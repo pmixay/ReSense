@@ -7,6 +7,13 @@ Numbers are for the **v0 prototype (2026-09-15, day 1)**, pure Python, 4-core sa
 
 ## 1. Real bags (no ground truth; one known obstacle)
 
+![person crossing the track at 55.7 m, doubleT_obstacle frame 20](img/doubleT_obstacle_0020.png)
+*`doubleT_obstacle` #20: the person crossing the track is reported at 55.7 m (red); the track axis
+(green) follows the right-hand drift of the column row / wall; side structures are advisory (blue).*
+
+![same bag, frame 165: person standing next to the column row → advisory only](img/doubleT_obstacle_0165.png)
+*Frame 165: the same person now stands at the column row, ~1.8 m left of the axis → warning, not an alarm.*
+
 | bag | frames | frames with **gauge alarm** | frames with advisory warning | mean / p95 ms | comment |
 |---|---|---|---|---|---|
 | `doubleT_obstacle` | 41 (every 5th) | 12 | 39 | 51 / 60 | **true positive**: person crossing / standing on the track at 55–57 m, reported at 55.6 m in frames 15–70 (while moving inside the gauge); walking person at 2–11 m next to the train is outside the gauge → advisory zone only |

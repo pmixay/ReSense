@@ -20,8 +20,8 @@ ROS 2 bag ─▶ /lidar_points ─▶ resense_ros/detector_node ─▶ /resense/
 ```
 
 Status: **v0 prototype (day 1)**. Works on the six organizer bags (round / rectangular /
-double-track tunnels, pressure gates, platform, switch), detects the real person on the track at
-55 m in `doubleT_obstacle` and ray-cast synthetic obstacles at 30 / 80 / 150 m; runs at 40–75 ms
+double-track tunnels, pressure gates, platform, switch), detects the person crossing the track
+at 55 m in `doubleT_obstacle` and ray-cast synthetic obstacles at 30 / 80 / 150 m; runs at 40–75 ms
 per frame in pure Python. Known false-positive sources and next steps: [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md).
 
 ## Repository layout
