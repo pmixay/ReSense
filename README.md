@@ -84,7 +84,14 @@ RViz and a Foxglove bridge (port 8765) next to the detector.
 
 ## Team
 
-Four people — captain/lead (architecture, ROS 2, Docker, submission), frontend (visualisation,
-dashboard, video, presentation), algorithms (track model, corridor, tracking, long range),
-data & evaluation (synthetic obstacles, metrics, tests). Detailed plan and sprint calendar to the
-29 September deadline: [`docs/PLAN.md`](docs/PLAN.md).
+Four people, mapped onto the five roles the organizers suggest (system analyst, computer-vision
+engineer, ROS 2 robotics developer, data specialist, C++/Python software developer):
+
+| # | who | organizers' roles | owns |
+|---|---|---|---|
+| P1 | captain / lead | system analyst + ROS 2 robotics developer | requirements, architecture, ROS 2 node & Docker, evaluation protocol, submission, pitch lead |
+| P2 | frontend | software developer (Python/JS tooling & UI) | RViz / Foxglove / web dashboard, label tool, video, presentation (mandatory slides 7–11) |
+| P3 | member 3 | computer-vision engineer | track model, gauge corridor, clustering, tracking, long range, false-positive suppression, performance |
+| P4 | member 4 | data specialist | dataset tooling, synthetic obstacles & augmentation, labelling, metrics, tests, CI |
+
+Detailed plan and sprint calendar to the 29 September deadline: [`docs/PLAN.md`](docs/PLAN.md).
