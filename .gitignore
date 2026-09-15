@@ -22,3 +22,20 @@ __pycache__/
 *.py[cod]
 .venv/
 venv/
+
+# ReSense: data, caches and run outputs (never commit bags)
+data/
+cache/
+*.db3
+*.mcap
+*.zst
+*.npy
+*.npz
+*.jsonl
+out/
+render/
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/
+*.egg-info/
+.pytest_cache/

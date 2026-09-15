@@ -1,0 +1,36 @@
+# docker compose up detector            # detector only (headless)
+# docker compose --profile viz up       # detector + RViz (needs X11: xhost +local:docker)
+# docker compose run --rm player ros2 bag play /data/roundT_doubleT --clock
+services:
+  detector:
+    build: { context: ., dockerfile: docker/Dockerfile }
+    image: resense:latest
+    network_mode: host
+    ipc: host
+    volumes:
+      - ${RESENSE_DATA:-./data}:/data:ro
+    command: ros2 launch resense_ros detector.launch.py
+  player:
+    image: resense:latest
+    network_mode: host
+    ipc: host
+    volumes:
+      - ${RESENSE_DATA:-./data}:/data:ro
+    profiles: ["tools"]
+    command: ros2 bag play /data/roundT_doubleT --clock
+  rviz:
+    image: resense:latest
+    network_mode: host
+    ipc: host
+    profiles: ["viz"]
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    command: rviz2 -d /opt/resense/ros2_ws/install/resense_ros/share/resense_ros/rviz/resense.rviz
+  foxglove:
+    image: resense:latest
+    network_mode: host
+    profiles: ["viz"]
+    command: ros2 launch foxglove_bridge foxglove_bridge_launch.xml port:=8765
