@@ -1,0 +1,58 @@
+"""Frame container and sensor -> vehicle frame conversion."""
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from typing import Optional
+
+import numpy as np
+
+from resense.config import SensorConfig
+
+_AXIS = {"x": 0, "y": 1, "z": 2}
+
+
+def axis_matrix(cfg: SensorConfig) -> np.ndarray:
+    """Rotation matrix R such that p_vehicle = R @ p_sensor."""
+    R = np.zeros((3, 3))
+    for row, spec in enumerate((cfg.forward, cfg.left, cfg.up)):
+        spec = spec.strip().lower()
+        sign = -1.0 if spec.startswith("-") else 1.0
+        ax = spec.lstrip("+-")
+        if ax not in _AXIS:
+            raise ValueError(f"bad axis spec {spec!r}")
+        R[row, _AXIS[ax]] = sign
+    if abs(np.linalg.det(R) - 1.0) > 1e-6:
+        raise ValueError("sensor axis mapping is not a proper rotation (check handedness)")
+    return R
+
+
+@dataclass
+class Frame:
+    """A LiDAR frame in the vehicle frame (X forward, Y left, Z up)."""
+    xyz: np.ndarray                      # (N,3) float32
+    intensity: np.ndarray                # (N,)
+    ring: Optional[np.ndarray] = None    # (N,) uint16
+    stamp: float = 0.0                   # seconds (bag/receive time)
+    frame_id: str = ""
+    meta: dict = field(default_factory=dict)
+
+    @property
+    def n(self) -> int:
+        return int(self.xyz.shape[0])
+
+
+def sensor_to_vehicle(xyz_sensor: np.ndarray, cfg: SensorConfig) -> np.ndarray:
+    R = axis_matrix(cfg).astype(np.float32)
+    return xyz_sensor @ R.T
+
+
+def frame_from_compact(arr: np.ndarray, cfg: SensorConfig, stamp: float = 0.0,
+                       frame_id: str = "") -> Frame:
+    """Compact structured array (sensor frame) -> Frame (vehicle frame), range-filtered."""
+    xyz = np.stack([arr["x"], arr["y"], arr["z"]], axis=1).astype(np.float32)
+    r2 = (xyz * xyz).sum(axis=1)
+    ok = (r2 >= cfg.min_range ** 2) & (r2 <= cfg.max_range ** 2)
+    xyz_v = sensor_to_vehicle(xyz[ok], cfg)
+    inten = arr["intensity"][ok].astype(np.float32) if "intensity" in arr.dtype.names else np.zeros(int(ok.sum()), np.float32)
+    ring = arr["ring"][ok] if "ring" in arr.dtype.names else None
+    return Frame(xyz=xyz_v, intensity=inten, ring=ring, stamp=stamp, frame_id=frame_id)

@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "resense"
+version = "0.1.0"
+description = "ReSense: LiDAR obstacle detection inside the train clearance gauge for a driverless metro (LCT 2026, case 05)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "numpy>=1.23",
+    "scipy>=1.9",
+    "scikit-learn>=1.1",
+    "pyyaml>=6",
+]
+
+[project.optional-dependencies]
+# offline tooling: bag reading without ROS, plots, synthetic obstacle injection
+dev = [
+    "rosbags>=0.9",
+    "matplotlib>=3.6",
+    "open3d>=0.17",
+    "pytest>=7",
+]
+
+[project.scripts]
+resense = "resense.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["resense*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

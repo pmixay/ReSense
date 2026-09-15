@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ReSense dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root { --bg:#14151a; --fg:#eaeaea; --ok:#2ecc71; --warn:#ff9f1c; --bad:#ff2d55; --muted:#8a8f98; }
+  body { margin:0; font-family: system-ui, sans-serif; background:var(--bg); color:var(--fg); }
+  header { display:flex; gap:16px; align-items:center; padding:12px 20px; border-bottom:1px solid #2a2c33; }
+  header h1 { font-size:18px; margin:0; letter-spacing:.5px; }
+  #banner { font-size:40px; font-weight:800; padding:18px 20px; }
+  .clear { color:var(--ok);} .warn { color:var(--warn);} .bad { color:var(--bad);}
+  main { display:grid; grid-template-columns: 2fr 1fr; gap:16px; padding:0 20px 20px; }
+  canvas { width:100%; background:#0d0e12; border:1px solid #2a2c33; border-radius:6px; }
+  .card { background:#1b1d24; border:1px solid #2a2c33; border-radius:6px; padding:12px; margin-bottom:12px; }
+  .kv { display:grid; grid-template-columns:1fr auto; gap:4px 12px; font-size:14px; }
+  .kv span:nth-child(odd) { color:var(--muted); }
+  #log { font-family: ui-monospace, monospace; font-size:12px; max-height:220px; overflow:auto; white-space:pre; }
+  input { background:#0d0e12; color:var(--fg); border:1px solid #2a2c33; border-radius:4px; padding:4px 8px; }
+  @media (max-width: 900px) { main { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>ReSense — clearance-gauge obstacle detection</h1>
+  <label>rosbridge <input id="url" value="ws://localhost:9090" size="24"></label>
+  <button id="connect">connect</button>
+  <span id="conn" style="color:var(--muted)">disconnected</span>
+</header>
+<div id="banner" class="clear">PATH CLEAR</div>
+<main>
+  <div>
+    <canvas id="top" width="1200" height="420"></canvas>
+    <canvas id="timeline" width="1200" height="160"></canvas>
+  </div>
+  <div>
+    <div class="card"><div class="kv">
+      <span>nearest obstacle</span><b id="dist">—</b>
+      <span>detections / warnings</span><b id="counts">0 / 0</b>
+      <span>track axis (m, +left)</span><b id="axis">—</b>
+      <span>curve radius</span><b id="radius">—</b>
+      <span>corridor trusted to</span><b id="valid">—</b>
+      <span>processing</span><b id="timing">—</b>
+      <span>frames</span><b id="frames">0</b>
+    </div></div>
+    <div class="card"><b>Alarm log</b><div id="log"></div></div>
+  </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/roslib@1/build/roslib.min.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const hist = [];           // [t, nearest_distance]
+let frames = 0;
+function draw(res) {
+  const c = $('top'), ctx = c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height);
+  const XMAX = 250, sx = c.width / XMAX, cy = c.height/2, sy = 22;  // 22 px per metre lateral
+  ctx.strokeStyle = '#2a2c33'; ctx.lineWidth = 1;
+  for (let x = 0; x <= XMAX; x += 50) { ctx.beginPath(); ctx.moveTo(x*sx, 0); ctx.lineTo(x*sx, c.height); ctx.stroke();
+    ctx.fillStyle = '#8a8f98'; ctx.font = '12px system-ui'; ctx.fillText(x + ' m', x*sx + 4, 14); }
+  const t = res.track || {}; const c0 = t.center || 0, yaw = t.yaw || 0, k = t.curvature || 0;
+  const axis = X => c0 + Math.tan(yaw)*X + 0.5*k*X*X;
+  // corridor (half-width 1.4 m) and trusted range
+  ctx.strokeStyle = '#2ecc71'; ctx.setLineDash([6,4]);
+  for (const side of [1.4, -1.4]) { ctx.beginPath();
+    for (let X = 3; X <= XMAX; X += 5) { const Y = axis(X) + side; const px = X*sx, py = cy - Y*sy; X === 3 ? ctx.moveTo(px,py) : ctx.lineTo(px,py); }
+    ctx.stroke(); }
+  ctx.setLineDash([]);
+  if (t.axis_valid && t.axis_valid < XMAX) { ctx.fillStyle = 'rgba(255,159,28,0.12)'; ctx.fillRect(t.axis_valid*sx, 0, c.width - t.axis_valid*sx, c.height); }
+  for (const d of (res.warnings || [])) box(ctx, d, sx, sy, cy, '#ff9f1c');
+  for (const d of (res.detections || [])) box(ctx, d, sx, sy, cy, '#ff2d55');
+}
+function box(ctx, d, sx, sy, cy, color) {
+  const w = Math.max(d.size[0], 1.5) * sx, h = Math.max(d.size[1], 0.6) * sy;
+  ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.strokeRect(d.center[0]*sx - w/2, cy - d.center[1]*sy - h/2, w, h);
+  ctx.fillStyle = color; ctx.font = 'bold 13px system-ui'; ctx.fillText(`${d.distance.toFixed(1)} m  p=${d.confidence.toFixed(2)}`, d.center[0]*sx + w/2 + 4, cy - d.center[1]*sy - 4);
+}
+function drawTimeline() {
+  const c = $('timeline'), ctx = c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height);
+  const now = Date.now()/1000, span = 30;
+  ctx.strokeStyle = '#2a2c33'; for (const d of [50,100,150,200]) { const y = c.height - d/250*c.height; ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(c.width,y); ctx.stroke(); ctx.fillStyle='#8a8f98'; ctx.fillText(d+' m', 4, y-2); }
+  ctx.fillStyle = '#ff2d55';
+  for (const [t, d] of hist) { if (d == null) continue; const x = c.width - (now - t)/span*c.width; const y = c.height - d/250*c.height; ctx.fillRect(x-2, y-2, 4, 4); }
+}
+function onStatus(msg) {
+  const res = JSON.parse(msg.data); frames++;
+  const b = $('banner');
+  if (res.obstacle) { b.className = 'bad'; b.textContent = `OBSTACLE  ${res.nearest_distance.toFixed(1)} m`; }
+  else if (res.warning) { b.className = 'warn'; b.textContent = 'WARNING: object near the gauge'; }
+  else { b.className = 'clear'; b.textContent = 'PATH CLEAR'; }
+  $('dist').textContent = res.nearest_distance == null ? '—' : res.nearest_distance.toFixed(1) + ' m';
+  $('counts').textContent = `${res.detections.length} / ${res.warnings.length}`;
+  const t = res.track || {};
+  $('axis').textContent = (t.center ?? 0).toFixed(2); $('radius').textContent = Math.abs(t.curvature||0) < 1e-6 ? 'straight' : (1/t.curvature).toFixed(0) + ' m';
+  $('valid').textContent = t.axis_valid ? t.axis_valid.toFixed(0) + ' m' : '—';
+  $('timing').textContent = (res.timing_ms?.total ?? 0).toFixed(0) + ' ms'; $('frames').textContent = frames;
+  hist.push([Date.now()/1000, res.nearest_distance]); while (hist.length > 600) hist.shift();
+  if (res.obstacle) { const l = $('log'); l.textContent = `${new Date().toLocaleTimeString()}  OBSTACLE ${res.nearest_distance.toFixed(1)} m  ` + res.detections.map(d => `#${d.id} dy=${d.lateral.toFixed(1)} n=${d.n_points} p=${d.confidence.toFixed(2)}`).join(' | ') + '\n' + l.textContent; }
+  draw(res); drawTimeline();
+}
+$('connect').onclick = () => {
+  const ros = new ROSLIB.Ros({ url: $('url').value });
+  ros.on('connection', () => $('conn').textContent = 'connected');
+  ros.on('error', e => $('conn').textContent = 'error');
+  ros.on('close', () => $('conn').textContent = 'disconnected');
+  new ROSLIB.Topic({ ros, name: '/resense/status', messageType: 'std_msgs/String' }).subscribe(onStatus);
+};
+draw({track:{center:0,yaw:0,curvature:0}, detections:[], warnings:[]}); drawTimeline();
+</script>
+</body>
+</html>
