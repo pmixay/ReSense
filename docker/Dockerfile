@@ -31,9 +31,10 @@ COPY resense ./resense
 COPY configs ./configs
 # Exact versions so that the jury builds the stack we measured on (numpy stays 1.x: ROS 2 Humble
 # python bindings are not built against numpy 2). The package itself is installed without
-# dependency resolution on top of them.
+# dependency resolution on top of them, and not in editable mode: jammy's pip 22.0.2 with the
+# system setuptools 59.6 has no PEP 660 build_editable hook.
 RUN pip3 install "numpy==1.26.4" "scipy==1.13.1" "scikit-learn==1.5.2" "pyyaml==6.0.2" \
-    && pip3 install --no-deps -e .
+    && pip3 install --no-deps .
 
 # optional offline / research tooling (bag reading without ROS, plots, synthetic injection, tests)
 COPY tests ./tests
