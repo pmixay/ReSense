@@ -11,10 +11,19 @@ jobs:
         with: { python-version: "3.10" }
       - run: pip install -e ".[dev]"
       - run: pytest -q
+  params-in-sync:
+    # configs/default.yaml is the single source of truth; the ROS package carries a copy
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: ./scripts/sync_params.sh --check
   docker:
     runs-on: ubuntu-22.04
     if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
-      - run: docker build -t resense:ci -f docker/Dockerfile .
-      - run: docker run --rm resense:ci python3 -m pytest -q /opt/resense/tests || true
+      - run: docker build -t resense:ci --build-arg WITH_TOOLS=1 -f docker/Dockerfile .
+      - name: unit tests inside the image (with open3d, so the synthetic-tunnel suite really runs)
+        run: docker run --rm resense:ci python3 -m pytest -q /opt/resense/tests
+      - name: ROS 2 package is importable and the launch file resolves
+        run: docker run --rm resense:ci bash -lc "ros2 pkg executables resense_ros && ros2 launch resense_ros detector.launch.py --print >/dev/null"
