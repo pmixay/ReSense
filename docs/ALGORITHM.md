@@ -12,8 +12,9 @@ A driverless metro train has a forward-looking 3D LiDAR. Ten times a second the 
 answer: **is there a foreign object inside the space the train is about to sweep, and how far
 ahead is it?** The object classes are unknown (a person, a box, a plank, a trolley, a fallen
 sign); the environment is known: a tunnel with two rails, a track bed, walls, columns, cable
-ducts, platforms, pressure gates and switches. Points come from a Hesai-class sensor with
-~190 000 valid returns per frame, usable to ~200 m ([`DATASET.md`](DATASET.md)).
+ducts, platforms, pressure gates and switches. Points come from a Hesai Pandar128 with
+~190 000 valid returns per frame, instrumented to 200 m on its 64 fine channels
+([`DATASET.md`](DATASET.md), [`SENSOR.md`](SENSOR.md)).
 
 We therefore model the *environment*, not the objects (spec §8.4): anything inside the
 clearance gauge that is not track, bed or known infrastructure is reported, whatever it looks

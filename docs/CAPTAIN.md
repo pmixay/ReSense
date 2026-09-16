@@ -9,13 +9,49 @@ State of the repo this map was written against: v0 prototype, one merged PR, 15 
 tests, CI with a `pytest` job, a parameter-sync check and a Docker job that runs the suite
 inside the image.
 
+## 0. Status (16.09, end of day 2) — done and what is left
+
+### Done on branch `claude/captain-member-mapping-6zge0b` (PR #2)
+
+| area | what | where |
+|---|---|---|
+| CI | Docker job builds with `WITH_TOOLS=1`, runs the 15 tests inside the image (no `\|\| true`), checks the ROS package and launch file; `params-in-sync` job | `.github/workflows/ci.yml` |
+| Docker | runtime image with pinned numpy 1.26 / scipy / scikit-learn / pyyaml, package installed non-editable (jammy pip has no PEP 660 hook), `WITH_TOOLS` build arg, canonical `configs/default.yaml` copied over the ROS copy at build time; first real build is green | `docker/Dockerfile`, `scripts/build.sh` |
+| parameters | `scripts/sync_params.sh` (copy / `--check`) | `scripts/` |
+| ROS node | `/resense/latency_ms`, `/resense/fps`, dropped-frame estimate, periodic latency mean / p95 / max log, `node` object in the status JSON, `stats_period` parameter | `ros2_ws/.../detector_node.py` |
+| docs | `ALGORITHM.md` (spec §5 structure), `EVALUATION.md` (data sets, metrics, procedure, targets), `SUBMISSION.md` (checklists, dry run, upload), `SENSOR.md` (Pandar128 identified from the manual and angle file; specs and their consequences), README topic table, node parameters and organizers' documentation index, this map | `docs/`, `README.md` |
+| corrections | the sensor is a Pandar128, not an AT128-class unit (DATASET.md, `sensor.py` docstring); 300 m is beyond the instrumented range for ordinary targets (EVALUATION.md) | |
+
+### Left for the captain (in order)
+
+1. Send the Sprint 0 questions to the organizers, now including the sensor questions in
+   `SENSOR.md` §4 (return mode, azimuth window, mount height, PTP / speed source).
+2. Launch arguments for the demo (`loop:=true`, node parameters as launch args) — item 7 below.
+3. Data-path alignment and a headless demo path — item 8.
+4. `scripts/dry_run.sh` asserting the `doubleT_obstacle` detection, p95 latency and no dropped
+   frames — item 9; run it on a team machine with the dataset.
+5. Dataset-free ROS smoke test in CI (synthetic bag through the node) — item 10.
+6. Intermediate submission tag and cover message once P2's demo recording exists — item 12.
+7. Sprint 2: bench timing on an i7-class machine, ego-speed parameter for accumulation,
+   remote-desktop demo runbook, extended-dataset intake — items 13–16.
+8. Sprint 3: keep `ALGORITHM.md` and `SUBMISSION.md` current, clean-machine dry run on 28.09,
+   captain slides — items 17–19.
+
+### Left for the team (captain tracks, does not do)
+
+| owner | item | why it matters |
+|---|---|---|
+| P3 | wall / bed curvature fusion at stations and transitions; GOST gauge polygon; ego-motion + 5–10-frame accumulation; reflectivity > 100 as a sign filter (`SENSOR.md` §3.3) | 49 of 67 false-alarm frames are in the platform-and-switch bag; 150–200 m needs accumulation |
+| P4 | `tests/test_core.py` skips the whole module without open3d (a local `pytest -q` says "1 skipped" and looks green); per-km / per-event false-alarm rates in `metrics.py`; label tool format; extended-dataset labelling | `EVALUATION.md` §2 depends on it |
+| P2 | demo video, RViz / Foxglove layouts, dashboard reading the new `node` stats, slides 7–11 | spec §5 video and §4 demo are pending |
+
 ## 1. Ownership map — who edits what
 
 | Path | Owner | Notes for the captain |
 |---|---|---|
 | `docker/`, `docker-compose.yml`, `scripts/build.sh`, `scripts/run_demo.sh`, `scripts/run_offline.sh`, `scripts/sync_params.sh` | **P1** | free to change |
 | `ros2_ws/src/resense_ros/` (node, launch, `package.xml`, `setup.py`, `config/`) | **P1** | free to change; `rviz/resense.rviz` is P2's |
-| `README.md`, `docs/ARCHITECTURE.md`, `docs/ALGORITHM.md`, `docs/EVALUATION.md`, `docs/SUBMISSION.md`, `docs/PLAN.md`, `docs/CAPTAIN.md` | **P1** | free to change; README screenshots come from P2; P3 reviews ALGORITHM.md |
+| `README.md`, `docs/ARCHITECTURE.md`, `docs/ALGORITHM.md`, `docs/EVALUATION.md`, `docs/SUBMISSION.md`, `docs/SENSOR.md`, `docs/PLAN.md`, `docs/CAPTAIN.md` | **P1** | free to change; README screenshots come from P2; P3 reviews ALGORITHM.md |
 | `.github/workflows/ci.yml` | P4 (pytest job) / **P1** (docker job) | edit only the docker job, tell P4 in the PR |
 | `configs/default.yaml` | P3 (values) / **P1** (structure, ROS install path) | never retune values; keep `resense:` root key |
 | `resense/config.py`, `resense/detector.py` | P3 | `FrameResult.to_dict()` is the JSON that P2's dashboard reads: treat as a frozen schema |

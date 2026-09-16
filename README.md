@@ -34,7 +34,7 @@ per frame in pure Python. Known false-positive sources and next steps: [`docs/EX
 | [`configs/default.yaml`](configs/default.yaml) | every tunable parameter (also installed as the ROS parameter file) |
 | [`tests/`](tests/) | pytest on a synthetic ray-cast tunnel — runs without the dataset |
 | [`web/`](web/) | browser dashboard scaffold (frontend track) |
-| [`docs/`](docs/) | [ARCHITECTURE](docs/ARCHITECTURE.md) · [ALGORITHM](docs/ALGORITHM.md) · [EXPERIMENTS](docs/EXPERIMENTS.md) · [EVALUATION](docs/EVALUATION.md) · [DATASET](docs/DATASET.md) · [RESEARCH](docs/RESEARCH.md) · [PLAN](docs/PLAN.md) · [CAPTAIN](docs/CAPTAIN.md) · [SUBMISSION](docs/SUBMISSION.md) · [PRESENTATION](docs/PRESENTATION.md) · organizers' README / ТЗ |
+| [`docs/`](docs/) | [ARCHITECTURE](docs/ARCHITECTURE.md) · [ALGORITHM](docs/ALGORITHM.md) · [EXPERIMENTS](docs/EXPERIMENTS.md) · [EVALUATION](docs/EVALUATION.md) · [DATASET](docs/DATASET.md) · [SENSOR](docs/SENSOR.md) · [RESEARCH](docs/RESEARCH.md) · [PLAN](docs/PLAN.md) · [CAPTAIN](docs/CAPTAIN.md) · [SUBMISSION](docs/SUBMISSION.md) · [PRESENTATION](docs/PRESENTATION.md) · organizers' README / ТЗ |
 
 ## Quick start (no ROS needed)
 
@@ -118,7 +118,7 @@ input queue dropped (estimated from gaps in the header stamps).
 | architecture (components, data flow) | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) |
 | algorithm (problem, data, processing, decision, parameters, limitations) | [`docs/ALGORITHM.md`](docs/ALGORITHM.md) |
 | experiments (range, latency, FPS, false alarms, hard cases, evolution) | [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md), protocol in [`docs/EVALUATION.md`](docs/EVALUATION.md) |
-| input data format | [`docs/DATASET.md`](docs/DATASET.md) |
+| input data format, sensor | [`docs/DATASET.md`](docs/DATASET.md), [`docs/SENSOR.md`](docs/SENSOR.md) (Hesai Pandar128 specs and what they imply) |
 | video | pending (P2), will be linked here |
 | submission status | [`docs/SUBMISSION.md`](docs/SUBMISSION.md) |
 

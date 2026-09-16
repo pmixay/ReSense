@@ -39,7 +39,7 @@ ROS 2 bag ──/lidar_points (PointCloud2, 10 Hz, ~190k pts)──▶ resense_r
 | `docker/`, `docker-compose.yml`, `scripts/` | reproducible build/run: `docker build → docker run → ros2 bag play → result` |
 | `configs/default.yaml` | all detector parameters; copied over the ROS package copy at Docker build time, `scripts/sync_params.sh --check` in CI keeps the two identical |
 | `tests/` | pytest on a synthetic ray-cast tunnel (no dataset needed) |
-| `docs/` | organizers' materials, dataset notes, research, plan, experiments, presentation notes |
+| `docs/` | organizers' materials, dataset and sensor notes, algorithm, evaluation protocol, research, plan, experiments, submission checklist, presentation notes |
 | `web/` | dashboard scaffold for the frontend member |
 
 ## Data flow and formats

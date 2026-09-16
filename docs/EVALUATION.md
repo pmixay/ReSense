@@ -31,7 +31,9 @@ excluded from recall, and their count is reported.
 | **CPU / memory** | `top` per core and RSS of the node on the reference machine | for the i7-9700E comparison |
 
 Match tolerance and bins are the ones implemented in `resense/metrics.py`; change them there
-and here together.
+and here together. The 200–300 m bin is kept for completeness: the Pandar128 is instrumented to
+200 m at 10 % reflectivity, and only on its horizon channels ([`SENSOR.md`](SENSOR.md) §3), so a
+non-reflective object in that bin is not expected to be detectable by any algorithm.
 
 ## 3. Procedure
 

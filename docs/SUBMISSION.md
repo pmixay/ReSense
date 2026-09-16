@@ -34,7 +34,7 @@ five rows above quoted in the cover message.
 | 12 | full demonstration on the control bag: `docker build → docker run → ros2 bag play → result` | `scripts/build.sh`, `scripts/run_demo.sh` | P1 | pending dry run 28.09 |
 | 13 | presentation, slides 7–11 exactly per template | [`PRESENTATION.md`](PRESENTATION.md), pptx | P2 | pending |
 | 14 | tests (spec §8.5) | `tests/`, CI (`pytest` job, Docker job runs the suite inside the image) | P4 / P1 | done |
-| 15 | input data description | [`DATASET.md`](DATASET.md) | P4 | done |
+| 15 | input data description | [`DATASET.md`](DATASET.md), sensor: [`SENSOR.md`](SENSOR.md) | P4 / P1 | done |
 
 ## Dry run (28.09)
 
