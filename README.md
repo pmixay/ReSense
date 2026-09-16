@@ -34,7 +34,7 @@ per frame in pure Python. Known false-positive sources and next steps: [`docs/EX
 | [`configs/default.yaml`](configs/default.yaml) | every tunable parameter (also installed as the ROS parameter file) |
 | [`tests/`](tests/) | pytest on a synthetic ray-cast tunnel — runs without the dataset |
 | [`web/`](web/) | browser dashboard scaffold (frontend track) |
-| [`docs/`](docs/) | [PLAN](docs/PLAN.md) · [ARCHITECTURE](docs/ARCHITECTURE.md) · [DATASET](docs/DATASET.md) · [RESEARCH](docs/RESEARCH.md) · [EXPERIMENTS](docs/EXPERIMENTS.md) · [PRESENTATION](docs/PRESENTATION.md) · organizers' README / ТЗ |
+| [`docs/`](docs/) | [PLAN](docs/PLAN.md) · [CAPTAIN](docs/CAPTAIN.md) · [ARCHITECTURE](docs/ARCHITECTURE.md) · [DATASET](docs/DATASET.md) · [RESEARCH](docs/RESEARCH.md) · [EXPERIMENTS](docs/EXPERIMENTS.md) · [PRESENTATION](docs/PRESENTATION.md) · organizers' README / ТЗ |
 
 ## Quick start (no ROS needed)
 
