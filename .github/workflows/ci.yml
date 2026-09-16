@@ -1,7 +1,6 @@
 name: ci
 on:
   push:
-  pull_request:
 jobs:
   pytest:
     runs-on: ubuntu-22.04
@@ -19,7 +18,6 @@ jobs:
       - run: ./scripts/sync_params.sh --check
   docker:
     runs-on: ubuntu-22.04
-    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
       - run: docker build -t resense:ci --build-arg WITH_TOOLS=1 -f docker/Dockerfile .
