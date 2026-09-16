@@ -30,7 +30,8 @@ promised an extended dataset with obstacles — until then all positive examples
   holds ~190 000 valid points, ~150 000 distinct rays.
 * Angular grid (measured): azimuth step **0.1°**, valid returns only within **±50°**; 128 rings with
   elevation **+14.4° … −25.1°**, **0.125° step in the ROI (+2° … −6.2°)**, 0.5° outside. The sweep
-  of one frame takes 33 ms. This matches a Hesai 128-channel AT-series unit (AT128-class).
+  of one frame takes 33 ms. The unit is a **Hesai Pandar128 (E3X)** — identified from the manual and the
+  angle correction file, see [`SENSOR.md`](SENSOR.md).
 * Range: last returns at ~206 m; the tunnel walls return points to ~150–200 m, the track bed to
   ~100 m; p99 of ranges is only ~48 m (most points are the near walls).
 * Sensor frame: **−y is forward, +x is left, +z is up** (right-handed). The package converts

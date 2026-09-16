@@ -34,13 +34,13 @@ per frame in pure Python. Known false-positive sources and next steps: [`docs/EX
 | [`configs/default.yaml`](configs/default.yaml) | every tunable parameter (also installed as the ROS parameter file) |
 | [`tests/`](tests/) | pytest on a synthetic ray-cast tunnel — runs without the dataset |
 | [`web/`](web/) | browser dashboard scaffold (frontend track) |
-| [`docs/`](docs/) | [PLAN](docs/PLAN.md) · [ARCHITECTURE](docs/ARCHITECTURE.md) · [DATASET](docs/DATASET.md) · [RESEARCH](docs/RESEARCH.md) · [EXPERIMENTS](docs/EXPERIMENTS.md) · [PRESENTATION](docs/PRESENTATION.md) · organizers' README / ТЗ |
+| [`docs/`](docs/) | [ARCHITECTURE](docs/ARCHITECTURE.md) · [ALGORITHM](docs/ALGORITHM.md) · [EXPERIMENTS](docs/EXPERIMENTS.md) · [EVALUATION](docs/EVALUATION.md) · [DATASET](docs/DATASET.md) · [SENSOR](docs/SENSOR.md) · [RESEARCH](docs/RESEARCH.md) · [PLAN](docs/PLAN.md) · [CAPTAIN](docs/CAPTAIN.md) · [SUBMISSION](docs/SUBMISSION.md) · [PRESENTATION](docs/PRESENTATION.md) · organizers' README / ТЗ |
 
 ## Quick start (no ROS needed)
 
 ```bash
 pip install -e ".[dev]"                       # numpy scipy scikit-learn pyyaml + rosbags matplotlib open3d pytest
-pytest -q                                     # 15 tests on a synthetic tunnel
+pytest -q                                     # expect "15 passed"; "1 skipped" means open3d is missing and nothing ran
 
 # unpack the dataset (see docs/DATASET.md), then:
 resense info  /data/for_hackathon/roundT_doubleT
@@ -57,6 +57,8 @@ resense eval data/synth
 ```bash
 ./scripts/build.sh                                   # docker build -t resense -f docker/Dockerfile .
 ./scripts/run_demo.sh /data/for_hackathon/roundT_doubleT   # detector + RViz + bag playback in one container
+WITH_TOOLS=1 ./scripts/build.sh                      # + rosbags / matplotlib / open3d / pytest inside the image
+docker run --rm resense python3 -m pytest -q /opt/resense/tests   # the test suite inside the image (CI does this)
 
 # or step by step
 docker run --rm -it --net=host -v /data/for_hackathon:/data resense \
@@ -70,6 +72,29 @@ Launch arguments: `input_topic:=/lidar_points`, `config_file:=/path/to/detector.
 `rviz:=true|false`, `bag:=/data/<bag>`, `rate:=1.0`. `docker compose --profile viz up` starts
 RViz and a Foxglove bridge (port 8765) next to the detector.
 
+The image contains only what the node needs (pinned numpy / scipy / scikit-learn / pyyaml, ROS 2
+packages, RViz, rosbag2, Foxglove bridge). `configs/default.yaml` is copied into the ROS package
+at build time, so the node always runs the committed parameters; `./scripts/sync_params.sh`
+keeps the in-repo copy identical (CI checks it).
+
+### Topics published by the node
+
+| topic | type | meaning |
+|---|---|---|
+| `/resense/obstacle_detected` | `std_msgs/Bool` | confirmed object inside the clearance gauge |
+| `/resense/warning` | `std_msgs/Bool` | confirmed object in the advisory zone only |
+| `/resense/nearest_distance` | `std_msgs/Float32` | m along the track to the nearest gauge obstacle, −1 if none |
+| `/resense/detections` | `vision_msgs/Detection3DArray` | boxes in the sensor frame, `class_id` = `gauge_obstacle` / `warning_obstacle`, score = confidence |
+| `/resense/status` | `std_msgs/String` | JSON: full per-frame result (detections, track model, per-stage timing) plus `node` = `{latency_ms, fps, frames, dropped_frames, input_period_ms}` |
+| `/resense/latency_ms` | `std_msgs/Float32` | per frame: decode + detect + publish, ms |
+| `/resense/fps` | `std_msgs/Float32` | frames processed per second, every `stats_period` s (default 2) |
+| `/resense/markers`, `/resense/corridor_points` | `MarkerArray`, `PointCloud2` | RViz: boxes, labels, corridor outline, status text; points inside the corridor |
+
+Node parameters: `input_topic`, `config_file`, `publish_markers`, `publish_corridor_cloud`,
+`marker_x_max`, `output_frame`, `stats_period`. Every `stats_period` seconds the node logs
+`fps`, latency mean / p95 / max, the measured input period and the number of frames the
+input queue dropped (estimated from gaps in the header stamps).
+
 ## Parameters worth knowing (`configs/default.yaml`)
 
 | key | default | meaning |
@@ -81,6 +106,21 @@ RViz and a Foxglove bridge (port 8765) next to the detector.
 | `cluster.eps / range_scale / voxel` | 0.35 / 40 / 0.05 | range-adaptive DBSCAN: ε(r) = eps·(1 + r/40 m) |
 | `cluster.*_max_*` | | infrastructure filters (thin hardware, low hardware, wall-like, overhead) |
 | `tracking.confirm_hits / conf_threshold` | 3 / 0.6 | persistence before an alarm |
+
+## Documentation required by the organizers (spec §5, §7)
+
+| requirement | where |
+|---|---|
+| project description | this README (top) |
+| build the Docker image | "ROS 2 / Docker" above, `scripts/build.sh` |
+| run, process a bag | "ROS 2 / Docker" (`run_demo.sh`, launch arguments), "Quick start" (offline `resense run`) |
+| parameters and configuration | "Parameters worth knowing", [`docs/ALGORITHM.md`](docs/ALGORITHM.md) §5, `configs/default.yaml` |
+| architecture (components, data flow) | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) |
+| algorithm (problem, data, processing, decision, parameters, limitations) | [`docs/ALGORITHM.md`](docs/ALGORITHM.md) |
+| experiments (range, latency, FPS, false alarms, hard cases, evolution) | [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md), protocol in [`docs/EVALUATION.md`](docs/EVALUATION.md) |
+| input data format, sensor | [`docs/DATASET.md`](docs/DATASET.md), [`docs/SENSOR.md`](docs/SENSOR.md) (Hesai Pandar128 specs and what they imply) |
+| video | pending (P2), will be linked here |
+| submission status | [`docs/SUBMISSION.md`](docs/SUBMISSION.md) |
 
 ## Team
 

@@ -9,6 +9,14 @@ Topics (defaults, all configurable via parameters):
   pub  /resense/status                  std_msgs/String    (JSON: full FrameResult for dashboards)
   pub  /resense/markers                 visualization_msgs/MarkerArray (boxes, labels, corridor)
   pub  /resense/corridor_points         sensor_msgs/PointCloud2 (points inside the corridor, debug)
+  pub  /resense/latency_ms              std_msgs/Float32   (per frame: decode + detect + publish, ms)
+  pub  /resense/fps                     std_msgs/Float32   (frames processed per second, every stats_period s)
+
+The status JSON carries an extra ``node`` object next to the detector fields:
+``{"latency_ms", "fps", "frames", "dropped_frames", "input_period_ms"}`` (``latency_ms`` there is
+decode + detect of the same frame, before publishing). ``dropped_frames``
+is estimated from gaps in the input header stamps (the subscription is best-effort with a
+short queue, so a slow frame silently drops the ones behind it).
 """
 from __future__ import annotations
 
@@ -40,6 +48,7 @@ class DetectorNode(Node):
         self.declare_parameter("publish_corridor_cloud", True)
         self.declare_parameter("marker_x_max", 250.0)
         self.declare_parameter("output_frame", "")   # empty = input frame id
+        self.declare_parameter("stats_period", 2.0)  # s, between FPS / latency log lines and /resense/fps
 
         cfg_file = self.get_parameter("config_file").get_parameter_value().string_value
         self.cfg = DetectorConfig.from_yaml(cfg_file) if cfg_file else DetectorConfig()
@@ -58,9 +67,56 @@ class DetectorNode(Node):
         self.pub_status = self.create_publisher(String, "/resense/status", 10)
         self.pub_markers = self.create_publisher(MarkerArray, "/resense/markers", 10)
         self.pub_corridor = self.create_publisher(PointCloud2, "/resense/corridor_points", 5)
+        self.pub_latency = self.create_publisher(Float32, "/resense/latency_ms", 10)
+        self.pub_fps = self.create_publisher(Float32, "/resense/fps", 10)
+
+        # --- runtime statistics (spec 8.3: latency, frame rate, real-time stability) ---
         self.n_frames = 0
-        self.t_last_log = time.time()
+        self.dropped = 0                      # frames the queue dropped, estimated from stamp gaps
+        self.input_period = 0.1               # s, running estimate of the sensor period
+        self.last_stamp = None                # header stamp of the previous processed frame
+        self.win_latency = []                 # ms, latencies since the last stats line
+        self.win_frames = 0
+        self.fps = 0.0
+        self.last_latency_ms = 0.0
+        self.last_status = "clear"
+        self.t_stats = time.perf_counter()
+        period = self.get_parameter("stats_period").get_parameter_value().double_value
+        self.stats_timer = self.create_timer(max(period, 0.1), self.on_stats)
         self.get_logger().info(f"ReSense detector listening on {topic}")
+
+    # ------------------------------------------------------------------
+    def _account_frame(self, stamp: float) -> None:
+        """Estimate dropped frames from the gap between consecutive input stamps."""
+        if self.last_stamp is not None:
+            gap = stamp - self.last_stamp
+            if 0.0 < gap < 1.6 * self.input_period:
+                # a regular gap: refine the period estimate (EMA)
+                self.input_period = 0.9 * self.input_period + 0.1 * gap
+            elif gap >= 1.6 * self.input_period:
+                self.dropped += int(round(gap / self.input_period)) - 1
+            # gap <= 0: a bag loop / restart, not a drop
+        self.last_stamp = stamp
+
+    def on_stats(self) -> None:
+        now = time.perf_counter()
+        dt = now - self.t_stats
+        self.t_stats = now
+        self.fps = self.win_frames / dt if dt > 0 else 0.0
+        self.pub_fps.publish(Float32(data=float(self.fps)))
+        if self.win_frames:
+            lat = np.asarray(self.win_latency)
+            self.get_logger().info(
+                f"frame {self.n_frames}: {self.last_status}; {self.fps:.1f} fps; "
+                f"latency mean {lat.mean():.0f} / p95 {np.percentile(lat, 95):.0f} / max {lat.max():.0f} ms; "
+                f"input period {self.input_period * 1e3:.0f} ms; dropped {self.dropped}")
+        self.win_latency.clear()
+        self.win_frames = 0
+
+    def node_stats(self) -> dict:
+        return {"latency_ms": round(self.last_latency_ms, 2), "fps": round(self.fps, 2),
+                "frames": self.n_frames, "dropped_frames": self.dropped,
+                "input_period_ms": round(self.input_period * 1e3, 1)}
 
     # ------------------------------------------------------------------
     def on_cloud(self, msg: PointCloud2) -> None:
@@ -73,15 +129,19 @@ class DetectorNode(Node):
         stamp = msg.header.stamp.sec + msg.header.stamp.nanosec * 1e-9
         frame = Frame(xyz=xyz_v, intensity=arr["intensity"][ok], ring=arr["ring"][ok],
                       stamp=stamp, frame_id=msg.header.frame_id)
+        self._account_frame(stamp)
         res = self.detector.process(frame)
+        self.last_latency_ms = (time.perf_counter() - t0) * 1e3   # decode + detect, goes into the status JSON
         self.publish(msg.header, frame, res)
         self.n_frames += 1
-        dt = (time.perf_counter() - t0) * 1e3
-        if time.time() - self.t_last_log > 2.0:
-            status = f"OBSTACLE at {res.nearest_distance:.1f} m" if res.obstacle else ("warning" if res.warning else "clear")
-            self.get_logger().info(f"frame {self.n_frames}: {status}; {dt:.0f} ms; axis y={res.track.center:+.2f} "
-                                   f"R={'inf' if abs(res.track.curvature) < 1e-6 else '%.0f' % (1 / res.track.curvature)}")
-            self.t_last_log = time.time()
+        self.win_frames += 1
+        latency_ms = (time.perf_counter() - t0) * 1e3               # + publishing, goes to /resense/latency_ms
+        self.win_latency.append(latency_ms)
+        self.pub_latency.publish(Float32(data=float(latency_ms)))
+        self.last_status = (f"OBSTACLE at {res.nearest_distance:.1f} m" if res.obstacle
+                            else ("warning" if res.warning else "clear"))
+        self.last_status += (f"; axis y={res.track.center:+.2f} "
+                             f"R={'inf' if abs(res.track.curvature) < 1e-6 else '%.0f' % (1 / res.track.curvature)}")
 
     # ------------------------------------------------------------------
     def publish(self, header: Header, frame: Frame, res: FrameResult) -> None:
@@ -90,7 +150,9 @@ class DetectorNode(Node):
         self.pub_flag.publish(Bool(data=bool(res.obstacle)))
         self.pub_warn.publish(Bool(data=bool(res.warning)))
         self.pub_dist.publish(Float32(data=float(res.nearest_distance) if res.nearest_distance is not None else -1.0))
-        self.pub_status.publish(String(data=json.dumps(res.to_dict())))
+        status = res.to_dict()
+        status["node"] = self.node_stats()
+        self.pub_status.publish(String(data=json.dumps(status)))
 
         det_msg = Detection3DArray(header=hdr)
         for d in res.detections + res.warnings:

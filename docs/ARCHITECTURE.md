@@ -25,6 +25,7 @@ ROS 2 bag ──/lidar_points (PointCloud2, 10 Hz, ~190k pts)──▶ resense_r
         /resense/obstacle_detected (Bool)   /resense/nearest_distance (Float32)
         /resense/warning (Bool)             /resense/detections (vision_msgs/Detection3DArray)
         /resense/status (String JSON)       /resense/markers (MarkerArray)  /resense/corridor_points
+        /resense/latency_ms (Float32)       /resense/fps (Float32)
                                                                   │
                                               RViz2 / Foxglove / web dashboard (web/)
 ```
@@ -36,9 +37,9 @@ ROS 2 bag ──/lidar_points (PointCloud2, 10 Hz, ~190k pts)──▶ resense_r
 | `resense/` | core library (no ROS dependency): decoding, track model, gauge, clustering, tracking, detector, synthetic data, metrics, CLI, plots |
 | `ros2_ws/src/resense_ros/` | ROS 2 Humble `ament_python` package: node, launch, params, RViz config |
 | `docker/`, `docker-compose.yml`, `scripts/` | reproducible build/run: `docker build → docker run → ros2 bag play → result` |
-| `configs/default.yaml` | all detector parameters (same file is installed as the ROS param file) |
+| `configs/default.yaml` | all detector parameters; copied over the ROS package copy at Docker build time, `scripts/sync_params.sh --check` in CI keeps the two identical |
 | `tests/` | pytest on a synthetic ray-cast tunnel (no dataset needed) |
-| `docs/` | organizers' materials, dataset notes, research, plan, experiments, presentation notes |
+| `docs/` | organizers' materials, dataset and sensor notes, algorithm, evaluation protocol, research, plan, experiments, submission checklist, presentation notes |
 | `web/` | dashboard scaffold for the frontend member |
 
 ## Data flow and formats
@@ -51,6 +52,13 @@ ROS 2 bag ──/lidar_points (PointCloud2, 10 Hz, ~190k pts)──▶ resense_r
   `obstacle`, `warning`, `nearest_distance`, `detections[]` (id, zone, distance along track,
   lateral offset, centre, size, n_points, confidence, age, height_min, intensity), `track`
   (floor polynomial, axis centre/yaw/curvature, rail offset, quality flags), `timing_ms`.
+  The ROS node adds a `node` object: `latency_ms` (decode + detect of this frame), `fps`,
+  `frames`, `dropped_frames` (estimated from gaps in the input stamps), `input_period_ms`.
+* Node runtime statistics (spec §8.3): `/resense/latency_ms` per frame (decode + detect +
+  publish), `/resense/fps` and a log line with latency mean / p95 / max and dropped frames every
+  `stats_period` seconds. The input subscription is best-effort with a queue of 5, so if a frame
+  takes longer than the sensor period the following frames are dropped rather than queued: the
+  node always works on the freshest data and the drop count makes overload visible.
 * `resense inject` writes `*.npz` (xyz, intensity, per-point labels) + `gt.json`;
   `resense eval` consumes them and prints recall by range, FP rates, latency.
 

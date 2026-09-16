@@ -1,10 +1,11 @@
-"""Sensor model of the hackathon LiDAR (Hesai 128-channel, AT128-class).
+"""Sensor model of the hackathon LiDAR (Hesai Pandar128 E3X, see docs/SENSOR.md).
 
 Measured from the provided bags (see docs/DATASET.md):
     * 1200 azimuth columns per frame, 0.1 deg step, returns only within +-50 deg
     * 128 rings, elevation +14.4 .. -25.1 deg; 0.125 deg step in the ROI (+2 .. -6.2 deg)
     * dual return (2 x 153 600 slots per frame), 10 Hz, 33 ms sweep
-    * useful range ~200 m (last returns at ~206 m)
+    * useful range ~200 m (last returns at ~206 m); the manual instruments 200 m only on
+      channels 26-89 (elevation +2 .. -6 deg), 100 m elsewhere
 The tables below drive the synthetic obstacle injector and the "expected number of
 points" model used to score clusters.
 """
