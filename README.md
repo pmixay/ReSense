@@ -57,6 +57,8 @@ resense eval data/synth
 ```bash
 ./scripts/build.sh                                   # docker build -t resense -f docker/Dockerfile .
 ./scripts/run_demo.sh /data/for_hackathon/roundT_doubleT   # detector + RViz + bag playback in one container
+./scripts/run_headless.sh /data/for_hackathon/doubleT_obstacle   # same, no X11: prints the distance
+./scripts/dry_run.sh /data/for_hackathon/doubleT_obstacle        # acceptance test, exits non-zero on failure
 WITH_TOOLS=1 ./scripts/build.sh                      # + rosbags / matplotlib / open3d / pytest inside the image
 docker run --rm resense python3 -m pytest -q /opt/resense/tests   # the test suite inside the image (CI does this)
 
@@ -71,6 +73,54 @@ ros2 topic echo /resense/nearest_distance                 # terminal 3 (any ROS 
 Launch arguments: `input_topic:=/lidar_points`, `config_file:=/path/to/detector.yaml`,
 `rviz:=true|false`, `bag:=/data/<bag>`, `rate:=1.0`. `docker compose --profile viz up` starts
 RViz and a Foxglove bridge (port 8765) next to the detector.
+
+### Where the data lives
+
+The bags are never copied into the image. **The directory that holds them is mounted at `/data`
+inside the container**, and there is exactly one way to name it per entry point:
+
+| entry point | how the directory is chosen |
+|---|---|
+| `scripts/run_demo.sh <bag>`, `run_headless.sh <bag>`, `dry_run.sh <bag>` | the parent of the bag path you pass |
+| `docker compose` | `$RESENSE_DATA` (default `/data/for_hackathon`); `$RESENSE_BAG` picks the bag the `player` and `echo` services use |
+| plain `docker run` | your own `-v <host dir>:/data:ro` |
+
+```bash
+RESENSE_DATA=/mnt/bags RESENSE_BAG=doubleT_obstacle docker compose --profile tools up
+```
+
+### Demo without a display
+
+Every step of the jury scenario works over ssh, with no X11 and no RViz — the detector prints
+`fps`, latency mean / p95 / max and dropped frames, and the distance readout comes from the topic:
+
+```bash
+./scripts/run_headless.sh /data/for_hackathon/doubleT_obstacle      # one container, prints "OBSTACLE 55.7 m"
+docker compose up detector                                          # or: detector alone,
+docker compose --profile tools up player                            #     bag in a second terminal,
+docker compose --profile tools run --rm echo                        #     distance in a third
+```
+
+### Acceptance test (`scripts/dry_run.sh`)
+
+The 28.09 dry run is a script, not a checklist. It builds the image with `--no-cache`, waits for
+the node to advertise before playing the bag (the launch file's own `bag:=` races startup and
+loses the first frames), captures `/resense/status` and checks it:
+
+```bash
+./scripts/dry_run.sh /data/for_hackathon/doubleT_obstacle
+# == checking out/dry_run/status.jsonl ==
+# status messages / alarm frames / obstacle distance / latency mean,p95,max / dropped frames / fps
+# PASS: all dry-run criteria met
+
+SKIP_BUILD=1 ./scripts/dry_run.sh /data/for_hackathon/roundT_doubleT --expect-clear   # false-alarm check
+```
+
+Defaults for `doubleT_obstacle`: the person is reported in 50–62 m, p95 of decode + detect is
+≤ 100 ms (the 10 Hz frame period) and no input frame is dropped. Any argument after the bag path
+is forwarded to `scripts/check_dry_run.py`, which holds the thresholds and can also run on a
+capture someone else recorded. Raw output stays in `$OUT` (default `out/dry_run/`):
+`status.jsonl` and `node.log`.
 
 The image contains only what the node needs (pinned numpy / scipy / scikit-learn / pyyaml, ROS 2
 packages, RViz, rosbag2, Foxglove bridge). `configs/default.yaml` is copied into the ROS package

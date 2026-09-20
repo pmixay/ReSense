@@ -42,15 +42,20 @@ On a machine that has never built the project:
 
 ```bash
 git clone <repo> && cd ReSense
-./scripts/build.sh                                        # must finish without manual steps
-./scripts/run_demo.sh /data/for_hackathon/doubleT_obstacle # RViz shows OBSTACLE ~55 m
-docker run --rm --net=host resense ros2 topic echo /resense/nearest_distance   # from a second terminal
-docker run --rm --net=host resense ros2 topic echo /resense/fps                # ~10 fps expected
+./scripts/dry_run.sh /data/for_hackathon/doubleT_obstacle      # builds --no-cache, plays, checks, exits 0/1
+SKIP_BUILD=1 ./scripts/dry_run.sh /data/for_hackathon/roundT_doubleT --expect-clear
+./scripts/run_demo.sh /data/for_hackathon/doubleT_obstacle     # RViz shows OBSTACLE ~55 m (needs X11)
+RVIZ=0 ./scripts/run_demo.sh /data/for_hackathon/doubleT_obstacle   # the same over ssh
 ```
 
-Pass criteria: the image builds from scratch, the node starts on the default command, the
-person in `doubleT_obstacle` is reported at 55–57 m, `/resense/fps` stays at the bag rate and
-the node log shows no dropped frames at rate 1.0.
+Pass criteria, all asserted by `dry_run.sh` (it exits non-zero otherwise): the image builds
+from scratch with no manual steps, the node starts on the default command, the person in
+`doubleT_obstacle` is reported in 50–62 m for at least 3 frames, p95 of decode + detect stays
+≤ 100 ms and no input frame is dropped at rate 1.0. `--expect-clear` on an empty bag is the
+false-alarm half of the same check. Raw capture: `out/dry_run/status.jsonl`, `node.log`.
+
+The RViz run stays in the procedure because the jury sees it, but it is no longer what decides
+whether the dry run passed.
 
 ## Upload
 
