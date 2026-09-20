@@ -39,13 +39,40 @@ inside the image.
 8. Sprint 3: keep `ALGORITHM.md` and `SUBMISSION.md` current, clean-machine dry run on 28.09,
    captain slides — items 17–19.
 
+### Findings from the first run on real data (20.09)
+
+The dataset was unpacked and the offline pipeline run on `doubleT_obstacle` and `roundT_doubleT`.
+Docker and ROS 2 were not available, so the node itself is still unexecuted.
+
+1. **The demo would have shown nothing.** `doubleT_obstacle` publishes
+   `/sensing/lidar/hesai128/pointcloud` with `frame_id = lidar_livox`, not `/lidar_points` /
+   `hesai_lidar`. The node's default topic, the RViz layout's topic **and** the RViz fixed frame
+   were all wrong for the one bag with a real obstacle. Fixed in the node (candidate topic list
+   + auto-discovery of PointCloud2 topics) and the launch file; **the RViz layout is P2's and
+   still hard-codes both** — `Topic: /lidar_points`, `Fixed Frame: hesai_lidar`.
+2. **The azimuth window is not constant across bags.** `doubleT_obstacle` is a 360° recording
+   (921 600 slots, ~347 k valid points); `roundT_doubleT` is the 120° window (~190 k). The
+   open question in `SENSOR.md` §4 is already answered by the data, and the wrong way: the
+   control bag may use either. Latency on the 347 k-point frames is still fine (mean 52 ms).
+3. **The v0 numbers reproduce exactly.** `doubleT_obstacle`, every 5th frame: 41 frames, 12
+   alarm frames, 39 warning frames, 55.6 → 56.4 m, mean 52 ms — matching `EXPERIMENTS.md`.
+4. **The false-alarm numbers do not, and are optimistic.** `EXPERIMENTS.md` reports
+   `roundT_doubleT` as "26 frames (every 5th), 1 gauge alarm". 252 frames / 26 = every **10th**.
+   Re-run at every 5th: **8 alarm frames, 3 false-alarm events**. Subsampling interacts with
+   `tracking.confirm_hits = 3` — at every 10th a candidate must persist a full second to be
+   confirmed, at 10 Hz only 0.3 s — so **every recall and false-alarm number measured on
+   subsampled frames understates the false-alarm rate the node will show at 10 Hz**. For P3/P4:
+   the evaluation has to run at full rate, or state the subsampling next to every number.
+5. **FP events vs FP frames, measured.** Those 8 alarm frames are 3 confirmed track ids
+   (5, 2 and 1 frames). The headline number in `EVALUATION.md` §2 should be events, as planned.
+
 ### Left for the team (captain tracks, does not do)
 
 | owner | item | why it matters |
 |---|---|---|
 | P3 | wall / bed curvature fusion at stations and transitions; GOST gauge polygon; ego-motion + 5–10-frame accumulation; reflectivity > 100 as a sign filter (`SENSOR.md` §3.3) | 49 of 67 false-alarm frames are in the platform-and-switch bag; 150–200 m needs accumulation |
 | P4 | `tests/test_core.py` skips the whole module without open3d (a local `pytest -q` says "1 skipped" and looks green); per-km / per-event false-alarm rates in `metrics.py`; label tool format; extended-dataset labelling | `EVALUATION.md` §2 depends on it |
-| P2 | demo video, RViz / Foxglove layouts, dashboard reading the new `node` stats, slides 7–11 | spec §5 video and §4 demo are pending |
+| P2 | **RViz layout hard-codes `Topic: /lidar_points` and `Fixed Frame: hesai_lidar`, so the demo bag shows an empty screen** (finding 1); demo video, Foxglove layout, dashboard reading the new `node` stats, slides 7–11 | spec §5 video and §4 demo are pending |
 
 ## 1. Ownership map — who edits what
 

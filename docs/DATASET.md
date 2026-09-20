@@ -32,8 +32,21 @@ promised an extended dataset with obstacles — until then all positive examples
 
 ## Topic and sensor
 
-* `/lidar_points` — `sensor_msgs/msg/PointCloud2`, `frame_id = hesai_lidar`, ~10 Hz
-  (frame period 80–120 ms in the bag clock).
+* **The bags do not agree on the topic name, the frame id or the azimuth window** (verified
+  2026-09-20 by reading the bags, not the notes):
+
+  | bag | topic | `frame_id` | `width` | azimuth span |
+  |---|---|---|---|---|
+  | `roundT_doubleT` | `/lidar_points` | `hesai_lidar` | 307 200 | 100° (−140°…−40°) |
+  | `doubleT_obstacle` | `/sensing/lidar/hesai128/pointcloud` | `lidar_livox` | 921 600 | 360° |
+
+  `doubleT_obstacle` is a **full-turn recording** (3600 azimuth columns × 128 rings × 2 returns
+  = 921 600 slots, ~347 k valid points) with a `lidar_livox` frame id left over from an earlier
+  rig; the others use the 120° window (1200 columns, ~190 k valid points). The remaining four
+  bags have not been re-checked — **do not assume, read the metadata**. Consequences: the node
+  takes a candidate topic list and auto-discovers PointCloud2 topics, and the RViz layout must
+  not hard-code the topic or the fixed frame.
+* `sensor_msgs/msg/PointCloud2`, ~10 Hz (frame period 80–120 ms in the bag clock).
 * Fields: `x y z` float32, `intensity` float32 (0–255, median 6–7, rails/retro-reflectors up to 255),
   `ring` uint16 (0–127), `timestamp` float64 (sensor clock, **not synchronised**: year 2000 epoch —
   use the bag receive time, not `header.stamp`).

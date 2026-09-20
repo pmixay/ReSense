@@ -12,7 +12,7 @@ clearance gauge sweeps, and reports every persistent cluster inside it with its 
 the track, lateral offset, size and confidence. No labelled obstacle classes are required.
 
 ```
-ROS 2 bag ─▶ /lidar_points ─▶ resense_ros/detector_node ─▶ /resense/obstacle_detected (Bool)
+ROS 2 bag ─▶ PointCloud2 ─▶ resense_ros/detector_node ─▶ /resense/obstacle_detected (Bool)
                                                          ├▶ /resense/nearest_distance (Float32)
                                                          ├▶ /resense/detections (vision_msgs/Detection3DArray)
                                                          ├▶ /resense/markers (RViz)  ─▶ RViz2 / Foxglove / web/
@@ -70,8 +70,17 @@ docker run --rm -it --net=host -v /data/for_hackathon:/data resense \
 ros2 topic echo /resense/nearest_distance                 # terminal 3 (any ROS 2 Humble host)
 ```
 
-Launch arguments: `input_topic:=/lidar_points`, `config_file:=/path/to/detector.yaml`,
-`rviz:=true|false`, `bag:=/data/<bag>`, `rate:=1.0`. `docker compose --profile viz up` starts
+Launch arguments: `input_topic:=...` (comma-separated candidates, default
+`/lidar_points,/sensing/lidar/hesai128/pointcloud`), `auto_discover:=true|false`,
+`config_file:=/path/to/detector.yaml`, `rviz:=true|false`, `bag:=/data/<bag>`, `rate:=1.0`,
+`loop:=true|false`, plus `publish_markers`, `publish_corridor_cloud`, `marker_x_max`,
+`output_frame`, `stats_period`, `discover_period`.
+
+**The bags disagree on the topic name** — `roundT_doubleT` publishes `/lidar_points`,
+`doubleT_obstacle` publishes `/sensing/lidar/hesai128/pointcloud` — so the node takes a list of
+candidates and, unless `auto_discover:=false`, subscribes to any other `PointCloud2` topic that
+appears on the graph. The first topic to deliver a frame wins and is logged; the others are
+dropped. The control bag therefore needs no argument. `docker compose --profile viz up` starts
 RViz and a Foxglove bridge (port 8765) next to the detector.
 
 ### Where the data lives
