@@ -1,8 +1,20 @@
 # Dataset notes (organizers' bags, 2026-09)
 
+**Download:** [`Датасет.zip`, 3.7 GB, Google Drive](https://drive.google.com/file/d/1WTlR2wDSuEHTOARGK_gZeXDTZ9RZpswu/view)
+(organizers' link, shared with the team — the bags themselves are never committed, see
+`.gitignore`).
+
 Source: `Датасет.zip` (3.7 GB) → `датасет.zip` → `archive/for_hackathon.zst` (tar, zstd).
 Unpack: `tar --zstd -xvf for_hackathon.zst` (or `python -c "import zstandard,tarfile..."` if
 `zstd` is missing). Six ROS 2 bags (sqlite3 storage, `metadata.yaml` + `*_0.db3`), one topic.
+Put the unpacked `for_hackathon/` where `$RESENSE_DATA` points (default `/data/for_hackathon`,
+see README "Where the data lives"):
+
+```bash
+mkdir -p /data && tar --zstd -xf for_hackathon.zst -C /data
+ls /data/for_hackathon          # six bag directories
+resense info /data/for_hackathon/roundT_doubleT
+```
 
 | Bag | Duration | Frames | Size | Scene (from the name) |
 |---|---|---|---|---|
