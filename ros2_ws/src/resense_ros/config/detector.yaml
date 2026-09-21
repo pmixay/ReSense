@@ -111,6 +111,11 @@ resense:
     gauge_min_points: 3
     overhead_min_height: 2.4
     visibility_ratio: 0.15
+    # retro-reflective plates / signs / markers (intensity is reflectivity %, > 100 = retro material)
+    retro_intensity: 100.0     # intensity from which a return counts as retro-reflective (0 = rule off)
+    retro_min_fraction: 0.5    # fraction of retro returns for a cluster to count as a reflector
+    retro_max_height: 1.2      # m, taller retro clusters (person in a hi-vis vest, train) keep their zone
+    retro_max_width: 0.8       # m, narrower retro clusters (plate, sign, marker, post) -> advisory
   tracking:
     gate_base: 1.5
     gate_per_m: 0.02

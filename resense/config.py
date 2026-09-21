@@ -125,6 +125,11 @@ class ClusterConfig:
     gauge_min_points: int = 3      # voxels inside the strict gauge to classify as 'gauge'
     overhead_min_height: float = 2.4   # clusters entirely above this (m over rail head) are advisory only
     visibility_ratio: float = 0.15 # cluster is plausible if n >= ratio * expected points
+    # retro-reflective infrastructure (signs, markers, reflectors): intensity is reflectivity %, > 100 = retro
+    retro_intensity: float = 100.0     # intensity from which a return counts as retro-reflective (0 = rule off)
+    retro_min_fraction: float = 0.5    # fraction of retro returns for a cluster to count as a reflector
+    retro_max_height: float = 1.2      # m, taller retro clusters (a person in a hi-vis vest, a train) are kept
+    retro_max_width: float = 0.8       # m, narrower retro clusters (plate, sign, marker, post) are demoted to advisory
 
 
 @dataclass
