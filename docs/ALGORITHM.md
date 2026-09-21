@@ -44,7 +44,7 @@ Three quantities describe the track ahead as functions of the along-track coordi
 | quantity | how it is estimated | range it is trusted |
 |---|---|---|
 | bed height `z_floor(X)` | per-bin (2 m, 5 m beyond 40 m) 20th percentile of Z in a ±1 m band around the axis; robust line through the near bins, far bins kept only within 0.35 m of it; a quadratic only if ≥ 4 consistent far bins exist and it bends less than a 1500 m vertical curve; linear extrapolation beyond the fitted range; EMA across frames (`floor_smoothing`) | fitted range + `floor_valid_margin` (60 m), **or as far as the extrapolation is verified** (next row) |
-| verified extrapolation `floor_verified` (v0.4, second height anchor) | the bed vanishes beyond ~100 m but the walls, benches and ducts beside the track are seen to the end of the range and their foot runs at a constant height above the rail head. Per 5 m bin the lowest point in the side band \|dy\| 1.6–3.5 m (minus half a ring spacing, since the lowest sample of a vertical face lies up to one ring above its foot) is compared with the extrapolated bed; the offset measured in the near bins where the bed fit is supported is the reference; walking outward, the extrapolation stays verified while the median deviation over the last 30 m of populated bins is within `floor_verify_tolerance` (0.5 m). A vertical curve, a platform or a transition breaks the agreement and the range stops there | `floor_verified`; the corridor is trusted to `max(fit + 60 m, floor_verified)`, so the check only extends the v0.3 range, never shrinks it |
+| verified extrapolation `floor_verified` (v0.4, second height anchor) | the bed vanishes beyond ~100 m but the walls, benches and ducts beside the track are seen to the end of the range and their foot runs at a constant height above the rail head. Per 5 m bin the lowest point in the side band \|dy\| 1.6–3.5 m (minus half a ring spacing, since the lowest sample of a vertical face lies up to one ring above its foot) is compared with the extrapolated bed; the offset measured in the near bins where the bed fit is supported is the reference; walking outward, the extrapolation stays verified while the median deviation over the last 30 m of populated bins is within `floor_verify_tolerance` (0.5 m). A vertical curve, a platform or a transition breaks the agreement and the range stops there | `floor_verified`; the corridor is trusted to `max(fit + 60 m, floor_verified)`, so the check only extends the v0.3 range; a longer trusted corridor also promotes advisory clusters there to alarms (21.09, full rate: +7 alarm frames on `roundT_squareT_pressureGate_squareT`, +1 on `roundT_doubleT`) |
 | rail-head level and lateral axis `center` | lateral height profile at 4–30 m in 5 cm bins (85th percentile per bin); the two rail ridges are found as a pair of local maxima `rails_spacing` = 1.59 m apart with a plausible head height (0.08–0.5 m above bed); the midpoint is the axis, the mean ridge height the rail head; EMA `rails_smoothing` | 4–30 m, then extended by the yaw/curvature model |
 | yaw and curvature of the axis | per 4 m bin between 6 and 160 m, in a height band 1.6–2.8 m above the rail head (above platforms, below the roof), the boundary of each side is the 90th percentile of \|dy\|; a robust quadratic per side gives `tan(yaw)` and curvature; if the two sides disagree, the **nearer** boundary wins (near structures are constrained to be parallel to the track, far walls are not); clipped to \|yaw\| ≤ 2° and R ≥ 150 m; EMA `walls_smoothing` | `axis_valid` = last observed boundary bin + 15 m (+50 m when straight and well fitted); shrinks by 20 m per frame without a fit |
 
@@ -150,9 +150,14 @@ not be smeared over half a second and is dense enough anyway.
 
 **Ego speed.** `Detector.process(frame, ego_speed=None)` takes the train speed in m/s when the
 caller knows it (the ROS node's parameter or odometry topic); a given speed always wins and is
-reported as `ego_speed_source = "given"`. Without it the detector estimates the speed from the
+reported as `ego_speed_source = "given"` (the estimator is then skipped, saving 7–12 ms per
+real frame, so `ego_speed_estimate` is null). Without it the detector estimates the speed from the
 LiDAR stream alone (`"estimated"`), or declares it unknown (`"none"`), in which case **nothing is
-merged**: a wrong shift smears, and the v0.3 single-frame pipeline is the safe fallback. ICP
+merged**: a wrong shift smears, and the v0.3 single-frame pipeline is the safe fallback. On real
+data a *stopped* train is not "unknown": the tracks cue (≥ 3 persistent static tracks with
+≈ 0 velocity) reports 0 m/s with confidence 0.6 and 5 frames are merged at v = 0, which smears
+a person walking across the track laterally (`doubleT_obstacle`, 21.09: width 1.06 m vs 0.57 m
+single-frame; distance unaffected). A lateral smear guard is pending (EXPERIMENTS.md §2b). ICP
 would be the textbook estimator, but a straight tunnel is translation-invariant along its axis
 and ICP is degenerate in exactly that direction ([`RESEARCH.md`](RESEARCH.md) §2). What is
 observable is the *texture* of the walls along the track — brackets, cable hangers, lamps,
@@ -285,7 +290,10 @@ the CLI and the ROS node. The ones that change behaviour visibly:
 7. **Filters are hand-tuned on six bags**; the extended dataset is needed to calibrate them and
    to measure real recall.
 8. **Pure Python**: 40–75 ms per frame on 4 cores for v0.3 on real frames; v0.4 adds ≈ 5 ms on
-   the synthetic frame (profile 3 ms, verification 1.5 ms, accumulation < 1 ms) — to be
+   the synthetic frame (profile 3 ms, verification 1.5 ms, accumulation < 1 ms) but +17–23 ms
+   mean on real frames (estimator 7–11 ms, now skipped when a speed is given; bed verification
+   5–7 ms; clustering of the merged cloud +8 ms), with p95 above the 100 ms period on the moving
+   bags on the 4-core sandbox (21.09, EXPERIMENTS.md §2b) — to be
    re-measured on real frames and on the i7-9700E (Numba/C++ fallback planned).
 9. **No semantics**: a legitimately parked train, a maintenance trolley or a worker on the track
    are all "obstacles", which is the intended behaviour for a safety function.

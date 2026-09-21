@@ -140,7 +140,9 @@ class Detector:
         # 3. ego speed: given > estimated > unknown
         dt = self._frame_dt(frame.stamp)
         est: Optional[EgoSpeedEstimate] = None
-        if acc.estimate_speed:
+        # the estimator costs 7-12 ms on real frames (review 21.09): skip it when the caller
+        # already knows the speed; `resense run` without a speed still exercises it
+        if acc.estimate_speed and ego_speed is None:
             est = self.ego.estimate(xyz, self.track, dt, self.tracker.tracks)
         if ego_speed is not None:
             speed, source = float(ego_speed), "given"

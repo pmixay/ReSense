@@ -100,6 +100,30 @@ above the walkway, background-subtracted, cross-correlated between frames (ALGOR
 | featureless synthetic tunnel, fresh noise per frame, stopped | "unknown" | no accumulation, no alarm |
 | featureless tunnel, emulated approach (background identical, only the object moves) | "unknown" | single-frame fallback: person confirmed at 189 m (seed 0), no smearing |
 
+**Real data (21.09, independent review, every frame of the six cached bags, no speed given).**
+The synthetic table above does not transfer to a stopped train: on the stationary
+`doubleT_obstacle` the *tracks* cue (≥ 3 persistent static tracks with ≈ 0 velocity) reports
+0.0 m/s with confidence 0.6 on 198 of 201 frames, the source is `"estimated"` and 5 frames are
+merged at v = 0. The person walking across the track is then smeared *laterally* (width 1.06 m
+vs 0.57 m single-frame, 97 vs 29 voxels) and stays "in gauge" four frames longer; the reported
+distance is unchanged (55.4–56.5 m, first alarm frame 9 as in v0.3). The along-track smear
+guard does not catch this; a lateral guard and a minimum |v| for the tracks cue are the next
+fix. On the moving bags the estimator is plausible: 15.0 → 19.4 m/s through `roundT_doubleT`
+(cross-checked against the approach rate of three persistent static tracks: 15.7 / 18.2 /
+19.1 m/s measured vs 15.7 / 18.2 / 19.1 estimated), 14.6–15.4 m/s through the pressure gate,
+0–15 m/s decelerating into the platform; it reports "none" on 42 % of the frames of
+`roundT_doubleT` and 82 % of the platform-and-switch bag, so accumulation is intermittent on
+real data (the buffer is cleared on every "none" frame). Full-rate false alarms with v0.4
+defaults vs v0.3 on the five obstacle-free bags: 1016 vs 1001 alarm frames (+1.5 %), 187 vs
+192 events, 619 vs 566 alarm frames beyond 60 m (+9 %; `roundT_squareT_pressureGate_squareT`
+87 → 104, mostly from accumulation, and phantoms at 135–142 m from the verified corridor).
+Per-frame time on the 4-core sandbox: `roundT_doubleT` 60 / 78 / 93 ms (mean / p95 / max) →
+77 / 119 / 139 ms, `doubleT_obstacle` 71 / 78 / 90 → 94 / 102 / 153 ms: +17–23 ms mean, of
+which the estimator 7–11 ms (now skipped when a speed is given), the bed verification 5–7 ms
+and the clustering of the merged cloud +8 ms. With `accumulation.enabled: false`,
+`estimate_speed: false`, `floor_verify_enabled: false` and `retro_intensity: 0` v0.4
+reproduces v0.3 bit for bit on real data. The retro rule never fired on the six bags.
+
 The featureless case is the honest one: a moving and a stopped train produce the same data
 there, so the estimator must say "unknown" rather than a confident 0 m/s. The first version
 of the count profile did return 0 m/s with confidence 0.9 on the featureless tunnel — the
@@ -158,7 +182,9 @@ the number of points at 4–25 m (denser than the synthetic tunnel); the union i
    synthetic objects. v0.4: the extrapolation is *verified* against the base of the side
    structures (walls, benches, ducts, seen to the end of the range) and the corridor is trusted
    as far as the two agree within 0.5 m (`track.floor_verify_*`); it never shrinks the v0.3
-   range, so the false-alarm behaviour cannot get worse, and it does not yet *correct* the bed
+   range, but a longer trusted corridor turns advisory clusters there into alarms (measured at
+   full rate on 21.09: +7 alarm frames on `roundT_squareT_pressureGate_squareT`, a phantom at
+   135–142 m, and +1 on `roundT_doubleT` at 117 m), and it does not yet *correct* the bed
    (§5). Synthetic: 167.5 → 195 m; a hand-made 1500 m vertical curve starting at 120 m stops
    the verification at 180 m (1.2 m error there).
 4. **Platform stop + switch bag** is where 49 of 67 residual FPs live. The advisory zone is
