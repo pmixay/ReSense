@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ReSense label tool</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root { --bg:#14151a; --fg:#eaeaea; --ok:#2ecc71; --warn:#ff9f1c; --bad:#ff2d55; --muted:#8a8f98; --line:#2a2c33; --card:#1b1d24; --accent:#8a83d1; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, sans-serif; background:var(--bg); color:var(--fg); font-size:14px; }
+  header { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; padding:10px 20px; border-bottom:1px solid var(--line); }
+  header h1 { font-size:18px; margin:0 12px 0 0; }
+  main { display:grid; grid-template-columns: 260px minmax(0,1fr); gap:16px; padding:16px 20px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:6px; padding:12px; margin-bottom:12px; }
+  .card h3 { margin:0 0 8px; font-size:12px; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); }
+  input, select, button { background:#0d0e12; color:var(--fg); border:1px solid var(--line); border-radius:4px; padding:4px 6px; font: inherit; }
+  input[type=number] { width: 72px; } input[type=text] { width: 110px; }
+  button { cursor:pointer; } button:hover { border-color: var(--accent); } button.primary { background:var(--accent); border-color:var(--accent); color:#111; font-weight:600; }
+  button.danger { color: var(--bad); }
+  #frames { list-style:none; margin:0; padding:0; max-height:420px; overflow:auto; }
+  #frames li { padding:4px 6px; border-radius:4px; cursor:pointer; display:flex; justify-content:space-between; font-family: ui-monospace, monospace; font-size:13px; }
+  #frames li:hover { background:#23252e; } #frames li.active { background:#2c2e3a; outline:1px solid var(--accent); }
+  #frames li .n { color:var(--muted); }
+  table { border-collapse: collapse; width:100%; }
+  th, td { text-align:left; padding:4px 6px; border-bottom:1px solid var(--line); font-size:13px; white-space:nowrap; }
+  th { color:var(--muted); font-weight:500; }
+  canvas { width:100%; display:block; background:#0d0e12; border:1px solid var(--line); border-radius:6px; }
+  .muted { color:var(--muted); } .hint { font-size:12px; color:var(--muted); margin-top:6px; }
+  .row { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:8px; }
+  .status.clear { color: var(--ok); } .status.obstacle { color: var(--bad); }
+  @media (max-width: 900px) { main { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>ReSense — per-frame obstacle labels → gt.json</h1>
+  <label class="muted">results.jsonl <input type="file" id="file-jsonl" accept=".jsonl,.json,.txt"></label>
+  <label class="muted">import gt.json <input type="file" id="file-gt" accept=".json"></label>
+  <button id="export" class="primary">export gt.json</button>
+  <span id="status" class="muted">no frames</span>
+</header>
+<main>
+  <div>
+    <div class="card"><h3>frames <span id="frame-count" class="muted"></span></h3>
+      <div class="row"><input type="number" id="new-frame" min="0" step="1" placeholder="bag frame index"><button id="add-frame">add frame</button></div>
+      <ul id="frames"></ul>
+      <div class="hint">Frames come from the loaded results.jsonl (its <code>frame</code> key = absolute bag frame index) or are typed by hand. Key in gt.json: index zero-padded to 5 digits, e.g. <code>00042</code>. A frame marked "checked, clear" is exported with an empty list.</div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <h3>frame <span id="cur-key">—</span> <span id="cur-det" class="muted"></span></h3>
+      <div class="row">
+        <button id="add-obs">add obstacle</button>
+        <button id="add-from-det" title="prefill from the detector's own detections in this frame">add from detection</button>
+        <label><input type="checkbox" id="checked"> checked, clear (export as empty list)</label>
+        <button id="remove-frame" class="danger">remove frame</button>
+      </div>
+      <table id="obs-table">
+        <thead><tr><th>#</th><th>kind</th><th>label</th><th>distance m</th><th>lateral m (+left)</th><th>L</th><th>W</th><th>H</th><th>yaw °</th><th>refl.</th><th>in gauge</th><th>n_points</th><th></th></tr></thead>
+        <tbody id="obs-body"></tbody>
+      </table>
+      <div class="hint">Same shape as <code>resense inject</code> writes: <code>{"&lt;frame&gt;": [{"kind","size":[L,W,H],"distance","lateral","yaw_deg","reflectivity","label","in_gauge","n_points"}]}</code>. <code>distance</code> = m along the track to the nearest face, <code>lateral</code> = m from the track axis (+ left); <code>in_gauge</code> defaults to |lateral| &lt; 1.3 m; <code>n_points</code> = 1 means "visible, count unknown" (<code>resense eval</code> skips entries with 0 as occluded).</div>
+    </div>
+    <div class="card"><h3>top-down: detector output (red / orange) and labels (cyan)</h3><canvas id="top" width="1200" height="360"></canvas></div>
+  </div>
+</main>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const KINDS = ['person', 'box', 'plank', 'cylinder', 'sphere', 'trolley', 'other'];
+const SIZES = { person: [0.4, 0.5, 1.7], box: [0.5, 0.5, 0.5], plank: [2.0, 0.25, 0.30], cylinder: [0.4, 0.4, 0.9], sphere: [0.4, 0.4, 0.4], trolley: [1.2, 0.8, 1.0], other: [0.5, 0.5, 0.5] };
+const keyOf = i => String(i).padStart(5, '0');
+const state = { results: {}, labels: {}, checked: {}, current: null, source: '' };  // results: key -> FrameResult; labels: key -> [obstacle]
+
+function frameKeys() {
+  const s = new Set([...Object.keys(state.results), ...Object.keys(state.labels), ...Object.keys(state.checked)]);
+  return [...s].sort();
+}
+function renderFrames() {
+  const ul = $('frames'); ul.innerHTML = '';
+  const keys = frameKeys();
+  for (const k of keys) {
+    const li = document.createElement('li'); li.dataset.key = k;
+    const r = state.results[k]; const n = (state.labels[k] || []).length;
+    const st = r ? (r.obstacle ? `det ${r.nearest_distance.toFixed(1)} m` : (r.warning ? 'warn' : 'clear')) : '';
+    li.innerHTML = `<span>${k}${n ? ' ★' + n : (state.checked[k] ? ' ✓' : '')}</span><span class="n ${r && r.obstacle ? 'status obstacle' : 'status clear'}">${st}</span>`;
+    if (k === state.current) li.classList.add('active');
+    li.onclick = () => select(k);
+    ul.appendChild(li);
+  }
+  const labelled = keys.filter(k => (state.labels[k] || []).length || state.checked[k]).length;
+  $('frame-count').textContent = `${keys.length} (${labelled} labelled)`;
+  $('status').textContent = keys.length ? `${keys.length} frames${state.source ? ' from ' + state.source : ''}, ${labelled} labelled` : 'no frames';
+}
+function select(k) { state.current = k; renderFrames(); renderObstacles(); draw(); }
+function newObstacle(kind, extra) {
+  kind = kind || 'person'; const s = SIZES[kind] || SIZES.other;
+  return Object.assign({ kind, size: [...s], distance: 50.0, lateral: 0.0, yaw_deg: 0.0, reflectivity: 40.0, label: kind, in_gauge: true, n_points: 1 }, extra || {});
+}
+function renderObstacles() {
+  const k = state.current, body = $('obs-body'); body.innerHTML = '';
+  $('cur-key').textContent = k || '—';
+  const r = k && state.results[k];
+  $('cur-det').textContent = r ? `detector: ${r.obstacle ? 'OBSTACLE ' + r.nearest_distance.toFixed(1) + ' m' : (r.warning ? 'warning' : 'clear')}, ${(r.detections || []).length} gauge / ${(r.warnings || []).length} advisory objects, frame_id ${r.frame_id || '?'}` : '';
+  $('checked').checked = !!(k && state.checked[k]);
+  $('add-from-det').disabled = !(r && ((r.detections || []).length || (r.warnings || []).length));
+  if (!k) return;
+  (state.labels[k] || []).forEach((o, i) => {
+    const tr = document.createElement('tr');
+    const num = (field, step, w) => `<td><input type="number" step="${step}" data-i="${i}" data-f="${field}" value="${o[field]}"></td>`;
+    tr.innerHTML = `<td>${i + 1}</td>
+      <td><select data-i="${i}" data-f="kind">${KINDS.map(x => `<option ${x === o.kind ? 'selected' : ''}>${x}</option>`).join('')}</select></td>
+      <td><input type="text" data-i="${i}" data-f="label" value="${o.label}"></td>
+      ${num('distance', 0.1)}${num('lateral', 0.1)}
+      <td><input type="number" step="0.05" data-i="${i}" data-f="size0" value="${o.size[0]}"></td>
+      <td><input type="number" step="0.05" data-i="${i}" data-f="size1" value="${o.size[1]}"></td>
+      <td><input type="number" step="0.05" data-i="${i}" data-f="size2" value="${o.size[2]}"></td>
+      ${num('yaw_deg', 1)}${num('reflectivity', 1)}
+      <td><input type="checkbox" data-i="${i}" data-f="in_gauge" ${o.in_gauge ? 'checked' : ''}></td>
+      ${num('n_points', 1)}
+      <td><button class="danger" data-i="${i}" data-f="delete">✕</button></td>`;
+    body.appendChild(tr);
+  });
+  body.querySelectorAll('input,select').forEach(el => el.addEventListener('change', onEdit));
+  body.querySelectorAll('button').forEach(el => el.onclick = () => { state.labels[k].splice(+el.dataset.i, 1); renderObstacles(); renderFrames(); draw(); });
+}
+function onEdit(ev) {
+  const el = ev.target, o = state.labels[state.current][+el.dataset.i], f = el.dataset.f;
+  if (f === 'kind') { o.kind = el.value; if (SIZES[o.kind]) o.size = [...SIZES[o.kind]]; if (!o.label || KINDS.includes(o.label)) o.label = o.kind; renderObstacles(); }
+  else if (f === 'label') o.label = el.value;
+  else if (f === 'in_gauge') o.in_gauge = el.checked;
+  else if (f.startsWith('size')) o.size[+f[4]] = +el.value;
+  else if (f === 'n_points') o.n_points = Math.round(+el.value);
+  else o[f] = +el.value;
+  if (f === 'lateral') { o.in_gauge = Math.abs(o.lateral) < 1.3; renderObstacles(); }
+  draw();
+}
+function draw() {
+  const c = $('top'), ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
+  const XMAX = 150, sx = c.width / XMAX, cy = c.height / 2, sy = 24;
+  ctx.strokeStyle = '#2a2c33'; ctx.font = '12px system-ui';
+  for (let x = 0; x <= XMAX; x += 25) { ctx.beginPath(); ctx.moveTo(x * sx, 0); ctx.lineTo(x * sx, c.height); ctx.stroke(); ctx.fillStyle = '#8a8f98'; ctx.fillText(x + ' m', x * sx + 4, 14); }
+  const k = state.current, r = k && state.results[k], t = (r && r.track) || { center: 0, yaw: 0, curvature: 0 };
+  const axis = X => (t.center || 0) + Math.tan(t.yaw || 0) * X + 0.5 * (t.curvature || 0) * X * X;
+  ctx.strokeStyle = '#2ecc71'; ctx.setLineDash([6, 4]);
+  for (const side of [1.4, -1.4]) { ctx.beginPath(); for (let X = 3; X <= XMAX; X += 5) { const px = X * sx, py = cy - (axis(X) + side) * sy; X === 3 ? ctx.moveTo(px, py) : ctx.lineTo(px, py); } ctx.stroke(); }
+  ctx.setLineDash([]);
+  const drawBox = (X, Y, L, W, color, text, below) => {
+    const w = Math.max(L, 1.5) * sx, h = Math.max(W, 0.6) * sy, x = X * sx, y = cy - Y * sy;
+    ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.strokeRect(x - w / 2, y - h / 2, w, h);
+    ctx.fillStyle = color; ctx.font = 'bold 12px system-ui';
+    ctx.fillText(text, x + w / 2 + 4, below ? y + h / 2 + 13 : y - h / 2 - 3);   // detector labels above, ours below
+  };
+  if (r) {
+    for (const d of (r.warnings || [])) drawBox(d.center[0], d.center[1], d.size[0], d.size[1], '#ff9f1c', `det ${d.distance.toFixed(1)} m`);
+    for (const d of (r.detections || [])) drawBox(d.center[0], d.center[1], d.size[0], d.size[1], '#ff2d55', `det ${d.distance.toFixed(1)} m`);
+  }
+  for (const o of (k && state.labels[k]) || []) drawBox(o.distance + o.size[0] / 2, axis(o.distance) + o.lateral, o.size[0], o.size[1], '#3ad1ff', `${o.label} ${o.distance.toFixed(1)} m${o.in_gauge ? '' : ' (outside)'}`, true);
+}
+
+// ---------------------------------------------------------------- loading
+function loadResults(text, name) {
+  state.results = {}; let n = 0;
+  for (const line of text.split(/\r?\n/)) {
+    const s = line.trim(); if (!s) continue;
+    try { const o = JSON.parse(s); if (o && typeof o === 'object' && 'obstacle' in o) { state.results[keyOf(o.frame ?? n)] = o; n++; } } catch (e) { }
+  }
+  state.source = name || 'results.jsonl';
+  const keys = frameKeys(); if (!state.current && keys.length) state.current = keys[0];
+  renderFrames(); renderObstacles(); draw();
+  return n;
+}
+function loadGT(obj) {
+  let n = 0;
+  for (const [k, list] of Object.entries(obj || {})) {
+    const key = /^\d+$/.test(k) ? keyOf(+k) : k;
+    if (Array.isArray(list) && list.length) {
+      state.labels[key] = list.map(o => newObstacle(o.kind, Object.assign({}, o, { size: [...(o.size || SIZES[o.kind] || SIZES.other)] })));
+      n += list.length;
+    } else { state.checked[key] = true; }
+  }
+  const keys = frameKeys(); if (!state.current && keys.length) state.current = keys[0];
+  renderFrames(); renderObstacles(); draw();
+  return n;
+}
+function exportGT() {
+  const out = {};
+  for (const k of frameKeys()) {
+    const list = state.labels[k] || [];
+    if (list.length) out[k] = list.map(o => ({ kind: o.kind, size: o.size.map(Number), distance: +o.distance, lateral: +o.lateral, yaw_deg: +o.yaw_deg, reflectivity: +o.reflectivity, label: o.label, in_gauge: !!o.in_gauge, n_points: Math.round(+o.n_points) }));
+    else if (state.checked[k]) out[k] = [];
+  }
+  return out;
+}
+function download(obj, name) {
+  const blob = new Blob([JSON.stringify(obj, null, 1)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+}
+$('file-jsonl').addEventListener('change', ev => { const f = ev.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => loadResults(String(r.result), f.name); r.readAsText(f); });
+$('file-gt').addEventListener('change', ev => { const f = ev.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => { try { loadGT(JSON.parse(String(r.result))); } catch (e) { alert('not a gt.json: ' + e); } }; r.readAsText(f); });
+$('export').onclick = () => download(exportGT(), 'gt.json');
+$('add-frame').onclick = () => { const v = $('new-frame').value; if (v === '') return; const k = keyOf(Math.max(0, Math.round(+v))); if (!state.labels[k]) state.labels[k] = []; select(k); };
+$('add-obs').onclick = () => { if (!state.current) return; (state.labels[state.current] = state.labels[state.current] || []).push(newObstacle('person')); state.checked[state.current] = false; renderObstacles(); renderFrames(); draw(); };
+$('add-from-det').onclick = () => {
+  const r = state.results[state.current]; if (!r) return;
+  const list = state.labels[state.current] = state.labels[state.current] || [];
+  for (const d of [...(r.detections || []), ...(r.warnings || [])]) {
+    list.push(newObstacle('other', { label: `det_${d.id}`, distance: +d.distance.toFixed(2), lateral: +d.lateral.toFixed(2), size: d.size.map(v => +v.toFixed(2)), in_gauge: d.zone === 'gauge', n_points: d.n_points || 1, reflectivity: +(d.intensity || 40).toFixed(1) }));
+  }
+  state.checked[state.current] = false; renderObstacles(); renderFrames(); draw();
+};
+$('checked').onchange = ev => { if (!state.current) return; state.checked[state.current] = ev.target.checked; if (ev.target.checked) state.labels[state.current] = []; renderObstacles(); renderFrames(); draw(); };
+$('remove-frame').onclick = () => { const k = state.current; if (!k) return; delete state.labels[k]; delete state.checked[k]; delete state.results[k]; state.current = frameKeys()[0] || null; renderFrames(); renderObstacles(); draw(); };
+document.addEventListener('keydown', ev => {
+  if (ev.target.tagName === 'INPUT' || ev.target.tagName === 'SELECT') return;
+  const keys = frameKeys(), i = keys.indexOf(state.current);
+  if (ev.code === 'ArrowDown' && i + 1 < keys.length) select(keys[i + 1]);
+  else if (ev.code === 'ArrowUp' && i > 0) select(keys[i - 1]);
+});
+window.resenseLabel = { state, loadResults, loadGT, exportGT, select, newObstacle };
+renderFrames(); draw();
+</script>
+</body>
+</html>

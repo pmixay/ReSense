@@ -1,67 +1,214 @@
+# ReSense RViz2 (Humble) layout — loaded by `ros2 launch resense_ros detector.launch.py rviz:=true`
+# and by the `rviz` service of docker-compose.yml.
+#
+# Frames: the detector node broadcasts a static identity TF  resense_lidar -> <input cloud frame_id>
+# as soon as the first frame arrives and publishes markers / detections / corridor points in the
+# input frame.  The fixed frame is therefore `resense_lidar`, whatever the bag calls its sensor
+# frame (`hesai_lidar` in roundT_doubleT, `lidar_livox` in doubleT_obstacle, unknown in the
+# control bag).  Two raw-cloud displays cover the two known topic names; the one the bag does
+# not carry simply stays grey ("No messages received").  RViz has no wildcard / regex topic
+# subscription, so a generic third display is not possible (see web/README.md).
+#
+# Sensor frame axes (Hesai mount in the bags): forward = -Y, left = +X, up = +Z.  The camera
+# sits ~18 m behind the sensor, 15 m up, looking down the track: the near 60-100 m of tunnel
+# fill the frame (the far end runs to the horizon) and the status text marker (8 m ahead,
+# 3.5 m up, 1.2 m letters) reads at the top of the picture.
 Panels:
   - Class: rviz_common/Displays
     Name: Displays
+    Property Tree Widget:
+      Expanded:
+        - /Global Options1
+        - /Detections1
+      Splitter Ratio: 0.5
+    Tree Height: 560
   - Class: rviz_common/Views
     Name: Views
+    Expanded:
+      - /Current View1
+    Splitter Ratio: 0.5
 Visualization Manager:
   Class: ""
   Displays:
     - Class: rviz_default_plugins/Grid
       Name: Grid
+      Enabled: true
       Cell Size: 10
       Plane Cell Count: 40
+      Plane: XY
+      Line Style:
+        Line Width: 0.03
+        Value: Lines
+      Color: 60; 62; 72
+      Alpha: 0.5
+      Normal Cell Count: 0
+      Offset:
+        X: 0
+        Y: -100
+        Z: -2
       Reference Frame: <Fixed Frame>
       Value: true
+    # --- raw LiDAR: one display per known topic name; whichever the bag carries renders ---
     - Class: rviz_default_plugins/PointCloud2
-      Name: LiDAR
+      Name: LiDAR (/lidar_points)
+      Enabled: true
       Topic:
         Value: /lidar_points
-        Reliability Policy: Best Effort
-        History Policy: Keep Last
         Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Best Effort
+      Position Transformer: XYZ
       Color Transformer: AxisColor
       Axis: Z
+      Use Fixed Frame: true
+      Autocompute Value Bounds:
+        Max Value: 3.5
+        Min Value: -2.5
+        Value: false
       Min Color: 0; 0; 0
       Max Color: 255; 255; 255
+      Alpha: 0.7
+      Decay Time: 0
+      Selectable: true
       Size (Pixels): 1.5
+      Size (m): 0.05
       Style: Points
-      Alpha: 0.6
       Value: true
     - Class: rviz_default_plugins/PointCloud2
+      Name: LiDAR (/sensing/lidar/hesai128/pointcloud)
+      Enabled: true
+      Topic:
+        Value: /sensing/lidar/hesai128/pointcloud
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Best Effort
+      Position Transformer: XYZ
+      Color Transformer: AxisColor
+      Axis: Z
+      Use Fixed Frame: true
+      Autocompute Value Bounds:
+        Max Value: 3.5
+        Min Value: -2.5
+        Value: false
+      Min Color: 0; 0; 0
+      Max Color: 255; 255; 255
+      Alpha: 0.7
+      Decay Time: 0
+      Selectable: true
+      Size (Pixels): 1.5
+      Size (m): 0.05
+      Style: Points
+      Value: true
+    # --- detector output ---
+    - Class: rviz_default_plugins/PointCloud2
       Name: Corridor points
+      Enabled: true
       Topic:
         Value: /resense/corridor_points
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
         Reliability Policy: Reliable
+      Position Transformer: XYZ
       Color Transformer: FlatColor
+      Use Fixed Frame: true
       Color: 255; 170; 0
+      Alpha: 1
+      Decay Time: 0
+      Selectable: true
       Size (Pixels): 4
+      Size (m): 0.1
       Style: Points
       Value: true
     - Class: rviz_default_plugins/MarkerArray
       Name: Detections
+      Enabled: true
       Topic:
         Value: /resense/markers
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+      Namespaces:
+        resense: true
       Value: true
+    - Class: rviz_default_plugins/TF
+      Name: TF
+      Enabled: false
+      Show Arrows: false
+      Show Axes: true
+      Show Names: true
+      Marker Scale: 3
+      Update Interval: 0
+      Frame Timeout: 15
+      Value: false
   Global Options:
-    Background Color: 20; 20; 24
-    Fixed Frame: hesai_lidar
+    Background Color: 12; 13; 18
+    Fixed Frame: resense_lidar
     Frame Rate: 30
   Tools:
     - Class: rviz_default_plugins/MoveCamera
     - Class: rviz_default_plugins/Select
+    - Class: rviz_default_plugins/FocusCamera
+    - Class: rviz_default_plugins/Measure
   Value: true
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 90
-      Focal Point:
-        X: 0
-        Y: -60
-        Z: 0
-      Pitch: 0.45
-      Yaw: 1.57
       Name: Current View
       Target Frame: <Fixed Frame>
+      # camera = focal + distance * (cos(yaw) cos(pitch), sin(yaw) cos(pitch), sin(pitch)):
+      # focal 35 m ahead (-Y), distance 55 m, yaw pi/2, pitch 0.27 -> camera at (0, +18, +15):
+      # behind and above the sensor, looking down the track.
+      Distance: 55
+      Focal Point:
+        X: 0
+        Y: -35
+        Z: 0
+      Focal Shape Fixed Size: true
+      Focal Shape Size: 0.05
+      Invert Z Axis: false
+      Near Clip Distance: 0.01
+      Pitch: 0.27
+      Yaw: 1.5708
+      Value: Orbit (rviz)
+    Saved:
+      - Class: rviz_default_plugins/Orbit
+        Name: Top-down 150 m
+        Target Frame: <Fixed Frame>
+        Distance: 160
+        Focal Point:
+          X: 0
+          Y: -75
+          Z: 0
+        Focal Shape Fixed Size: true
+        Focal Shape Size: 0.05
+        Invert Z Axis: false
+        Near Clip Distance: 0.01
+        Pitch: 1.5
+        Yaw: 1.5708
+        Value: Orbit (rviz)
+      - Class: rviz_default_plugins/Orbit
+        Name: Driver's seat
+        Target Frame: <Fixed Frame>
+        Distance: 12
+        Focal Point:
+          X: 0
+          Y: -10
+          Z: 0
+        Focal Shape Fixed Size: true
+        Focal Shape Size: 0.05
+        Invert Z Axis: false
+        Near Clip Distance: 0.01
+        Pitch: 0.12
+        Yaw: 1.5708
+        Value: Orbit (rviz)
 Window Geometry:
   Height: 900
   Width: 1500
+  Displays:
+    collapsed: false
+  Views:
+    collapsed: false
