@@ -23,6 +23,17 @@ inside the image.
 | docs | `ALGORITHM.md` (spec §5 structure), `EVALUATION.md` (data sets, metrics, procedure, targets), `SUBMISSION.md` (checklists, dry run, upload), `SENSOR.md` (Pandar128 identified from the manual and angle file; specs and their consequences), README topic table, node parameters and organizers' documentation index, this map | `docs/`, `README.md` |
 | corrections | the sensor is a Pandar128, not an AT128-class unit (DATASET.md, `sensor.py` docstring); 300 m is beyond the instrumented range for ordinary targets (EVALUATION.md) | |
 
+### Done on branch `claude/festive-thompson-f9w2qu` (21.09)
+
+| area | what | where |
+|---|---|---|
+| organizers | Sprint 0 + sensor questions drafted, ready to send (human captain sends) | `docs/QUESTIONS.md` |
+| ROS node | `ego_speed_mps` / `speed_topic` / `odom_topic` → `Detector.process(frame, ego_speed=...)`; static TF `resense_lidar → <input frame_id>` so one RViz / Foxglove layout serves every bag; all parameters as launch arguments; `delay:=` for playback | `detector_node.py`, `launch/`, `package.xml` |
+| CI / container | dataset-free ROS smoke test (synthetic bag in the organizers' exact layout played through the node inside the image, checker asserts the result) on every push; found and fixed the empty-wheel install (the node never imported `resense`) and the DDS-discovery frame loss; `web` job (dashboard in headless Chromium); in-image tests with the skip guard | `scripts/make_smoke_bag.py`, `scripts/smoke_test.sh`, `docker/Dockerfile`, `.github/workflows/ci.yml` |
+| data | streaming unpacker for the nested archive; all six bags cached at full rate and run at 10 Hz (finding 2 below); six-bag topic table | `scripts/unpack_dataset.py`, `DATASET.md` |
+| docs | remote-demo runbook, cover message, architecture (ego speed, TF, verification), submission status | README, `SUBMISSION.md`, `ARCHITECTURE.md` |
+| integration | P2, P3 and P4 branches reviewed by independent reviewers (real-data checks on the caches) and merged with their fixes; second round on real data launched | this file §0 |
+
 ### Left for the captain (in order)
 
 1. ~~Form the Sprint 0 + sensor questions~~ — drafted in [`QUESTIONS.md`](QUESTIONS.md)
@@ -145,9 +156,9 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
 | `configs/default.yaml` | P3 (values) / **P1** (structure, ROS install path) | never retune values; keep `resense:` root key |
 | `resense/config.py`, `resense/detector.py` | P3 | `FrameResult.to_dict()` is the JSON that P2's dashboard reads: treat as a frozen schema |
 | `resense/frame.py`, `resense/pointcloud.py`, `resense/sensor.py` | P1 / P3 shared | decoding is captain's, geometry is P3's; small, rarely conflicts |
-| `resense/track.py`, `gauge.py`, `clustering.py`, `tracking.py` | P3 | do not touch |
-| `resense/synthetic.py`, `metrics.py`, `io.py`, `cli.py` (`inject`, `eval`), `tests/`, `scripts/cache_frames.py` | P4 | do not touch |
-| `web/`, `ros2_ws/.../rviz/`, `docs/PRESENTATION.md`, video, slides | P2 | do not touch |
+| `resense/track.py`, `gauge.py`, `clustering.py`, `tracking.py`, `accumulate.py`, `egomotion.py`, `tests/test_algorithm.py` | P3 | do not touch |
+| `resense/synthetic.py`, `metrics.py`, `io.py`, `cli.py` (`inject`, `eval`, `summarize`), `tests/` (except `test_algorithm.py`), `scripts/cache_frames.py`, `labels/`, `docs/experiments_*.json` | P4 | do not touch |
+| `web/` (dashboard, Foxglove layout, label tool, `web/demo/` checks), `ros2_ws/.../rviz/`, `docs/PRESENTATION.md`, `docs/video/`, README screenshots | P2 | do not touch |
 | `docs/EXPERIMENTS.md`, `docs/DATASET.md`, `docs/RESEARCH.md` | P3 / P4 | captain appends bench-timing sections only |
 
 Rule of thumb: the captain adds **new** topics, launch arguments, scripts and docs, and does not
