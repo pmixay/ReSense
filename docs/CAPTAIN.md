@@ -25,19 +25,23 @@ inside the image.
 
 ### Left for the captain (in order)
 
-1. Send the Sprint 0 questions to the organizers, now including the sensor questions in
-   `SENSOR.md` §4 (return mode, azimuth window, mount height, PTP / speed source).
-2. **Run `scripts/dry_run.sh` on a team machine with the dataset** — the script exists
-   (item 9) but has never been executed against Docker or a bag; this is also the first
-   end-to-end run of the ROS node on a full bag.
-3. Launch arguments for the demo (`loop:=true`, node parameters as launch args) — item 7 below.
+1. ~~Form the Sprint 0 + sensor questions~~ — drafted in [`QUESTIONS.md`](QUESTIONS.md)
+   (21.09); **sending them and recording the answers is the human captain's action.**
+2. **Run `scripts/dry_run.sh` on a team machine with Docker and the dataset.** The container
+   path now runs in CI on a synthetic bag (item 10) and the offline pipeline has run on every
+   real frame; the ROS node on a real bag is still unexecuted (no Docker daemon in the sandbox).
+3. ~~Launch arguments for the demo~~ — done (`loop:=`, every parameter as a launch argument,
+   plus `ego_speed_mps` / `speed_topic` / `odom_topic` / `publish_tf` / `tf_parent_frame`).
 4. ~~Data-path alignment and a headless demo path~~ — done, item 8.
-5. Dataset-free ROS smoke test in CI (synthetic bag through the node) — item 10.
-6. Intermediate submission tag and cover message once P2's demo recording exists — item 12.
-7. Sprint 2: bench timing on an i7-class machine, ego-speed parameter for accumulation,
-   remote-desktop demo runbook, extended-dataset intake — items 13–16.
+5. ~~Dataset-free ROS smoke test in CI~~ — done, item 10 (`scripts/make_smoke_bag.py`,
+   `scripts/smoke_test.sh`, CI docker job).
+6. Intermediate submission: cover message drafted in `SUBMISSION.md`; tag on the day once P2's
+   recording exists and the organizers name the date (question 6).
+7. Sprint 2: ~~ego-speed parameter~~ done (item 14), ~~remote-desktop runbook~~ done (README,
+   item 15), bench timing measured on the 4-core sandbox (finding 4 above; the i7 run is still
+   owed, item 13), extended-dataset intake recipe in `DATASET.md` (item 16, with P4).
 8. Sprint 3: keep `ALGORITHM.md` and `SUBMISSION.md` current, clean-machine dry run on 28.09,
-   captain slides — items 17–19.
+   captain slides (P2 drafted them in `PRESENTATION.md`; the captain edits).
 
 ### Findings from the first run on real data (20.09)
 
@@ -65,6 +69,50 @@ Docker and ROS 2 were not available, so the node itself is still unexecuted.
    the evaluation has to run at full rate, or state the subsampling next to every number.
 5. **FP events vs FP frames, measured.** Those 8 alarm frames are 3 confirmed track ids
    (5, 2 and 1 frames). The headline number in `EVALUATION.md` §2 should be events, as planned.
+
+### Findings from the first full-rate run and the first container run (21.09)
+
+The sandbox of 21.09 had the dataset (downloaded and unpacked with `scripts/unpack_dataset.py`,
+every frame of every bag cached as `*.npy`) but no Docker daemon and no ROS 2; the container
+path ran for the first time in GitHub CI through the new dataset-free smoke test.
+
+1. **The image never contained an importable `resense`.** Jammy's pip 22.0.2 builds a
+   PEP 621 project into an empty `UNKNOWN-0.0.0` wheel, so `pip3 install --no-deps .` in the
+   Dockerfile installed nothing; the in-image `pytest` step passed only because its working
+   directory was the source tree, and the ROS node would have died at import on the jury's
+   machine. Fixed (pip upgraded before the install, the import verified from `/` at build
+   time, the CI pytest step runs with `-w /`). This is why the smoke test exists.
+2. **At full rate the v0.3 detector alarms on about half of the frames of the empty bags.**
+   `resense run --npy` on every cached frame (4-core sandbox, v0.3 parameters):
+
+   | bag | frames | alarm frames | alarm events (track ids) | advisory frames | alarm distances | ms mean / p95 / max |
+   |---|---|---|---|---|---|---|
+   | `doubleT_obstacle` | 201 | 76 | 3 | 199 | 17–57 m | 80 / 127 / 154 |
+   | `doubleT_platform` | 345 | 178 | 29 | 110 | 19–131 m | 79 / 132 / 173 |
+   | `roundT_doubleT` | 252 | 126 | 20 | 140 | 9–147 m | 48 / 84 / 138 |
+   | `roundT_pressureGate_roundT` | 268 | 106 | 19 | 135 | 3–77 m | 56 / 89 / 138 |
+   | `roundT_squareT_pressureGate_squareT` | 545 | 87 | 19 | 396 | 12–133 m | 61 / 101 / 155 |
+   | `squareT_platform_squareT_switch` | 877 | 504 | 105 | 680 | 17–148 m | 83 / 131 / 236 |
+
+   `EXPERIMENTS.md` §1 reports 1 alarm frame on `roundT_doubleT` at every 10th frame. Finding 4
+   of 20.09 predicted the direction (a candidate needs 3 *consecutive processed* frames, i.e.
+   1 s when subsampled by 10, 0.3 s at 10 Hz) but not the size: **every false-alarm number in
+   `EXPERIMENTS.md` is measured on subsampled frames and understates the 10 Hz rate by an order
+   of magnitude.** This is the first item for P3 with real data (raw runs:
+   `/data/results/v0.3/<bag>.jsonl` on the sandbox, reproducible with `resense run --npy`).
+   Obvious levers: persistence measured in seconds rather than processed frames, an axis that
+   does not jitter frame to frame, and cluster filters checked at 10 Hz.
+3. **All six bags' topics are now known** (metadata read from the archive):
+   `doubleT_obstacle` alone publishes `/sensing/lidar/hesai128/pointcloud`; the other five
+   publish `/lidar_points`. The azimuth window is ±50° in all bags except `doubleT_obstacle`
+   (±125°, 347 k points). `frame_id` is verified for two bags only (the caches carry no
+   frame id): `hesai_lidar` / `lidar_livox`.
+4. **Bench timing at full rate on real frames**, 4-core sandbox shared with other jobs (the
+   i7-9700E has 8 faster cores): `roundT_doubleT` total mean 57 ms, p95 95 ms, max 129 ms
+   (track 31 / corridor 16 / cluster 10 ms); `doubleT_obstacle` (347 k points) mean 71 ms,
+   p95 114 ms, max 177 ms. p95 is above the 100 ms frame period on this machine; the node
+   drops frames rather than queueing, so the dropped-frame counter is the number to watch on
+   the bench.
 
 ### Left for the team (captain tracks, does not do)
 
