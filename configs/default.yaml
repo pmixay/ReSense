@@ -126,4 +126,19 @@ resense:
     conf_gain: 0.35
     conf_decay: 0.25
     conf_threshold: 0.6
+  accumulation:
+    enabled: true                  # ego-motion compensated merge of the far corridor candidates
+    n_frames: 5                    # frames merged (the current one included)
+    min_range: 40.0                # m, only candidates beyond this range are accumulated
+    min_points_scale: 0.3          # per merged frame the voxel-count thresholds grow by this fraction (x1.5 at 5 frames)
+    estimate_speed: true           # run the ego-speed estimator (also when a speed is given, for diagnostics)
+    speed_min_confidence: 0.5      # below this the estimate is not used: source 'none', no accumulation
+    speed_max: 30.0                # m/s, search range of the estimator
+    speed_max_step: 3.0            # m/s, larger frame-to-frame jumps of the estimate halve its confidence
+    speed_warmup_frames: 3         # frames the estimator observes before it reports (static-pattern background)
+    smear_max_length: 2.0          # m, an accumulated cluster longer than this along X falls back to its current-frame points
+    max_points_per_frame: 20000    # cap on stored far candidates per frame (strided subsample above)
+    stamp_dt_range:                # s, stamp differences outside this are replaced by tracking.frame_dt
+    - 0.02
+    - 0.5
   voxel: 0.0

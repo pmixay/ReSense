@@ -133,6 +133,23 @@ class ClusterConfig:
 
 
 @dataclass
+class AccumulationConfig:
+    """Ego-motion compensated accumulation of far corridor candidates over several frames."""
+    enabled: bool = True
+    n_frames: int = 5              # frames merged (the current one included)
+    min_range: float = 40.0        # m, only candidates beyond this range are accumulated (near objects stay single-frame)
+    min_points_scale: float = 0.3  # per accumulated frame the voxel-count thresholds grow by this fraction (x1.5 at 5 frames)
+    estimate_speed: bool = True    # run the ego-speed estimator (also when a speed is given, for diagnostics)
+    speed_min_confidence: float = 0.5  # below this the estimate is not used: source 'none', no accumulation
+    speed_max: float = 30.0        # m/s, search range of the estimator (metro line speed limit is ~22 m/s)
+    speed_max_step: float = 3.0    # m/s, larger frame-to-frame jumps of the estimate halve its confidence
+    speed_warmup_frames: int = 3   # frames the estimator observes before it reports (static-pattern background)
+    smear_max_length: float = 2.0  # m, an accumulated cluster longer than this along X falls back to its current-frame points
+    max_points_per_frame: int = 20000  # cap on stored far candidates per frame (strided subsample above)
+    stamp_dt_range: Tuple[float, float] = (0.02, 0.5)  # s, stamp differences outside are replaced by tracking.frame_dt
+
+
+@dataclass
 class TrackingConfig:
     gate_base: float = 1.5         # m, association gate at range 0
     gate_per_m: float = 0.02       # m per metre of range
@@ -152,13 +169,14 @@ class DetectorConfig:
     gauge: GaugeConfig = field(default_factory=GaugeConfig)
     cluster: ClusterConfig = field(default_factory=ClusterConfig)
     tracking: TrackingConfig = field(default_factory=TrackingConfig)
+    accumulation: AccumulationConfig = field(default_factory=AccumulationConfig)
     voxel: float = 0.0             # optional voxel downsampling of corridor candidates (0 = off)
 
     # ---- (de)serialisation -------------------------------------------------
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "DetectorConfig":
         cfg = cls()
-        for section in ("sensor", "track", "gauge", "cluster", "tracking"):
+        for section in ("sensor", "track", "gauge", "cluster", "tracking", "accumulation"):
             if section in d and d[section]:
                 obj = getattr(cfg, section)
                 for k, v in d[section].items():
