@@ -124,3 +124,47 @@ Known limits:
   full picture of what the algorithm does, at a few hundred kB/s.
 * `foxglove_bridge` and the 3D panel expect `sensor_msgs/PointCloud2` with `x y z` float32,
   which both bags provide; the `timestamp` field (year-2000 sensor clock) is ignored.
+
+## Video
+
+Spec §5 asks for a short video of the algorithm at work. Two recipes below produce one from a
+run; **the real video on the organizers' bag is a human task (P2) on a machine with the dataset**
+— nothing in this section has been run on real data, the numbers are from the synthetic demo run.
+
+### 1. Offline: bag → PNG per frame → mp4
+
+```bash
+python -m resense.cli run --bag /data/for_hackathon/doubleT_obstacle --out out/doubleT.jsonl --render out/frames --x-max 150
+ffmpeg -framerate 10 -pattern_type glob -i 'out/frames/frame_*.png' \
+       -c:v libx264 -pix_fmt yuv420p -vf 'scale=trunc(iw/2)*2:trunc(ih/2)*2' out/doubleT_obstacle.mp4
+```
+
+`--render` writes one 1280×720 PNG per frame (top view + side view, corridor points in orange,
+detections in red with distance and confidence, status in the title); all 201 frames of
+`doubleT_obstacle` give a 20 s clip at 10 fps. `--every 2` halves the work at 5 fps
+(`-framerate 5`). ffmpeg is not installed in the sandbox this was written in: the command is
+documented, not executed.
+
+### 2. Dashboard replay recorded with Playwright
+
+```bash
+python web/demo/check_dashboard.py --jsonl out/doubleT.jsonl --video out/dashboard.webm --screenshot ''
+ffmpeg -i out/dashboard.webm -c:v libx264 -pix_fmt yuv420p out/dashboard.mp4      # optional, for players without VP8
+```
+
+Playwright records the whole replay (1440×900, WebM/VP8, with its bundled ffmpeg, no system
+ffmpeg needed) and the script moves the file to the path given. `--speed 2` halves the length.
+On the synthetic 60-frame demo run in the 4-core sandbox: 905 kB, 7.3 s at 1× (60 frames at
+10 Hz plus the load / seek moments at the ends). Videos are not committed (`out/` is gitignored).
+
+### 3. The real video (to do, P2, needs the dataset)
+
+Storyboard for 1–2 minutes, following the organizers' chain *tunnel → point cloud → algorithm →
+obstacle → distance*: (1) `./scripts/run_demo.sh /data/for_hackathon/doubleT_obstacle` with
+RViz — the raw cloud of the double-track tunnel; (2) toggle *Corridor points* — the orange
+gauge corridor; (3) the person crossing the track: red box, label and the banner
+`OBSTACLE 55.6 m` (real number, `docs/EXPERIMENTS.md` §1); (4) the dashboard's timeline and
+node card (latency / fps / dropped frames) during the same playback; (5) one empty bag
+(`roundT_squareT_pressureGate_squareT`) staying `PATH CLEAR` through the gate. Screen-record
+with OBS or `ffmpeg -f x11grab -framerate 25 -i :0.0 out/demo.mp4`; the captain links the file
+from the README.
