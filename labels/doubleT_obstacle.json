@@ -21,7 +21,7 @@
  },
  "labels": {
   "person_crossing": "person at 54.5-57 m crossing the track and standing beside it",
-  "person_walkway": "person walking away from the train on the left side, frames ~145-200"
+  "person_walkway": "person walking away from the train on the left side, frames 146-200"
  }
 },
 "00000": [{"kind":"person","name":"person","size":[0.26,0.56,1.5],"distance":55.51,"lateral":1.78,"yaw_deg":0.0,"reflectivity":57.1,"in_gauge":false,"gauge_margin":-0.1,"n_points":91,"bbox":[[55.51,-0.04,-2.53],[55.78,0.52,-1.03]],"h_above_rail":[0.19,1.32],"label":"person_crossing"}],
