@@ -10,7 +10,7 @@ Live status of every deliverable the organizers ask for (spec §5 and §7). Owne
 | 1 | Dockerfile and/or image with everything needed | [`docker/Dockerfile`](../docker/Dockerfile), `scripts/build.sh` | P1 | done (runtime image; `WITH_TOOLS=1` adds tests) |
 | 2 | working prototype of the algorithm | `resense/`, `ros2_ws/` | all | done, v0 |
 | 3 | short description of the chosen approach | [`README.md`](../README.md) intro, [`ALGORITHM.md`](ALGORITHM.md) §1–4 | P1 | done |
-| 4 | minimal demonstration on the provided data | `scripts/run_demo.sh doubleT_obstacle`; renders in [`img/`](img/) | P1 / P2 | renders done; live demo recording pending (P2) |
+| 4 | minimal demonstration on the provided data | `scripts/run_demo.sh doubleT_obstacle`; renders in [`img/`](img/); dashboard replay of a run (`web/index.html`, screenshot `img/dashboard_synthetic.png`) | P1 / P2 | renders and dashboard done; recording on the real bag pending (P2, needs a machine with the dataset) |
 | 5 | first experiment results | [`EXPERIMENTS.md`](EXPERIMENTS.md) | P3 / P4 | done, v0.3 |
 
 Package to send: link to the repository at a tagged commit (`v0.1-intermediate`), plus the
@@ -61,10 +61,10 @@ the commit hash filled in (the intermediate deadline itself is question 6 in
 | 8 | architecture description (components, data flow) | [`ARCHITECTURE.md`](ARCHITECTURE.md) | P1 | done |
 | 9 | algorithm description (problem, data, processing, decision, parameters, limitations) | [`ALGORITHM.md`](ALGORITHM.md) | P1, reviewed by P3 | done for v0; update with accumulation |
 | 10 | experiment results (range, latency, FPS, false alarms, hard cases, improvement over time) | [`EXPERIMENTS.md`](EXPERIMENTS.md), protocol in [`EVALUATION.md`](EVALUATION.md) | P3 / P4 | v0 done; extended dataset and bench timing pending |
-| 11 | video of the algorithm at work | `docs/video/` or a link in README | P2 | pending |
-| 12 | full demonstration on the control bag: `docker build → docker run → ros2 bag play → result` | `scripts/build.sh`, `scripts/run_demo.sh` | P1 | pending dry run 28.09 |
-| 13 | presentation, slides 7–11 exactly per template | [`PRESENTATION.md`](PRESENTATION.md), pptx | P2 | pending |
-| 14 | tests (spec §8.5) | `tests/`, CI (`pytest` job, Docker job runs the suite inside the image) | P4 / P1 | done |
+| 11 | video of the algorithm at work | recipe in [`web/README.md`](../web/README.md) (offline renders → ffmpeg; dashboard replay recorded with Playwright); `docs/video/` or a link in README | P2 | recipe verified on a synthetic bag; the real recording is pending |
+| 12 | full demonstration on the control bag: `docker build → docker run → ros2 bag play → result` | `scripts/build.sh`, `scripts/run_demo.sh`; same chain on a synthetic bag in CI (`scripts/smoke_test.sh`) | P1 | container chain proven in CI on a synthetic bag (21.09); dry run on a real bag pending (28.09) |
+| 13 | presentation, slides 7–11 exactly per template | [`PRESENTATION.md`](PRESENTATION.md) (texts for 7–11, plan for 12–20, captain's slides), pptx | P2 | texts drafted; pptx in the organizers' template pending |
+| 14 | tests (spec §8.5) | `tests/`, `web/demo/`, CI (`pytest`, `web` and Docker jobs; the Docker job also plays a synthetic bag through the node) | P4 / P1 / P2 | done |
 | 15 | input data description | [`DATASET.md`](DATASET.md), sensor: [`SENSOR.md`](SENSOR.md) | P4 / P1 | done |
 
 ## Dry run (28.09)
