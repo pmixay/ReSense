@@ -39,7 +39,126 @@
    ]
   },
   "machine": "4-core sandbox shared with another agent (P3) and with P4's own label script during the v0.4 run: load average 4.2-7.7 while it ran (see run_log), so every latency field of the v0.4 column is inflated by contention and is NOT comparable with the v0.3 column (recorded at an unknown load) nor with the reviewer's back-to-back numbers in docs/EXPERIMENTS.md (v0.4 77-94 ms mean). Alarm / event / advisory counts do not depend on the load. The jury's i7-9700E has 8 faster cores.",
-  "reproduces": "the reviewer's full-rate v0.4 totals of 21.09 (docs/EXPERIMENTS.md section 2b): 1016 vs 1001 alarm frames and 187 vs 192 events on the five obstacle-free bags"
+  "reproduces": "the reviewer's full-rate v0.4 totals of 21.09 (docs/EXPERIMENTS.md section 2b): 1016 vs 1001 alarm frames and 187 vs 192 events on the five obstacle-free bags",
+  "timing_ab_roundT_doubleT": {
+   "what": "resense bench --npy /data/cache/roundT_doubleT (252 frames, per-stage detector time), three variants run back to back on the same machine, 12:11-12:13 on 21.09, load average 3.5 at the start and 5.5 at the end (another agent working): absolute values are inflated, only the differences between the three rows are meaningful; the i7-9700E has 8 faster cores",
+   "commit": "f4e311f detector code (P4 branch for the --ego-speed option)",
+   "columns": "[mean, p95, max] ms",
+   "rows": {
+    "v0.4 defaults (estimator on, no speed given)": {
+     "total": [
+      109.6,
+      160.5,
+      196.7
+     ],
+     "track": [
+      57.4,
+      90.1,
+      110.6
+     ],
+     "corridor": [
+      19.4,
+      34.9,
+      54.5
+     ],
+     "egomotion": [
+      9.9,
+      20.4,
+      28.3
+     ],
+     "accumulate": [
+      0.3,
+      0.7,
+      8.4
+     ],
+     "cluster": [
+      22.4,
+      75.8,
+      114.6
+     ],
+     "tracking": [
+      0.3,
+      0.4,
+      4.4
+     ]
+    },
+    "v0.3-equivalent config (accumulation, estimator, bed verification, retro off)": {
+     "total": [
+      83.1,
+      124.5,
+      169.3
+     ],
+     "track": [
+      49.4,
+      81.1,
+      98.2
+     ],
+     "corridor": [
+      20.3,
+      34.7,
+      51.0
+     ],
+     "egomotion": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "accumulate": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "cluster": [
+      13.1,
+      33.7,
+      63.6
+     ],
+     "tracking": [
+      0.3,
+      0.4,
+      6.4
+     ]
+    },
+    "v0.4 defaults with --ego-speed 17 (given: estimator skipped, 5-frame union on every frame)": {
+     "total": [
+      111.7,
+      166.3,
+      196.3
+     ],
+     "track": [
+      60.1,
+      92.8,
+      111.3
+     ],
+     "corridor": [
+      20.0,
+      35.5,
+      54.9
+     ],
+     "egomotion": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "accumulate": [
+      0.5,
+      0.8,
+      5.2
+     ],
+     "cluster": [
+      30.8,
+      72.1,
+      123.1
+     ],
+     "tracking": [
+      0.2,
+      0.4,
+      0.7
+     ]
+    }
+   },
+   "reading": "v0.4 costs +26 ms mean over v0.3 on this bag at this load: estimator ~10 ms, bed verification inside track ~8 ms, clustering of the merged cloud ~9 ms; with a given speed the estimator's 10 ms are saved but the union is merged on every frame (cluster +17 ms), so the total is the same. Consistent with the reviewer's +17-23 ms measured at a lower load (docs/EXPERIMENTS.md 2b)."
+  }
  },
  "totals_empty_bags": {
   "v0.3": {
