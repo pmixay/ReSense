@@ -333,24 +333,24 @@ def test_check_dry_run_empty_capture(check_dry_run, tmp_path):
 
 def test_cli_run_bench_summarize(synth_npy_dir, tmp_path, capsys):
     jsonl = tmp_path / "run.jsonl"
-    main(["run", "--npy", str(synth_npy_dir), "--out", str(jsonl), "--quiet"])
+    run_cli(["run", "--npy", str(synth_npy_dir), "--out", str(jsonl), "--quiet"])
     lines = [json.loads(l) for l in open(jsonl)]
     assert [l["frame"] for l in lines] == [0, 1] and lines[0]["frame_id"] == "synthetic_0000.npy"
     assert {"stamp", "obstacle", "warning", "nearest_distance", "detections", "warnings", "track", "timing_ms"} <= set(lines[0])
     assert not lines[1]["obstacle"] and lines[1]["timing_ms"]["total"] > 0
     capsys.readouterr()
-    main(["bench", "--npy", str(synth_npy_dir)])
+    run_cli(["bench", "--npy", str(synth_npy_dir)])
     out = capsys.readouterr().out
     assert "total" in out and "p95" in out
-    s = main(["summarize", str(jsonl)])
+    s = run_cli(["summarize", str(jsonl)])
     assert s["frames"] == 2 and s["alarm_frames"] == 0 and s["fp_events"] == 0 and s["frame_stride"] == 1
 
 
 def test_cli_inject_and_eval(synth_npy_dir, tmp_path, capsys):
     out = tmp_path / "inj"
-    main(["inject", "--npy", str(synth_npy_dir), "--limit", "1", "--out", str(out), "--kinds", "box0.5",
+    run_cli(["inject", "--npy", str(synth_npy_dir), "--limit", "1", "--out", str(out), "--kinds", "box0.5",
           "--distances", "30:30", "--negative-fraction", "0", "--seed", "1"])
     assert sorted(os.listdir(out)) == ["00000.npz", "gt.json"]
-    res = main(["eval", str(out), "--text"])
+    res = run_cli(["eval", str(out), "--text"])
     assert res["frames"] == 1 and res["recall"] == 1.0
     assert "recall            : 100.0%" in capsys.readouterr().out
