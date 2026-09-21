@@ -1,9 +1,9 @@
-"""Tests for the P2 deliverables (RViz layout, Foxglove layout, demo run, dashboard replay).
+"""Tests for the P2 deliverables (RViz layout, Foxglove layout, demo run, dashboard replay, label tool).
 
 Run from the repository root:  python -m pytest -q web/demo
 (``testpaths`` in pyproject.toml only lists ``tests/``, so the plain ``pytest -q`` does not
 collect this file — add ``web/demo`` there if the team wants it in CI.)  Everything runs
-without the organizers' dataset; the browser test skips when Playwright or Chromium is missing.
+without the organizers' dataset; the browser tests skip when Playwright or Chromium is missing.
 """
 import json
 import os
@@ -16,6 +16,7 @@ sys.path.insert(0, os.path.join(ROOT, "web", "demo"))
 
 RVIZ = os.path.join(ROOT, "ros2_ws", "src", "resense_ros", "rviz", "resense.rviz")
 FOX = os.path.join(ROOT, "web", "foxglove_layout.json")
+LABEL_TOOL = os.path.join(ROOT, "web", "label_tool.html")
 RAW_TOPICS = ("/lidar_points", "/sensing/lidar/hesai128/pointcloud")
 
 
@@ -122,6 +123,14 @@ def _browser_available():
         return False
 
 
+def _launch(p):
+    import check_dashboard
+    try:
+        return p.chromium.launch(headless=True)
+    except Exception:
+        return p.chromium.launch(headless=True, executable_path=check_dashboard.find_chromium())
+
+
 def test_dashboard_replays_jsonl_in_chromium(tiny_run, tmp_path):
     if not _browser_available():
         pytest.skip("playwright + chromium not available")
@@ -151,10 +160,7 @@ def test_dashboard_rejects_garbage_lines(tmp_path):
         "frame": 7, "frame_id": "x", "node": {"latency_ms": 60.0, "fps": 9.8, "frames": 8, "dropped_frames": 2, "input_period_ms": 100.0}}
     text = "\n\nnot json\n" + json.dumps(good) + "\n{\"foo\": 1}\n"
     with sync_playwright() as p:
-        try:
-            b = p.chromium.launch(headless=True)
-        except Exception:
-            b = p.chromium.launch(headless=True, executable_path=check_dashboard.find_chromium())
+        b = _launch(p)
         page = b.new_page()
         page.goto("file://" + check_dashboard.INDEX, wait_until="domcontentloaded")
         page.wait_for_function("window.resense !== undefined")
@@ -164,3 +170,56 @@ def test_dashboard_rejects_garbage_lines(tmp_path):
         assert page.inner_text("#n-dropped").startswith("2")       # node stats are shown when present
         assert "notice" in page.get_attribute("#node-card", "class")
         b.close()
+
+
+# --------------------------------------------------------------------------- F. label tool -> gt.json
+GT_KEYS = {"kind", "size", "distance", "lateral", "yaw_deg", "reflectivity", "label", "in_gauge", "n_points"}
+
+
+def test_label_tool_exports_inject_shaped_gt(tiny_run, tmp_path):
+    if not _browser_available():
+        pytest.skip("playwright + chromium not available")
+    from playwright.sync_api import sync_playwright
+    from resense.metrics import GTObstacle
+    out, _ = tiny_run
+    with sync_playwright() as p:
+        b = _launch(p)
+        page = b.new_page()
+        page.goto("file://" + LABEL_TOOL, wait_until="domcontentloaded")
+        page.wait_for_function("window.resenseLabel !== undefined")
+        page.set_input_files("#file-jsonl", out)
+        page.wait_for_function("Object.keys(window.resenseLabel.state.results).length > 0")
+        keys = page.evaluate("Object.keys(window.resenseLabel.state.results).sort()")
+        assert keys[0] == "00000" and keys[-1] == "00013" and len(keys) == 14   # frame index, 5 digits
+        # a frame where the detector confirmed the person: prefill from the detection, then edit
+        det_key = page.evaluate("Object.keys(window.resenseLabel.state.results).sort().find(k => window.resenseLabel.state.results[k].obstacle)")
+        page.evaluate(f"window.resenseLabel.select('{det_key}')")
+        page.click("#add-from-det")
+        page.select_option("select[data-f=kind]", "person")
+        page.fill("input[data-f=label]", "person_real")
+        page.dispatch_event("input[data-f=label]", "change")
+        page.fill("input[data-f=lateral]", "-2.5")           # outside the gauge -> in_gauge auto-unchecks
+        page.dispatch_event("input[data-f=lateral]", "change")
+        assert page.is_checked("input[data-f=in_gauge]") is False
+        # a hand-typed frame, marked as checked and clear
+        page.fill("#new-frame", "42")
+        page.click("#add-frame")
+        page.check("#checked")
+        # export through the real download button and through the API
+        with page.expect_download() as dl:
+            page.click("#export")
+        path = str(tmp_path / "gt.json")
+        dl.value.save_as(path)
+        gt_api = page.evaluate("window.resenseLabel.exportGT()")
+        b.close()
+    gt = json.load(open(path))
+    assert gt == gt_api
+    assert set(gt) == {det_key, "00042"}
+    assert gt["00042"] == []
+    (o,) = gt[det_key]
+    assert set(o) == GT_KEYS
+    assert o["kind"] == "person" and o["label"] == "person_real" and o["in_gauge"] is False
+    assert o["lateral"] == -2.5 and 40.0 <= o["distance"] <= 72.0 and o["n_points"] >= 1
+    assert len(o["size"]) == 3 and all(isinstance(v, (int, float)) for v in o["size"])
+    g = GTObstacle.from_dict(o)                                   # what resense eval reads
+    assert g.distance == o["distance"] and g.in_gauge is False

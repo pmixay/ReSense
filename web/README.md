@@ -168,3 +168,41 @@ node card (latency / fps / dropped frames) during the same playback; (5) one emp
 (`roundT_squareT_pressureGate_squareT`) staying `PATH CLEAR` through the gate. Screen-record
 with OBS or `ffmpeg -f x11grab -framerate 25 -i :0.0 out/demo.mp4`; the captain links the file
 from the README.
+
+## Label tool (`label_tool.html`) and the `gt.json` key convention
+
+A minimal per-frame labelling page for real obstacles (the organizers' extended dataset, or the
+person in `doubleT_obstacle`). Open it in a browser, load the `results.jsonl` of the bag
+(`python -m resense.cli run --bag <bag> --out results.jsonl`) to get the frame list with the
+detector's own output as a reference, or type bag frame indices by hand. For each frame add one
+or more obstacles (kind, label, distance along the track, lateral offset, size L/W/H, yaw,
+reflectivity, in-gauge flag, point count) — *add from detection* prefills a row from what the
+detector reported — or tick *checked, clear* for a verified empty frame. *Export gt.json*
+downloads the file; *import gt.json* continues an earlier session. Arrow keys move between
+frames; the canvas shows detector boxes (red / orange) and labels (cyan) top-down.
+
+Format, identical to what `resense inject` writes (`cmd_inject` in `resense/cli.py`), so
+`resense eval` and `resense/metrics.py` read it unchanged:
+
+```json
+{"00042": [{"kind": "person", "size": [0.4, 0.5, 1.7], "distance": 55.6, "lateral": 0.1,
+            "yaw_deg": 0.0, "reflectivity": 40.0, "label": "person_crossing", "in_gauge": true,
+            "n_points": 1}],
+ "00043": []}
+```
+
+Key convention (P4 documents the same in `docs/DATASET.md`; the captain reconciles):
+
+* **key = absolute bag frame index, zero-padded to 5 digits** (`"00042"`): the `frame` value in
+  `results.jsonl`, the index `resense run` prints, and the `frame_00042.png` name of `--render`.
+  `--every N` / `--start` do not renumber (`resense.io.iter_bag_compact` yields the absolute
+  index), so labels made on a subsampled run stay valid for the full run. One `gt.json` per bag,
+  next to the bag's results, e.g. `data/labels/<bag>/gt.json`.
+* `distance` = m along the track to the obstacle's nearest face, `lateral` = m from the track
+  axis (+ left), both in the detector's track frame (what the status JSON reports), not in the
+  raw sensor frame; `size` = `[L along track, W across, H]` in m.
+* `in_gauge` defaults to `|lateral| < 1.3 m` (the rule `cmd_inject` uses) and can be overridden;
+  `n_points = 1` means "visible, count unknown" — `resense eval` drops entries with `n_points = 0`
+  as occluded, so never export 0 for a real object you can see.
+* A frame exported as an empty list is a verified negative (checked, nothing in the gauge);
+  frames absent from the file are unlabelled and count as empty in `resense eval` today.
