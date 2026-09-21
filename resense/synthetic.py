@@ -42,6 +42,46 @@ class ObstacleSpec:
 
 
 @dataclass
+class CatalogueEntry:
+    """A named test object for ``resense inject``: mesh kind, size and a reflectivity range
+    (intensity in the bags is reflectivity %, > 100 retro-reflective; SENSOR.md section 2).
+    The ranges are assumptions until calibrated on real obstacles of the extended dataset."""
+    kind: str
+    size: Tuple[float, float, float]      # (length X, width Y, height Z) m
+    reflectivity: Tuple[float, float]     # uniform range
+    note: str = ""
+
+
+OBJECT_CATALOGUE = {
+    "person":   CatalogueEntry("person", (0.4, 0.5, 1.7), (10, 60), "person in dark / ordinary clothing"),
+    "hivis":    CatalogueEntry("person", (0.4, 0.5, 1.7), (150, 250), "person in a hi-vis vest (retro-reflective)"),
+    "box0.2":   CatalogueEntry("box", (0.2, 0.2, 0.2), (20, 40), "cardboard box"),
+    "box0.5":   CatalogueEntry("box", (0.5, 0.5, 0.5), (20, 40), "cardboard box"),
+    "box1.0":   CatalogueEntry("box", (1.0, 1.0, 1.0), (20, 40), "cardboard crate"),
+    "box":      CatalogueEntry("box", (0.5, 0.5, 0.5), (20, 40), "legacy name for box0.5"),
+    "plank":    CatalogueEntry("plank", (2.0, 0.25, 0.30), (30, 60), "wooden plank / sleeper"),
+    "trolley":  CatalogueEntry("cylinder", (0.6, 0.6, 1.0), (40, 120), "maintenance trolley (painted metal), cylinder approximation"),
+    "cylinder": CatalogueEntry("cylinder", (0.4, 0.4, 0.9), (30, 90), "legacy: drum / bin"),
+    "sphere":   CatalogueEntry("sphere", (0.4, 0.4, 0.4), (20, 60), "ball-like debris"),
+}
+
+
+def catalogue_spec(name: str, distance: float, lateral: float = 0.0, yaw_deg: float = 0.0,
+                   rng: Optional[np.random.Generator] = None, label: Optional[str] = None,
+                   reflectivity: Optional[float] = None) -> ObstacleSpec:
+    """ObstacleSpec for a catalogue name; the reflectivity is drawn from the entry's range
+    unless given. Raises KeyError with the list of names for an unknown one."""
+    if name not in OBJECT_CATALOGUE:
+        raise KeyError(f"unknown object {name!r}; known: {', '.join(OBJECT_CATALOGUE)}")
+    e = OBJECT_CATALOGUE[name]
+    if reflectivity is None:
+        rng = rng or np.random.default_rng(0)
+        reflectivity = float(rng.uniform(*e.reflectivity))
+    return ObstacleSpec(kind=e.kind, size=e.size, distance=float(distance), lateral=float(lateral),
+                        yaw_deg=float(yaw_deg), reflectivity=float(reflectivity), label=label or name)
+
+
+@dataclass
 class InjectionResult:
     frame: Frame
     labels: np.ndarray                # (N,) int: 0 = background, k = k-th obstacle spec

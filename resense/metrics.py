@@ -73,6 +73,14 @@ def load_gt(path: str) -> Dict[str, list]:
     return {k: v for k, v in raw.items() if not k.startswith("_")}
 
 
+def gt_meta(path: str) -> dict:
+    """The ``_meta`` block of a gt.json ({} when absent)."""
+    with open(path, encoding="utf-8") as fh:
+        raw = json.load(fh)
+    meta = raw.get("_meta", {})
+    return meta if isinstance(meta, dict) else {}
+
+
 def gt_objects(rows: Sequence[dict], skip_occluded: bool = True) -> List[GTObstacle]:
     """Rows of one frame -> GTObstacle list; rows with ``n_points == 0`` (object fully
     occluded by real geometry) are dropped when ``skip_occluded`` (they count separately)."""
@@ -265,7 +273,7 @@ def format_summary(s: dict) -> str:
         return "n/a" if v is None else fmt.format(v)
     lines = [
         f"frames            : {s['frames']} (empty: {s['empty_frames']})" +
-        (f", every {s['frame_stride']}th bag frame" if s.get("frame_stride") else ""),
+        (f", every {s['frame_stride']}th bag frame" if (s.get("frame_stride") or 1) > 1 else ""),
         f"alarm frames      : {s['alarm_frames']}   alarm events (distinct confirmed ids): {s['alarm_events']}",
         f"advisory frames   : {s['advisory_frames']} ({f(s['advisory_frame_rate'], '{:.1%}')} of frames)",
         f"alarm distance    : {f(s['alarm_distance_min'], '{:.1f}')} .. {f(s['alarm_distance_max'], '{:.1f}')} m",

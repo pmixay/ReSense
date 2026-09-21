@@ -109,6 +109,54 @@ back to find the frame's labels, and `resense run --npy` numbers frames by their
 the directory (every file = one frame, `stamp = position × 0.1 s`; cached files carry no bag
 time, so per-hour rates need the bag itself).
 
+## Synthetic obstacles (`resense inject`)
+
+`resense inject` ray-casts catalogue objects into empty frames with the sensor's own angular
+grid (occlusion-correct, range-dependent dropout beyond 120 m scaled by reflectivity). Objects
+are selected by name with `--kinds`; the catalogue is `resense.synthetic.OBJECT_CATALOGUE`:
+
+| name | mesh | size L × W × H (m) | reflectivity (%) | stands for |
+|---|---|---|---|---|
+| `person` | cylinder body + head sphere | 0.4 × 0.5 × 1.7 | 10–60 | person in dark / ordinary clothing |
+| `hivis` | same | 0.4 × 0.5 × 1.7 | 150–250 | person in a hi-vis vest (retro-reflective) |
+| `box0.2` | box | 0.2 × 0.2 × 0.2 | 20–40 | cardboard box (top below the `hardware` filter's 0.35 m: invisible by design in v0, EXPERIMENTS.md §4 item 5) |
+| `box0.5` (alias `box`) | box | 0.5 × 0.5 × 0.5 | 20–40 | cardboard box |
+| `box1.0` | box | 1.0 × 1.0 × 1.0 | 20–40 | cardboard crate |
+| `plank` | box | 2.0 × 0.25 × 0.30 | 30–60 | wooden plank / sleeper |
+| `trolley` | cylinder | 0.6 × 0.6 × 1.0 | 40–120 | maintenance trolley (painted metal), cylinder approximation |
+| `cylinder` | cylinder | 0.4 × 0.4 × 0.9 | 30–90 | drum / bin (legacy name) |
+| `sphere` | sphere | 0.4 × 0.4 × 0.4 | 20–60 | ball-like debris |
+
+Reflectivity is drawn uniformly from the range per object (intensity in the bags is
+reflectivity %, > 100 retro-reflective, [`SENSOR.md`](SENSOR.md) §2). **The ranges are
+assumptions** until they are calibrated on real obstacles of the extended dataset (PLAN.md,
+P4 item 1); they only affect the injected intensity and the dropout beyond 120 m.
+
+Placement: one object set per background frame (`--per-frame`), distance uniform in
+`--distances lo:hi`, lateral uniform ±0.9 m inside the gauge or, for the `--negative-fraction`
+share, 2.2–3.0 m to either side (must **not** alarm, `in_gauge = false`), random yaw. Objects
+stand on the sleepers (rail head − 0.15 m) of the per-frame track model.
+
+```bash
+# static frames (recall by range): every 10th frame, one object each, 20 % negatives
+resense inject --bag <bag> --every 10 --out data/synth/<bag> --kinds person,box0.5,plank,trolley --distances 10:250
+resense eval data/synth/<bag>                      # --repeat 3 by default: emulates persistence on static frames
+
+# approach sequences (first-detection distance): 30 frames per background, 15 m/s = 1.5 m per step
+resense inject --bag <bag> --every 30 --out data/seq/<bag> --kinds person --distances 120:160 --sequence 30 --speed 15
+resense eval data/seq/<bag>                        # --repeat 1 automatically (the gt.json _meta says sequence > 1)
+
+# robustness: augmented backgrounds (5 % dropout, 1 cm range noise, ±0.3° yaw/pitch, ±0.2° roll, 10 % intensity jitter)
+resense inject --bag <bag> --every 10 --out data/synth_aug/<bag> --augment
+```
+
+`--sequence N --speed V` keeps the same background frame and moves the objects by
+`V × tracking.frame_dt` per step (`d − k·V·0.1` for k = 0..N−1), stopping early if an object
+would pass `gauge.range_min`; files are numbered in order and every row carries `seq`
+(background index), `seq_step` (k) and `speed_mps`, so `eval` in file order sees a
+moving-toward run. The background itself does not move, so this exercises persistence and
+the association gate, not ego-motion compensation.
+
 ## Label format (`gt.json`)
 
 One JSON object per bag (or per injected dataset), **keyed by the bag frame index** as a
