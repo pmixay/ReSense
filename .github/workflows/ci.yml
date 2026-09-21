@@ -12,6 +12,17 @@ jobs:
       - run: sudo apt-get update -qq && sudo apt-get install -y -qq libegl1 libgl1 libgomp1 libusb-1.0-0
       - run: pip install -e ".[dev]"
       - run: pytest -q
+  web:
+    # the dashboard replays a synthetic run in headless Chromium (web/demo/test_web.py, check_dashboard.py)
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.10" }
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq libegl1 libgl1 libgomp1 libusb-1.0-0
+      - run: pip install -e ".[dev]" playwright && python -m playwright install --with-deps chromium
+      - run: python -m pytest -q -rs web/demo
+      - run: python web/demo/make_demo_run.py --out out/demo_run.jsonl && python web/demo/check_dashboard.py --jsonl out/demo_run.jsonl --screenshot out/dashboard_synthetic.png
   params-in-sync:
     # configs/default.yaml is the single source of truth; the ROS package carries a copy
     runs-on: ubuntu-22.04

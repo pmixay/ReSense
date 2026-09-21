@@ -142,8 +142,11 @@ ffmpeg -framerate 10 -pattern_type glob -i 'out/frames/frame_*.png' \
 `--render` writes one 1280×720 PNG per frame (top view + side view, corridor points in orange,
 detections in red with distance and confidence, status in the title); all 201 frames of
 `doubleT_obstacle` give a 20 s clip at 10 fps. `--every 2` halves the work at 5 fps
-(`-framerate 5`). ffmpeg is not installed in the sandbox this was written in: the command is
-documented, not executed.
+(`-framerate 5`). Verified on a synthetic bag (`scripts/make_smoke_bag.py` → `resense run --render` →
+ffmpeg → mp4); not yet run on the organizers' data. The Playwright package version must match the
+Chromium build it drives (`playwright==1.56.0` for the pre-installed chromium-1194 in the team
+sandbox; elsewhere `pip install playwright && python -m playwright install --with-deps chromium`
+fetches a matching browser), or pass `--chromium <binary>`.
 
 ### 2. Dashboard replay recorded with Playwright
 

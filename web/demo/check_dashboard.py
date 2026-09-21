@@ -173,7 +173,8 @@ def check(jsonl: str, screenshot: str | None, video: str | None, speed: float, m
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--jsonl", default="out/demo_run.jsonl")
-    p.add_argument("--screenshot", default="docs/img/dashboard_synthetic.png", help="'' to skip")
+    p.add_argument("--screenshot", default="out/dashboard_synthetic.png",
+                   help="PNG to write ('' to skip); pass docs/img/dashboard_synthetic.png to refresh the committed one")
     p.add_argument("--video", default=None, help="record the replay to this .webm (e.g. out/dashboard.webm)")
     p.add_argument("--speed", type=float, default=1.0, help="replay speed: 0.25 0.5 1 2 4 10")
     p.add_argument("--min-dist", type=float, default=40.0)
