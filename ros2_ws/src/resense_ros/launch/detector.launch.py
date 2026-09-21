@@ -61,6 +61,8 @@ def generate_launch_description():
         DeclareLaunchArgument("bag", default_value="", description="optional bag to play"),
         DeclareLaunchArgument("rate", default_value="1.0"),
         DeclareLaunchArgument("loop", default_value="false", description="replay the bag forever"),
+        DeclareLaunchArgument("delay", default_value="3.0",
+                              description="s the player waits before the first message (DDS discovery)"),
     ]
 
     params = {k: ParameterValue(LaunchConfiguration(k), value_type=t)
@@ -68,15 +70,15 @@ def generate_launch_description():
     params["config_file"] = ParameterValue(LaunchConfiguration("config_file"), value_type=str)
 
     play = ["ros2", "bag", "play", LaunchConfiguration("bag"),
-            "--rate", LaunchConfiguration("rate"), "--clock"]
+            "--rate", LaunchConfiguration("rate"), "--clock", "--delay", LaunchConfiguration("delay")]
 
     return LaunchDescription(args + [
         Node(package="resense_ros", executable="detector_node", name="resense_detector",
              output="screen", parameters=[params]),
         Node(package="rviz2", executable="rviz2", name="rviz2", arguments=["-d", default_rviz],
              condition=IfCondition(LaunchConfiguration("rviz")), output="log"),
-        # NOTE: playing from the launch file races the node's startup and loses the first frames;
-        # scripts/run_headless.sh and scripts/dry_run.sh wait for /resense/status before playing.
+        # NOTE: playing from the launch file races the node's startup; --delay (default 3 s) gives
+        # discovery time, and scripts/run_headless.sh / dry_run.sh also wait for /resense/status.
         # Two variants rather than one conditional argument: an empty argv element would be read
         # by `ros2 bag play` as a second bag path.
         ExecuteProcess(cmd=play + ["--loop"], output="screen", condition=_bag_condition(True)),

@@ -73,7 +73,9 @@ ros2 topic echo /resense/nearest_distance                 # terminal 3 (any ROS 
 Launch arguments: `input_topic:=...` (comma-separated candidates, default
 `/lidar_points,/sensing/lidar/hesai128/pointcloud`), `auto_discover:=true|false`,
 `config_file:=/path/to/detector.yaml`, `rviz:=true|false`, `bag:=/data/<bag>`, `rate:=1.0`,
-`loop:=true|false`, plus `publish_markers`, `publish_corridor_cloud`, `marker_x_max`,
+`loop:=true|false`, `delay:=3.0` (seconds the player waits before the first message, so that DDS
+discovery completes: without it the first 1–3 s of a bag are lost), plus `publish_markers`,
+`publish_corridor_cloud`, `marker_x_max`,
 `output_frame`, `stats_period`, `discover_period`. For multi-frame accumulation the node needs
 the train speed: `ego_speed_mps:=22.0`, or `speed_topic:=/vehicle/speed` (`std_msgs/Float32`,
 m/s), or `odom_topic:=/odom` (`nav_msgs/Odometry`, `twist.linear.x`); with none of them the

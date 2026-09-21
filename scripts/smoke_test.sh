@@ -9,8 +9,9 @@
 # with a person standing on the track at 60 m, so the check is: the node starts on the default
 # command, the first frames are clear, the person is reported at 55-66 m, nothing was dropped.
 #
-# Environment: RATE (bag playback rate, default 0.5 because CI runners are slow), OUT (capture
-# directory, default /tmp/smoke_out), CHECK_ARGS (overrides the acceptance thresholds).
+# Environment: RATE (bag playback rate, default 0.5 because CI runners are slow), DELAY (s the
+# player waits before publishing, default 3), OUT (capture directory, default /tmp/smoke_out),
+# CHECK_ARGS (overrides the acceptance thresholds).
 set -uo pipefail
 cd "$(dirname "$0")/.."
 BAG="${1:?usage: scripts/smoke_test.sh <bag directory>}"
@@ -38,7 +39,9 @@ fi
 ros2 topic echo /resense/status --field data > "$OUT/status.jsonl" 2>/dev/null &
 ECHO_PID=$!
 sleep 3
-ros2 bag play "$BAG" --rate "$RATE" --clock
+# --delay: publishers exist for DELAY s before the first message, so DDS discovery with the node
+# completes; without it the first 1-3 s of a bag are silently lost (13 frames in CI run 21).
+ros2 bag play "$BAG" --rate "$RATE" --clock --delay "${DELAY:-3}" --disable-keyboard-controls
 sleep 4          # let the last frames finish and one more stats tick land
 kill "$ECHO_PID" "$LAUNCH_PID" 2>/dev/null || true
 wait "$ECHO_PID" 2>/dev/null || true

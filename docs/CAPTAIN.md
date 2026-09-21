@@ -114,7 +114,12 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
    publish `/lidar_points`. The azimuth window is ±50° in all bags except `doubleT_obstacle`
    (±125°, 347 k points). `frame_id` is verified for two bags only (the caches carry no
    frame id): `hesai_lidar` / `lidar_livox`.
-4. **Bench timing at full rate on real frames**, 4-core sandbox shared with other jobs (the
+4. **The first seconds of a bag are lost to DDS discovery.** `ros2 bag play` publishes as soon
+   as it opens the bag; the node's subscription needs a discovery round trip first. CI run 20
+   lost 2 frames, run 21 lost 13 (the whole clear lead-in), the jury's demo would lose the same.
+   Every playback path now passes `--delay 3` (smoke test, `dry_run.sh`, `run_headless.sh`, the
+   compose player, the launch file's `delay:=`).
+5. **Bench timing at full rate on real frames**, 4-core sandbox shared with other jobs (the
    i7-9700E has 8 faster cores): `roundT_doubleT` total mean 57 ms, p95 95 ms, max 129 ms
    (track 31 / corridor 16 / cluster 10 ms); `doubleT_obstacle` (347 k points) mean 71 ms,
    p95 114 ms, max 177 ms. p95 is above the 100 ms frame period on this machine; the node
