@@ -8,19 +8,24 @@ ROS 2 bag ──/lidar_points (PointCloud2, 10 Hz, ~190k pts)──▶ resense_r
                                                                   │
    1. sensor → vehicle frame (X fwd, Y left, Z up), range crop     │  frame.py
    2. track model per frame                                       │  track.py
-        • bed profile z(X): per-bin percentile, robust line + optional quadratic
-        • rail head level + track axis: two-ridge template (gauge 1.52 m) in 4–30 m
-        • yaw / curvature: quadratic fit of the left/right tunnel boundaries
-          (walls, column rows) in the band 1.8–2.6 m above rail head; nearer side wins;
-          axis trusted only up to the last observed boundary bin (+15 m)
+        • bed profile z(X): per-bin percentile, robust line + optional quadratic; height
+          reference trusted 20 m beyond the fit or as far as the side-structure base verifies it
+        • rail head level, track centre and yaw: two-ridge template (gauge 1.52 m) in three
+          slabs of the 4–30 m range, profile built in the previous axis' coordinates
+        • curvature 1/R: fit of the left/right tunnel boundaries (walls, column rows) with the
+          rail tangent fixed; rate limits per frame; nearer side wins; axis trusted only up to
+          the last observed boundary bin (+15 m), less when the two sides disagree
    3. clearance-gauge corridor                                     │  gauge.py
         • polygon (dy, h) relative to axis and rail head: |dy| ≤ 1.4 m, h 0.55–3.5 m,
           plus the low zone |dy| ≤ 0.95 m from h = 0.12 m; advisory zone +0.35 m
+   3b. multi-frame accumulation beyond 40 m (only with a given train speed)  │  accumulate.py
    4. candidates → voxels (range-normalised) → DBSCAN (eps ∝ 1 + r/40 m)  │  clustering.py
         • filters: max extent, thin linear hardware, low track hardware, wall-like side
-          structures, overhead-only clusters, expected-point visibility prior
+          structures, overhead-only clusters, expected-point visibility prior, and the
+          infrastructure signatures (column, elevated, floating, corridor edge, wall face)
    5. persistence tracker (greedy NN, gate ∝ range, ego-speed slack)  │  tracking.py
-        • confirmed after 3 hits, confidence ↑ per hit ↓ per miss
+        • confirmed after 3 hits spanning ≥ 0.3 s, ≥ 60 % of the last 10 frames matched and
+          ≥ 60 % of the last 10 hits inside the strict gauge; confidence ↑ per hit ↓ per miss
    6. FrameResult → topics                                          │  detector_node.py
         /resense/obstacle_detected (Bool)   /resense/nearest_distance (Float32)
         /resense/warning (Bool)             /resense/detections (vision_msgs/Detection3DArray)

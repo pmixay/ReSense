@@ -19,10 +19,16 @@ ROS 2 bag ─▶ PointCloud2 ─▶ resense_ros/detector_node ─▶ /resense/ob
                                                          └▶ /resense/status (JSON)
 ```
 
-Status: **v0 prototype (day 1)**. Works on the six organizer bags (round / rectangular /
-double-track tunnels, pressure gates, platform, switch), detects the person crossing the track
-at 55 m in `doubleT_obstacle` and ray-cast synthetic obstacles at 30 / 80 / 150 m; runs at 40–75 ms
-per frame in pure Python. Known false-positive sources and next steps: [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md).
+Status: **v0.5 (21.09, Sprint 2, measured on real data at full rate)**. On every frame of the
+five obstacle-free organizer bags (2 287 frames: round / rectangular / double-track tunnels,
+pressure gates, a platform stop, a switch) the detector raises **89 alarm frames / 29 alarm
+events** (v0.3: 1 001 / 192). The person crossing the track in `doubleT_obstacle` is reported at
+55.5–56.6 m in 66 of the 71 labelled in-gauge frames, the first alarm 0.5 s after he enters the
+gauge, distance error under 1 cm, and nothing else alarms on that bag. Multi-frame accumulation
+for 150 m and beyond runs with a given train speed (node parameter or odometry; synthetic:
+person confirmed at 189 m); the LiDAR-only speed estimator is off by default. The container
+chain (`docker build → run → bag play → result`) is verified in CI on a synthetic bag on every
+push. Numbers, hard cases and what did not work: [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md).
 
 ## Repository layout
 
