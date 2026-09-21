@@ -1,23 +1,36 @@
-# docker compose up detector            # detector only (headless)
-# docker compose --profile viz up       # detector + RViz (needs X11: xhost +local:docker)
-# docker compose run --rm player ros2 bag play /data/roundT_doubleT --clock
+# RESENSE_DATA is the host directory that holds the bags; it is mounted at /data in every
+# service. It defaults to /data/for_hackathon, the path the README and scripts/ use.
+# RESENSE_BAG is the bag inside it that the player and the headless demo play.
+#
+#   docker compose up detector                        # detector only (headless, no X11)
+#   docker compose --profile tools up player          # play $RESENSE_BAG into it
+#   docker compose --profile tools run --rm echo      # live distance readout, no X11
+#   docker compose --profile viz up                   # + RViz (needs X11: xhost +local:docker)
+#
+#   RESENSE_DATA=/mnt/bags RESENSE_BAG=doubleT_obstacle docker compose --profile tools up
+x-data: &data
+  network_mode: host
+  ipc: host
+  volumes:
+    - ${RESENSE_DATA:-/data/for_hackathon}:/data:ro
+
 services:
   detector:
+    <<: *data
     build: { context: ., dockerfile: docker/Dockerfile }
     image: resense:latest
-    network_mode: host
-    ipc: host
-    volumes:
-      - ${RESENSE_DATA:-./data}:/data:ro
     command: ros2 launch resense_ros detector.launch.py
   player:
+    <<: *data
+    image: resense:latest
+    profiles: ["tools"]
+    command: ros2 bag play /data/${RESENSE_BAG:-roundT_doubleT} --clock
+  echo:
+    # the headless equivalent of watching RViz: -1.0 means path clear
     image: resense:latest
     network_mode: host
-    ipc: host
-    volumes:
-      - ${RESENSE_DATA:-./data}:/data:ro
     profiles: ["tools"]
-    command: ros2 bag play /data/roundT_doubleT --clock
+    command: ros2 topic echo /resense/nearest_distance
   rviz:
     image: resense:latest
     network_mode: host

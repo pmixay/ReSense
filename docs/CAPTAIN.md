@@ -16,6 +16,7 @@ inside the image.
 | area | what | where |
 |---|---|---|
 | CI | Docker job builds with `WITH_TOOLS=1`, runs the 15 tests inside the image (no `\|\| true`), checks the ROS package and launch file; `params-in-sync` job | `.github/workflows/ci.yml` |
+| demo & acceptance | `scripts/run_headless.sh` (no-X11 demo), `scripts/dry_run.sh` + `scripts/check_dry_run.py` (build → play → assert), `RVIZ=0` on `run_demo.sh`, one data-path rule (`$RESENSE_DATA` → `/data`, default `/data/for_hackathon`), compose `echo` service | `scripts/`, `docker-compose.yml`, README, `SUBMISSION.md` |
 | Docker | runtime image with pinned numpy 1.26 / scipy / scikit-learn / pyyaml, package installed non-editable (jammy pip has no PEP 660 hook), `WITH_TOOLS` build arg, canonical `configs/default.yaml` copied over the ROS copy at build time; first real build is green | `docker/Dockerfile`, `scripts/build.sh` |
 | parameters | `scripts/sync_params.sh` (copy / `--check`) | `scripts/` |
 | ROS node | `/resense/latency_ms`, `/resense/fps`, dropped-frame estimate, periodic latency mean / p95 / max log, `node` object in the status JSON, `stats_period` parameter | `ros2_ws/.../detector_node.py` |
@@ -26,10 +27,11 @@ inside the image.
 
 1. Send the Sprint 0 questions to the organizers, now including the sensor questions in
    `SENSOR.md` §4 (return mode, azimuth window, mount height, PTP / speed source).
-2. Launch arguments for the demo (`loop:=true`, node parameters as launch args) — item 7 below.
-3. Data-path alignment and a headless demo path — item 8.
-4. `scripts/dry_run.sh` asserting the `doubleT_obstacle` detection, p95 latency and no dropped
-   frames — item 9; run it on a team machine with the dataset.
+2. **Run `scripts/dry_run.sh` on a team machine with the dataset** — the script exists
+   (item 9) but has never been executed against Docker or a bag; this is also the first
+   end-to-end run of the ROS node on a full bag.
+3. Launch arguments for the demo (`loop:=true`, node parameters as launch args) — item 7 below.
+4. ~~Data-path alignment and a headless demo path~~ — done, item 8.
 5. Dataset-free ROS smoke test in CI (synthetic bag through the node) — item 10.
 6. Intermediate submission tag and cover message once P2's demo recording exists — item 12.
 7. Sprint 2: bench timing on an i7-class machine, ego-speed parameter for accumulation,
@@ -37,19 +39,46 @@ inside the image.
 8. Sprint 3: keep `ALGORITHM.md` and `SUBMISSION.md` current, clean-machine dry run on 28.09,
    captain slides — items 17–19.
 
+### Findings from the first run on real data (20.09)
+
+The dataset was unpacked and the offline pipeline run on `doubleT_obstacle` and `roundT_doubleT`.
+Docker and ROS 2 were not available, so the node itself is still unexecuted.
+
+1. **The demo would have shown nothing.** `doubleT_obstacle` publishes
+   `/sensing/lidar/hesai128/pointcloud` with `frame_id = lidar_livox`, not `/lidar_points` /
+   `hesai_lidar`. The node's default topic, the RViz layout's topic **and** the RViz fixed frame
+   were all wrong for the one bag with a real obstacle. Fixed in the node (candidate topic list
+   + auto-discovery of PointCloud2 topics) and the launch file; **the RViz layout is P2's and
+   still hard-codes both** — `Topic: /lidar_points`, `Fixed Frame: hesai_lidar`.
+2. **The azimuth window is not constant across bags.** `doubleT_obstacle` is a 360° recording
+   (921 600 slots, ~347 k valid points); `roundT_doubleT` is the 120° window (~190 k). The
+   open question in `SENSOR.md` §4 is already answered by the data, and the wrong way: the
+   control bag may use either. Latency on the 347 k-point frames is still fine (mean 52 ms).
+3. **The v0 numbers reproduce exactly.** `doubleT_obstacle`, every 5th frame: 41 frames, 12
+   alarm frames, 39 warning frames, 55.6 → 56.4 m, mean 52 ms — matching `EXPERIMENTS.md`.
+4. **The false-alarm numbers do not, and are optimistic.** `EXPERIMENTS.md` reports
+   `roundT_doubleT` as "26 frames (every 5th), 1 gauge alarm". 252 frames / 26 = every **10th**.
+   Re-run at every 5th: **8 alarm frames, 3 false-alarm events**. Subsampling interacts with
+   `tracking.confirm_hits = 3` — at every 10th a candidate must persist a full second to be
+   confirmed, at 10 Hz only 0.3 s — so **every recall and false-alarm number measured on
+   subsampled frames understates the false-alarm rate the node will show at 10 Hz**. For P3/P4:
+   the evaluation has to run at full rate, or state the subsampling next to every number.
+5. **FP events vs FP frames, measured.** Those 8 alarm frames are 3 confirmed track ids
+   (5, 2 and 1 frames). The headline number in `EVALUATION.md` §2 should be events, as planned.
+
 ### Left for the team (captain tracks, does not do)
 
 | owner | item | why it matters |
 |---|---|---|
 | P3 | wall / bed curvature fusion at stations and transitions; GOST gauge polygon; ego-motion + 5–10-frame accumulation; reflectivity > 100 as a sign filter (`SENSOR.md` §3.3) | 49 of 67 false-alarm frames are in the platform-and-switch bag; 150–200 m needs accumulation |
 | P4 | `tests/test_core.py` skips the whole module without open3d (a local `pytest -q` says "1 skipped" and looks green); per-km / per-event false-alarm rates in `metrics.py`; label tool format; extended-dataset labelling | `EVALUATION.md` §2 depends on it |
-| P2 | demo video, RViz / Foxglove layouts, dashboard reading the new `node` stats, slides 7–11 | spec §5 video and §4 demo are pending |
+| P2 | **RViz layout hard-codes `Topic: /lidar_points` and `Fixed Frame: hesai_lidar`, so the demo bag shows an empty screen** (finding 1); demo video, Foxglove layout, dashboard reading the new `node` stats, slides 7–11 | spec §5 video and §4 demo are pending |
 
 ## 1. Ownership map — who edits what
 
 | Path | Owner | Notes for the captain |
 |---|---|---|
-| `docker/`, `docker-compose.yml`, `scripts/build.sh`, `scripts/run_demo.sh`, `scripts/run_offline.sh`, `scripts/sync_params.sh` | **P1** | free to change |
+| `docker/`, `docker-compose.yml`, `scripts/build.sh`, `scripts/run_demo.sh`, `scripts/run_headless.sh`, `scripts/run_offline.sh`, `scripts/sync_params.sh`, `scripts/dry_run.sh`, `scripts/check_dry_run.py` | **P1** | free to change |
 | `ros2_ws/src/resense_ros/` (node, launch, `package.xml`, `setup.py`, `config/`) | **P1** | free to change; `rviz/resense.rviz` is P2's |
 | `README.md`, `docs/ARCHITECTURE.md`, `docs/ALGORITHM.md`, `docs/EVALUATION.md`, `docs/SUBMISSION.md`, `docs/SENSOR.md`, `docs/PLAN.md`, `docs/CAPTAIN.md` | **P1** | free to change; README screenshots come from P2; P3 reviews ALGORITHM.md |
 | `.github/workflows/ci.yml` | P4 (pytest job) / **P1** (docker job) | edit only the docker job, tell P4 in the PR |
@@ -124,15 +153,24 @@ to touch. None changes a frozen contract. Items marked **done** were implemented
 7. **Launch arguments for the demo.** Add `loop:=true` (`ros2 bag play --loop`) for a
    continuous demo, expose `publish_markers`, `publish_corridor_cloud`, `marker_x_max`,
    `output_frame`, `stats_period` as launch arguments. File: `launch/detector.launch.py`, README.
-8. **Align the data path story.** `docker-compose.yml` defaults `RESENSE_DATA` to `./data`,
-   README and scripts assume `/data/for_hackathon`. Pick one, document `RESENSE_DATA`, and add a
-   headless demo path that needs no X11: detector + player + `ros2 topic echo
-   /resense/nearest_distance`. Files: `docker-compose.yml`, `scripts/run_demo.sh`, README.
-9. **A dry-run script that asserts a detection.** `scripts/dry_run.sh`: build from scratch, run
-   the container, play `doubleT_obstacle` (the only bag with a known obstacle), subscribe to
-   `/resense/obstacle_detected` and exit non-zero if it never goes true within the bag length
-   or if p95 latency exceeds 100 ms. This is the 28.09 acceptance test (procedure written in
-   `docs/SUBMISSION.md`). Needs the dataset, so it runs on a team machine, not in GitHub CI.
+8. **Align the data path story.** — **done.** One rule: the directory holding the bags is
+   mounted at `/data`. The scripts take it from the bag path they are given, `docker compose`
+   takes it from `$RESENSE_DATA` (now defaulting to `/data/for_hackathon`, with `$RESENSE_BAG`
+   choosing the bag), documented in README "Where the data lives". Headless path added:
+   `scripts/run_headless.sh` (one container: detector + playback + distance readout, no X11),
+   `RVIZ=0 ./scripts/run_demo.sh` delegates to it, and a compose `echo` service does the same
+   across three terminals.
+9. **A dry-run script that asserts a detection.** — **written, not yet run on data.**
+   `scripts/dry_run.sh` builds `--no-cache`, starts the node, **waits for `/resense/status` to be
+   advertised before playing** (the launch file's `bag:=` argument races node startup and loses
+   the first frames — found while writing this), captures the status stream and hands it to
+   `scripts/check_dry_run.py`, which asserts alarm frames, the distance window, p95 latency and
+   dropped frames and exits non-zero otherwise. `--expect-clear` turns it into a false-alarm
+   check on an empty bag. The checker is verified against synthetic captures; **the container
+   path has never been executed — no Docker and no dataset in the sandbox it was written in.**
+   Running it on a team machine is the next captain action, and it is also the first end-to-end
+   run of the ROS node on a full bag (all timing numbers so far are the offline CLI on
+   subsampled cached frames). Needs the dataset, so it stays out of GitHub CI.
 10. **A dataset-free ROS smoke test for CI.** A tiny bag (5–10 frames) written with `rosbags`
     from the synthetic tunnel (P4's generator, called, not modified) plus a launch test in
     `ros2_ws/src/resense_ros/test/` that plays it through the node and checks that `/resense/status`

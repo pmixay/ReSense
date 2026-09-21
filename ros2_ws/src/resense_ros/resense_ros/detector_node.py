@@ -1,7 +1,11 @@
 """ROS 2 node: PointCloud2 in -> obstacle flag, distance, Detection3DArray, RViz markers out.
 
 Topics (defaults, all configurable via parameters):
-  sub  /lidar_points                    sensor_msgs/PointCloud2
+  sub  /lidar_points, /sensing/lidar/hesai128/pointcloud, or whatever PointCloud2 topic the bag
+       carries -- ``input_topic`` is a comma-separated candidate list and, with ``auto_discover``,
+       the node also picks up any other PointCloud2 topic that appears on the graph. The
+       organizers' bags do not agree on the name (roundT_doubleT publishes /lidar_points,
+       doubleT_obstacle /sensing/lidar/hesai128/pointcloud) and the control bag is unseen.
   pub  /resense/obstacle_detected       std_msgs/Bool      (confirmed object inside the gauge)
   pub  /resense/warning                 std_msgs/Bool      (confirmed object in the advisory zone)
   pub  /resense/nearest_distance        std_msgs/Float32   (m along the track, -1 if none)
@@ -42,7 +46,9 @@ from resense.pointcloud import pointcloud2_to_structured, structured_to_compact
 class DetectorNode(Node):
     def __init__(self) -> None:
         super().__init__("resense_detector")
-        self.declare_parameter("input_topic", "/lidar_points")
+        self.declare_parameter("input_topic", "/lidar_points,/sensing/lidar/hesai128/pointcloud")
+        self.declare_parameter("auto_discover", True)    # also take PointCloud2 topics found on the graph
+        self.declare_parameter("discover_period", 2.0)   # s, how often to look while no frame has arrived
         self.declare_parameter("config_file", "")
         self.declare_parameter("publish_markers", True)
         self.declare_parameter("publish_corridor_cloud", True)
@@ -56,10 +62,14 @@ class DetectorNode(Node):
         self.R_vs = axis_matrix(self.cfg.sensor)            # sensor -> vehicle
         self.R_sv = self.R_vs.T                              # vehicle -> sensor (for markers)
 
-        qos = QoSProfile(depth=5, reliability=QoSReliabilityPolicy.BEST_EFFORT,
-                         history=QoSHistoryPolicy.KEEP_LAST)
+        self.qos = QoSProfile(depth=5, reliability=QoSReliabilityPolicy.BEST_EFFORT,
+                              history=QoSHistoryPolicy.KEEP_LAST)
         topic = self.get_parameter("input_topic").get_parameter_value().string_value
-        self.sub = self.create_subscription(PointCloud2, topic, self.on_cloud, qos)
+        self.subs = {}                 # topic -> Subscription
+        self.active_topic = None       # the topic the first frame arrived on; the others are dropped
+        for t in (x.strip() for x in topic.split(",")):
+            if t:
+                self.subscribe(t)
         self.pub_flag = self.create_publisher(Bool, "/resense/obstacle_detected", 10)
         self.pub_warn = self.create_publisher(Bool, "/resense/warning", 10)
         self.pub_dist = self.create_publisher(Float32, "/resense/nearest_distance", 10)
@@ -83,7 +93,35 @@ class DetectorNode(Node):
         self.t_stats = time.perf_counter()
         period = self.get_parameter("stats_period").get_parameter_value().double_value
         self.stats_timer = self.create_timer(max(period, 0.1), self.on_stats)
-        self.get_logger().info(f"ReSense detector listening on {topic}")
+        self.discover_timer = None
+        if self.get_parameter("auto_discover").get_parameter_value().bool_value:
+            dp = self.get_parameter("discover_period").get_parameter_value().double_value
+            self.discover_timer = self.create_timer(max(dp, 0.5), self.on_discover)
+        self.get_logger().info("ReSense detector listening on " + ", ".join(self.subs)
+                               + (" (+ auto-discovery)" if self.discover_timer else ""))
+
+    # ------------------------------------------------------------------
+    def subscribe(self, topic: str) -> None:
+        """Subscribe to one more candidate input topic (idempotent)."""
+        if topic in self.subs:
+            return
+        self.subs[topic] = self.create_subscription(
+            PointCloud2, topic, lambda msg, t=topic: self.on_cloud(msg, t), self.qos)
+
+    def on_discover(self) -> None:
+        """While nothing has arrived, subscribe to every PointCloud2 topic on the graph.
+
+        The organizers' bags disagree on the topic name and the control bag is unseen, so the
+        node finds its input instead of requiring the jury to pass the right one. Stops at the
+        first frame."""
+        if self.active_topic is not None:
+            self.discover_timer.cancel()
+            return
+        for name, types in self.get_topic_names_and_types():
+            if ("sensor_msgs/msg/PointCloud2" in types and not name.startswith("/resense/")
+                    and name not in self.subs):
+                self.get_logger().info("auto-discovered PointCloud2 topic " + name)
+                self.subscribe(name)
 
     # ------------------------------------------------------------------
     def _account_frame(self, stamp: float) -> None:
@@ -119,7 +157,17 @@ class DetectorNode(Node):
                 "input_period_ms": round(self.input_period * 1e3, 1)}
 
     # ------------------------------------------------------------------
-    def on_cloud(self, msg: PointCloud2) -> None:
+    def on_cloud(self, msg: PointCloud2, topic: str = "") -> None:
+        if self.active_topic is None and topic:
+            self.active_topic = topic
+            self.get_logger().info(
+                f"input: {topic} (frame_id={msg.header.frame_id}, {msg.width * msg.height} points)")
+            for other, sub in list(self.subs.items()):      # one input wins; stop listening to the rest
+                if other != topic:
+                    self.destroy_subscription(sub)
+                    del self.subs[other]
+        elif topic and topic != self.active_topic:
+            return
         t0 = time.perf_counter()
         arr = structured_to_compact(pointcloud2_to_structured(msg))
         xyz_s = np.stack([arr["x"], arr["y"], arr["z"]], axis=1).astype(np.float32)
