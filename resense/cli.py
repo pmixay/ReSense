@@ -1,4 +1,4 @@
-"""Command line tools: ``resense info | run | inject | eval | bench``."""
+"""Command line tools: ``resense info | run | inject | eval | summarize | bench``."""
 from __future__ import annotations
 
 import argparse
@@ -131,6 +131,57 @@ def cmd_eval(args):
     print(json.dumps(out, indent=1))
 
 
+def _iter_jsonl(path: str, unparsed: list):
+    """Yield the status dicts of a ``resense run --out`` file or of a
+    ``ros2 topic echo /resense/status --field data`` capture (``---`` separators ignored);
+    lines that are not a status JSON are appended to ``unparsed``."""
+    with open(path, encoding="utf-8") as fh:
+        for line in fh:
+            line = line.strip()
+            if not line or line == "---":
+                continue
+            try:
+                d = json.loads(line)
+            except ValueError:
+                unparsed.append(line)
+                continue
+            if not isinstance(d, dict) or "obstacle" not in d:
+                unparsed.append(line)
+                continue
+            yield d
+
+
+def cmd_summarize(args):
+    """Headline numbers of a JSONL written by ``resense run --out`` (or a status capture):
+    frames, alarm frames and events, advisory frames, alarm distances, latency, bag time,
+    events per hour / km, and the subsampling caveat."""
+    from resense.metrics import Evaluation, format_summary, gt_key, gt_objects, load_gt
+    cfg = _cfg(args)
+    gt = load_gt(args.gt) if args.gt else None
+    ev = Evaluation(confirm_hits=cfg.tracking.confirm_hits, frame_dt=cfg.tracking.frame_dt)
+    n_occluded = 0
+    unparsed = []
+    for d in _iter_jsonl(args.results, unparsed):
+        rows = []
+        if gt is not None:
+            key = gt_key(d["frame"]) if d.get("frame") is not None else None
+            if key not in gt and args.labelled_only:
+                continue
+            rows = gt.get(key, []) if key is not None else []
+        n_occluded += sum(1 for r in rows if r.get("n_points", 1) == 0)
+        ev.add_frame(d, gt_objects(rows), speed_mps=args.speed_mps)
+    out = ev.summary()
+    out["occluded_gt_skipped"] = n_occluded
+    out["unparsed_lines"] = len(unparsed)
+    if args.json:
+        print(json.dumps(out, indent=1))
+    else:
+        print(format_summary(out))
+        if unparsed:
+            print(f"({len(unparsed)} unparsed lines skipped)")
+    return out
+
+
 def cmd_bench(args):
     cfg = _cfg(args)
     det = Detector(cfg)
@@ -187,12 +238,22 @@ def main(argv=None):
     sp.add_argument("--reset-each", action="store_true")
     sp.set_defaults(func=cmd_eval)
 
+    sp = sub.add_parser("summarize", help="headline numbers of a `run --out` JSONL (alarm events, per hour/km, latency)")
+    sp.add_argument("results", help="JSONL from `resense run --out` or a /resense/status capture")
+    sp.add_argument("--speed-mps", type=float, default=None, help="constant train speed (m/s) for events per km; "
+                    "a per-frame ego_speed_mps key in the JSON is used otherwise")
+    sp.add_argument("--gt", default=None, help="gt.json with labels keyed by 5-digit bag frame index (docs/DATASET.md)")
+    sp.add_argument("--labelled-only", action="store_true", help="with --gt: count only frames that have a gt.json entry")
+    sp.add_argument("--config", default=None, help="YAML config (for tracking.confirm_hits / frame_dt in the caveat)")
+    sp.add_argument("--json", action="store_true", help="print the full summary as JSON")
+    sp.set_defaults(func=cmd_summarize)
+
     sp = sub.add_parser("bench", help="timing per stage")
     add_input(sp)
     sp.set_defaults(func=cmd_bench)
 
     args = p.parse_args(argv)
-    args.func(args)
+    return args.func(args)
 
 
 if __name__ == "__main__":
