@@ -63,6 +63,14 @@ class TrackConfig:
     axis_valid_margin: float = 15.0                  # m beyond the last observed boundary bin the axis is trusted
     axis_valid_straight_bonus: float = 50.0          # extra trusted range when the tunnel is straight (|curv| < 1e-4)
     floor_valid_margin: float = 60.0                 # m beyond the fitted bed range the height reference is trusted
+    # --- verification of the extrapolated bed beyond its fitted range (second height anchor) ---
+    floor_verify_enabled: bool = True                # confirm the extrapolated bed with the base of the side structures
+    floor_verify_band: Tuple[float, float] = (1.6, 3.5)  # m, |dy| band of walls / benches / ducts (outside the advisory corridor)
+    floor_verify_bin: float = 5.0                    # m, along-track bin of the side-base profile
+    floor_verify_window: float = 30.0                # m, window whose median deviation must stay within the tolerance
+    floor_verify_tolerance: float = 0.5              # m, allowed deviation of the far side base from its near-range height
+    floor_verify_min_points: int = 5                 # side points per bin for the bin to count
+    floor_verify_max_range: float = 250.0            # m, how far the verification is attempted
 
 
 @dataclass
@@ -117,6 +125,28 @@ class ClusterConfig:
     gauge_min_points: int = 3      # voxels inside the strict gauge to classify as 'gauge'
     overhead_min_height: float = 2.4   # clusters entirely above this (m over rail head) are advisory only
     visibility_ratio: float = 0.15 # cluster is plausible if n >= ratio * expected points
+    # retro-reflective infrastructure (signs, markers, reflectors): intensity is reflectivity %, > 100 = retro
+    retro_intensity: float = 100.0     # intensity from which a return counts as retro-reflective (0 = rule off)
+    retro_min_fraction: float = 0.5    # fraction of retro returns for a cluster to count as a reflector
+    retro_max_height: float = 1.2      # m, taller retro clusters (a person in a hi-vis vest, a train) are kept
+    retro_max_width: float = 0.8       # m, narrower retro clusters (plate, sign, marker, post) are demoted to advisory
+
+
+@dataclass
+class AccumulationConfig:
+    """Ego-motion compensated accumulation of far corridor candidates over several frames."""
+    enabled: bool = True
+    n_frames: int = 5              # frames merged (the current one included)
+    min_range: float = 40.0        # m, only candidates beyond this range are accumulated (near objects stay single-frame)
+    min_points_scale: float = 0.3  # per accumulated frame the voxel-count thresholds grow by this fraction (x1.5 at 5 frames)
+    estimate_speed: bool = True    # run the ego-speed estimator (also when a speed is given, for diagnostics)
+    speed_min_confidence: float = 0.5  # below this the estimate is not used: source 'none', no accumulation
+    speed_max: float = 30.0        # m/s, search range of the estimator (metro line speed limit is ~22 m/s)
+    speed_max_step: float = 3.0    # m/s, larger frame-to-frame jumps of the estimate halve its confidence
+    speed_warmup_frames: int = 3   # frames the estimator observes before it reports (static-pattern background)
+    smear_max_length: float = 2.0  # m, an accumulated cluster longer than this along X falls back to its current-frame points
+    max_points_per_frame: int = 20000  # cap on stored far candidates per frame (strided subsample above)
+    stamp_dt_range: Tuple[float, float] = (0.02, 0.5)  # s, stamp differences outside are replaced by tracking.frame_dt
 
 
 @dataclass
@@ -139,13 +169,14 @@ class DetectorConfig:
     gauge: GaugeConfig = field(default_factory=GaugeConfig)
     cluster: ClusterConfig = field(default_factory=ClusterConfig)
     tracking: TrackingConfig = field(default_factory=TrackingConfig)
+    accumulation: AccumulationConfig = field(default_factory=AccumulationConfig)
     voxel: float = 0.0             # optional voxel downsampling of corridor candidates (0 = off)
 
     # ---- (de)serialisation -------------------------------------------------
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "DetectorConfig":
         cfg = cls()
-        for section in ("sensor", "track", "gauge", "cluster", "tracking"):
+        for section in ("sensor", "track", "gauge", "cluster", "tracking", "accumulation"):
             if section in d and d[section]:
                 obj = getattr(cfg, section)
                 for k, v in d[section].items():

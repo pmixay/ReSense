@@ -28,6 +28,7 @@ class Cluster:
     score: float                 # 0..1 single-frame plausibility
     zone: str = "warning"        # 'gauge' (inside the strict gauge) or 'warning'
     n_gauge: int = 0             # voxels inside the strict gauge
+    retro: bool = False          # demoted to advisory as a retro-reflective sign / marker
 
     @property
     def size(self) -> np.ndarray:
@@ -68,11 +69,22 @@ def cluster_labels(xyz: np.ndarray, cfg: ClusterConfig) -> np.ndarray:
 
 def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.ndarray,
                   in_gauge: np.ndarray, cfg: ClusterConfig,
-                  frame_idx: Optional[np.ndarray] = None, axis_valid: float = 1e9) -> List[Cluster]:
+                  frame_idx: Optional[np.ndarray] = None, axis_valid: float = 1e9,
+                  min_points_factor: float = 1.0, factor_range: float = 0.0,
+                  smear_max_length: float = 0.0) -> List[Cluster]:
     """Voxelise candidates, cluster the voxels, describe and filter the clusters.
 
     ``xyz``/``intensity``/``dy``/``h``/``in_gauge`` are the corridor candidates;
-    ``frame_idx`` maps candidates back to frame indices (identity if None).
+    ``frame_idx`` maps candidates back to frame indices (identity if None; -1 marks points
+    merged from earlier frames by the accumulation, they are left out of ``points_idx``).
+    ``min_points_factor`` scales the point-count thresholds (``min_points``,
+    ``min_points_far``, ``gauge_min_points``) for clusters beyond ``factor_range`` when
+    several frames were merged, so that accumulated noise does not pass a single-frame bar.
+    ``smear_max_length`` (> 0 with accumulation) is the smear guard: a merged cluster longer
+    than this along X is a static object shifted by a wrong ego speed (or a moving one), so
+    it is re-described from its current-frame points only, with single-frame thresholds - a
+    wrong speed then degrades to single-frame behaviour instead of losing the object to the
+    ``max_extent`` rule.
     """
     out: List[Cluster] = []
     if xyz.shape[0] == 0:
@@ -90,10 +102,24 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
         pts = xyz[idx]
         bmin, bmax = pts.min(axis=0), pts.max(axis=0)
         size = bmax - bmin
+        factor = min_points_factor
+        if smear_max_length > 0 and size[0] > smear_max_length and (frame_idx[idx] < 0).any():
+            idx = idx[frame_idx[idx] >= 0]
+            if idx.size == 0:
+                continue
+            n_vox = int(np.unique(inv[idx]).size)
+            pts = xyz[idx]
+            bmin, bmax = pts.min(axis=0), pts.max(axis=0)
+            size = bmax - bmin
+            factor = 1.0
         if size.max() > cfg.max_extent or size[2] < cfg.min_height:
             continue
         dist = float(pts[:, 0].min())
         min_pts = cfg.min_points if dist < cfg.far_range else cfg.min_points_far
+        gauge_min = cfg.gauge_min_points
+        if factor > 1.0 and dist >= factor_range:
+            min_pts = int(np.ceil(min_pts * factor))
+            gauge_min = int(np.ceil(gauge_min * factor))
         if n_vox < min_pts:
             continue
         # linear infrastructure along the track: rails, pipes, cables, duct edges
@@ -115,23 +141,34 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
                 and abs(lateral) > cfg.linear_min_lateral):
             continue
         n_gauge = int(np.unique(inv[idx][in_gauge[idx]]).size)
-        zone = "gauge" if n_gauge >= cfg.gauge_min_points else "warning"
+        zone = "gauge" if n_gauge >= gauge_min else "warning"
         h_min = float(h[idx].min())
         # beyond the range where the axis is supported by observed tunnel boundaries, or
         # hanging entirely in the top zone (cables, lamps): advisory only
         if dist > axis_valid or h_min > cfg.overhead_min_height:
             zone = "warning"
+        mean_int = float(intensity[idx].mean()) if intensity is not None else 0.0
+        # retro-reflective plate / sign / marker: intensity is reflectivity %, > 100 only from
+        # retro-reflective material; small and low -> infrastructure, advisory only. A person
+        # in a hi-vis vest is taller, a train ahead is larger: both keep their zone.
+        retro = False
+        if cfg.retro_intensity > 0 and intensity is not None and idx.size:
+            frac = float((intensity[idx] >= cfg.retro_intensity).mean())
+            if (frac >= cfg.retro_min_fraction and size[2] < cfg.retro_max_height
+                    and size[1] < cfg.retro_max_width):
+                retro = True
+                zone = "warning"
         width = max(float(size[1]), 0.15)
         height = max(float(size[2]), 0.15)
         n_exp = float(expected_points(np.linalg.norm(pts.mean(axis=0)), width, height))
         vis = n_vox / max(n_exp, 1.0)
         score = float(np.clip(vis / cfg.visibility_ratio, 0.0, 1.0)) if n_exp > 1.0 else 1.0
+        fi = frame_idx[idx]
         out.append(Cluster(
-            points_idx=frame_idx[idx], n=n_vox, n_raw=int(idx.size), centroid=pts.mean(axis=0),
+            points_idx=fi[fi >= 0], n=n_vox, n_raw=int(idx.size), centroid=pts.mean(axis=0),
             bbox_min=bmin, bbox_max=bmax, distance=dist, lateral=lateral,
-            height_min=h_min, height_max=h_max,
-            intensity=float(intensity[idx].mean()) if intensity is not None else 0.0,
-            n_expected=n_exp, score=score, zone=zone, n_gauge=n_gauge,
+            height_min=h_min, height_max=h_max, intensity=mean_int,
+            n_expected=n_exp, score=score, zone=zone, n_gauge=n_gauge, retro=retro,
         ))
     out.sort(key=lambda c: c.distance)
     return out

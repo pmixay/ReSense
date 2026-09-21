@@ -53,6 +53,16 @@ resense:
     axis_valid_margin: 15.0
     axis_valid_straight_bonus: 50.0
     floor_valid_margin: 60.0
+    # verification of the extrapolated bed by the base of the side structures (walls, benches, ducts)
+    floor_verify_enabled: true
+    floor_verify_band:      # m, |dy| band of the side structures, outside the advisory corridor
+    - 1.6
+    - 3.5
+    floor_verify_bin: 5.0          # m, along-track bin of the side-base profile
+    floor_verify_window: 30.0      # m, window whose median deviation must stay within the tolerance
+    floor_verify_tolerance: 0.5    # m, allowed deviation of the far side base from its near-range height
+    floor_verify_min_points: 5     # side points per bin for the bin to count
+    floor_verify_max_range: 250.0  # m, how far the verification is attempted
   gauge:
     profile:
     - - -0.95
@@ -101,6 +111,11 @@ resense:
     gauge_min_points: 3
     overhead_min_height: 2.4
     visibility_ratio: 0.15
+    # retro-reflective plates / signs / markers (intensity is reflectivity %, > 100 = retro material)
+    retro_intensity: 100.0     # intensity from which a return counts as retro-reflective (0 = rule off)
+    retro_min_fraction: 0.5    # fraction of retro returns for a cluster to count as a reflector
+    retro_max_height: 1.2      # m, taller retro clusters (person in a hi-vis vest, train) keep their zone
+    retro_max_width: 0.8       # m, narrower retro clusters (plate, sign, marker, post) -> advisory
   tracking:
     gate_base: 1.5
     gate_per_m: 0.02
@@ -111,4 +126,19 @@ resense:
     conf_gain: 0.35
     conf_decay: 0.25
     conf_threshold: 0.6
+  accumulation:
+    enabled: true                  # ego-motion compensated merge of the far corridor candidates
+    n_frames: 5                    # frames merged (the current one included)
+    min_range: 40.0                # m, only candidates beyond this range are accumulated
+    min_points_scale: 0.3          # per merged frame the voxel-count thresholds grow by this fraction (x1.5 at 5 frames)
+    estimate_speed: true           # run the ego-speed estimator (also when a speed is given, for diagnostics)
+    speed_min_confidence: 0.5      # below this the estimate is not used: source 'none', no accumulation
+    speed_max: 30.0                # m/s, search range of the estimator
+    speed_max_step: 3.0            # m/s, larger frame-to-frame jumps of the estimate halve its confidence
+    speed_warmup_frames: 3         # frames the estimator observes before it reports (static-pattern background)
+    smear_max_length: 2.0          # m, an accumulated cluster longer than this along X falls back to its current-frame points
+    max_points_per_frame: 20000    # cap on stored far candidates per frame (strided subsample above)
+    stamp_dt_range:                # s, stamp differences outside this are replaced by tracking.frame_dt
+    - 0.02
+    - 0.5
   voxel: 0.0

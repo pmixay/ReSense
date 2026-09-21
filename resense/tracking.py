@@ -51,7 +51,10 @@ class Tracker:
         c = self.cfg
         return c.gate_base + c.gate_per_m * max(distance, 0.0)
 
-    def update(self, clusters: List[Cluster]) -> List[Track]:
+    def update(self, clusters: List[Cluster], ego_shift: float = 0.0) -> List[Track]:
+        """Associate ``clusters`` with the tracks. ``ego_shift`` (m) is the distance the
+        vehicle travelled since the previous frame when it is known: a track seen once has no
+        velocity yet and is then predicted as a static object approaching by that much."""
         c = self.cfg
         step = c.ego_speed_max * c.frame_dt
         n_t, n_c = len(self.tracks), len(clusters)
@@ -59,7 +62,8 @@ class Tracker:
         matched_c = np.zeros(n_c, dtype=bool)
         if n_t and n_c:
             # greedy nearest-neighbour association on predicted positions
-            pred = np.stack([t.centroid + t.velocity for t in self.tracks])
+            static = np.array([-float(ego_shift), 0.0, 0.0])
+            pred = np.stack([t.centroid + (t.velocity if t.hits > 1 else static) for t in self.tracks])
             cen = np.stack([cl.centroid for cl in clusters])
             d = np.linalg.norm(pred[:, None, :] - cen[None, :, :], axis=2)
             # along-track motion towards the vehicle is allowed up to ``step`` extra

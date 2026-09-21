@@ -31,6 +31,7 @@ Evolution during the day (same 272 cached frames):
 | v0.1 | rail-based self-calibration, rail-relative gauge, voxelised range-normalised DBSCAN, zones | 92 | 32–75 |
 | v0.2 | wall-based yaw/curvature, robust two-stage floor fit | 76 | 38–75 |
 | v0.3 | nearer-boundary rule, gauge 1.4 m, hardware/linear/wall filters, corridor validity range, overhead demotion | **67** (49 of them in the platform/switch bag) | 38–76 |
+| v0.4 (synthetic, 21.09) | ego-speed estimate + 5-frame ego-motion-compensated accumulation beyond 40 m, verified bed extrapolation (side-structure base) as second height anchor, retro-reflector rule, smear guard | **not measured** — no dataset in the sandbox this was built in; must be re-run on the cached frames before merge (§2b) | 30 mean / 31 p95 on the synthetic frame (base commit: 25 / 27, same machine) |
 
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 
@@ -56,6 +57,82 @@ consistent with the analytic estimate in DATASET.md. **Conclusion: single-frame 
 Synthetic-tunnel unit tests (`tests/`): box 0.6 m detected at 30 and 80 m, person at 150 m, no
 alarm on the clear tunnel, object 2.3 m off-axis not alarmed, occlusion of the background verified.
 
+## 2b. Multi-frame accumulation on synthetic sequences (v0.4, 21.09)
+
+**Every number in this section is synthetic** (`resense.synthetic.synthetic_tunnel_frame`, a
+featureless round tunnel with benches at 1.95 m; `tests/test_algorithm.py`), measured on the
+4-core sandbox, not on the organizers' bags (not available where this was built) and not on
+the i7-9700E. The approach of a train at 22 m/s is emulated by injecting the object at 200,
+197.8, 195.6, … m (2.2 m per 10 Hz frame) into the *same* background frame, so the background
+does not move — only the object does. The injector's default dropout (120 → 260 m) gives a
+person 4–7 returns at 200 m, more than the 3–5 at 150–190 m and 0–1 beyond 200 m measured on
+real frames in §2; the sequences therefore use `dropout_start=60, dropout_full=200`, which
+reproduces that budget (person: 2–5 returns at 185–200 m, mean 3.0; box 0.5 m: 4–6 at 100–130 m).
+
+**What limited v0.3 at range was not the point count but the corridor validity.** On the
+synthetic tunnel the bed fit ends at 107.5 m and the height reference was trusted only 60 m
+further (167.5 m), so a person seen with 5–7 points at 200 m was "advisory" until 167 m and
+alarmed at 162.6 m. v0.4 verifies the extrapolated bed against the base of the side structures
+(ALGORITHM.md §3.1): on the synthetic tunnel the verification reaches 195 m, and the corridor
+is trusted to 195 m (walls-based `axis_valid` = 221 m).
+
+| object, sequence (given ego speed 22 m/s) | first confirmed alarm, v0.3 (base commit) | v0.4, accumulation off | v0.4, accumulation on (5 frames) |
+|---|---|---|---|
+| person 0.4×0.5×1.7 m from 200 m, 6 seeds | 162.6 m (corridor validity) | 167–189 m, median 178 m, frames 5–15 | **189–191 m in 6/6 seeds**, frames 4–5, distance error ≤ 0.15 m |
+| box 0.5 m from 140 m, 4 seeds | 114.6 m | 89–116 m (one seed collapses to 89 m) | **113.6–115.8 m in 4/4 seeds** |
+
+Reading: with the real-frame budget the single-frame detector needs three consecutive frames
+with ≥ 3 returns and a height spread, which happens late and unpredictably; the 5-frame union
+gives 6–12 voxels every frame from ~193 m on, so the alarm is repeatable at the corridor
+validity limit. The 0.5 m box does not gain range: beyond ~118 m it is sampled by a single ring
+(the ring pattern moves only ≈2 cm per frame on a distant object, so accumulation densifies the
+same voxels but cannot widen the sampled extent within 0.5 s) and falls to the `min_height`
+0.08 m rule; the gain is repeatability. The Sprint 2 targets (person ≥ 150 m, box ≥ 100 m)
+are met on the synthetic tunnel; nothing is claimed for real bags yet.
+
+**Ego-speed estimator (no odometry).** Cue: 1-D along-track texture profile of the walls
+above the walkway, background-subtracted, cross-correlated between frames (ALGORITHM.md §3.4).
+
+| scene | estimator output | consequence |
+|---|---|---|
+| textured tunnel (posts on both walls every 3–9 m), whole scene moving 2.2 m/frame, person from 200 m, no speed given | 22.0 m/s, confidence 0.6–0.9, from the 4th frame (3-frame warm-up); one frame in 12 dropped to "unknown" before the background subtraction was added, none after | person confirmed at 184.6 m with 5 frames merged |
+| same posts, train stopped | "unknown" (confidence ≤ 0.26) | no accumulation, single-frame behaviour |
+| featureless synthetic tunnel, fresh noise per frame, stopped | "unknown" | no accumulation, no alarm |
+| featureless tunnel, emulated approach (background identical, only the object moves) | "unknown" | single-frame fallback: person confirmed at 189 m (seed 0), no smearing |
+
+The featureless case is the honest one: a moving and a stopped train produce the same data
+there, so the estimator must say "unknown" rather than a confident 0 m/s. The first version
+of the count profile did return 0 m/s with confidence 0.9 on the featureless tunnel — the
+ring/column grid leaves a pattern on the curved lining that is fixed in the sensor frame —
+and the unshifted 5-frame union then stretched the approaching person to 8.8 m, beyond
+`max_extent`, and lost it for the rest of the sequence. Two guards were added: the temporal
+background of the profile (what does not move is discarded) and the smear guard in the
+clusterer (a merged cluster longer than 2 m along X is re-described from its current-frame
+points). With the guard, a *given* speed that is 8 m/s wrong (30 instead of 22) still confirms
+the person at 93–85 m with a distance bias of at most 1.7 m towards the vehicle.
+
+Whether the estimator finds ~22 m/s on the real bags is **not measured** — the sandbox had no
+dataset. The status JSON carries `ego_speed_estimate` / `ego_speed_confidence` on every frame
+even when a speed is given, so `resense run --out` on the moving bags is all that is needed
+(P1/P4: compare with the frame-to-frame drift of the wall texture by eye, or with the speed
+the organizers may provide).
+
+**Retro-reflector rule** (ALGORITHM.md §3.3), single objects, 4 identical frames, synthetic:
+sign plate 0.05×0.6×0.8 m with reflectivity 220 at the corridor edge (40 m) → advisory; the
+same plate with reflectivity 60 → obstacle; person at 60 m with reflectivity 15 / 60 / 200 →
+obstacle; 1 m crate with reflectivity 220 → obstacle (wider than a sign); 0.5 m box with
+reflectivity 220 → advisory (a fully retro-reflective small cube is treated as a marker — a
+documented choice); the plank 2×0.25×0.3 m of the spec on the sleepers is invisible whatever
+its reflectivity (below the 35 cm hardware rule, §4 item 5), retro or not.
+
+**Timing on this machine (4-core sandbox, synthetic frame of 127 k points; the i7-9700E is
+faster):** base commit 25.4 ms mean / 27.3 ms p95; v0.4 with accumulation on 30.1 / 31.1 ms
+(ego-speed profile 3.0 ms, bed verification ≈1.5 ms inside `track`, accumulate 0.1 ms,
+cluster 1.9 ms). Stress frame with 32 objects in the corridor (730 corridor points, 5-frame
+union): 33.9 / 35.8 ms off → 34.4 / 36.4 ms on. On real frames the profile costs scale with
+the number of points at 4–25 m (denser than the synthetic tunnel); the union is bounded by
+`accumulation.max_points_per_frame` = 20 000 far candidates per frame.
+
 ## 3. Timing (4-core sandbox, Python)
 
 | stage | mean ms | notes |
@@ -78,8 +155,12 @@ alarm on the clear tunnel, object 2.3 m off-axis not alarmed, occlusion of the b
    demote beyond disagreement.
 3. **Height reference beyond ~80 m**: the bed is sparse/hidden (platforms, switches), the linear
    extrapolation drifts by up to 1–2 m at 120 m → phantom "overhead" obstacles and occluded
-   synthetic objects. Next: fit the rail/bed line with far wall-base points, or the tunnel
-   cross-section, as a second height anchor.
+   synthetic objects. v0.4: the extrapolation is *verified* against the base of the side
+   structures (walls, benches, ducts, seen to the end of the range) and the corridor is trusted
+   as far as the two agree within 0.5 m (`track.floor_verify_*`); it never shrinks the v0.3
+   range, so the false-alarm behaviour cannot get worse, and it does not yet *correct* the bed
+   (§5). Synthetic: 167.5 → 195 m; a hand-made 1500 m vertical curve starting at 120 m stops
+   the verification at 180 m (1.2 m error there).
 4. **Platform stop + switch bag** is where 49 of 67 residual FPs live. The advisory zone is
    inherently noisy near infrastructure (0.35 m outside the gauge).
 5. **Small objects**: anything below rail head + 12 cm inside the rails and low/narrow hardware
@@ -89,9 +170,26 @@ alarm on the clear tunnel, object 2.3 m off-axis not alarmed, occlusion of the b
 
 ## 5. Next experiments (owner in PLAN.md)
 
-- ego-motion from the bag (bed/wall texture ICP or the organizers' speed if provided) → 5–10-frame
-  accumulation → re-run §2 (target: person ≥ 150 m, box ≥ 100 m);
-- extended dataset with real obstacles → calibrate dropout/intensity in `inject`, real recall/FP;
+- **v0.4 on the cached real frames** (P3, first thing with the dataset): re-run §1 at every
+  frame (not subsampled, CAPTAIN.md finding 4) with `resense run --out`; the three regression
+  numbers of EVALUATION.md §3.6 plus `ego_speed_estimate` per frame on the moving bags; the
+  verification range `track.floor_verified` per bag (does it extend the corridor in the
+  straight bags and stop at the platform?); `n_accumulated` when the node passes a speed;
+- ego-speed estimator on real texture: if the profile cue is silent on a bag, try the
+  protrusion profile (minimum |dy| per bin instead of counts) and the bed profile with the ring
+  stripes removed; if it is confidently wrong, the smear guard keeps detections but the
+  accumulation gain is lost — then the organizers' speed / odometry is the way;
+- bed-trough centre vs wall axis (design, §4 item 2): the bed trough (20th-percentile Z
+  minimum across dy per 5 m bin, usable to ~60–100 m) gives a second lateral axis
+  `y_trough(X)`; where |y_trough − y_walls| > 0.4 m for two consecutive bins, `axis_valid` is
+  shrunk to that X (clusters beyond become advisory). Not implemented in v0.4 — no station /
+  transition frame exists in the synthetic tunnel to test the disagreement on;
+- second height anchor as a *correction*, not only a verification (§4 item 3): fit the
+  side-base line beyond the bed range and use `z_base(X) − offset_ref` as `z_floor(X)` where
+  the side base is continuous; needs the real platform / transition frames to see how the
+  offset jumps;
+- extended dataset with real obstacles → calibrate dropout/intensity in `inject` (the
+  sequence tests use `dropout_start=60, dropout_full=200` to match §2), real recall/FP;
 - FP taxonomy per scene type with the label tool (web/), report FP/km;
-- GOST 23961-80 gauge polygon; platform notch; overhead policy;
+- GOST 23961-80 gauge polygon from the drawings (ALGORITHM.md §3.2); platform notch; overhead policy;
 - timing on the i7-9700E bench; Numba for the binning stages if needed.
