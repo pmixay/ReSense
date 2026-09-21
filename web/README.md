@@ -127,6 +127,13 @@ Known limits:
 
 ## Video
 
+Made on 21.09 with v0.5 on the real bag `doubleT_obstacle` (every frame, offline):
+[`docs/video/doubleT_obstacle_offline.mp4`](../docs/video/doubleT_obstacle_offline.mp4) (renders → ffmpeg,
+1280×720, 10 fps, 20 s, 1.9 MB) and [`docs/video/dashboard_doubleT_obstacle.mp4`](../docs/video/dashboard_doubleT_obstacle.mp4)
+(the dashboard replaying `resense run --out` of the same bag, recorded with Playwright). The RViz
+recording of the jury chain (`docker build → run → bag play`) still needs a machine with Docker.
+
+
 Spec §5 asks for a short video of the algorithm at work. Two recipes below produce one from a
 run; **the real video on the organizers' bag is a human task (P2) on a machine with the dataset**
 — nothing in this section has been run on real data, the numbers are from the synthetic demo run.

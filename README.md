@@ -30,6 +30,9 @@ person confirmed at 189 m); the LiDAR-only speed estimator is off by default. Th
 chain (`docker build → run → bag play → result`) is verified in CI on a synthetic bag on every
 push. Numbers, hard cases and what did not work: [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md).
 
+![doubleT_obstacle frame 30: the person crossing the track is reported at 55.7 m (red box); the track axis (green) and the side structures (advisory, blue)](docs/img/doubleT_obstacle_0030_v05.png)
+*Real data, v0.5: `doubleT_obstacle` frame 30, the person on the track at 55.7 m. Videos: [offline renders of the whole bag](docs/video/doubleT_obstacle_offline.mp4) (20 s) and [the dashboard replaying the same run](docs/video/dashboard_doubleT_obstacle.mp4).*
+
 ## Repository layout
 
 | Path | What |
@@ -237,7 +240,7 @@ input queue dropped (estimated from gaps in the header stamps).
 | algorithm (problem, data, processing, decision, parameters, limitations) | [`docs/ALGORITHM.md`](docs/ALGORITHM.md) |
 | experiments (range, latency, FPS, false alarms, hard cases, evolution) | [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md), protocol in [`docs/EVALUATION.md`](docs/EVALUATION.md) |
 | input data format, sensor | [`docs/DATASET.md`](docs/DATASET.md), [`docs/SENSOR.md`](docs/SENSOR.md) (Hesai Pandar128 specs and what they imply) |
-| video | pending (P2), will be linked here |
+| video | [`docs/video/doubleT_obstacle_offline.mp4`](docs/video/doubleT_obstacle_offline.mp4) (top-down and side renders of every frame of the real bag, v0.5) and [`docs/video/dashboard_doubleT_obstacle.mp4`](docs/video/dashboard_doubleT_obstacle.mp4) (the web dashboard replaying the same run); recipe in [`web/README.md`](web/README.md); the RViz screen recording on the jury chain is still to be made on a machine with Docker |
 | submission status | [`docs/SUBMISSION.md`](docs/SUBMISSION.md) |
 
 ## Team
