@@ -8,6 +8,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.10" }
+      # open3d (the synthetic tunnel) links libEGL / libGL / libgomp / libusb, which the bare runner lacks
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq libegl1 libgl1 libgomp1 libusb-1.0-0
       - run: pip install -e ".[dev]"
       - run: pytest -q
   params-in-sync:
@@ -22,7 +24,8 @@ jobs:
       - uses: actions/checkout@v4
       - run: docker build -t resense:ci --build-arg WITH_TOOLS=1 -f docker/Dockerfile .
       - name: unit tests inside the image (with open3d, so the synthetic-tunnel suite really runs)
-        run: docker run --rm resense:ci python3 -m pytest -q /opt/resense/tests
+        # -w / so that "import resense" resolves to the installed package, not to the source tree in the cwd
+        run: docker run --rm -w / resense:ci python3 -m pytest -q /opt/resense/tests
       - name: ROS 2 package is importable and the launch file resolves
         run: docker run --rm resense:ci bash -lc "ros2 pkg executables resense_ros && ros2 launch resense_ros detector.launch.py --print >/dev/null"
       - name: ROS 2 smoke test — a synthetic bag through the node inside the image (no dataset needed)

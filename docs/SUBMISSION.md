@@ -14,7 +14,38 @@ Live status of every deliverable the organizers ask for (spec §5 and §7). Owne
 | 5 | first experiment results | [`EXPERIMENTS.md`](EXPERIMENTS.md) | P3 / P4 | done, v0.3 |
 
 Package to send: link to the repository at a tagged commit (`v0.1-intermediate`), plus the
-five rows above quoted in the cover message.
+five rows above quoted in the cover message. On the day: `git tag -a v0.1-intermediate -m
+"intermediate submission" && git push origin v0.1-intermediate`, then send the text below with
+the commit hash filled in (the intermediate deadline itself is question 6 in
+[`QUESTIONS.md`](QUESTIONS.md)).
+
+### Cover message (draft, Russian — the organizers' language)
+
+> Команда ReSense, кейс 05 («Обнаружение посторонних объектов в тоннеле метро по данным
+> 3D-лидара») — промежуточная сдача.
+> Репозиторий: https://github.com/pmixay/ReSense, тег `v0.1-intermediate` (коммит `<sha>`).
+>
+> 1. **Dockerfile** — `docker/Dockerfile`, сборка `./scripts/build.sh` (ROS 2 Humble, нода,
+>    RViz, foxglove_bridge; зависимости ставятся при сборке образа). CI на каждом коммите
+>    собирает образ, прогоняет тесты внутри него и сквозной прогон синтетического bag-файла
+>    через ноду.
+> 2. **Прототип** — пакет `resense` (Python: numpy / scipy / scikit-learn) и ROS 2-нода
+>    `resense_ros`. Запуск: `./scripts/run_demo.sh /data/for_hackathon/doubleT_obstacle` (RViz)
+>    или `./scripts/run_headless.sh …` (без X11); выход — флаг препятствия, расстояние,
+>    `vision_msgs/Detection3DArray`, маркеры RViz, JSON-статус.
+> 3. **Подход** (README, `docs/ALGORITHM.md`) — геометрическая модель «нормального тоннеля»:
+>    самокалибровка по рельсам, ось пути и кривизна по стенам / рядам колонн, коридор габарита,
+>    кластеризация с адаптацией к дальности, подтверждение по нескольким кадрам, накопление
+>    кадров с компенсацией движения для 150+ м. Без обучения на размеченных объектах —
+>    обобщается на новые записи.
+> 4. **Демонстрация** — человек, переходящий путь в `doubleT_obstacle`, обнаруживается на
+>    55–57 м (`docs/img/`, видео: `<ссылка>`); `scripts/dry_run.sh` воспроизводит это как
+>    автоматическую проверку.
+> 5. **Эксперименты** — `docs/EXPERIMENTS.md`: дальность на синтетических препятствиях,
+>    внесённых в реальные кадры трассировкой лучей; задержка и FPS; ложные срабатывания по типам
+>    сцен (платформы, стрелки, гермозатворы) и что с ними сделано.
+>
+> Вопросы к организаторам отправлены отдельно (`docs/QUESTIONS.md`).
 
 ## Final submission (spec §7.2 and §5)
 

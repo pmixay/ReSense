@@ -32,10 +32,15 @@ COPY resense ./resense
 COPY configs ./configs
 # Exact versions so that the jury builds the stack we measured on (numpy stays 1.x: ROS 2 Humble
 # python bindings are not built against numpy 2). The package itself is installed without
-# dependency resolution on top of them, and not in editable mode: jammy's pip 22.0.2 with the
-# system setuptools 59.6 has no PEP 660 build_editable hook.
-RUN pip3 install "numpy==1.26.4" "scipy==1.13.1" "scikit-learn==1.5.2" "pyyaml==6.0.2" \
-    && pip3 install --no-deps .
+# dependency resolution on top of them. pip is upgraded first: jammy's pip 22.0.2 builds a
+# PEP 621 (pyproject-only) project into an empty "UNKNOWN-0.0.0" wheel, so the node could not
+# import resense at all (found by the CI smoke test, 21.09). The last line proves the install
+# from a directory that is NOT the source tree, so a broken install fails the build here and
+# not in front of the jury.
+RUN pip3 install --upgrade "pip>=24" \
+    && pip3 install "numpy==1.26.4" "scipy==1.13.1" "scikit-learn==1.5.2" "pyyaml==6.0.2" \
+    && pip3 install --no-deps . \
+    && cd / && python3 -c "import resense, resense.detector; print('resense', resense.__version__, resense.__file__)"
 
 # optional offline / research tooling (bag reading without ROS, plots, synthetic injection, tests)
 # scripts/ carries the dataset-free ROS smoke test (make_smoke_bag.py + smoke_test.sh) and the

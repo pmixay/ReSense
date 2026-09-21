@@ -9,6 +9,7 @@ streams zip → zip → zstd → tar and writes only the bags you ask for.
     python scripts/unpack_dataset.py Датасет.zip --list
     python scripts/unpack_dataset.py Датасет.zip --out /data                       # all six bags
     python scripts/unpack_dataset.py Датасет.zip --out /data --only doubleT_obstacle,roundT_doubleT
+    python scripts/unpack_dataset.py Датасет.zip --out /tmp/meta --metadata-only   # just the metadata.yaml files
 
 Needs the ``zstandard`` package (installed with ``pip install -e ".[dev]"``). Also accepts the
 inner ``датасет.zip`` or the bare ``for_hackathon.zst`` as input.
@@ -48,6 +49,8 @@ def main() -> int:
     p.add_argument("--out", default="/data", help="directory that will contain for_hackathon/ (default /data)")
     p.add_argument("--only", default="", help="comma-separated bag names to extract (default: all)")
     p.add_argument("--list", action="store_true", help="only list the archive members")
+    p.add_argument("--metadata-only", action="store_true",
+                   help="extract only the metadata.yaml of each bag (topic, frame count, duration)")
     a = p.parse_args()
     try:
         import zstandard
@@ -68,6 +71,8 @@ def main() -> int:
                 print(f"{member.size:>14,d}  {member.name}")
                 continue
             if only and bag not in only:
+                continue
+            if a.metadata_only and not member.name.endswith("metadata.yaml"):
                 continue
             if member.isdir() or member.isfile():
                 tar.extract(member, a.out)

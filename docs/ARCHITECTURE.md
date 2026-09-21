@@ -26,6 +26,8 @@ ROS 2 bag ──/lidar_points (PointCloud2, 10 Hz, ~190k pts)──▶ resense_r
         /resense/warning (Bool)             /resense/detections (vision_msgs/Detection3DArray)
         /resense/status (String JSON)       /resense/markers (MarkerArray)  /resense/corridor_points
         /resense/latency_ms (Float32)       /resense/fps (Float32)
+        /tf_static: resense_lidar → <input frame_id> (identity, once per frame id)
+        in: ego speed from ego_speed_mps / speed_topic (Float32) / odom_topic (Odometry), optional
                                                                   │
                                               RViz2 / Foxglove / web dashboard (web/)
 ```
@@ -59,6 +61,19 @@ ROS 2 bag ──/lidar_points (PointCloud2, 10 Hz, ~190k pts)──▶ resense_r
   `stats_period` seconds. The input subscription is best-effort with a queue of 5, so if a frame
   takes longer than the sensor period the following frames are dropped rather than queued: the
   node always works on the freshest data and the drop count makes overload visible.
+* Ego speed for multi-frame accumulation: the node passes `Detector.process(frame, ego_speed=v)`
+  the value of the `ego_speed_mps` parameter, else the latest `speed_topic` / `odom_topic`
+  message younger than `speed_timeout`, else `None` (the detector estimates it itself); the
+  status JSON reports `node.ego_speed_mps` and `node.ego_speed_source`.
+* One fixed frame for every bag: the organizers' recordings carry different `frame_id`s
+  (`hesai_lidar`, `lidar_livox`), so the node broadcasts a static identity transform
+  `resense_lidar → <input frame_id>` when the first frame arrives and the RViz / Foxglove layouts
+  use `resense_lidar` as their fixed frame.
+* Verification without the dataset: `scripts/make_smoke_bag.py` writes a 40-frame synthetic bag in
+  the organizers' exact layout (clear tunnel, then a person at 60 m), `scripts/smoke_test.sh`
+  plays it through the node inside the Docker image and `scripts/check_dry_run.py` asserts the
+  status stream; the CI docker job runs this on every push. The same checker scores the real
+  dry run (`scripts/dry_run.sh`) on `doubleT_obstacle`.
 * `resense inject` writes `*.npz` (xyz, intensity, per-point labels) + `gt.json`;
   `resense eval` consumes them and prints recall by range, FP rates, latency.
 
