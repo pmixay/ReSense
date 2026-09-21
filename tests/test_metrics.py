@@ -91,10 +91,63 @@ def test_matched_track_is_not_a_false_alarm_event():
     assert s["recall"] == 1.0
     assert s["recall_by_range"] == {"50-100": 1.0}
     assert s["recall_by_class"] == {"box0.5": 1.0} and s["per_class_counts"] == {"box0.5": [2, 2]}
+    assert s["per_class_bin_counts"] == {"box0.5": {"50-100": [2, 2]}}
     assert s["first_detection_distance"] == {"box_a": 50.0}
     assert s["fp_detections"] == 2           # id 4 once, id 3 on the empty frame
     assert s["fp_events"] == 1 and s["alarm_events"] == 2   # only id 4 is an event: id 3 was matched earlier
     assert s["fp_frames"] == 1 and s["empty_frames"] == 1
+
+
+def test_distance_error_first_alarm_and_speed_sources():
+    """Additive summary keys: errors of matched detections, the first alarm frame, the
+    ego_speed_source counts and the mean number of merged frames."""
+    from resense.metrics import gt_row_speed
+    gt = [GTObstacle(distance=50.0, lateral=0.2, size=(0.5, 0.5, 1.7), label="p", kind="person")]
+    ev = Evaluation()
+    ev.add_frame(status(frame=3, stamp=0.0, ego_speed_source="none", n_accumulated=1), [])
+    ev.add_frame(status(frame=4, stamp=0.1, dets=[det(1, 50.4, 0.0)], ego_speed_source="given", n_accumulated=2), gt)
+    ev.add_frame(status(frame=5, stamp=0.2, dets=[det(1, 49.8, 0.5)], ego_speed_source="given", n_accumulated=3), gt)
+    s = ev.summary()
+    assert s["distance_error_mean_abs"] == pytest.approx(0.3) and s["distance_error_max_abs"] == pytest.approx(0.4)
+    assert s["distance_error_bias"] == pytest.approx(0.1) and s["lateral_error_mean_abs"] == pytest.approx(0.25)
+    assert s["first_alarm_frame"] == 4
+    assert s["ego_speed_sources"] == {"given": 2, "none": 1} and s["n_accumulated_mean"] == pytest.approx(2.0)
+    assert FROZEN_SUMMARY_KEYS <= set(s)
+    # no match, no frame index, no ego keys (a v0.3 JSONL): the keys exist and are empty
+    ev = Evaluation()
+    ev.add_frame(status(dets=[det(2, 30.0)]), [])
+    s = ev.summary()
+    assert s["distance_error_mean_abs"] is None and s["first_alarm_frame"] == 0
+    assert s["ego_speed_sources"] == {} and s["n_accumulated_mean"] is None
+    # the speed a sequence row gives the detector: positive speed_mps only
+    assert gt_row_speed([{"speed_mps": 15.0}]) == 15.0
+    assert gt_row_speed([{"speed_mps": 0.0}]) is None and gt_row_speed([{"distance": 3.0}]) is None and gt_row_speed([]) is None
+
+
+def test_summarize_compare_two_files(tmp_path, capsys):
+    """`resense summarize --compare before.jsonl after.jsonl` prints the before/after table."""
+    before = tmp_path / "before.jsonl"
+    after = tmp_path / "after.jsonl"
+    with open(before, "w") as fh:
+        for d in _empty_bag_every_5th():
+            fh.write(json.dumps(d) + "\n")
+    with open(after, "w") as fh:
+        for d in _empty_bag_every_5th()[:8]:           # the alarm of frame 40 (track 9) is gone
+            d = dict(d, ego_speed_source="given", n_accumulated=5)
+            fh.write(json.dumps(d) + "\n")
+    outs = run_cli(["summarize", "--compare", str(before), str(after)])
+    text = capsys.readouterr().out
+    assert isinstance(outs, list) and [o["alarm_events"] for o in outs] == [2, 1]
+    assert [o["file"] for o in outs] == [str(before), str(after)]
+    assert "| metric | before.jsonl | after.jsonl | delta |" in text
+    assert "| alarm frames | 4 | 3 | -1 |" in text and "| alarm events | 2 | 1 | -1 |" in text
+    assert "| frames | 10 | 8 | -2 |" in text and "| first alarm frame | 10 | 10 | +0 |" in text
+    assert "| alarm distance max (m) | 80.0 | 28.0 | -52.0 |" in text
+    assert "| frames merged (mean) | n/a | 5.00 |  |" in text and "CAVEAT" in text
+    outs = run_cli(["summarize", str(before), str(after), "--json"])
+    assert json.loads(capsys.readouterr().out)[1]["alarm_frames"] == 3 and len(outs) == 2
+    with pytest.raises(SystemExit):
+        run_cli(["summarize"])
 
 
 def test_frame_stride_detection():

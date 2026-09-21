@@ -51,8 +51,9 @@ def cmd_run(args):
         from resense.viz import render_frame
     n = 0
     t_start = time.perf_counter()
+    ego_speed = getattr(args, "ego_speed", None)
     for i, frame in _frames(args, cfg):
-        res = det.process(frame)
+        res = det.process(frame, ego_speed=ego_speed)
         d = res.to_dict()
         d["frame"] = i
         d["frame_id"] = frame.frame_id
@@ -176,7 +177,7 @@ def cmd_eval(args):
       (docs/DATASET.md "Label format"). Frames absent from ``gt.json`` count as empty unless
       ``--labelled-only``; all frames are still processed so the tracker state is realistic.
     """
-    from resense.metrics import Evaluation, format_summary, gt_meta, gt_objects, load_gt
+    from resense.metrics import Evaluation, format_summary, gt_meta, gt_objects, gt_row_speed, load_gt
     cfg = _cfg(args)
     if args.dataset:
         gt_path = args.gt or os.path.join(args.dataset, "gt.json")
@@ -200,12 +201,19 @@ def cmd_eval(args):
     out_fh = open(args.out, "w", encoding="utf-8") if args.out else None
     n_occluded = 0
     n_processed = 0
+    const_speed = getattr(args, "ego_speed", None)
+    use_gt_speed = not getattr(args, "no_gt_speed", False)
     for key, frame in source:
         if args.reset_each:
             det.reset()
+        # the speed the detector is given, as the ROS node gives it: --ego-speed V, else the
+        # simulated train speed of an `inject --sequence` row (speed_mps > 0), else none
+        ego_speed = const_speed
+        if ego_speed is None and use_gt_speed:
+            ego_speed = gt_row_speed(gt.get(key, []))
         res = None
         for _ in range(repeat):
-            res = det.process(frame)
+            res = det.process(frame, ego_speed=ego_speed)
         d = res.to_dict()
         d["frame"] = int(key) if key.isdigit() else None
         d["frame_id"] = frame.frame_id
@@ -252,17 +260,14 @@ def _iter_jsonl(path: str, unparsed: list):
             yield d
 
 
-def cmd_summarize(args):
-    """Headline numbers of a JSONL written by ``resense run --out`` (or a status capture):
-    frames, alarm frames and events, advisory frames, alarm distances, latency, bag time,
-    events per hour / km, and the subsampling caveat."""
-    from resense.metrics import Evaluation, format_summary, gt_key, gt_objects, load_gt
-    cfg = _cfg(args)
-    gt = load_gt(args.gt) if args.gt else None
+def _summarize_file(path: str, args, cfg, gt) -> dict:
+    """``Evaluation.summary()`` of one JSONL file (plus ``occluded_gt_skipped``,
+    ``unparsed_lines`` and ``file``)."""
+    from resense.metrics import Evaluation, gt_key, gt_objects
     ev = Evaluation(confirm_hits=cfg.tracking.confirm_hits, frame_dt=cfg.tracking.frame_dt)
     n_occluded = 0
     unparsed = []
-    for d in _iter_jsonl(args.results, unparsed):
+    for d in _iter_jsonl(path, unparsed):
         rows = []
         if gt is not None:
             key = gt_key(d["frame"]) if d.get("frame") is not None else None
@@ -274,21 +279,46 @@ def cmd_summarize(args):
     out = ev.summary()
     out["occluded_gt_skipped"] = n_occluded
     out["unparsed_lines"] = len(unparsed)
-    if args.json:
-        print(json.dumps(out, indent=1))
-    else:
-        print(format_summary(out))
-        if unparsed:
-            print(f"({len(unparsed)} unparsed lines skipped)")
+    out["file"] = path
     return out
+
+
+def cmd_summarize(args):
+    """Headline numbers of a JSONL written by ``resense run --out`` (or a status capture):
+    frames, alarm frames and events, advisory frames, alarm distances, latency, bag time,
+    events per hour / km, and the subsampling caveat. With two or more files (positional or
+    ``--compare``) a before/after table is printed instead (one column per file, a delta
+    column for exactly two) and a list of summaries is returned."""
+    from resense.metrics import format_comparison, format_summary, load_gt
+    files = list(args.results or []) + list(args.compare or [])
+    if not files:
+        raise SystemExit("resense summarize: give at least one JSONL file (or --compare a.jsonl b.jsonl)")
+    cfg = _cfg(args)
+    gt = load_gt(args.gt) if args.gt else None
+    outs = [_summarize_file(f, args, cfg, gt) for f in files]
+    if len(outs) == 1:
+        out = outs[0]
+        if args.json:
+            print(json.dumps(out, indent=1))
+        else:
+            print(format_summary(out))
+            if out["unparsed_lines"]:
+                print(f"({out['unparsed_lines']} unparsed lines skipped)")
+        return out
+    if args.json:
+        print(json.dumps(outs, indent=1))
+    else:
+        print(format_comparison(outs))
+    return outs
 
 
 def cmd_bench(args):
     cfg = _cfg(args)
     det = Detector(cfg)
     times = []
+    ego_speed = getattr(args, "ego_speed", None)
     for i, frame in _frames(args, cfg):
-        res = det.process(frame)
+        res = det.process(frame, ego_speed=ego_speed)
         times.append(res.timing_ms)
     keys = times[0].keys()
     for k in keys:
@@ -322,6 +352,10 @@ def run_cli(argv=None):
     sp.add_argument("--render", help="directory for PNG renders")
     sp.add_argument("--x-max", type=float, default=150.0)
     sp.add_argument("--quiet", action="store_true")
+    sp.add_argument("--ego-speed", type=float, default=None,
+                    help="train speed in m/s given to the detector on every frame (ego_speed_source 'given', "
+                         "as the ROS node does with ego_speed_mps / odometry); default: none, the detector "
+                         "estimates it")
     sp.set_defaults(func=cmd_run)
 
     sp = sub.add_parser("inject", help="inject synthetic obstacles into empty frames")
@@ -353,10 +387,21 @@ def run_cli(argv=None):
     sp.add_argument("--speed-mps", type=float, default=None, help="constant train speed for events per km")
     sp.add_argument("--out", default=None, help="also write the per-frame results as JSONL (for summarize / renders)")
     sp.add_argument("--text", action="store_true", help="human-readable summary instead of JSON")
+    sp.add_argument("--ego-speed", type=float, default=None,
+                    help="train speed in m/s given to the detector on every frame (ego_speed_source 'given'); "
+                         "default: the speed_mps of `inject --sequence` rows, else none (estimated)")
+    sp.add_argument("--no-gt-speed", action="store_true",
+                    help="do not give the detector the speed_mps of `inject --sequence` rows (single-frame / "
+                         "estimated behaviour on sequences)")
     sp.set_defaults(func=cmd_eval)
 
-    sp = sub.add_parser("summarize", help="headline numbers of a `run --out` JSONL (alarm events, per hour/km, latency)")
-    sp.add_argument("results", help="JSONL from `resense run --out` or a /resense/status capture")
+    sp = sub.add_parser("summarize", help="headline numbers of a `run --out` JSONL (alarm events, per hour/km, latency); "
+                                          "two or more files give a before/after table")
+    sp.add_argument("results", nargs="*", help="JSONL from `resense run --out` or a /resense/status capture; "
+                                               "several files are compared side by side")
+    sp.add_argument("--compare", nargs="+", default=None, metavar="JSONL",
+                    help="more files to put next to the first one (before/after table: frames, alarm frames, "
+                         "events, advisory, first alarm frame, distance range, latency)")
     sp.add_argument("--speed-mps", type=float, default=None, help="constant train speed (m/s) for events per km; "
                     "a per-frame ego_speed_mps key in the JSON is used otherwise")
     sp.add_argument("--gt", default=None, help="gt.json with labels keyed by 5-digit bag frame index (docs/DATASET.md)")
@@ -367,6 +412,8 @@ def run_cli(argv=None):
 
     sp = sub.add_parser("bench", help="timing per stage")
     add_input(sp)
+    sp.add_argument("--ego-speed", type=float, default=None,
+                    help="train speed in m/s given to the detector (skips the estimator, enables accumulation)")
     sp.set_defaults(func=cmd_bench)
 
     args = p.parse_args(argv)

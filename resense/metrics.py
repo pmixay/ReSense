@@ -81,6 +81,17 @@ def gt_meta(path: str) -> dict:
     return meta if isinstance(meta, dict) else {}
 
 
+def gt_row_speed(rows: Sequence[dict]) -> Optional[float]:
+    """The simulated train speed (m/s) of an ``inject --sequence`` frame: the ``speed_mps``
+    of its rows when it is positive, else None (static injected frames write 0.0 and real
+    labels carry no speed, so the detector is given nothing for them)."""
+    for r in rows:
+        v = r.get("speed_mps")
+        if v is not None and float(v) > 0.0:
+            return float(v)
+    return None
+
+
 def gt_objects(rows: Sequence[dict], skip_occluded: bool = True) -> List[GTObstacle]:
     """Rows of one frame -> GTObstacle list; rows with ``n_points == 0`` (object fully
     occluded by real geometry) are dropped when ``skip_occluded`` (they count separately)."""
@@ -91,6 +102,11 @@ def match(det_distance: float, det_lateral: float, gt: GTObstacle,
           tol_base: float = 2.0, tol_rel: float = 0.03, lateral_tol: float = 1.0) -> bool:
     tol = max(tol_base, tol_rel * gt.distance) + 0.5 * max(gt.size[0], 0.0)
     return abs(det_distance - gt.distance) <= tol and abs(det_lateral - gt.lateral) <= lateral_tol
+
+
+def _bin_order(key: str) -> float:
+    """Sort key of a range-bin label (``"50-100"``, ``"300+"``)."""
+    return float(key.split("-")[0].rstrip("+"))
 
 
 def frame_stride(frame_indices: Sequence[int]) -> Optional[int]:
@@ -124,11 +140,18 @@ class Evaluation:
     matched_ids: Set[int] = field(default_factory=set)    # ... matched to a gt object at least once
     unmatched_ids: Set[int] = field(default_factory=set)  # ... unmatched in at least one frame
     per_class: Dict[str, List[int]] = field(default_factory=dict)   # class: [tp, total]
+    per_class_bin: Dict[str, Dict[str, List[int]]] = field(default_factory=dict)  # class: {"lo-hi": [tp, total]}
     stamps: List[float] = field(default_factory=list)
     frame_indices: List[Optional[int]] = field(default_factory=list)
     alarm_distances: List[float] = field(default_factory=list)
     distance_m: float = 0.0                # travelled distance integrated from speed x stamp gaps
     speed_known: bool = False
+    # --- additive (real labels, 21.09): errors of matched detections, accumulation bookkeeping ---
+    distance_errors: List[float] = field(default_factory=list)   # det - gt distance (m) of every match
+    lateral_errors: List[float] = field(default_factory=list)    # det - gt lateral (m) of every match
+    ego_speed_sources: Counter = field(default_factory=Counter)  # ego_speed_source value -> frames
+    n_accumulated: List[int] = field(default_factory=list)       # frames merged per result
+    first_alarm_frame: Optional[int] = None                      # frame index (or position) of the first alarm
 
     def add_frame(self, result_dict: dict, gts: Sequence[GTObstacle], use_candidates: bool = False,
                   speed_mps: Optional[float] = None, frame_index: Optional[int] = None) -> None:
@@ -159,6 +182,8 @@ class Evaluation:
             cls_key = g.kind or "obstacle"
             self.per_class.setdefault(cls_key, [0, 0])
             self.per_class[cls_key][1] += 1
+            self.per_class_bin.setdefault(cls_key, {}).setdefault(key, [0, 0])
+            self.per_class_bin[cls_key][key][1] += 1
             hit = False
             for i, d in enumerate(dets):
                 if not used[i] and match(d["distance"], d["lateral"], g):
@@ -166,11 +191,14 @@ class Evaluation:
                     hit = True
                     if "id" in d:
                         self.matched_ids.add(int(d["id"]))
+                    self.distance_errors.append(float(d["distance"]) - g.distance)
+                    self.lateral_errors.append(float(d["lateral"]) - g.lateral)
                     break
             if hit:
                 self.tp += 1
                 self.per_bin[key][0] += 1
                 self.per_class[cls_key][0] += 1
+                self.per_class_bin[cls_key][key][0] += 1
                 self.first_detection[g.label] = max(self.first_detection.get(g.label, 0.0), g.distance)
             else:
                 self.fn += 1
@@ -201,6 +229,13 @@ class Evaluation:
         if frame_index is None:
             frame_index = result_dict.get("frame")
         self.frame_indices.append(None if frame_index is None else int(frame_index))
+        if result_dict.get("obstacle") and self.first_alarm_frame is None:
+            self.first_alarm_frame = int(frame_index) if frame_index is not None else self.n_frames - 1
+        src = result_dict.get("ego_speed_source")
+        if src is not None:
+            self.ego_speed_sources[str(src)] += 1
+        if result_dict.get("n_accumulated") is not None:
+            self.n_accumulated.append(int(result_dict["n_accumulated"]))
 
     # --- derived quantities -------------------------------------------------------------
     @property
@@ -232,10 +267,12 @@ class Evaluation:
                 f"counts understate the full-rate values (run every frame for the headline numbers)")
 
     def summary(self) -> dict:
-        rec = {k: (v[0] / v[1] if v[1] else None) for k, v in sorted(self.per_bin.items(), key=lambda kv: float(kv[0].split("-")[0].rstrip("+")))}
+        rec = {k: (v[0] / v[1] if v[1] else None) for k, v in sorted(self.per_bin.items(), key=lambda kv: _bin_order(kv[0]))}
         hours = self.bag_time_s / 3600.0
         km = self.distance_m / 1000.0
         lat = np.asarray(self.latency_ms, dtype=float)
+        derr = np.asarray(self.distance_errors, dtype=float)
+        lerr = np.asarray(self.lateral_errors, dtype=float)
         return {
             # --- keys that existed before Sprint 2 (frozen) ---
             "frames": self.n_frames, "empty_frames": self.n_empty_frames,
@@ -264,7 +301,79 @@ class Evaluation:
             "fp_events_per_km": (self.fp_events / km) if (self.speed_known and km > 0) else None,
             "frame_stride": self.stride,
             "stride_caveat": self.stride_caveat(),
+            # --- additive (21.09): matched-detection errors, first alarm, accumulation bookkeeping ---
+            "distance_error_mean_abs": float(np.mean(np.abs(derr))) if derr.size else None,
+            "distance_error_max_abs": float(np.max(np.abs(derr))) if derr.size else None,
+            "distance_error_bias": float(np.mean(derr)) if derr.size else None,
+            "lateral_error_mean_abs": float(np.mean(np.abs(lerr))) if lerr.size else None,
+            "first_alarm_frame": self.first_alarm_frame,
+            "ego_speed_sources": dict(sorted(self.ego_speed_sources.items())),
+            "n_accumulated_mean": float(np.mean(self.n_accumulated)) if self.n_accumulated else None,
+            "per_class_bin_counts": {c: dict(sorted(bins.items(), key=lambda kv: _bin_order(kv[0])))
+                                     for c, bins in sorted(self.per_class_bin.items())},
         }
+
+
+COMPARISON_ROWS = [
+    # (label, key, format, delta?)
+    ("frames", "frames", "{:d}", True),
+    ("alarm frames", "alarm_frames", "{:d}", True),
+    ("alarm events", "alarm_events", "{:d}", True),
+    ("advisory frames", "advisory_frames", "{:d}", True),
+    ("first alarm frame", "first_alarm_frame", "{:d}", True),
+    ("alarm distance min (m)", "alarm_distance_min", "{:.1f}", True),
+    ("alarm distance max (m)", "alarm_distance_max", "{:.1f}", True),
+    ("latency mean (ms)", "latency_ms_mean", "{:.1f}", True),
+    ("latency p95 (ms)", "latency_ms_p95", "{:.1f}", True),
+    ("latency max (ms)", "latency_ms_max", "{:.1f}", True),
+    ("fp frames", "fp_frames", "{:d}", True),
+    ("fp events", "fp_events", "{:d}", True),
+    ("recall", "recall", "{:.1%}", False),
+    ("frames merged (mean)", "n_accumulated_mean", "{:.2f}", True),
+]
+
+
+def format_comparison(summaries: Sequence[dict], names: Optional[Sequence[str]] = None) -> str:
+    """Markdown before/after table of several ``Evaluation.summary()`` dicts (one column per
+    summary; with exactly two, a delta column). ``names`` default to the ``file`` key."""
+    import os
+    if names is None:
+        names = [os.path.basename(str(s.get("file", f"run {i + 1}"))) for i, s in enumerate(summaries)]
+    two = len(summaries) == 2
+
+    def cell(v, fmt):
+        if v is None:
+            return "n/a"
+        return fmt.format(int(v) if fmt == "{:d}" else v)
+
+    def delta(a, b, fmt):
+        if a is None or b is None:
+            return ""
+        d = b - a
+        if fmt == "{:d}":
+            return f"{int(d):+d}"
+        if fmt == "{:.1%}":
+            return f"{d:+.1%}"
+        return f"{d:+.1f}" if fmt == "{:.1f}" else f"{d:+.2f}"
+
+    head = "| metric | " + " | ".join(names) + (" | delta |" if two else " |")
+    sep = "|---|" + "---|" * len(names) + ("---|" if two else "")
+    lines = [head, sep]
+    for label, key, fmt, with_delta in COMPARISON_ROWS:
+        vals = [s.get(key) for s in summaries]
+        if all(v is None for v in vals):
+            continue
+        row = f"| {label} | " + " | ".join(cell(v, fmt) for v in vals)
+        if two:
+            row += " | " + (delta(vals[0], vals[1], fmt) if with_delta else "") + " |"
+        else:
+            row += " |"
+        lines.append(row)
+    caveats = [s.get("stride_caveat") for s in summaries if s.get("stride_caveat")]
+    if caveats:
+        lines.append("")
+        lines.append("CAVEAT: " + caveats[0])
+    return "\n".join(lines)
 
 
 def format_summary(s: dict) -> str:
@@ -283,13 +392,24 @@ def format_summary(s: dict) -> str:
         f"false alarms      : {s['fp_frames']} frames, {s['fp_events']} events, "
         f"{f(s['fp_events_per_hour'], '{:.1f}')} events/hour, {f(s['fp_events_per_km'], '{:.2f}')} events/km",
     ]
+    if s.get("first_alarm_frame") is not None:
+        lines.append(f"first alarm frame : {s['first_alarm_frame']}")
+    if s.get("ego_speed_sources"):
+        acc = s.get("n_accumulated_mean")
+        lines.append("ego speed source  : " + ", ".join(f"{k} {v}" for k, v in s["ego_speed_sources"].items()) +
+                     (f"; frames merged (mean) {acc:.2f}" if acc is not None else ""))
     if s.get("recall") is not None:
         lines.append(f"recall            : {s['recall']:.1%} ({s['per_bin_counts']})")
         if s.get("recall_by_class"):
             lines.append(f"recall by class   : " + ", ".join(f"{k} {f(v, '{:.0%}')}" for k, v in s["recall_by_class"].items()))
+        for cls, bins in (s.get("per_class_bin_counts") or {}).items():
+            lines.append(f"  {cls:15s}: " + ", ".join(f"{b} {v[0]}/{v[1]}" for b, v in bins.items()))
         if s.get("first_detection_distance"):
             fd = s["first_detection_distance"]
             lines.append("first detection   : " + ", ".join(f"{k} {v:.1f} m" for k, v in sorted(fd.items())))
+        if s.get("distance_error_mean_abs") is not None:
+            lines.append(f"distance error    : mean |err| {s['distance_error_mean_abs']:.2f} m, max {s['distance_error_max_abs']:.2f} m, "
+                         f"bias {s['distance_error_bias']:+.2f} m; lateral mean |err| {f(s.get('lateral_error_mean_abs'))} m")
     if s.get("stride_caveat"):
         lines.append(f"CAVEAT            : {s['stride_caveat']}")
     return "\n".join(lines)
