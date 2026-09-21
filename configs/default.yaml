@@ -53,6 +53,16 @@ resense:
     axis_valid_margin: 15.0
     axis_valid_straight_bonus: 50.0
     floor_valid_margin: 60.0
+    # verification of the extrapolated bed by the base of the side structures (walls, benches, ducts)
+    floor_verify_enabled: true
+    floor_verify_band:      # m, |dy| band of the side structures, outside the advisory corridor
+    - 1.6
+    - 3.5
+    floor_verify_bin: 5.0          # m, along-track bin of the side-base profile
+    floor_verify_window: 30.0      # m, window whose median deviation must stay within the tolerance
+    floor_verify_tolerance: 0.5    # m, allowed deviation of the far side base from its near-range height
+    floor_verify_min_points: 5     # side points per bin for the bin to count
+    floor_verify_max_range: 250.0  # m, how far the verification is attempted
   gauge:
     profile:
     - - -0.95

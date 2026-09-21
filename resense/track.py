@@ -31,6 +31,7 @@ class TrackModel:
     axis_valid: float = 1e9          # X up to which the axis is supported by observed boundaries
     n_bins: int = 0                  # number of floor bins used
     residual: float = 0.0            # rms residual of the floor fit (m)
+    floor_verified: float = 0.0      # X up to which the extrapolated bed is confirmed by the side-structure base
 
     def floor_z(self, X) -> np.ndarray:
         """Bed reference height at along-track coordinate X, linearly extrapolated beyond
@@ -60,6 +61,7 @@ class TrackModel:
             "axis_valid": round(float(min(self.axis_valid, 9999.0)), 1),
             "n_bins": int(self.n_bins),
             "residual": round(float(self.residual), 3),
+            "floor_verified": round(float(self.floor_verified), 1),
         }
 
 
@@ -209,6 +211,68 @@ def estimate_axis_from_walls(xyz: np.ndarray, model: TrackModel, cfg: TrackConfi
     return c1, c2, quality, x_valid
 
 
+def verify_floor_extrapolation(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig) -> float:
+    """X up to which the linearly extrapolated bed is confirmed by the base of the side
+    structures; ``model.floor_range[1]`` when nothing confirms it.
+
+    The bed itself vanishes beyond ~100 m (grazing incidence, platforms, switches) but the
+    walls, benches and cable ducts beside the track are seen to the end of the range, and
+    their foot runs at a constant height above the rail head. Per along-track bin the lowest
+    side point (minus half a ring spacing: the lowest sample of a vertical face lies up to one
+    ring above its foot) is compared with the extrapolated bed; the offset measured in the
+    near bins, where the bed fit is supported, is the reference. Walking outward, the
+    extrapolation stays verified while the median deviation over the last ``floor_verify_window``
+    metres of populated bins is within ``floor_verify_tolerance``. A vertical curve, a platform
+    or a transition breaks the agreement and the range stops there, so the check can only
+    extend the trusted corridor where the geometry supports it, never shrink it.
+    """
+    x_fit = float(model.floor_range[1])
+    if not cfg.floor_verify_enabled:
+        return x_fit
+    x0 = 10.0
+    X = xyz[:, 0]
+    sel = (X > x0) & (X < cfg.floor_verify_max_range)
+    if sel.sum() < 100:
+        return x_fit
+    P = xyz[sel]
+    Xs = P[:, 0].astype(np.float64)
+    ady = np.abs(P[:, 1] - model.center_y(Xs))
+    b0, b1 = cfg.floor_verify_band
+    side = (ady > b0) & (ady < b1)
+    if side.sum() < 50:
+        return x_fit
+    Xs = Xs[side]
+    hs = P[side, 2] - model.floor_z(Xs)          # height above the extrapolated bed
+    keep = hs > -1.0                              # drop returns from below the bed (noise, drains)
+    Xs, hs = Xs[keep], hs[keep]
+    edges = np.arange(x0, cfg.floor_verify_max_range + cfg.floor_verify_bin, cfg.floor_verify_bin)
+    nb = edges.size - 1
+    b = np.clip(np.digitize(Xs, edges) - 1, 0, nb - 1)
+    counts = np.bincount(b, minlength=nb)
+    base = np.full(nb, np.inf)
+    np.minimum.at(base, b, hs)
+    centres = 0.5 * (edges[:-1] + edges[1:])
+    valid = (counts >= cfg.floor_verify_min_points) & np.isfinite(base)
+    # half a vertical ring spacing (0.125 deg in the fine band) at that range
+    base = base - 0.5 * centres * np.radians(0.125)
+    near = valid & (centres > 15.0) & (centres < x_fit)
+    if near.sum() < 3:
+        return x_fit
+    ref = float(np.median(base[near]))
+    if float(np.median(np.abs(base[near] - ref))) > cfg.floor_verify_tolerance:
+        return x_fit                              # the side base is not a stable reference here
+    dev = base - ref
+    verified = x_fit
+    for i in np.flatnonzero(valid & (centres >= x_fit)):
+        win = valid & (centres > centres[i] - cfg.floor_verify_window) & (centres <= centres[i])
+        if win.sum() < 2:
+            break
+        if float(np.median(np.abs(dev[win]))) > cfg.floor_verify_tolerance:
+            break
+        verified = float(edges[i + 1])
+    return verified
+
+
 def estimate_rails(xyz: np.ndarray, floor: TrackModel, cfg: TrackConfig,
                    prior_center: float) -> Tuple[float, float, float]:
     """Find the two rail-head ridges in the lateral height profile of the near range.
@@ -298,4 +362,5 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
         model.yaw = np.radians(cfg.yaw_deg)
         model.curvature = cfg.curvature
         model.axis_valid = 1e9
+    model.floor_verified = verify_floor_extrapolation(xyz, model, cfg)
     return model

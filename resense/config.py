@@ -63,6 +63,14 @@ class TrackConfig:
     axis_valid_margin: float = 15.0                  # m beyond the last observed boundary bin the axis is trusted
     axis_valid_straight_bonus: float = 50.0          # extra trusted range when the tunnel is straight (|curv| < 1e-4)
     floor_valid_margin: float = 60.0                 # m beyond the fitted bed range the height reference is trusted
+    # --- verification of the extrapolated bed beyond its fitted range (second height anchor) ---
+    floor_verify_enabled: bool = True                # confirm the extrapolated bed with the base of the side structures
+    floor_verify_band: Tuple[float, float] = (1.6, 3.5)  # m, |dy| band of walls / benches / ducts (outside the advisory corridor)
+    floor_verify_bin: float = 5.0                    # m, along-track bin of the side-base profile
+    floor_verify_window: float = 30.0                # m, window whose median deviation must stay within the tolerance
+    floor_verify_tolerance: float = 0.5              # m, allowed deviation of the far side base from its near-range height
+    floor_verify_min_points: int = 5                 # side points per bin for the bin to count
+    floor_verify_max_range: float = 250.0            # m, how far the verification is attempted
 
 
 @dataclass
