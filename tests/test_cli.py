@@ -157,3 +157,49 @@ def test_inject_sequence_and_augment_roundtrip(synth_npy_dir, tmp_path):
     assert gt2["00000"][0]["in_gauge"] is False and abs(gt2["00000"][0]["lateral"]) > 2.0
     res2 = run_cli(["eval", str(out2)])
     assert res2["empty_frames"] == 1 and res2["recall"] is None and res2["fp_frames"] == 0
+
+
+# --- offline given-speed path: run / bench / eval --ego-speed, sequence speed from gt rows ------
+
+def test_run_and_bench_with_given_ego_speed(synth_npy_dir, tmp_path, capsys):
+    """`run --ego-speed V` hands V to Detector.process on every frame: the JSONL says so
+    (ego_speed_source 'given'); without the option the source is the estimator's."""
+    jsonl = tmp_path / "given.jsonl"
+    run_cli(["run", "--npy", str(synth_npy_dir), "--out", str(jsonl), "--quiet", "--ego-speed", "15"])
+    lines = [json.loads(l) for l in open(jsonl)]
+    assert [l["ego_speed_source"] for l in lines] == ["given", "given"]
+    assert [l["ego_speed"] for l in lines] == [15.0, 15.0]
+    jsonl2 = tmp_path / "none.jsonl"
+    run_cli(["run", "--npy", str(synth_npy_dir), "--out", str(jsonl2), "--quiet"])
+    assert all(json.loads(l)["ego_speed_source"] != "given" for l in open(jsonl2))
+    capsys.readouterr()
+    run_cli(["bench", "--npy", str(synth_npy_dir), "--ego-speed", "15"])
+    assert "total" in capsys.readouterr().out
+    s = run_cli(["summarize", str(jsonl)])
+    assert s["ego_speed_sources"] == {"given": 2} and s["n_accumulated_mean"] >= 1.0
+
+
+def test_eval_gives_sequence_speed_to_detector(synth_npy_dir, tmp_path):
+    """On an `inject --sequence` dataset `eval` gives the detector the rows' speed_mps (as the
+    ROS node gives ego_speed_mps), so accumulation runs with a given speed; `--no-gt-speed`
+    restores the estimated / single-frame path and `--ego-speed V` overrides both. A static
+    dataset (speed_mps 0) is unchanged: nothing is given."""
+    seq = tmp_path / "seq"
+    run_cli(["inject", "--npy", str(synth_npy_dir), "--limit", "1", "--out", str(seq), "--kinds", "box1.0",
+          "--distances", "60:60", "--negative-fraction", "0", "--sequence", "3", "--speed", "20", "--seed", "5"])
+    jsonl = tmp_path / "seq.jsonl"
+    out = run_cli(["eval", str(seq), "--out", str(jsonl)])
+    lines = [json.loads(l) for l in open(jsonl)]
+    assert [l["ego_speed_source"] for l in lines] == ["given"] * 3 and [l["ego_speed"] for l in lines] == [20.0] * 3
+    assert lines[-1]["n_accumulated"] >= 2                      # the far candidates of the previous steps were merged
+    assert out["ego_speed_sources"] == {"given": 3} and out["n_accumulated_mean"] > 1.0
+    out = run_cli(["eval", str(seq), "--out", str(jsonl), "--no-gt-speed"])
+    assert "given" not in out["ego_speed_sources"]
+    out = run_cli(["eval", str(seq), "--out", str(jsonl), "--ego-speed", "5"])
+    assert out["ego_speed_sources"] == {"given": 3}
+    assert all(json.loads(l)["ego_speed"] == 5.0 for l in open(jsonl))
+    static = tmp_path / "static"
+    run_cli(["inject", "--npy", str(synth_npy_dir), "--limit", "1", "--out", str(static), "--kinds", "box1.0",
+          "--distances", "60:60", "--negative-fraction", "0", "--seed", "5"])
+    out = run_cli(["eval", str(static), "--out", str(jsonl)])
+    assert "given" not in out["ego_speed_sources"] and out["repeat"] == 3

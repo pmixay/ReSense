@@ -1,0 +1,455 @@
+{
+ "_meta": {
+  "title": "Full-rate (every frame) offline runs of the six organizer bags: v0.3 vs the merged v0.4 head",
+  "date": "2026-09-21",
+  "author": "P4",
+  "how_to_read": "Every alarm on the five bags other than doubleT_obstacle is a false alarm; on doubleT_obstacle the person crossing the track at 55-57 m is the only true obstacle (labels/doubleT_obstacle.json, set R numbers in docs/EVALUATION.md). alarm_events = distinct confirmed gauge track ids. Timing fields are per-frame detector time (timing_ms.total, no decode / publish).",
+  "v0.3": {
+   "commit": "f2c57e5",
+   "source": "/data/results/v0.3/<bag>.jsonl on the 21.09 sandbox: `resense run --npy /data/cache/<bag> --out <bag>.jsonl` with the v0.3 defaults, made by the captain (08:21-08:24, load unknown)",
+   "summarized_with": "python -m resense.cli summarize /data/results/v0.3/<bag>.jsonl --json (this commit)"
+  },
+  "v0.4": {
+   "commit": "f4e311f",
+   "config": "configs/default.yaml of f4e311f (merged defaults, accumulation + estimator + bed verification + retro rule on), no speed given (estimator only, as `resense run` without --ego-speed)",
+   "config_sha256": "6878ec08b68fe8931b4d3ec1a197e0d0dd8161f2c61538e4340b0bf7e549e7e2",
+   "command": "python -m resense.cli run --npy /data/cache/<bag> --out out/v04_fullrate/<bag>.jsonl --quiet",
+   "summarized_with": "python -m resense.cli summarize out/v04_fullrate/<bag>.jsonl --json",
+   "run_log": [
+    "commit f4e311fa0ab4cbe9c1b066ecd6cb968a5f095b22  config 6878ec08b68fe893",
+    "=== doubleT_obstacle  start 11:39:03   11:39:03 up 56 min,  0 user,  load average: 4.17, 2.09, 1.41",
+    "processed 201 frames in 49.7 s (4.0 fps incl. I/O)",
+    "=== doubleT_obstacle  end   11:39:55   11:39:55 up 57 min,  0 user,  load average: 5.54, 2.79, 1.68",
+    "=== doubleT_platform  start 11:39:55   11:39:55 up 57 min,  0 user,  load average: 5.54, 2.79, 1.68",
+    "processed 345 frames in 62.8 s (5.5 fps incl. I/O)",
+    "=== doubleT_platform  end   11:40:59   11:40:59 up 58 min,  0 user,  load average: 6.14, 3.53, 2.02",
+    "=== roundT_doubleT  start 11:40:59   11:40:59 up 58 min,  0 user,  load average: 6.14, 3.53, 2.02",
+    "processed 252 frames in 44.0 s (5.7 fps incl. I/O)",
+    "=== roundT_doubleT  end   11:41:45   11:41:45 up 59 min,  0 user,  load average: 7.70, 4.29, 2.35",
+    "=== roundT_pressureGate_roundT  start 11:41:45   11:41:45 up 59 min,  0 user,  load average: 7.70, 4.29, 2.35",
+    "processed 268 frames in 42.2 s (6.3 fps incl. I/O)",
+    "=== roundT_pressureGate_roundT  end   11:42:29   11:42:29 up 59 min,  0 user,  load average: 7.24, 4.64, 2.56",
+    "=== roundT_squareT_pressureGate_squareT  start 11:42:29   11:42:29 up 59 min,  0 user,  load average: 7.24, 4.64, 2.56",
+    "processed 545 frames in 77.8 s (7.0 fps incl. I/O)",
+    "=== roundT_squareT_pressureGate_squareT  end   11:43:48   11:43:48 up  1:01,  0 user,  load average: 6.34, 4.93, 2.83",
+    "=== squareT_platform_squareT_switch  start 11:43:48   11:43:48 up  1:01,  0 user,  load average: 6.34, 4.93, 2.83",
+    "processed 877 frames in 136.2 s (6.4 fps incl. I/O)",
+    "=== squareT_platform_squareT_switch  end   11:46:06   11:46:06 up  1:03,  0 user,  load average: 4.53, 4.76, 3.06",
+    "DONE"
+   ]
+  },
+  "machine": "4-core sandbox shared with another agent (P3) and with P4's own label script during the v0.4 run: load average 4.2-7.7 while it ran (see run_log), so every latency field of the v0.4 column is inflated by contention and is NOT comparable with the v0.3 column (recorded at an unknown load) nor with the reviewer's back-to-back numbers in docs/EXPERIMENTS.md (v0.4 77-94 ms mean). Alarm / event / advisory counts do not depend on the load. The jury's i7-9700E has 8 faster cores.",
+  "reproduces": "the reviewer's full-rate v0.4 totals of 21.09 (docs/EXPERIMENTS.md section 2b): 1016 vs 1001 alarm frames and 187 vs 192 events on the five obstacle-free bags",
+  "timing_ab_roundT_doubleT": {
+   "what": "resense bench --npy /data/cache/roundT_doubleT (252 frames, per-stage detector time), three variants run back to back on the same machine, 12:11-12:13 on 21.09, load average 3.5 at the start and 5.5 at the end (another agent working): absolute values are inflated, only the differences between the three rows are meaningful; the i7-9700E has 8 faster cores",
+   "commit": "f4e311f detector code (P4 branch for the --ego-speed option)",
+   "columns": "[mean, p95, max] ms",
+   "rows": {
+    "v0.4 defaults (estimator on, no speed given)": {
+     "total": [
+      109.6,
+      160.5,
+      196.7
+     ],
+     "track": [
+      57.4,
+      90.1,
+      110.6
+     ],
+     "corridor": [
+      19.4,
+      34.9,
+      54.5
+     ],
+     "egomotion": [
+      9.9,
+      20.4,
+      28.3
+     ],
+     "accumulate": [
+      0.3,
+      0.7,
+      8.4
+     ],
+     "cluster": [
+      22.4,
+      75.8,
+      114.6
+     ],
+     "tracking": [
+      0.3,
+      0.4,
+      4.4
+     ]
+    },
+    "v0.3-equivalent config (accumulation, estimator, bed verification, retro off)": {
+     "total": [
+      83.1,
+      124.5,
+      169.3
+     ],
+     "track": [
+      49.4,
+      81.1,
+      98.2
+     ],
+     "corridor": [
+      20.3,
+      34.7,
+      51.0
+     ],
+     "egomotion": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "accumulate": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "cluster": [
+      13.1,
+      33.7,
+      63.6
+     ],
+     "tracking": [
+      0.3,
+      0.4,
+      6.4
+     ]
+    },
+    "v0.4 defaults with --ego-speed 17 (given: estimator skipped, 5-frame union on every frame)": {
+     "total": [
+      111.7,
+      166.3,
+      196.3
+     ],
+     "track": [
+      60.1,
+      92.8,
+      111.3
+     ],
+     "corridor": [
+      20.0,
+      35.5,
+      54.9
+     ],
+     "egomotion": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "accumulate": [
+      0.5,
+      0.8,
+      5.2
+     ],
+     "cluster": [
+      30.8,
+      72.1,
+      123.1
+     ],
+     "tracking": [
+      0.2,
+      0.4,
+      0.7
+     ]
+    }
+   },
+   "reading": "v0.4 costs +26 ms mean over v0.3 on this bag at this load: estimator ~10 ms, bed verification inside track ~8 ms, clustering of the merged cloud ~9 ms; with a given speed the estimator's 10 ms are saved but the union is merged on every frame (cluster +17 ms), so the total is the same. Consistent with the reviewer's +17-23 ms measured at a lower load (docs/EXPERIMENTS.md 2b)."
+  }
+ },
+ "totals_empty_bags": {
+  "v0.3": {
+   "empty_bags_alarm_frames": 1001,
+   "empty_bags_alarm_events": 192,
+   "empty_bags_advisory_frames": 1461,
+   "empty_bags_frames": 2287
+  },
+  "v0.4": {
+   "empty_bags_alarm_frames": 1016,
+   "empty_bags_alarm_events": 187,
+   "empty_bags_advisory_frames": 1450,
+   "empty_bags_frames": 2287
+  }
+ },
+ "bags": {
+  "doubleT_obstacle": {
+   "frames": 201,
+   "known_obstacle": true,
+   "v0.3": {
+    "frames": 201,
+    "alarm_frames": 76,
+    "alarm_events": 3,
+    "advisory_frames": 199,
+    "first_alarm_frame": 9,
+    "alarm_distance_min": 17.38,
+    "alarm_distance_max": 56.46,
+    "latency_ms_mean": 80.27457711442786,
+    "latency_ms_p95": 127.19,
+    "latency_ms_max": 153.57,
+    "bag_time_s": 20.0,
+    "fp_events_per_hour": 540.0,
+    "ego_speed_sources": {},
+    "n_accumulated_mean": null,
+    "frame_stride": 1
+   },
+   "v0.4": {
+    "frames": 201,
+    "alarm_frames": 80,
+    "alarm_events": 3,
+    "advisory_frames": 199,
+    "first_alarm_frame": 9,
+    "alarm_distance_min": 17.38,
+    "alarm_distance_max": 56.46,
+    "latency_ms_mean": 146.93532338308458,
+    "latency_ms_p95": 195.25,
+    "latency_ms_max": 255.84,
+    "bag_time_s": 20.0,
+    "fp_events_per_hour": 540.0,
+    "ego_speed_sources": {
+     "estimated": 198,
+     "none": 3
+    },
+    "n_accumulated_mean": 4.890547263681592,
+    "frame_stride": 1
+   },
+   "delta_v0.4_minus_v0.3": {
+    "alarm_frames": 4,
+    "alarm_events": 0,
+    "advisory_frames": 0
+   }
+  },
+  "doubleT_platform": {
+   "frames": 345,
+   "known_obstacle": false,
+   "v0.3": {
+    "frames": 345,
+    "alarm_frames": 178,
+    "alarm_events": 29,
+    "advisory_frames": 110,
+    "first_alarm_frame": 11,
+    "alarm_distance_min": 18.82,
+    "alarm_distance_max": 131.42,
+    "latency_ms_mean": 79.44657971014493,
+    "latency_ms_p95": 132.162,
+    "latency_ms_max": 172.88,
+    "bag_time_s": 34.4,
+    "fp_events_per_hour": 3034.883720930233,
+    "ego_speed_sources": {},
+    "n_accumulated_mean": null,
+    "frame_stride": 1
+   },
+   "v0.4": {
+    "frames": 345,
+    "alarm_frames": 178,
+    "alarm_events": 27,
+    "advisory_frames": 109,
+    "first_alarm_frame": 12,
+    "alarm_distance_min": 18.82,
+    "alarm_distance_max": 111.87,
+    "latency_ms_mean": 151.2471884057971,
+    "latency_ms_p95": 207.366,
+    "latency_ms_max": 274.54,
+    "bag_time_s": 34.4,
+    "fp_events_per_hour": 2825.5813953488373,
+    "ego_speed_sources": {
+     "estimated": 251,
+     "none": 94
+    },
+    "n_accumulated_mean": 3.753623188405797,
+    "frame_stride": 1
+   },
+   "delta_v0.4_minus_v0.3": {
+    "alarm_frames": 0,
+    "alarm_events": -2,
+    "advisory_frames": -1
+   }
+  },
+  "roundT_doubleT": {
+   "frames": 252,
+   "known_obstacle": false,
+   "v0.3": {
+    "frames": 252,
+    "alarm_frames": 126,
+    "alarm_events": 20,
+    "advisory_frames": 140,
+    "first_alarm_frame": 2,
+    "alarm_distance_min": 8.59,
+    "alarm_distance_max": 147.18,
+    "latency_ms_mean": 48.36551587301587,
+    "latency_ms_p95": 84.00099999999999,
+    "latency_ms_max": 138.22,
+    "bag_time_s": 25.1,
+    "fp_events_per_hour": 2868.5258964143427,
+    "ego_speed_sources": {},
+    "n_accumulated_mean": null,
+    "frame_stride": 1
+   },
+   "v0.4": {
+    "frames": 252,
+    "alarm_frames": 131,
+    "alarm_events": 21,
+    "advisory_frames": 131,
+    "first_alarm_frame": 2,
+    "alarm_distance_min": 8.59,
+    "alarm_distance_max": 149.0,
+    "latency_ms_mean": 130.83134920634922,
+    "latency_ms_p95": 202.35,
+    "latency_ms_max": 269.63,
+    "bag_time_s": 25.1,
+    "fp_events_per_hour": 3011.9521912350597,
+    "ego_speed_sources": {
+     "estimated": 145,
+     "none": 107
+    },
+    "n_accumulated_mean": 2.7142857142857144,
+    "frame_stride": 1
+   },
+   "delta_v0.4_minus_v0.3": {
+    "alarm_frames": 5,
+    "alarm_events": 1,
+    "advisory_frames": -9
+   }
+  },
+  "roundT_pressureGate_roundT": {
+   "frames": 268,
+   "known_obstacle": false,
+   "v0.3": {
+    "frames": 268,
+    "alarm_frames": 106,
+    "alarm_events": 19,
+    "advisory_frames": 135,
+    "first_alarm_frame": 23,
+    "alarm_distance_min": 3.0,
+    "alarm_distance_max": 77.3,
+    "latency_ms_mean": 55.68257462686567,
+    "latency_ms_p95": 89.43249999999996,
+    "latency_ms_max": 137.75,
+    "bag_time_s": 26.700000000000003,
+    "fp_events_per_hour": 2561.797752808988,
+    "ego_speed_sources": {},
+    "n_accumulated_mean": null,
+    "frame_stride": 1
+   },
+   "v0.4": {
+    "frames": 268,
+    "alarm_frames": 108,
+    "alarm_events": 21,
+    "advisory_frames": 136,
+    "first_alarm_frame": 23,
+    "alarm_distance_min": 3.0,
+    "alarm_distance_max": 76.88,
+    "latency_ms_mean": 119.39619402985075,
+    "latency_ms_p95": 160.9215,
+    "latency_ms_max": 209.21,
+    "bag_time_s": 26.700000000000003,
+    "fp_events_per_hour": 2831.460674157303,
+    "ego_speed_sources": {
+     "estimated": 146,
+     "none": 122
+    },
+    "n_accumulated_mean": 2.667910447761194,
+    "frame_stride": 1
+   },
+   "delta_v0.4_minus_v0.3": {
+    "alarm_frames": 2,
+    "alarm_events": 2,
+    "advisory_frames": 1
+   }
+  },
+  "roundT_squareT_pressureGate_squareT": {
+   "frames": 545,
+   "known_obstacle": false,
+   "v0.3": {
+    "frames": 545,
+    "alarm_frames": 87,
+    "alarm_events": 19,
+    "advisory_frames": 396,
+    "first_alarm_frame": 12,
+    "alarm_distance_min": 12.12,
+    "alarm_distance_max": 133.3,
+    "latency_ms_mean": 61.22838532110092,
+    "latency_ms_p95": 100.692,
+    "latency_ms_max": 154.86,
+    "bag_time_s": 54.400000000000006,
+    "fp_events_per_hour": 1257.3529411764705,
+    "ego_speed_sources": {},
+    "n_accumulated_mean": null,
+    "frame_stride": 1
+   },
+   "v0.4": {
+    "frames": 545,
+    "alarm_frames": 104,
+    "alarm_events": 22,
+    "advisory_frames": 396,
+    "first_alarm_frame": 9,
+    "alarm_distance_min": 12.12,
+    "alarm_distance_max": 142.19,
+    "latency_ms_mean": 106.85649541284404,
+    "latency_ms_p95": 157.386,
+    "latency_ms_max": 223.12,
+    "bag_time_s": 54.400000000000006,
+    "fp_events_per_hour": 1455.8823529411764,
+    "ego_speed_sources": {
+     "estimated": 346,
+     "none": 199
+    },
+    "n_accumulated_mean": 3.165137614678899,
+    "frame_stride": 1
+   },
+   "delta_v0.4_minus_v0.3": {
+    "alarm_frames": 17,
+    "alarm_events": 3,
+    "advisory_frames": 0
+   }
+  },
+  "squareT_platform_squareT_switch": {
+   "frames": 877,
+   "known_obstacle": false,
+   "v0.3": {
+    "frames": 877,
+    "alarm_frames": 504,
+    "alarm_events": 105,
+    "advisory_frames": 680,
+    "first_alarm_frame": 73,
+    "alarm_distance_min": 17.44,
+    "alarm_distance_max": 148.12,
+    "latency_ms_mean": 82.58230330672747,
+    "latency_ms_p95": 131.326,
+    "latency_ms_max": 236.5,
+    "bag_time_s": 87.60000000000001,
+    "fp_events_per_hour": 4315.068493150685,
+    "ego_speed_sources": {},
+    "n_accumulated_mean": null,
+    "frame_stride": 1
+   },
+   "v0.4": {
+    "frames": 877,
+    "alarm_frames": 495,
+    "alarm_events": 96,
+    "advisory_frames": 678,
+    "first_alarm_frame": 56,
+    "alarm_distance_min": 17.44,
+    "alarm_distance_max": 148.12,
+    "latency_ms_mean": 133.39112884834665,
+    "latency_ms_p95": 194.29999999999998,
+    "latency_ms_max": 284.17,
+    "bag_time_s": 87.60000000000001,
+    "fp_events_per_hour": 3945.2054794520545,
+    "ego_speed_sources": {
+     "estimated": 154,
+     "none": 723
+    },
+    "n_accumulated_mean": 1.573546180159635,
+    "frame_stride": 1
+   },
+   "delta_v0.4_minus_v0.3": {
+    "alarm_frames": -9,
+    "alarm_events": -9,
+    "advisory_frames": -2
+   }
+  }
+ }
+}
