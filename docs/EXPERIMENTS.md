@@ -6,7 +6,7 @@ organizer bags cached as `*.npy` (`scripts/cache_frames.py`, 2 488 frames), pure
 stated). Raw per-frame results of the v0.3 baseline are the captain's
 `/data/results/v0.3/<bag>.jsonl` (commit f2c57e5, 21.09); the v0.5 runs are
 `python -m resense.cli run --npy /data/cache/<bag> --out <bag>.jsonl --quiet` with
-`configs/default.yaml` of commit TBD_COMMIT (per-bag summaries in
+`configs/default.yaml` of commit 9b56bdf (merged as 82815e9) (per-bag summaries in
 [`experiments_v0.5_real_fullrate.json`](experiments_v0.5_real_fullrate.json)); the
 same-machine A/B configs are listed in §1b. Every number below is either **real** (bag named)
 or **synthetic** (said so). The day-1 numbers on subsampled frames that this file carried
@@ -21,19 +21,19 @@ there is false. `doubleT_obstacle` has one true obstacle, the person crossing th
 
 | bag | frames | v0.3 alarm frames / events / advisory | **v0.5 alarm frames / events / advisory** | v0.5 first alarm (frame) | v0.5 alarm distances | what alarms in v0.5 |
 |---|---|---|---|---|---|---|
-| `doubleT_obstacle` (stationary, person crossing) | 201 | 76 / 3 / 199 | TBD_OBS | TBD_OBS_FIRST | TBD_OBS_DIST | the person only (v0.3: also the column row at 17–19 m and 34 m, 2 false events) |
-| `doubleT_platform` | 345 | 178 / 29 / 110 | TBD_PLAT | TBD_PLAT_FIRST | TBD_PLAT_DIST | a 2.1 m tall, 0.5 m wide post at 85–87 m left of the axis (10 frames; 0.1 m under the column rule), one frame of a 5 m long 0.2 m high strip at the nose at frame 177 and one 4-voxel cluster at 104.5 m |
-| `roundT_doubleT` | 252 | 126 / 20 / 140 | TBD_RTDT | TBD_RTDT_FIRST | TBD_RTDT_DIST | nothing (v0.3: columns and wall segments of the diverging double-track section, pulled in by the half curvature and the yaw jitter) |
-| `roundT_pressureGate_roundT` | 268 | 106 / 19 / 135 | TBD_GATE | TBD_GATE_FIRST | TBD_GATE_DIST | five duct / cabinet fragments at \|dy\| = 1.5–1.6 m, 42–78 m, 1–8 frames each (inner edge 0.05–0.15 m inside the 1.40 m gauge) |
-| `roundT_squareT_pressureGate_squareT` | 545 | 87 / 19 / 396 | TBD_SQT | TBD_SQT_FIRST | TBD_SQT_DIST | three single-frame far clusters at 101–127 m (6–16 voxels) |
-| `squareT_platform_squareT_switch` | 877 | 504 / 105 / 680 | TBD_SW | TBD_SW_FIRST | TBD_SW_DIST | the platform-end structure at 82.9 m while the train stands at the platform (2.2 × 0.4 × 1.2 m, lowest point at the bed, 5–8 voxels, 15 events of 1–7 frames, ~50 frames): a low ramp / rail at dy +1.2…+1.8 m by the single-frame axis that the run's left-bending curvature (R ≈ 3 km from the hall walls) puts at +0.5…+1.0 m; plus four single-frame far clusters at 87–119 m |
-| **five obstacle-free bags** | 2 287 | **1 001 / 192** / 1 461 | **TBD_TOT** | | | |
+| `doubleT_obstacle` (stationary, person crossing) | 201 | 76 / 3 / 199 | **69 / 1 / 199** | 7 | 55.5–56.6 m | the person only (v0.3: also the column row at 17–19 m and 34 m, 2 false events) |
+| `doubleT_platform` | 345 | 178 / 29 / 110 | **12 / 3 / 271** | 16 | 3.0–104.5 m | a 2.1 m tall, 0.5 m wide post at 85–87 m left of the axis (10 frames; 0.1 m under the column rule), one frame of a 5 m long 0.2 m high strip at the nose at frame 177 and one 4-voxel cluster at 104.5 m |
+| `roundT_doubleT` | 252 | 126 / 20 / 140 | **0 / 0 / 226** | — | — | nothing (v0.3: columns and wall segments of the diverging double-track section, pulled in by the half curvature and the yaw jitter) |
+| `roundT_pressureGate_roundT` | 268 | 106 / 19 / 135 | **16 / 5 / 262** | 48 | 42.0–77.9 m | five duct / cabinet fragments at \|dy\| = 1.5–1.6 m, 42–78 m, 1–8 frames each (inner edge 0.05–0.15 m inside the 1.40 m gauge) |
+| `roundT_squareT_pressureGate_squareT` | 545 | 87 / 19 / 396 | **5 / 3 / 499** | 99 | 101.3–127.2 m | three single-frame far clusters at 101–127 m (6–16 voxels) |
+| `squareT_platform_squareT_switch` | 877 | 504 / 105 / 680 | **56 / 18 / 781** | 67 | 81.0–119.2 m | the platform-end structure at 82.9 m while the train stands at the platform (2.2 × 0.4 × 1.2 m, lowest point at the bed, 5–8 voxels, 15 events of 1–7 frames, ~50 frames): a low ramp / rail at dy +1.2…+1.8 m by the single-frame axis that the run's left-bending curvature (R ≈ 3 km from the hall walls) puts at +0.5…+1.0 m; plus four single-frame far clusters at 87–119 m |
+| **five obstacle-free bags** | 2 287 | **1 001 / 192** / 1 461 | **89 / 29** / 2 039 | | | |
 
 On the labels of `doubleT_obstacle` (`resense eval --npy /data/cache/doubleT_obstacle --gt
 labels/doubleT_obstacle.json --text`, 71 in-gauge person frames): v0.3 recall 63/71, first
-alarm frame 9, 13 false-alarm frames / 2 events (the column row); **v0.5 recall TBD_RECALL,
-first alarm frame TBD_OBS_FIRST, TBD_OBS_FP false-alarm frames / events**; the person is
-confirmed inside 50–62 m in TBD_OBS_CONSEC consecutive frames.
+alarm frame 9, 13 false-alarm frames / 2 events (the column row); **v0.5 recall 66/71 (93 %),
+first alarm frame 7, 3 / 0 (frames 73–75, the person 0.1–0.2 m outside the gauge) false-alarm frames / events**; the person is
+confirmed inside 50–62 m in 69 (frames 7–75, one track) consecutive frames.
 
 Evolution (the day-1 rows were measured on 272 subsampled frames and are kept for the
 record; from v0.4 on the numbers are full rate):
@@ -45,7 +45,7 @@ record; from v0.4 on the numbers are full rate):
 | v0.2 | wall-based yaw/curvature, robust two-stage floor fit | 76 / — | — | 38–75 |
 | v0.3 (f2c57e5) | nearer-boundary rule, gauge 1.4 m, hardware/linear/wall filters, corridor validity range, overhead demotion | 67 / — subsampled; **1 001 / 192 at full rate** (2 287 frames) | 63/71, first alarm frame 9 | 48–83 mean, 84–132 p95 |
 | v0.4 (f4e311f, 21.09) | ego-speed estimate + 5-frame accumulation beyond 40 m, verified bed extrapolation, retro rule, smear guard | 1 016 / 187 (+1.5 % frames, +9 % beyond 60 m) | 64/71 (one frame gained by lateral smear), first alarm 9 | 73–133 mean, 112–193 p95 |
-| **v0.5 (real data, 21.09)** | axis: yaw from the rail slabs, curvature 1/R from the walls with the tangent fixed (v0.3 applied half the curvature), rate limits, side-agreement caps; height reference trusted 20 m beyond the bed fit (60) or as verified; five infrastructure signatures (column, elevated, floating, edge, wall face); zone / hit history over 10 frames, persistence in seconds; no merging below 1 m/s, lateral smear guard; vectorised binning | **TBD_TOT** | **TBD_RECALL**, first alarm frame TBD_OBS_FIRST | TBD_MS |
+| **v0.5 (real data, 21.09)** | axis: yaw from the rail slabs, curvature 1/R from the walls with the tangent fixed (v0.3 applied half the curvature), rate limits, side-agreement caps; height reference trusted 20 m beyond the bed fit (60) or as verified; five infrastructure signatures (column, elevated, floating, edge, wall face); zone / hit history over 10 frames, persistence in seconds; no merging below 1 m/s, lateral smear guard; vectorised binning | **89 / 29** | **66/71 (93 %)**, first alarm frame 7 | TBD_MS |
 
 ## 1b. False alarms by cause (why v0.3 alarmed on 44 % of the frames) and what removed them
 
@@ -59,15 +59,15 @@ Counts are alarm frames / events:
 
 | cause (v0.3 track signature) | `doubleT_platform` | `roundT_doubleT` | `roundT_pressureGate_roundT` | `roundT_squareT_pressureGate_squareT` | `squareT_platform_squareT_switch` | **total** | v0.5 |
 |---|---|---|---|---|---|---|---|
-| beyond the bed fit + 20 m: height reference (extrapolated bed 0.3–0.65 m off at 85–105 m lifts far rails / switch parts into the low zone and pulls the roof, h ≈ 4 m, into the polygon top) | 5 / 4 | 35 / 6 | 0 | 21 / 2 | 442 / 35 | **503 / 47** | TBD_C0 |
-| column / post: > 2.2 m tall, < 1 m wide, pulled onto the axis by the yaw error in the diverging double-track section | 16 / 2 | 70 / 7 | 0 | 0 | 8 / 3 | 94 / 12 | TBD_C1 |
-| elevated wide: lowest point > 1.2 m, > 2 m wide (roof strips / beams at 104–130 m of the stopped train) | 0 | 0 | 0 | 0 | 356 / 9 | 356 / 9 | TBD_C2 |
-| floating small: lowest point > 0.7 m, < 1.5 m tall, < 1 m wide (signs, lamps on the wall at 46–73 m) | 109 / 8 | 3 / 1 | 1 / 1 | 5 / 1 | 10 / 4 | 128 / 15 | TBD_C3 |
-| edge fragment: \|lateral\| > 1.2 m, long and low (duct / bench segments of the round tunnel at 3–35 m) | 0 | 0 | 90 / 11 | 12 / 4 | 17 / 4 | 119 / 19 | TBD_C4 |
-| other corridor-edge structure at \|lateral\| > 1.2 m (platform-edge posts at 23–25 m, column row at 17–19 m, cabinets, signs) | 99 / 5 | 33 / 5 | 25 / 7 | 62 / 12 | 13 / 5 | 232 / 34 | TBD_C5 |
-| wall / portal face (the platform-hall end wall at 72–78 m of the stopped train, full height, corridor centre empty) | 0 | 0 | 0 | 0 | 206 / 13 | 206 / 13 | TBD_C6 |
-| other | 32 / 9 | 2 / 1 | 0 | 0 | 198 / 32 | 232 / 42 | TBD_C8 |
-| **all** | 178 / 29 | 126 / 20 | 106 / 19 | 87 / 19 | 504 / 105 | **1 001 / 192** | **TBD_TOT** |
+| beyond the bed fit + 20 m: height reference (extrapolated bed 0.3–0.65 m off at 85–105 m lifts far rails / switch parts into the low zone and pulls the roof, h ≈ 4 m, into the polygon top) | 5 / 4 | 35 / 6 | 0 | 21 / 2 | 442 / 35 | **503 / 47** | — |
+| column / post: > 2.2 m tall, < 1 m wide, pulled onto the axis by the yaw error in the diverging double-track section | 16 / 2 | 70 / 7 | 0 | 0 | 8 / 3 | 94 / 12 | — |
+| elevated wide: lowest point > 1.2 m, > 2 m wide (roof strips / beams at 104–130 m of the stopped train) | 0 | 0 | 0 | 0 | 356 / 9 | 356 / 9 | — |
+| floating small: lowest point > 0.7 m, < 1.5 m tall, < 1 m wide (signs, lamps on the wall at 46–73 m) | 109 / 8 | 3 / 1 | 1 / 1 | 5 / 1 | 10 / 4 | 128 / 15 | — |
+| edge fragment: \|lateral\| > 1.2 m, long and low (duct / bench segments of the round tunnel at 3–35 m) | 0 | 0 | 90 / 11 | 12 / 4 | 17 / 4 | 119 / 19 | — |
+| other corridor-edge structure at \|lateral\| > 1.2 m (platform-edge posts at 23–25 m, column row at 17–19 m, cabinets, signs) | 99 / 5 | 33 / 5 | 25 / 7 | 62 / 12 | 13 / 5 | 232 / 34 | — |
+| wall / portal face (the platform-hall end wall at 72–78 m of the stopped train, full height, corridor centre empty) | 0 | 0 | 0 | 0 | 206 / 13 | 206 / 13 | — |
+| other | 32 / 9 | 2 / 1 | 0 | 0 | 198 / 32 | 232 / 42 | — |
+| **all** | 178 / 29 | 126 / 20 | 106 / 19 | 87 / 19 | 504 / 105 | **1 001 / 192** | **89 / 29** (per bag: 12 / 3, 0 / 0, 16 / 5, 5 / 3, 56 / 18) |
 
 Three findings behind the causes, all measured this round:
 
@@ -105,7 +105,7 @@ Three findings behind the causes, all measured this round:
    persistence needs 60 % of the last ten hits inside and 60 % matched, and the edge / column
    / floating / wall-face signatures cover the shapes; what remains is measured below.
 
-**Ablation (all six bags, every frame, same code = commit TBD_COMMIT, one lever group
+**Ablation (all six bags, every frame, same code = commit 9b56bdf (merged as 82815e9), one lever group
 switched off at a time by `--config`; five-bag alarm frames / events, and the person of
 `doubleT_obstacle`: recall on the 71 labelled frames, first alarm frame):**
 
@@ -113,7 +113,7 @@ switched off at a time by `--config`; five-bag alarm frames / events, and the pe
 |---|---|---|---|
 | v0.3 (f2c57e5 results) | 1 001 / 192 | 63/71, 9, 13 / 2 | baseline |
 | v0.5 code with the v0.3 switches (`rails_yaw_enabled: false`, rate limits and caps 0, `walls_max_yaw: 0.035`, `floor_valid_margin: 60`, verification / retro / accumulation off, signatures 0, zone window 5, `confirm_time_s: 0`) | TBD_V03SW | TBD_V03SW_OBS | only the curvature fix and the rail profile in curve coordinates remain: this is what the axis bug alone cost |
-| **v0.5 defaults** | **TBD_TOT** | **TBD_OBS_SHORT** | |
+| **v0.5 defaults** | **89 / 29** | **66/71, 7, 3 / 0** | |
 | − axis levers (rail yaw, rate limits, side caps off, yaw clip 2°) | TBD_ABL_AXIS | TBD_ABL_AXIS_OBS | |
 | − infrastructure signatures (column, elevated, floating, edge, wall face = 0) | TBD_ABL_RULES | TBD_ABL_RULES_OBS | |
 | − height-reference margin (`floor_valid_margin: 60`) | TBD_ABL_FLOOR | TBD_ABL_FLOOR_OBS | |
@@ -171,7 +171,7 @@ addressed in v0.5 (§1b, §3) and the estimator's real-bag behaviour is in §2c.
 
 ### 2c. Recall by range on real backgrounds (set S, v0.5, 21.09) — synthetic objects, real frames
 
-Sets built this round with the merged `resense inject` (commit TBD_COMMIT; objects are placed
+Sets built this round with the merged `resense inject` (commit 9b56bdf (merged as 82815e9); objects are placed
 on the per-frame track model of *this* code, so the frames differ slightly from P4's sets of
 f4e311f): the two static sets `S_roundT_doubleT` (26 frames) and
 `S_roundT_pressureGate_roundT` (27), every 10th frame, one catalogue object per frame
@@ -267,7 +267,7 @@ polygon test by its bounding box, the same frames took: track 81 → 31 ms, corr
 egomotion 9 → 7 (now off by default), cluster 6, total 112 → 52 ms.
 
 **Back-to-back bench on the idle machine** (`resense bench --npy /data/cache/<bag>`,
-every frame, commit TBD_COMMIT; the v0.3 switches are the config of §1b; load before each run
+every frame, commit 9b56bdf (merged as 82815e9); the v0.3 switches are the config of §1b; load before each run
 in the table; the i7-9700E has 8 faster cores):
 
 TBD_BENCH_TABLE
