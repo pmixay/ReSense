@@ -82,6 +82,12 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
    directory was the source tree, and the ROS node would have died at import on the jury's
    machine. Fixed (pip upgraded before the install, the import verified from `/` at build
    time, the CI pytest step runs with `-w /`). This is why the smoke test exists.
+   With the fix, CI run 20 (commit `7eee82b`) is the **first end-to-end run of the ROS node**:
+   inside the image, `ros2 launch` started the node on the default command, it auto-selected
+   `/lidar_points` (`frame_id hesai_lidar`), broadcast the static TF, processed the 40-frame
+   synthetic bag at rate 0.5 with 0 dropped frames and reported the person at 59.9 m in 23
+   frames; decode + detect latency on the GitHub runner: mean 63 / p95 65 / max 71 ms;
+   `check_dry_run.py` PASS. `ros2 topic echo --field data` output parses as the checker expects.
 2. **At full rate the v0.3 detector alarms on about half of the frames of the empty bags.**
    `resense run --npy` on every cached frame (4-core sandbox, v0.3 parameters):
 
