@@ -18,22 +18,30 @@ excluded from recall, and their count is reported.
 
 ## 2. Metrics
 
+Implemented in `resense/metrics.py` (`Evaluation.summary()` keys in brackets) and printed by
+`resense eval` and `resense summarize results.jsonl [--speed-mps V] [--gt gt.json]`.
+
 | metric | definition | reported as |
 |---|---|---|
-| **recall by range** | matched gauge ground-truth objects / all gauge ground-truth objects, per bin 0–50, 50–100, 100–150, 150–200, 200–300 m; a detection matches if \|Δdistance\| ≤ max(2 m, 3 % of range) + half object length and \|Δlateral\| ≤ 1 m | table per object class and overall |
-| **first-detection distance** | for a moving-toward run (real or simulated by decreasing injected range): the largest range at which the object is confirmed | m, per class |
-| **false-alarm frame rate** | frames with `obstacle = true` among frames with no gauge ground truth | per bag and per scene type (tunnel / curve / gate / platform / switch) |
-| **false alarms per km / per hour** | false-alarm *events* (a new confirmed track id) per travelled distance (from speed, when known) and per hour of bag time | per bag; the headline false-alarm number |
-| **advisory rate** | frames with `warning = true` on empty frames | informational; the advisory zone is expected to be noisy near infrastructure |
-| **latency** | per frame: decode + detect (status JSON `node.latency_ms`) and decode + detect + publish (`/resense/latency_ms`); offline `timing_ms.total` | mean, p95, max in ms |
-| **throughput** | frames processed per second in the ROS node (`/resense/fps`) against the sensor's 10 Hz; dropped frames from stamp gaps (`node.dropped_frames`) | fps, dropped / total |
+| **recall by range** | matched gauge ground-truth objects / all gauge ground-truth objects, per bin 0–50, 50–100, 100–150, 150–200, 200–300 m; a detection matches if \|Δdistance\| ≤ max(2 m, 3 % of range) + half object length and \|Δlateral\| ≤ 1 m | table per bin [`recall_by_range`, `per_bin_counts`], per object class [`recall_by_class`, `per_class_counts`; class = the `name` of the `inject` catalogue, else `kind`] and overall [`recall`] |
+| **first-detection distance** | for a moving-toward run (real, or `inject --sequence N --speed V`): the largest range at which the object is confirmed and matched | m, per ground-truth label [`first_detection_distance`] |
+| **false-alarm frames** | frames with `obstacle = true` among frames with no gauge ground truth [`fp_frames`, `fp_frame_rate`]; every frame with `obstacle = true` regardless of labels is an *alarm frame* [`alarm_frames`] | per bag and per scene type (tunnel / curve / gate / platform / switch) |
+| **false-alarm events** | distinct confirmed gauge track ids (`detections[].id`) that were never matched to a ground-truth object [`fp_events`]; distinct ids of all alarms [`alarm_events`]. One object that stays in the corridor for 50 frames is one event | **the headline false-alarm number**, per bag |
+| **false alarms per hour / per km** | `fp_events` per hour of bag time (span of the `stamp` field [`bag_time_s`]) [`fp_events_per_hour`] and per km travelled [`fp_events_per_km`] when a speed is known: `--speed-mps V` (constant) or a per-frame `ego_speed_mps` key in the JSON, integrated over the stamp gaps [`distance_km`] | per bag; `null` when no speed is known |
+| **advisory rate** | frames with `warning = true` [`advisory_frames`, `advisory_frame_rate` = share of all evaluated frames] | informational; the advisory zone is expected to be noisy near infrastructure |
+| **alarm distance** | min / max of `nearest_distance` over alarm frames [`alarm_distance_min`, `alarm_distance_max`] | m; on `doubleT_obstacle` this is the 55–57 m window the dry run checks |
+| **latency** | per frame: decode + detect (status JSON `node.latency_ms`) and decode + detect + publish (`/resense/latency_ms`); offline `timing_ms.total` [`latency_ms_mean`, `latency_ms_p95`, `latency_ms_max`] | mean, p95, max in ms |
+| **throughput** | frames processed per second in the ROS node (`/resense/fps`) against the sensor's 10 Hz; dropped frames from stamp gaps (`node.dropped_frames`) | fps, dropped / total (node stats line, `scripts/check_dry_run.py`) |
 | **decision latency** | frames from the first frame an object is visible in the corridor to the first `obstacle = true` | frames (3 by construction with `confirm_hits = 3`) |
+| **subsampling caveat** | the stride between consecutive `frame` indices [`frame_stride`]; with every N-th frame the `confirm_hits` consecutive hits are `N × frame_dt` s apart, so a candidate must persist `confirm_hits × N × frame_dt` s (1.5 s at every 5th, 3 s at every 10th) instead of 0.3 s at 10 Hz: **subsampled alarm and false-alarm counts understate the full-rate values** [`stride_caveat`] | printed next to every number measured on subsampled frames; headline numbers are measured at every frame |
 | **CPU / memory** | `top` per core and RSS of the node on the reference machine | for the i7-9700E comparison |
 
-Match tolerance and bins are the ones implemented in `resense/metrics.py`; change them there
-and here together. The 200–300 m bin is kept for completeness: the Pandar128 is instrumented to
-200 m at 10 % reflectivity, and only on its horizon channels ([`SENSOR.md`](SENSOR.md) §3), so a
-non-reflective object in that bin is not expected to be detectable by any algorithm.
+Objects fully occluded by real geometry (`n_points == 0` in `gt.json`) are excluded from
+recall and counted separately (`occluded_gt_skipped`). Match tolerance and bins are the ones
+implemented in `resense/metrics.py`; change them there and here together. The 200–300 m bin
+is kept for completeness: the Pandar128 is instrumented to 200 m at 10 % reflectivity, and
+only on its horizon channels ([`SENSOR.md`](SENSOR.md) §3), so a non-reflective object in
+that bin is not expected to be detectable by any algorithm.
 
 ## 3. Procedure
 

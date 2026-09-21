@@ -1,4 +1,4 @@
-"""Command line tools: ``resense info | run | inject | eval | bench``."""
+"""Command line tools: ``resense info | run | inject | eval | summarize | bench``."""
 from __future__ import annotations
 
 import argparse
@@ -17,11 +17,16 @@ def _cfg(args) -> DetectorConfig:
     return DetectorConfig.from_yaml(args.config) if args.config else DetectorConfig()
 
 
-def _frames(args, cfg):
+def _frames(args, cfg, npy_stride: bool = False):
+    """(index, Frame) iterator for --bag / --npy. ``--every/--start/--limit`` apply to a bag;
+    for a cached directory they apply only when ``npy_stride`` is set (inject), so that run /
+    bench keep their behaviour of reading every file."""
     from resense.io import iter_bag_frames, iter_npy_frames
     if args.bag:
         return iter_bag_frames(args.bag, cfg.sensor, topic=args.topic, every=args.every,
                                start=args.start, limit=args.limit)
+    if npy_stride:
+        return iter_npy_frames(args.npy, cfg.sensor, every=args.every, start=args.start, limit=args.limit)
     return iter_npy_frames(args.npy, cfg.sensor)
 
 
@@ -66,69 +71,214 @@ def cmd_run(args):
 
 
 def cmd_inject(args):
-    """Build a labelled synthetic dataset from empty-tunnel frames."""
-    from resense.synthetic import ObstacleSpec, inject_obstacles
+    """Build a labelled synthetic dataset from empty-tunnel frames (docs/DATASET.md).
+
+    Objects come from the catalogue (``--kinds`` names, sizes and reflectivity ranges in
+    ``resense.synthetic.OBJECT_CATALOGUE``), one object set per background frame. With
+    ``--sequence N --speed V`` every background frame becomes N frames in which the objects
+    approach by ``V * tracking.frame_dt`` per step (same background, files numbered in order,
+    gt rows carrying ``seq`` / ``seq_step`` / ``speed_mps``), so ``resense eval --repeat 1``
+    sees a moving-toward run and measures the first-detection distance. ``--augment``
+    applies :func:`resense.synthetic.augment_background` (dropout, range noise, small
+    mount rotations, intensity jitter) to the background before injection.
+    """
+    from resense.synthetic import OBJECT_CATALOGUE, augment_background, catalogue_spec, inject_obstacles
     from resense.track import estimate_track
     cfg = _cfg(args)
     rng = np.random.default_rng(args.seed)
     os.makedirs(args.out, exist_ok=True)
-    kinds = args.kinds.split(",")
+    kinds = [k.strip() for k in args.kinds.split(",") if k.strip()]
+    unknown = [k for k in kinds if k not in OBJECT_CATALOGUE]
+    if unknown:
+        raise SystemExit(f"unknown object(s) {unknown}; known: {', '.join(OBJECT_CATALOGUE)}")
     d_lo, d_hi = (float(v) for v in args.distances.split(":"))
-    gt = {}
+    n_seq = max(int(args.sequence), 1)
+    speed = float(args.speed)
+    step = speed * cfg.tracking.frame_dt
+    if n_seq > 1 and step <= 0:
+        raise SystemExit("--sequence N needs --speed V > 0 (m/s)")
+    gt = {"_meta": {"source": "inject", "kinds": kinds, "distances": [d_lo, d_hi], "per_frame": args.per_frame,
+                    "negative_fraction": args.negative_fraction, "sequence": n_seq, "speed_mps": speed,
+                    "frame_dt": cfg.tracking.frame_dt, "augment": bool(args.augment), "seed": args.seed,
+                    "input": args.bag or args.npy, "every": args.every, "start": args.start}}
     n = 0
-    track = None
-    for i, frame in _frames(args, cfg):
+    n_bg = 0
+    for i, frame in _frames(args, cfg, npy_stride=True):
+        if args.augment:
+            frame = augment_background(frame, rng=rng)
         # per-frame model without temporal smoothing: the same model `resense eval --reset-each` sees
         track = estimate_track(frame.xyz, cfg.track, prev=None)
-        specs = []
-        for _ in range(args.per_frame):
-            kind = rng.choice(kinds)
-            size = {"person": (0.4, 0.5, 1.7), "box": (0.5, 0.5, 0.5), "plank": (2.0, 0.25, 0.30),
-                    "cylinder": (0.4, 0.4, 0.9), "sphere": (0.4, 0.4, 0.4)}[kind]
+        objs = []   # (name, distance, lateral, yaw, reflectivity, label) drawn once per background frame
+        for j in range(args.per_frame):
+            name = str(rng.choice(kinds))
             in_gauge = rng.random() >= args.negative_fraction
             lateral = rng.uniform(-0.9, 0.9) if in_gauge else rng.choice([-1, 1]) * rng.uniform(2.2, 3.0)
-            specs.append(ObstacleSpec(kind=kind, size=size, distance=float(rng.uniform(d_lo, d_hi)),
-                                      lateral=float(lateral), yaw_deg=float(rng.uniform(0, 360)),
-                                      reflectivity=float(rng.uniform(15, 120)),
-                                      label=f"{kind}_{n}_{_}"))
-        res = inject_obstacles(frame, track, specs, rng=rng)
-        name = f"{n:05d}"
-        xyz_s = res.frame.xyz  # store in vehicle frame with labels
-        np.savez_compressed(os.path.join(args.out, name + ".npz"), xyz=xyz_s, intensity=res.frame.intensity,
-                            labels=res.labels)
-        gt[name] = [dict(s.to_dict(), in_gauge=abs(s.lateral) < 1.3, n_points=int(k))
-                    for s, k in zip(specs, res.n_added)]
-        print(f"{name}: " + ", ".join(f"{s.kind}@{s.distance:.0f}m dy={s.lateral:+.1f} -> {k} pts" for s, k in zip(specs, res.n_added)))
-        n += 1
-    json.dump(gt, open(os.path.join(args.out, "gt.json"), "w"), indent=1)
-    print(f"wrote {n} frames to {args.out}")
+            refl = catalogue_spec(name, 0.0, rng=rng).reflectivity
+            objs.append((name, float(rng.uniform(d_lo, d_hi)), float(lateral), float(rng.uniform(0, 360)), refl,
+                         f"{name}_{n_bg}_{j}"))
+        for k in range(n_seq):
+            specs = [catalogue_spec(name, dist - k * step, lateral, yaw, reflectivity=refl, label=label)
+                     for name, dist, lateral, yaw, refl, label in objs]
+            if any(s.distance < cfg.gauge.range_min for s in specs):
+                break   # the object has reached the sensor: the approach sequence ends here
+            res = inject_obstacles(frame, track, specs, rng=rng)
+            name_out = f"{n:05d}"
+            stamp = float(frame.stamp) + k * cfg.tracking.frame_dt
+            np.savez_compressed(os.path.join(args.out, name_out + ".npz"), xyz=res.frame.xyz,   # vehicle frame
+                                intensity=res.frame.intensity, labels=res.labels, stamp=stamp)
+            gt[name_out] = [dict(s.to_dict(), name=o[0], in_gauge=abs(s.lateral) < 1.3, n_points=int(cnt),
+                                 seq=n_bg, seq_step=k, speed_mps=speed)
+                            for s, o, cnt in zip(specs, objs, res.n_added)]
+            print(f"{name_out}: " + ", ".join(f"{o[0]}@{s.distance:.0f}m dy={s.lateral:+.1f} -> {cnt} pts"
+                                             for s, o, cnt in zip(specs, objs, res.n_added)))
+            n += 1
+        n_bg += 1
+    with open(os.path.join(args.out, "gt.json"), "w", encoding="utf-8") as fh:
+        json.dump(gt, fh, indent=1)
+    print(f"wrote {n} frames ({n_bg} backgrounds) to {args.out}")
+
+
+def _iter_npz_dataset(directory: str):
+    """(key, Frame) for an injected dataset: ``<key>.npz`` files in sorted order."""
+    import glob
+    from resense.frame import Frame
+    for f in sorted(glob.glob(os.path.join(directory, "*.npz"))):
+        name = os.path.splitext(os.path.basename(f))[0]
+        z = np.load(f)
+        stamp = float(z["stamp"]) if "stamp" in z.files else 0.0
+        yield name, Frame(xyz=z["xyz"], intensity=z["intensity"], ring=None, stamp=stamp, frame_id=name)
+
+
+def _iter_labelled_source(args, cfg):
+    """(key, Frame) for ``--bag`` (key = zero-padded bag frame index) or ``--npy`` (key = the
+    number at the end of the file name, else the file position; ``--every/--start/--limit``
+    select files like bag frames)."""
+    from resense.io import iter_bag_frames, iter_npy_frames
+    from resense.metrics import gt_key
+    if args.bag:
+        it = iter_bag_frames(args.bag, cfg.sensor, topic=args.topic, every=args.every, start=args.start,
+                             limit=args.limit)
+    else:
+        it = iter_npy_frames(args.npy, cfg.sensor, every=args.every, start=args.start, limit=args.limit,
+                             index_from_name=True)
+    for i, frame in it:
+        yield gt_key(i), frame
 
 
 def cmd_eval(args):
-    """Run the detector over an injected dataset (npz + gt.json) and report metrics."""
-    import glob
-    from resense.frame import Frame
-    from resense.metrics import Evaluation, GTObstacle
+    """Run the detector against ground truth and report metrics.
+
+    * ``resense eval <dir>``: an injected dataset (``*.npz`` + ``gt.json`` from ``resense inject``);
+    * ``resense eval --bag <bag> --gt gt.json [--every N]`` / ``--npy <dir> --gt gt.json``:
+      a real bag or cached frames against labels keyed by the 5-digit bag frame index
+      (docs/DATASET.md "Label format"). Frames absent from ``gt.json`` count as empty unless
+      ``--labelled-only``; all frames are still processed so the tracker state is realistic.
+    """
+    from resense.metrics import Evaluation, format_summary, gt_meta, gt_objects, load_gt
     cfg = _cfg(args)
-    gt = json.load(open(os.path.join(args.dataset, "gt.json")))
+    if args.dataset:
+        gt_path = args.gt or os.path.join(args.dataset, "gt.json")
+        source = _iter_npz_dataset(args.dataset)
+    elif args.bag or args.npy:
+        if not args.gt:
+            raise SystemExit("resense eval --bag/--npy needs --gt gt.json")
+        gt_path = args.gt
+        source = _iter_labelled_source(args, cfg)
+    else:
+        raise SystemExit("resense eval: give an injected dataset directory, or --bag <bag> / --npy <dir> with --gt")
+    gt = load_gt(gt_path)
+    meta = gt_meta(gt_path)
+    # static injected frames: repeat each 3x to emulate persistence; sequences and real
+    # sources are already in frame order, so every frame is processed once
+    repeat = args.repeat
+    if repeat is None:
+        repeat = 3 if (args.dataset and int(meta.get("sequence", 1)) <= 1) else 1
     det = Detector(cfg)
-    ev = Evaluation()
+    ev = Evaluation(confirm_hits=cfg.tracking.confirm_hits, frame_dt=cfg.tracking.frame_dt)
+    out_fh = open(args.out, "w", encoding="utf-8") if args.out else None
     n_occluded = 0
-    for f in sorted(glob.glob(os.path.join(args.dataset, "*.npz"))):
-        name = os.path.splitext(os.path.basename(f))[0]
-        z = np.load(f)
-        frame = Frame(xyz=z["xyz"], intensity=z["intensity"], ring=None, stamp=0.0, frame_id=name)
+    n_processed = 0
+    for key, frame in source:
         if args.reset_each:
             det.reset()
         res = None
-        for _ in range(args.repeat):   # static repeat emulates persistence on single frames
+        for _ in range(repeat):
             res = det.process(frame)
-        gts = [GTObstacle.from_dict(g) for g in gt.get(name, []) if g.get("n_points", 1) > 0]
-        n_occluded += sum(1 for g in gt.get(name, []) if g.get("n_points", 1) == 0)
-        ev.add_frame(res.to_dict(), gts)
+        d = res.to_dict()
+        d["frame"] = int(key) if key.isdigit() else None
+        d["frame_id"] = frame.frame_id
+        n_processed += 1
+        if out_fh:
+            out_fh.write(json.dumps(d) + "\n")
+        if args.labelled_only and key not in gt:
+            continue
+        rows = gt.get(key, [])
+        n_occluded += sum(1 for r in rows if r.get("n_points", 1) == 0)
+        ev.add_frame(d, gt_objects(rows), speed_mps=args.speed_mps)
+    if out_fh:
+        out_fh.close()
     out = ev.summary()
     out["occluded_gt_skipped"] = n_occluded
-    print(json.dumps(out, indent=1))
+    out["frames_processed"] = n_processed
+    out["gt_frames"] = len(gt)
+    out["repeat"] = repeat
+    if args.text:
+        print(format_summary(out))
+        print(f"occluded gt skipped: {n_occluded}; frames processed: {n_processed}; labelled frames in gt: {len(gt)}")
+    else:
+        print(json.dumps(out, indent=1))
+    return out
+
+
+def _iter_jsonl(path: str, unparsed: list):
+    """Yield the status dicts of a ``resense run --out`` file or of a
+    ``ros2 topic echo /resense/status --field data`` capture (``---`` separators ignored);
+    lines that are not a status JSON are appended to ``unparsed``."""
+    with open(path, encoding="utf-8") as fh:
+        for line in fh:
+            line = line.strip()
+            if not line or line == "---":
+                continue
+            try:
+                d = json.loads(line)
+            except ValueError:
+                unparsed.append(line)
+                continue
+            if not isinstance(d, dict) or "obstacle" not in d:
+                unparsed.append(line)
+                continue
+            yield d
+
+
+def cmd_summarize(args):
+    """Headline numbers of a JSONL written by ``resense run --out`` (or a status capture):
+    frames, alarm frames and events, advisory frames, alarm distances, latency, bag time,
+    events per hour / km, and the subsampling caveat."""
+    from resense.metrics import Evaluation, format_summary, gt_key, gt_objects, load_gt
+    cfg = _cfg(args)
+    gt = load_gt(args.gt) if args.gt else None
+    ev = Evaluation(confirm_hits=cfg.tracking.confirm_hits, frame_dt=cfg.tracking.frame_dt)
+    n_occluded = 0
+    unparsed = []
+    for d in _iter_jsonl(args.results, unparsed):
+        rows = []
+        if gt is not None:
+            key = gt_key(d["frame"]) if d.get("frame") is not None else None
+            if key not in gt and args.labelled_only:
+                continue
+            rows = gt.get(key, []) if key is not None else []
+        n_occluded += sum(1 for r in rows if r.get("n_points", 1) == 0)
+        ev.add_frame(d, gt_objects(rows), speed_mps=args.speed_mps)
+    out = ev.summary()
+    out["occluded_gt_skipped"] = n_occluded
+    out["unparsed_lines"] = len(unparsed)
+    if args.json:
+        print(json.dumps(out, indent=1))
+    else:
+        print(format_summary(out))
+        if unparsed:
+            print(f"({len(unparsed)} unparsed lines skipped)")
+    return out
 
 
 def cmd_bench(args):
@@ -173,26 +323,50 @@ def main(argv=None):
     sp = sub.add_parser("inject", help="inject synthetic obstacles into empty frames")
     add_input(sp)
     sp.add_argument("--out", required=True)
-    sp.add_argument("--kinds", default="person,box,plank,cylinder")
+    sp.add_argument("--kinds", default="person,box,plank,cylinder",
+                    help="comma-separated catalogue names: person, hivis, box0.2, box0.5, box1.0, box (= box0.5), "
+                         "plank, trolley, cylinder, sphere (sizes and reflectivity ranges in docs/DATASET.md)")
     sp.add_argument("--distances", default="10:250", help="lo:hi metres")
     sp.add_argument("--per-frame", type=int, default=1)
     sp.add_argument("--negative-fraction", type=float, default=0.2, help="share of objects placed outside the gauge")
     sp.add_argument("--seed", type=int, default=0)
+    sp.add_argument("--sequence", type=int, default=1, help="N frames per background with the object approaching "
+                    "by --speed * tracking.frame_dt per step (first-detection distance with eval --repeat 1)")
+    sp.add_argument("--speed", type=float, default=0.0, help="m/s, simulated train speed for --sequence")
+    sp.add_argument("--augment", action="store_true", help="augment the background (dropout, range noise, small "
+                    "mount rotations, intensity jitter) before injection")
     sp.set_defaults(func=cmd_inject)
 
-    sp = sub.add_parser("eval", help="evaluate on an injected dataset")
-    sp.add_argument("dataset")
-    sp.add_argument("--config", default=None)
-    sp.add_argument("--repeat", type=int, default=3, help="process each frame N times (persistence)")
+    sp = sub.add_parser("eval", help="evaluate on an injected dataset, or a bag / npy directory against gt.json labels")
+    sp.add_argument("dataset", nargs="?", default=None, help="injected dataset directory (*.npz + gt.json)")
+    add_input(sp, need=False)
+    sp.add_argument("--gt", default=None, help="gt.json (default <dataset>/gt.json; required with --bag/--npy)")
+    sp.add_argument("--repeat", type=int, default=None, help="process each frame N times; default 3 for a static "
+                    "injected dataset (emulates persistence), 1 for inject --sequence datasets, bags and npy")
     sp.add_argument("--reset-each", action="store_true")
+    sp.add_argument("--labelled-only", action="store_true", help="count only frames that have a gt.json entry "
+                    "(all frames are still processed)")
+    sp.add_argument("--speed-mps", type=float, default=None, help="constant train speed for events per km")
+    sp.add_argument("--out", default=None, help="also write the per-frame results as JSONL (for summarize / renders)")
+    sp.add_argument("--text", action="store_true", help="human-readable summary instead of JSON")
     sp.set_defaults(func=cmd_eval)
+
+    sp = sub.add_parser("summarize", help="headline numbers of a `run --out` JSONL (alarm events, per hour/km, latency)")
+    sp.add_argument("results", help="JSONL from `resense run --out` or a /resense/status capture")
+    sp.add_argument("--speed-mps", type=float, default=None, help="constant train speed (m/s) for events per km; "
+                    "a per-frame ego_speed_mps key in the JSON is used otherwise")
+    sp.add_argument("--gt", default=None, help="gt.json with labels keyed by 5-digit bag frame index (docs/DATASET.md)")
+    sp.add_argument("--labelled-only", action="store_true", help="with --gt: count only frames that have a gt.json entry")
+    sp.add_argument("--config", default=None, help="YAML config (for tracking.confirm_hits / frame_dt in the caveat)")
+    sp.add_argument("--json", action="store_true", help="print the full summary as JSON")
+    sp.set_defaults(func=cmd_summarize)
 
     sp = sub.add_parser("bench", help="timing per stage")
     add_input(sp)
     sp.set_defaults(func=cmd_bench)
 
     args = p.parse_args(argv)
-    args.func(args)
+    return args.func(args)
 
 
 if __name__ == "__main__":
