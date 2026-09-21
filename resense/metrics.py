@@ -298,7 +298,8 @@ class Evaluation:
             "bag_time_s": self.bag_time_s,
             "fp_events_per_hour": (self.fp_events / hours) if hours > 0 else None,
             "distance_km": km if self.speed_known else None,
-            "fp_events_per_km": (self.fp_events / km) if (self.speed_known and km > 0) else None,
+            # at least 10 m travelled: the estimator's ~0 m/s on a stationary bag gives a meaningless rate
+            "fp_events_per_km": (self.fp_events / km) if (self.speed_known and km >= 0.01) else None,
             "frame_stride": self.stride,
             "stride_caveat": self.stride_caveat(),
             # --- additive (21.09): matched-detection errors, first alarm, accumulation bookkeeping ---
