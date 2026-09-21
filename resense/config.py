@@ -57,12 +57,22 @@ class TrackConfig:
     walls_max_residual: float = 0.4                  # m, bins further from the fit are rejected
     walls_min_bins: int = 6
     walls_max_rms: float = 0.35
-    walls_max_yaw: float = 0.035                     # |tan(yaw)| limit (~2 deg)
+    walls_max_yaw: float = 0.06                      # |tan(yaw)| limit (~3.4 deg: mount yaw of ~1-1.5 deg in the bags plus the body angle in a curve; 0.035 in v0.3 saturated in every moving bag)
     walls_min_radius: float = 150.0                  # m, curvature limit
     walls_smoothing: float = 0.6                     # EMA of (yaw, curvature) across frames
     axis_valid_margin: float = 15.0                  # m beyond the last observed boundary bin the axis is trusted
-    axis_valid_straight_bonus: float = 50.0          # extra trusted range when the tunnel is straight (|curv| < 1e-4)
-    floor_valid_margin: float = 60.0                 # m beyond the fitted bed range the height reference is trusted
+    axis_valid_straight_bonus: float = 50.0          # extra trusted range when the tunnel is straight (|curv| < 1e-4) and both boundaries agree
+    floor_valid_margin: float = 20.0                 # m beyond the fitted bed range the height reference is trusted without verification (60 in v0.3: the extrapolated bed was 0.3-0.65 m off at 85-105 m in the platform bags)
+    # --- v0.5: yaw at the vehicle from the rail pair per along-track slab (the walls then give the curvature only) ---
+    rails_yaw_enabled: bool = True                   # yaw from the rail-pair midpoints of several near slabs; off = free quadratic through the walls (v0.3)
+    rails_yaw_slabs: int = 3                         # slabs between rails_range[0] and rails_range[1]
+    rails_yaw_min_slabs: int = 2                     # slabs with a plausible rail pair needed for a yaw estimate
+    rails_yaw_max_dev: float = 0.3                   # m, a slab's rail may sit this far from the global rail position
+    axis_max_yaw_rate: float = 0.003                 # rad per frame (0.17 deg; a train at 15 m/s on R = 700 m yaws 0.12 deg per frame); larger changes are clipped; 0 = off
+    axis_max_curvature_rate: float = 1.0e-4          # 1/m per frame, larger changes of the smoothed curvature are clipped; 0 = off
+    axis_sides_max_disagreement: float = 6.7e-4      # 1/m, both boundaries fitted and their curvatures differ by more (R 1500 m): axis trusted only to axis_disagree_range; 0 = off
+    axis_disagree_range: float = 60.0                # m, trusted range of the axis when the two boundaries disagree
+    axis_one_side_range: float = 120.0               # m, trusted range when only one boundary was fitted (it cannot tell a parallel wall from a diverging one); 0 = no cap
     # --- verification of the extrapolated bed beyond its fitted range (second height anchor) ---
     floor_verify_enabled: bool = True                # confirm the extrapolated bed with the base of the side structures
     floor_verify_band: Tuple[float, float] = (1.6, 3.5)  # m, |dy| band of walls / benches / ducts (outside the advisory corridor)
@@ -92,6 +102,11 @@ class GaugeConfig:
     range_min: float = 3.0         # m along track
     range_max: float = 250.0
     lateral_growth_per_100m: float = 0.0  # widen corridor with range to absorb yaw uncertainty
+    # v0.5: a voxel counts towards the strict-gauge decision only when it lies this far inside the
+    # polygon's lateral edge (the axis is uncertain by ~0.1 deg, i.e. 0.1 m per 60 m of range);
+    # candidates and the advisory zone are unaffected. 0 = off (v0.3 behaviour)
+    edge_margin: float = 0.0
+    edge_margin_per_100m: float = 0.0
 
 
 @dataclass
@@ -124,9 +139,24 @@ class ClusterConfig:
     wall_segment_max_width: float = 1.5
     gauge_min_points: int = 3      # voxels inside the strict gauge to classify as 'gauge'
     overhead_min_height: float = 2.4   # clusters entirely above this (m over rail head) are advisory only
+    # v0.5 infrastructure signatures measured on the organizer bags (EXPERIMENTS.md section 1b); each demotes
+    # the cluster to advisory ('warning'), never drops it; 0 = rule off
+    column_min_height: float = 2.2     # m, taller and narrower than column_max_width = column / post / gate leg (a person is 1.7 m)
+    column_max_width: float = 1.0      # m
+    elevated_min_height: float = 1.2   # m, lowest point above this and wider than elevated_min_width = beam / roof strip / sign gantry
+    elevated_min_width: float = 2.0    # m (a train ahead reaches down to the polygon bottom)
+    floating_min_height: float = 0.7   # m, lowest point above this, lower than floating_max_height and narrower than floating_max_width = sign / lamp / bracket on the wall
+    floating_max_height: float = 1.5   # m
+    floating_max_width: float = 1.0    # m
+    edge_min_lateral: float = 1.2      # m, |lateral| beyond this, longer than edge_min_aspect x width and lower than edge_max_height = duct / bench / platform-edge fragment
+    edge_min_aspect: float = 2.5
+    edge_max_height: float = 1.0       # m
+    wall_face_min_height: float = 1.5  # m, taller than this, reaching above overhead_min_height, and its part below that level hugs the corridor edge (|dy| from wall_face_min_inner to beyond wall_face_edge) = wall / portal face pulled in by the axis
+    wall_face_edge: float = 1.6        # m
+    wall_face_min_inner: float = 0.3   # m
     visibility_ratio: float = 0.15 # cluster is plausible if n >= ratio * expected points
     # retro-reflective infrastructure (signs, markers, reflectors): intensity is reflectivity %, > 100 = retro
-    retro_intensity: float = 100.0     # intensity from which a return counts as retro-reflective (0 = rule off)
+    retro_intensity: float = 0.0       # intensity from which a return counts as retro-reflective; 0 = rule off (v0.5 default: the rule never fired on the six bags, < 1 % of returns reach 100, and it demoted an injected trolley of reflectivity 110 at 13-24 m; set 100 to enable)
     retro_min_fraction: float = 0.5    # fraction of retro returns for a cluster to count as a reflector
     retro_max_height: float = 1.2      # m, taller retro clusters (a person in a hi-vis vest, a train) are kept
     retro_max_width: float = 0.8       # m, narrower retro clusters (plate, sign, marker, post) are demoted to advisory
@@ -135,16 +165,19 @@ class ClusterConfig:
 @dataclass
 class AccumulationConfig:
     """Ego-motion compensated accumulation of far corridor candidates over several frames."""
-    enabled: bool = True
+    enabled: bool = True           # merge only with a trustworthy speed: a given one (node parameter / odometry, eval sequences) or, with estimate_speed, the estimator
     n_frames: int = 5              # frames merged (the current one included)
     min_range: float = 40.0        # m, only candidates beyond this range are accumulated (near objects stay single-frame)
     min_points_scale: float = 0.3  # per accumulated frame the voxel-count thresholds grow by this fraction (x1.5 at 5 frames)
-    estimate_speed: bool = True    # run the ego-speed estimator (also when a speed is given, for diagnostics)
+    estimate_speed: bool = False   # v0.5 default off: the estimated-speed merge added 31 false-alarm frames on the five empty bags at full rate (119 vs 88, 21.09) and no real-data recall, and costs 7-8 ms per real frame; the synthetic gain (person 189 vs 178 m) is documented; true = the v0.4 behaviour
     speed_min_confidence: float = 0.5  # below this the estimate is not used: source 'none', no accumulation
     speed_max: float = 30.0        # m/s, search range of the estimator (metro line speed limit is ~22 m/s)
     speed_max_step: float = 3.0    # m/s, larger frame-to-frame jumps of the estimate halve its confidence
     speed_warmup_frames: int = 3   # frames the estimator observes before it reports (static-pattern background)
+    tracks_min_speed: float = 1.0  # m/s, the tracks cue reports nothing below this: a stopped train must not merge frames (a person walking across the track smears laterally; 21.09 review)
+    min_speed: float = 1.0         # m/s, below this (given or estimated) nothing is merged: a stopped train gains no density from identical frames but loses marginal objects to the scaled thresholds (P4 static sets, 21.09)
     smear_max_length: float = 2.0  # m, an accumulated cluster longer than this along X falls back to its current-frame points
+    smear_max_width: float = 1.0   # m, the same guard across the track (a moving object merged over 0.5 s); 0 = off
     max_points_per_frame: int = 20000  # cap on stored far candidates per frame (strided subsample above)
     stamp_dt_range: Tuple[float, float] = (0.02, 0.5)  # s, stamp differences outside are replaced by tracking.frame_dt
 
@@ -156,6 +189,11 @@ class TrackingConfig:
     ego_speed_max: float = 25.0    # m/s, obstacles approach at most this fast (no odometry)
     frame_dt: float = 0.1          # s
     confirm_hits: int = 3          # consecutive frames before an obstacle is reported
+    confirm_time_s: float = 0.3    # s of sensor time a track must have been observed (frames x interval, first frame included: 0.3 s = 3 frames at 10 Hz, the v0.3 persistence; 0.5 = 5 frames); applied when the caller supplies the frame interval (the Detector does); 0 = hits only
+    hit_window: int = 10           # frames of a track's recent history kept for min_hit_fraction
+    min_hit_fraction: float = 0.6  # a track must have been matched in this share of its last hit_window frames (flickering structures are not reported); 0 = off
+    zone_window: int = 10          # hits over which the zone (gauge / advisory) is decided (5 in v0.3)
+    zone_min_fraction: float = 0.6 # share of those hits inside the strict gauge for the track to be an obstacle (0.5 = majority, v0.3)
     max_misses: int = 3            # frames a track survives without a match
     conf_gain: float = 0.35        # confidence added per hit
     conf_decay: float = 0.25       # confidence removed per miss

@@ -29,6 +29,7 @@ class Cluster:
     zone: str = "warning"        # 'gauge' (inside the strict gauge) or 'warning'
     n_gauge: int = 0             # voxels inside the strict gauge
     retro: bool = False          # demoted to advisory as a retro-reflective sign / marker
+    reason: str = ""             # why the cluster is advisory although it has gauge voxels ('' = it has not / it is an obstacle)
 
     @property
     def size(self) -> np.ndarray:
@@ -71,7 +72,7 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
                   in_gauge: np.ndarray, cfg: ClusterConfig,
                   frame_idx: Optional[np.ndarray] = None, axis_valid: float = 1e9,
                   min_points_factor: float = 1.0, factor_range: float = 0.0,
-                  smear_max_length: float = 0.0) -> List[Cluster]:
+                  smear_max_length: float = 0.0, smear_max_width: float = 0.0) -> List[Cluster]:
     """Voxelise candidates, cluster the voxels, describe and filter the clusters.
 
     ``xyz``/``intensity``/``dy``/``h``/``in_gauge`` are the corridor candidates;
@@ -84,7 +85,12 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
     than this along X is a static object shifted by a wrong ego speed (or a moving one), so
     it is re-described from its current-frame points only, with single-frame thresholds - a
     wrong speed then degrades to single-frame behaviour instead of losing the object to the
-    ``max_extent`` rule.
+    ``max_extent`` rule; ``smear_max_width`` is the same guard across the track (a moving
+    person merged over 0.5 s, 21.09 review).
+
+    v0.5 infrastructure signatures (``column``, ``wall_face``, ``elevated``, ``floating``,
+    ``edge``; docs/ALGORITHM.md section 3.3) demote a cluster to advisory and record the
+    rule in ``Cluster.reason``; nothing is dropped by them.
     """
     out: List[Cluster] = []
     if xyz.shape[0] == 0:
@@ -103,7 +109,8 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
         bmin, bmax = pts.min(axis=0), pts.max(axis=0)
         size = bmax - bmin
         factor = min_points_factor
-        if smear_max_length > 0 and size[0] > smear_max_length and (frame_idx[idx] < 0).any():
+        merged = smear_max_length > 0 and (frame_idx[idx] < 0).any()
+        if merged and (size[0] > smear_max_length or (smear_max_width > 0 and size[1] > smear_max_width)):
             idx = idx[frame_idx[idx] >= 0]
             if idx.size == 0:
                 continue
@@ -143,9 +150,32 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
         n_gauge = int(np.unique(inv[idx][in_gauge[idx]]).size)
         zone = "gauge" if n_gauge >= gauge_min else "warning"
         h_min = float(h[idx].min())
+        reason = ""
         # beyond the range where the axis is supported by observed tunnel boundaries, or
         # hanging entirely in the top zone (cables, lamps): advisory only
-        if dist > axis_valid or h_min > cfg.overhead_min_height:
+        if dist > axis_valid:
+            reason = "beyond_axis"
+        elif h_min > cfg.overhead_min_height:
+            reason = "overhead"
+        elif zone == "gauge":
+            # v0.5 infrastructure signatures (measured on the organizer bags, EXPERIMENTS.md 1b)
+            hh = h[idx]
+            ady = np.abs(dy[idx])
+            if cfg.column_min_height > 0 and size[2] > cfg.column_min_height and size[1] < cfg.column_max_width:
+                reason = "column"                  # column, post, gate leg: taller than any listed object, narrow
+            elif cfg.elevated_min_height > 0 and h_min > cfg.elevated_min_height and size[1] > cfg.elevated_min_width:
+                reason = "elevated"                # beam / roof strip / gantry spanning the corridor above the rails
+            elif cfg.floating_min_height > 0 and h_min > cfg.floating_min_height and size[2] < cfg.floating_max_height \
+                    and size[1] < cfg.floating_max_width:
+                reason = "floating"                # sign, lamp, bracket: small and not touching the ground
+            elif cfg.edge_min_lateral > 0 and abs(lateral) > cfg.edge_min_lateral \
+                    and size[0] > cfg.edge_min_aspect * max(float(size[1]), 0.05) and size[2] < cfg.edge_max_height:
+                reason = "edge"                    # duct / bench / platform-edge fragment along the corridor edge
+            elif cfg.wall_face_min_height > 0 and size[2] > cfg.wall_face_min_height and h_max > cfg.overhead_min_height:
+                low = hh < cfg.overhead_min_height
+                if low.sum() >= 3 and ady[low].min() > cfg.wall_face_min_inner and ady[low].max() > cfg.wall_face_edge:
+                    reason = "wall_face"           # wall / portal face pulled in by the axis: hugs the edge, centre clear
+        if reason:
             zone = "warning"
         mean_int = float(intensity[idx].mean()) if intensity is not None else 0.0
         # retro-reflective plate / sign / marker: intensity is reflectivity %, > 100 only from
@@ -158,6 +188,7 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
                     and size[1] < cfg.retro_max_width):
                 retro = True
                 zone = "warning"
+                reason = reason or "retro"
         width = max(float(size[1]), 0.15)
         height = max(float(size[2]), 0.15)
         n_exp = float(expected_points(np.linalg.norm(pts.mean(axis=0)), width, height))
@@ -168,7 +199,7 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
             points_idx=fi[fi >= 0], n=n_vox, n_raw=int(idx.size), centroid=pts.mean(axis=0),
             bbox_min=bmin, bbox_max=bmax, distance=dist, lateral=lateral,
             height_min=h_min, height_max=h_max, intensity=mean_int,
-            n_expected=n_exp, score=score, zone=zone, n_gauge=n_gauge, retro=retro,
+            n_expected=n_exp, score=score, zone=zone, n_gauge=n_gauge, retro=retro, reason=reason,
         ))
     out.sort(key=lambda c: c.distance)
     return out
