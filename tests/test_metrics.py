@@ -3,7 +3,7 @@ import json
 
 import pytest
 
-from resense.cli import main
+from resense.cli import run_cli
 from resense.metrics import Evaluation, GTObstacle, frame_stride, gt_key, gt_objects, load_gt
 
 FROZEN_SUMMARY_KEYS = {"frames", "empty_frames", "recall", "recall_by_range", "per_bin_counts", "fp_frames",
@@ -126,12 +126,12 @@ def test_summarize_cli(tmp_path, capsys):
         for d in _empty_bag_every_5th():
             fh.write(json.dumps(d) + "\n")
         fh.write("---\nnot json\n")            # a status capture has separators and noise
-    out = main(["summarize", str(path), "--speed-mps", "10", "--json"])
+    out = run_cli(["summarize", str(path), "--speed-mps", "10", "--json"])
     printed = json.loads(capsys.readouterr().out)
     assert printed["fp_events"] == out["fp_events"] == 2
     assert printed["fp_events_per_km"] == pytest.approx(2 / 0.045)
     assert printed["unparsed_lines"] == 1
-    main(["summarize", str(path)])
+    run_cli(["summarize", str(path)])
     text = capsys.readouterr().out
     assert "alarm events (distinct confirmed ids): 2" in text and "CAVEAT" in text and "every 5th" in text
 
@@ -145,9 +145,9 @@ def test_summarize_cli_with_labels(tmp_path, capsys):
     with open(path, "w") as fh:
         for d in _empty_bag_every_5th():
             fh.write(json.dumps(d) + "\n")
-    out = main(["summarize", str(path), "--gt", str(tmp_path / "gt.json"), "--json"])
+    out = run_cli(["summarize", str(path), "--gt", str(tmp_path / "gt.json"), "--json"])
     assert out["recall"] == 1.0 and out["frames"] == 10 and out["empty_frames"] == 9
     assert out["fp_events"] == 1                      # id 7 matched the box at frame 10, id 9 remains
-    out = main(["summarize", str(path), "--gt", str(tmp_path / "gt.json"), "--labelled-only", "--json"])
+    out = run_cli(["summarize", str(path), "--gt", str(tmp_path / "gt.json"), "--labelled-only", "--json"])
     assert out["frames"] == 3 and out["fp_frames"] == 2 and out["fp_events"] == 0   # frames 15 and 20 alarm with id 7
     capsys.readouterr()

@@ -40,7 +40,7 @@ per frame in pure Python. Known false-positive sources and next steps: [`docs/EX
 
 ```bash
 pip install -e ".[dev]"                       # numpy scipy scikit-learn pyyaml + rosbags matplotlib open3d pytest
-pytest -q                                     # expect "15 passed"; "1 skipped" means open3d is missing and nothing ran
+pytest -q                                     # expect no skips: "skipped" means open3d is missing (RESENSE_REQUIRE_SYNTHETIC=1 makes that fail, as in CI)
 
 # unpack the dataset (see docs/DATASET.md), then:
 resense info  /data/for_hackathon/roundT_doubleT

@@ -7,7 +7,7 @@ import os
 import numpy as np
 import pytest
 
-from resense.cli import main
+from resense.cli import run_cli
 from resense.config import SensorConfig
 from resense.frame import axis_matrix
 from resense.io import npy_frame_index
@@ -52,7 +52,7 @@ def test_npy_frame_index_from_name():
 def test_eval_npy_against_labels(labelled_npy, tmp_path):
     d = labelled_npy
     jsonl = tmp_path / "res.jsonl"
-    out = main(["eval", "--npy", str(d), "--gt", str(d / "gt.json"), "--repeat", "3", "--out", str(jsonl)])
+    out = run_cli(["eval", "--npy", str(d), "--gt", str(d / "gt.json"), "--repeat", "3", "--out", str(jsonl)])
     assert out["frames"] == 3 and out["empty_frames"] == 2 and out["gt_frames"] == 2
     assert out["recall"] == 1.0 and out["recall_by_class"] == {"box0.5": 1.0}
     assert out["first_detection_distance"] == {"box_a": 40.0}
@@ -62,19 +62,19 @@ def test_eval_npy_against_labels(labelled_npy, tmp_path):
     assert [l["frame"] for l in lines] == [0, 5, 10]          # keys come from the file names
     assert lines[2]["obstacle"] and abs(lines[2]["nearest_distance"] - 40.0) < 2.0
     # summarize on the JSONL reproduces the evaluation
-    s = main(["summarize", str(jsonl), "--gt", str(d / "gt.json"), "--json"])
+    s = run_cli(["summarize", str(jsonl), "--gt", str(d / "gt.json"), "--json"])
     assert s["recall"] == 1.0 and s["fp_events"] == 0 and s["alarm_frames"] == 1
 
 
 def test_eval_npy_labelled_only_and_stride(labelled_npy):
     d = labelled_npy
-    out = main(["eval", "--npy", str(d), "--gt", str(d / "gt.json"), "--labelled-only", "--text"])
+    out = run_cli(["eval", "--npy", str(d), "--gt", str(d / "gt.json"), "--labelled-only", "--text"])
     assert out["frames"] == 2 and out["frames_processed"] == 3     # frame 5 processed but not counted
     assert out["repeat"] == 1 and out["recall"] == 0.0              # a bag / npy source is processed once per frame:
-    out = main(["eval", "--npy", str(d), "--gt", str(d / "gt.json"), "--every", "2", "--repeat", "3"])
+    out = run_cli(["eval", "--npy", str(d), "--gt", str(d / "gt.json"), "--every", "2", "--repeat", "3"])
     assert out["frames"] == 2 and out["recall"] == 1.0 and out["frame_stride"] == 10   # ... persistence needs --repeat
     with pytest.raises(SystemExit):
-        main(["eval", "--npy", str(d)])                            # labels are required for a bag / npy source
+        run_cli(["eval", "--npy", str(d)])                            # labels are required for a bag / npy source
 
 
 def test_eval_gt_bbox_row(labelled_npy, tmp_path):
@@ -86,7 +86,7 @@ def test_eval_gt_bbox_row(labelled_npy, tmp_path):
     del box
     p = tmp_path / "gt_bbox.json"
     p.write_text(json.dumps(gt))
-    out = main(["eval", "--npy", str(d), "--gt", str(p), "--repeat", "3"])
+    out = run_cli(["eval", "--npy", str(d), "--gt", str(p), "--repeat", "3"])
     assert out["recall"] == 1.0 and out["first_detection_distance"] == {"box_bbox": 40.0}
 
 
@@ -105,13 +105,13 @@ def test_catalogue_spec_and_unknown_name():
     with pytest.raises(KeyError):
         catalogue_spec("piano", 10.0)
     with pytest.raises(SystemExit):
-        main(["inject", "--npy", "/nonexistent", "--out", "/tmp/never", "--kinds", "piano"])
+        run_cli(["inject", "--npy", "/nonexistent", "--out", "/tmp/never", "--kinds", "piano"])
 
 
 def test_inject_static_roundtrip(synth_npy_dir, tmp_path):
     """Two backgrounds, one catalogue object each at 35 m inside the gauge -> eval finds both."""
     out = tmp_path / "inj"
-    main(["inject", "--npy", str(synth_npy_dir), "--out", str(out), "--kinds", "box0.5,person",
+    run_cli(["inject", "--npy", str(synth_npy_dir), "--out", str(out), "--kinds", "box0.5,person",
           "--distances", "35:35", "--negative-fraction", "0", "--seed", "3"])
     gt = json.loads((out / "gt.json").read_text())
     assert gt["_meta"]["source"] == "inject" and gt["_meta"]["sequence"] == 1
@@ -123,7 +123,7 @@ def test_inject_static_roundtrip(synth_npy_dir, tmp_path):
         assert r["seq_step"] == 0 and r["speed_mps"] == 0.0
     z = np.load(out / "00000.npz")
     assert {"xyz", "intensity", "labels", "stamp"} <= set(z.files) and (z["labels"] > 0).sum() == rows[0]["n_points"]
-    res = main(["eval", str(out)])
+    res = run_cli(["eval", str(out)])
     assert res["repeat"] == 3 and res["frames"] == 2 and res["recall"] == 1.0 and res["fp_events"] == 0
     assert set(res["recall_by_class"]) <= {"box0.5", "person"}
 
@@ -133,7 +133,7 @@ def test_inject_sequence_and_augment_roundtrip(synth_npy_dir, tmp_path):
     augmented background: files in order, rows carry seq / seq_step / speed_mps, and eval with
     the automatic --repeat 1 confirms the object before the last step."""
     out = tmp_path / "seq"
-    main(["inject", "--npy", str(synth_npy_dir), "--limit", "1", "--out", str(out), "--kinds", "box1.0",
+    run_cli(["inject", "--npy", str(synth_npy_dir), "--limit", "1", "--out", str(out), "--kinds", "box1.0",
           "--distances", "50:50", "--negative-fraction", "0", "--sequence", "4", "--speed", "20", "--augment",
           "--seed", "5"])
     gt = json.loads((out / "gt.json").read_text())
@@ -145,15 +145,15 @@ def test_inject_sequence_and_augment_roundtrip(synth_npy_dir, tmp_path):
     assert all(gt[k][0]["seq"] == 0 and gt[k][0]["speed_mps"] == 20.0 and gt[k][0]["label"] == "box1.0_0_0" for k in keys)
     stamps = [float(np.load(out / (k + ".npz"))["stamp"]) for k in keys]
     assert np.allclose(np.diff(stamps), 0.1)
-    res = main(["eval", str(out)])
+    res = run_cli(["eval", str(out)])
     assert res["repeat"] == 1 and res["frames"] == 4
     assert res["first_detection_distance"]["box1.0_0_0"] >= 44.0        # confirmed by the last step at the latest
     assert res["fp_events"] == 0
     # negatives outside the gauge must not alarm and are not counted as gauge ground truth
     out2 = tmp_path / "neg"
-    main(["inject", "--npy", str(synth_npy_dir), "--limit", "1", "--out", str(out2), "--kinds", "plank",
+    run_cli(["inject", "--npy", str(synth_npy_dir), "--limit", "1", "--out", str(out2), "--kinds", "plank",
           "--distances", "30:30", "--negative-fraction", "1", "--seed", "6"])
     gt2 = json.loads((out2 / "gt.json").read_text())
     assert gt2["00000"][0]["in_gauge"] is False and abs(gt2["00000"][0]["lateral"]) > 2.0
-    res2 = main(["eval", str(out2)])
+    res2 = run_cli(["eval", str(out2)])
     assert res2["empty_frames"] == 1 and res2["recall"] is None and res2["fp_frames"] == 0

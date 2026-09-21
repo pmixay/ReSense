@@ -13,7 +13,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from resense.cli import main
+from resense.cli import run_cli
 from resense.clustering import Cluster, find_clusters
 from resense.config import DetectorConfig, SensorConfig
 from resense.gauge import corridor_mask, point_in_polygon, widened_profile

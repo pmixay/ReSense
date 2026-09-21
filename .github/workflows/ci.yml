@@ -56,7 +56,7 @@ jobs:
       - run: docker build -t resense:ci --build-arg WITH_TOOLS=1 -f docker/Dockerfile .
       - name: unit tests inside the image (with open3d, so the synthetic-tunnel suite really runs)
         # -w / so that "import resense" resolves to the installed package, not to the source tree in the cwd
-        run: docker run --rm -w / resense:ci python3 -m pytest -q /opt/resense/tests
+        run: docker run --rm -w / -e RESENSE_REQUIRE_SYNTHETIC=1 resense:ci python3 -m pytest -q -rs /opt/resense/tests
       - name: ROS 2 package is importable and the launch file resolves
         run: docker run --rm resense:ci bash -lc "ros2 pkg executables resense_ros && ros2 launch resense_ros detector.launch.py --print >/dev/null"
       - name: ROS 2 smoke test — a synthetic bag through the node inside the image (no dataset needed)

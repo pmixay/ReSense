@@ -189,7 +189,7 @@ Object keys (the first seven are what `resense inject` has always written; keep 
 | `kind` | string | geometry class: `person`, `box`, `plank`, `cylinder`, `sphere` for injected objects; for real labels any short class string (`person`, `box`, `bag`, `trolley`, `sign`, `unknown`) |
 | `size` | `[L, W, H]` m | extent along the track, across it, and height |
 | `distance` | m | **X in the vehicle frame (forward) of the object's nearest point**, measured from the sensor. This is what `nearest_distance` reports and what the match tolerance is applied to |
-| `lateral` | m | lateral offset of the object centre from the **track axis**, + left. A tool that only knows the vehicle frame may use the object's Y: the axis is within 0.25 m of the sensor axis in all six bags, well inside the 1 m match tolerance |
+| `lateral` | m | lateral offset of the object centre from the **track axis**, + left. A tool that only knows the vehicle frame may use the object's Y: the axis is typically within 0.25 m of the sensor axis (single frames up to 0.7 m on the platform and curve bags), inside the 1 m match tolerance; label relative to the track axis when the tool knows it |
 | `yaw_deg` | deg | rotation about Z; 0 when unknown |
 | `reflectivity` | 0–255 | mean intensity of the object's returns (reflectivity %, > 100 retro-reflective); 0 when unknown |
 | `label` | string | **one string per physical object, kept across frames** (`person_crossing` in every frame it appears in). Recall is per object-frame; first-detection distance is per label, so a label that changes every frame breaks that metric |
@@ -231,12 +231,12 @@ Record in the table at the top of this file: **duration, frame count, size**, th
 **topic name(s)** and message count, the **`frame_id`**, the **`width`** of the first
 message (307 200 = 120° window, 921 600 = full turn), the **point count** of the first frame
 and the **azimuth span** of its valid returns (`atan2(x, -y)` in the sensor frame — a 120°
-window spans about 100° of valid returns, a full turn 360°), and the **frame period**
+window spans about 100° of valid returns, well over 120° for the full-turn recording: about 210° of valid returns in `doubleT_obstacle`), and the **frame period**
 (stamp gaps ≈ 0.1 s). Then:
 
 1. `resense run --bag <bag> --limit 30` — the track model must lock (`yc` stable within a
-   few cm, `rail_score` > 0.05 in the JSONL) and no alarm should appear on an empty tunnel
-   start; if `yc` jumps or `corr` is 0, the axis mapping (`sensor.forward/left/up`) or the
+   few cm, median `track.rail_score` of 0.15–0.19 over the run in the JSONL; single frames can drop to 0) and no alarm should appear on an empty tunnel
+   start; if `track.center` jumps or `n_corridor` is 0 in the JSONL (`yc` / `corr` in the `resense run` output), the axis mapping (`sensor.forward/left/up`) or the
    topic is wrong for that bag.
 2. `scripts/cache_frames.py <bag> cache/<bag> --every 10` — cached frames for P3/P4.
 3. If the bag contains an obstacle: label it with the tool (format above), keep the file as

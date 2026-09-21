@@ -17,17 +17,19 @@ def _cfg(args) -> DetectorConfig:
     return DetectorConfig.from_yaml(args.config) if args.config else DetectorConfig()
 
 
-def _frames(args, cfg, npy_stride: bool = False):
-    """(index, Frame) iterator for --bag / --npy. ``--every/--start/--limit`` apply to a bag;
-    for a cached directory they apply only when ``npy_stride`` is set (inject), so that run /
-    bench keep their behaviour of reading every file."""
+def _frames(args, cfg, npy_stride: bool = True):
+    """(index, Frame) iterator for --bag / --npy. ``--every/--start/--limit`` apply to a bag and
+    to a cached directory alike; for cached files the index (and the 0.1 s stamp) comes from the
+    bag frame number at the end of the file name (``scripts/cache_frames.py`` output), so a
+    strided cache keeps its bag time."""
     from resense.io import iter_bag_frames, iter_npy_frames
     if args.bag:
         return iter_bag_frames(args.bag, cfg.sensor, topic=args.topic, every=args.every,
                                start=args.start, limit=args.limit)
     if npy_stride:
-        return iter_npy_frames(args.npy, cfg.sensor, every=args.every, start=args.start, limit=args.limit)
-    return iter_npy_frames(args.npy, cfg.sensor)
+        return iter_npy_frames(args.npy, cfg.sensor, every=args.every, start=args.start, limit=args.limit,
+                               index_from_name=True)
+    return iter_npy_frames(args.npy, cfg.sensor, index_from_name=True)
 
 
 def cmd_info(args):
@@ -294,7 +296,9 @@ def cmd_bench(args):
         print(f"{k:10s} mean {v.mean():7.1f} ms  p95 {np.percentile(v, 95):7.1f} ms  max {v.max():7.1f} ms")
 
 
-def main(argv=None):
+def run_cli(argv=None):
+    """Parse ``argv`` and run the command; returns the command's result (a dict for ``eval`` /
+    ``summarize``, else None) so that tests can inspect it."""
     p = argparse.ArgumentParser(prog="resense", description=__doc__)
     sub = p.add_subparsers(dest="cmd", required=True)
 
@@ -367,6 +371,12 @@ def main(argv=None):
 
     args = p.parse_args(argv)
     return args.func(args)
+
+
+def main(argv=None) -> int:
+    """Console-script entry point (``resense ...``): exit status 0 on success."""
+    run_cli(argv)
+    return 0
 
 
 if __name__ == "__main__":

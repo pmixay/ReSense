@@ -72,7 +72,8 @@ def iter_npy_frames(directory: str, sensor: SensorConfig, pattern: str = "*.npy"
     ``index`` is the file's position in the full sorted list (so ``every`` / ``start`` /
     ``limit`` behave like they do for a bag), or, with ``index_from_name``, the number at the
     end of the file name when there is one (the bag frame index for ``scripts/cache_frames.py``
-    output). The stamp is ``position * 0.1`` s: cached files carry no bag time.
+    output). The stamp is ``index * 0.1`` s: cached files carry no bag time, but with
+    ``index_from_name`` a strided cache keeps the bag's frame spacing.
     """
     files = sorted(glob.glob(os.path.join(directory, pattern)))
     n_out = 0
@@ -84,7 +85,7 @@ def iter_npy_frames(directory: str, sensor: SensorConfig, pattern: str = "*.npy"
         if index_from_name:
             named = npy_frame_index(f)
             idx = i if named is None else named
-        yield idx, frame_from_compact(arr, sensor, stamp=float(i) * 0.1, frame_id=os.path.basename(f))
+        yield idx, frame_from_compact(arr, sensor, stamp=float(idx) * 0.1, frame_id=os.path.basename(f))
         n_out += 1
         if limit is not None and n_out >= limit:
             return
