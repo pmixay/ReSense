@@ -60,8 +60,10 @@ class EgoSpeedEstimate:
     speed_tracks: Optional[float] = None
 
 
-def texture_profiles(xyz: np.ndarray, track: TrackModel) -> Tuple[np.ndarray, np.ndarray]:
-    """Left / right side histograms of returns along X (``BIN`` metres, ``X_RANGE``)."""
+def texture_profiles(xyz: np.ndarray, track: TrackModel, dy_all: Optional[np.ndarray] = None,
+                     h_all: Optional[np.ndarray] = None) -> Tuple[np.ndarray, np.ndarray]:
+    """Left / right side histograms of returns along X (``BIN`` metres, ``X_RANGE``);
+    ``dy_all`` / ``h_all`` are the frame's corridor coordinates when the caller has them."""
     x0, x1 = X_RANGE
     nb = int(round((x1 - x0) / BIN))
     X = xyz[:, 0]
@@ -70,8 +72,11 @@ def texture_profiles(xyz: np.ndarray, track: TrackModel) -> Tuple[np.ndarray, np
     if P.shape[0] == 0:
         return np.zeros(nb), np.zeros(nb)
     Xs = P[:, 0].astype(np.float64)
-    dy = P[:, 1] - track.center_y(Xs)
-    h = P[:, 2] - track.rail_z(Xs)
+    if dy_all is not None and h_all is not None:
+        dy, h = dy_all[sel], h_all[sel]
+    else:
+        dy = P[:, 1] - track.center_y(Xs)
+        h = P[:, 2] - track.rail_z(Xs)
     ady = np.abs(dy)
     side = (h > H_BAND[0]) & (h < H_BAND[1]) & (ady > DY_BAND[0]) & (ady < DY_BAND[1])
     b = np.clip(((Xs - x0) / BIN).astype(int), 0, nb - 1)
@@ -140,9 +145,10 @@ class EgoSpeedEstimator:
         self.last_speed = None
 
     # -- cue 1 ---------------------------------------------------------------
-    def profile_cue(self, xyz: np.ndarray, track: TrackModel, dt: float):
+    def profile_cue(self, xyz: np.ndarray, track: TrackModel, dt: float,
+                    dy_all: Optional[np.ndarray] = None, h_all: Optional[np.ndarray] = None):
         """(speed, confidence, corr) from the texture profile, or None while warming up."""
-        left, right = texture_profiles(xyz, track)
+        left, right = texture_profiles(xyz, track, dy_all, h_all)
         raw = (normalise_profile(left), normalise_profile(right))
         if self._bg is None:
             self._bg = raw
@@ -172,8 +178,11 @@ class EgoSpeedEstimator:
 
     # -- cue 2 ---------------------------------------------------------------
     @staticmethod
-    def tracks_cue(tracks: Sequence, dt: float):
-        """(speed, n) from the along-track velocity of persistent tracks, or None."""
+    def tracks_cue(tracks: Sequence, dt: float, min_speed: float = 0.0):
+        """(speed, n) from the along-track velocity of persistent tracks, or None. Below
+        ``min_speed`` nothing is reported: a stopped train (0 m/s from static tracks) must not
+        merge frames, because a person walking across the track then smears laterally
+        (21.09 review on ``doubleT_obstacle``), and the single frame is dense enough anyway."""
         v = [-float(t.velocity[0]) / max(dt, 1e-3) for t in tracks
              if t.hits >= 3 and t.misses == 0 and t.last is not None]
         if len(v) < 2:
@@ -182,14 +191,17 @@ class EgoSpeedEstimator:
         med = float(np.median(v))
         if np.median(np.abs(v - med)) > 1.5:
             return None
+        if abs(med) < min_speed:
+            return None
         return med, int(v.size)
 
     # -- fusion --------------------------------------------------------------
     def estimate(self, xyz: np.ndarray, track: TrackModel, dt: float,
-                 tracks: Sequence = ()) -> EgoSpeedEstimate:
+                 tracks: Sequence = (), dy_all: Optional[np.ndarray] = None,
+                 h_all: Optional[np.ndarray] = None) -> EgoSpeedEstimate:
         cfg = self.cfg
-        prof = self.profile_cue(xyz, track, dt)
-        trk = self.tracks_cue(tracks, dt)
+        prof = self.profile_cue(xyz, track, dt, dy_all, h_all)
+        trk = self.tracks_cue(tracks, dt, cfg.tracks_min_speed)
         speed, conf, method, corr = None, 0.0, "none", 0.0
         sp = st = None
         if prof is not None:

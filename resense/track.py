@@ -4,9 +4,15 @@
   otherwise shifts the gauge by metres at 100+ m.
 * The lateral axis and the rail-head height are self-calibrated from the two rail ridges
   seen in the near range (4-30 m), so the pipeline does not depend on the sensor mounting
-  (the hackathon bags come from at least two different mounts).
-* Yaw/curvature of the axis beyond the rail range is, in v0, a configured constant;
-  estimating it from the tunnel walls is the main open research item (docs/RESEARCH.md).
+  (the hackathon bags come from at least two different mounts). The ridge profile is built
+  in the lateral coordinate of the previous axis (its yaw and curvature removed), so that in
+  a curve the rails are straight lines in the profile instead of a 0.5 m smear (v0.5).
+* The yaw of the axis at the vehicle comes from the same rail pair measured per along-track
+  slab (v0.5): the rails are the sharpest parallel reference there is. The tunnel boundaries
+  (walls, column rows, ducts) then contribute the curvature only; a free quadratic through a
+  diverging or interrupted boundary traded yaw against curvature and jittered by up to a
+  degree per frame on the organizer bags (docs/EXPERIMENTS.md section 1b). Yaw and
+  curvature are rate-limited frame to frame.
 """
 from __future__ import annotations
 
@@ -24,14 +30,16 @@ class TrackModel:
     floor_range: tuple               # (x_min, x_max) where the fit is supported by data
     center: float                    # lateral offset of the track axis at X=0 (m, + left)
     yaw: float                       # rad, corridor yaw
-    curvature: float                 # 1/m
+    curvature: float                 # 1/m (1/R, + = left)
     rail_offset: float = 0.35        # rail head height above the floor (bed) reference
     rail_score: float = 0.0          # ridge prominence of the last rail detection (m)
-    wall_quality: float = -1.0       # rms of the boundary fit that gave yaw/curvature (m)
+    wall_quality: float = -1.0       # rms of the boundary fit that gave the curvature (m)
     axis_valid: float = 1e9          # X up to which the axis is supported by observed boundaries
     n_bins: int = 0                  # number of floor bins used
     residual: float = 0.0            # rms residual of the floor fit (m)
     floor_verified: float = 0.0      # X up to which the extrapolated bed is confirmed by the side-structure base
+    rail_slabs: int = 0              # v0.5: near-range slabs in which the rail pair was found (yaw support)
+    axis_sides: int = 0              # v0.5: tunnel boundaries fitted this frame (0, 1 or 2)
 
     def floor_z(self, X) -> np.ndarray:
         """Bed reference height at along-track coordinate X, linearly extrapolated beyond
@@ -39,8 +47,12 @@ class TrackModel:
         X = np.asarray(X, dtype=np.float64)
         x0, x1 = self.floor_range
         Xc = np.clip(X, x0, x1)
-        z = np.polyval(self.floor_coef, Xc)
-        slope = np.polyval(np.polyder(self.floor_coef), Xc)
+        c = np.asarray(self.floor_coef, dtype=np.float64)
+        if c.size == 3:                           # the common case, written out (2x faster than polyval)
+            a2, a1, a0 = c
+            return (a2 * Xc + a1) * Xc + a0 + (2.0 * a2 * Xc + a1) * (X - Xc)
+        z = np.polyval(c, Xc)
+        slope = np.polyval(np.polyder(c), Xc)
         return z + slope * (X - Xc)
 
     def rail_z(self, X) -> np.ndarray:
@@ -62,6 +74,8 @@ class TrackModel:
             "n_bins": int(self.n_bins),
             "residual": round(float(self.residual), 3),
             "floor_verified": round(float(self.floor_verified), 1),
+            "rail_slabs": int(self.rail_slabs),
+            "axis_sides": int(self.axis_sides),
         }
 
 
@@ -72,6 +86,33 @@ def default_track_model(cfg: TrackConfig, sensor_height: float = 1.5) -> TrackMo
         center=cfg.lateral_center, yaw=np.radians(cfg.yaw_deg), curvature=cfg.curvature,
         rail_offset=cfg.rail_offset_default,
     )
+
+
+def bin_percentile(values: np.ndarray, bins: np.ndarray, nb: int, percentile: float, min_points: int = 1,
+                   payload: Optional[np.ndarray] = None):
+    """Per-bin percentile of ``values`` (linear interpolation, as ``np.percentile``), vectorised:
+    one sort instead of a Python loop with a percentile call per bin. Returns (prof, counts)
+    with ``prof`` NaN where a bin holds fewer than ``min_points`` values; with ``payload`` the
+    payload of the value at the percentile rank is returned as a third array (nearest rank)."""
+    prof = np.full(nb, np.nan)
+    counts = np.bincount(bins, minlength=nb)[:nb]
+    if values.size == 0:
+        return (prof, counts, np.full(nb, np.nan)) if payload is not None else (prof, counts)
+    order = np.lexsort((values, bins))
+    v = values[order]
+    starts = np.concatenate([[0], np.cumsum(counts)[:-1]])
+    ok = counts >= max(1, int(min_points))
+    pos = percentile / 100.0 * (counts[ok] - 1)
+    lo = np.floor(pos).astype(int)
+    frac = pos - lo
+    i0 = starts[ok] + lo
+    i1 = np.minimum(i0 + 1, starts[ok] + counts[ok] - 1)
+    prof[ok] = v[i0] * (1.0 - frac) + v[i1] * frac
+    if payload is not None:
+        out = np.full(nb, np.nan)
+        out[ok] = payload[order][np.where(frac > 0.5, i1, i0)]
+        return prof, counts, out
+    return prof, counts
 
 
 def _fit_floor(xyz: np.ndarray, cfg: TrackConfig, prior: TrackModel):
@@ -92,24 +133,16 @@ def _fit_floor(xyz: np.ndarray, cfg: TrackConfig, prior: TrackModel):
     # bins grow with range (2 m near, 2.5x beyond 40 m) so that the sparse far bed still fills them
     edges = np.concatenate([np.arange(x0, min(40.0, x1), cfg.floor_bin),
                             np.arange(max(40.0, x0), x1 + 2.5 * cfg.floor_bin, 2.5 * cfg.floor_bin)])
+    nb = edges.size - 1
     idx = np.digitize(Xb, edges) - 1
-    order = np.argsort(idx, kind="stable")
-    idx_s, Z_s = idx[order], Zb[order]
-    bounds = np.flatnonzero(np.diff(idx_s)) + 1
-    starts = np.concatenate([[0], bounds])
-    ends = np.concatenate([bounds, [idx_s.size]])
-    xs, zs, ws = [], [], []
-    for s, e in zip(starts, ends):
-        n = e - s
-        b = idx_s[s]
-        if n < cfg.floor_min_points or b < 0 or b >= edges.size - 1:
-            continue
-        xs.append(0.5 * (edges[b] + edges[b + 1]))
-        zs.append(np.percentile(Z_s[s:e], cfg.floor_percentile))
-        ws.append(min(n, 200))
-    if len(xs) < 3:
+    inb = (idx >= 0) & (idx < nb)
+    prof, counts = bin_percentile(Zb[inb].astype(np.float64), idx[inb], nb, cfg.floor_percentile, cfg.floor_min_points)
+    ok = np.isfinite(prof)
+    if ok.sum() < 3:
         return None
-    xs, zs, ws = np.array(xs), np.array(zs), np.sqrt(np.array(ws, dtype=np.float64))
+    xs = 0.5 * (edges[:-1] + edges[1:])[ok]
+    zs = prof[ok]
+    ws = np.sqrt(np.minimum(counts[ok], 200).astype(np.float64))
     near = xs < 40.0
     if near.sum() < 3:
         near = np.ones_like(near)
@@ -135,83 +168,110 @@ def _fit_floor(xyz: np.ndarray, cfg: TrackConfig, prior: TrackModel):
     return coef, (float(xs.min()), float(xs.max())), int(xs.size), rms
 
 
-def _fit_side(xb: np.ndarray, yb: np.ndarray, cfg: TrackConfig, mean_abs_dy: float = 0.0):
-    """Robust quadratic through one boundary; returns (c1, c2, rms, mean_abs_dy) or None."""
+# ---------------------------------------------------------------------------
+# tunnel boundaries -> curvature (and yaw when the rails give none)
+# ---------------------------------------------------------------------------
+
+def _quad(xb: np.ndarray, yb: np.ndarray, t_fixed: Optional[float]):
+    """Least squares of ``y = a + t x + k x^2 / 2`` (``k`` = curvature 1/R); with ``t_fixed``
+    the tangent is given (by the rails) and only ``a`` and ``k`` are free. Returns (a, t, k)."""
+    if t_fixed is None:
+        coef = np.polyfit(xb, yb, 2)                  # y = c0 x^2 + c1 x + c2
+        return float(coef[2]), float(coef[1]), 2.0 * float(coef[0])
+    A = np.stack([np.ones_like(xb), 0.5 * xb * xb], axis=1)
+    sol, *_ = np.linalg.lstsq(A, yb - t_fixed * xb, rcond=None)
+    return float(sol[0]), float(t_fixed), float(sol[1])
+
+
+def _fit_side(xb: np.ndarray, yb: np.ndarray, cfg: TrackConfig, mean_abs_dy: float = 0.0,
+              t_fixed: Optional[float] = None):
+    """Robust quadratic through one boundary; returns (t, k, rms, mean_abs_dy, x_max) or None.
+    ``k`` is the curvature 1/R of the boundary (the track's, when it is parallel). Bins further
+    than ``walls_max_residual`` from the fit are dropped in two passes. With the tangent fixed
+    by the rails, a boundary that is not parallel to the track (a diverging tunnel, a platform
+    hall wall) cannot be fitted within ``walls_max_rms`` and is rejected instead of bending
+    the axis."""
     if xb.size < cfg.walls_min_bins:
         return None
-    coef = np.polyfit(xb, yb, 2)
+    a, t, k = _quad(xb, yb, t_fixed)
     for _ in range(2):
-        res = yb - np.polyval(coef, xb)
+        res = yb - (a + t * xb + 0.5 * k * xb * xb)
         keep = np.abs(res) < cfg.walls_max_residual
         if keep.sum() < cfg.walls_min_bins:
             return None
-        coef = np.polyfit(xb[keep], yb[keep], 2)
         xb, yb = xb[keep], yb[keep]
-    res = yb - np.polyval(coef, xb)
+        a, t, k = _quad(xb, yb, t_fixed)
+    res = yb - (a + t * xb + 0.5 * k * xb * xb)
     rms = float(np.sqrt(np.mean(res ** 2)))
     if rms > cfg.walls_max_rms:
         return None
-    return float(coef[1]), float(coef[0]), rms, float(mean_abs_dy), float(xb.max())
+    return t, k, rms, float(mean_abs_dy), float(xb.max())
 
 
-def estimate_axis_from_walls(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig):
+def estimate_axis_from_walls(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig,
+                             t_fixed: Optional[float] = None, floor_z_all: Optional[np.ndarray] = None):
     """Yaw (tan) and curvature of the track from the left/right tunnel boundaries.
 
     Walls, column rows and cable ducts run parallel to the track, so their curvature is the
     track's curvature (Shen et al. 2024 "parallel references"). Per along-track bin the
     boundary of each side is a high percentile of |dy| in a height band above the platform
-    level; each side is fitted with a robust quadratic and the two are averaged by fit quality.
-    Returns (tan_yaw, curvature, quality) or None.
+    level; each side is fitted with a robust quadratic (tangent fixed to ``t_fixed`` when the
+    rails gave one) and the two are averaged by fit quality; when they disagree the nearer
+    boundary wins. Returns (tan_yaw, curvature, quality, x_valid, n_sides, disagreement) or
+    None; ``disagreement`` is the curvature difference of the two sides when both were fitted.
     """
     X, Y, Z = xyz[:, 0], xyz[:, 1], xyz[:, 2]
     x0, x1 = cfg.walls_range
-    h = Z - model.rail_z(X)
+    zf = model.floor_z(X) if floor_z_all is None else floor_z_all
+    h = Z - (zf + model.rail_offset)
     band = (X > x0) & (X < x1) & (h > cfg.walls_band[0]) & (h < cfg.walls_band[1])
     if band.sum() < 50:
         return None
     Xb, Yb = X[band], Y[band]
     dy = Yb - model.center_y(Xb)
     edges = np.arange(x0, x1 + cfg.walls_bin, cfg.walls_bin)
+    nb = edges.size - 1
     idx = np.digitize(Xb, edges) - 1
+    inb = (idx >= 0) & (idx < nb)
+    centres = 0.5 * (edges[:-1] + edges[1:])
     sides = {}
     for name, sel in (("left", dy > 0), ("right", dy < 0)):
-        xs, ys, ds = [], [], []
-        ii, yy, dd = idx[sel], Yb[sel], np.abs(dy[sel])
-        order = np.argsort(ii, kind="stable")
-        ii, yy, dd = ii[order], yy[order], dd[order]
-        bounds = np.flatnonzero(np.diff(ii)) + 1
-        for s_, e_ in zip(np.concatenate([[0], bounds]), np.concatenate([bounds, [ii.size]])):
-            b = ii[s_]
-            if e_ - s_ < cfg.walls_min_points or b < 0 or b >= edges.size - 1:
-                continue
-            q = np.percentile(dd[s_:e_], cfg.walls_percentile)
-            # boundary in absolute Y: the point whose |dy| is closest to the percentile
-            j = s_ + int(np.argmin(np.abs(dd[s_:e_] - q)))
-            xs.append(0.5 * (edges[b] + edges[b + 1]))
-            ys.append(yy[j])
-            ds.append(dd[j])
-        fit = _fit_side(np.array(xs), np.array(ys), cfg, float(np.mean(ds)) if ds else 0.0)
+        sel = sel & inb
+        if sel.sum() < cfg.walls_min_points:
+            continue                                   # nothing on this side (platform hall, missing wall)
+        # boundary per bin: the point at the |dy| percentile rank, in absolute Y
+        q, counts, yq = bin_percentile(np.abs(dy[sel]), idx[sel], nb, cfg.walls_percentile, cfg.walls_min_points,
+                                       payload=Yb[sel].astype(np.float64))
+        ok = np.isfinite(q)
+        if not ok.any():
+            continue
+        fit = _fit_side(centres[ok], yq[ok], cfg, float(np.mean(q[ok])), t_fixed)
         if fit is not None:
             sides[name] = fit
     if not sides:
         return None
+    n_sides = len(sides)
+    disagreement = 0.0
     # Prefer the boundary that runs closest to the track: near structures (column rows,
     # cable ducts, the near wall) are constrained by the gauge to be parallel to the track,
     # far walls are not (caverns, stations, diverging tunnels).
-    if len(sides) == 2 and abs(sides["left"][1] - sides["right"][1]) > 1.0 / 3000.0:
-        nearer = min(sides, key=lambda k: sides[k][3])
-        sides = {nearer: sides[nearer]}
+    if n_sides == 2:
+        disagreement = abs(sides["left"][1] - sides["right"][1])
+        if disagreement > 1.0 / 1500.0:
+            nearer = min(sides, key=lambda k: sides[k][3])
+            sides = {nearer: sides[nearer]}
     w = np.array([1.0 / (f[2] ** 2 + 1e-4) for f in sides.values()])
     c1 = float(np.sum(w * [f[0] for f in sides.values()]) / w.sum())
     c2 = float(np.sum(w * [f[1] for f in sides.values()]) / w.sum())
     c1 = float(np.clip(c1, -cfg.walls_max_yaw, cfg.walls_max_yaw))
-    c2 = float(np.clip(c2, -0.5 / cfg.walls_min_radius, 0.5 / cfg.walls_min_radius))
+    c2 = float(np.clip(c2, -1.0 / cfg.walls_min_radius, 1.0 / cfg.walls_min_radius))
     quality = float(min(f[2] for f in sides.values()))
     x_valid = float(max(f[4] for f in sides.values()))
-    return c1, c2, quality, x_valid
+    return c1, c2, quality, x_valid, n_sides, disagreement
 
 
-def verify_floor_extrapolation(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig) -> float:
+def verify_floor_extrapolation(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig,
+                               floor_z_all: Optional[np.ndarray] = None) -> float:
     """X up to which the linearly extrapolated bed is confirmed by the base of the side
     structures; ``model.floor_range[1]`` when nothing confirms it.
 
@@ -242,7 +302,8 @@ def verify_floor_extrapolation(xyz: np.ndarray, model: TrackModel, cfg: TrackCon
     if side.sum() < 50:
         return x_fit
     Xs = Xs[side]
-    hs = P[side, 2] - model.floor_z(Xs)          # height above the extrapolated bed
+    zf = model.floor_z(Xs) if floor_z_all is None else floor_z_all[sel][side]
+    hs = P[side, 2] - zf                          # height above the extrapolated bed
     keep = hs > -1.0                              # drop returns from below the bed (noise, drains)
     Xs, hs = Xs[keep], hs[keep]
     edges = np.arange(x0, cfg.floor_verify_max_range + cfg.floor_verify_bin, cfg.floor_verify_bin)
@@ -273,40 +334,97 @@ def verify_floor_extrapolation(xyz: np.ndarray, model: TrackModel, cfg: TrackCon
     return verified
 
 
+# ---------------------------------------------------------------------------
+# rails -> lateral axis, rail head, and (v0.5) the yaw at the vehicle
+# ---------------------------------------------------------------------------
+
+def _height_profile(y: np.ndarray, h: np.ndarray, edges: np.ndarray, percentile: float,
+                    min_points: int = 8) -> np.ndarray:
+    """Per lateral bin the ``percentile`` of h (NaN where fewer than ``min_points``)."""
+    nb = edges.size - 1
+    idx = np.clip(np.digitize(y, edges) - 1, 0, nb - 1)
+    return bin_percentile(np.asarray(h, dtype=np.float64), idx, nb, percentile, min_points)[0]
+
+
+def _ridge(prof: np.ndarray, k: int) -> np.ndarray:
+    """Prominence of each bin over the mean of its neighbours ``k`` bins away."""
+    nb = prof.size
+    ridge = np.full(nb, np.nan)
+    ridge[k:nb - k] = prof[k:nb - k] - 0.5 * (prof[:nb - 2 * k] + prof[2 * k:])
+    return ridge
+
+
+def _refine_peak(ridge: np.ndarray, b: int) -> float:
+    """Sub-bin position of a ridge maximum at bin ``b`` (parabola through its neighbours)."""
+    if 0 < b < ridge.size - 1 and np.isfinite(ridge[b - 1]) and np.isfinite(ridge[b + 1]):
+        d = ridge[b - 1] - 2 * ridge[b] + ridge[b + 1]
+        if d < -1e-9:
+            return b + float(np.clip(0.5 * (ridge[b - 1] - ridge[b + 1]) / d, -0.5, 0.5))
+    return float(b)
+
+
+@dataclass
+class RailsFit:
+    """Result of :func:`estimate_rails`."""
+    score: float                       # ridge prominence of the weaker rail (m); < 0 = nothing plausible found
+    center: float                      # track axis at X = 0 (m, + left)
+    rail_offset: float                 # rail head above the bed reference (m)
+    n_slabs: int = 0                   # slabs in which the pair was found again (v0.5)
+    tan_yaw: Optional[float] = None    # tangent of the axis at the vehicle from the slab midpoints (None = no yaw)
+    xm: Optional[np.ndarray] = None    # slab centres (m along the track)
+    mids: Optional[np.ndarray] = None  # rail-pair midpoints per slab (absolute Y, m)
+    wts: Optional[np.ndarray] = None   # ridge prominence per slab (m)
+
+    def __iter__(self):
+        """Backwards compatible unpacking: (score, center, rail_offset)."""
+        return iter((self.score, self.center, self.rail_offset))
+
+    def __getitem__(self, i):
+        return (self.score, self.center, self.rail_offset)[i]
+
+
 def estimate_rails(xyz: np.ndarray, floor: TrackModel, cfg: TrackConfig,
-                   prior_center: float) -> Tuple[float, float, float]:
+                   prior_center: float, prior: Optional[TrackModel] = None,
+                   floor_z_all: Optional[np.ndarray] = None) -> RailsFit:
     """Find the two rail-head ridges in the lateral height profile of the near range.
 
-    Returns (score, center, rail_head_height). ``score`` is the ridge prominence (m) of the
-    weaker rail; a negative score means nothing plausible was found.
+    ``score`` is the ridge prominence (m) of the weaker rail; a negative score means nothing
+    plausible was found. The profile is built in the lateral coordinate of the *prior* axis
+    (its yaw and curvature removed), so that in a curve the rails at 4-30 m are straight
+    lines instead of a 0.5 m smear. The pair is then located again in each of
+    ``rails_yaw_slabs`` along-track slabs (v0.5): a line through the slab midpoints (with the
+    prior curvature held fixed) gives the axis at X = 0 (``center``) and its tangent
+    (``tan_yaw``); with fewer than ``rails_yaw_min_slabs`` slabs the mean midpoint over the
+    rail range is the centre and no yaw is reported.
     """
     X, Y, Z = xyz[:, 0], xyz[:, 1], xyz[:, 2]
     x0, x1 = cfg.rails_range
     half, step = cfg.rails_search_halfwidth, cfg.rails_bin
-    h = Z - floor.floor_z(X)
-    sel = (X > x0) & (X < x1) & (np.abs(Y - prior_center) < half) & (h > -0.4) & (h < 0.8)
+    near = (X > x0) & (X < x1)                    # the near range only: the profile needs ~1/3 of the frame
+    Xd = X[near].astype(np.float64)
+    Yn, Zn = Y[near].astype(np.float64), Z[near]
+    h = Zn - (floor.floor_z(Xd) if floor_z_all is None else floor_z_all[near])
+    if prior is not None:
+        shape = np.tan(prior.yaw) * Xd + 0.5 * prior.curvature * Xd * Xd
+        Yp = Yn - shape
+        kap = float(prior.curvature)
+    else:
+        Yp = Yn
+        kap = 0.0
+    sel = (np.abs(Yp - prior_center) < half) & (h > -0.4) & (h < 0.8)
     if sel.sum() < 200:
-        return -1.0, prior_center, floor.rail_offset
-    y, hh = Y[sel], h[sel]
+        return RailsFit(-1.0, prior_center, floor.rail_offset)
+    y, hh, xs = Yp[sel], h[sel], Xd[sel]
     edges = np.arange(prior_center - half, prior_center + half + step, step)
     nb = edges.size - 1
-    idx = np.clip(np.digitize(y, edges) - 1, 0, nb - 1)
-    order = np.argsort(idx, kind="stable")
-    idx_s, h_s = idx[order], hh[order]
-    bounds = np.flatnonzero(np.diff(idx_s)) + 1
-    starts = np.concatenate([[0], bounds])
-    ends = np.concatenate([bounds, [idx_s.size]])
-    prof = np.full(nb, np.nan)
-    for s, e in zip(starts, ends):
-        if e - s >= 8:
-            prof[idx_s[s]] = np.percentile(h_s[s:e], cfg.rails_percentile)
+    prof = _height_profile(y, hh, edges, cfg.rails_percentile)
     yc = edges[:-1] + step / 2
     k = max(1, int(round(0.25 / step)))
-    ridge = np.full(nb, np.nan)
-    ridge[k:nb - k] = prof[k:nb - k] - 0.5 * (prof[:nb - 2 * k] + prof[2 * k:])
+    ridge = _ridge(prof, k)
     half_sp = int(round(0.5 * cfg.rails_spacing / step))
     lo, hi = cfg.rails_head_height
     best = (-1.0, prior_center, floor.rail_offset)
+    best_bins = None
     for b in range(half_sp, nb - half_sp):
         bl, br = b - half_sp, b + half_sp
         rl, rr = ridge[bl], ridge[br]
@@ -317,7 +435,43 @@ def estimate_rails(xyz: np.ndarray, floor: TrackModel, cfg: TrackConfig,
         sc = float(min(rl, rr))
         if sc > best[0]:
             best = (sc, float(yc[b]), float(0.5 * (prof[bl] + prof[br])))
-    return best
+            best_bins = (bl, br)
+    if best_bins is None or best[0] < cfg.rails_min_score or not cfg.rails_yaw_enabled or cfg.rails_yaw_slabs < 2:
+        return RailsFit(*best)
+    # per slab: the ridge maximum near each global rail position -> pair midpoint per slab
+    n_slabs = int(cfg.rails_yaw_slabs)
+    slab_edges = np.linspace(x0, x1, n_slabs + 1)
+    dev = max(1, int(round(cfg.rails_yaw_max_dev / step)))
+    xm, mids, wts = [], [], []
+    for s in range(n_slabs):
+        m = (xs >= slab_edges[s]) & (xs < slab_edges[s + 1])
+        if m.sum() < 100:
+            continue
+        p = _height_profile(y[m], hh[m], edges, cfg.rails_percentile, min_points=4)
+        r = _ridge(p, k)
+        pos = []
+        for b0 in best_bins:
+            lo_b, hi_b = max(k, b0 - dev), min(nb - k, b0 + dev + 1)
+            seg = r[lo_b:hi_b]
+            if seg.size == 0 or not np.isfinite(seg).any():
+                break
+            j = lo_b + int(np.nanargmax(seg))
+            if not (np.isfinite(r[j]) and r[j] >= 0.5 * cfg.rails_min_score and lo < p[j] < hi):
+                break
+            pos.append((float(yc[j]) + (_refine_peak(r, j) - j) * step, float(r[j])))
+        if len(pos) == 2:
+            mids.append(0.5 * (pos[0][0] + pos[1][0]))
+            xm.append(0.5 * (slab_edges[s] + slab_edges[s + 1]))
+            wts.append(min(pos[0][1], pos[1][1]))
+    if len(mids) < max(2, int(cfg.rails_yaw_min_slabs)):
+        return RailsFit(best[0], best[1], best[2], len(mids))
+    xm, mids, wts = np.array(xm), np.array(mids), np.array(wts)
+    mids_abs = mids + (np.tan(prior.yaw) * xm + 0.5 * kap * xm * xm if prior is not None else 0.0)
+    # line through the absolute midpoints with the prior curvature held fixed:
+    # y - k x^2 / 2 = c + t x  ->  c = axis at X = 0, t = tangent at the vehicle
+    w = np.sqrt(wts / max(float(wts.max()), 1e-6))
+    t, c = np.polyfit(xm, mids_abs - 0.5 * kap * xm * xm, 1, w=w)
+    return RailsFit(best[0], float(c), best[2], len(mids), float(t), xm, mids_abs, wts)
 
 
 def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel] = None) -> TrackModel:
@@ -336,31 +490,61 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
         curvature=prior.curvature, rail_offset=prior.rail_offset, n_bins=n_bins, residual=rms,
         wall_quality=prior.wall_quality, axis_valid=prior.axis_valid,
     )
+    a_r = cfg.rails_smoothing if prev is not None else 0.0
+    a_w = cfg.walls_smoothing if prev is not None else 0.0
+    t_fixed: Optional[float] = None
+    zf = model.floor_z(xyz[:, 0])                  # the bed height of every point, shared by the three steps below
     if cfg.rails_enabled:
-        score, center, rail_h = estimate_rails(xyz, model, cfg, prior.center)
-        model.rail_score = score
-        if score >= cfg.rails_min_score:
-            a = cfg.rails_smoothing if prev is not None else 0.0
-            model.center = a * prior.center + (1 - a) * center
-            model.rail_offset = a * prior.rail_offset + (1 - a) * rail_h
+        rails = estimate_rails(xyz, model, cfg, prior.center, prior, floor_z_all=zf)
+        model.rail_score = rails.score
+        model.rail_slabs = rails.n_slabs
+        if rails.score >= cfg.rails_min_score:
+            model.center = a_r * prior.center + (1 - a_r) * rails.center
+            model.rail_offset = a_r * prior.rail_offset + (1 - a_r) * rails.rail_offset
+            if cfg.rails_yaw_enabled and rails.tan_yaw is not None:
+                t_fixed = float(np.clip(rails.tan_yaw, -cfg.walls_max_yaw, cfg.walls_max_yaw))
     if cfg.walls_enabled:
-        est = estimate_axis_from_walls(xyz, model, cfg)
+        est = estimate_axis_from_walls(xyz, model, cfg, t_fixed, floor_z_all=zf)
         if est is not None:
-            tan_yaw, curv, q, x_valid = est
-            a = cfg.walls_smoothing if prev is not None else 0.0
-            model.yaw = a * prior.yaw + (1 - a) * np.arctan(tan_yaw)
-            model.curvature = a * prior.curvature + (1 - a) * curv
+            tan_yaw, curv, q, x_valid, n_sides, disagreement = est
+            model.yaw = a_w * prior.yaw + (1 - a_w) * np.arctan(tan_yaw)
+            model.curvature = a_w * prior.curvature + (1 - a_w) * curv
             model.wall_quality = q
+            model.axis_sides = n_sides
             model.axis_valid = x_valid + cfg.axis_valid_margin
-            if abs(model.curvature) < 1e-4 and q < 0.2:
+            agree = n_sides == 2 and (cfg.axis_sides_max_disagreement <= 0 or disagreement <= cfg.axis_sides_max_disagreement)
+            if abs(model.curvature) < 1e-4 and q < 0.2 and (agree or cfg.axis_one_side_range <= 0):
                 model.axis_valid += cfg.axis_valid_straight_bonus
+            if n_sides == 1 and cfg.axis_one_side_range > 0:
+                # one boundary alone cannot tell a parallel wall from a diverging one
+                model.axis_valid = min(model.axis_valid, cfg.axis_one_side_range)
+            if n_sides == 2 and cfg.axis_sides_max_disagreement > 0 and disagreement > cfg.axis_sides_max_disagreement:
+                # the two boundaries bend differently (transition, cavern, platform hall):
+                # whichever side won, the corridor beyond the disagreement is a guess
+                model.axis_valid = min(model.axis_valid, cfg.axis_disagree_range)
         else:
-            # keep previous yaw/curvature (the corridor does not jump on a bad frame) but
-            # shrink the trusted range
-            model.axis_valid = max(cfg.walls_range[0] + cfg.axis_valid_margin, prior.axis_valid - 20.0)
+            # no boundary parallel to the track this frame: the rails alone give the tangent,
+            # the curvature (unsupported now) decays towards straight and the trusted range
+            # shrinks; without rails the corridor keeps its shape (no jump on a bad frame)
+            floor_valid = cfg.walls_range[0] + cfg.axis_valid_margin
+            if t_fixed is not None:
+                model.yaw = a_w * prior.yaw + (1 - a_w) * np.arctan(t_fixed)
+                model.curvature = a_w * prior.curvature
+                floor_valid = cfg.rails_range[1] + cfg.axis_valid_margin
+            model.axis_valid = max(floor_valid, prior.axis_valid - 20.0)
+            model.axis_sides = 0
     else:
         model.yaw = np.radians(cfg.yaw_deg)
         model.curvature = cfg.curvature
         model.axis_valid = 1e9
-    model.floor_verified = verify_floor_extrapolation(xyz, model, cfg)
+    if prev is not None:
+        # the vehicle cannot turn by more than a fraction of a degree per frame, nor can the
+        # curvature ahead change faster than along a transition curve: larger jumps are
+        # estimator noise (a boundary flipping between two structures) and are clipped
+        if cfg.axis_max_yaw_rate > 0:
+            model.yaw = float(np.clip(model.yaw, prev.yaw - cfg.axis_max_yaw_rate, prev.yaw + cfg.axis_max_yaw_rate))
+        if cfg.axis_max_curvature_rate > 0:
+            model.curvature = float(np.clip(model.curvature, prev.curvature - cfg.axis_max_curvature_rate,
+                                            prev.curvature + cfg.axis_max_curvature_rate))
+    model.floor_verified = verify_floor_extrapolation(xyz, model, cfg, floor_z_all=zf)
     return model

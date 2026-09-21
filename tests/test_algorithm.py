@@ -49,6 +49,15 @@ def first_alarm(det, frames, speed):
     return None
 
 
+def acc_cfg(estimate=False):
+    """Defaults with the multi-frame accumulation switched on (v0.5 ships it off, EXPERIMENTS.md 1b);
+    ``estimate`` also switches the ego-speed estimator on."""
+    cfg = DetectorConfig()
+    cfg.accumulation.enabled = True
+    cfg.accumulation.estimate_speed = bool(estimate)
+    return cfg
+
+
 # ---------------------------------------------------------------------------
 # configuration and result contract
 # ---------------------------------------------------------------------------
@@ -57,8 +66,8 @@ def test_config_new_sections_round_trip():
     cfg = DetectorConfig()
     back = DetectorConfig.from_dict(cfg.to_dict())
     assert back.to_dict() == cfg.to_dict()
-    assert cfg.accumulation.enabled and cfg.accumulation.n_frames == 5
-    assert cfg.cluster.retro_intensity == 100.0
+    assert cfg.accumulation.enabled and not cfg.accumulation.estimate_speed and cfg.accumulation.n_frames == 5   # v0.5: merge only with a given speed
+    assert cfg.cluster.retro_intensity == 0.0           # v0.5: retro rule off by default (EXPERIMENTS.md 1b, 2c)
     with pytest.raises(KeyError):
         DetectorConfig.from_dict({"accumulation": {"n_frame": 5}})
     yaml_cfg = DetectorConfig.from_yaml(str(Path(__file__).resolve().parents[1] / "configs" / "default.yaml"))
@@ -155,7 +164,7 @@ def test_floor_verification_stops_at_a_vertical_curve():
 # ---------------------------------------------------------------------------
 
 def test_accumulation_confirms_person_within_8_frames_from_200m(tunnel):
-    cfg = DetectorConfig()
+    cfg = acc_cfg()
     det = Detector(cfg)
     hit = first_alarm(det, approach(tunnel, 200.0, 8), EGO)
     assert hit is not None, "person approaching from 200 m not confirmed within 8 frames"
@@ -171,7 +180,7 @@ def test_single_frame_confirms_later_than_accumulation(tunnel):
     """Documents the gain. With the real-frame point budget the single-frame detector needs
     3 consecutive frames with >= 3 returns and confirms the seed-0 sequence at 178 m (167-189 m
     over seeds); accumulation confirms it at 189-191 m in every seed."""
-    on = DetectorConfig()
+    on = acc_cfg()
     off = DetectorConfig()
     off.accumulation.enabled = False
     hit_on = first_alarm(Detector(on), approach(tunnel, 200.0, 20), EGO)
@@ -185,7 +194,7 @@ def test_single_frame_confirms_later_than_accumulation(tunnel):
 
 
 def test_box_05m_confirmed_beyond_100m(tunnel):
-    hit = first_alarm(Detector(DetectorConfig()), approach(tunnel, 140.0, 20, kind="box", size=BOX), EGO)
+    hit = first_alarm(Detector(acc_cfg()), approach(tunnel, 140.0, 20, kind="box", size=BOX), EGO)
     assert hit is not None and hit[1] >= 100.0, hit and hit[:2]
     assert abs(hit[2].nearest_distance - hit[1]) <= max(2.0, 0.03 * hit[1])
     print("\n[synthetic] box 0.5 m confirmed at truth %.1f m (frame %d)" % (hit[1], hit[0]))
@@ -193,7 +202,7 @@ def test_box_05m_confirmed_beyond_100m(tunnel):
 
 def test_clear_tunnel_with_accumulation_stays_clear(tunnel):
     frame, _, _ = tunnel
-    det = Detector(DetectorConfig())
+    det = Detector(acc_cfg())
     for _ in range(10):
         res = det.process(frame, ego_speed=EGO)
         assert not res.obstacle and not res.warning, [d.to_dict() for d in res.detections + res.warnings]
@@ -201,30 +210,37 @@ def test_clear_tunnel_with_accumulation_stays_clear(tunnel):
 
 def test_near_object_not_smeared_by_accumulation(tunnel):
     # approaching box crosses the accumulation boundary (40 m): distance and length stay right
-    det = Detector(DetectorConfig())
+    det = Detector(acc_cfg())
     for d, fr in approach(tunnel, 45.0, 8, kind="box", size=(0.6, 0.6, 0.6), dropout={}):
         res = det.process(fr, ego_speed=EGO)
         if res.obstacle:
             assert abs(res.nearest_distance - d) < 1.0, (res.nearest_distance, d)
             assert res.detections[0].size[0] < 1.0
     assert res.obstacle and res.nearest_distance == pytest.approx(29.6, abs=1.0)
-    # static person at 60 m, train stopped: 5 frames merge into the same voxels
+    # static person at 60 m, train stopped (given 0 m/s): v0.5 merges nothing below
+    # accumulation.min_speed (identical frames add no density but the scaled thresholds lose
+    # marginal objects, P4 static sets 21.09); the object is confirmed from single frames
     frame, _, gt = tunnel
     inj = inject_obstacles(frame, gt, [ObstacleSpec(kind="person", size=PERSON, distance=60.0, lateral=0.0, reflectivity=60)],
                            rng=np.random.default_rng(3))
-    det = Detector(DetectorConfig())
+    det = Detector(acc_cfg())
     for _ in range(6):
         res = det.process(inj.frame, ego_speed=0.0)
-    assert res.obstacle and res.n_accumulated == 5
+    assert res.obstacle and res.n_accumulated == 1 and res.ego_speed_source == "given"
     assert abs(res.nearest_distance - 60.0) < 1.0 and res.detections[0].size[0] < 1.0
-    assert res.detections[0].n_points < 80                    # 56 voxels single-frame: no double counting
+    assert res.detections[0].n_points < 80                    # 56 voxels single-frame
+    # crawling (2 m/s given): the 5 frames are merged and still land on the same voxels
+    det = Detector(acc_cfg())
+    for _ in range(6):
+        res = det.process(inj.frame, ego_speed=2.0)
+    assert res.obstacle and res.n_accumulated == 5 and res.detections[0].size[0] < 1.5
 
 
 def test_wrong_given_speed_degrades_to_single_frame(tunnel):
     """Smear guard: with the speed 8 m/s off, the merged cluster stretches along X and is
     re-described from the current frame; the object is kept and its distance stays within
     tolerance (biased towards the vehicle by at most smear_max_length)."""
-    det = Detector(DetectorConfig())
+    det = Detector(acc_cfg())
     confirmed = 0
     for d, fr in approach(tunnel, 100.0, 8, dropout={}):
         res = det.process(fr, ego_speed=30.0)
@@ -236,7 +252,7 @@ def test_wrong_given_speed_degrades_to_single_frame(tunnel):
 
 
 def test_timing_with_accumulation(tunnel):
-    det = Detector(DetectorConfig())
+    det = Detector(acc_cfg())
     totals = []
     for d, fr in approach(tunnel, 200.0, 20, seed=5):
         res = det.process(fr, ego_speed=EGO)
@@ -292,7 +308,7 @@ def test_estimator_finds_ego_speed_on_a_textured_moving_tunnel():
     """Posts on both walls, the whole scene (and a person from 200 m) moves 2.2 m per frame:
     the texture cue must report ~22 m/s with no speed given, and accumulation must run."""
     posts = _posts(np.random.default_rng(7))
-    det = Detector(DetectorConfig())
+    det = Detector(acc_cfg(estimate=True))
     speeds = []
     hit = None
     for k in range(11):
@@ -313,12 +329,12 @@ def test_estimator_reports_unknown_when_nothing_moves():
     """A stopped train in front of the same posts, and a featureless tunnel with fresh noise:
     nothing moves, so the honest answer is 'unknown' (no accumulation), not a confident 0."""
     posts = _posts(np.random.default_rng(7))
-    det = Detector(DetectorConfig())
+    det = Detector(acc_cfg(estimate=True))
     for k in range(6):
         res = det.process(_textured_scene(posts, 0.0, None, seed=300 + k), ego_speed=None)
         assert res.ego_speed_source == "none" and res.n_accumulated == 1, res.to_dict()
         assert not res.obstacle
-    det = Detector(DetectorConfig())
+    det = Detector(acc_cfg(estimate=True))
     for k in range(5):
         res = det.process(synthetic_tunnel_frame(rng=np.random.default_rng(400 + k))[0], ego_speed=None)
         assert res.ego_speed_source == "none" and res.ego_speed_confidence < 0.5
@@ -329,7 +345,7 @@ def test_unknown_speed_never_smears_the_moving_person(tunnel):
     """The emulated sequence moves only the object, the background is one frame: the
     estimator sees nothing moving, reports 'unknown', and the detector falls back to single
     frames instead of merging unshifted frames (which would stretch the person to 8.8 m)."""
-    det = Detector(DetectorConfig())
+    det = Detector(acc_cfg(estimate=True))
     hit = first_alarm(det, approach(tunnel, 200.0, 20), None)
     assert hit is not None
     k, d, res = hit
@@ -345,7 +361,9 @@ def _single(tunnel, kind, size, distance, lateral, refl, speed=0.0):
     frame, _, gt = tunnel
     inj = inject_obstacles(frame, gt, [ObstacleSpec(kind=kind, size=size, distance=distance, lateral=lateral, reflectivity=refl)],
                            rng=np.random.default_rng(5))
-    det = Detector(DetectorConfig())
+    cfg = DetectorConfig()
+    cfg.cluster.retro_intensity = 100.0                 # the rule is off by default since v0.5
+    det = Detector(cfg)
     for _ in range(4):
         res = det.process(inj.frame, ego_speed=speed)
     return res
@@ -371,13 +389,227 @@ def test_retro_sign_is_advisory_person_is_obstacle(tunnel):
     assert crate.obstacle
 
 
-def test_retro_rule_can_be_switched_off(tunnel):
+def test_retro_rule_is_off_by_default(tunnel):
     frame, _, gt = tunnel
     inj = inject_obstacles(frame, gt, [ObstacleSpec(kind="box", size=(0.05, 0.6, 0.8), distance=40.0, lateral=1.0, reflectivity=220)],
                            rng=np.random.default_rng(5))
     cfg = DetectorConfig()
-    cfg.cluster.retro_intensity = 0.0
+    assert cfg.cluster.retro_intensity == 0.0
     det = Detector(cfg)
     for _ in range(4):
         res = det.process(inj.frame, ego_speed=0.0)
     assert res.obstacle
+
+
+# ---------------------------------------------------------------------------
+# v0.5 (real data, 21.09): axis from the rails, persistence in seconds, infrastructure
+# signatures, stopped-train and lateral smear guards. All hand-made point sets, no dataset.
+# ---------------------------------------------------------------------------
+
+from resense.clustering import Cluster, find_clusters             # noqa: E402
+from resense.config import TrackingConfig                         # noqa: E402
+from resense.egomotion import EgoSpeedEstimator                   # noqa: E402
+from resense.gauge import gauge_core_mask, point_in_polygon, widened_profile  # noqa: E402
+from resense.track import estimate_track                          # noqa: E402
+from resense.tracking import Track, Tracker                       # noqa: E402
+
+
+def _curved_scene(R, yaw_deg, seed=0, wall=2.2, right_bend_R=None):
+    """Bed, two rail ridges (4-60 m) and two vertical walls following a track of radius R
+    (1e9 = straight) with the given yaw at the vehicle; with ``right_bend_R`` the right wall
+    bends away to the right with that radius (a diverging tunnel, not parallel to the track)."""
+    rng = np.random.default_rng(seed)
+    t, kap = np.tan(np.radians(yaw_deg)), 1.0 / R
+
+    def yc(X):
+        return -0.1 + t * X + 0.5 * kap * X * X
+    parts = []
+    X = 3 + 117 * rng.random(40000) ** 0.5
+    parts.append(np.stack([X, yc(X) + rng.uniform(-1.2, 1.2, X.size), -1.5 + rng.normal(0, 0.01, X.size)], 1))
+    for s in (-1, 1):
+        Xr = 3 + 57 * rng.random(12000) ** 0.5
+        parts.append(np.stack([Xr, yc(Xr) + s * 0.795 + rng.uniform(-0.03, 0.03, Xr.size),
+                               -1.15 + rng.normal(0, 0.005, Xr.size)], 1))
+    for s in (-1, 1):
+        Xw = rng.uniform(3, 200, 30000)
+        off = s * wall
+        if s < 0 and right_bend_R:
+            off = off - 0.5 * Xw * Xw / right_bend_R
+        parts.append(np.stack([Xw, yc(Xw) + off + rng.normal(0, 0.02, Xw.size), rng.uniform(-1.4, 3.3, Xw.size)], 1))
+    return np.concatenate(parts).astype(np.float32), yc
+
+
+def _run_track(xyz, cfg, n=6):
+    prev = None
+    for _ in range(n):
+        prev = estimate_track(xyz, cfg.track, prev=prev)
+    return prev
+
+
+def test_axis_follows_a_curved_track():
+    """v0.3 stored the walls' quadratic coefficient (1/2R) as the curvature and applied it as
+    1/R: the axis bent half as much as the tunnel (2.4 m off at 100 m on R = 800 m), and the
+    rail profile in absolute Y smeared by the yaw over 4-30 m (centre 0.9 m off). v0.5: yaw
+    and centre from the rail slabs, curvature 1/R from the walls with the tangent fixed."""
+    cfg = DetectorConfig()
+    for R, yaw in ((800.0, 1.2), (2000.0, -0.8), (1e9, 0.0)):
+        xyz, yc = _curved_scene(R, yaw)
+        m = _run_track(xyz, cfg)
+        assert abs(np.degrees(m.yaw) - yaw) < 0.15, (R, yaw, np.degrees(m.yaw))
+        assert abs(m.curvature - 1.0 / R) < 0.15 / R + 4e-5, (R, m.curvature)   # 4e-5 = the fit's noise floor (0.2 m at 100 m)
+        err = max(abs(float(m.center_y(x) - yc(x))) for x in (30.0, 60.0, 100.0))
+        assert err < 0.25, (R, yaw, err)
+        assert m.rail_slabs >= 2 and m.axis_sides == 2 and m.rail_score > cfg.track.rails_min_score
+
+
+def test_diverging_wall_cannot_bend_the_axis():
+    """Left wall parallel, right wall bending away with R = 600 m (a diverging tunnel): the two
+    boundaries disagree, the nearer (parallel) one wins, the axis follows the rails and that
+    wall, and the trusted range is capped at ``axis_disagree_range``. A boundary that kinks
+    away is simply dropped as outliers by the two-pass fit and does not reach this rule."""
+    cfg = DetectorConfig()
+    xyz, yc = _curved_scene(1e9, 0.5, right_bend_R=600.0)
+    m = _run_track(xyz, cfg)
+    assert abs(np.degrees(m.yaw) - 0.5) < 0.2
+    assert abs(float(m.center_y(100.0) - yc(100.0))) < 0.4
+    assert m.axis_sides == 2 and m.axis_valid <= cfg.track.axis_disagree_range, m.to_dict()
+    one, yc1 = _curved_scene(1e9, 0.5, wall=2.2)
+    one = one[~((one[:, 1] - yc1(one[:, 0]) < -1.5) & (one[:, 2] > -1.4))]   # no right wall at all: one boundary
+    m = _run_track(one, cfg)
+    assert m.axis_sides == 1 and m.axis_valid <= cfg.track.axis_one_side_range, m.to_dict()
+
+
+def test_axis_rate_limits_clip_a_jump():
+    cfg = DetectorConfig()
+    xyz0, _ = _curved_scene(1e9, 0.0)
+    xyz1, _ = _curved_scene(1e9, 2.0, seed=1)
+    m = _run_track(xyz0, cfg, 5)
+    y0, k0 = m.yaw, m.curvature
+    m = estimate_track(xyz1, cfg.track, prev=m)
+    assert abs(m.yaw - y0) <= cfg.track.axis_max_yaw_rate + 1e-9
+    assert abs(m.curvature - k0) <= cfg.track.axis_max_curvature_rate + 1e-12
+    for _ in range(20):
+        m = estimate_track(xyz1, cfg.track, prev=m)
+    assert abs(np.degrees(m.yaw) - 2.0) < 0.2, "the limit delays, it must not block"
+
+
+def _cluster_at(x, zone="gauge"):
+    c = np.array([x, 0.0, 0.5])
+    return Cluster(points_idx=np.arange(3), n=10, n_raw=20, centroid=c, bbox_min=c - 0.25, bbox_max=c + 0.25,
+                   distance=x - 0.25, lateral=0.0, height_min=0.2, height_max=0.7, intensity=30.0,
+                   n_expected=10.0, score=1.0, zone=zone, n_gauge=10)
+
+
+def test_persistence_in_seconds_derives_the_hit_count_from_the_frame_interval():
+    cfg = TrackingConfig(confirm_time_s=0.5)
+    t = Tracker(cfg)
+    for k in range(1, 5):
+        t.update([_cluster_at(100.0)], frame_dt=0.1)
+        assert t.confirmed() == [], f"confirmed after {k} frames = {0.1 * k:.1f} s"
+    t.update([_cluster_at(100.0)], frame_dt=0.1)
+    assert len(t.confirmed()) == 1                      # 5 frames = 0.5 s at 10 Hz
+    t = Tracker(cfg)                                    # at 5 Hz the same 0.5 s is 3 frames (= confirm_hits)
+    for k in range(3):
+        t.update([_cluster_at(100.0)], frame_dt=0.2)
+        assert len(t.confirmed()) == (1 if k == 2 else 0)
+    t = Tracker(cfg)                                    # no time base given: hit counting (confirm_hits)
+    for k in range(3):
+        t.update([_cluster_at(100.0)])
+    assert len(t.confirmed()) == 1
+    assert TrackingConfig().confirm_time_s == 0.3       # the default: 3 frames at 10 Hz, as v0.3
+
+
+def test_flickering_track_is_not_confirmed_and_zone_needs_a_clear_majority():
+    cfg = TrackingConfig()                              # min_hit_fraction 0.6 over 10 frames
+    t = Tracker(cfg)
+    for k in range(14):                                 # matched every other frame: 50 % < 60 %
+        t.update([_cluster_at(100.0)] if k % 2 == 0 else [], frame_dt=0.1)
+        assert t.confirmed() == [], k
+    t = Tracker(cfg)
+    for k in range(12):                                 # one dropout in twelve: still reported once re-matched
+        t.update([_cluster_at(100.0)] if k != 6 else [], frame_dt=0.1)
+    assert len(t.confirmed()) == 1
+    t = Tracker(cfg)                                    # zone: 10-hit window, 60 % must be inside the gauge
+    for k in range(12):
+        t.update([_cluster_at(50.0, "gauge" if k % 2 == 0 else "warning")], frame_dt=0.1)
+    assert t.confirmed()[0].zone == "warning"
+    for _ in range(4):
+        t.update([_cluster_at(50.0, "gauge")], frame_dt=0.1)
+    assert t.confirmed()[0].zone == "gauge"             # 7 of the last 10 hits inside
+
+
+def _box(x, y, z, L, W, H, step=0.05):
+    """Dense box of points (nearest face at X = x, centre at Y = y, bottom at Z = z) in a frame
+    whose track axis is Y = 0 and rail head Z = 0, so dy = Y and h = Z."""
+    xs = x + np.arange(0.0, L + 1e-9, step)
+    ys = y - W / 2 + np.arange(0.0, W + 1e-9, step)
+    zs = z + np.arange(0.0, H + 1e-9, step)
+    return np.array(np.meshgrid(xs, ys, zs)).reshape(3, -1).T.astype(np.float32)
+
+
+def _find(pts, cfg=None, frame_idx=None, **kw):
+    cfg = cfg or DetectorConfig()
+    dy, h = pts[:, 1].astype(np.float64), pts[:, 2].astype(np.float64)
+    wide = point_in_polygon(dy, h, widened_profile(cfg.gauge, cfg.gauge.warning_margin))
+    pts, dy, h = pts[wide], dy[wide], h[wide]
+    ig = point_in_polygon(dy, h, cfg.gauge.profile)
+    fi = None if frame_idx is None else frame_idx[wide]
+    return find_clusters(pts, np.full(pts.shape[0], 30.0, np.float32), dy, h, ig, cfg.cluster, frame_idx=fi, **kw)
+
+
+def test_infrastructure_signatures_are_advisory_and_objects_are_not():
+    cases = {
+        "column":    (_box(40.0, 0.3, -0.15, 0.4, 0.4, 2.8), "column"),      # post / column / gate leg
+        "beam":      (_box(60.0, 0.0, 1.6, 0.3, 2.6, 0.3), "elevated"),      # beam / roof strip across the corridor
+        "sign":      (_box(50.0, 1.0, 1.2, 0.05, 0.6, 0.6), "floating"),     # sign on the wall, not touching the ground
+        "duct":      (_box(30.0, 1.45, 0.6, 2.0, 0.5, 0.6), "edge"),         # duct / bench fragment at the corridor edge
+        "portal":    (_box(75.0, 1.2, 0.55, 0.3, 1.2, 2.9), "wall_face"),    # wall face pulled in: hugs the edge, centre clear
+        "person":    (_box(40.0, 0.0, -0.15, 0.4, 0.5, 1.7), ""),
+        "crate":     (_box(60.0, 0.3, -0.15, 1.0, 1.0, 1.0), ""),
+        "trolley":   (_box(50.0, -0.5, -0.15, 0.6, 0.6, 1.0), ""),
+        "train":     (_box(75.0, 0.0, 0.1, 0.3, 2.7, 3.3), ""),              # a train ahead reaches the polygon bottom and both edges
+        "edge_person": (_box(40.0, 1.2, -0.15, 0.4, 0.5, 1.7), ""),         # person at the gauge edge stays an obstacle
+    }
+    for name, (pts, want) in cases.items():
+        cl = _find(pts)
+        assert len(cl) == 1, (name, len(cl))
+        assert cl[0].reason == want, (name, cl[0].reason, cl[0].zone)
+        assert cl[0].zone == ("warning" if want else "gauge"), name
+    off = DetectorConfig()
+    for k in ("column_min_height", "elevated_min_height", "floating_min_height", "edge_min_lateral", "wall_face_min_height"):
+        setattr(off.cluster, k, 0.0)
+    for name in ("column", "beam", "sign", "duct", "portal"):
+        cl = _find(cases[name][0], off)
+        assert len(cl) == 1 and cl[0].zone == "gauge" and cl[0].reason == "", name
+
+
+def test_gauge_edge_margin_shrinks_the_strict_decision_with_range():
+    cfg = DetectorConfig().gauge
+    dy = np.array([1.30, 1.30, 0.5, -1.30])
+    h = np.array([1.0, 1.0, 1.0, 1.0])
+    X = np.array([10.0, 100.0, 100.0, 10.0])
+    assert gauge_core_mask(dy, h, X, cfg).tolist() == [True, True, True, True]     # margins 0: the polygon itself
+    cfg.edge_margin, cfg.edge_margin_per_100m = 0.02, 0.3
+    assert gauge_core_mask(dy, h, X, cfg).tolist() == [True, False, True, True]    # 0.32 m margin at 100 m (1.62 > 1.40), 0.05 m at 10 m (1.35)
+
+
+def test_stopped_train_tracks_cue_reports_nothing():
+    def tracks(vx):
+        return [Track(id=i, centroid=np.array([50.0 + 10 * i, 0.0, 0.5]), velocity=np.array([vx, 0.0, 0.0]),
+                      hits=4, misses=0, last=_cluster_at(50.0 + 10 * i)) for i in range(3)]
+    assert EgoSpeedEstimator.tracks_cue(tracks(0.0), 0.1, min_speed=1.0) is None        # stopped: unknown, no merge
+    assert EgoSpeedEstimator.tracks_cue(tracks(0.0), 0.1, min_speed=0.0) == (0.0, 3)    # the v0.4 behaviour
+    v, n = EgoSpeedEstimator.tracks_cue(tracks(-1.5), 0.1, min_speed=1.0)
+    assert abs(v - 15.0) < 1e-9 and n == 3
+
+
+def test_lateral_smear_guard_redescribes_a_merged_cluster_from_the_current_frame():
+    cur = _box(60.0, 0.0, -0.15, 0.4, 0.5, 1.7)
+    old = _box(60.0, 1.2, -0.15, 0.4, 0.5, 1.7)                     # the same person 1.2 m to the left 0.3 s ago
+    pts = np.concatenate([cur, old])
+    fi = np.concatenate([np.arange(cur.shape[0]), np.full(old.shape[0], -1)])
+    smeared = _find(pts, frame_idx=fi, smear_max_length=2.0, smear_max_width=0.0)
+    guarded = _find(pts, frame_idx=fi, smear_max_length=2.0, smear_max_width=1.0)
+    assert len(smeared) == 1 and smeared[0].size[1] > 1.5
+    assert len(guarded) == 1 and guarded[0].size[1] < 0.6 and abs(guarded[0].lateral) < 0.1
+    assert (guarded[0].points_idx >= 0).all()

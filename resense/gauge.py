@@ -1,7 +1,7 @@
 """Clearance-gauge corridor: which points violate the envelope the train needs."""
 from __future__ import annotations
 
-from typing import Tuple
+from typing import Optional, Tuple
 
 import numpy as np
 
@@ -46,9 +46,11 @@ def corridor_coordinates(xyz: np.ndarray, track: TrackModel):
     return dy, h
 
 
-def corridor_mask(xyz: np.ndarray, track: TrackModel, cfg: GaugeConfig) -> Tuple[np.ndarray, np.ndarray]:
+def corridor_mask(xyz: np.ndarray, track: TrackModel, cfg: GaugeConfig,
+                  dy_all: Optional[np.ndarray] = None, h_all: Optional[np.ndarray] = None) -> Tuple[np.ndarray, np.ndarray]:
     """Returns (mask_any, in_gauge): points inside the warning corridor, and among the
-    whole frame, which are inside the strict gauge."""
+    whole frame, which are inside the strict gauge. ``dy_all`` / ``h_all`` are the corridor
+    coordinates of the whole frame when the caller already has them."""
     X = xyz[:, 0]
     in_range = (X >= cfg.range_min) & (X <= cfg.range_max)
     mask = np.zeros(xyz.shape[0], dtype=bool)
@@ -56,15 +58,35 @@ def corridor_mask(xyz: np.ndarray, track: TrackModel, cfg: GaugeConfig) -> Tuple
     if not in_range.any():
         return mask, strict
     idx = np.flatnonzero(in_range)
-    dy, h = corridor_coordinates(xyz[idx], track)
+    if dy_all is not None and h_all is not None:
+        dy, h = dy_all[idx], h_all[idx]
+    else:
+        dy, h = corridor_coordinates(xyz[idx], track)
     if cfg.lateral_growth_per_100m > 0:
         dy = dy / (1.0 + cfg.lateral_growth_per_100m * X[idx] / 100.0)
-    wide = point_in_polygon(dy, h, widened_profile(cfg, cfg.warning_margin))
-    sub = np.flatnonzero(wide)
+    poly = widened_profile(cfg, cfg.warning_margin)
+    # bounding-box prefilter: the polygon test on ~190k points costs 6 ms, on the few
+    # thousand points inside the box well under 1 ms
+    box = np.flatnonzero((np.abs(dy) <= np.abs(poly[:, 0]).max()) & (h >= poly[:, 1].min()) & (h <= poly[:, 1].max()))
+    if box.size == 0:
+        return mask, strict
+    sub = box[point_in_polygon(dy[box], h[box], poly)]
     mask[idx[sub]] = True
     if sub.size:
         strict[idx[sub[point_in_polygon(dy[sub], h[sub], cfg.profile)]]] = True
     return mask, strict
+
+
+def gauge_core_mask(dy: np.ndarray, h: np.ndarray, X: np.ndarray, cfg: GaugeConfig) -> np.ndarray:
+    """Strict-gauge membership with the lateral edge margin (v0.5): a point counts only when it
+    lies ``edge_margin + edge_margin_per_100m * X / 100`` inside the polygon's lateral edge,
+    i.e. it is tested at |dy| + margin. The axis is uncertain by about 0.1 deg (0.1 m per
+    60 m), so a return a few centimetres inside the edge at range is not evidence of an
+    object in the gauge; candidates and the advisory zone are unaffected."""
+    m = cfg.edge_margin + cfg.edge_margin_per_100m * np.asarray(X, dtype=np.float64) / 100.0
+    if not np.any(m > 0):
+        return point_in_polygon(dy, h, cfg.profile)
+    return point_in_polygon(dy + np.sign(dy) * m, h, cfg.profile)
 
 
 def profile_bounds(cfg: GaugeConfig):
