@@ -18,34 +18,43 @@ resense info /data/for_hackathon/roundT_doubleT
 
 | Bag | Duration | Frames | Size | Scene (from the name) |
 |---|---|---|---|---|
-| `doubleT_obstacle` | 20.4 s | 201 | 4.5 GB | double-track tunnel, **train stationary**, a person walks away from the train on the left walkway (2.5 → 11 m, ~1.9 m left of the sensor axis, ~2.1–2.5 m left of the track axis) |
+| `doubleT_obstacle` | 20.4 s | 201 | 4.5 GB | double-track tunnel, **train stationary**; a person crosses the track at 54.5–57 m (inside the gauge in frames 2–72, then standing 2.1–2.5 m left of the axis until the end); a second person walks away from the train along the left side (X 1 → 16 m, 2.2–2.5 m left of the axis) in frames **146–200** — both labelled in `labels/doubleT_obstacle.json` (section "Real labels" below) |
 | `doubleT_platform` | 34.4 s | 345 | 2.6 GB | double-track tunnel → station platform |
 | `roundT_doubleT` | 25.1 s | 252 | 1.9 GB | round single-track tunnel → double-track tunnel (walls diverge) |
 | `roundT_pressureGate_roundT` | 26.7 s | 268 | 2.0 GB | round tunnel through a pressure gate (гермозатвор), right-hand curve |
 | `roundT_squareT_pressureGate_squareT` | 55.4 s | 545 | 4.1 GB | round → rectangular tunnel, pressure gate |
 | `squareT_platform_squareT_switch` | 88.2 s | 877 | 6.6 GB | rectangular tunnel → platform (train stops) → switch |
 
-Total 2 488 frames / 250 s. **No obstacle inside the clearance gauge in any bag** (the only
-foreign object is the walking person next to the track in `doubleT_obstacle`). Organizers
-promised an extended dataset with obstacles — until then all positive examples come from
-`resense inject` (synthetic obstacles ray-cast into the real frames, see ARCHITECTURE.md).
+Total 2 488 frames / 250 s. **The only obstacle inside the clearance gauge in the six bags is
+the person crossing the track at 55–57 m in `doubleT_obstacle`** (frames 2–72; the labels are
+in `labels/doubleT_obstacle.json`); every alarm on the other five bags is a false alarm.
+Organizers promised an extended dataset with obstacles — until then the positive examples at
+other ranges and for other objects come from `resense inject` (synthetic obstacles ray-cast
+into the real frames, see ARCHITECTURE.md and "Set S" below).
 
 ## Topic and sensor
 
-* **The bags do not agree on the topic name, the frame id or the azimuth window** (verified
-  2026-09-20 by reading the bags, not the notes):
+* **The bags do not agree on the topic name, the frame id or the azimuth window.** Topics
+  from every bag's `metadata.yaml` (read by the captain on 2026-09-21, CAPTAIN.md finding 3 of
+  21.09); `frame_id` and `width` read from the messages of two bags only (2026-09-20); the
+  window and the point counts measured on the cached frames of all six bags (P4, 21.09: five
+  frames per bag, azimuth `atan2(x, −y)` in the sensor frame, 0.5–99.5 percentiles):
 
-  | bag | topic | `frame_id` | `width` | azimuth span |
-  |---|---|---|---|---|
-  | `roundT_doubleT` | `/lidar_points` | `hesai_lidar` | 307 200 | 100° (−140°…−40°) |
-  | `doubleT_obstacle` | `/sensing/lidar/hesai128/pointcloud` | `lidar_livox` | 921 600 | 360° |
+  | bag | topic (`metadata.yaml`) | `frame_id` | `width` | azimuth window | valid points / frame |
+  |---|---|---|---|---|---|
+  | `doubleT_obstacle` | `/sensing/lidar/hesai128/pointcloud` | `lidar_livox` (read) | 921 600 | full turn; valid returns over ~210° (−104°…+106°) | ~347 k |
+  | `doubleT_platform` | `/lidar_points` | not verified | not read | ±50° | 160–186 k |
+  | `roundT_doubleT` | `/lidar_points` | `hesai_lidar` (read) | 307 200 | ±50° | 180–190 k |
+  | `roundT_pressureGate_roundT` | `/lidar_points` | not verified | not read | ±50° | 182–190 k |
+  | `roundT_squareT_pressureGate_squareT` | `/lidar_points` | not verified | not read | ±50° | 181–190 k |
+  | `squareT_platform_squareT_switch` | `/lidar_points` | not verified | not read | ±50° | 160–182 k |
 
   `doubleT_obstacle` is a **full-turn recording** (3600 azimuth columns × 128 rings × 2 returns
   = 921 600 slots, ~347 k valid points) with a `lidar_livox` frame id left over from an earlier
-  rig; the others use the 120° window (1200 columns, ~190 k valid points). **Only these two
-  of the six bags have had their topic and frame id verified by reading the bag**; the other
-  four (`doubleT_platform`, `roundT_pressureGate_roundT`, `roundT_squareT_pressureGate_squareT`,
-  `squareT_platform_squareT_switch`) are unverified — **do not assume, read the metadata**
+  rig; the others use the 120° window (1200 columns, valid returns within ±50°, 160–190 k
+  points — fewer at the platforms, where the near walls are missing). **Only two of the six bags
+  have had their frame id verified by reading the bag**; for the other four the topic comes
+  from `metadata.yaml` and the frame id is unknown — **do not assume, read the messages**
   (recipe below). Consequences: the node takes a candidate topic list and auto-discovers
   PointCloud2 topics, and the RViz layout must not hard-code the topic or the fixed frame.
 * `sensor_msgs/msg/PointCloud2`, ~10 Hz (frame period 80–120 ms in the bag clock).
@@ -137,18 +146,37 @@ Placement: one object set per background frame (`--per-frame`), distance uniform
 share, 2.2–3.0 m to either side (must **not** alarm, `in_gauge = false`), random yaw. Objects
 stand on the sleepers (rail head − 0.15 m) of the per-frame track model.
 
-```bash
-# static frames (recall by range): every 10th frame, one object each, 20 % negatives
-resense inject --bag <bag> --every 10 --out data/synth/<bag> --kinds person,box0.5,plank,trolley --distances 10:250
-resense eval data/synth/<bag>                      # --repeat 3 by default: emulates persistence on static frames
+**Set S as built on 21.09** (EVALUATION.md §3, raw summaries in
+[`experiments_v0.4_synthetic_on_real.json`](experiments_v0.4_synthetic_on_real.json); the
+seeds are fixed, so the same frames come out of the cache on any machine):
 
-# approach sequences (first-detection distance): 30 frames per background, 15 m/s = 1.5 m per step
-resense inject --bag <bag> --every 30 --out data/seq/<bag> --kinds person --distances 120:160 --sequence 30 --speed 15
-resense eval data/seq/<bag>                        # --repeat 1 automatically (the gt.json _meta says sequence > 1)
+```bash
+# static sets (recall by range per kind): every 10th frame of three empty bags, one catalogue
+# object per frame, 20 % negatives outside the gauge; 26 / 27 / 55 frames, ~1.1 MB each
+for bag in roundT_doubleT roundT_pressureGate_roundT roundT_squareT_pressureGate_squareT; do
+  resense inject --npy /data/cache/$bag --every 10 --out data/S_$bag \
+      --kinds person,box0.5,box1.0,plank,trolley --distances 10:250 --negative-fraction 0.2 --seed 1
+  resense eval data/S_$bag --repeat 3 --text        # 3 repeats emulate persistence; no speed given
+done
+
+# approach sequences (first-detection distance) on roundT_doubleT: 8 steps of 1.5 m (15 m/s)
+# per background, one kind per set, seeds 1-3; 208 frames per set, deleted after the evaluation
+for kind in person box0.5 box1.0 plank trolley; do for seed in 1 2 3; do
+  resense inject --npy /data/cache/roundT_doubleT --every 10 --out data/SEQ_${kind}_s$seed --kinds $kind \
+      --distances 10:250 --negative-fraction 0.2 --sequence 8 --speed 15 --seed $seed
+  resense eval data/SEQ_${kind}_s$seed --repeat 1 --text                 # rows' speed_mps given to the detector
+  resense eval data/SEQ_${kind}_s$seed --repeat 1 --no-gt-speed --text   # estimator / single-frame path
+done; done
 
 # robustness: augmented backgrounds (5 % dropout, 1 cm range noise, ±0.3° yaw/pitch, ±0.2° roll, 10 % intensity jitter)
-resense inject --bag <bag> --every 10 --out data/synth_aug/<bag> --augment
+resense inject --npy /data/cache/<bag> --every 10 --out data/synth_aug/<bag> --augment
 ```
+
+`resense eval` gives the detector the `speed_mps` of `inject --sequence` rows on every frame
+(`ego_speed_source: given`, the way the ROS node passes `ego_speed_mps` / odometry);
+`--ego-speed V` forces a constant speed on any source, `--no-gt-speed` withholds the rows'
+speed. Static sets carry `speed_mps: 0` and get nothing (the estimator runs, as in
+`resense run`). `resense run` and `resense bench` take the same `--ego-speed V`.
 
 `--sequence N --speed V` keeps the same background frame and moves the objects by
 `V × tracking.frame_dt` per step (`d − k·V·0.1` for k = 0..N−1), stopping early if an object
@@ -214,9 +242,75 @@ resense run  --bag <bag> --out results.jsonl && resense summarize results.jsonl 
 `--repeat 1` for real sequences (the tracker sees the true frame order); the default
 `--repeat 3` is for static injected frames, where it emulates persistence.
 
-The first real label file to produce is `doubleT_obstacle` (the person crossing the track at
-55–57 m, reported at 55.6 m in the v0 run — [`EXPERIMENTS.md`](EXPERIMENTS.md) §1). Its frame
-numbers and lateral offsets have to come from the label tool on the bag, not from memory.
+## Real labels (set R): `labels/doubleT_obstacle.json`
+
+Made on 2026-09-21 (P4) from the cached frames of `doubleT_obstacle`, **not** from the
+detector's output: every one of the 201 frames was searched for person-sized clusters with the
+recipe below and every frame carries a label list (74 KB, one line per frame). The recipe uses
+the package only, so the file can be rebuilt and checked:
+
+1. frame `NNNN` = `/data/cache/doubleT_obstacle/doubleT_obstacle_NNNN.npy` →
+   `resense.frame.frame_from_compact(arr, SensorConfig())` (vehicle frame, X forward / Y left /
+   Z up) and a per-frame track model `resense.track.estimate_track(xyz, cfg.track, prev=None)`
+   for the rail-head height. The lateral axis of the labels is the **median of the 201
+   per-frame axes** (centre −0.225 m, yaw −1.25°, curvature −7.6e−5 m⁻¹; the per-frame yaw
+   scatters between −2.0° and −0.84°, i.e. ±0.5 m at 55 m, while the train does not move, so
+   one axis is the physical truth and the per-frame value is detector noise).
+2. **Far window** X 50–62 m, |dy| ≤ 4 m, 0.1–2.3 m above the rail head → DBSCAN (0.4 m, 4
+   points); a person is a cluster of ≥ 15 points, ≤ 1.2 m long, ≤ 1.3 m wide, 0.6–2.0 m tall
+   (the columns at 45.6 m and 46.8 m are 2.2–2.6 m tall and outside the window). Exactly one
+   such cluster exists in every frame: 80–123 points, 0.2–0.75 m long, 0.5–1.2 m wide,
+   1.0–1.6 m tall measured from the bed (the head is not always returned; in frames 28–48 the
+   person bends down while crossing the rails: 1.0–1.2 m tall, 1.2 m wide, 30–45 points fewer).
+3. **Near window** X 0.5–25 m, dy 0.8–3.5 m, 0.05–2.3 m above the rail head, minus the static
+   background (0.25 m voxels occupied in ≥ 50 % of frames 0–100) → DBSCAN (0.35 m, 5); a person
+   is ≥ 30 points, ≤ 1.5 m long, ≤ 1.2 m wide, 0.8–2.0 m tall. Found in frames 146–200 only
+   (400–4 200 points, 1.5–1.6 m tall; partial in 146–150 while entering the 2.5 m minimum range).
+4. Row keys: `distance` = X of the nearest point; `lateral` = mean dy of the cluster from the
+   median axis (+ left); `size` = bbox extent, height measured on all points inside the
+   footprint down to 0.25 m below the rail head (the person stands on the bed); `bbox` in the
+   vehicle frame; `reflectivity` = mean intensity; `h_above_rail` = [min, max] above the
+   per-frame rail head; `n_points` = cluster size (not an occlusion flag for real labels).
+5. `in_gauge` = the nearest edge of the person, |lateral| − W/2, is inside the strict gauge
+   half width of 1.4 m (`gauge.profile` above 0.55 m in `configs/default.yaml`);
+   `gauge_margin` = 1.4 − edge (m, negative = outside) is written so that borderline frames can
+   be re-thresholded: **frames 0–4 and 70–76 are within ±0.25 m of the boundary** (the axis
+   uncertainty at 55 m), everything else is clear-cut.
+6. Checked by eye on renders: `resense run --npy /data/cache/doubleT_obstacle --start F
+   --limit 1 --render out/render --x-max 70` for F = 0, 40, 72, 100, 165, 200 (the person
+   cluster sits at the labelled X / Y in every render; `img/doubleT_obstacle_0020.png` and
+   `_0165.png` are the v0 renders of the same scene), and against the v0.3 full-rate results
+   (`/data/results/v0.3/doubleT_obstacle.jsonl`: track 6 follows the same lateral path,
+   55.4–56.6 m, frames 2–72).
+
+| label | frames | where | `in_gauge` |
+|---|---|---|---|
+| `person_crossing` | 0–200 (every frame) | 55.4–56.7 m ahead; lateral +1.8 m (frame 0) → +1.1 m (10) → +0.4 m (20) → −0.26 m (35–45, on the axis) → +0.6 m (60) → +1.5 m (70) → +1.8 m (73) → +2.5 m (90–115) → +2.33 m (140–200, standing still at 54.65 m) | **true in frames 2–72** (71 frames), false in 0–1 and 73–200 (beside the track / column row) |
+| `person_walkway` | 146–200 | walks away from the train along the left side: X 0.9 → 15.4 m, lateral +2.2…+2.5 m, ~2.8 m/s | false (edge 0.4–0.8 m outside the gauge) |
+
+Two corrections to earlier notes: the walking person is in the **last** 55 frames, not the
+first ones, and the standing person of `EXPERIMENTS.md` §1 (frame 165, "~1.8 m left") is
+2.33 m left of the axis, 0.6 m outside the advisory corridor.
+
+**Results on the labels** (21.09, every frame of the cached bag, commit f4e311f;
+`resense eval --npy /data/cache/doubleT_obstacle --gt labels/doubleT_obstacle.json --text`,
+`--labelled-only` gives the same numbers because every frame is labelled):
+
+| detector | recall (person in gauge, 71 frames) | first detection | distance error mean / max (bias) | lateral error | FP frames / events | alarm frames / events |
+|---|---|---|---|---|---|---|
+| f4e311f defaults (v0.4: accumulation + estimator on, no speed given) | 64/71 = **90.1 %** | 56.5 m | 0.07 / 0.19 m (−0.07 m) | 0.18 m | 16 / 2 | 80 / 3 |
+| f4e311f with the v0.3-equivalent config (`accumulation.enabled: false`, `estimate_speed: false`, `track.floor_verify_enabled: false`, `cluster.retro_intensity: 0`) | 63/71 = 88.7 % | 56.5 m | 0.00 / 0.05 m (+0.00 m) | 0.17 m | 13 / 2 | 76 / 3 |
+| `/data/results/v0.3/doubleT_obstacle.jsonl` (commit f2c57e5) through `resense summarize --gt` | 63/71 = 88.7 % | 56.5 m | 0.00 / 0.05 m | 0.17 m | 13 / 2 | 76 / 3 |
+
+Reading: the misses are frames 2–8 in both versions (the person enters the strict gauge at
+frame 2 with a 0.04 m margin; `confirm_hits = 3` confirms at frame 9) plus frame 72 for v0.3
+(the last in-gauge frame, margin 0.0 m). The two false-alarm events are the column-row
+structures on the right, 17.4–19.5 m (−1.6 m, track id 1, 40 frames between 10 and 159) and
+33.6–33.9 m (id 3, frames 13–14), which flip from the advisory zone into the gauge. The three
+extra FP frames of v0.4 (73–75) are the person himself, 0.12–0.22 m outside the gauge by the
+label and still reported inside by the laterally accumulated track (EXPERIMENTS.md §2b:
+"stays in gauge four frames longer"); they are borderline, not phantoms. The distance bias of
+v0.4 (−0.07 m) comes from the same accumulation.
 
 ## How to check a new bag (intake recipe)
 
