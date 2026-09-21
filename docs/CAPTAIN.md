@@ -63,8 +63,8 @@ Docker and ROS 2 were not available, so the node itself is still unexecuted.
 4. **The false-alarm numbers do not, and are optimistic.** `EXPERIMENTS.md` reports
    `roundT_doubleT` as "26 frames (every 5th), 1 gauge alarm". 252 frames / 26 = every **10th**.
    Re-run at every 5th: **8 alarm frames, 3 false-alarm events**. Subsampling interacts with
-   `tracking.confirm_hits = 3` — at every 10th a candidate must persist a full second to be
-   confirmed, at 10 Hz only 0.3 s — so **every recall and false-alarm number measured on
+   `tracking.confirm_hits = 3` — the three hits are 1 s apart at every 10th frame (3 s of
+   persistence), 0.5 s apart at every 5th (1.5 s), 0.1 s apart at 10 Hz (0.3 s) — so **every recall and false-alarm number measured on
    subsampled frames understates the false-alarm rate the node will show at 10 Hz**. For P3/P4:
    the evaluation has to run at full rate, or state the subsampling next to every number.
 5. **FP events vs FP frames, measured.** Those 8 alarm frames are 3 confirmed track ids
@@ -101,8 +101,9 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
    | `squareT_platform_squareT_switch` | 877 | 504 | 105 | 680 | 17–148 m | 83 / 131 / 236 |
 
    `EXPERIMENTS.md` §1 reports 1 alarm frame on `roundT_doubleT` at every 10th frame. Finding 4
-   of 20.09 predicted the direction (a candidate needs 3 *consecutive processed* frames, i.e.
-   1 s when subsampled by 10, 0.3 s at 10 Hz) but not the size: **every false-alarm number in
+   of 20.09 predicted the direction (a candidate needs `confirm_hits` = 3 *consecutive processed*
+   frames, which are N × 0.1 s apart when every N-th frame is used: 3 s of persistence at every
+   10th, 1.5 s at every 5th, 0.3 s at 10 Hz) but not the size: **every false-alarm number in
    `EXPERIMENTS.md` is measured on subsampled frames and understates the 10 Hz rate by an order
    of magnitude.** This is the first item for P3 with real data (raw runs:
    `/data/results/v0.3/<bag>.jsonl` on the sandbox, reproducible with `resense run --npy`).
