@@ -63,6 +63,8 @@ def main(argv=None) -> int:
     p.add_argument("--min-alarm-frames", type=int, default=3,
                    help="with --expect-obstacle: how many alarm frames are enough (default 3)")
     p.add_argument("--min-frames", type=int, default=50, help="minimum status messages seen (default 50)")
+    p.add_argument("--first-clear", type=int, default=0, metavar="N",
+                   help="the first N status messages must report no obstacle (clear lead-in of a bag)")
     p.add_argument("--max-p95-latency", type=float, default=100.0,
                    help="ms, p95 of node.latency_ms = decode + detect (default 100, the 10 Hz frame period)")
     p.add_argument("--max-dropped", type=int, default=0, help="allowed dropped input frames (default 0)")
@@ -105,6 +107,11 @@ def main(argv=None) -> int:
         failures.append(f"{len(alarms)} alarm frames, expected >= {args.min_alarm_frames}")
     if args.expect_clear and alarms:
         failures.append(f"{len(alarms)} false alarms on a bag expected to be clear")
+    if args.first_clear > 0:
+        early = [i for i, f in enumerate(frames[:args.first_clear]) if f["obstacle"]]
+        if early:
+            failures.append(f"{len(early)} of the first {args.first_clear} frames report an obstacle "
+                            f"(first at message {early[0]}); expected a clear lead-in")
     if args.distance and distances:
         lo, hi = (float(v) for v in args.distance.split(":"))
         out = [d for d in distances if not lo <= d <= hi]

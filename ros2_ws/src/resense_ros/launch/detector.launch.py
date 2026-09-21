@@ -1,8 +1,11 @@
-"""ros2 launch resense_ros detector.launch.py [bag:=/data/for_hackathon/roundT_doubleT] [rviz:=true]
+"""ros2 launch resense_ros detector.launch.py [bag:=/data/for_hackathon/roundT_doubleT] [rviz:=true] [loop:=true]
 
 Every node parameter is a launch argument, so the demo can be retuned without rebuilding.
 ``input_topic`` is a comma-separated candidate list; the node also auto-discovers PointCloud2
 topics unless ``auto_discover:=false`` (the organizers' bags disagree on the topic name).
+``bag:=`` plays a bag from the launch file (``loop:=true`` forever, ``rate:=`` playback rate);
+``ego_speed_mps:=22`` (or ``speed_topic:=`` / ``odom_topic:=``) feeds the train speed to the
+multi-frame accumulation; ``publish_tf`` links the fixed frame ``resense_lidar`` to the bag's frame.
 """
 import os
 
@@ -26,6 +29,13 @@ PARAMS = {
     "marker_x_max": ("250.0", float, "m, how far the corridor outline is drawn"),
     "output_frame": ("", str, "frame_id of the published markers/detections; empty = the input's"),
     "stats_period": ("2.0", float, "s between fps / latency log lines"),
+    "ego_speed_mps": ("-1.0", float, "train speed in m/s for multi-frame accumulation; < 0 = unknown "
+                                     "(speed_topic / odom_topic or the detector's own estimate)"),
+    "speed_topic": ("", str, "std_msgs/Float32 topic carrying the train speed in m/s (optional)"),
+    "odom_topic": ("", str, "nav_msgs/Odometry topic; twist.linear.x is taken as the train speed (optional)"),
+    "speed_timeout": ("1.0", float, "s after which a speed message no longer counts"),
+    "publish_tf": ("true", bool, "broadcast a static identity TF tf_parent_frame -> input frame id"),
+    "tf_parent_frame": ("resense_lidar", str, "fixed frame used by the RViz / Foxglove layouts"),
 }
 
 

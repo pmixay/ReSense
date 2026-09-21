@@ -20,7 +20,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         python3-pip python3-numpy python3-yaml \
-        ros-humble-vision-msgs ros-humble-rviz2 ros-humble-rosbag2 \
+        ros-humble-vision-msgs ros-humble-nav-msgs ros-humble-tf2-ros-py \
+        ros-humble-rviz2 ros-humble-rosbag2 \
         ros-humble-rosbag2-storage-default-plugins ros-humble-rosbag2-storage-mcap \
         ros-humble-foxglove-bridge \
     && rm -rf /var/lib/apt/lists/*
@@ -37,7 +38,11 @@ RUN pip3 install "numpy==1.26.4" "scipy==1.13.1" "scikit-learn==1.5.2" "pyyaml==
     && pip3 install --no-deps .
 
 # optional offline / research tooling (bag reading without ROS, plots, synthetic injection, tests)
+# scripts/ carries the dataset-free ROS smoke test (make_smoke_bag.py + smoke_test.sh) and the
+# acceptance checker; they are small and need nothing beyond the runtime stack (the smoke bag
+# generator itself needs open3d, i.e. WITH_TOOLS=1).
 COPY tests ./tests
+COPY scripts ./scripts
 RUN if [ "$WITH_TOOLS" = "1" ]; then \
         pip3 install "rosbags==0.10.11" "matplotlib==3.10.7" "open3d==0.19.0" "pytest==8.4.2"; \
     fi

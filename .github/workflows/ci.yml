@@ -25,3 +25,5 @@ jobs:
         run: docker run --rm resense:ci python3 -m pytest -q /opt/resense/tests
       - name: ROS 2 package is importable and the launch file resolves
         run: docker run --rm resense:ci bash -lc "ros2 pkg executables resense_ros && ros2 launch resense_ros detector.launch.py --print >/dev/null"
+      - name: ROS 2 smoke test — a synthetic bag through the node inside the image (no dataset needed)
+        run: docker run --rm resense:ci bash -lc "python3 scripts/make_smoke_bag.py /tmp/smoke_bag && scripts/smoke_test.sh /tmp/smoke_bag"

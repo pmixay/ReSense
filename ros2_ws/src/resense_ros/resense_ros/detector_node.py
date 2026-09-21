@@ -15,27 +15,43 @@ Topics (defaults, all configurable via parameters):
   pub  /resense/corridor_points         sensor_msgs/PointCloud2 (points inside the corridor, debug)
   pub  /resense/latency_ms              std_msgs/Float32   (per frame: decode + detect + publish, ms)
   pub  /resense/fps                     std_msgs/Float32   (frames processed per second, every stats_period s)
+  pub  /tf_static                       resense_lidar -> <input frame_id>, identity, once per input frame id
+  sub  <speed_topic>                    std_msgs/Float32   (optional: train speed in m/s)
+  sub  <odom_topic>                     nav_msgs/Odometry  (optional: twist.linear.x is the train speed)
 
 The status JSON carries an extra ``node`` object next to the detector fields:
-``{"latency_ms", "fps", "frames", "dropped_frames", "input_period_ms"}`` (``latency_ms`` there is
-decode + detect of the same frame, before publishing). ``dropped_frames``
-is estimated from gaps in the input header stamps (the subscription is best-effort with a
-short queue, so a slow frame silently drops the ones behind it).
+``{"latency_ms", "fps", "frames", "dropped_frames", "input_period_ms", "ego_speed_mps",
+"ego_speed_source"}`` (``latency_ms`` there is decode + detect of the same frame, before
+publishing). ``dropped_frames`` is estimated from gaps in the input header stamps (the
+subscription is best-effort with a short queue, so a slow frame silently drops the ones behind
+it).
+
+Ego speed (multi-frame accumulation needs it): the ``ego_speed_mps`` parameter wins when >= 0,
+else the latest value from ``speed_topic`` / ``odom_topic`` younger than ``speed_timeout``,
+else ``None`` and the detector falls back to its own estimate. The value is handed to
+``Detector.process(frame, ego_speed=...)`` when the installed detector accepts it.
+
+The static TF exists so that one RViz / Foxglove layout works for every bag: the organizers'
+bags carry different ``frame_id`` values (``hesai_lidar``, ``lidar_livox``); the layouts use
+``resense_lidar`` as the fixed frame and the node links it to whatever frame the input has.
 """
 from __future__ import annotations
 
+import inspect
 import json
 import time
 
 import numpy as np
 import rclpy
-from geometry_msgs.msg import Point
+from geometry_msgs.msg import Point, TransformStamped
+from nav_msgs.msg import Odometry
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy
 from sensor_msgs.msg import PointCloud2, PointField
 from std_msgs.msg import Bool, Float32, String, Header
 from vision_msgs.msg import Detection3D, Detection3DArray, ObjectHypothesisWithPose
 from visualization_msgs.msg import Marker, MarkerArray
+from tf2_ros import StaticTransformBroadcaster
 
 from resense.config import DetectorConfig
 from resense.detector import Detector, FrameResult
@@ -55,12 +71,36 @@ class DetectorNode(Node):
         self.declare_parameter("marker_x_max", 250.0)
         self.declare_parameter("output_frame", "")   # empty = input frame id
         self.declare_parameter("stats_period", 2.0)  # s, between FPS / latency log lines and /resense/fps
+        self.declare_parameter("ego_speed_mps", -1.0)   # train speed for accumulation; < 0 = unknown
+        self.declare_parameter("speed_topic", "")       # std_msgs/Float32, m/s (optional)
+        self.declare_parameter("odom_topic", "")        # nav_msgs/Odometry, twist.linear.x (optional)
+        self.declare_parameter("speed_timeout", 1.0)    # s, a speed message older than this no longer counts
+        self.declare_parameter("publish_tf", True)      # static identity TF tf_parent_frame -> input frame id
+        self.declare_parameter("tf_parent_frame", "resense_lidar")
 
         cfg_file = self.get_parameter("config_file").get_parameter_value().string_value
         self.cfg = DetectorConfig.from_yaml(cfg_file) if cfg_file else DetectorConfig()
         self.detector = Detector(self.cfg)
         self.R_vs = axis_matrix(self.cfg.sensor)            # sensor -> vehicle
         self.R_sv = self.R_vs.T                              # vehicle -> sensor (for markers)
+
+        # --- ego speed: parameter > topic > the detector's own estimate. The accumulation stage
+        # takes ``ego_speed`` as a keyword; a detector without it (older core) still works.
+        self._process_takes_speed = "ego_speed" in inspect.signature(Detector.process).parameters
+        self.speed_value = None        # m/s, latest topic value
+        self.speed_time = None         # perf_counter() when it arrived
+        self.last_speed = None         # what the last frame was processed with
+        self.last_speed_source = None  # "param" | "topic" | None
+        speed_topic = self.get_parameter("speed_topic").get_parameter_value().string_value
+        odom_topic = self.get_parameter("odom_topic").get_parameter_value().string_value
+        if speed_topic:
+            self.create_subscription(Float32, speed_topic, self.on_speed, 10)
+        if odom_topic:
+            self.create_subscription(Odometry, odom_topic, self.on_odom, 10)
+        # --- one fixed frame for the visualisation layouts, whatever the bag's frame_id is
+        self.tf_static = (StaticTransformBroadcaster(self)
+                          if self.get_parameter("publish_tf").get_parameter_value().bool_value else None)
+        self.tf_frames_sent = set()
 
         self.qos = QoSProfile(depth=5, reliability=QoSReliabilityPolicy.BEST_EFFORT,
                               history=QoSHistoryPolicy.KEEP_LAST)
@@ -124,6 +164,40 @@ class DetectorNode(Node):
                 self.subscribe(name)
 
     # ------------------------------------------------------------------
+    def on_speed(self, msg: Float32) -> None:
+        self.speed_value, self.speed_time = float(msg.data), time.perf_counter()
+
+    def on_odom(self, msg: Odometry) -> None:
+        self.speed_value, self.speed_time = float(msg.twist.twist.linear.x), time.perf_counter()
+
+    def ego_speed(self):
+        """(train speed in m/s or None, source): the parameter wins, then a fresh topic value."""
+        v = self.get_parameter("ego_speed_mps").get_parameter_value().double_value
+        if v >= 0.0:
+            return v, "param"
+        timeout = self.get_parameter("speed_timeout").get_parameter_value().double_value
+        if self.speed_value is not None and time.perf_counter() - self.speed_time <= timeout:
+            return self.speed_value, "topic"
+        return None, None
+
+    def send_static_tf(self, child: str) -> None:
+        """Identity transform ``tf_parent_frame`` -> the input frame id, sent once per frame id, so
+        that RViz / Foxglove can keep ``resense_lidar`` as the fixed frame for every bag."""
+        if self.tf_static is None or not child or child in self.tf_frames_sent:
+            return
+        parent = self.get_parameter("tf_parent_frame").get_parameter_value().string_value
+        self.tf_frames_sent.add(child)
+        if child == parent:
+            return
+        t = TransformStamped()
+        t.header.stamp = self.get_clock().now().to_msg()
+        t.header.frame_id = parent
+        t.child_frame_id = child
+        t.transform.rotation.w = 1.0
+        self.tf_static.sendTransform(t)
+        self.get_logger().info(f"static TF {parent} -> {child} (identity)")
+
+    # ------------------------------------------------------------------
     def _account_frame(self, stamp: float) -> None:
         """Estimate dropped frames from the gap between consecutive input stamps."""
         if self.last_stamp is not None:
@@ -154,7 +228,9 @@ class DetectorNode(Node):
     def node_stats(self) -> dict:
         return {"latency_ms": round(self.last_latency_ms, 2), "fps": round(self.fps, 2),
                 "frames": self.n_frames, "dropped_frames": self.dropped,
-                "input_period_ms": round(self.input_period * 1e3, 1)}
+                "input_period_ms": round(self.input_period * 1e3, 1),
+                "ego_speed_mps": None if self.last_speed is None else round(float(self.last_speed), 2),
+                "ego_speed_source": self.last_speed_source}
 
     # ------------------------------------------------------------------
     def on_cloud(self, msg: PointCloud2, topic: str = "") -> None:
@@ -168,6 +244,7 @@ class DetectorNode(Node):
                     del self.subs[other]
         elif topic and topic != self.active_topic:
             return
+        self.send_static_tf(msg.header.frame_id)
         t0 = time.perf_counter()
         arr = structured_to_compact(pointcloud2_to_structured(msg))
         xyz_s = np.stack([arr["x"], arr["y"], arr["z"]], axis=1).astype(np.float32)
@@ -178,7 +255,9 @@ class DetectorNode(Node):
         frame = Frame(xyz=xyz_v, intensity=arr["intensity"][ok], ring=arr["ring"][ok],
                       stamp=stamp, frame_id=msg.header.frame_id)
         self._account_frame(stamp)
-        res = self.detector.process(frame)
+        self.last_speed, self.last_speed_source = self.ego_speed()
+        res = (self.detector.process(frame, ego_speed=self.last_speed) if self._process_takes_speed
+               else self.detector.process(frame))
         self.last_latency_ms = (time.perf_counter() - t0) * 1e3   # decode + detect, goes into the status JSON
         self.publish(msg.header, frame, res)
         self.n_frames += 1

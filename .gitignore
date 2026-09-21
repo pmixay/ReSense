@@ -39,3 +39,6 @@ ros2_ws/install/
 ros2_ws/log/
 *.egg-info/
 .pytest_cache/
+
+# Claude Code worktrees (multi-agent sessions)
+.claude/
