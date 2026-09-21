@@ -338,7 +338,10 @@ def format_comparison(summaries: Sequence[dict], names: Optional[Sequence[str]] 
     summary; with exactly two, a delta column). ``names`` default to the ``file`` key."""
     import os
     if names is None:
-        names = [os.path.basename(str(s.get("file", f"run {i + 1}"))) for i, s in enumerate(summaries)]
+        paths = [str(s.get("file", f"run {i + 1}")) for i, s in enumerate(summaries)]
+        names = [os.path.basename(p) for p in paths]
+        if len(set(names)) < len(names):        # same file name in different directories: keep the parent
+            names = [os.path.join(os.path.basename(os.path.dirname(p)), os.path.basename(p)) for p in paths]
     two = len(summaries) == 2
 
     def cell(v, fmt):

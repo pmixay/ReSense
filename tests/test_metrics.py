@@ -148,6 +148,12 @@ def test_summarize_compare_two_files(tmp_path, capsys):
     assert json.loads(capsys.readouterr().out)[1]["alarm_frames"] == 3 and len(outs) == 2
     with pytest.raises(SystemExit):
         run_cli(["summarize"])
+    # the same file name in two directories (results/v0.3/bag.jsonl vs results/v0.4/bag.jsonl) stays readable
+    from resense.metrics import format_comparison
+    a, b = dict(outs[0], file="v0.3/bag.jsonl"), dict(outs[1], file="v0.4/bag.jsonl")
+    assert format_comparison([a, b]).splitlines()[0] == "| metric | v0.3/bag.jsonl | v0.4/bag.jsonl | delta |"
+    assert "| metric | x.jsonl | y.jsonl | z.jsonl |" in format_comparison([dict(a, file="x.jsonl"), dict(b, file="y.jsonl"),
+                                                                           dict(b, file="z.jsonl")])
 
 
 def test_frame_stride_detection():
