@@ -5,107 +5,362 @@
 <title>ReSense dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-  :root { --bg:#14151a; --fg:#eaeaea; --ok:#2ecc71; --warn:#ff9f1c; --bad:#ff2d55; --muted:#8a8f98; }
+  :root { --bg:#14151a; --fg:#eaeaea; --ok:#2ecc71; --warn:#ff9f1c; --bad:#ff2d55; --muted:#8a8f98; --line:#2a2c33; --card:#1b1d24; --accent:#8a83d1; }
+  * { box-sizing: border-box; }
   body { margin:0; font-family: system-ui, sans-serif; background:var(--bg); color:var(--fg); }
-  header { display:flex; gap:16px; align-items:center; padding:12px 20px; border-bottom:1px solid #2a2c33; }
-  header h1 { font-size:18px; margin:0; letter-spacing:.5px; }
-  #banner { font-size:40px; font-weight:800; padding:18px 20px; }
+  header { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; padding:10px 20px; border-bottom:1px solid var(--line); }
+  header h1 { font-size:18px; margin:0 12px 0 0; letter-spacing:.5px; white-space:nowrap; }
+  .mode { display:flex; gap:8px; align-items:center; padding:4px 10px; border:1px solid var(--line); border-radius:6px; }
+  .mode.active { border-color: var(--accent); }
+  .mode .tag { font-size:11px; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); }
+  #banner { font-size:44px; font-weight:800; padding:14px 20px 10px; line-height:1.1; }
+  #banner small { display:block; font-size:14px; font-weight:400; color:var(--muted); margin-top:2px; }
   .clear { color:var(--ok);} .warn { color:var(--warn);} .bad { color:var(--bad);}
-  main { display:grid; grid-template-columns: 2fr 1fr; gap:16px; padding:0 20px 20px; }
-  canvas { width:100%; background:#0d0e12; border:1px solid #2a2c33; border-radius:6px; }
-  .card { background:#1b1d24; border:1px solid #2a2c33; border-radius:6px; padding:12px; margin-bottom:12px; }
+  main { display:grid; grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr); gap:16px; padding:0 20px 20px; }
+  canvas { width:100%; display:block; background:#0d0e12; border:1px solid var(--line); border-radius:6px; margin-bottom:10px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:6px; padding:12px; margin-bottom:12px; transition: border-color .3s, box-shadow .3s; }
+  .card h3 { margin:0 0 8px; font-size:13px; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); }
+  .card.alert { border-color: var(--bad); box-shadow: 0 0 0 2px rgba(255,45,85,.35); }
+  .card.notice { border-color: var(--warn); }
   .kv { display:grid; grid-template-columns:1fr auto; gap:4px 12px; font-size:14px; }
   .kv span:nth-child(odd) { color:var(--muted); }
+  .kv b.bad { color:var(--bad); } .kv b.warn { color:var(--warn); }
   #log { font-family: ui-monospace, monospace; font-size:12px; max-height:220px; overflow:auto; white-space:pre; }
-  input { background:#0d0e12; color:var(--fg); border:1px solid #2a2c33; border-radius:4px; padding:4px 8px; }
-  @media (max-width: 900px) { main { grid-template-columns:1fr; } }
+  input, select, button { background:#0d0e12; color:var(--fg); border:1px solid var(--line); border-radius:4px; padding:4px 8px; font: inherit; }
+  button { cursor:pointer; } button:hover { border-color: var(--accent); } button:disabled { opacity:.4; cursor:default; }
+  button.primary { background:var(--accent); border-color:var(--accent); color:#111; font-weight:600; }
+  input[type=file] { max-width: 220px; }
+  input[type=range] { width: 160px; padding:0; vertical-align: middle; }
+  .status-line { font-size:12px; color:var(--muted); }
+  .canvas-tools { display:flex; gap:12px; align-items:center; font-size:12px; color:var(--muted); margin-bottom:6px; }
+  @media (max-width: 960px) { main { grid-template-columns:1fr; } #banner { font-size:32px; } }
 </style>
 </head>
 <body>
 <header>
   <h1>ReSense — clearance-gauge obstacle detection</h1>
-  <label>rosbridge <input id="url" value="ws://localhost:9090" size="24"></label>
-  <button id="connect">connect</button>
-  <span id="conn" style="color:var(--muted)">disconnected</span>
+  <div class="mode active" id="mode-live">
+    <span class="tag">live</span>
+    <label>rosbridge <input id="url" value="ws://localhost:9090" size="20"></label>
+    <button id="connect">connect</button>
+    <span id="conn" class="status-line">disconnected</span>
+  </div>
+  <div class="mode" id="mode-replay">
+    <span class="tag">replay</span>
+    <input type="file" id="file" accept=".jsonl,.json,.txt,.log" title="results.jsonl from: python -m resense.cli run --out results.jsonl">
+    <button id="stepback" title="previous frame (←)" disabled>&#9664;</button>
+    <button id="play" class="primary" title="play / pause (space)" disabled>play</button>
+    <button id="stepfwd" title="next frame (→)" disabled>&#9654;</button>
+    <input type="range" id="seek" min="0" max="0" value="0" disabled>
+    <span id="frame-pos" class="status-line">no file</span>
+    <label class="status-line">speed <select id="speed">
+      <option value="0.25">0.25x</option><option value="0.5">0.5x</option><option value="1" selected>1x</option>
+      <option value="2">2x</option><option value="4">4x</option><option value="10">10x</option>
+    </select></label>
+    <label class="status-line"><input type="checkbox" id="loop"> loop</label>
+  </div>
 </header>
 <div id="banner" class="clear">PATH CLEAR</div>
 <main>
   <div>
+    <div class="canvas-tools">
+      <span>top-down view, X along the track</span>
+      <label>range <select id="xmax"><option value="100">100 m</option><option value="150" selected>150 m</option><option value="250">250 m</option></select></label>
+      <span id="canvas-note"></span>
+    </div>
     <canvas id="top" width="1200" height="420"></canvas>
-    <canvas id="timeline" width="1200" height="160"></canvas>
+    <canvas id="timeline" width="1200" height="170"></canvas>
   </div>
   <div>
-    <div class="card"><div class="kv">
+    <div class="card"><h3>detector</h3><div class="kv">
       <span>nearest obstacle</span><b id="dist">—</b>
       <span>detections / warnings</span><b id="counts">0 / 0</b>
       <span>track axis (m, +left)</span><b id="axis">—</b>
       <span>curve radius</span><b id="radius">—</b>
       <span>corridor trusted to</span><b id="valid">—</b>
-      <span>processing</span><b id="timing">—</b>
-      <span>frames</span><b id="frames">0</b>
+      <span>points / in corridor</span><b id="points">—</b>
+      <span>detect time (total)</span><b id="timing">—</b>
+      <span>stages track / corridor / cluster</span><b id="stages">—</b>
+      <span>frames shown</span><b id="frames">0</b>
     </div></div>
-    <div class="card"><b>Alarm log</b><div id="log"></div></div>
+    <div class="card" id="node-card"><h3>ROS node <span id="node-note" class="status-line"></span></h3><div class="kv">
+      <span>latency (decode + detect)</span><b id="n-latency">—</b>
+      <span>fps</span><b id="n-fps">—</b>
+      <span>frames processed</span><b id="n-frames">—</b>
+      <span>dropped frames</span><b id="n-dropped">—</b>
+      <span>input period</span><b id="n-period">—</b>
+    </div></div>
+    <div class="card"><h3>alarm log</h3><div id="log"></div></div>
   </div>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/roslib@1/build/roslib.min.js"></script>
+<!-- roslibjs is only needed for the live mode; the page (and the replay mode) works without it -->
+<script async src="https://cdn.jsdelivr.net/npm/roslib@1/build/roslib.min.js" onerror="document.getElementById('conn').textContent='roslib.js not loaded (offline?) — replay mode only'"></script>
 <script>
+'use strict';
 const $ = id => document.getElementById(id);
-const hist = [];           // [t, nearest_distance]
-let frames = 0;
-function draw(res) {
-  const c = $('top'), ctx = c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height);
-  const XMAX = 250, sx = c.width / XMAX, cy = c.height/2, sy = 22;  // 22 px per metre lateral
-  ctx.strokeStyle = '#2a2c33'; ctx.lineWidth = 1;
-  for (let x = 0; x <= XMAX; x += 50) { ctx.beginPath(); ctx.moveTo(x*sx, 0); ctx.lineTo(x*sx, c.height); ctx.stroke();
-    ctx.fillStyle = '#8a8f98'; ctx.font = '12px system-ui'; ctx.fillText(x + ' m', x*sx + 4, 14); }
+const FRAME_DT = 0.1;                       // s, sensor period used for the replay clock
+const TIMELINE_SPAN = 30;                   // s of history on the timeline
+
+// ----------------------------------------------------------------------------- state
+const state = {
+  mode: 'live',                              // 'live' | 'replay'
+  frames: [],                                // replay: parsed FrameResult dicts (in file order)
+  idx: -1,                                   // replay: index of the frame shown
+  playing: false,
+  timer: null,
+  speed: 1,
+  hist: [],                                  // [{t, dist, warnDist, obstacle}] for the timeline
+  shown: 0,                                  // frames applied since the last reset
+  t0: null,                                  // replay: stamp of the first frame (timeline origin)
+  alarmFrames: 0,                            // frames of the current alarm (for the log)
+  lastObstacle: false,
+  node: { lastDropped: null, alertUntil: 0 },
+  last: null,                                // last result applied (for redraws)
+};
+
+// ----------------------------------------------------------------------------- drawing
+function drawTop(res) {
+  const c = $('top'), ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
+  const XMAX = +$('xmax').value, sx = c.width / XMAX, cy = c.height / 2, sy = 22;   // 22 px per metre lateral
+  ctx.strokeStyle = '#2a2c33'; ctx.lineWidth = 1; ctx.font = '12px system-ui';
+  const step = XMAX > 150 ? 50 : 25;
+  for (let x = 0; x <= XMAX; x += step) {
+    ctx.beginPath(); ctx.moveTo(x * sx, 0); ctx.lineTo(x * sx, c.height); ctx.stroke();
+    ctx.fillStyle = '#8a8f98'; ctx.fillText(x + ' m', x * sx + 4, 14);
+  }
+  for (const y of [-4, -2, 2, 4]) { ctx.beginPath(); ctx.moveTo(0, cy - y * sy); ctx.lineTo(c.width, cy - y * sy); ctx.stroke(); }
   const t = res.track || {}; const c0 = t.center || 0, yaw = t.yaw || 0, k = t.curvature || 0;
-  const axis = X => c0 + Math.tan(yaw)*X + 0.5*k*X*X;
-  // corridor (half-width 1.4 m) and trusted range
-  ctx.strokeStyle = '#2ecc71'; ctx.setLineDash([6,4]);
-  for (const side of [1.4, -1.4]) { ctx.beginPath();
-    for (let X = 3; X <= XMAX; X += 5) { const Y = axis(X) + side; const px = X*sx, py = cy - Y*sy; X === 3 ? ctx.moveTo(px,py) : ctx.lineTo(px,py); }
-    ctx.stroke(); }
+  const axis = X => c0 + Math.tan(yaw) * X + 0.5 * k * X * X;
+  // sensor / train nose
+  ctx.fillStyle = '#8a83d1'; ctx.beginPath(); ctx.moveTo(0, cy - 12); ctx.lineTo(14, cy); ctx.lineTo(0, cy + 12); ctx.closePath(); ctx.fill();
+  // track axis and the strict gauge corridor (half-width 1.4 m)
+  ctx.strokeStyle = 'rgba(46,204,113,0.5)'; ctx.setLineDash([2, 6]); ctx.beginPath();
+  for (let X = 3; X <= XMAX; X += 5) { const px = X * sx, py = cy - axis(X) * sy; X === 3 ? ctx.moveTo(px, py) : ctx.lineTo(px, py); }
+  ctx.stroke();
+  ctx.strokeStyle = '#2ecc71'; ctx.setLineDash([6, 4]);
+  for (const side of [1.4, -1.4]) {
+    ctx.beginPath();
+    for (let X = 3; X <= XMAX; X += 5) { const px = X * sx, py = cy - (axis(X) + side) * sy; X === 3 ? ctx.moveTo(px, py) : ctx.lineTo(px, py); }
+    ctx.stroke();
+  }
   ctx.setLineDash([]);
-  if (t.axis_valid && t.axis_valid < XMAX) { ctx.fillStyle = 'rgba(255,159,28,0.12)'; ctx.fillRect(t.axis_valid*sx, 0, c.width - t.axis_valid*sx, c.height); }
-  for (const d of (res.warnings || [])) box(ctx, d, sx, sy, cy, '#ff9f1c');
-  for (const d of (res.detections || [])) box(ctx, d, sx, sy, cy, '#ff2d55');
+  if (t.axis_valid != null && t.axis_valid < XMAX) {
+    ctx.fillStyle = 'rgba(255,159,28,0.10)'; ctx.fillRect(t.axis_valid * sx, 0, c.width - t.axis_valid * sx, c.height);
+    ctx.fillStyle = '#ff9f1c'; ctx.fillText('corridor not trusted beyond ' + t.axis_valid.toFixed(0) + ' m', t.axis_valid * sx + 6, c.height - 8);
+  }
+  for (const d of (res.warnings || [])) box(ctx, d, sx, sy, cy, '#ff9f1c', XMAX);
+  for (const d of (res.detections || [])) box(ctx, d, sx, sy, cy, '#ff2d55', XMAX);
 }
-function box(ctx, d, sx, sy, cy, color) {
+function box(ctx, d, sx, sy, cy, color, XMAX) {
+  if (!d.center || d.center[0] > XMAX) return;
   const w = Math.max(d.size[0], 1.5) * sx, h = Math.max(d.size[1], 0.6) * sy;
-  ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.strokeRect(d.center[0]*sx - w/2, cy - d.center[1]*sy - h/2, w, h);
-  ctx.fillStyle = color; ctx.font = 'bold 13px system-ui'; ctx.fillText(`${d.distance.toFixed(1)} m  p=${d.confidence.toFixed(2)}`, d.center[0]*sx + w/2 + 4, cy - d.center[1]*sy - 4);
+  const x = d.center[0] * sx, y = cy - d.center[1] * sy;
+  ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.strokeRect(x - w / 2, y - h / 2, w, h);
+  ctx.fillStyle = color; ctx.font = 'bold 13px system-ui';
+  const label = `${d.distance.toFixed(1)} m  p=${d.confidence.toFixed(2)}`;
+  const tw = ctx.measureText(label).width;
+  ctx.fillText(label, Math.min(x + w / 2 + 4, ctx.canvas.width - tw - 4), y - h / 2 - 4);
 }
+function timelineNow() {
+  if (state.mode === 'replay') { const f = state.last; return f ? stampOf(f) : 0; }
+  return Date.now() / 1000;
+}
+function stampOf(f) { return (typeof f.stamp === 'number' && isFinite(f.stamp)) ? f.stamp : (f.frame || 0) * FRAME_DT; }
 function drawTimeline() {
-  const c = $('timeline'), ctx = c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height);
-  const now = Date.now()/1000, span = 30;
-  ctx.strokeStyle = '#2a2c33'; for (const d of [50,100,150,200]) { const y = c.height - d/250*c.height; ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(c.width,y); ctx.stroke(); ctx.fillStyle='#8a8f98'; ctx.fillText(d+' m', 4, y-2); }
-  ctx.fillStyle = '#ff2d55';
-  for (const [t, d] of hist) { if (d == null) continue; const x = c.width - (now - t)/span*c.width; const y = c.height - d/250*c.height; ctx.fillRect(x-2, y-2, 4, 4); }
+  const c = $('timeline'), ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
+  const now = timelineNow(), span = TIMELINE_SPAN, DMAX = 250, top = 6, bottom = c.height - 18, H = bottom - top;
+  const yOf = d => bottom - Math.min(d, DMAX) / DMAX * H, xOf = t => c.width - (now - t) / span * c.width;
+  ctx.strokeStyle = '#2a2c33'; ctx.font = '11px system-ui';
+  for (const d of [50, 100, 150, 200]) { const y = yOf(d); ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(c.width, y); ctx.stroke(); ctx.fillStyle = '#8a8f98'; ctx.fillText(d + ' m', 4, y - 2); }
+  // x-axis: wall clock in live mode, stamp relative to the first frame in replay
+  const tick = 5, first = Math.floor((now - span) / tick) * tick;
+  for (let t = first; t <= now; t += tick) {
+    if (t < now - span) continue;
+    const x = xOf(t); ctx.beginPath(); ctx.moveTo(x, bottom); ctx.lineTo(x, bottom + 4); ctx.stroke();
+    const rel = t - (state.t0 || 0);
+    const label = state.mode === 'replay' ? ((rel >= 0 ? '+' : '−') + Math.abs(rel).toFixed(0) + ' s') : new Date(t * 1000).toLocaleTimeString();
+    ctx.fillStyle = '#8a8f98'; ctx.fillText(label, x + 3, c.height - 5);
+  }
+  ctx.fillStyle = '#8a8f98'; ctx.textAlign = 'right';
+  ctx.fillText(state.mode === 'replay' ? 'nearest obstacle vs replay clock (message stamp)' : 'nearest obstacle vs wall clock', c.width - 6, top + 10);
+  ctx.textAlign = 'left';
+  for (const h of state.hist) {
+    if (h.t < now - span) continue;
+    if (h.warnDist != null && !h.obstacle) { ctx.fillStyle = '#ff9f1c'; ctx.fillRect(xOf(h.t) - 1.5, yOf(h.warnDist) - 1.5, 3, 3); }
+    if (h.dist != null) { ctx.fillStyle = '#ff2d55'; ctx.fillRect(xOf(h.t) - 2, yOf(h.dist) - 2, 4, 4); }
+  }
+  if (state.mode === 'replay') { ctx.strokeStyle = '#8a83d1'; ctx.beginPath(); ctx.moveTo(c.width - 1, top); ctx.lineTo(c.width - 1, bottom); ctx.stroke(); }
 }
-function onStatus(msg) {
-  const res = JSON.parse(msg.data); frames++;
+
+// ----------------------------------------------------------------------------- applying a result
+function fmt(v, digits, unit) { return v == null || !isFinite(v) ? '—' : v.toFixed(digits) + (unit || ''); }
+function applyResult(res, opts) {
+  opts = opts || {}; const draw = opts.draw !== false;
+  state.last = res; state.shown++;
+  const t = state.mode === 'replay' ? stampOf(res) : Date.now() / 1000;
   const b = $('banner');
+  const dets = res.detections || [], warns = res.warnings || [];
   if (res.obstacle) { b.className = 'bad'; b.textContent = `OBSTACLE  ${res.nearest_distance.toFixed(1)} m`; }
   else if (res.warning) { b.className = 'warn'; b.textContent = 'WARNING: object near the gauge'; }
   else { b.className = 'clear'; b.textContent = 'PATH CLEAR'; }
+  if (state.mode === 'replay' && res.frame != null) { const s = document.createElement('small'); s.textContent = `#${String(res.frame).padStart(5, '0')}  t = +${(t - (state.t0 || 0)).toFixed(1)} s  (${res.frame_id || ''})`; b.appendChild(s); }
   $('dist').textContent = res.nearest_distance == null ? '—' : res.nearest_distance.toFixed(1) + ' m';
-  $('counts').textContent = `${res.detections.length} / ${res.warnings.length}`;
-  const t = res.track || {};
-  $('axis').textContent = (t.center ?? 0).toFixed(2); $('radius').textContent = Math.abs(t.curvature||0) < 1e-6 ? 'straight' : (1/t.curvature).toFixed(0) + ' m';
-  $('valid').textContent = t.axis_valid ? t.axis_valid.toFixed(0) + ' m' : '—';
-  $('timing').textContent = (res.timing_ms?.total ?? 0).toFixed(0) + ' ms'; $('frames').textContent = frames;
-  hist.push([Date.now()/1000, res.nearest_distance]); while (hist.length > 600) hist.shift();
-  if (res.obstacle) { const l = $('log'); l.textContent = `${new Date().toLocaleTimeString()}  OBSTACLE ${res.nearest_distance.toFixed(1)} m  ` + res.detections.map(d => `#${d.id} dy=${d.lateral.toFixed(1)} n=${d.n_points} p=${d.confidence.toFixed(2)}`).join(' | ') + '\n' + l.textContent; }
-  draw(res); drawTimeline();
+  $('counts').textContent = `${dets.length} / ${warns.length}`;
+  const tr = res.track || {};
+  $('axis').textContent = fmt(tr.center, 2);
+  $('radius').textContent = tr.curvature == null ? '—' : (Math.abs(tr.curvature) < 1e-6 ? 'straight' : (1 / tr.curvature).toFixed(0) + ' m');
+  $('valid').textContent = fmt(tr.axis_valid, 0, ' m');
+  $('points').textContent = res.n_points == null ? '—' : `${res.n_points} / ${res.n_corridor ?? '—'}`;
+  const tm = res.timing_ms || {};
+  $('timing').textContent = fmt(tm.total, 0, ' ms');
+  $('timing').className = tm.total > 100 ? 'warn' : '';
+  $('stages').textContent = [tm.track, tm.corridor, tm.cluster].every(v => v != null) ? `${tm.track.toFixed(0)} / ${tm.corridor.toFixed(0)} / ${tm.cluster.toFixed(0)} ms` : '—';
+  $('frames').textContent = state.shown;
+  applyNode(res.node);
+  // timeline history
+  const warnDist = warns.length ? Math.min(...warns.map(w => w.distance)) : null;
+  state.hist.push({ t, dist: res.obstacle ? res.nearest_distance : null, warnDist, obstacle: !!res.obstacle });
+  while (state.hist.length > 5000) state.hist.shift();
+  // alarm log: one line per alarm frame, one line when the alarm ends
+  const when = state.mode === 'replay' ? `#${String(res.frame ?? state.shown - 1).padStart(5, '0')} +${(t - (state.t0 || 0)).toFixed(1)}s` : new Date().toLocaleTimeString();
+  if (res.obstacle) {
+    state.alarmFrames++;
+    logLine(`${when}  OBSTACLE ${res.nearest_distance.toFixed(1)} m  ` + dets.map(d => `#${d.id} dy=${d.lateral.toFixed(1)} ${d.size[0].toFixed(1)}x${d.size[1].toFixed(1)}x${d.size[2].toFixed(1)} n=${d.n_points} p=${d.confidence.toFixed(2)}`).join(' | '));
+  } else if (state.lastObstacle) {
+    logLine(`${when}  path clear again (alarm lasted ${state.alarmFrames} frames)`);
+    state.alarmFrames = 0;
+  }
+  state.lastObstacle = !!res.obstacle;
+  if (draw) { drawTop(res); drawTimeline(); }
 }
+function logLine(s) { const l = $('log'); l.textContent = s + '\n' + l.textContent; if (l.textContent.length > 60000) l.textContent = l.textContent.slice(0, 50000); }
+function applyNode(node) {
+  const card = $('node-card');
+  if (!node) {
+    for (const id of ['n-latency', 'n-fps', 'n-frames', 'n-dropped', 'n-period']) $(id).textContent = '—';
+    $('node-note').textContent = state.mode === 'replay' ? '(offline replay: no node stats in results.jsonl)' : '(no "node" object in the status message)';
+    card.className = 'card'; return;
+  }
+  $('node-note').textContent = '';
+  $('n-latency').textContent = fmt(node.latency_ms, 0, ' ms'); $('n-latency').className = node.latency_ms > 100 ? 'warn' : '';
+  $('n-fps').textContent = fmt(node.fps, 1); $('n-fps').className = (node.fps != null && node.fps > 0 && node.fps < 9) ? 'warn' : '';
+  $('n-frames').textContent = node.frames ?? '—';
+  $('n-period').textContent = fmt(node.input_period_ms, 0, ' ms');
+  const dropped = node.dropped_frames ?? 0, now = Date.now();
+  const grew = state.node.lastDropped != null && dropped > state.node.lastDropped;
+  if (grew) { state.node.alertUntil = now + 3000; logLine(`${new Date().toLocaleTimeString()}  node dropped ${dropped - state.node.lastDropped} input frame(s), total ${dropped}`); }
+  state.node.lastDropped = dropped;
+  $('n-dropped').textContent = dropped + (grew ? '  ▲' : '');
+  $('n-dropped').className = dropped > 0 ? (now < state.node.alertUntil ? 'bad' : 'warn') : '';
+  card.className = 'card' + (now < state.node.alertUntil ? ' alert' : (dropped > 0 ? ' notice' : ''));
+}
+
+// ----------------------------------------------------------------------------- live mode
+function onStatus(msg) {
+  if (state.mode !== 'live') return;
+  let res; try { res = JSON.parse(msg.data); } catch (e) { return; }
+  applyResult(res);
+}
+let ros = null;
 $('connect').onclick = () => {
-  const ros = new ROSLIB.Ros({ url: $('url').value });
+  if (typeof ROSLIB === 'undefined') { $('conn').textContent = 'roslib.js not loaded — live mode unavailable'; return; }
+  setMode('live');
+  if (ros) { try { ros.close(); } catch (e) {} }
+  ros = new ROSLIB.Ros({ url: $('url').value });
+  $('conn').textContent = 'connecting…';
   ros.on('connection', () => $('conn').textContent = 'connected');
-  ros.on('error', e => $('conn').textContent = 'error');
+  ros.on('error', () => $('conn').textContent = 'error');
   ros.on('close', () => $('conn').textContent = 'disconnected');
   new ROSLIB.Topic({ ros, name: '/resense/status', messageType: 'std_msgs/String' }).subscribe(onStatus);
 };
-draw({track:{center:0,yaw:0,curvature:0}, detections:[], warnings:[]}); drawTimeline();
+
+// ----------------------------------------------------------------------------- replay mode
+function resetView() {
+  state.hist = []; state.shown = 0; state.alarmFrames = 0; state.lastObstacle = false; state.last = null;
+  state.node = { lastDropped: null, alertUntil: 0 };
+  $('log').textContent = '';
+}
+function setMode(m) {
+  if (state.mode === m) return;
+  pause(); state.mode = m; resetView();
+  $('mode-live').classList.toggle('active', m === 'live'); $('mode-replay').classList.toggle('active', m === 'replay');
+  $('canvas-note').textContent = m === 'replay' ? 'offline replay of results.jsonl' : '';
+}
+function loadText(text, name) {
+  const frames = [];
+  for (const line of text.split(/\r?\n/)) {
+    const s = line.trim(); if (!s) continue;
+    try { const o = JSON.parse(s); if (o && typeof o === 'object' && 'obstacle' in o) frames.push(o); } catch (e) { /* skip bad line */ }
+  }
+  setMode('replay'); pause();
+  state.frames = frames; state.idx = -1; state.t0 = frames.length ? stampOf(frames[0]) : null;
+  const ok = frames.length > 0;
+  for (const id of ['play', 'stepback', 'stepfwd', 'seek']) $(id).disabled = !ok;
+  $('seek').max = Math.max(frames.length - 1, 0); $('seek').value = 0;
+  $('frame-pos').textContent = ok ? `${name || 'file'}: ${frames.length} frames` : 'no frames found in the file';
+  resetView();
+  if (ok) seek(0);
+  return frames.length;
+}
+function showFrame(i, draw) {
+  state.idx = i; const f = state.frames[i];
+  applyResult(f, { draw });
+  $('seek').value = i; $('frame-pos').textContent = `frame ${i + 1} / ${state.frames.length}`;
+}
+function seek(i) {
+  // rebuild the timeline and the log from the start so that seeking backwards is consistent
+  i = Math.max(0, Math.min(i, state.frames.length - 1));
+  resetView();
+  for (let k = 0; k <= i; k++) showFrame(k, k === i);
+}
+function step(n) {
+  if (!state.frames.length) return;
+  const i = state.idx + n;
+  if (n > 0 && i < state.frames.length) showFrame(i, true);
+  else if (n < 0 && i >= 0) seek(i);
+}
+function tick() {
+  if (state.idx + 1 >= state.frames.length) {
+    if ($('loop').checked) { seek(0); return; }
+    pause(); return;
+  }
+  showFrame(state.idx + 1, true);
+}
+function play() {
+  if (!state.frames.length || state.playing) return;
+  if (state.idx + 1 >= state.frames.length) seek(0);
+  state.playing = true; $('play').textContent = 'pause';
+  state.timer = setInterval(tick, 1000 * FRAME_DT / state.speed);
+}
+function pause() {
+  if (state.timer) clearInterval(state.timer);
+  state.timer = null; state.playing = false; $('play').textContent = 'play';
+}
+$('file').addEventListener('change', ev => {
+  const f = ev.target.files && ev.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => loadText(String(r.result), f.name);
+  r.readAsText(f);
+});
+$('play').onclick = () => state.playing ? pause() : play();
+$('stepfwd').onclick = () => { pause(); step(1); };
+$('stepback').onclick = () => { pause(); step(-1); };
+$('seek').oninput = ev => { pause(); seek(+ev.target.value); };
+$('speed').onchange = ev => { state.speed = +ev.target.value; if (state.playing) { pause(); play(); } };
+$('xmax').onchange = () => { if (state.last) drawTop(state.last); };
+document.addEventListener('keydown', ev => {
+  if (ev.target.tagName === 'INPUT' || ev.target.tagName === 'SELECT') return;
+  if (ev.code === 'Space') { ev.preventDefault(); if (state.frames.length) state.playing ? pause() : play(); }
+  else if (ev.code === 'ArrowRight') { pause(); step(1); }
+  else if (ev.code === 'ArrowLeft') { pause(); step(-1); }
+});
+// in live mode the timeline scrolls with the wall clock even when no message arrives
+setInterval(() => { if (state.mode === 'live') drawTimeline(); }, 500);
+
+// test / automation hook (used by web/demo/check_dashboard.py)
+window.resense = { state, loadText, play, pause, step, seek, setMode, applyResult };
+
+drawTop({ track: { center: 0, yaw: 0, curvature: 0 }, detections: [], warnings: [] }); drawTimeline();
 </script>
 </body>
 </html>

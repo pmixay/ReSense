@@ -1,0 +1,171 @@
+{
+  "configById": {
+    "3D!resense": {
+      "cameraState": {
+        "perspective": true,
+        "distance": 60,
+        "phi": 70,
+        "thetaDeg": 180,
+        "targetOffset": [0, -35, 0],
+        "target": [0, 0, 0],
+        "targetOrientation": [0, 0, 0, 1],
+        "fovy": 45,
+        "near": 0.5,
+        "far": 5000
+      },
+      "followMode": "follow-pose",
+      "followTf": "resense_lidar",
+      "scene": {
+        "enableStats": false,
+        "backgroundColor": "#0c0d12",
+        "labelScaleFactor": 1,
+        "transforms": { "showLabel": false, "axisScale": 1 }
+      },
+      "transforms": {},
+      "topics": {
+        "/lidar_points": {
+          "visible": true,
+          "pointSize": 2,
+          "pointShape": "circle",
+          "decayTime": 0,
+          "colorMode": "colormap",
+          "colorField": "z",
+          "colorMap": "turbo",
+          "minValue": -2.5,
+          "maxValue": 3.5
+        },
+        "/sensing/lidar/hesai128/pointcloud": {
+          "visible": true,
+          "pointSize": 2,
+          "pointShape": "circle",
+          "decayTime": 0,
+          "colorMode": "colormap",
+          "colorField": "z",
+          "colorMap": "turbo",
+          "minValue": -2.5,
+          "maxValue": 3.5
+        },
+        "/resense/corridor_points": {
+          "visible": true,
+          "pointSize": 5,
+          "pointShape": "circle",
+          "decayTime": 0,
+          "colorMode": "flat",
+          "flatColor": "#ffaa00"
+        },
+        "/resense/markers": {
+          "visible": true
+        }
+      },
+      "layers": {},
+      "publish": {
+        "type": "point",
+        "poseTopic": "/move_base_simple/goal",
+        "pointTopic": "/clicked_point",
+        "poseEstimateTopic": "/initialpose",
+        "poseEstimateXDeviation": 0.5,
+        "poseEstimateYDeviation": 0.5,
+        "poseEstimateThetaDeviation": 0.26179939
+      },
+      "imageMode": {}
+    },
+    "Indicator!obstacle": {
+      "path": "/resense/obstacle_detected.data",
+      "style": "background",
+      "fallbackColor": "#2ecc71",
+      "fallbackLabel": "PATH CLEAR",
+      "rules": [
+        { "operator": "=", "rawValue": "true", "color": "#ff2d55", "label": "OBSTACLE" },
+        { "operator": "=", "rawValue": "false", "color": "#2ecc71", "label": "PATH CLEAR" }
+      ]
+    },
+    "Plot!distance": {
+      "title": "nearest obstacle, m (-1 = none)",
+      "paths": [
+        { "value": "/resense/nearest_distance.data", "enabled": true, "timestampMethod": "receiveTime", "color": "#ff2d55", "label": "nearest_distance" }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": false,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": true,
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "followingViewWidth": 30,
+      "minYValue": -5,
+      "maxYValue": 250
+    },
+    "Plot!latency": {
+      "title": "latency, ms (decode + detect + publish)",
+      "paths": [
+        { "value": "/resense/latency_ms.data", "enabled": true, "timestampMethod": "receiveTime", "color": "#8a83d1", "label": "latency_ms" }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": false,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": true,
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "followingViewWidth": 30,
+      "minYValue": 0,
+      "maxYValue": 150
+    },
+    "Plot!fps": {
+      "title": "fps",
+      "paths": [
+        { "value": "/resense/fps.data", "enabled": true, "timestampMethod": "receiveTime", "color": "#2ecc71", "label": "fps" }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": false,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": true,
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "followingViewWidth": 30,
+      "minYValue": 0,
+      "maxYValue": 12
+    },
+    "RawMessages!status": {
+      "topicPath": "/resense/status",
+      "diffTopicPath": "",
+      "diffMethod": "custom",
+      "diffEnabled": false,
+      "showFullMessageForDiff": false,
+      "expansion": "all"
+    }
+  },
+  "globalVariables": {},
+  "userNodes": {},
+  "playbackConfig": { "speed": 1 },
+  "layout": {
+    "direction": "row",
+    "first": {
+      "direction": "column",
+      "first": "Indicator!obstacle",
+      "second": "3D!resense",
+      "splitPercentage": 12
+    },
+    "second": {
+      "direction": "column",
+      "first": {
+        "direction": "column",
+        "first": "Plot!distance",
+        "second": {
+          "direction": "row",
+          "first": "Plot!latency",
+          "second": "Plot!fps",
+          "splitPercentage": 50
+        },
+        "splitPercentage": 50
+      },
+      "second": "RawMessages!status",
+      "splitPercentage": 60
+    },
+    "splitPercentage": 65
+  }
+}

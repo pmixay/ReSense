@@ -1,25 +1,126 @@
-# ReSense web dashboard (frontend track)
+# ReSense web dashboard, RViz / Foxglove layouts, demo tooling (frontend track, P2)
 
-Goal: a browser page that shows, live or from a recorded run, what the jury needs to see —
-**tunnel → point cloud → corridor → obstacle → distance** — plus the health of the system.
+Everything the jury sees: the RViz layout the launch file loads, a Foxglove layout for remote
+demos, a browser dashboard that works live (rosbridge) and offline (replay of `results.jsonl`),
+the scripts that verify the dashboard headlessly, and the video recipe.
 
-## Data sources
-1. **Live from ROS 2** via `rosbridge_suite` (`ros2 launch rosbridge_server rosbridge_websocket_launch.xml`)
-   or via `foxglove_bridge` (already in the Docker image, port 8765):
-   - `/resense/status` (`std_msgs/String`, JSON `FrameResult`: obstacle flag, nearest distance,
-     detections with distance/lateral/size/confidence/zone, track model, timings) — **1 message per frame, small**
-   - `/resense/markers` (`visualization_msgs/MarkerArray`) — boxes + corridor lines
-   - `/resense/corridor_points` (`PointCloud2`, only the corridor candidates — a few thousand points)
-   - `/lidar_points` (`PointCloud2`, 8 MB/frame — decimate on the server side before streaming to a browser)
-2. **Offline** from `resense run --out results.jsonl --render frames/` (JSONL + PNG per frame).
+| file | what |
+|---|---|
+| [`index.html`](index.html) | dashboard: banner, top-down view, timeline, node stats, alarm log; live + offline replay; no build step |
+| [`foxglove_layout.json`](foxglove_layout.json) | Foxglove Studio layout (3D + plots + indicator + status), see "Remote demo with Foxglove" |
+| [`demo/make_demo_run.py`](demo/make_demo_run.py) | synthetic approach sequence → `out/demo_run.jsonl` in the `resense run --out` format |
+| [`demo/check_dashboard.py`](demo/check_dashboard.py) | Playwright + headless Chromium: loads the JSONL into the dashboard, plays it, asserts the banner, screenshot / video |
+| [`demo/test_web.py`](demo/test_web.py) | pytest for the layouts, the JSONL format and the browser replay: `python -m pytest -q web/demo` |
+| `../ros2_ws/src/resense_ros/rviz/resense.rviz` | RViz2 layout (P2-owned, loaded by `detector.launch.py rviz:=true` and the compose `rviz` service) |
 
-## Minimal scope (Sprint 1)
-- `index.html` (this folder): connects to rosbridge, subscribes to `/resense/status`, shows a
-  big **PATH CLEAR / OBSTACLE 87 m** banner, a top-down canvas with the corridor and detections,
-  a distance timeline (last 30 s), FPS / latency, and an alarm log.
-- No build step: plain HTML + JS (roslibjs from CDN); Three.js only if a 3D view is added.
+![dashboard replaying a synthetic approach: person confirmed from 115.7 m down to 40 m](../docs/img/dashboard_synthetic.png)
+*Offline replay of `web/demo/make_demo_run.py` output (synthetic ray-cast tunnel, not the
+organizers' data): the person is confirmed at 115.7 m and tracked down to 40 m.*
 
-## Later
-- Foxglove layout file (`foxglove_layout.json`) with 3D panel + plots — good for remote demos.
-- Label tool: click on a frame render to mark obstacle position/size → `gt.json` for `resense eval`.
-- Video export of a run (render frames with `resense run --render` → `ffmpeg -r 10 -i frame_%05d.png`).
+## Dashboard (`index.html`)
+
+Open the file in a browser; nothing to install or build. Two modes, same widgets:
+
+* **Live**: enter the rosbridge URL (`ws://<host>:9090`, from
+  `ros2 launch rosbridge_server rosbridge_websocket_launch.xml` on the machine running the
+  detector) and press *connect*. The page subscribes to `/resense/status` (`std_msgs/String`,
+  one JSON `FrameResult` per frame plus the node's `node` object) and needs nothing else — no
+  point cloud is streamed to the browser. roslibjs comes from a CDN; without internet the
+  live mode is unavailable and the page says so, the replay mode still works.
+* **Replay**: *Choose file* → a `results.jsonl` written by
+  `python -m resense.cli run --bag <bag> --out results.jsonl` (one `FrameResult` JSON per line
+  with the extra `frame` and `frame_id` keys). Play / pause (space), step (◀ ▶, arrow keys),
+  seek slider, speed 0.25×–10×, loop. Playback is 10 Hz × speed; the timeline's x-axis is the
+  message `stamp` (seconds relative to the first frame), in live mode it is the wall clock.
+  Broken or blank lines are skipped.
+
+What is shown:
+
+| widget | source in the status JSON |
+|---|---|
+| banner **PATH CLEAR / WARNING / OBSTACLE 55.6 m** | `obstacle`, `warning`, `nearest_distance` |
+| top-down canvas (100 / 150 / 250 m): track axis, ±1.4 m gauge corridor, untrusted range shaded, red gauge boxes, orange advisory boxes with distance and confidence | `track.center/yaw/curvature/axis_valid`, `detections[]`, `warnings[]` |
+| timeline (last 30 s): nearest gauge obstacle (red), nearest advisory object (orange) | `nearest_distance`, `warnings[].distance` |
+| detector card: counts, axis, radius, trusted range, points, per-stage timing | `track`, `n_points`, `n_corridor`, `timing_ms` |
+| **ROS node card**: `latency_ms`, `fps`, `frames`, `dropped_frames`, `input_period_ms` | `node` (only in the node's messages; a replay file says "no node stats") |
+| alarm log: one line per alarm frame (id, lateral offset, size, points, confidence), one line when the alarm ends | `detections[]` |
+
+Health warnings: latency above 100 ms (the 10 Hz period) and fps below 9 turn orange; when
+`dropped_frames` **grows** the node card flashes red for 3 s and the log gets a line, and it
+stays orange-bordered while the count is above zero.
+
+### Verify headlessly (Playwright)
+
+```bash
+pip install playwright                      # the Python package; a Chromium build must be reachable
+python web/demo/make_demo_run.py            # synthetic tunnel, person 120 -> 40 m over 40 frames, 10 clear frames before/after
+python web/demo/check_dashboard.py          # loads out/demo_run.jsonl, plays it, asserts, screenshot -> docs/img/dashboard_synthetic.png
+python -m pytest -q web/demo                # the same as tests (+ layout checks); browser tests skip without Chromium
+```
+
+`check_dashboard.py` asserts PATH CLEAR at the start and OBSTACLE with a distance in 40–125 m
+during playback, then seeks to the frame with the nearest obstacle for the screenshot. If
+Playwright's own browser is missing it falls back to any Chromium under
+`$PLAYWRIGHT_BROWSERS_PATH` (or `--chromium <binary>`). `make_demo_run.py` needs open3d (ray
+casting); its output is exactly the `resense run --out` format, so the dashboard treats it like
+a real run. Both scripts run from the repository root.
+
+## RViz layout (`ros2_ws/src/resense_ros/rviz/resense.rviz`)
+
+* **Fixed frame `resense_lidar`.** The detector node broadcasts a static identity TF
+  `resense_lidar → <frame_id of the input cloud>` when the first frame arrives and publishes
+  markers, detections and the corridor cloud in the input frame, so the layout no longer
+  depends on the bag's frame id (`hesai_lidar` in `roundT_doubleT`, `lidar_livox` in
+  `doubleT_obstacle`, unknown in the control bag).
+* **Two raw-cloud displays**, `/lidar_points` and `/sensing/lidar/hesai128/pointcloud`, both
+  Best Effort / Keep Last / depth 5 (the bag publisher is best-effort): the one the bag carries
+  renders, the other stays grey with "No messages received". **A generic third display is not
+  possible**: RViz2 subscribes to one literal topic name per display (no wildcard, regex or
+  "first PointCloud2 topic" option), so a control bag with a third topic name needs either the
+  node's `output_frame` / a `ros2 topic` remap, or one more display added in the *Displays*
+  panel during the demo (10 s of clicking: Add → PointCloud2 → pick the topic). The node itself
+  auto-discovers the topic, so the detections and the corridor cloud show up regardless.
+* Colours: raw cloud by height (−2.5…3.5 m, grey scale), corridor candidates orange, gauge
+  boxes red, advisory boxes orange, corridor edges green, status text
+  (`PATH CLEAR` / `OBSTACLE 55.6 m`) 1.2 m tall at 8 m ahead of the sensor.
+* Camera: orbit view 18 m behind and 15 m above the sensor looking down the track (the sensor
+  frame's forward axis is −Y), ~0–90 m in the frame; saved views *Top-down 150 m* and
+  *Driver's seat* in the *Views* panel.
+* Validated by parsing (`python -m pytest -q web/demo`) and by using only keys RViz2 Humble
+  writes into its own saved configs; it has not been opened in RViz in this sandbox (no ROS).
+
+## Remote demo with Foxglove
+
+The spec (§4) rewards a live demo, e.g. over a remote desktop. Foxglove replaces the remote
+desktop: the container already runs `foxglove_bridge` on port 8765, the audience opens the
+layout in their own Foxglove.
+
+```bash
+# on the demo machine (with the bags in $RESENSE_DATA, default /data/for_hackathon)
+docker compose --profile viz up                          # detector + foxglove bridge (+ RViz if X11)
+docker compose --profile tools up player                 # play $RESENSE_BAG once (add --loop to the player command in docker-compose.yml for a looping demo)
+```
+
+Then in Foxglove Studio (desktop app or https://app.foxglove.dev): **Open connection → Foxglove
+WebSocket → `ws://<demo host>:8765`**, then **Layout → Import from file → `web/foxglove_layout.json`**.
+
+What the audience sees: a 3D panel (dark, camera behind the sensor looking down the track, both
+raw-cloud topics, `/resense/corridor_points` in orange, `/resense/markers` with the boxes, labels,
+corridor edges and the status text), an indicator that switches from green *PATH CLEAR* to red
+*OBSTACLE* on `/resense/obstacle_detected`, plots of `/resense/nearest_distance` (−1 = none),
+`/resense/latency_ms` and `/resense/fps` over the last 30 s, and the raw `/resense/status` JSON.
+
+Known limits:
+
+* **The layout is untested on a live bridge** — no ROS 2 or Foxglove in the sandbox it was
+  written in; it parses and uses only documented panel keys (3D: `topics` keyed by name with
+  `visible`; Plot: `paths[].value` / `timestampMethod`; Indicator: `path` + `rules`). If a panel
+  comes up empty after import, re-pick its topic in the panel settings.
+* The 3D panel follows `resense_lidar`; until the node's static TF exists in the running
+  version, the raw cloud and the markers still render (same frame), only "follow" is off.
+* **Bandwidth**: the raw cloud is 8 MB (120° window) to 24 MB (360°, `doubleT_obstacle`) per frame at 10 Hz. Over a remote link uncheck
+  `/lidar_points` / `/sensing/lidar/hesai128/pointcloud` in the 3D panel and keep
+  `/resense/corridor_points` (a few thousand points), the markers and the plots — that is the
+  full picture of what the algorithm does, at a few hundred kB/s.
+* `foxglove_bridge` and the 3D panel expect `sensor_msgs/PointCloud2` with `x y z` float32,
+  which both bags provide; the `timestamp` field (year-2000 sensor clock) is ignored.
