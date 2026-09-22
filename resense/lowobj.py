@@ -19,7 +19,9 @@ is the same every metre, so
    whose residual exceeds ``min_excess`` is a **low candidate**; the candidates go to the
    clusterer with the corridor candidates (flagged, so that the low-hardware rule does not
    drop them) and a cluster made of them must be short along the track (rails, guard rails
-   and cables are long) and have ``min_points`` voxels.
+   and cables are long), at least ``min_width`` wide, have ``min_points`` voxels and **reach
+   the rail-head plane** (its highest point at least ``min_top`` above the rail head): the bed
+   carries fixtures of the same size that stay below the rail head by design.
 
 Where the bed is not observed (beyond ~50-80 m, grazing incidence) there is no local
 offset and nothing is reported: the stage's range is where the bed is seen. Puddles in the
@@ -104,6 +106,6 @@ def low_candidates(X: np.ndarray, dy: np.ndarray, h: np.ndarray, template: BedTe
     off = np.interp(centres, centres[seen], off[seen])
     r = res - off[b]
     keep = (r > cfg.min_excess) & (r < cfg.max_excess) & (X[idx] < x_seen)
-    if cfg.min_top > -1.0:
-        keep &= h[idx] > cfg.min_top
+    if cfg.min_point_top > -1.0:
+        keep &= h[idx] > cfg.min_point_top
     return idx[keep], x_seen

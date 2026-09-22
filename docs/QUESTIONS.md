@@ -7,10 +7,12 @@ English notes after each block say why we ask and where the answer goes. Record 
 [`DATASET.md`](DATASET.md) (data), [`SUBMISSION.md`](SUBMISSION.md) (submission), [`SENSOR.md`](SENSOR.md)
 (sensor) and move the question to the "Closed" table at the end of this file.
 
-Status: **drafted 21.09, revised 22.09** — the organizers' hand-outs (lidar manual, test-stand
-software, extended recording) closed three items and the team lead closed five more (see
-"Closed" below); seven questions remain, **not yet sent** — the captain sends them and updates
-this file.
+Status: **sent; answered 22.09 by the organizers' recorded Q&A session** — questions 1, 2, 3,
+5, 6 and 7 are answered there (transcript and summary:
+[`organizers/QA_session.md`](organizers/QA_session.md), table "Answers to the questions in
+docs/QUESTIONS.md"); question 4 (PTP / GNSS time sync) was not addressed and stays open. The
+answers are recorded in the "Closed (22.09, Q&A session)" table below; the message text is kept
+for the record.
 
 ---
 
@@ -83,3 +85,19 @@ this file.
 | intermediate submission (date, form, where), final submission (image vs Dockerfile, size, video), test-stand procedure (launch, internet at build, bag playback, disk) | organisational — the team handles these itself, not a question to the organizers | [`SUBMISSION.md`](SUBMISSION.md), README "Where the data lives" / demo runbook |
 | may the given recordings be used for tuning parameters | answered 22.09: yes, acceptable | — |
 | own slides after the template's 7–11 | answered 22.09: yes, acceptable | [`PRESENTATION.md`](PRESENTATION.md) |
+
+## Closed (22.09, the organizers' Q&A session)
+
+Source: [`organizers/QA_session.md`](organizers/QA_session.md) (timestamps there).
+
+| was asked | answer | recorded in / consequence |
+|---|---|---|
+| 1. staged obstacles in `new_data`, labels | none: "all we can give is more empty tunnel"; no labels exist; the hidden check adds the organizers' own **synthetic obstacles** | `DATASET.md` "Extended dataset"; every `new_data` alarm is a false alarm; synthetic evaluation (set F) |
+| 2. control-bag format | same conditions as the provided data, the LiDAR mount of the empty-tunnel rides; **full-ride recordings** in other tunnels too | node keeps topic auto-discovery; no map-based logic |
+| 3. return mode, mount height / pitch / offset | the LiDAR position "is not fixed, differs even in the provided clouds, not yet approved — count on a variable position, set it in the launch parameters" | `resense/calibration.py` + mount launch arguments |
+| 5. which obstacles, which ranges, person on a platform | anything inside the **2.1 m × 3.0 m train envelope**, at least **30 × 30 × 10 cm**; **broken hanging cables must be detected**; a person on a platform is not an obstacle unless inside the envelope; range: < 100 m rated poorly, farther is better, the visible limit in a curve is acceptable | `gauge.profile`, `resense/lowobj.py`, signature changes (ALGORITHM.md §3.2–3.3c) |
+| 6. evaluation format | "can we go / obstacle or not / distance", any ROS topic, per-frame yes/no is enough, extra logic must be described | `/resense/decision`, `/resense/clear_distance`, README "What to look at" |
+| 7. remote demo | acceptable, but the organizers run every solution themselves | README demo sections unchanged |
+| (new) speed | 80 km/h regulated; plan for 85 km/h = 2.3 m between frames | tracker gate 25 m/s covers it |
+| (new) the obstacle recording | besides the person, **an object lies on the rails** where the person stands | labelled (`labels/doubleT_obstacle.json`, `object_on_rail`) |
+| 4. PTP / GNSS time sync | not answered | open; bag receive time remains the clock |

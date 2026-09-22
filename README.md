@@ -19,32 +19,56 @@ ROS 2 bag ─▶ PointCloud2 ─▶ resense_ros/detector_node ─▶ /resense/ob
                                                          └▶ /resense/status (JSON)
 ```
 
-Status: **v0.5 (21.09, Sprint 2, measured on real data at full rate)**. On every frame of the
-five obstacle-free organizer bags (2 287 frames: round / rectangular / double-track tunnels,
-pressure gates, a platform stop, a switch) the detector raises **96 alarm frames / 32 alarm
-events** (v0.3: 1 001 / 192) and runs at 43–55 ms per frame mean, 51–60 ms p95 on the tunnel
-bags of a 4-core sandbox (v0.3: 56–71 / 71–76 ms). The person crossing the track in `doubleT_obstacle` is reported at
-55.5–56.6 m in 66 of the 71 labelled in-gauge frames, the first alarm 0.5 s after he enters the
-gauge, distance error under 1 cm, and nothing else alarms on that bag. Multi-frame accumulation
-for 150 m and beyond runs with a given train speed (node parameter or odometry; synthetic:
-person confirmed at 189 m); the LiDAR-only speed estimator is off by default. The container
-chain (`docker build → run → bag play → result`) is verified in CI on a synthetic bag on every
-push. Numbers, hard cases and what did not work: [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md).
+Status: **v0.6 (22.09) — rebuilt around the organizers' Q&A answers**
+([`docs/organizers/QA_session.md`](docs/organizers/QA_session.md): the recorded session,
+transcribed and summarised). The strict decision now uses **the train envelope the organizers
+gave (2.1 m wide × 3.0 m high)**; objects **hanging** into it (broken cables) are obstacles
+whatever their shape; **low objects lying on a rail** are found by a bed-anomaly stage; tall
+objects are reported out to the trusted axis range (~200 m on straight track) instead of the
+height-reference range; the **LiDAR mount is found from the data** (orientation, roll, pitch)
+because "the LiDAR position is not fixed"; and every frame says **how far the path was
+verified clear** and whether the input can be trusted (`/resense/decision`
+GO / CAUTION / STOP / FAULT, `/resense/clear_distance`, `/resense/health`).
+
+Measured on **all 13 558 real frames** of the organizers' data at 10 Hz
+([`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) §0, §1d): false alarms on the five obstacle-free
+bags **83 frames / 25 events** (v0.5 logic on the same frames: 116 / 32) and on the 20-minute
+ride **258 frames / 74 events** (448 / 93); the person crossing the track in
+`doubleT_obstacle` is reported in 58 of the 61 frames in which he is inside the envelope, the
+first alarm 0.3 s after he enters it, distance error < 0.35 m. Long range on the moving ride
+(objects ray-cast into consecutive real frames, §2d): see the range table in EXPERIMENTS.md.
+The container chain (`docker build → run → bag play → result`) is verified in CI on a synthetic
+bag on every push. Self-assessment against every criterion: [`docs/SCORECARD.md`](docs/SCORECARD.md).
 
 ![doubleT_obstacle frame 30: the person crossing the track is reported at 55.7 m (red box); the track axis (green) and the side structures (advisory, blue)](docs/img/doubleT_obstacle_0030_v05.png)
 *Real data, v0.5: `doubleT_obstacle` frame 30, the person on the track at 55.7 m. Videos: [offline renders of the whole bag](docs/video/doubleT_obstacle_offline.mp4) (20 s) and [the dashboard replaying the same run](docs/video/dashboard_doubleT_obstacle.mp4).*
+
+## What to look at (for the jury)
+
+The organizers asked that every team "say clearly what to look at". One line per question:
+
+| question | topic | values |
+|---|---|---|
+| can the train go? | **`/resense/decision`** (`std_msgs/String`) | `GO` (clear), `CAUTION` (object next to the envelope, or degraded health), `STOP` (obstacle inside the 2.1 × 3.0 m envelope), `FAULT` (input cannot be trusted or stopped arriving) |
+| is there an obstacle? | **`/resense/obstacle_detected`** (`std_msgs/Bool`) | per frame, confirmed over 0.3 s |
+| how far is it? | **`/resense/nearest_distance`** (`std_msgs/Float32`) | m along the track, −1 if none |
+| how far is the path verified clear? | **`/resense/clear_distance`** (`std_msgs/Float32`) | the obstacle distance, else how far the corridor was actually checked (sightline, trusted track model); 0 on a fault |
+| everything else | `/resense/detections` (`vision_msgs/Detection3DArray`), `/resense/status` (JSON: every object with distance, lateral offset, size, confidence, kind; track model; health; mount calibration; timing) | |
+
+Decision logic, thresholds and their measured effect: [`docs/ALGORITHM.md`](docs/ALGORITHM.md) §4, §4b.
 
 ## Repository layout
 
 | Path | What |
 |---|---|
-| [`resense/`](resense/) | core library (numpy / scipy / scikit-learn, no ROS): PointCloud2 decoding, track model, gauge corridor, clustering, tracking, detector, synthetic obstacle injection, metrics, CLI |
+| [`resense/`](resense/) | core library (numpy / scipy / scikit-learn, no ROS): PointCloud2 decoding, mount calibration, track model, gauge corridor, low-object stage, clustering, tracking, health, detector, synthetic obstacle injection, metrics, CLI |
 | [`ros2_ws/src/resense_ros/`](ros2_ws/src/resense_ros/) | ROS 2 Humble node, launch file, parameters, RViz layout |
 | [`docker/`](docker/), [`docker-compose.yml`](docker-compose.yml), [`scripts/`](scripts/) | reproducible build and demo |
 | [`configs/default.yaml`](configs/default.yaml) | every tunable parameter (also installed as the ROS parameter file) |
 | [`tests/`](tests/) | pytest on a synthetic ray-cast tunnel — runs without the dataset |
 | [`web/`](web/) | browser dashboard (live via rosbridge or offline replay of a `resense run` JSONL), Foxglove layout, label tool, headless checks |
-| [`docs/`](docs/) | [ARCHITECTURE](docs/ARCHITECTURE.md) · [ALGORITHM](docs/ALGORITHM.md) · [EXPERIMENTS](docs/EXPERIMENTS.md) · [EVALUATION](docs/EVALUATION.md) · [DATASET](docs/DATASET.md) · [SENSOR](docs/SENSOR.md) · [RESEARCH](docs/RESEARCH.md) · [PLAN](docs/PLAN.md) · [CAPTAIN](docs/CAPTAIN.md) · [SUBMISSION](docs/SUBMISSION.md) · [PRESENTATION](docs/PRESENTATION.md) · [QUESTIONS](docs/QUESTIONS.md) · organizers' README / ТЗ · [test-stand software](docs/organizers/test_stand_software.md) · sensor manual ([`docs/sensor/`](docs/sensor/)) |
+| [`docs/`](docs/) | [ARCHITECTURE](docs/ARCHITECTURE.md) · [ALGORITHM](docs/ALGORITHM.md) · [EXPERIMENTS](docs/EXPERIMENTS.md) · [SCORECARD](docs/SCORECARD.md) · [EVALUATION](docs/EVALUATION.md) · [DATASET](docs/DATASET.md) · [SENSOR](docs/SENSOR.md) · [RESEARCH](docs/RESEARCH.md) · [PLAN](docs/PLAN.md) · [CAPTAIN](docs/CAPTAIN.md) · [SUBMISSION](docs/SUBMISSION.md) · [PRESENTATION](docs/PRESENTATION.md) · [QUESTIONS](docs/QUESTIONS.md) · organizers' README / ТЗ / [**Q&A session**](docs/organizers/QA_session.md) ([transcript](docs/organizers/QA_session_transcript_ru.md)) · [test-stand software](docs/organizers/test_stand_software.md) · sensor manual ([`docs/sensor/`](docs/sensor/)) |
+| [`labels/`](labels/) | real labels: `doubleT_obstacle.json` (the crossing person, the object on the rail, the walking person), `new_data_objects.json` (every object the detector confirmed on the 20-minute ride, with cause class) |
 
 ## Quick start (no ROS needed)
 
@@ -60,6 +84,13 @@ resense bench --bag /data/for_hackathon/roundT_doubleT --every 5                
 # synthetic obstacles ray-cast into real empty frames + evaluation
 resense inject --bag /data/for_hackathon/roundT_doubleT --every 10 --out data/synth --distances 10:250 --kinds person,box,plank
 resense eval data/synth
+
+# the real-data report card over every recording (frames cached once, docs/DATASET.md "Cached frames")
+for b in /data/for_hackathon/*/; do python scripts/cache_frames.py $b /data/cache/$(basename $b) --every 1 --int16 --stamps; done
+python scripts/eval_real.py --cache /data/cache --out out/eval          # false alarms, the labelled person / object, latency
+python scripts/far_range_eval.py --cache /data/cache/new_data --files 46,68,98 --kinds person,box1.0,cable \
+    --start 220 --out out/far.json                                    # objects approaching on the moving ride (set F)
+python scripts/mine_objects.py out/eval --bag new_data                  # every confirmed object of a ride, by cause
 ```
 
 ## ROS 2 / Docker (the way the jury runs it)
@@ -213,13 +244,22 @@ keeps the in-repo copy identical (CI checks it).
 | `/resense/status` | `std_msgs/String` | JSON: full per-frame result (detections, track model, per-stage timing) plus `node` = `{latency_ms, fps, frames, dropped_frames, input_period_ms, ego_speed_mps, ego_speed_source}` |
 | `/resense/latency_ms` | `std_msgs/Float32` | per frame: decode + detect + publish, ms |
 | `/resense/fps` | `std_msgs/Float32` | frames processed per second, every `stats_period` s (default 2) |
+| `/resense/decision` | `std_msgs/String` | v0.6: `GO` / `CAUTION` / `STOP` / `FAULT` (see "What to look at") |
+| `/resense/clear_distance` | `std_msgs/Float32` | v0.6: m of track verified clear (the obstacle, else the monitored range; 0 on a fault or a silent input) |
+| `/resense/health` | `diagnostic_msgs/DiagnosticArray` | v0.6: OK / WARN / ERROR / STALE with messages and values: points, window dirt, blocked sectors, visibility, rail lock, latency p95, monitored range, mount calibration |
 | `/resense/markers`, `/resense/corridor_points` | `MarkerArray`, `PointCloud2` | RViz: boxes, labels, corridor outline, status text; points inside the corridor |
 | `/tf_static` | `tf2_msgs/TFMessage` | identity transform `resense_lidar` → the input cloud's `frame_id`, sent once per frame id: the layouts keep `resense_lidar` as the fixed frame whether the bag says `hesai_lidar` or `lidar_livox` |
 
 Node parameters: `input_topic`, `auto_discover`, `discover_period`, `config_file`,
 `publish_markers`, `publish_corridor_cloud`, `marker_x_max`, `output_frame`, `stats_period`,
-`ego_speed_mps`, `speed_topic`, `odom_topic`, `speed_timeout`, `publish_tf`, `tf_parent_frame`
-(all of them are launch arguments too). Every `stats_period` seconds the node logs
+`ego_speed_mps`, `speed_topic`, `odom_topic`, `speed_timeout`, `publish_tf`, `tf_parent_frame`,
+and since v0.6 the **sensor mount** — `sensor_forward` / `sensor_left` / `sensor_up` (axis
+mapping, e.g. `sensor_forward:=+x`), `mount_roll_deg` / `mount_pitch_deg` / `mount_yaw_deg`
+(fixed tilt), `auto_calibrate` (default `true`: orientation, roll and pitch found from the rails
+and the bed in the first frames, reported in `/resense/status` → `mount`) — and the **guards**
+`stale_timeout` (s without a frame before `FAULT`, default 0.5) and `max_consecutive_errors`
+(processing exceptions before the detector is reset, default 5). All of them are launch
+arguments too. Every `stats_period` seconds the node logs
 `fps`, latency mean / p95 / max, the measured input period and the number of frames the
 input queue dropped (estimated from gaps in the header stamps).
 
@@ -227,13 +267,17 @@ input queue dropped (estimated from gaps in the header stamps).
 
 | key | default | meaning |
 |---|---|---|
-| `sensor.forward/left/up` | `-y/+x/+z` | sensor → vehicle axis mapping (hackathon Hesai frame) |
+| `sensor.forward/left/up`, `sensor.roll_deg/pitch_deg/yaw_deg` | `-y/+x/+z`, 0 | sensor → vehicle axis mapping (hackathon Hesai frame) and a fixed mount tilt |
+| `calibration.*` | on, 5 frames | automatic mount calibration (orientation, roll, pitch, yaw > 3°) |
 | `track.rails_*` | | rail-ridge template (gauge 1.52 m) for the track axis and rail-head level |
 | `track.walls_*` | band 1.6–2.8 m | tunnel-boundary fit for yaw / curvature; `axis_valid_*` = how far the corridor is trusted |
-| `gauge.profile` | ±1.4 m, 0.12/0.55–3.5 m | clearance-gauge polygon (dy, h above rail head); `warning_margin` = advisory zone |
+| `gauge.profile` | \|dy\| ≤ 1.05 m, 0.12–3.0 m | **the organizers' 2.1 × 3.0 m train envelope**; `warning_margin` 0.35 m = advisory zone; `edge_margin_per_100m` 0.15 m |
+| `lowobj.*` | on, ≤ 60 m | low objects on the rails (bumps above the learned bed that rise ≥ 3 cm above the rail head) |
+| `cluster.far_*` | 0.6 m tall, ≤ 3 m long | what may alarm beyond the height reference (far field of straight track) |
 | `cluster.eps / range_scale / voxel` | 0.35 / 40 / 0.05 | range-adaptive DBSCAN: ε(r) = eps·(1 + r/40 m) |
-| `cluster.*_max_*` | | infrastructure filters (thin hardware, low hardware, wall-like, overhead) |
-| `tracking.confirm_hits / conf_threshold` | 3 / 0.6 | persistence before an alarm |
+| `cluster.*_max_*`, signatures | | infrastructure filters (thin hardware, low hardware, wall-like, column, floating, edge, wall face); thin objects hanging near the axis are never demoted |
+| `tracking.confirm_hits / conf_threshold` | 3 / 0.6 | persistence before an alarm (low objects: 5 hits) |
+| `health.*` | | thresholds of the production guards |
 
 ## Documentation required by the organizers (spec §5, §7)
 

@@ -7,6 +7,9 @@ ROS 2 bag ──/lidar_points (PointCloud2, 10 Hz, ~190k pts)──▶ resense_r
                               resense.Detector.process(Frame)  (pure numpy / scipy / sklearn)
                                                                   │
    1. sensor → vehicle frame (X fwd, Y left, Z up), range crop     │  frame.py
+   1b. mount auto-calibration (v0.6): orientation from the rail     │  calibration.py
+        pair (24 candidates), roll from the rail heads, pitch from the bed slope, large yaw;
+        frozen after 5 frames, drift monitored every 50
    2. track model per frame                                       │  track.py
         • bed profile z(X): per-bin percentile, robust line + optional quadratic; height
           reference trusted 20 m beyond the fit or as far as the side-structure base verifies it
@@ -16,21 +19,30 @@ ROS 2 bag ──/lidar_points (PointCloud2, 10 Hz, ~190k pts)──▶ resense_r
           rail tangent fixed; rate limits per frame; nearer side wins; axis trusted only up to
           the last observed boundary bin (+15 m), less when the two sides disagree
    3. clearance-gauge corridor                                     │  gauge.py
-        • polygon (dy, h) relative to axis and rail head: |dy| ≤ 1.4 m, h 0.55–3.5 m,
-          plus the low zone |dy| ≤ 0.95 m from h = 0.12 m; advisory zone +0.35 m
+        • v0.6: the organizers' train envelope, polygon (dy, h) relative to axis and rail head:
+          |dy| ≤ 1.05 m, h 0.12–3.0 m; advisory zone +0.35 m (= the v0.5 polygon, 1.40 m);
+          edge margin 0.15 m per 100 m for the strict decision
+   3a. low objects (v0.6): bumps above the learned bed cross-section │  lowobj.py
+        that reach the rail-head plane, within the observed bed (≤ 60 m)
    3b. multi-frame accumulation beyond 40 m (only with a given train speed)  │  accumulate.py
    4. candidates → voxels (range-normalised) → DBSCAN (eps ∝ 1 + r/40 m)  │  clustering.py
         • filters: max extent, thin linear hardware, low track hardware, wall-like side
           structures, overhead-only clusters, expected-point visibility prior, and the
-          infrastructure signatures (column, elevated, floating, corridor edge, wall face)
+          infrastructure signatures (column, elevated, floating, corridor edge, wall face;
+          v0.6: thin objects hanging near the axis are never demoted); far field (v0.6):
+          beyond the height reference only tall, grounded, short clusters alarm
    5. persistence tracker (greedy NN, gate ∝ range, ego-speed slack)  │  tracking.py
         • confirmed after 3 hits spanning ≥ 0.3 s, ≥ 60 % of the last 10 frames matched and
           ≥ 60 % of the last 10 hits inside the strict gauge; confidence ↑ per hit ↓ per miss
+   5b. health (v0.6): input sanity, blocked view, visibility,       │  health.py
+        rail lock, latency, calibration → level + monitored range + clear distance
    6. FrameResult → topics                                          │  detector_node.py
         /resense/obstacle_detected (Bool)   /resense/nearest_distance (Float32)
         /resense/warning (Bool)             /resense/detections (vision_msgs/Detection3DArray)
         /resense/status (String JSON)       /resense/markers (MarkerArray)  /resense/corridor_points
         /resense/latency_ms (Float32)       /resense/fps (Float32)
+        /resense/decision (String GO|CAUTION|STOP|FAULT)   /resense/clear_distance (Float32)
+        /resense/health (diagnostic_msgs/DiagnosticArray) + watchdog on a silent input
         /tf_static: resense_lidar → <input frame_id> (identity, once per frame id)
         in: ego speed from ego_speed_mps / speed_topic (Float32) / odom_topic (Odometry), optional
                                                                   │
@@ -58,7 +70,11 @@ ROS 2 bag ──/lidar_points (PointCloud2, 10 Hz, ~190k pts)──▶ resense_r
 * Output `FrameResult` (also serialised as JSON on `/resense/status` and by `resense run --out`):
   `obstacle`, `warning`, `nearest_distance`, `detections[]` (id, zone, distance along track,
   lateral offset, centre, size, n_points, confidence, age, height_min, intensity), `track`
-  (floor polynomial, axis centre/yaw/curvature, rail offset, quality flags), `timing_ms`.
+  (floor polynomial, axis centre/yaw/curvature, rail offset, quality flags), `timing_ms`;
+  since v0.6 also `clear_distance`, `health` (level, messages, points, near fraction, blocked
+  sectors, visibility, rail lock, latency p95, monitored range) and `mount` (calibration status,
+  orientation, roll / pitch / yaw, height, drift), and `detections[].kind` (`low` for a bed-level
+  object). All older keys are unchanged.
   The ROS node adds a `node` object: `latency_ms` (decode + detect of this frame), `fps`,
   `frames`, `dropped_frames` (estimated from gaps in the input stamps), `input_period_ms`.
 * Node runtime statistics (spec §8.3): `/resense/latency_ms` per frame (decode + detect +
@@ -88,7 +104,13 @@ ROS 2 bag ──/lidar_points (PointCloud2, 10 Hz, ~190k pts)──▶ resense_r
   rails; anything inside the clearance gauge that is not rails/bed/known hardware is a hazard,
   whatever it looks like. No labelled obstacle classes are needed.
 * **Self-calibration**: bed level, rail level and track axis are re-estimated every frame from the
-  rails, so different sensor mounts (the bags come from at least two) need no manual calibration.
+  rails, and (v0.6) the mount itself — which axis looks forward, roll, pitch — is found from the
+  rails and the bed in the first frames, so a different mount (the organizers: "the LiDAR
+  position is not fixed") needs no manual calibration; the launch file still accepts it.
+* **The customer's envelope** (v0.6): the strict decision uses the 2.1 × 3.0 m cross-section the
+  organizers gave; the wider v0.5 polygon became the advisory zone.
+* **Fail-safe outputs** (v0.6): `clear_distance` shrinks to what was actually checked and to 0 on
+  any input fault; the decision topic says `FAULT` instead of staying silent.
 * **Curvature from parallel references**: rails are visible only to ~30–40 m, walls/column rows
   to 150–200 m (Shen et al. 2024). This is what makes a corridor at 100+ m meaningful; where no
   boundary is observed the corridor is explicitly *not trusted* and only warnings are raised.
@@ -114,11 +136,12 @@ machine: tens of thousands of cluster candidates); the node drops frames rather 
 there. The jury's i7-9700E (8 faster cores) has not been measured yet. Full table and stage
 attribution: EXPERIMENTS.md §3.
 
-## Known limitations of v0 (see EXPERIMENTS.md)
+## Known limitations (see ALGORITHM.md §6 and EXPERIMENTS.md)
 
 * Curvature is only observed where tunnel boundaries are visible; stations and switch caverns
-  weaken the estimate → detections there are demoted to warnings but still noisy.
-* Track hardware / infrastructure filters are hand-tuned on six bags; a 20–30 cm object lying
-  on the rail is filtered out with the "low hardware" rule.
-* No ego-motion estimate yet: the tracker uses a range-dependent gate with a 25 m/s slack.
-* Single-frame evidence beyond ~150 m is 1–5 points; accumulation is required for 200–300 m.
+  weaken the estimate → detections there are demoted to warnings and `health` reports it.
+* Infrastructure filters are hand-tuned on six bags and checked on the 20-minute ride.
+* A low object lying on the bed below the rail head is not an alarm by default (bed fixtures of
+  the same size); an object on a rail is.
+* Without a train speed the tracker uses a range-dependent gate with a 25 m/s slack and the
+  pipeline is single-frame; beyond ~150 m a person returns 3–10 points per frame.

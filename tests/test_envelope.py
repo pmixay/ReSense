@@ -62,13 +62,13 @@ def test_organizers_minimum_object_on_a_rail(distance, lateral):
 @pytest.mark.parametrize("distance,lateral", [(12.0, 0.0), (20.0, 0.4), (28.0, -0.3)])
 def test_minimum_object_below_the_rail_head_is_a_policy(distance, lateral):
     """The same object lying on the bed between the rails stays below the rail head: by default
-    (``lowobj.min_top`` = 0.03) it is not an alarm - the metro bed carries fixtures of that size
+    (``lowobj.min_top`` = 0.0: the object's top must reach the rail-head plane) it is not an alarm - the metro bed carries fixtures of that size
     every few tens of metres (1 350 alarm events on the 20-minute ride with the bed-level policy,
-    EXPERIMENTS.md §1d); ``min_top: -1`` reports any bump above the bed."""
+    EXPERIMENTS.md §1d); ``min_top: -1`` with ``min_point_top: -1`` reports any bump above the bed."""
     spec = ObstacleSpec(kind="box", size=(0.3, 0.3, 0.1), distance=distance, lateral=lateral, base_z=FLOOR_Z)
     assert not _run(_scene([spec])).obstacle
     cfg = DetectorConfig()
-    cfg.lowobj.min_top = -1.0
+    cfg.lowobj.min_top = cfg.lowobj.min_point_top = -1.0     # the bed-level policy
     res = _run(_scene([spec]), cfg=cfg)
     assert res.obstacle and res.detections[0].kind == "low"
     assert abs(res.detections[0].distance - distance) < 0.6
@@ -103,3 +103,25 @@ def test_person_in_the_envelope_still_alarms():
     spec = catalogue_spec("person", 60.0, 0.2, reflectivity=30.0)
     res = _run(_scene([spec]))
     assert res.obstacle and abs(res.nearest_distance - 60.0) < 1.0
+
+
+def test_wall_face_cluster_does_not_break_later_low_clusters():
+    """Regression (v0.6 review): the wall-face rule used a local variable named ``low`` that
+    shadowed the low-candidate flags of find_clusters, so a wall face followed by more
+    clusters in the same frame raised IndexError on the extended ride."""
+    from resense.clustering import find_clusters
+    from resense.config import ClusterConfig, LowObjectConfig
+    rng = np.random.default_rng(0)
+
+    def blob(x, y, z, L, W, H, n):
+        return np.stack([rng.uniform(x, x + L, n), rng.uniform(y - W / 2, y + W / 2, n), rng.uniform(z, z + H, n)], 1)
+
+    face = blob(15.0, 1.0, 0.55, 0.3, 1.3, 2.4, 3000)       # wall face at the edge, nearest (clusters run in voxel order)
+    other = [blob(30.0 + 5 * k, 0.0, 0.3, 0.5, 0.5, 0.5, 400) for k in range(4)]
+    pts = np.concatenate([face] + other).astype(np.float32)
+    dy, h = pts[:, 1].astype(np.float64), pts[:, 2].astype(np.float64)
+    low = np.zeros(pts.shape[0], bool)
+    low[-50:] = True
+    out = find_clusters(pts, np.full(pts.shape[0], 30.0, np.float32), dy, h, np.abs(dy) < 1.05, ClusterConfig(),
+                        low=low, low_cfg=LowObjectConfig())
+    assert len(out) >= 4

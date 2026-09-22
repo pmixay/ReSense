@@ -107,6 +107,12 @@ offset of each event, `events` in the JSON; 27 last one frame, 31 last ≥ 5 fra
 * 18 in between (0.8–1.35 m), mostly the edge family seen with a worse axis.
 * 4 events while the train stands (files 188, 190, 207): 4–12-point clusters at 82–139 m.
 
+**Organizers' answer (Q&A session, 22.09):** nothing is staged in `new_data` — "all we can give
+is more empty tunnel"; no labels exist; the hidden check adds synthetic obstacles made with the
+organizers' own tool. Every alarm on this ride is therefore a false alarm. The v0.6 object list
+of the ride (every confirmed track, alarm or advisory, with geometry and cause class) is
+`labels/new_data_objects.json`; the classes and counts are in EXPERIMENTS.md §1d.
+
 Renders looked at (from the cache, `resense run --npy … --render`): file 22 frame 10 (switch:
 diverging track, axis wanders), 55 frames 10 and 20 (platform: the axis bends into the
 platform, a straight fit two frames later), 81 frame 10 (double-track, columns on the right),
@@ -200,17 +206,34 @@ compensation (and the extended dataset for calibration of dropout at range) is t
 ## Cached frames for fast iteration
 
 `resense.io.iter_bag_compact` reads bags without ROS (pure-python `rosbags`). For prototyping we
-cache every N-th frame as compact `*.npy` (x,y,z,intensity,ring; ~3.5 MB each):
+cache frames as compact `*.npy` (x, y, z, intensity, ring):
 
 ```bash
-python scripts/cache_frames.py /data/for_hackathon/roundT_doubleT cache/ --every 10
+python scripts/cache_frames.py /data/for_hackathon/roundT_doubleT cache/ --every 10                  # float32, ~3.5 MB / frame
+python scripts/cache_frames.py /data/for_hackathon/roundT_doubleT cache/roundT_doubleT --every 1 --int16 --stamps   # 1.5 MB / frame
 ```
+
+**v0.6 cache formats.** `--int16` writes `resense.pointcloud.COMPACT16_DTYPE`: coordinates in
+centimetres as int16 (±327 m), intensity and ring as uint8 — 8 bytes per point instead of 18;
+the 5 mm quantisation is a quarter of the sensor's range noise, and `roundT_doubleT` gives the
+same alarms from it as from the float cache (0 alarm frames, 222 vs 226 advisory frames).
+`resense.pointcloud.compact16_dedup` additionally stores each pair of identical points once
+with a flag in the ring's high bit: **49 % of the points of a frame are exact duplicates** (a
+ray with a single echo repeats it in both return slots of the dual-return layout); the reader
+(`expand_compact16`, called by `frame_from_compact`) restores them, so the detector sees the
+same multiset of points (0.75 MB per frame). `--stamps` writes `<name>_stamps.json` with the
+bag receive time of every frame; `resense.io.iter_npy_frames` then gives frames their bag
+time (the measured frame interval matters for the tracker and the recording holes of
+`new_data`) and plays split-file caches in natural order (`new_data_2_…` before
+`new_data_10_…`). All 2 488 frames of the six bags (3.6 GB) and all 11 271 frames of the
+extended ride (8.0 GB, deduplicated) were cached this way on 22.09 in ~10 minutes.
 
 The file name carries the **bag frame index** (`roundT_doubleT_0120.npy` = message 120 of the
 bag, 0-based, in message order). `resense eval --npy <dir> --gt gt.json` reads that number
-back to find the frame's labels, and `resense run --npy` numbers frames by their position in
-the directory (every file = one frame, `stamp = position × 0.1 s`; cached files carry no bag
-time, so per-hour rates need the bag itself).
+back to find the frame's labels. `scripts/eval_real.py --cache <dir>` runs one configuration
+over every cached recording (the ride split into parallel pieces) and prints the real-data
+report card; `scripts/far_range_eval.py` builds set F (objects approaching on the moving ride,
+EXPERIMENTS.md §2d); `scripts/mine_objects.py` lists every confirmed object of a run.
 
 ## Synthetic obstacles (`resense inject`)
 
@@ -337,6 +360,18 @@ resense run  --bag <bag> --out results.jsonl && resense summarize results.jsonl 
 `--repeat 3` is for static injected frames, where it emulates persistence.
 
 ## Real labels (set R): `labels/doubleT_obstacle.json`
+
+**v0.6 update (22.09).** (1) **`object_on_rail`**: the organizers pointed out in the Q&A session
+(`organizers/QA_session.md` fact 8) that besides the person "an object lies on the rails where
+the person stands". It is there for the whole bag: ~0.45 × 0.6 × 0.3 m at X 56.1–56.6 m,
+lateral −0.6…−1.2 m (on the right rail), top 0.15–0.2 m above the mean rail-head level
+(5–10 cm above its own rail once the 3° roll of this mount is corrected), 19–23 points per
+frame; visible (≥ 5 points) in 183 of 201 frames, hidden by the person in 16 (`n_points` 0,
+excluded from recall). Rows were added to every frame from the points in X 55.9–56.8 m,
+dy −1.3…−0.55 m, h −0.15…+0.45 m of the per-frame track model. (2) **`in_gauge` now means the
+organizers' 2.1 × 3.0 m envelope** (half-width 1.05 m): the crossing person is inside it in
+frames 8–68 (61 frames; 71 frames 2–72 with the 1.40 m polygon of v0.5, kept as `in_gauge_v05`
+/ `gauge_margin_v05`).
 
 Made on 2026-09-21 (P4) from the cached frames of `doubleT_obstacle`, **not** from the
 detector's output: every one of the 201 frames was searched for person-sized clusters with the

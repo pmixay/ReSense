@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import List, Optional
 
 import numpy as np
@@ -250,12 +250,38 @@ class Detector:
 
         # 5. voxelise + cluster + describe + filter (count thresholds scaled for the merged frames)
         factor = max(1.0, n_acc * acc.min_points_scale) if n_acc > 1 else 1.0
-        clusters = find_clusters(xyz_c, i_c, dy_c, h_c, g_c, cfg.cluster, frame_idx=fidx, axis_valid=valid,
+        corr = ~low_c
+        clusters = find_clusters(xyz_c[corr], i_c[corr], dy_c[corr], h_c[corr], g_c[corr], cfg.cluster,
+                                 frame_idx=fidx[corr], axis_valid=valid,
                                  height_valid=floor_valid if cfg.cluster.far_min_height > 0 else None,
                                  min_points_factor=factor, factor_range=acc.min_range,
                                  smear_max_length=acc.smear_max_length if n_acc > 1 else 0.0,
-                                 smear_max_width=acc.smear_max_width if n_acc > 1 else 0.0,
-                                 low=low_c, low_cfg=cfg.lowobj)
+                                 smear_max_width=acc.smear_max_width if n_acc > 1 else 0.0)
+        if low_c.any():
+            # low candidates are clustered on their own with a tighter radius: at 50 m the corridor
+            # radius (0.8 m) merges a 30 cm object with the bed fixtures around it (v0.6 review)
+            lcfg = replace(cfg.cluster, eps=cfg.lowobj.eps)
+            lows = find_clusters(xyz_c[low_c], i_c[low_c], dy_c[low_c], h_c[low_c], g_c[low_c], lcfg,
+                                 frame_idx=fidx[low_c], axis_valid=valid,
+                                 low=np.ones(int(low_c.sum()), dtype=bool), low_cfg=cfg.lowobj)
+            # the foot of something taller (a sign, a column, a person) belongs to the corridor stage,
+            # which may have demoted it: drop low clusters with corridor points high above them
+            Xc, dyc, hc = xyz_c[corr, 0], dy_c[corr], h_c[corr]
+            tall = hc > cfg.lowobj.foot_max_top
+            Xc, dyc = Xc[tall], dyc[tall]
+            keep = []
+            for c in lows:
+                m = ((Xc > c.bbox_min[0] - 0.3) & (Xc < c.bbox_max[0] + 0.3)
+                     & (np.abs(dyc - c.lateral) < 0.5 * float(c.size[1]) + 0.3))
+                if int(m.sum()) >= 3:
+                    continue
+                # the lower part of an object the corridor stage already reports: one detection, not two
+                dup = any(k.bbox_min[0] - 0.3 < c.bbox_max[0] and k.bbox_max[0] + 0.3 > c.bbox_min[0]
+                          and abs(k.lateral - c.lateral) < 0.5 * float(k.size[1] + c.size[1]) + 0.3
+                          for k in clusters)
+                if not dup:
+                    keep.append(c)
+            clusters = sorted(clusters + keep, key=lambda c: c.distance)
         t5 = time.perf_counter()
 
         # 6. temporal persistence (in seconds: the tracker gets the measured frame interval)

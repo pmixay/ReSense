@@ -149,6 +149,9 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
             # rail-head slivers, fastenings and joint bars are narrow across the track; a 30 cm object is not
             if size[1] < low_cfg.min_width:
                 continue
+            # the object must reach the rail-head plane (bed fixtures stay below it by design)
+            if low_cfg.min_top > -1.0 and float(h[idx].max()) < low_cfg.min_top:
+                continue
             dist = float(pts[:, 0].min())
             width = max(float(size[1]), 0.15)
             height = max(float(size[2]), 0.1)
@@ -221,8 +224,8 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
                     and size[0] > cfg.edge_min_aspect * max(float(size[1]), 0.05) and size[2] < cfg.edge_max_height:
                 reason = "edge"                    # duct / bench / platform-edge fragment along the corridor edge
             elif cfg.wall_face_min_height > 0 and size[2] > cfg.wall_face_min_height and h_max > cfg.wall_face_min_top:
-                low = hh < cfg.wall_face_min_top
-                if low.sum() >= 3 and ady[low].min() > cfg.wall_face_min_inner and ady[low].max() > cfg.wall_face_edge:
+                below = hh < cfg.wall_face_min_top
+                if below.sum() >= 3 and ady[below].min() > cfg.wall_face_min_inner and ady[below].max() > cfg.wall_face_edge:
                     reason = "wall_face"           # wall / portal face pulled in by the axis: hugs the edge, centre clear
         if reason:
             zone = "warning"

@@ -144,6 +144,7 @@ class Tracker:
         c = self.cfg
         need_span = c.confirm_time_s if (self._timed and c.confirm_time_s > 0) else 0.0
         return [t for t in self.tracks
-                if t.hits >= c.confirm_hits and t.confidence >= c.conf_threshold and t.misses == 0
+                if t.hits >= (c.low_confirm_hits if (t.last is not None and t.last.kind == "low") else c.confirm_hits)
+                and t.confidence >= c.conf_threshold and t.misses == 0
                 and t.span_s >= need_span - 1e-9
                 and (c.min_hit_fraction <= 0 or t.hit_fraction >= c.min_hit_fraction - 1e-9)]

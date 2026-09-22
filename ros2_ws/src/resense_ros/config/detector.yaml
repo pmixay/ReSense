@@ -148,6 +148,7 @@ resense:
     ego_speed_max: 25.0
     frame_dt: 0.1
     confirm_hits: 3
+    low_confirm_hits: 5            # v0.6: hits before a low (bed-level) object is reported
     confirm_time_s: 0.3
     hit_window: 10
     min_hit_fraction: 0.6
@@ -178,9 +179,10 @@ resense:
   lowobj:                          # v0.6: low foreign objects on the track bed (resense/lowobj.py)
     enabled: true
     half_width: 1.05
-    min_excess: 0.07               # m above the learned bed cross-section
+    min_excess: 0.05               # m above the learned bed cross-section
     max_excess: 1.0
-    min_top: 0.03                  # m above the rail head a candidate must reach (bed fixtures stay below it; -1 = any bump above the bed)
+    min_top: 0.0                   # m above the rail head the top of a low cluster must reach (bed fixtures stay below it; -1 = any bump above the bed)
+    min_point_top: 0.03            # m above the rail head every low candidate must be (rail-area fixtures reach the rail-head level); -1 = off
     template_range:
     - 4.0
     - 30.0
@@ -192,6 +194,8 @@ resense:
     local_bin: 2.0
     local_min_points: 5
     range_max: 60.0
+    foot_max_top: 0.35             # a low cluster under corridor points higher than this is the foot of something taller
+    eps: 0.2                       # DBSCAN radius of the low candidates (range-normalised; 0.48 m at 56 m)
     min_points: 3
     min_height: 0.0
     max_length: 1.5

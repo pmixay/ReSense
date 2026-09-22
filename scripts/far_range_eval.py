@@ -68,7 +68,7 @@ def vault_drift(xyz, track, x0=40.0, x1=230.0, step=10.0):
 
 
 def run_sequence(job):
-    (files, stamps, speeds, kind, d0, lateral, refl, seed, cfg_path, far_min_height) = job
+    (files, stamps, speeds, kind, d0, lateral, refl, seed, cfg_dict, far_min_height) = job
     sys.path.insert(0, os.getcwd())
     from resense.config import DetectorConfig
     from resense.detector import Detector
@@ -76,7 +76,7 @@ def run_sequence(job):
     from resense.synthetic import catalogue_spec, inject_obstacles, local_bed_z
     from resense.track import estimate_track
     from dataclasses import replace
-    cfg = DetectorConfig.from_yaml(cfg_path)
+    cfg = DetectorConfig.from_dict(cfg_dict)
     if far_min_height is not None:
         cfg.cluster.far_min_height = far_min_height
     det = Detector(cfg)
@@ -110,14 +110,16 @@ def run_sequence(job):
         res = det.process(inj.frame)
         tol = max(2.0, 0.03 * d)
         hit = False
+        fps = []
         for det_ in res.detections:
             if abs(det_.distance - d) <= tol and abs(det_.lateral - lateral) <= 1.2:
                 hit = True
             else:
                 fp += 1
+                fps.append([round(det_.distance, 1), round(det_.lateral, 2), [round(float(v), 2) for v in det_.size], det_.kind])
         if hit and first is None:
             first = d
-        rows.append({"frame": stem, "d": round(d, 1), "n": n_pts, "hit": hit,
+        rows.append({"frame": stem, "d": round(d, 1), "n": n_pts, "hit": hit, "fp_dets": fps,
                      "cand": any(abs(c.distance - d) <= tol for c in res.candidates),
                      "mon": res.health.get("monitored_range"), "vis": res.health.get("visibility")})
     return {"kind": kind, "d0": d0, "lateral": lateral, "refl": refl, "first": first, "fp": fp, "rows": rows,
@@ -139,8 +141,13 @@ def main():
     ap.add_argument("--jobs", type=int, default=4)
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
+    import yaml
+    from resense.config import DetectorConfig
     from resense.io import _natural_key, load_cache_stamps
     from resense.synthetic import OBJECT_CATALOGUE
+    raw = yaml.safe_load(open(a.config, encoding="utf-8")) or {}
+    cfg_dict = raw.get("resense", raw)          # read once: every sequence runs the same parameters
+    DetectorConfig.from_dict(cfg_dict)
     intake = json.load(open(a.speeds))
     spd_file = {f["n"]: (f.get("speed_tracks") or 0.0) for f in intake["files"]}
     stamps = load_cache_stamps(a.cache)
@@ -155,7 +162,7 @@ def main():
         for kind in a.kinds.split(","):
             refl = float(rng.uniform(*OBJECT_CATALOGUE[kind].reflectivity))
             jobs.append((files, stamps, speeds, kind, a.start, float(rng.uniform(lo, hi)), refl,
-                         int(rng.integers(1 << 30)), a.config, a.far_min_height))
+                         int(rng.integers(1 << 30)), cfg_dict, a.far_min_height))
     t0 = time.time()
     with ProcessPoolExecutor(max_workers=a.jobs) as ex:
         out = list(ex.map(run_sequence, jobs))

@@ -203,6 +203,7 @@ class TrackingConfig:
     ego_speed_max: float = 25.0    # m/s, obstacles approach at most this fast (no odometry)
     frame_dt: float = 0.1          # s
     confirm_hits: int = 3          # consecutive frames before an obstacle is reported
+    low_confirm_hits: int = 5      # v0.6: hits before a low (bed-level) object is reported: it is static and in view for seconds, while rail-area clutter flickers for 2-3 frames
     confirm_time_s: float = 0.3    # s of sensor time a track must have been observed (frames x interval, first frame included: 0.3 s = 3 frames at 10 Hz, the v0.3 persistence; 0.5 = 5 frames); applied when the caller supplies the frame interval (the Detector does); 0 = hits only
     hit_window: int = 10           # frames of a track's recent history kept for min_hit_fraction
     min_hit_fraction: float = 0.6  # a track must have been matched in this share of its last hit_window frames (flickering structures are not reported); 0 = off
@@ -221,9 +222,10 @@ class LowObjectConfig:
     300 x 300 x 100 mm)."""
     enabled: bool = True
     half_width: float = 1.05           # m, |dy| of the search band (the train envelope)
-    min_excess: float = 0.07           # m above the local bed template
+    min_excess: float = 0.05           # m above the local bed template (a 10 cm object lying on a rail head clears it by ~5 cm)
     max_excess: float = 1.0            # m
-    min_top: float = 0.03              # m above the rail head a candidate must reach: the bed is full of fixtures 5-40 cm tall that stay below the rail head by design (EXPERIMENTS.md §1d); -1 = any bump above the bed
+    min_top: float = 0.0               # m above the rail head the top of a low cluster must reach: the bed is full of fixtures 5-40 cm tall that stay below the rail head by design (EXPERIMENTS.md §1d); -1 = any bump above the bed
+    min_point_top: float = 0.03        # m above the rail head every low candidate point must be (the rail-area fixtures - guard rails, joints, fastenings - reach the rail-head level; a candidate must rise above it); -1 = off
     template_range: Tuple[float, float] = (4.0, 30.0)   # m along track where the cross-section is learned
     template_bin: float = 0.025        # m lateral bin of the template
     template_percentile: float = 30.0  # per-bin percentile of the height (the bed surface)
@@ -233,6 +235,8 @@ class LowObjectConfig:
     local_bin: float = 2.0             # m along-track bin of the local bed offset
     local_min_points: int = 5          # bed returns per bin for the bin to count as observed
     range_max: float = 60.0            # m, the bed is observed at grazing incidence: beyond this nothing is reported
+    foot_max_top: float = 0.35         # m, a low cluster with corridor points higher than this above it is the foot of something taller (the corridor stage decides)
+    eps: float = 0.2                   # DBSCAN radius of the low candidates (range-normalised like cluster.eps: 0.48 m at 56 m)
     min_points: int = 3                # voxels of a low cluster
     min_height: float = 0.0            # m, vertical extent of a low cluster (0: a flat top face at close range is enough, its excess over the bed is the height)
     max_length: float = 1.5            # m along the track (rails, guard rails, cables and ducts are longer)

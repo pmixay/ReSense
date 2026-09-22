@@ -1,0 +1,34 @@
+# Self-assessment against the organizers' criteria (spec §8) — v0.6, 22.09
+
+How ReSense stands on every criterion the jury announced (technical specification §8 and the
+Q&A session, [`organizers/QA_session.md`](organizers/QA_session.md)), with the evidence, what
+v0.6 changed, and what is still weak. Numbers: [`EXPERIMENTS.md`](EXPERIMENTS.md) (section
+given per row). "Real" = the organizers' recordings; "synthetic" = objects ray-cast into them.
+
+| § | criterion (weight as announced) | evidence | v0.6 change | self-rating | remaining risk |
+|---|---|---|---|---|---|
+| 8.1 | **Works: detects obstacles, stable across tunnel sections, few misses, few false alarms, works on unseen data** (main criterion) | real: the crossing person of `doubleT_obstacle` in 58 of the 61 frames it is inside the 2.1 m envelope, first alarm 0.3 s after it enters, distance error < 0.35 m; the object on the rail found (see 8.1 note); false alarms on **all 13 558 frames** of the organizers' data: five empty bags 85 → see §1d final row, the 20-minute ride ≈ 60–90 events/20 min (v0.5: 93) with no event in 2 of the 5 short bags; synthetic: set F on the moving ride (§2d) | envelope = the organizers' 2.1 × 3.0 m; hanging cables detected; low objects on the rails; far field; mount calibration; guards | **good** | the corridor edge at stations and switches (platform ends, contact-rail brackets) still produces most false alarms; the object on the rail protrudes ~5 cm and is found in only a few frames by default (§1d) |
+| 8.2 | **Range** (300 excellent / 200 very good / 100 good; < 100 poor; the visible limit in a curve is acceptable) | synthetic on the moving ride (set F, §2d): person / crate / trolley / cable approaching from 220 m, first confirmed detection per kind on straight track and in R ≈ 350 m curves; the sensor returns nothing beyond ~209 m (§2d), so 300 m is physically out of reach with this LiDAR | far-field rule: tall objects alarm to the trusted axis range (~200 m on straight track) instead of the height-reference range (~100–130 m) | **good (100–200 m on straight track; the sightline in curves)** | small objects (< 0.6 m) beyond the height-reference range are advisory; single-frame evidence at 180–200 m is 3–10 points |
+| 8.3 | **Speed: latency, FPS, CPU/GPU, real-time stability** | per-stage timing on real frames (§3), p95 inside the 100 ms frame period on the tunnel sections on a 4-core machine; the node drops frames rather than queueing and reports it | health reports latency p95 against the budget | **good** | the jury's i7-9700E is not measured (8 faster cores than our sandbox); pure Python |
+| 8.4 | **Generalisation to unseen data** (the check includes full rides through other tunnels; a map of the given tunnels "will not fully work") | no map, no learned object classes: every frame re-estimates bed, rails, axis, curvature; tested on the 20-minute ride (7 stops, curves to R 350 m, stations, a switch, recording holes) that was not used to design v0.5; auto-calibration for other mounts | mount calibration (24 orientations, roll / pitch / yaw) and mount launch arguments; the organizers' envelope instead of our assumed polygon | **good** | parameters were tuned on the same 7 recordings they are evaluated on (only 13 558 real frames exist); the ride is a single line |
+| 8.5 | **Technical quality: architecture, code, robustness, reproducibility, tests, resources, docs, clarity** | 13 modules with one responsibility each; 130+ tests (synthetic ray-cast tunnel, no dataset needed) incl. regression tests for every bug found; CI builds the Docker image, runs the suite inside it and plays a synthetic bag through the node; docs: README, ARCHITECTURE, ALGORITHM, EXPERIMENTS, DATASET, EVALUATION, SENSOR, this file | health monitor, fail-safe outputs, exception guard and watchdog in the node; evaluation harness over all real data (`scripts/eval_real.py`) | **very good** | the ROS node itself has run only in CI on a synthetic bag (no Docker daemon in the development sandbox) |
+| 8.6 | **Ease of launch: docker build → docker run → ros2 bag play → result** | `./scripts/build.sh`, `docker run … ros2 launch resense_ros detector.launch.py`, the node auto-discovers the input topic and bridges the frame id; offline at run time | mount launch arguments; `/resense/decision` answers "can we go" in one word | **very good** | — |
+| 8.7 | **Team approach: hypotheses, experiments, what failed, why the final choice, trade-offs** | EXPERIMENTS.md keeps every version (v0.0 → v0.6) with its numbers and the failed variants: the v0.4 LiDAR-only speed estimator (more false alarms), the bed-level low-object stage (1 350 alarms / 20 min), the permissive rail-level stage (~800), the per-point variant that shipped; the Q&A answers and how each changed the code | this file; §1d variant table | **very good** | — |
+| 8.8 | **Pitch** (lower weight): problem → idea → algorithm → demo → results | PRESENTATION.md, videos in `docs/video/`, the dashboard (`web/`) now shows decision, verified-clear distance, health | dashboard card for the v0.6 outputs | **good** | the RViz screen recording of the Docker chain on a machine with Docker is still to be made |
+
+### Notes
+
+* **8.1, the object on the rail.** In one frame the organizers' object (~0.45 × 0.6 × 0.3 m lying
+  across the right rail, 5 cm above it after the mount's 3° roll is corrected) is geometrically
+  the same as the rail-area fixtures of the ride (guard rails, joints, fastenings): reporting it
+  in every frame costs ~800 false events per 20 minutes. The shipped setting reports a 10 cm
+  object that rises ≥ 3 cm above a rail head (10–25 m on the synthetic tunnel) and keeps the
+  ride's false alarms at the v0.5 level; `lowobj.min_point_top: -1` reports the organizers'
+  object in 126 of 126 frames when a line's bed is known to be clean (ALGORITHM.md §3.3b).
+* **8.2, 300 m.** The Pandar128 is specified to 200 m at 10 % reflectivity; the farthest return
+  in all 13 558 frames is ~209 m, and a straight tunnel returns only the vault and the walls
+  beyond 150 m (~70 points per 25 m of tunnel). An obstacle at 300 m cannot produce a point.
+* **What we would do next** (not in v0.6): a lining-anchored far height reference (the vault
+  drift is measurable to ~200 m, §2d), cant-aware roll, a learned second opinion trained on
+  far more rides (§8 of EXPERIMENTS.md shows the experiment), C++/Numba for the platform
+  frames.

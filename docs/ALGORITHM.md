@@ -35,8 +35,53 @@ like. No training data and no object classes are required.
   downstream is in the vehicle frame; the ROS node maps detections back to the sensor frame for
   RViz.
 
-No calibration of sensor height, pitch or lateral position is needed: the track model below
-re-estimates them every frame.
+The sensor height, the lateral offset and the yaw of the track are re-estimated every frame
+by the track model (§3.1). What the per-frame model cannot absorb — a different mount — is
+found once from the data (§2b); the organizers confirmed that the LiDAR position is not fixed
+between trains and differs even between the provided recordings
+([`organizers/QA_session.md`](organizers/QA_session.md) fact 7).
+
+### 2b. Mount auto-calibration (`resense/calibration.py`, section `calibration`) — v0.6
+
+`sensor.forward/left/up` (plus the fixed tilt `sensor.roll_deg/pitch_deg/yaw_deg`) map the
+sensor onto the vehicle frame; the calibrator checks and corrects that mapping from the data in
+the first frames and hands the detector a rotation `R` (`p_processed = R · p_configured`):
+
+1. **orientation** — only if the configured mapping shows no rail pair ahead (or more far
+   returns behind than ahead), all 24 axis-aligned proper rotations are scored by the rail
+   pair they reveal: two ridges 1.59 m apart, 0.08–0.5 m above a bed that lies below the
+   sensor, running along +X, with the tunnel visible ahead. A candidate is adopted when it wins
+   on `orientation_votes` = 2 frames and the configured mapping never passed, so a platform or a
+   switch (no rails) cannot flip the mount. Tested: upside down, `+x` forward (the ROS
+   convention), mounted backwards, `+x` forward and rolled 2° — all recovered to < 0.5°
+   (`tests/test_calibration.py`);
+2. **roll** from the rail pair: the height difference of the two rail heads over their spacing
+   (the gauge is defined in the rail plane, so this is the roll that matters);
+3. **pitch** from the slope of the bed fit at the vehicle (the train rides on the track, so the
+   bed slope at X = 0 in the sensor frame is the mount pitch whatever the grade);
+4. **yaw** from the rail-slab tangent, applied only above `min_yaw_deg` = 3° (the per-frame
+   model follows smaller and dynamic yaw; the rails' tangent at the sensor includes the chord
+   angle of the car in a curve).
+
+Medians over `frames` = 5 frames with a rail pair are composed into `R` once; corrections below
+`apply_min_deg` = 0.3° are not applied; tilts above `max_tilt_deg` = 15° are rejected
+(configured mapping kept, status `fallback`); without a rail pair in `max_frames` = 100 frames
+the calibrator gives up (`fallback`). After freezing, the same measurement runs every
+`monitor_period` = 50 frames on the corrected cloud and a residual tilt above
+`drift_warn_deg` = 1° (a mount knocked loose) is reported in the health status, never
+silently re-applied. The result is in the status JSON as `mount` (`status`, `orientation`,
+`roll_deg`, `pitch_deg`, `yaw_deg`, `height`, `lateral`, `drift_deg`, `message`); the frozen
+values can be copied into `sensor.roll_deg/pitch_deg/yaw_deg` or given to the node as the
+launch arguments `mount_roll_deg/…` and `sensor_forward/left/up`. On the organizer bags the
+calibrator measures a roll of −1.0…−1.6° on the moving recordings (`roundT_doubleT`) and
+confirms `doubleT_platform` (status `identity`); a real frame rotated by known mounts (roll 3°,
+pitch −4°, the four orientation changes) is recovered to the recorded mount
+(EXPERIMENTS.md §6). Cost: one extra rail/bed measurement per frame during the first 5–10
+frames and every 50th frame afterwards.
+
+The track model is seeded again after the correction; since v0.6 its rate limits
+(§3.1) apply only after `track.axis_warmup_frames` = 5 frames, so a wrong first-frame
+estimate (a cold start mid-ride) is not locked in for 30+ frames.
 
 ## 3. Processing pipeline
 
@@ -64,36 +109,31 @@ confirm the extrapolation.
 
 ### 3.2 Clearance-gauge corridor (`resense/gauge.py`, section `gauge`)
 
-The gauge is a closed polygon in `(dy, h)`, i.e. a cross-section swept along the axis:
-half-width 1.40 m from 0.55 m above the rail head (above the contact-rail cover) to 3.50 m, plus
-a lower zone \|dy\| ≤ 0.95 m from 0.12 m up (between the rails). A second, **advisory** polygon
-is the same profile widened by `warning_margin` = 0.35 m on the outside only.
+The gauge is a closed polygon in `(dy, h)`, i.e. a cross-section swept along the axis. **Since
+v0.6 it is the train envelope the organizers gave in the Q&A session: 2.1 m wide × 3.0 m high,
+all protruding elements included** ([`organizers/QA_session.md`](organizers/QA_session.md)
+fact 1): \|dy\| ≤ 1.05 m, from 0.12 m above the rail head (the rail heads, fastenings and joint
+bars stay out; lower objects on the track are the low-object stage's, §3.3b) to 3.0 m. A
+second, **advisory** polygon is the same profile widened by `warning_margin` = 0.35 m, i.e. to
+\|dy\| ≤ 1.40 m — the strict polygon of v0.5. A confirmed object there is a `warning`
+(decision `CAUTION`), not an alarm: the organizers stated that a person on a platform or
+beside the track is not an obstacle unless inside the envelope.
 
-**Source of the numbers and what is still to verify against GOST 23961-80** ("Метрополитены.
-Габариты приближения строений, оборудования и подвижного состава", 1520 mm gauge; the rolling
-stock gauge is drawings 6 and 7 of the standard). The text of the standard is online
-(files.stroyinf.ru, meganorm.ru, docs.cntd.ru, dnaop.com — checked 21.09), but the profile
-dimensions exist only in the drawings, which none of the mirrors transcribes, so the polygon
-could **not** be set from the standard and stays as designed on day 1. What the text does give,
-and what the profile is consistent with: track gauge 1520 mm, 1600 mm between the wheel
-rolling circles, platform edge at 1450–1600 mm from the track axis (table 3, straight track
-to curves) at 1100 mm above the rail head — so the half-width at platform height must be
-< 1.45 m and our 1.40 m keeps a ≥ 5 cm margin to the platform edge, while the organizer bags
-show the edge at ~1.6 m ([`DATASET.md`](DATASET.md)); 137 mm maximum height of the
-train-control inductor above the rail head under the car, which is why nothing below 0.12 m
-between the rails is looked at. Assumptions to check on the drawings: car body half-width
-1.35 m (2.7 m body) + dynamic margin = 1.40 m; the 0.55 m step for the contact-rail zone; the
-3.5 m top (the car is ~3.7 m above the rail head, the polygon top only needs to cover what a
-train can hit); a platform notch is not modelled. The synthetic benches at 1.95 m and the
-tests do not constrain the half-width between 1.40 and 1.5 m.
+v0.5 used a polygon designed on day 1 from the car body (half-width 1.40 m from 0.55 m up,
+0.95 m between the rails from 0.12 m, top 3.5 m); the GOST 23961-80 profile drawings could not
+be transcribed (only the text is online: platform edge 1.45–1.6 m from the axis at 1.1 m above
+the rail head, 137 mm maximum height of the train-control inductor). The organizers' envelope
+replaces that assumption; the narrower polygon also takes the corridor edge (the ducts,
+benches, platform edges and column rows at 1.5–1.7 m that caused most v0.5 false alarms)
+0.45 m further away from the strict decision.
 
 Points between `range_min` (3 m) and `range_max` (250 m) are tested against both polygons
 with a vectorised even-odd test (after a bounding-box prefilter, v0.5: the polygon test on the
 few thousand points inside the box instead of the whole frame). Points inside the advisory
 polygon are the *candidates*; membership in the strict polygon is remembered per point. An
-optional **edge margin** (`gauge.edge_margin` + `edge_margin_per_100m` × X/100, v0.5, 0 by
-default) counts a point as inside the strict gauge only when it lies that far inside the
-polygon's lateral edge: the axis is uncertain by ~0.1° (0.1 m per 60 m), so a return a few
+**edge margin** (`gauge.edge_margin` + `edge_margin_per_100m` × X/100; v0.5 option, **on since
+v0.6 with 0.15 m per 100 m**) counts a point as inside the strict gauge only when it lies that
+far inside the polygon's lateral edge: the axis is uncertain by ~0.1° (0.1 m per 60 m), so a return a few
 centimetres inside the edge at range is not evidence of an object in the gauge; the
 candidates and the advisory zone are unaffected. Its measured effect (side structures at
 \|dy\| 1.5–1.6 m vs the crossing person) is in EXPERIMENTS.md §1b.
@@ -123,7 +163,7 @@ Everything is **range-adaptive**, because a 0.5 m object gives ~500 returns at 2
 
 5. the surviving cluster is assigned a **zone**: `gauge` if ≥ `gauge_min_points` (3) voxels lie
    inside the strict polygon, otherwise `warning`; it is demoted to `warning` when it lies beyond
-   `axis_valid` (the corridor is not trusted there) or entirely above `overhead_min_height`
+   `axis_valid` (the corridor is not trusted there) or entirely above `overhead_min_height` (v0.6: 3.0 m, the envelope top; 2.4 m in v0.5)
    (2.4 m: cables, lamps);
 5b. **infrastructure signatures** (v0.5, measured on the six organizer bags at full rate,
    EXPERIMENTS.md §1b; each demotes a gauge cluster to `warning` and records its name in the
@@ -131,11 +171,11 @@ Everything is **range-adaptive**, because a 0.5 m object gives ~500 returns at 2
 
    | signature | rule (defaults) | what it is on the bags | why no listed object matches |
    |---|---|---|---|
-   | `column` | height > 2.2 m and width < 1.0 m | columns of the double-track tunnel, posts, gate legs pulled in by the axis (`roundT_doubleT` frames 114–251: 94 v0.3 alarm frames) | a person is 1.7 m; a train or trolley is wider |
+   | `column` | height > 2.2 m and width < 1.0 m, and (v0.6) either off the track centre (\|lateral\| > `signature_min_lateral` = 0.6 m) or at least `column_min_width` = 0.25 m wide | columns of the double-track tunnel, posts, gate legs pulled in by the axis (`roundT_doubleT` frames 114–251: 94 v0.3 alarm frames) | a person is 1.7 m; a train or trolley is wider; **a broken cable hanging near the axis is thinner than 0.25 m and stays an obstacle** (organizers' Q&A: "cables must be detected, this is very important") |
    | `elevated` | lowest point > 1.2 m above the rail head and width > 2.0 m | roof strips and beams across the tunnel read 0.3–0.65 m too low by the extrapolated bed (`squareT_platform_squareT_switch` 104–130 m: 356 frames) | every listed object stands on the bed; a train ahead reaches the polygon bottom |
-   | `floating` | lowest point > 0.7 m, height < 1.2 m, width < 1.0 m | signs, lamps and brackets on the wall (`doubleT_platform` 46–73 m: 109 frames) | an object on the track touches the ground; a person cut by the 0.55 m polygon step has its lowest point *at* 0.55 m |
-   | `edge` | \|lateral\| > 1.2 m, length > 2.5 × width, height < 1.0 m | duct / bench / platform-edge fragments along the corridor edge (`roundT_pressureGate_roundT` 3–35 m: 90 frames) | the spec's plank is filtered by the hardware rule anyway; boxes and persons are not elongated |
-   | `wall_face` | height > 2.0 m (taller than a person), top above 2.4 m, and the part below 2.4 m has \|dy\| ≥ 0.3 m everywhere and > 1.6 m somewhere | the platform-hall end wall / portal jamb at 72–78 m of the stopped train (206 frames) | a train ahead fills the corridor centre (\|dy\| ≈ 0 below 2.4 m); a person is lower than 2.0 m. The first cut used 1.5 m and demoted a person standing on a 1.1 m platform edge with the body 15–25 cm inside the gauge (top at 2.8 m) — found by the review of 22.09 on hand-built clusters and fixed; the same review moved `floating_max_height` from 1.5 to 1.2 m for the same case |
+   | `floating` | lowest point > 0.7 m, height < 1.2 m, width < 1.0 m, and (v0.6) off the track centre (\|lateral\| > 0.6 m) | signs, lamps and brackets on the wall (`doubleT_platform` 46–73 m: 109 frames) | an object on the track touches the ground; **an object hanging into the envelope near the axis stays an obstacle** (v0.6) |
+   | `edge` | \|lateral\| > `edge_min_lateral` (v0.6: 1.0 m for the 1.05 m envelope; 1.2 m with the 1.40 m polygon), length > 2.5 × width, height < 1.0 m | duct / bench / platform-edge fragments along the corridor edge (`roundT_pressureGate_roundT` 3–35 m: 90 frames) | the spec's plank is filtered by the hardware rule anyway; boxes and persons are not elongated |
+   | `wall_face` | height > 2.0 m (taller than a person), top above `wall_face_min_top` (v0.6: 2.8 m, under the 3.0 m envelope top; 2.4 m in v0.5), and the part below it has \|dy\| ≥ 0.3 m everywhere and > `wall_face_edge` somewhere (v0.6: 1.3 m, the advisory zone ends at 1.40 m; 1.6 m in v0.5) | the platform-hall end wall / portal jamb at 72–78 m of the stopped train (206 frames) | a train ahead fills the corridor centre (\|dy\| ≈ 0 below 2.4 m); a person is lower than 2.0 m. The first cut used 1.5 m and demoted a person standing on a 1.1 m platform edge with the body 15–25 cm inside the gauge (top at 2.8 m) — found by the review of 22.09 on hand-built clusters and fixed; the same review moved `floating_max_height` from 1.5 to 1.2 m for the same case |
 
    The rules never drop a cluster: it stays an advisory warning with its reason, and a
    persistent object that stops matching a signature (a person stepping away from a column)
@@ -171,6 +211,74 @@ person at 190 m — and a ×3 factor was measured to lose the box (EXPERIMENTS.m
 can only be a static object shifted by the wrong amount or a moving one, so it is re-described
 from its current-frame points with single-frame thresholds — a wrong speed then degrades to
 v0.3 behaviour instead of stretching the object past `max_extent` and losing it.
+
+### 3.3b Low objects on the track (`resense/lowobj.py`, section `lowobj`) — v0.6
+
+The organizers' size criterion is **300 × 300 × 100 mm** (Q&A fact 2). Such an object is lower
+than the polygon bottom (0.12 m above the rail head), so the corridor stage cannot see it by
+construction. It is, however, an anomaly of the *track bed*, whose cross-section (rails,
+fastenings, bed, drainage trough) repeats every metre:
+
+1. the **bed template** `h_bed(dy)` — the height of the bed surface above the rail head at
+   lateral offset `dy` — is learned every frame from the dense near range (4–30 m) as the 30th
+   percentile per 2.5 cm lateral bin, dilated by ±5 cm (the rail heads and their flanks belong
+   to the template), smoothed over frames (EMA 0.8), updated only while the rail pair is locked;
+2. per 2 m along-track bin the **local offset** of the bed returns from the template (the
+   height reference drifts by centimetres with range) is the median residual of the points that
+   look like bed (residual −0.15…+0.05 m); bins without bed returns end the stage's range
+   (the bed is seen at grazing incidence: ~50–80 m, `range_max` = 60 m);
+3. a point inside the envelope (\|dy\| ≤ 1.05 m), below the polygon bottom, whose residual
+   exceeds `min_excess` = 5 cm **and which is itself at least `min_point_top` = 3 cm above the
+   rail head** is a **low candidate**;
+4. the low candidates are clustered **on their own** with a tighter radius (`lowobj.eps` = 0.2,
+   range-normalised like the corridor's: 0.25 m at 10 m, 0.48 m at 56 m — the corridor radius,
+   0.84 m at 56 m, merged the object of `doubleT_obstacle` with the bed fixtures around it into a
+   2 × 1.6 m cluster). A low cluster must be ≤ 1.5 m long along the track (rails, guard rails,
+   cables, ducts are longer), ≥ `min_width` = 0.15 m across (rail-head slivers and fastenings
+   are narrower), have 3 voxels and its top must reach the rail-head plane (`min_top` = 0); it is
+   a gauge obstacle with `kind = "low"`;
+5. a low cluster is dropped when corridor candidates higher than `foot_max_top` = 0.35 m stand
+   in its footprint (it is the foot of a sign, a column or a person: the corridor stage decides,
+   including its signature demotions) or when a corridor cluster overlaps it (the lower part of
+   an object the corridor stage already reports: one detection, not two).
+
+**What decided the thresholds (measured, EXPERIMENTS.md §1d).** (a) Reporting every bump above
+the bed alarmed **1 350 times on the 20-minute ride**: the metro bed carries fixtures 5–40 cm
+tall and 0.3–1 m wide every few tens of metres (train-control inductors, drain covers, cable
+crossings), geometrically the same as a 30 × 30 × 10 cm box — and they stay below the rail head
+by design, because the train passes over them. The envelope of the train starts at the rail
+head, so an object lying on the bed between the rails is below it. (b) Requiring only the
+cluster's *top* to reach the rail-head plane still left **~800 false events**: the rail area
+itself (guard rails in curves, joints, fastenings, check rails at switches) produces clusters
+whose top is 1–8 cm above the rail head — the same as the organizers' object lying on the rail
+of `doubleT_obstacle`, whose top is 4 cm (median) above its rail once the 3° roll of that mount
+is corrected, and whose excess over the bed (0.14–0.19 m) sits inside the false events'
+distribution too: in one frame the two are geometrically the same. (c) Requiring every
+candidate point to be ≥ 3 cm above the rail head leaves **2 false events on the 13 worst files
+of the ride** and still finds a 10 cm box lying on a rail head at 10–25 m (synthetic tunnel,
+`tests/test_envelope.py`); the real object of `doubleT_obstacle`, protruding ~5 cm, is then
+found in only 4 of the 126 frames after the person leaves it (126 of 126 with (b)). The default
+is (c): a safety function that stops the train every 1.5 s on a clean track is not usable;
+`min_top: -1` and `min_point_top: -1` restore the bed-level policy for a line with a clean bed.
+
+Puddles in the trough (Q&A fact 17) return nothing or mirror images *below* the bed (negative
+residuals) and are ignored by construction. Cost: 3–5 ms per frame.
+
+### 3.3c The far field of a straight tunnel — v0.6
+
+The corridor is trusted to `min(axis_valid, height_valid)` in v0.5, and on a straight tunnel the
+height reference is the limit: the bed stops returning at ~100 m (grazing incidence), its fit
+ends at 70–90 m, and the side-base verification reaches 100–145 m, while the walls confirm the
+axis to ~200 m (`axis_valid` 197–217 m on the straight sections of the ride). Measured against
+the tunnel vault, the extrapolated rail level runs 0.1 m low at 85 m, 0.25 m at 100 m and
+0.4–0.5 m at 150–200 m (EXPERIMENTS.md §2d). A 0.5 m error does not change whether a person,
+a crate or a train ahead is inside a 3 m tall envelope; it only lifts flat far-bed returns into
+the polygon bottom. v0.6 therefore trusts the axis to `axis_valid` and, **between the height
+reference and the axis range, reports a cluster as an obstacle only if it is at least
+`far_min_height` = 0.6 m tall, at most `far_max_length` = 3 m long along the track and reaches
+below `far_max_bottom` = 1.0 m** — a face seen head-on that stands on the track, not a surface
+at grazing incidence nor a sign hanging above the corridor (`reason = "beyond_height_ref"`
+otherwise). The edge margin grows to 0.3 m at 200 m there, for the lateral uncertainty.
 
 ### 3.4 Ego speed and multi-frame accumulation (`resense/egomotion.py`, `resense/accumulate.py`, section `accumulation`) — v0.4
 
@@ -295,6 +403,33 @@ already a confirmed object. On `doubleT_obstacle` the person enters the strict g
 and is reported from frame 7 (v0.3: frame 9; the axis no longer jitters, so the zone history
 fills faster).
 
+### 4b. Outputs for the train: decision, verified-clear distance, health — v0.6
+
+The organizers asked for "can we go / is there an obstacle / how far" (Q&A fact 9). Besides the
+flag and the distance, every frame carries:
+
+* **`clear_distance`** (status JSON, `/resense/clear_distance`) — metres of track verified
+  clear: the nearest confirmed obstacle, else the **monitored range** =
+  `min(visibility, trusted corridor, gauge range)`, where *visibility* is the X of the 20th
+  farthest return within 3 m of the track axis (the sightline in a curve, the end of a
+  platform hall) — the organizers accept a detection at the visible limit ("no worse than a
+  driver", fact 14), so the output says how far the path was actually checked. A consumer that
+  brakes on `clear_distance` < stopping distance gets fail-safe behaviour for free: a blinded
+  sensor, a lost track model or a stale input shrink it to 0;
+* **`health`** (`resense/health.py`, `/resense/health` as `diagnostic_msgs/DiagnosticArray`):
+  `ok` / `warn` / `error` with messages — valid returns per frame (error below 20 000 = a
+  blinded sensor or a truncated message, warning below half the running median), returns closer
+  than 2.5 m (> 20 %: a dirty or blocked window), 10° azimuth sectors without returns in the
+  central ±30° (view blocked), visibility < 60 m, rail lock in < 30 % of the last 20 frames
+  (track model on its prior: stations, switches, pressure gates — where "the rails are flush
+  with the gate floor", Q&A fact 16), latency p95 over the 100 ms budget, mount calibration
+  fallback or drift; an error sets the monitored range to 0;
+* **`decision`** (node, `/resense/decision`): `STOP` when a confirmed obstacle is inside the
+  envelope; `FAULT` on a health error, on an exception while processing (logged, the node
+  keeps running and resets the detector after 5 in a row) and from the watchdog when no frame
+  arrived for `stale_timeout` = 0.5 s; `CAUTION` for an advisory object or a health warning;
+  else `GO`.
+
 ## 5. Parameters that matter most
 
 All parameters live in one file, `configs/default.yaml` (`resense:` root key), loaded by both
@@ -325,8 +460,34 @@ the CLI and the ROS node. The ones that change behaviour visibly:
 | `accumulation.enabled`, `n_frames`, `min_range` | true, 5, 40 m | how many frames are merged beyond which range; off = v0.3 single-frame behaviour |
 | `accumulation.min_points_scale`, `smear_max_length` | 0.3, 2 m | noise bar of merged clusters; length beyond which a merged cluster is taken as smeared |
 | `accumulation.speed_min_confidence` | 0.5 | how sure the ego-speed estimate must be before frames are merged without a given speed |
+| `gauge.profile` (v0.6) | \|dy\| ≤ 1.05 m, 0.12–3.0 m | the organizers' train envelope (2.1 × 3.0 m); the advisory zone is 0.35 m wider |
+| `gauge.edge_margin_per_100m` (v0.6) | 0.15 m | lateral margin inside the envelope edge for the strict decision, growing with range |
+| `lowobj.min_point_top`, `min_top`, `min_excess`, `eps`, `range_max` (v0.6) | 0.03 m, 0.0 m, 0.05 m, 0.2, 60 m | every low candidate ≥ 3 cm above the rail head, the cluster's top at the rail-head plane (both −1 = any bump above the bed); excess over the bed template; clustering radius; how far the bed is used |
+| `cluster.far_min_height`, `far_max_length`, `far_max_bottom` (v0.6) | 0.6 m, 3 m, 1.0 m | what may alarm between the trusted height reference and the trusted axis range (0 = v0.5 behaviour: nothing) |
+| `cluster.signature_min_lateral`, `column_min_width` (v0.6) | 0.6 m, 0.25 m | where the column / floating signatures apply (hanging cables near the axis are obstacles) |
+| `calibration.enabled`, `frames`, `min_yaw_deg` (v0.6) | true, 5, 3° | mount auto-calibration; `sensor.roll_deg/pitch_deg/yaw_deg` freeze a known mount |
+| `health.*` (v0.6) | see §4b | thresholds of the guards; they never change a detection |
 
-## 6. Limitations (v0.5)
+## 6. Limitations (v0.6)
+
+v0.6 additions first; the v0.5 list follows.
+
+* **Low objects below the rail head are not alarms by default** (§3.3b): a 30 × 30 × 10 cm box
+  lying on the bed between the rails is geometrically the same as the bed fixtures the train
+  passes over every few tens of metres; it is reported only when it reaches the rail-head plane
+  (e.g. lying on a rail) by ≥ 3 cm with several points. On a line with a clean bed,
+  `lowobj.min_top: -1` with `min_point_top: -1` reports it. The organizers' object lying on the
+  rail of `doubleT_obstacle` protrudes ~5 cm and is reported in 4 of 126 frames by default.
+* **A 10 cm object is resolved to ~20–25 m**: its face is one ring high beyond that
+  (0.125° = 5 cm at 25 m) — the physical limit of the sensor's vertical resolution.
+* **Far field**: between the height reference and the axis range only tall, grounded, short
+  clusters alarm (§3.3c); a small box (< 0.6 m) at 120–200 m is advisory until the height
+  reference reaches it.
+* **Mount calibration** needs a rail pair in the first 100 frames (a start inside a pressure gate
+  or a switch cavern delays it) and corrects roll / pitch / yaw only as a whole-run constant;
+  the cant of a curve is part of the rail plane and is not separated from the mount roll.
+
+### Limitations of v0.5 (still valid)
 
 1. **The corridor edge is where the remaining false alarms live.** Cable ducts, benches and
    platform-edge fittings run 1.5–1.6 m from the axis; the strict gauge is 1.40 m wide at that
