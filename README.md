@@ -34,9 +34,14 @@ Measured on **all 13 558 real frames** of the organizers' data at 10 Hz
 ([`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) §0, §1d): false alarms on the five obstacle-free
 bags **83 frames / 25 events** (v0.5 logic on the same frames: 116 / 32) and on the 20-minute
 ride **258 frames / 74 events** (448 / 93); the person crossing the track in
-`doubleT_obstacle` is reported in 58 of the 61 frames in which he is inside the envelope, the
-first alarm 0.3 s after he enters it, distance error < 0.35 m. Long range on the moving ride
-(objects ray-cast into consecutive real frames, §2d): see the range table in EXPERIMENTS.md.
+`doubleT_obstacle` is reported in 58 of the 61 frames in which the person is inside the
+envelope, the first alarm 0.3 s after entering it, distance error < 0.35 m. Long range on the
+moving ride (objects ray-cast into consecutive real frames, no speed input, §2d): a person
+approaching on straight track is first confirmed at **165 m median** (110–168 m, 6 of 6), a 1 m
+crate at 127 m, a trolley at 121 m (up to 198 m), a 3 cm hanging cable at 107 m; in R ≈ 350 m
+curves at the sightline (79 m). 300 m is beyond this sensor: the farthest return in all
+13 558 frames is 208.5 m. Other LiDAR mounts (upside down, `+x` forward, backwards, rolled /
+pitched) are recovered from the rails and the bed to < 0.5° (§6).
 The container chain (`docker build → run → bag play → result`) is verified in CI on a synthetic
 bag on every push. Self-assessment against every criterion: [`docs/SCORECARD.md`](docs/SCORECARD.md).
 
@@ -65,7 +70,7 @@ Decision logic, thresholds and their measured effect: [`docs/ALGORITHM.md`](docs
 | [`ros2_ws/src/resense_ros/`](ros2_ws/src/resense_ros/) | ROS 2 Humble node, launch file, parameters, RViz layout |
 | [`docker/`](docker/), [`docker-compose.yml`](docker-compose.yml), [`scripts/`](scripts/) | reproducible build and demo |
 | [`configs/default.yaml`](configs/default.yaml) | every tunable parameter (also installed as the ROS parameter file) |
-| [`tests/`](tests/) | pytest on a synthetic ray-cast tunnel — runs without the dataset |
+| [`tests/`](tests/) | pytest on a synthetic ray-cast tunnel — runs without the dataset (algorithm, envelope, calibration, guards, and the ROS node against stand-ins: `test_node.py`) |
 | [`web/`](web/) | browser dashboard (live via rosbridge or offline replay of a `resense run` JSONL), Foxglove layout, label tool, headless checks |
 | [`docs/`](docs/) | [ARCHITECTURE](docs/ARCHITECTURE.md) · [ALGORITHM](docs/ALGORITHM.md) · [EXPERIMENTS](docs/EXPERIMENTS.md) · [SCORECARD](docs/SCORECARD.md) · [EVALUATION](docs/EVALUATION.md) · [DATASET](docs/DATASET.md) · [SENSOR](docs/SENSOR.md) · [RESEARCH](docs/RESEARCH.md) · [PLAN](docs/PLAN.md) · [CAPTAIN](docs/CAPTAIN.md) · [SUBMISSION](docs/SUBMISSION.md) · [PRESENTATION](docs/PRESENTATION.md) · [QUESTIONS](docs/QUESTIONS.md) · organizers' README / ТЗ / [**Q&A session**](docs/organizers/QA_session.md) ([transcript](docs/organizers/QA_session_transcript_ru.md)) · [test-stand software](docs/organizers/test_stand_software.md) · sensor manual ([`docs/sensor/`](docs/sensor/)) |
 | [`labels/`](labels/) | real labels: `doubleT_obstacle.json` (the crossing person, the object on the rail, the walking person), `new_data_objects.json` (every object the detector confirmed on the 20-minute ride, with cause class) |

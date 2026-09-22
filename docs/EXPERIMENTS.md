@@ -159,10 +159,21 @@ is confirmed at 80–200 m (median ~125 m); a 0.5 m box only below ~120 m and of
 50–60 m: it is a single ring high beyond ~115 m and lower than `far_min_height` beyond the
 height reference. (4) A 3 cm cable hanging into the envelope is detected at 59–114 m (the
 beam-footprint model of the injector, DATASET.md, makes it 5–11 cm wide at that range; a
-real cable's echo strength is the open question). (5) Over the ~3 000 injected frames the
-confirmed detections away from the object are listed in the run file (false detections on the
-backgrounds of these files in the plain v0.6 run: one event, `new_data_98`, a 2.4 m tall
-structure at 90–180 m).
+real cable's echo strength is the open question). (5) **Confirmed gauge detections away from
+the object: 49 of the 3 060 injected frames (1.6 %), none in the curves.** The same 110-frame
+starts of files 68, 98, 168 and 172 run with a fresh detector and *no* object give **no
+confirmed gauge detection at all**, so every one of the 49 comes with the object: 13 are the
+object's own cluster merged with bed returns in front of it and reported 3–7 m short (outside
+the max(2 m, 3 %) match window: a localisation error, counted against us); 35 are a structure
+30–65 m *beyond* the object (on file 98 the 2 m tall fixtures at the left envelope edge at
+105–165 m that the plain ride run reports as advisory, on file 168 an edge fixture at 94 m);
+1 is a bed fixture at 8.7 m. Mechanism of the 35 (traced on file 98): where the real bed no
+longer returns (beyond ~90 m) the base of the object fills a bed bin, the bed fit extends from
+~80 to ~107 m, the wall band above it shifts and the far curvature moves by ~2.5·10⁻⁵ m⁻¹ —
+0.3 m at 150 m, enough to bring an edge fixture inside the 0.15 m/100 m margin. The object
+itself is confirmed in the same frames, so the train's decision (STOP at the object) does not
+change; a bed bin that is narrower than the bed (an object, not the track) should not extend
+the fit — noted in ALGORITHM.md §6.
 
 ## 1. Real bags at full rate (every frame, 10 Hz)
 
@@ -290,8 +301,8 @@ lever group switched off per row by `--config`): the two levers that matter most
 strips and posts of the stopped train come back, 374 frames in the switch bag alone) and the
 **height-reference range** (391 frames: the unverified extrapolation lifts far rails and pulls
 the roof into the polygon exactly as §1b finding 2 describes). The **axis levers** cut 171 → 89 (first cut)
-and, on the person, bring the first alarm from frame 11 to 7 (the rail-slab yaw keeps him inside
-the gauge as soon as he is). The **history rules** trade 54 alarm frames for two frames of person
+and, on the person, bring the first alarm from frame 11 to 7 (the rail-slab yaw keeps the person inside
+the gauge as soon as they are). The **history rules** trade 54 alarm frames for two frames of person
 recall and a first alarm two frames earlier (68/71, frame 5 without them). A **0.5 s
 confirmation** (`tracking.confirm_time_s: 0.5`) removes another 20 frames / 8 events at no cost
 on the person (he is confirmed at frame 7 either way, 0.5 s after entering the gauge) and is the

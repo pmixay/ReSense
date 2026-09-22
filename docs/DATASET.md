@@ -184,7 +184,7 @@ the disk.
 * Contact (third) rail with its cover: ~1.6–2.0 m left of the track axis, top ≈ 0.35–0.5 m above rail head.
 * Column row in the double-track tunnel: inner faces ≈ 1.7 m from the track axis, floor to ceiling.
 * Platform edge: ≈ 1.6 m from the track axis, 1.1 m above rail head (long, straight, thin → the
-  gauge polygon is 1.4 m wide there).
+  v0.5 gauge polygon was 1.4 m wide there; the v0.6 envelope is 1.05 m).
 * Pressure gate: frame narrows the tunnel to roughly the structure gauge.
 * Curves: at least three bags contain curves with R ≈ 700–3000 m; a straight corridor cuts into
   the wall / column row beyond 50–100 m, hence the wall-based yaw/curvature estimator.

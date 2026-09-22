@@ -183,10 +183,37 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
    (asked whether the driver publishes it). The stand runs driver 580 / CUDA 13 with a 12.9
    toolkit; ReSense is CPU-only, so nothing changes for the image.
 
+### v0.6 (22.09 evening) — the organizers' Q&A answers implemented and measured
+
+9. **Q&A session transcribed** (Whisper, Russian) and summarised with the facts that change the
+   code: [`organizers/QA_session.md`](organizers/QA_session.md) (transcript next to it). The
+   envelope is 2.1 × 3.0 m, the size criterion 30 × 30 × 10 cm, hanging cables are obstacles,
+   the LiDAR mount is not fixed between trains, the hidden check uses rides through other
+   tunnels plus synthetic obstacles, `doubleT_obstacle` also holds an object on the rail, and the
+   answer the train needs is "can we go / what / how far".
+10. **What v0.6 changed** (ALGORITHM.md §2b, §3.3b, §3.3c, §4b): the organizers' envelope with a
+    0.35 m advisory zone; a low-object stage at the rail heads; hanging cables no longer demoted
+    as columns near the axis; a far-field rule for tall grounded objects to the trusted axis
+    range; **mount auto-calibration** (24 orientations from the rail pair, roll from the rail
+    cant, pitch from the bed slope, yaw; launch arguments for a known mount); **production
+    guards** (health monitor, `GO / CAUTION / STOP / FAULT` on `/resense/decision`, verified-clear
+    distance, `DiagnosticArray`, watchdog, exception guard with detector reset).
+11. **Measured on every real frame** (13 558: six bags + the 20-minute ride; EXPERIMENTS §0,
+    §1d): five empty bags 83 alarm frames / 25 events (v0.5 logic 116 / 32), ride 258 / 74 events
+    (3.7 per km; v0.5 448 / 93), person 58 of 61 envelope frames from frame 11. Long range on the
+    moving ride (set F, §2d): person first confirmed at 165 m median on straight track,
+    crate 127 m, trolley 121 m, cable 107 m; 79 m in R ≈ 350 m curves (sightline). The farthest
+    return in all data is 208.5 m, so 300 m is out of the sensor's reach.
+12. **Tests**: 130 (the node's decision / fault / watchdog / mount-parameter logic now runs
+    against ROS stand-ins in `tests/test_node.py`, so a node bug no longer waits for the Docker
+    job). Self-assessment per criterion: [`SCORECARD.md`](SCORECARD.md).
+
 ### Left for the team (captain tracks, does not do)
 
 | owner | item | why it matters |
 |---|---|---|
+| P1 | `scripts/dry_run.sh` on a machine with Docker (v0.6 reports the person at 55–57 m from frame 11, `--distance 50:62` holds); the i7-9700E timing; `/resense/decision` and `/resense/health` in the RViz / Foxglove layouts | spec §4, §8.3 |
+| P3 | v0.6 follow-ups: a lining-anchored far height reference (vault drift measurable to ~200 m, EXPERIMENTS §2d); a bed bin must span the bed to extend the fit (an object far ahead lengthens it, §2d); cant-aware roll; the platform-end structure at 82–84 m | `EXPERIMENTS.md` §2d, ALGORITHM §6 |
 | P3 | the zone-history fast path (alarm when the last three hits are inside, measured on the five bags), the edge-margin variants, re-classifying the 96 residual alarm frames by cause, the platform-end structure at 81–83 m (20 of 32 events), accumulation on a moving bag with an obstacle (none exists yet), the injector's height reference beyond 80 m (with P4) | `EXPERIMENTS.md` §1b ablations and §5 |
 | P4 | extended-dataset intake and labelling with the `labels/` format; the injector placing far objects under the real bed (use the verified floor); calibration of the catalogue reflectivities against real obstacles | `DATASET.md` "Real labels", `EXPERIMENTS.md` §2c |
 | P2 | the RViz screen recording of the Docker chain on a machine with Docker (the offline and dashboard videos exist); slides 7–11 in the organizers' pptx template from `PRESENTATION.md`; the dashboard card for `ego_speed` / `n_accumulated` / alarm events | spec §4 demo and §8.8 pitch |

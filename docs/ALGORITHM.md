@@ -438,7 +438,7 @@ the CLI and the ROS node. The ones that change behaviour visibly:
 | parameter | default | effect |
 |---|---|---|
 | `sensor.forward/left/up` | `-y/+x/+z` | sensor → vehicle axes; wrong values break everything |
-| `gauge.profile`, `gauge.warning_margin` | ±1.40 m, 0.12/0.55–3.5 m; 0.35 m | what counts as "in the way"; widen for safety, narrow to cut platform-edge false alarms |
+| `gauge.profile`, `gauge.warning_margin` | v0.6: ±1.05 m, 0.12–3.0 m (the organizers' envelope); 0.35 m (v0.5: ±1.40 m, 0.12/0.55–3.5 m) | what counts as "in the way"; widen for safety, narrow to cut platform-edge false alarms |
 | `gauge.range_max` | 250 m | how far the corridor is evaluated |
 | `track.walls_*`, `track.axis_valid_margin` | band 1.6–2.8 m, +15 m | how far the curved corridor is trusted; beyond it only warnings |
 | `track.rails_yaw_enabled`, `rails_yaw_slabs` | true, 3 | yaw of the axis from the rail pair (off = free quadratic through the walls, the v0.3 way: 0.8–1.0° yaw error on curve frames) |
@@ -483,6 +483,11 @@ v0.6 additions first; the v0.5 list follows.
 * **Far field**: between the height reference and the axis range only tall, grounded, short
   clusters alarm (§3.3c); a small box (< 0.6 m) at 120–200 m is advisory until the height
   reference reaches it.
+* **An obstacle far ahead can extend the bed fit.** Beyond ~90 m the real bed stops
+  returning; the base of an object standing there fills a bed bin and lengthens the fit, and
+  the far curvature follows. On the moving ride this made edge fixtures 30–65 m *beyond* an
+  injected object alarm in 35 of 3 060 frames (EXPERIMENTS.md §2d) — while the object itself
+  was confirmed, so the decision was unchanged. A bed bin should span the bed's width to count.
 * **Mount calibration** needs a rail pair in the first 100 frames (a start inside a pressure gate
   or a switch cavern delays it) and corrects roll / pitch / yaw only as a whole-run constant;
   the cant of a curve is part of the rail plane and is not separated from the mount roll.
@@ -490,13 +495,16 @@ v0.6 additions first; the v0.5 list follows.
 ### Limitations of v0.5 (still valid)
 
 1. **The corridor edge is where the remaining false alarms live.** Cable ducts, benches and
-   platform-edge fittings run 1.5–1.6 m from the axis; the strict gauge is 1.40 m wide at that
-   height, so a 0.1–0.2 m axis error at 40–80 m puts a sliver of them inside. With the rails
+   platform-edge fittings run 1.5–1.6 m from the axis; the v0.5 strict gauge was 1.40 m wide at
+   that height (v0.6: the envelope ends at 1.05 m and the advisory zone at 1.40 m), so a
+   0.1–0.2 m axis error at 40–80 m puts a sliver of them inside. In v0.6 the edge structures
+   that still alarm sit at 0.9–1.2 m (brackets, platform-end fittings; 21 of the ride's 74
+   events, EXPERIMENTS.md §1d), and the edge margin grows 0.15 m per 100 m. With the rails
    pinning the yaw the near axis is good to a few centimetres, but at 60–80 m the curvature
    from the walls (R ≈ 1000 m in the organizer bags) still leaves ~0.1–0.3 m of uncertainty.
    The edge margin of §3.2 trades those alarms against the last borderline frames of an object
-   leaving the gauge; the trade-off is measured in EXPERIMENTS.md §1b and the default keeps
-   the polygon exact (margin 0).
+   leaving the gauge; the trade-off is measured in EXPERIMENTS.md §1b (v0.5 kept the polygon
+   exact, margin 0; v0.6 ships 0.15 m per 100 m, §1d row v0.6d).
 2. **Curvature is only known where a boundary parallel to the track is visible.** Stations,
    switch caverns and tunnel-type transitions (walls diverge) leave the curvature to the
    previous frames (it decays towards straight) and the corridor is trusted only to
