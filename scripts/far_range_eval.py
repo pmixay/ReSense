@@ -17,6 +17,9 @@ same frame (the extrapolated rail level of the model runs 0.2-0.5 m low at 100-2
 straight sections, EXPERIMENTS.md §2d) - so a far object stands where the real bed is, not where
 the detector's model thinks it is.
 
+With ``--given-speed`` the train speed is handed to the detector, which then merges frames
+beyond ``accumulation.min_range`` (the multi-frame path; off without a speed).
+
 For each sequence a fresh detector runs over the frames; a frame counts as a hit when a
 confirmed gauge detection lies within ``max(2 m, 3 %)`` of the object's distance and 1.2 m
 laterally. Reported: first confirmed detection distance per object, recall per range bin over
@@ -68,7 +71,7 @@ def vault_drift(xyz, track, x0=40.0, x1=230.0, step=10.0):
 
 
 def run_sequence(job):
-    (files, stamps, speeds, kind, d0, lateral, refl, seed, cfg_dict, far_min_height) = job
+    (files, stamps, speeds, kind, d0, lateral, refl, seed, cfg_dict, far_min_height, given_speed) = job
     sys.path.insert(0, os.getcwd())
     from resense.config import DetectorConfig
     from resense.detector import Detector
@@ -107,7 +110,7 @@ def run_sequence(job):
             spec = replace(spec, base_z=zb)
         inj = inject_obstacles(fr, tm, [spec], rng=rng, dropout_start=60.0, dropout_full=200.0)
         n_pts = int(inj.n_added[0])
-        res = det.process(inj.frame)
+        res = det.process(inj.frame, ego_speed=spd if given_speed else None)
         tol = max(2.0, 0.03 * d)
         hit = False
         fps = []
@@ -137,6 +140,8 @@ def main():
     ap.add_argument("--speeds", default="docs/extended_dataset_intake.json")
     ap.add_argument("--config", default="configs/default.yaml")
     ap.add_argument("--far-min-height", type=float, default=None, help="override cluster.far_min_height")
+    ap.add_argument("--given-speed", action="store_true",
+                    help="hand the ride's train speed to the detector (enables multi-frame accumulation)")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--jobs", type=int, default=4)
     ap.add_argument("--out", required=True)
@@ -162,7 +167,7 @@ def main():
         for kind in a.kinds.split(","):
             refl = float(rng.uniform(*OBJECT_CATALOGUE[kind].reflectivity))
             jobs.append((files, stamps, speeds, kind, a.start, float(rng.uniform(lo, hi)), refl,
-                         int(rng.integers(1 << 30)), cfg_dict, a.far_min_height))
+                         int(rng.integers(1 << 30)), cfg_dict, a.far_min_height, a.given_speed))
     t0 = time.time()
     with ProcessPoolExecutor(max_workers=a.jobs) as ex:
         out = list(ex.map(run_sequence, jobs))
