@@ -58,7 +58,7 @@ def load_cfg(path, sets):
 
 def run_piece(job):
     """Process one sequence of cached files with a fresh detector; returns per-piece stats."""
-    name, files, cfg_dict, out_path, stamps = job
+    name, files, cfg_dict, out_path, stamps, speeds = job
     sys.path.insert(0, os.getcwd())
     from resense.config import DetectorConfig
     from resense.detector import Detector
@@ -71,7 +71,7 @@ def run_piece(job):
             stem = os.path.splitext(os.path.basename(f))[0]
             idx = int(stem.rsplit("_", 1)[1])
             fr = frame_from_compact(np.load(f), cfg.sensor, stamp=stamps.get(stem, i * 0.1), frame_id=stem)
-            res = det.process(fr)
+            res = det.process(fr, ego_speed=speeds[i]) if speeds is not None else det.process(fr)
             d = res.to_dict()
             d["frame"] = idx if name in SIX else i
             d["frame_id"] = stem
@@ -129,6 +129,9 @@ def main():
     ap.add_argument("--bags", default=",".join(SIX + ["new_data"]))
     ap.add_argument("--jobs", type=int, default=os.cpu_count() or 4)
     ap.add_argument("--chunks", type=int, default=8, help="parallel pieces of new_data")
+    ap.add_argument("--given-speed", default="", metavar="INTAKE_JSON",
+                    help="hand the train speed of new_data to the detector (per split file, 'speed_tracks' of "
+                         "docs/extended_dataset_intake.json): the multi-frame accumulation path")
     a = ap.parse_args()
     from resense.io import _natural_key, load_cache_stamps
     os.makedirs(a.out, exist_ok=True)
@@ -136,6 +139,9 @@ def main():
     load_cfg(a.config, a.set)                      # fail fast on an unknown key
     with open(os.path.join(a.out, "config.yaml"), "w", encoding="utf-8") as fh:
         yaml.safe_dump({"resense": cfg_dict}, fh, sort_keys=False)
+    spd_file = {}
+    if a.given_speed:
+        spd_file = {f["n"]: (f.get("speed_tracks") or 0.0) for f in json.load(open(a.given_speed))["files"]}
     jobs = []
     pieces = {}
     for bag in [b for b in a.bags.split(",") if b]:
@@ -148,7 +154,10 @@ def main():
         n = a.chunks if bag == "new_data" else 1
         for k, part in enumerate(np.array_split(np.array(files), n)):
             out = os.path.join(a.out, f"{bag}.jsonl" if n == 1 else f"{bag}_{k}.jsonl")
-            jobs.append((bag, list(part), cfg_dict, out, stamps))
+            speeds = None
+            if spd_file and bag == "new_data":
+                speeds = [float(spd_file.get(int(os.path.basename(f).split("_")[2]), 0.0)) for f in part]
+            jobs.append((bag, list(part), cfg_dict, out, stamps, speeds))
             pieces.setdefault(bag, []).append(out)
     t0 = time.time()
     lat = {}
@@ -157,7 +166,7 @@ def main():
     with ProcessPoolExecutor(max_workers=a.jobs) as ex:
         for name, path, l in ex.map(run_piece, jobs):
             lat.setdefault(name, []).extend(l)
-    summary = {"config": a.config, "set": a.set, "wall_s": round(time.time() - t0, 1), "bags": {}}
+    summary = {"config": a.config, "set": a.set, "given_speed": bool(spd_file), "wall_s": round(time.time() - t0, 1), "bags": {}}
     tot_f = tot_e = tot_n = 0
     for bag, paths in pieces.items():
         s = summarize(bag, paths, LABELS.get(bag))

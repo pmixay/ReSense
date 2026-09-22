@@ -175,6 +175,32 @@ itself is confirmed in the same frames, so the train's decision (STOP at the obj
 change; a bed bin that is narrower than the bed (an object, not the track) should not extend
 the fit — noted in ALGORITHM.md §6.
 
+**What the far-field rule and a train speed add** (paired runs of set F: the same 30 sequences,
+the same random draws; `far_range_eval.py --far-min-height 0` = the v0.5 behaviour,
+`--given-speed` = the ride's per-file train speed handed to the detector, which then merges 5
+frames beyond 40 m — what the node does when `speed_topic` / `odom_topic` / `ego_speed_mps`
+is set):
+
+| object (6 sequences each) | far rule off (v0.5) | **shipped, no speed** | shipped + speed given |
+|---|---|---|---|
+| person: first confirmed, median (range) | 109 m (83–111) | **165 m** (110–168) | **177 m** (150–200) |
+| crate 1 m | 108 m (79–114) | 127 m (79–168) | 177 m (110–196) |
+| trolley | 108 m (85–110) | 121 m (85–198) | 192 m (144–205) |
+| 3 cm hanging cable | 107 m (59–114) | 107 m (59–114) | 107 m (65–110) |
+| box 0.5 m | 76 m, 4 / 6 | 76 m, 4 / 6 | 112 m, 5 / 6 |
+| person, frame recall 50–100 / 100–150 / 150–200 m | 94 / 16 / 0 % | 94 / 72 / 12 % | 86 / 62 / 53 % |
+| trolley, frame recall 50–100 / 100–150 / 150–200 m | 88 / 15 / 0 % | 88 / 29 / 1 % | 67 / 62 / 48 % |
+| confirmed detections away from the object (3 060 frames) | 13 | 49 | 47 |
+
+Reading. The far-field rule is what takes a person from the height-reference limit (~110 m) to
+~165 m without any speed. A train speed adds the rest of the sensor's reach — first
+confirmation at 150–205 m for a person, a crate and a trolley, half of the 150–200 m frames —
+and lets a 0.5 m box be seen from ~110 m; it costs mid-range frames (the merged cluster of an
+object is longer than the object when the speed is off by a fraction of a m/s — the ride's
+speed is a per-file average here, not odometry — and some frames leave the 3 % match window)
+and makes the cable's cluster noisier (10 off-object frames). Nothing is detected beyond
+~205 m in any variant: the sensor returns nothing there.
+
 ## 1. Real bags at full rate (every frame, 10 Hz)
 
 The five bags other than `doubleT_obstacle` contain no obstacle inside the gauge: every alarm
@@ -641,6 +667,42 @@ ride, 30 sequences × 110 frames, straight track, no speed unless said).
 | 6 | rail-level low-object stage (v0.6f) | a low cluster whose top reaches the rail head | object on the rail 170 / 185 frames; ride 734 events (guard rails, joints, fastenings) (§1d) | option for a line known to be clean |
 | 7 | **per-point rail-head rule + 0.5 s** (v0.6, shipped) | every low candidate ≥ 3 cm above the rail head, 5 hits | ride 18 low events; 10 cm box on a rail head 10–25 m (synthetic tunnel); real object 27 / 185 (§1d) | shipped |
 | 8 | **far-field rule** (v0.6, shipped) | beyond the height reference, tall (≥ 0.6 m), short (≤ 3 m), grounded clusters alarm to the trusted axis range | set F, rule off → on: person first confirmed 109 → **165 m** median, crate 108 → 127 m, trolley 108 → 121 m (max 198 m); off-object detections 13 → 49 of 3 060 frames, all while an object is present (§2d) | shipped |
-| 9 | learned second opinion (v0.6 experiment) | gradient-boosted trees on the descriptors of the geometric candidates | see §8 (in progress, 22.09) | — |
+| 9 | learned second opinion (v0.6 experiment) | gradient-boosted trees on the descriptors of the geometric candidates (positives: set-F objects; negatives: every candidate on empty data) | held-out ride part + unseen sequences: AUC 0.976–0.990; 83–95 % of false candidates removed at 97 % object recall; intensity is an injector artefact (§8) | not shipped: no real positives; ready as a re-weighting |
 | 10 | considered, not built | a trained 3D detector (PointPillars / CenterPoint: no real positives, ~0–3 % AP beyond 100 m in the rail literature), change detection against a map (needs localisation and repeated rides; "a map of the given tunnels will not fully work" — Q&A), a range-image anomaly model (fires on cables, signs, wet patches; needs the same gauge and persistence) | RESEARCH.md §0 | — |
+
+## 8. A learned second opinion on the geometric candidates (experiment, not shipped)
+
+Question: can a small classifier on cluster descriptors remove the geometric pipeline's false
+candidates without losing objects? `scripts/ml_dataset.py` records every single-frame
+candidate the pipeline places in the envelope (or demotes by a signature): **negatives** = all
+of them on the five empty bags and on every second split file of the ride (5 042 rows — every
+one is infrastructure or noise), **positives** = the candidates that match an object ray-cast
+into consecutive ride frames (set-F injection, 12 files × 5 kinds, 2 049 rows). 14 descriptors
+(distance, lateral, box size, voxel / raw point counts, visibility ratio, height span,
+intensity, low-object flag, demoted flag, share of points inside the envelope).
+`scripts/ml_second_opinion.py` trains gradient-boosted trees (scikit-learn
+`HistGradientBoostingClassifier`, 300 iterations, class-balanced) on the five bags + the first
+60 % of the ride and the first half of the object sequences, and tests on **the last 40 % of
+the ride and the other half of the sequences** (never seen).
+
+| descriptors | AUC (test) | false candidates removed at 99 / 97 / 95 % object recall | objects kept beyond 150 m (at 97 %) |
+|---|---|---|---|
+| all 14 | 0.990 | 74 / **95** / 98 % | 82 % |
+| without intensity | 0.988 | 81 / **91** / 95 % | 84 % |
+| without intensity and the point counts (n_vox, n_raw, visibility) | 0.976 | 67 / **83** / 89 % | 81 % |
+
+**Leakage check.** Permutation importance puts *intensity* first by a factor of eight (AUC drop
+0.136) — but the intensity of an injected object is drawn from the injector's reflectivity
+catalogue, and its point budget from the injector's dropout model: the classifier can learn
+"injected vs real" from them. Without them the trees still separate the two on shape and
+place alone (width, length, the demoted flag, the envelope share, the lateral offset: AUC
+0.976, 83 % of the false candidates removed at 97 % recall), which is the honest number.
+
+**Why it is not shipped.** Every positive is synthetic (our five object models); a real object
+of another shape (a bag, a fallen panel, a tool box) is outside what the trees have seen, and
+the negatives come from the same seven recordings the geometry was tuned on. As a veto it
+would trade an explainable rule set for a learned boundary with no real positives behind it
+— the opposite of what a safety function needs. The use we see: a confidence re-weighting of
+tracks (never a veto inside 60 m) once the organizers' real obstacles exist to train and test
+on; the dataset and training scripts are ready for that.
 
