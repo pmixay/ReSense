@@ -625,3 +625,22 @@ spins about its own z, so its rings say nothing about how it is mounted.) (5) Th
 costs 1–5 s once, over the first frames (the rows with a new orientation took 7–11 s for the
 25 frames against 5–6 s).
 
+## 7. Recognition methods tried, side by side
+
+The task statement allows any approach; these are the ones we built and measured (numbers from
+the sections named; "real" = the organizers' frames, "set F" = objects ray-cast into the moving
+ride, 30 sequences × 110 frames, straight track, no speed unless said).
+
+| # | method | what it is | measured | verdict |
+|---|---|---|---|---|
+| 1 | rectangle corridor + DBSCAN (v0.0) | fixed box ahead of the sensor, raw clustering | 149 alarm frames of 231 sampled empty frames; DBSCAN up to 1.4 s on dense near points (§1) | replaced by 2 |
+| 2 | **normal-tunnel geometry** (v0.3 → v0.5) | per-frame bed and rail fit, axis from the rails, curvature from the walls, gauge polygon, range-scaled voxel DBSCAN, infrastructure signatures, persistence in time | empty bags 1 001 → 96 alarm frames at 10 Hz; the real person 66/71 (§1, §1b) | **the core** |
+| 3 | multi-frame accumulation with a LiDAR-only speed estimate (v0.4) | merge 5 frames beyond 40 m, motion-compensated by a speed estimated from the tunnel texture | synthetic tunnel: person 189 vs 178 m; real empty bags 119 / 30 vs 88 / 27 (more false alarms), no change on the real person (§1b, §2b) | estimator off; accumulation kept for a given speed |
+| 4 | accumulation with the ride's train speed given, on a moving real background (v0.6) | set F with `--given-speed` | run in progress (22.09) | — |
+| 5 | bed-anomaly low-object stage (v0.6a) | every bump > 7 cm above a learned bed cross-section inside the envelope | ride 1 482 events / 20 min (inductors, drain covers, cable crossings) (§1d) | rejected |
+| 6 | rail-level low-object stage (v0.6f) | a low cluster whose top reaches the rail head | object on the rail 170 / 185 frames; ride 734 events (guard rails, joints, fastenings) (§1d) | option for a line known to be clean |
+| 7 | **per-point rail-head rule + 0.5 s** (v0.6, shipped) | every low candidate ≥ 3 cm above the rail head, 5 hits | ride 18 low events; 10 cm box on a rail head 10–25 m (synthetic tunnel); real object 27 / 185 (§1d) | shipped |
+| 8 | **far-field rule** (v0.6, shipped) | beyond the height reference, tall (≥ 0.6 m), short (≤ 3 m), grounded clusters alarm to the trusted axis range | set F, rule off → on: person first confirmed 109 → **165 m** median, crate 108 → 127 m, trolley 108 → 121 m (max 198 m); off-object detections 13 → 49 of 3 060 frames, all while an object is present (§2d) | shipped |
+| 9 | learned second opinion (v0.6 experiment) | gradient-boosted trees on the descriptors of the geometric candidates | see §8 (in progress, 22.09) | — |
+| 10 | considered, not built | a trained 3D detector (PointPillars / CenterPoint: no real positives, ~0–3 % AP beyond 100 m in the rail literature), change detection against a map (needs localisation and repeated rides; "a map of the given tunnels will not fully work" — Q&A), a range-image anomaly model (fires on cables, signs, wet patches; needs the same gauge and persistence) | RESEARCH.md §0 | — |
+
