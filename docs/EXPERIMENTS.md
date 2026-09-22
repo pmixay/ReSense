@@ -22,12 +22,14 @@ there is false. `doubleT_obstacle` has one true obstacle, the person crossing th
 | bag | frames | v0.3 alarm frames / events / advisory | **v0.5 alarm frames / events / advisory** | v0.5 first alarm (frame) | v0.5 alarm distances | what alarms in v0.5 |
 |---|---|---|---|---|---|---|
 | `doubleT_obstacle` (stationary, person crossing) | 201 | 76 / 3 / 199 | **69 / 1 / 199** | 7 | 55.5–56.6 m | the person only (v0.3: also the column row at 17–19 m and 34 m, 2 false events) |
-| `doubleT_platform` | 345 | 178 / 29 / 110 | **12 / 3 / 271** | 16 | 3.0–104.5 m | a 2.1 m tall, 0.5 m wide post at 85–87 m left of the axis (10 frames; 0.1 m under the column rule), one frame of a 5 m long 0.2 m high strip at the nose at frame 177 and one 4-voxel cluster at 104.5 m |
+| `doubleT_platform` | 345 | 178 / 29 / 110 | **15 / 4 / 271** | 2 | 3.0–114.5 m | a 2.1 m tall, 0.5 m wide post at 85–87 m left of the axis (10 frames; 0.1 m under the column rule), one frame of a 5 m long 0.2 m high strip at the nose at frame 177 and one 4-voxel cluster at 104.5 m |
 | `roundT_doubleT` | 252 | 126 / 20 / 140 | **0 / 0 / 226** | — | — | nothing (v0.3: columns and wall segments of the diverging double-track section, pulled in by the half curvature and the yaw jitter) |
 | `roundT_pressureGate_roundT` | 268 | 106 / 19 / 135 | **16 / 5 / 262** | 48 | 42.0–77.9 m | five duct / cabinet fragments at \|dy\| = 1.5–1.6 m, 42–78 m, 1–8 frames each (inner edge 0.05–0.15 m inside the 1.40 m gauge) |
 | `roundT_squareT_pressureGate_squareT` | 545 | 87 / 19 / 396 | **5 / 3 / 499** | 99 | 101.3–127.2 m | three far clusters at 101–127 m (6–16 voxels), one of them lasting 3 frames |
-| `squareT_platform_squareT_switch` | 877 | 504 / 105 / 680 | **56 / 18 / 781** | 67 | 81.0–119.2 m | the platform-end structure at 82.9 m while the train stands at the platform (2.2 × 0.4 × 1.2 m, lowest point at the bed, 5–8 voxels, 15 events of 1–7 frames, ~50 frames): a low ramp / rail at dy +1.2…+1.8 m by the single-frame axis that the run's left-bending curvature (R ≈ 3 km from the hall walls) puts at +0.5…+1.0 m; plus four single-frame far clusters at 87–119 m |
-| **five obstacle-free bags** | 2 287 | **1 001 / 192** / 1 461 | **89 / 29** / 2 039 | | | |
+| `squareT_platform_squareT_switch` | 877 | 504 / 105 / 680 | **60 / 20 / 779** | 67 | 71.9–119.2 m | the platform-end structure at 82.9 m while the train stands at the platform (2.2 × 0.4 × 1.2 m, lowest point at the bed, 5–8 voxels, 15 events of 1–7 frames, ~50 frames): a low ramp / rail at dy +1.2…+1.8 m by the single-frame axis that the run's left-bending curvature (R ≈ 3 km from the hall walls) puts at +0.5…+1.0 m; plus four single-frame far clusters at 87–119 m |
+| **five obstacle-free bags** | 2 287 | **1 001 / 192** / 1 461 | **96 / 32** / 2 037 | | | |
+
+The per-bag "what alarms" column and the cause table below were written for the first cut of v0.5 (89 / 29); the final defaults carry the two safety tweaks of the review of 22.09 (`wall_face_min_height` 2.0 m and `floating_max_height` 1.2 m so that a person on a platform edge stays an obstacle; `walls_max_yaw` 0.09), which add 3 alarm frames / 1 event on `doubleT_platform` (a near strip at the nose in frame 2) and 4 / 2 on the switch bag, and change nothing on the person.
 
 Renders (`img/`): `roundT_doubleT_0145_v03.png` vs `roundT_doubleT_0145_v05.png` (the v0.3 axis pulls the
 column row of the diverging double-track tunnel into the corridor, v0.5 follows the rails),
@@ -51,7 +53,7 @@ record; from v0.4 on the numbers are full rate):
 | v0.2 | wall-based yaw/curvature, robust two-stage floor fit | 76 / — | — | 38–75 |
 | v0.3 (f2c57e5) | nearer-boundary rule, gauge 1.4 m, hardware/linear/wall filters, corridor validity range, overhead demotion | 67 / — subsampled; **1 001 / 192 at full rate** (2 287 frames) | 63/71, first alarm frame 9 | 48–83 mean, 84–132 p95 |
 | v0.4 (f4e311f, 21.09) | ego-speed estimate + 5-frame accumulation beyond 40 m, verified bed extrapolation, retro rule, smear guard | 1 016 / 187 (+1.5 % frames, +9 % beyond 60 m) | 64/71 (one frame gained by lateral smear), first alarm 9 | 73–133 mean, 112–193 p95 |
-| **v0.5 (real data, 21.09)** | axis: yaw from the rail slabs, curvature 1/R from the walls with the tangent fixed (v0.3 applied half the curvature), rate limits, side-agreement caps; height reference trusted 20 m beyond the bed fit (60) or as verified; five infrastructure signatures (column, elevated, floating, edge, wall face); zone / hit history over 10 frames, persistence in seconds; no merging below 1 m/s, lateral smear guard; vectorised binning | **89 / 29** | **66/71 (93 %)**, first alarm frame 7 | TBD_MS |
+| **v0.5 (real data, 21.09)** | axis: yaw from the rail slabs, curvature 1/R from the walls with the tangent fixed (v0.3 applied half the curvature), rate limits, side-agreement caps; height reference trusted 20 m beyond the bed fit (60) or as verified; five infrastructure signatures (column, elevated, floating, edge, wall face); zone / hit history over 10 frames, persistence in seconds; no merging below 1 m/s, lateral smear guard; vectorised binning | **89 / 29** | **66/71 (93 %)**, first alarm frame 7 | 43–84 mean, 51–171 p95 (quiet 4-core sandbox, §3); v0.3 code back to back: 56 / 71 and 71 / 76 on the two reference bags |
 
 ## 1b. False alarms by cause (why v0.3 alarmed on 44 % of the frames) and what removed them
 
@@ -119,7 +121,8 @@ switched off at a time by `--config`; five-bag alarm frames / events, and the pe
 |---|---|---|---|
 | v0.3 (f2c57e5 results) | 1 001 / 192 | 63/71, 9, 13 / 2 | baseline |
 | v0.5 code with the v0.3 switches (`rails_yaw_enabled: false`, rate limits and caps 0, `walls_max_yaw: 0.035`, `floor_valid_margin: 60`, verification / retro / accumulation off, signatures 0, zone window 5, `confirm_time_s: 0`) | 785 / 155 (reviewer's run of 22.09: platform 212 / 20, `roundT_doubleT` 87 / 16, gate 94 / 15, `roundT_squareT` 0 / 0, switch 392 / 104) | 65/71, 8, 1 / 0 | only the curvature fix and the rail profile in curve coordinates remain: this is what the axis bug alone cost |
-| **v0.5 defaults** | **89 / 29** | **66/71, 7, 3 / 0** | |
+| **v0.5 first cut (the code the ablations were run on)** | **89 / 29** | **66/71, 7, 3 / 0** | |
+| **v0.5 final defaults** (review tweaks: `wall_face_min_height` 2.0, `floating_max_height` 1.2, `walls_max_yaw` 0.09) | **96 / 32** | **66/71, 7, 3 / 0** | +7 frames / +3 events for keeping a person on a platform edge an obstacle |
 | − axis levers (rail yaw, rate limits, side caps off, yaw clip 2°) | 171 / 56 (gate 57 / 8, switch 89 / 41) | 62/71, 11, 2 / 0 | |
 | − infrastructure signatures (column, elevated, floating, edge, wall face = 0) | 513 / 62 (switch 374 / 37, `roundT_doubleT` 36 / 6) | 66/71, 7, 3 / 0 | |
 | − height-reference margin (`floor_valid_margin: 60`) | 391 / 46 (switch 353 / 33) | 66/71, 7, 3 / 0 | |
@@ -135,7 +138,7 @@ lever group switched off per row by `--config`): the two levers that matter most
 **infrastructure signatures** (without them 513 alarm frames — the platform-hall end wall, roof
 strips and posts of the stopped train come back, 374 frames in the switch bag alone) and the
 **height-reference range** (391 frames: the unverified extrapolation lifts far rails and pulls
-the roof into the polygon exactly as §1b finding 2 describes). The **axis levers** cut 171 → 89
+the roof into the polygon exactly as §1b finding 2 describes). The **axis levers** cut 171 → 89 (first cut)
 and, on the person, bring the first alarm from frame 11 to 7 (the rail-slab yaw keeps him inside
 the gauge as soon as he is). The **history rules** trade 54 alarm frames for two frames of person
 recall and a first alarm two frames earlier (68/71, frame 5 without them). A **0.5 s
@@ -147,7 +150,7 @@ The accumulation row is identical to the defaults because the offline runs have 
 and nothing is merged; the given-speed behaviour is measured in §2c. The edge-margin variants
 were not run.
 
-**Accumulation default.** The multi-frame accumulation stays in the code and stays *enabled for a given speed* (the node's `ego_speed_mps` / odometry, `eval` sequences; P4's CLI tests pin this path), but the LiDAR-only estimator that fed it in v0.4 is **off by default** (`accumulation.estimate_speed: false`): with the estimator on, the same code alarmed on 119 frames / 30 events of the five empty bags instead of 88 / 27 (pre-vectorisation copy of the code; the final code measures 89 / 29, `roundT_pressureGate_roundT` 8 → 31 frames, `roundT_squareT_pressureGate_squareT` 5 → 20), it did not change the person's recall or first alarm on `doubleT_obstacle` (66/71, frame 7, with the stopped-train guard), and it costs 7–8 ms per frame; the final-code number is in the ablation row above. The synthetic gain of §2b (person 189 vs 178 m on the tunnel at 22 m/s) is real but has no real-data counterpart yet (no moving bag with an obstacle); with a given speed the given-speed rows of §2c and the given-speed runs of the ablation table are the measured behaviour. Regression rule of EVALUATION.md §3.6: false-alarm frames on E 1 001 → 89 and p95 latency (§3) are both better than v0.3; on R the first alarm frame is 7 (≤ 9) and the recall 66/71 (≥ 64/71).
+**Accumulation default.** The multi-frame accumulation stays in the code and stays *enabled for a given speed* (the node's `ego_speed_mps` / odometry, `eval` sequences; P4's CLI tests pin this path), but the LiDAR-only estimator that fed it in v0.4 is **off by default** (`accumulation.estimate_speed: false`): with the estimator on, the same code alarmed on 119 frames / 30 events of the five empty bags instead of 88 / 27 (pre-vectorisation copy of the code; the final code measures 89 / 29, `roundT_pressureGate_roundT` 8 → 31 frames, `roundT_squareT_pressureGate_squareT` 5 → 20), it did not change the person's recall or first alarm on `doubleT_obstacle` (66/71, frame 7, with the stopped-train guard), and it costs 7–8 ms per frame; the final-code number is in the ablation row above. The synthetic gain of §2b (person 189 vs 178 m on the tunnel at 22 m/s) is real but has no real-data counterpart yet (no moving bag with an obstacle); with a given speed the given-speed rows of §2c and the given-speed runs of the ablation table are the measured behaviour. Regression rule of EVALUATION.md §3.6: false-alarm frames on E 1 001 → 96 and p95 latency (§3: 51 vs 71 ms on `roundT_doubleT`, 60 vs 76 ms on `doubleT_obstacle`, back to back) are both better than v0.3; on R the first alarm frame is 7 (≤ 9) and the recall 66/71 (≥ 64/71).
 
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 
@@ -291,7 +294,23 @@ egomotion 9 → 7 (now off by default), cluster 6, total 112 → 52 ms.
 every frame, commit 9b56bdf (merged as 82815e9); the v0.3 switches are the config of §1b; load before each run
 in the table; the i7-9700E has 8 faster cores):
 
-TBD_BENCH_TABLE
+| bag (every frame, quiet 4-core sandbox, load < 1, runs back to back on 22.09) | v0.3 code (f2c57e5) mean / p95 / max | **v0.5 final** mean / p95 / max | v0.5 stage means |
+|---|---|---|---|
+| `roundT_doubleT` (189 k points, moving) | 56.4 / 70.6 / 83.2 ms | **43.0 / 50.9 / 87.7 ms** | track 28.8, corridor 6.7, cluster 7.2, tracking 0.3 |
+| `doubleT_obstacle` (347 k points, 360°, stationary) | 70.7 / 75.9 / 92.7 ms | **54.9 / 59.6 / 79.7 ms** | track 38.1, corridor 11.5, cluster 5.0, tracking 0.4 |
+| `doubleT_platform` | (v0.3 run of 21.09 under load: 79 / 132) | 83.3 / 170.8 / 196.3 ms | the platform approach: tens of thousands of candidates in the cluster stage, as in v0.3 |
+| `roundT_pressureGate_roundT` | (56 / 89) | 43.4 / 52.6 / 71.6 ms | |
+| `roundT_squareT_pressureGate_squareT` | (61 / 101) | 42.3 / 54.2 / 98.0 ms | |
+| `squareT_platform_squareT_switch` | (83 / 131) | 84.3 / 111.6 / 151.3 ms | |
+
+The vectorised bed / wall binning and the polygon bounding-box prefilter pay for the rail-slab
+yaw and the bed verification (each ~3–4 ms mean, ~10 ms p95 in the track stage, reviewer's
+attribution runs); the reviewer's pairs under load 4–7 gave the same picture (v0.3 code 83.7 /
+120.8 vs v0.5 69.1 / 98.2 on `roundT_doubleT`). With a given speed the accumulation adds the
+merged-cloud clustering (+12 ms mean on `roundT_doubleT` at load 8, reviewer's run). The frame
+period is 100 ms: p95 is inside it on the tunnel bags and above it on the two platform bags on
+this machine, where the node drops frames rather than queueing; the jury's i7-9700E (8 faster
+cores) has not been measured (P1).
 
 Per-stage means of the same runs are in the table; the platform bags remain the expensive
 ones because their corridor holds 15–20 k candidates per frame (DBSCAN 45–70 ms in v0.3 and

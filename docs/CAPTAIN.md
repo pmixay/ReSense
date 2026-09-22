@@ -32,15 +32,18 @@ inside the image.
 | CI / container | dataset-free ROS smoke test (synthetic bag in the organizers' exact layout played through the node inside the image, checker asserts the result) on every push; found and fixed the empty-wheel install (the node never imported `resense`) and the DDS-discovery frame loss; `web` job (dashboard in headless Chromium); in-image tests with the skip guard | `scripts/make_smoke_bag.py`, `scripts/smoke_test.sh`, `docker/Dockerfile`, `.github/workflows/ci.yml` |
 | data | streaming unpacker for the nested archive; all six bags cached at full rate and run at 10 Hz (finding 2 below); six-bag topic table | `scripts/unpack_dataset.py`, `DATASET.md` |
 | docs | remote-demo runbook, cover message, architecture (ego speed, TF, verification), submission status | README, `SUBMISSION.md`, `ARCHITECTURE.md` |
-| integration | P2, P3 and P4 branches reviewed by independent reviewers (real-data checks on the caches) and merged with their fixes; second round on real data launched | this file §0 |
+| integration | round 1 (synthetic): P2, P3 and P4 branches reviewed by independent reviewers and merged with their fixes; round 2 (real data, 21–22.09): P4 (real labels, set S on real frames, offline given-speed path, `summarize --compare`) and P3 v0.5 (axis from the rails, 1/R curvature, height-reference range, infrastructure signatures, persistence in time) reviewed on the six bags and merged; P2's real-data deliverables (renders, two videos, presentation numbers) done by the captain after P2's agent was cut off by the session limit | this file §0, `EXPERIMENTS.md` |
+| results | v0.5 at full rate: five obstacle-free bags 1 001 / 192 → **96 alarm frames / 32 events** (2 287 frames), person of `doubleT_obstacle` 66/71 labelled frames (v0.3 63/71), first alarm frame 7, 0 false events on that bag; 43–55 ms mean / 51–60 ms p95 on the tunnel bags (v0.3 56–71 / 71–76, same machine back to back); ablations of every lever group; raw files `experiments_v0.4_*.json`, `experiments_v0.5_real_fullrate.json`, labels in `labels/` | `EXPERIMENTS.md` §1, §1b, §3 |
 
 ### Left for the captain (in order)
 
 1. ~~Form the Sprint 0 + sensor questions~~ — drafted in [`QUESTIONS.md`](QUESTIONS.md)
    (21.09); **sending them and recording the answers is the human captain's action.**
 2. **Run `scripts/dry_run.sh` on a team machine with Docker and the dataset.** The container
-   path now runs in CI on a synthetic bag (item 10) and the offline pipeline has run on every
-   real frame; the ROS node on a real bag is still unexecuted (no Docker daemon in the sandbox).
+   path runs in CI on a synthetic bag on every push (item 10) and the offline pipeline has run
+   on every real frame; the ROS node on a real bag is still unexecuted (no Docker daemon in the
+   sandbox). Note for that run: `check_dry_run.py` defaults (`--distance 50:62`) still hold
+   (v0.5 reports the person at 55.5–56.6 m from frame 7).
 3. ~~Launch arguments for the demo~~ — done (`loop:=`, every parameter as a launch argument,
    plus `ego_speed_mps` / `speed_topic` / `odom_topic` / `publish_tf` / `tf_parent_frame`).
 4. ~~Data-path alignment and a headless demo path~~ — done, item 8.
@@ -130,7 +133,21 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
    lost 2 frames, run 21 lost 13 (the whole clear lead-in), the jury's demo would lose the same.
    Every playback path now passes `--delay 3` (smoke test, `dry_run.sh`, `run_headless.sh`, the
    compose player, the launch file's `delay:=`).
-5. **Bench timing at full rate on real frames**, 4-core sandbox shared with other jobs (the
+5. **v0.5 on real data (21–22.09).** P3's real-data round (its agent was interrupted twice by the
+   session limit; the captain committed its draft, measured every number and had the code
+   reviewed independently): false alarms on the five obstacle-free bags 1 001 frames / 192
+   events → 96 / 32 (`roundT_doubleT` 126 → 0), the person 66/71 with the first alarm two
+   frames earlier, per-frame time 25 % lower than v0.3 back to back. The review found and the
+   captain fixed: a person on a platform edge demoted by the new wall-face / floating
+   signatures (thresholds 2.0 / 1.2 m, +7 alarm frames), the yaw clip nearly binding on
+   `roundT_doubleT` (0.06 → 0.09), the tracker's gate widened by the nominal instead of the
+   measured frame interval (dropped frames could lose a 17 m/s approach). Documented, not
+   changed: an object first tracked as advisory needs six in-gauge hits (0.6 s) before the
+   alarm, and the LiDAR-only speed estimator is off by default (it merged frames at 0 m/s on a
+   stopped train and added 31 false-alarm frames); accumulation runs with the node's given
+   speed only. The single largest remaining source is the platform-end structure at 81–83 m
+   while the train stands at the platform (20 of the 32 events).
+6. **Bench timing at full rate on real frames**, 4-core sandbox shared with other jobs (the
    i7-9700E has 8 faster cores): `roundT_doubleT` total mean 57 ms, p95 95 ms, max 129 ms
    (track 31 / corridor 16 / cluster 10 ms); `doubleT_obstacle` (347 k points) mean 71 ms,
    p95 114 ms, max 177 ms. p95 is above the 100 ms frame period on this machine; the node
@@ -141,9 +158,9 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
 
 | owner | item | why it matters |
 |---|---|---|
-| P3 | wall / bed curvature fusion at stations and transitions; GOST gauge polygon; ego-motion + 5–10-frame accumulation; reflectivity > 100 as a sign filter (`SENSOR.md` §3.3) | 49 of 67 false-alarm frames are in the platform-and-switch bag; 150–200 m needs accumulation |
-| P4 | `tests/test_core.py` skips the whole module without open3d (a local `pytest -q` says "1 skipped" and looks green); per-km / per-event false-alarm rates in `metrics.py`; label tool format; extended-dataset labelling | `EVALUATION.md` §2 depends on it |
-| P2 | **RViz layout hard-codes `Topic: /lidar_points` and `Fixed Frame: hesai_lidar`, so the demo bag shows an empty screen** (finding 1); demo video, Foxglove layout, dashboard reading the new `node` stats, slides 7–11 | spec §5 video and §4 demo are pending |
+| P3 | the zone-history fast path (alarm when the last three hits are inside, measured on the five bags), the edge-margin variants, re-classifying the 96 residual alarm frames by cause, the platform-end structure at 81–83 m (20 of 32 events), accumulation on a moving bag with an obstacle (none exists yet), the injector's height reference beyond 80 m (with P4) | `EXPERIMENTS.md` §1b ablations and §5 |
+| P4 | extended-dataset intake and labelling with the `labels/` format; the injector placing far objects under the real bed (use the verified floor); calibration of the catalogue reflectivities against real obstacles | `DATASET.md` "Real labels", `EXPERIMENTS.md` §2c |
+| P2 | the RViz screen recording of the Docker chain on a machine with Docker (the offline and dashboard videos exist); slides 7–11 in the organizers' pptx template from `PRESENTATION.md`; the dashboard card for `ego_speed` / `n_accumulated` / alarm events | spec §4 demo and §8.8 pitch |
 
 ## 1. Ownership map — who edits what
 

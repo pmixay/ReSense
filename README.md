@@ -21,8 +21,9 @@ ROS 2 bag ─▶ PointCloud2 ─▶ resense_ros/detector_node ─▶ /resense/ob
 
 Status: **v0.5 (21.09, Sprint 2, measured on real data at full rate)**. On every frame of the
 five obstacle-free organizer bags (2 287 frames: round / rectangular / double-track tunnels,
-pressure gates, a platform stop, a switch) the detector raises **89 alarm frames / 29 alarm
-events** (v0.3: 1 001 / 192). The person crossing the track in `doubleT_obstacle` is reported at
+pressure gates, a platform stop, a switch) the detector raises **96 alarm frames / 32 alarm
+events** (v0.3: 1 001 / 192) and runs at 43–55 ms per frame mean, 51–60 ms p95 on the tunnel
+bags of a 4-core sandbox (v0.3: 56–71 / 71–76 ms). The person crossing the track in `doubleT_obstacle` is reported at
 55.5–56.6 m in 66 of the 71 labelled in-gauge frames, the first alarm 0.5 s after he enters the
 gauge, distance error under 1 cm, and nothing else alarms on that bag. Multi-frame accumulation
 for 150 m and beyond runs with a given train speed (node parameter or odometry; synthetic:

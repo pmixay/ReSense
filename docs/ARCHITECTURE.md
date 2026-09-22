@@ -98,18 +98,21 @@ ROS 2 bag ──/lidar_points (PointCloud2, 10 Hz, ~190k pts)──▶ resense_r
 * **Persistence before alarm**: three consecutive frames (0.3 s) suppress single-frame noise; the
   cost is 0.3 s of latency — at 80 km/h that is 6.7 m of travel.
 
-## Real-time budget (4-core sandbox, Python)
+## Real-time budget (v0.5, every frame of the real bags, quiet 4-core sandbox, Python)
 
-| stage | mean | p95 |
+| stage | `roundT_doubleT` (189 k pts) mean | `doubleT_obstacle` (347 k pts) mean |
 |---|---|---|
-| track model | ~15 ms | 25 ms |
-| corridor mask | ~8 ms | 12 ms |
-| voxel + DBSCAN + filters | ~15 ms | 40 ms |
-| tracking | <1 ms | 1 ms |
-| **total** | **40–75 ms** | **~120 ms** |
+| track model (bed, rails, walls, verification) | 28.8 ms | 38.1 ms |
+| corridor mask | 6.7 ms | 11.5 ms |
+| voxel + DBSCAN + filters | 7.2 ms | 5.0 ms |
+| tracking | 0.3 ms | 0.4 ms |
+| **total** (mean / p95 / max) | **43.0 / 50.9 / 87.7 ms** | **54.9 / 59.6 / 79.7 ms** |
+| v0.3 code, same machine, back to back | 56.4 / 70.6 / 83.2 ms | 70.7 / 75.9 / 92.7 ms |
 
-The frame period is 100 ms; on the test bench (i7-9700E, 8 cores) the pipeline runs in real
-time with headroom for multi-frame accumulation.
+The frame period is 100 ms. The platform bags cost more (83–84 ms mean, p95 112–171 ms on this
+machine: tens of thousands of cluster candidates); the node drops frames rather than queueing
+there. The jury's i7-9700E (8 faster cores) has not been measured yet. Full table and stage
+attribution: EXPERIMENTS.md §3.
 
 ## Known limitations of v0 (see EXPERIMENTS.md)
 
