@@ -154,6 +154,28 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
    drops frames rather than queueing, so the dropped-frame counter is the number to watch on
    the bench.
 
+### Findings from the organizers' hand-outs (22.09)
+
+7. **Extended dataset received and read end to end** (`DATASET.md` "Extended dataset"): one
+   20-minute bag of 221 split files (90 GB unpacked, 17 GB archive on Yandex Disk), same
+   topic / frame id / 120° window as five of the six bags, seven stops, 77 km/h top speed,
+   curves to R ≈ 350 m, stations and a switch, recording holes of up to 7 s in the last third.
+   Streamed through v0.5 at full rate in the sandbox (no disk for the bag itself): 358 alarm
+   frames / 102 events in 11 271 frames — 306 events per hour against ≈ 500 on the six bags —
+   with the left gauge edge (contact-rail brackets at 40–100 m) as the largest family and the
+   unlocked track model at stations / switches as the second. **Unlabelled**: the organizers
+   did not say whether anything was staged; asked (QUESTIONS.md item 1). The full-bag replay
+   (`ros2 bag play /data/new_data`) is the closest thing to the control run and should be the
+   dry-run input once the stand has 90 GB free. `scripts/unpack_dataset.py` now streams the
+   archive from the link; `scripts/cache_frames.py` and `resense run` take a single split file.
+8. **Sensor manual and test-stand software** (`SENSOR.md`, `organizers/test_stand_software.md`):
+   the Pandar128E3X manual the organizers handed out is the 2024-07 document, not the
+   "rev. 2025-11" cited earlier — every number re-checked; new facts that matter: the
+   duplicate points in the bags match the *Last and First* return mode, not the default,
+   High Resolution 0.1° applies to channels 26–89 only, and every packet carries an IMU
+   (asked whether the driver publishes it). The stand runs driver 580 / CUDA 13 with a 12.9
+   toolkit; ReSense is CPU-only, so nothing changes for the image.
+
 ### Left for the team (captain tracks, does not do)
 
 | owner | item | why it matters |

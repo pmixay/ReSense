@@ -114,6 +114,11 @@ inside the container**, and there is exactly one way to name it per entry point:
 RESENSE_DATA=/mnt/bags RESENSE_BAG=doubleT_obstacle docker compose --profile tools up
 ```
 
+The organizers' extended recording (`new_data`, one 20-minute bag of 221 split files, 90 GB
+unpacked — [`docs/DATASET.md`](docs/DATASET.md) "Extended dataset") is used the same way once
+unpacked next to the six bags: `scripts/run_headless.sh /data/new_data`, or
+`RESENSE_DATA=/data RESENSE_BAG=new_data docker compose up`.
+
 The organizers' download is a zip inside a zip around a 4 GB zstd tar; unpacking it by hand
 needs ~30 GB of scratch space. `scripts/unpack_dataset.py` streams zip → zip → zstd → tar and
 writes only the bags you ask for:

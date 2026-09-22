@@ -6,11 +6,12 @@
 
 **Extended dataset (recorded 2026-09-17, link received 22.09):**
 [`new_data.zst`, 17.1 GB, Yandex Disk](https://disk.yandex.ru/d/N8IUpAyd7jyvow) — a
-zstd-compressed tar of **one recording split into rosbag2 files** `new_data/new_data_<N>.db3`
-(sqlite3, ~408 MB / 51 frames / 5 s each, no `metadata.yaml` alongside them in the archive
-unless noted in the section "Extended dataset" below, which records what was read from it).
-`scripts/unpack_dataset.py` streams it straight from the link (`--url`, no 17 GB copy) or
-from a downloaded `new_data.zst`; a single `.db3` file opens directly with `resense run --bag
+zstd-compressed tar of **one 20-minute rosbag2 bag `new_data/`** split into 221 sqlite3 files
+`new_data_<N>.db3` (408 MB / 51 frames each) plus its `metadata.yaml` (90 GB unpacked); what
+was read from it is in the section "Extended dataset" below. `scripts/unpack_dataset.py`
+streams it straight from the link (no 17 GB copy) or from a downloaded `new_data.zst`; the
+unpacked directory is an ordinary bag (`resense info /data/new_data`, `ros2 bag play
+/data/new_data`), and a single split file opens on its own with `resense run --bag
 <file>.db3` (the `rosbags` reader does not need the metadata file).
 
 Source: `Датасет.zip` (3.7 GB) → `датасет.zip` → `archive/for_hackathon.zst` (tar, zstd).
@@ -34,12 +35,96 @@ resense info /data/for_hackathon/roundT_doubleT
 | `roundT_squareT_pressureGate_squareT` | 55.4 s | 545 | 4.1 GB | round → rectangular tunnel, pressure gate |
 | `squareT_platform_squareT_switch` | 88.2 s | 877 | 6.6 GB | rectangular tunnel → platform (train stops) → switch |
 
-Total 2 488 frames / 250 s. **The only obstacle inside the clearance gauge in the six bags is
+Total 2 488 frames / 250 s (plus the 11 271-frame extended recording, section "Extended
+dataset" below). **The only obstacle inside the clearance gauge in the six bags is
 the person crossing the track at 55–57 m in `doubleT_obstacle`** (frames 2–72; the labels are
 in `labels/doubleT_obstacle.json`); every alarm on the other five bags is a false alarm.
 Organizers promised an extended dataset with obstacles — until then the positive examples at
 other ranges and for other objects come from `resense inject` (synthetic obstacles ray-cast
 into the real frames, see ARCHITECTURE.md and "Set S" below).
+
+## Extended dataset: `new_data` (recorded 17.09, streamed and run on 22.09)
+
+**What it is.** [`new_data.zst`](https://disk.yandex.ru/d/N8IUpAyd7jyvow) (17 078 961 996
+bytes, sha256 `8124b627a8a70516a4023db522849f1cadae711e7b152b0f701535a69dab99ec`, uploaded
+2026-09-17 12:51 UTC) is a zstd tar holding **one rosbag2 bag `new_data/`**: 221 sqlite3
+split files `new_data_0.db3` … `new_data_220.db3` (407 789 568 bytes = 51 frames each, the
+recorder's ~400 MB split size) and `metadata.yaml` as the last tar member (rosbag2 metadata
+version 5, one topic, 11 271 messages, 1 199.9 s, `relative_file_paths` listing all 221
+files). Unpacked it is 90.1 GB, 5.3× the archive. The extracted directory is an ordinary bag
+(`resense info /data/new_data`, `resense run --bag /data/new_data`, `ros2 bag play
+/data/new_data`, the launch file's `bag:=/data/new_data`); a single split file also opens on
+its own (`resense run --bag /data/new_data/new_data_30.db3`, `scripts/cache_frames.py
+/data/new_data/new_data_30.db3 cache/new_data --every 10`), which is what the intake used.
+
+**Intake** (the recipe of "How to check a new bag" below, every file read on 22.09; the
+sandbox had 9 GB of disk, so the archive was streamed once — `curl … | zstd -d | tar`, 16 MB/s,
+20 min — and every split file was processed as it arrived and deleted: `sqlite3` counts, the
+first message's header and layout, every frame decoded, the v0.5 detector at full rate with a
+fresh detector per file, every 10th frame cached as `new_data_<N>_<i>.npy` (1 326 files,
+4.1 GB). Per-file rows, the first message and the alarm events are in
+[`extended_dataset_intake.json`](extended_dataset_intake.json)):
+
+| what | read from the bag |
+|---|---|
+| topic / type | `/lidar_points`, `sensor_msgs/msg/PointCloud2`, cdr — the only topic; 11 271 messages (`metadata.yaml` and the 221 files agree, 51 per file) |
+| `frame_id` | `hesai_lidar` in every file |
+| layout | `height 1`, `width 307 200`, `point_step 26`, fields `x y z intensity` float32, `ring` uint16, `timestamp` float64 — identical to the five 120°-window bags above |
+| azimuth window | valid returns within −49.5° … +49.6° (0.5–99.5 percentiles of the first frame of every file): the 120° window, 1200 columns |
+| points per frame | 152 754 – 191 094 valid (median ≈ 183 k); the low values are stations, where the near walls are missing |
+| rings / range / intensity | 128 rings; last returns to 209 m; p99 of ranges ≈ 65 m; intensity median 8, retro-reflectors 255 (linear reflectivity mapping, `SENSOR.md` §2) |
+| clock | bag receive time starts 2026-09-17 11:02:06 UTC; `header.stamp` is still the year-2000 sensor clock — use the bag time, as before |
+| frame period | 0.100 s inside a file and 0.100 s from the last frame of file N to the first of N+1 (max 0.12 s): **one continuous recording** — except **recording holes in the last third**: from file 156 (t ≈ 800 s) on, 26 files span 6–12 s instead of 5.1 s, with gaps of 1.2–7.1 s between consecutive frames (`period_max` per file in the JSON). 51 frames still sit in every file, so ≈ 70 s of the 1 200 s carry no frames; `ros2 bag play` pauses there and the tracker's gate (measured frame interval, `tracking.py`) is what keeps a track alive across such a gap |
+| the ride | from the drift of static tracks (m/s per file, `speed_tracks` in the JSON — the estimator in the detector is off, `EXPERIMENTS.md` §1b): departs from standstill at t = 0, stops at 168–209 s, 291–306, 439–459, 592–648, 760–775, 984–1007 and 1106–1117 s (seven stops: stations or signals), top speed 21.3 m/s (77 km/h) at t ≈ 230 s, mean 11.5 m/s, ≈ 13 km covered |
+| scenes | tunnels of both kinds, curves down to R ≈ 350 m (median \|curvature\| up to 3·10⁻³ m⁻¹ in files 129–134, 176–180), stations and a switch — files 22, 55, 113–114 and 155 have the track model unlocked (median `rail_score` < 0.1, platforms / switch, as in `squareT_platform_squareT_switch`). **No labels and nothing staged that we know of**: the organizers' message named no obstacles; asked in `QUESTIONS.md` item 1 |
+
+**v0.5 defaults at full rate** (every frame, fresh detector per 51-frame file, no speed given;
+raw per-frame JSONL kept out of git, 442 files / 15 MB):
+
+| frames | alarm frames | alarm events | events / hour | events / km | advisory frames | latency mean / p95 / max |
+|---|---|---|---|---|---|---|
+| 11 271 (1 200 s) | 358 (3.2 %) | 102 | 306 | 7.9 | 8 564 (76 %) | 41 / 74 / 157 ms |
+
+For scale: the five obstacle-free organizer bags give v0.5 96 alarm frames / 32 events in
+230 s, ≈ 500 events per hour (`EXPERIMENTS.md` §1). Where the 102 events sit (median lateral
+offset of each event, `events` in the JSON; 27 last one frame, 31 last ≥ 5 frames, the longest
+21 frames):
+
+* **40 at the left gauge edge** (lateral −1.35 … −1.65 m, bottom ≈ 0.6 m above the rail head,
+  median 0.9 m long × 0.7 m tall, median first distance 61 m): the contact-rail side — brackets
+  and insulators above the cover, which flip from the advisory zone into the gauge at 40–100 m
+  where the axis is uncertain by ±0.5 m. The same family as the edge false alarms of §1b, now
+  the largest single cause (the column row of `doubleT_obstacle` was the right-hand version).
+* **16 at the right edge** (+1.5 m): the same on the other side, in the double-track sections
+  the column row (file 81 at 95–106 m: 0.2–0.5 × 0.5–0.7 × 1.5 m clusters 1.0–1.6 m above the
+  rail head, the columns' feet).
+* **28 central** (|lateral| < 0.8 m): 11 in the unlocked-track files (a switch in file 22 — a
+  "7 m × 0.4 m × 0.2 m object" at 6–8 m is the diverging rail; platform-end structures 2–3 m
+  tall at 25–55 m in files 22, 23, 113, 114); 17 of the 28 have ≤ 15 points at 60–140 m (thin
+  clusters on the bed or hanging 0.7–1.9 m above the rail head — cables, signs). Only five
+  central events outside the unlocked files have more than 15 points, all 1.5–3.1 m tall
+  structures at 48–115 m (files 23, 53, 64, 81, 138) that last 1–7 frames.
+* 18 in between (0.8–1.35 m), mostly the edge family seen with a worse axis.
+* 4 events while the train stands (files 188, 190, 207): 4–12-point clusters at 82–139 m.
+
+Renders looked at (from the cache, `resense run --npy … --render`): file 22 frame 10 (switch:
+diverging track, axis wanders), 55 frames 10 and 20 (platform: the axis bends into the
+platform, a straight fit two frames later), 81 frame 10 (double-track, columns on the right),
+134 frame 20 (R ≈ 350 m curve, the corridor follows the wall; candidates are wall / ceiling
+brackets, rejected as elevated). Nothing person- or box-like sits in the gauge for more than a
+few frames below 60 m outside station ends — as far as one can say without labels.
+
+**What follows.** (1) The organizers' answer on staged obstacles → labels in `labels/` and a
+recall number on real objects (P4). (2) P3: the left-edge family is now the largest cause
+(40 of 102 events) — the contact-rail side needs the same treatment as the column row (`edge`
+signature with the rail-side offset), and the switch / platform-end cases need the track model
+to declare itself unlocked rather than fit a platform. (3) Run the bag in one go
+(`resense run --bag /data/new_data --out …`) on a machine with 90 GB free: the per-file numbers
+above reset the tracker every 5.1 s (6 events start in frames 0–2 and 12 end in frames 49–50
+of a file, so a continuous run can only merge a few of them). (4) `ros2 bag play
+/data/new_data` through the container is the closest thing to the control run we have: 20 min,
+seven stops, curves, stations, recording holes — the dry run should use it once the stand has
+the disk.
 
 ## Topic and sensor
 

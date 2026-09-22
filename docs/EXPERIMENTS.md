@@ -152,6 +152,28 @@ were not run.
 
 **Accumulation default.** The multi-frame accumulation stays in the code and stays *enabled for a given speed* (the node's `ego_speed_mps` / odometry, `eval` sequences; P4's CLI tests pin this path), but the LiDAR-only estimator that fed it in v0.4 is **off by default** (`accumulation.estimate_speed: false`): with the estimator on, the same code alarmed on 119 frames / 30 events of the five empty bags instead of 88 / 27 (pre-vectorisation copy of the code; the final code measures 89 / 29, `roundT_pressureGate_roundT` 8 → 31 frames, `roundT_squareT_pressureGate_squareT` 5 → 20), it did not change the person's recall or first alarm on `doubleT_obstacle` (66/71, frame 7, with the stopped-train guard), and it costs 7–8 ms per frame; the final-code number is in the ablation row above. The synthetic gain of §2b (person 189 vs 178 m on the tunnel at 22 m/s) is real but has no real-data counterpart yet (no moving bag with an obstacle); with a given speed the given-speed rows of §2c and the given-speed runs of the ablation table are the measured behaviour. Regression rule of EVALUATION.md §3.6: false-alarm frames on E 1 001 → 96 and p95 latency (§3: 51 vs 71 ms on `roundT_doubleT`, 60 vs 76 ms on `doubleT_obstacle`, back to back) are both better than v0.3; on R the first alarm frame is 7 (≤ 9) and the recall 66/71 (≥ 64/71).
 
+## 1c. v0.5 on the organizers' extended recording (22.09, unlabelled, every frame)
+
+The 20-minute bag `new_data` (221 split files, 11 271 frames, seven stops, top speed 77 km/h,
+tunnels / curves / stations / a switch; `DATASET.md` "Extended dataset") streamed once through
+the v0.5 defaults, a fresh detector per 51-frame file, no speed given. No labels exist, so
+these are false-alarm numbers on a ride, not recall:
+
+| recording | frames | alarm frames | alarm events | events / hour | events / km | latency mean / p95 / max |
+|---|---|---|---|---|---|---|
+| `new_data` (1 200 s, ≈ 13 km) | 11 271 | 358 (3.2 %) | 102 | 306 | 7.9 | 41 / 74 / 157 ms |
+| five obstacle-free organizer bags (230 s, §1) | 2 287 | 96 (4.2 %) | 32 | ≈ 500 | — | see §3 |
+
+Causes, by the median lateral offset of the 102 events (per-event rows in
+`extended_dataset_intake.json`): 40 at the left gauge edge (contact-rail side, brackets 0.6 m
+above the rail head flipping into the gauge at 40–100 m), 16 at the right edge (column row in
+double-track sections), 28 central — 11 of them in the five files where the track model is not
+locked (a switch, platform ends) and 17 with ≤ 15 points at 60–140 m — and 18 in between. The
+biggest single family is therefore the left edge (the mirror image of the column-row family of
+§1b), the second the unlocked track model at stations and switches; both are on P3's list in
+`DATASET.md` "What follows". The tracker's measured-interval gate (§1b review fix) is exercised
+for real here: the last third of the recording has holes of 1.2–7.1 s between frames.
+
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 
 ### 2a. Day-1 numbers (v0.3, 26 frames of `roundT_doubleT`, every 10th, synthetic objects)
