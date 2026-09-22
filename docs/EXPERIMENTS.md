@@ -90,7 +90,7 @@ by 3.0–3.2°. Without the correction (v0.5) the object reads 0.15–0.2 m abov
 level and the corridor stage saw its top; with it, it is 5 cm above its own rail. The
 calibration is right (the gauge is defined in the rail plane) and costs this object; the
 organizers said the hidden data use the mount of the empty-tunnel rides, on which the
-calibration measures −1.0…−1.6° (`roundT_doubleT`) and nothing to correct on `doubleT_platform`.
+calibration finds `roundT_doubleT` and `doubleT_platform` level within 0.5° (v0.6.1, §6; the −1.0…−1.6° v0.6 measured on `roundT_doubleT` was the 5-frame window).
 
 **Where the ride's 74 remaining events come from** (`scripts/mine_objects.py`, classes by
 median geometry, `labels/new_data_objects.json`): corridor-edge structures 21 (at \|lateral\|
@@ -611,45 +611,65 @@ on the bench.
 - timing on the i7-9700E bench; Numba for the DBSCAN stage on the platform bags (15–20 k
   candidates per frame) if needed.
 
-## 6. Mount calibration on real frames (v0.6)
+## 6. Mount calibration on real frames (v0.6.1)
 
-`scripts/calib_check.py --npy <recording>`: frames 100–124 of a recording, re-mounted by known
-rotations (the cloud rotated as a sensor mounted that way would see it), a fresh detector
-over the 25 frames. The residual is measured against the correction found on the recording
-*as it is* — the rigs are tilted themselves (below), which is not an error — and split into
-tilt (roll + pitch) and yaw. Mount yaw below `calibration.min_yaw_deg` (3°) is left to the
-per-frame track model by design, so the 2° of the combined case stays in the yaw column.
+`scripts/calib_check.py --npy <recording>`: a whole recording (201–260 frames, so that the
+20-second final window completes), re-mounted by known rotations (the cloud rotated as a
+sensor mounted that way would see it), a fresh detector over it. The residual is measured
+against the correction found on the recording *as it is* — a rig may be tilted itself, which
+is not an error — and split into tilt (roll + pitch) and yaw. Mount yaw below
+`calibration.min_yaw_deg` (3°) is left to the per-frame track model by design, so the 2° of the
+combined case stays in the yaw column.
 
-| re-mount | `roundT_doubleT` tilt / yaw residual | `roundT_squareT_pressureGate_squareT` | `doubleT_obstacle` (360°) |
+| re-mount | `roundT_doubleT` (frames 0–251) tilt / yaw residual | `roundT_squareT_pressureGate_squareT` (100–359) | `doubleT_obstacle` (0–200, 360°) |
 |---|---|---|---|
-| as recorded: the rig's own correction | roll −1.07°, pitch 0 | none (`identity`) | roll +3.35°, pitch −0.85° |
-| roll +3° | 0.76° / 0 | 0.18° / 0 | 0.35° / 0 |
-| pitch −4° | 0.41° / 0.10° | 0.19° / 0 | 0.22° / 0.25° |
-| roll −2°, pitch 3°, yaw 2° | 0.28° / 2.06° (by design) | 0.10° / 2.10° | 0.31° / 2.26° |
-| upside down | 0.69° / 0 — orientation found | 0.00° / 0 — found | 0.24° / 0 — found |
-| forward = `+x` (the ROS convention) | 0.69° / 0 — found | 0.00° / 0 — found | 0.24° / 0 — found |
-| mounted backwards | 0.69° / 0 — found | 0.00° / 0 — found | 0.24° / 0 — found |
-| on its side (spin axis horizontal) | **not supported**: 92° | **not supported**: 83° | **not supported**: 85° |
+| as recorded: the rig's own correction | none (`identity`) | none (`identity`) | roll +3.02°, pitch −0.88° |
+| roll +3° | 0.36° / 0 | 0.19° / 0 | 0.04° / 0 |
+| pitch −4° | 0.26° / 0 | 0.34° / 0 | 0.07° / 0.21° |
+| roll −2°, pitch 3°, yaw 2° | 0.32° / 2.09° (by design) | 0.49° / 2.09° | 0.04° / 2.26° |
+| upside down | 0.00° — orientation found | 0.00° — found | 0.03° — found |
+| forward = `+x` (the ROS convention) | 0.00° — found | 0.00° — found | 0.03° — found |
+| mounted backwards | 0.00° — found | 0.00° — found | 0.03° — found |
+| on its side (spin axis horizontal) | **not supported** (80°) | **not supported** (90°) | **not supported** (84°) |
 
-Reading. (1) Every upright or inverted mount is found from the data on all three recordings;
-the tilt is recovered to 0.0–0.8° (median ~0.3°: 1 cm at the edge of the 1.05 m envelope,
-2–4 cm at its top corners). (2) The rigs are tilted: the `doubleT_obstacle` rig by 3.0–3.4°
-of roll (its right rail head is 8 cm above the left over 4–30 m of straight, stationary
-track), `roundT_doubleT` by −1.1°, `roundT_squareT_pressureGate_squareT` not at all — the
-correction is applied in each case. (3) The first version searched all 24 axis-aligned
-orientations: on `roundT_squareT_pressureGate_squareT` the upside-down, `+x`-forward and
-backwards mounts adopted "left = ±z" (83° off, status `ok`) — the flat side wall of the
-square tunnel with two cable trays on it passed for the bed with a rail pair and scored
-higher than the real track. A spinning LiDAR is mounted with its spin axis vertical, so the
-default search is now the 8 orientations that keep it vertical (`calibration.keep_up_axis`,
-`tests/test_calibration.py`). (4) The same wall is why a sensor that really is mounted on its
-side cannot be recognised from the geometry (the configured mapping "passes" on the wall and
-the detector then alarms): such a mount must be set with `sensor.forward/left/up` (launch
-arguments `sensor_forward` / `sensor_left` / `sensor_up`); ALGORITHM.md §6. (We tried the
-ring structure as a physical cue for the spin axis and dropped it: a real sensor always
-spins about its own z, so its rings say nothing about how it is mounted.) (5) The search
-costs 1–5 s once, over the first frames (the rows with a new orientation took 7–11 s for the
-25 frames against 5–6 s).
+Reading. (1) Every upright or inverted mount is found from the data on all three recordings
+and the tilt is recovered to 0.0–0.5° (median 0.2°: < 1 cm at the edge of the 1.05 m envelope).
+(2) The `doubleT_obstacle` rig is rolled by 3.0° (its right rail head is 8 cm above the left
+over 4–30 m of straight, stationary track) — corrected after half a second by the provisional
+stage and confirmed by the final one; the two moving rigs are level within 0.5°.
+(3) The first version searched all 24 axis-aligned orientations: on
+`roundT_squareT_pressureGate_squareT` the upside-down, `+x`-forward and backwards mounts
+adopted "left = ±z" (83° off, status `ok`) — the flat side wall of the square tunnel with two
+cable trays on it passed for the bed with a rail pair and scored higher than the real track.
+A spinning LiDAR is mounted with its spin axis vertical, so the default search is now the 8
+orientations that keep it vertical (`calibration.keep_up_axis`, `tests/test_calibration.py`).
+(4) The same wall is why a sensor that really is mounted on its side cannot be recognised
+from the geometry (the configured mapping "passes" on the wall and the detector then alarms):
+such a mount must be set with `sensor.forward/left/up` (launch arguments `sensor_forward` /
+`sensor_left` / `sensor_up`); ALGORITHM.md §6. (We tried the ring structure as a physical cue
+for the spin axis and dropped it: a real sensor always spins about its own z, so its rings say
+nothing about how it is mounted.)
+
+**Why the tilt needs 20 s on a moving train** (`scripts/mount_survey.py --npy new_data`: the
+calibrator's roll measurement on every 5th frame of the 20-minute ride with the correction
+off). The per-frame roll has a median of **−0.09°** and a 10–90 % range of −1.0…+0.7° — on
+straight track (|k| < 2·10⁻⁴: −0.9…+0.6°) as in curves (−1.1…+0.8°): cant transitions, the
+body's lean and the rail geometry itself. Neighbouring frames see the same stretch of rail, so
+the error of a median depends on the time it spans more than on the count:
+
+| window a fresh calibration freezes | median error | p90 | max |
+|---|---|---|---|
+| 5 consecutive frames (v0.6) | 0.37° | 1.01° | 2.20° |
+| 20 observations every 10 frames (20 s, **v0.6.1 default**) | 0.24° | 0.53° | 1.02° |
+| 20 observations every 20 frames (40 s) | 0.19° | 0.42° | 0.84° |
+
+With v0.6 the eight parallel pieces of the ride evaluation froze eight different "mount
+rolls" (−0.97…+1.63°) for one sensor, and the drift monitor (an EMA of single checks against
+1°) then flagged 5 482 of the 11 271 frames — `CAUTION` on half of the ride for nothing. v0.6.1:
+a provisional correction after 5 frames only above 2.5° (a clearly tilted rig such as
+`doubleT_obstacle`), the final one from the 20-s window above 0.5°, and the drift monitor on the
+median of the last 10 checks (50 s) against 1.5° (ALGORITHM.md §2b). The v0.6 table (25 frames,
+5-frame median) had tilt residuals of 0.0–0.8°.
 
 ## 7. Recognition methods tried, side by side
 

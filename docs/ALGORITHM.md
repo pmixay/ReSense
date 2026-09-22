@@ -55,7 +55,7 @@ the first frames and hands the detector a rotation `R` (`p_processed = R · p_co
    on `orientation_votes` = 2 frames and the configured mapping never passed, so a platform or a
    switch (no rails) cannot flip the mount. Tested: upside down, `+x` forward (the ROS
    convention), mounted backwards, `+x` forward and rolled 2° — all recovered to < 0.5° on the
-   synthetic tunnel (`tests/test_calibration.py`) and to 0.0–0.8° of tilt on re-mounted real
+   synthetic tunnel (`tests/test_calibration.py`) and to 0.0–0.5° of tilt on re-mounted real
    frames of three recordings (EXPERIMENTS.md §6). The sideways candidates are off by default:
    on the square tunnel a flat side wall with two cable trays passed for the bed (§6); a sensor
    really mounted on its side must be configured;
