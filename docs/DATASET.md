@@ -79,7 +79,7 @@ fresh detector per file, every 10th frame cached as `new_data_<N>_<i>.npy` (1 32
 | scenes | tunnels of both kinds, curves down to R ≈ 350 m (median \|curvature\| up to 3·10⁻³ m⁻¹ in files 129–134, 176–180), stations and a switch — files 22, 55, 113–114 and 155 have the track model unlocked (median `rail_score` < 0.1, platforms / switch, as in `squareT_platform_squareT_switch`). **No labels and nothing staged that we know of**: the organizers' message named no obstacles; asked in `QUESTIONS.md` item 1 |
 
 **v0.5 defaults at full rate** (every frame, fresh detector per 51-frame file, no speed given;
-raw per-frame JSONL kept out of git, 442 files / 15 MB):
+raw per-frame JSONL kept out of git, 442 files / 17 MB):
 
 | frames | alarm frames | alarm events | events / hour | events / km | advisory frames | latency mean / p95 / max |
 |---|---|---|---|---|---|---|
