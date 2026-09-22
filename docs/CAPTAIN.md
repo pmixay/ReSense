@@ -202,8 +202,9 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
     §1d, v0.6.1): five empty bags 104 alarm frames / 30 events (v0.5 logic 116 / 32), ride 289 / 82
     events (6.3 per km; v0.5 448 / 93), person 58 of 61 envelope frames from frame 11; a health
     warning on 1.4 % of the frames after the calibration fix of v0.6.1 (42 % before it). Long range on the
-    moving ride (set F, §2d): person first confirmed at 165 m median on straight track,
-    crate 127 m, trolley 121 m, cable 107 m; 79 m in R ≈ 350 m curves (sightline). The farthest
+    moving ride (set F, §2d, v0.6.1): person first confirmed at 150 m median on straight track,
+    trolley 146 m, crate 111 m, cable 95 m; with a train speed 177 / 190 / 183 m and fewer ride false
+    alarms (274 / 75); 74–82 m in R ≈ 350 m curves (sightline). The farthest
     return in all data is 208.5 m, so 300 m is out of the sensor's reach.
 12. **Tests**: 132 (the node's decision / fault / watchdog / mount-parameter logic now runs
     against ROS stand-ins in `tests/test_node.py`, so a node bug no longer waits for the Docker

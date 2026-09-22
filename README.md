@@ -38,9 +38,11 @@ frames (stations, switches); the person crossing the track in
 `doubleT_obstacle` is reported in 58 of the 61 frames in which the person is inside the
 envelope, the first alarm 0.3 s after entering it, distance error < 0.35 m. Long range on the
 moving ride (objects ray-cast into consecutive real frames, no speed input, §2d): a person
-approaching on straight track is first confirmed at **165 m median** (110–168 m, 6 of 6), a 1 m
-crate at 127 m, a trolley at 121 m (up to 198 m), a 3 cm hanging cable at 107 m; in R ≈ 350 m
-curves at the sightline (79 m). 300 m is beyond this sensor: the farthest return in all
+approaching on straight track is first confirmed at **150 m median** (110–169 m, 6 of 6), a
+trolley at 146 m, a 1 m crate at 111 m, a 3 cm hanging cable at 95 m; with a train speed given
+(odometry or a speed topic: 5-frame accumulation) the person at **177 m** and the trolley at
+190 m (up to 205 m) — with fewer false alarms on the ride, not more; in R ≈ 350 m curves at the
+sightline (74–82 m). 300 m is beyond this sensor: the farthest return in all
 13 759 frames is 208.5 m. Other LiDAR mounts (upside down, `+x` forward, backwards, rolled /
 pitched) are recovered from the rails and the bed: orientation found and tilt within 0.5° on
 re-mounted real frames of three recordings (§6). Clean timing: 42–58 ms mean, p95 52–69 ms per
