@@ -234,7 +234,7 @@ def test_remounted_sensor_is_calibrated_and_outputs_stay_in_the_sensor_frame(nod
     node = node_cls()
     R = _feed(node, frame.xyz, 12, M=M)
     pub = node.published
-    assert node.mount_logged == "ok", node.mount_logged
+    assert node.detector.calib.state.orientation == "forward=+y left=-x up=+z", node.detector.calib.state
     assert pub["/resense/decision"][-1].data == "STOP"
     assert 38.0 < pub["/resense/nearest_distance"][-1].data < 42.0
     c = pub["/resense/detections"][-1].detections[0].bbox.center.position

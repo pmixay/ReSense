@@ -8,8 +8,9 @@ ROS 2 bag ──/lidar_points (PointCloud2, 10 Hz, ~190k pts)──▶ resense_r
                                                                   │
    1. sensor → vehicle frame (X fwd, Y left, Z up), range crop     │  frame.py
    1b. mount auto-calibration (v0.6): orientation from the rail     │  calibration.py
-        pair (24 candidates), roll from the rail heads, pitch from the bed slope, large yaw;
-        frozen after 5 frames, drift monitored every 50
+        pair (8 candidates, spin axis vertical), roll from the rail heads, pitch from the bed
+        slope, large yaw; provisional after 5 frames for a clearly tilted rig, final median of
+        20 observations over 20 s, drift = median of the last 10 checks (every 50 frames)
    2. track model per frame                                       │  track.py
         • bed profile z(X): per-bin percentile, robust line + optional quadratic; height
           reference trusted 20 m beyond the fit or as far as the side-structure base verifies it

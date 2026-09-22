@@ -165,8 +165,9 @@ class Detector:
         if self.calib.update(xyz_cfg, xyz, self.track):
             xyz = self.calib.apply(xyz_cfg)
             self.track = estimate_track(xyz, cfg.track, prev=None)      # re-seed in the corrected frame
-            self.tracker.reset()
-            self.buffer.clear()
+            self.buffer.clear()                                         # merged clouds are in the old frame
+            if self.calib.last_change_deg > 1.0:                        # a new orientation or a large tilt:
+                self.tracker.reset()                                    # the tracks' positions are meaningless
         t1 = time.perf_counter()
 
         # 2. clearance gauge corridor (warning zone) and strict gauge membership; the corridor

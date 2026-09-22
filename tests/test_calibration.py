@@ -64,6 +64,15 @@ def test_sideways_mount_only_with_the_full_search(tunnel):
     assert _angle_deg(det.mount_rotation @ M) < 0.5, res.mount
 
 
+def _short(cfg: DetectorConfig = None) -> DetectorConfig:
+    """The final tilt after 5 consecutive observations: the synthetic scene is one static frame,
+    so the 20 s spacing of the defaults (a moving train's cant averaging out) would only make
+    the test long."""
+    cfg = cfg or DetectorConfig()
+    cfg.calibration.frames, cfg.calibration.obs_spacing = 5, 1
+    return cfg
+
+
 def _run(det: Detector, frame: Frame, n: int):
     res = None
     for k in range(n):
@@ -74,7 +83,7 @@ def _run(det: Detector, frame: Frame, n: int):
 
 def test_calibrator_confirms_a_correct_mount(tunnel):
     frame, _, _ = tunnel
-    det = Detector(DetectorConfig())
+    det = Detector(_short())
     res = _run(det, frame, 8)
     assert res.mount["status"] == "identity", res.mount
     assert np.allclose(det.mount_rotation, np.eye(3))
@@ -85,11 +94,55 @@ def test_calibrator_confirms_a_correct_mount(tunnel):
 def test_calibrator_recovers_roll_and_pitch(tunnel, roll, pitch):
     frame, _, _ = tunnel
     M = rot_y(np.radians(pitch)) @ rot_x(np.radians(roll))
-    det = Detector(DetectorConfig())
+    det = Detector(_short())
     res = _run(det, _remount(frame, M), 8)
     assert res.mount["status"] == "ok", res.mount
     assert _angle_deg(det.mount_rotation @ M) < 0.5, (res.mount, det.mount_rotation @ M)
     assert not res.obstacle
+
+
+def test_provisional_tilt_only_for_a_clearly_tilted_rig(tunnel):
+    """Defaults: a 3.3 deg roll (the doubleT_obstacle rig) is corrected after 5 frames; a 1.5 deg
+    one waits for the spaced 20-observation window (on a moving train the per-frame roll swings
+    by +-1 deg with the cant), and is then applied."""
+    frame, _, _ = tunnel
+    det = Detector(DetectorConfig())
+    M = rot_x(np.radians(3.3))
+    res = _run(det, _remount(frame, M), 6)
+    assert res.mount["status"] == "provisional", res.mount
+    assert _angle_deg(det.mount_rotation @ M) < 0.5
+    cfg = DetectorConfig()
+    cfg.calibration.obs_spacing = 2
+    cfg.calibration.frames = 6
+    det = Detector(cfg)
+    M = rot_x(np.radians(1.5))
+    res = _run(det, _remount(frame, M), 6)
+    assert res.mount["status"] == "pending" and np.allclose(det.mount_rotation, np.eye(3)), res.mount
+    res = _run(det, _remount(frame, M), 8)
+    assert res.mount["status"] == "ok", res.mount
+    assert _angle_deg(det.mount_rotation @ M) < 0.5
+
+
+def test_drift_monitor_warns_on_a_lasting_tilt_not_on_a_curve(tunnel):
+    """After freezing, single checks with +-1.8 deg of roll (cant, lean) leave the median of the
+    window small; a mount knocked 3 deg is reported once the window holds it."""
+    frame, _, _ = tunnel
+    cfg = _short()
+    cfg.calibration.monitor_period = 1
+    cfg.calibration.drift_window = 6
+    cal = MountCalibrator(cfg.calibration, cfg.track)
+    xyz = frame.xyz
+    for _ in range(6):
+        cal.update(xyz, xyz, None)
+    assert cal.frozen and cal.state.status == "identity"
+    for k in range(12):
+        c = _remount(frame, rot_x(np.radians(1.8 if k % 2 else -1.8))).xyz
+        cal.update(c, c, None)
+    assert cal.state.drift_deg < 1.5 and "drift" not in cal.state.message, cal.state
+    knocked = _remount(frame, rot_x(np.radians(3.0))).xyz
+    for _ in range(6):
+        cal.update(knocked, knocked, None)
+    assert cal.state.drift_deg > 1.5 and cal.state.message.startswith("mount drift"), cal.state
 
 
 @pytest.mark.parametrize("name,M", [
@@ -102,7 +155,7 @@ def test_calibrator_finds_the_orientation_and_the_detector_works(name, M):
     from resense.synthetic import ObstacleSpec, synthetic_tunnel_frame
     frame, _, _ = synthetic_tunnel_frame(rng=np.random.default_rng(3),
                                          specs=[ObstacleSpec(kind="box", size=(0.6, 0.6, 0.6), distance=40.0)])
-    det = Detector(DetectorConfig())
+    det = Detector(_short())
     res = _run(det, _remount(frame, M), 12)
     assert res.mount["orientation"] != "configured", res.mount
     assert _angle_deg(det.mount_rotation @ M) < 0.5, (name, res.mount)

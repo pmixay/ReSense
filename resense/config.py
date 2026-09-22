@@ -249,20 +249,23 @@ class CalibrationConfig:
     """Automatic mount calibration (v0.6, ``resense/calibration.py``): sensor orientation, roll,
     pitch and a large mount yaw measured from the rails and the bed in the first frames."""
     enabled: bool = True
-    frames: int = 5                # frames with a rail pair whose median roll / pitch / yaw is frozen
-    max_frames: int = 100          # give up (keep the configured mapping, report 'fallback') after this many frames
+    frames: int = 20               # observations (frames with a rail pair) whose median roll / pitch / yaw is frozen
+    obs_spacing: int = 10          # frames between those observations (20 x 10 = 20 s: a moving train's cant and lean average out)
+    provisional_frames: int = 5    # the first observations, for a provisional correction ...
+    provisional_min_deg: float = 2.5   # ... applied only for a clearly tilted rig (larger roll or pitch)
+    max_frames: int = 400          # give up (keep the configured mapping, report 'fallback') after this many frames
     search_orientations: bool = True   # try other axis-aligned orientations when the configured mapping shows no rails
     keep_up_axis: bool = True      # only orientations whose up axis is the configured one, upright or inverted (8 of 24):
                                    # a spinning LiDAR is mounted with its spin axis vertical; false = all 24 (a flat
                                    # tunnel wall with cable trays then competes with the bed, EXPERIMENTS.md section 6)
     orientation_votes: int = 2     # frames on which the same candidate orientation must win before it is adopted
     min_rail_score: float = 0.05   # m, ridge prominence of the rail pair (as track.rails_min_score)
-    apply_min_deg: float = 0.3     # roll / pitch corrections below this are not applied
+    apply_min_deg: float = 0.5     # roll / pitch corrections below this are not applied
     min_yaw_deg: float = 3.0       # the mount yaw is corrected only above this (the track model follows smaller / dynamic yaw, and the rails' tangent at the sensor includes the chord angle of the car in a curve)
     max_tilt_deg: float = 15.0     # larger roll / pitch estimates are rejected as implausible
     monitor_period: int = 50       # frames between drift checks after freezing; 0 = off
-    drift_warn_deg: float = 1.0    # residual tilt (EMA of the checks) that raises a health warning
-    drift_smoothing: float = 0.7   # EMA weight of the drift monitor
+    drift_warn_deg: float = 1.5    # residual tilt (median of the last checks) that raises a health warning
+    drift_window: int = 10         # checks in that median (10 x 50 frames = 50 s: a curve is not a drift)
 
 
 @dataclass

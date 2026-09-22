@@ -36,10 +36,19 @@ What is measured, and from what:
    ``min_yaw_deg`` (a big mount yaw); the per-frame track model follows small and dynamic
    yaw (curves) itself.
 
-Medians over ``frames`` frames with a rail pair are composed into ``R`` once and frozen;
-the track model is then re-seeded. Afterwards the same measurements continue every
-``monitor_period`` frames on the corrected cloud: a residual beyond ``drift_warn_deg`` (a
-mount knocked loose) is reported through the health status, never silently re-applied.
+The tilt is measured in two stages, because on a moving train the per-frame roll swings by
++-1 deg with the cant transitions and the body's lean (the 20-minute ride: median -0.1 deg,
+10-90 % range -1.0 ... +0.7 deg, EXPERIMENTS.md section 6), and neighbouring frames see the same
+stretch of rail: a median of 5 consecutive frames is off by up to 1.6-2.2 deg there. A
+**provisional** correction from the first ``provisional_frames`` observations is applied only
+for a clearly tilted rig (``provisional_min_deg``, e.g. the 3.3 deg of the ``doubleT_obstacle``
+rig); the **final** one is the median of ``frames`` observations taken every ``obs_spacing``
+frames (20 s at the defaults: p90 error 0.5 deg on the ride), applied above ``apply_min_deg``,
+and then frozen; the track model is re-seeded after every change. Afterwards the same
+measurements continue every ``monitor_period`` frames on the corrected cloud: when the median
+of the last ``drift_window`` checks leaves ``drift_warn_deg`` (a mount knocked loose - a
+lasting change, not a curve) it is reported through the health status, never silently
+re-applied.
 Implausible estimates (tilt > ``max_tilt_deg``) are rejected and reported; with no rail pair
 in ``max_frames`` frames the calibrator gives up and keeps the configured mapping
 (``status = 'fallback'``).
@@ -154,7 +163,7 @@ def observe_mount(xyz: np.ndarray, tcfg: TrackConfig, prior: Optional[TrackModel
 class MountCalibration:
     """Current state of the calibration, as reported in the status JSON (``mount``)."""
     R: np.ndarray = field(default_factory=lambda: np.eye(3))
-    status: str = "pending"         # pending | ok | identity | fallback | disabled
+    status: str = "pending"         # pending | provisional | ok | identity | fallback | disabled
     orientation: str = "configured"  # 'configured' or the adopted axis mapping, e.g. 'forward=+x left=+y up=+z'
     roll_deg: float = 0.0
     pitch_deg: float = 0.0
@@ -187,7 +196,13 @@ class MountCalibrator:
         self._R_orient = np.eye(3)
         self._orient_votes: dict = {}
         self._config_passed = False
-        self._obs: List[MountObservation] = []
+        self._obs: List[tuple] = []      # spaced observations for the final tilt: (roll, pitch, yaw, height, lateral)
+        self._recent: List[tuple] = []   # the first observations, for the provisional tilt
+        self._provisional_done = False
+        self._since_obs = 0
+        self._applied = (0.0, 0.0, 0.0)  # rad: the tilt part of the current correction (roll, pitch, yaw)
+        self._checks: List[tuple] = []   # drift monitor: residual (roll, pitch) of the last checks
+        self.last_change_deg = 0.0       # how far the last correction change rotated the cloud
         self._frames = 0
         self._frozen = not cfg.enabled
         self._since_check = 0
@@ -208,6 +223,23 @@ class MountCalibrator:
         if np.allclose(R, np.eye(3), atol=1e-9):
             return xyz
         return (xyz @ R.T.astype(np.float32)).astype(np.float32, copy=False)
+
+    def _set_tilt(self, roll: float, pitch: float, yaw: float) -> bool:
+        """Compose the orientation with a tilt (rad); True when the correction changed."""
+        R = rot_z(yaw) @ rot_y(pitch) @ rot_x(roll) @ self._R_orient
+        d = R @ self.state.R.T
+        self.last_change_deg = float(np.degrees(np.arccos(np.clip((np.trace(d) - 1.0) / 2.0, -1.0, 1.0))))
+        self.state.R = R
+        self._applied = (roll, pitch, yaw)
+        self.state.roll_deg, self.state.pitch_deg, self.state.yaw_deg = (float(np.degrees(v)) for v in (roll, pitch, yaw))
+        return self.last_change_deg > 1e-6
+
+    @staticmethod
+    def _medians(obs: List[tuple]):
+        a = np.asarray(obs, dtype=np.float64)
+        yaws = a[:, 2][np.isfinite(a[:, 2])]
+        return (float(np.median(a[:, 0])), float(np.median(a[:, 1])), float(np.median(yaws)) if yaws.size else 0.0,
+                float(np.median(a[:, 3])), float(np.median(a[:, 4])))
 
     # ------------------------------------------------------------------
     def _search_orientation(self, xyz_cfg: np.ndarray) -> Optional[int]:
@@ -236,12 +268,16 @@ class MountCalibrator:
                     self._since_check = 0
                     ob = observe_mount(xyz_cur, self.tcfg, track, cfg.min_rail_score)
                     if ob.ok:
-                        tilt = np.degrees(max(abs(ob.roll), abs(ob.pitch)))
-                        a = cfg.drift_smoothing
-                        self.state.drift_deg = float(a * self.state.drift_deg + (1 - a) * tilt)
-                        if self.state.drift_deg > cfg.drift_warn_deg:
+                        self._checks = (self._checks + [(ob.roll, ob.pitch)])[-max(cfg.drift_window, 1):]
+                        c = np.asarray(self._checks)
+                        self.state.drift_deg = float(np.degrees(np.max(np.abs(np.median(c, axis=0)))))
+                        drifting = len(self._checks) >= max(cfg.drift_window // 2, 1) and self.state.drift_deg > cfg.drift_warn_deg
+                        if drifting:
                             self.state.message = (f"mount drift: residual tilt {self.state.drift_deg:.1f} deg "
-                                                  f"(> {cfg.drift_warn_deg}) since calibration")
+                                                  f"(> {cfg.drift_warn_deg}, median of the last {len(self._checks)} checks) "
+                                                  f"since calibration")
+                        elif self.state.message.startswith("mount drift"):
+                            self.state.message = "drift back within bounds"
             return False
 
         ob = observe_mount(xyz_cur, self.tcfg, track, cfg.min_rail_score)
@@ -256,49 +292,65 @@ class MountCalibrator:
                     self.state.R = self._R_orient.copy()
                     self.state.orientation = axis_label(self._R_orient)
                     self.state.message = f"sensor orientation found from the data: {self.state.orientation}"
+                    self.last_change_deg = 90.0
                     self._obs.clear()
+                    self._recent.clear()
+                    self._since_obs = 0
                     self._config_passed = True          # stop searching
                     return True
         if ob.ok:
             self._config_passed = True
-            self._obs.append(ob)
-        # --- 2. tilt: medians over the frames with a rail pair
+            # absolute estimate = the tilt already applied + the residual seen through it (small angles)
+            a_r, a_p, a_y = self._applied
+            est = (ob.roll + a_r, ob.pitch + a_p, (ob.yaw + a_y) if np.isfinite(ob.yaw) else float("nan"),
+                   ob.height, ob.lateral)
+            if not self._provisional_done:
+                self._recent.append(est)
+            self._since_obs += 1
+            if not self._obs or self._since_obs >= max(cfg.obs_spacing, 1):
+                self._obs.append(est)
+                self._since_obs = 0
+        max_t = np.radians(cfg.max_tilt_deg)
+        # --- 2a. provisional tilt: only a clearly tilted rig is corrected before the final window
+        if not self._provisional_done and len(self._recent) >= cfg.provisional_frames:
+            self._provisional_done = True
+            roll, pitch, yaw, _, _ = self._medians(self._recent)
+            if (np.degrees(max(abs(roll), abs(pitch))) >= cfg.provisional_min_deg
+                    and abs(roll) <= max_t and abs(pitch) <= max_t):
+                yaw = yaw if abs(yaw) >= np.radians(cfg.min_yaw_deg) else 0.0
+                changed = self._set_tilt(roll, pitch, yaw)
+                self.state.status = "provisional"
+                self.state.message = (f"provisional tilt: roll {self.state.roll_deg:+.2f}, pitch {self.state.pitch_deg:+.2f} deg "
+                                      f"(final after {cfg.frames} observations)")
+        # --- 2b. final tilt: medians over spaced frames with a rail pair
         if len(self._obs) >= cfg.frames:
-            roll = float(np.median([o.roll for o in self._obs]))
-            pitch = float(np.median([o.pitch for o in self._obs]))
-            yaws = [o.yaw for o in self._obs if np.isfinite(o.yaw)]
-            yaw = float(np.median(yaws)) if yaws else 0.0
-            height = float(np.median([o.height for o in self._obs]))
-            lateral = float(np.median([o.lateral for o in self._obs]))
-            max_t = np.radians(cfg.max_tilt_deg)
+            roll, pitch, yaw, height, lateral = self._medians(self._obs)
             if abs(roll) > max_t or abs(pitch) > max_t:
                 self.state.status = "fallback"
                 self.state.message = (f"implausible tilt (roll {np.degrees(roll):.1f}, pitch "
                                       f"{np.degrees(pitch):.1f} deg): configured mapping kept")
                 self._frozen = True
-                return False
+                return self._set_tilt(0.0, 0.0, 0.0) or changed     # drop a provisional tilt too
             if abs(roll) < np.radians(cfg.apply_min_deg):
                 roll = 0.0
             if abs(pitch) < np.radians(cfg.apply_min_deg):
                 pitch = 0.0
             if abs(yaw) < np.radians(cfg.min_yaw_deg):
                 yaw = 0.0
-            R = rot_z(yaw) @ rot_y(pitch) @ rot_x(roll) @ self._R_orient
-            self.state.R = R
-            self.state.roll_deg, self.state.pitch_deg, self.state.yaw_deg = (float(np.degrees(v)) for v in (roll, pitch, yaw))
+            changed = self._set_tilt(roll, pitch, yaw) or changed
             self.state.height, self.state.lateral = height, lateral
             self.state.frames_used = len(self._obs)
-            identity = np.allclose(R, np.eye(3), atol=1e-9)
+            identity = np.allclose(self.state.R, np.eye(3), atol=1e-9)
             self.state.status = "identity" if identity else "ok"
-            if not self.state.message:
+            if not self.state.message or self.state.message.startswith("provisional"):
                 self.state.message = ("configured mapping confirmed" if identity else
                                       f"tilt corrected: roll {self.state.roll_deg:+.2f}, pitch {self.state.pitch_deg:+.2f}, "
                                       f"yaw {self.state.yaw_deg:+.2f} deg")
             self._frozen = True
-            changed = not identity
         elif self._frames >= cfg.max_frames:
+            kept = "provisional correction kept" if self.state.status == "provisional" else "configured mapping kept"
             self.state.status = "fallback"
-            self.state.message = (f"no rail pair in {self._frames} frames: configured mapping kept"
-                                  if not self._obs else f"only {len(self._obs)} frames with a rail pair: configured mapping kept")
+            self.state.message = (f"no rail pair in {self._frames} frames: {kept}"
+                                  if not self._obs else f"only {len(self._obs)} observations with a rail pair: {kept}")
             self._frozen = True
         return changed

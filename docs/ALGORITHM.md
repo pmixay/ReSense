@@ -67,21 +67,31 @@ the first frames and hands the detector a rotation `R` (`p_processed = R · p_co
    model follows smaller and dynamic yaw; the rails' tangent at the sensor includes the chord
    angle of the car in a curve).
 
-Medians over `frames` = 5 frames with a rail pair are composed into `R` once; corrections below
-`apply_min_deg` = 0.3° are not applied; tilts above `max_tilt_deg` = 15° are rejected
-(configured mapping kept, status `fallback`); without a rail pair in `max_frames` = 100 frames
-the calibrator gives up (`fallback`). After freezing, the same measurement runs every
-`monitor_period` = 50 frames on the corrected cloud and a residual tilt above
-`drift_warn_deg` = 1° (a mount knocked loose) is reported in the health status, never
-silently re-applied. The result is in the status JSON as `mount` (`status`, `orientation`,
-`roll_deg`, `pitch_deg`, `yaw_deg`, `height`, `lateral`, `drift_deg`, `message`); the frozen
-values can be copied into `sensor.roll_deg/pitch_deg/yaw_deg` or given to the node as the
-launch arguments `mount_roll_deg/…` and `sensor_forward/left/up`. On the organizer bags the
-calibrator measures a roll of −1.0…−1.6° on the moving recordings (`roundT_doubleT`) and
-confirms `doubleT_platform` (status `identity`); a real frame rotated by known mounts (roll 3°,
-pitch −4°, the four orientation changes) is recovered to the recorded mount
-(EXPERIMENTS.md §6). Cost: one extra rail/bed measurement per frame during the first 5–10
-frames and every 50th frame afterwards.
+**Two stages for the tilt (v0.6.1).** On a moving train the per-frame roll swings by ±1° with
+the cant transitions and the body's lean — over the 20-minute ride the estimate has a median
+of −0.1° and a 10–90 % range of −1.0…+0.7° at any curvature — and neighbouring frames see
+the same stretch of rail, so the median of 5 consecutive frames (v0.6) was off by up to
+1.6–2.2°: eight fresh detectors on the ride froze eight different "mount rolls" (−1.0…+1.6°)
+for one sensor, and the drift monitor then flagged half of the ride. Now: a **provisional**
+correction from the first `provisional_frames` = 5 observations, applied only for a clearly
+tilted rig (`provisional_min_deg` = 2.5°: the 3.3° of the `doubleT_obstacle` rig is corrected
+after half a second as before); the **final** correction is the median of `frames` = 20
+observations taken every `obs_spacing` = 10 frames (20 s; p90 error 0.5° on the ride, max
+1.0°), applied above `apply_min_deg` = 0.5°, then frozen. Tilts above `max_tilt_deg` = 15° are
+rejected (configured mapping kept, status `fallback`); without a rail pair in `max_frames` =
+400 frames the calibrator gives up (`fallback`). A change re-seeds the track model and clears
+the accumulation buffer; the tracker is reset only for a change above 1° (a new orientation),
+so the final refinement does not drop confirmed tracks. After freezing, the same measurement
+runs every `monitor_period` = 50 frames on the corrected cloud and the **median of the last
+`drift_window` = 10 checks** (50 s) above `drift_warn_deg` = 1.5° — a lasting change, a mount
+knocked loose, not a curve — is reported in the health status, never silently re-applied. The
+result is in the status JSON as `mount` (`status` pending / provisional / ok / identity /
+fallback, `orientation`, `roll_deg`, `pitch_deg`, `yaw_deg`, `height`, `lateral`, `drift_deg`,
+`message`); the frozen values can be copied into `sensor.roll_deg/pitch_deg/yaw_deg` or given
+to the node as the launch arguments `mount_roll_deg/…` and `sensor_forward/left/up`. Real frames
+rotated by known mounts (roll 3°, pitch −4°, the four orientation changes) are recovered to
+the recorded mount (EXPERIMENTS.md §6). Cost: one extra rail/bed measurement per frame during
+the first ~20 s and every 50th frame afterwards.
 
 The track model is seeded again after the correction; since v0.6 its rate limits
 (§3.1) apply only after `track.axis_warmup_frames` = 5 frames, so a wrong first-frame
@@ -469,7 +479,7 @@ the CLI and the ROS node. The ones that change behaviour visibly:
 | `lowobj.min_point_top`, `min_top`, `min_excess`, `eps`, `range_max` (v0.6) | 0.03 m, 0.0 m, 0.05 m, 0.2, 60 m | every low candidate ≥ 3 cm above the rail head, the cluster's top at the rail-head plane (both −1 = any bump above the bed); excess over the bed template; clustering radius; how far the bed is used |
 | `cluster.far_min_height`, `far_max_length`, `far_max_bottom` (v0.6) | 0.6 m, 3 m, 1.0 m | what may alarm between the trusted height reference and the trusted axis range (0 = v0.5 behaviour: nothing) |
 | `cluster.signature_min_lateral`, `column_min_width` (v0.6) | 0.6 m, 0.25 m | where the column / floating signatures apply (hanging cables near the axis are obstacles) |
-| `calibration.enabled`, `frames`, `min_yaw_deg` (v0.6) | true, 5, 3° | mount auto-calibration; `sensor.roll_deg/pitch_deg/yaw_deg` freeze a known mount |
+| `calibration.enabled`, `frames` × `obs_spacing`, `provisional_min_deg`, `min_yaw_deg`, `drift_warn_deg` / `drift_window` (v0.6.1) | true, 20 × 10 frames, 2.5°, 3°, 1.5° / 10 checks | mount auto-calibration (final tilt over 20 s, provisional only for a clearly tilted rig); `sensor.roll_deg/pitch_deg/yaw_deg` freeze a known mount |
 | `health.*` (v0.6) | see §4b | thresholds of the guards; they never change a detection |
 
 ## 6. Limitations (v0.6)
