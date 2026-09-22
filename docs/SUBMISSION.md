@@ -16,8 +16,8 @@ Live status of every deliverable the organizers ask for (spec §5 and §7). Owne
 Package to send: link to the repository at a tagged commit (`v0.1-intermediate`), plus the
 five rows above quoted in the cover message. On the day: `git tag -a v0.1-intermediate -m
 "intermediate submission" && git push origin v0.1-intermediate`, then send the text below with
-the commit hash filled in (the intermediate deadline itself is question 6 in
-[`QUESTIONS.md`](QUESTIONS.md)).
+the commit hash filled in (the intermediate deadline, the form of the final package and the
+stand procedure are the team's own to settle — not organizer questions, `QUESTIONS.md` "Closed").
 
 ### Cover message (draft, Russian — the organizers' language)
 
