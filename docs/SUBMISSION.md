@@ -65,7 +65,7 @@ the commit hash filled in (the intermediate deadline itself is question 6 in
 | 12 | full demonstration on the control bag: `docker build → docker run → ros2 bag play → result` | `scripts/build.sh`, `scripts/run_demo.sh`; same chain on a synthetic bag in CI (`scripts/smoke_test.sh`) | P1 | container chain proven in CI on a synthetic bag (21.09); dry run on a real bag pending (28.09) |
 | 13 | presentation, slides 7–11 exactly per template | [`PRESENTATION.md`](PRESENTATION.md) (texts for 7–11, plan for 12–20, captain's slides), pptx | P2 | texts drafted; pptx in the organizers' template pending |
 | 14 | tests (spec §8.5) | `tests/`, `web/demo/`, CI (`pytest`, `web` and Docker jobs; the Docker job also plays a synthetic bag through the node) | P4 / P1 / P2 | done |
-| 15 | input data description | [`DATASET.md`](DATASET.md), sensor: [`SENSOR.md`](SENSOR.md) | P4 / P1 | done |
+| 15 | input data description | [`DATASET.md`](DATASET.md) (both organizer links: Google Drive bags and the Yandex Disk extended dataset), sensor: [`SENSOR.md`](SENSOR.md) with the Hesai manual in [`sensor/`](sensor/); the test stand's driver / CUDA state in [`organizers/test_stand_software.md`](organizers/test_stand_software.md) | P4 / P1 | done |
 
 ## Dry run (28.09)
 

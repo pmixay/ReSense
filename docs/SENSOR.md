@@ -1,9 +1,18 @@
 # Sensor: Hesai Pandar128 (E3X)
 
-Source: Hesai downloads page, https://www.hesaitech.com/downloads/#pandar128 — user manual
-`Pandar128E3X_v4p5` (rev. 2025-11), angle correction file `Pandar128_Angle_Correction_File`,
-firetime correction file, STEP model. Numbers below are from the manual; the "measured" column
-is what [`DATASET.md`](DATASET.md) found in the organizer bags.
+Source: the user manual handed out by the organizers on 2026-09-22, kept in the repository as
+[`sensor/Pandar128E3X_v4p5_User_Manual_128-en-240710-1.pdf`](sensor/Pandar128E3X_v4p5_User_Manual_128-en-240710-1.pdf)
+(Hesai document version 128-en-240710, July 2024, 145 pages, classification "Public", 5.4 MB,
+sha256 `69c09eb2af5eb358e6d76559108238f15a1ee57b742560b8be8d7fce582e915a`). The angle
+correction file `Pandar128_Angle_Correction_File`, the firetime correction file and the STEP
+model are on Hesai's downloads page, https://www.hesaitech.com/downloads/#pandar128. The
+manual's legal notice forbids reproducing it without Hesai's authorization, while its safety
+notice requires integrators to give the users access to it: the copy here is the organizers'
+hand-out for the team's own use — do not redistribute it outside the hackathon. An earlier
+revision of this file cited "rev. 2025-11" from the downloads page; the hand-out is the
+2024-07 version and every number below was re-checked against it on 22.09 (the sections and
+appendices named below are the manual's own). The "measured" column is what
+[`DATASET.md`](DATASET.md) found in the organizer bags.
 
 ## 1. Identification
 
@@ -16,7 +25,7 @@ The bags come from a **Pandar128**, not an AT-series unit as first assumed. Evid
 | fine vertical band | 0.125° on channels 26–90 (+2.01° … −6.10°) | 0.125° step on rings 26–90 (+2.0° … −6.2°) |
 | coarse bands | 0.5° on channels 2–26 and 90–127, 1° at the ends | 0.5° outside the fine band |
 | per-channel elevations (angle correction file) | channel 1 = +14.436°, channel 128 = −25.016° | ring 0 = +14.402°, ring 127 = −25.120°; all 128 agree within 0.12° |
-| horizontal resolution | 0.1° at 10 Hz (0.2° in Standard mode) | 0.1° |
+| horizontal resolution | High Resolution mode at 10 Hz: **0.1° on the 64 channels 26–89, 0.2° on the other channels**; Standard mode (factory default): 0.2° for all channels; near-field measurement (< 2.85 m) always 0.4° (§4.4) | 0.1° column grid (1200 columns for the 120° window); whether the coarse channels fill every column was not checked |
 | horizontal FOV | 360°, configurable azimuth window(s) | 1200 columns = 120° window, returns within ±50° |
 | frame rate | 10 Hz / 20 Hz | ~10 Hz |
 | return modes | single (last / strongest / first), dual (last+strongest, last+first, first+strongest) | dual return, 2 × 153 600 slots |
@@ -35,9 +44,11 @@ table stays.
 | ranging accuracy | ±2 cm (1–200 m, average); ±5 cm below 1 m | the reported obstacle distance is limited by our clustering (nearest point), not by the sensor |
 | minimum range | 0.3 m on 32 near-field channels, 2.7 m on the others; near-field returns (0.3–2.85 m) have 0.4° horizontal resolution | `sensor.min_range = 2.5 m` discards the near-field zone, which only contains the train's own nose |
 | point rate | 3 456 000 pts/s single, 6 912 000 dual (max, 360°) | the 120° window gives ~1.15 M valid points/s single; with dual return and empty slots the bags carry ~190 k valid points per frame |
-| dual return blocks | two adjacent blocks per firing; **when a ray has a single return both blocks carry the same point** | duplicates in the cloud: ~190 k points but ~150 k distinct rays; the range-normalised voxel grid merges them before clustering |
-| reflectivity | 0–255, default linear mapping (value = reflectivity in %); > 100 for retro-reflectors | `intensity` in the bags is reflectivity %; rails and signs saturate at 255. Usable to flag retro-reflective infrastructure (signs, markers) as non-obstacles |
-| clock | GNSS or PTP (1588v2 / 802.1AS), ≤ 1 µs; unsynchronised sensor time starts in year 2000 | the bags have no clock source (`timestamp` field is year-2000 epoch): use the bag receive time. On the train PTP will be available: per-point timestamps allow motion deskew |
+| dual return blocks | two adjacent blocks per firing with the same azimuth (§3.1.2.3). In **Last and First** mode a ray with a single return is stored in both blocks; in **Last and Strongest** (default) and First and Strongest, block 2 stores the *second strongest* return when block 1's return is also the strongest — the manual does not say what block 2 holds when there is only one return | duplicates are measured in the cloud: ~190 k points but ~150 k distinct rays. So either the recordings use Last and First, or a lone return is repeated in the default mode too — asked in §4; the range-normalised voxel grid merges the duplicates before clustering either way |
+| reflectivity | 0–255, default linear mapping (value = reflectivity in %); > 100 for retro-reflectors. Two optional non-linear mappings (Appendix C) compress the scale, and the value is then no longer a percentage | the bags' values (median 6–7, retro-reflectors 255) match the linear mapping: `intensity` is reflectivity %; rails and signs saturate at 255. Usable to flag retro-reflective infrastructure (signs, markers) as non-obstacles; if the train's unit were switched to a non-linear mapping the `cluster.retro_intensity` threshold would have to be re-derived |
+| clock | GNSS (GPS PPS + NMEA) or PTP (1588v2 / 802.1AS), ≤ 1 µs; without a source the sensor clock starts at a virtual UTC 2000-01-01 | the bags have no clock source (`timestamp` field is year-2000 epoch): use the bag receive time. On the train PTP will be available: per-point timestamps allow motion deskew |
+| built-in IMU | every point-cloud packet tail carries IMU data (§3.1.2.5): 3-axis acceleration (unit 0.244 mg), 3-axis angular velocity (unit 17.5 mdps), IMU temperature and an IMU timestamp (25 µs ticks from power-on) | the sensor itself reports angular rate and acceleration — enough for vibration / pitch compensation and, integrated with a speed reference, for the ego-motion step. The `PointCloud2` messages in the bags do not carry it; whether the train's driver publishes an IMU topic is asked in §4 |
+| factory defaults (web control, §4) | 600 rpm (10 Hz), return mode Last and Strongest, Standard horizontal resolution (0.2°), clock source GPS, linear reflectivity mapping, angle-based trigger, azimuth FOV "for all channels" 0–360° | the bags show 0.1° columns and a 120° window, so the recording unit was reconfigured (High Resolution, custom FOV). The control run must use the same settings, or the point budget in `DATASET.md` changes by up to 2× per axis |
 | sweep and motion | one 120° window is swept in 33 ms; at 80 km/h (22 m/s) that is 0.7 m of travel within a frame and 2.2 m between frames | relevant for multi-frame accumulation (Sprint 2): the ego-motion estimate must be applied per frame, and per-point deskew is worth it above ~40 km/h |
 | azimuth FOV setting | up to 5 azimuth windows can be configured in the sensor | the 120° window in the bags was set on the sensor; the control bag will presumably use the same window, but the code does not assume it |
 | coordinate system | Z = rotation axis, Y = 0° azimuth, clockwise rotation (top view) | in the bags forward = −Y, left = +X, up = +Z: the sensor's 0° mark points backwards. `sensor.forward/left/up` in `configs/default.yaml` captures this and nothing else in the code depends on the sensor model |
@@ -71,8 +82,11 @@ table stays.
 
 ## 4. Open questions for the organizers
 
-* Return mode of the recordings (last + strongest is the manual's default) and whether the
-  control bag uses the same 120° azimuth window and High Resolution mode.
+* Return mode of the recordings (Last and Strongest is the manual's default, but the duplicate
+  points in the bags match the Last and First description, §2 "dual return blocks") and whether
+  the control bag uses the same 120° azimuth window and High Resolution mode.
+* Whether the lidar driver on the train publishes the packet-tail IMU data (accelerometer /
+  gyroscope) as a ROS topic, and if so its name and rate.
 * Mounting height and pitch on the train (the bags show two different mounts; the detector
   self-calibrates, but the number helps the synthetic injector).
 * Whether PTP time will be available on the train, and the odometry / speed source.

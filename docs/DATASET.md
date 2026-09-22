@@ -4,6 +4,15 @@
 (organizers' link, shared with the team — the bags themselves are never committed, see
 `.gitignore`).
 
+**Extended dataset (recorded 2026-09-17, link received 22.09):**
+[`new_data.zst`, 17.1 GB, Yandex Disk](https://disk.yandex.ru/d/N8IUpAyd7jyvow) — a
+zstd-compressed tar of **one recording split into rosbag2 files** `new_data/new_data_<N>.db3`
+(sqlite3, ~408 MB / 51 frames / 5 s each, no `metadata.yaml` alongside them in the archive
+unless noted in the section "Extended dataset" below, which records what was read from it).
+`scripts/unpack_dataset.py` streams it straight from the link (`--url`, no 17 GB copy) or
+from a downloaded `new_data.zst`; a single `.db3` file opens directly with `resense run --bag
+<file>.db3` (the `rosbags` reader does not need the metadata file).
+
 Source: `Датасет.zip` (3.7 GB) → `датасет.zip` → `archive/for_hackathon.zst` (tar, zstd).
 Unpack: `tar --zstd -xvf for_hackathon.zst` (or `python -c "import zstandard,tarfile..."` if
 `zstd` is missing). Six ROS 2 bags (sqlite3 storage, `metadata.yaml` + `*_0.db3`), one topic.
