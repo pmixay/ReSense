@@ -24,7 +24,7 @@ services:
     <<: *data
     image: resense:latest
     profiles: ["tools"]
-    command: ros2 bag play /data/${RESENSE_BAG:-roundT_doubleT} --clock
+    command: ros2 bag play /data/${RESENSE_BAG:-roundT_doubleT} --clock --delay 3
   echo:
     # the headless equivalent of watching RViz: -1.0 means path clear
     image: resense:latest

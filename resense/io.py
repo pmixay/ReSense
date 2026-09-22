@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import glob
 import os
+import re
 from pathlib import Path
 from typing import Iterator, Optional
 
@@ -55,11 +56,39 @@ def bag_info(bag_path: str) -> dict:
     }
 
 
-def iter_npy_frames(directory: str, sensor: SensorConfig, pattern: str = "*.npy") -> Iterator[tuple]:
+def npy_frame_index(path: str) -> Optional[int]:
+    """Bag frame index encoded in a cached file name (``<bag>_0120.npy`` -> 120, as
+    ``scripts/cache_frames.py`` writes them), or None when the name carries no number."""
+    stem = os.path.splitext(os.path.basename(path))[0]
+    m = re.search(r"(\d+)$", stem)
+    return int(m.group(1)) if m else None
+
+
+def iter_npy_frames(directory: str, sensor: SensorConfig, pattern: str = "*.npy", every: int = 1,
+                    start: int = 0, limit: Optional[int] = None,
+                    index_from_name: bool = False) -> Iterator[tuple]:
+    """Yield (index, Frame) for the cached ``*.npy`` files of a directory in sorted order.
+
+    ``index`` is the file's position in the full sorted list (so ``every`` / ``start`` /
+    ``limit`` behave like they do for a bag), or, with ``index_from_name``, the number at the
+    end of the file name when there is one (the bag frame index for ``scripts/cache_frames.py``
+    output). The stamp is ``index * 0.1`` s: cached files carry no bag time, but with
+    ``index_from_name`` a strided cache keeps the bag's frame spacing.
+    """
     files = sorted(glob.glob(os.path.join(directory, pattern)))
+    n_out = 0
     for i, f in enumerate(files):
+        if i < start or (i - start) % every != 0:
+            continue
         arr = np.load(f)
-        yield i, frame_from_compact(arr, sensor, stamp=float(i) * 0.1, frame_id=os.path.basename(f))
+        idx = i
+        if index_from_name:
+            named = npy_frame_index(f)
+            idx = i if named is None else named
+        yield idx, frame_from_compact(arr, sensor, stamp=float(idx) * 0.1, frame_id=os.path.basename(f))
+        n_out += 1
+        if limit is not None and n_out >= limit:
+            return
 
 
 def load_npy_frame(path: str, sensor: SensorConfig) -> Frame:

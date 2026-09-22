@@ -43,6 +43,6 @@ stdbuf -oL ros2 topic echo /resense/nearest_distance --field data 2>/dev/null \
   | stdbuf -oL awk '{ if ($1 < 0) print "  path clear"; else printf "  OBSTACLE %.1f m\n", $1 }' &
 
 sleep 2
-ros2 bag play "/data/$BAG_NAME" --rate "$RATE" --clock
+ros2 bag play "/data/$BAG_NAME" --rate "$RATE" --clock --delay 3   # --delay: let DDS discovery finish before the first frame
 sleep 2
 INNER

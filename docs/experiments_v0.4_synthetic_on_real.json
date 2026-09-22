@@ -1,0 +1,4731 @@
+{
+ "_meta": {
+  "title": "Set S (docs/EVALUATION.md section 1): catalogue objects ray-cast into real empty frames, evaluated with the merged defaults of f4e311f",
+  "date": "2026-09-21",
+  "author": "P4",
+  "commit": "f4e311f (evaluated with the P4 branch's `eval`, which gives sequence rows' speed_mps to the detector; detector code identical to f4e311f)",
+  "config": "configs/default.yaml of f4e311f",
+  "config_sha256": "6878ec08b68fe8931b4d3ec1a197e0d0dd8161f2c61538e4340b0bf7e549e7e2",
+  "how_built": "the `inject` / `eval` commands recorded per set below (docs/EVALUATION.md section 3); static sets keep their *.npz in data/S_<bag>/ (gitignored), sequence frames were deleted after their evaluation (208 frames x 1.1 MB per set), their gt.json is kept Sequence sets contain one kind each, so their per_bin_counts are the per-kind bins used in recall_by_range_per_kind.",
+  "protocol": "static sets: --repeat 3 emulates persistence, no speed given (the estimator runs; on identical repeated frames it reports 0 m/s from the persistent-tracks cue and 2-5 frames are merged, see notes); sequences: --repeat 1, the rows' speed_mps = 15 m/s given to the detector (summary_given) and withheld (summary_nospeed); objects with n_points 0 (fully occluded by real geometry) are excluded from recall and counted in occluded_gt_skipped",
+  "recall_caveat": "sequence recall is per object-frame: the first two steps of every 8-step sequence cannot be confirmed (tracking.confirm_hits = 3), so the ceiling is 6/8 = 75 % for an object that is visible from its first step, and an object that starts beyond ~150 m approaches only 10.5 m within its sequence and stays in the 150-300 m bins; quote the first-detection distances for sequences and the static sets for per-range recall. Objects with n_points 0 (fully occluded by real geometry, mostly placed under the real bed where the per-frame track model extrapolates too low beyond ~80 m, EXPERIMENTS.md section 4 item 3) are excluded and counted in occluded_gt_skipped: 23-108 of the 205-208 object-frames per sequence set, 5-12 of 26-55 per static set",
+  "false_alarm_caveat": "fp_* and alarm_* of the static sets are not meaningful: every 10th frame of a moving bag is a new scene 1 s apart and the repeats confirm any corridor structure; the sequence sets reuse one background per 8 frames, so their fp_events are the background structures that the (given or estimated) shift smears or that persist",
+  "machine": "4-core sandbox shared with another agent, load 2-5 during the runs (latency fields noisy)",
+  "run_log": [
+   "commit f4e311fa0ab4cbe9c1b066ecd6cb968a5f095b22  config 6878ec08b68fe893  start 11:46:32   11:46:32 up  1:04,  0 user,  load average: 2.99, 4.38, 2.98",
+   "=== static roundT_doubleT  11:46:32   11:46:32 up  1:04,  0 user,  load average: 2.99, 4.38, 2.98",
+   "=== static roundT_pressureGate_roundT  11:47:06   11:47:06 up  1:04,  0 user,  load average: 4.02, 4.49, 3.07",
+   "=== static roundT_squareT_pressureGate_squareT  11:47:39   11:47:39 up  1:05,  0 user,  load average: 4.38, 4.54, 3.14",
+   "=== sequence SEQ_person_s1  11:48:34   11:48:34 up  1:06,  0 user,  load average: 4.82, 4.58, 3.23",
+   "=== sequence SEQ_person_s2  11:50:11   11:50:11 up  1:07,  0 user,  load average: 3.21, 4.22, 3.24",
+   "=== sequence SEQ_person_s3  11:51:41   11:51:41 up  1:09,  0 user,  load average: 2.29, 3.63, 3.12",
+   "=== sequence SEQ_box0.5_s1  11:53:10   11:53:10 up  1:10,  0 user,  load average: 2.27, 3.25, 3.03",
+   "=== sequence SEQ_box0.5_s2  11:54:39   11:54:39 up  1:12,  0 user,  load average: 4.05, 3.61, 3.17",
+   "=== sequence SEQ_box0.5_s3  11:56:05   11:56:05 up  1:13,  0 user,  load average: 3.99, 3.74, 3.26",
+   "=== sequence SEQ_box1.0_s1  11:57:32   11:57:32 up  1:15,  0 user,  load average: 2.03, 3.22, 3.13",
+   "=== sequence SEQ_box1.0_s2  11:59:00   11:59:00 up  1:16,  0 user,  load average: 1.45, 2.73, 2.96",
+   "=== sequence SEQ_box1.0_s3  12:00:30   12:00:30 up  1:18,  0 user,  load average: 3.17, 2.92, 3.00",
+   "/home/user/ReSense/.claude/worktrees/wf_892b8747-5ea-1/resense/track.py:132: RankWarning: Polyfit may be poorly conditioned",
+   "  coef = np.concatenate([[0.0], np.polyfit(xs, zs, 1, w=ws)])",
+   "/home/user/ReSense/.claude/worktrees/wf_892b8747-5ea-1/resense/track.py:132: RankWarning: Polyfit may be poorly conditioned",
+   "  coef = np.concatenate([[0.0], np.polyfit(xs, zs, 1, w=ws)])",
+   "=== sequence SEQ_plank_s1  12:01:59   12:01:59 up  1:19,  0 user,  load average: 3.88, 3.28, 3.12",
+   "=== sequence SEQ_plank_s2  12:03:27   12:03:27 up  1:20,  0 user,  load average: 4.60, 3.71, 3.29",
+   "=== sequence SEQ_plank_s3  12:04:54   12:04:54 up  1:22,  0 user,  load average: 3.21, 3.61, 3.30",
+   "=== sequence SEQ_trolley_s1  12:06:21   12:06:21 up  1:23,  0 user,  load average: 4.30, 3.83, 3.41",
+   "=== sequence SEQ_trolley_s2  12:07:48   12:07:48 up  1:25,  0 user,  load average: 2.14, 3.31, 3.26",
+   "=== sequence SEQ_trolley_s3  12:09:19   12:09:19 up  1:26,  0 user,  load average: 4.16, 3.61, 3.37",
+   "DONE 12:10:47   12:10:47 up  1:28,  0 user,  load average: 4.19, 3.80, 3.46"
+  ]
+ },
+ "recall_by_range_per_kind": {
+  "person": {
+   "sequences_given_speed": {
+    "0-50": [
+     85,
+     121
+    ],
+    "50-100": [
+     19,
+     62
+    ],
+    "100-150": [
+     15,
+     95
+    ],
+    "150-200": [
+     0,
+     56
+    ],
+    "200-300": [
+     0,
+     70
+    ]
+   },
+   "sequences_no_speed": {
+    "0-50": [
+     83,
+     121
+    ],
+    "50-100": [
+     25,
+     62
+    ],
+    "100-150": [
+     12,
+     95
+    ],
+    "150-200": [
+     0,
+     56
+    ],
+    "200-300": [
+     0,
+     70
+    ]
+   },
+   "static_3_bags": {
+    "0-50": [
+     5,
+     6
+    ],
+    "50-100": [
+     2,
+     2
+    ],
+    "100-150": [
+     1,
+     2
+    ],
+    "150-200": [
+     0,
+     1
+    ],
+    "200-300": [
+     0,
+     2
+    ]
+   },
+   "first_detection_given_speed_m": [
+    7.2,
+    12.1,
+    13.5,
+    14.9,
+    16.8,
+    18.5,
+    18.6,
+    29.1,
+    32.0,
+    35.7,
+    35.9,
+    36.7,
+    38.4,
+    49.1,
+    49.4,
+    62.5,
+    70.1,
+    70.3,
+    72.6,
+    75.7,
+    107.5,
+    114.6,
+    117.5,
+    123.7
+   ],
+   "first_detection_no_speed_m": [
+    7.2,
+    12.0,
+    12.1,
+    14.9,
+    16.8,
+    18.5,
+    18.6,
+    29.1,
+    32.0,
+    34.2,
+    35.9,
+    36.7,
+    38.4,
+    49.1,
+    49.4,
+    62.5,
+    70.1,
+    72.6,
+    73.3,
+    81.7,
+    107.5,
+    114.6,
+    120.5,
+    123.7
+   ],
+   "occluded_gt_skipped_sequences": 183
+  },
+  "box0.5": {
+   "sequences_given_speed": {
+    "0-50": [
+     47,
+     85
+    ],
+    "50-100": [
+     8,
+     73
+    ],
+    "100-150": [
+     5,
+     64
+    ],
+    "150-200": [
+     0,
+     37
+    ],
+    "200-300": [
+     0,
+     37
+    ]
+   },
+   "sequences_no_speed": {
+    "0-50": [
+     42,
+     85
+    ],
+    "50-100": [
+     8,
+     73
+    ],
+    "100-150": [
+     8,
+     64
+    ],
+    "150-200": [
+     0,
+     37
+    ],
+    "200-300": [
+     0,
+     37
+    ]
+   },
+   "static_3_bags": {
+    "0-50": [
+     0,
+     2
+    ],
+    "50-100": [
+     2,
+     6
+    ],
+    "100-150": [
+     0,
+     3
+    ]
+   },
+   "first_detection_given_speed_m": [
+    5.6,
+    8.0,
+    10.4,
+    29.1,
+    30.3,
+    34.5,
+    37.2,
+    43.4,
+    44.3,
+    49.5,
+    53.2,
+    67.1,
+    69.2,
+    71.0,
+    104.7,
+    125.7
+   ],
+   "first_detection_no_speed_m": [
+    7.1,
+    8.0,
+    10.4,
+    29.1,
+    30.3,
+    34.5,
+    37.2,
+    44.3,
+    68.6,
+    71.0,
+    110.7,
+    125.7
+   ],
+   "occluded_gt_skipped_sequences": 239
+  },
+  "box1.0": {
+   "sequences_given_speed": {
+    "0-50": [
+     53,
+     83
+    ],
+    "50-100": [
+     24,
+     80
+    ],
+    "100-150": [
+     0,
+     104
+    ],
+    "150-200": [
+     0,
+     95
+    ],
+    "200-300": [
+     0,
+     39
+    ]
+   },
+   "sequences_no_speed": {
+    "0-50": [
+     54,
+     83
+    ],
+    "50-100": [
+     29,
+     80
+    ],
+    "100-150": [
+     2,
+     104
+    ],
+    "150-200": [
+     0,
+     95
+    ],
+    "200-300": [
+     0,
+     39
+    ]
+   },
+   "static_3_bags": {
+    "0-50": [
+     1,
+     2
+    ],
+    "50-100": [
+     3,
+     5
+    ],
+    "100-150": [
+     1,
+     1
+    ],
+    "150-200": [
+     0,
+     5
+    ]
+   },
+   "first_detection_given_speed_m": [
+    8.6,
+    8.6,
+    23.7,
+    25.7,
+    29.1,
+    29.2,
+    38.8,
+    41.6,
+    51.6,
+    54.0,
+    63.0,
+    68.1,
+    70.0,
+    78.7
+   ],
+   "first_detection_no_speed_m": [
+    8.6,
+    8.6,
+    23.7,
+    24.2,
+    29.1,
+    29.2,
+    38.8,
+    41.6,
+    43.9,
+    49.5,
+    51.6,
+    64.5,
+    68.1,
+    73.0,
+    77.1,
+    78.7,
+    111.2
+   ],
+   "occluded_gt_skipped_sequences": 96
+  },
+  "plank": {
+   "sequences_given_speed": {
+    "0-50": [
+     6,
+     135
+    ],
+    "50-100": [
+     8,
+     51
+    ],
+    "100-150": [
+     0,
+     31
+    ],
+    "150-200": [
+     0,
+     41
+    ],
+    "200-300": [
+     0,
+     26
+    ]
+   },
+   "sequences_no_speed": {
+    "0-50": [
+     6,
+     135
+    ],
+    "50-100": [
+     6,
+     51
+    ],
+    "100-150": [
+     0,
+     31
+    ],
+    "150-200": [
+     0,
+     41
+    ],
+    "200-300": [
+     0,
+     26
+    ]
+   },
+   "static_3_bags": {
+    "0-50": [
+     1,
+     3
+    ],
+    "50-100": [
+     0,
+     6
+    ],
+    "100-150": [
+     0,
+     2
+    ],
+    "150-200": [
+     1,
+     1
+    ],
+    "200-300": [
+     0,
+     1
+    ]
+   },
+   "first_detection_given_speed_m": [
+    23.2,
+    33.2,
+    61.6,
+    67.2
+   ],
+   "first_detection_no_speed_m": [
+    23.2,
+    33.2,
+    61.6
+   ],
+   "occluded_gt_skipped_sequences": 230
+  },
+  "trolley": {
+   "sequences_given_speed": {
+    "0-50": [
+     49,
+     101
+    ],
+    "50-100": [
+     11,
+     59
+    ],
+    "100-150": [
+     2,
+     45
+    ],
+    "150-200": [
+     0,
+     53
+    ],
+    "200-300": [
+     0,
+     43
+    ]
+   },
+   "sequences_no_speed": {
+    "0-50": [
+     53,
+     101
+    ],
+    "50-100": [
+     19,
+     59
+    ],
+    "100-150": [
+     6,
+     45
+    ],
+    "150-200": [
+     0,
+     53
+    ],
+    "200-300": [
+     0,
+     43
+    ]
+   },
+   "static_3_bags": {
+    "0-50": [
+     3,
+     5
+    ],
+    "50-100": [
+     0,
+     2
+    ],
+    "100-150": [
+     0,
+     6
+    ],
+    "150-200": [
+     0,
+     3
+    ],
+    "200-300": [
+     0,
+     1
+    ]
+   },
+   "first_detection_given_speed_m": [
+    11.8,
+    15.0,
+    28.0,
+    35.2,
+    37.7,
+    42.6,
+    45.0,
+    46.7,
+    50.2,
+    68.9,
+    69.1,
+    92.8,
+    114.9
+   ],
+   "first_detection_no_speed_m": [
+    11.8,
+    15.0,
+    28.0,
+    35.2,
+    37.7,
+    42.6,
+    44.8,
+    45.0,
+    46.7,
+    50.2,
+    55.6,
+    68.9,
+    69.1,
+    98.8,
+    114.9
+   ],
+   "occluded_gt_skipped_sequences": 181
+  }
+ },
+ "static": {
+  "roundT_doubleT": {
+   "inject": "resense inject --npy /data/cache/roundT_doubleT --every 10 --out data/S_roundT_doubleT --kinds person,box0.5,box1.0,plank,trolley --distances 10:250 --negative-fraction 0.2 --seed 1",
+   "eval": "resense eval data/S_roundT_doubleT --repeat 3",
+   "gt_meta": {
+    "source": "inject",
+    "kinds": [
+     "person",
+     "box0.5",
+     "box1.0",
+     "plank",
+     "trolley"
+    ],
+    "distances": [
+     10.0,
+     250.0
+    ],
+    "per_frame": 1,
+    "negative_fraction": 0.2,
+    "sequence": 1,
+    "speed_mps": 0.0,
+    "frame_dt": 0.1,
+    "augment": false,
+    "seed": 1,
+    "input": "/data/cache/roundT_doubleT",
+    "every": 10,
+    "start": 0
+   },
+   "gt_counts": {
+    "frames": 26,
+    "objects": 26,
+    "in_gauge": 21,
+    "occluded": 9
+   },
+   "summary": {
+    "frames": 26,
+    "empty_frames": 12,
+    "recall": 0.5,
+    "recall_by_range": {
+     "0-50": 1.0,
+     "50-100": 0.5,
+     "100-150": 0.3333333333333333,
+     "150-200": 0.0
+    },
+    "per_bin_counts": {
+     "50-100": [
+      2,
+      4
+     ],
+     "150-200": [
+      0,
+      3
+     ],
+     "0-50": [
+      4,
+      4
+     ],
+     "100-150": [
+      1,
+      3
+     ]
+    },
+    "fp_frames": 8,
+    "fp_frame_rate": 0.6666666666666666,
+    "fp_detections": 21,
+    "first_detection_distance": {
+     "box1.0_0_0": 84.8395484825165,
+     "trolley_3_0": 40.62896475905671,
+     "trolley_6_0": 30.925177837300453,
+     "box0.5_17_0": 73.37998642085196,
+     "trolley_18_0": 19.35243566658106,
+     "person_22_0": 21.56531986897236,
+     "person_23_0": 111.27598613188229
+    },
+    "latency_ms_mean": 93.77115384615384,
+    "latency_ms_p95": 109.64750000000001,
+    "latency_ms_max": 128.26,
+    "recall_by_class": {
+     "box0.5": 0.3333333333333333,
+     "box1.0": 0.5,
+     "person": 1.0,
+     "plank": 0.0,
+     "trolley": 0.6
+    },
+    "per_class_counts": {
+     "box1.0": [
+      1,
+      2
+     ],
+     "plank": [
+      0,
+      2
+     ],
+     "trolley": [
+      3,
+      5
+     ],
+     "box0.5": [
+      1,
+      3
+     ],
+     "person": [
+      2,
+      2
+     ]
+    },
+    "alarm_frames": 19,
+    "alarm_events": 20,
+    "alarm_distance_min": 17.52,
+    "alarm_distance_max": 111.1,
+    "advisory_frames": 17,
+    "advisory_frame_rate": 0.6538461538461539,
+    "fp_events": 13,
+    "bag_time_s": 25.0,
+    "fp_events_per_hour": 1872.0,
+    "distance_km": 0.00017,
+    "fp_events_per_km": 76470.58823529411,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.09677416673733522,
+    "distance_error_max_abs": 0.17598613188229706,
+    "distance_error_bias": -0.09677416673733522,
+    "lateral_error_mean_abs": 0.1802719037668397,
+    "first_alarm_frame": 0,
+    "ego_speed_sources": {
+     "estimated": 25,
+     "none": 1
+    },
+    "n_accumulated_mean": 3.0,
+    "per_class_bin_counts": {
+     "box0.5": {
+      "50-100": [
+       1,
+       1
+      ],
+      "100-150": [
+       0,
+       2
+      ]
+     },
+     "box1.0": {
+      "50-100": [
+       1,
+       1
+      ],
+      "150-200": [
+       0,
+       1
+      ]
+     },
+     "person": {
+      "0-50": [
+       1,
+       1
+      ],
+      "100-150": [
+       1,
+       1
+      ]
+     },
+     "plank": {
+      "50-100": [
+       0,
+       2
+      ]
+     },
+     "trolley": {
+      "0-50": [
+       3,
+       3
+      ],
+      "150-200": [
+       0,
+       2
+      ]
+     }
+    },
+    "occluded_gt_skipped": 9,
+    "frames_processed": 26,
+    "gt_frames": 26,
+    "repeat": 3
+   }
+  },
+  "roundT_pressureGate_roundT": {
+   "inject": "resense inject --npy /data/cache/roundT_pressureGate_roundT --every 10 --out data/S_roundT_pressureGate_roundT --kinds person,box0.5,box1.0,plank,trolley --distances 10:250 --negative-fraction 0.2 --seed 1",
+   "eval": "resense eval data/S_roundT_pressureGate_roundT --repeat 3",
+   "gt_meta": {
+    "source": "inject",
+    "kinds": [
+     "person",
+     "box0.5",
+     "box1.0",
+     "plank",
+     "trolley"
+    ],
+    "distances": [
+     10.0,
+     250.0
+    ],
+    "per_frame": 1,
+    "negative_fraction": 0.2,
+    "sequence": 1,
+    "speed_mps": 0.0,
+    "frame_dt": 0.1,
+    "augment": false,
+    "seed": 1,
+    "input": "/data/cache/roundT_pressureGate_roundT",
+    "every": 10,
+    "start": 0
+   },
+   "gt_counts": {
+    "frames": 27,
+    "objects": 27,
+    "in_gauge": 23,
+    "occluded": 5
+   },
+   "summary": {
+    "frames": 27,
+    "empty_frames": 7,
+    "recall": 0.15,
+    "recall_by_range": {
+     "0-50": 0.14285714285714285,
+     "50-100": 0.3333333333333333,
+     "100-150": 0.0,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "50-100": [
+      2,
+      6
+     ],
+     "150-200": [
+      0,
+      1
+     ],
+     "100-150": [
+      0,
+      5
+     ],
+     "0-50": [
+      1,
+      7
+     ],
+     "200-300": [
+      0,
+      1
+     ]
+    },
+    "fp_frames": 5,
+    "fp_frame_rate": 0.7142857142857143,
+    "fp_detections": 17,
+    "first_detection_distance": {
+     "box1.0_0_0": 84.8395484825165,
+     "box0.5_12_0": 59.93752928533313,
+     "box1.0_22_0": 32.43340883565593
+    },
+    "latency_ms_mean": 89.64444444444445,
+    "latency_ms_p95": 118.03599999999999,
+    "latency_ms_max": 128.08,
+    "recall_by_class": {
+     "box0.5": 0.5,
+     "box1.0": 0.4,
+     "person": 0.0,
+     "plank": 0.0,
+     "trolley": 0.0
+    },
+    "per_class_counts": {
+     "box1.0": [
+      2,
+      5
+     ],
+     "plank": [
+      0,
+      5
+     ],
+     "trolley": [
+      0,
+      5
+     ],
+     "person": [
+      0,
+      3
+     ],
+     "box0.5": [
+      1,
+      2
+     ]
+    },
+    "alarm_frames": 14,
+    "alarm_events": 15,
+    "alarm_distance_min": 8.58,
+    "alarm_distance_max": 84.65,
+    "advisory_frames": 15,
+    "advisory_frame_rate": 0.5555555555555556,
+    "fp_events": 12,
+    "bag_time_s": 26.0,
+    "fp_events_per_hour": 1661.5384615384617,
+    "distance_km": 8.999999999999999e-05,
+    "fp_events_per_km": 133333.33333333334,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.15682886783518768,
+    "distance_error_max_abs": 0.21340883565593316,
+    "distance_error_bias": -0.15682886783518768,
+    "lateral_error_mean_abs": 0.2716134758006889,
+    "first_alarm_frame": 0,
+    "ego_speed_sources": {
+     "estimated": 26,
+     "none": 1
+    },
+    "n_accumulated_mean": 2.5555555555555554,
+    "per_class_bin_counts": {
+     "box0.5": {
+      "0-50": [
+       0,
+       1
+      ],
+      "50-100": [
+       1,
+       1
+      ]
+     },
+     "box1.0": {
+      "0-50": [
+       1,
+       2
+      ],
+      "50-100": [
+       1,
+       2
+      ],
+      "150-200": [
+       0,
+       1
+      ]
+     },
+     "person": {
+      "0-50": [
+       0,
+       1
+      ],
+      "100-150": [
+       0,
+       1
+      ],
+      "200-300": [
+       0,
+       1
+      ]
+     },
+     "plank": {
+      "0-50": [
+       0,
+       1
+      ],
+      "50-100": [
+       0,
+       2
+      ],
+      "100-150": [
+       0,
+       2
+      ]
+     },
+     "trolley": {
+      "0-50": [
+       0,
+       2
+      ],
+      "50-100": [
+       0,
+       1
+      ],
+      "100-150": [
+       0,
+       2
+      ]
+     }
+    },
+    "occluded_gt_skipped": 5,
+    "frames_processed": 27,
+    "gt_frames": 27,
+    "repeat": 3
+   }
+  },
+  "roundT_squareT_pressureGate_squareT": {
+   "inject": "resense inject --npy /data/cache/roundT_squareT_pressureGate_squareT --every 10 --out data/S_roundT_squareT_pressureGate_squareT --kinds person,box0.5,box1.0,plank,trolley --distances 10:250 --negative-fraction 0.2 --seed 1",
+   "eval": "resense eval data/S_roundT_squareT_pressureGate_squareT --repeat 3",
+   "gt_meta": {
+    "source": "inject",
+    "kinds": [
+     "person",
+     "box0.5",
+     "box1.0",
+     "plank",
+     "trolley"
+    ],
+    "distances": [
+     10.0,
+     250.0
+    ],
+    "per_frame": 1,
+    "negative_fraction": 0.2,
+    "sequence": 1,
+    "speed_mps": 0.0,
+    "frame_dt": 0.1,
+    "augment": false,
+    "seed": 1,
+    "input": "/data/cache/roundT_squareT_pressureGate_squareT",
+    "every": 10,
+    "start": 0
+   },
+   "gt_counts": {
+    "frames": 55,
+    "objects": 55,
+    "in_gauge": 43,
+    "occluded": 12
+   },
+   "summary": {
+    "frames": 55,
+    "empty_frames": 22,
+    "recall": 0.30303030303030304,
+    "recall_by_range": {
+     "0-50": 0.7142857142857143,
+     "50-100": 0.2727272727272727,
+     "100-150": 0.16666666666666666,
+     "150-200": 0.16666666666666666,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "50-100": [
+      3,
+      11
+     ],
+     "150-200": [
+      1,
+      6
+     ],
+     "200-300": [
+      0,
+      3
+     ],
+     "100-150": [
+      1,
+      6
+     ],
+     "0-50": [
+      5,
+      7
+     ]
+    },
+    "fp_frames": 4,
+    "fp_frame_rate": 0.18181818181818182,
+    "fp_detections": 18,
+    "first_detection_distance": {
+     "box1.0_0_0": 84.8395484825165,
+     "person_15_0": 10.89504694873309,
+     "person_16_0": 76.46685964405398,
+     "person_19_0": 18.928485297152015,
+     "person_21_0": 43.5561130926573,
+     "box1.0_22_0": 101.74415695806582,
+     "plank_24_0": 169.28932475388308,
+     "person_27_0": 86.24413854568103,
+     "person_35_0": 31.314587085731162,
+     "plank_38_0": 14.456545085408186
+    },
+    "latency_ms_mean": 81.67345454545456,
+    "latency_ms_p95": 104.895,
+    "latency_ms_max": 137.47,
+    "recall_by_class": {
+     "box0.5": 0.0,
+     "box1.0": 0.3333333333333333,
+     "person": 0.75,
+     "plank": 0.3333333333333333,
+     "trolley": 0.0
+    },
+    "per_class_counts": {
+     "box1.0": [
+      2,
+      6
+     ],
+     "plank": [
+      2,
+      6
+     ],
+     "trolley": [
+      0,
+      7
+     ],
+     "box0.5": [
+      0,
+      6
+     ],
+     "person": [
+      6,
+      8
+     ]
+    },
+    "alarm_frames": 20,
+    "alarm_events": 20,
+    "alarm_distance_min": 10.79,
+    "alarm_distance_max": 165.93,
+    "advisory_frames": 41,
+    "advisory_frame_rate": 0.7454545454545455,
+    "fp_events": 10,
+    "bag_time_s": 54.0,
+    "fp_events_per_hour": 666.6666666666667,
+    "distance_km": 9.999999999999999e-05,
+    "fp_events_per_km": 100000.00000000001,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.5001715723065775,
+    "distance_error_max_abs": 3.3593247538830724,
+    "distance_error_bias": -0.3614805893882146,
+    "lateral_error_mean_abs": 0.13532105035318648,
+    "first_alarm_frame": 0,
+    "ego_speed_sources": {
+     "estimated": 53,
+     "none": 2
+    },
+    "n_accumulated_mean": 3.1636363636363636,
+    "per_class_bin_counts": {
+     "box0.5": {
+      "0-50": [
+       0,
+       1
+      ],
+      "50-100": [
+       0,
+       4
+      ],
+      "100-150": [
+       0,
+       1
+      ]
+     },
+     "box1.0": {
+      "50-100": [
+       1,
+       2
+      ],
+      "100-150": [
+       1,
+       1
+      ],
+      "150-200": [
+       0,
+       3
+      ]
+     },
+     "person": {
+      "0-50": [
+       4,
+       4
+      ],
+      "50-100": [
+       2,
+       2
+      ],
+      "150-200": [
+       0,
+       1
+      ],
+      "200-300": [
+       0,
+       1
+      ]
+     },
+     "plank": {
+      "0-50": [
+       1,
+       2
+      ],
+      "50-100": [
+       0,
+       2
+      ],
+      "150-200": [
+       1,
+       1
+      ],
+      "200-300": [
+       0,
+       1
+      ]
+     },
+     "trolley": {
+      "50-100": [
+       0,
+       1
+      ],
+      "100-150": [
+       0,
+       4
+      ],
+      "150-200": [
+       0,
+       1
+      ],
+      "200-300": [
+       0,
+       1
+      ]
+     }
+    },
+    "occluded_gt_skipped": 12,
+    "frames_processed": 55,
+    "gt_frames": 55,
+    "repeat": 3
+   }
+  }
+ },
+ "sequences": {
+  "SEQ_person_s1": {
+   "kind": "person",
+   "seed": 1,
+   "inject": "resense inject --npy /data/cache/roundT_doubleT --every 10 --out data/SEQ_person_s1 --kinds person --distances 10:250 --negative-fraction 0.2 --sequence 8 --speed 15 --seed 1",
+   "eval_given": "resense eval data/SEQ_person_s1 --repeat 1",
+   "eval_nospeed": "resense eval data/SEQ_person_s1 --repeat 1 --no-gt-speed",
+   "gt_meta": {
+    "source": "inject",
+    "kinds": [
+     "person"
+    ],
+    "distances": [
+     10.0,
+     250.0
+    ],
+    "per_frame": 1,
+    "negative_fraction": 0.2,
+    "sequence": 8,
+    "speed_mps": 15.0,
+    "frame_dt": 0.1,
+    "augment": false,
+    "seed": 1,
+    "input": "/data/cache/roundT_doubleT",
+    "every": 10,
+    "start": 0
+   },
+   "gt_counts": {
+    "frames": 208,
+    "objects": 208,
+    "in_gauge": 200,
+    "occluded": 67
+   },
+   "summary_given": {
+    "frames": 208,
+    "empty_frames": 69,
+    "recall": 0.23741007194244604,
+    "recall_by_range": {
+     "0-50": 0.7916666666666666,
+     "50-100": 0.375,
+     "100-150": 0.27586206896551724,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "200-300": [
+      0,
+      32
+     ],
+     "150-200": [
+      0,
+      38
+     ],
+     "50-100": [
+      6,
+      16
+     ],
+     "0-50": [
+      19,
+      24
+     ],
+     "100-150": [
+      8,
+      29
+     ]
+    },
+    "fp_frames": 19,
+    "fp_frame_rate": 0.2753623188405797,
+    "fp_detections": 90,
+    "first_detection_distance": {
+     "person_5_0": 70.28490925724886,
+     "person_6_0": 32.035040666375124,
+     "person_12_0": 14.920358101594857,
+     "person_14_0": 72.60484743043187,
+     "person_18_0": 36.71116759719208,
+     "person_22_0": 107.45642115176533,
+     "person_23_0": 123.742742873136
+    },
+    "latency_ms_mean": 97.70865384615384,
+    "latency_ms_p95": 133.65149999999994,
+    "latency_ms_max": 211.22,
+    "recall_by_class": {
+     "person": 0.23741007194244604
+    },
+    "per_class_counts": {
+     "person": [
+      33,
+      139
+     ]
+    },
+    "alarm_frames": 91,
+    "alarm_events": 27,
+    "alarm_distance_min": 8.8,
+    "alarm_distance_max": 154.61,
+    "advisory_frames": 96,
+    "advisory_frame_rate": 0.46153846153846156,
+    "fp_events": 20,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 2801.556420233463,
+    "distance_km": 0.38549999999999884,
+    "fp_events_per_km": 51.88067444876799,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.3178789913929535,
+    "distance_error_max_abs": 3.2264211517653223,
+    "distance_error_bias": -0.3178789913929535,
+    "lateral_error_mean_abs": 0.1264052698339311,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "given": 208
+    },
+    "n_accumulated_mean": 4.951923076923077,
+    "occluded_gt_skipped": 67,
+    "frames_processed": 208,
+    "gt_frames": 208,
+    "repeat": 1
+   },
+   "summary_nospeed": {
+    "frames": 208,
+    "empty_frames": 69,
+    "recall": 0.2517985611510791,
+    "recall_by_range": {
+     "0-50": 0.7916666666666666,
+     "50-100": 0.5,
+     "100-150": 0.27586206896551724,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "200-300": [
+      0,
+      32
+     ],
+     "150-200": [
+      0,
+      38
+     ],
+     "50-100": [
+      8,
+      16
+     ],
+     "0-50": [
+      19,
+      24
+     ],
+     "100-150": [
+      8,
+      29
+     ]
+    },
+    "fp_frames": 31,
+    "fp_frame_rate": 0.4492753623188406,
+    "fp_detections": 165,
+    "first_detection_distance": {
+     "person_5_0": 73.28490925724886,
+     "person_6_0": 32.035040666375124,
+     "person_12_0": 14.920358101594857,
+     "person_14_0": 72.60484743043187,
+     "person_18_0": 36.71116759719208,
+     "person_22_0": 107.45642115176533,
+     "person_23_0": 123.742742873136
+    },
+    "latency_ms_mean": 96.1766826923077,
+    "latency_ms_p95": 124.054,
+    "latency_ms_max": 146.45,
+    "recall_by_class": {
+     "person": 0.2517985611510791
+    },
+    "per_class_counts": {
+     "person": [
+      35,
+      139
+     ]
+    },
+    "alarm_frames": 123,
+    "alarm_events": 35,
+    "alarm_distance_min": 8.8,
+    "alarm_distance_max": 154.61,
+    "advisory_frames": 122,
+    "advisory_frame_rate": 0.5865384615384616,
+    "fp_events": 28,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 3922.178988326848,
+    "distance_km": 6.70000000000001e-05,
+    "fp_events_per_km": 417910.44776119344,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.2639950065847196,
+    "distance_error_max_abs": 2.0464211517653297,
+    "distance_error_bias": -0.2639950065847196,
+    "lateral_error_mean_abs": 0.12232570496521765,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "estimated": 191,
+     "none": 17
+    },
+    "n_accumulated_mean": 4.100961538461538,
+    "occluded_gt_skipped": 67,
+    "frames_processed": 208,
+    "gt_frames": 208,
+    "repeat": 1
+   }
+  },
+  "SEQ_person_s2": {
+   "kind": "person",
+   "seed": 2,
+   "inject": "resense inject --npy /data/cache/roundT_doubleT --every 10 --out data/SEQ_person_s2 --kinds person --distances 10:250 --negative-fraction 0.2 --sequence 8 --speed 15 --seed 2",
+   "eval_given": "resense eval data/SEQ_person_s2 --repeat 1",
+   "eval_nospeed": "resense eval data/SEQ_person_s2 --repeat 1 --no-gt-speed",
+   "gt_meta": {
+    "source": "inject",
+    "kinds": [
+     "person"
+    ],
+    "distances": [
+     10.0,
+     250.0
+    ],
+    "per_frame": 1,
+    "negative_fraction": 0.2,
+    "sequence": 8,
+    "speed_mps": 15.0,
+    "frame_dt": 0.1,
+    "augment": false,
+    "seed": 2,
+    "input": "/data/cache/roundT_doubleT",
+    "every": 10,
+    "start": 0
+   },
+   "gt_counts": {
+    "frames": 205,
+    "objects": 205,
+    "in_gauge": 181,
+    "occluded": 66
+   },
+   "summary_given": {
+    "frames": 205,
+    "empty_frames": 74,
+    "recall": 0.3893129770992366,
+    "recall_by_range": {
+     "0-50": 0.7894736842105263,
+     "50-100": 0.23076923076923078,
+     "100-150": 0.0,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "0-50": [
+      45,
+      57
+     ],
+     "150-200": [
+      0,
+      18
+     ],
+     "200-300": [
+      0,
+      12
+     ],
+     "50-100": [
+      6,
+      26
+     ],
+     "100-150": [
+      0,
+      18
+     ]
+    },
+    "fp_frames": 29,
+    "fp_frame_rate": 0.3918918918918919,
+    "fp_detections": 79,
+    "first_detection_distance": {
+     "person_0_0": 29.05982611242326,
+     "person_4_0": 70.14703132789712,
+     "person_5_0": 49.41876306562904,
+     "person_6_0": 12.052230371269237,
+     "person_16_0": 18.57626811881225,
+     "person_17_0": 16.84240100662417,
+     "person_19_0": 49.110245172994986,
+     "person_21_0": 18.534658790362926,
+     "person_23_0": 7.183899683321016
+    },
+    "latency_ms_mean": 91.63214634146344,
+    "latency_ms_p95": 128.65,
+    "latency_ms_max": 145.05,
+    "recall_by_class": {
+     "person": 0.3893129770992366
+    },
+    "per_class_counts": {
+     "person": [
+      51,
+      131
+     ]
+    },
+    "alarm_frames": 103,
+    "alarm_events": 29,
+    "alarm_distance_min": 4.08,
+    "alarm_distance_max": 127.51,
+    "advisory_frames": 99,
+    "advisory_frame_rate": 0.48292682926829267,
+    "fp_events": 20,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 2801.556420233463,
+    "distance_km": 0.3854999999999989,
+    "fp_events_per_km": 51.880674448767984,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.11353417345178371,
+    "distance_error_max_abs": 0.1502451729949854,
+    "distance_error_bias": -0.11353417345178371,
+    "lateral_error_mean_abs": 0.10860524199145631,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "given": 205
+    },
+    "n_accumulated_mean": 4.951219512195122,
+    "per_class_bin_counts": {
+     "person": {
+      "0-50": [
+       45,
+       57
+      ],
+      "50-100": [
+       6,
+       26
+      ],
+      "100-150": [
+       0,
+       18
+      ],
+      "150-200": [
+       0,
+       18
+      ],
+      "200-300": [
+       0,
+       12
+      ]
+     }
+    },
+    "occluded_gt_skipped": 66,
+    "frames_processed": 205,
+    "gt_frames": 205,
+    "repeat": 1
+   },
+   "summary_nospeed": {
+    "frames": 205,
+    "empty_frames": 74,
+    "recall": 0.3893129770992366,
+    "recall_by_range": {
+     "0-50": 0.7894736842105263,
+     "50-100": 0.23076923076923078,
+     "100-150": 0.0,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "0-50": [
+      45,
+      57
+     ],
+     "150-200": [
+      0,
+      18
+     ],
+     "200-300": [
+      0,
+      12
+     ],
+     "50-100": [
+      6,
+      26
+     ],
+     "100-150": [
+      0,
+      18
+     ]
+    },
+    "fp_frames": 44,
+    "fp_frame_rate": 0.5945945945945946,
+    "fp_detections": 122,
+    "first_detection_distance": {
+     "person_0_0": 29.05982611242326,
+     "person_4_0": 70.14703132789712,
+     "person_5_0": 49.41876306562904,
+     "person_6_0": 12.052230371269237,
+     "person_16_0": 18.57626811881225,
+     "person_17_0": 16.84240100662417,
+     "person_19_0": 49.110245172994986,
+     "person_21_0": 18.534658790362926,
+     "person_23_0": 7.183899683321016
+    },
+    "latency_ms_mean": 96.89824390243902,
+    "latency_ms_p95": 119.73199999999999,
+    "latency_ms_max": 130.89,
+    "recall_by_class": {
+     "person": 0.3893129770992366
+    },
+    "per_class_counts": {
+     "person": [
+      51,
+      131
+     ]
+    },
+    "alarm_frames": 122,
+    "alarm_events": 34,
+    "alarm_distance_min": 4.08,
+    "alarm_distance_max": 116.83,
+    "advisory_frames": 122,
+    "advisory_frame_rate": 0.5951219512195122,
+    "fp_events": 25,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 3501.9455252918287,
+    "distance_km": 5.7e-05,
+    "fp_events_per_km": 438596.49122807017,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.10745574207923492,
+    "distance_error_max_abs": 0.1502451729949854,
+    "distance_error_bias": -0.10745574207923492,
+    "lateral_error_mean_abs": 0.10417109075750947,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "estimated": 184,
+     "none": 21
+    },
+    "n_accumulated_mean": 3.7609756097560973,
+    "per_class_bin_counts": {
+     "person": {
+      "0-50": [
+       45,
+       57
+      ],
+      "50-100": [
+       6,
+       26
+      ],
+      "100-150": [
+       0,
+       18
+      ],
+      "150-200": [
+       0,
+       18
+      ],
+      "200-300": [
+       0,
+       12
+      ]
+     }
+    },
+    "occluded_gt_skipped": 66,
+    "frames_processed": 205,
+    "gt_frames": 205,
+    "repeat": 1
+   }
+  },
+  "SEQ_person_s3": {
+   "kind": "person",
+   "seed": 3,
+   "inject": "resense inject --npy /data/cache/roundT_doubleT --every 10 --out data/SEQ_person_s3 --kinds person --distances 10:250 --negative-fraction 0.2 --sequence 8 --speed 15 --seed 3",
+   "eval_given": "resense eval data/SEQ_person_s3 --repeat 1",
+   "eval_nospeed": "resense eval data/SEQ_person_s3 --repeat 1 --no-gt-speed",
+   "gt_meta": {
+    "source": "inject",
+    "kinds": [
+     "person"
+    ],
+    "distances": [
+     10.0,
+     250.0
+    ],
+    "per_frame": 1,
+    "negative_fraction": 0.2,
+    "sequence": 8,
+    "speed_mps": 15.0,
+    "frame_dt": 0.1,
+    "augment": false,
+    "seed": 3,
+    "input": "/data/cache/roundT_doubleT",
+    "every": 10,
+    "start": 0
+   },
+   "gt_counts": {
+    "frames": 208,
+    "objects": 208,
+    "in_gauge": 184,
+    "occluded": 50
+   },
+   "summary_given": {
+    "frames": 208,
+    "empty_frames": 74,
+    "recall": 0.26119402985074625,
+    "recall_by_range": {
+     "0-50": 0.525,
+     "50-100": 0.35,
+     "100-150": 0.14583333333333334,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "100-150": [
+      7,
+      48
+     ],
+     "0-50": [
+      21,
+      40
+     ],
+     "200-300": [
+      0,
+      26
+     ],
+     "50-100": [
+      7,
+      20
+     ]
+    },
+    "fp_frames": 37,
+    "fp_frame_rate": 0.5,
+    "fp_detections": 89,
+    "first_detection_distance": {
+     "person_2_0": 38.36265102088264,
+     "person_3_0": 35.94782042979746,
+     "person_8_0": 35.725825254342915,
+     "person_10_0": 13.487310348624344,
+     "person_15_0": 62.49694469166043,
+     "person_19_0": 75.72656961886702,
+     "person_20_0": 117.54871342694325,
+     "person_24_0": 114.57190128147056
+    },
+    "latency_ms_mean": 86.91615384615385,
+    "latency_ms_p95": 115.62849999999996,
+    "latency_ms_max": 144.68,
+    "recall_by_class": {
+     "person": 0.26119402985074625
+    },
+    "per_class_counts": {
+     "person": [
+      35,
+      134
+     ]
+    },
+    "alarm_frames": 106,
+    "alarm_events": 28,
+    "alarm_distance_min": 5.87,
+    "alarm_distance_max": 146.82,
+    "advisory_frames": 94,
+    "advisory_frame_rate": 0.4519230769230769,
+    "fp_events": 20,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 2801.556420233463,
+    "distance_km": 0.38549999999999884,
+    "fp_events_per_km": 51.88067444876799,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.17361674773757244,
+    "distance_error_max_abs": 2.0758252543429165,
+    "distance_error_bias": -0.17361674773757244,
+    "lateral_error_mean_abs": 0.248203458000391,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "given": 208
+    },
+    "n_accumulated_mean": 4.951923076923077,
+    "per_class_bin_counts": {
+     "person": {
+      "0-50": [
+       21,
+       40
+      ],
+      "50-100": [
+       7,
+       20
+      ],
+      "100-150": [
+       7,
+       48
+      ],
+      "200-300": [
+       0,
+       26
+      ]
+     }
+    },
+    "occluded_gt_skipped": 50,
+    "frames_processed": 208,
+    "gt_frames": 208,
+    "repeat": 1
+   },
+   "summary_nospeed": {
+    "frames": 208,
+    "empty_frames": 74,
+    "recall": 0.2537313432835821,
+    "recall_by_range": {
+     "0-50": 0.475,
+     "50-100": 0.55,
+     "100-150": 0.08333333333333333,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "100-150": [
+      4,
+      48
+     ],
+     "0-50": [
+      19,
+      40
+     ],
+     "200-300": [
+      0,
+      26
+     ],
+     "50-100": [
+      11,
+      20
+     ]
+    },
+    "fp_frames": 40,
+    "fp_frame_rate": 0.5405405405405406,
+    "fp_detections": 161,
+    "first_detection_distance": {
+     "person_2_0": 38.36265102088264,
+     "person_3_0": 35.94782042979746,
+     "person_8_0": 34.225825254342915,
+     "person_10_0": 11.987310348624344,
+     "person_15_0": 62.49694469166043,
+     "person_19_0": 81.72656961886702,
+     "person_20_0": 120.54871342694325,
+     "person_24_0": 114.57190128147056
+    },
+    "latency_ms_mean": 93.99475961538461,
+    "latency_ms_p95": 119.84799999999998,
+    "latency_ms_max": 168.7,
+    "recall_by_class": {
+     "person": 0.2537313432835821
+    },
+    "per_class_counts": {
+     "person": [
+      34,
+      134
+     ]
+    },
+    "alarm_frames": 122,
+    "alarm_events": 40,
+    "alarm_distance_min": 5.87,
+    "alarm_distance_max": 146.8,
+    "advisory_frames": 117,
+    "advisory_frame_rate": 0.5625,
+    "fp_events": 31,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 4342.412451361867,
+    "distance_km": 2.2999999999999997e-05,
+    "fp_events_per_km": 1347826.086956522,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.16716437536723894,
+    "distance_error_max_abs": 2.0758252543429165,
+    "distance_error_bias": -0.16716437536723894,
+    "lateral_error_mean_abs": 0.2261163860399147,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "estimated": 185,
+     "none": 23
+    },
+    "n_accumulated_mean": 3.8076923076923075,
+    "per_class_bin_counts": {
+     "person": {
+      "0-50": [
+       19,
+       40
+      ],
+      "50-100": [
+       11,
+       20
+      ],
+      "100-150": [
+       4,
+       48
+      ],
+      "200-300": [
+       0,
+       26
+      ]
+     }
+    },
+    "occluded_gt_skipped": 50,
+    "frames_processed": 208,
+    "gt_frames": 208,
+    "repeat": 1
+   }
+  },
+  "SEQ_box0.5_s1": {
+   "kind": "box0.5",
+   "seed": 1,
+   "inject": "resense inject --npy /data/cache/roundT_doubleT --every 10 --out data/SEQ_box0.5_s1 --kinds box0.5 --distances 10:250 --negative-fraction 0.2 --sequence 8 --speed 15 --seed 1",
+   "eval_given": "resense eval data/SEQ_box0.5_s1 --repeat 1",
+   "eval_nospeed": "resense eval data/SEQ_box0.5_s1 --repeat 1 --no-gt-speed",
+   "gt_meta": {
+    "source": "inject",
+    "kinds": [
+     "box0.5"
+    ],
+    "distances": [
+     10.0,
+     250.0
+    ],
+    "per_frame": 1,
+    "negative_fraction": 0.2,
+    "sequence": 8,
+    "speed_mps": 15.0,
+    "frame_dt": 0.1,
+    "augment": false,
+    "seed": 1,
+    "input": "/data/cache/roundT_doubleT",
+    "every": 10,
+    "start": 0
+   },
+   "gt_counts": {
+    "frames": 206,
+    "objects": 206,
+    "in_gauge": 182,
+    "occluded": 85
+   },
+   "summary_given": {
+    "frames": 206,
+    "empty_frames": 94,
+    "recall": 0.11607142857142858,
+    "recall_by_range": {
+     "0-50": 0.6666666666666666,
+     "50-100": 0.1388888888888889,
+     "100-150": 0.11764705882352941,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "200-300": [
+      0,
+      17
+     ],
+     "150-200": [
+      0,
+      19
+     ],
+     "100-150": [
+      4,
+      34
+     ],
+     "50-100": [
+      5,
+      36
+     ],
+     "0-50": [
+      4,
+      6
+     ]
+    },
+    "fp_frames": 35,
+    "fp_frame_rate": 0.3723404255319149,
+    "fp_detections": 82,
+    "first_detection_distance": {
+     "box0.5_10_0": 53.19713360283052,
+     "box0.5_13_0": 7.974587002062277,
+     "box0.5_19_0": 67.12439703233102,
+     "box0.5_20_0": 125.65807871751343
+    },
+    "latency_ms_mean": 90.51553398058253,
+    "latency_ms_p95": 121.89500000000001,
+    "latency_ms_max": 130.72,
+    "recall_by_class": {
+     "box0.5": 0.11607142857142858
+    },
+    "per_class_counts": {
+     "box0.5": [
+      13,
+      112
+     ]
+    },
+    "alarm_frames": 79,
+    "alarm_events": 25,
+    "alarm_distance_min": 3.35,
+    "alarm_distance_max": 135.88,
+    "advisory_frames": 98,
+    "advisory_frame_rate": 0.47572815533980584,
+    "fp_events": 21,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 2941.6342412451363,
+    "distance_km": 0.38549999999999884,
+    "fp_events_per_km": 54.47470817120639,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.1365680469582634,
+    "distance_error_max_abs": 0.1743970323310151,
+    "distance_error_bias": -0.1365680469582634,
+    "lateral_error_mean_abs": 0.19336323243487422,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "given": 206
+    },
+    "n_accumulated_mean": 4.951456310679611,
+    "per_class_bin_counts": {
+     "box0.5": {
+      "0-50": [
+       4,
+       6
+      ],
+      "50-100": [
+       5,
+       36
+      ],
+      "100-150": [
+       4,
+       34
+      ],
+      "150-200": [
+       0,
+       19
+      ],
+      "200-300": [
+       0,
+       17
+      ]
+     }
+    },
+    "occluded_gt_skipped": 85,
+    "frames_processed": 206,
+    "gt_frames": 206,
+    "repeat": 1
+   },
+   "summary_nospeed": {
+    "frames": 206,
+    "empty_frames": 94,
+    "recall": 0.10714285714285714,
+    "recall_by_range": {
+     "0-50": 0.6666666666666666,
+     "50-100": 0.1388888888888889,
+     "100-150": 0.08823529411764706,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "200-300": [
+      0,
+      17
+     ],
+     "150-200": [
+      0,
+      19
+     ],
+     "100-150": [
+      3,
+      34
+     ],
+     "50-100": [
+      5,
+      36
+     ],
+     "0-50": [
+      4,
+      6
+     ]
+    },
+    "fp_frames": 48,
+    "fp_frame_rate": 0.5106382978723404,
+    "fp_detections": 150,
+    "first_detection_distance": {
+     "box0.5_13_0": 7.974587002062277,
+     "box0.5_19_0": 68.62439703233102,
+     "box0.5_20_0": 125.65807871751343
+    },
+    "latency_ms_mean": 90.47223300970873,
+    "latency_ms_p95": 112.245,
+    "latency_ms_max": 132.0,
+    "recall_by_class": {
+     "box0.5": 0.10714285714285714
+    },
+    "per_class_counts": {
+     "box0.5": [
+      12,
+      112
+     ]
+    },
+    "alarm_frames": 104,
+    "alarm_events": 34,
+    "alarm_distance_min": 3.35,
+    "alarm_distance_max": 135.88,
+    "advisory_frames": 126,
+    "advisory_frame_rate": 0.6116504854368932,
+    "fp_events": 31,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 4342.412451361867,
+    "distance_km": 3.800000000000005e-05,
+    "fp_events_per_km": 815789.4736842095,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.1195474435370415,
+    "distance_error_max_abs": 0.1743970323310151,
+    "distance_error_bias": -0.1195474435370415,
+    "lateral_error_mean_abs": 0.09227596340466526,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "estimated": 185,
+     "none": 21
+    },
+    "n_accumulated_mean": 3.796116504854369,
+    "per_class_bin_counts": {
+     "box0.5": {
+      "0-50": [
+       4,
+       6
+      ],
+      "50-100": [
+       5,
+       36
+      ],
+      "100-150": [
+       3,
+       34
+      ],
+      "150-200": [
+       0,
+       19
+      ],
+      "200-300": [
+       0,
+       17
+      ]
+     }
+    },
+    "occluded_gt_skipped": 85,
+    "frames_processed": 206,
+    "gt_frames": 206,
+    "repeat": 1
+   }
+  },
+  "SEQ_box0.5_s2": {
+   "kind": "box0.5",
+   "seed": 2,
+   "inject": "resense inject --npy /data/cache/roundT_doubleT --every 10 --out data/SEQ_box0.5_s2 --kinds box0.5 --distances 10:250 --negative-fraction 0.2 --sequence 8 --speed 15 --seed 2",
+   "eval_given": "resense eval data/SEQ_box0.5_s2 --repeat 1",
+   "eval_nospeed": "resense eval data/SEQ_box0.5_s2 --repeat 1 --no-gt-speed",
+   "gt_meta": {
+    "source": "inject",
+    "kinds": [
+     "box0.5"
+    ],
+    "distances": [
+     10.0,
+     250.0
+    ],
+    "per_frame": 1,
+    "negative_fraction": 0.2,
+    "sequence": 8,
+    "speed_mps": 15.0,
+    "frame_dt": 0.1,
+    "augment": false,
+    "seed": 2,
+    "input": "/data/cache/roundT_doubleT",
+    "every": 10,
+    "start": 0
+   },
+   "gt_counts": {
+    "frames": 205,
+    "objects": 205,
+    "in_gauge": 173,
+    "occluded": 108
+   },
+   "summary_given": {
+    "frames": 205,
+    "empty_frames": 123,
+    "recall": 0.1951219512195122,
+    "recall_by_range": {
+     "0-50": 0.3939393939393939,
+     "50-100": 0.10714285714285714,
+     "100-150": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "0-50": [
+      13,
+      33
+     ],
+     "200-300": [
+      0,
+      13
+     ],
+     "50-100": [
+      3,
+      28
+     ],
+     "100-150": [
+      0,
+      8
+     ]
+    },
+    "fp_frames": 38,
+    "fp_frame_rate": 0.3089430894308943,
+    "fp_detections": 85,
+    "first_detection_distance": {
+     "box0.5_0_0": 29.05982611242326,
+     "box0.5_3_0": 71.00783908021599,
+     "box0.5_14_0": 43.37246951394952,
+     "box0.5_17_0": 5.63675822393429,
+     "box0.5_24_0": 69.15682055144724
+    },
+    "latency_ms_mean": 87.21078048780487,
+    "latency_ms_p95": 125.14199999999998,
+    "latency_ms_max": 139.22,
+    "recall_by_class": {
+     "box0.5": 0.1951219512195122
+    },
+    "per_class_counts": {
+     "box0.5": [
+      16,
+      82
+     ]
+    },
+    "alarm_frames": 70,
+    "alarm_events": 27,
+    "alarm_distance_min": 3.98,
+    "alarm_distance_max": 135.88,
+    "advisory_frames": 99,
+    "advisory_frame_rate": 0.48292682926829267,
+    "fp_events": 22,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 3081.712062256809,
+    "distance_km": 0.3854999999999989,
+    "fp_events_per_km": 57.06874189364478,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.17983246275218415,
+    "distance_error_max_abs": 1.2578390802159873,
+    "distance_error_bias": -0.17983246275218415,
+    "lateral_error_mean_abs": 0.16274552576993867,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "given": 205
+    },
+    "n_accumulated_mean": 4.951219512195122,
+    "per_class_bin_counts": {
+     "box0.5": {
+      "0-50": [
+       13,
+       33
+      ],
+      "50-100": [
+       3,
+       28
+      ],
+      "100-150": [
+       0,
+       8
+      ],
+      "200-300": [
+       0,
+       13
+      ]
+     }
+    },
+    "occluded_gt_skipped": 108,
+    "frames_processed": 205,
+    "gt_frames": 205,
+    "repeat": 1
+   },
+   "summary_nospeed": {
+    "frames": 205,
+    "empty_frames": 123,
+    "recall": 0.14634146341463414,
+    "recall_by_range": {
+     "0-50": 0.2727272727272727,
+     "50-100": 0.10714285714285714,
+     "100-150": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "0-50": [
+      9,
+      33
+     ],
+     "200-300": [
+      0,
+      13
+     ],
+     "50-100": [
+      3,
+      28
+     ],
+     "100-150": [
+      0,
+      8
+     ]
+    },
+    "fp_frames": 68,
+    "fp_frame_rate": 0.5528455284552846,
+    "fp_detections": 151,
+    "first_detection_distance": {
+     "box0.5_0_0": 29.05982611242326,
+     "box0.5_3_0": 71.00783908021599,
+     "box0.5_17_0": 7.13675822393429
+    },
+    "latency_ms_mean": 93.74658536585368,
+    "latency_ms_p95": 118.10799999999999,
+    "latency_ms_max": 133.89,
+    "recall_by_class": {
+     "box0.5": 0.14634146341463414
+    },
+    "per_class_counts": {
+     "box0.5": [
+      12,
+      82
+     ]
+    },
+    "alarm_frames": 111,
+    "alarm_events": 35,
+    "alarm_distance_min": 3.98,
+    "alarm_distance_max": 135.88,
+    "advisory_frames": 127,
+    "advisory_frame_rate": 0.6195121951219512,
+    "fp_events": 32,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 4482.49027237354,
+    "distance_km": 4.600000000000007e-05,
+    "fp_events_per_km": 695652.1739130424,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.10356238224919967,
+    "distance_error_max_abs": 0.15675822393429018,
+    "distance_error_bias": -0.10356238224919967,
+    "lateral_error_mean_abs": 0.19436569922770483,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "estimated": 184,
+     "none": 21
+    },
+    "n_accumulated_mean": 3.765853658536585,
+    "per_class_bin_counts": {
+     "box0.5": {
+      "0-50": [
+       9,
+       33
+      ],
+      "50-100": [
+       3,
+       28
+      ],
+      "100-150": [
+       0,
+       8
+      ],
+      "200-300": [
+       0,
+       13
+      ]
+     }
+    },
+    "occluded_gt_skipped": 108,
+    "frames_processed": 205,
+    "gt_frames": 205,
+    "repeat": 1
+   }
+  },
+  "SEQ_box0.5_s3": {
+   "kind": "box0.5",
+   "seed": 3,
+   "inject": "resense inject --npy /data/cache/roundT_doubleT --every 10 --out data/SEQ_box0.5_s3 --kinds box0.5 --distances 10:250 --negative-fraction 0.2 --sequence 8 --speed 15 --seed 3",
+   "eval_given": "resense eval data/SEQ_box0.5_s3 --repeat 1",
+   "eval_nospeed": "resense eval data/SEQ_box0.5_s3 --repeat 1 --no-gt-speed",
+   "gt_meta": {
+    "source": "inject",
+    "kinds": [
+     "box0.5"
+    ],
+    "distances": [
+     10.0,
+     250.0
+    ],
+    "per_frame": 1,
+    "negative_fraction": 0.2,
+    "sequence": 8,
+    "speed_mps": 15.0,
+    "frame_dt": 0.1,
+    "augment": false,
+    "seed": 3,
+    "input": "/data/cache/roundT_doubleT",
+    "every": 10,
+    "start": 0
+   },
+   "gt_counts": {
+    "frames": 207,
+    "objects": 207,
+    "in_gauge": 135,
+    "occluded": 46
+   },
+   "summary_given": {
+    "frames": 207,
+    "empty_frames": 105,
+    "recall": 0.30392156862745096,
+    "recall_by_range": {
+     "0-50": 0.6521739130434783,
+     "50-100": 0.0,
+     "100-150": 0.045454545454545456,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "200-300": [
+      0,
+      7
+     ],
+     "100-150": [
+      1,
+      22
+     ],
+     "50-100": [
+      0,
+      9
+     ],
+     "0-50": [
+      30,
+      46
+     ],
+     "150-200": [
+      0,
+      18
+     ]
+    },
+    "fp_frames": 37,
+    "fp_frame_rate": 0.3523809523809524,
+    "fp_detections": 75,
+    "first_detection_distance": {
+     "box0.5_5_0": 49.49238885274593,
+     "box0.5_12_0": 10.410484810338579,
+     "box0.5_19_0": 104.73417858373736,
+     "box0.5_22_0": 37.17228891098624,
+     "box0.5_23_0": 44.29250076554783,
+     "box0.5_24_0": 30.33815279347945,
+     "box0.5_25_0": 34.47367500915456
+    },
+    "latency_ms_mean": 88.19009661835749,
+    "latency_ms_p95": 114.187,
+    "latency_ms_max": 138.47,
+    "recall_by_class": {
+     "box0.5": 0.30392156862745096
+    },
+    "per_class_counts": {
+     "box0.5": [
+      31,
+      102
+     ]
+    },
+    "alarm_frames": 81,
+    "alarm_events": 26,
+    "alarm_distance_min": 4.34,
+    "alarm_distance_max": 127.51,
+    "advisory_frames": 99,
+    "advisory_frame_rate": 0.4782608695652174,
+    "fp_events": 20,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 2801.556420233463,
+    "distance_km": 0.38549999999999884,
+    "fp_events_per_km": 51.88067444876799,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.09429594024224346,
+    "distance_error_max_abs": 0.12815279347944752,
+    "distance_error_bias": -0.09429594024224346,
+    "lateral_error_mean_abs": 0.1079235326477254,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "given": 207
+    },
+    "n_accumulated_mean": 4.951690821256038,
+    "per_class_bin_counts": {
+     "box0.5": {
+      "0-50": [
+       30,
+       46
+      ],
+      "50-100": [
+       0,
+       9
+      ],
+      "100-150": [
+       1,
+       22
+      ],
+      "150-200": [
+       0,
+       18
+      ],
+      "200-300": [
+       0,
+       7
+      ]
+     }
+    },
+    "occluded_gt_skipped": 46,
+    "frames_processed": 207,
+    "gt_frames": 207,
+    "repeat": 1
+   },
+   "summary_nospeed": {
+    "frames": 207,
+    "empty_frames": 105,
+    "recall": 0.3333333333333333,
+    "recall_by_range": {
+     "0-50": 0.6304347826086957,
+     "50-100": 0.0,
+     "100-150": 0.22727272727272727,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "200-300": [
+      0,
+      7
+     ],
+     "100-150": [
+      5,
+      22
+     ],
+     "50-100": [
+      0,
+      9
+     ],
+     "0-50": [
+      29,
+      46
+     ],
+     "150-200": [
+      0,
+      18
+     ]
+    },
+    "fp_frames": 51,
+    "fp_frame_rate": 0.4857142857142857,
+    "fp_detections": 136,
+    "first_detection_distance": {
+     "box0.5_12_0": 10.410484810338579,
+     "box0.5_19_0": 110.73417858373736,
+     "box0.5_22_0": 37.17228891098624,
+     "box0.5_23_0": 44.29250076554783,
+     "box0.5_24_0": 30.33815279347945,
+     "box0.5_25_0": 34.47367500915456
+    },
+    "latency_ms_mean": 89.0795652173913,
+    "latency_ms_p95": 114.378,
+    "latency_ms_max": 126.93,
+    "recall_by_class": {
+     "box0.5": 0.3333333333333333
+    },
+    "per_class_counts": {
+     "box0.5": [
+      34,
+      102
+     ]
+    },
+    "alarm_frames": 106,
+    "alarm_events": 35,
+    "alarm_distance_min": 4.34,
+    "alarm_distance_max": 135.88,
+    "advisory_frames": 129,
+    "advisory_frame_rate": 0.6231884057971014,
+    "fp_events": 30,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 4202.334630350195,
+    "distance_km": 3.4000000000000054e-05,
+    "fp_events_per_km": 882352.9411764692,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.0861029302856776,
+    "distance_error_max_abs": 0.12815279347944752,
+    "distance_error_bias": -0.0861029302856776,
+    "lateral_error_mean_abs": 0.12368924848094782,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "estimated": 190,
+     "none": 17
+    },
+    "n_accumulated_mean": 4.043478260869565,
+    "per_class_bin_counts": {
+     "box0.5": {
+      "0-50": [
+       29,
+       46
+      ],
+      "50-100": [
+       0,
+       9
+      ],
+      "100-150": [
+       5,
+       22
+      ],
+      "150-200": [
+       0,
+       18
+      ],
+      "200-300": [
+       0,
+       7
+      ]
+     }
+    },
+    "occluded_gt_skipped": 46,
+    "frames_processed": 207,
+    "gt_frames": 207,
+    "repeat": 1
+   }
+  },
+  "SEQ_box1.0_s1": {
+   "kind": "box1.0",
+   "seed": 1,
+   "inject": "resense inject --npy /data/cache/roundT_doubleT --every 10 --out data/SEQ_box1.0_s1 --kinds box1.0 --distances 10:250 --negative-fraction 0.2 --sequence 8 --speed 15 --seed 1",
+   "eval_given": "resense eval data/SEQ_box1.0_s1 --repeat 1",
+   "eval_nospeed": "resense eval data/SEQ_box1.0_s1 --repeat 1 --no-gt-speed",
+   "gt_meta": {
+    "source": "inject",
+    "kinds": [
+     "box1.0"
+    ],
+    "distances": [
+     10.0,
+     250.0
+    ],
+    "per_frame": 1,
+    "negative_fraction": 0.2,
+    "sequence": 8,
+    "speed_mps": 15.0,
+    "frame_dt": 0.1,
+    "augment": false,
+    "seed": 1,
+    "input": "/data/cache/roundT_doubleT",
+    "every": 10,
+    "start": 0
+   },
+   "gt_counts": {
+    "frames": 206,
+    "objects": 206,
+    "in_gauge": 168,
+    "occluded": 36
+   },
+   "summary_given": {
+    "frames": 206,
+    "empty_frames": 66,
+    "recall": 0.11428571428571428,
+    "recall_by_range": {
+     "0-50": 0.2727272727272727,
+     "50-100": 0.38235294117647056,
+     "100-150": 0.0,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "200-300": [
+      0,
+      29
+     ],
+     "150-200": [
+      0,
+      11
+     ],
+     "100-150": [
+      0,
+      55
+     ],
+     "50-100": [
+      13,
+      34
+     ],
+     "0-50": [
+      3,
+      11
+     ]
+    },
+    "fp_frames": 17,
+    "fp_frame_rate": 0.25757575757575757,
+    "fp_detections": 89,
+    "first_detection_distance": {
+     "box1.0_17_0": 53.96865952149136,
+     "box1.0_19_0": 68.06818808649354,
+     "box1.0_23_0": 70.04849450774267
+    },
+    "latency_ms_mean": 88.22135922330096,
+    "latency_ms_p95": 121.07000000000001,
+    "latency_ms_max": 134.95,
+    "recall_by_class": {
+     "box1.0": 0.11428571428571428
+    },
+    "per_class_counts": {
+     "box1.0": [
+      16,
+      140
+     ]
+    },
+    "alarm_frames": 81,
+    "alarm_events": 23,
+    "alarm_distance_min": 10.92,
+    "alarm_distance_max": 130.67,
+    "advisory_frames": 114,
+    "advisory_frame_rate": 0.5533980582524272,
+    "fp_events": 20,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 2801.556420233463,
+    "distance_km": 0.38549999999999884,
+    "fp_events_per_km": 51.88067444876799,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.18531647993000444,
+    "distance_error_max_abs": 0.23818808649353684,
+    "distance_error_bias": -0.18531647993000444,
+    "lateral_error_mean_abs": 0.18982172049883062,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "given": 206
+    },
+    "n_accumulated_mean": 4.951456310679611,
+    "per_class_bin_counts": {
+     "box1.0": {
+      "0-50": [
+       3,
+       11
+      ],
+      "50-100": [
+       13,
+       34
+      ],
+      "100-150": [
+       0,
+       55
+      ],
+      "150-200": [
+       0,
+       11
+      ],
+      "200-300": [
+       0,
+       29
+      ]
+     }
+    },
+    "occluded_gt_skipped": 36,
+    "frames_processed": 206,
+    "gt_frames": 206,
+    "repeat": 1
+   },
+   "summary_nospeed": {
+    "frames": 206,
+    "empty_frames": 66,
+    "recall": 0.10714285714285714,
+    "recall_by_range": {
+     "0-50": 0.2727272727272727,
+     "50-100": 0.35294117647058826,
+     "100-150": 0.0,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "200-300": [
+      0,
+      29
+     ],
+     "150-200": [
+      0,
+      11
+     ],
+     "100-150": [
+      0,
+      55
+     ],
+     "50-100": [
+      12,
+      34
+     ],
+     "0-50": [
+      3,
+      11
+     ]
+    },
+    "fp_frames": 20,
+    "fp_frame_rate": 0.30303030303030304,
+    "fp_detections": 132,
+    "first_detection_distance": {
+     "box1.0_17_0": 49.46865952149136,
+     "box1.0_19_0": 68.06818808649354,
+     "box1.0_23_0": 73.04849450774267
+    },
+    "latency_ms_mean": 95.06092233009709,
+    "latency_ms_p95": 120.31,
+    "latency_ms_max": 140.79,
+    "recall_by_class": {
+     "box1.0": 0.10714285714285714
+    },
+    "per_class_counts": {
+     "box1.0": [
+      15,
+      140
+     ]
+    },
+    "alarm_frames": 93,
+    "alarm_events": 33,
+    "alarm_distance_min": 10.92,
+    "alarm_distance_max": 116.83,
+    "advisory_frames": 130,
+    "advisory_frame_rate": 0.6310679611650486,
+    "fp_events": 30,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 4202.334630350195,
+    "distance_km": 1.9000000000000025e-05,
+    "fp_events_per_km": 1578947.3684210505,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.15640494199275612,
+    "distance_error_max_abs": 0.23818808649353684,
+    "distance_error_bias": -0.15640494199275612,
+    "lateral_error_mean_abs": 0.12428595419918279,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "estimated": 188,
+     "none": 18
+    },
+    "n_accumulated_mean": 3.9514563106796117,
+    "per_class_bin_counts": {
+     "box1.0": {
+      "0-50": [
+       3,
+       11
+      ],
+      "50-100": [
+       12,
+       34
+      ],
+      "100-150": [
+       0,
+       55
+      ],
+      "150-200": [
+       0,
+       11
+      ],
+      "200-300": [
+       0,
+       29
+      ]
+     }
+    },
+    "occluded_gt_skipped": 36,
+    "frames_processed": 206,
+    "gt_frames": 206,
+    "repeat": 1
+   }
+  },
+  "SEQ_box1.0_s2": {
+   "kind": "box1.0",
+   "seed": 2,
+   "inject": "resense inject --npy /data/cache/roundT_doubleT --every 10 --out data/SEQ_box1.0_s2 --kinds box1.0 --distances 10:250 --negative-fraction 0.2 --sequence 8 --speed 15 --seed 2",
+   "eval_given": "resense eval data/SEQ_box1.0_s2 --repeat 1",
+   "eval_nospeed": "resense eval data/SEQ_box1.0_s2 --repeat 1 --no-gt-speed",
+   "gt_meta": {
+    "source": "inject",
+    "kinds": [
+     "box1.0"
+    ],
+    "distances": [
+     10.0,
+     250.0
+    ],
+    "per_frame": 1,
+    "negative_fraction": 0.2,
+    "sequence": 8,
+    "speed_mps": 15.0,
+    "frame_dt": 0.1,
+    "augment": false,
+    "seed": 2,
+    "input": "/data/cache/roundT_doubleT",
+    "every": 10,
+    "start": 0
+   },
+   "gt_counts": {
+    "frames": 206,
+    "objects": 206,
+    "in_gauge": 150,
+    "occluded": 37
+   },
+   "summary_given": {
+    "frames": 206,
+    "empty_frames": 88,
+    "recall": 0.3050847457627119,
+    "recall_by_range": {
+     "0-50": 0.68,
+     "50-100": 0.2857142857142857,
+     "100-150": 0.0,
+     "150-200": 0.0
+    },
+    "per_bin_counts": {
+     "0-50": [
+      34,
+      50
+     ],
+     "150-200": [
+      0,
+      36
+     ],
+     "50-100": [
+      2,
+      7
+     ],
+     "100-150": [
+      0,
+      25
+     ]
+    },
+    "fp_frames": 31,
+    "fp_frame_rate": 0.3522727272727273,
+    "fp_detections": 74,
+    "first_detection_distance": {
+     "box1.0_0_0": 29.05982611242326,
+     "box1.0_5_0": 51.607171603494066,
+     "box1.0_14_0": 25.66144347423254,
+     "box1.0_16_0": 38.79470950839624,
+     "box1.0_20_0": 8.570226076486385,
+     "box1.0_22_0": 29.17610644988939
+    },
+    "latency_ms_mean": 91.08514563106796,
+    "latency_ms_p95": 128.5225,
+    "latency_ms_max": 136.03,
+    "recall_by_class": {
+     "box1.0": 0.3050847457627119
+    },
+    "per_class_counts": {
+     "box1.0": [
+      36,
+      118
+     ]
+    },
+    "alarm_frames": 91,
+    "alarm_events": 24,
+    "alarm_distance_min": 3.94,
+    "alarm_distance_max": 135.88,
+    "advisory_frames": 106,
+    "advisory_frame_rate": 0.5145631067961165,
+    "fp_events": 18,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 2521.4007782101166,
+    "distance_km": 0.3854999999999989,
+    "fp_events_per_km": 46.69260700389118,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.14044072814863895,
+    "distance_error_max_abs": 0.24717160349406697,
+    "distance_error_bias": -0.14044072814863895,
+    "lateral_error_mean_abs": 0.2558001509836449,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "given": 206
+    },
+    "n_accumulated_mean": 4.951456310679611,
+    "per_class_bin_counts": {
+     "box1.0": {
+      "0-50": [
+       34,
+       50
+      ],
+      "50-100": [
+       2,
+       7
+      ],
+      "100-150": [
+       0,
+       25
+      ],
+      "150-200": [
+       0,
+       36
+      ]
+     }
+    },
+    "occluded_gt_skipped": 37,
+    "frames_processed": 206,
+    "gt_frames": 206,
+    "repeat": 1
+   },
+   "summary_nospeed": {
+    "frames": 206,
+    "empty_frames": 88,
+    "recall": 0.3305084745762712,
+    "recall_by_range": {
+     "0-50": 0.74,
+     "50-100": 0.2857142857142857,
+     "100-150": 0.0,
+     "150-200": 0.0
+    },
+    "per_bin_counts": {
+     "0-50": [
+      37,
+      50
+     ],
+     "150-200": [
+      0,
+      36
+     ],
+     "50-100": [
+      2,
+      7
+     ],
+     "100-150": [
+      0,
+      25
+     ]
+    },
+    "fp_frames": 43,
+    "fp_frame_rate": 0.48863636363636365,
+    "fp_detections": 130,
+    "first_detection_distance": {
+     "box1.0_0_0": 29.05982611242326,
+     "box1.0_5_0": 51.607171603494066,
+     "box1.0_9_0": 43.93944818421847,
+     "box1.0_14_0": 24.16144347423254,
+     "box1.0_16_0": 38.79470950839624,
+     "box1.0_20_0": 8.570226076486385,
+     "box1.0_22_0": 29.17610644988939
+    },
+    "latency_ms_mean": 93.11703883495146,
+    "latency_ms_p95": 122.4925,
+    "latency_ms_max": 137.21,
+    "recall_by_class": {
+     "box1.0": 0.3305084745762712
+    },
+    "per_class_counts": {
+     "box1.0": [
+      39,
+      118
+     ]
+    },
+    "alarm_frames": 116,
+    "alarm_events": 33,
+    "alarm_distance_min": 3.94,
+    "alarm_distance_max": 135.88,
+    "advisory_frames": 123,
+    "advisory_frame_rate": 0.5970873786407767,
+    "fp_events": 25,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 3501.9455252918287,
+    "distance_km": 3.699999999999999e-05,
+    "fp_events_per_km": 675675.6756756759,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.2307060291031303,
+    "distance_error_max_abs": 1.379448184218468,
+    "distance_error_bias": -0.17556292696960413,
+    "lateral_error_mean_abs": 0.21791082645870247,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "estimated": 183,
+     "none": 23
+    },
+    "n_accumulated_mean": 3.9271844660194173,
+    "per_class_bin_counts": {
+     "box1.0": {
+      "0-50": [
+       37,
+       50
+      ],
+      "50-100": [
+       2,
+       7
+      ],
+      "100-150": [
+       0,
+       25
+      ],
+      "150-200": [
+       0,
+       36
+      ]
+     }
+    },
+    "occluded_gt_skipped": 37,
+    "frames_processed": 206,
+    "gt_frames": 206,
+    "repeat": 1
+   }
+  },
+  "SEQ_box1.0_s3": {
+   "kind": "box1.0",
+   "seed": 3,
+   "inject": "resense inject --npy /data/cache/roundT_doubleT --every 10 --out data/SEQ_box1.0_s3 --kinds box1.0 --distances 10:250 --negative-fraction 0.2 --sequence 8 --speed 15 --seed 3",
+   "eval_given": "resense eval data/SEQ_box1.0_s3 --repeat 1",
+   "eval_nospeed": "resense eval data/SEQ_box1.0_s3 --repeat 1 --no-gt-speed",
+   "gt_meta": {
+    "source": "inject",
+    "kinds": [
+     "box1.0"
+    ],
+    "distances": [
+     10.0,
+     250.0
+    ],
+    "per_frame": 1,
+    "negative_fraction": 0.2,
+    "sequence": 8,
+    "speed_mps": 15.0,
+    "frame_dt": 0.1,
+    "augment": false,
+    "seed": 3,
+    "input": "/data/cache/roundT_doubleT",
+    "every": 10,
+    "start": 0
+   },
+   "gt_counts": {
+    "frames": 206,
+    "objects": 206,
+    "in_gauge": 166,
+    "occluded": 23
+   },
+   "summary_given": {
+    "frames": 206,
+    "empty_frames": 63,
+    "recall": 0.17482517482517482,
+    "recall_by_range": {
+     "0-50": 0.7272727272727273,
+     "50-100": 0.23076923076923078,
+     "100-150": 0.0,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "200-300": [
+      0,
+      10
+     ],
+     "150-200": [
+      0,
+      48
+     ],
+     "100-150": [
+      0,
+      24
+     ],
+     "50-100": [
+      9,
+      39
+     ],
+     "0-50": [
+      16,
+      22
+     ]
+    },
+    "fp_frames": 30,
+    "fp_frame_rate": 0.47619047619047616,
+    "fp_detections": 83,
+    "first_detection_distance": {
+     "box1.0_8_0": 23.725548025265635,
+     "box1.0_13_0": 41.62450304141289,
+     "box1.0_19_0": 78.70070806743257,
+     "box1.0_21_0": 8.555080536013307,
+     "box1.0_24_0": 63.02027805279232
+    },
+    "latency_ms_mean": 85.40582524271844,
+    "latency_ms_p95": 118.02,
+    "latency_ms_max": 136.99,
+    "recall_by_class": {
+     "box1.0": 0.17482517482517482
+    },
+    "per_class_counts": {
+     "box1.0": [
+      25,
+      143
+     ]
+    },
+    "alarm_frames": 89,
+    "alarm_events": 28,
+    "alarm_distance_min": 3.0,
+    "alarm_distance_max": 165.76,
+    "advisory_frames": 98,
+    "advisory_frame_rate": 0.47572815533980584,
+    "fp_events": 23,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 3221.7898832684823,
+    "distance_km": 0.3854999999999989,
+    "fp_events_per_km": 59.66277561608318,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.25946584342405826,
+    "distance_error_max_abs": 1.3455480252656358,
+    "distance_error_bias": -0.25946584342405826,
+    "lateral_error_mean_abs": 0.13857303393394968,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "given": 206
+    },
+    "n_accumulated_mean": 4.951456310679611,
+    "per_class_bin_counts": {
+     "box1.0": {
+      "0-50": [
+       16,
+       22
+      ],
+      "50-100": [
+       9,
+       39
+      ],
+      "100-150": [
+       0,
+       24
+      ],
+      "150-200": [
+       0,
+       48
+      ],
+      "200-300": [
+       0,
+       10
+      ]
+     }
+    },
+    "occluded_gt_skipped": 23,
+    "frames_processed": 206,
+    "gt_frames": 206,
+    "repeat": 1
+   },
+   "summary_nospeed": {
+    "frames": 206,
+    "empty_frames": 63,
+    "recall": 0.21678321678321677,
+    "recall_by_range": {
+     "0-50": 0.6363636363636364,
+     "50-100": 0.38461538461538464,
+     "100-150": 0.08333333333333333,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "200-300": [
+      0,
+      10
+     ],
+     "150-200": [
+      0,
+      48
+     ],
+     "100-150": [
+      2,
+      24
+     ],
+     "50-100": [
+      15,
+      39
+     ],
+     "0-50": [
+      14,
+      22
+     ]
+    },
+    "fp_frames": 30,
+    "fp_frame_rate": 0.47619047619047616,
+    "fp_detections": 167,
+    "first_detection_distance": {
+     "box1.0_5_0": 77.0868944356811,
+     "box1.0_8_0": 23.725548025265635,
+     "box1.0_13_0": 41.62450304141289,
+     "box1.0_19_0": 78.70070806743257,
+     "box1.0_21_0": 8.555080536013307,
+     "box1.0_23_0": 111.23286529256966,
+     "box1.0_24_0": 64.52027805279232
+    },
+    "latency_ms_mean": 96.9544660194175,
+    "latency_ms_p95": 124.9375,
+    "latency_ms_max": 147.51,
+    "recall_by_class": {
+     "box1.0": 0.21678321678321677
+    },
+    "per_class_counts": {
+     "box1.0": [
+      31,
+      143
+     ]
+    },
+    "alarm_frames": 115,
+    "alarm_events": 47,
+    "alarm_distance_min": 3.0,
+    "alarm_distance_max": 127.43,
+    "advisory_frames": 125,
+    "advisory_frame_rate": 0.6067961165048543,
+    "fp_events": 39,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 5463.035019455253,
+    "distance_km": 0.0004829999999999983,
+    "fp_events_per_km": 80745.34161490711,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.3433063984967167,
+    "distance_error_max_abs": 2.030278052792319,
+    "distance_error_bias": -0.2519840140717421,
+    "lateral_error_mean_abs": 0.14064690244127093,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "estimated": 184,
+     "none": 22
+    },
+    "n_accumulated_mean": 3.8349514563106797,
+    "per_class_bin_counts": {
+     "box1.0": {
+      "0-50": [
+       14,
+       22
+      ],
+      "50-100": [
+       15,
+       39
+      ],
+      "100-150": [
+       2,
+       24
+      ],
+      "150-200": [
+       0,
+       48
+      ],
+      "200-300": [
+       0,
+       10
+      ]
+     }
+    },
+    "occluded_gt_skipped": 23,
+    "frames_processed": 206,
+    "gt_frames": 206,
+    "repeat": 1
+   }
+  },
+  "SEQ_plank_s1": {
+   "kind": "plank",
+   "seed": 1,
+   "inject": "resense inject --npy /data/cache/roundT_doubleT --every 10 --out data/SEQ_plank_s1 --kinds plank --distances 10:250 --negative-fraction 0.2 --sequence 8 --speed 15 --seed 1",
+   "eval_given": "resense eval data/SEQ_plank_s1 --repeat 1",
+   "eval_nospeed": "resense eval data/SEQ_plank_s1 --repeat 1 --no-gt-speed",
+   "gt_meta": {
+    "source": "inject",
+    "kinds": [
+     "plank"
+    ],
+    "distances": [
+     10.0,
+     250.0
+    ],
+    "per_frame": 1,
+    "negative_fraction": 0.2,
+    "sequence": 8,
+    "speed_mps": 15.0,
+    "frame_dt": 0.1,
+    "augment": false,
+    "seed": 1,
+    "input": "/data/cache/roundT_doubleT",
+    "every": 10,
+    "start": 0
+   },
+   "gt_counts": {
+    "frames": 206,
+    "objects": 206,
+    "in_gauge": 174,
+    "occluded": 76
+   },
+   "summary_given": {
+    "frames": 206,
+    "empty_frames": 96,
+    "recall": 0.0,
+    "recall_by_range": {
+     "0-50": 0.0,
+     "50-100": 0.0,
+     "100-150": 0.0,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "200-300": [
+      0,
+      17
+     ],
+     "50-100": [
+      0,
+      14
+     ],
+     "0-50": [
+      0,
+      54
+     ],
+     "150-200": [
+      0,
+      9
+     ],
+     "100-150": [
+      0,
+      16
+     ]
+    },
+    "fp_frames": 39,
+    "fp_frame_rate": 0.40625,
+    "fp_detections": 72,
+    "first_detection_distance": {},
+    "latency_ms_mean": 89.58592233009708,
+    "latency_ms_p95": 129.35750000000002,
+    "latency_ms_max": 152.62,
+    "recall_by_class": {
+     "plank": 0.0
+    },
+    "per_class_counts": {
+     "plank": [
+      0,
+      110
+     ]
+    },
+    "alarm_frames": 67,
+    "alarm_events": 19,
+    "alarm_distance_min": 10.86,
+    "alarm_distance_max": 135.88,
+    "advisory_frames": 102,
+    "advisory_frame_rate": 0.49514563106796117,
+    "fp_events": 19,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 2661.47859922179,
+    "distance_km": 0.3854999999999989,
+    "fp_events_per_km": 49.28664072632958,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": null,
+    "distance_error_max_abs": null,
+    "distance_error_bias": null,
+    "lateral_error_mean_abs": null,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "given": 206
+    },
+    "n_accumulated_mean": 4.951456310679611,
+    "per_class_bin_counts": {
+     "plank": {
+      "0-50": [
+       0,
+       54
+      ],
+      "50-100": [
+       0,
+       14
+      ],
+      "100-150": [
+       0,
+       16
+      ],
+      "150-200": [
+       0,
+       9
+      ],
+      "200-300": [
+       0,
+       17
+      ]
+     }
+    },
+    "occluded_gt_skipped": 76,
+    "frames_processed": 206,
+    "gt_frames": 206,
+    "repeat": 1
+   },
+   "summary_nospeed": {
+    "frames": 206,
+    "empty_frames": 96,
+    "recall": 0.0,
+    "recall_by_range": {
+     "0-50": 0.0,
+     "50-100": 0.0,
+     "100-150": 0.0,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "200-300": [
+      0,
+      17
+     ],
+     "50-100": [
+      0,
+      14
+     ],
+     "0-50": [
+      0,
+      54
+     ],
+     "150-200": [
+      0,
+      9
+     ],
+     "100-150": [
+      0,
+      16
+     ]
+    },
+    "fp_frames": 51,
+    "fp_frame_rate": 0.53125,
+    "fp_detections": 135,
+    "first_detection_distance": {},
+    "latency_ms_mean": 92.9307281553398,
+    "latency_ms_p95": 122.39750000000001,
+    "latency_ms_max": 133.03,
+    "recall_by_class": {
+     "plank": 0.0
+    },
+    "per_class_counts": {
+     "plank": [
+      0,
+      110
+     ]
+    },
+    "alarm_frames": 96,
+    "alarm_events": 26,
+    "alarm_distance_min": 10.86,
+    "alarm_distance_max": 135.88,
+    "advisory_frames": 129,
+    "advisory_frame_rate": 0.6262135922330098,
+    "fp_events": 26,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 3642.023346303502,
+    "distance_km": 2.500000000000001e-05,
+    "fp_events_per_km": 1039999.9999999995,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": null,
+    "distance_error_max_abs": null,
+    "distance_error_bias": null,
+    "lateral_error_mean_abs": null,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "estimated": 185,
+     "none": 21
+    },
+    "n_accumulated_mean": 3.825242718446602,
+    "per_class_bin_counts": {
+     "plank": {
+      "0-50": [
+       0,
+       54
+      ],
+      "50-100": [
+       0,
+       14
+      ],
+      "100-150": [
+       0,
+       16
+      ],
+      "150-200": [
+       0,
+       9
+      ],
+      "200-300": [
+       0,
+       17
+      ]
+     }
+    },
+    "occluded_gt_skipped": 76,
+    "frames_processed": 206,
+    "gt_frames": 206,
+    "repeat": 1
+   }
+  },
+  "SEQ_plank_s2": {
+   "kind": "plank",
+   "seed": 2,
+   "inject": "resense inject --npy /data/cache/roundT_doubleT --every 10 --out data/SEQ_plank_s2 --kinds plank --distances 10:250 --negative-fraction 0.2 --sequence 8 --speed 15 --seed 2",
+   "eval_given": "resense eval data/SEQ_plank_s2 --repeat 1",
+   "eval_nospeed": "resense eval data/SEQ_plank_s2 --repeat 1 --no-gt-speed",
+   "gt_meta": {
+    "source": "inject",
+    "kinds": [
+     "plank"
+    ],
+    "distances": [
+     10.0,
+     250.0
+    ],
+    "per_frame": 1,
+    "negative_fraction": 0.2,
+    "sequence": 8,
+    "speed_mps": 15.0,
+    "frame_dt": 0.1,
+    "augment": false,
+    "seed": 2,
+    "input": "/data/cache/roundT_doubleT",
+    "every": 10,
+    "start": 0
+   },
+   "gt_counts": {
+    "frames": 206,
+    "objects": 206,
+    "in_gauge": 174,
+    "occluded": 72
+   },
+   "summary_given": {
+    "frames": 206,
+    "empty_frames": 101,
+    "recall": 0.05714285714285714,
+    "recall_by_range": {
+     "0-50": 0.0,
+     "50-100": 0.20689655172413793,
+     "100-150": 0.0,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "0-50": [
+      0,
+      44
+     ],
+     "150-200": [
+      0,
+      21
+     ],
+     "50-100": [
+      6,
+      29
+     ],
+     "200-300": [
+      0,
+      3
+     ],
+     "100-150": [
+      0,
+      8
+     ]
+    },
+    "fp_frames": 38,
+    "fp_frame_rate": 0.37623762376237624,
+    "fp_detections": 78,
+    "first_detection_distance": {
+     "plank_20_0": 61.60688746824697
+    },
+    "latency_ms_mean": 91.09776699029126,
+    "latency_ms_p95": 128.86,
+    "latency_ms_max": 148.18,
+    "recall_by_class": {
+     "plank": 0.05714285714285714
+    },
+    "per_class_counts": {
+     "plank": [
+      6,
+      105
+     ]
+    },
+    "alarm_frames": 69,
+    "alarm_events": 22,
+    "alarm_distance_min": 10.92,
+    "alarm_distance_max": 135.88,
+    "advisory_frames": 104,
+    "advisory_frame_rate": 0.5048543689320388,
+    "fp_events": 21,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 2941.6342412451363,
+    "distance_km": 0.38549999999999884,
+    "fp_events_per_km": 54.47470817120639,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.016258312164644906,
+    "distance_error_max_abs": 0.026887468246968638,
+    "distance_error_bias": -0.015220801580300739,
+    "lateral_error_mean_abs": 0.06833333333333334,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "given": 206
+    },
+    "n_accumulated_mean": 4.951456310679611,
+    "per_class_bin_counts": {
+     "plank": {
+      "0-50": [
+       0,
+       44
+      ],
+      "50-100": [
+       6,
+       29
+      ],
+      "100-150": [
+       0,
+       8
+      ],
+      "150-200": [
+       0,
+       21
+      ],
+      "200-300": [
+       0,
+       3
+      ]
+     }
+    },
+    "occluded_gt_skipped": 72,
+    "frames_processed": 206,
+    "gt_frames": 206,
+    "repeat": 1
+   },
+   "summary_nospeed": {
+    "frames": 206,
+    "empty_frames": 101,
+    "recall": 0.05714285714285714,
+    "recall_by_range": {
+     "0-50": 0.0,
+     "50-100": 0.20689655172413793,
+     "100-150": 0.0,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "0-50": [
+      0,
+      44
+     ],
+     "150-200": [
+      0,
+      21
+     ],
+     "50-100": [
+      6,
+      29
+     ],
+     "200-300": [
+      0,
+      3
+     ],
+     "100-150": [
+      0,
+      8
+     ]
+    },
+    "fp_frames": 58,
+    "fp_frame_rate": 0.5742574257425742,
+    "fp_detections": 143,
+    "first_detection_distance": {
+     "plank_20_0": 61.60688746824697
+    },
+    "latency_ms_mean": 90.67543689320388,
+    "latency_ms_p95": 114.11,
+    "latency_ms_max": 129.1,
+    "recall_by_class": {
+     "plank": 0.05714285714285714
+    },
+    "per_class_counts": {
+     "plank": [
+      6,
+      105
+     ]
+    },
+    "alarm_frames": 99,
+    "alarm_events": 32,
+    "alarm_distance_min": 10.92,
+    "alarm_distance_max": 135.88,
+    "advisory_frames": 138,
+    "advisory_frame_rate": 0.6699029126213593,
+    "fp_events": 31,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 4342.412451361867,
+    "distance_km": 1.9999999999999947e-05,
+    "fp_events_per_km": 1550000.000000004,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.016258312164644906,
+    "distance_error_max_abs": 0.026887468246968638,
+    "distance_error_bias": -0.015220801580300739,
+    "lateral_error_mean_abs": 0.05833333333333333,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "estimated": 182,
+     "none": 24
+    },
+    "n_accumulated_mean": 3.6990291262135924,
+    "per_class_bin_counts": {
+     "plank": {
+      "0-50": [
+       0,
+       44
+      ],
+      "50-100": [
+       6,
+       29
+      ],
+      "100-150": [
+       0,
+       8
+      ],
+      "150-200": [
+       0,
+       21
+      ],
+      "200-300": [
+       0,
+       3
+      ]
+     }
+    },
+    "occluded_gt_skipped": 72,
+    "frames_processed": 206,
+    "gt_frames": 206,
+    "repeat": 1
+   }
+  },
+  "SEQ_plank_s3": {
+   "kind": "plank",
+   "seed": 3,
+   "inject": "resense inject --npy /data/cache/roundT_doubleT --every 10 --out data/SEQ_plank_s3 --kinds plank --distances 10:250 --negative-fraction 0.2 --sequence 8 --speed 15 --seed 3",
+   "eval_given": "resense eval data/SEQ_plank_s3 --repeat 1",
+   "eval_nospeed": "resense eval data/SEQ_plank_s3 --repeat 1 --no-gt-speed",
+   "gt_meta": {
+    "source": "inject",
+    "kinds": [
+     "plank"
+    ],
+    "distances": [
+     10.0,
+     250.0
+    ],
+    "per_frame": 1,
+    "negative_fraction": 0.2,
+    "sequence": 8,
+    "speed_mps": 15.0,
+    "frame_dt": 0.1,
+    "augment": false,
+    "seed": 3,
+    "input": "/data/cache/roundT_doubleT",
+    "every": 10,
+    "start": 0
+   },
+   "gt_counts": {
+    "frames": 205,
+    "objects": 205,
+    "in_gauge": 125,
+    "occluded": 82
+   },
+   "summary_given": {
+    "frames": 205,
+    "empty_frames": 136,
+    "recall": 0.11594202898550725,
+    "recall_by_range": {
+     "0-50": 0.16216216216216217,
+     "50-100": 0.25,
+     "100-150": 0.0,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "0-50": [
+      6,
+      37
+     ],
+     "200-300": [
+      0,
+      6
+     ],
+     "150-200": [
+      0,
+      11
+     ],
+     "50-100": [
+      2,
+      8
+     ],
+     "100-150": [
+      0,
+      7
+     ]
+    },
+    "fp_frames": 52,
+    "fp_frame_rate": 0.38235294117647056,
+    "fp_detections": 81,
+    "first_detection_distance": {
+     "plank_8_0": 23.204920615734316,
+     "plank_13_0": 33.16837177053492,
+     "plank_17_0": 67.23611121417309
+    },
+    "latency_ms_mean": 89.58843902439027,
+    "latency_ms_p95": 121.50199999999998,
+    "latency_ms_max": 139.84,
+    "recall_by_class": {
+     "plank": 0.11594202898550725
+    },
+    "per_class_counts": {
+     "plank": [
+      8,
+      69
+     ]
+    },
+    "alarm_frames": 75,
+    "alarm_events": 21,
+    "alarm_distance_min": 10.61,
+    "alarm_distance_max": 135.88,
+    "advisory_frames": 106,
+    "advisory_frame_rate": 0.5170731707317073,
+    "fp_events": 18,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 2521.4007782101166,
+    "distance_km": 0.3854999999999989,
+    "fp_events_per_km": 46.69260700389118,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.7764234368732246,
+    "distance_error_max_abs": 2.218371770534919,
+    "distance_error_bias": 0.09810034030591597,
+    "lateral_error_mean_abs": 0.20156409676374573,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "given": 205
+    },
+    "n_accumulated_mean": 4.951219512195122,
+    "per_class_bin_counts": {
+     "plank": {
+      "0-50": [
+       6,
+       37
+      ],
+      "50-100": [
+       2,
+       8
+      ],
+      "100-150": [
+       0,
+       7
+      ],
+      "150-200": [
+       0,
+       11
+      ],
+      "200-300": [
+       0,
+       6
+      ]
+     }
+    },
+    "occluded_gt_skipped": 82,
+    "frames_processed": 205,
+    "gt_frames": 205,
+    "repeat": 1
+   },
+   "summary_nospeed": {
+    "frames": 205,
+    "empty_frames": 136,
+    "recall": 0.08695652173913043,
+    "recall_by_range": {
+     "0-50": 0.16216216216216217,
+     "50-100": 0.0,
+     "100-150": 0.0,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "0-50": [
+      6,
+      37
+     ],
+     "200-300": [
+      0,
+      6
+     ],
+     "150-200": [
+      0,
+      11
+     ],
+     "50-100": [
+      0,
+      8
+     ],
+     "100-150": [
+      0,
+      7
+     ]
+    },
+    "fp_frames": 68,
+    "fp_frame_rate": 0.5,
+    "fp_detections": 139,
+    "first_detection_distance": {
+     "plank_8_0": 23.204920615734316,
+     "plank_13_0": 33.16837177053492
+    },
+    "latency_ms_mean": 95.15453658536586,
+    "latency_ms_p95": 121.53199999999998,
+    "latency_ms_max": 141.05,
+    "recall_by_class": {
+     "plank": 0.08695652173913043
+    },
+    "per_class_counts": {
+     "plank": [
+      6,
+      69
+     ]
+    },
+    "alarm_frames": 99,
+    "alarm_events": 28,
+    "alarm_distance_min": 10.61,
+    "alarm_distance_max": 135.88,
+    "advisory_frames": 131,
+    "advisory_frame_rate": 0.6390243902439025,
+    "fp_events": 26,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 3642.023346303502,
+    "distance_km": 1.7000000000000013e-05,
+    "fp_events_per_km": 1529411.7647058812,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.7206016538886614,
+    "distance_error_max_abs": 2.218371770534919,
+    "distance_error_bias": -0.18382914153441673,
+    "lateral_error_mean_abs": 0.18649716300669594,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "estimated": 187,
+     "none": 18
+    },
+    "n_accumulated_mean": 3.946341463414634,
+    "per_class_bin_counts": {
+     "plank": {
+      "0-50": [
+       6,
+       37
+      ],
+      "50-100": [
+       0,
+       8
+      ],
+      "100-150": [
+       0,
+       7
+      ],
+      "150-200": [
+       0,
+       11
+      ],
+      "200-300": [
+       0,
+       6
+      ]
+     }
+    },
+    "occluded_gt_skipped": 82,
+    "frames_processed": 205,
+    "gt_frames": 205,
+    "repeat": 1
+   }
+  },
+  "SEQ_trolley_s1": {
+   "kind": "trolley",
+   "seed": 1,
+   "inject": "resense inject --npy /data/cache/roundT_doubleT --every 10 --out data/SEQ_trolley_s1 --kinds trolley --distances 10:250 --negative-fraction 0.2 --sequence 8 --speed 15 --seed 1",
+   "eval_given": "resense eval data/SEQ_trolley_s1 --repeat 1",
+   "eval_nospeed": "resense eval data/SEQ_trolley_s1 --repeat 1 --no-gt-speed",
+   "gt_meta": {
+    "source": "inject",
+    "kinds": [
+     "trolley"
+    ],
+    "distances": [
+     10.0,
+     250.0
+    ],
+    "per_frame": 1,
+    "negative_fraction": 0.2,
+    "sequence": 8,
+    "speed_mps": 15.0,
+    "frame_dt": 0.1,
+    "augment": false,
+    "seed": 1,
+    "input": "/data/cache/roundT_doubleT",
+    "every": 10,
+    "start": 0
+   },
+   "gt_counts": {
+    "frames": 205,
+    "objects": 205,
+    "in_gauge": 128,
+    "occluded": 47
+   },
+   "summary_given": {
+    "frames": 205,
+    "empty_frames": 103,
+    "recall": 0.2647058823529412,
+    "recall_by_range": {
+     "0-50": 0.48,
+     "50-100": 0.13636363636363635,
+     "100-150": 0.0,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "200-300": [
+      0,
+      10
+     ],
+     "150-200": [
+      0,
+      9
+     ],
+     "100-150": [
+      0,
+      11
+     ],
+     "0-50": [
+      24,
+      50
+     ],
+     "50-100": [
+      3,
+      22
+     ]
+    },
+    "fp_frames": 37,
+    "fp_frame_rate": 0.3592233009708738,
+    "fp_detections": 81,
+    "first_detection_distance": {
+     "trolley_3_0": 11.766105558221998,
+     "trolley_5_0": 27.980284089164122,
+     "trolley_21_0": 69.08813432338127,
+     "trolley_22_0": 35.16296072717864,
+     "trolley_25_0": 37.70761245273047
+    },
+    "latency_ms_mean": 90.30765853658536,
+    "latency_ms_p95": 128.18599999999995,
+    "latency_ms_max": 157.02,
+    "recall_by_class": {
+     "trolley": 0.2647058823529412
+    },
+    "per_class_counts": {
+     "trolley": [
+      27,
+      102
+     ]
+    },
+    "alarm_frames": 87,
+    "alarm_events": 27,
+    "alarm_distance_min": 4.21,
+    "alarm_distance_max": 135.88,
+    "advisory_frames": 95,
+    "advisory_frame_rate": 0.4634146341463415,
+    "fp_events": 22,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 3081.712062256809,
+    "distance_km": 0.3854999999999989,
+    "fp_events_per_km": 57.06874189364478,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.050228886441304535,
+    "distance_error_max_abs": 0.07610555822199849,
+    "distance_error_bias": -0.050228886441304535,
+    "lateral_error_mean_abs": 0.07226509887612506,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "given": 205
+    },
+    "n_accumulated_mean": 4.951219512195122,
+    "per_class_bin_counts": {
+     "trolley": {
+      "0-50": [
+       24,
+       50
+      ],
+      "50-100": [
+       3,
+       22
+      ],
+      "100-150": [
+       0,
+       11
+      ],
+      "150-200": [
+       0,
+       9
+      ],
+      "200-300": [
+       0,
+       10
+      ]
+     }
+    },
+    "occluded_gt_skipped": 47,
+    "frames_processed": 205,
+    "gt_frames": 205,
+    "repeat": 1
+   },
+   "summary_nospeed": {
+    "frames": 205,
+    "empty_frames": 103,
+    "recall": 0.3431372549019608,
+    "recall_by_range": {
+     "0-50": 0.56,
+     "50-100": 0.3181818181818182,
+     "100-150": 0.0,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "200-300": [
+      0,
+      10
+     ],
+     "150-200": [
+      0,
+      9
+     ],
+     "100-150": [
+      0,
+      11
+     ],
+     "0-50": [
+      28,
+      50
+     ],
+     "50-100": [
+      7,
+      22
+     ]
+    },
+    "fp_frames": 63,
+    "fp_frame_rate": 0.6116504854368932,
+    "fp_detections": 150,
+    "first_detection_distance": {
+     "trolley_3_0": 11.766105558221998,
+     "trolley_5_0": 27.980284089164122,
+     "trolley_8_0": 44.846562095689855,
+     "trolley_9_0": 55.583075659009936,
+     "trolley_21_0": 69.08813432338127,
+     "trolley_22_0": 35.16296072717864,
+     "trolley_25_0": 37.70761245273047
+    },
+    "latency_ms_mean": 92.48658536585366,
+    "latency_ms_p95": 119.74399999999997,
+    "latency_ms_max": 133.01,
+    "recall_by_class": {
+     "trolley": 0.3431372549019608
+    },
+    "per_class_counts": {
+     "trolley": [
+      35,
+      102
+     ]
+    },
+    "alarm_frames": 131,
+    "alarm_events": 40,
+    "alarm_distance_min": 4.21,
+    "alarm_distance_max": 135.88,
+    "advisory_frames": 124,
+    "advisory_frame_rate": 0.6048780487804878,
+    "fp_events": 33,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 4622.568093385214,
+    "distance_km": 2.8999999999999983e-05,
+    "fp_events_per_km": 1137931.0344827592,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.16565023083870128,
+    "distance_error_max_abs": 1.713075659009938,
+    "distance_error_bias": -0.16565023083870128,
+    "lateral_error_mean_abs": 0.12685499216123436,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "estimated": 185,
+     "none": 20
+    },
+    "n_accumulated_mean": 3.9609756097560975,
+    "per_class_bin_counts": {
+     "trolley": {
+      "0-50": [
+       28,
+       50
+      ],
+      "50-100": [
+       7,
+       22
+      ],
+      "100-150": [
+       0,
+       11
+      ],
+      "150-200": [
+       0,
+       9
+      ],
+      "200-300": [
+       0,
+       10
+      ]
+     }
+    },
+    "occluded_gt_skipped": 47,
+    "frames_processed": 205,
+    "gt_frames": 205,
+    "repeat": 1
+   }
+  },
+  "SEQ_trolley_s2": {
+   "kind": "trolley",
+   "seed": 2,
+   "inject": "resense inject --npy /data/cache/roundT_doubleT --every 10 --out data/SEQ_trolley_s2 --kinds trolley --distances 10:250 --negative-fraction 0.2 --sequence 8 --speed 15 --seed 2",
+   "eval_given": "resense eval data/SEQ_trolley_s2 --repeat 1",
+   "eval_nospeed": "resense eval data/SEQ_trolley_s2 --repeat 1 --no-gt-speed",
+   "gt_meta": {
+    "source": "inject",
+    "kinds": [
+     "trolley"
+    ],
+    "distances": [
+     10.0,
+     250.0
+    ],
+    "per_frame": 1,
+    "negative_fraction": 0.2,
+    "sequence": 8,
+    "speed_mps": 15.0,
+    "frame_dt": 0.1,
+    "augment": false,
+    "seed": 2,
+    "input": "/data/cache/roundT_doubleT",
+    "every": 10,
+    "start": 0
+   },
+   "gt_counts": {
+    "frames": 206,
+    "objects": 206,
+    "in_gauge": 174,
+    "occluded": 50
+   },
+   "summary_given": {
+    "frames": 206,
+    "empty_frames": 73,
+    "recall": 0.17293233082706766,
+    "recall_by_range": {
+     "0-50": 0.43478260869565216,
+     "50-100": 0.0625,
+     "100-150": 0.06451612903225806,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "0-50": [
+      20,
+      46
+     ],
+     "100-150": [
+      2,
+      31
+     ],
+     "50-100": [
+      1,
+      16
+     ],
+     "200-300": [
+      0,
+      21
+     ],
+     "150-200": [
+      0,
+      19
+     ]
+    },
+    "fp_frames": 28,
+    "fp_frame_rate": 0.3835616438356164,
+    "fp_detections": 70,
+    "first_detection_distance": {
+     "trolley_4_0": 42.625534358496495,
+     "trolley_5_0": 45.00440216122776,
+     "trolley_13_0": 14.969977908913513,
+     "trolley_19_0": 92.83354259953819,
+     "trolley_20_0": 46.722779742469484,
+     "trolley_23_0": 114.94563577427353
+    },
+    "latency_ms_mean": 96.59276699029127,
+    "latency_ms_p95": 125.1425,
+    "latency_ms_max": 139.8,
+    "recall_by_class": {
+     "trolley": 0.17293233082706766
+    },
+    "per_class_counts": {
+     "trolley": [
+      23,
+      133
+     ]
+    },
+    "alarm_frames": 77,
+    "alarm_events": 25,
+    "alarm_distance_min": 10.92,
+    "alarm_distance_max": 146.8,
+    "advisory_frames": 108,
+    "advisory_frame_rate": 0.5242718446601942,
+    "fp_events": 19,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 2661.47859922179,
+    "distance_km": 0.38549999999999884,
+    "fp_events_per_km": 49.28664072632959,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.09521236325537291,
+    "distance_error_max_abs": 0.6700220910864871,
+    "distance_error_bias": -0.008742066916290363,
+    "lateral_error_mean_abs": 0.08600432570976188,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "given": 206
+    },
+    "n_accumulated_mean": 4.951456310679611,
+    "per_class_bin_counts": {
+     "trolley": {
+      "0-50": [
+       20,
+       46
+      ],
+      "50-100": [
+       1,
+       16
+      ],
+      "100-150": [
+       2,
+       31
+      ],
+      "150-200": [
+       0,
+       19
+      ],
+      "200-300": [
+       0,
+       21
+      ]
+     }
+    },
+    "occluded_gt_skipped": 50,
+    "frames_processed": 206,
+    "gt_frames": 206,
+    "repeat": 1
+   },
+   "summary_nospeed": {
+    "frames": 206,
+    "empty_frames": 73,
+    "recall": 0.23308270676691728,
+    "recall_by_range": {
+     "0-50": 0.43478260869565216,
+     "50-100": 0.3125,
+     "100-150": 0.1935483870967742,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "0-50": [
+      20,
+      46
+     ],
+     "100-150": [
+      6,
+      31
+     ],
+     "50-100": [
+      5,
+      16
+     ],
+     "200-300": [
+      0,
+      21
+     ],
+     "150-200": [
+      0,
+      19
+     ]
+    },
+    "fp_frames": 40,
+    "fp_frame_rate": 0.547945205479452,
+    "fp_detections": 133,
+    "first_detection_distance": {
+     "trolley_4_0": 42.625534358496495,
+     "trolley_5_0": 45.00440216122776,
+     "trolley_13_0": 14.969977908913513,
+     "trolley_19_0": 98.83354259953819,
+     "trolley_20_0": 46.722779742469484,
+     "trolley_23_0": 114.94563577427353
+    },
+    "latency_ms_mean": 97.05325242718449,
+    "latency_ms_p95": 124.815,
+    "latency_ms_max": 143.09,
+    "recall_by_class": {
+     "trolley": 0.23308270676691728
+    },
+    "per_class_counts": {
+     "trolley": [
+      31,
+      133
+     ]
+    },
+    "alarm_frames": 109,
+    "alarm_events": 33,
+    "alarm_distance_min": 10.92,
+    "alarm_distance_max": 165.29,
+    "advisory_frames": 128,
+    "advisory_frame_rate": 0.6213592233009708,
+    "fp_events": 26,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 3642.023346303502,
+    "distance_km": 3.399999999999999e-05,
+    "fp_events_per_km": 764705.8823529413,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.3059782677926904,
+    "distance_error_max_abs": 3.2756357742735247,
+    "distance_error_bias": -0.24089616239746994,
+    "lateral_error_mean_abs": 0.16755993922378792,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "estimated": 190,
+     "none": 16
+    },
+    "n_accumulated_mean": 4.058252427184466,
+    "per_class_bin_counts": {
+     "trolley": {
+      "0-50": [
+       20,
+       46
+      ],
+      "50-100": [
+       5,
+       16
+      ],
+      "100-150": [
+       6,
+       31
+      ],
+      "150-200": [
+       0,
+       19
+      ],
+      "200-300": [
+       0,
+       21
+      ]
+     }
+    },
+    "occluded_gt_skipped": 50,
+    "frames_processed": 206,
+    "gt_frames": 206,
+    "repeat": 1
+   }
+  },
+  "SEQ_trolley_s3": {
+   "kind": "trolley",
+   "seed": 3,
+   "inject": "resense inject --npy /data/cache/roundT_doubleT --every 10 --out data/SEQ_trolley_s3 --kinds trolley --distances 10:250 --negative-fraction 0.2 --sequence 8 --speed 15 --seed 3",
+   "eval_given": "resense eval data/SEQ_trolley_s3 --repeat 1",
+   "eval_nospeed": "resense eval data/SEQ_trolley_s3 --repeat 1 --no-gt-speed",
+   "gt_meta": {
+    "source": "inject",
+    "kinds": [
+     "trolley"
+    ],
+    "distances": [
+     10.0,
+     250.0
+    ],
+    "per_frame": 1,
+    "negative_fraction": 0.2,
+    "sequence": 8,
+    "speed_mps": 15.0,
+    "frame_dt": 0.1,
+    "augment": false,
+    "seed": 3,
+    "input": "/data/cache/roundT_doubleT",
+    "every": 10,
+    "start": 0
+   },
+   "gt_counts": {
+    "frames": 208,
+    "objects": 208,
+    "in_gauge": 136,
+    "occluded": 84
+   },
+   "summary_given": {
+    "frames": 208,
+    "empty_frames": 142,
+    "recall": 0.18181818181818182,
+    "recall_by_range": {
+     "0-50": 1.0,
+     "50-100": 0.3333333333333333,
+     "100-150": 0.0,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "150-200": [
+      0,
+      25
+     ],
+     "50-100": [
+      7,
+      21
+     ],
+     "100-150": [
+      0,
+      3
+     ],
+     "200-300": [
+      0,
+      12
+     ],
+     "0-50": [
+      5,
+      5
+     ]
+    },
+    "fp_frames": 45,
+    "fp_frame_rate": 0.31690140845070425,
+    "fp_detections": 90,
+    "first_detection_distance": {
+     "trolley_20_0": 68.8804707375417,
+     "trolley_25_0": 50.247621979998144
+    },
+    "latency_ms_mean": 90.29562499999999,
+    "latency_ms_p95": 126.42049999999998,
+    "latency_ms_max": 145.82,
+    "recall_by_class": {
+     "trolley": 0.18181818181818182
+    },
+    "per_class_counts": {
+     "trolley": [
+      12,
+      66
+     ]
+    },
+    "alarm_frames": 78,
+    "alarm_events": 23,
+    "alarm_distance_min": 10.61,
+    "alarm_distance_max": 135.88,
+    "advisory_frames": 103,
+    "advisory_frame_rate": 0.4951923076923077,
+    "fp_events": 21,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 2941.6342412451363,
+    "distance_km": 0.38549999999999884,
+    "fp_events_per_km": 54.47470817120639,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.05904635876992378,
+    "distance_error_max_abs": 0.08047073754170242,
+    "distance_error_bias": -0.05904635876992378,
+    "lateral_error_mean_abs": 0.03916666666666666,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "given": 208
+    },
+    "n_accumulated_mean": 4.951923076923077,
+    "per_class_bin_counts": {
+     "trolley": {
+      "0-50": [
+       5,
+       5
+      ],
+      "50-100": [
+       7,
+       21
+      ],
+      "100-150": [
+       0,
+       3
+      ],
+      "150-200": [
+       0,
+       25
+      ],
+      "200-300": [
+       0,
+       12
+      ]
+     }
+    },
+    "occluded_gt_skipped": 84,
+    "frames_processed": 208,
+    "gt_frames": 208,
+    "repeat": 1
+   },
+   "summary_nospeed": {
+    "frames": 208,
+    "empty_frames": 142,
+    "recall": 0.18181818181818182,
+    "recall_by_range": {
+     "0-50": 1.0,
+     "50-100": 0.3333333333333333,
+     "100-150": 0.0,
+     "150-200": 0.0,
+     "200-300": 0.0
+    },
+    "per_bin_counts": {
+     "150-200": [
+      0,
+      25
+     ],
+     "50-100": [
+      7,
+      21
+     ],
+     "100-150": [
+      0,
+      3
+     ],
+     "200-300": [
+      0,
+      12
+     ],
+     "0-50": [
+      5,
+      5
+     ]
+    },
+    "fp_frames": 73,
+    "fp_frame_rate": 0.5140845070422535,
+    "fp_detections": 142,
+    "first_detection_distance": {
+     "trolley_20_0": 68.8804707375417,
+     "trolley_25_0": 50.247621979998144
+    },
+    "latency_ms_mean": 94.11932692307693,
+    "latency_ms_p95": 119.26749999999998,
+    "latency_ms_max": 126.81,
+    "recall_by_class": {
+     "trolley": 0.18181818181818182
+    },
+    "per_class_counts": {
+     "trolley": [
+      12,
+      66
+     ]
+    },
+    "alarm_frames": 103,
+    "alarm_events": 32,
+    "alarm_distance_min": 10.61,
+    "alarm_distance_max": 135.88,
+    "advisory_frames": 135,
+    "advisory_frame_rate": 0.6490384615384616,
+    "fp_events": 30,
+    "bag_time_s": 25.7,
+    "fp_events_per_hour": 4202.334630350195,
+    "distance_km": 1.699999999999999e-05,
+    "fp_events_per_km": 1764705.8823529421,
+    "frame_stride": 1,
+    "stride_caveat": null,
+    "distance_error_mean_abs": 0.04571302543658836,
+    "distance_error_max_abs": 0.08047073754170242,
+    "distance_error_bias": -0.04571302543658836,
+    "lateral_error_mean_abs": 0.05111866345709698,
+    "first_alarm_frame": 2,
+    "ego_speed_sources": {
+     "estimated": 188,
+     "none": 20
+    },
+    "n_accumulated_mean": 3.855769230769231,
+    "per_class_bin_counts": {
+     "trolley": {
+      "0-50": [
+       5,
+       5
+      ],
+      "50-100": [
+       7,
+       21
+      ],
+      "100-150": [
+       0,
+       3
+      ],
+      "150-200": [
+       0,
+       25
+      ],
+      "200-300": [
+       0,
+       12
+      ]
+     }
+    },
+    "occluded_gt_skipped": 84,
+    "frames_processed": 208,
+    "gt_frames": 208,
+    "repeat": 1
+   }
+  }
+ }
+}

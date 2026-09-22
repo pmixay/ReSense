@@ -1,8 +1,11 @@
-"""ros2 launch resense_ros detector.launch.py [bag:=/data/for_hackathon/roundT_doubleT] [rviz:=true]
+"""ros2 launch resense_ros detector.launch.py [bag:=/data/for_hackathon/roundT_doubleT] [rviz:=true] [loop:=true]
 
 Every node parameter is a launch argument, so the demo can be retuned without rebuilding.
 ``input_topic`` is a comma-separated candidate list; the node also auto-discovers PointCloud2
 topics unless ``auto_discover:=false`` (the organizers' bags disagree on the topic name).
+``bag:=`` plays a bag from the launch file (``loop:=true`` forever, ``rate:=`` playback rate);
+``ego_speed_mps:=22`` (or ``speed_topic:=`` / ``odom_topic:=``) feeds the train speed to the
+multi-frame accumulation; ``publish_tf`` links the fixed frame ``resense_lidar`` to the bag's frame.
 """
 import os
 
@@ -26,6 +29,13 @@ PARAMS = {
     "marker_x_max": ("250.0", float, "m, how far the corridor outline is drawn"),
     "output_frame": ("", str, "frame_id of the published markers/detections; empty = the input's"),
     "stats_period": ("2.0", float, "s between fps / latency log lines"),
+    "ego_speed_mps": ("-1.0", float, "train speed in m/s for multi-frame accumulation; < 0 = unknown "
+                                     "(speed_topic / odom_topic or the detector's own estimate)"),
+    "speed_topic": ("", str, "std_msgs/Float32 topic carrying the train speed in m/s (optional)"),
+    "odom_topic": ("", str, "nav_msgs/Odometry topic; twist.linear.x is taken as the train speed (optional)"),
+    "speed_timeout": ("1.0", float, "s after which a speed message no longer counts"),
+    "publish_tf": ("true", bool, "broadcast a static identity TF tf_parent_frame -> input frame id"),
+    "tf_parent_frame": ("resense_lidar", str, "fixed frame used by the RViz / Foxglove layouts"),
 }
 
 
@@ -51,6 +61,8 @@ def generate_launch_description():
         DeclareLaunchArgument("bag", default_value="", description="optional bag to play"),
         DeclareLaunchArgument("rate", default_value="1.0"),
         DeclareLaunchArgument("loop", default_value="false", description="replay the bag forever"),
+        DeclareLaunchArgument("delay", default_value="3.0",
+                              description="s the player waits before the first message (DDS discovery)"),
     ]
 
     params = {k: ParameterValue(LaunchConfiguration(k), value_type=t)
@@ -58,15 +70,15 @@ def generate_launch_description():
     params["config_file"] = ParameterValue(LaunchConfiguration("config_file"), value_type=str)
 
     play = ["ros2", "bag", "play", LaunchConfiguration("bag"),
-            "--rate", LaunchConfiguration("rate"), "--clock"]
+            "--rate", LaunchConfiguration("rate"), "--clock", "--delay", LaunchConfiguration("delay")]
 
     return LaunchDescription(args + [
         Node(package="resense_ros", executable="detector_node", name="resense_detector",
              output="screen", parameters=[params]),
         Node(package="rviz2", executable="rviz2", name="rviz2", arguments=["-d", default_rviz],
              condition=IfCondition(LaunchConfiguration("rviz")), output="log"),
-        # NOTE: playing from the launch file races the node's startup and loses the first frames;
-        # scripts/run_headless.sh and scripts/dry_run.sh wait for /resense/status before playing.
+        # NOTE: playing from the launch file races the node's startup; --delay (default 3 s) gives
+        # discovery time, and scripts/run_headless.sh / dry_run.sh also wait for /resense/status.
         # Two variants rather than one conditional argument: an empty argv element would be read
         # by `ros2 bag play` as a second bag path.
         ExecuteProcess(cmd=play + ["--loop"], output="screen", condition=_bag_condition(True)),

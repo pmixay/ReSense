@@ -10,11 +10,42 @@ Live status of every deliverable the organizers ask for (spec §5 and §7). Owne
 | 1 | Dockerfile and/or image with everything needed | [`docker/Dockerfile`](../docker/Dockerfile), `scripts/build.sh` | P1 | done (runtime image; `WITH_TOOLS=1` adds tests) |
 | 2 | working prototype of the algorithm | `resense/`, `ros2_ws/` | all | done, v0 |
 | 3 | short description of the chosen approach | [`README.md`](../README.md) intro, [`ALGORITHM.md`](ALGORITHM.md) §1–4 | P1 | done |
-| 4 | minimal demonstration on the provided data | `scripts/run_demo.sh doubleT_obstacle`; renders in [`img/`](img/) | P1 / P2 | renders done; live demo recording pending (P2) |
+| 4 | minimal demonstration on the provided data | `scripts/run_demo.sh doubleT_obstacle`; real renders in [`img/`](img/) (`doubleT_obstacle_*_v05.png`), videos in [`video/`](video/), dashboard replay (`web/index.html`, screenshot `img/dashboard_doubleT_obstacle.png`) | P1 / P2 | done offline on the real bag; the live RViz run needs a machine with Docker |
 | 5 | first experiment results | [`EXPERIMENTS.md`](EXPERIMENTS.md) | P3 / P4 | done, v0.3 |
 
 Package to send: link to the repository at a tagged commit (`v0.1-intermediate`), plus the
-five rows above quoted in the cover message.
+five rows above quoted in the cover message. On the day: `git tag -a v0.1-intermediate -m
+"intermediate submission" && git push origin v0.1-intermediate`, then send the text below with
+the commit hash filled in (the intermediate deadline, the form of the final package and the
+stand procedure are the team's own to settle — not organizer questions, `QUESTIONS.md` "Closed").
+
+### Cover message (draft, Russian — the organizers' language)
+
+> Команда ReSense, кейс 05 («Обнаружение посторонних объектов в тоннеле метро по данным
+> 3D-лидара») — промежуточная сдача.
+> Репозиторий: https://github.com/pmixay/ReSense, тег `v0.1-intermediate` (коммит `<sha>`).
+>
+> 1. **Dockerfile** — `docker/Dockerfile`, сборка `./scripts/build.sh` (ROS 2 Humble, нода,
+>    RViz, foxglove_bridge; зависимости ставятся при сборке образа). CI на каждом коммите
+>    собирает образ, прогоняет тесты внутри него и сквозной прогон синтетического bag-файла
+>    через ноду.
+> 2. **Прототип** — пакет `resense` (Python: numpy / scipy / scikit-learn) и ROS 2-нода
+>    `resense_ros`. Запуск: `./scripts/run_demo.sh /data/for_hackathon/doubleT_obstacle` (RViz)
+>    или `./scripts/run_headless.sh …` (без X11); выход — флаг препятствия, расстояние,
+>    `vision_msgs/Detection3DArray`, маркеры RViz, JSON-статус.
+> 3. **Подход** (README, `docs/ALGORITHM.md`) — геометрическая модель «нормального тоннеля»:
+>    самокалибровка по рельсам, ось пути и кривизна по стенам / рядам колонн, коридор габарита,
+>    кластеризация с адаптацией к дальности, подтверждение по нескольким кадрам, накопление
+>    кадров с компенсацией движения для 150+ м. Без обучения на размеченных объектах —
+>    обобщается на новые записи.
+> 4. **Демонстрация** — человек, переходящий путь в `doubleT_obstacle`, обнаруживается на
+>    55–57 м (`docs/img/`, видео: `<ссылка>`); `scripts/dry_run.sh` воспроизводит это как
+>    автоматическую проверку.
+> 5. **Эксперименты** — `docs/EXPERIMENTS.md`: дальность на синтетических препятствиях,
+>    внесённых в реальные кадры трассировкой лучей; задержка и FPS; ложные срабатывания по типам
+>    сцен (платформы, стрелки, гермозатворы) и что с ними сделано.
+>
+> Вопросы к организаторам отправлены отдельно (`docs/QUESTIONS.md`).
 
 ## Final submission (spec §7.2 and §5)
 
@@ -29,12 +60,12 @@ five rows above quoted in the cover message.
 | 7 | README: parameters and configuration | README "Parameters worth knowing", [`ALGORITHM.md`](ALGORITHM.md) §5, `configs/default.yaml` | P1 / P3 | done |
 | 8 | architecture description (components, data flow) | [`ARCHITECTURE.md`](ARCHITECTURE.md) | P1 | done |
 | 9 | algorithm description (problem, data, processing, decision, parameters, limitations) | [`ALGORITHM.md`](ALGORITHM.md) | P1, reviewed by P3 | done for v0; update with accumulation |
-| 10 | experiment results (range, latency, FPS, false alarms, hard cases, improvement over time) | [`EXPERIMENTS.md`](EXPERIMENTS.md), protocol in [`EVALUATION.md`](EVALUATION.md) | P3 / P4 | v0 done; extended dataset and bench timing pending |
-| 11 | video of the algorithm at work | `docs/video/` or a link in README | P2 | pending |
-| 12 | full demonstration on the control bag: `docker build → docker run → ros2 bag play → result` | `scripts/build.sh`, `scripts/run_demo.sh` | P1 | pending dry run 28.09 |
-| 13 | presentation, slides 7–11 exactly per template | [`PRESENTATION.md`](PRESENTATION.md), pptx | P2 | pending |
-| 14 | tests (spec §8.5) | `tests/`, CI (`pytest` job, Docker job runs the suite inside the image) | P4 / P1 | done |
-| 15 | input data description | [`DATASET.md`](DATASET.md), sensor: [`SENSOR.md`](SENSOR.md) | P4 / P1 | done |
+| 10 | experiment results (range, latency, FPS, false alarms, hard cases, improvement over time) | [`EXPERIMENTS.md`](EXPERIMENTS.md) (full-rate real-data numbers of v0.3 → v0.5, causes of false alarms, real labels, synthetic-on-real recall), protocol in [`EVALUATION.md`](EVALUATION.md), raw files `experiments_*.json`, labels in `labels/` | P3 / P4 | real-data round done (21.09); the extended recording streamed and run at full rate on 22.09 (unlabelled: false-alarm numbers only, `DATASET.md` "Extended dataset"); i7 bench timing pending |
+| 11 | video of the algorithm at work | [`video/doubleT_obstacle_offline.mp4`](video/doubleT_obstacle_offline.mp4) (every frame of the real bag, v0.5, 20 s) and [`video/dashboard_doubleT_obstacle.mp4`](video/dashboard_doubleT_obstacle.mp4) (dashboard replay); recipe in [`web/README.md`](../web/README.md) | P2 | done on real data (offline chain); the RViz screen recording of the Docker chain still to be made on a machine with Docker |
+| 12 | full demonstration on the control bag: `docker build → docker run → ros2 bag play → result` | `scripts/build.sh`, `scripts/run_demo.sh`; same chain on a synthetic bag in CI (`scripts/smoke_test.sh`) | P1 | container chain proven in CI on a synthetic bag (21.09); dry run on a real bag pending (28.09) |
+| 13 | presentation, slides 7–11 exactly per template | [`PRESENTATION.md`](PRESENTATION.md) (texts for 7–11, plan for 12–20, captain's slides), pptx | P2 | texts drafted; pptx in the organizers' template pending |
+| 14 | tests (spec §8.5) | `tests/`, `web/demo/`, CI (`pytest`, `web` and Docker jobs; the Docker job also plays a synthetic bag through the node) | P4 / P1 / P2 | done |
+| 15 | input data description | [`DATASET.md`](DATASET.md) (both organizer links: Google Drive bags and the Yandex Disk extended dataset), sensor: [`SENSOR.md`](SENSOR.md) with the Hesai manual in [`sensor/`](sensor/); the test stand's driver / CUDA state in [`organizers/test_stand_software.md`](organizers/test_stand_software.md) | P4 / P1 | done |
 
 ## Dry run (28.09)
 

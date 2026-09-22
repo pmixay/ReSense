@@ -3,13 +3,46 @@ on:
   push:
 jobs:
   pytest:
+    # The synthetic-tunnel tests need open3d; without it they are skipped, and a skipped
+    # suite must never look green here: RESENSE_REQUIRE_SYNTHETIC=1 makes tests/conftest.py
+    # fail the run on any skip, and the junit skip count is checked independently.
+    runs-on: ubuntu-22.04
+    env:
+      RESENSE_REQUIRE_SYNTHETIC: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      # open3d (the synthetic tunnel) links libEGL / libGL / libgomp / libusb, which the bare runner lacks
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq libegl1 libgl1 libgomp1 libusb-1.0-0
+      - run: pip install -e ".[dev]"
+      - run: python -c "import open3d, sys; print('open3d', open3d.__version__, 'python', sys.version)"
+      - run: python -m pytest -rs -q --junitxml=junit.xml
+      - name: no test may have been skipped
+        run: |
+          python - <<'PY'
+          import xml.etree.ElementTree as ET, sys
+          root = ET.parse("junit.xml").getroot()
+          suites = [root] if root.tag == "testsuite" else list(root)
+          tests = sum(int(s.get("tests", 0)) for s in suites)
+          skipped = sum(int(s.get("skipped", 0)) for s in suites)
+          print(f"junit: {tests} tests, {skipped} skipped")
+          sys.exit(1 if skipped or tests == 0 else 0)
+          PY
+  web:
+    # the dashboard replays a synthetic run in headless Chromium (web/demo/test_web.py, check_dashboard.py)
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.10" }
-      - run: pip install -e ".[dev]"
-      - run: pytest -q
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq libegl1 libgl1 libgomp1 libusb-1.0-0
+      - run: pip install -e ".[dev]" playwright && python -m playwright install --with-deps chromium
+      - run: python -m pytest -q -rs web/demo
+      - run: python web/demo/make_demo_run.py --out out/demo_run.jsonl && python web/demo/check_dashboard.py --jsonl out/demo_run.jsonl --screenshot out/dashboard_synthetic.png
   params-in-sync:
     # configs/default.yaml is the single source of truth; the ROS package carries a copy
     runs-on: ubuntu-22.04
@@ -22,6 +55,9 @@ jobs:
       - uses: actions/checkout@v4
       - run: docker build -t resense:ci --build-arg WITH_TOOLS=1 -f docker/Dockerfile .
       - name: unit tests inside the image (with open3d, so the synthetic-tunnel suite really runs)
-        run: docker run --rm resense:ci python3 -m pytest -q /opt/resense/tests
+        # -w / so that "import resense" resolves to the installed package, not to the source tree in the cwd
+        run: docker run --rm -w / -e RESENSE_REQUIRE_SYNTHETIC=1 resense:ci python3 -m pytest -q -rs /opt/resense/tests
       - name: ROS 2 package is importable and the launch file resolves
         run: docker run --rm resense:ci bash -lc "ros2 pkg executables resense_ros && ros2 launch resense_ros detector.launch.py --print >/dev/null"
+      - name: ROS 2 smoke test — a synthetic bag through the node inside the image (no dataset needed)
+        run: docker run --rm resense:ci bash -lc "python3 scripts/make_smoke_bag.py /tmp/smoke_bag && scripts/smoke_test.sh /tmp/smoke_bag"

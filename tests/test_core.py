@@ -1,4 +1,9 @@
-"""Unit tests that run without the dataset (synthetic tunnel via Open3D ray casting)."""
+"""Unit tests that run without the dataset.
+
+The pure-numpy tests always run. The tests that take the ``tunnel`` fixture (synthetic
+ray-cast tunnel) need Open3D and are skipped without it -- see ``conftest.py`` for the
+marker and the ``RESENSE_REQUIRE_SYNTHETIC`` guard used in CI.
+"""
 import numpy as np
 import pytest
 
@@ -8,10 +13,8 @@ from resense.frame import axis_matrix, frame_from_compact, sensor_to_vehicle
 from resense.gauge import point_in_polygon, widened_profile
 from resense.pointcloud import COMPACT_DTYPE, structured_to_compact
 from resense.sensor import expected_points, ray_directions
+from resense.synthetic import ObstacleSpec, inject_obstacles   # imports without open3d (lazy)
 from resense.track import TrackModel
-
-o3d = pytest.importorskip("open3d", reason="open3d needed for the synthetic tunnel")
-from resense.synthetic import ObstacleSpec, inject_obstacles, synthetic_tunnel_frame  # noqa: E402
 
 
 def test_axis_matrix_hesai_mapping():
@@ -70,11 +73,7 @@ def test_track_model_extrapolates_linearly():
     assert z100 == pytest.approx(z50 + slope * 50.0)
 
 
-@pytest.fixture(scope="module")
-def tunnel():
-    frame, labels, gt = synthetic_tunnel_frame(rng=np.random.default_rng(1))
-    return frame, labels, gt
-
+# --- synthetic tunnel (Open3D): ``tunnel`` fixture from conftest.py ---------------------
 
 def test_synthetic_tunnel_is_clear(tunnel):
     frame, _, gt = tunnel

@@ -8,24 +8,31 @@ ROS 2 bag ──/lidar_points (PointCloud2, 10 Hz, ~190k pts)──▶ resense_r
                                                                   │
    1. sensor → vehicle frame (X fwd, Y left, Z up), range crop     │  frame.py
    2. track model per frame                                       │  track.py
-        • bed profile z(X): per-bin percentile, robust line + optional quadratic
-        • rail head level + track axis: two-ridge template (gauge 1.52 m) in 4–30 m
-        • yaw / curvature: quadratic fit of the left/right tunnel boundaries
-          (walls, column rows) in the band 1.8–2.6 m above rail head; nearer side wins;
-          axis trusted only up to the last observed boundary bin (+15 m)
+        • bed profile z(X): per-bin percentile, robust line + optional quadratic; height
+          reference trusted 20 m beyond the fit or as far as the side-structure base verifies it
+        • rail head level, track centre and yaw: two-ridge template (gauge 1.52 m) in three
+          slabs of the 4–30 m range, profile built in the previous axis' coordinates
+        • curvature 1/R: fit of the left/right tunnel boundaries (walls, column rows) with the
+          rail tangent fixed; rate limits per frame; nearer side wins; axis trusted only up to
+          the last observed boundary bin (+15 m), less when the two sides disagree
    3. clearance-gauge corridor                                     │  gauge.py
         • polygon (dy, h) relative to axis and rail head: |dy| ≤ 1.4 m, h 0.55–3.5 m,
           plus the low zone |dy| ≤ 0.95 m from h = 0.12 m; advisory zone +0.35 m
+   3b. multi-frame accumulation beyond 40 m (only with a given train speed)  │  accumulate.py
    4. candidates → voxels (range-normalised) → DBSCAN (eps ∝ 1 + r/40 m)  │  clustering.py
         • filters: max extent, thin linear hardware, low track hardware, wall-like side
-          structures, overhead-only clusters, expected-point visibility prior
+          structures, overhead-only clusters, expected-point visibility prior, and the
+          infrastructure signatures (column, elevated, floating, corridor edge, wall face)
    5. persistence tracker (greedy NN, gate ∝ range, ego-speed slack)  │  tracking.py
-        • confirmed after 3 hits, confidence ↑ per hit ↓ per miss
+        • confirmed after 3 hits spanning ≥ 0.3 s, ≥ 60 % of the last 10 frames matched and
+          ≥ 60 % of the last 10 hits inside the strict gauge; confidence ↑ per hit ↓ per miss
    6. FrameResult → topics                                          │  detector_node.py
         /resense/obstacle_detected (Bool)   /resense/nearest_distance (Float32)
         /resense/warning (Bool)             /resense/detections (vision_msgs/Detection3DArray)
         /resense/status (String JSON)       /resense/markers (MarkerArray)  /resense/corridor_points
         /resense/latency_ms (Float32)       /resense/fps (Float32)
+        /tf_static: resense_lidar → <input frame_id> (identity, once per frame id)
+        in: ego speed from ego_speed_mps / speed_topic (Float32) / odom_topic (Odometry), optional
                                                                   │
                                               RViz2 / Foxglove / web dashboard (web/)
 ```
@@ -59,6 +66,19 @@ ROS 2 bag ──/lidar_points (PointCloud2, 10 Hz, ~190k pts)──▶ resense_r
   `stats_period` seconds. The input subscription is best-effort with a queue of 5, so if a frame
   takes longer than the sensor period the following frames are dropped rather than queued: the
   node always works on the freshest data and the drop count makes overload visible.
+* Ego speed for multi-frame accumulation: the node passes `Detector.process(frame, ego_speed=v)`
+  the value of the `ego_speed_mps` parameter, else the latest `speed_topic` / `odom_topic`
+  message younger than `speed_timeout`, else `None` (the detector estimates it itself); the
+  status JSON reports `node.ego_speed_mps` and `node.ego_speed_source`.
+* One fixed frame for every bag: the organizers' recordings carry different `frame_id`s
+  (`hesai_lidar`, `lidar_livox`), so the node broadcasts a static identity transform
+  `resense_lidar → <input frame_id>` when the first frame arrives and the RViz / Foxglove layouts
+  use `resense_lidar` as their fixed frame.
+* Verification without the dataset: `scripts/make_smoke_bag.py` writes a 40-frame synthetic bag in
+  the organizers' exact layout (clear tunnel, then a person at 60 m), `scripts/smoke_test.sh`
+  plays it through the node inside the Docker image and `scripts/check_dry_run.py` asserts the
+  status stream; the CI docker job runs this on every push. The same checker scores the real
+  dry run (`scripts/dry_run.sh`) on `doubleT_obstacle`.
 * `resense inject` writes `*.npz` (xyz, intensity, per-point labels) + `gt.json`;
   `resense eval` consumes them and prints recall by range, FP rates, latency.
 
@@ -78,18 +98,21 @@ ROS 2 bag ──/lidar_points (PointCloud2, 10 Hz, ~190k pts)──▶ resense_r
 * **Persistence before alarm**: three consecutive frames (0.3 s) suppress single-frame noise; the
   cost is 0.3 s of latency — at 80 km/h that is 6.7 m of travel.
 
-## Real-time budget (4-core sandbox, Python)
+## Real-time budget (v0.5, every frame of the real bags, quiet 4-core sandbox, Python)
 
-| stage | mean | p95 |
+| stage | `roundT_doubleT` (189 k pts) mean | `doubleT_obstacle` (347 k pts) mean |
 |---|---|---|
-| track model | ~15 ms | 25 ms |
-| corridor mask | ~8 ms | 12 ms |
-| voxel + DBSCAN + filters | ~15 ms | 40 ms |
-| tracking | <1 ms | 1 ms |
-| **total** | **40–75 ms** | **~120 ms** |
+| track model (bed, rails, walls, verification) | 28.8 ms | 38.1 ms |
+| corridor mask | 6.7 ms | 11.5 ms |
+| voxel + DBSCAN + filters | 7.2 ms | 5.0 ms |
+| tracking | 0.3 ms | 0.4 ms |
+| **total** (mean / p95 / max) | **43.0 / 50.9 / 87.7 ms** | **54.9 / 59.6 / 79.7 ms** |
+| v0.3 code, same machine, back to back | 56.4 / 70.6 / 83.2 ms | 70.7 / 75.9 / 92.7 ms |
 
-The frame period is 100 ms; on the test bench (i7-9700E, 8 cores) the pipeline runs in real
-time with headroom for multi-frame accumulation.
+The frame period is 100 ms. The platform bags cost more (83–84 ms mean, p95 112–171 ms on this
+machine: tens of thousands of cluster candidates); the node drops frames rather than queueing
+there. The jury's i7-9700E (8 faster cores) has not been measured yet. Full table and stage
+attribution: EXPERIMENTS.md §3.
 
 ## Known limitations of v0 (see EXPERIMENTS.md)
 

@@ -1,0 +1,1100 @@
+{
+ "_meta": {
+  "what": "full-rate runs (every cached frame) of v0.5 on the six organizer bags: final defaults (after the review tweaks of 22.09), the first cut (89 / 29) the ablations were run on, five one-lever-off ablations of the first cut, and a back-to-back timing pair with the real v0.3 code on a quiet machine",
+  "code_commit": "final defaults: b67c5c1 (v0.5 code 9b56bdf + review tweaks); first cut and ablations: 9b56bdf",
+  "config_sha256_16": "3e02b2eec9da130e",
+  "machine": "4-core sandbox shared with a review agent and other runs (load 2-6): timing fields are NOT comparable between variants; see EXPERIMENTS.md section 3 for the back-to-back bench",
+  "command": "python -m resense.cli run --npy /data/cache/<bag> --out <bag>.jsonl --quiet [--config <variant>.yaml]",
+  "baseline": "v0.3 = /data/results/v0.3/<bag>.jsonl (commit f2c57e5), summarised in experiments_v0.4_real_fullrate.json",
+  "labels": "labels/doubleT_obstacle.json (71 in-gauge person frames)",
+  "config_sha256_16_final": "a629f07341177a81"
+ },
+ "ablations": {
+  "abl_axis": {
+   "config_overrides": {
+    "track.walls_max_yaw": {
+     "default": 0.06,
+     "variant": 0.035
+    },
+    "track.rails_yaw_enabled": {
+     "default": true,
+     "variant": false
+    },
+    "track.axis_max_yaw_rate": {
+     "default": 0.003,
+     "variant": 0.0
+    },
+    "track.axis_max_curvature_rate": {
+     "default": 0.0001,
+     "variant": 0.0
+    },
+    "track.axis_sides_max_disagreement": {
+     "default": 0.00067,
+     "variant": 0.0
+    }
+   },
+   "bags": {
+    "doubleT_obstacle": {
+     "frames": 201,
+     "alarm_frames": 64,
+     "alarm_events": 1,
+     "advisory_frames": 199,
+     "first_alarm_frame": 11,
+     "alarm_distance_min": 55.52,
+     "alarm_distance_max": 56.61,
+     "fp_frames": 2,
+     "fp_events": 0,
+     "recall": 0.8732394366197183,
+     "per_bin_counts": {
+      "50-100": [
+       62,
+       71
+      ]
+     }
+    },
+    "doubleT_platform": {
+     "frames": 345,
+     "alarm_frames": 18,
+     "alarm_events": 5,
+     "advisory_frames": 259,
+     "first_alarm_frame": 16,
+     "alarm_distance_min": 3.0,
+     "alarm_distance_max": 104.48,
+     "fp_frames": 18,
+     "fp_events": 5,
+     "recall": null,
+     "per_bin_counts": {}
+    },
+    "roundT_doubleT": {
+     "frames": 252,
+     "alarm_frames": 7,
+     "alarm_events": 2,
+     "advisory_frames": 195,
+     "first_alarm_frame": 2,
+     "alarm_distance_min": 25.42,
+     "alarm_distance_max": 122.83,
+     "fp_frames": 7,
+     "fp_events": 2,
+     "recall": null,
+     "per_bin_counts": {}
+    },
+    "roundT_pressureGate_roundT": {
+     "frames": 268,
+     "alarm_frames": 57,
+     "alarm_events": 8,
+     "advisory_frames": 221,
+     "first_alarm_frame": 41,
+     "alarm_distance_min": 10.93,
+     "alarm_distance_max": 100.77,
+     "fp_frames": 57,
+     "fp_events": 8,
+     "recall": null,
+     "per_bin_counts": {}
+    },
+    "roundT_squareT_pressureGate_squareT": {
+     "frames": 545,
+     "alarm_frames": 0,
+     "alarm_events": 0,
+     "advisory_frames": 459,
+     "first_alarm_frame": null,
+     "alarm_distance_min": null,
+     "alarm_distance_max": null,
+     "fp_frames": 0,
+     "fp_events": 0,
+     "recall": null,
+     "per_bin_counts": {}
+    },
+    "squareT_platform_squareT_switch": {
+     "frames": 877,
+     "alarm_frames": 89,
+     "alarm_events": 41,
+     "advisory_frames": 785,
+     "first_alarm_frame": 67,
+     "alarm_distance_min": 24.39,
+     "alarm_distance_max": 129.11,
+     "fp_frames": 89,
+     "fp_events": 41,
+     "recall": null,
+     "per_bin_counts": {}
+    }
+   }
+  },
+  "abl_rules": {
+   "config_overrides": {
+    "cluster.column_min_height": {
+     "default": 2.2,
+     "variant": 0.0
+    },
+    "cluster.elevated_min_height": {
+     "default": 1.2,
+     "variant": 0.0
+    },
+    "cluster.floating_min_height": {
+     "default": 0.7,
+     "variant": 0.0
+    },
+    "cluster.edge_min_lateral": {
+     "default": 1.2,
+     "variant": 0.0
+    },
+    "cluster.wall_face_min_height": {
+     "default": 1.5,
+     "variant": 0.0
+    }
+   },
+   "bags": {
+    "doubleT_obstacle": {
+     "frames": 201,
+     "alarm_frames": 69,
+     "alarm_events": 1,
+     "advisory_frames": 199,
+     "first_alarm_frame": 7,
+     "alarm_distance_min": 55.5,
+     "alarm_distance_max": 56.57,
+     "fp_frames": 3,
+     "fp_events": 0,
+     "recall": 0.9295774647887324,
+     "per_bin_counts": {
+      "50-100": [
+       66,
+       71
+      ]
+     }
+    },
+    "doubleT_platform": {
+     "frames": 345,
+     "alarm_frames": 34,
+     "alarm_events": 6,
+     "advisory_frames": 271,
+     "first_alarm_frame": 2,
+     "alarm_distance_min": 3.0,
+     "alarm_distance_max": 114.51,
+     "fp_frames": 34,
+     "fp_events": 6,
+     "recall": null,
+     "per_bin_counts": {}
+    },
+    "roundT_doubleT": {
+     "frames": 252,
+     "alarm_frames": 36,
+     "alarm_events": 6,
+     "advisory_frames": 215,
+     "first_alarm_frame": 106,
+     "alarm_distance_min": 39.96,
+     "alarm_distance_max": 107.19,
+     "fp_frames": 36,
+     "fp_events": 6,
+     "recall": null,
+     "per_bin_counts": {}
+    },
+    "roundT_pressureGate_roundT": {
+     "frames": 268,
+     "alarm_frames": 56,
+     "alarm_events": 9,
+     "advisory_frames": 262,
+     "first_alarm_frame": 48,
+     "alarm_distance_min": 35.91,
+     "alarm_distance_max": 91.95,
+     "fp_frames": 56,
+     "fp_events": 9,
+     "recall": null,
+     "per_bin_counts": {}
+    },
+    "roundT_squareT_pressureGate_squareT": {
+     "frames": 545,
+     "alarm_frames": 13,
+     "alarm_events": 4,
+     "advisory_frames": 499,
+     "first_alarm_frame": 97,
+     "alarm_distance_min": 57.45,
+     "alarm_distance_max": 127.22,
+     "fp_frames": 13,
+     "fp_events": 4,
+     "recall": null,
+     "per_bin_counts": {}
+    },
+    "squareT_platform_squareT_switch": {
+     "frames": 877,
+     "alarm_frames": 374,
+     "alarm_events": 37,
+     "advisory_frames": 771,
+     "first_alarm_frame": 67,
+     "alarm_distance_min": 71.86,
+     "alarm_distance_max": 119.21,
+     "fp_frames": 374,
+     "fp_events": 37,
+     "recall": null,
+     "per_bin_counts": {}
+    }
+   }
+  },
+  "abl_floor": {
+   "config_overrides": {
+    "track.floor_valid_margin": {
+     "default": 20.0,
+     "variant": 60.0
+    }
+   },
+   "bags": {
+    "doubleT_obstacle": {
+     "frames": 201,
+     "alarm_frames": 69,
+     "alarm_events": 1,
+     "advisory_frames": 199,
+     "first_alarm_frame": 7,
+     "alarm_distance_min": 55.5,
+     "alarm_distance_max": 56.57,
+     "fp_frames": 3,
+     "fp_events": 0,
+     "recall": 0.9295774647887324,
+     "per_bin_counts": {
+      "50-100": [
+       66,
+       71
+      ]
+     }
+    },
+    "doubleT_platform": {
+     "frames": 345,
+     "alarm_frames": 16,
+     "alarm_events": 5,
+     "advisory_frames": 270,
+     "first_alarm_frame": 2,
+     "alarm_distance_min": 3.0,
+     "alarm_distance_max": 133.72,
+     "fp_frames": 16,
+     "fp_events": 5,
+     "recall": null,
+     "per_bin_counts": {}
+    },
+    "roundT_doubleT": {
+     "frames": 252,
+     "alarm_frames": 0,
+     "alarm_events": 0,
+     "advisory_frames": 226,
+     "first_alarm_frame": null,
+     "alarm_distance_min": null,
+     "alarm_distance_max": null,
+     "fp_frames": 0,
+     "fp_events": 0,
+     "recall": null,
+     "per_bin_counts": {}
+    },
+    "roundT_pressureGate_roundT": {
+     "frames": 268,
+     "alarm_frames": 16,
+     "alarm_events": 5,
+     "advisory_frames": 262,
+     "first_alarm_frame": 48,
+     "alarm_distance_min": 42.04,
+     "alarm_distance_max": 77.86,
+     "fp_frames": 16,
+     "fp_events": 5,
+     "recall": null,
+     "per_bin_counts": {}
+    },
+    "roundT_squareT_pressureGate_squareT": {
+     "frames": 545,
+     "alarm_frames": 6,
+     "alarm_events": 3,
+     "advisory_frames": 499,
+     "first_alarm_frame": 97,
+     "alarm_distance_min": 101.3,
+     "alarm_distance_max": 127.22,
+     "fp_frames": 6,
+     "fp_events": 3,
+     "recall": null,
+     "per_bin_counts": {}
+    },
+    "squareT_platform_squareT_switch": {
+     "frames": 877,
+     "alarm_frames": 353,
+     "alarm_events": 33,
+     "advisory_frames": 774,
+     "first_alarm_frame": 67,
+     "alarm_distance_min": 80.95,
+     "alarm_distance_max": 147.5,
+     "fp_frames": 353,
+     "fp_events": 33,
+     "recall": null,
+     "per_bin_counts": {}
+    }
+   }
+  },
+  "abl_persist": {
+   "config_overrides": {
+    "tracking.min_hit_fraction": {
+     "default": 0.6,
+     "variant": 0.0
+    },
+    "tracking.zone_window": {
+     "default": 10,
+     "variant": 5
+    },
+    "tracking.zone_min_fraction": {
+     "default": 0.6,
+     "variant": 0.5
+    }
+   },
+   "bags": {
+    "doubleT_obstacle": {
+     "frames": 201,
+     "alarm_frames": 69,
+     "alarm_events": 1,
+     "advisory_frames": 199,
+     "first_alarm_frame": 5,
+     "alarm_distance_min": 55.43,
+     "alarm_distance_max": 56.54,
+     "fp_frames": 1,
+     "fp_events": 0,
+     "recall": 0.9577464788732394,
+     "per_bin_counts": {
+      "50-100": [
+       68,
+       71
+      ]
+     }
+    },
+    "doubleT_platform": {
+     "frames": 345,
+     "alarm_frames": 14,
+     "alarm_events": 4,
+     "advisory_frames": 272,
+     "first_alarm_frame": 16,
+     "alarm_distance_min": 3.0,
+     "alarm_distance_max": 110.27,
+     "fp_frames": 14,
+     "fp_events": 4,
+     "recall": null,
+     "per_bin_counts": {}
+    },
+    "roundT_doubleT": {
+     "frames": 252,
+     "alarm_frames": 3,
+     "alarm_events": 2,
+     "advisory_frames": 226,
+     "first_alarm_frame": 203,
+     "alarm_distance_min": 103.2,
+     "alarm_distance_max": 124.48,
+     "fp_frames": 3,
+     "fp_events": 2,
+     "recall": null,
+     "per_bin_counts": {}
+    },
+    "roundT_pressureGate_roundT": {
+     "frames": 268,
+     "alarm_frames": 28,
+     "alarm_events": 7,
+     "advisory_frames": 260,
+     "first_alarm_frame": 14,
+     "alarm_distance_min": 42.62,
+     "alarm_distance_max": 91.1,
+     "fp_frames": 28,
+     "fp_events": 7,
+     "recall": null,
+     "per_bin_counts": {}
+    },
+    "roundT_squareT_pressureGate_squareT": {
+     "frames": 545,
+     "alarm_frames": 9,
+     "alarm_events": 4,
+     "advisory_frames": 500,
+     "first_alarm_frame": 91,
+     "alarm_distance_min": 71.47,
+     "alarm_distance_max": 129.97,
+     "fp_frames": 9,
+     "fp_events": 4,
+     "recall": null,
+     "per_bin_counts": {}
+    },
+    "squareT_platform_squareT_switch": {
+     "frames": 877,
+     "alarm_frames": 89,
+     "alarm_events": 27,
+     "advisory_frames": 790,
+     "first_alarm_frame": 67,
+     "alarm_distance_min": 80.93,
+     "alarm_distance_max": 128.45,
+     "fp_frames": 89,
+     "fp_events": 27,
+     "recall": null,
+     "per_bin_counts": {}
+    }
+   }
+  },
+  "opt_t05": {
+   "config_overrides": {
+    "tracking.confirm_time_s": {
+     "default": 0.3,
+     "variant": 0.5
+    }
+   },
+   "bags": {
+    "doubleT_obstacle": {
+     "frames": 201,
+     "alarm_frames": 69,
+     "alarm_events": 1,
+     "advisory_frames": 197,
+     "first_alarm_frame": 7,
+     "alarm_distance_min": 55.5,
+     "alarm_distance_max": 56.57,
+     "fp_frames": 3,
+     "fp_events": 0,
+     "recall": 0.9295774647887324,
+     "per_bin_counts": {
+      "50-100": [
+       66,
+       71
+      ]
+     }
+    },
+    "doubleT_platform": {
+     "frames": 345,
+     "alarm_frames": 10,
+     "alarm_events": 1,
+     "advisory_frames": 254,
+     "first_alarm_frame": 203,
+     "alarm_distance_min": 84.79,
+     "alarm_distance_max": 87.22,
+     "fp_frames": 10,
+     "fp_events": 1,
+     "recall": null,
+     "per_bin_counts": {}
+    },
+    "roundT_doubleT": {
+     "frames": 252,
+     "alarm_frames": 0,
+     "alarm_events": 0,
+     "advisory_frames": 210,
+     "first_alarm_frame": null,
+     "alarm_distance_min": null,
+     "alarm_distance_max": null,
+     "fp_frames": 0,
+     "fp_events": 0,
+     "recall": null,
+     "per_bin_counts": {}
+    },
+    "roundT_pressureGate_roundT": {
+     "frames": 268,
+     "alarm_frames": 13,
+     "alarm_events": 4,
+     "advisory_frames": 260,
+     "first_alarm_frame": 48,
+     "alarm_distance_min": 42.04,
+     "alarm_distance_max": 77.86,
+     "fp_frames": 13,
+     "fp_events": 4,
+     "recall": null,
+     "per_bin_counts": {}
+    },
+    "roundT_squareT_pressureGate_squareT": {
+     "frames": 545,
+     "alarm_frames": 2,
+     "alarm_events": 2,
+     "advisory_frames": 488,
+     "first_alarm_frame": 99,
+     "alarm_distance_min": 101.3,
+     "alarm_distance_max": 117.73,
+     "fp_frames": 2,
+     "fp_events": 2,
+     "recall": null,
+     "per_bin_counts": {}
+    },
+    "squareT_platform_squareT_switch": {
+     "frames": 877,
+     "alarm_frames": 44,
+     "alarm_events": 14,
+     "advisory_frames": 752,
+     "first_alarm_frame": 391,
+     "alarm_distance_min": 80.95,
+     "alarm_distance_max": 82.95,
+     "fp_frames": 44,
+     "fp_events": 14,
+     "recall": null,
+     "per_bin_counts": {}
+    }
+   }
+  }
+ },
+ "v0.5_first_cut": {
+  "doubleT_obstacle": {
+   "frames": 201,
+   "empty_frames": 130,
+   "recall": 0.9295774647887324,
+   "recall_by_range": {
+    "50-100": 0.9295774647887324
+   },
+   "per_bin_counts": {
+    "50-100": [
+     66,
+     71
+    ]
+   },
+   "fp_frames": 3,
+   "fp_frame_rate": 0.023076923076923078,
+   "fp_detections": 3,
+   "first_detection_distance": {
+    "person_crossing": 56.51
+   },
+   "latency_ms_mean": 54.795870646766154,
+   "latency_ms_p95": 61.11,
+   "latency_ms_max": 91.15,
+   "recall_by_class": {
+    "person": 0.9295774647887324
+   },
+   "per_class_counts": {
+    "person": [
+     66,
+     71
+    ]
+   },
+   "alarm_frames": 69,
+   "alarm_events": 1,
+   "alarm_distance_min": 55.5,
+   "alarm_distance_max": 56.57,
+   "advisory_frames": 199,
+   "advisory_frame_rate": 0.9900497512437811,
+   "fp_events": 0,
+   "bag_time_s": 20.0,
+   "fp_events_per_hour": 0.0,
+   "distance_km": null,
+   "fp_events_per_km": null,
+   "frame_stride": 1,
+   "stride_caveat": null,
+   "distance_error_mean_abs": 0.0003030303030303504,
+   "distance_error_max_abs": 0.010000000000005116,
+   "distance_error_bias": 0.0003030303030303504,
+   "lateral_error_mean_abs": 0.08757575757575758,
+   "first_alarm_frame": 7,
+   "ego_speed_sources": {
+    "none": 201
+   },
+   "n_accumulated_mean": 1.0,
+   "per_class_bin_counts": {
+    "person": {
+     "50-100": [
+      66,
+      71
+     ]
+    }
+   },
+   "occluded_gt_skipped": 0,
+   "unparsed_lines": 0,
+   "file": "/tmp/claude-0/-home-user-ReSense/5b59d0fa-d0e4-5952-ae60-f61d5ccca2a1/scratchpad/v05/doubleT_obstacle.jsonl"
+  },
+  "doubleT_platform": {
+   "frames": 345,
+   "empty_frames": 345,
+   "recall": null,
+   "recall_by_range": {},
+   "per_bin_counts": {},
+   "fp_frames": 12,
+   "fp_frame_rate": 0.034782608695652174,
+   "fp_detections": 12,
+   "first_detection_distance": {},
+   "latency_ms_mean": 85.7697391304348,
+   "latency_ms_p95": 169.412,
+   "latency_ms_max": 243.17,
+   "recall_by_class": {},
+   "per_class_counts": {},
+   "alarm_frames": 12,
+   "alarm_events": 3,
+   "alarm_distance_min": 3.0,
+   "alarm_distance_max": 104.48,
+   "advisory_frames": 271,
+   "advisory_frame_rate": 0.7855072463768116,
+   "fp_events": 3,
+   "bag_time_s": 34.4,
+   "fp_events_per_hour": 313.95348837209303,
+   "distance_km": null,
+   "fp_events_per_km": null,
+   "frame_stride": 1,
+   "stride_caveat": null,
+   "distance_error_mean_abs": null,
+   "distance_error_max_abs": null,
+   "distance_error_bias": null,
+   "lateral_error_mean_abs": null,
+   "first_alarm_frame": 16,
+   "ego_speed_sources": {
+    "none": 345
+   },
+   "n_accumulated_mean": 1.0,
+   "per_class_bin_counts": {},
+   "occluded_gt_skipped": 0,
+   "unparsed_lines": 0,
+   "file": "/tmp/claude-0/-home-user-ReSense/5b59d0fa-d0e4-5952-ae60-f61d5ccca2a1/scratchpad/v05/doubleT_platform.jsonl"
+  },
+  "roundT_doubleT": {
+   "frames": 252,
+   "empty_frames": 252,
+   "recall": null,
+   "recall_by_range": {},
+   "per_bin_counts": {},
+   "fp_frames": 0,
+   "fp_frame_rate": 0.0,
+   "fp_detections": 0,
+   "first_detection_distance": {},
+   "latency_ms_mean": 50.60154761904762,
+   "latency_ms_p95": 91.22,
+   "latency_ms_max": 110.81,
+   "recall_by_class": {},
+   "per_class_counts": {},
+   "alarm_frames": 0,
+   "alarm_events": 0,
+   "alarm_distance_min": null,
+   "alarm_distance_max": null,
+   "advisory_frames": 226,
+   "advisory_frame_rate": 0.8968253968253969,
+   "fp_events": 0,
+   "bag_time_s": 25.1,
+   "fp_events_per_hour": 0.0,
+   "distance_km": null,
+   "fp_events_per_km": null,
+   "frame_stride": 1,
+   "stride_caveat": null,
+   "distance_error_mean_abs": null,
+   "distance_error_max_abs": null,
+   "distance_error_bias": null,
+   "lateral_error_mean_abs": null,
+   "first_alarm_frame": null,
+   "ego_speed_sources": {
+    "none": 252
+   },
+   "n_accumulated_mean": 1.0,
+   "per_class_bin_counts": {},
+   "occluded_gt_skipped": 0,
+   "unparsed_lines": 0,
+   "file": "/tmp/claude-0/-home-user-ReSense/5b59d0fa-d0e4-5952-ae60-f61d5ccca2a1/scratchpad/v05/roundT_doubleT.jsonl"
+  },
+  "roundT_pressureGate_roundT": {
+   "frames": 268,
+   "empty_frames": 268,
+   "recall": null,
+   "recall_by_range": {},
+   "per_bin_counts": {},
+   "fp_frames": 16,
+   "fp_frame_rate": 0.05970149253731343,
+   "fp_detections": 16,
+   "first_detection_distance": {},
+   "latency_ms_mean": 42.87589552238805,
+   "latency_ms_p95": 51.36449999999999,
+   "latency_ms_max": 69.8,
+   "recall_by_class": {},
+   "per_class_counts": {},
+   "alarm_frames": 16,
+   "alarm_events": 5,
+   "alarm_distance_min": 42.04,
+   "alarm_distance_max": 77.86,
+   "advisory_frames": 262,
+   "advisory_frame_rate": 0.9776119402985075,
+   "fp_events": 5,
+   "bag_time_s": 26.700000000000003,
+   "fp_events_per_hour": 674.1573033707864,
+   "distance_km": null,
+   "fp_events_per_km": null,
+   "frame_stride": 1,
+   "stride_caveat": null,
+   "distance_error_mean_abs": null,
+   "distance_error_max_abs": null,
+   "distance_error_bias": null,
+   "lateral_error_mean_abs": null,
+   "first_alarm_frame": 48,
+   "ego_speed_sources": {
+    "none": 268
+   },
+   "n_accumulated_mean": 1.0,
+   "per_class_bin_counts": {},
+   "occluded_gt_skipped": 0,
+   "unparsed_lines": 0,
+   "file": "/tmp/claude-0/-home-user-ReSense/5b59d0fa-d0e4-5952-ae60-f61d5ccca2a1/scratchpad/v05/roundT_pressureGate_roundT.jsonl"
+  },
+  "roundT_squareT_pressureGate_squareT": {
+   "frames": 545,
+   "empty_frames": 545,
+   "recall": null,
+   "recall_by_range": {},
+   "per_bin_counts": {},
+   "fp_frames": 5,
+   "fp_frame_rate": 0.009174311926605505,
+   "fp_detections": 5,
+   "first_detection_distance": {},
+   "latency_ms_mean": 42.01739449541285,
+   "latency_ms_p95": 52.68199999999998,
+   "latency_ms_max": 107.07,
+   "recall_by_class": {},
+   "per_class_counts": {},
+   "alarm_frames": 5,
+   "alarm_events": 3,
+   "alarm_distance_min": 101.3,
+   "alarm_distance_max": 127.22,
+   "advisory_frames": 499,
+   "advisory_frame_rate": 0.9155963302752294,
+   "fp_events": 3,
+   "bag_time_s": 54.400000000000006,
+   "fp_events_per_hour": 198.52941176470586,
+   "distance_km": null,
+   "fp_events_per_km": null,
+   "frame_stride": 1,
+   "stride_caveat": null,
+   "distance_error_mean_abs": null,
+   "distance_error_max_abs": null,
+   "distance_error_bias": null,
+   "lateral_error_mean_abs": null,
+   "first_alarm_frame": 99,
+   "ego_speed_sources": {
+    "none": 545
+   },
+   "n_accumulated_mean": 1.0,
+   "per_class_bin_counts": {},
+   "occluded_gt_skipped": 0,
+   "unparsed_lines": 0,
+   "file": "/tmp/claude-0/-home-user-ReSense/5b59d0fa-d0e4-5952-ae60-f61d5ccca2a1/scratchpad/v05/roundT_squareT_pressureGate_squareT.jsonl"
+  },
+  "squareT_platform_squareT_switch": {
+   "frames": 877,
+   "empty_frames": 877,
+   "recall": null,
+   "recall_by_range": {},
+   "per_bin_counts": {},
+   "fp_frames": 56,
+   "fp_frame_rate": 0.06385404789053592,
+   "fp_detections": 57,
+   "first_detection_distance": {},
+   "latency_ms_mean": 100.94579247434434,
+   "latency_ms_p95": 174.47199999999998,
+   "latency_ms_max": 248.56,
+   "recall_by_class": {},
+   "per_class_counts": {},
+   "alarm_frames": 56,
+   "alarm_events": 18,
+   "alarm_distance_min": 80.95,
+   "alarm_distance_max": 119.21,
+   "advisory_frames": 781,
+   "advisory_frame_rate": 0.8905359179019384,
+   "fp_events": 18,
+   "bag_time_s": 87.60000000000001,
+   "fp_events_per_hour": 739.7260273972602,
+   "distance_km": null,
+   "fp_events_per_km": null,
+   "frame_stride": 1,
+   "stride_caveat": null,
+   "distance_error_mean_abs": null,
+   "distance_error_max_abs": null,
+   "distance_error_bias": null,
+   "lateral_error_mean_abs": null,
+   "first_alarm_frame": 67,
+   "ego_speed_sources": {
+    "none": 877
+   },
+   "n_accumulated_mean": 1.0,
+   "per_class_bin_counts": {},
+   "occluded_gt_skipped": 0,
+   "unparsed_lines": 0,
+   "file": "/tmp/claude-0/-home-user-ReSense/5b59d0fa-d0e4-5952-ae60-f61d5ccca2a1/scratchpad/v05/squareT_platform_squareT_switch.jsonl"
+  }
+ },
+ "v0.5_final": {
+  "doubleT_obstacle": {
+   "frames": 201,
+   "empty_frames": 130,
+   "recall": 0.9295774647887324,
+   "recall_by_range": {
+    "50-100": 0.9295774647887324
+   },
+   "per_bin_counts": {
+    "50-100": [
+     66,
+     71
+    ]
+   },
+   "fp_frames": 3,
+   "fp_frame_rate": 0.023076923076923078,
+   "fp_detections": 3,
+   "first_detection_distance": {
+    "person_crossing": 56.51
+   },
+   "latency_ms_mean": 54.930547263681596,
+   "latency_ms_p95": 59.57,
+   "latency_ms_max": 79.72,
+   "recall_by_class": {
+    "person": 0.9295774647887324
+   },
+   "per_class_counts": {
+    "person": [
+     66,
+     71
+    ]
+   },
+   "alarm_frames": 69,
+   "alarm_events": 1,
+   "alarm_distance_min": 55.5,
+   "alarm_distance_max": 56.57,
+   "advisory_frames": 199,
+   "advisory_frame_rate": 0.9900497512437811,
+   "fp_events": 0,
+   "bag_time_s": 20.0,
+   "fp_events_per_hour": 0.0,
+   "distance_km": null,
+   "fp_events_per_km": null,
+   "frame_stride": 1,
+   "stride_caveat": null,
+   "distance_error_mean_abs": 0.0003030303030303504,
+   "distance_error_max_abs": 0.010000000000005116,
+   "distance_error_bias": 0.0003030303030303504,
+   "lateral_error_mean_abs": 0.08757575757575758,
+   "first_alarm_frame": 7,
+   "ego_speed_sources": {
+    "none": 201
+   },
+   "n_accumulated_mean": 1.0,
+   "per_class_bin_counts": {
+    "person": {
+     "50-100": [
+      66,
+      71
+     ]
+    }
+   },
+   "occluded_gt_skipped": 0,
+   "unparsed_lines": 0,
+   "file": "/tmp/claude-0/-home-user-ReSense/5b59d0fa-d0e4-5952-ae60-f61d5ccca2a1/scratchpad/v05b/doubleT_obstacle.jsonl"
+  },
+  "doubleT_platform": {
+   "frames": 345,
+   "empty_frames": 345,
+   "recall": null,
+   "recall_by_range": {},
+   "per_bin_counts": {},
+   "fp_frames": 15,
+   "fp_frame_rate": 0.043478260869565216,
+   "fp_detections": 15,
+   "first_detection_distance": {},
+   "latency_ms_mean": 83.31095652173913,
+   "latency_ms_p95": 170.806,
+   "latency_ms_max": 196.28,
+   "recall_by_class": {},
+   "per_class_counts": {},
+   "alarm_frames": 15,
+   "alarm_events": 4,
+   "alarm_distance_min": 3.0,
+   "alarm_distance_max": 114.51,
+   "advisory_frames": 271,
+   "advisory_frame_rate": 0.7855072463768116,
+   "fp_events": 4,
+   "bag_time_s": 34.4,
+   "fp_events_per_hour": 418.60465116279073,
+   "distance_km": null,
+   "fp_events_per_km": null,
+   "frame_stride": 1,
+   "stride_caveat": null,
+   "distance_error_mean_abs": null,
+   "distance_error_max_abs": null,
+   "distance_error_bias": null,
+   "lateral_error_mean_abs": null,
+   "first_alarm_frame": 2,
+   "ego_speed_sources": {
+    "none": 345
+   },
+   "n_accumulated_mean": 1.0,
+   "per_class_bin_counts": {},
+   "occluded_gt_skipped": 0,
+   "unparsed_lines": 0,
+   "file": "/tmp/claude-0/-home-user-ReSense/5b59d0fa-d0e4-5952-ae60-f61d5ccca2a1/scratchpad/v05b/doubleT_platform.jsonl"
+  },
+  "roundT_doubleT": {
+   "frames": 252,
+   "empty_frames": 252,
+   "recall": null,
+   "recall_by_range": {},
+   "per_bin_counts": {},
+   "fp_frames": 0,
+   "fp_frame_rate": 0.0,
+   "fp_detections": 0,
+   "first_detection_distance": {},
+   "latency_ms_mean": 42.98119047619048,
+   "latency_ms_p95": 50.891999999999996,
+   "latency_ms_max": 87.67,
+   "recall_by_class": {},
+   "per_class_counts": {},
+   "alarm_frames": 0,
+   "alarm_events": 0,
+   "alarm_distance_min": null,
+   "alarm_distance_max": null,
+   "advisory_frames": 226,
+   "advisory_frame_rate": 0.8968253968253969,
+   "fp_events": 0,
+   "bag_time_s": 25.1,
+   "fp_events_per_hour": 0.0,
+   "distance_km": null,
+   "fp_events_per_km": null,
+   "frame_stride": 1,
+   "stride_caveat": null,
+   "distance_error_mean_abs": null,
+   "distance_error_max_abs": null,
+   "distance_error_bias": null,
+   "lateral_error_mean_abs": null,
+   "first_alarm_frame": null,
+   "ego_speed_sources": {
+    "none": 252
+   },
+   "n_accumulated_mean": 1.0,
+   "per_class_bin_counts": {},
+   "occluded_gt_skipped": 0,
+   "unparsed_lines": 0,
+   "file": "/tmp/claude-0/-home-user-ReSense/5b59d0fa-d0e4-5952-ae60-f61d5ccca2a1/scratchpad/v05b/roundT_doubleT.jsonl"
+  },
+  "roundT_pressureGate_roundT": {
+   "frames": 268,
+   "empty_frames": 268,
+   "recall": null,
+   "recall_by_range": {},
+   "per_bin_counts": {},
+   "fp_frames": 16,
+   "fp_frame_rate": 0.05970149253731343,
+   "fp_detections": 16,
+   "first_detection_distance": {},
+   "latency_ms_mean": 43.381492537313434,
+   "latency_ms_p95": 52.602999999999994,
+   "latency_ms_max": 71.6,
+   "recall_by_class": {},
+   "per_class_counts": {},
+   "alarm_frames": 16,
+   "alarm_events": 5,
+   "alarm_distance_min": 42.04,
+   "alarm_distance_max": 77.86,
+   "advisory_frames": 262,
+   "advisory_frame_rate": 0.9776119402985075,
+   "fp_events": 5,
+   "bag_time_s": 26.700000000000003,
+   "fp_events_per_hour": 674.1573033707864,
+   "distance_km": null,
+   "fp_events_per_km": null,
+   "frame_stride": 1,
+   "stride_caveat": null,
+   "distance_error_mean_abs": null,
+   "distance_error_max_abs": null,
+   "distance_error_bias": null,
+   "lateral_error_mean_abs": null,
+   "first_alarm_frame": 48,
+   "ego_speed_sources": {
+    "none": 268
+   },
+   "n_accumulated_mean": 1.0,
+   "per_class_bin_counts": {},
+   "occluded_gt_skipped": 0,
+   "unparsed_lines": 0,
+   "file": "/tmp/claude-0/-home-user-ReSense/5b59d0fa-d0e4-5952-ae60-f61d5ccca2a1/scratchpad/v05b/roundT_pressureGate_roundT.jsonl"
+  },
+  "roundT_squareT_pressureGate_squareT": {
+   "frames": 545,
+   "empty_frames": 545,
+   "recall": null,
+   "recall_by_range": {},
+   "per_bin_counts": {},
+   "fp_frames": 5,
+   "fp_frame_rate": 0.009174311926605505,
+   "fp_detections": 5,
+   "first_detection_distance": {},
+   "latency_ms_mean": 42.2725504587156,
+   "latency_ms_p95": 54.243999999999986,
+   "latency_ms_max": 98.04,
+   "recall_by_class": {},
+   "per_class_counts": {},
+   "alarm_frames": 5,
+   "alarm_events": 3,
+   "alarm_distance_min": 101.3,
+   "alarm_distance_max": 127.22,
+   "advisory_frames": 499,
+   "advisory_frame_rate": 0.9155963302752294,
+   "fp_events": 3,
+   "bag_time_s": 54.400000000000006,
+   "fp_events_per_hour": 198.52941176470586,
+   "distance_km": null,
+   "fp_events_per_km": null,
+   "frame_stride": 1,
+   "stride_caveat": null,
+   "distance_error_mean_abs": null,
+   "distance_error_max_abs": null,
+   "distance_error_bias": null,
+   "lateral_error_mean_abs": null,
+   "first_alarm_frame": 99,
+   "ego_speed_sources": {
+    "none": 545
+   },
+   "n_accumulated_mean": 1.0,
+   "per_class_bin_counts": {},
+   "occluded_gt_skipped": 0,
+   "unparsed_lines": 0,
+   "file": "/tmp/claude-0/-home-user-ReSense/5b59d0fa-d0e4-5952-ae60-f61d5ccca2a1/scratchpad/v05b/roundT_squareT_pressureGate_squareT.jsonl"
+  },
+  "squareT_platform_squareT_switch": {
+   "frames": 877,
+   "empty_frames": 877,
+   "recall": null,
+   "recall_by_range": {},
+   "per_bin_counts": {},
+   "fp_frames": 60,
+   "fp_frame_rate": 0.06841505131128849,
+   "fp_detections": 62,
+   "first_detection_distance": {},
+   "latency_ms_mean": 84.32640820980617,
+   "latency_ms_p95": 111.60799999999999,
+   "latency_ms_max": 151.33,
+   "recall_by_class": {},
+   "per_class_counts": {},
+   "alarm_frames": 60,
+   "alarm_events": 20,
+   "alarm_distance_min": 71.86,
+   "alarm_distance_max": 119.21,
+   "advisory_frames": 779,
+   "advisory_frame_rate": 0.8882554161915621,
+   "fp_events": 20,
+   "bag_time_s": 87.60000000000001,
+   "fp_events_per_hour": 821.917808219178,
+   "distance_km": null,
+   "fp_events_per_km": null,
+   "frame_stride": 1,
+   "stride_caveat": null,
+   "distance_error_mean_abs": null,
+   "distance_error_max_abs": null,
+   "distance_error_bias": null,
+   "lateral_error_mean_abs": null,
+   "first_alarm_frame": 67,
+   "ego_speed_sources": {
+    "none": 877
+   },
+   "n_accumulated_mean": 1.0,
+   "per_class_bin_counts": {},
+   "occluded_gt_skipped": 0,
+   "unparsed_lines": 0,
+   "file": "/tmp/claude-0/-home-user-ReSense/5b59d0fa-d0e4-5952-ae60-f61d5ccca2a1/scratchpad/v05b/squareT_platform_squareT_switch.jsonl"
+  }
+ },
+ "timing_back_to_back_quiet": {
+  "note": "22.09, load < 1 before the runs, v0.5 final then the real v0.3 code (f2c57e5) on the same cache; ms mean / p95 / max of timing_ms.total",
+  "roundT_doubleT": {
+   "v0.3_code": [
+    56.4,
+    70.6,
+    83.2
+   ],
+   "v0.5_final": [
+    43.0,
+    50.9,
+    87.7
+   ]
+  },
+  "doubleT_obstacle": {
+   "v0.3_code": [
+    70.7,
+    75.9,
+    92.7
+   ],
+   "v0.5_final": [
+    54.9,
+    59.6,
+    79.7
+   ]
+  }
+ }
+}

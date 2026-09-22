@@ -74,7 +74,7 @@ ros2 topic echo /resense/status --field data >/out/status.jsonl 2>/dev/null &
 ECHO_PID=$!
 sleep 2
 
-ros2 bag play "/data/$BAG_NAME" --rate "$RATE" --clock
+ros2 bag play "/data/$BAG_NAME" --rate "$RATE" --clock --delay 3 --disable-keyboard-controls   # --delay: let DDS discovery finish before the first frame
 sleep 3        # let the last frames finish and one more stats tick land
 
 kill "$ECHO_PID" "$LAUNCH_PID" 2>/dev/null || true

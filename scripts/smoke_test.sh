@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# Dataset-free end-to-end check of the ROS 2 node (docs/CAPTAIN.md item 10): play a synthetic bag
+# through the node and assert the status stream. Runs INSIDE the image (needs ros2), e.g.
+#
+#   docker run --rm resense:ci bash -lc \
+#       "python3 scripts/make_smoke_bag.py /tmp/smoke_bag && scripts/smoke_test.sh /tmp/smoke_bag"
+#
+# The bag (scripts/make_smoke_bag.py) holds a clear synthetic tunnel followed by the same tunnel
+# with a person standing on the track at 60 m, so the check is: the node starts on the default
+# command, the first frames are clear, the person is reported at 55-66 m, nothing was dropped.
+#
+# Environment: RATE (bag playback rate, default 0.5 because CI runners are slow), DELAY (s the
+# player waits before publishing, default 3), OUT (capture directory, default /tmp/smoke_out),
+# CHECK_ARGS (overrides the acceptance thresholds).
+set -uo pipefail
+cd "$(dirname "$0")/.."
+BAG="${1:?usage: scripts/smoke_test.sh <bag directory>}"
+RATE="${RATE:-0.5}"
+OUT="${OUT:-/tmp/smoke_out}"
+mkdir -p "$OUT"
+rm -f "$OUT/status.jsonl" "$OUT/node.log"
+
+ros2 launch resense_ros detector.launch.py rviz:=false > "$OUT/node.log" 2>&1 &
+LAUNCH_PID=$!
+trap 'kill $(jobs -p) 2>/dev/null || true' EXIT
+
+# wait for the node before playing (the launch file's own bag:= argument races node startup)
+for _ in $(seq 1 90); do
+  if ros2 topic list 2>/dev/null | grep -qx /resense/status; then break; fi
+  if ! kill -0 "$LAUNCH_PID" 2>/dev/null; then
+    echo "detector exited during startup:" >&2; cat "$OUT/node.log" >&2; exit 3
+  fi
+  sleep 1
+done
+if ! ros2 topic list 2>/dev/null | grep -qx /resense/status; then
+  echo "detector never advertised /resense/status:" >&2; cat "$OUT/node.log" >&2; exit 3
+fi
+
+ros2 topic echo /resense/status --field data > "$OUT/status.jsonl" 2>/dev/null &
+ECHO_PID=$!
+sleep 3
+# --delay: publishers exist for DELAY s before the first message, so DDS discovery with the node
+# completes; without it the first 1-3 s of a bag are silently lost (13 frames in CI run 21).
+ros2 bag play "$BAG" --rate "$RATE" --clock --delay "${DELAY:-3}" --disable-keyboard-controls
+sleep 4          # let the last frames finish and one more stats tick land
+kill "$ECHO_PID" "$LAUNCH_PID" 2>/dev/null || true
+wait "$ECHO_PID" 2>/dev/null || true
+
+echo "== node.log (tail) =="
+tail -n 12 "$OUT/node.log"
+echo "== checking $OUT/status.jsonl =="
+if [ -n "${CHECK_ARGS:-}" ]; then
+  # shellcheck disable=SC2086
+  python3 scripts/check_dry_run.py "$OUT/status.jsonl" $CHECK_ARGS
+else
+  python3 scripts/check_dry_run.py "$OUT/status.jsonl" --expect-obstacle --distance 55:66 \
+      --first-clear 10 --min-frames 25 --max-dropped 3 --max-p95-latency 500
+fi

@@ -3,6 +3,16 @@
 Without odometry a static obstacle moves towards the vehicle by v*dt per frame, so the
 association gate is widened by ``ego_speed_max * frame_dt`` along X. Confidence grows
 with consecutive hits and decays with misses; only confirmed tracks are reported.
+
+Persistence (v0.5) is measured in *time*, not only in processed frames: a track is
+confirmed when it has ``confirm_hits`` hits, it has been observed for at least
+``confirm_time_s`` of sensor time (frames x the frame interval the caller passes to
+:meth:`Tracker.update`, the first frame included, so 0.3 s = 3 frames at 10 Hz and 3 frames
+at any lower rate too; a caller that never passes an interval gets hit counting only), it
+was matched in at least ``min_hit_fraction`` of its last ``hit_window`` frames, and it is
+matched now. Its zone is 'gauge' when at least ``zone_min_fraction`` of its last
+``zone_window`` hits were inside the strict gauge, so a corridor-edge structure that
+flickers into the gauge every other frame is advisory (docs/EXPERIMENTS.md section 1b).
 """
 from __future__ import annotations
 
@@ -28,13 +38,20 @@ class Track:
     history: List[float] = field(default_factory=list)  # distances
 
     gauge_hits: int = 0             # frames in which the cluster was inside the strict gauge
-    zone_hist: List[bool] = field(default_factory=list)   # last 5 hits: inside strict gauge?
+    zone_hist: List[bool] = field(default_factory=list)   # last zone_window hits: inside strict gauge?
+    hit_hist: List[bool] = field(default_factory=list)    # last hit_window frames: matched?
+    span_s: float = 0.0             # seconds of sensor time the track has been observed (frames x interval, first frame included)
+    zone_min_fraction: float = 0.5  # share of zone_hist that must be inside the gauge
 
     @property
     def zone(self) -> str:
         if not self.zone_hist:
             return "warning"
-        return "gauge" if sum(self.zone_hist) * 2 >= len(self.zone_hist) else "warning"
+        return "gauge" if sum(self.zone_hist) >= self.zone_min_fraction * len(self.zone_hist) - 1e-9 else "warning"
+
+    @property
+    def hit_fraction(self) -> float:
+        return (sum(self.hit_hist) / len(self.hit_hist)) if self.hit_hist else 1.0
 
 
 class Tracker:
@@ -42,24 +59,39 @@ class Tracker:
         self.cfg = cfg
         self.tracks: List[Track] = []
         self._next_id = 1
+        self._timed = False          # a frame interval was supplied at least once
 
     def reset(self) -> None:
         self.tracks.clear()
         self._next_id = 1
+        self._timed = False
 
     def _gate(self, distance: float) -> float:
         c = self.cfg
         return c.gate_base + c.gate_per_m * max(distance, 0.0)
 
-    def update(self, clusters: List[Cluster]) -> List[Track]:
+    def update(self, clusters: List[Cluster], ego_shift: float = 0.0,
+               frame_dt: Optional[float] = None) -> List[Track]:
+        """Associate ``clusters`` with the tracks. ``ego_shift`` (m) is the distance the
+        vehicle travelled since the previous frame when it is known: a track seen once has no
+        velocity yet and is then predicted as a static object approaching by that much.
+        ``frame_dt`` (s) is the interval since the previous frame; it accumulates each track's
+        observed time for the ``confirm_time_s`` rule (without it persistence counts hits only)."""
         c = self.cfg
-        step = c.ego_speed_max * c.frame_dt
+        # widen the gate by the distance a static object travels in the *measured* interval, so a
+        # dropped frame (0.2-0.3 s gap in the node) does not throw a 17 m/s approach out of the gate
+        step = c.ego_speed_max * (float(frame_dt) if frame_dt is not None and frame_dt > 0 else c.frame_dt)
+        if frame_dt is not None:
+            self._timed = True
+        dt = float(frame_dt) if frame_dt is not None else 0.0
         n_t, n_c = len(self.tracks), len(clusters)
         matched_t = np.zeros(n_t, dtype=bool)
         matched_c = np.zeros(n_c, dtype=bool)
+        zw, hw = max(1, int(c.zone_window)), max(1, int(c.hit_window))
         if n_t and n_c:
             # greedy nearest-neighbour association on predicted positions
-            pred = np.stack([t.centroid + t.velocity for t in self.tracks])
+            static = np.array([-float(ego_shift), 0.0, 0.0])
+            pred = np.stack([t.centroid + (t.velocity if t.hits > 1 else static) for t in self.tracks])
             cen = np.stack([cl.centroid for cl in clusters])
             d = np.linalg.norm(pred[:, None, :] - cen[None, :, :], axis=2)
             # along-track motion towards the vehicle is allowed up to ``step`` extra
@@ -76,10 +108,12 @@ class Tracker:
                 t.hits += 1
                 t.misses = 0
                 t.age += 1
+                t.span_s += dt
                 t.confidence = min(1.0, t.confidence + c.conf_gain * cl.score)
                 t.last = cl
                 t.gauge_hits += int(cl.zone == "gauge")
-                t.zone_hist = (t.zone_hist + [cl.zone == "gauge"])[-5:]
+                t.zone_hist = (t.zone_hist + [cl.zone == "gauge"])[-zw:]
+                t.hit_hist = (t.hit_hist + [True])[-hw:]
                 t.history.append(cl.distance)
                 matched_t[i] = matched_c[j] = True
                 d[i, :] = np.inf
@@ -89,8 +123,10 @@ class Tracker:
             if not matched_t[i]:
                 t.misses += 1
                 t.age += 1
+                t.span_s += dt
                 t.centroid = t.centroid + t.velocity
                 t.confidence = max(0.0, t.confidence - c.conf_decay)
+                t.hit_hist = (t.hit_hist + [False])[-hw:]
         self.tracks = [t for t in self.tracks if t.misses <= c.max_misses]
         # new tracks
         for j, cl in enumerate(clusters):
@@ -98,12 +134,16 @@ class Tracker:
                 self.tracks.append(Track(
                     id=self._next_id, centroid=cl.centroid, velocity=np.zeros(3),
                     confidence=c.conf_gain * cl.score, last=cl, history=[cl.distance],
-                    gauge_hits=int(cl.zone == "gauge"), zone_hist=[cl.zone == "gauge"],
+                    gauge_hits=int(cl.zone == "gauge"), zone_hist=[cl.zone == "gauge"], hit_hist=[True],
+                    span_s=dt, zone_min_fraction=c.zone_min_fraction,
                 ))
                 self._next_id += 1
         return self.tracks
 
     def confirmed(self) -> List[Track]:
         c = self.cfg
+        need_span = c.confirm_time_s if (self._timed and c.confirm_time_s > 0) else 0.0
         return [t for t in self.tracks
-                if t.hits >= c.confirm_hits and t.confidence >= c.conf_threshold and t.misses == 0]
+                if t.hits >= c.confirm_hits and t.confidence >= c.conf_threshold and t.misses == 0
+                and t.span_s >= need_span - 1e-9
+                and (c.min_hit_fraction <= 0 or t.hit_fraction >= c.min_hit_fraction - 1e-9)]
