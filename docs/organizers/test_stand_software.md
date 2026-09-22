@@ -2,9 +2,9 @@
 
 Hardware per the specification (§3.1): Intel Core i7-9700E (8 cores, 2.60 GHz), 128 GiB RAM,
 NVIDIA GeForce RTX 4070 Ti SUPER, Ubuntu 22.04.5 LTS, ROS 2 Humble, Docker. The software
-below was reported to the team on 22.09 (`nvidia-smi` header and `dpkg -l` rows); it closes
-the GPU part of the stand questions — what remains open (launch procedure, internet access at
-build time, bag playback, disk) is question 8 in [`../QUESTIONS.md`](../QUESTIONS.md):
+below was reported to the team on 22.09 (`nvidia-smi` header and `dpkg -l` rows); the rest of
+the stand procedure (launch, internet access at build time, bag playback, disk) is the team's
+own to settle, not an organizer question ([`../QUESTIONS.md`](../QUESTIONS.md) "Closed"):
 
 ```
 NVIDIA-SMI 580.173.02             Driver Version: 580.173.02     CUDA Version: 13.0

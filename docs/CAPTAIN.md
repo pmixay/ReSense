@@ -50,7 +50,7 @@ inside the image.
 5. ~~Dataset-free ROS smoke test in CI~~ — done, item 10 (`scripts/make_smoke_bag.py`,
    `scripts/smoke_test.sh`, CI docker job).
 6. Intermediate submission: cover message drafted in `SUBMISSION.md`; tag on the day once P2's
-   recording exists and the organizers name the date (question 6).
+   recording exists (the date and form are the team's own to settle, 22.09).
 7. Sprint 2: ~~ego-speed parameter~~ done (item 14), ~~remote-desktop runbook~~ done (README,
    item 15), bench timing measured on the 4-core sandbox (finding 4 above; the i7 run is still
    owed, item 13), extended-dataset intake recipe in `DATASET.md` (item 16, with P4).
@@ -168,6 +168,13 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
    (`ros2 bag play /data/new_data`) is the closest thing to the control run and should be the
    dry-run input once the stand has 90 GB free. `scripts/unpack_dataset.py` now streams the
    archive from the link; `scripts/cache_frames.py` and `resense run` take a single split file.
+   **Decision (team lead, 22.09): train-speed data is not technically possible for this case —
+   the solution operates without it.** The deliverable is the no-speed path (single-frame
+   detection + persistence in time, the v0.5 numbers above); `ego_speed_mps` / `speed_topic` /
+   `odom_topic` stay optional inputs and the multi-frame accumulation stays off unless a speed
+   is given. The same round closed the tuning question (using the given recordings for
+   parameter tuning is acceptable) and the slides question (own slides after the template's
+   7–11 are acceptable); the submission / stand logistics are the team's own.
 8. **Sensor manual and test-stand software** (`SENSOR.md`, `organizers/test_stand_software.md`):
    the Pandar128E3X manual the organizers handed out is the 2024-07 document, not the
    "rev. 2025-11" cited earlier — every number re-checked; new facts that matter: the

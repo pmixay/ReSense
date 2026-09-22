@@ -85,8 +85,12 @@ table stays.
 * Return mode of the recordings (Last and Strongest is the manual's default, but the duplicate
   points in the bags match the Last and First description, §2 "dual return blocks") and whether
   the control bag uses the same 120° azimuth window and High Resolution mode.
-* Whether the lidar driver on the train publishes the packet-tail IMU data (accelerometer /
-  gyroscope) as a ROS topic, and if so its name and rate.
 * Mounting height and pitch on the train (the bags show two different mounts; the detector
   self-calibrates, but the number helps the synthetic injector).
-* Whether PTP time will be available on the train, and the odometry / speed source.
+* Whether PTP / GNSS time will be available on the train (every recording so far carries the
+  unsynchronised year-2000 sensor clock).
+
+Closed on 22.09 (team decision, `QUESTIONS.md` "Closed"): **no train speed, odometry or IMU
+data will be available for this case** — the solution operates without them. The packet-tail
+IMU noted in §2 is therefore documentation only; the node's speed inputs stay optional and the
+multi-frame accumulation stays off unless a speed is given.
