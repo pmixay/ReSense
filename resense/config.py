@@ -57,7 +57,7 @@ class TrackConfig:
     walls_max_residual: float = 0.4                  # m, bins further from the fit are rejected
     walls_min_bins: int = 6
     walls_max_rms: float = 0.35
-    walls_max_yaw: float = 0.06                      # |tan(yaw)| limit (~3.4 deg: mount yaw of ~1-1.5 deg in the bags plus the body angle in a curve; 0.035 in v0.3 saturated in every moving bag)
+    walls_max_yaw: float = 0.09                      # |tan(yaw)| limit (~5 deg: mount yaw of ~1-1.5 deg in the bags plus the body angle in a curve; 0.035 in v0.3 saturated in every moving bag, 0.06 was within 0.6 deg of binding on roundT_doubleT frames 120-180)
     walls_min_radius: float = 150.0                  # m, curvature limit
     walls_smoothing: float = 0.6                     # EMA of (yaw, curvature) across frames
     axis_valid_margin: float = 15.0                  # m beyond the last observed boundary bin the axis is trusted
@@ -146,12 +146,12 @@ class ClusterConfig:
     elevated_min_height: float = 1.2   # m, lowest point above this and wider than elevated_min_width = beam / roof strip / sign gantry
     elevated_min_width: float = 2.0    # m (a train ahead reaches down to the polygon bottom)
     floating_min_height: float = 0.7   # m, lowest point above this, lower than floating_max_height and narrower than floating_max_width = sign / lamp / bracket on the wall
-    floating_max_height: float = 1.5   # m
+    floating_max_height: float = 1.2   # m (a person is taller: a 1.5 m limit demoted a person on a platform edge, review 22.09)
     floating_max_width: float = 1.0    # m
     edge_min_lateral: float = 1.2      # m, |lateral| beyond this, longer than edge_min_aspect x width and lower than edge_max_height = duct / bench / platform-edge fragment
     edge_min_aspect: float = 2.5
     edge_max_height: float = 1.0       # m
-    wall_face_min_height: float = 1.5  # m, taller than this, reaching above overhead_min_height, and its part below that level hugs the corridor edge (|dy| from wall_face_min_inner to beyond wall_face_edge) = wall / portal face pulled in by the axis
+    wall_face_min_height: float = 2.0  # m, taller than a person (1.5 demoted a person standing on a 1.1 m platform edge, review 22.09); taller than this, reaching above overhead_min_height, and its part below that level hugs the corridor edge (|dy| from wall_face_min_inner to beyond wall_face_edge) = wall / portal face pulled in by the axis
     wall_face_edge: float = 1.6        # m
     wall_face_min_inner: float = 0.3   # m
     visibility_ratio: float = 0.15 # cluster is plausible if n >= ratio * expected points

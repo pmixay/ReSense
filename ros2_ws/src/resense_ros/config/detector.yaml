@@ -47,7 +47,7 @@ resense:
     walls_max_residual: 0.4
     walls_min_bins: 6
     walls_max_rms: 0.35
-    walls_max_yaw: 0.06
+    walls_max_yaw: 0.09
     walls_min_radius: 150.0
     walls_smoothing: 0.6
     axis_valid_margin: 15.0
@@ -125,12 +125,12 @@ resense:
     elevated_min_height: 1.2
     elevated_min_width: 2.0
     floating_min_height: 0.7
-    floating_max_height: 1.5
+    floating_max_height: 1.2
     floating_max_width: 1.0
     edge_min_lateral: 1.2
     edge_min_aspect: 2.5
     edge_max_height: 1.0
-    wall_face_min_height: 1.5
+    wall_face_min_height: 2.0
     wall_face_edge: 1.6
     wall_face_min_inner: 0.3
     visibility_ratio: 0.15

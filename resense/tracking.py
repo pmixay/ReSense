@@ -78,7 +78,9 @@ class Tracker:
         ``frame_dt`` (s) is the interval since the previous frame; it accumulates each track's
         observed time for the ``confirm_time_s`` rule (without it persistence counts hits only)."""
         c = self.cfg
-        step = c.ego_speed_max * c.frame_dt
+        # widen the gate by the distance a static object travels in the *measured* interval, so a
+        # dropped frame (0.2-0.3 s gap in the node) does not throw a 17 m/s approach out of the gate
+        step = c.ego_speed_max * (float(frame_dt) if frame_dt is not None and frame_dt > 0 else c.frame_dt)
         if frame_dt is not None:
             self._timed = True
         dt = float(frame_dt) if frame_dt is not None else 0.0

@@ -50,8 +50,8 @@ def first_alarm(det, frames, speed):
 
 
 def acc_cfg(estimate=False):
-    """Defaults with the multi-frame accumulation switched on (v0.5 ships it off, EXPERIMENTS.md 1b);
-    ``estimate`` also switches the ego-speed estimator on."""
+    """Defaults (accumulation is on, merging only with a given speed; v0.5 ships the LiDAR-only
+    estimator off, EXPERIMENTS.md 1b); ``estimate`` switches the ego-speed estimator on."""
     cfg = DetectorConfig()
     cfg.accumulation.enabled = True
     cfg.accumulation.estimate_speed = bool(estimate)

@@ -25,9 +25,15 @@ there is false. `doubleT_obstacle` has one true obstacle, the person crossing th
 | `doubleT_platform` | 345 | 178 / 29 / 110 | **12 / 3 / 271** | 16 | 3.0–104.5 m | a 2.1 m tall, 0.5 m wide post at 85–87 m left of the axis (10 frames; 0.1 m under the column rule), one frame of a 5 m long 0.2 m high strip at the nose at frame 177 and one 4-voxel cluster at 104.5 m |
 | `roundT_doubleT` | 252 | 126 / 20 / 140 | **0 / 0 / 226** | — | — | nothing (v0.3: columns and wall segments of the diverging double-track section, pulled in by the half curvature and the yaw jitter) |
 | `roundT_pressureGate_roundT` | 268 | 106 / 19 / 135 | **16 / 5 / 262** | 48 | 42.0–77.9 m | five duct / cabinet fragments at \|dy\| = 1.5–1.6 m, 42–78 m, 1–8 frames each (inner edge 0.05–0.15 m inside the 1.40 m gauge) |
-| `roundT_squareT_pressureGate_squareT` | 545 | 87 / 19 / 396 | **5 / 3 / 499** | 99 | 101.3–127.2 m | three single-frame far clusters at 101–127 m (6–16 voxels) |
+| `roundT_squareT_pressureGate_squareT` | 545 | 87 / 19 / 396 | **5 / 3 / 499** | 99 | 101.3–127.2 m | three far clusters at 101–127 m (6–16 voxels), one of them lasting 3 frames |
 | `squareT_platform_squareT_switch` | 877 | 504 / 105 / 680 | **56 / 18 / 781** | 67 | 81.0–119.2 m | the platform-end structure at 82.9 m while the train stands at the platform (2.2 × 0.4 × 1.2 m, lowest point at the bed, 5–8 voxels, 15 events of 1–7 frames, ~50 frames): a low ramp / rail at dy +1.2…+1.8 m by the single-frame axis that the run's left-bending curvature (R ≈ 3 km from the hall walls) puts at +0.5…+1.0 m; plus four single-frame far clusters at 87–119 m |
 | **five obstacle-free bags** | 2 287 | **1 001 / 192** / 1 461 | **89 / 29** / 2 039 | | | |
+
+Renders (`img/`): `roundT_doubleT_0145_v03.png` vs `roundT_doubleT_0145_v05.png` (the v0.3 axis pulls the
+column row of the diverging double-track tunnel into the corridor, v0.5 follows the rails),
+`squareT_platform_switch_0400_v03.png` vs `_v05.png` (the train standing at the platform: roof strips and
+the hall end wall are advisory in v0.5), `doubleT_obstacle_0030_v05.png` (the person on the track at
+55.7 m; the whole bag as `video/doubleT_obstacle_offline.mp4`).
 
 On the labels of `doubleT_obstacle` (`resense eval --npy /data/cache/doubleT_obstacle --gt
 labels/doubleT_obstacle.json --text`, 71 in-gauge person frames): v0.3 recall 63/71, first
@@ -112,21 +118,36 @@ switched off at a time by `--config`; five-bag alarm frames / events, and the pe
 | variant | five empty bags: alarm frames / events | `doubleT_obstacle`: recall, first alarm, false frames / events | reading |
 |---|---|---|---|
 | v0.3 (f2c57e5 results) | 1 001 / 192 | 63/71, 9, 13 / 2 | baseline |
-| v0.5 code with the v0.3 switches (`rails_yaw_enabled: false`, rate limits and caps 0, `walls_max_yaw: 0.035`, `floor_valid_margin: 60`, verification / retro / accumulation off, signatures 0, zone window 5, `confirm_time_s: 0`) | TBD_V03SW | TBD_V03SW_OBS | only the curvature fix and the rail profile in curve coordinates remain: this is what the axis bug alone cost |
+| v0.5 code with the v0.3 switches (`rails_yaw_enabled: false`, rate limits and caps 0, `walls_max_yaw: 0.035`, `floor_valid_margin: 60`, verification / retro / accumulation off, signatures 0, zone window 5, `confirm_time_s: 0`) | 785 / 155 (reviewer's run of 22.09: platform 212 / 20, `roundT_doubleT` 87 / 16, gate 94 / 15, `roundT_squareT` 0 / 0, switch 392 / 104) | 65/71, 8, 1 / 0 | only the curvature fix and the rail profile in curve coordinates remain: this is what the axis bug alone cost |
 | **v0.5 defaults** | **89 / 29** | **66/71, 7, 3 / 0** | |
-| − axis levers (rail yaw, rate limits, side caps off, yaw clip 2°) | TBD_ABL_AXIS | TBD_ABL_AXIS_OBS | |
-| − infrastructure signatures (column, elevated, floating, edge, wall face = 0) | TBD_ABL_RULES | TBD_ABL_RULES_OBS | |
-| − height-reference margin (`floor_valid_margin: 60`) | TBD_ABL_FLOOR | TBD_ABL_FLOOR_OBS | |
-| − history rules (`min_hit_fraction: 0`, zone window 5 / 0.5) | TBD_ABL_PERSIST | TBD_ABL_PERSIST_OBS | |
-| − accumulation (`accumulation.enabled: false`, estimator off) | TBD_ABL_ACC | TBD_ABL_ACC_OBS | |
-| + `confirm_time_s: 0.5` (5 frames at 10 Hz) | TBD_OPT_T05 | TBD_OPT_T05_OBS | latency 0.5 s = 11 m at 80 km/h instead of 0.3 s = 6.7 m; not shipped: P4's tests pin the 3-frame confirmation (`tests/test_cli.py --repeat 3`, `tests/test_core.py` 4-frame loops) |
-| + edge margin 0.05 m + 0.20 m per 100 m | TBD_OPT_MARGIN | TBD_OPT_MARGIN_OBS | |
-| + edge margin 0.15 m per 100 m only | TBD_OPT_MARGIN_S | TBD_OPT_MARGIN_S_OBS | |
-| + `confirm_time_s: 0.5` and edge margin 0.05 + 0.20 / 100 m | TBD_OPT_T05M | TBD_OPT_T05M_OBS | |
+| − axis levers (rail yaw, rate limits, side caps off, yaw clip 2°) | 171 / 56 (gate 57 / 8, switch 89 / 41) | 62/71, 11, 2 / 0 | |
+| − infrastructure signatures (column, elevated, floating, edge, wall face = 0) | 513 / 62 (switch 374 / 37, `roundT_doubleT` 36 / 6) | 66/71, 7, 3 / 0 | |
+| − height-reference margin (`floor_valid_margin: 60`) | 391 / 46 (switch 353 / 33) | 66/71, 7, 3 / 0 | |
+| − history rules (`min_hit_fraction: 0`, zone window 5 / 0.5) | 143 / 44 | 68/71, 5, 1 / 0 | |
+| − accumulation (`accumulation.enabled: false`, estimator off) | 89 / 29 (identical: without a given speed nothing is merged in the offline runs) | 66/71, 7, 3 / 0 | |
+| + `confirm_time_s: 0.5` (5 frames at 10 Hz) | 69 / 21 | 66/71, 7, 3 / 0 | latency 0.5 s = 11 m at 80 km/h instead of 0.3 s = 6.7 m; not shipped: P4's tests pin the 3-frame confirmation (`tests/test_cli.py --repeat 3`, `tests/test_core.py` 4-frame loops) |
+| + edge margin 0.05 m + 0.20 m per 100 m | not run | not run | |
+| + edge margin 0.15 m per 100 m only | not run | not run | |
+| + `confirm_time_s: 0.5` and edge margin 0.05 + 0.20 / 100 m | not run | not run | |
 
-TBD_ABLATION_READING
+Reading (captain's runs of 22.09 on the six cached bags, every frame, commit 9b56bdf with one
+lever group switched off per row by `--config`): the two levers that matter most are the
+**infrastructure signatures** (without them 513 alarm frames — the platform-hall end wall, roof
+strips and posts of the stopped train come back, 374 frames in the switch bag alone) and the
+**height-reference range** (391 frames: the unverified extrapolation lifts far rails and pulls
+the roof into the polygon exactly as §1b finding 2 describes). The **axis levers** cut 171 → 89
+and, on the person, bring the first alarm from frame 11 to 7 (the rail-slab yaw keeps him inside
+the gauge as soon as he is). The **history rules** trade 54 alarm frames for two frames of person
+recall and a first alarm two frames earlier (68/71, frame 5 without them). A **0.5 s
+confirmation** (`tracking.confirm_time_s: 0.5`) removes another 20 frames / 8 events at no cost
+on the person (he is confirmed at frame 7 either way, 0.5 s after entering the gauge) and is the
+first knob to turn if the control bag shows more short-lived false alarms; it stays at 0.3 s so
+that the 3-frame confirmation the synthetic tests and the dry-run checker assume keeps holding.
+The accumulation row is identical to the defaults because the offline runs have no train speed
+and nothing is merged; the given-speed behaviour is measured in §2c. The edge-margin variants
+were not run.
 
-**Accumulation default.** The multi-frame accumulation stays in the code and stays *enabled for a given speed* (the node's `ego_speed_mps` / odometry, `eval` sequences; P4's CLI tests pin this path), but the LiDAR-only estimator that fed it in v0.4 is **off by default** (`accumulation.estimate_speed: false`): with the estimator on, the same code alarmed on 119 frames / 30 events of the five empty bags instead of 88 / 27 (pre-vectorisation copy of the final code, `roundT_pressureGate_roundT` 8 → 31 frames, `roundT_squareT_pressureGate_squareT` 5 → 20), it did not change the person's recall or first alarm on `doubleT_obstacle` (66/71, frame 7, with the stopped-train guard), and it costs 7–8 ms per frame; the final-code number is in the ablation row above. The synthetic gain of §2b (person 189 vs 178 m on the tunnel at 22 m/s) is real but has no real-data counterpart yet (no moving bag with an obstacle); with a given speed the given-speed rows of §2c and the given-speed runs of the ablation table are the measured behaviour. Regression rule of EVALUATION.md §3.6: false-alarm frames on E 1 001 → 89 and p95 latency (§3) are both better than v0.3; on R the first alarm frame is 7 (≤ 9) and the recall 66/71 (≥ 64/71).
+**Accumulation default.** The multi-frame accumulation stays in the code and stays *enabled for a given speed* (the node's `ego_speed_mps` / odometry, `eval` sequences; P4's CLI tests pin this path), but the LiDAR-only estimator that fed it in v0.4 is **off by default** (`accumulation.estimate_speed: false`): with the estimator on, the same code alarmed on 119 frames / 30 events of the five empty bags instead of 88 / 27 (pre-vectorisation copy of the code; the final code measures 89 / 29, `roundT_pressureGate_roundT` 8 → 31 frames, `roundT_squareT_pressureGate_squareT` 5 → 20), it did not change the person's recall or first alarm on `doubleT_obstacle` (66/71, frame 7, with the stopped-train guard), and it costs 7–8 ms per frame; the final-code number is in the ablation row above. The synthetic gain of §2b (person 189 vs 178 m on the tunnel at 22 m/s) is real but has no real-data counterpart yet (no moving bag with an obstacle); with a given speed the given-speed rows of §2c and the given-speed runs of the ablation table are the measured behaviour. Regression rule of EVALUATION.md §3.6: false-alarm frames on E 1 001 → 89 and p95 latency (§3) are both better than v0.3; on R the first alarm frame is 7 (≤ 9) and the recall 66/71 (≥ 64/71).
 
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 
