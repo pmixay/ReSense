@@ -1,6 +1,6 @@
 # Experiments log
 
-**v0.6 (22.09) headline numbers are in §0, §1d and §2d** (all 13 558 real frames; the moving-ride
+**v0.6 (22.09) headline numbers are in §0, §1d and §2d** (all 13 759 real frames; the moving-ride
 long-range set F). The v0.5 text below (§1–§5) is kept as the record of how we got there.
 
 Headline numbers of v0.5 were for **v0.5 (real data, 2026-09-21, Sprint 2)**: every frame of the six
@@ -16,28 +16,40 @@ or **synthetic** (said so). The day-1 numbers on subsampled frames that this fil
 before 21.09 are superseded (they understated the 10 Hz false-alarm rate by an order of
 magnitude, CAPTAIN.md finding 2 of 21.09).
 
-## 0. v0.6 (22.09) — after the organizers' Q&A session
+## 0. v0.6.1 (22.09) — after the organizers' Q&A session
 
 The organizers' recorded Q&A session ([`organizers/QA_session.md`](organizers/QA_session.md))
 changed the target: the envelope to monitor is **2.1 m × 3.0 m** (not our assumed 2.8 × 3.5 m),
 the size criterion is **30 × 30 × 10 cm**, **hanging cables must be detected**, the **LiDAR mount
 varies**, the hidden check uses rides through other tunnels plus the organizers' **synthetic
 obstacles**, and there is an **object on the rail** in `doubleT_obstacle`. v0.6 implements all of
-it and is measured on **every frame of every recording** the organizers gave — 13 558 frames:
+it and is measured on **every frame of every recording** the organizers gave — 13 759 frames:
 the six bags (2 488) and the 20-minute ride `new_data` (11 271) — cached once
 (`scripts/cache_frames.py --int16 --stamps`) and run with `scripts/eval_real.py` (the ride in 8
 parallel pieces with a fresh detector each; bag receive times; 4-core sandbox shared by the
 four pieces, so the latencies in these runs are inflated ×2–3 — clean timing in §3).
 
-| | v0.5 logic (same frames, same harness) | **v0.6** |
+| | v0.5 logic (same frames, same harness) | **v0.6.1** |
 |---|---|---|
-| five obstacle-free bags (2 287 frames): alarm frames / events | 116 / 32 | **83 / 25** |
-| 20-minute ride (11 271 frames, 13 km): alarm frames / events | 448 / 93 | **258 / 74** (3.7 per km) |
+| five obstacle-free bags (2 287 frames): alarm frames / events | 116 / 32 | **104 / 30** |
+| 20-minute ride (11 271 frames, 13.0 km): alarm frames / events | 448 / 93 | **289 / 82** (6.3 per km, 4.1 per minute) |
+| frames with a health warning other than latency (all 13 759) | — | **196 (1.4 %)**: track model lost its rails at stations / switches (v0.6: 42 %, drift monitor) |
 | crossing person, frames inside the 2.1 m envelope (61): reported / first alarm | 61 / frame 8 | 58 / frame 11 (0.3 s after entering) |
 | object on the rail (185 visible frames) | 24 (only while the person stood next to it) | 27 (see §1d: 126/126 with the bed-level setting) |
 | hanging cable, 10 cm box on a rail (synthetic tunnel) | not reported (column / floating / hardware rules) | reported (`tests/test_envelope.py`) |
 | person approaching on the moving ride (set F, §2d): first confirmed detection | — | **165 m median, 168 m max** (6/6) |
 | other mounts (upside down, `+x` forward, backwards, rolled / pitched) | blind / skewed corridor | recovered from the data (§6) |
+
+**v0.6 → v0.6.1** changed only the mount calibration (§6, ALGORITHM.md §2b): v0.6 froze the
+median of the first 5 frames, which on a moving train is the local cant, not the mount — the
+pieces of the ride froze −0.97…+1.63° of "roll" for one level sensor, `roundT_doubleT` −1.55°,
+`squareT_platform_squareT_switch` −0.69° of pitch — and its drift monitor then warned on 42 %
+of all frames. v0.6.1 finds those rigs level (the ride's survey: −0.09°) and keeps the 3.0° of
+the `doubleT_obstacle` rig. Recordings whose calibration came out the same are bit-identical
+between the two runs; on the others 139 alarm frames appeared and 87 disappeared (v0.6: 83 / 25
+and 258 / 74): the edge structures that make most of the false alarms react to sub-degree tilts
+in both directions, so these counts carry a ±20 % spread from the mount state alone. The v0.6.1
+numbers are the ones with the physically right mount.
 
 The v0.5 row is the v0.5 detection logic run by the v0.6 harness with the calibration off
 (`calibration.enabled: false`); it differs slightly from EXPERIMENTS.md §1 (96 / 32) because of
@@ -45,7 +57,7 @@ the bag receive times, the int16 cache and the v0.6 track warm-up (§6).
 
 ## 1d. v0.6 on all real data: the variants that led to the defaults
 
-Every row is a full run over the 13 558 frames (`scripts/eval_real.py`, ~14 min each); the
+Every row is a full run over the 13 759 frames (`scripts/eval_real.py`, ~14 min each); the
 five-bag column sums `doubleT_platform`, `roundT_doubleT`, `roundT_pressureGate_roundT`,
 `roundT_squareT_pressureGate_squareT`, `squareT_platform_squareT_switch`.
 
@@ -58,7 +70,8 @@ five-bag column sums `doubleT_platform`, `roundT_doubleT`, `roundT_pressureGate_
 | v0.6d | + columns ≥ 0.25 m wide demoted anywhere, `edge` at 1.0 m, edge margin 0.15 m / 100 m, far clusters ≤ 3 m long and grounded; low stage with candidates ≥ 3 cm above the rail head | 81 / 21 | 239 / 60 | 58, first 11 | 29 |
 | v0.6f | low stage: the cluster's top at the rail head, candidates from 5 cm excess, own clustering radius | 412 / 169 | 1 735 / 734 | 58 | **170** |
 | v0.6g | low stage: every candidate ≥ 3 cm above the rail head again | 85 / 27 | 272 / 88 | 58 | 29 |
-| **v0.6 (h, shipped)** | + a low object needs 5 hits (0.5 s) | **83 / 25** | **258 / 74** | **58, first 11** | 27 |
+| v0.6 (h) | + a low object needs 5 hits (0.5 s) | 83 / 25 | 258 / 74 | 58, first 11 | 27 |
+| **v0.6.1 (shipped)** | mount tilt over 20 s instead of 5 frames, median drift monitor (§6) — the detection logic of v0.6h | **104 / 30** | **289 / 82** | **58, first 11** | 27 |
 
 **The bed is full of objects.** v0.6a reported every bump more than 7 cm above the learned bed
 cross-section inside the envelope: 1 350 low-object events on the ride. The ones looked at
@@ -92,7 +105,7 @@ calibration is right (the gauge is defined in the rail plane) and costs this obj
 organizers said the hidden data use the mount of the empty-tunnel rides, on which the
 calibration finds `roundT_doubleT` and `doubleT_platform` level within 0.5° (v0.6.1, §6; the −1.0…−1.6° v0.6 measured on `roundT_doubleT` was the 5-frame window).
 
-**Where the ride's 74 remaining events come from** (`scripts/mine_objects.py`, classes by
+**Where the ride's remaining events come from** (the v0.6h run, 74 events; `scripts/mine_objects.py`, classes by
 median geometry, `labels/new_data_objects.json`): corridor-edge structures 21 (at \|lateral\|
 0.9–1.2 m, 30–70 m; a quarter of them at the station of files 52–55), station / platform-end
 structures 13, low objects 12 (+6 low tracks classed otherwise), far small clusters 11
@@ -103,11 +116,11 @@ were checked by eye on close-ups (`img/new_data_person_like_check.png`): poles f
 the vault, cabinets, signs, the wall of the R ≈ 350 m curve — no person anywhere near the
 track, as the organizers said.
 
-**Per bag (v0.6):** `doubleT_platform` 5 / 6 (low objects at the platform, 4 events), 
-`roundT_doubleT` 1 / 1, `roundT_pressureGate_roundT` 2 / 1, `roundT_squareT_pressureGate_squareT`
-0 / 0, `squareT_platform_squareT_switch` 75 / 17 — the platform-end structure at 82–84 m while
-the train stands at the platform (§1), unchanged by v0.6: the station-curvature limitation of
-ALGORITHM.md §6.
+**Per bag (v0.6.1):** `doubleT_platform` 5 / 6 (low objects at the platform, 4 events),
+`roundT_doubleT` 3 / 2, `roundT_pressureGate_roundT` 2 / 1, `roundT_squareT_pressureGate_squareT`
+0 / 0, `squareT_platform_squareT_switch` 94 / 21 (v0.6: 75 / 17 with a spurious −0.69° pitch) —
+the platform-end structure at 82–84 m while the train stands at the platform (§1), unchanged
+since v0.5: the station-curvature limitation of ALGORITHM.md §6.
 
 ## 2d. The far field and long range on a moving background (set F, v0.6)
 

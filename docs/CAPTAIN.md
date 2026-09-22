@@ -198,9 +198,10 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
     cant, pitch from the bed slope, yaw; launch arguments for a known mount); **production
     guards** (health monitor, `GO / CAUTION / STOP / FAULT` on `/resense/decision`, verified-clear
     distance, `DiagnosticArray`, watchdog, exception guard with detector reset).
-11. **Measured on every real frame** (13 558: six bags + the 20-minute ride; EXPERIMENTS §0,
-    §1d): five empty bags 83 alarm frames / 25 events (v0.5 logic 116 / 32), ride 258 / 74 events
-    (3.7 per km; v0.5 448 / 93), person 58 of 61 envelope frames from frame 11. Long range on the
+11. **Measured on every real frame** (13 759: six bags + the 20-minute ride; EXPERIMENTS §0,
+    §1d, v0.6.1): five empty bags 104 alarm frames / 30 events (v0.5 logic 116 / 32), ride 289 / 82
+    events (6.3 per km; v0.5 448 / 93), person 58 of 61 envelope frames from frame 11; a health
+    warning on 1.4 % of the frames after the calibration fix of v0.6.1 (42 % before it). Long range on the
     moving ride (set F, §2d): person first confirmed at 165 m median on straight track,
     crate 127 m, trolley 121 m, cable 107 m; 79 m in R ≈ 350 m curves (sightline). The farthest
     return in all data is 208.5 m, so 300 m is out of the sensor's reach.

@@ -19,7 +19,7 @@ ROS 2 bag ─▶ PointCloud2 ─▶ resense_ros/detector_node ─▶ /resense/ob
                                                          └▶ /resense/status (JSON)
 ```
 
-Status: **v0.6 (22.09) — rebuilt around the organizers' Q&A answers**
+Status: **v0.6.1 (22.09) — rebuilt around the organizers' Q&A answers**
 ([`docs/organizers/QA_session.md`](docs/organizers/QA_session.md): the recorded session,
 transcribed and summarised). The strict decision now uses **the train envelope the organizers
 gave (2.1 m wide × 3.0 m high)**; objects **hanging** into it (broken cables) are obstacles
@@ -30,17 +30,18 @@ because "the LiDAR position is not fixed"; and every frame says **how far the pa
 verified clear** and whether the input can be trusted (`/resense/decision`
 GO / CAUTION / STOP / FAULT, `/resense/clear_distance`, `/resense/health`).
 
-Measured on **all 13 558 real frames** of the organizers' data at 10 Hz
+Measured on **all 13 759 real frames** of the organizers' data at 10 Hz
 ([`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) §0, §1d): false alarms on the five obstacle-free
-bags **83 frames / 25 events** (v0.5 logic on the same frames: 116 / 32) and on the 20-minute
-ride **258 frames / 74 events** (448 / 93); the person crossing the track in
+bags **104 frames / 30 events** (v0.5 logic on the same frames: 116 / 32) and on the 20-minute,
+13 km ride **289 frames / 82 events** (448 / 93; 6.3 per km); a health warning on 1.4 % of the
+frames (stations, switches); the person crossing the track in
 `doubleT_obstacle` is reported in 58 of the 61 frames in which the person is inside the
 envelope, the first alarm 0.3 s after entering it, distance error < 0.35 m. Long range on the
 moving ride (objects ray-cast into consecutive real frames, no speed input, §2d): a person
 approaching on straight track is first confirmed at **165 m median** (110–168 m, 6 of 6), a 1 m
 crate at 127 m, a trolley at 121 m (up to 198 m), a 3 cm hanging cable at 107 m; in R ≈ 350 m
 curves at the sightline (79 m). 300 m is beyond this sensor: the farthest return in all
-13 558 frames is 208.5 m. Other LiDAR mounts (upside down, `+x` forward, backwards, rolled /
+13 759 frames is 208.5 m. Other LiDAR mounts (upside down, `+x` forward, backwards, rolled /
 pitched) are recovered from the rails and the bed: orientation found and tilt within 0.5° on
 re-mounted real frames of three recordings (§6). Clean timing: 42–58 ms mean, p95 52–69 ms per
 frame on every recording (4-core sandbox, pure Python, §3).
