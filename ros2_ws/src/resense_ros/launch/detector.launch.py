@@ -6,6 +6,9 @@ topics unless ``auto_discover:=false`` (the organizers' bags disagree on the top
 ``bag:=`` plays a bag from the launch file (``loop:=true`` forever, ``rate:=`` playback rate);
 ``ego_speed_mps:=22`` (or ``speed_topic:=`` / ``odom_topic:=``) feeds the train speed to the
 multi-frame accumulation; ``publish_tf`` links the fixed frame ``resense_lidar`` to the bag's frame.
+A different LiDAR mount: ``sensor_forward:=+x sensor_left:=+y sensor_up:=+z`` (axis mapping),
+``mount_roll_deg:=`` / ``mount_pitch_deg:=`` / ``mount_yaw_deg:=`` (fixed tilt), and
+``auto_calibrate:=true`` (default) finds orientation and tilt from the rails in the first frames.
 """
 import os
 
@@ -36,6 +39,16 @@ PARAMS = {
     "speed_timeout": ("1.0", float, "s after which a speed message no longer counts"),
     "publish_tf": ("true", bool, "broadcast a static identity TF tf_parent_frame -> input frame id"),
     "tf_parent_frame": ("resense_lidar", str, "fixed frame used by the RViz / Foxglove layouts"),
+    # v0.6: sensor mount (the LiDAR position is not fixed between trains) and production guards
+    "sensor_forward": ("", str, "sensor axis pointing forward, e.g. -y (hackathon mount) or +x; empty = config file"),
+    "sensor_left": ("", str, "sensor axis pointing left; empty = config file"),
+    "sensor_up": ("", str, "sensor axis pointing up; empty = config file"),
+    "mount_roll_deg": ("-999.0", float, "fixed roll correction in deg (-999 = config file)"),
+    "mount_pitch_deg": ("-999.0", float, "fixed pitch correction in deg (-999 = config file)"),
+    "mount_yaw_deg": ("-999.0", float, "fixed yaw correction in deg (-999 = config file)"),
+    "auto_calibrate": ("true", bool, "find the sensor orientation / roll / pitch from rails and bed in the first frames"),
+    "stale_timeout": ("0.5", float, "s without an input frame before the decision becomes FAULT"),
+    "max_consecutive_errors": ("5", int, "processing exceptions in a row before the detector is reset"),
 }
 
 

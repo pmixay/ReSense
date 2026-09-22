@@ -15,6 +15,18 @@ PF_DTYPES = {1: "i1", 2: "u1", 3: "i2", 4: "u2", 5: "i4", 6: "u4", 7: "f4", 8: "
 COMPACT_DTYPE = np.dtype(
     [("x", "f4"), ("y", "f4"), ("z", "f4"), ("intensity", "f4"), ("ring", "u2")]
 )
+# quantised cache (8 bytes per point instead of 18): coordinates in centimetres as int16
+# (+-327 m, the sensor returns nothing beyond ~210 m), intensity 0..255 and ring 0..127 as
+# uint8. The 5 mm quantisation error is a quarter of the sensor's range noise (Pandar128
+# manual: +-2 cm), and every reader goes through :func:`compact_to_xyz`.
+COMPACT16_DTYPE = np.dtype(
+    [("x", "i2"), ("y", "i2"), ("z", "i2"), ("intensity", "u1"), ("ring", "u1")]
+)
+COMPACT16_SCALE = 0.01   # m per unit
+# in a *deduplicated* quantised cache the high bit of ``ring`` marks a point that stood twice
+# in the frame: in the dual-return layout of the Pandar128 a ray with a single echo repeats it in
+# both return slots (49 % of the points of a frame). :func:`expand_compact16` restores them.
+DUP_FLAG = 0x80
 
 
 def pointcloud2_dtype(msg) -> np.dtype:
@@ -58,5 +70,50 @@ def structured_to_compact(arr: np.ndarray, min_range: float = 0.05) -> np.ndarra
 
 
 def compact_to_xyz(arr: np.ndarray) -> np.ndarray:
-    """(N,3) float32 array of sensor-frame coordinates from a compact array."""
-    return np.stack([arr["x"], arr["y"], arr["z"]], axis=1).astype(np.float32)
+    """(N,3) float32 array of sensor-frame coordinates from a compact array (either dtype)."""
+    xyz = np.stack([arr["x"], arr["y"], arr["z"]], axis=1).astype(np.float32)
+    if arr.dtype["x"].kind == "i":
+        xyz *= np.float32(COMPACT16_SCALE)
+    return xyz
+
+
+def compact16_dedup(arr: np.ndarray) -> np.ndarray:
+    """Collapse exact duplicates of a :data:`COMPACT16_DTYPE` array: every pair of identical
+    rows becomes one row with :data:`DUP_FLAG` set in ``ring`` (a group of ``c`` identical rows
+    becomes ``c // 2`` flagged rows plus one plain row if ``c`` is odd). Lossless: the detector
+    never uses the point order, and :func:`expand_compact16` restores the multiset exactly."""
+    if arr.size == 0:
+        return arr
+    key = np.ascontiguousarray(arr).view(np.uint64)
+    _, first, counts = np.unique(key, return_index=True, return_counts=True)
+    order = np.argsort(first)
+    first, counts = first[order], counts[order]
+    rows = arr[first]
+    pairs, odd = counts // 2, counts % 2
+    flagged = np.repeat(rows, pairs)
+    flagged["ring"] |= np.uint8(DUP_FLAG)
+    return np.concatenate([flagged, rows[odd > 0]])
+
+
+def expand_compact16(arr: np.ndarray) -> np.ndarray:
+    """Undo :func:`compact16_dedup` (no-op for any array without the flag)."""
+    if arr.dtype.names is None or "ring" not in arr.dtype.names or arr.dtype["ring"].itemsize != 1:
+        return arr
+    dup = (arr["ring"] & DUP_FLAG) != 0
+    if not dup.any():
+        return arr
+    out = np.repeat(arr, np.where(dup, 2, 1))
+    out["ring"] &= np.uint8(~DUP_FLAG & 0xFF)
+    return out
+
+
+def compact_to_compact16(arr: np.ndarray) -> np.ndarray:
+    """Quantise a compact array to :data:`COMPACT16_DTYPE` (points beyond +-327 m dropped)."""
+    xyz = compact_to_xyz(arr)
+    q = np.round(xyz / COMPACT16_SCALE)
+    ok = (np.abs(q) < 32767).all(axis=1)
+    out = np.zeros(int(ok.sum()), dtype=COMPACT16_DTYPE)
+    out["x"], out["y"], out["z"] = q[ok, 0], q[ok, 1], q[ok, 2]
+    out["intensity"] = np.clip(np.round(arr["intensity"][ok]), 0, 255)
+    out["ring"] = np.clip(arr["ring"][ok], 0, 255)
+    return out

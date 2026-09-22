@@ -1,0 +1,160 @@
+"""Mount auto-calibration (resense/calibration.py) and production guards (resense/health.py).
+
+The synthetic ray-cast tunnel (rails, bed, benches) is re-mounted by known rotations; the
+calibrator must find the orientation from the data, recover roll and pitch, and the detector
+must then report the obstacle at the right distance as if the sensor had been mounted
+correctly. The guards must turn a blinded / empty / NaN-poisoned input into a health error
+with nothing verified, without raising.
+"""
+from __future__ import annotations
+
+import numpy as np
+import pytest
+
+from resense.calibration import MountCalibrator, orientation_candidates, rot_x, rot_y, rot_z
+from resense.config import DetectorConfig
+from resense.detector import Detector
+from resense.frame import Frame
+
+
+def _remount(frame: Frame, M: np.ndarray) -> Frame:
+    """The same scene seen by a sensor whose configured-vehicle frame is rotated by M^T
+    (p_seen = M @ p_true): the calibrator should come back with R ~ M^T."""
+    return Frame(xyz=(frame.xyz @ M.T).astype(np.float32), intensity=frame.intensity, ring=frame.ring,
+                 stamp=frame.stamp, frame_id=frame.frame_id, meta=dict(frame.meta))
+
+
+def _angle_deg(R: np.ndarray) -> float:
+    return float(np.degrees(np.arccos(np.clip((np.trace(R) - 1.0) / 2.0, -1.0, 1.0))))
+
+
+def test_orientation_candidates_are_the_24_proper_rotations():
+    c = orientation_candidates()
+    assert len(c) == 24
+    assert np.allclose(c[0], np.eye(3))
+    for R in c:
+        assert np.allclose(R @ R.T, np.eye(3)) and abs(np.linalg.det(R) - 1.0) < 1e-9
+    assert len({tuple(R.ravel()) for R in c}) == 24
+
+
+def _run(det: Detector, frame: Frame, n: int):
+    res = None
+    for k in range(n):
+        f = Frame(xyz=frame.xyz, intensity=frame.intensity, ring=frame.ring, stamp=0.1 * k, meta=dict(frame.meta))
+        res = det.process(f)
+    return res
+
+
+def test_calibrator_confirms_a_correct_mount(tunnel):
+    frame, _, _ = tunnel
+    det = Detector(DetectorConfig())
+    res = _run(det, frame, 8)
+    assert res.mount["status"] == "identity", res.mount
+    assert np.allclose(det.mount_rotation, np.eye(3))
+    assert not res.obstacle
+
+
+@pytest.mark.parametrize("roll,pitch", [(3.0, 0.0), (0.0, -2.5), (-2.0, 2.0)])
+def test_calibrator_recovers_roll_and_pitch(tunnel, roll, pitch):
+    frame, _, _ = tunnel
+    M = rot_y(np.radians(pitch)) @ rot_x(np.radians(roll))
+    det = Detector(DetectorConfig())
+    res = _run(det, _remount(frame, M), 8)
+    assert res.mount["status"] == "ok", res.mount
+    assert _angle_deg(det.mount_rotation @ M) < 0.5, (res.mount, det.mount_rotation @ M)
+    assert not res.obstacle
+
+
+@pytest.mark.parametrize("name,M", [
+    ("upside down", rot_x(np.pi)),
+    ("forward = +x (ROS convention)", rot_z(np.pi / 2)),
+    ("mounted backwards", rot_z(np.pi)),
+    ("forward = +x, rolled 2 deg", rot_x(np.radians(2.0)) @ rot_z(-np.pi / 2)),
+])
+def test_calibrator_finds_the_orientation_and_the_detector_works(name, M):
+    from resense.synthetic import ObstacleSpec, synthetic_tunnel_frame
+    frame, _, _ = synthetic_tunnel_frame(rng=np.random.default_rng(3),
+                                         specs=[ObstacleSpec(kind="box", size=(0.6, 0.6, 0.6), distance=40.0)])
+    det = Detector(DetectorConfig())
+    res = _run(det, _remount(frame, M), 12)
+    assert res.mount["orientation"] != "configured", res.mount
+    assert _angle_deg(det.mount_rotation @ M) < 0.5, (name, res.mount)
+    assert res.obstacle, (name, res.mount, res.health)
+    assert 38.0 < res.nearest_distance < 42.0
+
+
+def test_calibration_can_be_switched_off(tunnel):
+    frame, _, _ = tunnel
+    cfg = DetectorConfig()
+    cfg.calibration.enabled = False
+    det = Detector(cfg)
+    res = _run(det, _remount(frame, rot_x(np.radians(3.0))), 6)
+    assert res.mount["status"] == "disabled"
+    assert np.allclose(det.mount_rotation, np.eye(3))
+
+
+def test_calibrator_gives_up_without_rails():
+    """A cloud with no rail pair anywhere (a featureless box): keep the configured mapping."""
+    rng = np.random.default_rng(0)
+    xyz = np.stack([rng.uniform(3, 80, 50000), rng.uniform(-2.5, 2.5, 50000), rng.uniform(-1.5, 3, 50000)], 1)
+    cfg = DetectorConfig()
+    cfg.calibration.max_frames = 4
+    cal = MountCalibrator(cfg.calibration, cfg.track)
+    for _ in range(5):
+        cal.update(xyz.astype(np.float32), xyz.astype(np.float32), None)
+    assert cal.state.status == "fallback" and np.allclose(cal.R, np.eye(3))
+
+
+# ---------------------------------------------------------------------------
+# production guards
+# ---------------------------------------------------------------------------
+
+def test_health_on_a_clear_tunnel_reports_the_verified_range(tunnel):
+    frame, _, _ = tunnel
+    res = _run(Detector(DetectorConfig()), frame, 5)
+    h = res.health
+    assert h["level"] in ("ok", "warn")
+    assert h["monitored_range"] > 100.0
+    assert res.clear_distance == pytest.approx(h["monitored_range"], abs=0.2)
+    d = res.to_dict()
+    assert {"health", "mount", "clear_distance"} <= set(d)
+
+
+def test_clear_distance_is_the_obstacle_distance(tunnel):
+    from resense.synthetic import ObstacleSpec, synthetic_tunnel_frame
+    frame, _, _ = synthetic_tunnel_frame(rng=np.random.default_rng(3),
+                                         specs=[ObstacleSpec(kind="box", size=(0.6, 0.6, 0.6), distance=40.0)])
+    res = _run(Detector(DetectorConfig()), frame, 6)
+    assert res.obstacle
+    assert res.clear_distance == pytest.approx(res.nearest_distance, abs=0.2)
+
+
+def test_blinded_sensor_is_an_error_with_nothing_verified(tunnel):
+    frame, _, _ = tunnel
+    det = Detector(DetectorConfig())
+    _run(det, frame, 3)
+    few = Frame(xyz=frame.xyz[:500], intensity=frame.intensity[:500], stamp=0.5)
+    res = det.process(few)
+    assert res.health["level"] == "error"
+    assert res.health["monitored_range"] == 0.0 and res.clear_distance == 0.0
+    empty = Frame(xyz=np.zeros((0, 3), np.float32), intensity=np.zeros(0, np.float32), stamp=0.6)
+    res = det.process(empty)
+    assert res.health["level"] == "error" and not res.obstacle
+
+
+def test_nan_points_are_dropped_not_propagated(tunnel):
+    frame, _, _ = tunnel
+    xyz = frame.xyz.copy()
+    xyz[::50] = np.nan
+    xyz[1::97, 2] = np.inf
+    res = _run(Detector(DetectorConfig()), Frame(xyz=xyz, intensity=frame.intensity), 4)
+    assert not res.obstacle
+    assert np.isfinite(res.track.center) and np.isfinite(res.track.yaw)
+
+
+def test_window_dirt_is_flagged(tunnel):
+    frame, _, _ = tunnel
+    det = Detector(DetectorConfig())
+    f = Frame(xyz=frame.xyz, intensity=frame.intensity, meta={"n_raw": frame.n * 2, "n_near": frame.n})
+    res = det.process(f)
+    assert any("window" in m for m in res.health["messages"])

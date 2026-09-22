@@ -146,11 +146,12 @@ def test_overhead_cluster_is_demoted():
 # ---------------------------------------------------------------------------
 
 def test_point_in_default_gauge_profile():
+    """v0.6: the organizers' envelope, |dy| <= 1.05 m, 0.12 <= h <= 3.0 m above the rail head."""
     prof = CFG.gauge.profile
-    dy = np.array([0.0, 0.0, 1.2, 1.2, 1.5, 0.0, -0.9, -1.2])
-    h = np.array([1.0, 0.05, 0.3, 1.0, 1.0, 3.6, 0.2, 0.7])
-    #                in   below  side-low  in  wide  above  in-low  in
-    assert point_in_polygon(dy, h, prof).tolist() == [True, False, False, True, False, False, True, True]
+    dy = np.array([0.0, 0.0, 1.2, 1.0, 1.5, 0.0, -0.9, -1.0, 0.5])
+    h = np.array([1.0, 0.05, 0.3, 1.0, 1.0, 3.2, 0.2, 0.7, 2.9])
+    #                in   below  side   in  wide  above  in-low  in   in-top
+    assert point_in_polygon(dy, h, prof).tolist() == [True, False, False, True, False, False, True, True, True]
 
 
 def test_widened_profile_keeps_inner_zone():
@@ -176,8 +177,10 @@ def test_corridor_mask_strict_is_subset_of_wide():
     dy = xyz[:, 1] - track.center_y(X)
     h = xyz[:, 2] - track.rail_z(X)
     margin_only = mask & ~strict
-    assert (np.abs(dy[margin_only]) > 1.4 - 1e-6).all() and (np.abs(dy[margin_only]) <= 1.4 + CFG.gauge.warning_margin + 1e-6).all()
-    assert (h[strict] >= 0.12 - 1e-6).all() and (h[strict] <= 3.5 + 1e-6).all()
+    prof = np.asarray(CFG.gauge.profile)
+    hw, top = float(np.abs(prof[:, 0]).max()), float(prof[:, 1].max())
+    assert (np.abs(dy[margin_only]) > hw - 1e-6).all() and (np.abs(dy[margin_only]) <= hw + CFG.gauge.warning_margin + 1e-6).all()
+    assert (h[strict] >= 0.12 - 1e-6).all() and (h[strict] <= top + 1e-6).all()
 
 
 # ---------------------------------------------------------------------------

@@ -483,7 +483,7 @@ def test_axis_rate_limits_clip_a_jump():
     cfg = DetectorConfig()
     xyz0, _ = _curved_scene(1e9, 0.0)
     xyz1, _ = _curved_scene(1e9, 2.0, seed=1)
-    m = _run_track(xyz0, cfg, 5)
+    m = _run_track(xyz0, cfg, cfg.track.axis_warmup_frames + 1)   # past the warm-up (v0.6)
     y0, k0 = m.yaw, m.curvature
     m = estimate_track(xyz1, cfg.track, prev=m)
     assert abs(m.yaw - y0) <= cfg.track.axis_max_yaw_rate + 1e-9
@@ -491,6 +491,18 @@ def test_axis_rate_limits_clip_a_jump():
     for _ in range(20):
         m = estimate_track(xyz1, cfg.track, prev=m)
     assert abs(np.degrees(m.yaw) - 2.0) < 0.2, "the limit delays, it must not block"
+
+
+def test_rate_limits_do_not_apply_during_the_warm_up():
+    """v0.6: a cold start on a frame whose estimate is off (the node started mid-ride, or the
+    model re-seeded after the mount calibration) must not be locked in by the rate limits."""
+    cfg = DetectorConfig()
+    xyz0, _ = _curved_scene(1e9, 0.0)
+    xyz1, _ = _curved_scene(1e9, 2.0, seed=1)
+    m = estimate_track(xyz0, cfg.track, prev=None)       # a seed that is 2 deg off
+    for _ in range(cfg.track.axis_warmup_frames):
+        m = estimate_track(xyz1, cfg.track, prev=m)
+    assert abs(np.degrees(m.yaw) - 2.0) < 0.3, np.degrees(m.yaw)
 
 
 def _cluster_at(x, zone="gauge"):
@@ -558,17 +570,21 @@ def _find(pts, cfg=None, frame_idx=None, **kw):
 
 
 def test_infrastructure_signatures_are_advisory_and_objects_are_not():
+    """v0.6: the envelope is 2.1 m x 3.0 m and the column / floating signatures only apply off
+    the track centre (|lateral| > 0.6 m): a cable or object hanging near the axis is an obstacle."""
     cases = {
-        "column":    (_box(40.0, 0.3, -0.15, 0.4, 0.4, 2.8), "column"),      # post / column / gate leg
+        "column":    (_box(40.0, 0.8, -0.15, 0.4, 0.4, 2.8), "column"),      # post / column / gate leg pulled in at the edge
         "beam":      (_box(60.0, 0.0, 1.6, 0.3, 2.6, 0.3), "elevated"),      # beam / roof strip across the corridor
         "sign":      (_box(50.0, 1.0, 1.2, 0.05, 0.6, 0.6), "floating"),     # sign on the wall, not touching the ground
-        "duct":      (_box(30.0, 1.45, 0.6, 2.0, 0.5, 0.6), "edge"),         # duct / bench fragment at the corridor edge
-        "portal":    (_box(75.0, 1.2, 0.55, 0.3, 1.2, 2.9), "wall_face"),    # wall face pulled in: hugs the edge, centre clear
+        "duct":      (_box(30.0, 1.25, 0.6, 1.6, 0.5, 0.6), "edge"),         # duct / bench fragment at the corridor edge
+        "portal":    (_box(75.0, 1.15, 0.55, 0.3, 1.6, 2.9), "wall_face"),   # wall face pulled in: hugs the edge, centre clear
         "person":    (_box(40.0, 0.0, -0.15, 0.4, 0.5, 1.7), ""),
         "crate":     (_box(60.0, 0.3, -0.15, 1.0, 1.0, 1.0), ""),
         "trolley":   (_box(50.0, -0.5, -0.15, 0.6, 0.6, 1.0), ""),
         "train":     (_box(75.0, 0.0, 0.1, 0.3, 2.7, 3.3), ""),              # a train ahead reaches the polygon bottom and both edges
-        "edge_person": (_box(40.0, 1.2, -0.15, 0.4, 0.5, 1.7), ""),         # person at the gauge edge stays an obstacle
+        "edge_person": (_box(40.0, 0.9, -0.15, 0.4, 0.5, 1.7), ""),         # person at the envelope edge stays an obstacle
+        "cable":     (_box(40.0, 0.1, 0.6, 0.05, 0.05, 2.4), ""),            # broken cable hanging near the axis (organizers' Q&A)
+        "hanging":   (_box(45.0, -0.2, 1.5, 0.3, 0.3, 0.5), ""),             # small object hanging into the envelope near the axis
     }
     for name, (pts, want) in cases.items():
         cl = _find(pts)
@@ -585,12 +601,14 @@ def test_infrastructure_signatures_are_advisory_and_objects_are_not():
 
 def test_gauge_edge_margin_shrinks_the_strict_decision_with_range():
     cfg = DetectorConfig().gauge
-    dy = np.array([1.30, 1.30, 0.5, -1.30])
+    cfg.edge_margin, cfg.edge_margin_per_100m = 0.0, 0.0          # v0.6 ships 0.15 m / 100 m; test the polygon itself first
+    hw = float(np.abs(np.asarray(cfg.profile)[:, 0]).max())       # 1.05 m since v0.6
+    dy = np.array([hw - 0.1, hw - 0.1, 0.5, -(hw - 0.1)])
     h = np.array([1.0, 1.0, 1.0, 1.0])
     X = np.array([10.0, 100.0, 100.0, 10.0])
     assert gauge_core_mask(dy, h, X, cfg).tolist() == [True, True, True, True]     # margins 0: the polygon itself
     cfg.edge_margin, cfg.edge_margin_per_100m = 0.02, 0.3
-    assert gauge_core_mask(dy, h, X, cfg).tolist() == [True, False, True, True]    # 0.32 m margin at 100 m (1.62 > 1.40), 0.05 m at 10 m (1.35)
+    assert gauge_core_mask(dy, h, X, cfg).tolist() == [True, False, True, True]    # 0.32 m margin at 100 m, 0.05 m at 10 m
 
 
 def test_stopped_train_tracks_cue_reports_nothing():

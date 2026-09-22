@@ -64,6 +64,27 @@ def npy_frame_index(path: str) -> Optional[int]:
     return int(m.group(1)) if m else None
 
 
+def _natural_key(path: str):
+    """Sort key that orders ``new_data_2_0010.npy`` before ``new_data_10_0000.npy``."""
+    return [int(t) if t.isdigit() else t for t in re.split(r"(\d+)", os.path.basename(path))]
+
+
+def load_cache_stamps(directory: str) -> dict:
+    """{file stem: bag receive time (s)} from the ``*_stamps.json`` files that
+    ``scripts/cache_frames.py --stamps`` writes next to a cache (empty when there are none)."""
+    import json
+    out = {}
+    for f in glob.glob(os.path.join(directory, "*_stamps.json")):
+        try:
+            d = json.load(open(f, encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        name = d.get("bag") or os.path.basename(f)[: -len("_stamps.json")]
+        for k, v in d.get("stamps", {}).items():
+            out[f"{name}_{k}"] = float(v)
+    return out
+
+
 def iter_npy_frames(directory: str, sensor: SensorConfig, pattern: str = "*.npy", every: int = 1,
                     start: int = 0, limit: Optional[int] = None,
                     index_from_name: bool = False) -> Iterator[tuple]:
@@ -72,10 +93,13 @@ def iter_npy_frames(directory: str, sensor: SensorConfig, pattern: str = "*.npy"
     ``index`` is the file's position in the full sorted list (so ``every`` / ``start`` /
     ``limit`` behave like they do for a bag), or, with ``index_from_name``, the number at the
     end of the file name when there is one (the bag frame index for ``scripts/cache_frames.py``
-    output). The stamp is ``index * 0.1`` s: cached files carry no bag time, but with
+    output). Files are in natural order (a cache of split files ``new_data_<N>_<i>.npy`` plays
+    in recording order). The stamp is the bag receive time when the cache carries
+    ``*_stamps.json`` (``cache_frames.py --stamps``), else ``index * 0.1`` s: with
     ``index_from_name`` a strided cache keeps the bag's frame spacing.
     """
-    files = sorted(glob.glob(os.path.join(directory, pattern)))
+    files = sorted(glob.glob(os.path.join(directory, pattern)), key=_natural_key)
+    stamps = load_cache_stamps(directory)
     n_out = 0
     for i, f in enumerate(files):
         if i < start or (i - start) % every != 0:
@@ -85,7 +109,9 @@ def iter_npy_frames(directory: str, sensor: SensorConfig, pattern: str = "*.npy"
         if index_from_name:
             named = npy_frame_index(f)
             idx = i if named is None else named
-        yield idx, frame_from_compact(arr, sensor, stamp=float(idx) * 0.1, frame_id=os.path.basename(f))
+        stem = os.path.splitext(os.path.basename(f))[0]
+        stamp = stamps.get(stem, float(idx) * 0.1)
+        yield idx, frame_from_compact(arr, sensor, stamp=stamp, frame_id=os.path.basename(f))
         n_out += 1
         if limit is not None and n_out >= limit:
             return

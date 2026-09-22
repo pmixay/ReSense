@@ -30,6 +30,7 @@ class Cluster:
     n_gauge: int = 0             # voxels inside the strict gauge
     retro: bool = False          # demoted to advisory as a retro-reflective sign / marker
     reason: str = ""             # why the cluster is advisory although it has gauge voxels ('' = it has not / it is an obstacle)
+    kind: str = ""               # v0.6: 'low' = a bump above the track bed (resense/lowobj.py), '' = corridor cluster
 
     @property
     def size(self) -> np.ndarray:
@@ -72,7 +73,9 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
                   in_gauge: np.ndarray, cfg: ClusterConfig,
                   frame_idx: Optional[np.ndarray] = None, axis_valid: float = 1e9,
                   min_points_factor: float = 1.0, factor_range: float = 0.0,
-                  smear_max_length: float = 0.0, smear_max_width: float = 0.0) -> List[Cluster]:
+                  smear_max_length: float = 0.0, smear_max_width: float = 0.0,
+                  low: Optional[np.ndarray] = None, low_cfg=None,
+                  height_valid: Optional[float] = None) -> List[Cluster]:
     """Voxelise candidates, cluster the voxels, describe and filter the clusters.
 
     ``xyz``/``intensity``/``dy``/``h``/``in_gauge`` are the corridor candidates;
@@ -90,7 +93,26 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
 
     v0.5 infrastructure signatures (``column``, ``wall_face``, ``elevated``, ``floating``,
     ``edge``; docs/ALGORITHM.md section 3.3) demote a cluster to advisory and record the
-    rule in ``Cluster.reason``; nothing is dropped by them.
+    rule in ``Cluster.reason``; nothing is dropped by them. Since v0.6 the ``column`` and
+    ``floating`` signatures only apply off the track centre (``|lateral| >
+    signature_min_lateral``): a broken cable or an object hanging into the envelope near the
+    axis is an obstacle whatever its shape (organizers' Q&A: hanging cables must be detected).
+
+    ``low`` (v0.6) flags candidates that are bumps above the track bed below the polygon
+    bottom (``resense/lowobj.py``); a cluster made mostly of them skips the infrastructure
+    filters written for the corridor (they would drop any 10 cm object) and is kept when it is
+    short along the track (``low_cfg.max_length``), not wider than ``low_cfg.max_width`` and has
+    ``low_cfg.min_points`` voxels; it is a gauge obstacle with ``kind = 'low'``.
+
+    ``axis_valid`` is where the corridor's lateral position is trusted; ``height_valid`` (v0.6,
+    default = ``axis_valid``) where its height reference is. Between the two - the far field of
+    a straight tunnel, where the walls confirm the axis to ~200 m but the bed stopped returning
+    at ~100 m and the extrapolated rail level drifts by 0.2-0.5 m (EXPERIMENTS.md §2d) - a
+    cluster is an obstacle only if it is at least ``far_min_height`` tall, at most
+    ``far_max_length`` long along the track (a face seen head-on, not a surface at grazing
+    incidence) and reaches down below ``far_max_bottom``: a person, a trolley, a crate, a train
+    ahead; not a flat patch of the far bed that the height error lifted into the polygon nor a
+    sign hanging above it (``reason = 'beyond_height_ref'`` otherwise).
     """
     out: List[Cluster] = []
     if xyz.shape[0] == 0:
@@ -119,6 +141,28 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
             bmin, bmax = pts.min(axis=0), pts.max(axis=0)
             size = bmax - bmin
             factor = 1.0
+        is_low = low is not None and low_cfg is not None and bool(low[idx].mean() >= 0.5)
+        if is_low:
+            if (size[0] > low_cfg.max_length or size[1] > low_cfg.max_width or size[2] < low_cfg.min_height
+                    or n_vox < low_cfg.min_points):
+                continue
+            # rail-head slivers, fastenings and joint bars are narrow across the track; a 30 cm object is not
+            if size[1] < low_cfg.min_width:
+                continue
+            dist = float(pts[:, 0].min())
+            width = max(float(size[1]), 0.15)
+            height = max(float(size[2]), 0.1)
+            n_exp = float(expected_points(np.linalg.norm(pts.mean(axis=0)), width, height))
+            score = float(np.clip(n_vox / max(n_exp, 1.0) / cfg.visibility_ratio, 0.0, 1.0)) if n_exp > 1.0 else 1.0
+            fi = frame_idx[idx]
+            out.append(Cluster(
+                points_idx=fi[fi >= 0], n=n_vox, n_raw=int(idx.size), centroid=pts.mean(axis=0),
+                bbox_min=bmin, bbox_max=bmax, distance=dist, lateral=float(dy[idx].mean()),
+                height_min=float(h[idx].min()), height_max=float(h[idx].max()),
+                intensity=float(intensity[idx].mean()) if intensity is not None else 0.0,
+                n_expected=n_exp, score=score, zone="gauge", n_gauge=n_vox, kind="low",
+            ))
+            continue
         if size.max() > cfg.max_extent or size[2] < cfg.min_height:
             continue
         dist = float(pts[:, 0].min())
@@ -155,24 +199,29 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
         # hanging entirely in the top zone (cables, lamps): advisory only
         if dist > axis_valid:
             reason = "beyond_axis"
+        elif height_valid is not None and dist > height_valid and (
+                size[2] < cfg.far_min_height or size[0] > cfg.far_max_length or float(h[idx].min()) > cfg.far_max_bottom):
+            reason = "beyond_height_ref"
         elif h_min > cfg.overhead_min_height:
             reason = "overhead"
         elif zone == "gauge":
             # v0.5 infrastructure signatures (measured on the organizer bags, EXPERIMENTS.md 1b)
             hh = h[idx]
             ady = np.abs(dy[idx])
-            if cfg.column_min_height > 0 and size[2] > cfg.column_min_height and size[1] < cfg.column_max_width:
+            off_centre = abs(lateral) > cfg.signature_min_lateral
+            if cfg.column_min_height > 0 and size[2] > cfg.column_min_height and size[1] < cfg.column_max_width \
+                    and (off_centre or size[1] >= cfg.column_min_width):
                 reason = "column"                  # column, post, gate leg: taller than any listed object, narrow
             elif cfg.elevated_min_height > 0 and h_min > cfg.elevated_min_height and size[1] > cfg.elevated_min_width:
                 reason = "elevated"                # beam / roof strip / gantry spanning the corridor above the rails
             elif cfg.floating_min_height > 0 and h_min > cfg.floating_min_height and size[2] < cfg.floating_max_height \
-                    and size[1] < cfg.floating_max_width:
+                    and size[1] < cfg.floating_max_width and off_centre:
                 reason = "floating"                # sign, lamp, bracket: small and not touching the ground
             elif cfg.edge_min_lateral > 0 and abs(lateral) > cfg.edge_min_lateral \
                     and size[0] > cfg.edge_min_aspect * max(float(size[1]), 0.05) and size[2] < cfg.edge_max_height:
                 reason = "edge"                    # duct / bench / platform-edge fragment along the corridor edge
-            elif cfg.wall_face_min_height > 0 and size[2] > cfg.wall_face_min_height and h_max > cfg.overhead_min_height:
-                low = hh < cfg.overhead_min_height
+            elif cfg.wall_face_min_height > 0 and size[2] > cfg.wall_face_min_height and h_max > cfg.wall_face_min_top:
+                low = hh < cfg.wall_face_min_top
                 if low.sum() >= 3 and ady[low].min() > cfg.wall_face_min_inner and ady[low].max() > cfg.wall_face_edge:
                     reason = "wall_face"           # wall / portal face pulled in by the axis: hugs the edge, centre clear
         if reason:
