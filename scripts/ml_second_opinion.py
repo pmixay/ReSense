@@ -21,12 +21,18 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("dataset")
     ap.add_argument("--out", default=None)
+    ap.add_argument("--drop", default="", help="comma-separated features to leave out (leakage checks: "
+                    "the injected objects' intensity and point budget come from the injector's model)")
     a = ap.parse_args()
     from sklearn.ensemble import HistGradientBoostingClassifier
     from sklearn.metrics import roc_auc_score
     z = np.load(a.dataset, allow_pickle=False)
     feats = [str(f) for f in z["features"]]
     Xn, gn, Xp, gp, kp, dp = z["X_neg"], z["g_neg"], z["X_pos"], z["g_pos"], z["k_pos"], z["d_pos"]
+    drop = [f for f in a.drop.split(",") if f]
+    keep = [i for i, f in enumerate(feats) if f not in drop]
+    feats = [feats[i] for i in keep]
+    Xn, Xp = Xn[:, keep], Xp[:, keep]
     ride = gn[gn >= 0]
     t_split = np.quantile(ride, 0.6) if ride.size else 0.0
     n_tr = (gn < 0) | (gn <= t_split)                 # the five bags + the first 60 % of the ride
@@ -42,7 +48,10 @@ def main():
     clf.fit(X_tr, y_tr, sample_weight=w)
     p = clf.predict_proba(X_te)[:, 1]
     auc = roc_auc_score(y_te, p)
-    out = {"features": feats, "train": {"neg": int(n_tr.sum()), "pos": int(p_tr.sum())},
+    from sklearn.inspection import permutation_importance
+    imp = permutation_importance(clf, X_te, y_te, scoring="roc_auc", n_repeats=5, random_state=0)
+    out = {"features": feats, "dropped": drop,
+           "importance_auc_drop": {f: round(float(v), 4) for f, v in sorted(zip(feats, imp.importances_mean), key=lambda t: -t[1])}, "train": {"neg": int(n_tr.sum()), "pos": int(p_tr.sum())},
            "test": {"neg": int((~n_tr).sum()), "pos": int((~p_tr).sum())}, "auc": round(float(auc), 4), "at_recall": {}}
     pp, pn = p[y_te == 1], p[y_te == 0]
     for rec in (0.99, 0.97, 0.95, 0.90):

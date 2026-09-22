@@ -37,6 +37,33 @@ def test_orientation_candidates_are_the_24_proper_rotations():
     assert len({tuple(R.ravel()) for R in c}) == 24
 
 
+def test_default_search_keeps_the_spin_axis_vertical():
+    """8 of the 24: upright or inverted, forward along any horizontal axis. The sideways ones let
+    a flat tunnel wall pass for the bed (real square-tunnel frames, EXPERIMENTS.md section 6)."""
+    c = orientation_candidates(keep_up_axis=True)
+    assert len(c) == 8 and np.allclose(c[0], np.eye(3))
+    assert all(abs(R[2, 2]) == 1.0 for R in c)
+    for M in (rot_x(np.pi), rot_z(np.pi / 2), rot_z(-np.pi / 2), rot_z(np.pi)):
+        assert any(np.allclose(R, M.T, atol=1e-9) for R in c)
+
+
+def test_sideways_mount_only_with_the_full_search(tunnel):
+    """A spinning LiDAR on its side is not searched by default (the mapping is kept and the
+    calibration reports it); with ``keep_up_axis: false`` the 24-candidate search finds it."""
+    frame, _, _ = tunnel
+    M = rot_x(np.pi / 2)
+    cfg = DetectorConfig()
+    cfg.calibration.max_frames = 12
+    det = Detector(cfg)
+    res = _run(det, _remount(frame, M), 14)
+    assert res.mount["orientation"] == "configured" and res.mount["status"] == "fallback", res.mount
+    cfg = DetectorConfig()
+    cfg.calibration.keep_up_axis = False
+    det = Detector(cfg)
+    res = _run(det, _remount(frame, M), 12)
+    assert _angle_deg(det.mount_rotation @ M) < 0.5, res.mount
+
+
 def _run(det: Detector, frame: Frame, n: int):
     res = None
     for k in range(n):

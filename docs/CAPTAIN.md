@@ -194,7 +194,7 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
 10. **What v0.6 changed** (ALGORITHM.md §2b, §3.3b, §3.3c, §4b): the organizers' envelope with a
     0.35 m advisory zone; a low-object stage at the rail heads; hanging cables no longer demoted
     as columns near the axis; a far-field rule for tall grounded objects to the trusted axis
-    range; **mount auto-calibration** (24 orientations from the rail pair, roll from the rail
+    range; **mount auto-calibration** (8 orientations with the spin axis vertical, from the rail pair; roll from the rail
     cant, pitch from the bed slope, yaw; launch arguments for a known mount); **production
     guards** (health monitor, `GO / CAUTION / STOP / FAULT` on `/resense/decision`, verified-clear
     distance, `DiagnosticArray`, watchdog, exception guard with detector reset).
@@ -204,7 +204,7 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
     moving ride (set F, §2d): person first confirmed at 165 m median on straight track,
     crate 127 m, trolley 121 m, cable 107 m; 79 m in R ≈ 350 m curves (sightline). The farthest
     return in all data is 208.5 m, so 300 m is out of the sensor's reach.
-12. **Tests**: 130 (the node's decision / fault / watchdog / mount-parameter logic now runs
+12. **Tests**: 132 (the node's decision / fault / watchdog / mount-parameter logic now runs
     against ROS stand-ins in `tests/test_node.py`, so a node bug no longer waits for the Docker
     job). Self-assessment per criterion: [`SCORECARD.md`](SCORECARD.md).
 

@@ -206,6 +206,7 @@ resense:
     frames: 5
     max_frames: 100
     search_orientations: true
+    keep_up_axis: true               # only the 8 orientations with the spin axis vertical (upright / inverted); false = all 24
     orientation_votes: 2
     min_rail_score: 0.05
     apply_min_deg: 0.3

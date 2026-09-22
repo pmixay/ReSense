@@ -48,13 +48,17 @@ sensor onto the vehicle frame; the calibrator checks and corrects that mapping f
 the first frames and hands the detector a rotation `R` (`p_processed = R · p_configured`):
 
 1. **orientation** — only if the configured mapping shows no rail pair ahead (or more far
-   returns behind than ahead), all 24 axis-aligned proper rotations are scored by the rail
+   returns behind than ahead), the 8 axis-aligned proper rotations that keep the spin axis
+   vertical (upright or inverted; `keep_up_axis`, all 24 when false) are scored by the rail
    pair they reveal: two ridges 1.59 m apart, 0.08–0.5 m above a bed that lies below the
    sensor, running along +X, with the tunnel visible ahead. A candidate is adopted when it wins
    on `orientation_votes` = 2 frames and the configured mapping never passed, so a platform or a
    switch (no rails) cannot flip the mount. Tested: upside down, `+x` forward (the ROS
-   convention), mounted backwards, `+x` forward and rolled 2° — all recovered to < 0.5°
-   (`tests/test_calibration.py`);
+   convention), mounted backwards, `+x` forward and rolled 2° — all recovered to < 0.5° on the
+   synthetic tunnel (`tests/test_calibration.py`) and to 0.0–0.8° of tilt on re-mounted real
+   frames of three recordings (EXPERIMENTS.md §6). The sideways candidates are off by default:
+   on the square tunnel a flat side wall with two cable trays passed for the bed (§6); a sensor
+   really mounted on its side must be configured;
 2. **roll** from the rail pair: the height difference of the two rail heads over their spacing
    (the gauge is defined in the rail plane, so this is the roll that matters);
 3. **pitch** from the slope of the bed fit at the vehicle (the train rides on the track, so the
@@ -488,6 +492,10 @@ v0.6 additions first; the v0.5 list follows.
   the far curvature follows. On the moving ride this made edge fixtures 30–65 m *beyond* an
   injected object alarm in 35 of 3 060 frames (EXPERIMENTS.md §2d) — while the object itself
   was confirmed, so the decision was unchanged. A bed bin should span the bed's width to count.
+* **A sensor mounted on its side** (spin axis horizontal) is not recognised: in a square
+  tunnel its "down" is a flat wall that passes for the bed, the configured mapping looks valid
+  and the detector alarms on the wall (EXPERIMENTS.md §6). Such a mount is set with
+  `sensor.forward/left/up`; every upright or inverted mount is found from the data.
 * **Mount calibration** needs a rail pair in the first 100 frames (a start inside a pressure gate
   or a switch cavern delays it) and corrects roll / pitch / yaw only as a whole-run constant;
   the cant of a curve is part of the rail plane and is not separated from the mount roll.

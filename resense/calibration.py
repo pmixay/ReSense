@@ -14,12 +14,18 @@ What is measured, and from what:
 
 1. **Orientation** (which signed sensor axis points forward / up): only when the configured
    mapping fails a sanity check on a frame (no rail pair in the near range, or fewer far
-   returns ahead than behind). Then all 24 axis-aligned proper rotations are tried and each
+   returns ahead than behind). Then the axis-aligned proper rotations are tried - the 8 that
+   keep the configured up axis vertical (upright or inverted: a spinning LiDAR's spin axis is
+   vertical in any real mount) or, with ``keep_up_axis: false``, all 24 - and each
    is scored by the rail pair it reveals: two parallel ridges 1.59 m apart, 0.08-0.5 m above a
    bed that lies below the sensor, running along +X, with the tunnel visible ahead. Nothing
    but a correctly oriented cloud shows that pattern. A new orientation is adopted only when
    the same candidate wins on ``orientation_votes`` frames and the configured one never
-   passed, so a platform or a switch (no rails) cannot flip the mount.
+   passed, so a platform or a switch (no rails) cannot flip the mount. (The sideways
+   candidates are off by default because a flat side wall of a square tunnel with two cable
+   trays on it passes for a bed with a rail pair: measured on ``roundT_squareT_pressureGate_squareT``.
+   For the same reason a sensor that *is* mounted on its side must be described by
+   ``sensor.forward/left/up``: the geometry alone cannot tell such a wall from the bed.)
 2. **Roll** from the rail pair: the two rail heads are at the same height in the track's own
    cross-section, so their height difference over the rail spacing is the sensor roll
    relative to the rail plane (which is what the clearance gauge is defined in).
@@ -50,8 +56,9 @@ from resense.config import CalibrationConfig, TrackConfig
 from resense.track import TrackModel, _fit_floor, default_track_model, estimate_rails
 
 
-def orientation_candidates() -> List[np.ndarray]:
-    """The 24 proper rotations that map sensor axes onto signed vehicle axes (identity first)."""
+def orientation_candidates(keep_up_axis: bool = False) -> List[np.ndarray]:
+    """The 24 proper rotations that map sensor axes onto signed vehicle axes (identity first);
+    with ``keep_up_axis`` only the 8 whose up row is the configured up axis (either sign)."""
     out = [np.eye(3)]
     for perm in itertools.permutations(range(3)):
         for signs in itertools.product((1.0, -1.0), repeat=3):
@@ -59,6 +66,8 @@ def orientation_candidates() -> List[np.ndarray]:
             for row, (col, s) in enumerate(zip(perm, signs)):
                 R[row, col] = s
             if abs(np.linalg.det(R) - 1.0) < 1e-9 and not np.allclose(R, np.eye(3)):
+                if keep_up_axis and abs(R[2, 2]) != 1.0:
+                    continue
                 out.append(R)
     return out
 
@@ -182,7 +191,7 @@ class MountCalibrator:
         self._frames = 0
         self._frozen = not cfg.enabled
         self._since_check = 0
-        self._candidates = orientation_candidates()
+        self._candidates = orientation_candidates(getattr(cfg, "keep_up_axis", True))
 
     # ------------------------------------------------------------------
     @property

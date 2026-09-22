@@ -41,7 +41,9 @@ approaching on straight track is first confirmed at **165 m median** (110–168 
 crate at 127 m, a trolley at 121 m (up to 198 m), a 3 cm hanging cable at 107 m; in R ≈ 350 m
 curves at the sightline (79 m). 300 m is beyond this sensor: the farthest return in all
 13 558 frames is 208.5 m. Other LiDAR mounts (upside down, `+x` forward, backwards, rolled /
-pitched) are recovered from the rails and the bed to < 0.5° (§6).
+pitched) are recovered from the rails and the bed: orientation found and tilt within 0.8° on
+re-mounted real frames of three recordings (§6). Clean timing: 42–58 ms mean, p95 52–69 ms per
+frame on every recording (4-core sandbox, pure Python, §3).
 The container chain (`docker build → run → bag play → result`) is verified in CI on a synthetic
 bag on every push. Self-assessment against every criterion: [`docs/SCORECARD.md`](docs/SCORECARD.md).
 

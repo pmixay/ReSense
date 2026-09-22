@@ -465,6 +465,32 @@ measured this round.
 
 ## 3. Timing (4-core sandbox, Python, every frame; the i7-9700E bench is still owed)
 
+**v0.6 (22.09, the idle sandbox, nothing else running; `resense bench --npy <recording>`,
+every frame, recordings back to back; the load of 1–3 is the bench's own BLAS threads).**
+`total` is the whole `Detector.process` — mount calibration, track model, corridor and the
+low-object stage, clustering, tracking, health:
+
+| recording (every frame) | **v0.6** mean / p95 / max | track / corridor / cluster means | v0.5 mean / p95 (below) |
+|---|---|---|---|
+| `roundT_doubleT` (189 k points, moving) | **45.3 / 55.9 / 93.4 ms** | 26.8 / 11.6 / 6.7 | 43.0 / 50.9 |
+| `doubleT_obstacle` (347 k points, 360°) | **57.9 / 69.1 / 109.6 ms** | 37.1 / 16.4 / 4.3 | 54.9 / 59.6 |
+| `doubleT_platform` | **42.2 / 52.5 / 100.7 ms** | 22.9 / 10.2 / 8.9 | 83.3 / 170.8 |
+| `roundT_pressureGate_roundT` | **43.0 / 52.8 / 86.7 ms** | 26.6 / 11.6 / 4.7 | 43.4 / 52.6 |
+| `roundT_squareT_pressureGate_squareT` | **43.4 / 53.1 / 84.6 ms** | 27.2 / 12.2 / 3.8 | 42.3 / 54.2 |
+| `squareT_platform_squareT_switch` | **43.4 / 52.2 / 81.2 ms** | 27.4 / 11.9 / 4.0 | 84.3 / 111.6 |
+| `new_data` frames 2550–3149 (files 50–61: approach, station, departure) | **44.0 / 58.1 / 91.4 ms** | 26.0 / 12.1 / 5.7 | — |
+
+p95 is inside the 100 ms frame period on **every** recording now, the platform bags included.
+The v0.6 additions cost 2–5 ms mean on the tunnel bags (the corridor stage, 7 → 12 ms, now
+holds the bed template and the low-object candidates; the calibration runs on the first
+frames only). The platform bags got twice as fast (83 → 42 ms mean, p95 171 → 53 ms): the
+2.1 m envelope keeps the platform edge out of the corridor, so DBSCAN no longer sees 15–20 k
+candidates per frame. The maxima (81–110 ms) are single frames (the cold first fit, the
+calibration frames). The ROS node adds decode (~5 ms) and publishing; the jury's i7-9700E (8
+faster cores) is not measured.
+
+**v0.5 (history).**
+
 Where the v0.5 time went before the cost work (cProfile over frames 100–114 of
 `roundT_doubleT`, load 4.6): the rail-slab profiles called `np.percentile` once per 5 cm bin
 (6 208 calls per 14 frames, 49 ms per frame), the bed height was evaluated six times per frame
@@ -558,3 +584,44 @@ on the bench.
   policy;
 - timing on the i7-9700E bench; Numba for the DBSCAN stage on the platform bags (15–20 k
   candidates per frame) if needed.
+
+## 6. Mount calibration on real frames (v0.6)
+
+`scripts/calib_check.py --npy <recording>`: frames 100–124 of a recording, re-mounted by known
+rotations (the cloud rotated as a sensor mounted that way would see it), a fresh detector
+over the 25 frames. The residual is measured against the correction found on the recording
+*as it is* — the rigs are tilted themselves (below), which is not an error — and split into
+tilt (roll + pitch) and yaw. Mount yaw below `calibration.min_yaw_deg` (3°) is left to the
+per-frame track model by design, so the 2° of the combined case stays in the yaw column.
+
+| re-mount | `roundT_doubleT` tilt / yaw residual | `roundT_squareT_pressureGate_squareT` | `doubleT_obstacle` (360°) |
+|---|---|---|---|
+| as recorded: the rig's own correction | roll −1.07°, pitch 0 | none (`identity`) | roll +3.35°, pitch −0.85° |
+| roll +3° | 0.76° / 0 | 0.18° / 0 | 0.35° / 0 |
+| pitch −4° | 0.41° / 0.10° | 0.19° / 0 | 0.22° / 0.25° |
+| roll −2°, pitch 3°, yaw 2° | 0.28° / 2.06° (by design) | 0.10° / 2.10° | 0.31° / 2.26° |
+| upside down | 0.69° / 0 — orientation found | 0.00° / 0 — found | 0.24° / 0 — found |
+| forward = `+x` (the ROS convention) | 0.69° / 0 — found | 0.00° / 0 — found | 0.24° / 0 — found |
+| mounted backwards | 0.69° / 0 — found | 0.00° / 0 — found | 0.24° / 0 — found |
+| on its side (spin axis horizontal) | **not supported**: 92° | **not supported**: 83° | **not supported**: 85° |
+
+Reading. (1) Every upright or inverted mount is found from the data on all three recordings;
+the tilt is recovered to 0.0–0.8° (median ~0.3°: 1 cm at the edge of the 1.05 m envelope,
+2–4 cm at its top corners). (2) The rigs are tilted: the `doubleT_obstacle` rig by 3.0–3.4°
+of roll (its right rail head is 8 cm above the left over 4–30 m of straight, stationary
+track), `roundT_doubleT` by −1.1°, `roundT_squareT_pressureGate_squareT` not at all — the
+correction is applied in each case. (3) The first version searched all 24 axis-aligned
+orientations: on `roundT_squareT_pressureGate_squareT` the upside-down, `+x`-forward and
+backwards mounts adopted "left = ±z" (83° off, status `ok`) — the flat side wall of the
+square tunnel with two cable trays on it passed for the bed with a rail pair and scored
+higher than the real track. A spinning LiDAR is mounted with its spin axis vertical, so the
+default search is now the 8 orientations that keep it vertical (`calibration.keep_up_axis`,
+`tests/test_calibration.py`). (4) The same wall is why a sensor that really is mounted on its
+side cannot be recognised from the geometry (the configured mapping "passes" on the wall and
+the detector then alarms): such a mount must be set with `sensor.forward/left/up` (launch
+arguments `sensor_forward` / `sensor_left` / `sensor_up`); ALGORITHM.md §6. (We tried the
+ring structure as a physical cue for the spin axis and dropped it: a real sensor always
+spins about its own z, so its rings say nothing about how it is mounted.) (5) The search
+costs 1–5 s once, over the first frames (the rows with a new orientation took 7–11 s for the
+25 frames against 5–6 s).
+
