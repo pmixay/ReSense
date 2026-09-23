@@ -1,7 +1,10 @@
 # Experiments log
 
-**v0.6 (22.09) headline numbers are in §0, §1d and §2d** (all 13 759 real frames; the moving-ride
-long-range set F). The v0.5 text below (§1–§5) is kept as the record of how we got there.
+**v0.6.1 (22–23.09) headline numbers are in §0, §1d and §2d** (all 13 759 real frames; the
+moving-ride long-range set F); raw summaries: [`experiments_v0.6.1_real_fullrate.json`](experiments_v0.6.1_real_fullrate.json)
+(every bag and the ride, with and without a given speed) and
+[`experiments_v0.6.1_setF.json`](experiments_v0.6.1_setF.json) (set F: shipped, far rule off,
+given speed, curves). The v0.5 text below (§1–§5) is kept as the record of how we got there.
 
 Headline numbers of v0.5 were for **v0.5 (real data, 2026-09-21, Sprint 2)**: every frame of the six
 organizer bags cached as `*.npy` (`scripts/cache_frames.py`, 2 488 frames), pure Python on the
@@ -74,7 +77,7 @@ five-bag column sums `doubleT_platform`, `roundT_doubleT`, `roundT_pressureGate_
 | **v0.6.1 (shipped)** | mount tilt over 20 s instead of 5 frames, median drift monitor (§6) — the detection logic of v0.6h | **104 / 30** | **289 / 82** | **58, first 11** | 27 |
 
 **The bed is full of objects.** v0.6a reported every bump more than 7 cm above the learned bed
-cross-section inside the envelope: 1 350 low-object events on the ride. The ones looked at
+cross-section inside the envelope: 1 350 of the ride's 1 482 events were low-object events. The ones looked at
 (`new_data_46` frames 26–39, a straight section at 20 m/s): 0.3 m wide, 5–12 cm tall bumps in the
 middle of the track approaching at the train's speed (train-control inductors, drain covers),
 0.6–1 m wide transverse ones (cable crossings), all with their top 15–30 cm *below the rail
@@ -85,11 +88,8 @@ reach the rail-head plane.
 **The rail area is full of objects too.** v0.6f let a cluster through when its top reached the
 rail head (candidates from 5 cm above the bed): 734 events on the ride, at \|lateral\| 0.5–0.9 m —
 the rails and just inside them (guard rails in curves, joints, fastenings), 3–43 m away, tops
-1–8 cm above the rail head (median 3 cm), excess over the bed 0.14 m median. The organizers'
-object on the rail of `doubleT_obstacle` has its top 4 cm (median) above its rail once the 3°
-roll of that mount is corrected (below) and an excess of 0.14–0.19 m: in one frame it is the
-same as those fixtures, and no single-frame threshold on height, width, excess or voxel count
-separates them (measured on 1 330 false clusters of 12 ride files vs 125 clusters of the
+1–8 cm above the rail head (median 3 cm), excess over the bed 0.14 m median; no single-frame
+threshold on height, width, excess or voxel count separates them (measured on 1 330 false clusters of 12 ride files vs 125 clusters of the
 object). v0.6f finds the object in 170 of 185 frames and would stop the train every 1.6 s.
 Shipped: every low candidate must be ≥ 3 cm above the rail head and the object must be seen in
 5 frames (the false clusters flicker for 2 frames median, 3 at the 90th percentile): 18 low
@@ -97,11 +97,23 @@ events on the ride, a 10 cm box lying on a rail head found at 10–25 m (synthet
 real object in 2–4 of the 126 frames after the person leaves it. `lowobj.min_point_top: -1` with
 `min_top: 0` restores the v0.6f behaviour for a line known to be clean.
 
+**Why the real object is missed — corrected 23.09** (a jury-style review questioned the height,
+and we re-measured it on the frames with the final v0.6.1 calibration): the object's top is
+**0.10–0.15 m (median 0.13 m) above the detector's rail-head plane** in the 111 frames after the
+person leaves — at the 0.12 m floor of the envelope, not "4–5 cm above its rail" as written here
+before (that figure was taken against the rail ridge, ~6 points at 56 m, and is not confirmed).
+What the pipeline produces at its position: **nothing in 99 of the 111 frames** — 0–3 points
+above the envelope floor, below the main stage's cluster minimum — and a 3-point low-object
+sliver 0.03–0.07 m high in 12 frames, too few hits to confirm. The object falls *between* the two
+stages; clustering an object that straddles the envelope floor as one object is the fix to try
+next (SCORECARD.md "What is left").
+
 **Mount roll changes what "on the rail" means.** The rail pair of `doubleT_obstacle` has its
 right head 8 cm above the left over 4–30 m on a straight, stationary track: that rig is rolled
 by 3.0–3.2°. Without the correction (v0.5) the object reads 0.15–0.2 m above the *mean* rail
-level and the corridor stage saw its top; with it, it is 5 cm above its own rail. The
-calibration is right (the gauge is defined in the rail plane) and costs this object; the
+level and the corridor stage saw its top; with it, it is 0.10–0.15 m above the rail-head plane,
+at the envelope floor, where it falls between the stages (above). The calibration is right (the
+gauge is defined in the rail plane); the
 organizers said the hidden data use the mount of the empty-tunnel rides, on which the
 calibration finds `roundT_doubleT` and `doubleT_platform` level within 0.5° (v0.6.1, §6; the −1.0…−1.6° v0.6 measured on `roundT_doubleT` was the 5-frame window).
 
@@ -538,7 +550,13 @@ holds the bed template and the low-object candidates; the calibration runs on th
 frames only). The platform bags got twice as fast (83 → 42 ms mean, p95 171 → 53 ms): the
 2.1 m envelope keeps the platform edge out of the corridor, so DBSCAN no longer sees 15–20 k
 candidates per frame. The maxima (81–110 ms) are single frames (the cold first fit, the
-calibration frames). The ROS node adds decode (~5 ms) and publishing; the jury's i7-9700E (8
+calibration frames).
+
+**CPU and memory** (23.09, the same machine, frames loaded one at a time, `Detector.process` only):
+`roundT_doubleT` 47 ms of CPU per frame, `doubleT_obstacle` 65 ms — **one core, 47–65 % of it at
+10 Hz** — and 160–180 MB resident. With the library defaults the BLAS threads of numpy kept 3.9
+cores busy on the 347 k-point frames (250 ms of CPU per frame) for no speed-up (64 vs 65 ms wall
+time); the image therefore sets `OMP_NUM_THREADS=OPENBLAS_NUM_THREADS=MKL_NUM_THREADS=1`. The ROS node adds decode (~5 ms) and publishing; the jury's i7-9700E (8
 faster cores) is not measured.
 
 **v0.5 (history).**

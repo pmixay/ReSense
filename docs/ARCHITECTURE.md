@@ -60,7 +60,7 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
 | `configs/default.yaml` | all detector parameters; copied over the ROS package copy at Docker build time, `scripts/sync_params.sh --check` in CI keeps the two identical |
 | `tests/` | pytest on a synthetic ray-cast tunnel (no dataset needed) |
 | `docs/` | organizers' materials, dataset and sensor notes, algorithm, evaluation protocol, research, plan, experiments, submission checklist, presentation notes |
-| `web/` | dashboard scaffold for the frontend member |
+| `web/` | the dashboard: replays a `results.jsonl` or shows the live node through rosbridge (`web/README.md`) |
 
 ## Data flow and formats
 
@@ -85,9 +85,10 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   `frames`, `dropped_frames` (estimated from gaps in the input stamps), `input_period_ms`.
 * Node runtime statistics (spec §8.3): `/resense/latency_ms` per frame (decode + detect +
   publish), `/resense/fps` and a log line with latency mean / p95 / max and dropped frames every
-  `stats_period` seconds. The input subscription is best-effort with a queue of 5, so if a frame
-  takes longer than the sensor period the following frames are dropped rather than queued: the
-  node always works on the freshest data and the drop count makes overload visible.
+  `stats_period` seconds. The input subscription is best-effort with a queue of one frame
+  (`input_queue_depth`), so if a frame takes longer than the sensor period the older frames are
+  dropped rather than queued: the node always works on the freshest data and the drop count makes
+  overload visible.
 * Ego speed for multi-frame accumulation: the node passes `Detector.process(frame, ego_speed=v)`
   the value of the `ego_speed_mps` parameter, else the latest `speed_topic` / `odom_topic`
   message younger than `speed_timeout`, else `None` (the detector estimates it itself); the
@@ -126,21 +127,21 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
 * **Persistence before alarm**: three consecutive frames (0.3 s) suppress single-frame noise; the
   cost is 0.3 s of latency — at 80 km/h that is 6.7 m of travel.
 
-## Real-time budget (v0.5, every frame of the real bags, quiet 4-core sandbox, Python)
+## Real-time budget (v0.6.1, every frame of the real bags, quiet 4-core sandbox, Python)
 
-| stage | `roundT_doubleT` (189 k pts) mean | `doubleT_obstacle` (347 k pts) mean |
+| stage | `roundT_doubleT` (189 k pts) mean | `doubleT_obstacle` (347 k pts, 360°) mean |
 |---|---|---|
-| track model (bed, rails, walls, verification) | 28.8 ms | 38.1 ms |
-| corridor mask | 6.7 ms | 11.5 ms |
-| voxel + DBSCAN + filters | 7.2 ms | 5.0 ms |
-| tracking | 0.3 ms | 0.4 ms |
-| **total** (mean / p95 / max) | **43.0 / 50.9 / 87.7 ms** | **54.9 / 59.6 / 79.7 ms** |
-| v0.3 code, same machine, back to back | 56.4 / 70.6 / 83.2 ms | 70.7 / 75.9 / 92.7 ms |
+| track model (bed, rails, walls, verification, calibration) | 26.8 ms | 37.1 ms |
+| corridor mask + low-object stage | 11.6 ms | 16.4 ms |
+| voxel + DBSCAN + filters | 6.7 ms | 4.3 ms |
+| tracking | 0.1 ms | 0.1 ms |
+| **total** (mean / p95 / max) | **45.3 / 55.9 / 93.4 ms** | **57.9 / 69.1 / 109.6 ms** |
 
-The frame period is 100 ms. The platform bags cost more (83–84 ms mean, p95 112–171 ms on this
-machine: tens of thousands of cluster candidates); the node drops frames rather than queueing
-there. The jury's i7-9700E (8 faster cores) has not been measured yet. Full table and stage
-attribution: EXPERIMENTS.md §3.
+The frame period is 100 ms; p95 is inside it on all six bags and on a station section of the
+ride (42–58 ms mean, p95 52–69 ms, EXPERIMENTS.md §3). **Resources:** one CPU core per stream
+(47–65 ms of CPU time per frame = 47–65 % of a core at 10 Hz with single-threaded BLAS, set in
+the image), about 160–180 MB resident, no GPU. The jury's i7-9700E (8 faster cores) has not been
+measured yet.
 
 ## Known limitations (see ALGORITHM.md §6 and EXPERIMENTS.md)
 

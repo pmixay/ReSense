@@ -36,9 +36,11 @@ resense info /data/for_hackathon/roundT_doubleT
 | `squareT_platform_squareT_switch` | 88.2 s | 877 | 6.6 GB | rectangular tunnel → platform (train stops) → switch |
 
 Total 2 488 frames / 250 s (plus the 11 271-frame extended recording, section "Extended
-dataset" below). **The only obstacle inside the clearance gauge in the six bags is
-the person crossing the track at 55–57 m in `doubleT_obstacle`** (frames 2–72; the labels are
-in `labels/doubleT_obstacle.json`); every alarm on the other five bags is a false alarm.
+dataset" below). **The obstacles inside the envelope in the six bags are in `doubleT_obstacle`:
+the person crossing the track at 55–57 m** (inside the 2.1 m envelope in frames 8–68) **and the
+object lying on the right rail next to it** (the organizers pointed it out in the Q&A session;
+both labelled in `labels/doubleT_obstacle.json`); every alarm on the other five bags is a false
+alarm.
 Organizers promised an extended dataset with obstacles — until then the positive examples at
 other ranges and for other objects come from `resense inject` (synthetic obstacles ray-cast
 into the real frames, see ARCHITECTURE.md and "Set S" below).

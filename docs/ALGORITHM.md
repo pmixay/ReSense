@@ -79,7 +79,7 @@ the same stretch of rail, so the median of 5 consecutive frames (v0.6) was off b
 1.6–2.2°: eight fresh detectors on the ride froze eight different "mount rolls" (−1.0…+1.6°)
 for one sensor, and the drift monitor then flagged half of the ride. Now: a **provisional**
 correction from the first `provisional_frames` = 5 observations, applied only for a clearly
-tilted rig (`provisional_min_deg` = 2.5°: the 3.3° of the `doubleT_obstacle` rig is corrected
+tilted rig (`provisional_min_deg` = 2.5°: the ~3° of the `doubleT_obstacle` rig is corrected
 after half a second as before); the **final** correction is the median of `frames` = 20
 observations taken every `obs_spacing` = 10 frames (20 s; p90 error 0.5° on the ride, max
 1.0°), applied above `apply_min_deg` = 0.5°, then frozen. Tilts above `max_tilt_deg` = 15° are
@@ -269,15 +269,21 @@ by design, because the train passes over them. The envelope of the train starts 
 head, so an object lying on the bed between the rails is below it. (b) Requiring only the
 cluster's *top* to reach the rail-head plane still left **~800 false events**: the rail area
 itself (guard rails in curves, joints, fastenings, check rails at switches) produces clusters
-whose top is 1–8 cm above the rail head — the same as the organizers' object lying on the rail
-of `doubleT_obstacle`, whose top is 4 cm (median) above its rail once the 3° roll of that mount
-is corrected, and whose excess over the bed (0.14–0.19 m) sits inside the false events'
-distribution too: in one frame the two are geometrically the same. (c) Requiring every
-candidate point to be ≥ 3 cm above the rail head leaves **2 false events on the 13 worst files
-of the ride** and still finds a 10 cm box lying on a rail head at 10–25 m (synthetic tunnel,
-`tests/test_envelope.py`); the real object of `doubleT_obstacle`, protruding ~5 cm, is then
-found in only 4 of the 126 frames after the person leaves it (126 of 126 with (b)). The default
-is (c): a safety function that stops the train every 1.5 s on a clean track is not usable;
+whose top is 1–8 cm above the rail head, and no single-frame threshold on height, width, excess
+or voxel count separates them from a small object. (c) Requiring every candidate point to be
+≥ 3 cm above the rail head leaves **2 false events on the 13 worst files of the ride** and still
+finds a 10 cm box lying on a rail head at 10–25 m (synthetic tunnel, `tests/test_envelope.py`).
+The default is (c): a safety function that stops the train every 1.5 s on a clean track is not
+usable. **The organizers' object lying on the rail of `doubleT_obstacle` falls between the two
+stages** (measured on 23.09 with the final calibration, 111 frames after the person leaves it):
+its top is 0.10–0.15 m (median 0.13 m) above the detector's rail-head plane — at the 0.12 m floor
+of the envelope — so the main stage gets 0–3 points above the floor (below its cluster minimum)
+and the low-object stage a 3-point sliver 0.03–0.07 m high in 12 of the 111 frames; neither
+confirms it, and it is reported in 27 of its 185 visible frames, mostly while the person stands
+next to it (126 of 126 with (b)). An object straddling the envelope floor should be clustered
+whole — the next fix (SCORECARD.md "What is left"). The earlier statement that it protrudes
+"~5 cm above its own rail" was taken against the rail ridge, which returns ~6 points at 56 m, and
+is not confirmed.
 `min_top: -1` and `min_point_top: -1` restore the bed-level policy for a line with a clean bed.
 
 Puddles in the trough (Q&A fact 17) return nothing or mirror images *below* the bed (negative
@@ -419,8 +425,8 @@ Cost of the rule: three frames of latency (0.3 s, 6.7 m at 80 km/h) for an objec
 suppressing single-frame noise; `confirm_time_s: 0.5` would make it five frames (0.5 s,
 11 m at 80 km/h). Persistence is applied before the alarm, not after, so the first alarm is
 already a confirmed object. On `doubleT_obstacle` the person enters the strict gauge at frame 2
-and is reported from frame 7 (v0.3: frame 9; the axis no longer jitters, so the zone history
-fills faster).
+and was reported from frame 7 in v0.5 (v0.3: frame 9); with the 2.1 m envelope of v0.6 it enters
+the envelope at frame 8 and is reported from frame 11 (EXPERIMENTS.md §0).
 
 ### 4b. Outputs for the train: decision, verified-clear distance, health — v0.6
 
@@ -465,13 +471,13 @@ the CLI and the ROS node. The ones that change behaviour visibly:
 | `track.axis_sides_max_disagreement`, `axis_disagree_range`, `axis_one_side_range` | 6.7e-4 m⁻¹, 60 m, 120 m | trusted range when the two boundaries disagree or only one is seen |
 | `track.floor_valid_margin` | 20 m (60 in v0.3) | how far beyond the fitted bed the height reference is trusted without verification |
 | `cluster.column_*`, `elevated_*`, `floating_*`, `edge_*`, `wall_face_*` | see §3.3 | infrastructure signatures (advisory only); 0 switches a rule off |
-| `gauge.edge_margin`, `edge_margin_per_100m` | 0, 0 | lateral margin inside the polygon edge required for the strict decision (option, EXPERIMENTS.md §1b) |
+| `gauge.edge_margin`, `edge_margin_per_100m` | 0, 0.15 m (v0.6; 0, 0 in v0.5) | lateral margin inside the polygon edge required for the strict decision (option, EXPERIMENTS.md §1b) |
 | `tracking.confirm_time_s`, `min_hit_fraction`, `zone_window`, `zone_min_fraction` | 0.3 s, 0.6, 10, 0.6 | persistence in seconds and over the track's history |
 | `accumulation.min_speed`, `tracks_min_speed` | 1 m/s, 1 m/s | no merging and no tracks-cue estimate for a stopped train |
 | `cluster.eps`, `cluster.range_scale`, `cluster.voxel` | 0.35 m, 40 m, 5 cm | cluster granularity vs range |
 | `cluster.min_points`, `cluster.min_points_far`, `cluster.far_range` | 5, 3, 100 m | sensitivity at range vs noise |
 | `cluster.hardware_*`, `cluster.thin_*`, `cluster.wall_*`, `cluster.linear_*` | see table above | infrastructure suppression; the `hardware` rule also hides objects below 35 cm on the sleepers |
-| `cluster.overhead_min_height` | 2.4 m | overhead fixtures are advisory only |
+| `cluster.overhead_min_height` | 3.0 m (v0.6: the envelope top; 2.4 m in v0.5) | overhead fixtures are advisory only |
 | `tracking.confirm_hits`, `tracking.conf_threshold` | 3, 0.6 | latency vs false alarms |
 | `tracking.ego_speed_max` | 25 m/s | association slack without odometry |
 | `track.floor_verify_tolerance`, `track.floor_verify_band` | 0.5 m, \|dy\| 1.6–3.5 m | how far the bed extrapolation is trusted beyond the fit: looser = longer corridor, more phantom objects where the bed bends |
@@ -496,7 +502,9 @@ v0.6 additions first; the v0.5 list follows.
   passes over every few tens of metres; it is reported only when it reaches the rail-head plane
   (e.g. lying on a rail) by ≥ 3 cm with several points. On a line with a clean bed,
   `lowobj.min_top: -1` with `min_point_top: -1` reports it. The organizers' object lying on the
-  rail of `doubleT_obstacle` protrudes ~5 cm and is reported in 4 of 126 frames by default.
+  rail of `doubleT_obstacle` straddles the envelope floor (top 0.10–0.15 m above the rail-head
+  plane) and falls between the main and the low-object stage: reported in 27 of its 185 visible
+  frames, 2–4 of the 126 after the person leaves it (§3.3b).
 * **A 10 cm object is resolved to ~20–25 m**: its face is one ring high beyond that
   (0.125° = 5 cm at 25 m) — the physical limit of the sensor's vertical resolution.
 * **Far field**: between the height reference and the axis range only tall, grounded, short
@@ -505,7 +513,7 @@ v0.6 additions first; the v0.5 list follows.
 * **An obstacle far ahead can extend the bed fit.** Beyond ~90 m the real bed stops
   returning; the base of an object standing there fills a bed bin and lengthens the fit, and
   the far curvature follows. On the moving ride this made edge fixtures 30–65 m *beyond* an
-  injected object alarm in 35 of 3 060 frames (EXPERIMENTS.md §2d) — while the object itself
+  injected object alarm in 19 of 3 060 frames (v0.6.1, EXPERIMENTS.md §2d) — while the object itself
   was confirmed, so the decision was unchanged. A bed bin should span the bed's width to count.
 * **A sensor mounted on its side** (spin axis horizontal) is not recognised: in a square
   tunnel its "down" is a flat wall that passes for the bed, the configured mapping looks valid

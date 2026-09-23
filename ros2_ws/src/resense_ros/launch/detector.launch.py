@@ -33,7 +33,7 @@ PARAMS = {
     "output_frame": ("", str, "frame_id of the published markers/detections; empty = the input's"),
     "stats_period": ("2.0", float, "s between fps / latency log lines"),
     "ego_speed_mps": ("-1.0", float, "train speed in m/s for multi-frame accumulation; < 0 = unknown "
-                                     "(speed_topic / odom_topic or the detector's own estimate)"),
+                                     "(speed_topic / odom_topic; none = single-frame path, no accumulation)"),
     "speed_topic": ("", str, "std_msgs/Float32 topic carrying the train speed in m/s (optional)"),
     "odom_topic": ("", str, "nav_msgs/Odometry topic; twist.linear.x is taken as the train speed (optional)"),
     "speed_timeout": ("1.0", float, "s after which a speed message no longer counts"),
@@ -53,6 +53,7 @@ PARAMS = {
     "input_switch_timeout": ("1.0", float, "s the active input topic must be silent before another topic is taken"),
     "new_input_gap": ("30.0", float, "s of forward header-stamp jump taken as a new recording (detector restarted)"),
     "hole_reset_gap": ("1.0", float, "s of forward header-stamp jump that resets the scene state (calibration kept)"),
+    "input_queue_depth": ("1", int, "frames the input subscription may hold; 1 = always process the newest frame"),
 }
 
 

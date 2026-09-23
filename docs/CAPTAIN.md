@@ -205,11 +205,11 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
     warning on 1.4 % of the frames after the calibration fix of v0.6.1 (42 % before it). Long range on the
     moving ride (set F, §2d, v0.6.1): person first confirmed at 150 m median on straight track,
     trolley 146 m, crate 111 m, cable 95 m; with a train speed 177 / 190 / 183 m and fewer ride false
-    alarms (274 / 75); 74–82 m in R ≈ 350 m curves (sightline). The farthest
+    alarms (274 / 75); in R ≈ 350 m curves 1 of 2 approaches detected, at 74–82 m (sightline). The farthest
     return in all data is 208.5 m, so 300 m is out of the sensor's reach.
-12. **Tests**: 138 (the node's decision / fault / watchdog / mount-parameter / input-switching
+12. **Tests**: 140 (the node's decision / fault / watchdog / mount-parameter / input-switching
     logic runs against ROS stand-ins in `tests/test_node.py`, so a node bug no longer waits for
-    the Docker job). Self-assessment per criterion: [`SCORECARD.md`](SCORECARD.md).
+    the Docker job). Criteria judgement and the remaining work: [`SCORECARD.md`](SCORECARD.md).
 13. **Written answers of the organizers (23.09)** to our questions 1, 2 and 6, recorded
     verbatim in [`organizers/answers.md`](organizers/answers.md) next to the Q&A-session answers
     ([`QUESTIONS.md`](QUESTIONS.md) now holds only the three questions still open): `new_data` has no obstacles; the control data

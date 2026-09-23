@@ -360,3 +360,26 @@ def test_discovery_keeps_looking_while_the_input_is_silent(node_cls, tunnel):
     node.on_discover()                                       # silent: the next bag may use another name
     assert "/new_lidar" in node.subs and "/resense/corridor_points" not in node.subs
 
+
+def test_status_marker_says_the_decision_and_publishing_errors_are_contained(node_cls, tunnel, box_scene):
+    node = node_cls()
+    _feed(node, tunnel[0].xyz, 4)
+    status = node.published["/resense/markers"][-1].markers[-1]
+    assert status.text.startswith("GO: path clear")
+    node = node_cls()
+    _feed(node, box_scene[0].xyz, 6)
+    assert node.published["/resense/markers"][-1].markers[-1].text.startswith("STOP: OBSTACLE")
+
+    def boom(*a, **k):
+        raise TypeError("not JSON serializable")
+    node.make_markers = boom                                  # a publishing failure (e.g. a bad value in the status)
+    frames = node.n_frames
+    _feed(node, box_scene[0].xyz, 1, t0=0.6)                  # must not raise out of the callback
+    assert node.n_frames == frames and node.published["/resense/decision"][-1].data == "FAULT"
+
+
+def test_input_queue_holds_only_the_newest_frame(node_cls):
+    assert node_cls().qos["depth"] == 1                       # a slow frame makes the node skip, never lag behind
+    _Node.overrides = {"input_queue_depth": 3}
+    assert node_cls().qos["depth"] == 3
+

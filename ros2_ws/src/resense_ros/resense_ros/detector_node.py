@@ -35,7 +35,8 @@ it).
 
 Ego speed (multi-frame accumulation needs it): the ``ego_speed_mps`` parameter wins when >= 0,
 else the latest value from ``speed_topic`` / ``odom_topic`` younger than ``speed_timeout``,
-else ``None`` and the detector falls back to its own estimate. The value is handed to
+else ``None``: the single-frame path (no accumulation; the LiDAR-only speed estimator is off
+by default, ``accumulation.estimate_speed``, EXPERIMENTS.md section 1b). The value is handed to
 ``Detector.process(frame, ego_speed=...)`` when the installed detector accepts it.
 
 Decision (v0.6, the organizers' "can we go / is there an obstacle / how far"): ``STOP`` when a
@@ -129,6 +130,8 @@ class DetectorNode(Node):
         self.declare_parameter("input_switch_timeout", 1.0)   # s the active topic must be silent before another one is taken
         self.declare_parameter("new_input_gap", 30.0)         # s of forward stamp jump that means a new recording (full reset)
         self.declare_parameter("hole_reset_gap", 1.0)         # s of forward stamp jump that resets the scene (calibration kept)
+        self.declare_parameter("input_queue_depth", 1)        # frames the input subscription may hold: 1 = always the newest,
+                                                              # a slow frame makes the node skip, never lag behind the sensor
 
         cfg_file = self.get_parameter("config_file").get_parameter_value().string_value
         self.cfg = DetectorConfig.from_yaml(cfg_file) if cfg_file else DetectorConfig()
@@ -149,7 +152,7 @@ class DetectorNode(Node):
             f"roll/pitch/yaw={self.cfg.sensor.roll_deg}/{self.cfg.sensor.pitch_deg}/{self.cfg.sensor.yaw_deg} deg; "
             f"auto-calibration {'on' if self.cfg.calibration.enabled else 'off'}")
 
-        # --- ego speed: parameter > topic > the detector's own estimate. The accumulation stage
+        # --- ego speed: parameter > topic > none (single-frame path). The accumulation stage
         # takes ``ego_speed`` as a keyword; a detector without it (older core) still works.
         self._process_takes_speed = "ego_speed" in inspect.signature(Detector.process).parameters
         self.speed_value = None        # m/s, latest topic value
@@ -167,7 +170,8 @@ class DetectorNode(Node):
                           if self.get_parameter("publish_tf").get_parameter_value().bool_value else None)
         self.tf_frames_sent = set()
 
-        self.qos = QoSProfile(depth=5, reliability=QoSReliabilityPolicy.BEST_EFFORT,
+        depth = max(1, self.get_parameter("input_queue_depth").get_parameter_value().integer_value)
+        self.qos = QoSProfile(depth=depth, reliability=QoSReliabilityPolicy.BEST_EFFORT,
                               history=QoSHistoryPolicy.KEEP_LAST)
         topic = self.get_parameter("input_topic").get_parameter_value().string_value
         self.subs = {}                 # topic -> Subscription (all kept: a later recording may use another name)
@@ -384,7 +388,11 @@ class DetectorNode(Node):
         if mount.get("status") and mount.get("status") != self.mount_logged:
             self.mount_logged = mount["status"]
             self.get_logger().info(f"mount calibration: {mount.get('status')} - {mount.get('message', '')}")
-        self.publish(msg.header, frame, res)
+        try:
+            self.publish(msg.header, frame, res)
+        except Exception as e:  # noqa: BLE001 - a publishing failure must not take the node down either
+            self.on_processing_error(msg.header, e)
+            return
         self.n_frames += 1
         self.win_frames += 1
         latency_ms = (time.perf_counter() - t0) * 1e3               # + publishing, goes to /resense/latency_ms
@@ -548,14 +556,19 @@ class DetectorNode(Node):
         status.pose.position.x, status.pose.position.y, status.pose.position.z = map(float, p_s)
         status.pose.orientation.w = 1.0
         status.scale.z = 1.2
+        decision = self.decision(res)             # the same word as /resense/decision
+        clear = float(getattr(res, "clear_distance", -1.0))
         if res.obstacle:
-            status.text = f"OBSTACLE  {res.nearest_distance:.1f} m"
+            status.text = f"STOP: OBSTACLE  {res.nearest_distance:.1f} m"
             status.color.r, status.color.g, status.color.b, status.color.a = 1.0, 0.1, 0.1, 1.0
-        elif res.warning:
-            status.text = "WARNING: object near gauge"
+        elif decision == "FAULT":
+            status.text = "FAULT: input not trusted"
+            status.color.r, status.color.g, status.color.b, status.color.a = 0.8, 0.2, 0.8, 1.0
+        elif decision == "CAUTION":
+            status.text = ("CAUTION: object near gauge" if res.warning else "CAUTION: degraded") + f"  clear {clear:.0f} m"
             status.color.r, status.color.g, status.color.b, status.color.a = 1.0, 0.6, 0.0, 1.0
         else:
-            status.text = "PATH CLEAR"
+            status.text = f"GO: path clear {clear:.0f} m"
             status.color.r, status.color.g, status.color.b, status.color.a = 0.2, 1.0, 0.3, 1.0
         arr.markers.append(status)
         return arr

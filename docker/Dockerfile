@@ -16,7 +16,12 @@ ARG WITH_TOOLS=0
 ENV DEBIAN_FRONTEND=noninteractive \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
-    PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1 \
+    OMP_NUM_THREADS=1 \
+    OPENBLAS_NUM_THREADS=1 \
+    MKL_NUM_THREADS=1
+# single-threaded BLAS: on the 347 k-point frames the library threads kept 3.9 cores busy for no
+# speed-up (65 vs 64 ms per frame, 1.0 core instead; EXPERIMENTS.md section 3)
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         python3-pip python3-numpy python3-yaml \

@@ -1,0 +1,17 @@
+# The image copies only pyproject.toml, README.md, resense/, configs/, tests/, scripts/,
+# ros2_ws/src/ and docker/entrypoint.sh (docker/Dockerfile); keep everything else out of the
+# build context (git history, videos, caches, local outputs and cached frames).
+.git
+.github
+docs
+web
+labels
+out
+data
+**/__pycache__
+**/*.pyc
+.pytest_cache
+*.egg-info
+**/*.npy
+**/*.db3
+**/*.mcap

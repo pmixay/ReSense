@@ -41,14 +41,14 @@ moving ride (objects ray-cast into consecutive real frames, no speed input, §2d
 approaching on straight track is first confirmed at **150 m median** (110–169 m, 6 of 6), a
 trolley at 146 m, a 1 m crate at 111 m, a 3 cm hanging cable at 95 m; with a train speed given
 (odometry or a speed topic: 5-frame accumulation) the person at **177 m** and the trolley at
-190 m (up to 205 m) — with fewer false alarms on the ride, not more; in R ≈ 350 m curves at the
-sightline (74–82 m). 300 m is beyond this sensor: the farthest return in all
+190 m (up to 205 m) — with fewer false alarms on the ride, not more; in R ≈ 350 m curves only 2 approaches were
+run and 1 of 2 was detected, at 74–82 m (the sightline). 300 m is beyond this sensor: the farthest return in all
 13 759 frames is 208.5 m. Other LiDAR mounts (upside down, `+x` forward, backwards, rolled /
 pitched) are recovered from the rails and the bed: orientation found and tilt within 0.5° on
 re-mounted real frames of three recordings (§6). Clean timing: 42–58 ms mean, p95 52–69 ms per
 frame on every recording (4-core sandbox, pure Python, §3).
 The container chain (`docker build → run → bag play → result`) is verified in CI on a synthetic
-bag on every push. Self-assessment against every criterion: [`docs/SCORECARD.md`](docs/SCORECARD.md).
+bag on every push. Judgement against every criterion (two independent reviews, 23.09: 6.4 / 10 indicative) and what is left: [`docs/SCORECARD.md`](docs/SCORECARD.md).
 
 ![doubleT_obstacle frame 30: the person crossing the track is reported at 55.7 m (red box); the track axis (green) and the side structures (advisory, blue)](docs/img/doubleT_obstacle_0030_v05.png)
 *Real data, v0.5: `doubleT_obstacle` frame 30, the person on the track at 55.7 m. Videos: [offline renders of the whole bag](docs/video/doubleT_obstacle_offline.mp4) (20 s) and [the dashboard replaying the same run](docs/video/dashboard_doubleT_obstacle.mp4).*
@@ -114,13 +114,13 @@ python scripts/mine_objects.py out/eval --bag new_data                  # every 
 ./scripts/run_headless.sh /data/for_hackathon/doubleT_obstacle   # same, no X11: prints the distance
 ./scripts/dry_run.sh /data/for_hackathon/doubleT_obstacle        # acceptance test, exits non-zero on failure
 WITH_TOOLS=1 ./scripts/build.sh                      # + rosbags / matplotlib / open3d / pytest inside the image
-docker run --rm resense python3 -m pytest -q /opt/resense/tests   # the test suite inside the image (CI does this)
+docker run --rm resense python3 -m pytest -q /opt/resense/tests   # the test suite inside the image (needs the WITH_TOOLS=1 image; CI does this)
 
 # or step by step
 docker run --rm -it --net=host --ipc=host -v /data/for_hackathon:/data resense \
     ros2 launch resense_ros detector.launch.py            # terminal 1: detector
 docker run --rm -it --net=host --ipc=host -v /data/for_hackathon:/data resense \
-    ros2 bag play /data/roundT_doubleT --clock            # terminal 2: playback
+    ros2 bag play /data/roundT_doubleT --clock --delay 3  # terminal 2: playback (--delay: DDS discovery first)
 ros2 topic echo /resense/nearest_distance                 # terminal 3 (any ROS 2 Humble host)
 ```
 
@@ -133,7 +133,8 @@ discovery completes: without it the first 1–3 s of a bag are lost), plus `publ
 `output_frame`, `stats_period`, `discover_period`. For multi-frame accumulation the node needs
 the train speed: `ego_speed_mps:=22.0`, or `speed_topic:=/vehicle/speed` (`std_msgs/Float32`,
 m/s), or `odom_topic:=/odom` (`nav_msgs/Odometry`, `twist.linear.x`); with none of them the
-detector uses its own estimate. `publish_tf:=true|false` and `tf_parent_frame:=resense_lidar`
+detector runs the single-frame path (no accumulation: the LiDAR-only speed estimator is off by
+default, EXPERIMENTS.md §1b). `publish_tf:=true|false` and `tf_parent_frame:=resense_lidar`
 control the static TF that lets one RViz / Foxglove layout serve every bag.
 
 **The bags disagree on the topic name and frame id** — `roundT_doubleT` and four more publish
@@ -169,7 +170,9 @@ ros2 bag play <bag>  ──PointCloud2 (either topic / frame pair), 10 Hz──�
    (the same image and command for every bag; mount / topic arguments are optional; `--ipc=host`
    lets Fast DDS use shared memory with a player on the same machine — without it the 5–8 MB
    point clouds may not arrive);
-2. play the bag from any console: `ros2 bag play <bag>` (or `ros2 launch … bag:=/data/<bag>` to
+2. play the bag from any console: `ros2 bag play <bag> --delay 3` (the delay lets DDS discovery
+   finish, otherwise the first 1–3 s of the bag are lost; same `ROS_DOMAIN_ID` as the node, default 0;
+   or `ros2 launch … bag:=/data/<bag>` to
    let the launch file play it inside the container; the image has the sqlite3 and mcap storage
    plugins, so the storage format does not matter);
 3. read the answer on the topics of "What to look at" above; `ros2 topic echo /resense/decision`.
@@ -310,7 +313,8 @@ and the bed in the first frames, reported in `/resense/status` → `mount`) — 
 `stale_timeout` (s without a frame before `FAULT`, default 0.5) and `max_consecutive_errors`
 (processing exceptions before the detector is reset, default 5); since v0.6.1 the **input
 handling** — `input_switch_timeout` (1 s), `new_input_gap` (30 s), `hole_reset_gap` (1 s), see
-"How a bag is processed". All of them are launch arguments too. Every `stats_period` seconds the node logs
+"How a bag is processed" — and `input_queue_depth` (1: the node always takes the newest frame and
+skips rather than lags behind the sensor). All of them are launch arguments too. Every `stats_period` seconds the node logs
 `fps`, latency mean / p95 / max, the measured input period and the number of frames the
 input queue dropped (estimated from gaps in the header stamps).
 

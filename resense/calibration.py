@@ -41,7 +41,7 @@ The tilt is measured in two stages, because on a moving train the per-frame roll
 10-90 % range -1.0 ... +0.7 deg, EXPERIMENTS.md section 6), and neighbouring frames see the same
 stretch of rail: a median of 5 consecutive frames is off by up to 1.6-2.2 deg there. A
 **provisional** correction from the first ``provisional_frames`` observations is applied only
-for a clearly tilted rig (``provisional_min_deg``, e.g. the 3.3 deg of the ``doubleT_obstacle``
+for a clearly tilted rig (``provisional_min_deg``, e.g. the ~3 deg of the ``doubleT_obstacle``
 rig); the **final** one is the median of ``frames`` observations taken every ``obs_spacing``
 frames (20 s at the defaults: p90 error 0.5 deg on the ride), applied above ``apply_min_deg``,
 and then frozen; the track model is re-seeded after every change. Afterwards the same
