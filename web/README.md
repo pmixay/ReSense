@@ -7,6 +7,7 @@ the scripts that verify the dashboard headlessly, and the video recipe.
 | file | what |
 |---|---|
 | [`index.html`](index.html) | Russian-language dashboard in the modular Moscow Transport visual style: banner, top-down view, decision/health, timeline, node stats, run summary and alarm log; live + offline replay + built-in demo; no build step |
+| [`assets/fonts/`](assets/fonts/) | local Montserrat variable font subsets (Cyrillic + Latin) and the OFL license; the dashboard typography works offline |
 | [`foxglove_layout.json`](foxglove_layout.json) | Foxglove Studio layout (3D + plots + indicator + status), see "Remote demo with Foxglove" |
 | [`demo/make_demo_run.py`](demo/make_demo_run.py) | synthetic approach sequence → `out/demo_run.jsonl` in the `resense run --out` format |
 | [`demo/check_dashboard.py`](demo/check_dashboard.py) | Playwright + headless Chromium: loads the JSONL into the dashboard, plays it, asserts the banner, screenshot / video |
@@ -27,7 +28,9 @@ the reference portal are bundled.*
 
 Open the file in a browser; nothing to install or build. The visible interface is entirely in
 Russian and follows the reference portal's light background, modular card floors, red primary
-actions, large status typography and responsive grid. Two modes use the same widgets:
+actions, large status typography and responsive grid. Montserrat is bundled locally. Cards,
+controls and active states use flat background colours without borders, outlines, glow or drop
+shadows. Two modes use the same widgets:
 
 * **Live**: enter the rosbridge URL (`ws://<host>:9090`, from
   `ros2 launch rosbridge_server rosbridge_websocket_launch.xml` on the machine running the
@@ -64,7 +67,7 @@ What is shown:
 
 Health warnings: latency above 100 ms (the 10 Hz period) and fps below 9 turn orange; when
 `dropped_frames` **grows** the node card flashes red for 3 s and the log gets a line, and it
-stays orange-bordered while the count is above zero.
+keeps a pale-yellow background while the count is above zero.
 
 ### Verify headlessly (Playwright)
 

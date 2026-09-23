@@ -20,6 +20,10 @@ RVIZ = os.path.join(ROOT, "ros2_ws", "src", "resense_ros", "rviz", "resense.rviz
 FOX = os.path.join(ROOT, "web", "foxglove_layout.json")
 LABEL_TOOL = os.path.join(ROOT, "web", "label_tool.html")
 PRESENTATION = os.path.join(ROOT, "docs", "presentation", "ReSense_LCT2026.pptx")
+MONTSERRAT = (
+    os.path.join(ROOT, "web", "assets", "fonts", "montserrat-cyrillic.woff2"),
+    os.path.join(ROOT, "web", "assets", "fonts", "montserrat-latin.woff2"),
+)
 RAW_TOPICS = ("/lidar_points", "/sensing/lidar/hesai128/pointcloud")
 
 
@@ -207,6 +211,20 @@ def test_dashboard_builtin_demo_and_summary():
         assert page.inner_text("#health") == "норма"
         assert page.is_enabled("#export-report")
         b.close()
+
+
+def test_dashboard_uses_flat_local_montserrat_visual_system():
+    """The jury UI stays usable offline and does not regress to outlined/glowing cards."""
+    html = open(os.path.join(ROOT, "web", "index.html"), encoding="utf-8").read()
+    compact = html.replace(" ", "")
+    assert "font-family:'Montserrat'" in compact
+    assert "box-shadow" not in html
+    assert "text-shadow" not in html
+    assert "outline:0" in compact
+    for width in range(1, 10):
+        assert f"border:{width}px" not in compact
+    for path in MONTSERRAT:
+        assert os.path.getsize(path) > 20_000
 
 
 def test_presentation_artifact_uses_the_organizers_slide_sequence():

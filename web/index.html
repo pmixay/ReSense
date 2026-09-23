@@ -6,33 +6,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#e21d36">
 <style>
+  @font-face { font-family:'Montserrat'; font-style:normal; font-weight:400 900; font-display:swap; src:url('assets/fonts/montserrat-cyrillic.woff2') format('woff2'); unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
+  @font-face { font-family:'Montserrat'; font-style:normal; font-weight:400 900; font-display:swap; src:url('assets/fonts/montserrat-latin.woff2') format('woff2'); unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
   :root {
-    --page:#f2f3f5; --paper:#fff; --ink:#101114; --muted:#686d75; --line:#dfe2e6;
+    --page:#e9ebee; --paper:#fff; --ink:#101114; --muted:#292c31;
     --red:#e21d36; --red-dark:#be1229; --cyan:#16a8c1; --blue:#0878d1;
-    --green:#13a957; --yellow:#ffbf19; --shadow:0 8px 28px rgba(20,29,39,.08);
+    --green:#13a957; --yellow:#ffbf19;
   }
   * { box-sizing:border-box; }
   html { scroll-behavior:smooth; }
-  body { margin:0; color:var(--ink); background:var(--page); font-family:Arial, Helvetica, sans-serif; font-size:15px; }
+  body { margin:0; color:var(--ink); background:var(--page); font-family:'Montserrat', Arial, sans-serif; font-size:15px; }
   button, input, select { font:inherit; }
-  button, .file-button { min-height:42px; border:0; border-radius:11px; padding:0 16px; display:inline-flex; align-items:center; justify-content:center; gap:8px; color:var(--ink); background:#edf0f2; font-weight:700; cursor:pointer; transition:transform .16s, background .16s, box-shadow .16s; }
+  button, .file-button { min-height:42px; border:0; border-radius:11px; padding:0 16px; display:inline-flex; align-items:center; justify-content:center; gap:8px; color:var(--ink); background:#e3e6e9; font-weight:700; cursor:pointer; transition:transform .16s, background .16s; }
   button:hover, .file-button:hover { transform:translateY(-1px); background:#e3e6e9; }
   button:disabled { opacity:.42; cursor:default; transform:none; }
-  button.primary { color:#fff; background:var(--red); box-shadow:0 5px 15px rgba(226,29,54,.2); }
+  button.primary { color:#fff; background:var(--red); }
   button.primary:hover { background:var(--red-dark); }
   button.secondary { color:var(--red); background:#fff0f2; }
-  button:focus-visible, input:focus-visible, select:focus-visible, .file-button:focus-within { outline:3px solid rgba(8,120,209,.28); outline-offset:2px; }
-  select, input[type=text] { min-height:42px; border:1px solid var(--line); border-radius:11px; padding:0 12px; color:var(--ink); background:var(--paper); }
+  button:focus-visible, input:focus-visible, select:focus-visible, .file-button:focus-within { outline:0; background:#d8e8f4; }
+  button.primary:focus-visible, .file-button:focus-within { background:var(--red-dark); }
+  select, input[type=text] { min-height:42px; border:0; border-radius:11px; padding:0 12px; color:var(--ink); background:#eceef0; }
   input[type=range] { width:170px; accent-color:var(--red); }
   input[type=checkbox] { width:18px; height:18px; accent-color:var(--red); }
   #file { position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; }
-  .site-header { background:var(--paper); border-bottom:1px solid var(--line); }
+  .site-header { background:var(--paper); }
   .header-inner { max-width:1600px; margin:auto; min-height:92px; padding:18px 28px; display:flex; align-items:center; gap:30px; }
   .brand { display:flex; align-items:center; gap:14px; min-width:max-content; }
-  .brand-mark { position:relative; width:52px; height:52px; border-radius:16px; background:var(--red); box-shadow:0 8px 20px rgba(226,29,54,.24); }
-  .brand-mark::before, .brand-mark::after { content:''; position:absolute; border:4px solid #fff; border-radius:50%; }
-  .brand-mark::before { width:8px; height:8px; left:11px; top:11px; box-shadow:18px 18px 0 -4px #fff; }
-  .brand-mark::after { width:22px; height:22px; left:15px; top:15px; border-width:0 0 4px 4px; border-radius:0 0 0 12px; transform:rotate(-12deg); }
+  .brand-mark { position:relative; width:52px; height:52px; border-radius:16px; background:var(--red); }
+  .brand-mark::before { content:'R'; position:absolute; inset:0; display:grid; place-items:center; color:#fff; font-size:27px; font-weight:900; }
   .brand h1 { margin:0; font-size:26px; line-height:1; letter-spacing:-.7px; }
   .brand p { margin:5px 0 0; color:var(--muted); font-size:13px; }
   .top-nav { display:flex; gap:22px; margin-left:auto; }
@@ -48,8 +49,8 @@
   .eyebrow { color:var(--red); font-size:12px; font-weight:800; letter-spacing:.11em; text-transform:uppercase; }
   .page-title { margin:7px 0 20px; font-size:clamp(30px,4vw,54px); line-height:.98; letter-spacing:-2px; max-width:900px; }
   .control-deck { display:grid; grid-template-columns:minmax(260px,.72fr) minmax(580px,1.7fr); gap:14px; margin-bottom:14px; }
-  .mode { min-width:0; padding:18px; border-radius:20px; background:var(--paper); box-shadow:var(--shadow); }
-  .mode.active { box-shadow:inset 0 0 0 2px var(--red), var(--shadow); }
+  .mode { min-width:0; padding:18px; border-radius:20px; background:var(--paper); }
+  .mode.active { background:#fff1f3; }
   .mode-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; }
   .mode .tag { font-size:17px; font-weight:800; }
   .mode .tag::before { content:''; display:inline-block; width:9px; height:9px; margin-right:8px; border-radius:50%; background:#b7bbc0; }
@@ -63,39 +64,39 @@
   .frame-state { min-width:95px; }
   .speed-label, .check-label { display:inline-flex; align-items:center; gap:7px; color:var(--muted); font-size:12px; }
   .speed-label select { min-height:36px; }
-  #banner { position:relative; overflow:hidden; min-height:170px; margin-bottom:14px; padding:28px 34px; border-radius:24px; color:#fff; font-size:clamp(38px,5vw,72px); font-weight:900; line-height:.95; letter-spacing:-2.5px; box-shadow:var(--shadow); }
-  #banner::after { content:''; position:absolute; width:360px; height:360px; right:-85px; top:-155px; border:34px solid rgba(255,255,255,.16); border-radius:50%; box-shadow:0 0 0 34px rgba(255,255,255,.08),0 0 0 68px rgba(255,255,255,.05); }
+  #banner { position:relative; overflow:hidden; min-height:170px; margin-bottom:14px; padding:28px 34px; border-radius:24px; color:#fff; font-size:clamp(38px,5vw,72px); font-weight:900; line-height:.95; letter-spacing:-2.5px; }
+  #banner::after { content:''; position:absolute; width:320px; height:320px; right:-70px; top:-145px; border-radius:50%; background:rgba(255,255,255,.1); }
   #banner.clear { background:var(--green); }
   #banner.warn { color:#18130a; background:var(--yellow); }
   #banner.bad { background:var(--red); }
   #banner small { display:block; position:relative; z-index:1; margin-top:16px; color:inherit; opacity:.76; font-size:14px; font-weight:600; letter-spacing:0; }
   main { display:grid; grid-template-columns:minmax(0,2fr) minmax(340px,.88fr); gap:14px; }
   .visual-column { min-width:0; }
-  .visual-card, .card { background:var(--paper); border-radius:20px; box-shadow:var(--shadow); }
+  .visual-card, .card { background:var(--paper); border-radius:20px; }
   .visual-card { padding:18px; margin-bottom:14px; }
   .canvas-tools { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-bottom:14px; }
   .canvas-tools h2 { margin:0 auto 0 0; font-size:22px; letter-spacing:-.5px; }
   .canvas-tools label { display:flex; align-items:center; gap:8px; color:var(--muted); font-size:12px; }
   .canvas-tools select { min-height:36px; }
-  canvas { width:100%; display:block; background:#f8f9fa; border:1px solid #e6e8eb; border-radius:14px; }
+  canvas { width:100%; display:block; background:#f3f4f5; border:0; border-radius:14px; }
   #timeline { margin-top:12px; }
   .side-column { display:grid; align-content:start; gap:14px; }
-  .card { padding:20px; transition:box-shadow .2s, transform .2s; }
+  .card { padding:20px; transition:background .2s; }
   .card h3 { display:flex; align-items:center; gap:8px; margin:0 0 15px; font-size:18px; letter-spacing:-.25px; }
   .card h3::before { content:''; width:10px; height:10px; border-radius:3px; background:var(--cyan); }
   #safety-card h3::before { background:var(--red); }
   #node-card h3::before { background:var(--blue); }
-  .card.alert { box-shadow:inset 0 0 0 2px var(--red), var(--shadow); }
-  .card.notice { box-shadow:inset 0 0 0 2px var(--yellow), var(--shadow); }
+  .card.alert { background:#fff0f2; }
+  .card.notice { background:#fff6dc; }
   .kv { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:9px 14px; font-size:14px; }
   .kv span:nth-child(odd) { color:var(--muted); }
   .kv b { text-align:right; }
   .kv b.bad { color:var(--red); } .kv b.warn { color:#9a6a00; }
   #health-msgs { margin-top:10px; }
-  #log { min-height:56px; max-height:230px; overflow:auto; white-space:pre-wrap; color:#35383d; font:12px/1.45 ui-monospace, SFMono-Regular, Consolas, monospace; }
-  .empty-log { color:var(--muted); font-family:Arial,Helvetica,sans-serif; white-space:normal; }
+  #log { min-height:56px; max-height:230px; overflow:auto; white-space:pre-wrap; color:#202226; font:500 12px/1.45 'Montserrat',Arial,sans-serif; }
+  .empty-log { color:var(--muted); font-family:'Montserrat',Arial,sans-serif; white-space:normal; }
   .shortcut { display:block; margin-top:7px; opacity:.75; }
-  #drop-overlay { display:none; position:fixed; inset:18px; z-index:20; place-items:center; border:4px dashed var(--red); border-radius:28px; background:rgba(255,255,255,.94); color:var(--red); font-size:26px; font-weight:800; pointer-events:none; }
+  #drop-overlay { display:none; position:fixed; inset:18px; z-index:20; place-items:center; border:0; border-radius:28px; background:rgba(226,29,54,.96); color:#fff; font-size:26px; font-weight:800; pointer-events:none; }
   body.dragging #drop-overlay { display:grid; }
   .site-footer { max-width:1600px; margin:0 auto; padding:0 28px 30px; color:var(--muted); font-size:12px; display:flex; justify-content:space-between; gap:20px; }
   @media (max-width:1180px) { .top-nav { display:none; } .control-deck { grid-template-columns:1fr; } main { grid-template-columns:1fr; } .side-column { grid-template-columns:repeat(2,minmax(0,1fr)); } }
@@ -116,7 +117,7 @@
   <section class="control-deck" aria-label="Источники данных">
     <div class="mode active" id="mode-live">
       <div class="mode-head"><span class="tag">Прямой эфир</span><span id="conn" class="status-line" role="status">Нет подключения</span></div>
-      <div class="mode-body"><label class="connection-field"><span class="status-line">rosbridge</span><input id="url" value="ws://localhost:9090" size="20" aria-label="Адрес rosbridge"></label><button id="connect" class="primary" type="button">Подключить</button></div>
+      <div class="mode-body"><label class="connection-field"><span class="status-line">rosbridge</span><input id="url" type="text" value="ws://localhost:9090" size="20" aria-label="Адрес rosbridge"></label><button id="connect" class="primary" type="button">Подключить</button></div>
     </div>
     <div class="mode" id="mode-replay">
       <div class="mode-head"><span class="tag">Запись</span><span id="frame-pos" class="status-line frame-state">Файл не выбран</span></div>
@@ -215,11 +216,11 @@ const state = {
 function drawTop(res) {
   const c = $('top'), ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
   const XMAX = +$('xmax').value, sx = c.width / XMAX, cy = c.height / 2, sy = 22;   // 22 px per metre lateral
-  ctx.strokeStyle = '#dfe2e6'; ctx.lineWidth = 1; ctx.font = '12px Arial';
+  ctx.strokeStyle = '#dfe2e6'; ctx.lineWidth = 1; ctx.font = '500 12px Montserrat';
   const step = XMAX > 150 ? 50 : 25;
   for (let x = 0; x <= XMAX; x += step) {
     ctx.beginPath(); ctx.moveTo(x * sx, 0); ctx.lineTo(x * sx, c.height); ctx.stroke();
-    ctx.fillStyle = '#70757d'; ctx.fillText(x + ' м', x * sx + 4, 14);
+    ctx.fillStyle = '#292c31'; ctx.fillText(x + ' м', x * sx + 4, 14);
   }
   for (const y of [-4, -2, 2, 4]) { ctx.beginPath(); ctx.moveTo(0, cy - y * sy); ctx.lineTo(c.width, cy - y * sy); ctx.stroke(); }
   const t = res.track || {}; const c0 = t.center || 0, yaw = t.yaw || 0, k = t.curvature || 0;
@@ -249,7 +250,7 @@ function box(ctx, d, sx, sy, cy, color, XMAX) {
   const w = Math.max(d.size[0], 1.5) * sx, h = Math.max(d.size[1], 0.6) * sy;
   const x = d.center[0] * sx, y = cy - d.center[1] * sy;
   ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.strokeRect(x - w / 2, y - h / 2, w, h);
-  ctx.fillStyle = color; ctx.font = 'bold 13px Arial';
+  ctx.fillStyle = color; ctx.font = '700 13px Montserrat';
   const label = `${d.distance.toFixed(1)} м  p=${d.confidence.toFixed(2)}`;
   const tw = ctx.measureText(label).width;
   ctx.fillText(label, Math.min(x + w / 2 + 4, ctx.canvas.width - tw - 4), y - h / 2 - 4);
@@ -263,8 +264,8 @@ function drawTimeline() {
   const c = $('timeline'), ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
   const now = timelineNow(), span = TIMELINE_SPAN, DMAX = 250, top = 6, bottom = c.height - 18, H = bottom - top;
   const yOf = d => bottom - Math.min(d, DMAX) / DMAX * H, xOf = t => c.width - (now - t) / span * c.width;
-  ctx.strokeStyle = '#dfe2e6'; ctx.font = '11px Arial';
-  for (const d of [50, 100, 150, 200]) { const y = yOf(d); ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(c.width, y); ctx.stroke(); ctx.fillStyle = '#70757d'; ctx.fillText(d + ' м', 4, y - 2); }
+  ctx.strokeStyle = '#dfe2e6'; ctx.font = '500 11px Montserrat';
+  for (const d of [50, 100, 150, 200]) { const y = yOf(d); ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(c.width, y); ctx.stroke(); ctx.fillStyle = '#292c31'; ctx.fillText(d + ' м', 4, y - 2); }
   // x-axis: wall clock in live mode, stamp relative to the first frame in replay
   const tick = 5, first = Math.floor((now - span) / tick) * tick;
   for (let t = first; t <= now; t += tick) {
@@ -272,9 +273,9 @@ function drawTimeline() {
     const x = xOf(t); ctx.beginPath(); ctx.moveTo(x, bottom); ctx.lineTo(x, bottom + 4); ctx.stroke();
     const rel = t - (state.t0 || 0);
     const label = state.mode === 'replay' ? ((rel >= 0 ? '+' : '−') + Math.abs(rel).toFixed(0) + ' с') : new Date(t * 1000).toLocaleTimeString('ru-RU');
-    ctx.fillStyle = '#70757d'; ctx.fillText(label, x + 3, c.height - 5);
+    ctx.fillStyle = '#292c31'; ctx.fillText(label, x + 3, c.height - 5);
   }
-  ctx.fillStyle = '#70757d'; ctx.textAlign = 'right';
+  ctx.fillStyle = '#292c31'; ctx.textAlign = 'right';
   ctx.fillText(state.mode === 'replay' ? 'дистанция до объекта · время записи' : 'дистанция до объекта · текущее время', c.width - 6, top + 10);
   ctx.textAlign = 'left';
   for (const h of state.hist) {
@@ -540,6 +541,10 @@ setInterval(() => { if (state.mode === 'live') drawTimeline(); }, 500);
 window.resense = { state, loadText, play, pause, step, seek, setMode, applyResult, summarizeFrames, demoFrames };
 
 drawTop({ track: { center: 0, yaw: 0, curvature: 0 }, detections: [], warnings: [] }); drawTimeline();
+if (document.fonts) document.fonts.ready.then(() => {
+  drawTop(state.last || { track: { center: 0, yaw: 0, curvature: 0 }, detections: [], warnings: [] });
+  drawTimeline();
+});
 </script>
 </body>
 </html>
