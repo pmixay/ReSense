@@ -73,7 +73,8 @@ a real run. Both scripts run from the repository root.
   depends on the bag's frame id (`hesai_lidar` in `roundT_doubleT`, `lidar_livox` in
   `doubleT_obstacle`, unknown in the control bag).
 * **Two raw-cloud displays**, `/lidar_points` and `/sensing/lidar/hesai128/pointcloud`, both
-  Best Effort / Keep Last / depth 5 (the bag publisher is best-effort): the one the bag carries
+  Reliable / Keep Last / depth 5 (`ros2 bag play` offers the recorded RELIABLE profile; a
+  best-effort display lost most of the 5–10 MB clouds, EXPERIMENTS.md §3b): the one the bag carries
   renders, the other stays grey with "No messages received". **A generic third display is not
   possible**: RViz2 subscribes to one literal topic name per display (no wildcard, regex or
   "first PointCloud2 topic" option), so a control bag with a third topic name needs either the
