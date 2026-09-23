@@ -284,7 +284,8 @@ class Detector:
                                  low=np.ones(int(low_c.sum()), dtype=bool), low_cfg=cfg.lowobj)
         if straddle_idx.size >= 3:
             si = straddle_idx
-            scfg = replace(cfg.lowobj, min_top=cfg.lowobj.straddle_min_top)
+            scfg = replace(cfg.lowobj, min_top=cfg.lowobj.straddle_min_top,
+                           min_width=cfg.lowobj.straddle_min_width, max_length=cfg.lowobj.straddle_max_length)
             straddling = find_clusters(xyz[si], frame.intensity[si], dy_all[si], h_all[si],
                                        np.ones(si.size, dtype=bool), lcfg, frame_idx=si, axis_valid=valid,
                                        low=np.ones(si.size, dtype=bool), low_cfg=scfg)

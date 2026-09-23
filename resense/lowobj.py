@@ -31,7 +31,11 @@ is the same every metre, so
    leaves it two points. ``low_candidates`` therefore also returns every bed anomaly without that
    rule; the detector clusters them together with the corridor points just above the floor and
    reports such a cluster only when its top reaches ``straddle_min_top`` (0.10 m) above the rail
-   head - above the 1-8 cm the rail fittings reach (EXPERIMENTS.md §1d).
+   head - above the 1-8 cm the rail fittings reach (EXPERIMENTS.md §1d) - and it is at least
+   ``straddle_min_width`` (0.35 m) wide across the track and at most ``straddle_max_length``
+   (0.8 m) long along it: the trackside devices beside the rails (train stops, lubricators,
+   signalling) reach 0.2-0.35 m but are mounted along the rail, 0.2-0.3 m across and 0.5-1.4 m
+   long; without this shape rule the path added 49 false events on the 20-minute ride.
 
 Where the bed is not observed (beyond ~50-80 m, grazing incidence) there is no local
 offset and nothing is reported: the stage's range is where the bed is seen. Puddles in the

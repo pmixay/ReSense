@@ -204,6 +204,8 @@ resense:
     straddle_enabled: true         # v0.6.2: objects straddling the envelope floor (an object lying across a rail)
     straddle_min_top: 0.10         # m above the rail head the top of such a cluster must reach (rail fittings reach 1-8 cm)
     straddle_band: 0.30            # m above the envelope floor from which corridor points join that clustering
+    straddle_min_width: 0.35       # m across the track (trackside devices beside a rail are narrow across it)
+    straddle_max_length: 0.8       # m along the track (an object lying across a rail is short along it)
   calibration:                     # v0.6: automatic mount calibration (resense/calibration.py)
     enabled: true
     frames: 20                       # v0.6.1: final tilt = median of 20 observations ...

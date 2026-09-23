@@ -245,6 +245,9 @@ class LowObjectConfig:
     straddle_enabled: bool = True      # v0.6.2: objects straddling the envelope floor (lowobj.py step 4)
     straddle_min_top: float = 0.10     # m above the rail head the top of such a cluster must reach (rail fittings reach 1-8 cm)
     straddle_band: float = 0.30        # m above the envelope floor from which corridor points join that clustering
+    straddle_min_width: float = 0.35   # m across the track: trackside devices beside a rail (train stops, lubricators,
+                                       # signalling) are mounted along it and narrow across it; an object lying across
+    straddle_max_length: float = 0.8   # m along the track      a rail is wide across it and short along it
 
 
 @dataclass
