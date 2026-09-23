@@ -74,6 +74,49 @@ def test_minimum_object_below_the_rail_head_is_a_policy(distance, lateral):
     assert abs(res.detections[0].distance - distance) < 0.6
 
 
+@pytest.mark.parametrize("distance,lateral", [(25.0, -0.8), (40.0, 0.8), (50.0, -0.8)])
+def test_object_lying_across_a_rail_is_found_whole(distance, lateral):
+    """v0.6.2: shaped like the organizers' object in ``doubleT_obstacle`` - standing on the bed
+    across a rail, its top 0.13 m above the rail head, most of it below the rail head. The
+    point-wise low stage sees only the slice between 3 cm and the 0.12 m envelope floor and the
+    corridor stage the top centimetre; the straddle clustering takes it whole."""
+    spec = ObstacleSpec(kind="box", size=(0.4, 0.6, 0.31), distance=distance, lateral=lateral, base_z=FLOOR_Z)
+    res = _run(_scene([spec]), n=8)
+    assert res.obstacle, [(c.kind, c.distance, c.size.round(2).tolist()) for c in res.candidates]
+    d = res.detections[0]
+    assert d.kind == "low" and abs(d.distance - distance) < 0.8 and abs(d.lateral - lateral) < 0.4
+
+
+def _sparse_object_across_a_rail(tunnel_frame: Frame, x0: float, top: float, seed: int = 0) -> Frame:
+    """The point layout measured on the organizers' object at 56 m (23.09, EXPERIMENTS.md §1d):
+    ~21 returns, 16 below 3 cm above the rail head, 2 between 3 cm and the 0.12 m envelope floor,
+    3 above the floor up to ``top``; lying across the right rail (the synthetic axis is at
+    y = 0.25, the rails at +-0.8 from it)."""
+    rng = np.random.default_rng(seed)
+    lo = 0.121 if top > 0.121 else top - 0.02          # a fitting that stays below the floor: its top 3 points
+    hs = np.concatenate([rng.uniform(-0.15, 0.02, 16), rng.uniform(0.03, min(0.10, top), 2), rng.uniform(lo, top, 3)])
+    n = hs.size
+    dy = np.concatenate([rng.uniform(-1.1, -0.88, n // 2), rng.uniform(-0.72, -0.5, n - n // 2)])
+    pts = np.stack([rng.uniform(x0, x0 + 0.4, n), 0.25 + dy, RAIL_HEAD_Z + hs], axis=1).astype(np.float32)
+    return Frame(xyz=np.concatenate([tunnel_frame.xyz, pts]),
+                 intensity=np.concatenate([tunnel_frame.intensity, np.full(n, 20.0, np.float32)]))
+
+
+def test_sparse_object_straddling_the_envelope_floor(tunnel):
+    """v0.6.2 regression: neither the point-wise low stage (2 points) nor the corridor stage
+    (3 points) confirms the real object's layout; the straddle clustering does, and a fitting of
+    the same layout whose top stays 6 cm above the rail head is not reported."""
+    frame, _, _ = tunnel
+    obj = _sparse_object_across_a_rail(frame, 45.0, top=0.135)
+    cfg = DetectorConfig()
+    cfg.lowobj.straddle_enabled = False
+    assert not _run(obj, 8, cfg).obstacle
+    res = _run(obj, 8)
+    assert res.obstacle and res.detections[0].kind == "low", [(c.kind, c.distance) for c in res.candidates]
+    assert abs(res.detections[0].distance - 45.0) < 0.8
+    assert not _run(_sparse_object_across_a_rail(frame, 45.0, top=0.06), 8).obstacle
+
+
 def test_low_object_stage_can_be_switched_off():
     spec = ObstacleSpec(kind="box", size=(0.3, 0.3, 0.1), distance=15.0, lateral=0.8, base_z=RAIL_HEAD_Z)
     assert _run(_scene([spec])).obstacle

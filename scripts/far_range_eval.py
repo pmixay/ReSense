@@ -20,6 +20,11 @@ the detector's model thinks it is.
 With ``--given-speed`` the train speed is handed to the detector, which then merges frames
 beyond ``accumulation.min_range`` (the multi-frame path; off without a speed).
 
+``sustained_m`` (v0.6.2) is the largest distance from which the object is detected in >= 90 %
+of the frames in which it returned a point, all the way in - the "reliable" range, next to
+``first_detection_m``, the first confirmed hit. ``--place rail`` lays the object on the rail head
+(the organizers' 30 x 30 x 10 cm criterion) instead of standing it on the bed.
+
 For each sequence a fresh detector runs over the frames; a frame counts as a hit when a
 confirmed gauge detection lies within ``max(2 m, 3 %)`` of the object's distance and 1.2 m
 laterally. Reported: first confirmed detection distance per object, recall per range bin over
@@ -70,8 +75,21 @@ def vault_drift(xyz, track, x0=40.0, x1=230.0, step=10.0):
     return lambda x: k * np.maximum(np.asarray(x, dtype=float) - 40.0, 0.0)
 
 
+def sustained_range(rows, frac: float = 0.9, min_frames: int = 5):
+    """The largest distance D from which the object is detected in >= ``frac`` of the frames
+    in which it returned a point, all the way in (d <= D); None if never."""
+    vis = [r for r in rows if r["n"] > 0]
+    best = None
+    for r in vis:
+        D = r["d"]
+        sub = [x["hit"] for x in vis if x["d"] <= D]
+        if len(sub) >= min_frames and np.mean(sub) >= frac:
+            best = D if best is None else max(best, D)
+    return best
+
+
 def run_sequence(job):
-    (files, stamps, speeds, kind, d0, lateral, refl, seed, cfg_dict, far_min_height, given_speed) = job
+    (files, stamps, speeds, kind, d0, lateral, refl, seed, cfg_dict, far_min_height, given_speed, place) = job
     sys.path.insert(0, os.getcwd())
     from resense.config import DetectorConfig
     from resense.detector import Detector
@@ -103,7 +121,11 @@ def run_sequence(job):
         tm = estimate_track(fr.xyz, cfg.track, prev=det.track)
         spec = catalogue_spec(kind, d, lateral, reflectivity=refl)
         x = d + spec.size[0] / 2
-        if spec.base is None:
+        if spec.base is None and place == "rail":
+            # lying on the rail head (the organizers' 30 x 30 x 10 cm criterion on a rail)
+            zb = float(tm.rail_z(x)) + (float(vault_drift(fr.xyz, tm)(x)) if x > 60.0 else 0.0)
+            spec = replace(spec, base_z=zb)
+        elif spec.base is None:
             zb = local_bed_z(fr.xyz, tm, x, lateral)
             if zb is None:
                 zb = float(tm.rail_z(x)) - 0.25 + float(vault_drift(fr.xyz, tm)(x))
@@ -142,6 +164,8 @@ def main():
     ap.add_argument("--far-min-height", type=float, default=None, help="override cluster.far_min_height")
     ap.add_argument("--given-speed", action="store_true",
                     help="hand the ride's train speed to the detector (enables multi-frame accumulation)")
+    ap.add_argument("--place", choices=("bed", "rail"), default="bed",
+                    help="bed: standing on the bed measured under it (default); rail: lying on the rail head")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--jobs", type=int, default=4)
     ap.add_argument("--out", required=True)
@@ -167,7 +191,7 @@ def main():
         for kind in a.kinds.split(","):
             refl = float(rng.uniform(*OBJECT_CATALOGUE[kind].reflectivity))
             jobs.append((files, stamps, speeds, kind, a.start, float(rng.uniform(lo, hi)), refl,
-                         int(rng.integers(1 << 30)), cfg_dict, a.far_min_height, a.given_speed))
+                         int(rng.integers(1 << 30)), cfg_dict, a.far_min_height, a.given_speed, a.place))
     t0 = time.time()
     with ProcessPoolExecutor(max_workers=a.jobs) as ex:
         out = list(ex.map(run_sequence, jobs))
@@ -180,7 +204,10 @@ def main():
         for lo_b, hi_b in BINS:
             vis = [r for o in seqs for r in o["rows"] if lo_b <= r["d"] < hi_b and r["n"] > 0]
             bins[f"{lo_b}-{hi_b}"] = [sum(r["hit"] for r in vis), len(vis)]
+        sus = [s for s in (sustained_range(o["rows"]) for o in seqs) if s is not None]
         summ["per_kind"][kind] = {"sequences": len(seqs), "detected": len(firsts),
+                                  "sustained_m": sorted(round(v, 1) for v in sus),
+                                  "sustained_median": round(float(np.median(sus)), 1) if sus else None,
                                   "first_detection_m": sorted(round(v, 1) for v in firsts),
                                   "first_detection_median": round(float(np.median(firsts)), 1) if firsts else None,
                                   "recall_by_bin": bins, "false_detections": sum(o["fp"] for o in seqs)}

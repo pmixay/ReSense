@@ -20,6 +20,12 @@ from resense.track import TrackModel, estimate_track
 from resense.tracking import Tracker
 
 
+def _overlap(a: Cluster, b: Cluster, margin: float = 0.3) -> bool:
+    """Two clusters of the same object: their along-track extents and lateral widths overlap."""
+    return (b.bbox_min[0] - margin < a.bbox_max[0] and b.bbox_max[0] + margin > a.bbox_min[0]
+            and abs(b.lateral - a.lateral) < 0.5 * float(a.size[1] + b.size[1]) + margin)
+
+
 @dataclass
 class Detection:
     id: int
@@ -191,14 +197,23 @@ class Detector:
         #     below the polygon bottom, where the bed is observed (resense/lowobj.py)
         low_flag = np.zeros(idx.size, dtype=bool)
         self.low_range = 0.0
+        straddle_idx = np.zeros(0, dtype=np.int64)
         if cfg.lowobj.enabled:
             X_all = xyz[:, 0]
             if self.track.rail_score >= cfg.track.rails_min_score:
                 self.bed.update(X_all, dy_all, h_all)
             h_bottom = float(np.asarray(cfg.gauge.profile, dtype=np.float64)[:, 1].min())
-            lidx, self.low_range = low_candidates(X_all, dy_all, h_all, self.bed, cfg.lowobj,
-                                                  cfg.gauge.range_min, min(axis_valid, floor_valid), h_bottom)
+            lidx, self.low_range, lall = low_candidates(X_all, dy_all, h_all, self.bed, cfg.lowobj,
+                                                        cfg.gauge.range_min, min(axis_valid, floor_valid),
+                                                        h_bottom, with_all=True)
             lidx = lidx[~mask[lidx]] if lidx.size else lidx
+            if cfg.lowobj.straddle_enabled and lall.size:
+                # (v0.6.2) every bed anomaly plus the corridor points just above the envelope floor,
+                # where the bed is observed: an object lying across a rail is clustered whole
+                ch = h_all[idx]
+                band = ((ch < h_bottom + cfg.lowobj.straddle_band) & (X_all[idx] < self.low_range)
+                        & (np.abs(dy_all[idx]) <= cfg.lowobj.half_width))
+                straddle_idx = np.unique(np.concatenate([lall[~mask[lall]], idx[band]]))
             if lidx.size:
                 idx = np.concatenate([idx, lidx])
                 cand = xyz[idx]
@@ -258,13 +273,24 @@ class Detector:
                                  min_points_factor=factor, factor_range=acc.min_range,
                                  smear_max_length=acc.smear_max_length if n_acc > 1 else 0.0,
                                  smear_max_width=acc.smear_max_width if n_acc > 1 else 0.0)
+        lows: List[Cluster] = []
+        straddling: List[Cluster] = []
+        lcfg = replace(cfg.cluster, eps=cfg.lowobj.eps)
         if low_c.any():
             # low candidates are clustered on their own with a tighter radius: at 50 m the corridor
             # radius (0.8 m) merges a 30 cm object with the bed fixtures around it (v0.6 review)
-            lcfg = replace(cfg.cluster, eps=cfg.lowobj.eps)
             lows = find_clusters(xyz_c[low_c], i_c[low_c], dy_c[low_c], h_c[low_c], g_c[low_c], lcfg,
                                  frame_idx=fidx[low_c], axis_valid=valid,
                                  low=np.ones(int(low_c.sum()), dtype=bool), low_cfg=cfg.lowobj)
+        if straddle_idx.size >= 3:
+            si = straddle_idx
+            scfg = replace(cfg.lowobj, min_top=cfg.lowobj.straddle_min_top)
+            straddling = find_clusters(xyz[si], frame.intensity[si], dy_all[si], h_all[si],
+                                       np.ones(si.size, dtype=bool), lcfg, frame_idx=si, axis_valid=valid,
+                                       low=np.ones(si.size, dtype=bool), low_cfg=scfg)
+            # a straddling cluster is the whole of what the point-wise low stage saw a slice of
+            lows = [c for c in lows if not any(_overlap(c, k) for k in straddling)] + straddling
+        if lows:
             # the foot of something taller (a sign, a column, a person) belongs to the corridor stage,
             # which may have demoted it: drop low clusters with corridor points high above them
             Xc, dyc, hc = xyz_c[corr, 0], dy_c[corr], h_c[corr]
@@ -277,9 +303,10 @@ class Detector:
                 if int(m.sum()) >= 3:
                     continue
                 # the lower part of an object the corridor stage already reports: one detection, not two
-                dup = any(k.bbox_min[0] - 0.3 < c.bbox_max[0] and k.bbox_max[0] + 0.3 > c.bbox_min[0]
-                          and abs(k.lateral - c.lateral) < 0.5 * float(k.size[1] + c.size[1]) + 0.3
-                          for k in clusters)
+                # (a straddling cluster yields only to a corridor cluster that is itself reported)
+                strad = any(c is k for k in straddling)
+                dup = any(_overlap(c, k) for k in clusters
+                          if not strad or (k.zone == "gauge" and not k.reason))
                 if not dup:
                     keep.append(c)
             clusters = sorted(clusters + keep, key=lambda c: c.distance)

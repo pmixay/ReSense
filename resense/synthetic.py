@@ -90,6 +90,10 @@ OBJECT_CATALOGUE = {
     "box0.3":   CatalogueEntry("box", (0.3, 0.3, 0.3), (20, 60), "300 mm cube"),
     "cable":    CatalogueEntry("cable", (0.03, 0.03, 3.5), (10, 40), "broken cable hanging from the vault into the envelope, lower end 1.0 m above the rail head", base=1.0),
     "cable_low": CatalogueEntry("cable", (0.03, 0.03, 4.3), (10, 40), "cable hanging down to 0.2 m above the rail head", base=0.2),
+    # v0.6.2, from the criteria review: an animal-sized object and one shaped like the organizers'
+    # object lying across a rail (place it at lateral +-0.8 on the bed)
+    "dog":      CatalogueEntry("box", (0.6, 0.3, 0.45), (10, 40), "dog-sized: 0.6 long x 0.3 wide x 0.45 m tall, standing on the bed"),
+    "railobj":  CatalogueEntry("box", (0.4, 0.6, 0.31), (15, 40), "like the organizers' object: across a rail, top ~0.13 m above the rail head"),
 }
 
 

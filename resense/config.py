@@ -242,6 +242,9 @@ class LowObjectConfig:
     max_length: float = 1.5            # m along the track (rails, guard rails, cables and ducts are longer)
     max_width: float = 1.6             # m
     min_width: float = 0.15            # m, a low cluster narrower than this across the track is a rail-head sliver / fastening
+    straddle_enabled: bool = True      # v0.6.2: objects straddling the envelope floor (lowobj.py step 4)
+    straddle_min_top: float = 0.10     # m above the rail head the top of such a cluster must reach (rail fittings reach 1-8 cm)
+    straddle_band: float = 0.30        # m above the envelope floor from which corridor points join that clustering
 
 
 @dataclass

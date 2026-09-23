@@ -201,6 +201,9 @@ resense:
     max_length: 1.5
     max_width: 1.6
     min_width: 0.15                # a low cluster narrower than this across the track is a rail sliver / fastening
+    straddle_enabled: true         # v0.6.2: objects straddling the envelope floor (an object lying across a rail)
+    straddle_min_top: 0.10         # m above the rail head the top of such a cluster must reach (rail fittings reach 1-8 cm)
+    straddle_band: 0.30            # m above the envelope floor from which corridor points join that clustering
   calibration:                     # v0.6: automatic mount calibration (resense/calibration.py)
     enabled: true
     frames: 20                       # v0.6.1: final tilt = median of 20 observations ...

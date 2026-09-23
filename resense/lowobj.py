@@ -23,6 +23,16 @@ is the same every metre, so
    the rail-head plane** (its highest point at least ``min_top`` above the rail head): the bed
    carries fixtures of the same size that stay below the rail head by design.
 
+4. (v0.6.2) **objects straddling the envelope floor**: an object lying across a rail can have
+   most of its points below the rail head and only its top above the envelope floor (the
+   organizers' object in ``doubleT_obstacle``: ~21 points at 56 m, ~16 of them below the rail
+   head, ~3 above the 0.12 m floor, top 0.10-0.15 m above the rail head). The rule of step 3 that
+   every candidate be ``min_point_top`` above the rail head (it keeps the rail fittings out)
+   leaves it two points. ``low_candidates`` therefore also returns every bed anomaly without that
+   rule; the detector clusters them together with the corridor points just above the floor and
+   reports such a cluster only when its top reaches ``straddle_min_top`` (0.10 m) above the rail
+   head - above the 1-8 cm the rail fittings reach (EXPERIMENTS.md §1d).
+
 Where the bed is not observed (beyond ~50-80 m, grazing incidence) there is no local
 offset and nothing is reported: the stage's range is where the bed is seen. Puddles in the
 trough return nothing or mirror images *below* the bed (negative residuals): they are
@@ -81,15 +91,17 @@ class BedTemplate:
 
 def low_candidates(X: np.ndarray, dy: np.ndarray, h: np.ndarray, template: BedTemplate,
                    cfg: LowObjectConfig, range_min: float, x_limit: float,
-                   h_bottom: float) -> Tuple[np.ndarray, float]:
-    """(indices of low candidates, range up to which the bed was observed)."""
+                   h_bottom: float, with_all: bool = False):
+    """(indices of low candidates, range up to which the bed was observed); with ``with_all``
+    also the indices of every bed anomaly before the ``min_point_top`` rule (step 4)."""
+    empty = np.zeros(0, dtype=np.int64)
     if template.prof is None:
-        return np.zeros(0, dtype=np.int64), 0.0
+        return (empty, 0.0, empty) if with_all else (empty, 0.0)
     x1 = min(cfg.range_max, x_limit)
     band = (X >= range_min) & (X < x1) & (np.abs(dy) <= cfg.half_width) & (h < h_bottom) & (h > -1.2)
     idx = np.flatnonzero(band)
     if idx.size == 0:
-        return idx, 0.0
+        return (idx, 0.0, idx) if with_all else (idx, 0.0)
     res = h[idx] - template(dy[idx])
     edges = np.arange(range_min, x1 + cfg.local_bin, cfg.local_bin)
     nb = edges.size - 1
@@ -98,14 +110,15 @@ def low_candidates(X: np.ndarray, dy: np.ndarray, h: np.ndarray, template: BedTe
     off, cnt = bin_percentile(res[bed].astype(np.float64), b[bed], nb, 50.0, cfg.local_min_points)
     seen = np.isfinite(off)
     if not seen.any():
-        return np.zeros(0, dtype=np.int64), 0.0
+        return (empty, 0.0, empty) if with_all else (empty, 0.0)
     # the bed is "observed" up to the last bin with bed returns (gaps of a few bins are bridged)
     last = int(np.flatnonzero(seen)[-1])
     x_seen = float(edges[last + 1])
     centres = 0.5 * (edges[:-1] + edges[1:])
     off = np.interp(centres, centres[seen], off[seen])
     r = res - off[b]
-    keep = (r > cfg.min_excess) & (r < cfg.max_excess) & (X[idx] < x_seen)
+    anomaly = (r > cfg.min_excess) & (r < cfg.max_excess) & (X[idx] < x_seen)
+    keep = anomaly.copy()
     if cfg.min_point_top > -1.0:
         keep &= h[idx] > cfg.min_point_top
-    return idx[keep], x_seen
+    return (idx[keep], x_seen, idx[anomaly]) if with_all else (idx[keep], x_seen)
