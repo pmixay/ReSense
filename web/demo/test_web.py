@@ -150,7 +150,7 @@ def test_dashboard_replays_jsonl_in_chromium(tiny_run, tmp_path):
     r = check_dashboard.check(out, shot, None, speed=10.0, min_dist=40.0, max_dist=72.0, timeout_s=60.0)
     assert r["ok"], r["errors"]
     assert r["frames"] == 14
-    assert r["observed"][0][1].startswith("PATH CLEAR")
+    assert r["observed"][0][1].startswith("ПУТЬ СВОБОДЕН")
     assert r["nearest_min_m"] is not None and 40.0 <= r["nearest_min_m"] <= 72.0
     assert os.path.getsize(shot) > 10_000
     assert not r["errors"]
@@ -176,7 +176,7 @@ def test_dashboard_rejects_garbage_lines(tmp_path):
         page.wait_for_function("window.resense !== undefined")
         n = page.evaluate("window.resense.loadText(%s, 'x.jsonl')" % json.dumps(text))
         assert n == 1
-        assert check_dashboard.banner_text(page) == "OBSTACLE  55.6 m"
+        assert check_dashboard.banner_text(page) == "ПРЕПЯТСТВИЕ  55.6 м"
         assert page.inner_text("#n-dropped").startswith("2")       # node stats are shown when present
         assert "notice" in page.get_attribute("#node-card", "class")
         b.close()
@@ -202,9 +202,9 @@ def test_dashboard_builtin_demo_and_summary():
             "nearest_m": pytest.approx(40.0), "max_detect_ms": 49,
         }
         assert page.inner_text("#s-alarms") == "1 / 36"
-        assert page.inner_text("#s-nearest") == "40.0 m"
-        assert page.inner_text("#decision") == "GO"
-        assert page.inner_text("#health") == "ok"
+        assert page.inner_text("#s-nearest") == "40.0 м"
+        assert page.inner_text("#decision") == "ДВИЖЕНИЕ"
+        assert page.inner_text("#health") == "норма"
         assert page.is_enabled("#export-report")
         b.close()
 

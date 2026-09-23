@@ -1,133 +1,191 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
 <meta charset="utf-8">
-<title>ReSense dashboard</title>
+<title>ReSense — контроль препятствий</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#e21d36">
 <style>
-  :root { --bg:#111218; --fg:#f4f3f8; --ok:#35d07f; --warn:#ffad33; --bad:#ff3b65; --muted:#9da1ad; --line:#30323c; --card:#1a1c24; --accent:#9b92e8; --accent-2:#ff3b76; }
-  * { box-sizing: border-box; }
-  body { margin:0; font-family: system-ui, sans-serif; background:var(--bg); color:var(--fg); }
-  header { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; padding:12px 20px; border-bottom:1px solid var(--line); background:linear-gradient(90deg,rgba(82,9,120,.22),transparent 45%); }
-  header h1 { font-size:18px; margin:0 12px 0 0; letter-spacing:.5px; white-space:nowrap; display:flex; align-items:center; gap:10px; }
-  .brand-mark { display:inline-grid; place-items:center; width:30px; height:30px; border-radius:9px; color:white; background:linear-gradient(135deg,var(--accent-2),#520978); font-weight:900; box-shadow:0 0 22px rgba(255,59,118,.25); }
-  .mode { display:flex; gap:8px; align-items:center; padding:4px 10px; border:1px solid var(--line); border-radius:6px; }
-  .mode.active { border-color: var(--accent); }
-  .mode .tag { font-size:11px; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); }
-  #banner { font-size:44px; font-weight:850; padding:16px 20px 12px; line-height:1.1; letter-spacing:-1px; border-left:5px solid currentColor; background:linear-gradient(90deg,currentColor 0,currentColor 5px,transparent 5px); }
-  #banner small { display:block; font-size:14px; font-weight:400; color:var(--muted); margin-top:2px; }
-  .clear { color:var(--ok);} .warn { color:var(--warn);} .bad { color:var(--bad);}
-  main { display:grid; grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr); gap:16px; padding:0 20px 20px; }
-  canvas { width:100%; display:block; background:#0d0e12; border:1px solid var(--line); border-radius:6px; margin-bottom:10px; }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:6px; padding:12px; margin-bottom:12px; transition: border-color .3s, box-shadow .3s; }
-  .card h3 { margin:0 0 8px; font-size:13px; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); }
-  .card.alert { border-color: var(--bad); box-shadow: 0 0 0 2px rgba(255,45,85,.35); }
-  .card.notice { border-color: var(--warn); }
-  .kv { display:grid; grid-template-columns:1fr auto; gap:4px 12px; font-size:14px; }
+  :root {
+    --page:#f2f3f5; --paper:#fff; --ink:#101114; --muted:#686d75; --line:#dfe2e6;
+    --red:#e21d36; --red-dark:#be1229; --cyan:#16a8c1; --blue:#0878d1;
+    --green:#13a957; --yellow:#ffbf19; --shadow:0 8px 28px rgba(20,29,39,.08);
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; color:var(--ink); background:var(--page); font-family:Arial, Helvetica, sans-serif; font-size:15px; }
+  button, input, select { font:inherit; }
+  button, .file-button { min-height:42px; border:0; border-radius:11px; padding:0 16px; display:inline-flex; align-items:center; justify-content:center; gap:8px; color:var(--ink); background:#edf0f2; font-weight:700; cursor:pointer; transition:transform .16s, background .16s, box-shadow .16s; }
+  button:hover, .file-button:hover { transform:translateY(-1px); background:#e3e6e9; }
+  button:disabled { opacity:.42; cursor:default; transform:none; }
+  button.primary { color:#fff; background:var(--red); box-shadow:0 5px 15px rgba(226,29,54,.2); }
+  button.primary:hover { background:var(--red-dark); }
+  button.secondary { color:var(--red); background:#fff0f2; }
+  button:focus-visible, input:focus-visible, select:focus-visible, .file-button:focus-within { outline:3px solid rgba(8,120,209,.28); outline-offset:2px; }
+  select, input[type=text] { min-height:42px; border:1px solid var(--line); border-radius:11px; padding:0 12px; color:var(--ink); background:var(--paper); }
+  input[type=range] { width:170px; accent-color:var(--red); }
+  input[type=checkbox] { width:18px; height:18px; accent-color:var(--red); }
+  #file { position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; }
+  .site-header { background:var(--paper); border-bottom:1px solid var(--line); }
+  .header-inner { max-width:1600px; margin:auto; min-height:92px; padding:18px 28px; display:flex; align-items:center; gap:30px; }
+  .brand { display:flex; align-items:center; gap:14px; min-width:max-content; }
+  .brand-mark { position:relative; width:52px; height:52px; border-radius:16px; background:var(--red); box-shadow:0 8px 20px rgba(226,29,54,.24); }
+  .brand-mark::before, .brand-mark::after { content:''; position:absolute; border:4px solid #fff; border-radius:50%; }
+  .brand-mark::before { width:8px; height:8px; left:11px; top:11px; box-shadow:18px 18px 0 -4px #fff; }
+  .brand-mark::after { width:22px; height:22px; left:15px; top:15px; border-width:0 0 4px 4px; border-radius:0 0 0 12px; transform:rotate(-12deg); }
+  .brand h1 { margin:0; font-size:26px; line-height:1; letter-spacing:-.7px; }
+  .brand p { margin:5px 0 0; color:var(--muted); font-size:13px; }
+  .top-nav { display:flex; gap:22px; margin-left:auto; }
+  .top-nav a { color:var(--ink); text-decoration:none; font-weight:700; font-size:14px; }
+  .top-nav a:hover { color:var(--red); }
+  .health { display:flex; gap:8px; align-items:center; margin-left:12px; }
+  .pill { display:inline-flex; align-items:center; gap:7px; min-height:34px; padding:0 12px; border-radius:999px; color:var(--muted); background:#f0f2f4; font-size:12px; font-weight:700; white-space:nowrap; }
+  .pill::before { content:''; width:8px; height:8px; border-radius:50%; background:currentColor; }
+  .pill.ok { color:#087d41; background:#e7f7ee; }
+  .pill.warn { color:#8a6200; background:#fff3cf; }
+  .pill.bad { color:#b3132a; background:#ffe8ec; }
+  .page { max-width:1600px; margin:auto; padding:24px 28px 44px; }
+  .eyebrow { color:var(--red); font-size:12px; font-weight:800; letter-spacing:.11em; text-transform:uppercase; }
+  .page-title { margin:7px 0 20px; font-size:clamp(30px,4vw,54px); line-height:.98; letter-spacing:-2px; max-width:900px; }
+  .control-deck { display:grid; grid-template-columns:minmax(260px,.72fr) minmax(580px,1.7fr); gap:14px; margin-bottom:14px; }
+  .mode { min-width:0; padding:18px; border-radius:20px; background:var(--paper); box-shadow:var(--shadow); }
+  .mode.active { box-shadow:inset 0 0 0 2px var(--red), var(--shadow); }
+  .mode-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; }
+  .mode .tag { font-size:17px; font-weight:800; }
+  .mode .tag::before { content:''; display:inline-block; width:9px; height:9px; margin-right:8px; border-radius:50%; background:#b7bbc0; }
+  .mode.active .tag::before { background:var(--red); }
+  .mode-body { display:flex; flex-wrap:wrap; align-items:center; gap:9px; }
+  .connection-field { display:flex; align-items:center; gap:8px; flex:1; min-width:230px; }
+  .connection-field input { width:100%; }
+  .status-line { color:var(--muted); font-size:12px; }
+  .file-button { color:#fff; background:var(--red); }
+  .file-button:hover { background:var(--red-dark); }
+  .frame-state { min-width:95px; }
+  .speed-label, .check-label { display:inline-flex; align-items:center; gap:7px; color:var(--muted); font-size:12px; }
+  .speed-label select { min-height:36px; }
+  #banner { position:relative; overflow:hidden; min-height:170px; margin-bottom:14px; padding:28px 34px; border-radius:24px; color:#fff; font-size:clamp(38px,5vw,72px); font-weight:900; line-height:.95; letter-spacing:-2.5px; box-shadow:var(--shadow); }
+  #banner::after { content:''; position:absolute; width:360px; height:360px; right:-85px; top:-155px; border:34px solid rgba(255,255,255,.16); border-radius:50%; box-shadow:0 0 0 34px rgba(255,255,255,.08),0 0 0 68px rgba(255,255,255,.05); }
+  #banner.clear { background:var(--green); }
+  #banner.warn { color:#18130a; background:var(--yellow); }
+  #banner.bad { background:var(--red); }
+  #banner small { display:block; position:relative; z-index:1; margin-top:16px; color:inherit; opacity:.76; font-size:14px; font-weight:600; letter-spacing:0; }
+  main { display:grid; grid-template-columns:minmax(0,2fr) minmax(340px,.88fr); gap:14px; }
+  .visual-column { min-width:0; }
+  .visual-card, .card { background:var(--paper); border-radius:20px; box-shadow:var(--shadow); }
+  .visual-card { padding:18px; margin-bottom:14px; }
+  .canvas-tools { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-bottom:14px; }
+  .canvas-tools h2 { margin:0 auto 0 0; font-size:22px; letter-spacing:-.5px; }
+  .canvas-tools label { display:flex; align-items:center; gap:8px; color:var(--muted); font-size:12px; }
+  .canvas-tools select { min-height:36px; }
+  canvas { width:100%; display:block; background:#f8f9fa; border:1px solid #e6e8eb; border-radius:14px; }
+  #timeline { margin-top:12px; }
+  .side-column { display:grid; align-content:start; gap:14px; }
+  .card { padding:20px; transition:box-shadow .2s, transform .2s; }
+  .card h3 { display:flex; align-items:center; gap:8px; margin:0 0 15px; font-size:18px; letter-spacing:-.25px; }
+  .card h3::before { content:''; width:10px; height:10px; border-radius:3px; background:var(--cyan); }
+  #safety-card h3::before { background:var(--red); }
+  #node-card h3::before { background:var(--blue); }
+  .card.alert { box-shadow:inset 0 0 0 2px var(--red), var(--shadow); }
+  .card.notice { box-shadow:inset 0 0 0 2px var(--yellow), var(--shadow); }
+  .kv { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:9px 14px; font-size:14px; }
   .kv span:nth-child(odd) { color:var(--muted); }
-  .kv b.bad { color:var(--bad); } .kv b.warn { color:var(--warn); }
-  #log { font-family: ui-monospace, monospace; font-size:12px; max-height:220px; overflow:auto; white-space:pre; }
-  input, select, button { background:#0d0e12; color:var(--fg); border:1px solid var(--line); border-radius:4px; padding:4px 8px; font: inherit; }
-  button { cursor:pointer; } button:hover { border-color: var(--accent); } button:disabled { opacity:.4; cursor:default; }
-  button.primary { background:var(--accent); border-color:var(--accent); color:#111; font-weight:600; }
-  button.secondary { border-color:#5e597f; }
-  button:focus-visible, input:focus-visible, select:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
-  input[type=file] { max-width: 220px; }
-  input[type=range] { width: 160px; padding:0; vertical-align: middle; }
-  .status-line { font-size:12px; color:var(--muted); }
-  .canvas-tools { display:flex; gap:12px; align-items:center; font-size:12px; color:var(--muted); margin-bottom:6px; }
-  .health { margin-left:auto; display:flex; gap:7px; align-items:center; }
-  .pill { display:inline-flex; gap:6px; align-items:center; border:1px solid var(--line); border-radius:999px; padding:4px 9px; font-size:11px; color:var(--muted); }
-  .pill::before { content:''; width:7px; height:7px; border-radius:50%; background:currentColor; }
-  .pill.ok { color:var(--ok); border-color:rgba(53,208,127,.35); }
-  .pill.warn { color:var(--warn); border-color:rgba(255,173,51,.35); }
-  .pill.bad { color:var(--bad); border-color:rgba(255,59,101,.35); }
-  .empty-log { color:var(--muted); font-family:system-ui,sans-serif; white-space:normal; }
-  #drop-overlay { display:none; position:fixed; inset:12px; z-index:20; place-items:center; border:3px dashed var(--accent); border-radius:18px; background:rgba(17,18,24,.92); font-size:24px; font-weight:700; color:var(--accent); pointer-events:none; }
+  .kv b { text-align:right; }
+  .kv b.bad { color:var(--red); } .kv b.warn { color:#9a6a00; }
+  #health-msgs { margin-top:10px; }
+  #log { min-height:56px; max-height:230px; overflow:auto; white-space:pre-wrap; color:#35383d; font:12px/1.45 ui-monospace, SFMono-Regular, Consolas, monospace; }
+  .empty-log { color:var(--muted); font-family:Arial,Helvetica,sans-serif; white-space:normal; }
+  .shortcut { display:block; margin-top:7px; opacity:.75; }
+  #drop-overlay { display:none; position:fixed; inset:18px; z-index:20; place-items:center; border:4px dashed var(--red); border-radius:28px; background:rgba(255,255,255,.94); color:var(--red); font-size:26px; font-weight:800; pointer-events:none; }
   body.dragging #drop-overlay { display:grid; }
-  .shortcut { opacity:.8; }
-  @media (max-width: 960px) { main { grid-template-columns:1fr; } #banner { font-size:32px; } }
+  .site-footer { max-width:1600px; margin:0 auto; padding:0 28px 30px; color:var(--muted); font-size:12px; display:flex; justify-content:space-between; gap:20px; }
+  @media (max-width:1180px) { .top-nav { display:none; } .control-deck { grid-template-columns:1fr; } main { grid-template-columns:1fr; } .side-column { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+  @media (max-width:720px) { .header-inner { padding:14px 16px; flex-wrap:wrap; gap:12px; } .brand p { display:none; } .health { order:2; margin:0; width:100%; } .page { padding:18px 12px 32px; } .page-title { letter-spacing:-1.2px; } .mode { padding:14px; } .mode-body { align-items:stretch; } .connection-field { min-width:100%; } input[type=range] { width:100%; } #banner { min-height:145px; padding:24px 20px; border-radius:20px; } .side-column { grid-template-columns:1fr; } .visual-card, .card { border-radius:16px; } .site-footer { padding:0 16px 24px; flex-direction:column; } }
 </style>
 </head>
 <body>
-<header>
-  <h1><span class="brand-mark" aria-hidden="true">R</span>ReSense — clearance-gauge obstacle detection</h1>
-  <div class="mode active" id="mode-live">
-    <span class="tag">live</span>
-    <label>rosbridge <input id="url" value="ws://localhost:9090" size="20"></label>
-    <button id="connect" type="button">connect</button>
-    <span id="conn" class="status-line" role="status">disconnected</span>
-  </div>
-  <div class="mode" id="mode-replay">
-    <span class="tag">replay</span>
-    <input type="file" id="file" accept=".jsonl,.json,.txt,.log" title="results.jsonl from: python -m resense.cli run --out results.jsonl">
-    <button id="demo" class="secondary" type="button" title="load a built-in 60-frame jury demo">demo</button>
-    <button id="stepback" type="button" aria-label="previous frame" title="previous frame (←)" disabled>&#9664;</button>
-    <button id="play" type="button" class="primary" title="play / pause (space)" disabled>play</button>
-    <button id="stepfwd" type="button" aria-label="next frame" title="next frame (→)" disabled>&#9654;</button>
-    <input type="range" id="seek" min="0" max="0" value="0" disabled>
-    <span id="frame-pos" class="status-line">no file</span>
-    <label class="status-line">speed <select id="speed">
-      <option value="0.25">0.25x</option><option value="0.5">0.5x</option><option value="1" selected>1x</option>
-      <option value="2">2x</option><option value="4">4x</option><option value="10">10x</option>
-    </select></label>
-    <label class="status-line"><input type="checkbox" id="loop"> loop</label>
-    <button id="export-report" type="button" title="download a JSON summary of the loaded run" disabled>report</button>
-  </div>
-  <div class="health" aria-label="system health">
-    <span id="health-source" class="pill">no source</span>
-    <span id="health-realtime" class="pill">latency —</span>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand"><span class="brand-mark" aria-hidden="true"></span><div><h1>ReSense</h1><p>Безопасность движения в тоннеле</p></div></div>
+    <nav class="top-nav" aria-label="Основная навигация"><a href="#monitor">Мониторинг</a><a href="#safety-card">Решение</a><a href="#node-card">Система</a><a href="#log">События</a></nav>
+    <div class="health" aria-label="Состояние системы"><span id="health-source" class="pill">Источник не выбран</span><span id="health-realtime" class="pill">Задержка —</span></div>
   </div>
 </header>
-<div id="banner" class="clear" role="status" aria-live="assertive">PATH CLEAR</div>
-<main>
-  <div>
-    <div class="canvas-tools">
-      <span>top-down view, X along the track</span>
-      <label>range <select id="xmax"><option value="100">100 m</option><option value="150" selected>150 m</option><option value="250">250 m</option></select></label>
-      <span id="canvas-note"></span>
+<div class="page">
+  <div class="eyebrow">Московский транспорт · ЛЦТ 2026</div>
+  <h2 class="page-title">Контроль свободного габарита в реальном времени</h2>
+  <section class="control-deck" aria-label="Источники данных">
+    <div class="mode active" id="mode-live">
+      <div class="mode-head"><span class="tag">Прямой эфир</span><span id="conn" class="status-line" role="status">Нет подключения</span></div>
+      <div class="mode-body"><label class="connection-field"><span class="status-line">rosbridge</span><input id="url" value="ws://localhost:9090" size="20" aria-label="Адрес rosbridge"></label><button id="connect" class="primary" type="button">Подключить</button></div>
     </div>
-    <canvas id="top" width="1200" height="420" role="img" aria-label="Top-down view of the track corridor and detected objects"></canvas>
-    <canvas id="timeline" width="1200" height="170" role="img" aria-label="Thirty-second obstacle distance timeline"></canvas>
+    <div class="mode" id="mode-replay">
+      <div class="mode-head"><span class="tag">Запись</span><span id="frame-pos" class="status-line frame-state">Файл не выбран</span></div>
+      <div class="mode-body">
+        <label class="file-button" for="file">Выбрать файл<input type="file" id="file" accept=".jsonl,.json,.txt,.log" title="results.jsonl из команды python -m resense.cli run --out results.jsonl"></label>
+        <button id="demo" class="secondary" type="button" title="Загрузить встроенную демонстрацию на 60 кадров">Демо</button>
+        <button id="stepback" type="button" aria-label="Предыдущий кадр" title="Предыдущий кадр (←)" disabled>&#9664;</button>
+        <button id="play" type="button" class="primary" title="Воспроизведение или пауза (пробел)" disabled>Пуск</button>
+        <button id="stepfwd" type="button" aria-label="Следующий кадр" title="Следующий кадр (→)" disabled>&#9654;</button>
+        <input type="range" id="seek" min="0" max="0" value="0" aria-label="Позиция воспроизведения" disabled>
+        <label class="speed-label">Скорость <select id="speed"><option value="0.25">0,25×</option><option value="0.5">0,5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option><option value="10">10×</option></select></label>
+        <label class="check-label"><input type="checkbox" id="loop"> Повтор</label>
+        <button id="export-report" type="button" title="Скачать сводку запуска в JSON" disabled>Отчёт</button>
+      </div>
+    </div>
+  </section>
+  <div id="banner" class="clear" role="status" aria-live="assertive">ПУТЬ СВОБОДЕН</div>
+  <main id="monitor">
+  <div class="visual-column">
+    <div class="visual-card">
+    <div class="canvas-tools">
+      <h2>Обстановка по ходу движения</h2>
+      <label>Дальность <select id="xmax"><option value="100">100 м</option><option value="150" selected>150 м</option><option value="250">250 м</option></select></label>
+      <span id="canvas-note" class="status-line"></span>
+    </div>
+    <canvas id="top" width="1200" height="420" role="img" aria-label="Вид пути сверху, границы габарита и обнаруженные объекты"></canvas>
+    <canvas id="timeline" width="1200" height="170" role="img" aria-label="График дистанции до препятствия за последние тридцать секунд"></canvas>
+    </div>
   </div>
-  <div>
-    <div class="card"><h3>detector</h3><div class="kv">
-      <span>nearest obstacle</span><b id="dist">—</b>
-      <span>detections / warnings</span><b id="counts">0 / 0</b>
-      <span>track axis (m, +left)</span><b id="axis">—</b>
-      <span>curve radius</span><b id="radius">—</b>
-      <span>corridor trusted to</span><b id="valid">—</b>
-      <span>points / in corridor</span><b id="points">—</b>
-      <span>detect time (total)</span><b id="timing">—</b>
-      <span>stages track / corridor / cluster</span><b id="stages">—</b>
-      <span>frames shown</span><b id="frames">0</b>
+  <div class="side-column">
+    <div class="card"><h3>Детектор</h3><div class="kv">
+      <span>Ближайшее препятствие</span><b id="dist">—</b>
+      <span>Детекции / предупреждения</span><b id="counts">0 / 0</b>
+      <span>Ось пути, м (+ влево)</span><b id="axis">—</b>
+      <span>Радиус кривой</span><b id="radius">—</b>
+      <span>Проверенная дальность</span><b id="valid">—</b>
+      <span>Точек / внутри габарита</span><b id="points">—</b>
+      <span>Время обработки</span><b id="timing">—</b>
+      <span>Путь / габарит / кластеры</span><b id="stages">—</b>
+      <span>Показано кадров</span><b id="frames">0</b>
     </div></div>
-    <div class="card" id="safety-card"><h3>decision &amp; health <span class="status-line">(v0.6)</span></h3><div class="kv">
-      <span>decision</span><b id="decision">—</b>
-      <span>path verified clear to</span><b id="clear">—</b>
-      <span>health</span><b id="health">—</b>
-      <span>visibility / rail lock</span><b id="vis">—</b>
-      <span>mount calibration</span><b id="mount">—</b>
+    <div class="card" id="safety-card"><h3>Решение и надёжность <span class="status-line">v0.6</span></h3><div class="kv">
+      <span>Решение</span><b id="decision">—</b>
+      <span>Путь свободен до</span><b id="clear">—</b>
+      <span>Состояние данных</span><b id="health">—</b>
+      <span>Видимость / захват рельсов</span><b id="vis">—</b>
+      <span>Калибровка лидара</span><b id="mount">—</b>
     </div><div id="health-msgs" class="status-line"></div></div>
-    <div class="card" id="node-card"><h3>ROS node <span id="node-note" class="status-line"></span></h3><div class="kv">
-      <span>latency (decode + detect)</span><b id="n-latency">—</b>
-      <span>fps</span><b id="n-fps">—</b>
-      <span>frames processed</span><b id="n-frames">—</b>
-      <span>dropped frames</span><b id="n-dropped">—</b>
-      <span>input period</span><b id="n-period">—</b>
+    <div class="card" id="node-card"><h3>Узел ROS <span id="node-note" class="status-line"></span></h3><div class="kv">
+      <span>Задержка декодирования и поиска</span><b id="n-latency">—</b>
+      <span>Кадров в секунду</span><b id="n-fps">—</b>
+      <span>Обработано кадров</span><b id="n-frames">—</b>
+      <span>Пропущено кадров</span><b id="n-dropped">—</b>
+      <span>Период входного потока</span><b id="n-period">—</b>
     </div></div>
-    <div class="card"><h3>run summary</h3><div class="kv">
-      <span>alarm events / frames</span><b id="s-alarms">—</b>
-      <span>nearest confirmed</span><b id="s-nearest">—</b>
-      <span>warning frames</span><b id="s-warnings">—</b>
-      <span>max detect time</span><b id="s-max-time">—</b>
+    <div class="card"><h3>Сводка запуска</h3><div class="kv">
+      <span>Событий / кадров тревоги</span><b id="s-alarms">—</b>
+      <span>Минимальная дистанция</span><b id="s-nearest">—</b>
+      <span>Кадров предупреждения</span><b id="s-warnings">—</b>
+      <span>Максимальное время</span><b id="s-max-time">—</b>
     </div></div>
-    <div class="card"><h3>alarm log</h3><div id="log" aria-live="polite"><span class="empty-log">No alarms. Load a JSONL file, drop it anywhere, or press demo. <span class="shortcut">Space: play/pause · ←/→: step</span></span></div></div>
+    <div class="card"><h3>Журнал событий</h3><div id="log" aria-live="polite"><span class="empty-log">Событий пока нет. Выберите JSONL-файл, перетащите его в окно или запустите демо.<span class="shortcut">Пробел — пуск/пауза · ←/→ — покадрово</span></span></div></div>
   </div>
 </main>
-<div id="drop-overlay">Drop results.jsonl to replay</div>
-<!-- roslibjs is only needed for the live mode; the page (and the replay mode) works without it -->
-<script async src="https://cdn.jsdelivr.net/npm/roslib@1/build/roslib.min.js" onerror="document.getElementById('conn').textContent='roslib.js not loaded (offline?) — replay mode only'"></script>
+  </div>
+<footer class="site-footer"><span>ReSense · Система контроля свободного габарита</span><span>Данные обновляются до 10 раз в секунду</span></footer>
+<div id="drop-overlay">Отпустите results.jsonl для воспроизведения</div>
+<!-- roslibjs нужен только для прямого эфира; воспроизведение записей работает без него -->
+<script async src="https://cdn.jsdelivr.net/npm/roslib@1/build/roslib.min.js" onerror="document.getElementById('conn').textContent='roslib.js не загружен — доступна запись'"></script>
 <script>
 'use strict';
 const $ = id => document.getElementById(id);
@@ -157,22 +215,22 @@ const state = {
 function drawTop(res) {
   const c = $('top'), ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
   const XMAX = +$('xmax').value, sx = c.width / XMAX, cy = c.height / 2, sy = 22;   // 22 px per metre lateral
-  ctx.strokeStyle = '#2a2c33'; ctx.lineWidth = 1; ctx.font = '12px system-ui';
+  ctx.strokeStyle = '#dfe2e6'; ctx.lineWidth = 1; ctx.font = '12px Arial';
   const step = XMAX > 150 ? 50 : 25;
   for (let x = 0; x <= XMAX; x += step) {
     ctx.beginPath(); ctx.moveTo(x * sx, 0); ctx.lineTo(x * sx, c.height); ctx.stroke();
-    ctx.fillStyle = '#8a8f98'; ctx.fillText(x + ' m', x * sx + 4, 14);
+    ctx.fillStyle = '#70757d'; ctx.fillText(x + ' м', x * sx + 4, 14);
   }
   for (const y of [-4, -2, 2, 4]) { ctx.beginPath(); ctx.moveTo(0, cy - y * sy); ctx.lineTo(c.width, cy - y * sy); ctx.stroke(); }
   const t = res.track || {}; const c0 = t.center || 0, yaw = t.yaw || 0, k = t.curvature || 0;
   const axis = X => c0 + Math.tan(yaw) * X + 0.5 * k * X * X;
   // sensor / train nose
-  ctx.fillStyle = '#8a83d1'; ctx.beginPath(); ctx.moveTo(0, cy - 12); ctx.lineTo(14, cy); ctx.lineTo(0, cy + 12); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#e21d36'; ctx.beginPath(); ctx.moveTo(0, cy - 12); ctx.lineTo(14, cy); ctx.lineTo(0, cy + 12); ctx.closePath(); ctx.fill();
   // track axis and the strict gauge corridor (half-width 1.4 m)
-  ctx.strokeStyle = 'rgba(46,204,113,0.5)'; ctx.setLineDash([2, 6]); ctx.beginPath();
+  ctx.strokeStyle = 'rgba(19,169,87,0.45)'; ctx.setLineDash([2, 6]); ctx.beginPath();
   for (let X = 3; X <= XMAX; X += 5) { const px = X * sx, py = cy - axis(X) * sy; X === 3 ? ctx.moveTo(px, py) : ctx.lineTo(px, py); }
   ctx.stroke();
-  ctx.strokeStyle = '#2ecc71'; ctx.setLineDash([6, 4]);
+  ctx.strokeStyle = '#13a957'; ctx.setLineDash([6, 4]);
   for (const side of [1.4, -1.4]) {
     ctx.beginPath();
     for (let X = 3; X <= XMAX; X += 5) { const px = X * sx, py = cy - (axis(X) + side) * sy; X === 3 ? ctx.moveTo(px, py) : ctx.lineTo(px, py); }
@@ -180,19 +238,19 @@ function drawTop(res) {
   }
   ctx.setLineDash([]);
   if (t.axis_valid != null && t.axis_valid < XMAX) {
-    ctx.fillStyle = 'rgba(255,159,28,0.10)'; ctx.fillRect(t.axis_valid * sx, 0, c.width - t.axis_valid * sx, c.height);
-    ctx.fillStyle = '#ff9f1c'; ctx.fillText('corridor not trusted beyond ' + t.axis_valid.toFixed(0) + ' m', t.axis_valid * sx + 6, c.height - 8);
+    ctx.fillStyle = 'rgba(255,191,25,0.16)'; ctx.fillRect(t.axis_valid * sx, 0, c.width - t.axis_valid * sx, c.height);
+    ctx.fillStyle = '#8a6200'; ctx.fillText('коридор не подтверждён дальше ' + t.axis_valid.toFixed(0) + ' м', t.axis_valid * sx + 6, c.height - 8);
   }
-  for (const d of (res.warnings || [])) box(ctx, d, sx, sy, cy, '#ff9f1c', XMAX);
-  for (const d of (res.detections || [])) box(ctx, d, sx, sy, cy, '#ff2d55', XMAX);
+  for (const d of (res.warnings || [])) box(ctx, d, sx, sy, cy, '#e8a400', XMAX);
+  for (const d of (res.detections || [])) box(ctx, d, sx, sy, cy, '#e21d36', XMAX);
 }
 function box(ctx, d, sx, sy, cy, color, XMAX) {
   if (!d.center || d.center[0] > XMAX) return;
   const w = Math.max(d.size[0], 1.5) * sx, h = Math.max(d.size[1], 0.6) * sy;
   const x = d.center[0] * sx, y = cy - d.center[1] * sy;
   ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.strokeRect(x - w / 2, y - h / 2, w, h);
-  ctx.fillStyle = color; ctx.font = 'bold 13px system-ui';
-  const label = `${d.distance.toFixed(1)} m  p=${d.confidence.toFixed(2)}`;
+  ctx.fillStyle = color; ctx.font = 'bold 13px Arial';
+  const label = `${d.distance.toFixed(1)} м  p=${d.confidence.toFixed(2)}`;
   const tw = ctx.measureText(label).width;
   ctx.fillText(label, Math.min(x + w / 2 + 4, ctx.canvas.width - tw - 4), y - h / 2 - 4);
 }
@@ -205,26 +263,26 @@ function drawTimeline() {
   const c = $('timeline'), ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
   const now = timelineNow(), span = TIMELINE_SPAN, DMAX = 250, top = 6, bottom = c.height - 18, H = bottom - top;
   const yOf = d => bottom - Math.min(d, DMAX) / DMAX * H, xOf = t => c.width - (now - t) / span * c.width;
-  ctx.strokeStyle = '#2a2c33'; ctx.font = '11px system-ui';
-  for (const d of [50, 100, 150, 200]) { const y = yOf(d); ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(c.width, y); ctx.stroke(); ctx.fillStyle = '#8a8f98'; ctx.fillText(d + ' m', 4, y - 2); }
+  ctx.strokeStyle = '#dfe2e6'; ctx.font = '11px Arial';
+  for (const d of [50, 100, 150, 200]) { const y = yOf(d); ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(c.width, y); ctx.stroke(); ctx.fillStyle = '#70757d'; ctx.fillText(d + ' м', 4, y - 2); }
   // x-axis: wall clock in live mode, stamp relative to the first frame in replay
   const tick = 5, first = Math.floor((now - span) / tick) * tick;
   for (let t = first; t <= now; t += tick) {
     if (t < now - span) continue;
     const x = xOf(t); ctx.beginPath(); ctx.moveTo(x, bottom); ctx.lineTo(x, bottom + 4); ctx.stroke();
     const rel = t - (state.t0 || 0);
-    const label = state.mode === 'replay' ? ((rel >= 0 ? '+' : '−') + Math.abs(rel).toFixed(0) + ' s') : new Date(t * 1000).toLocaleTimeString();
-    ctx.fillStyle = '#8a8f98'; ctx.fillText(label, x + 3, c.height - 5);
+    const label = state.mode === 'replay' ? ((rel >= 0 ? '+' : '−') + Math.abs(rel).toFixed(0) + ' с') : new Date(t * 1000).toLocaleTimeString('ru-RU');
+    ctx.fillStyle = '#70757d'; ctx.fillText(label, x + 3, c.height - 5);
   }
-  ctx.fillStyle = '#8a8f98'; ctx.textAlign = 'right';
-  ctx.fillText(state.mode === 'replay' ? 'nearest obstacle vs replay clock (message stamp)' : 'nearest obstacle vs wall clock', c.width - 6, top + 10);
+  ctx.fillStyle = '#70757d'; ctx.textAlign = 'right';
+  ctx.fillText(state.mode === 'replay' ? 'дистанция до объекта · время записи' : 'дистанция до объекта · текущее время', c.width - 6, top + 10);
   ctx.textAlign = 'left';
   for (const h of state.hist) {
     if (h.t < now - span) continue;
-    if (h.warnDist != null && !h.obstacle) { ctx.fillStyle = '#ff9f1c'; ctx.fillRect(xOf(h.t) - 1.5, yOf(h.warnDist) - 1.5, 3, 3); }
-    if (h.dist != null) { ctx.fillStyle = '#ff2d55'; ctx.fillRect(xOf(h.t) - 2, yOf(h.dist) - 2, 4, 4); }
+    if (h.warnDist != null && !h.obstacle) { ctx.fillStyle = '#e8a400'; ctx.fillRect(xOf(h.t) - 1.5, yOf(h.warnDist) - 1.5, 3, 3); }
+    if (h.dist != null) { ctx.fillStyle = '#e21d36'; ctx.fillRect(xOf(h.t) - 2, yOf(h.dist) - 2, 4, 4); }
   }
-  if (state.mode === 'replay') { ctx.strokeStyle = '#8a83d1'; ctx.beginPath(); ctx.moveTo(c.width - 1, top); ctx.lineTo(c.width - 1, bottom); ctx.stroke(); }
+  if (state.mode === 'replay') { ctx.strokeStyle = '#0878d1'; ctx.beginPath(); ctx.moveTo(c.width - 1, top); ctx.lineTo(c.width - 1, bottom); ctx.stroke(); }
 }
 
 // ----------------------------------------------------------------------------- applying a result
@@ -235,21 +293,21 @@ function applyResult(res, opts) {
   const t = state.mode === 'replay' ? stampOf(res) : Date.now() / 1000;
   const b = $('banner');
   const dets = res.detections || [], warns = res.warnings || [];
-  if (res.obstacle) { b.className = 'bad'; b.textContent = `OBSTACLE  ${res.nearest_distance.toFixed(1)} m`; }
-  else if (res.warning) { b.className = 'warn'; b.textContent = 'WARNING: object near the gauge'; }
-  else { b.className = 'clear'; b.textContent = 'PATH CLEAR'; }
-  if (state.mode === 'replay' && res.frame != null) { const s = document.createElement('small'); s.textContent = `#${String(res.frame).padStart(5, '0')}  t = +${(t - (state.t0 || 0)).toFixed(1)} s  (${res.frame_id || ''})`; b.appendChild(s); }
-  $('dist').textContent = res.nearest_distance == null ? '—' : res.nearest_distance.toFixed(1) + ' m';
+  if (res.obstacle) { b.className = 'bad'; b.textContent = `ПРЕПЯТСТВИЕ  ${res.nearest_distance.toFixed(1)} м`; }
+  else if (res.warning) { b.className = 'warn'; b.textContent = 'ВНИМАНИЕ: ОБЪЕКТ РЯДОМ С ГАБАРИТОМ'; }
+  else { b.className = 'clear'; b.textContent = 'ПУТЬ СВОБОДЕН'; }
+  if (state.mode === 'replay' && res.frame != null) { const s = document.createElement('small'); s.textContent = `Кадр ${String(res.frame).padStart(5, '0')} · +${(t - (state.t0 || 0)).toFixed(1)} с · ${res.frame_id || 'без источника'}`; b.appendChild(s); }
+  $('dist').textContent = res.nearest_distance == null ? '—' : res.nearest_distance.toFixed(1) + ' м';
   $('counts').textContent = `${dets.length} / ${warns.length}`;
   const tr = res.track || {};
   $('axis').textContent = fmt(tr.center, 2);
-  $('radius').textContent = tr.curvature == null ? '—' : (Math.abs(tr.curvature) < 1e-6 ? 'straight' : (1 / tr.curvature).toFixed(0) + ' m');
-  $('valid').textContent = fmt(tr.axis_valid, 0, ' m');
+  $('radius').textContent = tr.curvature == null ? '—' : (Math.abs(tr.curvature) < 1e-6 ? 'прямая' : (1 / tr.curvature).toFixed(0) + ' м');
+  $('valid').textContent = fmt(tr.axis_valid, 0, ' м');
   $('points').textContent = res.n_points == null ? '—' : `${res.n_points} / ${res.n_corridor ?? '—'}`;
   const tm = res.timing_ms || {};
-  $('timing').textContent = fmt(tm.total, 0, ' ms');
+  $('timing').textContent = fmt(tm.total, 0, ' мс');
   $('timing').className = tm.total > 100 ? 'warn' : '';
-  $('stages').textContent = [tm.track, tm.corridor, tm.cluster].every(v => v != null) ? `${tm.track.toFixed(0)} / ${tm.corridor.toFixed(0)} / ${tm.cluster.toFixed(0)} ms` : '—';
+  $('stages').textContent = [tm.track, tm.corridor, tm.cluster].every(v => v != null) ? `${tm.track.toFixed(0)} / ${tm.corridor.toFixed(0)} / ${tm.cluster.toFixed(0)} мс` : '—';
   $('frames').textContent = state.shown;
   applySafety(res);
   applyNode(res.node);
@@ -258,12 +316,12 @@ function applyResult(res, opts) {
   state.hist.push({ t, dist: res.obstacle ? res.nearest_distance : null, warnDist, obstacle: !!res.obstacle });
   while (state.hist.length > 5000) state.hist.shift();
   // alarm log: one line per alarm frame, one line when the alarm ends
-  const when = state.mode === 'replay' ? `#${String(res.frame ?? state.shown - 1).padStart(5, '0')} +${(t - (state.t0 || 0)).toFixed(1)}s` : new Date().toLocaleTimeString();
+  const when = state.mode === 'replay' ? `#${String(res.frame ?? state.shown - 1).padStart(5, '0')} +${(t - (state.t0 || 0)).toFixed(1)}с` : new Date().toLocaleTimeString('ru-RU');
   if (res.obstacle) {
     state.alarmFrames++;
-    logLine(`${when}  OBSTACLE ${res.nearest_distance.toFixed(1)} m  ` + dets.map(d => `#${d.id} dy=${d.lateral.toFixed(1)} ${d.size[0].toFixed(1)}x${d.size[1].toFixed(1)}x${d.size[2].toFixed(1)} n=${d.n_points} p=${d.confidence.toFixed(2)}`).join(' | '));
+    logLine(`${when}  ПРЕПЯТСТВИЕ ${res.nearest_distance.toFixed(1)} м  ` + dets.map(d => `#${d.id} смещение=${d.lateral.toFixed(1)} размер=${d.size[0].toFixed(1)}×${d.size[1].toFixed(1)}×${d.size[2].toFixed(1)} точек=${d.n_points} p=${d.confidence.toFixed(2)}`).join(' | '));
   } else if (state.lastObstacle) {
-    logLine(`${when}  path clear again (alarm lasted ${state.alarmFrames} frames)`);
+    logLine(`${when}  путь снова свободен · тревога длилась ${state.alarmFrames} кадр.`);
     state.alarmFrames = 0;
   }
   state.lastObstacle = !!res.obstacle;
@@ -273,13 +331,13 @@ function applySafety(res) {
   // v0.6 fields: decision (node only, else derived), clear_distance, health, mount; absent in older results
   const h = res.health || {}, m = res.mount || {};
   const decision = res.decision || (res.obstacle ? 'STOP' : (h.level === 'error' ? 'FAULT' : ((res.warning || h.level === 'warn') ? 'CAUTION' : (h.level ? 'GO' : '—'))));
-  $('decision').textContent = decision;
+  $('decision').textContent = { GO: 'ДВИЖЕНИЕ', CAUTION: 'ВНИМАНИЕ', STOP: 'СТОП', FAULT: 'ОШИБКА' }[decision] || decision;
   $('decision').className = { STOP: 'bad', FAULT: 'bad', CAUTION: 'warn' }[decision] || '';
-  $('clear').textContent = res.clear_distance == null ? '—' : res.clear_distance.toFixed(0) + ' m';
-  $('health').textContent = h.level || '—';
+  $('clear').textContent = res.clear_distance == null ? '—' : res.clear_distance.toFixed(0) + ' м';
+  $('health').textContent = { ok: 'норма', warn: 'предупреждение', error: 'ошибка' }[h.level] || '—';
   $('health').className = { error: 'bad', warn: 'warn' }[h.level] || '';
-  $('vis').textContent = h.visibility == null ? '—' : `${h.visibility.toFixed(0)} m / ${(100 * (h.rail_lock ?? 0)).toFixed(0)} %`;
-  $('mount').textContent = m.status ? `${m.status}${m.status === 'ok' ? ` (roll ${m.roll_deg}°, pitch ${m.pitch_deg}°)` : ''}` : '—';
+  $('vis').textContent = h.visibility == null ? '—' : `${h.visibility.toFixed(0)} м / ${(100 * (h.rail_lock ?? 0)).toFixed(0)} %`;
+  $('mount').textContent = m.status ? `${{ ok: 'норма', pending: 'ожидание', error: 'ошибка' }[m.status] || m.status}${m.status === 'ok' ? ` (крен ${m.roll_deg}°, тангаж ${m.pitch_deg}°)` : ''}` : '—';
   $('health-msgs').textContent = (h.messages || []).join('; ');
 }
 function logLine(s) { const l = $('log'); l.textContent = s + '\n' + l.textContent; if (l.textContent.length > 60000) l.textContent = l.textContent.slice(0, 50000); }
@@ -287,26 +345,26 @@ function applyNode(node) {
   const card = $('node-card');
   if (!node) {
     for (const id of ['n-latency', 'n-fps', 'n-frames', 'n-dropped', 'n-period']) $(id).textContent = '—';
-    $('node-note').textContent = state.mode === 'replay' ? '(offline replay: no node stats in results.jsonl)' : '(no "node" object in the status message)';
+    $('node-note').textContent = state.mode === 'replay' ? '(в файле нет статистики узла)' : '(ожидание данных узла)';
     card.className = 'card';
-    $('health-realtime').className = 'pill'; $('health-realtime').textContent = state.mode === 'replay' ? 'offline replay' : 'latency —';
+    $('health-realtime').className = 'pill'; $('health-realtime').textContent = state.mode === 'replay' ? 'Запись' : 'Задержка —';
     return;
   }
   $('node-note').textContent = '';
-  $('n-latency').textContent = fmt(node.latency_ms, 0, ' ms'); $('n-latency').className = node.latency_ms > 100 ? 'warn' : '';
+  $('n-latency').textContent = fmt(node.latency_ms, 0, ' мс'); $('n-latency').className = node.latency_ms > 100 ? 'warn' : '';
   $('n-fps').textContent = fmt(node.fps, 1); $('n-fps').className = (node.fps != null && node.fps > 0 && node.fps < 9) ? 'warn' : '';
   $('n-frames').textContent = node.frames ?? '—';
-  $('n-period').textContent = fmt(node.input_period_ms, 0, ' ms');
+  $('n-period').textContent = fmt(node.input_period_ms, 0, ' мс');
   const dropped = node.dropped_frames ?? 0, now = Date.now();
   const grew = state.node.lastDropped != null && dropped > state.node.lastDropped;
-  if (grew) { state.node.alertUntil = now + 3000; logLine(`${new Date().toLocaleTimeString()}  node dropped ${dropped - state.node.lastDropped} input frame(s), total ${dropped}`); }
+  if (grew) { state.node.alertUntil = now + 3000; logLine(`${new Date().toLocaleTimeString('ru-RU')}  узел пропустил кадров: ${dropped - state.node.lastDropped}; всего ${dropped}`); }
   state.node.lastDropped = dropped;
   $('n-dropped').textContent = dropped + (grew ? '  ▲' : '');
   $('n-dropped').className = dropped > 0 ? (now < state.node.alertUntil ? 'bad' : 'warn') : '';
   card.className = 'card' + (now < state.node.alertUntil ? ' alert' : (dropped > 0 ? ' notice' : ''));
   const unhealthy = node.latency_ms > 100 || (node.fps != null && node.fps > 0 && node.fps < 9) || dropped > 0;
   $('health-realtime').className = 'pill ' + (unhealthy ? 'warn' : 'ok');
-  $('health-realtime').textContent = node.latency_ms == null ? 'node online' : `latency ${node.latency_ms.toFixed(0)} ms`;
+  $('health-realtime').textContent = node.latency_ms == null ? 'Узел в сети' : `Задержка ${node.latency_ms.toFixed(0)} мс`;
 }
 
 // ----------------------------------------------------------------------------- live mode
@@ -317,15 +375,15 @@ function onStatus(msg) {
 }
 let ros = null;
 $('connect').onclick = () => {
-  if (typeof ROSLIB === 'undefined') { $('conn').textContent = 'roslib.js not loaded — live mode unavailable'; return; }
+  if (typeof ROSLIB === 'undefined') { $('conn').textContent = 'roslib.js не загружен'; return; }
   setMode('live');
   if (ros) { try { ros.close(); } catch (e) {} }
   ros = new ROSLIB.Ros({ url: $('url').value });
-  $('conn').textContent = 'connecting…';
-  $('health-source').className = 'pill warn'; $('health-source').textContent = 'live connecting';
-  ros.on('connection', () => { $('conn').textContent = 'connected'; $('health-source').className = 'pill ok'; $('health-source').textContent = 'live connected'; });
-  ros.on('error', () => { $('conn').textContent = 'error'; $('health-source').className = 'pill bad'; $('health-source').textContent = 'live error'; });
-  ros.on('close', () => { $('conn').textContent = 'disconnected'; $('health-source').className = 'pill warn'; $('health-source').textContent = 'live disconnected'; });
+  $('conn').textContent = 'Подключение…';
+  $('health-source').className = 'pill warn'; $('health-source').textContent = 'Подключение к потоку';
+  ros.on('connection', () => { $('conn').textContent = 'Подключено'; $('health-source').className = 'pill ok'; $('health-source').textContent = 'Прямой эфир'; });
+  ros.on('error', () => { $('conn').textContent = 'Ошибка'; $('health-source').className = 'pill bad'; $('health-source').textContent = 'Ошибка потока'; });
+  ros.on('close', () => { $('conn').textContent = 'Нет подключения'; $('health-source').className = 'pill warn'; $('health-source').textContent = 'Поток отключён'; });
   new ROSLIB.Topic({ ros, name: '/resense/status', messageType: 'std_msgs/String' }).subscribe(onStatus);
 };
 
@@ -339,9 +397,9 @@ function setMode(m) {
   if (state.mode === m) return;
   pause(); state.mode = m; resetView();
   $('mode-live').classList.toggle('active', m === 'live'); $('mode-replay').classList.toggle('active', m === 'replay');
-  $('canvas-note').textContent = m === 'replay' ? 'offline replay of results.jsonl' : '';
+  $('canvas-note').textContent = m === 'replay' ? 'Воспроизведение results.jsonl' : 'Данные ROS в реальном времени';
   $('health-source').className = 'pill ' + (m === 'live' ? 'warn' : 'ok');
-  $('health-source').textContent = m === 'live' ? 'live disconnected' : 'replay ready';
+  $('health-source').textContent = m === 'live' ? 'Поток отключён' : 'Запись готова';
 }
 function summarizeFrames(frames) {
   let events = 0, alarmFrames = 0, warningFrames = 0, active = false, nearest = Infinity, maxTime = 0;
@@ -357,9 +415,9 @@ function summarizeFrames(frames) {
 function renderSummary() {
   const s = state.summary;
   $('s-alarms').textContent = s ? `${s.alarm_events} / ${s.alarm_frames}` : '—';
-  $('s-nearest').textContent = s && s.nearest_m != null ? `${s.nearest_m.toFixed(1)} m` : '—';
+  $('s-nearest').textContent = s && s.nearest_m != null ? `${s.nearest_m.toFixed(1)} м` : '—';
   $('s-warnings').textContent = s ? s.warning_frames : '—';
-  $('s-max-time').textContent = s && s.max_detect_ms != null ? `${s.max_detect_ms.toFixed(0)} ms` : '—';
+  $('s-max-time').textContent = s && s.max_detect_ms != null ? `${s.max_detect_ms.toFixed(0)} мс` : '—';
 }
 function loadText(text, name) {
   const frames = [];
@@ -374,7 +432,7 @@ function loadText(text, name) {
   for (const id of ['play', 'stepback', 'stepfwd', 'seek']) $(id).disabled = !ok;
   $('export-report').disabled = !ok;
   $('seek').max = Math.max(frames.length - 1, 0); $('seek').value = 0;
-  $('frame-pos').textContent = ok ? `${name || 'file'}: ${frames.length} frames` : 'no frames found in the file';
+  $('frame-pos').textContent = ok ? `${name || 'файл'} · ${frames.length} кадр.` : 'В файле нет кадров';
   resetView();
   if (ok) seek(0);
   return frames.length;
@@ -414,7 +472,7 @@ function readReplayFile(file) {
 function showFrame(i, draw) {
   state.idx = i; const f = state.frames[i];
   applyResult(f, { draw });
-  $('seek').value = i; $('frame-pos').textContent = `frame ${i + 1} / ${state.frames.length}`;
+  $('seek').value = i; $('frame-pos').textContent = `Кадр ${i + 1} из ${state.frames.length}`;
 }
 function seek(i) {
   // rebuild the timeline and the log from the start so that seeking backwards is consistent
@@ -438,18 +496,18 @@ function tick() {
 function play() {
   if (!state.frames.length || state.playing) return;
   if (state.idx + 1 >= state.frames.length) seek(0);
-  state.playing = true; $('play').textContent = 'pause';
+  state.playing = true; $('play').textContent = 'Пауза';
   state.timer = setInterval(tick, 1000 * FRAME_DT / state.speed);
 }
 function pause() {
   if (state.timer) clearInterval(state.timer);
-  state.timer = null; state.playing = false; $('play').textContent = 'play';
+  state.timer = null; state.playing = false; $('play').textContent = 'Пуск';
 }
 $('file').addEventListener('change', ev => {
   readReplayFile(ev.target.files && ev.target.files[0]);
 });
 $('demo').onclick = () => {
-  loadText(demoFrames().map(f => JSON.stringify(f)).join('\n'), 'built-in jury demo');
+  loadText(demoFrames().map(f => JSON.stringify(f)).join('\n'), 'Встроенное демо');
   $('speed').value = '2'; state.speed = 2; play();
 };
 $('export-report').onclick = () => downloadJSON({ generated_at: new Date().toISOString(), source: state.sourceName,

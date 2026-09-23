@@ -6,7 +6,7 @@ the scripts that verify the dashboard headlessly, and the video recipe.
 
 | file | what |
 |---|---|
-| [`index.html`](index.html) | dashboard: banner, top-down view, decision/health, timeline, node stats, run summary and alarm log; live + offline replay + built-in demo; no build step |
+| [`index.html`](index.html) | Russian-language dashboard in the modular Moscow Transport visual style: banner, top-down view, decision/health, timeline, node stats, run summary and alarm log; live + offline replay + built-in demo; no build step |
 | [`foxglove_layout.json`](foxglove_layout.json) | Foxglove Studio layout (3D + plots + indicator + status), see "Remote demo with Foxglove" |
 | [`demo/make_demo_run.py`](demo/make_demo_run.py) | synthetic approach sequence → `out/demo_run.jsonl` in the `resense run --out` format |
 | [`demo/check_dashboard.py`](demo/check_dashboard.py) | Playwright + headless Chromium: loads the JSONL into the dashboard, plays it, asserts the banner, screenshot / video |
@@ -19,38 +19,41 @@ Current UI captures: [GO / path clear](../docs/images/dashboard-clear.png),
 [CAUTION / object near the gauge](../docs/images/dashboard-caution.png), and
 [STOP / confirmed obstacle](../docs/images/dashboard-stop.png). The complete gallery and its
 data provenance are in [`docs/images/README.md`](../docs/images/README.md).
-*Offline replay of `web/demo/make_demo_run.py` output (synthetic ray-cast tunnel, not the
-organizers' data): the person is confirmed at 115.7 m and tracked down to 40 m.*
+*Built-in 60-frame UI demonstration (synthetic interface data, not the organizers' data and not
+evaluation evidence). The dashboard uses an original ReSense mark and graphics; no assets from
+the reference portal are bundled.*
 
 ## Dashboard (`index.html`)
 
-Open the file in a browser; nothing to install or build. Two modes, same widgets:
+Open the file in a browser; nothing to install or build. The visible interface is entirely in
+Russian and follows the reference portal's light background, modular card floors, red primary
+actions, large status typography and responsive grid. Two modes use the same widgets:
 
 * **Live**: enter the rosbridge URL (`ws://<host>:9090`, from
   `ros2 launch rosbridge_server rosbridge_websocket_launch.xml` on the machine running the
-  detector) and press *connect*. The page subscribes to `/resense/status` (`std_msgs/String`,
+  detector) and press *Подключить*. The page subscribes to `/resense/status` (`std_msgs/String`,
   one JSON `FrameResult` per frame plus the node's `node` object) and needs nothing else — no
   point cloud is streamed to the browser. roslibjs comes from a CDN; without internet the
   live mode is unavailable and the page says so, the replay mode still works. rosbridge is
   **not** in the ReSense image (`apt install ros-humble-rosbridge-suite` where ROS runs); for a
   live view on an offline stand use Foxglove, whose bridge the image has (`foxglove_layout.json`).
-* **Replay**: *Choose file* (or drop the file anywhere) → a `results.jsonl` written by
+* **Replay**: *Выбрать файл* (or drop the file anywhere) → a `results.jsonl` written by
   `python -m resense.cli run --bag <bag> --out results.jsonl` (one `FrameResult` JSON per line
   with the extra `frame` and `frame_id` keys). Play / pause (space), step (◀ ▶, arrow keys),
   seek slider, speed 0.25×–10×, loop. Playback is 10 Hz × speed; the timeline's x-axis is the
   message `stamp` (seconds relative to the first frame), in live mode it is the wall clock.
   Broken or blank lines are skipped.
-* **Built-in demo**: press *demo* for a 60-frame synthetic approach (120 → 40 m). It exercises
+* **Built-in demo**: press *Демо* for a 60-frame synthetic approach (120 → 40 m). It exercises
   GO / CAUTION / STOP, mount/health fields, playback and the summary card without ROS, Python or
   a dataset. It is a UI fallback for a jury laptop, not an evaluation result.
-* **Report** downloads `resense_run_report.json`: source, frame count, alarm events/frames,
+* **Отчёт** downloads `resense_run_report.json`: source, frame count, alarm events/frames,
   warning frames, nearest confirmed distance, peak detector time and time span.
 
 What is shown:
 
 | widget | source in the status JSON |
 |---|---|
-| banner **PATH CLEAR / WARNING / OBSTACLE 55.6 m** | `obstacle`, `warning`, `nearest_distance` |
+| banner **ПУТЬ СВОБОДЕН / ВНИМАНИЕ / ПРЕПЯТСТВИЕ 55.6 м** | `obstacle`, `warning`, `nearest_distance` |
 | top-down canvas (100 / 150 / 250 m): track axis, ±1.4 m gauge corridor, untrusted range shaded, red gauge boxes, orange advisory boxes with distance and confidence | `track.center/yaw/curvature/axis_valid`, `detections[]`, `warnings[]` |
 | timeline (last 30 s): nearest gauge obstacle (red), nearest advisory object (orange) | `nearest_distance`, `warnings[].distance` |
 | detector card: counts, axis, radius, trusted range, points, per-stage timing | `track`, `n_points`, `n_corridor`, `timing_ms` |
@@ -68,11 +71,11 @@ stays orange-bordered while the count is above zero.
 ```bash
 pip install playwright                      # the Python package; a Chromium build must be reachable
 python web/demo/make_demo_run.py            # synthetic tunnel, person 120 -> 40 m over 40 frames, 10 clear frames before/after
-python web/demo/check_dashboard.py          # loads out/demo_run.jsonl, plays it, asserts, screenshot -> docs/img/dashboard_synthetic.png
+python web/demo/check_dashboard.py          # loads out/demo_run.jsonl, plays it, asserts, screenshot -> out/dashboard_synthetic.png
 python -m pytest -q web/demo                # the same as tests (+ layout checks); browser tests skip without Chromium
 ```
 
-`check_dashboard.py` asserts PATH CLEAR at the start and OBSTACLE with a distance in 40–125 m
+`check_dashboard.py` asserts `ПУТЬ СВОБОДЕН` at the start and `ПРЕПЯТСТВИЕ` with a distance in 40–125 m
 during playback, then seeks to the frame with the nearest obstacle for the screenshot. If
 Playwright's own browser is missing it falls back to any Chromium under
 `$PLAYWRIGHT_BROWSERS_PATH` (or `--chromium <binary>`). `make_demo_run.py` needs open3d (ray

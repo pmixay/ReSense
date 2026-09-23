@@ -3,7 +3,7 @@
 
 Opens ``web/index.html`` from disk, loads a ``results.jsonl`` (from ``resense run --out`` or
 ``web/demo/make_demo_run.py``) through the file input, plays it back and asserts that the
-banner shows PATH CLEAR at the start and OBSTACLE with a distance inside ``[--min-dist,
+Russian banner shows ПУТЬ СВОБОДЕН at the start and ПРЕПЯТСТВИЕ with a distance inside ``[--min-dist,
 --max-dist]`` at some point.  Saves a screenshot of the frame with the nearest obstacle and,
 with ``--video``, a WebM recording of the replay.
 
@@ -29,7 +29,7 @@ import time
 
 _ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 INDEX = os.path.join(_ROOT, "web", "index.html")
-OBSTACLE_RE = re.compile(r"OBSTACLE\s+([\d.]+)\s*m")
+OBSTACLE_RE = re.compile(r"ПРЕПЯТСТВИЕ\s+([\d.]+)\s*м")
 
 
 def banner_text(page) -> str:
@@ -156,14 +156,14 @@ def check(jsonl: str, screenshot: str | None, video: str | None, speed: float, m
 
     # --- assertions ------------------------------------------------------------------------
     texts = [t for _, t in report["observed"]]
-    if not texts or not texts[0].startswith("PATH CLEAR"):
-        report["errors"].append(f"banner at the start is {texts[:1]!r}, expected PATH CLEAR")
+    if not texts or not texts[0].startswith("ПУТЬ СВОБОДЕН"):
+        report["errors"].append(f"banner at the start is {texts[:1]!r}, expected ПУТЬ СВОБОДЕН")
     dists = [float(m.group(1)) for t in texts for m in [OBSTACLE_RE.search(t)] if m]
     report["nearest_min_m"] = min(dists) if dists else None
     if not dists:
-        report["errors"].append("the banner never showed OBSTACLE during playback")
+        report["errors"].append("the banner never showed ПРЕПЯТСТВИЕ during playback")
     elif not any(min_dist <= d <= max_dist for d in dists):
-        report["errors"].append(f"OBSTACLE distances {sorted(set(dists))[:5]}... never inside [{min_dist}, {max_dist}] m")
+        report["errors"].append(f"ПРЕПЯТСТВИЕ distances {sorted(set(dists))[:5]}... never inside [{min_dist}, {max_dist}] m")
     if report["obstacle_banner"] and not OBSTACLE_RE.search(report["obstacle_banner"]):
         report["errors"].append(f"after seeking to the nearest-obstacle frame the banner says {report['obstacle_banner']!r}")
     report["ok"] = not report["errors"]
@@ -185,7 +185,7 @@ def main(argv=None) -> int:
     r = check(a.jsonl, a.screenshot or None, a.video, a.speed, a.min_dist, a.max_dist, a.chromium, a.timeout)
     seen = {t for _, t in r["observed"]}
     print(f"frames: {r['frames']}  banner states seen: {len(seen)}  first: {r['observed'][0][1] if r['observed'] else None!r}")
-    print(f"nearest OBSTACLE shown: {r['nearest_min_m']} m  (accepted window {a.min_dist}-{a.max_dist} m)")
+    print(f"nearest ПРЕПЯТСТВИЕ shown: {r['nearest_min_m']} m  (accepted window {a.min_dist}-{a.max_dist} m)")
     if r["screenshot"]:
         print(f"screenshot: {r['screenshot']} ({os.path.getsize(r['screenshot'])} bytes)")
     if r["video"]:
