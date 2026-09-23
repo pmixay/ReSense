@@ -203,10 +203,22 @@ def fill(sh, paras, size=None, color=None, bullet=None, space_before=None, line=
                 te.set("{http://www.w3.org/XML/1998/namespace}space", "preserve")
 
 
+def _jpeg(path, quality=92):
+    """A large PNG render goes into the deck as JPEG (a point-cloud render: 1.6 MB -> ~0.5 MB)."""
+    import io
+    from PIL import Image
+    if not path.lower().endswith(".png") or os.path.getsize(path) < 400_000:
+        return path
+    buf = io.BytesIO()
+    Image.open(path).convert("RGB").save(buf, "JPEG", quality=quality)
+    buf.seek(0)
+    return buf
+
+
 def picture_cover(slide, path, left, top, width, height):
     """Add a picture that fills the box (cropped, aspect kept)."""
     from PIL import Image
-    pic = slide.shapes.add_picture(path, left, top, width, height)
+    pic = slide.shapes.add_picture(_jpeg(path), left, top, width, height)
     iw, ih = Image.open(path).size
     box, img = width / height, iw / ih
     if img > box:
@@ -219,7 +231,7 @@ def picture_cover(slide, path, left, top, width, height):
 
 
 def picture_in_placeholder(ph, path):
-    return ph.insert_picture(path)
+    return ph.insert_picture(_jpeg(path))
 
 
 def textbox(slide, left, top, width, height, paras, size=12, color="FFFFFF", bold=False, anchor=None):
@@ -406,7 +418,9 @@ def s_data(sl):             # template slide 12: text left, picture right
     out.save(buf, "JPEG", quality=88)
     buf.seek(0)
     _, rid = sl.part.get_or_add_image_part(buf)
+    old = blip.get(R)
     blip.set(R, rid)
+    sl.part.drop_rel(old)                      # the template's picture is not written again
 
 
 def s_algorithm(sl):        # template slide 25: timeline 1-5
@@ -567,7 +581,7 @@ def s_next(sl):             # template slide 17: three cards
     cards = [
         (49, 37, 38, "Что получилось", f"ROS 2-модуль в Docker; все {N['frames']} реальных кадров: человек и "
                                        f"предмет на рельсе найдены, {N['ride_per_km']} ложных события на км; "
-                                       f"{N['tests']} теста и CI"),
+                                       f"{N['tests']} тестов и CI"),
         (50, 39, 40, "Что дальше", "опора высоты по своду тоннеля — мелкие объекты дальше 100 м; скорость "
                                    "поезда в узел; «второе мнение» на реальных препятствиях; замер на i7-9700E"),
         (51, 41, 42, "Внедрение", "docker build → run → ros2 bag play; один файл параметров; стандартные "
