@@ -5,15 +5,16 @@
 <title>ReSense dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-  :root { --bg:#14151a; --fg:#eaeaea; --ok:#2ecc71; --warn:#ff9f1c; --bad:#ff2d55; --muted:#8a8f98; --line:#2a2c33; --card:#1b1d24; --accent:#8a83d1; }
+  :root { --bg:#111218; --fg:#f4f3f8; --ok:#35d07f; --warn:#ffad33; --bad:#ff3b65; --muted:#9da1ad; --line:#30323c; --card:#1a1c24; --accent:#9b92e8; --accent-2:#ff3b76; }
   * { box-sizing: border-box; }
   body { margin:0; font-family: system-ui, sans-serif; background:var(--bg); color:var(--fg); }
-  header { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; padding:10px 20px; border-bottom:1px solid var(--line); }
-  header h1 { font-size:18px; margin:0 12px 0 0; letter-spacing:.5px; white-space:nowrap; }
+  header { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; padding:12px 20px; border-bottom:1px solid var(--line); background:linear-gradient(90deg,rgba(82,9,120,.22),transparent 45%); }
+  header h1 { font-size:18px; margin:0 12px 0 0; letter-spacing:.5px; white-space:nowrap; display:flex; align-items:center; gap:10px; }
+  .brand-mark { display:inline-grid; place-items:center; width:30px; height:30px; border-radius:9px; color:white; background:linear-gradient(135deg,var(--accent-2),#520978); font-weight:900; box-shadow:0 0 22px rgba(255,59,118,.25); }
   .mode { display:flex; gap:8px; align-items:center; padding:4px 10px; border:1px solid var(--line); border-radius:6px; }
   .mode.active { border-color: var(--accent); }
   .mode .tag { font-size:11px; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); }
-  #banner { font-size:44px; font-weight:800; padding:14px 20px 10px; line-height:1.1; }
+  #banner { font-size:44px; font-weight:850; padding:16px 20px 12px; line-height:1.1; letter-spacing:-1px; border-left:5px solid currentColor; background:linear-gradient(90deg,currentColor 0,currentColor 5px,transparent 5px); }
   #banner small { display:block; font-size:14px; font-weight:400; color:var(--muted); margin-top:2px; }
   .clear { color:var(--ok);} .warn { color:var(--warn);} .bad { color:var(--bad);}
   main { display:grid; grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr); gap:16px; padding:0 20px 20px; }
@@ -29,28 +30,41 @@
   input, select, button { background:#0d0e12; color:var(--fg); border:1px solid var(--line); border-radius:4px; padding:4px 8px; font: inherit; }
   button { cursor:pointer; } button:hover { border-color: var(--accent); } button:disabled { opacity:.4; cursor:default; }
   button.primary { background:var(--accent); border-color:var(--accent); color:#111; font-weight:600; }
+  button.secondary { border-color:#5e597f; }
+  button:focus-visible, input:focus-visible, select:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
   input[type=file] { max-width: 220px; }
   input[type=range] { width: 160px; padding:0; vertical-align: middle; }
   .status-line { font-size:12px; color:var(--muted); }
   .canvas-tools { display:flex; gap:12px; align-items:center; font-size:12px; color:var(--muted); margin-bottom:6px; }
+  .health { margin-left:auto; display:flex; gap:7px; align-items:center; }
+  .pill { display:inline-flex; gap:6px; align-items:center; border:1px solid var(--line); border-radius:999px; padding:4px 9px; font-size:11px; color:var(--muted); }
+  .pill::before { content:''; width:7px; height:7px; border-radius:50%; background:currentColor; }
+  .pill.ok { color:var(--ok); border-color:rgba(53,208,127,.35); }
+  .pill.warn { color:var(--warn); border-color:rgba(255,173,51,.35); }
+  .pill.bad { color:var(--bad); border-color:rgba(255,59,101,.35); }
+  .empty-log { color:var(--muted); font-family:system-ui,sans-serif; white-space:normal; }
+  #drop-overlay { display:none; position:fixed; inset:12px; z-index:20; place-items:center; border:3px dashed var(--accent); border-radius:18px; background:rgba(17,18,24,.92); font-size:24px; font-weight:700; color:var(--accent); pointer-events:none; }
+  body.dragging #drop-overlay { display:grid; }
+  .shortcut { opacity:.8; }
   @media (max-width: 960px) { main { grid-template-columns:1fr; } #banner { font-size:32px; } }
 </style>
 </head>
 <body>
 <header>
-  <h1>ReSense — clearance-gauge obstacle detection</h1>
+  <h1><span class="brand-mark" aria-hidden="true">R</span>ReSense — clearance-gauge obstacle detection</h1>
   <div class="mode active" id="mode-live">
     <span class="tag">live</span>
     <label>rosbridge <input id="url" value="ws://localhost:9090" size="20"></label>
-    <button id="connect">connect</button>
-    <span id="conn" class="status-line">disconnected</span>
+    <button id="connect" type="button">connect</button>
+    <span id="conn" class="status-line" role="status">disconnected</span>
   </div>
   <div class="mode" id="mode-replay">
     <span class="tag">replay</span>
     <input type="file" id="file" accept=".jsonl,.json,.txt,.log" title="results.jsonl from: python -m resense.cli run --out results.jsonl">
-    <button id="stepback" title="previous frame (←)" disabled>&#9664;</button>
-    <button id="play" class="primary" title="play / pause (space)" disabled>play</button>
-    <button id="stepfwd" title="next frame (→)" disabled>&#9654;</button>
+    <button id="demo" class="secondary" type="button" title="load a built-in 60-frame jury demo">demo</button>
+    <button id="stepback" type="button" aria-label="previous frame" title="previous frame (←)" disabled>&#9664;</button>
+    <button id="play" type="button" class="primary" title="play / pause (space)" disabled>play</button>
+    <button id="stepfwd" type="button" aria-label="next frame" title="next frame (→)" disabled>&#9654;</button>
     <input type="range" id="seek" min="0" max="0" value="0" disabled>
     <span id="frame-pos" class="status-line">no file</span>
     <label class="status-line">speed <select id="speed">
@@ -58,9 +72,14 @@
       <option value="2">2x</option><option value="4">4x</option><option value="10">10x</option>
     </select></label>
     <label class="status-line"><input type="checkbox" id="loop"> loop</label>
+    <button id="export-report" type="button" title="download a JSON summary of the loaded run" disabled>report</button>
+  </div>
+  <div class="health" aria-label="system health">
+    <span id="health-source" class="pill">no source</span>
+    <span id="health-realtime" class="pill">latency —</span>
   </div>
 </header>
-<div id="banner" class="clear">PATH CLEAR</div>
+<div id="banner" class="clear" role="status" aria-live="assertive">PATH CLEAR</div>
 <main>
   <div>
     <div class="canvas-tools">
@@ -68,8 +87,8 @@
       <label>range <select id="xmax"><option value="100">100 m</option><option value="150" selected>150 m</option><option value="250">250 m</option></select></label>
       <span id="canvas-note"></span>
     </div>
-    <canvas id="top" width="1200" height="420"></canvas>
-    <canvas id="timeline" width="1200" height="170"></canvas>
+    <canvas id="top" width="1200" height="420" role="img" aria-label="Top-down view of the track corridor and detected objects"></canvas>
+    <canvas id="timeline" width="1200" height="170" role="img" aria-label="Thirty-second obstacle distance timeline"></canvas>
   </div>
   <div>
     <div class="card"><h3>detector</h3><div class="kv">
@@ -97,9 +116,16 @@
       <span>dropped frames</span><b id="n-dropped">—</b>
       <span>input period</span><b id="n-period">—</b>
     </div></div>
-    <div class="card"><h3>alarm log</h3><div id="log"></div></div>
+    <div class="card"><h3>run summary</h3><div class="kv">
+      <span>alarm events / frames</span><b id="s-alarms">—</b>
+      <span>nearest confirmed</span><b id="s-nearest">—</b>
+      <span>warning frames</span><b id="s-warnings">—</b>
+      <span>max detect time</span><b id="s-max-time">—</b>
+    </div></div>
+    <div class="card"><h3>alarm log</h3><div id="log" aria-live="polite"><span class="empty-log">No alarms. Load a JSONL file, drop it anywhere, or press demo. <span class="shortcut">Space: play/pause · ←/→: step</span></span></div></div>
   </div>
 </main>
+<div id="drop-overlay">Drop results.jsonl to replay</div>
 <!-- roslibjs is only needed for the live mode; the page (and the replay mode) works without it -->
 <script async src="https://cdn.jsdelivr.net/npm/roslib@1/build/roslib.min.js" onerror="document.getElementById('conn').textContent='roslib.js not loaded (offline?) — replay mode only'"></script>
 <script>
@@ -123,6 +149,8 @@ const state = {
   lastObstacle: false,
   node: { lastDropped: null, alertUntil: 0 },
   last: null,                                // last result applied (for redraws)
+  sourceName: null,
+  summary: null,
 };
 
 // ----------------------------------------------------------------------------- drawing
@@ -260,7 +288,9 @@ function applyNode(node) {
   if (!node) {
     for (const id of ['n-latency', 'n-fps', 'n-frames', 'n-dropped', 'n-period']) $(id).textContent = '—';
     $('node-note').textContent = state.mode === 'replay' ? '(offline replay: no node stats in results.jsonl)' : '(no "node" object in the status message)';
-    card.className = 'card'; return;
+    card.className = 'card';
+    $('health-realtime').className = 'pill'; $('health-realtime').textContent = state.mode === 'replay' ? 'offline replay' : 'latency —';
+    return;
   }
   $('node-note').textContent = '';
   $('n-latency').textContent = fmt(node.latency_ms, 0, ' ms'); $('n-latency').className = node.latency_ms > 100 ? 'warn' : '';
@@ -274,6 +304,9 @@ function applyNode(node) {
   $('n-dropped').textContent = dropped + (grew ? '  ▲' : '');
   $('n-dropped').className = dropped > 0 ? (now < state.node.alertUntil ? 'bad' : 'warn') : '';
   card.className = 'card' + (now < state.node.alertUntil ? ' alert' : (dropped > 0 ? ' notice' : ''));
+  const unhealthy = node.latency_ms > 100 || (node.fps != null && node.fps > 0 && node.fps < 9) || dropped > 0;
+  $('health-realtime').className = 'pill ' + (unhealthy ? 'warn' : 'ok');
+  $('health-realtime').textContent = node.latency_ms == null ? 'node online' : `latency ${node.latency_ms.toFixed(0)} ms`;
 }
 
 // ----------------------------------------------------------------------------- live mode
@@ -289,9 +322,10 @@ $('connect').onclick = () => {
   if (ros) { try { ros.close(); } catch (e) {} }
   ros = new ROSLIB.Ros({ url: $('url').value });
   $('conn').textContent = 'connecting…';
-  ros.on('connection', () => $('conn').textContent = 'connected');
-  ros.on('error', () => $('conn').textContent = 'error');
-  ros.on('close', () => $('conn').textContent = 'disconnected');
+  $('health-source').className = 'pill warn'; $('health-source').textContent = 'live connecting';
+  ros.on('connection', () => { $('conn').textContent = 'connected'; $('health-source').className = 'pill ok'; $('health-source').textContent = 'live connected'; });
+  ros.on('error', () => { $('conn').textContent = 'error'; $('health-source').className = 'pill bad'; $('health-source').textContent = 'live error'; });
+  ros.on('close', () => { $('conn').textContent = 'disconnected'; $('health-source').className = 'pill warn'; $('health-source').textContent = 'live disconnected'; });
   new ROSLIB.Topic({ ros, name: '/resense/status', messageType: 'std_msgs/String' }).subscribe(onStatus);
 };
 
@@ -306,6 +340,26 @@ function setMode(m) {
   pause(); state.mode = m; resetView();
   $('mode-live').classList.toggle('active', m === 'live'); $('mode-replay').classList.toggle('active', m === 'replay');
   $('canvas-note').textContent = m === 'replay' ? 'offline replay of results.jsonl' : '';
+  $('health-source').className = 'pill ' + (m === 'live' ? 'warn' : 'ok');
+  $('health-source').textContent = m === 'live' ? 'live disconnected' : 'replay ready';
+}
+function summarizeFrames(frames) {
+  let events = 0, alarmFrames = 0, warningFrames = 0, active = false, nearest = Infinity, maxTime = 0;
+  for (const f of frames) {
+    if (f.obstacle) { alarmFrames++; nearest = Math.min(nearest, Number(f.nearest_distance)); if (!active) events++; }
+    if (f.warning) warningFrames++;
+    active = !!f.obstacle;
+    maxTime = Math.max(maxTime, Number((f.timing_ms || {}).total) || 0);
+  }
+  return { frames: frames.length, alarm_events: events, alarm_frames: alarmFrames, warning_frames: warningFrames,
+    nearest_m: isFinite(nearest) ? nearest : null, max_detect_ms: maxTime || null };
+}
+function renderSummary() {
+  const s = state.summary;
+  $('s-alarms').textContent = s ? `${s.alarm_events} / ${s.alarm_frames}` : '—';
+  $('s-nearest').textContent = s && s.nearest_m != null ? `${s.nearest_m.toFixed(1)} m` : '—';
+  $('s-warnings').textContent = s ? s.warning_frames : '—';
+  $('s-max-time').textContent = s && s.max_detect_ms != null ? `${s.max_detect_ms.toFixed(0)} ms` : '—';
 }
 function loadText(text, name) {
   const frames = [];
@@ -315,13 +369,47 @@ function loadText(text, name) {
   }
   setMode('replay'); pause();
   state.frames = frames; state.idx = -1; state.t0 = frames.length ? stampOf(frames[0]) : null;
+  state.sourceName = name || 'results.jsonl'; state.summary = summarizeFrames(frames); renderSummary();
   const ok = frames.length > 0;
   for (const id of ['play', 'stepback', 'stepfwd', 'seek']) $(id).disabled = !ok;
+  $('export-report').disabled = !ok;
   $('seek').max = Math.max(frames.length - 1, 0); $('seek').value = 0;
   $('frame-pos').textContent = ok ? `${name || 'file'}: ${frames.length} frames` : 'no frames found in the file';
   resetView();
   if (ok) seek(0);
   return frames.length;
+}
+function demoFrames() {
+  const frames = [];
+  for (let i = 0; i < 60; i++) {
+    const approach = i >= 10 && i < 50, distance = 120 - (i - 10) * (80 / 39);
+    const obstacle = approach && i >= 14, warning = approach && i >= 10 && i < 14;
+    const detection = { id: 1, zone: obstacle ? 'gauge' : 'warning', distance, lateral: 0.08,
+      center: [distance + 0.2, 0.08, 0.9], size: [0.4, 0.5, 1.7], n_points: Math.round(8 + (120 - distance) * .7),
+      confidence: obstacle ? Math.min(.99, .62 + (120 - distance) / 160) : .45, age: Math.max(1, i - 9), height_min: .12, intensity: 60 };
+    frames.push({ stamp: i * FRAME_DT, frame: i, frame_id: 'resense_demo', obstacle, warning,
+      decision: obstacle ? 'STOP' : (warning ? 'CAUTION' : 'GO'), clear_distance: obstacle ? distance : 145,
+      health: { level: 'ok', messages: [], visibility: 170, rail_lock: .98 },
+      mount: { status: 'ok', roll_deg: .1, pitch_deg: -.2, yaw_deg: 0, frames_used: 20 },
+      nearest_distance: obstacle ? distance : null, detections: obstacle ? [detection] : [], warnings: warning ? [detection] : [],
+      n_candidates: approach ? detection.n_points : 0, n_points: 190000, n_corridor: approach ? detection.n_points : 0,
+      track: { center: .04, yaw: .002, curvature: .00018, axis_valid: 145 },
+      timing_ms: { track: 14, corridor: 5, cluster: approach ? 18 : 8, total: approach ? 49 : 38 },
+      node: { latency_ms: approach ? 56 : 44, fps: 10, frames: i + 1, dropped_frames: 0, input_period_ms: 100 } });
+  }
+  return frames;
+}
+function downloadJSON(value, name) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(value, null, 2)], { type: 'application/json' }));
+  a.download = name; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+}
+function readReplayFile(file) {
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = () => loadText(String(r.result), file.name);
+  r.readAsText(file);
 }
 function showFrame(i, draw) {
   state.idx = i; const f = state.frames[i];
@@ -358,11 +446,15 @@ function pause() {
   state.timer = null; state.playing = false; $('play').textContent = 'play';
 }
 $('file').addEventListener('change', ev => {
-  const f = ev.target.files && ev.target.files[0]; if (!f) return;
-  const r = new FileReader();
-  r.onload = () => loadText(String(r.result), f.name);
-  r.readAsText(f);
+  readReplayFile(ev.target.files && ev.target.files[0]);
 });
+$('demo').onclick = () => {
+  loadText(demoFrames().map(f => JSON.stringify(f)).join('\n'), 'built-in jury demo');
+  $('speed').value = '2'; state.speed = 2; play();
+};
+$('export-report').onclick = () => downloadJSON({ generated_at: new Date().toISOString(), source: state.sourceName,
+  summary: state.summary, first_stamp: state.frames.length ? stampOf(state.frames[0]) : null,
+  last_stamp: state.frames.length ? stampOf(state.frames[state.frames.length - 1]) : null }, 'resense_run_report.json');
 $('play').onclick = () => state.playing ? pause() : play();
 $('stepfwd').onclick = () => { pause(); step(1); };
 $('stepback').onclick = () => { pause(); step(-1); };
@@ -375,11 +467,19 @@ document.addEventListener('keydown', ev => {
   else if (ev.code === 'ArrowRight') { pause(); step(1); }
   else if (ev.code === 'ArrowLeft') { pause(); step(-1); }
 });
+let dragDepth = 0;
+document.addEventListener('dragenter', ev => { ev.preventDefault(); dragDepth++; document.body.classList.add('dragging'); });
+document.addEventListener('dragover', ev => ev.preventDefault());
+document.addEventListener('dragleave', ev => { ev.preventDefault(); dragDepth = Math.max(0, dragDepth - 1); if (!dragDepth) document.body.classList.remove('dragging'); });
+document.addEventListener('drop', ev => {
+  ev.preventDefault(); dragDepth = 0; document.body.classList.remove('dragging');
+  readReplayFile(ev.dataTransfer && ev.dataTransfer.files && ev.dataTransfer.files[0]);
+});
 // in live mode the timeline scrolls with the wall clock even when no message arrives
 setInterval(() => { if (state.mode === 'live') drawTimeline(); }, 500);
 
 // test / automation hook (used by web/demo/check_dashboard.py)
-window.resense = { state, loadText, play, pause, step, seek, setMode, applyResult };
+window.resense = { state, loadText, play, pause, step, seek, setMode, applyResult, summarizeFrames, demoFrames };
 
 drawTop({ track: { center: 0, yaw: 0, curvature: 0 }, detections: [], warnings: [] }); drawTimeline();
 </script>

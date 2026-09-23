@@ -6,7 +6,7 @@ the scripts that verify the dashboard headlessly, and the video recipe.
 
 | file | what |
 |---|---|
-| [`index.html`](index.html) | dashboard: banner, top-down view, timeline, node stats, alarm log; live + offline replay; no build step |
+| [`index.html`](index.html) | dashboard: banner, top-down view, decision/health, timeline, node stats, run summary and alarm log; live + offline replay + built-in demo; no build step |
 | [`foxglove_layout.json`](foxglove_layout.json) | Foxglove Studio layout (3D + plots + indicator + status), see "Remote demo with Foxglove" |
 | [`demo/make_demo_run.py`](demo/make_demo_run.py) | synthetic approach sequence → `out/demo_run.jsonl` in the `resense run --out` format |
 | [`demo/check_dashboard.py`](demo/check_dashboard.py) | Playwright + headless Chromium: loads the JSONL into the dashboard, plays it, asserts the banner, screenshot / video |
@@ -29,12 +29,17 @@ Open the file in a browser; nothing to install or build. Two modes, same widgets
   live mode is unavailable and the page says so, the replay mode still works. rosbridge is
   **not** in the ReSense image (`apt install ros-humble-rosbridge-suite` where ROS runs); for a
   live view on an offline stand use Foxglove, whose bridge the image has (`foxglove_layout.json`).
-* **Replay**: *Choose file* → a `results.jsonl` written by
+* **Replay**: *Choose file* (or drop the file anywhere) → a `results.jsonl` written by
   `python -m resense.cli run --bag <bag> --out results.jsonl` (one `FrameResult` JSON per line
   with the extra `frame` and `frame_id` keys). Play / pause (space), step (◀ ▶, arrow keys),
   seek slider, speed 0.25×–10×, loop. Playback is 10 Hz × speed; the timeline's x-axis is the
   message `stamp` (seconds relative to the first frame), in live mode it is the wall clock.
   Broken or blank lines are skipped.
+* **Built-in demo**: press *demo* for a 60-frame synthetic approach (120 → 40 m). It exercises
+  GO / CAUTION / STOP, mount/health fields, playback and the summary card without ROS, Python or
+  a dataset. It is a UI fallback for a jury laptop, not an evaluation result.
+* **Report** downloads `resense_run_report.json`: source, frame count, alarm events/frames,
+  warning frames, nearest confirmed distance, peak detector time and time span.
 
 What is shown:
 
@@ -44,7 +49,9 @@ What is shown:
 | top-down canvas (100 / 150 / 250 m): track axis, ±1.4 m gauge corridor, untrusted range shaded, red gauge boxes, orange advisory boxes with distance and confidence | `track.center/yaw/curvature/axis_valid`, `detections[]`, `warnings[]` |
 | timeline (last 30 s): nearest gauge obstacle (red), nearest advisory object (orange) | `nearest_distance`, `warnings[].distance` |
 | detector card: counts, axis, radius, trusted range, points, per-stage timing | `track`, `n_points`, `n_corridor`, `timing_ms` |
+| decision and health: GO / CAUTION / STOP / FAULT, verified-clear distance, visibility, rail lock, calibration | `decision`, `clear_distance`, `health`, `mount` |
 | **ROS node card**: `latency_ms`, `fps`, `frames`, `dropped_frames`, `input_period_ms` | `node` (only in the node's messages; a replay file says "no node stats") |
+| run summary: alarm events/frames, warning frames, nearest object, peak detector time | all loaded replay frames |
 | alarm log: one line per alarm frame (id, lateral offset, size, points, confidence), one line when the alarm ends | `detections[]` |
 
 Health warnings: latency above 100 ms (the 10 Hz period) and fps below 9 turn orange; when
@@ -132,16 +139,18 @@ Known limits:
 
 ## Video
 
-Made on 21.09 with v0.5 on the real bag `doubleT_obstacle` (every frame, offline):
-[`docs/video/doubleT_obstacle_offline.mp4`](../docs/video/doubleT_obstacle_offline.mp4) (renders → ffmpeg,
-1280×720, 10 fps, 20 s, 1.9 MB) and [`docs/video/dashboard_doubleT_obstacle.mp4`](../docs/video/dashboard_doubleT_obstacle.mp4)
-(the dashboard replaying `resense run --out` of the same bag, recorded with Playwright). The RViz
-recording of the jury chain (`docker build → run → bag play`) still needs a machine with Docker.
+The committed v0.6.2 real-data clips cover every presentation surface:
 
+* [`docker_chain_rviz.mp4`](../docs/video/docker_chain_rviz.mp4) — the full jury chain on screen:
+  node and RViz in Docker, `ros2 bag play` as a normal user, and `/resense/decision`;
+* [`doubleT_obstacle_cab.mp4`](../docs/video/doubleT_obstacle_cab.mp4) — the real bag from the
+  driver's seat with the envelope, STOP decision, distance and close-up;
+* [`doubleT_obstacle_offline.mp4`](../docs/video/doubleT_obstacle_offline.mp4) — top and side
+  views of every frame;
+* [`dashboard_doubleT_obstacle.mp4`](../docs/video/dashboard_doubleT_obstacle.mp4) — dashboard
+  replay of that run.
 
-Spec §5 asks for a short video of the algorithm at work. Two recipes below produce one from a
-run; **the real video on the organizers' bag is a human task (P2) on a machine with the dataset**
-— nothing in this section has been run on real data, the numbers are from the synthetic demo run.
+The recipes below reproduce the offline and dashboard clips.
 
 ### 1. Offline: bag → PNG per frame → mp4
 
@@ -154,8 +163,8 @@ ffmpeg -framerate 10 -pattern_type glob -i 'out/frames/frame_*.png' \
 `--render` writes one 1280×720 PNG per frame (top view + side view, corridor points in orange,
 detections in red with distance and confidence, status in the title); all 201 frames of
 `doubleT_obstacle` give a 20 s clip at 10 fps. `--every 2` halves the work at 5 fps
-(`-framerate 5`). Verified on a synthetic bag (`scripts/make_smoke_bag.py` → `resense run --render` →
-ffmpeg → mp4); not yet run on the organizers' data. The Playwright package version must match the
+(`-framerate 5`). Verified on the organizers' `doubleT_obstacle` bag and on a synthetic bag
+(`scripts/make_smoke_bag.py` → `resense run --render` → ffmpeg → mp4). The Playwright package version must match the
 Chromium build it drives (`playwright==1.56.0` for the pre-installed chromium-1194 in the team
 sandbox; elsewhere `pip install playwright && python -m playwright install --with-deps chromium`
 fetches a matching browser), or pass `--chromium <binary>`.
@@ -170,15 +179,16 @@ ffmpeg -i out/dashboard.webm -c:v libx264 -pix_fmt yuv420p out/dashboard.mp4    
 Playwright records the whole replay (1440×900, WebM/VP8, with its bundled ffmpeg, no system
 ffmpeg needed) and the script moves the file to the path given. `--speed 2` halves the length.
 On the synthetic 60-frame demo run in the 4-core sandbox: 905 kB, 7.3 s at 1× (60 frames at
-10 Hz plus the load / seek moments at the ends). Videos are not committed (`out/` is gitignored).
+10 Hz plus the load / seek moments at the ends). Temporary files under `out/` remain gitignored;
+the final real-data clips are committed under `docs/video/`.
 
-### 3. The real video (to do, P2, needs the dataset)
+### 3. Live-chain storyboard (completed in `docker_chain_rviz.mp4`)
 
 Storyboard for 1–2 minutes, following the organizers' chain *tunnel → point cloud → algorithm →
 obstacle → distance*: (1) `./scripts/run_demo.sh /data/for_hackathon/doubleT_obstacle` with
 RViz — the raw cloud of the double-track tunnel; (2) toggle *Corridor points* — the orange
-gauge corridor; (3) the person crossing the track: red box, label and the banner
-`OBSTACLE 55.6 m` (real number, `docs/EXPERIMENTS.md` §1); (4) the dashboard's timeline and
+gauge corridor; (3) the person crossing the track: red box, STOP label and distance
+55.7–56.3 m (`docs/EXPERIMENTS.md` §3b); (4) the dashboard's timeline and
 node card (latency / fps / dropped frames) during the same playback; (5) one empty bag
 (`roundT_squareT_pressureGate_squareT`) staying `PATH CLEAR` through the gate. Screen-record
 with OBS or `ffmpeg -f x11grab -framerate 25 -i :0.0 out/demo.mp4`; the captain links the file
