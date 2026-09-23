@@ -37,7 +37,9 @@ def events(path):
 
 
 def obstacle_hits(run):
-    """frames in which each labelled in-envelope object of doubleT_obstacle is detected"""
+    """frames in which each labelled in-envelope object of doubleT_obstacle is detected; the object
+    on the rail only by its own (bed-level, ``kind`` 'low') detection within 0.4 m: with a 1 m
+    window the person's track next to it counts too (27 instead of 2 frames for v0.6.1)"""
     lab = json.load(open(LABELS))
     hits = {}
     for line in open(os.path.join(run, "doubleT_obstacle.jsonl")):
@@ -47,8 +49,10 @@ def obstacle_hits(run):
                 continue
             h = hits.setdefault(r["label"], [0, 0])
             h[1] += 1
-            if any(abs(x["distance"] - r["distance"]) < 1.5 and abs(x["lateral"] - r["lateral"]) < 1.0
-                   for x in d["detections"]):
+            own = r["label"] == "object_on_rail"
+            if any(abs(x["distance"] - r["distance"]) < 1.5
+                   and abs(x["lateral"] - r["lateral"]) < (0.4 if own else 1.0)
+                   and (not own or x.get("kind") == "low") for x in d["detections"]):
                 h[0] += 1
     return hits
 

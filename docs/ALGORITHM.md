@@ -294,7 +294,7 @@ lying across the right rail of `doubleT_obstacle` (0.45 × 0.6 × 0.3 m, 56 m) r
 (median 0.13 m) above the rail-head plane. In v0.6.1 it fell *between* the stages: the corridor
 stage saw 0–3 points above the floor (below its cluster minimum), the low-object stage — whose
 every candidate must be 3 cm above the rail head — a 3-point sliver, and neither confirmed it
-(27 of 185 frames, 2 of the 126 after the person leaves it). v0.6.2 adds a third clustering:
+(2 of its 185 frames by its own detection, both after the person left it). v0.6.2 adds a third clustering:
 
 1. `low_candidates` also returns every bed anomaly **without** the per-point `min_point_top`
    rule (step 3);
@@ -311,7 +311,11 @@ every candidate must be 3 cm above the rail head — a 3-point sliver, and neith
    corridor cluster that is itself reported (one detection per object).
 
 Result (EXPERIMENTS.md §0): the object in **118 of the 126 frames after the person leaves it**
-and 146 of 185 overall, +1 event on the five empty bags and +1 on the ride. An object of that shape
+and 121 of 185 overall (its own detection; v0.6.1: 2), +1 event on the five empty bags and +1 on the ride.
+The thresholds sit close to this one real object — its top 0.11–0.16 m against 0.10, its width
+0.38–0.50 m against 0.35 (a review found 45 of 126 frames with a 0.13 m minimum and 95 with a
+0.45 m width) — because the rail fittings reach 8 cm and the trackside devices are 0.2–0.3 m
+across: there is no wider margin on geometry alone. An object of that shape
 lying across a rail is found at 25, 40 and 50 m in the synthetic tunnel
 (`tests/test_envelope.py`); beyond ~50–60 m the bed stops returning (grazing incidence) and a
 0.3 m-high object has one or two rings above the rail head, which is where the stage ends.

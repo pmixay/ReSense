@@ -45,7 +45,7 @@ inside the image.
    topic pairs, two recordings into one node — detections as offline, `roundT_doubleT` PASS
    with `--max-alarm-frames 2`; it found and fixed the best-effort transport bug (v0.6.2
    `input_reliability`). What is left for the stand: the original bags (not rebuilt ones) and
-   the i7 timing — at 360° the 4-vCPU sandbox runs at 8–9.6 fps.
+   the i7 timing — at 360° the 4-vCPU sandbox runs at 8–10 fps in steady state and loses the first seconds to the DDS start-up (EXPERIMENTS §3b).
 3. ~~Launch arguments for the demo~~ — done (`loop:=`, every parameter as a launch argument,
    plus `ego_speed_mps` / `speed_topic` / `odom_topic` / `publish_tf` / `tf_parent_frame`).
 4. ~~Data-path alignment and a headless demo path~~ — done, item 8.
@@ -208,7 +208,7 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
     moving ride (set F, §2d, v0.6.1): person first confirmed at 150 m median on straight track,
     trolley 146 m, crate 111 m, cable 95 m; with a train speed 177 / 190 / 183 m and fewer ride false
     alarms (274 / 75); in R ≈ 350 m curves 1 of 2 approaches detected, at 74–82 m (sightline). The farthest
-    return in all data is 208.5 m, so 300 m is out of the sensor's reach.
+    return in all data is 210 m (every recording stops at 209.2–210.0 m), so 300 m is out of the sensor's reach.
 12. **Tests**: 147 (the node's decision / fault / watchdog / mount-parameter / input-switching
     logic runs against ROS stand-ins in `tests/test_node.py`, so a node bug no longer waits for
     the Docker job). Criteria judgement and the remaining work: [`SCORECARD.md`](SCORECARD.md).
@@ -236,7 +236,7 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
     `scripts/build_deck.py`; the captain fills the `<…>` personal data and photos on slides 2–4);
     the main shot from the cab: `scripts/hero_view.py` → `img/hero_person.png`, video
     `video/doubleT_obstacle_cab.mp4`. Set F round 2 (EXPERIMENTS §2d): a person on straight track
-    first confirmed at 148 m, detected continuously from 135 m (167 m with a train speed), curves
+    first confirmed at 148 m, held in ≥ 90 % of the frames from 135 m (every 10 m band from 115 m; 167 m with a train speed), curves
     6 of 7 approaches, station stops 6 of 6, 30 cm objects on a rail head 6 of 6 from 42–44 m.
     The organizers' procedure ran in Docker on the real frames (EXPERIMENTS §3b) and found a
     transport bug, fixed (`input_reliability`).
@@ -350,9 +350,9 @@ to touch. None changes a frozen contract. Items marked **done** were implemented
    subsampled cached frames). Needs the dataset, so it stays out of GitHub CI.
 10. **A dataset-free ROS smoke test for CI.** A tiny bag (5–10 frames) written with `rosbags`
     from the synthetic tunnel (P4's generator, called, not modified) plus a launch test in
-    `ros2_ws/src/resense_ros/test/` that plays it through the node and checks that `/resense/status`
+    `scripts/smoke_test.sh` that plays it through the node and checks that `/resense/status`
     arrives and the clear tunnel is not alarmed. Runs inside the Docker CI job. Files:
-    `scripts/make_smoke_bag.py`, `ros2_ws/.../test/`, `ci.yml` docker job.
+    `scripts/make_smoke_bag.py`, `scripts/smoke_test.sh`, `scripts/check_dry_run.py`, `ci.yml` docker job.
 11. **Evaluation protocol document.** — **done**, `docs/EVALUATION.md`: data sets, metrics
     (matching the implementation in `metrics.py`), procedure, regression rule and sprint
     targets. P4 extends `metrics.py` for the per-km / per-event rates; P3 optimises against it.

@@ -1,0 +1,17 @@
+[INFO] [launch]: All log files can be found below /root/.ros/log/2026-09-23-11-23-32-990730-vm-1
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [detector_node-1]: process started with pid [22]
+[detector_node-1] [INFO] [1790162614.002211954] [resense_detector]: sensor mount: forward=-y left=+x up=+z roll/pitch/yaw=0.0/0.0/0.0 deg; auto-calibration on
+[detector_node-1] [INFO] [1790162614.018845672] [resense_detector]: ReSense detector listening on /lidar_points, /sensing/lidar/hesai128/pointcloud (+ auto-discovery); input reliability auto
+[detector_node-1] [INFO] [1790162623.175246876] [resense_detector]: input 1: /lidar_points (frame_id=hesai_lidar, 139859 points)
+[detector_node-1] [INFO] [1790162623.176090917] [resense_detector]: static TF resense_lidar -> hesai_lidar (identity)
+[detector_node-1] [INFO] [1790162623.259141640] [resense_detector]: mount calibration: pending - 
+[detector_node-1] [INFO] [1790162624.030821897] [resense_detector]: frame 9: clear; axis y=+0.25 R=-278668; 4.5 fps; latency mean 64 / p95 77 / max 86 ms; input period 100 ms; dropped 4
+[detector_node-1] [INFO] [1790162626.047583620] [resense_detector]: frame 29: OBSTACLE at 59.9 m; axis y=+0.25 R=281944; 9.9 fps; latency mean 70 / p95 77 / max 80 ms; input period 100 ms; dropped 4
+[detector_node-1] [INFO] [1790162628.020134691] [resense_detector]: frame 36: OBSTACLE at 59.9 m; axis y=+0.25 R=282470; 3.5 fps; latency mean 71 / p95 81 / max 81 ms; input period 100 ms; dropped 4
+[detector_node-1] [INFO] [1790162635.619685618] [resense_detector]: input 2: /sensing/lidar/hesai128/pointcloud (frame_id=lidar_livox, 139859 points) - input switched from /lidar_points: detector restarted
+[detector_node-1] [INFO] [1790162635.620781348] [resense_detector]: static TF resense_lidar -> lidar_livox (identity)
+[detector_node-1] [INFO] [1790162635.681364967] [resense_detector]: mount calibration: pending - 
+[detector_node-1] [INFO] [1790162636.058218086] [resense_detector]: frame 41: clear; axis y=+0.25 R=inf; 2.5 fps; latency mean 66 / p95 73 / max 75 ms; input period 100 ms; dropped 8
+[detector_node-1] [INFO] [1790162638.057814585] [resense_detector]: frame 61: OBSTACLE at 44.9 m; axis y=+0.25 R=-279316; 10.0 fps; latency mean 71 / p95 85 / max 91 ms; input period 100 ms; dropped 8
+[detector_node-1] [INFO] [1790162640.020016345] [resense_detector]: frame 72: OBSTACLE at 44.9 m; axis y=+0.25 R=-140674; 5.6 fps; latency mean 70 / p95 85 / max 93 ms; input period 100 ms; dropped 8

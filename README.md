@@ -21,10 +21,9 @@ ROS 2 bag ─▶ PointCloud2 ─▶ resense_ros/detector_node ─▶ /resense/ob
 
 Status: **v0.6.2 (23.09)** — v0.6.1 rebuilt the detector around the organizers' Q&A answers;
 v0.6.2 finds the organizers' object lying across a rail and cuts the false stops on the ride by 43 %
-after an independent criteria review ([`docs/SCORECARD.md`](docs/SCORECARD.md)).
-v0.6.1 (22.09)
-([`docs/organizers/QA_session.md`](docs/organizers/QA_session.md): the recorded session,
-transcribed and summarised). The strict decision now uses **the train envelope the organizers
+after an independent criteria review ([`docs/SCORECARD.md`](docs/SCORECARD.md)). What v0.6.1
+(22.09) changed after the Q&A session ([`docs/organizers/QA_session.md`](docs/organizers/QA_session.md):
+the recorded session, transcribed and summarised): The strict decision now uses **the train envelope the organizers
 gave (2.1 m wide × 3.0 m high)**; objects **hanging** into it (broken cables) are obstacles
 whatever their shape; **low objects lying on a rail** are found by a bed-anomaly stage (v0.6.2:
 also when they straddle the envelope floor, like the organizers' object); tall
@@ -46,20 +45,22 @@ distance error < 0.35 m; the **object lying across the rail** (0.45 × 0.6 × 0.
 the 126 frames** after the person leaves it (v0.6.1: 2). Long range on the
 moving ride (objects ray-cast into consecutive real frames, no speed input, §2d, v0.6.2): a
 person on straight track is first confirmed at **148 m median** (110–169 m, 6 of 6) and
-**detected continuously from 135 m**; a trolley first at 144 m, a 1 m crate at 111 m, a 3 cm
+detected in ≥ 90 % of the frames from 135 m inward (in every 10 m band from 115 m); a trolley first at 144 m, a 1 m crate at 111 m, a 3 cm
 hanging cable at 95 m; with a train speed given (odometry or a speed topic: 5-frame
 accumulation) the person at **167 m**, the crate at 182 m; in R ≈ 350 m curves 6 of 7 approaches
 are detected, from 58–86 m (the sightline past the inner wall); at station stops a person 6 of
 6 from 113 m; 30 cm objects lying on a rail head 6 of 6 from 42–44 m. 300 m is beyond this
-sensor: the farthest return in all 13 759 frames is 208.5 m. Other LiDAR mounts (upside down, `+x` forward, backwards, rolled /
+sensor: no return in any of the 13 759 frames lies beyond 210 m (every recording stops at 209.2–210.0 m). Other LiDAR mounts (upside down, `+x` forward, backwards, rolled /
 pitched) are recovered from the rails and the bed: orientation found and tilt within 0.5° on
 re-mounted real frames of three recordings (§6). Clean timing: 42–58 ms mean, p95 52–69 ms per
 frame on every recording (4-core sandbox, pure Python, §3).
 The container chain (`docker build → run → bag play → result`) is verified in CI on synthetic
 bags on every push, and was rehearsed on 23.09 on the real frames in Docker — the node in one
 container, `ros2 bag play` in another, both topic / frame pairs, two recordings into one node
-(EXPERIMENTS.md §3b: the 120° recording at 10 fps, p95 76 ms; the 360° one at 8–9.6 fps on the
-4-vCPU sandbox; the node container at 75 % of one core and 178 MB). Judgement against every criterion and what is left: [`docs/SCORECARD.md`](docs/SCORECARD.md).
+(EXPERIMENTS.md §3b: the 120° recording at 10 fps, p95 76 ms; the 360° one at 8–10 fps in steady
+state on the 4-vCPU sandbox, its first seconds lost to the transport's start-up; the node container
+at ~100 % of one core while frames arrive, 186 MB). The bag may be played by any user: the image
+runs DDS over UDP (a normal user's player cannot write into a root node's shared memory). Judgement against every criterion and what is left: [`docs/SCORECARD.md`](docs/SCORECARD.md).
 
 ![doubleT_obstacle frame 24 seen from the cab: the train envelope (green) swept along the track axis, the points inside it (yellow), the person on the track reported at 55.8 m (STOP) and a close-up of the person's points](docs/img/hero_person.png)
 *Real data, v0.6.2: `doubleT_obstacle` frame 24 from the driver's seat (`scripts/hero_view.py`), the person on the track at 55.8 m. Videos: [the whole bag from the cab](docs/video/doubleT_obstacle_cab.mp4), [offline renders, top and side view](docs/video/doubleT_obstacle_offline.mp4) and [the dashboard replaying the same run](docs/video/dashboard_doubleT_obstacle.mp4). Slides in the organizers' template: [`docs/presentation/ReSense_LCT2026.pptx`](docs/presentation/ReSense_LCT2026.pptx).*
@@ -280,13 +281,17 @@ EXPERIMENTS.md §3b): `roundT_doubleT` 237 of 252 frames at 10 fps, p95 76 ms, a
 2 known alarm frames at 128–130 m — PASS with `--max-alarm-frames 2` (the only v0.6.2 false
 alarm on that recording, the offline evaluation has the same two); `doubleT_obstacle` the
 person and the object at 55.9–56.6 m, 88–118 alarm frames, but at 360° this sandbox is at the
-frame period (96 ms mean, p95 112–130 ms) and the node skips frames (8–9.6 fps), so the
+frame period (96 ms mean, p95 112–130 ms) and the node skips frames (8–10 fps in steady state), so the
 default `--max-p95-latency 100 --max-dropped 0` fail there; the jury's i7-9700E is the
 reference for those two. The organizers' way — node container, `ros2 bag play` from another
 container, `roundT_doubleT` then `doubleT_obstacle` into the same running node — switched the
 input and restarted the detector as designed (`--expect-inputs 2`). That first run also found
-that a best-effort subscription lost 196 of the 201 ten-megabyte clouds; the node now matches
-the publishers' reliability (`input_reliability`, below).
+that a best-effort subscription lost 196 of the 201 ten-megabyte clouds (the node now matches
+the publishers' reliability, `input_reliability`, below), and a review found that a player run
+by a **normal user** reached the root node not at all through shared memory: the image now runs
+DDS over UDP (`docker/fastdds_udp.xml`), and `scripts/console_test.sh` — node container, player
+as uid 1000 in another container — runs in CI. Through ROS the first seconds of a 360°
+recording are lost to the DDS start-up with 10 MB reliable samples (EXPERIMENTS.md §3b).
 
 Defaults for `doubleT_obstacle`: the person is reported in 50–62 m, p95 of decode + detect is
 ≤ 100 ms (the 10 Hz frame period) and no input frame is dropped. Any argument after the bag path
@@ -376,7 +381,7 @@ input queue dropped (estimated from gaps in the header stamps).
 | algorithm (problem, data, processing, decision, parameters, limitations) | [`docs/ALGORITHM.md`](docs/ALGORITHM.md) |
 | experiments (range, latency, FPS, false alarms, hard cases, evolution) | [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md), protocol in [`docs/EVALUATION.md`](docs/EVALUATION.md) |
 | input data format, sensor | [`docs/DATASET.md`](docs/DATASET.md), [`docs/SENSOR.md`](docs/SENSOR.md) (Hesai Pandar128 specs and what they imply) |
-| video | [`docs/video/doubleT_obstacle_offline.mp4`](docs/video/doubleT_obstacle_offline.mp4) (top-down and side renders of every frame of the real bag, v0.5) and [`docs/video/dashboard_doubleT_obstacle.mp4`](docs/video/dashboard_doubleT_obstacle.mp4) (the web dashboard replaying the same run); recipe in [`web/README.md`](web/README.md); the RViz screen recording on the jury chain is still to be made on a machine with Docker |
+| video | [`docs/video/doubleT_obstacle_cab.mp4`](docs/video/doubleT_obstacle_cab.mp4) (the real bag from the cab: envelope, obstacle, decision and distance; `scripts/hero_view.py --sequence`), [`docs/video/doubleT_obstacle_offline.mp4`](docs/video/doubleT_obstacle_offline.mp4) (top-down and side renders of every frame) and [`docs/video/dashboard_doubleT_obstacle.mp4`](docs/video/dashboard_doubleT_obstacle.mp4) (the web dashboard replaying the same run), all v0.6.2; recipe in [`web/README.md`](web/README.md); a screen recording of RViz on the jury chain needs a machine with a display |
 | submission status | [`docs/SUBMISSION.md`](docs/SUBMISSION.md) |
 
 ## Team

@@ -36,12 +36,12 @@ stand procedure are the team's own to settle — not organizer questions, `organ
 > 3. **Подход** (README, `docs/ALGORITHM.md`) — геометрическая модель «нормального тоннеля»:
 >    самокалибровка по рельсам, ось пути и кривизна по стенам / рядам колонн, коридор габарита,
 >    кластеризация с адаптацией к дальности, подтверждение по нескольким кадрам; дальнее
->    правило для высоких объектов (человек — ~150 м без датчика скорости, ~177 м с ним:
+>    правило для высоких объектов (человек — ~148 м без датчика скорости, ~167 м с ним:
 >    накопление кадров с компенсацией движения); автокалибровка крепления лидара. Без обучения
 >    на размеченных объектах —
 >    обобщается на новые записи.
 > 4. **Демонстрация** — человек, переходящий путь в `doubleT_obstacle`, обнаруживается на
->    55–57 м (`docs/img/`, видео: `<ссылка>`); `scripts/dry_run.sh` воспроизводит это как
+>    55–57 м (`docs/img/hero_person.png`, видео `docs/video/doubleT_obstacle_cab.mp4`); `scripts/dry_run.sh` воспроизводит это как
 >    автоматическую проверку.
 > 5. **Эксперименты** — `docs/EXPERIMENTS.md`: дальность на синтетических препятствиях,
 >    внесённых в реальные кадры трассировкой лучей; задержка и FPS; ложные срабатывания по типам
@@ -66,7 +66,7 @@ stand procedure are the team's own to settle — not organizer questions, `organ
 | 11 | video of the algorithm at work | [`video/doubleT_obstacle_cab.mp4`](video/doubleT_obstacle_cab.mp4) (the real bag from the cab: envelope, obstacle, STOP / distance, v0.6.2, 20 s), [`video/doubleT_obstacle_offline.mp4`](video/doubleT_obstacle_offline.mp4) (top and side view) and [`video/dashboard_doubleT_obstacle.mp4`](video/dashboard_doubleT_obstacle.mp4) (dashboard replay); recipes in `scripts/hero_view.py` and [`web/README.md`](../web/README.md) | P2 | done on real data (offline chain, v0.6.2); the RViz screen recording of the Docker chain still to be made on a machine with Docker |
 | 12 | full demonstration on the control bag: `docker build → docker run → ros2 bag play → result` (rehearsed on the real frames in Docker on 23.09, EXPERIMENTS.md §3b) | `scripts/build.sh`, `scripts/run_demo.sh`; same chain on a synthetic bag in CI (`scripts/smoke_test.sh`) | P1 | container chain proven in CI on a synthetic bag (21.09); dry run on a real bag pending (28.09) |
 | 13 | presentation, slides 7–11 exactly per template | [`presentation/ReSense_LCT2026.pptx`](presentation/ReSense_LCT2026.pptx) (15 slides in the organizers' template, built by `scripts/build_deck.py`; PDF next to it), drafts and speaker text in [`PRESENTATION.md`](PRESENTATION.md) | P2 | done; the captain fills the `<…>` personal data and the photos on slides 2–4 |
-| 14 | tests (spec §8.5) | `tests/` (140 tests: algorithm on the ray-cast tunnel, envelope and low objects, mount calibration and guards, the node's decision / fault / watchdog / input-switching logic against ROS stand-ins in `tests/test_node.py`), `web/demo/`, CI (`pytest`, `web` and Docker jobs; the Docker job also plays a synthetic bag through the node) | P4 / P1 / P2 | done |
+| 14 | tests (spec §8.5) | `tests/` (147 tests: algorithm on the ray-cast tunnel, envelope and low objects, mount calibration and guards, the node's decision / fault / watchdog / input-switching logic against ROS stand-ins in `tests/test_node.py`), `web/demo/`, CI (`pytest`, `web` and Docker jobs; the Docker job also plays a synthetic bag through the node) | P4 / P1 / P2 | done |
 | 15 | input data description | [`DATASET.md`](DATASET.md) (both organizer links: Google Drive bags and the Yandex Disk extended dataset), sensor: [`SENSOR.md`](SENSOR.md) with the Hesai manual in [`sensor/`](sensor/); the test stand's driver / CUDA state in [`organizers/test_stand_software.md`](organizers/test_stand_software.md) | P4 / P1 | done |
 | 16 | the organizers' Q&A answers applied (envelope 2.1 × 3.0 m, 30 × 30 × 10 cm, hanging cables, variable mount, object on the rail, decision output) | [`organizers/QA_session.md`](organizers/QA_session.md) (transcript and the facts that changed the code), [`SCORECARD.md`](SCORECARD.md) (self-assessment per criterion) | all | done (22.09) |
 
@@ -93,10 +93,14 @@ v0.6.2, hence `--max-alarm-frames 2`). Raw capture: `out/dry_run/status.jsonl`, 
 frame cache; EXPERIMENTS.md §3b): build, default command, both topic / frame pairs, two
 recordings into one running node, the player in a separate container — all as expected; the
 person and the object at 55.9–56.6 m; `roundT_doubleT` PASS (10 fps, p95 76 ms, its 2 known
-frames). The 360° `doubleT_obstacle` runs at 8–9.6 fps there (p95 112–130 ms), so the latency
-and dropped-frame criteria are for the i7-9700E stand to confirm. The rehearsal found and fixed
-a transport bug (best-effort subscription lost 196 of 201 ten-megabyte clouds; v0.6.2
-`input_reliability: auto`).
+frames). The 360° `doubleT_obstacle` runs at 8–10 fps in steady state there (p95 112–130 ms), so the latency
+and dropped-frame criteria are for the i7-9700E stand to confirm. The rehearsal and a review
+found and fixed two transport bugs: a best-effort subscription lost 196 of 201 ten-megabyte
+clouds (v0.6.2 `input_reliability: auto`), and a player run by a normal user could not reach
+the root node through shared memory (the image now runs DDS over UDP). On the stand, play the
+bag from a normal user's console as the organizers will — `scripts/console_test.sh` does the
+same with containers (node, player as uid 1000, status recorder). Expect the first seconds of a
+360° recording to be lost to the DDS start-up with 10 MB reliable samples (EXPERIMENTS.md §3b).
 
 The RViz run stays in the procedure because the jury sees it, but it is no longer what decides
 whether the dry run passed.

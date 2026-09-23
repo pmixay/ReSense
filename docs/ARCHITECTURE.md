@@ -96,7 +96,7 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   publisher is (a live sensor-data driver).
 * Ego speed for multi-frame accumulation: the node passes `Detector.process(frame, ego_speed=v)`
   the value of the `ego_speed_mps` parameter, else the latest `speed_topic` / `odom_topic`
-  message younger than `speed_timeout`, else `None` (the detector estimates it itself); the
+  message younger than `speed_timeout`, else `None` (single-frame path: the LiDAR-only speed estimator is off by default, `accumulation.estimate_speed`); the
   status JSON reports `node.ego_speed_mps` and `node.ego_speed_source`.
 * One fixed frame for every bag: the organizers' recordings carry different `frame_id`s
   (`hesai_lidar`, `lidar_livox`), so the node broadcasts a static identity transform
@@ -131,7 +131,7 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
 * **Range-adaptive everything**: voxel size, DBSCAN radius, minimum cluster size and the
   expected-point prior all scale with range, so a 5-point cluster at 150 m is treated as
   seriously as a 500-point cluster at 20 m.
-* **Persistence before alarm**: five consecutive frames (0.5 s, v0.6.2; 0.3 s before) suppress
+* **Persistence before alarm**: ≥ 3 hits spanning ≥ 0.5 s — five frames at 10 Hz (v0.6.2; 0.3 s before) — suppress
   single-frame noise and flickering edge structures; the cost is 0.5 s of latency for an object
   that appears inside the envelope — 11 m of travel at 80 km/h — and none for one tracked while it
   approaches (EXPERIMENTS.md §0: −35 % false-alarm events on the empty bags, −27 % on the ride).
@@ -152,9 +152,9 @@ The frame period is 100 ms; p95 is inside it on all six bags and on a station se
 ride (42–58 ms mean, p95 52–69 ms, EXPERIMENTS.md §3). **Resources:** one CPU core per stream
 (47–65 ms of CPU time per frame = 47–65 % of a core at 10 Hz with single-threaded BLAS, set in
 the image), about 160–180 MB resident, no GPU. **Through ROS in Docker** (v0.6.2, §3b of
-EXPERIMENTS.md): the 120° recording at the full 10 Hz (p95 76 ms), the 360° one at 8–9.6 fps
-(~96 ms mean: the node skips frames rather than lagging), the node container at 75 % of one
-core and 178 MB. The jury's i7-9700E (8 faster cores) has not been measured.
+EXPERIMENTS.md): the 120° recording at the full 10 Hz (p95 76 ms), the 360° one at 8–10 fps in
+steady state (~96 ms mean: the node skips frames rather than lagging), the node container at
+~100 % of one core while frames arrive, 186 MB. The jury's i7-9700E (8 faster cores) has not been measured.
 
 ## Known limitations (see ALGORITHM.md §6 and EXPERIMENTS.md)
 

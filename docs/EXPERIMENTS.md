@@ -29,22 +29,24 @@ magnitude, CAPTAIN.md finding 2 of 21.09).
 ## 0. v0.6.2 (23.09) — after the criteria review
 
 The criteria review ([`SCORECARD.md`](SCORECARD.md)) found three things on the detection side:
-the organizers' object on the rail was missed (27 of 185 frames), there were too many false
+the organizers' object on the rail was missed (2 of its 185 frames by its own detection), there were too many false
 stops (82 events on the 20-minute ride), and nothing showed that the tuning was not fitted to
 one stretch of track. v0.6.2 is v0.6.1 plus three changes, each measured by a full run over the
 13 759 real frames (`scripts/eval_real.py`, the ride in 8 pieces with a fresh detector each):
 
-| run | change | five bags: frames / events | ride: frames / events | person (61 frames in the envelope) | object on the rail: 185 frames / 126 after the person leaves |
+| run | change | five bags: frames / events | ride: frames / events | person (61 frames in the envelope) | object on the rail, its own detection: of 185 frames / of the 126 after the person leaves |
 |---|---|---|---|---|---|
-| v0.6.1 | — | 104 / 30 | 289 / 82 | 58, first frame 11 | 27 / 2 |
-| v0.6.2a | an object straddling the envelope floor is clustered whole (ALGORITHM.md §3.3b) | 126 / 39 | 396 / 131 | 58, 11 | 147 / 118 |
-| v0.6.2b | + it must be ≥ 0.35 m across the track and ≤ 0.8 m along it | 105 / 31 | 292 / 83 | 58, 11 | 147 / 118 |
-| v0.6.2c | + confirmation 0.5 s instead of 0.3 s (`tracking.confirm_time_s`) | 81 / 20 | 258 / 61 | 58, 11 | 146 / 118 |
-| **v0.6.2** | + no rail pair in the near range → clusters beyond 40 m advisory (`gauge.no_rail_range`) | **81 / 20** | **164 / 47** | **58, 11** | **146 / 118** |
+| v0.6.1 | — | 104 / 30 | 289 / 82 | 58, first frame 11 | 2 / 2 |
+| v0.6.2a | an object straddling the envelope floor is clustered whole (ALGORITHM.md §3.3b) | 126 / 39 | 396 / 131 | 58, 11 | 122 / 118 |
+| v0.6.2b | + it must be ≥ 0.35 m across the track and ≤ 0.8 m along it | 105 / 31 | 292 / 83 | 58, 11 | 122 / 118 |
+| v0.6.2c | + confirmation 0.5 s instead of 0.3 s (`tracking.confirm_time_s`) | 81 / 20 | 258 / 61 | 58, 11 | 121 / 118 |
+| **v0.6.2** | + no rail pair in the near range → clusters beyond 40 m advisory (`gauge.no_rail_range`) | **81 / 20** | **164 / 47** | **58, 11** | **121 / 118** |
 
 * **The object on the rail** (0.45 × 0.6 × 0.3 m lying across the right rail at 56 m, top
   0.10–0.15 m above the rail-head plane): **118 of the 126 frames after the person leaves it**
-  (v0.6.1: 2), 146 of 185 over the whole recording. Most of its ~21 points are below the rail
+  (v0.6.1: 2), 121 of 185 over the whole recording (v0.6.1: 2; counted by the object's own
+  bed-level detection within 0.4 m — with a 1 m window, as §0a and §1d counted before, the person's
+  track next to it adds frames: 27 for v0.6.1, 146 for v0.6.2). Most of its ~21 points are below the rail
   head, ~3 above the 0.12 m envelope floor; v0.6.1 had the main stage see 0–3 points and the
   low-object stage a sliver, so neither confirmed it. v0.6.2 clusters all bed anomalies and the
   corridor points just above the floor together and reports a cluster whose top reaches 0.10 m
@@ -63,15 +65,16 @@ one stretch of track. v0.6.2 is v0.6.1 plus three changes, each measured by a fu
   the verified-clear distance says 40 m.
 * **Ride: 47 events in 13.0 km = 3.6 per km** (v0.6.1: 6.3 per km); alarm frames
   1.5 % of the ride. By cause (`scripts/mine_objects.py`, `labels/new_data_objects.json`):
-  corridor-edge structures 18, bed-level fixtures 11, far small clusters 7 (105–180 m),
+  corridor-edge structures 18, bed-level fixtures 11, far small clusters 7 (91–180 m),
   other 6, tall structures 2, hanging equipment 2, person-like 1 (a wall cabinet in a curve,
   checked by eye in v0.6). The organizers confirmed in writing (23.09) that the ride contains no
   obstacle, so every one of these is a false alarm.
 * Health warnings other than latency: 196 of 13 759 frames (1.4 %, rails lost at stations and
   switches), as in v0.6.1.
 * **Long range and small objects** (set F round 2, §2d, objects ray-cast into the moving ride):
-  a person on straight track first confirmed at 148 m (median of 6) and **detected continuously
-  from 135 m**; 167 m with a train speed given; curves R ≈ 350 m 6 of 7 approaches (58–86 m, the
+  a person on straight track first confirmed at 148 m (median of 6), detected in ≥ 90 % of the
+  frames from 135 m inward and in ≥ 90 % of every 10 m band from 115 m inward; 167 m first
+  confirmation with a train speed given; curves R ≈ 350 m 6 of 7 approaches (58–86 m, the
   sightline); station stops 6 of 6 from 113 m; 30 cm objects on a rail head 6 of 6 from 42–44 m;
   objects on the bed between the rails are below the envelope (policy, §3.3b).
 * **Through ROS in Docker** (§3b): the organizers' procedure on the real frames, two recordings
@@ -509,7 +512,7 @@ measured this round.
 
 **What a straight tunnel returns far away** (`new_data_46`, 20 m/s, R > 100 km): of ~188 000
 points per frame, 422 lie 100–125 m ahead, 217 at 125–150 m, 73 at 150–175 m and 56 at
-175–215 m; the farthest return of any frame of the ride is 208.5 m. Beyond ~100 m the bed does
+175–215 m; no return of any frame of any recording lies beyond 210 m (every recording stops at 209.2–210.0 m: a cut-off of the sensor, not a gradual fade). Beyond ~100 m the bed does
 not return (grazing incidence); only the vault (4.4–4.7 m above the rail head) and the walls at
 ±2 m do. **The extrapolated height reference drifts**: relative to the vault measured at 20–60 m,
 the vault seen through the model is +0.07 m at 65 m, +0.15 at 85 m, +0.24 at 95 m, +0.49 at 115 m
@@ -536,7 +539,10 @@ confirmed gauge detection lies within max(2 m, 3 %) and 1.2 m laterally of the o
 a rail head, lateral positions to the envelope edge, 7 approaches in curves and 6 at station
 stops, and the **sustained range** next to the first hit: the largest distance D from which the
 object is detected in ≥ 90 % of the frames in which it returns a point, all the way in (≥ 5
-frames). The v0.6.2 configuration (0.5 s confirmation), no speed given unless said; 6 sequences
+frames) — a lenient measure: the misses may bunch at its far end. The strict one next to it:
+every 10 m band from the train out to D detected in ≥ 90 % of its frames (straight, median of
+6: person **115 m**, crate 95 m, trolley 70 m; with a train speed person 105 m, crate 70 m,
+trolley 110 m). The v0.6.2 configuration (0.5 s confirmation), no speed given unless said; 6 sequences
 per object unless said; raw summaries in
 [`experiments_v0.6.2_setF.json`](experiments_v0.6.2_setF.json).
 
@@ -567,11 +573,13 @@ per object unless said; raw summaries in
 | | 0.3 m cube | 1 / 6 | 9 m | — | 1 % |
 | | dog-sized 0.6 × 0.3 × 0.45 m | 1 / 6 | 50 m | 42 m | 13 / 1 % |
 
-Reading. (1) **A person is detected continuously from ~135 m** on straight track (median of the
-sustained range; first hit ~148 m, v0.6.1 150 m — the 0.5 s confirmation costs ~3 m there and
-~10 m with a train speed: 167 against 177 m); in one sequence out of six the sustained range
-collapses to ~20 m because a few frames are lost at 20–60 m where the object crosses the
-near-range bed fit — the first-hit median hides such dropouts, which is why both are reported.
+Reading. (1) **A person on straight track is first confirmed at ~148 m, held in ≥ 90 % of the
+frames from ~135 m and in every 10 m band from ~115 m** (medians of 6; runs of up to 7
+consecutive missed frames occur inside the lenient range); v0.6.1 first hit 150 m — the 0.5 s
+confirmation costs ~3 m there and ~10 m with a train speed (167 against 177 m). In one sequence
+out of six both sustained measures collapse to ~20 m because a few frames are lost at 20–60 m
+where the object crosses the near-range bed fit — the first-hit median hides such dropouts,
+which is why all three are reported.
 (2) **Curves: 6 of 7 approaches** detected (round 1: 1 of 2), first at 58–86 m and sustained
 from 61–94 m — the sightline past the inner wall of an R ≈ 350 m curve (≈ √(8·R·w) = 80–110 m).
 (3) **Station stops**: a person 6 / 6 from 113 m; the stations carry the ride's own false alarms
@@ -607,7 +615,7 @@ detection at the visible limit in a curve (Q&A fact 14).
 Reading. (1) A person is confirmed at 146–169 m on straight track in 5 of 6 sequences with no
 speed input; the 150–200 m bin holds 3–10 returns per frame and is where the single-frame
 pipeline ends (10 % of those frames). (2) Beyond ~200 m nothing is detected, as the sensor
-physics predicts: the farthest return of the whole ride is 208.5 m. (3) A trolley is
+physics predicts: no return of the whole ride lies beyond 210 m. (3) A trolley is
 confirmed at 85–171 m (median 146 m), a 1 m crate at 79–156 m (the crate is 1 m tall, closer to
 `far_min_height` = 0.6 m after the far bed error than a person). (4) **A 0.5 m box standing in
 the bed is borderline by construction**: the bed's drainage trough lies 0.3–0.4 m below the
@@ -696,7 +704,7 @@ calibration frames).
 `roundT_doubleT` 47 ms of CPU per frame, `doubleT_obstacle` 65 ms — **one core, 47–65 % of it at
 10 Hz** — and 160–180 MB resident. With the library defaults the BLAS threads of numpy kept 3.9
 cores busy on the 347 k-point frames (250 ms of CPU per frame) for no speed-up (64 vs 65 ms wall
-time); the image therefore sets `OMP_NUM_THREADS=OPENBLAS_NUM_THREADS=MKL_NUM_THREADS=1`. The ROS node adds decode (~5 ms) and publishing; the jury's i7-9700E (8
+time); the image therefore sets `OMP_NUM_THREADS=OPENBLAS_NUM_THREADS=MKL_NUM_THREADS=1`. The ROS node adds ~20–25 ms per 360° frame (message conversion, decode, publishing; §3b); the jury's i7-9700E (8
 faster cores) is not measured.
 
 **v0.5 (history).**
@@ -734,7 +742,7 @@ cores) has not been measured (P1).
 
 Per-stage means of the same runs are in the table; the platform bags remain the expensive
 ones because their corridor holds 15–20 k candidates per frame (DBSCAN 45–70 ms in v0.3 and
-v0.5 alike). The frame period is 100 ms; the ROS node adds decode (~5 ms) and publishing, and
+v0.5 alike). The frame period is 100 ms; the ROS node adds message conversion, decode and publishing (~20–25 ms at 360°, §3b), and
 drops frames rather than queueing, so the node's dropped-frame counter is the number to watch
 on the bench.
 
@@ -753,27 +761,52 @@ carry the cache's 5 mm quantisation. Scored by `scripts/check_dry_run.py`.
 **What the first run found.** The node received **5 of the 201 clouds** of `doubleT_obstacle`:
 a 360° cloud is ~10 MB, ~160 UDP fragments, and the node's best-effort subscription loses a
 whole message with any fragment; it then reset its scene on every "hole" and confirmed nothing.
-`ros2 bag play` publishes these recordings reliable; a reliable reader received 174+ of 201 in
-the same setup. v0.6.2 adds `input_reliability` (default `auto`: subscribe reliable, and match
+`ros2 bag play` publishes these recordings reliable (every original `metadata.yaml` records
+`reliability: 1`, [`evidence/bag_metadata/`](evidence/bag_metadata/)); a reliable reader received
+174+ of 201 in the same setup. v0.6.2 adds `input_reliability` (default `auto`: subscribe reliable, and match
 the publishers within a second — best-effort when a publisher is, e.g. a live sensor-data
 driver, to which a reliable reader would get nothing). The CI smoke test had not caught it: its
 synthetic clouds are a third of the size.
 
-| run (v0.6.2 image) | frames processed | fps | latency decode + detect mean / p95 | detector stage mean | result |
-|---|---|---|---|---|---|
-| `dry_run.sh` `roundT_doubleT` (120° window, `/lidar_points` + `hesai_lidar`), node and player in one container | 237 of 252 | 10.0 | 65 / 76 ms | 53 ms | 2 alarm frames at 128.3–130.2 m — the same frames as the offline evaluation (§0) |
-| `dry_run.sh` `doubleT_obstacle` (360°, `/sensing/lidar/hesai128/pointcloud` + `lidar_livox`) | 103–134 of 201 | 8.1–8.6 | 96–99 / 112–130 ms | 74–76 ms | obstacle 55.9–56.6 m, 88–118 alarm frames |
-| the organizers' way: node container + `ros2 bag play` from another container, `roundT_doubleT` then `doubleT_obstacle` into the same running node | 362 | 8.2–10 | 79 / 104 ms | 62 ms | "input 2: /sensing/lidar/hesai128/pointcloud ... input switched from /lidar_points: detector restarted"; 116 alarm frames: the person and the object at 55.9–56.6 m, the 2 frames at 128–130 m of `roundT_doubleT` and 1 low-object frame at 49.7 m there that the offline run does not have (frames skipped under load change what the tracker sees) |
-| CI smoke test (`scripts/smoke_test.sh`, two synthetic bags) | 76 of 80 | 5 (bag at 0.5×) | 64 / 76 ms | 52 ms | PASS |
+**What a review found next.** With the player run **as a normal user** — the organizers play the
+bag from their host console — the node received nothing at all: with `ipc=host`, Fast DDS puts
+the node's shared-memory segments in `/dev/shm` as root-owned 0644 files the player cannot
+write. (`umask 0000` in the container does not help: Fast DDS sets the mode.) The image now runs
+Fast DDS over UDP only (`docker/fastdds_udp.xml`, `FASTRTPS_DEFAULT_PROFILES_FILE`); on the
+10 MB clouds this measured the same rate and latency as shared memory. `scripts/console_test.sh`
+(node container, player as uid 1000 in another container, status recorded by a third) checks it
+in CI on the two synthetic bags. The node also publishes `FAULT` / `NO_INPUT` while no frame
+has arrived yet instead of staying silent.
 
-**Resources of the node container** (`docker stats` every 0.5 s during the `doubleT_obstacle`
-replay): **75 % of one core median (max 102 %), 178 MB**. The detector stage costs the same in
-the image (Python 3.10, numpy 1.26) as on the host (74 vs 68 ms on the first 100 frames of
-`doubleT_obstacle`); the ROS path adds ~20–25 ms per 360° frame (message conversion, decode —
-`pointcloud2_to_arrays`, 40 → 9 ms in v0.6.2 — and publishing the markers and the corridor
-cloud). **At 360° this sandbox is at the frame period**: the node skips frames (8–9.6 fps of 10)
-instead of lagging, as designed (keep-last 1). The 120° recordings run at the full 10 Hz. The
-jury's i7-9700E (8 cores, higher clock) has not been measured.
+| run (v0.6.2 image) | frames processed | fps (2 s windows) | latency decode + detect mean / p95 | detector stage mean | result |
+|---|---|---|---|---|---|
+| `dry_run.sh` `roundT_doubleT` (120° window, `/lidar_points` + `hesai_lidar`), node and player in one container, root | 237 of 252 | 10.0 | 65 / 76 ms | 53 ms | 2 alarm frames at 128.3–130.2 m — the same frames as the offline evaluation (§0) |
+| `dry_run.sh` `doubleT_obstacle` (360°, `/sensing/lidar/hesai128/pointcloud` + `lidar_livox`), one container, root | 103–134 of 201 | 8–9 in steady state, lower at the start | 96–99 / 112–130 ms | 74–76 ms | obstacle 55.9–56.6 m, 88–118 alarm frames |
+| **`console_test.sh`**, player **uid 1000** in its own container, UDP profile: `roundT_doubleT` then `doubleT_obstacle` into the same running node | 351 of 453 | 8.3–10 in steady state | 82 / 102 ms | 65 ms | input switched, detector restarted; 131 alarm frames: the person and the object at 56.1–56.5 m and the 2 known frames at 128–130 m of `roundT_doubleT` |
+| `console_test.sh` on the two synthetic bags (the CI step) | 72 of 80 | 5 (bag at 0.5×) | 65 / 78 ms | 53 ms | PASS |
+| CI smoke test (`scripts/smoke_test.sh`, one container) | 76 of 80 | 5 (bag at 0.5×) | 64 / 76 ms | 52 ms | PASS |
+
+**The first seconds of a 360° recording are not seen.** Through ROS the first cloud of
+`doubleT_obstacle` arrives, then the next one 2–5 s later in recording time: a bare rclpy
+subscriber doing nothing receives the same sequence (the first reliable 10 MB sample is
+delivered ~4.5 s late, the samples in between are superseded in the keep-last-1 history), so it
+is the transport's start-up with the recorded reliable QoS, not the detector. Each such hole
+resets the scene. The first STOP of the person came at 5.7–9.2 s of recording time through ROS
+against 1.1 s offline; on the 120° recording the start-up hole is ~1 s. A player started well
+before the frames matter, or a live sensor that is already streaming, does not have it; the
+organizers' short control recordings may.
+
+**Resources of the node container** (`docker stats` every ~0.5 s during the `doubleT_obstacle`
+replay by a uid-1000 player): **~100 % of one core while frames arrive (median of the busy
+samples; max 102 %), 186 MB** — at 360° the node is compute-bound on this sandbox. The detector
+stage costs the same in the image (Python 3.10, numpy 1.26) as on the host (74 vs 68 ms on the
+first 100 frames of `doubleT_obstacle`); the ROS path adds ~20–25 ms per 360° frame (message
+conversion, decode — `pointcloud2_to_arrays`, 40 → 9 ms in v0.6.2 — and publishing the markers
+and the corridor cloud). The node skips frames instead of lagging, as designed (keep-last 1):
+over a whole 360° recording it processes 103–142 of 201 frames (the start-up hole included),
+8–10 fps in steady state; the 120° recordings run at the full 10 Hz. Captures, node logs and
+the checker output: [`evidence/docker_2026-09-23/`](evidence/docker_2026-09-23/). The jury's
+i7-9700E (8 cores, higher clock) has not been measured.
 
 ## 4. What we learned / hard cases
 
@@ -906,7 +939,9 @@ ride, 30 sequences × 110 frames, straight track, no speed unless said).
 | 4 | **accumulation with the ride's train speed given**, on a moving real background (v0.6) | 5 frames merged beyond 40 m, motion-compensated with the given speed | set F: person 150 → **177 m** median, trolley 146 → 190 m (max 205 m), crate 111 → 183 m, 0.5 m box 2 → 4 of 6; the whole ride 289 / 82 → **274 / 75** false alarm frames / events (§2d) | on whenever the node gets a speed (odometry / speed topic / parameter); the organizers' trains may have none |
 | 5 | bed-anomaly low-object stage (v0.6a) | every bump > 7 cm above a learned bed cross-section inside the envelope | ride 1 482 events / 20 min (inductors, drain covers, cable crossings) (§1d) | rejected |
 | 6 | rail-level low-object stage (v0.6f) | a low cluster whose top reaches the rail head | object on the rail 170 / 185 frames; ride 734 events (guard rails, joints, fastenings) (§1d) | option for a line known to be clean |
-| 7 | **per-point rail-head rule + 0.5 s** (v0.6, shipped) | every low candidate ≥ 3 cm above the rail head, 5 hits | ride 18 low events; 10 cm box on a rail head 10–25 m (synthetic tunnel); real object 27 / 185 (§1d) | shipped |
+| 7 | **per-point rail-head rule + 0.5 s** (v0.6, shipped) | every low candidate ≥ 3 cm above the rail head, 5 hits | ride 18 low events; 10 cm box on a rail head 10–25 m (synthetic tunnel); real object 2 / 185 by its own detection (§1d) | shipped in v0.6–v0.6.1 |
+| 7b | **straddle clustering** (v0.6.2, shipped) | bed anomalies and the corridor points just above the envelope floor clustered together; top ≥ 0.10 m above the rail head, ≥ 0.35 m across, ≤ 0.8 m along the track | real object 2 → **121 / 185**, 118 of the 126 frames after the person leaves; +1 event on the five bags and on the ride; 30 cm objects on a rail head 6 / 6 from 42–44 m (set F round 2); without the shape rule +49 ride events (§0, §2d) | shipped; the thresholds sit close to the one real object (top 0.11–0.16 m, 0.38–0.50 m across) |
+| 7c | **confirmation 0.5 s; no far alarm without rails** (v0.6.2, shipped) | 5 frames instead of 3; clusters beyond 40 m advisory in frames without the rail pair | false events: five bags 31 → 20, ride 83 → 47; the real person unchanged; a person 3 m later on straight track, 10 m later with a speed (§0, §2d) | shipped |
 | 8 | **far-field rule** (v0.6, shipped) | beyond the height reference, tall (≥ 0.6 m), short (≤ 3 m), grounded clusters alarm to the trusted axis range | set F, rule off → on: person first confirmed 106 → **150 m** median, trolley 105 → 146 m, crate 106 → 111 m; off-object detections 12 → 39 of 3 060 frames (§2d) | shipped |
 | 9 | learned second opinion (v0.6 experiment) | gradient-boosted trees on the descriptors of the geometric candidates (positives: set-F objects; negatives: every candidate on empty data) | held-out ride part + unseen sequences: AUC 0.976–0.990; 83–95 % of false candidates removed at 97 % object recall; intensity is an injector artefact (§8) | not shipped: no real positives; ready as a re-weighting |
 | 10 | considered, not built | a trained 3D detector (PointPillars / CenterPoint: no real positives, ~0–3 % AP beyond 100 m in the rail literature), change detection against a map (needs localisation and repeated rides; "a map of the given tunnels will not fully work" — Q&A), a range-image anomaly model (fires on cables, signs, wet patches; needs the same gauge and persistence) | RESEARCH.md §0 | — |
