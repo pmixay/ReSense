@@ -54,6 +54,8 @@ PARAMS = {
     "new_input_gap": ("30.0", float, "s of forward header-stamp jump taken as a new recording (detector restarted)"),
     "hole_reset_gap": ("1.0", float, "s of forward header-stamp jump that resets the scene state (calibration kept)"),
     "input_queue_depth": ("1", int, "frames the input subscription may hold; 1 = always process the newest frame"),
+    "input_reliability": ("auto", str, "input QoS: auto = match the publishers (reliable for ros2 bag play of the "
+                                       "organizers' recordings), reliable, best_effort"),
 }
 
 

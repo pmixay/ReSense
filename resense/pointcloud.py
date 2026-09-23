@@ -52,7 +52,10 @@ def pointcloud2_to_structured(msg) -> np.ndarray:
     n = int(msg.width) * int(msg.height)
     buf = msg.data
     if not isinstance(buf, (bytes, bytearray, memoryview, np.ndarray)):
-        buf = bytes(buf)
+        try:
+            buf = memoryview(buf)          # rclpy hands over an array.array: no 10 MB copy
+        except TypeError:
+            buf = bytes(buf)               # a plain list of ints
     return np.frombuffer(buf, dtype=dt, count=n)
 
 

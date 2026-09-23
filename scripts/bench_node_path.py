@@ -41,7 +41,7 @@ def message(xyz_s, intensity, ring, stamp, rng):
     n = xyz_s.shape[0]
     n_empty = n // 10
     pts = np.zeros(n + n_empty, dtype=POINT_DTYPE)
-    filled = rng.permutation(n + n_empty)[:n]
+    filled = np.delete(np.arange(n + n_empty), np.arange(10, n + n_empty, 11)[:n_empty])   # scan order kept
     pts["x"][filled], pts["y"][filled], pts["z"][filled] = xyz_s[:, 0], xyz_s[:, 1], xyz_s[:, 2]
     pts["intensity"][filled] = intensity
     pts["ring"][filled] = ring

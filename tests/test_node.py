@@ -89,7 +89,7 @@ class _Node:
         return _Param(self._params[name])
 
     def create_subscription(self, msg_type, topic, cb, qos):
-        return types.SimpleNamespace(topic=topic, cb=cb)
+        return types.SimpleNamespace(topic=topic, cb=cb, qos=qos)
 
     def destroy_subscription(self, sub):
         pass
@@ -110,6 +110,9 @@ class _Node:
     def get_topic_names_and_types(self):
         return []
 
+    def get_publishers_info_by_topic(self, topic):
+        return []
+
 
 def _stub_modules():
     m = {}
@@ -123,7 +126,7 @@ def _stub_modules():
     rclpy = mod("rclpy", init=lambda args=None: None, spin=lambda n: None, shutdown=lambda: None)
     rclpy.node = mod("rclpy.node", Node=_Node)
     rclpy.qos = mod("rclpy.qos", QoSProfile=lambda **kw: kw,
-                    QoSReliabilityPolicy=types.SimpleNamespace(BEST_EFFORT=2),
+                    QoSReliabilityPolicy=types.SimpleNamespace(RELIABLE=1, BEST_EFFORT=2),
                     QoSHistoryPolicy=types.SimpleNamespace(KEEP_LAST=1))
     mod("geometry_msgs"), mod("geometry_msgs.msg", Point=_msg("Point"), TransformStamped=_msg("TransformStamped"))
     mod("nav_msgs"), mod("nav_msgs.msg", Odometry=_msg("Odometry"))
@@ -361,6 +364,27 @@ def test_discovery_keeps_looking_while_the_input_is_silent(node_cls, tunnel):
     assert "/new_lidar" in node.subs and "/resense/corridor_points" not in node.subs
 
 
+def test_input_reliability_follows_the_publishers(node_cls, monkeypatch):
+    """A 10 MB cloud is ~160 UDP fragments: best-effort lost 196 of 201 frames of doubleT_obstacle
+    played by `ros2 bag play` (reliable) in Docker. auto subscribes reliable, and switches to the
+    publishers' reliability when they are known (a best-effort driver would give a reliable reader
+    nothing)."""
+    node = node_cls()
+    assert node.sub_rel == {"/lidar_points": "reliable", "/sensing/lidar/hesai128/pointcloud": "reliable"}
+    assert node.subs["/lidar_points"].qos["reliability"] == 1
+    pub = lambda rel: types.SimpleNamespace(qos_profile=types.SimpleNamespace(reliability=rel))
+    graph = {"/lidar_points": [pub(1)], "/sensing/lidar/hesai128/pointcloud": [pub(2), pub(1)]}
+    node.get_publishers_info_by_topic = lambda t: graph.get(t, [])
+    node.on_match_qos()
+    assert node.sub_rel["/lidar_points"] == "reliable"                          # unchanged
+    assert node.sub_rel["/sensing/lidar/hesai128/pointcloud"] == "best_effort"  # one best-effort writer
+    assert node.subs["/sensing/lidar/hesai128/pointcloud"].qos["reliability"] == 2
+    assert any("re-created" in s for _, s in node.get_logger().lines)
+    monkeypatch.setattr(_Node, "overrides", {"input_reliability": "best_effort"})
+    forced = node_cls()
+    assert set(forced.sub_rel.values()) == {"best_effort"} and forced.qos_timer is None
+
+
 def test_status_marker_says_the_decision_and_publishing_errors_are_contained(node_cls, tunnel, box_scene):
     node = node_cls()
     _feed(node, tunnel[0].xyz, 4)
@@ -379,7 +403,9 @@ def test_status_marker_says_the_decision_and_publishing_errors_are_contained(nod
 
 
 def test_input_queue_holds_only_the_newest_frame(node_cls):
-    assert node_cls().qos["depth"] == 1                       # a slow frame makes the node skip, never lag behind
+    node = node_cls()
+    assert node.subs["/lidar_points"].qos["depth"] == 1        # a slow frame makes the node skip, never lag behind
+    assert node.subs["/lidar_points"].qos["history"] == 1      # keep last
     _Node.overrides = {"input_queue_depth": 3}
-    assert node_cls().qos["depth"] == 3
+    assert node_cls().subs["/lidar_points"].qos["depth"] == 3
 

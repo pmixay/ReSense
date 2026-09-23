@@ -133,6 +133,12 @@ class DetectorNode(Node):
         self.declare_parameter("hole_reset_gap", 1.0)         # s of forward stamp jump that resets the scene (calibration kept)
         self.declare_parameter("input_queue_depth", 1)        # frames the input subscription may hold: 1 = always the newest,
                                                               # a slow frame makes the node skip, never lag behind the sensor
+        # --- v0.6.2: reliability of the input subscription. A 360-degree cloud is ~10 MB, i.e. ~160 UDP
+        # fragments; best-effort loses the whole message with any fragment (measured in Docker with
+        # `ros2 bag play` of doubleT_obstacle: 5 of 201 frames delivered best-effort, 174+ reliable).
+        # auto = match the publishers: reliable when every publisher of the topic is (`ros2 bag play`
+        # of the organizers' recordings), best-effort when one is not (a sensor-data driver)
+        self.declare_parameter("input_reliability", "auto")   # auto | reliable | best_effort
 
         cfg_file = self.get_parameter("config_file").get_parameter_value().string_value
         self.cfg = DetectorConfig.from_yaml(cfg_file) if cfg_file else DetectorConfig()
@@ -171,9 +177,10 @@ class DetectorNode(Node):
                           if self.get_parameter("publish_tf").get_parameter_value().bool_value else None)
         self.tf_frames_sent = set()
 
-        depth = max(1, self.get_parameter("input_queue_depth").get_parameter_value().integer_value)
-        self.qos = QoSProfile(depth=depth, reliability=QoSReliabilityPolicy.BEST_EFFORT,
-                              history=QoSHistoryPolicy.KEEP_LAST)
+        self.qos_depth = max(1, self.get_parameter("input_queue_depth").get_parameter_value().integer_value)
+        rel = self.get_parameter("input_reliability").get_parameter_value().string_value.strip().lower()
+        self.input_reliability = rel.replace("-", "_") if rel else "auto"
+        self.sub_rel = {}              # topic -> "reliable" | "best_effort" of its subscription
         topic = self.get_parameter("input_topic").get_parameter_value().string_value
         self.subs = {}                 # topic -> Subscription (all kept: a later recording may use another name)
         self.active_topic = None       # the topic being processed; frames on the others are ignored while it is live
@@ -218,16 +225,53 @@ class DetectorNode(Node):
         if self.get_parameter("auto_discover").get_parameter_value().bool_value:
             dp = self.get_parameter("discover_period").get_parameter_value().double_value
             self.discover_timer = self.create_timer(max(dp, 0.5), self.on_discover)
+        self.qos_timer = (self.create_timer(1.0, self.on_match_qos)
+                          if self.input_reliability not in ("reliable", "best_effort") else None)
         self.get_logger().info("ReSense detector listening on " + ", ".join(self.subs)
-                               + (" (+ auto-discovery)" if self.discover_timer else ""))
+                               + (" (+ auto-discovery)" if self.discover_timer else "")
+                               + f"; input reliability {self.input_reliability}")
 
     # ------------------------------------------------------------------
-    def subscribe(self, topic: str) -> None:
+    def input_qos(self, reliability: str):
+        return QoSProfile(depth=self.qos_depth, history=QoSHistoryPolicy.KEEP_LAST,
+                          reliability=(QoSReliabilityPolicy.RELIABLE if reliability == "reliable"
+                                       else QoSReliabilityPolicy.BEST_EFFORT))
+
+    def publisher_reliability(self, topic: str):
+        """'reliable' when every publisher of ``topic`` is, 'best_effort' when one is not (a
+        best-effort reader matches both), None when there is no publisher yet."""
+        try:
+            infos = self.get_publishers_info_by_topic(topic)
+        except Exception:  # noqa: BLE001 - graph queries are best effort
+            return None
+        rels = [getattr(getattr(i, "qos_profile", None), "reliability", None) for i in infos]
+        rels = [r for r in rels if r is not None]
+        if not rels:
+            return None
+        return "reliable" if all(r == QoSReliabilityPolicy.RELIABLE for r in rels) else "best_effort"
+
+    def subscribe(self, topic: str, reliability: str = None) -> None:
         """Subscribe to one more candidate input topic (idempotent)."""
         if topic in self.subs:
             return
+        if reliability is None:
+            reliability = (self.input_reliability if self.input_reliability in ("reliable", "best_effort")
+                           else self.publisher_reliability(topic) or "reliable")
+        self.sub_rel[topic] = reliability
         self.subs[topic] = self.create_subscription(
-            PointCloud2, topic, lambda msg, t=topic: self.on_cloud(msg, t), self.qos)
+            PointCloud2, topic, lambda msg, t=topic: self.on_cloud(msg, t), self.input_qos(reliability))
+
+    def on_match_qos(self) -> None:
+        """(input_reliability auto) Re-create a subscription whose reliability differs from its
+        publishers': a reliable reader gets nothing from a best-effort writer, and a best-effort
+        reader loses most multi-megabyte clouds of a reliable one."""
+        for topic in list(self.subs):
+            want = self.publisher_reliability(topic)
+            if want is None or want == self.sub_rel.get(topic):
+                continue
+            self.destroy_subscription(self.subs.pop(topic))
+            self.get_logger().info(f"{topic}: publishers are {want.replace('_', '-')}; subscription re-created to match")
+            self.subscribe(topic, want)
 
     def on_discover(self) -> None:
         """While no input is live, subscribe to every PointCloud2 topic on the graph.

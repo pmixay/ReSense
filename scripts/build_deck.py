@@ -47,12 +47,12 @@ N = {
     "object_hits": "118 из 126", "object_before": "2",
     "ride_events": "47", "ride_per_km": "3,6", "ride_km": "13",
     "empty_events": "20",
-    "first_person": "150", "sustained_person": "100", "speed_person": "177",
+    "first_person": "148", "sustained_person": "135", "speed_person": "177",
     "latency": "42–58 мс", "p95": "69 мс",
     "tests": "145",
     # first confirmed detection, straight track, median over the approaches [synthetic in real frames]
-    "range_chart": [("человек 1,7 м", 150), ("тележка", 146), ("ящик 1 м", 111), ("кабель 3 см", 95),
-                    ("ящик 0,5 м", 55)],
+    "range_chart": [("человек 1,7 м", 148), ("тележка", 144), ("ящик 1 м", 111), ("висящий кабель 3 см", 95),
+                    ("предмет поперёк рельса", 46), ("ящик 30 см на рельсе", 44)],
 }
 
 PINK, DEEP, VIOLET, LIGHT = "FF0053", "520978", "8A83D1", "FFD6E4"
@@ -501,7 +501,7 @@ def s_range(sl):            # template slide 22: horizontal bar chart + four not
     plot.data_labels.number_format_is_linked = False
     plot.data_labels.font.size = Pt(12)
     plot.data_labels.font.bold = True
-    cols = [LIGHT, VIOLET, DEEP, "310F53", PINK][::-1][-len(data):]
+    cols = [PINK, "310F53", DEEP, VIOLET, LIGHT, "FC3777"][:len(data)][::-1]
     for i, pt in enumerate(plot.series[0].points):
         pt.format.fill.solid()
         pt.format.fill.fore_color.rgb = RGBColor.from_string(cols[i % len(cols)])
@@ -520,7 +520,8 @@ def s_range(sl):            # template slide 22: horizontal bar chart + four not
         fill(placeholder(sl, ti), [t], size=16)
         fill(placeholder(sl, di), [d], size=12, bullet=False)
     textbox(sl, Emu(346075), Emu(5900000), Emu(5800000), Emu(380000),
-            ["первое подтверждение на прямой, медиана подходов · синтетика в реальных кадрах поездки"],
+            ["первое подтверждение на прямой, медиана 6 подходов, поезд 17–21 м/с без датчика скорости · "
+             "синтетика в реальных кадрах поездки"],
             size=10, color="6B6B6B")
 
 
