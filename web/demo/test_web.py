@@ -30,7 +30,9 @@ def test_rviz_layout_parses_and_covers_both_bags():
     for t in RAW_TOPICS:
         disp = by_topic[t]
         assert disp["Class"] == "rviz_default_plugins/PointCloud2"
-        assert disp["Topic"]["Reliability Policy"] == "Best Effort"
+        # reliable: `ros2 bag play` offers the recorded RELIABLE profile and a best-effort display
+        # loses most 5-10 MB clouds (EXPERIMENTS.md section 3b, the RViz recording of 23.09)
+        assert disp["Topic"]["Reliability Policy"] == "Reliable"
         assert disp["Topic"]["Depth"] == 5
         assert disp["Enabled"] is True
     assert by_topic["/resense/corridor_points"]["Class"] == "rviz_default_plugins/PointCloud2"
