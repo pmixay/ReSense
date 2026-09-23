@@ -207,7 +207,7 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
     trolley 146 m, crate 111 m, cable 95 m; with a train speed 177 / 190 / 183 m and fewer ride false
     alarms (274 / 75); in R ≈ 350 m curves 1 of 2 approaches detected, at 74–82 m (sightline). The farthest
     return in all data is 208.5 m, so 300 m is out of the sensor's reach.
-12. **Tests**: 140 (the node's decision / fault / watchdog / mount-parameter / input-switching
+12. **Tests**: 145 (the node's decision / fault / watchdog / mount-parameter / input-switching
     logic runs against ROS stand-ins in `tests/test_node.py`, so a node bug no longer waits for
     the Docker job). Criteria judgement and the remaining work: [`SCORECARD.md`](SCORECARD.md).
 13. **Written answers of the organizers (23.09)** to our questions 1, 2 and 6, recorded
@@ -222,6 +222,18 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
     "How a bag is processed" (the solution does not read bags; `--ipc=host` added to the
     step-by-step `docker run` lines, without which Fast DDS shared memory can swallow the 5–8 MB
     clouds of a player on the same machine).
+14. **v0.6.2 (23.09), after the criteria review** ([`SCORECARD.md`](SCORECARD.md), EXPERIMENTS
+    §0): the organizers' object lying across the rail is found in **118 of the 126 frames** after
+    the person leaves it (v0.6.1: 2) — it straddled the envelope floor and fell between the two
+    detection stages, now it is clustered whole; confirmation 0.5 s instead of 0.3 s; without a
+    rail lock (stations) the corridor beyond 40 m is advisory. All 13 759 frames: five empty bags
+    **81 / 20** alarm frames / events (v0.6.1 104 / 30), ride **164 / 47 = 3.6 per km** (289 / 82),
+    person 58 of 61 from frame 11 as before; fewer events in 12 of 13 subsets of the data and more
+    in none (`scripts/consistency_check.py`). Slides in the organizers' template:
+    [`presentation/ReSense_LCT2026.pptx`](presentation/ReSense_LCT2026.pptx) (built by
+    `scripts/build_deck.py`; the captain fills the `<…>` personal data and photos on slides 2–4);
+    the main shot from the cab: `scripts/hero_view.py` → `img/hero_person.png`, video
+    `video/doubleT_obstacle_cab.mp4`.
 
 ### Left for the team (captain tracks, does not do)
 

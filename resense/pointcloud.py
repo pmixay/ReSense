@@ -56,6 +56,30 @@ def pointcloud2_to_structured(msg) -> np.ndarray:
     return np.frombuffer(buf, dtype=dt, count=n)
 
 
+def pointcloud2_to_arrays(msg, min_range: float, max_range: float):
+    """The ROS node's per-frame decode in one pass (v0.6.2): ``(xyz (N, 3) float32, intensity
+    float32, ring uint16, n_finite, n_near)`` for the returns between ``min_range`` and
+    ``max_range``; ``n_finite`` counts the valid returns, ``n_near`` those closer than
+    ``min_range`` (dirt on the window, for the health monitor). The (0, 0, 0) slots of the
+    dual-return layout are dropped. Reads the x / y / z fields in place and copies each kept
+    point once: about half the time of ``structured_to_compact`` + crop on a 360° frame."""
+    arr = pointcloud2_to_structured(msg)
+    x, y, z = arr["x"], arr["y"], arr["z"]
+    r2 = x.astype(np.float32) ** 2
+    r2 += y * y
+    r2 += z * z
+    finite = np.isfinite(r2) & (r2 > 0.0025)                 # (0, 0, 0): no return in that slot
+    near = finite & (r2 < min_range * min_range)
+    ok = finite & ~near & (r2 <= max_range * max_range)
+    n = int(ok.sum())
+    xyz = np.empty((n, 3), dtype=np.float32)
+    xyz[:, 0], xyz[:, 1], xyz[:, 2] = x[ok], y[ok], z[ok]
+    names = arr.dtype.names
+    inten = arr["intensity"][ok].astype(np.float32) if "intensity" in names else np.zeros(n, np.float32)
+    ring = arr["ring"][ok].astype(np.uint16) if "ring" in names else np.zeros(n, np.uint16)
+    return xyz, inten, ring, int(finite.sum()), int(near.sum())
+
+
 def structured_to_compact(arr: np.ndarray, min_range: float = 0.05) -> np.ndarray:
     """Drop NaN / zero-range points (Hesai emits (0,0,0) for missing returns) and keep
     x, y, z, intensity, ring in the compact dtype."""

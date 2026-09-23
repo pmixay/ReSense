@@ -45,11 +45,11 @@ N = {
     "frames": "13 759",
     "person_hits": "58 из 61", "person_first": "0,3 с", "person_err": "0,35 м",
     "object_hits": "118 из 126", "object_before": "2",
-    "ride_events": "61", "ride_per_km": "4,7", "ride_km": "13",
+    "ride_events": "47", "ride_per_km": "3,6", "ride_km": "13",
     "empty_events": "20",
     "first_person": "150", "sustained_person": "100", "speed_person": "177",
     "latency": "42–58 мс", "p95": "69 мс",
-    "tests": "144",
+    "tests": "145",
     # first confirmed detection, straight track, median over the approaches [synthetic in real frames]
     "range_chart": [("человек 1,7 м", 150), ("тележка", 146), ("ящик 1 м", 111), ("кабель 3 см", 95),
                     ("ящик 0,5 м", 55)],

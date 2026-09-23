@@ -17,7 +17,7 @@ from resense.cli import run_cli
 from resense.clustering import Cluster, find_clusters
 from resense.config import DetectorConfig, SensorConfig
 from resense.gauge import corridor_mask, point_in_polygon, widened_profile
-from resense.pointcloud import COMPACT_DTYPE, pointcloud2_to_structured, structured_to_compact
+from resense.pointcloud import COMPACT_DTYPE, pointcloud2_to_arrays, pointcloud2_to_structured, structured_to_compact
 from resense.track import TrackModel, estimate_track
 from resense.tracking import Tracker
 
@@ -272,6 +272,25 @@ def test_pointcloud2_decoding_drops_dual_return_zeros_and_keeps_ring_intensity()
     assert out.dtype == COMPACT_DTYPE and out.shape == (2,)
     assert out["x"].tolist() == [1.0, -2.0] and out["y"].tolist() == [-20.0, -50.0]
     assert out["intensity"].tolist() == [12.0, 255.0] and out["ring"].tolist() == [40, 64]
+
+
+def test_node_decode_matches_the_compact_path_and_counts_near_returns():
+    """pointcloud2_to_arrays (the node's one-pass decode, v0.6.2) = structured_to_compact + the
+    node's former range crop; returns inside min_range are counted as near, not kept."""
+    rng = np.random.default_rng(3)
+    rows = [(float(x), float(y), float(z), float(i), int(r), 1e9) for x, y, z, i, r in
+            zip(rng.uniform(-80, 80, 300), rng.uniform(-80, 80, 300), rng.uniform(-3, 3, 300),
+                rng.uniform(0, 255, 300), rng.integers(0, 128, 300))]
+    rows += [(0.0, 0.0, 0.0, 0.0, 5, 1e9)] * 30 + [(0.5, 0.3, 0.1, 9.0, 7, 1e9)] * 4 + [(300.0, 0.0, 0.0, 9.0, 7, 1e9)]
+    msg = _PointCloud2(rows)
+    xyz, inten, ring, n_raw, n_near = pointcloud2_to_arrays(msg, 2.5, 250.0)
+    ref = structured_to_compact(pointcloud2_to_structured(msg))
+    r2 = ref["x"] ** 2 + ref["y"] ** 2 + ref["z"] ** 2
+    keep = (r2 >= 2.5 ** 2) & (r2 <= 250.0 ** 2)
+    assert n_raw == len(ref) == 305 and n_near == 4 and xyz.shape == (int(keep.sum()), 3)
+    assert np.array_equal(xyz[:, 0], ref["x"][keep]) and np.array_equal(xyz[:, 2], ref["z"][keep])
+    assert np.array_equal(inten, ref["intensity"][keep]) and np.array_equal(ring, ref["ring"][keep])
+    assert xyz.dtype == np.float32 and inten.dtype == np.float32 and ring.dtype == np.uint16
 
 
 # ---------------------------------------------------------------------------

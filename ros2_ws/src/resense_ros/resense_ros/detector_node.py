@@ -92,7 +92,7 @@ from tf2_ros import StaticTransformBroadcaster
 from resense.config import DetectorConfig
 from resense.detector import Detector, FrameResult
 from resense.frame import Frame, axis_matrix
-from resense.pointcloud import pointcloud2_to_structured, structured_to_compact
+from resense.pointcloud import pointcloud2_to_arrays
 
 
 UNSET = -999.0   # sentinel of the mount_*_deg parameters: keep the value of the parameter file
@@ -366,17 +366,12 @@ class DetectorNode(Node):
         t0 = time.perf_counter()
         self.last_frame_wall = t0
         try:
-            arr = structured_to_compact(pointcloud2_to_structured(msg))
-            xyz_s = np.stack([arr["x"], arr["y"], arr["z"]], axis=1).astype(np.float32)
-            r2 = (xyz_s * xyz_s).sum(axis=1)
-            finite = np.isfinite(r2)
-            ok = finite & (r2 >= self.cfg.sensor.min_range ** 2) & (r2 <= self.cfg.sensor.max_range ** 2)
-            xyz_v = xyz_s[ok] @ self.R_vs.T.astype(np.float32)
+            xyz_s, inten, ring, n_raw, n_near = pointcloud2_to_arrays(
+                msg, self.cfg.sensor.min_range, self.cfg.sensor.max_range)
+            xyz_v = xyz_s @ self.R_vs.T.astype(np.float32)
             stamp = msg.header.stamp.sec + msg.header.stamp.nanosec * 1e-9
-            frame = Frame(xyz=xyz_v, intensity=arr["intensity"][ok], ring=arr["ring"][ok],
-                          stamp=stamp, frame_id=msg.header.frame_id,
-                          meta={"n_raw": int(finite.sum()),
-                                "n_near": int((finite & (r2 < self.cfg.sensor.min_range ** 2)).sum())})
+            frame = Frame(xyz=xyz_v, intensity=inten, ring=ring, stamp=stamp, frame_id=msg.header.frame_id,
+                          meta={"n_raw": n_raw, "n_near": n_near})
             self._account_frame(stamp)
             self.last_speed, self.last_speed_source = self.ego_speed()
             res = (self.detector.process(frame, ego_speed=self.last_speed) if self._process_takes_speed
