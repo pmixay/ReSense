@@ -164,7 +164,7 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
    frames / 102 events in 11 271 frames — 306 events per hour against ≈ 500 on the six bags —
    with the left gauge edge (contact-rail brackets at 40–100 m) as the largest family and the
    unlocked track model at stations / switches as the second. **No obstacles in it** — the
-   Q&A session (22.09) and the organizers' written answer of 23.09 (QUESTIONS.md item 1): every
+   Q&A session (22.09) and the organizers' written answer of 23.09 (`organizers/answers.md`): every
    alarm on it is a false alarm. The full-bag replay
    (`ros2 bag play /data/new_data`) is the closest thing to the control run and should be the
    dry-run input once the stand has 90 GB free. `scripts/unpack_dataset.py` now streams the
@@ -210,8 +210,9 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
 12. **Tests**: 138 (the node's decision / fault / watchdog / mount-parameter / input-switching
     logic runs against ROS stand-ins in `tests/test_node.py`, so a node bug no longer waits for
     the Docker job). Self-assessment per criterion: [`SCORECARD.md`](SCORECARD.md).
-13. **Written answers of the organizers (23.09)** to QUESTIONS.md items 1, 2 and 6, recorded
-    verbatim there next to the Q&A-session answers: `new_data` has no obstacles; the control data
+13. **Written answers of the organizers (23.09)** to our questions 1, 2 and 6, recorded
+    verbatim in [`organizers/answers.md`](organizers/answers.md) next to the Q&A-session answers
+    ([`QUESTIONS.md`](QUESTIONS.md) now holds only the three questions still open): `new_data` has no obstacles; the control data
     may use **either (topic, frame) pair** (`/lidar_points` + `hesai_lidar`,
     `/sensing/lidar/hesai128/pointcloud` + `lidar_livox`), all from the same LiDAR, and will most
     likely be **played from the console** — describe the pipeline if the code reads bags; the

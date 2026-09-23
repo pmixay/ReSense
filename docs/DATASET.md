@@ -76,7 +76,7 @@ fresh detector per file, every 10th frame cached as `new_data_<N>_<i>.npy` (1 32
 | clock | bag receive time starts 2026-09-17 11:02:06 UTC; `header.stamp` is still the year-2000 sensor clock — use the bag time, as before |
 | frame period | 0.100 s inside a file and 0.100 s from the last frame of file N to the first of N+1 (max 0.12 s): **one continuous recording** — except **recording holes in the last third**: from file 156 (t ≈ 800 s) on, 26 files span 6–12 s instead of 5.1 s, with gaps of 1.2–7.1 s between consecutive frames (`period_max` per file in the JSON). 51 frames still sit in every file, so ≈ 70 s of the 1 200 s carry no frames; `ros2 bag play` pauses there and the tracker's gate (measured frame interval, `tracking.py`) is what keeps a track alive across such a gap |
 | the ride | from the drift of static tracks (m/s per file, `speed_tracks` in the JSON — the estimator in the detector is off, `EXPERIMENTS.md` §1b): departs from standstill at t = 0, stops at 168–209 s, 291–306, 439–459, 592–648, 760–775, 984–1007 and 1106–1117 s (seven stops: stations or signals), top speed 21.3 m/s (77 km/h) at t ≈ 230 s, mean 11.5 m/s, ≈ 13 km covered |
-| scenes | tunnels of both kinds, curves down to R ≈ 350 m (median \|curvature\| up to 3·10⁻³ m⁻¹ in files 129–134, 176–180), stations and a switch — files 22, 55, 113–114 and 155 have the track model unlocked (median `rail_score` < 0.1, platforms / switch, as in `squareT_platform_squareT_switch`). **No labels and nothing staged that we know of**: the organizers' message named no obstacles; asked in `QUESTIONS.md` item 1 |
+| scenes | tunnels of both kinds, curves down to R ≈ 350 m (median \|curvature\| up to 3·10⁻³ m⁻¹ in files 129–134, 176–180), stations and a switch — files 22, 55, 113–114 and 155 have the track model unlocked (median `rail_score` < 0.1, platforms / switch, as in `squareT_platform_squareT_switch`). **No labels and no obstacles**: confirmed by the organizers (Q&A session 22.09; written answer 23.09 "В new_data препятствий нет", [`organizers/answers.md`](organizers/answers.md)) |
 
 **v0.5 defaults at full rate** (every frame, fresh detector per 51-frame file, no speed given;
 raw per-frame JSONL kept out of git, 442 files / 17 MB):
@@ -134,7 +134,7 @@ the disk.
 
 ## Topic and sensor
 
-* **Organizers, 23.09 (written answer to QUESTIONS.md item 2):** the control data may contain
+* **Organizers, 23.09 (written answer, [`organizers/answers.md`](organizers/answers.md)):** the control data may contain
   **both (topic, frame) pairs** — `/lidar_points` + `hesai_lidar` and
   `/sensing/lidar/hesai128/pointcloud` + `lidar_livox`; **all data were recorded with the same
   LiDAR**; the storage format matters little, the bag will most likely be played from the

@@ -41,10 +41,11 @@ context. Timestamps below are `mm:ss` of the recording.
 | 22 | **No changes after the 29.09 deadline**; upload the link early (platform overload near the deadline) | 02:26–03:07, 50:22–51:10 | SUBMISSION.md: upload by 18:00 on 29.09 |
 | 23 | A live remote-desktop demo is fine, but the organizers will run every solution themselves | 15:34–16:22 | the jury path (`docker build → run → ros2 launch`) is primary |
 
-## 2. Answers to the questions in `docs/QUESTIONS.md`
+## 2. Answers to our questions
 
 The session answered most of our questions; on 23.09 the organizers also answered questions 1, 2
-and 6 in writing (verbatim in [`../QUESTIONS.md`](../QUESTIONS.md) "Written answers").
+and 6 in writing — both are consolidated, with the written answers verbatim, in
+[`answers.md`](answers.md); [`../QUESTIONS.md`](../QUESTIONS.md) keeps only the questions still open.
 
 | our question | answer from the session (22.09) | written answer (23.09) |
 |---|---|---|

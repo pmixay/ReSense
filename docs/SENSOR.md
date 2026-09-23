@@ -82,15 +82,22 @@ table stays.
 
 ## 4. Open questions for the organizers
 
+Still open (sent again as [`QUESTIONS.md`](QUESTIONS.md) items 1 and 2, 23.09):
+
 * Return mode of the recordings (Last and Strongest is the manual's default, but the duplicate
   points in the bags match the Last and First description, §2 "dual return blocks") and whether
-  the control bag uses the same 120° azimuth window and High Resolution mode.
-* Mounting height and pitch on the train (the bags show two different mounts; the detector
-  self-calibrates, but the number helps the synthetic injector).
+  the control data use the same High Resolution mode and azimuth windows (120° with
+  `/lidar_points` + `hesai_lidar`, the full turn with `/sensing/lidar/hesai128/pointcloud` +
+  `lidar_livox`; the organizers confirmed on 23.09 that both pairs may occur and that all data
+  come from the same LiDAR).
 * Whether PTP / GNSS time will be available on the train (every recording so far carries the
   unsynchronised year-2000 sensor clock).
 
-Closed on 22.09 (team decision, `QUESTIONS.md` "Closed"): **no train speed, odometry or IMU
+Answered: the mounting height and pitch are **not fixed** between trains — "count on a variable
+position, set it in the launch parameters" (Q&A session 22.09): the auto-calibration and the
+mount launch arguments cover it ([`organizers/answers.md`](organizers/answers.md)).
+
+Closed on 22.09 (team decision, [`organizers/answers.md`](organizers/answers.md) §3): **no train speed, odometry or IMU
 data will be available for this case** — the solution operates without them. The packet-tail
 IMU noted in §2 is therefore documentation only; the node's speed inputs stay optional and the
 multi-frame accumulation stays off unless a speed is given.
