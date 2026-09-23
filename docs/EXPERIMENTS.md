@@ -1,10 +1,15 @@
 # Experiments log
 
-**v0.6.1 (22–23.09) headline numbers are in §0, §1d and §2d** (all 13 759 real frames; the
-moving-ride long-range set F); raw summaries: [`experiments_v0.6.1_real_fullrate.json`](experiments_v0.6.1_real_fullrate.json)
-(every bag and the ride, with and without a given speed) and
-[`experiments_v0.6.1_setF.json`](experiments_v0.6.1_setF.json) (set F: shipped, far rule off,
-given speed, curves). The v0.5 text below (§1–§5) is kept as the record of how we got there.
+**Reading order.** §0 is the shipped version (v0.6.2, 23.09) on all real data; §0a is v0.6.1,
+the version the organizers' Q&A answers produced; §1–§1d and §2–§2d are the record of how the
+detector got there (real bags; synthetic obstacles in real frames; long range on the moving
+ride), §3 timing, §4–§5 lessons and next steps, §6 mount calibration, §7 the recognition methods
+side by side, §8 the learned second opinion. Raw summaries:
+[`experiments_v0.6.2_real_fullrate.json`](experiments_v0.6.2_real_fullrate.json) (v0.6.1 and every
+v0.6.2 step over all 13 759 frames, plus the leave-one-out check),
+[`experiments_v0.6.1_real_fullrate.json`](experiments_v0.6.1_real_fullrate.json),
+[`experiments_v0.6.1_setF.json`](experiments_v0.6.1_setF.json) (set F round 1). Every number is
+**real** (recording named) or **synthetic** (said so).
 
 Headline numbers of v0.5 were for **v0.5 (real data, 2026-09-21, Sprint 2)**: every frame of the six
 organizer bags cached as `*.npy` (`scripts/cache_frames.py`, 2 488 frames), pure Python on the
@@ -18,6 +23,74 @@ same-machine A/B configs are listed in §1b. Every number below is either **real
 or **synthetic** (said so). The day-1 numbers on subsampled frames that this file carried
 before 21.09 are superseded (they understated the 10 Hz false-alarm rate by an order of
 magnitude, CAPTAIN.md finding 2 of 21.09).
+
+## 0. v0.6.2 (23.09) — after the criteria review
+
+The criteria review ([`SCORECARD.md`](SCORECARD.md)) found three things on the detection side:
+the organizers' object on the rail was missed (27 of 185 frames), there were too many false
+stops (82 events on the 20-minute ride), and nothing showed that the tuning was not fitted to
+one stretch of track. v0.6.2 is v0.6.1 plus three changes, each measured by a full run over the
+13 759 real frames (`scripts/eval_real.py`, the ride in 8 pieces with a fresh detector each):
+
+| run | change | five bags: frames / events | ride: frames / events | person (61 frames in the envelope) | object on the rail: 185 frames / 126 after the person leaves |
+|---|---|---|---|---|---|
+| v0.6.1 | — | 104 / 30 | 289 / 82 | 58, first frame 11 | 27 / 2 |
+| v0.6.2a | an object straddling the envelope floor is clustered whole (ALGORITHM.md §3.3b) | 126 / 39 | 396 / 131 | 58, 11 | 147 / 118 |
+| v0.6.2b | + it must be ≥ 0.35 m across the track and ≤ 0.8 m along it | 105 / 31 | 292 / 83 | 58, 11 | 147 / 118 |
+| v0.6.2c | + confirmation 0.5 s instead of 0.3 s (`tracking.confirm_time_s`) | 81 / 20 | 258 / 61 | 58, 11 | 146 / 118 |
+| **v0.6.2** | + no rail pair in the near range → clusters beyond 40 m advisory (`gauge.no_rail_range`) | **81 / 20** | **164 / 47** | **58, 11** | **146 / 118** |
+
+* **The object on the rail** (0.45 × 0.6 × 0.3 m lying across the right rail at 56 m, top
+  0.10–0.15 m above the rail-head plane): **118 of the 126 frames after the person leaves it**
+  (v0.6.1: 2), 146 of 185 over the whole recording. Most of its ~21 points are below the rail
+  head, ~3 above the 0.12 m envelope floor; v0.6.1 had the main stage see 0–3 points and the
+  low-object stage a sliver, so neither confirmed it. v0.6.2 clusters all bed anomalies and the
+  corridor points just above the floor together and reports a cluster whose top reaches 0.10 m
+  above the rail head (rail fittings reach 1–8 cm, §1d). Without a shape rule (v0.6.2a) the
+  trackside devices beside the rails — train stops, lubricators, signalling boxes, 0.2–0.35 m
+  tall but mounted *along* the rail — added 49 ride events; they are 0.2–0.3 m across and
+  0.5–1.4 m long, the object is 0.6 m across and 0.45 m long.
+* **Confirmation 0.5 s** removed 11 of 31 events on the five bags and 22 of 83 on the ride. It
+  costs 0.2 s (4.4 m at 80 km/h) for an object that appears inside the envelope, nothing for one
+  tracked while it approaches: the real person, stepping in from the side, is still reported
+  from frame 11, 0.3 s after entering the envelope.
+* **No rails, no far alarm**: the ride's station stops (pieces 1 and 4) lost 14 events and 94
+  alarm frames; nothing else changed, including the five bags (the platform-end structure of
+  `squareT_platform_squareT_switch` is seen with the rails locked). Cost: at a station where the
+  rails are not found an object beyond 40 m is a `CAUTION` until the train is within 40 m, and
+  the verified-clear distance says 40 m.
+* **Ride: 47 events in 13.0 km = 3.6 per km** (v0.6.1: 6.3 per km); alarm frames
+  1.5 % of the ride. By cause (`scripts/mine_objects.py`, `labels/new_data_objects.json`):
+  corridor-edge structures 18, bed-level fixtures 11, far small clusters 7 (105–180 m),
+  other 6, tall structures 2, hanging equipment 2, person-like 1 (a wall cabinet in a curve,
+  checked by eye in v0.6). The organizers confirmed in writing (23.09) that the ride contains no
+  obstacle, so every one of these is a false alarm.
+* Health warnings other than latency: 196 of 13 759 frames (1.4 %, rails lost at stations and
+  switches), as in v0.6.1.
+
+**Is the gain spread over the data?** The parameters were chosen on the frames they are scored
+on — there is no held-out data with obstacles. `scripts/consistency_check.py` splits the data
+into 13 subsets (the five empty recordings and the ride's eight ~2.5-minute pieces) and asks,
+leaving each subset out in turn, whether v0.6.2 would still have been chosen over v0.6.1 on the
+rest (fewer events there, the real person and object still found):
+
+| subset | v0.6.1 → v0.6.2 events | subset | v0.6.1 → v0.6.2 events |
+|---|---|---|---|
+| `doubleT_platform` | 6 → 4 | ride piece 0 | 4 → 3 |
+| `roundT_doubleT` | 2 → 1 | ride piece 1 | 20 → 11 |
+| `roundT_pressureGate_roundT` | 1 → 0 | ride piece 2 | 12 → 8 |
+| `roundT_squareT_pressureGate_squareT` | 0 → 0 | ride piece 3 | 4 → 2 |
+| `squareT_platform_squareT_switch` | 21 → 15 | ride piece 4 | 18 → 7 |
+| | | ride piece 5 | 11 → 6 |
+| | | ride piece 6 | 7 → 6 |
+| | | ride piece 7 | 6 → 4 |
+
+(events = distinct confirmed track ids, as `eval_real.py` counts them.) **Fewer events in 12 of
+13 subsets, more in none; chosen in every leave-one-out.** The same check for the 0.5 s
+confirmation alone: 12 fewer, 0 more; for the rail rule alone: fewer in the two pieces with
+station stops, equal elsewhere. This is not a held-out test of the ~15 infrastructure rules
+tuned since v0.5 — those were tuned on the same recordings — but none of the v0.6.2 gains rests
+on one recording.
 
 ## 0a. v0.6.1 (22.09) — after the organizers' Q&A session
 

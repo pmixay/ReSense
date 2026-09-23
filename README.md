@@ -19,11 +19,15 @@ ROS 2 bag ─▶ PointCloud2 ─▶ resense_ros/detector_node ─▶ /resense/ob
                                                          └▶ /resense/status (JSON)
 ```
 
-Status: **v0.6.1 (22.09) — rebuilt around the organizers' Q&A answers**
+Status: **v0.6.2 (23.09)** — v0.6.1 rebuilt the detector around the organizers' Q&A answers;
+v0.6.2 finds the organizers' object lying across a rail and cuts the false stops on the ride by 43 %
+after an independent criteria review ([`docs/SCORECARD.md`](docs/SCORECARD.md)).
+v0.6.1 (22.09)
 ([`docs/organizers/QA_session.md`](docs/organizers/QA_session.md): the recorded session,
 transcribed and summarised). The strict decision now uses **the train envelope the organizers
 gave (2.1 m wide × 3.0 m high)**; objects **hanging** into it (broken cables) are obstacles
-whatever their shape; **low objects lying on a rail** are found by a bed-anomaly stage; tall
+whatever their shape; **low objects lying on a rail** are found by a bed-anomaly stage (v0.6.2:
+also when they straddle the envelope floor, like the organizers' object); tall
 objects are reported out to the trusted axis range (~200 m on straight track) instead of the
 height-reference range; the **LiDAR mount is found from the data** (orientation, roll, pitch)
 because "the LiDAR position is not fixed"; and every frame says **how far the path was
@@ -31,12 +35,15 @@ verified clear** and whether the input can be trusted (`/resense/decision`
 GO / CAUTION / STOP / FAULT, `/resense/clear_distance`, `/resense/health`).
 
 Measured on **all 13 759 real frames** of the organizers' data at 10 Hz
-([`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) §0, §1d): false alarms on the five obstacle-free
-bags **104 frames / 30 events** (v0.5 logic on the same frames: 116 / 32) and on the 20-minute,
-13 km ride **289 frames / 82 events** (448 / 93; 6.3 per km); a health warning on 1.4 % of the
-frames (stations, switches); the person crossing the track in
-`doubleT_obstacle` is reported in 58 of the 61 frames in which the person is inside the
-envelope, the first alarm 0.3 s after entering it, distance error < 0.35 m. Long range on the
+([`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) §0): false alarms on the five obstacle-free
+bags **81 frames / 20 events** (v0.6.1: 104 / 30; v0.5 logic: 116 / 32) and on the 20-minute,
+13 km ride **164 frames / 47 events, 3.6 per km** (v0.6.1: 289 / 82; v0.5: 448 / 93); fewer
+events in 12 of 13 subsets of the data and more in none, so the gain is not carried by one
+recording (leave-one-out check, §0); a health warning on 1.4 % of the frames (stations,
+switches); the person crossing the track in `doubleT_obstacle` is reported in 58 of the 61
+frames in which the person is inside the envelope, the first alarm 0.3 s after entering it,
+distance error < 0.35 m; the **object lying across the rail** (0.45 × 0.6 × 0.3 m) in **118 of
+the 126 frames** after the person leaves it (v0.6.1: 2). Long range on the
 moving ride (objects ray-cast into consecutive real frames, no speed input, §2d): a person
 approaching on straight track is first confirmed at **150 m median** (110–169 m, 6 of 6), a
 trolley at 146 m, a 1 m crate at 111 m, a 3 cm hanging cable at 95 m; with a train speed given
@@ -50,8 +57,8 @@ frame on every recording (4-core sandbox, pure Python, §3).
 The container chain (`docker build → run → bag play → result`) is verified in CI on a synthetic
 bag on every push. Judgement against every criterion (two independent reviews, 23.09: 6.4 / 10 indicative) and what is left: [`docs/SCORECARD.md`](docs/SCORECARD.md).
 
-![doubleT_obstacle frame 30: the person crossing the track is reported at 55.7 m (red box); the track axis (green) and the side structures (advisory, blue)](docs/img/doubleT_obstacle_0030_v05.png)
-*Real data, v0.5: `doubleT_obstacle` frame 30, the person on the track at 55.7 m. Videos: [offline renders of the whole bag](docs/video/doubleT_obstacle_offline.mp4) (20 s) and [the dashboard replaying the same run](docs/video/dashboard_doubleT_obstacle.mp4).*
+![doubleT_obstacle frame 24 seen from the cab: the train envelope (green) swept along the track axis, the points inside it (yellow), the person on the track reported at 55.8 m (STOP) and a close-up of the person's points](docs/img/hero_person.png)
+*Real data, v0.6.2: `doubleT_obstacle` frame 24 from the driver's seat (`scripts/hero_view.py`), the person on the track at 55.8 m. Videos: [the whole bag from the cab](docs/video/doubleT_obstacle_cab.mp4), [offline renders, top and side view](docs/video/doubleT_obstacle_offline.mp4) and [the dashboard replaying the same run](docs/video/dashboard_doubleT_obstacle.mp4). Slides in the organizers' template: [`docs/presentation/ReSense_LCT2026.pptx`](docs/presentation/ReSense_LCT2026.pptx).*
 
 ## What to look at (for the jury)
 
@@ -60,7 +67,7 @@ The organizers asked that every team "say clearly what to look at". One line per
 | question | topic | values |
 |---|---|---|
 | can the train go? | **`/resense/decision`** (`std_msgs/String`) | `GO` (clear), `CAUTION` (object next to the envelope, or degraded health), `STOP` (obstacle inside the 2.1 × 3.0 m envelope), `FAULT` (input cannot be trusted or stopped arriving) |
-| is there an obstacle? | **`/resense/obstacle_detected`** (`std_msgs/Bool`) | per frame, confirmed over 0.3 s |
+| is there an obstacle? | **`/resense/obstacle_detected`** (`std_msgs/Bool`) | per frame, confirmed over 0.5 s |
 | how far is it? | **`/resense/nearest_distance`** (`std_msgs/Float32`) | m along the track, −1 if none |
 | how far is the path verified clear? | **`/resense/clear_distance`** (`std_msgs/Float32`) | the obstacle distance, else how far the corridor was actually checked (sightline, trusted track model); 0 on a fault |
 | everything else | `/resense/detections` (`vision_msgs/Detection3DArray`), `/resense/status` (JSON: every object with distance, lateral offset, size, confidence, kind; track model; health; mount calibration; timing) | |

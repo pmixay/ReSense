@@ -285,17 +285,36 @@ or voxel count separates them from a small object. (c) Requiring every candidate
 ≥ 3 cm above the rail head leaves **2 false events on the 13 worst files of the ride** and still
 finds a 10 cm box lying on a rail head at 10–25 m (synthetic tunnel, `tests/test_envelope.py`).
 The default is (c): a safety function that stops the train every 1.5 s on a clean track is not
-usable. **The organizers' object lying on the rail of `doubleT_obstacle` falls between the two
-stages** (measured on 23.09 with the final calibration, 111 frames after the person leaves it):
-its top is 0.10–0.15 m (median 0.13 m) above the detector's rail-head plane — at the 0.12 m floor
-of the envelope — so the main stage gets 0–3 points above the floor (below its cluster minimum)
-and the low-object stage a 3-point sliver 0.03–0.07 m high in 12 of the 111 frames; neither
-confirms it, and it is reported in 27 of its 185 visible frames, mostly while the person stands
-next to it (126 of 126 with (b)). An object straddling the envelope floor should be clustered
-whole — the next fix (SCORECARD.md "What is left"). The earlier statement that it protrudes
-"~5 cm above its own rail" was taken against the rail ridge, which returns ~6 points at 56 m, and
-is not confirmed.
-`min_top: -1` and `min_point_top: -1` restore the bed-level policy for a line with a clean bed.
+usable. `min_top: -1` and `min_point_top: -1` restore the bed-level policy for a line with a
+clean bed.
+
+**Objects straddling the envelope floor (v0.6.2, `lowobj.straddle_*`).** The organizers' object
+lying across the right rail of `doubleT_obstacle` (0.45 × 0.6 × 0.3 m, 56 m) returns ~21 points,
+~16 of them below the rail head and ~3 above the 0.12 m envelope floor; its top is 0.10–0.15 m
+(median 0.13 m) above the rail-head plane. In v0.6.1 it fell *between* the stages: the corridor
+stage saw 0–3 points above the floor (below its cluster minimum), the low-object stage — whose
+every candidate must be 3 cm above the rail head — a 3-point sliver, and neither confirmed it
+(27 of 185 frames, 2 of the 126 after the person leaves it). v0.6.2 adds a third clustering:
+
+1. `low_candidates` also returns every bed anomaly **without** the per-point `min_point_top`
+   rule (step 3);
+2. those, together with the corridor points less than `straddle_band` = 0.30 m above the
+   envelope floor inside the envelope's width and the bed's observed range, are clustered with
+   the low-object radius;
+3. a cluster is reported (`kind = "low"`, the 5-hit confirmation of low objects) when its **top
+   reaches `straddle_min_top` = 0.10 m above the rail head** — the rail fittings reach 1–8 cm —
+   and it is **≥ `straddle_min_width` = 0.35 m across the track and ≤ `straddle_max_length` =
+   0.8 m along it**: trackside devices beside the rails (train stops, lubricators, signalling)
+   reach 0.2–0.35 m but are mounted along the rail, 0.2–0.3 m across and 0.5–1.4 m long, and
+   without the shape rule added 49 false events on the ride;
+4. a straddling cluster replaces the low-stage slivers it overlaps, and yields only to a
+   corridor cluster that is itself reported (one detection per object).
+
+Result (EXPERIMENTS.md §0): the object in **118 of the 126 frames after the person leaves it**
+and 146 of 185 overall, +1 event on the five empty bags and +1 on the ride. An object of that shape
+lying across a rail is found at 25, 40 and 50 m in the synthetic tunnel
+(`tests/test_envelope.py`); beyond ~50–60 m the bed stops returning (grazing incidence) and a
+0.3 m-high object has one or two rings above the rail head, which is where the stage ends.
 
 Puddles in the trough (Q&A fact 17) return nothing or mirror images *below* the bed (negative
 residuals) and are ignored by construction. Cost: 3–5 ms per frame.
@@ -502,20 +521,25 @@ the CLI and the ROS node. The ones that change behaviour visibly:
 | `cluster.far_min_height`, `far_max_length`, `far_max_bottom` (v0.6) | 0.6 m, 3 m, 1.0 m | what may alarm between the trusted height reference and the trusted axis range (0 = v0.5 behaviour: nothing) |
 | `cluster.signature_min_lateral`, `column_min_width` (v0.6) | 0.6 m, 0.25 m | where the column / floating signatures apply (hanging cables near the axis are obstacles) |
 | `calibration.enabled`, `frames` × `obs_spacing`, `provisional_min_deg`, `min_yaw_deg`, `drift_warn_deg` / `drift_window` (v0.6.1) | true, 20 × 10 frames, 2.5°, 3°, 1.5° / 10 checks | mount auto-calibration (final tilt over 20 s, provisional only for a clearly tilted rig); `sensor.roll_deg/pitch_deg/yaw_deg` freeze a known mount |
+| `lowobj.straddle_enabled`, `straddle_min_top`, `straddle_min_width`, `straddle_max_length`, `straddle_band` (v0.6.2) | true, 0.10 m, 0.35 m, 0.8 m, 0.30 m | an object across a rail, straddling the envelope floor, clustered whole (§3.3b) |
+| `gauge.no_rail_range` (v0.6.2) | 40 m | without a rail pair in the near range clusters beyond it are advisory and the verified-clear distance is capped there (§3.2); 0 = off |
 | `health.*` (v0.6) | see §4b | thresholds of the guards; they never change a detection |
 
-## 6. Limitations (v0.6)
+## 6. Limitations (v0.6.2)
 
-v0.6 additions first; the v0.5 list follows.
+v0.6–v0.6.2 additions first; the v0.5 list follows.
 
 * **Low objects below the rail head are not alarms by default** (§3.3b): a 30 × 30 × 10 cm box
   lying on the bed between the rails is geometrically the same as the bed fixtures the train
   passes over every few tens of metres; it is reported only when it reaches the rail-head plane
   (e.g. lying on a rail) by ≥ 3 cm with several points. On a line with a clean bed,
-  `lowobj.min_top: -1` with `min_point_top: -1` reports it. The organizers' object lying on the
-  rail of `doubleT_obstacle` straddles the envelope floor (top 0.10–0.15 m above the rail-head
-  plane) and falls between the main and the low-object stage: reported in 27 of its 185 visible
-  frames, 2–4 of the 126 after the person leaves it (§3.3b).
+  `lowobj.min_top: -1` with `min_point_top: -1` reports it. An object lying *across* a rail
+  (the organizers' object in `doubleT_obstacle`) is reported since v0.6.2 (§3.3b: 118 of the
+  126 frames after the person leaves it), but only while the bed is seen (≤ ~50–60 m) and only
+  when it is ≥ 0.35 m across the track: an object lying *along* a rail is indistinguishable from
+  the trackside devices mounted there.
+* **At stations without a rail lock** (v0.6.2, §3.2) an object beyond 40 m is advisory
+  (`CAUTION`, verified-clear distance 40 m) until the train is within 40 m of it.
 * **A 10 cm object is resolved to ~20–25 m**: its face is one ring high beyond that
   (0.125° = 5 cm at 25 m) — the physical limit of the sensor's vertical resolution.
 * **Far field**: between the height reference and the axis range only tall, grounded, short

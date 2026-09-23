@@ -23,8 +23,10 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
         • v0.6: the organizers' train envelope, polygon (dy, h) relative to axis and rail head:
           |dy| ≤ 1.05 m, h 0.12–3.0 m; advisory zone +0.35 m (= the v0.5 polygon, 1.40 m);
           edge margin 0.15 m per 100 m for the strict decision
+        • v0.6.2: no rail pair in the near range → the corridor beyond 40 m is advisory
    3a. low objects (v0.6): bumps above the learned bed cross-section │  lowobj.py
-        that reach the rail-head plane, within the observed bed (≤ 60 m)
+        that reach the rail-head plane, within the observed bed (≤ 60 m); v0.6.2: an object
+        straddling the envelope floor (across a rail) clustered whole
    3b. multi-frame accumulation beyond 40 m (only with a given train speed)  │  accumulate.py
    4. candidates → voxels (range-normalised) → DBSCAN (eps ∝ 1 + r/40 m)  │  clustering.py
         • filters: max extent, thin linear hardware, low track hardware, wall-like side
@@ -33,7 +35,7 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
           v0.6: thin objects hanging near the axis are never demoted); far field (v0.6):
           beyond the height reference only tall, grounded, short clusters alarm
    5. persistence tracker (greedy NN, gate ∝ range, ego-speed slack)  │  tracking.py
-        • confirmed after 3 hits spanning ≥ 0.3 s, ≥ 60 % of the last 10 frames matched and
+        • confirmed after 3 hits spanning ≥ 0.5 s (v0.6.2), ≥ 60 % of the last 10 frames matched and
           ≥ 60 % of the last 10 hits inside the strict gauge; confidence ↑ per hit ↓ per miss
    5b. health (v0.6): input sanity, blocked view, visibility,       │  health.py
         rail lock, latency, calibration → level + monitored range + clear distance
@@ -124,8 +126,12 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
 * **Range-adaptive everything**: voxel size, DBSCAN radius, minimum cluster size and the
   expected-point prior all scale with range, so a 5-point cluster at 150 m is treated as
   seriously as a 500-point cluster at 20 m.
-* **Persistence before alarm**: three consecutive frames (0.3 s) suppress single-frame noise; the
-  cost is 0.3 s of latency — at 80 km/h that is 6.7 m of travel.
+* **Persistence before alarm**: five consecutive frames (0.5 s, v0.6.2; 0.3 s before) suppress
+  single-frame noise and flickering edge structures; the cost is 0.5 s of latency for an object
+  that appears inside the envelope — 11 m of travel at 80 km/h — and none for one tracked while it
+  approaches (EXPERIMENTS.md §0: −35 % false-alarm events on the empty bags, −27 % on the ride).
+* **No rails, no far alarm** (v0.6.2): without the rail pair in the near range (stations, switch
+  caverns) the corridor beyond 40 m is advisory and the verified-clear distance says 40 m.
 
 ## Real-time budget (v0.6.1, every frame of the real bags, quiet 4-core sandbox, Python)
 
