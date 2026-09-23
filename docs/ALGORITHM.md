@@ -25,8 +25,13 @@ like. No training data and no object classes are required.
 * `sensor_msgs/PointCloud2` on `/lidar_points` (`frame_id = hesai_lidar`) in five of the six
   organizer bags and on `/sensing/lidar/hesai128/pointcloud` (`frame_id = lidar_livox`, full-turn
   recording) in `doubleT_obstacle`; fields `x y z intensity ring timestamp`, dual-return layout
-  with empty `(0,0,0)` slots. The node subscribes to both names and auto-discovers any other
-  PointCloud2 topic; the frame id is bridged to `resense_lidar` by a static transform.
+  with empty `(0,0,0)` slots. The organizers confirmed (23.09) that the control data may use
+  either (topic, frame) pair and that all recordings come from the same LiDAR. The node
+  subscribes to both names and auto-discovers any other PointCloud2 topic; it processes one
+  input at a time, switches when the active one falls silent, and restarts the detector (scene
+  state and mount calibration) for every new recording — a new topic, frame id or a jump of the
+  header stamps (README "How a bag is processed"). The frame id is bridged to `resense_lidar`
+  by a static transform.
 * Decoding (`resense/pointcloud.py`) is zero-copy into a structured numpy array; empty slots
   and returns closer than `sensor.min_range` (2.5 m, the train's own nose) or beyond
   `sensor.max_range` (250 m) are dropped.

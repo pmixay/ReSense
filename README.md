@@ -66,6 +66,9 @@ The organizers asked that every team "say clearly what to look at". One line per
 | everything else | `/resense/detections` (`vision_msgs/Detection3DArray`), `/resense/status` (JSON: every object with distance, lateral offset, size, confidence, kind; track model; health; mount calibration; timing) | |
 
 Decision logic, thresholds and their measured effect: [`docs/ALGORITHM.md`](docs/ALGORITHM.md) §4, §4b.
+The organizers left the choice of outputs to the teams and asked that everything needed be stated
+in the algorithm and launch descriptions (23.09): this table, "Topics published by the node" below
+and ALGORITHM.md §4 / §4b are that statement; how to run it is "How a bag is processed".
 
 ## Repository layout
 
@@ -114,9 +117,9 @@ WITH_TOOLS=1 ./scripts/build.sh                      # + rosbags / matplotlib / 
 docker run --rm resense python3 -m pytest -q /opt/resense/tests   # the test suite inside the image (CI does this)
 
 # or step by step
-docker run --rm -it --net=host -v /data/for_hackathon:/data resense \
+docker run --rm -it --net=host --ipc=host -v /data/for_hackathon:/data resense \
     ros2 launch resense_ros detector.launch.py            # terminal 1: detector
-docker run --rm -it --net=host -v /data/for_hackathon:/data resense \
+docker run --rm -it --net=host --ipc=host -v /data/for_hackathon:/data resense \
     ros2 bag play /data/roundT_doubleT --clock            # terminal 2: playback
 ros2 topic echo /resense/nearest_distance                 # terminal 3 (any ROS 2 Humble host)
 ```
@@ -133,12 +136,49 @@ m/s), or `odom_topic:=/odom` (`nav_msgs/Odometry`, `twist.linear.x`); with none 
 detector uses its own estimate. `publish_tf:=true|false` and `tf_parent_frame:=resense_lidar`
 control the static TF that lets one RViz / Foxglove layout serve every bag.
 
-**The bags disagree on the topic name** — `roundT_doubleT` publishes `/lidar_points`,
-`doubleT_obstacle` publishes `/sensing/lidar/hesai128/pointcloud` — so the node takes a list of
-candidates and, unless `auto_discover:=false`, subscribes to any other `PointCloud2` topic that
-appears on the graph. The first topic to deliver a frame wins and is logged; the others are
-dropped. The control bag therefore needs no argument. `docker compose --profile viz up` starts
-RViz and a Foxglove bridge (port 8765) next to the detector.
+**The bags disagree on the topic name and frame id** — `roundT_doubleT` and four more publish
+`/lidar_points` in `hesai_lidar`, `doubleT_obstacle` publishes `/sensing/lidar/hesai128/pointcloud`
+in `lidar_livox` — and the organizers confirmed (23.09) that **the control data may use either
+pair, all recorded with the same LiDAR**. The node therefore listens to both names and, unless
+`auto_discover:=false`, to any other `PointCloud2` topic that appears on the graph (discovery
+keeps running whenever the input is silent). One input is processed at a time; when it has been
+silent for `input_switch_timeout` (1 s) and another topic delivers, the node switches to it. Every
+**new recording** — another topic, another frame id, or header stamps that jump back (the bag
+played again) or forward by more than `new_input_gap` (30 s) — starts with a fresh detector, so
+the scene state and the mount calibration of one bag never carry into the next; a shorter hole
+in a recording (> `hole_reset_gap`, 1 s) resets the scene only. The control bags therefore need
+no argument and can be played one after another into one running node. `docker compose
+--profile viz up` starts RViz and a Foxglove bridge (port 8765) next to the detector.
+
+### How a bag is processed (the pipeline we expect)
+
+The organizers will most likely play the control bag from a console (their answer of 23.09). That
+is the whole pipeline — **ReSense does not read bag files**; it subscribes to the point cloud:
+
+```text
+ros2 bag play <bag>  ──PointCloud2 (either topic / frame pair), 10 Hz──▶  resense_detector node
+(any console on the same ROS 2 network,        (docker run --net=host --ipc=host … ros2 launch …)
+ or inside our image: sqlite3 + mcap plugins)        │
+                                                     ├─▶ /resense/decision        GO / CAUTION / STOP / FAULT
+                                                     ├─▶ /resense/obstacle_detected, /resense/nearest_distance
+                                                     ├─▶ /resense/clear_distance, /resense/health
+                                                     └─▶ /resense/detections, /resense/status (JSON), RViz markers
+```
+
+1. start the detector: `docker run --rm -it --net=host --ipc=host resense ros2 launch resense_ros detector.launch.py`
+   (the same image and command for every bag; mount / topic arguments are optional; `--ipc=host`
+   lets Fast DDS use shared memory with a player on the same machine — without it the 5–8 MB
+   point clouds may not arrive);
+2. play the bag from any console: `ros2 bag play <bag>` (or `ros2 launch … bag:=/data/<bag>` to
+   let the launch file play it inside the container; the image has the sqlite3 and mcap storage
+   plugins, so the storage format does not matter);
+3. read the answer on the topics of "What to look at" above; `ros2 topic echo /resense/decision`.
+
+Several bags can be played one after another into the same node (see the paragraph above). The
+offline command-line tool (`python -m resense.cli run --bag <dir>`, Quick start) *does* read a
+rosbag2 directory directly (the pure-Python `rosbags` reader, no ROS needed) — it is our
+development and evaluation tool and produces the same per-frame JSON as `/resense/status`, but it
+is not the way the solution is meant to be run.
 
 ### Where the data lives
 
@@ -268,8 +308,9 @@ mapping, e.g. `sensor_forward:=+x`), `mount_roll_deg` / `mount_pitch_deg` / `mou
 (fixed tilt), `auto_calibrate` (default `true`: orientation, roll and pitch found from the rails
 and the bed in the first frames, reported in `/resense/status` → `mount`) — and the **guards**
 `stale_timeout` (s without a frame before `FAULT`, default 0.5) and `max_consecutive_errors`
-(processing exceptions before the detector is reset, default 5). All of them are launch
-arguments too. Every `stats_period` seconds the node logs
+(processing exceptions before the detector is reset, default 5); since v0.6.1 the **input
+handling** — `input_switch_timeout` (1 s), `new_input_gap` (30 s), `hole_reset_gap` (1 s), see
+"How a bag is processed". All of them are launch arguments too. Every `stats_period` seconds the node logs
 `fps`, latency mean / p95 / max, the measured input period and the number of frames the
 input queue dropped (estimated from gaps in the header stamps).
 

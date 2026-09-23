@@ -179,10 +179,10 @@ def _cloud(xyz_vehicle: np.ndarray, stamp: float, M: np.ndarray = None, frame_id
                 point_step=18, row_step=18 * xyz_s.shape[0], data=data.tobytes()), R
 
 
-def _feed(node, xyz, n, M=None, t0=0.0):
+def _feed(node, xyz, n, M=None, t0=0.0, topic="/lidar_points", frame_id="hesai_lidar"):
     for k in range(n):
-        msg, R = _cloud(xyz, t0 + 0.1 * k, M)
-        node.on_cloud(msg, "/lidar_points")
+        msg, R = _cloud(xyz, t0 + 0.1 * k, M, frame_id=frame_id)
+        node.on_cloud(msg, topic)
     return R
 
 
@@ -304,3 +304,59 @@ def test_decision_levels(node_cls):
     assert d(ns(obstacle=False, warning=True, health={"level": "ok"})) == "CAUTION"
     assert d(ns(obstacle=False, warning=False, health={"level": "warn"})) == "CAUTION"
     assert d(ns(obstacle=False, warning=False, health={"level": "ok"})) == "GO"
+
+
+# ---------------------------------------------------------------------------
+# several recordings through one running node (the organizers, 23.09: the control data may use
+# either topic / frame pair - /lidar_points + hesai_lidar or /sensing/lidar/hesai128/pointcloud
+# + lidar_livox - all from the same LiDAR, played from the console)
+# ---------------------------------------------------------------------------
+
+def test_next_recording_on_the_other_topic_pair_is_taken_with_a_fresh_detector(node_cls, tunnel):
+    node = node_cls()
+    _feed(node, tunnel[0].xyz, 4)
+    first = node.detector
+    assert node.active_topic == "/lidar_points" and node.n_frames == 4
+    node.last_frame_wall = time.perf_counter() - 2.0          # the first bag has ended
+    _feed(node, tunnel[0].xyz, 4, t0=5000.0, topic="/sensing/lidar/hesai128/pointcloud", frame_id="lidar_livox")
+    assert node.active_topic == "/sensing/lidar/hesai128/pointcloud" and node.active_frame_id == "lidar_livox"
+    assert node.n_inputs == 2 and node.detector is not first and node.n_frames == 8
+    assert node.published["/resense/decision"][-1].data == "GO"
+    assert any("input switched" in s for _, s in node.get_logger().lines)
+
+
+def test_the_same_lidar_on_two_topics_is_processed_once(node_cls, tunnel):
+    node = node_cls()
+    msg_a, _ = _cloud(tunnel[0].xyz, 0.0)
+    msg_b, _ = _cloud(tunnel[0].xyz, 0.0, frame_id="lidar_livox")
+    node.on_cloud(msg_a, "/lidar_points")
+    node.on_cloud(msg_b, "/sensing/lidar/hesai128/pointcloud")    # while /lidar_points is live: ignored
+    assert node.n_frames == 1 and node.active_topic == "/lidar_points" and node.n_inputs == 1
+
+
+def test_a_bag_played_again_restarts_and_a_hole_only_resets_the_scene(node_cls, tunnel, monkeypatch):
+    node = node_cls()
+    _feed(node, tunnel[0].xyz, 3, t0=100.0)
+    first = node.detector
+    _feed(node, tunnel[0].xyz, 2, t0=99.0)                   # stamps jump back: the bag again (loop:=true)
+    assert node.detector is not first and node.n_inputs == 2
+    resets = []
+    monkeypatch.setattr(node.detector, "reset", lambda: resets.append(1))
+    second = node.detector
+    _feed(node, tunnel[0].xyz, 1, t0=105.0)                  # a 5.9 s hole in the recording
+    assert resets == [1] and node.detector is second and node.n_inputs == 2
+    _feed(node, tunnel[0].xyz, 1, t0=500.0)                  # 395 s forward: another recording
+    assert node.detector is not second and node.n_inputs == 3
+
+
+def test_discovery_keeps_looking_while_the_input_is_silent(node_cls, tunnel):
+    node = node_cls()
+    _feed(node, tunnel[0].xyz, 1)
+    node.get_topic_names_and_types = lambda: [("/new_lidar", ["sensor_msgs/msg/PointCloud2"]),
+                                              ("/resense/corridor_points", ["sensor_msgs/msg/PointCloud2"])]
+    node.on_discover()                                       # input live: nothing to do
+    assert "/new_lidar" not in node.subs
+    node.last_frame_wall = time.perf_counter() - 2.0
+    node.on_discover()                                       # silent: the next bag may use another name
+    assert "/new_lidar" in node.subs and "/resense/corridor_points" not in node.subs
+

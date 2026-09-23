@@ -4,8 +4,10 @@ Topics (defaults, all configurable via parameters):
   sub  /lidar_points, /sensing/lidar/hesai128/pointcloud, or whatever PointCloud2 topic the bag
        carries -- ``input_topic`` is a comma-separated candidate list and, with ``auto_discover``,
        the node also picks up any other PointCloud2 topic that appears on the graph. The
-       organizers' bags do not agree on the name (roundT_doubleT publishes /lidar_points,
-       doubleT_obstacle /sensing/lidar/hesai128/pointcloud) and the control bag is unseen.
+       organizers' bags do not agree on the name (roundT_doubleT publishes /lidar_points +
+       hesai_lidar, doubleT_obstacle /sensing/lidar/hesai128/pointcloud + lidar_livox) and the
+       organizers confirmed (23.09) that the control data may use either pair, all recorded with
+       the same LiDAR. See "Input handling" below.
   pub  /resense/obstacle_detected       std_msgs/Bool      (confirmed object inside the gauge)
   pub  /resense/warning                 std_msgs/Bool      (confirmed object in the advisory zone)
   pub  /resense/nearest_distance        std_msgs/Float32   (m along the track, -1 if none)
@@ -50,6 +52,16 @@ mapping of the parameter file, ``mount_roll_deg`` / ``mount_pitch_deg`` / ``moun
 fixed tilt correction, and ``auto_calibrate`` (default true) lets the detector find the
 orientation and tilt from the rails and the bed in the first frames (``resense/calibration.py``).
 
+Input handling (v0.6.1): every candidate subscription stays open; one input is processed at a
+time (the same LiDAR may appear on two topics). When the active topic has been silent for
+``input_switch_timeout`` s and another topic delivers, the node switches to it. A **new
+recording** - another topic, another ``frame_id``, header stamps that jump back (a bag played
+again, ``loop:=true``) or forward by more than ``new_input_gap`` s - starts from scratch: a
+fresh detector, so the scene state and the mount calibration of the previous recording (the
+bags use different mounts) do not carry over. A shorter forward gap above ``hole_reset_gap`` s
+(a hole in the recording) resets the scene but keeps the calibration. While the input is
+silent, topic discovery keeps running, so a bag with a topic name nobody listed is still found.
+
 The static TF exists so that one RViz / Foxglove layout works for every bag: the organizers'
 bags carry different ``frame_id`` values (``hesai_lidar``, ``lidar_livox``); the layouts use
 ``resense_lidar`` as the fixed frame and the node links it to whatever frame the input has.
@@ -89,7 +101,7 @@ class DetectorNode(Node):
         super().__init__("resense_detector")
         self.declare_parameter("input_topic", "/lidar_points,/sensing/lidar/hesai128/pointcloud")
         self.declare_parameter("auto_discover", True)    # also take PointCloud2 topics found on the graph
-        self.declare_parameter("discover_period", 2.0)   # s, how often to look while no frame has arrived
+        self.declare_parameter("discover_period", 2.0)   # s, how often to look while the input is silent
         self.declare_parameter("config_file", "")
         self.declare_parameter("publish_markers", True)
         self.declare_parameter("publish_corridor_cloud", True)
@@ -113,6 +125,10 @@ class DetectorNode(Node):
         # --- v0.6: production guards
         self.declare_parameter("stale_timeout", 0.5)    # s without an input frame before FAULT / STALE
         self.declare_parameter("max_consecutive_errors", 5)   # processing exceptions in a row before the detector is reset
+        # --- v0.6.1: several recordings / topic names through one running node
+        self.declare_parameter("input_switch_timeout", 1.0)   # s the active topic must be silent before another one is taken
+        self.declare_parameter("new_input_gap", 30.0)         # s of forward stamp jump that means a new recording (full reset)
+        self.declare_parameter("hole_reset_gap", 1.0)         # s of forward stamp jump that resets the scene (calibration kept)
 
         cfg_file = self.get_parameter("config_file").get_parameter_value().string_value
         self.cfg = DetectorConfig.from_yaml(cfg_file) if cfg_file else DetectorConfig()
@@ -154,8 +170,10 @@ class DetectorNode(Node):
         self.qos = QoSProfile(depth=5, reliability=QoSReliabilityPolicy.BEST_EFFORT,
                               history=QoSHistoryPolicy.KEEP_LAST)
         topic = self.get_parameter("input_topic").get_parameter_value().string_value
-        self.subs = {}                 # topic -> Subscription
-        self.active_topic = None       # the topic the first frame arrived on; the others are dropped
+        self.subs = {}                 # topic -> Subscription (all kept: a later recording may use another name)
+        self.active_topic = None       # the topic being processed; frames on the others are ignored while it is live
+        self.active_frame_id = None
+        self.n_inputs = 0              # recordings seen (a new topic, frame id or a stamp discontinuity)
         for t in (x.strip() for x in topic.split(",")):
             if t:
                 self.subscribe(t)
@@ -207,13 +225,13 @@ class DetectorNode(Node):
             PointCloud2, topic, lambda msg, t=topic: self.on_cloud(msg, t), self.qos)
 
     def on_discover(self) -> None:
-        """While nothing has arrived, subscribe to every PointCloud2 topic on the graph.
+        """While no input is live, subscribe to every PointCloud2 topic on the graph.
 
-        The organizers' bags disagree on the topic name and the control bag is unseen, so the
-        node finds its input instead of requiring the jury to pass the right one. Stops at the
-        first frame."""
-        if self.active_topic is not None:
-            self.discover_timer.cancel()
+        The organizers' bags disagree on the topic name and the control data may use either,
+        so the node finds its input instead of requiring the jury to pass the right one. Keeps
+        looking whenever the input is silent (the next recording may use another name)."""
+        if self.active_topic is not None and not self.input_silent(
+                self.get_parameter("stale_timeout").get_parameter_value().double_value):
             return
         for name, types in self.get_topic_names_and_types():
             if ("sensor_msgs/msg/PointCloud2" in types and not name.startswith("/resense/")
@@ -291,16 +309,52 @@ class DetectorNode(Node):
                 "ego_speed_source": self.last_speed_source}
 
     # ------------------------------------------------------------------
+    def input_silent(self, timeout: float) -> bool:
+        return self.last_frame_wall is None or time.perf_counter() - self.last_frame_wall > timeout
+
+    def start_new_input(self, topic: str, msg: PointCloud2, why: str) -> None:
+        """A new recording: a fresh detector (scene state and mount calibration start over)."""
+        first = self.active_topic is None
+        self.active_topic = topic or self.active_topic
+        self.active_frame_id = msg.header.frame_id
+        self.n_inputs += 1
+        if not first:
+            self.detector = Detector(self.cfg)
+            self.consecutive_errors = 0
+            self.mount_logged = ""
+        self.last_stamp = None
+        self.get_logger().info(
+            f"input {self.n_inputs}: {self.active_topic} (frame_id={msg.header.frame_id}, "
+            f"{msg.width * msg.height} points){'' if first else ' - ' + why + ': detector restarted'}")
+
+    def check_continuity(self, topic: str, msg: PointCloud2) -> bool:
+        """Decide what a frame means for the input state; False = ignore the frame."""
+        if self.active_topic is None:
+            self.start_new_input(topic, msg, "")
+            return True
+        if topic and topic != self.active_topic:
+            timeout = self.get_parameter("input_switch_timeout").get_parameter_value().double_value
+            if not self.input_silent(timeout):
+                return False                 # the same LiDAR on a second topic: one input at a time
+            self.start_new_input(topic, msg, f"input switched from {self.active_topic}")
+            return True
+        if msg.header.frame_id != self.active_frame_id:
+            self.start_new_input(topic, msg, f"frame_id changed from {self.active_frame_id}")
+            return True
+        if self.last_stamp is not None:
+            stamp = msg.header.stamp.sec + msg.header.stamp.nanosec * 1e-9
+            gap = stamp - self.last_stamp
+            new_gap = self.get_parameter("new_input_gap").get_parameter_value().double_value
+            hole = self.get_parameter("hole_reset_gap").get_parameter_value().double_value
+            if gap < -0.5 or gap > new_gap:
+                self.start_new_input(topic, msg, f"header stamps jumped by {gap:+.1f} s (a new recording)")
+            elif gap > hole:
+                self.get_logger().warn(f"{gap:.1f} s hole in the input: scene state reset, calibration kept")
+                self.detector.reset()
+        return True
+
     def on_cloud(self, msg: PointCloud2, topic: str = "") -> None:
-        if self.active_topic is None and topic:
-            self.active_topic = topic
-            self.get_logger().info(
-                f"input: {topic} (frame_id={msg.header.frame_id}, {msg.width * msg.height} points)")
-            for other, sub in list(self.subs.items()):      # one input wins; stop listening to the rest
-                if other != topic:
-                    self.destroy_subscription(sub)
-                    del self.subs[other]
-        elif topic and topic != self.active_topic:
+        if not self.check_continuity(topic, msg):
             return
         self.send_static_tf(msg.header.frame_id)
         t0 = time.perf_counter()

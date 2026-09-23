@@ -26,7 +26,7 @@ PARAMS = {
     "input_topic": ("/lidar_points,/sensing/lidar/hesai128/pointcloud", str,
                     "comma-separated candidate input topics"),
     "auto_discover": ("true", bool, "also subscribe to PointCloud2 topics found on the graph"),
-    "discover_period": ("2.0", float, "s between discovery scans while no frame has arrived"),
+    "discover_period": ("2.0", float, "s between discovery scans while the input is silent"),
     "publish_markers": ("true", bool, "RViz MarkerArray"),
     "publish_corridor_cloud": ("true", bool, "points inside the corridor, for debugging"),
     "marker_x_max": ("250.0", float, "m, how far the corridor outline is drawn"),
@@ -49,6 +49,10 @@ PARAMS = {
     "auto_calibrate": ("true", bool, "find the sensor orientation / roll / pitch from rails and bed in the first frames"),
     "stale_timeout": ("0.5", float, "s without an input frame before the decision becomes FAULT"),
     "max_consecutive_errors": ("5", int, "processing exceptions in a row before the detector is reset"),
+    # v0.6.1: several recordings / topic names through one running node
+    "input_switch_timeout": ("1.0", float, "s the active input topic must be silent before another topic is taken"),
+    "new_input_gap": ("30.0", float, "s of forward header-stamp jump taken as a new recording (detector restarted)"),
+    "hole_reset_gap": ("1.0", float, "s of forward header-stamp jump that resets the scene state (calibration kept)"),
 }
 
 

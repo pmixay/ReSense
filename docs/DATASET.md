@@ -134,6 +134,14 @@ the disk.
 
 ## Topic and sensor
 
+* **Organizers, 23.09 (written answer to QUESTIONS.md item 2):** the control data may contain
+  **both (topic, frame) pairs** — `/lidar_points` + `hesai_lidar` and
+  `/sensing/lidar/hesai128/pointcloud` + `lidar_livox`; **all data were recorded with the same
+  LiDAR**; the storage format matters little, the bag will most likely be played from the
+  console. The two layouts below (120° window vs full turn, 307 200 vs 921 600 slots) are
+  therefore two driver configurations / mounts of one Pandar128, not two sensors; the node
+  handles both and restarts per recording (README "How a bag is processed"). Also 23.09:
+  **`new_data` has no obstacles** (item 1).
 * **The bags do not agree on the topic name, the frame id or the azimuth window.** Topics
   from every bag's `metadata.yaml` (read by the captain on 2026-09-21, CAPTAIN.md finding 3 of
   21.09); `frame_id` and `width` read from the messages of two bags only (2026-09-20); the

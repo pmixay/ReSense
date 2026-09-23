@@ -1,7 +1,7 @@
 # Architecture
 
 ```
-ROS 2 bag ──/lidar_points (PointCloud2, 10 Hz, ~190k pts)──▶ resense_ros/detector_node
+ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCloud2, 10 Hz)──▶ resense_ros/detector_node
                                                                   │
                                                                   ▼
                               resense.Detector.process(Frame)  (pure numpy / scipy / sklearn)
@@ -64,7 +64,12 @@ ROS 2 bag ──/lidar_points (PointCloud2, 10 Hz, ~190k pts)──▶ resense_r
 
 ## Data flow and formats
 
-* Input: `sensor_msgs/PointCloud2` with fields `x y z intensity ring timestamp` (see DATASET.md).
+* Input: `sensor_msgs/PointCloud2` with fields `x y z intensity ring timestamp` (see DATASET.md),
+  on either of the two (topic, frame) pairs the organizers use (23.09: the control data may have
+  both, one LiDAR) or any other PointCloud2 topic found on the graph. One input at a time; a new
+  recording (another topic or frame id, or a jump of the header stamps) gets a fresh detector
+  (`detector_node.py` "Input handling"). The bag is played by `ros2 bag play`; nothing in the
+  solution reads bag files (the offline CLI does, as a development tool).
   The node decodes it zero-copy into a numpy structured array (`pointcloud.py`), drops the
   `(0,0,0)` slots of the dual-return layout and points closer than 2.5 m.
 * Internal `Frame`: `xyz (N,3) float32` in the vehicle frame, `intensity`, `ring`, `stamp`.

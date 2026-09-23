@@ -163,8 +163,9 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
    Streamed through v0.5 at full rate in the sandbox (no disk for the bag itself): 358 alarm
    frames / 102 events in 11 271 frames — 306 events per hour against ≈ 500 on the six bags —
    with the left gauge edge (contact-rail brackets at 40–100 m) as the largest family and the
-   unlocked track model at stations / switches as the second. **Unlabelled**: the organizers
-   did not say whether anything was staged; asked (QUESTIONS.md item 1). The full-bag replay
+   unlocked track model at stations / switches as the second. **No obstacles in it** — the
+   Q&A session (22.09) and the organizers' written answer of 23.09 (QUESTIONS.md item 1): every
+   alarm on it is a false alarm. The full-bag replay
    (`ros2 bag play /data/new_data`) is the closest thing to the control run and should be the
    dry-run input once the stand has 90 GB free. `scripts/unpack_dataset.py` now streams the
    archive from the link; `scripts/cache_frames.py` and `resense run` take a single split file.
@@ -206,9 +207,20 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
     trolley 146 m, crate 111 m, cable 95 m; with a train speed 177 / 190 / 183 m and fewer ride false
     alarms (274 / 75); 74–82 m in R ≈ 350 m curves (sightline). The farthest
     return in all data is 208.5 m, so 300 m is out of the sensor's reach.
-12. **Tests**: 132 (the node's decision / fault / watchdog / mount-parameter logic now runs
-    against ROS stand-ins in `tests/test_node.py`, so a node bug no longer waits for the Docker
-    job). Self-assessment per criterion: [`SCORECARD.md`](SCORECARD.md).
+12. **Tests**: 138 (the node's decision / fault / watchdog / mount-parameter / input-switching
+    logic runs against ROS stand-ins in `tests/test_node.py`, so a node bug no longer waits for
+    the Docker job). Self-assessment per criterion: [`SCORECARD.md`](SCORECARD.md).
+13. **Written answers of the organizers (23.09)** to QUESTIONS.md items 1, 2 and 6, recorded
+    verbatim there next to the Q&A-session answers: `new_data` has no obstacles; the control data
+    may use **either (topic, frame) pair** (`/lidar_points` + `hesai_lidar`,
+    `/sensing/lidar/hesai128/pointcloud` + `lidar_livox`), all from the same LiDAR, and will most
+    likely be **played from the console** — describe the pipeline if the code reads bags; the
+    outputs are ours to choose but must be fully described. Done: the node keeps every
+    subscription, switches inputs between recordings and restarts the detector per recording
+    (v0.6.1, launch arguments `input_switch_timeout`, `new_input_gap`, `hole_reset_gap`); README
+    "How a bag is processed" (the solution does not read bags; `--ipc=host` added to the
+    step-by-step `docker run` lines, without which Fast DDS shared memory can swallow the 5–8 MB
+    clouds of a player on the same machine).
 
 ### Left for the team (captain tracks, does not do)
 

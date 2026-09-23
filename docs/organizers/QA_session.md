@@ -43,15 +43,18 @@ context. Timestamps below are `mm:ss` of the recording.
 
 ## 2. Answers to the questions in `docs/QUESTIONS.md`
 
-| our question | answer from the session |
-|---|---|
-| 1. staged obstacles in `new_data`? | no — only empty tunnel; no labels; the evaluation adds synthetic obstacles (facts 4, 5) |
-| 2. control bag format like `new_data` / five of six bags? | control data: same conditions as the provided data, LiDAR mount of the empty-tunnel rides (fact 7); full-ride recordings included (fact 15). Topic / frame id not stated — the node keeps auto-discovery |
-| 3. return mode, mount height / pitch / lateral offset | not fixed, varies, set it in the launch parameters (fact 7) |
-| 4. PTP / GNSS time sync | not answered |
-| 5. which obstacles, which ranges, person on a platform? | anything ≥ 30×30×10 cm in the 2.1 × 3 m envelope; broken cables; people / animals / objects thrown on the track; a person on a platform is not an obstacle (facts 1–3) |
-| 6. how is the result evaluated, which messages? | per-frame obstacle yes/no + distance, any ROS topic, extras welcome if described (fact 9) |
-| 7. remote demo, duration | remote demo acceptable, organizers run the solution themselves (fact 23) |
+The session answered most of our questions; on 23.09 the organizers also answered questions 1, 2
+and 6 in writing (verbatim in [`../QUESTIONS.md`](../QUESTIONS.md) "Written answers").
+
+| our question | answer from the session (22.09) | written answer (23.09) |
+|---|---|---|
+| 1. staged obstacles in `new_data`? | no — only empty tunnel; no labels; the evaluation adds synthetic obstacles (facts 4, 5) | "В new_data препятствий нет" — none |
+| 2. control bag format like `new_data` / five of six bags? | control data: same conditions as the provided data, LiDAR mount of the empty-tunnel rides (fact 7); full-ride recordings included (fact 15). Topic / frame id not stated | **either (topic, frame) pair may occur; all data from the same LiDAR; the bag will most likely be played from the console; describe the launch pipeline if the code reads bags directly** → node input switching and per-recording restart (v0.6.1), README "How a bag is processed" |
+| 3. return mode, mount height / pitch / lateral offset | not fixed, varies, set it in the launch parameters (fact 7) | — |
+| 4. PTP / GNSS time sync | not answered | — |
+| 5. which obstacles, which ranges, person on a platform? | anything ≥ 30×30×10 cm in the 2.1 × 3 m envelope; broken cables; people / animals / objects thrown on the track; a person on a platform is not an obstacle (facts 1–3) | — |
+| 6. how is the result evaluated, which messages? | per-frame obstacle yes/no + distance, any ROS topic, extras welcome if described (fact 9) | **outputs are the participants' choice; everything needed must be stated in the algorithm and launch descriptions** → README "What to look at", ALGORITHM.md §4 / §4b |
+| 7. remote demo, duration | remote demo acceptable, organizers run the solution themselves (fact 23) | — |
 
 ## 3. What changed in the code because of this session (v0.6)
 
@@ -61,4 +64,7 @@ context. Timestamps below are `mm:ss` of the recording.
 * synthetic catalogue: `lowbox` (0.3×0.3×0.1 m), `box0.3`, `cable`, `cable_low` (facts 2–4);
 * mount auto-calibration + mount launch parameters (fact 7);
 * `/resense/decision`, `/resense/clear_distance`, `/resense/health` (facts 9, 14);
-* the object on the rails of `doubleT_obstacle` labelled (fact 8).
+* the object on the rails of `doubleT_obstacle` labelled (fact 8);
+* after the written answers of 23.09 (v0.6.1): the node takes either (topic, frame) pair, switches
+  between recordings played one after another and restarts the detector for each; the README
+  describes the launch pipeline (`ros2 bag play` from a console → the node → the topics).
