@@ -59,5 +59,9 @@ jobs:
         run: docker run --rm -w / -e RESENSE_REQUIRE_SYNTHETIC=1 resense:ci python3 -m pytest -q -rs /opt/resense/tests
       - name: ROS 2 package is importable and the launch file resolves
         run: docker run --rm resense:ci bash -lc "ros2 pkg executables resense_ros && ros2 launch resense_ros detector.launch.py --print >/dev/null"
-      - name: ROS 2 smoke test — a synthetic bag through the node inside the image (no dataset needed)
-        run: docker run --rm resense:ci bash -lc "python3 scripts/make_smoke_bag.py /tmp/smoke_bag && scripts/smoke_test.sh /tmp/smoke_bag"
+      - name: ROS 2 smoke test — two synthetic bags, both topic / frame pairs, through one running node (no dataset needed)
+        run: >-
+          docker run --rm resense:ci bash -lc
+          "python3 scripts/make_smoke_bag.py /tmp/smoke_bag &&
+          python3 scripts/make_smoke_bag.py /tmp/smoke_bag2 --topic /sensing/lidar/hesai128/pointcloud --frame-id lidar_livox --distance 45 &&
+          scripts/smoke_test.sh /tmp/smoke_bag /tmp/smoke_bag2"

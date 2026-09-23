@@ -106,8 +106,10 @@ WebSocket → `ws://<demo host>:8765`**, then **Layout → Import from file → 
 
 What the audience sees: a 3D panel (dark, camera behind the sensor looking down the track, both
 raw-cloud topics, `/resense/corridor_points` in orange, `/resense/markers` with the boxes, labels,
-corridor edges and the status text), an indicator that switches from green *PATH CLEAR* to red
-*OBSTACLE* on `/resense/obstacle_detected`, plots of `/resense/nearest_distance` (−1 = none),
+corridor edges and the status text), an indicator of `/resense/decision` (green *GO*, orange
+*CAUTION*, red *STOP*, violet *FAULT*) next to the *PATH CLEAR* / *OBSTACLE* indicator of
+`/resense/obstacle_detected`, plots of `/resense/nearest_distance` (−1 = none) and
+`/resense/clear_distance`,
 `/resense/latency_ms` and `/resense/fps` over the last 30 s, and the raw `/resense/status` JSON.
 
 Known limits:

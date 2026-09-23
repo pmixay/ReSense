@@ -114,6 +114,7 @@ python scripts/mine_objects.py out/eval --bag new_data                  # every 
 ./scripts/run_headless.sh /data/for_hackathon/doubleT_obstacle   # same, no X11: prints the distance
 ./scripts/dry_run.sh /data/for_hackathon/doubleT_obstacle        # acceptance test, exits non-zero on failure
 WITH_TOOLS=1 ./scripts/build.sh                      # + rosbags / matplotlib / open3d / pytest inside the image
+PULL=1 ./scripts/build.sh                            # refresh the ros:humble base first (an old cached one fails apt-get update)
 docker run --rm resense python3 -m pytest -q /opt/resense/tests   # the test suite inside the image (needs the WITH_TOOLS=1 image; CI does this)
 
 # or step by step
@@ -241,7 +242,8 @@ Two ways to show the chain tunnel → cloud → detection → distance to a jury
    On any laptop open Foxglove (desktop app or app.foxglove.dev) → Open connection →
    `ws://<demo-host>:8765` (`ssh -L 8765:localhost:8765 <demo-host>` first if only ssh is open) →
    Layout → Import → [`web/foxglove_layout.json`](web/foxglove_layout.json): raw cloud, corridor
-   points, boxes, status text and the distance / latency / fps plots. Details and limits in
+   points, boxes, the GO / CAUTION / STOP / FAULT indicator, status text and the distance /
+   clear-distance / latency / fps plots. Details and limits in
    [`web/README.md`](web/README.md). Over a slow link switch the raw-cloud panel off and keep
    `/resense/corridor_points` (a few thousand points): the detections and the status text do not
    depend on it.

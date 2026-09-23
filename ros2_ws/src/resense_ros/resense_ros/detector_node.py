@@ -28,7 +28,8 @@ Topics (defaults, all configurable via parameters):
 
 The status JSON carries an extra ``node`` object next to the detector fields:
 ``{"latency_ms", "fps", "frames", "dropped_frames", "input_period_ms", "ego_speed_mps",
-"ego_speed_source"}`` (``latency_ms`` there is decode + detect of the same frame, before
+"ego_speed_source", "input_topic", "recording"}`` (``recording`` counts the recordings seen,
+see "Input handling") (``latency_ms`` there is decode + detect of the same frame, before
 publishing). ``dropped_frames`` is estimated from gaps in the input header stamps (the
 subscription is best-effort with a short queue, so a slow frame silently drops the ones behind
 it).
@@ -310,7 +311,8 @@ class DetectorNode(Node):
                 "frames": self.n_frames, "dropped_frames": self.dropped,
                 "input_period_ms": round(self.input_period * 1e3, 1),
                 "ego_speed_mps": None if self.last_speed is None else round(float(self.last_speed), 2),
-                "ego_speed_source": self.last_speed_source}
+                "ego_speed_source": self.last_speed_source,
+                "input_topic": self.active_topic, "recording": self.n_inputs}
 
     # ------------------------------------------------------------------
     def input_silent(self, timeout: float) -> bool:

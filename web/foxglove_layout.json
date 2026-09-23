@@ -6,9 +6,22 @@
         "distance": 60,
         "phi": 70,
         "thetaDeg": 180,
-        "targetOffset": [0, -35, 0],
-        "target": [0, 0, 0],
-        "targetOrientation": [0, 0, 0, 1],
+        "targetOffset": [
+          0,
+          -35,
+          0
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "targetOrientation": [
+          0,
+          0,
+          0,
+          1
+        ],
         "fovy": 45,
         "near": 0.5,
         "far": 5000
@@ -19,7 +32,10 @@
         "enableStats": false,
         "backgroundColor": "#0c0d12",
         "labelScaleFactor": 1,
-        "transforms": { "showLabel": false, "axisScale": 1 }
+        "transforms": {
+          "showLabel": false,
+          "axisScale": 1
+        }
       },
       "transforms": {},
       "topics": {
@@ -75,14 +91,37 @@
       "fallbackColor": "#2ecc71",
       "fallbackLabel": "PATH CLEAR",
       "rules": [
-        { "operator": "=", "rawValue": "true", "color": "#ff2d55", "label": "OBSTACLE" },
-        { "operator": "=", "rawValue": "false", "color": "#2ecc71", "label": "PATH CLEAR" }
+        {
+          "operator": "=",
+          "rawValue": "true",
+          "color": "#ff2d55",
+          "label": "OBSTACLE"
+        },
+        {
+          "operator": "=",
+          "rawValue": "false",
+          "color": "#2ecc71",
+          "label": "PATH CLEAR"
+        }
       ]
     },
     "Plot!distance": {
-      "title": "nearest obstacle, m (-1 = none)",
+      "title": "nearest obstacle and verified-clear distance, m",
       "paths": [
-        { "value": "/resense/nearest_distance.data", "enabled": true, "timestampMethod": "receiveTime", "color": "#ff2d55", "label": "nearest_distance" }
+        {
+          "value": "/resense/nearest_distance.data",
+          "enabled": true,
+          "timestampMethod": "receiveTime",
+          "color": "#ff2d55",
+          "label": "nearest_distance"
+        },
+        {
+          "value": "/resense/clear_distance.data",
+          "enabled": true,
+          "timestampMethod": "receiveTime",
+          "color": "#2ecc71",
+          "label": "clear_distance"
+        }
       ],
       "showXAxisLabels": true,
       "showYAxisLabels": true,
@@ -99,7 +138,13 @@
     "Plot!latency": {
       "title": "latency, ms (decode + detect + publish)",
       "paths": [
-        { "value": "/resense/latency_ms.data", "enabled": true, "timestampMethod": "receiveTime", "color": "#8a83d1", "label": "latency_ms" }
+        {
+          "value": "/resense/latency_ms.data",
+          "enabled": true,
+          "timestampMethod": "receiveTime",
+          "color": "#8a83d1",
+          "label": "latency_ms"
+        }
       ],
       "showXAxisLabels": true,
       "showYAxisLabels": true,
@@ -116,7 +161,13 @@
     "Plot!fps": {
       "title": "fps",
       "paths": [
-        { "value": "/resense/fps.data", "enabled": true, "timestampMethod": "receiveTime", "color": "#2ecc71", "label": "fps" }
+        {
+          "value": "/resense/fps.data",
+          "enabled": true,
+          "timestampMethod": "receiveTime",
+          "color": "#2ecc71",
+          "label": "fps"
+        }
       ],
       "showXAxisLabels": true,
       "showYAxisLabels": true,
@@ -137,16 +188,55 @@
       "diffEnabled": false,
       "showFullMessageForDiff": false,
       "expansion": "all"
+    },
+    "Indicator!decision": {
+      "path": "/resense/decision.data",
+      "style": "background",
+      "fallbackColor": "#7f8c8d",
+      "fallbackLabel": "no decision yet",
+      "rules": [
+        {
+          "operator": "=",
+          "rawValue": "STOP",
+          "color": "#ff2d55",
+          "label": "STOP: obstacle in the envelope"
+        },
+        {
+          "operator": "=",
+          "rawValue": "FAULT",
+          "color": "#9b59b6",
+          "label": "FAULT: input not trusted"
+        },
+        {
+          "operator": "=",
+          "rawValue": "CAUTION",
+          "color": "#f39c12",
+          "label": "CAUTION"
+        },
+        {
+          "operator": "=",
+          "rawValue": "GO",
+          "color": "#2ecc71",
+          "label": "GO: path clear"
+        }
+      ]
     }
   },
   "globalVariables": {},
   "userNodes": {},
-  "playbackConfig": { "speed": 1 },
+  "playbackConfig": {
+    "speed": 1
+  },
   "layout": {
     "direction": "row",
     "first": {
       "direction": "column",
-      "first": "Indicator!obstacle",
+      "first": {
+        "direction": "row",
+        "first": "Indicator!decision",
+        "second": "Indicator!obstacle",
+        "splitPercentage": 60
+      },
       "second": "3D!resense",
       "splitPercentage": 12
     },

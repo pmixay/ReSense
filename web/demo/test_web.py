@@ -56,6 +56,9 @@ def test_foxglove_layout_parses_and_has_the_panels():
         for p in c["paths"]:
             assert p["timestampMethod"] in ("receiveTime", "headerStamp")
     assert any(c.get("path", "").startswith("/resense/obstacle_detected") for k, c in cfg.items() if k.startswith("Indicator!"))
+    decision = [c for k, c in cfg.items() if k.startswith("Indicator!") and c.get("path") == "/resense/decision.data"]
+    assert decision and {r["rawValue"] for r in decision[0]["rules"]} == {"GO", "CAUTION", "STOP", "FAULT"}
+    assert "/resense/clear_distance.data" in plotted
     assert any(c.get("topicPath") == "/resense/status" for k, c in cfg.items() if k.startswith("RawMessages!"))
 
     # every leaf of the mosaic layout is a configured panel and every panel is placed

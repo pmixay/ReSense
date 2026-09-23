@@ -69,6 +69,9 @@ def main(argv=None) -> int:
                    help="ms, p95 of node.latency_ms = decode + detect (default 100, the 10 Hz frame period)")
     p.add_argument("--max-dropped", type=int, default=0, help="allowed dropped input frames (default 0)")
     p.add_argument("--min-fps", type=float, default=None, help="minimum of the last reported node.fps")
+    p.add_argument("--expect-inputs", type=int, default=0, metavar="N",
+                   help="N recordings played one after another into one node (node.recording counts them); "
+                        "with --expect-obstacle every one of them must have --min-alarm-frames alarms")
     args = p.parse_args(argv)
 
     frames, skipped = load(args.status_jsonl)
@@ -126,6 +129,19 @@ def main(argv=None) -> int:
         failures.append(f"{dropped} dropped input frames > {args.max_dropped}")
     if args.min_fps is not None and (fps is None or fps < args.min_fps):
         failures.append(f"fps {fps} < {args.min_fps}")
+    if args.expect_inputs:
+        rec = [f.get("node", {}).get("recording") for f in frames]
+        recs = sorted({r for r in rec if r is not None})
+        topics = sorted({f.get("node", {}).get("input_topic") for f in frames if f.get("node", {}).get("input_topic")})
+        print(f"recordings seen      : {len(recs)} {topics}")
+        if len(recs) < args.expect_inputs:
+            failures.append(f"{len(recs)} recordings seen, expected {args.expect_inputs} "
+                            "(the node did not take the next bag / topic)")
+        if args.expect_obstacle:
+            for r in recs:
+                n = sum(1 for f, x in zip(frames, rec) if x == r and f["obstacle"])
+                if n < args.min_alarm_frames:
+                    failures.append(f"recording {r}: {n} alarm frames, expected >= {args.min_alarm_frames}")
 
     print()
     if failures:

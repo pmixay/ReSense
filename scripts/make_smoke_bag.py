@@ -2,6 +2,8 @@
 """Write a small ROS 2 bag of synthetic tunnel frames — the dataset-free input for the ROS smoke test.
 
     python scripts/make_smoke_bag.py /tmp/smoke_bag [--clear 15] [--obstacle 25] [--distance 60]
+    python scripts/make_smoke_bag.py /tmp/smoke_bag2 --topic /sensing/lidar/hesai128/pointcloud \
+        --frame-id lidar_livox --distance 45      # the organizers' other (topic, frame) pair
 
 Frames 0..clear-1 are an empty synthetic round tunnel (resense.synthetic.synthetic_tunnel_frame);
 the next ``obstacle`` frames contain a person (0.4 x 0.5 x 1.7 m) standing on the track at
@@ -129,13 +131,18 @@ def write_bag(path: str, messages, t0_ns: int, period_ns: int) -> dict:
 
 
 def main(argv=None) -> int:
+    global TOPIC, FRAME_ID
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("out", help="bag directory to create (its basename names the .db3 file)")
     p.add_argument("--clear", type=int, default=15, help="leading frames of empty tunnel (default 15)")
     p.add_argument("--obstacle", type=int, default=25, help="frames with the person on the track (default 25)")
     p.add_argument("--distance", type=float, default=60.0, help="m, where the person stands (default 60)")
     p.add_argument("--seed", type=int, default=100)
+    p.add_argument("--topic", default=TOPIC, help=f"topic name (default {TOPIC}; the organizers also use "
+                                                  "/sensing/lidar/hesai128/pointcloud)")
+    p.add_argument("--frame-id", default=FRAME_ID, help=f"header frame_id (default {FRAME_ID}; or lidar_livox)")
     a = p.parse_args(argv)
+    TOPIC, FRAME_ID = a.topic, a.frame_id
 
     from rosbags.typesys import Stores, get_typestore
     ts = get_typestore(Stores.ROS2_HUMBLE)
