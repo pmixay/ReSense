@@ -44,18 +44,22 @@ switches); the person crossing the track in `doubleT_obstacle` is reported in 58
 frames in which the person is inside the envelope, the first alarm 0.3 s after entering it,
 distance error < 0.35 m; the **object lying across the rail** (0.45 × 0.6 × 0.3 m) in **118 of
 the 126 frames** after the person leaves it (v0.6.1: 2). Long range on the
-moving ride (objects ray-cast into consecutive real frames, no speed input, §2d): a person
-approaching on straight track is first confirmed at **150 m median** (110–169 m, 6 of 6), a
-trolley at 146 m, a 1 m crate at 111 m, a 3 cm hanging cable at 95 m; with a train speed given
-(odometry or a speed topic: 5-frame accumulation) the person at **177 m** and the trolley at
-190 m (up to 205 m) — with fewer false alarms on the ride, not more; in R ≈ 350 m curves only 2 approaches were
-run and 1 of 2 was detected, at 74–82 m (the sightline). 300 m is beyond this sensor: the farthest return in all
-13 759 frames is 208.5 m. Other LiDAR mounts (upside down, `+x` forward, backwards, rolled /
+moving ride (objects ray-cast into consecutive real frames, no speed input, §2d, v0.6.2): a
+person on straight track is first confirmed at **148 m median** (110–169 m, 6 of 6) and
+**detected continuously from 135 m**; a trolley first at 144 m, a 1 m crate at 111 m, a 3 cm
+hanging cable at 95 m; with a train speed given (odometry or a speed topic: 5-frame
+accumulation) the person at **167 m**, the crate at 182 m; in R ≈ 350 m curves 6 of 7 approaches
+are detected, from 58–86 m (the sightline past the inner wall); at station stops a person 6 of
+6 from 113 m; 30 cm objects lying on a rail head 6 of 6 from 42–44 m. 300 m is beyond this
+sensor: the farthest return in all 13 759 frames is 208.5 m. Other LiDAR mounts (upside down, `+x` forward, backwards, rolled /
 pitched) are recovered from the rails and the bed: orientation found and tilt within 0.5° on
 re-mounted real frames of three recordings (§6). Clean timing: 42–58 ms mean, p95 52–69 ms per
 frame on every recording (4-core sandbox, pure Python, §3).
-The container chain (`docker build → run → bag play → result`) is verified in CI on a synthetic
-bag on every push. Judgement against every criterion (two independent reviews, 23.09: 6.4 / 10 indicative) and what is left: [`docs/SCORECARD.md`](docs/SCORECARD.md).
+The container chain (`docker build → run → bag play → result`) is verified in CI on synthetic
+bags on every push, and was rehearsed on 23.09 on the real frames in Docker — the node in one
+container, `ros2 bag play` in another, both topic / frame pairs, two recordings into one node
+(EXPERIMENTS.md §3b: the 120° recording at 10 fps, p95 76 ms; the 360° one at 8–9.6 fps on the
+4-vCPU sandbox; the node container at 75 % of one core and 178 MB). Judgement against every criterion and what is left: [`docs/SCORECARD.md`](docs/SCORECARD.md).
 
 ![doubleT_obstacle frame 24 seen from the cab: the train envelope (green) swept along the track axis, the points inside it (yellow), the person on the track reported at 55.8 m (STOP) and a close-up of the person's points](docs/img/hero_person.png)
 *Real data, v0.6.2: `doubleT_obstacle` frame 24 from the driver's seat (`scripts/hero_view.py`), the person on the track at 55.8 m. Videos: [the whole bag from the cab](docs/video/doubleT_obstacle_cab.mp4), [offline renders, top and side view](docs/video/doubleT_obstacle_offline.mp4) and [the dashboard replaying the same run](docs/video/dashboard_doubleT_obstacle.mp4). Slides in the organizers' template: [`docs/presentation/ReSense_LCT2026.pptx`](docs/presentation/ReSense_LCT2026.pptx).*

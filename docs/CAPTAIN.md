@@ -209,7 +209,7 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
     trolley 146 m, crate 111 m, cable 95 m; with a train speed 177 / 190 / 183 m and fewer ride false
     alarms (274 / 75); in R ≈ 350 m curves 1 of 2 approaches detected, at 74–82 m (sightline). The farthest
     return in all data is 208.5 m, so 300 m is out of the sensor's reach.
-12. **Tests**: 145 (the node's decision / fault / watchdog / mount-parameter / input-switching
+12. **Tests**: 147 (the node's decision / fault / watchdog / mount-parameter / input-switching
     logic runs against ROS stand-ins in `tests/test_node.py`, so a node bug no longer waits for
     the Docker job). Criteria judgement and the remaining work: [`SCORECARD.md`](SCORECARD.md).
 13. **Written answers of the organizers (23.09)** to our questions 1, 2 and 6, recorded
@@ -235,7 +235,11 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
     [`presentation/ReSense_LCT2026.pptx`](presentation/ReSense_LCT2026.pptx) (built by
     `scripts/build_deck.py`; the captain fills the `<…>` personal data and photos on slides 2–4);
     the main shot from the cab: `scripts/hero_view.py` → `img/hero_person.png`, video
-    `video/doubleT_obstacle_cab.mp4`.
+    `video/doubleT_obstacle_cab.mp4`. Set F round 2 (EXPERIMENTS §2d): a person on straight track
+    first confirmed at 148 m, detected continuously from 135 m (167 m with a train speed), curves
+    6 of 7 approaches, station stops 6 of 6, 30 cm objects on a rail head 6 of 6 from 42–44 m.
+    The organizers' procedure ran in Docker on the real frames (EXPERIMENTS §3b) and found a
+    transport bug, fixed (`input_reliability`).
 
 ### Left for the team (captain tracks, does not do)
 

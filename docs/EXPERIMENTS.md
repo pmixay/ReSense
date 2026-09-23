@@ -7,6 +7,8 @@ ride), §3 timing, §4–§5 lessons and next steps, §6 mount calibration, §7 
 side by side, §8 the learned second opinion. Raw summaries:
 [`experiments_v0.6.2_real_fullrate.json`](experiments_v0.6.2_real_fullrate.json) (v0.6.1 and every
 v0.6.2 step over all 13 759 frames, plus the leave-one-out check),
+[`experiments_v0.6.2_setF.json`](experiments_v0.6.2_setF.json) (set F round 2: small objects,
+rail heads, the envelope edge, curves, station stops, sustained range),
 [`experiments_v0.6.1_real_fullrate.json`](experiments_v0.6.1_real_fullrate.json),
 [`experiments_v0.6.1_setF.json`](experiments_v0.6.1_setF.json) (set F round 1). Every number is
 **real** (recording named) or **synthetic** (said so).
@@ -67,6 +69,14 @@ one stretch of track. v0.6.2 is v0.6.1 plus three changes, each measured by a fu
   obstacle, so every one of these is a false alarm.
 * Health warnings other than latency: 196 of 13 759 frames (1.4 %, rails lost at stations and
   switches), as in v0.6.1.
+* **Long range and small objects** (set F round 2, §2d, objects ray-cast into the moving ride):
+  a person on straight track first confirmed at 148 m (median of 6) and **detected continuously
+  from 135 m**; 167 m with a train speed given; curves R ≈ 350 m 6 of 7 approaches (58–86 m, the
+  sightline); station stops 6 of 6 from 113 m; 30 cm objects on a rail head 6 of 6 from 42–44 m;
+  objects on the bed between the rails are below the envelope (policy, §3.3b).
+* **Through ROS in Docker** (§3b): the organizers' procedure on the real frames, two recordings
+  into one node; the first run found and fixed a transport bug (best-effort input lost 196 of
+  201 ten-megabyte clouds).
 
 **Is the gain spread over the data?** The parameters were chosen on the frames they are scored
 on — there is no held-out data with obstacles. `scripts/consistency_check.py` splits the data
@@ -495,7 +505,7 @@ ranges on these two curved bags; the Sprint 2 targets (person ≥ 150 m, box ≥
 the synthetic tunnel only (§2b) and are not met on real backgrounds by any configuration
 measured this round.
 
-## 2d. The far field and long range on a moving background (set F, v0.6)
+## 2d. The far field and long range on a moving background (set F, v0.6 – v0.6.2)
 
 **What a straight tunnel returns far away** (`new_data_46`, 20 m/s, R > 100 km): of ~188 000
 points per frame, 422 lie 100–125 m ahead, 217 at 125–150 m, 73 at 150–175 m and 56 at
@@ -522,7 +532,64 @@ from 60 m to 200 m scaled by reflectivity (the real-frame budget, §2b). A fresh
 sequence, **no speed given** (single-frame pipeline + persistence). A frame is a hit when a
 confirmed gauge detection lies within max(2 m, 3 %) and 1.2 m laterally of the object.
 
-Straight sections (files 46, 68, 98, 140, 168, 172; 17–21 m/s), v0.6.1:
+**Round 2 (v0.6.2, 23.09)** — what the criteria review asked for: small objects, objects on
+a rail head, lateral positions to the envelope edge, 7 approaches in curves and 6 at station
+stops, and the **sustained range** next to the first hit: the largest distance D from which the
+object is detected in ≥ 90 % of the frames in which it returns a point, all the way in (≥ 5
+frames). The v0.6.2 configuration (0.5 s confirmation), no speed given unless said; 6 sequences
+per object unless said; raw summaries in
+[`experiments_v0.6.2_setF.json`](experiments_v0.6.2_setF.json).
+
+| set | object | detected | first confirmed, median (per sequence) | sustained ≥ 90 %, median (per sequence) | frame recall 0–50 / 50–100 / 100–150 / 150–200 m |
+|---|---|---|---|---|---|
+| straight, \|lateral\| ≤ 0.6 m | person 0.4 × 0.5 × 1.7 m | 6 / 6 | **148 m** (110, 146, 146, 149, 162, 169) | **135 m** (22, 92, 120, 150, 162, 176) | 96 / 94 / 67 / 7 % |
+| | trolley 0.6 × 1.0 m | 6 / 6 | 144 m (85–154) | 115 m (22–118) | 96 / 88 / 27 / 3 % |
+| | crate 1.0 m | 6 / 6 | 111 m (79–156) | 117 m (22–129) | 96 / 92 / 26 / 1 % |
+| | cable 3 cm hanging to 1.0 m above the rail head | 6 / 6 | 95 m (13–108) | 53 m (19–98, 4 of 6) | 74 / 59 / 6 / 0 % |
+| | box 0.5 m in the bed | 1 / 6 | 52 m | 56 m | 16 / 2 / 0 / 0 % |
+| same, **train speed given** (5-frame accumulation) | person | 6 / 6 | **167 m** (143–188) | 151 m (22–190) | 96 / 83 / 58 / 34 % |
+| | trolley | 6 / 6 | 175 m (110–194) | 122 m (22–186) | 96 / 84 / 41 / 42 % |
+| | crate 1.0 m | 6 / 6 | 182 m (142–201) | 89 m (22–170, 5 of 6) | 94 / 71 / 55 / 38 % |
+| to the envelope edge, \|lateral\| ≤ 1.0 m | person | 6 / 6 | 138 m (108–161) | 115 m (16–164) | 94 / 91 / 56 / 3 % |
+| | crate 1.0 m | 6 / 6 | 116 m (83–151) | 118 m (22–129) | 95 / 91 / 22 / 1 % |
+| | trolley | 6 / 6 | 116 m (101–157) | 95 m (22–120, 4 of 6) | 85 / 83 / 24 / 1 % |
+| | cable hanging to 0.2 m above the rail head | 3 / 6 | 132 m (108–135) | 64 m (1 of 6) | 24 / 18 / 13 / 0 % |
+| curves R ≈ 350 m (7 approaches) | person | **6 / 7** | 78 m (58–86) | 85 m (61–94) | 100 / 50 / 0 / 0 % |
+| | crate 1.0 m | 6 / 7 | 68 m (47–89) | 68 m (48–95, 4 of 7) | 87 / 35 / 0 / 0 % |
+| | trolley | 6 / 7 | 68 m (51–89) | 73 m (24–97) | 92 / 39 / 0 / 0 % |
+| station stops (6) | person | 6 / 6 | 113 m (89–144) | 122 m (77–127, 5 of 6) | 93 / 85 / 29 / 0 % |
+| | crate 1.0 m | 6 / 6 | 102 m (79–144) | 80 m (61–94, 3 of 6) | 76 / 73 / 10 / 0 % |
+| | dog-sized box 0.6 × 0.3 × 0.45 m on the bed | 1 / 6 | 41 m | — | 2 / 0 / 0 / 0 % |
+| small objects on a rail head | 0.3 × 0.3 × 0.1 m | **6 / 6** | 42 m (41–48) | 45 m (33–48) | 84 / 0 / 0 % |
+| | 0.3 m cube | **6 / 6** | 44 m (42–50) | 47 m (44–50) | 87 / 1 / 0 % |
+| across a rail (replica of the organizers' object, 0.4 × 0.6 × 0.31 m) | | 5 / 6 | 46 m (24–50) | 32 m (26–50, 4 of 6) | 48 / 1 / 0 % |
+| on the bed between the rails | 0.3 × 0.3 × 0.1 m | 0 / 6 | — | — | 0 % |
+| | 0.3 m cube | 1 / 6 | 9 m | — | 1 % |
+| | dog-sized 0.6 × 0.3 × 0.45 m | 1 / 6 | 50 m | 42 m | 13 / 1 % |
+
+Reading. (1) **A person is detected continuously from ~135 m** on straight track (median of the
+sustained range; first hit ~148 m, v0.6.1 150 m — the 0.5 s confirmation costs ~3 m there and
+~10 m with a train speed: 167 against 177 m); in one sequence out of six the sustained range
+collapses to ~20 m because a few frames are lost at 20–60 m where the object crosses the
+near-range bed fit — the first-hit median hides such dropouts, which is why both are reported.
+(2) **Curves: 6 of 7 approaches** detected (round 1: 1 of 2), first at 58–86 m and sustained
+from 61–94 m — the sightline past the inner wall of an R ≈ 350 m curve (≈ √(8·R·w) = 80–110 m).
+(3) **Station stops**: a person 6 / 6 from 113 m; the stations carry the ride's own false alarms
+(75, 58 and 51 confirmed detections away from the objects in these 18 sequences of ~110
+frames — the platform-edge and platform-end structures of §0a). (4) **Small objects on a rail
+head** — a 30 × 30 × 10 cm box and a 30 cm cube — are found in 6 of 6 approaches from 42–44 m
+and held from 45–47 m; the replica of the organizers' object lying across a rail in 5 of 6, from
+46 m. (5) **The same objects on the bed between the rails are below the envelope**: the bed lies
+~0.44 m below the rail head in these tunnels (`track.rail_offset`), so a 10 cm box, a 30 cm cube
+and even a 45 cm dog-sized box stay below the envelope floor (0.12 m above the rail head) or
+barely reach the rail-head plane — not reported by the default policy (ALGORITHM.md §3.3b, §6),
+which a line with a clean bed can switch (`lowobj.min_top: -1`, `min_point_top: -1`). An attempt
+to exempt low clusters centred between the rails from the track-hardware rule changed nothing
+(no candidate reaches the corridor) and was not kept. (6) Off-axis objects to the envelope edge
+lose ~10 m of first detection (the edge margin grows with range); a 3 cm cable near the edge is
+found in 3 of 6.
+
+**Round 1 (v0.6.1, 22.09).** Straight sections (files 46, 68, 98, 140, 168, 172; 17–21 m/s), v0.6.1:
 
 | object | sequences detected | first confirmed detection: per sequence (m) | median | recall 0–50 / 50–100 / 100–150 / 150–200 / 200–250 m |
 |---|---|---|---|---|

@@ -47,9 +47,9 @@ N = {
     "object_hits": "118 из 126", "object_before": "2",
     "ride_events": "47", "ride_per_km": "3,6", "ride_km": "13",
     "empty_events": "20",
-    "first_person": "148", "sustained_person": "135", "speed_person": "177",
+    "first_person": "148", "sustained_person": "135", "speed_person": "167",
     "latency": "42–58 мс", "p95": "69 мс",
-    "tests": "145",
+    "tests": "147",
     # first confirmed detection, straight track, median over the approaches [synthetic in real frames]
     "range_chart": [("человек 1,7 м", 148), ("тележка", 144), ("ящик 1 м", 111), ("висящий кабель 3 см", 95),
                     ("предмет поперёк рельса", 46), ("ящик 30 см на рельсе", 44)],
@@ -478,8 +478,8 @@ def s_results(sl):          # template slide 20: left card + five rows
         f"**Предмет на рельсе** (реальная): {N['object_hits']} кадров после ухода человека (v0.6.1: {N['object_before']})",
         f"**Ложные остановки:** поездка {N['ride_km']} км — {N['ride_events']} событий, пять пустых записей — "
         f"{N['empty_events']}",
-        f"**Человек на подходе** [синтетика]: первое подтверждение ~{N['first_person']} м, "
-        f"{N['speed_person']} м со скоростью поезда",
+        f"**Человек на подходе** [синтетика]: первое подтверждение ~{N['first_person']} м, непрерывно "
+        f"с {N['sustained_person']} м; {N['speed_person']} м со скоростью поезда",
         f"**Задержка** {N['latency']} на кадр, p95 ≤ {N['p95']}, одно ядро CPU, без GPU",
     ]
     for idx, text in zip(range(15, 20), rows):
@@ -514,7 +514,7 @@ def s_range(sl):            # template slide 22: horizontal bar chart + four not
         (21, 18, "300 м — предел лидара", "дальше 208,5 м в данных нет ни одной точки"),
         (22, 23, "Со скоростью поезда", f"накопление 5 кадров: человек {N['speed_person']} м"),
         (24, 25, "Устойчиво", f"≥ 90 % кадров: человек с ~{N['sustained_person']} м"),
-        (26, 27, "В кривых", "до предела видимости за стеной (R ≈ 350 м: 74–82 м)"),
+        (26, 27, "В кривых", "6 из 7 подходов, с 58–86 м — предел видимости за стеной (R ≈ 350 м)"),
     ]
     for ti, di, t, d in pairs:
         fill(placeholder(sl, ti), [t], size=16)
@@ -533,8 +533,8 @@ def s_reliability(sl):      # template slide 16: four cards
         (50, 39, 40, "Монитор исправности", "мало точек, закрытый обзор, потеря рельсов, задержка → FAULT и "
                                             "честная свободная дистанция"),
         (51, 41, 42, "Любой вход", "оба набора топик / frame_id, поиск топика, перезапуск на новой записи"),
-        (52, 43, 44, "Воспроизводимо", f"{N['tests']} теста; CI собирает образ, гоняет тесты в нём и "
-                                       "проигрывает бэг через узел"),
+        (52, 43, 44, "Воспроизводимо", f"{N['tests']} тестов; CI собирает образ и проигрывает бэги через "
+                                       "узел; цепочка организаторов прогнана в Docker на реальных записях"),
     ]
     for k, (ni, ti, di, t, d) in enumerate(cards):
         fill(placeholder(sl, ni), [f"0{k + 1}"])
