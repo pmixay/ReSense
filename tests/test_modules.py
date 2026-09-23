@@ -342,6 +342,14 @@ def test_check_dry_run_failures(check_dry_run, tmp_path, capsys, case, kwargs, a
     assert "FAIL:" in capsys.readouterr().out
 
 
+def test_check_dry_run_allows_the_known_alarm_frames_of_a_recording(check_dry_run, tmp_path, capsys):
+    p = _capture(tmp_path / "known.jsonl", alarms=(40, 41), distance=129.0)
+    assert check_dry_run.main([p, "--expect-clear"]) == 1
+    assert check_dry_run.main([p, "--expect-clear", "--max-alarm-frames", "2"]) == 0
+    assert check_dry_run.main([p, "--expect-clear", "--max-alarm-frames", "1"]) == 1
+    assert "(allowed 1)" in capsys.readouterr().out
+
+
 def test_check_dry_run_empty_capture(check_dry_run, tmp_path):
     p = tmp_path / "empty.jsonl"
     p.write_text("---\n")

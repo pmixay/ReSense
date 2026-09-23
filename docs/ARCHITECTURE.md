@@ -87,10 +87,13 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   `frames`, `dropped_frames` (estimated from gaps in the input stamps), `input_period_ms`.
 * Node runtime statistics (spec §8.3): `/resense/latency_ms` per frame (decode + detect +
   publish), `/resense/fps` and a log line with latency mean / p95 / max and dropped frames every
-  `stats_period` seconds. The input subscription is best-effort with a queue of one frame
-  (`input_queue_depth`), so if a frame takes longer than the sensor period the older frames are
-  dropped rather than queued: the node always works on the freshest data and the drop count makes
-  overload visible.
+  `stats_period` seconds. The input subscription keeps one frame (`input_queue_depth`, keep-last),
+  so if a frame takes longer than the sensor period the older frames are dropped rather than
+  queued: the node always works on the freshest data and the drop count makes overload visible.
+  Its reliability follows the publishers (`input_reliability: auto`, v0.6.2): reliable for
+  `ros2 bag play` of the organizers' recordings — a best-effort reader lost 196 of the 201
+  10 MB clouds of `doubleT_obstacle` in Docker (EXPERIMENTS.md §3b) — and best-effort when a
+  publisher is (a live sensor-data driver).
 * Ego speed for multi-frame accumulation: the node passes `Detector.process(frame, ego_speed=v)`
   the value of the `ego_speed_mps` parameter, else the latest `speed_topic` / `odom_topic`
   message younger than `speed_timeout`, else `None` (the detector estimates it itself); the
@@ -103,7 +106,9 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   the organizers' exact layout (clear tunnel, then a person at 60 m), `scripts/smoke_test.sh`
   plays it through the node inside the Docker image and `scripts/check_dry_run.py` asserts the
   status stream; the CI docker job runs this on every push. The same checker scores the real
-  dry run (`scripts/dry_run.sh`) on `doubleT_obstacle`.
+  dry run (`scripts/dry_run.sh`) on `doubleT_obstacle`; on 23.09 it ran in Docker on the real
+  frames (bags rebuilt from the cache by `scripts/cache_to_bag.py`), with the node and the player
+  in separate containers and two recordings into one node (EXPERIMENTS.md §3b).
 * `resense inject` writes `*.npz` (xyz, intensity, per-point labels) + `gt.json`;
   `resense eval` consumes them and prints recall by range, FP rates, latency.
 
@@ -146,8 +151,10 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
 The frame period is 100 ms; p95 is inside it on all six bags and on a station section of the
 ride (42–58 ms mean, p95 52–69 ms, EXPERIMENTS.md §3). **Resources:** one CPU core per stream
 (47–65 ms of CPU time per frame = 47–65 % of a core at 10 Hz with single-threaded BLAS, set in
-the image), about 160–180 MB resident, no GPU. The jury's i7-9700E (8 faster cores) has not been
-measured yet.
+the image), about 160–180 MB resident, no GPU. **Through ROS in Docker** (v0.6.2, §3b of
+EXPERIMENTS.md): the 120° recording at the full 10 Hz (p95 76 ms), the 360° one at 8–9.6 fps
+(~96 ms mean: the node skips frames rather than lagging), the node container at 75 % of one
+core and 178 MB. The jury's i7-9700E (8 faster cores) has not been measured.
 
 ## Known limitations (see ALGORITHM.md §6 and EXPERIMENTS.md)
 

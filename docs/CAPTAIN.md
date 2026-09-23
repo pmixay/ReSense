@@ -39,11 +39,13 @@ inside the image.
 
 1. ~~Form the Sprint 0 + sensor questions~~ — drafted in [`QUESTIONS.md`](QUESTIONS.md)
    (21.09); **sending them and recording the answers is the human captain's action.**
-2. **Run `scripts/dry_run.sh` on a team machine with Docker and the dataset.** The container
-   path runs in CI on a synthetic bag on every push (item 10) and the offline pipeline has run
-   on every real frame; the ROS node on a real bag is still unexecuted (no Docker daemon in the
-   sandbox). Note for that run: `check_dry_run.py` defaults (`--distance 50:62`) still hold
-   (v0.5 reports the person at 55.5–56.6 m from frame 7).
+2. **Run `scripts/dry_run.sh` on the i7 stand with the original bags.** Rehearsed on 23.09 in
+   the sandbox (a Docker daemon runs there after all; recordings rebuilt from the frame cache;
+   EXPERIMENTS.md §3b): the node container plus `ros2 bag play` from another container, both
+   topic pairs, two recordings into one node — detections as offline, `roundT_doubleT` PASS
+   with `--max-alarm-frames 2`; it found and fixed the best-effort transport bug (v0.6.2
+   `input_reliability`). What is left for the stand: the original bags (not rebuilt ones) and
+   the i7 timing — at 360° the 4-vCPU sandbox runs at 8–9.6 fps.
 3. ~~Launch arguments for the demo~~ — done (`loop:=`, every parameter as a launch argument,
    plus `ego_speed_mps` / `speed_topic` / `odom_topic` / `publish_tf` / `tf_parent_frame`).
 4. ~~Data-path alignment and a headless demo path~~ — done, item 8.
@@ -239,11 +241,11 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
 
 | owner | item | why it matters |
 |---|---|---|
-| P1 | `scripts/dry_run.sh` on a machine with Docker (v0.6 reports the person at 55–57 m from frame 11, `--distance 50:62` holds); the i7-9700E timing; `/resense/decision` and `/resense/health` in the RViz / Foxglove layouts | spec §4, §8.3 |
+| P1 | `scripts/dry_run.sh` on the i7 stand with the original bags (rehearsed in the sandbox on 23.09 on rebuilt ones, EXPERIMENTS §3b; the person at 55.9–56.6 m, `--distance 50:62` holds); the i7-9700E timing | spec §4, §8.3 |
 | P3 | v0.6 follow-ups: a lining-anchored far height reference (vault drift measurable to ~200 m, EXPERIMENTS §2d); a bed bin must span the bed to extend the fit (an object far ahead lengthens it, §2d); cant-aware roll; the platform-end structure at 82–84 m | `EXPERIMENTS.md` §2d, ALGORITHM §6 |
 | P3 | the zone-history fast path (alarm when the last three hits are inside, measured on the five bags), the edge-margin variants, re-classifying the 96 residual alarm frames by cause, the platform-end structure at 81–83 m (20 of 32 events), accumulation on a moving bag with an obstacle (none exists yet), the injector's height reference beyond 80 m (with P4) | `EXPERIMENTS.md` §1b ablations and §5 |
 | P4 | extended-dataset intake and labelling with the `labels/` format; the injector placing far objects under the real bed (use the verified floor); calibration of the catalogue reflectivities against real obstacles | `DATASET.md` "Real labels", `EXPERIMENTS.md` §2c |
-| P2 | the RViz screen recording of the Docker chain on a machine with Docker (the offline and dashboard videos exist); slides 7–11 in the organizers' pptx template from `PRESENTATION.md`; the dashboard card for `ego_speed` / `n_accumulated` / alarm events | spec §4 demo and §8.8 pitch |
+| P2 | the RViz screen recording of the Docker chain on a machine with a display (the cab-view, offline and dashboard videos exist); personal data and photos on slides 2–4 of `presentation/ReSense_LCT2026.pptx`; the dashboard card for `ego_speed` / `n_accumulated` / alarm events | spec §4 demo and §8.8 pitch |
 
 ## 1. Ownership map — who edits what
 

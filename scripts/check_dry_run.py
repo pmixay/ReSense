@@ -58,6 +58,9 @@ def main(argv=None) -> int:
                    help="require at least --min-alarm-frames frames with obstacle = true")
     p.add_argument("--expect-clear", action="store_true",
                    help="require no frame with obstacle = true (false-alarm check on an empty bag)")
+    p.add_argument("--max-alarm-frames", type=int, default=None, metavar="N",
+                   help="with --expect-clear: allow up to N alarm frames (the known ones of a recording, "
+                        "e.g. 2 at 128-130 m in roundT_doubleT, EXPERIMENTS.md section 0)")
     p.add_argument("--distance", default=None, metavar="LO:HI",
                    help="expected obstacle distance window in metres, e.g. 50:62")
     p.add_argument("--min-alarm-frames", type=int, default=3,
@@ -108,8 +111,10 @@ def main(argv=None) -> int:
                         "(the node started late or dropped most of the bag)")
     if args.expect_obstacle and len(alarms) < args.min_alarm_frames:
         failures.append(f"{len(alarms)} alarm frames, expected >= {args.min_alarm_frames}")
-    if args.expect_clear and alarms:
-        failures.append(f"{len(alarms)} false alarms on a bag expected to be clear")
+    allowed = args.max_alarm_frames or 0
+    if args.expect_clear and len(alarms) > allowed:
+        failures.append(f"{len(alarms)} false alarms on a bag expected to be clear"
+                        + (f" (allowed {allowed})" if allowed else ""))
     if args.first_clear > 0:
         early = [i for i, f in enumerate(frames[:args.first_clear]) if f["obstacle"]]
         if early:

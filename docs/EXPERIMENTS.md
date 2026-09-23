@@ -671,6 +671,43 @@ v0.5 alike). The frame period is 100 ms; the ROS node adds decode (~5 ms) and pu
 drops frames rather than queueing, so the node's dropped-frame counter is the number to watch
 on the bench.
 
+### 3b. The ROS 2 node in Docker on real recordings (23.09, v0.6.2)
+
+**Setup.** A Docker daemon runs in this sandbox (4 vCPU, 16 GB), so the organizers' procedure
+was run for the first time on real frames: `docker build` of `docker/Dockerfile` (in the sandbox
+with the session proxy's CA added after `FROM`, nothing else changed), the node started as
+`docker run --net=host --ipc=host resense` (the image's default command), the recordings played
+by `ros2 bag play --delay 3` from **a second container** (standing in for the host console), and
+`/resense/status` recorded by a third one. The original bags were no longer on disk; they were
+rebuilt from the frame cache by `scripts/cache_to_bag.py` — same topic, `frame_id`, PointCloud2
+layout (`point_step` 26, empty dual-return slots, scan order) and receive times; coordinates
+carry the cache's 5 mm quantisation. Scored by `scripts/check_dry_run.py`.
+
+**What the first run found.** The node received **5 of the 201 clouds** of `doubleT_obstacle`:
+a 360° cloud is ~10 MB, ~160 UDP fragments, and the node's best-effort subscription loses a
+whole message with any fragment; it then reset its scene on every "hole" and confirmed nothing.
+`ros2 bag play` publishes these recordings reliable; a reliable reader received 174+ of 201 in
+the same setup. v0.6.2 adds `input_reliability` (default `auto`: subscribe reliable, and match
+the publishers within a second — best-effort when a publisher is, e.g. a live sensor-data
+driver, to which a reliable reader would get nothing). The CI smoke test had not caught it: its
+synthetic clouds are a third of the size.
+
+| run (v0.6.2 image) | frames processed | fps | latency decode + detect mean / p95 | detector stage mean | result |
+|---|---|---|---|---|---|
+| `dry_run.sh` `roundT_doubleT` (120° window, `/lidar_points` + `hesai_lidar`), node and player in one container | 237 of 252 | 10.0 | 65 / 76 ms | 53 ms | 2 alarm frames at 128.3–130.2 m — the same frames as the offline evaluation (§0) |
+| `dry_run.sh` `doubleT_obstacle` (360°, `/sensing/lidar/hesai128/pointcloud` + `lidar_livox`) | 103–134 of 201 | 8.1–8.6 | 96–99 / 112–130 ms | 74–76 ms | obstacle 55.9–56.6 m, 88–118 alarm frames |
+| the organizers' way: node container + `ros2 bag play` from another container, `roundT_doubleT` then `doubleT_obstacle` into the same running node | 362 | 8.2–10 | 79 / 104 ms | 62 ms | "input 2: /sensing/lidar/hesai128/pointcloud ... input switched from /lidar_points: detector restarted"; 116 alarm frames: the person and the object at 55.9–56.6 m, the 2 frames at 128–130 m of `roundT_doubleT` and 1 low-object frame at 49.7 m there that the offline run does not have (frames skipped under load change what the tracker sees) |
+| CI smoke test (`scripts/smoke_test.sh`, two synthetic bags) | 76 of 80 | 5 (bag at 0.5×) | 64 / 76 ms | 52 ms | PASS |
+
+**Resources of the node container** (`docker stats` every 0.5 s during the `doubleT_obstacle`
+replay): **75 % of one core median (max 102 %), 178 MB**. The detector stage costs the same in
+the image (Python 3.10, numpy 1.26) as on the host (74 vs 68 ms on the first 100 frames of
+`doubleT_obstacle`); the ROS path adds ~20–25 ms per 360° frame (message conversion, decode —
+`pointcloud2_to_arrays`, 40 → 9 ms in v0.6.2 — and publishing the markers and the corridor
+cloud). **At 360° this sandbox is at the frame period**: the node skips frames (8–9.6 fps of 10)
+instead of lagging, as designed (keep-last 1). The 120° recordings run at the full 10 Hz. The
+jury's i7-9700E (8 cores, higher clock) has not been measured.
+
 ## 4. What we learned / hard cases
 
 1. **Sensor mounts differ between bags** (bed 1.5 m vs 2.0 m below the sensor, axis 0.05–0.25 m
