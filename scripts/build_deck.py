@@ -47,9 +47,9 @@ N = {
     "object_hits": "118 из 126", "object_before": "2",
     "ride_events": "47", "ride_per_km": "3,6", "ride_km": "13",
     "empty_events": "20",
-    "first_person": "148", "sustained_person": "135", "speed_person": "167",
+    "first_person": "148", "sustained_person": "135", "band_person": "115", "speed_person": "167",
     "latency": "42–58 мс", "p95": "69 мс",
-    "tests": "148",
+    "tests": "150",
     # first confirmed detection, straight track, median over the approaches [synthetic in real frames]
     "range_chart": [("человек 1,7 м", 148), ("тележка", 144), ("ящик 1 м", 111), ("висящий кабель 3 см", 95),
                     ("предмет поперёк рельса", 46), ("ящик 30 см на рельсе", 44)],
@@ -492,8 +492,8 @@ def s_results(sl):          # template slide 20: left card + five rows
         f"**Предмет на рельсе** (реальная): {N['object_hits']} кадров после ухода человека (v0.6.1: {N['object_before']})",
         f"**Ложные остановки:** поездка {N['ride_km']} км — {N['ride_events']} событий, пять пустых записей — "
         f"{N['empty_events']}",
-        f"**Человек на подходе** [синтетика]: первое подтверждение ~{N['first_person']} м, в ≥ 90 % кадров "
-        f"с {N['sustained_person']} м; {N['speed_person']} м со скоростью поезда",
+        f"**Человек на подходе** [синтетика]: устойчиво со {N['band_person']} м (≥ 90 % кадров в каждой полосе 10 м), "
+        f"первое подтверждение ~{N['first_person']} м; {N['speed_person']} м со скоростью поезда",
         f"**Задержка** детектора {N['latency']} на кадр (p95 ≤ {N['p95']}); через ROS в Docker 65 мс (120°) и "
         f"~96 мс (360°); одно ядро CPU, без GPU",
     ]
@@ -528,7 +528,7 @@ def s_range(sl):            # template slide 22: horizontal bar chart + four not
     pairs = [
         (21, 18, "300 м — предел лидара", "дальше 210 м в данных нет ни одной точки: это предел сенсора"),
         (22, 23, "Со скоростью поезда", f"накопление 5 кадров: человек {N['speed_person']} м"),
-        (24, 25, "Устойчиво", f"≥ 90 % кадров: человек с ~{N['sustained_person']} м, в каждых 10 м — со 115 м"),
+        (24, 25, "Устойчиво", f"≥ 90 % кадров: человек с ~{N['sustained_person']} м, в каждых 10 м — со {N['band_person']} м"),
         (26, 27, "В кривых", "6 из 7 подходов, с 58–86 м — предел видимости за стеной (R ≈ 350 м)"),
     ]
     for ti, di, t, d in pairs:

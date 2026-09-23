@@ -44,12 +44,14 @@ frames in which the person is inside the envelope, the first alarm 0.3 s after e
 distance error < 0.35 m; the **object lying across the rail** (0.45 × 0.6 × 0.3 m) in **118 of
 the 126 frames** after the person leaves it (v0.6.1: 2). Long range on the
 moving ride (objects ray-cast into consecutive real frames, no speed input, §2d, v0.6.2): a
-person on straight track is first confirmed at **148 m median** (110–169 m, 6 of 6) and
-detected in ≥ 90 % of the frames from 135 m inward (in every 10 m band from 115 m); a trolley first at 144 m, a 1 m crate at 111 m, a 3 cm
+person on straight track is **held from 115 m inward** (detected in ≥ 90 % of the frames of every
+10 m band from there; in ≥ 90 % of all frames from 135 m) and first confirmed at 148 m median
+(110–169 m, 6 of 6); a trolley first at 144 m, a 1 m crate at 111 m, a 3 cm
 hanging cable at 95 m; with a train speed given (odometry or a speed topic: 5-frame
 accumulation) the person at **167 m**, the crate at 182 m; in R ≈ 350 m curves 6 of 7 approaches
 are detected, from 58–86 m (the sightline past the inner wall); at station stops a person 6 of
-6 from 113 m; 30 cm objects lying on a rail head 6 of 6 from 42–44 m. 300 m is beyond this
+6 from 113 m; 30 cm objects lying on a rail head 6 of 6 from 42–44 m; a person lying across the
+rails 6 of 6 from ~60 m (between the rails: where the body rises above the rail head, §2d). 300 m is beyond this
 sensor: no return in any of the 13 759 frames lies beyond 210 m (every recording stops at 209.2–210.0 m). Other LiDAR mounts (upside down, `+x` forward, backwards, rolled /
 pitched) are recovered from the rails and the bed: orientation found and tilt within 0.5° on
 re-mounted real frames of three recordings (§6). Clean timing: 42–58 ms mean, p95 52–69 ms per

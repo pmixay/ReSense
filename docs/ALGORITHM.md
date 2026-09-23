@@ -265,7 +265,9 @@ fastenings, bed, drainage trough) repeats every metre:
    range-normalised like the corridor's: 0.25 m at 10 m, 0.48 m at 56 m — the corridor radius,
    0.84 m at 56 m, merged the object of `doubleT_obstacle` with the bed fixtures around it into a
    2 × 1.6 m cluster). A low cluster must be ≤ 1.5 m long along the track (rails, guard rails,
-   cables, ducts are longer), ≥ `min_width` = 0.15 m across (rail-head slivers and fastenings
+   cables, ducts are longer), ≤ 2.2 m across (the envelope's width; 1.6 m until the second
+   review of 23.09 rejected a person lying across the track — identical on all real frames,
+   EXPERIMENTS.md §0), ≥ `min_width` = 0.15 m across (rail-head slivers and fastenings
    are narrower), have 3 voxels and its top must reach the rail-head plane (`min_top` = 0); it is
    a gauge obstacle with `kind = "low"`;
 5. a low cluster is dropped when corridor candidates higher than `foot_max_top` = 0.35 m stand
@@ -316,7 +318,9 @@ and 121 of 185 overall (its own detection; v0.6.1: 2), +1 event on the five empt
 The thresholds sit close to this one real object — its top 0.11–0.16 m against 0.10, its width
 0.38–0.50 m against 0.35 (a review found 45 of 126 frames with a 0.13 m minimum and 95 with a
 0.45 m width) — because the rail fittings reach 8 cm and the trackside devices are 0.2–0.3 m
-across: there is no wider margin on geometry alone. An object of that shape
+across: there is no wider margin on geometry alone. Moving each threshold by 20–25 % over all
+13 759 frames (EXPERIMENTS.md §0) changes the false alarms by −1…+2 events of 67 but the
+object's frames from 121 to 91–127: the thin margin is on the object's side. An object of that shape
 lying across a rail is found at 25, 40 and 50 m in the synthetic tunnel
 (`tests/test_envelope.py`); beyond ~50–60 m the bed stops returning (grazing incidence) and a
 0.3 m-high object has one or two rings above the rail head, which is where the stage ends.
@@ -527,6 +531,7 @@ the CLI and the ROS node. The ones that change behaviour visibly:
 | `cluster.signature_min_lateral`, `column_min_width` (v0.6) | 0.6 m, 0.25 m | where the column / floating signatures apply (hanging cables near the axis are obstacles) |
 | `calibration.enabled`, `frames` × `obs_spacing`, `provisional_min_deg`, `min_yaw_deg`, `drift_warn_deg` / `drift_window` (v0.6.1) | true, 20 × 10 frames, 2.5°, 3°, 1.5° / 10 checks | mount auto-calibration (final tilt over 20 s, provisional only for a clearly tilted rig); `sensor.roll_deg/pitch_deg/yaw_deg` freeze a known mount |
 | `lowobj.straddle_enabled`, `straddle_min_top`, `straddle_min_width`, `straddle_max_length`, `straddle_band` (v0.6.2) | true, 0.10 m, 0.35 m, 0.8 m, 0.30 m | an object across a rail, straddling the envelope floor, clustered whole (§3.3b) |
+| `lowobj.max_length`, `max_width` | 1.5 m, 2.2 m | the largest low cluster along / across the track; 2.2 m (the envelope's width, 1.6 m until 23.09) keeps a person lying across the track; identical on all real frames (EXPERIMENTS.md §0) |
 | `gauge.no_rail_range` (v0.6.2) | 40 m | without a rail pair in the near range clusters beyond it are advisory and the verified-clear distance is capped there (§3.2); 0 = off |
 | `health.*` (v0.6) | see §4b | thresholds of the guards; they never change a detection |
 
@@ -543,6 +548,11 @@ v0.6–v0.6.2 additions first; the v0.5 list follows.
   126 frames after the person leaves it), but only while the bed is seen (≤ ~50–60 m) and only
   when it is ≥ 0.35 m across the track: an object lying *along* a rail is indistinguishable from
   the trackside devices mounted there.
+* **A person lying on the track** (synthetic, EXPERIMENTS.md §2d): across the rail heads the
+  corridor stage finds it from ~60 m; between the rails only the part above the rail head
+  counts, so on the deep bed of these tunnels (0.44–0.6 m below the rail head) a 0.35 m body is
+  not reported, and on a shallow bed it is found from ~50 m when it rises 0.15 m above the rail
+  head, from ~17 m when it rises 5 cm.
 * **At stations without a rail lock** (v0.6.2, §3.2) an object beyond 40 m is advisory
   (`CAUTION`, verified-clear distance 40 m) until the train is within 40 m of it.
 * **A 10 cm object is resolved to ~20–25 m**: its face is one ring high beyond that

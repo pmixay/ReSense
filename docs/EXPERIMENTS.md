@@ -9,6 +9,8 @@ side by side, §8 the learned second opinion. Raw summaries:
 v0.6.2 step over all 13 759 frames, plus the leave-one-out check),
 [`experiments_v0.6.2_setF.json`](experiments_v0.6.2_setF.json) (set F round 2: small objects,
 rail heads, the envelope edge, curves, station stops, sustained range),
+[`experiments_v0.6.2_margins_lying.json`](experiments_v0.6.2_margins_lying.json) (the straddle
+thresholds' margins, the low-object width cap, the lying person),
 [`experiments_v0.6.1_real_fullrate.json`](experiments_v0.6.1_real_fullrate.json),
 [`experiments_v0.6.1_setF.json`](experiments_v0.6.1_setF.json) (set F round 1). Every number is
 **real** (recording named) or **synthetic** (said so).
@@ -104,6 +106,35 @@ confirmation alone: 12 fewer, 0 more; for the rail rule alone: fewer in the two 
 station stops, equal elsewhere. This is not a held-out test of the ~15 infrastructure rules
 tuned since v0.5 — those were tuned on the same recordings — but none of the v0.6.2 gains rests
 on one recording.
+
+**Threshold margins of the straddle stage** (23.09, second review: "the thresholds sit close to
+the one real object"). Each threshold moved by 20–25 % either way, one full run over the 13 759
+frames each, compared subset by subset with the shipped run (`scripts/consistency_check.py`;
+events summed over the 13 subsets, 67 for v0.6.2):
+
+| variant | events (13 subsets) | object on the rail, of 185 frames | person |
+|---|---|---|---|
+| **v0.6.2** (top ≥ 0.10 m, ≥ 0.35 m across, ≤ 0.8 m along) | **67** | **121** | 58 / 61 |
+| `straddle_min_top` 0.08 | 66 | 127 | 58 / 61 |
+| `straddle_min_top` 0.12 | 67 | 91 | 58 / 61 |
+| `straddle_min_width` 0.30 | 68 | 121 | 58 / 61 |
+| `straddle_min_width` 0.40 | 68 | 110 | 58 / 61 |
+| `straddle_max_length` 0.6 | 67 | 121 | 58 / 61 |
+| `straddle_max_length` 1.0 | 69 | 121 | 58 / 61 |
+
+The false alarms barely move (66–69 events) — the rail fittings (≤ 8 cm) and the trackside
+devices (0.2–0.3 m across) are well inside the thresholds — while the object loses a quarter
+of its frames at a 0.12 m top threshold and 9 % at 0.40 m width. The margin that is thin is the
+one on the object's side; 0.10 m sits between the fittings' 8 cm and the object's 11–16 cm, and
+lowering it to 0.08 m would add object frames at no measured cost here, but at the fittings' own
+height — kept at 0.10 m.
+
+**Low-object width cap 1.6 → 2.2 m** (23.09, second review). A person lying across the track
+on a shallow bed is ~1.8 m wide; the low-object stage capped clusters at 1.6 m across, so it was
+rejected (set F, §2d: 2 of 6 approaches). The cap is now the envelope's 2.1 m plus margin: **the
+decision and the distance are identical on every one of the 13 759 real frames** (full run,
+`lowobj.max_width=2.2` against v0.6.2), and the lying person is found in 6 of 6 approaches (§2d).
+Raw summaries of both: [`experiments_v0.6.2_margins_lying.json`](experiments_v0.6.2_margins_lying.json).
 
 ## 0a. v0.6.1 (22.09) — after the organizers' Q&A session
 
@@ -572,6 +603,11 @@ per object unless said; raw summaries in
 | on the bed between the rails | 0.3 × 0.3 × 0.1 m | 0 / 6 | — | — | 0 % |
 | | 0.3 m cube | 1 / 6 | 9 m | — | 1 % |
 | | dog-sized 0.6 × 0.3 × 0.45 m | 1 / 6 | 50 m | 42 m | 13 / 1 % |
+| person lying, 0.5 × 1.8 × 0.35 m (added 23.09 after the second review) | across the rails, on the rail heads | 6 / 6 | 61 m (50–111) | 65 m (54–68, 4 of 6) | 90 / 20 / 2 % |
+| | on the bed between the rails (0.44–0.6 m below the rail head in these tunnels: the body stays below it) | 0–1 / 6 | — | — | 0 % |
+| | on a shallow bed, top 0.15 m above the rail head, **across** the track: v0.6.2 → with the 2.2 m width cap | 2 / 6 → **6 / 6** | 41 → **49 m** (47–52) | — → **53 m** (50–56) | 3 → 98 % (0–50 m) |
+| | same, **along** the track | 6 / 6 | 50 m (48–52) | 54 m (52–56) | 100 % (0–50 m) |
+| | across, top 0.10 m / 0.05 m above the rail head (2.2 m cap) | 6 / 6, 6 / 6 | 42 m / 17 m | 43 m / 17 m (4 of 6) | 79 % / 24 % (0–50 m) |
 
 Reading. (1) **A person on straight track is first confirmed at ~148 m, held in ≥ 90 % of the
 frames from ~135 m and in every 10 m band from ~115 m** (medians of 6; runs of up to 7
@@ -593,7 +629,14 @@ and even a 45 cm dog-sized box stay below the envelope floor (0.12 m above the r
 barely reach the rail-head plane — not reported by the default policy (ALGORITHM.md §3.3b, §6),
 which a line with a clean bed can switch (`lowobj.min_top: -1`, `min_point_top: -1`). An attempt
 to exempt low clusters centred between the rails from the track-hardware rule changed nothing
-(no candidate reaches the corridor) and was not kept. (6) Off-axis objects to the envelope edge
+(no candidate reaches the corridor) and was not kept. (6) **A person lying on the track** (the review's case, 0.5 × 1.8 × 0.35 m, placed by
+`far_range_eval.py` with the bed depth fixed; shallow-bed runs with `local_bed_z` replaced by
+"rail level − depth"): across the rail heads the corridor stage sees it (6 / 6, from ~60 m); on
+these tunnels' deep bed the whole body is below the rail head and not reported (policy); where
+the bed is shallow it straddles the envelope floor and the straddle stage finds it, across the
+track only since the width cap follows the envelope (§0) — from ~50 m with its top 0.15 m above
+the rail head, from ~17 m when only 5 cm of it rise above the rail head. No false detection in
+these 60 sequences. (7) Off-axis objects to the envelope edge
 lose ~10 m of first detection (the edge margin grows with range); a 3 cm cable near the edge is
 found in 3 of 6.
 

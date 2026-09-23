@@ -200,7 +200,7 @@ resense:
     min_points: 3
     min_height: 0.0
     max_length: 1.5
-    max_width: 1.6
+    max_width: 2.2                 # m across: the whole envelope (1.6 rejected a person lying across the track; identical on all real frames)
     min_width: 0.15                # a low cluster narrower than this across the track is a rail sliver / fastening
     straddle_enabled: true         # v0.6.2: objects straddling the envelope floor (an object lying across a rail)
     straddle_min_top: 0.10         # m above the rail head the top of such a cluster must reach (rail fittings reach 1-8 cm)

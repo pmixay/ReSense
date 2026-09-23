@@ -209,7 +209,7 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
     trolley 146 m, crate 111 m, cable 95 m; with a train speed 177 / 190 / 183 m and fewer ride false
     alarms (274 / 75); in R ≈ 350 m curves 1 of 2 approaches detected, at 74–82 m (sightline). The farthest
     return in all data is 210 m (every recording stops at 209.2–210.0 m), so 300 m is out of the sensor's reach.
-12. **Tests**: 148 (the node's decision / fault / watchdog / mount-parameter / input-switching
+12. **Tests**: 150 (the node's decision / fault / watchdog / mount-parameter / input-switching
     logic runs against ROS stand-ins in `tests/test_node.py`, so a node bug no longer waits for
     the Docker job). Criteria judgement and the remaining work: [`SCORECARD.md`](SCORECARD.md).
 13. **Written answers of the organizers (23.09)** to our questions 1, 2 and 6, recorded
@@ -246,6 +246,11 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
     `_advisory_reason`, `_is_retro`; every output was compared before and after on 2 930 real frames
     (the obstacle recording, a given-speed run with accumulation, an estimator run, 1 600 ride frames):
     identical. A `lint` CI job runs ruff (pinned) over the package, the node, the scripts and the tests.
+    The jury chain is on screen (`video/docker_chain_rviz.mp4`), which found the RViz config reading
+    the played clouds best-effort (fixed). The straddle thresholds' margins were measured (EXPERIMENTS
+    §0: false alarms −1…+2 of 67 events, the object 91–127 of 185 frames) and the low-object width
+    cap follows the envelope (2.2 m): a person lying across the track on a shallow bed 2 → 6 of 6,
+    identical on every real frame.
 
 ### Left for the team (captain tracks, does not do)
 

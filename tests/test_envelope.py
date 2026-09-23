@@ -87,6 +87,21 @@ def test_object_lying_across_a_rail_is_found_whole(distance, lateral):
     assert d.kind == "low" and abs(d.distance - distance) < 0.8 and abs(d.lateral - lateral) < 0.4
 
 
+
+@pytest.mark.parametrize("distance", [20.0, 35.0])
+def test_person_lying_across_the_track_is_found(distance):
+    """A person lying across the track on a shallow bed (0.5 x 1.8 x 0.35 m; the synthetic bed is
+    0.18 m below the rail head, so the body rises 0.17 m above it) spans both rails: the straddle
+    clustering sees it 1.8 m wide. The low-object width cap was 1.6 m until the 23.09 review and
+    rejected it; it is now the envelope's 2.1 m plus margin (identical on all real frames)."""
+    spec = ObstacleSpec(kind="box", size=(0.5, 1.8, 0.35), distance=distance, lateral=0.0, base_z=FLOOR_Z)
+    res = _run(_scene([spec]), n=8)
+    assert res.obstacle, [(c.kind, c.distance, c.size.round(2).tolist()) for c in res.candidates]
+    assert abs(res.detections[0].distance - distance) < 0.8
+    cfg = DetectorConfig()
+    cfg.lowobj.max_width = 1.6                                    # the old cap
+    assert not _run(_scene([spec]), n=8, cfg=cfg).obstacle
+
 def _sparse_object_across_a_rail(tunnel_frame: Frame, x0: float, top: float, seed: int = 0) -> Frame:
     """The point layout measured on the organizers' object at 56 m (23.09, EXPERIMENTS.md §1d):
     ~21 returns, 16 below 3 cm above the rail head, 2 between 3 cm and the 0.12 m envelope floor,

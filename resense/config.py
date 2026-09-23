@@ -250,7 +250,7 @@ class LowObjectConfig:
     min_points: int = 3                # voxels of a low cluster
     min_height: float = 0.0            # m, vertical extent of a low cluster (0: a flat top face at close range is enough, its excess over the bed is the height)
     max_length: float = 1.5            # m along the track (rails, guard rails, cables and ducts are longer)
-    max_width: float = 1.6             # m
+    max_width: float = 2.2             # m across the track: the envelope is 2.1 m wide (v0.6.2: 1.6 m rejected a person lying across the track, EXPERIMENTS.md §2d)
     min_width: float = 0.15            # m, a low cluster narrower than this across the track is a rail-head sliver / fastening
     straddle_enabled: bool = True      # v0.6.2: objects straddling the envelope floor (lowobj.py step 4)
     straddle_min_top: float = 0.10     # m above the rail head the top of such a cluster must reach (rail fittings reach 1-8 cm)
