@@ -42,6 +42,7 @@ class Track:
     hit_hist: List[bool] = field(default_factory=list)    # last hit_window frames: matched?
     span_s: float = 0.0             # seconds of sensor time the track has been observed (frames x interval, first frame included)
     zone_min_fraction: float = 0.5  # share of zone_hist that must be inside the gauge
+    reported: bool = False          # reported as an obstacle / advisory after the last update
 
     @property
     def zone(self) -> str:
@@ -138,13 +139,21 @@ class Tracker:
                     span_s=dt, zone_min_fraction=c.zone_min_fraction,
                 ))
                 self._next_id += 1
+        # reported: confirmed now, or reported in the previous frame and missed for at most
+        # hold_misses frames (a single missed frame does not drop a STOP; review 23.09)
+        for t in self.tracks:
+            t.reported = self._qualifies(t) or (t.reported and 0 < t.misses <= c.hold_misses)
         return self.tracks
 
-    def confirmed(self) -> List[Track]:
+    def _qualifies(self, t: Track) -> bool:
         c = self.cfg
         need_span = c.confirm_time_s if (self._timed and c.confirm_time_s > 0) else 0.0
-        return [t for t in self.tracks
-                if t.hits >= (c.low_confirm_hits if (t.last is not None and t.last.kind == "low") else c.confirm_hits)
+        return (t.hits >= (c.low_confirm_hits if (t.last is not None and t.last.kind == "low") else c.confirm_hits)
                 and t.confidence >= c.conf_threshold and t.misses == 0
                 and t.span_s >= need_span - 1e-9
-                and (c.min_hit_fraction <= 0 or t.hit_fraction >= c.min_hit_fraction - 1e-9)]
+                and (c.min_hit_fraction <= 0 or t.hit_fraction >= c.min_hit_fraction - 1e-9))
+
+    def confirmed(self) -> List[Track]:
+        """The tracks reported after the last ``update``: confirmed in this frame, or held over
+        ``hold_misses`` missed frames after being reported (their cluster is the last matched one)."""
+        return [t for t in self.tracks if t.reported]

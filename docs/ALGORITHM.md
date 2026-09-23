@@ -83,7 +83,10 @@ correction from the first `provisional_frames` = 5 observations, applied only fo
 tilted rig (`provisional_min_deg` = 2.5°: the ~3° of the `doubleT_obstacle` rig is corrected
 after half a second as before); the **final** correction is the median of `frames` = 20
 observations taken every `obs_spacing` = 10 frames (20 s; p90 error 0.5° on the ride, max
-1.0°), applied above `apply_min_deg` = 0.5°, then frozen. Tilts above `max_tilt_deg` = 15° are
+1.0°), applied above `apply_min_deg` = 0.75° (1.5× that noise; 0.5° until 23.09, when a ride
+piece applied a noise-level +0.51° roll and gained 6 false events), then frozen. Between two
+spaced observations the frame is not measured (v0.6.2, second review: measuring every frame
+cost 10–15 ms per frame for the first 20 s). Tilts above `max_tilt_deg` = 15° are
 rejected (configured mapping kept, status `fallback`); without a rail pair in `max_frames` =
 400 frames the calibrator gives up (`fallback`). A change re-seeds the track model and clears
 the accumulation buffer; the tracker is reset only for a change above 1° (a new orientation),
@@ -294,7 +297,8 @@ clean bed.
 **Objects straddling the envelope floor (v0.6.2, `lowobj.straddle_*`).** The organizers' object
 lying across the right rail of `doubleT_obstacle` (0.45 × 0.6 × 0.3 m, 56 m) returns ~21 points,
 ~16 of them below the rail head and ~3 above the 0.12 m envelope floor; its top is 0.10–0.15 m
-(median 0.13 m) above the rail-head plane. In v0.6.1 it fell *between* the stages: the corridor
+(median 0.13 m) above the detector's rail-head plane after the mount calibration (the labels,
+measured against the per-frame track model before it, give 0.07–0.22 m, median 0.17 m). In v0.6.1 it fell *between* the stages: the corridor
 stage saw 0–3 points above the floor (below its cluster minimum), the low-object stage — whose
 every candidate must be 3 cm above the rail head — a 3-point sliver, and neither confirmed it
 (2 of its 185 frames by its own detection, both after the person left it). v0.6.2 adds a third clustering:
@@ -313,7 +317,7 @@ every candidate must be 3 cm above the rail head — a 3-point sliver, and neith
 4. a straddling cluster replaces the low-stage slivers it overlaps, and yields only to a
    corridor cluster that is itself reported (one detection per object).
 
-Result (EXPERIMENTS.md §0): the object in **118 of the 126 frames after the person leaves it**
+Result (EXPERIMENTS.md §0): the object in **118 of the 126 frames after the person leaves it** (124 since the v0.6.3 hold over one missed frame)
 and 121 of 185 overall (its own detection; v0.6.1: 2), +1 event on the five empty bags and +1 on the ride.
 The thresholds sit close to this one real object — its top 0.11–0.16 m against 0.10, its width
 0.38–0.50 m against 0.35 (a review found 45 of 126 frames with a 0.13 m minimum and 95 with a
@@ -444,7 +448,9 @@ A frame reports `obstacle = true` when at least one track is **confirmed**:
 * seen in ≥ `confirm_hits` = 3 frames and observed for ≥ `confirm_time_s` = 0.5 s (5 frames
   at 10 Hz, v0.6.2; 0.3 s before), matched in ≥ 60 % of its last 10 frames,
 * confidence ≥ `conf_threshold` = 0.6,
-* matched in the current frame (no miss),
+* matched in the current frame (no miss) — or reported in the previous frame and missed for at
+  most `hold_misses` = 1 frame (v0.6.3), then at its predicted distance: one missed frame no
+  longer switches a STOP off and on (−25 % STOP episodes, events unchanged, EXPERIMENTS.md §0),
 * zone = `gauge`: ≥ 60 % of its last 10 hits had ≥ `gauge_min_points` voxels inside the strict
   polygon and matched none of the infrastructure signatures of §3.3 (column, elevated,
   floating, edge, wall face), were within `axis_valid` and the trusted height-reference range,
@@ -518,6 +524,8 @@ the CLI and the ROS node. The ones that change behaviour visibly:
 | `cluster.hardware_*`, `cluster.thin_*`, `cluster.wall_*`, `cluster.linear_*` | see table above | infrastructure suppression; the `hardware` rule also hides objects below 35 cm on the sleepers |
 | `cluster.overhead_min_height` | 3.0 m (v0.6: the envelope top; 2.4 m in v0.5) | overhead fixtures are advisory only |
 | `tracking.confirm_hits`, `tracking.conf_threshold` | 3, 0.6 | latency vs false alarms |
+| `tracking.hold_misses` (v0.6.3) | 1 | frames a reported obstacle stays reported without a match; 0 = the v0.6.2 behaviour |
+| `calibration.apply_min_deg` | 0.75° | smallest tilt applied (1.5× the p90 noise of the 20-observation median on a moving train; 0.5° until v0.6.3) |
 | `tracking.ego_speed_max` | 25 m/s | association slack without odometry |
 | `track.floor_verify_tolerance`, `track.floor_verify_band` | 0.5 m, \|dy\| 1.6–3.5 m | how far the bed extrapolation is trusted beyond the fit: looser = longer corridor, more phantom objects where the bed bends |
 | `cluster.retro_intensity`, `retro_max_height`, `retro_max_width` | 0 (off), 1.2 m, 0.8 m | which bright clusters are signs (advisory) rather than obstacles; 0 disables the rule |
@@ -544,15 +552,16 @@ v0.6–v0.6.2 additions first; the v0.5 list follows.
   passes over every few tens of metres; it is reported only when it reaches the rail-head plane
   (e.g. lying on a rail) by ≥ 3 cm with several points. On a line with a clean bed,
   `lowobj.min_top: -1` with `min_point_top: -1` reports it. An object lying *across* a rail
-  (the organizers' object in `doubleT_obstacle`) is reported since v0.6.2 (§3.3b: 118 of the
+  (the organizers' object in `doubleT_obstacle`) is reported since v0.6.2 (§3.3b: 124 of the
   126 frames after the person leaves it), but only while the bed is seen (≤ ~50–60 m) and only
   when it is ≥ 0.35 m across the track: an object lying *along* a rail is indistinguishable from
   the trackside devices mounted there.
 * **A person lying on the track** (synthetic, EXPERIMENTS.md §2d): across the rail heads the
   corridor stage finds it from ~60 m; between the rails only the part above the rail head
-  counts, so on the deep bed of these tunnels (0.44–0.6 m below the rail head) a 0.35 m body is
-  not reported, and on a shallow bed it is found from ~50 m when it rises 0.15 m above the rail
-  head, from ~17 m when it rises 5 cm.
+  counts: in these tunnels the bed lies 0.26–0.34 m below the rail head beside a 0.57–0.60 m
+  drainage trough, so a 0.35 m body lying across the track rises 0.01–0.09 m above the rail head:
+  found from ~42 m when 0.10 m of it is above the rail head, from ~17 m at 0.05 m, not below the
+  3 cm point rule; on a shallower bed (0.15 m above) from ~50 m; in the trough not at all.
 * **At stations without a rail lock** (v0.6.2, §3.2) an object beyond 40 m is advisory
   (`CAUTION`, verified-clear distance 40 m) until the train is within 40 m of it.
 * **A 10 cm object is resolved to ~20–25 m**: its face is one ring high beyond that

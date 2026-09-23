@@ -26,7 +26,9 @@ Open the file in a browser; nothing to install or build. Two modes, same widgets
   detector) and press *connect*. The page subscribes to `/resense/status` (`std_msgs/String`,
   one JSON `FrameResult` per frame plus the node's `node` object) and needs nothing else — no
   point cloud is streamed to the browser. roslibjs comes from a CDN; without internet the
-  live mode is unavailable and the page says so, the replay mode still works.
+  live mode is unavailable and the page says so, the replay mode still works. rosbridge is
+  **not** in the ReSense image (`apt install ros-humble-rosbridge-suite` where ROS runs); for a
+  live view on an offline stand use Foxglove, whose bridge the image has (`foxglove_layout.json`).
 * **Replay**: *Choose file* → a `results.jsonl` written by
   `python -m resense.cli run --bag <bag> --out results.jsonl` (one `FrameResult` JSON per line
   with the extra `frame` and `frame_id` keys). Play / pause (space), step (◀ ▶, arrow keys),

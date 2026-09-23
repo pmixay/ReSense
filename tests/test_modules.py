@@ -55,12 +55,35 @@ def test_tracker_confidence_decays_and_track_is_dropped_after_max_misses():
     conf = t.tracks[0].confidence
     for k in range(1, CFG.tracking.max_misses + 1):
         t.update([])
-        assert t.confirmed() == []                              # a missed track is never reported
+        # a reported track is held over hold_misses missed frames (a single miss does not drop a
+        # STOP), then no longer reported although it survives to max_misses
+        assert [x.id for x in t.confirmed()] == ([tid] if k <= CFG.tracking.hold_misses else [])
         assert len(t.tracks) == 1 and t.tracks[0].id == tid and t.tracks[0].misses == k
         assert t.tracks[0].confidence == pytest.approx(max(0.0, conf - k * CFG.tracking.conf_decay))
     t.update([])
     assert t.tracks == []                                       # max_misses + 1 misses: dropped
 
+
+
+def test_a_single_missed_frame_does_not_drop_a_reported_obstacle():
+    """Review 23.09: the decision flickered (a confirmed obstacle missed in one frame gave GO for
+    that frame). hold_misses = 1 keeps it for one missed frame; a new track is never created or
+    confirmed by the hold, and hold_misses = 0 restores the old behaviour."""
+    from dataclasses import replace
+    for hold, expect in ((1, [True, True, False]), (0, [True, False, False])):
+        t = Tracker(replace(CFG.tracking, hold_misses=hold))
+        for _ in range(5):
+            t.update([cluster_at(50.0)])
+        seen = [bool(t.confirmed())]
+        t.update([])                                   # one missed frame
+        seen.append(bool(t.confirmed()))
+        t.update([])                                   # a second one
+        seen.append(bool(t.confirmed()))
+        assert seen == expect, (hold, seen)
+    t = Tracker(CFG.tracking)
+    t.update([cluster_at(50.0)])
+    t.update([])
+    assert t.confirmed() == []                         # never reported, so nothing to hold
 
 def test_tracker_keeps_a_static_object_approaching_at_ego_speed_max():
     t = Tracker(CFG.tracking)
@@ -306,7 +329,8 @@ def check_dry_run():
     return mod
 
 
-def _capture(path, n=60, alarms=(20, 21, 22, 23, 24), distance=55.5, latency=50.0, dropped=0, fps=9.9):
+def _capture(path, n=60, alarms=(20, 21, 22, 23, 24), distance=55.5, latency=50.0, dropped=0, fps=9.9,
+             recording=None):
     with open(path, "w") as fh:
         fh.write("garbage line\n")
         for i in range(n):
@@ -315,7 +339,10 @@ def _capture(path, n=60, alarms=(20, 21, 22, 23, 24), distance=55.5, latency=50.
                  "nearest_distance": distance if alarm else None,
                  "detections": [{"id": 1, "distance": distance}] if alarm else [],
                  "timing_ms": {"total": latency - 5.0},
-                 "node": {"latency_ms": latency + (i % 3), "dropped_frames": dropped, "fps": fps}}
+                 "node": {"latency_ms": latency + (i % 3), "fps": fps,
+                          "dropped_frames": dropped(i) if callable(dropped) else dropped}}
+            if recording is not None:
+                d["node"]["recording"] = recording(i)
             fh.write(json.dumps(d) + "\n---\n")
     return str(path)
 
@@ -332,7 +359,7 @@ def test_check_dry_run_pass(check_dry_run, tmp_path, capsys):
     ("no alarm", dict(alarms=()), ["--expect-obstacle", "--distance", "50:62"]),
     ("distance outside the window", dict(distance=70.0), ["--expect-obstacle", "--distance", "50:62"]),
     ("p95 latency too high", dict(latency=150.0), ["--expect-obstacle", "--distance", "50:62"]),
-    ("dropped frames", dict(dropped=2), ["--expect-obstacle", "--distance", "50:62"]),
+    ("dropped frames", dict(dropped=lambda i: 3 + (i >= 55) * 2), ["--expect-obstacle", "--distance", "50:62"]),
     ("alarms on a bag expected clear", dict(), ["--expect-clear"]),
     ("fps below the minimum", dict(fps=5.0), ["--expect-obstacle", "--min-fps", "9"]),
 ])
@@ -348,6 +375,20 @@ def test_check_dry_run_allows_the_known_alarm_frames_of_a_recording(check_dry_ru
     assert check_dry_run.main([p, "--expect-clear", "--max-alarm-frames", "2"]) == 0
     assert check_dry_run.main([p, "--expect-clear", "--max-alarm-frames", "1"]) == 1
     assert "(allowed 1)" in capsys.readouterr().out
+
+
+
+def test_check_dry_run_ignores_the_start_up_hole_and_takes_the_obstacle_recording(check_dry_run, tmp_path, capsys):
+    """Review 23.09: frames lost in the first seconds (the DDS start-up of 5-10 MB reliable clouds)
+    are not the node's drops; a clear recording may precede the one with the obstacle."""
+    p = _capture(tmp_path / "startup.jsonl", dropped=9)                 # all 9 lost before the first frame
+    assert check_dry_run.main([p, "--expect-obstacle"]) == 0
+    assert check_dry_run.main([p, "--expect-obstacle", "--settle-s", "0"]) == 1
+    two = _capture(tmp_path / "two.jsonl", n=80, alarms=range(60, 70), recording=lambda i: 1 + (i >= 40))
+    args = [two, "--expect-obstacle", "--expect-inputs", "2"]
+    assert check_dry_run.main(args) == 1                                # recording 1 is clear
+    assert check_dry_run.main(args + ["--obstacle-in", "2"]) == 0
+    assert "recording 1: 0 alarm frames" in capsys.readouterr().out
 
 
 def test_check_dry_run_empty_capture(check_dry_run, tmp_path):

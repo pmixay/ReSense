@@ -280,6 +280,13 @@ class MountCalibrator:
                             self.state.message = "drift back within bounds"
             return False
 
+        spacing = max(cfg.obs_spacing, 1)
+        if self._provisional_done and self._config_passed and self._obs and self._since_obs + 1 < spacing:
+            # between two spaced observations the frame is not needed: observing every frame cost
+            # 10-15 ms for the first ~20 s of every recording (review 23.09). The spacing counts
+            # frames; the observation is taken on the first frame with a rail pair after it.
+            self._since_obs += 1
+            return self._finish(False)
         ob = observe_mount(xyz_cur, self.tcfg, track, cfg.min_rail_score)
         changed = False
         # --- 1. orientation: only if the current mapping fails and another one passes repeatedly
@@ -310,6 +317,12 @@ class MountCalibrator:
             if not self._obs or self._since_obs >= max(cfg.obs_spacing, 1):
                 self._obs.append(est)
                 self._since_obs = 0
+        return self._finish(changed)
+
+    def _finish(self, changed: bool) -> bool:
+        """The provisional tilt, the final tilt and the no-rail fallback, once the frame's
+        observation (if any) is recorded."""
+        cfg = self.cfg
         max_t = np.radians(cfg.max_tilt_deg)
         # --- 2a. provisional tilt: only a clearly tilted rig is corrected before the final window
         if not self._provisional_done and len(self._recent) >= cfg.provisional_frames:

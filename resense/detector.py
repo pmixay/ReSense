@@ -413,8 +413,11 @@ class Detector:
         for t in self.tracker.confirmed():
             if t.last is None:
                 continue
+            # a track held over a missed frame is reported where it is predicted, not where it was
+            shift = float(t.centroid[0] - t.last.centroid[0]) if t.misses else 0.0
             dets.append(Detection(
-                id=t.id, distance=t.last.distance, lateral=t.last.lateral, center=t.last.centroid,
+                id=t.id, distance=t.last.distance + shift, lateral=t.last.lateral,
+                center=t.centroid if t.misses else t.last.centroid,
                 size=t.last.size, n_points=t.last.n, confidence=t.confidence, age=t.age,
                 zone=t.zone, height_min=t.last.height_min, intensity=t.last.intensity,
                 reason=t.last.reason, kind=t.last.kind,

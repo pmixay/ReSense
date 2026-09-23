@@ -103,7 +103,9 @@ def test_make_demo_run_writes_resense_run_format(tiny_run):
     assert not lines[0]["obstacle"] and not lines[-1]["obstacle"]
     alarms = [d for d in lines if d["obstacle"]]
     assert alarms, "the approaching person was never confirmed"
-    assert all(40.0 <= d["nearest_distance"] <= 72.0 for d in alarms)
+    # 70 -> 42 m, then the person is gone; since v0.6.3 a reported obstacle is held over one missed
+    # frame at its predicted distance (one 4 m step closer)
+    assert all(36.0 <= d["nearest_distance"] <= 72.0 for d in alarms)
 
 
 # --------------------------------------------------------------------------- B. dashboard replay in a browser

@@ -212,6 +212,7 @@ class TrackingConfig:
     zone_window: int = 10          # hits over which the zone (gauge / advisory) is decided (5 in v0.3)
     zone_min_fraction: float = 0.6 # share of those hits inside the strict gauge for the track to be an obstacle (0.5 = majority, v0.3)
     max_misses: int = 3            # frames a track survives without a match
+    hold_misses: int = 1           # frames a reported track stays reported without a match (at its predicted distance): one missed frame does not drop a STOP (review 23.09); 0 = the v0.6.2 behaviour
     conf_gain: float = 0.35        # confidence added per hit
     conf_decay: float = 0.25       # confidence removed per miss
     conf_threshold: float = 0.6    # report obstacles with confidence >= threshold
@@ -276,7 +277,7 @@ class CalibrationConfig:
                                    # tunnel wall with cable trays then competes with the bed, EXPERIMENTS.md section 6)
     orientation_votes: int = 2     # frames on which the same candidate orientation must win before it is adopted
     min_rail_score: float = 0.05   # m, ridge prominence of the rail pair (as track.rails_min_score)
-    apply_min_deg: float = 0.5     # roll / pitch corrections below this are not applied
+    apply_min_deg: float = 0.75    # roll / pitch corrections below this are not applied: 1.5x the p90 error of the 20-observation median on a moving train (0.5 deg; at 0.5 a noise-level +0.51 deg roll was applied on a ride piece and added 6 false events, review 23.09)
     min_yaw_deg: float = 3.0       # the mount yaw is corrected only above this (the track model follows smaller / dynamic yaw, and the rails' tangent at the sensor includes the chord angle of the car in a curve)
     max_tilt_deg: float = 15.0     # larger roll / pitch estimates are rejected as implausible
     monitor_period: int = 50       # frames between drift checks after freezing; 0 = off

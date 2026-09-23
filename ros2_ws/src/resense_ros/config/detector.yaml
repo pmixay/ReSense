@@ -218,7 +218,7 @@ resense:
     keep_up_axis: true               # only the 8 orientations with the spin axis vertical (upright / inverted); false = all 24
     orientation_votes: 2
     min_rail_score: 0.05
-    apply_min_deg: 0.5
+    apply_min_deg: 0.75              # 1.5x the p90 error of the tilt median on a moving train (0.5 deg): noise is not applied
     min_yaw_deg: 3.0
     max_tilt_deg: 15.0
     monitor_period: 50

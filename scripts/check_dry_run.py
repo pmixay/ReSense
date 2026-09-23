@@ -70,11 +70,18 @@ def main(argv=None) -> int:
                    help="the first N status messages must report no obstacle (clear lead-in of a bag)")
     p.add_argument("--max-p95-latency", type=float, default=100.0,
                    help="ms, p95 of node.latency_ms = decode + detect (default 100, the 10 Hz frame period)")
-    p.add_argument("--max-dropped", type=int, default=0, help="allowed dropped input frames (default 0)")
+    p.add_argument("--max-dropped", type=int, default=0,
+                   help="allowed dropped input frames after --settle-s (default 0)")
+    p.add_argument("--settle-s", type=float, default=5.0,
+                   help="s of recording time after the first processed frame in which dropped frames are not "
+                        "counted: the DDS start-up with 5-10 MB reliable clouds loses the first 2-4 s of a "
+                        "played bag whatever the node does (EXPERIMENTS.md section 3b); default 5")
     p.add_argument("--min-fps", type=float, default=None, help="minimum of the last reported node.fps")
     p.add_argument("--expect-inputs", type=int, default=0, metavar="N",
                    help="N recordings played one after another into one node (node.recording counts them); "
                         "with --expect-obstacle every one of them must have --min-alarm-frames alarms")
+    p.add_argument("--obstacle-in", default=None, metavar="LIST",
+                   help="with --expect-inputs and --expect-obstacle: only these recordings (1-based, e.g. 2 or 1,3) must show the obstacle; default every one")
     args = p.parse_args(argv)
 
     frames, skipped = load(args.status_jsonl)
@@ -87,6 +94,13 @@ def main(argv=None) -> int:
     totals = [t for t in totals if t is not None]
     last_node = frames[-1].get("node", {})
     dropped = last_node.get("dropped_frames")
+    dropped_settled = dropped
+    t0 = frames[0].get("stamp")
+    if dropped is not None and t0 is not None and args.settle_s > 0:
+        k = next((i for i, f in enumerate(frames) if f.get("stamp") is not None
+                  and 0 <= f["stamp"] - t0 and f["stamp"] - t0 >= args.settle_s), None)
+        base = frames[k].get("node", {}).get("dropped_frames") if k is not None else dropped
+        dropped_settled = dropped - (base or 0)
     fps = last_node.get("fps")
     alarms = [f for f in frames if f["obstacle"]]
     distances = [f["nearest_distance"] for f in alarms if f.get("nearest_distance") is not None]
@@ -102,7 +116,8 @@ def main(argv=None) -> int:
     if totals:
         print(f"detector stage total : mean {sum(totals)/len(totals):.0f} / "
               f"p95 {percentile(totals, 95):.0f} ms")
-    print(f"dropped input frames : {dropped}")
+    print(f"dropped input frames : {dropped}" + (f" ({dropped_settled} after the first {args.settle_s:g} s)"
+                                                 if dropped_settled != dropped else ""))
     print(f"fps (last report)    : {fps}")
 
     failures = []
@@ -130,8 +145,8 @@ def main(argv=None) -> int:
         failures.append("no obstacle distance reported, cannot check the distance window")
     if p95 is not None and p95 > args.max_p95_latency:
         failures.append(f"p95 latency {p95:.0f} ms > {args.max_p95_latency:.0f} ms")
-    if dropped is not None and dropped > args.max_dropped:
-        failures.append(f"{dropped} dropped input frames > {args.max_dropped}")
+    if dropped_settled is not None and dropped_settled > args.max_dropped:
+        failures.append(f"{dropped_settled} dropped input frames after the first {args.settle_s:g} s > {args.max_dropped}")
     if args.min_fps is not None and (fps is None or fps < args.min_fps):
         failures.append(f"fps {fps} < {args.min_fps}")
     if args.expect_inputs:
@@ -143,7 +158,10 @@ def main(argv=None) -> int:
             failures.append(f"{len(recs)} recordings seen, expected {args.expect_inputs} "
                             "(the node did not take the next bag / topic)")
         if args.expect_obstacle:
+            want = {int(x) for x in args.obstacle_in.split(",")} if args.obstacle_in else None
             for r in recs:
+                if want is not None and r not in want:
+                    continue
                 n = sum(1 for f, x in zip(frames, rec) if x == r and f["obstacle"])
                 if n < args.min_alarm_frames:
                     failures.append(f"recording {r}: {n} alarm frames, expected >= {args.min_alarm_frames}")

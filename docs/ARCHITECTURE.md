@@ -62,7 +62,7 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
 | `configs/default.yaml` | all detector parameters; copied over the ROS package copy at Docker build time, `scripts/sync_params.sh --check` in CI keeps the two identical |
 | `tests/` | pytest on a synthetic ray-cast tunnel (no dataset needed) |
 | `docs/` | organizers' materials, dataset and sensor notes, algorithm, evaluation protocol, research, plan, experiments, submission checklist, presentation notes |
-| `web/` | the dashboard: replays a `results.jsonl` or shows the live node through rosbridge (`web/README.md`) |
+| `web/` | the dashboard: replays a `results.jsonl`, or shows the live node through rosbridge — not in the image, and roslib comes from a CDN (`web/README.md`); offline live view: Foxglove |
 
 ## Data flow and formats
 
@@ -150,7 +150,7 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
 | **total** (mean / p95 / max) | **45.3 / 55.9 / 93.4 ms** | **57.9 / 69.1 / 109.6 ms** |
 
 The frame period is 100 ms; p95 is inside it on all six bags and on a station section of the
-ride (42–58 ms mean, p95 52–69 ms, EXPERIMENTS.md §3). **Resources:** one CPU core per stream
+ride (v0.6.3: 42–64 ms mean, p95 53–78 ms, EXPERIMENTS.md §3). **Resources:** one CPU core per stream
 (47–65 ms of CPU time per frame = 47–65 % of a core at 10 Hz with single-threaded BLAS, set in
 the image), about 160–180 MB resident, no GPU. **Through ROS in Docker** (v0.6.2, §3b of
 EXPERIMENTS.md): the 120° recording at the full 10 Hz (p95 76 ms), the 360° one at 8–10 fps in

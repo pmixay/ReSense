@@ -7,7 +7,10 @@
 #   IMAGE=resense:ci PLAYER_USER=1001:1001 scripts/console_test.sh /tmp/bags/smoke_bag /tmp/bags/smoke_bag2
 #
 # A second bag is played into the same running node after the first (the input switch). With no
-# check arguments: an obstacle must be reported and, with two bags, two recordings seen.
+# check arguments: an obstacle must be reported in every recording and, with two bags, two
+# recordings seen (the CI bags both have one). The organizers' recordings, a clear one first:
+#   scripts/console_test.sh <bags>/roundT_doubleT <bags>/doubleT_obstacle -- --expect-obstacle \
+#       --obstacle-in 2 --expect-inputs 2 --min-frames 20 --max-p95-latency 1000 --max-dropped 100000
 # Exits with check_dry_run.py's code. Needs Docker, not ROS on the host.
 set -uo pipefail
 cd "$(dirname "$0")/.."

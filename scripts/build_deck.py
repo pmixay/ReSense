@@ -37,6 +37,7 @@ IMG = {
     "ride_clean": "docs/img/hero_ride_clean.png",     # the same frame with --no-hud (data slide background)
     "dashboard": "docs/img/dashboard_doubleT_obstacle.png",
     "render": "docs/img/doubleT_obstacle_0024_v062.png",   # resense run --render, frame 24
+    "chain": "docs/img/docker_chain_rviz.jpg",       # docs/video/docker_chain_rviz.mp4 at 35 s
     "logo": None,                                     # the template's own "Московский транспорт" logo
 }
 
@@ -44,12 +45,12 @@ IMG = {
 N = {
     "frames": "13 759",
     "person_hits": "58 из 61", "person_first": "0,3 с", "person_err": "0,35 м",
-    "object_hits": "118 из 126", "object_before": "2",
+    "object_hits": "124 из 126", "object_before": "2",
     "ride_events": "47", "ride_per_km": "3,6", "ride_km": "13",
     "empty_events": "20",
     "first_person": "148", "sustained_person": "135", "band_person": "115", "speed_person": "167",
-    "latency": "42–58 мс", "p95": "69 мс",
-    "tests": "150",
+    "latency": "42–64 мс", "p95": "78 мс",
+    "tests": "152",
     # first confirmed detection, straight track, median over the approaches [synthetic in real frames]
     "range_chart": [("человек 1,7 м", 148), ("тележка", 144), ("ящик 1 м", 111), ("висящий кабель 3 см", 95),
                     ("предмет поперёк рельса", 46), ("ящик 30 см на рельсе", 44)],
@@ -464,13 +465,13 @@ def s_hero(sl):             # template slide 13: big white card
 def s_demo(sl):             # template slide 27: two browser frames
     title_chip(sl, 2, shape(sl, 55), "ДЕМОНСТРАЦИЯ")
     picture_in_placeholder(placeholder(sl, 14), os.path.join(ROOT, IMG["dashboard"]))
-    picture_in_placeholder(placeholder(sl, 18), os.path.join(ROOT, IMG["render"]))
+    picture_in_placeholder(placeholder(sl, 18), os.path.join(ROOT, IMG["chain"]))
     fill(shape(sl, 10), ["localhost:8080"])
-    fill(shape(sl, 33), ["resense run --render"])
-    fill(placeholder(sl, 15), ["Веб-дашборд: живой узел через rosbridge или воспроизведение results.jsonl — "
-                               "решение, дистанция, детекции, исправность"], size=12)
-    fill(placeholder(sl, 16), ["Офлайн-рендер кадра: вид сверху и сбоку, коридор габарита, подтверждённое "
-                               "препятствие; RViz и Foxglove — готовые раскладки"], size=12)
+    fill(shape(sl, 33), ["docker run resense"])
+    fill(placeholder(sl, 15), ["Веб-дашборд: воспроизведение results.jsonl (живой узел — через rosbridge, "
+                               "ставится отдельно) — решение, дистанция, детекции, исправность"], size=12)
+    fill(placeholder(sl, 16), ["Цепочка жюри в Docker: узел с RViz, bag play от обычного пользователя из "
+                               "другого контейнера, /resense/decision — STOP 56 м (видео 69 с)"], size=12)
     textbox(sl, Emu(1210643), Emu(5700000), Emu(9770000), Emu(480000),
             [("docker build → docker run → ros2 bag play → /resense/decision", {"align": "ctr"})], size=16,
             color=DEEP, bold=True, anchor="ctr")
@@ -605,7 +606,7 @@ NOTES = {  # speaker notes per template slide (the main shot's are set in s_hero
         "поэтому коридор осмыслен и там, где рельсов уже не видно.",
     27: "Цепочка организаторов прогнана в Docker на реальных записях: узел в одном контейнере, bag play из "
         "другого, от обычного пользователя. Решение — топик /resense/decision: GO, CAUTION, STOP, FAULT.",
-    20: "Человек на пути — 58 из 61 кадра, предмет на рельсе — 118 из 126. Ложных событий в 20-минутной "
+    20: "Человек на пути — 58 из 61 кадра, предмет на рельсе — 124 из 126. Ложных событий в 20-минутной "
         "поездке — 3,6 на км, почти вдвое меньше, чем в v0.6.1, и меньше в 12 из 13 частей данных.",
     22: "Первое подтверждение человека — 148 м, в 90 % кадров — со 135 м. Со скоростью поезда — 167 м. "
         "Мелкие предметы на головке рельса — с 42–44 м. Всё это синтетика в реальных кадрах поездки.",

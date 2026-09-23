@@ -28,9 +28,63 @@ or **synthetic** (said so). The day-1 numbers on subsampled frames that this fil
 before 21.09 are superseded (they understated the 10 Hz false-alarm rate by an order of
 magnitude, CAPTAIN.md finding 2 of 21.09).
 
-## 0. v0.6.2 (23.09) — after the criteria review
+## 0. v0.6.2 (23.09) — after the criteria review; v0.6.3 after the second one
 
-The criteria review ([`SCORECARD.md`](SCORECARD.md)) found three things on the detection side:
+**v0.6.3 (23.09, after the second independent review).** Three changes, each measured on all
+13 759 frames against v0.6.2 (the per-frame outputs of both runs compared):
+
+1. **Low-object width cap 1.6 → 2.2 m** (the envelope's width): a person lying across the track
+   on a shallow bed is kept (§2d); decision and distance **identical on every real frame**.
+2. **Mount calibration**: between two spaced observations the frame is no longer measured
+   (it cost 10–15 ms per frame for the first ~20 s of every recording, i.e. all of a short
+   control bag), and a tilt is applied from 0.75° instead of 0.5° — 1.5× the p90 error of the
+   20-observation median on a moving train (§6). With the old threshold the new sampling applied
+   a noise-level +0.51° roll on one ride piece and gained 6 false events; with 0.75° the decision
+   and distance are **identical on every real frame** and every rig correction stays (the
+   `doubleT_obstacle` rig: roll +3.02°, pitch −0.88°). The re-mount check of §6 gives the same
+   residuals for every supported mount.
+3. **A reported obstacle is held over one missed frame** (`tracking.hold_misses` = 1, at its
+   predicted distance): the decision flickered — a confirmed obstacle missed in one frame gave
+   `GO` for that frame. Events cannot change (the hold neither creates nor confirms a track);
+   alarm frames and STOP episodes do:
+
+| | v0.6.2 | **v0.6.3** |
+|---|---|---|
+| five obstacle-free bags: alarm frames / events / STOP episodes | 81 / 20 / 36 | **107 / 20 / 27** |
+| ride (13 km): alarm frames / events / STOP episodes | 164 / 47 / 52 | **204 / 47 / 39** |
+| the crossing person: frames reported of 61, first alarm | 58, frame 11 | **58, frame 11** |
+| the object on the rail, its own detection: of 185 / of the 126 after the person leaves | 121 / 118 | **127 / 124** |
+| `doubleT_obstacle` STOP episodes | 6 | **3** |
+
+The hold costs 27 % more false-alarm frames (245 → 311 over all obstacle-free data) and saves
+25 % of the STOP episodes (88 → 66) — a braking
+signal that switches off for one frame and back on is worse than one that stays on 0.1 s
+longer; events, the number of times a train would stop for nothing, are unchanged.
+
+**Where processing starts** (review 23.09: through ROS the first 2–4 s of a played bag are lost,
+so the jury's runs start after frame 0; `scripts/start_offsets.py`, v0.6.3, raw:
+[`experiments_v0.6.3_start_offsets.json`](experiments_v0.6.3_start_offsets.json)). Alarm frames /
+events / STOP episodes by the first processed frame:
+
+| recording | start 0 | 10 | 20 | 30 | 40 |
+|---|---|---|---|---|---|
+| `doubleT_platform` | 4 / 4 / 1 | 8 / 3 / 3 | 12 / 3 / 1 | 7 / 1 / 1 | 0 / 0 / 0 |
+| `roundT_doubleT` | 2 / 1 / 1 | 4 / 2 / 2 | 3 / 2 / 2 | 1 / 1 / 1 | 2 / 1 / 1 |
+| `roundT_pressureGate_roundT`, `roundT_squareT_pressureGate_squareT` | 0 | 0 | 0 | 0 | 0 |
+| `squareT_platform_squareT_switch` | 101 / 15 / 25 | 73 / 15 / 20 | 83 / 15 / 17 | 86 / 16 / 18 | 74 / 13 / 17 |
+| **five bags** | **107 / 20 / 27** | 85 / 20 / 25 | 98 / 20 / 20 | 94 / 18 / 20 | 76 / 14 / 18 |
+| person in the envelope, frames reported | 58 / 61 | 50 / 59 | 40 / 49 | 31 / 39 | 20 / 29 |
+| object on the rail, own detection | 127 / 185 | 129 / 176 | 129 / 174 | 129 / 171 | 128 / 161 |
+
+Starting at frame 0 is the worst case for the false alarms in total (107 / 20), so the figures of
+this file are not flattered by it; single recordings move by a few frames (a trackside device at
+48–54 m in `roundT_doubleT` and a bed fixture at 26–49 m in `doubleT_platform` are confirmed from
+some start frames and not from others). What a late start costs is the first second: a person
+already inside the envelope when processing begins is reported ~9–10 frames later (the track
+model and the 0.5 s confirmation start from nothing); the object on the rail is found from every
+start.
+
+**v0.6.2.** The criteria review ([`SCORECARD.md`](SCORECARD.md)) found three things on the detection side:
 the organizers' object on the rail was missed (2 of its 185 frames by its own detection), there were too many false
 stops (82 events on the 20-minute ride), and nothing showed that the tuning was not fitted to
 one stretch of track. v0.6.2 is v0.6.1 plus three changes, each measured by a full run over the
@@ -604,7 +658,7 @@ per object unless said; raw summaries in
 | | 0.3 m cube | 1 / 6 | 9 m | — | 1 % |
 | | dog-sized 0.6 × 0.3 × 0.45 m | 1 / 6 | 50 m | 42 m | 13 / 1 % |
 | person lying, 0.5 × 1.8 × 0.35 m (added 23.09 after the second review) | across the rails, on the rail heads | 6 / 6 | 61 m (50–111) | 65 m (54–68, 4 of 6) | 90 / 20 / 2 % |
-| | on the bed between the rails (0.44–0.6 m below the rail head in these tunnels: the body stays below it) | 0–1 / 6 | — | — | 0 % |
+| | in the central drainage trough (0.57–0.60 m below the rail head in these tunnels: the body stays below it) | 0–1 / 6 | — | — | 0 % |
 | | on a shallow bed, top 0.15 m above the rail head, **across** the track: v0.6.2 → with the 2.2 m width cap | 2 / 6 → **6 / 6** | 41 → **49 m** (47–52) | — → **53 m** (50–56) | 3 → 98 % (0–50 m) |
 | | same, **along** the track | 6 / 6 | 50 m (48–52) | 54 m (52–56) | 100 % (0–50 m) |
 | | across, top 0.10 m / 0.05 m above the rail head (2.2 m cap) | 6 / 6, 6 / 6 | 42 m / 17 m | 43 m / 17 m (4 of 6) | 79 % / 24 % (0–50 m) |
@@ -613,8 +667,10 @@ Reading. (1) **A person on straight track is first confirmed at ~148 m, held in 
 frames from ~135 m and in every 10 m band from ~115 m** (medians of 6; runs of up to 7
 consecutive missed frames occur inside the lenient range); v0.6.1 first hit 150 m — the 0.5 s
 confirmation costs ~3 m there and ~10 m with a train speed (167 against 177 m). In one sequence
-out of six both sustained measures collapse to ~20 m because a few frames are lost at 20–60 m
-where the object crosses the near-range bed fit — the first-hit median hides such dropouts,
+out of six both sustained measures collapse to ~20 m: the recording has a 3.4 s hole there
+(`new_data_169`, frames 14 → 15), the object jumps ~65 m closer, the detector resets its scene
+and needs 0.5 s to confirm again (a review found it; the sequence is kept as it is, a control
+recording can have such holes too) — the first-hit median hides such dropouts,
 which is why all three are reported.
 (2) **Curves: 6 of 7 approaches** detected (round 1: 1 of 2), first at 58–86 m and sustained
 from 61–94 m — the sightline past the inner wall of an R ≈ 350 m curve (≈ √(8·R·w) = 80–110 m).
@@ -623,10 +679,11 @@ from 61–94 m — the sightline past the inner wall of an R ≈ 350 m curve (�
 frames — the platform-edge and platform-end structures of §0a). (4) **Small objects on a rail
 head** — a 30 × 30 × 10 cm box and a 30 cm cube — are found in 6 of 6 approaches from 42–44 m
 and held from 45–47 m; the replica of the organizers' object lying across a rail in 5 of 6, from
-46 m. (5) **The same objects on the bed between the rails are below the envelope**: the bed lies
-~0.44 m below the rail head in these tunnels (`track.rail_offset`), so a 10 cm box, a 30 cm cube
-and even a 45 cm dog-sized box stay below the envelope floor (0.12 m above the rail head) or
-barely reach the rail-head plane — not reported by the default policy (ALGORITHM.md §3.3b, §6),
+46 m. (5) **The same objects on the bed between the rails are below the envelope**: measured under
+these placements (files 46–172, 20–50 m), the bed lies 0.26–0.34 m below the rail head half a metre
+off the axis and the central drainage trough 0.57–0.60 m (the track model's `rail_offset`: 0.35–0.38 m),
+so a 10 cm box, a 30 cm cube and even a 45 cm dog-sized box stay below the envelope floor (0.12 m
+above the rail head) or barely reach the rail-head plane — not reported by the default policy (ALGORITHM.md §3.3b, §6),
 which a line with a clean bed can switch (`lowobj.min_top: -1`, `min_point_top: -1`). An attempt
 to exempt low clusters centred between the rails from the track-hardware rule changed nothing
 (no candidate reaches the corridor) and was not kept. (6) **A person lying on the track** (the review's case, 0.5 × 1.8 × 0.35 m, placed by
@@ -636,7 +693,9 @@ these tunnels' deep bed the whole body is below the rail head and not reported (
 the bed is shallow it straddles the envelope floor and the straddle stage finds it, across the
 track only since the width cap follows the envelope (§0) — from ~50 m with its top 0.15 m above
 the rail head, from ~17 m when only 5 cm of it rise above the rail head. No false detection in
-these 60 sequences. (7) Off-axis objects to the envelope edge
+these 60 sequences. A body lying across the track rests on the bed beside the trough, 0.26–0.34 m
+below the rail head, so the 0.25 and 0.30 m rows are the realistic case in these tunnels: found in
+6 of 6 approaches, but only from ~42 m (top 0.10 m) and ~17 m (top 0.05 m). (7) Off-axis objects to the envelope edge
 lose ~10 m of first detection (the edge margin grows with range); a 3 cm cable near the edge is
 found in 3 of 6.
 
@@ -661,8 +720,8 @@ pipeline ends (10 % of those frames). (2) Beyond ~200 m nothing is detected, as 
 physics predicts: no return of the whole ride lies beyond 210 m. (3) A trolley is
 confirmed at 85–171 m (median 146 m), a 1 m crate at 79–156 m (the crate is 1 m tall, closer to
 `far_min_height` = 0.6 m after the far bed error than a person). (4) **A 0.5 m box standing in
-the bed is borderline by construction**: the bed's drainage trough lies 0.3–0.4 m below the
-rail head (DATASET.md), so the box top is 0.1–0.2 m above the rail head — at the envelope's
+the bed is borderline by construction**: beside the central drainage trough the bed lies
+0.26–0.34 m below the rail head (round 2, reading 5), so the box top is 0.15–0.25 m above the rail head — at the envelope's
 bottom (0.12 m) — and it is reported only in the frames where it reaches into the envelope
 (2 of 6 sequences, 50–60 m); on a rail head the same box is found (the low-object stage,
 `tests/test_envelope.py`). (5) A 3 cm cable hanging into the envelope is detected at 59–112 m
@@ -719,6 +778,25 @@ so the shipped numbers are the no-speed column; with an odometry or speed topic 
 the third column automatically.
 
 ## 3. Timing (4-core sandbox, Python, every frame; the i7-9700E bench is still owed)
+
+**v0.6.3 (23.09, the idle sandbox, `resense bench --npy <recording>`, every frame, recordings
+back to back, `OMP_NUM_THREADS=1`)** — a review measured the v0.6.2 code 25–33 % slower than the
+v0.6 figures below still quoted in the README — in part the mount calibration measuring every
+frame of its first 20 s (bisected by the review), in part the stages added since v0.6 (not
+broken down); v0.6.3 measures the calibration only every 10th frame:
+
+| recording (every frame) | **v0.6.3** mean / p95 / max | track / corridor / cluster means |
+|---|---|---|
+| `roundT_doubleT` (189 k points, moving) | **50.2 / 63.4 / 76.1 ms** | 27.4 / 12.6 / 10.0 |
+| `doubleT_obstacle` (347 k points, 360°) | **63.6 / 77.8 / 119.2 ms** | 39.9 / 16.7 / 6.7 |
+| `doubleT_platform` | **53.7 / 75.2 / 115.1 ms** | 23.9 / 11.1 / 18.4 |
+| `roundT_pressureGate_roundT` | **45.6 / 57.1 / 83.1 ms** | 26.6 / 11.7 / 7.3 |
+| `roundT_squareT_pressureGate_squareT` | **43.9 / 55.8 / 73.8 ms** | 26.6 / 11.3 / 5.9 |
+| `squareT_platform_squareT_switch` | **42.3 / 52.8 / 81.2 ms** | 23.5 / 10.5 / 8.1 |
+| `new_data` frames 2550–3149 | **43.4 / 57.8 / 87.5 ms** | 22.3 / 10.2 / 10.8 |
+
+p95 stays inside the 100 ms frame period on every recording; through ROS the node adds ~20–25 ms
+per 360° frame (§3b), which is where the 360° recording reaches the frame period on this sandbox.
 
 **v0.6 (22.09, the idle sandbox, nothing else running; `resense bench --npy <recording>`,
 every frame, recordings back to back; the load of 1–3 is the bench's own BLAS threads).**
@@ -835,7 +913,8 @@ subscriber doing nothing receives the same sequence (the first reliable 10 MB sa
 delivered ~4.5 s late, the samples in between are superseded in the keep-last-1 history), so it
 is the transport's start-up with the recorded reliable QoS, not the detector. Each such hole
 resets the scene. The first STOP of the person came at 5.7–9.2 s of recording time through ROS
-against 1.1 s offline; on the 120° recording the start-up hole is ~1 s. A player started well
+against 1.1 s offline; on the 120° recording the start-up hole is 0.9 s in our run and 2.0–2.7 s in a review's runs
+(`--delay 3` does not remove it). A player started well
 before the frames matter, or a live sensor that is already streaming, does not have it; the
 organizers' short control recordings may.
 
@@ -943,7 +1022,7 @@ combined case stays in the yaw column.
 | upside down | 0.00° — orientation found | 0.00° — found | 0.03° — found |
 | forward = `+x` (the ROS convention) | 0.00° — found | 0.00° — found | 0.03° — found |
 | mounted backwards | 0.00° — found | 0.00° — found | 0.03° — found |
-| on its side (spin axis horizontal) | **not supported** (80°) | **not supported** (90°) | **not supported** (84°) |
+| on its side (spin axis horizontal) | **not supported** (83°; 80° before v0.6.3) | **not supported** (89°; 90°) | **not supported** (84°) |
 
 Reading. (1) Every upright or inverted mount is found from the data on all three recordings
 and the tilt is recovered to 0.0–0.5° (median 0.2°: < 1 cm at the edge of the 1.05 m envelope).
