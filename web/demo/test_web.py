@@ -8,6 +8,8 @@ without the organizers' dataset; the browser tests skip when Playwright or Chrom
 import json
 import os
 import sys
+import zipfile
+import xml.etree.ElementTree as ET
 
 import pytest
 
@@ -17,6 +19,7 @@ sys.path.insert(0, os.path.join(ROOT, "web", "demo"))
 RVIZ = os.path.join(ROOT, "ros2_ws", "src", "resense_ros", "rviz", "resense.rviz")
 FOX = os.path.join(ROOT, "web", "foxglove_layout.json")
 LABEL_TOOL = os.path.join(ROOT, "web", "label_tool.html")
+PRESENTATION = os.path.join(ROOT, "docs", "presentation", "ReSense_LCT2026.pptx")
 RAW_TOPICS = ("/lidar_points", "/sensing/lidar/hesai128/pointcloud")
 
 
@@ -177,6 +180,54 @@ def test_dashboard_rejects_garbage_lines(tmp_path):
         assert page.inner_text("#n-dropped").startswith("2")       # node stats are shown when present
         assert "notice" in page.get_attribute("#node-card", "class")
         b.close()
+
+
+def test_dashboard_builtin_demo_and_summary():
+    """The jury can exercise the dashboard even when no bag or generated JSONL is available."""
+    if not _browser_available():
+        pytest.skip("playwright + chromium not available")
+    from playwright.sync_api import sync_playwright
+    import check_dashboard
+    with sync_playwright() as p:
+        b = _launch(p)
+        page = b.new_page()
+        page.goto("file://" + check_dashboard.INDEX, wait_until="domcontentloaded")
+        page.wait_for_function("window.resense !== undefined")
+        page.click("#demo")
+        page.evaluate("window.resense.pause()")
+        state = page.evaluate("({frames: window.resense.state.frames.length, summary: window.resense.state.summary})")
+        assert state["frames"] == 60
+        assert state["summary"] == {
+            "frames": 60, "alarm_events": 1, "alarm_frames": 36, "warning_frames": 4,
+            "nearest_m": pytest.approx(40.0), "max_detect_ms": 49,
+        }
+        assert page.inner_text("#s-alarms") == "1 / 36"
+        assert page.inner_text("#s-nearest") == "40.0 m"
+        assert page.inner_text("#decision") == "GO"
+        assert page.inner_text("#health") == "ok"
+        assert page.is_enabled("#export-report")
+        b.close()
+
+
+def test_presentation_artifact_uses_the_organizers_slide_sequence():
+    """The committed v0.6 deck is a valid 15-slide subset of the organizers' template."""
+    assert os.path.getsize(PRESENTATION) > 1_000_000
+    with zipfile.ZipFile(PRESENTATION) as zf:
+        assert zf.testzip() is None
+        root = ET.fromstring(zf.read("ppt/presentation.xml"))
+        ns = {"p": "http://schemas.openxmlformats.org/presentationml/2006/main",
+              "r": "http://schemas.openxmlformats.org/officeDocument/2006/relationships"}
+        slide_ids = list(root.find("p:sldIdLst", ns))
+        assert len(slide_ids) == 15
+        rel_root = ET.fromstring(zf.read("ppt/_rels/presentation.xml.rels"))
+        rels = {rel.attrib["Id"]: rel.attrib["Target"] for rel in rel_root}
+        slide_paths = ["ppt/" + rels[s.attrib[f"{{{ns['r']}}}id"]] for s in slide_ids]
+        text = " ".join(
+            " ".join(ET.fromstring(zf.read(path)).itertext()) for path in slide_paths
+        ).replace("\u00a0", " ")
+    for required in ("ReSense", "КОМАНДА", "КОРОТКО О РЕШЕНИИ", "ГЛАВНЫЙ КАДР", "13 759", "58 из 61"):
+        assert required in text
+    assert "Привет, участник хакатона" not in text
 
 
 # --------------------------------------------------------------------------- F. label tool -> gt.json

@@ -24,6 +24,10 @@ dev = [
     "open3d>=0.17",
     "pytest>=7",
 ]
+presentation = [
+    "python-pptx>=1.0",
+    "Pillow>=10",
+]
 
 [project.scripts]
 resense = "resense.cli:main"
