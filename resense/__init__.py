@@ -10,4 +10,4 @@ from resense.config import DetectorConfig
 from resense.detector import Detector, FrameResult, Detection
 
 __all__ = ["DetectorConfig", "Detector", "FrameResult", "Detection"]
-__version__ = "0.6.1"
+__version__ = "0.6.2"

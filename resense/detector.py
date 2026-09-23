@@ -192,6 +192,10 @@ class Detector:
         floor_valid = max(self.track.floor_range[1] + cfg.track.floor_valid_margin, self.track.floor_verified)
         axis_valid = min(self.track.axis_valid, cfg.gauge.range_max)
         valid = min(axis_valid, floor_valid) if cfg.cluster.far_min_height <= 0 else axis_valid
+        if cfg.gauge.no_rail_range > 0 and self.track.rail_slabs == 0:
+            # v0.6.2: no rail pair in the near range (station, switch cavern): the axis rests on
+            # the walls alone, so far clusters are advisory (the tracker's zone vote smooths it)
+            valid = min(valid, cfg.gauge.no_rail_range)
 
         # 2b. low objects on the track bed (v0.6): bumps above the learned bed cross-section,
         #     below the polygon bottom, where the bed is observed (resense/lowobj.py)

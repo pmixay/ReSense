@@ -191,13 +191,14 @@ def cmd_eval(args):
         raise SystemExit("resense eval: give an injected dataset directory, or --bag <bag> / --npy <dir> with --gt")
     gt = load_gt(gt_path)
     meta = gt_meta(gt_path)
-    # static injected frames: repeat each 3x to emulate persistence; sequences and real
-    # sources are already in frame order, so every frame is processed once
+    # static injected frames: repeat each as often as the tracker needs to confirm a static
+    # object (tracking.confirm_hits / confirm_time_s: 5 at 10 Hz) to emulate persistence;
+    # sequences and real sources are already in frame order, so every frame is processed once
     repeat = args.repeat
     if repeat is None:
-        repeat = 3 if (args.dataset and int(meta.get("sequence", 1)) <= 1) else 1
+        repeat = cfg.tracking.frames_to_confirm() if (args.dataset and int(meta.get("sequence", 1)) <= 1) else 1
     det = Detector(cfg)
-    ev = Evaluation(confirm_hits=cfg.tracking.confirm_hits, frame_dt=cfg.tracking.frame_dt)
+    ev = Evaluation(confirm_hits=cfg.tracking.frames_to_confirm(), frame_dt=cfg.tracking.frame_dt)
     out_fh = open(args.out, "w", encoding="utf-8") if args.out else None
     n_occluded = 0
     n_processed = 0
@@ -264,7 +265,7 @@ def _summarize_file(path: str, args, cfg, gt) -> dict:
     """``Evaluation.summary()`` of one JSONL file (plus ``occluded_gt_skipped``,
     ``unparsed_lines`` and ``file``)."""
     from resense.metrics import Evaluation, gt_key, gt_objects
-    ev = Evaluation(confirm_hits=cfg.tracking.confirm_hits, frame_dt=cfg.tracking.frame_dt)
+    ev = Evaluation(confirm_hits=cfg.tracking.frames_to_confirm(), frame_dt=cfg.tracking.frame_dt)
     n_occluded = 0
     unparsed = []
     for d in _iter_jsonl(path, unparsed):
@@ -379,8 +380,9 @@ def run_cli(argv=None):
     sp.add_argument("dataset", nargs="?", default=None, help="injected dataset directory (*.npz + gt.json)")
     add_input(sp, need=False)
     sp.add_argument("--gt", default=None, help="gt.json (default <dataset>/gt.json; required with --bag/--npy)")
-    sp.add_argument("--repeat", type=int, default=None, help="process each frame N times; default 3 for a static "
-                    "injected dataset (emulates persistence), 1 for inject --sequence datasets, bags and npy")
+    sp.add_argument("--repeat", type=int, default=None, help="process each frame N times; default for a static injected "
+                    "dataset: the frames the tracker needs to confirm (5 at 10 Hz, emulates persistence); 1 for "
+                    "inject --sequence datasets, bags and npy")
     sp.add_argument("--reset-each", action="store_true")
     sp.add_argument("--labelled-only", action="store_true", help="count only frames that have a gt.json entry "
                     "(all frames are still processed)")

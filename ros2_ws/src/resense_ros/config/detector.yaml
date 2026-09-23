@@ -93,6 +93,7 @@ resense:
     lateral_growth_per_100m: 0.0
     edge_margin: 0.0
     edge_margin_per_100m: 0.15       # v0.6: strict decision needs points 0.15 m per 100 m inside the envelope edge (axis uncertainty)
+    no_rail_range: 40.0              # v0.6.2: without the rail pair in the near range (stations, switch caverns) the corridor beyond 40 m is advisory only; 0 = off
   cluster:
     eps: 0.35
     range_scale: 40.0
@@ -149,7 +150,7 @@ resense:
     frame_dt: 0.1
     confirm_hits: 3
     low_confirm_hits: 5            # v0.6: hits before a low (bed-level) object is reported
-    confirm_time_s: 0.3
+    confirm_time_s: 0.5
     hit_window: 10
     min_hit_fraction: 0.6
     zone_window: 10

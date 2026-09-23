@@ -19,7 +19,7 @@ or **synthetic** (said so). The day-1 numbers on subsampled frames that this fil
 before 21.09 are superseded (they understated the 10 Hz false-alarm rate by an order of
 magnitude, CAPTAIN.md finding 2 of 21.09).
 
-## 0. v0.6.1 (22.09) — after the organizers' Q&A session
+## 0a. v0.6.1 (22.09) — after the organizers' Q&A session
 
 The organizers' recorded Q&A session ([`organizers/QA_session.md`](organizers/QA_session.md))
 changed the target: the envelope to monitor is **2.1 m × 3.0 m** (not our assumed 2.8 × 3.5 m),
@@ -57,187 +57,6 @@ numbers are the ones with the physically right mount.
 The v0.5 row is the v0.5 detection logic run by the v0.6 harness with the calibration off
 (`calibration.enabled: false`); it differs slightly from EXPERIMENTS.md §1 (96 / 32) because of
 the bag receive times, the int16 cache and the v0.6 track warm-up (§6).
-
-## 1d. v0.6 on all real data: the variants that led to the defaults
-
-Every row is a full run over the 13 759 frames (`scripts/eval_real.py`, ~14 min each); the
-five-bag column sums `doubleT_platform`, `roundT_doubleT`, `roundT_pressureGate_roundT`,
-`roundT_squareT_pressureGate_squareT`, `squareT_platform_squareT_switch`.
-
-| run | what changed | five bags: frames / events | ride: frames / events | person (61) | object on the rail (185) |
-|---|---|---|---|---|---|
-| v0.5 logic | — | 116 / 32 | 448 / 93 | 61, first 8 | 24 |
-| v0.6a | envelope 2.1 × 3.0 m, calibration, health, **low-object stage reporting every bump above the bed** | 1 310 / 256 | 6 391 / **1 482** | 54 | 26 |
-| v0.6b | + a low object must reach 5 cm below the rail head | 528 / 99 | 1 502 / 345 | 61 | 102 |
-| v0.6c | low stage off; far-field rule, near-axis tall objects allowed | 393 / 49 | 857 / 121 | 61 | 25 |
-| v0.6d | + columns ≥ 0.25 m wide demoted anywhere, `edge` at 1.0 m, edge margin 0.15 m / 100 m, far clusters ≤ 3 m long and grounded; low stage with candidates ≥ 3 cm above the rail head | 81 / 21 | 239 / 60 | 58, first 11 | 29 |
-| v0.6f | low stage: the cluster's top at the rail head, candidates from 5 cm excess, own clustering radius | 412 / 169 | 1 735 / 734 | 58 | **170** |
-| v0.6g | low stage: every candidate ≥ 3 cm above the rail head again | 85 / 27 | 272 / 88 | 58 | 29 |
-| v0.6 (h) | + a low object needs 5 hits (0.5 s) | 83 / 25 | 258 / 74 | 58, first 11 | 27 |
-| **v0.6.1 (shipped)** | mount tilt over 20 s instead of 5 frames, median drift monitor (§6) — the detection logic of v0.6h | **104 / 30** | **289 / 82** | **58, first 11** | 27 |
-
-**The bed is full of objects.** v0.6a reported every bump more than 7 cm above the learned bed
-cross-section inside the envelope: 1 350 of the ride's 1 482 events were low-object events. The ones looked at
-(`new_data_46` frames 26–39, a straight section at 20 m/s): 0.3 m wide, 5–12 cm tall bumps in the
-middle of the track approaching at the train's speed (train-control inductors, drain covers),
-0.6–1 m wide transverse ones (cable crossings), all with their top 15–30 cm *below the rail
-head*. Geometrically a 30 × 30 × 10 cm box lying on the bed is the same thing. The train
-envelope starts at the rail head, so such an object is below it; v0.6 reports low objects that
-reach the rail-head plane.
-
-**The rail area is full of objects too.** v0.6f let a cluster through when its top reached the
-rail head (candidates from 5 cm above the bed): 734 events on the ride, at \|lateral\| 0.5–0.9 m —
-the rails and just inside them (guard rails in curves, joints, fastenings), 3–43 m away, tops
-1–8 cm above the rail head (median 3 cm), excess over the bed 0.14 m median; no single-frame
-threshold on height, width, excess or voxel count separates them (measured on 1 330 false clusters of 12 ride files vs 125 clusters of the
-object). v0.6f finds the object in 170 of 185 frames and would stop the train every 1.6 s.
-Shipped: every low candidate must be ≥ 3 cm above the rail head and the object must be seen in
-5 frames (the false clusters flicker for 2 frames median, 3 at the 90th percentile): 18 low
-events on the ride, a 10 cm box lying on a rail head found at 10–25 m (synthetic tunnel), the
-real object in 2–4 of the 126 frames after the person leaves it. `lowobj.min_point_top: -1` with
-`min_top: 0` restores the v0.6f behaviour for a line known to be clean.
-
-**Why the real object is missed — corrected 23.09** (a jury-style review questioned the height,
-and we re-measured it on the frames with the final v0.6.1 calibration): the object's top is
-**0.10–0.15 m (median 0.13 m) above the detector's rail-head plane** in the 111 frames after the
-person leaves — at the 0.12 m floor of the envelope, not "4–5 cm above its rail" as written here
-before (that figure was taken against the rail ridge, ~6 points at 56 m, and is not confirmed).
-What the pipeline produces at its position: **nothing in 99 of the 111 frames** — 0–3 points
-above the envelope floor, below the main stage's cluster minimum — and a 3-point low-object
-sliver 0.03–0.07 m high in 12 frames, too few hits to confirm. The object falls *between* the two
-stages; clustering an object that straddles the envelope floor as one object is the fix to try
-next (SCORECARD.md "What is left").
-
-**Mount roll changes what "on the rail" means.** The rail pair of `doubleT_obstacle` has its
-right head 8 cm above the left over 4–30 m on a straight, stationary track: that rig is rolled
-by 3.0–3.2°. Without the correction (v0.5) the object reads 0.15–0.2 m above the *mean* rail
-level and the corridor stage saw its top; with it, it is 0.10–0.15 m above the rail-head plane,
-at the envelope floor, where it falls between the stages (above). The calibration is right (the
-gauge is defined in the rail plane); the
-organizers said the hidden data use the mount of the empty-tunnel rides, on which the
-calibration finds `roundT_doubleT` and `doubleT_platform` level within 0.5° (v0.6.1, §6; the −1.0…−1.6° v0.6 measured on `roundT_doubleT` was the 5-frame window).
-
-**Where the ride's remaining events come from** (the v0.6h run, 74 events; `scripts/mine_objects.py`, classes by
-median geometry, `labels/new_data_objects.json`): corridor-edge structures 21 (at \|lateral\|
-0.9–1.2 m, 30–70 m; a quarter of them at the station of files 52–55), station / platform-end
-structures 13, low objects 12 (+6 low tracks classed otherwise), far small clusters 11
-(105–180 m, 8–12 points), hanging equipment 8 (1.5–2.7 m above the rail head, 50–80 m), tall
-structures 7, person-like 2 (both infrastructure, below). 874 tracks were confirmed on the
-ride in total, 800 of them advisory (mostly the edge structures). The 11 person-like tracks
-were checked by eye on close-ups (`img/new_data_person_like_check.png`): poles from the bed to
-the vault, cabinets, signs, the wall of the R ≈ 350 m curve — no person anywhere near the
-track, as the organizers said.
-
-**Per bag (v0.6.1):** `doubleT_platform` 5 / 6 (low objects at the platform, 4 events),
-`roundT_doubleT` 3 / 2, `roundT_pressureGate_roundT` 2 / 1, `roundT_squareT_pressureGate_squareT`
-0 / 0, `squareT_platform_squareT_switch` 94 / 21 (v0.6: 75 / 17 with a spurious −0.69° pitch) —
-the platform-end structure at 82–84 m while the train stands at the platform (§1), unchanged
-since v0.5: the station-curvature limitation of ALGORITHM.md §6.
-
-## 2d. The far field and long range on a moving background (set F, v0.6)
-
-**What a straight tunnel returns far away** (`new_data_46`, 20 m/s, R > 100 km): of ~188 000
-points per frame, 422 lie 100–125 m ahead, 217 at 125–150 m, 73 at 150–175 m and 56 at
-175–215 m; the farthest return of any frame of the ride is 208.5 m. Beyond ~100 m the bed does
-not return (grazing incidence); only the vault (4.4–4.7 m above the rail head) and the walls at
-±2 m do. **The extrapolated height reference drifts**: relative to the vault measured at 20–60 m,
-the vault seen through the model is +0.07 m at 65 m, +0.15 at 85 m, +0.24 at 95 m, +0.49 at 115 m
-and +0.79 at 135 m (file 46); +0.10 at 85 m, +0.25 at 115 m, +0.40 at 155 m, +0.5 at 175–195 m
-(file 98) — the model's rail level runs low by that much (a vertical curve ahead, or the
-extrapolated slope). The lateral residual of the walls is ±0.3 m. That is why the corridor was
-trusted only to the bed fit + 20 m or the side-base verification (100–130 m), and why v0.6
-extends the alarm range for **tall, grounded, short** clusters only (ALGORITHM.md §3.3c): a 0.5 m
-error does not move a 1.7 m person out of a 3 m envelope, but it does lift flat far-bed returns
-into its bottom. A lining-anchored far reference (correct the model by the vault drift) is
-measurable to ~200 m and is the next step (not in v0.6: the lateral residuals are too noisy to
-anchor the axis).
-
-**Set F** (`scripts/far_range_eval.py`): an object is placed at a fixed point of the tunnel
-220 m ahead of 110 consecutive frames of the ride and ray-cast into every frame at the distance
-it has then (the train speed of the ride from the static-track drift of each split file, the bag
-frame intervals); it stands on the bed measured under it where the bed returns, else on the
-model's rail level corrected by the vault drift above; laterally uniform in ±0.6 m; dropout
-from 60 m to 200 m scaled by reflectivity (the real-frame budget, §2b). A fresh detector per
-sequence, **no speed given** (single-frame pipeline + persistence). A frame is a hit when a
-confirmed gauge detection lies within max(2 m, 3 %) and 1.2 m laterally of the object.
-
-Straight sections (files 46, 68, 98, 140, 168, 172; 17–21 m/s), v0.6.1:
-
-| object | sequences detected | first confirmed detection: per sequence (m) | median | recall 0–50 / 50–100 / 100–150 / 150–200 / 200–250 m |
-|---|---|---|---|---|
-| person 0.4 × 0.5 × 1.7 m | 6 / 6 | 110, 146, 149, 152, 166, 169 | **150 m** | 97 % / 94 % / 68 % / 10 % / 0 % |
-| trolley 0.6 × 1.0 m | 6 / 6 | 85, 142, 145, 146, 153, 171 | 146 m | 97 % / 88 % / 28 % / 3 % / 0 % |
-| crate 1.0 m | 6 / 6 | 79, 108, 110, 112, 145, 156 | 111 m | 97 % / 92 % / 26 % / 1 % / 0 % |
-| cable 3 cm hanging to 1.0 m above the rail head | 6 / 6 | 16, 59, 94, 96, 103, 112 | 95 m | 83 % / 63 % / 7 % / 0 % / 0 % |
-| box 0.5 m standing in the bed | 2 / 6 | 52, 57 | 55 m | 15 % / 2 % / 0 % / 0 % / 0 % |
-
-Curves (files 129 and 176, R ≈ 350 m): person first confirmed at 82 m and crate at 74 m in one
-of the two sequences, nothing beyond ~100 m — the inner wall hides the track beyond
-√(8·R·w) ≈ 80–110 m and the corridor is trusted only to 60–120 m there; the organizers accept
-detection at the visible limit in a curve (Q&A fact 14).
-
-Reading. (1) A person is confirmed at 146–169 m on straight track in 5 of 6 sequences with no
-speed input; the 150–200 m bin holds 3–10 returns per frame and is where the single-frame
-pipeline ends (10 % of those frames). (2) Beyond ~200 m nothing is detected, as the sensor
-physics predicts: the farthest return of the whole ride is 208.5 m. (3) A trolley is
-confirmed at 85–171 m (median 146 m), a 1 m crate at 79–156 m (the crate is 1 m tall, closer to
-`far_min_height` = 0.6 m after the far bed error than a person). (4) **A 0.5 m box standing in
-the bed is borderline by construction**: the bed's drainage trough lies 0.3–0.4 m below the
-rail head (DATASET.md), so the box top is 0.1–0.2 m above the rail head — at the envelope's
-bottom (0.12 m) — and it is reported only in the frames where it reaches into the envelope
-(2 of 6 sequences, 50–60 m); on a rail head the same box is found (the low-object stage,
-`tests/test_envelope.py`). (5) A 3 cm cable hanging into the envelope is detected at 59–112 m
-(the beam-footprint model of the injector, DATASET.md, makes it 5–11 cm wide at that range; a
-real cable's echo strength is the open question). (6) **Confirmed gauge detections away from
-the object: 39 of the 3 060 injected frames (1.3 %), none in the curves.** 10 are the object's
-own cluster merged with bed returns in front of it and reported 3–7 m short (outside the
-max(2 m, 3 %) match window: a localisation error, counted against us); 10 are the background's
-own false alarms (the same start of file 98 run with *no* object confirms 6 frames of 2 m tall
-fixtures at 134–158 m; files 68, 168 and 172 give none); 19 are a structure 30–65 m *beyond*
-the object that alarms only with the object present (file 98 at 105–165 m, file 168 at 94 m).
-Mechanism of those 19 (traced on file 98): where the real bed no longer returns (beyond ~90 m)
-the base of the object fills a bed bin, the bed fit extends from ~80 to ~107 m, the wall band
-above it shifts and the far curvature moves by ~2.5·10⁻⁵ m⁻¹ — 0.3 m at 150 m, enough to bring
-an edge fixture inside the 0.15 m/100 m margin. The object itself is confirmed in the same
-frames, so the train's decision (STOP at the object) does not change; a bed bin that is
-narrower than the bed (an object, not the track) should not extend the fit — noted in
-ALGORITHM.md §6. (7) **Sensitivity to the mount tilt.** The same set run with the v0.6
-calibration (a 5-frame tilt frozen at the start of each sequence: up to ±1.6° of spurious roll
-and ±0.4° of pitch on this level rig) gave a person median of 165 m, crate 127 m, trolley
-121 m, box 0.5 m 4 / 6: far-field numbers move by ±15–30 m with a few tenths of a degree of
-pitch (0.3° is 0.8 m of height at 150 m). The v0.6.1 numbers above are the ones with the
-physically right (level) mount.
-
-**What the far-field rule and a train speed add** (paired v0.6.1 runs of set F: the same 30
-sequences, the same random draws; `far_range_eval.py --far-min-height 0` = the v0.5
-behaviour, `--given-speed` = the ride's per-file train speed handed to the detector, which then
-merges 5 frames beyond 40 m — what the node does when `speed_topic` / `odom_topic` /
-`ego_speed_mps` is set):
-
-| object (6 sequences each) | far rule off (v0.5) | **shipped, no speed** | shipped + speed given |
-|---|---|---|---|
-| person: first confirmed, median (range) | 106 m (83–110) | **150 m** (110–169) | **177 m** (150–192) |
-| trolley | 105 m (85–110) | 146 m (85–171) | 190 m (144–205) |
-| crate 1 m | 106 m (79–110) | 111 m (79–156) | 183 m (110–192) |
-| 3 cm hanging cable | 92 m (16–112) | 95 m (16–112) | 107 m (65–110) |
-| box 0.5 m in the bed | 55 m, 2 / 6 | 55 m, 2 / 6 | 110 m, 4 / 6 |
-| person, frame recall 50–100 / 100–150 / 150–200 m | 94 / 13 / 0 % | 94 / 68 / 10 % | 86 / 62 / 44 % |
-| trolley, frame recall 50–100 / 100–150 / 150–200 m | 88 / 11 / 0 % | 88 / 28 / 3 % | 67 / 55 / 51 % |
-| confirmed detections away from the object (3 060 frames) | 12 | 39 | 21 |
-| **the 20-minute ride without objects**: alarm frames / events | — | 289 / 82 | **274 / 75** |
-
-Reading. The far-field rule is what takes a person from the height-reference limit (~106 m) to
-~150 m without any speed. A train speed adds the rest of the sensor's reach — first
-confirmation at 150–205 m for a person, a crate and a trolley, half of the 150–200 m frames —
-and a 0.5 m box from ~110 m, **with fewer false alarms, not more**: on the whole ride (every
-frame, `eval_real.py --given-speed`) 274 / 75 against 289 / 82, and 21 against 39 off-object
-frames in set F — merged clouds are denser and steadier than single frames. It costs
-mid-range frames (the merged cluster of an object is longer than the object when the speed is
-off by a fraction of a m/s — the ride's speed is a per-file average here, not odometry — and
-some frames leave the 3 % match window). Nothing is detected beyond ~205 m in any variant: the
-sensor returns nothing there. The organizers said the trains may have no odometry (Q&A fact 6),
-so the shipped numbers are the no-speed column; with an odometry or speed topic the node takes
-the third column automatically.
 
 ## 1. Real bags at full rate (every frame, 10 Hz)
 
@@ -400,6 +219,82 @@ biggest single family is therefore the left edge (the mirror image of the column
 `DATASET.md` "What follows". The tracker's measured-interval gate (§1b review fix) is exercised
 for real here: the last third of the recording has holes of 1.2–7.1 s between frames.
 
+## 1d. v0.6 on all real data: the variants that led to the defaults
+
+Every row is a full run over the 13 759 frames (`scripts/eval_real.py`, ~14 min each); the
+five-bag column sums `doubleT_platform`, `roundT_doubleT`, `roundT_pressureGate_roundT`,
+`roundT_squareT_pressureGate_squareT`, `squareT_platform_squareT_switch`.
+
+| run | what changed | five bags: frames / events | ride: frames / events | person (61) | object on the rail (185) |
+|---|---|---|---|---|---|
+| v0.5 logic | — | 116 / 32 | 448 / 93 | 61, first 8 | 24 |
+| v0.6a | envelope 2.1 × 3.0 m, calibration, health, **low-object stage reporting every bump above the bed** | 1 310 / 256 | 6 391 / **1 482** | 54 | 26 |
+| v0.6b | + a low object must reach 5 cm below the rail head | 528 / 99 | 1 502 / 345 | 61 | 102 |
+| v0.6c | low stage off; far-field rule, near-axis tall objects allowed | 393 / 49 | 857 / 121 | 61 | 25 |
+| v0.6d | + columns ≥ 0.25 m wide demoted anywhere, `edge` at 1.0 m, edge margin 0.15 m / 100 m, far clusters ≤ 3 m long and grounded; low stage with candidates ≥ 3 cm above the rail head | 81 / 21 | 239 / 60 | 58, first 11 | 29 |
+| v0.6f | low stage: the cluster's top at the rail head, candidates from 5 cm excess, own clustering radius | 412 / 169 | 1 735 / 734 | 58 | **170** |
+| v0.6g | low stage: every candidate ≥ 3 cm above the rail head again | 85 / 27 | 272 / 88 | 58 | 29 |
+| v0.6 (h) | + a low object needs 5 hits (0.5 s) | 83 / 25 | 258 / 74 | 58, first 11 | 27 |
+| **v0.6.1 (shipped)** | mount tilt over 20 s instead of 5 frames, median drift monitor (§6) — the detection logic of v0.6h | **104 / 30** | **289 / 82** | **58, first 11** | 27 |
+
+**The bed is full of objects.** v0.6a reported every bump more than 7 cm above the learned bed
+cross-section inside the envelope: 1 350 of the ride's 1 482 events were low-object events. The ones looked at
+(`new_data_46` frames 26–39, a straight section at 20 m/s): 0.3 m wide, 5–12 cm tall bumps in the
+middle of the track approaching at the train's speed (train-control inductors, drain covers),
+0.6–1 m wide transverse ones (cable crossings), all with their top 15–30 cm *below the rail
+head*. Geometrically a 30 × 30 × 10 cm box lying on the bed is the same thing. The train
+envelope starts at the rail head, so such an object is below it; v0.6 reports low objects that
+reach the rail-head plane.
+
+**The rail area is full of objects too.** v0.6f let a cluster through when its top reached the
+rail head (candidates from 5 cm above the bed): 734 events on the ride, at \|lateral\| 0.5–0.9 m —
+the rails and just inside them (guard rails in curves, joints, fastenings), 3–43 m away, tops
+1–8 cm above the rail head (median 3 cm), excess over the bed 0.14 m median; no single-frame
+threshold on height, width, excess or voxel count separates them (measured on 1 330 false clusters of 12 ride files vs 125 clusters of the
+object). v0.6f finds the object in 170 of 185 frames and would stop the train every 1.6 s.
+Shipped: every low candidate must be ≥ 3 cm above the rail head and the object must be seen in
+5 frames (the false clusters flicker for 2 frames median, 3 at the 90th percentile): 18 low
+events on the ride, a 10 cm box lying on a rail head found at 10–25 m (synthetic tunnel), the
+real object in 2–4 of the 126 frames after the person leaves it. `lowobj.min_point_top: -1` with
+`min_top: 0` restores the v0.6f behaviour for a line known to be clean.
+
+**Why the real object is missed — corrected 23.09** (a jury-style review questioned the height,
+and we re-measured it on the frames with the final v0.6.1 calibration): the object's top is
+**0.10–0.15 m (median 0.13 m) above the detector's rail-head plane** in the 111 frames after the
+person leaves — at the 0.12 m floor of the envelope, not "4–5 cm above its rail" as written here
+before (that figure was taken against the rail ridge, ~6 points at 56 m, and is not confirmed).
+What the pipeline produces at its position: **nothing in 99 of the 111 frames** — 0–3 points
+above the envelope floor, below the main stage's cluster minimum — and a 3-point low-object
+sliver 0.03–0.07 m high in 12 frames, too few hits to confirm. The object falls *between* the two
+stages; clustering an object that straddles the envelope floor as one object is the fix to try
+next (SCORECARD.md "What is left").
+
+**Mount roll changes what "on the rail" means.** The rail pair of `doubleT_obstacle` has its
+right head 8 cm above the left over 4–30 m on a straight, stationary track: that rig is rolled
+by 3.0–3.2°. Without the correction (v0.5) the object reads 0.15–0.2 m above the *mean* rail
+level and the corridor stage saw its top; with it, it is 0.10–0.15 m above the rail-head plane,
+at the envelope floor, where it falls between the stages (above). The calibration is right (the
+gauge is defined in the rail plane); the
+organizers said the hidden data use the mount of the empty-tunnel rides, on which the
+calibration finds `roundT_doubleT` and `doubleT_platform` level within 0.5° (v0.6.1, §6; the −1.0…−1.6° v0.6 measured on `roundT_doubleT` was the 5-frame window).
+
+**Where the ride's remaining events come from** (the v0.6h run, 74 events; `scripts/mine_objects.py`, classes by
+median geometry, `labels/new_data_objects.json`): corridor-edge structures 21 (at \|lateral\|
+0.9–1.2 m, 30–70 m; a quarter of them at the station of files 52–55), station / platform-end
+structures 13, low objects 12 (+6 low tracks classed otherwise), far small clusters 11
+(105–180 m, 8–12 points), hanging equipment 8 (1.5–2.7 m above the rail head, 50–80 m), tall
+structures 7, person-like 2 (both infrastructure, below). 874 tracks were confirmed on the
+ride in total, 800 of them advisory (mostly the edge structures). The 11 person-like tracks
+were checked by eye on close-ups (`img/new_data_person_like_check.png`): poles from the bed to
+the vault, cabinets, signs, the wall of the R ≈ 350 m curve — no person anywhere near the
+track, as the organizers said.
+
+**Per bag (v0.6.1):** `doubleT_platform` 5 / 6 (low objects at the platform, 4 events),
+`roundT_doubleT` 3 / 2, `roundT_pressureGate_roundT` 2 / 1, `roundT_squareT_pressureGate_squareT`
+0 / 0, `squareT_platform_squareT_switch` 94 / 21 (v0.6: 75 / 17 with a spurious −0.69° pitch) —
+the platform-end structure at 82–84 m while the train stands at the platform (§1), unchanged
+since v0.5: the station-curvature limitation of ALGORITHM.md §6.
+
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 
 ### 2a. Day-1 numbers (v0.3, 26 frames of `roundT_doubleT`, every 10th, synthetic objects)
@@ -526,6 +421,111 @@ The `person` first detection of 104.9 m and the `box1.0` 81.8 m are the honest s
 ranges on these two curved bags; the Sprint 2 targets (person ≥ 150 m, box ≥ 100 m) hold on
 the synthetic tunnel only (§2b) and are not met on real backgrounds by any configuration
 measured this round.
+
+## 2d. The far field and long range on a moving background (set F, v0.6)
+
+**What a straight tunnel returns far away** (`new_data_46`, 20 m/s, R > 100 km): of ~188 000
+points per frame, 422 lie 100–125 m ahead, 217 at 125–150 m, 73 at 150–175 m and 56 at
+175–215 m; the farthest return of any frame of the ride is 208.5 m. Beyond ~100 m the bed does
+not return (grazing incidence); only the vault (4.4–4.7 m above the rail head) and the walls at
+±2 m do. **The extrapolated height reference drifts**: relative to the vault measured at 20–60 m,
+the vault seen through the model is +0.07 m at 65 m, +0.15 at 85 m, +0.24 at 95 m, +0.49 at 115 m
+and +0.79 at 135 m (file 46); +0.10 at 85 m, +0.25 at 115 m, +0.40 at 155 m, +0.5 at 175–195 m
+(file 98) — the model's rail level runs low by that much (a vertical curve ahead, or the
+extrapolated slope). The lateral residual of the walls is ±0.3 m. That is why the corridor was
+trusted only to the bed fit + 20 m or the side-base verification (100–130 m), and why v0.6
+extends the alarm range for **tall, grounded, short** clusters only (ALGORITHM.md §3.3c): a 0.5 m
+error does not move a 1.7 m person out of a 3 m envelope, but it does lift flat far-bed returns
+into its bottom. A lining-anchored far reference (correct the model by the vault drift) is
+measurable to ~200 m and is the next step (not in v0.6: the lateral residuals are too noisy to
+anchor the axis).
+
+**Set F** (`scripts/far_range_eval.py`): an object is placed at a fixed point of the tunnel
+220 m ahead of 110 consecutive frames of the ride and ray-cast into every frame at the distance
+it has then (the train speed of the ride from the static-track drift of each split file, the bag
+frame intervals); it stands on the bed measured under it where the bed returns, else on the
+model's rail level corrected by the vault drift above; laterally uniform in ±0.6 m; dropout
+from 60 m to 200 m scaled by reflectivity (the real-frame budget, §2b). A fresh detector per
+sequence, **no speed given** (single-frame pipeline + persistence). A frame is a hit when a
+confirmed gauge detection lies within max(2 m, 3 %) and 1.2 m laterally of the object.
+
+Straight sections (files 46, 68, 98, 140, 168, 172; 17–21 m/s), v0.6.1:
+
+| object | sequences detected | first confirmed detection: per sequence (m) | median | recall 0–50 / 50–100 / 100–150 / 150–200 / 200–250 m |
+|---|---|---|---|---|
+| person 0.4 × 0.5 × 1.7 m | 6 / 6 | 110, 146, 149, 152, 166, 169 | **150 m** | 97 % / 94 % / 68 % / 10 % / 0 % |
+| trolley 0.6 × 1.0 m | 6 / 6 | 85, 142, 145, 146, 153, 171 | 146 m | 97 % / 88 % / 28 % / 3 % / 0 % |
+| crate 1.0 m | 6 / 6 | 79, 108, 110, 112, 145, 156 | 111 m | 97 % / 92 % / 26 % / 1 % / 0 % |
+| cable 3 cm hanging to 1.0 m above the rail head | 6 / 6 | 16, 59, 94, 96, 103, 112 | 95 m | 83 % / 63 % / 7 % / 0 % / 0 % |
+| box 0.5 m standing in the bed | 2 / 6 | 52, 57 | 55 m | 15 % / 2 % / 0 % / 0 % / 0 % |
+
+Curves (files 129 and 176, R ≈ 350 m): person first confirmed at 82 m and crate at 74 m in one
+of the two sequences, nothing beyond ~100 m — the inner wall hides the track beyond
+√(8·R·w) ≈ 80–110 m and the corridor is trusted only to 60–120 m there; the organizers accept
+detection at the visible limit in a curve (Q&A fact 14).
+
+Reading. (1) A person is confirmed at 146–169 m on straight track in 5 of 6 sequences with no
+speed input; the 150–200 m bin holds 3–10 returns per frame and is where the single-frame
+pipeline ends (10 % of those frames). (2) Beyond ~200 m nothing is detected, as the sensor
+physics predicts: the farthest return of the whole ride is 208.5 m. (3) A trolley is
+confirmed at 85–171 m (median 146 m), a 1 m crate at 79–156 m (the crate is 1 m tall, closer to
+`far_min_height` = 0.6 m after the far bed error than a person). (4) **A 0.5 m box standing in
+the bed is borderline by construction**: the bed's drainage trough lies 0.3–0.4 m below the
+rail head (DATASET.md), so the box top is 0.1–0.2 m above the rail head — at the envelope's
+bottom (0.12 m) — and it is reported only in the frames where it reaches into the envelope
+(2 of 6 sequences, 50–60 m); on a rail head the same box is found (the low-object stage,
+`tests/test_envelope.py`). (5) A 3 cm cable hanging into the envelope is detected at 59–112 m
+(the beam-footprint model of the injector, DATASET.md, makes it 5–11 cm wide at that range; a
+real cable's echo strength is the open question). (6) **Confirmed gauge detections away from
+the object: 39 of the 3 060 injected frames (1.3 %), none in the curves.** 10 are the object's
+own cluster merged with bed returns in front of it and reported 3–7 m short (outside the
+max(2 m, 3 %) match window: a localisation error, counted against us); 10 are the background's
+own false alarms (the same start of file 98 run with *no* object confirms 6 frames of 2 m tall
+fixtures at 134–158 m; files 68, 168 and 172 give none); 19 are a structure 30–65 m *beyond*
+the object that alarms only with the object present (file 98 at 105–165 m, file 168 at 94 m).
+Mechanism of those 19 (traced on file 98): where the real bed no longer returns (beyond ~90 m)
+the base of the object fills a bed bin, the bed fit extends from ~80 to ~107 m, the wall band
+above it shifts and the far curvature moves by ~2.5·10⁻⁵ m⁻¹ — 0.3 m at 150 m, enough to bring
+an edge fixture inside the 0.15 m/100 m margin. The object itself is confirmed in the same
+frames, so the train's decision (STOP at the object) does not change; a bed bin that is
+narrower than the bed (an object, not the track) should not extend the fit — noted in
+ALGORITHM.md §6. (7) **Sensitivity to the mount tilt.** The same set run with the v0.6
+calibration (a 5-frame tilt frozen at the start of each sequence: up to ±1.6° of spurious roll
+and ±0.4° of pitch on this level rig) gave a person median of 165 m, crate 127 m, trolley
+121 m, box 0.5 m 4 / 6: far-field numbers move by ±15–30 m with a few tenths of a degree of
+pitch (0.3° is 0.8 m of height at 150 m). The v0.6.1 numbers above are the ones with the
+physically right (level) mount.
+
+**What the far-field rule and a train speed add** (paired v0.6.1 runs of set F: the same 30
+sequences, the same random draws; `far_range_eval.py --far-min-height 0` = the v0.5
+behaviour, `--given-speed` = the ride's per-file train speed handed to the detector, which then
+merges 5 frames beyond 40 m — what the node does when `speed_topic` / `odom_topic` /
+`ego_speed_mps` is set):
+
+| object (6 sequences each) | far rule off (v0.5) | **shipped, no speed** | shipped + speed given |
+|---|---|---|---|
+| person: first confirmed, median (range) | 106 m (83–110) | **150 m** (110–169) | **177 m** (150–192) |
+| trolley | 105 m (85–110) | 146 m (85–171) | 190 m (144–205) |
+| crate 1 m | 106 m (79–110) | 111 m (79–156) | 183 m (110–192) |
+| 3 cm hanging cable | 92 m (16–112) | 95 m (16–112) | 107 m (65–110) |
+| box 0.5 m in the bed | 55 m, 2 / 6 | 55 m, 2 / 6 | 110 m, 4 / 6 |
+| person, frame recall 50–100 / 100–150 / 150–200 m | 94 / 13 / 0 % | 94 / 68 / 10 % | 86 / 62 / 44 % |
+| trolley, frame recall 50–100 / 100–150 / 150–200 m | 88 / 11 / 0 % | 88 / 28 / 3 % | 67 / 55 / 51 % |
+| confirmed detections away from the object (3 060 frames) | 12 | 39 | 21 |
+| **the 20-minute ride without objects**: alarm frames / events | — | 289 / 82 | **274 / 75** |
+
+Reading. The far-field rule is what takes a person from the height-reference limit (~106 m) to
+~150 m without any speed. A train speed adds the rest of the sensor's reach — first
+confirmation at 150–205 m for a person, a crate and a trolley, half of the 150–200 m frames —
+and a 0.5 m box from ~110 m, **with fewer false alarms, not more**: on the whole ride (every
+frame, `eval_real.py --given-speed`) 274 / 75 against 289 / 82, and 21 against 39 off-object
+frames in set F — merged clouds are denser and steadier than single frames. It costs
+mid-range frames (the merged cluster of an object is longer than the object when the speed is
+off by a fraction of a m/s — the ride's speed is a per-file average here, not odometry — and
+some frames leave the 3 % match window). Nothing is detected beyond ~205 m in any variant: the
+sensor returns nothing there. The organizers said the trains may have no odometry (Q&A fact 6),
+so the shipped numbers are the no-speed column; with an odometry or speed topic the node takes
+the third column automatically.
 
 ## 3. Timing (4-core sandbox, Python, every frame; the i7-9700E bench is still owed)
 

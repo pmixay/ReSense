@@ -364,7 +364,7 @@ def _single(tunnel, kind, size, distance, lateral, refl, speed=0.0):
     cfg = DetectorConfig()
     cfg.cluster.retro_intensity = 100.0                 # the rule is off by default since v0.5
     det = Detector(cfg)
-    for _ in range(4):
+    for _ in range(cfg.tracking.frames_to_confirm() + 1):
         res = det.process(inj.frame, ego_speed=speed)
     return res
 
@@ -396,7 +396,7 @@ def test_retro_rule_is_off_by_default(tunnel):
     cfg = DetectorConfig()
     assert cfg.cluster.retro_intensity == 0.0
     det = Detector(cfg)
-    for _ in range(4):
+    for _ in range(cfg.tracking.frames_to_confirm() + 1):
         res = det.process(inj.frame, ego_speed=0.0)
     assert res.obstacle
 
@@ -528,7 +528,10 @@ def test_persistence_in_seconds_derives_the_hit_count_from_the_frame_interval():
     for k in range(3):
         t.update([_cluster_at(100.0)])
     assert len(t.confirmed()) == 1
-    assert TrackingConfig().confirm_time_s == 0.3       # the default: 3 frames at 10 Hz, as v0.3
+    assert TrackingConfig().confirm_time_s == 0.5       # the default since v0.6.2 (0.3 s = 3 frames before)
+    assert TrackingConfig().frames_to_confirm() == 5 and TrackingConfig().frames_to_confirm(0.2) == 3
+    assert TrackingConfig(confirm_time_s=0.3).frames_to_confirm() == 3
+    assert TrackingConfig(confirm_time_s=0.0).frames_to_confirm() == 3
 
 
 def test_flickering_track_is_not_confirmed_and_zone_needs_a_clear_majority():

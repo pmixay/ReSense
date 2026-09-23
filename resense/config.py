@@ -1,6 +1,7 @@
 """Configuration of the detection pipeline (plain dataclasses, loadable from YAML)."""
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field, asdict
 from typing import Any, List, Tuple
 
@@ -115,6 +116,7 @@ class GaugeConfig:
     # candidates and the advisory zone are unaffected. 0 = off (v0.3 behaviour)
     edge_margin: float = 0.0
     edge_margin_per_100m: float = 0.15   # v0.6: 0.15 m per 100 m (0.3 m at 200 m) of axis uncertainty at the envelope edge
+    no_rail_range: float = 40.0    # v0.6.2: m; in a frame without the rail pair in the near range (stations, switch caverns: the axis rests on walls alone) the corridor beyond this is advisory only; 0 = off
 
 
 @dataclass
@@ -204,7 +206,7 @@ class TrackingConfig:
     frame_dt: float = 0.1          # s
     confirm_hits: int = 3          # consecutive frames before an obstacle is reported
     low_confirm_hits: int = 5      # v0.6: hits before a low (bed-level) object is reported: it is static and in view for seconds, while rail-area clutter flickers for 2-3 frames
-    confirm_time_s: float = 0.3    # s of sensor time a track must have been observed (frames x interval, first frame included: 0.3 s = 3 frames at 10 Hz, the v0.3 persistence; 0.5 = 5 frames); applied when the caller supplies the frame interval (the Detector does); 0 = hits only
+    confirm_time_s: float = 0.5    # s of sensor time a track must have been observed (frames x interval, first frame included: 0.5 s = 5 frames at 10 Hz, v0.6.2; 0.3 = 3 frames, the v0.3-v0.6.1 persistence); applied when the caller supplies the frame interval (the Detector does); 0 = hits only
     hit_window: int = 10           # frames of a track's recent history kept for min_hit_fraction
     min_hit_fraction: float = 0.6  # a track must have been matched in this share of its last hit_window frames (flickering structures are not reported); 0 = off
     zone_window: int = 10          # hits over which the zone (gauge / advisory) is decided (5 in v0.3)
@@ -213,6 +215,14 @@ class TrackingConfig:
     conf_gain: float = 0.35        # confidence added per hit
     conf_decay: float = 0.25       # confidence removed per miss
     conf_threshold: float = 0.6    # report obstacles with confidence >= threshold
+
+    def frames_to_confirm(self, frame_dt: float | None = None) -> int:
+        """Consecutive frames a static, always-matched object needs before it is reported
+        (the larger of ``confirm_hits`` and ``confirm_time_s`` in frames, first frame
+        included): 5 at 10 Hz with the defaults."""
+        dt = self.frame_dt if frame_dt is None else frame_dt
+        by_time = int(math.ceil(self.confirm_time_s / dt - 1e-9)) if (self.confirm_time_s > 0 and dt > 0) else 0
+        return max(self.confirm_hits, by_time)
 
 
 @dataclass

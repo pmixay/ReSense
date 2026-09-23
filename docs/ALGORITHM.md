@@ -157,6 +157,17 @@ centimetres inside the edge at range is not evidence of an object in the gauge; 
 candidates and the advisory zone are unaffected. Its measured effect (side structures at
 \|dy\| 1.5–1.6 m vs the crossing person) is in EXPERIMENTS.md §1b.
 
+**Without rails the far corridor is advisory (v0.6.2, `gauge.no_rail_range` = 40 m).** In a frame
+in which the track model found no rail pair in the near range (`rail_slabs` = 0: a station with
+the rails in shadow, a switch cavern), the axis rests on the walls alone, and at stations the
+"walls" are platform edges and end structures. Clusters beyond 40 m in such a frame are
+advisory (reason `beyond_axis`, decision `CAUTION`), and the verified-clear distance is capped
+at 40 m, so a braking controller sees a short clear distance rather than a confident one; the
+tracker's zone vote over the last ten hits smooths frames in which the rails flicker. Nearer
+than 40 m the strict decision is kept, so an object close ahead still stops the train (at
+40 m a lateral error of 0.1° is 7 cm). Measured on all real data (EXPERIMENTS.md §0): the platform-end
+structure of `squareT_platform_squareT_switch` and the station ends of the ride.
+
 ### 3.3 Candidate clustering and infrastructure filters (`resense/clustering.py`, section `cluster`)
 
 Everything is **range-adaptive**, because a 0.5 m object gives ~500 returns at 20 m and ~7 at
@@ -386,10 +397,10 @@ object approaching by `v · dt`. Confidence rises by `conf_gain · score` per hi
 `conf_decay` per miss; a track is dropped after `max_misses` = 3.
 
 Persistence is measured in **time** since v0.5: besides `confirm_hits` = 3 hits a track must
-have been observed for `confirm_time_s` = 0.3 s of sensor time (frames × the measured frame
-interval, the first frame included — 3 frames at 10 Hz, the v0.3 persistence, and still 3
-frames when the node runs at a lower rate; 0.5 s would be 5 frames, measured in EXPERIMENTS.md
-§1b), it must have been matched in `min_hit_fraction` = 60 % of its last `hit_window` = 10
+have been observed for `confirm_time_s` = 0.5 s of sensor time (frames × the measured frame
+interval, the first frame included — 5 frames at 10 Hz, 3 frames at 5 Hz; v0.3–v0.6.1 used
+0.3 s = 3 frames; v0.6.2 took 0.5 s after it removed 27–35 % of the false-alarm events on all
+real data without delaying the real person, EXPERIMENTS.md §0), it must have been matched in `min_hit_fraction` = 60 % of its last `hit_window` = 10
 frames (a structure that flickers into the corridor every other frame is never reported), and
 it must be matched now. The zone of a track is decided over its last `zone_window` = 10 hits:
 `gauge` when `zone_min_fraction` = 60 % of them were inside the strict polygon (v0.3: the
@@ -402,8 +413,8 @@ semantics.
 
 A frame reports `obstacle = true` when at least one track is **confirmed**:
 
-* seen in ≥ `confirm_hits` = 3 frames and observed for ≥ `confirm_time_s` = 0.3 s (3 frames
-  at 10 Hz), matched in ≥ 60 % of its last 10 frames,
+* seen in ≥ `confirm_hits` = 3 frames and observed for ≥ `confirm_time_s` = 0.5 s (5 frames
+  at 10 Hz, v0.6.2; 0.3 s before), matched in ≥ 60 % of its last 10 frames,
 * confidence ≥ `conf_threshold` = 0.6,
 * matched in the current frame (no miss),
 * zone = `gauge`: ≥ 60 % of its last 10 hits had ≥ `gauge_min_points` voxels inside the strict
@@ -421,12 +432,12 @@ status JSON. Since v0.4 it also carries `ego_speed` (the value used, or null),
 `ego_speed_estimate` / `ego_speed_confidence` (the estimator's own opinion, also when a speed
 is given) and `track.floor_verified`; all existing keys are unchanged.
 
-Cost of the rule: three frames of latency (0.3 s, 6.7 m at 80 km/h) for an object that enters the corridor inside the strict gauge, six frames (0.6 s, 13 m) for one that was tracked as advisory for five or more hits first — a far object beyond the trusted range that is then approached, or a person stepping in from the side — because the zone history needs 60 % of the last ten hits inside; the alarm also lingers four frames after the object leaves the gauge (the three "false" frames of the `doubleT_obstacle` evaluation, EXPERIMENTS.md §1) in exchange for
-suppressing single-frame noise; `confirm_time_s: 0.5` would make it five frames (0.5 s,
-11 m at 80 km/h). Persistence is applied before the alarm, not after, so the first alarm is
-already a confirmed object. On `doubleT_obstacle` the person enters the strict gauge at frame 2
+Cost of the rule: five frames of latency (0.5 s, 11 m at 80 km/h; three frames and 6.7 m before v0.6.2) for an object that appears inside the strict gauge; nothing extra for one that was already tracked while it approached from the side or from beyond the trusted range — the persistence clock runs while the track is advisory, and the zone history then decides (six frames, 0.6 s, when it was advisory for five or more hits first) — a far object beyond the trusted range that is then approached, or a person stepping in from the side — because the zone history needs 60 % of the last ten hits inside; the alarm also lingers four frames after the object leaves the gauge (the three "false" frames of the `doubleT_obstacle` evaluation, EXPERIMENTS.md §1) in exchange for
+suppressing single-frame noise. Persistence is applied before the alarm, not after, so the
+first alarm is already a confirmed object. On `doubleT_obstacle` the person enters the strict gauge at frame 2
 and was reported from frame 7 in v0.5 (v0.3: frame 9); with the 2.1 m envelope of v0.6 it enters
-the envelope at frame 8 and is reported from frame 11 (EXPERIMENTS.md §0).
+the envelope at frame 8 and is reported from frame 11 (EXPERIMENTS.md §0) — with 0.3 s and with
+0.5 s alike, because the person was tracked while stepping in from the side.
 
 ### 4b. Outputs for the train: decision, verified-clear distance, health — v0.6
 
@@ -472,7 +483,7 @@ the CLI and the ROS node. The ones that change behaviour visibly:
 | `track.floor_valid_margin` | 20 m (60 in v0.3) | how far beyond the fitted bed the height reference is trusted without verification |
 | `cluster.column_*`, `elevated_*`, `floating_*`, `edge_*`, `wall_face_*` | see §3.3 | infrastructure signatures (advisory only); 0 switches a rule off |
 | `gauge.edge_margin`, `edge_margin_per_100m` | 0, 0.15 m (v0.6; 0, 0 in v0.5) | lateral margin inside the polygon edge required for the strict decision (option, EXPERIMENTS.md §1b) |
-| `tracking.confirm_time_s`, `min_hit_fraction`, `zone_window`, `zone_min_fraction` | 0.3 s, 0.6, 10, 0.6 | persistence in seconds and over the track's history |
+| `tracking.confirm_time_s`, `min_hit_fraction`, `zone_window`, `zone_min_fraction` | 0.5 s, 0.6, 10, 0.6 | persistence in seconds and over the track's history (0.3 s before v0.6.2) |
 | `accumulation.min_speed`, `tracks_min_speed` | 1 m/s, 1 m/s | no merging and no tracks-cue estimate for a stopped train |
 | `cluster.eps`, `cluster.range_scale`, `cluster.voxel` | 0.35 m, 40 m, 5 cm | cluster granularity vs range |
 | `cluster.min_points`, `cluster.min_points_far`, `cluster.far_range` | 5, 3, 100 m | sensitivity at range vs noise |
