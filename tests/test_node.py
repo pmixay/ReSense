@@ -287,8 +287,14 @@ def test_processing_exception_is_fault_then_detector_reset(node_cls, tunnel, mon
 
 def test_watchdog_reports_a_silent_input(node_cls, tunnel):
     node = node_cls()
-    node.on_watchdog()                                   # nothing received yet: no verdict
+    node.on_watchdog()                                   # just started, nothing received yet: no verdict
     assert not node.published["/resense/decision"]
+    node.t_node_start -= 5.0                             # 5 s later, still nothing: FAULT, not silence
+    node.on_watchdog()
+    assert node.published["/resense/decision"][-1].data == "FAULT"
+    st = node.published["/resense/health"][-1].status[0]
+    assert "no LiDAR frame received yet" in st.message and st.values[0].value == "NO_INPUT"
+    node.last_stale_pub = 0.0
     _feed(node, tunnel[0].xyz, 1)
     node.on_watchdog()                                   # fresh frame: silent
     assert node.published["/resense/decision"][-1].data != "FAULT"

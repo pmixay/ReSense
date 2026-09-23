@@ -31,8 +31,8 @@ The status JSON carries an extra ``node`` object next to the detector fields:
 "ego_speed_source", "input_topic", "recording"}`` (``recording`` counts the recordings seen,
 see "Input handling") (``latency_ms`` there is decode + detect of the same frame, before
 publishing). ``dropped_frames`` is estimated from gaps in the input header stamps (the
-subscription is best-effort with a short queue, so a slow frame silently drops the ones behind
-it).
+subscription keeps the newest frame only, so a slow frame silently drops the ones behind it; its
+reliability follows the publishers, ``input_reliability``).
 
 Ego speed (multi-frame accumulation needs it): the ``ego_speed_mps`` parameter wins when >= 0,
 else the latest value from ``speed_topic`` / ``odom_topic`` younger than ``speed_timeout``,
@@ -47,7 +47,8 @@ processing), ``CAUTION`` for an advisory object next to the envelope or a degrad
 (track model on its prior, short visibility, latency over budget), else ``GO``. The node never
 dies on a bad frame: the exception is logged, ``FAULT`` published, and after
 ``max_consecutive_errors`` the detector is reset. The watchdog publishes ``FAULT`` / health
-``STALE`` while the input is silent.
+``STALE`` while the input is silent, and ``FAULT`` / ``NO_INPUT`` before the first frame
+(after ``startup_grace`` s).
 
 Sensor mount (v0.6): ``sensor_forward`` / ``sensor_left`` / ``sensor_up`` override the axis
 mapping of the parameter file, ``mount_roll_deg`` / ``mount_pitch_deg`` / ``mount_yaw_deg`` a
@@ -126,6 +127,7 @@ class DetectorNode(Node):
         self.declare_parameter("auto_calibrate", True)  # find orientation / tilt from rails and bed in the first frames
         # --- v0.6: production guards
         self.declare_parameter("stale_timeout", 0.5)    # s without an input frame before FAULT / STALE
+        self.declare_parameter("startup_grace", 2.0)    # s after start before "no input yet" is a FAULT
         self.declare_parameter("max_consecutive_errors", 5)   # processing exceptions in a row before the detector is reset
         # --- v0.6.1: several recordings / topic names through one running node
         self.declare_parameter("input_switch_timeout", 1.0)   # s the active topic must be silent before another one is taken
@@ -203,6 +205,7 @@ class DetectorNode(Node):
         self.pub_health = self.create_publisher(DiagnosticArray, "/resense/health", 10)
         # --- guards: last processed frame time (watchdog), consecutive processing errors
         self.last_frame_wall = None
+        self.t_node_start = time.perf_counter()
         self.consecutive_errors = 0
         self.mount_logged = ""
         self.watchdog = self.create_timer(0.1, self.on_watchdog)
@@ -469,11 +472,18 @@ class DetectorNode(Node):
         self.pub_health.publish(arr)
 
     def on_watchdog(self) -> None:
-        """Guard: the input went silent (sensor, driver or bag stopped) -> FAULT / STALE at 2 Hz."""
-        if self.last_frame_wall is None:
-            return
+        """Guard: the input went silent (sensor, driver or bag stopped) -> FAULT / STALE at 2 Hz;
+        before the first frame, after ``startup_grace`` s, FAULT / NO_INPUT (v0.6.2: silence is
+        not an answer to "can we go")."""
         timeout = self.get_parameter("stale_timeout").get_parameter_value().double_value
         now = time.perf_counter()
+        if self.last_frame_wall is None:
+            grace = self.get_parameter("startup_grace").get_parameter_value().double_value
+            if now - self.t_node_start > grace and now - self.last_stale_pub > 0.5:
+                self.last_stale_pub = now
+                self.publish_fault(Header(frame_id=""), "no LiDAR frame received yet (listening on "
+                                   + ", ".join(self.subs) + "): path not monitored", "NO_INPUT")
+            return
         silent = now - self.last_frame_wall
         if silent > timeout and now - self.last_stale_pub > 0.5:
             self.last_stale_pub = now

@@ -2,8 +2,8 @@
 #
 #   docker build -t resense -f docker/Dockerfile .                         # runtime image (what the jury builds)
 #   docker build -t resense --build-arg WITH_TOOLS=1 -f docker/Dockerfile . # + offline tools and the test suite (CI)
-#   docker run --rm -it --net=host -v /path/to/for_hackathon:/data resense \
-#       ros2 launch resense_ros detector.launch.py bag:=/data/roundT_doubleT rviz:=true
+#   docker run --rm -it --net=host --ipc=host resense            # the node; play the bag from the host console
+#   (RViz from the image needs the X11 socket: README "Run with RViz", scripts/run_demo.sh)
 #
 # The runtime image contains only what the node needs: pinned numpy / scipy / scikit-learn /
 # pyyaml, the ROS 2 packages, RViz, rosbag2, foxglove_bridge. WITH_TOOLS=1 adds the pure python
@@ -65,5 +65,9 @@ RUN . /opt/ros/humble/setup.sh && cd /opt/resense/ros2_ws && colcon build --syml
 
 COPY docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+# DDS over UDP only: a bag played by a normal user on the host cannot write into the shared-memory
+# segments of a root process (docker/fastdds_udp.xml); unset the variable to use shared memory
+COPY docker/fastdds_udp.xml /opt/resense/fastdds_udp.xml
+ENV FASTRTPS_DEFAULT_PROFILES_FILE=/opt/resense/fastdds_udp.xml
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["ros2", "launch", "resense_ros", "detector.launch.py"]

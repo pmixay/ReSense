@@ -65,3 +65,10 @@ jobs:
           "python3 scripts/make_smoke_bag.py /tmp/smoke_bag &&
           python3 scripts/make_smoke_bag.py /tmp/smoke_bag2 --topic /sensing/lidar/hesai128/pointcloud --frame-id lidar_livox --distance 45 &&
           scripts/smoke_test.sh /tmp/smoke_bag /tmp/smoke_bag2"
+      - name: the organizers' way — the node in its own container, the bags played by a normal user from another one
+        # a player that is not root cannot write into a root node's shared-memory segments (/dev/shm with
+        # ipc=host): the image runs Fast DDS over UDP (docker/fastdds_udp.xml); this step keeps it that way
+        run: |
+          mkdir -p /tmp/bags && chmod 777 /tmp/bags
+          docker run --rm -v /tmp/bags:/bags resense:ci bash -lc "python3 scripts/make_smoke_bag.py /bags/smoke_bag && python3 scripts/make_smoke_bag.py /bags/smoke_bag2 --topic /sensing/lidar/hesai128/pointcloud --frame-id lidar_livox --distance 45"
+          IMAGE=resense:ci PLAYER_USER=1000:1000 scripts/console_test.sh /tmp/bags/smoke_bag /tmp/bags/smoke_bag2

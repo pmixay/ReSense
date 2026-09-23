@@ -48,6 +48,7 @@ PARAMS = {
     "mount_yaw_deg": ("-999.0", float, "fixed yaw correction in deg (-999 = config file)"),
     "auto_calibrate": ("true", bool, "find the sensor orientation / roll / pitch from rails and bed in the first frames"),
     "stale_timeout": ("0.5", float, "s without an input frame before the decision becomes FAULT"),
+    "startup_grace": ("2.0", float, "s after start before 'no LiDAR frame received yet' is published as FAULT"),
     "max_consecutive_errors": ("5", int, "processing exceptions in a row before the detector is reset"),
     # v0.6.1: several recordings / topic names through one running node
     "input_switch_timeout": ("1.0", float, "s the active input topic must be silent before another topic is taken"),
