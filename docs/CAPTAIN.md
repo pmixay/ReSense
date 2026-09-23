@@ -39,11 +39,13 @@ inside the image.
 
 1. ~~Form the Sprint 0 + sensor questions~~ — drafted in [`QUESTIONS.md`](QUESTIONS.md)
    (21.09); **sending them and recording the answers is the human captain's action.**
-2. **Run `scripts/dry_run.sh` on a team machine with Docker and the dataset.** The container
-   path runs in CI on a synthetic bag on every push (item 10) and the offline pipeline has run
-   on every real frame; the ROS node on a real bag is still unexecuted (no Docker daemon in the
-   sandbox). Note for that run: `check_dry_run.py` defaults (`--distance 50:62`) still hold
-   (v0.5 reports the person at 55.5–56.6 m from frame 7).
+2. **Run `scripts/dry_run.sh` on the i7 stand with the original bags.** Rehearsed on 23.09 in
+   the sandbox (a Docker daemon runs there after all; recordings rebuilt from the frame cache;
+   EXPERIMENTS.md §3b): the node container plus `ros2 bag play` from another container, both
+   topic pairs, two recordings into one node — detections as offline, `roundT_doubleT` PASS
+   with `--max-alarm-frames 2`; it found and fixed the best-effort transport bug (v0.6.2
+   `input_reliability`). What is left for the stand: the original bags (not rebuilt ones) and
+   the i7 timing — at 360° the 4-vCPU sandbox runs at 8–10 fps in steady state and loses the first seconds to the DDS start-up (EXPERIMENTS §3b).
 3. ~~Launch arguments for the demo~~ — done (`loop:=`, every parameter as a launch argument,
    plus `ego_speed_mps` / `speed_topic` / `odom_topic` / `publish_tf` / `tf_parent_frame`).
 4. ~~Data-path alignment and a headless demo path~~ — done, item 8.
@@ -163,8 +165,9 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
    Streamed through v0.5 at full rate in the sandbox (no disk for the bag itself): 358 alarm
    frames / 102 events in 11 271 frames — 306 events per hour against ≈ 500 on the six bags —
    with the left gauge edge (contact-rail brackets at 40–100 m) as the largest family and the
-   unlocked track model at stations / switches as the second. **Unlabelled**: the organizers
-   did not say whether anything was staged; asked (QUESTIONS.md item 1). The full-bag replay
+   unlocked track model at stations / switches as the second. **No obstacles in it** — the
+   Q&A session (22.09) and the organizers' written answer of 23.09 (`organizers/answers.md`): every
+   alarm on it is a false alarm. The full-bag replay
    (`ros2 bag play /data/new_data`) is the closest thing to the control run and should be the
    dry-run input once the stand has 90 GB free. `scripts/unpack_dataset.py` now streams the
    archive from the link; `scripts/cache_frames.py` and `resense run` take a single split file.
@@ -183,13 +186,89 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
    (asked whether the driver publishes it). The stand runs driver 580 / CUDA 13 with a 12.9
    toolkit; ReSense is CPU-only, so nothing changes for the image.
 
+### v0.6 (22.09 evening) — the organizers' Q&A answers implemented and measured
+
+9. **Q&A session transcribed** (Whisper, Russian) and summarised with the facts that change the
+   code: [`organizers/QA_session.md`](organizers/QA_session.md) (transcript next to it). The
+   envelope is 2.1 × 3.0 m, the size criterion 30 × 30 × 10 cm, hanging cables are obstacles,
+   the LiDAR mount is not fixed between trains, the hidden check uses rides through other
+   tunnels plus synthetic obstacles, `doubleT_obstacle` also holds an object on the rail, and the
+   answer the train needs is "can we go / what / how far".
+10. **What v0.6 changed** (ALGORITHM.md §2b, §3.3b, §3.3c, §4b): the organizers' envelope with a
+    0.35 m advisory zone; a low-object stage at the rail heads; hanging cables no longer demoted
+    as columns near the axis; a far-field rule for tall grounded objects to the trusted axis
+    range; **mount auto-calibration** (8 orientations with the spin axis vertical, from the rail pair; roll from the rail
+    cant, pitch from the bed slope, yaw; launch arguments for a known mount); **production
+    guards** (health monitor, `GO / CAUTION / STOP / FAULT` on `/resense/decision`, verified-clear
+    distance, `DiagnosticArray`, watchdog, exception guard with detector reset).
+11. **Measured on every real frame** (13 759: six bags + the 20-minute ride; EXPERIMENTS §0,
+    §1d, v0.6.1): five empty bags 104 alarm frames / 30 events (v0.5 logic 116 / 32), ride 289 / 82
+    events (6.3 per km; v0.5 448 / 93), person 58 of 61 envelope frames from frame 11; a health
+    warning on 1.4 % of the frames after the calibration fix of v0.6.1 (42 % before it). Long range on the
+    moving ride (set F, §2d, v0.6.1): person first confirmed at 150 m median on straight track,
+    trolley 146 m, crate 111 m, cable 95 m; with a train speed 177 / 190 / 183 m and fewer ride false
+    alarms (274 / 75); in R ≈ 350 m curves 1 of 2 approaches detected, at 74–82 m (sightline). The farthest
+    return in all data is 210 m (every recording stops at 209.2–210.0 m), so 300 m is out of the sensor's reach.
+12. **Tests**: 152 (the node's decision / fault / watchdog / mount-parameter / input-switching
+    logic runs against ROS stand-ins in `tests/test_node.py`, so a node bug no longer waits for
+    the Docker job). Criteria judgement and the remaining work: [`SCORECARD.md`](SCORECARD.md).
+13. **Written answers of the organizers (23.09)** to our questions 1, 2 and 6, recorded
+    verbatim in [`organizers/answers.md`](organizers/answers.md) next to the Q&A-session answers
+    ([`QUESTIONS.md`](QUESTIONS.md) now holds only the three questions still open): `new_data` has no obstacles; the control data
+    may use **either (topic, frame) pair** (`/lidar_points` + `hesai_lidar`,
+    `/sensing/lidar/hesai128/pointcloud` + `lidar_livox`), all from the same LiDAR, and will most
+    likely be **played from the console** — describe the pipeline if the code reads bags; the
+    outputs are ours to choose but must be fully described. Done: the node keeps every
+    subscription, switches inputs between recordings and restarts the detector per recording
+    (v0.6.1, launch arguments `input_switch_timeout`, `new_input_gap`, `hole_reset_gap`); README
+    "How a bag is processed" (the solution does not read bags; `--ipc=host` added to the
+    step-by-step `docker run` lines, without which Fast DDS shared memory can swallow the 5–8 MB
+    clouds of a player on the same machine).
+14. **v0.6.2 (23.09), after the criteria review** ([`SCORECARD.md`](SCORECARD.md), EXPERIMENTS
+    §0): the organizers' object lying across the rail is found in **118 of the 126 frames** after
+    the person leaves it (v0.6.1: 2) — it straddled the envelope floor and fell between the two
+    detection stages, now it is clustered whole; confirmation 0.5 s instead of 0.3 s; without a
+    rail lock (stations) the corridor beyond 40 m is advisory. All 13 759 frames: five empty bags
+    **81 / 20** alarm frames / events (v0.6.1 104 / 30), ride **164 / 47 = 3.6 per km** (289 / 82),
+    person 58 of 61 from frame 11 as before; fewer events in 12 of 13 subsets of the data and more
+    in none (`scripts/consistency_check.py`). Slides in the organizers' template:
+    [`presentation/ReSense_LCT2026.pptx`](presentation/ReSense_LCT2026.pptx) (built by
+    `scripts/build_deck.py`; the captain fills the `<…>` personal data and photos on slides 2–4);
+    the main shot from the cab: `scripts/hero_view.py` → `img/hero_person.png`, video
+    `video/doubleT_obstacle_cab.mp4`. Set F round 2 (EXPERIMENTS §2d): a person on straight track
+    first confirmed at 148 m, held in ≥ 90 % of the frames from 135 m (every 10 m band from 115 m; 167 m with a train speed), curves
+    6 of 7 approaches, station stops 6 of 6, 30 cm objects on a rail head 6 of 6 from 42–44 m.
+    The organizers' procedure ran in Docker on the real frames (EXPERIMENTS §3b) and found a
+    transport bug, fixed (`input_reliability`).
+15. **Code health (23.09, after the second review)**: `Detector.process` is one method per stage
+    (`_fit_track`, `_corridor`, `_low_stage`, `_speed`, `_accumulate`, `_cluster`, `_confirm`) and
+    `find_clusters` delegates to `_low_cluster`, `_corridor_cluster`, `_is_infrastructure`,
+    `_advisory_reason`, `_is_retro`; every output was compared before and after on 2 930 real frames
+    (the obstacle recording, a given-speed run with accumulation, an estimator run, 1 600 ride frames):
+    identical. A `lint` CI job runs ruff (pinned) over the package, the node, the scripts and the tests.
+    The jury chain is on screen (`video/docker_chain_rviz.mp4`), which found the RViz config reading
+    the played clouds best-effort (fixed). The straddle thresholds' margins were measured (EXPERIMENTS
+    §0: false alarms −1…+2 of 67 events, the object 91–127 of 185 frames) and the low-object width
+    cap follows the envelope (2.2 m): a person lying across the track on a shallow bed 2 → 6 of 6,
+    identical on every real frame.
+16. **v0.6.3 (23.09), after the second review** (EXPERIMENTS §0): a reported STOP is held over one
+    missed frame (STOP episodes 88 → 66 on the obstacle-free data, events unchanged, the object on
+    the rail 124 of 126 frames after the person leaves); the mount calibration measures every 10th
+    frame only (10–15 ms per frame less for the first 20 s) and applies a tilt from 0.75° — identical
+    on every real frame; false alarms measured with processing starting 0–40 frames late, as a
+    played bag does through ROS (`scripts/start_offsets.py`: 14–20 events on the five bags); clean
+    timing re-measured (42–64 ms mean, p95 53–78 ms); the dry-run checker ignores the transport's
+    start-up hole (`--settle-s`) and takes `--obstacle-in`; a jury quick path heads the README.
+
 ### Left for the team (captain tracks, does not do)
 
 | owner | item | why it matters |
 |---|---|---|
+| P1 | `scripts/dry_run.sh` on the i7 stand with the original bags (rehearsed in the sandbox on 23.09 on rebuilt ones, EXPERIMENTS §3b; the person at 55.9–56.6 m, `--distance 50:62` holds); the i7-9700E timing | spec §4, §8.3 |
+| P3 | v0.6 follow-ups: a lining-anchored far height reference (vault drift measurable to ~200 m, EXPERIMENTS §2d); a bed bin must span the bed to extend the fit (an object far ahead lengthens it, §2d); cant-aware roll; the platform-end structure at 82–84 m | `EXPERIMENTS.md` §2d, ALGORITHM §6 |
 | P3 | the zone-history fast path (alarm when the last three hits are inside, measured on the five bags), the edge-margin variants, re-classifying the 96 residual alarm frames by cause, the platform-end structure at 81–83 m (20 of 32 events), accumulation on a moving bag with an obstacle (none exists yet), the injector's height reference beyond 80 m (with P4) | `EXPERIMENTS.md` §1b ablations and §5 |
 | P4 | extended-dataset intake and labelling with the `labels/` format; the injector placing far objects under the real bed (use the verified floor); calibration of the catalogue reflectivities against real obstacles | `DATASET.md` "Real labels", `EXPERIMENTS.md` §2c |
-| P2 | the RViz screen recording of the Docker chain on a machine with Docker (the offline and dashboard videos exist); slides 7–11 in the organizers' pptx template from `PRESENTATION.md`; the dashboard card for `ego_speed` / `n_accumulated` / alarm events | spec §4 demo and §8.8 pitch |
+| P2 | personal data and photos on slides 2–4 of `presentation/ReSense_LCT2026.pptx`; the dashboard card for `ego_speed` / `n_accumulated` / alarm events | spec §4 demo and §8.8 pitch |
 
 ## 1. Ownership map — who edits what
 
@@ -290,9 +369,9 @@ to touch. None changes a frozen contract. Items marked **done** were implemented
    subsampled cached frames). Needs the dataset, so it stays out of GitHub CI.
 10. **A dataset-free ROS smoke test for CI.** A tiny bag (5–10 frames) written with `rosbags`
     from the synthetic tunnel (P4's generator, called, not modified) plus a launch test in
-    `ros2_ws/src/resense_ros/test/` that plays it through the node and checks that `/resense/status`
+    `scripts/smoke_test.sh` that plays it through the node and checks that `/resense/status`
     arrives and the clear tunnel is not alarmed. Runs inside the Docker CI job. Files:
-    `scripts/make_smoke_bag.py`, `ros2_ws/.../test/`, `ci.yml` docker job.
+    `scripts/make_smoke_bag.py`, `scripts/smoke_test.sh`, `scripts/check_dry_run.py`, `ci.yml` docker job.
 11. **Evaluation protocol document.** — **done**, `docs/EVALUATION.md`: data sets, metrics
     (matching the implementation in `metrics.py`), procedure, regression rule and sprint
     targets. P4 extends `metrics.py` for the per-km / per-event rates; P3 optimises against it.

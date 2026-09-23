@@ -19,38 +19,115 @@ ROS 2 bag ─▶ PointCloud2 ─▶ resense_ros/detector_node ─▶ /resense/ob
                                                          └▶ /resense/status (JSON)
 ```
 
-Status: **v0.5 (21.09, Sprint 2, measured on real data at full rate)**. On every frame of the
-five obstacle-free organizer bags (2 287 frames: round / rectangular / double-track tunnels,
-pressure gates, a platform stop, a switch) the detector raises **96 alarm frames / 32 alarm
-events** (v0.3: 1 001 / 192) and runs at 43–55 ms per frame mean, 51–60 ms p95 on the tunnel
-bags of a 4-core sandbox (v0.3: 56–71 / 71–76 ms). The person crossing the track in `doubleT_obstacle` is reported at
-55.5–56.6 m in 66 of the 71 labelled in-gauge frames, the first alarm 0.5 s after he enters the
-gauge, distance error under 1 cm, and nothing else alarms on that bag. Multi-frame accumulation
-for 150 m and beyond runs with a given train speed (node parameter or odometry; synthetic:
-person confirmed at 189 m); the LiDAR-only speed estimator is off by default. The container
-chain (`docker build → run → bag play → result`) is verified in CI on a synthetic bag on every
-push. Numbers, hard cases and what did not work: [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md).
+**For the jury: build, run, play, read** (details: "ROS 2 / Docker" and "What to look at" below)
 
-![doubleT_obstacle frame 30: the person crossing the track is reported at 55.7 m (red box); the track axis (green) and the side structures (advisory, blue)](docs/img/doubleT_obstacle_0030_v05.png)
-*Real data, v0.5: `doubleT_obstacle` frame 30, the person on the track at 55.7 m. Videos: [offline renders of the whole bag](docs/video/doubleT_obstacle_offline.mp4) (20 s) and [the dashboard replaying the same run](docs/video/dashboard_doubleT_obstacle.mp4).*
+```bash
+docker build -t resense -f docker/Dockerfile .              # once; needs the network for apt / pip
+docker run --rm -it --net=host --ipc=host resense           # console 1: the node (the image's default command)
+ros2 bag play <control bag> --delay 3                       # console 2: any console on the same ROS 2 network
+ros2 topic echo /resense/decision --field data              # console 3: GO | CAUTION | STOP | FAULT
+ros2 topic echo /resense/nearest_distance                   # distance along the track to the nearest obstacle, m
+```
+
+Expected on the organizers' `doubleT_obstacle`: `STOP` at 55.7–56.5 m (the person crossing, then
+the object lying across the rail). No ROS on the host: play from a second container,
+`docker run --rm --net=host --ipc=host -v <bag dir>:/data:ro resense ros2 bag play /data/<bag> --delay 3`.
+Worth knowing: the first **2–4 s of a played bag are not processed** — the DDS start-up with
+5–10 MB reliable clouds, `--delay 3` does not avoid it (EXPERIMENTS.md §3b); until the first frame
+the decision is `FAULT` (no input). `STOP` is the alarm; `CAUTION` is advisory — something next to
+the envelope or beyond the verified range (columns, platform edges, far clusters) — and is common
+in a normal tunnel. `/resense/obstacle_detected` answers for the last processed frame; the
+go / no-go signal is `/resense/decision`, which also says `FAULT` when no frame is arriving.
+
+Status: **v0.6.3 (23.09)** — v0.6.1 rebuilt the detector around the organizers' Q&A answers;
+v0.6.2 finds the organizers' object lying across a rail and cuts the false stops on the ride by 43 %
+after an independent criteria review; v0.6.3, after a second one, holds a STOP over a single missed
+frame (25 % fewer on/off episodes), keeps a person lying across the track and makes the first
+20 s of a recording 10–15 ms per frame faster ([`docs/SCORECARD.md`](docs/SCORECARD.md)). What v0.6.1
+(22.09) changed after the Q&A session ([`docs/organizers/QA_session.md`](docs/organizers/QA_session.md):
+the recorded session, transcribed and summarised): The strict decision now uses **the train envelope the organizers
+gave (2.1 m wide × 3.0 m high)**; objects **hanging** into it (broken cables) are obstacles
+whatever their shape; **low objects lying on a rail** are found by a bed-anomaly stage (v0.6.2:
+also when they straddle the envelope floor, like the organizers' object); tall
+objects are reported out to the trusted axis range (~200 m on straight track) instead of the
+height-reference range; the **LiDAR mount is found from the data** (orientation, roll, pitch)
+because "the LiDAR position is not fixed"; and every frame says **how far the path was
+verified clear** and whether the input can be trusted (`/resense/decision`
+GO / CAUTION / STOP / FAULT, `/resense/clear_distance`, `/resense/health`).
+
+Measured on **all 13 759 real frames** of the organizers' data at 10 Hz
+([`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) §0): false alarms on the five obstacle-free
+bags **20 events** (107 alarm frames, 27 STOP episodes; v0.6.1: 30 events, v0.5 logic: 32) and on
+the 20-minute, 13 km ride **47 events, 3.6 per km** (204 frames, 39 episodes; v0.6.1: 82, v0.5:
+93); v0.6.2 had fewer events than v0.6.1 in 12 of 13 subsets of the data and more in none, so
+the gain is not carried by one recording (leave-one-out check, §0), and starting the recordings
+0–40 frames later, as a played bag does through ROS, gives 14–20 events (§0); a health warning on 1.4 % of the frames (stations,
+switches); the person crossing the track in `doubleT_obstacle` is reported in 58 of the 61
+frames in which the person is inside the envelope, the first alarm 0.3 s after entering it,
+distance error < 0.35 m; the **object lying across the rail** (0.45 × 0.6 × 0.3 m) in **124 of
+the 126 frames** after the person leaves it (v0.6.1: 2). Long range on the
+moving ride (objects ray-cast into consecutive real frames, no speed input, §2d, v0.6.2): a
+person on straight track is **held from 115 m inward** (median of 6 approaches, per approach
+20–160 m: detected in ≥ 90 % of the frames of every 10 m band from there; in ≥ 90 % of all
+frames from 135 m) and first confirmed at 148 m median (110–169 m, 6 of 6); a trolley first at
+144 m, a 1 m crate at 111 m, a 3 cm hanging cable first at 95 m but held only from ~50 m (4 of
+6); with a train speed given (odometry or a speed topic: 5-frame accumulation) the person first
+at **167 m**, the crate at 182 m — reach bought with steadiness: the crate is then held only
+from 89 m instead of 117 m and the person's 50–100 m recall drops from 94 to 83 %; in R ≈ 350 m curves 6 of 7 approaches
+are detected, from 58–86 m (the sightline past the inner wall); at station stops a person 6 of
+6 from 113 m; 30 cm objects lying on a rail head 6 of 6 from 42–44 m; a person lying across the
+rails 6 of 6 from ~60 m (between the rails: where the body rises above the rail head, §2d). 300 m is beyond this
+sensor: no return in any of the 13 759 frames lies beyond 210 m (every recording stops at 209.2–210.0 m). Other LiDAR mounts (upside down, `+x` forward, backwards, rolled /
+pitched) are recovered from the rails and the bed: orientation found and tilt within 0.5° on
+re-mounted real frames of three recordings (§6). Clean timing: 42–64 ms mean, p95 53–78 ms per
+frame on every recording (4-core sandbox, pure Python, §3; the node adds ~20–25 ms at 360°).
+The container chain (`docker build → run → bag play → result`) is verified in CI on synthetic
+bags on every push, and was rehearsed on 23.09 on the real frames in Docker — the node in one
+container, `ros2 bag play` in another, both topic / frame pairs, two recordings into one node
+(EXPERIMENTS.md §3b: the 120° recording at 10 fps, p95 76 ms; the 360° one at 7–10 fps in steady
+state on the 4-vCPU sandbox, its first seconds lost to the transport's start-up; the node container
+at ~100 % of one core while frames arrive, 186 MB). The bag may be played by any user: the image
+runs DDS over UDP (a normal user's player cannot write into a root node's shared memory). Judgement against every criterion and what is left: [`docs/SCORECARD.md`](docs/SCORECARD.md).
+
+![doubleT_obstacle frame 24 seen from the cab: the train envelope (green) swept along the track axis, the points inside it (yellow), the person on the track reported at 55.8 m (STOP) and a close-up of the person's points](docs/img/hero_person.png)
+*Real data, v0.6.2: `doubleT_obstacle` frame 24 from the driver's seat (`scripts/hero_view.py`), the person on the track at 55.8 m. Videos: [the jury chain in Docker with RViz](docs/video/docker_chain_rviz.mp4), [the whole bag from the cab](docs/video/doubleT_obstacle_cab.mp4), [offline renders, top and side view](docs/video/doubleT_obstacle_offline.mp4) and [the dashboard replaying the same run](docs/video/dashboard_doubleT_obstacle.mp4). Slides in the organizers' template: [`docs/presentation/ReSense_LCT2026.pptx`](docs/presentation/ReSense_LCT2026.pptx).*
+
+## What to look at (for the jury)
+
+The organizers asked that every team "say clearly what to look at". One line per question:
+
+| question | topic | values |
+|---|---|---|
+| can the train go? | **`/resense/decision`** (`std_msgs/String`) | `GO` (clear), `CAUTION` (advisory: a confirmed object in the band just outside the envelope, a far cluster beyond the verified range, known infrastructure, or degraded health — on 10–64 % of the frames of the obstacle-free recordings, so it is not an alarm), `STOP` (obstacle inside the 2.1 × 3.0 m envelope), `FAULT` (input cannot be trusted or stopped arriving, and before the first frame) |
+| is there an obstacle? | **`/resense/obstacle_detected`** (`std_msgs/Bool`) | per processed frame, confirmed over 0.5 s, held over one missed frame; `false` while no frame arrives (then `decision` says `FAULT`) |
+| how far is it? | **`/resense/nearest_distance`** (`std_msgs/Float32`) | m along the track, −1 if none |
+| how far is the path verified clear? | **`/resense/clear_distance`** (`std_msgs/Float32`) | the obstacle distance, else how far the corridor was actually checked (sightline, trusted track model); 0 on a fault |
+| everything else | `/resense/detections` (`vision_msgs/Detection3DArray`), `/resense/status` (JSON: every object with distance, lateral offset, size, confidence, kind; track model; health; mount calibration; timing) | |
+
+Decision logic, thresholds and their measured effect: [`docs/ALGORITHM.md`](docs/ALGORITHM.md) §4, §4b.
+The organizers left the choice of outputs to the teams and asked that everything needed be stated
+in the algorithm and launch descriptions (23.09): this table, "Topics published by the node" below
+and ALGORITHM.md §4 / §4b are that statement; how to run it is "How a bag is processed".
 
 ## Repository layout
 
 | Path | What |
 |---|---|
-| [`resense/`](resense/) | core library (numpy / scipy / scikit-learn, no ROS): PointCloud2 decoding, track model, gauge corridor, clustering, tracking, detector, synthetic obstacle injection, metrics, CLI |
+| [`resense/`](resense/) | core library (numpy / scipy / scikit-learn, no ROS): PointCloud2 decoding, mount calibration, track model, gauge corridor, low-object stage, clustering, tracking, health, detector, synthetic obstacle injection, metrics, CLI |
 | [`ros2_ws/src/resense_ros/`](ros2_ws/src/resense_ros/) | ROS 2 Humble node, launch file, parameters, RViz layout |
 | [`docker/`](docker/), [`docker-compose.yml`](docker-compose.yml), [`scripts/`](scripts/) | reproducible build and demo |
 | [`configs/default.yaml`](configs/default.yaml) | every tunable parameter (also installed as the ROS parameter file) |
-| [`tests/`](tests/) | pytest on a synthetic ray-cast tunnel — runs without the dataset |
-| [`web/`](web/) | browser dashboard (live via rosbridge or offline replay of a `resense run` JSONL), Foxglove layout, label tool, headless checks |
-| [`docs/`](docs/) | [ARCHITECTURE](docs/ARCHITECTURE.md) · [ALGORITHM](docs/ALGORITHM.md) · [EXPERIMENTS](docs/EXPERIMENTS.md) · [EVALUATION](docs/EVALUATION.md) · [DATASET](docs/DATASET.md) · [SENSOR](docs/SENSOR.md) · [RESEARCH](docs/RESEARCH.md) · [PLAN](docs/PLAN.md) · [CAPTAIN](docs/CAPTAIN.md) · [SUBMISSION](docs/SUBMISSION.md) · [PRESENTATION](docs/PRESENTATION.md) · [QUESTIONS](docs/QUESTIONS.md) · organizers' README / ТЗ · [test-stand software](docs/organizers/test_stand_software.md) · sensor manual ([`docs/sensor/`](docs/sensor/)) |
+| [`tests/`](tests/) | pytest on a synthetic ray-cast tunnel — runs without the dataset (algorithm, envelope, calibration, guards, and the ROS node against stand-ins: `test_node.py`) |
+| [`web/`](web/) | browser dashboard (offline replay of a `resense run` JSONL; live via rosbridge, installed separately and with roslib from a CDN), Foxglove layout (the image has the Foxglove bridge), label tool, headless checks |
+| [`docs/`](docs/) | [ARCHITECTURE](docs/ARCHITECTURE.md) · [ALGORITHM](docs/ALGORITHM.md) · [EXPERIMENTS](docs/EXPERIMENTS.md) · [SCORECARD](docs/SCORECARD.md) · [EVALUATION](docs/EVALUATION.md) · [DATASET](docs/DATASET.md) · [SENSOR](docs/SENSOR.md) · [RESEARCH](docs/RESEARCH.md) · [PLAN](docs/PLAN.md) · [CAPTAIN](docs/CAPTAIN.md) · [SUBMISSION](docs/SUBMISSION.md) · [PRESENTATION](docs/PRESENTATION.md) · [QUESTIONS](docs/QUESTIONS.md) · organizers' README / ТЗ / [**Q&A session**](docs/organizers/QA_session.md) ([transcript](docs/organizers/QA_session_transcript_ru.md)) · [organizers' answers](docs/organizers/answers.md) · [test-stand software](docs/organizers/test_stand_software.md) · sensor manual ([`docs/sensor/`](docs/sensor/)) |
+| [`labels/`](labels/) | real labels: `doubleT_obstacle.json` (the crossing person, the object on the rail, the walking person), `new_data_objects.json` (every object the detector confirmed on the 20-minute ride, with cause class) |
 
 ## Quick start (no ROS needed)
 
 ```bash
 pip install -e ".[dev]"                       # numpy scipy scikit-learn pyyaml + rosbags matplotlib open3d pytest
 pytest -q                                     # expect no skips: "skipped" means open3d is missing (RESENSE_REQUIRE_SYNTHETIC=1 makes that fail, as in CI)
+ruff check .                                  # lint, as the CI job "lint" (pip install ruff)
 
 # unpack the dataset (see docs/DATASET.md), then:
 resense info  /data/for_hackathon/roundT_doubleT
@@ -60,6 +137,13 @@ resense bench --bag /data/for_hackathon/roundT_doubleT --every 5                
 # synthetic obstacles ray-cast into real empty frames + evaluation
 resense inject --bag /data/for_hackathon/roundT_doubleT --every 10 --out data/synth --distances 10:250 --kinds person,box,plank
 resense eval data/synth
+
+# the real-data report card over every recording (frames cached once, docs/DATASET.md "Cached frames")
+for b in /data/for_hackathon/*/; do python scripts/cache_frames.py $b /data/cache/$(basename $b) --every 1 --int16 --stamps; done
+python scripts/eval_real.py --cache /data/cache --out out/eval          # false alarms, the labelled person / object, latency
+python scripts/far_range_eval.py --cache /data/cache/new_data --files 46,68,98 --kinds person,box1.0,cable \
+    --start 220 --out out/far.json                                    # objects approaching on the moving ride (set F)
+python scripts/mine_objects.py out/eval --bag new_data                  # every confirmed object of a ride, by cause
 ```
 
 ## ROS 2 / Docker (the way the jury runs it)
@@ -70,13 +154,14 @@ resense eval data/synth
 ./scripts/run_headless.sh /data/for_hackathon/doubleT_obstacle   # same, no X11: prints the distance
 ./scripts/dry_run.sh /data/for_hackathon/doubleT_obstacle        # acceptance test, exits non-zero on failure
 WITH_TOOLS=1 ./scripts/build.sh                      # + rosbags / matplotlib / open3d / pytest inside the image
-docker run --rm resense python3 -m pytest -q /opt/resense/tests   # the test suite inside the image (CI does this)
+PULL=1 ./scripts/build.sh                            # refresh the ros:humble base first (an old cached one fails apt-get update)
+docker run --rm resense python3 -m pytest -q /opt/resense/tests   # the test suite inside the image (needs the WITH_TOOLS=1 image; CI does this)
 
 # or step by step
-docker run --rm -it --net=host -v /data/for_hackathon:/data resense \
+docker run --rm -it --net=host --ipc=host -v /data/for_hackathon:/data resense \
     ros2 launch resense_ros detector.launch.py            # terminal 1: detector
-docker run --rm -it --net=host -v /data/for_hackathon:/data resense \
-    ros2 bag play /data/roundT_doubleT --clock            # terminal 2: playback
+docker run --rm -it --net=host --ipc=host -v /data/for_hackathon:/data resense \
+    ros2 bag play /data/roundT_doubleT --clock --delay 3  # terminal 2: playback (--delay: DDS discovery first)
 ros2 topic echo /resense/nearest_distance                 # terminal 3 (any ROS 2 Humble host)
 ```
 
@@ -89,15 +174,56 @@ discovery completes: without it the first 1–3 s of a bag are lost), plus `publ
 `output_frame`, `stats_period`, `discover_period`. For multi-frame accumulation the node needs
 the train speed: `ego_speed_mps:=22.0`, or `speed_topic:=/vehicle/speed` (`std_msgs/Float32`,
 m/s), or `odom_topic:=/odom` (`nav_msgs/Odometry`, `twist.linear.x`); with none of them the
-detector uses its own estimate. `publish_tf:=true|false` and `tf_parent_frame:=resense_lidar`
+detector runs the single-frame path (no accumulation: the LiDAR-only speed estimator is off by
+default, EXPERIMENTS.md §1b). `publish_tf:=true|false` and `tf_parent_frame:=resense_lidar`
 control the static TF that lets one RViz / Foxglove layout serve every bag.
 
-**The bags disagree on the topic name** — `roundT_doubleT` publishes `/lidar_points`,
-`doubleT_obstacle` publishes `/sensing/lidar/hesai128/pointcloud` — so the node takes a list of
-candidates and, unless `auto_discover:=false`, subscribes to any other `PointCloud2` topic that
-appears on the graph. The first topic to deliver a frame wins and is logged; the others are
-dropped. The control bag therefore needs no argument. `docker compose --profile viz up` starts
-RViz and a Foxglove bridge (port 8765) next to the detector.
+**The bags disagree on the topic name and frame id** — `roundT_doubleT` and four more publish
+`/lidar_points` in `hesai_lidar`, `doubleT_obstacle` publishes `/sensing/lidar/hesai128/pointcloud`
+in `lidar_livox` — and the organizers confirmed (23.09) that **the control data may use either
+pair, all recorded with the same LiDAR**. The node therefore listens to both names and, unless
+`auto_discover:=false`, to any other `PointCloud2` topic that appears on the graph (discovery
+keeps running whenever the input is silent). One input is processed at a time; when it has been
+silent for `input_switch_timeout` (1 s) and another topic delivers, the node switches to it. Every
+**new recording** — another topic, another frame id, or header stamps that jump back (the bag
+played again) or forward by more than `new_input_gap` (30 s) — starts with a fresh detector, so
+the scene state and the mount calibration of one bag never carry into the next; a shorter hole
+in a recording (> `hole_reset_gap`, 1 s) resets the scene only. The control bags therefore need
+no argument and can be played one after another into one running node. `docker compose
+--profile viz up` starts RViz and a Foxglove bridge (port 8765) next to the detector.
+
+### How a bag is processed (the pipeline we expect)
+
+The organizers will most likely play the control bag from a console (their answer of 23.09). That
+is the whole pipeline — **ReSense does not read bag files**; it subscribes to the point cloud:
+
+```text
+ros2 bag play <bag>  ──PointCloud2 (either topic / frame pair), 10 Hz──▶  resense_detector node
+(any console on the same ROS 2 network,        (docker run --net=host --ipc=host … ros2 launch …)
+ or inside our image: sqlite3 + mcap plugins)        │
+                                                     ├─▶ /resense/decision        GO / CAUTION / STOP / FAULT
+                                                     ├─▶ /resense/obstacle_detected, /resense/nearest_distance
+                                                     ├─▶ /resense/clear_distance, /resense/health
+                                                     └─▶ /resense/detections, /resense/status (JSON), RViz markers
+```
+
+1. start the detector: `docker run --rm -it --net=host --ipc=host resense ros2 launch resense_ros detector.launch.py`
+   (the same image and command for every bag; mount / topic arguments are optional; the image
+   runs DDS over UDP (`docker/fastdds_udp.xml`), so a player on the same machine needs no shared
+   memory and may run as any user — `--ipc=host` is harmless and kept for older images);
+2. play the bag from any console: `ros2 bag play <bag> --delay 3` (the delay lets DDS discovery
+   finish; even so the first 2–4 s of a bag are not processed — the DDS start-up with 5–10 MB
+   reliable clouds, EXPERIMENTS.md §3b; same `ROS_DOMAIN_ID` as the node, default 0;
+   or `ros2 launch … bag:=/data/<bag>` to
+   let the launch file play it inside the container; the image has the sqlite3 and mcap storage
+   plugins, so the storage format does not matter);
+3. read the answer on the topics of "What to look at" above; `ros2 topic echo /resense/decision`.
+
+Several bags can be played one after another into the same node (see the paragraph above). The
+offline command-line tool (`python -m resense.cli run --bag <dir>`, Quick start) *does* read a
+rosbag2 directory directly (the pure-Python `rosbags` reader, no ROS needed) — it is our
+development and evaluation tool and produces the same per-frame JSON as `/resense/status`, but it
+is not the way the solution is meant to be run.
 
 ### Where the data lives
 
@@ -148,7 +274,11 @@ Two ways to show the chain tunnel → cloud → detection → distance to a jury
 1. **Screen share of RViz**: `./scripts/run_demo.sh /data/for_hackathon/doubleT_obstacle` on the
    demo machine and share the RViz window; for a continuous replay use the launch file directly
    with `loop:=true`:
-   `docker run --rm -it --net=host -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /data/for_hackathon:/data:ro resense ros2 launch resense_ros detector.launch.py bag:=/data/doubleT_obstacle loop:=true rviz:=true`.
+   `docker run --rm -it --net=host --ipc=host -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /data/for_hackathon:/data:ro resense ros2 launch resense_ros detector.launch.py bag:=/data/doubleT_obstacle loop:=true rviz:=true`.
+   What this looks like, with the bag played from a second container as the jury would:
+   [`docs/video/docker_chain_rviz.mp4`](docs/video/docker_chain_rviz.mp4). RViz subscribes to the
+   raw clouds reliable, as the node does; a best-effort RViz display shows almost none of the
+   5–10 MB clouds that `ros2 bag play` publishes (EXPERIMENTS.md §3b).
 2. **Foxglove over the network**, nothing graphical on the demo machine:
    ```bash
    docker compose --profile viz up detector foxglove                      # detector + foxglove_bridge :8765
@@ -157,7 +287,8 @@ Two ways to show the chain tunnel → cloud → detection → distance to a jury
    On any laptop open Foxglove (desktop app or app.foxglove.dev) → Open connection →
    `ws://<demo-host>:8765` (`ssh -L 8765:localhost:8765 <demo-host>` first if only ssh is open) →
    Layout → Import → [`web/foxglove_layout.json`](web/foxglove_layout.json): raw cloud, corridor
-   points, boxes, status text and the distance / latency / fps plots. Details and limits in
+   points, boxes, the GO / CAUTION / STOP / FAULT indicator, status text and the distance /
+   clear-distance / latency / fps plots. Details and limits in
    [`web/README.md`](web/README.md). Over a slow link switch the raw-cloud panel off and keep
    `/resense/corridor_points` (a few thousand points): the detections and the status text do not
    depend on it.
@@ -174,11 +305,31 @@ loses the first frames), captures `/resense/status` and checks it:
 # status messages / alarm frames / obstacle distance / latency mean,p95,max / dropped frames / fps
 # PASS: all dry-run criteria met
 
-SKIP_BUILD=1 ./scripts/dry_run.sh /data/for_hackathon/roundT_doubleT --expect-clear   # false-alarm check
+SKIP_BUILD=1 ./scripts/dry_run.sh /data/for_hackathon/roundT_doubleT --expect-clear --max-alarm-frames 2   # false-alarm check
 ```
 
+**Run on 23.09** (Docker in the development sandbox, 4 vCPU; the recordings rebuilt from the
+frame cache by `scripts/cache_to_bag.py`, same topic / `frame_id` / layout / receive times;
+EXPERIMENTS.md §3b): `roundT_doubleT` 237 of 252 frames at 10 fps, p95 76 ms, and 2 alarm
+frames at 128–130 m — PASS with `--max-alarm-frames 2` (the offline evaluation from frame 0 has
+the same two; which frame processing starts from matters: a trackside device at 48–54 m is
+confirmed from some start frames, so a run gives 1–4 alarm frames, EXPERIMENTS.md §0); `doubleT_obstacle` the
+person and the object at 55.9–56.6 m, 88–118 alarm frames, but at 360° this sandbox is at the
+frame period (96 ms mean, p95 112–130 ms) and the node skips frames (7–10 fps in steady state), so the
+default `--max-p95-latency 100 --max-dropped 0` fail there (drops are counted after the first 5 s,
+`--settle-s`: the start-up hole is the transport's); the jury's i7-9700E is the
+reference for those two. The organizers' way — node container, `ros2 bag play` from another
+container, `roundT_doubleT` then `doubleT_obstacle` into the same running node — switched the
+input and restarted the detector as designed (`--expect-inputs 2`). That first run also found
+that a best-effort subscription lost 196 of the 201 ten-megabyte clouds (the node now matches
+the publishers' reliability, `input_reliability`, below), and a review found that a player run
+by a **normal user** reached the root node not at all through shared memory: the image now runs
+DDS over UDP (`docker/fastdds_udp.xml`), and `scripts/console_test.sh` — node container, player
+as uid 1000 in another container — runs in CI. Through ROS the first seconds of a 360°
+recording are lost to the DDS start-up with 10 MB reliable samples (EXPERIMENTS.md §3b).
+
 Defaults for `doubleT_obstacle`: the person is reported in 50–62 m, p95 of decode + detect is
-≤ 100 ms (the 10 Hz frame period) and no input frame is dropped. Any argument after the bag path
+≤ 100 ms (the 10 Hz frame period) and no input frame is dropped after the first 5 s. Any argument after the bag path
 is forwarded to `scripts/check_dry_run.py`, which holds the thresholds (`--expect-obstacle`,
 `--expect-clear`, `--distance LO:HI`, `--first-clear N`, `--max-p95-latency`, `--max-dropped`,
 ...) and can also run on a capture someone else recorded. Raw output stays in `$OUT` (default
@@ -213,13 +364,27 @@ keeps the in-repo copy identical (CI checks it).
 | `/resense/status` | `std_msgs/String` | JSON: full per-frame result (detections, track model, per-stage timing) plus `node` = `{latency_ms, fps, frames, dropped_frames, input_period_ms, ego_speed_mps, ego_speed_source}` |
 | `/resense/latency_ms` | `std_msgs/Float32` | per frame: decode + detect + publish, ms |
 | `/resense/fps` | `std_msgs/Float32` | frames processed per second, every `stats_period` s (default 2) |
+| `/resense/decision` | `std_msgs/String` | v0.6: `GO` / `CAUTION` / `STOP` / `FAULT` (see "What to look at") |
+| `/resense/clear_distance` | `std_msgs/Float32` | v0.6: m of track verified clear (the obstacle, else the monitored range; 0 on a fault or a silent input) |
+| `/resense/health` | `diagnostic_msgs/DiagnosticArray` | v0.6: OK / WARN / ERROR / STALE with messages and values: points, window dirt, blocked sectors, visibility, rail lock, latency p95, monitored range, mount calibration |
 | `/resense/markers`, `/resense/corridor_points` | `MarkerArray`, `PointCloud2` | RViz: boxes, labels, corridor outline, status text; points inside the corridor |
 | `/tf_static` | `tf2_msgs/TFMessage` | identity transform `resense_lidar` → the input cloud's `frame_id`, sent once per frame id: the layouts keep `resense_lidar` as the fixed frame whether the bag says `hesai_lidar` or `lidar_livox` |
 
 Node parameters: `input_topic`, `auto_discover`, `discover_period`, `config_file`,
 `publish_markers`, `publish_corridor_cloud`, `marker_x_max`, `output_frame`, `stats_period`,
-`ego_speed_mps`, `speed_topic`, `odom_topic`, `speed_timeout`, `publish_tf`, `tf_parent_frame`
-(all of them are launch arguments too). Every `stats_period` seconds the node logs
+`ego_speed_mps`, `speed_topic`, `odom_topic`, `speed_timeout`, `publish_tf`, `tf_parent_frame`,
+and since v0.6 the **sensor mount** — `sensor_forward` / `sensor_left` / `sensor_up` (axis
+mapping, e.g. `sensor_forward:=+x`), `mount_roll_deg` / `mount_pitch_deg` / `mount_yaw_deg`
+(fixed tilt), `auto_calibrate` (default `true`: orientation, roll and pitch found from the rails
+and the bed in the first frames, reported in `/resense/status` → `mount`) — and the **guards**
+`stale_timeout` (s without a frame before `FAULT`, default 0.5) and `max_consecutive_errors`
+(processing exceptions before the detector is reset, default 5); since v0.6.1 the **input
+handling** — `input_switch_timeout` (1 s), `new_input_gap` (30 s), `hole_reset_gap` (1 s), see
+"How a bag is processed" — and `input_queue_depth` (1: the node always takes the newest frame and
+skips rather than lags behind the sensor); since v0.6.2 `input_reliability` (`auto`: the input
+subscription matches its publishers — reliable for `ros2 bag play` of the organizers'
+recordings, best-effort for a best-effort driver; `reliable` / `best_effort` force it). All of
+them are launch arguments too. Every `stats_period` seconds the node logs
 `fps`, latency mean / p95 / max, the measured input period and the number of frames the
 input queue dropped (estimated from gaps in the header stamps).
 
@@ -227,13 +392,17 @@ input queue dropped (estimated from gaps in the header stamps).
 
 | key | default | meaning |
 |---|---|---|
-| `sensor.forward/left/up` | `-y/+x/+z` | sensor → vehicle axis mapping (hackathon Hesai frame) |
+| `sensor.forward/left/up`, `sensor.roll_deg/pitch_deg/yaw_deg` | `-y/+x/+z`, 0 | sensor → vehicle axis mapping (hackathon Hesai frame) and a fixed mount tilt |
+| `calibration.*` | on, 5 frames | automatic mount calibration (orientation, roll, pitch, yaw > 3°) |
 | `track.rails_*` | | rail-ridge template (gauge 1.52 m) for the track axis and rail-head level |
 | `track.walls_*` | band 1.6–2.8 m | tunnel-boundary fit for yaw / curvature; `axis_valid_*` = how far the corridor is trusted |
-| `gauge.profile` | ±1.4 m, 0.12/0.55–3.5 m | clearance-gauge polygon (dy, h above rail head); `warning_margin` = advisory zone |
+| `gauge.profile` | \|dy\| ≤ 1.05 m, 0.12–3.0 m | **the organizers' 2.1 × 3.0 m train envelope**; `warning_margin` 0.35 m = advisory zone; `edge_margin_per_100m` 0.15 m |
+| `lowobj.*` | on, ≤ 60 m | low objects on the rails (bumps above the learned bed that rise ≥ 3 cm above the rail head) |
+| `cluster.far_*` | 0.6 m tall, ≤ 3 m long | what may alarm beyond the height reference (far field of straight track) |
 | `cluster.eps / range_scale / voxel` | 0.35 / 40 / 0.05 | range-adaptive DBSCAN: ε(r) = eps·(1 + r/40 m) |
-| `cluster.*_max_*` | | infrastructure filters (thin hardware, low hardware, wall-like, overhead) |
-| `tracking.confirm_hits / conf_threshold` | 3 / 0.6 | persistence before an alarm |
+| `cluster.*_max_*`, signatures | | infrastructure filters (thin hardware, low hardware, wall-like, column, floating, edge, wall face); thin objects hanging near the axis are never demoted |
+| `tracking.confirm_hits / conf_threshold` | 3 / 0.6 | persistence before an alarm (low objects: 5 hits) |
+| `health.*` | | thresholds of the production guards |
 
 ## Documentation required by the organizers (spec §5, §7)
 
@@ -247,7 +416,7 @@ input queue dropped (estimated from gaps in the header stamps).
 | algorithm (problem, data, processing, decision, parameters, limitations) | [`docs/ALGORITHM.md`](docs/ALGORITHM.md) |
 | experiments (range, latency, FPS, false alarms, hard cases, evolution) | [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md), protocol in [`docs/EVALUATION.md`](docs/EVALUATION.md) |
 | input data format, sensor | [`docs/DATASET.md`](docs/DATASET.md), [`docs/SENSOR.md`](docs/SENSOR.md) (Hesai Pandar128 specs and what they imply) |
-| video | [`docs/video/doubleT_obstacle_offline.mp4`](docs/video/doubleT_obstacle_offline.mp4) (top-down and side renders of every frame of the real bag, v0.5) and [`docs/video/dashboard_doubleT_obstacle.mp4`](docs/video/dashboard_doubleT_obstacle.mp4) (the web dashboard replaying the same run); recipe in [`web/README.md`](web/README.md); the RViz screen recording on the jury chain is still to be made on a machine with Docker |
+| video | [`docs/video/doubleT_obstacle_cab.mp4`](docs/video/doubleT_obstacle_cab.mp4) (the real bag from the cab: envelope, obstacle, decision and distance; `scripts/hero_view.py --sequence`), [`docs/video/doubleT_obstacle_offline.mp4`](docs/video/doubleT_obstacle_offline.mp4) (top-down and side renders of every frame) and [`docs/video/dashboard_doubleT_obstacle.mp4`](docs/video/dashboard_doubleT_obstacle.mp4) (the web dashboard replaying the same run), all v0.6.2; recipe in [`web/README.md`](web/README.md); **the jury chain on screen**: [`docs/video/docker_chain_rviz.mp4`](docs/video/docker_chain_rviz.mp4) (69 s: `docker run` of the node with RViz, `ros2 bag play` as a normal user from another container, `/resense/decision`; sandbox, bag at 0.5×) |
 | submission status | [`docs/SUBMISSION.md`](docs/SUBMISSION.md) |
 
 ## Team

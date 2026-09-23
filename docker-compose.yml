@@ -26,11 +26,12 @@ services:
     profiles: ["tools"]
     command: ros2 bag play /data/${RESENSE_BAG:-roundT_doubleT} --clock --delay 3
   echo:
-    # the headless equivalent of watching RViz: -1.0 means path clear
+    # the headless equivalent of watching RViz: GO / CAUTION / STOP / FAULT
     image: resense:latest
     network_mode: host
+    ipc: host                 # harmless: the image runs DDS over UDP (docker/fastdds_udp.xml)
     profiles: ["tools"]
-    command: ros2 topic echo /resense/nearest_distance
+    command: ros2 topic echo /resense/decision
   rviz:
     image: resense:latest
     network_mode: host
@@ -45,5 +46,6 @@ services:
   foxglove:
     image: resense:latest
     network_mode: host
+    ipc: host
     profiles: ["viz"]
     command: ros2 launch foxglove_bridge foxglove_bridge_launch.xml port:=8765

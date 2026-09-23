@@ -83,6 +83,13 @@
       <span>stages track / corridor / cluster</span><b id="stages">—</b>
       <span>frames shown</span><b id="frames">0</b>
     </div></div>
+    <div class="card" id="safety-card"><h3>decision &amp; health <span class="status-line">(v0.6)</span></h3><div class="kv">
+      <span>decision</span><b id="decision">—</b>
+      <span>path verified clear to</span><b id="clear">—</b>
+      <span>health</span><b id="health">—</b>
+      <span>visibility / rail lock</span><b id="vis">—</b>
+      <span>mount calibration</span><b id="mount">—</b>
+    </div><div id="health-msgs" class="status-line"></div></div>
     <div class="card" id="node-card"><h3>ROS node <span id="node-note" class="status-line"></span></h3><div class="kv">
       <span>latency (decode + detect)</span><b id="n-latency">—</b>
       <span>fps</span><b id="n-fps">—</b>
@@ -216,6 +223,7 @@ function applyResult(res, opts) {
   $('timing').className = tm.total > 100 ? 'warn' : '';
   $('stages').textContent = [tm.track, tm.corridor, tm.cluster].every(v => v != null) ? `${tm.track.toFixed(0)} / ${tm.corridor.toFixed(0)} / ${tm.cluster.toFixed(0)} ms` : '—';
   $('frames').textContent = state.shown;
+  applySafety(res);
   applyNode(res.node);
   // timeline history
   const warnDist = warns.length ? Math.min(...warns.map(w => w.distance)) : null;
@@ -232,6 +240,19 @@ function applyResult(res, opts) {
   }
   state.lastObstacle = !!res.obstacle;
   if (draw) { drawTop(res); drawTimeline(); }
+}
+function applySafety(res) {
+  // v0.6 fields: decision (node only, else derived), clear_distance, health, mount; absent in older results
+  const h = res.health || {}, m = res.mount || {};
+  const decision = res.decision || (res.obstacle ? 'STOP' : (h.level === 'error' ? 'FAULT' : ((res.warning || h.level === 'warn') ? 'CAUTION' : (h.level ? 'GO' : '—'))));
+  $('decision').textContent = decision;
+  $('decision').className = { STOP: 'bad', FAULT: 'bad', CAUTION: 'warn' }[decision] || '';
+  $('clear').textContent = res.clear_distance == null ? '—' : res.clear_distance.toFixed(0) + ' m';
+  $('health').textContent = h.level || '—';
+  $('health').className = { error: 'bad', warn: 'warn' }[h.level] || '';
+  $('vis').textContent = h.visibility == null ? '—' : `${h.visibility.toFixed(0)} m / ${(100 * (h.rail_lock ?? 0)).toFixed(0)} %`;
+  $('mount').textContent = m.status ? `${m.status}${m.status === 'ok' ? ` (roll ${m.roll_deg}°, pitch ${m.pitch_deg}°)` : ''}` : '—';
+  $('health-msgs').textContent = (h.messages || []).join('; ');
 }
 function logLine(s) { const l = $('log'); l.textContent = s + '\n' + l.textContent; if (l.textContent.length > 60000) l.textContent = l.textContent.slice(0, 50000); }
 function applyNode(node) {

@@ -11,9 +11,10 @@ Two levels of false-alarm accounting (docs/EVALUATION.md section 2):
   ``ego_speed`` key in the result dict).
 
 Frame indices (the ``frame`` key that ``resense run`` writes) are used to detect the
-subsampling stride: with every N-th frame, ``tracking.confirm_hits`` consecutive hits are
-``N * frame_dt`` seconds apart, so a candidate must persist ``confirm_hits * N * frame_dt``
-seconds instead of ``confirm_hits * frame_dt`` -- subsampled false-alarm counts understate
+subsampling stride: with every N-th frame, the consecutive hits a track needs
+(``tracking.frames_to_confirm()``: ``confirm_hits`` / ``confirm_time_s``) are ``N * frame_dt``
+seconds apart, so a candidate must persist ``confirm_hits * N * frame_dt`` seconds instead of
+``confirm_hits * frame_dt`` -- subsampled false-alarm counts understate
 the rate the node shows at 10 Hz. :meth:`Evaluation.summary` says so (``stride_caveat``).
 
 Ground-truth files: ``gt.json`` as written by ``resense inject`` and by the label tool
@@ -132,7 +133,7 @@ class Evaluation:
     first_detection: Dict[str, float] = field(default_factory=dict)  # gt label -> max distance detected
     latency_ms: List[float] = field(default_factory=list)
     # --- additive (Sprint 2): events, advisory frames, bag time, distance, stride ---------
-    confirm_hits: int = 3                  # tracking.confirm_hits, for the stride caveat
+    confirm_hits: int = 3                  # frames a static object needs to be confirmed (tracking.frames_to_confirm()), for the stride caveat
     frame_dt: float = 0.1                  # tracking.frame_dt (s)
     alarm_frames: int = 0                  # frames with obstacle = true (all frames)
     advisory_frames: int = 0               # frames with warning = true (all frames)
@@ -260,8 +261,8 @@ class Evaluation:
         s = self.stride
         if s is None or s <= 1:
             return None
-        return (f"frames are every {s}th bag frame: tracking.confirm_hits = {self.confirm_hits} consecutive "
-                f"hits are {s * self.frame_dt:.1f} s apart, so a candidate must persist "
+        return (f"frames are every {s}th bag frame: the {self.confirm_hits} consecutive "
+                f"hits a track needs are {s * self.frame_dt:.1f} s apart, so a candidate must persist "
                 f"{self.confirm_hits * s * self.frame_dt:.1f} s to be confirmed instead of "
                 f"{self.confirm_hits * self.frame_dt:.1f} s at 10 Hz; subsampled alarm and false-alarm "
                 f"counts understate the full-rate values (run every frame for the headline numbers)")
@@ -405,7 +406,7 @@ def format_summary(s: dict) -> str:
     if s.get("recall") is not None:
         lines.append(f"recall            : {s['recall']:.1%} ({s['per_bin_counts']})")
         if s.get("recall_by_class"):
-            lines.append(f"recall by class   : " + ", ".join(f"{k} {f(v, '{:.0%}')}" for k, v in s["recall_by_class"].items()))
+            lines.append("recall by class   : " + ", ".join(f"{k} {f(v, '{:.0%}')}" for k, v in s["recall_by_class"].items()))
         for cls, bins in (s.get("per_class_bin_counts") or {}).items():
             lines.append(f"  {cls:15s}: " + ", ".join(f"{b} {v[0]}/{v[1]}" for b, v in bins.items()))
         if s.get("first_detection_distance"):

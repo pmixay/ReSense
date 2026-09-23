@@ -1,6 +1,7 @@
 """Configuration of the detection pipeline (plain dataclasses, loadable from YAML)."""
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field, asdict
 from typing import Any, List, Tuple
 
@@ -20,6 +21,12 @@ class SensorConfig:
     min_range: float = 2.5     # m, closer returns are the train's own nose / sensor artefacts
     max_range: float = 250.0   # m
     frame_id: str = "hesai_lidar"
+    # v0.6: fixed mount correction applied after the axis mapping, p = Rz(yaw) Ry(pitch) Rx(roll) p_axes
+    # (the values the automatic calibration reports as mount.roll_deg / pitch_deg / yaw_deg can be
+    # frozen here, or set by hand for a known mount; the calibration then refines on top)
+    roll_deg: float = 0.0
+    pitch_deg: float = 0.0
+    yaw_deg: float = 0.0
 
 
 @dataclass
@@ -70,6 +77,7 @@ class TrackConfig:
     rails_yaw_max_dev: float = 0.3                   # m, a slab's rail may sit this far from the global rail position
     axis_max_yaw_rate: float = 0.003                 # rad per frame (0.17 deg; a train at 15 m/s on R = 700 m yaws 0.12 deg per frame); larger changes are clipped; 0 = off
     axis_max_curvature_rate: float = 1.0e-4          # 1/m per frame, larger changes of the smoothed curvature are clipped; 0 = off
+    axis_warmup_frames: int = 5                      # frames after a (re)seed of the track model during which the rate limits do not apply (v0.6)
     axis_sides_max_disagreement: float = 6.7e-4      # 1/m, both boundaries fitted and their curvatures differ by more (R 1500 m): axis trusted only to axis_disagree_range; 0 = off
     axis_disagree_range: float = 60.0                # m, trusted range of the axis when the two boundaries disagree
     axis_one_side_range: float = 120.0               # m, trusted range when only one boundary was fitted (it cannot tell a parallel wall from a diverging one); 0 = no cap
@@ -88,15 +96,16 @@ class GaugeConfig:
     """Clearance-gauge cross-section, relative to the track axis and the rail head level.
 
     ``profile`` is a closed polygon [(dy, h), ...] with dy = lateral offset from the track
-    axis (m, + left) and h = height above the rail head (m). Default: half-width 1.4 m
-    (car body 1.36 m + margin; platform edges sit at ~1.6 m) from 0.55 m up (above the contact-rail cover), and a lower
-    zone from 0.12 m in the middle (|dy| < 0.95 m, between the rails). Top at 3.5 m.
-    The ``warning_margin`` widens the polygon laterally for a second, advisory zone.
-    Values are placeholders — refine against GOST 23961-80 drawings.
+    axis (m, + left) and h = height above the rail head (m). Default since v0.6: **the train
+    envelope the organizers gave in the Q&A session (2.1 m wide x 3.0 m high, all protruding
+    elements included)**: half-width 1.05 m, from 0.12 m above the rail head (the rail heads,
+    their fastenings and the joint bars stay out) to 3.0 m. Objects lower than 0.12 m on the
+    track are the low-object stage's (``lowobj``). v0.5 used a 2.8 m x 3.5 m polygon assumed
+    from the car body (1.36 m half-width + margin); it is now the advisory zone:
+    ``warning_margin`` = 0.35 m widens the polygon laterally to 1.40 m.
     """
     profile: List[Tuple[float, float]] = field(default_factory=lambda: [
-        (-0.95, 0.12), (0.95, 0.12), (0.95, 0.55), (1.40, 0.55), (1.40, 3.50),
-        (-1.40, 3.50), (-1.40, 0.55), (-0.95, 0.55),
+        (-1.05, 0.12), (1.05, 0.12), (1.05, 3.00), (-1.05, 3.00),
     ])
     warning_margin: float = 0.35   # m, extra lateral width of the advisory zone
     range_min: float = 3.0         # m along track
@@ -106,7 +115,8 @@ class GaugeConfig:
     # polygon's lateral edge (the axis is uncertain by ~0.1 deg, i.e. 0.1 m per 60 m of range);
     # candidates and the advisory zone are unaffected. 0 = off (v0.3 behaviour)
     edge_margin: float = 0.0
-    edge_margin_per_100m: float = 0.0
+    edge_margin_per_100m: float = 0.15   # v0.6: 0.15 m per 100 m (0.3 m at 200 m) of axis uncertainty at the envelope edge
+    no_rail_range: float = 40.0    # v0.6.2: m; in a frame without the rail pair in the near range (stations, switch caverns: the axis rests on walls alone) the corridor beyond this is advisory only; 0 = off
 
 
 @dataclass
@@ -138,21 +148,27 @@ class ClusterConfig:
     wall_segment_min_length: float = 4.0   # tall + long + narrow = wall segment (a train ahead is wide)
     wall_segment_max_width: float = 1.5
     gauge_min_points: int = 3      # voxels inside the strict gauge to classify as 'gauge'
-    overhead_min_height: float = 2.4   # clusters entirely above this (m over rail head) are advisory only
+    overhead_min_height: float = 3.0   # clusters entirely above this (m over rail head) are advisory only (v0.6: the envelope top; 2.4 in v0.5)
     # v0.5 infrastructure signatures measured on the organizer bags (EXPERIMENTS.md section 1b); each demotes
     # the cluster to advisory ('warning'), never drops it; 0 = rule off
     column_min_height: float = 2.2     # m, taller and narrower than column_max_width = column / post / gate leg (a person is 1.7 m)
     column_max_width: float = 1.0      # m
+    column_min_width: float = 0.25     # m, v0.6: near the axis only clusters at least this wide are columns (a hanging cable is thinner)
     elevated_min_height: float = 1.2   # m, lowest point above this and wider than elevated_min_width = beam / roof strip / sign gantry
     elevated_min_width: float = 2.0    # m (a train ahead reaches down to the polygon bottom)
     floating_min_height: float = 0.7   # m, lowest point above this, lower than floating_max_height and narrower than floating_max_width = sign / lamp / bracket on the wall
     floating_max_height: float = 1.2   # m (a person is taller: a 1.5 m limit demoted a person on a platform edge, review 22.09)
     floating_max_width: float = 1.0    # m
-    edge_min_lateral: float = 1.2      # m, |lateral| beyond this, longer than edge_min_aspect x width and lower than edge_max_height = duct / bench / platform-edge fragment
+    edge_min_lateral: float = 1.0      # m (v0.6: 1.2 with the 1.40 m polygon), |lateral| beyond this, longer than edge_min_aspect x width and lower than edge_max_height = duct / bench / platform-edge fragment
     edge_min_aspect: float = 2.5
     edge_max_height: float = 1.0       # m
+    far_min_height: float = 0.6        # m, v0.6: beyond the trusted height reference (but within the trusted axis) only clusters at least this tall are obstacles,
+    far_max_length: float = 3.0        # m, ... at most this long along the track (a face seen head-on, not a surface at grazing incidence),
+    far_max_bottom: float = 1.0        # m, ... and reaching down below this height (not a sign hanging above the far corridor)
+    signature_min_lateral: float = 0.6  # m, v0.6: the column and floating signatures apply only off the track centre (a cable / object hanging into the envelope near the axis is an obstacle)
     wall_face_min_height: float = 2.0  # m, taller than a person (1.5 demoted a person standing on a 1.1 m platform edge, review 22.09); taller than this, reaching above overhead_min_height, and its part below that level hugs the corridor edge (|dy| from wall_face_min_inner to beyond wall_face_edge) = wall / portal face pulled in by the axis
-    wall_face_edge: float = 1.6        # m
+    wall_face_min_top: float = 2.8     # m, v0.6: the face reaches above this (just under the 3.0 m envelope top; v0.5 used overhead_min_height = 2.4 under a 3.5 m top)
+    wall_face_edge: float = 1.3        # m (v0.6: the advisory zone now ends at 1.40 m; 1.6 with the 1.75 m zone of v0.5)
     wall_face_min_inner: float = 0.3   # m
     visibility_ratio: float = 0.15 # cluster is plausible if n >= ratio * expected points
     # retro-reflective infrastructure (signs, markers, reflectors): intensity is reflectivity %, > 100 = retro
@@ -189,15 +205,101 @@ class TrackingConfig:
     ego_speed_max: float = 25.0    # m/s, obstacles approach at most this fast (no odometry)
     frame_dt: float = 0.1          # s
     confirm_hits: int = 3          # consecutive frames before an obstacle is reported
-    confirm_time_s: float = 0.3    # s of sensor time a track must have been observed (frames x interval, first frame included: 0.3 s = 3 frames at 10 Hz, the v0.3 persistence; 0.5 = 5 frames); applied when the caller supplies the frame interval (the Detector does); 0 = hits only
+    low_confirm_hits: int = 5      # v0.6: hits before a low (bed-level) object is reported: it is static and in view for seconds, while rail-area clutter flickers for 2-3 frames
+    confirm_time_s: float = 0.5    # s of sensor time a track must have been observed (frames x interval, first frame included: 0.5 s = 5 frames at 10 Hz, v0.6.2; 0.3 = 3 frames, the v0.3-v0.6.1 persistence); applied when the caller supplies the frame interval (the Detector does); 0 = hits only
     hit_window: int = 10           # frames of a track's recent history kept for min_hit_fraction
     min_hit_fraction: float = 0.6  # a track must have been matched in this share of its last hit_window frames (flickering structures are not reported); 0 = off
     zone_window: int = 10          # hits over which the zone (gauge / advisory) is decided (5 in v0.3)
     zone_min_fraction: float = 0.6 # share of those hits inside the strict gauge for the track to be an obstacle (0.5 = majority, v0.3)
     max_misses: int = 3            # frames a track survives without a match
+    hold_misses: int = 1           # frames a reported track stays reported without a match (at its predicted distance): one missed frame does not drop a STOP (review 23.09); 0 = the v0.6.2 behaviour
     conf_gain: float = 0.35        # confidence added per hit
     conf_decay: float = 0.25       # confidence removed per miss
     conf_threshold: float = 0.6    # report obstacles with confidence >= threshold
+
+    def frames_to_confirm(self, frame_dt: float | None = None) -> int:
+        """Consecutive frames a static, always-matched object needs before it is reported
+        (the larger of ``confirm_hits`` and ``confirm_time_s`` in frames, first frame
+        included): 5 at 10 Hz with the defaults."""
+        dt = self.frame_dt if frame_dt is None else frame_dt
+        by_time = int(math.ceil(self.confirm_time_s / dt - 1e-9)) if (self.confirm_time_s > 0 and dt > 0) else 0
+        return max(self.confirm_hits, by_time)
+
+
+@dataclass
+class LowObjectConfig:
+    """Low foreign objects on the bed (v0.6, ``resense/lowobj.py``): bumps above the learned
+    track-bed cross-section, below the gauge polygon bottom (organizers' size criterion
+    300 x 300 x 100 mm)."""
+    enabled: bool = True
+    half_width: float = 1.05           # m, |dy| of the search band (the train envelope)
+    min_excess: float = 0.05           # m above the local bed template (a 10 cm object lying on a rail head clears it by ~5 cm)
+    max_excess: float = 1.0            # m
+    min_top: float = 0.0               # m above the rail head the top of a low cluster must reach: the bed is full of fixtures 5-40 cm tall that stay below the rail head by design (EXPERIMENTS.md §1d); -1 = any bump above the bed
+    min_point_top: float = 0.03        # m above the rail head every low candidate point must be (the rail-area fixtures - guard rails, joints, fastenings - reach the rail-head level; a candidate must rise above it); -1 = off
+    template_range: Tuple[float, float] = (4.0, 30.0)   # m along track where the cross-section is learned
+    template_bin: float = 0.025        # m lateral bin of the template
+    template_percentile: float = 30.0  # per-bin percentile of the height (the bed surface)
+    template_min_points: int = 12
+    template_dilate: float = 0.05      # m, max-filter of the template (rail heads and flanks belong to it)
+    template_smoothing: float = 0.8    # EMA of the template across frames
+    local_bin: float = 2.0             # m along-track bin of the local bed offset
+    local_min_points: int = 5          # bed returns per bin for the bin to count as observed
+    range_max: float = 60.0            # m, the bed is observed at grazing incidence: beyond this nothing is reported
+    foot_max_top: float = 0.35         # m, a low cluster with corridor points higher than this above it is the foot of something taller (the corridor stage decides)
+    eps: float = 0.2                   # DBSCAN radius of the low candidates (range-normalised like cluster.eps: 0.48 m at 56 m)
+    min_points: int = 3                # voxels of a low cluster
+    min_height: float = 0.0            # m, vertical extent of a low cluster (0: a flat top face at close range is enough, its excess over the bed is the height)
+    max_length: float = 1.5            # m along the track (rails, guard rails, cables and ducts are longer)
+    max_width: float = 2.2             # m across the track: the envelope is 2.1 m wide (v0.6.2: 1.6 m rejected a person lying across the track, EXPERIMENTS.md §2d)
+    min_width: float = 0.15            # m, a low cluster narrower than this across the track is a rail-head sliver / fastening
+    straddle_enabled: bool = True      # v0.6.2: objects straddling the envelope floor (lowobj.py step 4)
+    straddle_min_top: float = 0.10     # m above the rail head the top of such a cluster must reach (rail fittings reach 1-8 cm)
+    straddle_band: float = 0.30        # m above the envelope floor from which corridor points join that clustering
+    straddle_min_width: float = 0.35   # m across the track: trackside devices beside a rail (train stops, lubricators,
+                                       # signalling) are mounted along it and narrow across it; an object lying across
+    straddle_max_length: float = 0.8   # m along the track      a rail is wide across it and short along it
+
+
+@dataclass
+class CalibrationConfig:
+    """Automatic mount calibration (v0.6, ``resense/calibration.py``): sensor orientation, roll,
+    pitch and a large mount yaw measured from the rails and the bed in the first frames."""
+    enabled: bool = True
+    frames: int = 20               # observations (frames with a rail pair) whose median roll / pitch / yaw is frozen
+    obs_spacing: int = 10          # frames between those observations (20 x 10 = 20 s: a moving train's cant and lean average out)
+    provisional_frames: int = 5    # the first observations, for a provisional correction ...
+    provisional_min_deg: float = 2.5   # ... applied only for a clearly tilted rig (larger roll or pitch)
+    max_frames: int = 400          # give up (keep the configured mapping, report 'fallback') after this many frames
+    search_orientations: bool = True   # try other axis-aligned orientations when the configured mapping shows no rails
+    keep_up_axis: bool = True      # only orientations whose up axis is the configured one, upright or inverted (8 of 24):
+                                   # a spinning LiDAR is mounted with its spin axis vertical; false = all 24 (a flat
+                                   # tunnel wall with cable trays then competes with the bed, EXPERIMENTS.md section 6)
+    orientation_votes: int = 2     # frames on which the same candidate orientation must win before it is adopted
+    min_rail_score: float = 0.05   # m, ridge prominence of the rail pair (as track.rails_min_score)
+    apply_min_deg: float = 0.75    # roll / pitch corrections below this are not applied: 1.5x the p90 error of the 20-observation median on a moving train (0.5 deg; at 0.5 a noise-level +0.51 deg roll was applied on a ride piece and added 6 false events, review 23.09)
+    min_yaw_deg: float = 3.0       # the mount yaw is corrected only above this (the track model follows smaller / dynamic yaw, and the rails' tangent at the sensor includes the chord angle of the car in a curve)
+    max_tilt_deg: float = 15.0     # larger roll / pitch estimates are rejected as implausible
+    monitor_period: int = 50       # frames between drift checks after freezing; 0 = off
+    drift_warn_deg: float = 1.5    # residual tilt (median of the last checks) that raises a health warning
+    drift_window: int = 10         # checks in that median (10 x 50 frames = 50 s: a curve is not a drift)
+
+
+@dataclass
+class HealthConfig:
+    """Production guards (v0.6, ``resense/health.py``): input sanity, visibility, track lock,
+    latency budget. They never change a detection; they set ``health.level`` and the
+    monitored (verified-clear) range."""
+    min_points: int = 20000        # valid returns per frame below which the input is a fault
+    low_points_fraction: float = 0.5   # warn when a frame has fewer than this share of the running median
+    near_range: float = 2.5        # m, returns closer than this are window dirt / the train's nose
+    max_near_fraction: float = 0.2 # warn when more than this share of the returns is that close (blocked / dirty window, spray)
+    min_visibility: float = 60.0   # m, warn when the tunnel ahead is visible less far than this
+    sector_deg: float = 10.0       # azimuth sectors for the blockage check (central +-30 deg)
+    lock_window: int = 20          # frames over which the rail lock rate is computed
+    min_lock_rate: float = 0.3     # warn below this share of frames with a rail pair
+    latency_budget_ms: float = 100.0   # warn when the p95 of the recent frames exceeds it
+    latency_window: int = 50
 
 
 @dataclass
@@ -208,13 +310,16 @@ class DetectorConfig:
     cluster: ClusterConfig = field(default_factory=ClusterConfig)
     tracking: TrackingConfig = field(default_factory=TrackingConfig)
     accumulation: AccumulationConfig = field(default_factory=AccumulationConfig)
+    lowobj: LowObjectConfig = field(default_factory=LowObjectConfig)
+    calibration: CalibrationConfig = field(default_factory=CalibrationConfig)
+    health: HealthConfig = field(default_factory=HealthConfig)
     voxel: float = 0.0             # optional voxel downsampling of corridor candidates (0 = off)
 
     # ---- (de)serialisation -------------------------------------------------
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "DetectorConfig":
         cfg = cls()
-        for section in ("sensor", "track", "gauge", "cluster", "tracking", "accumulation"):
+        for section in ("sensor", "track", "gauge", "cluster", "tracking", "accumulation", "lowobj", "calibration", "health"):
             if section in d and d[section]:
                 obj = getattr(cfg, section)
                 for k, v in d[section].items():

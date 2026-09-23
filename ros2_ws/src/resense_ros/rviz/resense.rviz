@@ -57,7 +57,9 @@ Visualization Manager:
         Depth: 5
         Durability Policy: Volatile
         History Policy: Keep Last
-        Reliability Policy: Best Effort
+        # reliable, as the node's input_reliability: auto: `ros2 bag play` offers the recorded RELIABLE
+        # profile, and a best-effort reader loses most 5-10 MB clouds (EXPERIMENTS.md section 3b)
+        Reliability Policy: Reliable
       Position Transformer: XYZ
       Color Transformer: AxisColor
       Axis: Z
@@ -83,7 +85,9 @@ Visualization Manager:
         Depth: 5
         Durability Policy: Volatile
         History Policy: Keep Last
-        Reliability Policy: Best Effort
+        # reliable, as the node's input_reliability: auto: `ros2 bag play` offers the recorded RELIABLE
+        # profile, and a best-effort reader loses most 5-10 MB clouds (EXPERIMENTS.md section 3b)
+        Reliability Policy: Reliable
       Position Transformer: XYZ
       Color Transformer: AxisColor
       Axis: Z

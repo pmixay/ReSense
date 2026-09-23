@@ -1,0 +1,45 @@
+== clear (dry_run.sh roundT_doubleT, node + player in one container, root, v0.6.2 before the UDP profile)
+status messages      : 237
+alarm frames         : 2
+obstacle distance    : 128.3 .. 130.2 m
+latency decode+detect: mean 65 / p95 76 / max 89 ms
+detector stage total : mean 53 / p95 62 ms
+dropped input frames : 9
+fps (last report)    : 10.0
+
+PASS: all dry-run criteria met
+
+== obstacle (dry_run.sh doubleT_obstacle, one container, root)
+status messages      : 103
+alarm frames         : 88
+obstacle distance    : 56.1 .. 56.2 m
+latency decode+detect: mean 99 / p95 130 / max 189 ms
+detector stage total : mean 76 / p95 98 ms
+dropped input frames : 86
+fps (last report)    : 8.08
+
+FAIL: p95 latency 130 ms > 100 ms
+FAIL: 86 dropped input frames > 0
+
+== ct_smoke (console_test.sh: node container, player uid 1000 in another container, UDP profile, two synthetic bags)
+status messages      : 72
+alarm frames         : 42
+obstacle distance    : 44.9 .. 59.9 m
+latency decode+detect: mean 65 / p95 78 / max 89 ms
+detector stage total : mean 53 / p95 63 ms
+dropped input frames : 8
+fps (last report)    : 10.01
+recordings seen      : 2 ['/lidar_points', '/sensing/lidar/hesai128/pointcloud']
+
+PASS: all dry-run criteria met
+
+== ct_real (console_test.sh on roundT_doubleT then doubleT_obstacle, player uid 1000)
+status messages      : 351
+alarm frames         : 131
+obstacle distance    : 56.1 .. 130.2 m
+latency decode+detect: mean 82 / p95 102 / max 177 ms
+detector stage total : mean 65 / p95 80 ms
+dropped input frames : 104
+fps (last report)    : 8.69
+
+FAIL: 2 of 131 reported distances outside 50..62 m (e.g. 130.2 m)

@@ -30,7 +30,9 @@ def test_rviz_layout_parses_and_covers_both_bags():
     for t in RAW_TOPICS:
         disp = by_topic[t]
         assert disp["Class"] == "rviz_default_plugins/PointCloud2"
-        assert disp["Topic"]["Reliability Policy"] == "Best Effort"
+        # reliable: `ros2 bag play` offers the recorded RELIABLE profile and a best-effort display
+        # loses most 5-10 MB clouds (EXPERIMENTS.md section 3b, the RViz recording of 23.09)
+        assert disp["Topic"]["Reliability Policy"] == "Reliable"
         assert disp["Topic"]["Depth"] == 5
         assert disp["Enabled"] is True
     assert by_topic["/resense/corridor_points"]["Class"] == "rviz_default_plugins/PointCloud2"
@@ -56,6 +58,9 @@ def test_foxglove_layout_parses_and_has_the_panels():
         for p in c["paths"]:
             assert p["timestampMethod"] in ("receiveTime", "headerStamp")
     assert any(c.get("path", "").startswith("/resense/obstacle_detected") for k, c in cfg.items() if k.startswith("Indicator!"))
+    decision = [c for k, c in cfg.items() if k.startswith("Indicator!") and c.get("path") == "/resense/decision.data"]
+    assert decision and {r["rawValue"] for r in decision[0]["rules"]} == {"GO", "CAUTION", "STOP", "FAULT"}
+    assert "/resense/clear_distance.data" in plotted
     assert any(c.get("topicPath") == "/resense/status" for k, c in cfg.items() if k.startswith("RawMessages!"))
 
     # every leaf of the mosaic layout is a configured panel and every panel is placed
@@ -88,7 +93,7 @@ def tiny_run(tmp_path_factory):
 
 def test_make_demo_run_writes_resense_run_format(tiny_run):
     out, summary = tiny_run
-    lines = [json.loads(l) for l in open(out) if l.strip()]
+    lines = [json.loads(ln) for ln in open(out) if ln.strip()]
     assert len(lines) == summary["frames"] == 14
     for i, d in enumerate(lines):
         assert RESULT_KEYS <= set(d), d.keys() - RESULT_KEYS
@@ -98,7 +103,9 @@ def test_make_demo_run_writes_resense_run_format(tiny_run):
     assert not lines[0]["obstacle"] and not lines[-1]["obstacle"]
     alarms = [d for d in lines if d["obstacle"]]
     assert alarms, "the approaching person was never confirmed"
-    assert all(40.0 <= d["nearest_distance"] <= 72.0 for d in alarms)
+    # 70 -> 42 m, then the person is gone; since v0.6.3 a reported obstacle is held over one missed
+    # frame at its predicted distance (one 4 m step closer)
+    assert all(36.0 <= d["nearest_distance"] <= 72.0 for d in alarms)
 
 
 # --------------------------------------------------------------------------- B. dashboard replay in a browser

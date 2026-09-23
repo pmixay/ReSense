@@ -1,0 +1,1736 @@
+{
+ "note": "23.09, after the second criteria review. straddle_margins: scripts/eval_real.py over all 13 759 real frames with one straddle threshold moved, compared with v0.6.2 by scripts/consistency_check.py (events summed over the 13 subsets; object/person = frames found / in the envelope). low_max_width_2.2: the same for lowobj.max_width 1.6 -> 2.2 (decision and distance identical on every frame). lying: scripts/far_range_eval.py, files 46,68,98,140,168,172 of new_data, |lateral| <= 0.15 m, a 0.5 x 1.8 x 0.35 m box; 'rail' = on the rail heads (--place rail), 'deep_bed' = on the measured bed, 'shallow_bed_D' = base D m below the rail head (resense.synthetic.local_bed_z replaced); v062 = lowobj.max_width 1.6, wide = 2.2 (shipped).",
+ "straddle_margins": {
+  "top08": {
+   "base": "v062d",
+   "cand": "sw_top08",
+   "rows": [
+    {
+     "subset": "doubleT_platform",
+     "frames": 345,
+     "events_base": 4,
+     "events_cand": 3,
+     "alarm_frames_base": 2,
+     "alarm_frames_cand": 2,
+     "rest_base": 63,
+     "rest_cand": 63,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "roundT_doubleT",
+     "frames": 252,
+     "events_base": 1,
+     "events_cand": 1,
+     "alarm_frames_base": 2,
+     "alarm_frames_cand": 2,
+     "rest_base": 66,
+     "rest_cand": 65,
+     "chosen_without_it": true
+    },
+    {
+     "subset": "roundT_pressureGate_roundT",
+     "frames": 268,
+     "events_base": 0,
+     "events_cand": 0,
+     "alarm_frames_base": 0,
+     "alarm_frames_cand": 0,
+     "rest_base": 67,
+     "rest_cand": 66,
+     "chosen_without_it": true
+    },
+    {
+     "subset": "roundT_squareT_pressureGate_squareT",
+     "frames": 545,
+     "events_base": 0,
+     "events_cand": 0,
+     "alarm_frames_base": 0,
+     "alarm_frames_cand": 0,
+     "rest_base": 67,
+     "rest_cand": 66,
+     "chosen_without_it": true
+    },
+    {
+     "subset": "squareT_platform_squareT_switch",
+     "frames": 877,
+     "events_base": 15,
+     "events_cand": 15,
+     "alarm_frames_base": 77,
+     "alarm_frames_cand": 77,
+     "rest_base": 52,
+     "rest_cand": 51,
+     "chosen_without_it": true
+    },
+    {
+     "subset": "ride part 0",
+     "frames": 1409,
+     "events_base": 3,
+     "events_cand": 3,
+     "alarm_frames_base": 34,
+     "alarm_frames_cand": 34,
+     "rest_base": 64,
+     "rest_cand": 63,
+     "chosen_without_it": true
+    },
+    {
+     "subset": "ride part 1",
+     "frames": 1409,
+     "events_base": 11,
+     "events_cand": 11,
+     "alarm_frames_base": 21,
+     "alarm_frames_cand": 21,
+     "rest_base": 56,
+     "rest_cand": 55,
+     "chosen_without_it": true
+    },
+    {
+     "subset": "ride part 2",
+     "frames": 1409,
+     "events_base": 8,
+     "events_cand": 8,
+     "alarm_frames_base": 18,
+     "alarm_frames_cand": 16,
+     "rest_base": 59,
+     "rest_cand": 58,
+     "chosen_without_it": true
+    },
+    {
+     "subset": "ride part 3",
+     "frames": 1409,
+     "events_base": 2,
+     "events_cand": 2,
+     "alarm_frames_base": 4,
+     "alarm_frames_cand": 4,
+     "rest_base": 65,
+     "rest_cand": 64,
+     "chosen_without_it": true
+    },
+    {
+     "subset": "ride part 4",
+     "frames": 1409,
+     "events_base": 7,
+     "events_cand": 7,
+     "alarm_frames_base": 19,
+     "alarm_frames_cand": 19,
+     "rest_base": 60,
+     "rest_cand": 59,
+     "chosen_without_it": true
+    },
+    {
+     "subset": "ride part 5",
+     "frames": 1409,
+     "events_base": 6,
+     "events_cand": 6,
+     "alarm_frames_base": 33,
+     "alarm_frames_cand": 33,
+     "rest_base": 61,
+     "rest_cand": 60,
+     "chosen_without_it": true
+    },
+    {
+     "subset": "ride part 6",
+     "frames": 1409,
+     "events_base": 6,
+     "events_cand": 6,
+     "alarm_frames_base": 28,
+     "alarm_frames_cand": 28,
+     "rest_base": 61,
+     "rest_cand": 60,
+     "chosen_without_it": true
+    },
+    {
+     "subset": "ride part 7",
+     "frames": 1408,
+     "events_base": 4,
+     "events_cand": 4,
+     "alarm_frames_base": 7,
+     "alarm_frames_cand": 7,
+     "rest_base": 63,
+     "rest_cand": 62,
+     "chosen_without_it": true
+    }
+   ],
+   "fewer": 1,
+   "more": 0,
+   "obstacles_base": {
+    "object_on_rail": [
+     121,
+     185
+    ],
+    "person_crossing": [
+     58,
+     61
+    ]
+   },
+   "obstacles_cand": {
+    "object_on_rail": [
+     127,
+     185
+    ],
+    "person_crossing": [
+     58,
+     61
+    ]
+   },
+   "chosen_in_every_leave_one_out": false
+  },
+  "top12": {
+   "base": "v062d",
+   "cand": "sw_top12",
+   "rows": [
+    {
+     "subset": "doubleT_platform",
+     "frames": 345,
+     "events_base": 4,
+     "events_cand": 4,
+     "alarm_frames_base": 2,
+     "alarm_frames_cand": 2,
+     "rest_base": 63,
+     "rest_cand": 63,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "roundT_doubleT",
+     "frames": 252,
+     "events_base": 1,
+     "events_cand": 1,
+     "alarm_frames_base": 2,
+     "alarm_frames_cand": 2,
+     "rest_base": 66,
+     "rest_cand": 66,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "roundT_pressureGate_roundT",
+     "frames": 268,
+     "events_base": 0,
+     "events_cand": 0,
+     "alarm_frames_base": 0,
+     "alarm_frames_cand": 0,
+     "rest_base": 67,
+     "rest_cand": 67,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "roundT_squareT_pressureGate_squareT",
+     "frames": 545,
+     "events_base": 0,
+     "events_cand": 0,
+     "alarm_frames_base": 0,
+     "alarm_frames_cand": 0,
+     "rest_base": 67,
+     "rest_cand": 67,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "squareT_platform_squareT_switch",
+     "frames": 877,
+     "events_base": 15,
+     "events_cand": 15,
+     "alarm_frames_base": 77,
+     "alarm_frames_cand": 77,
+     "rest_base": 52,
+     "rest_cand": 52,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 0",
+     "frames": 1409,
+     "events_base": 3,
+     "events_cand": 3,
+     "alarm_frames_base": 34,
+     "alarm_frames_cand": 34,
+     "rest_base": 64,
+     "rest_cand": 64,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 1",
+     "frames": 1409,
+     "events_base": 11,
+     "events_cand": 11,
+     "alarm_frames_base": 21,
+     "alarm_frames_cand": 21,
+     "rest_base": 56,
+     "rest_cand": 56,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 2",
+     "frames": 1409,
+     "events_base": 8,
+     "events_cand": 8,
+     "alarm_frames_base": 18,
+     "alarm_frames_cand": 18,
+     "rest_base": 59,
+     "rest_cand": 59,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 3",
+     "frames": 1409,
+     "events_base": 2,
+     "events_cand": 2,
+     "alarm_frames_base": 4,
+     "alarm_frames_cand": 4,
+     "rest_base": 65,
+     "rest_cand": 65,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 4",
+     "frames": 1409,
+     "events_base": 7,
+     "events_cand": 7,
+     "alarm_frames_base": 19,
+     "alarm_frames_cand": 19,
+     "rest_base": 60,
+     "rest_cand": 60,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 5",
+     "frames": 1409,
+     "events_base": 6,
+     "events_cand": 6,
+     "alarm_frames_base": 33,
+     "alarm_frames_cand": 33,
+     "rest_base": 61,
+     "rest_cand": 61,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 6",
+     "frames": 1409,
+     "events_base": 6,
+     "events_cand": 6,
+     "alarm_frames_base": 28,
+     "alarm_frames_cand": 28,
+     "rest_base": 61,
+     "rest_cand": 61,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 7",
+     "frames": 1408,
+     "events_base": 4,
+     "events_cand": 4,
+     "alarm_frames_base": 7,
+     "alarm_frames_cand": 7,
+     "rest_base": 63,
+     "rest_cand": 63,
+     "chosen_without_it": false
+    }
+   ],
+   "fewer": 0,
+   "more": 0,
+   "obstacles_base": {
+    "object_on_rail": [
+     121,
+     185
+    ],
+    "person_crossing": [
+     58,
+     61
+    ]
+   },
+   "obstacles_cand": {
+    "object_on_rail": [
+     91,
+     185
+    ],
+    "person_crossing": [
+     58,
+     61
+    ]
+   },
+   "chosen_in_every_leave_one_out": false
+  },
+  "w30": {
+   "base": "v062d",
+   "cand": "sw_w30",
+   "rows": [
+    {
+     "subset": "doubleT_platform",
+     "frames": 345,
+     "events_base": 4,
+     "events_cand": 3,
+     "alarm_frames_base": 2,
+     "alarm_frames_cand": 2,
+     "rest_base": 63,
+     "rest_cand": 65,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "roundT_doubleT",
+     "frames": 252,
+     "events_base": 1,
+     "events_cand": 1,
+     "alarm_frames_base": 2,
+     "alarm_frames_cand": 2,
+     "rest_base": 66,
+     "rest_cand": 67,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "roundT_pressureGate_roundT",
+     "frames": 268,
+     "events_base": 0,
+     "events_cand": 0,
+     "alarm_frames_base": 0,
+     "alarm_frames_cand": 0,
+     "rest_base": 67,
+     "rest_cand": 68,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "roundT_squareT_pressureGate_squareT",
+     "frames": 545,
+     "events_base": 0,
+     "events_cand": 0,
+     "alarm_frames_base": 0,
+     "alarm_frames_cand": 0,
+     "rest_base": 67,
+     "rest_cand": 68,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "squareT_platform_squareT_switch",
+     "frames": 877,
+     "events_base": 15,
+     "events_cand": 15,
+     "alarm_frames_base": 77,
+     "alarm_frames_cand": 77,
+     "rest_base": 52,
+     "rest_cand": 53,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 0",
+     "frames": 1409,
+     "events_base": 3,
+     "events_cand": 4,
+     "alarm_frames_base": 34,
+     "alarm_frames_cand": 36,
+     "rest_base": 64,
+     "rest_cand": 64,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 1",
+     "frames": 1409,
+     "events_base": 11,
+     "events_cand": 11,
+     "alarm_frames_base": 21,
+     "alarm_frames_cand": 19,
+     "rest_base": 56,
+     "rest_cand": 57,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 2",
+     "frames": 1409,
+     "events_base": 8,
+     "events_cand": 8,
+     "alarm_frames_base": 18,
+     "alarm_frames_cand": 18,
+     "rest_base": 59,
+     "rest_cand": 60,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 3",
+     "frames": 1409,
+     "events_base": 2,
+     "events_cand": 2,
+     "alarm_frames_base": 4,
+     "alarm_frames_cand": 4,
+     "rest_base": 65,
+     "rest_cand": 66,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 4",
+     "frames": 1409,
+     "events_base": 7,
+     "events_cand": 8,
+     "alarm_frames_base": 19,
+     "alarm_frames_cand": 22,
+     "rest_base": 60,
+     "rest_cand": 60,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 5",
+     "frames": 1409,
+     "events_base": 6,
+     "events_cand": 6,
+     "alarm_frames_base": 33,
+     "alarm_frames_cand": 31,
+     "rest_base": 61,
+     "rest_cand": 62,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 6",
+     "frames": 1409,
+     "events_base": 6,
+     "events_cand": 6,
+     "alarm_frames_base": 28,
+     "alarm_frames_cand": 28,
+     "rest_base": 61,
+     "rest_cand": 62,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 7",
+     "frames": 1408,
+     "events_base": 4,
+     "events_cand": 4,
+     "alarm_frames_base": 7,
+     "alarm_frames_cand": 10,
+     "rest_base": 63,
+     "rest_cand": 64,
+     "chosen_without_it": false
+    }
+   ],
+   "fewer": 1,
+   "more": 2,
+   "obstacles_base": {
+    "object_on_rail": [
+     121,
+     185
+    ],
+    "person_crossing": [
+     58,
+     61
+    ]
+   },
+   "obstacles_cand": {
+    "object_on_rail": [
+     121,
+     185
+    ],
+    "person_crossing": [
+     58,
+     61
+    ]
+   },
+   "chosen_in_every_leave_one_out": false
+  },
+  "w40": {
+   "base": "v062d",
+   "cand": "sw_w40",
+   "rows": [
+    {
+     "subset": "doubleT_platform",
+     "frames": 345,
+     "events_base": 4,
+     "events_cand": 4,
+     "alarm_frames_base": 2,
+     "alarm_frames_cand": 2,
+     "rest_base": 63,
+     "rest_cand": 64,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "roundT_doubleT",
+     "frames": 252,
+     "events_base": 1,
+     "events_cand": 1,
+     "alarm_frames_base": 2,
+     "alarm_frames_cand": 2,
+     "rest_base": 66,
+     "rest_cand": 67,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "roundT_pressureGate_roundT",
+     "frames": 268,
+     "events_base": 0,
+     "events_cand": 0,
+     "alarm_frames_base": 0,
+     "alarm_frames_cand": 0,
+     "rest_base": 67,
+     "rest_cand": 68,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "roundT_squareT_pressureGate_squareT",
+     "frames": 545,
+     "events_base": 0,
+     "events_cand": 0,
+     "alarm_frames_base": 0,
+     "alarm_frames_cand": 0,
+     "rest_base": 67,
+     "rest_cand": 68,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "squareT_platform_squareT_switch",
+     "frames": 877,
+     "events_base": 15,
+     "events_cand": 15,
+     "alarm_frames_base": 77,
+     "alarm_frames_cand": 77,
+     "rest_base": 52,
+     "rest_cand": 53,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 0",
+     "frames": 1409,
+     "events_base": 3,
+     "events_cand": 3,
+     "alarm_frames_base": 34,
+     "alarm_frames_cand": 34,
+     "rest_base": 64,
+     "rest_cand": 65,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 1",
+     "frames": 1409,
+     "events_base": 11,
+     "events_cand": 12,
+     "alarm_frames_base": 21,
+     "alarm_frames_cand": 20,
+     "rest_base": 56,
+     "rest_cand": 56,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 2",
+     "frames": 1409,
+     "events_base": 8,
+     "events_cand": 8,
+     "alarm_frames_base": 18,
+     "alarm_frames_cand": 17,
+     "rest_base": 59,
+     "rest_cand": 60,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 3",
+     "frames": 1409,
+     "events_base": 2,
+     "events_cand": 2,
+     "alarm_frames_base": 4,
+     "alarm_frames_cand": 4,
+     "rest_base": 65,
+     "rest_cand": 66,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 4",
+     "frames": 1409,
+     "events_base": 7,
+     "events_cand": 7,
+     "alarm_frames_base": 19,
+     "alarm_frames_cand": 19,
+     "rest_base": 60,
+     "rest_cand": 61,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 5",
+     "frames": 1409,
+     "events_base": 6,
+     "events_cand": 6,
+     "alarm_frames_base": 33,
+     "alarm_frames_cand": 33,
+     "rest_base": 61,
+     "rest_cand": 62,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 6",
+     "frames": 1409,
+     "events_base": 6,
+     "events_cand": 6,
+     "alarm_frames_base": 28,
+     "alarm_frames_cand": 28,
+     "rest_base": 61,
+     "rest_cand": 62,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 7",
+     "frames": 1408,
+     "events_base": 4,
+     "events_cand": 4,
+     "alarm_frames_base": 7,
+     "alarm_frames_cand": 7,
+     "rest_base": 63,
+     "rest_cand": 64,
+     "chosen_without_it": false
+    }
+   ],
+   "fewer": 0,
+   "more": 1,
+   "obstacles_base": {
+    "object_on_rail": [
+     121,
+     185
+    ],
+    "person_crossing": [
+     58,
+     61
+    ]
+   },
+   "obstacles_cand": {
+    "object_on_rail": [
+     110,
+     185
+    ],
+    "person_crossing": [
+     58,
+     61
+    ]
+   },
+   "chosen_in_every_leave_one_out": false
+  },
+  "len06": {
+   "base": "v062d",
+   "cand": "sw_len06",
+   "rows": [
+    {
+     "subset": "doubleT_platform",
+     "frames": 345,
+     "events_base": 4,
+     "events_cand": 4,
+     "alarm_frames_base": 2,
+     "alarm_frames_cand": 2,
+     "rest_base": 63,
+     "rest_cand": 63,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "roundT_doubleT",
+     "frames": 252,
+     "events_base": 1,
+     "events_cand": 1,
+     "alarm_frames_base": 2,
+     "alarm_frames_cand": 2,
+     "rest_base": 66,
+     "rest_cand": 66,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "roundT_pressureGate_roundT",
+     "frames": 268,
+     "events_base": 0,
+     "events_cand": 0,
+     "alarm_frames_base": 0,
+     "alarm_frames_cand": 0,
+     "rest_base": 67,
+     "rest_cand": 67,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "roundT_squareT_pressureGate_squareT",
+     "frames": 545,
+     "events_base": 0,
+     "events_cand": 0,
+     "alarm_frames_base": 0,
+     "alarm_frames_cand": 0,
+     "rest_base": 67,
+     "rest_cand": 67,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "squareT_platform_squareT_switch",
+     "frames": 877,
+     "events_base": 15,
+     "events_cand": 15,
+     "alarm_frames_base": 77,
+     "alarm_frames_cand": 77,
+     "rest_base": 52,
+     "rest_cand": 52,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 0",
+     "frames": 1409,
+     "events_base": 3,
+     "events_cand": 3,
+     "alarm_frames_base": 34,
+     "alarm_frames_cand": 34,
+     "rest_base": 64,
+     "rest_cand": 64,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 1",
+     "frames": 1409,
+     "events_base": 11,
+     "events_cand": 11,
+     "alarm_frames_base": 21,
+     "alarm_frames_cand": 21,
+     "rest_base": 56,
+     "rest_cand": 56,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 2",
+     "frames": 1409,
+     "events_base": 8,
+     "events_cand": 8,
+     "alarm_frames_base": 18,
+     "alarm_frames_cand": 17,
+     "rest_base": 59,
+     "rest_cand": 59,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 3",
+     "frames": 1409,
+     "events_base": 2,
+     "events_cand": 2,
+     "alarm_frames_base": 4,
+     "alarm_frames_cand": 4,
+     "rest_base": 65,
+     "rest_cand": 65,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 4",
+     "frames": 1409,
+     "events_base": 7,
+     "events_cand": 7,
+     "alarm_frames_base": 19,
+     "alarm_frames_cand": 19,
+     "rest_base": 60,
+     "rest_cand": 60,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 5",
+     "frames": 1409,
+     "events_base": 6,
+     "events_cand": 6,
+     "alarm_frames_base": 33,
+     "alarm_frames_cand": 31,
+     "rest_base": 61,
+     "rest_cand": 61,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 6",
+     "frames": 1409,
+     "events_base": 6,
+     "events_cand": 6,
+     "alarm_frames_base": 28,
+     "alarm_frames_cand": 28,
+     "rest_base": 61,
+     "rest_cand": 61,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 7",
+     "frames": 1408,
+     "events_base": 4,
+     "events_cand": 4,
+     "alarm_frames_base": 7,
+     "alarm_frames_cand": 7,
+     "rest_base": 63,
+     "rest_cand": 63,
+     "chosen_without_it": false
+    }
+   ],
+   "fewer": 0,
+   "more": 0,
+   "obstacles_base": {
+    "object_on_rail": [
+     121,
+     185
+    ],
+    "person_crossing": [
+     58,
+     61
+    ]
+   },
+   "obstacles_cand": {
+    "object_on_rail": [
+     121,
+     185
+    ],
+    "person_crossing": [
+     58,
+     61
+    ]
+   },
+   "chosen_in_every_leave_one_out": false
+  },
+  "len10": {
+   "base": "v062d",
+   "cand": "sw_len10",
+   "rows": [
+    {
+     "subset": "doubleT_platform",
+     "frames": 345,
+     "events_base": 4,
+     "events_cand": 3,
+     "alarm_frames_base": 2,
+     "alarm_frames_cand": 2,
+     "rest_base": 63,
+     "rest_cand": 66,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "roundT_doubleT",
+     "frames": 252,
+     "events_base": 1,
+     "events_cand": 1,
+     "alarm_frames_base": 2,
+     "alarm_frames_cand": 2,
+     "rest_base": 66,
+     "rest_cand": 68,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "roundT_pressureGate_roundT",
+     "frames": 268,
+     "events_base": 0,
+     "events_cand": 0,
+     "alarm_frames_base": 0,
+     "alarm_frames_cand": 0,
+     "rest_base": 67,
+     "rest_cand": 69,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "roundT_squareT_pressureGate_squareT",
+     "frames": 545,
+     "events_base": 0,
+     "events_cand": 0,
+     "alarm_frames_base": 0,
+     "alarm_frames_cand": 0,
+     "rest_base": 67,
+     "rest_cand": 69,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "squareT_platform_squareT_switch",
+     "frames": 877,
+     "events_base": 15,
+     "events_cand": 15,
+     "alarm_frames_base": 77,
+     "alarm_frames_cand": 77,
+     "rest_base": 52,
+     "rest_cand": 54,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 0",
+     "frames": 1409,
+     "events_base": 3,
+     "events_cand": 3,
+     "alarm_frames_base": 34,
+     "alarm_frames_cand": 34,
+     "rest_base": 64,
+     "rest_cand": 66,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 1",
+     "frames": 1409,
+     "events_base": 11,
+     "events_cand": 11,
+     "alarm_frames_base": 21,
+     "alarm_frames_cand": 21,
+     "rest_base": 56,
+     "rest_cand": 58,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 2",
+     "frames": 1409,
+     "events_base": 8,
+     "events_cand": 8,
+     "alarm_frames_base": 18,
+     "alarm_frames_cand": 17,
+     "rest_base": 59,
+     "rest_cand": 61,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 3",
+     "frames": 1409,
+     "events_base": 2,
+     "events_cand": 2,
+     "alarm_frames_base": 4,
+     "alarm_frames_cand": 4,
+     "rest_base": 65,
+     "rest_cand": 67,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 4",
+     "frames": 1409,
+     "events_base": 7,
+     "events_cand": 8,
+     "alarm_frames_base": 19,
+     "alarm_frames_cand": 19,
+     "rest_base": 60,
+     "rest_cand": 61,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 5",
+     "frames": 1409,
+     "events_base": 6,
+     "events_cand": 8,
+     "alarm_frames_base": 33,
+     "alarm_frames_cand": 33,
+     "rest_base": 61,
+     "rest_cand": 61,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 6",
+     "frames": 1409,
+     "events_base": 6,
+     "events_cand": 6,
+     "alarm_frames_base": 28,
+     "alarm_frames_cand": 28,
+     "rest_base": 61,
+     "rest_cand": 63,
+     "chosen_without_it": false
+    },
+    {
+     "subset": "ride part 7",
+     "frames": 1408,
+     "events_base": 4,
+     "events_cand": 4,
+     "alarm_frames_base": 7,
+     "alarm_frames_cand": 7,
+     "rest_base": 63,
+     "rest_cand": 65,
+     "chosen_without_it": false
+    }
+   ],
+   "fewer": 1,
+   "more": 2,
+   "obstacles_base": {
+    "object_on_rail": [
+     121,
+     185
+    ],
+    "person_crossing": [
+     58,
+     61
+    ]
+   },
+   "obstacles_cand": {
+    "object_on_rail": [
+     121,
+     185
+    ],
+    "person_crossing": [
+     58,
+     61
+    ]
+   },
+   "chosen_in_every_leave_one_out": false
+  }
+ },
+ "lying": {
+  "rail_v062": {
+   "lying_across": {
+    "sequences": 6,
+    "detected": 6,
+    "sustained_m": [
+     54.1,
+     64.4,
+     66.1,
+     68.1
+    ],
+    "sustained_median": 65.2,
+    "first_detection_m": [
+     50.0,
+     58.6,
+     58.7,
+     62.4,
+     72.1,
+     110.5
+    ],
+    "first_detection_median": 60.5,
+    "recall_by_bin": {
+     "0-50": [
+      116,
+      129
+     ],
+     "50-100": [
+      31,
+      153
+     ],
+     "100-150": [
+      1,
+      65
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "false_detections": 3
+   }
+  },
+  "deep_bed_v062": {
+   "lying_across": {
+    "sequences": 6,
+    "detected": 0,
+    "sustained_m": [],
+    "sustained_median": null,
+    "first_detection_m": [],
+    "first_detection_median": null,
+    "recall_by_bin": {
+     "0-50": [
+      0,
+      129
+     ],
+     "50-100": [
+      0,
+      153
+     ],
+     "100-150": [
+      0,
+      65
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "false_detections": 0
+   },
+   "lying_along": {
+    "sequences": 6,
+    "detected": 0,
+    "sustained_m": [],
+    "sustained_median": null,
+    "first_detection_m": [],
+    "first_detection_median": null,
+    "recall_by_bin": {
+     "0-50": [
+      0,
+      129
+     ],
+     "50-100": [
+      0,
+      153
+     ],
+     "100-150": [
+      0,
+      63
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "false_detections": 0
+   }
+  },
+  "deep_bed_wide": {
+   "lying_across": {
+    "sequences": 6,
+    "detected": 0,
+    "sustained_m": [],
+    "sustained_median": null,
+    "first_detection_m": [],
+    "first_detection_median": null,
+    "recall_by_bin": {
+     "0-50": [
+      0,
+      129
+     ],
+     "50-100": [
+      0,
+      153
+     ],
+     "100-150": [
+      0,
+      65
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "false_detections": 0
+   },
+   "lying_along": {
+    "sequences": 6,
+    "detected": 0,
+    "sustained_m": [],
+    "sustained_median": null,
+    "first_detection_m": [],
+    "first_detection_median": null,
+    "recall_by_bin": {
+     "0-50": [
+      0,
+      129
+     ],
+     "50-100": [
+      0,
+      153
+     ],
+     "100-150": [
+      0,
+      63
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "false_detections": 0
+   }
+  },
+  "shallow_bed_0.20_v062": {
+   "lying_across": {
+    "sequences": 6,
+    "detected": 2,
+    "sustained_m": [],
+    "sustained_median": null,
+    "first_detection_m": [
+     36.5,
+     44.9
+    ],
+    "first_detection_median": 40.7,
+    "recall_by_bin": {
+     "0-50": [
+      4,
+      129
+     ],
+     "50-100": [
+      0,
+      35
+     ],
+     "100-150": [
+      0,
+      0
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "false_detections": 0
+   },
+   "lying_along": {
+    "sequences": 6,
+    "detected": 6,
+    "sustained_m": [
+     52.1,
+     52.1,
+     54.2,
+     54.4,
+     54.4,
+     55.8
+    ],
+    "sustained_median": 54.3,
+    "first_detection_m": [
+     48.0,
+     48.1,
+     50.3,
+     50.5,
+     50.7,
+     51.5
+    ],
+    "first_detection_median": 50.4,
+    "recall_by_bin": {
+     "0-50": [
+      129,
+      129
+     ],
+     "50-100": [
+      4,
+      35
+     ],
+     "100-150": [
+      0,
+      0
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "false_detections": 0
+   }
+  },
+  "shallow_bed_0.20_wide": {
+   "lying_across": {
+    "sequences": 6,
+    "detected": 6,
+    "sustained_m": [
+     50.1,
+     50.3,
+     52.1,
+     54.4,
+     54.4,
+     55.8
+    ],
+    "sustained_median": 53.2,
+    "first_detection_m": [
+     46.6,
+     48.0,
+     48.1,
+     50.5,
+     50.7,
+     51.5
+    ],
+    "first_detection_median": 49.3,
+    "recall_by_bin": {
+     "0-50": [
+      127,
+      129
+     ],
+     "50-100": [
+      3,
+      35
+     ],
+     "100-150": [
+      0,
+      0
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "false_detections": 0
+   },
+   "lying_along": {
+    "sequences": 6,
+    "detected": 6,
+    "sustained_m": [
+     52.1,
+     52.1,
+     54.2,
+     54.4,
+     54.4,
+     55.8
+    ],
+    "sustained_median": 54.3,
+    "first_detection_m": [
+     48.0,
+     48.1,
+     50.3,
+     50.5,
+     50.7,
+     51.5
+    ],
+    "first_detection_median": 50.4,
+    "recall_by_bin": {
+     "0-50": [
+      129,
+      129
+     ],
+     "50-100": [
+      4,
+      35
+     ],
+     "100-150": [
+      0,
+      0
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "false_detections": 0
+   }
+  },
+  "shallow_bed_0.25_wide": {
+   "lying_across": {
+    "sequences": 6,
+    "detected": 6,
+    "sustained_m": [
+     32.0,
+     32.1,
+     41.0,
+     45.2,
+     48.5,
+     48.7
+    ],
+    "sustained_median": 43.1,
+    "first_detection_m": [
+     30.0,
+     38.9,
+     41.5,
+     42.0,
+     46.6,
+     46.8
+    ],
+    "first_detection_median": 41.7,
+    "recall_by_bin": {
+     "0-50": [
+      102,
+      129
+     ],
+     "50-100": [
+      0,
+      35
+     ],
+     "100-150": [
+      0,
+      0
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "false_detections": 0
+   },
+   "lying_along": {
+    "sequences": 6,
+    "detected": 6,
+    "sustained_m": [
+     45.3,
+     46.0,
+     46.9,
+     48.1,
+     50.3,
+     54.4
+    ],
+    "sustained_median": 47.5,
+    "first_detection_m": [
+     42.0,
+     45.2,
+     45.3,
+     46.1,
+     46.6,
+     50.5
+    ],
+    "first_detection_median": 45.7,
+    "recall_by_bin": {
+     "0-50": [
+      117,
+      129
+     ],
+     "50-100": [
+      1,
+      35
+     ],
+     "100-150": [
+      0,
+      0
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "false_detections": 0
+   }
+  },
+  "shallow_bed_0.30_wide": {
+   "lying_across": {
+    "sequences": 6,
+    "detected": 6,
+    "sustained_m": [
+     16.1,
+     16.4,
+     17.3,
+     25.4
+    ],
+    "sustained_median": 16.9,
+    "first_detection_m": [
+     10.1,
+     16.1,
+     16.4,
+     17.3,
+     17.7,
+     23.6
+    ],
+    "first_detection_median": 16.8,
+    "recall_by_bin": {
+     "0-50": [
+      31,
+      129
+     ],
+     "50-100": [
+      0,
+      35
+     ],
+     "100-150": [
+      0,
+      0
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "false_detections": 0
+   },
+   "lying_along": {
+    "sequences": 6,
+    "detected": 6,
+    "sustained_m": [
+     32.1,
+     39.2,
+     44.7
+    ],
+    "sustained_median": 39.2,
+    "first_detection_m": [
+     11.3,
+     12.1,
+     22.0,
+     35.9,
+     39.2,
+     42.7
+    ],
+    "first_detection_median": 28.9,
+    "recall_by_bin": {
+     "0-50": [
+      60,
+      129
+     ],
+     "50-100": [
+      0,
+      35
+     ],
+     "100-150": [
+      0,
+      0
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "false_detections": 0
+   }
+  }
+ },
+ "low_max_width_2.2": {
+  "base": "v062d",
+  "cand": "sw_lowW22",
+  "rows": [
+   {
+    "subset": "doubleT_platform",
+    "frames": 345,
+    "events_base": 4,
+    "events_cand": 4,
+    "alarm_frames_base": 2,
+    "alarm_frames_cand": 2,
+    "rest_base": 63,
+    "rest_cand": 63,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "roundT_doubleT",
+    "frames": 252,
+    "events_base": 1,
+    "events_cand": 1,
+    "alarm_frames_base": 2,
+    "alarm_frames_cand": 2,
+    "rest_base": 66,
+    "rest_cand": 66,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "roundT_pressureGate_roundT",
+    "frames": 268,
+    "events_base": 0,
+    "events_cand": 0,
+    "alarm_frames_base": 0,
+    "alarm_frames_cand": 0,
+    "rest_base": 67,
+    "rest_cand": 67,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "roundT_squareT_pressureGate_squareT",
+    "frames": 545,
+    "events_base": 0,
+    "events_cand": 0,
+    "alarm_frames_base": 0,
+    "alarm_frames_cand": 0,
+    "rest_base": 67,
+    "rest_cand": 67,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "squareT_platform_squareT_switch",
+    "frames": 877,
+    "events_base": 15,
+    "events_cand": 15,
+    "alarm_frames_base": 77,
+    "alarm_frames_cand": 77,
+    "rest_base": 52,
+    "rest_cand": 52,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "ride part 0",
+    "frames": 1409,
+    "events_base": 3,
+    "events_cand": 3,
+    "alarm_frames_base": 34,
+    "alarm_frames_cand": 34,
+    "rest_base": 64,
+    "rest_cand": 64,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "ride part 1",
+    "frames": 1409,
+    "events_base": 11,
+    "events_cand": 11,
+    "alarm_frames_base": 21,
+    "alarm_frames_cand": 21,
+    "rest_base": 56,
+    "rest_cand": 56,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "ride part 2",
+    "frames": 1409,
+    "events_base": 8,
+    "events_cand": 8,
+    "alarm_frames_base": 18,
+    "alarm_frames_cand": 18,
+    "rest_base": 59,
+    "rest_cand": 59,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "ride part 3",
+    "frames": 1409,
+    "events_base": 2,
+    "events_cand": 2,
+    "alarm_frames_base": 4,
+    "alarm_frames_cand": 4,
+    "rest_base": 65,
+    "rest_cand": 65,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "ride part 4",
+    "frames": 1409,
+    "events_base": 7,
+    "events_cand": 7,
+    "alarm_frames_base": 19,
+    "alarm_frames_cand": 19,
+    "rest_base": 60,
+    "rest_cand": 60,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "ride part 5",
+    "frames": 1409,
+    "events_base": 6,
+    "events_cand": 6,
+    "alarm_frames_base": 33,
+    "alarm_frames_cand": 33,
+    "rest_base": 61,
+    "rest_cand": 61,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "ride part 6",
+    "frames": 1409,
+    "events_base": 6,
+    "events_cand": 6,
+    "alarm_frames_base": 28,
+    "alarm_frames_cand": 28,
+    "rest_base": 61,
+    "rest_cand": 61,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "ride part 7",
+    "frames": 1408,
+    "events_base": 4,
+    "events_cand": 4,
+    "alarm_frames_base": 7,
+    "alarm_frames_cand": 7,
+    "rest_base": 63,
+    "rest_cand": 63,
+    "chosen_without_it": false
+   }
+  ],
+  "fewer": 0,
+  "more": 0,
+  "obstacles_base": {
+   "object_on_rail": [
+    121,
+    185
+   ],
+   "person_crossing": [
+    58,
+    61
+   ]
+  },
+  "obstacles_cand": {
+   "object_on_rail": [
+    121,
+    185
+   ],
+   "person_crossing": [
+    58,
+    61
+   ]
+  },
+  "chosen_in_every_leave_one_out": false
+ }
+}

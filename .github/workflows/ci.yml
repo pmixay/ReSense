@@ -43,6 +43,13 @@ jobs:
       - run: pip install -e ".[dev]" playwright && python -m playwright install --with-deps chromium
       - run: python -m pytest -q -rs web/demo
       - run: python web/demo/make_demo_run.py --out out/demo_run.jsonl && python web/demo/check_dashboard.py --jsonl out/demo_run.jsonl --screenshot out/dashboard_synthetic.png
+  lint:
+    # pyflakes + the pycodestyle error classes (ruff's default rule set) over the package, the ROS
+    # node, the scripts and the tests; the version is pinned so a ruff release cannot turn CI red
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: pipx run ruff==0.15.8 check --output-format github .
   params-in-sync:
     # configs/default.yaml is the single source of truth; the ROS package carries a copy
     runs-on: ubuntu-22.04
@@ -59,5 +66,16 @@ jobs:
         run: docker run --rm -w / -e RESENSE_REQUIRE_SYNTHETIC=1 resense:ci python3 -m pytest -q -rs /opt/resense/tests
       - name: ROS 2 package is importable and the launch file resolves
         run: docker run --rm resense:ci bash -lc "ros2 pkg executables resense_ros && ros2 launch resense_ros detector.launch.py --print >/dev/null"
-      - name: ROS 2 smoke test — a synthetic bag through the node inside the image (no dataset needed)
-        run: docker run --rm resense:ci bash -lc "python3 scripts/make_smoke_bag.py /tmp/smoke_bag && scripts/smoke_test.sh /tmp/smoke_bag"
+      - name: ROS 2 smoke test — two synthetic bags, both topic / frame pairs, through one running node (no dataset needed)
+        run: >-
+          docker run --rm resense:ci bash -lc
+          "python3 scripts/make_smoke_bag.py /tmp/smoke_bag &&
+          python3 scripts/make_smoke_bag.py /tmp/smoke_bag2 --topic /sensing/lidar/hesai128/pointcloud --frame-id lidar_livox --distance 45 &&
+          scripts/smoke_test.sh /tmp/smoke_bag /tmp/smoke_bag2"
+      - name: the organizers' way — the node in its own container, the bags played by a normal user from another one
+        # a player that is not root cannot write into a root node's shared-memory segments (/dev/shm with
+        # ipc=host): the image runs Fast DDS over UDP (docker/fastdds_udp.xml); this step keeps it that way
+        run: |
+          mkdir -p /tmp/bags && chmod 777 /tmp/bags
+          docker run --rm -v /tmp/bags:/bags resense:ci bash -lc "python3 scripts/make_smoke_bag.py /bags/smoke_bag && python3 scripts/make_smoke_bag.py /bags/smoke_bag2 --topic /sensing/lidar/hesai128/pointcloud --frame-id lidar_livox --distance 45"
+          IMAGE=resense:ci PLAYER_USER=1000:1000 scripts/console_test.sh /tmp/bags/smoke_bag /tmp/bags/smoke_bag2

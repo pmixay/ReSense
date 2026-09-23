@@ -17,7 +17,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional, Tuple
+from typing import Optional
 
 import numpy as np
 
@@ -40,6 +40,7 @@ class TrackModel:
     floor_verified: float = 0.0      # X up to which the extrapolated bed is confirmed by the side-structure base
     rail_slabs: int = 0              # v0.5: near-range slabs in which the rail pair was found (yaw support)
     axis_sides: int = 0              # v0.5: tunnel boundaries fitted this frame (0, 1 or 2)
+    age: int = 0                     # v0.6: frames since the model was seeded (rate limits apply after the warm-up)
 
     def floor_z(self, X) -> np.ndarray:
         """Bed reference height at along-track coordinate X, linearly extrapolated beyond
@@ -76,6 +77,7 @@ class TrackModel:
             "floor_verified": round(float(self.floor_verified), 1),
             "rail_slabs": int(self.rail_slabs),
             "axis_sides": int(self.axis_sides),
+            "age": int(self.age),
         }
 
 
@@ -152,6 +154,8 @@ def _fit_floor(xyz: np.ndarray, cfg: TrackConfig, prior: TrackModel):
     line = np.polyfit(xs[keep], zs[keep], 1, w=ws[keep]) if keep.sum() >= 3 else line
     res = zs - np.polyval(line, xs)
     keep = np.abs(res) < cfg.floor_max_residual
+    if keep.sum() < 3:
+        return None                               # no consistent bed (an inverted or blinded cloud): keep the prior
     xs, zs, ws = xs[keep], zs[keep], ws[keep]
     far_bins = int((xs > 40.0).sum())
     if cfg.floor_poly_degree >= 2 and far_bins >= 4 and xs.size >= 6:
@@ -374,6 +378,15 @@ class RailsFit:
     xm: Optional[np.ndarray] = None    # slab centres (m along the track)
     mids: Optional[np.ndarray] = None  # rail-pair midpoints per slab (absolute Y, m)
     wts: Optional[np.ndarray] = None   # ridge prominence per slab (m)
+    head_left: float = float("nan")    # left rail head above the bed reference (m); NaN = no pair found
+    head_right: float = float("nan")   # right rail head above the bed reference (m)
+
+    @property
+    def cant(self) -> float:
+        """Height of the left rail head over the right one (m): the sensor roll relative to the
+        rail plane (plus the track cant in a curve); NaN without a rail pair. Used by the mount
+        calibration (``resense.calibration``)."""
+        return float(self.head_left - self.head_right)
 
     def __iter__(self):
         """Backwards compatible unpacking: (score, center, rail_offset)."""
@@ -436,8 +449,9 @@ def estimate_rails(xyz: np.ndarray, floor: TrackModel, cfg: TrackConfig,
         if sc > best[0]:
             best = (sc, float(yc[b]), float(0.5 * (prof[bl] + prof[br])))
             best_bins = (bl, br)
+    heads = {} if best_bins is None else {"head_left": float(prof[best_bins[1]]), "head_right": float(prof[best_bins[0]])}
     if best_bins is None or best[0] < cfg.rails_min_score or not cfg.rails_yaw_enabled or cfg.rails_yaw_slabs < 2:
-        return RailsFit(*best)
+        return RailsFit(*best, **heads)
     # per slab: the ridge maximum near each global rail position -> pair midpoint per slab
     n_slabs = int(cfg.rails_yaw_slabs)
     slab_edges = np.linspace(x0, x1, n_slabs + 1)
@@ -464,14 +478,14 @@ def estimate_rails(xyz: np.ndarray, floor: TrackModel, cfg: TrackConfig,
             xm.append(0.5 * (slab_edges[s] + slab_edges[s + 1]))
             wts.append(min(pos[0][1], pos[1][1]))
     if len(mids) < max(2, int(cfg.rails_yaw_min_slabs)):
-        return RailsFit(best[0], best[1], best[2], len(mids))
+        return RailsFit(best[0], best[1], best[2], len(mids), **heads)
     xm, mids, wts = np.array(xm), np.array(mids), np.array(wts)
     mids_abs = mids + (np.tan(prior.yaw) * xm + 0.5 * kap * xm * xm if prior is not None else 0.0)
     # line through the absolute midpoints with the prior curvature held fixed:
     # y - k x^2 / 2 = c + t x  ->  c = axis at X = 0, t = tangent at the vehicle
     w = np.sqrt(wts / max(float(wts.max()), 1e-6))
     t, c = np.polyfit(xm, mids_abs - 0.5 * kap * xm * xm, 1, w=w)
-    return RailsFit(best[0], float(c), best[2], len(mids), float(t), xm, mids_abs, wts)
+    return RailsFit(best[0], float(c), best[2], len(mids), float(t), xm, mids_abs, wts, **heads)
 
 
 def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel] = None) -> TrackModel:
@@ -489,6 +503,7 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
         floor_coef=coef, floor_range=frange, center=prior.center, yaw=prior.yaw,
         curvature=prior.curvature, rail_offset=prior.rail_offset, n_bins=n_bins, residual=rms,
         wall_quality=prior.wall_quality, axis_valid=prior.axis_valid,
+        age=(prev.age + 1) if prev is not None else 0,
     )
     a_r = cfg.rails_smoothing if prev is not None else 0.0
     a_w = cfg.walls_smoothing if prev is not None else 0.0
@@ -537,10 +552,13 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
         model.yaw = np.radians(cfg.yaw_deg)
         model.curvature = cfg.curvature
         model.axis_valid = 1e9
-    if prev is not None:
+    if prev is not None and prev.age >= cfg.axis_warmup_frames:
         # the vehicle cannot turn by more than a fraction of a degree per frame, nor can the
         # curvature ahead change faster than along a transition curve: larger jumps are
-        # estimator noise (a boundary flipping between two structures) and are clipped
+        # estimator noise (a boundary flipping between two structures) and are clipped.
+        # Not during the warm-up after a (re)seed (v0.6): a wrong first-frame estimate (a free
+        # wall fit clipped at 5 deg on a cold start mid-ride) would otherwise take 30+ frames
+        # to unwind at 0.17 deg per frame.
         if cfg.axis_max_yaw_rate > 0:
             model.yaw = float(np.clip(model.yaw, prev.yaw - cfg.axis_max_yaw_rate, prev.yaw + cfg.axis_max_yaw_rate))
         if cfg.axis_max_curvature_rate > 0:

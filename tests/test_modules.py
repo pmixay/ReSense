@@ -15,9 +15,9 @@ import pytest
 
 from resense.cli import run_cli
 from resense.clustering import Cluster, find_clusters
-from resense.config import DetectorConfig, SensorConfig
+from resense.config import DetectorConfig
 from resense.gauge import corridor_mask, point_in_polygon, widened_profile
-from resense.pointcloud import COMPACT_DTYPE, pointcloud2_to_structured, structured_to_compact
+from resense.pointcloud import COMPACT_DTYPE, pointcloud2_to_arrays, pointcloud2_to_structured, structured_to_compact
 from resense.track import TrackModel, estimate_track
 from resense.tracking import Tracker
 
@@ -55,12 +55,35 @@ def test_tracker_confidence_decays_and_track_is_dropped_after_max_misses():
     conf = t.tracks[0].confidence
     for k in range(1, CFG.tracking.max_misses + 1):
         t.update([])
-        assert t.confirmed() == []                              # a missed track is never reported
+        # a reported track is held over hold_misses missed frames (a single miss does not drop a
+        # STOP), then no longer reported although it survives to max_misses
+        assert [x.id for x in t.confirmed()] == ([tid] if k <= CFG.tracking.hold_misses else [])
         assert len(t.tracks) == 1 and t.tracks[0].id == tid and t.tracks[0].misses == k
         assert t.tracks[0].confidence == pytest.approx(max(0.0, conf - k * CFG.tracking.conf_decay))
     t.update([])
     assert t.tracks == []                                       # max_misses + 1 misses: dropped
 
+
+
+def test_a_single_missed_frame_does_not_drop_a_reported_obstacle():
+    """Review 23.09: the decision flickered (a confirmed obstacle missed in one frame gave GO for
+    that frame). hold_misses = 1 keeps it for one missed frame; a new track is never created or
+    confirmed by the hold, and hold_misses = 0 restores the old behaviour."""
+    from dataclasses import replace
+    for hold, expect in ((1, [True, True, False]), (0, [True, False, False])):
+        t = Tracker(replace(CFG.tracking, hold_misses=hold))
+        for _ in range(5):
+            t.update([cluster_at(50.0)])
+        seen = [bool(t.confirmed())]
+        t.update([])                                   # one missed frame
+        seen.append(bool(t.confirmed()))
+        t.update([])                                   # a second one
+        seen.append(bool(t.confirmed()))
+        assert seen == expect, (hold, seen)
+    t = Tracker(CFG.tracking)
+    t.update([cluster_at(50.0)])
+    t.update([])
+    assert t.confirmed() == []                         # never reported, so nothing to hold
 
 def test_tracker_keeps_a_static_object_approaching_at_ego_speed_max():
     t = Tracker(CFG.tracking)
@@ -146,11 +169,12 @@ def test_overhead_cluster_is_demoted():
 # ---------------------------------------------------------------------------
 
 def test_point_in_default_gauge_profile():
+    """v0.6: the organizers' envelope, |dy| <= 1.05 m, 0.12 <= h <= 3.0 m above the rail head."""
     prof = CFG.gauge.profile
-    dy = np.array([0.0, 0.0, 1.2, 1.2, 1.5, 0.0, -0.9, -1.2])
-    h = np.array([1.0, 0.05, 0.3, 1.0, 1.0, 3.6, 0.2, 0.7])
-    #                in   below  side-low  in  wide  above  in-low  in
-    assert point_in_polygon(dy, h, prof).tolist() == [True, False, False, True, False, False, True, True]
+    dy = np.array([0.0, 0.0, 1.2, 1.0, 1.5, 0.0, -0.9, -1.0, 0.5])
+    h = np.array([1.0, 0.05, 0.3, 1.0, 1.0, 3.2, 0.2, 0.7, 2.9])
+    #                in   below  side   in  wide  above  in-low  in   in-top
+    assert point_in_polygon(dy, h, prof).tolist() == [True, False, False, True, False, False, True, True, True]
 
 
 def test_widened_profile_keeps_inner_zone():
@@ -176,8 +200,10 @@ def test_corridor_mask_strict_is_subset_of_wide():
     dy = xyz[:, 1] - track.center_y(X)
     h = xyz[:, 2] - track.rail_z(X)
     margin_only = mask & ~strict
-    assert (np.abs(dy[margin_only]) > 1.4 - 1e-6).all() and (np.abs(dy[margin_only]) <= 1.4 + CFG.gauge.warning_margin + 1e-6).all()
-    assert (h[strict] >= 0.12 - 1e-6).all() and (h[strict] <= 3.5 + 1e-6).all()
+    prof = np.asarray(CFG.gauge.profile)
+    hw, top = float(np.abs(prof[:, 0]).max()), float(prof[:, 1].max())
+    assert (np.abs(dy[margin_only]) > hw - 1e-6).all() and (np.abs(dy[margin_only]) <= hw + CFG.gauge.warning_margin + 1e-6).all()
+    assert (h[strict] >= 0.12 - 1e-6).all() and (h[strict] <= top + 1e-6).all()
 
 
 # ---------------------------------------------------------------------------
@@ -271,6 +297,25 @@ def test_pointcloud2_decoding_drops_dual_return_zeros_and_keeps_ring_intensity()
     assert out["intensity"].tolist() == [12.0, 255.0] and out["ring"].tolist() == [40, 64]
 
 
+def test_node_decode_matches_the_compact_path_and_counts_near_returns():
+    """pointcloud2_to_arrays (the node's one-pass decode, v0.6.2) = structured_to_compact + the
+    node's former range crop; returns inside min_range are counted as near, not kept."""
+    rng = np.random.default_rng(3)
+    rows = [(float(x), float(y), float(z), float(i), int(r), 1e9) for x, y, z, i, r in
+            zip(rng.uniform(-80, 80, 300), rng.uniform(-80, 80, 300), rng.uniform(-3, 3, 300),
+                rng.uniform(0, 255, 300), rng.integers(0, 128, 300))]
+    rows += [(0.0, 0.0, 0.0, 0.0, 5, 1e9)] * 30 + [(0.5, 0.3, 0.1, 9.0, 7, 1e9)] * 4 + [(300.0, 0.0, 0.0, 9.0, 7, 1e9)]
+    msg = _PointCloud2(rows)
+    xyz, inten, ring, n_raw, n_near = pointcloud2_to_arrays(msg, 2.5, 250.0)
+    ref = structured_to_compact(pointcloud2_to_structured(msg))
+    r2 = ref["x"] ** 2 + ref["y"] ** 2 + ref["z"] ** 2
+    keep = (r2 >= 2.5 ** 2) & (r2 <= 250.0 ** 2)
+    assert n_raw == len(ref) == 305 and n_near == 4 and xyz.shape == (int(keep.sum()), 3)
+    assert np.array_equal(xyz[:, 0], ref["x"][keep]) and np.array_equal(xyz[:, 2], ref["z"][keep])
+    assert np.array_equal(inten, ref["intensity"][keep]) and np.array_equal(ring, ref["ring"][keep])
+    assert xyz.dtype == np.float32 and inten.dtype == np.float32 and ring.dtype == np.uint16
+
+
 # ---------------------------------------------------------------------------
 # scripts/check_dry_run.py (the captain's, loaded read-only)
 # ---------------------------------------------------------------------------
@@ -284,7 +329,8 @@ def check_dry_run():
     return mod
 
 
-def _capture(path, n=60, alarms=(20, 21, 22, 23, 24), distance=55.5, latency=50.0, dropped=0, fps=9.9):
+def _capture(path, n=60, alarms=(20, 21, 22, 23, 24), distance=55.5, latency=50.0, dropped=0, fps=9.9,
+             recording=None):
     with open(path, "w") as fh:
         fh.write("garbage line\n")
         for i in range(n):
@@ -293,7 +339,10 @@ def _capture(path, n=60, alarms=(20, 21, 22, 23, 24), distance=55.5, latency=50.
                  "nearest_distance": distance if alarm else None,
                  "detections": [{"id": 1, "distance": distance}] if alarm else [],
                  "timing_ms": {"total": latency - 5.0},
-                 "node": {"latency_ms": latency + (i % 3), "dropped_frames": dropped, "fps": fps}}
+                 "node": {"latency_ms": latency + (i % 3), "fps": fps,
+                          "dropped_frames": dropped(i) if callable(dropped) else dropped}}
+            if recording is not None:
+                d["node"]["recording"] = recording(i)
             fh.write(json.dumps(d) + "\n---\n")
     return str(path)
 
@@ -310,7 +359,7 @@ def test_check_dry_run_pass(check_dry_run, tmp_path, capsys):
     ("no alarm", dict(alarms=()), ["--expect-obstacle", "--distance", "50:62"]),
     ("distance outside the window", dict(distance=70.0), ["--expect-obstacle", "--distance", "50:62"]),
     ("p95 latency too high", dict(latency=150.0), ["--expect-obstacle", "--distance", "50:62"]),
-    ("dropped frames", dict(dropped=2), ["--expect-obstacle", "--distance", "50:62"]),
+    ("dropped frames", dict(dropped=lambda i: 3 + (i >= 55) * 2), ["--expect-obstacle", "--distance", "50:62"]),
     ("alarms on a bag expected clear", dict(), ["--expect-clear"]),
     ("fps below the minimum", dict(fps=5.0), ["--expect-obstacle", "--min-fps", "9"]),
 ])
@@ -318,6 +367,28 @@ def test_check_dry_run_failures(check_dry_run, tmp_path, capsys, case, kwargs, a
     p = _capture(tmp_path / "bad.jsonl", **kwargs)
     assert check_dry_run.main([p] + args) == 1, case
     assert "FAIL:" in capsys.readouterr().out
+
+
+def test_check_dry_run_allows_the_known_alarm_frames_of_a_recording(check_dry_run, tmp_path, capsys):
+    p = _capture(tmp_path / "known.jsonl", alarms=(40, 41), distance=129.0)
+    assert check_dry_run.main([p, "--expect-clear"]) == 1
+    assert check_dry_run.main([p, "--expect-clear", "--max-alarm-frames", "2"]) == 0
+    assert check_dry_run.main([p, "--expect-clear", "--max-alarm-frames", "1"]) == 1
+    assert "(allowed 1)" in capsys.readouterr().out
+
+
+
+def test_check_dry_run_ignores_the_start_up_hole_and_takes_the_obstacle_recording(check_dry_run, tmp_path, capsys):
+    """Review 23.09: frames lost in the first seconds (the DDS start-up of 5-10 MB reliable clouds)
+    are not the node's drops; a clear recording may precede the one with the obstacle."""
+    p = _capture(tmp_path / "startup.jsonl", dropped=9)                 # all 9 lost before the first frame
+    assert check_dry_run.main([p, "--expect-obstacle"]) == 0
+    assert check_dry_run.main([p, "--expect-obstacle", "--settle-s", "0"]) == 1
+    two = _capture(tmp_path / "two.jsonl", n=80, alarms=range(60, 70), recording=lambda i: 1 + (i >= 40))
+    args = [two, "--expect-obstacle", "--expect-inputs", "2"]
+    assert check_dry_run.main(args) == 1                                # recording 1 is clear
+    assert check_dry_run.main(args + ["--obstacle-in", "2"]) == 0
+    assert "recording 1: 0 alarm frames" in capsys.readouterr().out
 
 
 def test_check_dry_run_empty_capture(check_dry_run, tmp_path):
@@ -334,8 +405,8 @@ def test_check_dry_run_empty_capture(check_dry_run, tmp_path):
 def test_cli_run_bench_summarize(synth_npy_dir, tmp_path, capsys):
     jsonl = tmp_path / "run.jsonl"
     run_cli(["run", "--npy", str(synth_npy_dir), "--out", str(jsonl), "--quiet"])
-    lines = [json.loads(l) for l in open(jsonl)]
-    assert [l["frame"] for l in lines] == [0, 1] and lines[0]["frame_id"] == "synthetic_0000.npy"
+    lines = [json.loads(ln) for ln in open(jsonl)]
+    assert [ln["frame"] for ln in lines] == [0, 1] and lines[0]["frame_id"] == "synthetic_0000.npy"
     assert {"stamp", "obstacle", "warning", "nearest_distance", "detections", "warnings", "track", "timing_ms"} <= set(lines[0])
     assert not lines[1]["obstacle"] and lines[1]["timing_ms"]["total"] > 0
     capsys.readouterr()

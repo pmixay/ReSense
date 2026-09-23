@@ -21,7 +21,7 @@ import numpy as np
 from scipy.spatial import cKDTree
 
 from resense.frame import Frame
-from resense.sensor import AZIMUTH_FOV_DEG, AZIMUTH_STEP_DEG, RING_ELEVATION_DEG, ray_directions
+from resense.sensor import ray_directions
 from resense.track import TrackModel
 
 
@@ -34,11 +34,18 @@ class ObstacleSpec:
     yaw_deg: float = 0.0
     reflectivity: float = 40.0        # mean intensity of returns (Hesai 0..255)
     label: str = "obstacle"
+    base: Optional[float] = None      # v0.6: height of the object's bottom above the rail head (m); None = standing on the bed / sleepers
+    base_z: Optional[float] = None    # v0.6: absolute Z of the bottom in the vehicle frame (set by the injector from the local bed; wins over ``base``)
 
     def to_dict(self) -> dict:
-        return {"kind": self.kind, "size": list(self.size), "distance": self.distance,
-                "lateral": self.lateral, "yaw_deg": self.yaw_deg,
-                "reflectivity": self.reflectivity, "label": self.label}
+        d = {"kind": self.kind, "size": list(self.size), "distance": self.distance,
+             "lateral": self.lateral, "yaw_deg": self.yaw_deg,
+             "reflectivity": self.reflectivity, "label": self.label}
+        if self.base is not None:
+            d["base"] = self.base
+        if self.base_z is not None:
+            d["base_z"] = round(float(self.base_z), 3)
+        return d
 
 
 @dataclass
@@ -50,6 +57,21 @@ class CatalogueEntry:
     size: Tuple[float, float, float]      # (length X, width Y, height Z) m
     reflectivity: Tuple[float, float]     # uniform range
     note: str = ""
+    base: Optional[float] = None          # bottom above the rail head (m); None = on the bed
+
+
+# v0.6: effective diameter of a thin object for the ray caster. A real beam has a footprint of
+# ``range * BEAM_DIVERGENCE_RAD`` (the Pandar128 manual gives no figure; 1 mrad is typical of
+# 905 nm mechanical units); a cable returns an echo when it intercepts at least
+# ``THIN_MIN_FILL`` of that footprint, so the grid ray caster sees it as up to
+# 1 / THIN_MIN_FILL times its diameter at range. An assumption, stated in docs/DATASET.md.
+BEAM_DIVERGENCE_RAD = 1.0e-3
+THIN_MIN_FILL = 0.15
+
+
+def effective_thickness(diameter: float, distance: float) -> float:
+    foot = max(distance, 0.0) * BEAM_DIVERGENCE_RAD
+    return float(max(diameter, min(foot, diameter / THIN_MIN_FILL)))
 
 
 OBJECT_CATALOGUE = {
@@ -63,6 +85,15 @@ OBJECT_CATALOGUE = {
     "trolley":  CatalogueEntry("cylinder", (0.6, 0.6, 1.0), (40, 120), "maintenance trolley (painted metal), cylinder approximation"),
     "cylinder": CatalogueEntry("cylinder", (0.4, 0.4, 0.9), (30, 90), "legacy: drum / bin"),
     "sphere":   CatalogueEntry("sphere", (0.4, 0.4, 0.4), (20, 60), "ball-like debris"),
+    # v0.6, from the organizers' Q&A: the size criterion and hanging cables
+    "lowbox":   CatalogueEntry("box", (0.3, 0.3, 0.1), (20, 60), "the organizers' minimum object: 300 x 300 x 100 mm lying on the track"),
+    "box0.3":   CatalogueEntry("box", (0.3, 0.3, 0.3), (20, 60), "300 mm cube"),
+    "cable":    CatalogueEntry("cable", (0.03, 0.03, 3.5), (10, 40), "broken cable hanging from the vault into the envelope, lower end 1.0 m above the rail head", base=1.0),
+    "cable_low": CatalogueEntry("cable", (0.03, 0.03, 4.3), (10, 40), "cable hanging down to 0.2 m above the rail head", base=0.2),
+    # v0.6.2, from the criteria review: an animal-sized object and one shaped like the organizers'
+    # object lying across a rail (place it at lateral +-0.8 on the bed)
+    "dog":      CatalogueEntry("box", (0.6, 0.3, 0.45), (10, 40), "dog-sized: 0.6 long x 0.3 wide x 0.45 m tall, standing on the bed"),
+    "railobj":  CatalogueEntry("box", (0.4, 0.6, 0.31), (15, 40), "like the organizers' object: across a rail, top ~0.13 m above the rail head"),
 }
 
 
@@ -78,7 +109,8 @@ def catalogue_spec(name: str, distance: float, lateral: float = 0.0, yaw_deg: fl
         rng = rng or np.random.default_rng(0)
         reflectivity = float(rng.uniform(*e.reflectivity))
     return ObstacleSpec(kind=e.kind, size=e.size, distance=float(distance), lateral=float(lateral),
-                        yaw_deg=float(yaw_deg), reflectivity=float(reflectivity), label=label or name)
+                        yaw_deg=float(yaw_deg), reflectivity=float(reflectivity), label=label or name,
+                        base=e.base)
 
 
 @dataclass
@@ -101,7 +133,13 @@ def obstacle_mesh(spec: ObstacleSpec, track: TrackModel, base_offset: float = 0.
     metres below the rail head) at the requested distance."""
     o3d = _o3d()
     L, W, H = spec.size
-    if spec.kind == "box" or spec.kind == "plank":
+    if spec.kind == "cable":
+        # a thin vertical cylinder, thickened to what a beam of finite footprint sees at that range
+        d = effective_thickness(W, spec.distance)
+        m = o3d.geometry.TriangleMesh.create_cylinder(radius=d / 2, height=H, resolution=12)
+        m.translate([0, 0, H / 2])
+        L = W = d
+    elif spec.kind == "box" or spec.kind == "plank":
         m = o3d.geometry.TriangleMesh.create_box(width=L, height=W, depth=H)
         m.translate([-L / 2, -W / 2, 0.0])
     elif spec.kind == "cylinder":
@@ -123,7 +161,12 @@ def obstacle_mesh(spec: ObstacleSpec, track: TrackModel, base_offset: float = 0.
     m.rotate(R, center=(0, 0, 0))
     x = spec.distance + L / 2
     y = float(track.center_y(x)) + spec.lateral
-    z = float(track.rail_z(x)) - base_offset
+    if spec.base_z is not None:
+        z = float(spec.base_z)
+    elif spec.base is not None:
+        z = float(track.rail_z(x)) + float(spec.base)
+    else:
+        z = float(track.rail_z(x)) - base_offset
     m.translate([x, y, z])
     m.compute_vertex_normals()
     return m
@@ -135,19 +178,71 @@ def _angles_deg(xyz: np.ndarray):
     return az, el
 
 
+BED_DEPTH_DEFAULT = 0.25   # m below the rail head: the bed level measured on the organizer bags (DATASET.md)
+
+
+def local_bed_z(xyz: np.ndarray, track: TrackModel, x: float, lateral: float,
+                min_points: int = 8) -> Optional[float]:
+    """Z of the real bed surface under a placement (30th percentile of the returns within
+    +-max(1.5 m, 3 % of the range) along the track and +-0.4 m across, in the band 0.8 m
+    below to 0.1 m above the rail head); None where the frame has too few bed returns
+    (beyond ~60-80 m the bed is not observed)."""
+    half_x = max(1.5, 0.03 * x)
+    X = xyz[:, 0]
+    near = np.abs(X - x) < half_x
+    if not near.any():
+        return None
+    P = xyz[near]
+    Xs = P[:, 0].astype(np.float64)
+    dy = P[:, 1] - track.center_y(Xs)
+    h = P[:, 2] - track.rail_z(Xs)
+    sel = (np.abs(dy - lateral) < 0.4) & (h > -0.8) & (h < 0.1)
+    if sel.sum() < min_points:
+        return None
+    # height above the rail head of the bed there, moved to X = x with the model's slope
+    hb = float(np.percentile(h[sel], 30))
+    return float(track.rail_z(x)) + hb
+
+
+def place_on_bed(frame: Frame, track: TrackModel, specs: Sequence[ObstacleSpec],
+                 bed_depth: float = BED_DEPTH_DEFAULT) -> List[ObstacleSpec]:
+    """Copies of ``specs`` whose objects that stand on the ground (``base`` None) get
+    ``base_z`` from the real bed under them (:func:`local_bed_z`), else ``bed_depth`` below
+    the model's rail head. Objects with a ``base`` (hanging cables) keep it."""
+    from dataclasses import replace
+    out = []
+    for sp in specs:
+        if sp.base is not None or sp.base_z is not None:
+            out.append(sp)
+            continue
+        x = sp.distance + sp.size[0] / 2
+        z = local_bed_z(frame.xyz, track, x, sp.lateral)
+        if z is None:
+            z = float(track.rail_z(x)) - bed_depth
+        out.append(replace(sp, base_z=z))
+    return out
+
+
 def inject_obstacles(frame: Frame, track: TrackModel, specs: Sequence[ObstacleSpec],
                      rng: Optional[np.random.Generator] = None, noise_sigma: float = 0.02,
                      dropout_start: float = 120.0, dropout_full: float = 260.0,
-                     use_missing_rays: bool = True, angular_tol_deg: float = 0.06) -> InjectionResult:
+                     use_missing_rays: bool = True, angular_tol_deg: float = 0.06,
+                     on_bed: bool = False) -> InjectionResult:
     """Insert obstacles into a real frame with occlusion-correct ray casting.
 
     For every ray of the sensor grid that hits an obstacle: if the real frame has a return
     on that ray closer than the hit, the obstacle is occluded (nothing changes); if it has a
     return farther away, that return is removed (the obstacle shadows it) and the hit is
     added; if the ray had no return at all and ``use_missing_rays`` is set, the hit is added.
+
+    ``on_bed`` (v0.6): stand ground objects on the real bed measured under them
+    (:func:`place_on_bed`) instead of 0.15 m below the model's rail head, which beyond the
+    fitted bed range buried far objects under the real bed (EXPERIMENTS.md §2c).
     """
     o3d = _o3d()
     rng = rng or np.random.default_rng(0)
+    if on_bed:
+        specs = place_on_bed(frame, track, specs)
     scene = o3d.t.geometry.RaycastingScene()
     for spec in specs:
         scene.add_triangles(o3d.t.geometry.TriangleMesh.from_legacy(obstacle_mesh(spec, track)))

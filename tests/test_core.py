@@ -16,6 +16,8 @@ from resense.sensor import expected_points, ray_directions
 from resense.synthetic import ObstacleSpec, inject_obstacles   # imports without open3d (lazy)
 from resense.track import TrackModel
 
+CONFIRM = DetectorConfig().tracking.frames_to_confirm()      # frames before a static object is reported (5 at 10 Hz)
+
 
 def test_axis_matrix_hesai_mapping():
     R = axis_matrix(SensorConfig())
@@ -79,7 +81,7 @@ def test_synthetic_tunnel_is_clear(tunnel):
     frame, _, gt = tunnel
     det = Detector(DetectorConfig())
     res = None
-    for _ in range(4):
+    for _ in range(CONFIRM + 1):
         res = det.process(frame)
     assert not res.obstacle, [d.to_dict() for d in res.detections]
     assert abs(res.track.center - gt.center) < 0.15
@@ -95,7 +97,7 @@ def test_injected_box_is_detected(tunnel, distance, kind, size):
     assert inj.n_added[0] > 0
     det = Detector(DetectorConfig())
     res = None
-    for _ in range(4):
+    for _ in range(CONFIRM + 1):
         res = det.process(inj.frame)
     assert res.obstacle, "%s at %.0f m not detected" % (kind, distance)
     assert abs(res.nearest_distance - distance) < max(2.0, 0.03 * distance)
@@ -107,7 +109,7 @@ def test_object_outside_gauge_is_not_an_obstacle(tunnel):
     inj = inject_obstacles(frame, gt, [spec], rng=np.random.default_rng(3))
     det = Detector(DetectorConfig())
     res = None
-    for _ in range(4):
+    for _ in range(CONFIRM + 1):
         res = det.process(inj.frame)
     assert not res.obstacle
 

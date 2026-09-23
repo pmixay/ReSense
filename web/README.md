@@ -26,7 +26,9 @@ Open the file in a browser; nothing to install or build. Two modes, same widgets
   detector) and press *connect*. The page subscribes to `/resense/status` (`std_msgs/String`,
   one JSON `FrameResult` per frame plus the node's `node` object) and needs nothing else — no
   point cloud is streamed to the browser. roslibjs comes from a CDN; without internet the
-  live mode is unavailable and the page says so, the replay mode still works.
+  live mode is unavailable and the page says so, the replay mode still works. rosbridge is
+  **not** in the ReSense image (`apt install ros-humble-rosbridge-suite` where ROS runs); for a
+  live view on an offline stand use Foxglove, whose bridge the image has (`foxglove_layout.json`).
 * **Replay**: *Choose file* → a `results.jsonl` written by
   `python -m resense.cli run --bag <bag> --out results.jsonl` (one `FrameResult` JSON per line
   with the extra `frame` and `frame_id` keys). Play / pause (space), step (◀ ▶, arrow keys),
@@ -73,7 +75,8 @@ a real run. Both scripts run from the repository root.
   depends on the bag's frame id (`hesai_lidar` in `roundT_doubleT`, `lidar_livox` in
   `doubleT_obstacle`, unknown in the control bag).
 * **Two raw-cloud displays**, `/lidar_points` and `/sensing/lidar/hesai128/pointcloud`, both
-  Best Effort / Keep Last / depth 5 (the bag publisher is best-effort): the one the bag carries
+  Reliable / Keep Last / depth 5 (`ros2 bag play` offers the recorded RELIABLE profile; a
+  best-effort display lost most of the 5–10 MB clouds, EXPERIMENTS.md §3b): the one the bag carries
   renders, the other stays grey with "No messages received". **A generic third display is not
   possible**: RViz2 subscribes to one literal topic name per display (no wildcard, regex or
   "first PointCloud2 topic" option), so a control bag with a third topic name needs either the
@@ -106,8 +109,10 @@ WebSocket → `ws://<demo host>:8765`**, then **Layout → Import from file → 
 
 What the audience sees: a 3D panel (dark, camera behind the sensor looking down the track, both
 raw-cloud topics, `/resense/corridor_points` in orange, `/resense/markers` with the boxes, labels,
-corridor edges and the status text), an indicator that switches from green *PATH CLEAR* to red
-*OBSTACLE* on `/resense/obstacle_detected`, plots of `/resense/nearest_distance` (−1 = none),
+corridor edges and the status text), an indicator of `/resense/decision` (green *GO*, orange
+*CAUTION*, red *STOP*, violet *FAULT*) next to the *PATH CLEAR* / *OBSTACLE* indicator of
+`/resense/obstacle_detected`, plots of `/resense/nearest_distance` (−1 = none) and
+`/resense/clear_distance`,
 `/resense/latency_ms` and `/resense/fps` over the last 30 s, and the raw `/resense/status` JSON.
 
 Known limits:

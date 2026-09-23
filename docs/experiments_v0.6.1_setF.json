@@ -1,0 +1,623 @@
+{
+ "_meta": {
+  "what": "set F: objects ray-cast into consecutive frames of the moving ride (scripts/far_range_eval.py, 30 sequences x 110 frames from 220 m; curves: 2 files x 2 kinds); first_detection_m = the distance of the first confirmed hit per sequence; recall_by_bin = [frames with a confirmed hit, frames with >= 1 object return]",
+  "code": "v0.6.1",
+  "date": "2026-09-22"
+ },
+ "straight_shipped": {
+  "per_kind": {
+   "person": {
+    "sequences": 6,
+    "detected": 6,
+    "first_detection_m": [
+     109.9,
+     146.0,
+     149.0,
+     152.0,
+     166.1,
+     168.9
+    ],
+    "first_detection_median": 150.5,
+    "recall_by_bin": {
+     "0-50": [
+      107,
+      110
+     ],
+     "50-100": [
+      125,
+      133
+     ],
+     "100-150": [
+      102,
+      151
+     ],
+     "150-200": [
+      13,
+      127
+     ],
+     "200-250": [
+      0,
+      37
+     ]
+    },
+    "false_detections": 7
+   },
+   "box1.0": {
+    "sequences": 6,
+    "detected": 6,
+    "first_detection_m": [
+     79.1,
+     108.0,
+     109.9,
+     112.4,
+     145.3,
+     155.6
+    ],
+    "first_detection_median": 111.2,
+    "recall_by_bin": {
+     "0-50": [
+      107,
+      110
+     ],
+     "50-100": [
+      122,
+      133
+     ],
+     "100-150": [
+      40,
+      151
+     ],
+     "150-200": [
+      1,
+      137
+     ],
+     "200-250": [
+      0,
+      35
+     ]
+    },
+    "false_detections": 5
+   },
+   "box0.5": {
+    "sequences": 6,
+    "detected": 2,
+    "first_detection_m": [
+     51.9,
+     57.4
+    ],
+    "first_detection_median": 54.7,
+    "recall_by_bin": {
+     "0-50": [
+      17,
+      110
+     ],
+     "50-100": [
+      3,
+      133
+     ],
+     "100-150": [
+      0,
+      132
+     ],
+     "150-200": [
+      0,
+      67
+     ],
+     "200-250": [
+      0,
+      14
+     ]
+    },
+    "false_detections": 1
+   },
+   "trolley": {
+    "sequences": 6,
+    "detected": 6,
+    "first_detection_m": [
+     85.3,
+     142.0,
+     145.3,
+     146.1,
+     153.2,
+     170.8
+    ],
+    "first_detection_median": 145.7,
+    "recall_by_bin": {
+     "0-50": [
+      107,
+      110
+     ],
+     "50-100": [
+      117,
+      133
+     ],
+     "100-150": [
+      42,
+      150
+     ],
+     "150-200": [
+      5,
+      144
+     ],
+     "200-250": [
+      0,
+      50
+     ]
+    },
+    "false_detections": 23
+   },
+   "cable": {
+    "sequences": 6,
+    "detected": 6,
+    "first_detection_m": [
+     16.4,
+     58.5,
+     93.8,
+     95.7,
+     103.3,
+     112.0
+    ],
+    "first_detection_median": 94.8,
+    "recall_by_bin": {
+     "0-50": [
+      64,
+      77
+     ],
+     "50-100": [
+      47,
+      75
+     ],
+     "100-150": [
+      7,
+      99
+     ],
+     "150-200": [
+      0,
+      62
+     ],
+     "200-250": [
+      0,
+      23
+     ]
+    },
+    "false_detections": 3
+   }
+  },
+  "jobs": 30,
+  "wall_s": 288.5
+ },
+ "curves_shipped": {
+  "per_kind": {
+   "person": {
+    "sequences": 2,
+    "detected": 1,
+    "first_detection_m": [
+     81.8
+    ],
+    "first_detection_median": 81.8,
+    "recall_by_bin": {
+     "0-50": [
+      4,
+      4
+     ],
+     "50-100": [
+      21,
+      36
+     ],
+     "100-150": [
+      0,
+      32
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      1
+     ]
+    },
+    "false_detections": 0
+   },
+   "box1.0": {
+    "sequences": 2,
+    "detected": 1,
+    "first_detection_m": [
+     74.2
+    ],
+    "first_detection_median": 74.2,
+    "recall_by_bin": {
+     "0-50": [
+      4,
+      4
+     ],
+     "50-100": [
+      16,
+      36
+     ],
+     "100-150": [
+      0,
+      35
+     ],
+     "150-200": [
+      0,
+      1
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "false_detections": 0
+   }
+  },
+  "jobs": 4,
+  "wall_s": 40.7
+ },
+ "straight_far_rule_off": {
+  "per_kind": {
+   "person": {
+    "sequences": 6,
+    "detected": 6,
+    "first_detection_m": [
+     83.3,
+     104.9,
+     105.2,
+     106.9,
+     108.0,
+     109.9
+    ],
+    "first_detection_median": 106.0,
+    "recall_by_bin": {
+     "0-50": [
+      107,
+      110
+     ],
+     "50-100": [
+      125,
+      133
+     ],
+     "100-150": [
+      19,
+      151
+     ],
+     "150-200": [
+      0,
+      127
+     ],
+     "200-250": [
+      0,
+      37
+     ]
+    },
+    "false_detections": 0
+   },
+   "box1.0": {
+    "sequences": 6,
+    "detected": 6,
+    "first_detection_m": [
+     79.1,
+     104.9,
+     105.2,
+     106.9,
+     108.0,
+     109.9
+    ],
+    "first_detection_median": 106.0,
+    "recall_by_bin": {
+     "0-50": [
+      107,
+      110
+     ],
+     "50-100": [
+      122,
+      133
+     ],
+     "100-150": [
+      18,
+      151
+     ],
+     "150-200": [
+      0,
+      137
+     ],
+     "200-250": [
+      0,
+      35
+     ]
+    },
+    "false_detections": 3
+   },
+   "box0.5": {
+    "sequences": 6,
+    "detected": 2,
+    "first_detection_m": [
+     51.9,
+     57.4
+    ],
+    "first_detection_median": 54.7,
+    "recall_by_bin": {
+     "0-50": [
+      17,
+      110
+     ],
+     "50-100": [
+      3,
+      133
+     ],
+     "100-150": [
+      0,
+      132
+     ],
+     "150-200": [
+      0,
+      67
+     ],
+     "200-250": [
+      0,
+      14
+     ]
+    },
+    "false_detections": 0
+   },
+   "trolley": {
+    "sequences": 6,
+    "detected": 6,
+    "first_detection_m": [
+     85.3,
+     101.1,
+     103.9,
+     105.2,
+     108.8,
+     109.9
+    ],
+    "first_detection_median": 104.5,
+    "recall_by_bin": {
+     "0-50": [
+      107,
+      110
+     ],
+     "50-100": [
+      117,
+      133
+     ],
+     "100-150": [
+      16,
+      150
+     ],
+     "150-200": [
+      0,
+      144
+     ],
+     "200-250": [
+      0,
+      50
+     ]
+    },
+    "false_detections": 9
+   },
+   "cable": {
+    "sequences": 6,
+    "detected": 6,
+    "first_detection_m": [
+     16.4,
+     58.5,
+     89.5,
+     93.8,
+     103.3,
+     112.0
+    ],
+    "first_detection_median": 91.7,
+    "recall_by_bin": {
+     "0-50": [
+      64,
+      77
+     ],
+     "50-100": [
+      46,
+      75
+     ],
+     "100-150": [
+      7,
+      99
+     ],
+     "150-200": [
+      0,
+      62
+     ],
+     "200-250": [
+      0,
+      23
+     ]
+    },
+    "false_detections": 0
+   }
+  },
+  "jobs": 30,
+  "wall_s": 270.6
+ },
+ "straight_given_speed": {
+  "per_kind": {
+   "person": {
+    "sequences": 6,
+    "detected": 6,
+    "first_detection_m": [
+     150.0,
+     156.0,
+     175.8,
+     178.4,
+     181.9,
+     192.1
+    ],
+    "first_detection_median": 177.1,
+    "recall_by_bin": {
+     "0-50": [
+      107,
+      110
+     ],
+     "50-100": [
+      114,
+      133
+     ],
+     "100-150": [
+      94,
+      151
+     ],
+     "150-200": [
+      56,
+      127
+     ],
+     "200-250": [
+      0,
+      37
+     ]
+    },
+    "false_detections": 1
+   },
+   "box1.0": {
+    "sequences": 6,
+    "detected": 6,
+    "first_detection_m": [
+     109.9,
+     168.2,
+     179.8,
+     185.9,
+     188.0,
+     192.1
+    ],
+    "first_detection_median": 182.9,
+    "recall_by_bin": {
+     "0-50": [
+      107,
+      110
+     ],
+     "50-100": [
+      112,
+      133
+     ],
+     "100-150": [
+      70,
+      151
+     ],
+     "150-200": [
+      63,
+      137
+     ],
+     "200-250": [
+      0,
+      35
+     ]
+    },
+    "false_detections": 3
+   },
+   "box0.5": {
+    "sequences": 6,
+    "detected": 4,
+    "first_detection_m": [
+     71.9,
+     108.8,
+     112.0,
+     156.0
+    ],
+    "first_detection_median": 110.4,
+    "recall_by_bin": {
+     "0-50": [
+      18,
+      110
+     ],
+     "50-100": [
+      41,
+      133
+     ],
+     "100-150": [
+      12,
+      132
+     ],
+     "150-200": [
+      1,
+      67
+     ],
+     "200-250": [
+      0,
+      14
+     ]
+    },
+    "false_detections": 1
+   },
+   "trolley": {
+    "sequences": 6,
+    "detected": 6,
+    "first_detection_m": [
+     144.1,
+     149.0,
+     186.2,
+     194.0,
+     200.0,
+     204.9
+    ],
+    "first_detection_median": 190.1,
+    "recall_by_bin": {
+     "0-50": [
+      107,
+      110
+     ],
+     "50-100": [
+      89,
+      133
+     ],
+     "100-150": [
+      83,
+      150
+     ],
+     "150-200": [
+      73,
+      144
+     ],
+     "200-250": [
+      4,
+      50
+     ]
+    },
+    "false_detections": 12
+   },
+   "cable": {
+    "sequences": 6,
+    "detected": 6,
+    "first_detection_m": [
+     64.6,
+     101.1,
+     105.2,
+     108.0,
+     108.8,
+     109.9
+    ],
+    "first_detection_median": 106.6,
+    "recall_by_bin": {
+     "0-50": [
+      66,
+      77
+     ],
+     "50-100": [
+      66,
+      75
+     ],
+     "100-150": [
+      12,
+      99
+     ],
+     "150-200": [
+      0,
+      62
+     ],
+     "200-250": [
+      0,
+      23
+     ]
+    },
+    "false_detections": 4
+   }
+  },
+  "jobs": 30,
+  "wall_s": 270.8
+ }
+}

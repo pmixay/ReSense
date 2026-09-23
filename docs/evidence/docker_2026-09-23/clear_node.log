@@ -1,0 +1,21 @@
+[INFO] [launch]: All log files can be found below /root/.ros/log/2026-09-23-10-46-41-023868-vm-22
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [detector_node-1]: process started with pid [26]
+[detector_node-1] [INFO] [1790160402.017731146] [resense_detector]: sensor mount: forward=-y left=+x up=+z roll/pitch/yaw=0.0/0.0/0.0 deg; auto-calibration on
+[detector_node-1] [INFO] [1790160402.035926430] [resense_detector]: ReSense detector listening on /lidar_points, /sensing/lidar/hesai128/pointcloud (+ auto-discovery); input reliability auto
+[detector_node-1] [INFO] [1790160410.165591464] [resense_detector]: input 1: /lidar_points (frame_id=hesai_lidar, 208324 points)
+[detector_node-1] [INFO] [1790160410.166333997] [resense_detector]: static TF resense_lidar -> hesai_lidar (identity)
+[detector_node-1] [INFO] [1790160410.236928105] [resense_detector]: mount calibration: pending - 
+[detector_node-1] [INFO] [1790160412.074414531] [resense_detector]: frame 20: clear; axis y=-0.00 R=99389; 9.8 fps; latency mean 72 / p95 76 / max 77 ms; input period 99 ms; dropped 9
+[detector_node-1] [INFO] [1790160414.075718838] [resense_detector]: frame 40: clear; axis y=-0.01 R=68136; 10.0 fps; latency mean 72 / p95 80 / max 80 ms; input period 99 ms; dropped 9
+[detector_node-1] [INFO] [1790160416.096187771] [resense_detector]: frame 60: warning; axis y=-0.04 R=-3369; 9.9 fps; latency mean 71 / p95 76 / max 83 ms; input period 101 ms; dropped 9
+[detector_node-1] [INFO] [1790160418.089422240] [resense_detector]: frame 80: warning; axis y=-0.00 R=-1195; 10.0 fps; latency mean 73 / p95 84 / max 85 ms; input period 100 ms; dropped 9
+[detector_node-1] [INFO] [1790160420.065863425] [resense_detector]: frame 100: warning; axis y=+0.05 R=-1535; 10.1 fps; latency mean 75 / p95 76 / max 77 ms; input period 99 ms; dropped 9
+[detector_node-1] [INFO] [1790160422.090001745] [resense_detector]: frame 120: warning; axis y=+0.02 R=-1334; 9.9 fps; latency mean 73 / p95 86 / max 95 ms; input period 99 ms; dropped 9
+[detector_node-1] [INFO] [1790160424.086267137] [resense_detector]: frame 140: warning; axis y=+0.01 R=-1553; 10.0 fps; latency mean 75 / p95 80 / max 82 ms; input period 100 ms; dropped 9
+[detector_node-1] [INFO] [1790160426.084856485] [resense_detector]: frame 160: warning; axis y=+0.02 R=-1251; 10.0 fps; latency mean 75 / p95 84 / max 85 ms; input period 100 ms; dropped 9
+[detector_node-1] [INFO] [1790160428.082748933] [resense_detector]: frame 180: warning; axis y=-0.07 R=-2746; 10.0 fps; latency mean 74 / p95 85 / max 92 ms; input period 100 ms; dropped 9
+[detector_node-1] [INFO] [1790160429.180306273] [resense_detector]: mount calibration: identity - configured mapping confirmed
+[detector_node-1] [INFO] [1790160430.066281420] [resense_detector]: frame 200: warning; axis y=-0.06 R=-38100; 10.1 fps; latency mean 69 / p95 84 / max 85 ms; input period 100 ms; dropped 9
+[detector_node-1] [INFO] [1790160432.065658822] [resense_detector]: frame 220: OBSTACLE at 128.3 m; axis y=-0.01 R=15648; 10.0 fps; latency mean 59 / p95 62 / max 68 ms; input period 100 ms; dropped 9
+[detector_node-1] [INFO] [1790160434.037031584] [resense_detector]: frame 237: warning; axis y=-0.02 R=-13450; 8.6 fps; latency mean 59 / p95 66 / max 66 ms; input period 100 ms; dropped 9

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Fast DDS profile of the ReSense image (FASTRTPS_DEFAULT_PROFILES_FILE): UDP only, no shared memory.
+
+  With shared memory the node (root in the container) creates its segments in the shared /dev/shm
+  as root-owned 0644 files; a `ros2 bag play` started by a normal user on the host console
+  (the organizers' procedure, with ipc=host) cannot write into them, and the node receives
+  nothing at all (found by a review on 23.09, EXPERIMENTS.md section 3b). Over UDP any user's
+  player reaches the node; measured on the 10 MB clouds of doubleT_obstacle: the same frame rate
+  and latency as shared memory (8.3-9.5 fps, ~100 ms on the 4-vCPU sandbox). The larger socket
+  buffers are requested, the kernel caps them at net.core.rmem_max / wmem_max.
+-->
+<profiles xmlns="http://www.eprosima.com/XMLSchemas/fastRTPS_Profiles">
+  <transport_descriptors>
+    <transport_descriptor>
+      <transport_id>resense_udp</transport_id>
+      <type>UDPv4</type>
+      <sendBufferSize>8388608</sendBufferSize>
+      <receiveBufferSize>8388608</receiveBufferSize>
+    </transport_descriptor>
+  </transport_descriptors>
+  <participant profile_name="resense_udp_only" is_default_profile="true">
+    <rtps>
+      <userTransports>
+        <transport_id>resense_udp</transport_id>
+      </userTransports>
+      <useBuiltinTransports>false</useBuiltinTransports>
+    </rtps>
+  </participant>
+</profiles>
