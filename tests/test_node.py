@@ -417,3 +417,15 @@ def test_input_queue_holds_only_the_newest_frame(node_cls):
     _Node.overrides = {"input_queue_depth": 3}
     assert node_cls().subs["/lidar_points"].qos["depth"] == 3
 
+
+
+def test_rviz_shows_the_played_clouds():
+    """The shipped RViz config reads the raw clouds reliable, like the node: `ros2 bag play` offers
+    the recorded RELIABLE profile and a best-effort display showed almost none of the 5-10 MB
+    clouds (EXPERIMENTS.md section 3b); the decision overlay and markers stay subscribed."""
+    import yaml
+    cfg = yaml.safe_load((NODE_PKG / "rviz" / "resense.rviz").read_text())
+    displays = {d.get("Topic", {}).get("Value"): d for d in cfg["Visualization Manager"]["Displays"] if "Topic" in d}
+    for topic in ("/lidar_points", "/sensing/lidar/hesai128/pointcloud"):
+        assert displays[topic]["Enabled"] and displays[topic]["Topic"]["Reliability Policy"] == "Reliable"
+    assert displays["/resense/markers"]["Enabled"]

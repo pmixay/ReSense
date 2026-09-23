@@ -93,7 +93,8 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   Its reliability follows the publishers (`input_reliability: auto`, v0.6.2): reliable for
   `ros2 bag play` of the organizers' recordings — a best-effort reader lost 196 of the 201
   10 MB clouds of `doubleT_obstacle` in Docker (EXPERIMENTS.md §3b) — and best-effort when a
-  publisher is (a live sensor-data driver).
+  publisher is (a live sensor-data driver). The shipped RViz config subscribes to the raw clouds
+  reliable too (a live best-effort driver needs the display's Reliability Policy switched in RViz).
 * Ego speed for multi-frame accumulation: the node passes `Detector.process(frame, ego_speed=v)`
   the value of the `ego_speed_mps` parameter, else the latest `speed_topic` / `odom_topic`
   message younger than `speed_timeout`, else `None` (single-frame path: the LiDAR-only speed estimator is off by default, `accumulation.estimate_speed`); the

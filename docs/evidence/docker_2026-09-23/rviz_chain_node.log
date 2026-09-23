@@ -1,0 +1,34 @@
+[INFO] [launch]: All log files can be found below /root/.ros/log/2026-09-23-11-51-05-479235-vm-1
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [detector_node-1]: process started with pid [22]
+[INFO] [rviz2-2]: process started with pid [24]
+[rviz2-2] QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+[rviz2-2] [INFO] [1790164265.662072271] [rviz2]: Stereo is NOT SUPPORTED
+[rviz2-2] [INFO] [1790164265.662303260] [rviz2]: OpenGl version: 4.5 (GLSL 4.5)
+[rviz2-2] [INFO] [1790164265.710229964] [rviz2]: Stereo is NOT SUPPORTED
+[detector_node-1] [INFO] [1790164266.575664492] [resense_detector]: sensor mount: forward=-y left=+x up=+z roll/pitch/yaw=0.0/0.0/0.0 deg; auto-calibration on
+[detector_node-1] [INFO] [1790164266.592307244] [resense_detector]: ReSense detector listening on /lidar_points, /sensing/lidar/hesai128/pointcloud (+ auto-discovery); input reliability auto
+[detector_node-1] [INFO] [1790164284.830278106] [resense_detector]: input 1: /sensing/lidar/hesai128/pointcloud (frame_id=lidar_livox, 381416 points)
+[detector_node-1] [INFO] [1790164284.833157519] [resense_detector]: static TF resense_lidar -> lidar_livox (identity)
+[detector_node-1] [INFO] [1790164284.974706877] [resense_detector]: mount calibration: pending - 
+[detector_node-1] [WARN] [1790164285.012382688] [resense_detector]: 1.1 s hole in the input: scene state reset, calibration kept
+[detector_node-1] [INFO] [1790164285.541787236] [resense_detector]: mount calibration: provisional - provisional tilt: roll +3.15, pitch -0.76 deg (final after 20 observations)
+[detector_node-1] [INFO] [1790164286.703726900] [resense_detector]: frame 11: OBSTACLE at 55.8 m; axis y=+0.01 R=-7013; 5.2 fps; latency mean 118 / p95 150 / max 155 ms; input period 100 ms; dropped 11
+[detector_node-1] [INFO] [1790164288.714697329] [resense_detector]: frame 21: OBSTACLE at 55.7 m; axis y=+0.04 R=-7429; 5.0 fps; latency mean 117 / p95 128 / max 129 ms; input period 100 ms; dropped 11
+[detector_node-1] [INFO] [1790164290.684727615] [resense_detector]: frame 31: OBSTACLE at 55.7 m; axis y=+0.04 R=-8673; 5.1 fps; latency mean 112 / p95 126 / max 128 ms; input period 100 ms; dropped 11
+[detector_node-1] [INFO] [1790164292.672963520] [resense_detector]: frame 41: OBSTACLE at 56.1 m; axis y=+0.03 R=-8183; 5.0 fps; latency mean 113 / p95 127 / max 134 ms; input period 100 ms; dropped 11
+[detector_node-1] [INFO] [1790164294.675016078] [resense_detector]: frame 51: OBSTACLE at 56.3 m; axis y=+0.04 R=-7542; 5.0 fps; latency mean 111 / p95 127 / max 132 ms; input period 99 ms; dropped 11
+[detector_node-1] [INFO] [1790164296.674095469] [resense_detector]: frame 61: OBSTACLE at 56.2 m; axis y=+0.03 R=-7240; 5.0 fps; latency mean 110 / p95 128 / max 133 ms; input period 99 ms; dropped 11
+[detector_node-1] [INFO] [1790164298.683697144] [resense_detector]: frame 71: OBSTACLE at 56.1 m; axis y=+0.03 R=-5633; 5.0 fps; latency mean 114 / p95 123 / max 123 ms; input period 99 ms; dropped 11
+[detector_node-1] [INFO] [1790164300.657873853] [resense_detector]: frame 81: OBSTACLE at 56.1 m; axis y=+0.03 R=-7346; 5.1 fps; latency mean 115 / p95 126 / max 127 ms; input period 99 ms; dropped 11
+[detector_node-1] [INFO] [1790164302.675994778] [resense_detector]: frame 91: OBSTACLE at 56.2 m; axis y=+0.03 R=-7301; 5.0 fps; latency mean 113 / p95 142 / max 144 ms; input period 100 ms; dropped 11
+[detector_node-1] [INFO] [1790164304.671418142] [resense_detector]: frame 101: OBSTACLE at 56.2 m; axis y=+0.04 R=-7539; 5.0 fps; latency mean 105 / p95 119 / max 126 ms; input period 100 ms; dropped 11
+[detector_node-1] [INFO] [1790164306.695370978] [resense_detector]: frame 111: OBSTACLE at 56.2 m; axis y=+0.03 R=-7350; 4.9 fps; latency mean 110 / p95 133 / max 138 ms; input period 101 ms; dropped 11
+[detector_node-1] [INFO] [1790164308.700681307] [resense_detector]: frame 121: OBSTACLE at 56.2 m; axis y=+0.03 R=-5492; 5.0 fps; latency mean 122 / p95 144 / max 144 ms; input period 100 ms; dropped 11
+[detector_node-1] [INFO] [1790164310.685390164] [resense_detector]: frame 130: OBSTACLE at 56.1 m; axis y=+0.03 R=-5883; 4.5 fps; latency mean 105 / p95 119 / max 124 ms; input period 100 ms; dropped 12
+[detector_node-1] [INFO] [1790164312.666590838] [resense_detector]: frame 140: OBSTACLE at 56.1 m; axis y=+0.03 R=-5908; 5.0 fps; latency mean 107 / p95 121 / max 124 ms; input period 99 ms; dropped 12
+[detector_node-1] [INFO] [1790164314.669437051] [resense_detector]: frame 150: OBSTACLE at 56.1 m; axis y=+0.03 R=-6402; 5.0 fps; latency mean 104 / p95 116 / max 119 ms; input period 100 ms; dropped 12
+[detector_node-1] [INFO] [1790164316.678120492] [resense_detector]: frame 157: OBSTACLE at 56.2 m; axis y=+0.03 R=-6080; 3.5 fps; latency mean 108 / p95 121 / max 122 ms; input period 99 ms; dropped 15
+[detector_node-1] [INFO] [1790164318.711463853] [resense_detector]: frame 167: OBSTACLE at 56.2 m; axis y=+0.03 R=-5655; 4.9 fps; latency mean 117 / p95 148 / max 159 ms; input period 100 ms; dropped 15
+[detector_node-1] [INFO] [1790164320.695719950] [resense_detector]: frame 177: OBSTACLE at 56.1 m; axis y=+0.02 R=-5525; 5.0 fps; latency mean 117 / p95 127 / max 129 ms; input period 100 ms; dropped 15
+[detector_node-1] [INFO] [1790164322.593242460] [resense_detector]: frame 186: warning; axis y=+0.03 R=-5707; 4.7 fps; latency mean 112 / p95 127 / max 137 ms; input period 100 ms; dropped 15

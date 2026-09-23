@@ -63,7 +63,7 @@ at ~100 % of one core while frames arrive, 186 MB). The bag may be played by any
 runs DDS over UDP (a normal user's player cannot write into a root node's shared memory). Judgement against every criterion and what is left: [`docs/SCORECARD.md`](docs/SCORECARD.md).
 
 ![doubleT_obstacle frame 24 seen from the cab: the train envelope (green) swept along the track axis, the points inside it (yellow), the person on the track reported at 55.8 m (STOP) and a close-up of the person's points](docs/img/hero_person.png)
-*Real data, v0.6.2: `doubleT_obstacle` frame 24 from the driver's seat (`scripts/hero_view.py`), the person on the track at 55.8 m. Videos: [the whole bag from the cab](docs/video/doubleT_obstacle_cab.mp4), [offline renders, top and side view](docs/video/doubleT_obstacle_offline.mp4) and [the dashboard replaying the same run](docs/video/dashboard_doubleT_obstacle.mp4). Slides in the organizers' template: [`docs/presentation/ReSense_LCT2026.pptx`](docs/presentation/ReSense_LCT2026.pptx).*
+*Real data, v0.6.2: `doubleT_obstacle` frame 24 from the driver's seat (`scripts/hero_view.py`), the person on the track at 55.8 m. Videos: [the jury chain in Docker with RViz](docs/video/docker_chain_rviz.mp4), [the whole bag from the cab](docs/video/doubleT_obstacle_cab.mp4), [offline renders, top and side view](docs/video/doubleT_obstacle_offline.mp4) and [the dashboard replaying the same run](docs/video/dashboard_doubleT_obstacle.mp4). Slides in the organizers' template: [`docs/presentation/ReSense_LCT2026.pptx`](docs/presentation/ReSense_LCT2026.pptx).*
 
 ## What to look at (for the jury)
 
@@ -246,7 +246,11 @@ Two ways to show the chain tunnel → cloud → detection → distance to a jury
 1. **Screen share of RViz**: `./scripts/run_demo.sh /data/for_hackathon/doubleT_obstacle` on the
    demo machine and share the RViz window; for a continuous replay use the launch file directly
    with `loop:=true`:
-   `docker run --rm -it --net=host -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /data/for_hackathon:/data:ro resense ros2 launch resense_ros detector.launch.py bag:=/data/doubleT_obstacle loop:=true rviz:=true`.
+   `docker run --rm -it --net=host --ipc=host -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /data/for_hackathon:/data:ro resense ros2 launch resense_ros detector.launch.py bag:=/data/doubleT_obstacle loop:=true rviz:=true`.
+   What this looks like, with the bag played from a second container as the jury would:
+   [`docs/video/docker_chain_rviz.mp4`](docs/video/docker_chain_rviz.mp4). RViz subscribes to the
+   raw clouds reliable, as the node does; a best-effort RViz display shows almost none of the
+   5–10 MB clouds that `ros2 bag play` publishes (EXPERIMENTS.md §3b).
 2. **Foxglove over the network**, nothing graphical on the demo machine:
    ```bash
    docker compose --profile viz up detector foxglove                      # detector + foxglove_bridge :8765
@@ -382,7 +386,7 @@ input queue dropped (estimated from gaps in the header stamps).
 | algorithm (problem, data, processing, decision, parameters, limitations) | [`docs/ALGORITHM.md`](docs/ALGORITHM.md) |
 | experiments (range, latency, FPS, false alarms, hard cases, evolution) | [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md), protocol in [`docs/EVALUATION.md`](docs/EVALUATION.md) |
 | input data format, sensor | [`docs/DATASET.md`](docs/DATASET.md), [`docs/SENSOR.md`](docs/SENSOR.md) (Hesai Pandar128 specs and what they imply) |
-| video | [`docs/video/doubleT_obstacle_cab.mp4`](docs/video/doubleT_obstacle_cab.mp4) (the real bag from the cab: envelope, obstacle, decision and distance; `scripts/hero_view.py --sequence`), [`docs/video/doubleT_obstacle_offline.mp4`](docs/video/doubleT_obstacle_offline.mp4) (top-down and side renders of every frame) and [`docs/video/dashboard_doubleT_obstacle.mp4`](docs/video/dashboard_doubleT_obstacle.mp4) (the web dashboard replaying the same run), all v0.6.2; recipe in [`web/README.md`](web/README.md); a screen recording of RViz on the jury chain needs a machine with a display |
+| video | [`docs/video/doubleT_obstacle_cab.mp4`](docs/video/doubleT_obstacle_cab.mp4) (the real bag from the cab: envelope, obstacle, decision and distance; `scripts/hero_view.py --sequence`), [`docs/video/doubleT_obstacle_offline.mp4`](docs/video/doubleT_obstacle_offline.mp4) (top-down and side renders of every frame) and [`docs/video/dashboard_doubleT_obstacle.mp4`](docs/video/dashboard_doubleT_obstacle.mp4) (the web dashboard replaying the same run), all v0.6.2; recipe in [`web/README.md`](web/README.md); **the jury chain on screen**: [`docs/video/docker_chain_rviz.mp4`](docs/video/docker_chain_rviz.mp4) (69 s: `docker run` of the node with RViz, `ros2 bag play` as a normal user from another container, `/resense/decision`; sandbox, bag at 0.5×) |
 | submission status | [`docs/SUBMISSION.md`](docs/SUBMISSION.md) |
 
 ## Team

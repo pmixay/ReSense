@@ -14,8 +14,9 @@ and the status stream (`*_status.jsonl.gz`).
 | `obstacle` | `scripts/dry_run.sh doubleT_obstacle`, one container, root | person and object at 55.9–56.5 m; at 360° the sandbox runs at the frame period, so the p95 ≤ 100 ms and "no dropped frame" criteria fail here |
 | `ct_smoke` | `scripts/console_test.sh`, with the node in its own container on the image's default command and the player **as uid 1000** in a second container; two synthetic bags, both topic / frame pairs | PASS; input switched, detector restarted |
 | `ct_real` | the same procedure on `roundT_doubleT` and then `doubleT_obstacle` | both recordings; obstacle at 56.1 m; the only out-of-window distances are the 2 known frames at 128–130 m of the first recording; `ct_real_docker_stats.txt` shows the node container at ~100 % of one core while frames arrive (busy median), 186 MB |
+| `rviz_chain` | the node with `rviz:=true` on a virtual display, `ros2 topic echo /resense/decision` and the player (uid 1000, bag at 0.5×) in separate containers; screen recorded: [`../video/docker_chain_rviz.mp4`](../video/docker_chain_rviz.mp4) | OBSTACLE at 55.7–56.3 m, `FAULT` before the first cloud and 0.5 s after the last; `rviz_chain_node.log` |
 
-The `clear` and `obstacle` runs predate the image's UDP-only DDS profile (`docker/fastdds_udp.xml`). The `ct_*` runs use it.
+The `clear` and `obstacle` runs predate the image's UDP-only DDS profile (`docker/fastdds_udp.xml`). The `ct_*` and `rviz_chain` runs use it.
 
 ## `bag_metadata/`: the original `metadata.yaml` of the six recordings
 

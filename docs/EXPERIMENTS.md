@@ -808,6 +808,22 @@ over a whole 360° recording it processes 103–142 of 201 frames (the start-up 
 the checker output: [`evidence/docker_2026-09-23/`](evidence/docker_2026-09-23/). The jury's
 i7-9700E (8 cores, higher clock) has not been measured.
 
+**With RViz, on screen** ([`video/docker_chain_rviz.mp4`](video/docker_chain_rviz.mp4), 69 s,
+image built from the current tree). The node container started with `rviz:=true` on a virtual
+display (Xvfb, software OpenGL, no GPU), `ros2 topic echo /resense/decision` in a second
+container, the bag played as uid 1000 from a third — every command on screen is the one that
+ran. The bag played at 0.5×: RViz renders the 360° cloud in software at 6–10 fps on the same 4
+vCPU. Node log ([`evidence/docker_2026-09-23/rviz_chain_node.log`](evidence/docker_2026-09-23/rviz_chain_node.log)):
+`FAULT` (no input) until the first cloud; a 1.1 s start-up hole (the transport stall above);
+OBSTACLE at 55.7–56.3 m from its frame 11 to 177; the last frames alternate STOP with CAUTION
+(the object missed in that frame, advisory tracks at 11.6 m and beyond 139 m — the
+`console_test` capture ends the same way, and offline the object is missed in 8 of its 126
+frames); `FAULT` / `STALE` 0.5 s after the bag ended. 5 fps (the input rate at 0.5×), latency
+mean 104–122 ms, p95 116–150 ms with RViz on the same cores, 15 of 201 clouds skipped. The
+recording found one more transport defect: **the shipped RViz config subscribed the raw clouds
+best-effort**, so during `ros2 bag play` it would have shown almost none of them (the node's own
+first-run failure); it now subscribes reliable, like the node (`rviz/resense.rviz`).
+
 ## 4. What we learned / hard cases
 
 1. **Sensor mounts differ between bags** (bed 1.5 m vs 2.0 m below the sensor, axis 0.05–0.25 m

@@ -49,7 +49,7 @@ N = {
     "empty_events": "20",
     "first_person": "148", "sustained_person": "135", "speed_person": "167",
     "latency": "42–58 мс", "p95": "69 мс",
-    "tests": "147",
+    "tests": "148",
     # first confirmed detection, straight track, median over the approaches [synthetic in real frames]
     "range_chart": [("человек 1,7 м", 148), ("тележка", 144), ("ящик 1 м", 111), ("висящий кабель 3 см", 95),
                     ("предмет поперёк рельса", 46), ("ящик 30 см на рельсе", 44)],

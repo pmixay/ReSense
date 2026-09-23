@@ -209,7 +209,7 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
     trolley 146 m, crate 111 m, cable 95 m; with a train speed 177 / 190 / 183 m and fewer ride false
     alarms (274 / 75); in R ≈ 350 m curves 1 of 2 approaches detected, at 74–82 m (sightline). The farthest
     return in all data is 210 m (every recording stops at 209.2–210.0 m), so 300 m is out of the sensor's reach.
-12. **Tests**: 147 (the node's decision / fault / watchdog / mount-parameter / input-switching
+12. **Tests**: 148 (the node's decision / fault / watchdog / mount-parameter / input-switching
     logic runs against ROS stand-ins in `tests/test_node.py`, so a node bug no longer waits for
     the Docker job). Criteria judgement and the remaining work: [`SCORECARD.md`](SCORECARD.md).
 13. **Written answers of the organizers (23.09)** to our questions 1, 2 and 6, recorded
@@ -255,7 +255,7 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
 | P3 | v0.6 follow-ups: a lining-anchored far height reference (vault drift measurable to ~200 m, EXPERIMENTS §2d); a bed bin must span the bed to extend the fit (an object far ahead lengthens it, §2d); cant-aware roll; the platform-end structure at 82–84 m | `EXPERIMENTS.md` §2d, ALGORITHM §6 |
 | P3 | the zone-history fast path (alarm when the last three hits are inside, measured on the five bags), the edge-margin variants, re-classifying the 96 residual alarm frames by cause, the platform-end structure at 81–83 m (20 of 32 events), accumulation on a moving bag with an obstacle (none exists yet), the injector's height reference beyond 80 m (with P4) | `EXPERIMENTS.md` §1b ablations and §5 |
 | P4 | extended-dataset intake and labelling with the `labels/` format; the injector placing far objects under the real bed (use the verified floor); calibration of the catalogue reflectivities against real obstacles | `DATASET.md` "Real labels", `EXPERIMENTS.md` §2c |
-| P2 | the RViz screen recording of the Docker chain on a machine with a display (the cab-view, offline and dashboard videos exist); personal data and photos on slides 2–4 of `presentation/ReSense_LCT2026.pptx`; the dashboard card for `ego_speed` / `n_accumulated` / alarm events | spec §4 demo and §8.8 pitch |
+| P2 | personal data and photos on slides 2–4 of `presentation/ReSense_LCT2026.pptx`; the dashboard card for `ego_speed` / `n_accumulated` / alarm events | spec §4 demo and §8.8 pitch |
 
 ## 1. Ownership map — who edits what
 
