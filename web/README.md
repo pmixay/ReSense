@@ -13,7 +13,12 @@ the scripts that verify the dashboard headlessly, and the video recipe.
 | [`demo/test_web.py`](demo/test_web.py) | pytest for the layouts, the JSONL format and the browser replay: `python -m pytest -q web/demo` |
 | `../ros2_ws/src/resense_ros/rviz/resense.rviz` | RViz2 layout (P2-owned, loaded by `detector.launch.py rviz:=true` and the compose `rviz` service) |
 
-![dashboard replaying a synthetic approach: person confirmed from 115.7 m down to 40 m](../docs/img/dashboard_synthetic.png)
+![current ReSense dashboard showing a STOP decision in the built-in synthetic UI demo](../docs/images/dashboard-stop.png)
+
+Current UI captures: [GO / path clear](../docs/images/dashboard-clear.png),
+[CAUTION / object near the gauge](../docs/images/dashboard-caution.png), and
+[STOP / confirmed obstacle](../docs/images/dashboard-stop.png). The complete gallery and its
+data provenance are in [`docs/images/README.md`](../docs/images/README.md).
 *Offline replay of `web/demo/make_demo_run.py` output (synthetic ray-cast tunnel, not the
 organizers' data): the person is confirmed at 115.7 m and tracked down to 40 m.*
 
