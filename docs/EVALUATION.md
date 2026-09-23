@@ -31,7 +31,7 @@ latency, FP frames / events, recall, frames merged) with a delta column.
 | **first-detection distance** | for a moving-toward run (real, or `inject --sequence N --speed V`): the largest range at which the object is confirmed and matched | m, per ground-truth label [`first_detection_distance`] |
 | **distance / lateral error** | over matched detections: mean and max of \|Δdistance\|, the signed mean (bias, + = reported farther than the label), mean \|Δlateral\| [`distance_error_mean_abs`, `distance_error_max_abs`, `distance_error_bias`, `lateral_error_mean_abs`] | m; on the real person of `doubleT_obstacle` 0.00–0.07 m mean (DATASET.md "Real labels") |
 | **first alarm frame** | index of the first frame with `obstacle = true` [`first_alarm_frame`] | frame; on `doubleT_obstacle` it must stay 9 (the person enters the gauge at frame 2, `confirm_hits = 3`) |
-| **ego-speed source / frames merged** | how the accumulation actually ran: frames per `ego_speed_source` value (`given` / `estimated` / `none`) and the mean `n_accumulated` [`ego_speed_sources`, `n_accumulated_mean`] | counts; `given` on every frame when the node has a speed, `estimated` on 40–99 % of the frames of the real bags without one |
+| **ego-speed source / frames merged** | how the accumulation actually ran: frames per `ego_speed_source` value (`given` / `estimated` / `none`) and the mean `n_accumulated` [`ego_speed_sources`, `n_accumulated_mean`] | counts; `given` when the node receives a valid speed; without one, shipped defaults report `none` (`accumulation.estimate_speed: false`); `estimated` requires explicitly opting in |
 | **false-alarm frames** | frames with `obstacle = true` among frames with no gauge ground truth [`fp_frames`, `fp_frame_rate`]; every frame with `obstacle = true` regardless of labels is an *alarm frame* [`alarm_frames`] | per bag and per scene type (tunnel / curve / gate / platform / switch) |
 | **false-alarm events** | distinct confirmed gauge track ids (`detections[].id`) that were never matched to a ground-truth object [`fp_events`]; distinct ids of all alarms [`alarm_events`]. One object that stays in the corridor for 50 frames is one event | **the headline false-alarm number**, per bag |
 | **false alarms per hour / per km** | `fp_events` per hour of bag time (span of the `stamp` field [`bag_time_s`]) [`fp_events_per_hour`] and per km travelled [`fp_events_per_km`] when a speed is known: `--speed-mps V` (constant) or a per-frame `ego_speed_mps` key in the JSON, integrated over the stamp gaps [`distance_km`] | per bag; `null` when no speed is known |
@@ -51,6 +51,26 @@ only on its horizon channels ([`SENSOR.md`](SENSOR.md) §3), so a non-reflective
 that bin is not expected to be detectable by any algorithm.
 
 ## 3. Procedure
+
+**Set F independent placement (synthetic positives).** `scripts/far_range_eval.py` defaults
+to `--placement-mode legacy`, which uses the detector-derived per-frame far axis and vault
+drift; those results are not an independent test of curve or gauge-edge generalisation.
+For `--placement-mode independent`, provide a separately surveyed physical reference in
+vehicle coordinates: `--axis-center`, `--axis-yaw-deg`, `--axis-curvature`, `--rail-z0`,
+`--rail-grade`. The tool never reads background points to set this reference or the object's
+height: bed placement is 0.25 m below the supplied rail profile (an assumption), rail
+placement at rail height. `--lateral-offset` and `--yaw-perturb-deg` apply fixed, explicit
+perturbations to each sequence; `--lateral` supplies the nominal sampled lateral interval.
+Matched detections are compared in vehicle-frame Y instead of assuming the detector's axis
+is ground truth. Record reference survey provenance, cache and config hashes, visible-return
+denominators and seeds alongside every report. A fixed extrapolation may miss the real curve
+or grade, especially beyond the sensor's sightline; this protocol is a sensitivity test, not
+a measured real-positive generalisation score. The script's `recall_by_bin` counts visible
+synthetic object-frames only (`n > 0`), and its `false_detections` counts unmatched detections
+per frame, not distinct false-alarm events from `resense.metrics.Evaluation`.
+The fixed reference is held in vehicle coordinates for the entire approach: on a moving
+curve it is an extrapolation, not a surveyed world-fixed trajectory. Check its physical
+validity over each sequence before interpreting range or edge results.
 
 1. **Freeze the config.** One `configs/default.yaml` per evaluation; record the commit and
    `sha256sum configs/default.yaml`. For a same-machine A/B against v0.3 use a copy of the
@@ -80,7 +100,8 @@ that bin is not expected to be detectable by any algorithm.
    `eval` gives the detector the `speed_mps` of `inject --sequence` rows (`ego_speed_source:
    given`, as the ROS node with `ego_speed_mps` / odometry); `--ego-speed V` forces a constant
    on any source, `--no-gt-speed` withholds it; static sets (`speed_mps: 0`) get nothing and
-   the estimator runs, as in `resense run`. Report recall by range per kind
+    the estimator is off by default, as in `resense run` (enable
+    `accumulation.estimate_speed` explicitly to evaluate it). Report recall by range per kind
    (`per_class_bin_counts`), first-detection distances and the occluded count. Two caveats:
    the per-frame recall of an 8-step sequence is capped at 6/8 (the first two steps cannot be
    confirmed with `confirm_hits = 3`, and an object that starts beyond 150 m approaches only
@@ -109,6 +130,11 @@ that bin is not expected to be detectable by any algorithm.
    Run on the closest available machine to the bench (8 cores, no GPU), state which, state the
    load (`uptime`) and run compared variants back to back on the same bag: on the shared 4-core
    sandbox the per-frame time of the same code varies by ±50 % with the load.
+   Both commands require their respective input data. `resense bench` and
+   `scripts/bench_node_path.py` fail with an explicit empty-input diagnostic rather than printing
+   a misleading timing result. ROS timing and throughput require a running ROS 2 graph and Docker
+   acceptance requires a reachable daemon; when those are unavailable, report the check as
+   unmeasured rather than reusing historical FPS/latency values.
 6. **Regression:** the three numbers that must not get worse between versions are recall
    50–100 m on S, false-alarm frames on E (all bags), and p95 latency; on R the first alarm
    frame (9) and the recall (64/71) must not drop. Each PR that touches `resense/` re-runs S,

@@ -17,6 +17,7 @@
 # Needs the dataset, so this runs on a team machine, not in GitHub CI.
 set -euo pipefail
 cd "$(dirname "$0")/.."
+. "$(dirname "${BASH_SOURCE[0]}")/require_docker.sh"
 
 if [ $# -lt 1 ]; then
   sed -n '2,16p' "$0" >&2
@@ -28,6 +29,7 @@ if [ ! -d "$BAG_PATH" ] || [ ! -f "$BAG_PATH/metadata.yaml" ]; then
   echo "ERROR: $BAG_PATH is not a ROS 2 bag directory (no metadata.yaml)" >&2
   exit 2
 fi
+require_docker_daemon
 BAG_DIR="$(cd "$(dirname "$BAG_PATH")" && pwd)"
 BAG_NAME="$(basename "$BAG_PATH")"
 RATE="${RATE:-1.0}"
@@ -52,7 +54,7 @@ docker run --rm -i --net=host --ipc=host \
   -v "$OUT_ABS":/out \
   -e BAG_NAME="$BAG_NAME" -e RATE="$RATE" \
   resense:latest bash -s <<'INNER'
-set -uo pipefail
+set -euo pipefail
 ros2 launch resense_ros detector.launch.py rviz:=false >/out/node.log 2>&1 &
 LAUNCH_PID=$!
 

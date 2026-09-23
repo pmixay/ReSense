@@ -343,7 +343,7 @@ def format_comparison(summaries: Sequence[dict], names: Optional[Sequence[str]] 
         paths = [str(s.get("file", f"run {i + 1}")) for i, s in enumerate(summaries)]
         names = [os.path.basename(p) for p in paths]
         if len(set(names)) < len(names):        # same file name in different directories: keep the parent
-            names = [os.path.join(os.path.basename(os.path.dirname(p)), os.path.basename(p)) for p in paths]
+            names = [os.path.basename(os.path.dirname(p)) + "/" + os.path.basename(p) for p in paths]
     two = len(summaries) == 2
 
     def cell(v, fmt):

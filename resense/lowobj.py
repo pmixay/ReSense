@@ -37,6 +37,11 @@ is the same every metre, so
    signalling) reach 0.2-0.35 m but are mounted along the rail, 0.2-0.3 m across and 0.5-1.4 m
    long; without this shape rule the path added 49 false events on the 20-minute ride.
 
+5. An opt-in central near-bed path accepts a compact, sufficiently raised anomaly below
+   the rail head only within 30 m, inside the rail pair, with local bed support and current
+   rail lock. Disabled by default pending real-ride false-positive evaluation. The
+   point-wise rail-head rule and the straddle thresholds stay unchanged.
+
 Where the bed is not observed (beyond ~50-80 m, grazing incidence) there is no local
 offset and nothing is reported: the stage's range is where the bed is seen. Puddles in the
 trough return nothing or mirror images *below* the bed (negative residuals): they are
@@ -95,17 +100,23 @@ class BedTemplate:
 
 def low_candidates(X: np.ndarray, dy: np.ndarray, h: np.ndarray, template: BedTemplate,
                    cfg: LowObjectConfig, range_min: float, x_limit: float,
-                   h_bottom: float, with_all: bool = False):
+                   h_bottom: float, with_all: bool = False, with_near: bool = False):
     """(indices of low candidates, range up to which the bed was observed); with ``with_all``
-    also the indices of every bed anomaly before the ``min_point_top`` rule (step 4)."""
+    also the indices of every bed anomaly before the ``min_point_top`` rule (step 4).
+    ``with_near`` adds dense-bed, central near-range anomalies independently of that rule."""
     empty = np.zeros(0, dtype=np.int64)
+
+    def result(kept, seen_range, all_idx=empty, near_idx=empty):
+        return ((kept, seen_range, all_idx, near_idx) if with_near else
+                (kept, seen_range, all_idx) if with_all else (kept, seen_range))
+
     if template.prof is None:
-        return (empty, 0.0, empty) if with_all else (empty, 0.0)
+        return result(empty, 0.0)
     x1 = min(cfg.range_max, x_limit)
     band = (X >= range_min) & (X < x1) & (np.abs(dy) <= cfg.half_width) & (h < h_bottom) & (h > -1.2)
     idx = np.flatnonzero(band)
     if idx.size == 0:
-        return (idx, 0.0, idx) if with_all else (idx, 0.0)
+        return result(idx, 0.0)
     res = h[idx] - template(dy[idx])
     edges = np.arange(range_min, x1 + cfg.local_bin, cfg.local_bin)
     nb = edges.size - 1
@@ -114,7 +125,7 @@ def low_candidates(X: np.ndarray, dy: np.ndarray, h: np.ndarray, template: BedTe
     off, cnt = bin_percentile(res[bed].astype(np.float64), b[bed], nb, 50.0, cfg.local_min_points)
     seen = np.isfinite(off)
     if not seen.any():
-        return (empty, 0.0, empty) if with_all else (empty, 0.0)
+        return result(empty, 0.0)
     # the bed is "observed" up to the last bin with bed returns (gaps of a few bins are bridged)
     last = int(np.flatnonzero(seen)[-1])
     x_seen = float(edges[last + 1])
@@ -125,4 +136,14 @@ def low_candidates(X: np.ndarray, dy: np.ndarray, h: np.ndarray, template: BedTe
     keep = anomaly.copy()
     if cfg.min_point_top > -1.0:
         keep &= h[idx] > cfg.min_point_top
-    return (idx[keep], x_seen, idx[anomaly]) if with_all else (idx[keep], x_seen)
+    # Require bed support in the *same* along-track bin: interpolation across an unobserved
+    # trough / puddle or gap in the bed must not produce a near-bed alarm.
+    near = empty
+    if with_near and cfg.near_enabled:
+        central_bed = bed & (np.abs(dy[idx]) <= cfg.near_half_width)
+        near_seen = np.bincount(b[central_bed], minlength=nb) >= cfg.local_min_points
+        central = ((r > cfg.near_min_excess) & (r < cfg.max_excess)
+                   & (X[idx] < min(cfg.near_range, x_seen)) & (np.abs(dy[idx]) <= cfg.near_half_width)
+                   & seen[b] & near_seen[b])
+        near = idx[central]
+    return result(idx[keep], x_seen, idx[anomaly], near)

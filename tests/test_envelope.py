@@ -49,6 +49,7 @@ RAIL_HEAD_Z = FLOOR_Z + 0.18    # synthetic rails are 0.18 m tall
 
 
 @pytest.mark.parametrize("distance,lateral", [(10.0, -0.8), (16.0, 0.8), (20.0, -0.75)])
+@pytest.mark.synthetic
 def test_organizers_minimum_object_on_a_rail(distance, lateral):
     """300 x 300 x 100 mm lying on a rail head: 0.1 m above the rail-head plane, below the
     0.12 m polygon bottom - found by the low-object stage (bumps above the learned bed)."""
@@ -60,21 +61,21 @@ def test_organizers_minimum_object_on_a_rail(distance, lateral):
 
 
 @pytest.mark.parametrize("distance,lateral", [(12.0, 0.0), (20.0, 0.4), (28.0, -0.3)])
+@pytest.mark.synthetic
 def test_minimum_object_below_the_rail_head_is_a_policy(distance, lateral):
-    """The same object lying on the bed between the rails stays below the rail head: by default
-    (``lowobj.min_top`` = 0.0: the object's top must reach the rail-head plane) it is not an alarm - the metro bed carries fixtures of that size
-    every few tens of metres (1 350 alarm events on the 20-minute ride with the bed-level policy,
-    EXPERIMENTS.md §1d); ``min_top: -1`` with ``min_point_top: -1`` reports any bump above the bed."""
+    """The default keeps the rail-head-only baseline; enabling the bounded near-bed
+    experiment explicitly may find a 10 cm box below the rail head."""
     spec = ObstacleSpec(kind="box", size=(0.3, 0.3, 0.1), distance=distance, lateral=lateral, base_z=FLOOR_Z)
     assert not _run(_scene([spec])).obstacle
     cfg = DetectorConfig()
-    cfg.lowobj.min_top = cfg.lowobj.min_point_top = -1.0     # the bed-level policy
+    cfg.lowobj.near_enabled = True
     res = _run(_scene([spec]), cfg=cfg)
     assert res.obstacle and res.detections[0].kind == "low"
-    assert abs(res.detections[0].distance - distance) < 0.6
+    assert abs(res.nearest_distance - distance) < 0.6
 
 
 @pytest.mark.parametrize("distance,lateral", [(25.0, -0.8), (40.0, 0.8), (50.0, -0.8)])
+@pytest.mark.synthetic
 def test_object_lying_across_a_rail_is_found_whole(distance, lateral):
     """v0.6.2: shaped like the organizers' object in ``doubleT_obstacle`` - standing on the bed
     across a rail, its top 0.13 m above the rail head, most of it below the rail head. The
@@ -89,6 +90,7 @@ def test_object_lying_across_a_rail_is_found_whole(distance, lateral):
 
 
 @pytest.mark.parametrize("distance", [20.0, 35.0])
+@pytest.mark.synthetic
 def test_person_lying_across_the_track_is_found(distance):
     """A person lying across the track on a shallow bed (0.5 x 1.8 x 0.35 m; the synthetic bed is
     0.18 m below the rail head, so the body rises 0.17 m above it) spans both rails: the straddle
@@ -132,6 +134,7 @@ def test_sparse_object_straddling_the_envelope_floor(tunnel):
     assert not _run(_sparse_object_across_a_rail(frame, 45.0, top=0.06), 8).obstacle
 
 
+@pytest.mark.synthetic
 def test_low_object_stage_can_be_switched_off():
     spec = ObstacleSpec(kind="box", size=(0.3, 0.3, 0.1), distance=15.0, lateral=0.8, base_z=RAIL_HEAD_Z)
     assert _run(_scene([spec])).obstacle
@@ -142,6 +145,7 @@ def test_low_object_stage_can_be_switched_off():
 
 @pytest.mark.parametrize("distance,lateral,name", [(25.0, 0.0, "cable"), (40.0, 0.3, "cable"),
                                                    (30.0, -0.2, "cable_low")])
+@pytest.mark.synthetic
 def test_hanging_cable_in_the_envelope_is_an_obstacle(distance, lateral, name):
     spec = catalogue_spec(name, distance, lateral, reflectivity=25.0)
     res = _run(_scene([spec]))
@@ -149,6 +153,7 @@ def test_hanging_cable_in_the_envelope_is_an_obstacle(distance, lateral, name):
     assert abs(res.nearest_distance - distance) < 1.0
 
 
+@pytest.mark.synthetic
 def test_object_outside_the_envelope_is_advisory():
     """A person 1.35 m off the axis: inside the v0.5 polygon (1.40 m), outside the 1.05 m envelope."""
     spec = catalogue_spec("person", 35.0, 1.35, reflectivity=30.0)
@@ -157,6 +162,7 @@ def test_object_outside_the_envelope_is_advisory():
     assert res.warning
 
 
+@pytest.mark.synthetic
 def test_person_in_the_envelope_still_alarms():
     spec = catalogue_spec("person", 60.0, 0.2, reflectivity=30.0)
     res = _run(_scene([spec]))

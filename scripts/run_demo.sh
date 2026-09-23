@@ -8,6 +8,7 @@
 # data lives"). docker compose uses $RESENSE_DATA for the same mount.
 set -euo pipefail
 cd "$(dirname "$0")/.."
+. "$(dirname "${BASH_SOURCE[0]}")/require_docker.sh"
 
 if [ $# -lt 1 ]; then
   sed -n '2,5p' "$0" >&2
@@ -23,6 +24,7 @@ if [ ! -d "$BAG_PATH" ] || [ ! -f "$BAG_PATH/metadata.yaml" ]; then
   echo "ERROR: $BAG_PATH is not a ROS 2 bag directory (no metadata.yaml)" >&2
   exit 2
 fi
+require_docker_daemon
 BAG_DIR="$(cd "$(dirname "$BAG_PATH")" && pwd)"
 BAG_NAME="$(basename "$BAG_PATH")"
 

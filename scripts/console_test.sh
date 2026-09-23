@@ -12,15 +12,25 @@
 #   scripts/console_test.sh <bags>/roundT_doubleT <bags>/doubleT_obstacle -- --expect-obstacle \
 #       --obstacle-in 2 --expect-inputs 2 --min-frames 20 --max-p95-latency 1000 --max-dropped 100000
 # Exits with check_dry_run.py's code. Needs Docker, not ROS on the host.
-set -uo pipefail
+set -euo pipefail
 cd "$(dirname "$0")/.."
+. "$(dirname "${BASH_SOURCE[0]}")/require_docker.sh"
 IMAGE="${IMAGE:-resense:latest}"
 PLAYER_USER="${PLAYER_USER:-1000:1000}"
 OUT="${OUT:-out/console_test}"
 BAG1="${1:?usage: scripts/console_test.sh <bag dir> [<second bag dir>] [-- check args]}"; shift
+if [ ! -d "$BAG1" ] || [ ! -f "$BAG1/metadata.yaml" ]; then
+  echo "ERROR: $BAG1 is not a ROS 2 bag directory (no metadata.yaml)" >&2
+  exit 2
+fi
 BAG2=""
 if [ $# -gt 0 ] && [ "$1" != "--" ]; then BAG2="$1"; shift; fi
+if [ -n "$BAG2" ] && { [ ! -d "$BAG2" ] || [ ! -f "$BAG2/metadata.yaml" ]; }; then
+  echo "ERROR: $BAG2 is not a ROS 2 bag directory (no metadata.yaml)" >&2
+  exit 2
+fi
 [ "${1:-}" = "--" ] && shift
+require_docker_daemon
 PARENT="$(cd "$(dirname "$BAG1")" && pwd)"
 mkdir -p "$OUT"; OUT_ABS="$(cd "$OUT" && pwd)"
 rm -f "$OUT_ABS/status.jsonl" "$OUT_ABS/node.log"
@@ -29,10 +39,19 @@ trap cleanup EXIT
 cleanup
 
 docker run -d --name resense_ct_node --net=host --ipc=host "$IMAGE" >/dev/null
+READY=0
 for _ in $(seq 1 60); do
-  docker logs resense_ct_node 2>&1 | grep -q "ReSense detector listening" && break
+  if docker logs resense_ct_node 2>&1 | grep -q "ReSense detector listening"; then
+    READY=1
+    break
+  fi
   sleep 1
 done
+if [ "$READY" -ne 1 ]; then
+  echo "ERROR: detector container did not become ready within 60 s" >&2
+  docker logs resense_ct_node 2>&1 || true
+  exit 3
+fi
 docker run -d --name resense_ct_echo --net=host --ipc=host -v "$OUT_ABS":/out "$IMAGE" \
   bash -c "ros2 topic echo /resense/status --field data > /out/status.jsonl" >/dev/null
 sleep 4

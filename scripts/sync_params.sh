@@ -7,11 +7,14 @@ cd "$(dirname "$0")/.."
 SRC=configs/default.yaml
 DST=ros2_ws/src/resense_ros/config/detector.yaml
 if [ "${1:-}" = "--check" ]; then
-  if diff -q "$SRC" "$DST" >/dev/null; then
+  # Git checkouts on Windows can leave one or both YAML files with mixed CRLF/LF
+  # after a patch.  Parameter synchronization is semantic; ignore only the
+  # carriage-return byte so a line-ending detail cannot hide a real flag drift.
+  if diff -q --strip-trailing-cr "$SRC" "$DST" >/dev/null; then
     echo "parameter files in sync"
   else
     echo "ERROR: $DST differs from $SRC — run ./scripts/sync_params.sh and commit" >&2
-    diff -u "$SRC" "$DST" >&2 || true
+    diff -u --strip-trailing-cr "$SRC" "$DST" >&2 || true
     exit 1
   fi
 else

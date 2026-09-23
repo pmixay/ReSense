@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Long-range evaluation on a *moving* real background (set F, v0.6).
+"""Long-range evaluation with synthetic positives on a moving real background (set F).
 
 Earlier synthetic sequences (``resense inject --sequence``) moved the object towards a frozen
 background frame: the tunnel did not move, so neither the track model nor the tracker saw a
@@ -10,12 +10,11 @@ interval from the bag stamps and the train speed of the ride (``--speeds``, the 
 measured from static tracks in ``docs/extended_dataset_intake.json``). Background, motion,
 far-field sparsity and sightline are real; only the object is synthetic.
 
-Placement: laterally uniform inside the envelope (``--lateral``), standing on the bed measured
-under it where the bed returns (``resense.synthetic.local_bed_z``, up to ~80 m); beyond, on the
-model's rail level minus the bed depth, **corrected by the drift of the vault** measured in the
-same frame (the extrapolated rail level of the model runs 0.2-0.5 m low at 100-200 m on the
-straight sections, EXPERIMENTS.md §2d) - so a far object stands where the real bed is, not where
-the detector's model thinks it is.
+Legacy placement: laterally uniform inside the envelope (``--lateral``), standing on the bed
+measured under it where the bed returns (``resense.synthetic.local_bed_z``, up to ~80 m); beyond,
+on the model's rail level minus the bed depth, corrected by the vault drift measured in the same
+frame (EXPERIMENTS.md §2d). This is an approximation derived from the evaluated background, not
+an independent measurement of the far bed.
 
 With ``--given-speed`` the train speed is handed to the detector, which then merges frames
 beyond ``accumulation.min_range`` (the multi-frame path; off without a speed).
@@ -32,20 +31,90 @@ the frames in which the object returned >= 1 point, false confirmed gauge detect
 
     python scripts/far_range_eval.py --cache /data/cache/new_data --files 46,47,48 --kinds person,box1.0 \\
         --start 220 --out out/far/person.json
+
+Default ``legacy`` placement uses the frame's far-field detector axis and vault drift.
+``independent`` uses an explicitly measured fixed physical axis and rail height in the vehicle
+frame; no point of the frame (near or far) contributes to the placement reference. Supply
+calibrated parameters, not detector outputs, when using this mode. Both modes inject synthetic
+objects, not measured positive examples.
 """
 from __future__ import annotations
 
 import argparse
+import hashlib
 import glob
 import json
 import os
 import sys
 import time
 from concurrent.futures import ProcessPoolExecutor
+from dataclasses import replace
 
 import numpy as np
 
 BINS = [(0, 50), (50, 100), (100, 150), (150, 200), (200, 250)]
+
+
+def fixed_reference(center: float, yaw_deg: float, curvature: float, rail_z0: float,
+                    rail_grade: float) -> dict:
+    """Externally surveyed axis/rail in the *vehicle* frame; no cloud-derived parameters."""
+    values = (center, yaw_deg, curvature, rail_z0, rail_grade)
+    if not all(np.isfinite(values)):
+        raise ValueError("reference values must be finite")
+    return dict(type="fixed_physical", center_y0_m=float(center), yaw_deg=float(yaw_deg),
+                curvature_per_m=float(curvature), rail_z0_m=float(rail_z0), rail_grade=float(rail_grade))
+
+
+def independent_placement(kind, d, lateral, refl, reference, lateral_offset, yaw_deg, place):
+    """Return (spec, track) without consulting any cloud, detector state or far-range fit.
+
+    ``lateral`` is the nominal displacement from the reference; ``lateral_offset`` is an
+    explicit perturbation. The same reference is serialized into every object's label.
+    """
+    from resense.synthetic import BED_DEPTH_DEFAULT, catalogue_spec
+    from resense.track import TrackModel
+    track = TrackModel(floor_coef=np.array([0.0, reference["rail_grade"],
+                                             reference["rail_z0_m"]]),
+                       floor_range=(0.0, 300.0), rail_offset=0.0,
+                       center=reference["center_y0_m"], yaw=np.radians(reference["yaw_deg"]),
+                       curvature=reference["curvature_per_m"])
+    spec = catalogue_spec(kind, d, lateral + lateral_offset, yaw_deg=yaw_deg, reflectivity=refl)
+    x = d + spec.size[0] / 2
+    z = float(track.rail_z(x)) + (spec.base if spec.base is not None else
+                                   (0.0 if place == "rail" else -BED_DEPTH_DEFAULT))
+    spec = replace(spec, base_z=z, reference=dict(reference),
+                   perturbation={"lateral_m": float(lateral_offset), "yaw_deg": float(yaw_deg),
+                                 "nominal_lateral_m": float(lateral)})
+    return spec, track
+
+
+def legacy_placement(xyz, cfg, previous, kind, d, lateral, refl, place):
+    """Historical frame-derived placement, including far vault correction and local bed."""
+    from resense.synthetic import catalogue_spec, local_bed_z
+    from resense.track import estimate_track
+    tm = estimate_track(xyz, cfg, prev=previous)
+    spec = catalogue_spec(kind, d, lateral, reflectivity=refl)
+    x = d + spec.size[0] / 2
+    if spec.base is None and place == "rail":
+        zb = float(tm.rail_z(x)) + (float(vault_drift(xyz, tm)(x)) if x > 60.0 else 0.0)
+        spec = replace(spec, base_z=zb)
+    elif spec.base is None:
+        zb = local_bed_z(xyz, tm, x, lateral)
+        if zb is None:
+            zb = float(tm.rail_z(x)) - 0.25 + float(vault_drift(xyz, tm)(x))
+        spec = replace(spec, base_z=zb)
+    return spec, tm
+
+
+def placement_match(detection, d, spec, placement_track, detector_track, mode):
+    """Independent matching compares vehicle-frame Y, never detector-relative GT lateral."""
+    tol = max(2.0, 0.03 * d)
+    if mode == "legacy":
+        return abs(detection.distance - d) <= tol and abs(detection.lateral - spec.lateral) <= 1.2
+    x = d + spec.size[0] / 2
+    gt_y = float(placement_track.center_y(x)) + spec.lateral
+    det_y = float(detector_track.center_y(detection.distance)) + detection.lateral
+    return abs(detection.distance - d) <= tol and abs(det_y - gt_y) <= 1.2
 
 
 def vault_drift(xyz, track, x0=40.0, x1=230.0, step=10.0):
@@ -89,14 +158,13 @@ def sustained_range(rows, frac: float = 0.9, min_frames: int = 5):
 
 
 def run_sequence(job):
-    (files, stamps, speeds, kind, d0, lateral, refl, seed, cfg_dict, far_min_height, given_speed, place) = job
+    (files, stamps, speeds, kind, d0, lateral, refl, seed, cfg_dict, far_min_height, given_speed,
+     place, mode, reference, lateral_offset, yaw_deg) = job
     sys.path.insert(0, os.getcwd())
     from resense.config import DetectorConfig
     from resense.detector import Detector
     from resense.frame import frame_from_compact
-    from resense.synthetic import catalogue_spec, inject_obstacles, local_bed_z
-    from resense.track import estimate_track
-    from dataclasses import replace
+    from resense.synthetic import inject_obstacles
     cfg = DetectorConfig.from_dict(cfg_dict)
     if far_min_height is not None:
         cfg.cluster.far_min_height = far_min_height
@@ -117,19 +185,10 @@ def run_sequence(job):
         if d < 8.0:
             break
         fr = frame_from_compact(np.load(f), cfg.sensor, stamp=t or 0.0, frame_id=stem)
-        # placement from the frame's own (unsmoothed) track model and the vault drift
-        tm = estimate_track(fr.xyz, cfg.track, prev=det.track)
-        spec = catalogue_spec(kind, d, lateral, reflectivity=refl)
-        x = d + spec.size[0] / 2
-        if spec.base is None and place == "rail":
-            # lying on the rail head (the organizers' 30 x 30 x 10 cm criterion on a rail)
-            zb = float(tm.rail_z(x)) + (float(vault_drift(fr.xyz, tm)(x)) if x > 60.0 else 0.0)
-            spec = replace(spec, base_z=zb)
-        elif spec.base is None:
-            zb = local_bed_z(fr.xyz, tm, x, lateral)
-            if zb is None:
-                zb = float(tm.rail_z(x)) - 0.25 + float(vault_drift(fr.xyz, tm)(x))
-            spec = replace(spec, base_z=zb)
+        if mode == "independent":
+            spec, tm = independent_placement(kind, d, lateral, refl, reference, lateral_offset, yaw_deg, place)
+        else:
+            spec, tm = legacy_placement(fr.xyz, cfg.track, det.track, kind, d, lateral, refl, place)
         inj = inject_obstacles(fr, tm, [spec], rng=rng, dropout_start=60.0, dropout_full=200.0)
         n_pts = int(inj.n_added[0])
         res = det.process(inj.frame, ego_speed=spd if given_speed else None)
@@ -137,7 +196,7 @@ def run_sequence(job):
         hit = False
         fps = []
         for det_ in res.detections:
-            if abs(det_.distance - d) <= tol and abs(det_.lateral - lateral) <= 1.2:
+            if placement_match(det_, d, spec, tm, res.track, mode):
                 hit = True
             else:
                 fp += 1
@@ -145,9 +204,12 @@ def run_sequence(job):
         if hit and first is None:
             first = d
         rows.append({"frame": stem, "d": round(d, 1), "n": n_pts, "hit": hit, "fp_dets": fps,
+                     "gt": spec.to_dict(), "gt_vehicle_y_m": float(tm.center_y(d + spec.size[0] / 2)) + spec.lateral,
                      "cand": any(abs(c.distance - d) <= tol for c in res.candidates),
                      "mon": res.health.get("monitored_range"), "vis": res.health.get("visibility")})
     return {"kind": kind, "d0": d0, "lateral": lateral, "refl": refl, "first": first, "fp": fp, "rows": rows,
+            "placement_mode": mode, "reference": reference if mode == "independent" else None,
+            "perturbation": {"lateral_m": lateral_offset, "yaw_deg": yaw_deg} if mode == "independent" else None,
             "file0": os.path.basename(files[0])}
 
 
@@ -165,33 +227,69 @@ def main():
     ap.add_argument("--given-speed", action="store_true",
                     help="hand the ride's train speed to the detector (enables multi-frame accumulation)")
     ap.add_argument("--place", choices=("bed", "rail"), default="bed",
-                    help="bed: standing on the bed measured under it (default); rail: lying on the rail head")
+                     help="bed: standing on the bed measured under it (default); rail: lying on the rail head")
+    ap.add_argument("--placement-mode", choices=("legacy", "independent"), default="legacy",
+                    help="legacy: detector-derived axis (default); independent: explicit fixed physical reference")
+    ap.add_argument("--axis-center", type=float, help="independent: surveyed Y at X=0 (m, vehicle frame)")
+    ap.add_argument("--axis-yaw-deg", type=float, help="independent: surveyed tangent yaw (degrees)")
+    ap.add_argument("--axis-curvature", type=float, help="independent: surveyed curvature (1/m)")
+    ap.add_argument("--rail-z0", type=float, help="independent: surveyed rail Z at X=0 (m)")
+    ap.add_argument("--rail-grade", type=float, help="independent: surveyed rail slope (m/m)")
+    ap.add_argument("--lateral-offset", type=float, default=0.0, help="independent: add to nominal lateral (m)")
+    ap.add_argument("--yaw-perturb-deg", type=float, default=0.0, help="independent: object yaw (degrees)")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--jobs", type=int, default=4)
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
+    reference = None
+    axis_args = (a.axis_center, a.axis_yaw_deg, a.axis_curvature, a.rail_z0, a.rail_grade)
+    if a.placement_mode == "independent":
+        if any(v is None for v in axis_args):
+            ap.error("independent placement requires --axis-center, --axis-yaw-deg, --axis-curvature, --rail-z0 and --rail-grade")
+        reference = fixed_reference(*axis_args)
+    elif any(v is not None for v in axis_args) or a.lateral_offset or a.yaw_perturb_deg:
+        ap.error("axis and perturbation options require --placement-mode independent")
     import yaml
     from resense.config import DetectorConfig
     from resense.io import _natural_key, load_cache_stamps
     from resense.synthetic import OBJECT_CATALOGUE
-    raw = yaml.safe_load(open(a.config, encoding="utf-8")) or {}
+    with open(a.config, "rb") as fh:
+        config_bytes = fh.read()
+    raw = yaml.safe_load(config_bytes) or {}
     cfg_dict = raw.get("resense", raw)          # read once: every sequence runs the same parameters
     DetectorConfig.from_dict(cfg_dict)
-    intake = json.load(open(a.speeds))
+    with open(a.speeds, "rb") as fh:
+        speeds_bytes = fh.read()
+    intake = json.loads(speeds_bytes)
     spd_file = {f["n"]: (f.get("speed_tracks") or 0.0) for f in intake["files"]}
     stamps = load_cache_stamps(a.cache)
     allf = sorted(glob.glob(os.path.join(a.cache, "*.npy")), key=_natural_key)
     lo, hi = (float(v) for v in a.lateral.split(":"))
+    if a.placement_mode == "independent" and (not np.isfinite([lo, hi, a.lateral_offset, a.yaw_perturb_deg]).all()
+                                               or lo > hi):
+        ap.error("lateral range and perturbations must be finite; lateral lo must not exceed hi")
     rng = np.random.default_rng(a.seed)
     jobs = []
     for fn in [int(v) for v in a.files.split(",") if v]:
-        start = next(i for i, f in enumerate(allf) if os.path.basename(f).startswith(f"new_data_{fn}_"))
+        start = next((i for i, f in enumerate(allf) if os.path.basename(f).startswith(f"new_data_{fn}_")), None)
+        if start is None:
+            ap.error(f"no cached frames for new_data_{fn} in {a.cache}")
         files = allf[start:start + a.frames]
+        if not files:
+            ap.error(f"no frames for new_data_{fn}")
+        if a.placement_mode == "independent":
+            missing = [os.path.basename(f) for f in files if os.path.splitext(os.path.basename(f))[0] not in stamps]
+            if missing:
+                ap.error(f"independent placement requires bag stamps for every frame (missing {missing[:3]})")
+            missing_speeds = [f for f in files if int(os.path.basename(f).split("_")[2]) not in spd_file]
+            if missing_speeds:
+                ap.error(f"independent placement requires speed rows for every split file: {missing_speeds[:3]}")
         speeds = [spd_file.get(int(os.path.basename(f).split("_")[2]), 0.0) for f in files]
         for kind in a.kinds.split(","):
             refl = float(rng.uniform(*OBJECT_CATALOGUE[kind].reflectivity))
             jobs.append((files, stamps, speeds, kind, a.start, float(rng.uniform(lo, hi)), refl,
-                         int(rng.integers(1 << 30)), cfg_dict, a.far_min_height, a.given_speed, a.place))
+                          int(rng.integers(1 << 30)), cfg_dict, a.far_min_height, a.given_speed, a.place,
+                          a.placement_mode, reference, a.lateral_offset, a.yaw_perturb_deg))
     t0 = time.time()
     with ProcessPoolExecutor(max_workers=a.jobs) as ex:
         out = list(ex.map(run_sequence, jobs))
@@ -210,8 +308,24 @@ def main():
                                   "sustained_median": round(float(np.median(sus)), 1) if sus else None,
                                   "first_detection_m": sorted(round(v, 1) for v in firsts),
                                   "first_detection_median": round(float(np.median(firsts)), 1) if firsts else None,
-                                  "recall_by_bin": bins, "false_detections": sum(o["fp"] for o in seqs)}
-    json.dump({"summary": summ, "sequences": out}, open(a.out, "w"), indent=1)
+                                   "recall_by_bin": bins, "false_detections": sum(o["fp"] for o in seqs)}
+    selected_files = [os.path.basename(f) for job in jobs for f in job[0]]
+    selected_stamps = {os.path.splitext(f)[0]: stamps.get(os.path.splitext(f)[0]) for f in selected_files}
+    report = {"schema": "setF-placement-v1", "source": "synthetic objects on real empty ride frames",
+              "parameters": {"placement_mode": a.placement_mode, "reference": reference,
+                             "perturbation": {"lateral_m": a.lateral_offset, "yaw_deg": a.yaw_perturb_deg},
+                             "place": a.place, "seed": a.seed, "files": a.files, "frames": a.frames,
+                             "kinds": a.kinds, "start_m": a.start, "lateral_range": a.lateral,
+                             "given_speed": a.given_speed, "far_min_height": a.far_min_height,
+                             "config_sha256": hashlib.sha256(config_bytes).hexdigest(),
+                             "speeds_sha256": hashlib.sha256(speeds_bytes).hexdigest(),
+                             "selected_stamps_sha256": hashlib.sha256(json.dumps(
+                                 selected_stamps, sort_keys=True).encode()).hexdigest(),
+                             "cache": os.path.abspath(a.cache),
+                             "cache_files": selected_files},
+              "summary": summ, "sequences": out}
+    with open(a.out, "w", encoding="utf-8") as fh:
+        json.dump(report, fh, indent=1)
     print(json.dumps(summ, indent=1))
 
 

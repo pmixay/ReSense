@@ -224,6 +224,117 @@ def test_track_model_on_synthetic_tunnel(tunnel):
     assert abs(m2.center - gt.center) < 0.15 and np.isfinite(m2.axis_valid)
 
 
+def _station_wall_scene(wall_curvature, rail_curvature, far_rails=True):
+    """Rail bed with a platform-hall boundary that can bend independently of the rails."""
+    rng = np.random.default_rng(72)
+    x = rng.uniform(3, 110, 26000)
+    bed = np.stack([x, rng.uniform(-1.1, 1.1, x.size),
+                    -1.5 + rng.normal(0, 0.01, x.size)], axis=1)
+    parts = [bed]
+    for side in (-1, 1):
+        x = rng.uniform(4, 85 if far_rails else 28, 15000)
+        parts.append(np.stack([x, side * 0.795 + 0.5 * rail_curvature * x ** 2 + rng.normal(0, 0.015, x.size),
+                               -1.16 + rng.normal(0, 0.005, x.size)], axis=1))
+        x = rng.uniform(6, 150, 22000)
+        parts.append(np.stack([x, side * 3.0 + 0.5 * wall_curvature * x ** 2 + rng.normal(0, 0.02, x.size),
+                               rng.uniform(0.4, 1.5, x.size)], axis=1))
+    return np.concatenate(parts).astype(np.float32)
+
+
+def test_station_wall_curvature_is_checked_against_far_rails(monkeypatch):
+    """Near rails lock but station walls invent a bend: a side structure is pulled into the
+    gauge at 80 m. Two further rail slabs contradict it and restore the axis. A
+    genuinely curved track (walls and rails agree) keeps its detection range."""
+    from resense import track as track_module
+
+    cfg = DetectorConfig()
+    xyz = _station_wall_scene(1 / 3000, 0.0)
+
+    def run(cloud):
+        model = None
+        for _ in range(6):
+            model = estimate_track(cloud, cfg.track, prev=model)
+        return model
+
+    real_check = track_module._check_far_rails
+    assert not cfg.track.rails_far_check_enabled
+    monkeypatch.setattr(track_module, "_check_far_rails", lambda *args: pytest.fail("opt-in check ran by default"))
+    unchecked = run(xyz)
+    monkeypatch.setattr(track_module, "_check_far_rails", real_check)
+    cfg.track.rails_far_check_enabled = True
+    checked = run(xyz)
+    assert unchecked.rail_slabs >= 2 and unchecked.axis_valid > 80
+    assert abs(float(unchecked.center_y(80))) > 0.7  # platform edge at +1.4 m appears central
+    assert abs(float(checked.center_y(80))) < 0.25, checked.to_dict()
+    assert checked.axis_valid >= 80
+    assert checked.axis_valid < unchecked.axis_valid
+
+    # The same wall curvature with no independently observable far pair cannot be
+    # treated as evidence of a contradiction; the old confidence policy remains.
+    no_far = run(_station_wall_scene(1 / 3000, 0.0, far_rails=False))
+    assert no_far.axis_valid > 80
+    curved = run(_station_wall_scene(1 / 1000, 1 / 1000))
+    assert curved.rail_slabs >= 2 and curved.axis_valid > 80, curved.to_dict()
+
+    # At that range a 1.4 m platform edge is outside the envelope when the axis
+    # follows the rails. A central person remains in the strict gauge, as does a
+    # near-axis hanging cable; the correction is not an object-shape filter.
+    def membership(model, pts):
+        _, strict = corridor_mask(pts, model, cfg.gauge)
+        return int(strict.sum())
+
+    edge = surface_box(80, 1.4, 0.2, 0.3, 0.4, 1.0)
+    person = surface_box(80, 0.0, 0.2, 0.4, 0.5, 1.7)
+    cable = surface_box(35, 0.0, 0.6, 0.05, 0.05, 2.0)
+    assert membership(unchecked, edge) > cfg.cluster.gauge_min_points
+    assert membership(checked, edge) == 0
+    assert membership(checked, person) > cfg.cluster.gauge_min_points
+    assert membership(checked, cable) > cfg.cluster.gauge_min_points
+
+
+def test_station_edge_false_event_and_central_obstacle_regression():
+    """Full pipeline: a station edge at 80 m is an event with the hall-wall bend,
+    but not with the rail-checked axis; a central object must still STOP."""
+    from resense.detector import Detector
+    from resense.frame import Frame
+
+    scene = _station_wall_scene(1 / 3000, 0.0)
+    edge = surface_box(80, 1.4, -0.96, 0.3, 0.4, 1.0)
+    central = surface_box(80, 0.0, -0.96, 0.4, 0.5, 1.7)
+
+    def run(extra, enable_far_check=False):
+        points = np.concatenate([scene, extra])
+        frame = Frame(xyz=points, intensity=np.full(points.shape[0], 30, np.float32))
+        cfg = DetectorConfig()
+        cfg.track.rails_far_check_enabled = enable_far_check
+        det = Detector(cfg)
+        results = [det.process(frame) for _ in range(8)]
+        return results[-1]
+
+    old_edge = run(edge)
+    new_edge = run(edge, enable_far_check=True)
+    new_central = run(central, enable_far_check=True)
+    assert old_edge.obstacle, [(c.distance, c.lateral, c.reason) for c in old_edge.candidates]
+    assert not new_edge.obstacle, [(c.distance, c.lateral, c.reason) for c in new_edge.candidates]
+    assert new_central.obstacle and abs(new_central.nearest_distance - 80) < 1.0, (
+        new_central.track.to_dict(), new_central.corridor_idx.size,
+        [(c.distance, c.lateral, c.reason) for c in new_central.candidates])
+
+
+def test_without_a_rail_pair_far_clusters_remain_advisory():
+    from resense.detector import Detector
+
+    det = Detector(DetectorConfig())
+    det.track = TrackModel(floor_coef=np.array([0.0, 0.0, -1.5]), floor_range=(3, 120),
+                           center=0.0, yaw=0.0, curvature=0.0, axis_valid=150,
+                           floor_verified=120, rail_slabs=0)
+    pts = surface_box(80, 0, -0.9, 0.4, 0.5, 1.0)
+    cand, _, _, _, (valid, _, _) = det._corridor(pts, np.full(pts.shape[0], 30, np.float32))
+    clusters = det._cluster(cand, 1, valid, 120, None)
+    assert valid == det.cfg.gauge.no_rail_range
+    assert len(clusters) == 1 and clusters[0].zone == "warning" and clusters[0].reason == "beyond_axis"
+
+
 # ---------------------------------------------------------------------------
 # config round trip
 # ---------------------------------------------------------------------------
@@ -243,6 +354,17 @@ def test_default_yaml_equals_code_defaults():
     assert set(from_file) == set(from_code)
     for k in from_code:
         assert from_file[k] == from_code[k], f"{k}: yaml {from_file[k]!r} != code {from_code[k]!r}"
+
+
+def test_ros_parameters_in_sync_and_far_check_is_opt_in():
+    canonical = REPO / "configs" / "default.yaml"
+    ros = REPO / "ros2_ws" / "src" / "resense_ros" / "config" / "detector.yaml"
+    assert canonical.read_text(encoding="utf-8") == ros.read_text(encoding="utf-8")
+    assert not DetectorConfig().track.rails_far_check_enabled
+    assert DetectorConfig.from_yaml(str(canonical)).to_dict() == DetectorConfig().to_dict()
+    assert not DetectorConfig.from_yaml(str(ros)).track.rails_far_check_enabled
+    enabled = DetectorConfig.from_dict({"track": {"rails_far_check_enabled": True}})
+    assert enabled.track.rails_far_check_enabled
 
 
 def test_unknown_config_key_raises():
@@ -396,6 +518,31 @@ def test_check_dry_run_empty_capture(check_dry_run, tmp_path):
     p.write_text("---\n")
     assert check_dry_run.main([str(p)]) == 2
     assert check_dry_run.percentile([1.0, 2.0, 3.0, 4.0], 95) == pytest.approx(np.percentile([1, 2, 3, 4], 95))
+
+
+def test_check_dry_run_rejects_missing_metrics_and_fault_only_capture(check_dry_run, tmp_path, capsys):
+    capture = tmp_path / "missing_metrics.jsonl"
+    capture.write_text("".join(json.dumps({"obstacle": False, "stamp": i * 0.1}) + "\n" for i in range(60)))
+    assert check_dry_run.main([str(capture)]) == 1
+    out = capsys.readouterr().out
+    assert "node.latency_ms missing" in out and "node.dropped_frames missing" in out
+
+    capture.write_text("".join(json.dumps({"obstacle": False, "stamp": i * 0.1,
+                                           "node": {"latency_ms": float("nan"), "dropped_frames": "0"}}) + "\n"
+                               for i in range(60)))
+    assert check_dry_run.main([str(capture)]) == 1
+    out = capsys.readouterr().out
+    assert "latency_ms missing or invalid" in out and "dropped_frames missing or invalid" in out
+
+    capture.write_text("".join(json.dumps({"obstacle": False, "decision": "FAULT", "stamp": i * 0.1}) + "\n"
+                               for i in range(60)))
+    assert check_dry_run.main([str(capture)]) == 2
+    assert "no status messages parsed" in capsys.readouterr().out
+
+
+def test_bench_empty_input_has_a_diagnostic(tmp_path):
+    with pytest.raises(SystemExit, match="no input frames"):
+        run_cli(["bench", "--npy", str(tmp_path)])
 
 
 # ---------------------------------------------------------------------------

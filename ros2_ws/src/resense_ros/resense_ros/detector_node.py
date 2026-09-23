@@ -461,15 +461,56 @@ class DetectorNode(Node):
             self.consecutive_errors = 0
 
     def publish_fault(self, header: Header, message: str, level_name: str = "ERROR") -> None:
+        """Publish a fault as a complete output snapshot.
+
+        A fault must not leave the last successful decision visible on any of the
+        alarm topics or in RViz.  In particular, publishing only ``/decision``
+        used to leave the previous warning, distance, detections, markers and
+        status JSON latched at their old values.
+        """
         self.pub_decision.publish(String(data="FAULT"))
         self.pub_clear.publish(Float32(data=0.0))
         self.pub_flag.publish(Bool(data=False))
+        self.pub_warn.publish(Bool(data=False))
+        self.pub_dist.publish(Float32(data=-1.0))
         arr = DiagnosticArray(header=Header(stamp=self.get_clock().now().to_msg(), frame_id=header.frame_id))
-        st = DiagnosticStatus(level=DiagnosticStatus.ERROR, name="resense/detector", message=message,
+        diag_level = (DiagnosticStatus.STALE if level_name == "STALE" else DiagnosticStatus.ERROR)
+        st = DiagnosticStatus(level=diag_level, name="resense/detector", message=message,
                               hardware_id=header.frame_id or "lidar")
         st.values.append(KeyValue(key="state", value=level_name))
         arr.status.append(st)
         self.pub_health.publish(arr)
+
+        # Keep the status stream useful to headless consumers as well.  A
+        # watchdog/error snapshot is not a frame from a recording, so it has no
+        # ``node`` timing object: acceptance tooling must not count it as a
+        # zero-latency frame or include it in per-recording criteria.
+        try:
+            stamp = float(header.stamp.sec) + float(header.stamp.nanosec) * 1e-9
+        except (AttributeError, TypeError, ValueError):
+            stamp = 0.0
+        fault_status = {
+            "stamp": stamp,
+            "obstacle": False,
+            "warning": False,
+            "nearest_distance": None,
+            "detections": [],
+            "warnings": [],
+            "n_candidates": 0,
+            "n_points": 0,
+            "n_corridor": 0,
+            "timing_ms": {},
+            "health": {"level": "error", "messages": [message]},
+            "mount": {},
+            "clear_distance": 0.0,
+            "decision": "FAULT",
+        }
+        self.pub_status.publish(String(data=json.dumps(fault_status)))
+        self.pub_det.publish(Detection3DArray(header=header))
+        if self.get_parameter("publish_markers").get_parameter_value().bool_value:
+            clear = Marker(header=header, ns="resense", id=0, action=Marker.DELETEALL)
+            self.pub_markers.publish(MarkerArray(markers=[clear]))
+        self.last_status = "FAULT: " + message
 
     def on_watchdog(self) -> None:
         """Guard: the input went silent (sensor, driver or bag stopped) -> FAULT / STALE at 2 Hz;

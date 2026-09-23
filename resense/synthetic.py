@@ -36,6 +36,8 @@ class ObstacleSpec:
     label: str = "obstacle"
     base: Optional[float] = None      # v0.6: height of the object's bottom above the rail head (m); None = standing on the bed / sleepers
     base_z: Optional[float] = None    # v0.6: absolute Z of the bottom in the vehicle frame (set by the injector from the local bed; wins over ``base``)
+    reference: Optional[dict] = None  # placement reference, when externally specified
+    perturbation: Optional[dict] = None  # offsets from that reference
 
     def to_dict(self) -> dict:
         d = {"kind": self.kind, "size": list(self.size), "distance": self.distance,
@@ -45,6 +47,10 @@ class ObstacleSpec:
             d["base"] = self.base
         if self.base_z is not None:
             d["base_z"] = round(float(self.base_z), 3)
+        if self.reference is not None:
+            d["reference"] = self.reference
+        if self.perturbation is not None:
+            d["perturbation"] = self.perturbation
         return d
 
 
@@ -254,7 +260,9 @@ def inject_obstacles(frame: Frame, track: TrackModel, specs: Sequence[ObstacleSp
     geom = ans["geometry_ids"].numpy()
     hit = np.isfinite(t_hit)
     if not hit.any():
-        return InjectionResult(frame=frame, labels=np.zeros(frame.n, dtype=np.int32), n_added=[0] * len(specs))
+        from dataclasses import replace
+        out = replace(frame, meta=dict(frame.meta, obstacles=[s.to_dict() for s in specs]))
+        return InjectionResult(frame=out, labels=np.zeros(frame.n, dtype=np.int32), n_added=[0] * len(specs))
 
     hit_idx = np.flatnonzero(hit)
     hit_dirs, hit_t, hit_geom = dirs[hit_idx], t_hit[hit_idx], geom[hit_idx]
