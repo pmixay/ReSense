@@ -100,6 +100,7 @@ and ALGORITHM.md §4 / §4b are that statement; how to run it is "How a bag is p
 ```bash
 pip install -e ".[dev]"                       # numpy scipy scikit-learn pyyaml + rosbags matplotlib open3d pytest
 pytest -q                                     # expect no skips: "skipped" means open3d is missing (RESENSE_REQUIRE_SYNTHETIC=1 makes that fail, as in CI)
+ruff check .                                  # lint, as the CI job "lint" (pip install ruff)
 
 # unpack the dataset (see docs/DATASET.md), then:
 resense info  /data/for_hackathon/roundT_doubleT

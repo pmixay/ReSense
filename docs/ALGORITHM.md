@@ -2,8 +2,9 @@
 
 Structured after spec §5 ("description of the algorithm"): problem → input data → point-cloud
 processing → decision rule → parameters → limitations. The code path is
-`resense.Detector.process()` (`resense/detector.py`); each stage below names its module and
-its parameter section in `configs/default.yaml`. Component diagram and topics:
+`resense.Detector.process()` (`resense/detector.py`), one method per stage (`_fit_track`,
+`_corridor`, `_low_stage`, `_speed`, `_accumulate`, `_cluster`, `_confirm`); each stage below
+names its module and its parameter section in `configs/default.yaml`. Component diagram and topics:
 [`ARCHITECTURE.md`](ARCHITECTURE.md). Numbers: [`EXPERIMENTS.md`](EXPERIMENTS.md).
 
 ## 1. Problem

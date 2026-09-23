@@ -21,7 +21,7 @@ import numpy as np
 from scipy.spatial import cKDTree
 
 from resense.frame import Frame
-from resense.sensor import AZIMUTH_FOV_DEG, AZIMUTH_STEP_DEG, RING_ELEVATION_DEG, ray_directions
+from resense.sensor import ray_directions
 from resense.track import TrackModel
 
 

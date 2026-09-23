@@ -58,8 +58,8 @@ def test_eval_npy_against_labels(labelled_npy, tmp_path):
     assert out["first_detection_distance"] == {"box_a": 40.0}
     assert out["fp_frames"] == 0 and out["fp_events"] == 0 and out["alarm_events"] == 1
     assert out["frame_stride"] == 5 and "every 5th" in out["stride_caveat"]
-    lines = [json.loads(l) for l in open(jsonl)]
-    assert [l["frame"] for l in lines] == [0, 5, 10]          # keys come from the file names
+    lines = [json.loads(ln) for ln in open(jsonl)]
+    assert [ln["frame"] for ln in lines] == [0, 5, 10]          # keys come from the file names
     assert lines[2]["obstacle"] and abs(lines[2]["nearest_distance"] - 40.0) < 2.0
     # summarize on the JSONL reproduces the evaluation
     s = run_cli(["summarize", str(jsonl), "--gt", str(d / "gt.json"), "--json"])
@@ -166,12 +166,12 @@ def test_run_and_bench_with_given_ego_speed(synth_npy_dir, tmp_path, capsys):
     (ego_speed_source 'given'); without the option the source is the estimator's."""
     jsonl = tmp_path / "given.jsonl"
     run_cli(["run", "--npy", str(synth_npy_dir), "--out", str(jsonl), "--quiet", "--ego-speed", "15"])
-    lines = [json.loads(l) for l in open(jsonl)]
-    assert [l["ego_speed_source"] for l in lines] == ["given", "given"]
-    assert [l["ego_speed"] for l in lines] == [15.0, 15.0]
+    lines = [json.loads(ln) for ln in open(jsonl)]
+    assert [ln["ego_speed_source"] for ln in lines] == ["given", "given"]
+    assert [ln["ego_speed"] for ln in lines] == [15.0, 15.0]
     jsonl2 = tmp_path / "none.jsonl"
     run_cli(["run", "--npy", str(synth_npy_dir), "--out", str(jsonl2), "--quiet"])
-    assert all(json.loads(l)["ego_speed_source"] != "given" for l in open(jsonl2))
+    assert all(json.loads(ln)["ego_speed_source"] != "given" for ln in open(jsonl2))
     capsys.readouterr()
     run_cli(["bench", "--npy", str(synth_npy_dir), "--ego-speed", "15"])
     assert "total" in capsys.readouterr().out
@@ -189,15 +189,15 @@ def test_eval_gives_sequence_speed_to_detector(synth_npy_dir, tmp_path):
           "--distances", "60:60", "--negative-fraction", "0", "--sequence", "3", "--speed", "20", "--seed", "5"])
     jsonl = tmp_path / "seq.jsonl"
     out = run_cli(["eval", str(seq), "--out", str(jsonl)])
-    lines = [json.loads(l) for l in open(jsonl)]
-    assert [l["ego_speed_source"] for l in lines] == ["given"] * 3 and [l["ego_speed"] for l in lines] == [20.0] * 3
+    lines = [json.loads(ln) for ln in open(jsonl)]
+    assert [ln["ego_speed_source"] for ln in lines] == ["given"] * 3 and [ln["ego_speed"] for ln in lines] == [20.0] * 3
     assert lines[-1]["n_accumulated"] >= 2                      # the far candidates of the previous steps were merged
     assert out["ego_speed_sources"] == {"given": 3} and out["n_accumulated_mean"] > 1.0
     out = run_cli(["eval", str(seq), "--out", str(jsonl), "--no-gt-speed"])
     assert "given" not in out["ego_speed_sources"]
     out = run_cli(["eval", str(seq), "--out", str(jsonl), "--ego-speed", "5"])
     assert out["ego_speed_sources"] == {"given": 3}
-    assert all(json.loads(l)["ego_speed"] == 5.0 for l in open(jsonl))
+    assert all(json.loads(ln)["ego_speed"] == 5.0 for ln in open(jsonl))
     static = tmp_path / "static"
     run_cli(["inject", "--npy", str(synth_npy_dir), "--limit", "1", "--out", str(static), "--kinds", "box1.0",
           "--distances", "60:60", "--negative-fraction", "0", "--seed", "5"])

@@ -406,7 +406,7 @@ def format_summary(s: dict) -> str:
     if s.get("recall") is not None:
         lines.append(f"recall            : {s['recall']:.1%} ({s['per_bin_counts']})")
         if s.get("recall_by_class"):
-            lines.append(f"recall by class   : " + ", ".join(f"{k} {f(v, '{:.0%}')}" for k, v in s["recall_by_class"].items()))
+            lines.append("recall by class   : " + ", ".join(f"{k} {f(v, '{:.0%}')}" for k, v in s["recall_by_class"].items()))
         for cls, bins in (s.get("per_class_bin_counts") or {}).items():
             lines.append(f"  {cls:15s}: " + ", ".join(f"{b} {v[0]}/{v[1]}" for b, v in bins.items()))
         if s.get("first_detection_distance"):

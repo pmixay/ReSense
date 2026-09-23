@@ -33,3 +33,7 @@ include = ["resense*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.ruff]
+# `ruff check .` (CI job "lint"): the default rules, pyflakes and pycodestyle errors
+target-version = "py310"

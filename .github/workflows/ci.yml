@@ -43,6 +43,13 @@ jobs:
       - run: pip install -e ".[dev]" playwright && python -m playwright install --with-deps chromium
       - run: python -m pytest -q -rs web/demo
       - run: python web/demo/make_demo_run.py --out out/demo_run.jsonl && python web/demo/check_dashboard.py --jsonl out/demo_run.jsonl --screenshot out/dashboard_synthetic.png
+  lint:
+    # pyflakes + the pycodestyle error classes (ruff's default rule set) over the package, the ROS
+    # node, the scripts and the tests; the version is pinned so a ruff release cannot turn CI red
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: pipx run ruff==0.15.8 check --output-format github .
   params-in-sync:
     # configs/default.yaml is the single source of truth; the ROS package carries a copy
     runs-on: ubuntu-22.04

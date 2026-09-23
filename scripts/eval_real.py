@@ -164,8 +164,8 @@ def main():
     # longest first
     jobs.sort(key=lambda j: -len(j[1]))
     with ProcessPoolExecutor(max_workers=a.jobs) as ex:
-        for name, path, l in ex.map(run_piece, jobs):
-            lat.setdefault(name, []).extend(l)
+        for name, path, lats in ex.map(run_piece, jobs):
+            lat.setdefault(name, []).extend(lats)
     summary = {"config": a.config, "set": a.set, "given_speed": bool(spd_file), "wall_s": round(time.time() - t0, 1), "bags": {}}
     tot_f = tot_e = tot_n = 0
     for bag, paths in pieces.items():

@@ -378,7 +378,9 @@ def test_input_reliability_follows_the_publishers(node_cls, monkeypatch):
     node = node_cls()
     assert node.sub_rel == {"/lidar_points": "reliable", "/sensing/lidar/hesai128/pointcloud": "reliable"}
     assert node.subs["/lidar_points"].qos["reliability"] == 1
-    pub = lambda rel: types.SimpleNamespace(qos_profile=types.SimpleNamespace(reliability=rel))
+    def pub(rel):
+        return types.SimpleNamespace(qos_profile=types.SimpleNamespace(reliability=rel))
+
     graph = {"/lidar_points": [pub(1)], "/sensing/lidar/hesai128/pointcloud": [pub(2), pub(1)]}
     node.get_publishers_info_by_topic = lambda t: graph.get(t, [])
     node.on_match_qos()

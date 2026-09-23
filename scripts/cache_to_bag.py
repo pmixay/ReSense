@@ -62,7 +62,6 @@ def main(argv=None) -> int:
     if a.limit:
         files = files[:a.limit]
     stamps = [float(st["stamps"][os.path.basename(f)[len(bag) + 1:-4]]) for f in files]
-    rng = np.random.default_rng(0)
     fields = [T["sensor_msgs/msg/PointField"](name=n, offset=o, datatype=d, count=1)
               for n, o, d in (("x", 0, 7), ("y", 4, 7), ("z", 8, 7), ("intensity", 12, 7), ("ring", 16, 4),
                               ("timestamp", 18, 8))]

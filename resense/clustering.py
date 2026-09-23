@@ -125,133 +125,179 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
     for lab in np.unique(vlabels):
         if lab < 0:
             continue
-        idx = np.flatnonzero(labels == lab)
-        n_vox = int((vlabels == lab).sum())
-        pts = xyz[idx]
-        bmin, bmax = pts.min(axis=0), pts.max(axis=0)
-        size = bmax - bmin
+        b = _Blob.of(xyz, np.flatnonzero(labels == lab), int((vlabels == lab).sum()))
         factor = min_points_factor
-        merged = smear_max_length > 0 and (frame_idx[idx] < 0).any()
+        size = b.size
+        merged = smear_max_length > 0 and (frame_idx[b.idx] < 0).any()
         if merged and (size[0] > smear_max_length or (smear_max_width > 0 and size[1] > smear_max_width)):
-            idx = idx[frame_idx[idx] >= 0]
+            idx = b.idx[frame_idx[b.idx] >= 0]
             if idx.size == 0:
                 continue
-            n_vox = int(np.unique(inv[idx]).size)
-            pts = xyz[idx]
-            bmin, bmax = pts.min(axis=0), pts.max(axis=0)
-            size = bmax - bmin
+            b = _Blob.of(xyz, idx, int(np.unique(inv[idx]).size))
             factor = 1.0
-        is_low = low is not None and low_cfg is not None and bool(low[idx].mean() >= 0.5)
-        if is_low:
-            if (size[0] > low_cfg.max_length or size[1] > low_cfg.max_width or size[2] < low_cfg.min_height
-                    or n_vox < low_cfg.min_points):
-                continue
-            # rail-head slivers, fastenings and joint bars are narrow across the track; a 30 cm object is not
-            if size[1] < low_cfg.min_width:
-                continue
-            # the object must reach the rail-head plane (bed fixtures stay below it by design)
-            if low_cfg.min_top > -1.0 and float(h[idx].max()) < low_cfg.min_top:
-                continue
-            dist = float(pts[:, 0].min())
-            width = max(float(size[1]), 0.15)
-            height = max(float(size[2]), 0.1)
-            n_exp = float(expected_points(np.linalg.norm(pts.mean(axis=0)), width, height))
-            score = float(np.clip(n_vox / max(n_exp, 1.0) / cfg.visibility_ratio, 0.0, 1.0)) if n_exp > 1.0 else 1.0
-            fi = frame_idx[idx]
-            out.append(Cluster(
-                points_idx=fi[fi >= 0], n=n_vox, n_raw=int(idx.size), centroid=pts.mean(axis=0),
-                bbox_min=bmin, bbox_max=bmax, distance=dist, lateral=float(dy[idx].mean()),
-                height_min=float(h[idx].min()), height_max=float(h[idx].max()),
-                intensity=float(intensity[idx].mean()) if intensity is not None else 0.0,
-                n_expected=n_exp, score=score, zone="gauge", n_gauge=n_vox, kind="low",
-            ))
-            continue
-        if size.max() > cfg.max_extent or size[2] < cfg.min_height:
-            continue
-        dist = float(pts[:, 0].min())
-        min_pts = cfg.min_points if dist < cfg.far_range else cfg.min_points_far
-        gauge_min = cfg.gauge_min_points
-        if factor > 1.0 and dist >= factor_range:
-            min_pts = int(np.ceil(min_pts * factor))
-            gauge_min = int(np.ceil(gauge_min * factor))
-        if n_vox < min_pts:
-            continue
-        # linear infrastructure along the track: rails, pipes, cables, duct edges
-        if size[0] > cfg.thin_min_length and size[1] < cfg.thin_max_width and size[2] < cfg.thin_max_height:
-            continue
-        lateral = float(dy[idx].mean())
-        h_max = float(h[idx].max())
-        # low, narrow track hardware (rail clamps, cables, joint bars) — tune with injected data
-        if h_max < cfg.hardware_max_top and size[1] < cfg.hardware_max_width and size[2] < cfg.hardware_max_height:
-            continue
-        # wall-like structure at the side (columns, gate frames, platform walls) or a tall,
-        # long, narrow wall segment that a mis-estimated axis pulled into the corridor
-        if size[2] > cfg.wall_min_height and abs(lateral) > cfg.wall_min_lateral:
-            continue
-        if size[2] > cfg.wall_min_height and size[0] > cfg.wall_segment_min_length and size[1] < cfg.wall_segment_max_width:
-            continue
-        # long linear structure along the track at the side (platform edge, duct, cabinet row)
-        if (size[0] > cfg.linear_min_aspect * max(float(size[1]), 0.05) and size[2] < cfg.linear_max_height
-                and abs(lateral) > cfg.linear_min_lateral):
-            continue
-        n_gauge = int(np.unique(inv[idx][in_gauge[idx]]).size)
-        zone = "gauge" if n_gauge >= gauge_min else "warning"
-        h_min = float(h[idx].min())
-        reason = ""
-        # beyond the range where the axis is supported by observed tunnel boundaries, or
-        # hanging entirely in the top zone (cables, lamps): advisory only
-        if dist > axis_valid:
-            reason = "beyond_axis"
-        elif height_valid is not None and dist > height_valid and (
-                size[2] < cfg.far_min_height or size[0] > cfg.far_max_length or float(h[idx].min()) > cfg.far_max_bottom):
-            reason = "beyond_height_ref"
-        elif h_min > cfg.overhead_min_height:
-            reason = "overhead"
-        elif zone == "gauge":
-            # v0.5 infrastructure signatures (measured on the organizer bags, EXPERIMENTS.md 1b)
-            hh = h[idx]
-            ady = np.abs(dy[idx])
-            off_centre = abs(lateral) > cfg.signature_min_lateral
-            if cfg.column_min_height > 0 and size[2] > cfg.column_min_height and size[1] < cfg.column_max_width \
-                    and (off_centre or size[1] >= cfg.column_min_width):
-                reason = "column"                  # column, post, gate leg: taller than any listed object, narrow
-            elif cfg.elevated_min_height > 0 and h_min > cfg.elevated_min_height and size[1] > cfg.elevated_min_width:
-                reason = "elevated"                # beam / roof strip / gantry spanning the corridor above the rails
-            elif cfg.floating_min_height > 0 and h_min > cfg.floating_min_height and size[2] < cfg.floating_max_height \
-                    and size[1] < cfg.floating_max_width and off_centre:
-                reason = "floating"                # sign, lamp, bracket: small and not touching the ground
-            elif cfg.edge_min_lateral > 0 and abs(lateral) > cfg.edge_min_lateral \
-                    and size[0] > cfg.edge_min_aspect * max(float(size[1]), 0.05) and size[2] < cfg.edge_max_height:
-                reason = "edge"                    # duct / bench / platform-edge fragment along the corridor edge
-            elif cfg.wall_face_min_height > 0 and size[2] > cfg.wall_face_min_height and h_max > cfg.wall_face_min_top:
-                below = hh < cfg.wall_face_min_top
-                if below.sum() >= 3 and ady[below].min() > cfg.wall_face_min_inner and ady[below].max() > cfg.wall_face_edge:
-                    reason = "wall_face"           # wall / portal face pulled in by the axis: hugs the edge, centre clear
-        if reason:
-            zone = "warning"
-        mean_int = float(intensity[idx].mean()) if intensity is not None else 0.0
-        # retro-reflective plate / sign / marker: intensity is reflectivity %, > 100 only from
-        # retro-reflective material; small and low -> infrastructure, advisory only. A person
-        # in a hi-vis vest is taller, a train ahead is larger: both keep their zone.
-        retro = False
-        if cfg.retro_intensity > 0 and intensity is not None and idx.size:
-            frac = float((intensity[idx] >= cfg.retro_intensity).mean())
-            if (frac >= cfg.retro_min_fraction and size[2] < cfg.retro_max_height
-                    and size[1] < cfg.retro_max_width):
-                retro = True
-                zone = "warning"
-                reason = reason or "retro"
-        width = max(float(size[1]), 0.15)
-        height = max(float(size[2]), 0.15)
-        n_exp = float(expected_points(np.linalg.norm(pts.mean(axis=0)), width, height))
-        vis = n_vox / max(n_exp, 1.0)
-        score = float(np.clip(vis / cfg.visibility_ratio, 0.0, 1.0)) if n_exp > 1.0 else 1.0
-        fi = frame_idx[idx]
-        out.append(Cluster(
-            points_idx=fi[fi >= 0], n=n_vox, n_raw=int(idx.size), centroid=pts.mean(axis=0),
-            bbox_min=bmin, bbox_max=bmax, distance=dist, lateral=lateral,
-            height_min=h_min, height_max=h_max, intensity=mean_int,
-            n_expected=n_exp, score=score, zone=zone, n_gauge=n_gauge, retro=retro, reason=reason,
-        ))
+        if low is not None and low_cfg is not None and bool(low[b.idx].mean() >= 0.5):
+            c = _low_cluster(b, dy, h, intensity, frame_idx, cfg, low_cfg)
+        else:
+            c = _corridor_cluster(b, dy, h, in_gauge, intensity, inv, frame_idx, cfg, factor, factor_range,
+                                  axis_valid, height_valid)
+        if c is not None:
+            out.append(c)
     out.sort(key=lambda c: c.distance)
     return out
+
+
+@dataclass
+class _Blob:
+    """One DBSCAN cluster: indices into the candidate arrays, occupied voxels, points, box."""
+    idx: np.ndarray
+    n_vox: int
+    pts: np.ndarray
+    bmin: np.ndarray
+    bmax: np.ndarray
+
+    @classmethod
+    def of(cls, xyz: np.ndarray, idx: np.ndarray, n_vox: int) -> "_Blob":
+        pts = xyz[idx]
+        return cls(idx, n_vox, pts, pts.min(axis=0), pts.max(axis=0))
+
+    @property
+    def size(self) -> np.ndarray:
+        return self.bmax - self.bmin
+
+
+def _visibility(b: _Blob, width: float, height: float, cfg: ClusterConfig):
+    """(expected returns for this size at this range, 0..1 score of the voxels seen against them)."""
+    n_exp = float(expected_points(np.linalg.norm(b.pts.mean(axis=0)), width, height))
+    score = float(np.clip(b.n_vox / max(n_exp, 1.0) / cfg.visibility_ratio, 0.0, 1.0)) if n_exp > 1.0 else 1.0
+    return n_exp, score
+
+
+def _low_cluster(b: _Blob, dy, h, intensity, frame_idx, cfg: ClusterConfig, low_cfg) -> Optional[Cluster]:
+    """A cluster made mostly of bed bumps (v0.6): kept as a gauge obstacle of ``kind = 'low'``
+    when it is short along the track, not too wide, wide enough across the track and reaches
+    the rail-head plane; the corridor's infrastructure filters are not applied."""
+    size = b.size
+    if (size[0] > low_cfg.max_length or size[1] > low_cfg.max_width or size[2] < low_cfg.min_height
+            or b.n_vox < low_cfg.min_points):
+        return None
+    # rail-head slivers, fastenings and joint bars are narrow across the track; a 30 cm object is not
+    if size[1] < low_cfg.min_width:
+        return None
+    # the object must reach the rail-head plane (bed fixtures stay below it by design)
+    if low_cfg.min_top > -1.0 and float(h[b.idx].max()) < low_cfg.min_top:
+        return None
+    n_exp, score = _visibility(b, max(float(size[1]), 0.15), max(float(size[2]), 0.1), cfg)
+    fi = frame_idx[b.idx]
+    return Cluster(
+        points_idx=fi[fi >= 0], n=b.n_vox, n_raw=int(b.idx.size), centroid=b.pts.mean(axis=0),
+        bbox_min=b.bmin, bbox_max=b.bmax, distance=float(b.pts[:, 0].min()), lateral=float(dy[b.idx].mean()),
+        height_min=float(h[b.idx].min()), height_max=float(h[b.idx].max()),
+        intensity=float(intensity[b.idx].mean()) if intensity is not None else 0.0,
+        n_expected=n_exp, score=score, zone="gauge", n_gauge=b.n_vox, kind="low",
+    )
+
+
+def _is_infrastructure(size: np.ndarray, lateral: float, h_max: float, cfg: ClusterConfig) -> bool:
+    """Shapes dropped outright: linear infrastructure along the track (rails, pipes, cables,
+    duct edges), low narrow track hardware, wall-like structure at the side, a tall long narrow
+    wall segment that a mis-estimated axis pulled into the corridor, and long linear structure
+    at the side (platform edge, duct, cabinet row)."""
+    if size[0] > cfg.thin_min_length and size[1] < cfg.thin_max_width and size[2] < cfg.thin_max_height:
+        return True
+    # rail clamps, cables, joint bars — tune with injected data
+    if h_max < cfg.hardware_max_top and size[1] < cfg.hardware_max_width and size[2] < cfg.hardware_max_height:
+        return True
+    if size[2] > cfg.wall_min_height and abs(lateral) > cfg.wall_min_lateral:
+        return True
+    if size[2] > cfg.wall_min_height and size[0] > cfg.wall_segment_min_length and size[1] < cfg.wall_segment_max_width:
+        return True
+    return (size[0] > cfg.linear_min_aspect * max(float(size[1]), 0.05) and size[2] < cfg.linear_max_height
+            and abs(lateral) > cfg.linear_min_lateral)
+
+
+def _advisory_reason(b: _Blob, dist: float, lateral: float, zone: str, dy, h, cfg: ClusterConfig,
+                     axis_valid: float, height_valid: Optional[float]) -> str:
+    """Why a cluster is advisory although it may have gauge voxels ('' = it is an obstacle):
+    beyond the range where the axis or the height reference is supported, hanging entirely in
+    the top zone (cables, lamps), or a v0.5 infrastructure signature (EXPERIMENTS.md 1b)."""
+    size = b.size
+    hh = h[b.idx]
+    h_min, h_max = float(hh.min()), float(hh.max())
+    if dist > axis_valid:
+        return "beyond_axis"
+    if height_valid is not None and dist > height_valid and (
+            size[2] < cfg.far_min_height or size[0] > cfg.far_max_length or h_min > cfg.far_max_bottom):
+        return "beyond_height_ref"
+    if h_min > cfg.overhead_min_height:
+        return "overhead"
+    if zone != "gauge":
+        return ""
+    ady = np.abs(dy[b.idx])
+    off_centre = abs(lateral) > cfg.signature_min_lateral
+    if cfg.column_min_height > 0 and size[2] > cfg.column_min_height and size[1] < cfg.column_max_width \
+            and (off_centre or size[1] >= cfg.column_min_width):
+        return "column"                    # column, post, gate leg: taller than any listed object, narrow
+    if cfg.elevated_min_height > 0 and h_min > cfg.elevated_min_height and size[1] > cfg.elevated_min_width:
+        return "elevated"                  # beam / roof strip / gantry spanning the corridor above the rails
+    if cfg.floating_min_height > 0 and h_min > cfg.floating_min_height and size[2] < cfg.floating_max_height \
+            and size[1] < cfg.floating_max_width and off_centre:
+        return "floating"                  # sign, lamp, bracket: small and not touching the ground
+    if cfg.edge_min_lateral > 0 and abs(lateral) > cfg.edge_min_lateral \
+            and size[0] > cfg.edge_min_aspect * max(float(size[1]), 0.05) and size[2] < cfg.edge_max_height:
+        return "edge"                      # duct / bench / platform-edge fragment along the corridor edge
+    if cfg.wall_face_min_height > 0 and size[2] > cfg.wall_face_min_height and h_max > cfg.wall_face_min_top:
+        below = hh < cfg.wall_face_min_top
+        if below.sum() >= 3 and ady[below].min() > cfg.wall_face_min_inner and ady[below].max() > cfg.wall_face_edge:
+            return "wall_face"             # wall / portal face pulled in by the axis: hugs the edge, centre clear
+    return ""
+
+
+def _is_retro(b: _Blob, intensity, cfg: ClusterConfig) -> bool:
+    """Retro-reflective plate / sign / marker: intensity is reflectivity %, > 100 only from
+    retro-reflective material; small and low -> infrastructure, advisory only. A person in a
+    hi-vis vest is taller, a train ahead is larger: both keep their zone."""
+    if not (cfg.retro_intensity > 0 and intensity is not None and b.idx.size):
+        return False
+    size = b.size
+    frac = float((intensity[b.idx] >= cfg.retro_intensity).mean())
+    return frac >= cfg.retro_min_fraction and size[2] < cfg.retro_max_height and size[1] < cfg.retro_max_width
+
+
+def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg: ClusterConfig,
+                      factor: float, factor_range: float, axis_valid: float,
+                      height_valid: Optional[float]) -> Optional[Cluster]:
+    """A corridor cluster: size and point-count bars, the infrastructure shapes, then the zone
+    (enough voxels in the strict gauge) and the reason that demotes it to advisory."""
+    size = b.size
+    if size.max() > cfg.max_extent or size[2] < cfg.min_height:
+        return None
+    dist = float(b.pts[:, 0].min())
+    min_pts = cfg.min_points if dist < cfg.far_range else cfg.min_points_far
+    gauge_min = cfg.gauge_min_points
+    if factor > 1.0 and dist >= factor_range:
+        min_pts = int(np.ceil(min_pts * factor))
+        gauge_min = int(np.ceil(gauge_min * factor))
+    if b.n_vox < min_pts:
+        return None
+    lateral = float(dy[b.idx].mean())
+    h_max = float(h[b.idx].max())
+    if _is_infrastructure(size, lateral, h_max, cfg):
+        return None
+    n_gauge = int(np.unique(inv[b.idx][in_gauge[b.idx]]).size)
+    zone = "gauge" if n_gauge >= gauge_min else "warning"
+    reason = _advisory_reason(b, dist, lateral, zone, dy, h, cfg, axis_valid, height_valid)
+    if reason:
+        zone = "warning"
+    retro = _is_retro(b, intensity, cfg)
+    if retro:
+        zone = "warning"
+        reason = reason or "retro"
+    n_exp, score = _visibility(b, max(float(size[1]), 0.15), max(float(size[2]), 0.15), cfg)
+    fi = frame_idx[b.idx]
+    return Cluster(
+        points_idx=fi[fi >= 0], n=b.n_vox, n_raw=int(b.idx.size), centroid=b.pts.mean(axis=0),
+        bbox_min=b.bmin, bbox_max=b.bmax, distance=dist, lateral=lateral,
+        height_min=float(h[b.idx].min()), height_max=h_max,
+        intensity=float(intensity[b.idx].mean()) if intensity is not None else 0.0,
+        n_expected=n_exp, score=score, zone=zone, n_gauge=n_gauge, retro=retro, reason=reason,
+    )

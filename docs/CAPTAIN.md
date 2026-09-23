@@ -240,6 +240,12 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
     6 of 7 approaches, station stops 6 of 6, 30 cm objects on a rail head 6 of 6 from 42–44 m.
     The organizers' procedure ran in Docker on the real frames (EXPERIMENTS §3b) and found a
     transport bug, fixed (`input_reliability`).
+15. **Code health (23.09, after the second review)**: `Detector.process` is one method per stage
+    (`_fit_track`, `_corridor`, `_low_stage`, `_speed`, `_accumulate`, `_cluster`, `_confirm`) and
+    `find_clusters` delegates to `_low_cluster`, `_corridor_cluster`, `_is_infrastructure`,
+    `_advisory_reason`, `_is_retro`; every output was compared before and after on 2 930 real frames
+    (the obstacle recording, a given-speed run with accumulation, an estimator run, 1 600 ride frames):
+    identical. A `lint` CI job runs ruff (pinned) over the package, the node, the scripts and the tests.
 
 ### Left for the team (captain tracks, does not do)
 

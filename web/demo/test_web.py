@@ -91,7 +91,7 @@ def tiny_run(tmp_path_factory):
 
 def test_make_demo_run_writes_resense_run_format(tiny_run):
     out, summary = tiny_run
-    lines = [json.loads(l) for l in open(out) if l.strip()]
+    lines = [json.loads(ln) for ln in open(out) if ln.strip()]
     assert len(lines) == summary["frames"] == 14
     for i, d in enumerate(lines):
         assert RESULT_KEYS <= set(d), d.keys() - RESULT_KEYS

@@ -15,7 +15,7 @@ import pytest
 
 from resense.cli import run_cli
 from resense.clustering import Cluster, find_clusters
-from resense.config import DetectorConfig, SensorConfig
+from resense.config import DetectorConfig
 from resense.gauge import corridor_mask, point_in_polygon, widened_profile
 from resense.pointcloud import COMPACT_DTYPE, pointcloud2_to_arrays, pointcloud2_to_structured, structured_to_compact
 from resense.track import TrackModel, estimate_track
@@ -364,8 +364,8 @@ def test_check_dry_run_empty_capture(check_dry_run, tmp_path):
 def test_cli_run_bench_summarize(synth_npy_dir, tmp_path, capsys):
     jsonl = tmp_path / "run.jsonl"
     run_cli(["run", "--npy", str(synth_npy_dir), "--out", str(jsonl), "--quiet"])
-    lines = [json.loads(l) for l in open(jsonl)]
-    assert [l["frame"] for l in lines] == [0, 1] and lines[0]["frame_id"] == "synthetic_0000.npy"
+    lines = [json.loads(ln) for ln in open(jsonl)]
+    assert [ln["frame"] for ln in lines] == [0, 1] and lines[0]["frame_id"] == "synthetic_0000.npy"
     assert {"stamp", "obstacle", "warning", "nearest_distance", "detections", "warnings", "track", "timing_ms"} <= set(lines[0])
     assert not lines[1]["obstacle"] and lines[1]["timing_ms"]["total"] > 0
     capsys.readouterr()
