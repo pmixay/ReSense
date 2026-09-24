@@ -4,7 +4,6 @@ import importlib.util
 from pathlib import Path
 
 import numpy as np
-import pytest
 
 
 def _load(name):
@@ -95,6 +94,9 @@ def test_held_from_needs_ninety_percent_of_the_closer_frames():
     assert score._held_from([]) is None
 
 
-@pytest.mark.parametrize("d,key", [(0.0, "0-50"), (99.9, "50-100"), (250.0, "200-300"), (300.0, "300+")])
-def test_range_bins(d, key):
-    assert score._bin(d) == key
+def test_a_track_matched_to_an_object_elsewhere_is_not_background():
+    gt = {"00000": [_row("inside", 40.0)], "00001": []}
+    results = [{"frame": 0, "obstacle": True, "detections": [_det(5, 40.0)], "warnings": []},
+               {"frame": 1, "obstacle": True, "detections": [_det(5, 38.0)], "warnings": []}]   # held after the label ends
+    _, bg = score.score(results, gt)
+    assert bg["background_alarm_ids"] == 0 and bg["background_alarm_frames"] == 0

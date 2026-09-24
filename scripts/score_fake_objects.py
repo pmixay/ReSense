@@ -18,7 +18,8 @@ the distance within max(2 m, 3 %) plus half the object's length, the lateral off
 * an object outside the envelope must not be matched by an alarm: every such frame is a
   false alarm on that object (advisory frames are allowed and counted).
 
-Alarms that match no object are background false alarms (frames and distinct track IDs).
+Alarms that match no object are background false alarms: the distinct track IDs never matched
+to an object in any frame (as ``fp_events`` of ``resense eval``) and the frames that carry one.
 Frames are counted where the object is visible and ``plausible`` (inside the tunnel cross-
 section: far away the organizers' path leaves the tunnel), so the recall denominators are
 the frames in which the sensor had at least one return from a physically possible object.
@@ -35,16 +36,9 @@ import numpy as np
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from resense.metrics import RANGE_BINS, GTObstacle, _assign_detections, load_gt  # noqa: E402
+from resense.metrics import GTObstacle, _assign_detections, _bin_order, gt_meta, load_gt, range_bin  # noqa: E402
 
 HOLD_FRACTION = 0.9
-
-
-def _bin(d: float) -> str:
-    for lo, hi in RANGE_BINS:
-        if lo <= d < hi:
-            return f"{lo}-{hi}"
-    return f"{RANGE_BINS[-1][1]}+"
 
 
 def _held_from(dist_hit):
@@ -62,7 +56,8 @@ def _held_from(dist_hit):
 
 def score(results, gt):
     objs = {}
-    bg_frames, bg_ids = 0, set()
+    unmatched_by_frame = []           # per frame: IDs of alarms that matched no object there
+    matched_ids = set()               # IDs matched to an object in some frame
     alarm_frames = 0
     for r in results:
         key = f"{int(r['frame']):05d}"
@@ -80,14 +75,13 @@ def score(results, gt):
             hit = gi in a_alarm
             adv = (not hit) and gi in a_warn
             o["frames"].append((int(r["frame"]), g.distance, hit, adv, row.get("n_in_envelope", 1) > 0))
-            b = o["bins"].setdefault(_bin(g.distance), [0, 0, 0])
+            b = o["bins"].setdefault(range_bin(g.distance), [0, 0, 0])
             b[0] += int(hit)
             b[1] += int(adv)
             b[2] += 1
-        unmatched = [d for i, d in enumerate(dets) if i not in used]
-        if unmatched:
-            bg_frames += 1
-            bg_ids.update(int(d["id"]) for d in unmatched if "id" in d)
+        matched_ids.update(int(dets[i]["id"]) for i in used if "id" in dets[i])
+        unmatched_by_frame.append([int(d["id"]) if "id" in d else None
+                                   for i, d in enumerate(dets) if i not in used])
     out = {}
     for label, o in objs.items():
         fr = o["frames"]
@@ -102,7 +96,7 @@ def score(results, gt):
             "frames_in_envelope": sum(1 for f in fr if f[4]),
             "alarm_frames_in_envelope": sum(1 for f in hits if f[4]),
             "bins": {k: {"alarm": v[0], "advisory_only": v[1], "visible": v[2]}
-                     for k, v in sorted(o["bins"].items(), key=lambda kv: float(kv[0].split("-")[0].rstrip("+")))},
+                     for k, v in sorted(o["bins"].items(), key=lambda kv: _bin_order(kv[0]))},
         }
         if o["in_gauge"]:
             entry["first_alarm_m"] = round(max(f[1] for f in hits), 1) if hits else None
@@ -117,6 +111,10 @@ def score(results, gt):
             entry["false_alarm_from_m"] = round(max(f[1] for f in hits), 1) if hits else None
             entry["verdict"] = "false alarm" if hits else ("advisory" if advs else "ignored (correct)")
         out[label] = entry
+    # as Evaluation.fp_events: a track matched to an object in any frame is that object (held
+    # a frame after its label rows end, or briefly beyond the lateral tolerance), not background
+    bg_ids = {i for ids in unmatched_by_frame for i in ids if i is not None} - matched_ids
+    bg_frames = sum(1 for ids in unmatched_by_frame if any(i is None or i in bg_ids for i in ids))
     return out, {"frames": len(results), "alarm_frames": alarm_frames,
                  "background_alarm_frames": bg_frames, "background_alarm_ids": len(bg_ids)}
 
@@ -150,8 +148,7 @@ def main():
     with open(a.results, encoding="utf-8") as fh:
         results = [json.loads(line) for line in fh if line.strip()]
     gt = load_gt(a.gt)
-    with open(a.gt, encoding="utf-8") as fh:
-        order = list(json.load(fh).get("_meta", {}).get("objects", {}))
+    order = list(gt_meta(a.gt).get("objects", {}))
     objs, bg = score(results, gt)
     print(markdown(objs, bg, order or sorted(objs)))
     if a.out:

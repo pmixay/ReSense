@@ -217,9 +217,13 @@ Held down by:
 
 **P4 follow-ups after this review (24.09, not re-scored).**
 
-* Item 7: set F was re-run in pairs on seven curve and edge scenes, with a placement anchored
-  on the near rails. There were no matches beyond 100 m in either mode ([`P4_AUDIT.md`](P4_AUDIT.md)).
-  A surveyed straight-track reference still does not exist.
+* Item 7 (done, synthetic): set F was re-run in pairs, the detector's far axis against a
+  placement anchored on the near rails ([`P4_AUDIT.md`](P4_AUDIT.md)).
+  * On the straight set of round 3, a person is first confirmed at a median 154 m anchored
+    against 150 m legacy (5 approaches), so the ~148 m figure does not rest on the detector's
+    own far model.
+  * On seven curve and edge scenes, neither mode matched anything beyond 100 m.
+  * A surveyed reference still does not exist.
 * The organizers' own synthetic-obstacle recording (`cloud_with_fake_obj`) is now labelled
   exactly and graded per object ([`P4_AUDIT.md`](P4_AUDIT.md) "Organizer synthetic-obstacle
   recording"). It is the first positive set made by the tool that is part of the hidden check.

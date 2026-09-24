@@ -117,6 +117,9 @@ frames on the inside objects for +2 events on the five empty bags
 [`experiments_p4_fake_labelled.json`](experiments_p4_fake_labelled.json)).
 The integration rerun on `4cd32d6` (24.09) again found 107 alarm frames / 20 events on the
 five empty bags and 185/246 labelled obstacle-frames on `doubleT_obstacle` (first alarm 11).
+The straight set of round 3 re-run in the same pairs (P4_AUDIT, 24.09 evening) keeps its range:
+a person anchored on the near rails is first confirmed at a median 154 m (legacy 150 m, 5 paired
+approaches), the trolley at 148 m in both modes, the 1 m crate at 110 m (legacy 116 m).
 One paired 35-frame, <40 m approach on a short cached ride slice produced the same 31/35
 visible hits for each of a person and 1 m box under both placement modes; it cannot validate
 the historical 100–200 m range claims (protocol and command: [`P4_AUDIT.md`](P4_AUDIT.md)).

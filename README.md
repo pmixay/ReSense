@@ -94,8 +94,10 @@ The long-range figures above are from an earlier synthetic set F, which placed e
 using that frame's estimated axis; this can flatter curve and envelope-edge results. A P4
 paired rerun on seven organizer curve/edge scenes with the current code found **0 matches
 beyond 100 m** in the six usable sequences of either mode and skipped one sequence after a
-recording gap. Near anchoring used the real ride's rail fits and estimated speed, **not surveyed
-ground truth**, so neither result establishes real-positive long-range recall. See
+recording gap. On the straight set of round 3, the same pairing leaves the range intact. A person
+anchored on the near rails is first confirmed at a median **154 m** (legacy placement 150 m, 5
+paired approaches). Near anchoring used the real ride's rail fits and estimated speed, **not
+surveyed ground truth**, so neither result establishes real-positive long-range recall. See
 [`docs/P4_AUDIT.md`](docs/P4_AUDIT.md) and the paired counts there.
 The same audit reran set S on 108 real empty backgrounds: corrected bed placement matched
 22/67 visible in-gauge synthetic objects, versus 29/68 with the old, higher placement.

@@ -1,7 +1,7 @@
 {
  "schema": "p4-fake-object-grade-v1",
  "date": "2026-09-24",
- "code_commit": "c3dabe3 (merge of main) + this commit's scripts; the detector code is unchanged",
+ "code_commit": "07b5e0c + the review fixes of 24.09 (maximum-cardinality matching, background IDs as fp_events); the detector code is unchanged",
  "bag": {
   "name": "cloud_with_fake_obj",
   "link": "https://disk.yandex.ru/d/KpkG_yKoGk-vHQ",
@@ -636,8 +636,8 @@
    "background": {
     "frames": 1510,
     "alarm_frames": 342,
-    "background_alarm_frames": 29,
-    "background_alarm_ids": 8
+    "background_alarm_frames": 3,
+    "background_alarm_ids": 2
    },
    "resense_summarize": {
     "recall": 0.3782771535580524,
@@ -1054,8 +1054,8 @@
    "background": {
     "frames": 1510,
     "alarm_frames": 386,
-    "background_alarm_frames": 41,
-    "background_alarm_ids": 10
+    "background_alarm_frames": 8,
+    "background_alarm_ids": 4
    }
   },
   "minpts3": {
@@ -1425,8 +1425,8 @@
    "background": {
     "frames": 1510,
     "alarm_frames": 346,
-    "background_alarm_frames": 30,
-    "background_alarm_ids": 9
+    "background_alarm_frames": 3,
+    "background_alarm_ids": 2
    }
   },
   "gaugemin2": {
@@ -1796,8 +1796,8 @@
    "background": {
     "frames": 1510,
     "alarm_frames": 345,
-    "background_alarm_frames": 29,
-    "background_alarm_ids": 8
+    "background_alarm_frames": 3,
+    "background_alarm_ids": 2
    }
   },
   "near": {
@@ -2167,8 +2167,8 @@
    "background": {
     "frames": 1510,
     "alarm_frames": 680,
-    "background_alarm_frames": 492,
-    "background_alarm_ids": 112
+    "background_alarm_frames": 466,
+    "background_alarm_ids": 106
    }
   },
   "float09": {
@@ -2538,8 +2538,8 @@
    "background": {
     "frames": 1510,
     "alarm_frames": 353,
-    "background_alarm_frames": 29,
-    "background_alarm_ids": 8
+    "background_alarm_frames": 3,
+    "background_alarm_ids": 2
    }
   },
   "noelev": {
@@ -2909,8 +2909,8 @@
    "background": {
     "frames": 1510,
     "alarm_frames": 374,
-    "background_alarm_frames": 30,
-    "background_alarm_ids": 9
+    "background_alarm_frames": 3,
+    "background_alarm_ids": 2
    }
   },
   "both": {
@@ -3280,8 +3280,8 @@
    "background": {
     "frames": 1510,
     "alarm_frames": 385,
-    "background_alarm_frames": 30,
-    "background_alarm_ids": 9
+    "background_alarm_frames": 3,
+    "background_alarm_ids": 2
    }
   },
   "shortsig": {
@@ -3651,8 +3651,8 @@
    "background": {
     "frames": 1510,
     "alarm_frames": 396,
-    "background_alarm_frames": 31,
-    "background_alarm_ids": 10
+    "background_alarm_frames": 3,
+    "background_alarm_ids": 2
    },
    "resense_summarize": {
     "recall": 0.4394506866416979,

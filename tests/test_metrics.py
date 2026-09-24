@@ -61,18 +61,41 @@ def test_fp_events_vs_fp_frames_and_rates():
     assert FROZEN_SUMMARY_KEYS <= set(s)
 
 
+def _caveat_at(stride):
+    # v0.6.3 defaults: confirm_hits 3, confirm_time_s 0.5 -> 5 frames at 10 Hz
+    ev = Evaluation(confirm_hits=5, frame_dt=0.1, min_hits=3, confirm_time_s=0.5, stamp_dt_range=(0.02, 0.5))
+    for k in range(4):
+        ev.add_frame(status(frame=stride * k, stamp=0.1 * stride * k), [])
+    return ev.summary()["stride_caveat"]
+
+
 def test_stride_caveat_applies_the_trackers_time_rule():
-    # v0.6.3 defaults: confirm_hits 3, confirm_time_s 0.5 -> 5 frames at 10 Hz; the tracker is
-    # given the measured interval, so at every 5th frame 3 hits (1.5 s) confirm, not 5 (2.5 s)
-    ev = Evaluation(confirm_hits=5, frame_dt=0.1, min_hits=3, confirm_time_s=0.5)
-    for d in _empty_bag_every_5th():
-        ev.add_frame(d, [])
-    c = ev.summary()["stride_caveat"]
+    # the detector hands the tracker the measured interval up to 0.5 s: at every 5th frame
+    # 3 hits (1.5 s) confirm, not 5 (2.5 s); beyond 0.5 s it falls back to 0.1 s per frame,
+    # so at every 10th frame it still needs 5 hits (5 s)
+    c = _caveat_at(5)
     assert "the 3 consecutive hits" in c and "persist 1.5 s" in c and "instead of 0.5 s" in c
-    ev = Evaluation(confirm_hits=5, frame_dt=0.1, min_hits=3, confirm_time_s=0.5)
-    for k in range(4):                                      # every 2nd frame: 0.2 s apart
-        ev.add_frame(status(frame=2 * k, stamp=0.2 * k), [])
-    assert "the 3 consecutive hits" in ev.summary()["stride_caveat"]
+    assert "the 3 consecutive hits" in _caveat_at(2)
+    c = _caveat_at(10)
+    assert "the 5 consecutive hits" in c and "persist 5.0 s" in c
+
+
+def test_stride_caveat_agrees_with_the_detector():
+    """The caveat's hit count is what the detector's interval rule and the tracker's
+    confirmation rule give at that stride."""
+    from resense.config import DetectorConfig
+    from resense.detector import Detector
+    cfg = DetectorConfig()
+    for stride in (2, 5, 6, 10):
+        det = Detector(cfg)
+        dts = [det._frame_dt(100.0 + 0.1 * stride * k) for k in range(3)]
+        hits = cfg.tracking.frames_to_confirm(dts[-1])
+        ev = Evaluation(confirm_hits=cfg.tracking.frames_to_confirm(), frame_dt=cfg.tracking.frame_dt,
+                        min_hits=cfg.tracking.confirm_hits, confirm_time_s=cfg.tracking.confirm_time_s,
+                        stamp_dt_range=tuple(cfg.accumulation.stamp_dt_range))
+        for k in range(3):
+            ev.add_frame(status(frame=stride * k, stamp=100.0 + 0.1 * stride * k), [])
+        assert f"the {hits} consecutive hits" in ev.summary()["stride_caveat"], stride
 
 
 def test_no_speed_and_no_stride_information():
@@ -306,3 +329,14 @@ def test_summarize_cli_with_labels(tmp_path, capsys):
     out = run_cli(["summarize", str(path), "--gt", str(tmp_path / "gt.json"), "--labelled-only", "--json"])
     assert out["frames"] == 3 and out["fp_frames"] == 2 and out["fp_events"] == 0   # frames 15 and 20 alarm with id 7
     capsys.readouterr()
+
+
+def test_assignment_keeps_the_largest_number_of_matches():
+    # six objects 2.2 m apart along the track and 0.99 m apart sideways; detection i sits on
+    # object i + 1. Every object i is within tolerance of detection i, so all six can be
+    # matched, although five nearly perfect pairs plus one miss have smaller position errors
+    from resense.metrics import _assign_detections
+    gts = [GTObstacle(distance=50.0 + 2.2 * i, lateral=0.99 * i, size=(0.5, 0.5, 0.5)) for i in range(6)]
+    dets = [{"distance": 50.0 + 2.2 * (i + 1), "lateral": 0.99 * (i + 1)} for i in range(5)]
+    dets.append({"distance": 50.0 + 2.2 * 5 + 1.5, "lateral": 0.99 * 5 + 0.9})
+    assert len(_assign_detections(dets, gts)) == 6

@@ -60,7 +60,7 @@
         <thead><tr><th>#</th><th>kind</th><th>label</th><th>distance m</th><th>lateral m (+left)</th><th>L</th><th>W</th><th>H</th><th>yaw °</th><th>refl.</th><th>in gauge</th><th>n_points</th><th></th></tr></thead>
         <tbody id="obs-body"></tbody>
       </table>
-      <div class="hint">Same shape as <code>resense inject</code> writes: <code>{"&lt;frame&gt;": [{"kind","size":[L,W,H],"distance","lateral","yaw_deg","reflectivity","label","in_gauge","n_points"}]}</code>. <code>distance</code> = m along the track to the nearest face, <code>lateral</code> = m from the track axis (+ left); <code>in_gauge</code> defaults to horizontal footprint overlap with the strict 1.05 m half-width. Check height and override the checkbox manually when needed. Detector-prefilled boxes are suggestions, not independent ground truth: review the original cloud before saving. <code>n_points</code> = 1 means "visible, count unknown" (<code>resense eval</code> skips entries with 0 as occluded).</div>
+      <div class="hint">Same shape as <code>resense inject</code> writes: <code>{"&lt;frame&gt;": [{"kind","size":[L,W,H],"distance","lateral","yaw_deg","reflectivity","label","in_gauge","n_points"}]}</code>. <code>distance</code> = m along the track to the nearest face, <code>lateral</code> = m from the track axis (+ left); <code>in_gauge</code> defaults to horizontal footprint overlap with the strict 1.05 m half-width. Check height and override the checkbox manually when needed: a value set by hand is kept when the object is edited afterwards. Detector-prefilled boxes are suggestions, not independent ground truth: review the original cloud before saving. <code>n_points</code> = 1 means "visible, count unknown" (<code>resense eval</code> skips entries with 0 as occluded).</div>
     </div>
     <div class="card"><h3>top-down: detector output (red / orange) and labels (cyan)</h3><canvas id="top" width="1200" height="360"></canvas></div>
   </div>
@@ -106,6 +106,10 @@ function overlapsGauge(o) {
     : width / 2;
   return Math.abs(o.lateral) - extent <= 1.05;
 }
+// in_gauge follows the footprint until the labeller sets the checkbox; a value set by hand (or
+// loaded from a file where it disagrees with the footprint, e.g. an object above the envelope)
+// is kept when size, kind, yaw or lateral change afterwards (review 24.09)
+function autoGauge(o) { if (!o.gaugeManual) o.in_gauge = overlapsGauge(o); }
 function renderObstacles() {
   const k = state.current, body = $('obs-body'); body.innerHTML = '';
   $('cur-key').textContent = k || '—';
@@ -135,13 +139,13 @@ function renderObstacles() {
 }
 function onEdit(ev) {
   const el = ev.target, o = state.labels[state.current][+el.dataset.i], f = el.dataset.f;
-  if (f === 'kind') { o.kind = el.value; if (SIZES[o.kind]) o.size = [...SIZES[o.kind]]; if (!o.label || KINDS.includes(o.label)) o.label = o.kind; o.in_gauge = overlapsGauge(o); renderObstacles(); }
+  if (f === 'kind') { o.kind = el.value; if (SIZES[o.kind]) o.size = [...SIZES[o.kind]]; if (!o.label || KINDS.includes(o.label)) o.label = o.kind; autoGauge(o); renderObstacles(); }
   else if (f === 'label') o.label = el.value;
-  else if (f === 'in_gauge') o.in_gauge = el.checked;
-  else if (f.startsWith('size')) { o.size[+f[4]] = +el.value; o.in_gauge = overlapsGauge(o); renderObstacles(); }
+  else if (f === 'in_gauge') { o.in_gauge = el.checked; o.gaugeManual = true; }
+  else if (f.startsWith('size')) { o.size[+f[4]] = +el.value; autoGauge(o); renderObstacles(); }
   else if (f === 'n_points') o.n_points = Math.round(+el.value);
   else o[f] = +el.value;
-  if (f === 'lateral' || f === 'yaw_deg') { o.in_gauge = overlapsGauge(o); renderObstacles(); }
+  if (f === 'lateral' || f === 'yaw_deg') { autoGauge(o); renderObstacles(); }
   draw();
 }
 function draw() {
@@ -185,7 +189,11 @@ function loadGT(obj) {
     if (k.startsWith('_')) continue;              // "_meta" and other metadata keys of an inject gt.json
     const key = /^\d+$/.test(k) ? keyOf(+k) : k;
     if (Array.isArray(list) && list.length) {
-      state.labels[key] = list.map(o => newObstacle(o.kind, Object.assign({}, o, { size: [...(o.size || SIZES[o.kind] || SIZES.other)] })));
+      state.labels[key] = list.map(o => {
+        const ob = newObstacle(o.kind, Object.assign({}, o, { size: [...(o.size || SIZES[o.kind] || SIZES.other)] }));
+        ob.gaugeManual = 'in_gauge' in o && !!o.in_gauge !== overlapsGauge(ob);
+        return ob;
+      });
       n += list.length;
     } else { state.checked[key] = true; }
   }

@@ -58,18 +58,32 @@ SPLIT_FRAME = re.compile(r"new_data_(\d+)_(\d+)\.npy$")
 FRAMES_PER_SPLIT = 51  # organizer new_data metadata: every split has frames 0000..0050
 
 
+def _split_frame(path):
+    m = SPLIT_FRAME.fullmatch(os.path.basename(path))
+    if m is None:
+        raise ValueError(f"expected split frame new_data_<file>_<frame>.npy: {path}")
+    return tuple(map(int, m.groups()))
+
+
 def consecutive_files(all_files, start, limit):
-    """Keep one continuous approach; an incomplete cache must not jump to another scene."""
+    """Keep one continuous approach; an incomplete cache must not jump to another scene.
+
+    A strided cache (``scripts/cache_frames.py --every N`` writes frames 0, N, 2N, ... of every
+    split file) is continuous at its own step, taken as the smallest frame step cached for the
+    first split file of the approach."""
+    first = _split_frame(all_files[start])
+    same = sorted(_split_frame(p)[1] for p in all_files
+                  if SPLIT_FRAME.fullmatch(os.path.basename(p)) and _split_frame(p)[0] == first[0])
+    steps = [b - a for a, b in zip(same, same[1:]) if b > a]
+    step = min(steps) if steps else 1
+    last = ((FRAMES_PER_SPLIT - 1) // step) * step       # the last cached frame of a split
     chosen = []
     prev = None
     for path in all_files[start:start + limit]:
-        m = SPLIT_FRAME.fullmatch(os.path.basename(path))
-        if m is None:
-            raise ValueError(f"expected split frame new_data_<file>_<frame>.npy: {path}")
-        current = tuple(map(int, m.groups()))
+        current = _split_frame(path)
         if prev is not None:
-            within_split = prev[1] < FRAMES_PER_SPLIT - 1 and current == (prev[0], prev[1] + 1)
-            next_split = prev[1] == FRAMES_PER_SPLIT - 1 and current == (prev[0] + 1, 0)
+            within_split = prev[1] < last and current == (prev[0], prev[1] + step)
+            next_split = prev[1] == last and current == (prev[0] + 1, 0)
             if not (within_split or next_split):
                 break
         chosen.append(path)
@@ -290,8 +304,11 @@ def run_sequence(job):
         hit = False
         fps = []
         for det_ in res.detections:
-            if n_pts > 0 and placement_match(det_, spec.distance, spec, tm, res.track, mode):
-                hit = True
+            if placement_match(det_, spec.distance, spec, tm, res.track, mode):
+                # the object's own track: a hit only when the object returned points; on a
+                # 0-return frame (dropout) its held or accumulated track is neither a hit
+                # nor a false detection
+                hit = hit or n_pts > 0
             else:
                 fp += 1
                 fps.append([round(det_.distance, 1), round(det_.lateral, 2), [round(float(v), 2) for v in det_.size], det_.kind])
@@ -377,7 +394,10 @@ def main():
         start = next((i for i, f in enumerate(allf) if os.path.basename(f).startswith(f"new_data_{fn}_")), None)
         if start is None:
             ap.error(f"no cached frames for new_data_{fn} in {a.cache}")
-        files = consecutive_files(allf, start, a.frames)
+        try:
+            files = consecutive_files(allf, start, a.frames)
+        except ValueError as exc:
+            ap.error(str(exc))
         if not files:
             ap.error(f"no frames for new_data_{fn}")
         if a.placement_mode in ("independent", "anchored"):
@@ -424,6 +444,7 @@ def main():
                              "place": a.place, "seed": a.seed, "files": a.files, "frames": a.frames,
                              "kinds": a.kinds, "start_m": a.start, "lateral_range": a.lateral,
                              "given_speed": a.given_speed, "far_min_height": a.far_min_height,
+                             "reflectivity": a.reflectivity,
                              "config_sha256": hashlib.sha256(config_bytes).hexdigest(),
                              "speeds_sha256": hashlib.sha256(speeds_bytes).hexdigest(),
                              "selected_stamps_sha256": hashlib.sha256(json.dumps(

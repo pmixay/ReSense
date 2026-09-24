@@ -124,7 +124,10 @@ def test_sequence_does_not_fit_far_cloud_and_writes_ground_truth(monkeypatch):
     assert row["gt_vehicle_y_m"] == pytest.approx(0.3)
 
 
-def test_zero_return_cannot_be_claimed_by_a_nearby_background_detection(monkeypatch):
+def test_zero_return_frame_is_neither_a_hit_nor_a_false_detection(monkeypatch):
+    # a detection where the object is, on a frame in which the object returned no point, may be
+    # the object's own held (hold_misses) or accumulated track: it must not make a hit, and it
+    # is not counted as a false detection either (review 24.09)
     from resense.config import DetectorConfig
 
     track = TrackModel(np.array([0., 0., -1.]), (0., 100.), 0., 0., 0.)
@@ -148,7 +151,7 @@ def test_zero_return_cannot_be_claimed_by_a_nearby_background_detection(monkeypa
            DetectorConfig().to_dict(), None, False, "rail", "independent",
            far.fixed_reference(0., 0., 0., -1., 0.), 0., 0.)
     result = far.run_sequence(job)
-    assert result["first"] is None and result["fp"] == 1
+    assert result["first"] is None and result["fp"] == 0
     assert result["rows"][0]["n"] == 0 and not result["rows"][0]["hit"]
 
 

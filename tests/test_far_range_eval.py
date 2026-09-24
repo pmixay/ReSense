@@ -35,6 +35,9 @@ def test_approach_does_not_jump_to_a_different_split_or_skip_a_frame():
     assert consecutive_files(files, 0, 220) == files[:4]
     assert consecutive_files(files, 2, 220) == files[2:4]
     assert consecutive_files([files[0], files[2]], 0, 10) == files[:1]
+    strided = [f"new_data_46_{i:04d}.npy" for i in range(0, 51, 10)] + [f"new_data_47_{i:04d}.npy" for i in range(0, 51, 10)]
+    assert consecutive_files(strided, 0, 220) == strided          # cache_frames.py --every 10
+    assert consecutive_files(strided[:3] + strided[4:], 0, 220) == strided[:3]   # a missing frame ends it
     with pytest.raises(ValueError, match="expected split frame"):
         consecutive_files(["other_0000.npy"], 0, 10)
 

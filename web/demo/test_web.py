@@ -356,6 +356,15 @@ def test_label_tool_exports_inject_shaped_gt(tiny_run, tmp_path):
         page.fill("input[data-f=lateral]", "-2.5")           # outside the gauge -> in_gauge auto-unchecks
         page.dispatch_event("input[data-f=lateral]", "change")
         assert page.is_checked("input[data-f=in_gauge]") is False
+        page.check("input[data-f=in_gauge]")                 # set by hand (e.g. reaching in from above) ...
+        page.dispatch_event("input[data-f=in_gauge]", "change")
+        page.fill("input[data-f=size2]", "1.6")
+        page.dispatch_event("input[data-f=size2]", "change")
+        page.fill("input[data-f=lateral]", "-2.5")
+        page.dispatch_event("input[data-f=lateral]", "change")
+        assert page.is_checked("input[data-f=in_gauge]") is True    # ... and kept when the object is edited
+        page.uncheck("input[data-f=in_gauge]")
+        page.dispatch_event("input[data-f=in_gauge]", "change")
         # a hand-typed frame, marked as checked and clear
         page.fill("#new-frame", "42")
         page.click("#add-frame")

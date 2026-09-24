@@ -37,11 +37,22 @@ def test_skipped_sequence_is_excluded_from_both_modes():
     assert {k: v for k, v in summary.items() if k != "recall_by_bin"} == {
         "paired_sequences": 1, "skipped": 1, "visible": {"legacy": 1, "anchored": 1},
         "visible_hits": {"legacy": 1, "anchored": 0},
+        "detected_both": 1, "detected_only": {"legacy": 0, "anchored": 0},
         "first_median": {"legacy": 49., "anchored": 49.}}
     assert summary["recall_by_bin"]["legacy"]["0-50"] == [1, 1]
     assert summary["recall_by_bin"]["anchored"]["0-50"] == [0, 1]
     assert s["sequences"][0]["max_axis_delta_m"] == 0.6
     assert s["sequences"][1]["skipped"]["anchored"] == "no near reference"
+
+
+def test_first_medians_are_paired_over_sequences_detected_in_both_modes():
+    old, new = report("legacy"), report("anchored")
+    old["sequences"][0]["first"] = 150.0          # found far in legacy mode only ...
+    new["sequences"][0]["first"] = None
+    old["sequences"][1]["first"] = new["sequences"][1]["first"] = 60.0
+    summary = module.compare(old, new)["per_kind"]["person"]
+    assert summary["detected_both"] == 1 and summary["detected_only"] == {"legacy": 1, "anchored": 0}
+    assert summary["first_median"] == {"legacy": 60.0, "anchored": 60.0}   # ... reported, not folded in
 
 
 @pytest.mark.parametrize("mutate, message", [

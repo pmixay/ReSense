@@ -126,8 +126,50 @@ person claim for the *current* code. The published set F numbers were produced o
 config and sampling and should only be quoted as dated self-referential results.
 
 `far_range_eval.py` now stops at a missing split/frame rather than jumping to an unrelated
-piece of the ride; in anchored mode it rejects missing stamps or a near reference. A
-zero-return object cannot be marked a hit by an unrelated background detection.
+piece of the ride (a cache strided by `cache_frames.py --every N` is followed at its own step);
+in anchored mode it rejects missing stamps or a near reference. A zero-return object cannot be
+marked a hit. Since the 24.09 review, a detection where it stands on such a frame (its own held
+or accumulated track) is not counted as a false detection either. The curve/edge `false
+detections` above were counted the older way and include such frames.
+
+## Paired straight-track range audit (24.09, SCORECARD improvement 7)
+
+The straight set of set F round 3 was re-run in pairs on the current code:
+
+* files 46, 68, 98, 140, 168 and 172, 110 frames each, objects from 220 m;
+* lateral −0.6…0.6 m, seed 0, the five kinds of round 3;
+* `legacy` (the detector's per-frame far axis) against `anchored` (the object fixed where the
+  near rails put it, then carried back through the approach).
+
+18 split files were streamed from the organizers' link and cached at every frame with their
+stamps. File 168 has a recording gap (a 65.4 m motion step), so anchored mode skips it, and the
+paired summary drops it from both modes. Anchored placement differs from legacy by 0.4–1.1 m
+in Y at the far end of the person approaches. Raw report:
+[`experiments_p4_setf_straight_paired.json`](experiments_p4_setf_straight_paired.json).
+
+```bash
+python scripts/far_range_eval.py --cache /data/cache/new_data --files 46,68,98,140,168,172 --frames 110 \
+  --kinds person,box1.0,box0.5,trolley,cable --start 220 --lateral=-0.6:0.6 --seed 0 --placement-mode legacy --out out/straight-legacy.json
+python scripts/far_range_eval.py ... --placement-mode anchored --out out/straight-anchored.json
+python scripts/compare_setf.py out/straight-legacy.json out/straight-anchored.json --out out/straight-paired.json
+```
+
+| synthetic object (5 paired approaches) | detected (both modes) | first confirmed, paired median: legacy → anchored | visible hits 100–150 m: legacy → anchored |
+|---|---:|---:|---:|
+| person 0.4 × 0.5 × 1.7 m | 5 / 5 | 149.9 → **154.1 m** | 94/125 → 97/125 |
+| trolley | 5 / 5 | 148.1 → 148.1 m | 34/125 → 32/125 |
+| crate 1.0 m | 5 / 5 | 116.1 → 109.9 m | 26/125 → 28/125 |
+| cable 3 cm hanging to 1.0 m | 5 / 5 | 103.9 → 101.7 m | 12/80 → 5/87 |
+| box 0.5 m in the bed | 1 / 5 | 51.9 → 51.9 m | 0 → 0 |
+
+**On straight track the range does not depend on the detector's own far axis.** A person placed
+from the near rails is first confirmed at a median 154 m (150–180 m). This supports the
+historical ~148 m straight-track figure for the current code, unlike the curve and edge scenes
+above, where neither mode matched anything beyond 100 m. It is still synthetic: the anchoring
+uses the ride's rail fits and estimated speed, not a survey. The 0.5 m box on the bed stays at
+1 of 5, as in round 3. The legacy person median over all six attempted sequences, 151.0 m,
+differs from round 3's 148 m because set F now seeds the ray casting per frame (the dropout
+draws differ), not because the detector changed.
 
 ## Organizer synthetic-obstacle recording (`cloud_with_fake_obj`, labelled 24.09)
 
@@ -166,13 +208,18 @@ STOP is an alarm frame (`detections`), advisory is `warnings` only.
 | 9 | 2 × 0.2 m, across the rails (inside) | 86 (248.5 m) | 77 | 42 | 0 | 82.2 m | 58.6 m | detected |
 | 10 | 0.05 m, hanging from the roof (inside) | 42 (199.7 m) | 20 | 0 | 0 | — | — | missed |
 
-Alarms that match no labelled object: 29 frames, 8 track IDs. Five of the IDs are the objects
-themselves. Three pass within 2.5 m of the sensor after their labels end. One is the inner
-edge of #7, just beyond the 1 m lateral match tolerance. One is #9, whose 4 m-long low
-cluster starts 4 m in front of it at 65 m. Three are background. One of
-them (frames 213–226, reported at 3.0 m) is caused by the 2 × 2 m box: while it is 10–20 m
-ahead, its shadow hides the rails, the rail-height fit drifts by ~0.5 m and the bed 2.5–8 m
-ahead reads as an obstacle. The STOP is right, but the distance is wrong. Standard metrics
+Alarm tracks that never match a labelled object (counted like `fp_events`): 2 IDs in 3 frames,
+at 129–141 m in frames 666–667 and 1131. Six more IDs are unmatched in some frames and matched
+to an object in others:
+
+* three pass within 2.5 m of the sensor after their labels end;
+* one is the inner edge of #7, just beyond the 1 m lateral match tolerance;
+* one is #9, whose 4 m-long low cluster starts 4 m in front of it at 65 m;
+* one (frames 213–226, reported at 3.0 m) is caused by the 2 × 2 m box. While the box is
+  10–20 m ahead, its shadow hides the rails, the rail-height fit drifts by ~0.5 m and the bed
+  2.5–8 m ahead reads as an obstacle. The STOP is right, but the distance is wrong.
+
+Standard metrics
 (`resense summarize --gt`): recall 0.378 of visible in-gauge object-frames (0–50 m 113/227,
 50–100 m 189/338, beyond 100 m 1/236). These are 1,206 frames of ten synthetic objects, not an
 operating recall.
@@ -196,24 +243,24 @@ What the grade says, by cause:
 * **Edge tests (#4–#7) depend on the reference frame.** Measured from the rails, #6 is outside
   in 117 of 125 frames and #5 inside in 101 of 112. The detector follows the rails. The
   organizers followed the sensor's axis. Setting `edge_margin_per_100m` to 0 only added false
-  STOPs on #7 (6 → 40 frames) and in the background (29 → 41 frames).
+  STOPs on #7 (6 → 40 frames) and in the background (3 → 8 frames).
 
 **Improvement experiments.** All run on the fake-object bag and, for the false-alarm cost, on
 all six original bags at every frame. The default reproduces 107 alarm frames / 20 events on the
 five empty bags and 185/246 labelled frames, first alarm 11, on `doubleT_obstacle`. Raw numbers:
 [`experiments_p4_fake_labelled.json`](experiments_p4_fake_labelled.json).
 
-| variant | fake bag: STOP frames on inside objects | fake bag: STOP frames on outside objects | fake bag: background alarm frames / IDs | five empty bags: alarm frames / events | `doubleT_obstacle` |
+| variant | fake bag: STOP frames on inside objects | fake bag: STOP frames on outside objects | fake bag: background alarm frames / IDs (never matched to an object) | five empty bags: alarm frames / events | `doubleT_obstacle` |
 |---|---:|---:|---:|---:|---|
-| default | 303 | 6 | 29 / 8 | 107 / 20 | 185/246, frame 11 |
-| `edge_margin_per_100m: 0` | 303 | 40 | 41 / 10 | — | — |
-| `min_points 3, min_points_far 2` | 306 (#10: 3 at 10 m) | 6 | 30 / 9 | — | — |
-| `gauge_min_points 2` | 303 | 9 | 29 / 8 | — | — |
-| `lowobj.near_enabled` | 303 | 6 | 492 / 112 | — | — |
-| `signature_min_lateral: 0.9` | 314 (#2 from 52.5 m) | 6 | 29 / 8 | 168 / 26 | unchanged |
-| `elevated` off | 334 (#8: 43 frames) | 6 | 30 / 9 | 139 / 23 | unchanged |
-| both | 345 | 6 | 30 / 9 | 186 / 26 | unchanged |
-| **short signatures** (experiment) | **352** | 9 | 31 / 10 | **113 / 22** | unchanged |
+| default | 303 | 6 | 3 / 2 | 107 / 20 | 185/246, frame 11 |
+| `edge_margin_per_100m: 0` | 303 | 40 | 8 / 4 | — | — |
+| `min_points 3, min_points_far 2` | 306 (#10: 3 at 10 m) | 6 | 3 / 2 | — | — |
+| `gauge_min_points 2` | 303 | 9 | 3 / 2 | — | — |
+| `lowobj.near_enabled` | 303 | 6 | 466 / 106 | — | — |
+| `signature_min_lateral: 0.9` | 314 (#2 from 52.5 m) | 6 | 3 / 2 | 168 / 26 | unchanged |
+| `elevated` off | 334 (#8: 43 frames) | 6 | 3 / 2 | 139 / 23 | unchanged |
+| both | 345 | 6 | 3 / 2 | 186 / 26 | unchanged |
+| **short signatures** (experiment) | **352** | 9 | 3 / 2 | **113 / 22** | unchanged |
 
 The extra false alarms of the two blanket relaxations all come from
 `squareT_platform_squareT_switch`: one structure ~104 m ahead of the stopped train, 3.9–5.7 m

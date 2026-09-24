@@ -26,7 +26,7 @@ def compare(legacy: dict, anchored: dict) -> dict:
     if lp["placement_mode"] != "legacy" or ap["placement_mode"] != "anchored":
         raise ValueError("expected legacy first, anchored second")
     for key in ("place", "seed", "files", "frames", "kinds", "start_m", "lateral_range",
-                "given_speed", "far_min_height", "config_sha256", "speeds_sha256",
+                "given_speed", "far_min_height", "reflectivity", "config_sha256", "speeds_sha256",
                 "selected_stamps_sha256", "cache_files"):
         if lp.get(key) != ap.get(key):
             raise ValueError(f"different {key}: cannot compare unpaired experiments")
@@ -75,13 +75,19 @@ def compare(legacy: dict, anchored: dict) -> dict:
                                                               for p in attempted) for i in (0, 1)]
                                                          for label in (f"{lo}-{hi}" for lo, hi in BINS)}
                                             for mode in ("legacy", "anchored")},
-                          "first_median": {mode: round(statistics.median(
-                              p["first_m"][mode] for p in attempted if p["first_m"][mode] is not None), 1)
-                              if any(p["first_m"][mode] is not None for p in attempted) else None
-                              for mode in ("legacy", "anchored")}}
+                          # medians over the sequences detected in *both* modes; a sequence found
+                          # in one mode only is counted, not folded into one side's median
+                          "detected_both": len(both := [p for p in attempted
+                                                        if None not in (p["first_m"]["legacy"], p["first_m"]["anchored"])]),
+                          "detected_only": {mode: sum(p["first_m"][mode] is not None and p["first_m"][other] is None
+                                                      for p in attempted)
+                                            for mode, other in (("legacy", "anchored"), ("anchored", "legacy"))},
+                          "first_median": {mode: round(statistics.median(p["first_m"][mode] for p in both), 1)
+                                           if both else None
+                                           for mode in ("legacy", "anchored")}}
     return {"source": "paired synthetic positives on organizer empty-ride frames",
             "parameters": {k: lp.get(k) for k in ("files", "frames", "kinds", "seed", "start_m",
-                                                  "lateral_range", "config_sha256", "speeds_sha256",
+                                                  "lateral_range", "reflectivity", "config_sha256", "speeds_sha256",
                                                   "selected_stamps_sha256")},
             "per_kind": per_kind, "sequences": pairs}
 

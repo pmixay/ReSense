@@ -253,14 +253,15 @@ def local_bed_z(xyz: np.ndarray, track: TrackModel, x: float, lateral: float,
 
 
 def place_on_bed(frame: Frame, track: TrackModel, specs: Sequence[ObstacleSpec],
-                 bed_depth: float = BED_DEPTH_DEFAULT) -> List[ObstacleSpec]:
+                 bed_depth: float = BED_DEPTH_DEFAULT, drift_cache: Optional[dict] = None) -> List[ObstacleSpec]:
     """Copies of ``specs`` whose objects that stand on the ground (``base`` None) get
     ``base_z`` from the real bed under them (:func:`local_bed_z`), else ``bed_depth`` below
     the model's rail head corrected by the observed vault drift. Objects with a ``base``
-    (hanging cables) keep it."""
+    (hanging cables) keep it. ``drift_cache`` (a dict kept by the caller for one background
+    frame and track) keeps the vault drift from being re-measured on every sequence step."""
     from dataclasses import replace
     out = []
-    drift = None
+    cache = drift_cache if drift_cache is not None else {}
     for sp in specs:
         if sp.base is not None or sp.base_z is not None:
             out.append(sp)
@@ -268,9 +269,9 @@ def place_on_bed(frame: Frame, track: TrackModel, specs: Sequence[ObstacleSpec],
         x = sp.distance + sp.size[0] / 2
         z = local_bed_z(frame.xyz, track, x, sp.lateral)
         if z is None:
-            if drift is None:
-                drift = vault_drift(frame.xyz, track)
-            z = float(track.rail_z(x)) - bed_depth + float(drift(x))
+            if "drift" not in cache:
+                cache["drift"] = vault_drift(frame.xyz, track)
+            z = float(track.rail_z(x)) - bed_depth + float(cache["drift"](x))
         out.append(replace(sp, base_z=z))
     return out
 

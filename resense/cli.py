@@ -133,13 +133,14 @@ def cmd_inject(args):
             objs.append((name, float(plan_rng.uniform(d_lo, d_hi)), float(lateral),
                          float(plan_rng.uniform(0, 360)), refl,
                          f"{name}_{n_bg}_{j}"))
+        drift_cache = {}      # the vault drift of this background, measured once for all steps
         for k in range(n_seq):
             specs = [catalogue_spec(name, dist - k * step, lateral, yaw, reflectivity=refl, label=label)
                      for name, dist, lateral, yaw, refl, label in objs]
             if any(s.distance < cfg.gauge.range_min for s in specs):
                 break   # the object has reached the sensor: the approach sequence ends here
             if args.placement == "bed":
-                specs = place_on_bed(frame, track, specs)
+                specs = place_on_bed(frame, track, specs, drift_cache=drift_cache)
             render_rng = np.random.default_rng(np.random.SeedSequence([args.seed, n_bg, k, 1]))
             res = inject_obstacles(frame, track, specs, rng=render_rng)
             name_out = f"{n:05d}"
@@ -217,7 +218,8 @@ def cmd_eval(args):
         repeat = cfg.tracking.frames_to_confirm() if (args.dataset and int(meta.get("sequence", 1)) <= 1) else 1
     det = Detector(cfg)
     ev = Evaluation(confirm_hits=cfg.tracking.frames_to_confirm(), frame_dt=cfg.tracking.frame_dt,
-                    min_hits=cfg.tracking.confirm_hits, confirm_time_s=cfg.tracking.confirm_time_s)
+                    min_hits=cfg.tracking.confirm_hits, confirm_time_s=cfg.tracking.confirm_time_s,
+                    stamp_dt_range=tuple(cfg.accumulation.stamp_dt_range))
     out_fh = open(args.out, "w", encoding="utf-8") if args.out else None
     n_occluded = 0
     n_processed = 0
@@ -294,7 +296,8 @@ def _summarize_file(path: str, args, cfg, gt) -> dict:
     ``unparsed_lines`` and ``file``)."""
     from resense.metrics import Evaluation, gt_key, gt_objects
     ev = Evaluation(confirm_hits=cfg.tracking.frames_to_confirm(), frame_dt=cfg.tracking.frame_dt,
-                    min_hits=cfg.tracking.confirm_hits, confirm_time_s=cfg.tracking.confirm_time_s)
+                    min_hits=cfg.tracking.confirm_hits, confirm_time_s=cfg.tracking.confirm_time_s,
+                    stamp_dt_range=tuple(cfg.accumulation.stamp_dt_range))
     n_occluded = 0
     unparsed = []
     for d in _iter_jsonl(path, unparsed):

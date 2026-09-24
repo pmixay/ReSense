@@ -12,11 +12,13 @@ Two levels of false-alarm accounting (docs/EVALUATION.md section 2):
   ``ego_speed`` key in the result dict).
 
 Frame indices (the ``frame`` key that ``resense run`` writes) are used to detect the
-subsampling stride: with every N-th frame the tracker is given the measured interval
-``N * frame_dt``, so it needs max(``confirm_hits``, ceil(``confirm_time_s`` / (N * frame_dt)))
-consecutive hits (``tracking.frames_to_confirm(N * frame_dt)``), ``N * frame_dt`` seconds apart,
-instead of ``frames_to_confirm()`` frames at 10 Hz -- subsampled false-alarm counts understate
-the rate the node shows at 10 Hz. :meth:`Evaluation.summary` says so (``stride_caveat``).
+subsampling stride: with every N-th frame the detector hands the tracker the measured interval
+``N * frame_dt`` when it lies inside ``accumulation.stamp_dt_range`` (else the nominal
+``frame_dt``), so a track needs ``tracking.frames_to_confirm(interval)`` consecutive hits,
+``N * frame_dt`` seconds apart (defaults: 3 hits = 1.5 s at every 5th frame, 5 hits = 5 s at
+every 10th), instead of ``frames_to_confirm()`` frames = 0.5 s at 10 Hz -- subsampled
+false-alarm counts understate the rate the node shows at 10 Hz. :meth:`Evaluation.summary`
+says so (``stride_caveat``).
 
 Ground-truth files: ``gt.json`` as written by ``resense inject`` and by the label tool
 (docs/DATASET.md "Label format"), loaded with :func:`load_gt`.
@@ -27,7 +29,7 @@ import json
 import math
 from collections import Counter
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Sequence, Set
+from typing import Dict, List, Optional, Sequence, Set, Tuple
 
 import numpy as np
 from scipy.optimize import linear_sum_assignment
@@ -117,7 +119,10 @@ def _assign_detections(dets: Sequence[dict], gts: Sequence[GTObstacle]) -> Dict[
     if not dets or not gts:
         return {}
     n_det = len(dets)
-    cost = np.full((len(gts), n_det + len(gts)), 10.0)
+    # A feasible pair costs at most 2 (dx / tol <= 1, dy <= 1): a miss must cost more than any
+    # whole matching can, or the solver trades a match for smaller errors (review 24.09)
+    miss = 2.0 * min(len(gts), n_det) + 1.0
+    cost = np.full((len(gts), n_det + len(gts)), miss)
     cost[:, :n_det] = 1e6
     for gi, gt in enumerate(gts):
         distance_tol = max(2.0, 0.03 * gt.distance) + 0.5 * max(gt.size[0], 0.0)
@@ -127,7 +132,15 @@ def _assign_detections(dets: Sequence[dict], gts: Sequence[GTObstacle]) -> Dict[
             if match(float(det["distance"]), float(det["lateral"]), gt):
                 cost[gi, di] = dx / distance_tol + dy
     gt_idx, det_idx = linear_sum_assignment(cost)
-    return {int(gi): int(di) for gi, di in zip(gt_idx, det_idx) if di < n_det and cost[gi, di] < 10.0}
+    return {int(gi): int(di) for gi, di in zip(gt_idx, det_idx) if di < n_det and cost[gi, di] < miss}
+
+
+def range_bin(distance: float) -> str:
+    """The recall-by-range bin label of a distance (``"50-100"``; ``"300+"`` beyond the last)."""
+    for lo, hi in RANGE_BINS:
+        if lo <= distance < hi:
+            return f"{lo}-{hi}"
+    return f"{RANGE_BINS[-1][1]}+"
 
 
 def _bin_order(key: str) -> float:
@@ -162,6 +175,7 @@ class Evaluation:
     frame_dt: float = 0.1                  # tracking.frame_dt (s)
     min_hits: Optional[int] = None         # tracking.confirm_hits; with confirm_time_s the caveat applies the tracker's rule at the stride
     confirm_time_s: float = 0.0            # tracking.confirm_time_s (s)
+    stamp_dt_range: Optional[Tuple[float, float]] = None   # accumulation.stamp_dt_range: intervals the detector trusts
     alarm_frames: int = 0                  # frames with obstacle = true (all frames)
     advisory_frames: int = 0               # frames with warning = true (all frames)
     alarm_ids: Set[tuple] = field(default_factory=set)      # (sequence, track id): ids may restart between sequences
@@ -207,12 +221,7 @@ class Evaluation:
             if result_dict["obstacle"]:
                 self.fp_frames += 1
         for gi, g in enumerate(gauge_gts):
-            key = None
-            for lo, hi in RANGE_BINS:
-                if lo <= g.distance < hi:
-                    key = f"{lo}-{hi}"
-            if key is None:
-                key = f"{RANGE_BINS[-1][1]}+"
+            key = range_bin(g.distance)
             self.per_bin.setdefault(key, [0, 0])
             self.per_bin[key][1] += 1
             cls_key = g.kind or "obstacle"
@@ -309,8 +318,13 @@ class Evaluation:
             return None
         hits = self.confirm_hits
         if self.min_hits is not None:
-            # the tracker is given the measured interval: the time rule is met sooner at a stride
-            by_time = int(math.ceil(self.confirm_time_s / (s * self.frame_dt) - 1e-9)) if self.confirm_time_s > 0 else 0
+            # the detector hands the tracker the measured interval when it lies inside
+            # accumulation.stamp_dt_range, else the nominal frame_dt (Detector._frame_dt): the
+            # time rule is met sooner at every 2nd-5th frame, not at every 10th
+            dt = s * self.frame_dt
+            if self.stamp_dt_range is not None and not (self.stamp_dt_range[0] <= dt <= self.stamp_dt_range[1]):
+                dt = self.frame_dt
+            by_time = int(math.ceil(self.confirm_time_s / dt - 1e-9)) if self.confirm_time_s > 0 else 0
             hits = max(int(self.min_hits), by_time)
         return (f"frames are every {s}th bag frame: the {hits} consecutive "
                 f"hits a track needs are {s * self.frame_dt:.1f} s apart, so a candidate must persist "
