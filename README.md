@@ -288,7 +288,7 @@ writes only the bags you ask for:
 ```bash
 python scripts/unpack_dataset.py Датасет.zip --list
 python scripts/unpack_dataset.py Датасет.zip --out /data --only doubleT_obstacle,roundT_doubleT
-python scripts/unpack_dataset.py https://disk.yandex.ru/d/N8IUpAyd7jyvow --out /data   # extended dataset (17 GB, streamed from the link)
+python scripts/unpack_dataset.py https://disk.yandex.ru/d/N8IUpAyd7jyvow --member new_data.zst --out /data   # extended dataset (17 GB, streamed from the link)
 python scripts/unpack_dataset.py https://disk.yandex.ru/d/KpkG_yKoGk-vHQ --out /data   # synthetic obstacles (1.7 GB -> 7.4 GB)
 ```
 

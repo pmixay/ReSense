@@ -9,7 +9,8 @@
 zstd-compressed tar of **one 20-minute rosbag2 bag `new_data/`** split into 221 sqlite3 files
 `new_data_<N>.db3` (408 MB / 51 frames each) plus its `metadata.yaml` (90 GB unpacked); what
 was read from it is in the section "Extended dataset" below. `scripts/unpack_dataset.py`
-streams it straight from the link (no 17 GB copy) or from a downloaded `new_data.zst`; the
+streams it straight from the link (no 17 GB copy; since 24.09 the folder also holds
+`cloud_with_fake_obj.zst`, so pass `--member new_data.zst`) or from a downloaded `new_data.zst`; the
 unpacked directory is an ordinary bag (`resense info /data/new_data`, `ros2 bag play
 /data/new_data`), and a single split file opens on its own with `resense run --bag
 <file>.db3` (the `rosbags` reader does not need the metadata file).

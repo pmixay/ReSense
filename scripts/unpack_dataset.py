@@ -16,8 +16,12 @@ new_data_<N>.db3``) is streamed the same way, from a downloaded file or straight
 organizers' Yandex Disk link (the public API resolves the link to a download URL; nothing is
 written but the extracted files):
 
-    python scripts/unpack_dataset.py https://disk.yandex.ru/d/N8IUpAyd7jyvow --list
-    python scripts/unpack_dataset.py https://disk.yandex.ru/d/N8IUpAyd7jyvow --out /data     # /data/new_data/*.db3
+    python scripts/unpack_dataset.py https://disk.yandex.ru/d/N8IUpAyd7jyvow --member new_data.zst --list
+    python scripts/unpack_dataset.py https://disk.yandex.ru/d/N8IUpAyd7jyvow --member new_data.zst --out /data   # /data/new_data/*.db3
+    python scripts/unpack_dataset.py https://disk.yandex.ru/d/KpkG_yKoGk-vHQ --out /data     # /data/cloud_with_fake_obj/
+
+(Since 24.09 the extended-dataset folder also holds ``cloud_with_fake_obj.zst``, so a link to the
+folder needs ``--member``; the second link is that file on its own.)
     python scripts/unpack_dataset.py new_data.zst --out /data --only new_data
     python scripts/unpack_dataset.py new_data.zst --out /data --only new_data_127.db3,new_data_128.db3
 
