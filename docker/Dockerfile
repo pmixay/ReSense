@@ -63,6 +63,9 @@ COPY ros2_ws/src /opt/resense/ros2_ws/src
 COPY configs/default.yaml /opt/resense/ros2_ws/src/resense_ros/config/detector.yaml
 RUN . /opt/ros/humble/setup.sh && cd /opt/resense/ros2_ws && colcon build --symlink-install
 
+# The P4 label-metadata regression and offline `resense eval` use the committed real labels.
+COPY labels/doubleT_obstacle.json ./labels/doubleT_obstacle.json
+
 COPY docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 # DDS over UDP only: a bag played by a normal user on the host cannot write into the shared-memory
