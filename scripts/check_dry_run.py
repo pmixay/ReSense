@@ -76,8 +76,9 @@ def main(argv=None) -> int:
                    help="allowed dropped input frames after --settle-s (default 0)")
     p.add_argument("--settle-s", type=float, default=5.0,
                    help="s of recording time after the first processed frame in which dropped frames are not "
-                        "counted: the DDS start-up with 5-10 MB reliable clouds loses the first 2-4 s of a "
-                        "played bag whatever the node does (EXPERIMENTS.md section 3b); default 5")
+                        "counted: `ros2 bag play` (Humble) preloads the bag and then sends its first seconds "
+                        "back to back, which the node works through catchup_step s apart, skipping the "
+                        "frames in between (EXPERIMENTS.md section 3b); default 5")
     p.add_argument("--min-fps", type=float, default=None, help="minimum of the last reported node.fps")
     p.add_argument("--expect-inputs", type=int, default=0, metavar="N",
                    help="N recordings played one after another into one node (node.recording counts them); "
@@ -124,6 +125,16 @@ def main(argv=None) -> int:
     print(f"dropped input frames : {dropped}" + (f" ({dropped_settled} after the first {args.settle_s:g} s)"
                                                  if dropped_settled != dropped else ""))
     print(f"fps (last report)    : {fps}")
+    rec0 = frames[0].get("node", {}).get("recording")
+    first = [f for f in frames if f.get("node", {}).get("recording") == rec0
+             and isinstance(f.get("stamp"), (int, float)) and t0 is not None and f["stamp"] >= t0]
+    if len(first) > 1:               # the start of the (first) recording: holes, the first STOP
+        rel = [f["stamp"] - t0 for f in first]
+        gaps = [b - a for a, b in zip(rel, rel[1:]) if a < args.settle_s]
+        stop = next((r for f, r in zip(first, rel) if f.get("decision") == "STOP"), None)
+        print(f"start of the input   : {sum(1 for r in rel if r < args.settle_s)} frames in the first "
+              f"{args.settle_s:g} s after the first one, largest gap {max(gaps or [0.0]):.1f} s"
+              + (f", first STOP at +{stop:.1f} s" if stop is not None else ""))
 
     failures = []
     if len(valid_latencies) != len(frames):

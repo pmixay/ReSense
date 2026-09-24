@@ -29,7 +29,7 @@ The bags come from a **Pandar128**, not an AT-series unit as first assumed. Evid
 | horizontal FOV | 360°, configurable azimuth window(s) | 1200 columns = 120° window, returns within ±50° |
 | frame rate | 10 Hz / 20 Hz | ~10 Hz |
 | return modes | single (last / strongest / first), dual (last+strongest, last+first, first+strongest) | dual return, 2 × 153 600 slots |
-| range | 0.3 … 200 m @ 10 % reflectivity | last returns at ~206 m |
+| range | 0.3 … 200 m @ 10 % reflectivity | last returns at 209–210 m (every recording stops at 209.2–210.0 m) |
 
 `resense/sensor.py` keeps the measured ring elevations; the design values from the angle
 correction file differ by ≤ 0.12° (each real unit carries its own calibration), so the measured

@@ -29,21 +29,29 @@ ros2 topic echo /resense/decision --field data              # console 3: GO | CA
 ros2 topic echo /resense/nearest_distance                   # distance along the track to the nearest obstacle, m
 ```
 
-Expected on the organizers' `doubleT_obstacle`: `STOP` at 55.7–56.5 m (the person crossing, then
+Expected on the organizers' `doubleT_obstacle`: `STOP` at 55.5–56.6 m (the person crossing, then
 the object lying across the rail). No ROS on the host: play from a second container,
 `docker run --rm --net=host --ipc=host -v <bag dir>:/data:ro resense ros2 bag play /data/<bag> --delay 3`.
-Worth knowing: the first **2–4 s of a played bag are not processed** — the DDS start-up with
-5–10 MB reliable clouds, `--delay 3` does not avoid it (EXPERIMENTS.md §3b); until the first frame
-the decision is `FAULT` (no input). `STOP` is the alarm; `CAUTION` is advisory — something next to
+Worth knowing: `ros2 bag play` (Humble) reads up to 1000 messages — all of a short recording —
+before its first publish while its clock runs, then sends the overdue first seconds back to back;
+the decision is `FAULT` (no input) until then (2.6–4 s for a 1.9 GB recording already in the page
+cache, longer from a slow disk). The node then works through that burst from the recording's first
+frame, one frame every 0.3 s of recording (`catchup_step`), and is back in real time within ~2 s:
+on `doubleT_obstacle` the first `STOP` comes 1.3–1.6 s into the recording, as offline (v0.6.4,
+EXPERIMENTS.md §3b; before it the first 2–5 s were lost). `STOP` is the alarm; `CAUTION` is advisory — something next to
 the envelope or beyond the verified range (columns, platform edges, far clusters) — and is common
 in a normal tunnel. `/resense/obstacle_detected` answers for the last processed frame; the
 go / no-go signal is `/resense/decision`, which also says `FAULT` when no frame is arriving.
 
-Status: **v0.6.3 (23.09)** — v0.6.1 rebuilt the detector around the organizers' Q&A answers;
+Status: **v0.6.4 (24.09)** — the detector of v0.6.3; the ROS node now works through the burst of
+the first seconds that `ros2 bag play` sends after preloading a bag instead of losing them (first
+`STOP` on `doubleT_obstacle` 1.3–1.6 s into the recording through ROS, was 3.2–4.5 s). Before it:
+v0.6.1 rebuilt the detector around the organizers' Q&A answers;
 v0.6.2 finds the organizers' object lying across a rail and cuts the false stops on the ride by 43 %
 after an independent criteria review; v0.6.3, after a second one, holds a STOP over a single missed
 frame (25 % fewer on/off episodes), keeps a person lying across the track and makes the first
-20 s of a recording 10–15 ms per frame faster ([`docs/SCORECARD.md`](docs/SCORECARD.md)). What v0.6.1
+20 s of a recording 10–15 ms per frame faster. The current judgement against the organizers'
+criteria is an independent review of 24.09: [`docs/SCORECARD.md`](docs/SCORECARD.md). What v0.6.1
 (22.09) changed after the Q&A session ([`docs/organizers/QA_session.md`](docs/organizers/QA_session.md):
 the recorded session, transcribed and summarised): The strict decision now uses **the train envelope the organizers
 gave (2.1 m wide × 3.0 m high)**; objects **hanging** into it (broken cables) are obstacles
@@ -55,8 +63,9 @@ because "the LiDAR position is not fixed"; and every frame says **how far the pa
 verified clear** and whether the input can be trusted (`/resense/decision`
 GO / CAUTION / STOP / FAULT, `/resense/clear_distance`, `/resense/health`).
 
-Historical v0.6.3 measurements on **all 13 759 real frames** of the organizers' data at 10 Hz
-([`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) §0): false alarms on the five obstacle-free
+Measured on **all 13 759 real frames** of the organizers' data at 10 Hz
+([`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) §0; v0.6.3, re-run on the current code on 24.09 with
+identical output on every frame): false alarms on the five obstacle-free
 bags **20 events** (107 alarm frames, 27 STOP episodes; v0.6.1: 30 events, v0.5 logic: 32) and on
 the 20-minute, 13 km ride **47 events, 3.6 per km** (204 frames, 39 episodes; v0.6.1: 82, v0.5:
 93); v0.6.2 had fewer events than v0.6.1 in 12 of 13 subsets of the data and more in none, so
@@ -64,19 +73,19 @@ the gain is not carried by one recording (leave-one-out check, §0), and startin
 0–40 frames later, as a played bag does through ROS, gives 14–20 events (§0); a health warning on 1.4 % of the frames (stations,
 switches); the person crossing the track in `doubleT_obstacle` is reported in 58 of the 61
 frames in which the person is inside the envelope, the first alarm 0.3 s after entering it,
-distance error < 0.35 m; the **object lying across the rail** (0.45 × 0.6 × 0.3 m) in **124 of
+distance error ≤ 0.23 m; the **object lying across the rail** (0.45 × 0.6 × 0.3 m) in **124 of
 the 126 frames** after the person leaves it (v0.6.1: 2). Long range on the
-moving ride (**synthetic objects with legacy detector-derived placement** ray-cast into consecutive real frames, no speed input, §2d, v0.6.2): a
+moving ride (**synthetic objects with legacy detector-derived placement** ray-cast into consecutive real frames, no speed input, §2d round 3: the current code, 24.09): a
 person on straight track is **held from 115 m inward** (median of 6 approaches, per approach
 20–160 m: detected in ≥ 90 % of the frames of every 10 m band from there; in ≥ 90 % of all
-frames from 135 m) and first confirmed at 148 m median (110–169 m, 6 of 6); a trolley first at
+frames from 149 m) and first confirmed at 148 m median (110–169 m, 6 of 6); a trolley first at
 144 m, a 1 m crate at 111 m, a 3 cm hanging cable first at 95 m but held only from ~50 m (4 of
 6); with a train speed given (odometry or a speed topic: 5-frame accumulation) the person first
 at **167 m**, the crate at 182 m — reach bought with steadiness: the crate is then held only
-from 89 m instead of 117 m and the person's 50–100 m recall drops from 94 to 83 %; in R ≈ 350 m curves 6 of 7 approaches
+from 79 m instead of 119 m and the person's 50–100 m recall drops from 94 to 83 %; in R ≈ 350 m curves 6 of 7 approaches
 are detected, from 58–86 m (the sightline past the inner wall); at station stops a person 6 of
-6 from 113 m; 30 cm objects lying on a rail head 6 of 6 from 42–44 m; a person lying across the
-rails 6 of 6 from ~60 m (between the rails: where the body rises above the rail head, §2d). 300 m is beyond this
+6 from 113 m; 30 cm objects lying on a rail head 6 of 6 from 42–49 m; a person lying across the
+rails 6 of 6 from ~64 m (between the rails: where the body rises above the rail head, §2d). 300 m is beyond this
 sensor: no return in any of the 13 759 frames lies beyond 210 m (every recording stops at 209.2–210.0 m). Other LiDAR mounts (upside down, `+x` forward, backwards, rolled /
 pitched) are recovered from the rails and the bed: orientation found and tilt within 0.5° on
 re-mounted real frames of three recordings (§6). Clean timing: 42–64 ms mean, p95 53–78 ms per
@@ -85,9 +94,9 @@ The container chain (`docker build → run → bag play → result`) is verified
 bags on every push, and was rehearsed on 23.09 on the real frames in Docker — the node in one
 container, `ros2 bag play` in another, both topic / frame pairs, two recordings into one node
 (EXPERIMENTS.md §3b: the 120° recording at 10 fps, p95 76 ms; the 360° one at 7–10 fps in steady
-state on the 4-vCPU sandbox, its first seconds lost to the transport's start-up; the node container
+state on the 4-vCPU sandbox; since v0.6.4 the burst of the player's first seconds is worked through, not lost; the node container
 at ~100 % of one core while frames arrive, 186 MB). The bag may be played by any user: the image
-runs DDS over UDP (a normal user's player cannot write into a root node's shared memory). Judgement against every criterion and what is left: [`docs/SCORECARD.md`](docs/SCORECARD.md).
+runs DDS over UDP (a normal user's player cannot write into a root node's shared memory). Judgement against every criterion and what is left (independent review, 24.09): [`docs/SCORECARD.md`](docs/SCORECARD.md).
 
 ![doubleT_obstacle frame 24 seen from the cab: the train envelope (green) swept along the track axis, the points inside it (yellow), the person on the track reported at 55.8 m (STOP) and a close-up of the person's points](docs/img/hero_person.png)
 *Real data, v0.6.2: `doubleT_obstacle` frame 24 from the driver's seat (`scripts/hero_view.py`), the person on the track at 55.8 m. Videos: [the jury chain in Docker with RViz](docs/video/docker_chain_rviz.mp4), [the whole bag from the cab](docs/video/doubleT_obstacle_cab.mp4), [offline renders, top and side view](docs/video/doubleT_obstacle_offline.mp4) and [the dashboard replaying the same run](docs/video/dashboard_doubleT_obstacle.mp4). Slides in the organizers' template: [`docs/presentation/ReSense_LCT2026.pptx`](docs/presentation/ReSense_LCT2026.pptx).*
@@ -108,7 +117,7 @@ The organizers asked that every team "say clearly what to look at". One line per
 
 | question | topic | values |
 |---|---|---|
-| can the train go? | **`/resense/decision`** (`std_msgs/String`) | `GO` (clear), `CAUTION` (advisory: a confirmed object in the band just outside the envelope, a far cluster beyond the verified range, known infrastructure, or degraded health — on 10–64 % of the frames of the obstacle-free recordings, so it is not an alarm), `STOP` (obstacle inside the 2.1 × 3.0 m envelope), `FAULT` (input cannot be trusted or stopped arriving, and before the first frame) |
+| can the train go? | **`/resense/decision`** (`std_msgs/String`) | `GO` (clear), `CAUTION` (advisory: a confirmed object in the band just outside the envelope, a far cluster beyond the verified range, known infrastructure, or degraded health — on 27–68 % of the frames of the obstacle-free recordings and 41 % of the ride, so it is not an alarm), `STOP` (obstacle inside the 2.1 × 3.0 m envelope), `FAULT` (input cannot be trusted or stopped arriving, and before the first frame) |
 | is there an obstacle? | **`/resense/obstacle_detected`** (`std_msgs/Bool`) | per processed frame, confirmed over 0.5 s, held over one missed frame; `false` while no frame arrives (then `decision` says `FAULT`) |
 | how far is it? | **`/resense/nearest_distance`** (`std_msgs/Float32`) | m along the track, −1 if none |
 | how far is the path verified clear? | **`/resense/clear_distance`** (`std_msgs/Float32`) | the obstacle distance, else how far the corridor was actually checked (sightline, trusted track model); 0 on a fault |
@@ -222,8 +231,9 @@ ros2 bag play <bag>  ──PointCloud2 (either topic / frame pair), 10 Hz──�
    runs DDS over UDP (`docker/fastdds_udp.xml`), so a player on the same machine needs no shared
    memory and may run as any user — `--ipc=host` is harmless and kept for older images);
 2. play the bag from any console: `ros2 bag play <bag> --delay 3` (the delay lets DDS discovery
-   finish; even so the first 2–4 s of a bag are not processed — the DDS start-up with 5–10 MB
-   reliable clouds, EXPERIMENTS.md §3b; same `ROS_DOMAIN_ID` as the node, default 0;
+   finish; the player preloads the bag and then sends its first seconds back to back, which the
+   node works through `catchup_step` s of recording apart, EXPERIMENTS.md §3b; same `ROS_DOMAIN_ID`
+   as the node, default 0;
    or `ros2 launch … bag:=/data/<bag>` to
    let the launch file play it inside the container; the image has the sqlite3 and mcap storage
    plugins, so the storage format does not matter);
@@ -327,7 +337,7 @@ confirmed from some start frames, so a run gives 1–4 alarm frames, EXPERIMENTS
 person and the object at 55.9–56.6 m, 88–118 alarm frames, but at 360° this sandbox is at the
 frame period (96 ms mean, p95 112–130 ms) and the node skips frames (7–10 fps in steady state), so the
 default `--max-p95-latency 100 --max-dropped 0` fail there (drops are counted after the first 5 s,
-`--settle-s`: the start-up hole is the transport's); the jury's i7-9700E is the
+`--settle-s`: the player's start-up burst); the jury's i7-9700E is the
 reference for those two. The organizers' way — node container, `ros2 bag play` from another
 container, `roundT_doubleT` then `doubleT_obstacle` into the same running node — switched the
 input and restarted the detector as designed (`--expect-inputs 2`). That first run also found
@@ -335,8 +345,9 @@ that a best-effort subscription lost 196 of the 201 ten-megabyte clouds (the nod
 the publishers' reliability, `input_reliability`, below), and a review found that a player run
 by a **normal user** reached the root node not at all through shared memory: the image now runs
 DDS over UDP (`docker/fastdds_udp.xml`), and `scripts/console_test.sh` — node container, player
-as uid 1000 in another container — runs in CI. Through ROS the first seconds of a 360°
-recording are lost to the DDS start-up with 10 MB reliable samples (EXPERIMENTS.md §3b).
+as uid 1000 in another container — runs in CI. The first seconds of a played recording were
+lost until v0.6.4: the player preloads the bag and sends them back to back, and the node kept the
+newest frame only; it now works through them (EXPERIMENTS.md §3b).
 
 Defaults for `doubleT_obstacle`: the person is reported in 50–62 m, p95 of decode + detect is
 ≤ 100 ms (the 10 Hz frame period) and no input frame is dropped after the first 5 s. Any argument after the bag path
@@ -399,8 +410,11 @@ and the bed in the first frames, reported in `/resense/status` → `mount`) — 
 `stale_timeout` (s without a frame before `FAULT`, default 0.5) and `max_consecutive_errors`
 (processing exceptions before the detector is reset, default 5); since v0.6.1 the **input
 handling** — `input_switch_timeout` (1 s), `new_input_gap` (30 s), `hole_reset_gap` (1 s), see
-"How a bag is processed" — and `input_queue_depth` (1: the node always takes the newest frame and
-skips rather than lags behind the sensor); since v0.6.2 `input_reliability` (`auto`: the input
+"How a bag is processed" — and `input_queue_depth` (40 since v0.6.4; a frame that waits alone is
+processed at once, so the node skips rather than lags behind the sensor), `catchup_step` (0.3 s:
+while several frames wait — the burst at the start of a played bag — one every 0.3 s of recording
+is processed from the first frame on until the node is back on the newest; 0 = the newest only)
+and `catchup_max_lag` (5 s); since v0.6.2 `input_reliability` (`auto`: the input
 subscription matches its publishers — reliable for `ros2 bag play` of the organizers'
 recordings, best-effort for a best-effort driver; `reliable` / `best_effort` force it). All of
 them are launch arguments too. Every `stats_period` seconds the node logs
@@ -412,18 +426,18 @@ input queue dropped (estimated from gaps in the header stamps).
 | key | default | meaning |
 |---|---|---|
 | `sensor.forward/left/up`, `sensor.roll_deg/pitch_deg/yaw_deg` | `-y/+x/+z`, 0 | sensor → vehicle axis mapping (hackathon Hesai frame) and a fixed mount tilt |
-| `calibration.*` | on, 5 frames | automatic mount calibration (orientation, roll, pitch, yaw > 3°) |
-| `track.rails_*` | | rail-ridge template (gauge 1.52 m) for the track axis and rail-head level |
+| `calibration.*` | on, 20 observations every 10 frames | automatic mount calibration (orientation, roll, pitch, yaw > 3°); a tilt is applied from 0.75° |
+| `track.rails_*` | | rail-ridge template (track gauge 1.52 m, rail-head centres `rails_spacing` 1.59 m apart) for the track axis and rail-head level |
 | `track.walls_*` | band 1.6–2.8 m | tunnel-boundary fit for yaw / curvature; `axis_valid_*` = how far the corridor is trusted |
 | `track.rails_far_check_enabled` | false | Sprint 1 experimental far-rail cross-check; opt-in pending real-recording A/B and timing |
 | `gauge.profile` | \|dy\| ≤ 1.05 m, 0.12–3.0 m | **the organizers' 2.1 × 3.0 m train envelope**; `warning_margin` 0.35 m = advisory zone; `edge_margin_per_100m` 0.15 m |
 | `lowobj.*` | on, ≤ 60 m | low objects on the rails (bumps above the learned bed that rise ≥ 3 cm above the rail head) |
-| `lowobj.near_enabled` | false | Sprint 2 experimental central near-bed path; opt-in pending real-ride false-event evaluation |
+| `lowobj.near_enabled` | false | experimental central near-bed path; measured on 24.09 it raises the ride's false events from 47 to 667, so it stays off (ALGORITHM.md §6) |
 | `accumulation.estimate_speed` | false | LiDAR-only speed estimation opt-in; without a supplied speed, use single-frame detection |
 | `cluster.far_*` | 0.6 m tall, ≤ 3 m long | what may alarm beyond the height reference (far field of straight track) |
 | `cluster.eps / range_scale / voxel` | 0.35 / 40 / 0.05 | range-adaptive DBSCAN: ε(r) = eps·(1 + r/40 m) |
 | `cluster.*_max_*`, signatures | | infrastructure filters (thin hardware, low hardware, wall-like, column, floating, edge, wall face); thin objects hanging near the axis are never demoted |
-| `tracking.confirm_hits / conf_threshold` | 3 / 0.6 | persistence before an alarm (low objects: 5 hits) |
+| `tracking.confirm_time_s / confirm_hits / conf_threshold` | 0.5 s / 3 / 0.6 | persistence before an alarm (low objects: 5 hits); `hold_misses` 1 keeps a reported obstacle over one missed frame |
 | `health.*` | | thresholds of the production guards |
 
 ## Documentation required by the organizers (spec §5, §7)
@@ -443,7 +457,7 @@ input queue dropped (estimated from gaps in the header stamps).
 
 ## Team
 
-Four people, mapped onto the five roles the organizers suggest (system analyst, computer-vision
+Team «Молоток» (Molotok; ReSense is the name of the solution): four people, mapped onto the five roles the organizers suggest (system analyst, computer-vision
 engineer, ROS 2 robotics developer, data specialist, C++/Python software developer):
 
 | # | who | organizers' roles | owns |

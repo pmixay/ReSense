@@ -54,7 +54,11 @@ PARAMS = {
     "input_switch_timeout": ("1.0", float, "s the active input topic must be silent before another topic is taken"),
     "new_input_gap": ("30.0", float, "s of forward header-stamp jump taken as a new recording (detector restarted)"),
     "hole_reset_gap": ("1.0", float, "s of forward header-stamp jump that resets the scene state (calibration kept)"),
-    "input_queue_depth": ("1", int, "frames the input subscription may hold; 1 = always process the newest frame"),
+    "input_queue_depth": ("40", int, "frames the input subscription may hold between two processed frames"),
+    # v0.6.4: `ros2 bag play` sends the first seconds of a recording back to back (it preloads the bag)
+    "catchup_step": ("0.3", float, "s of recording between processed frames while frames wait (a burst from the "
+                                   "player); 0 = always process the newest frame only"),
+    "catchup_max_lag": ("5.0", float, "s: waiting frames older than the newest by more than this are dropped"),
     "input_reliability": ("auto", str, "input QoS: auto = match the publishers (reliable for ros2 bag play of the "
                                        "organizers' recordings), reliable, best_effort"),
 }

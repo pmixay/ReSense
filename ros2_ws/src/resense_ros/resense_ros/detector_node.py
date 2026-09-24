@@ -30,9 +30,10 @@ The status JSON carries an extra ``node`` object next to the detector fields:
 ``{"latency_ms", "fps", "frames", "dropped_frames", "input_period_ms", "ego_speed_mps",
 "ego_speed_source", "input_topic", "recording"}`` (``recording`` counts the recordings seen,
 see "Input handling") (``latency_ms`` there is decode + detect of the same frame, before
-publishing). ``dropped_frames`` is estimated from gaps in the input header stamps (the
-subscription keeps the newest frame only, so a slow frame silently drops the ones behind it; its
-reliability follows the publishers, ``input_reliability``).
+publishing). ``dropped_frames`` is estimated from gaps in the input header stamps (a slow frame
+makes the node skip the ones that arrived meanwhile, and a backlog is worked through
+``catchup_step`` s of recording apart, see "Input handling"; the input's reliability follows the
+publishers, ``input_reliability``).
 
 Ego speed (multi-frame accumulation needs it): the ``ego_speed_mps`` parameter wins when >= 0,
 else the latest value from ``speed_topic`` / ``odom_topic`` younger than ``speed_timeout``,
@@ -64,6 +65,13 @@ fresh detector, so the scene state and the mount calibration of the previous rec
 bags use different mounts) do not carry over. A shorter forward gap above ``hole_reset_gap`` s
 (a hole in the recording) resets the scene but keeps the calibration. While the input is
 silent, topic discovery keeps running, so a bag with a topic name nobody listed is still found.
+
+Backlog (v0.6.4): ``ros2 bag play`` (Humble) reads up to 1000 messages before its first publish
+while its clock runs, then sends the overdue first seconds of the recording back to back. The
+input queue holds ``input_queue_depth`` frames and every frame waiting is taken; one frame waiting
+is processed at once, several are worked through ``catchup_step`` s of recording apart (the ones
+in between skipped, none older than ``catchup_max_lag`` s behind the newest) until the node is
+back on the newest frame. ``catchup_step: 0`` processes the newest only.
 
 The static TF exists so that one RViz / Foxglove layout works for every bag: the organizers'
 bags carry different ``frame_id`` values (``hesai_lidar``, ``lidar_livox``); the layouts use
@@ -133,8 +141,20 @@ class DetectorNode(Node):
         self.declare_parameter("input_switch_timeout", 1.0)   # s the active topic must be silent before another one is taken
         self.declare_parameter("new_input_gap", 30.0)         # s of forward stamp jump that means a new recording (full reset)
         self.declare_parameter("hole_reset_gap", 1.0)         # s of forward stamp jump that resets the scene (calibration kept)
-        self.declare_parameter("input_queue_depth", 1)        # frames the input subscription may hold: 1 = always the newest,
-                                                              # a slow frame makes the node skip, never lag behind the sensor
+        # --- v0.6.4: the start of a played bag. `ros2 bag play` (Humble) reads up to 1000 messages - all
+        # of a short recording, ~2 GB for 20 s of 360-degree clouds - before its first publish while
+        # its clock already runs, then sends the overdue first seconds back to back (doubleT_obstacle:
+        # 4.1 s of recording in 0.4 s). A keep-last-1 input kept the newest of them only and the first
+        # 2-4 s of every played bag were lost. The input now holds input_queue_depth frames; while
+        # frames wait, the node works through them catchup_step s of recording apart (the frames in
+        # between are skipped) until it is back on the newest. A frame that waits alone is processed
+        # at once: a node slower than the sensor still skips, never lags (EXPERIMENTS.md section 3b).
+        # 40 frames ride out a transport stall inside the burst (20 lost 1.7 s once in 3 runs); the
+        # reader keeps what it once held: ~0.4 GB more resident memory with 10 MB clouds
+        self.declare_parameter("input_queue_depth", 40)       # frames the input subscription may hold between two frames
+        self.declare_parameter("catchup_step", 0.3)           # s of recording between processed frames while frames wait;
+                                                              # 0 = always the newest (the v0.6.3 behaviour)
+        self.declare_parameter("catchup_max_lag", 5.0)        # s: waiting frames older than the newest by more are dropped
         # --- v0.6.2: reliability of the input subscription. A 360-degree cloud is ~10 MB, i.e. ~160 UDP
         # fragments; best-effort loses the whole message with any fragment (measured in Docker with
         # `ros2 bag play` of doubleT_obstacle: 5 of 201 frames delivered best-effort, 174+ reliable).
@@ -180,6 +200,13 @@ class DetectorNode(Node):
         self.tf_frames_sent = set()
 
         self.qos_depth = max(1, self.get_parameter("input_queue_depth").get_parameter_value().integer_value)
+        self.catchup_step = self.get_parameter("catchup_step").get_parameter_value().double_value
+        self.catchup_max_lag = self.get_parameter("catchup_max_lag").get_parameter_value().double_value
+        self.pending = []              # (topic, msg) taken from the input queues, not processed yet, oldest first
+        self.pending_last = None       # (topic, frame_id, stamp) of the last frame handed to processing
+        self.catchup = None            # [frames processed, max s behind, start time] of the current catch-up
+        self.catchup_skipped = 0       # frames skipped since the current catch-up started
+        self.pending_gc = self.create_guard_condition(self.on_pending)
         rel = self.get_parameter("input_reliability").get_parameter_value().string_value.strip().lower()
         self.input_reliability = rel.replace("-", "_") if rel else "auto"
         self.sub_rel = {}              # topic -> "reliable" | "best_effort" of its subscription
@@ -406,7 +433,127 @@ class DetectorNode(Node):
                 self.detector.reset()
         return True
 
+    # ------------------------------------------------------------------
+    @staticmethod
+    def _stamp(msg: PointCloud2) -> float:
+        return msg.header.stamp.sec + msg.header.stamp.nanosec * 1e-9
+
+    @staticmethod
+    def catchup_plan(stamps, last, step: float, max_lag: float):
+        """Indices of the waiting frames to process, oldest first; the others are skipped.
+
+        ``stamps``: the header stamps of the waiting frames of one input, in arrival order and
+        increasing; ``last``: the stamp of the input's last processed frame (None at its start).
+        One frame waiting: that frame. Several (the node is behind): a chain through them that
+        steps at most ``step`` s of recording - each link the latest frame within ``step`` of the
+        previous one, the next frame when none is - from ``last`` (from the first frame at the
+        start of an input) to the newest frame; frames older than the newest by more than
+        ``max_lag`` s are dropped first. ``step`` <= 0: the newest frame only."""
+        n = len(stamps)
+        if n <= 1:
+            return list(range(n))
+        if step <= 0:
+            return [n - 1]
+        i = 0
+        if max_lag > 0:
+            while i < n - 1 and stamps[i] < stamps[-1] - max_lag:
+                i += 1
+        plan, cur = [], last
+        while i < n:
+            j = i
+            while cur is not None and j + 1 < n and stamps[j + 1] <= cur + step + 1e-6:
+                j += 1
+            plan.append(j)
+            cur, i = stamps[j], j + 1
+        return plan
+
     def on_cloud(self, msg: PointCloud2, topic: str = "") -> None:
+        """Input callback: the frame joins the ones already waiting behind it, then the next one
+        is processed (``catchup_step``)."""
+        self.pending.append((topic, msg))
+        self.take_waiting(topic)
+        self.process_next()
+
+    def on_pending(self) -> None:
+        """Guard condition: frames are still waiting after the last one processed."""
+        for topic in {t for t, _ in self.pending}:
+            self.take_waiting(topic)
+        self.process_next()
+
+    def take_waiting(self, topic: str) -> None:
+        """Move the frames waiting in the subscription's queue into ``pending`` (the rclpy call the
+        executor itself makes; without it, e.g. in the unit tests, nothing is taken)."""
+        sub = self.subs.get(topic)
+        handle = getattr(sub, "handle", None)
+        if handle is None or not hasattr(handle, "take_message"):
+            return
+        try:
+            while True:
+                with handle:
+                    got = handle.take_message(sub.msg_type, sub.raw)
+                if got is None:
+                    return
+                self.pending.append((topic, got[0]))
+                if len(self.pending) > 2:
+                    self.prune()                # hold the chain's frames only, not the whole burst
+        except Exception as e:  # noqa: BLE001 - never lose the input over the queue peek
+            self.get_logger().warn(f"could not take the waiting frames of {topic}: {e!r}")
+
+    def prune(self):
+        """Drop the waiting frames the catch-up will skip; returns the stamps of the frames of
+        one input at the head of ``pending`` that are left (the next to process first)."""
+        topic0, m0 = self.pending[0]
+        stamps = [self._stamp(m0)]
+        for t, m in self.pending[1:]:           # the frames of one input at the head of the queue
+            s = self._stamp(m)
+            if t != topic0 or m.header.frame_id != m0.header.frame_id or s < stamps[-1]:
+                break
+            stamps.append(s)
+        last = self.pending_last
+        new_gap = self.get_parameter("new_input_gap").get_parameter_value().double_value
+        last = (last[2] if last is not None and last[:2] == (topic0, m0.header.frame_id)
+                and -0.5 <= stamps[0] - last[2] <= new_gap else None)
+        n = len(stamps)
+        plan = self.catchup_plan(stamps, last, self.catchup_step, self.catchup_max_lag)
+        if len(plan) < n:
+            run, self.pending = self.pending[:n], self.pending[n:]
+            self.pending[:0] = [run[i] for i in plan]
+            self.catchup_skipped += n - len(plan)
+        return [stamps[i] for i in plan]
+
+    def process_next(self) -> None:
+        """Process one waiting frame: the only one, or the next link of the catch-up chain."""
+        if not self.pending:
+            return
+        stamps = self.prune()
+        self.track_catchup(stamps[-1] - stamps[0], len(stamps))
+        topic, msg = self.pending.pop(0)
+        try:
+            self.process_cloud(msg, topic)
+        finally:
+            if topic == self.active_topic:
+                self.pending_last = (topic, msg.header.frame_id, self._stamp(msg))
+            if self.pending:
+                self.pending_gc.trigger()
+
+    def track_catchup(self, behind: float, left: int) -> None:
+        """Log a catch-up - more than ``catchup_step`` s of recording waiting - when it starts and
+        when the node is back on the newest frame (``left``: frames of the chain, this one included)."""
+        if self.catchup is None:
+            if self.catchup_step <= 0 or behind <= self.catchup_step:
+                self.catchup_skipped = 0
+                return
+            self.catchup = [0, 0.0, time.perf_counter()]
+            self.get_logger().info(f"{behind:.1f} s of recording waiting: catching up, one frame every "
+                                   f"{self.catchup_step:g} s of recording")
+        c = self.catchup
+        c[0], c[1] = c[0] + 1, max(c[1], behind)
+        if left == 1 and len(self.pending) <= 1:
+            self.get_logger().info(f"caught up in {time.perf_counter() - c[2]:.1f} s: {c[0]} frames processed, "
+                                   f"{self.catchup_skipped} skipped, at most {c[1]:.1f} s of recording behind")
+            self.catchup, self.catchup_skipped = None, 0
+
+    def process_cloud(self, msg: PointCloud2, topic: str = "") -> None:
         if not self.check_continuity(topic, msg):
             return
         self.send_static_tf(msg.header.frame_id)
