@@ -80,7 +80,7 @@ def run_piece(job):
     return name, out_path, lat
 
 
-def summarize(name, paths, labels_path=None, confirm_hits=5, frame_dt=0.1):
+def summarize(name, paths, labels_path=None, confirm_hits=5, frame_dt=0.1, min_hits=None, confirm_time_s=0.0):
     from resense.metrics import Evaluation, gt_objects, load_gt
     gt = load_gt(labels_path) if labels_path else {}
     alarm_frames = adv_frames = frames = 0
@@ -88,7 +88,8 @@ def summarize(name, paths, labels_path=None, confirm_hits=5, frame_dt=0.1):
     dists = []
     health = {"ok": 0, "warn": 0, "error": 0}
     mon = []
-    ev = Evaluation(confirm_hits=confirm_hits, frame_dt=frame_dt) if labels_path else None
+    ev = (Evaluation(confirm_hits=confirm_hits, frame_dt=frame_dt, min_hits=min_hits,
+                     confirm_time_s=confirm_time_s) if labels_path else None)
     for pi, p in enumerate(paths):
         for line in open(p, encoding="utf-8"):
             d = json.loads(line)
@@ -170,7 +171,8 @@ def main():
     tot_f = tot_e = tot_n = 0
     for bag, paths in pieces.items():
         s = summarize(bag, paths, LABELS.get(bag),
-                      confirm_hits=cfg.tracking.frames_to_confirm(), frame_dt=cfg.tracking.frame_dt)
+                      confirm_hits=cfg.tracking.frames_to_confirm(), frame_dt=cfg.tracking.frame_dt,
+                      min_hits=cfg.tracking.confirm_hits, confirm_time_s=cfg.tracking.confirm_time_s)
         L = np.array(lat[bag])
         s["latency_ms"] = [round(float(L.mean()), 1), round(float(np.percentile(L, 95)), 1), round(float(L.max()), 1)]
         summary["bags"][bag] = s

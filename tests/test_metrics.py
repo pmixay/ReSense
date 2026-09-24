@@ -61,6 +61,20 @@ def test_fp_events_vs_fp_frames_and_rates():
     assert FROZEN_SUMMARY_KEYS <= set(s)
 
 
+def test_stride_caveat_applies_the_trackers_time_rule():
+    # v0.6.3 defaults: confirm_hits 3, confirm_time_s 0.5 -> 5 frames at 10 Hz; the tracker is
+    # given the measured interval, so at every 5th frame 3 hits (1.5 s) confirm, not 5 (2.5 s)
+    ev = Evaluation(confirm_hits=5, frame_dt=0.1, min_hits=3, confirm_time_s=0.5)
+    for d in _empty_bag_every_5th():
+        ev.add_frame(d, [])
+    c = ev.summary()["stride_caveat"]
+    assert "the 3 consecutive hits" in c and "persist 1.5 s" in c and "instead of 0.5 s" in c
+    ev = Evaluation(confirm_hits=5, frame_dt=0.1, min_hits=3, confirm_time_s=0.5)
+    for k in range(4):                                      # every 2nd frame: 0.2 s apart
+        ev.add_frame(status(frame=2 * k, stamp=0.2 * k), [])
+    assert "the 3 consecutive hits" in ev.summary()["stride_caveat"]
+
+
 def test_no_speed_and_no_stride_information():
     ev = Evaluation()
     for k in range(3):

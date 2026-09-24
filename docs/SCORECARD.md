@@ -215,5 +215,15 @@ Held down by:
 | 9 | Station and platform-end false alarms: 25 of the 27 STOP episodes on the five recordings, and the station pieces of the ride. Needs a station-aware corridor or a longer confirmation where the rails are lost, then a full re-run. | 8.1, 8.4 | P3 | 1–2 days |
 | 10 | If the organizers say that bed objects count: build a discriminator for the near-bed path (it now raises 667 ride events), for example an object that stands above the local template in consecutive frames and approaches at the train speed. Re-measure on all data and on set F. | 8.1, 8.2 | P3 / P4 | 2–3 days, uncertain |
 
+**P4 follow-ups after this review (24.09, not re-scored).**
+
+* Item 7: set F was re-run in pairs on seven curve and edge scenes, with a placement anchored
+  on the near rails. There were no matches beyond 100 m in either mode ([`P4_AUDIT.md`](P4_AUDIT.md)).
+  A surveyed straight-track reference still does not exist.
+* The organizers' own synthetic-obstacle recording (`cloud_with_fake_obj`) is now labelled
+  exactly and graded per object ([`P4_AUDIT.md`](P4_AUDIT.md) "Organizer synthetic-obstacle
+  recording"). It is the first positive set made by the tool that is part of the hidden check.
+* For item 1: none of its ten test objects lies on the bed between the rails.
+
 Optional, low priority by the team's decisions: a saved Docker image (the stand has internet)
 and a decision-log slide (the pitch stays focused).

@@ -275,6 +275,12 @@ unpacked — [`docs/DATASET.md`](docs/DATASET.md) "Extended dataset") is used th
 unpacked next to the six bags: `scripts/run_headless.sh /data/new_data`, or
 `RESENSE_DATA=/data RESENSE_BAG=new_data docker compose up`.
 
+The organizers' synthetic-obstacle recording of 24.09 (`cloud_with_fake_obj`, 151 s, ten
+obstacles ray-cast into a real ride, [Yandex Disk](https://disk.yandex.ru/d/KpkG_yKoGk-vHQ))
+is labelled in [`labels/cloud_with_fake_obj.json`](labels/cloud_with_fake_obj.json) and graded
+per object by `scripts/score_fake_objects.py` ([`docs/DATASET.md`](docs/DATASET.md)
+"Synthetic-obstacle recording").
+
 The organizers' download is a zip inside a zip around a 4 GB zstd tar; unpacking it by hand
 needs ~30 GB of scratch space. `scripts/unpack_dataset.py` streams zip → zip → zstd → tar and
 writes only the bags you ask for:
@@ -283,6 +289,7 @@ writes only the bags you ask for:
 python scripts/unpack_dataset.py Датасет.zip --list
 python scripts/unpack_dataset.py Датасет.zip --out /data --only doubleT_obstacle,roundT_doubleT
 python scripts/unpack_dataset.py https://disk.yandex.ru/d/N8IUpAyd7jyvow --out /data   # extended dataset (17 GB, streamed from the link)
+python scripts/unpack_dataset.py https://disk.yandex.ru/d/KpkG_yKoGk-vHQ --out /data   # synthetic obstacles (1.7 GB -> 7.4 GB)
 ```
 
 ### Demo without a display

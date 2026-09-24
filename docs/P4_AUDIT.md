@@ -129,18 +129,107 @@ config and sampling and should only be quoted as dated self-referential results.
 piece of the ride; in anchored mode it rejects missing stamps or a near reference. A
 zero-return object cannot be marked a hit by an unrelated background detection.
 
-## New unlabelled positive bag
+## Organizer synthetic-obstacle recording (`cloud_with_fake_obj`, labelled 24.09)
 
-The public organizer folder also now includes `cloud_with_fake_obj.zst`. Its checksum, bag
-layout and absent labels are recorded in [`DATASET.md`](DATASET.md). A full-rate offline run
-on all **1,510 frames** reported 342 alarm frames, 9 alarm track IDs and 459 advisory frames;
-the summary is [`experiments_p4_fake_unlabelled.json`](experiments_p4_fake_unlabelled.json).
-The object injection manifest/ground truth was **not supplied**, so those nine tracks cannot
-be divided into true and false events or attributed to particular obstacle classes. The
-new `resense summarize --unlabelled` option reports false-alarm fields as `null` rather than
-incorrectly treating every positive-bag alarm as false. P1 should request the organizers'
-per-frame synthetic object positions (vehicle coordinates, dimensions, labels and visibility)
-to allow independent recall-by-range scoring; the test stand does not block this P4 request.
+The organizers' folder added `cloud_with_fake_obj.zst` on 24.09
+([Yandex Disk](https://disk.yandex.ru/d/KpkG_yKoGk-vHQ), SHA-256 in [`DATASET.md`](DATASET.md)).
+The first P4 pass scored it unlabelled on all **1,510 frames**: 342 alarm frames, 9 alarm track
+IDs, 459 advisory frames ([`experiments_p4_fake_unlabelled.json`](experiments_p4_fake_unlabelled.json)).
+The organizers then described the ten obstacles and their order. The object points turned out
+to be recoverable exactly: every message is the organized real scan followed by the object
+points (intensity 1). So the recording is now labelled: `scripts/label_fake_objects.py` →
+[`labels/cloud_with_fake_obj.json`](../labels/cloud_with_fake_obj.json), 1,206 object-frames of
+ten objects in frames 0–803. How the labels are made, and three properties that limit how they
+can be read, are in [`DATASET.md`](DATASET.md) "Synthetic-obstacle recording". In short:
+
+* the objects approach at 14–20 m/s independently of the real train, which backs up and stands
+  during the recording;
+* they are placed from the sensor's axis, which runs at −0.24° to the rails here, so the edge
+  tests sit within ±0.1–0.4 m of the envelope edge;
+* beyond ~100 m their path leaves the tunnel. Those rows are graded out (`plausible`).
+
+**Grade of the shipped detector (default config, every frame, no speed given).** Produced by
+`scripts/score_fake_objects.py`. "Visible" counts plausible frames with at least one return;
+"in measured envelope" counts frames with a point inside the envelope measured from the rails.
+STOP is an alarm frame (`detections`), advisory is `warnings` only.
+
+| # | object (organizers' intent) | visible frames (from) | in measured envelope | STOP frames | advisory only | first STOP | STOP held from | verdict |
+|---|---|---|---:|---:|---:|---:|---:|---|
+| 1 | 2×2 m, centre (inside) | 213 (98.7 m) | 213 | 207 | 0 | 98.0 m | 98.7 m | detected at first sight |
+| 2 | 0.3 m, centre, floating 1.0–1.4 m up (inside) | 79 (128.9 m) | 63 | 19 | 11 | 34.0 m | 37.4 m | detected late |
+| 3 | 0.3 m, on the left rail (inside) | 49 (237.3 m) | 33 | 23 | 0 | 42.7 m | 46.2 m | detected |
+| 4 | 0.3 m, at the edge (inside) | 83 (154.7 m) | 16 | 0 | 25 | — | — | advisory only |
+| 5 | 0.3 m, just outside (outside) | 112 (238.4 m) | 101 | 0 | 24 | — | — | correct: no STOP |
+| 6 | 2×2 m, at the edge (inside) | 125 (248.6 m) | 8 | 0 | 0 | — | — | missed |
+| 7 | 2×2 m, outside (outside) | 104 (249.4 m) | 52 | 6 | 44 | 142.3 m | — | 6 false STOP frames |
+| 8 | 2×2 m, top of the envelope (inside) | 124 (248.2 m) | 75 | 12 | 37 | 101.3 m | — | mostly advisory |
+| 9 | 2 × 0.2 m, across the rails (inside) | 86 (248.5 m) | 77 | 42 | 0 | 82.2 m | 58.6 m | detected |
+| 10 | 0.05 m, hanging from the roof (inside) | 42 (199.7 m) | 20 | 0 | 0 | — | — | missed |
+
+Alarms that match no labelled object: 29 frames, 8 track IDs. Five of the IDs are the objects
+themselves. Three pass within 2.5 m of the sensor after their labels end. One is the inner
+edge of #7, just beyond the 1 m lateral match tolerance. One is #9, whose 4 m-long low
+cluster starts 4 m in front of it at 65 m. Three are background. One of
+them (frames 213–226, reported at 3.0 m) is caused by the 2 × 2 m box: while it is 10–20 m
+ahead, its shadow hides the rails, the rail-height fit drifts by ~0.5 m and the bed 2.5–8 m
+ahead reads as an obstacle. The STOP is right, but the distance is wrong. Standard metrics
+(`resense summarize --gt`): recall 0.378 of visible in-gauge object-frames (0–50 m 113/227,
+50–100 m 189/338, beyond 100 m 1/236). These are 1,206 frames of ten synthetic objects, not an
+operating recall.
+
+What the grade says, by cause:
+
+* **Big objects in the corridor are found at first sight** (#1 at 98 m). The plank across the
+  rails (#9) is found from 82 m and held from 59 m.
+* **0.3 m objects are found at 34–43 m.** At 60–115 m the organizers' 0.3 m cube returns 2–4
+  points a frame; the clustering needs 5 voxels within 100 m. A single frame cannot confirm a
+  0.3 m object much beyond 50 m with this sensor. Accumulation would need a real ego speed, and
+  this recording cannot test it, because its objects move independently of the train.
+  Lowering the minimums (`min_points 3`, `min_points_far 2` or `gauge_min_points 2`) changed
+  nothing for them.
+* **Two infrastructure signatures demote real test obstacles.** `floating` makes #2 advisory at
+  47–52 m (lateral 0.70–0.78 m > `signature_min_lateral` 0.6), and #4 always. `elevated` makes
+  #8 advisory in 36 frames: a 2 m wide cluster with its bottom above 1.2 m, although that bottom
+  is 2.2–2.9 m above the rail head, inside the envelope.
+* **The thin hanging object never becomes a candidate.** Only its lowest 0.2–0.36 m is inside
+  the 3.0 m envelope, 1–4 points a frame. With `min_points 3` it alarms in 3 frames at 10 m.
+* **Edge tests (#4–#7) depend on the reference frame.** Measured from the rails, #6 is outside
+  in 117 of 125 frames and #5 inside in 101 of 112. The detector follows the rails. The
+  organizers followed the sensor's axis. Setting `edge_margin_per_100m` to 0 only added false
+  STOPs on #7 (6 → 40 frames) and in the background (29 → 41 frames).
+
+**Improvement experiments.** All run on the fake-object bag and, for the false-alarm cost, on
+all six original bags at every frame. The default reproduces 107 alarm frames / 20 events on the
+five empty bags and 185/246 labelled frames, first alarm 11, on `doubleT_obstacle`. Raw numbers:
+[`experiments_p4_fake_labelled.json`](experiments_p4_fake_labelled.json).
+
+| variant | fake bag: STOP frames on inside objects | fake bag: STOP frames on outside objects | fake bag: background alarm frames / IDs | five empty bags: alarm frames / events | `doubleT_obstacle` |
+|---|---:|---:|---:|---:|---|
+| default | 303 | 6 | 29 / 8 | 107 / 20 | 185/246, frame 11 |
+| `edge_margin_per_100m: 0` | 303 | 40 | 41 / 10 | — | — |
+| `min_points 3, min_points_far 2` | 306 (#10: 3 at 10 m) | 6 | 30 / 9 | — | — |
+| `gauge_min_points 2` | 303 | 9 | 29 / 8 | — | — |
+| `lowobj.near_enabled` | 303 | 6 | 492 / 112 | — | — |
+| `signature_min_lateral: 0.9` | 314 (#2 from 52.5 m) | 6 | 29 / 8 | 168 / 26 | unchanged |
+| `elevated` off | 334 (#8: 43 frames) | 6 | 30 / 9 | 139 / 23 | unchanged |
+| both | 345 | 6 | 30 / 9 | 186 / 26 | unchanged |
+| **short signatures** (experiment) | **352** | 9 | 31 / 10 | **113 / 22** | unchanged |
+
+The extra false alarms of the two blanket relaxations all come from
+`squareT_platform_squareT_switch`: one structure ~104 m ahead of the stopped train, 3.9–5.7 m
+long, bottom 2.0–2.5 m above the rail head, near the end of the height reference. The organizers'
+test objects are 0.3–2.2 m long. `scripts/short_signature_experiment.py` keeps both signatures
+for clusters longer than 3 m or farther than 100 m. This moves #2's first STOP from 34.0 to
+52.5 m, gives #4 a STOP from 14.5 m and gives #8 43 STOP frames (held from 31 m). The cost is
++6 alarm frames and +2 events on the five empty bags, plus 3 STOP frames on #5, which is inside
+the envelope measured from the rails in those frames. **Not shipped:** the rule belongs to P3
+(`resense/clustering.py`), and the 20-minute ride, where most infrastructure lives, has not been
+re-run with it.
+
+**What the organizers' set implies for the open bed question** (SCORECARD improvement 1): none of
+their ten test objects lies on the bed between the rails. The small ones float mid-envelope, stand
+on a rail or sit at the edge, and the low one lies across both rails. The shipped policy
+(nothing below the envelope floor between the rails) is not tested by this set.
 
 ## Original-bag reproduction recipe
 
@@ -166,4 +255,7 @@ surveyed long-range detection range. The original-bag rerun shows that the P4 ac
 changes did not alter the published real-object or empty-bag counts.
 
 Initial audit verification on `a81108f`: 166 dataset-free Python tests, Ruff and the
-parameter-sync check passed. Integration checks on current `main` are recorded separately.
+parameter-sync check passed. After merging `main` of 24.09 (`de98266`) and adding the
+synthetic-obstacle labels: 235 tests (`RESENSE_REQUIRE_SYNTHETIC=1`, no skips), Ruff and the
+parameter-sync check pass, and a fresh full-rate run of the six original bags reproduces
+107 alarm frames / 20 events and 185/246 labelled frames (first alarm frame 11).

@@ -14,9 +14,12 @@ unpacked directory is an ordinary bag (`resense info /data/new_data`, `ros2 bag 
 /data/new_data`), and a single split file opens on its own with `resense run --bag
 <file>.db3` (the `rosbags` reader does not need the metadata file).
 
-**Additional organizer recording (24.09):** the same public folder now also contains
-`cloud_with_fake_obj.zst`, a separate 1.75 GB archive with a 151-second, 1,510-frame bag
-containing simulated objects; see ["Fake-object recording"](#fake-object-recording-unlabelled).
+**Synthetic-obstacle recording (24.09):**
+[`cloud_with_fake_obj.zst`, 1.75 GB, Yandex Disk](https://disk.yandex.ru/d/KpkG_yKoGk-vHQ) —
+a 151-second, 1,510-frame bag with ten obstacles the organizers ray-cast into a real
+recording, in a known order. Labelled by P4 in
+[`labels/cloud_with_fake_obj.json`](../labels/cloud_with_fake_obj.json); see
+["Synthetic-obstacle recording"](#synthetic-obstacle-recording-cloud_with_fake_obj-labelled).
 It must not be confused with the empty 20-minute `new_data` ride.
 
 Source: `Датасет.zip` (3.7 GB) → `датасет.zip` → `archive/for_hackathon.zst` (tar, zstd).
@@ -50,33 +53,83 @@ The organizers confirmed that the extended `new_data` recording has no obstacles
 examples at other ranges and for other objects therefore come from `resense inject` (synthetic
 obstacles ray-cast into real frames, see ARCHITECTURE.md and "Set S" below).
 
-## Fake-object recording (unlabelled)
+## Synthetic-obstacle recording (`cloud_with_fake_obj`, labelled)
 
-The organizers' public folder added `cloud_with_fake_obj.zst` on 24.09. Its SHA-256 is
-`d41c2fb28475194a98efeca5d2ee3fd175c0aef350ffb92fff4c26d497e696e9` (1,746,145,824
-bytes); the archive holds `cloud_with_fake_obj/metadata.yaml` and one 7.42 GB
-`cloud_with_fake_obj_0.db3`. The bag has 1,510 PointCloud2 messages on `/lidar_points`, frame
-`hesai_lidar`, spanning 150.851 s. Unlike the original bags, its cloud fields contain
-`x,y,z,intensity` **without a ring field**; the reader fills a zero ring for the compact format.
+**Download:** [Yandex Disk](https://disk.yandex.ru/d/KpkG_yKoGk-vHQ) (the organizers' link of
+24.09): `cloud_with_fake_obj.zst`, 1,746,145,824 bytes, SHA-256
+`d41c2fb28475194a98efeca5d2ee3fd175c0aef350ffb92fff4c26d497e696e9` (MD5
+`5c0cefe7ef10fae249b5ae653cbd165d`). The archive holds `cloud_with_fake_obj/metadata.yaml` and
+one 7.42 GB `cloud_with_fake_obj_0.db3`. The bag has 1,510 PointCloud2 messages on
+`/lidar_points`, frame `hesai_lidar` (the 120° pair), spanning 150.851 s. Unlike the original
+bags, its cloud fields are `x,y,z,intensity` **without a ring field**; the reader fills a zero ring.
 
 ```bash
-python scripts/unpack_dataset.py cloud_with_fake_obj.zst --out /data
-resense run --bag /data/cloud_with_fake_obj --out out/fake-object.jsonl --quiet
-resense summarize out/fake-object.jsonl --unlabelled --json
+python scripts/unpack_dataset.py https://disk.yandex.ru/d/KpkG_yKoGk-vHQ --out /data   # or the downloaded .zst
+python scripts/cache_frames.py /data/cloud_with_fake_obj /data/cache/cloud_with_fake_obj --every 1 --int16 --stamps
+python scripts/label_fake_objects.py /data/cloud_with_fake_obj --out labels/cloud_with_fake_obj.json   # ~2 min
+resense run --npy /data/cache/cloud_with_fake_obj --out out/fake.jsonl --quiet
+python scripts/score_fake_objects.py out/fake.jsonl --gt labels/cloud_with_fake_obj.json   # per-object table
+resense eval --npy /data/cache/cloud_with_fake_obj --gt labels/cloud_with_fake_obj.json --repeat 1   # standard metrics
 ```
 
-The archive supplies no object manifest, injection geometry, visibility annotations or
-`gt.json`. Therefore **alarm frames and events are observable**, but true-positive recall,
-false-positive rate, object class and first-confirmed detection *of the synthetic object*
-are **unknown**. Do not use a plain unlabelled `summarize` call: it assumes every frame is
-empty, incorrectly marking all alarms as false. Ask the organizers for the synthetic-object
-manifest (object type, size, coordinate frame, per-frame location and visibility). Until
-then this bag is an unlabelled integration stress test, not independently scored positive data.
-A full-rate run of the shipped detector reported 342 alarm frames / 9 confirmed track IDs
-and 459 advisory frames; see
-[`experiments_p4_fake_unlabelled.json`](experiments_p4_fake_unlabelled.json). Those are counts
-of *outputs*, not true-positive or false-positive counts. Timing on the shared workstation
-is not a stand benchmark.
+**What is in it (the organizers' description, 24.09).** The obstacles follow one another about
+100 m apart, in this order:
+
+| # | organizers' text | label | envelope (intent) |
+|---|---|---|---|
+| 1 | посередине габарита крупный, 2х2 метра | `big_center` | inside |
+| 2 | посередине габарита мелкий 0.3х0.3 м | `small_center` | inside (floats at mid-height, 1.0–1.4 m above the rail head) |
+| 3 | мелкий 0.3х0.3 м стоит на рельсах | `small_on_rail` | inside (on the left rail) |
+| 4 | 0.3х0.3 м скраю габарита | `small_edge_inside` | inside (straddles the edge) |
+| 5 | 0.3х0.3 м за пределами габарита, но близко | `small_outside_near` | outside |
+| 6 | 2х2 метра скраю в пределах габарита | `big_edge_inside` | inside |
+| 7 | 2х2 за пределами габарита | `big_outside` | outside |
+| 8 | 2х2 сверху габарита | `big_above` | inside (see below) |
+| 9 | длинный низкий предмет лежит на рельсах (2х0.2) | `long_low_on_rails` | inside (across both rails) |
+| 10 | узкий длинный свисает с потолка (ширина 0.05 м) | `thin_hanging` | inside (hangs to 2.7 m above the rail head) |
+
+**How the labels are made.** Each message is the organized real scan (128 × 2 400 points,
+no-return points kept as zeros, the returns an object hides removed) **followed by the object
+points, all with intensity 1**. `scripts/label_fake_objects.py` takes every point after the last
+zero point of a message as object points, splits them into objects at X gaps over 8 m and links
+them into tracks. Exactly ten tracks come out, and they pass the sensor in the organizers'
+order. Frames 0–803 carry object points; frames 804–1509 are the real recording alone. Each
+visible object-frame gets a row in the "Label format" below, 1,206 rows in all. `distance` and
+`lateral` are measured in the detector's mount-calibrated frame from its per-frame track axis,
+as for `doubleT_obstacle`. `in_gauge` is the organizers' intent. Extra keys:
+
+* `gauge_margin` and `h_above_rail`: the measured position;
+* `lateral_sensor`: the lateral offset from the sensor's own axis;
+* `n_in_envelope`: object points inside the envelope measured from the rails;
+* `plausible`: the object lies in the tunnel cross-section.
+
+Three properties of the recording decide how it can be scored:
+
+* **The objects move, the train does not follow them.** They approach at 14–20 m/s (object 1
+  at 2–7 m/s). Frame-to-frame ICP on the real points shows the train itself slowing, backing up
+  ~70 m over frames 300–650, creeping at under 1 m/s from frame ~850 to ~1200 and then moving on. The injected
+  motion is therefore not ego-motion: a given train speed or the LiDAR speed estimator would
+  accumulate the background wrongly. The shipped single-frame path is what can be scored.
+* **The objects were placed from the sensor's axis, not from the rails.** Near the train the
+  objects are centred on the sensor's Y = 0. The rails of this recording, fitted directly
+  (0.76–0.81 m either side), run at **−0.24°** to that axis in frames 0–100, 400–500 and
+  1300–1400, and the detector's axis agrees. The two frames differ by 0.1 m at 25 m and 0.4 m at
+  100 m. So the edge tests (#4–#7) sit within ±0.1–0.4 m of the envelope edge, on different
+  sides depending on the frame. For example, #5 "outside but close" has points inside the
+  rail-measured envelope in 101 of its 112 frames. Further out, the objects follow the curve of
+  their own path. It is not the tunnel: #3 "on the rail" is 4 m above the rail head at 81 m,
+  and single points of #2 and #4 lie 17–37 m above or below the track beyond 200 m.
+  `plausible` drops those rows from grading.
+* **"сверху габарита" is read as the top of the envelope.** The bottom of #8 is 2.4–2.9 m above
+  the rail head in both frames, inside the 3.0 m envelope, so it is labelled `in_gauge: true`.
+  The opposite reading, "above the envelope, must not alarm", is question 4 in
+  [`QUESTIONS.md`](QUESTIONS.md).
+
+The first P4 pass (24.09, before the description arrived) scored the bag unlabelled: 342 alarm
+frames / 9 track IDs / 459 advisory frames with the shipped detector
+([`experiments_p4_fake_unlabelled.json`](experiments_p4_fake_unlabelled.json)). The per-object
+grade is now in [`P4_AUDIT.md`](P4_AUDIT.md) "Organizer synthetic-obstacle recording" and
+[`experiments_p4_fake_labelled.json`](experiments_p4_fake_labelled.json).
 
 ## Extended dataset: `new_data` (recorded 17.09, streamed and run on 22.09)
 

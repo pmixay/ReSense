@@ -216,7 +216,8 @@ def cmd_eval(args):
     if repeat is None:
         repeat = cfg.tracking.frames_to_confirm() if (args.dataset and int(meta.get("sequence", 1)) <= 1) else 1
     det = Detector(cfg)
-    ev = Evaluation(confirm_hits=cfg.tracking.frames_to_confirm(), frame_dt=cfg.tracking.frame_dt)
+    ev = Evaluation(confirm_hits=cfg.tracking.frames_to_confirm(), frame_dt=cfg.tracking.frame_dt,
+                    min_hits=cfg.tracking.confirm_hits, confirm_time_s=cfg.tracking.confirm_time_s)
     out_fh = open(args.out, "w", encoding="utf-8") if args.out else None
     n_occluded = 0
     n_processed = 0
@@ -292,7 +293,8 @@ def _summarize_file(path: str, args, cfg, gt) -> dict:
     """``Evaluation.summary()`` of one JSONL file (plus ``occluded_gt_skipped``,
     ``unparsed_lines`` and ``file``)."""
     from resense.metrics import Evaluation, gt_key, gt_objects
-    ev = Evaluation(confirm_hits=cfg.tracking.frames_to_confirm(), frame_dt=cfg.tracking.frame_dt)
+    ev = Evaluation(confirm_hits=cfg.tracking.frames_to_confirm(), frame_dt=cfg.tracking.frame_dt,
+                    min_hits=cfg.tracking.confirm_hits, confirm_time_s=cfg.tracking.confirm_time_s)
     n_occluded = 0
     unparsed = []
     for d in _iter_jsonl(path, unparsed):

@@ -1,0 +1,3979 @@
+{
+ "schema": "p4-fake-object-grade-v1",
+ "date": "2026-09-24",
+ "code_commit": "c3dabe3 (merge of main) + this commit's scripts; the detector code is unchanged",
+ "bag": {
+  "name": "cloud_with_fake_obj",
+  "link": "https://disk.yandex.ru/d/KpkG_yKoGk-vHQ",
+  "archive_sha256": "d41c2fb28475194a98efeca5d2ee3fd175c0aef350ffb92fff4c26d497e696e9",
+  "frames": 1510,
+  "duration_s": 150.851
+ },
+ "labels": {
+  "file": "labels/cloud_with_fake_obj.json",
+  "sha256": "4cdb5afe4a57ce7476ff88a1ee0b74bb6faed18862447c1361d8e824b238c545",
+  "rows": 1206,
+  "objects": {
+   "big_center": {
+    "description": "посередине габарита крупный, 2х2 метра",
+    "in_gauge": true,
+    "size_m": [
+     2.0,
+     2.0,
+     2.0
+    ],
+    "frames": [
+     0,
+     228
+    ],
+    "visible_frames": 229,
+    "first_visible_m": 98.69,
+    "plausible_frames": 213,
+    "first_plausible_m": 98.69,
+    "frames_in_envelope": 213,
+    "lateral_near_m": 0.13,
+    "gauge_margin_near_m": 1.05,
+    "h_above_rail_near_m": [
+     -0.49,
+     1.46
+    ]
+   },
+   "small_center": {
+    "description": "посередине габарита мелкий 0.3х0.3 м",
+    "in_gauge": true,
+    "size_m": [
+     0.3,
+     0.3,
+     0.3
+    ],
+    "frames": [
+     171,
+     368
+    ],
+    "visible_frames": 134,
+    "first_visible_m": 248.45,
+    "plausible_frames": 79,
+    "first_plausible_m": 128.87,
+    "frames_in_envelope": 63,
+    "lateral_near_m": 0.38,
+    "gauge_margin_near_m": 0.81,
+    "h_above_rail_near_m": [
+     1.06,
+     1.32
+    ]
+   },
+   "small_on_rail": {
+    "description": "мелкий 0.3х0.3 м стоит на рельсах",
+    "in_gauge": true,
+    "size_m": [
+     0.3,
+     0.3,
+     0.3
+    ],
+    "frames": [
+     275,
+     425
+    ],
+    "visible_frames": 96,
+    "first_visible_m": 247.57,
+    "plausible_frames": 49,
+    "first_plausible_m": 237.31,
+    "frames_in_envelope": 33,
+    "lateral_near_m": 0.85,
+    "gauge_margin_near_m": 0.35,
+    "h_above_rail_near_m": [
+     0.14,
+     0.37
+    ]
+   },
+   "small_edge_inside": {
+    "description": "0.3х0.3 м скраю габарита",
+    "in_gauge": true,
+    "size_m": [
+     0.3,
+     0.3,
+     0.3
+    ],
+    "frames": [
+     348,
+     479
+    ],
+    "visible_frames": 92,
+    "first_visible_m": 236.25,
+    "plausible_frames": 83,
+    "first_plausible_m": 154.66,
+    "frames_in_envelope": 16,
+    "lateral_near_m": 1.13,
+    "gauge_margin_near_m": 0.06,
+    "h_above_rail_near_m": [
+     1.06,
+     1.33
+    ]
+   },
+   "small_outside_near": {
+    "description": "0.3х0.3 м за пределами габарита, но близко",
+    "in_gauge": false,
+    "size_m": [
+     0.3,
+     0.3,
+     0.3
+    ],
+    "frames": [
+     405,
+     532
+    ],
+    "visible_frames": 112,
+    "first_visible_m": 238.41,
+    "plausible_frames": 112,
+    "first_plausible_m": 238.41,
+    "frames_in_envelope": 101,
+    "lateral_near_m": -1.19,
+    "gauge_margin_near_m": 0.01,
+    "h_above_rail_near_m": [
+     1.06,
+     1.31
+    ]
+   },
+   "big_edge_inside": {
+    "description": "2х2 метра скраю в пределах габарита",
+    "in_gauge": true,
+    "size_m": [
+     2.0,
+     2.0,
+     2.0
+    ],
+    "frames": [
+     454,
+     583
+    ],
+    "visible_frames": 130,
+    "first_visible_m": 248.61,
+    "plausible_frames": 125,
+    "first_plausible_m": 248.61,
+    "frames_in_envelope": 8,
+    "lateral_near_m": 2.25,
+    "gauge_margin_near_m": -0.01,
+    "h_above_rail_near_m": [
+     0.15,
+     2.14
+    ]
+   },
+   "big_outside": {
+    "description": "2х2 за пределами габарита",
+    "in_gauge": false,
+    "size_m": [
+     2.0,
+     2.0,
+     2.0
+    ],
+    "frames": [
+     508,
+     633
+    ],
+    "visible_frames": 126,
+    "first_visible_m": 249.4,
+    "plausible_frames": 104,
+    "first_plausible_m": 249.4,
+    "frames_in_envelope": 52,
+    "lateral_near_m": -2.35,
+    "gauge_margin_near_m": -0.1,
+    "h_above_rail_near_m": [
+     0.14,
+     2.16
+    ]
+   },
+   "big_above": {
+    "description": "2х2 сверху габарита",
+    "in_gauge": true,
+    "size_m": [
+     2.0,
+     2.0,
+     2.0
+    ],
+    "frames": [
+     559,
+     682
+    ],
+    "visible_frames": 124,
+    "first_visible_m": 248.15,
+    "plausible_frames": 124,
+    "first_plausible_m": 248.15,
+    "frames_in_envelope": 75,
+    "lateral_near_m": 0.03,
+    "gauge_margin_near_m": 1.05,
+    "h_above_rail_near_m": [
+     2.81,
+     4.79
+    ]
+   },
+   "long_low_on_rails": {
+    "description": "длинный низкий предмет лежит на рельсах (2х0.2)",
+    "in_gauge": true,
+    "size_m": [
+     0.5,
+     2.0,
+     0.2
+    ],
+    "frames": [
+     609,
+     744
+    ],
+    "visible_frames": 117,
+    "first_visible_m": 248.49,
+    "plausible_frames": 86,
+    "first_plausible_m": 248.49,
+    "frames_in_envelope": 77,
+    "lateral_near_m": 0.14,
+    "gauge_margin_near_m": 1.05,
+    "h_above_rail_near_m": [
+     0.02,
+     0.26
+    ]
+   },
+   "thin_hanging": {
+    "description": "узкий длинный свисает с потолка (ширина 0.05 м)",
+    "in_gauge": true,
+    "size_m": [
+     0.05,
+     0.05,
+     1.5
+    ],
+    "frames": [
+     686,
+     803
+    ],
+    "visible_frames": 46,
+    "first_visible_m": 199.69,
+    "plausible_frames": 42,
+    "first_plausible_m": 199.69,
+    "frames_in_envelope": 20,
+    "lateral_near_m": 0.08,
+    "gauge_margin_near_m": 0.98,
+    "h_above_rail_near_m": [
+     2.72,
+     4.41
+    ]
+   }
+  }
+ },
+ "protocol": "resense run --npy <int16 cache of every frame> (shipped single-frame path, no speed given); scripts/score_fake_objects.py per object on plausible visible frames; resense summarize --gt for the standard metrics; scripts/eval_real.py on the six original bags (every frame) for the false-alarm cost of each variant. 4-vCPU cloud sandbox with runs in parallel: latency figures are not benchmarks.",
+ "variants": {
+  "default": "configs/default.yaml",
+  "edge0": "gauge.edge_margin_per_100m: 0",
+  "minpts3": "cluster.min_points: 3, cluster.min_points_far: 2",
+  "gaugemin2": "cluster.gauge_min_points: 2",
+  "near": "lowobj.near_enabled: true",
+  "float09": "cluster.signature_min_lateral: 0.9",
+  "noelev": "cluster.elevated_min_width: 99 (elevated signature off)",
+  "both": "float09 + noelev",
+  "shortsig": "scripts/short_signature_experiment.py (not a config key): the elevated / floating signatures demote only clusters longer than 3.0 m along the track or farther than 100 m"
+ },
+ "fake_bag": {
+  "default": {
+   "objects": {
+    "big_center": {
+     "in_gauge": true,
+     "visible_frames": 213,
+     "first_visible_m": 98.7,
+     "alarm_frames": 207,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 213,
+     "alarm_frames_in_envelope": 207,
+     "bins": {
+      "0-50": {
+       "alarm": 42,
+       "advisory_only": 0,
+       "visible": 43
+      },
+      "50-100": {
+       "alarm": 165,
+       "advisory_only": 0,
+       "visible": 170
+      }
+     },
+     "first_alarm_m": 98.0,
+     "first_alarm_frame": 5,
+     "alarm_held_from_m": 98.7,
+     "first_advisory_or_alarm_m": 98.0,
+     "verdict": "detected"
+    },
+    "small_on_rail": {
+     "in_gauge": true,
+     "visible_frames": 49,
+     "first_visible_m": 237.3,
+     "alarm_frames": 23,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 33,
+     "alarm_frames_in_envelope": 23,
+     "bins": {
+      "0-50": {
+       "alarm": 23,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 19
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 1
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 2
+      }
+     },
+     "first_alarm_m": 42.7,
+     "first_alarm_frame": 403,
+     "alarm_held_from_m": 46.2,
+     "first_advisory_or_alarm_m": 42.7,
+     "verdict": "detected"
+    },
+    "small_center": {
+     "in_gauge": true,
+     "visible_frames": 79,
+     "first_visible_m": 128.9,
+     "alarm_frames": 19,
+     "advisory_only_frames": 11,
+     "frames_in_envelope": 63,
+     "alarm_frames_in_envelope": 19,
+     "bins": {
+      "0-50": {
+       "alarm": 19,
+       "advisory_only": 9,
+       "visible": 28
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 2,
+       "visible": 31
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 20
+      }
+     },
+     "first_alarm_m": 34.0,
+     "first_alarm_frame": 350,
+     "alarm_held_from_m": 37.4,
+     "first_advisory_or_alarm_m": 52.5,
+     "verdict": "detected"
+    },
+    "small_edge_inside": {
+     "in_gauge": true,
+     "visible_frames": 83,
+     "first_visible_m": 154.7,
+     "alarm_frames": 0,
+     "advisory_only_frames": 25,
+     "frames_in_envelope": 16,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 25,
+       "visible": 26
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 3
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": 47.9,
+     "verdict": "advisory only"
+    },
+    "small_outside_near": {
+     "in_gauge": false,
+     "visible_frames": 112,
+     "first_visible_m": 238.4,
+     "alarm_frames": 0,
+     "advisory_only_frames": 24,
+     "frames_in_envelope": 101,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 24,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 23
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 12
+      }
+     },
+     "false_alarm_frames": 0,
+     "false_alarm_from_m": null,
+     "verdict": "advisory"
+    },
+    "big_edge_inside": {
+     "in_gauge": true,
+     "visible_frames": 125,
+     "first_visible_m": 248.6,
+     "alarm_frames": 0,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 8,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 22
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": null,
+     "verdict": "missed"
+    },
+    "big_outside": {
+     "in_gauge": false,
+     "visible_frames": 104,
+     "first_visible_m": 249.4,
+     "alarm_frames": 6,
+     "advisory_only_frames": 44,
+     "frames_in_envelope": 52,
+     "alarm_frames_in_envelope": 6,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 19,
+       "visible": 25
+      },
+      "100-150": {
+       "alarm": 6,
+       "advisory_only": 16,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 3,
+       "visible": 4
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 6,
+       "visible": 26
+      }
+     },
+     "false_alarm_frames": 6,
+     "false_alarm_from_m": 142.3,
+     "verdict": "false alarm"
+    },
+    "big_above": {
+     "in_gauge": true,
+     "visible_frames": 124,
+     "first_visible_m": 248.2,
+     "alarm_frames": 12,
+     "advisory_only_frames": 37,
+     "frames_in_envelope": 75,
+     "alarm_frames_in_envelope": 12,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 17,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 11,
+       "advisory_only": 14,
+       "visible": 25
+      },
+      "100-150": {
+       "alarm": 1,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 6,
+       "visible": 25
+      }
+     },
+     "first_alarm_m": 101.3,
+     "first_alarm_frame": 632,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": 238.2,
+     "verdict": "detected"
+    },
+    "long_low_on_rails": {
+     "in_gauge": true,
+     "visible_frames": 86,
+     "first_visible_m": 248.5,
+     "alarm_frames": 42,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 77,
+     "alarm_frames_in_envelope": 42,
+     "bins": {
+      "0-50": {
+       "alarm": 29,
+       "advisory_only": 0,
+       "visible": 29
+      },
+      "50-100": {
+       "alarm": 13,
+       "advisory_only": 0,
+       "visible": 30
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 15
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 12
+      }
+     },
+     "first_alarm_m": 82.2,
+     "first_alarm_frame": 696,
+     "alarm_held_from_m": 58.6,
+     "first_advisory_or_alarm_m": 82.2,
+     "verdict": "detected"
+    },
+    "thin_hanging": {
+     "in_gauge": true,
+     "visible_frames": 42,
+     "first_visible_m": 199.7,
+     "alarm_frames": 0,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 20,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 10
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 3
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 5
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": null,
+     "verdict": "missed"
+    }
+   },
+   "background": {
+    "frames": 1510,
+    "alarm_frames": 342,
+    "background_alarm_frames": 29,
+    "background_alarm_ids": 8
+   },
+   "resense_summarize": {
+    "recall": 0.3782771535580524,
+    "per_bin_counts": {
+     "50-100": [
+      189,
+      338
+     ],
+     "0-50": [
+      113,
+      227
+     ],
+     "200-300": [
+      0,
+      61
+     ],
+     "100-150": [
+      1,
+      117
+     ],
+     "150-200": [
+      0,
+      58
+     ]
+    },
+    "recall_by_class": {
+     "big_above": 0.0967741935483871,
+     "big_center": 0.971830985915493,
+     "big_edge_inside": 0.0,
+     "long_low_on_rails": 0.4883720930232558,
+     "small_center": 0.24050632911392406,
+     "small_edge_inside": 0.0,
+     "small_on_rail": 0.46938775510204084,
+     "thin_hanging": 0.0
+    },
+    "first_detection_distance": {
+     "big_center": 98.03,
+     "small_center": 34.02,
+     "small_on_rail": 42.66,
+     "big_above": 101.32,
+     "long_low_on_rails": 82.15
+    },
+    "fp_frames": 20,
+    "fp_events": 3,
+    "alarm_frames": 342,
+    "alarm_events": 10,
+    "advisory_frames": 423
+   }
+  },
+  "edge0": {
+   "objects": {
+    "big_center": {
+     "in_gauge": true,
+     "visible_frames": 213,
+     "first_visible_m": 98.7,
+     "alarm_frames": 207,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 213,
+     "alarm_frames_in_envelope": 207,
+     "bins": {
+      "0-50": {
+       "alarm": 42,
+       "advisory_only": 0,
+       "visible": 43
+      },
+      "50-100": {
+       "alarm": 165,
+       "advisory_only": 0,
+       "visible": 170
+      }
+     },
+     "first_alarm_m": 98.0,
+     "first_alarm_frame": 5,
+     "alarm_held_from_m": 98.7,
+     "first_advisory_or_alarm_m": 98.0,
+     "verdict": "detected"
+    },
+    "small_on_rail": {
+     "in_gauge": true,
+     "visible_frames": 49,
+     "first_visible_m": 237.3,
+     "alarm_frames": 23,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 33,
+     "alarm_frames_in_envelope": 23,
+     "bins": {
+      "0-50": {
+       "alarm": 23,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 19
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 1
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 2
+      }
+     },
+     "first_alarm_m": 42.7,
+     "first_alarm_frame": 403,
+     "alarm_held_from_m": 46.2,
+     "first_advisory_or_alarm_m": 42.7,
+     "verdict": "detected"
+    },
+    "small_center": {
+     "in_gauge": true,
+     "visible_frames": 79,
+     "first_visible_m": 128.9,
+     "alarm_frames": 19,
+     "advisory_only_frames": 11,
+     "frames_in_envelope": 63,
+     "alarm_frames_in_envelope": 19,
+     "bins": {
+      "0-50": {
+       "alarm": 19,
+       "advisory_only": 9,
+       "visible": 28
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 2,
+       "visible": 31
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 20
+      }
+     },
+     "first_alarm_m": 34.0,
+     "first_alarm_frame": 350,
+     "alarm_held_from_m": 37.4,
+     "first_advisory_or_alarm_m": 52.5,
+     "verdict": "detected"
+    },
+    "small_edge_inside": {
+     "in_gauge": true,
+     "visible_frames": 83,
+     "first_visible_m": 154.7,
+     "alarm_frames": 0,
+     "advisory_only_frames": 25,
+     "frames_in_envelope": 16,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 25,
+       "visible": 26
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 3
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": 47.9,
+     "verdict": "advisory only"
+    },
+    "small_outside_near": {
+     "in_gauge": false,
+     "visible_frames": 112,
+     "first_visible_m": 238.4,
+     "alarm_frames": 0,
+     "advisory_only_frames": 24,
+     "frames_in_envelope": 101,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 24,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 23
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 12
+      }
+     },
+     "false_alarm_frames": 0,
+     "false_alarm_from_m": null,
+     "verdict": "advisory"
+    },
+    "big_edge_inside": {
+     "in_gauge": true,
+     "visible_frames": 125,
+     "first_visible_m": 248.6,
+     "alarm_frames": 0,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 8,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 22
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": null,
+     "verdict": "missed"
+    },
+    "big_outside": {
+     "in_gauge": false,
+     "visible_frames": 104,
+     "first_visible_m": 249.4,
+     "alarm_frames": 40,
+     "advisory_only_frames": 10,
+     "frames_in_envelope": 52,
+     "alarm_frames_in_envelope": 34,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "50-100": {
+       "alarm": 19,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "100-150": {
+       "alarm": 21,
+       "advisory_only": 1,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 3,
+       "visible": 4
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 6,
+       "visible": 26
+      }
+     },
+     "false_alarm_frames": 40,
+     "false_alarm_from_m": 146.2,
+     "verdict": "false alarm"
+    },
+    "big_above": {
+     "in_gauge": true,
+     "visible_frames": 124,
+     "first_visible_m": 248.2,
+     "alarm_frames": 12,
+     "advisory_only_frames": 37,
+     "frames_in_envelope": 75,
+     "alarm_frames_in_envelope": 12,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 17,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 11,
+       "advisory_only": 14,
+       "visible": 25
+      },
+      "100-150": {
+       "alarm": 1,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 6,
+       "visible": 25
+      }
+     },
+     "first_alarm_m": 101.3,
+     "first_alarm_frame": 632,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": 238.2,
+     "verdict": "detected"
+    },
+    "long_low_on_rails": {
+     "in_gauge": true,
+     "visible_frames": 86,
+     "first_visible_m": 248.5,
+     "alarm_frames": 42,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 77,
+     "alarm_frames_in_envelope": 42,
+     "bins": {
+      "0-50": {
+       "alarm": 29,
+       "advisory_only": 0,
+       "visible": 29
+      },
+      "50-100": {
+       "alarm": 13,
+       "advisory_only": 0,
+       "visible": 30
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 15
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 12
+      }
+     },
+     "first_alarm_m": 82.2,
+     "first_alarm_frame": 696,
+     "alarm_held_from_m": 58.6,
+     "first_advisory_or_alarm_m": 82.2,
+     "verdict": "detected"
+    },
+    "thin_hanging": {
+     "in_gauge": true,
+     "visible_frames": 42,
+     "first_visible_m": 199.7,
+     "alarm_frames": 0,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 20,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 10
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 3
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 5
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": null,
+     "verdict": "missed"
+    }
+   },
+   "background": {
+    "frames": 1510,
+    "alarm_frames": 386,
+    "background_alarm_frames": 41,
+    "background_alarm_ids": 10
+   }
+  },
+  "minpts3": {
+   "objects": {
+    "big_center": {
+     "in_gauge": true,
+     "visible_frames": 213,
+     "first_visible_m": 98.7,
+     "alarm_frames": 207,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 213,
+     "alarm_frames_in_envelope": 207,
+     "bins": {
+      "0-50": {
+       "alarm": 42,
+       "advisory_only": 0,
+       "visible": 43
+      },
+      "50-100": {
+       "alarm": 165,
+       "advisory_only": 0,
+       "visible": 170
+      }
+     },
+     "first_alarm_m": 98.0,
+     "first_alarm_frame": 5,
+     "alarm_held_from_m": 98.7,
+     "first_advisory_or_alarm_m": 98.0,
+     "verdict": "detected"
+    },
+    "small_on_rail": {
+     "in_gauge": true,
+     "visible_frames": 49,
+     "first_visible_m": 237.3,
+     "alarm_frames": 23,
+     "advisory_only_frames": 11,
+     "frames_in_envelope": 33,
+     "alarm_frames_in_envelope": 23,
+     "bins": {
+      "0-50": {
+       "alarm": 23,
+       "advisory_only": 4,
+       "visible": 27
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 7,
+       "visible": 19
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 1
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 2
+      }
+     },
+     "first_alarm_m": 42.7,
+     "first_alarm_frame": 403,
+     "alarm_held_from_m": 46.2,
+     "first_advisory_or_alarm_m": 62.1,
+     "verdict": "detected"
+    },
+    "small_center": {
+     "in_gauge": true,
+     "visible_frames": 79,
+     "first_visible_m": 128.9,
+     "alarm_frames": 19,
+     "advisory_only_frames": 15,
+     "frames_in_envelope": 63,
+     "alarm_frames_in_envelope": 19,
+     "bins": {
+      "0-50": {
+       "alarm": 19,
+       "advisory_only": 9,
+       "visible": 28
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 6,
+       "visible": 31
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 20
+      }
+     },
+     "first_alarm_m": 34.0,
+     "first_alarm_frame": 350,
+     "alarm_held_from_m": 37.4,
+     "first_advisory_or_alarm_m": 59.2,
+     "verdict": "detected"
+    },
+    "small_edge_inside": {
+     "in_gauge": true,
+     "visible_frames": 83,
+     "first_visible_m": 154.7,
+     "alarm_frames": 0,
+     "advisory_only_frames": 33,
+     "frames_in_envelope": 16,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 26,
+       "visible": 26
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 7,
+       "visible": 27
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 3
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": 84.6,
+     "verdict": "advisory only"
+    },
+    "small_outside_near": {
+     "in_gauge": false,
+     "visible_frames": 112,
+     "first_visible_m": 238.4,
+     "alarm_frames": 0,
+     "advisory_only_frames": 37,
+     "frames_in_envelope": 101,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 25,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 12,
+       "visible": 27
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 23
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 12
+      }
+     },
+     "false_alarm_frames": 0,
+     "false_alarm_from_m": null,
+     "verdict": "advisory"
+    },
+    "big_edge_inside": {
+     "in_gauge": true,
+     "visible_frames": 125,
+     "first_visible_m": 248.6,
+     "alarm_frames": 0,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 8,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 22
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": null,
+     "verdict": "missed"
+    },
+    "big_outside": {
+     "in_gauge": false,
+     "visible_frames": 104,
+     "first_visible_m": 249.4,
+     "alarm_frames": 6,
+     "advisory_only_frames": 44,
+     "frames_in_envelope": 52,
+     "alarm_frames_in_envelope": 6,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 19,
+       "visible": 25
+      },
+      "100-150": {
+       "alarm": 6,
+       "advisory_only": 16,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 3,
+       "visible": 4
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 6,
+       "visible": 26
+      }
+     },
+     "false_alarm_frames": 6,
+     "false_alarm_from_m": 142.3,
+     "verdict": "false alarm"
+    },
+    "big_above": {
+     "in_gauge": true,
+     "visible_frames": 124,
+     "first_visible_m": 248.2,
+     "alarm_frames": 12,
+     "advisory_only_frames": 37,
+     "frames_in_envelope": 75,
+     "alarm_frames_in_envelope": 12,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 17,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 11,
+       "advisory_only": 14,
+       "visible": 25
+      },
+      "100-150": {
+       "alarm": 1,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 6,
+       "visible": 25
+      }
+     },
+     "first_alarm_m": 101.3,
+     "first_alarm_frame": 632,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": 238.2,
+     "verdict": "detected"
+    },
+    "long_low_on_rails": {
+     "in_gauge": true,
+     "visible_frames": 86,
+     "first_visible_m": 248.5,
+     "alarm_frames": 42,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 77,
+     "alarm_frames_in_envelope": 42,
+     "bins": {
+      "0-50": {
+       "alarm": 29,
+       "advisory_only": 0,
+       "visible": 29
+      },
+      "50-100": {
+       "alarm": 13,
+       "advisory_only": 0,
+       "visible": 30
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 15
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 12
+      }
+     },
+     "first_alarm_m": 82.2,
+     "first_alarm_frame": 696,
+     "alarm_held_from_m": 58.6,
+     "first_advisory_or_alarm_m": 82.2,
+     "verdict": "detected"
+    },
+    "thin_hanging": {
+     "in_gauge": true,
+     "visible_frames": 42,
+     "first_visible_m": 199.7,
+     "alarm_frames": 3,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 20,
+     "alarm_frames_in_envelope": 3,
+     "bins": {
+      "0-50": {
+       "alarm": 3,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 10
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 3
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 5
+      }
+     },
+     "first_alarm_m": 10.1,
+     "first_alarm_frame": 801,
+     "alarm_held_from_m": 10.1,
+     "first_advisory_or_alarm_m": 10.1,
+     "verdict": "detected"
+    }
+   },
+   "background": {
+    "frames": 1510,
+    "alarm_frames": 346,
+    "background_alarm_frames": 30,
+    "background_alarm_ids": 9
+   }
+  },
+  "gaugemin2": {
+   "objects": {
+    "big_center": {
+     "in_gauge": true,
+     "visible_frames": 213,
+     "first_visible_m": 98.7,
+     "alarm_frames": 207,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 213,
+     "alarm_frames_in_envelope": 207,
+     "bins": {
+      "0-50": {
+       "alarm": 42,
+       "advisory_only": 0,
+       "visible": 43
+      },
+      "50-100": {
+       "alarm": 165,
+       "advisory_only": 0,
+       "visible": 170
+      }
+     },
+     "first_alarm_m": 98.0,
+     "first_alarm_frame": 5,
+     "alarm_held_from_m": 98.7,
+     "first_advisory_or_alarm_m": 98.0,
+     "verdict": "detected"
+    },
+    "small_on_rail": {
+     "in_gauge": true,
+     "visible_frames": 49,
+     "first_visible_m": 237.3,
+     "alarm_frames": 23,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 33,
+     "alarm_frames_in_envelope": 23,
+     "bins": {
+      "0-50": {
+       "alarm": 23,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 19
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 1
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 2
+      }
+     },
+     "first_alarm_m": 42.7,
+     "first_alarm_frame": 403,
+     "alarm_held_from_m": 46.2,
+     "first_advisory_or_alarm_m": 42.7,
+     "verdict": "detected"
+    },
+    "small_center": {
+     "in_gauge": true,
+     "visible_frames": 79,
+     "first_visible_m": 128.9,
+     "alarm_frames": 19,
+     "advisory_only_frames": 11,
+     "frames_in_envelope": 63,
+     "alarm_frames_in_envelope": 19,
+     "bins": {
+      "0-50": {
+       "alarm": 19,
+       "advisory_only": 9,
+       "visible": 28
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 2,
+       "visible": 31
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 20
+      }
+     },
+     "first_alarm_m": 34.0,
+     "first_alarm_frame": 350,
+     "alarm_held_from_m": 37.4,
+     "first_advisory_or_alarm_m": 52.5,
+     "verdict": "detected"
+    },
+    "small_edge_inside": {
+     "in_gauge": true,
+     "visible_frames": 83,
+     "first_visible_m": 154.7,
+     "alarm_frames": 0,
+     "advisory_only_frames": 25,
+     "frames_in_envelope": 16,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 25,
+       "visible": 26
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 3
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": 47.9,
+     "verdict": "advisory only"
+    },
+    "small_outside_near": {
+     "in_gauge": false,
+     "visible_frames": 112,
+     "first_visible_m": 238.4,
+     "alarm_frames": 0,
+     "advisory_only_frames": 24,
+     "frames_in_envelope": 101,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 24,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 23
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 12
+      }
+     },
+     "false_alarm_frames": 0,
+     "false_alarm_from_m": null,
+     "verdict": "advisory"
+    },
+    "big_edge_inside": {
+     "in_gauge": true,
+     "visible_frames": 125,
+     "first_visible_m": 248.6,
+     "alarm_frames": 0,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 8,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 22
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": null,
+     "verdict": "missed"
+    },
+    "big_outside": {
+     "in_gauge": false,
+     "visible_frames": 104,
+     "first_visible_m": 249.4,
+     "alarm_frames": 9,
+     "advisory_only_frames": 41,
+     "frames_in_envelope": 52,
+     "alarm_frames_in_envelope": 9,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 19,
+       "visible": 25
+      },
+      "100-150": {
+       "alarm": 9,
+       "advisory_only": 13,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 3,
+       "visible": 4
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 6,
+       "visible": 26
+      }
+     },
+     "false_alarm_frames": 9,
+     "false_alarm_from_m": 148.2,
+     "verdict": "false alarm"
+    },
+    "big_above": {
+     "in_gauge": true,
+     "visible_frames": 124,
+     "first_visible_m": 248.2,
+     "alarm_frames": 12,
+     "advisory_only_frames": 37,
+     "frames_in_envelope": 75,
+     "alarm_frames_in_envelope": 12,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 17,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 11,
+       "advisory_only": 14,
+       "visible": 25
+      },
+      "100-150": {
+       "alarm": 1,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 6,
+       "visible": 25
+      }
+     },
+     "first_alarm_m": 101.3,
+     "first_alarm_frame": 632,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": 238.2,
+     "verdict": "detected"
+    },
+    "long_low_on_rails": {
+     "in_gauge": true,
+     "visible_frames": 86,
+     "first_visible_m": 248.5,
+     "alarm_frames": 42,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 77,
+     "alarm_frames_in_envelope": 42,
+     "bins": {
+      "0-50": {
+       "alarm": 29,
+       "advisory_only": 0,
+       "visible": 29
+      },
+      "50-100": {
+       "alarm": 13,
+       "advisory_only": 0,
+       "visible": 30
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 15
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 12
+      }
+     },
+     "first_alarm_m": 82.2,
+     "first_alarm_frame": 696,
+     "alarm_held_from_m": 58.6,
+     "first_advisory_or_alarm_m": 82.2,
+     "verdict": "detected"
+    },
+    "thin_hanging": {
+     "in_gauge": true,
+     "visible_frames": 42,
+     "first_visible_m": 199.7,
+     "alarm_frames": 0,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 20,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 10
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 3
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 5
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": null,
+     "verdict": "missed"
+    }
+   },
+   "background": {
+    "frames": 1510,
+    "alarm_frames": 345,
+    "background_alarm_frames": 29,
+    "background_alarm_ids": 8
+   }
+  },
+  "near": {
+   "objects": {
+    "big_center": {
+     "in_gauge": true,
+     "visible_frames": 213,
+     "first_visible_m": 98.7,
+     "alarm_frames": 207,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 213,
+     "alarm_frames_in_envelope": 207,
+     "bins": {
+      "0-50": {
+       "alarm": 42,
+       "advisory_only": 0,
+       "visible": 43
+      },
+      "50-100": {
+       "alarm": 165,
+       "advisory_only": 0,
+       "visible": 170
+      }
+     },
+     "first_alarm_m": 98.0,
+     "first_alarm_frame": 5,
+     "alarm_held_from_m": 98.7,
+     "first_advisory_or_alarm_m": 98.0,
+     "verdict": "detected"
+    },
+    "small_on_rail": {
+     "in_gauge": true,
+     "visible_frames": 49,
+     "first_visible_m": 237.3,
+     "alarm_frames": 23,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 33,
+     "alarm_frames_in_envelope": 23,
+     "bins": {
+      "0-50": {
+       "alarm": 23,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 19
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 1
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 2
+      }
+     },
+     "first_alarm_m": 42.7,
+     "first_alarm_frame": 403,
+     "alarm_held_from_m": 46.2,
+     "first_advisory_or_alarm_m": 42.7,
+     "verdict": "detected"
+    },
+    "small_center": {
+     "in_gauge": true,
+     "visible_frames": 79,
+     "first_visible_m": 128.9,
+     "alarm_frames": 19,
+     "advisory_only_frames": 11,
+     "frames_in_envelope": 63,
+     "alarm_frames_in_envelope": 19,
+     "bins": {
+      "0-50": {
+       "alarm": 19,
+       "advisory_only": 9,
+       "visible": 28
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 2,
+       "visible": 31
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 20
+      }
+     },
+     "first_alarm_m": 34.0,
+     "first_alarm_frame": 350,
+     "alarm_held_from_m": 37.4,
+     "first_advisory_or_alarm_m": 52.5,
+     "verdict": "detected"
+    },
+    "small_edge_inside": {
+     "in_gauge": true,
+     "visible_frames": 83,
+     "first_visible_m": 154.7,
+     "alarm_frames": 0,
+     "advisory_only_frames": 25,
+     "frames_in_envelope": 16,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 25,
+       "visible": 26
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 3
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": 47.9,
+     "verdict": "advisory only"
+    },
+    "small_outside_near": {
+     "in_gauge": false,
+     "visible_frames": 112,
+     "first_visible_m": 238.4,
+     "alarm_frames": 0,
+     "advisory_only_frames": 24,
+     "frames_in_envelope": 101,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 24,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 23
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 12
+      }
+     },
+     "false_alarm_frames": 0,
+     "false_alarm_from_m": null,
+     "verdict": "advisory"
+    },
+    "big_edge_inside": {
+     "in_gauge": true,
+     "visible_frames": 125,
+     "first_visible_m": 248.6,
+     "alarm_frames": 0,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 8,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 22
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": null,
+     "verdict": "missed"
+    },
+    "big_outside": {
+     "in_gauge": false,
+     "visible_frames": 104,
+     "first_visible_m": 249.4,
+     "alarm_frames": 6,
+     "advisory_only_frames": 44,
+     "frames_in_envelope": 52,
+     "alarm_frames_in_envelope": 6,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 19,
+       "visible": 25
+      },
+      "100-150": {
+       "alarm": 6,
+       "advisory_only": 16,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 3,
+       "visible": 4
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 6,
+       "visible": 26
+      }
+     },
+     "false_alarm_frames": 6,
+     "false_alarm_from_m": 142.3,
+     "verdict": "false alarm"
+    },
+    "big_above": {
+     "in_gauge": true,
+     "visible_frames": 124,
+     "first_visible_m": 248.2,
+     "alarm_frames": 12,
+     "advisory_only_frames": 37,
+     "frames_in_envelope": 75,
+     "alarm_frames_in_envelope": 12,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 17,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 11,
+       "advisory_only": 14,
+       "visible": 25
+      },
+      "100-150": {
+       "alarm": 1,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 6,
+       "visible": 25
+      }
+     },
+     "first_alarm_m": 101.3,
+     "first_alarm_frame": 632,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": 238.2,
+     "verdict": "detected"
+    },
+    "long_low_on_rails": {
+     "in_gauge": true,
+     "visible_frames": 86,
+     "first_visible_m": 248.5,
+     "alarm_frames": 42,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 77,
+     "alarm_frames_in_envelope": 42,
+     "bins": {
+      "0-50": {
+       "alarm": 29,
+       "advisory_only": 0,
+       "visible": 29
+      },
+      "50-100": {
+       "alarm": 13,
+       "advisory_only": 0,
+       "visible": 30
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 15
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 12
+      }
+     },
+     "first_alarm_m": 82.2,
+     "first_alarm_frame": 696,
+     "alarm_held_from_m": 58.6,
+     "first_advisory_or_alarm_m": 82.2,
+     "verdict": "detected"
+    },
+    "thin_hanging": {
+     "in_gauge": true,
+     "visible_frames": 42,
+     "first_visible_m": 199.7,
+     "alarm_frames": 0,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 20,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 10
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 3
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 5
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": null,
+     "verdict": "missed"
+    }
+   },
+   "background": {
+    "frames": 1510,
+    "alarm_frames": 680,
+    "background_alarm_frames": 492,
+    "background_alarm_ids": 112
+   }
+  },
+  "float09": {
+   "objects": {
+    "big_center": {
+     "in_gauge": true,
+     "visible_frames": 213,
+     "first_visible_m": 98.7,
+     "alarm_frames": 207,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 213,
+     "alarm_frames_in_envelope": 207,
+     "bins": {
+      "0-50": {
+       "alarm": 42,
+       "advisory_only": 0,
+       "visible": 43
+      },
+      "50-100": {
+       "alarm": 165,
+       "advisory_only": 0,
+       "visible": 170
+      }
+     },
+     "first_alarm_m": 98.0,
+     "first_alarm_frame": 5,
+     "alarm_held_from_m": 98.7,
+     "first_advisory_or_alarm_m": 98.0,
+     "verdict": "detected"
+    },
+    "small_on_rail": {
+     "in_gauge": true,
+     "visible_frames": 49,
+     "first_visible_m": 237.3,
+     "alarm_frames": 23,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 33,
+     "alarm_frames_in_envelope": 23,
+     "bins": {
+      "0-50": {
+       "alarm": 23,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 19
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 1
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 2
+      }
+     },
+     "first_alarm_m": 42.7,
+     "first_alarm_frame": 403,
+     "alarm_held_from_m": 46.2,
+     "first_advisory_or_alarm_m": 42.7,
+     "verdict": "detected"
+    },
+    "small_center": {
+     "in_gauge": true,
+     "visible_frames": 79,
+     "first_visible_m": 128.9,
+     "alarm_frames": 30,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 63,
+     "alarm_frames_in_envelope": 30,
+     "bins": {
+      "0-50": {
+       "alarm": 28,
+       "advisory_only": 0,
+       "visible": 28
+      },
+      "50-100": {
+       "alarm": 2,
+       "advisory_only": 0,
+       "visible": 31
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 20
+      }
+     },
+     "first_alarm_m": 52.5,
+     "first_alarm_frame": 339,
+     "alarm_held_from_m": 57.5,
+     "first_advisory_or_alarm_m": 52.5,
+     "verdict": "detected"
+    },
+    "small_edge_inside": {
+     "in_gauge": true,
+     "visible_frames": 83,
+     "first_visible_m": 154.7,
+     "alarm_frames": 0,
+     "advisory_only_frames": 25,
+     "frames_in_envelope": 16,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 25,
+       "visible": 26
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 3
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": 47.9,
+     "verdict": "advisory only"
+    },
+    "small_outside_near": {
+     "in_gauge": false,
+     "visible_frames": 112,
+     "first_visible_m": 238.4,
+     "alarm_frames": 0,
+     "advisory_only_frames": 24,
+     "frames_in_envelope": 101,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 24,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 23
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 12
+      }
+     },
+     "false_alarm_frames": 0,
+     "false_alarm_from_m": null,
+     "verdict": "advisory"
+    },
+    "big_edge_inside": {
+     "in_gauge": true,
+     "visible_frames": 125,
+     "first_visible_m": 248.6,
+     "alarm_frames": 0,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 8,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 22
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": null,
+     "verdict": "missed"
+    },
+    "big_outside": {
+     "in_gauge": false,
+     "visible_frames": 104,
+     "first_visible_m": 249.4,
+     "alarm_frames": 6,
+     "advisory_only_frames": 44,
+     "frames_in_envelope": 52,
+     "alarm_frames_in_envelope": 6,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 19,
+       "visible": 25
+      },
+      "100-150": {
+       "alarm": 6,
+       "advisory_only": 16,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 3,
+       "visible": 4
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 6,
+       "visible": 26
+      }
+     },
+     "false_alarm_frames": 6,
+     "false_alarm_from_m": 142.3,
+     "verdict": "false alarm"
+    },
+    "big_above": {
+     "in_gauge": true,
+     "visible_frames": 124,
+     "first_visible_m": 248.2,
+     "alarm_frames": 12,
+     "advisory_only_frames": 37,
+     "frames_in_envelope": 75,
+     "alarm_frames_in_envelope": 12,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 17,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 11,
+       "advisory_only": 14,
+       "visible": 25
+      },
+      "100-150": {
+       "alarm": 1,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 6,
+       "visible": 25
+      }
+     },
+     "first_alarm_m": 101.3,
+     "first_alarm_frame": 632,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": 238.2,
+     "verdict": "detected"
+    },
+    "long_low_on_rails": {
+     "in_gauge": true,
+     "visible_frames": 86,
+     "first_visible_m": 248.5,
+     "alarm_frames": 42,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 77,
+     "alarm_frames_in_envelope": 42,
+     "bins": {
+      "0-50": {
+       "alarm": 29,
+       "advisory_only": 0,
+       "visible": 29
+      },
+      "50-100": {
+       "alarm": 13,
+       "advisory_only": 0,
+       "visible": 30
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 15
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 12
+      }
+     },
+     "first_alarm_m": 82.2,
+     "first_alarm_frame": 696,
+     "alarm_held_from_m": 58.6,
+     "first_advisory_or_alarm_m": 82.2,
+     "verdict": "detected"
+    },
+    "thin_hanging": {
+     "in_gauge": true,
+     "visible_frames": 42,
+     "first_visible_m": 199.7,
+     "alarm_frames": 0,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 20,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 10
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 3
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 5
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": null,
+     "verdict": "missed"
+    }
+   },
+   "background": {
+    "frames": 1510,
+    "alarm_frames": 353,
+    "background_alarm_frames": 29,
+    "background_alarm_ids": 8
+   }
+  },
+  "noelev": {
+   "objects": {
+    "big_center": {
+     "in_gauge": true,
+     "visible_frames": 213,
+     "first_visible_m": 98.7,
+     "alarm_frames": 207,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 213,
+     "alarm_frames_in_envelope": 207,
+     "bins": {
+      "0-50": {
+       "alarm": 42,
+       "advisory_only": 0,
+       "visible": 43
+      },
+      "50-100": {
+       "alarm": 165,
+       "advisory_only": 0,
+       "visible": 170
+      }
+     },
+     "first_alarm_m": 98.0,
+     "first_alarm_frame": 5,
+     "alarm_held_from_m": 98.7,
+     "first_advisory_or_alarm_m": 98.0,
+     "verdict": "detected"
+    },
+    "small_on_rail": {
+     "in_gauge": true,
+     "visible_frames": 49,
+     "first_visible_m": 237.3,
+     "alarm_frames": 23,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 33,
+     "alarm_frames_in_envelope": 23,
+     "bins": {
+      "0-50": {
+       "alarm": 23,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 19
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 1
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 2
+      }
+     },
+     "first_alarm_m": 42.7,
+     "first_alarm_frame": 403,
+     "alarm_held_from_m": 46.2,
+     "first_advisory_or_alarm_m": 42.7,
+     "verdict": "detected"
+    },
+    "small_center": {
+     "in_gauge": true,
+     "visible_frames": 79,
+     "first_visible_m": 128.9,
+     "alarm_frames": 19,
+     "advisory_only_frames": 11,
+     "frames_in_envelope": 63,
+     "alarm_frames_in_envelope": 19,
+     "bins": {
+      "0-50": {
+       "alarm": 19,
+       "advisory_only": 9,
+       "visible": 28
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 2,
+       "visible": 31
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 20
+      }
+     },
+     "first_alarm_m": 34.0,
+     "first_alarm_frame": 350,
+     "alarm_held_from_m": 37.4,
+     "first_advisory_or_alarm_m": 52.5,
+     "verdict": "detected"
+    },
+    "small_edge_inside": {
+     "in_gauge": true,
+     "visible_frames": 83,
+     "first_visible_m": 154.7,
+     "alarm_frames": 0,
+     "advisory_only_frames": 25,
+     "frames_in_envelope": 16,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 25,
+       "visible": 26
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 3
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": 47.9,
+     "verdict": "advisory only"
+    },
+    "small_outside_near": {
+     "in_gauge": false,
+     "visible_frames": 112,
+     "first_visible_m": 238.4,
+     "alarm_frames": 0,
+     "advisory_only_frames": 24,
+     "frames_in_envelope": 101,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 24,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 23
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 12
+      }
+     },
+     "false_alarm_frames": 0,
+     "false_alarm_from_m": null,
+     "verdict": "advisory"
+    },
+    "big_edge_inside": {
+     "in_gauge": true,
+     "visible_frames": 125,
+     "first_visible_m": 248.6,
+     "alarm_frames": 0,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 8,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 22
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": null,
+     "verdict": "missed"
+    },
+    "big_outside": {
+     "in_gauge": false,
+     "visible_frames": 104,
+     "first_visible_m": 249.4,
+     "alarm_frames": 6,
+     "advisory_only_frames": 44,
+     "frames_in_envelope": 52,
+     "alarm_frames_in_envelope": 6,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 19,
+       "visible": 25
+      },
+      "100-150": {
+       "alarm": 6,
+       "advisory_only": 16,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 3,
+       "visible": 4
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 6,
+       "visible": 26
+      }
+     },
+     "false_alarm_frames": 6,
+     "false_alarm_from_m": 142.3,
+     "verdict": "false alarm"
+    },
+    "big_above": {
+     "in_gauge": true,
+     "visible_frames": 124,
+     "first_visible_m": 248.2,
+     "alarm_frames": 43,
+     "advisory_only_frames": 6,
+     "frames_in_envelope": 75,
+     "alarm_frames_in_envelope": 43,
+     "bins": {
+      "0-50": {
+       "alarm": 17,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 25,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "100-150": {
+       "alarm": 1,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 6,
+       "visible": 25
+      }
+     },
+     "first_alarm_m": 101.3,
+     "first_alarm_frame": 632,
+     "alarm_held_from_m": 31.2,
+     "first_advisory_or_alarm_m": 238.2,
+     "verdict": "detected"
+    },
+    "long_low_on_rails": {
+     "in_gauge": true,
+     "visible_frames": 86,
+     "first_visible_m": 248.5,
+     "alarm_frames": 42,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 77,
+     "alarm_frames_in_envelope": 42,
+     "bins": {
+      "0-50": {
+       "alarm": 29,
+       "advisory_only": 0,
+       "visible": 29
+      },
+      "50-100": {
+       "alarm": 13,
+       "advisory_only": 0,
+       "visible": 30
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 15
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 12
+      }
+     },
+     "first_alarm_m": 82.2,
+     "first_alarm_frame": 696,
+     "alarm_held_from_m": 58.6,
+     "first_advisory_or_alarm_m": 82.2,
+     "verdict": "detected"
+    },
+    "thin_hanging": {
+     "in_gauge": true,
+     "visible_frames": 42,
+     "first_visible_m": 199.7,
+     "alarm_frames": 0,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 20,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 10
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 3
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 5
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": null,
+     "verdict": "missed"
+    }
+   },
+   "background": {
+    "frames": 1510,
+    "alarm_frames": 374,
+    "background_alarm_frames": 30,
+    "background_alarm_ids": 9
+   }
+  },
+  "both": {
+   "objects": {
+    "big_center": {
+     "in_gauge": true,
+     "visible_frames": 213,
+     "first_visible_m": 98.7,
+     "alarm_frames": 207,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 213,
+     "alarm_frames_in_envelope": 207,
+     "bins": {
+      "0-50": {
+       "alarm": 42,
+       "advisory_only": 0,
+       "visible": 43
+      },
+      "50-100": {
+       "alarm": 165,
+       "advisory_only": 0,
+       "visible": 170
+      }
+     },
+     "first_alarm_m": 98.0,
+     "first_alarm_frame": 5,
+     "alarm_held_from_m": 98.7,
+     "first_advisory_or_alarm_m": 98.0,
+     "verdict": "detected"
+    },
+    "small_on_rail": {
+     "in_gauge": true,
+     "visible_frames": 49,
+     "first_visible_m": 237.3,
+     "alarm_frames": 23,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 33,
+     "alarm_frames_in_envelope": 23,
+     "bins": {
+      "0-50": {
+       "alarm": 23,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 19
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 1
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 2
+      }
+     },
+     "first_alarm_m": 42.7,
+     "first_alarm_frame": 403,
+     "alarm_held_from_m": 46.2,
+     "first_advisory_or_alarm_m": 42.7,
+     "verdict": "detected"
+    },
+    "small_center": {
+     "in_gauge": true,
+     "visible_frames": 79,
+     "first_visible_m": 128.9,
+     "alarm_frames": 30,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 63,
+     "alarm_frames_in_envelope": 30,
+     "bins": {
+      "0-50": {
+       "alarm": 28,
+       "advisory_only": 0,
+       "visible": 28
+      },
+      "50-100": {
+       "alarm": 2,
+       "advisory_only": 0,
+       "visible": 31
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 20
+      }
+     },
+     "first_alarm_m": 52.5,
+     "first_alarm_frame": 339,
+     "alarm_held_from_m": 57.5,
+     "first_advisory_or_alarm_m": 52.5,
+     "verdict": "detected"
+    },
+    "small_edge_inside": {
+     "in_gauge": true,
+     "visible_frames": 83,
+     "first_visible_m": 154.7,
+     "alarm_frames": 0,
+     "advisory_only_frames": 25,
+     "frames_in_envelope": 16,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 25,
+       "visible": 26
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 3
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": 47.9,
+     "verdict": "advisory only"
+    },
+    "small_outside_near": {
+     "in_gauge": false,
+     "visible_frames": 112,
+     "first_visible_m": 238.4,
+     "alarm_frames": 0,
+     "advisory_only_frames": 24,
+     "frames_in_envelope": 101,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 24,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 23
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 12
+      }
+     },
+     "false_alarm_frames": 0,
+     "false_alarm_from_m": null,
+     "verdict": "advisory"
+    },
+    "big_edge_inside": {
+     "in_gauge": true,
+     "visible_frames": 125,
+     "first_visible_m": 248.6,
+     "alarm_frames": 0,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 8,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 22
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": null,
+     "verdict": "missed"
+    },
+    "big_outside": {
+     "in_gauge": false,
+     "visible_frames": 104,
+     "first_visible_m": 249.4,
+     "alarm_frames": 6,
+     "advisory_only_frames": 44,
+     "frames_in_envelope": 52,
+     "alarm_frames_in_envelope": 6,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 19,
+       "visible": 25
+      },
+      "100-150": {
+       "alarm": 6,
+       "advisory_only": 16,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 3,
+       "visible": 4
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 6,
+       "visible": 26
+      }
+     },
+     "false_alarm_frames": 6,
+     "false_alarm_from_m": 142.3,
+     "verdict": "false alarm"
+    },
+    "big_above": {
+     "in_gauge": true,
+     "visible_frames": 124,
+     "first_visible_m": 248.2,
+     "alarm_frames": 43,
+     "advisory_only_frames": 6,
+     "frames_in_envelope": 75,
+     "alarm_frames_in_envelope": 43,
+     "bins": {
+      "0-50": {
+       "alarm": 17,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 25,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "100-150": {
+       "alarm": 1,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 6,
+       "visible": 25
+      }
+     },
+     "first_alarm_m": 101.3,
+     "first_alarm_frame": 632,
+     "alarm_held_from_m": 31.2,
+     "first_advisory_or_alarm_m": 238.2,
+     "verdict": "detected"
+    },
+    "long_low_on_rails": {
+     "in_gauge": true,
+     "visible_frames": 86,
+     "first_visible_m": 248.5,
+     "alarm_frames": 42,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 77,
+     "alarm_frames_in_envelope": 42,
+     "bins": {
+      "0-50": {
+       "alarm": 29,
+       "advisory_only": 0,
+       "visible": 29
+      },
+      "50-100": {
+       "alarm": 13,
+       "advisory_only": 0,
+       "visible": 30
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 15
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 12
+      }
+     },
+     "first_alarm_m": 82.2,
+     "first_alarm_frame": 696,
+     "alarm_held_from_m": 58.6,
+     "first_advisory_or_alarm_m": 82.2,
+     "verdict": "detected"
+    },
+    "thin_hanging": {
+     "in_gauge": true,
+     "visible_frames": 42,
+     "first_visible_m": 199.7,
+     "alarm_frames": 0,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 20,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 10
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 3
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 5
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": null,
+     "verdict": "missed"
+    }
+   },
+   "background": {
+    "frames": 1510,
+    "alarm_frames": 385,
+    "background_alarm_frames": 30,
+    "background_alarm_ids": 9
+   }
+  },
+  "shortsig": {
+   "objects": {
+    "big_center": {
+     "in_gauge": true,
+     "visible_frames": 213,
+     "first_visible_m": 98.7,
+     "alarm_frames": 207,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 213,
+     "alarm_frames_in_envelope": 207,
+     "bins": {
+      "0-50": {
+       "alarm": 42,
+       "advisory_only": 0,
+       "visible": 43
+      },
+      "50-100": {
+       "alarm": 165,
+       "advisory_only": 0,
+       "visible": 170
+      }
+     },
+     "first_alarm_m": 98.0,
+     "first_alarm_frame": 5,
+     "alarm_held_from_m": 98.7,
+     "first_advisory_or_alarm_m": 98.0,
+     "verdict": "detected"
+    },
+    "small_on_rail": {
+     "in_gauge": true,
+     "visible_frames": 49,
+     "first_visible_m": 237.3,
+     "alarm_frames": 23,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 33,
+     "alarm_frames_in_envelope": 23,
+     "bins": {
+      "0-50": {
+       "alarm": 23,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 19
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 1
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 2
+      }
+     },
+     "first_alarm_m": 42.7,
+     "first_alarm_frame": 403,
+     "alarm_held_from_m": 46.2,
+     "first_advisory_or_alarm_m": 42.7,
+     "verdict": "detected"
+    },
+    "small_center": {
+     "in_gauge": true,
+     "visible_frames": 79,
+     "first_visible_m": 128.9,
+     "alarm_frames": 30,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 63,
+     "alarm_frames_in_envelope": 30,
+     "bins": {
+      "0-50": {
+       "alarm": 28,
+       "advisory_only": 0,
+       "visible": 28
+      },
+      "50-100": {
+       "alarm": 2,
+       "advisory_only": 0,
+       "visible": 31
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 20
+      }
+     },
+     "first_alarm_m": 52.5,
+     "first_alarm_frame": 339,
+     "alarm_held_from_m": 57.5,
+     "first_advisory_or_alarm_m": 52.5,
+     "verdict": "detected"
+    },
+    "small_edge_inside": {
+     "in_gauge": true,
+     "visible_frames": 83,
+     "first_visible_m": 154.7,
+     "alarm_frames": 7,
+     "advisory_only_frames": 18,
+     "frames_in_envelope": 16,
+     "alarm_frames_in_envelope": 7,
+     "bins": {
+      "0-50": {
+       "alarm": 7,
+       "advisory_only": 18,
+       "visible": 26
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 3
+      }
+     },
+     "first_alarm_m": 14.5,
+     "first_alarm_frame": 473,
+     "alarm_held_from_m": 14.5,
+     "first_advisory_or_alarm_m": 47.9,
+     "verdict": "detected"
+    },
+    "small_outside_near": {
+     "in_gauge": false,
+     "visible_frames": 112,
+     "first_visible_m": 238.4,
+     "alarm_frames": 3,
+     "advisory_only_frames": 21,
+     "frames_in_envelope": 101,
+     "alarm_frames_in_envelope": 3,
+     "bins": {
+      "0-50": {
+       "alarm": 3,
+       "advisory_only": 21,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 27
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 23
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 12
+      }
+     },
+     "false_alarm_frames": 3,
+     "false_alarm_from_m": 27.2,
+     "verdict": "false alarm"
+    },
+    "big_edge_inside": {
+     "in_gauge": true,
+     "visible_frames": 125,
+     "first_visible_m": 248.6,
+     "alarm_frames": 0,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 8,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 26
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 22
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": null,
+     "verdict": "missed"
+    },
+    "big_outside": {
+     "in_gauge": false,
+     "visible_frames": 104,
+     "first_visible_m": 249.4,
+     "alarm_frames": 6,
+     "advisory_only_frames": 44,
+     "frames_in_envelope": 52,
+     "alarm_frames_in_envelope": 6,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 19,
+       "visible": 25
+      },
+      "100-150": {
+       "alarm": 6,
+       "advisory_only": 16,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 3,
+       "visible": 4
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 6,
+       "visible": 26
+      }
+     },
+     "false_alarm_frames": 6,
+     "false_alarm_from_m": 142.3,
+     "verdict": "false alarm"
+    },
+    "big_above": {
+     "in_gauge": true,
+     "visible_frames": 124,
+     "first_visible_m": 248.2,
+     "alarm_frames": 43,
+     "advisory_only_frames": 6,
+     "frames_in_envelope": 75,
+     "alarm_frames_in_envelope": 43,
+     "bins": {
+      "0-50": {
+       "alarm": 17,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "50-100": {
+       "alarm": 25,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "100-150": {
+       "alarm": 1,
+       "advisory_only": 0,
+       "visible": 25
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 6,
+       "visible": 25
+      }
+     },
+     "first_alarm_m": 101.3,
+     "first_alarm_frame": 632,
+     "alarm_held_from_m": 31.2,
+     "first_advisory_or_alarm_m": 238.2,
+     "verdict": "detected"
+    },
+    "long_low_on_rails": {
+     "in_gauge": true,
+     "visible_frames": 86,
+     "first_visible_m": 248.5,
+     "alarm_frames": 42,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 77,
+     "alarm_frames_in_envelope": 42,
+     "bins": {
+      "0-50": {
+       "alarm": 29,
+       "advisory_only": 0,
+       "visible": 29
+      },
+      "50-100": {
+       "alarm": 13,
+       "advisory_only": 0,
+       "visible": 30
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 15
+      },
+      "200-300": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 12
+      }
+     },
+     "first_alarm_m": 82.2,
+     "first_alarm_frame": 696,
+     "alarm_held_from_m": 58.6,
+     "first_advisory_or_alarm_m": 82.2,
+     "verdict": "detected"
+    },
+    "thin_hanging": {
+     "in_gauge": true,
+     "visible_frames": 42,
+     "first_visible_m": 199.7,
+     "alarm_frames": 0,
+     "advisory_only_frames": 0,
+     "frames_in_envelope": 20,
+     "alarm_frames_in_envelope": 0,
+     "bins": {
+      "0-50": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 24
+      },
+      "50-100": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 10
+      },
+      "100-150": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 3
+      },
+      "150-200": {
+       "alarm": 0,
+       "advisory_only": 0,
+       "visible": 5
+      }
+     },
+     "first_alarm_m": null,
+     "first_alarm_frame": null,
+     "alarm_held_from_m": null,
+     "first_advisory_or_alarm_m": null,
+     "verdict": "missed"
+    }
+   },
+   "background": {
+    "frames": 1510,
+    "alarm_frames": 396,
+    "background_alarm_frames": 31,
+    "background_alarm_ids": 10
+   },
+   "resense_summarize": {
+    "recall": 0.4394506866416979,
+    "per_bin_counts": {
+     "50-100": [
+      205,
+      338
+     ],
+     "0-50": [
+      146,
+      227
+     ],
+     "200-300": [
+      0,
+      61
+     ],
+     "100-150": [
+      1,
+      117
+     ],
+     "150-200": [
+      0,
+      58
+     ]
+    },
+    "recall_by_class": {
+     "big_above": 0.3467741935483871,
+     "big_center": 0.971830985915493,
+     "big_edge_inside": 0.0,
+     "long_low_on_rails": 0.4883720930232558,
+     "small_center": 0.379746835443038,
+     "small_edge_inside": 0.08433734939759036,
+     "small_on_rail": 0.46938775510204084,
+     "thin_hanging": 0.0
+    },
+    "first_detection_distance": {
+     "big_center": 98.03,
+     "small_center": 52.5,
+     "small_on_rail": 42.66,
+     "small_edge_inside": 14.52,
+     "big_above": 101.32,
+     "long_low_on_rails": 82.15
+    },
+    "fp_frames": 20,
+    "fp_events": 4,
+    "alarm_frames": 396,
+    "alarm_events": 13,
+    "advisory_frames": 385
+   }
+  }
+ },
+ "six_original_bags": {
+  "default": {
+   "doubleT_obstacle": {
+    "frames": 201,
+    "alarm_frames": 188,
+    "alarm_events": 2,
+    "advisory_frames": 84,
+    "labelled": {
+     "recall": 0.752,
+     "first_alarm_frame": 11,
+     "fp_frames": 0,
+     "fp_events": 0,
+     "per_bin": {
+      "50-100": [
+       185,
+       246
+      ]
+     }
+    }
+   },
+   "doubleT_platform": {
+    "frames": 345,
+    "alarm_frames": 4,
+    "alarm_events": 4,
+    "advisory_frames": 180
+   },
+   "roundT_doubleT": {
+    "frames": 252,
+    "alarm_frames": 2,
+    "alarm_events": 1,
+    "advisory_frames": 173
+   },
+   "roundT_pressureGate_roundT": {
+    "frames": 268,
+    "alarm_frames": 0,
+    "alarm_events": 0,
+    "advisory_frames": 104
+   },
+   "roundT_squareT_pressureGate_squareT": {
+    "frames": 545,
+    "alarm_frames": 0,
+    "alarm_events": 0,
+    "advisory_frames": 146
+   },
+   "squareT_platform_squareT_switch": {
+    "frames": 877,
+    "alarm_frames": 101,
+    "alarm_events": 15,
+    "advisory_frames": 394
+   },
+   "five_empty_total": {
+    "alarm_frames": 107,
+    "alarm_events": 20
+   }
+  },
+  "float09": {
+   "doubleT_obstacle": {
+    "frames": 201,
+    "alarm_frames": 188,
+    "alarm_events": 2,
+    "advisory_frames": 84,
+    "labelled": {
+     "recall": 0.752,
+     "first_alarm_frame": 11,
+     "fp_frames": 0,
+     "fp_events": 0,
+     "per_bin": {
+      "50-100": [
+       185,
+       246
+      ]
+     }
+    }
+   },
+   "doubleT_platform": {
+    "frames": 345,
+    "alarm_frames": 4,
+    "alarm_events": 4,
+    "advisory_frames": 180
+   },
+   "roundT_doubleT": {
+    "frames": 252,
+    "alarm_frames": 2,
+    "alarm_events": 1,
+    "advisory_frames": 173
+   },
+   "roundT_pressureGate_roundT": {
+    "frames": 268,
+    "alarm_frames": 0,
+    "alarm_events": 0,
+    "advisory_frames": 104
+   },
+   "roundT_squareT_pressureGate_squareT": {
+    "frames": 545,
+    "alarm_frames": 0,
+    "alarm_events": 0,
+    "advisory_frames": 146
+   },
+   "squareT_platform_squareT_switch": {
+    "frames": 877,
+    "alarm_frames": 162,
+    "alarm_events": 21,
+    "advisory_frames": 389
+   },
+   "five_empty_total": {
+    "alarm_frames": 168,
+    "alarm_events": 26
+   }
+  },
+  "noelev": {
+   "doubleT_obstacle": {
+    "frames": 201,
+    "alarm_frames": 188,
+    "alarm_events": 2,
+    "advisory_frames": 84,
+    "labelled": {
+     "recall": 0.752,
+     "first_alarm_frame": 11,
+     "fp_frames": 0,
+     "fp_events": 0,
+     "per_bin": {
+      "50-100": [
+       185,
+       246
+      ]
+     }
+    }
+   },
+   "doubleT_platform": {
+    "frames": 345,
+    "alarm_frames": 4,
+    "alarm_events": 4,
+    "advisory_frames": 180
+   },
+   "roundT_doubleT": {
+    "frames": 252,
+    "alarm_frames": 2,
+    "alarm_events": 1,
+    "advisory_frames": 173
+   },
+   "roundT_pressureGate_roundT": {
+    "frames": 268,
+    "alarm_frames": 0,
+    "alarm_events": 0,
+    "advisory_frames": 104
+   },
+   "roundT_squareT_pressureGate_squareT": {
+    "frames": 545,
+    "alarm_frames": 0,
+    "alarm_events": 0,
+    "advisory_frames": 146
+   },
+   "squareT_platform_squareT_switch": {
+    "frames": 877,
+    "alarm_frames": 133,
+    "alarm_events": 18,
+    "advisory_frames": 391
+   },
+   "five_empty_total": {
+    "alarm_frames": 139,
+    "alarm_events": 23
+   }
+  },
+  "both": {
+   "doubleT_obstacle": {
+    "frames": 201,
+    "alarm_frames": 188,
+    "alarm_events": 2,
+    "advisory_frames": 84,
+    "labelled": {
+     "recall": 0.752,
+     "first_alarm_frame": 11,
+     "fp_frames": 0,
+     "fp_events": 0,
+     "per_bin": {
+      "50-100": [
+       185,
+       246
+      ]
+     }
+    }
+   },
+   "doubleT_platform": {
+    "frames": 345,
+    "alarm_frames": 4,
+    "alarm_events": 4,
+    "advisory_frames": 180
+   },
+   "roundT_doubleT": {
+    "frames": 252,
+    "alarm_frames": 2,
+    "alarm_events": 1,
+    "advisory_frames": 173
+   },
+   "roundT_pressureGate_roundT": {
+    "frames": 268,
+    "alarm_frames": 0,
+    "alarm_events": 0,
+    "advisory_frames": 104
+   },
+   "roundT_squareT_pressureGate_squareT": {
+    "frames": 545,
+    "alarm_frames": 0,
+    "alarm_events": 0,
+    "advisory_frames": 146
+   },
+   "squareT_platform_squareT_switch": {
+    "frames": 877,
+    "alarm_frames": 180,
+    "alarm_events": 21,
+    "advisory_frames": 389
+   },
+   "five_empty_total": {
+    "alarm_frames": 186,
+    "alarm_events": 26
+   }
+  },
+  "shortsig": {
+   "doubleT_obstacle": {
+    "frames": 201,
+    "alarm_frames": 188,
+    "alarm_events": 2,
+    "advisory_frames": 84,
+    "labelled": {
+     "recall": 0.752,
+     "first_alarm_frame": 11,
+     "fp_frames": 0,
+     "fp_events": 0,
+     "per_bin": {
+      "50-100": [
+       185,
+       246
+      ]
+     }
+    }
+   },
+   "doubleT_platform": {
+    "frames": 345,
+    "alarm_frames": 9,
+    "alarm_events": 5,
+    "advisory_frames": 177
+   },
+   "roundT_doubleT": {
+    "frames": 252,
+    "alarm_frames": 2,
+    "alarm_events": 1,
+    "advisory_frames": 173
+   },
+   "roundT_pressureGate_roundT": {
+    "frames": 268,
+    "alarm_frames": 0,
+    "alarm_events": 0,
+    "advisory_frames": 104
+   },
+   "roundT_squareT_pressureGate_squareT": {
+    "frames": 545,
+    "alarm_frames": 0,
+    "alarm_events": 0,
+    "advisory_frames": 146
+   },
+   "squareT_platform_squareT_switch": {
+    "frames": 877,
+    "alarm_frames": 102,
+    "alarm_events": 16,
+    "advisory_frames": 394
+   },
+   "five_empty_total": {
+    "alarm_frames": 113,
+    "alarm_events": 22
+   }
+  }
+ }
+}

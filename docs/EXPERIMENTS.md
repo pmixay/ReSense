@@ -104,10 +104,17 @@ at the envelope edge. Those older results cannot be compared to new code without
 per kind, the current code matched no visible person or 1 m box in the 100–150 m bin in either
 mode. One more sequence was excluded after a recording gap. This is a placement-bias sensitivity
 test on synthetic positives, not surveyed long-range recall; it does not supersede the dated
-historical figures below with a new positive capability claim. The new organizer fake-object
-bag was processed on all 1,510 frames, but shipped no ground truth: 342 alarm frames / 9 tracks
-are *unclassified*, not 342 true hits or 9 false events
-([`experiments_p4_fake_unlabelled.json`](experiments_p4_fake_unlabelled.json)).
+historical figures below with a new positive capability claim. The organizers' synthetic-obstacle
+bag `cloud_with_fake_obj` (24.09, ten objects ray-cast by their own tool) is now **labelled
+exactly** from its appended object points ([`DATASET.md`](DATASET.md)). Graded per object, the
+shipped detector finds the 2×2 m box at first sight (98 m), the plank across the rails from
+82 m, and the 0.3 m cubes only from 34–43 m. It leaves the 2×2 m box at the top of the envelope
+mostly advisory (12 STOP frames of 124) and misses the 5 cm hanging object and the 2×2 m box at
+the edge; the edge tests depend on a 0.24° offset between the organizers' placement axis and
+the rails. A length-limited `elevated` / `floating` rule (experiment, not shipped) gains 49 STOP
+frames on the inside objects for +2 events on the five empty bags
+([`P4_AUDIT.md`](P4_AUDIT.md) "Organizer synthetic-obstacle recording",
+[`experiments_p4_fake_labelled.json`](experiments_p4_fake_labelled.json)).
 The integration rerun on `4cd32d6` (24.09) again found 107 alarm frames / 20 events on the
 five empty bags and 185/246 labelled obstacle-frames on `doubleT_obstacle` (first alarm 11).
 One paired 35-frame, <40 m approach on a short cached ride slice produced the same 31/35

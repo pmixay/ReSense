@@ -11,6 +11,7 @@ onto numbers we actually report. Results go to [`EXPERIMENTS.md`](EXPERIMENTS.md
 | **S** synthetic | `resense inject` on real empty frames of every organizer bag, every 10th frame | person 0.5×1.7 m, box 0.2 / 0.5 / 1.0 m, plank 2×0.25×0.3 m, trolley; one object per frame, uniform 10–250 m along the track | 20 % of objects placed outside the gauge (must **not** alarm) | recall by range, first-detection distance, tuning |
 | **E** empty real | the five organizer bags without a known obstacle | none | every frame | false-alarm rates by scene type |
 | **R** real obstacles | `doubleT_obstacle` (crossing person and object on a rail, both labelled in `gt.json`) | labelled visible frames | labelled empty frames and the five empty bags | real recall and a limited reflectivity check; the extended `new_data` recording has no obstacles |
+| **O** organizers' synthetic | `cloud_with_fake_obj` (24.09): ten objects ray-cast by the organizers' own tool into a real recording, labelled exactly from the appended object points (`labels/cloud_with_fake_obj.json`, [`DATASET.md`](DATASET.md)) | eight objects inside the envelope (2×2 m, 0.3 m cubes, a plank across the rails, a 5 cm hanging object) | two objects just outside it | per-object first STOP / held-from distance and false STOP on the outside objects (`scripts/score_fake_objects.py`); the tool that is part of the hidden check, so the closest thing to it |
 | **H** hidden | the organizers' control bag on the day | unknown | unknown | nothing is tuned on it; the dry-run script only checks the pipeline runs |
 
 Objects whose rays are fully occluded by real geometry (`n_points == 0` in `gt.json`) are
@@ -148,9 +149,12 @@ validity over each sequence before interpreting range or edge results.
    machine and load; on R the first alarm frame (11) must not get later and the recall (the
    person 58 of its 61 frames in the envelope, the object on the rail 124 of its 126 frames from
    frame 75, 127 of its 185 visible frames) must not drop. Do not compare these 2.1 m-envelope
-   counts to older 1.4 m-envelope runs as if the labels were identical. Each PR that touches
-   `resense/` re-runs S, E and R on the cached frames (`scripts/cache_frames.py`) and adds a row
-   to the version table in EXPERIMENTS.md.
+   counts to older 1.4 m-envelope runs as if the labels were identical. On O, the per-object
+   table of `scripts/score_fake_objects.py` must not lose a detected object or add STOP frames
+   on the two outside objects (default of 24.09: objects 1, 2, 3, 8 and 9 detected, first STOP
+   at 98.0 / 34.0 / 42.7 / 101.3 / 82.2 m; 6 STOP frames on the outside 2×2 m box; P4_AUDIT).
+   Each PR that touches `resense/` re-runs S, E, R and O on the cached frames
+   (`scripts/cache_frames.py`) and adds a row to the version table in EXPERIMENTS.md.
 
 ## 4. Targets (from PLAN.md sprints)
 

@@ -12,10 +12,10 @@ Two levels of false-alarm accounting (docs/EVALUATION.md section 2):
   ``ego_speed`` key in the result dict).
 
 Frame indices (the ``frame`` key that ``resense run`` writes) are used to detect the
-subsampling stride: with every N-th frame, the consecutive hits a track needs
-(``tracking.frames_to_confirm()``: ``confirm_hits`` / ``confirm_time_s``) are ``N * frame_dt``
-seconds apart, so a candidate must persist ``confirm_hits * N * frame_dt`` seconds instead of
-``confirm_hits * frame_dt`` -- subsampled false-alarm counts understate
+subsampling stride: with every N-th frame the tracker is given the measured interval
+``N * frame_dt``, so it needs max(``confirm_hits``, ceil(``confirm_time_s`` / (N * frame_dt)))
+consecutive hits (``tracking.frames_to_confirm(N * frame_dt)``), ``N * frame_dt`` seconds apart,
+instead of ``frames_to_confirm()`` frames at 10 Hz -- subsampled false-alarm counts understate
 the rate the node shows at 10 Hz. :meth:`Evaluation.summary` says so (``stride_caveat``).
 
 Ground-truth files: ``gt.json`` as written by ``resense inject`` and by the label tool
@@ -24,6 +24,7 @@ Ground-truth files: ``gt.json`` as written by ``resense inject`` and by the labe
 from __future__ import annotations
 
 import json
+import math
 from collections import Counter
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Sequence, Set
@@ -159,6 +160,8 @@ class Evaluation:
     # --- additive (Sprint 2): events, advisory frames, bag time, distance, stride ---------
     confirm_hits: int = 3                  # frames a static object needs to be confirmed (tracking.frames_to_confirm()), for the stride caveat
     frame_dt: float = 0.1                  # tracking.frame_dt (s)
+    min_hits: Optional[int] = None         # tracking.confirm_hits; with confirm_time_s the caveat applies the tracker's rule at the stride
+    confirm_time_s: float = 0.0            # tracking.confirm_time_s (s)
     alarm_frames: int = 0                  # frames with obstacle = true (all frames)
     advisory_frames: int = 0               # frames with warning = true (all frames)
     alarm_ids: Set[tuple] = field(default_factory=set)      # (sequence, track id): ids may restart between sequences
@@ -304,9 +307,14 @@ class Evaluation:
         s = self.stride
         if s is None or s <= 1:
             return None
-        return (f"frames are every {s}th bag frame: the {self.confirm_hits} consecutive "
+        hits = self.confirm_hits
+        if self.min_hits is not None:
+            # the tracker is given the measured interval: the time rule is met sooner at a stride
+            by_time = int(math.ceil(self.confirm_time_s / (s * self.frame_dt) - 1e-9)) if self.confirm_time_s > 0 else 0
+            hits = max(int(self.min_hits), by_time)
+        return (f"frames are every {s}th bag frame: the {hits} consecutive "
                 f"hits a track needs are {s * self.frame_dt:.1f} s apart, so a candidate must persist "
-                f"{self.confirm_hits * s * self.frame_dt:.1f} s to be confirmed instead of "
+                f"{hits * s * self.frame_dt:.1f} s to be confirmed instead of "
                 f"{self.confirm_hits * self.frame_dt:.1f} s at 10 Hz; subsampled alarm and false-alarm "
                 f"counts understate the full-rate values (run every frame for the headline numbers)")
 
