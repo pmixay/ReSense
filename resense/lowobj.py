@@ -53,6 +53,7 @@ from typing import Optional
 
 import numpy as np
 
+from resense import _native
 from resense.config import LowObjectConfig
 from resense.track import bin_percentile
 
@@ -73,8 +74,12 @@ class BedTemplate:
     def update(self, X: np.ndarray, dy: np.ndarray, h: np.ndarray) -> Optional[np.ndarray]:
         cfg = self.cfg
         x0, x1 = cfg.template_range
-        sel = (X > x0) & (X < x1) & (dy > self.edges[0]) & (dy < self.edges[-1]) & (h > -1.2) & (h < 0.4)
-        if sel.sum() < 200:
+        sel = _native.select(X.size, (X, ">", x0, "<", x1), (dy, ">", self.edges[0], "<", self.edges[-1]),
+                             (h, ">", -1.2, "<", 0.4))    # np.flatnonzero of the mask below, one pass; None: numpy
+        if sel is None:
+            sel = (X > x0) & (X < x1) & (dy > self.edges[0]) & (dy < self.edges[-1]) & (h > -1.2) & (h < 0.4)
+        n_sel = int(sel.sum()) if sel.dtype == bool else sel.size
+        if n_sel < 200:
             return self.prof
         nb = self.edges.size - 1
         b = np.clip(np.digitize(dy[sel], self.edges) - 1, 0, nb - 1)
@@ -113,8 +118,11 @@ def low_candidates(X: np.ndarray, dy: np.ndarray, h: np.ndarray, template: BedTe
     if template.prof is None:
         return result(empty, 0.0)
     x1 = min(cfg.range_max, x_limit)
-    band = (X >= range_min) & (X < x1) & (np.abs(dy) <= cfg.half_width) & (h < h_bottom) & (h > -1.2)
-    idx = np.flatnonzero(band)
+    idx = _native.select(X.size, (X, ">=", range_min, "<", x1), (dy, None, None, "<=", cfg.half_width, True),
+                         (h, ">", -1.2, "<", h_bottom))
+    if idx is None:
+        band = (X >= range_min) & (X < x1) & (np.abs(dy) <= cfg.half_width) & (h < h_bottom) & (h > -1.2)
+        idx = np.flatnonzero(band)
     if idx.size == 0:
         return result(idx, 0.0)
     res = h[idx] - template(dy[idx])

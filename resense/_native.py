@@ -15,17 +15,24 @@ from __future__ import annotations
 
 import ctypes
 import glob
+import math
 import os
 from typing import Optional
 
 import numpy as np
 
-_ABI = 1
+_ABI = 2
 MIN_SIZE = 2048          # below this the numpy code is as fast (ctypes call ~ a few microseconds)
 
 _c_double_p = ctypes.POINTER(ctypes.c_double)
 _c_int64_p = ctypes.POINTER(ctypes.c_int64)
 _c_float_p = ctypes.POINTER(ctypes.c_float)
+
+
+class _Cond(ctypes.Structure):
+    _fields_ = [("data", ctypes.c_void_p), ("stride", ctypes.c_int64), ("is_f64", ctypes.c_int32),
+                ("absval", ctypes.c_int32), ("lo_op", ctypes.c_int32), ("hi_op", ctypes.c_int32),
+                ("lo", ctypes.c_double), ("hi", ctypes.c_double)]
 
 
 def _load():
@@ -51,6 +58,21 @@ def _load():
                                                 _c_double_p, _c_double_p]
         lib.rs_visibility.restype = dbl
         lib.rs_visibility.argtypes = [_c_float_p, i64, dbl, dbl, dbl, dbl, i64]
+        flt = ctypes.c_float
+        lib.rs_floor_band.restype = i64
+        lib.rs_floor_band.argtypes = [_c_float_p, i64, flt, flt, dbl, dbl, dbl, dbl, _c_double_p, i64,
+                                      _c_double_p, _c_int64_p, _c_int64_p]
+        lib.rs_rails_band.restype = i64
+        lib.rs_rails_band.argtypes = [_c_float_p, _c_double_p, i64, flt, flt, ctypes.c_int, dbl, dbl, dbl, dbl,
+                                      _c_double_p, _c_double_p, _c_double_p]
+        lib.rs_walls_band.restype = i64
+        lib.rs_walls_band.argtypes = [_c_float_p, _c_double_p, i64, dbl, flt, flt, dbl, dbl, dbl, dbl, dbl,
+                                      _c_float_p, _c_float_p, _c_double_p]
+        lib.rs_verify_profile.restype = None
+        lib.rs_verify_profile.argtypes = [_c_float_p, _c_double_p, i64, flt, flt, dbl, dbl, dbl, dbl, dbl,
+                                          _c_double_p, i64, _c_int64_p, _c_double_p, _c_int64_p, _c_int64_p]
+        lib.rs_select.restype = i64
+        lib.rs_select.argtypes = [i64, ctypes.POINTER(_Cond), ctypes.c_int32, _c_int64_p]
         return lib, path
     return None, None
 
@@ -175,3 +197,121 @@ def visibility(xyz, c: float, t: float, hk: float, band: float, k: int) -> Optio
     if _cloud(xyz) is None:
         return None
     return float(_lib.rs_visibility(_ptr(xyz, _c_float_p), xyz.shape[0], c, t, hk, float(band), int(k)))
+
+
+# -- selection prologues ------------------------------------------------------------------------
+
+def _f32(v) -> Optional[float]:
+    """A threshold that numpy compares with a float32 array in float32 on every numpy version: a
+    finite Python float or a small Python int (a numpy float64 scalar compares in float64 on
+    numpy 2 but in float32 on numpy 1.x, so it is left to numpy). None when it does not qualify."""
+    if type(v) is float and math.isfinite(v) and abs(v) < 1e30:
+        return v
+    if type(v) is int and abs(v) <= 2 ** 24:
+        return float(v)
+    return None
+
+
+def _xyz_zf(xyz, zf) -> bool:
+    return (_cloud(xyz) is not None and isinstance(zf, np.ndarray) and zf.dtype == np.float64 and zf.ndim == 1
+            and zf.size == xyz.shape[0] and zf.flags.c_contiguous)
+
+
+def _edges(edges) -> Optional[np.ndarray]:
+    e = np.ascontiguousarray(edges, dtype=np.float64)
+    if e.ndim != 1 or e.size < 2 or not np.all(e[1:] > e[:-1]):
+        return None                   # np.digitize also takes decreasing edges; the kernels do not
+    return e
+
+
+def floor_band(xyz, x0, x1, coefs, halfwidth: float, edges):
+    """``_fit_floor``: (band size, Z of the band points in a bin as float64, their bin) or None."""
+    lo, hi, e = _f32(x0), _f32(x1), _edges(edges)
+    if lo is None or hi is None or e is None or _cloud(xyz) is None:
+        return None
+    n = xyz.shape[0]
+    zb = np.empty(n, dtype=np.float64)
+    bins = np.empty(n, dtype=np.int64)
+    m = np.zeros(1, dtype=np.int64)
+    nband = _lib.rs_floor_band(_ptr(xyz, _c_float_p), n, lo, hi, *coefs, float(halfwidth), _ptr(e, _c_double_p),
+                               e.size, _ptr(zb, _c_double_p), _ptr(bins, _c_int64_p), _ptr(m, _c_int64_p))
+    k = int(m[0])
+    return int(nband), zb[:k].copy(), bins[:k].astype(np.intp, copy=True)
+
+
+def rails_band(xyz, zf, x0, x1, prior_coefs, center: float, half: float):
+    """``estimate_rails``: (X, Y in the prior's curve coordinates, h) of the selected near-range
+    points, or None. ``prior_coefs`` is ``prior.center_coefs()`` (None without a prior)."""
+    lo, hi = _f32(x0), _f32(x1)
+    if lo is None or hi is None or not _xyz_zf(xyz, zf):
+        return None
+    n = xyz.shape[0]
+    t, hk = (0.0, 0.0) if prior_coefs is None else (prior_coefs[1], prior_coefs[2])
+    xs, ys, hs = (np.empty(n, dtype=np.float64) for _ in range(3))
+    m = _lib.rs_rails_band(_ptr(xyz, _c_float_p), _ptr(zf, _c_double_p), n, lo, hi, int(prior_coefs is not None),
+                           t, hk, float(center), float(half), _ptr(xs, _c_double_p), _ptr(ys, _c_double_p),
+                           _ptr(hs, _c_double_p))
+    return xs[:m].copy(), ys[:m].copy(), hs[:m].copy()
+
+
+def walls_band(xyz, zf, rail_offset: float, x0, x1, b0: float, b1: float, coefs):
+    """``estimate_axis_from_walls``: (X, Y as float32, dy) of the band points, or None."""
+    lo, hi = _f32(x0), _f32(x1)
+    if lo is None or hi is None or not _xyz_zf(xyz, zf):
+        return None
+    n = xyz.shape[0]
+    xb, yb = np.empty(n, dtype=np.float32), np.empty(n, dtype=np.float32)
+    dy = np.empty(n, dtype=np.float64)
+    m = _lib.rs_walls_band(_ptr(xyz, _c_float_p), _ptr(zf, _c_double_p), n, float(rail_offset), lo, hi,
+                           float(b0), float(b1), *coefs, _ptr(xb, _c_float_p), _ptr(yb, _c_float_p),
+                           _ptr(dy, _c_double_p))
+    return xb[:m].copy(), yb[:m].copy(), dy[:m].copy()
+
+
+def verify_profile(xyz, zf, x0, x1, coefs, b0: float, b1: float, edges):
+    """``verify_floor_extrapolation``: (n_sel, n_side, counts, base) or None."""
+    lo, hi, e = _f32(x0), _f32(x1), _edges(edges)
+    if lo is None or hi is None or e is None or not _xyz_zf(xyz, zf):
+        return None
+    nb = e.size - 1
+    counts = np.zeros(nb, dtype=np.int64)
+    base = np.full(nb, np.inf)
+    ns, nd = np.zeros(1, dtype=np.int64), np.zeros(1, dtype=np.int64)
+    _lib.rs_verify_profile(_ptr(xyz, _c_float_p), _ptr(zf, _c_double_p), xyz.shape[0], lo, hi, *coefs,
+                           float(b0), float(b1), _ptr(e, _c_double_p), e.size, _ptr(counts, _c_int64_p),
+                           _ptr(base, _c_double_p), _ptr(ns, _c_int64_p), _ptr(nd, _c_int64_p))
+    return int(ns[0]), int(nd[0]), counts.astype(np.intp, copy=False), base
+
+
+_OPS = {None: 0, ">": 1, ">=": 2, "<": 1, "<=": 2}
+
+
+def select(n: int, *conds) -> Optional[np.ndarray]:
+    """``np.flatnonzero`` of a conjunction of range tests, or None. Each condition is
+    ``(array, lo_op, lo, hi_op, hi)`` or with a sixth element ``True`` for ``np.abs(array)``;
+    ``lo_op`` is None, '>' or '>=', ``hi_op`` None, '<' or '<='. Arrays are 1-D float32 / float64
+    of length ``n`` (any stride)."""
+    if not _enabled or n < MIN_SIZE:
+        return None
+    arr = (_Cond * len(conds))()
+    keep = []
+    for q, c in zip(arr, conds):
+        a, lo_op, lo, hi_op, hi = c[:5]
+        if not (isinstance(a, np.ndarray) and a.ndim == 1 and a.size == n and a.dtype in (np.float32, np.float64)
+                and a.strides[0] > 0) or lo_op not in (None, ">", ">=") or hi_op not in (None, "<", "<="):
+            return None
+        f64 = a.dtype == np.float64
+        if f64:
+            lo = None if lo_op is None else float(lo)
+            hi = None if hi_op is None else float(hi)
+        else:
+            lo = None if lo_op is None else _f32(lo)
+            hi = None if hi_op is None else _f32(hi)
+            if (lo_op is not None and lo is None) or (hi_op is not None and hi is None):
+                return None
+        keep.append(a)
+        q.data, q.stride, q.is_f64, q.absval = a.ctypes.data, a.strides[0], int(f64), int(len(c) > 5 and bool(c[5]))
+        q.lo_op, q.hi_op, q.lo, q.hi = _OPS[lo_op], _OPS[hi_op], lo or 0.0, hi or 0.0
+    out = np.empty(n, dtype=np.int64)
+    m = _lib.rs_select(n, arr, len(conds), _ptr(out, _c_int64_p))
+    return out[:m].astype(np.intp, copy=True)

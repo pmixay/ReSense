@@ -14,6 +14,20 @@
 #include <cstring>
 #include <vector>
 
+// Generic conjunction of range tests (np.flatnonzero of a numpy mask chain): per condition a
+// float32 or float64 column (byte stride), optionally its absolute value, a lower test (0 none,
+// 1 >, 2 >=) and an upper test (0 none, 1 <, 2 <=). float32 columns compare in float32.
+struct RsCond {
+    const void* data;
+    int64_t stride;
+    int32_t is_f64;
+    int32_t absval;
+    int32_t lo_op;
+    int32_t hi_op;
+    double lo;
+    double hi;
+};
+
 namespace {
 
 struct Item {
@@ -59,11 +73,29 @@ inline double center_y1(double x, double c, double t, double hk) {
     return (c + t * x) + (hk * x) * x;
 }
 
+// np.digitize(x, edges) - 1 for increasing edges (np.searchsorted(edges, x, "right") - 1)
+inline int64_t bin_of(double x, const double* edges, int64_t ne) {
+    return static_cast<int64_t>(std::upper_bound(edges, edges + ne, x) - edges) - 1;
+}
+
+template <typename T>
+inline bool cond_ok(const RsCond& q, int64_t k) {
+    T v;
+    std::memcpy(&v, static_cast<const char*>(q.data) + k * q.stride, sizeof v);
+    if (q.absval) v = std::fabs(v);
+    const T lo = static_cast<T>(q.lo), hi = static_cast<T>(q.hi);
+    if (q.lo_op == 1 && !(v > lo)) return false;
+    if (q.lo_op == 2 && !(v >= lo)) return false;
+    if (q.hi_op == 1 && !(v < hi)) return false;
+    if (q.hi_op == 2 && !(v <= hi)) return false;
+    return true;
+}
+
 }  // namespace
 
 extern "C" {
 
-int rs_abi_version() { return 1; }
+int rs_abi_version() { return 2; }
 
 // resense.track.bin_percentile: per-bin percentile of ``values`` (linear interpolation between
 // the two order statistics around the rank, as np.percentile), bins with fewer than
@@ -138,21 +170,146 @@ void rs_corridor_coordinates(const float* xyz, int64_t n, double x0, double x1, 
 }
 
 // resense.health.visibility_along_track for a C-contiguous float32 (n, 3) cloud: X of the
-// k-th farthest forward return within ``band`` of the track axis (0 when there is none).
+// k-th farthest forward return within ``band`` of the track axis (0 when there is none; the
+// nearest one when there are at most k). The k largest values are kept in a min-heap: its top is
+// the value np.partition puts at rank m - k.
 double rs_visibility(const float* xyz, int64_t n, double c, double t, double hk, double band, int64_t k) {
-    std::vector<double> xs;
-    xs.reserve(static_cast<size_t>(n / 4 + 16));
+    if (k < 1) k = 1;
+    std::vector<double> heap;
+    heap.reserve(static_cast<size_t>(k));
+    const auto gt = [](double a, double b) { return a > b; };
+    int64_t m = 0;
+    double lo = 0.0;
     for (int64_t j = 0; j < n; ++j) {
         const float* p = xyz + 3 * j;
         if (!(p[0] > 0.0f)) continue;
         const double x = static_cast<double>(p[0]);
-        if (std::fabs(static_cast<double>(p[1]) - center_y1(x, c, t, hk)) < band) xs.push_back(x);
+        if (!(std::fabs(static_cast<double>(p[1]) - center_y1(x, c, t, hk)) < band)) continue;
+        lo = (m == 0) ? x : std::min(lo, x);
+        ++m;
+        if (static_cast<int64_t>(heap.size()) < k) {
+            heap.push_back(x);
+            std::push_heap(heap.begin(), heap.end(), gt);
+        } else if (x > heap.front()) {
+            std::pop_heap(heap.begin(), heap.end(), gt);
+            heap.back() = x;
+            std::push_heap(heap.begin(), heap.end(), gt);
+        }
     }
-    const int64_t m = static_cast<int64_t>(xs.size());
     if (m == 0) return 0.0;
-    if (m <= k) return *std::min_element(xs.begin(), xs.end());
-    std::nth_element(xs.begin(), xs.begin() + (m - k), xs.end());
-    return xs[static_cast<size_t>(m - k)];
+    if (m <= k) return lo;
+    return heap.front();
+}
+
+// ---------------------------------------------------------------------------------------------
+// Selection prologues of the track stage (resense/track.py, lowobj.py, gauge.py): the masks and
+// gathers over the whole cloud, fused into one pass each. A float32 coordinate is compared with
+// a threshold in float32, as numpy does for a Python float threshold (resense/_native.py passes
+// only Python floats here and falls back to numpy otherwise). Outputs keep the point order.
+// ---------------------------------------------------------------------------------------------
+
+// _fit_floor: band = (X >= x0) & (X < x1) & (|Y - center_y(X)| < halfwidth); for the band points in
+// a bin: Z (float64) and the bin. Returns the band size (the numpy code's Xb.size).
+int64_t rs_floor_band(const float* xyz, int64_t n, float x0, float x1, double c, double t, double hk,
+                      double halfwidth, const double* edges, int64_t ne, double* zb, int64_t* bins,
+                      int64_t* n_out) {
+    int64_t nband = 0, m = 0;
+    const int64_t nb = ne - 1;
+    for (int64_t k = 0; k < n; ++k) {
+        const float* p = xyz + 3 * k;
+        if (!(p[0] >= x0 && p[0] < x1)) continue;
+        const double x = static_cast<double>(p[0]);
+        if (!(std::fabs(static_cast<double>(p[1]) - center_y1(x, c, t, hk)) < halfwidth)) continue;
+        ++nband;
+        const int64_t b = bin_of(x, edges, ne);
+        if (b >= 0 && b < nb) {
+            zb[m] = static_cast<double>(p[2]);
+            bins[m] = b;
+            ++m;
+        }
+    }
+    *n_out = m;
+    return nband;
+}
+
+// estimate_rails: near = (X > x0) & (X < x1); h = Z - zf; Yp = Y - (t X + hk X X) (Y without a prior);
+// sel = (|Yp - center| < half) & (h > -0.4) & (h < 0.8). Writes X, Yp, h of the selection.
+int64_t rs_rails_band(const float* xyz, const double* zf, int64_t n, float x0, float x1, int has_prior,
+                      double t, double hk, double center, double half, double* xs, double* ys, double* hs) {
+    int64_t m = 0;
+    for (int64_t k = 0; k < n; ++k) {
+        const float* p = xyz + 3 * k;
+        if (!(p[0] > x0 && p[0] < x1)) continue;
+        const double x = static_cast<double>(p[0]);
+        const double h = static_cast<double>(p[2]) - zf[k];
+        const double yn = static_cast<double>(p[1]);
+        const double yp = has_prior ? yn - (t * x + (hk * x) * x) : yn;
+        if (std::fabs(yp - center) < half && h > -0.4 && h < 0.8) {
+            xs[m] = x;
+            ys[m] = yp;
+            hs[m] = h;
+            ++m;
+        }
+    }
+    return m;
+}
+
+// estimate_axis_from_walls: h = Z - (zf + rail_offset); band = (X > x0) & (X < x1) & (h > b0) & (h < b1).
+// Writes X, Y (float32, as X[band], Y[band]) and dy = Y - center_y(X) of the band points.
+int64_t rs_walls_band(const float* xyz, const double* zf, int64_t n, double rail_offset, float x0, float x1,
+                      double b0, double b1, double c, double t, double hk, float* xb, float* yb, double* dy) {
+    int64_t m = 0;
+    for (int64_t k = 0; k < n; ++k) {
+        const float* p = xyz + 3 * k;
+        if (!(p[0] > x0 && p[0] < x1)) continue;
+        const double h = static_cast<double>(p[2]) - (zf[k] + rail_offset);
+        if (!(h > b0 && h < b1)) continue;
+        xb[m] = p[0];
+        yb[m] = p[1];
+        dy[m] = static_cast<double>(p[1]) - center_y1(static_cast<double>(p[0]), c, t, hk);
+        ++m;
+    }
+    return m;
+}
+
+// verify_floor_extrapolation: sel = (X > x0) & (X < x1); side = b0 < |Y - center_y(X)| < b1;
+// hs = Z - zf, kept where hs > -1; per bin (clipped to the edges) the count and np.minimum.at of
+// hs. counts must be zeroed and base inf-filled by the caller. n_sel / n_side: the sizes the
+// numpy code tests before binning.
+void rs_verify_profile(const float* xyz, const double* zf, int64_t n, float x0, float x1, double c, double t,
+                       double hk, double b0, double b1, const double* edges, int64_t ne, int64_t* counts,
+                       double* base, int64_t* n_sel, int64_t* n_side) {
+    int64_t ns = 0, nd = 0;
+    const int64_t nb = ne - 1;
+    for (int64_t k = 0; k < n; ++k) {
+        const float* p = xyz + 3 * k;
+        if (!(p[0] > x0 && p[0] < x1)) continue;
+        ++ns;
+        const double x = static_cast<double>(p[0]);
+        const double ady = std::fabs(static_cast<double>(p[1]) - center_y1(x, c, t, hk));
+        if (!(ady > b0 && ady < b1)) continue;
+        ++nd;
+        const double h = static_cast<double>(p[2]) - zf[k];
+        if (!(h > -1.0)) continue;
+        const int64_t b = std::min(std::max(bin_of(x, edges, ne), int64_t(0)), nb - 1);
+        ++counts[b];
+        const double a = base[b];
+        base[b] = (a < h || std::isnan(a)) ? a : h;          // numpy's minimum: NaN wins, ties take h
+    }
+    *n_sel = ns;
+    *n_side = nd;
+}
+
+// np.flatnonzero of the conjunction of ``nc`` conditions (RsCond above).
+int64_t rs_select(int64_t n, const RsCond* conds, int32_t nc, int64_t* out) {
+    int64_t m = 0;
+    for (int64_t k = 0; k < n; ++k) {
+        bool ok = true;
+        for (int32_t j = 0; j < nc && ok; ++j)
+            ok = conds[j].is_f64 ? cond_ok<double>(conds[j], k) : cond_ok<float>(conds[j], k);
+        if (ok) out[m++] = k;
+    }
+    return m;
 }
 
 }  // extern "C"

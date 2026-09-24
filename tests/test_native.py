@@ -49,6 +49,22 @@ def bits_equal(a, b) -> bool:
     return bool(np.array_equal(a, b))
 
 
+def deep_equal(a, b) -> bool:
+    """Bit-exact equality of results: dataclasses field by field, sequences, arrays, floats."""
+    import dataclasses
+    import struct
+    if dataclasses.is_dataclass(a):
+        return type(a) is type(b) and all(deep_equal(getattr(a, f.name), getattr(b, f.name))
+                                          for f in dataclasses.fields(a))
+    if isinstance(a, (tuple, list)):
+        return type(a) is type(b) and len(a) == len(b) and all(deep_equal(x, y) for x, y in zip(a, b))
+    if isinstance(a, np.ndarray):
+        return isinstance(b, np.ndarray) and bits_equal(a, b)
+    if isinstance(a, float):
+        return type(a) is type(b) and (struct.pack("<d", a) == struct.pack("<d", b) or (a != a and b != b))
+    return type(a) is type(b) and a == b
+
+
 def test_status_line():
     assert _native.enabled() in (True, False)
     assert "native" in _native.status() or "numpy" in _native.status()
@@ -128,6 +144,45 @@ def test_corridor_coordinates_and_visibility_identical():
     assert a == b == 0.0
 
 
+def test_select_matches_numpy_masks():
+    rng = np.random.default_rng(5)
+    xyz = _cloud(30000, 2)
+    X = xyz[:, 0]                                            # float32, strided
+    X[:50] = np.float32(0.1)                                 # exactly at float32(0.1): float32 vs float64 compares differ
+    dy = rng.normal(0.0, 1.0, X.size)
+    h = rng.normal(0.0, 1.0, X.size)
+    with native(True):
+        got = _native.select(X.size, (X, ">", 0.1, "<=", 120.5), (dy, None, None, "<", 0.7, True), (h, ">=", -0.2, None, None))
+        assert _native.select(X.size, (X, ">", np.float64(0.1), None, None)) is None   # numpy-version dependent: numpy decides
+        assert _native.select(X.size, (X, "=", 0.1, None, None)) is None
+    want = np.flatnonzero((X > 0.1) & (X <= 120.5) & (np.abs(dy) < 0.7) & (h >= -0.2))
+    assert got is not None and bits_equal(got, want)
+
+
+def test_track_stage_functions_identical(tunnel):
+    """The selection prologues (floor band, rails, walls, floor verification) through the real
+    functions, on the synthetic tunnel and on a random cloud."""
+    from resense.config import TrackConfig
+    from resense.track import (_fit_floor, estimate_axis_from_walls, estimate_rails, estimate_track,
+                               verify_floor_extrapolation)
+    cfg = TrackConfig()
+    frame, _, gt = tunnel
+    for xyz in (frame.xyz, _cloud(60000, 4)):
+        m = _model()
+        zf = m.floor_z(xyz[:, 0])
+        results = [both(lambda: _fit_floor(xyz, cfg, m)),
+                   both(lambda: estimate_rails(xyz, m, cfg, m.center, m, floor_z_all=zf)),
+                   both(lambda: estimate_axis_from_walls(xyz, m, cfg, None, floor_z_all=zf)),
+                   both(lambda: estimate_axis_from_walls(xyz, m, cfg, 0.01, floor_z_all=zf)),
+                   both(lambda: verify_floor_extrapolation(xyz, m, cfg, floor_z_all=zf)),
+                   both(lambda: estimate_track(xyz, cfg, prev=m)),
+                   both(lambda: estimate_track(xyz, cfg, prev=None))]
+        for a, b in results:
+            assert deep_equal(a, b)
+        if xyz is frame.xyz:                                  # the tunnel: every step found something
+            assert results[0][0] is not None and results[1][0].score > 0 and results[2][0] is not None
+
+
 def _frames(tunnel, n=6):
     """The clear synthetic tunnel with a 0.5 m box of points approaching in the gauge."""
     frame, _, gt = tunnel
@@ -161,5 +216,5 @@ def test_detector_output_identical(tunnel):
         return [_strip(det.process(f).to_dict()) for f in frames]
 
     a, b = both(run)
-    assert a == b
+    assert a == b                         # the JSON view; the track floats (floor_coef, yaw, curvature) are unrounded
     assert any(r["obstacle"] or r["warning"] for r in a)     # the box is reported: the comparison is not vacuous

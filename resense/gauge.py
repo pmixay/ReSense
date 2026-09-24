@@ -58,9 +58,23 @@ def corridor_mask(xyz: np.ndarray, track: TrackModel, cfg: GaugeConfig,
     whole frame, which are inside the strict gauge. ``dy_all`` / ``h_all`` are the corridor
     coordinates of the whole frame when the caller already has them."""
     X = xyz[:, 0]
-    in_range = (X >= cfg.range_min) & (X <= cfg.range_max)
     mask = np.zeros(xyz.shape[0], dtype=bool)
     strict = np.zeros(xyz.shape[0], dtype=bool)
+    if dy_all is not None and h_all is not None and cfg.lateral_growth_per_100m <= 0 and _native.enabled():
+        # the range test and the bounding box below in one pass (resense/_native.py): frame indices
+        poly = widened_profile(cfg, cfg.warning_margin)
+        box = _native.select(xyz.shape[0], (X, ">=", cfg.range_min, "<=", cfg.range_max),
+                             (dy_all, None, None, "<=", np.abs(poly[:, 0]).max(), True),
+                             (h_all, ">=", poly[:, 1].min(), "<=", poly[:, 1].max()))
+        if box is not None:
+            if box.size == 0:
+                return mask, strict
+            sub = box[point_in_polygon(dy_all[box], h_all[box], poly)]
+            mask[sub] = True
+            if sub.size:
+                strict[sub[point_in_polygon(dy_all[sub], h_all[sub], cfg.profile)]] = True
+            return mask, strict
+    in_range = (X >= cfg.range_min) & (X <= cfg.range_max)
     if not in_range.any():
         return mask, strict
     idx = np.flatnonzero(in_range)
