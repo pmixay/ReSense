@@ -28,10 +28,19 @@ What it means for ReSense:
   `nvidia-container-toolkit` on the host and `--gpus all` (or the compose `deploy.resources`
   equivalent).
 * **ReSense does not use the GPU.** The image installs no CUDA runtime, the node runs on CPU
-  (numpy / scipy / scikit-learn), and nothing in the launch or compose files requests a GPU.
-  The stand's driver / toolkit state therefore does not affect the build or the demo; the
-  per-frame budget on this machine is the CPU one in [`../EXPERIMENTS.md`](../EXPERIMENTS.md) §3.
+  (numpy / scipy / scikit-learn, optional C++ kernels compiled at build time), and nothing in the
+  launch or compose files requests a GPU. The stand's driver / toolkit state therefore does not
+  affect the build or the demo; the per-frame budget on this machine is the CPU one in
+  [`../EXPERIMENTS.md`](../EXPERIMENTS.md) §3.
+* **Evaluated on 24.09 and rejected for 29.09**
+  ([`../ARCHITECTURE.md`](../ARCHITECTURE.md) "GPU: evaluated, not used"): the i7-9700E has
+  PCIe 3.0 only; a frame is ~1 160 small array operations, so a CuPy port is dispatch-bound and
+  would save at most 30–45 ms per 360° frame against numpy, 5–15 ms against fused CPU code; the
+  `dpkg` list above has no `nvidia-container-toolkit`, and without it a container that requests
+  the GPU does not start at all; CuPy needs seconds of JIT warm-up in a fresh container; the image
+  would grow by 0.3–6 GB; nothing of it can be tested in CI. The spec (§3.1) allows the GPU only
+  if the algorithm needs it.
 * If a GPU stage is ever added (accumulation buffers or a learned second opinion, see
   [`../RESEARCH.md`](../RESEARCH.md) §3–4), it must target CUDA 12.x with the driver above and
-  stay optional (CPU fallback), because the spec (§3.1) allows the GPU but does not promise it
-  on the control run.
+  stay optional (CPU fallback, not requested by the default launch), because the spec does not
+  promise the GPU on the control run.

@@ -52,8 +52,9 @@ trained on `resense inject` data plus mined false positives (see §4).
 replaced by the organizers' train envelope, 2.1 × 3.0 m (v0.6, [`ALGORITHM.md`](ALGORITHM.md) §3.2);
 "confirm over ≥3 frames" became 3 hits over 0.5 s of sensor time (v0.6.2, ALGORITHM §3.5);
 multi-frame accumulation with ego-motion compensation was built in v0.4 (its inputs and defaults:
-ALGORITHM §3.4); the sensor is a Hesai Pandar128 (E3X) ([`SENSOR.md`](SENSOR.md) §1), not the
-OT128/AT128 assumed in §5.
+ALGORITHM §3.4; the LiDAR-only speed estimate measured against ICP on 24.09: EXPERIMENTS §9); the
+GPU was evaluated on 24.09 and is not used (ARCHITECTURE "GPU: evaluated, not used"); the sensor is
+a Hesai Pandar128 (E3X) ([`SENSOR.md`](SENSOR.md) §1), not the OT128/AT128 assumed in §5.
 
 ---
 

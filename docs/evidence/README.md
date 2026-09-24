@@ -19,6 +19,7 @@ One JSON per experiment, each with a `note`, `_meta` or `source` block that name
 
 | file | date | code | script | cited by |
 |---|---|---|---|---|
+| [`experiments_2026-09-24_train_speed.json`](results/experiments_2026-09-24_train_speed.json) | 24.09 | `537e220` (detector unchanged) + the scripts of `396755f` | `scripts/speed_reference.py`, `speed_accuracy.py`, `eval_real.py --nominal-stamps --speed-ref`, `score_fake_objects.py`, `speed_setf.py`, `speed_static_check.py`, `speed_timing.py` | EXPERIMENTS §9; CHANGELOG; SCORECARD §8 |
 | [`experiments_2026-09-24_remeasure.json`](results/experiments_2026-09-24_remeasure.json) | 24.09 | `4cd32d6` (current) against `1210580` (v0.6.3) | `scripts/eval_real.py`, `start_offsets.py`, `far_range_eval.py`, `lying_person_eval.py`, `resense bench` | EXPERIMENTS "Re-measurement", §2d round 3; SCORECARD §1 |
 | [`experiments_p4_fake_labelled.json`](results/experiments_p4_fake_labelled.json) | 24.09 | `07b5e0c` + P4's evaluation fixes of 24.09 (detector unchanged) | `resense run`, `scripts/score_fake_objects.py`, `resense summarize --gt`, `scripts/eval_real.py`, `short_signature_experiment.py` | EXPERIMENTS §1e, §2e; P4_AUDIT; DATASET |
 | [`experiments_p4_fake_unlabelled.json`](results/experiments_p4_fake_unlabelled.json) | 24.09 | not recorded (P4's first, unlabelled pass) | `resense run` + `resense summarize` | EXPERIMENTS §2e; P4_AUDIT; DATASET |
@@ -82,4 +83,6 @@ the repository.
 |---|---|---|---|
 | v0.6.4 node start-up in the Docker chain (catch-up of the player's burst; first STOP 4.02 → 1.59 s, peak RSS 403–434 MB) | 24.09 | EXPERIMENTS §3b; CHANGELOG | node logs, status captures, `docker stats` |
 | the opt-in near-bed path on all 13 759 frames and on set F (five bags 20 → 145 events, ride 47 → 667) | 24.09 | EXPERIMENTS §1e; SCORECARD §3 | the per-frame outputs and summaries of the criteria review of 24.09 |
+| the opt-in near-bed path with the gates of `537e220` and of the fix `7df1796` on the six recordings and set O (five bags 141 / 28 / 33 and 459 / 107 / 72) | 24.09 | EXPERIMENTS §1e; ALGORITHM §3.3b, §6; CHANGELOG | the per-frame outputs and summaries of the fix's runs |
+| the GPU study and the C++ kernels' A/B timing and identity runs (3 998 frames) | 24.09 | ARCHITECTURE "Native kernels", "GPU: evaluated, not used"; EXPERIMENTS §3 | the profiles, A/B logs and per-frame diffs |
 | the judges' own runs (bench under load, 5 Hz and tilt stress tests, `clear_distance` audit) | 24.09 | [`../SCORECARD.md`](../SCORECARD.md) §1–§3 | their outputs (the judges' VM only) |

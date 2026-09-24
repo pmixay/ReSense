@@ -13,7 +13,10 @@
 рельсе — в 124 из 126 кадров после ухода человека, ошибка расстояния ≤ 0,23 м. На синтетических
 объектах самих организаторов (набор O) STOP получают 5 из 8 объектов в габарите: ящик 2 × 2 м
 с 98 м, кубы 0,3 м только с 34–43 м. Человек на 148–154 м — только на нашей синтетике. Время
-кадра 42–64 мс (p95 53–78 мс) на одном ядре машины разработки; стенд i7-9700E не измерен.
+кадра 42–64 мс (p95 53–78 мс) на одном ядре машины разработки без монитора состояния; ядра на C++
+(24.09) сокращают его на 38–57 %; стенд i7-9700E не измерен. Собственная оценка скорости поезда по
+лидару точна (ошибка 0,06–0,08 м/с), но даже точная скорость не улучшает проверку организаторов
+(§9), поэтому по умолчанию она выключена.
 
 ## Current results (detector v0.6.3, node v0.6.4; re-measured 24.09)
 
@@ -35,14 +38,15 @@ and terms: [`README.md`](README.md) §3 (glossary), [`EVALUATION.md`](EVALUATION
 | same, object anchored on the near rails | person **154 m** (legacy 150 m in the same 5 pairs), trolley 148 m (148 m), crate 110 m (116 m), cable 102 m (104 m) | synthetic, set F round 4, anchored placement, 24.09 | §2d |
 | curves and the envelope edge, paired | no visible object matched at 100–150 m in either placement mode (6 paired R ≈ 350 m curve approaches per kind, lateral to the envelope edge); first confirmed person 74 → 68 m, 1 m box 75 → 80 m (legacy → anchored) | synthetic, set F paired, 24.09 | §2d |
 | long range with a given train speed | person 167 m, trolley 175 m, crate 182 m (held only from 79 m) | synthetic, set F round 3, legacy, 24.09 | §2d |
+| train speed (opt-in LiDAR-only estimate) | median error 0.06–0.08 m/s, p90 ≤ 0.20 m/s against an ICP reference on 55–96 % of the moving frames, +6.6–6.8 ms per frame; even the reference speed handed in as odometry buys nothing on the organizers' check: five bags 103 / 18 → 111 / 16 alarm frames / events, no organizers' object STOPs earlier, 6 → 17 false STOP frames on the 2 × 2 m box outside; only far-field frame recall rises | real, organizers' synthetic and synthetic, 24.09 | §9 |
 | curves, stations, small and low objects | R ≈ 350 m curves 6 of 7 from 58–86 m (the sightline); station stops 6 of 6 from 113 m; 30 cm objects on a rail head 6 of 6 from 42–49 m; a person lying across the rails 6 of 6 from 64 m; objects on the bed between the rails stay below the envelope (policy) | synthetic, set F round 3, legacy, 24.09 | §2d |
 | set S (108 real empty frames) | 22 of 67 visible in-gauge objects with bed placement, 29 of 68 with the old legacy height (small samples) | synthetic, 24.09 | [`P4_AUDIT.md`](P4_AUDIT.md) |
 | sensor reach | no return beyond 210 m in any of the 13 759 frames: 300 m is beyond this sensor | real | §2d |
 | other mounts | upside down, `+x` forward, backwards found; tilt recovered to 0.0–0.5° | real, re-mounted, 22–23.09 | §6 |
-| offline timing per frame | 42–64 ms mean, p95 53–78 ms on every recording, one core, pure Python (v0.6.3); on another idle VM on 24.09 36.5–52.2 ms mean, p95 50.3–67.1 ms | timing: sandbox, 23.09 | §3 |
+| offline timing per frame | 42–64 ms mean, p95 53–78 ms on every recording, one core, numpy path (v0.6.3), health monitor not included (7–14 ms more); on another idle VM on 24.09 36.5–52.2 ms mean, p95 50.3–67.1 ms; the optional C++ kernels (merged 24.09, after v0.6.3) cut the detector time by 38–57 % with identical output | timing: sandbox, 23.09 (kernels: 24.09, under load) | §3; [`ARCHITECTURE.md`](ARCHITECTURE.md) "Native kernels" |
 | ROS 2 node in Docker | 120°: 10 fps, p95 76 ms; 360°: 7–10 fps, p95 112–130 ms in `dry_run.sh` (the sandbox is at the frame period); ~100 % of one core, 186 MB | timing: sandbox, 23.09 (v0.6.2 image) | §3b |
 | node start-up (v0.6.4) | first STOP on `doubleT_obstacle` 1.59 s into the recording (v0.6.3: 4.02 s), no scene reset; peak RSS 403–434 MB at 360° | timing: sandbox, 24.09 [team record, unverified: raw captures not committed] | §3b |
-| opt-in near-bed path (off) | switched on: five bags 20 → 145 events, ride 47 → 667; a 30 × 30 × 10 cm box on the bed found in 0 of 6 approaches; its gates were retuned by `537e220` since, not re-measured | real + synthetic, 24.09 [team record, unverified] | §1e |
+| opt-in near-bed path (off) | first gates: five bags 20 → 145 events, ride 47 → 667, a 30 × 30 × 10 cm box on the bed in 0 of 6 set F approaches [team record, unverified]; current gates (`537e220` with the box fix `7df1796`): five bags 459 alarm frames / 107 events / 72 STOP episodes, the box found in the synthetic-tunnel test at 12–28 m; ride and set F not re-run | real + synthetic, 24.09 | §1e |
 
 ¹ The same scene is counted three ways: 124 of 126 frames after the person leaves (the headline);
 127 of the object's 185 visible frames by its own detection; 185 of the 246 labelled
@@ -52,7 +56,7 @@ obstacle-frames of the recording (person 58 of 61 + object 127 of 185).
 
 * The opt-in paths `track.rails_far_check_enabled`, `lowobj.near_enabled` and
   `accumulation.estimate_speed` are `false` in both parameter files and the code defaults; the
-  far-rail check has never been measured, the near-bed path is §1e.
+  far-rail check has never been measured, the near-bed path is §1e, the speed estimator §9.
 * Set F uses legacy placement unless said (protocol: EVALUATION §3; paired check: §2d round 4 and
   [`P4_AUDIT.md`](P4_AUDIT.md)); synthetic objects are not a real long-range test.
 * ROS and Docker numbers are dated runs on the sandbox, not re-measured on every change.
@@ -82,8 +86,8 @@ full rate (all 13 759 frames), and the current code (`main` at `4cd32d6`) and v0
 are the record of how the detector got there (real bags; synthetic obstacles in real frames; long
 range on the moving ride; the organizers' synthetic-obstacle recording); §3 timing, §4 lessons,
 §5 open experiments, §6 mount calibration, §7 the recognition methods side by side, §8 the learned
-second opinion. Every number is **real** (recording named), **synthetic** (said so) or
-**organizers' synthetic** (set O).
+second opinion, §9 the train speed (the LiDAR-only estimate measured, and what a speed adds). Every
+number is **real** (recording named), **synthetic** (said so) or **organizers' synthetic** (set O).
 
 Raw summaries live in [`evidence/results/`](evidence/results/), one row each in
 [`evidence/README.md`](evidence/README.md); the ones this file cites most:
@@ -107,7 +111,9 @@ Raw summaries live in [`evidence/results/`](evidence/results/), one row each in
   [`experiments_p4_setf_straight_paired.json`](evidence/results/experiments_p4_setf_straight_paired.json):
   set F round 4, legacy against anchored placement;
 * [`experiments_p4_fake_labelled.json`](evidence/results/experiments_p4_fake_labelled.json): set O,
-  the per-object grade and the variants of §2e.
+  the per-object grade and the variants of §2e;
+* [`experiments_2026-09-24_train_speed.json`](evidence/results/experiments_2026-09-24_train_speed.json):
+  the train-speed study of §9 (estimator accuracy, false alarms, set O, set F, timing).
 
 **P4's evaluation audit (23–24.09).** [`P4_AUDIT.md`](P4_AUDIT.md) corrected the synthetic
 placement (set S on the local bed, set F anchored on the near rails) and the accounting (tracker
@@ -338,7 +344,7 @@ there is false. `doubleT_obstacle` has one true obstacle, the person crossing th
 55–57 m (in the strict gauge in frames 2–72, `labels/doubleT_obstacle.json`).
 
 **Protocol of the v0.5 runs (real data, 21.09).** Every frame of the six organizer bags cached as
-`*.npy` (`scripts/cache_frames.py`, 2 488 frames), pure Python on the 4-core sandbox (the jury's
+`*.npy` (`scripts/cache_frames.py`, 2 488 frames), Python / numpy on the 4-core sandbox (the jury's
 i7-9700E has 8 faster cores; the load of every timing run is stated). Raw per-frame results of the
 v0.3 baseline are the captain's `/data/results/v0.3/<bag>.jsonl` (commit `f2c57e5`, 21.09); the
 v0.5 runs are `python -m resense.cli run --npy /data/cache/<bag> --out <bag>.jsonl --quiet` with
@@ -493,12 +499,12 @@ code measures 89 / 29, `roundT_pressureGate_roundT` 8 → 31 frames,
 `roundT_squareT_pressureGate_squareT` 5 → 20), it did not change the person's recall or first alarm
 on `doubleT_obstacle` (66/71, frame 7, with the stopped-train guard), and it costs 7–8 ms per frame;
 the final-code number is in the ablation row above. The synthetic gain of §2b (person 189 vs 178 m
-on the tunnel at 22 m/s) is real but has no real-data counterpart yet (no moving bag with an
-obstacle); with a given speed the given-speed rows of §2c and the given-speed runs of the ablation
-table are the measured behaviour. Regression rule of [`EVALUATION.md`](EVALUATION.md) §3.6:
-false-alarm frames on E 1 001 → 96 and p95 latency (§3: 51 vs 71 ms on `roundT_doubleT`, 60 vs 76 ms
-on `doubleT_obstacle`, back to back) are both better than v0.3; on R the first alarm frame is 7
-(≤ 9) and the recall 66/71 (≥ 64/71).
+on the tunnel at 22 m/s) had no real-data counterpart then (no moving recording with an obstacle;
+since 24.09 there is one, and the estimator was measured on it: §9); with a given speed the
+given-speed rows of §2c and the given-speed runs of the ablation table are the measured behaviour.
+Regression rule of [`EVALUATION.md`](EVALUATION.md) §3.6: false-alarm frames on E 1 001 → 96 and p95
+latency (§3: 51 vs 71 ms on `roundT_doubleT`, 60 vs 76 ms on `doubleT_obstacle`, back to back) are
+both better than v0.3; on R the first alarm frame is 7 (≤ 9) and the recall 66/71 (≥ 64/71).
 
 ### 1c. v0.5 on the organizers' extended recording (22.09, unlabelled, every frame)
 
@@ -624,10 +630,34 @@ history) and by P4 on set O:
 626 of the 667 ride events are low-object tracks, first confirmed at a median 19 m (10–90 %:
 8–28 m), median |lateral| 0.02 m: the central bed fixtures of §1d (train-control inductors, drain
 covers). The path finds no 30 × 30 × 10 cm box and gives 51 false events per km of the ride, so it
-stays off. `537e220` (24.09) retuned its gates to reject those fixtures: excess 0.08 → 0.05 m,
-≥ 10 voxels (was 5), 0.24–0.55 m across, ≥ 0.18 m along the track, and bed support across ≥ 20
-lateral template bins in each 2 m bin. The retuned path has **not been re-measured** on real data;
-the numbers above are the gates of `a92625e`.
+stays off.
+
+**The gates of `537e220` and the box fix `7df1796` (24.09).** `537e220` retuned the gates to reject
+those fixtures (excess 0.08 → 0.05 m, ≥ 10 voxels, ≤ 0.55 m across, ≥ 0.18 m along the track, bed
+support in ≥ 20 of the lateral template bins of each 2 m bin) and then missed the synthetic
+30 × 30 × 10 cm box on the bed (`tests/test_envelope.py`, 12 / 20 / 28 m; `main` red). At those
+ranges the box is one scan line, 5–10 voxels and 0.03 m along the track, and the ≥ 10 voxel and
+≥ 0.18 m gates each rejected it alone; `7df1796` sets `near_min_points` back to 5 and
+`near_min_length` to 0 and keeps the other gates. Measured with `lowobj.near_enabled: true`,
+`scripts/eval_real.py --jobs 2` on the six recordings (STOP episodes and the person / rail-object
+counts as `scripts/start_offsets.py` counts them) and `scripts/score_fake_objects.py` on set O
+[real and organizers' synthetic, 24.09; raw runs not committed]. The shipped default (path off)
+reproduces the re-measurement above exactly, and the `4b5786b` row reproduces the review's
+five-bag numbers of the first table.
+
+| near-bed parameters | five recordings: alarm frames / events / STOP | `doubleT_obstacle` person, object | set O #2 / #3 / #4 STOP frames | set O background alarm frames / IDs |
+|---|---|---|---|---|
+| defaults (path off) | 107 / 20 / 27 | 58/61, 127/185 | 19 / 23 / 0 | 3 / 2 |
+| `4b5786b` (excess 0.08, ≥ 5 voxels) | 1 035 / 145 / 42 | 58/61, 127/185 | 19 / 23 / 0 | 466 / 106 |
+| `537e220` (+ width ≤ 0.55 m, bed support 20 bins, ≥ 10 voxels, ≥ 0.18 m long, excess 0.05) | 141 / 28 / 33 | 58/61, 127/185 | 19 / 23 / 0 | 95 / 17 |
+| **current** (`537e220` with ≥ 5 voxels, no length minimum) | **459 / 107 / 72** | 58/61, 127/185 | 19 / 23 / 0 | 319 / 113 |
+
+Each gate added alone to the `4b5786b` parameters (five recordings, alarm frames / events / STOP):
+width ≤ 0.55 m 531 / 108 / 70; bed support 1 023 / 135 / 41; ≥ 10 voxels 763 / 81 / 32;
+≥ 0.18 m 681 / 75 / 31; excess 0.05 1 061 / 169 / 50. The gates that did most of the reduction are
+the ones the box cannot pass: the remaining false events are central bed fixtures (median
+|lateral| 0.00 m, width 0.30 m, 7 voxels, first seen at 15 m) with the box's single-scan-line
+signature. The ride and set F were not re-run. The path stays off.
 
 **Far-rail check** (`track.rails_far_check_enabled`, `resense/track.py`: a wall-derived curvature
 that contradicts rails visible in two slabs beyond the near fit is replaced, for station halls whose
@@ -1041,10 +1071,11 @@ frames 0–803 by the tool the organizers will check solutions with ([Q&A](organ
 fact 4), so the closest thing to the hidden check. The object points are appended to each message,
 so the recording is labelled exactly (`scripts/label_fake_objects.py` →
 `labels/cloud_with_fake_obj.json`, 1 206 object-frames; DATASET "Synthetic-obstacle recording").
-Three limits: the objects approach at 14–20 m/s independently of the real train, which backs up and
-stands, so a given train speed cannot be tested; they are placed from the sensor's axis, −0.24° to
-the rails, so the edge tests sit within ±0.1–0.4 m of the envelope edge; beyond ~100 m their path
-leaves the tunnel, and those rows are graded out.
+The objects stand still in the tunnel while the train drives up to them at 1.4–20 m/s (corrected
+on 24.09: an earlier ICP had the train backing up), so a train speed can be tested on it (§9). Two
+limits: the objects are placed from the sensor's axis, −0.24° to the rails, so the edge tests sit
+within ±0.1–0.4 m of the envelope edge; beyond ~100 m their path leaves the tunnel, and those rows
+are graded out.
 
 **Grade of the shipped detector** (default config, every frame, no speed given;
 `scripts/score_fake_objects.py`; raw:
@@ -1112,7 +1143,17 @@ those frames). **Not shipped**: the 20-minute ride, where most infrastructure li
 re-run with it (§5). None of the ten objects lies on the bed between the rails, so the shipped bed
 policy is not tested by this set.
 
-## 3. Timing (4-core sandbox, Python, every frame; the i7-9700E bench is still owed)
+## 3. Timing (4-core sandbox, numpy path, every frame; the i7-9700E bench is still owed)
+
+**What is timed.** `resense bench` prints the `timing_ms` of each frame. Its `total` runs from the
+first stage through tracking and **leaves out the health monitor**, which `Detector.process` runs
+after it (`resense/detector.py`): 7–14 ms more per frame on the sandbox [timing: sandbox, 24.09].
+The node's `/resense/latency_ms` (decode + detect + publish) includes it. "360°" is
+`doubleT_obstacle`, which covers about −124…+118° of azimuth in the vehicle frame. The tables below
+are the numpy path; the optional C++ kernels merged on 24.09 cut the detector time by 38–57 % with
+bit-identical output ([`ARCHITECTURE.md`](ARCHITECTURE.md) "Native kernels": `roundT_doubleT`
+62.4 → 33.5 ms, `doubleT_obstacle` 81.3 → 34.6 ms with p95 107 → 51 ms, `total` under load);
+`RESENSE_NATIVE=0` forces the numpy path.
 
 **v0.6.3 (23.09, the idle sandbox, `resense bench --npy <recording>`, every frame, recordings
 back to back, `OMP_NUM_THREADS=1`)** — a review measured the v0.6.2 code 25–33 % slower than the
@@ -1140,8 +1181,8 @@ on 24.09 on another idle 4-core sandbox, the current code and v0.6.3 back to bac
 
 **v0.6 (22.09, the idle sandbox, nothing else running; `resense bench --npy <recording>`,
 every frame, recordings back to back; the load of 1–3 is the bench's own BLAS threads).**
-`total` is the whole `Detector.process` — mount calibration, track model, corridor and the
-low-object stage, clustering, tracking, health:
+`total` covers mount calibration, track model, corridor and the low-object stage, clustering and
+tracking; the health monitor runs after it and is not included (see above):
 
 | recording (every frame) | **v0.6** mean / p95 / max | track / corridor / cluster means | v0.5 mean / p95 (below) |
 |---|---|---|---|
@@ -1166,8 +1207,9 @@ calibration frames).
 Hz** — and 160–180 MB resident. With the library defaults the BLAS threads of numpy kept 3.9 cores
 busy on the 347 k-point frames (250 ms of CPU per frame) for no speed-up (64 vs 65 ms wall time);
 the image therefore sets `OMP_NUM_THREADS=OPENBLAS_NUM_THREADS=MKL_NUM_THREADS=1`. The ROS node adds
-~20–25 ms per 360° frame (message conversion, decode, publishing; §3b); the jury's i7-9700E (8
-faster cores) is not measured.
+~20–25 ms per 360° frame (message conversion, decode, publishing; §3b), part of which is the health
+monitor that the node's latency includes and `total` does not; the jury's i7-9700E (8 faster cores)
+is not measured.
 
 **v0.5 (history).**
 
@@ -1205,8 +1247,8 @@ cores) has not been measured (P1).
 Per-stage means of the same runs are in the table; the platform bags remain the expensive ones
 because their corridor holds 15–20 k candidates per frame (DBSCAN 45–70 ms in v0.3 and v0.5 alike).
 The frame period is 100 ms; the ROS node adds message conversion, decode and publishing (~20–25 ms
-at 360°, §3b), and drops frames rather than queueing, so the node's dropped-frame counter is the
-number to watch on the bench.
+at 360°, §3b; part of which is the health monitor, 7–14 ms, not in `total`), and drops frames
+rather than queueing, so the node's dropped-frame counter is the number to watch on the bench.
 
 ### 3b. The ROS 2 node in Docker on real recordings (23–24.09, v0.6.2–v0.6.4)
 
@@ -1299,7 +1341,8 @@ max 102 %), 186 MB** (v0.6.2 image, `ct_real_docker_stats.txt`) — at 360° the
 on the sandbox. The detector stage costs the same in the image (Python 3.10, numpy 1.26) as on the
 host (74 vs 68 ms on the first 100 frames of `doubleT_obstacle`); the ROS path adds ~20–25 ms per
 360° frame (message conversion, decode — `pointcloud2_to_arrays`, 40 → 9 ms in v0.6.2 — and
-publishing the markers and the corridor cloud). The node skips frames instead of lagging, as
+publishing the markers and the corridor cloud; part of which is the health monitor, 7–14 ms, not
+in `total`). The node skips frames instead of lagging, as
 designed (keep-last 1 until v0.6.3; since v0.6.4 a 40-frame queue worked through by the catch-up
 above): over a whole 360° recording it processes 103–142 of 201 frames (v0.6.3, the start-up hole
 included; v0.6.4: 171–175), 7–10 fps in steady state; the 120° recordings run at the full 10 Hz.
@@ -1365,8 +1408,9 @@ the ROS 2 image. Offline latency needs no Docker: `resense bench --npy <cache>` 
 6. **Small objects**: anything below rail head + 12 cm inside the rails and low/narrow hardware
    (< 0.35 m top, < 0.4 m wide) is filtered — a 20 cm object on the sleepers is invisible by
    design; revisit with the extended dataset. (The ride has no obstacles; none of the organizers'
-   ten test objects of set O lies on the bed, §2e; the opt-in near-bed path raised the ride's false
-   events from 47 to 667, §1e [team record, unverified].)
+   ten test objects of set O lies on the bed, §2e; the opt-in near-bed path with its first gates
+   raised the ride's false events from 47 to 667 [team record, unverified], and with the current
+   gates the five bags' from 20 to 107, §1e.)
 7. **Point budget** is the physical limit: 0.5 m object = 7 pts @100 m, 1.6 pts @200 m.
 8. **Injected objects beyond ~80 m are often fully occluded** because the v0.5 injector placed
    them 0.15 m below the per-frame extrapolated rail head, which lies under the real bed there
@@ -1394,9 +1438,9 @@ v0.6).
   the axis linked to points above the envelope, measured on set O, the empty bags and the ride;
 - **the rail shadow of a large near object** (P3; §2e): a 2 × 2 m box 10–20 m ahead hides the
   rails, the rail-height fit drifts by ~0.5 m and a wrong 3.0 m distance is reported;
-- **the near-bed path with the gates of `537e220`** (P3; §1e): all 13 759 frames and set F on the
-  bed before any change of its default; whether a bed object below the rail head counts at all is
-  asked as Q3 in [`QUESTIONS.md`](QUESTIONS.md);
+- **the near-bed path with the current gates** (`537e220` + `7df1796`; P3; §1e): the ride and set F
+  on the bed before any change of its default (the five bags give 107 events against 20); whether a
+  bed object below the rail head counts at all is asked as Q3 in [`QUESTIONS.md`](QUESTIONS.md);
 - **the far-rail check** (P3; §1e): a real-data A/B on the station bags and the ride, and its
   timing;
 - **bed correction from the side-structure base** (P3): use `z_base(X) − offset_ref` as
@@ -1404,14 +1448,17 @@ v0.6).
   and the 147.5 m switch structures;
 - **bed-trough centre vs wall axis** at stations (design in v0.4, not implemented): a second
   lateral axis where the walls are far;
-- ego-speed estimator: the tracks cue is silent below 1 m/s by design; the profile cue is
-  silent on 40–60 % of the moving frames — a bed profile with the ring stripes removed, or the
-  organizers' speed / odometry (the reliable path);
+- ego-speed estimator (measured 24.09, §9): accurate (median error 0.06–0.08 m/s) on 55–96 % of
+  the moving frames; the tracks cue reports 1.2–2.2 m/s at a standstill on 5 frames. A speed does
+  not pay on the organizers' synthetic check, so the next step, if any, is the `floating`
+  signature that demotes the merged 0.3 m cubes, not the estimator;
 - more *labelled obstacle* materials, if provided in future → calibrate dropout / intensity
   in `inject` and measure real recall by range and class. The delivered `new_data` ride has
   no obstacles, but supports false alarms per km and FP taxonomy by scene with the label tool;
-- timing on the i7-9700E bench; Numba for the DBSCAN stage on the platform bags (15–20 k
-  candidates per frame) if needed.
+- timing on the i7-9700E bench, native and numpy paths; further CPU savings measured as
+  prototypes, not merged ([`ARCHITECTURE.md`](ARCHITECTURE.md) "GPU: evaluated, not used"): an
+  exact cKDTree DBSCAN (−4…−6 ms), float32 corridor coordinates, a forward crop at X ≥ 2.9 m inside
+  the detector (−17 ms at 360°) and a single-pass C++ decode in the node (−11…−20 ms at 360°).
 
 **Independent set F placement** (P4): needs a separately surveyed vehicle-frame axis and rail
 profile of the ride, not the detector's far fit (protocol: [`EVALUATION.md`](EVALUATION.md) §3).
@@ -1503,14 +1550,14 @@ ride, 30 sequences × 110 frames, straight track, no speed unless said).
 |---|---|---|---|---|
 | 1 | rectangle corridor + DBSCAN (v0.0) | fixed box ahead of the sensor, raw clustering | 149 alarm frames of 231 sampled empty frames; DBSCAN up to 1.4 s on dense near points (§1) | replaced by 2 |
 | 2 | **normal-tunnel geometry** (v0.3 → v0.5) | per-frame bed and rail fit, axis from the rails, curvature from the walls, gauge polygon, range-scaled voxel DBSCAN, infrastructure signatures, persistence in time | empty bags 1 001 → 96 alarm frames at 10 Hz; the real person 66/71 (§1, §1b) | **the core** |
-| 3 | multi-frame accumulation with a LiDAR-only speed estimate (v0.4) | merge 5 frames beyond 40 m, motion-compensated by a speed estimated from the tunnel texture | synthetic tunnel: person 189 vs 178 m; real empty bags 119 / 30 vs 88 / 27 (more false alarms), no change on the real person (§1b, §2b) | estimator off; accumulation kept for a given speed |
+| 3 | multi-frame accumulation with a LiDAR-only speed estimate (v0.4) | merge 5 frames beyond 40 m, motion-compensated by a speed estimated from the tunnel texture | synthetic tunnel: person 189 vs 178 m; real empty bags 119 / 30 vs 88 / 27 (more false alarms), no change on the real person (§1b, §2b); 24.09: estimate accurate (median error 0.06–0.08 m/s), but even a perfect speed buys nothing on set O (§9) | estimator off; accumulation kept for a given speed |
 | 4 | **accumulation with the ride's train speed given**, on a moving real background (v0.6) | 5 frames merged beyond 40 m, motion-compensated with the given speed | set F: person 150 → **177 m** median, trolley 146 → 190 m (max 205 m), crate 111 → 183 m, 0.5 m box 2 → 4 of 6; the whole ride 289 / 82 → **274 / 75** false alarm frames / events (§2d) | on whenever the node gets a speed (odometry / speed topic / parameter); the organizers' trains may have none |
 | 5 | bed-anomaly low-object stage (v0.6a) | every bump > 7 cm above a learned bed cross-section inside the envelope | ride 1 482 events / 20 min (inductors, drain covers, cable crossings) (§1d) | rejected |
 | 6 | rail-level low-object stage (v0.6f) | a low cluster whose top reaches the rail head | object on the rail 170 / 185 frames; ride 734 events (guard rails, joints, fastenings) (§1d) | option for a line known to be clean |
 | 7 | **per-point rail-head rule + 0.5 s** (v0.6, shipped) | every low candidate ≥ 3 cm above the rail head, 5 hits | ride 18 low events; 10 cm box on a rail head 10–25 m (synthetic tunnel); real object 2 / 185 by its own detection (§1d) | shipped in v0.6–v0.6.1 |
 | 7b | **straddle clustering** (v0.6.2, shipped) | bed anomalies and the corridor points just above the envelope floor clustered together; top ≥ 0.10 m above the rail head, ≥ 0.35 m across, ≤ 0.8 m along the track | real object 2 → **121 / 185**, 118 of the 126 frames after the person leaves; +1 event on the five bags and on the ride; 30 cm objects on a rail head 6 / 6 from 42–44 m (set F round 2); without the shape rule +49 ride events (§0, §2d) | shipped; the thresholds sit close to the one real object (top 0.11–0.16 m, 0.38–0.50 m across) |
 | 7c | **confirmation 0.5 s; no far alarm without rails** (v0.6.2, shipped) | 5 frames instead of 3; clusters beyond 40 m advisory in frames without the rail pair | false events: five bags 31 → 20, ride 83 → 47; the real person unchanged; a person 3 m later on straight track, 10 m later with a speed (§0, §2d) | shipped |
-| 7d | central near-bed path (24.09, opt-in, off) | bed anomalies within ±0.55 m of the axis and 30 m, below the rail head, ≥ 0.08 m above the local bed | five bags 20 → 145 events, ride 47 → 667; the 30 × 30 × 10 cm box on the bed 0 of 6; set O background 3 → 466 alarm frames (§1e) [team record, partly unverified] | off; gates retuned in `537e220`, not re-measured |
+| 7d | central near-bed path (24.09, opt-in, off) | bed anomalies within ±0.55 m of the axis and 30 m, below the rail head, above the local bed | first gates: five bags 20 → 145 events, ride 47 → 667, the 30 × 30 × 10 cm box on the bed 0 of 6, set O background 3 → 466 alarm frames [team record, partly unverified]; current gates (`537e220` + `7df1796`): five bags 20 → 107 events, set O background 319 alarm frames, the box found in the synthetic-tunnel test (§1e) | off; the ride not re-run |
 | 7e | length-limited signatures (24.09, experiment) | `elevated` / `floating` demote only clusters longer than 3 m or farther than 100 m | set O: STOP frames on the inside objects 303 → 352; five bags 107 / 20 → 113 / 22 (§2e) | not shipped: the ride not re-run |
 | 7f | far-rail check (24.09, opt-in, off) | a wall-derived far curvature contradicted by rails visible beyond the near fit is replaced | unmeasured (§1e) | off until a real-data A/B |
 | 8 | **far-field rule** (v0.6, shipped) | beyond the height reference, tall (≥ 0.6 m), short (≤ 3 m), grounded clusters alarm to the trusted axis range | set F, rule off → on: person first confirmed 106 → **150 m** median, trolley 105 → 146 m, crate 106 → 111 m; off-object detections 12 → 39 of 3 060 frames (§2d) | shipped |
@@ -1552,3 +1599,145 @@ would trade an explainable rule set for a learned boundary with no real positive
 — the opposite of what a safety function needs. The use we see: a confidence re-weighting of
 tracks (never a veto inside 60 m) once the organizers' real obstacles exist to train and test
 on; the dataset and training scripts are ready for that.
+
+## 9. Train speed: the LiDAR-only estimate measured, and what a speed adds (24.09)
+
+**Organizers' fact, team decision.** The recordings carry no odometry, and some trains will have
+none ([Q&A](organizers/QA_session.md) fact 6, 22.09). The team therefore ships the no-speed path
+and keeps a given speed optional ([`CAPTAIN.md`](CAPTAIN.md) decision log, 22.09). ReSense has
+estimated a speed itself since v0.4 (`resense/egomotion.py`: the wall texture sliding past, and
+persistent tracks), switched off since v0.5 (`accumulation.estimate_speed: false`, §1b
+"Accumulation default"). A speed does two things in the detector: it enables the 5-frame
+accumulation beyond 40 m, and the tracker predicts a new track's first step with it. Everything
+below was measured on 24.09 on every frame of the seven cached recordings, detector `537e220`
+unchanged, on the shared 4-core sandbox (raw summaries:
+[`experiments_2026-09-24_train_speed.json`](evidence/results/experiments_2026-09-24_train_speed.json)).
+
+**The reference** (`scripts/speed_reference.py`). No recording has odometry, so the train's
+displacement per frame is measured by registering consecutive frames: a 1-D scan of the
+along-track shift over the points whose normals face along the track (sleepers, brackets,
+cabinets, niche edges, gates, platform ends; the lining constrains nothing along a straight
+tunnel), refined by 6-DOF point-to-plane ICP. It is valid on 89–100 % of the frames, its
+frame-to-frame noise is 0.01–0.03 m/s, scan and ICP agree within 1–4 mm, and on the standing
+`doubleT_obstacle` it reads 0.00 m/s (−0.1 m in 20 s). In `cloud_with_fake_obj` each of the
+organizers' ten objects approaches by the reference displacement within 0.00–0.04 m per frame:
+their tool places obstacles fixed in the tunnel, and the train drives forward ~2.0 km at
+1.4–20 m/s ([`DATASET.md`](DATASET.md) "Synthetic-obstacle recording", corrected on 24.09).
+
+**Stamps.** The cache's bag receive stamps jitter (sd 6–11 ms), while the displacement per frame
+varies by 0.2–0.3 % and is uncorrelated with them: the sensor frames are evenly spaced at 10 Hz,
+as the node's header clock is. The runs below give the detector the stamps snapped to the rotation
+(`scripts/eval_real.py --nominal-stamps`). With the raw receive stamps the estimator's error is
+3–5 times larger (median 0.15–0.38 m/s, p90 0.4–1.3 m/s: the jitter enters through its
+smoothing), so offline runs that depend on the frame interval should use `--nominal-stamps`.
+
+**The estimator against the reference** (`scripts/speed_accuracy.py`, nominal stamps)
+[real: seven recordings, 24.09]:
+
+| recording | train speed min / median / max (m/s) | distance (m) | estimate on moving frames | error median / p90 (m/s) | off by > 1 m/s | standing frames with an estimate ≥ 1 m/s |
+|---|---|---|---|---|---|---|
+| `doubleT_obstacle` (standing) | 0 / 0 / 0 | 0 | — (none on 200 standing frames) | — | — | 0 of 200 |
+| `doubleT_platform` | 0 / 5.3 / 14.9 | 213 | 96 % | 0.08 / 0.20 | 0 % | 0 of 81 |
+| `roundT_doubleT` | 15.1 / 16.8 / 19.3 | 426 | 58 % | 0.07 / 0.19 | 0 % | — |
+| `roundT_pressureGate_roundT` | 14.6 / 15.0 / 15.3 | 400 | 61 % | 0.06 / 0.18 | 0.6 % | — |
+| `roundT_squareT_pressureGate_squareT` | 8.3 / 13.4 / 15.0 | 689 | 58 % | 0.07 / 0.18 | 0 % | — |
+| `squareT_platform_squareT_switch` | 0 / 1.9 / 14.3 | 400 | 72 % | 0.06 / 0.18 | 1.7 % | 5 of 360 |
+| `cloud_with_fake_obj` | 0 / 15.1 / 20.3 | 2 024 | 55 % | 0.07 / 0.17 | 0 % | — |
+
+No confident estimate was off by more than 3 m/s. The texture cue is accurate: 1 982 estimates, 2
+off by more than 1 m/s. The tracks cue is the weak part: 52 estimates, 7 off by more than 1 m/s; on
+5 frames it reported 1.2–2.2 m/s while the train stood at a platform (jittering tracks of platform
+structures). The estimator costs **+6.6–6.8 ms per frame** (median of per-frame differences, three
+detectors interleaved on the same 145 frames × 3, one pinned core, load 6.5–8;
+`scripts/speed_timing.py`); a given speed costs +1.1–1.3 ms (the accumulation).
+
+**What a speed changes: false alarms** (`scripts/eval_real.py --nominal-stamps`; "reference" is the
+ICP speed handed to the detector as odometry would be, `--speed-ref`: the ceiling for any
+estimator). Alarm frames / events [real: six recordings, 24.09]:
+
+| recording | no speed (shipped) | estimator | reference | reference, merge ≥ 100 m | estimator, merge ≥ 100 m, tracks cue ≥ 5 m/s |
+|---|---|---|---|---|---|
+| `doubleT_platform` | 4 / 4 | 9 / 2 | 9 / 2 | 9 / 3 | 9 / 3 |
+| `roundT_doubleT` | 2 / 1 | 8 / 2 | 5 / 1 | 0 / 0 | 2 / 1 |
+| `roundT_pressureGate_roundT` | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 |
+| `roundT_squareT_pressureGate_squareT` | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 |
+| `squareT_platform_squareT_switch` | 97 / 13 | 97 / 13 | 97 / 13 | 97 / 13 | 97 / 13 |
+| **five obstacle-free recordings** | **103 / 18** | 114 / 17 | 111 / 16 | 106 / 16 | 108 / 17 |
+| `doubleT_obstacle` (person, standing train) | recall 0.752, first alarm frame 11 | identical | identical | identical | identical |
+
+The no-speed column differs from the headline 107 / 20 only by the stamps: with the receive stamps
+of the usual offline runs it is 107 / 20 without and 122 / 21 with the estimator. The added alarms
+are accumulation effects that a perfect speed has too: a column in a curve at 44–50 m
+(`roundT_doubleT`) whose merged cluster is 2.4 m long and so no longer passes the `column`
+signature, and a 2 m flat structure at the gauge edge at 99–107 m (`doubleT_platform`). All 13
+squareT events happen while the train stands or creeps below 1 m/s at the platform-end structures
+(82.9, 104.3 and 147.5 m); no speed can fix those.
+
+**What a speed changes: the organizers' obstacles** in the moving ride (`cloud_with_fake_obj`,
+`scripts/score_fake_objects.py`; first STOP / STOP held from; "seen" = first advisory or STOP)
+[organizers' synthetic: set O, 24.09]:
+
+| object (intent) | no speed | estimator | reference | reference, merge ≥ 100 m |
+|---|---|---|---|---|
+| 2 × 2 m centre (in) | 98.0 / 98.7 m | same | same | same |
+| 0.3 m floating, centre (in) | 34.0 / 37.4 m, seen 50.8 m | same | **30.6 / 32.3 m**, seen 57.5 m | same as no speed |
+| 0.3 m on the rail (in) | 42.7 / 46.2 m, seen 42.7 m | same | 42.7 / 46.2 m, seen 58.6 m | same as no speed |
+| 0.3 m at the edge (in) | advisory only, seen 47.9 m | seen 51.6 m | seen 57.1 m | seen 47.9 m |
+| 2 × 2 m top of the envelope (in) | 99.3 m, 11 STOP frames | same | same | same |
+| 2 × 0.2 m across the rails (in) | 82.2 / 58.6 m | same | 82.2 / 55.3 m | same as no speed |
+| 2 × 2 m outside (out) | 6 false STOP frames | 6 | **17** | 9 |
+| 0.3 m just outside (out) | 0 false STOP frames | 0 | 0 | 0 |
+| background alarm frames | 0 | 1 | 0 | 0 |
+
+Merged frames make the 0.3 m cubes visible 7–16 m earlier, but as advisories (the `floating`
+signature, [`P4_AUDIT.md`](P4_AUDIT.md)), and the longer advisory history then delays the STOP; the
+outside box's inner face, 0.1 m from the edge, crosses into the envelope in more merged frames. No
+object gets its first STOP earlier; a perfect speed costs one 0.3 m cube 3.4 m and adds 11 false
+STOP frames. With the receive stamps the estimator run had the same first STOP and held-from
+distance as the defaults on every object.
+
+**Long range with a speed** (set F on the original moving recordings, `scripts/speed_setf.py`: a
+synthetic person / 1 m crate fixed in the tunnel 200 m ahead, moved with the reference, 14
+approaches on straight and curved track at 10–18 m/s, legacy placement; frame recall per range)
+[synthetic: set F, 14 approaches on four moving recordings, 24.09]:
+
+| object | variant | first confirmed, median | 0–50 / 50–100 / 100–150 / 150–200 m | detections away from the object |
+|---|---|---|---|---|
+| person | no speed | 86 m | 95 / 66 / 33 / 4 % | 26 |
+| person | estimator | 86 m | 94 / 62 / 34 / 10 % | 23 |
+| person | reference | 90 m | 94 / 61 / 36 / 11 % | 19 |
+| crate 1 m | no speed | 74 m | 92 / 50 / 9 / 1 % | 26 |
+| crate 1 m | estimator | 75 m | 92 / 51 / 24 / 3 % | 32 |
+| crate 1 m | reference | 69 m | 91 / 47 / 25 / 3 % | 29 |
+
+The far-field frame recall rises (person at 150–200 m 4 → 10–11 %, crate at 100–150 m
+9 → 24–25 %), the 50–100 m recall falls by up to 5 points, and the first confirmation hardly moves:
+on these curved, short recordings the sightline, not the point count, limits it (on the straight
+ride of set F, §2d, a given speed moved a person's first confirmation 148 → 167 m). The estimator
+delivers nearly all of what the reference speed does.
+
+**Other uses of a speed, checked.**
+
+1. *Static-world rule* (an obstacle must approach at the train's speed;
+   `scripts/speed_static_check.py`, offline): of the 18 false-alarm events of the five recordings,
+   14 approach exactly like the tunnel (12 of them while the train stands or creeps below 1 m/s),
+   so at most 4 events (9 frames) could go, and a person running along the track would be rejected
+   too. On the organizers' ride the only non-static alarm is the 2 × 2 m box's own near-range
+   artefact at 3 m, a correct STOP. Not implemented.
+2. *Holding the last estimate* for 5 frames when the estimator is unsure: coverage 55 → 76 % on the
+   organizers' ride, but the held standstill errors of the tracks cue merge frames at a platform
+   (squareT 97 / 13 → 105 / 16, five recordings 121 / 20); reverted.
+3. *Merging only beyond 100 m*, with the tracks cue silenced below 5 m/s: 108 / 17 and the
+   organizers' objects unchanged, the closest to neutral, and no gain either.
+4. *Time to reach / braking*: the organizers put braking decisions outside the task (Q&A 22.09,
+   30:32); at a standstill the estimator reports "unknown", not 0. Not pursued.
+
+**Decision (unchanged, now measured).** The shipped path stays the no-speed one and
+`accumulation.estimate_speed` stays `false`. The estimator is accurate, but neither it nor a
+perfect speed pays on the organizers' own check (+3 to +11 false-alarm frames on the empty
+recordings, no earlier first STOP, +11 false STOP frames on the outside box); its only clear gain
+is far-field frame recall, which that check does not reward. It stays an opt-in with a known cost
+of +6.6–6.8 ms per frame. A speed from the node's `ego_speed_mps` / `speed_topic` / `odom_topic`
+is still honoured: if the stand provides one, the effect is the far-field gain for a few false-alarm
+frames. The next step, if anyone continues, is the `floating` signature that demotes the merged
+0.3 m cubes, not the estimator.

@@ -270,7 +270,7 @@ class LowObjectConfig:
     near_min_length: float = 0.0      # m observed along-track extent; a 30x30x10 cm box at 12-28 m is one scan line (~0.03 m)
     near_min_height: float = 0.0      # m; top-surface returns may have zero observed vertical extent
     near_min_bed_lateral_bins: int = 20  # support must span the central bed, not only the object footprint
-    near_min_points: int = 5          # distinct occupied voxels; that box returns 5-6 at 12-28 m (10 rejected it)
+    near_min_points: int = 5          # distinct occupied voxels; that box returns 5-10 at 12-28 m (10 rejected it)
     near_max_length: float = 0.75     # m along track; reject cables, guard rails, long drain covers
 
 

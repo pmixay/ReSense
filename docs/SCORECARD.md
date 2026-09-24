@@ -11,7 +11,8 @@
 воспроизводятся кадр в кадр, гипотезы и отказы записаны с цифрами. Слабая — 8.1 и 8.2 на
 синтетических препятствиях организаторов: STOP получают 5 из 8 объектов в габарите, дальше ~101 м
 STOP нет, кубы 0,3 м — только с 34–43 м, висящий объект 5 см пропущен. Быстрее всего баллы дают
-зелёный `main`, ответы организаторов, README, слайды и правило коротких сигнатур (§6).
+зелёный `main`, ответы организаторов, README, слайды и правило коротких сигнатур (§6). Что
+изменилось после оценки и на какие критерии это должно повлиять (без переоценки) — §8.
 
 ## 1. How it was judged
 
@@ -267,6 +268,24 @@ without a PR, which retunes the opt-in near-bed gates (`lowobj.near_*`). `lowobj
 stays `false`, so shipped behaviour does not change, but CI run 36044487647 is red: 3 of 235 tests
 fail (`tests/test_envelope.py::test_minimum_object_below_the_rail_head_is_a_policy`, the three
 parametrised cases that switch the path on and expect the 30 × 30 × 10 cm box below the rail
-head), and the `docker` job stopped at the in-image tests, skipping the smoke steps. The fix is
-being made on branch `claude/nifty-pascal-lzgl78`; until a green run exists, `4b5786b` is the last
-green commit.
+head), and the `docker` job stopped at the in-image tests, skipping the smoke steps. Fixed on
+branch `claude/nifty-pascal-lzgl78` by `7df1796` (`near_min_points` 10 → 5, `near_min_length`
+0.18 → 0, the other gates kept): all 235 tests pass again, and all 266 with the tests added since
+(§8), on the native and the numpy path. Until that branch is merged and CI is green on `main`,
+`4b5786b` stays the last green commit of `main`.
+
+## 8. After the judgement (24.09, night)
+
+What changed on branch `claude/nifty-pascal-lzgl78` after `4b5786b`, and the effect expected on
+each criterion. **Nothing here is re-scored**: the scores of §2 stay as judged until a new
+judgement.
+
+| change | what it is | criterion | expected effect |
+|---|---|---|---|
+| `537e220`, then `7df1796` | the near-bed gates that turned `main` red, and their fix: all tests green again; five bags with the opt-in path on 459 / 107 / 72 instead of 1 035 / 145 / 42 (EXPERIMENTS §1e) | 8.5 | the "`main` red at `537e220`" item of §3 8.5 is fixed on the branch; the first part of §6 row 1 (fix or revert `537e220`) is done once it is merged with CI green; its other parts (branch protection, one version) are still open |
+| C++ kernels (merge `d1a2d0c`) | optional kernels for the full-cloud passes and percentiles; detector time −38…−57 %, p95 at 360° 107 → 51 ms on the sandbox under load; 0 differing frames of 3 998; `RESENSE_NATIVE=0` falls back to numpy ([`ARCHITECTURE.md`](ARCHITECTURE.md) "Native kernels") | 8.3 | addresses "360° through ROS at the frame period" and "pure Python on one thread" of §3 8.3, the image builds them (CI run 36058665640, 24.09); an i7 run must still confirm the latency |
+| train-speed study | the LiDAR-only estimator measured against an ICP reference: median error 0.06–0.08 m/s on 55–96 % of the moving frames; even a perfect speed buys nothing on the organizers' check (EXPERIMENTS §9; raw: [`experiments_2026-09-24_train_speed.json`](evidence/results/experiments_2026-09-24_train_speed.json)) | 8.7 | a hypothesis → experiment → decision record with raw data |
+| | judge A's suggestion for 8.2 (a speed estimate, e.g. scan-to-scan ICP, to re-enable accumulation for range; §3 8.2: 0.3 m beyond 45 m needs a train speed) was tested with the ICP speed itself | 8.2 | it does not hold on the organizers' check: with the reference speed the 0.3 m cubes are seen 7–16 m earlier but only as advisories, no object gets its first STOP earlier, and the box outside gets 17 false STOP frames instead of 6; no 8.2 gain from a speed |
+| GPU study | no GPU before 29.09: the i7-9700E has PCIe 3.0, ~1 160 array operations per frame make a CuPy port dispatch-bound (≤ 30–45 ms per 360° frame saved against numpy, 5–15 ms against fused CPU code), and a container that requests a GPU does not start without `nvidia-container-toolkit` ([`ARCHITECTURE.md`](ARCHITECTURE.md) "GPU: evaluated, not used") | 8.7, 8.3 | "the GPU is unused" (§3 8.3) becomes an evaluated decision; the CPU savings it found (a forward crop −17 ms at 360°, an exact cKDTree DBSCAN −4…−6 ms) are candidates for §6 row 9 |
+| documentation | one format, one home per fact; `cloud_with_fake_obj` corrected (the objects stand still, the train drives ~2.0 km forward), so QUESTIONS Q1 lost a sentence built on the error; EXPERIMENTS §3 corrected: `timing_ms["total"]` leaves out the 7–14 ms health monitor | 8.7, 8.5 | fewer stale or wrong statements; the old Q1 must not be sent |
+| tests | 235 → 266 in `tests/` (+28 native kernels, +3 speed evaluation helpers), 11 in `web/demo` | 8.5 | the deck's test count (§6 row 5) is now 266 |

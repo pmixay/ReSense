@@ -218,7 +218,7 @@ resense:
     near_min_length: 0.0           # m observed along-track extent; 0: a 30x30x10 cm box at 12-28 m is one scan line (~0.03 m)
     near_min_height: 0.0           # m; top-surface returns may have zero observed vertical extent
     near_min_bed_lateral_bins: 20  # support must span the central bed, not only the object footprint
-    near_min_points: 5             # occupied voxels; the same box returns 5-6 at 12-28 m (10 rejected it)
+    near_min_points: 5             # occupied voxels; the same box returns 5-10 at 12-28 m (10 rejected it)
     near_max_length: 0.75          # m along track, reject linear infrastructure
   calibration:                     # v0.6: automatic mount calibration (resense/calibration.py)
     enabled: true

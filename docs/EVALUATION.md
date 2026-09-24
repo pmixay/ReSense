@@ -122,7 +122,8 @@ validity over each sequence before interpreting range or edge results.
    given`, as the ROS node with `ego_speed_mps` / odometry); `--ego-speed V` forces a constant
    on any source, `--no-gt-speed` withholds it; static sets (`speed_mps: 0`) get nothing and
    the LiDAR speed estimator is off by default (enable `accumulation.estimate_speed` to
-   evaluate it). Report recall by range per kind
+   evaluate it; its accuracy against an ICP reference: `scripts/speed_reference.py`,
+   `scripts/speed_accuracy.py`, EXPERIMENTS §9). Report recall by range per kind
    (`per_class_bin_counts`), first-detection distances and the occluded count. Two caveats:
    the per-frame recall of an 8-step sequence is capped at 4/8 for a new track with the current
    five-frame confirmation (and an object that starts beyond 150 m approaches only
@@ -154,7 +155,11 @@ validity over each sequence before interpreting range or edge results.
    full length and read the node's stats line (fps, latency mean / p95 / max, dropped frames).
    Run on the closest available machine to the bench (8 cores, no GPU), state which, state the
    load (`uptime`) and run compared variants back to back on the same bag: on the shared 4-core
-   sandbox the per-frame time of the same code varies by ±50 % with the load.
+   sandbox the per-frame time of the same code varies by ±50 % with the load. State the path
+   (native kernels, or numpy with `RESENSE_NATIVE=0`); `resense bench`'s `total` leaves out the
+   health monitor (7–14 ms), which the node's latency includes. Offline runs whose result depends
+   on the frame interval (a speed, the estimator) use `scripts/eval_real.py --nominal-stamps`:
+   the cache's receive stamps jitter, the node's header clock does not (EXPERIMENTS §9).
    Both commands require their respective input data. `resense bench` and
    `scripts/bench_node_path.py` fail with an explicit empty-input diagnostic rather than printing
    a misleading timing result. ROS timing and throughput require a running ROS 2 graph and Docker
@@ -186,7 +191,7 @@ actual values come from [`EXPERIMENTS.md`](EXPERIMENTS.md) "Current results", §
 | person: recall ≥ 90 % within 100 m | 1 | 100 % ≤ 50 m, 50 % 50–100 m | 96 % (0–50 m) and 94 % (50–100 m) of the visible frames on straight track [synthetic: set F round 3, legacy placement]; the real person 58 of 61 envelope frames at 55–57 m [real: `doubleT_obstacle`] | met |
 | box 0.5 m: recall ≥ 80 % within 80 m | 1 | found at 54–56 m | on the bed 1 of 6 approaches, first confirmed at 52 m [synthetic: set F round 3]; 0 of 13 in set S [synthetic, P4_AUDIT] | not met |
 | false-alarm frames on E ≤ 1 per 100 outside platforms | 1 | 67 of 231 frames (49 in the platform-and-switch bag) | 2 of 1 065 frames = 0.19 per 100 (`roundT_doubleT` and the two pressure-gate bags) [real] | met |
-| p95 latency ≤ 100 ms | 1, 2 | 47–125 ms | offline 53–78 ms on one core [timing: sandbox, 23.09]; ROS node in Docker 76 ms at 120°, 112–130 ms at 360° [timing: sandbox, 23.09]; the i7-9700E stand is not measured | met offline and at 120°; not at 360° on the sandbox |
+| p95 latency ≤ 100 ms | 1, 2 | 47–125 ms | offline 53–78 ms on one core, numpy path, health monitor not included [timing: sandbox, 23.09]; ROS node in Docker 76 ms at 120°, 112–130 ms at 360° [timing: sandbox, 23.09]; the i7-9700E stand is not measured | met offline and at 120°; not at 360° on the sandbox |
 | person confirmed at ≥ 150 m | 2 | 0 beyond 100 m | median 154 m with the object anchored on the near rails, 148 m with legacy placement, 167 m with a given train speed [synthetic: set F]; no real obstacle beyond 57 m exists | met on synthetic only |
 | box 0.5 m confirmed at ≥ 100 m | 2 | — | not beyond 52 m [synthetic: set F]; the organizers' 0.3 m cubes from 34–43 m, their 2 × 2 m box from 98 m [organizers' synthetic: set O] | not met |
 | false-alarm frames on E ≤ 1 per 100 including platforms | 2 | — | 107 of 2 287 frames = 4.7 per 100 (101 of them in `squareT_platform_squareT_switch`, train standing at the platform); the ride 204 of 11 271 = 1.8 per 100 [real] | not met |

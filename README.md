@@ -87,7 +87,10 @@ them: the first `STOP` on `doubleT_obstacle` comes 1.3–1.6 s into the recordin
 History: [`CHANGELOG.md`](CHANGELOG.md). Criteria judgement of 24.09 (two independent judges,
 reconciled): **60 / 100**; strongest 8.7 team approach (8 / 10) and 8.6 ease of launch
 (7.5 / 10), weakest 8.1 "does it work" (13 / 25) and 8.2 range (7 / 15), mainly on the organizers'
-synthetic-obstacle recording: [`docs/SCORECARD.md`](docs/SCORECARD.md). All current numbers:
+synthetic-obstacle recording: [`docs/SCORECARD.md`](docs/SCORECARD.md). Since then (unreleased,
+[`CHANGELOG.md`](CHANGELOG.md)): optional C++ kernels (38–57 % less detector time, identical
+output; the Docker build still has to pass the CI docker job), the near-bed opt-in box fix and a
+measured answer on the train speed (EXPERIMENTS §9). All current numbers:
 [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) "Current results" and §0.
 
 What the organizers' answers changed ([`docs/organizers/answers.md`](docs/organizers/answers.md)):
@@ -115,10 +118,11 @@ Headline results (kinds and placement modes: [`docs/README.md`](docs/README.md) 
 | organizers' synthetic objects (set O, 1 510 frames) | STOP for 5 of 8 in-envelope objects: 2 × 2 m box from 98 m, plank across the rails 82 m, 0.3 m cubes 34–43 m; edge 2 × 2 m box and 5 cm hanging object missed, edge 0.3 m cube advisory only; 6 false STOP frames on the outside 2 × 2 m box, 3 background alarm frames | organizers' synthetic | 24.09 | [P4_AUDIT](docs/P4_AUDIT.md) |
 | long range, straight track | person first confirmed at **148 m** median (6 of 6), held in ≥ 90 % of frames from 149 m and of every 10 m band from 115 m; trolley 144 m; 1 m crate 111 m; 3 cm hanging cable 95 m, held only from ~50 m (4 of 6) | synthetic, legacy | 24.09 | EXPERIMENTS §2d |
 | long range with a given train speed | person 167 m, crate 182 m (held only from 79 m) | synthetic, legacy | 24.09 | EXPERIMENTS §2d |
+| train speed | none is given (no odometry in the recordings); our LiDAR-only estimate is accurate (median error 0.06–0.08 m/s on 55–96 % of the moving frames), but even a perfect speed does not improve the organizers' check (no earlier first STOP, 6 → 17 false STOP frames on the box outside), so it stays off | real, organizers' synthetic | 24.09 | EXPERIMENTS §9 |
 | curves, stations, low objects | R ≈ 350 m curves 6 of 7 from 58–86 m (sightline past the inner wall); station stops 6 of 6 from 113 m; 30 cm on a rail head 6 of 6 from 42–49 m; person lying across the rails 6 of 6 from ~64 m | synthetic, legacy | 24.09 | EXPERIMENTS §2d |
 | sensor limit | no return beyond 210 m in any of the 13 759 frames: 300 m is beyond this sensor | real | 24.09 | EXPERIMENTS §2d |
 | other mounts | upside down, `+x` forward, backwards found; tilt recovered to 0.0–0.5° on re-mounted frames of 3 recordings | real, re-mounted | 22–23.09 | EXPERIMENTS §6 |
-| offline timing per frame | 42–64 ms mean, p95 53–78 ms on every recording (one core, pure Python); 24.09 on another idle VM 36.5–52.2 / 50.3–67.1 ms | timing: sandbox | 23.09 | EXPERIMENTS §3 |
+| offline timing per frame | 42–64 ms mean, p95 53–78 ms on every recording (one core, numpy path, health monitor not included: 7–14 ms more); 24.09 on another idle VM 36.5–52.2 / 50.3–67.1 ms; the optional C++ kernels: −38…−57 %, identical output | timing: sandbox | 23–24.09 | EXPERIMENTS §3, ARCHITECTURE "Native kernels" |
 | ROS node in Docker | 120°: 10 fps, p95 76 ms; 360°: 7–10 fps (the sandbox is at the frame period); ~100 % of one core, 186 MB (v0.6.3); v0.6.4 peak RSS 403–434 MB at 360° | timing: sandbox | 23–24.09 | EXPERIMENTS §3b |
 
 Set F uses legacy placement, which can flatter curves and envelope edges: P4's paired rerun found
@@ -157,7 +161,7 @@ teams (23.09). Decision logic and thresholds: [`docs/ALGORITHM.md`](docs/ALGORIT
 | [`docker/`](docker/), [`docker-compose.yml`](docker-compose.yml), [`scripts/`](scripts/) | reproducible build and demo |
 | [`configs/default.yaml`](configs/default.yaml) | the tunable parameters, copied into the ROS package at build time (`scripts/sync_params.sh`, checked in CI) |
 | [`native/`](native/) | optional C++ kernels for the per-frame hot spots (track stage, corridor selection, health visibility): about half the detector time, bit-identical output; built by `pip install`, numpy fallback without a compiler or with `RESENSE_NATIVE=0` ([ARCHITECTURE](docs/ARCHITECTURE.md) "Native kernels") |
-| [`tests/`](tests/) | 263 pytest tests on a synthetic ray-cast tunnel, no dataset needed (algorithm, envelope, calibration, guards, the ROS node against stand-ins) |
+| [`tests/`](tests/) | 266 pytest tests on a synthetic ray-cast tunnel, no dataset needed (algorithm, envelope, calibration, guards, the ROS node against stand-ins) |
 | [`web/`](web/) | browser dashboard (offline replay; live via rosbridge, installed separately), Foxglove layout, label tool, 11 headless tests |
 | [`docs/`](docs/) | [`docs/README.md`](docs/README.md): every document, its purpose and owner; organizers' material in [`docs/organizers/`](docs/organizers/) |
 | [`labels/`](labels/) | `doubleT_obstacle.json` (real labels), `new_data_objects.json` (every object confirmed on the ride, by cause), `cloud_with_fake_obj.json` (the organizers' synthetic objects) |
@@ -213,8 +217,8 @@ docker run --rm resense bash -lc "python3 scripts/make_smoke_bag.py /tmp/b && sc
 * **speed**: for multi-frame accumulation the node needs the train speed: `ego_speed_mps:=22.0`, or
   `speed_topic:=/vehicle/speed` (`std_msgs/Float32`, m/s), or `odom_topic:=/odom`
   (`nav_msgs/Odometry`, `twist.linear.x`), `speed_timeout`; with none of them the detector runs the
-  single-frame path (no accumulation: the LiDAR-only speed estimator is off by default,
-  EXPERIMENTS §1b);
+  single-frame path (no accumulation). The LiDAR-only speed estimator is off by default: it is
+  accurate, but a speed buys nothing on the organizers' check (EXPERIMENTS §9);
 * **output**: `config_file`, `publish_markers`, `publish_corridor_cloud`, `marker_x_max`,
   `output_frame`, `stats_period` (2 s: fps, latency mean / p95 / max, input period, dropped frames),
   `publish_tf` / `tf_parent_frame` (`resense_lidar`: one RViz / Foxglove layout for every bag);
@@ -288,8 +292,8 @@ but no `node` object (so acceptance tools do not count it as a frame), and `/res
 | `track.rails_far_check_enabled` | false | experimental station-wall axis check, off by default (24.09); not measured on real data |
 | `gauge.profile` | \|dy\| ≤ 1.05 m, 0.12–3.0 m | **the organizers' 2.1 × 3.0 m train envelope**; `warning_margin` 0.35 m = advisory zone; `edge_margin_per_100m` 0.15 m |
 | `lowobj.*` | on, ≤ 60 m | low objects on the rails (bumps above the learned bed that rise ≥ 3 cm above the rail head) |
-| `lowobj.near_enabled` | false | experimental central near-bed path, off: its first gates raised the ride's false events from 47 to 667 [24.09, raw not committed]; gates tightened on 24.09 (`537e220`), not re-measured (ALGORITHM §6) |
-| `accumulation.estimate_speed` | false | LiDAR-only speed estimation opt-in; without a supplied speed, use single-frame detection |
+| `lowobj.near_enabled` | false | experimental central near-bed path, off: its first gates raised the ride's false events from 47 to 667 [24.09, raw not committed]; with the current gates (`537e220`, box fix `7df1796`) the five bags give 107 instead of 145 events, the ride not re-run (EXPERIMENTS §1e) |
+| `accumulation.estimate_speed` | false | LiDAR-only speed estimation opt-in (median error 0.06–0.08 m/s, +6.6–6.8 ms per frame, no gain on the organizers' check, EXPERIMENTS §9); without a supplied speed, single-frame detection |
 | `cluster.far_*` | 0.6 m tall, ≤ 3 m long | what may alarm beyond the height reference (far field of straight track) |
 | `cluster.eps / range_scale / voxel`; `cluster.*_max_*`, signatures | 0.35 / 40 / 0.05 | range-adaptive DBSCAN: ε(r) = eps·(1 + r/40 m); infrastructure filters (thin hardware, low hardware, wall-like, column, floating, edge, wall face); thin objects hanging near the axis are never demoted |
 | `tracking.confirm_time_s / confirm_hits / conf_threshold` | 0.5 s / 3 / 0.6 | persistence before an alarm (low objects: 5 hits); `tracking.hold_misses` 1 (code default in `resense/config.py`) keeps a reported obstacle over one missed frame |

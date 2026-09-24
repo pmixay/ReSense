@@ -6,18 +6,20 @@
 
 **Кратко.** ROS 2-нода `resense_ros` принимает облако `PointCloud2` от `ros2 bag play` (любая из
 двух пар топик / frame id) и передаёт каждый кадр библиотеке `resense` (Python: numpy / scipy /
-scikit-learn, без ROS). Библиотека переводит точки в систему поезда и сама находит крепление
-LiDAR, строит модель пути (полотно, рельсы, ось и кривизна по стенам), вырезает коридор габарита
-2,1 × 3,0 м, ищет низкие объекты, кластеризует и подтверждает кандидатов по времени. Нода публикует
-решение GO / CAUTION / STOP / FAULT, расстояние до препятствия, проверенную свободную дальность,
-состояние входа и JSON-статус. Кадр обрабатывается за 42–64 мс в среднем на одном ядре (23.09) при
-периоде датчика 100 мс.
+scikit-learn и необязательные ядра на C++, без ROS). Библиотека переводит точки в систему поезда и
+сама находит крепление LiDAR, строит модель пути (полотно, рельсы, ось и кривизна по стенам),
+вырезает коридор габарита 2,1 × 3,0 м, ищет низкие объекты, кластеризует и подтверждает кандидатов
+по времени. Нода публикует решение GO / CAUTION / STOP / FAULT, расстояние до препятствия,
+проверенную свободную дальность, состояние входа и JSON-статус. Кадр обрабатывается за 42–64 мс в
+среднем на одном ядре (23.09, numpy, без монитора состояния) при периоде датчика 100 мс; ядра на C++
+(24.09) сокращают время детектора на 38–57 %. Видеокарта не используется, скорость поезда не нужна
+(заданная учитывается).
 
 ```
 ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCloud2, 10 Hz)──▶ resense_ros/detector_node
                                                                   │
                                                                   ▼
-                              resense.Detector.process(Frame)  (pure numpy / scipy / sklearn)
+                              resense.Detector.process(Frame)  (numpy / scipy / sklearn; optional C++ kernels)
                                                                   │
    1. sensor → vehicle frame (X fwd, Y left, Z up), range crop     │  frame.py
    1b. mount auto-calibration (v0.6): orientation from the rail     │  calibration.py
@@ -117,9 +119,11 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   reliable too (a live best-effort driver needs the display's Reliability Policy switched in RViz).
 * Ego speed for multi-frame accumulation: the node passes `Detector.process(frame, ego_speed=v)`
   the value of the `ego_speed_mps` parameter, else the latest `speed_topic` / `odom_topic`
-  message younger than `speed_timeout`, else `None` (single-frame path: the LiDAR-only speed
-  estimator is off by default, `accumulation.estimate_speed`); the status JSON reports
-  `node.ego_speed_mps` and `node.ego_speed_source`.
+  message younger than `speed_timeout`, else `None` (single-frame path); the status JSON reports
+  `node.ego_speed_mps` and `node.ego_speed_source`. The organizers' recordings carry no odometry
+  and some trains have none (Q&A fact 6), so the no-speed path is the deliverable. The LiDAR-only
+  estimator (`accumulation.estimate_speed`) stays off: measured on 24.09 it is accurate, but even a
+  perfect speed does not improve the organizers' check ([`EXPERIMENTS.md`](EXPERIMENTS.md) §9).
 * One fixed frame for every bag: the organizers' recordings carry different `frame_id`s
   (`hesai_lidar`, `lidar_livox`), so the node broadcasts a static identity transform
   `resense_lidar → <input frame_id>` when the first frame arrives and the RViz / Foxglove layouts
@@ -166,7 +170,7 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
 * **No rails, no far alarm** (v0.6.2): without the rail pair in the near range (stations, switch
   caverns) the corridor beyond 40 m is advisory and the verified-clear distance says 40 m.
 
-## Real-time budget (v0.6.3, 23.09: every frame of the real bags, idle 4-core sandbox, Python)
+## Real-time budget (v0.6.3, 23.09: every frame of the real bags, idle 4-core sandbox, numpy path)
 
 | stage | `roundT_doubleT` (189 k pts) mean | `doubleT_obstacle` (347 k pts, 360°) mean |
 |---|---|---|
@@ -174,11 +178,14 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
 | corridor mask + low-object stage | 12.6 ms | 16.7 ms |
 | voxel + DBSCAN + filters | 10.0 ms | 6.7 ms |
 | tracking | 0.2 ms | 0.2 ms |
-| **total** (mean / p95 / max) | **50.2 / 63.4 / 76.1 ms** | **63.6 / 77.8 / 119.2 ms** |
+| **total** (mean / p95 / max; health monitor not included) | **50.2 / 63.4 / 76.1 ms** | **63.6 / 77.8 / 119.2 ms** |
 
 Source: [`EXPERIMENTS.md`](EXPERIMENTS.md) §3, raw output in
 [`evidence/timing_2026-09-23/`](evidence/timing_2026-09-23/). Re-measured 24.09 on another idle VM:
 36.5–52.2 ms mean, p95 50.3–67.1 ms (EXPERIMENTS "Re-measurement"); the 23.09 figures stay quoted.
+`total` (`timing_ms["total"]`, what `resense bench` prints) ends after tracking: the health monitor
+runs after it and adds 7–14 ms per frame on the sandbox; the node's `/resense/latency_ms` includes
+it. "360°" is `doubleT_obstacle`, about −124…+118° of azimuth in the vehicle frame.
 
 The frame period is 100 ms; p95 is inside it on all six bags and on a station section of the
 ride (v0.6.3: 42–64 ms mean, p95 53–78 ms, EXPERIMENTS §3). **Resources:** one CPU core per
@@ -241,7 +248,39 @@ optional extension: without a C++ compiler the install still succeeds and the de
 numpy with the same results, slower); `scripts/build_native.sh` builds them in a source checkout
 used with `PYTHONPATH=.`. The Docker image installs `g++` and prints the path it took at build
 time; the node logs it at start (`per-frame kernels: native (...)`). `RESENSE_NATIVE=0` forces
-the numpy code.
+the numpy code. The test suite passes on both paths (266 tests). **Docker:** proven by CI run 36058665640
+(24.09, commit `d1a2d0c`): the image built the kernels, the in-image suite passed with
+`RESENSE_REQUIRE_SYNTHETIC=1` (a missing library would have failed it), and both ROS smoke tests
+passed (synthetic bags, decode + detect 35 ms mean). The i7-9700E has not been measured on either
+path.
+
+## GPU: evaluated, not used (24.09)
+
+The stand has an RTX 4070 Ti SUPER
+([`organizers/test_stand_software.md`](organizers/test_stand_software.md)). The spec (§3.1) allows
+the GPU only if the algorithm needs it («если это необходимо для его работы»); ReSense does not, and
+a study of 24.09 found no reason to add it before 29.09 [estimates from measured CPU stage times
+and published per-operation costs; no GPU in the sandbox]:
+
+* **Small upside.** A frame is ~1 160 array operations (about 108 boolean-mask gathers and 83
+  reductions that feed Python `if`s), so a straight CuPy port is dispatch- and sync-bound: it would
+  save ≤ 30–45 ms per 360° frame against numpy and 5–15 ms against fused CPU code such as the
+  native kernels above. Transfer is not the problem (5.4 MB per 360° frame), but the i7-9700E has
+  PCIe 3.0 only. cuML DBSCAN is slower than scikit-learn on our 100–1 000-voxel calls.
+* **Real costs.** A container that requests the GPU does not start at all when the host lacks
+  `nvidia-container-toolkit` (not in the organizers' package list), so the default launch could not
+  request it; CuPy compiles its kernels at first use (seconds of warm-up in a fresh container); the
+  image grows by 0.3–6 GB; the GPU path cannot be tested on the sandbox or in CI (no GPU on the
+  runners).
+* **Latency is not the limit.** An alarm needs ≥ 3 hits over ≥ 0.5 s; processing is < 15 % of the
+  time to alarm.
+
+CPU savings the same study measured as prototypes, identical decisions on 1 701 real frames, not
+merged: an exact cKDTree DBSCAN (−4…−6 ms per frame), float32 corridor coordinates (−3…−6 ms), a
+forward crop at X ≥ 2.9 m inside the detector (−17 ms at 360°: 42 % of its points lie at X < 3 m)
+and a single-pass C++ decode in the node (−11…−20 ms at 360°). They were measured on the numpy
+path, before the native kernels. With them the expected mean node latency on the i7-9700E at 360°
+is 48–56 ms [estimate; it assumes that numpy path].
 
 ## Known limitations
 

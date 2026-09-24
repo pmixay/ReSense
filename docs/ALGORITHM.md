@@ -331,8 +331,9 @@ or voxel count separates them from a small object. (c) Requiring every candidate
 finds a 10 cm box lying on a rail head at 10–25 m (synthetic tunnel, `tests/test_envelope.py`).
 The rail-head path keeps (c): a safety function that stops the train every 1.5 s on a clean
 track is not usable. The opt-in central near-bed path below is off in the shipped
-configuration: with its first gates it raised the ride's false events from 47 to 667, and its
-retuned gates of `537e220` are not measured on real data yet (§6, EXPERIMENTS §1e).
+configuration: with its first gates it raised the ride's false events from 47 to 667, and with the
+current gates the five obstacle-free recordings give 107 events instead of 20 (the ride not re-run;
+§6, EXPERIMENTS §1e).
 `min_top: -1` and `min_point_top: -1` restore the unrestricted bed-level policy for a line
 with a clean bed.
 
@@ -378,23 +379,24 @@ lying across a rail is found at 25, 40 and 50 m in the synthetic tunnel
 the bed between the rails, below the rail head. It accepts bed anomalies entirely within
 `near_half_width` = 0.55 m of the axis (the rail heads and their fastenings at ±0.8 m stay out)
 and within `near_range` = 30 m, only while the rail pair is locked and the *central* bed has at
-least `local_min_points` = 5 returns in the same 2 m bin, spread over at least
-`near_min_bed_lateral_bins` = 20 lateral template bins (0.5 m of the 1.1 m band), so an object
-cannot create its own local reference across a missing-bed gap. The excess over the locally
-offset bed template must exceed `near_min_excess` = 0.05 m. The candidates are clustered with the
-tight low radius, and a cluster needs ≥ `near_min_points` = 10 voxels, an observed width of
-`near_min_width`–`near_max_width` = 0.24–0.55 m and an observed length of
-`near_min_length`–`near_max_length` = 0.18–0.75 m along the track; its vertical extent is not
-required (`near_min_height` = 0 m), because a valid top-surface return can have zero observed
-height. The width and length gates exclude long drain covers, linear hardware and grazing
-slivers; the rail-head point-height rule and the straddle rules are unchanged, and the 5-hit
-low-object confirmation and the foot-of-corridor suppression apply. The gates are those of
-`537e220` (24.09), which tightened the first ones (excess 0.08 m, ≥ 5 voxels, no maximum width,
-no minimum length, no lateral bed-support rule) after they alarmed on the flat and sliver bed
-fixtures of the ride (§6, EXPERIMENTS §1e), while meant to keep a volumetric 30 × 30 × 10 cm
-object. A compact inductor or short raised cover with the same 3-D returns as a foreign object
-cannot be told apart by this geometry alone, and the retuned gates' false-event cost on the real
-ride is not measured yet.
+least `local_min_points` = 5 returns in the same 2 m bin, with returns in at least
+`near_min_bed_lateral_bins` = 20 of the 45 lateral template bins (2.5 cm each; the bins are
+counted, they need not be contiguous), so an object cannot create its own local reference across a
+missing-bed gap. The excess over the locally offset bed template must exceed `near_min_excess` =
+0.05 m; clustering uses the existing tight low radius and needs ≥ `near_min_points` = 5 voxels, an
+observed width of `near_min_width`–`near_max_width` = 0.24–0.55 m and ≤ `near_max_length` = 0.75 m
+along the track. Neither a vertical extent (`near_min_height` = 0) nor an along-track extent
+(`near_min_length` = 0) is required: at 12–28 m a 30 × 30 × 10 cm box returns a single scan line,
+5–10 voxels and ~0.03 m along the track, and the 10-voxel / 0.18 m gates tried on 24.09
+(`537e220`) rejected it (fixed in `7df1796`). The width and maximum-length gates exclude long
+drain covers and linear hardware; the rail-head point-height rule and the straddle rules are
+unchanged, and the 5-hit low-object confirmation and the foot-of-corridor suppression apply.
+Against the first gates of `a92625e` (excess 0.08 m, ≥ 5 voxels, no maximum width, no lateral
+bed-support rule), the width and bed-support gates halve the alarm frames on the five
+obstacle-free recordings (1 035 → 459) but remove only a quarter of the events (145 → 107): most of
+the remaining false events are central bed fixtures returning the same single scan line as the box
+(EXPERIMENTS §1e). A compact inductor or short raised cover with the same 3-D returns as a foreign
+object cannot be told apart by this geometry alone; the ride has not been re-run with these gates.
 
 Puddles in the trough (Q&A fact 17) return nothing or mirror images *below* the bed (negative
 residuals) and are ignored by construction. Cost: 3–5 ms per frame.
@@ -425,7 +427,12 @@ merge runs only with a speed the caller gives** (`ego_speed_mps` parameter or od
 the rows' speed in `eval` sequences); the LiDAR-only estimator is off (`estimate_speed: false`)
 because its estimated-speed merging added 31 false-alarm frames on the five empty bags at full rate
 (119 vs 88) without a real-data recall gain and costs 7–8 ms per frame (EXPERIMENTS §1b). Without a
-given speed the pipeline is single-frame. Only candidates beyond `min_range` = 40 m are merged:
+given speed the pipeline is single-frame. **Re-measured on 24.09** against an ICP reference
+(EXPERIMENTS §9): the estimate is accurate (median error 0.06–0.08 m/s, p90 ≤ 0.20 m/s on 55–96 %
+of the moving frames, +6.6–6.8 ms per frame), but neither it nor a perfect speed improves the
+organizers' check (no earlier first STOP on their objects, more false STOP frames on the box
+outside), so the default stays; the organizers' recordings carry no odometry (Q&A fact 6), and a
+given speed is honoured. Only candidates beyond `min_range` = 40 m are merged:
 there the single frame is what limits detection, while a person walking at 5 m from the train must
 not be smeared over half a second and is dense enough anyway.
 
@@ -615,7 +622,7 @@ the CLI and the ROS node; the one exception is `tracking.hold_misses`, a code de
 | `cluster.signature_min_lateral`, `column_min_width` (v0.6) | 0.6 m, 0.25 m | where the column / floating signatures apply (hanging cables near the axis are obstacles) |
 | `calibration.enabled`, `frames` × `obs_spacing`, `provisional_min_deg`, `min_yaw_deg`, `drift_warn_deg` / `drift_window` (v0.6.1) | true, 20 × 10 frames, 2.5°, 3°, 1.5° / 10 checks | mount auto-calibration (final tilt over 20 s, provisional only for a clearly tilted rig); `sensor.roll_deg/pitch_deg/yaw_deg` freeze a known mount |
 | `lowobj.straddle_enabled`, `straddle_min_top`, `straddle_min_width`, `straddle_max_length`, `straddle_band` (v0.6.2) | true, 0.10 m, 0.35 m, 0.8 m, 0.30 m | an object across a rail, straddling the envelope floor, clustered whole (§3.3b) |
-| `lowobj.near_enabled`, `near_range`, `near_half_width`, `near_min_excess`, `near_min_width`, `near_max_width`, `near_min_length`, `near_min_height`, `near_min_bed_lateral_bins`, `near_min_points`, `near_max_length` | false, 30 m, 0.55 m, 0.05 m, 0.24 / 0.55 m, 0.18 m, 0.0 m, 20, 10, 0.75 m | opt-in central near-bed path (§3.3b), off: its first gates added 620 events on the ride (§6); the gates of `537e220` shown here are not measured on real data |
+| `lowobj.near_enabled`, `near_range`, `near_half_width`, `near_min_excess`, `near_min_width`, `near_max_width`, `near_min_length`, `near_min_height`, `near_min_bed_lateral_bins`, `near_min_points`, `near_max_length` | false, 30 m, 0.55 m, 0.05 m, 0.24 / 0.55 m, 0.0 m, 0.0 m, 20, 5, 0.75 m | opt-in central near-bed path (§3.3b), off: its first gates added 620 events on the ride; the width and bed-support gates halve its alarm frames, 107 events on the five recordings against 20 (§3.3b, §6) |
 | `lowobj.max_length`, `max_width` | 1.5 m, 2.2 m | the largest low cluster along / across the track; 2.2 m (the envelope's width, 1.6 m until 23.09) keeps a person lying across the track; identical on all real frames (EXPERIMENTS §0) |
 | `gauge.no_rail_range` (v0.6.2) | 40 m | without a rail pair in the near range clusters beyond it are advisory and the verified-clear distance is capped there (§3.2); 0 = off |
 | `health.*` (v0.6) | see §4b | thresholds of the guards; they never change a detection |
@@ -636,7 +643,10 @@ data: [`SCORECARD.md`](SCORECARD.md).
   defaults), the ride 667 events and 247 STOP episodes (47 and 39), while the 30 × 30 × 10 cm box
   on the bed stays at 0 of 6 approaches [synthetic: set F] and a dog-sized box is found in 5 of 6
   approaches from 19.5–50.2 m; on set O the background alarm frames rise from 3 to 466 (P4, 24.09).
-  `537e220` (24.09) tightened the gates (§3.3b); they are not re-measured, and the path stays off.
+  With the width (≤ 0.55 m) and bed-support gates added on 24.09 (`537e220`, box fix `7df1796`) the
+  five recordings give 459 alarm frames / 107 events / 72 STOP episodes (1 035 / 145 / 42 before,
+  107 / 20 / 27 with the defaults) and set O 319 background alarm frames; the ride has not been
+  re-run, and the path stays off.
   Beyond 30 m or beside a rail the rail-head rule applies. On a line with a clean bed,
   `lowobj.min_top: -1` with `min_point_top: -1` reports all bed bumps. An object lying *across* a
   rail (the organizers' object in `doubleT_obstacle`) is reported since v0.6.2 (§3.3b: 124 of the
@@ -771,10 +781,11 @@ causes, each a limitation of the current rules:
    trustworthy speed; the measured effect on the real bags and on the injected sets is in
    EXPERIMENTS §1 and §2c, and the default is set from those numbers.
 5. **Ego speed without odometry depends on wall texture.** The estimator reports a speed on
-   40–60 % of the frames of the moving bags and "unknown" on the rest, so accumulation is
-   intermittent without a given speed; a given speed (parameter or odometry) is the reliable
-   path, and a wrong given speed is caught by the smear guards at the cost of the accumulation
-   gain.
+   55–96 % of the moving frames (median error 0.06–0.08 m/s against an ICP reference, 24.09) and
+   "unknown" on the rest, so accumulation is intermittent without a given speed; a given speed
+   (parameter or odometry) is the reliable path, and a wrong given speed is caught by the smear
+   guards at the cost of the accumulation gain. Neither the estimate nor a perfect speed improves
+   the organizers' check, so the estimator is off (EXPERIMENTS §9).
 6. **Objects lower than 35 cm on the sleepers are filtered by design** (the low-hardware rule);
    a plank lying on the sleepers is invisible whatever its reflectivity.
 7. **Tall narrow things and small floating things are advisory by design** (§3.3): a ladder standing
@@ -792,8 +803,9 @@ causes, each a limitation of the current rules:
    per-track tables of the v0.3 full-rate runs (EXPERIMENTS §1b) and checked on the same
    bags, so the numbers on the hidden bag will be worse than on these. The extended dataset
    is needed to calibrate them and to measure real recall beyond one person at 55 m.
-9. **Pure Python**: per-frame cost on the 4-core sandbox is in EXPERIMENTS §3 (v0.5 is not
-   slower than v0.3 there after vectorising the rail and wall binning); the i7-9700E bench is
-   still owed.
+9. **Python and numpy, optional C++ kernels, no GPU**: per-frame cost on the 4-core sandbox is in
+   EXPERIMENTS §3; the optional C++ kernels cut the detector time by 38–57 % with identical output
+   and the GPU was evaluated and not used ([`ARCHITECTURE.md`](ARCHITECTURE.md) "Native kernels",
+   "GPU: evaluated, not used"); the i7-9700E bench is still owed.
 10. **No semantics**: a legitimately parked train, a maintenance trolley or a worker on the
     track are all "obstacles", which is the intended behaviour for a safety function.

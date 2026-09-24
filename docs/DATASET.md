@@ -121,11 +121,15 @@ as for `doubleT_obstacle`. `in_gauge` is the organizers' intent. Extra keys:
 
 Three properties of the recording decide how it can be scored:
 
-* **The objects move, the train does not follow them.** They approach at 14–20 m/s (object 1 at 2–7
-  m/s). Frame-to-frame ICP on the real points shows the train itself slowing, backing up ~70 m over
-  frames 300–650, creeping at under 1 m/s from frame ~850 to ~1200 and then moving on. The injected
-  motion is therefore not ego-motion: a given train speed or the LiDAR speed estimator would
-  accumulate the background wrongly. The shipped single-frame path is what can be scored.
+* **The objects stand still in the tunnel; the train drives up to them.** The real ride is one
+  station-to-station run: 1.4 m/s at frame 0, 14–20 m/s from frame ~300 to ~1300, 2 m/s at the
+  end, 2.0 km in 151 s, never backing up (frame-to-frame point-to-plane ICP, re-measured 24.09
+  with `scripts/speed_reference.py`, and independently by the LiDAR-only speed estimator; an
+  earlier frame-to-frame ICP of 24.09 had reported the train backing up, which was wrong). Each
+  object approaches by exactly the train's displacement (median difference 0.00–0.04 m per frame
+  for all ten), so the organizers' tool places obstacles fixed in the world. This is the first
+  moving recording with obstacles on which a train speed (given or estimated) can be tested:
+  [`EXPERIMENTS.md`](EXPERIMENTS.md) §9.
 * **The objects were placed from the sensor's axis, not from the rails.** Near the train the
   objects are centred on the sensor's Y = 0, as the organizers' mount answer suggests (the
   LiDAR is 1 075 mm above the rail head on the train's centreline,
@@ -183,7 +187,7 @@ fresh detector per file, every 10th frame cached as `new_data_<N>_<i>.npy` (1 32
 | rings / range / intensity | 128 rings; last returns to 210 m (every recording stops at 209.2–210.0 m); p99 of ranges ≈ 65 m; intensity median 8, retro-reflectors 255 (linear reflectivity mapping, `SENSOR.md` §2) |
 | clock | bag receive time starts 2026-09-17 11:02:06 UTC; `header.stamp` is still the year-2000 sensor clock — use the bag time, as before |
 | frame period | 0.100 s inside a file and 0.100 s from the last frame of file N to the first of N+1 (max 0.12 s): **one continuous recording** — except **recording holes in the last third**: from file 156 (t ≈ 800 s) on, 26 files span 6–12 s instead of 5.1 s, with gaps of 1.2–7.1 s between consecutive frames (`period_max` per file in the JSON). 51 frames still sit in every file, so ≈ 70 s of the 1 200 s carry no frames; `ros2 bag play` pauses there and the tracker's gate (measured frame interval, `tracking.py`) is what keeps a track alive across such a gap |
-| the ride | from the drift of static tracks (m/s per file, `speed_tracks` in the JSON — the estimator in the detector is off, `EXPERIMENTS.md` §1b): departs from standstill at t = 0, stops at 168–209 s, 291–306, 439–459, 592–648, 760–775, 984–1007 and 1106–1117 s (seven stops: stations or signals), top speed 21.3 m/s (77 km/h) at t ≈ 230 s, mean 11.5 m/s, ≈ 13 km covered |
+| the ride | from the drift of static tracks (m/s per file, `speed_tracks` in the JSON — the estimator in the detector is off, `EXPERIMENTS.md` §1b, §9): departs from standstill at t = 0, stops at 168–209 s, 291–306, 439–459, 592–648, 760–775, 984–1007 and 1106–1117 s (seven stops: stations or signals), top speed 21.3 m/s (77 km/h) at t ≈ 230 s, mean 11.5 m/s, ≈ 13 km covered |
 | scenes | tunnels of both kinds, curves down to R ≈ 350 m (median \|curvature\| up to 3·10⁻³ m⁻¹ in files 129–134, 176–180), stations and a switch — files 22, 55, 113–114 and 155 have the track model unlocked (median `rail_score` < 0.1, platforms / switch, as in `squareT_platform_squareT_switch`). **No labels and no obstacles**: confirmed by the organizers (Q&A session 22.09; written answer 23.09 "В new_data препятствий нет", [`organizers/answers.md`](organizers/answers.md)) |
 
 **v0.5 defaults at full rate** (every frame, fresh detector per 51-frame file, no speed given;

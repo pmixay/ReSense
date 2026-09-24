@@ -59,7 +59,7 @@ N = {
     "empty_events": "20",
     "first_person": "148", "sustained_person": "149", "band_person": "115", "speed_person": "167",
     "latency": "42–64 мс", "p95": "78 мс",
-    "tests": "235",
+    "tests": "266",
     # first confirmed detection, straight track, median over the approaches [synthetic in real frames,
     # set F round 3 = the current code, EXPERIMENTS.md §2d]
     "range_chart": [("человек 1,7 м", 148), ("тележка", 144), ("ящик 1 м", 111), ("висящий кабель 3 см", 95),

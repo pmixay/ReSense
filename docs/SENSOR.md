@@ -122,7 +122,10 @@ and 1.51 m with a +3.0° roll on the older `doubleT_obstacle` rig [real, 24.09]:
 recordings hold two rigs, so the calibration stays on as the safeguard
 ([`ALGORITHM.md`](ALGORITHM.md) §2b).
 
-Closed on 22.09 (team decision, [`organizers/answers.md`](organizers/answers.md) §4): **no train
-speed, odometry or IMU data will be available for this case** — the solution operates without
-them. The packet-tail IMU noted in §2 is therefore documentation only; the node's speed inputs
-stay optional and the multi-frame accumulation stays off unless a speed is given.
+**Train speed.** Organizers' fact (Q&A 22.09, fact 6): the recordings carry no odometry, and some
+trains have none. Team decision of 22.09 ([`organizers/answers.md`](organizers/answers.md) §4): the
+solution operates without train speed, odometry or IMU data. The packet-tail IMU noted in §2 is
+therefore documentation only; the node's speed inputs stay optional and honoured, and the
+multi-frame accumulation stays off unless a speed is given. The LiDAR-only speed estimate was
+measured on 24.09: accurate (median error 0.06–0.08 m/s), but a speed does not improve the
+organizers' check, so it stays opt-in ([`EXPERIMENTS.md`](EXPERIMENTS.md) §9).

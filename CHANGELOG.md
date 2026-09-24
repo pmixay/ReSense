@@ -14,11 +14,52 @@ frames, 13 km, no obstacles).
 
 ## Unreleased (after v0.6.4)
 
+The package version stays 0.6.3 (node v0.6.4). Tests: 235 → 266 (+28 native kernels, +3 speed
+evaluation helpers) in `tests/`, 11 in `web/demo`.
+
+- **Train-speed evaluation (`396755f`, `93c6eaa`, 24.09):** tooling and measurements, no detector
+  change. `scripts/eval_real.py --nominal-stamps` (stamps snapped to the 10 Hz rotation, as the
+  node's header clock) and `--speed-ref` (a per-frame reference speed handed in as odometry);
+  `scripts/speed_reference.py` (frame-to-frame ICP reference), `speed_accuracy.py`,
+  `speed_setf.py`, `speed_static_check.py`, `speed_timing.py`; 3 tests. The LiDAR-only estimator
+  is accurate (median error 0.06–0.08 m/s, p90 ≤ 0.20 m/s on 55–96 % of the moving frames,
+  +6.6–6.8 ms per frame), but even a perfect speed does not improve the organizers' check: five
+  bags 103 / 18 → 111 / 16, no earlier first STOP on set O, 6 → 17 false STOP frames on the box
+  outside. `accumulation.estimate_speed` stays `false`; a given speed is still honoured. Raw:
+  [`experiments_2026-09-24_train_speed.json`](docs/evidence/results/experiments_2026-09-24_train_speed.json);
+  [EXPERIMENTS §9](docs/EXPERIMENTS.md).
+- **`cloud_with_fake_obj` corrected (24.09):** the organizers' objects stand still in the tunnel
+  and the train drives forward ~2.0 km at 1.4–20 m/s; the docs had said the objects move on their
+  own while the train backs up. Fixed in DATASET, P4_AUDIT, EXPERIMENTS §2e, QUESTIONS (Q1 lost
+  the sentence built on it) and `scripts/label_fake_objects.py`.
+- **C++ kernels (merge `d1a2d0c`, 24.09):** optional `native/resense_native.cpp`, a C ABI loaded
+  with ctypes by `resense/_native.py`, built as an optional setuptools extension
+  (`RESENSE_NATIVE=0` forces numpy): per-bin percentiles, the full-cloud passes of the track and
+  corridor stages, the health visibility. Detector time −38…−57 % (`roundT_doubleT`
+  62.4 → 33.5 ms, `doubleT_obstacle` 81.3 → 34.6 ms, p95 at 360° 107 → 51 ms; sandbox under load),
+  0 differing frames of 3 998 real frames with numpy 1.26 and 2.4; 28 tests. DBSCAN, the mount
+  rotation and the health azimuth histogram are not ported. The Docker build with the kernels is
+  proven by CI run 36058665640 (`d1a2d0c`: in-image tests and both ROS smoke tests green).
+  [ARCHITECTURE "Native kernels"](docs/ARCHITECTURE.md).
+- **`7df1796` (merged `7415495`, 24.09): near-bed gate fix, `main` green again once this branch
+  is merged.** `537e220` made the opt-in near-bed path miss the synthetic 30 × 30 × 10 cm bed box
+  at 12–28 m (3 failing tests in `tests/test_envelope.py`): `near_min_points` 10 → 5,
+  `near_min_length` 0.18 → 0.0, the other gates kept, the per-bin loop vectorised with identical
+  output. Five bags with the path on: 459 / 107 / 72 (`4b5786b` gates 1 035 / 145 / 42, `537e220`
+  141 / 28 / 33); defaults unchanged.
+  [EXPERIMENTS §1e](docs/EXPERIMENTS.md).
+- **`194b3e7` (24.09): criteria judgement and documentation revision.** New
+  [`docs/SCORECARD.md`](docs/SCORECARD.md) (two independent judges, 60 / 100, judged at
+  `4b5786b`); one format for every team-written document (header block, RU summary, dated
+  numbers), [`docs/README.md`](docs/README.md) index, this changelog, `docs/archive/`,
+  `docs/evidence/results/`; the separate review files removed (superseded by SCORECARD). Later on
+  24.09: the train-speed and GPU studies (EXPERIMENTS §9,
+  [ARCHITECTURE "GPU: evaluated, not used"](docs/ARCHITECTURE.md)).
 - **`537e220` (24.09, P3):** the opt-in central near-bed path gets stricter gates
   (`lowobj.near_min_excess` 0.05, `near_max_width`, `near_min_length`, `near_min_height`,
   `near_min_bed_lateral_bins`, `near_min_points` 10). `lowobj.near_enabled` stays `false`; the new
-  shipped key `lowobj.min_length` defaults to 0, so the default path is unchanged. Not measured on
-  real data.
+  shipped key `lowobj.min_length` defaults to 0, so the default path is unchanged. It turned
+  `main` red (the bed box, fixed by `7df1796` above).
 - **`4b5786b` (PR #9, 24.09, P4):** evaluation, not detector: set S objects placed on the local bed
   (22 of 67 visible hits against 29 of 68 with the old height), tracker reset per injected
   sequence, event identity `(seq, track id)`, per-sequence time and distance, one-to-one matching,
