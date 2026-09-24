@@ -128,6 +128,7 @@ int rs_bin_percentile(const double* values, const int64_t* bins, int64_t n, int6
         const double pos = p * static_cast<double>(c - 1);
         const int64_t lo = static_cast<int64_t>(std::floor(pos));
         const double frac = pos - static_cast<double>(lo);
+        if (lo < 0 || lo >= c) return -1;       // a percentile outside [0, 100]: left to numpy
         const int64_t r1 = std::min(lo + 1, c - 1);
         Item* seg = items.data() + start[b];
         std::nth_element(seg, seg + lo, seg + c, item_less);

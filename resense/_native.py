@@ -133,7 +133,7 @@ def bin_percentile(values, bins, nb: int, percentile: float, min_points: int, pa
     """``resense.track.bin_percentile`` or None."""
     if not (_enabled and isinstance(values, np.ndarray) and values.dtype == np.float64 and values.ndim == 1
             and isinstance(bins, np.ndarray) and bins.ndim == 1 and bins.size == values.size
-            and bins.dtype.kind in "iu" and values.size >= 64):
+            and bins.dtype.kind in "iu" and values.size >= 64 and 0.0 <= float(percentile) <= 100.0):
         return None
     if payload is not None and not (isinstance(payload, np.ndarray) and payload.dtype == np.float64
                                     and payload.shape == values.shape):

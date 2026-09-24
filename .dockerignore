@@ -1,4 +1,4 @@
-# The image copies only pyproject.toml, README.md, resense/, configs/, tests/, scripts/,
+# The image copies only pyproject.toml, setup.py, README.md, native/, resense/, configs/, tests/, scripts/,
 # labels/doubleT_obstacle.json, ros2_ws/src/ and selected docker/ files (docker/Dockerfile); keep everything else out of the
 # build context (git history, videos, caches, local outputs and cached frames).
 .git
@@ -9,6 +9,8 @@ out
 data
 **/__pycache__
 **/*.pyc
+resense/_resense_native*
+build
 .pytest_cache
 *.egg-info
 **/*.npy
