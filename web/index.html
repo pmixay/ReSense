@@ -481,7 +481,12 @@ function applySafety(res) {
   $('mount').textContent = m.status ? `${{ ok: 'норма', pending: 'ожидание', error: 'ошибка' }[m.status] || m.status}${m.status === 'ok' ? ` (крен ${m.roll_deg}°, тангаж ${m.pitch_deg}°)` : ''}` : '—';
   $('health-msgs').textContent = (h.messages || []).join('; ');
 }
-function logLine(s) { const l = $('log'); l.textContent = s + '\n' + l.textContent; if (l.textContent.length > 60000) l.textContent = l.textContent.slice(0, 50000); }
+function logLine(s) {
+  const l = $('log');
+  if (l.querySelector('.empty-log')) l.textContent = '';
+  l.textContent = s + '\n' + l.textContent;
+  if (l.textContent.length > 60000) l.textContent = l.textContent.slice(0, 50000);
+}
 function applyNode(node) {
   const card = $('node-card');
   if (!node) {
@@ -532,7 +537,7 @@ $('connect').onclick = () => {
 function resetView() {
   state.hist = []; state.shown = 0; state.alarmFrames = 0; state.lastObstacle = false; state.last = null;
   state.node = { lastDropped: null, alertUntil: 0 };
-  $('log').textContent = '';
+  $('log').innerHTML = '<span class="empty-log">Событий пока нет.</span>';
   $('banner').className = 'idle'; $('banner').textContent = 'ОЖИДАНИЕ ДАННЫХ';
 }
 function setMode(m) {

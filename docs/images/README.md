@@ -2,11 +2,11 @@
 
 > **Purpose:** gallery of the browser dashboard's captures and where their data comes from.
 > **Audience:** jury, team · **Owner:** P2 · **Language:** EN
-> **Last verified:** 2026-09-24, `537e220` · **Status:** current
+> **Last verified:** 2026-09-24, `46a04bb` · **Status:** current
 
 These screenshots show the current Russian-language browser dashboard in its three decision states.
-Its light modular layout, red primary actions and large status typography follow the visual
-direction of the Moscow Transport portal while all marks and graphics remain ReSense's. The **cab
+Its Moscow Sans typography and primary red come from the supplied Metro style archive. The layout
+uses plain white panels, dark labels and a red header that hides on downward scroll. The **cab
 view** (Вид из кабины) under the banner is the driver's-eye picture of
 [`scripts/hero_view.py`](../../scripts/hero_view.py) drawn from the status JSON alone: rails and the
 2.1 × 3.0 m train envelope along the fitted track axis and bed profile, the verified-clear stretch
@@ -15,7 +15,9 @@ tunnel outline is a schematic depth cue; no point cloud reaches the browser.
 
 The three full-page captures were taken from [`web/index.html`](../../web/index.html) at 1600 px
 width using the built-in 60-frame jury demo, so they are reproducible without ROS, a bag, or the
-organizers' dataset. Their values are synthetic UI demonstration data, not evaluation evidence.
+organizers' dataset. Run `python web/demo/capture_gallery.py` from the repository root with
+Playwright and Chromium installed to refresh all four images; use `--chromium` to select a browser.
+The demo values are synthetic UI demonstration data, not evaluation evidence.
 Real-data renders remain in [`docs/img/`](../img/), and real-data videos remain in
 [`docs/video/`](../video/).
 
@@ -25,7 +27,7 @@ Real-data renders remain in [`docs/img/`](../img/), and real-data videos remain 
 
 ## ВНИМАНИЕ — объект рядом с габаритом
 
-![ReSense dashboard showing a CAUTION decision for an advisory object at 116 metres in the cab view](dashboard-caution.png)
+![ReSense dashboard showing a CAUTION decision for an advisory object at 120 metres in the cab view](dashboard-caution.png)
 
 ## СТОП — препятствие внутри габарита
 
