@@ -141,17 +141,18 @@ def low_candidates(X: np.ndarray, dy: np.ndarray, h: np.ndarray, template: BedTe
     near = empty
     if with_near and cfg.near_enabled:
         central_bed = bed & (np.abs(dy[idx]) <= cfg.near_half_width)
-        central_bins = np.floor((dy[idx][central_bed] + cfg.near_half_width)
-                                / max(cfg.template_bin, 1e-6)).astype(int)
-        central_bin_counts = np.bincount(b[central_bed], minlength=nb)
-        central_bin_spread = {}
-        for bi in np.unique(b[central_bed]):
-            central_bin_spread[int(bi)] = int(np.unique(central_bins[b[central_bed] == bi]).size)
-        near_seen = np.array(
-            [central_bin_counts[i] >= cfg.local_min_points
-             and central_bin_spread.get(i, 0) >= cfg.near_min_bed_lateral_bins for i in range(nb)],
-            dtype=bool,
-        )
+        cb = b[central_bed]
+        lat = np.floor((dy[idx][central_bed] + cfg.near_half_width)
+                       / max(cfg.template_bin, 1e-6)).astype(np.int64)
+        # distinct lateral template bins with bed returns per along-track bin: one
+        # np.unique over (along-track bin, lateral bin) pairs instead of a loop over bins
+        spread = np.zeros(nb, dtype=np.int64)
+        if lat.size:
+            lat -= lat.min()
+            span = int(lat.max()) + 1
+            spread = np.bincount(np.unique(cb.astype(np.int64) * span + lat) // span, minlength=nb)
+        near_seen = ((np.bincount(cb, minlength=nb) >= cfg.local_min_points)
+                     & (spread >= cfg.near_min_bed_lateral_bins))
         central = ((r > cfg.near_min_excess) & (r < cfg.max_excess)
                    & (X[idx] < min(cfg.near_range, x_seen)) & (np.abs(dy[idx]) <= cfg.near_half_width)
                    & seen[b] & near_seen[b])
