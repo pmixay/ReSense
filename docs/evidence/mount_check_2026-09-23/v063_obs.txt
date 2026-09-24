@@ -1,0 +1,8 @@
+as recorded                          ok        residual  0.00 deg (tilt 0.00, yaw +0.00)  roll +3.02 pitch -0.88 yaw +0.00  orientation: configured  | obstacle True  17.4 s
+roll +3                              ok        residual  0.04 deg (tilt 0.04, yaw -0.00)  roll +0.00 pitch -0.91 yaw +0.00  orientation: configured  | obstacle True  16.0 s
+pitch -4                             ok        residual  0.23 deg (tilt 0.07, yaw -0.21)  roll +3.10 pitch +3.10 yaw +0.00  orientation: configured  | obstacle True  17.0 s
+roll -2 pitch 3 yaw 2                ok        residual  2.26 deg (tilt 0.04, yaw +2.26)  roll +5.13 pitch -3.67 yaw +0.00  orientation: configured  | obstacle True  17.5 s
+upside down                          ok        residual  0.03 deg (tilt 0.03, yaw -0.00)  roll +2.99 pitch -0.88 yaw +0.00  orientation: forward=+x left=-y up=-z  | obstacle True  17.2 s
+forward = +x (90 deg)                ok        residual  0.03 deg (tilt 0.03, yaw -0.00)  roll +2.99 pitch -0.88 yaw +0.00  orientation: forward=+y left=-x up=+z  | obstacle True  17.1 s
+backwards                            ok        residual  0.03 deg (tilt 0.03, yaw -0.00)  roll +2.99 pitch -0.88 yaw +0.00  orientation: forward=-x left=-y up=+z  | obstacle True  16.2 s
+on its side (spin axis horizontal)   provisional residual 84.33 deg (tilt 84.32, yaw +0.87)  roll -2.65 pitch -0.15 yaw +0.00  orientation: configured  | obstacle True  43.9 s

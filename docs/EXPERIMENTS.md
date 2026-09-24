@@ -80,7 +80,10 @@ magnitude, CAPTAIN.md finding 2 of 21.09).
 
 ## 0. v0.6.2 (23.09) — after the criteria review; v0.6.3 after the second one
 
-**v0.6.3 (23.09, after the second independent review).** Three changes, each measured on all
+**v0.6.3 (23.09, after the second independent review; raw: [`experiments_v0.6.3_real_fullrate.json`](experiments_v0.6.3_real_fullrate.json),
+per-frame fingerprints for refactors: `scripts/output_fingerprint.py`; measured on commit `c1c2b6a` —
+`a92625e` changed the detector and `configs/default.yaml` afterwards, so re-measure before quoting
+these numbers for later code).** Three changes, each measured on all
 13 759 frames against v0.6.2 (the per-frame outputs of both runs compared):
 
 1. **Low-object width cap 1.6 → 2.2 m** (the envelope's width): a person lying across the track

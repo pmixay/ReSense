@@ -1,0 +1,1036 @@
+{
+ "note": "scripts/eval_real.py over all 13 759 real frames (the six bags and the 20-minute ride in 8 pieces), 23.09. v062_w22 = v0.6.2 + lowobj.max_width 2.2 (the base of v0.6.3); v063_calib = + the mount calibration change (observations every obs_spacing frames, apply_min_deg 0.75) with tracking.hold_misses 0; v063 = + hold_misses 1 (v0.6.3 as shipped). stop_episodes = GO->STOP transitions per recording / ride piece. consistency_* = scripts/consistency_check.py against v062_w22. 4 jobs on a 4-core sandbox: the latencies are inflated (clean timing: EXPERIMENTS.md section 3).",
+ "runs": {
+  "v062_w22": {
+   "summary": {
+    "config": "configs/default.yaml",
+    "set": [
+     "lowobj.max_width=2.2"
+    ],
+    "given_speed": false,
+    "wall_s": 213.6,
+    "bags": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 182,
+      "alarm_events": 2,
+      "advisory_frames": 63,
+      "alarm_dist": [
+       55.5,
+       56.6
+      ],
+      "health": {
+       "ok": 201,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 151.0,
+      "labelled": {
+       "recall": 0.728,
+       "first_alarm_frame": 11,
+       "fp_frames": 0,
+       "fp_events": 0,
+       "per_bin": {
+        "50-100": [
+         179,
+         246
+        ]
+       },
+       "distance_error_max_abs": 0.23000000000000398
+      },
+      "latency_ms": [
+       69.4,
+       82.4,
+       102.3
+      ]
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 2,
+      "alarm_events": 4,
+      "advisory_frames": 155,
+      "alarm_dist": [
+       34.8,
+       41.7
+      ],
+      "health": {
+       "ok": 322,
+       "warn": 23,
+       "error": 0
+      },
+      "monitored_range_median": 120.0,
+      "latency_ms": [
+       54.3,
+       71.8,
+       112.4
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 2,
+      "alarm_events": 1,
+      "advisory_frames": 163,
+      "alarm_dist": [
+       128.3,
+       130.2
+      ],
+      "health": {
+       "ok": 252,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 145.8,
+      "latency_ms": [
+       51.3,
+       61.9,
+       80.6
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "advisory_frames": 93,
+      "alarm_dist": null,
+      "health": {
+       "ok": 268,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 130.3,
+      "latency_ms": [
+       48.7,
+       58.6,
+       66.1
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "advisory_frames": 114,
+      "alarm_dist": null,
+      "health": {
+       "ok": 545,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 157.5,
+      "latency_ms": [
+       44.7,
+       56.0,
+       87.6
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 77,
+      "alarm_events": 15,
+      "advisory_frames": 354,
+      "alarm_dist": [
+       82.1,
+       147.5
+      ],
+      "health": {
+       "ok": 877,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 143.0,
+      "latency_ms": [
+       41.7,
+       53.3,
+       80.9
+      ]
+     },
+     "new_data": {
+      "frames": 11271,
+      "alarm_frames": 164,
+      "alarm_events": 47,
+      "advisory_frames": 4209,
+      "alarm_dist": [
+       3.0,
+       158.3
+      ],
+      "health": {
+       "ok": 11076,
+       "warn": 195,
+       "error": 0
+      },
+      "monitored_range_median": 127.6,
+      "latency_ms": [
+       43.6,
+       60.7,
+       166.7
+      ]
+     }
+    },
+    "five_empty_bags": {
+     "frames": 2287,
+     "alarm_frames": 81,
+     "alarm_events": 20
+    }
+   },
+   "episodes": {
+    "doubleT_obstacle": {
+     "alarm_frames": 182,
+     "stop_episodes": 6
+    },
+    "doubleT_platform": {
+     "alarm_frames": 2,
+     "stop_episodes": 2
+    },
+    "new_data_0": {
+     "alarm_frames": 34,
+     "stop_episodes": 5
+    },
+    "new_data_1": {
+     "alarm_frames": 21,
+     "stop_episodes": 3
+    },
+    "new_data_2": {
+     "alarm_frames": 18,
+     "stop_episodes": 5
+    },
+    "new_data_3": {
+     "alarm_frames": 4,
+     "stop_episodes": 3
+    },
+    "new_data_4": {
+     "alarm_frames": 19,
+     "stop_episodes": 6
+    },
+    "new_data_5": {
+     "alarm_frames": 33,
+     "stop_episodes": 14
+    },
+    "new_data_6": {
+     "alarm_frames": 28,
+     "stop_episodes": 10
+    },
+    "new_data_7": {
+     "alarm_frames": 7,
+     "stop_episodes": 6
+    },
+    "roundT_doubleT": {
+     "alarm_frames": 2,
+     "stop_episodes": 1
+    },
+    "roundT_pressureGate_roundT": {
+     "alarm_frames": 0,
+     "stop_episodes": 0
+    },
+    "roundT_squareT_pressureGate_squareT": {
+     "alarm_frames": 0,
+     "stop_episodes": 0
+    },
+    "squareT_platform_squareT_switch": {
+     "alarm_frames": 77,
+     "stop_episodes": 33
+    }
+   }
+  },
+  "v063_calib": {
+   "summary": {
+    "config": "configs/default.yaml",
+    "set": [
+     "tracking.hold_misses=0"
+    ],
+    "given_speed": false,
+    "wall_s": 220.9,
+    "bags": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 182,
+      "alarm_events": 2,
+      "advisory_frames": 63,
+      "alarm_dist": [
+       55.5,
+       56.6
+      ],
+      "health": {
+       "ok": 197,
+       "warn": 4,
+       "error": 0
+      },
+      "monitored_range_median": 151.0,
+      "labelled": {
+       "recall": 0.728,
+       "first_alarm_frame": 11,
+       "fp_frames": 0,
+       "fp_events": 0,
+       "per_bin": {
+        "50-100": [
+         179,
+         246
+        ]
+       },
+       "distance_error_max_abs": 0.23000000000000398
+      },
+      "latency_ms": [
+       63.2,
+       81.7,
+       106.4
+      ]
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 2,
+      "alarm_events": 4,
+      "advisory_frames": 155,
+      "alarm_dist": [
+       34.8,
+       41.7
+      ],
+      "health": {
+       "ok": 322,
+       "warn": 23,
+       "error": 0
+      },
+      "monitored_range_median": 120.0,
+      "latency_ms": [
+       50.6,
+       69.1,
+       116.7
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 2,
+      "alarm_events": 1,
+      "advisory_frames": 163,
+      "alarm_dist": [
+       128.3,
+       130.2
+      ],
+      "health": {
+       "ok": 252,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 145.8,
+      "latency_ms": [
+       48.1,
+       59.8,
+       102.8
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "advisory_frames": 93,
+      "alarm_dist": null,
+      "health": {
+       "ok": 268,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 130.3,
+      "latency_ms": [
+       45.9,
+       60.1,
+       104.1
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "advisory_frames": 114,
+      "alarm_dist": null,
+      "health": {
+       "ok": 545,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 157.5,
+      "latency_ms": [
+       41.7,
+       52.8,
+       100.8
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 77,
+      "alarm_events": 15,
+      "advisory_frames": 354,
+      "alarm_dist": [
+       82.1,
+       147.5
+      ],
+      "health": {
+       "ok": 877,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 143.0,
+      "latency_ms": [
+       41.7,
+       53.2,
+       89.4
+      ]
+     },
+     "new_data": {
+      "frames": 11271,
+      "alarm_frames": 164,
+      "alarm_events": 47,
+      "advisory_frames": 4209,
+      "alarm_dist": [
+       3.0,
+       158.3
+      ],
+      "health": {
+       "ok": 11018,
+       "warn": 253,
+       "error": 0
+      },
+      "monitored_range_median": 127.6,
+      "latency_ms": [
+       45.1,
+       61.9,
+       235.2
+      ]
+     }
+    },
+    "five_empty_bags": {
+     "frames": 2287,
+     "alarm_frames": 81,
+     "alarm_events": 20
+    }
+   },
+   "episodes": {
+    "doubleT_obstacle": {
+     "alarm_frames": 182,
+     "stop_episodes": 6
+    },
+    "doubleT_platform": {
+     "alarm_frames": 2,
+     "stop_episodes": 2
+    },
+    "new_data_0": {
+     "alarm_frames": 34,
+     "stop_episodes": 5
+    },
+    "new_data_1": {
+     "alarm_frames": 21,
+     "stop_episodes": 3
+    },
+    "new_data_2": {
+     "alarm_frames": 18,
+     "stop_episodes": 5
+    },
+    "new_data_3": {
+     "alarm_frames": 4,
+     "stop_episodes": 3
+    },
+    "new_data_4": {
+     "alarm_frames": 19,
+     "stop_episodes": 6
+    },
+    "new_data_5": {
+     "alarm_frames": 33,
+     "stop_episodes": 14
+    },
+    "new_data_6": {
+     "alarm_frames": 28,
+     "stop_episodes": 10
+    },
+    "new_data_7": {
+     "alarm_frames": 7,
+     "stop_episodes": 6
+    },
+    "roundT_doubleT": {
+     "alarm_frames": 2,
+     "stop_episodes": 1
+    },
+    "roundT_pressureGate_roundT": {
+     "alarm_frames": 0,
+     "stop_episodes": 0
+    },
+    "roundT_squareT_pressureGate_squareT": {
+     "alarm_frames": 0,
+     "stop_episodes": 0
+    },
+    "squareT_platform_squareT_switch": {
+     "alarm_frames": 77,
+     "stop_episodes": 33
+    }
+   }
+  },
+  "v063": {
+   "summary": {
+    "config": "configs/default.yaml",
+    "set": [
+     "tracking.hold_misses=1"
+    ],
+    "given_speed": false,
+    "wall_s": 219.9,
+    "bags": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 188,
+      "alarm_events": 2,
+      "advisory_frames": 84,
+      "alarm_dist": [
+       55.5,
+       56.6
+      ],
+      "health": {
+       "ok": 201,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 151.0,
+      "labelled": {
+       "recall": 0.752,
+       "first_alarm_frame": 11,
+       "fp_frames": 0,
+       "fp_events": 0,
+       "per_bin": {
+        "50-100": [
+         185,
+         246
+        ]
+       },
+       "distance_error_max_abs": 0.23000000000000398
+      },
+      "latency_ms": [
+       57.5,
+       72.4,
+       113.8
+      ]
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 4,
+      "alarm_events": 4,
+      "advisory_frames": 180,
+      "alarm_dist": [
+       34.5,
+       41.7
+      ],
+      "health": {
+       "ok": 322,
+       "warn": 23,
+       "error": 0
+      },
+      "monitored_range_median": 120.0,
+      "latency_ms": [
+       50.2,
+       69.7,
+       109.6
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 2,
+      "alarm_events": 1,
+      "advisory_frames": 173,
+      "alarm_dist": [
+       128.3,
+       130.2
+      ],
+      "health": {
+       "ok": 252,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 145.8,
+      "latency_ms": [
+       44.5,
+       56.4,
+       67.2
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "advisory_frames": 104,
+      "alarm_dist": null,
+      "health": {
+       "ok": 268,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 130.3,
+      "latency_ms": [
+       43.0,
+       54.3,
+       219.2
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "advisory_frames": 146,
+      "alarm_dist": null,
+      "health": {
+       "ok": 545,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 157.5,
+      "latency_ms": [
+       41.7,
+       52.5,
+       108.2
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 101,
+      "alarm_events": 15,
+      "advisory_frames": 394,
+      "alarm_dist": [
+       82.0,
+       147.5
+      ],
+      "health": {
+       "ok": 877,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 143.0,
+      "latency_ms": [
+       41.1,
+       51.2,
+       90.3
+      ]
+     },
+     "new_data": {
+      "frames": 11271,
+      "alarm_frames": 204,
+      "alarm_events": 47,
+      "advisory_frames": 4737,
+      "alarm_dist": [
+       2.9,
+       158.3
+      ],
+      "health": {
+       "ok": 11084,
+       "warn": 187,
+       "error": 0
+      },
+      "monitored_range_median": 127.6,
+      "latency_ms": [
+       44.6,
+       61.7,
+       206.4
+      ]
+     }
+    },
+    "five_empty_bags": {
+     "frames": 2287,
+     "alarm_frames": 107,
+     "alarm_events": 20
+    }
+   },
+   "episodes": {
+    "doubleT_obstacle": {
+     "alarm_frames": 188,
+     "stop_episodes": 3
+    },
+    "doubleT_platform": {
+     "alarm_frames": 4,
+     "stop_episodes": 1
+    },
+    "new_data_0": {
+     "alarm_frames": 34,
+     "stop_episodes": 5
+    },
+    "new_data_1": {
+     "alarm_frames": 23,
+     "stop_episodes": 3
+    },
+    "new_data_2": {
+     "alarm_frames": 23,
+     "stop_episodes": 4
+    },
+    "new_data_3": {
+     "alarm_frames": 5,
+     "stop_episodes": 3
+    },
+    "new_data_4": {
+     "alarm_frames": 25,
+     "stop_episodes": 4
+    },
+    "new_data_5": {
+     "alarm_frames": 46,
+     "stop_episodes": 8
+    },
+    "new_data_6": {
+     "alarm_frames": 35,
+     "stop_episodes": 7
+    },
+    "new_data_7": {
+     "alarm_frames": 13,
+     "stop_episodes": 5
+    },
+    "roundT_doubleT": {
+     "alarm_frames": 2,
+     "stop_episodes": 1
+    },
+    "roundT_pressureGate_roundT": {
+     "alarm_frames": 0,
+     "stop_episodes": 0
+    },
+    "roundT_squareT_pressureGate_squareT": {
+     "alarm_frames": 0,
+     "stop_episodes": 0
+    },
+    "squareT_platform_squareT_switch": {
+     "alarm_frames": 101,
+     "stop_episodes": 25
+    }
+   }
+  }
+ },
+ "consistency_v063_calib": {
+  "base": "v062_w22",
+  "cand": "v063_calib",
+  "rows": [
+   {
+    "subset": "doubleT_platform",
+    "frames": 345,
+    "events_base": 4,
+    "events_cand": 4,
+    "alarm_frames_base": 2,
+    "alarm_frames_cand": 2,
+    "rest_base": 63,
+    "rest_cand": 63,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "roundT_doubleT",
+    "frames": 252,
+    "events_base": 1,
+    "events_cand": 1,
+    "alarm_frames_base": 2,
+    "alarm_frames_cand": 2,
+    "rest_base": 66,
+    "rest_cand": 66,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "roundT_pressureGate_roundT",
+    "frames": 268,
+    "events_base": 0,
+    "events_cand": 0,
+    "alarm_frames_base": 0,
+    "alarm_frames_cand": 0,
+    "rest_base": 67,
+    "rest_cand": 67,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "roundT_squareT_pressureGate_squareT",
+    "frames": 545,
+    "events_base": 0,
+    "events_cand": 0,
+    "alarm_frames_base": 0,
+    "alarm_frames_cand": 0,
+    "rest_base": 67,
+    "rest_cand": 67,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "squareT_platform_squareT_switch",
+    "frames": 877,
+    "events_base": 15,
+    "events_cand": 15,
+    "alarm_frames_base": 77,
+    "alarm_frames_cand": 77,
+    "rest_base": 52,
+    "rest_cand": 52,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "ride part 0",
+    "frames": 1409,
+    "events_base": 3,
+    "events_cand": 3,
+    "alarm_frames_base": 34,
+    "alarm_frames_cand": 34,
+    "rest_base": 64,
+    "rest_cand": 64,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "ride part 1",
+    "frames": 1409,
+    "events_base": 11,
+    "events_cand": 11,
+    "alarm_frames_base": 21,
+    "alarm_frames_cand": 21,
+    "rest_base": 56,
+    "rest_cand": 56,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "ride part 2",
+    "frames": 1409,
+    "events_base": 8,
+    "events_cand": 8,
+    "alarm_frames_base": 18,
+    "alarm_frames_cand": 18,
+    "rest_base": 59,
+    "rest_cand": 59,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "ride part 3",
+    "frames": 1409,
+    "events_base": 2,
+    "events_cand": 2,
+    "alarm_frames_base": 4,
+    "alarm_frames_cand": 4,
+    "rest_base": 65,
+    "rest_cand": 65,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "ride part 4",
+    "frames": 1409,
+    "events_base": 7,
+    "events_cand": 7,
+    "alarm_frames_base": 19,
+    "alarm_frames_cand": 19,
+    "rest_base": 60,
+    "rest_cand": 60,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "ride part 5",
+    "frames": 1409,
+    "events_base": 6,
+    "events_cand": 6,
+    "alarm_frames_base": 33,
+    "alarm_frames_cand": 33,
+    "rest_base": 61,
+    "rest_cand": 61,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "ride part 6",
+    "frames": 1409,
+    "events_base": 6,
+    "events_cand": 6,
+    "alarm_frames_base": 28,
+    "alarm_frames_cand": 28,
+    "rest_base": 61,
+    "rest_cand": 61,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "ride part 7",
+    "frames": 1408,
+    "events_base": 4,
+    "events_cand": 4,
+    "alarm_frames_base": 7,
+    "alarm_frames_cand": 7,
+    "rest_base": 63,
+    "rest_cand": 63,
+    "chosen_without_it": false
+   }
+  ],
+  "fewer": 0,
+  "more": 0,
+  "obstacles_base": {
+   "object_on_rail": [
+    121,
+    185
+   ],
+   "person_crossing": [
+    58,
+    61
+   ]
+  },
+  "obstacles_cand": {
+   "object_on_rail": [
+    121,
+    185
+   ],
+   "person_crossing": [
+    58,
+    61
+   ]
+  },
+  "chosen_in_every_leave_one_out": false
+ },
+ "consistency_v063": {
+  "base": "v062_w22",
+  "cand": "v063",
+  "rows": [
+   {
+    "subset": "doubleT_platform",
+    "frames": 345,
+    "events_base": 4,
+    "events_cand": 4,
+    "alarm_frames_base": 2,
+    "alarm_frames_cand": 4,
+    "rest_base": 63,
+    "rest_cand": 63,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "roundT_doubleT",
+    "frames": 252,
+    "events_base": 1,
+    "events_cand": 1,
+    "alarm_frames_base": 2,
+    "alarm_frames_cand": 2,
+    "rest_base": 66,
+    "rest_cand": 66,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "roundT_pressureGate_roundT",
+    "frames": 268,
+    "events_base": 0,
+    "events_cand": 0,
+    "alarm_frames_base": 0,
+    "alarm_frames_cand": 0,
+    "rest_base": 67,
+    "rest_cand": 67,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "roundT_squareT_pressureGate_squareT",
+    "frames": 545,
+    "events_base": 0,
+    "events_cand": 0,
+    "alarm_frames_base": 0,
+    "alarm_frames_cand": 0,
+    "rest_base": 67,
+    "rest_cand": 67,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "squareT_platform_squareT_switch",
+    "frames": 877,
+    "events_base": 15,
+    "events_cand": 15,
+    "alarm_frames_base": 77,
+    "alarm_frames_cand": 101,
+    "rest_base": 52,
+    "rest_cand": 52,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "ride part 0",
+    "frames": 1409,
+    "events_base": 3,
+    "events_cand": 3,
+    "alarm_frames_base": 34,
+    "alarm_frames_cand": 34,
+    "rest_base": 64,
+    "rest_cand": 64,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "ride part 1",
+    "frames": 1409,
+    "events_base": 11,
+    "events_cand": 11,
+    "alarm_frames_base": 21,
+    "alarm_frames_cand": 23,
+    "rest_base": 56,
+    "rest_cand": 56,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "ride part 2",
+    "frames": 1409,
+    "events_base": 8,
+    "events_cand": 8,
+    "alarm_frames_base": 18,
+    "alarm_frames_cand": 23,
+    "rest_base": 59,
+    "rest_cand": 59,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "ride part 3",
+    "frames": 1409,
+    "events_base": 2,
+    "events_cand": 2,
+    "alarm_frames_base": 4,
+    "alarm_frames_cand": 5,
+    "rest_base": 65,
+    "rest_cand": 65,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "ride part 4",
+    "frames": 1409,
+    "events_base": 7,
+    "events_cand": 7,
+    "alarm_frames_base": 19,
+    "alarm_frames_cand": 25,
+    "rest_base": 60,
+    "rest_cand": 60,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "ride part 5",
+    "frames": 1409,
+    "events_base": 6,
+    "events_cand": 6,
+    "alarm_frames_base": 33,
+    "alarm_frames_cand": 46,
+    "rest_base": 61,
+    "rest_cand": 61,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "ride part 6",
+    "frames": 1409,
+    "events_base": 6,
+    "events_cand": 6,
+    "alarm_frames_base": 28,
+    "alarm_frames_cand": 35,
+    "rest_base": 61,
+    "rest_cand": 61,
+    "chosen_without_it": false
+   },
+   {
+    "subset": "ride part 7",
+    "frames": 1408,
+    "events_base": 4,
+    "events_cand": 4,
+    "alarm_frames_base": 7,
+    "alarm_frames_cand": 13,
+    "rest_base": 63,
+    "rest_cand": 63,
+    "chosen_without_it": false
+   }
+  ],
+  "fewer": 0,
+  "more": 0,
+  "obstacles_base": {
+   "object_on_rail": [
+    121,
+    185
+   ],
+   "person_crossing": [
+    58,
+    61
+   ]
+  },
+  "obstacles_cand": {
+   "object_on_rail": [
+    127,
+    185
+   ],
+   "person_crossing": [
+    58,
+    61
+   ]
+  },
+  "chosen_in_every_leave_one_out": false
+ }
+}

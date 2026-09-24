@@ -18,6 +18,14 @@ and the status stream (`*_status.jsonl.gz`).
 
 The `clear` and `obstacle` runs predate the image's UDP-only DDS profile (`docker/fastdds_udp.xml`). The `ct_*` and `rviz_chain` runs use it.
 
+## `timing_2026-09-23/` and `mount_check_2026-09-23/`: v0.6.3 timing and the re-mount check
+
+`bench_v063.txt` is the output of `resense bench --npy <recording>` on every recording, back to back
+on the idle sandbox (EXPERIMENTS.md §3). The `v062_*` / `v063_*` files are `scripts/calib_check.py`
+on three recordings before and after the v0.6.3 calibration change (EXPERIMENTS.md §6): every
+supported mount gives the same residuals. `scripts/record_rviz_chain.sh` re-records
+`../video/docker_chain_rviz.mp4`.
+
 ## `bag_metadata/`: the original `metadata.yaml` of the six recordings
 
 These files are copied unchanged from the organizers' dataset. Every recording was made with
