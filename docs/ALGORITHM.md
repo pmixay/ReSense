@@ -349,7 +349,7 @@ same 3-D returns as a foreign object cannot be distinguished by this geometry al
 the false-event cost on the real ride must be measured before enabling it in production.
 
 Result (EXPERIMENTS.md §0): the object in **118 of the 126 frames after the person leaves it** (124 since the v0.6.3 hold over one missed frame)
-and 121 of 185 overall (its own detection; v0.6.1: 2), +1 event on the five empty bags and +1 on the ride.
+and 121 of 185 overall (127 with v0.6.3; its own detection; v0.6.1: 2), +1 event on the five empty bags and +1 on the ride.
 The thresholds sit close to this one real object — its top 0.11–0.16 m against 0.10, its width
 0.38–0.50 m against 0.35 (a review found 45 of 126 frames with a 0.13 m minimum and 95 with a
 0.45 m width) — because the rail fittings reach 8 cm and the trackside devices are 0.2–0.3 m
@@ -592,7 +592,7 @@ v0.6–v0.6.2 additions first; the v0.5 list follows.
   when it is ≥ 0.35 m across the track: an object lying *along* a rail is indistinguishable from
   the trackside devices mounted there.
 * **A person lying on the track** (synthetic, EXPERIMENTS.md §2d): across the rail heads the
-  corridor stage finds it from ~60 m; between the rails only the part above the rail head
+  corridor stage finds it from ~60–64 m; between the rails only the part above the rail head
   counts: in these tunnels the bed lies 0.26–0.34 m below the rail head beside a 0.57–0.60 m
   drainage trough, so a 0.35 m body lying across the track rises 0.01–0.09 m above the rail head:
   found from ~42 m when 0.10 m of it is above the rail head, from ~17 m at 0.05 m, not below the

@@ -9,7 +9,7 @@ State of the repo this map was written against: v0 prototype, one merged PR, 15 
 tests, CI with a `pytest` job, a parameter-sync check and a Docker job that runs the suite
 inside the image.
 
-## 0. Status (16.09, end of day 2) — done and what is left
+## 0. Status — done and what is left (started 16.09, last updated 24.09)
 
 ### Done on branch `claude/captain-member-mapping-6zge0b` (PR #2)
 
@@ -45,14 +45,14 @@ inside the image.
    topic pairs, two recordings into one node — detections as offline, `roundT_doubleT` PASS
    with `--max-alarm-frames 2`; it found and fixed the best-effort transport bug (v0.6.2
    `input_reliability`). What is left for the stand: the original bags (not rebuilt ones) and
-   the i7 timing — at 360° the 4-vCPU sandbox runs at 8–10 fps in steady state and loses the first seconds to the DDS start-up (EXPERIMENTS §3b).
+   the i7 timing — at 360° the 4-vCPU sandbox runs at 7–10 fps in steady state and loses the first seconds to the DDS start-up (EXPERIMENTS §3b).
 3. ~~Launch arguments for the demo~~ — done (`loop:=`, every parameter as a launch argument,
    plus `ego_speed_mps` / `speed_topic` / `odom_topic` / `publish_tf` / `tf_parent_frame`).
 4. ~~Data-path alignment and a headless demo path~~ — done, item 8.
 5. ~~Dataset-free ROS smoke test in CI~~ — done, item 10 (`scripts/make_smoke_bag.py`,
    `scripts/smoke_test.sh`, CI docker job).
-6. Intermediate submission: cover message drafted in `SUBMISSION.md`; tag on the day once P2's
-   recording exists (the date and form are the team's own to settle, 22.09).
+6. Intermediate submission: cover message drafted in `SUBMISSION.md`. **Tagging a release is
+   deferred (24.09): the system is still being developed**; no tag exists yet.
 7. Sprint 2: ~~ego-speed parameter~~ done (item 14), ~~remote-desktop runbook~~ done (README,
    item 15), bench timing measured on the 4-core sandbox (finding 4 above; the i7 run is still
    owed, item 13), extended-dataset intake recipe in `DATASET.md` (item 16, with P4).
@@ -209,7 +209,7 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
     trolley 146 m, crate 111 m, cable 95 m; with a train speed 177 / 190 / 183 m and fewer ride false
     alarms (274 / 75); in R ≈ 350 m curves 1 of 2 approaches detected, at 74–82 m (sightline). The farthest
     return in all data is 210 m (every recording stops at 209.2–210.0 m), so 300 m is out of the sensor's reach.
-12. **Tests**: 152 (the node's decision / fault / watchdog / mount-parameter / input-switching
+12. **Tests**: 152 on 23.09, 198 on 24.09 (the node's decision / fault / watchdog / mount-parameter / input-switching
     logic runs against ROS stand-ins in `tests/test_node.py`, so a node bug no longer waits for
     the Docker job). Criteria judgement and the remaining work: [`SCORECARD.md`](SCORECARD.md).
 13. **Written answers of the organizers (23.09)** to our questions 1, 2 and 6, recorded
@@ -259,6 +259,16 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
     played bag does through ROS (`scripts/start_offsets.py`: 14–20 events on the five bags); clean
     timing re-measured (42–64 ms mean, p95 53–78 ms); the dry-run checker ignores the transport's
     start-up hole (`--settle-s`) and takes `--obstacle-in`; a jury quick path heads the README.
+17. **Re-measurement on the current code (24.09)** (EXPERIMENTS "Re-measurement", raw
+    `experiments_2026-09-24_remeasure.json`): the organizers' data downloaded again and cached
+    (13 759 frames); `main` (after `a92625e` changed the detector without data) against v0.6.3:
+    **identical output on every real frame**, the start-offset check identical row for row, timing
+    unchanged back to back. Set F had never been re-run after v0.6.3's hold over one missed frame:
+    round 3 (§2d) keeps every first confirmation (person 148 m, 167 m with a speed) and moves the
+    held ranges (a person held from 149 m instead of 135 m). Numbers that disagreed between the docs
+    were aligned (distance error ≤ 0.23 m, 7–10 fps at 360° through ROS, 198 tests, `CAUTION` on
+    27–68 % of empty-recording frames, 16 of 47 ride events first confirmed beyond 100 m, the
+    v0.6.3 timing table in ARCHITECTURE). Release tagging is deferred while development continues.
 
 ### Left for the team (captain tracks, does not do)
 
@@ -268,7 +278,8 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
 | P3 | v0.6 follow-ups: a lining-anchored far height reference (vault drift measurable to ~200 m, EXPERIMENTS §2d); a bed bin must span the bed to extend the fit (an object far ahead lengthens it, §2d); cant-aware roll; the platform-end structure at 82–84 m | `EXPERIMENTS.md` §2d, ALGORITHM §6 |
 | P3 | the zone-history fast path (alarm when the last three hits are inside, measured on the five bags), the edge-margin variants, re-classifying the 96 residual alarm frames by cause, the platform-end structure at 81–83 m (20 of 32 events), accumulation on a moving bag with an obstacle (none exists yet), the injector's height reference beyond 80 m (with P4) | `EXPERIMENTS.md` §1b ablations and §5 |
 | P4 | extended-dataset intake and labelling with the `labels/` format; the injector placing far objects under the real bed (use the verified floor); calibration of the catalogue reflectivities against real obstacles | `DATASET.md` "Real labels", `EXPERIMENTS.md` §2c |
-| P2 | personal data and photos on slides 2–4 of `presentation/ReSense_LCT2026.pptx`; the dashboard card for `ego_speed` / `n_accumulated` / alarm events | spec §4 demo and §8.8 pitch |
+| P1 | personal data and photos on slides 2–4 of `presentation/ReSense_LCT2026.pptx` (`PRESENTATION.md`: the captain fills them) | spec §8.8 pitch |
+| P2 | the dashboard card for `ego_speed` / `n_accumulated` / alarm events | spec §4 demo |
 
 ## 1. Ownership map — who edits what
 

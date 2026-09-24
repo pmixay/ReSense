@@ -178,7 +178,7 @@ the disk.
   elevation **+14.4° … −25.1°**, **0.125° step in the ROI (+2° … −6.2°)**, 0.5° outside. The sweep
   of one frame takes 33 ms. The unit is a **Hesai Pandar128 (E3X)** — identified from the manual and the
   angle correction file, see [`SENSOR.md`](SENSOR.md).
-* Range: last returns at ~206 m; the tunnel walls return points to ~150–200 m, the track bed to
+* Range: last returns at 209–210 m (every recording stops at 209.2–210.0 m); the tunnel walls return points to ~150–200 m, the track bed to
   ~100 m; p99 of ranges is only ~48 m (most points are the near walls).
 * Sensor frame: **−y is forward, +x is left, +z is up** (right-handed). The package converts
   this to the vehicle frame X-forward / Y-left / Z-up (`SensorConfig.forward = "-y"`).

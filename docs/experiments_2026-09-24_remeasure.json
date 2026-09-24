@@ -1,0 +1,2359 @@
+{
+ "note": "Re-measurement of every headline number on the current code (main 4cd32d6; the commit that adds this file changes documentation only), 24.09, against v0.6.3 (1210580, the squash-merge of c1c2b6a). Data: the organizers' six bags and the 20-minute ride re-downloaded and cached at full rate (13 759 frames). real: scripts/eval_real.py (the ride in 8 pieces) on both code versions; identity = per-frame comparison of obstacle, warning, nearest/clear distance and every detection (id, distance, lateral, kind, zone). start_offsets: scripts/start_offsets.py. setF: scripts/far_range_eval.py / lying_person_eval.py, legacy placement, seed 0, 110 frames per sequence; band_range_m = per approach, the largest D with every 10 m band from the train out to D detected in >= 90 % of its frames with returns. setF_hold0_straight: the straight set with tracking.hold_misses 0 reproduces experiments_v0.6.2_setF.json 'straight' value for value. timing: resense bench --npy, every frame, OMP_NUM_THREADS=1, the two versions back to back on an idle 4-core sandbox (not the machine of 23.09).",
+ "code": {
+  "current": "4cd32d6 (main)",
+  "baseline": "1210580 (v0.6.3)"
+ },
+ "real": {
+  "per_recording": {
+   "doubleT_obstacle": {
+    "frames": 201,
+    "alarm_frames": 188,
+    "alarm_events": 2,
+    "advisory_frames": 84,
+    "alarm_dist": [
+     55.5,
+     56.6
+    ],
+    "monitored_range_median": 151.0,
+    "labelled": {
+     "recall": 0.752,
+     "first_alarm_frame": 11,
+     "fp_frames": 0,
+     "fp_events": 0,
+     "per_bin": {
+      "50-100": [
+       185,
+       246
+      ]
+     },
+     "distance_error_max_abs": 0.23000000000000398
+    }
+   },
+   "doubleT_platform": {
+    "frames": 345,
+    "alarm_frames": 4,
+    "alarm_events": 4,
+    "advisory_frames": 180,
+    "alarm_dist": [
+     34.5,
+     41.7
+    ],
+    "monitored_range_median": 120.0
+   },
+   "roundT_doubleT": {
+    "frames": 252,
+    "alarm_frames": 2,
+    "alarm_events": 1,
+    "advisory_frames": 173,
+    "alarm_dist": [
+     128.3,
+     130.2
+    ],
+    "monitored_range_median": 145.8
+   },
+   "roundT_pressureGate_roundT": {
+    "frames": 268,
+    "alarm_frames": 0,
+    "alarm_events": 0,
+    "advisory_frames": 104,
+    "alarm_dist": null,
+    "monitored_range_median": 130.3
+   },
+   "roundT_squareT_pressureGate_squareT": {
+    "frames": 545,
+    "alarm_frames": 0,
+    "alarm_events": 0,
+    "advisory_frames": 146,
+    "alarm_dist": null,
+    "monitored_range_median": 157.5
+   },
+   "squareT_platform_squareT_switch": {
+    "frames": 877,
+    "alarm_frames": 101,
+    "alarm_events": 15,
+    "advisory_frames": 394,
+    "alarm_dist": [
+     82.0,
+     147.5
+    ],
+    "monitored_range_median": 143.0
+   },
+   "new_data": {
+    "frames": 11271,
+    "alarm_frames": 204,
+    "alarm_events": 47,
+    "advisory_frames": 4737,
+    "alarm_dist": [
+     2.9,
+     158.3
+    ],
+    "monitored_range_median": 127.6
+   }
+  },
+  "stop_episodes": {
+   "new_data_0": 5,
+   "new_data_1": 3,
+   "new_data_2": 4,
+   "new_data_3": 3,
+   "new_data_4": 4,
+   "new_data_5": 8,
+   "new_data_6": 7,
+   "new_data_7": 5,
+   "doubleT_obstacle": 3,
+   "doubleT_platform": 1,
+   "roundT_doubleT": 1,
+   "roundT_pressureGate_roundT": 0,
+   "roundT_squareT_pressureGate_squareT": 0,
+   "squareT_platform_squareT_switch": 25
+  },
+  "five_empty_bags": {
+   "alarm_frames": 107,
+   "events": 20,
+   "stop_episodes": 27
+  },
+  "ride": {
+   "frames": 11271,
+   "alarm_frames": 204,
+   "events": 47,
+   "stop_episodes": 39,
+   "events_per_km": 3.6,
+   "events_first_confirmed_beyond_100m": 16
+  },
+  "doubleT_obstacle": {
+   "person_crossing": [
+    58,
+    61
+   ],
+   "person_first_frame": 11,
+   "distance_error_max_m": 0.23,
+   "object_on_rail_own_detection": [
+    127,
+    185
+   ],
+   "object_on_rail_from_frame_75": [
+    124,
+    126
+   ],
+   "stop_episodes": 3
+  },
+  "health_warnings_other_than_latency": [
+   196,
+   13759
+  ],
+  "caution_share_of_frames": {
+   "doubleT_platform": 0.56,
+   "roundT_doubleT": 0.68,
+   "roundT_pressureGate_roundT": 0.39,
+   "roundT_squareT_pressureGate_squareT": 0.27,
+   "squareT_platform_squareT_switch": 0.36,
+   "new_data": 0.41
+  },
+  "identity_vs_v063": {
+   "frames_compared": 13759,
+   "frames_differing": 0
+  }
+ },
+ "start_offsets": {
+  "rows": 30,
+  "rows_identical_to_v063_record": 30
+ },
+ "setF": {
+  "curves": {
+   "parameters": {
+    "placement_mode": "legacy",
+    "place": "bed",
+    "seed": 0,
+    "files": "127,129,131,160,164,175,177",
+    "frames": 110,
+    "kinds": "person,box1.0,trolley",
+    "start_m": 160.0,
+    "lateral_range": "-0.6:0.6",
+    "given_speed": false,
+    "far_min_height": null,
+    "config_sha256": "b333cd85572ce50c4acc2f6eade42a5e8f54cfc2ea0ac6f445c38916e00b1ee8",
+    "speeds_sha256": "05c1006de92d5331871da80999c27fadb2397981863b34b63b0d227dbe6d01f3",
+    "selected_stamps_sha256": "b762372f73ecbf7d503ed58cd133a8b834684ab7e933cbebb528601e47a1be0c"
+   },
+   "per_kind": {
+    "person": {
+     "sequences": 7,
+     "detected": 6,
+     "sustained_m": [
+      61.0,
+      74.7,
+      77.0,
+      92.7,
+      93.2,
+      93.7
+     ],
+     "sustained_median": 84.8,
+     "first_detection_m": [
+      58.5,
+      69.0,
+      70.9,
+      84.4,
+      85.8,
+      85.8
+     ],
+     "first_detection_median": 77.6,
+     "recall_by_bin": {
+      "0-50": [
+       142,
+       142
+      ],
+      "50-100": [
+       96,
+       191
+      ],
+      "100-150": [
+       0,
+       122
+      ],
+      "150-200": [
+       0,
+       10
+      ],
+      "200-250": [
+       0,
+       0
+      ]
+     },
+     "false_detections": 0,
+     "band_range_m": [
+      null,
+      50.0,
+      70.0,
+      80.0,
+      70.0,
+      80.0,
+      80.0
+     ]
+    },
+    "box1.0": {
+     "sequences": 7,
+     "detected": 6,
+     "sustained_m": [
+      49.7,
+      52.0,
+      84.4,
+      95.3
+     ],
+     "sustained_median": 68.2,
+     "first_detection_m": [
+      46.7,
+      48.2,
+      58.5,
+      77.6,
+      84.0,
+      88.9
+     ],
+     "first_detection_median": 68.1,
+     "recall_by_bin": {
+      "0-50": [
+       126,
+       142
+      ],
+      "50-100": [
+       67,
+       192
+      ],
+      "100-150": [
+       0,
+       122
+      ],
+      "150-200": [
+       0,
+       9
+      ],
+      "200-250": [
+       0,
+       0
+      ]
+     },
+     "false_detections": 8,
+     "band_range_m": [
+      null,
+      null,
+      40.0,
+      null,
+      50.0,
+      70.0,
+      70.0
+     ]
+    },
+    "trolley": {
+     "sequences": 7,
+     "detected": 6,
+     "sustained_m": [
+      23.9,
+      61.5,
+      62.2,
+      82.7,
+      91.4,
+      96.9
+     ],
+     "sustained_median": 72.5,
+     "first_detection_m": [
+      51.2,
+      57.7,
+      59.7,
+      76.0,
+      84.0,
+      88.9
+     ],
+     "first_detection_median": 67.8,
+     "recall_by_bin": {
+      "0-50": [
+       131,
+       142
+      ],
+      "50-100": [
+       74,
+       190
+      ],
+      "100-150": [
+       0,
+       110
+      ],
+      "150-200": [
+       0,
+       7
+      ],
+      "200-250": [
+       0,
+       0
+      ]
+     },
+     "false_detections": 11,
+     "band_range_m": [
+      null,
+      60.0,
+      20.0,
+      80.0,
+      50.0,
+      70.0,
+      90.0
+     ]
+    }
+   }
+  },
+  "lying_deep": {
+   "parameters": {
+    "placement_mode": "legacy",
+    "place": "bed",
+    "seed": 0,
+    "files": "46,68,98,140,168,172",
+    "frames": 110,
+    "kinds": "lying_across,lying_along",
+    "start_m": 150.0,
+    "lateral_range": "-0.15:0.15",
+    "given_speed": false,
+    "far_min_height": null,
+    "config_sha256": "b333cd85572ce50c4acc2f6eade42a5e8f54cfc2ea0ac6f445c38916e00b1ee8",
+    "speeds_sha256": "05c1006de92d5331871da80999c27fadb2397981863b34b63b0d227dbe6d01f3",
+    "selected_stamps_sha256": "ff172befbaebf883ae7773f64fd9835fd9bdffaac853ce593f0922d1aaab0cc0"
+   },
+   "per_kind": {
+    "lying_across": {
+     "sequences": 6,
+     "detected": 0,
+     "sustained_m": [],
+     "sustained_median": null,
+     "first_detection_m": [],
+     "first_detection_median": null,
+     "recall_by_bin": {
+      "0-50": [
+       0,
+       120
+      ],
+      "50-100": [
+       0,
+       152
+      ],
+      "100-150": [
+       0,
+       148
+      ],
+      "150-200": [
+       0,
+       6
+      ],
+      "200-250": [
+       0,
+       0
+      ]
+     },
+     "false_detections": 0,
+     "band_range_m": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "lying_along": {
+     "sequences": 6,
+     "detected": 0,
+     "sustained_m": [],
+     "sustained_median": null,
+     "first_detection_m": [],
+     "first_detection_median": null,
+     "recall_by_bin": {
+      "0-50": [
+       0,
+       120
+      ],
+      "50-100": [
+       0,
+       152
+      ],
+      "100-150": [
+       0,
+       132
+      ],
+      "150-200": [
+       0,
+       5
+      ],
+      "200-250": [
+       0,
+       0
+      ]
+     },
+     "false_detections": 0,
+     "band_range_m": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ]
+    }
+   }
+  },
+  "lying_rail": {
+   "parameters": {
+    "placement_mode": "legacy",
+    "place": "rail",
+    "seed": 0,
+    "files": "46,68,98,140,168,172",
+    "frames": 110,
+    "kinds": "lying_across",
+    "start_m": 150.0,
+    "lateral_range": "-0.15:0.15",
+    "given_speed": false,
+    "far_min_height": null,
+    "config_sha256": "b333cd85572ce50c4acc2f6eade42a5e8f54cfc2ea0ac6f445c38916e00b1ee8",
+    "speeds_sha256": "05c1006de92d5331871da80999c27fadb2397981863b34b63b0d227dbe6d01f3",
+    "selected_stamps_sha256": "ff172befbaebf883ae7773f64fd9835fd9bdffaac853ce593f0922d1aaab0cc0"
+   },
+   "per_kind": {
+    "lying_across": {
+     "sequences": 6,
+     "detected": 6,
+     "sustained_m": [
+      58.1,
+      63.3,
+      66.5,
+      68.6,
+      72.1,
+      82.9
+     ],
+     "sustained_median": 67.5,
+     "first_detection_m": [
+      54.1,
+      59.1,
+      62.7,
+      66.1,
+      77.1,
+      112.2
+     ],
+     "first_detection_median": 64.4,
+     "recall_by_bin": {
+      "0-50": [
+       119,
+       120
+      ],
+      "50-100": [
+       45,
+       152
+      ],
+      "100-150": [
+       2,
+       149
+      ],
+      "150-200": [
+       0,
+       6
+      ],
+      "200-250": [
+       0,
+       0
+      ]
+     },
+     "false_detections": 10,
+     "band_range_m": [
+      60.0,
+      50.0,
+      60.0,
+      40.0,
+      70.0,
+      60.0
+     ]
+    }
+   }
+  },
+  "lying_shallow_0.20": {
+   "parameters": {
+    "placement_mode": "legacy",
+    "place": "bed",
+    "seed": 0,
+    "files": "46,68,98,140,168,172",
+    "frames": 110,
+    "kinds": "lying_across,lying_along",
+    "start_m": 60.0,
+    "lateral_range": "-0.15:0.15",
+    "given_speed": false,
+    "far_min_height": null,
+    "config_sha256": "b333cd85572ce50c4acc2f6eade42a5e8f54cfc2ea0ac6f445c38916e00b1ee8",
+    "speeds_sha256": "05c1006de92d5331871da80999c27fadb2397981863b34b63b0d227dbe6d01f3",
+    "selected_stamps_sha256": "ff172befbaebf883ae7773f64fd9835fd9bdffaac853ce593f0922d1aaab0cc0"
+   },
+   "per_kind": {
+    "lying_across": {
+     "sequences": 6,
+     "detected": 6,
+     "sustained_m": [
+      50.3,
+      52.1,
+      52.1,
+      54.4,
+      54.4,
+      55.8
+     ],
+     "sustained_median": 53.2,
+     "first_detection_m": [
+      46.6,
+      48.0,
+      48.1,
+      50.5,
+      50.7,
+      51.5
+     ],
+     "first_detection_median": 49.3,
+     "recall_by_bin": {
+      "0-50": [
+       128,
+       129
+      ],
+      "50-100": [
+       3,
+       35
+      ],
+      "100-150": [
+       0,
+       0
+      ],
+      "150-200": [
+       0,
+       0
+      ],
+      "200-250": [
+       0,
+       0
+      ]
+     },
+     "false_detections": 0,
+     "band_range_m": [
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      40.0,
+      50.0
+     ]
+    },
+    "lying_along": {
+     "sequences": 6,
+     "detected": 6,
+     "sustained_m": [
+      52.1,
+      52.1,
+      54.2,
+      54.4,
+      54.4,
+      55.8
+     ],
+     "sustained_median": 54.3,
+     "first_detection_m": [
+      48.0,
+      48.1,
+      50.3,
+      50.5,
+      50.7,
+      51.5
+     ],
+     "first_detection_median": 50.4,
+     "recall_by_bin": {
+      "0-50": [
+       129,
+       129
+      ],
+      "50-100": [
+       4,
+       35
+      ],
+      "100-150": [
+       0,
+       0
+      ],
+      "150-200": [
+       0,
+       0
+      ],
+      "200-250": [
+       0,
+       0
+      ]
+     },
+     "false_detections": 0,
+     "band_range_m": [
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0
+     ]
+    }
+   }
+  },
+  "lying_shallow_0.25": {
+   "parameters": {
+    "placement_mode": "legacy",
+    "place": "bed",
+    "seed": 0,
+    "files": "46,68,98,140,168,172",
+    "frames": 110,
+    "kinds": "lying_across,lying_along",
+    "start_m": 60.0,
+    "lateral_range": "-0.15:0.15",
+    "given_speed": false,
+    "far_min_height": null,
+    "config_sha256": "b333cd85572ce50c4acc2f6eade42a5e8f54cfc2ea0ac6f445c38916e00b1ee8",
+    "speeds_sha256": "05c1006de92d5331871da80999c27fadb2397981863b34b63b0d227dbe6d01f3",
+    "selected_stamps_sha256": "ff172befbaebf883ae7773f64fd9835fd9bdffaac853ce593f0922d1aaab0cc0"
+   },
+   "per_kind": {
+    "lying_across": {
+     "sequences": 6,
+     "detected": 6,
+     "sustained_m": [
+      32.1,
+      41.0,
+      45.2,
+      46.0,
+      50.3,
+      50.5
+     ],
+     "sustained_median": 45.6,
+     "first_detection_m": [
+      30.0,
+      38.9,
+      41.5,
+      42.0,
+      46.6,
+      46.8
+     ],
+     "first_detection_median": 41.7,
+     "recall_by_bin": {
+      "0-50": [
+       106,
+       129
+      ],
+      "50-100": [
+       0,
+       35
+      ],
+      "100-150": [
+       0,
+       0
+      ],
+      "150-200": [
+       0,
+       0
+      ],
+      "200-250": [
+       0,
+       0
+      ]
+     },
+     "false_detections": 0,
+     "band_range_m": [
+      40.0,
+      30.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0
+     ]
+    },
+    "lying_along": {
+     "sequences": 6,
+     "detected": 6,
+     "sustained_m": [
+      45.3,
+      46.0,
+      46.9,
+      50.1,
+      50.3,
+      54.4
+     ],
+     "sustained_median": 48.5,
+     "first_detection_m": [
+      42.0,
+      45.2,
+      45.3,
+      46.1,
+      46.6,
+      50.5
+     ],
+     "first_detection_median": 45.7,
+     "recall_by_bin": {
+      "0-50": [
+       118,
+       129
+      ],
+      "50-100": [
+       1,
+       35
+      ],
+      "100-150": [
+       0,
+       0
+      ],
+      "150-200": [
+       0,
+       0
+      ],
+      "200-250": [
+       0,
+       0
+      ]
+     },
+     "false_detections": 0,
+     "band_range_m": [
+      null,
+      40.0,
+      40.0,
+      null,
+      40.0,
+      50.0
+     ]
+    }
+   }
+  },
+  "lying_shallow_0.30": {
+   "parameters": {
+    "placement_mode": "legacy",
+    "place": "bed",
+    "seed": 0,
+    "files": "46,68,98,140,168,172",
+    "frames": 110,
+    "kinds": "lying_across,lying_along",
+    "start_m": 60.0,
+    "lateral_range": "-0.15:0.15",
+    "given_speed": false,
+    "far_min_height": null,
+    "config_sha256": "b333cd85572ce50c4acc2f6eade42a5e8f54cfc2ea0ac6f445c38916e00b1ee8",
+    "speeds_sha256": "05c1006de92d5331871da80999c27fadb2397981863b34b63b0d227dbe6d01f3",
+    "selected_stamps_sha256": "ff172befbaebf883ae7773f64fd9835fd9bdffaac853ce593f0922d1aaab0cc0"
+   },
+   "per_kind": {
+    "lying_across": {
+     "sequences": 6,
+     "detected": 6,
+     "sustained_m": [
+      16.1,
+      16.4,
+      17.3,
+      17.7,
+      25.4
+     ],
+     "sustained_median": 17.3,
+     "first_detection_m": [
+      10.1,
+      16.1,
+      16.4,
+      17.3,
+      17.7,
+      23.6
+     ],
+     "first_detection_median": 16.8,
+     "recall_by_bin": {
+      "0-50": [
+       32,
+       129
+      ],
+      "50-100": [
+       0,
+       35
+      ],
+      "100-150": [
+       0,
+       0
+      ],
+      "150-200": [
+       0,
+       0
+      ],
+      "200-250": [
+       0,
+       0
+      ]
+     },
+     "false_detections": 0,
+     "band_range_m": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      20.0,
+      10.0
+     ]
+    },
+    "lying_along": {
+     "sequences": 6,
+     "detected": 6,
+     "sustained_m": [
+      22.0,
+      37.7,
+      41.1,
+      46.6
+     ],
+     "sustained_median": 39.4,
+     "first_detection_m": [
+      11.3,
+      12.1,
+      22.0,
+      35.9,
+      39.2,
+      42.7
+     ],
+     "first_detection_median": 28.9,
+     "recall_by_bin": {
+      "0-50": [
+       65,
+       129
+      ],
+      "50-100": [
+       0,
+       35
+      ],
+      "100-150": [
+       0,
+       0
+      ],
+      "150-200": [
+       0,
+       0
+      ],
+      "200-250": [
+       0,
+       0
+      ]
+     },
+     "false_detections": 0,
+     "band_range_m": [
+      10.0,
+      20.0,
+      10.0,
+      30.0,
+      40.0,
+      40.0
+     ]
+    }
+   }
+  },
+  "rail_head": {
+   "parameters": {
+    "placement_mode": "legacy",
+    "place": "rail",
+    "seed": 0,
+    "files": "46,68,98,140,168,172",
+    "frames": 110,
+    "kinds": "lowbox,box0.3",
+    "start_m": 150.0,
+    "lateral_range": "-0.8:-0.8",
+    "given_speed": false,
+    "far_min_height": null,
+    "config_sha256": "b333cd85572ce50c4acc2f6eade42a5e8f54cfc2ea0ac6f445c38916e00b1ee8",
+    "speeds_sha256": "05c1006de92d5331871da80999c27fadb2397981863b34b63b0d227dbe6d01f3",
+    "selected_stamps_sha256": "ff172befbaebf883ae7773f64fd9835fd9bdffaac853ce593f0922d1aaab0cc0"
+   },
+   "per_kind": {
+    "lowbox": {
+     "sequences": 6,
+     "detected": 6,
+     "sustained_m": [
+      29.7,
+      40.0,
+      44.3,
+      46.5,
+      47.9,
+      49.7
+     ],
+     "sustained_median": 45.4,
+     "first_detection_m": [
+      27.8,
+      38.0,
+      42.1,
+      42.4,
+      44.4,
+      46.1
+     ],
+     "first_detection_median": 42.3,
+     "recall_by_bin": {
+      "0-50": [
+       93,
+       118
+      ],
+      "50-100": [
+       0,
+       117
+      ],
+      "100-150": [
+       0,
+       33
+      ],
+      "150-200": [
+       0,
+       1
+      ],
+      "200-250": [
+       0,
+       0
+      ]
+     },
+     "false_detections": 4,
+     "band_range_m": [
+      40.0,
+      20.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0
+     ]
+    },
+    "box0.3": {
+     "sequences": 6,
+     "detected": 6,
+     "sustained_m": [
+      46.5,
+      49.7,
+      49.8,
+      57.0,
+      64.1,
+      70.1
+     ],
+     "sustained_median": 53.4,
+     "first_detection_m": [
+      44.4,
+      46.1,
+      46.1,
+      52.6,
+      60.1,
+      64.1
+     ],
+     "first_detection_median": 49.3,
+     "recall_by_bin": {
+      "0-50": [
+       114,
+       120
+      ],
+      "50-100": [
+       15,
+       150
+      ],
+      "100-150": [
+       0,
+       102
+      ],
+      "150-200": [
+       0,
+       3
+      ],
+      "200-250": [
+       0,
+       0
+      ]
+     },
+     "false_detections": 0,
+     "band_range_m": [
+      50.0,
+      60.0,
+      60.0,
+      40.0,
+      40.0,
+      40.0
+     ]
+    }
+   }
+  },
+  "railobj": {
+   "parameters": {
+    "placement_mode": "legacy",
+    "place": "bed",
+    "seed": 0,
+    "files": "46,68,98,140,168,172",
+    "frames": 110,
+    "kinds": "railobj",
+    "start_m": 150.0,
+    "lateral_range": "-0.85:-0.75",
+    "given_speed": false,
+    "far_min_height": null,
+    "config_sha256": "b333cd85572ce50c4acc2f6eade42a5e8f54cfc2ea0ac6f445c38916e00b1ee8",
+    "speeds_sha256": "05c1006de92d5331871da80999c27fadb2397981863b34b63b0d227dbe6d01f3",
+    "selected_stamps_sha256": "ff172befbaebf883ae7773f64fd9835fd9bdffaac853ce593f0922d1aaab0cc0"
+   },
+   "per_kind": {
+    "railobj": {
+     "sequences": 6,
+     "detected": 5,
+     "sustained_m": [
+      25.7,
+      31.4,
+      48.4,
+      49.9
+     ],
+     "sustained_median": 39.9,
+     "first_detection_m": [
+      23.8,
+      29.6,
+      46.1,
+      46.4,
+      50.2
+     ],
+     "first_detection_median": 46.1,
+     "recall_by_bin": {
+      "0-50": [
+       62,
+       120
+      ],
+      "50-100": [
+       1,
+       152
+      ],
+      "100-150": [
+       0,
+       129
+      ],
+      "150-200": [
+       0,
+       4
+      ],
+      "200-250": [
+       0,
+       0
+      ]
+     },
+     "false_detections": 4,
+     "band_range_m": [
+      40.0,
+      40.0,
+      10.0,
+      20.0,
+      null,
+      30.0
+     ]
+    }
+   }
+  },
+  "small_bed": {
+   "parameters": {
+    "placement_mode": "legacy",
+    "place": "bed",
+    "seed": 0,
+    "files": "46,68,98,140,168,172",
+    "frames": 110,
+    "kinds": "lowbox,box0.3,dog",
+    "start_m": 150.0,
+    "lateral_range": "-0.6:0.6",
+    "given_speed": false,
+    "far_min_height": null,
+    "config_sha256": "b333cd85572ce50c4acc2f6eade42a5e8f54cfc2ea0ac6f445c38916e00b1ee8",
+    "speeds_sha256": "05c1006de92d5331871da80999c27fadb2397981863b34b63b0d227dbe6d01f3",
+    "selected_stamps_sha256": "ff172befbaebf883ae7773f64fd9835fd9bdffaac853ce593f0922d1aaab0cc0"
+   },
+   "per_kind": {
+    "lowbox": {
+     "sequences": 6,
+     "detected": 0,
+     "sustained_m": [],
+     "sustained_median": null,
+     "first_detection_m": [],
+     "first_detection_median": null,
+     "recall_by_bin": {
+      "0-50": [
+       0,
+       118
+      ],
+      "50-100": [
+       0,
+       84
+      ],
+      "100-150": [
+       0,
+       50
+      ],
+      "150-200": [
+       0,
+       2
+      ],
+      "200-250": [
+       0,
+       0
+      ]
+     },
+     "false_detections": 6,
+     "band_range_m": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "box0.3": {
+     "sequences": 6,
+     "detected": 1,
+     "sustained_m": [],
+     "sustained_median": null,
+     "first_detection_m": [
+      9.0
+     ],
+     "first_detection_median": 9.0,
+     "recall_by_bin": {
+      "0-50": [
+       1,
+       118
+      ],
+      "50-100": [
+       0,
+       148
+      ],
+      "100-150": [
+       0,
+       92
+      ],
+      "150-200": [
+       0,
+       4
+      ],
+      "200-250": [
+       0,
+       0
+      ]
+     },
+     "false_detections": 0,
+     "band_range_m": [
+      null,
+      null,
+      null,
+      10.0,
+      null,
+      null
+     ]
+    },
+    "dog": {
+     "sequences": 6,
+     "detected": 1,
+     "sustained_m": [
+      50.2
+     ],
+     "sustained_median": 50.2,
+     "first_detection_m": [
+      50.2
+     ],
+     "first_detection_median": 50.2,
+     "recall_by_bin": {
+      "0-50": [
+       18,
+       120
+      ],
+      "50-100": [
+       1,
+       151
+      ],
+      "100-150": [
+       0,
+       119
+      ],
+      "150-200": [
+       0,
+       4
+      ],
+      "200-250": [
+       0,
+       0
+      ]
+     },
+     "false_detections": 2,
+     "band_range_m": [
+      null,
+      null,
+      40.0,
+      null,
+      null,
+      null
+     ]
+    }
+   }
+  },
+  "stops": {
+   "parameters": {
+    "placement_mode": "legacy",
+    "place": "bed",
+    "seed": 0,
+    "files": "29,52,81,111,144,183",
+    "frames": 110,
+    "kinds": "person,box1.0,dog",
+    "start_m": 150.0,
+    "lateral_range": "-0.6:0.6",
+    "given_speed": false,
+    "far_min_height": null,
+    "config_sha256": "b333cd85572ce50c4acc2f6eade42a5e8f54cfc2ea0ac6f445c38916e00b1ee8",
+    "speeds_sha256": "05c1006de92d5331871da80999c27fadb2397981863b34b63b0d227dbe6d01f3",
+    "selected_stamps_sha256": "2cde7a6d1c47215872b4d85d302e8874b86c1e7b9e7a54944cdff4bf11874a72"
+   },
+   "per_kind": {
+    "person": {
+     "sequences": 6,
+     "detected": 6,
+     "sustained_m": [
+      77.9,
+      83.2,
+      121.6,
+      126.0,
+      126.6
+     ],
+     "sustained_median": 121.6,
+     "first_detection_m": [
+      89.1,
+      106.3,
+      112.6,
+      114.0,
+      137.8,
+      144.2
+     ],
+     "first_detection_median": 113.3,
+     "recall_by_bin": {
+      "0-50": [
+       126,
+       136
+      ],
+      "50-100": [
+       223,
+       256
+      ],
+      "100-150": [
+       68,
+       224
+      ],
+      "150-200": [
+       0,
+       5
+      ],
+      "200-250": [
+       0,
+       0
+      ]
+     },
+     "false_detections": 111,
+     "band_range_m": [
+      120.0,
+      50.0,
+      60.0,
+      90.0,
+      110.0,
+      10.0
+     ]
+    },
+    "box1.0": {
+     "sequences": 6,
+     "detected": 6,
+     "sustained_m": [
+      83.2,
+      96.8,
+      103.1
+     ],
+     "sustained_median": 96.8,
+     "first_detection_m": [
+      79.0,
+      93.0,
+      100.9,
+      103.1,
+      112.6,
+      144.2
+     ],
+     "first_detection_median": 102.0,
+     "recall_by_bin": {
+      "0-50": [
+       108,
+       136
+      ],
+      "50-100": [
+       196,
+       256
+      ],
+      "100-150": [
+       22,
+       226
+      ],
+      "150-200": [
+       0,
+       3
+      ],
+      "200-250": [
+       0,
+       0
+      ]
+     },
+     "false_detections": 91,
+     "band_range_m": [
+      90.0,
+      null,
+      60.0,
+      null,
+      60.0,
+      10.0
+     ]
+    },
+    "dog": {
+     "sequences": 6,
+     "detected": 1,
+     "sustained_m": [],
+     "sustained_median": null,
+     "first_detection_m": [
+      40.7
+     ],
+     "first_detection_median": 40.7,
+     "recall_by_bin": {
+      "0-50": [
+       4,
+       136
+      ],
+      "50-100": [
+       0,
+       253
+      ],
+      "100-150": [
+       0,
+       170
+      ],
+      "150-200": [
+       0,
+       2
+      ],
+      "200-250": [
+       0,
+       0
+      ]
+     },
+     "false_detections": 81,
+     "band_range_m": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ]
+    }
+   }
+  },
+  "straight": {
+   "parameters": {
+    "placement_mode": "legacy",
+    "place": "bed",
+    "seed": 0,
+    "files": "46,68,98,140,168,172",
+    "frames": 110,
+    "kinds": "person,box1.0,box0.5,trolley,cable",
+    "start_m": 220.0,
+    "lateral_range": "-0.6:0.6",
+    "given_speed": false,
+    "far_min_height": null,
+    "config_sha256": "b333cd85572ce50c4acc2f6eade42a5e8f54cfc2ea0ac6f445c38916e00b1ee8",
+    "speeds_sha256": "05c1006de92d5331871da80999c27fadb2397981863b34b63b0d227dbe6d01f3",
+    "selected_stamps_sha256": "ff172befbaebf883ae7773f64fd9835fd9bdffaac853ce593f0922d1aaab0cc0"
+   },
+   "per_kind": {
+    "person": {
+     "sequences": 6,
+     "detected": 6,
+     "sustained_m": [
+      91.5,
+      119.9,
+      149.0,
+      149.9,
+      162.1,
+      177.3
+     ],
+     "sustained_median": 149.4,
+     "first_detection_m": [
+      109.9,
+      146.0,
+      146.1,
+      149.0,
+      162.4,
+      168.9
+     ],
+     "first_detection_median": 147.5,
+     "recall_by_bin": {
+      "0-50": [
+       106,
+       110
+      ],
+      "50-100": [
+       125,
+       133
+      ],
+      "100-150": [
+       103,
+       151
+      ],
+      "150-200": [
+       11,
+       127
+      ],
+      "200-250": [
+       0,
+       37
+      ]
+     },
+     "false_detections": 9,
+     "band_range_m": [
+      80.0,
+      110.0,
+      140.0,
+      160.0,
+      20.0,
+      120.0
+     ]
+    },
+    "box1.0": {
+     "sequences": 6,
+     "detected": 6,
+     "sustained_m": [
+      22.1,
+      85.3,
+      118.1,
+      119.8,
+      119.9,
+      129.1
+     ],
+     "sustained_median": 118.9,
+     "first_detection_m": [
+      79.1,
+      108.0,
+      109.9,
+      112.4,
+      145.3,
+      155.6
+     ],
+     "first_detection_median": 111.2,
+     "recall_by_bin": {
+      "0-50": [
+       106,
+       110
+      ],
+      "50-100": [
+       123,
+       133
+      ],
+      "100-150": [
+       42,
+       151
+      ],
+      "150-200": [
+       1,
+       137
+      ],
+      "200-250": [
+       0,
+       35
+      ]
+     },
+     "false_detections": 6,
+     "band_range_m": [
+      80.0,
+      110.0,
+      110.0,
+      100.0,
+      20.0,
+      110.0
+     ]
+    },
+    "box0.5": {
+     "sequences": 6,
+     "detected": 1,
+     "sustained_m": [
+      55.6
+     ],
+     "sustained_median": 55.6,
+     "first_detection_m": [
+      51.9
+     ],
+     "first_detection_median": 51.9,
+     "recall_by_bin": {
+      "0-50": [
+       18,
+       110
+      ],
+      "50-100": [
+       2,
+       133
+      ],
+      "100-150": [
+       0,
+       132
+      ],
+      "150-200": [
+       0,
+       67
+      ],
+      "200-250": [
+       0,
+       14
+      ]
+     },
+     "false_detections": 2,
+     "band_range_m": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      50.0
+     ]
+    },
+    "trolley": {
+     "sequences": 6,
+     "detected": 6,
+     "sustained_m": [
+      22.1,
+      93.5,
+      113.9,
+      116.1,
+      119.8,
+      129.1
+     ],
+     "sustained_median": 115.0,
+     "first_detection_m": [
+      85.3,
+      133.8,
+      142.0,
+      146.1,
+      153.2,
+      153.8
+     ],
+     "first_detection_median": 144.0,
+     "recall_by_bin": {
+      "0-50": [
+       106,
+       110
+      ],
+      "50-100": [
+       120,
+       133
+      ],
+      "100-150": [
+       44,
+       150
+      ],
+      "150-200": [
+       4,
+       144
+      ],
+      "200-250": [
+       0,
+       50
+      ]
+     },
+     "false_detections": 25,
+     "band_range_m": [
+      80.0,
+      60.0,
+      100.0,
+      110.0,
+      20.0,
+      60.0
+     ]
+    },
+    "cable": {
+     "sequences": 6,
+     "detected": 6,
+     "sustained_m": [
+      19.0,
+      49.5,
+      56.4,
+      97.7
+     ],
+     "sustained_median": 53.0,
+     "first_detection_m": [
+      12.6,
+      56.4,
+      93.8,
+      95.7,
+      103.3,
+      108.0
+     ],
+     "first_detection_median": 94.8,
+     "recall_by_bin": {
+      "0-50": [
+       57,
+       77
+      ],
+      "50-100": [
+       44,
+       75
+      ],
+      "100-150": [
+       6,
+       99
+      ],
+      "150-200": [
+       0,
+       62
+      ],
+      "200-250": [
+       0,
+       23
+      ]
+     },
+     "false_detections": 4,
+     "band_range_m": [
+      20.0,
+      20.0,
+      20.0,
+      40.0,
+      10.0,
+      20.0
+     ]
+    }
+   }
+  },
+  "straight_speed": {
+   "parameters": {
+    "placement_mode": "legacy",
+    "place": "bed",
+    "seed": 0,
+    "files": "46,68,98,140,168,172",
+    "frames": 110,
+    "kinds": "person,box1.0,trolley",
+    "start_m": 220.0,
+    "lateral_range": "-0.6:0.6",
+    "given_speed": true,
+    "far_min_height": null,
+    "config_sha256": "b333cd85572ce50c4acc2f6eade42a5e8f54cfc2ea0ac6f445c38916e00b1ee8",
+    "speeds_sha256": "05c1006de92d5331871da80999c27fadb2397981863b34b63b0d227dbe6d01f3",
+    "selected_stamps_sha256": "ff172befbaebf883ae7773f64fd9835fd9bdffaac853ce593f0922d1aaab0cc0"
+   },
+   "per_kind": {
+    "person": {
+     "sequences": 6,
+     "detected": 6,
+     "sustained_m": [
+      22.1,
+      60.5,
+      114.0,
+      188.0,
+      190.3,
+      195.4
+     ],
+     "sustained_median": 151.0,
+     "first_detection_m": [
+      143.2,
+      154.1,
+      164.0,
+      169.9,
+      177.7,
+      187.8
+     ],
+     "first_detection_median": 167.0,
+     "recall_by_bin": {
+      "0-50": [
+       106,
+       110
+      ],
+      "50-100": [
+       110,
+       133
+      ],
+      "100-150": [
+       93,
+       151
+      ],
+      "150-200": [
+       47,
+       131
+      ],
+      "200-250": [
+       0,
+       37
+      ]
+     },
+     "false_detections": 6,
+     "band_range_m": [
+      50.0,
+      100.0,
+      160.0,
+      170.0,
+      20.0,
+      110.0
+     ]
+    },
+    "box1.0": {
+     "sequences": 6,
+     "detected": 6,
+     "sustained_m": [
+      22.1,
+      61.5,
+      68.7,
+      88.6,
+      166.1,
+      174.1
+     ],
+     "sustained_median": 78.7,
+     "first_detection_m": [
+      142.0,
+      166.0,
+      179.8,
+      183.8,
+      192.1,
+      200.7
+     ],
+     "first_detection_median": 181.8,
+     "recall_by_bin": {
+      "0-50": [
+       104,
+       110
+      ],
+      "50-100": [
+       97,
+       133
+      ],
+      "100-150": [
+       88,
+       151
+      ],
+      "150-200": [
+       52,
+       127
+      ],
+      "200-250": [
+       1,
+       34
+      ]
+     },
+     "false_detections": 7,
+     "band_range_m": [
+      60.0,
+      10.0,
+      90.0,
+      120.0,
+      20.0,
+      80.0
+     ]
+    },
+    "trolley": {
+     "sequences": 6,
+     "detected": 6,
+     "sustained_m": [
+      22.1,
+      68.7,
+      119.9,
+      123.4,
+      127.2,
+      186.1
+     ],
+     "sustained_median": 121.7,
+     "first_detection_m": [
+      109.9,
+      156.7,
+      172.1,
+      178.4,
+      192.1,
+      194.5
+     ],
+     "first_detection_median": 175.3,
+     "recall_by_bin": {
+      "0-50": [
+       106,
+       110
+      ],
+      "50-100": [
+       112,
+       133
+      ],
+      "100-150": [
+       66,
+       151
+      ],
+      "150-200": [
+       57,
+       129
+      ],
+      "200-250": [
+       0,
+       49
+      ]
+     },
+     "false_detections": 2,
+     "band_range_m": [
+      60.0,
+      110.0,
+      160.0,
+      110.0,
+      20.0,
+      110.0
+     ]
+    }
+   }
+  },
+  "wide": {
+   "parameters": {
+    "placement_mode": "legacy",
+    "place": "bed",
+    "seed": 0,
+    "files": "46,68,98,140,168,172",
+    "frames": 110,
+    "kinds": "person,box1.0,trolley,cable_low",
+    "start_m": 220.0,
+    "lateral_range": "-1.0:1.0",
+    "given_speed": false,
+    "far_min_height": null,
+    "config_sha256": "b333cd85572ce50c4acc2f6eade42a5e8f54cfc2ea0ac6f445c38916e00b1ee8",
+    "speeds_sha256": "05c1006de92d5331871da80999c27fadb2397981863b34b63b0d227dbe6d01f3",
+    "selected_stamps_sha256": "ff172befbaebf883ae7773f64fd9835fd9bdffaac853ce593f0922d1aaab0cc0"
+   },
+   "per_kind": {
+    "person": {
+     "sequences": 6,
+     "detected": 6,
+     "sustained_m": [
+      22.1,
+      95.5,
+      108.0,
+      132.1,
+      168.9,
+      169.9
+     ],
+     "sustained_median": 120.0,
+     "first_detection_m": [
+      87.3,
+      119.9,
+      122.1,
+      149.0,
+      151.8,
+      155.1
+     ],
+     "first_detection_median": 135.6,
+     "recall_by_bin": {
+      "0-50": [
+       106,
+       110
+      ],
+      "50-100": [
+       123,
+       133
+      ],
+      "100-150": [
+       97,
+       151
+      ],
+      "150-200": [
+       4,
+       131
+      ],
+      "200-250": [
+       0,
+       41
+      ]
+     },
+     "false_detections": 6,
+     "band_range_m": [
+      80.0,
+      60.0,
+      110.0,
+      150.0,
+      20.0,
+      150.0
+     ]
+    },
+    "box1.0": {
+     "sequences": 6,
+     "detected": 6,
+     "sustained_m": [
+      22.1,
+      83.3,
+      99.5,
+      116.0,
+      119.9,
+      127.2
+     ],
+     "sustained_median": 107.8,
+     "first_detection_m": [
+      76.9,
+      92.0,
+      106.0,
+      109.9,
+      122.3,
+      151.8
+     ],
+     "first_detection_median": 108.0,
+     "recall_by_bin": {
+      "0-50": [
+       106,
+       110
+      ],
+      "50-100": [
+       118,
+       133
+      ],
+      "100-150": [
+       24,
+       151
+      ],
+      "150-200": [
+       1,
+       129
+      ],
+      "200-250": [
+       0,
+       36
+      ]
+     },
+     "false_detections": 9,
+     "band_range_m": [
+      70.0,
+      110.0,
+      100.0,
+      90.0,
+      20.0,
+      110.0
+     ]
+    },
+    "trolley": {
+     "sequences": 6,
+     "detected": 6,
+     "sustained_m": [
+      22.1,
+      83.3,
+      103.9,
+      114.0,
+      114.4,
+      119.8
+     ],
+     "sustained_median": 109.0,
+     "first_detection_m": [
+      95.7,
+      103.9,
+      105.2,
+      139.5,
+      146.0,
+      151.3
+     ],
+     "first_detection_median": 122.3,
+     "recall_by_bin": {
+      "0-50": [
+       106,
+       110
+      ],
+      "50-100": [
+       120,
+       133
+      ],
+      "100-150": [
+       31,
+       151
+      ],
+      "150-200": [
+       1,
+       137
+      ],
+      "200-250": [
+       0,
+       41
+      ]
+     },
+     "false_detections": 9,
+     "band_range_m": [
+      70.0,
+      100.0,
+      90.0,
+      110.0,
+      20.0,
+      100.0
+     ]
+    },
+    "cable_low": {
+     "sequences": 6,
+     "detected": 3,
+     "sustained_m": [
+      35.2,
+      43.6
+     ],
+     "sustained_median": 39.4,
+     "first_detection_m": [
+      136.1,
+      136.5,
+      138.1
+     ],
+     "first_detection_median": 136.5,
+     "recall_by_bin": {
+      "0-50": [
+       26,
+       77
+      ],
+      "50-100": [
+       33,
+       84
+      ],
+      "100-150": [
+       28,
+       85
+      ],
+      "150-200": [
+       0,
+       63
+      ],
+      "200-250": [
+       0,
+       22
+      ]
+     },
+     "false_detections": 4,
+     "band_range_m": [
+      null,
+      30.0,
+      10.0,
+      40.0,
+      null,
+      null
+     ]
+    }
+   }
+  }
+ },
+ "setF_hold0_straight": {
+  "identical_to_v062_record": true,
+  "per_kind": {
+   "person": {
+    "sequences": 6,
+    "detected": 6,
+    "sustained_m": [
+     22.1,
+     91.5,
+     119.9,
+     149.9,
+     162.1,
+     175.5
+    ],
+    "sustained_median": 134.9,
+    "first_detection_m": [
+     109.9,
+     146.0,
+     146.1,
+     149.0,
+     162.4,
+     168.9
+    ],
+    "first_detection_median": 147.5,
+    "recall_by_bin": {
+     "0-50": [
+      106,
+      110
+     ],
+     "50-100": [
+      125,
+      133
+     ],
+     "100-150": [
+      101,
+      151
+     ],
+     "150-200": [
+      9,
+      127
+     ],
+     "200-250": [
+      0,
+      37
+     ]
+    },
+    "false_detections": 7
+   },
+   "box1.0": {
+    "sequences": 6,
+    "detected": 6,
+    "sustained_m": [
+     22.1,
+     85.3,
+     116.0,
+     117.9,
+     119.9,
+     129.1
+    ],
+    "sustained_median": 117.0,
+    "first_detection_m": [
+     79.1,
+     108.0,
+     109.9,
+     112.4,
+     145.3,
+     155.6
+    ],
+    "first_detection_median": 111.2,
+    "recall_by_bin": {
+     "0-50": [
+      106,
+      110
+     ],
+     "50-100": [
+      122,
+      133
+     ],
+     "100-150": [
+      40,
+      151
+     ],
+     "150-200": [
+      1,
+      137
+     ],
+     "200-250": [
+      0,
+      35
+     ]
+    },
+    "false_detections": 5
+   },
+   "box0.5": {
+    "sequences": 6,
+    "detected": 1,
+    "sustained_m": [
+     55.6
+    ],
+    "sustained_median": 55.6,
+    "first_detection_m": [
+     51.9
+    ],
+    "first_detection_median": 51.9,
+    "recall_by_bin": {
+     "0-50": [
+      18,
+      110
+     ],
+     "50-100": [
+      2,
+      133
+     ],
+     "100-150": [
+      0,
+      132
+     ],
+     "150-200": [
+      0,
+      67
+     ],
+     "200-250": [
+      0,
+      14
+     ]
+    },
+    "false_detections": 1
+   },
+   "trolley": {
+    "sequences": 6,
+    "detected": 6,
+    "sustained_m": [
+     22.1,
+     93.5,
+     113.9,
+     116.1,
+     117.9,
+     118.0
+    ],
+    "sustained_median": 115.0,
+    "first_detection_m": [
+     85.3,
+     133.8,
+     142.0,
+     146.1,
+     153.2,
+     153.8
+    ],
+    "first_detection_median": 144.0,
+    "recall_by_bin": {
+     "0-50": [
+      106,
+      110
+     ],
+     "50-100": [
+      117,
+      133
+     ],
+     "100-150": [
+      41,
+      150
+     ],
+     "150-200": [
+      4,
+      144
+     ],
+     "200-250": [
+      0,
+      50
+     ]
+    },
+    "false_detections": 23
+   },
+   "cable": {
+    "sequences": 6,
+    "detected": 6,
+    "sustained_m": [
+     19.0,
+     49.5,
+     56.4,
+     97.7
+    ],
+    "sustained_median": 53.0,
+    "first_detection_m": [
+     12.6,
+     56.4,
+     93.8,
+     95.7,
+     103.3,
+     108.0
+    ],
+    "first_detection_median": 94.8,
+    "recall_by_bin": {
+     "0-50": [
+      57,
+      77
+     ],
+     "50-100": [
+      44,
+      75
+     ],
+     "100-150": [
+      6,
+      99
+     ],
+     "150-200": [
+      0,
+      62
+     ],
+     "200-250": [
+      0,
+      23
+     ]
+    },
+    "false_detections": 3
+   }
+  }
+ },
+ "timing_ms_mean_p95_max": {
+  "roundT_doubleT": {
+   "head": [
+    42.5,
+    57.2,
+    78.5
+   ],
+   "v063": [
+    40.9,
+    57.5,
+    83.6
+   ]
+  },
+  "doubleT_obstacle": {
+   "head": [
+    52.2,
+    67.1,
+    100.4
+   ],
+   "v063": [
+    57.4,
+    75.4,
+    132.4
+   ]
+  },
+  "doubleT_platform": {
+   "head": [
+    42.0,
+    58.1,
+    100.0
+   ],
+   "v063": [
+    44.4,
+    61.7,
+    91.6
+   ]
+  },
+  "roundT_pressureGate_roundT": {
+   "head": [
+    38.1,
+    50.3,
+    69.0
+   ],
+   "v063": [
+    35.8,
+    46.5,
+    56.8
+   ]
+  },
+  "roundT_squareT_pressureGate_squareT": {
+   "head": [
+    38.2,
+    50.5,
+    69.3
+   ],
+   "v063": [
+    37.9,
+    49.0,
+    68.6
+   ]
+  },
+  "squareT_platform_squareT_switch": {
+   "head": [
+    36.5,
+    52.7,
+    75.5
+   ],
+   "v063": [
+    35.1,
+    46.3,
+    64.4
+   ]
+  },
+  "new_data": {
+   "head": [
+    37.1,
+    50.4,
+    74.1
+   ],
+   "v063": [
+    37.1,
+    50.4,
+    72.9
+   ]
+  }
+ }
+}

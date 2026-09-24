@@ -139,21 +139,23 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
 * **No rails, no far alarm** (v0.6.2): without the rail pair in the near range (stations, switch
   caverns) the corridor beyond 40 m is advisory and the verified-clear distance says 40 m.
 
-## Real-time budget (v0.6.1, every frame of the real bags, quiet 4-core sandbox, Python)
+## Real-time budget (v0.6.3, every frame of the real bags, idle 4-core sandbox, Python)
 
 | stage | `roundT_doubleT` (189 k pts) mean | `doubleT_obstacle` (347 k pts, 360°) mean |
 |---|---|---|
-| track model (bed, rails, walls, verification, calibration) | 26.8 ms | 37.1 ms |
-| corridor mask + low-object stage | 11.6 ms | 16.4 ms |
-| voxel + DBSCAN + filters | 6.7 ms | 4.3 ms |
-| tracking | 0.1 ms | 0.1 ms |
-| **total** (mean / p95 / max) | **45.3 / 55.9 / 93.4 ms** | **57.9 / 69.1 / 109.6 ms** |
+| track model (bed, rails, walls, verification, calibration) | 27.4 ms | 39.9 ms |
+| corridor mask + low-object stage | 12.6 ms | 16.7 ms |
+| voxel + DBSCAN + filters | 10.0 ms | 6.7 ms |
+| tracking | 0.2 ms | 0.2 ms |
+| **total** (mean / p95 / max) | **50.2 / 63.4 / 76.1 ms** | **63.6 / 77.8 / 119.2 ms** |
+
+(EXPERIMENTS.md §3, raw output in [`evidence/timing_2026-09-23/`](evidence/timing_2026-09-23/).)
 
 The frame period is 100 ms; p95 is inside it on all six bags and on a station section of the
 ride (v0.6.3: 42–64 ms mean, p95 53–78 ms, EXPERIMENTS.md §3). **Resources:** one CPU core per stream
 (47–65 ms of CPU time per frame = 47–65 % of a core at 10 Hz with single-threaded BLAS, set in
 the image), about 160–180 MB resident, no GPU. **Through ROS in Docker** (v0.6.2, §3b of
-EXPERIMENTS.md): the 120° recording at the full 10 Hz (p95 76 ms), the 360° one at 8–10 fps in
+EXPERIMENTS.md): the 120° recording at the full 10 Hz (p95 76 ms), the 360° one at 7–10 fps in
 steady state (~96 ms mean: the node skips frames rather than lagging), the node container at
 ~100 % of one core while frames arrive, 186 MB. The jury's i7-9700E (8 faster cores) has not been measured.
 

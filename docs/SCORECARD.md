@@ -55,10 +55,10 @@ What holds it down:
 
 - A person on straight track is held in every 10 m band from 115 m inward. That is the median of 6 approaches; per approach it ranges from 20 to 160 m.
 - A person is first confirmed at 148 m; with the train speed, at 167 m.
-- Small objects on a rail head are found from 42–47 m.
+- Small objects on a rail head are first found at 42–49 m and held from 45–53 m (set F round 3, the current code).
 - In R ≈ 350 m curves the range is 58–86 m, the sightline.
 - 300 m is impossible: no return lies beyond 210 m.
-- 14 of the 47 ride events start beyond 100 m, which is what the far-field rule costs.
+- 16 of the 47 ride events are first confirmed beyond 100 m, which is what the far-field rule costs (re-counted on 24.09; the review said 14).
 
 **8.3: 6.**
 
@@ -76,7 +76,7 @@ What holds it down:
 **8.5: 7.5.**
 
 - A pure-Python library, a thin ROS node and one parameter file checked by CI.
-- 150 tests at the reviewed commit (152 now), and ruff is clean.
+- 150 tests at the reviewed commit (198 on 24.09), and ruff is clean.
 - Guards: watchdog, `FAULT` / `NO_INPUT` / `STALE`, a reset after errors.
 - Input switching was verified by the reviewer with both topic / frame pairs.
 - Held down: CI was red at `fcbb3f8` (a stale web test), and false alarms depended on the start frame.
@@ -122,7 +122,7 @@ Every finding below was re-checked by the team before acting on it.
 | B9 | `console_test.sh` defaults fail on a clear recording played first. | confirmed | **fixed:** `--obstacle-in`, with the usage for the real recordings in the script. |
 | B1 | CI red at `fcbb3f8`: a web test still expected best-effort RViz displays. | confirmed | **fixed** in `fa81206`. The RViz raw-cloud displays read reliable (the recording showed best-effort ones lose the played clouds). |
 | B5–B8 | Stale statements: `--ipc=host` "shared memory" (the image runs UDP), SUBMISSION "pending (28.09)", the Dockerfile pointed to a missing README section, the README pointed the jury to an old self-assessment. | confirmed | **fixed** (this file replaced). |
-| B10, B11 | `CAUTION` covers 10–64 % of an empty recording's frames and is not explained; `obstacle_detected` is `false` during `FAULT`. | confirmed | **documented** in the README quick path and "What to look at": `CAUTION` is advisory, `/resense/decision` is the go / no-go signal. The semantics are unchanged. Filtering classified infrastructure out of `CAUTION` would remove at most half of it (measured per recording). |
+| B10, B11 | `CAUTION` covers most of an empty recording's frames (`roundT_doubleT` through ROS: 159–162 of 224–233) and is not explained; `obstacle_detected` is `false` during `FAULT`. | confirmed | **documented** in the README quick path and "What to look at": `CAUTION` is advisory, `/resense/decision` is the go / no-go signal. The semantics are unchanged. Filtering classified infrastructure out of `CAUTION` would remove at most half of it (measured per recording). |
 | B12 | The dashboard's live mode is advertised "via rosbridge", but the image has no rosbridge and roslib comes from a CDN. | confirmed | **fixed** wording (web/README, README, ARCHITECTURE, slide 10). Foxglove, whose bridge the image has, is named for an offline stand. |
 | B13 | Template slide 9: 5 cards became 4. | checked | **kept:** the team has four members. |
 | A1, A8 | The range headline was a median without its spread. "Crate 182 m with speed" hid the loss of steadiness. The cable at 95 m was a first hit only. | confirmed | **fixed:** per-approach spread (20–160 m), the speed trade-off (crate held from 89 instead of 117 m), and the cable held from ~50 m are now in the README. |
@@ -159,7 +159,7 @@ open questions ([`QUESTIONS.md`](QUESTIONS.md)). The owner merges the branch to 
    1 482 events (EXPERIMENTS §1d). 3–4 h plus a full run. It is a policy decision as much as a
    technical one.
 3. **A far height reference anchored on the tunnel vault.** Small objects cannot alarm beyond
-   ~100 m, and 14 of the 47 ride events start beyond 100 m. 1–2 days, some risk. Moves 8.2.
+   ~100 m, and 16 of the 47 ride events are first confirmed beyond 100 m. 1–2 days, some risk. Moves 8.2.
 4. **Set F with independent placement** (A5): anchor the curve and edge objects on the axis
    estimated when the train is within ~30 m, then re-run. 2–3 h. Makes the curve and edge
    numbers credible.

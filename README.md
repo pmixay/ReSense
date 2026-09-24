@@ -29,7 +29,7 @@ ros2 topic echo /resense/decision --field data              # console 3: GO | CA
 ros2 topic echo /resense/nearest_distance                   # distance along the track to the nearest obstacle, m
 ```
 
-Expected on the organizers' `doubleT_obstacle`: `STOP` at 55.7–56.5 m (the person crossing, then
+Expected on the organizers' `doubleT_obstacle`: `STOP` at 55.5–56.6 m (the person crossing, then
 the object lying across the rail). No ROS on the host: play from a second container,
 `docker run --rm --net=host --ipc=host -v <bag dir>:/data:ro resense ros2 bag play /data/<bag> --delay 3`.
 Worth knowing: the first **2–4 s of a played bag are not processed** — the DDS start-up with
@@ -55,8 +55,9 @@ because "the LiDAR position is not fixed"; and every frame says **how far the pa
 verified clear** and whether the input can be trusted (`/resense/decision`
 GO / CAUTION / STOP / FAULT, `/resense/clear_distance`, `/resense/health`).
 
-Historical v0.6.3 measurements on **all 13 759 real frames** of the organizers' data at 10 Hz
-([`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) §0): false alarms on the five obstacle-free
+Measured on **all 13 759 real frames** of the organizers' data at 10 Hz
+([`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) §0; v0.6.3, re-run on the current code on 24.09 with
+identical output on every frame): false alarms on the five obstacle-free
 bags **20 events** (107 alarm frames, 27 STOP episodes; v0.6.1: 30 events, v0.5 logic: 32) and on
 the 20-minute, 13 km ride **47 events, 3.6 per km** (204 frames, 39 episodes; v0.6.1: 82, v0.5:
 93); v0.6.2 had fewer events than v0.6.1 in 12 of 13 subsets of the data and more in none, so
@@ -64,19 +65,19 @@ the gain is not carried by one recording (leave-one-out check, §0), and startin
 0–40 frames later, as a played bag does through ROS, gives 14–20 events (§0); a health warning on 1.4 % of the frames (stations,
 switches); the person crossing the track in `doubleT_obstacle` is reported in 58 of the 61
 frames in which the person is inside the envelope, the first alarm 0.3 s after entering it,
-distance error < 0.35 m; the **object lying across the rail** (0.45 × 0.6 × 0.3 m) in **124 of
+distance error ≤ 0.23 m; the **object lying across the rail** (0.45 × 0.6 × 0.3 m) in **124 of
 the 126 frames** after the person leaves it (v0.6.1: 2). Long range on the
-moving ride (**synthetic objects with legacy detector-derived placement** ray-cast into consecutive real frames, no speed input, §2d, v0.6.2): a
+moving ride (**synthetic objects with legacy detector-derived placement** ray-cast into consecutive real frames, no speed input, §2d round 3: the current code, 24.09): a
 person on straight track is **held from 115 m inward** (median of 6 approaches, per approach
 20–160 m: detected in ≥ 90 % of the frames of every 10 m band from there; in ≥ 90 % of all
-frames from 135 m) and first confirmed at 148 m median (110–169 m, 6 of 6); a trolley first at
+frames from 149 m) and first confirmed at 148 m median (110–169 m, 6 of 6); a trolley first at
 144 m, a 1 m crate at 111 m, a 3 cm hanging cable first at 95 m but held only from ~50 m (4 of
 6); with a train speed given (odometry or a speed topic: 5-frame accumulation) the person first
 at **167 m**, the crate at 182 m — reach bought with steadiness: the crate is then held only
-from 89 m instead of 117 m and the person's 50–100 m recall drops from 94 to 83 %; in R ≈ 350 m curves 6 of 7 approaches
+from 79 m instead of 119 m and the person's 50–100 m recall drops from 94 to 83 %; in R ≈ 350 m curves 6 of 7 approaches
 are detected, from 58–86 m (the sightline past the inner wall); at station stops a person 6 of
-6 from 113 m; 30 cm objects lying on a rail head 6 of 6 from 42–44 m; a person lying across the
-rails 6 of 6 from ~60 m (between the rails: where the body rises above the rail head, §2d). 300 m is beyond this
+6 from 113 m; 30 cm objects lying on a rail head 6 of 6 from 42–49 m; a person lying across the
+rails 6 of 6 from ~64 m (between the rails: where the body rises above the rail head, §2d). 300 m is beyond this
 sensor: no return in any of the 13 759 frames lies beyond 210 m (every recording stops at 209.2–210.0 m). Other LiDAR mounts (upside down, `+x` forward, backwards, rolled /
 pitched) are recovered from the rails and the bed: orientation found and tilt within 0.5° on
 re-mounted real frames of three recordings (§6). Clean timing: 42–64 ms mean, p95 53–78 ms per
@@ -108,7 +109,7 @@ The organizers asked that every team "say clearly what to look at". One line per
 
 | question | topic | values |
 |---|---|---|
-| can the train go? | **`/resense/decision`** (`std_msgs/String`) | `GO` (clear), `CAUTION` (advisory: a confirmed object in the band just outside the envelope, a far cluster beyond the verified range, known infrastructure, or degraded health — on 10–64 % of the frames of the obstacle-free recordings, so it is not an alarm), `STOP` (obstacle inside the 2.1 × 3.0 m envelope), `FAULT` (input cannot be trusted or stopped arriving, and before the first frame) |
+| can the train go? | **`/resense/decision`** (`std_msgs/String`) | `GO` (clear), `CAUTION` (advisory: a confirmed object in the band just outside the envelope, a far cluster beyond the verified range, known infrastructure, or degraded health — on 27–68 % of the frames of the obstacle-free recordings and 41 % of the ride, so it is not an alarm), `STOP` (obstacle inside the 2.1 × 3.0 m envelope), `FAULT` (input cannot be trusted or stopped arriving, and before the first frame) |
 | is there an obstacle? | **`/resense/obstacle_detected`** (`std_msgs/Bool`) | per processed frame, confirmed over 0.5 s, held over one missed frame; `false` while no frame arrives (then `decision` says `FAULT`) |
 | how far is it? | **`/resense/nearest_distance`** (`std_msgs/Float32`) | m along the track, −1 if none |
 | how far is the path verified clear? | **`/resense/clear_distance`** (`std_msgs/Float32`) | the obstacle distance, else how far the corridor was actually checked (sightline, trusted track model); 0 on a fault |
@@ -412,8 +413,8 @@ input queue dropped (estimated from gaps in the header stamps).
 | key | default | meaning |
 |---|---|---|
 | `sensor.forward/left/up`, `sensor.roll_deg/pitch_deg/yaw_deg` | `-y/+x/+z`, 0 | sensor → vehicle axis mapping (hackathon Hesai frame) and a fixed mount tilt |
-| `calibration.*` | on, 5 frames | automatic mount calibration (orientation, roll, pitch, yaw > 3°) |
-| `track.rails_*` | | rail-ridge template (gauge 1.52 m) for the track axis and rail-head level |
+| `calibration.*` | on, 20 observations every 10 frames | automatic mount calibration (orientation, roll, pitch, yaw > 3°); a tilt is applied from 0.75° |
+| `track.rails_*` | | rail-ridge template (track gauge 1.52 m, rail-head centres `rails_spacing` 1.59 m apart) for the track axis and rail-head level |
 | `track.walls_*` | band 1.6–2.8 m | tunnel-boundary fit for yaw / curvature; `axis_valid_*` = how far the corridor is trusted |
 | `track.rails_far_check_enabled` | false | Sprint 1 experimental far-rail cross-check; opt-in pending real-recording A/B and timing |
 | `gauge.profile` | \|dy\| ≤ 1.05 m, 0.12–3.0 m | **the organizers' 2.1 × 3.0 m train envelope**; `warning_margin` 0.35 m = advisory zone; `edge_margin_per_100m` 0.15 m |
@@ -423,7 +424,7 @@ input queue dropped (estimated from gaps in the header stamps).
 | `cluster.far_*` | 0.6 m tall, ≤ 3 m long | what may alarm beyond the height reference (far field of straight track) |
 | `cluster.eps / range_scale / voxel` | 0.35 / 40 / 0.05 | range-adaptive DBSCAN: ε(r) = eps·(1 + r/40 m) |
 | `cluster.*_max_*`, signatures | | infrastructure filters (thin hardware, low hardware, wall-like, column, floating, edge, wall face); thin objects hanging near the axis are never demoted |
-| `tracking.confirm_hits / conf_threshold` | 3 / 0.6 | persistence before an alarm (low objects: 5 hits) |
+| `tracking.confirm_time_s / confirm_hits / conf_threshold` | 0.5 s / 3 / 0.6 | persistence before an alarm (low objects: 5 hits); `hold_misses` 1 keeps a reported obstacle over one missed frame |
 | `health.*` | | thresholds of the production guards |
 
 ## Documentation required by the organizers (spec §5, §7)

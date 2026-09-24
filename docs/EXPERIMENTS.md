@@ -1,5 +1,21 @@
 # Experiments log
 
+## Re-measurement on the current code (24.09)
+
+The v0.6.3 numbers were measured on commit `c1c2b6a` (merged as `1210580`); `a92625e` then changed
+the detector and `configs/default.yaml` (two opt-in stages, both off) without data at hand, and set F
+had not been re-run since v0.6.2. On 24.09 the organizers' data was downloaded again and cached at
+full rate (all 13 759 frames), and the current code (`main` at `4cd32d6`) and v0.6.3 were run on it
+(raw summaries: [`experiments_2026-09-24_remeasure.json`](experiments_2026-09-24_remeasure.json)):
+
+| check | result |
+|---|---|
+| real frames: per-frame output of the current code against v0.6.3 (obstacle, warning, nearest and clear distance, every detection's id, distance, lateral, kind, zone) | **identical on all 13 759 frames.** Every real-data number of §0 holds for the current code: five obstacle-free bags 107 alarm frames / 20 events / 27 STOP episodes; ride 204 / 47 / 39 (3.6 events per km); the person 58 of 61 frames from frame 11, distance error ≤ 0.23 m; the object on the rail 124 of the 126 frames from frame 75 (127 of 185 by its own detection); 3 STOP episodes on `doubleT_obstacle`; health warnings other than latency on 196 frames (1.4 %) |
+| false alarms by the first processed frame (`scripts/start_offsets.py`) | 30 of 30 rows identical to the v0.6.3 record (14–20 events on the five bags) |
+| set F (synthetic objects in the moving ride) | first confirmations unchanged; the held ranges, frame recall and off-object detections moved because round 2 predates v0.6.3's hold over one missed frame — with the hold off the current code reproduces round 2's straight set value for value. Round 3 table: §2d |
+| offline timing, the two versions back to back (`resense bench`, every frame, `OMP_NUM_THREADS=1`, an idle 4-core sandbox — not the machine of 23.09) | current code 36.5–52.2 ms mean, p95 50.3–67.1 ms; v0.6.3 35.1–57.4 ms, p95 46.3–75.4 ms; per recording −9…+6 % (run-to-run noise), no regression. §3's 42–64 / 53–78 ms of 23.09 stays the quoted figure |
+| derived figures that had no recorded source | `CAUTION` (warning or a non-latency health warning, no obstacle) on 27–68 % of the frames of the five obstacle-free recordings and on 41 % of the ride; 16 of the 47 ride events are first confirmed beyond 100 m (a review had counted 14) |
+
 ## Sprint 5 local freeze (2026-09-23; no new real-data measurements)
 
 The shipped `track.rails_far_check_enabled`, `lowobj.near_enabled` and
@@ -10,7 +26,9 @@ placement on real backgrounds**, not real long-range positives or independent pl
 No new recall, false-event, FPS or latency measurement on bags/cache or in ROS is claimed by
 this local freeze: the cache/bags and a reachable Docker daemon were unavailable. Open3D was
 also unavailable locally, so Open3D-dependent tests were skipped. Re-evaluate the opt-in paths
-on real recordings before interpreting them as shipped improvements.
+on real recordings before interpreting them as shipped improvements. (The shipped defaults were
+re-measured on the data on 24.09: "Re-measurement" above. The opt-in paths are still not
+evaluated.)
 
 ## Sprint 4 acceptance check (2026-09-23, no new ROS measurements)
 
@@ -50,11 +68,18 @@ its outcomes as evidence about curves. Do not copy the old JSON numbers into it.
 and the same seed for comparisons. Without the cache and independent reference there are no
 new recall, first/sustained range or real-positive generalisation numbers to report.
 
-**Reading order.** §0 is the shipped version (v0.6.2, 23.09) on all real data; §0a is v0.6.1,
+**Reading order.** §0 is the shipped version (v0.6.3, 23.09; re-measured on the current code on
+24.09, section "Re-measurement" at the top) on all real data; §0a is v0.6.1,
 the version the organizers' Q&A answers produced; §1–§1d and §2–§2d are the record of how the
 detector got there (real bags; synthetic obstacles in real frames; long range on the moving
 ride), §3 timing, §4–§5 lessons and next steps, §6 mount calibration, §7 the recognition methods
 side by side, §8 the learned second opinion. Raw summaries:
+[`experiments_2026-09-24_remeasure.json`](experiments_2026-09-24_remeasure.json) (the re-measurement
+of every headline number on the current code, 24.09),
+[`experiments_v0.6.3_real_fullrate.json`](experiments_v0.6.3_real_fullrate.json) (v0.6.3 over all
+13 759 frames, STOP episodes, the leave-one-out check),
+[`experiments_v0.6.3_start_offsets.json`](experiments_v0.6.3_start_offsets.json) (false alarms by
+the first processed frame),
 [`experiments_v0.6.2_real_fullrate.json`](experiments_v0.6.2_real_fullrate.json) (v0.6.1 and every
 v0.6.2 step over all 13 759 frames, plus the leave-one-out check),
 [`experiments_v0.6.2_setF.json`](experiments_v0.6.2_setF.json) (set F round 2: small objects,
@@ -81,9 +106,11 @@ magnitude, CAPTAIN.md finding 2 of 21.09).
 ## 0. v0.6.2 (23.09) — after the criteria review; v0.6.3 after the second one
 
 **v0.6.3 (23.09, after the second independent review; raw: [`experiments_v0.6.3_real_fullrate.json`](experiments_v0.6.3_real_fullrate.json),
-per-frame fingerprints for refactors: `scripts/output_fingerprint.py`; measured on commit `c1c2b6a` —
-`a92625e` changed the detector and `configs/default.yaml` afterwards, so re-measure before quoting
-these numbers for later code).** Three changes, each measured on all
+per-frame fingerprints for refactors: `scripts/output_fingerprint.py`; measured on commit `c1c2b6a`,
+merged as `1210580`. `a92625e` then added two opt-in stages to the detector and
+`configs/default.yaml`, both off by default; re-run on 24.09, the current code gives **identical
+output on every one of the 13 759 frames**, so every number of this section holds for it — see
+"Re-measurement" at the top).** Three changes, each measured on all
 13 759 frames against v0.6.2 (the per-frame outputs of both runs compared):
 
 1. **Low-object width cap 1.6 → 2.2 m** (the envelope's width): a person lying across the track
@@ -180,12 +207,14 @@ one stretch of track. v0.6.2 is v0.6.1 plus three changes, each measured by a fu
   obstacle, so every one of these is a false alarm.
 * Health warnings other than latency: 196 of 13 759 frames (1.4 %, rails lost at stations and
   switches), as in v0.6.1.
-* **Long range and small objects** (set F round 2, §2d, objects ray-cast into the moving ride):
-  a person on straight track first confirmed at 148 m (median of 6), detected in ≥ 90 % of the
-  frames from 135 m inward and in ≥ 90 % of every 10 m band from 115 m inward; 167 m first
+* **Long range and small objects** (set F, §2d, objects ray-cast into the moving ride; round 2
+  on v0.6.2, round 3 on v0.6.3 = the current code): a person on straight track first confirmed
+  at 148 m (median of 6), detected in ≥ 90 % of the frames from 135 m inward (round 3, with the
+  v0.6.3 hold: 149 m) and in ≥ 90 % of every 10 m band from 115 m inward; 167 m first
   confirmation with a train speed given; curves R ≈ 350 m 6 of 7 approaches (58–86 m, the
-  sightline); station stops 6 of 6 from 113 m; 30 cm objects on a rail head 6 of 6 from 42–44 m;
-  objects on the bed between the rails are below the envelope (policy, §3.3b).
+  sightline); station stops 6 of 6 from 113 m; 30 cm objects on a rail head 6 of 6 from 42–44 m
+  (round 3, new draws: 42–49 m); objects on the bed between the rails are below the envelope
+  (policy, §3.3b).
 * **Through ROS in Docker** (§3b): the organizers' procedure on the real frames, two recordings
   into one node; the first run found and fixed a transport bug (best-effort input lost 196 of
   201 ten-megabyte clouds).
@@ -673,6 +702,64 @@ from 60 m to 200 m scaled by reflectivity (the real-frame budget, §2b). A fresh
 sequence, **no speed given** (single-frame pipeline + persistence). A frame is a hit when a
 confirmed gauge detection lies within max(2 m, 3 %) and 1.2 m laterally of the object.
 
+**Round 3 (v0.6.3, the current code, 24.09)** — the same sets re-run on the shipped code
+(raw summaries with the per-approach band ranges:
+[`experiments_2026-09-24_remeasure.json`](experiments_2026-09-24_remeasure.json)). Round 2 below
+was measured on v0.6.2 and never repeated after v0.6.3's hold over one missed frame
+(`tracking.hold_misses` 1): with the hold switched off, the current code reproduces round 2's
+straight set value for value, so every difference between the two tables is the hold. First
+confirmations do not change (the hold neither creates nor confirms a track); the held ranges and
+the frame recall rise where a single missed frame used to break a run, and so do the confirmed
+detections away from the object (a held false detection counts once more). Placements are those
+of round 2 (same files, start, lateral range, seed) except where marked: the envelope-edge set and
+the rail-head and lying-on-the-rails sets of round 2 were drawn with parameters that the stored
+summaries do not fully record, so these rows are new draws of the same scenario.
+
+| set | object | detected | first confirmed, median (range) | sustained ≥ 90 %, median (range) | every 10 m band ≥ 90 %, median (per approach) | frame recall 0–50 / 50–100 / 100–150 / 150–200 m | confirmed detections away from the object |
+|---|---|---|---|---|---|---|---|
+| straight, \|lateral\| ≤ 0.6 m | person 0.4 × 0.5 × 1.7 m | 6 / 6 | 148 m (110–169) | 149 m (92–177) | 115 m (20–160) | 96 / 94 / 68 / 9 % | 9 |
+|  | trolley 0.6 × 1.0 m | 6 / 6 | 144 m (85–154) | 115 m (22–129) | 70 m (20–110) | 96 / 90 / 29 / 3 % | 25 |
+|  | crate 1.0 m | 6 / 6 | 111 m (79–156) | 119 m (22–129) | 105 m (20–110) | 96 / 92 / 28 / 1 % | 6 |
+|  | cable 3 cm hanging to 1.0 m above the rail head | 6 / 6 | 95 m (13–108) | 53 m (19–98, 4 of 6) | 20 m (10–40) | 74 / 59 / 6 / 0 % | 4 |
+|  | box 0.5 m in the bed | 1 / 6 | 52 m | 56 m, 1 of 6 | 50 m (50–50, 1 of 6) | 16 / 2 / 0 / 0 % | 2 |
+| same, **train speed given** (5-frame accumulation) | person | 6 / 6 | 167 m (143–188) | 151 m (22–195) | 105 m (20–170) | 96 / 83 / 62 / 36 % | 6 |
+|  | trolley | 6 / 6 | 175 m (110–194) | 122 m (22–186) | 110 m (20–160) | 96 / 84 / 44 / 44 % | 2 |
+|  | crate 1.0 m | 6 / 6 | 182 m (142–201) | 79 m (22–174) | 70 m (10–120) | 95 / 73 / 58 / 41 % | 7 |
+| to the envelope edge, \|lateral\| ≤ 1.0 m (new random placements) | person | 6 / 6 | 136 m (87–155) | 120 m (22–170) | 95 m (20–150) | 96 / 92 / 64 / 3 % | 6 |
+|  | crate 1.0 m | 6 / 6 | 108 m (77–152) | 108 m (22–127) | 95 m (20–110) | 96 / 89 / 16 / 1 % | 9 |
+|  | trolley | 6 / 6 | 122 m (96–151) | 109 m (22–120) | 95 m (20–110) | 96 / 90 / 21 / 1 % | 9 |
+|  | cable hanging to 0.2 m above the rail head | 3 / 6 | 136 m (136–138) | 39 m (35–44, 2 of 6) | 30 m (10–40, 3 of 6) | 34 / 39 / 33 / 0 % | 4 |
+| curves R ≈ 350 m (7 approaches) | person | 6 / 7 | 78 m (58–86) | 85 m (61–94, 6 of 7) | 75 m (50–80, 6 of 7) | 100 / 50 / 0 / 0 % | 0 |
+|  | crate 1.0 m | 6 / 7 | 68 m (47–89) | 68 m (50–95, 4 of 7) | 60 m (40–70, 4 of 7) | 89 / 35 / 0 / 0 % | 8 |
+|  | trolley | 6 / 7 | 68 m (51–89) | 72 m (24–97, 6 of 7) | 65 m (20–90, 6 of 7) | 92 / 39 / 0 / 0 % | 11 |
+| station stops (6) | person | 6 / 6 | 113 m (89–144) | 122 m (78–127, 5 of 6) | 75 m (10–120) | 93 / 87 / 30 / 0 % | 111 |
+|  | crate 1.0 m | 6 / 6 | 102 m (79–144) | 97 m (83–103, 3 of 6) | 60 m (10–90, 4 of 6) | 79 / 77 / 10 / 0 % | 91 |
+|  | dog-sized box 0.6 × 0.3 × 0.45 m on the bed | 1 / 6 | 41 m | — | — | 3 / 0 / 0 / 0 % | 81 |
+| small objects on a rail head (start 150 m) | 0.3 × 0.3 × 0.1 m | 6 / 6 | 42 m (28–46) | 45 m (30–50) | 40 m (20–40) | 79 / 0 / 0 % | 4 |
+|  | 0.3 m cube | 6 / 6 | 49 m (44–64) | 53 m (46–70) | 45 m (40–60) | 95 / 10 / 0 % | 0 |
+| across a rail (replica of the organizers' object, 0.4 × 0.6 × 0.31 m) |  | 5 / 6 | 46 m (24–50) | 40 m (26–50, 4 of 6) | 30 m (10–40, 5 of 6) | 52 / 1 / 0 % | 4 |
+| on the bed between the rails | 0.3 × 0.3 × 0.1 m | 0 / 6 | — | — | — | 0 / 0 % | 6 |
+|  | 0.3 m cube | 1 / 6 | 9 m | — | 10 m (10–10, 1 of 6) | 1 / 0 % | 0 |
+|  | dog-sized 0.6 × 0.3 × 0.45 m | 1 / 6 | 50 m | 50 m, 1 of 6 | 40 m (40–40, 1 of 6) | 15 / 1 % | 2 |
+| person lying, 0.5 × 1.8 × 0.35 m | across the rails, on the rail heads (start 150 m) | 6 / 6 | 64 m (54–112) | 68 m (58–83) | 60 m (40–70) | 99 / 30 / 1 % | 10 |
+|  | on the measured (deep) bed, across | 0 / 6 | — | — | — | 0 % | 0 |
+|  | same, along | 0 / 6 | — | — | — | 0 % | 0 |
+|  | shallow bed, top 0.15 m above the rail head, across | 6 / 6 | 49 m (47–52) | 53 m (50–56) | 50 m (40–50) | 99 % | 0 |
+|  | same, along | 6 / 6 | 50 m (48–52) | 54 m (52–56) | 50 m (50–50) | 100 % | 0 |
+|  | top 0.10 m above the rail head, across | 6 / 6 | 42 m (30–47) | 46 m (32–50) | 40 m (30–40) | 82 % | 0 |
+|  | same, along | 6 / 6 | 46 m (42–50) | 48 m (45–54) | 40 m (40–50, 4 of 6) | 91 % | 0 |
+|  | top 0.05 m above the rail head, across | 6 / 6 | 17 m (10–24) | 17 m (16–25, 5 of 6) | 10 m (10–20) | 25 % | 0 |
+|  | same, along | 6 / 6 | 29 m (11–43) | 39 m (22–47, 4 of 6) | 25 m (10–40) | 50 % | 0 |
+
+Reading (what differs from round 2). A person on straight track: first confirmed at **148 m**
+(unchanged), held in ≥ 90 % of the frames from **149 m** (round 2: 135 m; the approach through the
+3.4 s recording hole of `new_data_169` no longer collapses to 22 m) and in every 10 m band from
+**115 m** (unchanged; per approach 20–160 m). With a train speed the crate is held from 79 m
+(round 2: 89 m, 5 of 6 approaches; now 6 of 6). At station stops the crate is held from 97 m
+(round 2: 80 m), and the confirmed detections away from the objects rise from 75 / 58 / 51 to
+111 / 91 / 81 (the stations' own false alarms, held). Small objects on a rail head: first at
+42 m (the 10 cm box) and 49 m (the 30 cm cube), held from 45 m and 53 m.
+
 **Round 2 (v0.6.2, 23.09)** — what the criteria review asked for: small objects, objects on
 a rail head, lateral positions to the envelope edge, 7 approaches in curves and 6 at station
 stops, and the **sustained range** next to the first hit: the largest distance D from which the
@@ -850,6 +937,10 @@ broken down); v0.6.3 measures the calibration only every 10th frame:
 
 p95 stays inside the 100 ms frame period on every recording; through ROS the node adds ~20–25 ms
 per 360° frame (§3b), which is where the 360° recording reaches the frame period on this sandbox.
+Re-measured on 24.09 on another idle 4-core sandbox, the current code and v0.6.3 back to back:
+36.5–52.2 against 35.1–57.4 ms mean (p95 50.3–67.1 against 46.3–75.4 ms), −9…+6 % per recording —
+no regression ("Re-measurement" at the top; that sandbox is faster, so the table above stays the
+quoted figure).
 
 **v0.6 (22.09, the idle sandbox, nothing else running; `resense bench --npy <recording>`,
 every frame, recordings back to back; the load of 1–3 is the bench's own BLAS threads).**
@@ -955,7 +1046,7 @@ has arrived yet instead of staying silent.
 | run (v0.6.2 image) | frames processed | fps (2 s windows) | latency decode + detect mean / p95 | detector stage mean | result |
 |---|---|---|---|---|---|
 | `dry_run.sh` `roundT_doubleT` (120° window, `/lidar_points` + `hesai_lidar`), node and player in one container, root | 237 of 252 | 10.0 | 65 / 76 ms | 53 ms | 2 alarm frames at 128.3–130.2 m — the same frames as the offline evaluation (§0) |
-| `dry_run.sh` `doubleT_obstacle` (360°, `/sensing/lidar/hesai128/pointcloud` + `lidar_livox`), one container, root | 103–134 of 201 | 8–9 in steady state, lower at the start | 96–99 / 112–130 ms | 74–76 ms | obstacle 55.9–56.6 m, 88–118 alarm frames |
+| `dry_run.sh` `doubleT_obstacle` (360°, `/sensing/lidar/hesai128/pointcloud` + `lidar_livox`), one container, root | 103–134 of 201 | 7–9 in steady state (6.8–8.3 in the stored log), lower at the start | 96–99 / 112–130 ms | 74–76 ms | obstacle 55.9–56.6 m, 88–118 alarm frames |
 | **`console_test.sh`**, player **uid 1000** in its own container, UDP profile: `roundT_doubleT` then `doubleT_obstacle` into the same running node | 351 of 453 | 8.3–10 in steady state | 82 / 102 ms | 65 ms | input switched, detector restarted; 131 alarm frames: the person and the object at 56.1–56.5 m and the 2 known frames at 128–130 m of `roundT_doubleT` |
 | `console_test.sh` on the two synthetic bags (the CI step) | 72 of 80 | 5 (bag at 0.5×) | 65 / 78 ms | 53 ms | PASS |
 | CI smoke test (`scripts/smoke_test.sh`, one container) | 76 of 80 | 5 (bag at 0.5×) | 64 / 76 ms | 52 ms | PASS |
@@ -979,7 +1070,7 @@ first 100 frames of `doubleT_obstacle`); the ROS path adds ~20–25 ms per 360°
 conversion, decode — `pointcloud2_to_arrays`, 40 → 9 ms in v0.6.2 — and publishing the markers
 and the corridor cloud). The node skips frames instead of lagging, as designed (keep-last 1):
 over a whole 360° recording it processes 103–142 of 201 frames (the start-up hole included),
-8–10 fps in steady state; the 120° recordings run at the full 10 Hz. Captures, node logs and
+7–10 fps in steady state; the 120° recordings run at the full 10 Hz. Captures, node logs and
 the checker output: [`evidence/docker_2026-09-23/`](evidence/docker_2026-09-23/). The jury's
 i7-9700E (8 cores, higher clock) has not been measured.
 

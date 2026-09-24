@@ -61,7 +61,7 @@ What is shown:
 |---|---|
 | banner **ПУТЬ СВОБОДЕН / ВНИМАНИЕ / ПРЕПЯТСТВИЕ 55.6 м** | `obstacle`, `warning`, `nearest_distance` |
 | **cab view** (driver's-eye schematic, the camera of `scripts/hero_view.py` without the point cloud): rails and the 2.1 × 3.0 m train envelope along the fitted axis and bed profile, the stretch verified clear in green (to the obstacle, else `clear_distance`), a red stop zone at the obstacle, confirmed objects as 3D boxes with a distance chip, a zoomed close-up of the nearest one, decision chip and legend; the tunnel outline is only a depth cue | `track.center/yaw/curvature/floor_coef/floor_range/rail_offset/axis_valid`, `detections[]`, `warnings[]`, `clear_distance`, `decision`, `health` |
-| top-down canvas (100 / 150 / 250 m): track axis, ±1.4 m gauge corridor, untrusted range shaded, red gauge boxes, orange advisory boxes with distance and confidence | `track.center/yaw/curvature/axis_valid`, `detections[]`, `warnings[]` |
+| top-down canvas (100 / 150 / 250 m): track axis, ±1.4 m band (the ±1.05 m train envelope plus the 0.35 m advisory margin), untrusted range shaded, red gauge boxes, orange advisory boxes with distance and confidence | `track.center/yaw/curvature/axis_valid`, `detections[]`, `warnings[]` |
 | timeline (last 30 s): nearest gauge obstacle (red), nearest advisory object (orange) | `nearest_distance`, `warnings[].distance` |
 | detector card: counts, axis, radius, trusted range, points, per-stage timing | `track`, `n_points`, `n_corridor`, `timing_ms` |
 | decision and health: GO / CAUTION / STOP / FAULT, verified-clear distance, visibility, rail lock, calibration | `decision`, `clear_distance`, `health`, `mount` |
