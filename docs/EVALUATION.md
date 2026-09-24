@@ -32,17 +32,17 @@ it leaves FP counts and rates unknown (`null`) rather than assuming every frame 
 | **recall by class and range** | the recall-by-range table split per object class [`per_class_bin_counts`: class → bin → [matched, total]]; the per-kind table of set S | counts per cell (the cells of a 26-frame set hold 1–4 objects: quote the counts, not only the ratio) |
 | **first-detection distance** | for a moving-toward run (real, or `inject --sequence N --speed V`): the largest range at which the object is confirmed and matched | m, per ground-truth label [`first_detection_distance`] |
 | **distance / lateral error** | over matched detections: mean and max of \|Δdistance\|, the signed mean (bias, + = reported farther than the label), mean \|Δlateral\| [`distance_error_mean_abs`, `distance_error_max_abs`, `distance_error_bias`, `lateral_error_mean_abs`] | m; on the real person of `doubleT_obstacle` 0.00–0.07 m mean (DATASET.md "Real labels") |
-| **first alarm frame** | index of the first frame with `obstacle = true` [`first_alarm_frame`] | frame; v0.6.3 first alarms on `doubleT_obstacle` at frame 11 (the person enters the 2.1 m envelope at frame 8) |
-| **ego-speed source / frames merged** | how the accumulation actually ran: frames per `ego_speed_source` value (`given` / `estimated` / `none`) and the mean `n_accumulated` [`ego_speed_sources`, `n_accumulated_mean`] | counts; `given` when the node has a speed, `none` by default without one; `estimated` only with the opt-in LiDAR speed estimator |
+| **first alarm frame** | index of the first frame with `obstacle = true` [`first_alarm_frame`] | frame; on `doubleT_obstacle` it is 11 (the person enters the 2.1 m envelope at frame 8 and, tracked while it approached, is reported 0.3 s later) and must not get later |
+| **ego-speed source / frames merged** | how the accumulation actually ran: frames per `ego_speed_source` value (`given` / `estimated` / `none`) and the mean `n_accumulated` [`ego_speed_sources`, `n_accumulated_mean`] | counts; `given` when the node receives a valid speed; without one, shipped defaults report `none` (`accumulation.estimate_speed: false`); `estimated` requires explicitly opting in |
 | **false-alarm frames** | frames with `obstacle = true` among frames with no gauge ground truth [`fp_frames`, `fp_frame_rate`]; every frame with `obstacle = true` regardless of labels is an *alarm frame* [`alarm_frames`] | per bag and per scene type (tunnel / curve / gate / platform / switch) |
 | **false-alarm events** | distinct confirmed gauge track ids (`detections[].id`) that were never matched to a ground-truth object [`fp_events`]; distinct ids of all alarms [`alarm_events`]. Injected sequences scope each ID by `seq`, because the tracker restarts at each sequence; one object that stays in the corridor for 50 frames is one event | **the headline false-alarm number**, per bag |
 | **false alarms per hour / per km** | `fp_events` per hour of bag time (span of the `stamp` field [`bag_time_s`]) [`fp_events_per_hour`] and per km travelled [`fp_events_per_km`] when a speed is known: `--speed-mps V` (constant) or a per-frame `ego_speed_mps` key in the JSON, integrated over the stamp gaps [`distance_km`]. For independent injected `seq` runs, inter-sequence time and distance are excluded. | per bag; `null` when no speed is known |
 | **advisory rate** | frames with `warning = true` [`advisory_frames`, `advisory_frame_rate` = share of all evaluated frames] | informational; the advisory zone is expected to be noisy near infrastructure |
-| **alarm distance** | min / max of `nearest_distance` over alarm frames [`alarm_distance_min`, `alarm_distance_max`] | m; the max on `doubleT_obstacle` is the person (56.5 m), the min includes false alarms near the train, so quote the max or per-event distances |
+| **alarm distance** | min / max of `nearest_distance` over alarm frames [`alarm_distance_min`, `alarm_distance_max`] | m; the max on `doubleT_obstacle` is the person (56.6 m), the min includes false alarms near the train, so quote the max or per-event distances |
 | **latency** | per frame: decode + detect (status JSON `node.latency_ms`) and decode + detect + publish (`/resense/latency_ms`); offline `timing_ms.total` [`latency_ms_mean`, `latency_ms_p95`, `latency_ms_max`] | mean, p95, max in ms |
 | **throughput** | frames processed per second in the ROS node (`/resense/fps`) against the sensor's 10 Hz; dropped frames from stamp gaps (`node.dropped_frames`) | fps, dropped / total (node stats line, `scripts/check_dry_run.py`) |
-| **decision latency** | frames from the first visible in-gauge object to the first `obstacle = true`; report the actual result, since a track can have hits before it enters the gauge | frames and seconds; on the current crossing person, frame 8 → 11 (0.3 s) with the five-frame confirmation setting |
-| **subsampling caveat** | the stride between consecutive `frame` indices [`frame_stride`]; the current five-hit confirmation spans approximately `5 × N × frame_dt` (2.5 s at every 5th frame, 5 s at every 10th) instead of 0.5 s at 10 Hz: **subsampled alarm and false-alarm counts understate the full-rate values** [`stride_caveat`] | printed next to every number measured on subsampled frames; headline numbers are measured at every frame |
+| **decision latency** | frames from the first frame an object is visible in the corridor to the first `obstacle = true` | frames: 5 (0.5 s, `tracking.confirm_time_s`) for an object that appears inside the envelope; fewer for one already tracked while it approaches (the real person: 3) |
+| **subsampling caveat** | the stride between consecutive `frame` indices [`frame_stride`]; the tracker is given the measured frame interval, so with every N-th frame it needs max(`confirm_hits`, ⌈`confirm_time_s` / (N × frame_dt)⌉) consecutive hits, N × frame_dt s apart: 3 hits spanning 1.5 s at every 5th frame and 3 s at every 10th, instead of 5 frames (0.5 s) at 10 Hz: **subsampled alarm and false-alarm counts understate the full-rate values** [`stride_caveat`] | printed next to every number measured on subsampled frames; headline numbers are measured at every frame |
 | **CPU / memory** | `top` per core and RSS of the node on the reference machine | for the i7-9700E comparison |
 
 Objects fully occluded by real geometry (`n_points == 0` in `gt.json`) are excluded from
@@ -143,13 +143,14 @@ validity over each sequence before interpreting range or edge results.
    a misleading timing result. ROS timing and throughput require a running ROS 2 graph and Docker
    acceptance requires a reachable daemon; when those are unavailable, report the check as
    unmeasured rather than reusing historical FPS/latency values.
-6. **Regression:** compare recall 50–100 m on S, false-alarm frames and events on E (all
-   bags), and p95 latency under the same machine/load. On R, keep the current 2.1 m-envelope
-   baseline visible: crossing person 58/61 in-gauge frames, first alarm frame 11, rail object
-   127/185 visible frames (124/126 after the person leaves). Do not compare those counts to
-   older 1.4 m-envelope runs as if the labels were identical. Each PR that touches `resense/`
-   re-runs S, E and R on the cached frames (`scripts/cache_frames.py`) and adds a row to the
-   version table in EXPERIMENTS.md.
+6. **Regression:** the three numbers that must not get worse between versions are recall
+   50–100 m on S, false-alarm frames and events on E (all bags), and p95 latency under the same
+   machine and load; on R the first alarm frame (11) must not get later and the recall (the
+   person 58 of its 61 frames in the envelope, the object on the rail 124 of its 126 frames from
+   frame 75, 127 of its 185 visible frames) must not drop. Do not compare these 2.1 m-envelope
+   counts to older 1.4 m-envelope runs as if the labels were identical. Each PR that touches
+   `resense/` re-runs S, E and R on the cached frames (`scripts/cache_frames.py`) and adds a row
+   to the version table in EXPERIMENTS.md.
 
 ## 4. Targets (from PLAN.md sprints)
 

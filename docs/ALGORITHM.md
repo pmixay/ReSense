@@ -349,7 +349,7 @@ same 3-D returns as a foreign object cannot be distinguished by this geometry al
 the false-event cost on the real ride must be measured before enabling it in production.
 
 Result (EXPERIMENTS.md §0): the object in **118 of the 126 frames after the person leaves it** (124 since the v0.6.3 hold over one missed frame)
-and 121 of 185 overall (its own detection; v0.6.1: 2), +1 event on the five empty bags and +1 on the ride.
+and 121 of 185 overall (127 with v0.6.3; its own detection; v0.6.1: 2), +1 event on the five empty bags and +1 on the ride.
 The thresholds sit close to this one real object — its top 0.11–0.16 m against 0.10, its width
 0.38–0.50 m against 0.35 (a review found 45 of 126 frames with a 0.13 m minimum and 95 with a
 0.45 m width) — because the rail fittings reach 8 cm and the trackside devices are 0.2–0.3 m
@@ -584,7 +584,11 @@ v0.6–v0.6.2 additions first; the v0.5 list follows.
 * **Low objects below the rail head** (§3.3b): the shipped default does not report compact
   objects on the bed between the rails. The opt-in central near-bed path can report them
   within 30 m, provided the local bed is observed and the rails are locked. A fixture with
-  the same geometry can still cause a false alarm; its real-ride FP cost is unmeasured.
+  the same geometry can still cause a false alarm, and on real data it does: measured on 24.09
+  (the independent review, [`reviews/2026-09-24_review.md`](reviews/2026-09-24_review.md)), with
+  the path on the five obstacle-free recordings give 145 events (20 with the defaults) and the
+  ride 667 events and 247 STOP episodes (47 and 39), while the 30 × 30 × 10 cm box on the bed
+  stays at 0 of 6 approaches and the dog-sized box is found only from ~20 m. It stays off.
   Beyond that range or beside a rail the original rail-head rule applies. On a line with a clean bed,
   `lowobj.min_top: -1` with `min_point_top: -1` reports all bed bumps. An object lying *across* a rail
   (the organizers' object in `doubleT_obstacle`) is reported since v0.6.2 (§3.3b: 124 of the
@@ -592,7 +596,7 @@ v0.6–v0.6.2 additions first; the v0.5 list follows.
   when it is ≥ 0.35 m across the track: an object lying *along* a rail is indistinguishable from
   the trackside devices mounted there.
 * **A person lying on the track** (synthetic, EXPERIMENTS.md §2d): across the rail heads the
-  corridor stage finds it from ~60 m; between the rails only the part above the rail head
+  corridor stage finds it from ~60–64 m; between the rails only the part above the rail head
   counts: in these tunnels the bed lies 0.26–0.34 m below the rail head beside a 0.57–0.60 m
   drainage trough, so a 0.35 m body lying across the track rises 0.01–0.09 m above the rail head:
   found from ~42 m when 0.10 m of it is above the rail head, from ~17 m at 0.05 m, not below the

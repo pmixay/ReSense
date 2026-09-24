@@ -42,3 +42,6 @@ ros2_ws/log/
 
 # Claude Code worktrees (multi-agent sessions)
 .claude/
+
+# Presentation: team personal data and photos stay local (scripts/build_deck.py --team)
+docs/presentation/private/
