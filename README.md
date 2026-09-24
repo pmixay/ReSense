@@ -420,7 +420,7 @@ input queue dropped (estimated from gaps in the header stamps).
 | `track.rails_far_check_enabled` | false | Sprint 1 experimental far-rail cross-check; opt-in pending real-recording A/B and timing |
 | `gauge.profile` | \|dy\| ≤ 1.05 m, 0.12–3.0 m | **the organizers' 2.1 × 3.0 m train envelope**; `warning_margin` 0.35 m = advisory zone; `edge_margin_per_100m` 0.15 m |
 | `lowobj.*` | on, ≤ 60 m | low objects on the rails (bumps above the learned bed that rise ≥ 3 cm above the rail head) |
-| `lowobj.near_enabled` | false | Sprint 2 experimental central near-bed path; opt-in pending real-ride false-event evaluation |
+| `lowobj.near_enabled` | false | experimental central near-bed path; measured on 24.09 it raises the ride's false events from 47 to 667, so it stays off (ALGORITHM.md §6) |
 | `accumulation.estimate_speed` | false | LiDAR-only speed estimation opt-in; without a supplied speed, use single-frame detection |
 | `cluster.far_*` | 0.6 m tall, ≤ 3 m long | what may alarm beyond the height reference (far field of straight track) |
 | `cluster.eps / range_scale / voxel` | 0.35 / 40 / 0.05 | range-adaptive DBSCAN: ε(r) = eps·(1 + r/40 m) |

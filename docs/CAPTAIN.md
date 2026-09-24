@@ -222,8 +222,9 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
     subscription, switches inputs between recordings and restarts the detector per recording
     (v0.6.1, launch arguments `input_switch_timeout`, `new_input_gap`, `hole_reset_gap`); README
     "How a bag is processed" (the solution does not read bags; `--ipc=host` added to the
-    step-by-step `docker run` lines, without which Fast DDS shared memory can swallow the 5–8 MB
-    clouds of a player on the same machine).
+    step-by-step `docker run` lines, without which Fast DDS shared memory could swallow the 5–8 MB
+    clouds of a player on the same machine; superseded on 23.09: the image now runs DDS over UDP
+    only, so `--ipc=host` is harmless and kept only for compatibility).
 14. **v0.6.2 (23.09), after the criteria review** (EXPERIMENTS §0; the review reports of 23.09
     are in the git history): the organizers' object lying across the rail is found in **118 of the 126 frames** after
     the person leaves it (v0.6.1: 2) — it straddled the envelope floor and fell between the two

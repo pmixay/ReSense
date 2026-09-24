@@ -584,7 +584,11 @@ v0.6–v0.6.2 additions first; the v0.5 list follows.
 * **Low objects below the rail head** (§3.3b): the shipped default does not report compact
   objects on the bed between the rails. The opt-in central near-bed path can report them
   within 30 m, provided the local bed is observed and the rails are locked. A fixture with
-  the same geometry can still cause a false alarm; its real-ride FP cost is unmeasured.
+  the same geometry can still cause a false alarm, and on real data it does: measured on 24.09
+  (the independent review, [`reviews/2026-09-24_review.md`](reviews/2026-09-24_review.md)), with
+  the path on the five obstacle-free recordings give 145 events (20 with the defaults) and the
+  ride 667 events and 247 STOP episodes (47 and 39), while the 30 × 30 × 10 cm box on the bed
+  stays at 0 of 6 approaches and the dog-sized box is found only from ~20 m. It stays off.
   Beyond that range or beside a rail the original rail-head rule applies. On a line with a clean bed,
   `lowobj.min_top: -1` with `min_point_top: -1` reports all bed bumps. An object lying *across* a rail
   (the organizers' object in `doubleT_obstacle`) is reported since v0.6.2 (§3.3b: 124 of the
