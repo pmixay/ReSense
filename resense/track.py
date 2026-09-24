@@ -21,6 +21,7 @@ from typing import Optional
 
 import numpy as np
 
+from resense import _native
 from resense.config import TrackConfig
 
 
@@ -45,10 +46,14 @@ class TrackModel:
     def floor_z(self, X) -> np.ndarray:
         """Bed reference height at along-track coordinate X, linearly extrapolated beyond
         the supported range (a quadratic extrapolated to 250 m is not trustworthy)."""
+        c = np.asarray(self.floor_coef, dtype=np.float64)
+        if c.size == 3 and _native.enabled():     # the same arithmetic in one pass (resense/_native.py)
+            z = _native.floor_z(X, self.floor_range, c)
+            if z is not None:
+                return z
         X = np.asarray(X, dtype=np.float64)
         x0, x1 = self.floor_range
         Xc = np.clip(X, x0, x1)
-        c = np.asarray(self.floor_coef, dtype=np.float64)
         if c.size == 3:                           # the common case, written out (2x faster than polyval)
             a2, a1, a0 = c
             return (a2 * Xc + a1) * Xc + a0 + (2.0 * a2 * Xc + a1) * (X - Xc)
@@ -61,8 +66,16 @@ class TrackModel:
         return self.floor_z(X) + self.rail_offset
 
     def center_y(self, X) -> np.ndarray:
+        if _native.enabled():
+            y = _native.center_y(X, *self.center_coefs())
+            if y is not None:
+                return y
         X = np.asarray(X, dtype=np.float64)
         return self.center + np.tan(self.yaw) * X + 0.5 * self.curvature * X * X
+
+    def center_coefs(self) -> tuple:
+        """(c, t, k2) with ``center_y(X) = c + t X + k2 X X``, exactly as ``center_y`` rounds them."""
+        return float(self.center), float(np.tan(self.yaw)), float(0.5 * self.curvature)
 
     def to_dict(self) -> dict:
         return {
@@ -96,6 +109,10 @@ def bin_percentile(values: np.ndarray, bins: np.ndarray, nb: int, percentile: fl
     one sort instead of a Python loop with a percentile call per bin. Returns (prof, counts)
     with ``prof`` NaN where a bin holds fewer than ``min_points`` values; with ``payload`` the
     payload of the value at the percentile rank is returned as a third array (nearest rank)."""
+    if _native.enabled():                          # counting sort + selection, the same values (resense/_native.py)
+        res = _native.bin_percentile(values, bins, nb, percentile, min_points, payload)
+        if res is not None:
+            return res
     prof = np.full(nb, np.nan)
     counts = np.bincount(bins, minlength=nb)[:nb]
     if values.size == 0:
