@@ -20,7 +20,7 @@
   <section class="intro" aria-labelledby="page-title">
     <div><p class="eyebrow">Мониторинг пути</p><h2 class="page-title" id="page-title">Контроль свободного габарита</h2></div>
   </section>
-  <div id="banner" class="idle" role="status" aria-live="assertive">ОЖИДАНИЕ ДАННЫХ</div>
+  <div id="banner" class="idle" role="status" aria-live="assertive"><span id="banner-title">ОЖИДАНИЕ ДАННЫХ</span><small id="banner-detail" hidden></small><svg class="banner-icon" viewBox="0 0 220 140" preserveAspectRatio="none" aria-hidden="true"><path id="banner-icon-shape"></path></svg></div>
   <main id="monitor">
     <div class="visual-column">
       <div class="visual-tabs" role="tablist" aria-label="Вид мониторинга">
@@ -449,16 +449,29 @@ function drawTimeline() {
 
 // ----------------------------------------------------------------------------- applying a result
 function fmt(v, digits, unit) { return v == null || !isFinite(v) ? '—' : v.toFixed(digits) + (unit || ''); }
+const BANNER_ICONS = {
+  clear: { path: 'M0 45 H120 V0 L220 70 120 140 V95 H0 Z', color: '#8CD9A5' },
+  bad: { path: 'M0 0 H52 L110 43 168 0 H220 L145 70 220 140 H168 L110 97 52 140 H0 L75 70 Z', color: '#FF9CA3' },
+  warn: { path: 'M0 0 H145 L116 82 H28 Z M36 94 H100 V130 H36 Z', color: '#FFF7A8' },
+};
+function setBanner(kind, title, detail) {
+  const banner = $('banner'), icon = BANNER_ICONS[kind];
+  banner.className = kind;
+  $('banner-title').textContent = title;
+  $('banner-detail').textContent = detail || '';
+  $('banner-detail').hidden = !detail;
+  $('banner-icon-shape').setAttribute('d', icon ? icon.path : '');
+  banner.style.setProperty('--banner-icon-color', icon ? icon.color : 'transparent');
+}
 function applyResult(res, opts) {
   opts = opts || {}; const draw = opts.draw !== false;
   state.last = res; state.shown++;
   const t = state.mode === 'replay' ? stampOf(res) : Date.now() / 1000;
-  const b = $('banner');
   const dets = res.detections || [], warns = res.warnings || [];
-  if (res.obstacle) { b.className = 'bad'; b.textContent = `ПРЕПЯТСТВИЕ  ${res.nearest_distance.toFixed(1)} м`; }
-  else if (res.warning) { b.className = 'warn'; b.textContent = 'ВНИМАНИЕ: ОБЪЕКТ РЯДОМ С ГАБАРИТОМ'; }
-  else { b.className = 'clear'; b.textContent = 'ПУТЬ СВОБОДЕН'; }
-  if (state.mode === 'replay' && res.frame != null) { const s = document.createElement('small'); s.textContent = `Кадр ${String(res.frame).padStart(5, '0')} · +${(t - (state.t0 || 0)).toFixed(1)} с · ${res.frame_id || 'без источника'}`; b.appendChild(s); }
+  const detail = state.mode === 'replay' && res.frame != null ? `Кадр ${String(res.frame).padStart(5, '0')} · +${(t - (state.t0 || 0)).toFixed(1)} с · ${res.frame_id || 'без источника'}` : '';
+  if (res.obstacle) setBanner('bad', `ПРЕПЯТСТВИЕ  ${res.nearest_distance.toFixed(1)} м`, detail);
+  else if (res.warning) setBanner('warn', 'ВНИМАНИЕ: ОБЪЕКТ РЯДОМ С ГАБАРИТОМ', detail);
+  else setBanner('clear', 'ПУТЬ СВОБОДЕН', detail);
   $('dist').textContent = res.nearest_distance == null ? '—' : res.nearest_distance.toFixed(1) + ' м';
   $('counts').textContent = `${dets.length} / ${warns.length}`;
   const tr = res.track || {};
@@ -560,7 +573,7 @@ function resetView() {
   state.hist = []; state.shown = 0; state.alarmFrames = 0; state.lastObstacle = false; state.last = null;
   state.node = { lastDropped: null, alertUntil: 0 };
   $('log').innerHTML = '<span class="empty-log">Событий пока нет.</span>';
-  $('banner').className = 'idle'; $('banner').textContent = 'ОЖИДАНИЕ ДАННЫХ';
+  setBanner('idle', 'ОЖИДАНИЕ ДАННЫХ');
 }
 function setMode(m) {
   if (state.mode === m) return;

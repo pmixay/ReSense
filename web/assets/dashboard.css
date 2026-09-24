@@ -93,16 +93,17 @@ input[type="checkbox"] { width: 17px; height: 17px; accent-color: var(--red); }
 .speed-label, .check-label { display: inline-flex; align-items: center; gap: 6px; color: var(--ink); font-size: 12px; }
 .speed-label select { min-height: 34px; }
 
-#banner { display: flex; align-items: center; flex-wrap: wrap; flex: 0 0 auto; gap: 0 12px; min-height: 76px; margin-bottom: 10px; padding: 13px 18px; color: #fff; font-size: clamp(25px, 2.5vw, 34px); font-weight: 800; line-height: 1.1; letter-spacing: -.5px; }
-#banner::before { content: "→"; display: inline-grid; place-items: center; width: 38px; height: 38px; flex: 0 0 auto; border: 2px solid currentColor; font-size: 27px; font-weight: 400; line-height: 1; }
+#banner { --banner-icon-width: clamp(144px, 11.4vw, 182px); position: relative; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; flex: 0 0 auto; min-height: 76px; margin-bottom: 10px; padding: 13px 18px 13px calc(var(--banner-icon-width) - 12px); overflow: hidden; color: #fff; font-size: clamp(25px, 2.5vw, 34px); font-weight: 800; line-height: 1.1; letter-spacing: -.5px; }
+#banner-title, #banner-detail { position: relative; z-index: 1; }
+.banner-icon { position: absolute; top: -22px; left: -30px; width: var(--banner-icon-width); height: calc(100% + 44px); overflow: visible; fill: var(--banner-icon-color); pointer-events: none; }
 #banner.clear { background: var(--green); }
-#banner.idle { border: 1px solid var(--line); background: var(--paper); color: var(--ink); }
-#banner.idle::before { content: "—"; }
+#banner.idle { flex-direction: row; align-items: center; justify-content: flex-start; gap: 12px; padding-left: 18px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); }
+#banner.idle::before { content: "—"; display: inline-grid; place-items: center; width: 38px; height: 38px; flex: 0 0 auto; border: 2px solid currentColor; font-size: 27px; font-weight: 400; line-height: 1; }
+#banner.idle .banner-icon { display: none; }
 #banner.warn { background: var(--yellow); color: var(--ink); }
-#banner.warn::before { content: "!"; }
 #banner.bad { background: var(--red); }
-#banner.bad::before { content: "×"; }
-#banner small { display: block; width: 100%; margin: 5px 0 0 50px; font-size: 12px; font-weight: 400; letter-spacing: 0; }
+#banner small { display: block; width: 100%; margin-top: 5px; font-size: 12px; font-weight: 400; letter-spacing: 0; }
+#banner small[hidden] { display: none; }
 
 main { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, 390px); flex: 1 1 auto; min-height: 0; gap: 10px; }
 .visual-column { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
@@ -173,9 +174,10 @@ body.dragging #drop-overlay { display: grid; }
   .connection-field { flex-basis: 100%; }
   .connection-field .status-line { display: inline; }
   input[type="range"] { flex: 1 1 100%; width: 100%; }
-  #banner { padding: 17px; font-size: 27px; }
-  #banner::before { width: 36px; height: 36px; font-size: 26px; }
-  #banner small { margin-left: 0; }
+  #banner { --banner-icon-width: clamp(85px, 26vw, 144px); padding: 17px 17px 17px calc(var(--banner-icon-width) - 4px); font-size: 27px; }
+  .banner-icon { left: -14px; }
+  #banner.idle { padding-left: 17px; }
+  #banner.idle::before { width: 36px; height: 36px; font-size: 26px; }
   .visual-card { padding: 12px; }
   .cab-stage { min-height: 280px; }
   .plan-card { grid-template-rows: auto 240px 150px; }
