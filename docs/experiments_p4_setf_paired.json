@@ -1,0 +1,962 @@
+{
+ "source": "paired synthetic positives on organizer empty-ride frames",
+ "parameters": {
+  "files": "127,129,131,160,164,175,177",
+  "frames": 220,
+  "kinds": "person,box1.0",
+  "seed": 0,
+  "start_m": 160.0,
+  "lateral_range": "-1.0:1.0",
+  "config_sha256": "b333cd85572ce50c4acc2f6eade42a5e8f54cfc2ea0ac6f445c38916e00b1ee8",
+  "speeds_sha256": "05c1006de92d5331871da80999c27fadb2397981863b34b63b0d227dbe6d01f3",
+  "selected_stamps_sha256": "2dbd4828885f3d0e3f672e67ddc8f3e4752ee470e63951a738c068cef6963a4a"
+ },
+ "per_kind": {
+  "box1.0": {
+   "paired_sequences": 6,
+   "skipped": 1,
+   "visible": {
+    "legacy": 492,
+    "anchored": 484
+   },
+   "visible_hits": {
+    "legacy": 266,
+    "anchored": 274
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      168,
+      168
+     ],
+     "50-100": [
+      98,
+      202
+     ],
+     "100-150": [
+      0,
+      116
+     ],
+     "150-200": [
+      0,
+      6
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      168,
+      168
+     ],
+     "50-100": [
+      106,
+      208
+     ],
+     "100-150": [
+      0,
+      103
+     ],
+     "150-200": [
+      0,
+      5
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    }
+   },
+   "first_median": {
+    "legacy": 74.7,
+    "anchored": 79.6
+   }
+  },
+  "person": {
+   "paired_sequences": 6,
+   "skipped": 1,
+   "visible": {
+    "legacy": 495,
+    "anchored": 476
+   },
+   "visible_hits": {
+    "legacy": 224,
+    "anchored": 214
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      142,
+      168
+     ],
+     "50-100": [
+      82,
+      199
+     ],
+     "100-150": [
+      0,
+      116
+     ],
+     "150-200": [
+      0,
+      12
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      145,
+      168
+     ],
+     "50-100": [
+      69,
+      204
+     ],
+     "100-150": [
+      0,
+      102
+     ],
+     "150-200": [
+      0,
+      2
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    }
+   },
+   "first_median": {
+    "legacy": 73.7,
+    "anchored": 67.5
+   }
+  }
+ },
+ "sequences": [
+  {
+   "file0": "new_data_127_0000.npy",
+   "kind": "person",
+   "frames": 182,
+   "first_m": {
+    "legacy": 60.21078288651197,
+    "anchored": 54.06384642445324
+   },
+   "visible": {
+    "legacy": 137,
+    "anchored": 120
+   },
+   "visible_hits": {
+    "legacy": 43,
+    "anchored": 37
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      34,
+      34
+     ],
+     "50-100": [
+      9,
+      43
+     ],
+     "100-150": [
+      0,
+      52
+     ],
+     "150-200": [
+      0,
+      8
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      33,
+      34
+     ],
+     "50-100": [
+      4,
+      44
+     ],
+     "100-150": [
+      0,
+      42
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    }
+   },
+   "legacy_only_hits": 6,
+   "anchored_only_hits": 0,
+   "max_axis_delta_m": 17.08,
+   "median_axis_delta_m": 0.34
+  },
+  {
+   "file0": "new_data_127_0000.npy",
+   "kind": "box1.0",
+   "frames": 182,
+   "first_m": {
+    "legacy": 72.92964832789768,
+    "anchored": 82.23151706726439
+   },
+   "visible": {
+    "legacy": 126,
+    "anchored": 119
+   },
+   "visible_hits": {
+    "legacy": 54,
+    "anchored": 57
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      34,
+      34
+     ],
+     "50-100": [
+      20,
+      43
+     ],
+     "100-150": [
+      0,
+      47
+     ],
+     "150-200": [
+      0,
+      2
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      34,
+      34
+     ],
+     "50-100": [
+      23,
+      44
+     ],
+     "100-150": [
+      0,
+      40
+     ],
+     "150-200": [
+      0,
+      1
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    }
+   },
+   "legacy_only_hits": 0,
+   "anchored_only_hits": 3,
+   "max_axis_delta_m": 17.1,
+   "median_axis_delta_m": 0.35
+  },
+  {
+   "file0": "new_data_129_0000.npy",
+   "kind": "person",
+   "frames": 123,
+   "first_m": {
+    "legacy": 59.68279819763212,
+    "anchored": 59.323878930668755
+   },
+   "visible": {
+    "legacy": 101,
+    "anchored": 100
+   },
+   "visible_hits": {
+    "legacy": 39,
+    "anchored": 39
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      31,
+      31
+     ],
+     "50-100": [
+      8,
+      40
+     ],
+     "100-150": [
+      0,
+      29
+     ],
+     "150-200": [
+      0,
+      1
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      31,
+      31
+     ],
+     "50-100": [
+      8,
+      41
+     ],
+     "100-150": [
+      0,
+      28
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    }
+   },
+   "legacy_only_hits": 0,
+   "anchored_only_hits": 0,
+   "max_axis_delta_m": 7.6,
+   "median_axis_delta_m": 0.13
+  },
+  {
+   "file0": "new_data_129_0000.npy",
+   "kind": "box1.0",
+   "frames": 123,
+   "first_m": {
+    "legacy": 59.68279819763212,
+    "anchored": 59.264027594307365
+   },
+   "visible": {
+    "legacy": 105,
+    "anchored": 101
+   },
+   "visible_hits": {
+    "legacy": 39,
+    "anchored": 39
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      31,
+      31
+     ],
+     "50-100": [
+      8,
+      40
+     ],
+     "100-150": [
+      0,
+      33
+     ],
+     "150-200": [
+      0,
+      1
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      31,
+      31
+     ],
+     "50-100": [
+      8,
+      41
+     ],
+     "100-150": [
+      0,
+      28
+     ],
+     "150-200": [
+      0,
+      1
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    }
+   },
+   "legacy_only_hits": 0,
+   "anchored_only_hits": 0,
+   "max_axis_delta_m": 7.59,
+   "median_axis_delta_m": 0.15
+  },
+  {
+   "file0": "new_data_131_0000.npy",
+   "kind": "person",
+   "frames": 105,
+   "first_m": {
+    "legacy": 66.41774149690376,
+    "anchored": 66.05281822059875
+   },
+   "visible": {
+    "legacy": 90,
+    "anchored": 88
+   },
+   "visible_hits": {
+    "legacy": 9,
+    "anchored": 12
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      7,
+      28
+     ],
+     "50-100": [
+      2,
+      33
+     ],
+     "100-150": [
+      0,
+      26
+     ],
+     "150-200": [
+      0,
+      3
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      9,
+      28
+     ],
+     "50-100": [
+      3,
+      34
+     ],
+     "100-150": [
+      0,
+      26
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    }
+   },
+   "legacy_only_hits": 0,
+   "anchored_only_hits": 3,
+   "max_axis_delta_m": 4.95,
+   "median_axis_delta_m": 0.12
+  },
+  {
+   "file0": "new_data_131_0000.npy",
+   "kind": "box1.0",
+   "frames": 105,
+   "first_m": {
+    "legacy": 69.47433506677442,
+    "anchored": 70.2745735344182
+   },
+   "visible": {
+    "legacy": 83,
+    "anchored": 84
+   },
+   "visible_hits": {
+    "legacy": 41,
+    "anchored": 42
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      28,
+      28
+     ],
+     "50-100": [
+      13,
+      33
+     ],
+     "100-150": [
+      0,
+      22
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      28,
+      28
+     ],
+     "50-100": [
+      14,
+      34
+     ],
+     "100-150": [
+      0,
+      22
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    }
+   },
+   "legacy_only_hits": 0,
+   "anchored_only_hits": 1,
+   "max_axis_delta_m": 4.87,
+   "median_axis_delta_m": 0.15
+  },
+  {
+   "file0": "new_data_160_0000.npy",
+   "kind": "person",
+   "frames": 83,
+   "first_m": {
+    "legacy": 83.95759646823498,
+    "anchored": 79.88677007738656
+   },
+   "visible": {
+    "legacy": 55,
+    "anchored": 54
+   },
+   "visible_hits": {
+    "legacy": 37,
+    "anchored": 38
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      18,
+      23
+     ],
+     "50-100": [
+      19,
+      26
+     ],
+     "100-150": [
+      0,
+      6
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      21,
+      23
+     ],
+     "50-100": [
+      17,
+      27
+     ],
+     "100-150": [
+      0,
+      4
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    }
+   },
+   "legacy_only_hits": 2,
+   "anchored_only_hits": 3,
+   "max_axis_delta_m": 5.87,
+   "median_axis_delta_m": 0.11
+  },
+  {
+   "file0": "new_data_160_0000.npy",
+   "kind": "box1.0",
+   "frames": 83,
+   "first_m": {
+    "legacy": 76.54701219984511,
+    "anchored": 83.53731501745668
+   },
+   "visible": {
+    "legacy": 59,
+    "anchored": 61
+   },
+   "visible_hits": {
+    "legacy": 38,
+    "anchored": 42
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      23,
+      23
+     ],
+     "50-100": [
+      15,
+      26
+     ],
+     "100-150": [
+      0,
+      10
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      23,
+      23
+     ],
+     "50-100": [
+      19,
+      28
+     ],
+     "100-150": [
+      0,
+      8
+     ],
+     "150-200": [
+      0,
+      2
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    }
+   },
+   "legacy_only_hits": 0,
+   "anchored_only_hits": 4,
+   "max_axis_delta_m": 5.91,
+   "median_axis_delta_m": 0.12
+  },
+  {
+   "file0": "new_data_164_0000.npy",
+   "kind": "person",
+   "skipped": {
+    "legacy": null,
+    "anchored": "motion step 24.5 m has no reliable near-track overlap"
+   }
+  },
+  {
+   "file0": "new_data_164_0000.npy",
+   "kind": "box1.0",
+   "skipped": {
+    "legacy": null,
+    "anchored": "motion step 24.5 m has no reliable near-track overlap"
+   }
+  },
+  {
+   "file0": "new_data_175_0000.npy",
+   "kind": "person",
+   "frames": 92,
+   "first_m": {
+    "legacy": 80.96191732340253,
+    "anchored": 68.85499313149167
+   },
+   "visible": {
+    "legacy": 53,
+    "anchored": 53
+   },
+   "visible_hits": {
+    "legacy": 45,
+    "anchored": 37
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      26,
+      26
+     ],
+     "50-100": [
+      19,
+      26
+     ],
+     "100-150": [
+      0,
+      1
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      25,
+      26
+     ],
+     "50-100": [
+      12,
+      26
+     ],
+     "100-150": [
+      0,
+      0
+     ],
+     "150-200": [
+      0,
+      1
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    }
+   },
+   "legacy_only_hits": 8,
+   "anchored_only_hits": 0,
+   "max_axis_delta_m": 11.27,
+   "median_axis_delta_m": 0.1
+  },
+  {
+   "file0": "new_data_175_0000.npy",
+   "kind": "box1.0",
+   "frames": 92,
+   "first_m": {
+    "legacy": 77.63679109716517,
+    "anchored": 77.05437280366468
+   },
+   "visible": {
+    "legacy": 61,
+    "anchored": 60
+   },
+   "visible_hits": {
+    "legacy": 43,
+    "anchored": 43
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      26,
+      26
+     ],
+     "50-100": [
+      17,
+      30
+     ],
+     "100-150": [
+      0,
+      2
+     ],
+     "150-200": [
+      0,
+      3
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      26,
+      26
+     ],
+     "50-100": [
+      17,
+      30
+     ],
+     "100-150": [
+      0,
+      4
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    }
+   },
+   "legacy_only_hits": 0,
+   "anchored_only_hits": 0,
+   "max_axis_delta_m": 11.34,
+   "median_axis_delta_m": 0.1
+  },
+  {
+   "file0": "new_data_177_0000.npy",
+   "kind": "person",
+   "frames": 96,
+   "first_m": {
+    "legacy": 88.90665090799759,
+    "anchored": 88.08253657927574
+   },
+   "visible": {
+    "legacy": 59,
+    "anchored": 61
+   },
+   "visible_hits": {
+    "legacy": 51,
+    "anchored": 51
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      26,
+      26
+     ],
+     "50-100": [
+      25,
+      31
+     ],
+     "100-150": [
+      0,
+      2
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      26,
+      26
+     ],
+     "50-100": [
+      25,
+      32
+     ],
+     "100-150": [
+      0,
+      2
+     ],
+     "150-200": [
+      0,
+      1
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    }
+   },
+   "legacy_only_hits": 0,
+   "anchored_only_hits": 0,
+   "max_axis_delta_m": 1.58,
+   "median_axis_delta_m": 0.12
+  },
+  {
+   "file0": "new_data_177_0000.npy",
+   "kind": "box1.0",
+   "frames": 96,
+   "first_m": {
+    "legacy": 88.90665090799759,
+    "anchored": 88.03594920976009
+   },
+   "visible": {
+    "legacy": 58,
+    "anchored": 59
+   },
+   "visible_hits": {
+    "legacy": 51,
+    "anchored": 51
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      26,
+      26
+     ],
+     "50-100": [
+      25,
+      30
+     ],
+     "100-150": [
+      0,
+      2
+     ],
+     "150-200": [
+      0,
+      0
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      26,
+      26
+     ],
+     "50-100": [
+      25,
+      31
+     ],
+     "100-150": [
+      0,
+      1
+     ],
+     "150-200": [
+      0,
+      1
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    }
+   },
+   "legacy_only_hits": 0,
+   "anchored_only_hits": 0,
+   "max_axis_delta_m": 1.57,
+   "median_axis_delta_m": 0.12
+  }
+ ]
+}

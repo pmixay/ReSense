@@ -339,6 +339,20 @@ def test_label_tool_exports_inject_shaped_gt(tiny_run, tmp_path):
         page.select_option("select[data-f=kind]", "person")
         page.fill("input[data-f=label]", "person_real")
         page.dispatch_event("input[data-f=label]", "change")
+        page.fill("input[data-f=lateral]", "1.30")
+        page.dispatch_event("input[data-f=lateral]", "change")
+        assert page.is_checked("input[data-f=in_gauge]") is True  # 1.30 - 0.25 = 1.05
+        page.fill("input[data-f=lateral]", "1.31")
+        page.dispatch_event("input[data-f=lateral]", "change")
+        assert page.is_checked("input[data-f=in_gauge]") is False
+        page.select_option("select[data-f=kind]", "plank")
+        page.fill("input[data-f=lateral]", "2.0")
+        page.dispatch_event("input[data-f=lateral]", "change")
+        assert page.is_checked("input[data-f=in_gauge]") is False
+        page.fill("input[data-f=yaw_deg]", "90")
+        page.dispatch_event("input[data-f=yaw_deg]", "change")
+        assert page.is_checked("input[data-f=in_gauge]") is True  # rotated 2 m plank crosses the edge
+        page.select_option("select[data-f=kind]", "person")
         page.fill("input[data-f=lateral]", "-2.5")           # outside the gauge -> in_gauge auto-unchecks
         page.dispatch_event("input[data-f=lateral]", "change")
         assert page.is_checked("input[data-f=in_gauge]") is False

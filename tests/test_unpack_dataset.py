@@ -23,12 +23,12 @@ SPEC.loader.exec_module(unpack)
     ("doubleT_obstacle", {"for_hackathon/doubleT_obstacle/metadata.yaml"}),
 ])
 def test_selective_unpack_of_both_archive_layouts(monkeypatch, tmp_path, selection, expected):
-    members = ("new_data/new_data_127.db3", "new_data/new_data_128.db3", "new_data/metadata.yaml",
+    members = ("./new_data/new_data_127.db3", "./new_data/new_data_128.db3", "./new_data/metadata.yaml",
                "for_hackathon/doubleT_obstacle/metadata.yaml", "for_hackathon/roundT_doubleT/metadata.yaml")
     buf = io.BytesIO()
     with tarfile.open(fileobj=buf, mode="w") as tar:
         for name in members:
-            payload = name.encode()
+            payload = name.removeprefix("./").encode()
             info = tarfile.TarInfo(name)
             info.size = len(payload)
             tar.addfile(info, io.BytesIO(payload))

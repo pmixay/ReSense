@@ -428,8 +428,9 @@ def format_summary(s: dict) -> str:
     """Human-readable block for ``resense summarize`` / ``resense eval``."""
     def f(v, fmt="{:.2f}"):
         return "n/a" if v is None else fmt.format(v)
+    unknown_gt = s.get("gt_status") == "unlabelled"
     lines = [
-        f"frames            : {s['frames']} (empty: {s['empty_frames']})" +
+        f"frames            : {s['frames']} (empty: {s['empty_frames'] if not unknown_gt else 'unknown'})" +
         (f", every {s['frame_stride']}th bag frame" if (s.get("frame_stride") or 1) > 1 else ""),
         f"alarm frames      : {s['alarm_frames']}   alarm events (distinct confirmed ids): {s['alarm_events']}",
         f"advisory frames   : {s['advisory_frames']} ({f(s['advisory_frame_rate'], '{:.1%}')} of frames)",
@@ -437,8 +438,9 @@ def format_summary(s: dict) -> str:
         f"latency total ms  : mean {f(s['latency_ms_mean'], '{:.1f}')} / p95 {f(s['latency_ms_p95'], '{:.1f}')} / max {f(s['latency_ms_max'], '{:.1f}')}",
         f"bag time span     : {f(s['bag_time_s'], '{:.1f}')} s" +
         (f", travelled {s['distance_km']:.3f} km" if s.get("distance_km") is not None else ""),
-        f"false alarms      : {s['fp_frames']} frames, {s['fp_events']} events, "
-        f"{f(s['fp_events_per_hour'], '{:.1f}')} events/hour, {f(s['fp_events_per_km'], '{:.2f}')} events/km",
+        ("false alarms      : unknown (ground truth is unlabelled)" if unknown_gt else
+         f"false alarms      : {s['fp_frames']} frames, {s['fp_events']} events, "
+         f"{f(s['fp_events_per_hour'], '{:.1f}')} events/hour, {f(s['fp_events_per_km'], '{:.2f}')} events/km"),
     ]
     if s.get("first_alarm_frame") is not None:
         lines.append(f"first alarm frame : {s['first_alarm_frame']}")

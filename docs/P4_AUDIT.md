@@ -12,7 +12,7 @@ from this six-bag rerun.
 | P4 criterion | Finding | Correction | What has been verified |
 |---|---|---|---|
 | Set S placement | `place_on_bed` existed but `resense inject` never called it. Ground objects were placed at rail head − 0.15 m even where the real bed was lower, and the far model could place them under the bed. | Injection now defaults to the local bed or rail head − 0.25 m plus measured vault drift and stores `base_z` in `gt.json`. `--placement legacy` reproduces the old height under the new paired-run RNG protocol. | Synthetic bed/vault cases and paired runs on 108 frames of three real empty bags: 22/67 visible in-gauge hits with bed placement versus 29/68 with legacy height. Corrected placement lowers the apparent recall; see below. |
-| Set F independence (SCORECARD A5) | The object's Y position was recomputed from the detector's own far axis every frame, reducing the apparent cost of axis errors on curves and near the envelope edge. Missing or invalid timestamps also silently fell back to a 0.1-second motion step. | `scripts/far_range_eval.py --placement-mode anchored`: a rail-supported track fit when the object is within 30 m defines its location; near track fits in consecutive empty frames transport that location back through the sequence. `--placement-mode legacy` reproduces the old placement. Recording gaps over 5 m, missing near references, and missing or invalid timestamps are reported as skipped. `--placement-mode independent` also remains available for externally surveyed fixed references. | A known rigid transform, a deliberately wrong far axis, gap and timestamp rejection, and an end-to-end cached synthetic sequence. Anchoring still uses estimated speed and near-track registration; it is an axis-bias sensitivity check, not surveyed ground truth. No full organizer-data paired run yet. |
+| Set F independence (SCORECARD A5) | The object's Y position was recomputed from the detector's own far axis every frame, reducing the apparent cost of axis errors on curves and near the envelope edge. Missing or invalid timestamps also silently fell back to a 0.1-second motion step. | `scripts/far_range_eval.py --placement-mode anchored`: a rail-supported track fit when the object is within 30 m defines its location; near track fits in consecutive empty frames transport that location back through the sequence. `--placement-mode legacy` reproduces the old placement. Recording gaps over 5 m, missing near references, and missing or invalid timestamps are reported as skipped. `--placement-mode independent` also remains available for externally surveyed fixed references. | Known rigid-transform and wrong far-axis regressions, then a paired run on seven organizer sequences: one skip due to a 24.5 m recording gap; see below. Anchoring uses estimated speed and near-track registration, not surveyed ground truth. |
 | Set S / sequence evaluation | `resense eval` carried tracker state from one unrelated injected background or approach sequence into the next. | The tracker resets at each injected `seq` boundary. | A two-sequence injected run shows no alarm on either sequence's first frame. |
 | False-alarm events | Tracker IDs restart at a sequence boundary, but the evaluator counted raw IDs globally. A false event in one sequence could disappear if the same ID matched ground truth in another. | Event identity is `(sequence, track ID)`; `eval --out` includes `seq` so `summarize` reproduces the count. | An ID-reuse regression and the JSONL round trip. |
 | Sequence time/distance | Synthetic approach sequences are independent, but the evaluator integrated timestamp gaps between them as travelled time and kilometres, producing spurious rate denominators. | For scoped `seq` rows, only within-sequence elapsed time and distance are accumulated. Continuous real bags retain their original span accounting. | A two-sequence regression with a 9.9 s inter-sequence gap and a missing-stamp case. |
@@ -71,7 +71,7 @@ capability claim. The 0.5 m boxes in this seed fell in sparse/poor-visibility sc
 generalise the 0/13 result to every box. Static set S repeats one frame to satisfy the
 five-hit rule; its false-event rates and wall-clock latency are not operational metrics.
 
-On the only extended-ride cache slice currently available (51 frames from split file 30), a
+An initial extended-ride smoke test (51 frames from split file 30) with a
 paired **near-range smoke test** with `--files 30 --start 40 --frames 45 --kinds
 person,box1.0 --lateral=0:0 --seed 1 --jobs 1` and `--placement-mode legacy` / `anchored`
 completed without skips. Each mode saw 31/35 visible hits for both synthetic objects, first
@@ -81,12 +81,15 @@ versus four unmatched detections under legacy versus anchored placement. These c
 synthetic positives on a single short approach **below 40 m**, not long-range recall, and
 cannot replace the extended curve and gauge-edge comparison below.
 
-## Extended-ride re-evaluation required before updating range claims
+## Paired extended-ride range audit (24.09, selected curve and edge scenes)
 
-With the organizer bags cached as described in [`DATASET.md`](DATASET.md), run the same seed
-and configuration on both axis modes, and count skipped sequences. A missing near reference
-must not be silently replaced by the current frame axis. In particular, repeat the curve,
-envelope-edge and station sets, where the old placement could help most:
+The organizer archive (SHA-256 in [`DATASET.md`](DATASET.md)) was downloaded and verified.
+Selected contiguous full-rate split files 127–135, 160–168 and 175–181 were cached with real
+receive timestamps. Both modes used the **same seed, config, sampled lateral/reflectivity and
+frame selection**; `scripts/compare_setf.py` checks these and excludes a skipped trajectory
+from *both* denominators. The raw configurations, per-frame truth, visibility and detection
+rows are reproducible with the commands below; the compact per-sequence report, config and
+timestamp hashes are committed in [`experiments_p4_setf_paired.json`](experiments_p4_setf_paired.json).
 
 ```bash
 python scripts/far_range_eval.py --cache /data/cache/new_data --files 127,129,131,160,164,175,177 \
@@ -95,7 +98,51 @@ python scripts/far_range_eval.py --cache /data/cache/new_data --files 127,129,13
 python scripts/far_range_eval.py --cache /data/cache/new_data --files 127,129,131,160,164,175,177 \
   --kinds person,box1.0 --start 160 --frames 220 --lateral=-1.0:1.0 --seed 0 \
   --placement-mode anchored --out out/setf-anchored.json
+python scripts/compare_setf.py out/setf-frame.json out/setf-anchored.json --out out/setf-paired.json
 ```
+
+| Synthetic object | Paired approaches / skips | Legacy visible hits / returns | Anchored visible hits / returns | First confirmed, legacy → anchored (paired medians) |
+|---|---:|---:|---:|---:|
+| Person | 6 / 1 | 224/495 | 214/476 | 73.7 → 67.5 m |
+| Box 1.0 m | 6 / 1 | 266/492 | 274/484 | 74.7 → 79.6 m |
+
+In the 50–100 m visible bin, the person matched 82/199 (legacy) versus 69/204 (anchored),
+and the box matched 98/202 versus 106/208. These are per-frame synthetic hits, not
+independent physical objects or operating recall; the same six approaches per kind contribute
+to both columns.
+
+The recording gap in file 164 implies a **24.5 m motion step**: anchored placement skipped
+both objects there, and the paired summary excludes that file's legacy result too. All six
+paired approaches in each class have a first confirmed hit, but **neither mode matched any
+visible object at 100–150 m** in these particular curve/edge samples (legacy person 0/116,
+box 0/116; anchored person 0/102, box 0/103). The 50–100 m visible denominators and placement
+geometry also differ between modes. The largest per-frame Y difference is 17.1 m on the curve
+starting at file 127; even the earlier 110 m edge run at file 133 moved the person first hit
+from 85.1 m (legacy) to 51.9 m (anchored). Differences are **sensitivity to assumed object
+placement**, not independent surveyed recall. Near-rail fits and per-file speed estimates can
+accumulate lateral error over a moving curve; no physical survey or real long-range positive
+validates either trajectory. These selected scenes cannot support the historical 148 m median
+person claim for the *current* code. The published set F numbers were produced on older code,
+config and sampling and should only be quoted as dated self-referential results.
+
+`far_range_eval.py` now stops at a missing split/frame rather than jumping to an unrelated
+piece of the ride; in anchored mode it rejects missing stamps or a near reference. A
+zero-return object cannot be marked a hit by an unrelated background detection.
+
+## New unlabelled positive bag
+
+The public organizer folder also now includes `cloud_with_fake_obj.zst`. Its checksum, bag
+layout and absent labels are recorded in [`DATASET.md`](DATASET.md). A full-rate offline run
+on all **1,510 frames** reported 342 alarm frames, 9 alarm track IDs and 459 advisory frames;
+the summary is [`experiments_p4_fake_unlabelled.json`](experiments_p4_fake_unlabelled.json).
+The object injection manifest/ground truth was **not supplied**, so those nine tracks cannot
+be divided into true and false events or attributed to particular obstacle classes. The
+new `resense summarize --unlabelled` option reports false-alarm fields as `null` rather than
+incorrectly treating every positive-bag alarm as false. P1 should request the organizers'
+per-frame synthetic object positions (vehicle coordinates, dimensions, labels and visibility)
+to allow independent recall-by-range scoring; the test stand does not block this P4 request.
+
+## Original-bag reproduction recipe
 
 The original-bag paired run above used this recipe (repeat for the three named empty bags);
 the new `gt.json` records both the placement and RNG protocol:
@@ -114,9 +161,9 @@ python scripts/eval_real.py --cache /data/cache --out out/p4-real --bags \
 ```
 
 The published range numbers in the README and EXPERIMENTS §2d use the old set F placement;
-until these paired runs exist, treat them as results of a self-referential synthetic test,
-not as independently anchored detection range. The original-bag rerun above shows that the
-P4 accounting changes did not alter the published real-object or empty-bag counts.
+the paired sensitivity check above changes their interpretation, but cannot replace them with
+surveyed long-range detection range. The original-bag rerun shows that the P4 accounting
+changes did not alter the published real-object or empty-bag counts.
 
 Initial audit verification on `a81108f`: 166 dataset-free Python tests, Ruff and the
 parameter-sync check passed. Integration checks on current `main` are recorded separately.

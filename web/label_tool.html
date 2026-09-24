@@ -60,7 +60,7 @@
         <thead><tr><th>#</th><th>kind</th><th>label</th><th>distance m</th><th>lateral m (+left)</th><th>L</th><th>W</th><th>H</th><th>yaw °</th><th>refl.</th><th>in gauge</th><th>n_points</th><th></th></tr></thead>
         <tbody id="obs-body"></tbody>
       </table>
-      <div class="hint">Same shape as <code>resense inject</code> writes: <code>{"&lt;frame&gt;": [{"kind","size":[L,W,H],"distance","lateral","yaw_deg","reflectivity","label","in_gauge","n_points"}]}</code>. <code>distance</code> = m along the track to the nearest face, <code>lateral</code> = m from the track axis (+ left); <code>in_gauge</code> defaults to |lateral| &lt; 1.3 m; <code>n_points</code> = 1 means "visible, count unknown" (<code>resense eval</code> skips entries with 0 as occluded).</div>
+      <div class="hint">Same shape as <code>resense inject</code> writes: <code>{"&lt;frame&gt;": [{"kind","size":[L,W,H],"distance","lateral","yaw_deg","reflectivity","label","in_gauge","n_points"}]}</code>. <code>distance</code> = m along the track to the nearest face, <code>lateral</code> = m from the track axis (+ left); <code>in_gauge</code> defaults to horizontal footprint overlap with the strict 1.05 m half-width. Check height and override the checkbox manually when needed. Detector-prefilled boxes are suggestions, not independent ground truth: review the original cloud before saving. <code>n_points</code> = 1 means "visible, count unknown" (<code>resense eval</code> skips entries with 0 as occluded).</div>
     </div>
     <div class="card"><h3>top-down: detector output (red / orange) and labels (cyan)</h3><canvas id="top" width="1200" height="360"></canvas></div>
   </div>
@@ -69,7 +69,7 @@
 'use strict';
 const $ = id => document.getElementById(id);
 const KINDS = ['person', 'box', 'plank', 'cylinder', 'sphere', 'trolley', 'other'];
-const SIZES = { person: [0.4, 0.5, 1.7], box: [0.5, 0.5, 0.5], plank: [2.0, 0.25, 0.30], cylinder: [0.4, 0.4, 0.9], sphere: [0.4, 0.4, 0.4], trolley: [1.2, 0.8, 1.0], other: [0.5, 0.5, 0.5] };
+const SIZES = { person: [0.4, 0.5, 1.7], box: [0.5, 0.5, 0.5], plank: [2.0, 0.25, 0.30], cylinder: [0.4, 0.4, 0.9], sphere: [0.4, 0.4, 0.4], trolley: [0.6, 0.6, 1.0], other: [0.5, 0.5, 0.5] };
 const keyOf = i => String(i).padStart(5, '0');
 const state = { results: {}, labels: {}, checked: {}, current: null, source: '' };  // results: key -> FrameResult; labels: key -> [obstacle]
 
@@ -97,6 +97,14 @@ function select(k) { state.current = k; renderFrames(); renderObstacles(); draw(
 function newObstacle(kind, extra) {
   kind = kind || 'person'; const s = SIZES[kind] || SIZES.other;
   return Object.assign({ kind, size: [...s], distance: 50.0, lateral: 0.0, yaw_deg: 0.0, reflectivity: 40.0, label: kind, in_gauge: true, n_points: 1 }, extra || {});
+}
+function overlapsGauge(o) {
+  const [length, width] = o.size;
+  const angle = o.yaw_deg * Math.PI / 180;
+  const extent = o.kind === 'box' || o.kind === 'plank'
+    ? (Math.abs(Math.sin(angle)) * length + Math.abs(Math.cos(angle)) * width) / 2
+    : width / 2;
+  return Math.abs(o.lateral) - extent <= 1.05;
 }
 function renderObstacles() {
   const k = state.current, body = $('obs-body'); body.innerHTML = '';
@@ -127,13 +135,13 @@ function renderObstacles() {
 }
 function onEdit(ev) {
   const el = ev.target, o = state.labels[state.current][+el.dataset.i], f = el.dataset.f;
-  if (f === 'kind') { o.kind = el.value; if (SIZES[o.kind]) o.size = [...SIZES[o.kind]]; if (!o.label || KINDS.includes(o.label)) o.label = o.kind; renderObstacles(); }
+  if (f === 'kind') { o.kind = el.value; if (SIZES[o.kind]) o.size = [...SIZES[o.kind]]; if (!o.label || KINDS.includes(o.label)) o.label = o.kind; o.in_gauge = overlapsGauge(o); renderObstacles(); }
   else if (f === 'label') o.label = el.value;
   else if (f === 'in_gauge') o.in_gauge = el.checked;
-  else if (f.startsWith('size')) o.size[+f[4]] = +el.value;
+  else if (f.startsWith('size')) { o.size[+f[4]] = +el.value; o.in_gauge = overlapsGauge(o); renderObstacles(); }
   else if (f === 'n_points') o.n_points = Math.round(+el.value);
   else o[f] = +el.value;
-  if (f === 'lateral') { o.in_gauge = Math.abs(o.lateral) < 1.3; renderObstacles(); }
+  if (f === 'lateral' || f === 'yaw_deg') { o.in_gauge = overlapsGauge(o); renderObstacles(); }
   draw();
 }
 function draw() {

@@ -14,6 +14,11 @@ unpacked directory is an ordinary bag (`resense info /data/new_data`, `ros2 bag 
 /data/new_data`), and a single split file opens on its own with `resense run --bag
 <file>.db3` (the `rosbags` reader does not need the metadata file).
 
+**Additional organizer recording (24.09):** the same public folder now also contains
+`cloud_with_fake_obj.zst`, a separate 1.75 GB archive with a 151-second, 1,510-frame bag
+containing simulated objects; see ["Fake-object recording"](#fake-object-recording-unlabelled).
+It must not be confused with the empty 20-minute `new_data` ride.
+
 Source: `Датасет.zip` (3.7 GB) → `датасет.zip` → `archive/for_hackathon.zst` (tar, zstd).
 Unpack: `tar --zstd -xvf for_hackathon.zst` (or `python -c "import zstandard,tarfile..."` if
 `zstd` is missing). Six ROS 2 bags (sqlite3 storage, `metadata.yaml` + `*_0.db3`), one topic.
@@ -44,6 +49,34 @@ alarm.
 The organizers confirmed that the extended `new_data` recording has no obstacles. Positive
 examples at other ranges and for other objects therefore come from `resense inject` (synthetic
 obstacles ray-cast into real frames, see ARCHITECTURE.md and "Set S" below).
+
+## Fake-object recording (unlabelled)
+
+The organizers' public folder added `cloud_with_fake_obj.zst` on 24.09. Its SHA-256 is
+`d41c2fb28475194a98efeca5d2ee3fd175c0aef350ffb92fff4c26d497e696e9` (1,746,145,824
+bytes); the archive holds `cloud_with_fake_obj/metadata.yaml` and one 7.42 GB
+`cloud_with_fake_obj_0.db3`. The bag has 1,510 PointCloud2 messages on `/lidar_points`, frame
+`hesai_lidar`, spanning 150.851 s. Unlike the original bags, its cloud fields contain
+`x,y,z,intensity` **without a ring field**; the reader fills a zero ring for the compact format.
+
+```bash
+python scripts/unpack_dataset.py cloud_with_fake_obj.zst --out /data
+resense run --bag /data/cloud_with_fake_obj --out out/fake-object.jsonl --quiet
+resense summarize out/fake-object.jsonl --unlabelled --json
+```
+
+The archive supplies no object manifest, injection geometry, visibility annotations or
+`gt.json`. Therefore **alarm frames and events are observable**, but true-positive recall,
+false-positive rate, object class and first-confirmed detection *of the synthetic object*
+are **unknown**. Do not use a plain unlabelled `summarize` call: it assumes every frame is
+empty, incorrectly marking all alarms as false. Ask the organizers for the synthetic-object
+manifest (object type, size, coordinate frame, per-frame location and visibility). Until
+then this bag is an unlabelled integration stress test, not independently scored positive data.
+A full-rate run of the shipped detector reported 342 alarm frames / 9 confirmed track IDs
+and 459 advisory frames; see
+[`experiments_p4_fake_unlabelled.json`](experiments_p4_fake_unlabelled.json). Those are counts
+of *outputs*, not true-positive or false-positive counts. Timing on the shared workstation
+is not a stand benchmark.
 
 ## Extended dataset: `new_data` (recorded 17.09, streamed and run on 22.09)
 

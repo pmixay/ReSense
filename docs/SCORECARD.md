@@ -163,9 +163,12 @@ open questions ([`QUESTIONS.md`](QUESTIONS.md)). The owner merges the branch to 
 4. **Set F with independent placement** (A5): `--placement-mode legacy` remains the default
    for reproducing the historical frame-axis method; `--placement-mode anchored` uses a near
    rail reference, while `--placement-mode independent` takes an externally surveyed axis.
-   A 51-frame near-range smoke run succeeded, but the curve and edge sets still need a paired
-   run on the extended cache. The near reference uses estimated speed and track registration,
-   so it is not surveyed ground truth ([`P4_AUDIT.md`](P4_AUDIT.md)).
+   The paired selected curve/edge run is complete: six usable approaches per kind and one
+   recording-gap skip; no visible synthetic person or box was matched in the 100–150 m bin
+   in either mode. The near reference uses estimated speed and track registration, so it is
+   not surveyed ground truth ([`P4_AUDIT.md`](P4_AUDIT.md)). The organizers' new fake-object
+   recording has no injection manifest: P4 can process it, but cannot score true/false events
+   independently until the organizer supplies labels.
 5. **Start-frame robustness of the low stage.** The trackside device at ~50 m in `roundT_doubleT`
    is confirmed from some start frames: its low and corridor hits are chained into one track.
    Look at the association between the two stages. Half a day.

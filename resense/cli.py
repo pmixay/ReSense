@@ -305,6 +305,12 @@ def _summarize_file(path: str, args, cfg, gt) -> dict:
         n_occluded += sum(1 for r in rows if r.get("n_points", 1) == 0)
         ev.add_frame(d, gt_objects(rows), speed_mps=args.speed_mps)
     out = ev.summary()
+    if args.unlabelled:
+        # Without GT an unknown-positive bag cannot establish false-alarm counts.
+        for key in ("empty_frames", "fp_frames", "fp_frame_rate", "fp_detections",
+                    "fp_events", "fp_events_per_hour", "fp_events_per_km"):
+            out[key] = None
+        out["gt_status"] = "unlabelled"
     out["occluded_gt_skipped"] = n_occluded
     out["unparsed_lines"] = len(unparsed)
     out["file"] = path
@@ -321,6 +327,8 @@ def cmd_summarize(args):
     files = list(args.results or []) + list(args.compare or [])
     if not files:
         raise SystemExit("resense summarize: give at least one JSONL file (or --compare a.jsonl b.jsonl)")
+    if args.unlabelled and (args.gt or args.labelled_only):
+        raise SystemExit("resense summarize --unlabelled cannot be used with --gt or --labelled-only")
     cfg = _cfg(args)
     gt = load_gt(args.gt) if args.gt else None
     outs = [_summarize_file(f, args, cfg, gt) for f in files]
@@ -442,6 +450,7 @@ def run_cli(argv=None):
     sp.add_argument("--speed-mps", type=float, default=None, help="constant train speed (m/s) for events per km; "
                     "a per-frame ego_speed_mps key in the JSON is used otherwise")
     sp.add_argument("--gt", default=None, help="gt.json with labels keyed by 5-digit bag frame index (docs/DATASET.md)")
+    sp.add_argument("--unlabelled", action="store_true", help="ground truth unknown: show alarms but mark all false-alarm rates and empty frames n/a")
     sp.add_argument("--labelled-only", action="store_true", help="with --gt: count only frames that have a gt.json entry")
     sp.add_argument("--config", default=None, help="YAML config (for tracking.confirm_hits / frame_dt in the caveat)")
     sp.add_argument("--json", action="store_true", help="print the full summary as JSON")

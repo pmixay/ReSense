@@ -23,6 +23,8 @@ Implemented in `resense/metrics.py` (`Evaluation.summary()` keys in brackets) an
 `resense summarize --compare before.jsonl after.jsonl` prints the before/after table of two
 runs (frames, alarm frames, events, advisory frames, first alarm frame, alarm distance range,
 latency, FP frames / events, recall, frames merged) with a delta column.
+On an unlabelled recording that may contain obstacles, use `resense summarize ... --unlabelled`:
+it leaves FP counts and rates unknown (`null`) rather than assuming every frame is clear.
 
 | metric | definition | reported as |
 |---|---|---|

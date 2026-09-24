@@ -147,6 +147,21 @@ def test_missing_timestamp_does_not_bridge_continuous_distance():
     assert ev.summary()["distance_km"] == pytest.approx(0.001)
 
 
+def test_unlabelled_positive_bag_does_not_claim_false_alarms(tmp_path, capsys):
+    path = tmp_path / "unknown.jsonl"
+    path.write_text(json.dumps(status(frame=0, stamp=0.0, dets=[det(1, 50.0)])) + "\n")
+    s = run_cli(["summarize", str(path), "--unlabelled", "--json"])
+    assert s["alarm_frames"] == 1 and s["alarm_events"] == 1
+    assert s["gt_status"] == "unlabelled"
+    assert all(s[k] is None for k in ("empty_frames", "fp_frames", "fp_events",
+                                      "fp_events_per_hour", "fp_events_per_km", "fp_detections"))
+    capsys.readouterr()
+    run_cli(["summarize", str(path), "--unlabelled"])
+    assert "ground truth is unlabelled" in capsys.readouterr().out
+    with pytest.raises(SystemExit, match="cannot be used with --gt"):
+        run_cli(["summarize", str(path), "--unlabelled", "--gt", str(tmp_path / "gt.json")])
+
+
 def test_distance_error_first_alarm_and_speed_sources():
     """Additive summary keys: errors of matched detections, the first alarm frame, the
     ego_speed_source counts and the mean number of merged frames."""

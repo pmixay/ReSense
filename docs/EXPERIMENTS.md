@@ -72,7 +72,17 @@ v0.6.3 empty-bag and real-obstacle counts. Paired set S on 108 real empty backgr
 22/67 visible in-gauge hits with the corrected bed height versus 29/68 with the old, higher
 placement; those are small synthetic samples, not operational recall. All set F range numbers
 below were measured with the older frame-axis placement, which favours objects on curves and
-at the envelope edge; they have **not** yet been re-measured with near-anchored placement.
+at the envelope edge. Those older results cannot be compared to new code without a paired rerun.
+**Update 24.09:** the selected extended-ride curve/edge pairs have now been re-measured
+([`P4_AUDIT.md`](P4_AUDIT.md),
+[`experiments_p4_setf_paired.json`](experiments_p4_setf_paired.json)); on six valid approaches
+per kind, the current code matched no visible person or 1 m box in the 100–150 m bin in either
+mode. One more sequence was excluded after a recording gap. This is a placement-bias sensitivity
+test on synthetic positives, not surveyed long-range recall; it does not supersede the dated
+historical figures below with a new positive capability claim. The new organizer fake-object
+bag was processed on all 1,510 frames, but shipped no ground truth: 342 alarm frames / 9 tracks
+are *unclassified*, not 342 true hits or 9 false events
+([`experiments_p4_fake_unlabelled.json`](experiments_p4_fake_unlabelled.json)).
 The integration rerun on `4cd32d6` (24.09) again found 107 alarm frames / 20 events on the
 five empty bags and 185/246 labelled obstacle-frames on `doubleT_obstacle` (first alarm 11).
 One paired 35-frame, <40 m approach on a short cached ride slice produced the same 31/35

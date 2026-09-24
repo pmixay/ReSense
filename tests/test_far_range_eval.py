@@ -20,12 +20,23 @@ _module = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_module)
 near_anchor_placements = _module.near_anchor_placements
 run_sequence = _module.run_sequence
+consecutive_files = _module.consecutive_files
 
 
 def model(center=0.0, slope=0.0, curvature=0.0, rail_score=0.1):
     return TrackModel(floor_coef=np.array([0.0, 0.0, -0.35]), floor_range=(4.0, 60.0),
                       center=center, yaw=np.arctan(slope), curvature=curvature,
                       rail_offset=0.35, rail_score=rail_score)
+
+
+def test_approach_does_not_jump_to_a_different_split_or_skip_a_frame():
+    files = [f"new_data_{split}_{frame:04d}.npy" for split, frame in
+             ((46, 49), (46, 50), (47, 0), (47, 1), (127, 0))]
+    assert consecutive_files(files, 0, 220) == files[:4]
+    assert consecutive_files(files, 2, 220) == files[2:4]
+    assert consecutive_files([files[0], files[2]], 0, 10) == files[:1]
+    with pytest.raises(ValueError, match="expected split frame"):
+        consecutive_files(["other_0000.npy"], 0, 10)
 
 
 def test_near_anchor_recovers_a_known_frame_transform():

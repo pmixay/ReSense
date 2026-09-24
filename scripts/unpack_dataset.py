@@ -88,7 +88,8 @@ def selected_member(name: str, only: set[str]) -> bool:
     ``new_data/new_data_<N>.db3``. Accepting the top-level directory also lets
     ``--only new_data`` select all split files as documented.
     """
-    parts = name.split("/")
+    # GNU tar commonly prefixes archive paths with "./" (as new_data.zst does).
+    parts = name.removeprefix("./").split("/")
     return not only or parts[0] in only or (len(parts) > 1 and parts[1] in only)
 
 

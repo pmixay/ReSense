@@ -81,10 +81,13 @@ sensor: no return in any of the 13 759 frames lies beyond 210 m (every recording
 pitched) are recovered from the rails and the bed: orientation found and tilt within 0.5° on
 re-mounted real frames of three recordings (§6). Clean timing: 42–64 ms mean, p95 53–78 ms per
 frame on every recording (4-core sandbox, pure Python, §3; the node adds ~20–25 ms at 360°).
-The long-range figures above are from the earlier synthetic set F, which placed each object
-using that frame's estimated axis; this can flatter curve and envelope-edge results. The P4
-audit added near-anchored placement, but its results still need to be measured on the organizer
-cache before replacing those figures ([`docs/P4_AUDIT.md`](docs/P4_AUDIT.md)).
+The long-range figures above are from an earlier synthetic set F, which placed each object
+using that frame's estimated axis; this can flatter curve and envelope-edge results. A P4
+paired rerun on seven organizer curve/edge scenes with the current code found **0 matches
+beyond 100 m** in the six usable sequences of either mode and skipped one sequence after a
+recording gap. Near anchoring used the real ride's rail fits and estimated speed, **not surveyed
+ground truth**, so neither result establishes real-positive long-range recall. See
+[`docs/P4_AUDIT.md`](docs/P4_AUDIT.md) and the paired counts there.
 The same audit reran set S on 108 real empty backgrounds: corrected bed placement matched
 22/67 visible in-gauge synthetic objects, versus 29/68 with the old, higher placement.
 Those small samples are not an operational recall estimate.

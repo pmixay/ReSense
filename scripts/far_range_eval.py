@@ -45,6 +45,7 @@ import hashlib
 import glob
 import json
 import os
+import re
 import sys
 import time
 from concurrent.futures import ProcessPoolExecutor
@@ -53,6 +54,27 @@ from dataclasses import replace
 import numpy as np
 
 BINS = [(0, 50), (50, 100), (100, 150), (150, 200), (200, 250)]
+SPLIT_FRAME = re.compile(r"new_data_(\d+)_(\d+)\.npy$")
+FRAMES_PER_SPLIT = 51  # organizer new_data metadata: every split has frames 0000..0050
+
+
+def consecutive_files(all_files, start, limit):
+    """Keep one continuous approach; an incomplete cache must not jump to another scene."""
+    chosen = []
+    prev = None
+    for path in all_files[start:start + limit]:
+        m = SPLIT_FRAME.fullmatch(os.path.basename(path))
+        if m is None:
+            raise ValueError(f"expected split frame new_data_<file>_<frame>.npy: {path}")
+        current = tuple(map(int, m.groups()))
+        if prev is not None:
+            within_split = prev[1] < FRAMES_PER_SPLIT - 1 and current == (prev[0], prev[1] + 1)
+            next_split = prev[1] == FRAMES_PER_SPLIT - 1 and current == (prev[0] + 1, 0)
+            if not (within_split or next_split):
+                break
+        chosen.append(path)
+        prev = current
+    return chosen
 
 
 def fixed_reference(center: float, yaw_deg: float, curvature: float, rail_z0: float,
@@ -268,7 +290,7 @@ def run_sequence(job):
         hit = False
         fps = []
         for det_ in res.detections:
-            if placement_match(det_, spec.distance, spec, tm, res.track, mode):
+            if n_pts > 0 and placement_match(det_, spec.distance, spec, tm, res.track, mode):
                 hit = True
             else:
                 fp += 1
@@ -279,7 +301,7 @@ def run_sequence(job):
                      "gt": spec.to_dict(), "gt_vehicle_y_m": float(y),
                      "axis_error_m": round(float(spec.lateral - lateral), 2),
                      "n": n_pts, "hit": hit, "fp_dets": fps,
-                     "cand": any(placement_match(c, spec.distance, spec, tm, res.track, mode)
+                     "cand": n_pts > 0 and any(placement_match(c, spec.distance, spec, tm, res.track, mode)
                                  for c in res.candidates),
                      "mon": res.health.get("monitored_range"), "vis": res.health.get("visibility")})
     return {"kind": kind, "d0": d0, "lateral": lateral, "refl": refl, "first": first, "fp": fp, "rows": rows,
@@ -355,7 +377,7 @@ def main():
         start = next((i for i, f in enumerate(allf) if os.path.basename(f).startswith(f"new_data_{fn}_")), None)
         if start is None:
             ap.error(f"no cached frames for new_data_{fn} in {a.cache}")
-        files = allf[start:start + a.frames]
+        files = consecutive_files(allf, start, a.frames)
         if not files:
             ap.error(f"no frames for new_data_{fn}")
         if a.placement_mode in ("independent", "anchored"):
