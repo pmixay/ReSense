@@ -30,13 +30,14 @@ writing). Questions 4 and 5 come from the organizers' synthetic-obstacle recordi
    синхронизированы), поэтому мы опираемся на время записи бэга и на разность штампов между
    кадрами.
 3. **Защита.** Сколько минут отводится на выступление и на демонстрацию?
-4. **Система координат габарита в синтетической проверке.** В бэге `cloud_with_fake_obj`
-   объекты поставлены от оси лидара (Y = 0), а рельсы в этой записи идут под углом 0,24° к
-   ней: на 25 м расхождение 0,1 м, на 100 м — 0,4 м. Из-за этого «0,3 м за пределами габарита,
-   но близко» по рельсам оказывается внутри габарита, а «2х2 скраю в пределах габарита» —
-   снаружи. Относительно чего задан габарит в контрольной проверке: оси лидара или оси пути
-   (рельсов)? Будут ли в контрольных данных объекты двигаться независимо от поезда, как в этом
-   бэге (подъезжают со скоростью 14–20 м/с, пока поезд стоит или сдаёт назад)?
+4. **Система координат габарита в синтетической проверке.** Вы ответили, что лидар стоит на
+   1075 мм над головкой рельса ровно посередине состава, и в бэге `cloud_with_fake_obj` объекты
+   действительно поставлены от оси лидара (Y = 0). Но рельсы в этой записи идут под углом 0,24°
+   к оси лидара: на 25 м расхождение 0,1 м, на 100 м — 0,4 м. Из-за этого «0,3 м за пределами
+   габарита, но близко» по рельсам оказывается внутри габарита, а «2х2 скраю в пределах
+   габарита» — снаружи. В контрольной проверке габарит отсчитывается от оси лидара (то есть
+   поезда) или от оси пути (рельсов)? Будут ли в контрольных данных объекты двигаться независимо
+   от поезда, как в этом бэге (подъезжают со скоростью 14–20 м/с, пока поезд стоит или сдаёт назад)?
 5. **«2х2 сверху габарита».** Низ этого объекта — на 2,4–2,9 м над головкой рельса, то есть
    он на 0,1–0,6 м заходит в габарит высотой 3,0 м. Это препятствие (должен быть STOP) или
    объект вне габарита (тревоги быть не должно)?
@@ -52,5 +53,5 @@ writing). Questions 4 and 5 come from the organizers' synthetic-obstacle recordi
 | 1 | 21.09 item 3 (the mount part is answered: variable, set in the launch parameters) | [`SENSOR.md`](SENSOR.md) §2 (dual return, defaults), `resense/sensor.py`, `resense inject`, [`DATASET.md`](DATASET.md) "Point budget" | the return mode decides how duplicate points are merged and the point budget at range; another resolution or window changes the points per object by up to 2× per axis, i.e. the long-range numbers of EXPERIMENTS.md §2d; the node already handles both layouts |
 | 2 | 21.09 item 4 | [`SENSOR.md`](SENSOR.md) §2 (clock), `resense/io.py`, `detector_node.py` "Input handling" | with synchronised per-point time an intra-frame deskew becomes possible; the node's detection of a new recording relies on jumps of `header.stamp`, which a synchronised clock would change (not break) |
 | 3 | 21.09 item 7 (the demo part is answered: remote demo acceptable, the organizers run every solution themselves) | [`PRESENTATION.md`](PRESENTATION.md), [`SUBMISSION.md`](SUBMISSION.md) | slide count and how long the live demo segment can be |
-| 4 | new, 24.09 (P4) | [`DATASET.md`](DATASET.md) "Synthetic-obstacle recording", `labels/cloud_with_fake_obj.json` (`in_gauge`), `resense/track.py` | if the envelope is taken from the LiDAR's axis, the corridor near the train should follow the sensor's Y = 0 rather than the rail fit; four of the ten test objects change sides of the edge. Objects that move independently of the train also rule out testing accumulation on their data |
+| 4 | new, 24.09 (P4); narrowed by the organizers' mount answer ([`organizers/mount_and_switch_qa.md`](organizers/mount_and_switch_qa.md): 1075 mm above the rail head, on the train's centreline, test bags mounted as ours) | [`DATASET.md`](DATASET.md) "Synthetic-obstacle recording", `labels/cloud_with_fake_obj.json` (`in_gauge`), `resense/track.py` | if the envelope is taken from the LiDAR's axis, the corridor near the train should follow the sensor's Y = 0 rather than the rail fit; four of the ten test objects change sides of the edge. Objects that move independently of the train also rule out testing accumulation on their data |
 | 5 | new, 24.09 (P4) | `labels/cloud_with_fake_obj.json` (`big_above`), P4_AUDIT "Organizer synthetic-obstacle recording" | labelled inside now; if it must not alarm, its 12 STOP frames become false alarms and the `elevated` experiment goes the wrong way |

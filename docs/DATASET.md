@@ -112,7 +112,10 @@ Three properties of the recording decide how it can be scored:
   motion is therefore not ego-motion: a given train speed or the LiDAR speed estimator would
   accumulate the background wrongly. The shipped single-frame path is what can be scored.
 * **The objects were placed from the sensor's axis, not from the rails.** Near the train the
-  objects are centred on the sensor's Y = 0. The rails of this recording, fitted directly
+  objects are centred on the sensor's Y = 0, as the organizers' mount answer suggests (the
+  LiDAR is 1075 mm above the rail head on the train's centreline,
+  [`organizers/mount_and_switch_qa.md`](organizers/mount_and_switch_qa.md); the detector measures
+  1.08 m here). The rails of this recording, fitted directly
   (0.76–0.81 m either side), run at **−0.24°** to that axis in frames 0–100, 400–500 and
   1300–1400, and the detector's axis agrees. The two frames differ by 0.1 m at 25 m and 0.4 m at
   100 m. So the edge tests (#4–#7) sit within ±0.1–0.4 m of the envelope edge, on different
