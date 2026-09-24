@@ -1,4 +1,9 @@
-# Test stand: GPU driver and CUDA software (reported 22.09)
+# Test Stand Software
+
+> **Purpose:** the GPU driver and CUDA software the organizers reported for the test stand (22.09),
+> verbatim, and what it means for ReSense.
+> **Audience:** team · **Owner:** P1 · **Language:** EN, the organizers' output verbatim
+> **Last verified:** 2026-09-24 against `537e220` · **Status:** current
 
 Hardware per the specification (§3.1): Intel Core i7-9700E (8 cores, 2.60 GHz), 128 GiB RAM,
 NVIDIA GeForce RTX 4070 Ti SUPER, Ubuntu 22.04.5 LTS, ROS 2 Humble, Docker. The software

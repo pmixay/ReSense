@@ -1,21 +1,33 @@
-# Evaluation protocol
+# Evaluation Protocol
 
-What "better" means for ReSense, written down once so that P3 optimises against it, P4
-implements it (`resense/metrics.py`, `resense eval`) and the jury's criteria (spec §8) map
-onto numbers we actually report. Results go to [`EXPERIMENTS.md`](EXPERIMENTS.md).
+> **Purpose:** what "better" means for ReSense — data sets, metrics, procedure and targets —
+> written once so that P3 optimises against it, P4 implements it (`resense/metrics.py`,
+> `resense eval`) and the jury's criteria (spec §8) map onto numbers we actually report.
+> **Audience:** team, jury · **Owner:** P1 (protocol), P4 (code) · **Language:** EN, summary RU
+> **Last verified:** 2026-09-24 against `537e220` · **Status:** current
+
+**Кратко.** Как мы измеряем качество. Наборы данных: S — наши синтетические объекты в реальных
+пустых кадрах; E — пять реальных записей без препятствий (ложные срабатывания); R — реальные
+человек и предмет на рельсе в `doubleT_obstacle`; O — синтетические объекты, добавленные
+инструментом самих организаторов; F — наши объекты, приближающиеся к поезду в 20-минутной
+поездке; H — скрытая контрольная запись. Метрики: полнота по дальности, дальность первого
+обнаружения, ложные события и кадры, задержка и FPS; что не должно ухудшаться между версиями
+(§3, шаг 6). Цели спринтов на 24.09 (§4): полнота по человеку до 100 м, ≤ 1 ложного кадра на 100
+вне платформ и p95 ≤ 100 мс офлайн выполнены; ящик 0,5 м и ложные срабатывания с платформами — нет;
+человек на 150 м — только на синтетике.
+
+Results live in [`EXPERIMENTS.md`](EXPERIMENTS.md); this file defines how they are produced.
 
 ## 1. Data sets
 
 | set | source | positives | negatives | use |
 |---|---|---|---|---|
-| **S** synthetic | `resense inject` on real empty frames of every organizer bag, every 10th frame | person 0.5×1.7 m, box 0.2 / 0.5 / 1.0 m, plank 2×0.25×0.3 m, trolley; one object per frame, uniform 10–250 m along the track | 20 % of objects placed outside the gauge (must **not** alarm) | recall by range, first-detection distance, tuning |
+| **S** synthetic | `resense inject` on real empty frames of every organizer bag, every 10th frame | person 0.5 × 1.7 m, box 0.2 / 0.5 / 1.0 m, plank 2 × 0.25 × 0.3 m, trolley; one object per frame, uniform 10–250 m along the track | 20 % of objects placed outside the gauge (must **not** alarm) | recall by range, first-detection distance, tuning |
 | **E** empty real | the five organizer bags without a known obstacle | none | every frame | false-alarm rates by scene type |
-| **R** real obstacles | `doubleT_obstacle` (crossing person and object on a rail, both labelled in `gt.json`) | labelled visible frames | labelled empty frames and the five empty bags | real recall and a limited reflectivity check; the extended `new_data` recording has no obstacles |
-| **O** organizers' synthetic | `cloud_with_fake_obj` (24.09): ten objects ray-cast by the organizers' own tool into a real recording, labelled exactly from the appended object points (`labels/cloud_with_fake_obj.json`, [`DATASET.md`](DATASET.md)) | eight objects inside the envelope (2×2 m, 0.3 m cubes, a plank across the rails, a 5 cm hanging object) | two objects just outside it | per-object first STOP / held-from distance and false STOP on the outside objects (`scripts/score_fake_objects.py`); the tool that is part of the hidden check, so the closest thing to it |
+| **R** real obstacles | `doubleT_obstacle` (crossing person and object on a rail, both labelled in `labels/doubleT_obstacle.json`) | labelled visible frames | labelled empty frames and the five empty bags | real recall and a limited reflectivity check; the extended `new_data` recording has no obstacles |
+| **O** organizers' synthetic | `cloud_with_fake_obj` (24.09): ten objects ray-cast by the organizers' own tool into a real recording, labelled exactly from the appended object points (`labels/cloud_with_fake_obj.json`, [`DATASET.md`](DATASET.md)) | eight objects inside the envelope (2 × 2 m, 0.3 m cubes, a plank across the rails, a 5 cm hanging object) | two objects just outside it | per-object first STOP / held-from distance and false STOP on the outside objects (`scripts/score_fake_objects.py`); the tool that is part of the hidden check, so the closest thing to it |
+| **F** synthetic on the moving ride | `scripts/far_range_eval.py`: catalogue objects ray-cast into selected split files of the 20-minute ride `new_data`, approaching the moving train from 150–220 m; placement per §3 | person, trolley, 1 m crate, 0.5 m box, hanging cable, small objects on the bed and on a rail head | the ride's own frames (off-object detections) | first-confirmed and held distances on a moving background: straight track, curves, stations |
 | **H** hidden | the organizers' control bag on the day | unknown | unknown | nothing is tuned on it; the dry-run script only checks the pipeline runs |
-
-Objects whose rays are fully occluded by real geometry (`n_points == 0` in `gt.json`) are
-excluded from recall, and their count is reported.
 
 ## 2. Metrics
 
@@ -32,7 +44,7 @@ it leaves FP counts and rates unknown (`null`) rather than assuming every frame 
 | **recall by range** | matched gauge ground-truth objects / all gauge ground-truth objects, per bin 0–50, 50–100, 100–150, 150–200, 200–300 m; a detection matches if \|Δdistance\| ≤ max(2 m, 3 % of range) + half object length and \|Δlateral\| ≤ 1 m | table per bin [`recall_by_range`, `per_bin_counts`], per object class [`recall_by_class`, `per_class_counts`; class = the `name` of the `inject` catalogue, else `kind`] and overall [`recall`] |
 | **recall by class and range** | the recall-by-range table split per object class [`per_class_bin_counts`: class → bin → [matched, total]]; the per-kind table of set S | counts per cell (the cells of a 26-frame set hold 1–4 objects: quote the counts, not only the ratio) |
 | **first-detection distance** | for a moving-toward run (real, or `inject --sequence N --speed V`): the largest range at which the object is confirmed and matched | m, per ground-truth label [`first_detection_distance`] |
-| **distance / lateral error** | over matched detections: mean and max of \|Δdistance\|, the signed mean (bias, + = reported farther than the label), mean \|Δlateral\| [`distance_error_mean_abs`, `distance_error_max_abs`, `distance_error_bias`, `lateral_error_mean_abs`] | m; on the real person of `doubleT_obstacle` 0.00–0.07 m mean (DATASET.md "Real labels") |
+| **distance / lateral error** | over matched detections: mean and max of \|Δdistance\|, the signed mean (bias, + = reported farther than the label), mean \|Δlateral\| [`distance_error_mean_abs`, `distance_error_max_abs`, `distance_error_bias`, `lateral_error_mean_abs`] | m; on the real person of `doubleT_obstacle` 0.00–0.07 m mean in v0.4 ([`DATASET.md`](DATASET.md) "Real labels"), ≤ 0.23 m max on 24.09 ([`EXPERIMENTS.md`](EXPERIMENTS.md) "Current results") |
 | **first alarm frame** | index of the first frame with `obstacle = true` [`first_alarm_frame`] | frame; on `doubleT_obstacle` it is 11 (the person enters the 2.1 m envelope at frame 8 and, tracked while it approached, is reported 0.3 s later) and must not get later |
 | **ego-speed source / frames merged** | how the accumulation actually ran: frames per `ego_speed_source` value (`given` / `estimated` / `none`) and the mean `n_accumulated` [`ego_speed_sources`, `n_accumulated_mean`] | counts; `given` when the node receives a valid speed; without one, shipped defaults report `none` (`accumulation.estimate_speed: false`); `estimated` requires explicitly opting in |
 | **false-alarm frames** | frames with `obstacle = true` among frames with no gauge ground truth [`fp_frames`, `fp_frame_rate`]; every frame with `obstacle = true` regardless of labels is an *alarm frame* [`alarm_frames`] | per bag and per scene type (tunnel / curve / gate / platform / switch) |
@@ -58,7 +70,7 @@ that bin is not expected to be detectable by any algorithm.
 **Set F synthetic-positive placement.** `scripts/far_range_eval.py` defaults to
 `--placement-mode legacy`, which uses the detector-derived per-frame far axis and vault
 drift; those results are not an independent test of curve or gauge-edge generalisation.
-`--placement-mode anchored` carries a fixed object position backwards from a near (≤30 m)
+`--placement-mode anchored` carries a fixed object position backwards from a near (≤ 30 m)
 rail-supported track fit using consecutive near fits and recorded speed. It rejects missing
 stamps, large movement gaps and sequences without a near reference. Its placement is
 independent of the *far axis*, but its pose is estimated from the same ride, not surveyed
@@ -84,11 +96,11 @@ validity over each sequence before interpreting range or edge results.
    file with `accumulation.enabled: false`, `accumulation.estimate_speed: false`,
    `track.floor_verify_enabled: false`, `cluster.retro_intensity: 0` (`--config`): v0.4 then
    reproduces v0.3 bit for bit (verified on the six bags on 21.09).
-2. **Synthetic on real frames (S)** — rebuild from the same cached empty frames and seeds as
-   the 21.09 sets. The historical v0.4 summaries in
-   [`experiments_v0.4_synthetic_on_real.json`](experiments_v0.4_synthetic_on_real.json)
-   used older object placement, persistence and sequence handling; their scores must not be
-   compared as a paired A/B against the commands below without re-running both versions:
+2. **Synthetic on real frames (S)** — rebuild from the same cached empty frames and seeds as the
+   21.09 sets. The historical v0.4 summaries in
+   [`experiments_v0.4_synthetic_on_real.json`](evidence/results/experiments_v0.4_synthetic_on_real.json)
+   used older object placement, persistence and sequence handling; their scores must not be compared
+   as a paired A/B against the commands below without re-running both versions:
 
    ```bash
    # static sets: every 10th frame of three empty bags, one catalogue object per frame, 20 % negatives
@@ -123,9 +135,13 @@ validity over each sequence before interpreting range or edge results.
    per bag (alarm frames, events, advisory frames, first alarm frame, distance range, latency)
    and `resense summarize --compare before.jsonl after.jsonl` for the before/after table of a
    change; the 21.09 record of v0.3 vs the merged head on all six bags is
-   [`experiments_v0.4_real_fullrate.json`](experiments_v0.4_real_fullrate.json). Classify each
-   false alarm event by cause (platform edge, gate frame, overhead fixture, axis error, other)
-   using the renders (`--render`).
+   [`experiments_v0.4_real_fullrate.json`](evidence/results/experiments_v0.4_real_fullrate.json).
+   Classify each false alarm event by cause (platform edge, gate frame, overhead fixture, axis
+   error, switch, other) using the renders (`--render`), and report switch events separately:
+   the organizers do not count glitches at switches as a minus, because the switch state is not
+   given to the system (24.09,
+   [`organizers/mount_and_switch_qa.md`](organizers/mount_and_switch_qa.md) §5); false alarms
+   at platforms do count.
 4. **Real obstacles (R):** `resense eval --npy /data/cache/doubleT_obstacle --gt
    labels/doubleT_obstacle.json --text` (every frame is processed; `--labelled-only` counts only
    the labelled frames of a partially labelled bag; `--out r.jsonl` keeps the per-frame results
@@ -152,14 +168,25 @@ validity over each sequence before interpreting range or edge results.
    counts to older 1.4 m-envelope runs as if the labels were identical. On O, the per-object
    table of `scripts/score_fake_objects.py` must not lose a detected object or add STOP frames
    on the two outside objects (default of 24.09: objects 1, 2, 3, 8 and 9 detected, first STOP
-   at 98.0 / 34.0 / 42.7 / 101.3 / 82.2 m; 6 STOP frames on the outside 2×2 m box; P4_AUDIT).
+   at 98.0 / 34.0 / 42.7 / 101.3 / 82.2 m; 6 STOP frames on the outside 2 × 2 m box;
+   [`P4_AUDIT.md`](P4_AUDIT.md)).
    Each PR that touches `resense/` re-runs S, E, R and O on the cached frames
-   (`scripts/cache_frames.py`) and adds a row to the version table in EXPERIMENTS.md.
+   (`scripts/cache_frames.py`), adds its numbers to [`EXPERIMENTS.md`](EXPERIMENTS.md) and a line to
+   [`CHANGELOG.md`](../CHANGELOG.md).
 
-## 4. Targets (from PLAN.md sprints)
+## 4. Targets of the sprints (17–24.09) and their status on 24.09
 
-| milestone | recall person | recall box 0.5 m | false-alarm frames on E | p95 latency |
+The targets were set on day 1 for Sprint 1 (17–20.09) and Sprint 2 (21–24.09) of
+[`PLAN.md`](PLAN.md); "v0" is the day-1 prototype, measured on subsampled frames (15.09). The
+actual values come from [`EXPERIMENTS.md`](EXPERIMENTS.md) "Current results", §2d, §2e, §3 and
+§3b and from [`P4_AUDIT.md`](P4_AUDIT.md), each tagged with its kind.
+
+| target | sprint | v0 (15.09, measured) | actual (24.09) | status |
 |---|---|---|---|---|
-| v0 (day 1, measured) | 100 % ≤ 50 m, 50 % 50–100 m, 0 beyond | box 0.5 m at 54–56 m | 67 / 231 frames (49 in the platform-and-switch bag) | 47–125 ms |
-| Sprint 1 | ≥ 90 % ≤ 100 m | ≥ 80 % ≤ 80 m | ≤ 1 per 100 frames outside platforms | ≤ 100 ms |
-| Sprint 2 (accumulation) | confirmed at ≥ 150 m | confirmed at ≥ 100 m | ≤ 1 per 100 frames including platforms | ≤ 100 ms |
+| person: recall ≥ 90 % within 100 m | 1 | 100 % ≤ 50 m, 50 % 50–100 m | 96 % (0–50 m) and 94 % (50–100 m) of the visible frames on straight track [synthetic: set F round 3, legacy placement]; the real person 58 of 61 envelope frames at 55–57 m [real: `doubleT_obstacle`] | met |
+| box 0.5 m: recall ≥ 80 % within 80 m | 1 | found at 54–56 m | on the bed 1 of 6 approaches, first confirmed at 52 m [synthetic: set F round 3]; 0 of 13 in set S [synthetic, P4_AUDIT] | not met |
+| false-alarm frames on E ≤ 1 per 100 outside platforms | 1 | 67 of 231 frames (49 in the platform-and-switch bag) | 2 of 1 065 frames = 0.19 per 100 (`roundT_doubleT` and the two pressure-gate bags) [real] | met |
+| p95 latency ≤ 100 ms | 1, 2 | 47–125 ms | offline 53–78 ms on one core [timing: sandbox, 23.09]; ROS node in Docker 76 ms at 120°, 112–130 ms at 360° [timing: sandbox, 23.09]; the i7-9700E stand is not measured | met offline and at 120°; not at 360° on the sandbox |
+| person confirmed at ≥ 150 m | 2 | 0 beyond 100 m | median 154 m with the object anchored on the near rails, 148 m with legacy placement, 167 m with a given train speed [synthetic: set F]; no real obstacle beyond 57 m exists | met on synthetic only |
+| box 0.5 m confirmed at ≥ 100 m | 2 | — | not beyond 52 m [synthetic: set F]; the organizers' 0.3 m cubes from 34–43 m, their 2 × 2 m box from 98 m [organizers' synthetic: set O] | not met |
+| false-alarm frames on E ≤ 1 per 100 including platforms | 2 | — | 107 of 2 287 frames = 4.7 per 100 (101 of them in `squareT_platform_squareT_switch`, train standing at the platform); the ride 204 of 11 271 = 1.8 per 100 [real] | not met |

@@ -1,4 +1,9 @@
-# Organizers' Q&A session (case 05) — transcript summary and what it changes
+# Organizers' Q&A Session
+
+> **Purpose:** the team's summary of the organizers' recorded Q&A session of 22.09 (case 05): the
+> facts that decide the design, with timestamps, and what each changed in ReSense.
+> **Audience:** team, jury · **Owner:** P1 · **Language:** EN (the transcript next to it is RU)
+> **Last verified:** 2026-09-24 against `537e220` · **Status:** current
 
 Source: recording of the case-05 Q&A session, "Город 5. Департамент транспорта.mp4"
 ([Google Drive](https://drive.google.com/file/d/1Py6Ptq5HFu8Y0vj-m2R5zIQv7dFVZ6Ax/view), 58 min,
@@ -23,11 +28,11 @@ context. Timestamps below are `mm:ss` of the recording.
 | 4 | **The hidden test set: rides through the same and other tunnels, plus the organizers' own tool that generates synthetic obstacles** — "we will also check solutions with it" | 07:19–07:43 | synthetic objects are part of the evaluation: our injector (`resense inject`) and the envelope follow the organizers' definitions; no dependence on object appearance |
 | 5 | **No labels exist, no more data with obstacles** — "all we can give is more empty tunnel"; nothing staged in `new_data` | 03:46–06:58 | positives remain synthetic (ray-cast into real frames) plus the one real scene; every alarm in `new_data` is a false alarm |
 | 6 | **No odometry** in the recordings, and some trains will have none: "you have a LiDAR cloud and, without auxiliary means, find the obstacles" | 07:46–08:33 | the detector must work without speed (the default path); speed stays an optional input |
-| 7 | **The LiDAR position is not fixed** — it differs between the provided recordings and is not yet approved; "count on a variable position, set it in the launch parameters". The control data will use the mount of the empty-tunnel rides (not the `doubleT_obstacle` mount) | 21:45–22:40 | mount auto-calibration (`resense/calibration.py`) + launch parameters `sensor_forward/left/up`, `mount_roll/pitch/yaw_deg`, `auto_calibrate` |
+| 7 | **The LiDAR position is not fixed** — it differs between the provided recordings and is not yet approved; "count on a variable position, set it in the launch parameters". The control data will use the mount of the empty-tunnel rides (not the `doubleT_obstacle` mount) | 21:45–22:40 | mount auto-calibration (`resense/calibration.py`) + launch parameters `sensor_forward/left/up`, `mount_roll/pitch/yaw_deg`, `auto_calibrate`; follow-up 24.09: test bags mounted as the provided ones, LiDAR 1075 mm above the rail head on the centreline ([`mount_and_switch_qa.md`](mount_and_switch_qa.md)) |
 | 8 | In `doubleT_obstacle` **an object lies on the rails where the person stands** (besides the person) | 49:14–49:30 | labelled in `labels/doubleT_obstacle.json` (see DATASET.md "Real labels") |
 | 9 | **Output:** "can we go / obstacle or not / distance to it", any extra information welcome; format free, a ROS topic expected; **per-frame obstacle yes/no is sufficient**, extra decision logic is a bonus but must be described ("tell us clearly what to look at") | 13:53–14:59, 17:01–20:24 | new `/resense/decision` (GO / CAUTION / STOP / FAULT) and `/resense/clear_distance`; README says which topic to read |
 | 10 | **Launch:** everything inside the Docker container, "the less magic the better — ideally `docker run`, then `ros2 launch`, and check". Must work **offline** | 10:24–10:44, 15:05–15:26 | unchanged: `docker run … ros2 launch resense_ros detector.launch.py`; no network at run time |
-| 11 | **Real time:** frames arrive at 10 Hz (as in the data); the closer to 10 Hz the better. Multi-frame confirmation is allowed but costs reaction time, which must stay adequate | 20:28–21:16, 32:40–33:30 | persistence 0.3 s (3 frames) kept; latency budget 100 ms |
+| 11 | **Real time:** frames arrive at 10 Hz (as in the data); the closer to 10 Hz the better. Multi-frame confirmation is allowed but costs reaction time, which must stay adequate | 20:28–21:16, 32:40–33:30 | persistence 0.3 s (3 frames) in v0.6–v0.6.1; 0.5 s (5 frames) since v0.6.2; latency budget 100 ms |
 | 12 | **Speed:** regulated maximum 80 km/h; plan for 85 km/h → **up to 2.3 m between consecutive frames** | 31:11–32:12 | tracker gate `tracking.ego_speed_max` 25 m/s covers it |
 | 13 | **Braking decisions are out of scope**; concentrate on obstacle yes/no, distance, optional extras | 30:22–31:10 | no braking model in the product |
 | 14 | **Range:** "farther is better; a kilometre would be magic"; 100 m good / 200 m very good / 300 m excellent as in the spec; **under 100 m is rated poorly**. But **if the tunnel is not visible farther (a curve), detecting at the visible limit (e.g. 60 m) is fine** — "no worse than a train driver" | 42:17–43:40, 55:40–57:40 | report the monitored (verified-clear) range next to every detection; a sightline limit is not a failure |
@@ -43,21 +48,12 @@ context. Timestamps below are `mm:ss` of the recording.
 
 ## 2. Answers to our questions
 
-The session answered most of our questions. On 23.09 the organizers also answered questions 1,
-2 and 6 in writing, and on 24.09 questions 3 (return mode) and 4 (time); question 7's duration
-part was withdrawn by the team as organisational. All of it is consolidated, with the written
-answers verbatim, in
-[`answers.md`](answers.md); [`../QUESTIONS.md`](../QUESTIONS.md) keeps only the questions still open.
-
-| our question | answer from the session (22.09) | written answer (23.09) |
-|---|---|---|
-| 1. staged obstacles in `new_data`? | no — only empty tunnel; no labels; the evaluation adds synthetic obstacles (facts 4, 5) | "В new_data препятствий нет" — none |
-| 2. control bag format like `new_data` / five of six bags? | control data: same conditions as the provided data, LiDAR mount of the empty-tunnel rides (fact 7); full-ride recordings included (fact 15). Topic / frame id not stated | **either (topic, frame) pair may occur; all data from the same LiDAR; the bag will most likely be played from the console; describe the launch pipeline if the code reads bags directly** → node input switching and per-recording restart (v0.6.1), README "How a bag is processed" |
-| 3. return mode, mount height / pitch / lateral offset | not fixed, varies, set it in the launch parameters (fact 7) | 24.09: **Last and Strongest now; the recordings are old and may differ; the control data use the same settings** → nothing changes: one echo is stored twice in every recording and the detector counts voxels (SENSOR.md §4) |
-| 4. PTP / GNSS time sync | not answered | 24.09: **will exist on the train, but not within this hackathon** → the bag receive time and stamp differences stay the clocks |
-| 5. which obstacles, which ranges, person on a platform? | anything ≥ 30×30×10 cm in the 2.1 × 3 m envelope; broken cables; people / animals / objects thrown on the track; a person on a platform is not an obstacle (facts 1–3) | — |
-| 6. how is the result evaluated, which messages? | per-frame obstacle yes/no + distance, any ROS topic, extras welcome if described (fact 9) | **outputs are the participants' choice; everything needed must be stated in the algorithm and launch descriptions** → README "What to look at", ALGORITHM.md §4 / §4b |
-| 7. remote demo, duration | remote demo acceptable, organizers run the solution themselves (fact 23) | the duration was withdrawn by the team on 24.09 (organisational) |
+The session answered most of our questions. On 23.09 the organizers also answered questions 1, 2
+and 6 in writing, on 24.09 questions 3 (return mode) and 4 (time), and the experts answered the
+mount and switch questions; question 7's duration part was withdrawn by the team as
+organisational. The answers by question, with the written ones verbatim, are in
+[`answers.md`](answers.md) §1–§5; [`../QUESTIONS.md`](../QUESTIONS.md) keeps only the questions
+still open.
 
 ## 3. What changed in the code because of this session (v0.6)
 

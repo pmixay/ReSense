@@ -1,5 +1,18 @@
 # Architecture
 
+> **Purpose:** components, data flow and real-time budget of ReSense (spec §5 "Архитектура").
+> **Audience:** jury, team · **Owner:** P1 · **Language:** EN, summary RU
+> **Last verified:** 2026-09-24, `537e220` (detector v0.6.3, node v0.6.4) · **Status:** current
+
+**Кратко.** ROS 2-нода `resense_ros` принимает облако `PointCloud2` от `ros2 bag play` (любая из
+двух пар топик / frame id) и передаёт каждый кадр библиотеке `resense` (Python: numpy / scipy /
+scikit-learn, без ROS). Библиотека переводит точки в систему поезда и сама находит крепление
+LiDAR, строит модель пути (полотно, рельсы, ось и кривизна по стенам), вырезает коридор габарита
+2,1 × 3,0 м, ищет низкие объекты, кластеризует и подтверждает кандидатов по времени. Нода публикует
+решение GO / CAUTION / STOP / FAULT, расстояние до препятствия, проверенную свободную дальность,
+состояние входа и JSON-статус. Кадр обрабатывается за 42–64 мс в среднем на одном ядре (23.09) при
+периоде датчика 100 мс.
+
 ```
 ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCloud2, 10 Hz)──▶ resense_ros/detector_node
                                                                   │
@@ -36,7 +49,8 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
           beyond the height reference only tall, grounded, short clusters alarm
    5. persistence tracker (greedy NN, gate ∝ range, ego-speed slack)  │  tracking.py
         • confirmed after 3 hits spanning ≥ 0.5 s (v0.6.2), ≥ 60 % of the last 10 frames matched and
-          ≥ 60 % of the last 10 hits inside the strict gauge; confidence ↑ per hit ↓ per miss
+          ≥ 60 % of the last 10 hits inside the strict gauge; confidence ↑ per hit ↓ per miss;
+          a reported obstacle is held over one missed frame (hold_misses 1, v0.6.3)
    5b. health (v0.6): input sanity, blocked view, visibility,       │  health.py
         rail lock, latency, calibration → level + monitored range + clear distance
    6. FrameResult → topics                                          │  detector_node.py
@@ -61,19 +75,19 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
 | `docker/`, `docker-compose.yml`, `scripts/` | reproducible build/run: `docker build → docker run → ros2 bag play → result` |
 | `configs/default.yaml` | all detector parameters; copied over the ROS package copy at Docker build time, `scripts/sync_params.sh --check` in CI keeps the two identical |
 | `tests/` | pytest on a synthetic ray-cast tunnel (no dataset needed) |
-| `docs/` | organizers' materials, dataset and sensor notes, algorithm, evaluation protocol, research, plan, experiments, submission checklist, presentation notes |
+| `docs/` | every document, its purpose and owner: [`docs/README.md`](README.md) |
 | `web/` | the dashboard: replays a `results.jsonl`, or shows the live node through rosbridge — not in the image, and roslib comes from a CDN (`web/README.md`); offline live view: Foxglove |
 
 ## Data flow and formats
 
-* Input: `sensor_msgs/PointCloud2` with fields `x y z intensity ring timestamp` (see DATASET.md),
-  on either of the two (topic, frame) pairs the organizers use (23.09: the control data may have
-  both, one LiDAR) or any other PointCloud2 topic found on the graph. One input at a time; a new
-  recording (another topic or frame id, or a jump of the header stamps) gets a fresh detector
-  (`detector_node.py` "Input handling"). The bag is played by `ros2 bag play`; nothing in the
-  solution reads bag files (the offline CLI does, as a development tool).
-  The node decodes it zero-copy into a numpy structured array (`pointcloud.py`), drops the
-  `(0,0,0)` slots of the dual-return layout and points closer than 2.5 m.
+* Input: `sensor_msgs/PointCloud2` with fields `x y z intensity ring timestamp`
+  ([`DATASET.md`](DATASET.md)), on either of the two (topic, frame) pairs the organizers use (23.09:
+  the control data may have both, one LiDAR) or any other PointCloud2 topic found on the graph. One
+  input at a time; a new recording (another topic or frame id, or a jump of the header stamps) gets
+  a fresh detector (`detector_node.py` "Input handling"). The bag is played by `ros2 bag play`;
+  nothing in the solution reads bag files (the offline CLI does, as a development tool). The node
+  decodes it zero-copy into a numpy structured array (`pointcloud.py`), drops the `(0,0,0)` slots of
+  the dual-return layout and points closer than 2.5 m.
 * Internal `Frame`: `xyz (N,3) float32` in the vehicle frame, `intensity`, `ring`, `stamp`.
 * Output `FrameResult` (also serialised as JSON on `/resense/status` and by `resense run --out`):
   `obstacle`, `warning`, `nearest_distance`, `detections[]` (id, zone, distance along track,
@@ -84,24 +98,27 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   orientation, roll / pitch / yaw, height, drift), and `detections[].kind` (`low` for a bed-level
   object). All older keys are unchanged.
   The ROS node adds a `node` object: `latency_ms` (decode + detect of this frame), `fps`,
-  `frames`, `dropped_frames` (estimated from gaps in the input stamps), `input_period_ms`.
-* Node runtime statistics (spec §8.3): `/resense/latency_ms` per frame (decode + detect +
-  publish), `/resense/fps` and a log line with latency mean / p95 / max and dropped frames every
+  `frames`, `dropped_frames` (estimated from gaps in the input stamps), `input_period_ms`,
+  `ego_speed_mps`, `ego_speed_source`, `input_topic`, `recording` (recordings seen); a fault
+  snapshot has no `node` object.
+* Node runtime statistics (spec §8.3): `/resense/latency_ms` per frame (decode + detect + publish),
+  `/resense/fps` and a log line with latency mean / p95 / max and dropped frames every
   `stats_period` seconds. A frame that waits alone is processed at once, so if a frame takes longer
   than the sensor period the frames behind it are skipped rather than queued: the node works on the
-  freshest data and the drop count makes overload visible. Several waiting frames (the burst at
-  the start of a played bag: `ros2 bag play` preloads the recording and then sends its first
-  seconds back to back) are worked through one every `catchup_step` = 0.3 s of recording from the
-  first frame on, until the node is back on the newest (v0.6.4; `input_queue_depth` 40).
-  Its reliability follows the publishers (`input_reliability: auto`, v0.6.2): reliable for
-  `ros2 bag play` of the organizers' recordings — a best-effort reader lost 196 of the 201
-  10 MB clouds of `doubleT_obstacle` in Docker (EXPERIMENTS.md §3b) — and best-effort when a
+  freshest data and the drop count makes overload visible. Several waiting frames (the burst at the
+  start of a played bag: `ros2 bag play` preloads the recording and then sends its first seconds
+  back to back) are worked through one every `catchup_step` = 0.3 s of recording from the first
+  frame on, until the node is back on the newest (v0.6.4; `input_queue_depth` 40). Its reliability
+  follows the publishers (`input_reliability: auto`, v0.6.2): reliable for `ros2 bag play` of the
+  organizers' recordings — a best-effort reader lost 196 of the 201 10 MB clouds of
+  `doubleT_obstacle` in Docker ([`EXPERIMENTS.md`](EXPERIMENTS.md) §3b) — and best-effort when a
   publisher is (a live sensor-data driver). The shipped RViz config subscribes to the raw clouds
   reliable too (a live best-effort driver needs the display's Reliability Policy switched in RViz).
 * Ego speed for multi-frame accumulation: the node passes `Detector.process(frame, ego_speed=v)`
   the value of the `ego_speed_mps` parameter, else the latest `speed_topic` / `odom_topic`
-  message younger than `speed_timeout`, else `None` (single-frame path: the LiDAR-only speed estimator is off by default, `accumulation.estimate_speed`); the
-  status JSON reports `node.ego_speed_mps` and `node.ego_speed_source`.
+  message younger than `speed_timeout`, else `None` (single-frame path: the LiDAR-only speed
+  estimator is off by default, `accumulation.estimate_speed`); the status JSON reports
+  `node.ego_speed_mps` and `node.ego_speed_source`.
 * One fixed frame for every bag: the organizers' recordings carry different `frame_id`s
   (`hesai_lidar`, `lidar_livox`), so the node broadcasts a static identity transform
   `resense_lidar → <input frame_id>` when the first frame arrives and the RViz / Foxglove layouts
@@ -112,7 +129,7 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   status stream; the CI docker job runs this on every push. The same checker scores the real
   dry run (`scripts/dry_run.sh`) on `doubleT_obstacle`; on 23.09 it ran in Docker on the real
   frames (bags rebuilt from the cache by `scripts/cache_to_bag.py`), with the node and the player
-  in separate containers and two recordings into one node (EXPERIMENTS.md §3b).
+  in separate containers and two recordings into one node (EXPERIMENTS §3b).
 * `resense inject` writes `*.npz` (xyz, intensity, per-point labels) + `gt.json`;
   `resense eval` consumes them and prints recall by range, FP rates, latency.
 
@@ -123,26 +140,32 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   whatever it looks like. No labelled obstacle classes are needed.
 * **Self-calibration**: bed level, rail level and track axis are re-estimated every frame from the
   rails, and (v0.6) the mount itself — which axis looks forward, roll, pitch — is found from the
-  rails and the bed in the first frames, so a different mount (the organizers: "the LiDAR
-  position is not fixed") needs no manual calibration; the launch file still accepts it.
+  rails and the bed in the first frames, so a different mount (the organizers, 22.09: "the LiDAR
+  position is not fixed") needs no manual calibration; the launch file still accepts it. 24.09:
+  the test bags use the mounts of the provided ones, the LiDAR 1 075 mm above the rail head on the
+  train's centreline ([`organizers/mount_and_switch_qa.md`](organizers/mount_and_switch_qa.md)),
+  so the calibration stays as a safeguard.
 * **The customer's envelope** (v0.6): the strict decision uses the 2.1 × 3.0 m cross-section the
   organizers gave; the wider v0.5 polygon became the advisory zone.
 * **Fail-safe outputs** (v0.6): `clear_distance` shrinks to what was actually checked and to 0 on
-  any input fault; the decision topic says `FAULT` instead of staying silent.
+  any input fault; the decision topic says `FAULT` instead of staying silent, and since 24.09 a
+  fault is published on every output at once (no earlier `STOP` stays latched;
+  [`README.md`](../README.md) "Topics published by the node").
 * **Curvature from parallel references**: rails are visible only to ~30–40 m, walls/column rows
   to 150–200 m (Shen et al. 2024). This is what makes a corridor at 100+ m meaningful; where no
   boundary is observed the corridor is explicitly *not trusted* and only warnings are raised.
 * **Range-adaptive everything**: voxel size, DBSCAN radius, minimum cluster size and the
   expected-point prior all scale with range, so a 5-point cluster at 150 m is treated as
   seriously as a 500-point cluster at 20 m.
-* **Persistence before alarm**: ≥ 3 hits spanning ≥ 0.5 s — five frames at 10 Hz (v0.6.2; 0.3 s before) — suppress
-  single-frame noise and flickering edge structures; the cost is 0.5 s of latency for an object
-  that appears inside the envelope — 11 m of travel at 80 km/h — and none for one tracked while it
-  approaches (EXPERIMENTS.md §0: −35 % false-alarm events on the empty bags, −27 % on the ride).
+* **Persistence before alarm**: ≥ 3 hits spanning ≥ 0.5 s — five frames at 10 Hz (v0.6.2; 0.3 s
+  before) — suppress single-frame noise and flickering edge structures; the cost is 0.5 s of latency
+  for an object that appears inside the envelope — 11 m of travel at 80 km/h — and none for one
+  tracked while it approaches (EXPERIMENTS §0: −35 % false-alarm events on the empty bags, −27 % on
+  the ride).
 * **No rails, no far alarm** (v0.6.2): without the rail pair in the near range (stations, switch
   caverns) the corridor beyond 40 m is advisory and the verified-clear distance says 40 m.
 
-## Real-time budget (v0.6.3, every frame of the real bags, idle 4-core sandbox, Python)
+## Real-time budget (v0.6.3, 23.09: every frame of the real bags, idle 4-core sandbox, Python)
 
 | stage | `roundT_doubleT` (189 k pts) mean | `doubleT_obstacle` (347 k pts, 360°) mean |
 |---|---|---|
@@ -152,17 +175,22 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
 | tracking | 0.2 ms | 0.2 ms |
 | **total** (mean / p95 / max) | **50.2 / 63.4 / 76.1 ms** | **63.6 / 77.8 / 119.2 ms** |
 
-(EXPERIMENTS.md §3, raw output in [`evidence/timing_2026-09-23/`](evidence/timing_2026-09-23/).)
+Source: [`EXPERIMENTS.md`](EXPERIMENTS.md) §3, raw output in
+[`evidence/timing_2026-09-23/`](evidence/timing_2026-09-23/). Re-measured 24.09 on another idle VM:
+36.5–52.2 ms mean, p95 50.3–67.1 ms (EXPERIMENTS "Re-measurement"); the 23.09 figures stay quoted.
 
 The frame period is 100 ms; p95 is inside it on all six bags and on a station section of the
-ride (v0.6.3: 42–64 ms mean, p95 53–78 ms, EXPERIMENTS.md §3). **Resources:** one CPU core per stream
-(47–65 ms of CPU time per frame = 47–65 % of a core at 10 Hz with single-threaded BLAS, set in
-the image), about 160–180 MB resident, no GPU. **Through ROS in Docker** (v0.6.2, §3b of
-EXPERIMENTS.md): the 120° recording at the full 10 Hz (p95 76 ms), the 360° one at 7–10 fps in
-steady state (~96 ms mean: the node skips frames rather than lagging), the node container at
-~100 % of one core while frames arrive, 186 MB. The jury's i7-9700E (8 faster cores) has not been measured.
+ride (v0.6.3: 42–64 ms mean, p95 53–78 ms, EXPERIMENTS §3). **Resources:** one CPU core per
+stream (47–65 ms of CPU time per frame = 47–65 % of a core at 10 Hz with single-threaded BLAS, set
+in the image), about 160–180 MB resident, no GPU. **Through ROS in Docker** (23–24.09,
+v0.6.2–v0.6.4, EXPERIMENTS §3b): the 120° recording at the full 10 Hz (p95 76 ms), the 360° one at
+7–10 fps in steady state (~96 ms mean: the node skips frames rather than lagging), the node
+container at ~100 % of one core while frames arrive, 186 MB (v0.6.3); the v0.6.4 catch-up queue
+raises the peak to 403–434 MB at 360°. The jury's i7-9700E (8 faster cores) has not been measured.
 
-## Known limitations (see ALGORITHM.md §6 and EXPERIMENTS.md)
+## Known limitations
+
+Details: [`ALGORITHM.md`](ALGORITHM.md) §6 and [`EXPERIMENTS.md`](EXPERIMENTS.md) §4.
 
 * Curvature is only observed where tunnel boundaries are visible; stations and switch caverns
   weaken the estimate → detections there are demoted to warnings and `health` reports it.
