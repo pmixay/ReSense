@@ -87,9 +87,12 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   `frames`, `dropped_frames` (estimated from gaps in the input stamps), `input_period_ms`.
 * Node runtime statistics (spec §8.3): `/resense/latency_ms` per frame (decode + detect +
   publish), `/resense/fps` and a log line with latency mean / p95 / max and dropped frames every
-  `stats_period` seconds. The input subscription keeps one frame (`input_queue_depth`, keep-last),
-  so if a frame takes longer than the sensor period the older frames are dropped rather than
-  queued: the node always works on the freshest data and the drop count makes overload visible.
+  `stats_period` seconds. A frame that waits alone is processed at once, so if a frame takes longer
+  than the sensor period the frames behind it are skipped rather than queued: the node works on the
+  freshest data and the drop count makes overload visible. Several waiting frames (the burst at
+  the start of a played bag: `ros2 bag play` preloads the recording and then sends its first
+  seconds back to back) are worked through one every `catchup_step` = 0.3 s of recording from the
+  first frame on, until the node is back on the newest (v0.6.4; `input_queue_depth` 40).
   Its reliability follows the publishers (`input_reliability: auto`, v0.6.2): reliable for
   `ros2 bag play` of the organizers' recordings — a best-effort reader lost 196 of the 201
   10 MB clouds of `doubleT_obstacle` in Docker (EXPERIMENTS.md §3b) — and best-effort when a

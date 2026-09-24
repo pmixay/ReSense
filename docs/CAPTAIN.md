@@ -45,7 +45,7 @@ inside the image.
    topic pairs, two recordings into one node — detections as offline, `roundT_doubleT` PASS
    with `--max-alarm-frames 2`; it found and fixed the best-effort transport bug (v0.6.2
    `input_reliability`). What is left for the stand: the original bags (not rebuilt ones) and
-   the i7 timing — at 360° the 4-vCPU sandbox runs at 7–10 fps in steady state and loses the first seconds to the DDS start-up (EXPERIMENTS §3b).
+   the i7 timing — at 360° the 4-vCPU sandbox runs at 7–10 fps in steady state; the first seconds of a played bag, lost until v0.6.4, are now worked through (EXPERIMENTS §3b).
 3. ~~Launch arguments for the demo~~ — done (`loop:=`, every parameter as a launch argument,
    plus `ego_speed_mps` / `speed_topic` / `odom_topic` / `publish_tf` / `tf_parent_frame`).
 4. ~~Data-path alignment and a headless demo path~~ — done, item 8.
@@ -130,7 +130,8 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
    publish `/lidar_points`. The azimuth window is ±50° in all bags except `doubleT_obstacle`
    (±125°, 347 k points). `frame_id` is verified for two bags only (the caches carry no
    frame id): `hesai_lidar` / `lidar_livox`.
-4. **The first seconds of a bag are lost to DDS discovery.** `ros2 bag play` publishes as soon
+4. **The first seconds of a bag are lost to DDS discovery** (the diagnosis of 21.09; corrected on
+   24.09, item 19: the player preloads the bag and then bursts). `ros2 bag play` publishes as soon
    as it opens the bag; the node's subscription needs a discovery round trip first. CI run 20
    lost 2 frames, run 21 lost 13 (the whole clear lead-in), the jury's demo would lose the same.
    Every playback path now passes `--delay 3` (smoke test, `dry_run.sh`, `run_headless.sh`, the
@@ -209,7 +210,7 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
     trolley 146 m, crate 111 m, cable 95 m; with a train speed 177 / 190 / 183 m and fewer ride false
     alarms (274 / 75); in R ≈ 350 m curves 1 of 2 approaches detected, at 74–82 m (sightline). The farthest
     return in all data is 210 m (every recording stops at 209.2–210.0 m), so 300 m is out of the sensor's reach.
-12. **Tests**: 152 on 23.09, 198 on 24.09 (the node's decision / fault / watchdog / mount-parameter / input-switching
+12. **Tests**: 152 on 23.09, 198 on 24.09, 199 with v0.6.4 (the node's decision / fault / watchdog / mount-parameter / input-switching
     logic runs against ROS stand-ins in `tests/test_node.py`, so a node bug no longer waits for
     the Docker job). Criteria judgement and the remaining work: [`SCORECARD.md`](SCORECARD.md).
 13. **Written answers of the organizers (23.09)** to our questions 1, 2 and 6, recorded
@@ -274,6 +275,15 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
     [`reviews/2026-09-24_review.md`](reviews/2026-09-24_review.md)) replaces all earlier
     evaluations. It reproduced every real-data headline number and measured the opt-in near-bed
     path on all 13 759 frames: 667 ride events with it on against 47 with the defaults.
+19. **v0.6.4 (24.09): the lost start of a played bag fixed on the node's side** (EXPERIMENTS §3b).
+    Root cause measured with a packet capture: `ros2 bag play` (Humble) preloads min(1000 messages,
+    the whole recording) while its clock runs and then sends the overdue first seconds back to
+    back; the keep-last-1 input kept the newest of them only. The node now holds 40 frames and
+    works through a backlog one frame every 0.3 s of recording (`catchup_step`) from the first frame:
+    3 runs each on `doubleT_obstacle` from a uid-1000 player, the largest gap in the first 5 s
+    2.07 → 0.40 s, the first STOP 4.02 → 1.59 s of recording time, no scene reset (1–2 per run
+    before); `roundT_doubleT` 223 → 241 of 252 frames. What remains is the player's preload itself
+    (`NO_INPUT` for 2.6–4 s) and ~0.25 GB more memory at 360°.
 
 ### Left for the team (captain tracks, does not do)
 

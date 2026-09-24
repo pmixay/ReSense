@@ -32,14 +32,21 @@ ros2 topic echo /resense/nearest_distance                   # distance along the
 Expected on the organizers' `doubleT_obstacle`: `STOP` at 55.5–56.6 m (the person crossing, then
 the object lying across the rail). No ROS on the host: play from a second container,
 `docker run --rm --net=host --ipc=host -v <bag dir>:/data:ro resense ros2 bag play /data/<bag> --delay 3`.
-Worth knowing: the first **2–4 s of a played bag are not processed** — the DDS start-up with
-5–10 MB reliable clouds, `--delay 3` does not avoid it (EXPERIMENTS.md §3b); until the first frame
-the decision is `FAULT` (no input). `STOP` is the alarm; `CAUTION` is advisory — something next to
+Worth knowing: `ros2 bag play` (Humble) reads up to 1000 messages — all of a short recording —
+before its first publish while its clock runs, then sends the overdue first seconds back to back;
+the decision is `FAULT` (no input) until then (2.6–4 s for a 1.9 GB recording already in the page
+cache, longer from a slow disk). The node then works through that burst from the recording's first
+frame, one frame every 0.3 s of recording (`catchup_step`), and is back in real time within ~2 s:
+on `doubleT_obstacle` the first `STOP` comes 1.3–1.6 s into the recording, as offline (v0.6.4,
+EXPERIMENTS.md §3b; before it the first 2–5 s were lost). `STOP` is the alarm; `CAUTION` is advisory — something next to
 the envelope or beyond the verified range (columns, platform edges, far clusters) — and is common
 in a normal tunnel. `/resense/obstacle_detected` answers for the last processed frame; the
 go / no-go signal is `/resense/decision`, which also says `FAULT` when no frame is arriving.
 
-Status: **v0.6.3 (23.09)** — v0.6.1 rebuilt the detector around the organizers' Q&A answers;
+Status: **v0.6.4 (24.09)** — the detector of v0.6.3; the ROS node now works through the burst of
+the first seconds that `ros2 bag play` sends after preloading a bag instead of losing them (first
+`STOP` on `doubleT_obstacle` 1.3–1.6 s into the recording through ROS, was 3.2–4.5 s). Before it:
+v0.6.1 rebuilt the detector around the organizers' Q&A answers;
 v0.6.2 finds the organizers' object lying across a rail and cuts the false stops on the ride by 43 %
 after an independent criteria review; v0.6.3, after a second one, holds a STOP over a single missed
 frame (25 % fewer on/off episodes), keeps a person lying across the track and makes the first
@@ -87,7 +94,7 @@ The container chain (`docker build → run → bag play → result`) is verified
 bags on every push, and was rehearsed on 23.09 on the real frames in Docker — the node in one
 container, `ros2 bag play` in another, both topic / frame pairs, two recordings into one node
 (EXPERIMENTS.md §3b: the 120° recording at 10 fps, p95 76 ms; the 360° one at 7–10 fps in steady
-state on the 4-vCPU sandbox, its first seconds lost to the transport's start-up; the node container
+state on the 4-vCPU sandbox; since v0.6.4 the burst of the player's first seconds is worked through, not lost; the node container
 at ~100 % of one core while frames arrive, 186 MB). The bag may be played by any user: the image
 runs DDS over UDP (a normal user's player cannot write into a root node's shared memory). Judgement against every criterion and what is left (independent review, 24.09): [`docs/SCORECARD.md`](docs/SCORECARD.md).
 
@@ -224,8 +231,9 @@ ros2 bag play <bag>  ──PointCloud2 (either topic / frame pair), 10 Hz──�
    runs DDS over UDP (`docker/fastdds_udp.xml`), so a player on the same machine needs no shared
    memory and may run as any user — `--ipc=host` is harmless and kept for older images);
 2. play the bag from any console: `ros2 bag play <bag> --delay 3` (the delay lets DDS discovery
-   finish; even so the first 2–4 s of a bag are not processed — the DDS start-up with 5–10 MB
-   reliable clouds, EXPERIMENTS.md §3b; same `ROS_DOMAIN_ID` as the node, default 0;
+   finish; the player preloads the bag and then sends its first seconds back to back, which the
+   node works through `catchup_step` s of recording apart, EXPERIMENTS.md §3b; same `ROS_DOMAIN_ID`
+   as the node, default 0;
    or `ros2 launch … bag:=/data/<bag>` to
    let the launch file play it inside the container; the image has the sqlite3 and mcap storage
    plugins, so the storage format does not matter);
@@ -329,7 +337,7 @@ confirmed from some start frames, so a run gives 1–4 alarm frames, EXPERIMENTS
 person and the object at 55.9–56.6 m, 88–118 alarm frames, but at 360° this sandbox is at the
 frame period (96 ms mean, p95 112–130 ms) and the node skips frames (7–10 fps in steady state), so the
 default `--max-p95-latency 100 --max-dropped 0` fail there (drops are counted after the first 5 s,
-`--settle-s`: the start-up hole is the transport's); the jury's i7-9700E is the
+`--settle-s`: the player's start-up burst); the jury's i7-9700E is the
 reference for those two. The organizers' way — node container, `ros2 bag play` from another
 container, `roundT_doubleT` then `doubleT_obstacle` into the same running node — switched the
 input and restarted the detector as designed (`--expect-inputs 2`). That first run also found
@@ -337,8 +345,9 @@ that a best-effort subscription lost 196 of the 201 ten-megabyte clouds (the nod
 the publishers' reliability, `input_reliability`, below), and a review found that a player run
 by a **normal user** reached the root node not at all through shared memory: the image now runs
 DDS over UDP (`docker/fastdds_udp.xml`), and `scripts/console_test.sh` — node container, player
-as uid 1000 in another container — runs in CI. Through ROS the first seconds of a 360°
-recording are lost to the DDS start-up with 10 MB reliable samples (EXPERIMENTS.md §3b).
+as uid 1000 in another container — runs in CI. The first seconds of a played recording were
+lost until v0.6.4: the player preloads the bag and sends them back to back, and the node kept the
+newest frame only; it now works through them (EXPERIMENTS.md §3b).
 
 Defaults for `doubleT_obstacle`: the person is reported in 50–62 m, p95 of decode + detect is
 ≤ 100 ms (the 10 Hz frame period) and no input frame is dropped after the first 5 s. Any argument after the bag path
@@ -401,8 +410,11 @@ and the bed in the first frames, reported in `/resense/status` → `mount`) — 
 `stale_timeout` (s without a frame before `FAULT`, default 0.5) and `max_consecutive_errors`
 (processing exceptions before the detector is reset, default 5); since v0.6.1 the **input
 handling** — `input_switch_timeout` (1 s), `new_input_gap` (30 s), `hole_reset_gap` (1 s), see
-"How a bag is processed" — and `input_queue_depth` (1: the node always takes the newest frame and
-skips rather than lags behind the sensor); since v0.6.2 `input_reliability` (`auto`: the input
+"How a bag is processed" — and `input_queue_depth` (40 since v0.6.4; a frame that waits alone is
+processed at once, so the node skips rather than lags behind the sensor), `catchup_step` (0.3 s:
+while several frames wait — the burst at the start of a played bag — one every 0.3 s of recording
+is processed from the first frame on until the node is back on the newest; 0 = the newest only)
+and `catchup_max_lag` (5 s); since v0.6.2 `input_reliability` (`auto`: the input
 subscription matches its publishers — reliable for `ros2 bag play` of the organizers'
 recordings, best-effort for a best-effort driver; `reliable` / `best_effort` force it). All of
 them are launch arguments too. Every `stats_period` seconds the node logs

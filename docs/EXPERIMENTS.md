@@ -141,8 +141,8 @@ The hold costs 27 % more false-alarm frames (245 → 311 over all obstacle-free 
 signal that switches off for one frame and back on is worse than one that stays on 0.1 s
 longer; events, the number of times a train would stop for nothing, are unchanged.
 
-**Where processing starts** (review 23.09: through ROS the first 2–4 s of a played bag are lost,
-so the jury's runs start after frame 0; `scripts/start_offsets.py`, v0.6.3, raw:
+**Where processing starts** (review 23.09: through ROS the first 2–4 s of a played bag were lost,
+so the jury's runs started after frame 0 — until v0.6.4, §3b; `scripts/start_offsets.py`, v0.6.3, raw:
 [`experiments_v0.6.3_start_offsets.json`](experiments_v0.6.3_start_offsets.json)). Alarm frames /
 events / STOP episodes by the first processed frame:
 
@@ -1051,16 +1051,47 @@ has arrived yet instead of staying silent.
 | `console_test.sh` on the two synthetic bags (the CI step) | 72 of 80 | 5 (bag at 0.5×) | 65 / 78 ms | 53 ms | PASS |
 | CI smoke test (`scripts/smoke_test.sh`, one container) | 76 of 80 | 5 (bag at 0.5×) | 64 / 76 ms | 52 ms | PASS |
 
-**The first seconds of a 360° recording are not seen.** Through ROS the first cloud of
-`doubleT_obstacle` arrives, then the next one 2–5 s later in recording time: a bare rclpy
-subscriber doing nothing receives the same sequence (the first reliable 10 MB sample is
-delivered ~4.5 s late, the samples in between are superseded in the keep-last-1 history), so it
-is the transport's start-up with the recorded reliable QoS, not the detector. Each such hole
-resets the scene. The first STOP of the person came at 5.7–9.2 s of recording time through ROS
-against 1.1 s offline; on the 120° recording the start-up hole is 0.9 s in our run and 2.0–2.7 s in a review's runs
-(`--delay 3` does not remove it). A player started well
-before the frames matter, or a live sensor that is already streaming, does not have it; the
-organizers' short control recordings may.
+**The first seconds of a played bag (v0.6.3: lost; v0.6.4, 24.09: worked through).** Until
+v0.6.3 the first cloud of a played recording arrived, then the next one 2–5 s later in recording
+time, and every such hole reset the scene: the first STOP of the person came at 5.7–9.2 s of
+recording time through ROS against 1.1 s offline. It was blamed on the DDS start-up; a packet
+capture on 24.09 showed it is the player: `ros2 bag play` (Humble) starts its clock, then reads
+min(1000 messages, the whole bag) before its first publish — 1.9 GB for `doubleT_obstacle` — and
+then sends the overdue frames back to back (the first DATA_FRAG left the player 4.13 s after it
+started publishing, clouds 1–46 followed in 0.39 s, then one every 100 ms; with
+`--read-ahead-queue-size 5` the first cloud left at +0.11 s). `--delay 3` sleeps before the clock
+starts and the preload, so it does not help. The node's keep-last-1 input kept only the newest
+cloud of that burst. v0.6.4 holds 40 frames (`input_queue_depth`), takes every waiting frame, and
+works through a backlog one frame every `catchup_step` = 0.3 s of recording from the recording's
+first frame until it is back on the newest; a frame that waits alone is processed at once, as
+before (`catchup_step: 0` restores the newest-only behaviour). In the Docker chain on bags rebuilt
+from the frame cache (4 vCPU, 3 runs per cell, the player as uid 1000 in its own container unless
+said; "gap" = recording time of the second processed frame, "largest gap" within the first 5 s):
+
+| recording, setup | version | gap | largest gap | frames in the first 5 s | first STOP (recording time) | frames processed | scene resets per run | peak RSS |
+|---|---|---|---|---|---|---|---|---|
+| `doubleT_obstacle` (360°) | v0.6.3 | 2.32 s (2.09–2.59) | 2.07 s | 18 (13–26) | 4.02 s (3.19–4.48) | 161 | 1–2 | 182 MB |
+| | **v0.6.4** | **0.38 s** (0.28–0.48) | **0.40 s** | 23 (21–27) | **1.59 s** (1.30–1.99) | 173 | **0** | 434 MB |
+| same, player inside the node container | v0.6.3 / **v0.6.4** | 2.25 / **0.28 s** | 2.06 / **0.30 s** | 22 / 23 | 3.42 / **1.30 s** | 172 / 171 | 1 / **0** | — |
+| same, stock `net.core.rmem_max` 212992 | v0.6.3 / **v0.6.4** | 2.95 / **0.48 s** | 2.69 / **0.34 s** | 16 / 25 | 4.35 / **1.59 s** | 162 / 175 | 1–2 / **0** | 180 / 403 MB |
+| `roundT_doubleT` (120°) | v0.6.3 / **v0.6.4** | 2.02 / **0.28 s** | 2.02 / **0.29 s** | 26 / 40 | — | 223 / 241 of 252 | 1–2 / **0** | 143 / 188 MB |
+| same, stock `rmem_max` | v0.6.3 / **v0.6.4** | 1.78 / **0.39 s** | 0.99 / **0.38 s** | 32 / 37 | — | 228 / 238 | 0–1 / **0** | — |
+
+The node catches up in 1.5–2.2 s of wall time at 360° (at most 2.1–3.7 s of recording behind) and
+0.3–0.7 s at 120°; after that fps (9.3–10) and latency (74–80 ms at 360°, 53–58 ms at 120°) are as
+before. `scripts/console_test.sh` on the two real recordings and `scripts/dry_run.sh` on
+`doubleT_obstacle` pass (largest gap 0.3 s, first STOP +1.3 s); the checker now prints the start
+of the input (frames in the first 5 s, largest gap, first STOP). Not kept: a reader-side Fast DDS
+profile (heartbeat response 0, initial acknack 0, faster announcements) — the first cloud still
+came 2.7 s after the player started; larger socket buffers change nothing (the hole and the fix
+are the same at 212992 and 4 MB). What remains: the player's preload itself (`FAULT` / `NO_INPUT`
+for 2.6–4 s here, longer from a slow disk; nothing on the node's side can shorten it); the
+frames between the catch-up steps are not processed (21–27 of ~50 in the first 5 s at 360°);
+during the burst the node's UDP receive buffer can overflow and a late repair lose one of the
+first 1–3 clouds (the player's writer keeps 10 samples); ~0.25 GB more resident memory at 360°.
+With a live sensor a stall longer than 0.3 s is now worked through at ~3× real time instead of
+jumping to the newest frame. The trackside false alarm at 48–54 m of `roundT_doubleT` (the
+start-frame sensitivity of §0) appeared in 2 of 9 v0.6.3 runs and 3 of 22 v0.6.4 runs.
 
 **Resources of the node container** (`docker stats` every ~0.5 s during the `doubleT_obstacle`
 replay by a uid-1000 player): **~100 % of one core while frames arrive (median of the busy
@@ -1069,7 +1100,7 @@ stage costs the same in the image (Python 3.10, numpy 1.26) as on the host (74 v
 first 100 frames of `doubleT_obstacle`); the ROS path adds ~20–25 ms per 360° frame (message
 conversion, decode — `pointcloud2_to_arrays`, 40 → 9 ms in v0.6.2 — and publishing the markers
 and the corridor cloud). The node skips frames instead of lagging, as designed (keep-last 1):
-over a whole 360° recording it processes 103–142 of 201 frames (the start-up hole included),
+over a whole 360° recording it processes 103–142 of 201 frames (v0.6.3, the start-up hole included; v0.6.4: 171–175),
 7–10 fps in steady state; the 120° recordings run at the full 10 Hz. Captures, node logs and
 the checker output: [`evidence/docker_2026-09-23/`](evidence/docker_2026-09-23/). The jury's
 i7-9700E (8 cores, higher clock) has not been measured.
@@ -1080,7 +1111,7 @@ display (Xvfb, software OpenGL, no GPU), `ros2 topic echo /resense/decision` in 
 container, the bag played as uid 1000 from a third — every command on screen is the one that
 ran. The bag played at 0.5×: RViz renders the 360° cloud in software at 6–10 fps on the same 4
 vCPU. Node log ([`evidence/docker_2026-09-23/rviz_chain_node.log`](evidence/docker_2026-09-23/rviz_chain_node.log)):
-`FAULT` (no input) until the first cloud; a 1.1 s start-up hole (the transport stall above);
+`FAULT` (no input) until the first cloud; a 1.1 s start-up hole (v0.6.3; the player's burst above);
 OBSTACLE at 55.7–56.3 m from its frame 11 to 177; the last frames alternate STOP with CAUTION
 (the object missed in that frame, advisory tracks at 11.6 m and beyond 139 m — the
 `console_test` capture ends the same way, and offline the object is missed in 8 of its 126
