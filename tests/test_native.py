@@ -9,6 +9,7 @@ failure, so the shipped path is always the tested one.
 from __future__ import annotations
 
 import contextlib
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -209,7 +210,7 @@ def test_detector_output_identical(tunnel):
     from resense.config import DetectorConfig
     from resense.detector import Detector
     frames = _frames(tunnel)
-    cfg = DetectorConfig.from_yaml("configs/default.yaml")
+    cfg = DetectorConfig.from_yaml(str(Path(__file__).resolve().parents[1] / "configs" / "default.yaml"))
 
     def run():
         det = Detector(cfg)
