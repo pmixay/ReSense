@@ -151,6 +151,7 @@ def test_drift_monitor_warns_on_a_lasting_tilt_not_on_a_curve(tunnel):
     ("mounted backwards", rot_z(np.pi)),
     ("forward = +x, rolled 2 deg", rot_x(np.radians(2.0)) @ rot_z(-np.pi / 2)),
 ])
+@pytest.mark.synthetic
 def test_calibrator_finds_the_orientation_and_the_detector_works(name, M):
     from resense.synthetic import ObstacleSpec, synthetic_tunnel_frame
     frame, _, _ = synthetic_tunnel_frame(rng=np.random.default_rng(3),

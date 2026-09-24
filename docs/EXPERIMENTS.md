@@ -1,5 +1,55 @@
 # Experiments log
 
+## Sprint 5 local freeze (2026-09-23; no new real-data measurements)
+
+The shipped `track.rails_far_check_enabled`, `lowobj.near_enabled` and
+`accumulation.estimate_speed` are all `false` in both parameter files and the Python defaults.
+The first two are experimental opt-in paths; the LiDAR-only speed estimator is opt-in as well.
+Historical set F results below use **synthetic positives with legacy, detector-derived
+placement on real backgrounds**, not real long-range positives or independent placement.
+No new recall, false-event, FPS or latency measurement on bags/cache or in ROS is claimed by
+this local freeze: the cache/bags and a reachable Docker daemon were unavailable. Open3D was
+also unavailable locally, so Open3D-dependent tests were skipped. Re-evaluate the opt-in paths
+on real recordings before interpreting them as shipped improvements.
+
+## Sprint 4 acceptance check (2026-09-23, no new ROS measurements)
+
+This workspace run had no reachable Docker daemon and no ROS bag/cache files. Therefore Sprint 4
+does not claim a new ROS FPS, ROS latency, dropped-frame count, or obstacle acceptance result. The
+Docker acceptance scripts now check the daemon before starting and report the limitation explicitly;
+`smoke_test.sh` also fails fast when it is run outside the ROS 2 image. Historical ROS numbers in
+§3b remain dated measurements from the earlier Docker environment and must not be read as results
+of this run. Offline latency can be measured with `resense bench --npy <cache>` or
+`scripts/bench_node_path.py --npy <cache>` when a non-empty cache is available; no threshold or
+experimental flag is changed by this check.
+
+## Sprint 3 protocol (no new measured results)
+
+The historical set F results below use `scripts/far_range_eval.py`'s **legacy** placement:
+the synthetic object is anchored on a per-frame track fit and vault correction derived from
+the evaluated background. That can flatter recall on curves and at the envelope edge.
+There is no independent set F run recorded here; the historical set F positives do not
+establish real long-range obstacle generalisation. For a reproducible sensitivity run when
+`new_data` full-rate cache and its stamps are available, first obtain a separately surveyed
+vehicle-frame axis and rail profile (not the detector's far fit), then run e.g.:
+
+```bash
+python scripts/far_range_eval.py --cache /data/cache/new_data --files 46,68,98,140,168,172 \
+  --frames 110 --kinds person,box0.5,box1.0 --start 200 --seed 3 --jobs 4 \
+  --placement-mode independent --axis-center <survey_m> --axis-yaw-deg <survey_deg> \
+  --axis-curvature <survey_per_m> --rail-z0 <survey_m> --rail-grade <survey_m_per_m> \
+  --lateral=-0.8:0.8 --lateral-offset 0.15 --yaw-perturb-deg 10 \
+  --out out/far_independent.json
+```
+
+Create `out/` first. The generated `setF-placement-v1` JSON contains run parameters,
+config and speed-input SHA256s, cache filenames, per-frame truth/visibility and the summary;
+the selected frame stamps are hashed as well. A single fixed vehicle-frame axis over a moving
+curve is an approximation: validate the physical reference for each sequence before using
+its outcomes as evidence about curves. Do not copy the old JSON numbers into it. Repeat with other offsets, yaws, surveyed curves,
+and the same seed for comparisons. Without the cache and independent reference there are no
+new recall, first/sustained range or real-positive generalisation numbers to report.
+
 **Reading order.** §0 is the shipped version (v0.6.2, 23.09) on all real data; §0a is v0.6.1,
 the version the organizers' Q&A answers produced; §1–§1d and §2–§2d are the record of how the
 detector got there (real bags; synthetic obstacles in real frames; long range on the moving

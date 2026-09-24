@@ -10,6 +10,7 @@ messages built from the synthetic ray-cast tunnel.
 from __future__ import annotations
 
 import importlib
+import json
 import sys
 import time
 import types
@@ -191,6 +192,7 @@ def _feed(node, xyz, n, M=None, t0=0.0, topic="/lidar_points", frame_id="hesai_l
 
 @pytest.fixture(scope="module")
 def box_scene():
+    pytest.importorskip("open3d")
     from resense.synthetic import ObstacleSpec, synthetic_tunnel_frame
     frame, labels, _ = synthetic_tunnel_frame(rng=np.random.default_rng(3),
                                               specs=[ObstacleSpec(kind="box", size=(0.6, 0.6, 0.6), distance=40.0)])
@@ -283,6 +285,36 @@ def test_processing_exception_is_fault_then_detector_reset(node_cls, tunnel, mon
     assert pub["/resense/obstacle_detected"][-1].data is False
     assert resets == [1] and node.consecutive_errors == 0
     assert any(level == "error" and "boom" in s for level, s in node.get_logger().lines)
+
+
+def test_fault_snapshot_clears_previous_alarm_outputs(node_cls):
+    """A watchdog/error snapshot must not leave a previous GO/STOP payload latched."""
+    node = node_cls()
+    node.publish_fault(_Msg(frame_id="hesai_lidar", stamp=_Msg(sec=12, nanosec=0)), "input is stale", "STALE")
+    pub = node.published
+    assert pub["/resense/decision"][-1].data == "FAULT"
+    assert pub["/resense/obstacle_detected"][-1].data is False
+    assert pub["/resense/warning"][-1].data is False
+    assert pub["/resense/nearest_distance"][-1].data == -1.0
+    assert pub["/resense/detections"][-1].detections == []
+    assert pub["/resense/markers"][-1].markers[0].action == 3  # Marker.DELETEALL
+    status = json.loads(pub["/resense/status"][-1].data)
+    assert status["decision"] == "FAULT" and "node" not in status
+
+
+def test_watchdog_no_input_and_stale_are_faults_without_open3d(node_cls):
+    """Input guards remain testable on the ROS-message stubs without synthetic data."""
+    node = node_cls()
+    node.t_node_start -= 5.0
+    node.on_watchdog()
+    assert node.published["/resense/decision"][-1].data == "FAULT"
+    assert node.published["/resense/health"][-1].status[0].values[0].value == "NO_INPUT"
+    node.last_frame_wall = time.perf_counter() - 2.0
+    node.last_stale_pub = 0.0
+    node.on_watchdog()
+    assert node.published["/resense/decision"][-1].data == "FAULT"
+    stale = node.published["/resense/health"][-1].status[0]
+    assert stale.values[0].value == "STALE" and stale.level == 3
 
 
 def test_watchdog_reports_a_silent_input(node_cls, tunnel):

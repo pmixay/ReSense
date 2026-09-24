@@ -16,7 +16,7 @@
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Optional
 
 import numpy as np
@@ -488,6 +488,59 @@ def estimate_rails(xyz: np.ndarray, floor: TrackModel, cfg: TrackConfig,
     return RailsFit(best[0], float(c), best[2], len(mids), float(t), xm, mids_abs, wts, **heads)
 
 
+def _check_far_rails(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig, near: RailsFit) -> None:
+    """Replace wall-derived curvature that contradicts independently visible rails.
+
+    Station hall walls can look like a gentle curve while the rails remain straight. A
+    near rail pair fixes the tangent but cannot validate the walls' curvature at 80 m.
+    Use two *independent* slabs beyond the near fit; with no far pair there is no new
+    evidence and the existing range policy applies unchanged. Beyond the last rail
+    slab the contradictory walls cannot validate the axis, so that range is advisory.
+    """
+    if (near.n_slabs < cfg.rails_yaw_min_slabs or near.xm is None or model.axis_sides == 0
+            or model.axis_valid <= cfg.rails_range[1] + cfg.axis_valid_margin):
+        return
+    near_end = cfg.rails_range[1]
+    far_cfg = replace(cfg, rails_range=(near_end, near_end + 2 * (near_end - cfg.rails_range[0])),
+                      rails_yaw_slabs=2, rails_yaw_min_slabs=2)
+    if abs(model.curvature) * far_cfg.rails_range[1] ** 2 / 2 <= cfg.rails_yaw_max_dev:
+        return  # a wall bend this small cannot displace the far corridor appreciably
+    # Remove the unverified curvature from the search coordinates: otherwise the
+    # wall's error can make the real far ridges disappear from the rail profile.
+    tangent = replace(model, curvature=0.0)
+    rails = estimate_rails(xyz, model, far_cfg, model.center, prior=tangent)
+    if rails.score < cfg.rails_min_score or rails.n_slabs < 2 or rails.xm is None:
+        return
+    # The second slab must actually extend to its far end. A short fragment at a
+    # switch must not be assigned the centre of an otherwise empty 25 m slab.
+    end = far_cfg.rails_range[1]
+    tail = xyz[(xyz[:, 0] > end - 5) & (xyz[:, 0] < end)]
+    if tail.size == 0:
+        return
+    height = tail[:, 2] - model.floor_z(tail[:, 0])
+    y_tangent = model.center + np.tan(model.yaw) * tail[:, 0]
+    lateral = tail[:, 1] - y_tangent
+    head = (height > cfg.rails_head_height[0]) & (height < cfg.rails_head_height[1])
+    if any(np.count_nonzero(head & (np.abs(lateral - side * cfg.rails_spacing / 2)
+                                   < cfg.rails_yaw_max_dev)) < 50 for side in (-1, 1)):
+        return
+    error = rails.mids - model.center_y(rails.xm)
+    # Both slabs must disagree in the same direction, beyond the ridge search's
+    # lateral tolerance. A single switch fitting or noisy slab cannot shorten range.
+    if (np.all(np.sign(error) == np.sign(error[0]))
+            and np.min(np.abs(error)) > 0.5 * cfg.rails_bin
+            and np.max(np.abs(error)) > cfg.rails_yaw_max_dev):
+        x = np.concatenate([near.xm, rails.xm])
+        y = np.concatenate([near.mids, rails.mids])
+        w = np.concatenate([near.wts, rails.wts])
+        a, t, c = np.polyfit(x, y, 2, w=np.sqrt(w))
+        if abs(2 * a) <= 1.0 / cfg.walls_min_radius:
+            model.center = float(c)
+            model.yaw = float(np.arctan(t))
+            model.curvature = float(2 * a)
+            model.axis_valid = min(model.axis_valid, end + cfg.axis_valid_margin)
+
+
 def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel] = None) -> TrackModel:
     """Fit floor + rails + boundary-based yaw/curvature for one frame, smoothing against the
     previous model."""
@@ -509,6 +562,7 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
     a_w = cfg.walls_smoothing if prev is not None else 0.0
     t_fixed: Optional[float] = None
     zf = model.floor_z(xyz[:, 0])                  # the bed height of every point, shared by the three steps below
+    rails = None
     if cfg.rails_enabled:
         rails = estimate_rails(xyz, model, cfg, prior.center, prior, floor_z_all=zf)
         model.rail_score = rails.score
@@ -564,5 +618,7 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
         if cfg.axis_max_curvature_rate > 0:
             model.curvature = float(np.clip(model.curvature, prev.curvature - cfg.axis_max_curvature_rate,
                                             prev.curvature + cfg.axis_max_curvature_rate))
+    if cfg.rails_far_check_enabled and rails is not None and cfg.walls_enabled:
+        _check_far_rails(xyz, model, cfg, rails)
     model.floor_verified = verify_floor_extrapolation(xyz, model, cfg, floor_z_all=zf)
     return model

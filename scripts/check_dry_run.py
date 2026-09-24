@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import sys
 
 
@@ -32,7 +33,7 @@ def percentile(values, q):
 
 
 def load(path):
-    """Parse the echo capture, skipping separators and any non-JSON noise."""
+    """Parse frame results, excluding watchdog/error snapshots (not processed frames)."""
     frames, skipped = [], 0
     with open(path, encoding="utf-8") as fh:
         for line in fh:
@@ -44,7 +45,8 @@ def load(path):
             except ValueError:
                 skipped += 1
                 continue
-            if isinstance(obj, dict) and "obstacle" in obj:
+            if (isinstance(obj, dict) and "obstacle" in obj
+                    and (obj.get("decision") != "FAULT" or "node" in obj)):
                 frames.append(obj)
             else:
                 skipped += 1
@@ -89,30 +91,33 @@ def main(argv=None) -> int:
         print(f"FAIL: no status messages parsed from {args.status_jsonl} ({skipped} unparsed lines)")
         return 2
 
-    latencies = [f["node"]["latency_ms"] for f in frames if "node" in f and "latency_ms" in f["node"]]
+    latencies = [f.get("node", {}).get("latency_ms") for f in frames]
+    valid_latencies = [v for v in latencies if isinstance(v, (int, float)) and math.isfinite(v) and v >= 0]
     totals = [f.get("timing_ms", {}).get("total") for f in frames]
     totals = [t for t in totals if t is not None]
     last_node = frames[-1].get("node", {})
     dropped = last_node.get("dropped_frames")
+    if not isinstance(dropped, int):
+        dropped = None
     dropped_settled = dropped
     t0 = frames[0].get("stamp")
     if dropped is not None and t0 is not None and args.settle_s > 0:
         k = next((i for i, f in enumerate(frames) if f.get("stamp") is not None
                   and 0 <= f["stamp"] - t0 and f["stamp"] - t0 >= args.settle_s), None)
         base = frames[k].get("node", {}).get("dropped_frames") if k is not None else dropped
-        dropped_settled = dropped - (base or 0)
+        dropped_settled = dropped - base if isinstance(base, int) else None
     fps = last_node.get("fps")
     alarms = [f for f in frames if f["obstacle"]]
     distances = [f["nearest_distance"] for f in alarms if f.get("nearest_distance") is not None]
 
-    p95 = percentile(latencies, 95)
+    p95 = percentile(valid_latencies, 95)
     print(f"status messages      : {len(frames)}" + (f" ({skipped} lines skipped)" if skipped else ""))
     print(f"alarm frames         : {len(alarms)}")
     if distances:
         print(f"obstacle distance    : {min(distances):.1f} .. {max(distances):.1f} m")
-    if latencies:
-        print(f"latency decode+detect: mean {sum(latencies)/len(latencies):.0f} / "
-              f"p95 {p95:.0f} / max {max(latencies):.0f} ms")
+    if valid_latencies:
+        print(f"latency decode+detect: mean {sum(valid_latencies)/len(valid_latencies):.0f} / "
+              f"p95 {p95:.0f} / max {max(valid_latencies):.0f} ms")
     if totals:
         print(f"detector stage total : mean {sum(totals)/len(totals):.0f} / "
               f"p95 {percentile(totals, 95):.0f} ms")
@@ -121,6 +126,11 @@ def main(argv=None) -> int:
     print(f"fps (last report)    : {fps}")
 
     failures = []
+    if len(valid_latencies) != len(frames):
+        failures.append(f"node.latency_ms missing or invalid in {len(frames) - len(valid_latencies)} "
+                        "status messages: cannot check p95 latency")
+    if any(not isinstance(f.get("node", {}).get("dropped_frames"), int) for f in frames):
+        failures.append("node.dropped_frames missing or invalid in status messages: cannot check input drops")
     if len(frames) < args.min_frames:
         failures.append(f"only {len(frames)} status messages, expected >= {args.min_frames} "
                         "(the node started late or dropped most of the bag)")

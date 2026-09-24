@@ -75,6 +75,7 @@ class TrackConfig:
     rails_yaw_slabs: int = 3                         # slabs between rails_range[0] and rails_range[1]
     rails_yaw_min_slabs: int = 2                     # slabs with a plausible rail pair needed for a yaw estimate
     rails_yaw_max_dev: float = 0.3                   # m, a slab's rail may sit this far from the global rail position
+    rails_far_check_enabled: bool = False            # experimental station-wall curvature correction; opt-in until real-data A/B and timing
     axis_max_yaw_rate: float = 0.003                 # rad per frame (0.17 deg; a train at 15 m/s on R = 700 m yaws 0.12 deg per frame); larger changes are clipped; 0 = off
     axis_max_curvature_rate: float = 1.0e-4          # 1/m per frame, larger changes of the smoothed curvature are clipped; 0 = off
     axis_warmup_frames: int = 5                      # frames after a (re)seed of the track model during which the rate limits do not apply (v0.6)
@@ -259,6 +260,13 @@ class LowObjectConfig:
     straddle_min_width: float = 0.35   # m across the track: trackside devices beside a rail (train stops, lubricators,
                                        # signalling) are mounted along it and narrow across it; an object lying across
     straddle_max_length: float = 0.8   # m along the track      a rail is wide across it and short along it
+    near_enabled: bool = False         # opt-in: real-ride false-positive cost has not been measured
+    near_range: float = 30.0           # m, only where the cross-section is learned from dense returns
+    near_half_width: float = 0.55      # m from the track axis; rail heads/fastenings are near +-0.8 m
+    near_min_excess: float = 0.08      # m above the local bed, not every small bump or flat cover
+    near_min_width: float = 0.25      # m across the track
+    near_min_points: int = 5          # distinct occupied voxels
+    near_max_length: float = 0.75     # m along track; reject cables, guard rails, long drain covers
 
 
 @dataclass

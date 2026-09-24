@@ -321,6 +321,9 @@ def cmd_bench(args):
     for i, frame in _frames(args, cfg):
         res = det.process(frame, ego_speed=ego_speed)
         times.append(res.timing_ms)
+    if not times:
+        source = args.bag or args.npy
+        raise SystemExit(f"resense bench: no input frames found in {source!r}; provide a ROS bag or non-empty cache")
     keys = times[0].keys()
     for k in keys:
         v = np.array([t[k] for t in times])
@@ -356,7 +359,7 @@ def run_cli(argv=None):
     sp.add_argument("--ego-speed", type=float, default=None,
                     help="train speed in m/s given to the detector on every frame (ego_speed_source 'given', "
                          "as the ROS node does with ego_speed_mps / odometry); default: none, the detector "
-                         "estimates it")
+                          "uses the single-frame path unless accumulation.estimate_speed is enabled")
     sp.set_defaults(func=cmd_run)
 
     sp = sub.add_parser("inject", help="inject synthetic obstacles into empty frames")
@@ -391,10 +394,11 @@ def run_cli(argv=None):
     sp.add_argument("--text", action="store_true", help="human-readable summary instead of JSON")
     sp.add_argument("--ego-speed", type=float, default=None,
                     help="train speed in m/s given to the detector on every frame (ego_speed_source 'given'); "
-                         "default: the speed_mps of `inject --sequence` rows, else none (estimated)")
+                          "default: the speed_mps of `inject --sequence` rows, else none (single-frame unless "
+                          "accumulation.estimate_speed is enabled)")
     sp.add_argument("--no-gt-speed", action="store_true",
                     help="do not give the detector the speed_mps of `inject --sequence` rows (single-frame / "
-                         "estimated behaviour on sequences)")
+                         "single-frame by default; estimated only if enabled)")
     sp.set_defaults(func=cmd_eval)
 
     sp = sub.add_parser("summarize", help="headline numbers of a `run --out` JSONL (alarm events, per hour/km, latency); "

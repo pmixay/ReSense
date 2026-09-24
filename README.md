@@ -55,7 +55,7 @@ because "the LiDAR position is not fixed"; and every frame says **how far the pa
 verified clear** and whether the input can be trusted (`/resense/decision`
 GO / CAUTION / STOP / FAULT, `/resense/clear_distance`, `/resense/health`).
 
-Measured on **all 13 759 real frames** of the organizers' data at 10 Hz
+Historical v0.6.3 measurements on **all 13 759 real frames** of the organizers' data at 10 Hz
 ([`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) §0): false alarms on the five obstacle-free
 bags **20 events** (107 alarm frames, 27 STOP episodes; v0.6.1: 30 events, v0.5 logic: 32) and on
 the 20-minute, 13 km ride **47 events, 3.6 per km** (204 frames, 39 episodes; v0.6.1: 82, v0.5:
@@ -66,7 +66,7 @@ switches); the person crossing the track in `doubleT_obstacle` is reported in 58
 frames in which the person is inside the envelope, the first alarm 0.3 s after entering it,
 distance error < 0.35 m; the **object lying across the rail** (0.45 × 0.6 × 0.3 m) in **124 of
 the 126 frames** after the person leaves it (v0.6.1: 2). Long range on the
-moving ride (objects ray-cast into consecutive real frames, no speed input, §2d, v0.6.2): a
+moving ride (**synthetic objects with legacy detector-derived placement** ray-cast into consecutive real frames, no speed input, §2d, v0.6.2): a
 person on straight track is **held from 115 m inward** (median of 6 approaches, per approach
 20–160 m: detected in ≥ 90 % of the frames of every 10 m band from there; in ≥ 90 % of all
 frames from 135 m) and first confirmed at 148 m median (110–169 m, 6 of 6); a trolley first at
@@ -151,7 +151,7 @@ resense eval data/synth
 for b in /data/for_hackathon/*/; do python scripts/cache_frames.py $b /data/cache/$(basename $b) --every 1 --int16 --stamps; done
 python scripts/eval_real.py --cache /data/cache --out out/eval          # false alarms, the labelled person / object, latency
 python scripts/far_range_eval.py --cache /data/cache/new_data --files 46,68,98 --kinds person,box1.0,cable \
-    --start 220 --out out/far.json                                    # objects approaching on the moving ride (set F)
+    --start 220 --out out/far.json                                    # set F: synthetic positives, legacy placement by default
 python scripts/mine_objects.py out/eval --bag new_data                  # every confirmed object of a ride, by cause
 ```
 
@@ -344,6 +344,15 @@ is forwarded to `scripts/check_dry_run.py`, which holds the thresholds (`--expec
 ...) and can also run on a capture someone else recorded. Raw output stays in `$OUT` (default
 `out/dry_run/`): `status.jsonl` and `node.log`.
 
+**Sprint 4 acceptance availability.** `dry_run.sh`, `console_test.sh`, `build.sh` and the demo
+wrappers require both the Docker CLI and a reachable Docker daemon; they fail fast with the daemon
+diagnostic and exit 3 when that prerequisite is absent. `smoke_test.sh` is an in-image ROS check
+and reports when it is accidentally invoked on a host without `ros2`. A missing bag/cache is also
+reported before an acceptance run. In an environment without the daemon and recordings, no ROS
+FPS or latency result is produced; the dated historical measurements in `docs/EXPERIMENTS.md` are
+not a result of the current run. Offline `resense bench --npy <cache>` remains available when a
+cache is supplied and gives a clear error for an empty cache.
+
 ### Dataset-free smoke test (what CI runs)
 
 The same procedure runs on every push without the dataset. `scripts/make_smoke_bag.py` writes a
@@ -405,8 +414,11 @@ input queue dropped (estimated from gaps in the header stamps).
 | `calibration.*` | on, 5 frames | automatic mount calibration (orientation, roll, pitch, yaw > 3°) |
 | `track.rails_*` | | rail-ridge template (gauge 1.52 m) for the track axis and rail-head level |
 | `track.walls_*` | band 1.6–2.8 m | tunnel-boundary fit for yaw / curvature; `axis_valid_*` = how far the corridor is trusted |
+| `track.rails_far_check_enabled` | false | Sprint 1 experimental far-rail cross-check; opt-in pending real-recording A/B and timing |
 | `gauge.profile` | \|dy\| ≤ 1.05 m, 0.12–3.0 m | **the organizers' 2.1 × 3.0 m train envelope**; `warning_margin` 0.35 m = advisory zone; `edge_margin_per_100m` 0.15 m |
 | `lowobj.*` | on, ≤ 60 m | low objects on the rails (bumps above the learned bed that rise ≥ 3 cm above the rail head) |
+| `lowobj.near_enabled` | false | Sprint 2 experimental central near-bed path; opt-in pending real-ride false-event evaluation |
+| `accumulation.estimate_speed` | false | LiDAR-only speed estimation opt-in; without a supplied speed, use single-frame detection |
 | `cluster.far_*` | 0.6 m tall, ≤ 3 m long | what may alarm beyond the height reference (far field of straight track) |
 | `cluster.eps / range_scale / voxel` | 0.35 / 40 / 0.05 | range-adaptive DBSCAN: ε(r) = eps·(1 + r/40 m) |
 | `cluster.*_max_*`, signatures | | infrastructure filters (thin hardware, low hardware, wall-like, column, floating, edge, wall face); thin objects hanging near the axis are never demoted |

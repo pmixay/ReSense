@@ -99,7 +99,7 @@ fallback, `orientation`, `roll_deg`, `pitch_deg`, `yaw_deg`, `height`, `lateral`
 `message`); the frozen values can be copied into `sensor.roll_deg/pitch_deg/yaw_deg` or given
 to the node as the launch arguments `mount_roll_deg/…` and `sensor_forward/left/up`. Real frames
 rotated by known mounts (roll 3°, pitch −4°, the four orientation changes) are recovered to
-the recorded mount (EXPERIMENTS.md §6). Cost: one extra rail/bed measurement per frame during
+the recorded mount (EXPERIMENTS.md §6). Cost: one extra rail/bed measurement every 10th frame during
 the first ~20 s and every 50th frame afterwards.
 
 The track model is seeded again after the correction; since v0.6 its rate limits
@@ -129,6 +129,21 @@ which pulled the roof (h ≈ 4 m) into the polygon top and the far rails into it
 (EXPERIMENTS.md §1b: 503 of the 1001 v0.3 false-alarm frames lay beyond the fit + 20 m); the
 verification of §3.1 is what extends the corridor beyond that, where the side structures
 confirm the extrapolation.
+
+**Experimental far-rail cross-check (Sprint 1; disabled by default).** With
+`track.rails_far_check_enabled: true`, a wall-derived bend that would move the corridor
+appreciably is compared with rail-pair midpoints in two further slabs beyond the near
+4–30 m rail fit (up to 82 m with the default rail range). Both sides must have rail-head
+returns near the end of that range; if the far pair contradicts the wall-derived axis in
+the same direction in both slabs, a quadratic through the near and far rail midpoints
+replaces the estimated centre, yaw and curvature. The trusted axis then ends 15 m beyond
+the far rail range: beyond it the corridor is advisory. Without the far pair this check
+does nothing; without a near rail pair `gauge.no_rail_range` still limits the far corridor
+to advisory at 40 m. This option is supported by a hand-built station/edge regression
+only. **No full real-recording A/B or per-frame latency measurement exists** for it, so
+the CLI and ROS configurations both ship with the option off and retain the baseline
+axis model. It needs real-data false-event, obstacle-recall and runtime evaluation before
+activation.
 
 ### 3.2 Clearance-gauge corridor (`resense/gauge.py`, section `gauge`)
 
@@ -290,9 +305,11 @@ whose top is 1–8 cm above the rail head, and no single-frame threshold on heig
 or voxel count separates them from a small object. (c) Requiring every candidate point to be
 ≥ 3 cm above the rail head leaves **2 false events on the 13 worst files of the ride** and still
 finds a 10 cm box lying on a rail head at 10–25 m (synthetic tunnel, `tests/test_envelope.py`).
-The default is (c): a safety function that stops the train every 1.5 s on a clean track is not
-usable. `min_top: -1` and `min_point_top: -1` restore the bed-level policy for a line with a
-clean bed.
+The rail-head path keeps (c): a safety function that stops the train every 1.5 s on a clean
+track is not usable. The opt-in central near-bed experiment below is disabled in the shipped
+configuration until its false-positive cost is measured on the real ride.
+`min_top: -1` and `min_point_top: -1` restore the unrestricted bed-level policy for a line
+with a clean bed.
 
 **Objects straddling the envelope floor (v0.6.2, `lowobj.straddle_*`).** The organizers' object
 lying across the right rail of `doubleT_obstacle` (0.45 × 0.6 × 0.3 m, 56 m) returns ~21 points,
@@ -316,6 +333,20 @@ every candidate must be 3 cm above the rail head — a 3-point sliver, and neith
    without the shape rule added 49 false events on the ride;
 4. a straddling cluster replaces the low-stage slivers it overlaps, and yields only to a
    corridor cluster that is itself reported (one detection per object).
+
+**Central near-bed objects (Sprint 2, opt-in; not production default).** Set
+`lowobj.near_enabled: true` explicitly to test a separate low path accepting anomalies entirely in
+`|dy| ≤ near_half_width = 0.55 m`, within `near_range = 30 m`, only while the rail pair is
+locked and the *central* bed has at least `local_min_points` returns in the same 2 m bin.
+The excess over the locally offset bed template must exceed `near_min_excess = 0.08 m`;
+clustering uses the existing tight low radius and needs ≥ 5 voxels, ≥ 0.25 m across the
+track and ≤ 0.75 m along it. These clusters can remain below the rail head. The existing
+rail-head point-height rule and the straddle rules are unchanged. The central band excludes
+rail heads and their fastenings; the length/width/excess filters exclude long drain covers,
+linear hardware and small fluctuations. The existing 5-hit low-object confirmation and
+foot-of-corridor suppression apply. A compact inductor or short raised cover with the
+same 3-D returns as a foreign object cannot be distinguished by this geometry alone;
+the false-event cost on the real ride must be measured before enabling it in production.
 
 Result (EXPERIMENTS.md §0): the object in **118 of the 126 frames after the person leaves it** (124 since the v0.6.3 hold over one missed frame)
 and 121 of 185 overall (its own detection; v0.6.1: 2), +1 event on the five empty bags and +1 on the ride.
@@ -365,9 +396,10 @@ not be smeared over half a second and is dense enough anyway.
 **Ego speed.** `Detector.process(frame, ego_speed=None)` takes the train speed in m/s when the
 caller knows it (the ROS node's parameter or odometry topic); a given speed always wins and is
 reported as `ego_speed_source = "given"` (the estimator is then skipped, saving 7–12 ms per
-real frame, so `ego_speed_estimate` is null). Without it the detector estimates the speed from the
-LiDAR stream alone (`"estimated"`), or declares it unknown (`"none"`), in which case **nothing is
-merged**: a wrong shift smears, and the v0.3 single-frame pipeline is the safe fallback. Below
+real frame, so `ego_speed_estimate` is null). Without it and with the shipped
+`accumulation.estimate_speed: false`, the source is `"none"` and **nothing is merged**.
+Opting in to the LiDAR estimator may instead yield `"estimated"` when confident, or `"none"`
+when it is uncertain: a wrong shift smears, and the single-frame pipeline is the safe fallback. Below
 `accumulation.min_speed` (1 m/s, given or estimated) nothing is merged either (v0.5): a stopped
 train gains no density from identical frames (the union lands on the same voxels) but loses
 marginal objects to the scaled count thresholds, and in v0.4 the tracks cue (≥ 3 persistent
@@ -463,8 +495,8 @@ the sensor, measured to the object's nearest point). Confirmed tracks in the adv
 distance, lateral offset, size, confidence, age, the track model and per-stage timing) is the
 status JSON. Since v0.4 it also carries `ego_speed` (the value used, or null),
 `ego_speed_source` (`given` / `estimated` / `none`), `n_accumulated`, and for diagnostics
-`ego_speed_estimate` / `ego_speed_confidence` (the estimator's own opinion, also when a speed
-is given) and `track.floor_verified`; all existing keys are unchanged.
+`ego_speed_estimate` / `ego_speed_confidence` (the estimator's own opinion only when explicitly
+enabled and no speed is given) and `track.floor_verified`; all existing keys are unchanged.
 
 Cost of the rule: five frames of latency (0.5 s, 11 m at 80 km/h; three frames and 6.7 m before v0.6.2) for an object that appears inside the strict gauge; nothing extra for one that was already tracked while it approached from the side or from beyond the trusted range — the persistence clock runs while the track is advisory, and the zone history then decides (six frames, 0.6 s, when it was advisory for five or more hits first) — a far object beyond the trusted range that is then approached, or a person stepping in from the side — because the zone history needs 60 % of the last ten hits inside; the alarm also lingers four frames after the object leaves the gauge (the three "false" frames of the `doubleT_obstacle` evaluation, EXPERIMENTS.md §1) in exchange for
 suppressing single-frame noise. Persistence is applied before the alarm, not after, so the
@@ -512,6 +544,7 @@ the CLI and the ROS node. The ones that change behaviour visibly:
 | `gauge.range_max` | 250 m | how far the corridor is evaluated |
 | `track.walls_*`, `track.axis_valid_margin` | band 1.6–2.8 m, +15 m | how far the curved corridor is trusted; beyond it only warnings |
 | `track.rails_yaw_enabled`, `rails_yaw_slabs` | true, 3 | yaw of the axis from the rail pair (off = free quadratic through the walls, the v0.3 way: 0.8–1.0° yaw error on curve frames) |
+| `track.rails_far_check_enabled` | false | experimental far-rail cross-check for station-wall curvature (§3.1); opt-in, real-data A/B and timing pending |
 | `track.axis_max_yaw_rate`, `axis_max_curvature_rate` | 0.003 rad, 1e-4 m⁻¹ per frame | how fast the corridor may swing between frames; 0 = unlimited |
 | `track.axis_sides_max_disagreement`, `axis_disagree_range`, `axis_one_side_range` | 6.7e-4 m⁻¹, 60 m, 120 m | trusted range when the two boundaries disagree or only one is seen |
 | `track.floor_valid_margin` | 20 m (60 in v0.3) | how far beyond the fitted bed the height reference is trusted without verification |
@@ -539,6 +572,7 @@ the CLI and the ROS node. The ones that change behaviour visibly:
 | `cluster.signature_min_lateral`, `column_min_width` (v0.6) | 0.6 m, 0.25 m | where the column / floating signatures apply (hanging cables near the axis are obstacles) |
 | `calibration.enabled`, `frames` × `obs_spacing`, `provisional_min_deg`, `min_yaw_deg`, `drift_warn_deg` / `drift_window` (v0.6.1) | true, 20 × 10 frames, 2.5°, 3°, 1.5° / 10 checks | mount auto-calibration (final tilt over 20 s, provisional only for a clearly tilted rig); `sensor.roll_deg/pitch_deg/yaw_deg` freeze a known mount |
 | `lowobj.straddle_enabled`, `straddle_min_top`, `straddle_min_width`, `straddle_max_length`, `straddle_band` (v0.6.2) | true, 0.10 m, 0.35 m, 0.8 m, 0.30 m | an object across a rail, straddling the envelope floor, clustered whole (§3.3b) |
+| `lowobj.near_enabled`, `near_range`, `near_half_width`, `near_min_excess`, `near_min_width`, `near_min_points`, `near_max_length` | false, 30 m, 0.55 m, 0.08 m, 0.25 m, 5, 0.75 m | opt-in central near-bed path; no real-ride FP measurement yet (§3.3b) |
 | `lowobj.max_length`, `max_width` | 1.5 m, 2.2 m | the largest low cluster along / across the track; 2.2 m (the envelope's width, 1.6 m until 23.09) keeps a person lying across the track; identical on all real frames (EXPERIMENTS.md §0) |
 | `gauge.no_rail_range` (v0.6.2) | 40 m | without a rail pair in the near range clusters beyond it are advisory and the verified-clear distance is capped there (§3.2); 0 = off |
 | `health.*` (v0.6) | see §4b | thresholds of the guards; they never change a detection |
@@ -547,11 +581,12 @@ the CLI and the ROS node. The ones that change behaviour visibly:
 
 v0.6–v0.6.2 additions first; the v0.5 list follows.
 
-* **Low objects below the rail head are not alarms by default** (§3.3b): a 30 × 30 × 10 cm box
-  lying on the bed between the rails is geometrically the same as the bed fixtures the train
-  passes over every few tens of metres; it is reported only when it reaches the rail-head plane
-  (e.g. lying on a rail) by ≥ 3 cm with several points. On a line with a clean bed,
-  `lowobj.min_top: -1` with `min_point_top: -1` reports it. An object lying *across* a rail
+* **Low objects below the rail head** (§3.3b): the shipped default does not report compact
+  objects on the bed between the rails. The opt-in central near-bed path can report them
+  within 30 m, provided the local bed is observed and the rails are locked. A fixture with
+  the same geometry can still cause a false alarm; its real-ride FP cost is unmeasured.
+  Beyond that range or beside a rail the original rail-head rule applies. On a line with a clean bed,
+  `lowobj.min_top: -1` with `min_point_top: -1` reports all bed bumps. An object lying *across* a rail
   (the organizers' object in `doubleT_obstacle`) is reported since v0.6.2 (§3.3b: 124 of the
   126 frames after the person leaves it), but only while the bed is seen (≤ ~50–60 m) and only
   when it is ≥ 0.35 m across the track: an object lying *along* a rail is indistinguishable from

@@ -59,7 +59,8 @@ resense:
     rails_yaw_enabled: true
     rails_yaw_slabs: 3
     rails_yaw_min_slabs: 2
-    rails_yaw_max_dev: 0.3
+    rails_yaw_max_dev: 0.3         # near slab ridge tolerance; also the far-rail disagreement needed to replace a station-wall bend
+    rails_far_check_enabled: false # experimental station-wall axis correction; opt-in until real-data A/B and timing
     axis_max_yaw_rate: 0.003
     axis_max_curvature_rate: 0.0001
     axis_warmup_frames: 5          # v0.6: no rate limits for this many frames after a (re)seed of the track model
@@ -207,6 +208,13 @@ resense:
     straddle_band: 0.30            # m above the envelope floor from which corridor points join that clustering
     straddle_min_width: 0.35       # m across the track (trackside devices beside a rail are narrow across it)
     straddle_max_length: 0.8       # m along the track (an object lying across a rail is short along it)
+    near_enabled: false            # opt-in until real-ride false-positive cost is measured
+    near_range: 30.0               # within the dense template range
+    near_half_width: 0.55          # exclude rail heads and fastenings at +-0.8 m
+    near_min_excess: 0.08          # m above local bed
+    near_min_width: 0.25           # m across track
+    near_min_points: 5             # occupied voxels
+    near_max_length: 0.75          # m along track, reject linear infrastructure
   calibration:                     # v0.6: automatic mount calibration (resense/calibration.py)
     enabled: true
     frames: 20                       # v0.6.1: final tilt = median of 20 observations ...

@@ -202,15 +202,15 @@ class Detector:
         xyz = self._fit_track(frame.xyz)
         t1 = time.perf_counter()
         cand, dy_all, h_all, mask, (valid, axis_valid, floor_valid) = self._corridor(xyz, frame.intensity)
-        cand, straddle = self._low_stage(xyz, frame.intensity, dy_all, h_all, mask, cand,
-                                         min(axis_valid, floor_valid))
+        cand, straddle, near = self._low_stage(xyz, frame.intensity, dy_all, h_all, mask, cand,
+                                               min(axis_valid, floor_valid))
         t2 = time.perf_counter()
         dt = self._frame_dt(frame.stamp)
         speed, source, est = self._speed(xyz, dy_all, h_all, dt, ego_speed)
         t3 = time.perf_counter()
         merged, n_acc = self._accumulate(cand, speed, dt)
         t4 = time.perf_counter()
-        clusters = self._cluster(merged, n_acc, valid, floor_valid, straddle)
+        clusters = self._cluster(merged, n_acc, valid, floor_valid, straddle, near)
         t5 = time.perf_counter()
         gauge, warn = self._confirm(clusters, speed, dt)
         t6 = time.perf_counter()
@@ -280,17 +280,18 @@ class Detector:
         the polygon bottom, where the bed is observed (``resense/lowobj.py``); they are appended
         to the candidates with ``low`` set. Also returns the v0.6.2 straddle candidates (every
         bed anomaly plus the corridor points just above the envelope floor, so that an object
-        lying across a rail is clustered whole), or ``None``."""
+        lying across a rail is clustered whole), and the central near-bed candidates."""
         cfg = self.cfg
         self.low_range = 0.0
         if not cfg.lowobj.enabled:
-            return cand, None
+            return cand, None, None
         X_all = xyz[:, 0]
         if self.track.rail_score >= cfg.track.rails_min_score:
             self.bed.update(X_all, dy_all, h_all)
         h_bottom = float(np.asarray(cfg.gauge.profile, dtype=np.float64)[:, 1].min())
-        lidx, self.low_range, lall = low_candidates(X_all, dy_all, h_all, self.bed, cfg.lowobj,
-                                                    cfg.gauge.range_min, bed_valid, h_bottom, with_all=True)
+        lidx, self.low_range, lall, nidx = low_candidates(X_all, dy_all, h_all, self.bed, cfg.lowobj,
+                                                          cfg.gauge.range_min, bed_valid, h_bottom,
+                                                          with_all=True, with_near=True)
         lidx = lidx[~mask[lidx]] if lidx.size else lidx
         straddle = None
         if cfg.lowobj.straddle_enabled and lall.size:
@@ -305,8 +306,14 @@ class Detector:
         if lidx.size:
             ones = np.ones(lidx.size, dtype=bool)
             cand = cand.concat(Candidates(xyz=xyz[lidx], dy=dy_all[lidx], h=h_all[lidx], in_gauge=ones,
-                                          intensity=intensity[lidx], idx=lidx, low=ones))
-        return cand, straddle
+                                           intensity=intensity[lidx], idx=lidx, low=ones))
+        near = None
+        if nidx.size and self.track.rail_score >= cfg.track.rails_min_score:
+            nidx = nidx[~mask[nidx]]
+            ones = np.ones(nidx.size, dtype=bool)
+            near = Candidates(xyz=xyz[nidx], dy=dy_all[nidx], h=h_all[nidx], in_gauge=ones,
+                              intensity=intensity[nidx], idx=nidx, low=ones)
+        return cand, straddle, near
 
     # -- 3 -------------------------------------------------------------------------------------
     def _speed(self, xyz, dy_all, h_all, dt: float, ego_speed: Optional[float]):
@@ -349,7 +356,7 @@ class Detector:
 
     # -- 5 -------------------------------------------------------------------------------------
     def _cluster(self, cand: Candidates, n_acc: int, valid: float, floor_valid: float,
-                 straddle: Optional[Candidates]) -> List[Cluster]:
+                 straddle: Optional[Candidates], near: Optional[Candidates] = None) -> List[Cluster]:
         """Voxelise, cluster, describe and filter: the corridor candidates (count thresholds
         scaled for merged frames), the low candidates on their own with a tighter radius, the
         straddle candidates; then the low clusters that are the foot or the lower part of a
@@ -377,6 +384,15 @@ class Detector:
             straddling = _clusters_of(straddle, lcfg, axis_valid=valid, low=straddle.low, low_cfg=scfg)
             # a straddling cluster is the whole of what the point-wise low stage saw a slice of
             lows = [c for c in lows if not any(_overlap(c, k) for k in straddling)] + straddling
+        if near is not None and len(near):
+            ncfg = replace(cfg.lowobj, min_top=-1.0, min_width=cfg.lowobj.near_min_width,
+                           min_points=cfg.lowobj.near_min_points, max_length=cfg.lowobj.near_max_length)
+            central = _clusters_of(near, lcfg, axis_valid=min(valid, cfg.lowobj.near_range),
+                                   low=near.low, low_cfg=ncfg)
+            # Candidates are restricted to the inner band before clustering; avoid a
+            # second track for anything already accepted by the rail/straddle policies.
+            central = [c for c in central if not any(_overlap(c, k) for k in lows)]
+            lows += central
         if lows:
             keep = self._not_part_of_corridor_objects(lows, straddling, clusters, corr)
             clusters = sorted(clusters + keep, key=lambda c: c.distance)

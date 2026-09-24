@@ -247,6 +247,13 @@ EXPERIMENTS.md §2d); `scripts/mine_objects.py` lists every confirmed object of 
 
 ## Synthetic obstacles (`resense inject`)
 
+Set F (`scripts/far_range_eval.py`) positives are **ray-cast synthetic objects** on real
+empty backgrounds, not real long-range obstacle labels. Its `--placement-mode independent`
+accepts an externally measured fixed axis and rail profile in the vehicle frame; do not
+derive those parameters from the detector's far-field fit on the evaluated frames. The
+report's per-frame `gt` rows carry `reference`, `perturbation` and `base_z`, even when an
+object has zero returns.
+
 `resense inject` ray-casts catalogue objects into empty frames with the sensor's own angular
 grid (occlusion-correct, range-dependent dropout beyond 120 m scaled by reflectivity). Objects
 are selected by name with `--kinds`; the catalogue is `resense.synthetic.OBJECT_CATALOGUE`:
@@ -292,7 +299,7 @@ for kind in person box0.5 box1.0 plank trolley; do for seed in 1 2 3; do
   resense inject --npy /data/cache/roundT_doubleT --every 10 --out data/SEQ_${kind}_s$seed --kinds $kind \
       --distances 10:250 --negative-fraction 0.2 --sequence 8 --speed 15 --seed $seed
   resense eval data/SEQ_${kind}_s$seed --repeat 1 --text                 # rows' speed_mps given to the detector
-  resense eval data/SEQ_${kind}_s$seed --repeat 1 --no-gt-speed --text   # estimator / single-frame path
+  resense eval data/SEQ_${kind}_s$seed --repeat 1 --no-gt-speed --text   # single-frame by default; estimator only if explicitly enabled
 done; done
 
 # robustness: augmented backgrounds (5 % dropout, 1 cm range noise, ±0.3° yaw/pitch, ±0.2° roll, 10 % intensity jitter)
@@ -302,8 +309,10 @@ resense inject --npy /data/cache/<bag> --every 10 --out data/synth_aug/<bag> --a
 `resense eval` gives the detector the `speed_mps` of `inject --sequence` rows on every frame
 (`ego_speed_source: given`, the way the ROS node passes `ego_speed_mps` / odometry);
 `--ego-speed V` forces a constant speed on any source, `--no-gt-speed` withholds the rows'
-speed. Static sets carry `speed_mps: 0` and get nothing (the estimator runs, as in
-`resense run`). `resense run` and `resense bench` take the same `--ego-speed V`.
+speed. Static sets carry `speed_mps: 0` and get nothing: the shipped default is single-frame
+(`accumulation.estimate_speed: false`), as in `resense run` without a given speed. The LiDAR-only
+estimator runs only when explicitly enabled. `resense run` and `resense bench` take the same
+`--ego-speed V`.
 
 `--sequence N --speed V` keeps the same background frame and moves the objects by
 `V × tracking.frame_dt` per step (`d − k·V·0.1` for k = 0..N−1), stopping early if an object

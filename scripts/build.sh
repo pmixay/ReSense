@@ -6,6 +6,8 @@
 #                                   # (from before the 2025 ROS apt key rotation) fails apt-get update
 set -euo pipefail
 cd "$(dirname "$0")/.."
+. "$(dirname "${BASH_SOURCE[0]}")/require_docker.sh"
+require_docker_daemon
 args=(-t resense:latest --build-arg "WITH_TOOLS=${WITH_TOOLS:-0}" -f docker/Dockerfile)
 if [ "${PULL:-0}" = "1" ]; then
   args+=(--pull)

@@ -79,6 +79,8 @@ def main():
         dec.append(1e3 * (t1 - t0))
         tot.append(1e3 * (t2 - t0))
         n_pts.append(msg.width)
+    if not tot:
+        raise SystemExit(f"bench_node_path: no input frames found in {a.npy!r}; provide a non-empty cache")
     dec, tot = np.array(dec), np.array(tot)
     print(f"{os.path.basename(os.path.normpath(a.npy))}: {len(tot)} frames, {int(np.mean(n_pts))} slots per message")
     print(f"  decode + crop + rotate: mean {dec.mean():.1f} ms, p95 {np.percentile(dec, 95):.1f} ms")

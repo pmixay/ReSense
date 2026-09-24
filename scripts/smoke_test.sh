@@ -16,8 +16,13 @@
 # Environment: RATE (bag playback rate, default 0.5 because CI runners are slow), DELAY (s the
 # player waits before publishing, default 3), OUT (capture directory, default /tmp/smoke_out),
 # CHECK_ARGS (overrides the acceptance thresholds).
-set -uo pipefail
+set -euo pipefail
 cd "$(dirname "$0")/.."
+if ! command -v ros2 >/dev/null 2>&1; then
+  echo "ERROR: ros2 is unavailable. Run smoke_test.sh inside the built ROS 2/Docker image;" >&2
+  echo "       this script cannot provide a ROS acceptance result on the host." >&2
+  exit 3
+fi
 BAG="${1:?usage: scripts/smoke_test.sh <bag directory> [<second bag directory>]}"
 BAG2="${2:-}"
 RATE="${RATE:-0.5}"
@@ -30,14 +35,18 @@ LAUNCH_PID=$!
 trap 'kill $(jobs -p) 2>/dev/null || true' EXIT
 
 # wait for the node before playing (the launch file's own bag:= argument races node startup)
+READY=0
 for _ in $(seq 1 90); do
-  if ros2 topic list 2>/dev/null | grep -qx /resense/status; then break; fi
+  if ros2 topic list 2>/dev/null | grep -qx /resense/status; then
+    READY=1
+    break
+  fi
   if ! kill -0 "$LAUNCH_PID" 2>/dev/null; then
     echo "detector exited during startup:" >&2; cat "$OUT/node.log" >&2; exit 3
   fi
   sleep 1
 done
-if ! ros2 topic list 2>/dev/null | grep -qx /resense/status; then
+if [ "$READY" -ne 1 ]; then
   echo "detector never advertised /resense/status:" >&2; cat "$OUT/node.log" >&2; exit 3
 fi
 
