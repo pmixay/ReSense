@@ -264,7 +264,7 @@ class LowObjectConfig:
     near_range: float = 30.0           # m, only where the cross-section is learned from dense returns
     near_half_width: float = 0.55      # m from the track axis; rail heads/fastenings are near +-0.8 m
     near_min_excess: float = 0.08      # m above the local bed, not every small bump or flat cover
-    near_min_width: float = 0.25      # m across the track
+    near_min_width: float = 0.24      # m observed width; a ray-cast 0.30 m box is ~0.245 m at 20 m
     near_min_points: int = 5          # distinct occupied voxels
     near_max_length: float = 0.75     # m along track; reject cables, guard rails, long drain covers
 

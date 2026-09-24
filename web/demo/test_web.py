@@ -20,6 +20,10 @@ RVIZ = os.path.join(ROOT, "ros2_ws", "src", "resense_ros", "rviz", "resense.rviz
 FOX = os.path.join(ROOT, "web", "foxglove_layout.json")
 LABEL_TOOL = os.path.join(ROOT, "web", "label_tool.html")
 PRESENTATION = os.path.join(ROOT, "docs", "presentation", "ReSense_LCT2026.pptx")
+MONTSERRAT = (
+    os.path.join(ROOT, "web", "assets", "fonts", "montserrat-cyrillic.woff2"),
+    os.path.join(ROOT, "web", "assets", "fonts", "montserrat-latin.woff2"),
+)
 RAW_TOPICS = ("/lidar_points", "/sensing/lidar/hesai128/pointcloud")
 
 
@@ -150,8 +154,11 @@ def test_dashboard_replays_jsonl_in_chromium(tiny_run, tmp_path):
     r = check_dashboard.check(out, shot, None, speed=10.0, min_dist=40.0, max_dist=72.0, timeout_s=60.0)
     assert r["ok"], r["errors"]
     assert r["frames"] == 14
-    assert r["observed"][0][1].startswith("PATH CLEAR")
-    assert r["nearest_min_m"] is not None and 40.0 <= r["nearest_min_m"] <= 72.0
+    assert r["observed"][0][1].startswith("ПУТЬ СВОБОДЕН")
+    # A confirmed track is intentionally held for one missed frame and projected one step
+    # closer (4 m in this synthetic run), so the last displayed distance can be just below
+    # the acceptance window used by check().
+    assert r["nearest_min_m"] is not None and 36.0 <= r["nearest_min_m"] <= 72.0
     assert os.path.getsize(shot) > 10_000
     assert not r["errors"]
 
@@ -176,7 +183,7 @@ def test_dashboard_rejects_garbage_lines(tmp_path):
         page.wait_for_function("window.resense !== undefined")
         n = page.evaluate("window.resense.loadText(%s, 'x.jsonl')" % json.dumps(text))
         assert n == 1
-        assert check_dashboard.banner_text(page) == "OBSTACLE  55.6 m"
+        assert check_dashboard.banner_text(page) == "ПРЕПЯТСТВИЕ  55.6 м"
         assert page.inner_text("#n-dropped").startswith("2")       # node stats are shown when present
         assert "notice" in page.get_attribute("#node-card", "class")
         b.close()
@@ -202,11 +209,87 @@ def test_dashboard_builtin_demo_and_summary():
             "nearest_m": pytest.approx(40.0), "max_detect_ms": 49,
         }
         assert page.inner_text("#s-alarms") == "1 / 36"
-        assert page.inner_text("#s-nearest") == "40.0 m"
-        assert page.inner_text("#decision") == "GO"
-        assert page.inner_text("#health") == "ok"
+        assert page.inner_text("#s-nearest") == "40.0 м"
+        assert page.inner_text("#decision") == "ДВИЖЕНИЕ"
+        assert page.inner_text("#health") == "норма"
         assert page.is_enabled("#export-report")
         b.close()
+
+
+COLUMN_BOTTOMS = """() => { const r = s => document.querySelector(s).getBoundingClientRect();
+    return [r('.visual-column > :last-child').bottom, r('.side-column > :last-child').bottom]; }"""
+
+
+def test_dashboard_desktop_columns_end_together_and_cab_view_marks_the_obstacle():
+    """Desktop layout: no empty block under the shorter column (the cab view and the event log take up
+    the difference), and the cab view draws the confirmed obstacle with its distance and a close-up."""
+    if not _browser_available():
+        pytest.skip("playwright + chromium not available")
+    from playwright.sync_api import sync_playwright
+    import check_dashboard
+    with sync_playwright() as p:
+        b = _launch(p)
+        for width, height in ((1366, 768), (1600, 1000), (1920, 1080)):
+            page = b.new_page(viewport={"width": width, "height": height})
+            page.goto("file://" + check_dashboard.INDEX, wait_until="domcontentloaded")
+            page.wait_for_function("window.resense !== undefined")
+            page.click("#demo")
+            page.evaluate("window.resense.pause(); window.resense.seek(30)")   # STOP, person at 79 m
+            left, right = page.evaluate(COLUMN_BOTTOMS)
+            assert abs(left - right) <= 1, (width, left, right)
+            cab = page.evaluate("window.resense.state.cab")
+            assert cab["width"] > 800 and cab["height"] >= 360
+            (box,) = cab["boxes"]
+            assert box["zone"] == "gauge" and box["label"] == "ПРЕПЯТСТВИЕ · 79.0 м"
+            assert 0 <= box["x0"] < box["x1"] <= cab["width"] and 0 <= box["y0"] < box["y1"] <= cab["height"]
+            # the person stands on the track axis: its box is within the middle fifth of the view
+            assert abs((box["x0"] + box["x1"]) / 2 - cab["width"] / 2) < cab["width"] / 10
+            assert cab["clearEnd"] == pytest.approx(79.0, abs=0.1)
+            assert cab["inset"] and cab["inset"]["zone"] == "gauge"
+            page.evaluate("window.resense.seek(59)")                           # GO again
+            cab = page.evaluate("window.resense.state.cab")
+            assert cab["boxes"] == [] and cab["inset"] is None and cab["clearEnd"] == pytest.approx(145.0)
+            page.close()
+        b.close()
+
+
+def test_dashboard_cab_view_on_the_real_node_stream():
+    """The node's /resense/status stream from the Docker dry run on doubleT_obstacle: the fitted bed
+    profile (floor_coef) places the 56 m object in the cab view."""
+    if not _browser_available():
+        pytest.skip("playwright + chromium not available")
+    import gzip
+    from playwright.sync_api import sync_playwright
+    import check_dashboard
+    text = gzip.open(os.path.join(ROOT, "docs", "evidence", "docker_2026-09-23", "obstacle_status.jsonl.gz"), "rt").read()
+    with sync_playwright() as p:
+        b = _launch(p)
+        page = b.new_page(viewport={"width": 1600, "height": 1000})
+        page.goto("file://" + check_dashboard.INDEX, wait_until="domcontentloaded")
+        page.wait_for_function("window.resense !== undefined")
+        assert page.evaluate("t => window.resense.loadText(t, 'obstacle_status.jsonl')", text) == 103
+        idx = page.evaluate("window.resense.state.frames.findIndex(f => f.obstacle)")
+        page.evaluate(f"window.resense.seek({idx})")
+        cab = page.evaluate("window.resense.state.cab")
+        gauge = [bx for bx in cab["boxes"] if bx["zone"] == "gauge"]
+        assert gauge and gauge[0]["label"].startswith("ПРЕПЯТСТВИЕ · 56.")
+        bx = gauge[0]
+        assert 0 <= bx["x0"] < bx["x1"] <= cab["width"] and cab["height"] * 0.3 < bx["y1"] < cab["height"] * 0.8
+        b.close()
+
+
+def test_dashboard_uses_flat_local_montserrat_visual_system():
+    """The jury UI stays usable offline and does not regress to outlined/glowing cards."""
+    html = open(os.path.join(ROOT, "web", "index.html"), encoding="utf-8").read()
+    compact = html.replace(" ", "")
+    assert "font-family:'Montserrat'" in compact
+    assert "box-shadow" not in html
+    assert "text-shadow" not in html
+    assert "outline:0" in compact
+    for width in range(1, 10):
+        assert f"border:{width}px" not in compact
+    for path in MONTSERRAT:
+        assert os.path.getsize(path) > 20_000
 
 
 def test_presentation_artifact_uses_the_organizers_slide_sequence():

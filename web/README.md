@@ -6,7 +6,8 @@ the scripts that verify the dashboard headlessly, and the video recipe.
 
 | file | what |
 |---|---|
-| [`index.html`](index.html) | dashboard: banner, top-down view, decision/health, timeline, node stats, run summary and alarm log; live + offline replay + built-in demo; no build step |
+| [`index.html`](index.html) | Russian-language dashboard in the modular Moscow Transport visual style: banner, cab view, top-down view, decision/health, timeline, node stats, run summary and alarm log; live + offline replay + built-in demo; no build step |
+| [`assets/fonts/`](assets/fonts/) | local Montserrat variable font subsets (Cyrillic + Latin) and the OFL license; the dashboard typography works offline |
 | [`foxglove_layout.json`](foxglove_layout.json) | Foxglove Studio layout (3D + plots + indicator + status), see "Remote demo with Foxglove" |
 | [`demo/make_demo_run.py`](demo/make_demo_run.py) | synthetic approach sequence → `out/demo_run.jsonl` in the `resense run --out` format |
 | [`demo/check_dashboard.py`](demo/check_dashboard.py) | Playwright + headless Chromium: loads the JSONL into the dashboard, plays it, asserts the banner, screenshot / video |
@@ -16,41 +17,50 @@ the scripts that verify the dashboard headlessly, and the video recipe.
 ![current ReSense dashboard showing a STOP decision in the built-in synthetic UI demo](../docs/images/dashboard-stop.png)
 
 Current UI captures: [GO / path clear](../docs/images/dashboard-clear.png),
-[CAUTION / object near the gauge](../docs/images/dashboard-caution.png), and
-[STOP / confirmed obstacle](../docs/images/dashboard-stop.png). The complete gallery and its
+[CAUTION / object near the gauge](../docs/images/dashboard-caution.png),
+[STOP / confirmed obstacle](../docs/images/dashboard-stop.png) and
+[the cab view on the real `doubleT_obstacle` node stream](../docs/images/dashboard-cab-real.png). The complete gallery and its
 data provenance are in [`docs/images/README.md`](../docs/images/README.md).
-*Offline replay of `web/demo/make_demo_run.py` output (synthetic ray-cast tunnel, not the
-organizers' data): the person is confirmed at 115.7 m and tracked down to 40 m.*
+*Built-in 60-frame UI demonstration (synthetic interface data, not the organizers' data and not
+evaluation evidence). The dashboard uses an original ReSense mark and graphics; no assets from
+the reference portal are bundled.*
 
 ## Dashboard (`index.html`)
 
-Open the file in a browser; nothing to install or build. Two modes, same widgets:
+Open the file in a browser; nothing to install or build. The visible interface is entirely in
+Russian and follows the reference portal's light background, modular card floors, red primary
+actions, large status typography and responsive grid. Montserrat is bundled locally. Cards,
+controls and active states use flat background colours without borders, outlines, glow or drop
+shadows. The layout targets desktop screens: the two columns always end at the same height (the
+cab view grows to match the side cards, the event log fills the rest of the right column). Two
+modes use the same widgets:
 
 * **Live**: enter the rosbridge URL (`ws://<host>:9090`, from
   `ros2 launch rosbridge_server rosbridge_websocket_launch.xml` on the machine running the
-  detector) and press *connect*. The page subscribes to `/resense/status` (`std_msgs/String`,
+  detector) and press *Подключить*. The page subscribes to `/resense/status` (`std_msgs/String`,
   one JSON `FrameResult` per frame plus the node's `node` object) and needs nothing else — no
   point cloud is streamed to the browser. roslibjs comes from a CDN; without internet the
   live mode is unavailable and the page says so, the replay mode still works. rosbridge is
   **not** in the ReSense image (`apt install ros-humble-rosbridge-suite` where ROS runs); for a
   live view on an offline stand use Foxglove, whose bridge the image has (`foxglove_layout.json`).
-* **Replay**: *Choose file* (or drop the file anywhere) → a `results.jsonl` written by
+* **Replay**: *Выбрать файл* (or drop the file anywhere) → a `results.jsonl` written by
   `python -m resense.cli run --bag <bag> --out results.jsonl` (one `FrameResult` JSON per line
   with the extra `frame` and `frame_id` keys). Play / pause (space), step (◀ ▶, arrow keys),
   seek slider, speed 0.25×–10×, loop. Playback is 10 Hz × speed; the timeline's x-axis is the
   message `stamp` (seconds relative to the first frame), in live mode it is the wall clock.
   Broken or blank lines are skipped.
-* **Built-in demo**: press *demo* for a 60-frame synthetic approach (120 → 40 m). It exercises
+* **Built-in demo**: press *Демо* for a 60-frame synthetic approach (120 → 40 m). It exercises
   GO / CAUTION / STOP, mount/health fields, playback and the summary card without ROS, Python or
   a dataset. It is a UI fallback for a jury laptop, not an evaluation result.
-* **Report** downloads `resense_run_report.json`: source, frame count, alarm events/frames,
+* **Отчёт** downloads `resense_run_report.json`: source, frame count, alarm events/frames,
   warning frames, nearest confirmed distance, peak detector time and time span.
 
 What is shown:
 
 | widget | source in the status JSON |
 |---|---|
-| banner **PATH CLEAR / WARNING / OBSTACLE 55.6 m** | `obstacle`, `warning`, `nearest_distance` |
+| banner **ПУТЬ СВОБОДЕН / ВНИМАНИЕ / ПРЕПЯТСТВИЕ 55.6 м** | `obstacle`, `warning`, `nearest_distance` |
+| **cab view** (driver's-eye schematic, the camera of `scripts/hero_view.py` without the point cloud): rails and the 2.1 × 3.0 m train envelope along the fitted axis and bed profile, the stretch verified clear in green (to the obstacle, else `clear_distance`), a red stop zone at the obstacle, confirmed objects as 3D boxes with a distance chip, a zoomed close-up of the nearest one, decision chip and legend; the tunnel outline is only a depth cue | `track.center/yaw/curvature/floor_coef/floor_range/rail_offset/axis_valid`, `detections[]`, `warnings[]`, `clear_distance`, `decision`, `health` |
 | top-down canvas (100 / 150 / 250 m): track axis, ±1.4 m gauge corridor, untrusted range shaded, red gauge boxes, orange advisory boxes with distance and confidence | `track.center/yaw/curvature/axis_valid`, `detections[]`, `warnings[]` |
 | timeline (last 30 s): nearest gauge obstacle (red), nearest advisory object (orange) | `nearest_distance`, `warnings[].distance` |
 | detector card: counts, axis, radius, trusted range, points, per-stage timing | `track`, `n_points`, `n_corridor`, `timing_ms` |
@@ -61,18 +71,18 @@ What is shown:
 
 Health warnings: latency above 100 ms (the 10 Hz period) and fps below 9 turn orange; when
 `dropped_frames` **grows** the node card flashes red for 3 s and the log gets a line, and it
-stays orange-bordered while the count is above zero.
+keeps a pale-yellow background while the count is above zero.
 
 ### Verify headlessly (Playwright)
 
 ```bash
 pip install playwright                      # the Python package; a Chromium build must be reachable
 python web/demo/make_demo_run.py            # synthetic tunnel, person 120 -> 40 m over 40 frames, 10 clear frames before/after
-python web/demo/check_dashboard.py          # loads out/demo_run.jsonl, plays it, asserts, screenshot -> docs/img/dashboard_synthetic.png
+python web/demo/check_dashboard.py          # loads out/demo_run.jsonl, plays it, asserts, screenshot -> out/dashboard_synthetic.png
 python -m pytest -q web/demo                # the same as tests (+ layout checks); browser tests skip without Chromium
 ```
 
-`check_dashboard.py` asserts PATH CLEAR at the start and OBSTACLE with a distance in 40–125 m
+`check_dashboard.py` asserts `ПУТЬ СВОБОДЕН` at the start and `ПРЕПЯТСТВИЕ` with a distance in 40–125 m
 during playback, then seeks to the frame with the nearest obstacle for the screenshot. If
 Playwright's own browser is missing it falls back to any Chromium under
 `$PLAYWRIGHT_BROWSERS_PATH` (or `--chromium <binary>`). `make_demo_run.py` needs open3d (ray

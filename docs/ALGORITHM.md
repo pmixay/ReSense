@@ -339,7 +339,7 @@ every candidate must be 3 cm above the rail head — a 3-point sliver, and neith
 `|dy| ≤ near_half_width = 0.55 m`, within `near_range = 30 m`, only while the rail pair is
 locked and the *central* bed has at least `local_min_points` returns in the same 2 m bin.
 The excess over the locally offset bed template must exceed `near_min_excess = 0.08 m`;
-clustering uses the existing tight low radius and needs ≥ 5 voxels, ≥ 0.25 m across the
+clustering uses the existing tight low radius and needs ≥ 5 voxels, ≥ 0.24 m observed across the
 track and ≤ 0.75 m along it. These clusters can remain below the rail head. The existing
 rail-head point-height rule and the straddle rules are unchanged. The central band excludes
 rail heads and their fastenings; the length/width/excess filters exclude long drain covers,
@@ -572,7 +572,7 @@ the CLI and the ROS node. The ones that change behaviour visibly:
 | `cluster.signature_min_lateral`, `column_min_width` (v0.6) | 0.6 m, 0.25 m | where the column / floating signatures apply (hanging cables near the axis are obstacles) |
 | `calibration.enabled`, `frames` × `obs_spacing`, `provisional_min_deg`, `min_yaw_deg`, `drift_warn_deg` / `drift_window` (v0.6.1) | true, 20 × 10 frames, 2.5°, 3°, 1.5° / 10 checks | mount auto-calibration (final tilt over 20 s, provisional only for a clearly tilted rig); `sensor.roll_deg/pitch_deg/yaw_deg` freeze a known mount |
 | `lowobj.straddle_enabled`, `straddle_min_top`, `straddle_min_width`, `straddle_max_length`, `straddle_band` (v0.6.2) | true, 0.10 m, 0.35 m, 0.8 m, 0.30 m | an object across a rail, straddling the envelope floor, clustered whole (§3.3b) |
-| `lowobj.near_enabled`, `near_range`, `near_half_width`, `near_min_excess`, `near_min_width`, `near_min_points`, `near_max_length` | false, 30 m, 0.55 m, 0.08 m, 0.25 m, 5, 0.75 m | opt-in central near-bed path; no real-ride FP measurement yet (§3.3b) |
+| `lowobj.near_enabled`, `near_range`, `near_half_width`, `near_min_excess`, `near_min_width`, `near_min_points`, `near_max_length` | false, 30 m, 0.55 m, 0.08 m, 0.24 m, 5, 0.75 m | opt-in central near-bed path; no real-ride FP measurement yet (§3.3b) |
 | `lowobj.max_length`, `max_width` | 1.5 m, 2.2 m | the largest low cluster along / across the track; 2.2 m (the envelope's width, 1.6 m until 23.09) keeps a person lying across the track; identical on all real frames (EXPERIMENTS.md §0) |
 | `gauge.no_rail_range` (v0.6.2) | 40 m | without a rail pair in the near range clusters beyond it are advisory and the verified-clear distance is capped there (§3.2); 0 = off |
 | `health.*` (v0.6) | see §4b | thresholds of the guards; they never change a detection |

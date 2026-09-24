@@ -94,12 +94,13 @@ runs DDS over UDP (a normal user's player cannot write into a root node's shared
 
 ### Dashboard UI
 
-![ReSense dashboard showing a STOP decision, confirmed obstacle, health data, timeline and run summary](docs/images/dashboard-stop.png)
+![ReSense dashboard showing a STOP decision, the cab view with the confirmed obstacle, health data, top-down view, timeline and run summary](docs/images/dashboard-stop.png)
 
 The browser dashboard also has dedicated [GO](docs/images/dashboard-clear.png) and
 [CAUTION](docs/images/dashboard-caution.png) states. These three captures use the built-in
 synthetic UI demo so anyone can reproduce them without ROS or a dataset; they are interface
-examples, not evaluation evidence. See the complete [`docs/images` gallery](docs/images/README.md).
+examples, not evaluation evidence. Its cab view on the node's real `doubleT_obstacle` stream:
+[`dashboard-cab-real.png`](docs/images/dashboard-cab-real.png). See the complete [`docs/images` gallery](docs/images/README.md).
 
 ## What to look at (for the jury)
 

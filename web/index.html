@@ -1,138 +1,238 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
 <meta charset="utf-8">
-<title>ReSense dashboard</title>
+<title>ReSense — контроль препятствий</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#e31e36">
 <style>
-  :root { --bg:#111218; --fg:#f4f3f8; --ok:#35d07f; --warn:#ffad33; --bad:#ff3b65; --muted:#9da1ad; --line:#30323c; --card:#1a1c24; --accent:#9b92e8; --accent-2:#ff3b76; }
-  * { box-sizing: border-box; }
-  body { margin:0; font-family: system-ui, sans-serif; background:var(--bg); color:var(--fg); }
-  header { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; padding:12px 20px; border-bottom:1px solid var(--line); background:linear-gradient(90deg,rgba(82,9,120,.22),transparent 45%); }
-  header h1 { font-size:18px; margin:0 12px 0 0; letter-spacing:.5px; white-space:nowrap; display:flex; align-items:center; gap:10px; }
-  .brand-mark { display:inline-grid; place-items:center; width:30px; height:30px; border-radius:9px; color:white; background:linear-gradient(135deg,var(--accent-2),#520978); font-weight:900; box-shadow:0 0 22px rgba(255,59,118,.25); }
-  .mode { display:flex; gap:8px; align-items:center; padding:4px 10px; border:1px solid var(--line); border-radius:6px; }
-  .mode.active { border-color: var(--accent); }
-  .mode .tag { font-size:11px; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); }
-  #banner { font-size:44px; font-weight:850; padding:16px 20px 12px; line-height:1.1; letter-spacing:-1px; border-left:5px solid currentColor; background:linear-gradient(90deg,currentColor 0,currentColor 5px,transparent 5px); }
-  #banner small { display:block; font-size:14px; font-weight:400; color:var(--muted); margin-top:2px; }
-  .clear { color:var(--ok);} .warn { color:var(--warn);} .bad { color:var(--bad);}
-  main { display:grid; grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr); gap:16px; padding:0 20px 20px; }
-  canvas { width:100%; display:block; background:#0d0e12; border:1px solid var(--line); border-radius:6px; margin-bottom:10px; }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:6px; padding:12px; margin-bottom:12px; transition: border-color .3s, box-shadow .3s; }
-  .card h3 { margin:0 0 8px; font-size:13px; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); }
-  .card.alert { border-color: var(--bad); box-shadow: 0 0 0 2px rgba(255,45,85,.35); }
-  .card.notice { border-color: var(--warn); }
-  .kv { display:grid; grid-template-columns:1fr auto; gap:4px 12px; font-size:14px; }
+  @font-face { font-family:'Montserrat'; font-style:normal; font-weight:400 900; font-display:swap; src:url('assets/fonts/montserrat-cyrillic.woff2') format('woff2'); unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
+  @font-face { font-family:'Montserrat'; font-style:normal; font-weight:400 900; font-display:swap; src:url('assets/fonts/montserrat-latin.woff2') format('woff2'); unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  /* Moscow Sans is used automatically when a licensed system or project copy is available. */
+  @font-face { font-family:'Moscow Sans'; font-style:normal; font-weight:400 900; font-display:swap; src:local('Moscow Sans'),local('MoscowSans'); }
+  :root {
+    --page:#f1f2f4; --paper:#fff; --ink:#111216; --muted:#6d7178; --soft:#e5e7eb;
+    --red:#e31e36; --red-dark:#c9142c; --red-pale:#fff0f2; --cyan:#00a6c8; --blue:#0078bf;
+    --green:#008c45; --green-pale:#e8f7ef; --yellow:#ffd200; --yellow-pale:#fff4b8;
+    --font-ui:'Moscow Sans','Montserrat',Arial,sans-serif;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; color:var(--ink); background:var(--page); font-family:var(--font-ui); font-size:15px; }
+  body::before { content:''; position:fixed; inset:0 auto 0 0; z-index:30; width:10px; background:var(--red); }
+  button, input, select { font:inherit; }
+  button, .file-button { min-height:44px; border:0; border-radius:4px; padding:0 17px; display:inline-flex; align-items:center; justify-content:center; gap:8px; color:var(--ink); background:#e5e7e9; font-weight:750; cursor:pointer; transition:transform .16s,background .16s,color .16s; }
+  button:hover, .file-button:hover { transform:translateY(-2px); background:#dadde0; }
+  button:disabled { opacity:.42; cursor:default; transform:none; }
+  button.primary { color:#fff; background:var(--red); }
+  button.primary:hover { background:var(--red-dark); }
+  button.secondary { color:var(--red); background:var(--red-pale); }
+  button:focus-visible, input:focus-visible, select:focus-visible, .file-button:focus-within, a:focus-visible { outline:0; background:#dcebf5; }
+  button.primary:focus-visible, .file-button:focus-within { background:var(--red-dark); }
+  select, input[type=text] { min-height:44px; border:0; border-radius:4px; padding:0 13px; color:var(--ink); background:#eceef0; }
+  input[type=range] { width:170px; accent-color:var(--red); }
+  input[type=checkbox] { width:18px; height:18px; accent-color:var(--red); }
+  #file { position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; }
+  .skip-link { position:fixed; top:8px; left:18px; z-index:100; padding:10px 14px; color:#fff; background:var(--red); text-decoration:none; transform:translateY(-150%); }
+  .skip-link:focus { transform:none; }
+  .site-header { background:var(--paper); }
+  .header-inner { max-width:1660px; margin:auto; min-height:96px; padding:18px 34px; display:flex; align-items:center; gap:30px; }
+  .brand { display:flex; align-items:center; gap:15px; min-width:max-content; }
+  .brand-mark { position:relative; width:56px; height:56px; overflow:hidden; border-radius:50% 50% 50% 16%; background:var(--red); transform:rotate(45deg); }
+  .brand-mark::before, .brand-mark::after { content:''; position:absolute; border-radius:50%; outline:4px solid #fff; }
+  .brand-mark::before { width:30px; height:30px; left:7px; top:7px; }
+  .brand-mark::after { width:14px; height:14px; left:15px; top:15px; }
+  .brand h1 { margin:0; font-size:28px; line-height:1; letter-spacing:-1px; }
+  .brand p { margin:6px 0 0; color:var(--muted); font-size:11px; font-weight:650; letter-spacing:.035em; text-transform:uppercase; }
+  .top-nav { display:flex; align-self:stretch; gap:4px; margin-left:auto; }
+  .top-nav a { position:relative; display:flex; align-items:center; padding:0 15px; color:var(--ink); text-decoration:none; font-weight:750; font-size:13px; }
+  .top-nav a::after { content:''; position:absolute; right:15px; bottom:10px; left:15px; height:4px; border-radius:3px; background:transparent; }
+  .top-nav a:hover { color:var(--red); }
+  .top-nav a:first-child::after { background:var(--red); }
+  .health { display:flex; gap:8px; align-items:center; margin-left:12px; }
+  .pill { display:inline-flex; align-items:center; gap:8px; min-height:36px; padding:0 13px; border-radius:999px; color:var(--muted); background:#f0f2f4; font-size:11px; font-weight:750; white-space:nowrap; }
+  .pill::before { content:''; width:8px; height:8px; border-radius:50%; background:currentColor; }
+  .pill.ok { color:#007b3c; background:var(--green-pale); }
+  .pill.warn { color:#725b00; background:var(--yellow-pale); }
+  .pill.bad { color:#b3132a; background:var(--red-pale); }
+  .page { max-width:1660px; margin:auto; padding:30px 34px 52px; }
+  .intro { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:end; gap:40px; margin:4px 0 28px; }
+  .eyebrow { display:flex; align-items:center; gap:10px; color:var(--red); font-size:11px; font-weight:850; letter-spacing:.13em; text-transform:uppercase; }
+  .eyebrow::before { content:''; width:30px; height:8px; background:var(--red); }
+  .page-title { margin:10px 0 0; font-size:clamp(36px,4.1vw,66px); line-height:.96; letter-spacing:-3px; max-width:1050px; }
+  .intro-code { display:grid; grid-template-columns:auto auto; align-items:center; gap:13px; min-width:250px; }
+  .route-number { display:grid; place-items:center; width:66px; height:66px; color:#fff; background:var(--red); font-size:26px; font-weight:850; border-radius:50% 50% 50% 14%; transform:rotate(45deg); }
+  .route-number span { transform:rotate(-45deg); }
+  .intro-code b { display:block; font-size:13px; line-height:1.2; }
+  .intro-code small { display:block; margin-top:6px; color:var(--muted); font-size:11px; line-height:1.35; }
+  .control-deck { display:grid; grid-template-columns:minmax(310px,.72fr) minmax(650px,1.7fr); gap:12px; margin-bottom:12px; }
+  .mode { position:relative; min-width:0; overflow:hidden; padding:20px 20px 20px 27px; border-radius:6px; background:var(--paper); }
+  .mode::before { content:''; position:absolute; inset:0 auto 0 0; width:8px; background:#c9cdd1; }
+  .mode.active { background:var(--red-pale); }
+  .mode.active::before { background:var(--red); }
+  .mode-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; }
+  .mode .tag { font-size:16px; font-weight:850; }
+  .mode .tag::before { content:'●'; margin-right:9px; color:#b7bbc0; font-size:11px; }
+  .mode.active .tag::before { color:var(--red); }
+  .mode-body { display:flex; flex-wrap:wrap; align-items:center; gap:9px; }
+  .connection-field { display:flex; align-items:center; gap:8px; flex:1; min-width:230px; }
+  .connection-field input { width:100%; }
+  .status-line { color:var(--muted); font-size:11px; line-height:1.35; }
+  .file-button { color:#fff; background:var(--red); }
+  .file-button:hover { background:var(--red-dark); }
+  .frame-state { min-width:95px; }
+  .speed-label, .check-label { display:inline-flex; align-items:center; gap:7px; color:var(--muted); font-size:12px; }
+  .speed-label select { min-height:36px; }
+  #banner { position:relative; overflow:hidden; min-height:180px; margin-bottom:12px; padding:34px 150px 30px 130px; border-radius:6px; color:#fff; font-size:clamp(40px,5.2vw,78px); font-weight:900; line-height:.92; letter-spacing:-3px; }
+  #banner::before { content:'\2192'; position:absolute; left:32px; top:31px; display:grid; place-items:center; width:68px; height:68px; border-radius:50%; outline:6px solid currentColor; font-size:48px; font-weight:500; line-height:1; letter-spacing:0; }
+  #banner::after { content:''; position:absolute; inset:0 0 0 auto; width:110px; opacity:.14; background:repeating-linear-gradient(135deg,transparent 0 13px,currentColor 13px 20px); }
+  #banner.clear { background:var(--green); }
+  #banner.clear::before { content:'\2192'; }
+  #banner.warn { color:#18130a; background:var(--yellow); }
+  #banner.warn::before { content:'!'; }
+  #banner.bad { background:var(--red); }
+  #banner.bad::before { content:'\00d7'; }
+  #banner small { display:block; position:relative; z-index:1; margin-top:18px; color:inherit; opacity:.8; font-size:13px; font-weight:650; letter-spacing:.025em; }
+  main { display:grid; grid-template-columns:minmax(0,2fr) minmax(350px,.86fr); gap:12px; }
+  /* both columns stretch to the taller one: the cab view and event log absorb the difference */
+  .visual-column, .side-column { min-width:0; display:flex; flex-direction:column; gap:12px; }
+  .visual-card, .card { background:var(--paper); border-radius:6px; }
+  .visual-card { padding:22px; }
+  .cab-card { flex:1 1 auto; display:flex; flex-direction:column; }
+  .cab-stage { position:relative; flex:1 1 auto; aspect-ratio:16/9; min-height:360px; overflow:hidden; border-radius:6px; background:#12151b; }
+  .cab-stage canvas { position:absolute; inset:0; height:100%; border-radius:0; background:transparent; }
+  .canvas-tools { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-bottom:14px; }
+  .canvas-tools h2 { margin:0 auto 0 0; font-size:22px; letter-spacing:-.7px; }
+  .canvas-tools label { display:flex; align-items:center; gap:8px; color:var(--muted); font-size:12px; }
+  .canvas-tools select { min-height:36px; }
+  canvas { width:100%; display:block; background:#f3f4f5; border:0; border-radius:6px; }
+  #timeline { margin-top:12px; }
+  .card { position:relative; overflow:hidden; padding:21px 20px 22px 28px; transition:background .2s; }
+  .card::before { content:''; position:absolute; inset:0 auto 0 0; width:8px; background:var(--cyan); }
+  .card h3 { display:flex; align-items:center; gap:9px; margin:0 0 15px; font-size:17px; letter-spacing:-.35px; }
+  .card h3::before { content:''; width:13px; height:13px; border-radius:50% 50% 50% 3px; background:var(--cyan); transform:rotate(45deg); }
+  #safety-card::before { background:var(--red); }
+  #safety-card h3::before { background:var(--red); }
+  #node-card::before { background:var(--blue); }
+  #node-card h3::before { background:var(--blue); }
+  .card.alert { background:var(--red-pale); }
+  .card.notice { background:#fff9d9; }
+  .kv { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:10px 14px; font-size:13px; }
   .kv span:nth-child(odd) { color:var(--muted); }
-  .kv b.bad { color:var(--bad); } .kv b.warn { color:var(--warn); }
-  #log { font-family: ui-monospace, monospace; font-size:12px; max-height:220px; overflow:auto; white-space:pre; }
-  input, select, button { background:#0d0e12; color:var(--fg); border:1px solid var(--line); border-radius:4px; padding:4px 8px; font: inherit; }
-  button { cursor:pointer; } button:hover { border-color: var(--accent); } button:disabled { opacity:.4; cursor:default; }
-  button.primary { background:var(--accent); border-color:var(--accent); color:#111; font-weight:600; }
-  button.secondary { border-color:#5e597f; }
-  button:focus-visible, input:focus-visible, select:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
-  input[type=file] { max-width: 220px; }
-  input[type=range] { width: 160px; padding:0; vertical-align: middle; }
-  .status-line { font-size:12px; color:var(--muted); }
-  .canvas-tools { display:flex; gap:12px; align-items:center; font-size:12px; color:var(--muted); margin-bottom:6px; }
-  .health { margin-left:auto; display:flex; gap:7px; align-items:center; }
-  .pill { display:inline-flex; gap:6px; align-items:center; border:1px solid var(--line); border-radius:999px; padding:4px 9px; font-size:11px; color:var(--muted); }
-  .pill::before { content:''; width:7px; height:7px; border-radius:50%; background:currentColor; }
-  .pill.ok { color:var(--ok); border-color:rgba(53,208,127,.35); }
-  .pill.warn { color:var(--warn); border-color:rgba(255,173,51,.35); }
-  .pill.bad { color:var(--bad); border-color:rgba(255,59,101,.35); }
-  .empty-log { color:var(--muted); font-family:system-ui,sans-serif; white-space:normal; }
-  #drop-overlay { display:none; position:fixed; inset:12px; z-index:20; place-items:center; border:3px dashed var(--accent); border-radius:18px; background:rgba(17,18,24,.92); font-size:24px; font-weight:700; color:var(--accent); pointer-events:none; }
+  .kv b { text-align:right; font-weight:800; }
+  .kv b.bad { color:var(--red); } .kv b.warn { color:#826800; }
+  #health-msgs { margin-top:10px; }
+  .log-card { flex:1 1 auto; display:flex; flex-direction:column; min-height:220px; }
+  #log { flex:1 1 0; min-height:120px; overflow:auto; white-space:pre-wrap; color:#202226; font:550 11px/1.55 var(--font-ui); }
+  .empty-log { color:var(--muted); font-family:var(--font-ui); white-space:normal; }
+  .shortcut { display:block; margin-top:7px; opacity:.75; }
+  #drop-overlay { display:none; position:fixed; inset:18px; z-index:40; place-items:center; border:0; border-radius:6px; background:rgba(227,30,54,.97); color:#fff; font-size:26px; font-weight:850; pointer-events:none; }
   body.dragging #drop-overlay { display:grid; }
-  .shortcut { opacity:.8; }
-  @media (max-width: 960px) { main { grid-template-columns:1fr; } #banner { font-size:32px; } }
+  .site-footer { max-width:1660px; margin:0 auto; padding:0 34px 34px; color:var(--muted); font-size:11px; display:flex; justify-content:space-between; gap:20px; }
+  @media (max-width:1260px) { .top-nav { display:none; } .control-deck { grid-template-columns:1fr; } main { grid-template-columns:1fr; } .side-column { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); } .log-card { grid-column:1 / -1; } }
+  @media (max-width:820px) { body::before { width:6px; } .header-inner { padding:14px 18px; flex-wrap:wrap; gap:12px; } .brand p, .intro-code { display:none; } .health { order:2; margin:0; width:100%; } .page { padding:22px 14px 34px 20px; } .intro { grid-template-columns:1fr; margin-bottom:20px; } .page-title { letter-spacing:-1.8px; } .mode { padding:16px 15px 16px 23px; } .mode-body { align-items:stretch; } .connection-field { min-width:100%; } input[type=range] { width:100%; } #banner { min-height:170px; padding:92px 20px 24px; font-size:clamp(34px,10vw,54px); letter-spacing:-2px; } #banner::before { top:20px; left:22px; width:48px; height:48px; outline-width:4px; font-size:34px; } #banner::after { width:54px; } .side-column { grid-template-columns:1fr; } .visual-card, .card { border-radius:4px; } .cab-stage { min-height:260px; } .site-footer { padding:0 16px 24px 20px; flex-direction:column; } }
 </style>
 </head>
 <body>
-<header>
-  <h1><span class="brand-mark" aria-hidden="true">R</span>ReSense — clearance-gauge obstacle detection</h1>
-  <div class="mode active" id="mode-live">
-    <span class="tag">live</span>
-    <label>rosbridge <input id="url" value="ws://localhost:9090" size="20"></label>
-    <button id="connect" type="button">connect</button>
-    <span id="conn" class="status-line" role="status">disconnected</span>
-  </div>
-  <div class="mode" id="mode-replay">
-    <span class="tag">replay</span>
-    <input type="file" id="file" accept=".jsonl,.json,.txt,.log" title="results.jsonl from: python -m resense.cli run --out results.jsonl">
-    <button id="demo" class="secondary" type="button" title="load a built-in 60-frame jury demo">demo</button>
-    <button id="stepback" type="button" aria-label="previous frame" title="previous frame (←)" disabled>&#9664;</button>
-    <button id="play" type="button" class="primary" title="play / pause (space)" disabled>play</button>
-    <button id="stepfwd" type="button" aria-label="next frame" title="next frame (→)" disabled>&#9654;</button>
-    <input type="range" id="seek" min="0" max="0" value="0" disabled>
-    <span id="frame-pos" class="status-line">no file</span>
-    <label class="status-line">speed <select id="speed">
-      <option value="0.25">0.25x</option><option value="0.5">0.5x</option><option value="1" selected>1x</option>
-      <option value="2">2x</option><option value="4">4x</option><option value="10">10x</option>
-    </select></label>
-    <label class="status-line"><input type="checkbox" id="loop"> loop</label>
-    <button id="export-report" type="button" title="download a JSON summary of the loaded run" disabled>report</button>
-  </div>
-  <div class="health" aria-label="system health">
-    <span id="health-source" class="pill">no source</span>
-    <span id="health-realtime" class="pill">latency —</span>
+<a class="skip-link" href="#monitor">К мониторингу</a>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand"><span class="brand-mark" aria-hidden="true"></span><div><h1>ReSense</h1><p>Безопасность движения в тоннеле</p></div></div>
+    <nav class="top-nav" aria-label="Основная навигация"><a href="#monitor" aria-current="page">Мониторинг</a><a href="#safety-card">Решение</a><a href="#node-card">Система</a><a href="#log">События</a></nav>
+    <div class="health" aria-label="Состояние системы"><span id="health-source" class="pill">Источник не выбран</span><span id="health-realtime" class="pill">Задержка —</span></div>
   </div>
 </header>
-<div id="banner" class="clear" role="status" aria-live="assertive">PATH CLEAR</div>
-<main>
-  <div>
-    <div class="canvas-tools">
-      <span>top-down view, X along the track</span>
-      <label>range <select id="xmax"><option value="100">100 m</option><option value="150" selected>150 m</option><option value="250">250 m</option></select></label>
-      <span id="canvas-note"></span>
+<div class="page">
+  <section class="intro" aria-labelledby="page-title">
+    <div><div class="eyebrow">Московский транспорт · ЛЦТ 2026</div><h2 class="page-title" id="page-title">Свободный габарит.<br>Контроль в реальном времени</h2></div>
+    <div class="intro-code" aria-label="Параметры системы"><div class="route-number" aria-hidden="true"><span>05</span></div><div><b>Лидар · 10 Гц</b><small>Зона контроля до 250 м<br>Решение за один кадр</small></div></div>
+  </section>
+  <section class="control-deck" aria-label="Источники данных">
+    <div class="mode active" id="mode-live">
+      <div class="mode-head"><span class="tag">Прямой эфир</span><span id="conn" class="status-line" role="status">Нет подключения</span></div>
+      <div class="mode-body"><label class="connection-field"><span class="status-line">rosbridge</span><input id="url" type="text" value="ws://localhost:9090" size="20" aria-label="Адрес rosbridge"></label><button id="connect" class="primary" type="button">Подключить</button></div>
     </div>
-    <canvas id="top" width="1200" height="420" role="img" aria-label="Top-down view of the track corridor and detected objects"></canvas>
-    <canvas id="timeline" width="1200" height="170" role="img" aria-label="Thirty-second obstacle distance timeline"></canvas>
+    <div class="mode" id="mode-replay">
+      <div class="mode-head"><span class="tag">Запись</span><span id="frame-pos" class="status-line frame-state">Файл не выбран</span></div>
+      <div class="mode-body">
+        <label class="file-button" for="file">Выбрать файл<input type="file" id="file" accept=".jsonl,.json,.txt,.log" title="results.jsonl из команды python -m resense.cli run --out results.jsonl"></label>
+        <button id="demo" class="secondary" type="button" title="Загрузить встроенную демонстрацию на 60 кадров">Демо</button>
+        <button id="stepback" type="button" aria-label="Предыдущий кадр" title="Предыдущий кадр (←)" disabled>&#9664;</button>
+        <button id="play" type="button" class="primary" title="Воспроизведение или пауза (пробел)" disabled>Пуск</button>
+        <button id="stepfwd" type="button" aria-label="Следующий кадр" title="Следующий кадр (→)" disabled>&#9654;</button>
+        <input type="range" id="seek" min="0" max="0" value="0" aria-label="Позиция воспроизведения" disabled>
+        <label class="speed-label">Скорость <select id="speed"><option value="0.25">0,25×</option><option value="0.5">0,5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option><option value="10">10×</option></select></label>
+        <label class="check-label"><input type="checkbox" id="loop"> Повтор</label>
+        <button id="export-report" type="button" title="Скачать сводку запуска в JSON" disabled>Отчёт</button>
+      </div>
+    </div>
+  </section>
+  <div id="banner" class="clear" role="status" aria-live="assertive">ПУТЬ СВОБОДЕН</div>
+  <main id="monitor">
+  <div class="visual-column">
+    <div class="visual-card cab-card">
+    <div class="canvas-tools">
+      <h2>Вид из кабины</h2>
+      <span class="status-line">Схема по данным детектора: ось пути, профиль полотна, габарит 2,1 × 3,0 м</span>
+    </div>
+    <div class="cab-stage"><canvas id="cab" role="img" aria-label="Вид по ходу движения из кабины: рельсы, габарит поезда, проверенный свободный участок и обнаруженные объекты с дистанцией"></canvas></div>
+    </div>
+    <div class="visual-card">
+    <div class="canvas-tools">
+      <h2>Вид сверху</h2>
+      <label>Дальность <select id="xmax"><option value="100">100 м</option><option value="150" selected>150 м</option><option value="250">250 м</option></select></label>
+      <span id="canvas-note" class="status-line"></span>
+    </div>
+    <canvas id="top" width="1200" height="360" role="img" aria-label="Вид пути сверху, границы габарита и обнаруженные объекты"></canvas>
+    <canvas id="timeline" width="1200" height="170" role="img" aria-label="График дистанции до препятствия за последние тридцать секунд"></canvas>
+    </div>
   </div>
-  <div>
-    <div class="card"><h3>detector</h3><div class="kv">
-      <span>nearest obstacle</span><b id="dist">—</b>
-      <span>detections / warnings</span><b id="counts">0 / 0</b>
-      <span>track axis (m, +left)</span><b id="axis">—</b>
-      <span>curve radius</span><b id="radius">—</b>
-      <span>corridor trusted to</span><b id="valid">—</b>
-      <span>points / in corridor</span><b id="points">—</b>
-      <span>detect time (total)</span><b id="timing">—</b>
-      <span>stages track / corridor / cluster</span><b id="stages">—</b>
-      <span>frames shown</span><b id="frames">0</b>
-    </div></div>
-    <div class="card" id="safety-card"><h3>decision &amp; health <span class="status-line">(v0.6)</span></h3><div class="kv">
-      <span>decision</span><b id="decision">—</b>
-      <span>path verified clear to</span><b id="clear">—</b>
-      <span>health</span><b id="health">—</b>
-      <span>visibility / rail lock</span><b id="vis">—</b>
-      <span>mount calibration</span><b id="mount">—</b>
+  <div class="side-column">
+    <div class="card" id="safety-card"><h3>Решение и надёжность <span class="status-line">v0.6</span></h3><div class="kv">
+      <span>Решение</span><b id="decision">—</b>
+      <span>Путь свободен до</span><b id="clear">—</b>
+      <span>Состояние данных</span><b id="health">—</b>
+      <span>Видимость / захват рельсов</span><b id="vis">—</b>
+      <span>Калибровка лидара</span><b id="mount">—</b>
     </div><div id="health-msgs" class="status-line"></div></div>
-    <div class="card" id="node-card"><h3>ROS node <span id="node-note" class="status-line"></span></h3><div class="kv">
-      <span>latency (decode + detect)</span><b id="n-latency">—</b>
-      <span>fps</span><b id="n-fps">—</b>
-      <span>frames processed</span><b id="n-frames">—</b>
-      <span>dropped frames</span><b id="n-dropped">—</b>
-      <span>input period</span><b id="n-period">—</b>
+    <div class="card"><h3>Детектор</h3><div class="kv">
+      <span>Ближайшее препятствие</span><b id="dist">—</b>
+      <span>Детекции / предупреждения</span><b id="counts">0 / 0</b>
+      <span>Ось пути, м (+ влево)</span><b id="axis">—</b>
+      <span>Радиус кривой</span><b id="radius">—</b>
+      <span>Проверенная дальность</span><b id="valid">—</b>
+      <span>Точек / внутри габарита</span><b id="points">—</b>
+      <span>Время обработки</span><b id="timing">—</b>
+      <span>Путь / габарит / кластеры</span><b id="stages">—</b>
+      <span>Показано кадров</span><b id="frames">0</b>
     </div></div>
-    <div class="card"><h3>run summary</h3><div class="kv">
-      <span>alarm events / frames</span><b id="s-alarms">—</b>
-      <span>nearest confirmed</span><b id="s-nearest">—</b>
-      <span>warning frames</span><b id="s-warnings">—</b>
-      <span>max detect time</span><b id="s-max-time">—</b>
+    <div class="card" id="node-card"><h3>Узел ROS <span id="node-note" class="status-line"></span></h3><div class="kv">
+      <span>Задержка декодирования и поиска</span><b id="n-latency">—</b>
+      <span>Кадров в секунду</span><b id="n-fps">—</b>
+      <span>Обработано кадров</span><b id="n-frames">—</b>
+      <span>Пропущено кадров</span><b id="n-dropped">—</b>
+      <span>Период входного потока</span><b id="n-period">—</b>
     </div></div>
-    <div class="card"><h3>alarm log</h3><div id="log" aria-live="polite"><span class="empty-log">No alarms. Load a JSONL file, drop it anywhere, or press demo. <span class="shortcut">Space: play/pause · ←/→: step</span></span></div></div>
+    <div class="card"><h3>Сводка запуска</h3><div class="kv">
+      <span>Событий / кадров тревоги</span><b id="s-alarms">—</b>
+      <span>Минимальная дистанция</span><b id="s-nearest">—</b>
+      <span>Кадров предупреждения</span><b id="s-warnings">—</b>
+      <span>Максимальное время</span><b id="s-max-time">—</b>
+    </div></div>
+    <div class="card log-card"><h3>Журнал событий</h3><div id="log" aria-live="polite"><span class="empty-log">Событий пока нет. Выберите JSONL-файл, перетащите его в окно или запустите демо.<span class="shortcut">Пробел — пуск/пауза · ←/→ — покадрово</span></span></div></div>
   </div>
 </main>
-<div id="drop-overlay">Drop results.jsonl to replay</div>
-<!-- roslibjs is only needed for the live mode; the page (and the replay mode) works without it -->
-<script async src="https://cdn.jsdelivr.net/npm/roslib@1/build/roslib.min.js" onerror="document.getElementById('conn').textContent='roslib.js not loaded (offline?) — replay mode only'"></script>
+  </div>
+<footer class="site-footer"><span>ReSense · Система контроля свободного габарита</span><span>Данные обновляются до 10 раз в секунду</span></footer>
+<div id="drop-overlay">Отпустите results.jsonl для воспроизведения</div>
+<!-- roslibjs нужен только для прямого эфира; воспроизведение записей работает без него -->
+<script async src="https://cdn.jsdelivr.net/npm/roslib@1/build/roslib.min.js" onerror="document.getElementById('conn').textContent='roslib.js не загружен — доступна запись'"></script>
 <script>
 'use strict';
 const $ = id => document.getElementById(id);
 const FRAME_DT = 0.1;                       // s, sensor period used for the replay clock
 const TIMELINE_SPAN = 30;                   // s of history on the timeline
+const UI_FONT = '"Moscow Sans", Montserrat, Arial, sans-serif';
 
 // ----------------------------------------------------------------------------- state
 const state = {
@@ -149,6 +249,7 @@ const state = {
   lastObstacle: false,
   node: { lastDropped: null, alertUntil: 0 },
   last: null,                                // last result applied (for redraws)
+  cab: null,                                 // cab view: size, focal length and the labelled boxes of the last draw
   sourceName: null,
   summary: null,
 };
@@ -157,22 +258,22 @@ const state = {
 function drawTop(res) {
   const c = $('top'), ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
   const XMAX = +$('xmax').value, sx = c.width / XMAX, cy = c.height / 2, sy = 22;   // 22 px per metre lateral
-  ctx.strokeStyle = '#2a2c33'; ctx.lineWidth = 1; ctx.font = '12px system-ui';
+  ctx.strokeStyle = '#dfe2e6'; ctx.lineWidth = 1; ctx.font = '500 12px ' + UI_FONT;
   const step = XMAX > 150 ? 50 : 25;
   for (let x = 0; x <= XMAX; x += step) {
     ctx.beginPath(); ctx.moveTo(x * sx, 0); ctx.lineTo(x * sx, c.height); ctx.stroke();
-    ctx.fillStyle = '#8a8f98'; ctx.fillText(x + ' m', x * sx + 4, 14);
+    ctx.fillStyle = '#292c31'; ctx.fillText(x + ' м', x * sx + 4, 14);
   }
   for (const y of [-4, -2, 2, 4]) { ctx.beginPath(); ctx.moveTo(0, cy - y * sy); ctx.lineTo(c.width, cy - y * sy); ctx.stroke(); }
   const t = res.track || {}; const c0 = t.center || 0, yaw = t.yaw || 0, k = t.curvature || 0;
   const axis = X => c0 + Math.tan(yaw) * X + 0.5 * k * X * X;
   // sensor / train nose
-  ctx.fillStyle = '#8a83d1'; ctx.beginPath(); ctx.moveTo(0, cy - 12); ctx.lineTo(14, cy); ctx.lineTo(0, cy + 12); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#e31e36'; ctx.beginPath(); ctx.moveTo(0, cy - 12); ctx.lineTo(14, cy); ctx.lineTo(0, cy + 12); ctx.closePath(); ctx.fill();
   // track axis and the strict gauge corridor (half-width 1.4 m)
-  ctx.strokeStyle = 'rgba(46,204,113,0.5)'; ctx.setLineDash([2, 6]); ctx.beginPath();
+  ctx.strokeStyle = 'rgba(19,169,87,0.45)'; ctx.setLineDash([2, 6]); ctx.beginPath();
   for (let X = 3; X <= XMAX; X += 5) { const px = X * sx, py = cy - axis(X) * sy; X === 3 ? ctx.moveTo(px, py) : ctx.lineTo(px, py); }
   ctx.stroke();
-  ctx.strokeStyle = '#2ecc71'; ctx.setLineDash([6, 4]);
+  ctx.strokeStyle = '#008c45'; ctx.setLineDash([6, 4]);
   for (const side of [1.4, -1.4]) {
     ctx.beginPath();
     for (let X = 3; X <= XMAX; X += 5) { const px = X * sx, py = cy - (axis(X) + side) * sy; X === 3 ? ctx.moveTo(px, py) : ctx.lineTo(px, py); }
@@ -180,21 +281,242 @@ function drawTop(res) {
   }
   ctx.setLineDash([]);
   if (t.axis_valid != null && t.axis_valid < XMAX) {
-    ctx.fillStyle = 'rgba(255,159,28,0.10)'; ctx.fillRect(t.axis_valid * sx, 0, c.width - t.axis_valid * sx, c.height);
-    ctx.fillStyle = '#ff9f1c'; ctx.fillText('corridor not trusted beyond ' + t.axis_valid.toFixed(0) + ' m', t.axis_valid * sx + 6, c.height - 8);
+    ctx.fillStyle = 'rgba(255,191,25,0.16)'; ctx.fillRect(t.axis_valid * sx, 0, c.width - t.axis_valid * sx, c.height);
+    const note = 'коридор не подтверждён дальше ' + t.axis_valid.toFixed(0) + ' м';
+    ctx.fillStyle = '#8a6200'; ctx.fillText(note, Math.min(t.axis_valid * sx + 6, c.width - ctx.measureText(note).width - 6), c.height - 8);
   }
-  for (const d of (res.warnings || [])) box(ctx, d, sx, sy, cy, '#ff9f1c', XMAX);
-  for (const d of (res.detections || [])) box(ctx, d, sx, sy, cy, '#ff2d55', XMAX);
+  for (const d of (res.warnings || [])) box(ctx, d, sx, sy, cy, '#b08b00', XMAX);
+  for (const d of (res.detections || [])) box(ctx, d, sx, sy, cy, '#e31e36', XMAX);
 }
 function box(ctx, d, sx, sy, cy, color, XMAX) {
   if (!d.center || d.center[0] > XMAX) return;
   const w = Math.max(d.size[0], 1.5) * sx, h = Math.max(d.size[1], 0.6) * sy;
   const x = d.center[0] * sx, y = cy - d.center[1] * sy;
   ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.strokeRect(x - w / 2, y - h / 2, w, h);
-  ctx.fillStyle = color; ctx.font = 'bold 13px system-ui';
-  const label = `${d.distance.toFixed(1)} m  p=${d.confidence.toFixed(2)}`;
+  ctx.fillStyle = color; ctx.font = '700 13px ' + UI_FONT;
+  const label = `${d.distance.toFixed(1)} м  p=${d.confidence.toFixed(2)}`;
   const tw = ctx.measureText(label).width;
   ctx.fillText(label, Math.min(x + w / 2 + 4, ctx.canvas.width - tw - 4), y - h / 2 - 4);
+}
+// ----------------------------------------------------------------------------- cab view
+// The driver's-eye picture of scripts/hero_view.py without the point cloud (the dashboard only gets
+// the status JSON): rails and the train envelope along the fitted track axis and bed profile, the
+// verified-clear stretch, and the confirmed objects as boxes with their distance. The tunnel outline
+// is a schematic depth cue, not measured.
+const ENVELOPE = { half: 1.05, bottom: 0.12, top: 3.0 };   // m, GaugeConfig.profile (2.1 × 3.0 m)
+const RAIL_HALF = 0.795;                                    // m, rail-head centres of the 1520 mm gauge
+const CAB = { back: 8, up: 2.3, hfov: 36, pitch: -1.5, rangeMin: 3, far: 250 };   // camera as in hero_view.py
+const CAB_VHALF = Math.atan(Math.tan(CAB.hfov * Math.PI / 360) * 9 / 16);          // vertical half-FOV at 16:9
+const TUNNEL = [[-2.3, -0.5], [-2.3, 3.3], [-1.5, 4.3], [1.5, 4.3], [2.3, 3.3], [2.3, -0.5]];   // schematic (dy, h)
+const DECISION_RU = { GO: 'ДВИЖЕНИЕ', CAUTION: 'ВНИМАНИЕ', STOP: 'СТОП', FAULT: 'ОШИБКА' };
+function decisionOf(res) {
+  const h = res.health || {};
+  return res.decision || (res.obstacle ? 'STOP' : (h.level === 'error' ? 'FAULT' : ((res.warning || h.level === 'warn') ? 'CAUTION' : (h.level ? 'GO' : '—'))));
+}
+function trackModel(t) {
+  // resense.track.TrackModel.center_y / rail_z: quadratic bed, extrapolated linearly beyond floor_range
+  t = t || {};
+  const c0 = t.center || 0, tyaw = Math.tan(t.yaw || 0), k = t.curvature || 0;
+  const coef = Array.isArray(t.floor_coef) && t.floor_coef.length ? t.floor_coef : null;
+  const [x0, x1] = Array.isArray(t.floor_range) ? t.floor_range : [-1e9, 1e9];
+  const n = coef ? coef.length - 1 : 0;
+  const poly = X => coef.reduce((a, c) => a * X + c, 0);
+  const slope = X => coef.slice(0, -1).reduce((a, c, i) => a * X + c * (n - i), 0);
+  const floor = X => { const Xc = Math.min(Math.max(X, x0), x1); return poly(Xc) + slope(Xc) * (X - Xc); };
+  // without a bed fit (older results, the built-in demo) the rail head is the z = 0 plane
+  return { y: X => c0 + tyaw * X + 0.5 * k * X * X, z: coef ? X => floor(X) + (t.rail_offset ?? 0.35) : () => 0 };
+}
+function cabSteps(from, to) {
+  const xs = [];
+  for (let X = from; X < to; X += X < 40 ? 1 : (X < 100 ? 2 : 5)) xs.push(X);
+  xs.push(to); return xs;
+}
+function cabCamera(W, H, tm) {
+  // pinhole camera behind and above the sensor, looking along +X; a taller stage widens the view
+  const F = Math.min(W / 2 / Math.tan(CAB.hfov * Math.PI / 360), H / 2 / Math.tan(CAB_VHALF));
+  return { F, u0: W / 2, v0: H / 2, cx: -CAB.back, cy: tm.y(0), cz: tm.z(0) + CAB.up, tp: Math.tan(CAB.pitch * Math.PI / 180) };
+}
+function cabScene(ctx, W, H, r, tm, cam, opts) {
+  // everything in the 3D scene; returns the screen boxes of the objects. opts.hud: distance marks and labels
+  const { F, u0, v0, cx, cy, cz, tp } = cam, t = r ? (r.track || {}) : {};
+  const Pabs = (X, Y, Z) => { const d = Math.max(X - cx, 0.5); return [u0 - F * (Y - cy) / d, v0 - F * ((Z - cz) / d - tp)]; };
+  const P = (X, dy, h) => Pabs(X, tm.y(X) + dy, tm.z(X) + h);
+  const fade = X => Math.max(0.18, 1 - X / 280);
+  const line = (pts, color, width) => { ctx.strokeStyle = color; ctx.lineWidth = width; ctx.beginPath(); pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.stroke(); };
+  const band = (from, to, dyL, dyR, h, color) => {
+    if (!(to > from)) return;
+    const xs = cabSteps(from, to);
+    ctx.fillStyle = color; ctx.beginPath();
+    xs.forEach((X, i) => { const p = P(X, dyL, h); i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); });
+    xs.slice().reverse().forEach(X => { const p = P(X, dyR, h); ctx.lineTo(p[0], p[1]); });
+    ctx.closePath(); ctx.fill();
+  };
+  const envEnd = Math.min(CAB.far, Math.max(t.axis_valid ?? 150, 20));
+  const trackEnd = Math.min(CAB.far, envEnd + 60);        // the fitted axis is extrapolated beyond envEnd: faded, then cut
+  ctx.fillStyle = '#12151b'; ctx.fillRect(0, 0, W, H);
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  // schematic tunnel: a ring every 10 m and its longitudinal edges
+  if (opts.hud) for (let X = 10; X <= Math.min(200, trackEnd); X += 10) line(TUNNEL.map(([dy, h]) => P(X, dy, h)), `rgba(150,160,180,${0.22 * fade(X)})`, 1);
+  if (opts.hud) for (const [dy, h] of TUNNEL) line(cabSteps(0, Math.min(200, trackEnd)).map(X => P(X, dy, h)), 'rgba(150,160,180,0.12)', 1);
+  // track bed and sleepers
+  band(0, trackEnd, -1.6, 1.6, -0.2, '#1b2029');
+  for (let X = 1; X < 70; X += 1.5) {
+    line([P(X, -1.25, -0.16), P(X, 1.25, -0.16)], `rgba(120,130,148,${0.55 * fade(X * 3)})`, Math.max(0.6, Math.min(4, F * 0.2 / (X - cx))));
+  }
+  // verified-clear stretch in green up to the obstacle or the verified range; the stop zone in red
+  // (older results without clear_distance: the trusted corridor range; nothing on a fault or without data)
+  const clearEnd = !r || decisionOf(r) === 'FAULT' ? 0
+    : (r.obstacle ? r.nearest_distance : Math.min(r.clear_distance ?? t.axis_valid ?? 0, CAB.far));
+  band(CAB.rangeMin, clearEnd, -ENVELOPE.half, ENVELOPE.half, 0.01, 'rgba(19,169,87,0.34)');
+  if (r && r.obstacle && r.nearest_distance != null) band(r.nearest_distance, Math.min(r.nearest_distance + 6, CAB.far), -ENVELOPE.half, ENVELOPE.half, 0.01, 'rgba(226,29,54,0.5)');
+  // rails: per-segment width shrinks with range
+  const xsRail = cabSteps(0, trackEnd);
+  for (const side of [-RAIL_HALF, RAIL_HALF]) {
+    for (let i = 1; i < xsRail.length; i++) {
+      const X = xsRail[i];
+      line([P(xsRail[i - 1], side, 0), P(X, side, 0)], `rgba(196,204,218,${(X > envEnd ? 0.3 : 0.9) * fade(X)})`, Math.max(0.5, Math.min(5, F * 0.08 / (X - cx))));
+    }
+  }
+  // the train envelope the detector checks: floor and roof edges, a cross-section every 20 m
+  const env = a => `rgba(47,208,122,${a})`, xsEnv = cabSteps(CAB.rangeMin, envEnd);
+  for (const dy of [-ENVELOPE.half, ENVELOPE.half]) {
+    line(xsEnv.map(X => P(X, dy, ENVELOPE.bottom)), env(0.85), 1.6);
+    line(xsEnv.map(X => P(X, dy, ENVELOPE.top)), env(0.4), 1);
+  }
+  const frames = [];
+  if (opts.hud) for (let X = 10; X < envEnd; X += 20) frames.push(X);
+  if (opts.frameAt != null && opts.frameAt < envEnd) frames.push(opts.frameAt);
+  for (const X of frames) {
+    const rect = [[-1, 0], [1, 0], [1, 1], [-1, 1], [-1, 0]].map(([sd, up]) => P(X, sd * ENVELOPE.half, up ? ENVELOPE.top : ENVELOPE.bottom));
+    line(rect, env(X === opts.frameAt ? 0.9 : 0.45 * fade(X)), X === opts.frameAt ? 1.6 : 1);
+  }
+  if (opts.hud) {
+    const lab = P(14, -ENVELOPE.half, ENVELOPE.top);
+    ctx.font = '600 13px ' + UI_FONT; ctx.fillStyle = env(0.95); ctx.textAlign = 'right';
+    ctx.fillText('габарит поезда 2,1 × 3,0 м', lab[0] - 8, lab[1] - 8);
+  }
+  // confirmed objects, far first so that the nearest one is drawn on top
+  const objs = r ? [...(r.warnings || []).map(d => [d, false]), ...(r.detections || []).map(d => [d, true])]
+    .filter(([d]) => d && d.distance != null && d.distance <= CAB.far)
+    .sort((a, b) => b[0].distance - a[0].distance) : [];
+  const boxes = [];
+  for (const [d, gauge] of objs) {
+    const size = d.size || [0.5, 0.5, 1.5];
+    const ctr = d.center || [d.distance + size[0] / 2, tm.y(d.distance) + (d.lateral || 0), tm.z(d.distance) + size[2] / 2];
+    const lo = ctr.map((v, i) => v - size[i] / 2), hi = ctr.map((v, i) => v + size[i] / 2);
+    const corner = (i, j, k) => Pabs(i ? hi[0] : lo[0], j ? hi[1] : lo[1], k ? hi[2] : lo[2]);
+    const color = gauge ? '#ff2a45' : '#ffbf19';
+    const front = [corner(0, 0, 0), corner(0, 1, 0), corner(0, 1, 1), corner(0, 0, 1)];
+    ctx.fillStyle = gauge ? 'rgba(255,42,69,0.35)' : 'rgba(255,191,25,0.3)';
+    ctx.beginPath(); front.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = color; ctx.lineWidth = 1.5; ctx.beginPath();
+    for (let e = 0; e < 12; e++) {                           // the 12 edges: 4 along each axis
+      const ax = e >> 2, m = e & 3, o = [m & 1, m >> 1], p0 = [0, 0, 0], p1 = [0, 0, 0];
+      const rest = [0, 1, 2].filter(i => i !== ax); p0[rest[0]] = p1[rest[0]] = o[0]; p0[rest[1]] = p1[rest[1]] = o[1]; p1[ax] = 1;
+      const p = corner(...p0), q = corner(...p1); ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]);
+    }
+    ctx.stroke();
+    const us = [], vs = [];
+    for (let i = 0; i < 8; i++) { const p = corner(i & 1, (i >> 1) & 1, (i >> 2) & 1); us.push(p[0]); vs.push(p[1]); }
+    const bx = { zone: gauge ? 'gauge' : 'warning', distance: d.distance, size, center: ctr,
+      x0: Math.min(...us), y0: Math.min(...vs), x1: Math.max(...us), y1: Math.max(...vs) };
+    if (opts.hud) {
+      // a frame around it (a distant person is only a few pixels) and the label chip
+      const pad = 7, x0 = bx.x0 - pad, x1 = bx.x1 + pad, y0 = bx.y0 - pad, y1 = bx.y1 + pad;
+      ctx.strokeStyle = color; ctx.lineWidth = 3; ctx.strokeRect(x0, y0, x1 - x0, y1 - y0);
+      bx.label = `${gauge ? 'ПРЕПЯТСТВИЕ' : 'ОБЪЕКТ У ГАБАРИТА'} · ${d.distance.toFixed(1)} м`;
+      ctx.font = '800 15px ' + UI_FONT;
+      const cw = ctx.measureText(bx.label).width + 24, ch = 32;
+      const lx = Math.max(8, Math.min(W - cw - 8, (x0 + x1) / 2 - cw / 2)), ly = Math.max(8, y0 - ch - 8);
+      ctx.fillStyle = gauge ? '#e21d36' : '#ffbf19';
+      ctx.beginPath(); ctx.roundRect ? ctx.roundRect(lx, ly, cw, ch, 9) : ctx.rect(lx, ly, cw, ch); ctx.fill();
+      ctx.fillStyle = gauge ? '#fff' : '#18130a'; ctx.textAlign = 'left'; ctx.fillText(bx.label, lx + 12, ly + 21);
+      bx.chip = [lx, ly, lx + cw, ly + ch]; bx.frame = [x0, y0, x1, y1];
+    }
+    boxes.push(bx);
+  }
+  // distance marks beside the track (+ is left), skipped where a label chip or another mark already is
+  if (opts.hud) {
+    ctx.font = '600 12px ' + UI_FONT; ctx.textAlign = 'right';
+    let lastV = Infinity;
+    for (const X of [25, 50, 100]) {
+      const a = P(X, 1.35, 0), b = P(X, 1.9, 0), tw = ctx.measureText(X + ' м').width;
+      const rect = [b[0] - tw - 8, b[1] - 10, a[0] + 2, b[1] + 8];
+      const hits = q => q && rect[0] < q[2] && rect[2] > q[0] && rect[1] < q[3] && rect[3] > q[1];
+      if (lastV - b[1] < 16 || boxes.some(o => hits(o.chip) || hits(o.frame))) continue;
+      lastV = b[1];
+      line([a, b], `rgba(200,208,222,${0.7 * fade(X)})`, 1.5);
+      ctx.fillStyle = `rgba(214,220,232,${Math.max(0.45, fade(X))})`; ctx.fillText(X + ' м', b[0] - 6, b[1] + 4);
+    }
+  }
+  return { boxes, clearEnd, envEnd };
+}
+function drawCab(res) {
+  const c = $('cab'); if (!c) return;
+  const W = c.clientWidth, H = c.clientHeight; if (!W || !H) return;
+  const dpr = window.devicePixelRatio || 1;
+  if (c.width !== Math.round(W * dpr) || c.height !== Math.round(H * dpr)) { c.width = Math.round(W * dpr); c.height = Math.round(H * dpr); }
+  const ctx = c.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const r = res || null, t = r ? (r.track || {}) : {}, tm = trackModel(t), cam = cabCamera(W, H, tm);
+  const main = cabScene(ctx, W, H, r, tm, cam, { hud: true });
+  const round = (x, y, w, h, rad) => { ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x, y, w, h, rad) : ctx.rect(x, y, w, h); };
+  ctx.textAlign = 'left';
+  if (!r) {
+    ctx.font = '600 15px ' + UI_FONT; ctx.fillStyle = 'rgba(214,220,232,0.85)';
+    ctx.fillText('Нет данных: подключите поток, выберите файл или запустите демо', 18, 32);
+    state.cab = { width: W, height: H, focal: cam.F, clearEnd: 0, boxes: [], inset: null };
+    return;
+  }
+  // decision chip, as the node publishes it on /resense/decision
+  let dec = decisionOf(r); if (dec === '—') dec = 'GO';
+  const sub = dec === 'STOP' ? (r.nearest_distance != null ? `препятствие ${r.nearest_distance.toFixed(1)} м` : 'препятствие в габарите')
+    : dec === 'CAUTION' ? (r.warning ? 'объект рядом с габаритом' : 'снижена достоверность данных')
+    : dec === 'FAULT' ? 'нет достоверных данных'
+    : r.clear_distance == null ? 'путь свободен'
+    : r.clear_distance > 0 ? `путь свободен ${r.clear_distance.toFixed(0)} м` : 'свободный участок не подтверждён';
+  ctx.font = '900 22px ' + UI_FONT;
+  const head = DECISION_RU[dec] || dec, hw = ctx.measureText(head).width + 28;
+  ctx.fillStyle = { STOP: '#e21d36', CAUTION: '#ffbf19', FAULT: '#7b3fe4' }[dec] || '#13a957';
+  round(16, 16, hw, 44, 12); ctx.fill();
+  ctx.fillStyle = dec === 'CAUTION' ? '#18130a' : '#fff'; ctx.fillText(head, 30, 46);
+  ctx.font = '700 19px ' + UI_FONT; ctx.fillStyle = '#fff'; ctx.fillText(sub, 16 + hw + 14, 45);
+  // legend: what the green stretch means and how far the corridor is trusted
+  ctx.font = '600 12px ' + UI_FONT;
+  const legend = [
+    ['rgba(19,169,87,0.9)', main.clearEnd > CAB.rangeMin ? `проверено свободно: ${CAB.rangeMin}–${main.clearEnd.toFixed(0)} м` : 'свободный участок не подтверждён'],
+    ['rgba(47,208,122,0.95)', 'габарит поезда'],
+  ];
+  if (t.axis_valid != null) legend.push(['rgba(255,191,25,0.95)', `ось пути подтверждена до ${Math.min(t.axis_valid, 9999).toFixed(0)} м`]);
+  let lx = 16; const ly = H - 16;
+  ctx.fillStyle = 'rgba(18,21,27,0.82)'; round(8, ly - 20, Math.min(W - 16, legend.reduce((a, [, s]) => a + ctx.measureText(s).width + 36, 8)), 28, 8); ctx.fill();
+  for (const [col, text] of legend) {
+    ctx.fillStyle = col; ctx.fillRect(lx, ly - 10, 12, 4);
+    ctx.fillStyle = 'rgba(226,231,240,0.92)'; ctx.fillText(text, lx + 18, ly - 3);
+    lx += ctx.measureText(text).width + 36;
+  }
+  // close-up of the nearest object, zoomed on its cross-section of the envelope (far objects are a few pixels)
+  const target = main.boxes.filter(b => b.zone === 'gauge').pop() || main.boxes.filter(b => b.zone === 'warning').pop();
+  let inset = null;
+  if (target && target.distance > 20) {
+    const iw = Math.round(Math.max(220, W * 0.3)), ih = Math.round(Math.max(170, H * 0.36)), ix = W - iw - 16, iy = 16;
+    const Xo = target.distance, d = Xo - cam.cx;
+    const F = Math.max(cam.F * 1.5, 0.8 * ih * d / (ENVELOPE.top + 0.5));
+    // centred between the track axis and the object, and between mid-envelope and the object's height
+    const ay = ((tm.y(Xo) + target.center[1]) / 2 - cam.cy) / d, az = ((tm.z(Xo) + ENVELOPE.top / 2 + target.center[2]) / 2 - cam.cz) / d;
+    const icam = { ...cam, F, u0: iw / 2 + F * ay, v0: ih / 2 + F * (az - cam.tp) };
+    ctx.save(); ctx.translate(ix, iy); round(0, 0, iw, ih, 12); ctx.clip();
+    cabScene(ctx, iw, ih, r, tm, icam, { hud: false, frameAt: Xo });
+    ctx.restore();
+    const col = target.zone === 'gauge' ? '#ff2a45' : '#ffbf19';
+    ctx.strokeStyle = col; ctx.lineWidth = 2; round(ix, iy, iw, ih, 12); ctx.stroke();
+    const sz = target.size || [];
+    const caption = `крупно · ${Xo.toFixed(1)} м` + (sz.length === 3 ? ` · ${sz[0].toFixed(1)}×${sz[1].toFixed(1)}×${sz[2].toFixed(1)} м` : '');
+    ctx.font = '700 12px ' + UI_FONT; ctx.fillStyle = 'rgba(18,21,27,0.82)';
+    const cwid = ctx.measureText(caption).width + 16; round(ix + 8, iy + 8, cwid, 22, 6); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.fillText(caption, ix + 16, iy + 23);
+    inset = { x: ix, y: iy, width: iw, height: ih, distance: Xo, zone: target.zone };
+  }
+  state.cab = { width: W, height: H, focal: cam.F, clearEnd: main.clearEnd, boxes: main.boxes, inset };
 }
 function timelineNow() {
   if (state.mode === 'replay') { const f = state.last; return f ? stampOf(f) : 0; }
@@ -205,26 +527,26 @@ function drawTimeline() {
   const c = $('timeline'), ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
   const now = timelineNow(), span = TIMELINE_SPAN, DMAX = 250, top = 6, bottom = c.height - 18, H = bottom - top;
   const yOf = d => bottom - Math.min(d, DMAX) / DMAX * H, xOf = t => c.width - (now - t) / span * c.width;
-  ctx.strokeStyle = '#2a2c33'; ctx.font = '11px system-ui';
-  for (const d of [50, 100, 150, 200]) { const y = yOf(d); ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(c.width, y); ctx.stroke(); ctx.fillStyle = '#8a8f98'; ctx.fillText(d + ' m', 4, y - 2); }
+  ctx.strokeStyle = '#dfe2e6'; ctx.font = '500 11px ' + UI_FONT;
+  for (const d of [50, 100, 150, 200]) { const y = yOf(d); ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(c.width, y); ctx.stroke(); ctx.fillStyle = '#292c31'; ctx.fillText(d + ' м', 4, y - 2); }
   // x-axis: wall clock in live mode, stamp relative to the first frame in replay
   const tick = 5, first = Math.floor((now - span) / tick) * tick;
   for (let t = first; t <= now; t += tick) {
     if (t < now - span) continue;
     const x = xOf(t); ctx.beginPath(); ctx.moveTo(x, bottom); ctx.lineTo(x, bottom + 4); ctx.stroke();
     const rel = t - (state.t0 || 0);
-    const label = state.mode === 'replay' ? ((rel >= 0 ? '+' : '−') + Math.abs(rel).toFixed(0) + ' s') : new Date(t * 1000).toLocaleTimeString();
-    ctx.fillStyle = '#8a8f98'; ctx.fillText(label, x + 3, c.height - 5);
+    const label = state.mode === 'replay' ? ((rel >= 0 ? '+' : '−') + Math.abs(rel).toFixed(0) + ' с') : new Date(t * 1000).toLocaleTimeString('ru-RU');
+    ctx.fillStyle = '#292c31'; ctx.fillText(label, x + 3, c.height - 5);
   }
-  ctx.fillStyle = '#8a8f98'; ctx.textAlign = 'right';
-  ctx.fillText(state.mode === 'replay' ? 'nearest obstacle vs replay clock (message stamp)' : 'nearest obstacle vs wall clock', c.width - 6, top + 10);
+  ctx.fillStyle = '#292c31'; ctx.textAlign = 'right';
+  ctx.fillText(state.mode === 'replay' ? 'дистанция до объекта · время записи' : 'дистанция до объекта · текущее время', c.width - 6, top + 10);
   ctx.textAlign = 'left';
   for (const h of state.hist) {
     if (h.t < now - span) continue;
-    if (h.warnDist != null && !h.obstacle) { ctx.fillStyle = '#ff9f1c'; ctx.fillRect(xOf(h.t) - 1.5, yOf(h.warnDist) - 1.5, 3, 3); }
-    if (h.dist != null) { ctx.fillStyle = '#ff2d55'; ctx.fillRect(xOf(h.t) - 2, yOf(h.dist) - 2, 4, 4); }
+    if (h.warnDist != null && !h.obstacle) { ctx.fillStyle = '#b08b00'; ctx.fillRect(xOf(h.t) - 1.5, yOf(h.warnDist) - 1.5, 3, 3); }
+    if (h.dist != null) { ctx.fillStyle = '#e31e36'; ctx.fillRect(xOf(h.t) - 2, yOf(h.dist) - 2, 4, 4); }
   }
-  if (state.mode === 'replay') { ctx.strokeStyle = '#8a83d1'; ctx.beginPath(); ctx.moveTo(c.width - 1, top); ctx.lineTo(c.width - 1, bottom); ctx.stroke(); }
+  if (state.mode === 'replay') { ctx.strokeStyle = '#0078bf'; ctx.beginPath(); ctx.moveTo(c.width - 1, top); ctx.lineTo(c.width - 1, bottom); ctx.stroke(); }
 }
 
 // ----------------------------------------------------------------------------- applying a result
@@ -235,21 +557,21 @@ function applyResult(res, opts) {
   const t = state.mode === 'replay' ? stampOf(res) : Date.now() / 1000;
   const b = $('banner');
   const dets = res.detections || [], warns = res.warnings || [];
-  if (res.obstacle) { b.className = 'bad'; b.textContent = `OBSTACLE  ${res.nearest_distance.toFixed(1)} m`; }
-  else if (res.warning) { b.className = 'warn'; b.textContent = 'WARNING: object near the gauge'; }
-  else { b.className = 'clear'; b.textContent = 'PATH CLEAR'; }
-  if (state.mode === 'replay' && res.frame != null) { const s = document.createElement('small'); s.textContent = `#${String(res.frame).padStart(5, '0')}  t = +${(t - (state.t0 || 0)).toFixed(1)} s  (${res.frame_id || ''})`; b.appendChild(s); }
-  $('dist').textContent = res.nearest_distance == null ? '—' : res.nearest_distance.toFixed(1) + ' m';
+  if (res.obstacle) { b.className = 'bad'; b.textContent = `ПРЕПЯТСТВИЕ  ${res.nearest_distance.toFixed(1)} м`; }
+  else if (res.warning) { b.className = 'warn'; b.textContent = 'ВНИМАНИЕ: ОБЪЕКТ РЯДОМ С ГАБАРИТОМ'; }
+  else { b.className = 'clear'; b.textContent = 'ПУТЬ СВОБОДЕН'; }
+  if (state.mode === 'replay' && res.frame != null) { const s = document.createElement('small'); s.textContent = `Кадр ${String(res.frame).padStart(5, '0')} · +${(t - (state.t0 || 0)).toFixed(1)} с · ${res.frame_id || 'без источника'}`; b.appendChild(s); }
+  $('dist').textContent = res.nearest_distance == null ? '—' : res.nearest_distance.toFixed(1) + ' м';
   $('counts').textContent = `${dets.length} / ${warns.length}`;
   const tr = res.track || {};
   $('axis').textContent = fmt(tr.center, 2);
-  $('radius').textContent = tr.curvature == null ? '—' : (Math.abs(tr.curvature) < 1e-6 ? 'straight' : (1 / tr.curvature).toFixed(0) + ' m');
-  $('valid').textContent = fmt(tr.axis_valid, 0, ' m');
+  $('radius').textContent = tr.curvature == null ? '—' : (Math.abs(tr.curvature) < 1e-6 ? 'прямая' : (1 / tr.curvature).toFixed(0) + ' м');
+  $('valid').textContent = fmt(tr.axis_valid, 0, ' м');
   $('points').textContent = res.n_points == null ? '—' : `${res.n_points} / ${res.n_corridor ?? '—'}`;
   const tm = res.timing_ms || {};
-  $('timing').textContent = fmt(tm.total, 0, ' ms');
+  $('timing').textContent = fmt(tm.total, 0, ' мс');
   $('timing').className = tm.total > 100 ? 'warn' : '';
-  $('stages').textContent = [tm.track, tm.corridor, tm.cluster].every(v => v != null) ? `${tm.track.toFixed(0)} / ${tm.corridor.toFixed(0)} / ${tm.cluster.toFixed(0)} ms` : '—';
+  $('stages').textContent = [tm.track, tm.corridor, tm.cluster].every(v => v != null) ? `${tm.track.toFixed(0)} / ${tm.corridor.toFixed(0)} / ${tm.cluster.toFixed(0)} мс` : '—';
   $('frames').textContent = state.shown;
   applySafety(res);
   applyNode(res.node);
@@ -258,28 +580,28 @@ function applyResult(res, opts) {
   state.hist.push({ t, dist: res.obstacle ? res.nearest_distance : null, warnDist, obstacle: !!res.obstacle });
   while (state.hist.length > 5000) state.hist.shift();
   // alarm log: one line per alarm frame, one line when the alarm ends
-  const when = state.mode === 'replay' ? `#${String(res.frame ?? state.shown - 1).padStart(5, '0')} +${(t - (state.t0 || 0)).toFixed(1)}s` : new Date().toLocaleTimeString();
+  const when = state.mode === 'replay' ? `#${String(res.frame ?? state.shown - 1).padStart(5, '0')} +${(t - (state.t0 || 0)).toFixed(1)}с` : new Date().toLocaleTimeString('ru-RU');
   if (res.obstacle) {
     state.alarmFrames++;
-    logLine(`${when}  OBSTACLE ${res.nearest_distance.toFixed(1)} m  ` + dets.map(d => `#${d.id} dy=${d.lateral.toFixed(1)} ${d.size[0].toFixed(1)}x${d.size[1].toFixed(1)}x${d.size[2].toFixed(1)} n=${d.n_points} p=${d.confidence.toFixed(2)}`).join(' | '));
+    logLine(`${when}  ПРЕПЯТСТВИЕ ${res.nearest_distance.toFixed(1)} м  ` + dets.map(d => `#${d.id} смещение=${d.lateral.toFixed(1)} размер=${d.size[0].toFixed(1)}×${d.size[1].toFixed(1)}×${d.size[2].toFixed(1)} точек=${d.n_points} p=${d.confidence.toFixed(2)}`).join(' | '));
   } else if (state.lastObstacle) {
-    logLine(`${when}  path clear again (alarm lasted ${state.alarmFrames} frames)`);
+    logLine(`${when}  путь снова свободен · тревога длилась ${state.alarmFrames} кадр.`);
     state.alarmFrames = 0;
   }
   state.lastObstacle = !!res.obstacle;
-  if (draw) { drawTop(res); drawTimeline(); }
+  if (draw) { drawTop(res); drawTimeline(); drawCab(res); }
 }
 function applySafety(res) {
   // v0.6 fields: decision (node only, else derived), clear_distance, health, mount; absent in older results
   const h = res.health || {}, m = res.mount || {};
-  const decision = res.decision || (res.obstacle ? 'STOP' : (h.level === 'error' ? 'FAULT' : ((res.warning || h.level === 'warn') ? 'CAUTION' : (h.level ? 'GO' : '—'))));
-  $('decision').textContent = decision;
+  const decision = decisionOf(res);
+  $('decision').textContent = DECISION_RU[decision] || decision;
   $('decision').className = { STOP: 'bad', FAULT: 'bad', CAUTION: 'warn' }[decision] || '';
-  $('clear').textContent = res.clear_distance == null ? '—' : res.clear_distance.toFixed(0) + ' m';
-  $('health').textContent = h.level || '—';
+  $('clear').textContent = res.clear_distance == null ? '—' : res.clear_distance.toFixed(0) + ' м';
+  $('health').textContent = { ok: 'норма', warn: 'предупреждение', error: 'ошибка' }[h.level] || '—';
   $('health').className = { error: 'bad', warn: 'warn' }[h.level] || '';
-  $('vis').textContent = h.visibility == null ? '—' : `${h.visibility.toFixed(0)} m / ${(100 * (h.rail_lock ?? 0)).toFixed(0)} %`;
-  $('mount').textContent = m.status ? `${m.status}${m.status === 'ok' ? ` (roll ${m.roll_deg}°, pitch ${m.pitch_deg}°)` : ''}` : '—';
+  $('vis').textContent = h.visibility == null ? '—' : `${h.visibility.toFixed(0)} м / ${(100 * (h.rail_lock ?? 0)).toFixed(0)} %`;
+  $('mount').textContent = m.status ? `${{ ok: 'норма', pending: 'ожидание', error: 'ошибка' }[m.status] || m.status}${m.status === 'ok' ? ` (крен ${m.roll_deg}°, тангаж ${m.pitch_deg}°)` : ''}` : '—';
   $('health-msgs').textContent = (h.messages || []).join('; ');
 }
 function logLine(s) { const l = $('log'); l.textContent = s + '\n' + l.textContent; if (l.textContent.length > 60000) l.textContent = l.textContent.slice(0, 50000); }
@@ -287,26 +609,26 @@ function applyNode(node) {
   const card = $('node-card');
   if (!node) {
     for (const id of ['n-latency', 'n-fps', 'n-frames', 'n-dropped', 'n-period']) $(id).textContent = '—';
-    $('node-note').textContent = state.mode === 'replay' ? '(offline replay: no node stats in results.jsonl)' : '(no "node" object in the status message)';
+    $('node-note').textContent = state.mode === 'replay' ? '(в файле нет статистики узла)' : '(ожидание данных узла)';
     card.className = 'card';
-    $('health-realtime').className = 'pill'; $('health-realtime').textContent = state.mode === 'replay' ? 'offline replay' : 'latency —';
+    $('health-realtime').className = 'pill'; $('health-realtime').textContent = state.mode === 'replay' ? 'Запись' : 'Задержка —';
     return;
   }
   $('node-note').textContent = '';
-  $('n-latency').textContent = fmt(node.latency_ms, 0, ' ms'); $('n-latency').className = node.latency_ms > 100 ? 'warn' : '';
+  $('n-latency').textContent = fmt(node.latency_ms, 0, ' мс'); $('n-latency').className = node.latency_ms > 100 ? 'warn' : '';
   $('n-fps').textContent = fmt(node.fps, 1); $('n-fps').className = (node.fps != null && node.fps > 0 && node.fps < 9) ? 'warn' : '';
   $('n-frames').textContent = node.frames ?? '—';
-  $('n-period').textContent = fmt(node.input_period_ms, 0, ' ms');
+  $('n-period').textContent = fmt(node.input_period_ms, 0, ' мс');
   const dropped = node.dropped_frames ?? 0, now = Date.now();
   const grew = state.node.lastDropped != null && dropped > state.node.lastDropped;
-  if (grew) { state.node.alertUntil = now + 3000; logLine(`${new Date().toLocaleTimeString()}  node dropped ${dropped - state.node.lastDropped} input frame(s), total ${dropped}`); }
+  if (grew) { state.node.alertUntil = now + 3000; logLine(`${new Date().toLocaleTimeString('ru-RU')}  узел пропустил кадров: ${dropped - state.node.lastDropped}; всего ${dropped}`); }
   state.node.lastDropped = dropped;
   $('n-dropped').textContent = dropped + (grew ? '  ▲' : '');
   $('n-dropped').className = dropped > 0 ? (now < state.node.alertUntil ? 'bad' : 'warn') : '';
   card.className = 'card' + (now < state.node.alertUntil ? ' alert' : (dropped > 0 ? ' notice' : ''));
   const unhealthy = node.latency_ms > 100 || (node.fps != null && node.fps > 0 && node.fps < 9) || dropped > 0;
   $('health-realtime').className = 'pill ' + (unhealthy ? 'warn' : 'ok');
-  $('health-realtime').textContent = node.latency_ms == null ? 'node online' : `latency ${node.latency_ms.toFixed(0)} ms`;
+  $('health-realtime').textContent = node.latency_ms == null ? 'Узел в сети' : `Задержка ${node.latency_ms.toFixed(0)} мс`;
 }
 
 // ----------------------------------------------------------------------------- live mode
@@ -317,15 +639,15 @@ function onStatus(msg) {
 }
 let ros = null;
 $('connect').onclick = () => {
-  if (typeof ROSLIB === 'undefined') { $('conn').textContent = 'roslib.js not loaded — live mode unavailable'; return; }
+  if (typeof ROSLIB === 'undefined') { $('conn').textContent = 'roslib.js не загружен'; return; }
   setMode('live');
   if (ros) { try { ros.close(); } catch (e) {} }
   ros = new ROSLIB.Ros({ url: $('url').value });
-  $('conn').textContent = 'connecting…';
-  $('health-source').className = 'pill warn'; $('health-source').textContent = 'live connecting';
-  ros.on('connection', () => { $('conn').textContent = 'connected'; $('health-source').className = 'pill ok'; $('health-source').textContent = 'live connected'; });
-  ros.on('error', () => { $('conn').textContent = 'error'; $('health-source').className = 'pill bad'; $('health-source').textContent = 'live error'; });
-  ros.on('close', () => { $('conn').textContent = 'disconnected'; $('health-source').className = 'pill warn'; $('health-source').textContent = 'live disconnected'; });
+  $('conn').textContent = 'Подключение…';
+  $('health-source').className = 'pill warn'; $('health-source').textContent = 'Подключение к потоку';
+  ros.on('connection', () => { $('conn').textContent = 'Подключено'; $('health-source').className = 'pill ok'; $('health-source').textContent = 'Прямой эфир'; });
+  ros.on('error', () => { $('conn').textContent = 'Ошибка'; $('health-source').className = 'pill bad'; $('health-source').textContent = 'Ошибка потока'; });
+  ros.on('close', () => { $('conn').textContent = 'Нет подключения'; $('health-source').className = 'pill warn'; $('health-source').textContent = 'Поток отключён'; });
   new ROSLIB.Topic({ ros, name: '/resense/status', messageType: 'std_msgs/String' }).subscribe(onStatus);
 };
 
@@ -339,9 +661,9 @@ function setMode(m) {
   if (state.mode === m) return;
   pause(); state.mode = m; resetView();
   $('mode-live').classList.toggle('active', m === 'live'); $('mode-replay').classList.toggle('active', m === 'replay');
-  $('canvas-note').textContent = m === 'replay' ? 'offline replay of results.jsonl' : '';
+  $('canvas-note').textContent = m === 'replay' ? 'Воспроизведение results.jsonl' : 'Данные ROS в реальном времени';
   $('health-source').className = 'pill ' + (m === 'live' ? 'warn' : 'ok');
-  $('health-source').textContent = m === 'live' ? 'live disconnected' : 'replay ready';
+  $('health-source').textContent = m === 'live' ? 'Поток отключён' : 'Запись готова';
 }
 function summarizeFrames(frames) {
   let events = 0, alarmFrames = 0, warningFrames = 0, active = false, nearest = Infinity, maxTime = 0;
@@ -357,9 +679,9 @@ function summarizeFrames(frames) {
 function renderSummary() {
   const s = state.summary;
   $('s-alarms').textContent = s ? `${s.alarm_events} / ${s.alarm_frames}` : '—';
-  $('s-nearest').textContent = s && s.nearest_m != null ? `${s.nearest_m.toFixed(1)} m` : '—';
+  $('s-nearest').textContent = s && s.nearest_m != null ? `${s.nearest_m.toFixed(1)} м` : '—';
   $('s-warnings').textContent = s ? s.warning_frames : '—';
-  $('s-max-time').textContent = s && s.max_detect_ms != null ? `${s.max_detect_ms.toFixed(0)} ms` : '—';
+  $('s-max-time').textContent = s && s.max_detect_ms != null ? `${s.max_detect_ms.toFixed(0)} мс` : '—';
 }
 function loadText(text, name) {
   const frames = [];
@@ -374,18 +696,20 @@ function loadText(text, name) {
   for (const id of ['play', 'stepback', 'stepfwd', 'seek']) $(id).disabled = !ok;
   $('export-report').disabled = !ok;
   $('seek').max = Math.max(frames.length - 1, 0); $('seek').value = 0;
-  $('frame-pos').textContent = ok ? `${name || 'file'}: ${frames.length} frames` : 'no frames found in the file';
+  $('frame-pos').textContent = ok ? `${name || 'файл'} · ${frames.length} кадр.` : 'В файле нет кадров';
   resetView();
   if (ok) seek(0);
   return frames.length;
 }
 function demoFrames() {
   const frames = [];
+  const track = { center: .04, yaw: .002, curvature: .00018, axis_valid: 145 };
+  const axisY = X => track.center + Math.tan(track.yaw) * X + 0.5 * track.curvature * X * X;
   for (let i = 0; i < 60; i++) {
     const approach = i >= 10 && i < 50, distance = 120 - (i - 10) * (80 / 39);
     const obstacle = approach && i >= 14, warning = approach && i >= 10 && i < 14;
     const detection = { id: 1, zone: obstacle ? 'gauge' : 'warning', distance, lateral: 0.08,
-      center: [distance + 0.2, 0.08, 0.9], size: [0.4, 0.5, 1.7], n_points: Math.round(8 + (120 - distance) * .7),
+      center: [distance + 0.2, axisY(distance + 0.2) + 0.08, 0.9], size: [0.4, 0.5, 1.7], n_points: Math.round(8 + (120 - distance) * .7),
       confidence: obstacle ? Math.min(.99, .62 + (120 - distance) / 160) : .45, age: Math.max(1, i - 9), height_min: .12, intensity: 60 };
     frames.push({ stamp: i * FRAME_DT, frame: i, frame_id: 'resense_demo', obstacle, warning,
       decision: obstacle ? 'STOP' : (warning ? 'CAUTION' : 'GO'), clear_distance: obstacle ? distance : 145,
@@ -393,7 +717,7 @@ function demoFrames() {
       mount: { status: 'ok', roll_deg: .1, pitch_deg: -.2, yaw_deg: 0, frames_used: 20 },
       nearest_distance: obstacle ? distance : null, detections: obstacle ? [detection] : [], warnings: warning ? [detection] : [],
       n_candidates: approach ? detection.n_points : 0, n_points: 190000, n_corridor: approach ? detection.n_points : 0,
-      track: { center: .04, yaw: .002, curvature: .00018, axis_valid: 145 },
+      track: { ...track },
       timing_ms: { track: 14, corridor: 5, cluster: approach ? 18 : 8, total: approach ? 49 : 38 },
       node: { latency_ms: approach ? 56 : 44, fps: 10, frames: i + 1, dropped_frames: 0, input_period_ms: 100 } });
   }
@@ -414,7 +738,7 @@ function readReplayFile(file) {
 function showFrame(i, draw) {
   state.idx = i; const f = state.frames[i];
   applyResult(f, { draw });
-  $('seek').value = i; $('frame-pos').textContent = `frame ${i + 1} / ${state.frames.length}`;
+  $('seek').value = i; $('frame-pos').textContent = `Кадр ${i + 1} из ${state.frames.length}`;
 }
 function seek(i) {
   // rebuild the timeline and the log from the start so that seeking backwards is consistent
@@ -438,18 +762,18 @@ function tick() {
 function play() {
   if (!state.frames.length || state.playing) return;
   if (state.idx + 1 >= state.frames.length) seek(0);
-  state.playing = true; $('play').textContent = 'pause';
+  state.playing = true; $('play').textContent = 'Пауза';
   state.timer = setInterval(tick, 1000 * FRAME_DT / state.speed);
 }
 function pause() {
   if (state.timer) clearInterval(state.timer);
-  state.timer = null; state.playing = false; $('play').textContent = 'play';
+  state.timer = null; state.playing = false; $('play').textContent = 'Пуск';
 }
 $('file').addEventListener('change', ev => {
   readReplayFile(ev.target.files && ev.target.files[0]);
 });
 $('demo').onclick = () => {
-  loadText(demoFrames().map(f => JSON.stringify(f)).join('\n'), 'built-in jury demo');
+  loadText(demoFrames().map(f => JSON.stringify(f)).join('\n'), 'Встроенное демо');
   $('speed').value = '2'; state.speed = 2; play();
 };
 $('export-report').onclick = () => downloadJSON({ generated_at: new Date().toISOString(), source: state.sourceName,
@@ -479,9 +803,15 @@ document.addEventListener('drop', ev => {
 setInterval(() => { if (state.mode === 'live') drawTimeline(); }, 500);
 
 // test / automation hook (used by web/demo/check_dashboard.py)
-window.resense = { state, loadText, play, pause, step, seek, setMode, applyResult, summarizeFrames, demoFrames };
+window.resense = { state, loadText, play, pause, step, seek, setMode, applyResult, summarizeFrames, demoFrames, drawCab };
 
-drawTop({ track: { center: 0, yaw: 0, curvature: 0 }, detections: [], warnings: [] }); drawTimeline();
+drawTop({ track: { center: 0, yaw: 0, curvature: 0 }, detections: [], warnings: [] }); drawTimeline(); drawCab(null);
+// the cab canvas follows its stage (it grows to balance the columns): redraw at the new size
+if (window.ResizeObserver) new ResizeObserver(() => drawCab(state.last)).observe($('cab'));
+if (document.fonts) document.fonts.ready.then(() => {
+  drawTop(state.last || { track: { center: 0, yaw: 0, curvature: 0 }, detections: [], warnings: [] });
+  drawTimeline(); drawCab(state.last);
+});
 </script>
 </body>
 </html>
