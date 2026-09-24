@@ -90,6 +90,40 @@ thresholds' margins, the low-object width cap, the lying person),
 [`experiments_v0.6.1_setF.json`](experiments_v0.6.1_setF.json) (set F round 1). Every number is
 **real** (recording named) or **synthetic** (said so).
 
+**P4 evaluation audit (23.09, after v0.6.3):** [`P4_AUDIT.md`](P4_AUDIT.md) records fixes to
+synthetic bed placement, independent set F placement, sequence isolation, event counting and
+multi-object matching. A new full-rate run on the original six organizer bags reproduced the
+v0.6.3 empty-bag and real-obstacle counts. Paired set S on 108 real empty backgrounds found
+22/67 visible in-gauge hits with the corrected bed height versus 29/68 with the old, higher
+placement; those are small synthetic samples, not operational recall. All set F range numbers
+below were measured with the older frame-axis placement, which favours objects on curves and
+at the envelope edge. Those older results cannot be compared to new code without a paired rerun.
+**Update 24.09:** the selected extended-ride curve/edge pairs have now been re-measured
+([`P4_AUDIT.md`](P4_AUDIT.md),
+[`experiments_p4_setf_paired.json`](experiments_p4_setf_paired.json)); on six valid approaches
+per kind, the current code matched no visible person or 1 m box in the 100–150 m bin in either
+mode. One more sequence was excluded after a recording gap. This is a placement-bias sensitivity
+test on synthetic positives, not surveyed long-range recall; it does not supersede the dated
+historical figures below with a new positive capability claim. The organizers' synthetic-obstacle
+bag `cloud_with_fake_obj` (24.09, ten objects ray-cast by their own tool) is now **labelled
+exactly** from its appended object points ([`DATASET.md`](DATASET.md)). Graded per object, the
+shipped detector finds the 2×2 m box at first sight (98 m), the plank across the rails from
+82 m, and the 0.3 m cubes only from 34–43 m. It leaves the 2×2 m box at the top of the envelope
+mostly advisory (12 STOP frames of 124) and misses the 5 cm hanging object and the 2×2 m box at
+the edge; the edge tests depend on a 0.24° offset between the organizers' placement axis and
+the rails. A length-limited `elevated` / `floating` rule (experiment, not shipped) gains 49 STOP
+frames on the inside objects for +2 events on the five empty bags
+([`P4_AUDIT.md`](P4_AUDIT.md) "Organizer synthetic-obstacle recording",
+[`experiments_p4_fake_labelled.json`](experiments_p4_fake_labelled.json)).
+The integration rerun on `4cd32d6` (24.09) again found 107 alarm frames / 20 events on the
+five empty bags and 185/246 labelled obstacle-frames on `doubleT_obstacle` (first alarm 11).
+The straight set of round 3 re-run in the same pairs (P4_AUDIT, 24.09 evening) keeps its range:
+a person anchored on the near rails is first confirmed at a median 154 m (legacy 150 m, 5 paired
+approaches), the trolley at 148 m in both modes, the 1 m crate at 110 m (legacy 116 m).
+One paired 35-frame, <40 m approach on a short cached ride slice produced the same 31/35
+visible hits for each of a person and 1 m box under both placement modes; it cannot validate
+the historical 100–200 m range claims (protocol and command: [`P4_AUDIT.md`](P4_AUDIT.md)).
+
 Headline numbers of v0.5 were for **v0.5 (real data, 2026-09-21, Sprint 2)**: every frame of the six
 organizer bags cached as `*.npy` (`scripts/cache_frames.py`, 2 488 frames), pure Python on the
 4-core sandbox (the jury's i7-9700E has 8 faster cores; the load of every timing run is
@@ -605,13 +639,14 @@ decide how the far bins can be read:
   `roundT_pressureGate_roundT`, R = 1.8 km) and 124 m (`roundT_doubleT`, R = 3.5 km); only
   93 / 268 and 119 / 252 frames see further than 150 m. Nothing placed beyond the sightline
   can be detected by any sensor.
-* **Placement.** The injector stands objects on the per-frame extrapolated bed, which beyond
-  the fit (48–100 m in these frames) swings between +1.4 and −3.3 m at 100–250 m
-  (`S_roundT_doubleT` rows at 133, 230, 102 m); combined with the sightline this leaves
-  **11 of the 22 in-gauge objects of each static set fully occluded (all beyond 80 m)** and
-  436 of the 1 269 sequence rows; they are excluded from recall and counted here. The far
-  bins therefore hold 3–7 visible objects per set and measure the injector as much as the
-  detector (§5: placement on the local bed).
+* **Placement (historical correction).** The v0.5 `resense inject` code actually stood ground
+  objects 0.15 m below the *per-frame extrapolated rail head*, without calling the local-bed
+  placement helper. The earlier text here calling that an extrapolated-bed placement was
+  mistaken. With the sightline and ray-cast occlusion, **11 of the 22 in-gauge objects of each
+  static set are fully occluded (all beyond 80 m)** and 436 of the 1 269 sequence rows are
+  excluded from recall. The far bins therefore hold 3–7 visible objects per set and measure
+  the injector as much as the detector. The corrected bed-height A/B is in
+  [`P4_AUDIT.md`](P4_AUDIT.md); do not directly compare its counts to this v0.5 protocol.
 
 **Static sets (53 frames, 26 in-gauge visible objects; recall = matched / visible in-gauge
 objects, counts per bin):**
@@ -1170,9 +1205,9 @@ first-run failure); it now subscribes reliable, like the node (`rviz/resense.rvi
 - ego-speed estimator: the tracks cue is silent below 1 m/s by design; the profile cue is
   silent on 40–60 % of the moving frames — a bed profile with the ring stripes removed, or the
   organizers' speed / odometry (the reliable path);
-- extended dataset with real obstacles → calibrate dropout / intensity in `inject`, real
-  recall by range and class, false alarms per km, FP taxonomy per scene type with the label
-  tool;
+- more *labelled obstacle* materials, if provided in future → calibrate dropout / intensity
+  in `inject` and measure real recall by range and class. The delivered `new_data` ride has
+  no obstacles, but supports false alarms per km and FP taxonomy by scene with the label tool;
 - GOST 23961-80 gauge polygon from the drawings (ALGORITHM.md §3.2); platform notch; overhead
   policy;
 - timing on the i7-9700E bench; Numba for the DBSCAN stage on the platform bags (15–20 k
@@ -1294,4 +1329,3 @@ would trade an explainable rule set for a learned boundary with no real positive
 — the opposite of what a safety function needs. The use we see: a confidence re-weighting of
 tracks (never a veto inside 60 m) once the organizers' real obstacles exist to train and test
 on; the dataset and training scripts are ready for that.
-

@@ -90,6 +90,18 @@ sensor: no return in any of the 13 759 frames lies beyond 210 m (every recording
 pitched) are recovered from the rails and the bed: orientation found and tilt within 0.5° on
 re-mounted real frames of three recordings (§6). Clean timing: 42–64 ms mean, p95 53–78 ms per
 frame on every recording (4-core sandbox, pure Python, §3; the node adds ~20–25 ms at 360°).
+The long-range figures above are from an earlier synthetic set F, which placed each object
+using that frame's estimated axis; this can flatter curve and envelope-edge results. A P4
+paired rerun on seven organizer curve/edge scenes with the current code found **0 matches
+beyond 100 m** in the six usable sequences of either mode and skipped one sequence after a
+recording gap. On the straight set of round 3, the same pairing leaves the range intact. A person
+anchored on the near rails is first confirmed at a median **154 m** (legacy placement 150 m, 5
+paired approaches). Near anchoring used the real ride's rail fits and estimated speed, **not
+surveyed ground truth**, so neither result establishes real-positive long-range recall. See
+[`docs/P4_AUDIT.md`](docs/P4_AUDIT.md) and the paired counts there.
+The same audit reran set S on 108 real empty backgrounds: corrected bed placement matched
+22/67 visible in-gauge synthetic objects, versus 29/68 with the old, higher placement.
+Those small samples are not an operational recall estimate.
 The container chain (`docker build → run → bag play → result`) is verified in CI on synthetic
 bags on every push, and was rehearsed on 23.09 on the real frames in Docker — the node in one
 container, `ros2 bag play` in another, both topic / frame pairs, two recordings into one node
@@ -265,6 +277,12 @@ unpacked — [`docs/DATASET.md`](docs/DATASET.md) "Extended dataset") is used th
 unpacked next to the six bags: `scripts/run_headless.sh /data/new_data`, or
 `RESENSE_DATA=/data RESENSE_BAG=new_data docker compose up`.
 
+The organizers' synthetic-obstacle recording of 24.09 (`cloud_with_fake_obj`, 151 s, ten
+obstacles ray-cast into a real ride, [Yandex Disk](https://disk.yandex.ru/d/KpkG_yKoGk-vHQ))
+is labelled in [`labels/cloud_with_fake_obj.json`](labels/cloud_with_fake_obj.json) and graded
+per object by `scripts/score_fake_objects.py` ([`docs/DATASET.md`](docs/DATASET.md)
+"Synthetic-obstacle recording").
+
 The organizers' download is a zip inside a zip around a 4 GB zstd tar; unpacking it by hand
 needs ~30 GB of scratch space. `scripts/unpack_dataset.py` streams zip → zip → zstd → tar and
 writes only the bags you ask for:
@@ -272,7 +290,8 @@ writes only the bags you ask for:
 ```bash
 python scripts/unpack_dataset.py Датасет.zip --list
 python scripts/unpack_dataset.py Датасет.zip --out /data --only doubleT_obstacle,roundT_doubleT
-python scripts/unpack_dataset.py https://disk.yandex.ru/d/N8IUpAyd7jyvow --out /data   # extended dataset (17 GB, streamed from the link)
+python scripts/unpack_dataset.py https://disk.yandex.ru/d/N8IUpAyd7jyvow --member new_data.zst --out /data   # extended dataset (17 GB, streamed from the link)
+python scripts/unpack_dataset.py https://disk.yandex.ru/d/KpkG_yKoGk-vHQ --out /data   # synthetic obstacles (1.7 GB -> 7.4 GB)
 ```
 
 ### Demo without a display

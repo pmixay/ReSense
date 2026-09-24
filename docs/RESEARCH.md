@@ -38,7 +38,8 @@ trained on `resense inject` data plus mined false positives (see §4).
 - an "expected range image" background model of the tunnel (per ray) as an independent anomaly cue;
 - curvature estimation robustness at stations/switches (boundary jumps), fusion with the rails;
 - gauge polygon from GOST 23961-80 drawings; small-object policy on the rail head;
-- calibration of dropout/intensity at range once the extended dataset with real obstacles arrives.
+- calibration of dropout/intensity at range if genuinely new labelled obstacle materials become
+  available; the extended `new_data` ride has no obstacles.
 
 ---
 

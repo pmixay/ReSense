@@ -1,11 +1,10 @@
 # The image copies only pyproject.toml, README.md, resense/, configs/, tests/, scripts/,
-# ros2_ws/src/, docker/entrypoint.sh and docker/fastdds_udp.xml (docker/Dockerfile); keep everything else out of the
+# labels/doubleT_obstacle.json, ros2_ws/src/ and selected docker/ files (docker/Dockerfile); keep everything else out of the
 # build context (git history, videos, caches, local outputs and cached frames).
 .git
 .github
 docs
 web
-labels
 out
 data
 **/__pycache__

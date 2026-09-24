@@ -16,9 +16,14 @@ new_data_<N>.db3``) is streamed the same way, from a downloaded file or straight
 organizers' Yandex Disk link (the public API resolves the link to a download URL; nothing is
 written but the extracted files):
 
-    python scripts/unpack_dataset.py https://disk.yandex.ru/d/N8IUpAyd7jyvow --list
-    python scripts/unpack_dataset.py https://disk.yandex.ru/d/N8IUpAyd7jyvow --out /data     # /data/new_data/*.db3
+    python scripts/unpack_dataset.py https://disk.yandex.ru/d/N8IUpAyd7jyvow --member new_data.zst --list
+    python scripts/unpack_dataset.py https://disk.yandex.ru/d/N8IUpAyd7jyvow --member new_data.zst --out /data   # /data/new_data/*.db3
+    python scripts/unpack_dataset.py https://disk.yandex.ru/d/KpkG_yKoGk-vHQ --out /data     # /data/cloud_with_fake_obj/
+
+(Since 24.09 the extended-dataset folder also holds ``cloud_with_fake_obj.zst``, so a link to the
+folder needs ``--member``; the second link is that file on its own.)
     python scripts/unpack_dataset.py new_data.zst --out /data --only new_data
+    python scripts/unpack_dataset.py new_data.zst --out /data --only new_data_127.db3,new_data_128.db3
 
 Needs the ``zstandard`` package (installed with ``pip install -e ".[dev]"``). Also accepts the
 inner ``датасет.zip`` or the bare ``for_hackathon.zst`` as input.
@@ -80,6 +85,18 @@ def open_zst_stream(path: str, member: str = ""):
     return inner.open(zst[0])
 
 
+def selected_member(name: str, only: set[str]) -> bool:
+    """Select either a nested organizer bag or the extended ride's flat split files.
+
+    The original archive uses ``for_hackathon/<bag>/...``; the extended one uses
+    ``new_data/new_data_<N>.db3``. Accepting the top-level directory also lets
+    ``--only new_data`` select all split files as documented.
+    """
+    # GNU tar commonly prefixes archive paths with "./" (as new_data.zst does).
+    parts = name.removeprefix("./").split("/")
+    return not only or parts[0] in only or (len(parts) > 1 and parts[1] in only)
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("archive", help="Датасет.zip, датасет.zip, for_hackathon.zst, new_data.zst, or a Yandex Disk "
@@ -87,7 +104,7 @@ def main() -> int:
     p.add_argument("--member", default="", help="file name to pick when the Yandex Disk link is a folder "
                                                 "(default: the only *.zst in it)")
     p.add_argument("--out", default="/data", help="directory that will contain for_hackathon/ (default /data)")
-    p.add_argument("--only", default="", help="comma-separated bag names to extract (default: all)")
+    p.add_argument("--only", default="", help="comma-separated bag names or split filenames to extract (default: all)")
     p.add_argument("--list", action="store_true", help="only list the archive members")
     p.add_argument("--metadata-only", action="store_true",
                    help="extract only the metadata.yaml of each bag (topic, frame count, duration)")
@@ -105,12 +122,10 @@ def main() -> int:
     n_files, n_bytes = 0, 0
     with tarfile.open(fileobj=reader, mode="r|") as tar:
         for member in tar:
-            parts = member.name.split("/")
-            bag = parts[1] if len(parts) > 1 else ""
             if a.list:
                 print(f"{member.size:>14,d}  {member.name}")
                 continue
-            if only and bag not in only:
+            if not selected_member(member.name, only):
                 continue
             if a.metadata_only and not member.name.endswith("metadata.yaml"):
                 continue

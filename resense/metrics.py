@@ -3,7 +3,8 @@
 Two levels of false-alarm accounting (docs/EVALUATION.md section 2):
 
 * **frames** — frames with ``obstacle = true`` that have no gauge ground truth (``fp_frames``);
-* **events** — distinct confirmed gauge track ids (``detections[].id`` of the status JSON)
+* **events** — distinct confirmed gauge track ids (``detections[].id`` of the status JSON,
+  scoped by the injected sequence when the tracker restarts)
   that were never matched to a ground-truth object (``fp_events``). One object that stays
   in the corridor for 50 frames is one event; this is the headline number, reported per
   hour of bag time (from the ``stamp`` field) and per km when a speed is known (a constant
@@ -11,11 +12,13 @@ Two levels of false-alarm accounting (docs/EVALUATION.md section 2):
   ``ego_speed`` key in the result dict).
 
 Frame indices (the ``frame`` key that ``resense run`` writes) are used to detect the
-subsampling stride: with every N-th frame, the consecutive hits a track needs
-(``tracking.frames_to_confirm()``: ``confirm_hits`` / ``confirm_time_s``) are ``N * frame_dt``
-seconds apart, so a candidate must persist ``confirm_hits * N * frame_dt`` seconds instead of
-``confirm_hits * frame_dt`` -- subsampled false-alarm counts understate
-the rate the node shows at 10 Hz. :meth:`Evaluation.summary` says so (``stride_caveat``).
+subsampling stride: with every N-th frame the detector hands the tracker the measured interval
+``N * frame_dt`` when it lies inside ``accumulation.stamp_dt_range`` (else the nominal
+``frame_dt``), so a track needs ``tracking.frames_to_confirm(interval)`` consecutive hits,
+``N * frame_dt`` seconds apart (defaults: 3 hits = 1.5 s at every 5th frame, 5 hits = 5 s at
+every 10th), instead of ``frames_to_confirm()`` frames = 0.5 s at 10 Hz -- subsampled
+false-alarm counts understate the rate the node shows at 10 Hz. :meth:`Evaluation.summary`
+says so (``stride_caveat``).
 
 Ground-truth files: ``gt.json`` as written by ``resense inject`` and by the label tool
 (docs/DATASET.md "Label format"), loaded with :func:`load_gt`.
@@ -23,11 +26,13 @@ Ground-truth files: ``gt.json`` as written by ``resense inject`` and by the labe
 from __future__ import annotations
 
 import json
+import math
 from collections import Counter
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Sequence, Set
+from typing import Dict, List, Optional, Sequence, Set, Tuple
 
 import numpy as np
+from scipy.optimize import linear_sum_assignment
 
 RANGE_BINS = [(0, 50), (50, 100), (100, 150), (150, 200), (200, 300)]
 
@@ -105,6 +110,39 @@ def match(det_distance: float, det_lateral: float, gt: GTObstacle,
     return abs(det_distance - gt.distance) <= tol and abs(det_lateral - gt.lateral) <= lateral_tol
 
 
+def _assign_detections(dets: Sequence[dict], gts: Sequence[GTObstacle]) -> Dict[int, int]:
+    """Match as many objects as possible, then prefer the smallest position errors.
+
+    A first-fit loop can assign a shared detection to the wrong object and miss another
+    object that had a unique compatible detection. Dummy columns represent misses.
+    """
+    if not dets or not gts:
+        return {}
+    n_det = len(dets)
+    # A feasible pair costs at most 2 (dx / tol <= 1, dy <= 1): a miss must cost more than any
+    # whole matching can, or the solver trades a match for smaller errors (review 24.09)
+    miss = 2.0 * min(len(gts), n_det) + 1.0
+    cost = np.full((len(gts), n_det + len(gts)), miss)
+    cost[:, :n_det] = 1e6
+    for gi, gt in enumerate(gts):
+        distance_tol = max(2.0, 0.03 * gt.distance) + 0.5 * max(gt.size[0], 0.0)
+        for di, det in enumerate(dets):
+            dx = abs(float(det["distance"]) - gt.distance)
+            dy = abs(float(det["lateral"]) - gt.lateral)
+            if match(float(det["distance"]), float(det["lateral"]), gt):
+                cost[gi, di] = dx / distance_tol + dy
+    gt_idx, det_idx = linear_sum_assignment(cost)
+    return {int(gi): int(di) for gi, di in zip(gt_idx, det_idx) if di < n_det and cost[gi, di] < miss}
+
+
+def range_bin(distance: float) -> str:
+    """The recall-by-range bin label of a distance (``"50-100"``; ``"300+"`` beyond the last)."""
+    for lo, hi in RANGE_BINS:
+        if lo <= distance < hi:
+            return f"{lo}-{hi}"
+    return f"{RANGE_BINS[-1][1]}+"
+
+
 def _bin_order(key: str) -> float:
     """Sort key of a range-bin label (``"50-100"``, ``"300+"``)."""
     return float(key.split("-")[0].rstrip("+"))
@@ -135,11 +173,14 @@ class Evaluation:
     # --- additive (Sprint 2): events, advisory frames, bag time, distance, stride ---------
     confirm_hits: int = 3                  # frames a static object needs to be confirmed (tracking.frames_to_confirm()), for the stride caveat
     frame_dt: float = 0.1                  # tracking.frame_dt (s)
+    min_hits: Optional[int] = None         # tracking.confirm_hits; with confirm_time_s the caveat applies the tracker's rule at the stride
+    confirm_time_s: float = 0.0            # tracking.confirm_time_s (s)
+    stamp_dt_range: Optional[Tuple[float, float]] = None   # accumulation.stamp_dt_range: intervals the detector trusts
     alarm_frames: int = 0                  # frames with obstacle = true (all frames)
     advisory_frames: int = 0               # frames with warning = true (all frames)
-    alarm_ids: Set[int] = field(default_factory=set)      # confirmed gauge ids seen at all
-    matched_ids: Set[int] = field(default_factory=set)    # ... matched to a gt object at least once
-    unmatched_ids: Set[int] = field(default_factory=set)  # ... unmatched in at least one frame
+    alarm_ids: Set[tuple] = field(default_factory=set)      # (sequence, track id): ids may restart between sequences
+    matched_ids: Set[tuple] = field(default_factory=set)    # ... matched to a gt object at least once
+    unmatched_ids: Set[tuple] = field(default_factory=set)  # ... unmatched in at least one frame
     per_class: Dict[str, List[int]] = field(default_factory=dict)   # class: [tp, total]
     per_class_bin: Dict[str, Dict[str, List[int]]] = field(default_factory=dict)  # class: {"lo-hi": [tp, total]}
     stamps: List[float] = field(default_factory=list)
@@ -147,6 +188,10 @@ class Evaluation:
     alarm_distances: List[float] = field(default_factory=list)
     distance_m: float = 0.0                # travelled distance integrated from speed x stamp gaps
     speed_known: bool = False
+    scoped_time_s: float = 0.0             # duration within independent injected sequences
+    has_event_scope: bool = False
+    last_timed_stamp: Optional[float] = None
+    last_timed_scope: object = None
     # --- additive (real labels, 21.09): errors of matched detections, accumulation bookkeeping ---
     distance_errors: List[float] = field(default_factory=list)   # det - gt distance (m) of every match
     lateral_errors: List[float] = field(default_factory=list)    # det - gt lateral (m) of every match
@@ -155,7 +200,8 @@ class Evaluation:
     first_alarm_frame: Optional[int] = None                      # frame index (or position) of the first alarm
 
     def add_frame(self, result_dict: dict, gts: Sequence[GTObstacle], use_candidates: bool = False,
-                  speed_mps: Optional[float] = None, frame_index: Optional[int] = None) -> None:
+                  speed_mps: Optional[float] = None, frame_index: Optional[int] = None,
+                  event_scope=None) -> None:
         """Account one frame. ``result_dict`` is ``FrameResult.to_dict()`` (plus the ``frame``
         key that ``resense run`` adds); ``gts`` the ground truth of that frame (empty = no
         object). ``speed_mps`` (constant) or a per-frame ``ego_speed_mps`` / ``ego_speed`` key
@@ -167,17 +213,15 @@ class Evaluation:
         self.latency_ms.append(result_dict.get("timing_ms", {}).get("total", 0.0))
         used = np.zeros(len(dets), dtype=bool)
         gauge_gts = [g for g in gts if g.in_gauge]
+        assignments = _assign_detections(dets, gauge_gts)
+        if event_scope is None:
+            event_scope = result_dict.get("event_scope", result_dict.get("seq"))
         if not gauge_gts:
             self.n_empty_frames += 1
             if result_dict["obstacle"]:
                 self.fp_frames += 1
-        for g in gauge_gts:
-            key = None
-            for lo, hi in RANGE_BINS:
-                if lo <= g.distance < hi:
-                    key = f"{lo}-{hi}"
-            if key is None:
-                key = f"{RANGE_BINS[-1][1]}+"
+        for gi, g in enumerate(gauge_gts):
+            key = range_bin(g.distance)
             self.per_bin.setdefault(key, [0, 0])
             self.per_bin[key][1] += 1
             cls_key = g.kind or "obstacle"
@@ -185,17 +229,14 @@ class Evaluation:
             self.per_class[cls_key][1] += 1
             self.per_class_bin.setdefault(cls_key, {}).setdefault(key, [0, 0])
             self.per_class_bin[cls_key][key][1] += 1
-            hit = False
-            for i, d in enumerate(dets):
-                if not used[i] and match(d["distance"], d["lateral"], g):
-                    used[i] = True
-                    hit = True
-                    if "id" in d:
-                        self.matched_ids.add(int(d["id"]))
-                    self.distance_errors.append(float(d["distance"]) - g.distance)
-                    self.lateral_errors.append(float(d["lateral"]) - g.lateral)
-                    break
-            if hit:
+            if gi in assignments:
+                i = assignments[gi]
+                d = dets[i]
+                used[i] = True
+                if "id" in d:
+                    self.matched_ids.add((event_scope, int(d["id"])))
+                self.distance_errors.append(float(d["distance"]) - g.distance)
+                self.lateral_errors.append(float(d["lateral"]) - g.lateral)
                 self.tp += 1
                 self.per_bin[key][0] += 1
                 self.per_class[cls_key][0] += 1
@@ -206,9 +247,10 @@ class Evaluation:
         self.fp_detections += int((~used).sum())
         for i, d in enumerate(dets):
             if "id" in d:
-                self.alarm_ids.add(int(d["id"]))
+                scoped_id = (event_scope, int(d["id"]))
+                self.alarm_ids.add(scoped_id)
                 if not used[i]:
-                    self.unmatched_ids.add(int(d["id"]))
+                    self.unmatched_ids.add(scoped_id)
         # --- frame-level bookkeeping ---
         if result_dict.get("obstacle"):
             self.alarm_frames += 1
@@ -220,11 +262,22 @@ class Evaluation:
         stamp = result_dict.get("stamp")
         if speed_mps is None:
             speed_mps = result_dict.get("ego_speed_mps", result_dict.get("ego_speed"))
+        if event_scope is not None:
+            self.has_event_scope = True
         if stamp is not None:
             stamp = float(stamp)
-            if speed_mps is not None and self.stamps:
-                self.distance_m += float(speed_mps) * max(stamp - self.stamps[-1], 0.0)
+            if self.last_timed_stamp is not None and event_scope == self.last_timed_scope:
+                dt = max(stamp - self.last_timed_stamp, 0.0)
+                self.scoped_time_s += dt
+                if speed_mps is not None:
+                    self.distance_m += float(speed_mps) * dt
             self.stamps.append(stamp)
+            self.last_timed_stamp = stamp
+        else:
+            # A missing stamp breaks distance integration in a continuous bag as well:
+            # elapsed time since the previous known stamp is no longer attributable.
+            self.last_timed_stamp = None
+        self.last_timed_scope = event_scope
         if speed_mps is not None:
             self.speed_known = True
         if frame_index is None:
@@ -251,6 +304,8 @@ class Evaluation:
 
     @property
     def bag_time_s(self) -> float:
+        if self.has_event_scope:
+            return self.scoped_time_s
         return (max(self.stamps) - min(self.stamps)) if len(self.stamps) >= 2 else 0.0
 
     @property
@@ -261,9 +316,19 @@ class Evaluation:
         s = self.stride
         if s is None or s <= 1:
             return None
-        return (f"frames are every {s}th bag frame: the {self.confirm_hits} consecutive "
+        hits = self.confirm_hits
+        if self.min_hits is not None:
+            # the detector hands the tracker the measured interval when it lies inside
+            # accumulation.stamp_dt_range, else the nominal frame_dt (Detector._frame_dt): the
+            # time rule is met sooner at every 2nd-5th frame, not at every 10th
+            dt = s * self.frame_dt
+            if self.stamp_dt_range is not None and not (self.stamp_dt_range[0] <= dt <= self.stamp_dt_range[1]):
+                dt = self.frame_dt
+            by_time = int(math.ceil(self.confirm_time_s / dt - 1e-9)) if self.confirm_time_s > 0 else 0
+            hits = max(int(self.min_hits), by_time)
+        return (f"frames are every {s}th bag frame: the {hits} consecutive "
                 f"hits a track needs are {s * self.frame_dt:.1f} s apart, so a candidate must persist "
-                f"{self.confirm_hits * s * self.frame_dt:.1f} s to be confirmed instead of "
+                f"{hits * s * self.frame_dt:.1f} s to be confirmed instead of "
                 f"{self.confirm_hits * self.frame_dt:.1f} s at 10 Hz; subsampled alarm and false-alarm "
                 f"counts understate the full-rate values (run every frame for the headline numbers)")
 
@@ -385,8 +450,9 @@ def format_summary(s: dict) -> str:
     """Human-readable block for ``resense summarize`` / ``resense eval``."""
     def f(v, fmt="{:.2f}"):
         return "n/a" if v is None else fmt.format(v)
+    unknown_gt = s.get("gt_status") == "unlabelled"
     lines = [
-        f"frames            : {s['frames']} (empty: {s['empty_frames']})" +
+        f"frames            : {s['frames']} (empty: {s['empty_frames'] if not unknown_gt else 'unknown'})" +
         (f", every {s['frame_stride']}th bag frame" if (s.get("frame_stride") or 1) > 1 else ""),
         f"alarm frames      : {s['alarm_frames']}   alarm events (distinct confirmed ids): {s['alarm_events']}",
         f"advisory frames   : {s['advisory_frames']} ({f(s['advisory_frame_rate'], '{:.1%}')} of frames)",
@@ -394,8 +460,9 @@ def format_summary(s: dict) -> str:
         f"latency total ms  : mean {f(s['latency_ms_mean'], '{:.1f}')} / p95 {f(s['latency_ms_p95'], '{:.1f}')} / max {f(s['latency_ms_max'], '{:.1f}')}",
         f"bag time span     : {f(s['bag_time_s'], '{:.1f}')} s" +
         (f", travelled {s['distance_km']:.3f} km" if s.get("distance_km") is not None else ""),
-        f"false alarms      : {s['fp_frames']} frames, {s['fp_events']} events, "
-        f"{f(s['fp_events_per_hour'], '{:.1f}')} events/hour, {f(s['fp_events_per_km'], '{:.2f}')} events/km",
+        ("false alarms      : unknown (ground truth is unlabelled)" if unknown_gt else
+         f"false alarms      : {s['fp_frames']} frames, {s['fp_events']} events, "
+         f"{f(s['fp_events_per_hour'], '{:.1f}')} events/hour, {f(s['fp_events_per_km'], '{:.2f}')} events/km"),
     ]
     if s.get("first_alarm_frame") is not None:
         lines.append(f"first alarm frame : {s['first_alarm_frame']}")

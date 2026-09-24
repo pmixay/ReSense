@@ -1,5 +1,6 @@
 """Metrics on hand-made status JSON lines (no dataset, no Open3D)."""
 import json
+from pathlib import Path
 
 import pytest
 
@@ -60,6 +61,43 @@ def test_fp_events_vs_fp_frames_and_rates():
     assert FROZEN_SUMMARY_KEYS <= set(s)
 
 
+def _caveat_at(stride):
+    # v0.6.3 defaults: confirm_hits 3, confirm_time_s 0.5 -> 5 frames at 10 Hz
+    ev = Evaluation(confirm_hits=5, frame_dt=0.1, min_hits=3, confirm_time_s=0.5, stamp_dt_range=(0.02, 0.5))
+    for k in range(4):
+        ev.add_frame(status(frame=stride * k, stamp=0.1 * stride * k), [])
+    return ev.summary()["stride_caveat"]
+
+
+def test_stride_caveat_applies_the_trackers_time_rule():
+    # the detector hands the tracker the measured interval up to 0.5 s: at every 5th frame
+    # 3 hits (1.5 s) confirm, not 5 (2.5 s); beyond 0.5 s it falls back to 0.1 s per frame,
+    # so at every 10th frame it still needs 5 hits (5 s)
+    c = _caveat_at(5)
+    assert "the 3 consecutive hits" in c and "persist 1.5 s" in c and "instead of 0.5 s" in c
+    assert "the 3 consecutive hits" in _caveat_at(2)
+    c = _caveat_at(10)
+    assert "the 5 consecutive hits" in c and "persist 5.0 s" in c
+
+
+def test_stride_caveat_agrees_with_the_detector():
+    """The caveat's hit count is what the detector's interval rule and the tracker's
+    confirmation rule give at that stride."""
+    from resense.config import DetectorConfig
+    from resense.detector import Detector
+    cfg = DetectorConfig()
+    for stride in (2, 5, 6, 10):
+        det = Detector(cfg)
+        dts = [det._frame_dt(100.0 + 0.1 * stride * k) for k in range(3)]
+        hits = cfg.tracking.frames_to_confirm(dts[-1])
+        ev = Evaluation(confirm_hits=cfg.tracking.frames_to_confirm(), frame_dt=cfg.tracking.frame_dt,
+                        min_hits=cfg.tracking.confirm_hits, confirm_time_s=cfg.tracking.confirm_time_s,
+                        stamp_dt_range=tuple(cfg.accumulation.stamp_dt_range))
+        for k in range(3):
+            ev.add_frame(status(frame=stride * k, stamp=100.0 + 0.1 * stride * k), [])
+        assert f"the {hits} consecutive hits" in ev.summary()["stride_caveat"], stride
+
+
 def test_no_speed_and_no_stride_information():
     ev = Evaluation()
     for k in range(3):
@@ -96,6 +134,69 @@ def test_matched_track_is_not_a_false_alarm_event():
     assert s["fp_detections"] == 2           # id 4 once, id 3 on the empty frame
     assert s["fp_events"] == 1 and s["alarm_events"] == 2   # only id 4 is an event: id 3 was matched earlier
     assert s["fp_frames"] == 1 and s["empty_frames"] == 1
+
+
+def test_two_overlapping_objects_use_maximum_matching():
+    """The shared detection must go to the object with no other possible match."""
+    gts = [GTObstacle(distance=50.0, lateral=0.0, label="left", kind="person"),
+           GTObstacle(distance=50.0, lateral=1.5, label="right", kind="person")]
+    ev = Evaluation()
+    ev.add_frame(status(frame=0, dets=[det(1, 50.0, 0.7), det(2, 50.0, 0.0)]), gts)
+    s = ev.summary()
+    assert s["recall"] == 1.0 and s["fp_detections"] == 0
+    assert s["first_detection_distance"] == {"left": 50.0, "right": 50.0}
+
+
+def test_track_ids_are_scoped_to_independent_sequences():
+    ev = Evaluation()
+    gt = [GTObstacle(distance=50.0, lateral=0.0, label="box", kind="box")]
+    ev.add_frame(status(frame=0, dets=[det(1, 50.0)], seq=0), gt)
+    ev.add_frame(status(frame=1, dets=[det(1, 30.0)], seq=1), [])
+    s = ev.summary()
+    assert s["alarm_events"] == 2 and s["fp_events"] == 1
+    assert s["recall"] == 1.0
+
+
+def test_independent_sequences_exclude_inter_sequence_time_and_distance():
+    ev = Evaluation()
+    for i, (stamp, seq) in enumerate(((0.0, 0), (0.1, 0), (10.0, 1), (10.1, 1))):
+        ev.add_frame(status(frame=i, stamp=stamp, dets=[det(1, 30.0)], seq=seq),
+                     [], speed_mps=10.0)
+    s = ev.summary()
+    assert s["alarm_events"] == s["fp_events"] == 2
+    assert s["bag_time_s"] == pytest.approx(0.2)
+    assert s["distance_km"] == pytest.approx(0.002)
+    assert s["fp_events_per_hour"] == pytest.approx(2 * 3600 / 0.2)
+
+
+def test_missing_timestamp_does_not_bridge_scoped_sequence():
+    ev = Evaluation()
+    ev.add_frame(status(stamp=0.0, seq=0), [])
+    ev.add_frame(status(stamp=None, seq=1), [])
+    ev.add_frame(status(stamp=10.0, seq=1), [])
+    assert ev.summary()["bag_time_s"] == 0.0
+
+
+def test_missing_timestamp_does_not_bridge_continuous_distance():
+    ev = Evaluation()
+    for stamp in (0.0, None, 10.0, 10.1):
+        ev.add_frame(status(stamp=stamp), [], speed_mps=10.0)
+    assert ev.summary()["distance_km"] == pytest.approx(0.001)
+
+
+def test_unlabelled_positive_bag_does_not_claim_false_alarms(tmp_path, capsys):
+    path = tmp_path / "unknown.jsonl"
+    path.write_text(json.dumps(status(frame=0, stamp=0.0, dets=[det(1, 50.0)])) + "\n")
+    s = run_cli(["summarize", str(path), "--unlabelled", "--json"])
+    assert s["alarm_frames"] == 1 and s["alarm_events"] == 1
+    assert s["gt_status"] == "unlabelled"
+    assert all(s[k] is None for k in ("empty_frames", "fp_frames", "fp_events",
+                                      "fp_events_per_hour", "fp_events_per_km", "fp_detections"))
+    capsys.readouterr()
+    run_cli(["summarize", str(path), "--unlabelled"])
+    assert "ground truth is unlabelled" in capsys.readouterr().out
+    with pytest.raises(SystemExit, match="cannot be used with --gt"):
+        run_cli(["summarize", str(path), "--unlabelled", "--gt", str(tmp_path / "gt.json")])
 
 
 def test_distance_error_first_alarm_and_speed_sources():
@@ -179,6 +280,24 @@ def test_gt_row_from_bbox_and_meta(tmp_path):
     assert len(gt_objects(gt["00042"], skip_occluded=False)) == 2
 
 
+def test_committed_real_labels_use_the_current_envelope():
+    path = Path(__file__).resolve().parents[1] / "labels" / "doubleT_obstacle.json"
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    assert raw["_meta"]["gauge_half_width_m"] == 1.05
+    crossing_frames = []
+    for key, rows in raw.items():
+        if key.startswith("_"):
+            continue
+        for row in rows:
+            if "gauge_margin" in row:
+                margin = 1.05 - (abs(row["lateral"]) - row["size"][1] / 2)
+                assert row["gauge_margin"] == pytest.approx(margin, abs=0.04)
+                assert row["in_gauge"] == (row["gauge_margin"] >= 0)
+            if row.get("label") == "person_crossing" and row["in_gauge"]:
+                crossing_frames.append(int(key))
+    assert crossing_frames == list(range(8, 69))
+
+
 def test_summarize_cli(tmp_path, capsys):
     path = tmp_path / "results.jsonl"
     with open(path, "w") as fh:
@@ -210,3 +329,14 @@ def test_summarize_cli_with_labels(tmp_path, capsys):
     out = run_cli(["summarize", str(path), "--gt", str(tmp_path / "gt.json"), "--labelled-only", "--json"])
     assert out["frames"] == 3 and out["fp_frames"] == 2 and out["fp_events"] == 0   # frames 15 and 20 alarm with id 7
     capsys.readouterr()
+
+
+def test_assignment_keeps_the_largest_number_of_matches():
+    # six objects 2.2 m apart along the track and 0.99 m apart sideways; detection i sits on
+    # object i + 1. Every object i is within tolerance of detection i, so all six can be
+    # matched, although five nearly perfect pairs plus one miss have smaller position errors
+    from resense.metrics import _assign_detections
+    gts = [GTObstacle(distance=50.0 + 2.2 * i, lateral=0.99 * i, size=(0.5, 0.5, 0.5)) for i in range(6)]
+    dets = [{"distance": 50.0 + 2.2 * (i + 1), "lateral": 0.99 * (i + 1)} for i in range(5)]
+    dets.append({"distance": 50.0 + 2.2 * 5 + 1.5, "lateral": 0.99 * 5 + 0.9})
+    assert len(_assign_detections(dets, gts)) == 6

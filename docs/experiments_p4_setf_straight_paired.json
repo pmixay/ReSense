@@ -1,0 +1,2222 @@
+{
+ "source": "paired synthetic positives on organizer empty-ride frames",
+ "parameters": {
+  "files": "46,68,98,140,168,172",
+  "frames": 110,
+  "kinds": "person,box1.0,box0.5,trolley,cable",
+  "seed": 0,
+  "start_m": 220.0,
+  "lateral_range": "-0.6:0.6",
+  "reflectivity": null,
+  "config_sha256": "b333cd85572ce50c4acc2f6eade42a5e8f54cfc2ea0ac6f445c38916e00b1ee8",
+  "speeds_sha256": "05c1006de92d5331871da80999c27fadb2397981863b34b63b0d227dbe6d01f3",
+  "selected_stamps_sha256": "ff172befbaebf883ae7773f64fd9835fd9bdffaac853ce593f0922d1aaab0cc0"
+ },
+ "per_kind": {
+  "box0.5": {
+   "paired_sequences": 5,
+   "skipped": 1,
+   "visible": {
+    "legacy": 421,
+    "anchored": 425
+   },
+   "visible_hits": {
+    "legacy": 20,
+    "anchored": 20
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      18,
+      98
+     ],
+     "50-100": [
+      2,
+      130
+     ],
+     "100-150": [
+      0,
+      119
+     ],
+     "150-200": [
+      0,
+      62
+     ],
+     "200-250": [
+      0,
+      12
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      18,
+      98
+     ],
+     "50-100": [
+      2,
+      130
+     ],
+     "100-150": [
+      0,
+      119
+     ],
+     "150-200": [
+      0,
+      66
+     ],
+     "200-250": [
+      0,
+      12
+     ]
+    }
+   },
+   "detected_both": 1,
+   "detected_only": {
+    "legacy": 0,
+    "anchored": 0
+   },
+   "first_median": {
+    "legacy": 51.9,
+    "anchored": 51.9
+   }
+  },
+  "box1.0": {
+   "paired_sequences": 5,
+   "skipped": 1,
+   "visible": {
+    "legacy": 497,
+    "anchored": 502
+   },
+   "visible_hits": {
+    "legacy": 246,
+    "anchored": 246
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      98,
+      98
+     ],
+     "50-100": [
+      122,
+      130
+     ],
+     "100-150": [
+      26,
+      125
+     ],
+     "150-200": [
+      0,
+      112
+     ],
+     "200-250": [
+      0,
+      32
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      98,
+      98
+     ],
+     "50-100": [
+      119,
+      130
+     ],
+     "100-150": [
+      28,
+      125
+     ],
+     "150-200": [
+      1,
+      113
+     ],
+     "200-250": [
+      0,
+      36
+     ]
+    }
+   },
+   "detected_both": 5,
+   "detected_only": {
+    "legacy": 0,
+    "anchored": 0
+   },
+   "first_median": {
+    "legacy": 116.1,
+    "anchored": 109.9
+   }
+  },
+  "cable": {
+   "paired_sequences": 5,
+   "skipped": 1,
+   "visible": {
+    "legacy": 290,
+    "anchored": 311
+   },
+   "visible_hits": {
+    "legacy": 99,
+    "anchored": 88
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      40,
+      63
+     ],
+     "50-100": [
+      47,
+      72
+     ],
+     "100-150": [
+      12,
+      80
+     ],
+     "150-200": [
+      0,
+      53
+     ],
+     "200-250": [
+      0,
+      22
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      41,
+      61
+     ],
+     "50-100": [
+      42,
+      72
+     ],
+     "100-150": [
+      5,
+      87
+     ],
+     "150-200": [
+      0,
+      67
+     ],
+     "200-250": [
+      0,
+      24
+     ]
+    }
+   },
+   "detected_both": 5,
+   "detected_only": {
+    "legacy": 0,
+    "anchored": 0
+   },
+   "first_median": {
+    "legacy": 103.9,
+    "anchored": 101.7
+   }
+  },
+  "person": {
+   "paired_sequences": 5,
+   "skipped": 1,
+   "visible": {
+    "legacy": 485,
+    "anchored": 485
+   },
+   "visible_hits": {
+    "legacy": 325,
+    "anchored": 328
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      98,
+      98
+     ],
+     "50-100": [
+      122,
+      130
+     ],
+     "100-150": [
+      94,
+      125
+     ],
+     "150-200": [
+      11,
+      101
+     ],
+     "200-250": [
+      0,
+      31
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      98,
+      98
+     ],
+     "50-100": [
+      122,
+      130
+     ],
+     "100-150": [
+      97,
+      125
+     ],
+     "150-200": [
+      11,
+      101
+     ],
+     "200-250": [
+      0,
+      31
+     ]
+    }
+   },
+   "detected_both": 5,
+   "detected_only": {
+    "legacy": 0,
+    "anchored": 0
+   },
+   "first_median": {
+    "legacy": 149.9,
+    "anchored": 154.1
+   }
+  },
+  "trolley": {
+   "paired_sequences": 5,
+   "skipped": 1,
+   "visible": {
+    "legacy": 508,
+    "anchored": 507
+   },
+   "visible_hits": {
+    "legacy": 252,
+    "anchored": 246
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      98,
+      98
+     ],
+     "50-100": [
+      114,
+      130
+     ],
+     "100-150": [
+      34,
+      125
+     ],
+     "150-200": [
+      6,
+      111
+     ],
+     "200-250": [
+      0,
+      44
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      98,
+      98
+     ],
+     "50-100": [
+      113,
+      130
+     ],
+     "100-150": [
+      32,
+      125
+     ],
+     "150-200": [
+      3,
+      110
+     ],
+     "200-250": [
+      0,
+      44
+     ]
+    }
+   },
+   "detected_both": 5,
+   "detected_only": {
+    "legacy": 0,
+    "anchored": 0
+   },
+   "first_median": {
+    "legacy": 148.1,
+    "anchored": 148.1
+   }
+  }
+ },
+ "sequences": [
+  {
+   "file0": "new_data_46_0000.npy",
+   "kind": "person",
+   "frames": 102,
+   "first_m": {
+    "legacy": 169.21513825419802,
+    "anchored": 179.84118014747344
+   },
+   "visible": {
+    "legacy": 94,
+    "anchored": 97
+   },
+   "visible_hits": {
+    "legacy": 55,
+    "anchored": 49
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      20,
+      20
+     ],
+     "50-100": [
+      17,
+      25
+     ],
+     "100-150": [
+      9,
+      23
+     ],
+     "150-200": [
+      9,
+      20
+     ],
+     "200-250": [
+      0,
+      6
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      20,
+      20
+     ],
+     "50-100": [
+      17,
+      25
+     ],
+     "100-150": [
+      10,
+      23
+     ],
+     "150-200": [
+      2,
+      23
+     ],
+     "200-250": [
+      0,
+      6
+     ]
+    }
+   },
+   "legacy_only_hits": 8,
+   "anchored_only_hits": 2,
+   "max_axis_delta_m": 0.79,
+   "median_axis_delta_m": 0.05
+  },
+  {
+   "file0": "new_data_46_0000.npy",
+   "kind": "box1.0",
+   "frames": 102,
+   "first_m": {
+    "legacy": 146.02216128597644,
+    "anchored": 79.05410957260386
+   },
+   "visible": {
+    "legacy": 94,
+    "anchored": 95
+   },
+   "visible_hits": {
+    "legacy": 39,
+    "anchored": 35
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      20,
+      20
+     ],
+     "50-100": [
+      17,
+      25
+     ],
+     "100-150": [
+      2,
+      23
+     ],
+     "150-200": [
+      0,
+      20
+     ],
+     "200-250": [
+      0,
+      6
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      20,
+      20
+     ],
+     "50-100": [
+      15,
+      25
+     ],
+     "100-150": [
+      0,
+      23
+     ],
+     "150-200": [
+      0,
+      21
+     ],
+     "200-250": [
+      0,
+      6
+     ]
+    }
+   },
+   "legacy_only_hits": 4,
+   "anchored_only_hits": 0,
+   "max_axis_delta_m": 0.79,
+   "median_axis_delta_m": 0.05
+  },
+  {
+   "file0": "new_data_46_0000.npy",
+   "kind": "box0.5",
+   "frames": 102,
+   "first_m": {
+    "legacy": null,
+    "anchored": null
+   },
+   "visible": {
+    "legacy": 81,
+    "anchored": 82
+   },
+   "visible_hits": {
+    "legacy": 0,
+    "anchored": 0
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      0,
+      20
+     ],
+     "50-100": [
+      0,
+      25
+     ],
+     "100-150": [
+      0,
+      21
+     ],
+     "150-200": [
+      0,
+      12
+     ],
+     "200-250": [
+      0,
+      3
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      0,
+      20
+     ],
+     "50-100": [
+      0,
+      25
+     ],
+     "100-150": [
+      0,
+      21
+     ],
+     "150-200": [
+      0,
+      13
+     ],
+     "200-250": [
+      0,
+      3
+     ]
+    }
+   },
+   "legacy_only_hits": 0,
+   "anchored_only_hits": 0,
+   "max_axis_delta_m": 0.79,
+   "median_axis_delta_m": 0.05
+  },
+  {
+   "file0": "new_data_46_0000.npy",
+   "kind": "trolley",
+   "frames": 102,
+   "first_m": {
+    "legacy": 156.60342737679764,
+    "anchored": 160.81382771927935
+   },
+   "visible": {
+    "legacy": 99,
+    "anchored": 97
+   },
+   "visible_hits": {
+    "legacy": 46,
+    "anchored": 42
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      20,
+      20
+     ],
+     "50-100": [
+      15,
+      25
+     ],
+     "100-150": [
+      8,
+      23
+     ],
+     "150-200": [
+      3,
+      23
+     ],
+     "200-250": [
+      0,
+      8
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      20,
+      20
+     ],
+     "50-100": [
+      15,
+      25
+     ],
+     "100-150": [
+      5,
+      23
+     ],
+     "150-200": [
+      2,
+      20
+     ],
+     "200-250": [
+      0,
+      9
+     ]
+    }
+   },
+   "legacy_only_hits": 8,
+   "anchored_only_hits": 4,
+   "max_axis_delta_m": 0.79,
+   "median_axis_delta_m": 0.05
+  },
+  {
+   "file0": "new_data_46_0000.npy",
+   "kind": "cable",
+   "frames": 102,
+   "first_m": {
+    "legacy": 56.42330566502429,
+    "anchored": 58.46728419568241
+   },
+   "visible": {
+    "legacy": 57,
+    "anchored": 68
+   },
+   "visible_hits": {
+    "legacy": 8,
+    "anchored": 14
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      6,
+      12
+     ],
+     "50-100": [
+      2,
+      11
+     ],
+     "100-150": [
+      0,
+      16
+     ],
+     "150-200": [
+      0,
+      14
+     ],
+     "200-250": [
+      0,
+      4
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      11,
+      14
+     ],
+     "50-100": [
+      3,
+      17
+     ],
+     "100-150": [
+      0,
+      18
+     ],
+     "150-200": [
+      0,
+      12
+     ],
+     "200-250": [
+      0,
+      7
+     ]
+    }
+   },
+   "legacy_only_hits": 0,
+   "anchored_only_hits": 6,
+   "max_axis_delta_m": 0.78,
+   "median_axis_delta_m": 0.05
+  },
+  {
+   "file0": "new_data_68_0000.npy",
+   "kind": "person",
+   "frames": 106,
+   "first_m": {
+    "legacy": 144.10411691379912,
+    "anchored": 154.10120927640477
+   },
+   "visible": {
+    "legacy": 90,
+    "anchored": 88
+   },
+   "visible_hits": {
+    "legacy": 54,
+    "anchored": 59
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      21,
+      21
+     ],
+     "50-100": [
+      25,
+      25
+     ],
+     "100-150": [
+      8,
+      24
+     ],
+     "150-200": [
+      0,
+      18
+     ],
+     "200-250": [
+      0,
+      2
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      21,
+      21
+     ],
+     "50-100": [
+      25,
+      25
+     ],
+     "100-150": [
+      10,
+      24
+     ],
+     "150-200": [
+      3,
+      16
+     ],
+     "200-250": [
+      0,
+      2
+     ]
+    }
+   },
+   "legacy_only_hits": 2,
+   "anchored_only_hits": 7,
+   "max_axis_delta_m": 0.66,
+   "median_axis_delta_m": 0.04
+  },
+  {
+   "file0": "new_data_68_0000.npy",
+   "kind": "box1.0",
+   "frames": 106,
+   "first_m": {
+    "legacy": 109.93179787404264,
+    "anchored": 109.93175090146825
+   },
+   "visible": {
+    "legacy": 98,
+    "anchored": 99
+   },
+   "visible_hits": {
+    "legacy": 51,
+    "anchored": 51
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      21,
+      21
+     ],
+     "50-100": [
+      25,
+      25
+     ],
+     "100-150": [
+      5,
+      24
+     ],
+     "150-200": [
+      0,
+      22
+     ],
+     "200-250": [
+      0,
+      6
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      21,
+      21
+     ],
+     "50-100": [
+      25,
+      25
+     ],
+     "100-150": [
+      5,
+      24
+     ],
+     "150-200": [
+      0,
+      22
+     ],
+     "200-250": [
+      0,
+      7
+     ]
+    }
+   },
+   "legacy_only_hits": 0,
+   "anchored_only_hits": 0,
+   "max_axis_delta_m": 0.66,
+   "median_axis_delta_m": 0.04
+  },
+  {
+   "file0": "new_data_68_0000.npy",
+   "kind": "box0.5",
+   "frames": 106,
+   "first_m": {
+    "legacy": null,
+    "anchored": null
+   },
+   "visible": {
+    "legacy": 83,
+    "anchored": 82
+   },
+   "visible_hits": {
+    "legacy": 0,
+    "anchored": 0
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      0,
+      21
+     ],
+     "50-100": [
+      0,
+      25
+     ],
+     "100-150": [
+      0,
+      22
+     ],
+     "150-200": [
+      0,
+      14
+     ],
+     "200-250": [
+      0,
+      1
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      0,
+      21
+     ],
+     "50-100": [
+      0,
+      25
+     ],
+     "100-150": [
+      0,
+      22
+     ],
+     "150-200": [
+      0,
+      13
+     ],
+     "200-250": [
+      0,
+      1
+     ]
+    }
+   },
+   "legacy_only_hits": 0,
+   "anchored_only_hits": 0,
+   "max_axis_delta_m": 0.66,
+   "median_axis_delta_m": 0.04
+  },
+  {
+   "file0": "new_data_68_0000.npy",
+   "kind": "trolley",
+   "frames": 106,
+   "first_m": {
+    "legacy": 112.0249610088801,
+    "anchored": 112.02426192118706
+   },
+   "visible": {
+    "legacy": 94,
+    "anchored": 94
+   },
+   "visible_hits": {
+    "legacy": 49,
+    "anchored": 49
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      21,
+      21
+     ],
+     "50-100": [
+      22,
+      25
+     ],
+     "100-150": [
+      6,
+      24
+     ],
+     "150-200": [
+      0,
+      17
+     ],
+     "200-250": [
+      0,
+      7
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      21,
+      21
+     ],
+     "50-100": [
+      22,
+      25
+     ],
+     "100-150": [
+      6,
+      24
+     ],
+     "150-200": [
+      0,
+      17
+     ],
+     "200-250": [
+      0,
+      7
+     ]
+    }
+   },
+   "legacy_only_hits": 0,
+   "anchored_only_hits": 0,
+   "max_axis_delta_m": 0.66,
+   "median_axis_delta_m": 0.05
+  },
+  {
+   "file0": "new_data_68_0000.npy",
+   "kind": "cable",
+   "frames": 106,
+   "first_m": {
+    "legacy": 107.97488553778187,
+    "anchored": 101.72449915622806
+   },
+   "visible": {
+    "legacy": 60,
+    "anchored": 63
+   },
+   "visible_hits": {
+    "legacy": 23,
+    "anchored": 19
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      6,
+      13
+     ],
+     "50-100": [
+      13,
+      14
+     ],
+     "100-150": [
+      4,
+      16
+     ],
+     "150-200": [
+      0,
+      13
+     ],
+     "200-250": [
+      0,
+      4
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      6,
+      12
+     ],
+     "50-100": [
+      12,
+      14
+     ],
+     "100-150": [
+      1,
+      19
+     ],
+     "150-200": [
+      0,
+      13
+     ],
+     "200-250": [
+      0,
+      5
+     ]
+    }
+   },
+   "legacy_only_hits": 6,
+   "anchored_only_hits": 2,
+   "max_axis_delta_m": 0.66,
+   "median_axis_delta_m": 0.04
+  },
+  {
+   "file0": "new_data_98_0000.npy",
+   "kind": "person",
+   "frames": 106,
+   "first_m": {
+    "legacy": 152.04458009308337,
+    "anchored": 158.05941360485332
+   },
+   "visible": {
+    "legacy": 98,
+    "anchored": 97
+   },
+   "visible_hits": {
+    "legacy": 72,
+    "anchored": 75
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      21,
+      21
+     ],
+     "50-100": [
+      25,
+      25
+     ],
+     "100-150": [
+      24,
+      24
+     ],
+     "150-200": [
+      2,
+      20
+     ],
+     "200-250": [
+      0,
+      8
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      21,
+      21
+     ],
+     "50-100": [
+      25,
+      25
+     ],
+     "100-150": [
+      24,
+      24
+     ],
+     "150-200": [
+      5,
+      19
+     ],
+     "200-250": [
+      0,
+      8
+     ]
+    }
+   },
+   "legacy_only_hits": 0,
+   "anchored_only_hits": 3,
+   "max_axis_delta_m": 1.06,
+   "median_axis_delta_m": 0.52
+  },
+  {
+   "file0": "new_data_98_0000.npy",
+   "kind": "box1.0",
+   "frames": 106,
+   "first_m": {
+    "legacy": 101.85545842705349,
+    "anchored": 97.71343149617877
+   },
+   "visible": {
+    "legacy": 99,
+    "anchored": 100
+   },
+   "visible_hits": {
+    "legacy": 47,
+    "anchored": 45
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      21,
+      21
+     ],
+     "50-100": [
+      25,
+      25
+     ],
+     "100-150": [
+      1,
+      24
+     ],
+     "150-200": [
+      0,
+      23
+     ],
+     "200-250": [
+      0,
+      6
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      21,
+      21
+     ],
+     "50-100": [
+      24,
+      25
+     ],
+     "100-150": [
+      0,
+      24
+     ],
+     "150-200": [
+      0,
+      23
+     ],
+     "200-250": [
+      0,
+      7
+     ]
+    }
+   },
+   "legacy_only_hits": 2,
+   "anchored_only_hits": 0,
+   "max_axis_delta_m": 1.06,
+   "median_axis_delta_m": 0.51
+  },
+  {
+   "file0": "new_data_98_0000.npy",
+   "kind": "box0.5",
+   "frames": 106,
+   "first_m": {
+    "legacy": null,
+    "anchored": null
+   },
+   "visible": {
+    "legacy": 87,
+    "anchored": 89
+   },
+   "visible_hits": {
+    "legacy": 0,
+    "anchored": 0
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      0,
+      21
+     ],
+     "50-100": [
+      0,
+      25
+     ],
+     "100-150": [
+      0,
+      24
+     ],
+     "150-200": [
+      0,
+      12
+     ],
+     "200-250": [
+      0,
+      5
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      0,
+      21
+     ],
+     "50-100": [
+      0,
+      25
+     ],
+     "100-150": [
+      0,
+      24
+     ],
+     "150-200": [
+      0,
+      14
+     ],
+     "200-250": [
+      0,
+      5
+     ]
+    }
+   },
+   "legacy_only_hits": 0,
+   "anchored_only_hits": 0,
+   "max_axis_delta_m": 1.06,
+   "median_axis_delta_m": 0.53
+  },
+  {
+   "file0": "new_data_98_0000.npy",
+   "kind": "trolley",
+   "frames": 106,
+   "first_m": {
+    "legacy": 103.87502584064566,
+    "anchored": 103.87276869395193
+   },
+   "visible": {
+    "legacy": 103,
+    "anchored": 102
+   },
+   "visible_hits": {
+    "legacy": 48,
+    "anchored": 47
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      21,
+      21
+     ],
+     "50-100": [
+      25,
+      25
+     ],
+     "100-150": [
+      2,
+      24
+     ],
+     "150-200": [
+      0,
+      24
+     ],
+     "200-250": [
+      0,
+      9
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      21,
+      21
+     ],
+     "50-100": [
+      24,
+      25
+     ],
+     "100-150": [
+      2,
+      24
+     ],
+     "150-200": [
+      0,
+      24
+     ],
+     "200-250": [
+      0,
+      8
+     ]
+    }
+   },
+   "legacy_only_hits": 1,
+   "anchored_only_hits": 0,
+   "max_axis_delta_m": 1.06,
+   "median_axis_delta_m": 0.53
+  },
+  {
+   "file0": "new_data_98_0000.npy",
+   "kind": "cable",
+   "frames": 106,
+   "first_m": {
+    "legacy": 103.87502584064566,
+    "anchored": 59.26541654504686
+   },
+   "visible": {
+    "legacy": 64,
+    "anchored": 50
+   },
+   "visible_hits": {
+    "legacy": 29,
+    "anchored": 12
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      8,
+      14
+     ],
+     "50-100": [
+      19,
+      19
+     ],
+     "100-150": [
+      2,
+      18
+     ],
+     "150-200": [
+      0,
+      8
+     ],
+     "200-250": [
+      0,
+      5
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      9,
+      14
+     ],
+     "50-100": [
+      3,
+      10
+     ],
+     "100-150": [
+      0,
+      9
+     ],
+     "150-200": [
+      0,
+      14
+     ],
+     "200-250": [
+      0,
+      3
+     ]
+    }
+   },
+   "legacy_only_hits": 21,
+   "anchored_only_hits": 4,
+   "max_axis_delta_m": 1.05,
+   "median_axis_delta_m": 0.52
+  },
+  {
+   "file0": "new_data_140_0000.npy",
+   "kind": "person",
+   "frames": 110,
+   "first_m": {
+    "legacy": 149.5663297829377,
+    "anchored": 151.3155326226171
+   },
+   "visible": {
+    "legacy": 102,
+    "anchored": 103
+   },
+   "visible_hits": {
+    "legacy": 72,
+    "anchored": 73
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      18,
+      18
+     ],
+     "50-100": [
+      27,
+      27
+     ],
+     "100-150": [
+      27,
+      27
+     ],
+     "150-200": [
+      0,
+      22
+     ],
+     "200-250": [
+      0,
+      8
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      18,
+      18
+     ],
+     "50-100": [
+      27,
+      27
+     ],
+     "100-150": [
+      27,
+      27
+     ],
+     "150-200": [
+      1,
+      22
+     ],
+     "200-250": [
+      0,
+      9
+     ]
+    }
+   },
+   "legacy_only_hits": 0,
+   "anchored_only_hits": 1,
+   "max_axis_delta_m": 0.53,
+   "median_axis_delta_m": 0.03
+  },
+  {
+   "file0": "new_data_140_0000.npy",
+   "kind": "box1.0",
+   "frames": 110,
+   "first_m": {
+    "legacy": 149.5663297829377,
+    "anchored": 151.31555809569434
+   },
+   "visible": {
+    "legacy": 106,
+    "anchored": 107
+   },
+   "visible_hits": {
+    "legacy": 54,
+    "anchored": 60
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      18,
+      18
+     ],
+     "50-100": [
+      27,
+      27
+     ],
+     "100-150": [
+      9,
+      27
+     ],
+     "150-200": [
+      0,
+      27
+     ],
+     "200-250": [
+      0,
+      7
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      18,
+      18
+     ],
+     "50-100": [
+      27,
+      27
+     ],
+     "100-150": [
+      14,
+      27
+     ],
+     "150-200": [
+      1,
+      27
+     ],
+     "200-250": [
+      0,
+      8
+     ]
+    }
+   },
+   "legacy_only_hits": 0,
+   "anchored_only_hits": 6,
+   "max_axis_delta_m": 0.53,
+   "median_axis_delta_m": 0.04
+  },
+  {
+   "file0": "new_data_140_0000.npy",
+   "kind": "box0.5",
+   "frames": 110,
+   "first_m": {
+    "legacy": null,
+    "anchored": null
+   },
+   "visible": {
+    "legacy": 85,
+    "anchored": 86
+   },
+   "visible_hits": {
+    "legacy": 0,
+    "anchored": 0
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      0,
+      18
+     ],
+     "50-100": [
+      0,
+      27
+     ],
+     "100-150": [
+      0,
+      26
+     ],
+     "150-200": [
+      0,
+      14
+     ],
+     "200-250": [
+      0,
+      0
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      0,
+      18
+     ],
+     "50-100": [
+      0,
+      27
+     ],
+     "100-150": [
+      0,
+      26
+     ],
+     "150-200": [
+      0,
+      14
+     ],
+     "200-250": [
+      0,
+      1
+     ]
+    }
+   },
+   "legacy_only_hits": 0,
+   "anchored_only_hits": 0,
+   "max_axis_delta_m": 0.53,
+   "median_axis_delta_m": 0.03
+  },
+  {
+   "file0": "new_data_140_0000.npy",
+   "kind": "trolley",
+   "frames": 110,
+   "first_m": {
+    "legacy": 193.99496672565937,
+    "anchored": 151.315622965479
+   },
+   "visible": {
+    "legacy": 106,
+    "anchored": 107
+   },
+   "visible_hits": {
+    "legacy": 54,
+    "anchored": 53
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      18,
+      18
+     ],
+     "50-100": [
+      27,
+      27
+     ],
+     "100-150": [
+      6,
+      27
+     ],
+     "150-200": [
+      3,
+      24
+     ],
+     "200-250": [
+      0,
+      10
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      18,
+      18
+     ],
+     "50-100": [
+      27,
+      27
+     ],
+     "100-150": [
+      7,
+      27
+     ],
+     "150-200": [
+      1,
+      25
+     ],
+     "200-250": [
+      0,
+      10
+     ]
+    }
+   },
+   "legacy_only_hits": 3,
+   "anchored_only_hits": 2,
+   "max_axis_delta_m": 0.53,
+   "median_axis_delta_m": 0.04
+  },
+  {
+   "file0": "new_data_140_0000.npy",
+   "kind": "cable",
+   "frames": 110,
+   "first_m": {
+    "legacy": 93.83378925254479,
+    "anchored": 103.11074872870672
+   },
+   "visible": {
+    "legacy": 57,
+    "anchored": 64
+   },
+   "visible_hits": {
+    "legacy": 21,
+    "anchored": 25
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      12,
+      13
+     ],
+     "50-100": [
+      9,
+      16
+     ],
+     "100-150": [
+      0,
+      15
+     ],
+     "150-200": [
+      0,
+      10
+     ],
+     "200-250": [
+      0,
+      3
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      10,
+      11
+     ],
+     "50-100": [
+      13,
+      16
+     ],
+     "100-150": [
+      2,
+      21
+     ],
+     "150-200": [
+      0,
+      13
+     ],
+     "200-250": [
+      0,
+      3
+     ]
+    }
+   },
+   "legacy_only_hits": 4,
+   "anchored_only_hits": 8,
+   "max_axis_delta_m": 0.53,
+   "median_axis_delta_m": 0.04
+  },
+  {
+   "file0": "new_data_168_0000.npy",
+   "kind": "person",
+   "skipped": {
+    "legacy": null,
+    "anchored": "motion step 65.4 m has no reliable near-track overlap"
+   }
+  },
+  {
+   "file0": "new_data_168_0000.npy",
+   "kind": "box1.0",
+   "skipped": {
+    "legacy": null,
+    "anchored": "motion step 65.4 m has no reliable near-track overlap"
+   }
+  },
+  {
+   "file0": "new_data_168_0000.npy",
+   "kind": "box0.5",
+   "skipped": {
+    "legacy": null,
+    "anchored": "motion step 65.4 m has no reliable near-track overlap"
+   }
+  },
+  {
+   "file0": "new_data_168_0000.npy",
+   "kind": "trolley",
+   "skipped": {
+    "legacy": null,
+    "anchored": "motion step 65.4 m has no reliable near-track overlap"
+   }
+  },
+  {
+   "file0": "new_data_168_0000.npy",
+   "kind": "cable",
+   "skipped": {
+    "legacy": null,
+    "anchored": "motion step 65.4 m has no reliable near-track overlap"
+   }
+  },
+  {
+   "file0": "new_data_172_0000.npy",
+   "kind": "person",
+   "frames": 110,
+   "first_m": {
+    "legacy": 149.90791223132757,
+    "anchored": 149.9076962971753
+   },
+   "visible": {
+    "legacy": 101,
+    "anchored": 100
+   },
+   "visible_hits": {
+    "legacy": 72,
+    "anchored": 72
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      18,
+      18
+     ],
+     "50-100": [
+      28,
+      28
+     ],
+     "100-150": [
+      26,
+      27
+     ],
+     "150-200": [
+      0,
+      21
+     ],
+     "200-250": [
+      0,
+      7
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      18,
+      18
+     ],
+     "50-100": [
+      28,
+      28
+     ],
+     "100-150": [
+      26,
+      27
+     ],
+     "150-200": [
+      0,
+      21
+     ],
+     "200-250": [
+      0,
+      6
+     ]
+    }
+   },
+   "legacy_only_hits": 0,
+   "anchored_only_hits": 0,
+   "max_axis_delta_m": 0.41,
+   "median_axis_delta_m": 0.03
+  },
+  {
+   "file0": "new_data_172_0000.npy",
+   "kind": "box1.0",
+   "frames": 110,
+   "first_m": {
+    "legacy": 116.09511258017089,
+    "anchored": 116.09497493537293
+   },
+   "visible": {
+    "legacy": 100,
+    "anchored": 101
+   },
+   "visible_hits": {
+    "legacy": 55,
+    "anchored": 55
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      18,
+      18
+     ],
+     "50-100": [
+      28,
+      28
+     ],
+     "100-150": [
+      9,
+      27
+     ],
+     "150-200": [
+      0,
+      20
+     ],
+     "200-250": [
+      0,
+      7
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      18,
+      18
+     ],
+     "50-100": [
+      28,
+      28
+     ],
+     "100-150": [
+      9,
+      27
+     ],
+     "150-200": [
+      0,
+      20
+     ],
+     "200-250": [
+      0,
+      8
+     ]
+    }
+   },
+   "legacy_only_hits": 0,
+   "anchored_only_hits": 0,
+   "max_axis_delta_m": 0.41,
+   "median_axis_delta_m": 0.03
+  },
+  {
+   "file0": "new_data_172_0000.npy",
+   "kind": "box0.5",
+   "frames": 110,
+   "first_m": {
+    "legacy": 51.87277514515446,
+    "anchored": 51.87288317127489
+   },
+   "visible": {
+    "legacy": 85,
+    "anchored": 86
+   },
+   "visible_hits": {
+    "legacy": 20,
+    "anchored": 20
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      18,
+      18
+     ],
+     "50-100": [
+      2,
+      28
+     ],
+     "100-150": [
+      0,
+      26
+     ],
+     "150-200": [
+      0,
+      10
+     ],
+     "200-250": [
+      0,
+      3
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      18,
+      18
+     ],
+     "50-100": [
+      2,
+      28
+     ],
+     "100-150": [
+      0,
+      26
+     ],
+     "150-200": [
+      0,
+      12
+     ],
+     "200-250": [
+      0,
+      2
+     ]
+    }
+   },
+   "legacy_only_hits": 0,
+   "anchored_only_hits": 0,
+   "max_axis_delta_m": 0.41,
+   "median_axis_delta_m": 0.03
+  },
+  {
+   "file0": "new_data_172_0000.npy",
+   "kind": "trolley",
+   "frames": 110,
+   "first_m": {
+    "legacy": 148.05972270339538,
+    "anchored": 148.0595455659533
+   },
+   "visible": {
+    "legacy": 106,
+    "anchored": 107
+   },
+   "visible_hits": {
+    "legacy": 55,
+    "anchored": 55
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      18,
+      18
+     ],
+     "50-100": [
+      25,
+      28
+     ],
+     "100-150": [
+      12,
+      27
+     ],
+     "150-200": [
+      0,
+      23
+     ],
+     "200-250": [
+      0,
+      10
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      18,
+      18
+     ],
+     "50-100": [
+      25,
+      28
+     ],
+     "100-150": [
+      12,
+      27
+     ],
+     "150-200": [
+      0,
+      24
+     ],
+     "200-250": [
+      0,
+      10
+     ]
+    }
+   },
+   "legacy_only_hits": 0,
+   "anchored_only_hits": 0,
+   "max_axis_delta_m": 0.41,
+   "median_axis_delta_m": 0.03
+  },
+  {
+   "file0": "new_data_172_0000.npy",
+   "kind": "cable",
+   "frames": 110,
+   "first_m": {
+    "legacy": 112.52125894427063,
+    "anchored": 103.32176035726107
+   },
+   "visible": {
+    "legacy": 52,
+    "anchored": 66
+   },
+   "visible_hits": {
+    "legacy": 18,
+    "anchored": 18
+   },
+   "recall_by_bin": {
+    "legacy": {
+     "0-50": [
+      8,
+      11
+     ],
+     "50-100": [
+      4,
+      12
+     ],
+     "100-150": [
+      6,
+      15
+     ],
+     "150-200": [
+      0,
+      8
+     ],
+     "200-250": [
+      0,
+      6
+     ]
+    },
+    "anchored": {
+     "0-50": [
+      5,
+      10
+     ],
+     "50-100": [
+      11,
+      15
+     ],
+     "100-150": [
+      2,
+      20
+     ],
+     "150-200": [
+      0,
+      15
+     ],
+     "200-250": [
+      0,
+      6
+     ]
+    }
+   },
+   "legacy_only_hits": 8,
+   "anchored_only_hits": 8,
+   "max_axis_delta_m": 0.41,
+   "median_axis_delta_m": 0.03
+  }
+ ],
+ "note": "P4, 24.09: straight-track set F of round 3 (same files, start, lateral range, seed, kinds) run in pairs with legacy (detector's far axis) and anchored (near-rail) placement on the current code; false detections counted with the review fix (the object's own track on a 0-return frame is not one). Per-mode summaries: legacy / anchored first_detection_median person 151.0 / 154.1 m over all attempted sequences; the paired medians below exclude new_data_168 (recording gap, 65.4 m motion step) from both.",
+ "per_mode_summary": {
+  "legacy": {
+   "person": {
+    "sequences": 6,
+    "skipped": 0,
+    "detected": 6,
+    "first_detection_m": [
+     144.1,
+     149.6,
+     149.9,
+     152.0,
+     166.3,
+     169.2
+    ],
+    "first_detection_median": 151.0,
+    "sustained_median": 142.6,
+    "false_detections": 9
+   },
+   "box1.0": {
+    "sequences": 6,
+    "skipped": 0,
+    "detected": 6,
+    "first_detection_m": [
+     101.9,
+     109.9,
+     116.1,
+     131.8,
+     146.0,
+     149.6
+    ],
+    "first_detection_median": 123.9,
+    "sustained_median": 114.1,
+    "false_detections": 16
+   },
+   "box0.5": {
+    "sequences": 6,
+    "skipped": 0,
+    "detected": 1,
+    "first_detection_m": [
+     51.9
+    ],
+    "first_detection_median": 51.9,
+    "sustained_median": 55.6,
+    "false_detections": 4
+   },
+   "trolley": {
+    "sequences": 6,
+    "skipped": 0,
+    "detected": 6,
+    "first_detection_m": [
+     103.9,
+     112.0,
+     148.1,
+     154.8,
+     156.6,
+     194.0
+    ],
+    "first_detection_median": 151.4,
+    "sustained_median": 115.0,
+    "false_detections": 15
+   },
+   "cable": {
+    "sequences": 6,
+    "skipped": 0,
+    "detected": 6,
+    "first_detection_m": [
+     12.6,
+     56.4,
+     93.8,
+     103.9,
+     108.0,
+     112.5
+    ],
+    "first_detection_median": 98.9,
+    "sustained_median": 34.2,
+    "false_detections": 12
+   }
+  },
+  "anchored": {
+   "person": {
+    "sequences": 5,
+    "skipped": 1,
+    "detected": 5,
+    "first_detection_m": [
+     149.9,
+     151.3,
+     154.1,
+     158.1,
+     179.8
+    ],
+    "first_detection_median": 154.1,
+    "sustained_median": 163.2,
+    "false_detections": 3
+   },
+   "box1.0": {
+    "sequences": 5,
+    "skipped": 1,
+    "detected": 5,
+    "first_detection_m": [
+     79.1,
+     97.7,
+     109.9,
+     116.1,
+     151.3
+    ],
+    "first_detection_median": 109.9,
+    "sustained_median": 119.9,
+    "false_detections": 9
+   },
+   "box0.5": {
+    "sequences": 5,
+    "skipped": 1,
+    "detected": 1,
+    "first_detection_m": [
+     51.9
+    ],
+    "first_detection_median": 51.9,
+    "sustained_median": 55.6,
+    "false_detections": 1
+   },
+   "trolley": {
+    "sequences": 5,
+    "skipped": 1,
+    "detected": 5,
+    "first_detection_m": [
+     103.9,
+     112.0,
+     148.1,
+     151.3,
+     160.8
+    ],
+    "first_detection_median": 148.1,
+    "sustained_median": 116.0,
+    "false_detections": 22
+   },
+   "cable": {
+    "sequences": 5,
+    "skipped": 1,
+    "detected": 5,
+    "first_detection_m": [
+     58.5,
+     59.3,
+     101.7,
+     103.1,
+     103.3
+    ],
+    "first_detection_median": 101.7,
+    "sustained_median": 19.1,
+    "false_detections": 2
+   }
+  }
+ }
+}

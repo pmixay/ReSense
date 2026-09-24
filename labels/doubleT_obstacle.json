@@ -15,9 +15,9 @@
   },
   "gauge_half_width_m": 1.05,
   "keys": {
-   "gauge_margin": "1.4 m - (|lateral| - W/2): + inside the strict gauge, - outside",
+   "gauge_margin": "1.05 m - (|lateral| - W/2): + inside the current strict gauge, - outside",
    "h_above_rail": "[min, max] height of the cluster above the rail head (per-frame track model)",
-   "n_points": "points of the cluster in the selection window (not an occlusion flag for real labels)",
+   "n_points": "points of the cluster in the selection window; object_on_rail uses 0 when hidden by the person",
    "in_gauge": "inside the organizers' 2.1 m x 3.0 m envelope (half-width 1.05 m) since v0.6; in_gauge_v05 / gauge_margin_v05 = the 1.40 m polygon of v0.5"
   },
   "labels": {

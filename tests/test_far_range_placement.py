@@ -124,6 +124,37 @@ def test_sequence_does_not_fit_far_cloud_and_writes_ground_truth(monkeypatch):
     assert row["gt_vehicle_y_m"] == pytest.approx(0.3)
 
 
+def test_zero_return_frame_is_neither_a_hit_nor_a_false_detection(monkeypatch):
+    # a detection where the object is, on a frame in which the object returned no point, may be
+    # the object's own held (hold_misses) or accumulated track: it must not make a hit, and it
+    # is not counted as a false detection either (review 24.09)
+    from resense.config import DetectorConfig
+
+    track = TrackModel(np.array([0., 0., -1.]), (0., 100.), 0., 0., 0.)
+    frame = Frame(np.array([[10., 0., -1.]], dtype=np.float32), np.array([0.]))
+
+    class BackgroundDetection:
+        def __init__(self, cfg):
+            self.track = track
+
+        def process(self, injected, ego_speed):
+            return SimpleNamespace(track=track,
+                                   detections=[SimpleNamespace(distance=50., lateral=0., size=[0.5] * 3,
+                                                               kind="box")], candidates=[], health={})
+
+    monkeypatch.setattr("resense.frame.frame_from_compact", lambda *a, **kw: frame)
+    monkeypatch.setattr("resense.detector.Detector", BackgroundDetection)
+    monkeypatch.setattr("resense.synthetic.inject_obstacles", lambda *a, **kw:
+                        InjectionResult(frame=frame, labels=np.zeros(1, int), n_added=[0]))
+    monkeypatch.setattr(far.np, "load", lambda _: None)
+    job = (["new_data_46_0000.npy"], {"new_data_46_0000": 1.}, [0.], "box0.5", 50., 0., 30., 1,
+           DetectorConfig().to_dict(), None, False, "rail", "independent",
+           far.fixed_reference(0., 0., 0., -1., 0.), 0., 0.)
+    result = far.run_sequence(job)
+    assert result["first"] is None and result["fp"] == 0
+    assert result["rows"][0]["n"] == 0 and not result["rows"][0]["hit"]
+
+
 def test_zero_return_injection_retains_reference_metadata(monkeypatch):
     from resense import synthetic
 

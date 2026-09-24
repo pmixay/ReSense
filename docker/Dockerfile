@@ -54,7 +54,7 @@ RUN pip3 install --upgrade "pip>=24" \
 COPY tests ./tests
 COPY scripts ./scripts
 RUN if [ "$WITH_TOOLS" = "1" ]; then \
-        pip3 install "rosbags==0.10.11" "matplotlib==3.10.7" "open3d==0.19.0" "pytest==8.4.2"; \
+        pip3 install "rosbags==0.10.11" "zstandard==0.25.0" "matplotlib==3.10.7" "open3d==0.19.0" "pytest==8.4.2"; \
     fi
 
 # ROS 2 workspace. configs/default.yaml is the single source of truth for the detector
@@ -62,6 +62,9 @@ RUN if [ "$WITH_TOOLS" = "1" ]; then \
 COPY ros2_ws/src /opt/resense/ros2_ws/src
 COPY configs/default.yaml /opt/resense/ros2_ws/src/resense_ros/config/detector.yaml
 RUN . /opt/ros/humble/setup.sh && cd /opt/resense/ros2_ws && colcon build --symlink-install
+
+# The P4 label-metadata regression and offline `resense eval` use the committed real labels.
+COPY labels/doubleT_obstacle.json ./labels/doubleT_obstacle.json
 
 COPY docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
