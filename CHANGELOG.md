@@ -17,6 +17,10 @@ frames, 13 km, no obstacles).
 The package version stays 0.6.3 (node v0.6.4). Tests: 235 → 266 (+28 native kernels, +3 speed
 evaluation helpers) in `tests/`, 11 in `web/demo`.
 
+- **Dashboard restyle (`46a04bb`, P2, 24.09):** dashboard and label tool in the Metro style
+  (Moscow Sans from the supplied style archive, primary red `#E4000D`, styles in
+  `web/assets/dashboard.css` / `label-tool.css`), `web/demo/capture_gallery.py` refreshes the
+  `docs/images/` screenshots; 11 web tests.
 - **Train-speed evaluation (`396755f`, `93c6eaa`, 24.09):** tooling and measurements, no detector
   change. `scripts/eval_real.py --nominal-stamps` (stamps snapped to the 10 Hz rotation, as the
   node's header clock) and `--speed-ref` (a per-frame reference speed handed in as odometry);
