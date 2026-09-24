@@ -25,7 +25,8 @@ persistent tracks — but has run with it switched off since v0.5 (`accumulation
 false`, §1b "Accumulation default"). A speed does one thing in the detector: it enables the
 5-frame accumulation beyond 40 m, and the tracker predicts a new track's first step with it.
 Everything below was measured on 24.09 on every frame of the seven cached recordings,
-4-core shared sandbox, raw per-frame rows from the scripts named.
+4-core shared sandbox (raw summaries:
+[`experiments_2026-09-24_train_speed.json`](experiments_2026-09-24_train_speed.json)).
 
 **The reference** (`scripts/speed_reference.py`). No recording has odometry, so the train's
 displacement per frame is measured by registering consecutive frames: a 1-D scan of the
