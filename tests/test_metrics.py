@@ -1,5 +1,6 @@
 """Metrics on hand-made status JSON lines (no dataset, no Open3D)."""
 import json
+from pathlib import Path
 
 import pytest
 
@@ -98,6 +99,54 @@ def test_matched_track_is_not_a_false_alarm_event():
     assert s["fp_frames"] == 1 and s["empty_frames"] == 1
 
 
+def test_two_overlapping_objects_use_maximum_matching():
+    """The shared detection must go to the object with no other possible match."""
+    gts = [GTObstacle(distance=50.0, lateral=0.0, label="left", kind="person"),
+           GTObstacle(distance=50.0, lateral=1.5, label="right", kind="person")]
+    ev = Evaluation()
+    ev.add_frame(status(frame=0, dets=[det(1, 50.0, 0.7), det(2, 50.0, 0.0)]), gts)
+    s = ev.summary()
+    assert s["recall"] == 1.0 and s["fp_detections"] == 0
+    assert s["first_detection_distance"] == {"left": 50.0, "right": 50.0}
+
+
+def test_track_ids_are_scoped_to_independent_sequences():
+    ev = Evaluation()
+    gt = [GTObstacle(distance=50.0, lateral=0.0, label="box", kind="box")]
+    ev.add_frame(status(frame=0, dets=[det(1, 50.0)], seq=0), gt)
+    ev.add_frame(status(frame=1, dets=[det(1, 30.0)], seq=1), [])
+    s = ev.summary()
+    assert s["alarm_events"] == 2 and s["fp_events"] == 1
+    assert s["recall"] == 1.0
+
+
+def test_independent_sequences_exclude_inter_sequence_time_and_distance():
+    ev = Evaluation()
+    for i, (stamp, seq) in enumerate(((0.0, 0), (0.1, 0), (10.0, 1), (10.1, 1))):
+        ev.add_frame(status(frame=i, stamp=stamp, dets=[det(1, 30.0)], seq=seq),
+                     [], speed_mps=10.0)
+    s = ev.summary()
+    assert s["alarm_events"] == s["fp_events"] == 2
+    assert s["bag_time_s"] == pytest.approx(0.2)
+    assert s["distance_km"] == pytest.approx(0.002)
+    assert s["fp_events_per_hour"] == pytest.approx(2 * 3600 / 0.2)
+
+
+def test_missing_timestamp_does_not_bridge_scoped_sequence():
+    ev = Evaluation()
+    ev.add_frame(status(stamp=0.0, seq=0), [])
+    ev.add_frame(status(stamp=None, seq=1), [])
+    ev.add_frame(status(stamp=10.0, seq=1), [])
+    assert ev.summary()["bag_time_s"] == 0.0
+
+
+def test_missing_timestamp_does_not_bridge_continuous_distance():
+    ev = Evaluation()
+    for stamp in (0.0, None, 10.0, 10.1):
+        ev.add_frame(status(stamp=stamp), [], speed_mps=10.0)
+    assert ev.summary()["distance_km"] == pytest.approx(0.001)
+
+
 def test_distance_error_first_alarm_and_speed_sources():
     """Additive summary keys: errors of matched detections, the first alarm frame, the
     ego_speed_source counts and the mean number of merged frames."""
@@ -177,6 +226,24 @@ def test_gt_row_from_bbox_and_meta(tmp_path):
     objs = gt_objects(gt["00042"])
     assert [o.kind for o in objs] == ["person"]             # the occluded row (n_points == 0) is dropped
     assert len(gt_objects(gt["00042"], skip_occluded=False)) == 2
+
+
+def test_committed_real_labels_use_the_current_envelope():
+    path = Path(__file__).resolve().parents[1] / "labels" / "doubleT_obstacle.json"
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    assert raw["_meta"]["gauge_half_width_m"] == 1.05
+    crossing_frames = []
+    for key, rows in raw.items():
+        if key.startswith("_"):
+            continue
+        for row in rows:
+            if "gauge_margin" in row:
+                margin = 1.05 - (abs(row["lateral"]) - row["size"][1] / 2)
+                assert row["gauge_margin"] == pytest.approx(margin, abs=0.04)
+                assert row["in_gauge"] == (row["gauge_margin"] >= 0)
+            if row.get("label") == "person_crossing" and row["in_gauge"]:
+                crossing_frames.append(int(key))
+    assert crossing_frames == list(range(8, 69))
 
 
 def test_summarize_cli(tmp_path, capsys):

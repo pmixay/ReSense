@@ -10,7 +10,7 @@ onto numbers we actually report. Results go to [`EXPERIMENTS.md`](EXPERIMENTS.md
 |---|---|---|---|---|
 | **S** synthetic | `resense inject` on real empty frames of every organizer bag, every 10th frame | person 0.5×1.7 m, box 0.2 / 0.5 / 1.0 m, plank 2×0.25×0.3 m, trolley; one object per frame, uniform 10–250 m along the track | 20 % of objects placed outside the gauge (must **not** alarm) | recall by range, first-detection distance, tuning |
 | **E** empty real | the five organizer bags without a known obstacle | none | every frame | false-alarm rates by scene type |
-| **R** real obstacles | `doubleT_obstacle` (person at 55–57 m) + the organizers' extended dataset once labelled (`gt.json` via the label tool) | labelled frames | unlabelled frames of the same bags | honest recall, calibration of `inject` |
+| **R** real obstacles | `doubleT_obstacle` (crossing person and object on a rail, both labelled in `gt.json`) | labelled visible frames | labelled empty frames and the five empty bags | real recall and a limited reflectivity check; the extended `new_data` recording has no obstacles |
 | **H** hidden | the organizers' control bag on the day | unknown | unknown | nothing is tuned on it; the dry-run script only checks the pipeline runs |
 
 Objects whose rays are fully occluded by real geometry (`n_points == 0` in `gt.json`) are
@@ -30,17 +30,17 @@ latency, FP frames / events, recall, frames merged) with a delta column.
 | **recall by class and range** | the recall-by-range table split per object class [`per_class_bin_counts`: class → bin → [matched, total]]; the per-kind table of set S | counts per cell (the cells of a 26-frame set hold 1–4 objects: quote the counts, not only the ratio) |
 | **first-detection distance** | for a moving-toward run (real, or `inject --sequence N --speed V`): the largest range at which the object is confirmed and matched | m, per ground-truth label [`first_detection_distance`] |
 | **distance / lateral error** | over matched detections: mean and max of \|Δdistance\|, the signed mean (bias, + = reported farther than the label), mean \|Δlateral\| [`distance_error_mean_abs`, `distance_error_max_abs`, `distance_error_bias`, `lateral_error_mean_abs`] | m; on the real person of `doubleT_obstacle` 0.00–0.07 m mean (DATASET.md "Real labels") |
-| **first alarm frame** | index of the first frame with `obstacle = true` [`first_alarm_frame`] | frame; on `doubleT_obstacle` it must stay 9 (the person enters the gauge at frame 2, `confirm_hits = 3`) |
-| **ego-speed source / frames merged** | how the accumulation actually ran: frames per `ego_speed_source` value (`given` / `estimated` / `none`) and the mean `n_accumulated` [`ego_speed_sources`, `n_accumulated_mean`] | counts; `given` when the node receives a valid speed; without one, shipped defaults report `none` (`accumulation.estimate_speed: false`); `estimated` requires explicitly opting in |
+| **first alarm frame** | index of the first frame with `obstacle = true` [`first_alarm_frame`] | frame; v0.6.3 first alarms on `doubleT_obstacle` at frame 11 (the person enters the 2.1 m envelope at frame 8) |
+| **ego-speed source / frames merged** | how the accumulation actually ran: frames per `ego_speed_source` value (`given` / `estimated` / `none`) and the mean `n_accumulated` [`ego_speed_sources`, `n_accumulated_mean`] | counts; `given` when the node has a speed, `none` by default without one; `estimated` only with the opt-in LiDAR speed estimator |
 | **false-alarm frames** | frames with `obstacle = true` among frames with no gauge ground truth [`fp_frames`, `fp_frame_rate`]; every frame with `obstacle = true` regardless of labels is an *alarm frame* [`alarm_frames`] | per bag and per scene type (tunnel / curve / gate / platform / switch) |
-| **false-alarm events** | distinct confirmed gauge track ids (`detections[].id`) that were never matched to a ground-truth object [`fp_events`]; distinct ids of all alarms [`alarm_events`]. One object that stays in the corridor for 50 frames is one event | **the headline false-alarm number**, per bag |
-| **false alarms per hour / per km** | `fp_events` per hour of bag time (span of the `stamp` field [`bag_time_s`]) [`fp_events_per_hour`] and per km travelled [`fp_events_per_km`] when a speed is known: `--speed-mps V` (constant) or a per-frame `ego_speed_mps` key in the JSON, integrated over the stamp gaps [`distance_km`] | per bag; `null` when no speed is known |
+| **false-alarm events** | distinct confirmed gauge track ids (`detections[].id`) that were never matched to a ground-truth object [`fp_events`]; distinct ids of all alarms [`alarm_events`]. Injected sequences scope each ID by `seq`, because the tracker restarts at each sequence; one object that stays in the corridor for 50 frames is one event | **the headline false-alarm number**, per bag |
+| **false alarms per hour / per km** | `fp_events` per hour of bag time (span of the `stamp` field [`bag_time_s`]) [`fp_events_per_hour`] and per km travelled [`fp_events_per_km`] when a speed is known: `--speed-mps V` (constant) or a per-frame `ego_speed_mps` key in the JSON, integrated over the stamp gaps [`distance_km`]. For independent injected `seq` runs, inter-sequence time and distance are excluded. | per bag; `null` when no speed is known |
 | **advisory rate** | frames with `warning = true` [`advisory_frames`, `advisory_frame_rate` = share of all evaluated frames] | informational; the advisory zone is expected to be noisy near infrastructure |
 | **alarm distance** | min / max of `nearest_distance` over alarm frames [`alarm_distance_min`, `alarm_distance_max`] | m; the max on `doubleT_obstacle` is the person (56.5 m), the min includes false alarms near the train, so quote the max or per-event distances |
 | **latency** | per frame: decode + detect (status JSON `node.latency_ms`) and decode + detect + publish (`/resense/latency_ms`); offline `timing_ms.total` [`latency_ms_mean`, `latency_ms_p95`, `latency_ms_max`] | mean, p95, max in ms |
 | **throughput** | frames processed per second in the ROS node (`/resense/fps`) against the sensor's 10 Hz; dropped frames from stamp gaps (`node.dropped_frames`) | fps, dropped / total (node stats line, `scripts/check_dry_run.py`) |
-| **decision latency** | frames from the first frame an object is visible in the corridor to the first `obstacle = true` | frames (3 by construction with `confirm_hits = 3`) |
-| **subsampling caveat** | the stride between consecutive `frame` indices [`frame_stride`]; with every N-th frame the `confirm_hits` consecutive hits are `N × frame_dt` s apart, so a candidate must persist `confirm_hits × N × frame_dt` s (1.5 s at every 5th, 3 s at every 10th) instead of 0.3 s at 10 Hz: **subsampled alarm and false-alarm counts understate the full-rate values** [`stride_caveat`] | printed next to every number measured on subsampled frames; headline numbers are measured at every frame |
+| **decision latency** | frames from the first visible in-gauge object to the first `obstacle = true`; report the actual result, since a track can have hits before it enters the gauge | frames and seconds; on the current crossing person, frame 8 → 11 (0.3 s) with the five-frame confirmation setting |
+| **subsampling caveat** | the stride between consecutive `frame` indices [`frame_stride`]; the current five-hit confirmation spans approximately `5 × N × frame_dt` (2.5 s at every 5th frame, 5 s at every 10th) instead of 0.5 s at 10 Hz: **subsampled alarm and false-alarm counts understate the full-rate values** [`stride_caveat`] | printed next to every number measured on subsampled frames; headline numbers are measured at every frame |
 | **CPU / memory** | `top` per core and RSS of the node on the reference machine | for the i7-9700E comparison |
 
 Objects fully occluded by real geometry (`n_points == 0` in `gt.json`) are excluded from
@@ -52,10 +52,14 @@ that bin is not expected to be detectable by any algorithm.
 
 ## 3. Procedure
 
-**Set F independent placement (synthetic positives).** `scripts/far_range_eval.py` defaults
-to `--placement-mode legacy`, which uses the detector-derived per-frame far axis and vault
+**Set F synthetic-positive placement.** `scripts/far_range_eval.py` defaults to
+`--placement-mode legacy`, which uses the detector-derived per-frame far axis and vault
 drift; those results are not an independent test of curve or gauge-edge generalisation.
-For `--placement-mode independent`, provide a separately surveyed physical reference in
+`--placement-mode anchored` carries a fixed object position backwards from a near (≤30 m)
+rail-supported track fit using consecutive near fits and recorded speed. It rejects missing
+stamps, large movement gaps and sequences without a near reference. Its placement is
+independent of the *far axis*, but its pose is estimated from the same ride, not surveyed
+ground truth. For `--placement-mode independent`, provide a separately surveyed reference in
 vehicle coordinates: `--axis-center`, `--axis-yaw-deg`, `--axis-curvature`, `--rail-z0`,
 `--rail-grade`. The tool never reads background points to set this reference or the object's
 height: bed placement is 0.25 m below the supplied rail profile (an assumption), rail
@@ -77,37 +81,39 @@ validity over each sequence before interpreting range or edge results.
    file with `accumulation.enabled: false`, `accumulation.estimate_speed: false`,
    `track.floor_verify_enabled: false`, `cluster.retro_intensity: 0` (`--config`): v0.4 then
    reproduces v0.3 bit for bit (verified on the six bags on 21.09).
-2. **Synthetic on real frames (S)** — the sets of 21.09 (commit f4e311f; the seeds are fixed,
-   so the same frames come out of `/data/cache` on any machine; raw summaries and these
-   commands in [`experiments_v0.4_synthetic_on_real.json`](experiments_v0.4_synthetic_on_real.json)):
+2. **Synthetic on real frames (S)** — rebuild from the same cached empty frames and seeds as
+   the 21.09 sets. The historical v0.4 summaries in
+   [`experiments_v0.4_synthetic_on_real.json`](experiments_v0.4_synthetic_on_real.json)
+   used older object placement, persistence and sequence handling; their scores must not be
+   compared as a paired A/B against the commands below without re-running both versions:
 
    ```bash
    # static sets: every 10th frame of three empty bags, one catalogue object per frame, 20 % negatives
    for bag in roundT_doubleT roundT_pressureGate_roundT roundT_squareT_pressureGate_squareT; do
      resense inject --npy /data/cache/$bag --every 10 --out data/S_$bag \
          --kinds person,box0.5,box1.0,plank,trolley --distances 10:250 --negative-fraction 0.2 --seed 1
-     resense eval data/S_$bag --repeat 3 --text          # 3 repeats emulate persistence; no speed given
+     resense eval data/S_$bag --text                     # defaults to five repeats with the v0.6.3 config
    done
    # approach sequences on roundT_doubleT: 8 steps of 1.5 m (15 m/s) per background, one kind per set, seeds 1-3
    for kind in person box0.5 box1.0 plank trolley; do for seed in 1 2 3; do
      resense inject --npy /data/cache/roundT_doubleT --every 10 --out data/SEQ_${kind}_s$seed --kinds $kind \
          --distances 10:250 --negative-fraction 0.2 --sequence 8 --speed 15 --seed $seed
      resense eval data/SEQ_${kind}_s$seed --repeat 1 --text                 # the rows' speed_mps is given to the detector
-     resense eval data/SEQ_${kind}_s$seed --repeat 1 --no-gt-speed --text   # estimator / single-frame path
+     resense eval data/SEQ_${kind}_s$seed --repeat 1 --no-gt-speed --text   # single-frame default
    done; done
    ```
 
    `eval` gives the detector the `speed_mps` of `inject --sequence` rows (`ego_speed_source:
    given`, as the ROS node with `ego_speed_mps` / odometry); `--ego-speed V` forces a constant
    on any source, `--no-gt-speed` withholds it; static sets (`speed_mps: 0`) get nothing and
-    the estimator is off by default, as in `resense run` (enable
-    `accumulation.estimate_speed` explicitly to evaluate it). Report recall by range per kind
+   the LiDAR speed estimator is off by default (enable `accumulation.estimate_speed` to
+   evaluate it). Report recall by range per kind
    (`per_class_bin_counts`), first-detection distances and the occluded count. Two caveats:
-   the per-frame recall of an 8-step sequence is capped at 6/8 (the first two steps cannot be
-   confirmed with `confirm_hits = 3`, and an object that starts beyond 150 m approaches only
+   the per-frame recall of an 8-step sequence is capped at 4/8 for a new track with the current
+   five-frame confirmation (and an object that starts beyond 150 m approaches only
    10.5 m within its sequence), so sequences are read by their first-detection distances and
    the static sets give the per-range recall; and the false-alarm counts of a static set are
-   **not** meaningful: every 10th frame of a moving bag is a new scene 1 s apart and the 3
+   **not** meaningful: every 10th frame of a moving bag is a new scene 1 s apart and the five
    repeats confirm any structure that sits in the corridor.
 3. **Empty real (E):** `resense run --npy /data/cache/<bag> --out results/<bag>.jsonl --quiet`
    on every frame (`--bag` on the bag itself), then `resense summarize results/<bag>.jsonl`
@@ -135,11 +141,13 @@ validity over each sequence before interpreting range or edge results.
    a misleading timing result. ROS timing and throughput require a running ROS 2 graph and Docker
    acceptance requires a reachable daemon; when those are unavailable, report the check as
    unmeasured rather than reusing historical FPS/latency values.
-6. **Regression:** the three numbers that must not get worse between versions are recall
-   50–100 m on S, false-alarm frames on E (all bags), and p95 latency; on R the first alarm
-   frame (9) and the recall (64/71) must not drop. Each PR that touches `resense/` re-runs S,
-   E and R on the cached frames (`scripts/cache_frames.py`) and adds a row to the version
-   table in EXPERIMENTS.md.
+6. **Regression:** compare recall 50–100 m on S, false-alarm frames and events on E (all
+   bags), and p95 latency under the same machine/load. On R, keep the current 2.1 m-envelope
+   baseline visible: crossing person 58/61 in-gauge frames, first alarm frame 11, rail object
+   127/185 visible frames (124/126 after the person leaves). Do not compare those counts to
+   older 1.4 m-envelope runs as if the labels were identical. Each PR that touches `resense/`
+   re-runs S, E and R on the cached frames (`scripts/cache_frames.py`) and adds a row to the
+   version table in EXPERIMENTS.md.
 
 ## 4. Targets (from PLAN.md sprints)
 

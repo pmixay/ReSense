@@ -76,7 +76,7 @@ What holds it down:
 **8.5: 7.5.**
 
 - A pure-Python library, a thin ROS node and one parameter file checked by CI.
-- 150 tests at the reviewed commit (152 now), and ruff is clean.
+- 150 tests at the reviewed commit (152 at the v0.6.3 base; 166 on the P4 audit branch), and ruff is clean.
 - Guards: watchdog, `FAULT` / `NO_INPUT` / `STALE`, a reset after errors.
 - Input switching was verified by the reviewer with both topic / frame pairs.
 - Held down: CI was red at `fcbb3f8` (a stale web test), and false alarms depended on the start frame.
@@ -139,7 +139,7 @@ compared):
 - the object 127 / 185;
 - 20 and 47 events;
 - the width cap and the calibration change are identical frame for frame to the runs before them;
-- 152 tests and 6 dashboard tests pass, ruff is clean, and the parameter files are in sync.
+- 166 tests on the P4 audit branch and 6 dashboard tests pass, ruff is clean, and the parameter files are in sync.
 
 ## What is left (by expected gain per hour)
 
@@ -160,9 +160,12 @@ open questions ([`QUESTIONS.md`](QUESTIONS.md)). The owner merges the branch to 
    technical one.
 3. **A far height reference anchored on the tunnel vault.** Small objects cannot alarm beyond
    ~100 m, and 14 of the 47 ride events start beyond 100 m. 1–2 days, some risk. Moves 8.2.
-4. **Set F with independent placement** (A5): anchor the curve and edge objects on the axis
-   estimated when the train is within ~30 m, then re-run. 2–3 h. Makes the curve and edge
-   numbers credible.
+4. **Set F with independent placement** (A5): `--placement-mode legacy` remains the default
+   for reproducing the historical frame-axis method; `--placement-mode anchored` uses a near
+   rail reference, while `--placement-mode independent` takes an externally surveyed axis.
+   A 51-frame near-range smoke run succeeded, but the curve and edge sets still need a paired
+   run on the extended cache. The near reference uses estimated speed and track registration,
+   so it is not surveyed ground truth ([`P4_AUDIT.md`](P4_AUDIT.md)).
 5. **Start-frame robustness of the low stage.** The trackside device at ~50 m in `roundT_doubleT`
    is confirmed from some start frames: its low and corridor hits are chained into one track.
    Look at the association between the two stages. Half a day.

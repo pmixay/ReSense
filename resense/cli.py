@@ -85,11 +85,13 @@ def cmd_inject(args):
     applies :func:`resense.synthetic.augment_background` (dropout, range noise, small
     mount rotations, intensity jitter) to the background before injection.
     """
-    from resense.synthetic import OBJECT_CATALOGUE, augment_background, catalogue_spec, inject_obstacles
+    from resense.synthetic import (OBJECT_CATALOGUE, augment_background, catalogue_spec,
+                                   inject_obstacles, overlaps_gauge_laterally, place_on_bed)
     from resense.track import estimate_track
     cfg = _cfg(args)
-    rng = np.random.default_rng(args.seed)
-    os.makedirs(args.out, exist_ok=True)
+    # Keep the experiment design independent of how many ray hits the renderer produces.
+    # Otherwise changing placement or reflectivity changes *later* sampled objects too.
+    plan_rng = np.random.default_rng(args.seed)
     kinds = [k.strip() for k in args.kinds.split(",") if k.strip()]
     unknown = [k for k in kinds if k not in OBJECT_CATALOGUE]
     if unknown:
@@ -100,36 +102,52 @@ def cmd_inject(args):
     step = speed * cfg.tracking.frame_dt
     if n_seq > 1 and step <= 0:
         raise SystemExit("--sequence N needs --speed V > 0 (m/s)")
+    if args.reflectivity is not None and not (np.isfinite(args.reflectivity)
+                                               and 0.0 <= args.reflectivity <= 255.0):
+        raise SystemExit("--reflectivity must be between 0 and 255")
+    os.makedirs(args.out, exist_ok=True)
     gt = {"_meta": {"source": "inject", "kinds": kinds, "distances": [d_lo, d_hi], "per_frame": args.per_frame,
                     "negative_fraction": args.negative_fraction, "sequence": n_seq, "speed_mps": speed,
                     "frame_dt": cfg.tracking.frame_dt, "augment": bool(args.augment), "seed": args.seed,
-                    "input": args.bag or args.npy, "every": args.every, "start": args.start}}
+                    "input": args.bag or args.npy, "every": args.every, "start": args.start,
+                    "placement": ("local_bed_or_vault_corrected_floor" if args.placement == "bed"
+                                  else "legacy_rail_head_minus_0.15m"), "reflectivity": args.reflectivity,
+                    "rng_protocol": "separate_planning_and_per_frame_rendering_v1"}}
     n = 0
     n_bg = 0
+    gauge_half_width = max(abs(float(p[0])) for p in cfg.gauge.profile)
     for i, frame in _frames(args, cfg, npy_stride=True):
         if args.augment:
-            frame = augment_background(frame, rng=rng)
+            frame = augment_background(frame, rng=np.random.default_rng(
+                np.random.SeedSequence([args.seed, n_bg, 2])))
         # per-frame model without temporal smoothing: the same model `resense eval --reset-each` sees
         track = estimate_track(frame.xyz, cfg.track, prev=None)
         objs = []   # (name, distance, lateral, yaw, reflectivity, label) drawn once per background frame
         for j in range(args.per_frame):
-            name = str(rng.choice(kinds))
-            in_gauge = rng.random() >= args.negative_fraction
-            lateral = rng.uniform(-0.9, 0.9) if in_gauge else rng.choice([-1, 1]) * rng.uniform(2.2, 3.0)
-            refl = catalogue_spec(name, 0.0, rng=rng).reflectivity
-            objs.append((name, float(rng.uniform(d_lo, d_hi)), float(lateral), float(rng.uniform(0, 360)), refl,
+            name = str(plan_rng.choice(kinds))
+            in_gauge = plan_rng.random() >= args.negative_fraction
+            lateral = (plan_rng.uniform(-0.9, 0.9) if in_gauge else
+                       plan_rng.choice([-1, 1]) * plan_rng.uniform(2.2, 3.0))
+            sampled_refl = catalogue_spec(name, 0.0, rng=plan_rng).reflectivity
+            refl = args.reflectivity if args.reflectivity is not None else sampled_refl
+            objs.append((name, float(plan_rng.uniform(d_lo, d_hi)), float(lateral),
+                         float(plan_rng.uniform(0, 360)), refl,
                          f"{name}_{n_bg}_{j}"))
         for k in range(n_seq):
             specs = [catalogue_spec(name, dist - k * step, lateral, yaw, reflectivity=refl, label=label)
                      for name, dist, lateral, yaw, refl, label in objs]
             if any(s.distance < cfg.gauge.range_min for s in specs):
                 break   # the object has reached the sensor: the approach sequence ends here
-            res = inject_obstacles(frame, track, specs, rng=rng)
+            if args.placement == "bed":
+                specs = place_on_bed(frame, track, specs)
+            render_rng = np.random.default_rng(np.random.SeedSequence([args.seed, n_bg, k, 1]))
+            res = inject_obstacles(frame, track, specs, rng=render_rng)
             name_out = f"{n:05d}"
             stamp = float(frame.stamp) + k * cfg.tracking.frame_dt
             np.savez_compressed(os.path.join(args.out, name_out + ".npz"), xyz=res.frame.xyz,   # vehicle frame
                                 intensity=res.frame.intensity, labels=res.labels, stamp=stamp)
-            gt[name_out] = [dict(s.to_dict(), name=o[0], in_gauge=abs(s.lateral) < 1.3, n_points=int(cnt),
+            gt[name_out] = [dict(s.to_dict(), name=o[0], in_gauge=overlaps_gauge_laterally(s, gauge_half_width),
+                                 n_points=int(cnt),
                                  seq=n_bg, seq_step=k, speed_mps=speed)
                             for s, o, cnt in zip(specs, objs, res.n_added)]
             print(f"{name_out}: " + ", ".join(f"{o[0]}@{s.distance:.0f}m dy={s.lateral:+.1f} -> {cnt} pts"
@@ -204,28 +222,37 @@ def cmd_eval(args):
     n_processed = 0
     const_speed = getattr(args, "ego_speed", None)
     use_gt_speed = not getattr(args, "no_gt_speed", False)
+    previous_seq = None
     for key, frame in source:
-        if args.reset_each:
+        rows = gt.get(key, [])
+        seq = rows[0].get("seq") if args.dataset and rows else None
+        if args.reset_each or (seq is not None and previous_seq is not None and seq != previous_seq):
             det.reset()
+        if seq is not None:
+            previous_seq = seq
         # the speed the detector is given, as the ROS node gives it: --ego-speed V, else the
         # simulated train speed of an `inject --sequence` row (speed_mps > 0), else none
         ego_speed = const_speed
         if ego_speed is None and use_gt_speed:
-            ego_speed = gt_row_speed(gt.get(key, []))
+            ego_speed = gt_row_speed(rows)
         res = None
         for _ in range(repeat):
             res = det.process(frame, ego_speed=ego_speed)
         d = res.to_dict()
         d["frame"] = int(key) if key.isdigit() else None
         d["frame_id"] = frame.frame_id
+        if seq is not None:
+            d["seq"] = seq
+        if args.reset_each:
+            d["event_scope"] = key
         n_processed += 1
         if out_fh:
             out_fh.write(json.dumps(d) + "\n")
         if args.labelled_only and key not in gt:
             continue
-        rows = gt.get(key, [])
         n_occluded += sum(1 for r in rows if r.get("n_points", 1) == 0)
-        ev.add_frame(d, gt_objects(rows), speed_mps=args.speed_mps)
+        ev.add_frame(d, gt_objects(rows), speed_mps=args.speed_mps,
+                     event_scope=key if args.reset_each else seq)
     if out_fh:
         out_fh.close()
     out = ev.summary()
@@ -359,7 +386,7 @@ def run_cli(argv=None):
     sp.add_argument("--ego-speed", type=float, default=None,
                     help="train speed in m/s given to the detector on every frame (ego_speed_source 'given', "
                          "as the ROS node does with ego_speed_mps / odometry); default: none, the detector "
-                          "uses the single-frame path unless accumulation.estimate_speed is enabled")
+                         "uses the single-frame path unless accumulation.estimate_speed is enabled")
     sp.set_defaults(func=cmd_run)
 
     sp = sub.add_parser("inject", help="inject synthetic obstacles into empty frames")
@@ -371,6 +398,10 @@ def run_cli(argv=None):
     sp.add_argument("--distances", default="10:250", help="lo:hi metres")
     sp.add_argument("--per-frame", type=int, default=1)
     sp.add_argument("--negative-fraction", type=float, default=0.2, help="share of objects placed outside the gauge")
+    sp.add_argument("--placement", choices=("bed", "legacy"), default="bed",
+                    help="bed: measured bed or vault-corrected floor (default); legacy: old rail head - 0.15 m for a paired comparison")
+    sp.add_argument("--reflectivity", type=float, default=None,
+                    help="fixed 0-255 return intensity for a paired material-sensitivity run; default: catalogue range")
     sp.add_argument("--seed", type=int, default=0)
     sp.add_argument("--sequence", type=int, default=1, help="N frames per background with the object approaching "
                     "by --speed * tracking.frame_dt per step (first-detection distance with eval --repeat 1)")
@@ -394,11 +425,11 @@ def run_cli(argv=None):
     sp.add_argument("--text", action="store_true", help="human-readable summary instead of JSON")
     sp.add_argument("--ego-speed", type=float, default=None,
                     help="train speed in m/s given to the detector on every frame (ego_speed_source 'given'); "
-                          "default: the speed_mps of `inject --sequence` rows, else none (single-frame unless "
-                          "accumulation.estimate_speed is enabled)")
+                         "default: the speed_mps of `inject --sequence` rows, else none (single-frame unless "
+                         "accumulation.estimate_speed is enabled)")
     sp.add_argument("--no-gt-speed", action="store_true",
-                    help="do not give the detector the speed_mps of `inject --sequence` rows (single-frame / "
-                         "single-frame by default; estimated only if enabled)")
+                    help="do not give the detector the speed_mps of `inject --sequence` rows "
+                         "(single-frame by default; estimated only if enabled)")
     sp.set_defaults(func=cmd_eval)
 
     sp = sub.add_parser("summarize", help="headline numbers of a `run --out` JSONL (alarm events, per hour/km, latency); "

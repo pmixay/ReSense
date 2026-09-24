@@ -93,7 +93,7 @@ def test_eval_gt_bbox_row(labelled_npy, tmp_path):
 # --- resense inject: catalogue, sequences, augmentation -> resense eval round trip -----------
 
 def test_catalogue_spec_and_unknown_name():
-    from resense.synthetic import OBJECT_CATALOGUE, catalogue_spec
+    from resense.synthetic import OBJECT_CATALOGUE, catalogue_spec, overlaps_gauge_laterally
     assert {"person", "hivis", "box0.2", "box0.5", "box1.0", "box", "plank", "trolley", "cylinder", "sphere"} <= set(OBJECT_CATALOGUE)
     assert OBJECT_CATALOGUE["box0.2"].size == (0.2, 0.2, 0.2) and OBJECT_CATALOGUE["box"].size == OBJECT_CATALOGUE["box0.5"].size
     rng = np.random.default_rng(0)
@@ -102,10 +102,50 @@ def test_catalogue_spec_and_unknown_name():
         assert s.kind == e.kind and s.size == e.size and e.reflectivity[0] <= s.reflectivity <= e.reflectivity[1]
     assert catalogue_spec("hivis", 10.0, rng=rng).reflectivity >= 150      # retro-reflective vest
     assert catalogue_spec("person", 10.0, reflectivity=33.0).reflectivity == 33.0
+    assert overlaps_gauge_laterally(catalogue_spec("plank", 50.0, 2.0, yaw_deg=90), 1.05)
+    assert not overlaps_gauge_laterally(catalogue_spec("plank", 50.0, 2.0, yaw_deg=0), 1.05)
+    assert not overlaps_gauge_laterally(catalogue_spec("person", 50.0, 1.31), 1.05)
     with pytest.raises(KeyError):
         catalogue_spec("piano", 10.0)
     with pytest.raises(SystemExit):
         run_cli(["inject", "--npy", "/nonexistent", "--out", "/tmp/never", "--kinds", "piano"])
+
+
+def test_inject_fixed_reflectivity_preserves_seeded_placement(synth_npy_dir, tmp_path):
+    common = ["inject", "--npy", str(synth_npy_dir), "--limit", "2", "--kinds", "person,box1.0",
+              "--distances", "35:35", "--seed", "4"]
+    sampled = tmp_path / "sampled"
+    measured = tmp_path / "measured"
+    run_cli(common + ["--out", str(sampled)])
+    run_cli(common + ["--out", str(measured), "--reflectivity", "59.8"])
+    gt_a = json.loads((sampled / "gt.json").read_text())
+    gt_b = json.loads((measured / "gt.json").read_text())
+    assert gt_a["_meta"]["rng_protocol"] == "separate_planning_and_per_frame_rendering_v1"
+    for key in ("00000", "00001"):
+        a, b = gt_a[key][0], gt_b[key][0]
+        assert b["reflectivity"] == 59.8
+        assert {k: a[k] for k in ("name", "distance", "lateral", "yaw_deg", "base_z")} == {
+            k: b[k] for k in ("name", "distance", "lateral", "yaw_deg", "base_z")}
+    with pytest.raises(SystemExit, match="between 0 and 255"):
+        run_cli(common + ["--out", str(tmp_path / "invalid"), "--reflectivity", "256"])
+    with pytest.raises(SystemExit, match="between 0 and 255"):
+        run_cli(common + ["--out", str(tmp_path / "nan"), "--reflectivity", "nan"])
+
+
+def test_inject_legacy_placement_is_paired_with_bed_mode(synth_npy_dir, tmp_path):
+    common = ["inject", "--npy", str(synth_npy_dir), "--kinds", "person,box1.0",
+              "--distances", "35:35", "--seed", "4"]
+    bed, old = tmp_path / "bed", tmp_path / "legacy"
+    run_cli(common + ["--out", str(bed), "--placement", "bed"])
+    run_cli(common + ["--out", str(old), "--placement", "legacy"])
+    gt_bed = json.loads((bed / "gt.json").read_text())
+    gt_old = json.loads((old / "gt.json").read_text())
+    assert gt_old["_meta"]["placement"] == "legacy_rail_head_minus_0.15m"
+    for key in ("00000", "00001"):
+        b, o = gt_bed[key][0], gt_old[key][0]
+        assert {k: b[k] for k in ("name", "distance", "lateral", "yaw_deg", "reflectivity")} == {
+            k: o[k] for k in ("name", "distance", "lateral", "yaw_deg", "reflectivity")}
+        assert "base_z" in b and "base_z" not in o
 
 
 def test_inject_static_roundtrip(synth_npy_dir, tmp_path):
@@ -115,11 +155,13 @@ def test_inject_static_roundtrip(synth_npy_dir, tmp_path):
           "--distances", "35:35", "--negative-fraction", "0", "--seed", "3"])
     gt = json.loads((out / "gt.json").read_text())
     assert gt["_meta"]["source"] == "inject" and gt["_meta"]["sequence"] == 1
+    assert gt["_meta"]["placement"] == "local_bed_or_vault_corrected_floor"
     rows = [gt[k][0] for k in sorted(k for k in gt if not k.startswith("_"))]
     assert len(rows) == 2 and sorted(os.listdir(out)) == ["00000.npz", "00001.npz", "gt.json"]
     for r in rows:   # the keys inject has always written, plus the additive ones
         assert {"kind", "size", "distance", "lateral", "yaw_deg", "reflectivity", "label", "in_gauge", "n_points"} <= set(r)
         assert r["name"] in ("box0.5", "person") and r["in_gauge"] and r["n_points"] > 0
+        assert r["base_z"] == pytest.approx(-1.5, abs=0.2)
         assert r["seq_step"] == 0 and r["speed_mps"] == 0.0
     z = np.load(out / "00000.npz")
     assert {"xyz", "intensity", "labels", "stamp"} <= set(z.files) and (z["labels"] > 0).sum() == rows[0]["n_points"]
@@ -157,6 +199,20 @@ def test_inject_sequence_and_augment_roundtrip(synth_npy_dir, tmp_path):
     assert gt2["00000"][0]["in_gauge"] is False and abs(gt2["00000"][0]["lateral"]) > 2.0
     res2 = run_cli(["eval", str(out2)])
     assert res2["empty_frames"] == 1 and res2["recall"] is None and res2["fp_frames"] == 0
+
+
+def test_eval_resets_tracker_between_injected_sequences(synth_npy_dir, tmp_path):
+    out = tmp_path / "sequences"
+    run_cli(["inject", "--npy", str(synth_npy_dir), "--out", str(out), "--kinds", "person",
+             "--distances", "35:35", "--negative-fraction", "0", "--sequence", "6", "--speed", "1", "--seed", "7"])
+    jsonl = tmp_path / "results.jsonl"
+    result = run_cli(["eval", str(out), "--out", str(jsonl)])
+    lines = [json.loads(line) for line in jsonl.read_text().splitlines()]
+    assert [line["seq"] for line in lines] == [0] * 6 + [1] * 6
+    assert not lines[0]["obstacle"] and not lines[6]["obstacle"]
+    assert result["alarm_events"] == 2
+    again = run_cli(["summarize", str(jsonl), "--gt", str(out / "gt.json"), "--json"])
+    assert again["alarm_events"] == result["alarm_events"]
 
 
 # --- offline given-speed path: run / bench / eval --ego-speed, sequence speed from gt rows ------

@@ -81,6 +81,13 @@ sensor: no return in any of the 13 759 frames lies beyond 210 m (every recording
 pitched) are recovered from the rails and the bed: orientation found and tilt within 0.5° on
 re-mounted real frames of three recordings (§6). Clean timing: 42–64 ms mean, p95 53–78 ms per
 frame on every recording (4-core sandbox, pure Python, §3; the node adds ~20–25 ms at 360°).
+The long-range figures above are from the earlier synthetic set F, which placed each object
+using that frame's estimated axis; this can flatter curve and envelope-edge results. The P4
+audit added near-anchored placement, but its results still need to be measured on the organizer
+cache before replacing those figures ([`docs/P4_AUDIT.md`](docs/P4_AUDIT.md)).
+The same audit reran set S on 108 real empty backgrounds: corrected bed placement matched
+22/67 visible in-gauge synthetic objects, versus 29/68 with the old, higher placement.
+Those small samples are not an operational recall estimate.
 The container chain (`docker build → run → bag play → result`) is verified in CI on synthetic
 bags on every push, and was rehearsed on 23.09 on the real frames in Docker — the node in one
 container, `ros2 bag play` in another, both topic / frame pairs, two recordings into one node

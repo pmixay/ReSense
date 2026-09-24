@@ -58,7 +58,8 @@ class ObstacleSpec:
 class CatalogueEntry:
     """A named test object for ``resense inject``: mesh kind, size and a reflectivity range
     (intensity in the bags is reflectivity %, > 100 retro-reflective; SENSOR.md section 2).
-    The ranges are assumptions until calibrated on real obstacles of the extended dataset."""
+    The ranges remain material assumptions; the extended dataset has no positive objects
+    with which to calibrate them."""
     kind: str
     size: Tuple[float, float, float]      # (length X, width Y, height Z) m
     reflectivity: Tuple[float, float]     # uniform range
@@ -117,6 +118,17 @@ def catalogue_spec(name: str, distance: float, lateral: float = 0.0, yaw_deg: fl
     return ObstacleSpec(kind=e.kind, size=e.size, distance=float(distance), lateral=float(lateral),
                         yaw_deg=float(yaw_deg), reflectivity=float(reflectivity), label=label or name,
                         base=e.base)
+
+
+def overlaps_gauge_laterally(spec: ObstacleSpec, half_width: float) -> bool:
+    """Whether the object's horizontal footprint crosses the strict envelope width."""
+    length, width, _ = spec.size
+    if spec.kind in ("box", "plank"):
+        angle = np.radians(spec.yaw_deg)
+        extent = 0.5 * (abs(np.sin(angle)) * length + abs(np.cos(angle)) * width)
+    else:
+        extent = 0.5 * width
+    return bool(abs(spec.lateral) - extent <= half_width)
 
 
 @dataclass
@@ -187,6 +199,36 @@ def _angles_deg(xyz: np.ndarray):
 BED_DEPTH_DEFAULT = 0.25   # m below the rail head: the bed level measured on the organizer bags (DATASET.md)
 
 
+def vault_drift(xyz: np.ndarray, track: TrackModel, x0: float = 40.0,
+                x1: float = 230.0, step: float = 10.0):
+    """Estimate the far bed's vertical drift from the tunnel crown.
+
+    The bed itself often has no returns beyond 60-80 m. This is the same crown
+    reference used by set F; if it cannot be measured, the correction is zero.
+    """
+    from resense.gauge import corridor_coordinates
+    dy, h = corridor_coordinates(xyz, track)
+    X = xyz[:, 0]
+    top = (np.abs(dy) < 1.5) & (h > 2.0) & (h < 8.0)
+    near = top & (X > 20) & (X < 60)
+    if near.sum() < 20:
+        return lambda x: np.zeros_like(np.asarray(x, dtype=float))
+    ref = float(np.median(h[near]))
+    xs, zs = [], []
+    for a in np.arange(x0, x1, step):
+        m = top & (X >= a) & (X < a + step)
+        r = h[m] - ref
+        r = r[np.abs(r) < 1.2]
+        if r.size >= 3:
+            xs.append(a + step / 2)
+            zs.append(float(np.median(r)))
+    if len(xs) < 3:
+        return lambda x: np.zeros_like(np.asarray(x, dtype=float))
+    xs, zs = np.array(xs), np.array(zs)
+    k = float(np.median(zs / np.maximum(xs - 40.0, 1.0)))
+    return lambda x: k * np.maximum(np.asarray(x, dtype=float) - 40.0, 0.0)
+
+
 def local_bed_z(xyz: np.ndarray, track: TrackModel, x: float, lateral: float,
                 min_points: int = 8) -> Optional[float]:
     """Z of the real bed surface under a placement (30th percentile of the returns within
@@ -214,9 +256,11 @@ def place_on_bed(frame: Frame, track: TrackModel, specs: Sequence[ObstacleSpec],
                  bed_depth: float = BED_DEPTH_DEFAULT) -> List[ObstacleSpec]:
     """Copies of ``specs`` whose objects that stand on the ground (``base`` None) get
     ``base_z`` from the real bed under them (:func:`local_bed_z`), else ``bed_depth`` below
-    the model's rail head. Objects with a ``base`` (hanging cables) keep it."""
+    the model's rail head corrected by the observed vault drift. Objects with a ``base``
+    (hanging cables) keep it."""
     from dataclasses import replace
     out = []
+    drift = None
     for sp in specs:
         if sp.base is not None or sp.base_z is not None:
             out.append(sp)
@@ -224,7 +268,9 @@ def place_on_bed(frame: Frame, track: TrackModel, specs: Sequence[ObstacleSpec],
         x = sp.distance + sp.size[0] / 2
         z = local_bed_z(frame.xyz, track, x, sp.lateral)
         if z is None:
-            z = float(track.rail_z(x)) - bed_depth
+            if drift is None:
+                drift = vault_drift(frame.xyz, track)
+            z = float(track.rail_z(x)) - bed_depth + float(drift(x))
         out.append(replace(sp, base_z=z))
     return out
 

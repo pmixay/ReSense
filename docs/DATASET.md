@@ -28,7 +28,7 @@ resense info /data/for_hackathon/roundT_doubleT
 
 | Bag | Duration | Frames | Size | Scene (from the name) |
 |---|---|---|---|---|
-| `doubleT_obstacle` | 20.4 s | 201 | 4.5 GB | double-track tunnel, **train stationary**; a person crosses the track at 54.5–57 m (inside the gauge in frames 2–72, then standing 2.1–2.5 m left of the axis until the end); a second person walks away from the train along the left side (X 1 → 16 m, 2.2–2.5 m left of the axis) in frames **146–200** — both labelled in `labels/doubleT_obstacle.json` (section "Real labels" below) |
+| `doubleT_obstacle` | 20.4 s | 201 | 4.5 GB | double-track tunnel, **train stationary**; a person crosses the track at 54.5–57 m (inside the current 2.1 m envelope in frames 8–68, then standing 2.1–2.5 m left of the axis until the end); a second person walks away from the train along the left side (X 1 → 16 m, 2.2–2.5 m left of the axis) in frames **146–200** — both labelled in `labels/doubleT_obstacle.json` (section "Real labels" below) |
 | `doubleT_platform` | 34.4 s | 345 | 2.6 GB | double-track tunnel → station platform |
 | `roundT_doubleT` | 25.1 s | 252 | 1.9 GB | round single-track tunnel → double-track tunnel (walls diverge) |
 | `roundT_pressureGate_roundT` | 26.7 s | 268 | 2.0 GB | round tunnel through a pressure gate (гермозатвор), right-hand curve |
@@ -41,9 +41,9 @@ the person crossing the track at 55–57 m** (inside the 2.1 m envelope in frame
 object lying on the right rail next to it** (the organizers pointed it out in the Q&A session;
 both labelled in `labels/doubleT_obstacle.json`); every alarm on the other five bags is a false
 alarm.
-Organizers promised an extended dataset with obstacles — until then the positive examples at
-other ranges and for other objects come from `resense inject` (synthetic obstacles ray-cast
-into the real frames, see ARCHITECTURE.md and "Set S" below).
+The organizers confirmed that the extended `new_data` recording has no obstacles. Positive
+examples at other ranges and for other objects therefore come from `resense inject` (synthetic
+obstacles ray-cast into real frames, see ARCHITECTURE.md and "Set S" below).
 
 ## Extended dataset: `new_data` (recorded 17.09, streamed and run on 22.09)
 
@@ -122,8 +122,9 @@ platform, a straight fit two frames later), 81 frame 10 (double-track, columns o
 brackets, rejected as elevated). Nothing person- or box-like sits in the gauge for more than a
 few frames below 60 m outside station ends — as far as one can say without labels.
 
-**What follows.** (1) The organizers' answer on staged obstacles → labels in `labels/` and a
-recall number on real objects (P4). (2) P3: the left-edge family is now the largest cause
+**What follows.** (1) `new_data` has no staged obstacles, so it supports false-alarm and
+generalisation checks but cannot add real positive recall; the known positive labels are in
+`labels/doubleT_obstacle.json`. (2) P3: the left-edge family is now the largest cause
 (40 of 102 events) — the contact-rail side needs the same treatment as the column row (`edge`
 signature with the rail-side offset), and the switch / platform-end cases need the track model
 to declare itself unlocked rather than fit a platform. (3) Run the bag in one go
@@ -248,11 +249,13 @@ EXPERIMENTS.md §2d); `scripts/mine_objects.py` lists every confirmed object of 
 ## Synthetic obstacles (`resense inject`)
 
 Set F (`scripts/far_range_eval.py`) positives are **ray-cast synthetic objects** on real
-empty backgrounds, not real long-range obstacle labels. Its `--placement-mode independent`
+empty backgrounds, not real long-range obstacle labels. `--placement-mode anchored` uses a
+rail-supported near reference and near-frame motion instead of the far detector axis, but
+remains dependent on track fits and estimated speed. `--placement-mode independent`
 accepts an externally measured fixed axis and rail profile in the vehicle frame; do not
 derive those parameters from the detector's far-field fit on the evaluated frames. The
-report's per-frame `gt` rows carry `reference`, `perturbation` and `base_z`, even when an
-object has zero returns.
+report's per-frame `gt` rows carry `reference` (for anchored and independent runs) and
+`base_z`, even when an object has zero returns; independent runs also carry `perturbation`.
 
 `resense inject` ray-casts catalogue objects into empty frames with the sensor's own angular
 grid (occlusion-correct, range-dependent dropout beyond 120 m scaled by reflectivity). Objects
@@ -269,20 +272,49 @@ are selected by name with `--kinds`; the catalogue is `resense.synthetic.OBJECT_
 | `trolley` | cylinder | 0.6 × 0.6 × 1.0 | 40–120 | maintenance trolley (painted metal), cylinder approximation |
 | `cylinder` | cylinder | 0.4 × 0.4 × 0.9 | 30–90 | drum / bin (legacy name) |
 | `sphere` | sphere | 0.4 × 0.4 × 0.4 | 20–60 | ball-like debris |
+| `lowbox` | box | 0.3 × 0.3 × 0.1 | 20–60 | organizers' minimum object on the track |
+| `box0.3` | box | 0.3 × 0.3 × 0.3 | 20–60 | 30 cm cube |
+| `cable` | thin cylinder | 0.03 × 0.03 × 3.5 | 10–40 | broken cable hanging to 1.0 m above the rail head |
+| `cable_low` | thin cylinder | 0.03 × 0.03 × 4.3 | 10–40 | hanging to 0.2 m above the rail head |
+| `dog` | box approximation | 0.6 × 0.3 × 0.45 | 10–40 | animal-sized object on the bed |
+| `railobj` | box | 0.4 × 0.6 × 0.31 | 15–40 | replica of the organizers' object across a rail |
 
 Reflectivity is drawn uniformly from the range per object (intensity in the bags is
-reflectivity %, > 100 retro-reflective, [`SENSOR.md`](SENSOR.md) §2). **The ranges are
-assumptions** until they are calibrated on real obstacles of the extended dataset (PLAN.md,
-P4 item 1); they only affect the injected intensity and the dropout beyond 120 m.
+reflectivity %, > 100 retro-reflective, [`SENSOR.md`](SENSOR.md) §2). Most ranges are
+assumptions: `new_data` contains no real obstacles. The one labelled person and one object on a
+rail provide the limited observed ranges below; they cannot calibrate every material or the
+long-range dropout. Reflectivity affects the injected intensity and dropout beyond 120 m.
+
+Observed **per-frame mean return intensity** in the committed real labels, using rows with
+`n_points >= 15` (5th / 50th / 95th percentiles; repeated views of the same physical objects,
+not independent material samples):
+
+| real label | frames | p05 / median / p95 | catalogue assumption |
+|---|---:|---:|---|
+| `person_crossing` | 201 | 35.7 / 59.8 / 68.2 | `person`: 10–60 |
+| `person_walkway` | 55 | 39.1 / 74.4 / 96.1 | `person`: 10–60 |
+| `object_on_rail` | 152 | 13.6 / 15.4 / 22.5 | `railobj`: 15–40 |
+
+The person and rail-object ranges do not fully cover these observations. We keep the old
+catalogue intervals so the published synthetic experiments remain reproducible; a paired
+material sensitivity run can set `resense inject --reflectivity 59.8` or
+`scripts/far_range_eval.py --reflectivity 15.4` with the same seed. This changes only the
+sampled reflectivity, not the seeded position, and no longer-range conclusion is drawn from
+the near (~55 m) real labels.
 
 Placement: one object set per background frame (`--per-frame`), distance uniform in
 `--distances lo:hi`, lateral uniform ±0.9 m inside the gauge or, for the `--negative-fraction`
-share, 2.2–3.0 m to either side (must **not** alarm, `in_gauge = false`), random yaw. Objects
-stand on the sleepers (rail head − 0.15 m) of the per-frame track model.
+share, 2.2–3.0 m to either side (must **not** alarm, `in_gauge = false`), random yaw. The current
+injector puts ground objects on the measured local bed, or uses the model's rail level minus
+0.25 m corrected by the observed tunnel-vault drift where the bed has no returns. `gt.json`
+stores the resulting `base_z`. Earlier set S runs used rail head − 0.15 m and need re-evaluation
+before comparison with new results.
 
-**Set S as built on 21.09** (EVALUATION.md §3, raw summaries in
-[`experiments_v0.4_synthetic_on_real.json`](experiments_v0.4_synthetic_on_real.json); the
-seeds are fixed, so the same frames come out of the cache on any machine):
+**Current set S rebuild recipe using the 21.09 frame selection** (EVALUATION.md §3;
+historical scores in
+[`experiments_v0.4_synthetic_on_real.json`](experiments_v0.4_synthetic_on_real.json) were
+made with older placement and evaluation logic and must be re-run for a comparison; the
+seeds still fix the same frame selection):
 
 ```bash
 # static sets (recall by range per kind): every 10th frame of three empty bags, one catalogue
@@ -290,7 +322,7 @@ seeds are fixed, so the same frames come out of the cache on any machine):
 for bag in roundT_doubleT roundT_pressureGate_roundT roundT_squareT_pressureGate_squareT; do
   resense inject --npy /data/cache/$bag --every 10 --out data/S_$bag \
       --kinds person,box0.5,box1.0,plank,trolley --distances 10:250 --negative-fraction 0.2 --seed 1
-  resense eval data/S_$bag --repeat 3 --text        # 3 repeats emulate persistence; no speed given
+  resense eval data/S_$bag --text                   # five repeats emulate current persistence
 done
 
 # approach sequences (first-detection distance) on roundT_doubleT: 8 steps of 1.5 m (15 m/s)
@@ -357,7 +389,7 @@ Object keys (the first seven are what `resense inject` has always written; keep 
 | `yaw_deg` | deg | rotation about Z; 0 when unknown |
 | `reflectivity` | 0–255 | mean intensity of the object's returns (reflectivity %, > 100 retro-reflective); 0 when unknown |
 | `label` | string | **one string per physical object, kept across frames** (`person_crossing` in every frame it appears in). Recall is per object-frame; first-detection distance is per label, so a label that changes every frame breaks that metric |
-| `in_gauge` | bool | `true` if any part of the object is inside the strict clearance gauge (it must alarm); `false` for objects next to the track that must **not** alarm (negatives). `inject` sets it from `abs(lateral) < 1.3` |
+| `in_gauge` | bool | `true` if the object's rotated horizontal footprint intersects the current strict envelope width (it must alarm, including low objects handled by the low stage); `false` for objects next to the track that must **not** alarm. The sampled inside/outside positions are separated enough that the current catalogue objects keep their intended labels. |
 | `name` | string | optional: the `inject` catalogue name (`box0.5`, `hivis`, …) or a real class; the per-class recall table is keyed by it (falls back to `kind`) |
 | `n_points` | int | optional: `inject` writes the number of ray hits; **`0` means fully occluded** by real geometry, and such rows are excluded from recall and counted in `occluded_gt_skipped`. Real labels may write the measured cluster size (never 0; see "Real labels", which also adds `gauge_margin` and `h_above_rail`) |
 | `bbox` | `[[xmin, ymin, zmin], [xmax, ymax, zmax]]` m | optional, for the label tool: an axis-aligned box in the **vehicle frame** (X forward, Y left, Z up). When `distance` / `size` are missing they are derived: `distance = xmin`, `lateral = (ymin + ymax) / 2`, `size = max − min`. A tool that works in the raw sensor frame converts first: `X = −y_s`, `Y = x_s`, `Z = z_s` for the hackathon mount (`configs/default.yaml` → `sensor.forward/left/up`) |
@@ -375,8 +407,10 @@ resense eval --npy cache/doubleT_obstacle --gt labels/doubleT_obstacle.json --re
 resense run  --bag <bag> --out results.jsonl && resense summarize results.jsonl --gt labels/<bag>.json --speed-mps 15
 ```
 
-`--repeat 1` for real sequences (the tracker sees the true frame order); the default
-`--repeat 3` is for static injected frames, where it emulates persistence.
+`--repeat 1` for real sequences (the tracker sees the true frame order); the default for static
+injected frames is the current `tracking.frames_to_confirm()` (five with v0.6.3). The evaluator
+resets the tracker between independently injected backgrounds or approach sequences and scopes
+track IDs to each sequence when counting false-alarm events.
 
 ## Real labels (set R): `labels/doubleT_obstacle.json`
 
@@ -418,12 +452,12 @@ the package only, so the file can be rebuilt and checked:
    median axis (+ left); `size` = bbox extent, height measured on all points inside the
    footprint down to 0.25 m below the rail head (the person stands on the bed); `bbox` in the
    vehicle frame; `reflectivity` = mean intensity; `h_above_rail` = [min, max] above the
-   per-frame rail head; `n_points` = cluster size (not an occlusion flag for real labels).
+   per-frame rail head; `n_points` = cluster size for the people and 0 when the rail object is
+   occluded by the person.
 5. `in_gauge` = the nearest edge of the person, |lateral| − W/2, is inside the strict gauge
-   half width of 1.4 m (`gauge.profile` above 0.55 m in `configs/default.yaml`);
-   `gauge_margin` = 1.4 − edge (m, negative = outside) is written so that borderline frames can
-   be re-thresholded: **frames 0–4 and 70–76 are within ±0.25 m of the boundary** (the axis
-   uncertainty at 55 m), everything else is clear-cut.
+   half width of 1.05 m (`gauge.profile` in `configs/default.yaml`);
+   `gauge_margin` = 1.05 − edge (m, negative = outside). The earlier 1.4 m polygon is retained
+   only in `in_gauge_v05` / `gauge_margin_v05` for historical comparisons.
 6. Checked by eye on renders: `resense run --npy /data/cache/doubleT_obstacle --start F
    --limit 1 --render out/render --x-max 70` for F = 0, 40, 72, 100, 165, 200 (the person
    cluster sits at the labelled X / Y in every render; `img/doubleT_obstacle_0020.png` and
@@ -433,14 +467,16 @@ the package only, so the file can be rebuilt and checked:
 
 | label | frames | where | `in_gauge` |
 |---|---|---|---|
-| `person_crossing` | 0–200 (every frame) | 55.4–56.7 m ahead; lateral +1.8 m (frame 0) → +1.1 m (10) → +0.4 m (20) → −0.26 m (35–45, on the axis) → +0.6 m (60) → +1.5 m (70) → +1.8 m (73) → +2.5 m (90–115) → +2.33 m (140–200, standing still at 54.65 m) | **true in frames 2–72** (71 frames), false in 0–1 and 73–200 (beside the track / column row) |
+| `person_crossing` | 0–200 (every frame) | 55.4–56.7 m ahead; lateral +1.8 m (frame 0) → +1.1 m (10) → +0.4 m (20) → −0.26 m (35–45, on the axis) → +0.6 m (60) → +1.5 m (70) → +1.8 m (73) → +2.5 m (90–115) → +2.33 m (140–200, standing still at 54.65 m) | **true in frames 8–68** (61 frames) under the current envelope; 2–72 (71 frames) was the old v0.5 polygon |
 | `person_walkway` | 146–200 | walks away from the train along the left side: X 0.9 → 15.4 m, lateral +2.2…+2.5 m, ~2.8 m/s | false (edge 0.4–0.8 m outside the gauge) |
 
 Two corrections to earlier notes: the walking person is in the **last** 55 frames, not the
 first ones, and the standing person of `EXPERIMENTS.md` §1 (frame 165, "~1.8 m left") is
 2.33 m left of the axis, 0.6 m outside the advisory corridor.
 
-**Results on the labels** (21.09, every frame of the cached bag, commit f4e311f;
+**Historical v0.4 results with the old 1.4 m polygon** (21.09, every frame of the cached bag,
+commit f4e311f; the current `in_gauge` field uses 1.05 m, so these numbers are not a current
+`resense eval --gt` result without restoring `in_gauge_v05` first):
 `resense eval --npy /data/cache/doubleT_obstacle --gt labels/doubleT_obstacle.json --text`,
 `--labelled-only` gives the same numbers because every frame is labelled):
 
