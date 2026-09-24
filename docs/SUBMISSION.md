@@ -21,7 +21,7 @@ stand procedure are the team's own to settle — not organizer questions, `organ
 
 ### Cover message (draft, Russian — the organizers' language)
 
-> Команда ReSense, кейс 05 («Обнаружение посторонних объектов в тоннеле метро по данным
+> Команда «Молоток» (решение ReSense), кейс 05 («Обнаружение посторонних объектов в тоннеле метро по данным
 > 3D-лидара») — промежуточная сдача.
 > Репозиторий: https://github.com/pmixay/ReSense, тег `v0.1-intermediate` (коммит `<sha>`).
 >

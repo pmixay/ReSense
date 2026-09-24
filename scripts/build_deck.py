@@ -66,7 +66,9 @@ N = {
                     ("предмет поперёк рельса", 46), ("ящик 30 см на рельсе", 49)],
 }
 
-# ---- the team (slides 8-10): placeholders here, the real values from --team (not in git) -----
+# ---- the team (slides 7-10): the team is «Молоток», ReSense is the solution; personal data below are
+# placeholders here, the real values come from --team (not in git) -------------------------------
+TEAM_NAME = "Молоток"
 TEAM = {
     "captain": "<ФИО>", "captain_specialty": "<специальность>", "members": "4 человека",
     "formed": "<как образовалась команда>", "study": "<место учёбы / работы>",
@@ -293,9 +295,10 @@ def notes(slide, text):
 
 # ------------------------------------------------------------------------------------ slides
 def s07_title(sl, logo_path):
-    fill(placeholder(sl, 0), ["ReSense"])
+    fill(placeholder(sl, 0), [TEAM_NAME])
     body = placeholder(sl, 12)
-    fill(body, ["Кейс 05", "Обнаружение посторонних объектов в тоннеле метро по данным 3D-лидара"], size=15)
+    fill(body, ["Кейс 05 · решение ReSense", "Обнаружение посторонних объектов в тоннеле метро по данным 3D-лидара"],
+         size=15)
     for ppr in body.text_frame._txBody.iter(qa("pPr")):     # the template's first-line indent, for every line
         ppr.set("marL", ppr.get("indent", "268288"))
         ppr.set("indent", "0")
@@ -312,7 +315,7 @@ def s07_title(sl, logo_path):
 
 
 def s08_team(sl):
-    fill(shape(sl, 18), ["КОМАНДА «ReSense»"])
+    fill(shape(sl, 18), [f"КОМАНДА «{TEAM_NAME}»"])
     fill(shape(sl, 14), [
         f"**Капитан:** {TEAM['captain']}, {TEAM['captain_specialty']}",
         f"**Кол-во участников:** {TEAM['members']}",
@@ -349,7 +352,7 @@ def s08_team(sl):
 
 
 def s09_cards(sl):
-    fill(shape(sl, 7), ["КОМАНДА «ReSense»"])
+    fill(shape(sl, 7), [f"КОМАНДА «{TEAM_NAME}»"])
     cards = [  # (card, photo, name, details) shape ids, left to right
         (17, 2, 15, 9), (56, 3, 58, 57), (59, 4, 61, 60), (62, 5, 64, 63), (65, 6, 67, 66)]
     for (card, photo, name, det), role, who in zip(cards, ROLES, TEAM["cards"]):
@@ -636,8 +639,9 @@ def s_next(sl):             # template slide 17: three cards
 
 
 NOTES = {  # speaker notes per template slide (the main shot's are set in s_hero)
-    8: "Мы — команда ReSense, четверо друзей из одного лицея; на конкурсы всегда выходим этим составом. "
-       "Одной фразой о решении: описываем нормальный тоннель и сообщаем всё, что попадает в габарит поезда.",
+    8: "Мы — команда «Молоток», четверо друзей из одного лицея; на конкурсы всегда выходим этим составом. "
+       "Наше решение называется ReSense. Одной фразой: описываем нормальный тоннель и сообщаем всё, что "
+       "попадает в габарит поезда.",
     9: "Роли: капитан — ROS 2, Docker и интеграция; визуализация и презентация; компьютерное зрение — модель "
        "пути и трекинг; данные, синтетика, метрики и тесты. Каждый отвечал за свою часть, код общий.",
     10: "Почему эта задача: метро — наша ежедневная дорога, а препятствий в данных почти нет, поэтому мы не "
@@ -702,7 +706,7 @@ def main():
             notes(sl, NOTES[num])
     cp = prs.core_properties
     cp.title = "ReSense — ЛЦТ 2026, кейс 05: посторонние объекты в тоннеле метро по данным 3D-лидара"
-    cp.author = cp.last_modified_by = "Команда ReSense"
+    cp.author = cp.last_modified_by = f"Команда «{TEAM_NAME}»"
     cp.subject = "Лидеры цифровой трансформации 2026"
     cp.keywords = "LiDAR, ROS 2, метро, габарит, обнаружение препятствий"
     # the layouts' sample prompts ("Образец текста", "Заголовок", ...) are never shown by PowerPoint,

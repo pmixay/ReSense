@@ -445,7 +445,7 @@ input queue dropped (estimated from gaps in the header stamps).
 
 ## Team
 
-Four people, mapped onto the five roles the organizers suggest (system analyst, computer-vision
+Team «Молоток» (Molotok; ReSense is the name of the solution): four people, mapped onto the five roles the organizers suggest (system analyst, computer-vision
 engineer, ROS 2 robotics developer, data specialist, C++/Python software developer):
 
 | # | who | organizers' roles | owns |
