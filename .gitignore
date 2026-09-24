@@ -51,3 +51,6 @@ resense/_resense_native*.so
 
 # Local design reference archive; only the needed font files are committed.
 style.zip
+
+# Local assistant instruction template (not part of the repository)
+ui-screenshots.system-prompt.md
