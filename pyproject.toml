@@ -20,6 +20,7 @@ dependencies = [
 # offline tooling: bag reading without ROS, plots, synthetic obstacle injection
 dev = [
     "rosbags>=0.9",
+    "zstandard>=0.22",
     "matplotlib>=3.6",
     "open3d>=0.17",
     "pytest>=7",
