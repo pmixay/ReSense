@@ -17,7 +17,7 @@ video recipes.
 | [`foxglove_layout.json`](foxglove_layout.json) | Foxglove Studio layout (3D + plots + indicator + status), see "Remote demo with Foxglove" |
 | [`demo/make_demo_run.py`](demo/make_demo_run.py) | synthetic approach sequence → `out/demo_run.jsonl` in the `resense run --out` format |
 | [`demo/check_dashboard.py`](demo/check_dashboard.py) | Playwright + headless Chromium: loads the JSONL into the dashboard, plays it, asserts the banner, screenshot / video |
-| [`demo/capture_gallery.py`](demo/capture_gallery.py) | Playwright + Chromium: refreshes the four screenshots in `docs/images` from the built-in demo and the recorded real status stream |
+| [`demo/capture_gallery.py`](demo/capture_gallery.py) | Playwright + Chromium: refreshes the dashboard screenshots in `docs/images` from the built-in demo and the recorded real status stream |
 | [`demo/test_web.py`](demo/test_web.py) | pytest for the layouts, the JSONL format and the browser replay (11 tests): `python -m pytest -q web/demo` |
 | `../ros2_ws/src/resense_ros/rviz/resense.rviz` | RViz2 layout (P2-owned, loaded by `detector.launch.py rviz:=true` and the compose `rviz` service) |
 
@@ -36,9 +36,10 @@ original ReSense mark and graphics; the supplied Moscow Sans fonts are bundled l
 Open the file in a browser; nothing to install or build. The visible interface is entirely in
 Russian. Moscow Sans and the primary red (`#E4000D`) come from the supplied Metro style archive;
 the functional green and yellow keep safety decisions distinct. The design uses simple borders,
-white panels and dark text. The red header stays visible at the top, hides while scrolling down
-and returns when scrolling up. On desktop, the two columns end at the same height; on phones,
-the plots redraw at their displayed width so labels remain readable. Two modes use the same widgets:
+white panels and dark text. On 16:9 desktop screens, the status and cab view fit in one viewport.
+The top view and timeline share a second tab; source controls and detailed metrics open in the
+scrollable side list. The red header hides during page scrolling and returns when scrolling up.
+On phones, the panels stack and the plots redraw at their displayed width. Two modes use the same widgets:
 
 * **Live**: enter the rosbridge URL (`ws://<host>:9090`, from
   `ros2 launch rosbridge_server rosbridge_websocket_launch.xml` on the machine running the

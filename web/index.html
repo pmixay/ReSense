@@ -20,80 +20,98 @@
   <section class="intro" aria-labelledby="page-title">
     <div><p class="eyebrow">Мониторинг пути</p><h2 class="page-title" id="page-title">Контроль свободного габарита</h2></div>
   </section>
-  <section class="control-deck" aria-label="Источники данных">
-    <div class="mode active" id="mode-live">
-      <div class="mode-head"><span class="tag">Прямой эфир</span><span id="conn" class="status-line" role="status">Нет подключения</span></div>
-      <div class="mode-body"><label class="connection-field"><span class="status-line">Сервер</span><input id="url" type="text" value="ws://localhost:9090" size="20" aria-label="Адрес rosbridge"></label><button id="connect" class="primary" type="button">Подключить</button></div>
-    </div>
-    <div class="mode" id="mode-replay">
-      <div class="mode-head"><span class="tag">Запись</span><span id="frame-pos" class="status-line frame-state">Файл не выбран</span></div>
-      <div class="mode-body">
-        <label class="file-button" for="file">Выбрать файл<input type="file" id="file" accept=".jsonl,.json,.txt,.log" title="results.jsonl из команды python -m resense.cli run --out results.jsonl"></label>
-        <button id="demo" class="secondary" type="button" title="Загрузить встроенную демонстрацию на 60 кадров">Демо</button>
-        <div class="transport-controls"><button id="stepback" type="button" aria-label="Предыдущий кадр" title="Предыдущий кадр (←)" disabled>&#9664;</button>
-        <button id="play" type="button" class="primary" title="Воспроизведение или пауза (пробел)" disabled>Пуск</button>
-        <button id="stepfwd" type="button" aria-label="Следующий кадр" title="Следующий кадр (→)" disabled>&#9654;</button></div>
-        <input type="range" id="seek" min="0" max="0" value="0" aria-label="Позиция воспроизведения" disabled>
-        <label class="speed-label">Скорость <select id="speed"><option value="0.25">0,25×</option><option value="0.5">0,5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option><option value="10">10×</option></select></label>
-        <label class="check-label"><input type="checkbox" id="loop"> Повтор</label>
-        <button id="export-report" type="button" title="Скачать сводку запуска в JSON" disabled>Отчёт</button>
-      </div>
-    </div>
-  </section>
   <div id="banner" class="idle" role="status" aria-live="assertive">ОЖИДАНИЕ ДАННЫХ</div>
   <main id="monitor">
-  <div class="visual-column">
-    <div class="visual-card cab-card">
-    <div class="canvas-tools">
-      <h2>Вид из кабины</h2>
+    <div class="visual-column">
+      <div class="visual-tabs" role="tablist" aria-label="Вид мониторинга">
+        <button id="tab-cab" class="visual-tab active" type="button" role="tab" aria-selected="true" aria-controls="panel-cab">Вид из кабины</button>
+        <button id="tab-plan" class="visual-tab" type="button" role="tab" aria-selected="false" aria-controls="panel-plan" tabindex="-1">Схема и график</button>
+      </div>
+      <section class="visual-card cab-card" id="panel-cab" role="tabpanel" aria-labelledby="tab-cab">
+        <div class="cab-stage"><canvas id="cab" role="img" aria-label="Вид по ходу движения из кабины: рельсы, габарит поезда, проверенный свободный участок и обнаруженные объекты с дистанцией"></canvas></div>
+      </section>
+      <section class="visual-card plan-card" id="panel-plan" role="tabpanel" aria-labelledby="tab-plan" hidden>
+        <div class="canvas-tools">
+          <h2>Вид сверху</h2>
+          <label>Дальность <select id="xmax"><option value="100">100 м</option><option value="150" selected>150 м</option><option value="250">250 м</option></select></label>
+          <span id="canvas-note" class="status-line"></span>
+        </div>
+        <canvas id="top" width="1200" height="360" role="img" aria-label="Вид пути сверху, границы габарита и обнаруженные объекты"></canvas>
+        <canvas id="timeline" width="1200" height="170" role="img" aria-label="График дистанции до препятствия за последние тридцать секунд"></canvas>
+      </section>
     </div>
-    <div class="cab-stage"><canvas id="cab" role="img" aria-label="Вид по ходу движения из кабины: рельсы, габарит поезда, проверенный свободный участок и обнаруженные объекты с дистанцией"></canvas></div>
-    </div>
-    <div class="visual-card">
-    <div class="canvas-tools">
-      <h2>Вид сверху</h2>
-      <label>Дальность <select id="xmax"><option value="100">100 м</option><option value="150" selected>150 м</option><option value="250">250 м</option></select></label>
-      <span id="canvas-note" class="status-line"></span>
-    </div>
-    <canvas id="top" width="1200" height="360" role="img" aria-label="Вид пути сверху, границы габарита и обнаруженные объекты"></canvas>
-    <canvas id="timeline" width="1200" height="170" role="img" aria-label="График дистанции до препятствия за последние тридцать секунд"></canvas>
-    </div>
-  </div>
-  <div class="side-column">
-    <div class="card" id="safety-card"><h3>Решение и надёжность</h3><div class="kv">
-      <span>Решение</span><b id="decision">—</b>
-      <span>Путь свободен до</span><b id="clear">—</b>
-      <span>Состояние данных</span><b id="health">—</b>
-      <span>Видимость / захват рельсов</span><b id="vis">—</b>
-      <span>Калибровка лидара</span><b id="mount">—</b>
-    </div><div id="health-msgs" class="status-line"></div></div>
-    <div class="card"><h3>Детектор</h3><div class="kv">
-      <span>Ближайшее препятствие</span><b id="dist">—</b>
-      <span>Детекции / предупреждения</span><b id="counts">0 / 0</b>
-      <span>Ось пути, м (+ влево)</span><b id="axis">—</b>
-      <span>Радиус кривой</span><b id="radius">—</b>
-      <span>Проверенная дальность</span><b id="valid">—</b>
-      <span>Точек / внутри габарита</span><b id="points">—</b>
-      <span>Время обработки</span><b id="timing">—</b>
-      <span>Путь / габарит / кластеры</span><b id="stages">—</b>
-      <span>Показано кадров</span><b id="frames">0</b>
-    </div></div>
-    <div class="card" id="node-card"><h3>Узел ROS <span id="node-note" class="status-line"></span></h3><div class="kv">
-      <span>Задержка декодирования и поиска</span><b id="n-latency">—</b>
-      <span>Кадров в секунду</span><b id="n-fps">—</b>
-      <span>Обработано кадров</span><b id="n-frames">—</b>
-      <span>Пропущено кадров</span><b id="n-dropped">—</b>
-      <span>Период входного потока</span><b id="n-period">—</b>
-    </div></div>
-    <div class="card"><h3>Сводка запуска</h3><div class="kv">
-      <span>Событий / кадров тревоги</span><b id="s-alarms">—</b>
-      <span>Минимальная дистанция</span><b id="s-nearest">—</b>
-      <span>Кадров предупреждения</span><b id="s-warnings">—</b>
-      <span>Максимальное время</span><b id="s-max-time">—</b>
-    </div></div>
-    <div class="card log-card"><h3>Журнал событий</h3><div id="log" aria-live="polite"><span class="empty-log">Событий пока нет. Выберите JSONL-файл, перетащите его в окно или запустите демо.<span class="shortcut">Пробел — пуск/пауза · ←/→ — покадрово</span></span></div></div>
-  </div>
-</main>
+    <aside class="side-column" aria-label="Настройки и подробности">
+      <details class="side-section source-section" id="source-panel" open>
+        <summary>Источник данных</summary>
+        <div class="side-section-body">
+          <div class="mode active" id="mode-live">
+            <div class="mode-head"><span class="tag">Прямой эфир</span><span id="conn" class="status-line" role="status">Нет подключения</span></div>
+            <div class="mode-body"><label class="connection-field"><span class="status-line">Сервер</span><input id="url" type="text" value="ws://localhost:9090" size="20" aria-label="Адрес rosbridge"></label><button id="connect" class="primary" type="button">Подключить</button></div>
+          </div>
+          <div class="mode" id="mode-replay">
+            <div class="mode-head"><span class="tag">Запись</span><span id="frame-pos" class="status-line frame-state">Файл не выбран</span></div>
+            <div class="mode-body">
+              <label class="file-button" for="file">Выбрать файл<input type="file" id="file" accept=".jsonl,.json,.txt,.log" title="results.jsonl из команды python -m resense.cli run --out results.jsonl"></label>
+              <button id="demo" class="secondary" type="button" title="Загрузить встроенную демонстрацию на 60 кадров">Демо</button>
+              <div class="transport-controls"><button id="stepback" type="button" aria-label="Предыдущий кадр" title="Предыдущий кадр (←)" disabled>&#9664;</button>
+                <button id="play" type="button" class="primary" title="Воспроизведение или пауза (пробел)" disabled>Пуск</button>
+                <button id="stepfwd" type="button" aria-label="Следующий кадр" title="Следующий кадр (→)" disabled>&#9654;</button></div>
+              <input type="range" id="seek" min="0" max="0" value="0" aria-label="Позиция воспроизведения" disabled>
+              <label class="speed-label">Скорость <select id="speed"><option value="0.25">0,25×</option><option value="0.5">0,5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option><option value="10">10×</option></select></label>
+              <label class="check-label"><input type="checkbox" id="loop"> Повтор</label>
+            </div>
+          </div>
+        </div>
+      </details>
+      <details class="side-section" id="safety-card" open>
+        <summary>Решение и надёжность</summary>
+        <div class="side-section-body"><div class="kv">
+          <span>Решение</span><b id="decision">—</b>
+          <span>Путь свободен до</span><b id="clear">—</b>
+          <span>Состояние данных</span><b id="health">—</b>
+          <span>Видимость / захват рельсов</span><b id="vis">—</b>
+          <span>Калибровка лидара</span><b id="mount">—</b>
+        </div><div id="health-msgs" class="status-line"></div></div>
+      </details>
+      <details class="side-section" id="detector-card">
+        <summary>Детектор</summary>
+        <div class="side-section-body"><div class="kv">
+          <span>Ближайшее препятствие</span><b id="dist">—</b>
+          <span>Детекции / предупреждения</span><b id="counts">0 / 0</b>
+          <span>Ось пути, м (+ влево)</span><b id="axis">—</b>
+          <span>Радиус кривой</span><b id="radius">—</b>
+          <span>Проверенная дальность</span><b id="valid">—</b>
+          <span>Точек / внутри габарита</span><b id="points">—</b>
+          <span>Время обработки</span><b id="timing">—</b>
+          <span>Путь / габарит / кластеры</span><b id="stages">—</b>
+          <span>Показано кадров</span><b id="frames">0</b>
+        </div></div>
+      </details>
+      <details class="side-section" id="node-card">
+        <summary>Система <span id="node-note" class="status-line"></span></summary>
+        <div class="side-section-body"><div class="kv">
+          <span>Задержка декодирования и поиска</span><b id="n-latency">—</b>
+          <span>Кадров в секунду</span><b id="n-fps">—</b>
+          <span>Обработано кадров</span><b id="n-frames">—</b>
+          <span>Пропущено кадров</span><b id="n-dropped">—</b>
+          <span>Период входного потока</span><b id="n-period">—</b>
+        </div></div>
+      </details>
+      <details class="side-section" id="summary-card">
+        <summary>Сводка запуска</summary>
+        <div class="side-section-body"><div class="kv">
+          <span>Событий / кадров тревоги</span><b id="s-alarms">—</b>
+          <span>Минимальная дистанция</span><b id="s-nearest">—</b>
+          <span>Кадров предупреждения</span><b id="s-warnings">—</b>
+          <span>Максимальное время</span><b id="s-max-time">—</b>
+        </div><div class="summary-actions"><button id="export-report" type="button" title="Скачать сводку запуска в JSON" disabled>Скачать отчёт</button></div></div>
+      </details>
+      <details class="side-section" id="events-card">
+        <summary>Журнал событий</summary>
+        <div class="side-section-body"><div id="log" aria-live="polite"><span class="empty-log">Событий пока нет. Выберите JSONL-файл, перетащите его в окно или запустите демо.<span class="shortcut">Пробел — пуск/пауза · ←/→ — покадрово</span></span></div></div>
+      </details>
+    </aside>
+  </main>
   </div>
 <footer class="site-footer"><span>ReSense · Контроль свободного габарита</span></footer>
 <div id="drop-overlay">Отпустите results.jsonl для воспроизведения</div>
@@ -129,7 +147,8 @@ const state = {
 // ----------------------------------------------------------------------------- drawing
 function drawTop(res) {
   const c = $('top');
-  const width = Math.round(c.clientWidth), height = Math.max(220, Math.min(360, Math.round(width * .32)));
+  if (!c.clientWidth) return;
+  const width = Math.round(c.clientWidth), height = Math.round(c.clientHeight);
   if (width && (c.width !== width || c.height !== height)) { c.width = width; c.height = height; }
   const ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
   const XMAX = +$('xmax').value, sx = c.width / XMAX, cy = c.height / 2, sy = 22;   // 22 px per metre lateral
@@ -399,7 +418,9 @@ function timelineNow() {
 }
 function stampOf(f) { return (typeof f.stamp === 'number' && isFinite(f.stamp)) ? f.stamp : (f.frame || 0) * FRAME_DT; }
 function drawTimeline() {
-  const c = $('timeline'), width = Math.round(c.clientWidth), height = width < 500 ? 150 : 170;
+  const c = $('timeline');
+  if (!c.clientWidth) return;
+  const width = Math.round(c.clientWidth), height = Math.round(c.clientHeight);
   if (width && (c.width !== width || c.height !== height)) { c.width = width; c.height = height; }
   const ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
   const now = timelineNow(), span = TIMELINE_SPAN, DMAX = 250, top = 6, bottom = c.height - 18, H = bottom - top;
@@ -492,7 +513,7 @@ function applyNode(node) {
   if (!node) {
     for (const id of ['n-latency', 'n-fps', 'n-frames', 'n-dropped', 'n-period']) $(id).textContent = '—';
     $('node-note').textContent = state.mode === 'replay' ? '(в файле нет статистики узла)' : '(ожидание данных узла)';
-    card.className = 'card';
+    card.classList.remove('alert', 'notice');
     $('health-realtime').className = 'pill'; $('health-realtime').textContent = state.mode === 'replay' ? 'Запись' : 'Задержка —';
     return;
   }
@@ -507,7 +528,8 @@ function applyNode(node) {
   state.node.lastDropped = dropped;
   $('n-dropped').textContent = dropped + (grew ? '  ▲' : '');
   $('n-dropped').className = dropped > 0 ? (now < state.node.alertUntil ? 'bad' : 'warn') : '';
-  card.className = 'card' + (now < state.node.alertUntil ? ' alert' : (dropped > 0 ? ' notice' : ''));
+  card.classList.toggle('alert', now < state.node.alertUntil);
+  card.classList.toggle('notice', now >= state.node.alertUntil && dropped > 0);
   const unhealthy = node.latency_ms > 100 || (node.fps != null && node.fps > 0 && node.fps < 9) || dropped > 0;
   $('health-realtime').className = 'pill ' + (unhealthy ? 'warn' : 'ok');
   $('health-realtime').textContent = node.latency_ms == null ? 'Узел в сети' : `Задержка ${node.latency_ms.toFixed(0)} мс`;
@@ -668,6 +690,40 @@ $('stepback').onclick = () => { pause(); step(-1); };
 $('seek').oninput = ev => { pause(); seek(+ev.target.value); };
 $('speed').onchange = ev => { state.speed = +ev.target.value; if (state.playing) { pause(); play(); } };
 $('xmax').onchange = () => { if (state.last) drawTop(state.last); };
+function setView(view) {
+  const cab = view === 'cab';
+  $('panel-cab').hidden = !cab;
+  $('panel-plan').hidden = cab;
+  for (const [id, selected] of [['tab-cab', cab], ['tab-plan', !cab]]) {
+    $(id).classList.toggle('active', selected);
+    $(id).setAttribute('aria-selected', String(selected));
+    $(id).tabIndex = selected ? 0 : -1;
+  }
+  requestAnimationFrame(() => {
+    if (cab) drawCab(state.last);
+    else {
+      drawTop(state.last || { track: { center: 0, yaw: 0, curvature: 0 }, detections: [], warnings: [] });
+      drawTimeline();
+    }
+  });
+}
+$('tab-cab').onclick = () => setView('cab');
+$('tab-plan').onclick = () => setView('plan');
+document.querySelectorAll('.visual-tab').forEach(tab => tab.addEventListener('keydown', ev => {
+  if (ev.key !== 'ArrowLeft' && ev.key !== 'ArrowRight') return;
+  ev.preventDefault();
+  const next = tab.id === 'tab-cab' ? 'plan' : 'cab';
+  setView(next);
+  $(next === 'cab' ? 'tab-cab' : 'tab-plan').focus();
+}));
+document.querySelectorAll('.top-nav a').forEach(link => link.addEventListener('click', ev => {
+  const target = document.querySelector(link.getAttribute('href'));
+  const section = target && target.closest('.side-section');
+  if (!section) return;
+  ev.preventDefault();
+  section.open = true;
+  section.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}));
 document.addEventListener('keydown', ev => {
   if (ev.target.closest('button, input, select, textarea, a, [contenteditable="true"]')) return;
   if (ev.code === 'Space') { ev.preventDefault(); if (state.frames.length) state.playing ? pause() : play(); }
@@ -695,7 +751,7 @@ document.addEventListener('drop', ev => {
 setInterval(() => { if (state.mode === 'live') drawTimeline(); }, 500);
 
 // test / automation hook (used by web/demo/check_dashboard.py)
-window.resense = { state, loadText, play, pause, step, seek, setMode, applyResult, summarizeFrames, demoFrames, drawCab };
+window.resense = { state, loadText, play, pause, step, seek, setMode, setView, applyResult, summarizeFrames, demoFrames, drawCab };
 
 drawTop({ track: { center: 0, yaw: 0, curvature: 0 }, detections: [], warnings: [] }); drawTimeline(); drawCab(null);
 // the cab canvas follows its stage (it grows to balance the columns): redraw at the new size

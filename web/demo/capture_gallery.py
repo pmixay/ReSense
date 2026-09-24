@@ -41,6 +41,20 @@ def capture(output_dir: Path, chromium: str | None) -> None:
             page.screenshot(path=str(output_dir / filename), full_page=True, animations="disabled")
             print(output_dir / filename)
 
+        page.click("#tab-plan")
+        page.locator("#source-panel").evaluate("section => section.open = false")
+        page.locator("#safety-card").evaluate("section => section.open = false")
+        page.locator("#detector-card").evaluate("section => section.open = true")
+        page.locator("#node-card").evaluate("section => section.open = true")
+        page.wait_for_timeout(150)
+        page.screenshot(path=str(output_dir / "dashboard-plan.png"), full_page=True, animations="disabled")
+        print(output_dir / "dashboard-plan.png")
+        page.click("#tab-cab")
+        page.locator("#source-panel").evaluate("section => section.open = true")
+        page.locator("#safety-card").evaluate("section => section.open = true")
+        page.locator("#detector-card").evaluate("section => section.open = false")
+        page.locator("#node-card").evaluate("section => section.open = false")
+
         with gzip.open(REAL_RUN, "rt", encoding="utf-8") as stream:
             lines = "\n".join(line for line in stream if line.lstrip().startswith("{"))
         frames = [json.loads(line) for line in lines.splitlines() if line.strip()]

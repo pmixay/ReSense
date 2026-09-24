@@ -184,6 +184,7 @@ def test_dashboard_rejects_garbage_lines(tmp_path):
         n = page.evaluate("window.resense.loadText(%s, 'x.jsonl')" % json.dumps(text))
         assert n == 1
         assert check_dashboard.banner_text(page) == "ПРЕПЯТСТВИЕ  55.6 м"
+        page.locator("#node-card summary").click()
         assert page.inner_text("#n-dropped").startswith("2")       # node stats are shown when present
         assert "notice" in page.get_attribute("#node-card", "class")
         b.close()
@@ -208,6 +209,7 @@ def test_dashboard_builtin_demo_and_summary():
             "frames": 60, "alarm_events": 1, "alarm_frames": 36, "warning_frames": 4,
             "nearest_m": pytest.approx(40.0), "max_detect_ms": 49,
         }
+        page.locator("#summary-card summary").click()
         assert page.inner_text("#s-alarms") == "1 / 36"
         assert page.inner_text("#s-nearest") == "40.0 м"
         assert page.inner_text("#decision") == "ДВИЖЕНИЕ"
@@ -216,29 +218,26 @@ def test_dashboard_builtin_demo_and_summary():
         b.close()
 
 
-COLUMN_BOTTOMS = """() => { const r = s => document.querySelector(s).getBoundingClientRect();
-    return [r('.visual-column > :last-child').bottom, r('.side-column > :last-child').bottom]; }"""
-
-
-def test_dashboard_desktop_columns_end_together_and_cab_view_marks_the_obstacle():
-    """Desktop layout: no empty block under the shorter column (the cab view and the event log take up
-    the difference), and the cab view draws the confirmed obstacle with its distance and a close-up."""
+def test_dashboard_fits_169_screen_and_cab_view_marks_the_obstacle():
+    """A presentation screen shows the full dashboard; extra detail remains available in the side list."""
     if not _browser_available():
         pytest.skip("playwright + chromium not available")
     from playwright.sync_api import sync_playwright
     import check_dashboard
     with sync_playwright() as p:
         b = _launch(p)
-        for width, height in ((1366, 768), (1600, 1000), (1920, 1080)):
+        for width, height in ((1280, 720), (1366, 768), (1600, 900), (1920, 1080)):
             page = b.new_page(viewport={"width": width, "height": height})
             page.goto("file://" + check_dashboard.INDEX, wait_until="domcontentloaded")
             page.wait_for_function("window.resense !== undefined")
             page.click("#demo")
             page.evaluate("window.resense.pause(); window.resense.seek(30)")   # STOP, person at 79 m
-            left, right = page.evaluate(COLUMN_BOTTOMS)
-            assert abs(left - right) <= 1, (width, left, right)
+            layout = page.evaluate("""() => ({ pageHeight: document.documentElement.scrollHeight,
+                pageWidth: document.documentElement.scrollWidth, viewportHeight: innerHeight,
+                viewportWidth: innerWidth })""")
+            assert layout["pageHeight"] <= height + 1 and layout["pageWidth"] <= width + 1, layout
             cab = page.evaluate("window.resense.state.cab")
-            assert cab["width"] > 800 and cab["height"] >= 360
+            assert cab["width"] > 600 and cab["height"] >= 360
             (box,) = cab["boxes"]
             assert box["zone"] == "gauge" and box["label"] == "ПРЕПЯТСТВИЕ · 79.0 м"
             assert 0 <= box["x0"] < box["x1"] <= cab["width"] and 0 <= box["y0"] < box["y1"] <= cab["height"]
@@ -246,6 +245,14 @@ def test_dashboard_desktop_columns_end_together_and_cab_view_marks_the_obstacle(
             assert abs((box["x0"] + box["x1"]) / 2 - cab["width"] / 2) < cab["width"] / 10
             assert cab["clearEnd"] == pytest.approx(79.0, abs=0.1)
             assert cab["inset"] and cab["inset"]["zone"] == "gauge"
+            page.click("#tab-plan")
+            assert page.is_visible("#panel-plan") and not page.is_visible("#panel-cab")
+            page.wait_for_function("Math.abs(document.querySelector('#top').width - document.querySelector('#top').clientWidth) <= 1")
+            page.locator("#detector-card summary").click()
+            assert page.locator("#detector-card").evaluate("section => section.open")
+            page.locator('.top-nav a[href="#node-card"]').click()
+            assert page.locator("#node-card").evaluate("section => section.open")
+            page.click("#tab-cab")
             page.evaluate("window.resense.seek(59)")                           # GO again
             cab = page.evaluate("window.resense.state.cab")
             assert cab["boxes"] == [] and cab["inset"] is None and cab["clearEnd"] == pytest.approx(145.0)
