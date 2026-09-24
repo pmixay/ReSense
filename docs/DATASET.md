@@ -106,11 +106,15 @@ as for `doubleT_obstacle`. `in_gauge` is the organizers' intent. Extra keys:
 
 Three properties of the recording decide how it can be scored:
 
-* **The objects move, the train does not follow them.** They approach at 14–20 m/s (object 1
-  at 2–7 m/s). Frame-to-frame ICP on the real points shows the train itself slowing, backing up
-  ~70 m over frames 300–650, creeping at under 1 m/s from frame ~850 to ~1200 and then moving on. The injected
-  motion is therefore not ego-motion: a given train speed or the LiDAR speed estimator would
-  accumulate the background wrongly. The shipped single-frame path is what can be scored.
+* **The objects stand still in the tunnel; the train drives up to them.** The real ride is one
+  station-to-station run: 1.4 m/s at frame 0, 14–20 m/s from frame ~300 to ~1300, 2 m/s at the
+  end, 2.0 km in 151 s, never backing up (frame-to-frame point-to-plane ICP, re-measured 24.09
+  with `scripts/speed_reference.py`, and independently by the LiDAR-only speed estimator; an
+  earlier frame-to-frame ICP of 24.09 had reported the train backing up — wrong). Each object approaches by exactly the
+  train's displacement (median difference 0.00–0.04 m per frame for all ten), so the organizers'
+  tool places obstacles fixed in the world, and this is the first moving recording with
+  obstacles on which a train speed (given or estimated) can be tested — see
+  [`EXPERIMENTS.md`](EXPERIMENTS.md) "Train speed".
 * **The objects were placed from the sensor's axis, not from the rails.** Near the train the
   objects are centred on the sensor's Y = 0, as the organizers' mount answer suggests (the
   LiDAR is 1075 mm above the rail head on the train's centreline,

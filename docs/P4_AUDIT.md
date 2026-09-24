@@ -184,8 +184,8 @@ points (intensity 1). So the recording is now labelled: `scripts/label_fake_obje
 ten objects in frames 0–803. How the labels are made, and three properties that limit how they
 can be read, are in [`DATASET.md`](DATASET.md) "Synthetic-obstacle recording". In short:
 
-* the objects approach at 14–20 m/s independently of the real train, which backs up and stands
-  during the recording;
+* the objects stand still in the tunnel and the train drives up to them at 1.4–20 m/s (corrected
+  24.09: an earlier ICP had the train backing up; see [`EXPERIMENTS.md`](EXPERIMENTS.md) "Train speed");
 * they are placed from the sensor's axis, which runs at −0.24° to the rails here, so the edge
   tests sit within ±0.1–0.4 m of the envelope edge;
 * beyond ~100 m their path leaves the tunnel. Those rows are graded out (`plausible`).
@@ -230,8 +230,10 @@ What the grade says, by cause:
   rails (#9) is found from 82 m and held from 59 m.
 * **0.3 m objects are found at 34–43 m.** At 60–115 m the organizers' 0.3 m cube returns 2–4
   points a frame; the clustering needs 5 voxels within 100 m. A single frame cannot confirm a
-  0.3 m object much beyond 50 m with this sensor. Accumulation would need a real ego speed, and
-  this recording cannot test it, because its objects move independently of the train.
+  0.3 m object much beyond 50 m with this sensor. Accumulation needs an ego speed; with the
+  train's measured speed it makes the 0.3 m cubes visible from 57–59 m instead of 43–51 m, but as
+  advisories (the `floating` signature), and the first STOP does not move
+  ([`EXPERIMENTS.md`](EXPERIMENTS.md) "Train speed").
   Lowering the minimums (`min_points 3`, `min_points_far 2` or `gauge_min_points 2`) changed
   nothing for them.
 * **Two infrastructure signatures demote real test obstacles.** `floating` makes #2 advisory at

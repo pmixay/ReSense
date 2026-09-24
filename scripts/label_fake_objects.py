@@ -10,8 +10,8 @@ intensity 1. So the object points of every frame are exactly the points after th
 point of the message; nothing is guessed from the detector's output.
 
 The object points of one frame are split into objects at gaps of more than ``--gap`` m in X
-and linked across frames into tracks (they approach at up to ~20 m/s, independently of the
-real train, which stands or even backs up for part of the recording). The tracks are
+and linked across frames into tracks (they stand still in the tunnel and approach by the
+train's own displacement, 1.4-20 m/s; docs/EXPERIMENTS.md "Train speed"). The tracks are
 numbered in the order they pass the sensor. That order is the organizers' list of 24.09
 (``OBJECTS``), each obstacle ~100 m behind the one before it: the script stops if it does not
 find exactly ten tracks.

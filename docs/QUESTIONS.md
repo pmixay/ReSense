@@ -25,8 +25,7 @@ and the demo was withdrawn as an organisational matter.
    к оси лидара: на 25 м расхождение 0,1 м, на 100 м — 0,4 м. Из-за этого «0,3 м за пределами
    габарита, но близко» по рельсам оказывается внутри габарита, а «2х2 скраю в пределах
    габарита» — снаружи. В контрольной проверке габарит отсчитывается от оси лидара (то есть
-   поезда) или от оси пути (рельсов)? Будут ли в контрольных данных объекты двигаться независимо
-   от поезда, как в этом бэге (подъезжают со скоростью 14–20 м/с, пока поезд стоит или сдаёт назад)?
+   поезда) или от оси пути (рельсов)?
 2. **«2х2 сверху габарита».** Низ этого объекта — на 2,4–2,9 м над головкой рельса, то есть
    он на 0,1–0,6 м заходит в габарит высотой 3,0 м. Это препятствие (должен быть STOP) или
    объект вне габарита (тревоги быть не должно)?
@@ -39,5 +38,5 @@ and the demo was withdrawn as an organisational matter.
 
 | # | was | answer goes to | consequence for the code / plan |
 |---|---|---|---|
-| 1 | new, 24.09 (P4); narrowed by the organizers' mount answer ([`organizers/mount_and_switch_qa.md`](organizers/mount_and_switch_qa.md): 1075 mm above the rail head, on the train's centreline, test bags mounted as ours) | [`DATASET.md`](DATASET.md) "Synthetic-obstacle recording", `labels/cloud_with_fake_obj.json` (`in_gauge`), `resense/track.py` | if the envelope is taken from the LiDAR's axis, the corridor near the train should follow the sensor's Y = 0 rather than the rail fit; four of the ten test objects change sides of the edge. Objects that move independently of the train also rule out testing accumulation on their data |
+| 1 | new, 24.09 (P4); narrowed by the organizers' mount answer ([`organizers/mount_and_switch_qa.md`](organizers/mount_and_switch_qa.md): 1075 mm above the rail head, on the train's centreline, test bags mounted as ours) | [`DATASET.md`](DATASET.md) "Synthetic-obstacle recording", `labels/cloud_with_fake_obj.json` (`in_gauge`), `resense/track.py` | if the envelope is taken from the LiDAR's axis, the corridor near the train should follow the sensor's Y = 0 rather than the rail fit; four of the ten test objects change sides of the edge. (The part about objects moving independently of the train was withdrawn on 24.09: they stand still in the tunnel, EXPERIMENTS.md "Train speed") |
 | 2 | new, 24.09 (P4) | `labels/cloud_with_fake_obj.json` (`big_above`), P4_AUDIT "Organizer synthetic-obstacle recording" | labelled inside now; if it must not alarm, its 12 STOP frames become false alarms and the `elevated` experiment goes the wrong way |
