@@ -4,21 +4,24 @@
 <meta charset="utf-8">
 <title>ReSense — контроль препятствий</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#e51b36">
+<meta name="theme-color" content="#e31e36">
 <style>
   @font-face { font-family:'Montserrat'; font-style:normal; font-weight:400 900; font-display:swap; src:url('assets/fonts/montserrat-cyrillic.woff2') format('woff2'); unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
   @font-face { font-family:'Montserrat'; font-style:normal; font-weight:400 900; font-display:swap; src:url('assets/fonts/montserrat-latin.woff2') format('woff2'); unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  /* Moscow Sans is used automatically when a licensed system or project copy is available. */
+  @font-face { font-family:'Moscow Sans'; font-style:normal; font-weight:400 900; font-display:swap; src:local('Moscow Sans'),local('MoscowSans'); }
   :root {
-    --page:#f0f1f3; --paper:#fff; --ink:#101114; --muted:#62666d; --soft:#e7e9ec;
-    --red:#e51b36; --red-dark:#c8112a; --red-pale:#fff0f2; --cyan:#00a9c7; --blue:#0079c2;
-    --green:#007c3c; --green-pale:#e8f7ef; --yellow:#ffd400; --yellow-pale:#fff5bd;
+    --page:#f1f2f4; --paper:#fff; --ink:#111216; --muted:#6d7178; --soft:#e5e7eb;
+    --red:#e31e36; --red-dark:#c9142c; --red-pale:#fff0f2; --cyan:#00a6c8; --blue:#0078bf;
+    --green:#008c45; --green-pale:#e8f7ef; --yellow:#ffd200; --yellow-pale:#fff4b8;
+    --font-ui:'Moscow Sans','Montserrat',Arial,sans-serif;
   }
   * { box-sizing:border-box; }
   html { scroll-behavior:smooth; }
-  body { margin:0; color:var(--ink); background:var(--page); font-family:'Montserrat',Arial,sans-serif; font-size:15px; }
+  body { margin:0; color:var(--ink); background:var(--page); font-family:var(--font-ui); font-size:15px; }
   body::before { content:''; position:fixed; inset:0 auto 0 0; z-index:30; width:10px; background:var(--red); }
   button, input, select { font:inherit; }
-  button, .file-button { min-height:44px; border:0; border-radius:8px; padding:0 17px; display:inline-flex; align-items:center; justify-content:center; gap:8px; color:var(--ink); background:#e5e7e9; font-weight:750; cursor:pointer; transition:transform .16s,background .16s,color .16s; }
+  button, .file-button { min-height:44px; border:0; border-radius:4px; padding:0 17px; display:inline-flex; align-items:center; justify-content:center; gap:8px; color:var(--ink); background:#e5e7e9; font-weight:750; cursor:pointer; transition:transform .16s,background .16s,color .16s; }
   button:hover, .file-button:hover { transform:translateY(-2px); background:#dadde0; }
   button:disabled { opacity:.42; cursor:default; transform:none; }
   button.primary { color:#fff; background:var(--red); }
@@ -26,7 +29,7 @@
   button.secondary { color:var(--red); background:var(--red-pale); }
   button:focus-visible, input:focus-visible, select:focus-visible, .file-button:focus-within, a:focus-visible { outline:0; background:#dcebf5; }
   button.primary:focus-visible, .file-button:focus-within { background:var(--red-dark); }
-  select, input[type=text] { min-height:44px; border:0; border-radius:8px; padding:0 13px; color:var(--ink); background:#eceef0; }
+  select, input[type=text] { min-height:44px; border:0; border-radius:4px; padding:0 13px; color:var(--ink); background:#eceef0; }
   input[type=range] { width:170px; accent-color:var(--red); }
   input[type=checkbox] { width:18px; height:18px; accent-color:var(--red); }
   #file { position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; }
@@ -63,7 +66,7 @@
   .intro-code b { display:block; font-size:13px; line-height:1.2; }
   .intro-code small { display:block; margin-top:6px; color:var(--muted); font-size:11px; line-height:1.35; }
   .control-deck { display:grid; grid-template-columns:minmax(310px,.72fr) minmax(650px,1.7fr); gap:12px; margin-bottom:12px; }
-  .mode { position:relative; min-width:0; overflow:hidden; padding:20px 20px 20px 27px; border-radius:12px; background:var(--paper); }
+  .mode { position:relative; min-width:0; overflow:hidden; padding:20px 20px 20px 27px; border-radius:6px; background:var(--paper); }
   .mode::before { content:''; position:absolute; inset:0 auto 0 0; width:8px; background:#c9cdd1; }
   .mode.active { background:var(--red-pale); }
   .mode.active::before { background:var(--red); }
@@ -80,7 +83,7 @@
   .frame-state { min-width:95px; }
   .speed-label, .check-label { display:inline-flex; align-items:center; gap:7px; color:var(--muted); font-size:12px; }
   .speed-label select { min-height:36px; }
-  #banner { position:relative; overflow:hidden; min-height:180px; margin-bottom:12px; padding:34px 150px 30px 130px; border-radius:12px; color:#fff; font-size:clamp(40px,5.2vw,78px); font-weight:900; line-height:.92; letter-spacing:-3px; }
+  #banner { position:relative; overflow:hidden; min-height:180px; margin-bottom:12px; padding:34px 150px 30px 130px; border-radius:6px; color:#fff; font-size:clamp(40px,5.2vw,78px); font-weight:900; line-height:.92; letter-spacing:-3px; }
   #banner::before { content:'\2192'; position:absolute; left:32px; top:31px; display:grid; place-items:center; width:68px; height:68px; border-radius:50%; outline:6px solid currentColor; font-size:48px; font-weight:500; line-height:1; letter-spacing:0; }
   #banner::after { content:''; position:absolute; inset:0 0 0 auto; width:110px; opacity:.14; background:repeating-linear-gradient(135deg,transparent 0 13px,currentColor 13px 20px); }
   #banner.clear { background:var(--green); }
@@ -93,7 +96,7 @@
   main { display:grid; grid-template-columns:minmax(0,2fr) minmax(350px,.86fr); gap:12px; }
   /* both columns stretch to the taller one: the cab view and event log absorb the difference */
   .visual-column, .side-column { min-width:0; display:flex; flex-direction:column; gap:12px; }
-  .visual-card, .card { background:var(--paper); border-radius:12px; }
+  .visual-card, .card { background:var(--paper); border-radius:6px; }
   .visual-card { padding:22px; }
   .cab-card { flex:1 1 auto; display:flex; flex-direction:column; }
   .cab-stage { position:relative; flex:1 1 auto; aspect-ratio:16/9; min-height:360px; overflow:hidden; border-radius:6px; background:#12151b; }
@@ -120,14 +123,14 @@
   .kv b.bad { color:var(--red); } .kv b.warn { color:#826800; }
   #health-msgs { margin-top:10px; }
   .log-card { flex:1 1 auto; display:flex; flex-direction:column; min-height:220px; }
-  #log { flex:1 1 0; min-height:120px; overflow:auto; white-space:pre-wrap; color:#202226; font:550 11px/1.55 'Montserrat',Arial,sans-serif; }
-  .empty-log { color:var(--muted); font-family:'Montserrat',Arial,sans-serif; white-space:normal; }
+  #log { flex:1 1 0; min-height:120px; overflow:auto; white-space:pre-wrap; color:#202226; font:550 11px/1.55 var(--font-ui); }
+  .empty-log { color:var(--muted); font-family:var(--font-ui); white-space:normal; }
   .shortcut { display:block; margin-top:7px; opacity:.75; }
-  #drop-overlay { display:none; position:fixed; inset:18px; z-index:40; place-items:center; border:0; border-radius:12px; background:rgba(229,27,54,.97); color:#fff; font-size:26px; font-weight:850; pointer-events:none; }
+  #drop-overlay { display:none; position:fixed; inset:18px; z-index:40; place-items:center; border:0; border-radius:6px; background:rgba(227,30,54,.97); color:#fff; font-size:26px; font-weight:850; pointer-events:none; }
   body.dragging #drop-overlay { display:grid; }
   .site-footer { max-width:1660px; margin:0 auto; padding:0 34px 34px; color:var(--muted); font-size:11px; display:flex; justify-content:space-between; gap:20px; }
   @media (max-width:1260px) { .top-nav { display:none; } .control-deck { grid-template-columns:1fr; } main { grid-template-columns:1fr; } .side-column { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); } .log-card { grid-column:1 / -1; } }
-  @media (max-width:820px) { body::before { width:6px; } .header-inner { padding:14px 18px; flex-wrap:wrap; gap:12px; } .brand p, .intro-code { display:none; } .health { order:2; margin:0; width:100%; } .page { padding:22px 14px 34px 20px; } .intro { grid-template-columns:1fr; margin-bottom:20px; } .page-title { letter-spacing:-1.8px; } .mode { padding:16px 15px 16px 23px; } .mode-body { align-items:stretch; } .connection-field { min-width:100%; } input[type=range] { width:100%; } #banner { min-height:170px; padding:92px 20px 24px; font-size:clamp(34px,10vw,54px); letter-spacing:-2px; } #banner::before { top:20px; left:22px; width:48px; height:48px; outline-width:4px; font-size:34px; } #banner::after { width:54px; } .side-column { grid-template-columns:1fr; } .visual-card, .card { border-radius:10px; } .cab-stage { min-height:260px; } .site-footer { padding:0 16px 24px 20px; flex-direction:column; } }
+  @media (max-width:820px) { body::before { width:6px; } .header-inner { padding:14px 18px; flex-wrap:wrap; gap:12px; } .brand p, .intro-code { display:none; } .health { order:2; margin:0; width:100%; } .page { padding:22px 14px 34px 20px; } .intro { grid-template-columns:1fr; margin-bottom:20px; } .page-title { letter-spacing:-1.8px; } .mode { padding:16px 15px 16px 23px; } .mode-body { align-items:stretch; } .connection-field { min-width:100%; } input[type=range] { width:100%; } #banner { min-height:170px; padding:92px 20px 24px; font-size:clamp(34px,10vw,54px); letter-spacing:-2px; } #banner::before { top:20px; left:22px; width:48px; height:48px; outline-width:4px; font-size:34px; } #banner::after { width:54px; } .side-column { grid-template-columns:1fr; } .visual-card, .card { border-radius:4px; } .cab-stage { min-height:260px; } .site-footer { padding:0 16px 24px 20px; flex-direction:column; } }
 </style>
 </head>
 <body>
@@ -229,6 +232,7 @@
 const $ = id => document.getElementById(id);
 const FRAME_DT = 0.1;                       // s, sensor period used for the replay clock
 const TIMELINE_SPAN = 30;                   // s of history on the timeline
+const UI_FONT = '"Moscow Sans", Montserrat, Arial, sans-serif';
 
 // ----------------------------------------------------------------------------- state
 const state = {
@@ -254,7 +258,7 @@ const state = {
 function drawTop(res) {
   const c = $('top'), ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
   const XMAX = +$('xmax').value, sx = c.width / XMAX, cy = c.height / 2, sy = 22;   // 22 px per metre lateral
-  ctx.strokeStyle = '#dfe2e6'; ctx.lineWidth = 1; ctx.font = '500 12px Montserrat';
+  ctx.strokeStyle = '#dfe2e6'; ctx.lineWidth = 1; ctx.font = '500 12px ' + UI_FONT;
   const step = XMAX > 150 ? 50 : 25;
   for (let x = 0; x <= XMAX; x += step) {
     ctx.beginPath(); ctx.moveTo(x * sx, 0); ctx.lineTo(x * sx, c.height); ctx.stroke();
@@ -264,12 +268,12 @@ function drawTop(res) {
   const t = res.track || {}; const c0 = t.center || 0, yaw = t.yaw || 0, k = t.curvature || 0;
   const axis = X => c0 + Math.tan(yaw) * X + 0.5 * k * X * X;
   // sensor / train nose
-  ctx.fillStyle = '#e51b36'; ctx.beginPath(); ctx.moveTo(0, cy - 12); ctx.lineTo(14, cy); ctx.lineTo(0, cy + 12); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#e31e36'; ctx.beginPath(); ctx.moveTo(0, cy - 12); ctx.lineTo(14, cy); ctx.lineTo(0, cy + 12); ctx.closePath(); ctx.fill();
   // track axis and the strict gauge corridor (half-width 1.4 m)
   ctx.strokeStyle = 'rgba(19,169,87,0.45)'; ctx.setLineDash([2, 6]); ctx.beginPath();
   for (let X = 3; X <= XMAX; X += 5) { const px = X * sx, py = cy - axis(X) * sy; X === 3 ? ctx.moveTo(px, py) : ctx.lineTo(px, py); }
   ctx.stroke();
-  ctx.strokeStyle = '#00a550'; ctx.setLineDash([6, 4]);
+  ctx.strokeStyle = '#008c45'; ctx.setLineDash([6, 4]);
   for (const side of [1.4, -1.4]) {
     ctx.beginPath();
     for (let X = 3; X <= XMAX; X += 5) { const px = X * sx, py = cy - (axis(X) + side) * sy; X === 3 ? ctx.moveTo(px, py) : ctx.lineTo(px, py); }
@@ -281,15 +285,15 @@ function drawTop(res) {
     const note = 'коридор не подтверждён дальше ' + t.axis_valid.toFixed(0) + ' м';
     ctx.fillStyle = '#8a6200'; ctx.fillText(note, Math.min(t.axis_valid * sx + 6, c.width - ctx.measureText(note).width - 6), c.height - 8);
   }
-  for (const d of (res.warnings || [])) box(ctx, d, sx, sy, cy, '#c9a000', XMAX);
-  for (const d of (res.detections || [])) box(ctx, d, sx, sy, cy, '#e51b36', XMAX);
+  for (const d of (res.warnings || [])) box(ctx, d, sx, sy, cy, '#b08b00', XMAX);
+  for (const d of (res.detections || [])) box(ctx, d, sx, sy, cy, '#e31e36', XMAX);
 }
 function box(ctx, d, sx, sy, cy, color, XMAX) {
   if (!d.center || d.center[0] > XMAX) return;
   const w = Math.max(d.size[0], 1.5) * sx, h = Math.max(d.size[1], 0.6) * sy;
   const x = d.center[0] * sx, y = cy - d.center[1] * sy;
   ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.strokeRect(x - w / 2, y - h / 2, w, h);
-  ctx.fillStyle = color; ctx.font = '700 13px Montserrat';
+  ctx.fillStyle = color; ctx.font = '700 13px ' + UI_FONT;
   const label = `${d.distance.toFixed(1)} м  p=${d.confidence.toFixed(2)}`;
   const tw = ctx.measureText(label).width;
   ctx.fillText(label, Math.min(x + w / 2 + 4, ctx.canvas.width - tw - 4), y - h / 2 - 4);
@@ -388,7 +392,7 @@ function cabScene(ctx, W, H, r, tm, cam, opts) {
   }
   if (opts.hud) {
     const lab = P(14, -ENVELOPE.half, ENVELOPE.top);
-    ctx.font = '600 13px Montserrat'; ctx.fillStyle = env(0.95); ctx.textAlign = 'right';
+    ctx.font = '600 13px ' + UI_FONT; ctx.fillStyle = env(0.95); ctx.textAlign = 'right';
     ctx.fillText('габарит поезда 2,1 × 3,0 м', lab[0] - 8, lab[1] - 8);
   }
   // confirmed objects, far first so that the nearest one is drawn on top
@@ -421,7 +425,7 @@ function cabScene(ctx, W, H, r, tm, cam, opts) {
       const pad = 7, x0 = bx.x0 - pad, x1 = bx.x1 + pad, y0 = bx.y0 - pad, y1 = bx.y1 + pad;
       ctx.strokeStyle = color; ctx.lineWidth = 3; ctx.strokeRect(x0, y0, x1 - x0, y1 - y0);
       bx.label = `${gauge ? 'ПРЕПЯТСТВИЕ' : 'ОБЪЕКТ У ГАБАРИТА'} · ${d.distance.toFixed(1)} м`;
-      ctx.font = '800 15px Montserrat';
+      ctx.font = '800 15px ' + UI_FONT;
       const cw = ctx.measureText(bx.label).width + 24, ch = 32;
       const lx = Math.max(8, Math.min(W - cw - 8, (x0 + x1) / 2 - cw / 2)), ly = Math.max(8, y0 - ch - 8);
       ctx.fillStyle = gauge ? '#e21d36' : '#ffbf19';
@@ -433,7 +437,7 @@ function cabScene(ctx, W, H, r, tm, cam, opts) {
   }
   // distance marks beside the track (+ is left), skipped where a label chip or another mark already is
   if (opts.hud) {
-    ctx.font = '600 12px Montserrat'; ctx.textAlign = 'right';
+    ctx.font = '600 12px ' + UI_FONT; ctx.textAlign = 'right';
     let lastV = Infinity;
     for (const X of [25, 50, 100]) {
       const a = P(X, 1.35, 0), b = P(X, 1.9, 0), tw = ctx.measureText(X + ' м').width;
@@ -458,7 +462,7 @@ function drawCab(res) {
   const round = (x, y, w, h, rad) => { ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x, y, w, h, rad) : ctx.rect(x, y, w, h); };
   ctx.textAlign = 'left';
   if (!r) {
-    ctx.font = '600 15px Montserrat'; ctx.fillStyle = 'rgba(214,220,232,0.85)';
+    ctx.font = '600 15px ' + UI_FONT; ctx.fillStyle = 'rgba(214,220,232,0.85)';
     ctx.fillText('Нет данных: подключите поток, выберите файл или запустите демо', 18, 32);
     state.cab = { width: W, height: H, focal: cam.F, clearEnd: 0, boxes: [], inset: null };
     return;
@@ -470,14 +474,14 @@ function drawCab(res) {
     : dec === 'FAULT' ? 'нет достоверных данных'
     : r.clear_distance == null ? 'путь свободен'
     : r.clear_distance > 0 ? `путь свободен ${r.clear_distance.toFixed(0)} м` : 'свободный участок не подтверждён';
-  ctx.font = '900 22px Montserrat';
+  ctx.font = '900 22px ' + UI_FONT;
   const head = DECISION_RU[dec] || dec, hw = ctx.measureText(head).width + 28;
   ctx.fillStyle = { STOP: '#e21d36', CAUTION: '#ffbf19', FAULT: '#7b3fe4' }[dec] || '#13a957';
   round(16, 16, hw, 44, 12); ctx.fill();
   ctx.fillStyle = dec === 'CAUTION' ? '#18130a' : '#fff'; ctx.fillText(head, 30, 46);
-  ctx.font = '700 19px Montserrat'; ctx.fillStyle = '#fff'; ctx.fillText(sub, 16 + hw + 14, 45);
+  ctx.font = '700 19px ' + UI_FONT; ctx.fillStyle = '#fff'; ctx.fillText(sub, 16 + hw + 14, 45);
   // legend: what the green stretch means and how far the corridor is trusted
-  ctx.font = '600 12px Montserrat';
+  ctx.font = '600 12px ' + UI_FONT;
   const legend = [
     ['rgba(19,169,87,0.9)', main.clearEnd > CAB.rangeMin ? `проверено свободно: ${CAB.rangeMin}–${main.clearEnd.toFixed(0)} м` : 'свободный участок не подтверждён'],
     ['rgba(47,208,122,0.95)', 'габарит поезда'],
@@ -507,7 +511,7 @@ function drawCab(res) {
     ctx.strokeStyle = col; ctx.lineWidth = 2; round(ix, iy, iw, ih, 12); ctx.stroke();
     const sz = target.size || [];
     const caption = `крупно · ${Xo.toFixed(1)} м` + (sz.length === 3 ? ` · ${sz[0].toFixed(1)}×${sz[1].toFixed(1)}×${sz[2].toFixed(1)} м` : '');
-    ctx.font = '700 12px Montserrat'; ctx.fillStyle = 'rgba(18,21,27,0.82)';
+    ctx.font = '700 12px ' + UI_FONT; ctx.fillStyle = 'rgba(18,21,27,0.82)';
     const cwid = ctx.measureText(caption).width + 16; round(ix + 8, iy + 8, cwid, 22, 6); ctx.fill();
     ctx.fillStyle = '#fff'; ctx.fillText(caption, ix + 16, iy + 23);
     inset = { x: ix, y: iy, width: iw, height: ih, distance: Xo, zone: target.zone };
@@ -523,7 +527,7 @@ function drawTimeline() {
   const c = $('timeline'), ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
   const now = timelineNow(), span = TIMELINE_SPAN, DMAX = 250, top = 6, bottom = c.height - 18, H = bottom - top;
   const yOf = d => bottom - Math.min(d, DMAX) / DMAX * H, xOf = t => c.width - (now - t) / span * c.width;
-  ctx.strokeStyle = '#dfe2e6'; ctx.font = '500 11px Montserrat';
+  ctx.strokeStyle = '#dfe2e6'; ctx.font = '500 11px ' + UI_FONT;
   for (const d of [50, 100, 150, 200]) { const y = yOf(d); ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(c.width, y); ctx.stroke(); ctx.fillStyle = '#292c31'; ctx.fillText(d + ' м', 4, y - 2); }
   // x-axis: wall clock in live mode, stamp relative to the first frame in replay
   const tick = 5, first = Math.floor((now - span) / tick) * tick;
@@ -539,10 +543,10 @@ function drawTimeline() {
   ctx.textAlign = 'left';
   for (const h of state.hist) {
     if (h.t < now - span) continue;
-    if (h.warnDist != null && !h.obstacle) { ctx.fillStyle = '#c9a000'; ctx.fillRect(xOf(h.t) - 1.5, yOf(h.warnDist) - 1.5, 3, 3); }
-    if (h.dist != null) { ctx.fillStyle = '#e51b36'; ctx.fillRect(xOf(h.t) - 2, yOf(h.dist) - 2, 4, 4); }
+    if (h.warnDist != null && !h.obstacle) { ctx.fillStyle = '#b08b00'; ctx.fillRect(xOf(h.t) - 1.5, yOf(h.warnDist) - 1.5, 3, 3); }
+    if (h.dist != null) { ctx.fillStyle = '#e31e36'; ctx.fillRect(xOf(h.t) - 2, yOf(h.dist) - 2, 4, 4); }
   }
-  if (state.mode === 'replay') { ctx.strokeStyle = '#0079c2'; ctx.beginPath(); ctx.moveTo(c.width - 1, top); ctx.lineTo(c.width - 1, bottom); ctx.stroke(); }
+  if (state.mode === 'replay') { ctx.strokeStyle = '#0078bf'; ctx.beginPath(); ctx.moveTo(c.width - 1, top); ctx.lineTo(c.width - 1, bottom); ctx.stroke(); }
 }
 
 // ----------------------------------------------------------------------------- applying a result
