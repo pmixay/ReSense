@@ -17,7 +17,7 @@ Package to send: link to the repository at a tagged commit (`v0.1-intermediate`)
 five rows above quoted in the cover message. On the day: `git tag -a v0.1-intermediate -m
 "intermediate submission" && git push origin v0.1-intermediate`, then send the text below with
 the commit hash filled in (the intermediate deadline, the form of the final package and the
-stand procedure are the team's own to settle — not organizer questions, `organizers/answers.md` §3).
+stand procedure are the team's own to settle — not organizer questions, `organizers/answers.md` §4).
 
 ### Cover message (draft, Russian — the organizers' language)
 

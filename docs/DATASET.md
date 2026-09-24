@@ -126,7 +126,7 @@ Three properties of the recording decide how it can be scored:
   `plausible` drops those rows from grading.
 * **"сверху габарита" is read as the top of the envelope.** The bottom of #8 is 2.4–2.9 m above
   the rail head in both frames, inside the 3.0 m envelope, so it is labelled `in_gauge: true`.
-  The opposite reading, "above the envelope, must not alarm", is question 4 in
+  The opposite reading, "above the envelope, must not alarm", is question 2 in
   [`QUESTIONS.md`](QUESTIONS.md).
 
 The first P4 pass (24.09, before the description arrived) scored the bag unlabelled: 342 alarm
@@ -264,7 +264,9 @@ the disk.
   use the bag receive time, not `header.stamp`).
 * Layout: `height=1, width=307200`, `point_step=26`. 1200 azimuth columns × 128 rings × **2 returns**
   (dual-return mode). Missing returns are stored as `(0,0,0)` — ~38 % of the slots. A frame therefore
-  holds ~190 000 valid points, ~150 000 distinct rays.
+  holds ~190 000 valid points, but only 85 000–95 000 distinct ones: 96–98 % of the points come in
+  identical pairs, one echo stored in both return slots (measured on 24.09 in all seven
+  recordings; the organizers' answer on the return mode is in [`SENSOR.md`](SENSOR.md) §4).
 * Angular grid (measured): azimuth step **0.1°**, valid returns only within **±50°**; 128 rings with
   elevation **+14.4° … −25.1°**, **0.125° step in the ROI (+2° … −6.2°)**, 0.5° outside. The sweep
   of one frame takes 33 ms. The unit is a **Hesai Pandar128 (E3X)** — identified from the manual and the

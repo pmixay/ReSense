@@ -44,11 +44,11 @@ table stays.
 | ranging accuracy | ±2 cm (1–200 m, average); ±5 cm below 1 m | the reported obstacle distance is limited by our clustering (nearest point), not by the sensor |
 | minimum range | 0.3 m on 32 near-field channels, 2.7 m on the others; near-field returns (0.3–2.85 m) have 0.4° horizontal resolution | `sensor.min_range = 2.5 m` discards the near-field zone, which only contains the train's own nose |
 | point rate | 3 456 000 pts/s single, 6 912 000 dual (max, 360°) | the 120° window gives ~1.15 M valid points/s single; with dual return and empty slots the bags carry ~190 k valid points per frame |
-| dual return blocks | two adjacent blocks per firing with the same azimuth (§3.1.2.3). In **Last and First** mode a ray with a single return is stored in both blocks; in **Last and Strongest** (default) and First and Strongest, block 2 stores the *second strongest* return when block 1's return is also the strongest — the manual does not say what block 2 holds when there is only one return | duplicates are measured in the cloud: ~190 k points but ~150 k distinct rays. So either the recordings use Last and First, or a lone return is repeated in the default mode too — asked in §4; the range-normalised voxel grid merges the duplicates before clustering either way |
+| dual return blocks | two adjacent blocks per firing with the same azimuth (§3.1.2.3). In **Last and First** mode a ray with a single return is stored in both blocks; in **Last and Strongest** (default) and First and Strongest, block 2 stores the *second strongest* return when block 1's return is also the strongest — the manual does not say what block 2 holds when there is only one return | measured on 24.09, 12 frames per recording: in all seven recordings 96–98 % of the points come in identical pairs, i.e. one echo stored in both blocks (~190 k points, 85–95 k distinct per 120° frame; 346 k and 175 k at 360°). The organizers (24.09, §4): the unit is on Last and Strongest now, the recordings are old and may have used another mode, and the control data use the same settings. The detector's point bars count occupied voxels, so the copies change no decision |
 | reflectivity | 0–255, default linear mapping (value = reflectivity in %); > 100 for retro-reflectors. Two optional non-linear mappings (Appendix C) compress the scale, and the value is then no longer a percentage | the bags' values (median 6–7, retro-reflectors 255) match the linear mapping: `intensity` is reflectivity %; rails and signs saturate at 255. Usable to flag retro-reflective infrastructure (signs, markers) as non-obstacles; if the train's unit were switched to a non-linear mapping the `cluster.retro_intensity` threshold would have to be re-derived |
-| clock | GNSS (GPS PPS + NMEA) or PTP (1588v2 / 802.1AS), ≤ 1 µs; without a source the sensor clock starts at a virtual UTC 2000-01-01 | the bags have no clock source (`timestamp` field is year-2000 epoch): use the bag receive time. On the train PTP will be available: per-point timestamps allow motion deskew |
-| built-in IMU | every point-cloud packet tail carries IMU data (§3.1.2.5): 3-axis acceleration (unit 0.244 mg), 3-axis angular velocity (unit 17.5 mdps), IMU temperature and an IMU timestamp (25 µs ticks from power-on) | the sensor itself reports angular rate and acceleration — enough for vibration / pitch compensation and, integrated with a speed reference, for the ego-motion step. The `PointCloud2` messages in the bags do not carry it; whether the train's driver publishes an IMU topic is asked in §4 |
-| factory defaults (web control, §4) | 600 rpm (10 Hz), return mode Last and Strongest, Standard horizontal resolution (0.2°), clock source GPS, linear reflectivity mapping, angle-based trigger, azimuth FOV "for all channels" 0–360° | the bags show 0.1° columns and a 120° window, so the recording unit was reconfigured (High Resolution, custom FOV). The control run must use the same settings, or the point budget in `DATASET.md` changes by up to 2× per axis |
+| clock | GNSS (GPS PPS + NMEA) or PTP (1588v2 / 802.1AS), ≤ 1 µs; without a source the sensor clock starts at a virtual UTC 2000-01-01 | the bags have no clock source (`timestamp` field is year-2000 epoch): use the bag receive time. The organizers (24.09): PTP / GNSS will exist on the train, but not within this hackathon, so there is no per-point deskew |
+| built-in IMU | every point-cloud packet tail carries IMU data (§3.1.2.5): 3-axis acceleration (unit 0.244 mg), 3-axis angular velocity (unit 17.5 mdps), IMU temperature and an IMU timestamp (25 µs ticks from power-on) | the sensor itself reports angular rate and acceleration — enough for vibration / pitch compensation and, integrated with a speed reference, for the ego-motion step. The `PointCloud2` messages in the bags do not carry it; whether the train's driver publishes an IMU topic is not known, and the team works without speed or IMU input (§4) |
+| factory defaults (web control, §4) | 600 rpm (10 Hz), return mode Last and Strongest, Standard horizontal resolution (0.2°), clock source GPS, linear reflectivity mapping, angle-based trigger, azimuth FOV "for all channels" 0–360° | the bags show 0.1° columns and a 120° window, so the recording unit was reconfigured (High Resolution, custom FOV). The organizers confirmed on 24.09 that the control data use the same settings, so the point budget in `DATASET.md` holds |
 | sweep and motion | one 120° window is swept in 33 ms; at 80 km/h (22 m/s) that is 0.7 m of travel within a frame and 2.2 m between frames | relevant for multi-frame accumulation (Sprint 2): the ego-motion estimate must be applied per frame, and per-point deskew is worth it above ~40 km/h |
 | azimuth FOV setting | up to 5 azimuth windows can be configured in the sensor | the 120° window in the bags was set on the sensor; the control bag will presumably use the same window, but the code does not assume it |
 | coordinate system | Z = rotation axis, Y = 0° azimuth, clockwise rotation (top view) | in the bags forward = −Y, left = +X, up = +Z: the sensor's 0° mark points backwards. `sensor.forward/left/up` in `configs/default.yaml` captures this and nothing else in the code depends on the sensor model |
@@ -69,8 +69,9 @@ table stays.
 3. **Reflectivity is calibrated.** Because intensity is reflectivity %, a threshold above 100
    isolates retro-reflective material (signs, rail-head polish is also very bright). This is a
    cheap false-alarm filter for platform-edge signs (P3 backlog item 5).
-4. **Ego-motion.** With PTP on the train each point has a µs timestamp; the accumulation stage
-   should deskew within a frame using the ego speed, not only align whole frames.
+4. **Ego-motion.** With PTP on the train each point would have a µs timestamp, and the
+   accumulation stage could deskew within a frame using the ego speed, not only align whole
+   frames. The organizers said on 24.09 that this will not come within this hackathon.
 5. **Generalisation to another unit or mount.** The detector never uses the ring index; only
    `resense inject` (synthetic obstacles) and the expected-point prior use the elevation table.
    A control bag from a different Pandar128 or mount needs no code change; a different model
@@ -80,24 +81,25 @@ table stays.
    to 3×; `sensor.max_range` and the azimuth crop happen after decoding, so a wider window costs
    decode time only.
 
-## 4. Open questions for the organizers
+## 4. Questions to the organizers (answered)
 
-Still open (sent again as [`QUESTIONS.md`](QUESTIONS.md) items 1 and 2, 23.09):
+Answered on 24.09 ([`organizers/answers.md`](organizers/answers.md) §3):
 
-* Return mode of the recordings (Last and Strongest is the manual's default, but the duplicate
-  points in the bags match the Last and First description, §2 "dual return blocks") and whether
-  the control data use the same High Resolution mode and azimuth windows (120° with
-  `/lidar_points` + `hesai_lidar`, the full turn with `/sensing/lidar/hesai128/pointcloud` +
-  `lidar_livox`; the organizers confirmed on 23.09 that both pairs may occur and that all data
-  come from the same LiDAR).
-* Whether PTP / GNSS time will be available on the train (every recording so far carries the
-  unsynchronised year-2000 sensor clock).
+* **Return mode, resolution and window.** The unit is on Last and Strongest now. The provided
+  recordings, especially the one with people (`doubleT_obstacle`), are old and may have used
+  another mode. **The control data use the same settings.** In every recording one echo is
+  stored in both return blocks (§2 "dual return blocks"), and the detector counts occupied
+  voxels, not points. The High Resolution 0.1° columns, the 120° window with `/lidar_points` +
+  `hesai_lidar` and the full turn with `/sensing/lidar/hesai128/pointcloud` + `lidar_livox` stay
+  as they are (both pairs may occur, one LiDAR: answers of 23.09).
+* **PTP / GNSS time.** It will exist on the train, but not within this hackathon. The bag
+  receive time and the differences of the unsynchronised year-2000 `header.stamp` remain the clocks.
 
 Answered: the mounting height and pitch are **not fixed** between trains — "count on a variable
 position, set it in the launch parameters" (Q&A session 22.09): the auto-calibration and the
 mount launch arguments cover it ([`organizers/answers.md`](organizers/answers.md)).
 
-Closed on 22.09 (team decision, [`organizers/answers.md`](organizers/answers.md) §3): **no train speed, odometry or IMU
+Closed on 22.09 (team decision, [`organizers/answers.md`](organizers/answers.md) §4): **no train speed, odometry or IMU
 data will be available for this case** — the solution operates without them. The packet-tail
 IMU noted in §2 is therefore documentation only; the node's speed inputs stay optional and the
 multi-frame accumulation stays off unless a speed is given.
