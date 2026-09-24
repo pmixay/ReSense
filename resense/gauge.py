@@ -63,9 +63,9 @@ def corridor_mask(xyz: np.ndarray, track: TrackModel, cfg: GaugeConfig,
     if dy_all is not None and h_all is not None and cfg.lateral_growth_per_100m <= 0 and _native.enabled():
         # the range test and the bounding box below in one pass (resense/_native.py): frame indices
         poly = widened_profile(cfg, cfg.warning_margin)
-        box = _native.select(xyz.shape[0], (X, ">=", cfg.range_min, "<=", cfg.range_max),
-                             (dy_all, None, None, "<=", np.abs(poly[:, 0]).max(), True),
-                             (h_all, ">=", poly[:, 1].min(), "<=", poly[:, 1].max()))
+        box = _native.select(xyz.shape[0], (dy_all, None, None, "<=", np.abs(poly[:, 0]).max(), True),
+                             (h_all, ">=", poly[:, 1].min(), "<=", poly[:, 1].max()),
+                             (X, ">=", cfg.range_min, "<=", cfg.range_max))
         if box is not None:
             if box.size == 0:
                 return mask, strict

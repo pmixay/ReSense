@@ -290,7 +290,8 @@ def select(n: int, *conds) -> Optional[np.ndarray]:
     """``np.flatnonzero`` of a conjunction of range tests, or None. Each condition is
     ``(array, lo_op, lo, hi_op, hi)`` or with a sixth element ``True`` for ``np.abs(array)``;
     ``lo_op`` is None, '>' or '>=', ``hi_op`` None, '<' or '<='. Arrays are 1-D float32 / float64
-    of length ``n`` (any stride)."""
+    of length ``n`` (any stride). The result does not depend on the order of the conditions; the
+    kernel is fastest with the most selective one first."""
     if not _enabled or n < MIN_SIZE:
         return None
     arr = (_Cond * len(conds))()

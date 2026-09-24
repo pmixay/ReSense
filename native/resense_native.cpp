@@ -78,17 +78,30 @@ inline int64_t bin_of(double x, const double* edges, int64_t ne) {
     return static_cast<int64_t>(std::upper_bound(edges, edges + ne, x) - edges) - 1;
 }
 
+// One condition over the candidate indices (all n on the first pass), compacted in place without
+// branches: the result is the same set in the same order whatever order the conditions come in.
 template <typename T>
-inline bool cond_ok(const RsCond& q, int64_t k) {
-    T v;
-    std::memcpy(&v, static_cast<const char*>(q.data) + k * q.stride, sizeof v);
-    if (q.absval) v = std::fabs(v);
+int64_t filter_pass(const RsCond& q, int64_t* idx, int64_t cnt, bool first) {
+    const char* base = static_cast<const char*>(q.data);
+    const int64_t stride = q.stride;
     const T lo = static_cast<T>(q.lo), hi = static_cast<T>(q.hi);
-    if (q.lo_op == 1 && !(v > lo)) return false;
-    if (q.lo_op == 2 && !(v >= lo)) return false;
-    if (q.hi_op == 1 && !(v < hi)) return false;
-    if (q.hi_op == 2 && !(v <= hi)) return false;
-    return true;
+    const int lo_op = q.lo_op, hi_op = q.hi_op;
+    const bool absval = q.absval != 0;
+    int64_t m = 0;
+    for (int64_t i = 0; i < cnt; ++i) {
+        const int64_t k = first ? i : idx[i];
+        T v;
+        std::memcpy(&v, base + k * stride, sizeof v);
+        if (absval) v = std::fabs(v);
+        bool ok = true;
+        if (lo_op == 1) ok = v > lo;
+        else if (lo_op == 2) ok = v >= lo;
+        if (hi_op == 1) ok = ok && v < hi;
+        else if (hi_op == 2) ok = ok && v <= hi;
+        idx[m] = k;
+        m += ok ? 1 : 0;
+    }
+    return m;
 }
 
 }  // namespace
@@ -301,14 +314,18 @@ void rs_verify_profile(const float* xyz, const double* zf, int64_t n, float x0, 
     *n_side = nd;
 }
 
-// np.flatnonzero of the conjunction of ``nc`` conditions (RsCond above).
+// np.flatnonzero of the conjunction of ``nc`` conditions (RsCond above), one pass per condition
+// over the survivors of the previous ones (put the most selective condition first).
 int64_t rs_select(int64_t n, const RsCond* conds, int32_t nc, int64_t* out) {
-    int64_t m = 0;
-    for (int64_t k = 0; k < n; ++k) {
-        bool ok = true;
-        for (int32_t j = 0; j < nc && ok; ++j)
-            ok = conds[j].is_f64 ? cond_ok<double>(conds[j], k) : cond_ok<float>(conds[j], k);
-        if (ok) out[m++] = k;
+    if (nc <= 0) {
+        for (int64_t k = 0; k < n; ++k) out[k] = k;
+        return n;
+    }
+    int64_t m = n;
+    for (int32_t j = 0; j < nc; ++j) {
+        m = conds[j].is_f64 ? filter_pass<double>(conds[j], out, m, j == 0)
+                            : filter_pass<float>(conds[j], out, m, j == 0);
+        if (m == 0) break;
     }
     return m;
 }
