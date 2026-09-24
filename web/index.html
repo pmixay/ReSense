@@ -20,7 +20,7 @@
   <section class="intro" aria-labelledby="page-title">
     <div><p class="eyebrow">Мониторинг пути</p><h2 class="page-title" id="page-title">Контроль свободного габарита</h2></div>
   </section>
-  <div id="banner" class="idle" role="status" aria-live="assertive"><span id="banner-title">ОЖИДАНИЕ ДАННЫХ</span><small id="banner-detail" hidden></small><svg class="banner-icon" viewBox="0 0 220 140" preserveAspectRatio="none" aria-hidden="true"><path id="banner-icon-shape"></path></svg></div>
+  <div id="banner" class="idle" role="status" aria-live="assertive"><span id="banner-title">ОЖИДАНИЕ ДАННЫХ</span><small id="banner-detail" hidden></small><svg id="banner-icon" class="banner-icon" viewBox="0 0 220 140" preserveAspectRatio="none" aria-hidden="true"><path id="banner-icon-shape"></path></svg></div>
   <main id="monitor">
     <div class="visual-column">
       <div class="visual-tabs" role="tablist" aria-label="Вид мониторинга">
@@ -450,9 +450,9 @@ function drawTimeline() {
 // ----------------------------------------------------------------------------- applying a result
 function fmt(v, digits, unit) { return v == null || !isFinite(v) ? '—' : v.toFixed(digits) + (unit || ''); }
 const BANNER_ICONS = {
-  clear: { path: 'M0 57 H155 V0 L220 70 155 140 V83 H0 Z', color: '#8CD9A5' },
+  clear: { path: 'M-10 34 H207 V57 H-10 Z M160 0 H188 L236 45 188 90 H160 L207 45 Z', color: '#8CD9A5', viewBox: '0 0 236 90' },
   bad: { path: 'M0 0 H52 L110 43 168 0 H220 L145 70 220 140 H168 L110 97 52 140 H0 L75 70 Z', color: '#FF9CA3' },
-  warn: { path: 'M70 0 H76 L35 140 H29 Z M170 0 H176 L214 140 H208 Z M105 0 H140 L132 90 H113 Z M103 108 H130 V140 H103 Z', color: '#FFF7A8' },
+  warn: { path: 'M70 0 H82 L41 140 H29 Z M164 0 H176 L214 140 H202 Z M106 0 H139 V90 H106 Z M109 108 H136 V140 H109 Z', color: '#FFF7A8' },
 };
 function setBanner(kind, title, detail) {
   const banner = $('banner'), icon = BANNER_ICONS[kind];
@@ -460,6 +460,7 @@ function setBanner(kind, title, detail) {
   $('banner-title').textContent = title;
   $('banner-detail').textContent = detail || '';
   $('banner-detail').hidden = !detail;
+  $('banner-icon').setAttribute('viewBox', icon?.viewBox || '0 0 220 140');
   $('banner-icon-shape').setAttribute('d', icon ? icon.path : '');
   banner.style.setProperty('--banner-icon-color', icon ? icon.color : 'transparent');
 }
