@@ -1,4 +1,7 @@
 """Set F placement contract: deterministic independent truth, without Open3D or bag files."""
+import importlib.util
+from pathlib import Path
+import sys
 from types import SimpleNamespace
 
 import numpy as np
@@ -8,7 +11,16 @@ from resense.config import TrackConfig
 from resense.frame import Frame
 from resense.synthetic import InjectionResult
 from resense.track import TrackModel
-from scripts import far_range_eval as far
+
+# Load the repository script by path. Docker deliberately runs these tests from ``/`` so the
+# installed ``resense`` package is tested rather than the source tree; a top-level ``scripts``
+# import would otherwise depend on the current working directory.
+_FAR_PATH = Path(__file__).resolve().parents[1] / "scripts" / "far_range_eval.py"
+_FAR_SPEC = importlib.util.spec_from_file_location("resense_far_range_eval", _FAR_PATH)
+assert _FAR_SPEC is not None and _FAR_SPEC.loader is not None
+far = importlib.util.module_from_spec(_FAR_SPEC)
+sys.modules[_FAR_SPEC.name] = far
+_FAR_SPEC.loader.exec_module(far)
 
 
 def test_fixed_reference_never_reads_far_points(monkeypatch):

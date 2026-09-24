@@ -155,7 +155,10 @@ def test_dashboard_replays_jsonl_in_chromium(tiny_run, tmp_path):
     assert r["ok"], r["errors"]
     assert r["frames"] == 14
     assert r["observed"][0][1].startswith("ПУТЬ СВОБОДЕН")
-    assert r["nearest_min_m"] is not None and 40.0 <= r["nearest_min_m"] <= 72.0
+    # A confirmed track is intentionally held for one missed frame and projected one step
+    # closer (4 m in this synthetic run), so the last displayed distance can be just below
+    # the acceptance window used by check().
+    assert r["nearest_min_m"] is not None and 36.0 <= r["nearest_min_m"] <= 72.0
     assert os.path.getsize(shot) > 10_000
     assert not r["errors"]
 
