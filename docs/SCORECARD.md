@@ -8,7 +8,7 @@ Reviewer A judged the results (8.1–8.4) and reviewer B the engineering, the la
 and the pitch (8.5–8.8 and the §7.2 deliverables). Both were told to distrust the team's claims.
 Reviewer A re-ran the evaluations on the frame cache. Reviewer B built the image and ran the
 organizers' procedure on rebuilt real bags: the node container, then `ros2 bag play` as a normal
-user from another container.
+user from another container. Their reports: [`reviews/`](reviews/).
 
 This is the third round:
 
