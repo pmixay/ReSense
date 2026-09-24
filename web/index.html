@@ -452,7 +452,7 @@ function fmt(v, digits, unit) { return v == null || !isFinite(v) ? '—' : v.toF
 const BANNER_ICONS = {
   clear: { path: 'M0 57 H155 V0 L220 70 155 140 V83 H0 Z', color: '#8CD9A5' },
   bad: { path: 'M0 0 H52 L110 43 168 0 H220 L145 70 220 140 H168 L110 97 52 140 H0 L75 70 Z', color: '#FF9CA3' },
-  warn: { path: 'M0 0 H145 L116 82 H28 Z M36 94 H100 V130 H36 Z', color: '#FFF7A8' },
+  warn: { path: 'M0 0 H145 L116 78 H28 Z M36 99 H100 V140 H36 Z', color: '#FFF7A8' },
 };
 function setBanner(kind, title, detail) {
   const banner = $('banner'), icon = BANNER_ICONS[kind];
