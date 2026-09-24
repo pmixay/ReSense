@@ -60,6 +60,7 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
 | `ros2_ws/src/resense_ros/` | ROS 2 Humble `ament_python` package: node, launch, params, RViz config |
 | `docker/`, `docker-compose.yml`, `scripts/` | reproducible build/run: `docker build → docker run → ros2 bag play → result` |
 | `configs/default.yaml` | all detector parameters; copied over the ROS package copy at Docker build time, `scripts/sync_params.sh --check` in CI keeps the two identical |
+| `native/`, `setup.py` | optional C++ kernels for the per-frame hot spots, bit-identical to the numpy code they replace ("Native kernels" below); compiled by `pip install`, `RESENSE_NATIVE=0` forces numpy |
 | `tests/` | pytest on a synthetic ray-cast tunnel (no dataset needed) |
 | `docs/` | organizers' materials, dataset and sensor notes, algorithm, evaluation protocol, research, plan, experiments, submission checklist, presentation notes |
 | `web/` | the dashboard: replays a `results.jsonl`, or shows the live node through rosbridge — not in the image, and roslib comes from a CDN (`web/README.md`); offline live view: Foxglove |
@@ -161,6 +162,60 @@ the image), about 160–180 MB resident, no GPU. **Through ROS in Docker** (v0.6
 EXPERIMENTS.md): the 120° recording at the full 10 Hz (p95 76 ms), the 360° one at 7–10 fps in
 steady state (~96 ms mean: the node skips frames rather than lagging), the node container at
 ~100 % of one core while frames arrive, 186 MB. The jury's i7-9700E (8 faster cores) has not been measured.
+The table is the numpy path; the optional native kernels (next section) roughly halve it.
+
+## Native kernels (optional, C++; 24.09)
+
+Most of a frame's time went into full-cloud numpy passes of the track stage and the corridor /
+low-object selection (a mask, a gather and a float64 temporary per step over 190–350 k points)
+and into ten `np.lexsort` calls per frame for the per-bin percentiles. `native/resense_native.cpp`
+does the same work in one pass each, as a plain C ABI loaded with ctypes by `resense/_native.py`:
+
+| kernel | replaces |
+|---|---|
+| `rs_bin_percentile` | `track.bin_percentile` (bed, rails, walls, bed template, low objects): counting sort + selection instead of `np.lexsort` |
+| `rs_floor_z`, `rs_center_y`, `rs_corridor_coordinates` | `TrackModel.floor_z` / `center_y` and `gauge.corridor_coordinates` over the whole cloud |
+| `rs_floor_band`, `rs_rails_band`, `rs_walls_band`, `rs_verify_profile` | the selection prologues of `_fit_floor`, `estimate_rails`, `estimate_axis_from_walls`, `verify_floor_extrapolation` |
+| `rs_select` | the mask chains of the bed template, the low-object band and the corridor range / bounding box |
+| `rs_visibility` | `health.visibility_along_track` |
+
+**Same output, bit for bit.** Every kernel performs the numpy expression's IEEE operations in the
+same order (compiled without FMA contraction, fast-math or `-march=native`), a float32 coordinate
+is compared with a threshold in float32 as numpy does, and a selection returns the element a
+stable sort puts at that rank. Anything else (a numpy float64 threshold, an unusual dtype, a small
+array) takes the numpy code, which stays in place as the fallback. Checked by
+`tests/test_native.py` (every kernel against its numpy code, the detector on the synthetic tunnel)
+and on real data: all 3 998 cached frames (six recordings and the organizers' fake-object ride)
+give identical per-frame results with and without the kernels, and `scripts/output_fingerprint.py`
+(unrounded candidate values, the given-speed and estimator paths) is identical too; the same holds
+with the image's numpy 1.26 / scipy 1.13 / scikit-learn 1.5.
+
+**Faster.** Interleaved A/B on the same frames (medians; both detectors see every frame, the
+order alternates), one pinned core, single-threaded BLAS, 120 frames × 3, this 4-vCPU sandbox at
+load ~3 on 24.09 (it is slower than the idle one of the budget above: the numpy path measures
+62 instead of 50 ms on `roundT_doubleT`); separate processes, ABAB × 3, give the same −46 % and
+−58 %:
+
+| recording | numpy: track / corridor / total | native: track / corridor / total | `process()` wall incl. health |
+|---|---|---|---|
+| `roundT_doubleT` (190 k points, 120°) | 31.1 / 17.3 / **62.4 ms** | 11.8 / 6.8 / **33.5 ms** (−46 %) | 70.4 → 37.7 ms (p95 93.8 → 54.6) |
+| `doubleT_obstacle` (341 k points, 360°) | 49.1 / 22.3 / **81.3 ms** | 17.6 / 7.7 / **34.6 ms** (−57 %) | 94.8 → 41.3 ms (p95 123.4 → 57.8) |
+| `squareT_platform_squareT_switch` (179 k) | 29.5 / 13.8 / **52.4 ms** | 11.5 / 6.4 / **26.9 ms** (−49 %) | 60.1 → 30.9 ms |
+| `doubleT_platform` (164 k, the platform approach) | 27.7 / 14.4 / **66.7 ms** | 10.8 / 7.2 / **41.3 ms** (−38 %) | 74.0 → 45.2 ms |
+| `roundT_doubleT`, speed given (8 m/s: accumulation) | 31.5 / 17.6 / **70.7 ms** | 11.8 / 7.0 / **41.1 ms** (−42 %) | 78.6 → 45.2 ms |
+
+The clustering stage (voxel grid + scikit-learn DBSCAN) is unchanged; on the 120° recordings it
+is now the largest stage. Not ported on purpose: DBSCAN (an exact copy of scikit-learn's border-point
+assignment and `<=` radius test is a rewrite with its own risk), the mount rotation (a float32
+BLAS product: its rounding depends on the BLAS kernel) and the health monitor's azimuth
+histogram (`arctan2` of libm and numpy's SIMD code can differ in the last bit at a sector edge).
+
+**Build and switch.** `pip install .` / `pip install -e .` compile the kernels (`setup.py`, an
+optional extension: without a C++ compiler the install still succeeds and the detector runs on
+numpy with the same results, slower); `scripts/build_native.sh` builds them in a source checkout
+used with `PYTHONPATH=.`. The Docker image installs `g++` and prints the path it took at build
+time; the node logs it at start (`per-frame kernels: native (...)`). `RESENSE_NATIVE=0` forces
+the numpy code.
 
 ## Known limitations (see ALGORITHM.md §6 and EXPERIMENTS.md)
 

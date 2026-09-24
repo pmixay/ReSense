@@ -148,6 +148,7 @@ and ALGORITHM.md §4 / §4b are that statement; how to run it is "How a bag is p
 | [`ros2_ws/src/resense_ros/`](ros2_ws/src/resense_ros/) | ROS 2 Humble node, launch file, parameters, RViz layout |
 | [`docker/`](docker/), [`docker-compose.yml`](docker-compose.yml), [`scripts/`](scripts/) | reproducible build and demo |
 | [`configs/default.yaml`](configs/default.yaml) | every tunable parameter (also installed as the ROS parameter file) |
+| [`native/`](native/) | optional C++ kernels for the per-frame hot spots (the track stage, the corridor selection): about half the detector time, bit-identical results; built by `pip install`, numpy fallback without a compiler ([ARCHITECTURE](docs/ARCHITECTURE.md) "Native kernels") |
 | [`tests/`](tests/) | pytest on a synthetic ray-cast tunnel — runs without the dataset (algorithm, envelope, calibration, guards, and the ROS node against stand-ins: `test_node.py`) |
 | [`web/`](web/) | browser dashboard (offline replay of a `resense run` JSONL; live via rosbridge, installed separately and with roslib from a CDN), Foxglove layout (the image has the Foxglove bridge), label tool, headless checks |
 | [`docs/`](docs/) | [ARCHITECTURE](docs/ARCHITECTURE.md) · [ALGORITHM](docs/ALGORITHM.md) · [EXPERIMENTS](docs/EXPERIMENTS.md) · [SCORECARD](docs/SCORECARD.md) · [EVALUATION](docs/EVALUATION.md) · [DATASET](docs/DATASET.md) · [SENSOR](docs/SENSOR.md) · [RESEARCH](docs/RESEARCH.md) · [PLAN](docs/PLAN.md) · [CAPTAIN](docs/CAPTAIN.md) · [SUBMISSION](docs/SUBMISSION.md) · [PRESENTATION](docs/PRESENTATION.md) · [QUESTIONS](docs/QUESTIONS.md) · [UI screenshots](docs/images/README.md) · organizers' README / ТЗ / [**Q&A session**](docs/organizers/QA_session.md) ([transcript](docs/organizers/QA_session_transcript_ru.md)) · [organizers' answers](docs/organizers/answers.md) · [test-stand software](docs/organizers/test_stand_software.md) · sensor manual ([`docs/sensor/`](docs/sensor/)) |
@@ -157,6 +158,7 @@ and ALGORITHM.md §4 / §4b are that statement; how to run it is "How a bag is p
 
 ```bash
 pip install -e ".[dev]"                       # numpy scipy scikit-learn pyyaml + rosbags matplotlib open3d pytest
+                                              # (+ the optional C++ kernels, native/; scripts/build_native.sh without pip)
 pytest -q                                     # expect no skips: "skipped" means open3d is missing (RESENSE_REQUIRE_SYNTHETIC=1 makes that fail, as in CI)
 ruff check .                                  # lint, as the CI job "lint" (pip install ruff)
 
