@@ -213,6 +213,68 @@ def test_dashboard_builtin_demo_and_summary():
         b.close()
 
 
+COLUMN_BOTTOMS = """() => { const r = s => document.querySelector(s).getBoundingClientRect();
+    return [r('.visual-column > :last-child').bottom, r('.side-column > :last-child').bottom]; }"""
+
+
+def test_dashboard_desktop_columns_end_together_and_cab_view_marks_the_obstacle():
+    """Desktop layout: no empty block under the shorter column (the cab view and the event log take up
+    the difference), and the cab view draws the confirmed obstacle with its distance and a close-up."""
+    if not _browser_available():
+        pytest.skip("playwright + chromium not available")
+    from playwright.sync_api import sync_playwright
+    import check_dashboard
+    with sync_playwright() as p:
+        b = _launch(p)
+        for width, height in ((1366, 768), (1600, 1000), (1920, 1080)):
+            page = b.new_page(viewport={"width": width, "height": height})
+            page.goto("file://" + check_dashboard.INDEX, wait_until="domcontentloaded")
+            page.wait_for_function("window.resense !== undefined")
+            page.click("#demo")
+            page.evaluate("window.resense.pause(); window.resense.seek(30)")   # STOP, person at 79 m
+            left, right = page.evaluate(COLUMN_BOTTOMS)
+            assert abs(left - right) <= 1, (width, left, right)
+            cab = page.evaluate("window.resense.state.cab")
+            assert cab["width"] > 800 and cab["height"] >= 360
+            (box,) = cab["boxes"]
+            assert box["zone"] == "gauge" and box["label"] == "ПРЕПЯТСТВИЕ · 79.0 м"
+            assert 0 <= box["x0"] < box["x1"] <= cab["width"] and 0 <= box["y0"] < box["y1"] <= cab["height"]
+            # the person stands on the track axis: its box is within the middle fifth of the view
+            assert abs((box["x0"] + box["x1"]) / 2 - cab["width"] / 2) < cab["width"] / 10
+            assert cab["clearEnd"] == pytest.approx(79.0, abs=0.1)
+            assert cab["inset"] and cab["inset"]["zone"] == "gauge"
+            page.evaluate("window.resense.seek(59)")                           # GO again
+            cab = page.evaluate("window.resense.state.cab")
+            assert cab["boxes"] == [] and cab["inset"] is None and cab["clearEnd"] == pytest.approx(145.0)
+            page.close()
+        b.close()
+
+
+def test_dashboard_cab_view_on_the_real_node_stream():
+    """The node's /resense/status stream from the Docker dry run on doubleT_obstacle: the fitted bed
+    profile (floor_coef) places the 56 m object in the cab view."""
+    if not _browser_available():
+        pytest.skip("playwright + chromium not available")
+    import gzip
+    from playwright.sync_api import sync_playwright
+    import check_dashboard
+    text = gzip.open(os.path.join(ROOT, "docs", "evidence", "docker_2026-09-23", "obstacle_status.jsonl.gz"), "rt").read()
+    with sync_playwright() as p:
+        b = _launch(p)
+        page = b.new_page(viewport={"width": 1600, "height": 1000})
+        page.goto("file://" + check_dashboard.INDEX, wait_until="domcontentloaded")
+        page.wait_for_function("window.resense !== undefined")
+        assert page.evaluate("t => window.resense.loadText(t, 'obstacle_status.jsonl')", text) == 103
+        idx = page.evaluate("window.resense.state.frames.findIndex(f => f.obstacle)")
+        page.evaluate(f"window.resense.seek({idx})")
+        cab = page.evaluate("window.resense.state.cab")
+        gauge = [bx for bx in cab["boxes"] if bx["zone"] == "gauge"]
+        assert gauge and gauge[0]["label"].startswith("ПРЕПЯТСТВИЕ · 56.")
+        bx = gauge[0]
+        assert 0 <= bx["x0"] < bx["x1"] <= cab["width"] and cab["height"] * 0.3 < bx["y1"] < cab["height"] * 0.8
+        b.close()
+
+
 def test_dashboard_uses_flat_local_montserrat_visual_system():
     """The jury UI stays usable offline and does not regress to outlined/glowing cards."""
     html = open(os.path.join(ROOT, "web", "index.html"), encoding="utf-8").read()

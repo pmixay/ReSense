@@ -6,7 +6,7 @@ the scripts that verify the dashboard headlessly, and the video recipe.
 
 | file | what |
 |---|---|
-| [`index.html`](index.html) | Russian-language dashboard in the modular Moscow Transport visual style: banner, top-down view, decision/health, timeline, node stats, run summary and alarm log; live + offline replay + built-in demo; no build step |
+| [`index.html`](index.html) | Russian-language dashboard in the modular Moscow Transport visual style: banner, cab view, top-down view, decision/health, timeline, node stats, run summary and alarm log; live + offline replay + built-in demo; no build step |
 | [`assets/fonts/`](assets/fonts/) | local Montserrat variable font subsets (Cyrillic + Latin) and the OFL license; the dashboard typography works offline |
 | [`foxglove_layout.json`](foxglove_layout.json) | Foxglove Studio layout (3D + plots + indicator + status), see "Remote demo with Foxglove" |
 | [`demo/make_demo_run.py`](demo/make_demo_run.py) | synthetic approach sequence → `out/demo_run.jsonl` in the `resense run --out` format |
@@ -17,8 +17,9 @@ the scripts that verify the dashboard headlessly, and the video recipe.
 ![current ReSense dashboard showing a STOP decision in the built-in synthetic UI demo](../docs/images/dashboard-stop.png)
 
 Current UI captures: [GO / path clear](../docs/images/dashboard-clear.png),
-[CAUTION / object near the gauge](../docs/images/dashboard-caution.png), and
-[STOP / confirmed obstacle](../docs/images/dashboard-stop.png). The complete gallery and its
+[CAUTION / object near the gauge](../docs/images/dashboard-caution.png),
+[STOP / confirmed obstacle](../docs/images/dashboard-stop.png) and
+[the cab view on the real `doubleT_obstacle` node stream](../docs/images/dashboard-cab-real.png). The complete gallery and its
 data provenance are in [`docs/images/README.md`](../docs/images/README.md).
 *Built-in 60-frame UI demonstration (synthetic interface data, not the organizers' data and not
 evaluation evidence). The dashboard uses an original ReSense mark and graphics; no assets from
@@ -30,7 +31,9 @@ Open the file in a browser; nothing to install or build. The visible interface i
 Russian and follows the reference portal's light background, modular card floors, red primary
 actions, large status typography and responsive grid. Montserrat is bundled locally. Cards,
 controls and active states use flat background colours without borders, outlines, glow or drop
-shadows. Two modes use the same widgets:
+shadows. The layout targets desktop screens: the two columns always end at the same height (the
+cab view grows to match the side cards, the event log fills the rest of the right column). Two
+modes use the same widgets:
 
 * **Live**: enter the rosbridge URL (`ws://<host>:9090`, from
   `ros2 launch rosbridge_server rosbridge_websocket_launch.xml` on the machine running the
@@ -57,6 +60,7 @@ What is shown:
 | widget | source in the status JSON |
 |---|---|
 | banner **ПУТЬ СВОБОДЕН / ВНИМАНИЕ / ПРЕПЯТСТВИЕ 55.6 м** | `obstacle`, `warning`, `nearest_distance` |
+| **cab view** (driver's-eye schematic, the camera of `scripts/hero_view.py` without the point cloud): rails and the 2.1 × 3.0 m train envelope along the fitted axis and bed profile, the stretch verified clear in green (to the obstacle, else `clear_distance`), a red stop zone at the obstacle, confirmed objects as 3D boxes with a distance chip, a zoomed close-up of the nearest one, decision chip and legend; the tunnel outline is only a depth cue | `track.center/yaw/curvature/floor_coef/floor_range/rail_offset/axis_valid`, `detections[]`, `warnings[]`, `clear_distance`, `decision`, `health` |
 | top-down canvas (100 / 150 / 250 m): track axis, ±1.4 m gauge corridor, untrusted range shaded, red gauge boxes, orange advisory boxes with distance and confidence | `track.center/yaw/curvature/axis_valid`, `detections[]`, `warnings[]` |
 | timeline (last 30 s): nearest gauge obstacle (red), nearest advisory object (orange) | `nearest_distance`, `warnings[].distance` |
 | detector card: counts, axis, radius, trusted range, points, per-stage timing | `track`, `n_points`, `n_corridor`, `timing_ms` |

@@ -71,16 +71,19 @@
   #banner.bad { background:var(--red); }
   #banner small { display:block; position:relative; z-index:1; margin-top:16px; color:inherit; opacity:.76; font-size:14px; font-weight:600; letter-spacing:0; }
   main { display:grid; grid-template-columns:minmax(0,2fr) minmax(340px,.88fr); gap:14px; }
-  .visual-column { min-width:0; }
+  /* both columns stretch to the taller one: the cab view (left) and the event log (right) take up the difference */
+  .visual-column, .side-column { min-width:0; display:flex; flex-direction:column; gap:14px; }
   .visual-card, .card { background:var(--paper); border-radius:20px; }
-  .visual-card { padding:18px; margin-bottom:14px; }
+  .visual-card { padding:18px; }
+  .cab-card { flex:1 1 auto; display:flex; flex-direction:column; }
+  .cab-stage { position:relative; flex:1 1 auto; aspect-ratio:16/9; min-height:360px; overflow:hidden; border-radius:14px; background:#12151b; }
+  .cab-stage canvas { position:absolute; inset:0; height:100%; border-radius:0; background:transparent; }
   .canvas-tools { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-bottom:14px; }
   .canvas-tools h2 { margin:0 auto 0 0; font-size:22px; letter-spacing:-.5px; }
   .canvas-tools label { display:flex; align-items:center; gap:8px; color:var(--muted); font-size:12px; }
   .canvas-tools select { min-height:36px; }
   canvas { width:100%; display:block; background:#f3f4f5; border:0; border-radius:14px; }
   #timeline { margin-top:12px; }
-  .side-column { display:grid; align-content:start; gap:14px; }
   .card { padding:20px; transition:background .2s; }
   .card h3 { display:flex; align-items:center; gap:8px; margin:0 0 15px; font-size:18px; letter-spacing:-.25px; }
   .card h3::before { content:''; width:10px; height:10px; border-radius:3px; background:var(--cyan); }
@@ -93,13 +96,14 @@
   .kv b { text-align:right; }
   .kv b.bad { color:var(--red); } .kv b.warn { color:#9a6a00; }
   #health-msgs { margin-top:10px; }
-  #log { min-height:56px; max-height:230px; overflow:auto; white-space:pre-wrap; color:#202226; font:500 12px/1.45 'Montserrat',Arial,sans-serif; }
+  .log-card { flex:1 1 auto; display:flex; flex-direction:column; min-height:220px; }
+  #log { flex:1 1 0; min-height:120px; overflow:auto; white-space:pre-wrap; color:#202226; font:500 12px/1.45 'Montserrat',Arial,sans-serif; }
   .empty-log { color:var(--muted); font-family:'Montserrat',Arial,sans-serif; white-space:normal; }
   .shortcut { display:block; margin-top:7px; opacity:.75; }
   #drop-overlay { display:none; position:fixed; inset:18px; z-index:20; place-items:center; border:0; border-radius:28px; background:rgba(226,29,54,.96); color:#fff; font-size:26px; font-weight:800; pointer-events:none; }
   body.dragging #drop-overlay { display:grid; }
   .site-footer { max-width:1600px; margin:0 auto; padding:0 28px 30px; color:var(--muted); font-size:12px; display:flex; justify-content:space-between; gap:20px; }
-  @media (max-width:1180px) { .top-nav { display:none; } .control-deck { grid-template-columns:1fr; } main { grid-template-columns:1fr; } .side-column { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+  @media (max-width:1180px) { .top-nav { display:none; } .control-deck { grid-template-columns:1fr; } main { grid-template-columns:1fr; } .side-column { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); } .log-card { grid-column:1 / -1; } }
   @media (max-width:720px) { .header-inner { padding:14px 16px; flex-wrap:wrap; gap:12px; } .brand p { display:none; } .health { order:2; margin:0; width:100%; } .page { padding:18px 12px 32px; } .page-title { letter-spacing:-1.2px; } .mode { padding:14px; } .mode-body { align-items:stretch; } .connection-field { min-width:100%; } input[type=range] { width:100%; } #banner { min-height:145px; padding:24px 20px; border-radius:20px; } .side-column { grid-template-columns:1fr; } .visual-card, .card { border-radius:16px; } .site-footer { padding:0 16px 24px; flex-direction:column; } }
 </style>
 </head>
@@ -137,17 +141,31 @@
   <div id="banner" class="clear" role="status" aria-live="assertive">ПУТЬ СВОБОДЕН</div>
   <main id="monitor">
   <div class="visual-column">
+    <div class="visual-card cab-card">
+    <div class="canvas-tools">
+      <h2>Вид из кабины</h2>
+      <span class="status-line">Схема по данным детектора: ось пути, профиль полотна, габарит 2,1 × 3,0 м</span>
+    </div>
+    <div class="cab-stage"><canvas id="cab" role="img" aria-label="Вид по ходу движения из кабины: рельсы, габарит поезда, проверенный свободный участок и обнаруженные объекты с дистанцией"></canvas></div>
+    </div>
     <div class="visual-card">
     <div class="canvas-tools">
-      <h2>Обстановка по ходу движения</h2>
+      <h2>Вид сверху</h2>
       <label>Дальность <select id="xmax"><option value="100">100 м</option><option value="150" selected>150 м</option><option value="250">250 м</option></select></label>
       <span id="canvas-note" class="status-line"></span>
     </div>
-    <canvas id="top" width="1200" height="420" role="img" aria-label="Вид пути сверху, границы габарита и обнаруженные объекты"></canvas>
+    <canvas id="top" width="1200" height="360" role="img" aria-label="Вид пути сверху, границы габарита и обнаруженные объекты"></canvas>
     <canvas id="timeline" width="1200" height="170" role="img" aria-label="График дистанции до препятствия за последние тридцать секунд"></canvas>
     </div>
   </div>
   <div class="side-column">
+    <div class="card" id="safety-card"><h3>Решение и надёжность <span class="status-line">v0.6</span></h3><div class="kv">
+      <span>Решение</span><b id="decision">—</b>
+      <span>Путь свободен до</span><b id="clear">—</b>
+      <span>Состояние данных</span><b id="health">—</b>
+      <span>Видимость / захват рельсов</span><b id="vis">—</b>
+      <span>Калибровка лидара</span><b id="mount">—</b>
+    </div><div id="health-msgs" class="status-line"></div></div>
     <div class="card"><h3>Детектор</h3><div class="kv">
       <span>Ближайшее препятствие</span><b id="dist">—</b>
       <span>Детекции / предупреждения</span><b id="counts">0 / 0</b>
@@ -159,13 +177,6 @@
       <span>Путь / габарит / кластеры</span><b id="stages">—</b>
       <span>Показано кадров</span><b id="frames">0</b>
     </div></div>
-    <div class="card" id="safety-card"><h3>Решение и надёжность <span class="status-line">v0.6</span></h3><div class="kv">
-      <span>Решение</span><b id="decision">—</b>
-      <span>Путь свободен до</span><b id="clear">—</b>
-      <span>Состояние данных</span><b id="health">—</b>
-      <span>Видимость / захват рельсов</span><b id="vis">—</b>
-      <span>Калибровка лидара</span><b id="mount">—</b>
-    </div><div id="health-msgs" class="status-line"></div></div>
     <div class="card" id="node-card"><h3>Узел ROS <span id="node-note" class="status-line"></span></h3><div class="kv">
       <span>Задержка декодирования и поиска</span><b id="n-latency">—</b>
       <span>Кадров в секунду</span><b id="n-fps">—</b>
@@ -179,7 +190,7 @@
       <span>Кадров предупреждения</span><b id="s-warnings">—</b>
       <span>Максимальное время</span><b id="s-max-time">—</b>
     </div></div>
-    <div class="card"><h3>Журнал событий</h3><div id="log" aria-live="polite"><span class="empty-log">Событий пока нет. Выберите JSONL-файл, перетащите его в окно или запустите демо.<span class="shortcut">Пробел — пуск/пауза · ←/→ — покадрово</span></span></div></div>
+    <div class="card log-card"><h3>Журнал событий</h3><div id="log" aria-live="polite"><span class="empty-log">Событий пока нет. Выберите JSONL-файл, перетащите его в окно или запустите демо.<span class="shortcut">Пробел — пуск/пауза · ←/→ — покадрово</span></span></div></div>
   </div>
 </main>
   </div>
@@ -208,6 +219,7 @@ const state = {
   lastObstacle: false,
   node: { lastDropped: null, alertUntil: 0 },
   last: null,                                // last result applied (for redraws)
+  cab: null,                                 // cab view: size, focal length and the labelled boxes of the last draw
   sourceName: null,
   summary: null,
 };
@@ -240,7 +252,8 @@ function drawTop(res) {
   ctx.setLineDash([]);
   if (t.axis_valid != null && t.axis_valid < XMAX) {
     ctx.fillStyle = 'rgba(255,191,25,0.16)'; ctx.fillRect(t.axis_valid * sx, 0, c.width - t.axis_valid * sx, c.height);
-    ctx.fillStyle = '#8a6200'; ctx.fillText('коридор не подтверждён дальше ' + t.axis_valid.toFixed(0) + ' м', t.axis_valid * sx + 6, c.height - 8);
+    const note = 'коридор не подтверждён дальше ' + t.axis_valid.toFixed(0) + ' м';
+    ctx.fillStyle = '#8a6200'; ctx.fillText(note, Math.min(t.axis_valid * sx + 6, c.width - ctx.measureText(note).width - 6), c.height - 8);
   }
   for (const d of (res.warnings || [])) box(ctx, d, sx, sy, cy, '#e8a400', XMAX);
   for (const d of (res.detections || [])) box(ctx, d, sx, sy, cy, '#e21d36', XMAX);
@@ -254,6 +267,226 @@ function box(ctx, d, sx, sy, cy, color, XMAX) {
   const label = `${d.distance.toFixed(1)} м  p=${d.confidence.toFixed(2)}`;
   const tw = ctx.measureText(label).width;
   ctx.fillText(label, Math.min(x + w / 2 + 4, ctx.canvas.width - tw - 4), y - h / 2 - 4);
+}
+// ----------------------------------------------------------------------------- cab view
+// The driver's-eye picture of scripts/hero_view.py without the point cloud (the dashboard only gets
+// the status JSON): rails and the train envelope along the fitted track axis and bed profile, the
+// verified-clear stretch, and the confirmed objects as boxes with their distance. The tunnel outline
+// is a schematic depth cue, not measured.
+const ENVELOPE = { half: 1.05, bottom: 0.12, top: 3.0 };   // m, GaugeConfig.profile (2.1 × 3.0 m)
+const RAIL_HALF = 0.795;                                    // m, rail-head centres of the 1520 mm gauge
+const CAB = { back: 8, up: 2.3, hfov: 36, pitch: -1.5, rangeMin: 3, far: 250 };   // camera as in hero_view.py
+const CAB_VHALF = Math.atan(Math.tan(CAB.hfov * Math.PI / 360) * 9 / 16);          // vertical half-FOV at 16:9
+const TUNNEL = [[-2.3, -0.5], [-2.3, 3.3], [-1.5, 4.3], [1.5, 4.3], [2.3, 3.3], [2.3, -0.5]];   // schematic (dy, h)
+const DECISION_RU = { GO: 'ДВИЖЕНИЕ', CAUTION: 'ВНИМАНИЕ', STOP: 'СТОП', FAULT: 'ОШИБКА' };
+function decisionOf(res) {
+  const h = res.health || {};
+  return res.decision || (res.obstacle ? 'STOP' : (h.level === 'error' ? 'FAULT' : ((res.warning || h.level === 'warn') ? 'CAUTION' : (h.level ? 'GO' : '—'))));
+}
+function trackModel(t) {
+  // resense.track.TrackModel.center_y / rail_z: quadratic bed, extrapolated linearly beyond floor_range
+  t = t || {};
+  const c0 = t.center || 0, tyaw = Math.tan(t.yaw || 0), k = t.curvature || 0;
+  const coef = Array.isArray(t.floor_coef) && t.floor_coef.length ? t.floor_coef : null;
+  const [x0, x1] = Array.isArray(t.floor_range) ? t.floor_range : [-1e9, 1e9];
+  const n = coef ? coef.length - 1 : 0;
+  const poly = X => coef.reduce((a, c) => a * X + c, 0);
+  const slope = X => coef.slice(0, -1).reduce((a, c, i) => a * X + c * (n - i), 0);
+  const floor = X => { const Xc = Math.min(Math.max(X, x0), x1); return poly(Xc) + slope(Xc) * (X - Xc); };
+  // without a bed fit (older results, the built-in demo) the rail head is the z = 0 plane
+  return { y: X => c0 + tyaw * X + 0.5 * k * X * X, z: coef ? X => floor(X) + (t.rail_offset ?? 0.35) : () => 0 };
+}
+function cabSteps(from, to) {
+  const xs = [];
+  for (let X = from; X < to; X += X < 40 ? 1 : (X < 100 ? 2 : 5)) xs.push(X);
+  xs.push(to); return xs;
+}
+function cabCamera(W, H, tm) {
+  // pinhole camera behind and above the sensor, looking along +X; a taller stage widens the view
+  const F = Math.min(W / 2 / Math.tan(CAB.hfov * Math.PI / 360), H / 2 / Math.tan(CAB_VHALF));
+  return { F, u0: W / 2, v0: H / 2, cx: -CAB.back, cy: tm.y(0), cz: tm.z(0) + CAB.up, tp: Math.tan(CAB.pitch * Math.PI / 180) };
+}
+function cabScene(ctx, W, H, r, tm, cam, opts) {
+  // everything in the 3D scene; returns the screen boxes of the objects. opts.hud: distance marks and labels
+  const { F, u0, v0, cx, cy, cz, tp } = cam, t = r ? (r.track || {}) : {};
+  const Pabs = (X, Y, Z) => { const d = Math.max(X - cx, 0.5); return [u0 - F * (Y - cy) / d, v0 - F * ((Z - cz) / d - tp)]; };
+  const P = (X, dy, h) => Pabs(X, tm.y(X) + dy, tm.z(X) + h);
+  const fade = X => Math.max(0.18, 1 - X / 280);
+  const line = (pts, color, width) => { ctx.strokeStyle = color; ctx.lineWidth = width; ctx.beginPath(); pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.stroke(); };
+  const band = (from, to, dyL, dyR, h, color) => {
+    if (!(to > from)) return;
+    const xs = cabSteps(from, to);
+    ctx.fillStyle = color; ctx.beginPath();
+    xs.forEach((X, i) => { const p = P(X, dyL, h); i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); });
+    xs.slice().reverse().forEach(X => { const p = P(X, dyR, h); ctx.lineTo(p[0], p[1]); });
+    ctx.closePath(); ctx.fill();
+  };
+  const envEnd = Math.min(CAB.far, Math.max(t.axis_valid ?? 150, 20));
+  const trackEnd = Math.min(CAB.far, envEnd + 60);        // the fitted axis is extrapolated beyond envEnd: faded, then cut
+  ctx.fillStyle = '#12151b'; ctx.fillRect(0, 0, W, H);
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  // schematic tunnel: a ring every 10 m and its longitudinal edges
+  if (opts.hud) for (let X = 10; X <= Math.min(200, trackEnd); X += 10) line(TUNNEL.map(([dy, h]) => P(X, dy, h)), `rgba(150,160,180,${0.22 * fade(X)})`, 1);
+  if (opts.hud) for (const [dy, h] of TUNNEL) line(cabSteps(0, Math.min(200, trackEnd)).map(X => P(X, dy, h)), 'rgba(150,160,180,0.12)', 1);
+  // track bed and sleepers
+  band(0, trackEnd, -1.6, 1.6, -0.2, '#1b2029');
+  for (let X = 1; X < 70; X += 1.5) {
+    line([P(X, -1.25, -0.16), P(X, 1.25, -0.16)], `rgba(120,130,148,${0.55 * fade(X * 3)})`, Math.max(0.6, Math.min(4, F * 0.2 / (X - cx))));
+  }
+  // verified-clear stretch in green up to the obstacle or the verified range; the stop zone in red
+  // (older results without clear_distance: the trusted corridor range; nothing on a fault or without data)
+  const clearEnd = !r || decisionOf(r) === 'FAULT' ? 0
+    : (r.obstacle ? r.nearest_distance : Math.min(r.clear_distance ?? t.axis_valid ?? 0, CAB.far));
+  band(CAB.rangeMin, clearEnd, -ENVELOPE.half, ENVELOPE.half, 0.01, 'rgba(19,169,87,0.34)');
+  if (r && r.obstacle && r.nearest_distance != null) band(r.nearest_distance, Math.min(r.nearest_distance + 6, CAB.far), -ENVELOPE.half, ENVELOPE.half, 0.01, 'rgba(226,29,54,0.5)');
+  // rails: per-segment width shrinks with range
+  const xsRail = cabSteps(0, trackEnd);
+  for (const side of [-RAIL_HALF, RAIL_HALF]) {
+    for (let i = 1; i < xsRail.length; i++) {
+      const X = xsRail[i];
+      line([P(xsRail[i - 1], side, 0), P(X, side, 0)], `rgba(196,204,218,${(X > envEnd ? 0.3 : 0.9) * fade(X)})`, Math.max(0.5, Math.min(5, F * 0.08 / (X - cx))));
+    }
+  }
+  // the train envelope the detector checks: floor and roof edges, a cross-section every 20 m
+  const env = a => `rgba(47,208,122,${a})`, xsEnv = cabSteps(CAB.rangeMin, envEnd);
+  for (const dy of [-ENVELOPE.half, ENVELOPE.half]) {
+    line(xsEnv.map(X => P(X, dy, ENVELOPE.bottom)), env(0.85), 1.6);
+    line(xsEnv.map(X => P(X, dy, ENVELOPE.top)), env(0.4), 1);
+  }
+  const frames = [];
+  if (opts.hud) for (let X = 10; X < envEnd; X += 20) frames.push(X);
+  if (opts.frameAt != null && opts.frameAt < envEnd) frames.push(opts.frameAt);
+  for (const X of frames) {
+    const rect = [[-1, 0], [1, 0], [1, 1], [-1, 1], [-1, 0]].map(([sd, up]) => P(X, sd * ENVELOPE.half, up ? ENVELOPE.top : ENVELOPE.bottom));
+    line(rect, env(X === opts.frameAt ? 0.9 : 0.45 * fade(X)), X === opts.frameAt ? 1.6 : 1);
+  }
+  if (opts.hud) {
+    const lab = P(14, -ENVELOPE.half, ENVELOPE.top);
+    ctx.font = '600 13px Montserrat'; ctx.fillStyle = env(0.95); ctx.textAlign = 'right';
+    ctx.fillText('габарит поезда 2,1 × 3,0 м', lab[0] - 8, lab[1] - 8);
+  }
+  // confirmed objects, far first so that the nearest one is drawn on top
+  const objs = r ? [...(r.warnings || []).map(d => [d, false]), ...(r.detections || []).map(d => [d, true])]
+    .filter(([d]) => d && d.distance != null && d.distance <= CAB.far)
+    .sort((a, b) => b[0].distance - a[0].distance) : [];
+  const boxes = [];
+  for (const [d, gauge] of objs) {
+    const size = d.size || [0.5, 0.5, 1.5];
+    const ctr = d.center || [d.distance + size[0] / 2, tm.y(d.distance) + (d.lateral || 0), tm.z(d.distance) + size[2] / 2];
+    const lo = ctr.map((v, i) => v - size[i] / 2), hi = ctr.map((v, i) => v + size[i] / 2);
+    const corner = (i, j, k) => Pabs(i ? hi[0] : lo[0], j ? hi[1] : lo[1], k ? hi[2] : lo[2]);
+    const color = gauge ? '#ff2a45' : '#ffbf19';
+    const front = [corner(0, 0, 0), corner(0, 1, 0), corner(0, 1, 1), corner(0, 0, 1)];
+    ctx.fillStyle = gauge ? 'rgba(255,42,69,0.35)' : 'rgba(255,191,25,0.3)';
+    ctx.beginPath(); front.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = color; ctx.lineWidth = 1.5; ctx.beginPath();
+    for (let e = 0; e < 12; e++) {                           // the 12 edges: 4 along each axis
+      const ax = e >> 2, m = e & 3, o = [m & 1, m >> 1], p0 = [0, 0, 0], p1 = [0, 0, 0];
+      const rest = [0, 1, 2].filter(i => i !== ax); p0[rest[0]] = p1[rest[0]] = o[0]; p0[rest[1]] = p1[rest[1]] = o[1]; p1[ax] = 1;
+      const p = corner(...p0), q = corner(...p1); ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]);
+    }
+    ctx.stroke();
+    const us = [], vs = [];
+    for (let i = 0; i < 8; i++) { const p = corner(i & 1, (i >> 1) & 1, (i >> 2) & 1); us.push(p[0]); vs.push(p[1]); }
+    const bx = { zone: gauge ? 'gauge' : 'warning', distance: d.distance, size, center: ctr,
+      x0: Math.min(...us), y0: Math.min(...vs), x1: Math.max(...us), y1: Math.max(...vs) };
+    if (opts.hud) {
+      // a frame around it (a distant person is only a few pixels) and the label chip
+      const pad = 7, x0 = bx.x0 - pad, x1 = bx.x1 + pad, y0 = bx.y0 - pad, y1 = bx.y1 + pad;
+      ctx.strokeStyle = color; ctx.lineWidth = 3; ctx.strokeRect(x0, y0, x1 - x0, y1 - y0);
+      bx.label = `${gauge ? 'ПРЕПЯТСТВИЕ' : 'ОБЪЕКТ У ГАБАРИТА'} · ${d.distance.toFixed(1)} м`;
+      ctx.font = '800 15px Montserrat';
+      const cw = ctx.measureText(bx.label).width + 24, ch = 32;
+      const lx = Math.max(8, Math.min(W - cw - 8, (x0 + x1) / 2 - cw / 2)), ly = Math.max(8, y0 - ch - 8);
+      ctx.fillStyle = gauge ? '#e21d36' : '#ffbf19';
+      ctx.beginPath(); ctx.roundRect ? ctx.roundRect(lx, ly, cw, ch, 9) : ctx.rect(lx, ly, cw, ch); ctx.fill();
+      ctx.fillStyle = gauge ? '#fff' : '#18130a'; ctx.textAlign = 'left'; ctx.fillText(bx.label, lx + 12, ly + 21);
+      bx.chip = [lx, ly, lx + cw, ly + ch]; bx.frame = [x0, y0, x1, y1];
+    }
+    boxes.push(bx);
+  }
+  // distance marks beside the track (+ is left), skipped where a label chip or another mark already is
+  if (opts.hud) {
+    ctx.font = '600 12px Montserrat'; ctx.textAlign = 'right';
+    let lastV = Infinity;
+    for (const X of [25, 50, 100]) {
+      const a = P(X, 1.35, 0), b = P(X, 1.9, 0), tw = ctx.measureText(X + ' м').width;
+      const rect = [b[0] - tw - 8, b[1] - 10, a[0] + 2, b[1] + 8];
+      const hits = q => q && rect[0] < q[2] && rect[2] > q[0] && rect[1] < q[3] && rect[3] > q[1];
+      if (lastV - b[1] < 16 || boxes.some(o => hits(o.chip) || hits(o.frame))) continue;
+      lastV = b[1];
+      line([a, b], `rgba(200,208,222,${0.7 * fade(X)})`, 1.5);
+      ctx.fillStyle = `rgba(214,220,232,${Math.max(0.45, fade(X))})`; ctx.fillText(X + ' м', b[0] - 6, b[1] + 4);
+    }
+  }
+  return { boxes, clearEnd, envEnd };
+}
+function drawCab(res) {
+  const c = $('cab'); if (!c) return;
+  const W = c.clientWidth, H = c.clientHeight; if (!W || !H) return;
+  const dpr = window.devicePixelRatio || 1;
+  if (c.width !== Math.round(W * dpr) || c.height !== Math.round(H * dpr)) { c.width = Math.round(W * dpr); c.height = Math.round(H * dpr); }
+  const ctx = c.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const r = res || null, t = r ? (r.track || {}) : {}, tm = trackModel(t), cam = cabCamera(W, H, tm);
+  const main = cabScene(ctx, W, H, r, tm, cam, { hud: true });
+  const round = (x, y, w, h, rad) => { ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x, y, w, h, rad) : ctx.rect(x, y, w, h); };
+  ctx.textAlign = 'left';
+  if (!r) {
+    ctx.font = '600 15px Montserrat'; ctx.fillStyle = 'rgba(214,220,232,0.85)';
+    ctx.fillText('Нет данных: подключите поток, выберите файл или запустите демо', 18, 32);
+    state.cab = { width: W, height: H, focal: cam.F, clearEnd: 0, boxes: [], inset: null };
+    return;
+  }
+  // decision chip, as the node publishes it on /resense/decision
+  let dec = decisionOf(r); if (dec === '—') dec = 'GO';
+  const sub = dec === 'STOP' ? (r.nearest_distance != null ? `препятствие ${r.nearest_distance.toFixed(1)} м` : 'препятствие в габарите')
+    : dec === 'CAUTION' ? (r.warning ? 'объект рядом с габаритом' : 'снижена достоверность данных')
+    : dec === 'FAULT' ? 'нет достоверных данных'
+    : r.clear_distance == null ? 'путь свободен'
+    : r.clear_distance > 0 ? `путь свободен ${r.clear_distance.toFixed(0)} м` : 'свободный участок не подтверждён';
+  ctx.font = '900 22px Montserrat';
+  const head = DECISION_RU[dec] || dec, hw = ctx.measureText(head).width + 28;
+  ctx.fillStyle = { STOP: '#e21d36', CAUTION: '#ffbf19', FAULT: '#7b3fe4' }[dec] || '#13a957';
+  round(16, 16, hw, 44, 12); ctx.fill();
+  ctx.fillStyle = dec === 'CAUTION' ? '#18130a' : '#fff'; ctx.fillText(head, 30, 46);
+  ctx.font = '700 19px Montserrat'; ctx.fillStyle = '#fff'; ctx.fillText(sub, 16 + hw + 14, 45);
+  // legend: what the green stretch means and how far the corridor is trusted
+  ctx.font = '600 12px Montserrat';
+  const legend = [
+    ['rgba(19,169,87,0.9)', main.clearEnd > CAB.rangeMin ? `проверено свободно: ${CAB.rangeMin}–${main.clearEnd.toFixed(0)} м` : 'свободный участок не подтверждён'],
+    ['rgba(47,208,122,0.95)', 'габарит поезда'],
+  ];
+  if (t.axis_valid != null) legend.push(['rgba(255,191,25,0.95)', `ось пути подтверждена до ${Math.min(t.axis_valid, 9999).toFixed(0)} м`]);
+  let lx = 16; const ly = H - 16;
+  ctx.fillStyle = 'rgba(18,21,27,0.82)'; round(8, ly - 20, Math.min(W - 16, legend.reduce((a, [, s]) => a + ctx.measureText(s).width + 36, 8)), 28, 8); ctx.fill();
+  for (const [col, text] of legend) {
+    ctx.fillStyle = col; ctx.fillRect(lx, ly - 10, 12, 4);
+    ctx.fillStyle = 'rgba(226,231,240,0.92)'; ctx.fillText(text, lx + 18, ly - 3);
+    lx += ctx.measureText(text).width + 36;
+  }
+  // close-up of the nearest object, zoomed on its cross-section of the envelope (far objects are a few pixels)
+  const target = main.boxes.filter(b => b.zone === 'gauge').pop() || main.boxes.filter(b => b.zone === 'warning').pop();
+  let inset = null;
+  if (target && target.distance > 20) {
+    const iw = Math.round(Math.max(220, W * 0.3)), ih = Math.round(Math.max(170, H * 0.36)), ix = W - iw - 16, iy = 16;
+    const Xo = target.distance, d = Xo - cam.cx;
+    const F = Math.max(cam.F * 1.5, 0.8 * ih * d / (ENVELOPE.top + 0.5));
+    // centred between the track axis and the object, and between mid-envelope and the object's height
+    const ay = ((tm.y(Xo) + target.center[1]) / 2 - cam.cy) / d, az = ((tm.z(Xo) + ENVELOPE.top / 2 + target.center[2]) / 2 - cam.cz) / d;
+    const icam = { ...cam, F, u0: iw / 2 + F * ay, v0: ih / 2 + F * (az - cam.tp) };
+    ctx.save(); ctx.translate(ix, iy); round(0, 0, iw, ih, 12); ctx.clip();
+    cabScene(ctx, iw, ih, r, tm, icam, { hud: false, frameAt: Xo });
+    ctx.restore();
+    const col = target.zone === 'gauge' ? '#ff2a45' : '#ffbf19';
+    ctx.strokeStyle = col; ctx.lineWidth = 2; round(ix, iy, iw, ih, 12); ctx.stroke();
+    const sz = target.size || [];
+    const caption = `крупно · ${Xo.toFixed(1)} м` + (sz.length === 3 ? ` · ${sz[0].toFixed(1)}×${sz[1].toFixed(1)}×${sz[2].toFixed(1)} м` : '');
+    ctx.font = '700 12px Montserrat'; ctx.fillStyle = 'rgba(18,21,27,0.82)';
+    const cwid = ctx.measureText(caption).width + 16; round(ix + 8, iy + 8, cwid, 22, 6); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.fillText(caption, ix + 16, iy + 23);
+    inset = { x: ix, y: iy, width: iw, height: ih, distance: Xo, zone: target.zone };
+  }
+  state.cab = { width: W, height: H, focal: cam.F, clearEnd: main.clearEnd, boxes: main.boxes, inset };
 }
 function timelineNow() {
   if (state.mode === 'replay') { const f = state.last; return f ? stampOf(f) : 0; }
@@ -326,13 +559,13 @@ function applyResult(res, opts) {
     state.alarmFrames = 0;
   }
   state.lastObstacle = !!res.obstacle;
-  if (draw) { drawTop(res); drawTimeline(); }
+  if (draw) { drawTop(res); drawTimeline(); drawCab(res); }
 }
 function applySafety(res) {
   // v0.6 fields: decision (node only, else derived), clear_distance, health, mount; absent in older results
   const h = res.health || {}, m = res.mount || {};
-  const decision = res.decision || (res.obstacle ? 'STOP' : (h.level === 'error' ? 'FAULT' : ((res.warning || h.level === 'warn') ? 'CAUTION' : (h.level ? 'GO' : '—'))));
-  $('decision').textContent = { GO: 'ДВИЖЕНИЕ', CAUTION: 'ВНИМАНИЕ', STOP: 'СТОП', FAULT: 'ОШИБКА' }[decision] || decision;
+  const decision = decisionOf(res);
+  $('decision').textContent = DECISION_RU[decision] || decision;
   $('decision').className = { STOP: 'bad', FAULT: 'bad', CAUTION: 'warn' }[decision] || '';
   $('clear').textContent = res.clear_distance == null ? '—' : res.clear_distance.toFixed(0) + ' м';
   $('health').textContent = { ok: 'норма', warn: 'предупреждение', error: 'ошибка' }[h.level] || '—';
@@ -440,11 +673,13 @@ function loadText(text, name) {
 }
 function demoFrames() {
   const frames = [];
+  const track = { center: .04, yaw: .002, curvature: .00018, axis_valid: 145 };
+  const axisY = X => track.center + Math.tan(track.yaw) * X + 0.5 * track.curvature * X * X;
   for (let i = 0; i < 60; i++) {
     const approach = i >= 10 && i < 50, distance = 120 - (i - 10) * (80 / 39);
     const obstacle = approach && i >= 14, warning = approach && i >= 10 && i < 14;
     const detection = { id: 1, zone: obstacle ? 'gauge' : 'warning', distance, lateral: 0.08,
-      center: [distance + 0.2, 0.08, 0.9], size: [0.4, 0.5, 1.7], n_points: Math.round(8 + (120 - distance) * .7),
+      center: [distance + 0.2, axisY(distance + 0.2) + 0.08, 0.9], size: [0.4, 0.5, 1.7], n_points: Math.round(8 + (120 - distance) * .7),
       confidence: obstacle ? Math.min(.99, .62 + (120 - distance) / 160) : .45, age: Math.max(1, i - 9), height_min: .12, intensity: 60 };
     frames.push({ stamp: i * FRAME_DT, frame: i, frame_id: 'resense_demo', obstacle, warning,
       decision: obstacle ? 'STOP' : (warning ? 'CAUTION' : 'GO'), clear_distance: obstacle ? distance : 145,
@@ -452,7 +687,7 @@ function demoFrames() {
       mount: { status: 'ok', roll_deg: .1, pitch_deg: -.2, yaw_deg: 0, frames_used: 20 },
       nearest_distance: obstacle ? distance : null, detections: obstacle ? [detection] : [], warnings: warning ? [detection] : [],
       n_candidates: approach ? detection.n_points : 0, n_points: 190000, n_corridor: approach ? detection.n_points : 0,
-      track: { center: .04, yaw: .002, curvature: .00018, axis_valid: 145 },
+      track: { ...track },
       timing_ms: { track: 14, corridor: 5, cluster: approach ? 18 : 8, total: approach ? 49 : 38 },
       node: { latency_ms: approach ? 56 : 44, fps: 10, frames: i + 1, dropped_frames: 0, input_period_ms: 100 } });
   }
@@ -538,12 +773,14 @@ document.addEventListener('drop', ev => {
 setInterval(() => { if (state.mode === 'live') drawTimeline(); }, 500);
 
 // test / automation hook (used by web/demo/check_dashboard.py)
-window.resense = { state, loadText, play, pause, step, seek, setMode, applyResult, summarizeFrames, demoFrames };
+window.resense = { state, loadText, play, pause, step, seek, setMode, applyResult, summarizeFrames, demoFrames, drawCab };
 
-drawTop({ track: { center: 0, yaw: 0, curvature: 0 }, detections: [], warnings: [] }); drawTimeline();
+drawTop({ track: { center: 0, yaw: 0, curvature: 0 }, detections: [], warnings: [] }); drawTimeline(); drawCab(null);
+// the cab canvas follows its stage (it grows to balance the columns): redraw at the new size
+if (window.ResizeObserver) new ResizeObserver(() => drawCab(state.last)).observe($('cab'));
 if (document.fonts) document.fonts.ready.then(() => {
   drawTop(state.last || { track: { center: 0, yaw: 0, curvature: 0 }, detections: [], warnings: [] });
-  drawTimeline();
+  drawTimeline(); drawCab(state.last);
 });
 </script>
 </body>
