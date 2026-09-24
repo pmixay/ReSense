@@ -12,11 +12,12 @@ video recipes.
 
 | file | what |
 |---|---|
-| [`index.html`](index.html) | Russian-language dashboard in the modular Moscow Transport visual style: banner, cab view, top-down view, decision/health, timeline, node stats, run summary and alarm log; live + offline replay + built-in demo; no build step |
-| [`assets/fonts/`](assets/fonts/) | local Montserrat variable font subsets (Cyrillic + Latin) and the OFL license; the dashboard typography works offline |
+| [`index.html`](index.html) | Russian-language dashboard with a compact Metro-inspired layout: status, cab view, top-down view, decision/health, timeline, node stats, run summary and alarm log; live + offline replay + built-in demo; no build step |
+| [`assets/fonts/`](assets/fonts/) | Moscow Sans Regular and ExtraBold from the supplied style archive, loaded locally; legacy Montserrat files remain for older documents |
 | [`foxglove_layout.json`](foxglove_layout.json) | Foxglove Studio layout (3D + plots + indicator + status), see "Remote demo with Foxglove" |
 | [`demo/make_demo_run.py`](demo/make_demo_run.py) | synthetic approach sequence → `out/demo_run.jsonl` in the `resense run --out` format |
 | [`demo/check_dashboard.py`](demo/check_dashboard.py) | Playwright + headless Chromium: loads the JSONL into the dashboard, plays it, asserts the banner, screenshot / video |
+| [`demo/capture_gallery.py`](demo/capture_gallery.py) | Playwright + Chromium: refreshes the four screenshots in `docs/images` from the built-in demo and the recorded real status stream |
 | [`demo/test_web.py`](demo/test_web.py) | pytest for the layouts, the JSONL format and the browser replay (11 tests): `python -m pytest -q web/demo` |
 | `../ros2_ws/src/resense_ros/rviz/resense.rviz` | RViz2 layout (P2-owned, loaded by `detector.launch.py rviz:=true` and the compose `rviz` service) |
 
@@ -28,17 +29,16 @@ obstacle](../docs/images/dashboard-stop.png) and [the cab view on the real `doub
 stream](../docs/images/dashboard-cab-real.png). The complete gallery and its data provenance are in
 [`docs/images/README.md`](../docs/images/README.md). *Built-in 60-frame UI demonstration (synthetic
 interface data, not the organizers' data and not evaluation evidence). The dashboard uses an
-original ReSense mark and graphics; no assets from the reference portal are bundled.*
+original ReSense mark and graphics; the supplied Moscow Sans fonts are bundled locally.*
 
 ## Dashboard (`index.html`)
 
 Open the file in a browser; nothing to install or build. The visible interface is entirely in
-Russian and follows the reference portal's light background, modular card floors, red primary
-actions, large status typography and responsive grid. Montserrat is bundled locally. Cards,
-controls and active states use flat background colours without borders, outlines, glow or drop
-shadows. The layout targets desktop screens: the two columns always end at the same height (the
-cab view grows to match the side cards, the event log fills the rest of the right column). Two
-modes use the same widgets:
+Russian. Moscow Sans and the primary red (`#E4000D`) come from the supplied Metro style archive;
+the functional green and yellow keep safety decisions distinct. The design uses simple borders,
+white panels and dark text. The red header stays visible at the top, hides while scrolling down
+and returns when scrolling up. On desktop, the two columns end at the same height; on phones,
+the plots redraw at their displayed width so labels remain readable. Two modes use the same widgets:
 
 * **Live**: enter the rosbridge URL (`ws://<host>:9090`, from
   `ros2 launch rosbridge_server rosbridge_websocket_launch.xml` on the machine running the

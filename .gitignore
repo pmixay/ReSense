@@ -48,3 +48,6 @@ docs/presentation/private/
 
 # optional native kernels built in place (scripts/build_native.sh, pip install -e .)
 resense/_resense_native*.so
+
+# Local design reference archive; only the needed font files are committed.
+style.zip
