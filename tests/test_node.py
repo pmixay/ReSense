@@ -102,6 +102,11 @@ class _Node:
     def create_timer(self, period, cb):
         return types.SimpleNamespace(cancel=lambda: None, cb=cb)
 
+    def create_guard_condition(self, cb):
+        gc = types.SimpleNamespace(cb=cb, triggered=0)
+        gc.trigger = lambda: setattr(gc, "triggered", gc.triggered + 1)
+        return gc
+
     def get_logger(self):
         return self._logger
 
@@ -442,12 +447,65 @@ def test_status_marker_says_the_decision_and_publishing_errors_are_contained(nod
     assert node.n_frames == frames and node.published["/resense/decision"][-1].data == "FAULT"
 
 
-def test_input_queue_holds_only_the_newest_frame(node_cls):
+def test_input_queue_depth(node_cls):
     node = node_cls()
-    assert node.subs["/lidar_points"].qos["depth"] == 1        # a slow frame makes the node skip, never lag behind
+    assert node.subs["/lidar_points"].qos["depth"] == 40       # a burst of the player waits for the catch-up
     assert node.subs["/lidar_points"].qos["history"] == 1      # keep last
     _Node.overrides = {"input_queue_depth": 3}
     assert node_cls().subs["/lidar_points"].qos["depth"] == 3
+
+
+def test_backlog_is_worked_through_catchup_step_apart(node_cls):
+    """`ros2 bag play` (Humble) preloads the bag, then sends the overdue first seconds back to back
+    (doubleT_obstacle: 41 clouds in 0.4 s, EXPERIMENTS.md section 3b). The node takes every waiting
+    frame and processes one every catchup_step s of recording from the first frame on, instead of
+    the newest only (the first 2-4 s of every played bag were lost); a frame that waits alone is
+    processed at once, and catchup_step 0 restores the newest-only behaviour."""
+    plan = node_cls.catchup_plan
+    assert plan([5.0], 4.9, 0.3, 5.0) == [0]
+    t = [0.1 * k for k in range(41)]
+    chain = [round(0.3 * k, 1) for k in range(14)] + [4.0]      # from the first frame to the newest
+    assert [round(t[i], 1) for i in plan(t, None, 0.3, 5.0)] == chain
+    assert plan(t, None, 0.0, 5.0) == [40]                       # step 0: the newest only
+    assert [round(t[i], 1) for i in plan(t, 1.0, 0.3, 5.0)][:3] == [1.3, 1.6, 1.9]
+    assert plan(t, None, 0.3, 1.0)[0] == 30                      # older than the newest by > max lag: dropped
+    assert plan([2.0, 2.1], 0.0, 0.3, 5.0) == [0, 1]             # a hole in the data: the next frame
+
+    def stamp_msg(s):
+        return _Msg(header=_Msg(frame_id="lidar_livox", stamp=_Msg(sec=int(s), nanosec=int(round((s % 1) * 1e9)))))
+
+    for step, expect in ((0.3, chain), (0.0, [4.0])):
+        _Node.overrides = {"catchup_step": step}
+        node = node_cls()
+        topic = "/sensing/lidar/hesai128/pointcloud"
+        queue = [stamp_msg(0.1 * k) for k in range(1, 41)]       # waiting behind the first frame
+        sub = node.subs[topic]
+        sub.msg_type, sub.raw = None, False
+
+        class _Handle:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *a):
+                return False
+
+            def take_message(self, msg_type, raw):
+                held.append(len(node.pending))
+                return (queue.pop(0), {}) if queue else None
+        sub.handle = _Handle()
+        held = []
+        seen = []
+
+        def process(msg, t, node=node):
+            node.active_topic = t
+            seen.append(round(node._stamp(msg), 1))
+        node.process_cloud = process
+        node.on_cloud(stamp_msg(0.0), topic)
+        while node.pending:
+            node.on_pending()
+        assert seen == expect
+        assert max(held) <= len(expect) + 1                     # the frames to be skipped are not held
+        assert not node.pending and node.pending_gc.triggered == len(expect) - 1
 
 
 
