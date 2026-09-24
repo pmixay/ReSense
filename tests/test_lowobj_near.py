@@ -39,7 +39,7 @@ def _bed(trough=False, depth=0.32):
 def _patch(x, y, length=0.3, width=0.3, base=-0.32, height=0.1, step=0.04):
     xx, yy, zz = np.meshgrid(np.arange(x, x + length + 1e-5, step),
                              np.arange(y - width / 2, y + width / 2 + 1e-5, step),
-                             [base + height])
+                             np.arange(base, base + height + 1e-5, min(step, 0.04)))
     return np.stack([xx.ravel(), yy.ravel(), zz.ravel()], axis=1).astype(np.float32)
 
 

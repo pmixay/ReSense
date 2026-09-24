@@ -252,6 +252,7 @@ class LowObjectConfig:
     min_points: int = 3                # voxels of a low cluster
     min_height: float = 0.0            # m, vertical extent of a low cluster (0: a flat top face at close range is enough, its excess over the bed is the height)
     max_length: float = 1.5            # m along the track (rails, guard rails, cables and ducts are longer)
+    min_length: float = 0.0            # m along the track; used by the compact near-bed opt-in path
     max_width: float = 2.2             # m across the track: the envelope is 2.1 m wide (v0.6.2: 1.6 m rejected a person lying across the track, EXPERIMENTS.md §2d)
     min_width: float = 0.15            # m, a low cluster narrower than this across the track is a rail-head sliver / fastening
     straddle_enabled: bool = True      # v0.6.2: objects straddling the envelope floor (lowobj.py step 4)
@@ -263,9 +264,13 @@ class LowObjectConfig:
     near_enabled: bool = False         # opt-in: real-ride false-positive cost has not been measured
     near_range: float = 30.0           # m, only where the cross-section is learned from dense returns
     near_half_width: float = 0.55      # m from the track axis; rail heads/fastenings are near +-0.8 m
-    near_min_excess: float = 0.08      # m above the local bed, not every small bump or flat cover
+    near_min_excess: float = 0.05      # m above the local bed; shape gates reject flat infrastructure
     near_min_width: float = 0.24      # m observed width; a ray-cast 0.30 m box is ~0.245 m at 20 m
-    near_min_points: int = 5          # distinct occupied voxels
+    near_max_width: float = 0.55      # m; wider patches are bed/structure, not a compact object
+    near_min_length: float = 0.18     # m observed along-track extent; reject grazing slivers
+    near_min_height: float = 0.0      # m; top-surface returns may have zero observed vertical extent
+    near_min_bed_lateral_bins: int = 20  # support must span the central bed, not only the object footprint
+    near_min_points: int = 10         # distinct occupied voxels; reject sparse fixture fragments
     near_max_length: float = 0.75     # m along track; reject cables, guard rails, long drain covers
 
 

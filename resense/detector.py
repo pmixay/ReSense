@@ -386,6 +386,8 @@ class Detector:
             lows = [c for c in lows if not any(_overlap(c, k) for k in straddling)] + straddling
         if near is not None and len(near):
             ncfg = replace(cfg.lowobj, min_top=-1.0, min_width=cfg.lowobj.near_min_width,
+                           max_width=cfg.lowobj.near_max_width, min_length=cfg.lowobj.near_min_length,
+                           min_height=cfg.lowobj.near_min_height,
                            min_points=cfg.lowobj.near_min_points, max_length=cfg.lowobj.near_max_length)
             central = _clusters_of(near, lcfg, axis_valid=min(valid, cfg.lowobj.near_range),
                                    low=near.low, low_cfg=ncfg)

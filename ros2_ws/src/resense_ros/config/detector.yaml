@@ -201,6 +201,7 @@ resense:
     min_points: 3
     min_height: 0.0
     max_length: 1.5
+    min_length: 0.0
     max_width: 2.2                 # m across: the whole envelope (1.6 rejected a person lying across the track; identical on all real frames)
     min_width: 0.15                # a low cluster narrower than this across the track is a rail sliver / fastening
     straddle_enabled: true         # v0.6.2: objects straddling the envelope floor (an object lying across a rail)
@@ -211,10 +212,14 @@ resense:
     near_enabled: false            # opt-in until real-ride false-positive cost is measured
     near_range: 30.0               # within the dense template range
     near_half_width: 0.55          # exclude rail heads and fastenings at +-0.8 m
-    near_min_excess: 0.08          # m above local bed
+    near_min_excess: 0.05          # m above local bed; shape gates reject flat infrastructure
     near_min_width: 0.24           # observed width; a ray-cast 0.30 m box is ~0.245 m at 20 m
-    near_min_points: 5             # occupied voxels
-    near_max_length: 0.75          # m along track, reject linear infrastructure
+    near_max_width: 0.55           # m; wider patches are bed/structure, not a compact object
+    near_min_length: 0.18          # m observed along-track extent; reject grazing slivers
+    near_min_height: 0.0           # m; top-surface returns may have zero observed vertical extent
+    near_min_bed_lateral_bins: 20   # support must span the central bed, not only the object footprint
+    near_min_points: 10             # occupied voxels; reject sparse fixture fragments
+    near_max_length: 0.75           # m along track, reject linear infrastructure
   calibration:                     # v0.6: automatic mount calibration (resense/calibration.py)
     enabled: true
     frames: 20                       # v0.6.1: final tilt = median of 20 observations ...

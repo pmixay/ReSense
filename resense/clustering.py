@@ -177,8 +177,9 @@ def _low_cluster(b: _Blob, dy, h, intensity, frame_idx, cfg: ClusterConfig, low_
     when it is short along the track, not too wide, wide enough across the track and reaches
     the rail-head plane; the corridor's infrastructure filters are not applied."""
     size = b.size
-    if (size[0] > low_cfg.max_length or size[1] > low_cfg.max_width or size[2] < low_cfg.min_height
-            or b.n_vox < low_cfg.min_points):
+    if (size[0] < getattr(low_cfg, "min_length", 0.0)
+            or size[0] > low_cfg.max_length or size[1] > low_cfg.max_width
+            or size[2] < low_cfg.min_height or b.n_vox < low_cfg.min_points):
         return None
     # rail-head slivers, fastenings and joint bars are narrow across the track; a 30 cm object is not
     if size[1] < low_cfg.min_width:
