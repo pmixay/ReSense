@@ -98,6 +98,7 @@ from vision_msgs.msg import Detection3D, Detection3DArray, ObjectHypothesisWithP
 from visualization_msgs.msg import Marker, MarkerArray
 from tf2_ros import StaticTransformBroadcaster
 
+from resense import _native
 from resense.config import DetectorConfig
 from resense.detector import Detector, FrameResult
 from resense.frame import Frame, axis_matrix
@@ -259,7 +260,7 @@ class DetectorNode(Node):
                           if self.input_reliability not in ("reliable", "best_effort") else None)
         self.get_logger().info("ReSense detector listening on " + ", ".join(self.subs)
                                + (" (+ auto-discovery)" if self.discover_timer else "")
-                               + f"; input reliability {self.input_reliability}")
+                               + f"; input reliability {self.input_reliability}; per-frame kernels: {_native.status()}")
 
     # ------------------------------------------------------------------
     def input_qos(self, reliability: str):

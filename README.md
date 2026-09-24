@@ -156,7 +156,8 @@ teams (23.09). Decision logic and thresholds: [`docs/ALGORITHM.md`](docs/ALGORIT
 | [`ros2_ws/src/resense_ros/`](ros2_ws/src/resense_ros/) | ROS 2 Humble node, launch file, parameters, RViz layout |
 | [`docker/`](docker/), [`docker-compose.yml`](docker-compose.yml), [`scripts/`](scripts/) | reproducible build and demo |
 | [`configs/default.yaml`](configs/default.yaml) | the tunable parameters, copied into the ROS package at build time (`scripts/sync_params.sh`, checked in CI) |
-| [`tests/`](tests/) | 235 pytest tests on a synthetic ray-cast tunnel, no dataset needed (algorithm, envelope, calibration, guards, the ROS node against stand-ins) |
+| [`native/`](native/) | optional C++ kernels for the per-frame hot spots (track stage, corridor selection, health visibility): about half the detector time, bit-identical output; built by `pip install`, numpy fallback without a compiler or with `RESENSE_NATIVE=0` ([ARCHITECTURE](docs/ARCHITECTURE.md) "Native kernels") |
+| [`tests/`](tests/) | 263 pytest tests on a synthetic ray-cast tunnel, no dataset needed (algorithm, envelope, calibration, guards, the ROS node against stand-ins) |
 | [`web/`](web/) | browser dashboard (offline replay; live via rosbridge, installed separately), Foxglove layout, label tool, 11 headless tests |
 | [`docs/`](docs/) | [`docs/README.md`](docs/README.md): every document, its purpose and owner; organizers' material in [`docs/organizers/`](docs/organizers/) |
 | [`labels/`](labels/) | `doubleT_obstacle.json` (real labels), `new_data_objects.json` (every object confirmed on the ride, by cause), `cloud_with_fake_obj.json` (the organizers' synthetic objects) |
@@ -165,6 +166,7 @@ teams (23.09). Decision logic and thresholds: [`docs/ALGORITHM.md`](docs/ALGORIT
 
 ```bash
 pip install -e ".[dev]"                   # numpy scipy scikit-learn pyyaml + rosbags matplotlib open3d pytest
+                                          # + the optional C++ kernels (native/); scripts/build_native.sh without pip
 pytest -q                                 # "skipped" means open3d is missing (RESENSE_REQUIRE_SYNTHETIC=1 fails then, as in CI)
 pipx run ruff==0.15.8 check .             # lint, as the CI job "lint"
 

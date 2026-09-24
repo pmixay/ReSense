@@ -45,3 +45,6 @@ ros2_ws/log/
 
 # Presentation: team personal data and photos stay local (scripts/build_deck.py --team)
 docs/presentation/private/
+
+# optional native kernels built in place (scripts/build_native.sh, pip install -e .)
+resense/_resense_native*.so
