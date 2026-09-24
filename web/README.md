@@ -26,7 +26,8 @@ video recipes.
 Current UI captures: [GO / path clear](../docs/images/dashboard-clear.png), [CAUTION / object near
 the gauge](../docs/images/dashboard-caution.png), [STOP / confirmed
 obstacle](../docs/images/dashboard-stop.png) and [the cab view on the real `doubleT_obstacle` node
-stream](../docs/images/dashboard-cab-real.png). The complete gallery and its data provenance are in
+stream](../docs/images/dashboard-cab-real.png). [The scheme and side sections](../docs/images/dashboard-plan.png)
+show the alternative monitoring view. The complete gallery and its data provenance are in
 [`docs/images/README.md`](../docs/images/README.md). *Built-in 60-frame UI demonstration (synthetic
 interface data, not the organizers' data and not evaluation evidence). The dashboard uses an
 original ReSense mark and graphics; the supplied Moscow Sans fonts are bundled locally.*

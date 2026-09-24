@@ -137,7 +137,9 @@ at 55.8 m. Videos (v0.6.2; Docker chain v0.6.3; the dashboard clip shows the ear
 [`docs/video/`](docs/video/). Slides: [`docs/presentation/`](docs/presentation/). Below: the
 dashboard (synthetic UI demo, not evaluation evidence; [gallery](docs/images/README.md)).*
 
-![ReSense dashboard showing a STOP decision, the cab view with the confirmed obstacle, health data, top-down view, timeline and run summary](docs/images/dashboard-stop.png)
+![ReSense 16:9 dashboard showing a STOP decision, the cab view and collapsible detail sections](docs/images/dashboard-stop.png)
+
+The [scheme and detailed system view](docs/images/dashboard-plan.png) are available in the second tab.
 
 ## What to look at
 
