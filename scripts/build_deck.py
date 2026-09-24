@@ -10,9 +10,18 @@ Google Slides:
 
 Slides 7-11 (title, team, team cards, history, solution in short) keep their design and
 structure as the organizers require; the solution slides use the template's own layouts
-(12-29). Personal data stay as ``<...>`` placeholders for the captain. Every number is taken
-from ``N`` below, which is copied from docs/EXPERIMENTS.md; the pictures are made by
-``scripts/hero_view.py`` and ``resense run --render`` (paths in ``IMG``).
+(12-29). Every number is taken from ``N`` below, which is copied from docs/EXPERIMENTS.md; the
+pictures are made by ``scripts/hero_view.py`` and ``resense run --render`` (paths in ``IMG``).
+
+The team's personal data (names, Telegram nicknames, place of study, city, photos) are not in the
+public repository: without ``--team`` they stay ``<...>`` placeholders. The captain keeps them in a
+git-ignored folder and builds the full deck with
+
+    python scripts/build_deck.py --template template.pptx --team docs/presentation/private/team.json \
+      --out docs/presentation/private/ReSense_LCT2026.pptx
+
+``team.json`` holds the keys of ``TEAM`` below; photo paths are relative to the JSON file, and a
+card without a photo keeps the template's empty frame.
 
 Needs ``python-pptx`` (``pip install python-pptx``); not part of the runtime image.
 """
@@ -44,17 +53,28 @@ IMG = {
 # ---- every number on the slides (docs/EXPERIMENTS.md §0, §1d, §2d, §3) --------------------
 N = {
     "frames": "13 759",
-    "person_hits": "58 из 61", "person_first": "0,3 с", "person_err": "0,35 м",
+    "person_hits": "58 из 61", "person_first": "0,3 с", "person_err": "0,23 м",
     "object_hits": "124 из 126", "object_before": "2",
     "ride_events": "47", "ride_per_km": "3,6", "ride_km": "13",
     "empty_events": "20",
-    "first_person": "148", "sustained_person": "135", "band_person": "115", "speed_person": "167",
+    "first_person": "148", "sustained_person": "149", "band_person": "115", "speed_person": "167",
     "latency": "42–64 мс", "p95": "78 мс",
-    "tests": "152",
-    # first confirmed detection, straight track, median over the approaches [synthetic in real frames]
+    "tests": "198",
+    # first confirmed detection, straight track, median over the approaches [synthetic in real frames,
+    # set F round 3 = the current code, EXPERIMENTS.md §2d]
     "range_chart": [("человек 1,7 м", 148), ("тележка", 144), ("ящик 1 м", 111), ("висящий кабель 3 см", 95),
-                    ("предмет поперёк рельса", 46), ("ящик 30 см на рельсе", 44)],
+                    ("предмет поперёк рельса", 46), ("ящик 30 см на рельсе", 49)],
 }
+
+# ---- the team (slides 8-10): placeholders here, the real values from --team (not in git) -----
+TEAM = {
+    "captain": "<ФИО>", "captain_specialty": "<специальность>", "members": "4 человека",
+    "formed": "<как образовалась команда>", "study": "<место учёбы / работы>",
+    "study_short": "<место учёбы / работы>", "city": "<город>", "team_photo": None,
+    "cards": [{"name": "<Имя Фамилия>", "nick": "<@ник>", "photo": None} for _ in range(4)],
+}
+ROLES = ["Капитан · ROS 2, Docker, интеграция", "Визуализация, демо, презентация",
+         "Компьютерное зрение: модель пути, трекинг", "Данные, синтетика, метрики, тесты"]
 
 PINK, DEEP, VIOLET, LIGHT = "FF0053", "520978", "8A83D1", "FFD6E4"
 A = "http://schemas.openxmlformats.org/drawingml/2006/main"
@@ -235,6 +255,22 @@ def picture_in_placeholder(ph, path):
     return ph.insert_picture(_jpeg(path))
 
 
+def photo_into_frame(slide, sid, path):
+    """Replace a template photo frame (a picture placeholder) with the photo cropped to the frame's
+    box; the picture takes the frame's place in the drawing order, so the text above stays above."""
+    frame = shape(slide, sid)
+    el = frame._element
+    pic = picture_cover(slide, path, frame.left, frame.top, frame.width, frame.height)
+    el.addprevious(pic._element)
+    el.getparent().remove(el)
+    return pic
+
+
+def team_photo(name):
+    """Absolute path of a photo named in the --team JSON, or None."""
+    return os.path.join(TEAM["_dir"], name) if name and TEAM.get("_dir") else None
+
+
 def textbox(slide, left, top, width, height, paras, size=12, color="FFFFFF", bold=False, anchor=None):
     tb = slide.shapes.add_textbox(left, top, width, height)
     tf = tb.text_frame
@@ -278,13 +314,12 @@ def s07_title(sl, logo_path):
 def s08_team(sl):
     fill(shape(sl, 18), ["КОМАНДА «ReSense»"])
     fill(shape(sl, 14), [
-        "**Капитан:** <ФИО>, <специальность>",
-        "**Кол-во участников:** 4 человека",
+        f"**Капитан:** {TEAM['captain']}, {TEAM['captain_specialty']}",
+        f"**Кол-во участников:** {TEAM['members']}",
         "**Краткое описание:**",
-        ("собрались под этот кейс из четырёх специализаций: ROS 2 и интеграция, визуализация, "
-         "компьютерное зрение, данные и оценка", {"italic": False}),
-        ("место работы / учёбы: <организации участников>", {}),
-        "**Город и регион:** <город>, <регион>",
+        (TEAM["formed"], {"italic": False}),
+        (f"место учёбы: {TEAM['study']}", {}),
+        f"**Город и регион:** {TEAM['city']}",
     ])
     # the template's bullets for the two sub-items ("-") come from paragraphs 4-5
     body = shape(sl, 14).text_frame._txBody
@@ -309,17 +344,17 @@ def s08_team(sl):
              "кадре, кривизна — по стенам и рядам колонн, поэтому коридор осмыслен и там, где рельсов уже "
              "не видно. Вместо молчания — «проверенно свободная» дистанция. Настройка и оценка — на "
              "препятствиях, вставленных трассировкой лучей в реальные кадры."], size=12)
+    if team_photo(TEAM.get("team_photo")):
+        photo_into_frame(sl, 2, team_photo(TEAM["team_photo"]))
 
 
 def s09_cards(sl):
     fill(shape(sl, 7), ["КОМАНДА «ReSense»"])
     cards = [  # (card, photo, name, details) shape ids, left to right
         (17, 2, 15, 9), (56, 3, 58, 57), (59, 4, 61, 60), (62, 5, 64, 63), (65, 6, 67, 66)]
-    roles = ["Капитан · ROS 2, Docker, интеграция", "Визуализация, демо, презентация",
-             "Компьютерное зрение: модель пути, трекинг", "Данные, синтетика, метрики, тесты"]
-    for (card, photo, name, det), role in zip(cards, roles):
-        fill(shape(sl, name), ["<Имя Фамилия>"])
-        fill(shape(sl, det), [role, "<@ник>", "<телефон>", "<место работы / учёбы>"], size=11)
+    for (card, photo, name, det), role, who in zip(cards, ROLES, TEAM["cards"]):
+        fill(shape(sl, name), [who["name"]])
+        fill(shape(sl, det), [role, who["nick"], TEAM["study_short"]], size=11)
     for sid in cards[4]:                       # a team of four: the fifth card goes
         remove(shape(sl, sid))
     step = shape(sl, 56).left - shape(sl, 17).left
@@ -329,19 +364,24 @@ def s09_cards(sl):
         for sid in group:
             s = shape(sl, sid)
             s.left = Emu(s.left + dx)
+    for (card, photo, name, det), who in zip(cards, TEAM["cards"]):
+        if team_photo(who.get("photo")):
+            photo_into_frame(sl, photo, team_photo(who["photo"]))
 
 
 def s10_history(sl):
     fill(shape(sl, 7), ["ИСТОРИЯ КОМАНДЫ"])
-    fill(shape(sl, 37), ["Собрались под этот кейс вчетвером: системный анализ и ROS 2, фронтенд и визуализация, "
-                         "компьютерное зрение, данные и оценка. <личная история, одна фраза>"], size=12)
-    fill(shape(sl, 43), ["Задача безопасности на настоящих данных метро: поезд без машиниста должен сам ответить "
-                         "«путь свободен» или «тормозить». Вдохновил сам лидар — стены видны на 150–200 м, "
-                         "значит, ось пути можно вести по стенам там, где рельсов уже не видно."], size=12)
-    fill(shape(sl, 40), ["Препятствий в данных почти нет — «поставили» людей и ящики в реальные кадры трассировкой "
-                         "лучей лидара. Станции и стрелки давали ложные остановки — ось по стенам, зона доверия, "
-                         "фильтры инфраструктуры, подтверждение 0,5 с. Записи разные (топик, frame_id, 120° и 360°, "
-                         "наклон стенда 3°) — узел сам находит вход и калибруется по рельсам."], size=12)
+    fill(shape(sl, 37), ["Мы друзья и на конкурсы всегда выходим вчетвером: ROS 2 и интеграция, визуализация, "
+                         "компьютерное зрение, данные и тесты. Каждый день ездим на учёбу на метро — захотелось, "
+                         "чтобы поезд однажды сам видел, что у него впереди."], size=12)
+    fill(shape(sl, 43), ["Метро — наша ежедневная дорога, а беспилотный поезд — задача, где ошибка стоит дорого. "
+                         "Препятствий в данных почти нет, поэтому описываем «нормальный тоннель» и ловим всё, "
+                         "что в него не вписывается."], size=12)
+    fill(shape(sl, 40), ["Препятствий в записях почти нет — «ставили» людей и ящики в реальные кадры трассировкой "
+                         "лучей лидара. Станции и стрелки давали ложные остановки — помогли ось по стенам, зона "
+                         "доверия и подтверждение 0,5 с. Записи разные (два топика, 120° и 360°, наклон стенда 3°) — "
+                         "узел сам находит вход и калибруется по рельсам. И всё это — параллельно с учёбой."],
+         size=12)
 
 
 def s11_short(sl):
@@ -452,7 +492,7 @@ def s_hero(sl):             # template slide 13: big white card
         ("Человек переходит путь на 55–57 м", {"space_before": 10}),
         (f"Найден в **{N['person_hits']}** кадров внутри габарита", {"space_before": 8}),
         (f"Тревога через {N['person_first']} после входа в габарит", {"space_before": 8}),
-        (f"Ошибка дальности < {N['person_err']}", {"space_before": 8}),
+        (f"Ошибка дальности ≤ {N['person_err']}", {"space_before": 8}),
         (f"Предмет на рельсе — в **{N['object_hits']}** кадров после ухода человека", {"space_before": 8}),
     ], size=12, color="1C1D22", anchor="ctr")
     notes(sl, "Вот тоннель — двухпутный, поезд стоит, лидар на кабине. Вот облако: 350 тысяч точек за 0,1 с. "
@@ -489,7 +529,7 @@ def s_results(sl):          # template slide 20: left card + five rows
     ], bullet=False, color="1C1D22")
     rows = [
         f"**Человек на пути** (реальная запись): {N['person_hits']} кадров, тревога через {N['person_first']}, "
-        f"ошибка < {N['person_err']}",
+        f"ошибка ≤ {N['person_err']}",
         f"**Предмет на рельсе** (реальная): {N['object_hits']} кадров после ухода человека (v0.6.1: {N['object_before']})",
         f"**Ложные остановки:** поездка {N['ride_km']} км — {N['ride_events']} событий, пять пустых записей — "
         f"{N['empty_events']}",
@@ -596,20 +636,27 @@ def s_next(sl):             # template slide 17: three cards
 
 
 NOTES = {  # speaker notes per template slide (the main shot's are set in s_hero)
+    8: "Мы — команда ReSense, четверо друзей из одного лицея; на конкурсы всегда выходим этим составом. "
+       "Одной фразой о решении: описываем нормальный тоннель и сообщаем всё, что попадает в габарит поезда.",
+    9: "Роли: капитан — ROS 2, Docker и интеграция; визуализация и презентация; компьютерное зрение — модель "
+       "пути и трекинг; данные, синтетика, метрики и тесты. Каждый отвечал за свою часть, код общий.",
+    10: "Почему эта задача: метро — наша ежедневная дорога, а препятствий в данных почти нет, поэтому мы не "
+        "учим сеть на объектах, а описываем нормальный тоннель. Главные трудности — ложные остановки на "
+        "станциях и разные записи; обе решены в самой системе.",
     11: "Одной фразой: описываем нормальный тоннель и сообщаем всё, что попадает в габарит поезда. "
         "Работает в ROS 2 и Docker, без GPU и без обучения на объектах.",
     24: "Почему не нейросеть: реальных препятствий в данных почти нет, а на 100+ м у объекта единицы точек. "
         "Геометрия среды переносится между тоннелями, внешний вид объектов — нет.",
     12: "Все числа дальше — на всех 13 759 кадрах организаторов. Дальше 210 м датчик не возвращает ни одной "
         "точки — поэтому 300 м недостижимы этим лидаром; честно говорим об этом.",
-    25: "Пять шагов на каждый кадр, 60–100 мс. Калибровка крепления — сама, по рельсам; кривизна — по стенам, "
+    25: "Пять шагов на каждый кадр, 42–64 мс в среднем. Калибровка крепления — сама, по рельсам; кривизна — по стенам, "
         "поэтому коридор осмыслен и там, где рельсов уже не видно.",
     27: "Цепочка организаторов прогнана в Docker на реальных записях: узел в одном контейнере, bag play из "
         "другого, от обычного пользователя. Решение — топик /resense/decision: GO, CAUTION, STOP, FAULT.",
     20: "Человек на пути — 58 из 61 кадра, предмет на рельсе — 124 из 126. Ложных событий в 20-минутной "
         "поездке — 3,6 на км, почти вдвое меньше, чем в v0.6.1, и меньше в 12 из 13 частей данных.",
-    22: "Первое подтверждение человека — 148 м, в 90 % кадров — со 135 м. Со скоростью поезда — 167 м. "
-        "Мелкие предметы на головке рельса — с 42–44 м. Всё это синтетика в реальных кадрах поездки.",
+    22: "Первое подтверждение человека — 148 м, в 90 % кадров — со 149 м. Со скоростью поезда — 167 м. "
+        "Мелкие предметы на головке рельса — с 42–49 м. Всё это синтетика в реальных кадрах поездки.",
     16: "Надёжность: сами находим крепление и вход, при проблемах с данными говорим FAULT, а не молчим.",
     15: "Что не сработало и почему: полотно полно железа, станции — главный источник ложных остановок.",
     17: "Итог: работающий модуль, честные цифры, понятные следующие шаги — опора высоты по своду и замер "
@@ -626,7 +673,14 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--template", required=True, help="the organizers' template exported as .pptx")
     ap.add_argument("--out", required=True)
+    ap.add_argument("--team", default=None, help="JSON with the team's personal data and photos (kept out of git; "
+                                                 "keys as TEAM, photo paths relative to the file)")
     a = ap.parse_args()
+    if a.team:
+        import json
+        with open(a.team, encoding="utf-8") as fh:
+            TEAM.update(json.load(fh))
+        TEAM["_dir"] = os.path.dirname(os.path.abspath(a.team))
     prs = Presentation(a.template)
     slides = list(prs.slides)
     # the "Московский транспорт" logo from the template's logo slide (6)
