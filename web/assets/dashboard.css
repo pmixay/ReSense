@@ -93,7 +93,7 @@ input[type="checkbox"] { width: 17px; height: 17px; accent-color: var(--red); }
 .speed-label, .check-label { display: inline-flex; align-items: center; gap: 6px; color: var(--ink); font-size: 12px; }
 .speed-label select { min-height: 34px; }
 
-#banner { --banner-icon-width: clamp(144px, 11.4vw, 182px); position: relative; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; flex: 0 0 auto; min-height: 76px; margin-bottom: 10px; padding: 13px 18px 13px calc(var(--banner-icon-width) - 12px); overflow: hidden; color: #fff; font-size: clamp(25px, 2.5vw, 34px); font-weight: 800; line-height: 1.1; letter-spacing: -.5px; }
+#banner { --banner-icon-width: clamp(180px, 16.6vw, 265px); position: relative; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; flex: 0 0 auto; min-height: 76px; margin-bottom: 10px; padding: 13px 18px 13px calc(var(--banner-icon-width) + 15px); overflow: hidden; color: #fff; font-size: clamp(25px, 2.5vw, 34px); font-weight: 800; line-height: 1.1; letter-spacing: -.5px; }
 #banner-title, #banner-detail { position: relative; z-index: 1; }
 .banner-icon { position: absolute; top: -22px; left: -30px; width: var(--banner-icon-width); height: calc(100% + 44px); overflow: visible; fill: var(--banner-icon-color); pointer-events: none; }
 #banner.clear { background: var(--green); }
