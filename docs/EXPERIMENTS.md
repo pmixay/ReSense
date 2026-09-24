@@ -164,7 +164,7 @@ already inside the envelope when processing begins is reported ~9–10 frames la
 model and the 0.5 s confirmation start from nothing); the object on the rail is found from every
 start.
 
-**v0.6.2.** The criteria review ([`SCORECARD.md`](SCORECARD.md)) found three things on the detection side:
+**v0.6.2.** The first criteria review (23.09; its report is in the git history) found three things on the detection side:
 the organizers' object on the rail was missed (2 of its 185 frames by its own detection), there were too many false
 stops (82 events on the 20-minute ride), and nothing showed that the tuning was not fitted to
 one stretch of track. v0.6.2 is v0.6.1 plus three changes, each measured by a full run over the
@@ -520,7 +520,7 @@ What the pipeline produces at its position: **nothing in 99 of the 111 frames** 
 above the envelope floor, below the main stage's cluster minimum — and a 3-point low-object
 sliver 0.03–0.07 m high in 12 frames, too few hits to confirm. The object falls *between* the two
 stages; clustering an object that straddles the envelope floor as one object is the fix to try
-next (SCORECARD.md "What is left").
+next (done in v0.6.2, §0).
 
 **Mount roll changes what "on the rail" means.** The rail pair of `doubleT_obstacle` has its
 right head 8 cm above the left over 4–30 m on a straight, stationary track: that rig is rolled

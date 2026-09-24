@@ -43,7 +43,8 @@ Status: **v0.6.3 (23.09)** — v0.6.1 rebuilt the detector around the organizers
 v0.6.2 finds the organizers' object lying across a rail and cuts the false stops on the ride by 43 %
 after an independent criteria review; v0.6.3, after a second one, holds a STOP over a single missed
 frame (25 % fewer on/off episodes), keeps a person lying across the track and makes the first
-20 s of a recording 10–15 ms per frame faster ([`docs/SCORECARD.md`](docs/SCORECARD.md)). What v0.6.1
+20 s of a recording 10–15 ms per frame faster. The current judgement against the organizers'
+criteria is an independent review of 24.09: [`docs/SCORECARD.md`](docs/SCORECARD.md). What v0.6.1
 (22.09) changed after the Q&A session ([`docs/organizers/QA_session.md`](docs/organizers/QA_session.md):
 the recorded session, transcribed and summarised): The strict decision now uses **the train envelope the organizers
 gave (2.1 m wide × 3.0 m high)**; objects **hanging** into it (broken cables) are obstacles
@@ -88,7 +89,7 @@ container, `ros2 bag play` in another, both topic / frame pairs, two recordings 
 (EXPERIMENTS.md §3b: the 120° recording at 10 fps, p95 76 ms; the 360° one at 7–10 fps in steady
 state on the 4-vCPU sandbox, its first seconds lost to the transport's start-up; the node container
 at ~100 % of one core while frames arrive, 186 MB). The bag may be played by any user: the image
-runs DDS over UDP (a normal user's player cannot write into a root node's shared memory). Judgement against every criterion and what is left: [`docs/SCORECARD.md`](docs/SCORECARD.md).
+runs DDS over UDP (a normal user's player cannot write into a root node's shared memory). Judgement against every criterion and what is left (independent review, 24.09): [`docs/SCORECARD.md`](docs/SCORECARD.md).
 
 ![doubleT_obstacle frame 24 seen from the cab: the train envelope (green) swept along the track axis, the points inside it (yellow), the person on the track reported at 55.8 m (STOP) and a close-up of the person's points](docs/img/hero_person.png)
 *Real data, v0.6.2: `doubleT_obstacle` frame 24 from the driver's seat (`scripts/hero_view.py`), the person on the track at 55.8 m. Videos: [the jury chain in Docker with RViz](docs/video/docker_chain_rviz.mp4), [the whole bag from the cab](docs/video/doubleT_obstacle_cab.mp4), [offline renders, top and side view](docs/video/doubleT_obstacle_offline.mp4) and [the dashboard replaying the same run](docs/video/dashboard_doubleT_obstacle.mp4). Slides in the organizers' template: [`docs/presentation/ReSense_LCT2026.pptx`](docs/presentation/ReSense_LCT2026.pptx).*

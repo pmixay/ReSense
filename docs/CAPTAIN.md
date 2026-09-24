@@ -224,8 +224,8 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
     "How a bag is processed" (the solution does not read bags; `--ipc=host` added to the
     step-by-step `docker run` lines, without which Fast DDS shared memory can swallow the 5–8 MB
     clouds of a player on the same machine).
-14. **v0.6.2 (23.09), after the criteria review** ([`SCORECARD.md`](SCORECARD.md), EXPERIMENTS
-    §0): the organizers' object lying across the rail is found in **118 of the 126 frames** after
+14. **v0.6.2 (23.09), after the criteria review** (EXPERIMENTS §0; the review reports of 23.09
+    are in the git history): the organizers' object lying across the rail is found in **118 of the 126 frames** after
     the person leaves it (v0.6.1: 2) — it straddled the envelope floor and fell between the two
     detection stages, now it is clustered whole; confirmation 0.5 s instead of 0.3 s; without a
     rail lock (stations) the corridor beyond 40 m is advisory. All 13 759 frames: five empty bags
@@ -269,6 +269,10 @@ path ran for the first time in GitHub CI through the new dataset-free smoke test
     were aligned (distance error ≤ 0.23 m, 7–10 fps at 360° through ROS, 198 tests, `CAUTION` on
     27–68 % of empty-recording frames, 16 of 47 ride events first confirmed beyond 100 m, the
     v0.6.3 timing table in ARCHITECTURE). Release tagging is deferred while development continues.
+18. **Independent review of 24.09** (commit `d58567e`; [`SCORECARD.md`](SCORECARD.md), full report
+    [`reviews/2026-09-24_review.md`](reviews/2026-09-24_review.md)) replaces all earlier
+    evaluations. It reproduced every real-data headline number and measured the opt-in near-bed
+    path on all 13 759 frames: 667 ride events with it on against 47 with the defaults.
 
 ### Left for the team (captain tracks, does not do)
 
