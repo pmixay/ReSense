@@ -1,0 +1,7384 @@
+{
+ "schema": "resense-scorecard13-p3-v1",
+ "date": "2026-09-25",
+ "tool": "python scripts/robustness_check.py --cache /data/cache --jobs 1 --config <default.yaml + flags> [--every 2 | --mount roll_3 | --mount pitch_3]",
+ "base_commit": "1c96233",
+ "code": "the working tree of wf9/robustness at each run: the flags as in 'candidates', the periods as in cases.<id>.periods; the committed code is the K3d / ship state",
+ "config_sha256_shipped": "0adccd595c61f8c5ff02386897dbf7066c7c98894a32d5a231dad77fd3428c29",
+ "preregistration": "p3_robustness_2026-09-25.json",
+ "modes": {
+  "asrec": "as recorded (10 Hz)",
+  "5hz": "5 Hz (--every 2)",
+  "roll": "+3 deg roll (--mount roll_3)",
+  "pitch": "+3 deg pitch (--mount pitch_3)"
+ },
+ "candidates": {
+  "base": {},
+  "K1": {
+   "calibration.time_cadence": true
+  },
+  "K2": {
+   "calibration.time_cadence": true,
+   "track.rates_per_period (with the EMA weights squared, dropped)": true
+  },
+  "K1b": {
+   "calibration.time_cadence": true,
+   "calibration.keep_within_deg": 0.25
+  },
+  "K2b": {
+   "calibration.time_cadence": true,
+   "calibration.keep_within_deg": 0.25,
+   "track.rates_per_period": true
+  },
+  "K3b": {
+   "calibration.time_cadence": true,
+   "calibration.keep_within_deg": 0.25,
+   "track.rates_per_period": true,
+   "calibration.refine_min_deg": 0.5
+  },
+  "K2c": {
+   "calibration.time_cadence": true,
+   "calibration.keep_within_deg": 0.25,
+   "track.rates_per_period": true,
+   "track.walls_smoothing_per_period": true
+  },
+  "K3c": {
+   "calibration.time_cadence": true,
+   "calibration.keep_within_deg": 0.25,
+   "track.rates_per_period": true,
+   "track.walls_smoothing_per_period": true,
+   "calibration.refine_min_deg": 0.5
+  },
+  "K4c": {
+   "calibration.time_cadence": true,
+   "calibration.keep_within_deg": 0.25,
+   "track.rates_per_period": true,
+   "track.walls_smoothing_per_period": true,
+   "calibration.refine_min_deg": 0.5,
+   "calibration.provisional_per_axis": true
+  },
+  "K3d": {
+   "calibration.time_cadence": true,
+   "calibration.keep_within_deg": 0.25,
+   "track.rates_per_period": true,
+   "track.walls_smoothing_per_period": true,
+   "calibration.refine_min_deg": 0.5
+  },
+  "ship": {
+   "configs/default.yaml as committed (the K3d flags on)": true
+  }
+ },
+ "decision": "ship = K3d (the only candidate that passed the 10 Hz gate and improved the target); provisional_per_axis stays off",
+ "not_run": {
+  "K3": "superseded by addendum 1",
+  "K4": "superseded by addendum 1",
+  "K4b": "10 Hz tilt runs equal K4c's but for the two stamp gaps of doubleT_obstacle; K4c already worse at roll_3 and pitch_3"
+ },
+ "cases": {
+  "base": {
+   "periods": "-",
+   "asrec": {
+    "five_empty": {
+     "frames": 2287,
+     "alarm_frames": 58,
+     "alarm_events": 13,
+     "stop_episodes": 16
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 188,
+      "alarm_events": 2,
+      "stop_episodes": 3,
+      "advisory_frames": 84,
+      "events": {
+       "1": [
+        11,
+        73,
+        55.54
+       ],
+       "8": [
+        72,
+        200,
+        56.15
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        3.18,
+        -0.81
+       ],
+       [
+        190,
+        "ok",
+        3.02,
+        -0.88
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         185,
+         246
+        ]
+       },
+       "first_alarm_frame": 11,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 4,
+      "alarm_events": 4,
+      "stop_episodes": 1,
+      "advisory_frames": 180,
+      "events": {
+       "41": [
+        34,
+        37,
+        41.73
+       ],
+       "47": [
+        36,
+        37,
+        34.79
+       ],
+       "48": [
+        36,
+        37,
+        34.94
+       ],
+       "46": [
+        36,
+        37,
+        36.26
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        204,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 173,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 104,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 146,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 54,
+      "alarm_events": 9,
+      "stop_episodes": 15,
+      "advisory_frames": 394,
+      "events": {
+       "158": [
+        312,
+        317,
+        82.06
+       ],
+       "203": [
+        424,
+        427,
+        82.88
+       ],
+       "213": [
+        437,
+        528,
+        82.9
+       ],
+       "237": [
+        500,
+        501,
+        147.49
+       ],
+       "263": [
+        580,
+        580,
+        147.46
+       ],
+       "279": [
+        612,
+        613,
+        94.16
+       ],
+       "289": [
+        640,
+        642,
+        147.46
+       ],
+       "295": [
+        644,
+        675,
+        82.9
+       ],
+       "305": [
+        692,
+        708,
+        146.06
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     }
+    }
+   },
+   "5hz": {
+    "five_empty": {
+     "frames": 1145,
+     "alarm_frames": 63,
+     "alarm_events": 13,
+     "stop_episodes": 17
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 101,
+      "alarm_frames": 95,
+      "alarm_events": 2,
+      "stop_episodes": 1,
+      "advisory_frames": 10,
+      "events": {
+       "1": [
+        12,
+        74,
+        55.56
+       ],
+       "5": [
+        76,
+        200,
+        56.2
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        8,
+        "provisional",
+        3.06,
+        -0.83
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         92,
+         123
+        ]
+       },
+       "first_alarm_frame": 12,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 173,
+      "alarm_frames": 3,
+      "alarm_events": 2,
+      "stop_episodes": 1,
+      "advisory_frames": 82,
+      "events": {
+       "23": [
+        40,
+        44,
+        22.98
+       ],
+       "25": [
+        40,
+        42,
+        30.5
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 126,
+      "alarm_frames": 6,
+      "alarm_events": 3,
+      "stop_episodes": 4,
+      "advisory_frames": 87,
+      "events": {
+       "25": [
+        106,
+        108,
+        47.44
+       ],
+       "41": [
+        186,
+        186,
+        97.36
+       ],
+       "44": [
+        190,
+        196,
+        127.08
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 134,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 65,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 273,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 107,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        380,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 439,
+      "alarm_frames": 54,
+      "alarm_events": 8,
+      "stop_episodes": 12,
+      "advisory_frames": 223,
+      "events": {
+       "74": [
+        310,
+        322,
+        147.72
+       ],
+       "84": [
+        352,
+        354,
+        88.88
+       ],
+       "80": [
+        418,
+        442,
+        82.91
+       ],
+       "106": [
+        460,
+        462,
+        94.29
+       ],
+       "120": [
+        522,
+        524,
+        94.28
+       ],
+       "125": [
+        546,
+        610,
+        82.72
+       ],
+       "141": [
+        612,
+        614,
+        94.16
+       ],
+       "154": [
+        672,
+        708,
+        147.45
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        380,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     }
+    }
+   },
+   "roll": {
+    "five_empty": {
+     "frames": 2287,
+     "alarm_frames": 60,
+     "alarm_events": 16,
+     "stop_episodes": 17
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 185,
+      "alarm_events": 2,
+      "stop_episodes": 4,
+      "advisory_frames": 22,
+      "events": {
+       "1": [
+        12,
+        73,
+        55.54
+       ],
+       "7": [
+        73,
+        200,
+        56.18
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -0.91
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         181,
+         246
+        ]
+       },
+       "first_alarm_frame": 12,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 10,
+      "alarm_events": 4,
+      "stop_episodes": 3,
+      "advisory_frames": 168,
+      "events": {
+       "8": [
+        10,
+        11,
+        81.02
+       ],
+       "28": [
+        32,
+        36,
+        35.04
+       ],
+       "31": [
+        33,
+        37,
+        39.07
+       ],
+       "119": [
+        164,
+        165,
+        49.38
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -3.53,
+        -0.17
+       ],
+       [
+        207,
+        "ok",
+        -3.23,
+        0.0
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 3,
+      "alarm_events": 2,
+      "stop_episodes": 2,
+      "advisory_frames": 166,
+      "events": {
+       "26": [
+        111,
+        112,
+        43.6
+       ],
+       "18": [
+        234,
+        234,
+        128.27
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -5.03,
+        0.35
+       ],
+       [
+        190,
+        "ok",
+        -3.36,
+        0.0
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 105,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -2.7,
+        -0.14
+       ],
+       [
+        190,
+        "ok",
+        -3.03,
+        0.0
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 168,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -3.04,
+        -0.31
+       ],
+       [
+        190,
+        "ok",
+        -3.33,
+        0.0
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 47,
+      "alarm_events": 10,
+      "stop_episodes": 12,
+      "advisory_frames": 387,
+      "events": {
+       "159": [
+        309,
+        310,
+        147.81
+       ],
+       "160": [
+        311,
+        312,
+        82.11
+       ],
+       "176": [
+        359,
+        364,
+        82.9
+       ],
+       "197": [
+        416,
+        427,
+        82.89
+       ],
+       "208": [
+        489,
+        490,
+        82.9
+       ],
+       "242": [
+        582,
+        591,
+        82.9
+       ],
+       "266": [
+        612,
+        613,
+        94.16
+       ],
+       "276": [
+        637,
+        640,
+        147.45
+       ],
+       "278": [
+        674,
+        675,
+        82.77
+       ],
+       "291": [
+        677,
+        702,
+        147.24
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -2.84,
+        -0.69
+       ],
+       [
+        190,
+        "ok",
+        -2.68,
+        0.0
+       ]
+      ]
+     }
+    }
+   },
+   "pitch": {
+    "five_empty": {
+     "frames": 2287,
+     "alarm_frames": 70,
+     "alarm_events": 17,
+     "stop_episodes": 18
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 189,
+      "alarm_events": 2,
+      "stop_episodes": 2,
+      "advisory_frames": 78,
+      "events": {
+       "1": [
+        11,
+        72,
+        55.54
+       ],
+       "8": [
+        72,
+        200,
+        56.16
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        3.37,
+        -3.86
+       ],
+       [
+        190,
+        "ok",
+        3.06,
+        -3.86
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         186,
+         246
+        ]
+       },
+       "first_alarm_frame": 11,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 10,
+      "alarm_events": 6,
+      "stop_episodes": 4,
+      "advisory_frames": 183,
+      "events": {
+       "4": [
+        19,
+        19,
+        111.73
+       ],
+       "33": [
+        33,
+        37,
+        39.07
+       ],
+       "41": [
+        36,
+        37,
+        34.94
+       ],
+       "42": [
+        37,
+        38,
+        36.97
+       ],
+       "156": [
+        185,
+        186,
+        3.02
+       ],
+       "169": [
+        201,
+        201,
+        87.87
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -0.34,
+        -3.12
+       ],
+       [
+        199,
+        "ok",
+        0.0,
+        -3.2
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 2,
+      "alarm_events": 1,
+      "stop_episodes": 1,
+      "advisory_frames": 169,
+      "events": {
+       "24": [
+        99,
+        100,
+        49.67
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -1.57,
+        -2.7
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -2.81
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 103,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -0.05,
+        -3.15
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -3.29
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 152,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -0.3,
+        -3.27
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -3.19
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 58,
+      "alarm_events": 10,
+      "stop_episodes": 13,
+      "advisory_frames": 409,
+      "events": {
+       "153": [
+        311,
+        312,
+        82.11
+       ],
+       "164": [
+        329,
+        330,
+        89.91
+       ],
+       "197": [
+        415,
+        422,
+        147.44
+       ],
+       "200": [
+        416,
+        427,
+        82.89
+       ],
+       "209": [
+        489,
+        490,
+        82.9
+       ],
+       "252": [
+        539,
+        586,
+        82.93
+       ],
+       "279": [
+        612,
+        613,
+        94.15
+       ],
+       "287": [
+        637,
+        643,
+        147.46
+       ],
+       "290": [
+        644,
+        644,
+        82.9
+       ],
+       "302": [
+        692,
+        708,
+        146.07
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -0.01,
+        -3.69
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -3.31
+       ]
+      ]
+     }
+    }
+   }
+  },
+  "K1": {
+   "periods": "per-frame interval, round(dt / frame_dt)",
+   "5hz": {
+    "five_empty": {
+     "frames": 1145,
+     "alarm_frames": 63,
+     "alarm_events": 13,
+     "stop_episodes": 17
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 101,
+      "alarm_frames": 94,
+      "alarm_events": 2,
+      "stop_episodes": 2,
+      "advisory_frames": 12,
+      "events": {
+       "1": [
+        12,
+        74,
+        55.56
+       ],
+       "5": [
+        76,
+        200,
+        56.2
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        8,
+        "provisional",
+        3.06,
+        -0.83
+       ],
+       [
+        192,
+        "ok",
+        3.03,
+        -0.88
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         91,
+         123
+        ]
+       },
+       "first_alarm_frame": 12,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 173,
+      "alarm_frames": 3,
+      "alarm_events": 2,
+      "stop_episodes": 1,
+      "advisory_frames": 82,
+      "events": {
+       "23": [
+        40,
+        44,
+        22.98
+       ],
+       "25": [
+        40,
+        42,
+        30.5
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        214,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 126,
+      "alarm_frames": 6,
+      "alarm_events": 3,
+      "stop_episodes": 4,
+      "advisory_frames": 87,
+      "events": {
+       "25": [
+        106,
+        108,
+        47.44
+       ],
+       "41": [
+        186,
+        186,
+        97.36
+       ],
+       "44": [
+        190,
+        196,
+        127.08
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 134,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 65,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 273,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 107,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        192,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 439,
+      "alarm_frames": 54,
+      "alarm_events": 8,
+      "stop_episodes": 12,
+      "advisory_frames": 223,
+      "events": {
+       "74": [
+        310,
+        322,
+        147.72
+       ],
+       "84": [
+        352,
+        354,
+        88.88
+       ],
+       "80": [
+        418,
+        442,
+        82.91
+       ],
+       "106": [
+        460,
+        462,
+        94.29
+       ],
+       "120": [
+        522,
+        524,
+        94.28
+       ],
+       "125": [
+        546,
+        610,
+        82.72
+       ],
+       "141": [
+        612,
+        614,
+        94.16
+       ],
+       "154": [
+        672,
+        708,
+        147.45
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        192,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     }
+    }
+   }
+  },
+  "K2": {
+   "periods": "per-frame interval, round(dt / frame_dt)",
+   "5hz": {
+    "five_empty": {
+     "frames": 1145,
+     "alarm_frames": 44,
+     "alarm_events": 11,
+     "stop_episodes": 13
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 101,
+      "alarm_frames": 90,
+      "alarm_events": 2,
+      "stop_episodes": 2,
+      "advisory_frames": 14,
+      "events": {
+       "1": [
+        12,
+        74,
+        55.56
+       ],
+       "7": [
+        76,
+        192,
+        56.2
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        8,
+        "provisional",
+        3.15,
+        -0.83
+       ],
+       [
+        192,
+        "ok",
+        3.03,
+        -0.91
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         87,
+         123
+        ]
+       },
+       "first_alarm_frame": 12,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 173,
+      "alarm_frames": 3,
+      "alarm_events": 2,
+      "stop_episodes": 2,
+      "advisory_frames": 118,
+      "events": {
+       "30": [
+        38,
+        40,
+        44.43
+       ],
+       "100": [
+        200,
+        200,
+        88.19
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        216,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 126,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 88,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 134,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 60,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 273,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 105,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        192,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 439,
+      "alarm_frames": 41,
+      "alarm_events": 9,
+      "stop_episodes": 11,
+      "advisory_frames": 228,
+      "events": {
+       "94": [
+        310,
+        312,
+        147.72
+       ],
+       "95": [
+        312,
+        320,
+        82.06
+       ],
+       "107": [
+        352,
+        354,
+        88.88
+       ],
+       "119": [
+        416,
+        448,
+        82.89
+       ],
+       "143": [
+        522,
+        524,
+        94.28
+       ],
+       "148": [
+        546,
+        570,
+        82.72
+       ],
+       "160": [
+        612,
+        614,
+        94.16
+       ],
+       "166": [
+        640,
+        642,
+        147.46
+       ],
+       "175": [
+        704,
+        710,
+        138.39
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        192,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     }
+    }
+   }
+  },
+  "K1b": {
+   "periods": "per-frame interval",
+   "5hz": {
+    "five_empty": {
+     "frames": 1145,
+     "alarm_frames": 63,
+     "alarm_events": 13,
+     "stop_episodes": 17
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 101,
+      "alarm_frames": 95,
+      "alarm_events": 2,
+      "stop_episodes": 1,
+      "advisory_frames": 10,
+      "events": {
+       "1": [
+        12,
+        74,
+        55.56
+       ],
+       "5": [
+        76,
+        200,
+        56.2
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        8,
+        "provisional",
+        3.06,
+        -0.83
+       ],
+       [
+        192,
+        "ok",
+        3.06,
+        -0.83
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         92,
+         123
+        ]
+       },
+       "first_alarm_frame": 12,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 173,
+      "alarm_frames": 3,
+      "alarm_events": 2,
+      "stop_episodes": 1,
+      "advisory_frames": 82,
+      "events": {
+       "23": [
+        40,
+        44,
+        22.98
+       ],
+       "25": [
+        40,
+        42,
+        30.5
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        214,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 126,
+      "alarm_frames": 6,
+      "alarm_events": 3,
+      "stop_episodes": 4,
+      "advisory_frames": 87,
+      "events": {
+       "25": [
+        106,
+        108,
+        47.44
+       ],
+       "41": [
+        186,
+        186,
+        97.36
+       ],
+       "44": [
+        190,
+        196,
+        127.08
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 134,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 65,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 273,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 107,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        192,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 439,
+      "alarm_frames": 54,
+      "alarm_events": 8,
+      "stop_episodes": 12,
+      "advisory_frames": 223,
+      "events": {
+       "74": [
+        310,
+        322,
+        147.72
+       ],
+       "84": [
+        352,
+        354,
+        88.88
+       ],
+       "80": [
+        418,
+        442,
+        82.91
+       ],
+       "106": [
+        460,
+        462,
+        94.29
+       ],
+       "120": [
+        522,
+        524,
+        94.28
+       ],
+       "125": [
+        546,
+        610,
+        82.72
+       ],
+       "141": [
+        612,
+        614,
+        94.16
+       ],
+       "154": [
+        672,
+        708,
+        147.45
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        192,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     }
+    }
+   },
+   "roll": {
+    "five_empty": {
+     "frames": 2287,
+     "alarm_frames": 60,
+     "alarm_events": 16,
+     "stop_episodes": 17
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 187,
+      "alarm_events": 2,
+      "stop_episodes": 2,
+      "advisory_frames": 24,
+      "events": {
+       "1": [
+        12,
+        73,
+        55.54
+       ],
+       "7": [
+        73,
+        200,
+        56.18
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        186,
+        "ok",
+        0.0,
+        -0.88
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         183,
+         246
+        ]
+       },
+       "first_alarm_frame": 12,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 10,
+      "alarm_events": 4,
+      "stop_episodes": 3,
+      "advisory_frames": 168,
+      "events": {
+       "8": [
+        10,
+        11,
+        81.02
+       ],
+       "28": [
+        32,
+        36,
+        35.04
+       ],
+       "31": [
+        33,
+        37,
+        39.07
+       ],
+       "119": [
+        164,
+        165,
+        49.38
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -3.53,
+        -0.17
+       ],
+       [
+        207,
+        "ok",
+        -3.23,
+        0.0
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 3,
+      "alarm_events": 2,
+      "stop_episodes": 2,
+      "advisory_frames": 166,
+      "events": {
+       "26": [
+        111,
+        112,
+        43.6
+       ],
+       "18": [
+        234,
+        234,
+        128.27
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -5.03,
+        0.35
+       ],
+       [
+        190,
+        "ok",
+        -3.36,
+        0.0
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 105,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -2.7,
+        -0.14
+       ],
+       [
+        190,
+        "ok",
+        -3.03,
+        0.0
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 168,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -3.04,
+        -0.31
+       ],
+       [
+        190,
+        "ok",
+        -3.33,
+        0.0
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 47,
+      "alarm_events": 10,
+      "stop_episodes": 12,
+      "advisory_frames": 387,
+      "events": {
+       "159": [
+        309,
+        310,
+        147.81
+       ],
+       "160": [
+        311,
+        312,
+        82.11
+       ],
+       "176": [
+        359,
+        364,
+        82.9
+       ],
+       "197": [
+        416,
+        427,
+        82.89
+       ],
+       "208": [
+        489,
+        490,
+        82.9
+       ],
+       "242": [
+        582,
+        591,
+        82.9
+       ],
+       "266": [
+        612,
+        613,
+        94.16
+       ],
+       "276": [
+        637,
+        640,
+        147.45
+       ],
+       "278": [
+        674,
+        675,
+        82.77
+       ],
+       "291": [
+        677,
+        702,
+        147.24
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -2.84,
+        -0.69
+       ],
+       [
+        190,
+        "ok",
+        -2.68,
+        0.0
+       ]
+      ]
+     }
+    }
+   },
+   "pitch": {
+    "five_empty": {
+     "frames": 2287,
+     "alarm_frames": 70,
+     "alarm_events": 17,
+     "stop_episodes": 18
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 189,
+      "alarm_events": 2,
+      "stop_episodes": 2,
+      "advisory_frames": 78,
+      "events": {
+       "1": [
+        11,
+        72,
+        55.54
+       ],
+       "8": [
+        72,
+        200,
+        56.16
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        3.37,
+        -3.86
+       ],
+       [
+        186,
+        "ok",
+        3.08,
+        -3.82
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         186,
+         246
+        ]
+       },
+       "first_alarm_frame": 11,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 10,
+      "alarm_events": 6,
+      "stop_episodes": 4,
+      "advisory_frames": 183,
+      "events": {
+       "4": [
+        19,
+        19,
+        111.73
+       ],
+       "33": [
+        33,
+        37,
+        39.07
+       ],
+       "41": [
+        36,
+        37,
+        34.94
+       ],
+       "42": [
+        37,
+        38,
+        36.97
+       ],
+       "156": [
+        185,
+        186,
+        3.02
+       ],
+       "169": [
+        201,
+        201,
+        87.87
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -0.34,
+        -3.12
+       ],
+       [
+        199,
+        "ok",
+        0.0,
+        -3.2
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 2,
+      "alarm_events": 1,
+      "stop_episodes": 1,
+      "advisory_frames": 169,
+      "events": {
+       "24": [
+        99,
+        100,
+        49.67
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -1.57,
+        -2.7
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -2.81
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 96,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -0.05,
+        -3.15
+       ],
+       [
+        190,
+        "ok",
+        -0.05,
+        -3.15
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 152,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -0.3,
+        -3.27
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -3.19
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 58,
+      "alarm_events": 10,
+      "stop_episodes": 13,
+      "advisory_frames": 409,
+      "events": {
+       "153": [
+        311,
+        312,
+        82.11
+       ],
+       "164": [
+        329,
+        330,
+        89.91
+       ],
+       "197": [
+        415,
+        422,
+        147.44
+       ],
+       "200": [
+        416,
+        427,
+        82.89
+       ],
+       "209": [
+        489,
+        490,
+        82.9
+       ],
+       "252": [
+        539,
+        586,
+        82.93
+       ],
+       "279": [
+        612,
+        613,
+        94.15
+       ],
+       "287": [
+        637,
+        643,
+        147.46
+       ],
+       "290": [
+        644,
+        644,
+        82.9
+       ],
+       "302": [
+        692,
+        708,
+        146.07
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -0.01,
+        -3.69
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -3.31
+       ]
+      ]
+     }
+    }
+   }
+  },
+  "K2b": {
+   "periods": "per-frame interval",
+   "5hz": {
+    "five_empty": {
+     "frames": 1145,
+     "alarm_frames": 65,
+     "alarm_events": 11,
+     "stop_episodes": 17
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 101,
+      "alarm_frames": 95,
+      "alarm_events": 2,
+      "stop_episodes": 1,
+      "advisory_frames": 10,
+      "events": {
+       "1": [
+        12,
+        74,
+        55.56
+       ],
+       "5": [
+        76,
+        200,
+        56.2
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        8,
+        "provisional",
+        3.06,
+        -0.83
+       ],
+       [
+        192,
+        "ok",
+        3.06,
+        -0.83
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         92,
+         123
+        ]
+       },
+       "first_alarm_frame": 12,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 173,
+      "alarm_frames": 1,
+      "alarm_events": 1,
+      "stop_episodes": 1,
+      "advisory_frames": 99,
+      "events": {
+       "24": [
+        34,
+        34,
+        36.77
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        206,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 126,
+      "alarm_frames": 6,
+      "alarm_events": 2,
+      "stop_episodes": 2,
+      "advisory_frames": 81,
+      "events": {
+       "45": [
+        186,
+        192,
+        97.36
+       ],
+       "48": [
+        196,
+        198,
+        116.35
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 134,
+      "alarm_frames": 1,
+      "alarm_events": 1,
+      "stop_episodes": 1,
+      "advisory_frames": 73,
+      "events": {
+       "47": [
+        232,
+        232,
+        64.86
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 273,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 110,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        192,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 439,
+      "alarm_frames": 57,
+      "alarm_events": 7,
+      "stop_episodes": 13,
+      "advisory_frames": 203,
+      "events": {
+       "73": [
+        310,
+        322,
+        147.72
+       ],
+       "76": [
+        326,
+        332,
+        107.06
+       ],
+       "84": [
+        352,
+        354,
+        88.88
+       ],
+       "80": [
+        416,
+        458,
+        82.89
+       ],
+       "126": [
+        546,
+        576,
+        82.72
+       ],
+       "139": [
+        612,
+        614,
+        94.16
+       ],
+       "152": [
+        672,
+        708,
+        147.45
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        192,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     }
+    }
+   }
+  },
+  "K3b": {
+   "periods": "per-frame interval",
+   "5hz": {
+    "five_empty": {
+     "frames": 1145,
+     "alarm_frames": 65,
+     "alarm_events": 11,
+     "stop_episodes": 17
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 101,
+      "alarm_frames": 95,
+      "alarm_events": 2,
+      "stop_episodes": 1,
+      "advisory_frames": 10,
+      "events": {
+       "1": [
+        12,
+        74,
+        55.56
+       ],
+       "5": [
+        76,
+        200,
+        56.2
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        8,
+        "provisional",
+        3.06,
+        -0.83
+       ],
+       [
+        192,
+        "ok",
+        3.06,
+        -0.83
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         92,
+         123
+        ]
+       },
+       "first_alarm_frame": 12,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 173,
+      "alarm_frames": 1,
+      "alarm_events": 1,
+      "stop_episodes": 1,
+      "advisory_frames": 99,
+      "events": {
+       "24": [
+        34,
+        34,
+        36.77
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        206,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 126,
+      "alarm_frames": 6,
+      "alarm_events": 2,
+      "stop_episodes": 2,
+      "advisory_frames": 81,
+      "events": {
+       "45": [
+        186,
+        192,
+        97.36
+       ],
+       "48": [
+        196,
+        198,
+        116.35
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 134,
+      "alarm_frames": 1,
+      "alarm_events": 1,
+      "stop_episodes": 1,
+      "advisory_frames": 73,
+      "events": {
+       "47": [
+        232,
+        232,
+        64.86
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 273,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 110,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        192,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 439,
+      "alarm_frames": 57,
+      "alarm_events": 7,
+      "stop_episodes": 13,
+      "advisory_frames": 203,
+      "events": {
+       "73": [
+        310,
+        322,
+        147.72
+       ],
+       "76": [
+        326,
+        332,
+        107.06
+       ],
+       "84": [
+        352,
+        354,
+        88.88
+       ],
+       "80": [
+        416,
+        458,
+        82.89
+       ],
+       "126": [
+        546,
+        576,
+        82.72
+       ],
+       "139": [
+        612,
+        614,
+        94.16
+       ],
+       "152": [
+        672,
+        708,
+        147.45
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        192,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     }
+    }
+   },
+   "roll": {
+    "five_empty": {
+     "frames": 2287,
+     "alarm_frames": 42,
+     "alarm_events": 11,
+     "stop_episodes": 13
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 187,
+      "alarm_events": 2,
+      "stop_episodes": 2,
+      "advisory_frames": 24,
+      "events": {
+       "1": [
+        12,
+        73,
+        55.54
+       ],
+       "7": [
+        73,
+        200,
+        56.18
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        186,
+        "ok",
+        0.0,
+        -0.88
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         183,
+         246
+        ]
+       },
+       "first_alarm_frame": 12,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 10,
+      "alarm_events": 4,
+      "stop_episodes": 3,
+      "advisory_frames": 168,
+      "events": {
+       "8": [
+        10,
+        11,
+        81.02
+       ],
+       "28": [
+        32,
+        36,
+        35.04
+       ],
+       "31": [
+        33,
+        37,
+        39.07
+       ],
+       "119": [
+        164,
+        165,
+        49.38
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -3.53,
+        -0.17
+       ],
+       [
+        207,
+        "ok",
+        -3.23,
+        0.0
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 1,
+      "alarm_events": 1,
+      "stop_episodes": 1,
+      "advisory_frames": 165,
+      "events": {
+       "61": [
+        234,
+        234,
+        128.27
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -5.03,
+        0.35
+       ],
+       [
+        40,
+        "provisional",
+        -3.57,
+        0.0
+       ],
+       [
+        190,
+        "ok",
+        -3.3,
+        0.0
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 1,
+      "alarm_events": 1,
+      "stop_episodes": 1,
+      "advisory_frames": 115,
+      "events": {
+       "59": [
+        184,
+        184,
+        83.25
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -2.7,
+        -0.14
+       ],
+       [
+        50,
+        "provisional",
+        -3.26,
+        0.0
+       ],
+       [
+        190,
+        "ok",
+        -3.26,
+        0.0
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 168,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -3.04,
+        -0.31
+       ],
+       [
+        190,
+        "ok",
+        -3.33,
+        0.0
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 30,
+      "alarm_events": 5,
+      "stop_episodes": 8,
+      "advisory_frames": 441,
+      "events": {
+       "156": [
+        309,
+        310,
+        147.81
+       ],
+       "157": [
+        311,
+        320,
+        82.11
+       ],
+       "209": [
+        442,
+        490,
+        82.9
+       ],
+       "246": [
+        539,
+        540,
+        82.93
+       ],
+       "272": [
+        612,
+        613,
+        94.16
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -2.84,
+        -0.69
+       ],
+       [
+        40,
+        "provisional",
+        -3.08,
+        0.0
+       ],
+       [
+        180,
+        "provisional",
+        -2.57,
+        0.0
+       ],
+       [
+        190,
+        "ok",
+        -2.57,
+        0.0
+       ]
+      ]
+     }
+    }
+   },
+   "pitch": {
+    "five_empty": {
+     "frames": 2287,
+     "alarm_frames": 68,
+     "alarm_events": 16,
+     "stop_episodes": 17
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 189,
+      "alarm_events": 2,
+      "stop_episodes": 2,
+      "advisory_frames": 78,
+      "events": {
+       "1": [
+        11,
+        72,
+        55.54
+       ],
+       "8": [
+        72,
+        200,
+        56.16
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        3.37,
+        -3.86
+       ],
+       [
+        186,
+        "ok",
+        3.08,
+        -3.82
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         186,
+         246
+        ]
+       },
+       "first_alarm_frame": 11,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 10,
+      "alarm_events": 6,
+      "stop_episodes": 4,
+      "advisory_frames": 183,
+      "events": {
+       "4": [
+        19,
+        19,
+        111.73
+       ],
+       "33": [
+        33,
+        37,
+        39.07
+       ],
+       "41": [
+        36,
+        37,
+        34.94
+       ],
+       "42": [
+        37,
+        38,
+        36.97
+       ],
+       "156": [
+        185,
+        186,
+        3.02
+       ],
+       "169": [
+        201,
+        201,
+        87.87
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -0.34,
+        -3.12
+       ],
+       [
+        199,
+        "ok",
+        0.0,
+        -3.2
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 137,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -1.57,
+        -2.7
+       ],
+       [
+        60,
+        "provisional",
+        -0.98,
+        -2.73
+       ],
+       [
+        90,
+        "provisional",
+        0.0,
+        -2.77
+       ],
+       [
+        100,
+        "provisional",
+        -0.87,
+        -2.81
+       ],
+       [
+        150,
+        "provisional",
+        0.0,
+        -2.73
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -2.73
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 96,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -0.05,
+        -3.15
+       ],
+       [
+        190,
+        "ok",
+        -0.05,
+        -3.15
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 152,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -0.3,
+        -3.27
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -3.19
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 58,
+      "alarm_events": 10,
+      "stop_episodes": 13,
+      "advisory_frames": 409,
+      "events": {
+       "153": [
+        311,
+        312,
+        82.11
+       ],
+       "164": [
+        329,
+        330,
+        89.91
+       ],
+       "197": [
+        415,
+        422,
+        147.44
+       ],
+       "200": [
+        416,
+        427,
+        82.89
+       ],
+       "209": [
+        489,
+        490,
+        82.9
+       ],
+       "252": [
+        539,
+        586,
+        82.93
+       ],
+       "279": [
+        612,
+        613,
+        94.15
+       ],
+       "287": [
+        637,
+        643,
+        147.46
+       ],
+       "290": [
+        644,
+        644,
+        82.9
+       ],
+       "302": [
+        692,
+        708,
+        146.07
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -0.01,
+        -3.69
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -3.31
+       ]
+      ]
+     }
+    }
+   }
+  },
+  "K2c": {
+   "periods": "per-frame interval",
+   "5hz": {
+    "five_empty": {
+     "frames": 1145,
+     "alarm_frames": 44,
+     "alarm_events": 11,
+     "stop_episodes": 13
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 101,
+      "alarm_frames": 95,
+      "alarm_events": 2,
+      "stop_episodes": 1,
+      "advisory_frames": 9,
+      "events": {
+       "1": [
+        12,
+        74,
+        55.56
+       ],
+       "5": [
+        76,
+        200,
+        56.14
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        8,
+        "provisional",
+        3.13,
+        -0.83
+       ],
+       [
+        192,
+        "ok",
+        3.13,
+        -0.83
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         92,
+         123
+        ]
+       },
+       "first_alarm_frame": 12,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 173,
+      "alarm_frames": 5,
+      "alarm_events": 3,
+      "stop_episodes": 1,
+      "advisory_frames": 108,
+      "events": {
+       "19": [
+        34,
+        38,
+        36.77
+       ],
+       "22": [
+        38,
+        40,
+        35.74
+       ],
+       "26": [
+        40,
+        42,
+        30.5
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        220,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 126,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 80,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 134,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 59,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 273,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 91,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        192,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 439,
+      "alarm_frames": 39,
+      "alarm_events": 8,
+      "stop_episodes": 12,
+      "advisory_frames": 220,
+      "events": {
+       "91": [
+        310,
+        320,
+        82.17
+       ],
+       "93": [
+        310,
+        316,
+        147.72
+       ],
+       "104": [
+        352,
+        354,
+        88.88
+       ],
+       "120": [
+        416,
+        494,
+        82.89
+       ],
+       "141": [
+        522,
+        524,
+        94.28
+       ],
+       "144": [
+        568,
+        614,
+        82.91
+       ],
+       "161": [
+        612,
+        614,
+        94.16
+       ],
+       "171": [
+        670,
+        704,
+        147.47
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        192,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     }
+    }
+   }
+  },
+  "K3c": {
+   "periods": "per-frame interval",
+   "asrec": {
+    "five_empty": {
+     "frames": 2287,
+     "alarm_frames": 58,
+     "alarm_events": 13,
+     "stop_episodes": 16
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 189,
+      "alarm_events": 2,
+      "stop_episodes": 2,
+      "advisory_frames": 92,
+      "events": {
+       "1": [
+        11,
+        73,
+        55.54
+       ],
+       "8": [
+        72,
+        200,
+        56.15
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        3.18,
+        -0.81
+       ],
+       [
+        186,
+        "ok",
+        3.18,
+        -0.81
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         186,
+         246
+        ]
+       },
+       "first_alarm_frame": 11,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 4,
+      "alarm_events": 4,
+      "stop_episodes": 1,
+      "advisory_frames": 180,
+      "events": {
+       "41": [
+        34,
+        37,
+        41.73
+       ],
+       "47": [
+        36,
+        37,
+        34.79
+       ],
+       "48": [
+        36,
+        37,
+        34.94
+       ],
+       "46": [
+        36,
+        37,
+        36.26
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        204,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 173,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 104,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 146,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 54,
+      "alarm_events": 9,
+      "stop_episodes": 15,
+      "advisory_frames": 394,
+      "events": {
+       "158": [
+        312,
+        317,
+        82.06
+       ],
+       "203": [
+        424,
+        427,
+        82.88
+       ],
+       "213": [
+        437,
+        528,
+        82.9
+       ],
+       "237": [
+        500,
+        501,
+        147.49
+       ],
+       "263": [
+        580,
+        580,
+        147.46
+       ],
+       "279": [
+        612,
+        613,
+        94.16
+       ],
+       "289": [
+        640,
+        642,
+        147.46
+       ],
+       "295": [
+        644,
+        675,
+        82.9
+       ],
+       "305": [
+        692,
+        708,
+        146.06
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     }
+    }
+   },
+   "5hz": {
+    "five_empty": {
+     "frames": 1145,
+     "alarm_frames": 44,
+     "alarm_events": 11,
+     "stop_episodes": 13
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 101,
+      "alarm_frames": 95,
+      "alarm_events": 2,
+      "stop_episodes": 1,
+      "advisory_frames": 9,
+      "events": {
+       "1": [
+        12,
+        74,
+        55.56
+       ],
+       "5": [
+        76,
+        200,
+        56.14
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        8,
+        "provisional",
+        3.13,
+        -0.83
+       ],
+       [
+        192,
+        "ok",
+        3.13,
+        -0.83
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         92,
+         123
+        ]
+       },
+       "first_alarm_frame": 12,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 173,
+      "alarm_frames": 5,
+      "alarm_events": 3,
+      "stop_episodes": 1,
+      "advisory_frames": 108,
+      "events": {
+       "19": [
+        34,
+        38,
+        36.77
+       ],
+       "22": [
+        38,
+        40,
+        35.74
+       ],
+       "26": [
+        40,
+        42,
+        30.5
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        220,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 126,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 80,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 134,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 59,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 273,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 91,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        192,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 439,
+      "alarm_frames": 39,
+      "alarm_events": 8,
+      "stop_episodes": 12,
+      "advisory_frames": 220,
+      "events": {
+       "91": [
+        310,
+        320,
+        82.17
+       ],
+       "93": [
+        310,
+        316,
+        147.72
+       ],
+       "104": [
+        352,
+        354,
+        88.88
+       ],
+       "120": [
+        416,
+        494,
+        82.89
+       ],
+       "141": [
+        522,
+        524,
+        94.28
+       ],
+       "144": [
+        568,
+        614,
+        82.91
+       ],
+       "161": [
+        612,
+        614,
+        94.16
+       ],
+       "171": [
+        670,
+        704,
+        147.47
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        192,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     }
+    }
+   },
+   "roll": {
+    "five_empty": {
+     "frames": 2287,
+     "alarm_frames": 42,
+     "alarm_events": 11,
+     "stop_episodes": 13
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 187,
+      "alarm_events": 2,
+      "stop_episodes": 2,
+      "advisory_frames": 24,
+      "events": {
+       "1": [
+        12,
+        73,
+        55.54
+       ],
+       "7": [
+        73,
+        200,
+        56.18
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        186,
+        "ok",
+        0.0,
+        -0.88
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         183,
+         246
+        ]
+       },
+       "first_alarm_frame": 12,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 10,
+      "alarm_events": 4,
+      "stop_episodes": 3,
+      "advisory_frames": 168,
+      "events": {
+       "8": [
+        10,
+        11,
+        81.02
+       ],
+       "28": [
+        32,
+        36,
+        35.04
+       ],
+       "31": [
+        33,
+        37,
+        39.07
+       ],
+       "119": [
+        164,
+        165,
+        49.38
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -3.53,
+        -0.17
+       ],
+       [
+        207,
+        "ok",
+        -3.23,
+        0.0
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 1,
+      "alarm_events": 1,
+      "stop_episodes": 1,
+      "advisory_frames": 165,
+      "events": {
+       "61": [
+        234,
+        234,
+        128.27
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -5.03,
+        0.35
+       ],
+       [
+        40,
+        "provisional",
+        -3.57,
+        0.0
+       ],
+       [
+        190,
+        "ok",
+        -3.3,
+        0.0
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 1,
+      "alarm_events": 1,
+      "stop_episodes": 1,
+      "advisory_frames": 115,
+      "events": {
+       "59": [
+        184,
+        184,
+        83.25
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -2.7,
+        -0.14
+       ],
+       [
+        50,
+        "provisional",
+        -3.26,
+        0.0
+       ],
+       [
+        190,
+        "ok",
+        -3.26,
+        0.0
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 168,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -3.04,
+        -0.31
+       ],
+       [
+        190,
+        "ok",
+        -3.33,
+        0.0
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 30,
+      "alarm_events": 5,
+      "stop_episodes": 8,
+      "advisory_frames": 441,
+      "events": {
+       "156": [
+        309,
+        310,
+        147.81
+       ],
+       "157": [
+        311,
+        320,
+        82.11
+       ],
+       "209": [
+        442,
+        490,
+        82.9
+       ],
+       "246": [
+        539,
+        540,
+        82.93
+       ],
+       "272": [
+        612,
+        613,
+        94.16
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -2.84,
+        -0.69
+       ],
+       [
+        40,
+        "provisional",
+        -3.08,
+        0.0
+       ],
+       [
+        180,
+        "provisional",
+        -2.57,
+        0.0
+       ],
+       [
+        190,
+        "ok",
+        -2.57,
+        0.0
+       ]
+      ]
+     }
+    }
+   },
+   "pitch": {
+    "five_empty": {
+     "frames": 2287,
+     "alarm_frames": 68,
+     "alarm_events": 16,
+     "stop_episodes": 17
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 189,
+      "alarm_events": 2,
+      "stop_episodes": 2,
+      "advisory_frames": 76,
+      "events": {
+       "1": [
+        11,
+        72,
+        55.54
+       ],
+       "8": [
+        72,
+        200,
+        56.16
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        3.37,
+        -3.86
+       ],
+       [
+        186,
+        "ok",
+        3.08,
+        -3.82
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         186,
+         246
+        ]
+       },
+       "first_alarm_frame": 11,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 10,
+      "alarm_events": 6,
+      "stop_episodes": 4,
+      "advisory_frames": 183,
+      "events": {
+       "4": [
+        19,
+        19,
+        111.73
+       ],
+       "33": [
+        33,
+        37,
+        39.07
+       ],
+       "41": [
+        36,
+        37,
+        34.94
+       ],
+       "42": [
+        37,
+        38,
+        36.97
+       ],
+       "156": [
+        185,
+        186,
+        3.02
+       ],
+       "169": [
+        201,
+        201,
+        87.87
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -0.34,
+        -3.12
+       ],
+       [
+        199,
+        "ok",
+        0.0,
+        -3.2
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 137,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -1.57,
+        -2.7
+       ],
+       [
+        60,
+        "provisional",
+        -0.98,
+        -2.73
+       ],
+       [
+        90,
+        "provisional",
+        0.0,
+        -2.77
+       ],
+       [
+        100,
+        "provisional",
+        -0.87,
+        -2.81
+       ],
+       [
+        150,
+        "provisional",
+        0.0,
+        -2.73
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -2.73
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 96,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -0.05,
+        -3.15
+       ],
+       [
+        190,
+        "ok",
+        -0.05,
+        -3.15
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 152,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -0.3,
+        -3.27
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -3.19
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 58,
+      "alarm_events": 10,
+      "stop_episodes": 13,
+      "advisory_frames": 409,
+      "events": {
+       "153": [
+        311,
+        312,
+        82.11
+       ],
+       "164": [
+        329,
+        330,
+        89.91
+       ],
+       "197": [
+        415,
+        422,
+        147.44
+       ],
+       "200": [
+        416,
+        427,
+        82.89
+       ],
+       "209": [
+        489,
+        490,
+        82.9
+       ],
+       "252": [
+        539,
+        586,
+        82.93
+       ],
+       "279": [
+        612,
+        613,
+        94.15
+       ],
+       "287": [
+        637,
+        643,
+        147.46
+       ],
+       "290": [
+        644,
+        644,
+        82.9
+       ],
+       "302": [
+        692,
+        708,
+        146.07
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -0.01,
+        -3.69
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -3.31
+       ]
+      ]
+     }
+    }
+   }
+  },
+  "K4c": {
+   "periods": "per-frame interval",
+   "5hz": {
+    "five_empty": {
+     "frames": 1145,
+     "alarm_frames": 44,
+     "alarm_events": 11,
+     "stop_episodes": 13
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 101,
+      "alarm_frames": 92,
+      "alarm_events": 2,
+      "stop_episodes": 3,
+      "advisory_frames": 36,
+      "events": {
+       "1": [
+        12,
+        74,
+        55.54
+       ],
+       "3": [
+        76,
+        200,
+        56.21
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        8,
+        "provisional",
+        3.13,
+        0.0
+       ],
+       [
+        40,
+        "provisional",
+        3.5,
+        -0.96
+       ],
+       [
+        192,
+        "ok",
+        3.08,
+        -0.9
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         89,
+         123
+        ]
+       },
+       "first_alarm_frame": 12,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 173,
+      "alarm_frames": 5,
+      "alarm_events": 3,
+      "stop_episodes": 1,
+      "advisory_frames": 108,
+      "events": {
+       "19": [
+        34,
+        38,
+        36.77
+       ],
+       "22": [
+        38,
+        40,
+        35.74
+       ],
+       "26": [
+        40,
+        42,
+        30.5
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        220,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 126,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 80,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 134,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 59,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 273,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 91,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        192,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 439,
+      "alarm_frames": 39,
+      "alarm_events": 8,
+      "stop_episodes": 12,
+      "advisory_frames": 220,
+      "events": {
+       "91": [
+        310,
+        320,
+        82.17
+       ],
+       "93": [
+        310,
+        316,
+        147.72
+       ],
+       "104": [
+        352,
+        354,
+        88.88
+       ],
+       "120": [
+        416,
+        494,
+        82.89
+       ],
+       "141": [
+        522,
+        524,
+        94.28
+       ],
+       "144": [
+        568,
+        614,
+        82.91
+       ],
+       "161": [
+        612,
+        614,
+        94.16
+       ],
+       "171": [
+        670,
+        704,
+        147.47
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        192,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     }
+    }
+   },
+   "roll": {
+    "five_empty": {
+     "frames": 2287,
+     "alarm_frames": 52,
+     "alarm_events": 19,
+     "stop_episodes": 14
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 187,
+      "alarm_events": 2,
+      "stop_episodes": 2,
+      "advisory_frames": 24,
+      "events": {
+       "1": [
+        12,
+        73,
+        55.54
+       ],
+       "7": [
+        73,
+        200,
+        56.18
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        186,
+        "ok",
+        0.0,
+        -0.88
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         183,
+         246
+        ]
+       },
+       "first_alarm_frame": 12,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 5,
+      "alarm_events": 5,
+      "stop_episodes": 1,
+      "advisory_frames": 155,
+      "events": {
+       "27": [
+        33,
+        34,
+        31.77
+       ],
+       "30": [
+        33,
+        36,
+        39.07
+       ],
+       "32": [
+        36,
+        37,
+        34.79
+       ],
+       "35": [
+        36,
+        37,
+        35.59
+       ],
+       "37": [
+        36,
+        37,
+        36.26
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -3.53,
+        0.0
+       ],
+       [
+        199,
+        "ok",
+        -3.53,
+        0.0
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 2,
+      "alarm_events": 2,
+      "stop_episodes": 2,
+      "advisory_frames": 165,
+      "events": {
+       "34": [
+        159,
+        159,
+        53.0
+       ],
+       "73": [
+        234,
+        234,
+        128.27
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -5.03,
+        0.0
+       ],
+       [
+        40,
+        "provisional",
+        -4.17,
+        0.0
+       ],
+       [
+        130,
+        "provisional",
+        -3.66,
+        0.0
+       ],
+       [
+        190,
+        "ok",
+        -3.35,
+        0.0
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 1,
+      "alarm_events": 1,
+      "stop_episodes": 1,
+      "advisory_frames": 114,
+      "events": {
+       "57": [
+        182,
+        182,
+        81.53
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -2.7,
+        0.0
+       ],
+       [
+        50,
+        "provisional",
+        -3.26,
+        0.0
+       ],
+       [
+        190,
+        "ok",
+        -3.26,
+        0.0
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 155,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -3.04,
+        0.0
+       ],
+       [
+        190,
+        "ok",
+        -3.3,
+        0.0
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 44,
+      "alarm_events": 11,
+      "stop_episodes": 10,
+      "advisory_frames": 405,
+      "events": {
+       "92": [
+        148,
+        148,
+        98.58
+       ],
+       "164": [
+        309,
+        310,
+        147.81
+       ],
+       "165": [
+        311,
+        312,
+        82.11
+       ],
+       "203": [
+        405,
+        406,
+        147.45
+       ],
+       "208": [
+        426,
+        427,
+        82.9
+       ],
+       "218": [
+        451,
+        490,
+        82.9
+       ],
+       "255": [
+        608,
+        610,
+        82.9
+       ],
+       "282": [
+        612,
+        613,
+        94.16
+       ],
+       "293": [
+        637,
+        644,
+        147.45
+       ],
+       "296": [
+        644,
+        644,
+        82.9
+       ],
+       "309": [
+        694,
+        708,
+        145.82
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -2.84,
+        0.0
+       ],
+       [
+        190,
+        "ok",
+        -2.54,
+        0.0
+       ]
+      ]
+     }
+    }
+   },
+   "pitch": {
+    "five_empty": {
+     "frames": 2287,
+     "alarm_frames": 69,
+     "alarm_events": 19,
+     "stop_episodes": 17
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 189,
+      "alarm_events": 2,
+      "stop_episodes": 2,
+      "advisory_frames": 76,
+      "events": {
+       "1": [
+        11,
+        72,
+        55.54
+       ],
+       "8": [
+        72,
+        200,
+        56.16
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        3.37,
+        -3.86
+       ],
+       [
+        186,
+        "ok",
+        3.08,
+        -3.82
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         186,
+         246
+        ]
+       },
+       "first_alarm_frame": 11,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 7,
+      "alarm_events": 6,
+      "stop_episodes": 2,
+      "advisory_frames": 188,
+      "events": {
+       "28": [
+        33,
+        35,
+        31.77
+       ],
+       "39": [
+        36,
+        37,
+        31.58
+       ],
+       "40": [
+        36,
+        37,
+        34.94
+       ],
+       "38": [
+        36,
+        37,
+        36.26
+       ],
+       "41": [
+        36,
+        37,
+        38.11
+       ],
+       "150": [
+        186,
+        187,
+        3.03
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        0.0,
+        -3.12
+       ],
+       [
+        40,
+        "provisional",
+        -0.89,
+        -3.13
+       ],
+       [
+        50,
+        "provisional",
+        0.0,
+        -3.22
+       ],
+       [
+        204,
+        "ok",
+        0.0,
+        -3.22
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 2,
+      "alarm_events": 1,
+      "stop_episodes": 1,
+      "advisory_frames": 175,
+      "events": {
+       "36": [
+        99,
+        100,
+        49.67
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        0.0,
+        -2.7
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -2.7
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 112,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        0.0,
+        -3.15
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -3.15
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 165,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        0.0,
+        -3.27
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -3.27
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 60,
+      "alarm_events": 12,
+      "stop_episodes": 14,
+      "advisory_frames": 409,
+      "events": {
+       "150": [
+        311,
+        312,
+        82.11
+       ],
+       "162": [
+        329,
+        335,
+        89.91
+       ],
+       "193": [
+        410,
+        420,
+        147.45
+       ],
+       "196": [
+        416,
+        427,
+        82.89
+       ],
+       "225": [
+        486,
+        487,
+        147.5
+       ],
+       "205": [
+        489,
+        490,
+        82.9
+       ],
+       "234": [
+        500,
+        501,
+        147.49
+       ],
+       "251": [
+        582,
+        591,
+        82.91
+       ],
+       "280": [
+        612,
+        613,
+        94.15
+       ],
+       "289": [
+        641,
+        642,
+        147.49
+       ],
+       "291": [
+        644,
+        645,
+        82.9
+       ],
+       "301": [
+        692,
+        708,
+        146.07
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        0.0,
+        -3.69
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -3.32
+       ]
+      ]
+     }
+    }
+   }
+  },
+  "K3d": {
+   "periods": "median of the last 9 stamp intervals (committed code)",
+   "5hz": {
+    "five_empty": {
+     "frames": 1145,
+     "alarm_frames": 38,
+     "alarm_events": 10,
+     "stop_episodes": 10
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 101,
+      "alarm_frames": 95,
+      "alarm_events": 2,
+      "stop_episodes": 1,
+      "advisory_frames": 5,
+      "events": {
+       "1": [
+        12,
+        74,
+        55.56
+       ],
+       "5": [
+        76,
+        200,
+        56.14
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        8,
+        "provisional",
+        3.13,
+        -0.83
+       ],
+       [
+        190,
+        "ok",
+        3.13,
+        -0.83
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         92,
+         123
+        ]
+       },
+       "first_alarm_frame": 12,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 173,
+      "alarm_frames": 5,
+      "alarm_events": 3,
+      "stop_episodes": 1,
+      "advisory_frames": 108,
+      "events": {
+       "19": [
+        34,
+        38,
+        36.77
+       ],
+       "22": [
+        38,
+        40,
+        35.74
+       ],
+       "26": [
+        40,
+        42,
+        30.5
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        220,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 126,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 80,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 134,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 59,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 273,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 113,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 439,
+      "alarm_frames": 33,
+      "alarm_events": 7,
+      "stop_episodes": 9,
+      "advisory_frames": 215,
+      "events": {
+       "94": [
+        310,
+        314,
+        147.72
+       ],
+       "105": [
+        352,
+        354,
+        88.88
+       ],
+       "144": [
+        522,
+        524,
+        94.28
+       ],
+       "150": [
+        546,
+        620,
+        82.72
+       ],
+       "164": [
+        612,
+        614,
+        94.16
+       ],
+       "168": [
+        632,
+        638,
+        147.46
+       ],
+       "174": [
+        702,
+        706,
+        139.59
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     }
+    }
+   },
+   "roll": {
+    "five_empty": {
+     "frames": 2287,
+     "alarm_frames": 42,
+     "alarm_events": 11,
+     "stop_episodes": 13
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 185,
+      "alarm_events": 2,
+      "stop_episodes": 4,
+      "advisory_frames": 22,
+      "events": {
+       "1": [
+        12,
+        73,
+        55.54
+       ],
+       "7": [
+        73,
+        200,
+        56.18
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -0.91
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         181,
+         246
+        ]
+       },
+       "first_alarm_frame": 12,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 10,
+      "alarm_events": 4,
+      "stop_episodes": 3,
+      "advisory_frames": 168,
+      "events": {
+       "8": [
+        10,
+        11,
+        81.02
+       ],
+       "28": [
+        32,
+        36,
+        35.04
+       ],
+       "31": [
+        33,
+        37,
+        39.07
+       ],
+       "119": [
+        164,
+        165,
+        49.38
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -3.53,
+        -0.17
+       ],
+       [
+        207,
+        "ok",
+        -3.23,
+        0.0
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 1,
+      "alarm_events": 1,
+      "stop_episodes": 1,
+      "advisory_frames": 165,
+      "events": {
+       "61": [
+        234,
+        234,
+        128.27
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -5.03,
+        0.35
+       ],
+       [
+        40,
+        "provisional",
+        -3.57,
+        0.0
+       ],
+       [
+        190,
+        "ok",
+        -3.3,
+        0.0
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 1,
+      "alarm_events": 1,
+      "stop_episodes": 1,
+      "advisory_frames": 115,
+      "events": {
+       "59": [
+        184,
+        184,
+        83.25
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -2.7,
+        -0.14
+       ],
+       [
+        50,
+        "provisional",
+        -3.26,
+        0.0
+       ],
+       [
+        190,
+        "ok",
+        -3.26,
+        0.0
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 168,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -3.04,
+        -0.31
+       ],
+       [
+        190,
+        "ok",
+        -3.33,
+        0.0
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 30,
+      "alarm_events": 5,
+      "stop_episodes": 8,
+      "advisory_frames": 441,
+      "events": {
+       "156": [
+        309,
+        310,
+        147.81
+       ],
+       "157": [
+        311,
+        320,
+        82.11
+       ],
+       "209": [
+        442,
+        490,
+        82.9
+       ],
+       "246": [
+        539,
+        540,
+        82.93
+       ],
+       "272": [
+        612,
+        613,
+        94.16
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -2.84,
+        -0.69
+       ],
+       [
+        40,
+        "provisional",
+        -3.08,
+        0.0
+       ],
+       [
+        180,
+        "provisional",
+        -2.57,
+        0.0
+       ],
+       [
+        190,
+        "ok",
+        -2.57,
+        0.0
+       ]
+      ]
+     }
+    }
+   },
+   "pitch": {
+    "five_empty": {
+     "frames": 2287,
+     "alarm_frames": 68,
+     "alarm_events": 16,
+     "stop_episodes": 17
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 189,
+      "alarm_events": 2,
+      "stop_episodes": 2,
+      "advisory_frames": 78,
+      "events": {
+       "1": [
+        11,
+        72,
+        55.54
+       ],
+       "8": [
+        72,
+        200,
+        56.16
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        3.37,
+        -3.86
+       ],
+       [
+        190,
+        "ok",
+        3.06,
+        -3.86
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         186,
+         246
+        ]
+       },
+       "first_alarm_frame": 11,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 10,
+      "alarm_events": 6,
+      "stop_episodes": 4,
+      "advisory_frames": 183,
+      "events": {
+       "4": [
+        19,
+        19,
+        111.73
+       ],
+       "33": [
+        33,
+        37,
+        39.07
+       ],
+       "41": [
+        36,
+        37,
+        34.94
+       ],
+       "42": [
+        37,
+        38,
+        36.97
+       ],
+       "156": [
+        185,
+        186,
+        3.02
+       ],
+       "169": [
+        201,
+        201,
+        87.87
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -0.34,
+        -3.12
+       ],
+       [
+        199,
+        "ok",
+        0.0,
+        -3.2
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 137,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -1.57,
+        -2.7
+       ],
+       [
+        60,
+        "provisional",
+        -0.98,
+        -2.73
+       ],
+       [
+        90,
+        "provisional",
+        0.0,
+        -2.77
+       ],
+       [
+        100,
+        "provisional",
+        -0.87,
+        -2.81
+       ],
+       [
+        150,
+        "provisional",
+        0.0,
+        -2.73
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -2.73
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 96,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -0.05,
+        -3.15
+       ],
+       [
+        190,
+        "ok",
+        -0.05,
+        -3.15
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 152,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -0.3,
+        -3.27
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -3.19
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 58,
+      "alarm_events": 10,
+      "stop_episodes": 13,
+      "advisory_frames": 409,
+      "events": {
+       "153": [
+        311,
+        312,
+        82.11
+       ],
+       "164": [
+        329,
+        330,
+        89.91
+       ],
+       "197": [
+        415,
+        422,
+        147.44
+       ],
+       "200": [
+        416,
+        427,
+        82.89
+       ],
+       "209": [
+        489,
+        490,
+        82.9
+       ],
+       "252": [
+        539,
+        586,
+        82.93
+       ],
+       "279": [
+        612,
+        613,
+        94.15
+       ],
+       "287": [
+        637,
+        643,
+        147.46
+       ],
+       "290": [
+        644,
+        644,
+        82.9
+       ],
+       "302": [
+        692,
+        708,
+        146.07
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -0.01,
+        -3.69
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -3.31
+       ]
+      ]
+     }
+    }
+   }
+  },
+  "ship": {
+   "periods": "median of the last 9 stamp intervals (committed code)",
+   "asrec": {
+    "five_empty": {
+     "frames": 2287,
+     "alarm_frames": 58,
+     "alarm_events": 13,
+     "stop_episodes": 16
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 189,
+      "alarm_events": 2,
+      "stop_episodes": 2,
+      "advisory_frames": 94,
+      "events": {
+       "1": [
+        11,
+        73,
+        55.54
+       ],
+       "8": [
+        72,
+        200,
+        56.15
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        3.18,
+        -0.81
+       ],
+       [
+        190,
+        "ok",
+        3.18,
+        -0.81
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         186,
+         246
+        ]
+       },
+       "first_alarm_frame": 11,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 4,
+      "alarm_events": 4,
+      "stop_episodes": 1,
+      "advisory_frames": 180,
+      "events": {
+       "41": [
+        34,
+        37,
+        41.73
+       ],
+       "47": [
+        36,
+        37,
+        34.79
+       ],
+       "48": [
+        36,
+        37,
+        34.94
+       ],
+       "46": [
+        36,
+        37,
+        36.26
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        204,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 173,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 104,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 146,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 54,
+      "alarm_events": 9,
+      "stop_episodes": 15,
+      "advisory_frames": 394,
+      "events": {
+       "158": [
+        312,
+        317,
+        82.06
+       ],
+       "203": [
+        424,
+        427,
+        82.88
+       ],
+       "213": [
+        437,
+        528,
+        82.9
+       ],
+       "237": [
+        500,
+        501,
+        147.49
+       ],
+       "263": [
+        580,
+        580,
+        147.46
+       ],
+       "279": [
+        612,
+        613,
+        94.16
+       ],
+       "289": [
+        640,
+        642,
+        147.46
+       ],
+       "295": [
+        644,
+        675,
+        82.9
+       ],
+       "305": [
+        692,
+        708,
+        146.06
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     }
+    }
+   },
+   "5hz": {
+    "five_empty": {
+     "frames": 1145,
+     "alarm_frames": 38,
+     "alarm_events": 10,
+     "stop_episodes": 10
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 101,
+      "alarm_frames": 95,
+      "alarm_events": 2,
+      "stop_episodes": 1,
+      "advisory_frames": 5,
+      "events": {
+       "1": [
+        12,
+        74,
+        55.56
+       ],
+       "5": [
+        76,
+        200,
+        56.14
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        8,
+        "provisional",
+        3.13,
+        -0.83
+       ],
+       [
+        190,
+        "ok",
+        3.13,
+        -0.83
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         92,
+         123
+        ]
+       },
+       "first_alarm_frame": 12,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 173,
+      "alarm_frames": 5,
+      "alarm_events": 3,
+      "stop_episodes": 1,
+      "advisory_frames": 108,
+      "events": {
+       "19": [
+        34,
+        38,
+        36.77
+       ],
+       "22": [
+        38,
+        40,
+        35.74
+       ],
+       "26": [
+        40,
+        42,
+        30.5
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        220,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 126,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 80,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 134,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 59,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 273,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 113,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 439,
+      "alarm_frames": 33,
+      "alarm_events": 7,
+      "stop_episodes": 9,
+      "advisory_frames": 215,
+      "events": {
+       "94": [
+        310,
+        314,
+        147.72
+       ],
+       "105": [
+        352,
+        354,
+        88.88
+       ],
+       "144": [
+        522,
+        524,
+        94.28
+       ],
+       "150": [
+        546,
+        620,
+        82.72
+       ],
+       "164": [
+        612,
+        614,
+        94.16
+       ],
+       "168": [
+        632,
+        638,
+        147.46
+       ],
+       "174": [
+        702,
+        706,
+        139.59
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "identity",
+        0.0,
+        0.0
+       ]
+      ]
+     }
+    }
+   },
+   "roll": {
+    "five_empty": {
+     "frames": 2287,
+     "alarm_frames": 42,
+     "alarm_events": 11,
+     "stop_episodes": 13
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 185,
+      "alarm_events": 2,
+      "stop_episodes": 4,
+      "advisory_frames": 22,
+      "events": {
+       "1": [
+        12,
+        73,
+        55.54
+       ],
+       "7": [
+        73,
+        200,
+        56.18
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -0.91
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         181,
+         246
+        ]
+       },
+       "first_alarm_frame": 12,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 10,
+      "alarm_events": 4,
+      "stop_episodes": 3,
+      "advisory_frames": 168,
+      "events": {
+       "8": [
+        10,
+        11,
+        81.02
+       ],
+       "28": [
+        32,
+        36,
+        35.04
+       ],
+       "31": [
+        33,
+        37,
+        39.07
+       ],
+       "119": [
+        164,
+        165,
+        49.38
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -3.53,
+        -0.17
+       ],
+       [
+        207,
+        "ok",
+        -3.23,
+        0.0
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 1,
+      "alarm_events": 1,
+      "stop_episodes": 1,
+      "advisory_frames": 165,
+      "events": {
+       "61": [
+        234,
+        234,
+        128.27
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -5.03,
+        0.35
+       ],
+       [
+        40,
+        "provisional",
+        -3.57,
+        0.0
+       ],
+       [
+        190,
+        "ok",
+        -3.3,
+        0.0
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 1,
+      "alarm_events": 1,
+      "stop_episodes": 1,
+      "advisory_frames": 115,
+      "events": {
+       "59": [
+        184,
+        184,
+        83.25
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -2.7,
+        -0.14
+       ],
+       [
+        50,
+        "provisional",
+        -3.26,
+        0.0
+       ],
+       [
+        190,
+        "ok",
+        -3.26,
+        0.0
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 168,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -3.04,
+        -0.31
+       ],
+       [
+        190,
+        "ok",
+        -3.33,
+        0.0
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 30,
+      "alarm_events": 5,
+      "stop_episodes": 8,
+      "advisory_frames": 441,
+      "events": {
+       "156": [
+        309,
+        310,
+        147.81
+       ],
+       "157": [
+        311,
+        320,
+        82.11
+       ],
+       "209": [
+        442,
+        490,
+        82.9
+       ],
+       "246": [
+        539,
+        540,
+        82.93
+       ],
+       "272": [
+        612,
+        613,
+        94.16
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -2.84,
+        -0.69
+       ],
+       [
+        40,
+        "provisional",
+        -3.08,
+        0.0
+       ],
+       [
+        180,
+        "provisional",
+        -2.57,
+        0.0
+       ],
+       [
+        190,
+        "ok",
+        -2.57,
+        0.0
+       ]
+      ]
+     }
+    }
+   },
+   "pitch": {
+    "five_empty": {
+     "frames": 2287,
+     "alarm_frames": 68,
+     "alarm_events": 16,
+     "stop_episodes": 17
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 189,
+      "alarm_events": 2,
+      "stop_episodes": 2,
+      "advisory_frames": 78,
+      "events": {
+       "1": [
+        11,
+        72,
+        55.54
+       ],
+       "8": [
+        72,
+        200,
+        56.16
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        3.37,
+        -3.86
+       ],
+       [
+        190,
+        "ok",
+        3.06,
+        -3.86
+       ]
+      ],
+      "labelled": {
+       "hits": {
+        "50-100": [
+         186,
+         246
+        ]
+       },
+       "first_alarm_frame": 11,
+       "fp_events": 0
+      }
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 10,
+      "alarm_events": 6,
+      "stop_episodes": 4,
+      "advisory_frames": 183,
+      "events": {
+       "4": [
+        19,
+        19,
+        111.73
+       ],
+       "33": [
+        33,
+        37,
+        39.07
+       ],
+       "41": [
+        36,
+        37,
+        34.94
+       ],
+       "42": [
+        37,
+        38,
+        36.97
+       ],
+       "156": [
+        185,
+        186,
+        3.02
+       ],
+       "169": [
+        201,
+        201,
+        87.87
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -0.34,
+        -3.12
+       ],
+       [
+        199,
+        "ok",
+        0.0,
+        -3.2
+       ]
+      ]
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 137,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -1.57,
+        -2.7
+       ],
+       [
+        60,
+        "provisional",
+        -0.98,
+        -2.73
+       ],
+       [
+        90,
+        "provisional",
+        0.0,
+        -2.77
+       ],
+       [
+        100,
+        "provisional",
+        -0.87,
+        -2.81
+       ],
+       [
+        150,
+        "provisional",
+        0.0,
+        -2.73
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -2.73
+       ]
+      ]
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 96,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -0.05,
+        -3.15
+       ],
+       [
+        190,
+        "ok",
+        -0.05,
+        -3.15
+       ]
+      ]
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "advisory_frames": 152,
+      "events": {},
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -0.3,
+        -3.27
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -3.19
+       ]
+      ]
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 58,
+      "alarm_events": 10,
+      "stop_episodes": 13,
+      "advisory_frames": 409,
+      "events": {
+       "153": [
+        311,
+        312,
+        82.11
+       ],
+       "164": [
+        329,
+        330,
+        89.91
+       ],
+       "197": [
+        415,
+        422,
+        147.44
+       ],
+       "200": [
+        416,
+        427,
+        82.89
+       ],
+       "209": [
+        489,
+        490,
+        82.9
+       ],
+       "252": [
+        539,
+        586,
+        82.93
+       ],
+       "279": [
+        612,
+        613,
+        94.15
+       ],
+       "287": [
+        637,
+        643,
+        147.46
+       ],
+       "290": [
+        644,
+        644,
+        82.9
+       ],
+       "302": [
+        692,
+        708,
+        146.07
+       ]
+      },
+      "mount": [
+       [
+        0,
+        "pending",
+        0.0,
+        0.0
+       ],
+       [
+        4,
+        "provisional",
+        -0.01,
+        -3.69
+       ],
+       [
+        190,
+        "ok",
+        0.0,
+        -3.31
+       ]
+      ]
+     }
+    }
+   }
+  }
+ }
+}

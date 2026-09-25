@@ -1306,6 +1306,40 @@ with R1 on (`--jobs 1`, 1 093 s) passes with no gated row changed (five recordin
 ride 187 / 46 / 39, set O 303 STOP frames, set F straight identical), and its per-frame
 `clear_distance` equals the sweep's on all 15 068 frames.
 
+**5 Hz and a ±3° re-mount (SCORECARD #13, criterion 8.4; P3, 25.09 evening): shipped.** The §1g
+events, traced frame by frame on `1c96233`, had four causes, none in the tracker windows
+(`confirm_time_s` is already in seconds): the calibration spacing counted frames (the 5 Hz final
+never completed on the 25 s bags); the axis rate limits and yaw / curvature EMA were per frame,
+so at 5 Hz the axis lagged the curve of `roundT_doubleT` (yaw 0.009 rad behind at frame 112) and
+a low cluster at 47 m and structures at 83–137 m swept into the gauge; the provisional tilt (5
+consecutive frames) saw one canted stretch there (roll −1.0…−2.2°), so a re-mounted rig ran ~20 s
+with a 1.6–2° roll error; a final confirming the provisional (`doubleT_obstacle`, 0.16°) re-seeded
+the track model and lost frame 191. On since 25.09: `calibration.time_cadence` and
+`track.rates_per_period` / `walls_smoothing_per_period` (periods of the input rate, the median of
+the last 9 stamp intervals), `calibration.refine_min_deg` 0.5 (the spaced observations replace the
+provisional tilt) and `calibration.keep_within_deg` 0.25. Pre-registered 20:50 UTC with three
+dated addenda written before their runs
+([`p3_robustness_2026-09-25.json`](evidence/results/p3_robustness_2026-09-25.json); all runs:
+[`scorecard13_p3_2026-09-25.json`](evidence/results/scorecard13_p3_2026-09-25.json)). Five empty
+bags false events / STOP episodes, `roundT_doubleT` events, `doubleT_obstacle` hits @ first alarm:
+
+| mode | base `1c96233` (= P4) | shipped |
+|---|---|---|
+| 10 Hz as recorded | 13 / 16, 0, 185/246 @ 11 | 13 / 16, 0, **186/246** @ 11 |
+| 5 Hz | 13 / 17, **3**, 92/123 @ 12 | **10 / 10**, 0, 92/123 @ 12 |
+| +3° roll | 16 / 17, **2**, 181/246 @ 12 | **11 / 13**, 1, 181/246 @ 12 |
+| +3° pitch | 17 / 18, **1**, 186/246 @ 11 | 16 / 17, 0, 186/246 @ 11 |
+
+The axis flags make the 5 Hz gain, the refinement the tilt gain (it adds one roll event in
+`roundT_pressureGate_roundT`); time cadence and keep-within change no stress count. Tried, not
+shipped: the EMA of the bed and rails per period (5 Hz `doubleT_obstacle` 92 → 87/123), a
+per-axis provisional gate (roll / pitch 19 events), periods from each single interval (the ride's
+receive stamps come in bursts: gate FAIL, ride 46 / 39 → 48 / 42). 10 Hz gate (`--jobs 1`): PASS,
+`doubleT_obstacle` object on the rail +1 hit, ride, five bags, set O and set F straight identical.
+Open: pitch stays at 16 (`doubleT_platform` 6 vs 4, `squareT_platform_squareT_switch` 10 vs 9:
+marginal clusters, not traced to a rate or tilt rule); roll alarms once on the far column of
+`roundT_doubleT` (frame 234).
+
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 
 ### 2a. Day-1 numbers (v0.3, 26 frames of `roundT_doubleT`, every 10th, synthetic objects)
@@ -2335,6 +2369,10 @@ v0.6).
   with `scripts/regression_gate.py --set …`, then the go / no-go~~ decided 25.09 on the ride
   (§1f): the long overhead rule on (ride 47 → 46 events), short signatures off (ride STOP
   episodes +6 for +49 set O STOP frames);
+- **5 Hz and a ±3° re-mount** (SCORECARD #13; P3; §1g, §1i): the causes fixed on 25.09 (five
+  bags false events 5 Hz 13 → 10, roll 16 → 11, pitch 17 → 16; `roundT_doubleT` 3 / 2 / 1 →
+  0 / 1 / 0); open: pitch above the as-recorded 13 (marginal clusters in `doubleT_platform` and
+  `squareT_platform_squareT_switch`) and one roll alarm on the far column of `roundT_doubleT`;
 - ~~**the `floating` signature on the organizers' hanging cube** (P3; §2e)~~ done 25.09, round 2
   (§1i): `cluster.floating_free_max_size` 0.5 m, #2 a STOP from 52.5 m (34.0 m), every recording
   and the ride identical; #4 (edge, Q1) and #8 (`elevated`, Q2) wait on the organizers;

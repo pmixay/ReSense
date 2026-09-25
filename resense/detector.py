@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import time
+from collections import deque
 from dataclasses import dataclass, field, fields, replace
 from typing import List, Optional
 
@@ -156,6 +157,7 @@ class Detector:
         self.bed = BedTemplate(self.cfg.lowobj)
         self.low_range = 0.0            # m, how far the bed was observed for the low-object stage (last frame)
         self._prev_stamp: Optional[float] = None
+        self._gaps: deque = deque(maxlen=9)   # the last sane stamp intervals (s): the input rate
 
     @property
     def mount_rotation(self) -> np.ndarray:
@@ -172,6 +174,7 @@ class Detector:
         self.health.reset()
         self.bed.reset()
         self._prev_stamp = None
+        self._gaps.clear()
 
     def _frame_dt(self, stamp: float) -> float:
         """Time since the previous frame from the stamps when they are sane, else the nominal
@@ -182,6 +185,7 @@ class Detector:
             lo, hi = self.cfg.accumulation.stamp_dt_range
             if lo <= gap <= hi:
                 dt = gap
+                self._gaps.append(gap)
         self._prev_stamp = float(stamp)
         return dt
 
@@ -199,13 +203,13 @@ class Detector:
         cfg = self.cfg
         t0 = time.perf_counter()
         frame = _finite_only(frame)
-        xyz = self._fit_track(frame.xyz)
+        dt = self._frame_dt(frame.stamp)
+        xyz = self._fit_track(frame.xyz, self._periods())
         t1 = time.perf_counter()
         cand, dy_all, h_all, mask, (valid, axis_valid, floor_valid) = self._corridor(xyz, frame.intensity)
         cand, straddle, near = self._low_stage(xyz, frame.intensity, dy_all, h_all, mask, cand,
                                                min(axis_valid, floor_valid))
         t2 = time.perf_counter()
-        dt = self._frame_dt(frame.stamp)
         speed, source, est = self._speed(xyz, dy_all, h_all, dt, ego_speed)
         t3 = time.perf_counter()
         merged, n_acc = self._accumulate(cand, speed, dt)
@@ -238,14 +242,26 @@ class Detector:
             health=health, mount=mount, clear_distance=health["clear_distance"], xyz=xyz,
         )
 
+    def _periods(self) -> int:
+        """Nominal frame periods (``tracking.frame_dt``) per processed frame at the current input
+        rate: the median of the last 9 sane stamp intervals, rounded, at least 1 (1 on the first
+        frame). 1 at 10 Hz, 2 at 5 Hz; a single interval is not used, because recorded receive
+        stamps come in bursts (0.2-0.45 s, then 0.02 s: the ride). The track model
+        (``rates_per_period``, ``walls_smoothing_per_period``) and the mount calibration
+        (``time_cadence``) count these instead of frames when enabled."""
+        nominal = self.cfg.tracking.frame_dt
+        if not self._gaps or nominal <= 0:
+            return 1
+        return max(1, int(round(float(np.median(self._gaps)) / nominal)))
+
     # -- 1, 1b ---------------------------------------------------------------------------------
-    def _fit_track(self, xyz_cfg: np.ndarray) -> np.ndarray:
+    def _fit_track(self, xyz_cfg: np.ndarray, periods: int = 1) -> np.ndarray:
         """Track model (bed profile, rail-head level, axis) and the mount calibration (first
         frames, then a drift check every few seconds). Returns the cloud in the corrected frame."""
         cfg = self.cfg
         xyz = self.calib.apply(xyz_cfg)
-        self.track = estimate_track(xyz, cfg.track, prev=self.track)
-        if self.calib.update(xyz_cfg, xyz, self.track):
+        self.track = estimate_track(xyz, cfg.track, prev=self.track, periods=periods)
+        if self.calib.update(xyz_cfg, xyz, self.track, periods=periods):
             xyz = self.calib.apply(xyz_cfg)
             self.track = estimate_track(xyz, cfg.track, prev=None)      # re-seed in the corrected frame
             self.buffer.clear()                                         # merged clouds are in the old frame

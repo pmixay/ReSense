@@ -74,6 +74,8 @@ resense:
     axis_max_yaw_rate: 0.003
     axis_max_curvature_rate: 0.0001
     axis_warmup_frames: 5          # v0.6: no rate limits for this many frames after a (re)seed of the track model
+    rates_per_period: true         # on since 25.09 (P3, SCORECARD #13): the axis rate limits and the warm-up per nominal frame period (tracking.frame_dt), not per processed frame (x k, k = the input rate: 1 at 10 Hz, 2 at 5 Hz); 5 Hz five bags 13 / 17 -> 10 / 10 events / STOP episodes with the next flag, 10 Hz gate identical (EXPERIMENTS.md 1i)
+    walls_smoothing_per_period: true   # on since 25.09 (P3): walls_smoothing (axis yaw / curvature EMA) per nominal frame period (a^k); floor / rails smoothing stay per frame
     axis_sides_max_disagreement: 0.00067
     axis_disagree_range: 60.0
     axis_one_side_range: 120.0
@@ -266,6 +268,10 @@ resense:
     monitor_period: 50
     drift_warn_deg: 1.5
     drift_window: 10                 # median of the last 10 checks (50 s): a curve is not a drift
+    time_cadence: true               # on since 25.09 (P3, SCORECARD #13): obs_spacing / monitor_period / max_frames in nominal frame periods at the input rate (from the stamps), not processed frames: 5 Hz calibrates in 20 s as 10 Hz does (it never completed on a 25 s bag)
+    refine_min_deg: 0.5              # on since 25.09 (P3): a provisional tilt is replaced by the spaced observations so far when they differ by at least this (deg); +3 deg roll five bags 16 -> 11 events, pitch 17 -> 16; 0 = off
+    provisional_per_axis: false      # 25.09 (P3), tried, not shipped: the provisional tilt corrects only the axis that reaches provisional_min_deg (roll / pitch five bags -> 19 / 19 events)
+    keep_within_deg: 0.25            # on since 25.09 (P3): a final tilt within this (deg) of the applied provisional keeps it, no track re-seed (doubleT_obstacle 185 -> 186 labelled hits); 0 = off
   health:                          # v0.6: production guards (resense/health.py)
     min_points: 20000
     low_points_fraction: 0.5

@@ -25,6 +25,19 @@ transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
 `cluster.far_axis_both_sides`, +3 far bed bins, +5 the rail-shadow review fixes) in `tests/`, 13
 in `web/demo`.
 
+- **5 Hz and ±3° re-mount robustness (25.09, P3, SCORECARD #13):** five new detector flags, on
+  after the 10 Hz gate (PASS: ride, five bags, set O and set F straight identical;
+  `doubleT_obstacle` 185 → 186 labelled hits): `calibration.time_cadence` (the calibration
+  counts periods of the input rate: at 5 Hz its final never completed on the 25 s bags),
+  `track.rates_per_period` and `track.walls_smoothing_per_period` (axis rate limits and yaw /
+  curvature EMA per period: the 5 Hz axis lagged curves), `calibration.refine_min_deg` 0.5 (the
+  spaced observations replace a provisional tilt taken on a canted stretch),
+  `calibration.keep_within_deg` 0.25 (a confirming final does not re-seed the track model).
+  `robustness_check.py`, five bags false events / STOP episodes: 5 Hz 13 / 17 → 10 / 10, +3° roll
+  16 / 17 → 11 / 13, pitch 17 / 18 → 16 / 17; `roundT_doubleT` 3 / 2 / 1 → 0 / 1 / 0;
+  `doubleT_obstacle` under stress unchanged. Tried, not shipped: `calibration.provisional_per_axis`
+  (off). Tests 416 → 422 (EXPERIMENTS §1i).
+
 - **Conservative `clear_distance`, tried and not shipped (25.09, SCORECARD §6 row 6):** the opt-in
   `health.clear_cap` (default false, output byte-identical) caps the verified-clear distance at
   the nearest unconfirmed or advisory cluster touching the envelope, columns excluded
