@@ -1,8 +1,8 @@
 {
  "schema": "resense-regression-gate-v1",
- "created": "2026-09-25T19:09:29+00:00",
+ "created": "2026-09-25T20:14:53+00:00",
  "code": {
-  "commit": "c598cf650a0c92587366304c636bd2652d5c735e",
+  "commit": "154db25e2fa5e2e4ad28c1c148fef49b39ce31d2",
   "branch": "wf7/p3",
   "version": "1.0.0",
   "uncommitted_detector_changes": []
@@ -10,8 +10,8 @@
  "config": {
   "path": "configs/default.yaml",
   "set": [],
-  "sha256": "cdada3903d463ab8b7df0e67c2d16e3d9135a8b6e1cce2e23272e664b7af25c7",
-  "file_sha256": "cfb028b495df453ffeb1f60ecb475c68bd0810afdb71b47bf56249f0d34832a7"
+  "sha256": "184ea0e7c4cf020e587b0ee7cb7cde1b2f5c3a8100e27ea6795e7d8da2c2c5d6",
+  "file_sha256": "014a336958881d729d8b08c4b7789eea21aa5a9fccda0b2f865eed3ecd5b9edf"
  },
  "native": {
   "path": "native",
@@ -21,7 +21,7 @@
   "cache": "/data/cache",
   "jobs": 3,
   "nominal_stamps": false,
-  "wall_s": 331.8,
+  "wall_s": 379.8,
   "machine": {
    "cpus": 4,
    "platform": "Linux-6.18.44-fc-v37-x86_64-with-glibc2.39",
@@ -42,8 +42,8 @@
     56.6
    ],
    "health": {
-    "ok": 201,
-    "warn": 0,
+    "ok": 188,
+    "warn": 13,
     "error": 0
    },
    "monitored_range_median": 151.0,
@@ -144,7 +144,7 @@
    "first_alarm_frame": 312,
    "advisory_frames": 394,
    "alarm_dist": [
-    82.9,
+    82.0,
     147.5
    ],
    "health": {
@@ -173,7 +173,7 @@
   "advisory_frames": 4742,
   "alarm_dist": [
    2.9,
-   160.5
+   158.3
   ],
   "health": {
    "ok": 11098,
@@ -589,7 +589,7 @@
     "detected": 6,
     "first_detection_median_m": 123.9,
     "sustained_median_m": 114.1,
-    "false_detections": 10,
+    "false_detections": 12,
     "recall_by_bin": {
      "0-50": [
       106,
@@ -600,7 +600,7 @@
       133
      ],
      "100-150": [
-      43,
+      41,
       151
      ],
      "150-200": [
@@ -705,44 +705,44 @@
  "latency_ms": {
   "note": "timing_ms.total per frame; informational, never gated: the workers run in parallel on a shared machine (clean timing: EXPERIMENTS §3)",
   "doubleT_obstacle": {
-   "mean_ms": 25.3,
-   "p95_ms": 35.0,
-   "max_ms": 53.1
+   "mean_ms": 39.3,
+   "p95_ms": 81.2,
+   "max_ms": 115.1
   },
   "doubleT_platform": {
-   "mean_ms": 27.6,
-   "p95_ms": 42.8,
-   "max_ms": 100.0
+   "mean_ms": 47.2,
+   "p95_ms": 74.6,
+   "max_ms": 131.3
   },
   "roundT_doubleT": {
-   "mean_ms": 22.8,
-   "p95_ms": 32.0,
-   "max_ms": 58.5
+   "mean_ms": 43.8,
+   "p95_ms": 71.3,
+   "max_ms": 113.7
   },
   "roundT_pressureGate_roundT": {
-   "mean_ms": 19.7,
-   "p95_ms": 27.9,
-   "max_ms": 32.6
+   "mean_ms": 39.8,
+   "p95_ms": 66.2,
+   "max_ms": 91.4
   },
   "roundT_squareT_pressureGate_squareT": {
-   "mean_ms": 18.3,
-   "p95_ms": 26.7,
-   "max_ms": 41.5
+   "mean_ms": 30.0,
+   "p95_ms": 48.2,
+   "max_ms": 160.3
   },
   "squareT_platform_squareT_switch": {
-   "mean_ms": 19.4,
-   "p95_ms": 26.3,
-   "max_ms": 35.7
+   "mean_ms": 31.7,
+   "p95_ms": 57.1,
+   "max_ms": 117.0
   },
   "cloud_with_fake_obj": {
-   "mean_ms": 19.3,
-   "p95_ms": 27.7,
-   "max_ms": 61.7
+   "mean_ms": 18.7,
+   "p95_ms": 26.5,
+   "max_ms": 64.0
   },
   "new_data": {
-   "mean_ms": 21.2,
-   "p95_ms": 32.1,
-   "max_ms": 134.0
+   "mean_ms": 22.3,
+   "p95_ms": 37.7,
+   "max_ms": 152.6
   }
  }
 }

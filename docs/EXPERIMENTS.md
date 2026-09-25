@@ -4,7 +4,7 @@
 > range, latency, FPS, hard cases and how the quality changed (spec §5 "Эксперименты").
 > **Audience:** jury, team · **Owner:** P3, P4 (content), P1 (structure, timing) · **Language:** EN,
 > summary RU
-> **Last verified:** 2026-09-25 against `c598cf6` (detector v0.6.3 with the long overhead rule,
+> **Last verified:** 2026-09-25 against `154db25` (detector v0.6.3 with the long overhead rule,
 > `tracking.column_hold` and the rail-shadow rules on since 25.09, node v0.6.4, package 1.0.0;
 > re-measured by the regression gate with the ride) ·
 > **Status:** current
@@ -36,7 +36,7 @@ real-data rows (five obstacle-free bags, the person, the object on the rail, the
 row and set F straight track in one run, and gates every detector change against
 [`regression_baseline_2026-09-25_ride_p3.json`](evidence/results/regression_baseline_2026-09-25_ride_p3.json)
 (the shipped defaults of `c598cf6`, the four P3 items of 25.09 merged with the rail-shadow rules
-on, re-cut after the rules' review fixes on the final commit of those fixes: six recordings, set O,
+on, re-cut on `154db25` after the rules' review fixes: six recordings, set O,
 the ride and set F straight; 25.09, §1h). It is the single check of
 these results: a change that moves them commits a new baseline, one that does not leaves this
 table as it is. The three before it,
@@ -1206,7 +1206,8 @@ detection's distance changes in 124 detection-frames, always shorter (the person
 identical (224 STOP frames, 0 beyond 1 m, largest error 0.46 m); no inside object loses a
 matched-alarm or STOP frame. The floor-shadow rule still fires only on set O (29 frames, held 14,
 released 0). Tests 431 → 436, each new one failing on `8556773`. The baseline
-`regression_baseline_2026-09-25_ride_p3.json` is re-cut on the final commit (same name). Raw:
+`regression_baseline_2026-09-25_ride_p3.json` is re-cut on `154db25` (same name; that run equals
+the `b718a37` one on every value but latency and in every frame). Raw:
 [`p3_review_fixes_2026-09-25.json`](evidence/results/p3_review_fixes_2026-09-25.json).
 
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)

@@ -267,6 +267,13 @@
    "adjacency_and_face": "test_floor_shadow_needs_adjacent_bins_and_takes_the_face_nearest_the_shadow: 28 / 62.5 m high bins no shadow (8556773: 27 m), 28 / 30 m a shadow at 27 m; the face 15 m (13 m over two bins) with a nearer off-bed bin at 8 m (8556773: 7 m)"
   },
   "tests": "pytest 436 passed on the native path and with RESENSE_NATIVE=0 (431 + 5: the oblique bar at 40 / 80 / 120 m, the pitch step, the adjacency and face unit test); ruff check clean; scripts/sync_params.sh --check in sync; the docs link check clean",
-  "baseline": "The run differs from regression_baseline_2026-09-25_ride_p3.json on 4 leaves (above), so the gate is re-run on the final clean commit and its result replaces that file under the same name (see baseline_recut)."
+  "baseline": "Re-cut: see baseline_recut.",
+  "baseline_recut": {
+   "file": "docs/evidence/results/regression_baseline_2026-09-25_ride_p3.json (same name; the gate result of the final clean commit without its 'gate' block, as before)",
+   "measured_on": "154db25 (the fixes, the pre-registration, the results and docs; no detector change after 95ff725), native path, config sha256 184ea0e7..., --jobs 3, 380 s",
+   "gate": "PASS against regression_baseline_2026-09-25_ride_column.json, the same 5 gated rows better, none worse",
+   "equal_to_R1": "every leaf of this run and of the R1 run on b718a37 compared except latency, code, config, run, created, health: 383 leaves, 0 differ; the per-frame JSONL identical in every frame",
+   "differs_from_the_first_cut": "the 4 distance values of 'against_the_ride_p3_baseline'"
+  }
  }
 }

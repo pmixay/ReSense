@@ -39,7 +39,7 @@ in `web/demo`.
   set O and the ride, gauge distances only shorter (124 detection-frames); set O #1 unchanged (no
   STOP more than 1 m off); set F straight's 1 m box 10 → 12 false detections against the first
   `_ride_p3` cut (a STOP at 112–114 m reported 4 m short). `regression_baseline_2026-09-25_ride_p3.json`
-  re-cut under the same name. +5 tests, each failing before the fix.
+  re-cut under the same name on `154db25`. +5 tests, each failing before the fix.
   [`p3_review_fixes_2026-09-25.json`](docs/evidence/results/p3_review_fixes_2026-09-25.json),
   [EXPERIMENTS §1h](docs/EXPERIMENTS.md).
 

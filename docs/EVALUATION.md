@@ -219,7 +219,7 @@ validity over each sequence before interpreting range or edge results.
    and none worse (O: the 2 × 2 m box 207 → 208, the plank 42 → 49 STOP frames; F straight false
    detections person 7 → 6, 1 m box 13 → 10, trolley 12 → 5; EXPERIMENTS §1h,
    [`p3_combined_2026-09-25.json`](evidence/results/p3_combined_2026-09-25.json)). Re-cut under
-   the same name after the review fixes of the rail-shadow rules, on their final commit: the same
+   the same name after the review fixes of the rail-shadow rules, on `154db25` (380 s): the same
    5 rows better and none worse against the one before, the 1 m box 13 → 12 false detections
    (distances only get shorter; EXPERIMENTS §1h,
    [`p3_review_fixes_2026-09-25.json`](evidence/results/p3_review_fixes_2026-09-25.json)). The one
