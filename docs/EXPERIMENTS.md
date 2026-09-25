@@ -73,8 +73,9 @@ obstacle-frames of the recording (person 58 of 61 + object 127 of 185).
 **Caveats.**
 
 * The opt-in paths `track.rails_far_check_enabled`, `lowobj.near_enabled` and
-  `accumulation.estimate_speed` are `false` in both parameter files and the code defaults; the
-  far-rail check was measured on 25.09 on the six recordings and set O and never fires (§1f), the
+  `accumulation.estimate_speed` are `false` in both parameter files and the code defaults, and
+  `track.walls_min_far_support` is 0 (off; tried and not shipped, §1g); the far-rail check was measured on
+  25.09 on the six recordings, set O (§1f) and the ride (§1g) and never fires, the
   near-bed path is §1e (off for good: the organizers do not count an object on the bed between the
   rails as an obstacle, 25.09, [`organizers/answers.md`](organizers/answers.md) §8), the speed
   estimator §9. No number in this table uses any of them.
@@ -901,6 +902,60 @@ Tests (`tests/test_late_candidates.py`): the classification of the finding's box
 tunnel: the box's faces injected at 40–60 m (a single ray-cast frame returns only its 0.3 × 0.5 m
 front face there, which the long rule never sees as long) give a STOP with the shipped defaults and
 an advisory `floating` warning with the parameter 0.
+
+### 1g. P3 items of 25.09
+
+**The 82.9 m platform end: a far-support rule for the wall sides, tried, not shipped** [measured
+25.09]. Raw: [`p3_platform_end_2026-09-25.json`](evidence/results/p3_platform_end_2026-09-25.json)
+(two pre-registrations, 16:18 and 16:32 UTC, before their runs; every gate summary). *Diagnosis*
+(the defaults, per frame): at the alarm frames of `squareT_platform_squareT_switch` (train
+standing, frames 310–700) the curvature is 2.5–4.0e-4 /m (not 1.6e-4, §1f) and the axis is ~0.8 m
+off at 83 m: +0.47 m against a running-tunnel centre of about −0.45 m (walls at +1.6 and −2.5 m at
+90–120 m, frames 400–600 accumulated); the "platform-end structure" is that tunnel's left wall /
+hall end face, ~1.8 m from the true axis. The bend is the left boundary's: a platform-side
+structure at +1.6 m (6–33 m) joined by the robust quadratic to one bin at 44 m and one bin of the
+diverging hall end at 76 m, while its bins at 80–108 m lie off its own fit (2–4 of its 7–10 bins
+beyond 30 m within 0.4 m of it; the right wall 15–23 of 17–24). The sides disagree by 2.4–3.6e-4
+(< 6.7e-4), so they are averaged and the left wins on rms; the rails' tangent, computed with the
+prior curvature held fixed, feeds the bend back (yaw −0.0038 before the stop, −0.0065…−0.0085
+during it). The far-rail check never fires here (§1f), and a bed-trough axis has too little to
+work with at 83 m: beyond 55 m only 7–26 returns per 5 m slab and frame lie at bed height within
+±3 m (frames 400–600; 92 at the end face, 75–80 m). *The rule* (`track.walls_min_far_support` f, with
+`walls_far_support_max_curvature` 2e-4 and, round 2, `walls_far_support_frames` N): with both sides
+fitted and a rail tangent, a side keeping less than f of its bins beyond 30 m on its own fit does
+not set the axis shape when the other side keeps f and is nearly straight (a real curve is never
+overruled); side count and disagreement stay as fitted, as for the nearer-side rule. *Round 1*
+(f 0.5 / 0.4 / 0.6, six recordings and set O): platform STOP episodes 15 → 9 / 8 / 1, but the gate
+fails every time: set O `big_above` 12 → 11 STOP frames (one firing at set O frame 146 changes the
+track model of the next 1 364 frames by millimetres; at frame 643 the 2 × 2 m box at the envelope
+top reads `elevated`), and with 0.5 / 0.6 `doubleT_platform` 4 / 4 / 1 → 6 / 5 / 2 and 8 / 6 / 2 (a
+7-frame firing at its start sends its axis elsewhere; an event at 6 m at frames 182–183). *Round 2*
+(the count against such short firings): 0.6 × 10 frames passes the six recordings and set O
+(platform 54 / 9 / 15 → 24 / 7 / 10 alarm frames / events / STOP episodes: the 82.9 m end 10 → 4
+episodes, the 147.5 m switch parts 4 → 6; every other recording and set O identical frame by
+frame), but five of its platform events fall on frames the defaults did not alarm (the same two
+structures) and the full gate fails on the ride, 187 / 46 / 39 → 187 / 50 / 40: four new events,
+one at 72 m on an R ≈ 770 m curve (`new_data_73`), where the station stop of `new_data_59` had
+changed the axis of the whole piece; 0.6 × 20 fails on the platform itself (events 9 → 12); 0.5 ×
+10 passes the six recordings and set O (platform 42 / 8 / 10) but two of its switch-part events
+fall 1–8 frames off the defaults' (the pre-registered per-frame no-new-event condition).
+`doubleT_obstacle`, set O and set F straight are identical in every round-2 run, and for 0.6 × 10
+set F curves and station stops (anchored placement) are identical per sequence (curves: person 6
+of 6 first at 67.5 m, 1 m box 79.6 m; stops: 4 of 4 at 112.2 / 102.8 m, 2 of 6 approaches skipped
+for recording gaps). Not shipped: `walls_min_far_support` stays 0 (off), the default output
+unchanged. The lesson: the axis filter is chaotic under any change of its state (bin, side and
+residual decisions amplify millimetres), so a rule that fires anywhere moves marginal frames
+elsewhere; the fix left is to break the rails–walls feedback (tangent and curvature fitted jointly
+from the rail slabs and both boundaries), after the freeze.
+
+**The far-rail check on the ride** (`track.rails_far_check_enabled: true`, the full gate, 25.09,
+same raw file): **measured, no effect.** The gate passes with every gated row the same (ride 187 /
+46 / 39, set F straight identical), and the per-frame output (all but timing and health) is
+identical on all 11 271 ride frames, the six recordings and set O: on the ride too the check never
+changes the model. Why (its exits counted once over the ride): 7 132 frames find no far rail pair
+in two slabs between 30 and 82 m, 3 480 have a curvature below its threshold (\|k\|·82²/2 ≤ 0.3 m),
+394 no near rail pair, 247 no wall side, 11 too few rail-head returns at 77–82 m, 7 an axis range
+already short: none reaches the disagreement test. The flag stays off.
 
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 
@@ -1914,15 +1969,21 @@ v0.6).
   on the bed before any change of its default~~ dropped 25.09: a bed object below the rail head is
   not an obstacle (organizers' answer to Q3, [`organizers/answers.md`](organizers/answers.md) §8),
   the path stays off;
-- **the far-rail check** (P3; §1e, §1f): never fires on the six recordings and set O (25.09);
-  only the ride is left, and it is not expected to change anything;
-- **the 82.9 m platform end** (P3; §1f): 10 of the 25 STOP episodes at the platform come from the
-  axis being ~0.5 m off at 83 m (hall-wall curvature); a fix in the axis model, not a shape rule;
+- ~~**the far-rail check** (P3; §1e, §1f): never fires on the six recordings and set O (25.09);
+  only the ride is left~~ measured on the ride 25.09 (§1g): identical frame by frame there too, the flag stays off;
+- **the 82.9 m platform end** (P3; §1f, §1g): 10 of the 15 STOP episodes at the platform come from
+  the axis being ~0.8 m off at 83 m (a platform-side boundary joined to the hall end, 2.5–4e-4 /m);
+  a far-support rule for the wall sides was tried in two pre-registered rounds on 25.09 and not
+  shipped (platform episodes 15 → 1–10, but set O, `doubleT_platform` or the ride move every
+  time); next: break the rails–walls feedback with a joint fit of tangent and curvature, after the
+  freeze;
 - **bed correction from the side-structure base** (P3): use `z_base(X) − offset_ref` as
   `z_floor(X)` beyond the fit where the side base is continuous, then re-measure the far bins
   and the 147.5 m switch structures;
 - **bed-trough centre vs wall axis** at stations (design in v0.4, not implemented): a second
-  lateral axis where the walls are far;
+  lateral axis where the walls are far; at the `squareT_platform_squareT_switch` stop only 7–26
+  bed-height returns per 5 m slab and frame are left beyond 55 m, too few for the 82.9 m platform
+  end (§1g);
 - ego-speed estimator (measured 24.09, §9): accurate (median error 0.06–0.08 m/s) on 55–96 % of
   the moving frames; the tracks cue reports 1.2–2.2 m/s at a standstill on 5 frames. A speed does
   not pay on the organizers' synthetic check, so the next step, if any, is the `floating`

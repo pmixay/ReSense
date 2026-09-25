@@ -253,9 +253,9 @@ def _station_scene(curvature: float = 0.0, platform: bool = True, seed: int = 25
     return np.concatenate(parts).astype(np.float32)
 
 
-def _far_support_cfg(value: float = FAR_SUPPORT) -> DetectorConfig:
+def _far_support_cfg(value: float = FAR_SUPPORT, frames: int = 1) -> DetectorConfig:
     cfg = DetectorConfig()
-    cfg.track = replace(cfg.track, walls_min_far_support=value)
+    cfg.track = replace(cfg.track, walls_min_far_support=value, walls_far_support_frames=frames)
     return cfg
 
 
@@ -270,22 +270,34 @@ def _settled_track(cloud: np.ndarray, cfg: DetectorConfig, n: int = 30):
 def test_far_support_rule_default():
     for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
                 DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
-        assert cfg.track.walls_min_far_support == 0.0
+        assert cfg.track.walls_min_far_support == 0.0           # tried 25.09, not shipped (EXPERIMENTS 1g)
         assert cfg.track.walls_far_support_max_curvature == 2.0e-4
+        assert cfg.track.walls_far_support_frames == 1
 
 
 def test_far_support_keeps_the_station_axis_on_the_supported_side():
     """The platform-side boundary (near structure + one hall-end bin) bends the default axis by
     metres at 83 m; with the rule the right wall, whose far bins follow its fit, sets the shape
-    and the axis stays within 0.15 m of the track. A real curve (R 1 000 / 350 m, both walls
-    parallel) and a station on a curve (the supported side bends: never overruled) are
-    identical with and without the rule."""
+    and the axis stays within 0.15 m of the track; with ``walls_far_support_frames`` N the
+    first N - 1 frames are the default's. A real curve (R 1 000 / 350 m, both walls parallel)
+    and a station on a curve (the supported side bends: never overruled) are identical with
+    and without the rule."""
     station = _station_scene()
     off = _settled_track(station, DetectorConfig())
     on = _settled_track(station, _far_support_cfg())
     assert abs(float(off.center_y(83.0))) > 0.5, off.to_dict()
     assert abs(float(on.center_y(83.0))) < 0.15, on.to_dict()
     assert abs(on.curvature) < 1e-4 and on.axis_sides == 2
+    # walls_far_support_frames N: the rule sets the shape from the N-th consecutive frame only
+    from resense.track import estimate_axis_from_walls
+    held = _far_support_cfg(frames=10).track
+    tan = float(np.tan(on.yaw))
+    first = estimate_axis_from_walls(station, on, _far_support_cfg().track, tan)
+    average = estimate_axis_from_walls(station, on, DetectorConfig().track, tan)
+    assert first[6] == 1 and average[6] == 0 and first[1] != average[1]      # the supported side vs the average
+    assert estimate_axis_from_walls(station, on, held, tan, far_support_run=0)[:6] == average[:6]
+    tenth = estimate_axis_from_walls(station, on, held, tan, far_support_run=9)
+    assert tenth[6] == 10 and tenth[:6] == first[:6]
     for curvature, platform in ((1 / 1000, False), (1 / 350, False), (-1 / 1000, False), (1 / 1000, True)):
         scene = _station_scene(curvature, platform)
         a = _settled_track(scene, DetectorConfig()).to_dict()

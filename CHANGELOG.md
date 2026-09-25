@@ -17,11 +17,26 @@ frames, 13 km, no obstacles).
 ## Unreleased (in development; package version 1.0.0)
 
 Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
-overhead rule on, node v0.6.4). Tests: 235 → 396 (+28 native kernels, +3 speed evaluation
+overhead rule on, node v0.6.4). Tests: 235 → 399 (+28 native kernels, +3 speed evaluation
 helpers, +23 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5
 overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting and socket
-buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`) in `tests/`,
-11 in `web/demo`.
+buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`, +3 the
+far-support rule) in `tests/`, 11 in `web/demo`.
+
+- **The 82.9 m platform end: a far-support rule for the wall sides, tried, not shipped (`692feaf`,
+  `1ae1952`, P3, 25.09, delegated by the captain):** the axis at the platform of `squareT_platform_squareT_switch` is
+  ~0.8 m off at 83 m (curvature 2.5–4e-4 from a platform-side boundary joined to the hall end;
+  EXPERIMENTS §1g). New opt-in `track.walls_min_far_support` (0 = off), with
+  `walls_far_support_max_curvature` 2e-4 and `walls_far_support_frames` 1: a wall side whose bins
+  beyond 30 m mostly lie off its own fit does not set the axis shape when the other side's do and
+  say straight. Pre-registered in two rounds
+  ([`p3_platform_end_2026-09-25.json`](docs/evidence/results/p3_platform_end_2026-09-25.json)):
+  platform STOP episodes 15 → 1–10, but every candidate fails the gate or the per-frame
+  no-new-event condition (set O `big_above` 12 → 11 STOP frames, `doubleT_platform` +1 event;
+  0.6 × 10 frames: ride 46 → 50 events, 39 → 40 STOP episodes, one new event on an R ≈ 770 m
+  curve). Flags off; output with them off identical to before. The far-rail check
+  (`track.rails_far_check_enabled`) measured on the ride once: identical output on all 11 271
+  frames (gate PASS, every row the same); it stays off.
 
 - **`tracking.column_hold` 2: the `roundT_doubleT` dry-run alarm (`fce04aa`, `d117c8c`, 25.09,
   delegated by the captain):** the VM dry run of 25.09 failed `--expect-clear --max-alarm-frames 2`
