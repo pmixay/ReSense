@@ -4,125 +4,235 @@
 <meta charset="utf-8">
 <title>ReSense — контроль препятствий</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#e4000d">
-<link rel="stylesheet" href="assets/dashboard.css">
+<meta name="theme-color" content="#e31e36">
+<style>
+  @font-face { font-family:'Montserrat'; font-style:normal; font-weight:400 900; font-display:swap; src:url('assets/fonts/montserrat-cyrillic.woff2') format('woff2'); unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
+  @font-face { font-family:'Montserrat'; font-style:normal; font-weight:400 900; font-display:swap; src:url('assets/fonts/montserrat-latin.woff2') format('woff2'); unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  /* Moscow Sans is used automatically when a licensed system or project copy is available. */
+  @font-face { font-family:'Moscow Sans'; font-style:normal; font-weight:400 900; font-display:swap; src:local('Moscow Sans'),local('MoscowSans'); }
+  :root {
+    --page:#f1f2f4; --paper:#fff; --ink:#111216; --muted:#6d7178; --soft:#e5e7eb;
+    --red:#e31e36; --red-dark:#c9142c; --red-pale:#fff0f2; --cyan:#00a6c8; --blue:#0078bf;
+    --green:#008c45; --green-pale:#e8f7ef; --yellow:#ffd200; --yellow-pale:#fff4b8;
+    --font-ui:'Moscow Sans','Montserrat',Arial,sans-serif;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; color:var(--ink); background:var(--page); font-family:var(--font-ui); font-size:15px; }
+  body::before { content:''; position:fixed; inset:0 auto 0 0; z-index:30; width:10px; background:var(--red); }
+  button, input, select { font:inherit; }
+  button, .file-button { min-height:44px; border:0; border-radius:4px; padding:0 17px; display:inline-flex; align-items:center; justify-content:center; gap:8px; color:var(--ink); background:#e5e7e9; font-weight:750; cursor:pointer; transition:transform .16s,background .16s,color .16s; }
+  button:hover, .file-button:hover { transform:translateY(-2px); background:#dadde0; }
+  button:disabled { opacity:.42; cursor:default; transform:none; }
+  button.primary { color:#fff; background:var(--red); }
+  button.primary:hover { background:var(--red-dark); }
+  button.secondary { color:var(--red); background:var(--red-pale); }
+  button:focus-visible, input:focus-visible, select:focus-visible, .file-button:focus-within, a:focus-visible { outline:0; background:#dcebf5; }
+  button.primary:focus-visible, .file-button:focus-within { background:var(--red-dark); }
+  select, input[type=text] { min-height:44px; border:0; border-radius:4px; padding:0 13px; color:var(--ink); background:#eceef0; }
+  input[type=range] { width:170px; accent-color:var(--red); }
+  input[type=checkbox] { width:18px; height:18px; accent-color:var(--red); }
+  #file { position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; }
+  .skip-link { position:fixed; top:8px; left:18px; z-index:100; padding:10px 14px; color:#fff; background:var(--red); text-decoration:none; transform:translateY(-150%); }
+  .skip-link:focus { transform:none; }
+  .site-header { background:var(--paper); }
+  .header-inner { max-width:1660px; margin:auto; min-height:96px; padding:18px 34px; display:flex; align-items:center; gap:30px; }
+  .brand { display:flex; align-items:center; gap:15px; min-width:max-content; }
+  .brand-mark { position:relative; width:56px; height:56px; overflow:hidden; border-radius:50% 50% 50% 16%; background:var(--red); transform:rotate(45deg); }
+  .brand-mark::before, .brand-mark::after { content:''; position:absolute; border-radius:50%; outline:4px solid #fff; }
+  .brand-mark::before { width:30px; height:30px; left:7px; top:7px; }
+  .brand-mark::after { width:14px; height:14px; left:15px; top:15px; }
+  .brand h1 { margin:0; font-size:28px; line-height:1; letter-spacing:-1px; }
+  .brand p { margin:6px 0 0; color:var(--muted); font-size:11px; font-weight:650; letter-spacing:.035em; text-transform:uppercase; }
+  .top-nav { display:flex; align-self:stretch; gap:4px; margin-left:auto; }
+  .top-nav a { position:relative; display:flex; align-items:center; padding:0 15px; color:var(--ink); text-decoration:none; font-weight:750; font-size:13px; }
+  .top-nav a::after { content:''; position:absolute; right:15px; bottom:10px; left:15px; height:4px; border-radius:3px; background:transparent; }
+  .top-nav a:hover { color:var(--red); }
+  .top-nav a:first-child::after { background:var(--red); }
+  .health { display:flex; gap:8px; align-items:center; margin-left:12px; }
+  .pill { display:inline-flex; align-items:center; gap:8px; min-height:36px; padding:0 13px; border-radius:999px; color:var(--muted); background:#f0f2f4; font-size:11px; font-weight:750; white-space:nowrap; }
+  .pill::before { content:''; width:8px; height:8px; border-radius:50%; background:currentColor; }
+  .pill.ok { color:#007b3c; background:var(--green-pale); }
+  .pill.warn { color:#725b00; background:var(--yellow-pale); }
+  .pill.bad { color:#b3132a; background:var(--red-pale); }
+  .page { max-width:1660px; margin:auto; padding:30px 34px 52px; }
+  .intro { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:end; gap:40px; margin:4px 0 28px; }
+  .eyebrow { display:flex; align-items:center; gap:10px; color:var(--red); font-size:11px; font-weight:850; letter-spacing:.13em; text-transform:uppercase; }
+  .eyebrow::before { content:''; width:30px; height:8px; background:var(--red); }
+  .page-title { margin:10px 0 0; font-size:clamp(36px,4.1vw,66px); line-height:.96; letter-spacing:-3px; max-width:1050px; }
+  .intro-code { display:grid; grid-template-columns:auto auto; align-items:center; gap:13px; min-width:250px; }
+  .route-number { display:grid; place-items:center; width:66px; height:66px; color:#fff; background:var(--red); font-size:26px; font-weight:850; border-radius:50% 50% 50% 14%; transform:rotate(45deg); }
+  .route-number span { transform:rotate(-45deg); }
+  .intro-code b { display:block; font-size:13px; line-height:1.2; }
+  .intro-code small { display:block; margin-top:6px; color:var(--muted); font-size:11px; line-height:1.35; }
+  .control-deck { display:grid; grid-template-columns:minmax(310px,.72fr) minmax(650px,1.7fr); gap:12px; margin-bottom:12px; }
+  .mode { position:relative; min-width:0; overflow:hidden; padding:20px 20px 20px 27px; border-radius:6px; background:var(--paper); }
+  .mode::before { content:''; position:absolute; inset:0 auto 0 0; width:8px; background:#c9cdd1; }
+  .mode.active { background:var(--red-pale); }
+  .mode.active::before { background:var(--red); }
+  .mode-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; }
+  .mode .tag { font-size:16px; font-weight:850; }
+  .mode .tag::before { content:'●'; margin-right:9px; color:#b7bbc0; font-size:11px; }
+  .mode.active .tag::before { color:var(--red); }
+  .mode-body { display:flex; flex-wrap:wrap; align-items:center; gap:9px; }
+  .connection-field { display:flex; align-items:center; gap:8px; flex:1; min-width:230px; }
+  .connection-field input { width:100%; }
+  .status-line { color:var(--muted); font-size:11px; line-height:1.35; }
+  .file-button { color:#fff; background:var(--red); }
+  .file-button:hover { background:var(--red-dark); }
+  .frame-state { min-width:95px; }
+  .speed-label, .check-label { display:inline-flex; align-items:center; gap:7px; color:var(--muted); font-size:12px; }
+  .speed-label select { min-height:36px; }
+  #banner { position:relative; overflow:hidden; min-height:180px; margin-bottom:12px; padding:34px 150px 30px 130px; border-radius:6px; color:#fff; font-size:clamp(40px,5.2vw,78px); font-weight:900; line-height:.92; letter-spacing:-3px; }
+  #banner::before { content:'\2192'; position:absolute; left:32px; top:31px; display:grid; place-items:center; width:68px; height:68px; border-radius:50%; outline:6px solid currentColor; font-size:48px; font-weight:500; line-height:1; letter-spacing:0; }
+  #banner::after { content:''; position:absolute; inset:0 0 0 auto; width:110px; opacity:.14; background:repeating-linear-gradient(135deg,transparent 0 13px,currentColor 13px 20px); }
+  #banner.clear { background:var(--green); }
+  #banner.clear::before { content:'\2192'; }
+  #banner.warn { color:#18130a; background:var(--yellow); }
+  #banner.warn::before { content:'!'; }
+  #banner.bad { background:var(--red); }
+  #banner.bad::before { content:'\00d7'; }
+  #banner small { display:block; position:relative; z-index:1; margin-top:18px; color:inherit; opacity:.8; font-size:13px; font-weight:650; letter-spacing:.025em; }
+  main { display:grid; grid-template-columns:minmax(0,2fr) minmax(350px,.86fr); gap:12px; }
+  /* both columns stretch to the taller one: the cab view and event log absorb the difference */
+  .visual-column, .side-column { min-width:0; display:flex; flex-direction:column; gap:12px; }
+  .visual-card, .card { background:var(--paper); border-radius:6px; }
+  .visual-card { padding:22px; }
+  .cab-card { flex:1 1 auto; display:flex; flex-direction:column; }
+  .cab-stage { position:relative; flex:1 1 auto; aspect-ratio:16/9; min-height:360px; overflow:hidden; border-radius:6px; background:#12151b; }
+  .cab-stage canvas { position:absolute; inset:0; height:100%; border-radius:0; background:transparent; }
+  .canvas-tools { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-bottom:14px; }
+  .canvas-tools h2 { margin:0 auto 0 0; font-size:22px; letter-spacing:-.7px; }
+  .canvas-tools label { display:flex; align-items:center; gap:8px; color:var(--muted); font-size:12px; }
+  .canvas-tools select { min-height:36px; }
+  canvas { width:100%; display:block; background:#f3f4f5; border:0; border-radius:6px; }
+  #timeline { margin-top:12px; }
+  .card { position:relative; overflow:hidden; padding:21px 20px 22px 28px; transition:background .2s; }
+  .card::before { content:''; position:absolute; inset:0 auto 0 0; width:8px; background:var(--cyan); }
+  .card h3 { display:flex; align-items:center; gap:9px; margin:0 0 15px; font-size:17px; letter-spacing:-.35px; }
+  .card h3::before { content:''; width:13px; height:13px; border-radius:50% 50% 50% 3px; background:var(--cyan); transform:rotate(45deg); }
+  #safety-card::before { background:var(--red); }
+  #safety-card h3::before { background:var(--red); }
+  #node-card::before { background:var(--blue); }
+  #node-card h3::before { background:var(--blue); }
+  .card.alert { background:var(--red-pale); }
+  .card.notice { background:#fff9d9; }
+  .kv { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:10px 14px; font-size:13px; }
+  .kv span:nth-child(odd) { color:var(--muted); }
+  .kv b { text-align:right; font-weight:800; }
+  .kv b.bad { color:var(--red); } .kv b.warn { color:#826800; }
+  #health-msgs { margin-top:10px; }
+  .log-card { flex:1 1 auto; display:flex; flex-direction:column; min-height:220px; }
+  #log { flex:1 1 0; min-height:120px; overflow:auto; white-space:pre-wrap; color:#202226; font:550 11px/1.55 var(--font-ui); }
+  .empty-log { color:var(--muted); font-family:var(--font-ui); white-space:normal; }
+  .shortcut { display:block; margin-top:7px; opacity:.75; }
+  #drop-overlay { display:none; position:fixed; inset:18px; z-index:40; place-items:center; border:0; border-radius:6px; background:rgba(227,30,54,.97); color:#fff; font-size:26px; font-weight:850; pointer-events:none; }
+  body.dragging #drop-overlay { display:grid; }
+  .site-footer { max-width:1660px; margin:0 auto; padding:0 34px 34px; color:var(--muted); font-size:11px; display:flex; justify-content:space-between; gap:20px; }
+  @media (max-width:1260px) { .top-nav { display:none; } .control-deck { grid-template-columns:1fr; } main { grid-template-columns:1fr; } .side-column { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); } .log-card { grid-column:1 / -1; } }
+  @media (max-width:820px) { body::before { width:6px; } .header-inner { padding:14px 18px; flex-wrap:wrap; gap:12px; } .brand p, .intro-code { display:none; } .health { order:2; margin:0; width:100%; } .page { padding:22px 14px 34px 20px; } .intro { grid-template-columns:1fr; margin-bottom:20px; } .page-title { letter-spacing:-1.8px; } .mode { padding:16px 15px 16px 23px; } .mode-body { align-items:stretch; } .connection-field { min-width:100%; } input[type=range] { width:100%; } #banner { min-height:170px; padding:92px 20px 24px; font-size:clamp(34px,10vw,54px); letter-spacing:-2px; } #banner::before { top:20px; left:22px; width:48px; height:48px; outline-width:4px; font-size:34px; } #banner::after { width:54px; } .side-column { grid-template-columns:1fr; } .visual-card, .card { border-radius:4px; } .cab-stage { min-height:260px; } .site-footer { padding:0 16px 24px 20px; flex-direction:column; } }
+</style>
 </head>
 <body>
 <a class="skip-link" href="#monitor">К мониторингу</a>
 <header class="site-header">
   <div class="header-inner">
-    <div class="brand"><span class="brand-mark" aria-hidden="true">R</span><h1>ReSense</h1></div>
+    <div class="brand"><span class="brand-mark" aria-hidden="true"></span><div><h1>ReSense</h1><p>Безопасность движения в тоннеле</p></div></div>
     <nav class="top-nav" aria-label="Основная навигация"><a href="#monitor" aria-current="page">Мониторинг</a><a href="#safety-card">Решение</a><a href="#node-card">Система</a><a href="#log">События</a></nav>
     <div class="health" aria-label="Состояние системы"><span id="health-source" class="pill">Источник не выбран</span><span id="health-realtime" class="pill">Задержка —</span></div>
   </div>
 </header>
 <div class="page">
   <section class="intro" aria-labelledby="page-title">
-    <div><p class="eyebrow">Мониторинг пути</p><h2 class="page-title" id="page-title">Контроль свободного габарита</h2></div>
+    <div><div class="eyebrow">Московский транспорт · ЛЦТ 2026</div><h2 class="page-title" id="page-title">Свободный габарит.<br>Контроль в реальном времени</h2></div>
+    <div class="intro-code" aria-label="Параметры системы"><div class="route-number" aria-hidden="true"><span>05</span></div><div><b>Лидар · 10 Гц</b><small>Зона контроля до 250 м<br>Решение за один кадр</small></div></div>
   </section>
-  <div id="banner" class="idle" role="status" aria-live="assertive"><span id="banner-title">ОЖИДАНИЕ ДАННЫХ</span><small id="banner-detail" hidden></small><svg id="banner-icon" class="banner-icon" viewBox="0 0 220 140" preserveAspectRatio="none" aria-hidden="true"><path id="banner-icon-shape"></path></svg></div>
-  <main id="monitor">
-    <div class="visual-column">
-      <div class="visual-tabs" role="tablist" aria-label="Вид мониторинга">
-        <button id="tab-cab" class="visual-tab active" type="button" role="tab" aria-selected="true" aria-controls="panel-cab">Вид из кабины</button>
-        <button id="tab-plan" class="visual-tab" type="button" role="tab" aria-selected="false" aria-controls="panel-plan" tabindex="-1">Схема и график</button>
-      </div>
-      <section class="visual-card cab-card" id="panel-cab" role="tabpanel" aria-labelledby="tab-cab">
-        <div class="cab-stage"><canvas id="cab" role="img" aria-label="Вид по ходу движения из кабины: рельсы, габарит поезда, проверенный свободный участок и обнаруженные объекты с дистанцией"></canvas></div>
-      </section>
-      <section class="visual-card plan-card" id="panel-plan" role="tabpanel" aria-labelledby="tab-plan" hidden>
-        <div class="canvas-tools">
-          <h2>Вид сверху</h2>
-          <label>Дальность <select id="xmax"><option value="100">100 м</option><option value="150" selected>150 м</option><option value="250">250 м</option></select></label>
-          <span id="canvas-note" class="status-line"></span>
-        </div>
-        <canvas id="top" width="1200" height="360" role="img" aria-label="Вид пути сверху, границы габарита и обнаруженные объекты"></canvas>
-        <canvas id="timeline" width="1200" height="170" role="img" aria-label="График дистанции до препятствия за последние тридцать секунд"></canvas>
-      </section>
+  <section class="control-deck" aria-label="Источники данных">
+    <div class="mode active" id="mode-live">
+      <div class="mode-head"><span class="tag">Прямой эфир</span><span id="conn" class="status-line" role="status">Нет подключения</span></div>
+      <div class="mode-body"><label class="connection-field"><span class="status-line">rosbridge</span><input id="url" type="text" value="ws://localhost:9090" size="20" aria-label="Адрес rosbridge"></label><button id="connect" class="primary" type="button">Подключить</button></div>
     </div>
-    <aside class="side-column" aria-label="Настройки и подробности">
-      <details class="side-section source-section" id="source-panel" open>
-        <summary>Источник данных</summary>
-        <div class="side-section-body">
-          <div class="mode active" id="mode-live">
-            <div class="mode-head"><span class="tag">Прямой эфир</span><span id="conn" class="status-line" role="status">Нет подключения</span></div>
-            <div class="mode-body"><label class="connection-field"><span class="status-line">Сервер</span><input id="url" type="text" value="ws://localhost:9090" size="20" aria-label="Адрес rosbridge"></label><button id="connect" class="primary" type="button">Подключить</button></div>
-          </div>
-          <div class="mode" id="mode-replay">
-            <div class="mode-head"><span class="tag">Запись</span><span id="frame-pos" class="status-line frame-state">Файл не выбран</span></div>
-            <div class="mode-body">
-              <label class="file-button" for="file">Выбрать файл<input type="file" id="file" accept=".jsonl,.json,.txt,.log" title="results.jsonl из команды python -m resense.cli run --out results.jsonl"></label>
-              <button id="demo" class="secondary" type="button" title="Загрузить встроенную демонстрацию на 60 кадров">Демо</button>
-              <div class="transport-controls"><button id="stepback" type="button" aria-label="Предыдущий кадр" title="Предыдущий кадр (←)" disabled>&#9664;</button>
-                <button id="play" type="button" class="primary" title="Воспроизведение или пауза (пробел)" disabled>Пуск</button>
-                <button id="stepfwd" type="button" aria-label="Следующий кадр" title="Следующий кадр (→)" disabled>&#9654;</button></div>
-              <input type="range" id="seek" min="0" max="0" value="0" aria-label="Позиция воспроизведения" disabled>
-              <label class="speed-label">Скорость <select id="speed"><option value="0.25">0,25×</option><option value="0.5">0,5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option><option value="10">10×</option></select></label>
-              <label class="check-label"><input type="checkbox" id="loop"> Повтор</label>
-            </div>
-          </div>
-        </div>
-      </details>
-      <details class="side-section" id="safety-card" open>
-        <summary>Решение и надёжность</summary>
-        <div class="side-section-body"><div class="kv">
-          <span>Решение</span><b id="decision">—</b>
-          <span>Путь свободен до</span><b id="clear">—</b>
-          <span>Состояние данных</span><b id="health">—</b>
-          <span>Видимость / захват рельсов</span><b id="vis">—</b>
-          <span>Калибровка лидара</span><b id="mount">—</b>
-        </div><div id="health-msgs" class="status-line"></div></div>
-      </details>
-      <details class="side-section" id="detector-card">
-        <summary>Детектор</summary>
-        <div class="side-section-body"><div class="kv">
-          <span>Ближайшее препятствие</span><b id="dist">—</b>
-          <span>Детекции / предупреждения</span><b id="counts">0 / 0</b>
-          <span>Ось пути, м (+ влево)</span><b id="axis">—</b>
-          <span>Радиус кривой</span><b id="radius">—</b>
-          <span>Проверенная дальность</span><b id="valid">—</b>
-          <span>Точек / внутри габарита</span><b id="points">—</b>
-          <span>Время обработки</span><b id="timing">—</b>
-          <span>Путь / габарит / кластеры</span><b id="stages">—</b>
-          <span>Показано кадров</span><b id="frames">0</b>
-        </div></div>
-      </details>
-      <details class="side-section" id="node-card">
-        <summary>Система <span id="node-note" class="status-line"></span></summary>
-        <div class="side-section-body"><div class="kv">
-          <span>Задержка декодирования и поиска</span><b id="n-latency">—</b>
-          <span>Кадров в секунду</span><b id="n-fps">—</b>
-          <span>Обработано кадров</span><b id="n-frames">—</b>
-          <span>Пропущено кадров</span><b id="n-dropped">—</b>
-          <span>Период входного потока</span><b id="n-period">—</b>
-        </div></div>
-      </details>
-      <details class="side-section" id="summary-card">
-        <summary>Сводка запуска</summary>
-        <div class="side-section-body"><div class="kv">
-          <span>Событий / кадров тревоги</span><b id="s-alarms">—</b>
-          <span>Минимальная дистанция</span><b id="s-nearest">—</b>
-          <span>Кадров предупреждения</span><b id="s-warnings">—</b>
-          <span>Максимальное время</span><b id="s-max-time">—</b>
-        </div><div class="summary-actions"><button id="export-report" type="button" title="Скачать сводку запуска в JSON" disabled>Скачать отчёт</button></div></div>
-      </details>
-      <details class="side-section" id="events-card">
-        <summary>Журнал событий</summary>
-        <div class="side-section-body"><div id="log" aria-live="polite"><span class="empty-log">Событий пока нет. Выберите JSONL-файл, перетащите его в окно или запустите демо.<span class="shortcut">Пробел — пуск/пауза · ←/→ — покадрово</span></span></div></div>
-      </details>
-    </aside>
-  </main>
+    <div class="mode" id="mode-replay">
+      <div class="mode-head"><span class="tag">Запись</span><span id="frame-pos" class="status-line frame-state">Файл не выбран</span></div>
+      <div class="mode-body">
+        <label class="file-button" for="file">Выбрать файл<input type="file" id="file" accept=".jsonl,.json,.txt,.log" title="results.jsonl из команды python -m resense.cli run --out results.jsonl"></label>
+        <button id="demo" class="secondary" type="button" title="Загрузить встроенную демонстрацию на 60 кадров">Демо</button>
+        <button id="stepback" type="button" aria-label="Предыдущий кадр" title="Предыдущий кадр (←)" disabled>&#9664;</button>
+        <button id="play" type="button" class="primary" title="Воспроизведение или пауза (пробел)" disabled>Пуск</button>
+        <button id="stepfwd" type="button" aria-label="Следующий кадр" title="Следующий кадр (→)" disabled>&#9654;</button>
+        <input type="range" id="seek" min="0" max="0" value="0" aria-label="Позиция воспроизведения" disabled>
+        <label class="speed-label">Скорость <select id="speed"><option value="0.25">0,25×</option><option value="0.5">0,5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option><option value="10">10×</option></select></label>
+        <label class="check-label"><input type="checkbox" id="loop"> Повтор</label>
+        <button id="export-report" type="button" title="Скачать сводку запуска в JSON" disabled>Отчёт</button>
+      </div>
+    </div>
+  </section>
+  <div id="banner" class="clear" role="status" aria-live="assertive">ПУТЬ СВОБОДЕН</div>
+  <main id="monitor">
+  <div class="visual-column">
+    <div class="visual-card cab-card">
+    <div class="canvas-tools">
+      <h2>Вид из кабины</h2>
+      <span class="status-line">Схема по данным детектора: ось пути, профиль полотна, габарит 2,1 × 3,0 м</span>
+    </div>
+    <div class="cab-stage"><canvas id="cab" role="img" aria-label="Вид по ходу движения из кабины: рельсы, габарит поезда, проверенный свободный участок и обнаруженные объекты с дистанцией"></canvas></div>
+    </div>
+    <div class="visual-card">
+    <div class="canvas-tools">
+      <h2>Вид сверху</h2>
+      <label>Дальность <select id="xmax"><option value="100">100 м</option><option value="150" selected>150 м</option><option value="250">250 м</option></select></label>
+      <span id="canvas-note" class="status-line"></span>
+    </div>
+    <canvas id="top" width="1200" height="360" role="img" aria-label="Вид пути сверху, границы габарита и обнаруженные объекты"></canvas>
+    <canvas id="timeline" width="1200" height="170" role="img" aria-label="График дистанции до препятствия за последние тридцать секунд"></canvas>
+    </div>
   </div>
-<footer class="site-footer"><span>ReSense · Контроль свободного габарита</span></footer>
+  <div class="side-column">
+    <div class="card" id="safety-card"><h3>Решение и надёжность <span class="status-line">v0.6</span></h3><div class="kv">
+      <span>Решение</span><b id="decision">—</b>
+      <span>Путь свободен до</span><b id="clear">—</b>
+      <span>Состояние данных</span><b id="health">—</b>
+      <span>Видимость / захват рельсов</span><b id="vis">—</b>
+      <span>Калибровка лидара</span><b id="mount">—</b>
+    </div><div id="health-msgs" class="status-line"></div></div>
+    <div class="card"><h3>Детектор</h3><div class="kv">
+      <span>Ближайшее препятствие</span><b id="dist">—</b>
+      <span>Детекции / предупреждения</span><b id="counts">0 / 0</b>
+      <span>Ось пути, м (+ влево)</span><b id="axis">—</b>
+      <span>Радиус кривой</span><b id="radius">—</b>
+      <span>Проверенная дальность</span><b id="valid">—</b>
+      <span>Точек / внутри габарита</span><b id="points">—</b>
+      <span>Время обработки</span><b id="timing">—</b>
+      <span>Путь / габарит / кластеры</span><b id="stages">—</b>
+      <span>Показано кадров</span><b id="frames">0</b>
+    </div></div>
+    <div class="card" id="node-card"><h3>Узел ROS <span id="node-note" class="status-line"></span></h3><div class="kv">
+      <span>Задержка декодирования и поиска</span><b id="n-latency">—</b>
+      <span>Кадров в секунду</span><b id="n-fps">—</b>
+      <span>Обработано кадров</span><b id="n-frames">—</b>
+      <span>Пропущено кадров</span><b id="n-dropped">—</b>
+      <span>Период входного потока</span><b id="n-period">—</b>
+    </div></div>
+    <div class="card"><h3>Сводка запуска</h3><div class="kv">
+      <span>Событий / кадров тревоги</span><b id="s-alarms">—</b>
+      <span>Минимальная дистанция</span><b id="s-nearest">—</b>
+      <span>Кадров предупреждения</span><b id="s-warnings">—</b>
+      <span>Максимальное время</span><b id="s-max-time">—</b>
+    </div></div>
+    <div class="card log-card"><h3>Журнал событий</h3><div id="log" aria-live="polite"><span class="empty-log">Событий пока нет. Выберите JSONL-файл, перетащите его в окно или запустите демо.<span class="shortcut">Пробел — пуск/пауза · ←/→ — покадрово</span></span></div></div>
+  </div>
+</main>
+  </div>
+<footer class="site-footer"><span>ReSense · Система контроля свободного габарита</span><span>Данные обновляются до 10 раз в секунду</span></footer>
 <div id="drop-overlay">Отпустите results.jsonl для воспроизведения</div>
 <!-- roslibjs нужен только для прямого эфира; воспроизведение записей работает без него -->
-<script async src="assets/vendor/roslib.min.js" onerror="document.getElementById('conn').textContent='roslib.js не загружен — доступна запись'"></script>
+<script async src="https://cdn.jsdelivr.net/npm/roslib@1/build/roslib.min.js" onerror="document.getElementById('conn').textContent='roslib.js не загружен — доступна запись'"></script>
 <script>
 'use strict';
 const $ = id => document.getElementById(id);
 const FRAME_DT = 0.1;                       // s, sensor period used for the replay clock
 const TIMELINE_SPAN = 30;                   // s of history on the timeline
-const UI_FONT = '"Moscow Sans", Arial, sans-serif';
+const UI_FONT = '"Moscow Sans", Montserrat, Arial, sans-serif';
 
 // ----------------------------------------------------------------------------- state
 const state = {
@@ -146,11 +256,7 @@ const state = {
 
 // ----------------------------------------------------------------------------- drawing
 function drawTop(res) {
-  const c = $('top');
-  if (!c.clientWidth) return;
-  const width = Math.round(c.clientWidth), height = Math.round(c.clientHeight);
-  if (width && (c.width !== width || c.height !== height)) { c.width = width; c.height = height; }
-  const ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
+  const c = $('top'), ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
   const XMAX = +$('xmax').value, sx = c.width / XMAX, cy = c.height / 2, sy = 22;   // 22 px per metre lateral
   ctx.strokeStyle = '#dfe2e6'; ctx.lineWidth = 1; ctx.font = '500 12px ' + UI_FONT;
   const step = XMAX > 150 ? 50 : 25;
@@ -162,12 +268,12 @@ function drawTop(res) {
   const t = res.track || {}; const c0 = t.center || 0, yaw = t.yaw || 0, k = t.curvature || 0;
   const axis = X => c0 + Math.tan(yaw) * X + 0.5 * k * X * X;
   // sensor / train nose
-  ctx.fillStyle = '#e4000d'; ctx.beginPath(); ctx.moveTo(0, cy - 12); ctx.lineTo(14, cy); ctx.lineTo(0, cy + 12); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#e31e36'; ctx.beginPath(); ctx.moveTo(0, cy - 12); ctx.lineTo(14, cy); ctx.lineTo(0, cy + 12); ctx.closePath(); ctx.fill();
   // track axis and the strict gauge corridor (half-width 1.4 m)
   ctx.strokeStyle = 'rgba(19,169,87,0.45)'; ctx.setLineDash([2, 6]); ctx.beginPath();
   for (let X = 3; X <= XMAX; X += 5) { const px = X * sx, py = cy - axis(X) * sy; X === 3 ? ctx.moveTo(px, py) : ctx.lineTo(px, py); }
   ctx.stroke();
-  ctx.strokeStyle = '#00854a'; ctx.setLineDash([6, 4]);
+  ctx.strokeStyle = '#008c45'; ctx.setLineDash([6, 4]);
   for (const side of [1.4, -1.4]) {
     ctx.beginPath();
     for (let X = 3; X <= XMAX; X += 5) { const px = X * sx, py = cy - (axis(X) + side) * sy; X === 3 ? ctx.moveTo(px, py) : ctx.lineTo(px, py); }
@@ -175,12 +281,12 @@ function drawTop(res) {
   }
   ctx.setLineDash([]);
   if (t.axis_valid != null && t.axis_valid < XMAX) {
-    ctx.fillStyle = 'rgba(225,221,0,0.16)'; ctx.fillRect(t.axis_valid * sx, 0, c.width - t.axis_valid * sx, c.height);
-    const note = c.width < 500 ? 'Нет данных после ' + t.axis_valid.toFixed(0) + ' м' : 'коридор не подтверждён дальше ' + t.axis_valid.toFixed(0) + ' м';
-    ctx.fillStyle = '#766000'; ctx.fillText(note, Math.min(t.axis_valid * sx + 6, c.width - ctx.measureText(note).width - 6), c.height - 8);
+    ctx.fillStyle = 'rgba(255,191,25,0.16)'; ctx.fillRect(t.axis_valid * sx, 0, c.width - t.axis_valid * sx, c.height);
+    const note = 'коридор не подтверждён дальше ' + t.axis_valid.toFixed(0) + ' м';
+    ctx.fillStyle = '#8a6200'; ctx.fillText(note, Math.min(t.axis_valid * sx + 6, c.width - ctx.measureText(note).width - 6), c.height - 8);
   }
-  for (const d of (res.warnings || [])) box(ctx, d, sx, sy, cy, '#967c29', XMAX);
-  for (const d of (res.detections || [])) box(ctx, d, sx, sy, cy, '#e4000d', XMAX);
+  for (const d of (res.warnings || [])) box(ctx, d, sx, sy, cy, '#b08b00', XMAX);
+  for (const d of (res.detections || [])) box(ctx, d, sx, sy, cy, '#e31e36', XMAX);
 }
 function box(ctx, d, sx, sy, cy, color, XMAX) {
   if (!d.center || d.center[0] > XMAX) return;
@@ -262,7 +368,7 @@ function cabScene(ctx, W, H, r, tm, cam, opts) {
   const clearEnd = !r || decisionOf(r) === 'FAULT' ? 0
     : (r.obstacle ? r.nearest_distance : Math.min(r.clear_distance ?? t.axis_valid ?? 0, CAB.far));
   band(CAB.rangeMin, clearEnd, -ENVELOPE.half, ENVELOPE.half, 0.01, 'rgba(19,169,87,0.34)');
-  if (r && r.obstacle && r.nearest_distance != null) band(r.nearest_distance, Math.min(r.nearest_distance + 6, CAB.far), -ENVELOPE.half, ENVELOPE.half, 0.01, 'rgba(228,0,13,0.5)');
+  if (r && r.obstacle && r.nearest_distance != null) band(r.nearest_distance, Math.min(r.nearest_distance + 6, CAB.far), -ENVELOPE.half, ENVELOPE.half, 0.01, 'rgba(226,29,54,0.5)');
   // rails: per-segment width shrinks with range
   const xsRail = cabSteps(0, trackEnd);
   for (const side of [-RAIL_HALF, RAIL_HALF]) {
@@ -299,9 +405,9 @@ function cabScene(ctx, W, H, r, tm, cam, opts) {
     const ctr = d.center || [d.distance + size[0] / 2, tm.y(d.distance) + (d.lateral || 0), tm.z(d.distance) + size[2] / 2];
     const lo = ctr.map((v, i) => v - size[i] / 2), hi = ctr.map((v, i) => v + size[i] / 2);
     const corner = (i, j, k) => Pabs(i ? hi[0] : lo[0], j ? hi[1] : lo[1], k ? hi[2] : lo[2]);
-    const color = gauge ? '#e4000d' : '#e1dd00';
+    const color = gauge ? '#ff2a45' : '#ffbf19';
     const front = [corner(0, 0, 0), corner(0, 1, 0), corner(0, 1, 1), corner(0, 0, 1)];
-    ctx.fillStyle = gauge ? 'rgba(228,0,13,0.35)' : 'rgba(225,221,0,0.3)';
+    ctx.fillStyle = gauge ? 'rgba(255,42,69,0.35)' : 'rgba(255,191,25,0.3)';
     ctx.beginPath(); front.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); ctx.fill();
     ctx.strokeStyle = color; ctx.lineWidth = 1.5; ctx.beginPath();
     for (let e = 0; e < 12; e++) {                           // the 12 edges: 4 along each axis
@@ -322,7 +428,7 @@ function cabScene(ctx, W, H, r, tm, cam, opts) {
       ctx.font = '800 15px ' + UI_FONT;
       const cw = ctx.measureText(bx.label).width + 24, ch = 32;
       const lx = Math.max(8, Math.min(W - cw - 8, (x0 + x1) / 2 - cw / 2)), ly = Math.max(8, y0 - ch - 8);
-      ctx.fillStyle = gauge ? '#e4000d' : '#e1dd00';
+      ctx.fillStyle = gauge ? '#e21d36' : '#ffbf19';
       ctx.beginPath(); ctx.roundRect ? ctx.roundRect(lx, ly, cw, ch, 9) : ctx.rect(lx, ly, cw, ch); ctx.fill();
       ctx.fillStyle = gauge ? '#fff' : '#18130a'; ctx.textAlign = 'left'; ctx.fillText(bx.label, lx + 12, ly + 21);
       bx.chip = [lx, ly, lx + cw, ly + ch]; bx.frame = [x0, y0, x1, y1];
@@ -340,7 +446,7 @@ function cabScene(ctx, W, H, r, tm, cam, opts) {
       if (lastV - b[1] < 16 || boxes.some(o => hits(o.chip) || hits(o.frame))) continue;
       lastV = b[1];
       line([a, b], `rgba(200,208,222,${0.7 * fade(X)})`, 1.5);
-      ctx.fillStyle = '#fff'; ctx.fillText(X + ' м', b[0] - 6, b[1] + 4);
+      ctx.fillStyle = `rgba(214,220,232,${Math.max(0.45, fade(X))})`; ctx.fillText(X + ' м', b[0] - 6, b[1] + 4);
     }
   }
   return { boxes, clearEnd, envEnd };
@@ -356,7 +462,7 @@ function drawCab(res) {
   const round = (x, y, w, h, rad) => { ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x, y, w, h, rad) : ctx.rect(x, y, w, h); };
   ctx.textAlign = 'left';
   if (!r) {
-    ctx.font = '400 15px ' + UI_FONT; ctx.fillStyle = '#fff';
+    ctx.font = '600 15px ' + UI_FONT; ctx.fillStyle = 'rgba(214,220,232,0.85)';
     ctx.fillText('Нет данных: подключите поток, выберите файл или запустите демо', 18, 32);
     state.cab = { width: W, height: H, focal: cam.F, clearEnd: 0, boxes: [], inset: null };
     return;
@@ -370,7 +476,7 @@ function drawCab(res) {
     : r.clear_distance > 0 ? `путь свободен ${r.clear_distance.toFixed(0)} м` : 'свободный участок не подтверждён';
   ctx.font = '900 22px ' + UI_FONT;
   const head = DECISION_RU[dec] || dec, hw = ctx.measureText(head).width + 28;
-  ctx.fillStyle = { STOP: '#e4000d', CAUTION: '#e1dd00', FAULT: '#202020' }[dec] || '#00854a';
+  ctx.fillStyle = { STOP: '#e21d36', CAUTION: '#ffbf19', FAULT: '#7b3fe4' }[dec] || '#13a957';
   round(16, 16, hw, 44, 12); ctx.fill();
   ctx.fillStyle = dec === 'CAUTION' ? '#18130a' : '#fff'; ctx.fillText(head, 30, 46);
   ctx.font = '700 19px ' + UI_FONT; ctx.fillStyle = '#fff'; ctx.fillText(sub, 16 + hw + 14, 45);
@@ -380,18 +486,18 @@ function drawCab(res) {
     ['rgba(19,169,87,0.9)', main.clearEnd > CAB.rangeMin ? `проверено свободно: ${CAB.rangeMin}–${main.clearEnd.toFixed(0)} м` : 'свободный участок не подтверждён'],
     ['rgba(47,208,122,0.95)', 'габарит поезда'],
   ];
-  if (t.axis_valid != null) legend.push(['rgba(225,221,0,0.95)', `ось пути подтверждена до ${Math.min(t.axis_valid, 9999).toFixed(0)} м`]);
+  if (t.axis_valid != null) legend.push(['rgba(255,191,25,0.95)', `ось пути подтверждена до ${Math.min(t.axis_valid, 9999).toFixed(0)} м`]);
   let lx = 16; const ly = H - 16;
   ctx.fillStyle = 'rgba(18,21,27,0.82)'; round(8, ly - 20, Math.min(W - 16, legend.reduce((a, [, s]) => a + ctx.measureText(s).width + 36, 8)), 28, 8); ctx.fill();
   for (const [col, text] of legend) {
     ctx.fillStyle = col; ctx.fillRect(lx, ly - 10, 12, 4);
-    ctx.fillStyle = '#fff'; ctx.fillText(text, lx + 18, ly - 3);
+    ctx.fillStyle = 'rgba(226,231,240,0.92)'; ctx.fillText(text, lx + 18, ly - 3);
     lx += ctx.measureText(text).width + 36;
   }
   // close-up of the nearest object, zoomed on its cross-section of the envelope (far objects are a few pixels)
   const target = main.boxes.filter(b => b.zone === 'gauge').pop() || main.boxes.filter(b => b.zone === 'warning').pop();
   let inset = null;
-  if (target && target.distance > 20 && W >= 600) {
+  if (target && target.distance > 20) {
     const iw = Math.round(Math.max(220, W * 0.3)), ih = Math.round(Math.max(170, H * 0.36)), ix = W - iw - 16, iy = 16;
     const Xo = target.distance, d = Xo - cam.cx;
     const F = Math.max(cam.F * 1.5, 0.8 * ih * d / (ENVELOPE.top + 0.5));
@@ -401,7 +507,7 @@ function drawCab(res) {
     ctx.save(); ctx.translate(ix, iy); round(0, 0, iw, ih, 12); ctx.clip();
     cabScene(ctx, iw, ih, r, tm, icam, { hud: false, frameAt: Xo });
     ctx.restore();
-    const col = target.zone === 'gauge' ? '#e4000d' : '#e1dd00';
+    const col = target.zone === 'gauge' ? '#ff2a45' : '#ffbf19';
     ctx.strokeStyle = col; ctx.lineWidth = 2; round(ix, iy, iw, ih, 12); ctx.stroke();
     const sz = target.size || [];
     const caption = `крупно · ${Xo.toFixed(1)} м` + (sz.length === 3 ? ` · ${sz[0].toFixed(1)}×${sz[1].toFixed(1)}×${sz[2].toFixed(1)} м` : '');
@@ -418,11 +524,7 @@ function timelineNow() {
 }
 function stampOf(f) { return (typeof f.stamp === 'number' && isFinite(f.stamp)) ? f.stamp : (f.frame || 0) * FRAME_DT; }
 function drawTimeline() {
-  const c = $('timeline');
-  if (!c.clientWidth) return;
-  const width = Math.round(c.clientWidth), height = Math.round(c.clientHeight);
-  if (width && (c.width !== width || c.height !== height)) { c.width = width; c.height = height; }
-  const ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
+  const c = $('timeline'), ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
   const now = timelineNow(), span = TIMELINE_SPAN, DMAX = 250, top = 6, bottom = c.height - 18, H = bottom - top;
   const yOf = d => bottom - Math.min(d, DMAX) / DMAX * H, xOf = t => c.width - (now - t) / span * c.width;
   ctx.strokeStyle = '#dfe2e6'; ctx.font = '500 11px ' + UI_FONT;
@@ -437,42 +539,28 @@ function drawTimeline() {
     ctx.fillStyle = '#292c31'; ctx.fillText(label, x + 3, c.height - 5);
   }
   ctx.fillStyle = '#292c31'; ctx.textAlign = 'right';
-  ctx.fillText(c.width < 500 ? 'дистанция · время' : (state.mode === 'replay' ? 'дистанция до объекта · время записи' : 'дистанция до объекта · текущее время'), c.width - 6, top + 10);
+  ctx.fillText(state.mode === 'replay' ? 'дистанция до объекта · время записи' : 'дистанция до объекта · текущее время', c.width - 6, top + 10);
   ctx.textAlign = 'left';
   for (const h of state.hist) {
     if (h.t < now - span) continue;
-    if (h.warnDist != null && !h.obstacle) { ctx.fillStyle = '#967c29'; ctx.fillRect(xOf(h.t) - 1.5, yOf(h.warnDist) - 1.5, 3, 3); }
-    if (h.dist != null) { ctx.fillStyle = '#e4000d'; ctx.fillRect(xOf(h.t) - 2, yOf(h.dist) - 2, 4, 4); }
+    if (h.warnDist != null && !h.obstacle) { ctx.fillStyle = '#b08b00'; ctx.fillRect(xOf(h.t) - 1.5, yOf(h.warnDist) - 1.5, 3, 3); }
+    if (h.dist != null) { ctx.fillStyle = '#e31e36'; ctx.fillRect(xOf(h.t) - 2, yOf(h.dist) - 2, 4, 4); }
   }
-  if (state.mode === 'replay') { ctx.strokeStyle = '#e4000d'; ctx.beginPath(); ctx.moveTo(c.width - 1, top); ctx.lineTo(c.width - 1, bottom); ctx.stroke(); }
+  if (state.mode === 'replay') { ctx.strokeStyle = '#0078bf'; ctx.beginPath(); ctx.moveTo(c.width - 1, top); ctx.lineTo(c.width - 1, bottom); ctx.stroke(); }
 }
 
 // ----------------------------------------------------------------------------- applying a result
 function fmt(v, digits, unit) { return v == null || !isFinite(v) ? '—' : v.toFixed(digits) + (unit || ''); }
-const BANNER_ICONS = {
-  clear: { path: 'M-10 34 H207 V57 H-10 Z M160 0 H188 L236 45 188 90 H160 L207 45 Z', color: '#8CD9A5', viewBox: '0 0 236 90' },
-  bad: { path: 'M0 0 H52 L110 43 168 0 H220 L145 70 220 140 H168 L110 97 52 140 H0 L75 70 Z', color: '#FF9CA3' },
-  warn: { path: 'M70 0 H82 L41 140 H29 Z M164 0 H176 L214 140 H202 Z M106 0 H139 V90 H106 Z M109 108 H136 V140 H109 Z', color: '#FFF7A8' },
-};
-function setBanner(kind, title, detail) {
-  const banner = $('banner'), icon = BANNER_ICONS[kind];
-  banner.className = kind;
-  $('banner-title').textContent = title;
-  $('banner-detail').textContent = detail || '';
-  $('banner-detail').hidden = !detail;
-  $('banner-icon').setAttribute('viewBox', icon?.viewBox || '0 0 220 140');
-  $('banner-icon-shape').setAttribute('d', icon ? icon.path : '');
-  banner.style.setProperty('--banner-icon-color', icon ? icon.color : 'transparent');
-}
 function applyResult(res, opts) {
   opts = opts || {}; const draw = opts.draw !== false;
   state.last = res; state.shown++;
   const t = state.mode === 'replay' ? stampOf(res) : Date.now() / 1000;
+  const b = $('banner');
   const dets = res.detections || [], warns = res.warnings || [];
-  const detail = state.mode === 'replay' && res.frame != null ? `Кадр ${String(res.frame).padStart(5, '0')} · +${(t - (state.t0 || 0)).toFixed(1)} с · ${res.frame_id || 'без источника'}` : '';
-  if (res.obstacle) setBanner('bad', `ПРЕПЯТСТВИЕ  ${res.nearest_distance.toFixed(1)} м`, detail);
-  else if (res.warning) setBanner('warn', 'ВНИМАНИЕ: ОБЪЕКТ РЯДОМ С ГАБАРИТОМ', detail);
-  else setBanner('clear', 'ПУТЬ СВОБОДЕН', detail);
+  if (res.obstacle) { b.className = 'bad'; b.textContent = `ПРЕПЯТСТВИЕ  ${res.nearest_distance.toFixed(1)} м`; }
+  else if (res.warning) { b.className = 'warn'; b.textContent = 'ВНИМАНИЕ: ОБЪЕКТ РЯДОМ С ГАБАРИТОМ'; }
+  else { b.className = 'clear'; b.textContent = 'ПУТЬ СВОБОДЕН'; }
+  if (state.mode === 'replay' && res.frame != null) { const s = document.createElement('small'); s.textContent = `Кадр ${String(res.frame).padStart(5, '0')} · +${(t - (state.t0 || 0)).toFixed(1)} с · ${res.frame_id || 'без источника'}`; b.appendChild(s); }
   $('dist').textContent = res.nearest_distance == null ? '—' : res.nearest_distance.toFixed(1) + ' м';
   $('counts').textContent = `${dets.length} / ${warns.length}`;
   const tr = res.track || {};
@@ -516,18 +604,13 @@ function applySafety(res) {
   $('mount').textContent = m.status ? `${{ ok: 'норма', pending: 'ожидание', error: 'ошибка' }[m.status] || m.status}${m.status === 'ok' ? ` (крен ${m.roll_deg}°, тангаж ${m.pitch_deg}°)` : ''}` : '—';
   $('health-msgs').textContent = (h.messages || []).join('; ');
 }
-function logLine(s) {
-  const l = $('log');
-  if (l.querySelector('.empty-log')) l.textContent = '';
-  l.textContent = s + '\n' + l.textContent;
-  if (l.textContent.length > 60000) l.textContent = l.textContent.slice(0, 50000);
-}
+function logLine(s) { const l = $('log'); l.textContent = s + '\n' + l.textContent; if (l.textContent.length > 60000) l.textContent = l.textContent.slice(0, 50000); }
 function applyNode(node) {
   const card = $('node-card');
   if (!node) {
     for (const id of ['n-latency', 'n-fps', 'n-frames', 'n-dropped', 'n-period']) $(id).textContent = '—';
     $('node-note').textContent = state.mode === 'replay' ? '(в файле нет статистики узла)' : '(ожидание данных узла)';
-    card.classList.remove('alert', 'notice');
+    card.className = 'card';
     $('health-realtime').className = 'pill'; $('health-realtime').textContent = state.mode === 'replay' ? 'Запись' : 'Задержка —';
     return;
   }
@@ -542,8 +625,7 @@ function applyNode(node) {
   state.node.lastDropped = dropped;
   $('n-dropped').textContent = dropped + (grew ? '  ▲' : '');
   $('n-dropped').className = dropped > 0 ? (now < state.node.alertUntil ? 'bad' : 'warn') : '';
-  card.classList.toggle('alert', now < state.node.alertUntil);
-  card.classList.toggle('notice', now >= state.node.alertUntil && dropped > 0);
+  card.className = 'card' + (now < state.node.alertUntil ? ' alert' : (dropped > 0 ? ' notice' : ''));
   const unhealthy = node.latency_ms > 100 || (node.fps != null && node.fps > 0 && node.fps < 9) || dropped > 0;
   $('health-realtime').className = 'pill ' + (unhealthy ? 'warn' : 'ok');
   $('health-realtime').textContent = node.latency_ms == null ? 'Узел в сети' : `Задержка ${node.latency_ms.toFixed(0)} мс`;
@@ -573,8 +655,7 @@ $('connect').onclick = () => {
 function resetView() {
   state.hist = []; state.shown = 0; state.alarmFrames = 0; state.lastObstacle = false; state.last = null;
   state.node = { lastDropped: null, alertUntil: 0 };
-  $('log').innerHTML = '<span class="empty-log">Событий пока нет.</span>';
-  setBanner('idle', 'ОЖИДАНИЕ ДАННЫХ');
+  $('log').textContent = '';
 }
 function setMode(m) {
   if (state.mode === m) return;
@@ -704,55 +785,12 @@ $('stepback').onclick = () => { pause(); step(-1); };
 $('seek').oninput = ev => { pause(); seek(+ev.target.value); };
 $('speed').onchange = ev => { state.speed = +ev.target.value; if (state.playing) { pause(); play(); } };
 $('xmax').onchange = () => { if (state.last) drawTop(state.last); };
-function setView(view) {
-  const cab = view === 'cab';
-  $('panel-cab').hidden = !cab;
-  $('panel-plan').hidden = cab;
-  for (const [id, selected] of [['tab-cab', cab], ['tab-plan', !cab]]) {
-    $(id).classList.toggle('active', selected);
-    $(id).setAttribute('aria-selected', String(selected));
-    $(id).tabIndex = selected ? 0 : -1;
-  }
-  requestAnimationFrame(() => {
-    if (cab) drawCab(state.last);
-    else {
-      drawTop(state.last || { track: { center: 0, yaw: 0, curvature: 0 }, detections: [], warnings: [] });
-      drawTimeline();
-    }
-  });
-}
-$('tab-cab').onclick = () => setView('cab');
-$('tab-plan').onclick = () => setView('plan');
-document.querySelectorAll('.visual-tab').forEach(tab => tab.addEventListener('keydown', ev => {
-  if (ev.key !== 'ArrowLeft' && ev.key !== 'ArrowRight') return;
-  ev.preventDefault();
-  const next = tab.id === 'tab-cab' ? 'plan' : 'cab';
-  setView(next);
-  $(next === 'cab' ? 'tab-cab' : 'tab-plan').focus();
-}));
-document.querySelectorAll('.top-nav a').forEach(link => link.addEventListener('click', ev => {
-  const target = document.querySelector(link.getAttribute('href'));
-  const section = target && target.closest('.side-section');
-  if (!section) return;
-  ev.preventDefault();
-  section.open = true;
-  section.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-}));
 document.addEventListener('keydown', ev => {
-  if (ev.target.closest('button, input, select, textarea, a, [contenteditable="true"]')) return;
+  if (ev.target.tagName === 'INPUT' || ev.target.tagName === 'SELECT') return;
   if (ev.code === 'Space') { ev.preventDefault(); if (state.frames.length) state.playing ? pause() : play(); }
   else if (ev.code === 'ArrowRight') { pause(); step(1); }
   else if (ev.code === 'ArrowLeft') { pause(); step(-1); }
 });
-const siteHeader = document.querySelector('.site-header');
-let previousScrollY = window.scrollY;
-window.addEventListener('scroll', () => {
-  const nextScrollY = window.scrollY;
-  if (nextScrollY <= 4 || nextScrollY < previousScrollY) siteHeader.classList.remove('header-hidden');
-  else if (nextScrollY > previousScrollY && nextScrollY > siteHeader.offsetHeight) siteHeader.classList.add('header-hidden');
-  previousScrollY = nextScrollY;
-}, { passive: true });
-siteHeader.addEventListener('focusin', () => siteHeader.classList.remove('header-hidden'));
 let dragDepth = 0;
 document.addEventListener('dragenter', ev => { ev.preventDefault(); dragDepth++; document.body.classList.add('dragging'); });
 document.addEventListener('dragover', ev => ev.preventDefault());
@@ -765,14 +803,11 @@ document.addEventListener('drop', ev => {
 setInterval(() => { if (state.mode === 'live') drawTimeline(); }, 500);
 
 // test / automation hook (used by web/demo/check_dashboard.py)
-window.resense = { state, loadText, play, pause, step, seek, setMode, setView, applyResult, summarizeFrames, demoFrames, drawCab };
+window.resense = { state, loadText, play, pause, step, seek, setMode, applyResult, summarizeFrames, demoFrames, drawCab };
 
 drawTop({ track: { center: 0, yaw: 0, curvature: 0 }, detections: [], warnings: [] }); drawTimeline(); drawCab(null);
 // the cab canvas follows its stage (it grows to balance the columns): redraw at the new size
-if (window.ResizeObserver) {
-  new ResizeObserver(() => drawCab(state.last)).observe($('cab'));
-  new ResizeObserver(() => { drawTop(state.last || { track: { center: 0, yaw: 0, curvature: 0 }, detections: [], warnings: [] }); drawTimeline(); }).observe($('top'));
-}
+if (window.ResizeObserver) new ResizeObserver(() => drawCab(state.last)).observe($('cab'));
 if (document.fonts) document.fonts.ready.then(() => {
   drawTop(state.last || { track: { center: 0, yaw: 0, curvature: 0 }, detections: [], warnings: [] });
   drawTimeline(); drawCab(state.last);

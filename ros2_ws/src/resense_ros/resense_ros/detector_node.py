@@ -27,19 +27,13 @@ Topics (defaults, all configurable via parameters):
   sub  <odom_topic>                     nav_msgs/Odometry  (optional: twist.linear.x is the train speed)
 
 The status JSON carries an extra ``node`` object next to the detector fields:
-``{"latency_ms", "fps", "frames", "dropped_frames", "catchup_skipped", "catchup",
-"input_period_ms", "ego_speed_mps", "ego_speed_source", "input_topic", "recording"}``
-(``recording`` counts the recordings seen, see "Input handling") (``latency_ms`` there is decode +
-detect of the same frame, before publishing). ``dropped_frames`` is estimated from gaps in the
-input header stamps, whatever the cause (a slow frame makes the node skip the ones that arrived
-meanwhile, a backlog is worked through ``catchup_step`` s of recording apart, see "Backlog"; a
-frame can also be lost in transport or be missing from the recording itself; the input's
-reliability follows the publishers, ``input_reliability``). ``catchup_skipped`` (25.09) is the
-part of ``dropped_frames`` the node received and skipped on purpose (the catch-up plan), so
-``dropped_frames - catchup_skipped`` never reached the node. ``catchup`` is true while the node
-works through a backlog (more than ``catchup_step`` s of recording waiting), false again from the
-frame on which it is back on the newest one: ``scripts/check_dry_run.py`` counts drops after the
-start-up catch-up from there.
+``{"latency_ms", "fps", "frames", "dropped_frames", "input_period_ms", "ego_speed_mps",
+"ego_speed_source", "input_topic", "recording"}`` (``recording`` counts the recordings seen,
+see "Input handling") (``latency_ms`` there is decode + detect of the same frame, before
+publishing). ``dropped_frames`` is estimated from gaps in the input header stamps (a slow frame
+makes the node skip the ones that arrived meanwhile, and a backlog is worked through
+``catchup_step`` s of recording apart, see "Input handling"; the input's reliability follows the
+publishers, ``input_reliability``).
 
 Ego speed (multi-frame accumulation needs it): the ``ego_speed_mps`` parameter wins when >= 0,
 else the latest value from ``speed_topic`` / ``odom_topic`` younger than ``speed_timeout``,
@@ -82,22 +76,12 @@ back on the newest frame. ``catchup_step: 0`` processes the newest only.
 The static TF exists so that one RViz / Foxglove layout works for every bag: the organizers'
 bags carry different ``frame_id`` values (``hesai_lidar``, ``lidar_livox``); the layouts use
 ``resense_lidar`` as the fixed frame and the node links it to whatever frame the input has.
-
-Socket buffers (25.09): at start the node reads ``net.core.rmem_max`` (and ``rmem_default``) and
-logs one WARN below 32 MiB: at Ubuntu's 212992 a player on CycloneDDS got none of the ~24 MB
-360-degree clouds through to the node, a stock Fast DDS player 0-1 of 201 on one of two team VMs,
-and both all of them at 32 MiB (25.09, EXPERIMENTS.md section 3b). Never fatal.
-
-Threads (25.09): ``OMP_NUM_THREADS`` / ``OPENBLAS_NUM_THREADS`` / ``MKL_NUM_THREADS`` default to 1
-(``resense_ros/__init__.py``, before numpy is imported; an explicit value in the environment
-wins), as the image sets them.
 """
 from __future__ import annotations
 
 import inspect
 import json
 import math
-import os
 import time
 import traceback
 
@@ -114,7 +98,6 @@ from vision_msgs.msg import Detection3D, Detection3DArray, ObjectHypothesisWithP
 from visualization_msgs.msg import Marker, MarkerArray
 from tf2_ros import StaticTransformBroadcaster
 
-from resense import __version__ as RESENSE_VERSION, _native
 from resense.config import DetectorConfig
 from resense.detector import Detector, FrameResult
 from resense.frame import Frame, axis_matrix
@@ -122,8 +105,6 @@ from resense.pointcloud import pointcloud2_to_arrays
 
 
 UNSET = -999.0   # sentinel of the mount_*_deg parameters: keep the value of the parameter file
-PROC_NET_CORE = "/proc/sys/net/core"
-RMEM_WANT = 33554432   # 32 MiB: with it a CycloneDDS player delivered every 360-degree cloud (25.09)
 
 
 class DetectorNode(Node):
@@ -224,9 +205,7 @@ class DetectorNode(Node):
         self.pending = []              # (topic, msg) taken from the input queues, not processed yet, oldest first
         self.pending_last = None       # (topic, frame_id, stamp) of the last frame handed to processing
         self.catchup = None            # [frames processed, max s behind, start time] of the current catch-up
-        self.catchup_skipped = 0       # frames skipped since the current catch-up started (its log line)
-        self.skipped = []              # ((topic, frame_id), stamp) of skipped frames not yet accounted
-        self.frame_in_catchup = False  # the frame being processed is a link of a catch-up (status "catchup")
+        self.catchup_skipped = 0       # frames skipped since the current catch-up started
         self.pending_gc = self.create_guard_condition(self.on_pending)
         rel = self.get_parameter("input_reliability").get_parameter_value().string_value.strip().lower()
         self.input_reliability = rel.replace("-", "_") if rel else "auto"
@@ -261,8 +240,7 @@ class DetectorNode(Node):
 
         # --- runtime statistics (spec 8.3: latency, frame rate, real-time stability) ---
         self.n_frames = 0
-        self.dropped = 0                      # frames not processed, estimated from stamp gaps (any cause)
-        self.dropped_skipped = 0              # ... of which the node received and skipped (the catch-up plan)
+        self.dropped = 0                      # frames the queue dropped, estimated from stamp gaps
         self.input_period = 0.1               # s, running estimate of the sensor period
         self.last_stamp = None                # header stamp of the previous processed frame
         self.win_latency = []                 # ms, latencies since the last stats line
@@ -281,45 +259,7 @@ class DetectorNode(Node):
                           if self.input_reliability not in ("reliable", "best_effort") else None)
         self.get_logger().info("ReSense detector listening on " + ", ".join(self.subs)
                                + (" (+ auto-discovery)" if self.discover_timer else "")
-                               + f"; input reliability {self.input_reliability}; per-frame kernels: {_native.status()}"
-                               + f"; resense {RESENSE_VERSION}")
-        self.check_socket_buffers()
-
-    # ------------------------------------------------------------------
-    @staticmethod
-    def socket_buffer_warning(values: dict, profile: bool = True):
-        """The WARN line for the kernel's UDP receive-buffer limits, or None when they are fine.
-
-        ``values``: ``rmem_max`` / ``rmem_default`` in bytes (a missing one is not checked);
-        ``profile``: the image's Fast DDS profile is in use (``FASTRTPS_DEFAULT_PROFILES_FILE``),
-        which asks for a 32 MiB receive buffer explicitly, so only ``rmem_max`` caps it; without it
-        Fast DDS keeps the kernel default, ``rmem_default``."""
-        keys = ("rmem_max",) if profile else ("rmem_max", "rmem_default")
-        if not any(values.get(k) is not None and values[k] < RMEM_WANT for k in keys):
-            return None
-        now = ", ".join(f"net.core.{k} = {values[k]}" for k in ("rmem_max", "rmem_default") if values.get(k) is not None)
-        return (f"{now}: below 32 MiB. A bag player may then deliver few or none of the ~24 MB "
-                "360-degree clouds to this node (CycloneDDS always, stock Fast DDS on some hosts; the "
-                "120-degree clouds arrive). Fix on the host, before playing: sudo sysctl -w "
-                f"net.core.rmem_max={RMEM_WANT} net.core.rmem_default={RMEM_WANT}")
-
-    def check_socket_buffers(self):
-        """Read the kernel's receive-buffer limits and log one WARN when a host player might not
-        deliver the 360-degree clouds (EXPERIMENTS.md section 3b, 25.09). Never fails."""
-        values = {}
-        for key in ("rmem_max", "rmem_default"):
-            try:
-                with open(os.path.join(PROC_NET_CORE, key), encoding="ascii") as fh:
-                    values[key] = int(fh.read().split()[0])
-            except (OSError, ValueError, IndexError):
-                pass
-        try:
-            msg = self.socket_buffer_warning(values, bool(os.environ.get("FASTRTPS_DEFAULT_PROFILES_FILE")))
-            if msg:
-                self.get_logger().warn(msg)
-        except Exception:  # noqa: BLE001 - a diagnostic must never stop the node
-            pass
-        return values
+                               + f"; input reliability {self.input_reliability}")
 
     # ------------------------------------------------------------------
     def input_qos(self, reliability: str):
@@ -413,28 +353,15 @@ class DetectorNode(Node):
         self.get_logger().info(f"static TF {parent} -> {child} (identity)")
 
     # ------------------------------------------------------------------
-    def _account_frame(self, stamp: float, key=None) -> None:
-        """Estimate dropped frames from the gap between consecutive input stamps; the frames of
-        the gap that the node received and skipped itself (``prune``) also go to
-        ``dropped_skipped``. ``key``: (topic, frame_id) of the frame, as in ``skipped``."""
-        last, skipped = self.last_stamp, 0
-        if self.skipped:
-            keep = []
-            for k, s in self.skipped:
-                if k == key and s < stamp:           # accounted now (or older than the input's start)
-                    skipped += int(last is not None and s > last)
-                else:
-                    keep.append((k, s))
-            self.skipped = keep
-        if last is not None:
-            gap = stamp - last
+    def _account_frame(self, stamp: float) -> None:
+        """Estimate dropped frames from the gap between consecutive input stamps."""
+        if self.last_stamp is not None:
+            gap = stamp - self.last_stamp
             if 0.0 < gap < 1.6 * self.input_period:
                 # a regular gap: refine the period estimate (EMA)
                 self.input_period = 0.9 * self.input_period + 0.1 * gap
             elif gap >= 1.6 * self.input_period:
-                missing = int(round(gap / self.input_period)) - 1
-                self.dropped += missing
-                self.dropped_skipped += min(missing, skipped)
+                self.dropped += int(round(gap / self.input_period)) - 1
             # gap <= 0: a bag loop / restart, not a drop
         self.last_stamp = stamp
 
@@ -449,15 +376,13 @@ class DetectorNode(Node):
             self.get_logger().info(
                 f"frame {self.n_frames}: {self.last_status}; {self.fps:.1f} fps; "
                 f"latency mean {lat.mean():.0f} / p95 {np.percentile(lat, 95):.0f} / max {lat.max():.0f} ms; "
-                f"input period {self.input_period * 1e3:.0f} ms; dropped {self.dropped} "
-                f"({self.dropped_skipped} skipped by the catch-up)")
+                f"input period {self.input_period * 1e3:.0f} ms; dropped {self.dropped}")
         self.win_latency.clear()
         self.win_frames = 0
 
     def node_stats(self) -> dict:
         return {"latency_ms": round(self.last_latency_ms, 2), "fps": round(self.fps, 2),
                 "frames": self.n_frames, "dropped_frames": self.dropped,
-                "catchup_skipped": self.dropped_skipped, "catchup": bool(self.frame_in_catchup),
                 "input_period_ms": round(self.input_period * 1e3, 1),
                 "ego_speed_mps": None if self.last_speed is None else round(float(self.last_speed), 2),
                 "ego_speed_source": self.last_speed_source,
@@ -594,10 +519,6 @@ class DetectorNode(Node):
             run, self.pending = self.pending[:n], self.pending[n:]
             self.pending[:0] = [run[i] for i in plan]
             self.catchup_skipped += n - len(plan)
-            key, kept = (topic0, m0.header.frame_id), set(plan)
-            self.skipped.extend((key, stamps[i]) for i in range(n) if i not in kept)
-            if len(self.skipped) > 4 * self.qos_depth + 100:     # entries of an input that never came
-                del self.skipped[:len(self.skipped) - 4 * self.qos_depth - 100]
         return [stamps[i] for i in plan]
 
     def process_next(self) -> None:
@@ -610,7 +531,6 @@ class DetectorNode(Node):
         try:
             self.process_cloud(msg, topic)
         finally:
-            self.frame_in_catchup = False
             if topic == self.active_topic:
                 self.pending_last = (topic, msg.header.frame_id, self._stamp(msg))
             if self.pending:
@@ -618,10 +538,7 @@ class DetectorNode(Node):
 
     def track_catchup(self, behind: float, left: int) -> None:
         """Log a catch-up - more than ``catchup_step`` s of recording waiting - when it starts and
-        when the node is back on the newest frame (``left``: frames of the chain, this one included).
-        Sets ``frame_in_catchup`` (status ``node.catchup``) for the frames processed while behind;
-        the frame that brings the node back on the newest one is not."""
-        self.frame_in_catchup = False
+        when the node is back on the newest frame (``left``: frames of the chain, this one included)."""
         if self.catchup is None:
             if self.catchup_step <= 0 or behind <= self.catchup_step:
                 self.catchup_skipped = 0
@@ -635,8 +552,6 @@ class DetectorNode(Node):
             self.get_logger().info(f"caught up in {time.perf_counter() - c[2]:.1f} s: {c[0]} frames processed, "
                                    f"{self.catchup_skipped} skipped, at most {c[1]:.1f} s of recording behind")
             self.catchup, self.catchup_skipped = None, 0
-        else:
-            self.frame_in_catchup = True
 
     def process_cloud(self, msg: PointCloud2, topic: str = "") -> None:
         if not self.check_continuity(topic, msg):
@@ -651,7 +566,7 @@ class DetectorNode(Node):
             stamp = msg.header.stamp.sec + msg.header.stamp.nanosec * 1e-9
             frame = Frame(xyz=xyz_v, intensity=inten, ring=ring, stamp=stamp, frame_id=msg.header.frame_id,
                           meta={"n_raw": n_raw, "n_near": n_near})
-            self._account_frame(stamp, (topic, msg.header.frame_id))
+            self._account_frame(stamp)
             self.last_speed, self.last_speed_source = self.ego_speed()
             res = (self.detector.process(frame, ego_speed=self.last_speed) if self._process_takes_speed
                    else self.detector.process(frame))
@@ -789,7 +704,6 @@ class DetectorNode(Node):
                 st.values.append(KeyValue(key=f"mount_{k}", value=str(m[k])))
         st.values.append(KeyValue(key="fps", value=f"{self.fps:.1f}"))
         st.values.append(KeyValue(key="dropped_frames", value=str(self.dropped)))
-        st.values.append(KeyValue(key="catchup_skipped", value=str(self.dropped_skipped)))
         return DiagnosticArray(header=hdr, status=[st])
 
     # ------------------------------------------------------------------

@@ -1,13 +1,6 @@
-# P4 Data and Evaluation Audit
+# P4 data and evaluation audit — 23 September 2026
 
-> **Purpose:** P4's audit of synthetic placement, evaluation accounting and the organizers'
-> synthetic-obstacle recording, with the corrections made and what they change.
-> **Audience:** team, jury (spec §8.7) · **Owner:** P4 · **Language:** EN
-> **Last verified:** 2026-09-24 against `537e220` (numbers as measured on 23–24.09) ·
-> **Status:** dated record, 23–24.09
-
-Initial audit base: `a81108f` (v0.6.3, 23.09); integrated on `4cd32d6` (`main`, 24.09); merged as
-`4b5786b` (PR #9, 24.09).
+Initial audit base: `a81108f` (v0.6.3); integrated on `4cd32d6` (`main`, 24 September).
 The detector, ROS node and default detection parameters were not changed in this P4 pass.
 The original six organizer bags were downloaded from the
 public link, unpacked and cached at every frame; the new measurements on them are below.
@@ -19,7 +12,7 @@ from this six-bag rerun.
 | P4 criterion | Finding | Correction | What has been verified |
 |---|---|---|---|
 | Set S placement | `place_on_bed` existed but `resense inject` never called it. Ground objects were placed at rail head − 0.15 m even where the real bed was lower, and the far model could place them under the bed. | Injection now defaults to the local bed or rail head − 0.25 m plus measured vault drift and stores `base_z` in `gt.json`. `--placement legacy` reproduces the old height under the new paired-run RNG protocol. | Synthetic bed/vault cases and paired runs on 108 frames of three real empty bags: 22/67 visible in-gauge hits with bed placement versus 29/68 with legacy height. Corrected placement lowers the apparent recall; see below. |
-| Set F independence (review of 24.09: set F placement must not come from the detector's own far axis) | The object's Y position was recomputed from the detector's own far axis every frame, reducing the apparent cost of axis errors on curves and near the envelope edge. Missing or invalid timestamps also silently fell back to a 0.1-second motion step. | `scripts/far_range_eval.py --placement-mode anchored`: a rail-supported track fit when the object is within 30 m defines its location; near track fits in consecutive empty frames transport that location back through the sequence. `--placement-mode legacy` reproduces the old placement. Recording gaps over 5 m, missing near references, and missing or invalid timestamps are reported as skipped. `--placement-mode independent` also remains available for externally surveyed fixed references. | Known rigid-transform and wrong far-axis regressions, then a paired run on seven organizer sequences: one skip due to a 24.5 m recording gap; see below. Anchoring uses estimated speed and near-track registration, not surveyed ground truth. |
+| Set F independence (SCORECARD 24.09, improvement 7) | The object's Y position was recomputed from the detector's own far axis every frame, reducing the apparent cost of axis errors on curves and near the envelope edge. Missing or invalid timestamps also silently fell back to a 0.1-second motion step. | `scripts/far_range_eval.py --placement-mode anchored`: a rail-supported track fit when the object is within 30 m defines its location; near track fits in consecutive empty frames transport that location back through the sequence. `--placement-mode legacy` reproduces the old placement. Recording gaps over 5 m, missing near references, and missing or invalid timestamps are reported as skipped. `--placement-mode independent` also remains available for externally surveyed fixed references. | Known rigid-transform and wrong far-axis regressions, then a paired run on seven organizer sequences: one skip due to a 24.5 m recording gap; see below. Anchoring uses estimated speed and near-track registration, not surveyed ground truth. |
 | Set S / sequence evaluation | `resense eval` carried tracker state from one unrelated injected background or approach sequence into the next. | The tracker resets at each injected `seq` boundary. | A two-sequence injected run shows no alarm on either sequence's first frame. |
 | False-alarm events | Tracker IDs restart at a sequence boundary, but the evaluator counted raw IDs globally. A false event in one sequence could disappear if the same ID matched ground truth in another. | Event identity is `(sequence, track ID)`; `eval --out` includes `seq` so `summarize` reproduces the count. | An ID-reuse regression and the JSONL round trip. |
 | Sequence time/distance | Synthetic approach sequences are independent, but the evaluator integrated timestamp gaps between them as travelled time and kilometres, producing spurious rate denominators. | For scoped `seq` rows, only within-sequence elapsed time and distance are accumulated. Continuous real bags retain their original span accounting. | A two-sequence regression with a 9.9 s inter-sequence gap and a missing-stamp case. |
@@ -37,7 +30,7 @@ justify replacing the catalogue ranges for long-range tests. See [`DATASET.md`](
 ## New original-bag measurements
 
 The full-rate rerun of all six original bags reproduces the v0.6.3 counts: **107 alarm frames / 20
-events on 2 287 empty-bag frames**, and on `doubleT_obstacle` **58/61 crossing-person frames,
+events on 2,287 empty-bag frames**, and on `doubleT_obstacle` **58/61 crossing-person frames,
 first alarm frame 11, plus 127/185 visible rail-object frames**. This checks the P4 matching
 change against the committed real labels; it does not validate synthetic long-range placement.
 These runs overlapped archive extraction and other jobs on this workstation, so their latency
@@ -46,7 +39,7 @@ figures are not comparable to the repository's controlled timing measurements.
 **Integration on `4cd32d6` (24.09):** a full-rate rerun on the local six-bag cache again
 produced 107 alarm frames / 20 events on the five empty bags and 185/246 matched labelled
 obstacle-frames on `doubleT_obstacle`, first alarm frame 11. The cache and config were those
-selected by `scripts/eval_real.py --cache /data/cache --bags
+selected by `scripts/eval_real.py --cache /home/likikikpa/ReSense-p4-data/cache --bags
 doubleT_obstacle,doubleT_platform,roundT_doubleT,roundT_pressureGate_roundT,roundT_squareT_pressureGate_squareT,squareT_platform_squareT_switch`.
 Latency and health warnings from that concurrent, uncalibrated workstation run are not
 benchmarks.
@@ -96,8 +89,7 @@ receive timestamps. Both modes used the **same seed, config, sampled lateral/ref
 frame selection**; `scripts/compare_setf.py` checks these and excludes a skipped trajectory
 from *both* denominators. The raw configurations, per-frame truth, visibility and detection
 rows are reproducible with the commands below; the compact per-sequence report, config and
-timestamp hashes are committed in
-[`experiments_p4_setf_paired.json`](evidence/results/experiments_p4_setf_paired.json).
+timestamp hashes are committed in [`experiments_p4_setf_paired.json`](experiments_p4_setf_paired.json).
 
 ```bash
 python scripts/far_range_eval.py --cache /data/cache/new_data --files 127,129,131,160,164,175,177 \
@@ -136,11 +128,11 @@ config and sampling and should only be quoted as dated self-referential results.
 `far_range_eval.py` now stops at a missing split/frame rather than jumping to an unrelated
 piece of the ride (a cache strided by `cache_frames.py --every N` is followed at its own step);
 in anchored mode it rejects missing stamps or a near reference. A zero-return object cannot be
-marked a hit. Since 24.09, a detection where it stands on such a frame (its own held
+marked a hit. Since the 24.09 review, a detection where it stands on such a frame (its own held
 or accumulated track) is not counted as a false detection either. The curve/edge `false
 detections` above were counted the older way and include such frames.
 
-## Paired straight-track range audit (24.09)
+## Paired straight-track range audit (24.09, SCORECARD improvement 7)
 
 The straight set of set F round 3 was re-run in pairs on the current code:
 
@@ -153,7 +145,7 @@ The straight set of set F round 3 was re-run in pairs on the current code:
 stamps. File 168 has a recording gap (a 65.4 m motion step), so anchored mode skips it, and the
 paired summary drops it from both modes. Anchored placement differs from legacy by 0.4–1.1 m
 in Y at the far end of the person approaches. Raw report:
-[`experiments_p4_setf_straight_paired.json`](evidence/results/experiments_p4_setf_straight_paired.json).
+[`experiments_p4_setf_straight_paired.json`](experiments_p4_setf_straight_paired.json).
 
 ```bash
 python scripts/far_range_eval.py --cache /data/cache/new_data --files 46,68,98,140,168,172 --frames 110 \
@@ -183,18 +175,17 @@ draws differ), not because the detector changed.
 
 The organizers' folder added `cloud_with_fake_obj.zst` on 24.09
 ([Yandex Disk](https://disk.yandex.ru/d/KpkG_yKoGk-vHQ), SHA-256 in [`DATASET.md`](DATASET.md)).
-The first P4 pass scored it unlabelled on all **1 510 frames**: 342 alarm frames, 9 alarm track
-IDs, 459 advisory frames
-([`experiments_p4_fake_unlabelled.json`](evidence/results/experiments_p4_fake_unlabelled.json)).
+The first P4 pass scored it unlabelled on all **1,510 frames**: 342 alarm frames, 9 alarm track
+IDs, 459 advisory frames ([`experiments_p4_fake_unlabelled.json`](experiments_p4_fake_unlabelled.json)).
 The organizers then described the ten obstacles and their order. The object points turned out
-to be recoverable exactly: every message is the organizers' real scan followed by the object
+to be recoverable exactly: every message is the organized real scan followed by the object
 points (intensity 1). So the recording is now labelled: `scripts/label_fake_objects.py` →
-[`labels/cloud_with_fake_obj.json`](../labels/cloud_with_fake_obj.json), 1 206 object-frames of
+[`labels/cloud_with_fake_obj.json`](../labels/cloud_with_fake_obj.json), 1,206 object-frames of
 ten objects in frames 0–803. How the labels are made, and three properties that limit how they
 can be read, are in [`DATASET.md`](DATASET.md) "Synthetic-obstacle recording". In short:
 
-* the objects stand still in the tunnel and the train drives up to them at 1.4–20 m/s (corrected
-  24.09: an earlier ICP had the train backing up; [`EXPERIMENTS.md`](EXPERIMENTS.md) §9);
+* the objects approach at 14–20 m/s independently of the real train, which backs up and stands
+  during the recording;
 * they are placed from the sensor's axis, which runs at −0.24° to the rails here, so the edge
   tests sit within ±0.1–0.4 m of the envelope edge;
 * beyond ~100 m their path leaves the tunnel. Those rows are graded out (`plausible`).
@@ -230,7 +221,7 @@ to an object in others:
 
 Standard metrics
 (`resense summarize --gt`): recall 0.378 of visible in-gauge object-frames (0–50 m 113/227,
-50–100 m 189/338, beyond 100 m 1/236). These are 1 206 frames of ten synthetic objects, not an
+50–100 m 189/338, beyond 100 m 1/236). These are 1,206 frames of ten synthetic objects, not an
 operating recall.
 
 What the grade says, by cause:
@@ -239,10 +230,8 @@ What the grade says, by cause:
   rails (#9) is found from 82 m and held from 59 m.
 * **0.3 m objects are found at 34–43 m.** At 60–115 m the organizers' 0.3 m cube returns 2–4
   points a frame; the clustering needs 5 voxels within 100 m. A single frame cannot confirm a
-  0.3 m object much beyond 50 m with this sensor. Accumulation needs an ego speed; with the
-  train's measured speed it makes the 0.3 m cubes visible from 57–59 m instead of 43–51 m, but as
-  advisories (the `floating` signature), and no first STOP comes earlier (one comes 3.4 m later;
-  [`EXPERIMENTS.md`](EXPERIMENTS.md) §9).
+  0.3 m object much beyond 50 m with this sensor. Accumulation would need a real ego speed, and
+  this recording cannot test it, because its objects move independently of the train.
   Lowering the minimums (`min_points 3`, `min_points_far 2` or `gauge_min_points 2`) changed
   nothing for them.
 * **Two infrastructure signatures demote real test obstacles.** `floating` makes #2 advisory at
@@ -259,7 +248,7 @@ What the grade says, by cause:
 **Improvement experiments.** All run on the fake-object bag and, for the false-alarm cost, on
 all six original bags at every frame. The default reproduces 107 alarm frames / 20 events on the
 five empty bags and 185/246 labelled frames, first alarm 11, on `doubleT_obstacle`. Raw numbers:
-[`experiments_p4_fake_labelled.json`](evidence/results/experiments_p4_fake_labelled.json).
+[`experiments_p4_fake_labelled.json`](experiments_p4_fake_labelled.json).
 
 | variant | fake bag: STOP frames on inside objects | fake bag: STOP frames on outside objects | fake bag: background alarm frames / IDs (never matched to an object) | five empty bags: alarm frames / events | `doubleT_obstacle` |
 |---|---:|---:|---:|---:|---|
@@ -284,8 +273,7 @@ the envelope measured from the rails in those frames. **Not shipped:** the rule 
 (`resense/clustering.py`), and the 20-minute ride, where most infrastructure lives, has not been
 re-run with it.
 
-**What the organizers' set implies for the open bed question** (whether a bed object below the
-rail head counts; asked as Q3 in [`QUESTIONS.md`](QUESTIONS.md)): none of
+**What the organizers' set implies for the open bed question** (SCORECARD improvement 1): none of
 their ten test objects lies on the bed between the rails. The small ones float mid-envelope, stand
 on a rail or sit at the edge, and the low one lies across both rails. The shipped policy
 (nothing below the envelope floor between the rails) is not tested by this set.

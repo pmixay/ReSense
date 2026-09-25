@@ -8,9 +8,6 @@
 #   docker compose --profile viz up                   # + RViz (needs X11: xhost +local:docker)
 #
 #   RESENSE_DATA=/mnt/bags RESENSE_BAG=doubleT_obstacle docker compose --profile tools up
-#
-# No internet (the test stand): `docker load -i resense-image-<version>.tar.gz` first; with
-# resense:latest present compose never builds or pulls (do not pass --build there).
 x-data: &data
   network_mode: host
   ipc: host

@@ -128,8 +128,6 @@ resense:
     floating_min_height: 0.7
     floating_max_height: 1.2
     floating_max_width: 1.0
-    floating_long_min_length: 3.0  # on, decided 25.09 on the ride (0 = off): the floating shape also demotes clusters longer than this (m) along the track near the axis (overhead duct / tray / beam); ride 204 / 47 / 39 -> 197 / 46 / 39 alarm frames / events / STOP episodes, five bags 107 / 20 / 27 -> 60 / 14 / 17, set O, doubleT_obstacle and set F straight identical (docs/evidence/results/rules_decision_2026-09-25.json)
-    floating_long_min_bottom: 1.6  # review 25.09: the long branch only for clusters whose lowest point is above this (m; 0 = no bottom condition); pre-registered 2.0 / 1.8 / 1.6, the highest keeping every gain: 2.0 ride 197 / 46 / 39 -> 204 / 47 / 39, 1.8 -> 202 / 47 / 40, 1.6 identical on every recording, the ride, set O and set F straight; what the long branch demotes on them has its bottom at 1.68-2.65 m but one unconfirmed single-frame cluster (docs/evidence/results/long_rule_bottom_2026-09-25.json)
     edge_min_lateral: 1.0          # v0.6 (1.2 with the 1.40 m polygon)
     edge_min_aspect: 2.5
     edge_max_height: 1.0
@@ -137,8 +135,6 @@ resense:
     far_max_length: 3.0            #   at most this long along the track,
     far_max_bottom: 1.0            #   and reaching below this height
     signature_min_lateral: 0.6     # v0.6: column / floating signatures only off the track centre (hanging cables are obstacles)
-    short_signature_max_length: 0.0   # off, decided 25.09 on the ride (3.0 / 100 tried, not shipped: ride STOP episodes 39 -> 45 on top of the long rule, over the +5 limit; set O +49 STOP frames): > 0 = the elevated / floating signatures do not demote a cluster at most this long (m) ...
-    short_signature_max_distance: 100.0   # ... and at most this far (m); the measured candidate is 3.0 / 100.0 (docs/P4_AUDIT.md)
     wall_face_min_height: 2.0
     wall_face_min_top: 2.8         # v0.6: reaches above this (just under the envelope top)
     wall_face_edge: 1.3            # v0.6: the advisory zone ends at 1.40 m
@@ -160,7 +156,6 @@ resense:
     min_hit_fraction: 0.6
     zone_window: 10
     zone_min_fraction: 0.6
-    column_hold: 2                 # 25.09 (0 = off): a track demoted as a column in >= this many of its last zone_window hits stays advisory; roundT_doubleT's column at 101-149 m is a column in some frames and 1.6-2.2 m of it in others: 3 alarm frames at 111-115 m through ROS (original bag), 2 at 128-130 m from the cache -> 0 (4 column hits in its window); pre-registered 3 / 2 / 1, the highest passing: 3 fails the gate (ride STOP episodes 39 -> 40), 2 PASS: five bags 60 / 14 / 17 -> 58 / 13 / 16, ride 197 / 46 / 39 -> 187 / 46 / 39 alarm frames / events / STOP episodes, doubleT_obstacle, set O and set F detections identical (docs/evidence/results/column_hold_2026-09-25.json)
     max_misses: 3
     conf_gain: 0.35
     conf_decay: 0.25
@@ -223,7 +218,7 @@ resense:
     near_min_length: 0.0           # m observed along-track extent; 0: a 30x30x10 cm box at 12-28 m is one scan line (~0.03 m)
     near_min_height: 0.0           # m; top-surface returns may have zero observed vertical extent
     near_min_bed_lateral_bins: 20  # support must span the central bed, not only the object footprint
-    near_min_points: 5             # occupied voxels; the same box returns 5-10 at 12-28 m (10 rejected it)
+    near_min_points: 5             # occupied voxels; the same box returns 5-6 at 12-28 m (10 rejected it)
     near_max_length: 0.75          # m along track, reject linear infrastructure
   calibration:                     # v0.6: automatic mount calibration (resense/calibration.py)
     enabled: true

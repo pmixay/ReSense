@@ -1,1 +1,0 @@
-no --ref: exported from the checkout at 7290873 as 0.6.3-7290873 (the upload uses --ref v1.0-rc1 / v1.0-final)

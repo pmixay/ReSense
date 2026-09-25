@@ -1,7 +1,0 @@
-window: 30 min max; started 2026-09-25T09:54:01+00:00; automatic restore by the systemd timer resense-offline-restore.timer
-ssh ports kept: 22 
-external interface: eth0
-allowed hosts: none
-safety net: systemd timer resense-offline-restore.timer, fires at 2026-09-25T10:24:01+00:00
-restored: 2026-09-25T09:58:03+00:00
-internet after restore: github.com HTTP 200

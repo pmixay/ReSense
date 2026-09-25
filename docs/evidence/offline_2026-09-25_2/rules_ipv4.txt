@@ -1,8 +1,0 @@
-Chain RESENSE_OFFLINE (1 references)
- pkts bytes target     prot opt in     out     source               destination         
- 419K 4942M ACCEPT     all  --  *      lo      0.0.0.0/0            0.0.0.0/0           
- 1542  127K ACCEPT     all  --  *      *       0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED
-  310 91088 ACCEPT     all  --  *      *       0.0.0.0/0            224.0.0.0/4         
-    0     0 ACCEPT     all  --  *      *       0.0.0.0/0            169.254.169.254     
-    0     0 ACCEPT     udp  --  *      *       0.0.0.0/0            0.0.0.0/0            udp dpts:67:68
- 1152 95465 REJECT     all  --  *      *       0.0.0.0/0            0.0.0.0/0            reject-with icmp-port-unreachable

@@ -1,7 +1,0 @@
-apply_block	0	PASS	0	outbound blocked until 10:24:01 at the latest
-verify_blocked	0	PASS	100	
-remove_images	0	PASS	1	
-load_image	0	PASS	29	
-dry_obstacle	1	FAIL	34	
-dry_clear	1	FAIL	38	
-jury_console	0	PASS	40	
