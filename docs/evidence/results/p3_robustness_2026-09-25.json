@@ -42,5 +42,21 @@
       "tilt_roundT_doubleT": "the provisional tilt (median of the first 5 consecutive observations) carries a roll error: the as-recorded first frames measure roll -1.0 ... -2.15 deg (the spaced median settles at -0.5 after 6 observations and -0.19 at 20). pitch_3: provisional roll -1.57 / pitch -2.70 applied (final 0.0 / -2.81) -> track 24, a low cluster at the right rail at 50-54 m, frames 99-100. roll_3: provisional roll -5.03 (final -3.36) -> track 26, a low cluster at the right rail at 39-44 m, frames 111-112; track 18 at 234 is the known far column (column hits 1 of the last 10 at that frame) after the final calibration.",
       "tilt_other": "doubleT_platform pitch_3: track 4 (frame 19, 112 m) in the first frames after the provisional re-seed, track 156 (185-186, a low cluster at 3-9 m), track 169 (201, a column at 88 m confirmed on a 3-of-5 zone vote before its column hits); roll_3: track 8 (10-11, 81 m) after the re-seed, track 119 (164-165, 49 m). squareT_platform_squareT_switch 9 -> 10 events: the same flickering station structures at 82.9 / 94 / 147 m as recorded. These are not traced to a frame- or tilt-dependent rule."
     }
+  },
+  "addendum_1": {
+    "written_at_utc": "2026-09-25T20:56:45Z",
+    "why": "K1 and K2 measured at 5 Hz only (robustness_check.py --every 2). K1: five empty bags 13 / 17 -> 13 / 17 (events / STOP episodes), roundT_doubleT 3 -> 3, the final calibration now completes at original frame 190-214 on all six bags, but doubleT_obstacle 92/123 -> 91/123 (first alarm 12): the final correction (roll +3.03 / pitch -0.88 over the provisional +3.06 / -0.83, a 0.06 deg change) re-seeds the track model at frame 192 and the object is missed at 194, exactly as at 10 Hz as recorded (re-seed at 190, miss at 191). K2: five empty bags 13 / 17 -> 11 / 13, roundT_doubleT 3 -> 0, but doubleT_obstacle 92/123 -> 87/123: with the EMA weights squared per 5 Hz frame (floor 0.25, rails 0.49) the bed fit is noisier and the object on the rail (a low cluster at 56 m) is missed at 182 and 194-200. Both breach the registered stress safety condition (doubleT_obstacle at 5 Hz not below 92/123).",
+    "changes": {
+      "track.rates_per_period": "redefined before any further run: only axis_max_yaw_rate, axis_max_curvature_rate and the warm-up age count nominal periods (physical rates per second); the EMA weights stay per processed frame (noise averaging over frames). The K2 variant with the EMA scaled is recorded above and dropped.",
+      "calibration.keep_within_deg": "new, float deg, default 0 (off). > 0: a final tilt within this of the applied provisional one in roll and in pitch keeps the applied correction (status ok), so the track model is not re-seeded for a change below the final's own p90 error (0.5 deg). Registered value: 0.25."
+    },
+    "candidates_in_order": [
+      {"id": "K1b", "set": {"calibration.time_cadence": true, "calibration.keep_within_deg": 0.25}},
+      {"id": "K2b", "set": {"calibration.time_cadence": true, "calibration.keep_within_deg": 0.25, "track.rates_per_period": true}},
+      {"id": "K3b", "set": {"calibration.time_cadence": true, "calibration.keep_within_deg": 0.25, "track.rates_per_period": true, "calibration.refine_min_deg": 0.5}},
+      {"id": "K4b", "set": {"calibration.time_cadence": true, "calibration.keep_within_deg": 0.25, "track.rates_per_period": true, "calibration.refine_min_deg": 0.5, "calibration.provisional_per_axis": true},
+       "run_only_if": "K3b leaves a stress mode above 13 false events on the five empty bags, or roundT_doubleT above 0 at pitch_3"}
+    ],
+    "unchanged": "target, ship rule and safety conditions as registered; K1-K4 are superseded by K1b-K4b (K3 and K4 not run). These candidates are post hoc to the K1 / K2 5 Hz numbers and are reported as such."
   }
 }
