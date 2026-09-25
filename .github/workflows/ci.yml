@@ -154,20 +154,27 @@ jobs:
           sleep 4
           python3 scripts/check_dry_run.py /tmp/offline_out/status.jsonl --expect-obstacle --min-frames 20 --max-p95-latency 1000 --max-dropped 100000 --expect-inputs 2
   offline-build:
-    # Best effort (docs/ARCHITECTURE.md "Deployment without internet"): can a machine with no
-    # internet run `docker build` after `docker load` of our archive? The archive is made as for
-    # the release (scripts/export_image.sh: runtime image, base image pulled first so that it is
-    # resolved locally, inline layer cache, the base image's tag inside); every image and the build
-    # cache are removed, the archive is loaded, Docker Hub is made unreachable, and the documented
-    # command must rebuild the image from the loaded layers alone, from a checkout extracted under
-    # umask 002 and normalised with the documented chmod: every layer identical to the archive's
-    # means that no step ran (a RUN that ran would need the network and would write new files).
-    # RUN is not given --network none here: the network mode is part of BuildKit's cache key, so
-    # it would miss the cache. Same Docker release for both builds, so this proves the mechanism,
-    # not the stand's Docker. The primary path, `docker load`, does not depend on this job:
-    # continue-on-error, read its result explicitly.
+    # The release archive on a machine with no internet (docs/ARCHITECTURE.md "Deployment without
+    # internet"). The archive is made as for the release (scripts/export_image.sh: runtime image,
+    # base image pulled first so that it is resolved locally, inline layer cache, the base image's
+    # tag inside); every image and the build cache are removed and the archive is loaded
+    # (scripts/load_image.sh). Then two checks, both gating:
+    # 1. offline `docker build`: with Docker Hub made unreachable, the documented command must
+    #    rebuild the image from the loaded layers alone, from a checkout extracted under umask 002
+    #    and normalised with the documented chmod: every layer identical to the archive's means
+    #    that no step ran (a RUN that ran would need the network and would write new files). RUN
+    #    is not given --network none here: the network mode is part of BuildKit's cache key, so it
+    #    would miss the cache. Same Docker release for both builds, so this proves the mechanism,
+    #    not the stand's Docker: for the jury the offline build stays best effort, `docker load`
+    #    is the documented path.
+    # 2. the jury's image plays bags: the runtime image exactly as loaded from the archive (the
+    #    docker job plays through the WITH_TOOLS=1 image) runs the node on its default command on
+    #    an --internal network, a uid-1000 player from the same image plays both smoke bags (made
+    #    on the runner: the runtime image has no open3d / rosbags to make them), and
+    #    scripts/check_dry_run.py reads the recorded /resense/status.
+    # No continue-on-error since 25.09: check 1 passed on all four runs made with it
+    # (36109782167, 36112092652, 36113989932, 36116178404).
     runs-on: ubuntu-22.04
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - name: the release archive (scripts/export_image.sh; GZIP_LEVEL=1 for speed)
@@ -197,3 +204,67 @@ jobs:
           docker image inspect -f '{{json .RootFS.Layers}}' resense:offline > /tmp/layers_offline.json
           diff /tmp/layers_built.json /tmp/layers_offline.json
           echo "offline rebuild: every layer identical to the archive's, no step ran"
+      # ---- check 2, the jury's image plays bags. The /etc/hosts entries of the step above name
+      # Docker Hub's hosts only, so apt, PyPI and the pip cache are still reached; they stay, so
+      # nothing below can pull from Docker Hub either. These steps run whenever the load step ran
+      # (it sets VER), also after a failed offline rebuild: the two results are independent.
+      - uses: actions/setup-python@v5
+        id: py
+        if: ${{ !cancelled() && env.VER != '' }}
+        with:
+          python-version: "3.10"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - name: the two synthetic smoke bags, made on the runner (the runtime image cannot make them)
+        id: bags
+        if: ${{ !cancelled() && steps.py.outcome == 'success' }}
+        # make_smoke_bag.py needs open3d and rosbags (".[dev]", as in the pytest job); open3d links
+        # libEGL / libGL / libgomp / libusb, which the bare runner lacks
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq libegl1 libgl1 libgomp1 libusb-1.0-0
+          pip install -e ".[dev]"
+          mkdir -p /tmp/offline_bags
+          python scripts/make_smoke_bag.py /tmp/offline_bags/smoke_bag
+          python scripts/make_smoke_bag.py /tmp/offline_bags/smoke_bag2 --topic /sensing/lidar/hesai128/pointcloud --frame-id lidar_livox --distance 45
+          chmod -R a+rX /tmp/offline_bags        # the player is uid 1000, the runner's user is not
+          du -sh /tmp/offline_bags/*
+          df -h /
+      - name: no internet, the release archive's runtime image — node, recorder and a uid-1000 player on an internal network
+        # As the docker job's step "no internet, the organizers' way", but every container runs
+        # resense:$VER as scripts/load_image.sh loaded it from the archive. First it is proven to
+        # be that image (the layers that were built and exported; export_image.sh's version and
+        # commit labels, which resense:offline, the rebuild above, does not carry) and the runtime
+        # one (no WITH_TOOLS=1 module), with ros2 bag and the sqlite3 storage plugin the bags need
+        # (docker/Dockerfile's apt line). Then, on a `docker network create --internal` network:
+        # scripts/check_no_network.py, the node on the image's default command, a /resense/status
+        # recorder, a uid-1000 player that plays both bags into the running node (the input
+        # switch), and scripts/check_dry_run.py on the recording.
+        if: ${{ !cancelled() && steps.bags.outcome == 'success' }}
+        run: |
+          IMAGE="resense:$VER"
+          NET=resense-offline-rt
+          cleanup() {
+            docker logs resense_rt_node 2>&1 | tail -n 15 || true
+            docker rm -f resense_rt_node resense_rt_echo >/dev/null 2>&1 || true
+            docker network rm "$NET" >/dev/null 2>&1 || true
+          }
+          trap cleanup EXIT
+          test "$(docker image inspect -f '{{json .RootFS.Layers}}' "$IMAGE")" = "$(cat /tmp/layers_built.json)"
+          label() { docker image inspect -f "{{with .Config.Labels}}{{index . \"$1\"}}{{end}}" "$IMAGE"; }
+          test "$(label org.opencontainers.image.version)" = "$VER"
+          test "$(label org.opencontainers.image.revision)" = "$(git rev-parse HEAD)"
+          echo "$IMAGE: $(docker image inspect -f '{{.Id}}' "$IMAGE"), the archive's image (version $VER, commit $(git rev-parse HEAD))"
+          docker run --rm --network none "$IMAGE" python3 -c 'import importlib.util as u, sys; m = [n for n in ("open3d", "rosbags") if u.find_spec(n)]; print("WITH_TOOLS=1 modules in the image:", m or "none"); sys.exit(1 if m else 0)'
+          docker run --rm --network none "$IMAGE" bash -c 'dpkg-query -W ros-humble-rosbag2 ros-humble-rosbag2-storage-default-plugins && s="$(ros2 bag list storage)" && echo "rosbag2 storage plugins: $s" && grep -qx sqlite3 <<<"$s"'
+          docker network create --internal "$NET" >/dev/null
+          mkdir -p /tmp/offline_rt_out && chmod 777 /tmp/offline_rt_out
+          docker run --rm --network "$NET" "$IMAGE" python3 scripts/check_no_network.py
+          docker run -d --name resense_rt_node --network "$NET" "$IMAGE" >/dev/null
+          for _ in $(seq 1 60); do docker logs resense_rt_node 2>&1 | grep -q "ReSense detector listening" && break; sleep 1; done
+          docker logs resense_rt_node 2>&1 | grep -q "ReSense detector listening"
+          docker run -d --name resense_rt_echo --network "$NET" -v /tmp/offline_rt_out:/out "$IMAGE" bash -c "ros2 topic echo /resense/status --field data > /out/status.jsonl" >/dev/null
+          sleep 4
+          docker run --rm --network "$NET" --user 1000:1000 -e HOME=/tmp -v /tmp/offline_bags:/data:ro "$IMAGE" bash -c "ros2 bag play /data/smoke_bag --delay 3 --disable-keyboard-controls && sleep 5 && ros2 bag play /data/smoke_bag2 --delay 3 --disable-keyboard-controls"
+          sleep 4
+          python3 scripts/check_dry_run.py /tmp/offline_rt_out/status.jsonl --expect-obstacle --min-frames 20 --max-p95-latency 1000 --max-dropped 100000 --expect-inputs 2
+          echo "the release archive's runtime image played both bags with no internet"
