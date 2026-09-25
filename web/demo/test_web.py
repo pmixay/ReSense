@@ -299,6 +299,11 @@ def test_dashboard_shortcuts_work_after_clicking_a_control():
         page.keyboard.press("ArrowRight")
         page.keyboard.press("Space")
         assert page.evaluate(idx) == at and page.evaluate(playing) is False
+        page.click("#demo")                             # the demo starts playing, the focus stays on «Демо»
+        assert page.evaluate(playing) is True
+        page.evaluate("window.resense.seek(20)")
+        page.keyboard.press("Space")                    # pauses; does not restart the demo from frame 0
+        assert page.evaluate(playing) is False and page.evaluate(idx) >= 20
         b.close()
 
 

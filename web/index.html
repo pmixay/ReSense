@@ -741,8 +741,9 @@ document.querySelectorAll('.top-nav a').forEach(link => link.addEventListener('c
 document.addEventListener('keydown', ev => {
   // text entry keeps every key; a key a control already handled (the view tabs' ←/→) is not handled twice
   if (ev.defaultPrevented || ev.target.isContentEditable || ev.target.closest('input, select, textarea, [role="textbox"]')) return;
-  // Space clicks a focused button or link natively; a view tab is already selected, so Space stays play/pause there
-  if (ev.code === 'Space' && ev.target.closest('button:not([role="tab"]), a')) return;
+  // Space clicks a focused button or link natively; a view tab is already selected, and «Демо» would restart the
+  // demo it has just started, so Space stays play/pause on those two
+  if (ev.code === 'Space' && ev.target.closest('button:not([role="tab"]):not(#demo), a')) return;
   if (ev.code === 'Space') { ev.preventDefault(); if (state.frames.length) state.playing ? pause() : play(); }
   else if (ev.code === 'ArrowRight') { pause(); step(1); }
   else if (ev.code === 'ArrowLeft') { pause(); step(-1); }
