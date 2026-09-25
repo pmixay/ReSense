@@ -372,3 +372,130 @@ def test_rail_shadow_person_in_front_of_the_box_stops(tunnel):
     res = _run_with(frame, both, _rail_shadow_cfg(True))
     assert res.obstacle and abs(res.nearest_distance - 20.0) < 0.5
     assert _run_with(frame, person, _rail_shadow_cfg(True)).obstacle
+
+
+# ---------------------------------------------------------------------------
+# track.walls_min_far_support (P3, 25.09): the 82.9 m platform end
+# ---------------------------------------------------------------------------
+
+FAR_SUPPORT = 0.5          # the preferred candidate of docs/evidence/results/p3_platform_end_2026-09-25.json
+
+
+def _station_scene(curvature: float = 0.0, platform: bool = True, seed: int = 25) -> np.ndarray:
+    """A track (straight or curved) with its bed, the near rails (4-30 m) and a right wall at
+    -2.2 m; on the left, like ``squareT_platform_squareT_switch`` while the train stands at the
+    platform (EXPERIMENTS 1h): a platform-side structure at +1.6 m (6-33 m), one pillar bin at
+    44 m, the hall end diverging from +2.4 to +4.3 m at 74-88 m and the running tunnel's wall at
+    +2.05 m at 92-110 m; ``platform=False``: a plain left wall at +2.2 m. Walls 0.4-1.5 m above
+    the vehicle frame's origin (1.6-2.7 m above the rail head), bed at -1.5 m, rail head -1.16 m."""
+    rng = np.random.default_rng(seed)
+
+    def bend(x):
+        return 0.5 * curvature * x * x
+
+    def wall(x0, x1, y, n):
+        x = rng.uniform(x0, x1, n)
+        return np.stack([x, y(x) + bend(x) + rng.normal(0, 0.02, n), rng.uniform(0.4, 1.5, n)], 1)
+
+    x = rng.uniform(3, 110, 26000)
+    parts = [np.stack([x, rng.uniform(-1.1, 1.1, x.size) + bend(x), -1.5 + rng.normal(0, 0.01, x.size)], 1)]
+    for side in (-1, 1):
+        x = rng.uniform(4, 30, 15000)
+        parts.append(np.stack([x, side * 0.795 + bend(x) + rng.normal(0, 0.015, x.size),
+                               -1.16 + rng.normal(0, 0.005, x.size)], 1))
+    parts.append(wall(6, 150, lambda x: -2.2 + 0 * x, 22000))
+    if platform:
+        parts += [wall(6, 33, lambda x: 1.6 + 0 * x, 8000), wall(42, 46, lambda x: 2.2 + 0 * x, 400),
+                  wall(74, 88, lambda x: 2.4 + (x - 74) * (4.3 - 2.4) / 14, 1500),
+                  wall(92, 110, lambda x: 2.05 + 0 * x, 1000)]
+    else:
+        parts.append(wall(6, 150, lambda x: 2.2 + 0 * x, 22000))
+    return np.concatenate(parts).astype(np.float32)
+
+
+def _far_support_cfg(value: float = FAR_SUPPORT, frames: int = 1) -> DetectorConfig:
+    cfg = DetectorConfig()
+    cfg.track = replace(cfg.track, walls_min_far_support=value, walls_far_support_frames=frames)
+    return cfg
+
+
+def _settled_track(cloud: np.ndarray, cfg: DetectorConfig, n: int = 30):
+    from resense.track import estimate_track
+    model = None
+    for _ in range(n):
+        model = estimate_track(cloud, cfg.track, prev=model)
+    return model
+
+
+def test_far_support_rule_default():
+    for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
+                DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
+        assert cfg.track.walls_min_far_support == 0.0           # tried 25.09, not shipped (EXPERIMENTS 1h)
+        assert cfg.track.walls_far_support_max_curvature == 2.0e-4
+        assert cfg.track.walls_far_support_frames == 1
+
+
+def test_far_support_keeps_the_station_axis_on_the_supported_side():
+    """The platform-side boundary (near structure + one hall-end bin) bends the default axis by
+    metres at 83 m; with the rule the right wall, whose far bins follow its fit, sets the shape
+    and the axis stays within 0.15 m of the track; with ``walls_far_support_frames`` N the
+    first N - 1 frames are the default's. A real curve (R 1 000 / 350 m, both walls parallel)
+    and a station on a curve (the supported side bends: never overruled) are identical with
+    and without the rule."""
+    station = _station_scene()
+    off = _settled_track(station, DetectorConfig())
+    on = _settled_track(station, _far_support_cfg())
+    assert abs(float(off.center_y(83.0))) > 0.5, off.to_dict()
+    assert abs(float(on.center_y(83.0))) < 0.15, on.to_dict()
+    assert abs(on.curvature) < 1e-4 and on.axis_sides == 2
+    # walls_far_support_frames N: the rule sets the shape from the N-th consecutive frame only
+    from resense.track import estimate_axis_from_walls
+    held = _far_support_cfg(frames=10).track
+    tan = float(np.tan(on.yaw))
+    first = estimate_axis_from_walls(station, on, _far_support_cfg().track, tan)
+    average = estimate_axis_from_walls(station, on, DetectorConfig().track, tan)
+    assert first[6] == 1 and average[6] == 0 and first[1] != average[1]      # the supported side vs the average
+    assert estimate_axis_from_walls(station, on, held, tan, far_support_run=0)[:6] == average[:6]
+    tenth = estimate_axis_from_walls(station, on, held, tan, far_support_run=9)
+    assert tenth[6] == 10 and tenth[:6] == first[:6]
+    for curvature, platform in ((1 / 1000, False), (1 / 350, False), (-1 / 1000, False), (1 / 1000, True)):
+        scene = _station_scene(curvature, platform)
+        a = _settled_track(scene, DetectorConfig()).to_dict()
+        b = _settled_track(scene, _far_support_cfg()).to_dict()
+        assert a == b, (curvature, platform)
+        if not platform:
+            assert abs(a["curvature"] - curvature) < 0.1 * abs(curvature), a
+
+
+def test_far_support_station_obstacle_still_stops():
+    """End to end in the station scene with the rule: a person 0.5 x 0.4 x 1.7 m on the axis or
+    0.6 m off it, at 83, 60 or 25 m, is a STOP; the platform-end structure (2.2 x 0.4 x 1.25 m at
+    +1.9 m, bottom at the bed, as in squareT_platform_squareT_switch) is not. Without the rule
+    the bent axis reads the person 0.6 m right of the track at 60 m at -1.3 m: advisory only."""
+    station = _station_scene()
+    bed = -1.5
+
+    def last(extra, cfg, n=10):
+        pts = np.concatenate([station, extra]).astype(np.float32)
+        det = Detector(cfg)
+        res = None
+        for k in range(n):
+            res = det.process(Frame(xyz=pts, intensity=np.full(len(pts), 30.0, np.float32), stamp=0.1 * k))
+        return res
+
+    def box(x0, y0, length, width, height, z0=bed):
+        """``_box_surface`` placed in this scene: front at x0, centred at y0, bottom at z0."""
+        return _box_surface(x0, length, y0 - AXIS_Y, z0 - RAIL_HEAD_Z, height, width)
+
+    on = _far_support_cfg()
+    end = box(82.9, 1.9, 2.2, 0.4, 1.25)
+    res = last(end, on)
+    assert not res.obstacle, [(c.distance, c.lateral, c.zone, c.reason) for c in res.candidates]
+    off = _far_support_cfg(0.0)
+    res = last(np.concatenate([end, box(60.0, -0.6, 0.4, 0.5, 1.7)]), off)
+    assert not res.obstacle and res.warning
+    for dist in (83.0, 60.0, 25.0):
+        for lateral in (0.0, -0.6, 0.6):
+            res = last(np.concatenate([end, box(dist, lateral, 0.4, 0.5, 1.7)]), on)
+            assert res.obstacle and abs(res.nearest_distance - dist) < 1.0, (
+                dist, lateral, res.track.to_dict(), [(c.distance, c.lateral, c.zone, c.reason) for c in res.candidates])

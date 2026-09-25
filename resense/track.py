@@ -44,6 +44,7 @@ class TrackModel:
     age: int = 0                     # v0.6: frames since the model was seeded (rate limits apply after the warm-up)
     floor_shadow: float = 0.0        # 25.09: X where a near occluder's shadow starts in the bed band (0 = none; floor_shadow_height)
     floor_held: bool = False         # 25.09: the bed profile was held from the previous frame (too little bed in front of the shadow)
+    far_support_run: int = 0         # 25.09: consecutive frames with the walls_min_far_support condition (not reported)
 
     def floor_z(self, X) -> np.ndarray:
         """Bed reference height at along-track coordinate X, linearly extrapolated beyond
@@ -262,14 +263,17 @@ def _quad(xb: np.ndarray, yb: np.ndarray, t_fixed: Optional[float]):
 
 def _fit_side(xb: np.ndarray, yb: np.ndarray, cfg: TrackConfig, mean_abs_dy: float = 0.0,
               t_fixed: Optional[float] = None):
-    """Robust quadratic through one boundary; returns (t, k, rms, mean_abs_dy, x_max) or None.
-    ``k`` is the curvature 1/R of the boundary (the track's, when it is parallel). Bins further
-    than ``walls_max_residual`` from the fit are dropped in two passes. With the tangent fixed
-    by the rails, a boundary that is not parallel to the track (a diverging tunnel, a platform
-    hall wall) cannot be fitted within ``walls_max_rms`` and is rejected instead of bending
-    the axis."""
+    """Robust quadratic through one boundary; returns (t, k, rms, mean_abs_dy, x_max, n_far,
+    n_far_in) or None. ``k`` is the curvature 1/R of the boundary (the track's, when it is
+    parallel). Bins further than ``walls_max_residual`` from the fit are dropped in two passes.
+    With the tangent fixed by the rails, a boundary that is not parallel to the track (a
+    diverging tunnel, a platform hall wall) cannot be fitted within ``walls_max_rms`` and is
+    rejected instead of bending the axis. ``n_far`` / ``n_far_in``: the boundary bins beyond the
+    rail range (``rails_range[1]``) and how many of them lie within ``walls_max_residual`` of the
+    final fit (the far support of the fitted curvature, used by ``walls_min_far_support``)."""
     if xb.size < cfg.walls_min_bins:
         return None
+    x_all, y_all = xb, yb
     a, t, k = _quad(xb, yb, t_fixed)
     for _ in range(2):
         res = yb - (a + t * xb + 0.5 * k * xb * xb)
@@ -282,11 +286,37 @@ def _fit_side(xb: np.ndarray, yb: np.ndarray, cfg: TrackConfig, mean_abs_dy: flo
     rms = float(np.sqrt(np.mean(res ** 2)))
     if rms > cfg.walls_max_rms:
         return None
-    return t, k, rms, float(mean_abs_dy), float(xb.max())
+    far = x_all > cfg.rails_range[1]
+    far_in = far & (np.abs(y_all - (a + t * x_all + 0.5 * k * x_all * x_all)) < cfg.walls_max_residual)
+    return t, k, rms, float(mean_abs_dy), float(xb.max()), int(far.sum()), int(far_in.sum())
+
+
+def _far_supported_side(sides: dict, cfg: TrackConfig) -> Optional[str]:
+    """The side that alone should set the axis shape (``walls_min_far_support``, 25.09), or None.
+
+    A boundary's curvature is extrapolated to the end of the corridor, so it should be carried
+    by its bins beyond the rail range (the near 4-30 m, where the rails fix the axis). At a
+    station the platform-side boundary can be a near structure (a platform screen, a column
+    row) joined by the robust fit to one or two bins of the diverging hall end: the fit is
+    within ``walls_max_rms`` but most of its far bins lie off it, and averaged with the other
+    side it bent the axis ~0.8 m at 83 m in ``squareT_platform_squareT_switch`` (EXPERIMENTS
+    §1h). When both sides are fitted with ``walls_min_bins`` or more far bins each, one keeps at
+    least ``walls_min_far_support`` of them within ``walls_max_residual`` and the other does not,
+    and the supported side is nearly straight (|k| <= ``walls_far_support_max_curvature``: a
+    real R 350-1 000 m curve is never overruled), the supported side is returned."""
+    judged = {}
+    for name, f in sides.items():
+        if f[5] >= cfg.walls_min_bins:
+            judged[name] = f[6] >= cfg.walls_min_far_support * f[5]
+    if len(judged) != 2 or sum(judged.values()) != 1:
+        return None
+    good = next(name for name, ok in judged.items() if ok)
+    return good if abs(sides[good][1]) <= cfg.walls_far_support_max_curvature else None
 
 
 def estimate_axis_from_walls(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig,
-                             t_fixed: Optional[float] = None, floor_z_all: Optional[np.ndarray] = None):
+                             t_fixed: Optional[float] = None, floor_z_all: Optional[np.ndarray] = None,
+                             far_support_run: int = 0):
     """Yaw (tan) and curvature of the track from the left/right tunnel boundaries.
 
     Walls, column rows and cable ducts run parallel to the track, so their curvature is the
@@ -294,8 +324,11 @@ def estimate_axis_from_walls(xyz: np.ndarray, model: TrackModel, cfg: TrackConfi
     boundary of each side is a high percentile of |dy| in a height band above the platform
     level; each side is fitted with a robust quadratic (tangent fixed to ``t_fixed`` when the
     rails gave one) and the two are averaged by fit quality; when they disagree the nearer
-    boundary wins. Returns (tan_yaw, curvature, quality, x_valid, n_sides, disagreement) or
-    None; ``disagreement`` is the curvature difference of the two sides when both were fitted.
+    boundary wins. Returns (tan_yaw, curvature, quality, x_valid, n_sides, disagreement, run)
+    or None; ``disagreement`` is the curvature difference of the two sides when both were
+    fitted; ``run`` counts the consecutive frames (``far_support_run`` of the previous frame + 1,
+    or 0) in which the ``walls_min_far_support`` condition held: the rule applies from the
+    ``walls_far_support_frames``-th.
     """
     X, Y, Z = xyz[:, 0], xyz[:, 1], xyz[:, 2]
     x0, x1 = cfg.walls_range
@@ -336,12 +369,22 @@ def estimate_axis_from_walls(xyz: np.ndarray, model: TrackModel, cfg: TrackConfi
         return None
     n_sides = len(sides)
     disagreement = 0.0
+    run = 0
     # Prefer the boundary that runs closest to the track: near structures (column rows,
     # cable ducts, the near wall) are constrained by the gauge to be parallel to the track,
     # far walls are not (caverns, stations, diverging tunnels).
     if n_sides == 2:
         disagreement = abs(sides["left"][1] - sides["right"][1])
-        if disagreement > 1.0 / 1500.0:
+        # 25.09 (off by default): a side whose far bins do not follow its own fit does not set
+        # the shape when the other side's do and say straight, once that has held for
+        # walls_far_support_frames frames; side count and disagreement (the trusted range) stay
+        # as fitted, as for the nearer-side rule below
+        supported = (_far_supported_side(sides, cfg)
+                     if cfg.walls_min_far_support > 0 and t_fixed is not None else None)
+        run = far_support_run + 1 if supported is not None else 0
+        if supported is not None and run >= cfg.walls_far_support_frames:
+            sides = {supported: sides[supported]}
+        elif disagreement > 1.0 / 1500.0:
             nearer = min(sides, key=lambda k: sides[k][3])
             sides = {nearer: sides[nearer]}
     w = np.array([1.0 / (f[2] ** 2 + 1e-4) for f in sides.values()])
@@ -351,7 +394,7 @@ def estimate_axis_from_walls(xyz: np.ndarray, model: TrackModel, cfg: TrackConfi
     c2 = float(np.clip(c2, -1.0 / cfg.walls_min_radius, 1.0 / cfg.walls_min_radius))
     quality = float(min(f[2] for f in sides.values()))
     x_valid = float(max(f[4] for f in sides.values()))
-    return c1, c2, quality, x_valid, n_sides, disagreement
+    return c1, c2, quality, x_valid, n_sides, disagreement, run
 
 
 def verify_floor_extrapolation(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig,
@@ -678,9 +721,9 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
             if cfg.rails_yaw_enabled and rails.tan_yaw is not None:
                 t_fixed = float(np.clip(rails.tan_yaw, -cfg.walls_max_yaw, cfg.walls_max_yaw))
     if cfg.walls_enabled:
-        est = estimate_axis_from_walls(xyz, model, cfg, t_fixed, floor_z_all=zf)
+        est = estimate_axis_from_walls(xyz, model, cfg, t_fixed, floor_z_all=zf, far_support_run=prior.far_support_run)
         if est is not None:
-            tan_yaw, curv, q, x_valid, n_sides, disagreement = est
+            tan_yaw, curv, q, x_valid, n_sides, disagreement, model.far_support_run = est
             model.yaw = a_w * prior.yaw + (1 - a_w) * np.arctan(tan_yaw)
             model.curvature = a_w * prior.curvature + (1 - a_w) * curv
             model.wall_quality = q

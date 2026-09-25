@@ -798,8 +798,12 @@ causes, each a limitation of the current rules:
   structure (10 of the 25 episodes) is an overhead element running along the track near the axis,
   5.5 m long with its bottom at 2.2 m; `cluster.floating_long_min_length: 3.0` (on since 25.09)
   removes it (25 → 15 episodes, set O unchanged). The 82.9 m platform end (10 episodes) is an
-  axis error from the hall walls' curvature (0.5 m at 83 m), which the far-rail check cannot
-  correct here: the station's far rails are not found in two slabs. The switch parts at 147.5 m
+  axis error of ~0.8 m at 83 m: a platform-side boundary joined by its fit to the diverging hall
+  end bends the axis (2.5–4e-4 /m), and the rails' tangent, fitted with that curvature held,
+  follows it. The far-rail check cannot correct it (the station's far rails are not found in two
+  slabs), and a rule letting the wall side whose far bins follow its fit set the shape was tried
+  and not shipped: it removes up to 14 of the 15 episodes but moves marginal frames of set O and
+  new events onto the ride (EXPERIMENTS §1h, 25.09). The switch parts at 147.5 m
   pass the far-field rule like a person [real, 25.09, EXPERIMENTS §1f].
 * **Mount.** The test recordings use the mounts of the provided ones, the LiDAR 1 075 mm above
   the rail head on the train's centreline, with no numeric orientation (24.09, same source; §2).

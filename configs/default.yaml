@@ -56,6 +56,9 @@ resense:
     walls_max_yaw: 0.09
     walls_min_radius: 150.0
     walls_smoothing: 0.6
+    walls_min_far_support: 0.0     # 25.09, 0 = off: with both sides fitted, a side keeping fewer than this fraction of its boundary bins beyond rails_range[1] within walls_max_residual of its own fit does not set the axis shape when the other side's do and it is nearly straight (the 82.9 m platform end, EXPERIMENTS 1h)
+    walls_far_support_max_curvature: 0.0002  # 1/m, walls_min_far_support overrules only towards a side this straight (R >= 5 km): never on a real curve
+    walls_far_support_frames: 1    # 25.09: walls_min_far_support applies from the N-th consecutive frame its condition holds (a station stop, not a one-frame spurious side)
     axis_valid_margin: 15.0
     axis_valid_straight_bonus: 50.0
     floor_valid_margin: 20.0
