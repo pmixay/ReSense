@@ -25,8 +25,8 @@ git-ignored folder and builds the full deck with
     python scripts/build_deck.py --template template.pptx --team docs/presentation/private/team.json \
       --out docs/presentation/private/ReSense_LCT2026.pptx
 
-``team.json`` holds the keys of ``TEAM`` below; photo paths are relative to the JSON file, and a
-card without a photo keeps the template's empty frame.
+``team.json`` holds the keys of ``TEAM`` below; photo paths are relative to the JSON file. A
+private build requires all four card photos and rejects placeholder text.
 
 Needs ``python-pptx`` (``pip install python-pptx``); not part of the runtime image.
 """
@@ -300,6 +300,39 @@ def photo_into_frame(slide, sid, path):
 def team_photo(name):
     """Absolute path of a photo named in the --team JSON, or None."""
     return os.path.join(TEAM["_dir"], name) if name and TEAM.get("_dir") else None
+
+
+def validate_private_team(data, directory):
+    """Fail before building if the private team slides would contain gaps."""
+    from PIL import Image
+
+    missing = []
+    for key in ("captain", "captain_specialty", "formed", "study", "study_short", "city"):
+        value = data.get(key)
+        if not isinstance(value, str) or not value.strip() or "<" in value or ">" in value:
+            missing.append(key)
+    cards = data.get("cards")
+    if not isinstance(cards, list) or len(cards) != 4:
+        missing.append("cards (exactly four members)")
+    else:
+        for index, card in enumerate(cards, 1):
+            if not isinstance(card, dict):
+                missing.append(f"cards[{index}]")
+                continue
+            for key in ("name", "nick", "photo"):
+                value = card.get(key)
+                if not isinstance(value, str) or not value.strip() or "<" in value or ">" in value:
+                    missing.append(f"cards[{index}].{key}")
+            photo = card.get("photo")
+            if isinstance(photo, str) and photo.strip() and "<" not in photo and ">" not in photo:
+                path = os.path.join(directory, photo)
+                try:
+                    with Image.open(path) as image:
+                        image.verify()
+                except (OSError, ValueError):
+                    missing.append(f"cards[{index}].photo (image unavailable)")
+    if missing:
+        raise SystemExit("private deck needs: " + ", ".join(missing))
 
 
 def textbox(slide, left, top, width, height, paras, size=12, color="FFFFFF", bold=False, anchor=None):
@@ -835,7 +868,9 @@ def main():
     if a.team:
         import json
         with open(a.team, encoding="utf-8") as fh:
-            TEAM.update(json.load(fh))
+            data = json.load(fh)
+        validate_private_team(data, os.path.dirname(os.path.abspath(a.team)))
+        TEAM.update(data)
         TEAM["_dir"] = os.path.dirname(os.path.abspath(a.team))
     prs = Presentation(a.template)
     slides = list(prs.slides)
@@ -879,6 +914,14 @@ def main():
             prs.part.drop_rel(sid.rId)
     for sid in keep:
         lst.append(sid)
+    if a.team:
+        placeholders = []
+        for slide_number, slide in enumerate(prs.slides, 1):
+            for sh in slide.shapes:
+                if sh.has_text_frame and re.search(r"<[^>]+>", sh.text):
+                    placeholders.append(slide_number)
+        if placeholders:
+            raise ValueError(f"private deck still has placeholders on slides {sorted(set(placeholders))}")
     prs.save(a.out)
     os.remove(logo_path)
     print(f"{a.out}: {len(keep)} slides")
