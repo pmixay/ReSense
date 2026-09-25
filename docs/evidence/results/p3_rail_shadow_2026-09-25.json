@@ -46,5 +46,40 @@
     "why": "Writing the ray-cast unit test (resense.synthetic.synthetic_tunnel_frame, a 0.5 x 2 x 2 m box 0.1 m above the rail head approaching 40 -> 6 m at 1 m per frame): the bed shows under a raised box for ~20 % of its distance, so the shadow run starts behind that strip and the 'bin before it' was bed, not the face: the face bin (+0.47..0.65 m) stayed in the fit (rail head at 20 m 0.3-0.9 m off at 13-10 m), and the rail-pair search over 4-30 m, which runs on the box face, moved the rail head by +0.11 m (set O frame 217: +0.1 m and a 0.3 m lateral jump of the axis for one frame).",
     "rule_now": "track.floor_shadow_height (same candidates A-D, same settings): the shadow start is detected as registered; then only bins within track.floor_max_residual (0.35 m) of the previous frame's bed are fitted, never the populated bin just before the shadow; with fewer than floor_shadow_min_bins such bins in front of the shadow the previous bed is held. The object's face is the first bin before the shadow that is more than floor_max_residual off the previous bed, else the populated bin just before the shadow. In a frame with a shadow the rail-pair search range ends at the face's lower edge; with less than floor_shadow_min_bins x floor_bin (10 m) of range left the previous rail model is held (centre, rail head, rail score, slabs, and the previous yaw as the fixed tangent of the wall fit).",
     "prototype_after_amendment": "Set O frames 180-230 only: the reported distance equals #1's true distance in every frame, the rail head at 5 / 20 m stays within 0.03 / 0.08 m of its frame-190 value, rail offset 0.254-0.273; ray-cast tunnel: bed at 20 m within 0.001 m, rail offset 0.183 (true 0.18), the box's distance right in every frame. The ship rule, the target and the safety conditions are unchanged."
+  },
+  "round_1_results": {
+    "code": "b5d8b14 (amendment 1), native path, receive stamps, --jobs 1, the 4-vCPU dev VM shared with other agents",
+    "command": "python scripts/regression_gate.py --cache <the six recordings + cloud_with_fake_obj only> --jobs 1 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json --allow 'ride.*' --allow 'set_F_straight.*' --set <candidate>",
+    "verdict": "all four candidates FAIL the subset (the same five gated rows); none reached the full gate",
+    "rows": {
+      "A": "FAIL: doubleT_platform 4 / 4 / 1 -> 10 / 5 / 2 (alarm frames / events / STOP episodes), roundT_doubleT 0 / 0 / 0 -> 1 / 1 / 1, set O #7 (outside) false STOP frames 6 -> 7; better: #1 STOP frames 207 -> 208, #9 42 -> 49 (held from 58.6 -> 90.8 m), inside STOP frames 303 -> 311; doubleT_obstacle, the other four recordings, set O background 3 / 2 identical; five bags 58 / 13 / 16 -> 65 / 15 / 18",
+      "B": "FAIL, the same rows and numbers as A",
+      "C": "FAIL, the same rows and numbers as A",
+      "D": "FAIL, the same failing rows; inside STOP frames 303 -> 304 (#1 +1; #9 unchanged: its +7 came from cluster.gauge_distance)"
+    },
+    "target": {
+      "baseline": "wrong-distance frames 12 (213-224), max |error| 14.11 m, #1 STOP frames 224 of 229, #1 matched alarm frames 216",
+      "A": "0, 0.46 m, 224, 224", "B": "0, 0.46 m, 224, 224", "C": "0, 0.46 m, 224, 224", "D": "0, 0.82 m, 224, 224",
+      "per_frame_safety_A": "set O over all labelled frames: no inside object loses a matched alarm frame or a STOP frame; #1 gains 217-224, #9 gains 704 and 707-712; #7 gains frame 562; frames with an alarm matching no object 29 -> 9"
+    },
+    "causes": {
+      "doubleT_platform": "The shadow rule fired in 2 frames (18: start 37.0 m, 165: start 38.5 m; bins beyond 36 m more than 1.5 m above the bed). The floor-only run reproduces both changes: the model differs by millimetres to ~0.4 deg of yaw in a switch area (frames 160-190, yaw -1.8..+0.6 deg in both runs), the existing low-object false alarm (track 40, 34-37) is confirmed 2 frames earlier (32-33) and a new one appears at 3 m on the rail (185-188, lateral 0.73-0.78 m, 0.08 m tall)",
+      "roundT_doubleT": "Frame 196, 124.7 m, lateral -1.17 m: the split kept a 0.08 x 0.35 x 1.19 m fragment inside the gauge of a far cluster longer than 8 m (the far corridor at 113-208 m holds 10-42 m long sparse clusters with a few gauge voxels; the shadow rule never fired in this recording)",
+      "set_O_7": "Frame 562 (#7 at 144.3 m): the split kept a 0.6 m gauge fragment of a longer cluster at 154 m in frame 557, so the false-alarm track on #7 starts one frame earlier and is confirmed at 562 instead of 563"
+    },
+    "decision": "Not shipped as registered. The target is met by every candidate; the false alarms come from two ranges the rule was not meant for: the shadow start beyond 35 m and the split beyond 30 m."
+  },
+  "round_2_preregistered": {
+    "written_at_utc": "2026-09-25T16:32:26Z",
+    "code": "b5d8b14 + cluster.oversize_split_max_distance (m; the split applies only when the part inside the gauge starts within this distance; effective only with oversize_split_max_length > 0, so the default output stays identical); nothing else changes",
+    "why": "Round 1: every false alarm traced to a shadow start at 37-38.5 m (doubleT_platform) or a split at 124-154 m (roundT_doubleT, set O #7). The set O drift starts with the box at 25.8 m (shadow start 29 m) and the merge with the edge line at 19.4-20.7 m, so the two ranges are cut to what the failure needs.",
+    "candidates_in_order_of_preference": [
+      {"id": "A2", "set": {"track.floor_shadow_height": 1.0, "track.floor_shadow_range": 35.0, "cluster.oversize_split_max_length": 3.0, "cluster.oversize_split_max_distance": 30.0, "cluster.gauge_distance": true}},
+      {"id": "B2", "set": {"track.floor_shadow_height": 1.0, "track.floor_shadow_range": 30.0, "cluster.oversize_split_max_length": 3.0, "cluster.oversize_split_max_distance": 30.0, "cluster.gauge_distance": true}},
+      {"id": "C2", "set": {"track.floor_shadow_height": 1.0, "track.floor_shadow_range": 30.0, "cluster.oversize_split_max_length": 3.0, "cluster.oversize_split_max_distance": 30.0, "cluster.gauge_distance": false}}
+    ],
+    "order_of_runs": "A2, B2, C2: the subset first (as round 1); the full gate (the six recordings, set O, the ride in pieces, set F straight) only for a candidate that passes the subset, the target and the per-frame set O check; stop at the first candidate that passes everything and ship it. If none passes, nothing ships.",
+    "ship_rule": "Unchanged from 'preregistered.ship_rule' (the full gate exits 0 against regression_baseline_2026-09-25_ride_column.json with no gated row worse or missing; the target: wrong-distance frames of #1 < 12, max |error| < 14.11 m, no #1 STOP frame lost over its 229 labelled frames; the safety conditions, including the per-frame superset of matched alarm frames for every inside object of set O).",
+    "known_before_registration": "Round 1 numbers above. A2-C2 not run; A2's set O target frames are expected to be as A's (shadow start 29 m at the onset, splits at 8.8-20.7 m)."
   }
 }
