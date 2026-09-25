@@ -1513,6 +1513,34 @@ of the same day ([`evidence/dry_run_2026-09-25/`](evidence/dry_run_2026-09-25/),
   its 2 known frames at 128.3–130.2 m (§0). The catch-up at the start changes which frames the
   tracker sees. One native run also had a frame at 53.0 m: the trackside start-frame case of §0.
 
+**The `doubleT_obstacle` drops, diagnosed [measured 25.09].** From the node logs, captures and
+`docker stats` of the dry run and the native bench run (numbers in that order). *Start-up*: the
+first cloud reached the node 6.5 / 5.7 s after the player's clock started, while one core ran the
+player's preload (container memory 0.2 → 4.1 / 4.7 GiB, the node idle); 4.8 / 1.8–4.9 s of
+recording were then waiting, and the catch-up processed 30 frames in 2.3 / 2.8 s (decode + detect
+62 / 63 ms mean) and was back on the newest frame at +7.9 / +7.7 s. Cold start is not the cause:
+frame 0 took 98 / 171 ms against 69–72 ms for frames 1–3; CPU steal 0.0 %, container CPU ≤ 190 % of
+8 vCPU. *Counting*: `dropped_frames` included the catch-up's own skips, 16 of the 20 "after 5 s".
+Before +7.9 / +7.7 s 59 / 55 frames of the recording were not processed and the logs report 52 / 39
+skipped, so ≤ 7 / 16 were lost inside the burst (the player's writer keeps 10 samples, §3b).
+*The 4 later ones are holes of the recording*: 1 frame at +14.0 s and 3 at +16.9 s of the bag, the
+same header stamps in all three runs and in the CycloneDDS run at 32 MiB; the bag's own receive
+times jump by 0.201 and 0.413 s there (201 messages in 205 frame periods; `roundT_doubleT` has no
+such gap and no drop after 5 s). Latency around them 54–57 ms, after the catch-up at most 70 / 83 ms.
+*Changes (no processed frame and no decision changes)*: the status reports `node.catchup_skipped`
+and `node.catchup`; `check_dry_run.py` counts drops after the later of 5 s and the end of the
+start-up catch-up (at most 15 s), and with `--bag` (passed by `dry_run.sh`) the recording's messages
+not processed. The two captures, with the catch-up end of their logs, keep 4 drops after it, and 0
+against the bag's receive times (the frame cache's stamps with an estimated first header stamp;
+the VM re-run with the original bag decides). Offline on the 4-vCPU sandbox (load 7–8 from other
+jobs; native kernels; the first 12 frames of `doubleT_obstacle` in the 921 600-slot layout through
+the node's path, a fresh process per run, 6 runs each): frame 0 took 91 ms cold, 80 ms after a
+throwaway detector had processed one real frame; frames 1–4 82 / 79 ms, 5–11 68.5 / 68.5 ms, output
+identical: a warm-up would save ~15 ms once, so none was added. Threads: the native kernels use no
+OpenMP, `cKDTree.query_pairs` one thread, the image pins BLAS to one; numpy's default pool on this
+busy box made the same path 256 ms per frame against 67 ms (5 runs each), so the ROS package now
+defaults OMP / OpenBLAS / MKL to one thread outside the image too.
+
 The 8-core figure (C8) still needs 16 vCPU (8 physical cores) or the team's own 8-core machine; the
 kit runs unchanged there.
 
@@ -1651,7 +1679,11 @@ frames later); `roundT_doubleT` 3 alarm frames at 111.0–114.9 m against 2 allo
 user (`ros2 bag play` + `ros2 topic echo`, stock `rmw_fastrtps_cpp`, no profile) **PASS** (137
 `STOP`, 55.7 m); the same with **`rmw_cyclonedds_cpp`: FAIL**, only 0–1 of the 201 360° clouds
 reached the node (the 120° clouds did); with `net.core.rmem_default` / `rmem_max` raised to 32 MB for
-one run they all arrived (`dry_run_2026-09-25/diag_cyclonedds_buffers/`). Offline (outbound blocked
+one run they all arrived (`dry_run_2026-09-25/diag_cyclonedds_buffers/`; `wmem` was raised with
+them, the node's side is the receive buffer). Since then the node logs a WARN with the host fix
+when `rmem_max` is below 32 MiB, and the image asks for 32 MiB receive buffers instead of 8 MiB (a
+whole cloud fits; the buffer is set explicitly, so only `rmem_max` caps it, silently, and Fast DDS
+2.6 keeps the capped buffer: no change at 212992; README, ARCHITECTURE "Transport"). Offline (outbound blocked
 by the kit's iptables chain, no host allowed, restored after 4 min; nothing but the kit's own probes
 tried to go out): the archive of [`evidence/export_2026-09-25/`](evidence/export_2026-09-25/) loaded
 in 29 s after every image was deleted, `load_image.sh` PASS; the README jury commands from the host

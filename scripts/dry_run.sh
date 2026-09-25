@@ -21,6 +21,9 @@
 #
 # Any argument after the bag path is forwarded to scripts/check_dry_run.py, so the acceptance
 # thresholds live in one place. With no extra arguments the doubleT_obstacle criteria are used.
+# The checker also gets --bag <bag path>: it counts the recording's messages the node did not
+# process after the start-up catch-up, so frames missing from the recording itself (4 in
+# doubleT_obstacle) are not drops (check_dry_run.py --help, README "Acceptance test and CI").
 #
 # Needs the dataset, so this runs on a team machine, not in GitHub CI. The offline dry run (later
 # deployment) simulates the stand: scripts/export_image.sh with internet, the archive copied to the
@@ -30,7 +33,7 @@ cd "$(dirname "$0")/.."
 . "$(dirname "${BASH_SOURCE[0]}")/require_docker.sh"
 
 if [ $# -lt 1 ]; then
-  sed -n '2,27p' "$0" >&2
+  sed -n '2,30p' "$0" >&2
   exit 2
 fi
 
@@ -127,4 +130,4 @@ if [ $# -gt 0 ]; then
 else
   CHECK_ARGS=(--expect-obstacle --distance 50:62 --max-p95-latency 100 --max-dropped 0)
 fi
-python3 scripts/check_dry_run.py "$OUT_ABS/status.jsonl" "${CHECK_ARGS[@]}"
+python3 scripts/check_dry_run.py "$OUT_ABS/status.jsonl" "${CHECK_ARGS[@]}" --bag "$BAG_PATH"

@@ -17,9 +17,10 @@ frames, 13 km, no obstacles).
 ## Unreleased (in development; package version 1.0.0)
 
 Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
-overhead rule on, node v0.6.4). Tests: 235 → 347 (+28 native kernels, +3 speed evaluation
+overhead rule on, node v0.6.4). Tests: 235 → 352 (+28 native kernels, +3 speed evaluation
 helpers, +17 regression gate, +3 DBSCAN exactness, +3 late candidates, +53 release tooling, +5
-overview video, 2 of them in the image, which has no `docs/`) in `tests/`, 11 in `web/demo`.
+overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting and socket
+buffers) in `tests/`, 11 in `web/demo`.
 
 - **The captain's decisions (25.09):** no tags or releases now, the system is still in
   development: `.github/workflows/release.yml` and the release scripts stay, inert until a tag is
@@ -30,6 +31,16 @@ overview video, 2 of them in the image, which has no `docs/`) in `tests/`, 11 in
   "Deployment without internet"). Deployment (image archive, clean-machine and offline dry run on
   the 8-core stand-in) and the presentation (deck, team slides, video voice-over) come later.
   [`docs/CAPTAIN.md`](docs/CAPTAIN.md) C12, C13, C21, §9.
+- **Drops of the 25.09 dry run explained; the node and the checker count them apart (25.09):** of
+  the 20 frames "dropped after 5 s" on `doubleT_obstacle`, 16 were the start-up catch-up's own skips
+  (it ran to +7.7–7.9 s after the player's preload) and 4 are frames the recording itself lacks.
+  The status adds `node.catchup_skipped` and `node.catchup`; `scripts/check_dry_run.py` counts drops
+  after the later of 5 s and the end of the start-up catch-up (at most 15 s, `--max-settle-s`) and,
+  with `--bag` (passed by `dry_run.sh`), the recording's messages not processed. The node warns at
+  start when `net.core.rmem_max` is below 32 MiB (a CycloneDDS player then delivers no 360° cloud),
+  the image asks for 32 MiB receive buffers, and the ROS package defaults BLAS / OpenMP to one
+  thread outside the image. No processed frame or decision changes.
+  [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) §3a, §3b.
 - **Long overhead rule on, short signatures off (`935eecf`, `48411f2`, 25.09, A for the
   captain):** decided on the 20-minute ride with the regression gate against pre-registered
   criteria
