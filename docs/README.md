@@ -57,7 +57,7 @@ rewritten later; **frozen** = kept for reference, not maintained; **archive** = 
 |---|---|
 | [`img/`](img/) | real-data renders (views from the cab, top / side renders); `scripts/build_deck.py` and `web/demo/check_dashboard.py` read and write here, so it stays in place |
 | [`images/`](images/) | dashboard UI screenshots (P2) |
-| [`video/`](video/) | the committed clips: the jury chain in Docker with RViz, the bag from the cab, offline renders, dashboard replay (all silent) |
+| [`video/`](video/) | the 2:50 overview `resense_overview.mp4` (Russian subtitles burned in and in `resense_overview.ru.srt`, no sound) and the clips it is cut from: the jury chain in Docker with RViz, the bag from the cab, offline renders, the organizers' objects from the cab, dashboard replay (all silent) |
 | [`presentation/`](presentation/) | the deck in the organizers' template (pptx + pdf); personal data only in its git-ignored `private/` subfolder |
 | [`sensor/`](sensor/) | the Hesai Pandar128 user manual |
 | [`evidence/`](evidence/) | raw logs, captures and bench output per run (`<run>_<date>/`), the recordings' `bag_metadata/`, and `results/` with every `experiments_*.json` summary |

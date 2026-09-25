@@ -133,13 +133,15 @@ note says the ride was included (221 split files).
 
 ```bash
 scripts/vm/run_plan.sh export                        # rehearsal: HEAD as <version>-<sha>
-scripts/vm/run_plan.sh export --ref v1.0-rc1         # 27.09 after the tag (action 14b); --ref v1.0-final on 29.09
+scripts/vm/run_plan.sh export --ref v1.0.0-rc1       # after the tag (action 14b); --ref v1.0.0 on 29.09
 ```
 
 Calls `scripts/export_image.sh` (clean `--no-cache` build from `git archive`, gzip, `.sha256`) into
 `~/resense_dist/`, then `scripts/load_image.sh` on it. `--ref` builds from a clean clone of the tag.
 A dirty checkout is refused by `export_image.sh`: commit first, or use `--ref`. Done: `archive.txt`
-with the size and the sha256, `load_check` PASS.
+with the size and the sha256, `load_check` PASS. Since 25.09 a pushed `v1.0.0-rcN` / `v1.0.0` tag
+also gets its archive published by `.github/workflows/release.yml`; `scripts/verify_release.sh
+<tag>` fetches it into `dist/` with its sum checked, and this task is then the cross-check.
 
 **T7. Offline rehearsal (10–20 min; after T6).**
 
@@ -252,7 +254,7 @@ scripts/vm/fetch_data.sh --plan && scripts/vm/fetch_data.sh
 scripts/vm/run_plan.sh dryrun
 scripts/vm/run_plan.sh bench
 scripts/vm/run_plan.sh gate                         # and: gate --ref <candidate branch>
-scripts/vm/run_plan.sh export                       # and on 27.09: export --ref v1.0-rc1
+scripts/vm/run_plan.sh export                       # and after the rc1 tag: export --ref v1.0.0-rc1
 scripts/vm/run_plan.sh offline --minutes 30         # answer 'yes' from a second SSH session
 scripts/vm/run_plan.sh collect --to-repo            # then §3
 ```

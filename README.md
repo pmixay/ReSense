@@ -2,7 +2,8 @@
 
 > **Purpose:** what ReSense does, how the jury runs it, what to look at, headline results.
 > **Audience:** jury, team · **Owner:** P1 · **Language:** EN, RU block «Кратко для жюри»
-> **Last verified:** 2026-09-25, `8932f3a` (detector v0.6.3, node v0.6.4) · **Status:** current
+> **Last verified:** 2026-09-25, `79109f5` (detector v0.6.3 with the long overhead rule on, node
+> v0.6.4, package 1.0.0) · **Status:** current
 
 ЛЦТ 2026 · Кейс 05 · «Обнаружение посторонних объектов в тоннеле метро по данным 3D-лидара»
 (Московский транспорт / ГУП «Московский метрополитен»). Organizers' material:
@@ -30,11 +31,14 @@ ros2 topic echo /resense/nearest_distance --field data   # 5. расстояни
 
 С интернетом шаг 1 можно заменить сборкой: `docker build -t resense -f docker/Dockerfile .`.
 Проверка архива: `sha256sum -c resense-image-<версия>.tar.gz.sha256`, или
-`scripts/load_image.sh <архив>` (сумма, загрузка и запуск образа без сети). Сборка без интернета —
-запасной путь с оговорками ([ARCHITECTURE](docs/ARCHITECTURE.md) «Deployment without internet»):
-после шага 1, в исходниках того же тега, `chmod -R u+rwX,go+rX,go-w . && docker build --cache-from
-resense:<версия> -t resense -f docker/Dockerfile .` берёт все слои из архива; не вышло — образ из
-шага 1 не тронут, шаг 2 работает.
+`scripts/load_image.sh <архив>` (сумма, загрузка и запуск образа без сети). Архив, его `.sha256` и
+`SHA256SUMS` — ассеты GitHub-релиза тега: https://github.com/pmixay/ReSense/releases (тег
+`v1.0.0` — финальный, `v1.0.0-rcN` — кандидаты). Скачать и проверить сумму без Docker:
+`scripts/verify_release.sh <тег>`. Сборка без интернета — запасной путь с оговорками
+([ARCHITECTURE](docs/ARCHITECTURE.md) «Deployment without internet»): после шага 1, в исходниках
+того же тега, `chmod -R u+rwX,go+rX,go-w . && docker build --cache-from resense:<версия> -t
+resense -f docker/Dockerfile .` берёт все слои из архива; не вышло — образ из шага 1 не тронут,
+шаг 2 работает.
 
 **`--net=host` обязателен.** Образ передаёт DDS только по UDP; без общей с хостом сети плеер не
 находит ноду, и `/resense/decision` остаётся `FAULT`. `ROS_DOMAIN_ID` плеера и ноды должен
@@ -100,22 +104,24 @@ recording** (another topic or frame id, stamps that jump back or forward by > `n
 control bags can be played one after another into one running node. The offline tool
 (`resense run --bag <dir>`) reads rosbag2 directly and writes the same per-frame JSON.
 
-## Status (24.09): detector v0.6.3, node v0.6.4
+## Status (25.09): package 1.0.0, detector v0.6.3 with the long overhead rule, node v0.6.4
 
 The v0.6.4 node works through the burst of the first seconds of a played bag instead of losing
 them: the first `STOP` on `doubleT_obstacle` comes 1.3–1.6 s into the recording, was 3.2–4.5 s.
 History: [`CHANGELOG.md`](CHANGELOG.md). Criteria judgement of 24.09 (two independent judges,
 reconciled): **60 / 100**; strongest 8.7 team approach (8 / 10) and 8.6 ease of launch
 (7.5 / 10), weakest 8.1 "does it work" (13 / 25) and 8.2 range (7 / 15), mainly on the organizers'
-synthetic-obstacle recording: [`docs/SCORECARD.md`](docs/SCORECARD.md). Since then (unreleased,
-[`CHANGELOG.md`](CHANGELOG.md)): optional C++ kernels (38–57 % less detector time, identical
-output, built and tested in the CI image), DBSCAN on scipy's cKDTree with scikit-learn's exact
-labels (1.3–2.6 ms less per frame, identical output), the near-bed opt-in box fix, a measured
-answer on the train speed (EXPERIMENTS §9), delivery as an image archive for the offline stand,
-a CI step with a stock Fast DDS player, and two opt-in detector rules for the station false STOPs
-and the organizers' small objects, both off until the captain's go / no-go (EXPERIMENTS §1f).
-Every real-data number and set O is re-checked by one command, `scripts/regression_gate.py`
-(25.09: every gated metric the same). All current numbers:
+synthetic-obstacle recording: [`docs/SCORECARD.md`](docs/SCORECARD.md). Since then (the 1.0.0
+entry of [`CHANGELOG.md`](CHANGELOG.md)): optional C++ kernels (38–57 % less detector time,
+identical output, built and tested in the CI image), DBSCAN on scipy's cKDTree with scikit-learn's
+exact labels (1.3–2.6 ms less per frame, identical output), the near-bed opt-in box fix, a
+measured answer on the train speed (EXPERIMENTS §9), delivery as an image archive for the offline
+stand, a CI step with a stock Fast DDS player, the long overhead rule for the station false STOPs
+(on since 25.09, decided on the ride: five bags 20 → 14 events, ride 47 → 46; the short-signature
+rule for the organizers' small objects tried and not shipped, EXPERIMENTS §1f), version 1.0.0
+with a release workflow that publishes the image archive on a tag push, and a captioned 2:50
+overview video. Every real-data number, set O, the ride and set F straight are re-checked by one
+command, `scripts/regression_gate.py`. All current numbers:
 [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) "Current results" and §0.
 
 What the organizers' answers changed ([`docs/organizers/answers.md`](docs/organizers/answers.md)):
@@ -135,13 +141,13 @@ Headline results (kinds and placement modes: [`docs/README.md`](docs/README.md) 
 
 | metric | value | kind | date | source |
 |---|---|---|---|---|
-| false alarms, five obstacle-free bags (2 287 frames) | **20 events**, 107 alarm frames, 27 STOP episodes; 14–20 events when processing starts 0–40 frames later | real | 24.09 | EXPERIMENTS §0 |
-| false alarms, 20-minute 13 km ride (11 271 frames) | **47 events, 3.6 per km**, 204 alarm frames, 39 STOP episodes | real | 24.09 | EXPERIMENTS §0 |
+| false alarms, five obstacle-free bags (2 287 frames) | **14 events**, 60 alarm frames, 17 STOP episodes (20 / 107 / 27 before the long overhead rule of 25.09) | real | 25.09 | EXPERIMENTS §1f |
+| false alarms, 20-minute 13 km ride (11 271 frames) | **46 events, 3.5 per km**, 197 alarm frames, 39 STOP episodes (47 / 204 / 39 before the rule) | real | 25.09 | EXPERIMENTS §1f |
 | crossing person, `doubleT_obstacle` | STOP in **58 of 61** frames inside the envelope, first alarm frame 11 (0.3 s after entering), distance error ≤ 0.23 m | real | 24.09 | EXPERIMENTS §0 |
 | object lying across the rail (0.45 × 0.6 × 0.3 m) | **124 of the 126** frames after the person leaves it | real | 24.09 | EXPERIMENTS §0 |
 | health warnings, `CAUTION` | warnings on 196 of 13 759 frames (1.4 %: stations, switches); `CAUTION` on 27–68 % of the frames of the empty bags, 41 % of the ride | real | 24.09 | EXPERIMENTS §0 |
 | organizers' synthetic objects (set O, 1 510 frames) | STOP for 5 of 8 in-envelope objects: 2 × 2 m box from 98 m, plank across the rails 82 m, 0.3 m cubes 34–43 m; edge 2 × 2 m box and 5 cm hanging object missed, edge 0.3 m cube advisory only; 6 false STOP frames on the outside 2 × 2 m box, 3 background alarm frames | organizers' synthetic | 24.09 | [P4_AUDIT](docs/P4_AUDIT.md) |
-| long range, straight track | person first confirmed at **148 m** median (6 of 6), held in ≥ 90 % of frames from 149 m and of every 10 m band from 115 m; trolley 144 m; 1 m crate 111 m; 3 cm hanging cable 95 m, held only from ~50 m (4 of 6) | synthetic, legacy | 24.09 | EXPERIMENTS §2d |
+| long range, straight track | person first confirmed at **148 m** median (6 of 6), held in ≥ 90 % of frames from 149 m and of every 10 m band from 115 m; trolley 144 m; 1 m crate 111 m; 3 cm hanging cable 95 m, held only from ~50 m (4 of 6); the regression gate's run of the same set on the current evaluation script (25.09): person 151 m, held from 143 m | synthetic, legacy | 24.09, 25.09 | EXPERIMENTS §2d |
 | long range with a given train speed | person 167 m, crate 182 m (held only from 79 m) | synthetic, legacy | 24.09 | EXPERIMENTS §2d |
 | train speed | none is given (no odometry in the recordings); our LiDAR-only estimate is accurate (median error 0.06–0.08 m/s on 55–96 % of the moving frames), but even a perfect speed does not improve the organizers' check (no earlier first STOP, 6 → 17 false STOP frames on the box outside), so it stays off | real, organizers' synthetic | 24.09 | EXPERIMENTS §9 |
 | curves, stations, low objects | R ≈ 350 m curves 6 of 7 from 58–86 m (sightline past the inner wall); station stops 6 of 6 from 113 m; 30 cm on a rail head 6 of 6 from 42–49 m; person lying across the rails 6 of 6 from ~64 m | synthetic, legacy | 24.09 | EXPERIMENTS §2d |
@@ -158,8 +164,11 @@ Set S on 108 real empty frames: 22 / 67 bed placement, 29 / 68 legacy (small sam
 
 ![doubleT_obstacle frame 24 seen from the cab: the train envelope (green) swept along the track axis, the points inside it (yellow), the person on the track reported at 55.8 m (STOP) and a close-up of the person's points](docs/img/hero_person.png)
 *Real data, v0.6.2: `doubleT_obstacle` frame 24 from the cab (`scripts/hero_view.py`), the person
-at 55.8 m. Videos (v0.6.2; Docker chain v0.6.3; the dashboard clip shows the earlier UI):
-[`docs/video/`](docs/video/). Slides: [`docs/presentation/`](docs/presentation/). Below: the
+at 55.8 m. Video: the 2:50 captioned overview
+[`docs/video/resense_overview.mp4`](docs/video/resense_overview.mp4) (silent, Russian subtitles
+burned in and in `resense_overview.ru.srt`); the clips it is cut from (v0.6.2; Docker chain
+v0.6.3; the dashboard clip shows the earlier UI) in [`docs/video/`](docs/video/). Slides:
+[`docs/presentation/`](docs/presentation/). Below: the
 dashboard (synthetic UI demo, not evaluation evidence; [gallery](docs/images/README.md)).*
 
 ![ReSense 16:9 dashboard showing a STOP decision, the cab view and collapsible detail sections](docs/images/dashboard-stop.png)
@@ -189,7 +198,7 @@ teams (23.09). Decision logic and thresholds: [`docs/ALGORITHM.md`](docs/ALGORIT
 | [`scripts/vm/`](scripts/vm/) | kit for the team's temporary cloud VM: setup, data fetch, 8-core bench, dry run with the original bags and a host-console player, full regression gate, image export, offline rehearsal, results pack ([`AGENT_BRIEF.md`](scripts/vm/AGENT_BRIEF.md)) |
 | [`configs/default.yaml`](configs/default.yaml) | the tunable parameters, copied into the ROS package at build time (`scripts/sync_params.sh`, checked in CI) |
 | [`native/`](native/) | optional C++ kernels for the per-frame hot spots (track stage, corridor selection, health visibility): about half the detector time, bit-identical output; built by `pip install`, numpy fallback without a compiler or with `RESENSE_NATIVE=0` ([ARCHITECTURE](docs/ARCHITECTURE.md) "Native kernels") |
-| [`tests/`](tests/) | 289 pytest tests on a synthetic ray-cast tunnel, no dataset needed (algorithm, envelope, calibration, guards, the native kernels and the cKDTree DBSCAN against their reference code, the regression gate's rules, the ROS node against stand-ins) |
+| [`tests/`](tests/) | 347 pytest tests on a synthetic ray-cast tunnel, no dataset needed (algorithm, envelope, calibration, guards, the native kernels and the cKDTree DBSCAN against their reference code, the regression gate's rules, the release tooling, the overview video's table, the ROS node against stand-ins) |
 | [`web/`](web/) | browser dashboard (offline replay; live via rosbridge, installed separately), Foxglove layout, label tool, 11 headless tests |
 | [`docs/`](docs/) | [`docs/README.md`](docs/README.md): every document, its purpose and owner; organizers' material in [`docs/organizers/`](docs/organizers/) |
 | [`labels/`](labels/) | `doubleT_obstacle.json` (real labels), `new_data_objects.json` (every object confirmed on the ride, by cause), `cloud_with_fake_obj.json` (the organizers' synthetic objects) |
@@ -216,7 +225,7 @@ python scripts/far_range_eval.py --cache /data/cache/new_data --files 46,68,98 -
     --start 220 --out out/far.json                                    # set F: synthetic positives, legacy placement by default
 python scripts/mine_objects.py out/eval --bag new_data                  # every confirmed object of a ride, by cause
 python scripts/regression_gate.py --cache /data/cache \
-    --baseline docs/evidence/results/regression_baseline_2026-09-25.json   # the gate for every detector change (exit 1 = worse)
+    --baseline docs/evidence/results/regression_baseline_2026-09-25_ride.json   # the gate for every detector change (exit 1 = worse)
 ```
 
 ## ROS 2 / Docker
@@ -231,6 +240,8 @@ PLAYER_DDS=stock ./scripts/console_test.sh <bags>/roundT_doubleT <bags>/doubleT_
 ./scripts/bench_8core.sh <bags>/doubleT_obstacle <bags>/roundT_doubleT   # 8-core bench: build, dry runs native + numpy, console tests, docker stats, offline timing -> docs/evidence/bench_<date>/
 ./scripts/export_image.sh           # offline delivery: dist/resense-image-<ver>.tar.gz + .sha256
 ./scripts/load_image.sh dist/resense-image-<ver>.tar.gz    # sha256, docker load, --network none check
+scripts/verify_release.sh v1.0.0    # a release's archive into dist/, sha256 checked (no Docker needed)
+scripts/release.sh v1.0.0           # in a clean clone of the tag: release.yml by hand (DRY_RUN=1 plan, PUBLISH=1 publish)
 IMAGE_TAR=dist/resense-image-<ver>.tar.gz OFFLINE=1 ./scripts/dry_run.sh <bag>   # as on the stand
 WITH_TOOLS=1 ./scripts/build.sh     # + rosbags / matplotlib / open3d / pytest inside the image
 PULL=1 ./scripts/build.sh           # refresh the ros:humble base first (an old cached one fails apt-get update)
@@ -297,9 +308,15 @@ a uid-1000 player and listener with stock Fast DDS (shared memory on, checked in
 must hear `STOP`. The offline delivery is checked the same way: the built image goes through
 `docker save` → `docker rmi` → `docker load` (`export_image.sh`, `load_image.sh`), then the bags
 are played through the loaded image with `--network none` and on an internal Docker network with
-no way out; a best-effort job (`offline-build`) tries the offline rebuild from the loaded archive
-with Docker Hub blocked. `IMAGE_TAR=<archive> OFFLINE=1 ./scripts/dry_run.sh <bag>` is the same on
-real bags. `scripts/bench_8core.sh` bundles the acceptance runs and the timing for the team's
+no way out. The `offline-build` job does the same with the jury's own image: the runtime archive,
+made as for the release, is loaded after every image was removed, rebuilt offline with Docker Hub
+blocked (every layer from the archive's cache), and both synthetic bags are played through the
+runtime image exactly as loaded, by a uid-1000 player on an internal network.
+`IMAGE_TAR=<archive> OFFLINE=1 ./scripts/dry_run.sh <bag>` is the same on real bags. A pushed
+release tag (`v1.0.0-rcN`, `v1.0.0`) runs `.github/workflows/release.yml`: tests, the runtime
+archive built, removed and loaded back, both bags through the loaded image (internal network and
+`--net=host` with a stock player), then the GitHub release with the archive, its `.sha256` and
+`SHA256SUMS`. `scripts/bench_8core.sh` bundles the acceptance runs and the timing for the team's
 8-core machine (the organizers' i7 stand is not available before the upload).
 
 ### Topics published by the node
@@ -339,7 +356,8 @@ but no `node` object (so acceptance tools do not count it as a frame), and `/res
 | `lowobj.near_enabled` | false | experimental central near-bed path, off: its first gates raised the ride's false events from 47 to 667 [24.09, raw not committed]; with the current gates (`537e220`, box fix `7df1796`) the five bags give 107 instead of 145 events, the ride not re-run (EXPERIMENTS §1e) |
 | `accumulation.estimate_speed` | false | LiDAR-only speed estimation opt-in (median error 0.06–0.08 m/s, +6.6–6.8 ms per frame, no gain on the organizers' check, EXPERIMENTS §9); without a supplied speed, single-frame detection |
 | `cluster.far_*` | 0.6 m tall, ≤ 3 m long | what may alarm beyond the height reference (far field of straight track) |
-| `cluster.floating_long_min_length`, `cluster.short_signature_max_length` | 0, 0 (off) | opt-in rules of 25.09 awaiting the captain's go / no-go after the ride: 3.0 m takes the five bags from 20 to 14 events (station overhead structure) and, respectively, the organizers' objects from 303 to 352 STOP frames for 2 more events (EXPERIMENTS §1f) |
+| `cluster.floating_long_min_length` | 3.0 | on since 25.09 (decided on the ride): an overhead duct / tray / beam > 3 m along the track near the axis is advisory; five bags 20 → 14 events, ride 47 → 46 (EXPERIMENTS §1f) |
+| `cluster.short_signature_max_length` | 0 (off) | tried, not shipped (25.09): set O 303 → 352 STOP frames, but ride STOP episodes 39 → 45 (EXPERIMENTS §1f) |
 | `cluster.eps / range_scale / voxel`; `cluster.*_max_*`, signatures | 0.35 / 40 / 0.05 | range-adaptive DBSCAN: ε(r) = eps·(1 + r/40 m); infrastructure filters (thin hardware, low hardware, wall-like, column, floating, edge, wall face); thin objects hanging near the axis are never demoted |
 | `tracking.confirm_time_s / confirm_hits / conf_threshold` | 0.5 s / 3 / 0.6 | persistence before an alarm (low objects: 5 hits); `tracking.hold_misses` 1 (code default in `resense/config.py`) keeps a reported obstacle over one missed frame |
 
@@ -353,7 +371,7 @@ but no `node` object (so acceptance tools do not count it as a frame), and `/res
 | architecture (components, data flow); algorithm (problem, data, processing, decision, parameters, limitations) | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md); [`docs/ALGORITHM.md`](docs/ALGORITHM.md) |
 | experiments (range, latency, FPS, false alarms, hard cases, evolution) | [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md), protocol in [`docs/EVALUATION.md`](docs/EVALUATION.md) |
 | input data format, sensor | [`docs/DATASET.md`](docs/DATASET.md), [`docs/SENSOR.md`](docs/SENSOR.md) (Hesai Pandar128) |
-| video | [`docs/video/`](docs/video/): the jury chain in Docker with RViz (`docker_chain_rviz.mp4`, 69 s, v0.6.3: node, `ros2 bag play` as a normal user from another container, `/resense/decision`; sandbox, bag at 0.5×); the bag from the cab, offline renders, the dashboard replay (v0.6.2); the organizers' 2 × 2 m box from the cab on the moving train, STOP from 98 m (`fake_objects_cab.mp4`, 25.09); all silent, the narrated 2–3 min video is scripted in [`docs/PRESENTATION.md`](docs/PRESENTATION.md); recipes in [`web/README.md`](web/README.md) |
+| video | [`docs/video/resense_overview.mp4`](docs/video/resense_overview.mp4): the 2:50 overview (problem → idea → algorithm → demo → the organizers' objects → numbers → next), 1920×1080, no audio track, Russian subtitles burned in and as [`resense_overview.ru.srt`](docs/video/resense_overview.ru.srt), every number marked real / our synthetic / organizers' synthetic; built by `scripts/make_overview_video.py` from the clips, renders, UI captures and deck. Clips in [`docs/video/`](docs/video/): the jury chain in Docker with RViz (`docker_chain_rviz.mp4`, 69 s, v0.6.3: node, `ros2 bag play` as a normal user from another container, `/resense/decision`; sandbox, bag at 0.5×); the bag from the cab, offline renders, the dashboard replay (v0.6.2); the organizers' 2 × 2 m box from the cab on the moving train, STOP from 98 m (`fake_objects_cab.mp4`, 25.09); all silent; recipes in [`web/README.md`](web/README.md) |
 | submission status | [`docs/SUBMISSION.md`](docs/SUBMISSION.md) |
 
 ## Team

@@ -272,13 +272,14 @@ optional extension: without a C++ compiler the install still succeeds and the de
 numpy with the same results, slower); `scripts/build_native.sh` builds them in a source checkout
 used with `PYTHONPATH=.`. The Docker image installs `g++` and prints the path it took at build
 time; the node logs it at start (`per-frame kernels: native (...)`). `RESENSE_NATIVE=0` forces
-the numpy code. The test suite passes on both paths (289 tests, 25.09). **Docker:** proven by CI
-run 36058665640 (24.09, commit `d1a2d0c`): the image built the kernels, the in-image suite passed
-with `RESENSE_REQUIRE_SYNTHETIC=1` (a missing library would have failed it), and both ROS smoke
-tests passed (synthetic bags, decode + detect 35 ms mean); every docker job since does the same
-(run 36112092652 on `8932f3a`, 25.09: 289 passed in the image). Neither path can be run on the
-i7-9700E before submission (no stand access); the team's 8-core machine stands in for both
-(`scripts/bench_8core.sh` times both, EXPERIMENTS §3).
+the numpy code. The test suite passes on both paths (289 tests, 25.09; the 58 release and video
+tests added later do not touch the kernels). **Docker:** proven by CI run 36058665640 (24.09,
+commit `d1a2d0c`): the image built the kernels, the in-image suite passed with
+`RESENSE_REQUIRE_SYNTHETIC=1` (a missing library would have failed it), and both ROS smoke tests
+passed (synthetic bags, decode + detect 35 ms mean); every docker job since does the same (run
+36123184213 on `79109f5`, 25.09: 344 passed in the image, which has no `docs/`). Neither path can
+be run on the i7-9700E before submission (no stand access); the team's 8-core machine stands in
+for both (`scripts/bench_8core.sh` times both, EXPERIMENTS §3).
 
 ## GPU: evaluated, not used (24.09)
 
@@ -323,6 +324,7 @@ The test machine has no internet ([`organizers/answers.md`](organizers/answers.m
 | run time: node, launch file, entrypoint, compose services, RViz, foxglove_bridge | nothing: DDS over UDP on the host's interfaces (the loopback alone is enough), foxglove_bridge serves `ws://…:8765` itself, RViz is local | — |
 | dashboard `web/index.html`, label tool | nothing: fonts local, roslib bundled since 25.09 (it came from a CDN); its live mode needs rosbridge, which is not in the image | — |
 | Foxglove viewer (remote demo) | the desktop app works offline; app.foxglove.dev is a web page on the viewer's laptop | — |
+| overview video `scripts/make_overview_video.py` | nothing: clips, renders, deck and fonts are in the repository; Pillow, PyMuPDF and an ffmpeg with libx264 (`imageio-ffmpeg`) installed once | — |
 | not on the jury path | `scripts/unpack_dataset.py` (Yandex Disk), `scripts/build_deck.py` (template), CI | — |
 
 **Delivery.** `scripts/export_image.sh` builds the runtime image from `git archive HEAD`, tags
@@ -331,11 +333,20 @@ The test machine has no internet ([`organizers/answers.md`](organizers/answers.m
 with its `.sha256`; `scripts/load_image.sh` checks the sum, loads the archive and runs the image
 with `--network none`. The runtime image keeps `g++` (the C++ kernels are compiled at build time)
 and RViz: a multi-stage build without the compiler would be smaller but changes every layer, so it
-waits until after the freeze. The CI `docker` job proves the chain: `docker save` → `docker rmi`
-→ `docker load`, then the synthetic bags through the loaded image with `--network none` (only the
-loopback: Fast DDS joins its discovery multicast group on the loopback and sends through a
-loopback-bound socket, so the processes find each other with no network interface up) and in
-separate containers on a `docker network create --internal` network (no way out).
+waits until after the freeze. The CI `docker` job proves the chain on the `WITH_TOOLS=1` image:
+`docker save` → `docker rmi` → `docker load`, then the synthetic bags through the loaded image with
+`--network none` (only the loopback: Fast DDS joins its discovery multicast group on the loopback
+and sends through a loopback-bound socket, so the processes find each other with no network
+interface up) and in separate containers on a `docker network create --internal` network (no way
+out). The CI `offline-build` job does it with the jury's own image: it makes the runtime archive as
+`export_image.sh` makes the release, removes every image and the build cache, loads the archive,
+and plays both synthetic bags through `resense:<version>` exactly as loaded. It first checks that
+this is the archive's image (the built layers, the version and commit labels) and the runtime one
+(no open3d / rosbags, so the bags are made on the runner), with rosbag2 and its sqlite3 plugin.
+The playback runs on an `--internal` network: `check_no_network.py`, the node on its default
+command, a `/resense/status` recorder, a uid-1000 player of the same image, `check_dry_run.py
+--expect-obstacle --expect-inputs 2`. First green on `5a15c7c` (run 36122640174, 25.09): 78 status
+messages, 42 alarm frames at 44.9–59.9 m, p95 26 ms, both recordings, `PASS`.
 
 **Offline `docker build` (best effort).** If the jury insists on building, after `docker load`:
 
@@ -355,12 +366,25 @@ stand's version is unknown; (3) the context must be the tag's tree with the same
 (they are part of the cache key: a checkout under `umask 002` differs until the `chmod` above);
 (4) no `--pull`, `--no-cache`, `--network` or `WITH_TOOLS` (each changes the cache key); (5) any
 miss makes the build try `apt-get` and fail, and then the loaded image is untouched, so `docker run`
-still works. The CI job `offline-build` tries exactly this on the runner's Docker with Docker Hub
-blocked (continue-on-error). Its first result, run 36109782167 (25.09, `2b3cbd0`): the runtime
+still works. The CI job `offline-build` runs exactly this on the runner's Docker with Docker Hub
+blocked, as a gate since 25.09 (it passed on all four runs made with continue-on-error:
+36109782167, 36112092652, 36113989932, 36116178404); for the jury it stays best effort because the
+stand's Docker is unknown. Its first result, run 36109782167 (25.09, `2b3cbd0`): the runtime
 archive is 521 185 902 bytes (0.49 GiB at `GZIP_LEVEL=1`; the image 1.34 GiB unpacked, the base
 image included), and after all images and the build cache were removed and the archive loaded,
-all 18 steps came from the cache ("every layer identical to the archive's, no step ran"); run
-36112092652 on `8932f3a` repeated it. The documented path stays `docker load`.
+all 18 steps came from the cache ("every layer identical to the archive's, no step ran"); every
+later run repeated it (version 1.0.0 on `5a15c7c`: 521 306 060 bytes). The documented path stays
+`docker load`.
+
+**Release.** `.github/workflows/release.yml` turns a pushed tag `v<version>-rcN` / `v<version>`
+into a GitHub release (the tag must name the version the four declarations agree on,
+`scripts/release_meta.py`; now `v1.0.0-rcN` / `v1.0.0`). It builds the runtime image with
+`scripts/export_image.sh` (gzip -6), removes it and the build cache, loads the archive back with
+`scripts/load_image.sh`, and plays two synthetic bags through the loaded image on an `--internal`
+network (`scripts/internal_net_test.sh`) and with `--net=host` and a stock Fast DDS player
+(`scripts/console_test.sh`). It then publishes `resense-image-<tag>.tar.gz`, its `.sha256` and
+`SHA256SUMS` (`scripts/publish_release.sh`; a re-run replaces them) and re-downloads the archive
+to check the sum (`scripts/verify_release.sh`). `scripts/release.sh` is the same chain by hand.
 
 ## Known limitations
 

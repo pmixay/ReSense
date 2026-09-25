@@ -3,7 +3,8 @@
 > **Purpose:** status of every deliverable the organizers ask for (spec §5, §7), the dry run and the
 > upload procedure.
 > **Audience:** team · **Owner:** P1 · **Language:** EN, cover message RU
-> **Last verified:** 2026-09-25, `8932f3a` (detector v0.6.3, node v0.6.4) · **Status:** current
+> **Last verified:** 2026-09-25, `79109f5` (detector v0.6.3 with the long overhead rule on, node
+> v0.6.4, package 1.0.0) · **Status:** current
 
 Owner codes as in [`PLAN.md`](PLAN.md). Update this file in the PR that completes an item.
 
@@ -30,8 +31,9 @@ experiments) is in the repository (the table below) and is part of the final upl
 | 5 | first experiment results | [`EXPERIMENTS.md`](EXPERIMENTS.md) | P3 / P4 | done, v0.3 |
 
 Nothing is sent separately. The cover message drafted for an intermediate package (below; not sent
-as one) is kept as the base of the final one: replace «промежуточная сдача» and the tag, add step 1
-`docker load -i resense-image-v1.0-final.tar.gz` and the sha256 (see "Upload").
+as one) is kept as the base of the final one: replace «промежуточная сдача» and the tag
+`v0.1-intermediate` with `v1.0.0`, add step 1 `docker load -i resense-image-v1.0.0.tar.gz` and the
+sha256 (see "Upload").
 
 ### Cover message (draft, Russian — the organizers' language; not sent, base of the final one)
 
@@ -66,7 +68,7 @@ as one) is kept as the base of the final one: replace «промежуточна
 
 | # | required | where | owner | status |
 |---|---|---|---|---|
-| 1 | Docker container with everything needed; runs in the jury environment without manual dependency installation | `docker/`, `docker-compose.yml`; the stand has **no internet** ([`organizers/answers.md`](organizers/answers.md) §7), so the container goes as the image archive of row 17 | P1 | done; `docker save` → `docker rmi` → `docker load` and the node with `--network none` in CI (docker job); re-verify offline on a clean machine on 28.09 |
+| 1 | Docker container with everything needed; runs in the jury environment without manual dependency installation | `docker/`, `docker-compose.yml`; the stand has **no internet** ([`organizers/answers.md`](organizers/answers.md) §7), so the container goes as the image archive of row 17 | P1 | done; in CI on every push: `docker save` → `docker rmi` → `docker load` and the node with `--network none` (docker job), and the runtime archive loaded and both synthetic bags played through it on an internal network (`offline-build`, a gate since 25.09); re-verify offline on a clean machine on 28.09 |
 | 2 | source code | this repository | all | ongoing |
 | 3 | README: project description | [`README.md`](../README.md) | P1 | done |
 | 4 | README: how to build the image | README "Кратко для жюри", "ROS 2 / Docker" | P1 | done |
@@ -75,14 +77,14 @@ as one) is kept as the base of the final one: replace «промежуточна
 | 7 | README: parameters and configuration | README "Node parameters", "Parameters worth knowing", [`ALGORITHM.md`](ALGORITHM.md) §5, `configs/default.yaml` | P1 / P3 | done |
 | 8 | architecture description (components, data flow) | [`ARCHITECTURE.md`](ARCHITECTURE.md) | P1 | done |
 | 9 | algorithm description (problem, data, processing, decision, parameters, limitations) | [`ALGORITHM.md`](ALGORITHM.md) | P1, reviewed by P3 | done for v0.6 (mount calibration §2b, low objects §3.3b, far field §3.3c, decision / clear distance / health §4b, limitations §6) |
-| 10 | experiment results (range, latency, FPS, false alarms, hard cases, improvement over time) | [`EXPERIMENTS.md`](EXPERIMENTS.md), protocol in [`EVALUATION.md`](EVALUATION.md), raw summaries in [`evidence/results/`](evidence/results/), labels in `labels/` | P3 / P4 | v0.6.3 (23.09; re-run on the current code on 24.09, identical on every frame): all 13 759 frames of the organizer data at full rate for every change, with a leave-one-subset-out check and false alarms by the first processed frame (§0); ride tracks classified (`labels/new_data_objects.json`); long range on the moving ride (set F, §2d) and its paired audit ([`P4_AUDIT.md`](P4_AUDIT.md)); the organizers' synthetic-obstacle recording graded per object (set O, P4_AUDIT); mount calibration on re-mounted real frames (§6); learned second-opinion experiment (§8); clean timing (§3); since 25.09 every real-data number and set O is re-checked by one command, `scripts/regression_gate.py` against [`evidence/results/regression_baseline_2026-09-25.json`](evidence/results/regression_baseline_2026-09-25.json) (the merged `8932f3a`: every gated metric the same), and the two opt-in rules awaiting the go / no-go are measured in EXPERIMENTS §1f; 8-core timing: the kit `scripts/bench_8core.sh` is ready, its run pending ([`CAPTAIN.md`](CAPTAIN.md) action 7; the i7-9700E stand is not available before submission, [`organizers/answers.md`](organizers/answers.md) §6) |
-| 11 | video of the algorithm at work | [`video/`](video/): the Docker chain with RViz, `docker_chain_rviz.mp4` (69 s, node container + `ros2 bag play` as uid 1000 from another container + `/resense/decision`, sandbox, bag at 0.5×, EXPERIMENTS §3b); `doubleT_obstacle_cab.mp4` (the real bag from the cab: envelope, obstacle, STOP / distance, 20 s), `doubleT_obstacle_offline.mp4` (top and side view), `dashboard_doubleT_obstacle.mp4` (dashboard replay), `fake_objects_cab.mp4` (25.09: the organizers' synthetic objects from the cab: the 2 × 2 m box, GO → STOP at 98.0 m → 25 m, train 1.5–7.7 m/s, 20.5 s); recipes in `scripts/hero_view.py` and [`web/README.md`](../web/README.md) | P2 | done on real data (v0.6.2; the Docker chain v0.6.3); all five clips are silent; the narrated 2–3 min `resense_overview.mp4`: script and shot list ready (PRESENTATION «Сценарий видео (2–3 мин)», 25.09), voice (H) and edit (P2) on 26.09; `dashboard_doubleT_obstacle.mp4` shows the earlier UI and is not used |
+| 10 | experiment results (range, latency, FPS, false alarms, hard cases, improvement over time) | [`EXPERIMENTS.md`](EXPERIMENTS.md), protocol in [`EVALUATION.md`](EVALUATION.md), raw summaries in [`evidence/results/`](evidence/results/), labels in `labels/` | P3 / P4 | detector v0.6.3 (23.09; re-run on the current code on 24.09, identical on every frame) with the long overhead rule on since 25.09: all 13 759 frames of the organizer data at full rate for every change, with a leave-one-subset-out check and false alarms by the first processed frame (§0); ride tracks classified (`labels/new_data_objects.json`); long range on the moving ride (set F, §2d) and its paired audit ([`P4_AUDIT.md`](P4_AUDIT.md)); the organizers' synthetic-obstacle recording graded per object (set O, P4_AUDIT); mount calibration on re-mounted real frames (§6); learned second opinion (§8); clean timing (§3); since 25.09 the six recordings, set O, the ride and set F straight are re-checked by one command, `scripts/regression_gate.py` against [`evidence/results/regression_baseline_2026-09-25_ride.json`](evidence/results/regression_baseline_2026-09-25_ride.json); the two late rules were decided on the ride against pre-registered criteria (long overhead rule on: ride 47 → 46 events, five bags 20 → 14; short signatures off; EXPERIMENTS §1f, [`rules_decision_2026-09-25.json`](evidence/results/rules_decision_2026-09-25.json)); 8-core timing: the kit `scripts/bench_8core.sh` is ready, its run pending ([`CAPTAIN.md`](CAPTAIN.md) action 7; the i7-9700E stand is not available before submission, [`organizers/answers.md`](organizers/answers.md) §6) |
+| 11 | video of the algorithm at work | [`video/resense_overview.mp4`](video/resense_overview.mp4): 2:50 overview on the script of PRESENTATION «Сценарий видео (2–3 мин)», 1920×1080 H.264, 25 fps, 20.6 MB, no audio track, Russian subtitles burned in (≤ 2 lines) and as [`video/resense_overview.ru.srt`](video/resense_overview.ru.srt), a chapter per block; built by `scripts/make_overview_video.py` (one table: sources, timings, cards, subtitles). Its sources in [`video/`](video/): `docker_chain_rviz.mp4` (69 s, node container + `ros2 bag play` as uid 1000 from another container + `/resense/decision`, sandbox, bag at 0.5×, EXPERIMENTS §3b), `doubleT_obstacle_cab.mp4` (the real bag from the cab: envelope, obstacle, STOP / distance, 20 s), `doubleT_obstacle_offline.mp4` (top and side view), `fake_objects_cab.mp4` (the organizers' 2 × 2 m box from the cab, GO → STOP at 98.0 m → 25 m, train 1.5–7.7 m/s, 20.5 s), `dashboard_doubleT_obstacle.mp4` (earlier UI, not used); recipes in `scripts/hero_view.py` and [`web/README.md`](../web/README.md) | P2 | done 25.09 (`798a28f`; closing card «релиз v1.0.0», `5a15c7c`): captioned, silent; its ride card still says 3.6 per km (47 events), the 24.09 figure: rebuild at the final consistency pass (CAPTAIN action 13); optional: the captain's voice-over muxed on without re-editing (PRESENTATION «Сборка ролика»); the upload form takes links: the file at the release tag ("Upload") |
 | 12 | full demonstration on the control bag: `docker build → docker run → ros2 bag play → result` (on the stand, with no internet: `docker load` of row 17 instead of the build) | `scripts/build.sh`, `scripts/run_demo.sh`; the same chain on synthetic bags in CI (`scripts/smoke_test.sh`, `scripts/console_test.sh`; since 25.09 also after `docker load`, with no network, and with a stock Fast DDS player and listener, `PLAYER_DDS=stock`) | P1 | proven in CI on synthetic bags (since 21.09) and on the real frames in Docker, with RViz on screen (23.09, EXPERIMENTS §3b, `video/docker_chain_rviz.mp4`); left: the dry run with the original bags on a clean team machine (28.09; no run on the organizers' stand before submission, [`organizers/answers.md`](organizers/answers.md) §6) |
-| 13 | presentation, slides 7–11 exactly per template | [`presentation/ReSense_LCT2026.pptx`](presentation/ReSense_LCT2026.pptx) (16 slides in the organizers' template, built by `scripts/build_deck.py`; LibreOffice PDF next to it), drafts, speaker text and the video script in [`PRESENTATION.md`](PRESENTATION.md) | P2 | rebuilt 25.09: 289 tests, the organizers' objects (slide 13), the anchored 154 m next to 150 m legacy in the same 5 pairs, «~210 м — предел отражений в тоннеле», new UI capture, C++ kernels / train speed / GPU; open: the personal data and photos on slides 2–3 (17 `<…>` placeholders in the public build by design; P1 builds the private deck with `--team`), two rehearsals |
-| 14 | tests (spec §8.5) | `tests/` (289 tests: algorithm on the ray-cast tunnel, envelope and low objects, mount calibration and guards, the native kernels against their numpy code, the cKDTree DBSCAN against scikit-learn, the two opt-in rules, the regression gate's rules, P4 placement, evaluation, the synthetic-obstacle labels and the speed-evaluation helpers, the node's decision / fault / watchdog / input-switching logic against ROS stand-ins in `tests/test_node.py`) + `web/demo/` (11); CI jobs `pytest`, `web`, `lint` (ruff), `params-in-sync`, `docker` (the Docker job also plays synthetic bags through the node: the organizers' way with node and a uid-1000 player in separate containers, with a stock Fast DDS player and listener, and after `docker save` / `docker load` with no network), `offline-build` | P4 / P1 / P2 | done (CI state: [`CAPTAIN.md`](CAPTAIN.md) C17) |
+| 13 | presentation, slides 7–11 exactly per template | [`presentation/ReSense_LCT2026.pptx`](presentation/ReSense_LCT2026.pptx) (16 slides in the organizers' template, built by `scripts/build_deck.py`; LibreOffice PDF next to it), drafts, speaker text and the video script in [`PRESENTATION.md`](PRESENTATION.md) | P2 | rebuilt 25.09 (before the release tooling, the video and the 25.09 rule decision: it still says 289 tests and 47 ride events, now 347 and 46; rebuild at the final consistency pass, CAPTAIN action 13): the organizers' objects (slide 13), the anchored 154 m next to 150 m legacy in the same 5 pairs, «~210 м — предел отражений в тоннеле», new UI capture, C++ kernels / train speed / GPU; open: the personal data and photos on slides 2–3 (17 `<…>` placeholders in the public build by design; P1 builds the private deck with `--team`), two rehearsals |
+| 14 | tests (spec §8.5) | `tests/` (347 tests: algorithm on the ray-cast tunnel, envelope and low objects, mount calibration and guards, the native kernels against their numpy code, the cKDTree DBSCAN against scikit-learn, the two 25.09 rules, the regression gate's rules, P4 placement, evaluation, the synthetic-obstacle labels and the speed-evaluation helpers, the release tooling (`tests/test_release.py`), the overview video's table and subtitles, the node's decision / fault / watchdog / input-switching logic against ROS stand-ins in `tests/test_node.py`) + `web/demo/` (11); CI jobs `pytest` (347, none skipped), `web`, `lint` (ruff), `params-in-sync`, `docker` (344 in the image, which has no `docs/`; the Docker job also plays synthetic bags through the node: the organizers' way with node and a uid-1000 player in separate containers, with a stock Fast DDS player and listener, and after `docker save` / `docker load` with no network), `offline-build` (the runtime archive: loaded, rebuilt offline from its cache, both synthetic bags played through the loaded runtime image on an internal network) | P4 / P1 / P2 | done (CI state: [`CAPTAIN.md`](CAPTAIN.md) C17) |
 | 15 | input data description | [`DATASET.md`](DATASET.md) (the organizers' links: Google Drive bags, the Yandex Disk extended dataset and the synthetic-obstacle recording of 24.09, labelled in `labels/cloud_with_fake_obj.json`), sensor: [`SENSOR.md`](SENSOR.md) with the Hesai manual in [`sensor/`](sensor/); the test stand's driver / CUDA state in [`organizers/test_stand_software.md`](organizers/test_stand_software.md) | P4 / P1 | done |
 | 16 | the organizers' answers applied (envelope 2.1 × 3.0 m, 30 × 30 × 10 cm, hanging cables, mount, object on the rail, decision output; 24.09: mounts as in the provided bags, switches) | [`organizers/answers.md`](organizers/answers.md), [`organizers/QA_session.md`](organizers/QA_session.md) (the Q&A of 22.09 and the facts that changed the code), [`organizers/mount_and_switch_qa.md`](organizers/mount_and_switch_qa.md); criteria judgement: [`SCORECARD.md`](SCORECARD.md) (24.09) | all | done (22.09; 24.09 answers recorded; 25.09: no stand access before submission, `organizers/answers.md` §6; no internet on the stand, §7) |
-| 17 | **the image archive** (the stand has no internet, so `docker build` cannot run there): `resense-image-<tag>.tar.gz` and its `.sha256`, linked from the upload form as assets of the tag's GitHub release, loaded with `docker load -i` | `.github/workflows/release.yml` (pushing a `v*` tag attaches both files to the tag's release; being added 25.09), or by hand: `scripts/export_image.sh` (from a clean clone of the tag, on a machine with internet) and `gh release upload`; `scripts/load_image.sh`; README "Кратко для жюри" step 1 | P1 | tooling done (25.09); the runtime archive measured in CI: 521 185 902 bytes, 0.49 GiB at `GZIP_LEVEL=1` (1.34 GiB unpacked, run 36109782167); the form takes links and has no size limit (organizers, 25.09, [`organizers/answers.md`](organizers/answers.md) §8), a GitHub release asset holds up to 2 GB; the rc1 archive on 27.09, the final one on 29.09 |
+| 17 | **the image archive** (the stand has no internet, so `docker build` cannot run there): `resense-image-<tag>.tar.gz`, its `.sha256` and `SHA256SUMS`, linked from the upload form as assets of the tag's GitHub release, loaded with `docker load -i` | `.github/workflows/release.yml` (a pushed `v1.0.0-rcN` / `v1.0.0` tag; any other name publishes nothing), by hand `scripts/release.sh <tag>` in a clean clone of the tag (`PUBLISH=1` publishes); `scripts/verify_release.sh <tag>` downloads the asset and checks the sum; `scripts/load_image.sh`; README "Кратко для жюри" step 1 | P1 | tooling done 25.09; `release.yml` publishes the archive on the tag push after loading it back and playing both smoke bags through the loaded runtime image (internal network and `--net=host`); CI's `offline-build` does the load-and-play on every push (green since run 36122640174); runtime archive 521 317 060 bytes, 0.49 GiB at gzip -1, 1.34 GiB unpacked (run 36123184213, `79109f5`; the release uses gzip -6); the form takes links with no size limit ([`organizers/answers.md`](organizers/answers.md) §8): the upload gives the asset's link and its sha256. Releases: [`v1.0.0-rc1`](https://github.com/pmixay/ReSense/releases/tag/v1.0.0-rc1) (27.09) and [`v1.0.0`](https://github.com/pmixay/ReSense/releases/tag/v1.0.0) (29.09), neither pushed yet |
 
 ## Dry run (28.09)
 
@@ -107,10 +109,11 @@ the scripts), the archive and the bags, and its network is disconnected (cable o
 before the load:
 
 ```bash
-# on a machine with internet, from a clean clone of the tag
-git clone --branch v1.0-rc1 <repo> && cd ReSense && VERSION=v1.0-rc1 ./scripts/export_image.sh
-# copy dist/resense-image-v1.0-rc1.tar.gz and its .sha256 to the dry-run machine; disconnect it
-A=dist/resense-image-v1.0-rc1.tar.gz; B=/data/for_hackathon
+# on a machine with internet: the release asset into dist/, sha256 checked (no Docker needed)
+git clone --branch v1.0.0-rc1 <repo> && cd ReSense && scripts/verify_release.sh v1.0.0-rc1
+#   (no release yet: VERSION=v1.0.0-rc1 ./scripts/export_image.sh in the same clean clone)
+# copy dist/resense-image-v1.0.0-rc1.tar.gz and its .sha256 to the dry-run machine; disconnect it
+A=dist/resense-image-v1.0.0-rc1.tar.gz; B=/data/for_hackathon
 IMAGE_TAR=$A OFFLINE=1 ./scripts/dry_run.sh $B/doubleT_obstacle
 SKIP_BUILD=1 OFFLINE=1 ./scripts/dry_run.sh $B/roundT_doubleT --expect-clear --max-alarm-frames 2
 # then the jury's own commands by hand: README "Кратко для жюри" 1-5, the player from a normal
@@ -155,31 +158,35 @@ not decide whether the dry run passed.
 
 Deadline 29.09 23:59; target 18:00; the tags and times are in [`CAPTAIN.md`](CAPTAIN.md) §5. The
 i.moscow form takes **links** and has **no file-size limit** (organizers, 25.09,
-[`organizers/answers.md`](organizers/answers.md) §8): nothing is attached as a file. Links to type
-(`<sha>` = `git rev-list -n 1 v1.0-final`):
+[`organizers/answers.md`](organizers/answers.md) §8): nothing is attached as a file. Pushing the
+tag `v1.0.0` runs `.github/workflows/release.yml`, which publishes the release
+https://github.com/pmixay/ReSense/releases/tag/v1.0.0 with `resense-image-v1.0.0.tar.gz`, its
+`.sha256` and `SHA256SUMS` (the rc1 rehearsal: `v1.0.0-rc1`, a pre-release, 27.09). Links to type
+(`<sha>` = `git rev-list -n 1 v1.0.0`):
 
 | # | item | link to type | made by |
 |---|---|---|---|
-| 1 | the repository at the release tag, with its commit hash | `https://github.com/pmixay/ReSense/tree/v1.0-final` and «коммит `<sha>`» | the tag pushed on 29.09 (CAPTAIN §5) |
-| 2 | **the image archive** (row 17; the stand has no internet, so this is what the jury runs, not an extra) | the tag's release page `https://github.com/pmixay/ReSense/releases/tag/v1.0-final`, carrying `resense-image-v1.0-final.tar.gz` and `resense-image-v1.0-final.tar.gz.sha256`; the sha256 value also typed next to the link | `.github/workflows/release.yml` on the tag push (being added 25.09); if it did not run or failed: `VERSION=v1.0-final ./scripts/export_image.sh` from a clean clone of the tag, then `gh release upload v1.0-final dist/resense-image-v1.0-final.tar.gz dist/resense-image-v1.0-final.tar.gz.sha256` (Yandex Disk only as a second mirror) |
-| 3 | the video | `docs/video/resense_overview.mp4` at the tag (`https://github.com/pmixay/ReSense/blob/v1.0-final/docs/video/resense_overview.mp4`), or a video-hosting link | P2 edit, H voice (row 11, CAPTAIN action 9) |
+| 1 | the repository at the release tag, with its commit hash | `https://github.com/pmixay/ReSense/tree/v1.0.0` and «коммит `<sha>`» | the tag pushed on 29.09 (CAPTAIN §5) |
+| 2 | **the image archive** (row 17; the stand has no internet, so this is what the jury runs, not an extra) | `https://github.com/pmixay/ReSense/releases/download/v1.0.0/resense-image-v1.0.0.tar.gz` (the release page `https://github.com/pmixay/ReSense/releases/tag/v1.0.0` also carries the `.sha256` and `SHA256SUMS`); the sha256 value, from the release notes, typed next to the link | `release.yml` on the tag push; if it did not run or failed: `scripts/release.sh v1.0.0` in a clean clone of the tag (Docker and internet), then `PUBLISH=1 scripts/release.sh v1.0.0` (Yandex Disk only as a second mirror) |
+| 3 | the video | `https://github.com/pmixay/ReSense/blob/v1.0.0/docs/video/resense_overview.mp4` (2:50, Russian subtitles, no sound), or a video-hosting link | done 25.09 (row 11); a voice-over is optional |
 | 4 | the presentation | to be filled later: the private `--team` build (row 13) carries the team's personal data, so it goes by a link that opens without a sign-in but is not in the public repository (e.g. Yandex Disk); the public build is `docs/presentation/ReSense_LCT2026.pptx` / `.pdf` at the tag | P2, P1 (row 13, CAPTAIN action 8) |
 
 If the form has a description field, it takes the cover message (above, adapted) with the README
-section list of the final submission, step 1 as `docker load -i resense-image-v1.0-final.tar.gz`
-and the sha256. The archive is gzip because `docker load` reads it on any Docker version (zstd
-would be ~10–20 % smaller but is not read everywhere); its size and sha256 are printed by
-`export_image.sh` (and by the release job).
+section list of the final submission, step 1 as `docker load -i resense-image-v1.0.0.tar.gz`, the
+sha256 and the line «Видео (2:50, субтитры на русском):
+https://github.com/pmixay/ReSense/blob/v1.0.0/docs/video/resense_overview.mp4». The archive is gzip
+because `docker load` reads it on any Docker version (zstd would be ~10–20 % smaller but is not
+read everywhere); its size and sha256 are in the release notes and the job summary.
 
 **Check before submitting** (29.09, before 16:00; CAPTAIN §5):
 
 1. open every link in a private browser window, **logged out** of GitHub and Yandex: the
-   repository at the tag, the release page, both assets (each downloads), the video (plays), the
+   repository at the tag, the release page, the assets (each downloads), the video (plays), the
    presentation (opens); a link that asks for a sign-in is a failed link (a private repository or
    release is invisible to the jury);
-2. the commit hash typed in the form equals `git rev-list -n 1 v1.0-final` and the tag's CI run is
-   green;
-3. on a second machine: download both assets from the release page logged out (e.g. `curl -LO`),
-   `sha256sum -c resense-image-v1.0-final.tar.gz.sha256`, then
-   `./scripts/load_image.sh resense-image-v1.0-final.tar.gz` (sum, `docker load`, a run with
-   `--network none`); the sha256 typed in the form equals the file's.
+2. the commit hash typed in the form equals `git rev-list -n 1 v1.0.0`, and the tag's `release`
+   and `ci` runs are green;
+3. on a second machine: `EXPECT_SHA256=<the sum typed in the form> scripts/verify_release.sh
+   v1.0.0` (downloads the assets logged out into `dist/` and checks the `.sha256`, `SHA256SUMS`
+   and the typed sum), then `./scripts/load_image.sh dist/resense-image-v1.0.0.tar.gz` (sum,
+   `docker load`, a run with `--network none`).

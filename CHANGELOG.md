@@ -3,21 +3,58 @@
 > **Purpose:** what changed in ReSense, one entry per version or merge, newest first; the numbers
 > are those measured when the change landed.
 > **Audience:** jury (spec §5 "как менялось качество"), team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-25 against `8932f3a` · **Status:** current
+> **Last verified:** 2026-09-25 against `79109f5` · **Status:** current
 
-Versions are the team's labels. The package metadata (`pyproject.toml`) says 0.1.0 up to PR #4 and
-0.6.3 from PR #5 (`1210580`). No git tag exists yet; the release plan is in
-[`docs/CAPTAIN.md`](docs/CAPTAIN.md) §5. Results: [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md);
+Versions are the team's labels. The package metadata (`pyproject.toml`) says 0.1.0 up to PR #4,
+0.6.3 from PR #5 (`1210580`) and 1.0.0 from `65a5305` (25.09). Tags `v1.0.0-rcN` / `v1.0.0` are
+released by `.github/workflows/release.yml` ([`docs/CAPTAIN.md`](docs/CAPTAIN.md) §5); no tag is
+pushed yet. Results: [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md);
 counts are "alarm frames / events (/ STOP episodes)" at full rate unless said. "Five bags" = the
 five obstacle-free recordings (2 287 frames); "ride" = the 20-minute recording `new_data` (11 271
 frames, 13 km, no obstacles).
 
 ## 1.0.0 (release candidate, 25.09)
 
-The package version stays 0.6.3 (node v0.6.4). Tests: 235 → 289 (+28 native kernels, +3 speed
-evaluation helpers, +17 regression gate, +3 DBSCAN exactness, +3 late candidates) in `tests/`, 11
-in `web/demo`.
+Package version 1.0.0 (tags `v1.0.0-rcN`, final `v1.0.0`; detector v0.6.3 with the long overhead
+rule on, node v0.6.4). Tests: 235 → 347 (+28 native kernels, +3 speed evaluation helpers, +17
+regression gate, +3 DBSCAN exactness, +3 late candidates, +53 release tooling, +5 overview video,
+2 of them in the image, which has no `docs/`) in `tests/`, 11 in `web/demo`.
 
+- **Long overhead rule on, short signatures off (`935eecf`, `48411f2`, 25.09, A for the
+  captain):** decided on the 20-minute ride with the regression gate against pre-registered
+  criteria
+  ([`rules_decision_2026-09-25.json`](docs/evidence/results/rules_decision_2026-09-25.json)).
+  `cluster.floating_long_min_length` 3.0: ride 204 / 47 / 39 → 197 / 46 / 39 (3.5 events per km),
+  five bags 107 / 20 / 27 → 60 / 14 / 17; set O, `doubleT_obstacle` and set F straight identical.
+  `cluster.short_signature_max_length` stays 0: +6 ride STOP episodes on top (limit +5) for +49
+  set O STOP frames. New gate baseline with the ride and set F straight:
+  `docs/evidence/results/regression_baseline_2026-09-25_ride.json`. The pinned default in
+  `tests/test_late_candidates.py` follows the change. [EXPERIMENTS §1f](docs/EXPERIMENTS.md).
+- **Overview video (`798a28f`, `5a15c7c`, 25.09, A for P2):** `docs/video/resense_overview.mp4`,
+  2:50, 1920×1080 H.264 (yuv420p, 25 fps, faststart, no audio track, a chapter per block),
+  20.6 MB: the seven blocks and shot list of PRESENTATION «Сценарий видео», a sidebar with each
+  block's numbers marked real / our synthetic / organizers' synthetic, the narration burned in as
+  Russian subtitles and written to `resense_overview.ru.srt` with the same timings for a later
+  voice-over; the closing card names the release `v1.0.0`. `scripts/make_overview_video.py` holds
+  the cut in one table and renders it with Pillow (Moscow Sans) and libx264;
+  `tests/test_overview_video.py` keeps the table, the .srt and the ≤ 25 MB budget consistent.
+- **CI: the release archive's runtime image plays bags (`abbbc08`, 25.09):** after the offline
+  rebuild, the `offline-build` job makes the two synthetic bags on the runner and plays them
+  through `resense:<version>` exactly as `load_image.sh` loaded it from the release archive
+  (checked: the built layers, the version / commit labels, no open3d / rosbags, rosbag2 with
+  sqlite3), on a `docker network create --internal` network: `check_no_network.py`, the node on
+  its default command, a /resense/status recorder, a uid-1000 player of the same image,
+  `check_dry_run.py --expect-obstacle --expect-inputs 2`. Until then every bag in CI went through
+  the `WITH_TOOLS=1` image. `continue-on-error` removed: the job gates (the offline rebuild passed
+  on all four runs made with it). First run green: 36122640174 (`5a15c7c`).
+- **Version 1.0.0 and the release workflow (`65a5305`, `ee70f00`, `eabe0cc`, 25.09):** the four
+  version declarations say 1.0.0 (kept equal by `tests/test_release.py`); the node's start line
+  ends with `; resense 1.0.0`. `.github/workflows/release.yml`: a pushed `v1.0.0-rcN` / `v1.0.0`
+  tag builds the runtime archive, proves it (removed, loaded back, both smoke bags through the
+  loaded image with no internet and in the `--net=host` form) and publishes the GitHub release
+  with the archive, `.sha256` and `SHA256SUMS`. Scripts: `release.sh` (manual),
+  `publish_release.sh`, `verify_release.sh`, `internal_net_test.sh`, `release_meta.py`; any other
+  tag name (`v1.0-rc1`, `v1.0-final`) publishes nothing.
 - **Regression gate (`ca557cb` … `5017dec`, 25.09, A for P4):** `scripts/regression_gate.py`, one
   command and one JSON: the six recordings and set O, plus the ride and set F straight where
   cached. `--baseline` prints better / same / worse per metric and exits 1 on a gated regression;
@@ -37,8 +74,9 @@ in `web/demo`.
   `cluster.short_signature_max_length` (P3 / P4 short-signature rule; set O 303 → 352 inside STOP
   frames, five bags 107 / 20 / 27 → 113 / 22 / 29, gate FAIL on 5 rows) and
   `cluster.floating_long_min_length` (the overhead structure along the track at the platform;
-  five bags → 60 / 14 / 17, set O unchanged, gate PASS). Both are 0 (off); default output
-  identical. The far-rail check was measured: no effect on the six recordings and set O.
+  five bags → 60 / 14 / 17, set O unchanged, gate PASS). Both were merged 0 (off), default output
+  identical (decided the same day on the ride: see the first entry). The far-rail check was
+  measured: no effect on the six recordings and set O.
   [EXPERIMENTS §1f](docs/EXPERIMENTS.md).
 - **Stock Fast DDS console in CI and the 8-core bench kit (`fbef12b`, `8242c3e`, 25.09):**
   `scripts/console_test.sh` takes `PLAYER_DDS=stock` (a uid-1000 player and listener with Humble's
@@ -70,12 +108,12 @@ in `web/demo`.
   `OFFLINE=1` (node, player and recorder with `--network none`). README step 1 is now `docker load`
   (`docker build` with internet). CI: the docker job saves, removes and loads the built image and
   plays the synthetic bags through it with `--network none` and on an internal Docker network; the
-  new job `offline-build` (best effort, continue-on-error) rebuilds from the loaded archive with
-  Docker Hub blocked. Run-time audit: no network use in the node, launch file, entrypoint or
-  compose services; the dashboard's roslib (1.4.1, BSD) is bundled in `web/assets/vendor/`
-  instead of loaded from a CDN. `dist/` is excluded from the Docker build context. The Dockerfile's
-  layers are unchanged (a header comment only). [ARCHITECTURE "Deployment without
-  internet"](docs/ARCHITECTURE.md).
+  new job `offline-build` (best effort at first; a gate since `abbbc08`) rebuilds from the loaded
+  archive with Docker Hub blocked. Run-time audit: no network use in the node, launch file,
+  entrypoint or compose services; the dashboard's roslib (1.4.1, BSD) is bundled in
+  `web/assets/vendor/` instead of loaded from a CDN. `dist/` is excluded from the Docker build
+  context. The Dockerfile's layers are unchanged (a header comment only). [ARCHITECTURE
+  "Deployment without internet"](docs/ARCHITECTURE.md).
 
 - **Dashboard restyle (`46a04bb`, P2, 24.09):** dashboard and label tool in the Metro style
   (Moscow Sans from the supplied style archive, primary red `#E4000D`, styles in

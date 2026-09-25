@@ -169,7 +169,7 @@ validity over each sequence before interpreting range or edge results.
 
    ```bash
    python scripts/regression_gate.py --cache /data/cache \
-       --baseline docs/evidence/results/regression_baseline_2026-09-25.json \
+       --baseline docs/evidence/results/regression_baseline_2026-09-25_ride.json \
        [--config FILE] [--set section.key=value ...] [--allow PATTERN ...] \
        --out out/gate/<change>.json
    ```
@@ -205,18 +205,25 @@ validity over each sequence before interpreting range or edge results.
    stamps (`--nominal-stamps`) or ride pieces differ. A missing required recording, or a failed
    set F run on a cached ride, exits 2.
 
-   **Baseline of 25.09.** Native path, six recordings and O
-   ([`regression_baseline_2026-09-25.json`](evidence/results/regression_baseline_2026-09-25.json)).
-   It is identical to the 24.09 re-measure on every recording and to EXPERIMENTS §2e on every O
-   object. The same code passes with `RESENSE_NATIVE=0`; `--set cluster.min_points=8` fails
-   ([`evidence/regression_gate_2026-09-25/`](evidence/regression_gate_2026-09-25/)). The merged
-   `8932f3a` (DBSCAN on cKDTree, two opt-in flags off) passes with every gated metric the same
-   ([its JSON](evidence/results/regression_gate_2026-09-25_8932f3a.json)).
+   **Baselines of 25.09.** The current one is
+   [`regression_baseline_2026-09-25_ride.json`](evidence/results/regression_baseline_2026-09-25_ride.json):
+   the shipped defaults of `935eecf` (long overhead rule on) on the six recordings, O, the ride
+   and F straight, native path, 4-vCPU dev VM, `--jobs 3`, 394 s. It passes against the
+   shipped-defaults run of the same day with 3 gated rows better (EXPERIMENTS §1f,
+   [`rules_decision_2026-09-25.json`](evidence/results/rules_decision_2026-09-25.json)). The first
+   one, six recordings and O only
+   ([`regression_baseline_2026-09-25.json`](evidence/results/regression_baseline_2026-09-25.json)),
+   is identical to the 24.09 re-measure on every recording and to EXPERIMENTS §2e on every O
+   object; the same code passes with `RESENSE_NATIVE=0`, `--set cluster.min_points=8` fails
+   ([`evidence/regression_gate_2026-09-25/`](evidence/regression_gate_2026-09-25/)), and the
+   merged `8932f3a` passes with every gated metric the same
+   ([its JSON](evidence/results/regression_gate_2026-09-25_8932f3a.json)). It is kept for history.
 
    **Rules for PRs.** Every PR that touches `resense/` or `configs/` attaches the gate's JSON and
    table. A PR that is meant to move the numbers commits a new baseline with them. Set S is not in
    the gate: re-run step 2 when a change targets it. Nothing in the gate needs the organizers'
-   stand; the ride and set F are run on the team's 8-core machine. Do not compare the 2.1 m-envelope
+   stand; the ride and set F need the `new_data` cache (the 4-vCPU dev VM streams it with
+   `scripts/vm/stream_cache.py`). Do not compare the 2.1 m-envelope
    counts to older 1.4 m-envelope runs as if the labels were identical.
 
 ## 4. Targets of the sprints (17–24.09) and their status on 24.09
