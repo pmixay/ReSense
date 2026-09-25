@@ -25,6 +25,15 @@ transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
 `cluster.far_axis_both_sides`, +3 far bed bins, +5 the rail-shadow review fixes) in `tests/`, 13
 in `web/demo`.
 
+- **`health.clear_cap` on by default, candidate R1 (25.09, round 2, the captain's delegate):**
+  shipped although it **missed** its pre-registered clutter limit: the five obstacle-free
+  recordings' median `clear_distance` fell −5.5 % against a −5 % limit (by 0.5 pp), the ride −3.1 %
+  with 1.49 % of its frames under 60 m; R1–R4 were designed after round 1. Shipped because it makes
+  the verified-clear distance conservative (set O object-frames with a `clear_distance` past an
+  in-envelope object 172 → 82) and changes no detection or decision. The status JSON's `health`
+  gains `candidate_distance` (additive). Recorded as `decision` in
+  [`p3_clear_distance_2026-09-25.json`](docs/evidence/results/p3_clear_distance_2026-09-25.json),
+  EXPERIMENTS §1i.
 - **5 Hz and ±3° re-mount robustness (25.09, P3, SCORECARD #13):** five new detector flags, on
   after the 10 Hz gate (PASS: ride, five bags, set O and set F straight identical;
   `doubleT_obstacle` 185 → 186 labelled hits): `calibration.time_cadence` (the calibration

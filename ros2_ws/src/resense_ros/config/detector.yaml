@@ -286,10 +286,11 @@ resense:
     # 25.09 (SCORECARD §6 row 6; docs/evidence/results/p3_clear_distance_2026-09-25.json): cap
     # clear_distance at the nearest unconfirmed / advisory candidate touching the envelope;
     # never changes a detection or the decision; false = confirmed obstacles only (v0.6).
-    # Tried, not shipped (25.09, EXPERIMENTS §1i): set O overclaim 172 -> 82 object-frames, but
-    # the five obstacle-free recordings' median clear distance -5.5 % (limit 5 %); the values
-    # below are candidate R1, so clear_cap: true alone runs it
-    clear_cap: false
+    # On since 25.09, round 2 (candidate R1, the values below), shipped by the captain's delegate
+    # although it missed its pre-registered clutter limit (EXPERIMENTS §1i): set O overclaim
+    # 172 -> 82 object-frames, but the five obstacle-free recordings' median clear distance
+    # -5.5 % (limit -5 %), the ride -3.1 % (1.49 % of the frames under 60 m)
+    clear_cap: true
     clear_cap_min_gauge: 1           # voxels inside the strict envelope (Cluster.n_gauge)
     clear_cap_min_hits: 1            # frames the candidate's track was matched, this one included
     clear_cap_margin: -1.0           # m; >= 0: a point inside the envelope widened by this also touches; < 0 = n_gauge only

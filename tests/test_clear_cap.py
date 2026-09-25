@@ -1,6 +1,9 @@
-"""health.clear_cap (25.09, SCORECARD §6 row 6; opt-in, tried and not shipped): the
-verified-clear distance stops at an unconfirmed or advisory object inside the envelope; STOP
-and the decision are unchanged (docs/evidence/results/p3_clear_distance_2026-09-25.json)."""
+"""health.clear_cap (25.09, SCORECARD §6 row 6; on since round 2, candidate R1, shipped by the
+captain's delegate although it missed its pre-registered clutter limit): the verified-clear
+distance stops at an unconfirmed or advisory object inside the envelope; STOP and the decision
+are unchanged (docs/evidence/results/p3_clear_distance_2026-09-25.json)."""
+
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -9,6 +12,19 @@ from resense.config import DetectorConfig
 from resense.detector import Detector
 from resense.frame import Frame
 from resense.synthetic import ObstacleSpec, synthetic_tunnel_frame
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_clear_cap_is_on_by_default_with_candidate_r1():
+    """The defaults in the code and in both parameter files: on, with R1's sub-parameters."""
+    for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
+                DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
+        h = cfg.health
+        assert h.clear_cap is True
+        assert (h.clear_cap_min_gauge, h.clear_cap_min_hits, h.clear_cap_margin, h.clear_cap_points,
+                h.clear_cap_skip_columns) == (1, 1, -1.0, 0, True)
 
 
 def _run(det: Detector, frame: Frame, n: int):

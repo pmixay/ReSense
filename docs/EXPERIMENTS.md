@@ -1266,7 +1266,7 @@ The new defaults (`c0b4f2f`) reproduce A frame by frame on the seven recordings.
 (`tests/test_thin_hanging.py`): shapes, and ray-cast at 16.5 m/s, where the object STOPs from
 30.1 m and a person 3 m beyond it STOPs on the same frame as without the rule.
 
-**Conservative `clear_distance` (SCORECARD §6 row 6; 25.09, tried, not shipped).** The verified-clear
+**Conservative `clear_distance` (SCORECARD §6 row 6; 25.09; failed its pre-registered clutter limit, shipped on by the captain's delegate).** The verified-clear
 distance counts confirmed obstacles only (ALGORITHM §6). On set O, current code, 172 of the 505
 object-frames of in-envelope objects with points inside the measured envelope report a
 `clear_distance` more than 0.5 m beyond the object (`scripts/score_clear_distance.py`; the
@@ -1305,6 +1305,15 @@ empty-track range by 13–24 %. The flag stays off, byte-identical to `1c96233`
 with R1 on (`--jobs 1`, 1 093 s) passes with no gated row changed (five recordings 58 / 13 / 16,
 ride 187 / 46 / 39, set O 303 STOP frames, set F straight identical), and its per-frame
 `clear_distance` equals the sweep's on all 15 068 frames.
+*Decision (25.09, 22:15 UTC, the captain's delegate): `health.clear_cap` on, candidate R1.* It did
+**not** pass: R1 missed the pre-registered clutter limit (the five obstacle-free recordings'
+median clear distance −5.5 % against −5 %, by 0.5 pp; the ride −3.1 %, 1.49 % of its frames under
+60 m), and R1–R4 were designed after round 1. It ships anyway because it makes the verified-clear
+distance conservative (set O object-frames with a `clear_distance` past an in-envelope object
+172 → 82) and changes no detection and no decision. The status JSON now carries
+`health.candidate_distance` (additive). Recorded in
+[`p3_clear_distance_2026-09-25.json`](evidence/results/p3_clear_distance_2026-09-25.json)
+(`decision`); the numbers on the combined round-2 code are in the combined paragraph below.
 
 **5 Hz and a ±3° re-mount (SCORECARD #13, criterion 8.4; P3, 25.09 evening): shipped.** The §1g
 events, traced frame by frame on `1c96233`, had four causes, none in the tracker windows
@@ -2381,12 +2390,11 @@ v0.6).
   (§1i, `cluster.hanging_enabled`): the organizers' 5 cm object STOPs from 30.1 m, no gate row
   worse. Left open: 28 of the 29 groups it takes on the ride are station column tops in frames
   without a rail pair; a rail-lock condition is not measured;
-- **conservative `clear_distance`** (P3; §1i, 25.09): tried, not shipped. `health.clear_cap` (R1)
-  cuts the set O overclaim from 172 to 82 object-frames with no decision changed. It fails only the
-  pre-registered median limit on the five obstacle-free recordings (−5.5 % against 5 %: at the
-  platform the train stands capped at the platform-end structures). Open: a captain's trade-off call
-  on that limit, and a cap for objects that form no cluster (the 5 cm hanging object, far 0.3 m
-  cubes);
+- **conservative `clear_distance`** (P3; §1i, 25.09): `health.clear_cap` (R1) cuts the set O
+  overclaim from 172 to 82 object-frames with no decision changed; it failed the pre-registered
+  median limit on the five obstacle-free recordings (−5.5 % against −5 %: at the platform the train
+  stands capped at the platform-end structures) and was shipped on by the captain's delegate
+  anyway (25.09). Open: a cap for objects that form no cluster (far 0.3 m cubes);
 - ~~**the rail shadow of a large near object** (P3; §2e): a 2 × 2 m box 10–20 m ahead hides the
   rails, the rail-height fit drifts by ~0.5 m and a wrong 3.0 m distance is reported~~ shipped
   25.09 (§1h): set O #1 wrong-distance STOP frames 12 → 0, gate PASS with the ride; a shadow that

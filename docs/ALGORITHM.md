@@ -632,9 +632,10 @@ flag and the distance, every frame carries:
   platform hall) — the organizers accept a detection at the visible limit ("no worse than a
   driver", fact 14), so the output says how far the path was actually checked. A consumer that
   brakes on `clear_distance` < stopping distance gets fail-safe behaviour for free: a blinded
-  sensor, a lost track model or a stale input shrink it to 0. Only a *confirmed* obstacle
-  shortens it: an unconfirmed or advisory object inside the envelope does not (§6; the opt-in
-  `health.clear_cap` of 25.09 would, EXPERIMENTS §1i);
+  sensor, a lost track model or a stale input shrink it to 0. Since 25.09 (round 2,
+  `health.clear_cap` on) it also stops at the nearest unconfirmed or advisory cluster touching the
+  strict envelope (columns and a confirmed obstacle's own cluster excluded; its distance is in
+  `health.candidate_distance`); it never changes a detection or the decision (§6, EXPERIMENTS §1i);
 * **`health`** (`resense/health.py`, `/resense/health` as `diagnostic_msgs/DiagnosticArray`):
   `ok` / `warn` / `error` with messages — valid returns per frame (error below 20 000 = a
   blinded sensor or a truncated message, warning below half the running median), returns closer
@@ -829,19 +830,18 @@ causes, each a limitation of the current rules:
   the growing edge margin only added false STOPs (#7 6 → 40 frames, background 3 → 8). Which
   reference the envelope follows is an open question to the organizers
   ([`QUESTIONS.md`](QUESTIONS.md) Q1).
-* **`clear_distance` counts only confirmed obstacles** (§4b): an unconfirmed or advisory
-  object inside the envelope does not shorten it. On set O the criteria judgement of 24.09
-  (judge B, [`SCORECARD.md`](SCORECARD.md)) found 184 object-frames with the decision `GO` and a
-  `clear_distance` beyond an in-envelope object, 89 of them with object points inside the
-  measured envelope: the 5 cm hanging object at 6.7–30 m (3–27 points, up to 13 inside the
-  envelope) read `GO` with a clear distance of 150–170 m (a STOP from 30.1 m since 25.09, §3.3
-  item 8), the 0.3 m cube on the rail at 46–67 m `GO` with 165–185 m. The fix of SCORECARD §6
-  row 6 was measured on 25.09 and not shipped (EXPERIMENTS §1i). The opt-in `health.clear_cap`
-  caps the distance at the nearest unconfirmed or advisory cluster touching the envelope, columns
-  excluded, and changes no decision. It cuts the set O overclaim from 172 to 82 object-frames, but
-  it also shortens the verified range on empty track: the five recordings' median −5.5 %, where
-  the pre-registered limit was 5 %. The objects that form no cluster (far 0.3 m cubes) stay
-  uncapped either way.
+* ~~**`clear_distance` counts only confirmed obstacles**~~ (§4b) — capped since 25.09, round 2:
+  on set O the criteria judgement of 24.09 (judge B, [`SCORECARD.md`](SCORECARD.md)) found 184
+  object-frames with the decision `GO` and a `clear_distance` beyond an in-envelope object, 89 of
+  them with object points inside the measured envelope: the 5 cm hanging object at 6.7–30 m (3–27
+  points, up to 13 inside the envelope) read `GO` with a clear distance of 150–170 m (a STOP from
+  30.1 m since 25.09, §3.3 item 8), the 0.3 m cube on the rail at 46–67 m `GO` with 165–185 m.
+  `health.clear_cap` (candidate R1) caps the distance at the nearest unconfirmed or advisory
+  cluster touching the envelope, columns excluded, and changes no decision: the set O overclaim
+  172 → 82 object-frames. It **failed** its pre-registered clutter limit (the five obstacle-free
+  recordings' median −5.5 % against −5 %; the ride −3.1 %) and was shipped on by the captain's
+  delegate anyway (EXPERIMENTS §1i). Left: objects that form no cluster touching the envelope (far
+  0.3 m cubes) stay uncapped.
 
 ### What the organizers' answers settle
 

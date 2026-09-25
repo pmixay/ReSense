@@ -378,11 +378,12 @@ class HealthConfig:
     # 25.09 (SCORECARD §6 row 6, docs/evidence/results/p3_clear_distance_2026-09-25.json): cap the
     # verified-clear distance at the nearest candidate of this frame that touches the envelope
     # although it is not a confirmed obstacle (unconfirmed, advisory); never changes a detection
-    # or the decision. false = clear_distance counts confirmed obstacles only (v0.6). Tried, not
-    # shipped (25.09): set O overclaim 172 -> 82 object-frames, but the median clear distance of
-    # the five obstacle-free recordings -5.5 % (limit 5 %; EXPERIMENTS §1i). The sub-parameters
-    # below are the first candidate (R1): clear_cap = true alone runs it
-    clear_cap: bool = False
+    # or the decision. false = clear_distance counts confirmed obstacles only (v0.6). On since
+    # 25.09, round 2, candidate R1 (the sub-parameters below), shipped by the captain's delegate
+    # although it MISSED its pre-registered clutter limit: set O overclaim 172 -> 82
+    # object-frames, but the median clear distance of the five obstacle-free recordings -5.5 %
+    # (limit -5 %), the ride -3.1 % (1.49 % of the frames under 60 m); EXPERIMENTS §1i
+    clear_cap: bool = True
     clear_cap_min_gauge: int = 1       # voxels of the cluster inside the strict envelope (Cluster.n_gauge, edge margin applied)
     clear_cap_min_hits: int = 1        # frames the cluster's track has been matched, this one included
     clear_cap_margin: float = -1.0     # m; >= 0: a cluster also touches with a point of this frame inside the envelope widened laterally by this (no edge margin); < 0 = n_gauge only
