@@ -13,7 +13,7 @@ was matched in at least ``min_hit_fraction`` of its last ``hit_window`` frames, 
 matched now. Its zone is 'gauge' when at least ``zone_min_fraction`` of its last
 ``zone_window`` hits were inside the strict gauge, so a corridor-edge structure that
 flickers into the gauge every other frame is advisory (docs/EXPERIMENTS.md section 1b), and
-fewer than ``column_hold`` (1 since 25.09) of those hits were demoted as a column: a column far
+fewer than ``column_hold`` (2 since 25.09) of those hits were demoted as a column: a column far
 away shows more than ``column_min_height`` of itself in some frames only (EXPERIMENTS.md 3a).
 """
 from __future__ import annotations

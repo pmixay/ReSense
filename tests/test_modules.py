@@ -7,7 +7,7 @@ PointCloud2 decoding and the captain's dry-run checker; the synthetic tunnel (Op
 import importlib.util
 import json
 import os
-from dataclasses import asdict
+from dataclasses import asdict, replace as dataclass_replace
 from pathlib import Path
 
 import numpy as np
@@ -107,6 +107,45 @@ def test_tracker_zone_is_majority_of_recent_hits():
     for zone in ("warning", "warning"):
         t.update([cluster_at(50.0, zone=zone)])
     assert t.confirmed()[0].zone == "warning"
+
+
+def person_or_column(x, column):
+    """A person-size cluster in the gauge (0.5 x 0.6 x 1.8 m on the bed), or the same track's
+    cluster demoted as a column (taller than cluster.column_min_height, zone 'warning')."""
+    c = cluster_at(x, zone="warning" if column else "gauge")
+    c.reason = "column" if column else ""
+    c.bbox_min = np.array([x, -0.3, 0.0])
+    c.bbox_max = np.array([x + 0.5, 0.3, 2.6 if column else 1.8])
+    c.height_min, c.height_max = 0.0, float(c.bbox_max[2])
+    return c
+
+
+@pytest.mark.parametrize("hold", [1, 2, 3, DetectorConfig().tracking.column_hold])
+def test_column_hold_gauge_below_the_hold_advisory_at_it(hold):
+    """tracking.column_hold (roundT_doubleT, 25.09, EXPERIMENTS 3a): a track with fewer than
+    ``hold`` column hits among its last zone_window (10) hits, then gauge hits of a person-size
+    cluster, is an obstacle ('gauge'); at ``hold`` column hits or more it is advisory until they
+    leave the window, and an obstacle again after that."""
+    zw = CFG.tracking.zone_window
+    tc = dataclass_replace(CFG.tracking, column_hold=hold)
+    for n_col in range(0, hold + 2):
+        t = Tracker(tc)
+        hits = [True] * n_col + [False] * 6         # column hits, then 6 gauge hits of a person
+        for k, col in enumerate(hits):
+            t.update([person_or_column(60.0 - 1.5 * k, col)], frame_dt=0.1)
+        rep = t.confirmed()
+        assert len(rep) == 1 and rep[0].hits == len(hits)
+        assert rep[0].zone == ("gauge" if n_col < hold else "warning"), (hold, n_col)
+        if n_col >= hold:                           # column hits leaving the window: an obstacle again
+            k0 = len(hits)
+            for k in range(k0, k0 + zw):
+                t.update([person_or_column(60.0 - 1.5 * k, False)], frame_dt=0.1)
+                n_left = sum(1 for j in range(k + 1 - zw, k + 1) if 0 <= j < n_col)
+                assert t.confirmed()[0].zone == ("gauge" if n_left < hold else "warning"), (hold, n_col, k)
+    t = Tracker(dataclass_replace(CFG.tracking, column_hold=0))      # 0 = off: the zone vote alone
+    for k, col in enumerate([True] * 4 + [False] * 6):
+        t.update([person_or_column(60.0 - 1.5 * k, col)], frame_dt=0.1)
+    assert t.confirmed()[0].zone == "gauge"                          # 6 of 10 hits in the gauge
 
 
 # ---------------------------------------------------------------------------
