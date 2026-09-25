@@ -37,6 +37,7 @@ rewritten later; **frozen** = kept for reference, not maintained; **archive** = 
 | [`images/README.md`](images/README.md) | dashboard UI screenshots and their data provenance | jury, team | EN | P2 | current |
 | [`archive/README.md`](archive/README.md) | superseded material kept for the record (captain's log of 16–24.09, day-1 results) | team | EN | P1 | archive |
 | [`web/README.md`](../web/README.md) | dashboard, RViz / Foxglove layouts, label tool, headless checks, video recipes | team, jury (demo) | EN | P2 | current |
+| [`scripts/vm/AGENT_BRIEF.md`](../scripts/vm/AGENT_BRIEF.md) | brief and runbook for the team's temporary cloud VM: setup, data fetch, 8-core bench, dry run, full regression gate with the ride, image export, offline rehearsal | team (the agent or a human on the VM) | EN | P1 | current |
 
 ### Organizers' material ([`organizers/`](organizers/))
 
