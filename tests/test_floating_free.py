@@ -6,12 +6,15 @@ does not demote a compact cluster hanging free inside the envelope - every exten
 ``floating_free_max_size``, its outermost point at most ``floating_free_max_dy`` off the axis (it
 does not reach the wall side of the corridor) and its top at most ``floating_free_max_top`` (it
 does not reach up to the vault). The target is the organizers' 0.3 m cube hanging 1.0-1.4 m above
-the rail head 0.6-0.8 m off the axis (set O #2), advisory at 44-59 m with the rule off.
+the rail head 0.6-0.8 m off the axis (set O #2), advisory at 44-59 m with the rule off. On (0.5 m)
+since 25.09: pre-registered candidate A, regression gate PASS (#2 19 -> 30 STOP frames, first STOP
+34.0 -> 52.5 m; the six recordings, the ride and set F straight identical).
 docs/evidence/results/p3_signatures_2026-09-25.json has the pre-registration and the measurements.
 """
 from __future__ import annotations
 
 from dataclasses import replace
+from pathlib import Path
 
 import numpy as np
 
@@ -20,7 +23,8 @@ from resense.config import ClusterConfig, DetectorConfig
 from resense.detector import Detector
 from resense.frame import Frame
 
-FREE_SIZE = 0.5          # the candidate measured on 25.09 (m); 0 = off
+ROOT = Path(__file__).resolve().parents[1]
+FREE_SIZE = 0.5          # the shipped cluster.floating_free_max_size (m) since 25.09, round 2; 0 = off
 
 
 def _box(x0: float, length: float, lateral: float, bottom: float, height: float, width: float):
@@ -35,13 +39,9 @@ def _reason(cfg, x0, length, lateral, bottom, height, width):
     return _advisory_reason(b, x0, float(dy.mean()), "gauge", dy, h, cfg, 1e9, None)
 
 
-def _on(cfg: ClusterConfig = None) -> ClusterConfig:
-    return replace(cfg or ClusterConfig(), floating_free_max_size=FREE_SIZE)
-
-
 def test_free_hanging_classification():
-    off = replace(ClusterConfig(), floating_free_max_size=0.0)
-    on = _on()
+    on = ClusterConfig()                                                     # the shipped default
+    off = replace(on, floating_free_max_size=0.0)
     # the organizers' cube #2 as the detector sees it at 44-56 m: its front face, 0.6-0.8 m off the axis
     for lat in (0.61, 0.7, 0.77):
         assert _reason(off, 50.0, 0.05, lat, 1.17, 0.22, 0.28) == "floating"
@@ -57,10 +57,10 @@ def test_free_hanging_classification():
 
 
 def test_free_hanging_default():
-    for cfg in (DetectorConfig(), DetectorConfig.from_yaml("configs/default.yaml"),
-                DetectorConfig.from_yaml("ros2_ws/src/resense_ros/config/detector.yaml")):
+    for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
+                DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
         c = cfg.cluster
-        assert (c.floating_free_max_size, c.floating_free_max_dy, c.floating_free_max_top) == (0.0, 0.95, 2.5)
+        assert (c.floating_free_max_size, c.floating_free_max_dy, c.floating_free_max_top) == (FREE_SIZE, 0.95, 2.5)
 
 
 def _cast(specs):
@@ -80,14 +80,12 @@ def _last(frame: Frame, cfg: DetectorConfig, n: int = 6):
 def _cfgs():
     off = DetectorConfig()
     off.cluster = replace(off.cluster, floating_free_max_size=0.0)
-    on = DetectorConfig()
-    on.cluster = _on(on.cluster)
-    return off, on
+    return off, DetectorConfig()                                             # the rule off, the shipped defaults
 
 
 def test_free_hanging_cube_is_a_stop(tunnel):
     """Ray-cast tunnel: the organizers' 0.3 m cube hanging 1.0-1.1 m above the rail head, 0.7-0.75 m off
-    the axis, at 30-55 m: advisory ``floating`` with the rule off, a STOP with it on."""
+    the axis, at 30-55 m: advisory ``floating`` with the rule off, a STOP with the shipped defaults."""
     from resense.synthetic import ObstacleSpec
     off, on = _cfgs()
     for dist, lat, base in ((30.0, 0.75, 1.0), (40.0, 0.75, 1.0), (55.0, 0.7, 1.1)):
@@ -104,9 +102,9 @@ def test_free_hanging_cube_is_a_stop(tunnel):
 
 def test_nearby_obstacle_and_wall_fixture(tunnel):
     """Ray-cast tunnel: a person-size box standing on the axis next to the cube is a STOP with the
-    rule off and on (the rule only takes demotions away); a 0.3 m tall plate fixed to the side wall
-    at the cube's height, reaching into the envelope to 0.75 m off the axis, stays advisory
-    ``floating`` with the rule on."""
+    rule off and with the shipped defaults (the rule only takes demotions away); a 0.3 m tall plate
+    fixed to the side wall at the cube's height, reaching into the envelope to 0.75 m off the axis,
+    stays advisory ``floating`` with the shipped defaults."""
     from resense.synthetic import ObstacleSpec
     off, on = _cfgs()
     cube = ObstacleSpec(kind="box", size=(0.3, 0.3, 0.3), distance=40.0, lateral=0.75, base=1.0, label="cube")

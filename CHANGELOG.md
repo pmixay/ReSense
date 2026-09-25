@@ -23,6 +23,13 @@ overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting
 buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`, +20 DDS
 transport, 19 of them in the image) in `tests/`, 13 in `web/demo`.
 
+- **Free-hanging exemption of `floating` (25.09, round 2, P3):** `cluster.floating_free_max_size`
+  0.5 m (with `floating_free_max_dy` 0.95 m, `floating_free_max_top` 2.5 m): the `floating`
+  signature no longer demotes a compact cluster hanging free inside the envelope. The organizers'
+  0.3 m cube hanging 1.0–1.4 m up (set O #2) is a STOP from 52.5 m instead of 34.0 m (19 → 30 STOP
+  frames); the six recordings and the ride are identical frame by frame, gate PASS. Pre-registered
+  (A / B / C, A shipped): `docs/evidence/results/p3_signatures_2026-09-25.json`, EXPERIMENTS §1i.
+  Tests +4 (`tests/test_floating_free.py`).
 - **Dashboard shortcuts after a click, phone gutter (25.09, review of PR #12):** since `46a04bb`
   the page's key handler ignored every key while a button or link had the focus, so after a
   click on «Демо» or ▶ the arrow keys did nothing, and on a view tab Space did nothing, until a

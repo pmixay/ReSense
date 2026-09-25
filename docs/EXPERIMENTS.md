@@ -52,7 +52,7 @@ every gated metric the same ([its JSON](evidence/results/regression_gate_2026-09
 | health, `CAUTION` | non-latency health warnings on 196 of 13 759 frames (1.4 %: rails lost at stations and switches); `CAUTION` on 27–68 % of the frames of the empty bags, 41 % of the ride | real, 24.09 | "Re-measurement" |
 | current code against v0.6.3 | identical per-frame output on all 13 759 frames | real, 24.09 | "Re-measurement" |
 | regression gate with the ride and set F straight (native, 25.09) | current baseline [`regression_baseline_2026-09-25_ride_column.json`](evidence/results/regression_baseline_2026-09-25_ride_column.json) on `d117c8c` (`tracking.column_hold` 2, pre-registered 3 / 2 / 1, [`column_hold_2026-09-25.json`](evidence/results/column_hold_2026-09-25.json)): PASS against the one before with 7 gated rows better (`roundT_doubleT` events and STOP episodes, set F false detections of every kind), none worse, §3a. Before it: [`regression_baseline_2026-09-25_ride.json`](evidence/results/regression_baseline_2026-09-25_ride.json) on `935eecf`: PASS against the shipped-defaults run of the same day (3 gated rows better: `squareT_platform_squareT_switch` events and STOP episodes, ride events); decision evidence [`rules_decision_2026-09-25.json`](evidence/results/rules_decision_2026-09-25.json); the review fix `cluster.floating_long_min_bottom` 1.6 m (`0bb1ba3`) passes against the same baseline with every number but latency identical and the same per-frame output, so the baseline stands ([`long_rule_bottom_2026-09-25.json`](evidence/results/long_rule_bottom_2026-09-25.json)) | real, organizers' synthetic and synthetic, 25.09 | §1f |
-| organizers' objects (set O, `cloud_with_fake_obj`, 10 objects in 1 510 frames) | STOP for **5 of 8** in-envelope objects: 2 × 2 m box from 98 m (first sight), plank across the rails from 82 m, 0.3 m cubes from 34–43 m, 2 × 2 m box at the envelope top in 12 of 124 frames; the edge 2 × 2 m box and the 5 cm hanging object missed, the edge 0.3 m cube advisory only; STOP in 303 of 801 visible in-envelope object-frames, 1 of 236 beyond 100 m; 6 false STOP frames on the 2 × 2 m box outside, 3 background alarm frames | organizers' synthetic, 24.09 | §2e |
+| organizers' objects (set O, `cloud_with_fake_obj`, 10 objects in 1 510 frames) | STOP for **5 of 8** in-envelope objects: 2 × 2 m box from 98 m (first sight), plank across the rails from 82 m, 0.3 m cubes from 43–53 m (the hanging one from 52.5 m since 25.09, 34.0 m before, §1i), 2 × 2 m box at the envelope top in 12 of 124 frames; the edge 2 × 2 m box and the 5 cm hanging object missed, the edge 0.3 m cube advisory only; STOP in 314 of 801 visible in-envelope object-frames (303 before §1i), 1 of 236 beyond 100 m; 6 false STOP frames on the 2 × 2 m box outside, 3 background alarm frames | organizers' synthetic, 24.09; #2 25.09 | §2e, §1i |
 | long range, straight track | person first confirmed at **148 m** median (6 of 6), held in ≥ 90 % of the frames from 149 m and in every 10 m band from 115 m; trolley 144 m; 1 m crate 111 m; 3 cm hanging cable 95 m, held from 53 m (4 of 6); 0.5 m box on the bed 1 of 6; re-measured 25.09 by the gate on the current `far_range_eval.py` (changed by the P4 audit after 24.09; same files, seed, stamps, speeds): person 151.0 m median (6 of 6), held from 142.6 m; trolley 151.4 m; 1 m crate 123.9 m; cable 98.9 m, held from 34.2 m (6 of 6); 0.5 m box 1 of 6 (51.9 m); identical with and without either 25.09 rule [measured 25.09] | synthetic, set F round 3, legacy placement, 24.09; gate 25.09 | §2d |
 | same, object anchored on the near rails | person **154 m** (legacy 150 m in the same 5 pairs), trolley 148 m (148 m), crate 110 m (116 m), cable 102 m (104 m) | synthetic, set F round 4, anchored placement, 24.09 | §2d |
 | curves and the envelope edge, paired | no visible object matched at 100–150 m in either placement mode (6 paired R ≈ 350 m curve approaches per kind, lateral to the envelope edge); first confirmed person 74 → 68 m, 1 m box 75 → 80 m (legacy → anchored) | synthetic, set F paired, 24.09 | §2d |
@@ -953,6 +953,38 @@ Reproduce the six-bag checks with `python scripts/robustness_check.py --cache <c
 the held-out measurement with `resense run --bag <cloud_with_fake_obj> --out <full.jsonl>
 --quiet`, filter its JSONL rows to `804 <= frame <= 1509`, and run `resense summarize` on the
 filtered file. The raw bags and caches stay outside Git.
+
+### 1i. P3 items of 25.09, round 2
+
+**The free-hanging exemption of `floating` (set O cube #2, 25.09)** [organizers' synthetic and
+real, measured 25.09]. `floating` demoted the organizers' 0.3 m cube hanging 1.0–1.4 m above the
+rail head (#2) at 44–59 m: measured from the rails it is 0.61–0.82 m off the axis, beyond
+`signature_min_lateral` 0.6 m. The shipped rule, instrumented in one run on the six recordings,
+set O and the ride (decisions identical to the baseline), shows what the cube is not: the ride's
+43 `floating` cluster-frames (56.7–152.4 m) are 0.35–5.7 m in their largest extent (median 1.7 m),
+24 of them reach up to the vault (top above 2.5 m) and 12 the wall side of the corridor (outermost
+point beyond 0.95 m); the platform recording's 154 are mostly the ~104 m overhead structure. The cube is compact
+(extents 0.04–0.33 m, 5–7 voxels), hangs free mid-envelope (top 1.37–1.40 m, outermost point
+0.73–0.98 m, the wall 2.0–2.2 m off the axis, every other return ≥ 1.07 m away) and is a cluster
+in 9 of the 10 frames from 59 m. Of the ride's two compact `floating` clusters, one hangs from the
+vault (56.7 m, top 3.0 m, 0.13 m from the next return, a confirmed track), the other reaches
+1.26 m off the axis. Rule (`cluster.floating_free_max_size`, with `floating_free_max_dy`,
+`floating_free_max_top`): `floating` does not demote a cluster whose every extent is ≤ 0.5 m, whose
+outermost point is ≤ 0.95 m off the axis and whose top is ≤ 2.5 m. Pre-registered at 20:52 UTC,
+after the instrumented run and before any candidate run
+([`p3_signatures_2026-09-25.json`](evidence/results/p3_signatures_2026-09-25.json)): A 0.5 /
+0.95 / 2.5 m, B 0.4 / 0.95 / 2.5, C 0.5 / 0.90 / 2.2 in that order; ship the first with gate exit
+0, #2 improved and the safety conditions (`doubleT_obstacle`, set O inside objects and set F
+straight identical or better, no new false event on the five bags or the ride). A, on `edec4da`
+with `--jobs 1`: **gate PASS**, 2 gated rows better, none worse. #2: 19 → **30 STOP frames**, first
+STOP **34.0 → 52.5 m**, held from 37.4 → 57.5 m (inside STOP frames 303 → 314, still 5 of 8
+objects). The six recordings and all 11 271 ride frames are identical frame by frame (decisions,
+detections, warnings); set O differs in 11 frames, all #2; `doubleT_obstacle` 58 / 127 / 124 hits,
+first frame 11; set F straight identical; #5 0 and #7 6 false STOP frames, background 3 / 2. B and
+C were not run. **Shipped** (0.5 / 0.95 / 2.5 m; the new defaults resolve to the configuration of
+that gate run). Not won: #4 stays advisory, its outermost point 1.18–1.32 m off the axis like the
+outside cube #5's (Q1); #8 waits on Q2. Tests: `tests/test_floating_free.py` (ray-cast: the cube at
+30–55 m is a STOP, a person beside it a STOP, a plate fixed to the wall stays `floating`).
 
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 
@@ -1982,6 +2014,9 @@ v0.6).
   with `scripts/regression_gate.py --set …`, then the go / no-go~~ decided 25.09 on the ride
   (§1f): the long overhead rule on (ride 47 → 46 events), short signatures off (ride STOP
   episodes +6 for +49 set O STOP frames);
+- ~~**the `floating` signature on the organizers' hanging cube** (P3; §2e)~~ done 25.09, round 2
+  (§1i): `cluster.floating_free_max_size` 0.5 m, #2 a STOP from 52.5 m (34.0 m), every recording
+  and the ride identical; #4 (edge, Q1) and #8 (`elevated`, Q2) wait on the organizers;
 - **thin hanging objects** (P3, P4; §2e): the organizers' 5 cm object dips only 0.2–0.36 m into the
   envelope with 1–4 points a frame and never becomes a candidate; a rule for thin clusters near
   the axis linked to points above the envelope, measured on set O, the empty bags and the ride;
