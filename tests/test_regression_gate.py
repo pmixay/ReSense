@@ -313,8 +313,9 @@ def test_a_recording_or_object_missing_from_an_earlier_result_fails():
     new = copy.deepcopy(base)
     del new["recordings"]["roundT_doubleT"]
     del new["set_O"]["objects"]["small_center"]
-    assert failing(base, new) == [f"recordings.roundT_doubleT.{m}" for m in ("frames", "alarm_events", "stop_episodes")] \
-        + ["set_O.objects.small_center.stop_frames", "set_O.objects.small_center.first_stop_m"]
+    expected = [f"recordings.roundT_doubleT.{m}" for m in ("frames", "alarm_events", "stop_episodes")]
+    expected += ["set_O.objects.small_center.stop_frames", "set_O.objects.small_center.first_stop_m"]
+    assert failing(base, new) == expected
     lines = gate.missing_lines(gate.compare(base, new), new)
     assert lines[0] == "MISSING in this run: recording roundT_doubleT: 3 gated row(s) of the baseline not checked"
     assert lines[1] == "MISSING in this run: set O: 2 gated row(s) of the baseline not checked"
