@@ -484,9 +484,9 @@ def gate_summary(rows, base: dict, baseline_path: str, allow) -> dict:
             "baseline_config_sha256": (base.get("config") or {}).get("sha256"),
             "allow": list(allow), "passed": not fails, "worse_gated": fails,
             "worse_allowed": [r["metric"] for r in rows if r["allowed"]],
-            "better": [r["metric"] for r in rows if r["verdict"] == "better"],
+            "better": [r["metric"] for r in rows if r["gated"] and r["verdict"] == "better"],
             "same": sum(1 for r in rows if r["verdict"] == "same"),
-            "info_changed": [r["metric"] for r in rows if not r["gated"] and r["verdict"] not in ("same", "better")]}
+            "info_changed": [r["metric"] for r in rows if not r["gated"] and r["verdict"] != "same"]}
 
 
 # --------------------------------------------------------------------------------------------
@@ -566,11 +566,12 @@ def main(argv=None) -> int:
             print("note:", line)
         g = gate_summary(rows, base, a.baseline, a.allow)
         res["gate"] = g
-        n_b, n_w = len(g["better"]), len(g["worse_gated"])
+        counts = (f"{len(g['better'])} gated better, {len(g['worse_allowed'])} worse but allowed, "
+                  f"{len(g['info_changed'])} information rows changed")
         if g["passed"]:
-            print(f"GATE PASS: no gated metric worse ({n_b} better, {len(g['worse_allowed'])} worse but allowed)")
+            print(f"GATE PASS: no gated metric worse ({counts})")
         else:
-            print(f"GATE FAIL: {n_w} gated metric(s) worse: {', '.join(g['worse_gated'])}")
+            print(f"GATE FAIL: {len(g['worse_gated'])} gated metric(s) worse: {', '.join(g['worse_gated'])} ({counts})")
             code = 1
     out = a.out or (None if a.from_json else os.path.join(a.work, "result.json"))
     if out:
