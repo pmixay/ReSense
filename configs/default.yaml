@@ -26,6 +26,7 @@ resense:
     floor_shadow_height: 1.0       # on since 25.09 (P3, rail shadow; 0 = off): bed bins this far above the previous bed, two in a row starting within floor_shadow_range, start a shadow; the bed fit and the rail pair then use the track in front of the object, or hold the previous model (set O #1: wrong-distance frames 12 -> 0)
     floor_shadow_range: 30.0       # 25.09: m (40 fired at 37-38.5 m on doubleT_platform and added a false alarm)
     floor_shadow_min_bins: 5
+    floor_shadow_max_hold: 20      # review 25.09: frames; after this many held frames in a row the rule is released until no shadow is found (a pitch step held the bed for good); set O #1 holds 14; 0 = no cap
     floor_far_min_width: 0.0       # 25.09 (P3 bed_bin): m; a far bed bin narrower than this with an object standing on it is dropped from the fit; 0 = off
     floor_far_from: 90.0           # m, bin centre from which that check applies (the real bed stops returning beyond ~90 m)
     floor_far_min_standing: 2      # points 0.3-1.5 m above the narrow bin's low points needed to drop it (0 = drop every narrow far bin)
@@ -115,7 +116,7 @@ resense:
     max_extent: 8.0
     oversize_split_max_length: 3.0 # on since 25.09 (P3; 0 = off): a cluster larger than max_extent keeps its part inside the strict gauge when that part is at most this long (an object touching a line at the corridor edge)
     oversize_split_max_distance: 30.0 # 25.09 (P3): ... and starts within this distance (m; beyond, long sparse far clusters gave a false alarm)
-    gauge_distance: true           # on since 25.09 (P3; false = off): a gauge cluster's distance is its nearest point inside the envelope, not a margin point it touches
+    gauge_distance: true           # on since 25.09 (P3; false = off): a gauge cluster's distance is its nearest point inside the envelope, not a margin point it touches; since the review of 25.09 the envelope widened by the axis-uncertainty margin (edge_margin_per_100m), so never farther than where the object enters it
     min_height: 0.08
     thin_min_length: 3.0
     thin_max_width: 0.35

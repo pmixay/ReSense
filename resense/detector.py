@@ -376,7 +376,7 @@ class Detector:
                                 height_valid=floor_valid if cfg.cluster.far_min_height > 0 else None,
                                 min_points_factor=factor, factor_range=acc.min_range,
                                 smear_max_length=acc.smear_max_length if n_acc > 1 else 0.0,
-                                smear_max_width=acc.smear_max_width if n_acc > 1 else 0.0)
+                                smear_max_width=acc.smear_max_width if n_acc > 1 else 0.0, gauge=cfg.gauge)
         lows: List[Cluster] = []
         straddling: List[Cluster] = []
         lcfg = replace(cfg.cluster, eps=cfg.lowobj.eps)

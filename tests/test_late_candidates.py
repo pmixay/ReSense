@@ -16,7 +16,10 @@
   (the bed and the rail pair are fitted in front of the object's shadow or held),
   ``cluster.oversize_split_max_length`` (an object touching a long line at the corridor edge is
   not dropped with it) and ``cluster.gauge_distance`` (the distance is that of the part inside
-  the envelope); docs/evidence/results/p3_rail_shadow_2026-09-25.json.
+  the envelope); docs/evidence/results/p3_rail_shadow_2026-09-25.json. The safety review of 25.09
+  (docs/evidence/results/p3_review_fixes_2026-09-25.json): the distance on the envelope widened by
+  the axis-uncertainty margin (never beyond the entry), ``track.floor_shadow_max_hold`` (a hold
+  cannot lock), adjacent shadow bins and the face nearest the shadow.
 * ``cluster.far_axis_both_sides`` (25.09, far_switch; 0 = off): beyond the height reference a far
   obstacle needs both fitted tunnel boundaries to support the axis (mode 1 on every frame, the
   corridor ends there; mode 2 on bent frames only, would-be obstacles demoted); at the 147.5 m
@@ -32,6 +35,7 @@ from functools import lru_cache
 from pathlib import Path
 
 import numpy as np
+import pytest
 
 from resense.clustering import _advisory_reason, _Blob, find_clusters
 from resense.config import ClusterConfig, DetectorConfig
@@ -262,6 +266,7 @@ def test_rail_shadow_rules_shipped():
                 DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
         t, c = cfg.track, cfg.cluster
         assert (t.floor_shadow_height, t.floor_shadow_range, t.floor_shadow_min_bins) == (1.0, 30.0, 5)
+        assert t.floor_shadow_max_hold == 20                              # review 25.09: set O #1 holds 14 in a row
         assert (c.oversize_split_max_length, c.oversize_split_max_distance, c.gauge_distance) == (3.0, 30.0, True)
 
 
@@ -270,20 +275,22 @@ def test_oversize_split_and_gauge_distance():
     one cluster longer than max_extent (8 m): dropped whole when off; with the split it is the
     face, 2 m wide, at 15 m; beyond oversize_split_max_distance (30 m) it stays dropped. With the
     line shorter than max_extent the cluster is kept either way, but it starts at the line's near
-    end (3 m) unless gauge_distance is on."""
+    end (3 m) unless gauge_distance is on (it needs the gauge profile: without it the distance
+    stays the cluster's nearest point)."""
     from resense.gauge import corridor_coordinates, corridor_mask, gauge_core_mask
     from resense.track import TrackModel
     tm = TrackModel(floor_coef=np.array([0.0, 0.0, -1.5]), floor_range=(0.0, 250.0), center=AXIS_Y,
                     yaw=0.0, curvature=0.0, rail_offset=0.18)
     base = DetectorConfig()
 
-    def clusters(pts, split, gd, reach=30.0):
+    def clusters(pts, split, gd, reach=30.0, gauge=base.gauge):
         cfg = replace(base.cluster, oversize_split_max_length=split, gauge_distance=gd,
                       oversize_split_max_distance=reach)
         dy, h = corridor_coordinates(pts, tm)
         m, strict = corridor_mask(pts, tm, base.gauge, dy, h)
         strict = strict & gauge_core_mask(dy, h, pts[:, 0], base.gauge)
-        return find_clusters(pts[m], np.full(int(m.sum()), 10.0, np.float32), dy[m], h[m], strict[m], cfg)
+        return find_clusters(pts[m], np.full(int(m.sum()), 10.0, np.float32), dy[m], h[m], strict[m], cfg,
+                             gauge=gauge)
 
     long_line = np.concatenate([_face(15.0), _edge_line(3.0, 15.0)])
     assert clusters(long_line, 0.0, False) == []
@@ -299,6 +306,8 @@ def test_oversize_split_and_gauge_distance():
     assert c.zone == "gauge" and abs(c.distance - 3.0) < 0.01          # the line's near end
     (c,) = clusters(short_line, 3.0, True)
     assert c.zone == "gauge" and abs(c.distance - 9.0) < 0.01          # the face
+    (c,) = clusters(short_line, 3.0, True, gauge=None)
+    assert abs(c.distance - 3.0) < 0.01                                 # no profile: the nearest point
     clear = _edge_line(3.0, 30.0)                                       # the line alone: nothing either way
     assert clusters(clear, 3.0, True) == clusters(clear, 0.0, False) == []
 
@@ -379,6 +388,111 @@ def test_rail_shadow_person_in_front_of_the_box_stops(tunnel):
     res = _run_with(frame, both, _rail_shadow_cfg(True))
     assert res.obstacle and abs(res.nearest_distance - 20.0) < 0.5
     assert _run_with(frame, person, _rail_shadow_cfg(True)).obstacle
+
+
+# --- review of 25.09: the safety fixes of the rail-shadow rules ----------------------------------
+
+def _oblique_bar(x_entry: float, slope: float = 0.15, before: float = 2.0, after: float = 4.0,
+                 side: float = 1.0) -> np.ndarray:
+    """A 1.2 m tall bar (0.2-1.4 m above the rail head) lying obliquely across the corridor edge:
+    it starts ``before`` m ahead of its entry in the advisory margin (|dy| 1.35 m) and crosses the
+    1.05 m envelope edge at exactly ``x_entry``, ``slope`` m of |dy| per m of X (a fallen pole or
+    plank), points every 2 cm along the track, in the tunnel frame of ``synthetic_tunnel_frame``."""
+    X, Z = np.meshgrid(np.arange(x_entry - before, x_entry + after + 1e-9, 0.02), np.arange(0.0, 1.2 + 1e-9, 0.05),
+                       indexing="ij")
+    dy = 1.05 - slope * (X - x_entry)
+    return np.stack([X.ravel(), AXIS_Y + side * dy.ravel(), RAIL_HEAD_Z + 0.2 + Z.ravel()], 1).astype(np.float32)
+
+
+@pytest.mark.parametrize("x_entry", [40.0, 80.0, 120.0])
+def test_gauge_distance_is_never_beyond_the_envelope_entry(tunnel, x_entry):
+    """Review of 25.09 (safety): cluster.gauge_distance took the nearest point of the strict-gauge
+    mask, which is the envelope SHRUNK by the axis-uncertainty edge margin (0.15 m per 100 m): an
+    object entering the envelope obliquely was reported 0.4 / 0.8 / 1.2 m beyond its entry at
+    40 / 80 / 120 m (a too-long distance). The distance is now measured on the envelope widened
+    by that margin: never beyond the entry (+ 5 cm, the point spacing), never before the bar."""
+    frame, _, _ = tunnel
+    for side in (1.0, -1.0):
+        res = _run_with(frame, _oblique_bar(x_entry, side=side), DetectorConfig())
+        assert res.obstacle, (x_entry, side)
+        assert x_entry - 2.05 <= res.nearest_distance <= x_entry + 0.05, (x_entry, side, res.nearest_distance)
+
+
+def _pitched(tunnel_frame: Frame, grade: float) -> Frame:
+    """The frame seen by a sensor pitched down by ``atan(grade)``: the bed ahead rises by ``grade``."""
+    a = np.arctan(grade)
+    rot = np.array([[np.cos(a), 0.0, -np.sin(a)], [0.0, 1.0, 0.0], [np.sin(a), 0.0, np.cos(a)]])
+    return Frame(xyz=(tunnel_frame.xyz.astype(np.float64) @ rot.T).astype(np.float32), intensity=tunnel_frame.intensity)
+
+
+def _pitch_step(tunnel_frame: Frame, cfg: DetectorConfig, grade: float = 0.06, n: int = 45):
+    """10 frames of the clear tunnel, then ``n`` frames after a relative pitch step (grade 0 -> ``grade``)."""
+    det = Detector(cfg)
+    step = _pitched(tunnel_frame, grade)
+    for k in range(10):
+        det.process(Frame(xyz=tunnel_frame.xyz, intensity=tunnel_frame.intensity, stamp=0.1 * k))
+    return [det.process(Frame(xyz=step.xyz, intensity=step.intensity, stamp=0.1 * (k + 10))) for k in range(n)]
+
+
+def test_floor_shadow_hold_is_released_after_the_cap(tunnel):
+    """Review of 25.09: a held bed is the next frame's reference, so a relative pitch step of 3.4 deg
+    (grade 0 -> 6 %) after the warm-up looked like a shadow at 17 m and held the flat bed for good
+    (the lasting false STOP at ~4.4 m of the rising bed). With track.floor_shadow_max_hold (20
+    frames) the hold ends after 20 frames, the bed follows the pitch and the STOP clears for good;
+    the status counts the frames (health floor_shadow_frames / floor_held_frames /
+    floor_released_frames). Without the cap the lock is still there."""
+    frame, _, _ = tunnel
+    cap = 20                                                          # the shipped floor_shadow_max_hold
+    res = _pitch_step(frame, DetectorConfig())
+    held = [r.track.floor_held for r in res]
+    assert held[:cap] == [True] * cap and not any(held[cap:])
+    assert not any(r.obstacle for r in res[cap + 3:])
+    assert abs(float(res[-1].track.floor_z(20.0)) - (0.06 * 20.0 - 1.5 / np.cos(np.arctan(0.06)))) < 0.15
+    h = res[-1].health
+    assert h["floor_held_frames"] == cap and h["floor_released_frames"] >= 1
+    assert h["floor_shadow_frames"] == h["floor_held_frames"] + h["floor_released_frames"]
+    assert res[cap - 1].to_dict()["track"]["floor_hold_run"] == cap
+    cfg = DetectorConfig()
+    cfg.track = replace(cfg.track, floor_shadow_max_hold=0)
+    locked = _pitch_step(frame, cfg)
+    assert all(r.track.floor_held for r in locked) and locked[-1].obstacle
+
+
+def _band_points(bins: dict) -> np.ndarray:
+    """40 bed-band points per floor-profile bin centre (``{centre X: height above the bed}``), the
+    bed at -1.5 m on a straight axis at y = 0."""
+    rng = np.random.default_rng(7)
+    parts = [np.stack([rng.uniform(x - 0.4, x + 0.4, 40), rng.uniform(-0.8, 0.8, 40), np.full(40, -1.5 + dz)], 1)
+             for x, dz in bins.items()]
+    return np.concatenate(parts).astype(np.float32)
+
+
+def test_floor_shadow_needs_adjacent_bins_and_takes_the_face_nearest_the_shadow():
+    """Review of 25.09, unit (track._fit_floor): (1) two bins high above the bed with empty bins
+    between them (28 m and 62.5 m) are no shadow; two adjacent ones are (28 and 30 m: start 27 m).
+    (2) the object's face is the first bin of the off-bed run nearest the shadow, not a nearer
+    off-bed bin (a switch part or a low object at 8 m, which cut the rail search to 4-7 m and held
+    the rail model): the face bin at 16 m -> 15 m; a face over two bins (14 and 16 m) -> 13 m."""
+    from resense.config import TrackConfig
+    from resense.track import TrackModel, _fit_floor
+    cfg = TrackConfig()
+    prev = TrackModel(floor_coef=np.array([0.0, 0.0, -1.5]), floor_range=(3.0, 120.0), center=0.0, yaw=0.0,
+                      curvature=0.0, age=10)
+
+    def shadow_info(bins):
+        info = {}
+        assert _fit_floor(_band_points(bins), cfg, prev, shadow_ref=prev, info=info) is not None
+        return info
+
+    bed = {float(x): 0.0 for x in range(4, 28, 2)}
+    gap = shadow_info({**bed, 28.0: 2.5, 62.5: 2.5, **{x: 0.0 for x in (67.5, 72.5, 77.5, 82.5)}})
+    assert gap["shadow"] == 0.0
+    assert shadow_info({**bed, 28.0: 2.5, 30.0: 2.5})["shadow"] == 27.0
+    box = {**{float(x): 0.0 for x in range(4, 16, 2)}, 8.0: 0.6, 16.0: 0.6, **{float(x): 3.0 for x in range(18, 32, 2)}}
+    one = shadow_info(box)
+    assert (one["shadow"], one["face"], one["hold"]) == (17.0, 15.0, False)
+    two = shadow_info({**box, 14.0: 0.6})
+    assert (two["shadow"], two["face"]) == (17.0, 13.0)
 
 
 # ---------------------------------------------------------------------------

@@ -53,6 +53,10 @@ class TrackConfig:
     floor_shadow_height: float = 1.0
     floor_shadow_range: float = 30.0   # m (40 fired at 37-38.5 m on doubleT_platform and added a false alarm, round 1)
     floor_shadow_min_bins: int = 5
+    # review 25.09: at most this many held frames in a row (10 Hz), then the rule is released until no
+    # shadow is found (a held bed is the next frame's reference: a pitch step held it for good); set O
+    # #1 holds 14 frames in a row while the box closes from ~13 to ~3 m. 0 = no cap
+    floor_shadow_max_hold: int = 20
     # 25.09 (P3 bed_bin): a far bed bin (centre >= floor_far_from) whose low points span less than
     # floor_far_min_width laterally, with >= floor_far_min_standing points standing on them, is the
     # foot of an object, not the bed, and is dropped from the fit (track._narrow_far_bins); 0 = off
@@ -156,7 +160,9 @@ class ClusterConfig:
     oversize_split_max_length: float = 3.0
     oversize_split_max_distance: float = 30.0  # m, ... and only when that part starts within this distance (the far corridor holds long sparse clusters with a few gauge voxels, round 1 of 25.09)
     # on since 25.09 (P3): true = the distance of a cluster inside the strict gauge is that of its nearest
-    # point inside the gauge, not of a point in the advisory margin it touches; false = the nearest point (v0.1)
+    # point inside the gauge, not of a point in the advisory margin it touches; false = the nearest point (v0.1).
+    # Since the review of 25.09 "inside" is the envelope widened by the axis-uncertainty margin
+    # (gauge.edge_margin_per_100m; resense.gauge.gauge_reach_mask), never the strict-gauge mask shrunk by it
     gauge_distance: bool = True
     min_height: float = 0.08       # m, vertical extent (very flat clusters = floor noise)
     # linear infrastructure (rails, pipes, cables): long, thin, flat

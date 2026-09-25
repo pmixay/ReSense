@@ -44,6 +44,7 @@ class TrackModel:
     age: int = 0                     # v0.6: frames since the model was seeded (rate limits apply after the warm-up)
     floor_shadow: float = 0.0        # 25.09: X where a near occluder's shadow starts in the bed band (0 = none; floor_shadow_height)
     floor_held: bool = False         # 25.09: the bed profile was held from the previous frame (too little bed in front of the shadow)
+    floor_hold_run: int = 0          # 25.09 review: consecutive held frames; past floor_shadow_max_hold it keeps counting while the rule is released (a shadow still found, not applied)
     far_support_run: int = 0         # 25.09: consecutive frames with the walls_min_far_support condition (not reported)
     axis_valid_both: float = 1e9     # 25.09: X up to which BOTH fitted boundaries support the axis (= axis_valid with one or none); read only with cluster.far_axis_both_sides 1, not serialised
     axis_valid_bent: float = 1e9     # 25.09: the same without the straight bonus, on a bent axis with two boundaries only (1e9 otherwise); cluster.far_axis_both_sides 2, not serialised
@@ -97,7 +98,8 @@ class TrackModel:
             "axis_sides": int(self.axis_sides),
             "age": int(self.age),
             # 25.09 (additive, only in a frame with a shadow: the output is unchanged otherwise)
-            **({"floor_shadow": round(float(self.floor_shadow), 1), "floor_held": bool(self.floor_held)}
+            **({"floor_shadow": round(float(self.floor_shadow), 1), "floor_held": bool(self.floor_held),
+                "floor_hold_run": int(self.floor_hold_run)}
                if self.floor_shadow > 0 else {}),
         }
 
@@ -142,7 +144,8 @@ def bin_percentile(values: np.ndarray, bins: np.ndarray, nb: int, percentile: fl
     return prof, counts
 
 
-def _floor_shadow(xs: np.ndarray, zs: np.ndarray, ref: TrackModel, cfg: TrackConfig):
+def _floor_shadow(xs: np.ndarray, zs: np.ndarray, ref: TrackModel, cfg: TrackConfig,
+                  bins: Optional[np.ndarray] = None):
     """The shadow of a large near object in the bed band (25.09, ``floor_shadow_height``).
 
     An object that fills the band (the organizers' 2 x 2 m box) hides the bed behind it: the
@@ -150,24 +153,34 @@ def _floor_shadow(xs: np.ndarray, zs: np.ndarray, ref: TrackModel, cfg: TrackCon
     bins in front the line through the near bins tilts (set O, box at 9-26 m: the rail head at
     20 m 0.8-3.5 m off). The shadow starts at the first populated bin within ``floor_shadow_range``
     that lies more than ``floor_shadow_height`` above the previous frame's bed and is followed
-    by another such bin. Then only bins within ``floor_max_residual`` of the previous bed are
-    fitted, never the populated bin just before the shadow (the object's face, whose low
-    percentile can still look like bed); with fewer than ``floor_shadow_min_bins`` of them in
-    front of the shadow the previous bed is held. The object's face is the first bin before the
-    shadow that is not bed (more than ``floor_max_residual`` off; an object raised above the bed
-    lets the bed show under it for a few metres), else that populated bin just before the
+    by another such bin adjacent to it in X (``bins``: the profile bin index of each entry; since
+    the review of 25.09 two high bins with an empty bin between them, e.g. at 29 and 60 m, are no
+    shadow). Then only bins within ``floor_max_residual`` of the previous bed are fitted, never
+    the populated bin just before the shadow (the object's face, whose low percentile can still
+    look like bed); with fewer than ``floor_shadow_min_bins`` of them in front of the shadow the
+    previous bed is held. The object's face is the bin nearest the shadow that starts the last run
+    of bins before it that are not bed (more than ``floor_max_residual`` off; an object raised above
+    the bed lets the bed show under it for a few metres; a nearer off-bed bin, a switch part or a
+    low object, is not the face since the review of 25.09), else that populated bin just before the
     shadow. Returns (keep mask or None, shadow start X or 0, lower edge X of the face bin or 0,
     hold)."""
     d = zs - ref.floor_z(xs)
     high = d > cfg.floor_shadow_height
-    start = np.flatnonzero(high[:-1] & high[1:] & (xs[:-1] < cfg.floor_shadow_range))
+    pair = high[:-1] & high[1:] & (xs[:-1] < cfg.floor_shadow_range)
+    adjacent = np.ones(max(xs.size - 1, 0), dtype=bool) if bins is None else np.diff(bins) == 1
+    start = np.flatnonzero(pair & adjacent)
     if start.size == 0:
         return None, 0.0, 0.0, False
     s = int(start[0])
     x_s = float(xs[s] - 0.5 * cfg.floor_bin)                 # lower edge of the first shadowed bin
     keep = np.abs(d) < cfg.floor_max_residual
     off = np.flatnonzero(~keep[:s])
-    f = int(off[0]) if off.size else s - 1
+    if off.size:
+        f = int(off[-1])                                     # the off-bed run nearest the shadow ...
+        while f > 0 and not keep[f - 1] and adjacent[f - 1]:
+            f -= 1                                           # ... from its first bin (the object's front)
+    else:
+        f = s - 1
     x_face = float(xs[f] - 0.5 * cfg.floor_bin) if f >= 0 else x_s - cfg.floor_bin
     keep[max(s - 1, 0):s + 1] = False
     return keep, x_s, x_face, int((keep & (xs < x_s)).sum()) < cfg.floor_shadow_min_bins
@@ -224,7 +237,7 @@ def _narrow_far_bins(xyz: np.ndarray, cfg: TrackConfig, prior: TrackModel, edges
 
 
 def _fit_floor(xyz: np.ndarray, cfg: TrackConfig, prior: TrackModel,
-               shadow_ref: Optional[TrackModel] = None, info: Optional[dict] = None):
+               shadow_ref: Optional[TrackModel] = None, info: Optional[dict] = None, release: bool = False):
     """Robust per-bin percentile fit of the track bed. Returns (coef, range, n_bins, rms).
 
     Two stages: a line through the dense near bins (< 40 m), then far bins are accepted
@@ -234,6 +247,8 @@ def _fit_floor(xyz: np.ndarray, cfg: TrackConfig, prior: TrackModel,
     With ``shadow_ref`` (the previous frame's model; ``floor_shadow_height`` > 0) the bins in
     the shadow of a large near object are left out first, or ``shadow_ref``'s bed is returned
     unchanged (:func:`_floor_shadow`); ``info`` then receives ``shadow``, ``face`` and ``hold``.
+    With ``release`` (the bed was held ``floor_shadow_max_hold`` frames in a row) the shadow is
+    only looked for, to know whether it persists; the bed is fitted as without the rule.
     """
     X, Y, Z = xyz[:, 0], xyz[:, 1], xyz[:, 2]
     x0, x1 = cfg.floor_fit_range
@@ -268,7 +283,9 @@ def _fit_floor(xyz: np.ndarray, cfg: TrackConfig, prior: TrackModel,
     zs = prof[ok]
     ws = np.sqrt(np.minimum(counts[ok], 200).astype(np.float64))
     if shadow_ref is not None:
-        keep, x_s, x_face, hold = _floor_shadow(xs, zs, shadow_ref, cfg)
+        keep, x_s, x_face, hold = _floor_shadow(xs, zs, shadow_ref, cfg, bins=np.flatnonzero(ok))
+        if release:
+            keep, x_face, hold = None, 0.0, False
         if info is not None:
             info["shadow"], info["face"], info["hold"] = x_s, x_face, hold
         if hold:
@@ -740,8 +757,13 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
     prior = prev if prev is not None else default_track_model(cfg)
     shadow_ref = (prev if cfg.floor_shadow_height > 0 and prev is not None and prev.age >= cfg.axis_warmup_frames
                   else None)
+    # review 25.09: a held bed becomes the next frame's reference, so nothing in the rule itself ends
+    # a hold (a pitch step of 3.4 deg held the bed for good: a lasting false STOP at 4.3 m); after
+    # floor_shadow_max_hold held frames in a row the rule is released until no shadow is found
+    release = (shadow_ref is not None and cfg.floor_shadow_max_hold > 0
+               and shadow_ref.floor_hold_run >= cfg.floor_shadow_max_hold)
     info: dict = {}
-    fit = _fit_floor(xyz, cfg, prior, shadow_ref=shadow_ref, info=info)
+    fit = _fit_floor(xyz, cfg, prior, shadow_ref=shadow_ref, info=info, release=release)
     if fit is None:
         return prior
     coef, frange, n_bins, rms = fit
@@ -754,6 +776,8 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
         wall_quality=prior.wall_quality, axis_valid=prior.axis_valid,
         age=(prev.age + 1) if prev is not None else 0,
         floor_shadow=float(info.get("shadow", 0.0)), floor_held=bool(info.get("hold", False)),
+        floor_hold_run=(prev.floor_hold_run + 1 if prev is not None and (
+            info.get("hold", False) or (release and info.get("shadow", 0.0) > 0)) else 0),
     )
     a_r = cfg.rails_smoothing if prev is not None else 0.0
     a_w = cfg.walls_smoothing if prev is not None else 0.0
