@@ -69,6 +69,7 @@ class TrackConfig:
     walls_smoothing: float = 0.6                     # EMA of (yaw, curvature) across frames
     walls_min_far_support: float = 0.0               # 25.09, 0 = off: with both sides fitted, a side keeping fewer than this fraction of its boundary bins beyond rails_range[1] within walls_max_residual of its fit does not set the axis shape when the other side's do and it is nearly straight (EXPERIMENTS §1g: the 82.9 m platform end)
     walls_far_support_max_curvature: float = 2.0e-4  # 1/m, walls_min_far_support only overrules towards a side this straight (R >= 5 km): never on a real curve
+    walls_far_support_frames: int = 1                # walls_min_far_support applies from the N-th consecutive frame its condition holds (a station stop, not a one-frame spurious side)
     axis_valid_margin: float = 15.0                  # m beyond the last observed boundary bin the axis is trusted
     axis_valid_straight_bonus: float = 50.0          # extra trusted range when the tunnel is straight (|curv| < 1e-4) and both boundaries agree
     floor_valid_margin: float = 20.0                 # m beyond the fitted bed range the height reference is trusted without verification (60 in v0.3: the extrapolated bed was 0.3-0.65 m off at 85-105 m in the platform bags)
