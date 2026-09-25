@@ -23,6 +23,9 @@ resense:
     floor_poly_degree: 2
     floor_max_residual: 0.35
     floor_smoothing: 0.5
+    floor_shadow_height: 1.0       # on since 25.09 (P3, rail shadow; 0 = off): bed bins this far above the previous bed, two in a row starting within floor_shadow_range, start a shadow; the bed fit and the rail pair then use the track in front of the object, or hold the previous model (set O #1: wrong-distance frames 12 -> 0)
+    floor_shadow_range: 30.0       # 25.09: m (40 fired at 37-38.5 m on doubleT_platform and added a false alarm)
+    floor_shadow_min_bins: 5
     rails_enabled: true
     rails_range:
     - 4.0
@@ -104,6 +107,9 @@ resense:
     min_points_far: 3
     far_range: 100.0
     max_extent: 8.0
+    oversize_split_max_length: 3.0 # on since 25.09 (P3; 0 = off): a cluster larger than max_extent keeps its part inside the strict gauge when that part is at most this long (an object touching a line at the corridor edge)
+    oversize_split_max_distance: 30.0 # 25.09 (P3): ... and starts within this distance (m; beyond, long sparse far clusters gave a false alarm)
+    gauge_distance: true           # on since 25.09 (P3; false = off): a gauge cluster's distance is its nearest point inside the envelope, not a margin point it touches
     min_height: 0.08
     thin_min_length: 3.0
     thin_max_width: 0.35

@@ -12,15 +12,21 @@
   ``signature_min_lateral`` guard, so a tray / duct / pipe fallen onto the axis and hanging 0.7-1.9 m
   above the rail was demoted to advisory; the branch now needs the lowest point above this height
   (overhead infrastructure: the station structure has its bottom at ~2.2 m).
+* the rail shadow of a large near object (P3, 25.09; set O #1): ``track.floor_shadow_height``
+  (the bed and the rail pair are fitted in front of the object's shadow or held),
+  ``cluster.oversize_split_max_length`` (an object touching a long line at the corridor edge is
+  not dropped with it) and ``cluster.gauge_distance`` (the distance is that of the part inside
+  the envelope); docs/evidence/results/p3_rail_shadow_2026-09-25.json.
 """
 from __future__ import annotations
 
 from dataclasses import replace
+from functools import lru_cache
 from pathlib import Path
 
 import numpy as np
 
-from resense.clustering import _advisory_reason, _Blob
+from resense.clustering import _advisory_reason, _Blob, find_clusters
 from resense.config import ClusterConfig, DetectorConfig
 from resense.detector import Detector
 from resense.frame import Frame
@@ -212,3 +218,157 @@ def test_column_hold_person_beside_a_column_is_a_stop(tunnel):
             assert got == base, (m, got, base)
         else:
             assert base < got <= zw - hold, (m, got, base)
+
+
+# --- the rail shadow of a large near object (P3, 25.09) ------------------------------------------
+
+def _rail_shadow_cfg(on: bool) -> DetectorConfig:
+    """The shipped config (the three rail-shadow rules on since 25.09, candidate B2) or the same
+    with the three rules off (the behaviour before 25.09)."""
+    cfg = DetectorConfig()
+    if not on:
+        cfg.track = replace(cfg.track, floor_shadow_height=0.0)
+        cfg.cluster = replace(cfg.cluster, oversize_split_max_length=0.0, gauge_distance=False)
+    return cfg
+
+
+def _edge_line(x0: float, x1: float, dy: float = 1.37, h: float = 0.2) -> np.ndarray:
+    """A line of points along the corridor edge (a conductor rail: set O, dy 1.35-1.40 m, 0.16-0.38 m
+    above the rail head), every 5 cm, in the vehicle frame of ``synthetic_tunnel_frame``."""
+    xs = np.arange(x0, x1, 0.05)
+    return np.stack([xs, np.full(xs.size, AXIS_Y + dy), np.full(xs.size, RAIL_HEAD_Z + h)], 1).astype(np.float32)
+
+
+def _face(x: float, lateral: float = 0.2, width: float = 2.0, bottom: float = 0.05, height: float = 1.8,
+          step: float = 0.05) -> np.ndarray:
+    """The front face of the organizers' 2 x 2 m box (set O keeps only the face), in the tunnel frame."""
+    Y, Z = np.meshgrid(np.arange(-width / 2, width / 2 + 1e-6, step), np.arange(0.0, height + 1e-6, step), indexing="ij")
+    return (np.stack([np.full(Y.size, x), Y.ravel(), Z.ravel()], 1)
+            + np.array([0.0, AXIS_Y + lateral, RAIL_HEAD_Z + bottom])).astype(np.float32)
+
+
+def test_rail_shadow_rules_shipped():
+    """On since 25.09 with the values of candidate B2 (docs/evidence/results/p3_rail_shadow_2026-09-25.json):
+    a shadow start beyond 30 m (40 m fired on doubleT_platform) and a split beyond 30 m (the far
+    corridor's long sparse clusters) each added a false alarm in round 1."""
+    for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
+                DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
+        t, c = cfg.track, cfg.cluster
+        assert (t.floor_shadow_height, t.floor_shadow_range, t.floor_shadow_min_bins) == (1.0, 30.0, 5)
+        assert (c.oversize_split_max_length, c.oversize_split_max_distance, c.gauge_distance) == (3.0, 30.0, True)
+
+
+def test_oversize_split_and_gauge_distance():
+    """Clustering only: the set O box face at 15 m touching a 12 m line at the corridor edge forms
+    one cluster longer than max_extent (8 m): dropped whole when off; with the split it is the
+    face, 2 m wide, at 15 m; beyond oversize_split_max_distance (30 m) it stays dropped. With the
+    line shorter than max_extent the cluster is kept either way, but it starts at the line's near
+    end (3 m) unless gauge_distance is on."""
+    from resense.gauge import corridor_coordinates, corridor_mask, gauge_core_mask
+    from resense.track import TrackModel
+    tm = TrackModel(floor_coef=np.array([0.0, 0.0, -1.5]), floor_range=(0.0, 250.0), center=AXIS_Y,
+                    yaw=0.0, curvature=0.0, rail_offset=0.18)
+    base = DetectorConfig()
+
+    def clusters(pts, split, gd, reach=30.0):
+        cfg = replace(base.cluster, oversize_split_max_length=split, gauge_distance=gd,
+                      oversize_split_max_distance=reach)
+        dy, h = corridor_coordinates(pts, tm)
+        m, strict = corridor_mask(pts, tm, base.gauge, dy, h)
+        strict = strict & gauge_core_mask(dy, h, pts[:, 0], base.gauge)
+        return find_clusters(pts[m], np.full(int(m.sum()), 10.0, np.float32), dy[m], h[m], strict[m], cfg)
+
+    long_line = np.concatenate([_face(15.0), _edge_line(3.0, 15.0)])
+    assert clusters(long_line, 0.0, False) == []
+    for gd in (False, True):
+        (c,) = clusters(long_line, 3.0, gd)
+        assert c.zone == "gauge" and abs(c.distance - 15.0) < 0.01 and c.size[0] < 0.1 and c.size[1] > 1.5
+    far = np.concatenate([_face(45.0), _edge_line(33.0, 45.0)])
+    assert clusters(far, 3.0, True) == []                               # beyond 30 m: dropped as before
+    (c,) = clusters(far, 3.0, True, reach=60.0)
+    assert abs(c.distance - 45.0) < 0.01
+    short_line = np.concatenate([_face(9.0), _edge_line(3.0, 9.0)])
+    (c,) = clusters(short_line, 3.0, False)
+    assert c.zone == "gauge" and abs(c.distance - 3.0) < 0.01          # the line's near end
+    (c,) = clusters(short_line, 3.0, True)
+    assert c.zone == "gauge" and abs(c.distance - 9.0) < 0.01          # the face
+    clear = _edge_line(3.0, 30.0)                                       # the line alone: nothing either way
+    assert clusters(clear, 3.0, True) == clusters(clear, 0.0, False) == []
+
+
+@lru_cache(maxsize=1)
+def _box_approach():
+    """Ray-cast frames of a 0.5 x 2 x 2 m box standing on the axis, approaching from 36 to 6 m at
+    2 m per frame (20 m/s): it hides the bed band behind it (the roof is all the fit sees there),
+    as the organizers' 2 x 2 m box of set O does at 10-20 m."""
+    from resense.synthetic import ObstacleSpec, synthetic_tunnel_frame
+    out = []
+    for k, d in enumerate(np.arange(36.0, 5.0, -2.0)):
+        f, _, _ = synthetic_tunnel_frame(rng=np.random.default_rng(100 + k),
+                                         specs=[ObstacleSpec(kind="box", size=(0.5, 2.0, 2.0), distance=float(d))])
+        out.append((float(d), f))
+    return out
+
+
+def _drive(tunnel_frame: Frame, seq, cfg: DetectorConfig):
+    """Warm the detector up on the clear tunnel (8 frames), then play ``seq``; returns the results."""
+    det = Detector(cfg)
+    for k in range(8):
+        det.process(Frame(xyz=tunnel_frame.xyz, intensity=tunnel_frame.intensity, stamp=0.1 * k))
+    return [det.process(Frame(xyz=f.xyz, intensity=f.intensity, stamp=0.1 * (k + 8))) for k, (_, f) in enumerate(seq)]
+
+
+def test_rail_shadow_bed_and_distance(tunnel):
+    """End to end on the ray-cast tunnel: without the rules the roof behind the box tilts the bed
+    fit (the rail head at 20 m metres off) and the bed a few metres ahead becomes the reported
+    obstacle; with them the rail head is never further off than without them, within 0.1 m from
+    the frame the shadow is found (its start within floor_shadow_range, 30 m: the box at 22 m;
+    before, the drift is the same 0.04-0.15 m as without), the bed is held once too little of it
+    is left in front of the box, and every STOP reports the box's own distance. The first STOP
+    comes on the same frame."""
+    frame, _, _ = tunnel
+    seq = _box_approach()
+    off = _drive(frame, seq, _rail_shadow_cfg(False))
+    on = _drive(frame, seq, _rail_shadow_cfg(True))
+    dist = [d for d, _ in seq]
+    err_off = [abs(float(r.track.rail_z(20.0)) - RAIL_HEAD_Z) for r in off]
+    assert max(err_off) > 1.0
+    assert any(r.obstacle and r.nearest_distance < d - 3.0 for d, r in zip(dist, off))
+    first = [next(i for i, r in enumerate(rs) if r.obstacle) for rs in (off, on)]
+    assert first[1] == first[0]
+    for d, r in zip(dist[first[1]:], on[first[1]:]):
+        assert r.obstacle and abs(r.nearest_distance - d) < 0.5, (d, r.nearest_distance)
+    err_on = [abs(float(r.track.rail_z(20.0)) - RAIL_HEAD_Z) for r in on]
+    assert all(e_on <= e_off + 0.01 for e_on, e_off in zip(err_on, err_off))
+    found = next(i for i, r in enumerate(on) if r.track.floor_shadow > 0)
+    assert max(err_on[found:]) < 0.1 and max(err_on) < 0.2
+    assert on[-1].track.floor_held
+
+
+def test_rail_shadow_person_in_front_of_the_box_stops(tunnel):
+    """Safety: with the rules on, a person (0.4 x 0.5 x 1.7 m) standing on the axis 6 m in front
+    of the approaching box is a STOP at the person's distance in every frame from the frame the
+    rules off confirm it; so is the person next to a long line at the corridor edge, which the
+    rules off drop with the line (one cluster longer than max_extent)."""
+    from resense.synthetic import ObstacleSpec, synthetic_tunnel_frame
+    frame, _, _ = tunnel
+    seq = []
+    for k, d in enumerate(np.arange(36.0, 11.0, -2.0)):
+        f, _, _ = synthetic_tunnel_frame(rng=np.random.default_rng(200 + k), specs=[
+            ObstacleSpec(kind="box", size=(0.5, 2.0, 2.0), distance=float(d), base=0.1),
+            ObstacleSpec(kind="person", size=(0.4, 0.5, 1.7), distance=float(d) - 6.0, lateral=0.3)])
+        seq.append((float(d) - 6.0, f))
+    off = _drive(frame, seq, _rail_shadow_cfg(False))
+    on = _drive(frame, seq, _rail_shadow_cfg(True))
+    first = next(i for i, r in enumerate(off) if r.obstacle)
+    assert next(i for i, r in enumerate(on) if r.obstacle) <= first
+    for (d, _), r in zip(seq[first:], on[first:]):
+        assert r.obstacle and abs(r.nearest_distance - d) < 0.5, (d, r.nearest_distance)
+    # the person at the corridor edge next to a 12 m line (clear tunnel, no shadow)
+    person = _box_surface(20.0, 0.4, 0.85, 0.0, 1.7, 0.5)
+    line = _edge_line(8.0, 20.4)
+    both = np.concatenate([person, line])
+    assert not _run_with(frame, both, _rail_shadow_cfg(False)).obstacle
+    res = _run_with(frame, both, _rail_shadow_cfg(True))
+    assert res.obstacle and abs(res.nearest_distance - 20.0) < 0.5
+    assert _run_with(frame, person, _rail_shadow_cfg(True)).obstacle
