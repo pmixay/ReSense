@@ -1,5 +1,0 @@
-stdin is not a terminal device. Keyboard handling disabled.[INFO] [1790329330.545059918] [rosbag2_storage]: Opened database '/mnt/ramdata/for_hackathon/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.
-[INFO] [1790329330.545139410] [rosbag2_player]: Set rate to 1
-[INFO] [1790329330.549188885] [rosbag2_player]: Sleep 3000000000 ns
-[INFO] [1790329333.549808881] [rosbag2_storage]: Opened database '/mnt/ramdata/for_hackathon/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.
-player exit 0 after 25.046367751 s

@@ -1,5 +1,0 @@
-bench: FAIL  (2026-09-25T10:38:30+00:00, 430 s, commit 7290873, 8 vCPU)
-  bench_8core                          FAIL    exit 1       428 s  
-  note: 8 vCPU = 4 physical cores x 2 threads (the i7-9700E: 8 cores, no hyper-threading)
-  note: cpu steal before the runs: 0.0 % (shared vCPUs make timing noisy above ~5 %)
-  results: /home/mdm/resense_results/2026-09-25/bench

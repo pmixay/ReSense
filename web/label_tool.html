@@ -4,7 +4,32 @@
 <meta charset="utf-8">
 <title>ReSense label tool</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="assets/label-tool.css">
+<style>
+  :root { --bg:#14151a; --fg:#eaeaea; --ok:#2ecc71; --warn:#ff9f1c; --bad:#ff2d55; --muted:#8a8f98; --line:#2a2c33; --card:#1b1d24; --accent:#8a83d1; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, sans-serif; background:var(--bg); color:var(--fg); font-size:14px; }
+  header { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; padding:10px 20px; border-bottom:1px solid var(--line); }
+  header h1 { font-size:18px; margin:0 12px 0 0; }
+  main { display:grid; grid-template-columns: 260px minmax(0,1fr); gap:16px; padding:16px 20px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:6px; padding:12px; margin-bottom:12px; }
+  .card h3 { margin:0 0 8px; font-size:12px; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); }
+  input, select, button { background:#0d0e12; color:var(--fg); border:1px solid var(--line); border-radius:4px; padding:4px 6px; font: inherit; }
+  input[type=number] { width: 72px; } input[type=text] { width: 110px; }
+  button { cursor:pointer; } button:hover { border-color: var(--accent); } button.primary { background:var(--accent); border-color:var(--accent); color:#111; font-weight:600; }
+  button.danger { color: var(--bad); }
+  #frames { list-style:none; margin:0; padding:0; max-height:420px; overflow:auto; }
+  #frames li { padding:4px 6px; border-radius:4px; cursor:pointer; display:flex; justify-content:space-between; font-family: ui-monospace, monospace; font-size:13px; }
+  #frames li:hover { background:#23252e; } #frames li.active { background:#2c2e3a; outline:1px solid var(--accent); }
+  #frames li .n { color:var(--muted); }
+  table { border-collapse: collapse; width:100%; }
+  th, td { text-align:left; padding:4px 6px; border-bottom:1px solid var(--line); font-size:13px; white-space:nowrap; }
+  th { color:var(--muted); font-weight:500; }
+  canvas { width:100%; display:block; background:#0d0e12; border:1px solid var(--line); border-radius:6px; }
+  .muted { color:var(--muted); } .hint { font-size:12px; color:var(--muted); margin-top:6px; }
+  .row { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:8px; }
+  .status.clear { color: var(--ok); } .status.obstacle { color: var(--bad); }
+  @media (max-width: 900px) { main { grid-template-columns:1fr; } }
+</style>
 </head>
 <body>
 <header>
@@ -19,7 +44,7 @@
     <div class="card"><h3>frames <span id="frame-count" class="muted"></span></h3>
       <div class="row"><input type="number" id="new-frame" min="0" step="1" placeholder="bag frame index"><button id="add-frame">add frame</button></div>
       <ul id="frames"></ul>
-      <details><summary>Frame key help</summary><div class="hint">Frames come from the loaded results.jsonl (its <code>frame</code> key = absolute bag frame index) or are typed by hand. Key in gt.json: index zero-padded to 5 digits, e.g. <code>00042</code>. A frame marked "checked, clear" is exported with an empty list.</div></details>
+      <div class="hint">Frames come from the loaded results.jsonl (its <code>frame</code> key = absolute bag frame index) or are typed by hand. Key in gt.json: index zero-padded to 5 digits, e.g. <code>00042</code>. A frame marked "checked, clear" is exported with an empty list.</div>
     </div>
   </div>
   <div>
@@ -31,13 +56,13 @@
         <label><input type="checkbox" id="checked"> checked, clear (export as empty list)</label>
         <button id="remove-frame" class="danger">remove frame</button>
       </div>
-      <div class="table-scroll"><table id="obs-table">
+      <table id="obs-table">
         <thead><tr><th>#</th><th>kind</th><th>label</th><th>distance m</th><th>lateral m (+left)</th><th>L</th><th>W</th><th>H</th><th>yaw °</th><th>refl.</th><th>in gauge</th><th>n_points</th><th></th></tr></thead>
         <tbody id="obs-body"></tbody>
-      </table></div>
-      <details><summary>Label format and review notes</summary><div class="hint">Same shape as <code>resense inject</code> writes: <code>{"&lt;frame&gt;": [{"kind","size":[L,W,H],"distance","lateral","yaw_deg","reflectivity","label","in_gauge","n_points"}]}</code>. <code>distance</code> = m along the track to the nearest face, <code>lateral</code> = m from the track axis (+ left); <code>in_gauge</code> defaults to horizontal footprint overlap with the strict 1.05 m half-width. Check height and override the checkbox manually when needed: a value set by hand is kept when the object is edited afterwards. Detector-prefilled boxes are suggestions, not independent ground truth: review the original cloud before saving. <code>n_points</code> = 1 means "visible, count unknown" (<code>resense eval</code> skips entries with 0 as occluded).</div></details>
+      </table>
+      <div class="hint">Same shape as <code>resense inject</code> writes: <code>{"&lt;frame&gt;": [{"kind","size":[L,W,H],"distance","lateral","yaw_deg","reflectivity","label","in_gauge","n_points"}]}</code>. <code>distance</code> = m along the track to the nearest face, <code>lateral</code> = m from the track axis (+ left); <code>in_gauge</code> defaults to horizontal footprint overlap with the strict 1.05 m half-width. Check height and override the checkbox manually when needed: a value set by hand is kept when the object is edited afterwards. Detector-prefilled boxes are suggestions, not independent ground truth: review the original cloud before saving. <code>n_points</code> = 1 means "visible, count unknown" (<code>resense eval</code> skips entries with 0 as occluded).</div>
     </div>
-    <div class="card"><h3>Top view · detections in red, warnings in yellow, labels in green</h3><canvas id="top" width="1200" height="360"></canvas></div>
+    <div class="card"><h3>top-down: detector output (red / orange) and labels (cyan)</h3><canvas id="top" width="1200" height="360"></canvas></div>
   </div>
 </main>
 <script>
@@ -124,28 +149,26 @@ function onEdit(ev) {
   draw();
 }
 function draw() {
-  const c = $('top'), width = Math.round(c.clientWidth), height = Math.max(220, Math.min(360, Math.round(width * .3)));
-  if (width && (c.width !== width || c.height !== height)) { c.width = width; c.height = height; }
-  const ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
+  const c = $('top'), ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
   const XMAX = 150, sx = c.width / XMAX, cy = c.height / 2, sy = 24;
-  ctx.strokeStyle = '#d2d2cf'; ctx.font = '12px "Moscow Sans", Arial, sans-serif';
-  for (let x = 0; x <= XMAX; x += 25) { ctx.beginPath(); ctx.moveTo(x * sx, 0); ctx.lineTo(x * sx, c.height); ctx.stroke(); ctx.fillStyle = '#202020'; ctx.fillText(x + ' m', x * sx + 4, 14); }
+  ctx.strokeStyle = '#2a2c33'; ctx.font = '12px system-ui';
+  for (let x = 0; x <= XMAX; x += 25) { ctx.beginPath(); ctx.moveTo(x * sx, 0); ctx.lineTo(x * sx, c.height); ctx.stroke(); ctx.fillStyle = '#8a8f98'; ctx.fillText(x + ' m', x * sx + 4, 14); }
   const k = state.current, r = k && state.results[k], t = (r && r.track) || { center: 0, yaw: 0, curvature: 0 };
   const axis = X => (t.center || 0) + Math.tan(t.yaw || 0) * X + 0.5 * (t.curvature || 0) * X * X;
-  ctx.strokeStyle = '#00854a'; ctx.setLineDash([6, 4]);
+  ctx.strokeStyle = '#2ecc71'; ctx.setLineDash([6, 4]);
   for (const side of [1.4, -1.4]) { ctx.beginPath(); for (let X = 3; X <= XMAX; X += 5) { const px = X * sx, py = cy - (axis(X) + side) * sy; X === 3 ? ctx.moveTo(px, py) : ctx.lineTo(px, py); } ctx.stroke(); }
   ctx.setLineDash([]);
   const drawBox = (X, Y, L, W, color, text, below) => {
     const w = Math.max(L, 1.5) * sx, h = Math.max(W, 0.6) * sy, x = X * sx, y = cy - Y * sy;
     ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.strokeRect(x - w / 2, y - h / 2, w, h);
-    ctx.fillStyle = color; ctx.font = '800 12px "Moscow Sans", Arial, sans-serif';
+    ctx.fillStyle = color; ctx.font = 'bold 12px system-ui';
     ctx.fillText(text, x + w / 2 + 4, below ? y + h / 2 + 13 : y - h / 2 - 3);   // detector labels above, ours below
   };
   if (r) {
-    for (const d of (r.warnings || [])) drawBox(d.center[0], d.center[1], d.size[0], d.size[1], '#967c29', `det ${d.distance.toFixed(1)} m`);
-    for (const d of (r.detections || [])) drawBox(d.center[0], d.center[1], d.size[0], d.size[1], '#e4000d', `det ${d.distance.toFixed(1)} m`);
+    for (const d of (r.warnings || [])) drawBox(d.center[0], d.center[1], d.size[0], d.size[1], '#ff9f1c', `det ${d.distance.toFixed(1)} m`);
+    for (const d of (r.detections || [])) drawBox(d.center[0], d.center[1], d.size[0], d.size[1], '#ff2d55', `det ${d.distance.toFixed(1)} m`);
   }
-  for (const o of (k && state.labels[k]) || []) drawBox(o.distance + o.size[0] / 2, axis(o.distance) + o.lateral, o.size[0], o.size[1], '#00854a', `${o.label} ${o.distance.toFixed(1)} m${o.in_gauge ? '' : ' (outside)'}`, true);
+  for (const o of (k && state.labels[k]) || []) drawBox(o.distance + o.size[0] / 2, axis(o.distance) + o.lateral, o.size[0], o.size[1], '#3ad1ff', `${o.label} ${o.distance.toFixed(1)} m${o.in_gauge ? '' : ' (outside)'}`, true);
 }
 
 // ---------------------------------------------------------------- loading
@@ -213,18 +236,8 @@ document.addEventListener('keydown', ev => {
   if (ev.code === 'ArrowDown' && i + 1 < keys.length) select(keys[i + 1]);
   else if (ev.code === 'ArrowUp' && i > 0) select(keys[i - 1]);
 });
-const siteHeader = document.querySelector('header');
-let previousScrollY = window.scrollY;
-window.addEventListener('scroll', () => {
-  const nextScrollY = window.scrollY;
-  if (nextScrollY <= 4 || nextScrollY < previousScrollY) siteHeader.classList.remove('header-hidden');
-  else if (nextScrollY > previousScrollY && nextScrollY > siteHeader.offsetHeight) siteHeader.classList.add('header-hidden');
-  previousScrollY = nextScrollY;
-}, { passive: true });
-siteHeader.addEventListener('focusin', () => siteHeader.classList.remove('header-hidden'));
 window.resenseLabel = { state, loadResults, loadGT, exportGT, select, newObstacle };
 renderFrames(); draw();
-if (window.ResizeObserver) new ResizeObserver(draw).observe($('top'));
 </script>
 </body>
 </html>

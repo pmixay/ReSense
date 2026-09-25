@@ -5,7 +5,6 @@ from typing import Optional, Tuple
 
 import numpy as np
 
-from resense import _native
 from resense.config import GaugeConfig
 from resense.track import TrackModel
 
@@ -41,11 +40,6 @@ def widened_profile(cfg: GaugeConfig, margin: float):
 
 def corridor_coordinates(xyz: np.ndarray, track: TrackModel):
     """(dy, h): lateral offset from the track axis and height above the rail head."""
-    if _native.enabled() and np.asarray(track.floor_coef).size == 3:
-        res = _native.corridor_coordinates(xyz, track.floor_range, np.asarray(track.floor_coef, dtype=np.float64),
-                                           track.rail_offset, *track.center_coefs())
-        if res is not None:
-            return res
     X = xyz[:, 0].astype(np.float64)
     dy = xyz[:, 1] - track.center_y(X)
     h = xyz[:, 2] - track.rail_z(X)
@@ -58,23 +52,9 @@ def corridor_mask(xyz: np.ndarray, track: TrackModel, cfg: GaugeConfig,
     whole frame, which are inside the strict gauge. ``dy_all`` / ``h_all`` are the corridor
     coordinates of the whole frame when the caller already has them."""
     X = xyz[:, 0]
+    in_range = (X >= cfg.range_min) & (X <= cfg.range_max)
     mask = np.zeros(xyz.shape[0], dtype=bool)
     strict = np.zeros(xyz.shape[0], dtype=bool)
-    if dy_all is not None and h_all is not None and cfg.lateral_growth_per_100m <= 0 and _native.enabled():
-        # the range test and the bounding box below in one pass (resense/_native.py): frame indices
-        poly = widened_profile(cfg, cfg.warning_margin)
-        box = _native.select(xyz.shape[0], (dy_all, None, None, "<=", np.abs(poly[:, 0]).max(), True),
-                             (h_all, ">=", poly[:, 1].min(), "<=", poly[:, 1].max()),
-                             (X, ">=", cfg.range_min, "<=", cfg.range_max))
-        if box is not None:
-            if box.size == 0:
-                return mask, strict
-            sub = box[point_in_polygon(dy_all[box], h_all[box], poly)]
-            mask[sub] = True
-            if sub.size:
-                strict[sub[point_in_polygon(dy_all[sub], h_all[sub], cfg.profile)]] = True
-            return mask, strict
-    in_range = (X >= cfg.range_min) & (X <= cfg.range_max)
     if not in_range.any():
         return mask, strict
     idx = np.flatnonzero(in_range)

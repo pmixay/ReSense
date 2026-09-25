@@ -1,5 +1,0 @@
-gate: PASS  (2026-09-25T09:53:01+00:00, 536 s, commit 7290873, 8 vCPU)
-  gate_native                          PASS    exit 0       536 s  
-  note: ride cached (221 split files): the gate covers all 13 759 real frames
-  note: regression_gate.py exit codes: 0 identical or better, 1 a gated metric worse, 2 missing data / failed set F
-  results: /home/mdm/resense_results/2026-09-25/gate

@@ -51,39 +51,6 @@ def load_cfg_dict(path, sets) -> dict:
     return _apply_overrides(copy.deepcopy(d), sets)
 
 
-def nominal_stamps(stamps: dict, period: float = 0.1) -> dict:
-    """The receive stamps of a cache snapped to the sensor's rotation period: every gap becomes
-    a whole number (>= 1) of periods. The bag receive time jitters by +-20 % around the 10 Hz
-    rotation, while the node sees the sensor's ``header.stamp`` (a regular clock); a stage that
-    divides by the frame interval (the ego-speed estimator) needs the regular one to be
-    evaluated as it runs in the node."""
-    if not stamps:
-        return stamps
-    keys = sorted(stamps, key=lambda k: stamps[k])
-    out = {keys[0]: stamps[keys[0]]}
-    for a, b in zip(keys, keys[1:]):
-        out[b] = out[a] + period * max(1, round((stamps[b] - stamps[a]) / period))
-    return out
-
-
-def reference_speeds(path: str, n: int):
-    """Per-frame train speed (m/s) from a ``scripts/speed_reference.py`` JSONL: the ICP reference
-    where it is valid (``ref_ok``), a 5-frame running median of it, linear interpolation over
-    invalid frames; ``None`` before the first and after the last valid frame."""
-    rows = {}
-    for line in open(path, encoding="utf-8"):
-        r = json.loads(line)
-        if r.get("ref_ok") and r.get("ref_speed") is not None:
-            rows[int(r["frame"])] = float(r["ref_speed"])
-    if not rows:
-        return [None] * n
-    idx = np.array(sorted(rows))
-    val = np.array([rows[i] for i in idx])
-    med = np.array([np.median(val[max(0, k - 2): k + 3]) for k in range(val.size)])
-    out = np.interp(np.arange(n), idx, med)
-    return [float(v) if idx[0] <= i <= idx[-1] else None for i, v in enumerate(out)]
-
-
 def load_cfg(path, sets):
     from resense.config import DetectorConfig
     return DetectorConfig.from_dict(load_cfg_dict(path, sets))
@@ -164,11 +131,6 @@ def main():
     ap.add_argument("--bags", default=",".join(SIX + ["new_data"]))
     ap.add_argument("--jobs", type=int, default=os.cpu_count() or 4)
     ap.add_argument("--chunks", type=int, default=8, help="parallel pieces of new_data")
-    ap.add_argument("--speed-ref", default="", metavar="DIR",
-                    help="hand the detector the per-frame train speed of DIR/<bag>.jsonl (scripts/speed_reference.py): "
-                         "the accumulation with an independent reference speed, as if odometry were given")
-    ap.add_argument("--nominal-stamps", action="store_true",
-                    help="snap the cached receive stamps to the 10 Hz rotation (the node's header clock)")
     ap.add_argument("--given-speed", default="", metavar="INTAKE_JSON",
                     help="hand the train speed of new_data to the detector (per split file, 'speed_tracks' of "
                          "docs/extended_dataset_intake.json): the multi-frame accumulation path")
@@ -191,16 +153,12 @@ def main():
             print(f"skip {bag}: no cache in {d}", file=sys.stderr)
             continue
         stamps = load_cache_stamps(d)
-        if a.nominal_stamps:
-            stamps = nominal_stamps(stamps)
         n = a.chunks if bag == "new_data" else 1
         for k, part in enumerate(np.array_split(np.array(files), n)):
             out = os.path.join(a.out, f"{bag}.jsonl" if n == 1 else f"{bag}_{k}.jsonl")
             speeds = None
             if spd_file and bag == "new_data":
                 speeds = [float(spd_file.get(int(os.path.basename(f).split("_")[2]), 0.0)) for f in part]
-            elif a.speed_ref and os.path.exists(os.path.join(a.speed_ref, f"{bag}.jsonl")) and n == 1:
-                speeds = reference_speeds(os.path.join(a.speed_ref, f"{bag}.jsonl"), len(part))
             jobs.append((bag, list(part), cfg_dict, out, stamps, speeds))
             pieces.setdefault(bag, []).append(out)
     t0 = time.time()
@@ -210,7 +168,7 @@ def main():
     with ProcessPoolExecutor(max_workers=a.jobs) as ex:
         for name, path, lats in ex.map(run_piece, jobs):
             lat.setdefault(name, []).extend(lats)
-    summary = {"config": a.config, "set": a.set, "given_speed": bool(spd_file), "speed_ref": a.speed_ref, "nominal_stamps": a.nominal_stamps, "wall_s": round(time.time() - t0, 1), "bags": {}}
+    summary = {"config": a.config, "set": a.set, "given_speed": bool(spd_file), "wall_s": round(time.time() - t0, 1), "bags": {}}
     tot_f = tot_e = tot_n = 0
     for bag, paths in pieces.items():
         s = summarize(bag, paths, LABELS.get(bag),

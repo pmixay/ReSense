@@ -1,8 +1,0 @@
-## export_image
-   archive: 475489127 bytes (0.44 GiB)
-   image:   2075079161 bytes uncompressed (1.93 GiB)
-   sha256:  98be33db23417a88fcb001d0bc7515f151d9e9e41957e163953f63794510ed84
-   tags:    resense:0.6.3-7290873 resense:latest ros:humble-ros-base-jammy
-   commit:  72908737f2f8d1caf2b513f730abd930c8dac20d
-## load_check
-PASS: resense:latest loaded from resense-image-0.6.3-7290873.tar.gz and runs without network. Next:
