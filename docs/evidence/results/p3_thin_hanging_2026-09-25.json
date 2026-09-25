@@ -1207,7 +1207,8 @@
    "a_target": "set O thin_hanging with the guard: 15 STOP frames, first STOP 30.1 m (frame 789), held from 31.8 m; without it the same: HOLDS",
    "b_gate": "python scripts/regression_gate.py --from-json <with> --baseline <without>: exit 0, 0 gated rows worse, 0 better, 107 the same, only latency rows changed: HOLDS",
    "per_frame": "decisions (GO / CAUTION / STOP) identical in all 15 068 frames of the six recordings, set O and the ride; set O, the six recordings and ride pieces 0, 2, 3, 5, 6, 7 identical frame by frame; ride piece 1: the warnings list differs in 31 frames and piece 4 in 671 (track ids renumbered after the hanging tracks the guard removes; the same objects and distances), the warning flag in 4 frames (ride advisory frames 4 747 -> 4 743; 4 742 in _ride_p3) and clear_distance in 22 frames (hanging groups at a station no longer cap it)",
-   "decision": "ADOPTED: both conditions hold; cluster.hanging_needs_rails true in resense/config.py, configs/default.yaml and the ROS copy. The full combined gate re-runs on that clean commit (p3_round2_combined_2026-09-25.json)"
+   "decision": "ADOPTED: both conditions hold; cluster.hanging_needs_rails true in resense/config.py, configs/default.yaml and the ROS copy. The full combined gate re-runs on that clean commit (p3_round2_combined_2026-09-25.json)",
+   "census": "informational, on 30d0cac with the guard forced off (p3_round2_combined_2026-09-25.json result.hanging_groups): the ride 29 groups in 26 frames, 1 of them in a frame with a rail pair (the guard keeps 1, removes 28); set O 14 groups, all in frames with a rail pair; the six recordings none; no hanging track confirmed outside set O"
   }
  }
 }

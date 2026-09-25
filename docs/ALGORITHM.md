@@ -326,8 +326,11 @@ Everything is **range-adaptive**, because a 0.5 m object gives ~500 returns at 2
    a group with at least one voxel inside the strict envelope and one above its top, at most
    0.5 m along and across the track and at most 60 m away (and within the trusted corridor), is
    a gauge cluster of kind `hanging`. It is dropped when it overlaps a cluster of the other
-   stages, and it is confirmed like any track (5 frames). The organizers' 5 cm object STOPs from
-   30.1 m; the ride and the empty recordings are unchanged.
+   stages, and it is confirmed like any track (5 frames). Since 25.09, round 2
+   (`hanging_needs_rails`, on) the stage runs only on frames whose track model found the rail
+   pair in the near range (`track.rail_slabs` > 0): 28 of the 29 groups it took on the ride were
+   tops of station columns in frames without one. The organizers' 5 cm object STOPs from
+   30.1 m with and without the guard; the ride and the empty recordings are unchanged.
 
 When several frames are merged (§3.4) the voxel-count thresholds `min_points`, `min_points_far` and
 `gauge_min_points` are raised by `1 + n_merged · min_points_scale` (×1.5 for 5 frames,
@@ -806,8 +809,10 @@ causes, each a limitation of the current rules:
   hanging stage links them to the object's part above the envelope top: STOP in 15 frames from
   30.1 m (EXPERIMENTS §1i). Beyond ~50 m none of its returns is inside the envelope measured
   from the rails, and beyond 60 m the stage does not look. At stations without a rail lock the
-  tops of platform columns 13–40 m ahead pass the same test in single frames (28 on the ride).
-  None confirmed there, because those tracks were already advisory, but a fresh one could.
+  tops of platform columns 13–40 m ahead passed the same test in single frames (28 on the ride),
+  none confirmed; since the rail-lock guard of 25.09, round 2 (`cluster.hanging_needs_rails`),
+  the stage does not run on such frames, so a thin object hanging where the rails are not found
+  (a station, a switch cavern) is not looked for either.
 * **0.3 m cubes are confirmed only from 43–53 m** (#3 on the rail from 42.7 m; #2 from 52.5 m
   since 25.09, round 2, 34.0 m before). At 60–115 m such a cube returns 2–4 points a frame,
   below the 5-voxel minimum within 100 m, so a single frame cannot confirm a 0.3 m object much

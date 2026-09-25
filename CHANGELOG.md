@@ -17,14 +17,42 @@ frames, 13 km, no obstacles).
 ## Unreleased (in development; package version 1.0.0)
 
 Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
-overhead rule on, node v0.6.4). Tests: 235 → 436 (+28 native kernels, +3 speed evaluation
+overhead rule on, node v0.6.4). Tests: 235 → 456 (+28 native kernels, +3 speed evaluation
 helpers, +23 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5
 overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting and socket
 buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`, +20 DDS
 transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
-`cluster.far_axis_both_sides`, +3 far bed bins, +5 the rail-shadow review fixes) in `tests/`, 13
-in `web/demo`.
+`cluster.far_axis_both_sides`, +3 far bed bins, +5 the rail-shadow review fixes, +4 the
+free-hanging exemption of `floating`, +4 thin hanging objects, +5 `health.clear_cap`, +6 the rate
+and re-mount flags, +1 the rail-lock guard of the hanging stage) in `tests/`, 13 in `web/demo`.
 
+- **The P3 items of round 2 combined; new gate baseline (P3 integrator, 25.09, delegated by the
+  captain):** the four items below merged (`wf10/p3-round2`) on top of the rail-shadow rules,
+  with the two decisions of the captain's delegate (`health.clear_cap` on; the thin-hanging
+  rail-lock guard on). Pre-registered (22:13 UTC, before any run on the merged code); the full
+  gate of the final defaults (`30d0cac`, `--jobs 3`, 333 s) passes against
+  `regression_baseline_2026-09-25_ride_p3.json` with 6 gated rows better and none worse: set O
+  hanging 0.3 m cube 19 → 30 STOP frames, first STOP 34.0 → 52.5 m; 5 cm hanging object 0 → 15,
+  first STOP 30.1 m (set O inside STOP frames 311 → 337 of 801, objects with a STOP 5 → 6 of 8);
+  `doubleT_obstacle` 185 → 186 of 246 labelled hits (object on the rail 124 → 125 of 126 from
+  frame 75), first alarm frame 11. Five bags 58 / 13 / 16, ride 187 / 46 / 39 and set F straight
+  identical, decisions on the five bags and the ride identical frame by frame; no item interacts,
+  nothing turned back off. `clear_distance` with the cap on the combined code: five bags median
+  −5.5 %, ride −3.1 %, set O overclaim 147 → 67 object-frames, no decision changed. Stress check
+  on the combined defaults equals the robustness branch: five bags 5 Hz 10 / 10, +3° roll 11 / 13,
+  +3° pitch 16 / 17 events / STOP episodes. New gate baseline
+  `docs/evidence/results/regression_baseline_2026-09-25_ride_p3b.json`.
+  [`p3_round2_combined_2026-09-25.json`](docs/evidence/results/p3_round2_combined_2026-09-25.json),
+  [EXPERIMENTS §1i](docs/EXPERIMENTS.md).
+- **Thin-hanging rail-lock guard: `cluster.hanging_needs_rails` on (25.09, round 2, the captain's
+  delegate):** the hanging stage runs only on frames whose track model found the rail pair in the
+  near range; 28 of the 29 groups it took on the ride were station column tops without one.
+  Pre-registered (22:13 UTC, before its code) with the rule "set O's hanging object keeps 15 STOP
+  frames from ≥ 30.1 m and the combined gate has no row worse than without it": both held (15
+  from 30.1 m; the gate with and without it the same on all 107 rows, decisions identical in all
+  15 068 frames). +1 test.
+  [`p3_thin_hanging_2026-09-25.json`](docs/evidence/results/p3_thin_hanging_2026-09-25.json)
+  (`addendum_rail_lock`), [EXPERIMENTS §1i](docs/EXPERIMENTS.md).
 - **`health.clear_cap` on by default, candidate R1 (25.09, round 2, the captain's delegate):**
   shipped although it **missed** its pre-registered clutter limit: the five obstacle-free
   recordings' median `clear_distance` fell −5.5 % against a −5 % limit (by 0.5 pp), the ride −3.1 %
@@ -53,7 +81,8 @@ in `web/demo`.
   (`clear_cap_*` sub-parameters, `health.candidate_distance` in the status JSON when on); it
   changes no detection and no decision. Pre-registered (C0–C5, then R1–R4): set O overclaim
   172 → 82 object-frames, ride median clear distance 127.0 → 123.0 m, but the five
-  obstacle-free recordings' median −5.5 % against the 5 % limit, so off. New
+  obstacle-free recordings' median −5.5 % against the 5 % limit, so off on its branch (turned on
+  afterwards by the captain's delegate, the entry above: it still did not pass). New
   `scripts/score_clear_distance.py`; evidence `docs/evidence/results/p3_clear_distance_2026-09-25.json`;
   EXPERIMENTS §1i.
 

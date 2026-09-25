@@ -80,5 +80,658 @@
     },
     "clear_distance_record": "decision A is recorded, not tested: the set O overclaim, and the five bags' and the ride's median clear_distance with the cap against the uncapped value of the same frames (min(monitored_range, nearest confirmed obstacle)), from the gate's JSONL",
     "baseline_rule": "If the gate passes (after any turn-off), the gate's result JSON of the final clean commit, without its 'gate' block, becomes docs/evidence/results/regression_baseline_2026-09-25_ride_p3b.json and every 'current baseline' reference is repointed to it (EVALUATION section 3 step 6, README, VM_GUIDE, EXPERIMENTS 'Current results', CHANGELOG, docs/evidence/README.md, the scripts/regression_gate.py docstring, CAPTAIN section 6 gate-rule line)"
+  },
+  "result": {
+    "verdict": "SHIP the combination: the gate passes on the final clean commit with 6 gated rows better and none worse, every safety condition holds, the rail-lock guard (decision B) passed its addendum's rule and is on, health.clear_cap (decision A) is on; no pair of items interacts, nothing turned back off",
+    "runs": {
+      "combined_defaults": {
+        "commit": "e29d932b581234ea9728f1c2d3147b6a56bf2b66",
+        "config_sha256": "9e999000e447cfa6877f29d93a35bdf7d4d01400c7d048fb508ba786dc485b93",
+        "set": [],
+        "created": "2026-09-25T22:24:57+00:00",
+        "wall_s": 341.4,
+        "gate": {
+          "passed": true,
+          "worse_gated": [],
+          "missing_gated": [],
+          "better": [
+            "recordings.doubleT_obstacle.labelled.object_on_rail.hits",
+            "recordings.doubleT_obstacle.labelled.object_on_rail_from_frame_75.hits",
+            "set_O.objects.small_center.stop_frames",
+            "set_O.objects.small_center.first_stop_m",
+            "set_O.objects.thin_hanging.stop_frames",
+            "set_O.objects.thin_hanging.first_stop_m"
+          ]
+        }
+      },
+      "with_the_rail_lock_guard": {
+        "commit": "e29d932b581234ea9728f1c2d3147b6a56bf2b66",
+        "set": [
+          "cluster.hanging_needs_rails=true"
+        ],
+        "created": "2026-09-25T22:30:48+00:00",
+        "wall_s": 333.7,
+        "gate": "PASS against _ride_p3, the same 6 gated rows better; against the run without it (--from-json / --baseline): exit 0, 107 rows the same, only latency changed"
+      },
+      "every_round2_item_off": {
+        "commit": "e29d932b581234ea9728f1c2d3147b6a56bf2b66",
+        "set": [
+          "cluster.floating_free_max_size=0.0",
+          "cluster.hanging_enabled=false",
+          "health.clear_cap=false",
+          "calibration.time_cadence=false",
+          "track.rates_per_period=false",
+          "track.walls_smoothing_per_period=false",
+          "calibration.refine_min_deg=0.0",
+          "calibration.keep_within_deg=0.0"
+        ],
+        "created": "2026-09-25T22:36:33+00:00",
+        "gate": "PASS against _ride_p3 with 0 gated rows better, 0 worse, 105 the same, 0 information rows changed but latency: with the four items off the merged code reproduces the baseline",
+        "use": "the per-frame reference for the safety conditions below"
+      },
+      "final": {
+        "commit": "30d0cacbc7a1752818f18c4c8f5752201621ea09",
+        "branch": "wf10/p3-round2",
+        "uncommitted_detector_changes": [],
+        "config": {
+          "path": "configs/default.yaml",
+          "set": [],
+          "sha256": "591a26e11b40ee6f0e3b139963abde879d868f8d5cc8400ccd25682be44aad99",
+          "file_sha256": "bba54d3bb76ad38514c04855a51f02b2bbda3450963d3d9b6996fea4ee8d9dea"
+        },
+        "native": "native (_resense_native.so)",
+        "created": "2026-09-25T22:44:49+00:00",
+        "run": {
+          "jobs": 3,
+          "wall_s": 333.1,
+          "machine": "4-vCPU dev VM, no other job running"
+        },
+        "equal_to_the_guard_run": "every frame of every recording identical (decisions, detections, warnings, clear_distance, track model)"
+      }
+    },
+    "gate": {
+      "baseline": "docs/evidence/results/regression_baseline_2026-09-25_ride_p3.json",
+      "baseline_commit": "154db25e2fa5e2e4ad28c1c148fef49b39ce31d2",
+      "baseline_config_sha256": "184ea0e7c4cf020e587b0ee7cb7cde1b2f5c3a8100e27ea6795e7d8da2c2c5d6",
+      "allow": [],
+      "passed": true,
+      "worse_gated": [],
+      "missing_gated": [],
+      "better": [
+        "recordings.doubleT_obstacle.labelled.object_on_rail.hits",
+        "recordings.doubleT_obstacle.labelled.object_on_rail_from_frame_75.hits",
+        "set_O.objects.small_center.stop_frames",
+        "set_O.objects.small_center.first_stop_m",
+        "set_O.objects.thin_hanging.stop_frames",
+        "set_O.objects.thin_hanging.first_stop_m"
+      ],
+      "same": 91,
+      "info_changed": [
+        "recordings.doubleT_obstacle.stop_episodes",
+        "recordings.doubleT_obstacle.alarm_frames",
+        "recordings.doubleT_obstacle.advisory_frames",
+        "recordings.doubleT_obstacle.labelled.hits",
+        "set_O.objects.small_center.held_from_m",
+        "set_O.objects.small_center.advisory_frames",
+        "set_O.objects.thin_hanging.held_from_m",
+        "set_O.inside_stop_frames"
+      ]
+    },
+    "headline_before": {
+      "five_empty": {
+        "frames": 2287,
+        "alarm_frames": 58,
+        "alarm_events": 13,
+        "stop_episodes": 16,
+        "advisory_frames": 997
+      },
+      "ride": {
+        "frames": 11271,
+        "alarm_frames": 187,
+        "alarm_events": 46,
+        "stop_episodes": 39,
+        "advisory_frames": 4742,
+        "monitored_range_median": 127.6
+      },
+      "doubleT_obstacle": {
+        "labelled": {
+          "object_on_rail": {
+            "hits": 127,
+            "frames": 185
+          },
+          "person_crossing": {
+            "hits": 58,
+            "frames": 61
+          },
+          "object_on_rail_from_frame_75": {
+            "hits": 124,
+            "frames": 126
+          }
+        },
+        "hits": 185,
+        "first_alarm_frame": 11,
+        "stop_episodes": 3,
+        "fp_events": 0
+      },
+      "set_O": {
+        "inside_stop_frames": 311,
+        "inside_visible_frames": 801,
+        "inside_objects_with_stop": 5,
+        "outside_false_stop_frames": 6,
+        "background": {
+          "alarm_frames": 3,
+          "track_ids": 2
+        },
+        "stop_frames": {
+          "big_center": 208,
+          "small_center": 19,
+          "small_on_rail": 23,
+          "small_edge_inside": 0,
+          "small_outside_near": 0,
+          "big_edge_inside": 0,
+          "big_outside": 6,
+          "big_above": 12,
+          "long_low_on_rails": 49,
+          "thin_hanging": 0
+        },
+        "first_stop_m": {
+          "big_center": 98.0,
+          "small_center": 34.0,
+          "small_on_rail": 42.7,
+          "small_edge_inside": null,
+          "big_edge_inside": null,
+          "big_above": 101.3,
+          "long_low_on_rails": 82.2,
+          "thin_hanging": null
+        }
+      },
+      "set_F_straight": {
+        "person": {
+          "detected": 6,
+          "first_detection_median_m": 151.0,
+          "false_detections": 6
+        },
+        "box1.0": {
+          "detected": 6,
+          "first_detection_median_m": 123.9,
+          "false_detections": 12
+        },
+        "box0.5": {
+          "detected": 1,
+          "first_detection_median_m": 51.9,
+          "false_detections": 0
+        },
+        "trolley": {
+          "detected": 6,
+          "first_detection_median_m": 151.4,
+          "false_detections": 5
+        },
+        "cable": {
+          "detected": 6,
+          "first_detection_median_m": 98.9,
+          "false_detections": 3
+        }
+      }
+    },
+    "headline_after": {
+      "five_empty": {
+        "frames": 2287,
+        "alarm_frames": 58,
+        "alarm_events": 13,
+        "stop_episodes": 16,
+        "advisory_frames": 997
+      },
+      "ride": {
+        "frames": 11271,
+        "alarm_frames": 187,
+        "alarm_events": 46,
+        "stop_episodes": 39,
+        "advisory_frames": 4743,
+        "monitored_range_median": 127.6
+      },
+      "doubleT_obstacle": {
+        "labelled": {
+          "object_on_rail": {
+            "hits": 128,
+            "frames": 185
+          },
+          "person_crossing": {
+            "hits": 58,
+            "frames": 61
+          },
+          "object_on_rail_from_frame_75": {
+            "hits": 125,
+            "frames": 126
+          }
+        },
+        "hits": 186,
+        "first_alarm_frame": 11,
+        "stop_episodes": 2,
+        "fp_events": 0
+      },
+      "set_O": {
+        "inside_stop_frames": 337,
+        "inside_visible_frames": 801,
+        "inside_objects_with_stop": 6,
+        "outside_false_stop_frames": 6,
+        "background": {
+          "alarm_frames": 3,
+          "track_ids": 2
+        },
+        "stop_frames": {
+          "big_center": 208,
+          "small_center": 30,
+          "small_on_rail": 23,
+          "small_edge_inside": 0,
+          "small_outside_near": 0,
+          "big_edge_inside": 0,
+          "big_outside": 6,
+          "big_above": 12,
+          "long_low_on_rails": 49,
+          "thin_hanging": 15
+        },
+        "first_stop_m": {
+          "big_center": 98.0,
+          "small_center": 52.5,
+          "small_on_rail": 42.7,
+          "small_edge_inside": null,
+          "big_edge_inside": null,
+          "big_above": 101.3,
+          "long_low_on_rails": 82.2,
+          "thin_hanging": 30.1
+        }
+      },
+      "set_F_straight": {
+        "person": {
+          "detected": 6,
+          "first_detection_median_m": 151.0,
+          "false_detections": 6
+        },
+        "box1.0": {
+          "detected": 6,
+          "first_detection_median_m": 123.9,
+          "false_detections": 12
+        },
+        "box0.5": {
+          "detected": 1,
+          "first_detection_median_m": 51.9,
+          "false_detections": 0
+        },
+        "trolley": {
+          "detected": 6,
+          "first_detection_median_m": 151.4,
+          "false_detections": 5
+        },
+        "cable": {
+          "detected": 6,
+          "first_detection_median_m": 98.9,
+          "false_detections": 3
+        }
+      }
+    },
+    "safety": {
+      "doubleT_obstacle": "better: person_crossing 58 of 61 (same), object_on_rail 127 -> 128 of 185, from frame 75 124 -> 125 of 126, first alarm frame 11 (same), fp events 0; STOP episodes 3 -> 2 (frame 191 kept: keep_within_deg, no re-seed of the track model at the final calibration; the track model differs in 11 frames, 190-200)",
+      "set_O": "every inside object's STOP frames and first STOP identical or better: small_center 19 -> 30 @ 34.0 -> 52.5 m, thin_hanging 0 -> 15 @ none -> 30.1 m, the other six identical (big_center 208 @ 98.0, small_on_rail 23 @ 42.7, big_above 12 @ 101.3, long_low_on_rails 49 @ 82.2, the two edge objects 0); outside false STOP 6 -> 6, background 3 frames / 2 ids -> same. Per frame against the all-off run: 26 frames gain a STOP (11 small_center, 15 thin_hanging), none loses one",
+      "set_F_straight": "identical per kind (detected, median first confirmation, false detections: person 6/6 151.0 m 6, box1.0 6/6 123.9 m 12, box0.5 1/6 51.9 m 0, trolley 6/6 151.4 m 5, cable 6/6 98.9 m 3)",
+      "no_new_false_event": "five bags 58 / 13 / 16 and the ride 187 / 46 / 39 (alarm frames / events / STOP episodes) as in the baseline; per frame against the all-off run the STOP decision (obstacle) is identical in all 2 287 five-bag frames and all 11 271 ride frames, and every detection (track id, distance, kind, reason) is the same in every frame",
+      "held": true
+    },
+    "per_frame_against_all_off": "five bags: decisions and detections identical, clear_distance differs (the cap) in 18-368 frames per recording; ride: decisions and detections identical; warnings differ in piece 3 (1 frame's flag, 3 frames' lists: one hanging group with a rail pair joined an advisory track); set O: 26 STOP frames gained; doubleT_obstacle: 1 STOP frame gained (191), 11 frames of track model",
+    "interactions": "none found: every gated row moved as its item's own gate said (signatures: set O #2; thin_hanging: set O #10; robustness: doubleT_obstacle +1 frame; clear_cap: no gated row), and with the four items off the merged code reproduces _ride_p3 on every gated row",
+    "turned_off": [],
+    "clear_distance": {
+      "note": "decision A, recorded not tested: capped clear_distance of the final run against the uncapped value of the same frames (min(monitored_range, the nearest confirmed obstacle)), scripts/score_clear_distance.py on the gate's JSONL; the branch's R1 numbers (on 1c96233) are in p3_clear_distance_2026-09-25.json",
+      "five_empty": {
+        "median_m": [
+          127.0,
+          120.0
+        ],
+        "median_change_pct": -5.5,
+        "frames_pushed_under_60m": 28,
+        "frames_pushed_under_60m_pct": 1.22,
+        "decision_changed_frames": 0,
+        "limit": "-5 % (pre-registered S4): FAILED, as on the branch"
+      },
+      "ride": {
+        "median_m": [
+          127.0,
+          123.0
+        ],
+        "median_change_pct": -3.1,
+        "frames_pushed_under_60m": 169,
+        "frames_pushed_under_60m_pct": 1.5,
+        "decision_changed_frames": 0,
+        "note": "one frame reads 0.05 m longer capped than the reconstructed uncapped value: rounding of the reconstruction"
+      },
+      "set_O_overclaim": {
+        "object_frames_past_an_in_envelope_object": [
+          147,
+          67
+        ],
+        "of": 505,
+        "judgement_count_go": [
+          173,
+          154
+        ],
+        "per_object_uncapped": {
+          "big_center": 5,
+          "small_on_rail": 10,
+          "small_center": 33,
+          "small_edge_inside": 16,
+          "big_edge_inside": 8,
+          "big_above": 50,
+          "long_low_on_rails": 19,
+          "thin_hanging": 6
+        },
+        "per_object_capped": {
+          "big_center": 0,
+          "small_on_rail": 4,
+          "small_center": 30,
+          "small_edge_inside": 4,
+          "big_edge_inside": 6,
+          "big_above": 13,
+          "long_low_on_rails": 10,
+          "thin_hanging": 0
+        },
+        "outside_objects_clear_stops_at_object": {
+          "small_outside_near": 11,
+          "big_outside": 11
+        },
+        "note": "uncapped 147 here (not 172 as on 1c96233): the two newly stopped objects no longer overclaim"
+      },
+      "status_json": "health.candidate_distance present in all 15 068 frames (additive key)"
+    },
+    "stress": {
+      "commands": "python scripts/robustness_check.py --cache /data/cache --config configs/default.yaml --jobs 3 --out <scratch>/<mode> [--every 2 | --mount roll_3 | --mount pitch_3] on 30d0cac (PYTHONPATH = this checkout)",
+      "legend": "[five empty bags false events, STOP episodes, roundT_doubleT events, doubleT_obstacle labelled hits @ first alarm frame]",
+      "combined": {
+        "asrec": [
+          13,
+          16,
+          0,
+          "186/246 @ 11"
+        ],
+        "every2": [
+          10,
+          10,
+          0,
+          "92/123 @ 12"
+        ],
+        "roll3": [
+          11,
+          13,
+          1,
+          "181/246 @ 12"
+        ],
+        "pitch3": [
+          16,
+          17,
+          0,
+          "186/246 @ 11"
+        ]
+      },
+      "robustness_branch_shipped": {
+        "asrec": [
+          13,
+          16,
+          0,
+          "186/246 @ 11"
+        ],
+        "every2": [
+          10,
+          10,
+          0,
+          "92/123 @ 12"
+        ],
+        "roll3": [
+          11,
+          13,
+          1,
+          "181/246 @ 12"
+        ],
+        "pitch3": [
+          16,
+          17,
+          0,
+          "186/246 @ 11"
+        ]
+      },
+      "per_recording": {
+        "asrec": {
+          "doubleT_obstacle": [
+            201,
+            189,
+            2,
+            2
+          ],
+          "doubleT_platform": [
+            345,
+            4,
+            4,
+            1
+          ],
+          "roundT_doubleT": [
+            252,
+            0,
+            0,
+            0
+          ],
+          "roundT_pressureGate_roundT": [
+            268,
+            0,
+            0,
+            0
+          ],
+          "roundT_squareT_pressureGate_squareT": [
+            545,
+            0,
+            0,
+            0
+          ],
+          "squareT_platform_squareT_switch": [
+            877,
+            54,
+            9,
+            15
+          ]
+        },
+        "every2": {
+          "doubleT_obstacle": [
+            101,
+            95,
+            2,
+            1
+          ],
+          "doubleT_platform": [
+            173,
+            5,
+            3,
+            1
+          ],
+          "roundT_doubleT": [
+            126,
+            0,
+            0,
+            0
+          ],
+          "roundT_pressureGate_roundT": [
+            134,
+            0,
+            0,
+            0
+          ],
+          "roundT_squareT_pressureGate_squareT": [
+            273,
+            0,
+            0,
+            0
+          ],
+          "squareT_platform_squareT_switch": [
+            439,
+            33,
+            7,
+            9
+          ]
+        },
+        "roll3": {
+          "doubleT_obstacle": [
+            201,
+            185,
+            2,
+            4
+          ],
+          "doubleT_platform": [
+            345,
+            10,
+            4,
+            3
+          ],
+          "roundT_doubleT": [
+            252,
+            1,
+            1,
+            1
+          ],
+          "roundT_pressureGate_roundT": [
+            268,
+            1,
+            1,
+            1
+          ],
+          "roundT_squareT_pressureGate_squareT": [
+            545,
+            0,
+            0,
+            0
+          ],
+          "squareT_platform_squareT_switch": [
+            877,
+            30,
+            5,
+            8
+          ]
+        },
+        "pitch3": {
+          "doubleT_obstacle": [
+            201,
+            189,
+            2,
+            2
+          ],
+          "doubleT_platform": [
+            345,
+            10,
+            6,
+            4
+          ],
+          "roundT_doubleT": [
+            252,
+            0,
+            0,
+            0
+          ],
+          "roundT_pressureGate_roundT": [
+            268,
+            0,
+            0,
+            0
+          ],
+          "roundT_squareT_pressureGate_squareT": [
+            545,
+            0,
+            0,
+            0
+          ],
+          "squareT_platform_squareT_switch": [
+            877,
+            58,
+            10,
+            13
+          ]
+        }
+      },
+      "verdict": "identical to the robustness branch in every mode and count"
+    },
+    "new_baseline": "docs/evidence/results/regression_baseline_2026-09-25_ride_p3b.json: the final run's result without its 'gate' block (kept here); sorts after _ride_p3 under LC_ALL=C; every 'current baseline' reference repointed",
+    "hanging_groups": {
+      "note": "informational census on 30d0cac with the guard forced off (every group the stage keeps, with the frame's track.rail_slabs): nothing before stage 5b depends on it, so the guard keeps exactly the groups in frames with rail_slabs > 0",
+      "per_recording": {
+        "cloud_with_fake_obj": {
+          "groups": 14,
+          "groups_in_frames_with_rails": 14,
+          "frames_with_groups": 14,
+          "frames_with_groups_and_rails": 14,
+          "confirmed_hanging_track_ids": [
+            334
+          ],
+          "frames_with_a_confirmed_hanging_detection": 9,
+          "of_them_without_rails": 0
+        },
+        "new_data": {
+          "groups": 29,
+          "groups_in_frames_with_rails": 1,
+          "frames_with_groups": 26,
+          "frames_with_groups_and_rails": 1,
+          "confirmed_hanging_track_ids": [],
+          "frames_with_a_confirmed_hanging_detection": 0,
+          "of_them_without_rails": 0
+        },
+        "squareT_platform_squareT_switch": {
+          "groups": 0,
+          "groups_in_frames_with_rails": 0,
+          "frames_with_groups": 0,
+          "frames_with_groups_and_rails": 0,
+          "confirmed_hanging_track_ids": [],
+          "frames_with_a_confirmed_hanging_detection": 0,
+          "of_them_without_rails": 0
+        },
+        "roundT_squareT_pressureGate_squareT": {
+          "groups": 0,
+          "groups_in_frames_with_rails": 0,
+          "frames_with_groups": 0,
+          "frames_with_groups_and_rails": 0,
+          "confirmed_hanging_track_ids": [],
+          "frames_with_a_confirmed_hanging_detection": 0,
+          "of_them_without_rails": 0
+        },
+        "doubleT_platform": {
+          "groups": 0,
+          "groups_in_frames_with_rails": 0,
+          "frames_with_groups": 0,
+          "frames_with_groups_and_rails": 0,
+          "confirmed_hanging_track_ids": [],
+          "frames_with_a_confirmed_hanging_detection": 0,
+          "of_them_without_rails": 0
+        },
+        "roundT_pressureGate_roundT": {
+          "groups": 0,
+          "groups_in_frames_with_rails": 0,
+          "frames_with_groups": 0,
+          "frames_with_groups_and_rails": 0,
+          "confirmed_hanging_track_ids": [],
+          "frames_with_a_confirmed_hanging_detection": 0,
+          "of_them_without_rails": 0
+        },
+        "roundT_doubleT": {
+          "groups": 0,
+          "groups_in_frames_with_rails": 0,
+          "frames_with_groups": 0,
+          "frames_with_groups_and_rails": 0,
+          "confirmed_hanging_track_ids": [],
+          "frames_with_a_confirmed_hanging_detection": 0,
+          "of_them_without_rails": 0
+        },
+        "doubleT_obstacle": {
+          "groups": 0,
+          "groups_in_frames_with_rails": 0,
+          "frames_with_groups": 0,
+          "frames_with_groups_and_rails": 0,
+          "confirmed_hanging_track_ids": [],
+          "frames_with_a_confirmed_hanging_detection": 0,
+          "of_them_without_rails": 0
+        }
+      }
+    },
+    "tests": "pytest tests: 456 passed on the native path and with RESENSE_NATIVE=0 (436 before round 2 + 4 floating free-hanging + 4 thin hanging + 5 health.clear_cap + 6 rate / re-mount flags + 1 rail-lock guard); web/demo 13 passed; ruff check clean; scripts/sync_params.sh --check in sync; the docs link check (708 links) clean"
   }
 }
