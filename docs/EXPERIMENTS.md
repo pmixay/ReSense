@@ -48,7 +48,7 @@ every gated metric the same ([its JSON](evidence/results/regression_gate_2026-09
 | object lying across the rail (0.45 × 0.6 × 0.3 m, 56 m) | **124 of the 126** frames after the person leaves it (from frame 75)¹; 3 STOP episodes in the recording | real, 24.09 | §0 |
 | health, `CAUTION` | non-latency health warnings on 196 of 13 759 frames (1.4 %: rails lost at stations and switches); `CAUTION` on 27–68 % of the frames of the empty bags, 41 % of the ride | real, 24.09 | "Re-measurement" |
 | current code against v0.6.3 | identical per-frame output on all 13 759 frames | real, 24.09 | "Re-measurement" |
-| regression gate with the ride and set F straight (native, 25.09) | new baseline [`regression_baseline_2026-09-25_ride.json`](evidence/results/regression_baseline_2026-09-25_ride.json) on `935eecf`: PASS against the shipped-defaults run of the same day (3 gated rows better: `squareT_platform_squareT_switch` events and STOP episodes, ride events); decision evidence [`rules_decision_2026-09-25.json`](evidence/results/rules_decision_2026-09-25.json) | real, organizers' synthetic and synthetic, 25.09 | §1f |
+| regression gate with the ride and set F straight (native, 25.09) | new baseline [`regression_baseline_2026-09-25_ride.json`](evidence/results/regression_baseline_2026-09-25_ride.json) on `935eecf`: PASS against the shipped-defaults run of the same day (3 gated rows better: `squareT_platform_squareT_switch` events and STOP episodes, ride events); decision evidence [`rules_decision_2026-09-25.json`](evidence/results/rules_decision_2026-09-25.json); the review fix `cluster.floating_long_min_bottom` 1.6 m (`0bb1ba3`) passes against the same baseline with every number but latency identical and the same per-frame output, so the baseline stands ([`long_rule_bottom_2026-09-25.json`](evidence/results/long_rule_bottom_2026-09-25.json)) | real, organizers' synthetic and synthetic, 25.09 | §1f |
 | organizers' objects (set O, `cloud_with_fake_obj`, 10 objects in 1 510 frames) | STOP for **5 of 8** in-envelope objects: 2 × 2 m box from 98 m (first sight), plank across the rails from 82 m, 0.3 m cubes from 34–43 m, 2 × 2 m box at the envelope top in 12 of 124 frames; the edge 2 × 2 m box and the 5 cm hanging object missed, the edge 0.3 m cube advisory only; STOP in 303 of 801 visible in-envelope object-frames, 1 of 236 beyond 100 m; 6 false STOP frames on the 2 × 2 m box outside, 3 background alarm frames | organizers' synthetic, 24.09 | §2e |
 | long range, straight track | person first confirmed at **148 m** median (6 of 6), held in ≥ 90 % of the frames from 149 m and in every 10 m band from 115 m; trolley 144 m; 1 m crate 111 m; 3 cm hanging cable 95 m, held from 53 m (4 of 6); 0.5 m box on the bed 1 of 6; re-measured 25.09 by the gate on the current `far_range_eval.py` (changed by the P4 audit after 24.09; same files, seed, stamps, speeds): person 151.0 m median (6 of 6), held from 142.6 m; trolley 151.4 m; 1 m crate 123.9 m; cable 98.9 m, held from 34.2 m (6 of 6); 0.5 m box 1 of 6 (51.9 m); identical with and without either 25.09 rule [measured 25.09] | synthetic, set F round 3, legacy placement, 24.09; gate 25.09 | §2d |
 | same, object anchored on the near rails | person **154 m** (legacy 150 m in the same 5 pairs), trolley 148 m (148 m), crate 110 m (116 m), cable 102 m (104 m) | synthetic, set F round 4, anchored placement, 24.09 | §2d |
@@ -77,8 +77,10 @@ obstacle-frames of the recording (person 58 of 61 + object 127 of 185).
   rails as an obstacle, 25.09, [`organizers/answers.md`](organizers/answers.md) §8), the speed
   estimator §9. No number in this table uses any of them.
 * `cluster.floating_long_min_length` is 3.0 (on) in both parameter files and the code since 25.09
-  (decided on the ride, §1f); `cluster.short_signature_max_length` stays 0 (tried, not shipped,
-  §1f). Every number of this table dated 25.09 uses the long rule; the 24.09 rows do not (the
+  (decided on the ride, §1f), with `cluster.floating_long_min_bottom` 1.6 m since the review of the
+  same day (a tray or duct fallen onto the axis is a STOP again; every number of the gate identical
+  frame by frame, §1f "Review of 25.09"); `cluster.short_signature_max_length` stays 0 (tried, not
+  shipped, §1f). Every number of this table dated 25.09 uses the long rule; the 24.09 rows do not (the
   rule changes only `squareT_platform_squareT_switch` and one ride event: the person, the object
   on the rail, set O and set F straight are identical with and without it).
 * Set F uses legacy placement unless said (protocol: EVALUATION §3; paired check: §2d round 4 and
@@ -833,6 +835,70 @@ defaults is the new baseline,
 [`regression_baseline_2026-09-25_ride.json`](evidence/results/regression_baseline_2026-09-25_ride.json)
 (PASS against the defaults run, 3 gated rows better; its output equals the long-rule run frame by
 frame, only the load-dependent health-warning counts differ).
+
+**Review of 25.09: the long rule near the axis needs an overhead bottom** [measured 25.09]. The
+code review found that the along-track branch skipped the `signature_min_lateral` guard that keeps
+objects hanging near the axis: a cluster on the axis longer than 3 m, under 1.2 m tall and 1.0 m
+wide, with its bottom 0.7–1.9 m above the rail inside the envelope (a cable tray, duct or pipe
+fallen onto the axis, e.g. 4.0 × 0.3 × 0.5 m with its bottom at 1.0 m at 60 m) was demoted to
+advisory (`CAUTION`) instead of a STOP; the rule's evidence were overhead structures with their
+bottom at ~2.2 m. Fix (approved by the captain): the branch applies only when the cluster's lowest
+point is above `cluster.floating_long_min_bottom`; the off-centre `floating` path is unchanged.
+Raw: [`long_rule_bottom_2026-09-25.json`](evidence/results/long_rule_bottom_2026-09-25.json)
+(the pre-registration, the instrumented bottoms, the five gate summaries, the ride changes).
+
+*Pre-registered* (11:08 UTC, before any run): candidates 2.0, 1.8, 1.6 m; choose the highest for
+which, against [`regression_baseline_2026-09-25_ride.json`](evidence/results/regression_baseline_2026-09-25_ride.json),
+the five obstacle-free recordings and the ride are not worse on alarm frames, events or STOP
+episodes and set O, `doubleT_obstacle` and set F straight are identical; if none keeps every gain,
+the one that loses least, the safety fix taking priority over the false-alarm gain. All runs:
+`scripts/regression_gate.py --cache /data/cache --jobs 3 --set cluster.floating_long_min_bottom=<v>`,
+native path, receive stamps, the ride in 8 pieces, code `3bf6324` (the parameter added with 0 =
+the old rule), the 4-vCPU dev VM.
+
+*What the branch demotes.* The shipped rule instrumented inside a gate run (output identical to
+the baseline): every cluster classified `floating` near the axis (\|lateral\| ≤ 0.6 m), i.e. demoted
+only because it is longer than 3 m. Lowest point above the rail head:
+
+| recording | cluster-frames | where | bottom min / median / max |
+|---|---:|---|---|
+| `squareT_platform_squareT_switch` | 63 (62 frames) | 103.9–128.8 m; the ~104 m structure 56 + 5 (5.6 × 0.18 × 0.65 m median, lateral +0.36…+0.60 m), 2 at 127–129 m | 1.69 / 2.21 / 2.42 m (6 at ≤ 2.0 m, 1 at ≤ 1.8 m) |
+| ride (`new_data`) | 8 | the removed event, track 524 in `new_data_192`: 5 frames at 105.9–111.0 m, 4.1–4.4 m long, top 2.82–2.96 m | 1.68 / 1.88 / 1.92 m |
+| ride (`new_data`) | | single frames at 78.1 m (5.3 m long) and 115.7 m (5.7 m) | 2.49, 2.51 m |
+| ride (`new_data`) | | one frame at 112.6 m, 4.7 × 0.41 × 0.25 m (never confirmed) | 0.89 m |
+| `roundT_pressureGate_roundT` | 2 | 119–122 m, 4.7–4.8 m long | 2.64 / 2.65 m |
+| the other four recordings, set O | 0 | | |
+
+*The candidates* (alarm frames / events / STOP episodes; set O inside STOP frames / outside false
+STOP / background frames, IDs; set F straight detected of 6 and median first confirmation per kind):
+
+| | shipped (no bottom condition) | 2.0 m | 1.8 m | **1.6 m** |
+|---|---:|---:|---:|---:|
+| the ride | 197 / 46 / 39 | 204 / **47** / 39 | 202 / **47** / **40** | **197 / 46 / 39** |
+| five obstacle-free recordings | 60 / 14 / 17 | 60 / 14 / 17 | 60 / 14 / 17 | 60 / 14 / 17 |
+| `squareT_platform_squareT_switch` | 54 / 9 / 15 | 54 / 9 / 15 | 54 / 9 / 15 | 54 / 9 / 15 |
+| `doubleT_obstacle` (person 58 of 61, rail object from frame 75 124 of 126, first frame 11) | identical | identical | identical | identical |
+| set O | 303 / 6 / 3, 2 | identical | identical | identical |
+| set F straight (person, trolley, 1 m crate, cable, 0.5 m box) | 6 / 151.0, 6 / 151.4, 6 / 123.9, 6 / 98.9, 1 / 51.9 m | identical | identical | identical |
+| gate against the baseline | PASS | FAIL: ride events | FAIL: ride events, STOP episodes | PASS, identical frame by frame |
+
+2.0 m brings back ride track 524 (`new_data_192`, frames 14–24, 105–110 m; 11 frames change);
+1.8 m brings it back with one more STOP episode (8 frames change). Choice by the pre-registered rule:
+**1.6 m**, shipped in `0bb1ba3` (`configs/default.yaml`, the ROS copy, `resense/config.py`). The gate
+on the new defaults (no `--set`) passes against the old baseline with every number the same and
+the per-frame output identical on the six recordings, set O and the ride, so
+`regression_baseline_2026-09-25_ride.json` stays the baseline. What remains: a long cluster near
+the axis with its bottom above 1.6 m (up to the 3.0 m envelope top) is still advisory, whether an
+overhead duct or a tray hanging there; the finding's 0.7–1.6 m band is a STOP again. A higher
+threshold is not free: the overhead structures the rule is for read as low as 1.68 m at 105–110 m,
+where the extrapolated rail level drifts (§2d).
+
+Tests (`tests/test_late_candidates.py`): the classification of the finding's box on the axis
+(bottom 1.0 and 1.5 m: an obstacle; with the parameter 0: `floating`), the ~104 m structure
+(bottom 2.2 m) still `floating`, the off-centre path unchanged; and end to end on the ray-cast
+tunnel: the box's faces injected at 40–60 m (a single ray-cast frame returns only its 0.3 × 0.5 m
+front face there, which the long rule never sees as long) give a STOP with the shipped defaults and
+an advisory `floating` warning with the parameter 0.
 
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 
@@ -1782,7 +1848,7 @@ ride, 30 sequences × 110 frames, straight track, no speed unless said).
 | 7d | central near-bed path (24.09, opt-in, off) | bed anomalies within ±0.55 m of the axis and 30 m, below the rail head, above the local bed | first gates: five bags 20 → 145 events, ride 47 → 667, the 30 × 30 × 10 cm box on the bed 0 of 6, set O background 3 → 466 alarm frames [team record, partly unverified]; current gates (`537e220` + `7df1796`): five bags 20 → 107 events, set O background 319 alarm frames, the box found in the synthetic-tunnel test (§1e) | off; the ride not re-run |
 | 7e | short signatures (24.09 experiment; 25.09 flag `cluster.short_signature_max_length`, off) | `elevated` / `floating` do not demote a cluster at most 3 m long along the track within 100 m | set O: STOP frames on the inside objects 303 → 352, the 0.3 m floating cube from 52.5 m instead of 34 m; five bags 107 / 20 / 27 → 113 / 22 / 29; gate FAIL on 5 rows; on the ride, on top of the long rule, STOP episodes 39 → 45 (§1f, §2e) | tried, not shipped (25.09: ride STOP episodes +6 against a limit of +5) |
 | 7f | far-rail check (24.09, opt-in, off) | a wall-derived far curvature contradicted by rails visible beyond the near fit is replaced | 25.09: never fires on the six recordings and set O, output identical on all 3 998 frames (§1f) | off: nothing to gain on this data |
-| 7g | **long overhead rule** (25.09 flag `cluster.floating_long_min_length`, 3.0 m) | the `floating` shape also demotes a cluster near the axis longer than 3 m along the track (a duct, tray or beam) | the platform recording 101 / 15 / 25 → 54 / 9 / 15, five bags → 60 / 14 / 17, ride 204 / 47 / 39 → 197 / 46 / 39; every other recording, set O and set F straight identical; gate PASS (§1f) | shipped 25.09 (`935eecf`) |
+| 7g | **long overhead rule** (25.09 flag `cluster.floating_long_min_length`, 3.0 m) | the `floating` shape also demotes a cluster near the axis longer than 3 m along the track (a duct, tray or beam), since the review of 25.09 only with its bottom above 1.6 m (`cluster.floating_long_min_bottom`; a tray fallen onto the axis lower down is a STOP) | the platform recording 101 / 15 / 25 → 54 / 9 / 15, five bags → 60 / 14 / 17, ride 204 / 47 / 39 → 197 / 46 / 39; every other recording, set O and set F straight identical; gate PASS (§1f); the 1.6 m bottom condition changes none of it (2.0 / 1.8 m would bring back a ride event) | shipped 25.09 (`935eecf`; bottom condition `0bb1ba3`) |
 | 8 | **far-field rule** (v0.6, shipped) | beyond the height reference, tall (≥ 0.6 m), short (≤ 3 m), grounded clusters alarm to the trusted axis range | set F, rule off → on: person first confirmed 106 → **150 m** median, trolley 105 → 146 m, crate 106 → 111 m; off-object detections 12 → 39 of 3 060 frames (§2d) | shipped |
 | 9 | learned second opinion (v0.6 experiment) | gradient-boosted trees on the descriptors of the geometric candidates (positives: set-F objects; negatives: every candidate on empty data) | held-out ride part + unseen sequences: AUC 0.976–0.990; 83–95 % of false candidates removed at 97 % object recall; intensity is an injector artefact (§8) | not shipped: no real positives; ready as a re-weighting |
 | 10 | considered, not built | a trained 3D detector (PointPillars / CenterPoint: no real positives, ~0–3 % AP beyond 100 m in the rail literature), change detection against a map (needs localisation and repeated rides; "a map of the given tunnels will not fully work" — Q&A), a range-image anomaly model (fires on cables, signs, wet patches; needs the same gauge and persistence) | [`RESEARCH.md`](RESEARCH.md) §0 | — |

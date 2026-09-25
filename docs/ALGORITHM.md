@@ -246,7 +246,7 @@ Everything is **range-adaptive**, because a 0.5 m object gives ~500 returns at 2
    |---|---|---|---|
    | `column` | height > 2.2 m and width < 1.0 m, and (v0.6) either off the track centre (\|lateral\| > `signature_min_lateral` = 0.6 m) or at least `column_min_width` = 0.25 m wide | columns of the double-track tunnel, posts, gate legs pulled in by the axis (`roundT_doubleT` frames 114–251: 94 v0.3 alarm frames) | a person is 1.7 m; a train or trolley is wider; **a broken cable hanging near the axis is thinner than 0.25 m and stays an obstacle** (organizers' Q&A: "cables must be detected, this is very important") |
    | `elevated` | lowest point > 1.2 m above the rail head and width > 2.0 m | roof strips and beams across the tunnel read 0.3–0.65 m too low by the extrapolated bed (`squareT_platform_squareT_switch` 104–130 m: 356 frames) | every listed object stands on the bed; a train ahead reaches the polygon bottom |
-   | `floating` | lowest point > 0.7 m, height < 1.2 m, width < 1.0 m, and (v0.6) off the track centre (\|lateral\| > 0.6 m) | signs, lamps and brackets on the wall (`doubleT_platform` 46–73 m: 109 frames) | an object on the track touches the ground; **an object hanging into the envelope near the axis stays an obstacle** (v0.6) |
+   | `floating` | lowest point > 0.7 m, height < 1.2 m, width < 1.0 m, and (v0.6) off the track centre (\|lateral\| > 0.6 m); near the axis only (25.09) when longer than 3.0 m along the track with the lowest point above 1.6 m | signs, lamps and brackets on the wall (`doubleT_platform` 46–73 m: 109 frames) | an object on the track touches the ground; **an object hanging into the envelope near the axis stays an obstacle** (v0.6) |
    | `edge` | \|lateral\| > `edge_min_lateral` (v0.6: 1.0 m for the 1.05 m envelope; 1.2 m with the 1.40 m polygon), length > 2.5 × width, height < 1.0 m | duct / bench / platform-edge fragments along the corridor edge (`roundT_pressureGate_roundT` 3–35 m: 90 frames) | the spec's plank is filtered by the hardware rule anyway; boxes and persons are not elongated |
    | `wall_face` | height > 2.0 m (taller than a person), top above `wall_face_min_top` (v0.6: 2.8 m, under the 3.0 m envelope top; 2.4 m in v0.5), and the part below it has \|dy\| ≥ 0.3 m everywhere and > `wall_face_edge` somewhere (v0.6: 1.3 m, the advisory zone ends at 1.40 m; 1.6 m in v0.5) | the platform-hall end wall / portal jamb at 72–78 m of the stopped train (206 frames) | a train ahead fills the corridor centre (\|dy\| ≈ 0 below 2.4 m); a person is lower than 2.0 m. The first cut used 1.5 m and demoted a person standing on a 1.1 m platform edge with the body 15–25 cm inside the gauge (top at 2.8 m) — found by the review of 22.09 on hand-built clusters and fixed; the same review moved `floating_max_height` from 1.5 to 1.2 m for the same case |
 
@@ -264,12 +264,22 @@ Everything is **range-adaptive**, because a 0.5 m object gives ~500 returns at 2
      113 / 22 / 29 alarm frames / events / STOP episodes). Off (tried, not shipped, 25.09): on
      the ride it adds 6 STOP episodes on top of the long rule (a 1.8 m fixture at 96.8 m and a
      wall object at 55.8 m);
-   - `floating_long_min_length`: the `floating` shape also applies near the axis to a cluster
-     longer than that along the track: a duct, tray or beam running along the track. A cable
-     hanging from the vault is short along the track or taller than 1.2 m, and keeps its STOP.
-     On (3.0 m) since 25.09: the ~104 m structure of the platform recording is advisory (five
-     bags 107 / 20 / 27 → 60 / 14 / 17; ride 204 / 47 / 39 → 197 / 46 / 39), every organizer
-     object and set F straight unchanged.
+   - `floating_long_min_length` with `floating_long_min_bottom`: the `floating` shape also
+     applies near the axis to a cluster longer than `floating_long_min_length` along the track
+     **whose lowest point is above `floating_long_min_bottom`**: a duct, tray or beam running
+     along the track overhead. A cable hanging from the vault is short along the track or taller
+     than 1.2 m, and keeps its STOP. On (3.0 m) since 25.09: the ~104 m structure of the platform
+     recording is advisory (five bags 107 / 20 / 27 → 60 / 14 / 17; ride 204 / 47 / 39 →
+     197 / 46 / 39), every organizer object and set F straight unchanged. The bottom condition
+     (1.6 m) came from the review of the same day: without it the branch skipped the
+     `signature_min_lateral` guard, so a cable tray, duct or pipe fallen onto the axis (e.g.
+     4.0 × 0.3 × 0.5 m with its bottom 1.0 m above the rail at 60 m) was advisory (`CAUTION`)
+     instead of a STOP. Everything the branch demotes on the six recordings, set O and the ride has
+     its bottom at 1.68–2.65 m (the ~104 m structure 1.69–2.42 m, median 2.21 m), except one
+     single-frame cluster at 0.89 m that never confirmed; of the pre-registered 2.0 / 1.8 /
+     1.6 m, 2.0 and 1.8 m bring back the ride event at 105–110 m (bottom 1.68–1.92 m), and 1.6 m
+     leaves every recording, the ride, set O and set F straight identical frame by frame. A long
+     object near the axis whose bottom is above 1.6 m is still advisory (§6).
 
    [`EXPERIMENTS.md`](EXPERIMENTS.md) §1f has the numbers;
 6. **retro-reflector rule** (v0.4, [`SENSOR.md`](SENSOR.md) §3.3: intensity is reflectivity in
@@ -647,6 +657,7 @@ the CLI and the ROS node; the one exception is `tracking.hold_misses`, a code de
 | `cluster.signature_min_lateral`, `column_min_width` (v0.6) | 0.6 m, 0.25 m | where the column / floating signatures apply (hanging cables near the axis are obstacles) |
 | `cluster.short_signature_max_length`, `short_signature_max_distance` (25.09) | 0 (off), 100 m | tried, not shipped: `elevated` / `floating` spare a cluster at most this long along the track and this far (§3.3); at 3.0 m set O 303 → 352 inside STOP frames, but ride STOP episodes 39 → 45 with the long rule (EXPERIMENTS §1f) |
 | `cluster.floating_long_min_length` (25.09) | 3.0 m (on since 25.09) | `floating` also demotes a cluster near the axis longer than this along the track (§3.3): five bags 20 → 14 events, ride 47 → 46, set O and set F straight unchanged, gate PASS (EXPERIMENTS §1f) |
+| `cluster.floating_long_min_bottom` (25.09, review) | 1.6 m | ... only when the cluster's lowest point is above this (overhead infrastructure; a tray or duct fallen onto the axis lower down is a STOP): 2.0 / 1.8 m bring back a ride event (ride 46 → 47), 1.6 m changes nothing on the recordings, the ride, set O and set F straight (§3.3, EXPERIMENTS §1f); 0 = no bottom condition |
 | `calibration.enabled`, `frames` × `obs_spacing`, `provisional_min_deg`, `min_yaw_deg`, `drift_warn_deg` / `drift_window` (v0.6.1) | true, 20 × 10 frames, 2.5°, 3°, 1.5° / 10 checks | mount auto-calibration (final tilt over 20 s, provisional only for a clearly tilted rig); `sensor.roll_deg/pitch_deg/yaw_deg` freeze a known mount |
 | `lowobj.straddle_enabled`, `straddle_min_top`, `straddle_min_width`, `straddle_max_length`, `straddle_band` (v0.6.2) | true, 0.10 m, 0.35 m, 0.8 m, 0.30 m | an object across a rail, straddling the envelope floor, clustered whole (§3.3b) |
 | `lowobj.near_enabled`, `near_range`, `near_half_width`, `near_min_excess`, `near_min_width`, `near_max_width`, `near_min_length`, `near_min_height`, `near_min_bed_lateral_bins`, `near_min_points`, `near_max_length` | false, 30 m, 0.55 m, 0.05 m, 0.24 / 0.55 m, 0.0 m, 0.0 m, 20, 5, 0.75 m | opt-in central near-bed path (§3.3b), off: its first gates added 620 events on the ride; the width and bed-support gates halve its alarm frames, 107 events on the five recordings against 20 (§3.3b, §6) |
@@ -689,6 +700,13 @@ data: [`SCORECARD.md`](SCORECARD.md).
   3 cm point rule; on a shallower bed (0.15 m above) from ~50 m; in the trough not at all.
 * **At stations without a rail lock** (v0.6.2, §3.2) an object beyond 40 m is advisory
   (`CAUTION`, verified-clear distance 40 m) until the train is within 40 m of it.
+* **A long object hanging high near the axis** (§3.3, 25.09): a cluster near the axis longer than
+  3 m along the track, under 1.2 m tall and 1.0 m wide, with its lowest point above 1.6 m (the
+  shape of the overhead ducts, trays and beams along the track) is advisory (`CAUTION`), also when
+  it is a tray or pipe fallen into the envelope; with its bottom at or below 1.6 m this shape no
+  longer demotes it (a STOP inside the envelope; review of 25.09). A higher threshold (1.8 or
+  2.0 m) brings back a ride false event: the overhead structures read 1.68–2.65 m
+  (78–129 m ahead; beyond ~100 m the height reference drifts by 0.2–0.5 m, EXPERIMENTS §1f, §2d).
 * **A 10 cm object is resolved to ~20–25 m**: its face is one ring high beyond that
   (0.125° = 5 cm at 25 m) — the physical limit of the sensor's vertical resolution.
 * **Far field**: between the height reference and the axis range only tall, grounded, short

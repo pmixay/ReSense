@@ -17,10 +17,23 @@ frames, 13 km, no obstacles).
 ## Unreleased (in development; package version 1.0.0)
 
 Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
-overhead rule on, node v0.6.4). Tests: 235 → 347 (+28 native kernels, +3 speed evaluation
-helpers, +17 regression gate, +3 DBSCAN exactness, +3 late candidates, +53 release tooling, +5
+overhead rule on, node v0.6.4). Tests: 235 → 349 (+28 native kernels, +3 speed evaluation
+helpers, +17 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5
 overview video, 2 of them in the image, which has no `docs/`) in `tests/`, 11 in `web/demo`.
 
+- **Long overhead rule only above 1.6 m (`3bf6324`, `0bb1ba3`, 25.09, code review, approved by the
+  captain):** the along-track branch of the `floating` signature skipped the
+  `signature_min_lateral` guard, so a cable tray, duct or pipe fallen onto the axis and hanging
+  0.7–1.9 m above the rail (e.g. 4.0 × 0.3 × 0.5 m at 60 m) was advisory instead of a STOP. New
+  `cluster.floating_long_min_bottom` 1.6: the branch needs the cluster's lowest point above it.
+  Pre-registered 2.0 / 1.8 / 1.6 m, the highest keeping every gain chosen: 2.0 and 1.8 m bring back
+  the ride event at 105–110 m (bottom 1.68–1.92 m; ride 197 / 46 / 39 → 204 / 47 / 39 and
+  202 / 47 / 40); 1.6 m is identical frame by frame on the six recordings, the ride, set O and set F
+  straight, so `regression_baseline_2026-09-25_ride.json` stays the baseline. A long cluster near
+  the axis with its bottom above 1.6 m stays advisory (ALGORITHM §6). +2 tests in
+  `tests/test_late_candidates.py` (the classification; the box end to end on the ray-cast tunnel).
+  [`long_rule_bottom_2026-09-25.json`](docs/evidence/results/long_rule_bottom_2026-09-25.json),
+  [EXPERIMENTS §1f](docs/EXPERIMENTS.md).
 - **The captain's decisions (25.09):** no tags or releases now, the system is still in
   development: `.github/workflows/release.yml` and the release scripts stay, inert until a tag is
   pushed, and every plan item that scheduled a tag or a release is deferred. The submission is
