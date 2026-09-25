@@ -307,8 +307,11 @@ def _advisory_reason(b: _Blob, dist: float, lateral: float, zone: str, dy, h, cf
         return "" if short else "elevated"   # beam / roof strip / gantry spanning the corridor above the rails
     # on by default since 25.09 (3.0 m, decided on the ride; 0 = off): longer than
     # floating_long_min_length along the track, the floating shape is an overhead duct / tray /
-    # beam along the track wherever it is across it
-    along = cfg.floating_long_min_length > 0 and size[0] > cfg.floating_long_min_length
+    # beam along the track wherever it is across it - but only when its lowest point is as high
+    # as overhead infrastructure (floating_long_min_bottom, review 25.09): a cable tray, duct or
+    # pipe fallen onto the axis and hanging lower in the envelope is an obstacle
+    along = (cfg.floating_long_min_length > 0 and size[0] > cfg.floating_long_min_length
+             and h_min > cfg.floating_long_min_bottom)
     if cfg.floating_min_height > 0 and h_min > cfg.floating_min_height and size[2] < cfg.floating_max_height \
             and size[1] < cfg.floating_max_width and (off_centre or along):
         return "" if short else "floating"   # sign, lamp, bracket: small and not touching the ground
