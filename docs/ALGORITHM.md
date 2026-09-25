@@ -135,7 +135,7 @@ Three quantities describe the track ahead as functions of the along-track coordi
 
 | quantity | how it is estimated | range it is trusted |
 |---|---|---|
-| bed height `z_floor(X)` | per-bin (2 m, 5 m beyond 40 m) 20th percentile of Z in a ±1 m band around the axis; robust line through the near bins, far bins kept only within 0.35 m of it; a quadratic only if ≥ 4 consistent far bins exist and it bends less than a 1500 m vertical curve; linear extrapolation beyond the fitted range; EMA across frames (`floor_smoothing`) | fitted range + `floor_valid_margin` (20 m since v0.5, 60 m in v0.3), **or as far as the extrapolation is verified** (next row) |
+| bed height `z_floor(X)` | per-bin (2 m, 5 m beyond 40 m) 20th percentile of Z in a ±1 m band around the axis; robust line through the near bins, far bins kept only within 0.35 m of it; a quadratic only if ≥ 4 consistent far bins exist and it bends less than a 1500 m vertical curve; linear extrapolation beyond the fitted range; EMA across frames (`floor_smoothing`). **Shadow of a large near object** (25.09, `floor_shadow_height` 1.0): two adjacent bins (no empty bin between them, since the review of 25.09) more than 1 m above the previous frame's bed, the first within `floor_shadow_range` = 30 m, mean the bed behind an object is hidden (only the roof is left there); then only bins within 0.35 m of the previous bed are fitted, never the object's face (the first bin of the off-bed run nearest the shadow, not a nearer switch part or low object), the rail pair below is searched in front of the face, and with fewer than 5 bed bins (10 m) in front the previous bed and rail model are held (set O: the rail head at 20 m 0.8–3.5 m off without it); at most `floor_shadow_max_hold` = 20 frames in a row (review 25.09: a held bed is the next frame's reference, and a 3.4° pitch step held it for good), then the rule is released until no shadow is found | fitted range + `floor_valid_margin` (20 m since v0.5, 60 m in v0.3), **or as far as the extrapolation is verified** (next row) |
 | verified extrapolation `floor_verified` (v0.4, second height anchor) | the bed vanishes beyond ~100 m but the walls, benches and ducts beside the track are seen to the end of the range and their foot runs at a constant height above the rail head. Per 5 m bin the lowest point in the side band \|dy\| 1.6–3.5 m (minus half a ring spacing, since the lowest sample of a vertical face lies up to one ring above its foot) is compared with the extrapolated bed; the offset measured in the near bins where the bed fit is supported is the reference; walking outward, the extrapolation stays verified while the median deviation over the last 30 m of populated bins is within `floor_verify_tolerance` (0.5 m). A vertical curve, a platform or a transition breaks the agreement and the range stops there | `floor_verified`; the corridor is trusted to `max(fit + 20 m, floor_verified)` (v0.4: fit + 60 m, which on its own promoted advisory clusters at 135–142 m to alarms on `roundT_squareT_pressureGate_squareT`); on the six bags the verification reaches 105–145 m (p10–p90 of the per-frame value, v0.4 full-rate runs) against bed fits ending at 50–110 m |
 | rail-head level, lateral axis `center` and **yaw** (v0.5) | lateral height profile at 4–30 m in 5 cm bins (85th percentile per bin), built in the lateral coordinate of the previous axis (its yaw and curvature removed, so that in a curve the rails are straight lines in the profile — in absolute Y they smeared by up to 0.6 m and the centre was off by 0.9 m on a hand-made R = 800 m scene); the two rail ridges are found as a pair of local maxima `rails_spacing` = 1.59 m apart with a plausible head height (0.08–0.5 m above bed). The pair is then located again in `rails_yaw_slabs` = 3 along-track slabs; a line through the slab midpoints (the previous curvature held fixed) gives the axis at X = 0 and its tangent `tan(yaw)`: the rails are the sharpest parallel reference there is (±2 cm per ridge over a 26 m baseline ≈ 0.1°). EMA `rails_smoothing` | 4–30 m, then extended by the curvature |
 | curvature of the axis (yaw only when the rails give none) | per 4 m bin between 6 and 160 m, in a height band 1.6–2.8 m above the rail head (above platforms, below the roof), the boundary of each side is the 90th percentile of \|dy\|; a robust quadratic per side **with the tangent fixed by the rails** gives the curvature 1/R (v0.3 stored the quadratic coefficient 1/2R as the curvature and applied it as 1/R: the axis bent half as much as the tunnel, 2.4 m off at 100 m on R = 800 m; and its free quadratic traded yaw against curvature — the yaw was 0.8–1.0° off the rail direction on curve frames of the organizer bags and saturated at the ±2° clip in every moving bag). A boundary that cannot be fitted with that tangent (a diverging tunnel, a platform hall wall) is rejected instead of bending the axis; if both sides fit but disagree by more than `axis_sides_max_disagreement` (R 1500 m), the **nearer** boundary wins (near structures are constrained to be parallel to the track, far walls are not). Clipped to \|tan yaw\| ≤ 0.09 (5°; 0.06 was within 0.6° of binding on `roundT_doubleT` frames 120–180) and R ≥ 150 m; EMA `walls_smoothing`; yaw and curvature are **rate-limited** to `axis_max_yaw_rate` = 0.17° and `axis_max_curvature_rate` = 1e-4 m⁻¹ per frame (a train at 15 m/s on R = 700 m yaws 0.12° per frame; the v0.3 estimate jumped by 0.5–1.2° between frames on the moving bags, i.e. ±0.5 m at 55 m) | `axis_valid` = last observed boundary bin + 15 m; +50 m only when straight, well fitted and both sides agree; capped at `axis_one_side_range` = 120 m with one boundary and at `axis_disagree_range` = 60 m when the two disagree; shrinks by 20 m per frame without a fit |
@@ -221,13 +221,17 @@ Everything is **range-adaptive**, because a 0.5 m object gives ~500 returns at 2
    proxy for distinct rays) and clustered with DBSCAN (`min_samples` = 3; since 25.09 on scipy's
    `cKDTree` with scikit-learn's exact labels, `resense.clustering.dbscan_labels`,
    [`ARCHITECTURE.md`](ARCHITECTURE.md) "Native kernels");
-3. each cluster gets a bounding box, along-track distance of its nearest point, lateral offset
-   of its centroid, lowest and highest point above the rail head and mean intensity;
+3. each cluster gets a bounding box, along-track distance of its nearest point (since 25.09, for a
+   cluster in the strict gauge, of its nearest point inside the envelope: `gauge_distance`, not a
+   margin point it touches; since the review of 25.09 the envelope widened by the axis-uncertainty
+   margin of §3.2, 0.15 m per 100 m, so the distance is never beyond where the object enters the
+   envelope, while the strict decision uses the envelope shrunk by that margin), lateral offset of its centroid, lowest and highest point above the
+   rail head and mean intensity;
 4. clusters that describe infrastructure rather than obstacles are removed, in this order:
 
 | filter | rule (defaults) | what it removes |
 |---|---|---|
-| size | extent > 8 m or height < 0.08 m | walls, floor noise |
+| size | extent > 8 m or height < 0.08 m; since 25.09 a cluster > 8 m whose part inside the strict gauge is ≤ 3 m long and starts within 30 m is kept as that part (`oversize_split_max_length` / `_distance`: an object touching a long line at the corridor edge) | walls, floor noise |
 | point count | < 5 voxels (< 3 beyond 100 m) | noise |
 | thin linear | length > 3 m, width < 0.35 m, height < 0.25 m | rails, pipes, cables, duct edges |
 | low hardware | top < 0.35 m, width < 0.4 m, height < 0.3 m | clamps, joint bars, cables on the sleepers |
@@ -612,7 +616,11 @@ flag and the distance, every frame carries:
   central ±30° (view blocked), visibility < 60 m, rail lock in < 30 % of the last 20 frames
   (track model on its prior: stations, switches, pressure gates — where "the rails are flush
   with the gate floor", Q&A fact 16), latency p95 over the 100 ms budget, mount calibration
-  fallback or drift; an error sets the monitored range to 0;
+  fallback or drift; an error sets the monitored range to 0. Counters only (review 25.09, in the
+  status JSON's `health`, never a message or a level): `floor_shadow_frames`,
+  `floor_held_frames` and `floor_released_frames`, the frames since the start in which the
+  floor-shadow rule of §3.1 found a shadow, held the previous bed, or was released by its
+  20-frame cap;
 * **`decision`** (node, `/resense/decision`): `STOP` when a confirmed obstacle is inside the
   envelope; `FAULT` on a health error, on an exception while processing (logged, the node
   keeps running and resets the detector after 5 in a row) and from the watchdog when no frame
@@ -712,13 +720,18 @@ data: [`SCORECARD.md`](SCORECARD.md).
   (0.125° = 5 cm at 25 m) — the physical limit of the sensor's vertical resolution.
 * **Far field**: between the height reference and the axis range only tall, grounded, short
   clusters alarm (§3.3c); a small box (< 0.6 m) at 120–200 m is advisory until the height
-  reference reaches it.
+  reference reaches it. There the corridor follows the extrapolated curvature, also where one
+  boundary ends early: a hall wall seen to 72–92 m puts switch parts at 147.5 m into it
+  (4 STOP episodes of `squareT_platform_squareT_switch`, EXPERIMENTS §1h, 25.09).
 * **An obstacle far ahead can extend the bed fit.** Beyond ~90 m the real bed stops
   returning; the base of an object standing there fills a bed bin and lengthens the fit, and
   the far curvature follows. On the moving ride this made edge fixtures 30–65 m *beyond* an
   injected object alarm in 19 of 3 060 frames (v0.6.1, EXPERIMENTS §2d) — while the object
   itself was confirmed, so the decision was unchanged. A bed bin should span the bed's width to
-  count.
+  count; tried 25.09 and not shipped (`track.floor_far_min_width`, off; EXPERIMENTS §1h): the
+  width alone drops the real far bed (most real bins beyond 90 m are narrower than 1.1 m), and
+  dropping only an object's foot removes these detections but lets other fixtures beyond the
+  object confirm instead.
 * **A sensor mounted on its side** (spin axis horizontal) is not recognised: in a square
   tunnel its "down" is a flat wall that passes for the bed, the configured mapping looks valid
   and the detector alarms on the wall (EXPERIMENTS §6). Such a mount is set with
@@ -757,9 +770,14 @@ causes, each a limitation of the current rules:
   42.7 m). At 60–115 m such a cube returns 2–4 points a frame, below the 5-voxel minimum within
   100 m, so a single frame cannot confirm a 0.3 m object much beyond 50 m with this sensor;
   lowering `min_points`, `min_points_far` or `gauge_min_points` changed nothing for them.
-* **A large near object shadows the rails.** While the 2 × 2 m box (#1) is 10–20 m ahead, its
-  shadow hides the rails, the rail-height fit drifts by ~0.5 m and the bed 2.5–8 m ahead reads
-  as an obstacle: the STOP is right, but the reported distance (3.0 m) is wrong.
+* ~~**A large near object shadows the rails.**~~ Fixed 25.09 (§3.1, §3.3; EXPERIMENTS §1h):
+  while the 2 × 2 m box (#1) was 26 → 9 m ahead, the roof behind it tilted the bed fit (rail head
+  at 20 m 0.8–3.5 m off), the bed 3–10 m ahead read as the obstacle (3.0 m reported in frames
+  213–226) and, with a correct bed, box + a line at the corridor edge formed one cluster > 8 m that
+  was dropped. Now every STOP on #1 reports the box's distance (largest error 0.46 m). Left: a
+  shadow that starts beyond 30 m is not handled (`track.floor_shadow_range`; on set O the drift
+  starts at ~26 m), and an object touching a long line at the corridor edge beyond 30 m is still
+  dropped with it (`cluster.oversize_split_max_distance`).
 * **The edge tests are ambiguous.** The organizers placed the objects from the sensor's axis,
   which runs at −0.24° to the rails in this recording; the detector's envelope follows the rails
   (§3.1), so the edge tests (#4–#7) sit within ±0.1–0.4 m of the envelope edge, on different
@@ -791,9 +809,18 @@ causes, each a limitation of the current rules:
   structure (10 of the 25 episodes) is an overhead element running along the track near the axis,
   5.5 m long with its bottom at 2.2 m; `cluster.floating_long_min_length: 3.0` (on since 25.09)
   removes it (25 → 15 episodes, set O unchanged). The 82.9 m platform end (10 episodes) is an
-  axis error from the hall walls' curvature (0.5 m at 83 m), which the far-rail check cannot
-  correct here: the station's far rails are not found in two slabs. The switch parts at 147.5 m
-  pass the far-field rule like a person [real, 25.09, EXPERIMENTS §1f].
+  axis error of ~0.8 m at 83 m: a platform-side boundary joined by its fit to the diverging hall
+  end bends the axis (2.5–4e-4 /m), and the rails' tangent, fitted with that curvature held,
+  follows it. The far-rail check cannot correct it (the station's far rails are not found in two
+  slabs), and a rule letting the wall side whose far bins follow its fit set the shape was tried
+  and not shipped: it removes up to 14 of the 15 episodes but moves marginal frames of set O and
+  new events onto the ride (EXPERIMENTS §1h, 25.09). The switch parts at 147.5 m
+  pass the far-field rule like a person [real, 25.09, EXPERIMENTS §1f]; they are an axis error of
+  the same kind: a hall wall seen only to 72–92 m sets a curvature that moves the corridor by
+  1.4–3.4 m at 147 m. A far height threshold (0.8–1.0 m) costs set F 8–47 m of first confirmation,
+  and the opt-in `cluster.far_axis_both_sides` 2 (a far obstacle on a bent axis needs both
+  boundaries to reach it) removes them and 4 ride events but costs a person 1.9 m on gentle
+  curves: tried, not shipped [real and synthetic, 25.09, EXPERIMENTS §1h].
 * **Mount.** The test recordings use the mounts of the provided ones, the LiDAR 1 075 mm above
   the rail head on the train's centreline, with no numeric orientation (24.09, same source; §2).
   The unknown-mount case is gone, but the provided data hold two rigs (1.12 m and 1.51 m by the

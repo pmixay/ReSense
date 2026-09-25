@@ -9,7 +9,8 @@ from scipy.sparse import coo_matrix
 from scipy.sparse.csgraph import connected_components
 from scipy.spatial import cKDTree
 
-from resense.config import ClusterConfig
+from resense.config import ClusterConfig, GaugeConfig
+from resense.gauge import gauge_reach_mask
 from resense.sensor import expected_points
 
 
@@ -135,7 +136,7 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
                   min_points_factor: float = 1.0, factor_range: float = 0.0,
                   smear_max_length: float = 0.0, smear_max_width: float = 0.0,
                   low: Optional[np.ndarray] = None, low_cfg=None,
-                  height_valid: Optional[float] = None) -> List[Cluster]:
+                  height_valid: Optional[float] = None, gauge: Optional[GaugeConfig] = None) -> List[Cluster]:
     """Voxelise candidates, cluster the voxels, describe and filter the clusters.
 
     ``xyz``/``intensity``/``dy``/``h``/``in_gauge`` are the corridor candidates;
@@ -176,6 +177,10 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
     incidence) and reaches down below ``far_max_bottom``: a person, a trolley, a crate, a train
     ahead; not a flat patch of the far bed that the height error lifted into the polygon nor a
     sign hanging above it (``reason = 'beyond_height_ref'`` otherwise).
+
+    ``gauge`` (the envelope profile and its axis-uncertainty margin) is what ``cfg.gauge_distance``
+    measures a gauge cluster's distance against (:func:`resense.gauge.gauge_reach_mask`); without it
+    the distance stays the cluster's nearest point.
     """
     out: List[Cluster] = []
     if xyz.shape[0] == 0:
@@ -202,7 +207,7 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
             c = _low_cluster(b, dy, h, intensity, frame_idx, cfg, low_cfg)
         else:
             c = _corridor_cluster(b, dy, h, in_gauge, intensity, inv, frame_idx, cfg, factor, factor_range,
-                                  axis_valid, height_valid)
+                                  axis_valid, height_valid, gauge)
         if c is not None:
             out.append(c)
     out.sort(key=lambda c: c.distance)
@@ -339,12 +344,34 @@ def _is_retro(b: _Blob, intensity, cfg: ClusterConfig) -> bool:
     return frac >= cfg.retro_min_fraction and size[2] < cfg.retro_max_height and size[1] < cfg.retro_max_width
 
 
+def _gauge_part(b: _Blob, in_gauge, inv, cfg: ClusterConfig) -> Optional[_Blob]:
+    """The part of an oversized cluster inside the strict gauge (25.09,
+    ``oversize_split_max_length``), when it is at most that long along the track: an object
+    in the envelope that touches a long line at the corridor edge (a conductor rail, a duct
+    edge) forms one cluster longer than ``max_extent`` with it and would be dropped whole.
+    Only within ``oversize_split_max_distance``: the far corridor holds long sparse clusters
+    with a few gauge voxels. ``None`` = no such part (the cluster stays dropped)."""
+    m = in_gauge[b.idx]
+    if not m.any():
+        return None
+    idx, pts = b.idx[m], b.pts[m]
+    part = _Blob(idx, int(np.unique(inv[idx]).size), pts, pts.min(axis=0), pts.max(axis=0))
+    if float(part.size[0]) > cfg.oversize_split_max_length or float(part.bmin[0]) > cfg.oversize_split_max_distance:
+        return None
+    return part
+
+
 def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg: ClusterConfig,
                       factor: float, factor_range: float, axis_valid: float,
-                      height_valid: Optional[float]) -> Optional[Cluster]:
+                      height_valid: Optional[float], gauge: Optional[GaugeConfig] = None) -> Optional[Cluster]:
     """A corridor cluster: size and point-count bars, the infrastructure shapes, then the zone
     (enough voxels in the strict gauge) and the reason that demotes it to advisory."""
     size = b.size
+    if size.max() > cfg.max_extent and cfg.oversize_split_max_length > 0:
+        b = _gauge_part(b, in_gauge, inv, cfg)
+        if b is None:
+            return None
+        size = b.size
     if size.max() > cfg.max_extent or size[2] < cfg.min_height:
         return None
     dist = float(b.pts[:, 0].min())
@@ -370,6 +397,16 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
         reason = reason or "retro"
     n_exp, score = _visibility(b, max(float(size[1]), 0.15), max(float(size[2]), 0.15), cfg)
     fi = frame_idx[b.idx]
+    if cfg.gauge_distance and zone == "gauge" and gauge is not None:
+        # 25.09: an obstacle is as near as its part inside the envelope, not as a line at the
+        # corridor edge it touches (set O: a conductor-rail line 3-8 m ahead of the box at 5-8 m).
+        # Review 25.09: measured on the envelope widened by the axis-uncertainty margin, not on the
+        # strict-gauge mask (shrunk by it: an oblique object was reported 0.3 / 0.55 / 1.2 m beyond
+        # its entry at 40 / 80 / 120 m); never farther than the nearest point inside the envelope.
+        # Without the gauge profile the nearest point of the cluster stays the distance.
+        reach = in_gauge[b.idx] | gauge_reach_mask(dy[b.idx], h[b.idx], b.pts[:, 0], gauge)
+        if reach.any():
+            dist = float(b.pts[reach, 0].min())
     return Cluster(
         points_idx=fi[fi >= 0], n=b.n_vox, n_raw=int(b.idx.size), centroid=b.pts.mean(axis=0),
         bbox_min=b.bmin, bbox_max=b.bmax, distance=dist, lateral=lateral,

@@ -16,6 +16,10 @@ per frame and without touching any detection:
   runs on its prior without it: stations, switches, a covered bed);
 * ``latency_p95_ms`` against the frame budget;
 * the mount calibration status and drift (``resense/calibration.py``);
+* ``floor_shadow_frames`` / ``floor_held_frames`` / ``floor_released_frames`` (review 25.09) -
+  since the start (or a reset), the frames in which the floor-shadow rule of the track model
+  (``track.floor_shadow_height``) found the shadow of a large near object, held the previous bed,
+  or was released after ``track.floor_shadow_max_hold`` held frames in a row: counters only;
 * ``monitored_range`` - the distance up to which the corridor was checked this frame:
   ``min(visibility, trusted axis range, trusted height-reference range, gauge range)``; and
   ``clear_distance`` - the nearest confirmed obstacle, or ``monitored_range`` when there is
@@ -65,11 +69,13 @@ class HealthMonitor:
         self._points = deque(maxlen=200)
         self._lock = deque(maxlen=max(1, int(cfg.lock_window)))
         self._lat = deque(maxlen=max(1, int(cfg.latency_window)))
+        self._shadow = [0, 0, 0]            # floor-shadow frames: found, held, released
 
     def reset(self) -> None:
         self._points.clear()
         self._lock.clear()
         self._lat.clear()
+        self._shadow = [0, 0, 0]
 
     def update(self, xyz: np.ndarray, meta: dict, track, gauge: GaugeConfig, trusted_range: float,
                rails_min_score: float, latency_ms: float, calibration: Optional[dict] = None,
@@ -116,6 +122,13 @@ class HealthMonitor:
         if len(self._lock) >= min(5, self._lock.maxlen) and lock < cfg.min_lock_rate:
             flag(1, f"rail pair found in {lock:.0%} of the last {len(self._lock)} frames: track model on its prior")
 
+        if getattr(track, "floor_shadow", 0.0) > 0:
+            self._shadow[0] += 1
+            if track.floor_held:
+                self._shadow[1] += 1
+            elif getattr(track, "floor_hold_run", 0) > 0:
+                self._shadow[2] += 1
+
         self._lat.append(float(latency_ms))
         p95 = float(np.percentile(self._lat, 95))
         if len(self._lat) >= 10 and p95 > cfg.latency_budget_ms:
@@ -137,4 +150,6 @@ class HealthMonitor:
             "points": n, "near_fraction": round(near_frac, 3), "blocked_sectors": blocked,
             "visibility": round(vis, 1), "rail_lock": round(lock, 2), "latency_p95_ms": round(p95, 1),
             "monitored_range": round(monitored, 1), "clear_distance": round(clear, 1),
+            "floor_shadow_frames": self._shadow[0], "floor_held_frames": self._shadow[1],
+            "floor_released_frames": self._shadow[2],
         }

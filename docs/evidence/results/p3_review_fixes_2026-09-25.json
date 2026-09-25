@@ -1,0 +1,279 @@
+{
+ "schema": "resense-p3-item-v1",
+ "key": "review_fixes",
+ "date": "2026-09-25",
+ "owner": "P3 (integrator)",
+ "question": "The adversarial safety review of the rail-shadow rules shipped on wf7/p3 (8556773) returned 'concerns': (1) MAJOR, cluster.gauge_distance can report a distance beyond the envelope entry; (2) the floor-shadow hold can lock; (3) the shadow start and the face bin are chosen too loosely; (4) no diagnostic of how often the rule fires. Do the fixes (95ff725) keep the full gate and the set O #1 distance target?",
+ "review_findings": {
+  "1_major_gauge_distance": "clustering.py: the distance was taken from cand.in_gauge, the strict polygon SHRUNK by the axis-uncertainty edge margin (detector.py, gauge.edge_margin_per_100m 0.15), so it can be later than the true envelope entry (reviewer: +0.31 m at 42 m, +0.55 m at 81 m, +1.21 m at 121 m on diagonal bars; with a wrong lateral estimate up to the object's part in the margin, at most 8 m). The old rule (minimum over all points) was never later than the entry.",
+  "2_minor_hold_lock": "track.py: shadow_ref = prev and the held model becomes the next prev, no maximum hold age; a relative pitch step of ~3.4 deg (grade 0 -> 6 %) after warm-up keeps floor_held for every following frame: a lasting (fail-safe) false STOP at ~4.3 m.",
+  "3_minor_shadow_start_and_face": "track.py: the 'two in a row' test ran over consecutive POPULATED bins (two high bins separated by empty bins, e.g. 29 and 60 m, started a shadow), and the face was the first off-bed bin before the shadow, not the one nearest the object (a nearer switch part or low object cut the rail search).",
+  "4_diagnostic": "a status / health counter of how often the rule fires, if cheap and additive."
+ },
+ "diagnosis_before_registration": {
+  "code_measured": "8556773 (shipped) and 95ff725 (the fixes), synthetic ray-cast tunnel only; on real data only the shipped code's set O track fields (floor_shadow / floor_held per frame) were read, to size the hold cap; no gate, no set O decision or distance of the fixed code has been run or seen",
+  "oblique_bar": "tests: a 1.2 m tall bar (0.2-1.4 m above the rail head) crossing the 1.05 m edge at x_entry with 0.15 m of |dy| per m, starting 2 m before the entry at |dy| 1.35 m, both sides: 8556773 reports x_entry +0.38 / +0.42 (40 m), +0.80 / +0.84 (80 m), +1.20 / +1.24 m (120 m); 95ff725 -0.38..-0.42 / -0.76..-0.80 / -1.16..-1.20 m (the widened envelope; the bar's nearest point is x_entry - 2 m)",
+  "pitch_step": "tests: 10 clear frames, then the cloud pitched by atan(0.06) = 3.4 deg: 8556773 floor_held in all 45 following frames, STOP at 4.45-4.49 m from the 8th frame on; 95ff725 held 20 frames, released on the 21st (bed at 20 m -0.91 m, then -0.33 m, true -0.30 m), no STOP from the 22nd frame on; also released at grade 4 % and 10 %",
+  "set_O_holds_on_8556773": "scripts/eval_real.py --bags cloud_with_fake_obj on 8556773: a shadow in frames 204-231 and 369 (29 frames), the bed held in 218-231: 14 frames in a row while #1 closes from 12.6 m to under 3 m at ~0.95 m per frame; hence the cap 20 (~19 m of approach, 2 s at 10 Hz) leaves set O as it was",
+  "face_and_adjacency": "unit (track._fit_floor): 8556773 finds a shadow at 27 m from two high bins at 28 and 62.5 m with 15 empty bins between; with an off-bed bin at 8 m and the box face at 16 m it puts the face at 7 m (rail search 4-7 m, rail model held); 95ff725: no shadow, face at 15 m"
+ },
+ "preregistered": {
+  "written_at_utc": "2026-09-25T19:47:39Z",
+  "before_any_result": "No gate, eval_real or target run of 95ff725 on any organizer recording, set O, the ride or set F; only the synthetic tests above and the shipped code's set O hold frames.",
+  "code": "95ff725 (wf7/p3 = 8556773 + the fixes), native path; this registration is committed alone on top of it and the runs use that clean commit",
+  "candidates_in_order_of_preference": [
+   {
+    "id": "R1",
+    "what": "95ff725 as committed (the defaults): cluster.gauge_distance on the envelope widened by the edge margin (gauge_reach_mask, the polygon itself included), track.floor_shadow_max_hold 20 with the release, adjacent shadow bins, the face nearest the shadow, the health counters"
+   },
+   {
+    "id": "R2",
+    "what": "R1 with gauge_reach_mask reduced to the unshrunk polygon (no widening); run only if R1 fails the target or a gated row and the per-frame diff traces the failure to the widening"
+   },
+   {
+    "id": "R3",
+    "what": "R1 with cluster.gauge_distance false (the nearest point of the cluster: never beyond the entry); run only if R1 and R2 both fail because of gauge_distance"
+   },
+   {
+    "id": "R1b",
+    "what": "R1 with one empty bin allowed between the two high shadow bins; run only if R1 fails the #1 target and the per-frame diff traces it to the adjacency (the set O shadow frames 204-231 changed)"
+   }
+  ],
+  "command": "python scripts/regression_gate.py --cache /data/cache --jobs 3 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json --work <scratch> --out <scratch>/result.json (on the clean commit of this file)",
+  "ship_rule": {
+   "gate": "exits 0 against regression_baseline_2026-09-25_ride_column.json: no gated row worse or missing (the six recordings, set O, the ride in 8 pieces, set F straight)",
+   "target": "set O #1 (big_center) over all 229 labelled frames, from the gate's set O JSONL with the rail-shadow target script (resense.metrics._assign_detections): no STOP frame whose nearest_distance differs from #1's labelled distance by more than 1 m (8556773: largest 0.46 m), hence also 0 wrong-distance frames by the item's tolerance max(2 m, 3 %) + 1 m; #1 STOP frames 224 of 229 kept",
+   "tests": "the new safety tests pass (test_gauge_distance_is_never_beyond_the_envelope_entry at 40 / 80 / 120 m, test_floor_shadow_hold_is_released_after_the_cap, test_floor_shadow_needs_adjacent_bins_and_takes_the_face_nearest_the_shadow), pytest on the native and numpy paths, ruff, scripts/sync_params.sh --check, the docs link check",
+   "safety_first": "if the widening (R1) or the unshrunk envelope (R2) costs the #1 target, the distance stays safe rather than precise: R3 (gauge_distance off) ships and the #1 error is reported"
+  },
+  "safety_conditions": [
+   "doubleT_obstacle labelled hits per label (58 / 127 / 124) and first alarm frame (11) identical or better",
+   "set O: every inside object's STOP frames and first STOP identical or better against the baseline; per frame against 8556773's set O output (scripts/eval_real.py on 8556773): no inside object loses a matched-alarm or a STOP frame",
+   "set F straight per kind: detected, median first confirmation identical or better; false detections not higher",
+   "no new false alarm: alarm events and STOP episodes of the five obstacle-free recordings (13 / 16) and the ride (46 / 39) not higher"
+  ],
+  "expected": "The floor-shadow rule fires only on set O (8556773: frames 204-231 and 369, held 14 in a row), so the cap and the adjacency should change nothing there if the roof bins behind the box are all populated; the widened distance can only shorten a gauge cluster's distance against 8556773 (the rows that depend on it: set O #9 long_low_on_rails 49 STOP frames may fall back towards the 42 of the _ride_column baseline if its extra frames came from margin points within 0.09-0.14 m of the edge at 58-91 m; not a gated regression against _ride_column). Every other gated row equal to regression_baseline_2026-09-25_ride_p3.json.",
+  "information": "how often the floor-shadow rule fires (frames with a shadow, held, released) per data set, from the gate's JSONL; the rows that differ from _ride_p3; latency",
+  "baseline_rule": "If the gate passes and any gated or information row other than latency / code / config / run differs from regression_baseline_2026-09-25_ride_p3.json, the gate is re-run on the final clean commit and its result (without the 'gate' block) replaces regression_baseline_2026-09-25_ride_p3.json under the same name; the numbers quoted in EXPERIMENTS §1h / 'Current results', README and CHANGELOG follow. Otherwise the baseline stands."
+ },
+ "result": {
+  "verdict": "SHIP R1 (the first registered candidate): the gate passes, the #1 target holds (identical to 8556773), every safety condition holds; R2, R3 and R1b were not run",
+  "code": {
+   "measured_on": {
+    "commit": "b718a37f9333c17efb23ed017125fa481bcfae62",
+    "branch": "wf7/p3",
+    "version": "1.0.0",
+    "uncommitted_detector_changes": []
+   },
+   "config": {
+    "path": "configs/default.yaml",
+    "set": [],
+    "sha256": "184ea0e7c4cf020e587b0ee7cb7cde1b2f5c3a8100e27ea6795e7d8da2c2c5d6",
+    "file_sha256": "014a336958881d729d8b08c4b7789eea21aa5a9fccda0b2f865eed3ecd5b9edf"
+   },
+   "native": "native (_resense_native.so)",
+   "run": {
+    "jobs": 3,
+    "wall_s": 331.4,
+    "machine": "4-vCPU dev VM, no other gate running"
+   }
+  },
+  "gate": {
+   "baseline": "docs/evidence/results/regression_baseline_2026-09-25_ride_column.json",
+   "baseline_commit": "d117c8c462ff9c2483478206991f037fc929bf46",
+   "baseline_config_sha256": "0fd4e64e494f4c39cdab1da9a4fef7328057327b3dc5ac4dc8e21ebd47337b03",
+   "allow": [],
+   "passed": true,
+   "worse_gated": [],
+   "missing_gated": [],
+   "worse_allowed": [],
+   "missing_allowed": [],
+   "better": [
+    "set_O.objects.big_center.stop_frames",
+    "set_O.objects.long_low_on_rails.stop_frames",
+    "set_F_straight.person.false_detections",
+    "set_F_straight.box1.0.false_detections",
+    "set_F_straight.trolley.false_detections"
+   ],
+   "same": 95,
+   "info_changed": [
+    "set_O.objects.big_outside.advisory_frames",
+    "set_O.objects.long_low_on_rails.held_from_m",
+    "set_O.inside_stop_frames",
+    "set_F_straight.person.sustained_median_m",
+    "set_F_straight.trolley.sustained_median_m",
+    "latency_ms.doubleT_obstacle.mean",
+    "latency_ms.doubleT_obstacle.p95",
+    "latency_ms.doubleT_platform.mean",
+    "latency_ms.doubleT_platform.p95",
+    "latency_ms.roundT_doubleT.mean",
+    "latency_ms.roundT_doubleT.p95",
+    "latency_ms.roundT_pressureGate_roundT.mean",
+    "latency_ms.roundT_pressureGate_roundT.p95",
+    "latency_ms.roundT_squareT_pressureGate_squareT.mean",
+    "latency_ms.roundT_squareT_pressureGate_squareT.p95",
+    "latency_ms.squareT_platform_squareT_switch.mean",
+    "latency_ms.squareT_platform_squareT_switch.p95",
+    "latency_ms.cloud_with_fake_obj.mean",
+    "latency_ms.cloud_with_fake_obj.p95",
+    "latency_ms.new_data.mean",
+    "latency_ms.new_data.p95"
+   ]
+  },
+  "headline": {
+   "five_empty": {
+    "frames": 2287,
+    "alarm_frames": 58,
+    "alarm_events": 13,
+    "stop_episodes": 16,
+    "advisory_frames": 997
+   },
+   "ride": {
+    "frames": 11271,
+    "alarm_frames": 187,
+    "alarm_events": 46,
+    "stop_episodes": 39,
+    "monitored_range_median": 127.6
+   },
+   "doubleT_obstacle": {
+    "labelled": {
+     "object_on_rail": {
+      "hits": 127,
+      "frames": 185
+     },
+     "person_crossing": {
+      "hits": 58,
+      "frames": 61
+     },
+     "object_on_rail_from_frame_75": {
+      "hits": 124,
+      "frames": 126
+     }
+    },
+    "first_alarm_frame": 11
+   },
+   "set_O": {
+    "inside_stop_frames": 311,
+    "outside_false_stop_frames": 6,
+    "background": {
+     "alarm_frames": 3,
+     "track_ids": 2
+    },
+    "stop_frames": {
+     "big_center": 208,
+     "small_center": 19,
+     "small_on_rail": 23,
+     "small_edge_inside": 0,
+     "small_outside_near": 0,
+     "big_edge_inside": 0,
+     "big_outside": 6,
+     "big_above": 12,
+     "long_low_on_rails": 49,
+     "thin_hanging": 0
+    },
+    "first_stop_m": {
+     "big_center": 98.0,
+     "small_center": 34.0,
+     "small_on_rail": 42.7,
+     "small_edge_inside": null,
+     "small_outside_near": null,
+     "big_edge_inside": null,
+     "big_outside": null,
+     "big_above": 101.3,
+     "long_low_on_rails": 82.2,
+     "thin_hanging": null
+    }
+   },
+   "set_F_straight": {
+    "person": {
+     "detected": 6,
+     "first_detection_median_m": 151.0,
+     "false_detections": 6
+    },
+    "box1.0": {
+     "detected": 6,
+     "first_detection_median_m": 123.9,
+     "false_detections": 12
+    },
+    "box0.5": {
+     "detected": 1,
+     "first_detection_median_m": 51.9,
+     "false_detections": 0
+    },
+    "trolley": {
+     "detected": 6,
+     "first_detection_median_m": 151.4,
+     "false_detections": 5
+    },
+    "cable": {
+     "detected": 6,
+     "first_detection_median_m": 98.9,
+     "false_detections": 3
+    }
+   }
+  },
+  "against_the_ride_p3_baseline": {
+   "note": "every leaf of regression_baseline_2026-09-25_ride_p3.json and of this run compared except latency, code, config, run, created, health: 372 leaves, 4 differ",
+   "set_F_straight.box1.0.false_detections": "10 -> 12 (the _ride_column baseline had 13, so the gated row is still 'better')",
+   "set_F_straight.box1.0.recall_by_bin.100-150": "43 -> 41 of 151",
+   "recordings.squareT_platform_squareT_switch.alarm_dist": "[82.9, 147.5] -> [82.0, 147.5] (= the _ride_column baseline)",
+   "ride.alarm_dist": "[2.9, 160.5] -> [2.9, 158.3] (= the _ride_column baseline)",
+   "why": "Only reported distances move: the shrunk-mask rule of 8556773 had pushed these alarms 0.9-2.2 m farther than the nearest point (82.0 -> 82.9 m at the platform end, 158.3 -> 160.5 m on the ride); the widened envelope brings them back. In set F file 168 the 1 m box at 112.6-114.4 m forms one 6.6 m long, 1.8 m wide cluster with structure in front of it, part of which lies within the widened reach (0.17 m at 110 m): the STOP is reported at 107.5-110.2 m instead of the box's 112.6-114.4 m, 4 m short, so the matcher counts 2 false detections and 2 misses in those frames. A shorter distance is the safe side (review: a too-long distance is far worse than a false alarm)."
+  },
+  "target_set_O_1": {
+   "R1": {
+    "label": "big_center",
+    "label_frames": 229,
+    "stop_frames": 224,
+    "stop_frames_plausible": 208,
+    "matched_frames": 224,
+    "matched_frames_plausible": 208,
+    "wrong_distance_frames": 0,
+    "wrong_distance_frame_list": [],
+    "max_abs_err_m": 0.46,
+    "mean_abs_err_m_within_30m": 0.0,
+    "stop_frames_within_30m": 31,
+    "no_stop_frames": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ]
+   },
+   "rows": "identical to 8556773's (p3_combined target rows, all 229 frames): every STOP on #1 within 0.46 m, 0 frames beyond 1 m"
+  },
+  "per_frame_against_8556773": {
+   "how": "scripts/regression_gate.py run on an export of 8556773 (git archive, the same native library) into a scratch work dir: it reproduces regression_baseline_2026-09-25_ride_p3.json on every leaf but latency; then each JSONL of both runs compared frame by frame",
+   "decisions": "obstacle / warning identical in every frame of the six recordings, set O and the ride (8 pieces): 0 of 15 269 frames differ",
+   "track_model": "identical in every frame (the floor-shadow cap and the adjacency / face changes never act on the organizer data)",
+   "gauge_distances": "a confirmed gauge detection's distance changes in 124 detection-frames, always shorter, never longer: set O 59 (0.01-6.6 m: #7's false STOP at 136-144 m now at its labelled distance within 0.05 m instead of 1.2-1.5 m beyond it; the unmatched background track at 129-141 m in frames 666-667 6.6 m nearer; #1 unchanged), doubleT_obstacle 5 (the person 0.01-0.12 m), squareT_platform_squareT_switch 23 (0.11-3.2 m: the platform-end alarm 85.0 -> 82.0-84.4 m), the ride 37 (false alarms 0.01-6.7 m nearer); advisory distances move in 159 frames; clear_distance in 77 frames (always following the gauge distance above)",
+   "set_O_safety": "scripts perframe check (every labelled frame, plausible or not): no inside object loses a matched-alarm or STOP frame, matched frames identical per object, frames with an alarm matching no object 9 -> 9, alarm frames 342 -> 342: SAFETY_OK",
+   "set_F_straight": "5 of 30 sequences differ (far_range_eval.py of 8556773 with the gate's parameters vs the gate's setF_straight.json): only 'cand' flags (a single-frame candidate matching the object, its distance now shorter) and the two box frames of file 168 above; first detections identical in every sequence"
+  },
+  "where_the_floor_shadow_rule_acts": {
+   "cloud_with_fake_obj": "a shadow in 29 frames (204-231, 369), held in 14 (218-231: 11 held fits in a row, then 3 frames with no floor fit at all where the model stays as it was), released 0; health counters at the last frame 29 / 14 / 0",
+   "elsewhere": "0 frames on the six recordings and the ride (counters 0 / 0 / 0)"
+  },
+  "safety": {
+   "doubleT_obstacle": "identical: person_crossing 58 of 61, object_on_rail 127 of 185, from frame 75 124 of 126, first alarm frame 11, fp events 0",
+   "set_O_rows": "every inside object's STOP frames and first STOP identical to 8556773 (big_center 208, long_low_on_rails 49, ...); outside false STOP 6; background 3 frames / 2 ids",
+   "set_F_straight": "detected and median first confirmation identical per kind; false detections person 6, box1.0 12, box0.5 0, trolley 5, cable 3 (the _ride_column baseline: 7 / 13 / 0 / 12 / 3)",
+   "no_new_false_alarm": "five bags 58 / 13 / 16 and ride 187 / 46 / 39 (alarm frames / events / STOP episodes) identical"
+  },
+  "synthetic": {
+   "oblique_bar": "tests/test_late_candidates.py::test_gauge_distance_is_never_beyond_the_envelope_entry: 95ff725 reports 0.38-1.20 m BEFORE the entry at 40 / 80 / 120 m (both sides); 8556773 0.38-1.24 m beyond it (fails)",
+   "pitch_step": "test_floor_shadow_hold_is_released_after_the_cap: held 20 frames, released on the 21st, no STOP from the 22nd frame on; the bed at 20 m within 0.03 m of the pitched bed; with floor_shadow_max_hold 0 the lock stays (a STOP in the last frame); 8556773 fails (held in all 45 frames)",
+   "adjacency_and_face": "test_floor_shadow_needs_adjacent_bins_and_takes_the_face_nearest_the_shadow: 28 / 62.5 m high bins no shadow (8556773: 27 m), 28 / 30 m a shadow at 27 m; the face 15 m (13 m over two bins) with a nearer off-bed bin at 8 m (8556773: 7 m)"
+  },
+  "tests": "pytest 436 passed on the native path and with RESENSE_NATIVE=0 (431 + 5: the oblique bar at 40 / 80 / 120 m, the pitch step, the adjacency and face unit test); ruff check clean; scripts/sync_params.sh --check in sync; the docs link check clean",
+  "baseline": "Re-cut: see baseline_recut.",
+  "baseline_recut": {
+   "file": "docs/evidence/results/regression_baseline_2026-09-25_ride_p3.json (same name; the gate result of the final clean commit without its 'gate' block, as before)",
+   "measured_on": "154db25 (the fixes, the pre-registration, the results and docs; no detector change after 95ff725), native path, config sha256 184ea0e7..., --jobs 3, 380 s",
+   "gate": "PASS against regression_baseline_2026-09-25_ride_column.json, the same 5 gated rows better, none worse",
+   "equal_to_R1": "every leaf of this run and of the R1 run on b718a37 compared except latency, code, config, run, created, health: 383 leaves, 0 differ; the per-frame JSONL identical in every frame",
+   "differs_from_the_first_cut": "the 4 distance values of 'against_the_ride_p3_baseline'"
+  }
+ }
+}

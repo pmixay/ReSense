@@ -23,6 +23,13 @@ resense:
     floor_poly_degree: 2
     floor_max_residual: 0.35
     floor_smoothing: 0.5
+    floor_shadow_height: 1.0       # on since 25.09 (P3, rail shadow; 0 = off): bed bins this far above the previous bed, two in a row starting within floor_shadow_range, start a shadow; the bed fit and the rail pair then use the track in front of the object, or hold the previous model (set O #1: wrong-distance frames 12 -> 0)
+    floor_shadow_range: 30.0       # 25.09: m (40 fired at 37-38.5 m on doubleT_platform and added a false alarm)
+    floor_shadow_min_bins: 5
+    floor_shadow_max_hold: 20      # review 25.09: frames; after this many held frames in a row the rule is released until no shadow is found (a pitch step held the bed for good); set O #1 holds 14; 0 = no cap
+    floor_far_min_width: 0.0       # 25.09 (P3 bed_bin): m; a far bed bin narrower than this with an object standing on it is dropped from the fit; 0 = off
+    floor_far_from: 90.0           # m, bin centre from which that check applies (the real bed stops returning beyond ~90 m)
+    floor_far_min_standing: 2      # points 0.3-1.5 m above the narrow bin's low points needed to drop it (0 = drop every narrow far bin)
     rails_enabled: true
     rails_range:
     - 4.0
@@ -53,6 +60,9 @@ resense:
     walls_max_yaw: 0.09
     walls_min_radius: 150.0
     walls_smoothing: 0.6
+    walls_min_far_support: 0.0     # 25.09, 0 = off: with both sides fitted, a side keeping fewer than this fraction of its boundary bins beyond rails_range[1] within walls_max_residual of its own fit does not set the axis shape when the other side's do and it is nearly straight (the 82.9 m platform end, EXPERIMENTS 1h)
+    walls_far_support_max_curvature: 0.0002  # 1/m, walls_min_far_support overrules only towards a side this straight (R >= 5 km): never on a real curve
+    walls_far_support_frames: 1    # 25.09: walls_min_far_support applies from the N-th consecutive frame its condition holds (a station stop, not a one-frame spurious side)
     axis_valid_margin: 15.0
     axis_valid_straight_bonus: 50.0
     floor_valid_margin: 20.0
@@ -104,6 +114,9 @@ resense:
     min_points_far: 3
     far_range: 100.0
     max_extent: 8.0
+    oversize_split_max_length: 3.0 # on since 25.09 (P3; 0 = off): a cluster larger than max_extent keeps its part inside the strict gauge when that part is at most this long (an object touching a line at the corridor edge)
+    oversize_split_max_distance: 30.0 # 25.09 (P3): ... and starts within this distance (m; beyond, long sparse far clusters gave a false alarm)
+    gauge_distance: true           # on since 25.09 (P3; false = off): a gauge cluster's distance is its nearest point inside the envelope, not a margin point it touches; since the review of 25.09 the envelope widened by the axis-uncertainty margin (edge_margin_per_100m), so never farther than where the object enters it
     min_height: 0.08
     thin_min_length: 3.0
     thin_max_width: 0.35
@@ -136,6 +149,7 @@ resense:
     far_min_height: 0.6            # v0.6 far field (beyond the trusted height reference, within the trusted axis): at least this tall,
     far_max_length: 3.0            #   at most this long along the track,
     far_max_bottom: 1.0            #   and reaching below this height
+    far_axis_both_sides: 0         # 25.09 (far_switch), off: 1 / 2 = a far obstacle needs both tunnel boundaries to support the axis (1 every frame, 2 bent frames only); tried, not shipped (EXPERIMENTS 1h)
     signature_min_lateral: 0.6     # v0.6: column / floating signatures only off the track centre (hanging cables are obstacles)
     short_signature_max_length: 0.0   # off, decided 25.09 on the ride (3.0 / 100 tried, not shipped: ride STOP episodes 39 -> 45 on top of the long rule, over the +5 limit; set O +49 STOP frames): > 0 = the elevated / floating signatures do not demote a cluster at most this long (m) ...
     short_signature_max_distance: 100.0   # ... and at most this far (m); the measured candidate is 3.0 / 100.0 (docs/P4_AUDIT.md)

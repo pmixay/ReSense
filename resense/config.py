@@ -43,6 +43,26 @@ class TrackConfig:
     floor_poly_degree: int = 2
     floor_max_residual: float = 0.35  # m, bins further from the fit are rejected (2nd pass)
     floor_smoothing: float = 0.5   # exponential smoothing of coefficients across frames (0 = off)
+    # on since 25.09 (P3, docs/evidence/results/p3_rail_shadow_2026-09-25.json): the shadow of a large near
+    # object in the bed band (set O, the 2 x 2 m box at 10-20 m tilted the fit through the roof behind
+    # it): bins this far above the previous bed, two in a row starting within floor_shadow_range, start a
+    # shadow; then only bed bins (within floor_max_residual of the previous bed) are fitted, never the
+    # object's face, and the rail pair is searched in front of the face; with fewer than
+    # floor_shadow_min_bins bed bins (or 2 m x that much track) in front the previous bed / rail model is
+    # held. 0 = off
+    floor_shadow_height: float = 1.0
+    floor_shadow_range: float = 30.0   # m (40 fired at 37-38.5 m on doubleT_platform and added a false alarm, round 1)
+    floor_shadow_min_bins: int = 5
+    # review 25.09: at most this many held frames in a row (10 Hz), then the rule is released until no
+    # shadow is found (a held bed is the next frame's reference: a pitch step held it for good); set O
+    # #1 holds 14 frames in a row while the box closes from ~13 to ~3 m. 0 = no cap
+    floor_shadow_max_hold: int = 20
+    # 25.09 (P3 bed_bin): a far bed bin (centre >= floor_far_from) whose low points span less than
+    # floor_far_min_width laterally, with >= floor_far_min_standing points standing on them, is the
+    # foot of an object, not the bed, and is dropped from the fit (track._narrow_far_bins); 0 = off
+    floor_far_min_width: float = 0.0
+    floor_far_from: float = 90.0
+    floor_far_min_standing: int = 2
     # --- rail-based self-calibration of the track axis (near range) ---
     rails_enabled: bool = True
     rails_range: Tuple[float, float] = (4.0, 30.0)   # m along track
@@ -67,6 +87,9 @@ class TrackConfig:
     walls_max_yaw: float = 0.09                      # |tan(yaw)| limit (~5 deg: mount yaw of ~1-1.5 deg in the bags plus the body angle in a curve; 0.035 in v0.3 saturated in every moving bag, 0.06 was within 0.6 deg of binding on roundT_doubleT frames 120-180)
     walls_min_radius: float = 150.0                  # m, curvature limit
     walls_smoothing: float = 0.6                     # EMA of (yaw, curvature) across frames
+    walls_min_far_support: float = 0.0               # 25.09, 0 = off: with both sides fitted, a side keeping fewer than this fraction of its boundary bins beyond rails_range[1] within walls_max_residual of its fit does not set the axis shape when the other side's do and it is nearly straight (EXPERIMENTS §1h: the 82.9 m platform end)
+    walls_far_support_max_curvature: float = 2.0e-4  # 1/m, walls_min_far_support only overrules towards a side this straight (R >= 5 km): never on a real curve
+    walls_far_support_frames: int = 1                # walls_min_far_support applies from the N-th consecutive frame its condition holds (a station stop, not a one-frame spurious side)
     axis_valid_margin: float = 15.0                  # m beyond the last observed boundary bin the axis is trusted
     axis_valid_straight_bonus: float = 50.0          # extra trusted range when the tunnel is straight (|curv| < 1e-4) and both boundaries agree
     floor_valid_margin: float = 20.0                 # m beyond the fitted bed range the height reference is trusted without verification (60 in v0.3: the extrapolated bed was 0.3-0.65 m off at 85-105 m in the platform bags)
@@ -130,6 +153,17 @@ class ClusterConfig:
     min_points_far: int = 3        # minimum cluster size beyond ``far_range``
     far_range: float = 100.0
     max_extent: float = 8.0        # m, larger clusters are tunnel structure, not obstacles
+    # on since 25.09 (P3): > 0 = a cluster larger than max_extent is not dropped when its part inside the
+    # strict gauge is at most this long along the track: an object touching a long line at the corridor
+    # edge (the set O box at 9-21 m next to the line at 1.35-1.40 m; a person next to a conductor rail)
+    # is re-described from that part; 0 = off (the whole cluster dropped)
+    oversize_split_max_length: float = 3.0
+    oversize_split_max_distance: float = 30.0  # m, ... and only when that part starts within this distance (the far corridor holds long sparse clusters with a few gauge voxels, round 1 of 25.09)
+    # on since 25.09 (P3): true = the distance of a cluster inside the strict gauge is that of its nearest
+    # point inside the gauge, not of a point in the advisory margin it touches; false = the nearest point (v0.1).
+    # Since the review of 25.09 "inside" is the envelope widened by the axis-uncertainty margin
+    # (gauge.edge_margin_per_100m; resense.gauge.gauge_reach_mask), never the strict-gauge mask shrunk by it
+    gauge_distance: bool = True
     min_height: float = 0.08       # m, vertical extent (very flat clusters = floor noise)
     # linear infrastructure (rails, pipes, cables): long, thin, flat
     thin_min_length: float = 3.0
@@ -168,6 +202,7 @@ class ClusterConfig:
     far_min_height: float = 0.6        # m, v0.6: beyond the trusted height reference (but within the trusted axis) only clusters at least this tall are obstacles,
     far_max_length: float = 3.0        # m, ... at most this long along the track (a face seen head-on, not a surface at grazing incidence),
     far_max_bottom: float = 1.0        # m, ... and reaching down below this height (not a sign hanging above the far corridor)
+    far_axis_both_sides: int = 0       # 25.09 (far_switch), 0 = off: beyond the height reference, a far obstacle needs both fitted tunnel boundaries to support the axis there (the shorter side's last bin + axis_valid_margin); 1 = on every frame, the corridor itself ends there (+ the straight bonus); 2 = only on bent frames (no straight bonus), would-be obstacles demoted (beyond_axis); both measured, neither shipped (EXPERIMENTS 1h)
     signature_min_lateral: float = 0.6  # m, v0.6: the column and floating signatures apply only off the track centre (a cable / object hanging into the envelope near the axis is an obstacle)
     short_signature_max_length: float = 0.0   # m, candidate of 24.09 (P3 / P4), off (no-go 25.09 on the ride): > 0 = the elevated and floating signatures do not demote a cluster at most this long along the track
     short_signature_max_distance: float = 100.0  # m, ... and at most this far (the organizers' test objects are 0.3-2.2 m long; the platform structure these signatures must keep demoting is 3.9-5.7 m long at ~104 m); docs/P4_AUDIT.md, scripts/short_signature_experiment.py

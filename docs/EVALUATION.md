@@ -169,7 +169,7 @@ validity over each sequence before interpreting range or edge results.
 
    ```bash
    python scripts/regression_gate.py --cache /data/cache \
-       --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json \
+       --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_p3.json \
        [--config FILE] [--set section.key=value ...] [--allow PATTERN ...] \
        --out out/gate/<change>.json
    ```
@@ -212,11 +212,22 @@ validity over each sequence before interpreting range or edge results.
    recording, or a failed set F run on a cached ride, exits 2.
 
    **Baselines of 25.09.** The current one is
+   [`regression_baseline_2026-09-25_ride_p3.json`](evidence/results/regression_baseline_2026-09-25_ride_p3.json):
+   the shipped defaults of `c598cf6` (the four P3 items of 25.09 merged: the rail-shadow rules on,
+   the other three flags off) on the six recordings, O, the ride and F straight, native path,
+   4-vCPU dev VM, `--jobs 3`, 332 s. It passes against the one before with 5 gated rows better
+   and none worse (O: the 2 × 2 m box 207 → 208, the plank 42 → 49 STOP frames; F straight false
+   detections person 7 → 6, 1 m box 13 → 10, trolley 12 → 5; EXPERIMENTS §1h,
+   [`p3_combined_2026-09-25.json`](evidence/results/p3_combined_2026-09-25.json)). Re-cut under
+   the same name after the review fixes of the rail-shadow rules, on `154db25` (380 s): the same
+   5 rows better and none worse against the one before, the 1 m box 13 → 12 false detections
+   (distances only get shorter; EXPERIMENTS §1h,
+   [`p3_review_fixes_2026-09-25.json`](evidence/results/p3_review_fixes_2026-09-25.json)). The one
+   before,
    [`regression_baseline_2026-09-25_ride_column.json`](evidence/results/regression_baseline_2026-09-25_ride_column.json):
-   the shipped defaults of `d117c8c` (long overhead rule on, `tracking.column_hold` 2) on the six
-   recordings, O, the ride and F straight, native path, 4-vCPU dev VM, `--jobs 3`, 348 s. It
-   passes against the one before with 7 gated rows better and none worse (EXPERIMENTS §3a,
-   [`column_hold_2026-09-25.json`](evidence/results/column_hold_2026-09-25.json)). The one before,
+   the shipped defaults of `d117c8c` (long overhead rule on, `tracking.column_hold` 2), 348 s; it
+   passes against its predecessor with 7 gated rows better and none worse (EXPERIMENTS §3a,
+   [`column_hold_2026-09-25.json`](evidence/results/column_hold_2026-09-25.json)). Before it,
    [`regression_baseline_2026-09-25_ride.json`](evidence/results/regression_baseline_2026-09-25_ride.json):
    the shipped defaults of `935eecf` (long overhead rule on), 394 s; it passes against the
    shipped-defaults run of the same day with 3 gated rows better (EXPERIMENTS §1f,

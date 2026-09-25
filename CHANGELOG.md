@@ -17,12 +17,96 @@ frames, 13 km, no obstacles).
 ## Unreleased (in development; package version 1.0.0)
 
 Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
-overhead rule on, node v0.6.4). Tests: 235 → 416 (+28 native kernels, +3 speed evaluation
+overhead rule on, node v0.6.4). Tests: 235 → 436 (+28 native kernels, +3 speed evaluation
 helpers, +23 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5
 overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting and socket
 buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`, +20 DDS
-transport, 19 of them in the image) in `tests/`, 13 in `web/demo`.
+transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
+`cluster.far_axis_both_sides`, +3 far bed bins, +5 the rail-shadow review fixes) in `tests/`, 13
+in `web/demo`.
 
+- **Review fixes of the rail-shadow rules (P3, 25.09):** a safety review found three faults.
+  `cluster.gauge_distance` measured on the strict-gauge mask, the envelope shrunk by the axis
+  margin (0.15 m per 100 m), so an object entering obliquely was reported beyond its entry (+0.4 /
+  +0.8 / +1.2 m at 40 / 80 / 120 m; set O #7's false STOP 1.2–1.5 m too far): it now measures on
+  the envelope widened by that margin, never beyond the entry. A held bed had no end (a 3.4° pitch
+  step held it for good: a lasting false STOP): `track.floor_shadow_max_hold` 20 frames, then the
+  rule is released until no shadow is found. The two shadow bins must be adjacent, and the face is
+  the one nearest the shadow. Health counters `floor_shadow_frames` / `floor_held_frames` /
+  `floor_released_frames` (additive). Pre-registered (19:47 UTC); the full gate (`b718a37`) passes
+  against `regression_baseline_2026-09-25_ride_column.json` with the same 5 gated rows better and
+  none worse; decisions and the track model identical in all 15 269 frames of the six recordings,
+  set O and the ride, gauge distances only shorter (124 detection-frames); set O #1 unchanged (no
+  STOP more than 1 m off); set F straight's 1 m box 10 → 12 false detections against the first
+  `_ride_p3` cut (a STOP at 112–114 m reported 4 m short). `regression_baseline_2026-09-25_ride_p3.json`
+  re-cut under the same name on `154db25`. +5 tests, each failing before the fix.
+  [`p3_review_fixes_2026-09-25.json`](docs/evidence/results/p3_review_fixes_2026-09-25.json),
+  [EXPERIMENTS §1h](docs/EXPERIMENTS.md).
+
+- **The P3 items of 25.09 combined; new gate baseline (P3, 25.09, delegated by the captain):** the
+  four items below merged (`wf7/p3`): the rail-shadow rules ship; `track.walls_min_far_support`,
+  `cluster.far_axis_both_sides` and `track.floor_far_min_width` stay 0 (off). Pre-registered
+  (19:03 UTC, before any run on the merged code); the full gate of the merged defaults (`c598cf6`,
+  `--jobs 3`, 332 s) passes against `regression_baseline_2026-09-25_ride_column.json` with 5 gated
+  rows better (set O 2 × 2 m box 207 → 208 and plank 42 → 49 STOP frames; set F straight false
+  detections person 7 → 6, 1 m box 13 → 10, trolley 12 → 5), none worse, and equals the rail-shadow
+  item's own gate on every row but latency; five bags 58 / 13 / 16, ride 187 / 46 / 39,
+  `doubleT_obstacle` 185 of 246 from frame 11 unchanged; set O #1 wrong-distance STOP frames 12 → 0;
+  per frame no set O inside object loses a matched-alarm or STOP frame. New gate baseline
+  `docs/evidence/results/regression_baseline_2026-09-25_ride_p3.json`.
+  [`p3_combined_2026-09-25.json`](docs/evidence/results/p3_combined_2026-09-25.json),
+  [EXPERIMENTS §1h](docs/EXPERIMENTS.md).
+- **Far bed bins that are an object's foot: `track.floor_far_min_width` (25.09, P3 `bed_bin`,
+  default 0 = off, tried and not shipped):** an object standing beyond ~90 m, where the real bed no
+  longer returns, fills a bed bin and extends the fit (ALGORITHM §6). The flag drops a bin at or
+  beyond `floor_far_from` whose low points span less than the width with its face standing on
+  them. Pre-registered (17:50 UTC) 1.1 m from 90 m with ≥ 2 / ≥ 3 standing points / width only:
+  each fails on set F straight (false detections 35 → 43 / 36 / 27 with the trolley 12 → 21 / 18 /
+  14; the crate's six file-98 detections this item is about do go in B) and on a set O row;
+  station STOP episodes 15 → 9–10; the ride with A 187 / 46 / 39 → 171 / 45 / 40. With the flag
+  off the full gate equals the baseline in every row but latency.
+  [`p3_bed_bin_2026-09-25.json`](docs/evidence/results/p3_bed_bin_2026-09-25.json),
+  [EXPERIMENTS §1h](docs/EXPERIMENTS.md).
+- **The 147.5 m switch parts: tried, not shipped (25.09, P3; `cluster.far_axis_both_sides` 0 =
+  off, output byte-identical):** the 4 switch-part STOP episodes of
+  `squareT_platform_squareT_switch` are an axis error (a hall wall seen to 72–92 m sets a
+  curvature that moves the far corridor 1.4–3.4 m at 147 m), not a height one. Pre-registered
+  (`docs/evidence/results/p3_far_switch_2026-09-25.json`): `cluster.far_min_height` 0.8 / 0.9 /
+  1.0 (episodes 4 → 1 / 1 / 0) cut set F straight's person 151.0 → 143.5 / 143.5 / 138.8 m and the
+  trolley to 104.5–106.9 m; the new opt-in `cluster.far_axis_both_sides` (a far obstacle needs both
+  tunnel boundaries to reach it) mode 1 loses 3–15 m of set F; mode 2 (bent frames only) passes the
+  gate with 5 rows better (five bags 13 → 9 events, ride 46 → 42 events and 39 → 33 STOP episodes,
+  set O and set F straight identical) but costs a person 1.9 m of median first confirmation on six
+  gentle-curve approaches (124.1 → 122.2 m), so it stays off (EXPERIMENTS §1h).
+- **The 82.9 m platform end: a far-support rule for the wall sides, tried, not shipped (`692feaf`,
+  `1ae1952`, P3, 25.09, delegated by the captain):** the axis at the platform of `squareT_platform_squareT_switch` is
+  ~0.8 m off at 83 m (curvature 2.5–4e-4 from a platform-side boundary joined to the hall end;
+  EXPERIMENTS §1h). New opt-in `track.walls_min_far_support` (0 = off), with
+  `walls_far_support_max_curvature` 2e-4 and `walls_far_support_frames` 1: a wall side whose bins
+  beyond 30 m mostly lie off its own fit does not set the axis shape when the other side's do and
+  say straight. Pre-registered in two rounds
+  ([`p3_platform_end_2026-09-25.json`](docs/evidence/results/p3_platform_end_2026-09-25.json)):
+  platform STOP episodes 15 → 1–10, but every candidate fails the gate or the per-frame
+  no-new-event condition (set O `big_above` 12 → 11 STOP frames, `doubleT_platform` +1 event;
+  0.6 × 10 frames: ride 46 → 50 events, 39 → 40 STOP episodes, one new event on an R ≈ 770 m
+  curve). Flags off; output with them off identical to before. The far-rail check
+  (`track.rails_far_check_enabled`) measured on the ride once: identical output on all 11 271
+  frames (gate PASS, every row the same); it stays off.
+- **The rail shadow of a large near object (P3, 25.09, delegated by the captain):** on set O the
+  organizers' 2 × 2 m box at 26 → 9 m hid the bed behind it, the roof tilted the bed fit (rail head
+  at 20 m 0.8–3.5 m off) and the STOP reported the bed at 3.0 m (frames 213–226); with a correct bed
+  the box and a line at the corridor edge formed one cluster > 8 m that was dropped. Three rules, on:
+  `track.floor_shadow_height` 1.0 (`floor_shadow_range` 30 m, `floor_shadow_min_bins` 5: the bed and
+  the rail pair are fitted in front of the shadow or held), `cluster.oversize_split_max_length` 3.0
+  (`oversize_split_max_distance` 30 m: the part inside the gauge of such a cluster is kept),
+  `cluster.gauge_distance` true (the distance of the part inside the envelope). Set O #1 STOP frames
+  with a wrong distance 12 → 0 (largest error 14.1 → 0.46 m), no STOP frame lost. Pre-registered;
+  round 1 (40 m, split at any range) added false alarms on `doubleT_platform`, `roundT_doubleT` and
+  set O #7, 35 m cost set O #8 one STOP frame; 30 m passes the gate with 5 rows better (#1 207 → 208,
+  #9 42 → 49 STOP frames, set F straight false detections 35 → 24) and the ride, five bags,
+  `doubleT_obstacle` and set F detections unchanged. +4 tests.
+  [`p3_rail_shadow_2026-09-25.json`](docs/evidence/results/p3_rail_shadow_2026-09-25.json),
+  [EXPERIMENTS §1h](docs/EXPERIMENTS.md).
 - **Dashboard shortcuts after a click, phone gutter (25.09, review of PR #12):** since `46a04bb`
   the page's key handler ignored every key while a button or link had the focus, so after a
   click on «Демо» or ▶ the arrow keys did nothing, and on a view tab Space did nothing, until a
