@@ -332,8 +332,8 @@ def _advisory_reason(b: _Blob, dist: float, lateral: float, zone: str, dy, h, cf
 def find_hanging(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.ndarray,
                  cfg: ClusterConfig, top: float, range_min: float, max_distance: float,
                  in_gauge_idx: Optional[np.ndarray] = None) -> List[Cluster]:
-    """Thin objects hanging from above into the envelope near the axis (opt-in,
-    ``cluster.hanging_enabled``; SCORECARD #11, 25.09).
+    """Thin objects hanging from above into the envelope near the axis
+    (``cluster.hanging_enabled``, on since 25.09; SCORECARD #11).
 
     The organizers' 5 cm object hanging from the roof dips only 0.2-0.4 m below the envelope top
     (``top``), with 1-3 returns there a frame, so it never reaches the corridor clustering's

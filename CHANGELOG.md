@@ -23,6 +23,19 @@ overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting
 buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`, +20 DDS
 transport, 19 of them in the image) in `tests/`, 13 in `web/demo`.
 
+- **Thin hanging objects (25.09 evening, P3, SCORECARD #11):** new stage
+  `clustering.find_hanging`, on (`cluster.hanging_enabled`, `hanging_*`). It covers a thin object
+  hanging from above that dips into the envelope near the axis with only 1–3 returns: those
+  returns are linked to the object's part above the envelope top and reported as an obstacle.
+  Pre-registered candidates A / B / C (20:53 UTC); A, the first, passed the regression gate
+  (`--jobs 1`, the ride included). The organizers' 5 cm object in set O goes from `GO` in all
+  42 visible frames to a STOP in 15 frames from 30.1 m (set O inside STOP frames 303 → 318, 6 of 8
+  objects). Five bags 58 / 13 / 16, ride 187 / 46 / 39, `doubleT_obstacle`, the other set O
+  objects and set F straight are the same. On the ride it takes 29 single-frame groups, 28 of
+  them station column tops without a rail pair; none confirmed. Cost 0.5 ms a frame. Tests
+  416 → 420 (`tests/test_thin_hanging.py`). EXPERIMENTS §1i,
+  [`p3_thin_hanging_2026-09-25.json`](docs/evidence/results/p3_thin_hanging_2026-09-25.json).
+
 - **Dashboard shortcuts after a click, phone gutter (25.09, review of PR #12):** since `46a04bb`
   the page's key handler ignored every key while a button or link had the focus, so after a
   click on «Демо» or ▶ the arrow keys did nothing, and on a view tab Space did nothing, until a

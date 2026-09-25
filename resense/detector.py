@@ -194,7 +194,7 @@ class Detector:
 
         The stages are the methods below, in this order (docs/ALGORITHM.md has the reasoning):
         ``_fit_track`` (1, 1b), ``_corridor`` (2), ``_low_stage`` (2b), ``_speed`` (3),
-        ``_accumulate`` (4), ``_cluster`` (5), ``_confirm`` (6).
+        ``_accumulate`` (4), ``_cluster`` (5), ``_hanging`` (5b, 25.09), ``_confirm`` (6).
         """
         cfg = self.cfg
         t0 = time.perf_counter()
@@ -404,7 +404,7 @@ class Detector:
 
     def _hanging(self, xyz, intensity, dy_all, h_all, cand: Candidates, clusters: List[Cluster],
                  valid: float) -> List[Cluster]:
-        """5b (opt-in, ``cluster.hanging_enabled``, 25.09): thin objects hanging from above into
+        """5b (``cluster.hanging_enabled``, on since 25.09): thin objects hanging from above into
         the envelope near the axis (``clustering.find_hanging``), from the current frame's points
         within ``hanging_max_distance`` and where the corridor's axis and height reference are
         trusted. Strict-envelope membership is the corridor's (edge margin included). A hanging

@@ -298,7 +298,16 @@ Everything is **range-adaptive**, because a 0.5 m object gives ~500 returns at 2
    (from the front every object is thin). `retro_intensity: 0` switches the rule off;
 7. a **visibility score** compares the voxel count with the number of returns a target of that
    width and height should give at that range (`expected_points`); the score saturates at
-   `visibility_ratio` = 15 % of the expectation and feeds the tracker's confidence.
+   `visibility_ratio` = 15 % of the expectation and feeds the tracker's confidence;
+8. **thin objects hanging from above** (`hanging_*`, on since 25.09, `clustering.find_hanging`,
+   [`EXPERIMENTS.md`](EXPERIMENTS.md) §1i): a cable or rod that dips only 0.2–0.4 m below the
+   envelope top gives 1–3 returns there, below the 5-voxel minimum. The frame's points near the
+   axis (\|dy\| < 0.8 m) from 1.8 m up to 0.6 m above the top are linked at the corridor radius;
+   a group with at least one voxel inside the strict envelope and one above its top, at most
+   0.5 m along and across the track and at most 60 m away (and within the trusted corridor), is
+   a gauge cluster of kind `hanging`. It is dropped when it overlaps a cluster of the other
+   stages, and it is confirmed like any track (5 frames). The organizers' 5 cm object STOPs from
+   30.1 m; the ride and the empty recordings are unchanged.
 
 When several frames are merged (§3.4) the voxel-count thresholds `min_points`, `min_points_far` and
 `gauge_min_points` are raised by `1 + n_merged · min_points_scale` (×1.5 for 5 frames,
@@ -732,7 +741,8 @@ data: [`SCORECARD.md`](SCORECARD.md).
 
 The organizers' `cloud_with_fake_obj` recording carries ten objects added by their own tool,
 the one used for the hidden check; the shipped detector stops for 5 of the 8 objects inside the
-envelope [organizers' synthetic: set O, 24.09]. Per-object grade and the config sweeps:
+envelope [organizers' synthetic: set O, 24.09], 6 of 8 since the hanging stage of 25.09 (§3.3
+item 8). Per-object grade and the config sweeps:
 [`P4_AUDIT.md`](P4_AUDIT.md) "Organizer synthetic-obstacle recording", EXPERIMENTS §2e. The
 causes, each a limitation of the current rules:
 
@@ -748,11 +758,14 @@ causes, each a limitation of the current rules:
   for clusters longer than 3 m or farther than 100 m gives 352 instead of 303 STOP frames on the
   inside objects for 113 / 22; since 25.09 it is the flag `cluster.short_signature_max_length`
   (off, §3.3), measured on the ride 25.09 and not shipped (EXPERIMENTS §1f).
-* **A 5 cm object hanging from the roof is never a candidate** (#10, missed in all 42 visible
-  frames). Only its lowest 0.2–0.36 m dips into the 3.0 m envelope, with 1–4 points a frame,
-  below the cluster minimum of 5 voxels; with `cluster.min_points` 3 it alarms in 3 frames at
-  10 m. The exemption of thin hanging cables from the `column` signature (§3.3) cannot help a
-  cluster that never forms.
+* **A 5 cm object hanging from the roof is found only within ~30 m** (#10; since 25.09, §3.3
+  item 8; before that it was missed in all 42 visible frames). Only its lowest 0.2–0.36 m dips
+  into the 3.0 m envelope, with 1–3 returns a frame, below the cluster minimum of 5 voxels. The
+  hanging stage links them to the object's part above the envelope top: STOP in 15 frames from
+  30.1 m (EXPERIMENTS §1i). Beyond ~50 m none of its returns is inside the envelope measured
+  from the rails, and beyond 60 m the stage does not look. At stations without a rail lock the
+  tops of platform columns 13–40 m ahead pass the same test in single frames (28 on the ride).
+  None confirmed there, because those tracks were already advisory, but a fresh one could.
 * **0.3 m cubes are confirmed only from 34–43 m** (#2 from 34.0 m, #3 on the rail from
   42.7 m). At 60–115 m such a cube returns 2–4 points a frame, below the 5-voxel minimum within
   100 m, so a single frame cannot confirm a 0.3 m object much beyond 50 m with this sensor;
@@ -774,9 +787,10 @@ causes, each a limitation of the current rules:
   (judge B, [`SCORECARD.md`](SCORECARD.md)) found 184 object-frames with the decision `GO` and a
   `clear_distance` beyond an in-envelope object, 89 of them with object points inside the
   measured envelope: the 5 cm hanging object at 6.7–30 m (3–27 points, up to 13 inside the
-  envelope) read `GO` with a clear distance of 150–170 m, the 0.3 m cube on the rail at 46–67 m
-  `GO` with 165–185 m. The proposed fix caps it at the nearest unconfirmed or advisory candidate
-  that touches the envelope; STOP does not change (SCORECARD §6).
+  envelope) read `GO` with a clear distance of 150–170 m (a STOP from 30.1 m since 25.09, §3.3
+  item 8), the 0.3 m cube on the rail at 46–67 m `GO` with 165–185 m. The proposed fix caps it
+  at the nearest unconfirmed or advisory candidate that touches the envelope; STOP does not
+  change (SCORECARD §6).
 
 ### What the organizers' answers settle
 

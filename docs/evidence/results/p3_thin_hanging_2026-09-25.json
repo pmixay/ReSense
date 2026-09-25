@@ -45,5 +45,1140 @@
   "safety_conditions": "Each is required, and (1) already gates all but the last clause: doubleT_obstacle labelled hits per label and the first alarm frame identical or better; set O inside-object STOP frames and first STOP distances identical or better, outside-object false STOP frames and background alarms not higher; set F straight detections per kind identical or better (sequences detected, median first confirmation, false detections); no new false event (alarm events and STOP episodes) in the five obstacle-free recordings or the ride. A safety fix wins over a false-alarm gain; the choice between passing candidates is by order only (A is the most sensitive).",
   "if_shipped": "default on in resense/config.py, configs/default.yaml (dated comment) and the ROS copy (scripts/sync_params.sh); the seven-recording gate re-run on the new defaults without --set must reproduce the candidate run; tests: a ray-cast test that the thin hanging object now STOPs and one that a real obstacle nearby still STOPs."
  },
- "known_before_registration": "Looked at before this registration (the brief's investigation; no candidate rule run on recorded data): (1) the target frame by frame with the shipped defaults (1c96233): 46 frames with returns (686-803), 1-6 points at 137-200 m and 1-8 at 67-95 m, all 3.3-6.4 m above the detector's rail head (the extrapolated rail level there is 0.7-2 m lower than near the train), so none inside the envelope; 48-61 m 1-7 points, 1 inside in frames 777-778; 30-37 m 3-5 points, 1 inside a frame; 17-27 m 5-20 points, 1-3 inside (1-3 voxels); 8-15 m 22-27 points, 6-13 inside: the corridor stage forms a gauge cluster of 5-8 voxels in frames 798-802 only, which does not confirm before the object leaves the top of the sensor's field of view (frame 803, 6.7 m: 9 points, 3 voxels, none above 3.0 m); frames 779-780 and 784 have no return, 781-783 and 790 none inside. (2) An imitator survey on the six recordings and set O with the shipped defaults: per frame the point groups near the axis (|dy| < 0.8 m, 1.8 < h <= 3.6 m, 3-120 m, linked at the corridor radius) with a point inside the envelope. Linked to a point above 3.0 m: doubleT_platform 81, roundT_doubleT 211, roundT_pressureGate_roundT 148, roundT_squareT_pressureGate_squareT 68, squareT_platform_squareT_switch 711, set O 315 groups, doubleT_obstacle 0. Within 60 m 10 / 43 / 0 / 0 / 0 / 65: station and tunnel-transition structure at lateral 0.2-0.8 m, 1-23 m long along the track; at most 0.5 m along and across only 2 (roundT_doubleT, both overlapping a corridor cluster) and, in set O, the target in 14 frames (777-797; >= 2 voxels inside in 6 of them, 792-797). The ride was not surveyed: its imitators are logged in the gate runs. (3) A ray-cast prototype on the synthetic tunnel (5 cm, 1.5 m, bottom 0.33 m below the top, 16.5 m/s from 40 m): with min_voxels 2 a STOP from 20.2 m, none with the flag off."
+ "known_before_registration": "Looked at before this registration (the brief's investigation; no candidate rule run on recorded data): (1) the target frame by frame with the shipped defaults (1c96233): 46 frames with returns (686-803), 1-6 points at 137-200 m and 1-8 at 67-95 m, all 3.3-6.4 m above the detector's rail head (the extrapolated rail level there is 0.7-2 m lower than near the train), so none inside the envelope; 48-61 m 1-7 points, 1 inside in frames 777-778; 30-37 m 3-5 points, 1 inside a frame; 17-27 m 5-20 points, 1-3 inside (1-3 voxels); 8-15 m 22-27 points, 6-13 inside: the corridor stage forms a gauge cluster of 5-8 voxels in frames 798-802 only, which does not confirm before the object leaves the top of the sensor's field of view (frame 803, 6.7 m: 9 points, 3 voxels, none above 3.0 m); frames 779-780 and 784 have no return, 781-783 and 790 none inside. (2) An imitator survey on the six recordings and set O with the shipped defaults: per frame the point groups near the axis (|dy| < 0.8 m, 1.8 < h <= 3.6 m, 3-120 m, linked at the corridor radius) with a point inside the envelope. Linked to a point above 3.0 m: doubleT_platform 81, roundT_doubleT 211, roundT_pressureGate_roundT 148, roundT_squareT_pressureGate_squareT 68, squareT_platform_squareT_switch 711, set O 315 groups, doubleT_obstacle 0. Within 60 m 10 / 43 / 0 / 0 / 0 / 65: station and tunnel-transition structure at lateral 0.2-0.8 m, 1-23 m long along the track; at most 0.5 m along and across only 2 (roundT_doubleT, both overlapping a corridor cluster) and, in set O, the target in 14 frames (777-797; >= 2 voxels inside in 6 of them, 792-797). The ride was not surveyed: its imitators are logged in the gate runs. (3) A ray-cast prototype on the synthetic tunnel (5 cm, 1.5 m, bottom 0.33 m below the top, 16.5 m/s from 40 m): with min_voxels 2 a STOP from 20.2 m, none with the flag off.",
+ "how": "python scripts/regression_gate.py --cache <cache> --jobs 1 --set <candidate> --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json; the seven-recording subset with <cache> = a directory of symlinks to the six recordings and cloud_with_fake_obj (no new_data) and --allow 'ride.*' --allow 'set_F_straight.*'; the full gate with --cache /data/cache (the ride in 8 pieces, set F straight round 3); every hanging group the stage kept logged by a scratch wrapper around Detector._hanging (output unchanged); native path, receive stamps, the 4-vCPU dev VM shared with three other agents (latency not comparable)",
+ "baseline": {
+  "file": "docs/evidence/results/regression_baseline_2026-09-25_ride_column.json",
+  "code": "d117c8c",
+  "summary": {
+   "code": "d117c8c",
+   "set": [],
+   "config_sha256": "0fd4e64e494f",
+   "native": "native",
+   "wall_s": 347.9,
+   "recordings_alarm_frames_events_stop_episodes": {
+    "doubleT_obstacle": [
+     188,
+     2,
+     3
+    ],
+    "doubleT_platform": [
+     4,
+     4,
+     1
+    ],
+    "roundT_doubleT": [
+     0,
+     0,
+     0
+    ],
+    "roundT_pressureGate_roundT": [
+     0,
+     0,
+     0
+    ],
+    "roundT_squareT_pressureGate_squareT": [
+     0,
+     0,
+     0
+    ],
+    "squareT_platform_squareT_switch": [
+     54,
+     9,
+     15
+    ]
+   },
+   "doubleT_obstacle_labelled": {
+    "object_on_rail": [
+     127,
+     185
+    ],
+    "person_crossing": [
+     58,
+     61
+    ],
+    "object_on_rail_from_frame_75": [
+     124,
+     126
+    ],
+    "first_alarm_frame": 11,
+    "fp_events": 0
+   },
+   "five_empty": [
+    58,
+    13,
+    16
+   ],
+   "ride": [
+    187,
+    46,
+    39,
+    11271
+   ],
+   "set_O": {
+    "inside_stop_frames": 303,
+    "inside_objects_with_stop": 5,
+    "outside_false_stop_frames": 6,
+    "background_alarm_frames_ids": [
+     3,
+     2
+    ],
+    "objects_stop_frames_first_stop_m": {
+     "big_center": [
+      207,
+      98.0
+     ],
+     "small_center": [
+      19,
+      34.0
+     ],
+     "small_on_rail": [
+      23,
+      42.7
+     ],
+     "small_edge_inside": [
+      0,
+      null
+     ],
+     "small_outside_near": [
+      0,
+      null
+     ],
+     "big_edge_inside": [
+      0,
+      null
+     ],
+     "big_outside": [
+      6,
+      null
+     ],
+     "big_above": [
+      12,
+      101.3
+     ],
+     "long_low_on_rails": [
+      42,
+      82.2
+     ],
+     "thin_hanging": [
+      0,
+      null
+     ]
+    }
+   },
+   "set_F_straight": {
+    "person": {
+     "detected": 6,
+     "sequences": 6,
+     "first_median_m": 151.0,
+     "false": 7
+    },
+    "box1.0": {
+     "detected": 6,
+     "sequences": 6,
+     "first_median_m": 123.9,
+     "false": 13
+    },
+    "box0.5": {
+     "detected": 1,
+     "sequences": 6,
+     "first_median_m": 51.9,
+     "false": 0
+    },
+    "trolley": {
+     "detected": 6,
+     "sequences": 6,
+     "first_median_m": 151.4,
+     "false": 12
+    },
+    "cable": {
+     "detected": 6,
+     "sequences": 6,
+     "first_median_m": 98.9,
+     "false": 3
+    }
+   }
+  }
+ },
+ "runs": {
+  "A, seven recordings (21:07 UTC)": {
+   "code": "e22b41c",
+   "set": [
+    "cluster.hanging_enabled=true",
+    "cluster.hanging_min_voxels=1",
+    "cluster.hanging_max_lateral=0.8",
+    "cluster.hanging_max_size=0.5",
+    "cluster.hanging_max_distance=60"
+   ],
+   "config_sha256": "d33de1252e64",
+   "native": "native",
+   "wall_s": 587.7,
+   "recordings_alarm_frames_events_stop_episodes": {
+    "doubleT_obstacle": [
+     188,
+     2,
+     3
+    ],
+    "doubleT_platform": [
+     4,
+     4,
+     1
+    ],
+    "roundT_doubleT": [
+     0,
+     0,
+     0
+    ],
+    "roundT_pressureGate_roundT": [
+     0,
+     0,
+     0
+    ],
+    "roundT_squareT_pressureGate_squareT": [
+     0,
+     0,
+     0
+    ],
+    "squareT_platform_squareT_switch": [
+     54,
+     9,
+     15
+    ]
+   },
+   "doubleT_obstacle_labelled": {
+    "object_on_rail": [
+     127,
+     185
+    ],
+    "person_crossing": [
+     58,
+     61
+    ],
+    "object_on_rail_from_frame_75": [
+     124,
+     126
+    ],
+    "first_alarm_frame": 11,
+    "fp_events": 0
+   },
+   "five_empty": [
+    58,
+    13,
+    16
+   ],
+   "ride": "not run",
+   "set_O": {
+    "inside_stop_frames": 318,
+    "inside_objects_with_stop": 6,
+    "outside_false_stop_frames": 6,
+    "background_alarm_frames_ids": [
+     3,
+     2
+    ],
+    "objects_stop_frames_first_stop_m": {
+     "big_center": [
+      207,
+      98.0
+     ],
+     "small_center": [
+      19,
+      34.0
+     ],
+     "small_on_rail": [
+      23,
+      42.7
+     ],
+     "small_edge_inside": [
+      0,
+      null
+     ],
+     "small_outside_near": [
+      0,
+      null
+     ],
+     "big_edge_inside": [
+      0,
+      null
+     ],
+     "big_outside": [
+      6,
+      null
+     ],
+     "big_above": [
+      12,
+      101.3
+     ],
+     "long_low_on_rails": [
+      42,
+      82.2
+     ],
+     "thin_hanging": [
+      15,
+      30.1
+     ]
+    }
+   },
+   "set_F_straight": "not run",
+   "verdict": "PASS: 2 gated rows better; the ride and set F straight not run (allowed)"
+  },
+  "A, full gate (21:48 UTC)": {
+   "code": "e22b41c",
+   "set": [
+    "cluster.hanging_enabled=true",
+    "cluster.hanging_min_voxels=1",
+    "cluster.hanging_max_lateral=0.8",
+    "cluster.hanging_max_size=0.5",
+    "cluster.hanging_max_distance=60"
+   ],
+   "config_sha256": "d33de1252e64",
+   "native": "native",
+   "wall_s": 2413.1,
+   "recordings_alarm_frames_events_stop_episodes": {
+    "doubleT_obstacle": [
+     188,
+     2,
+     3
+    ],
+    "doubleT_platform": [
+     4,
+     4,
+     1
+    ],
+    "roundT_doubleT": [
+     0,
+     0,
+     0
+    ],
+    "roundT_pressureGate_roundT": [
+     0,
+     0,
+     0
+    ],
+    "roundT_squareT_pressureGate_squareT": [
+     0,
+     0,
+     0
+    ],
+    "squareT_platform_squareT_switch": [
+     54,
+     9,
+     15
+    ]
+   },
+   "doubleT_obstacle_labelled": {
+    "object_on_rail": [
+     127,
+     185
+    ],
+    "person_crossing": [
+     58,
+     61
+    ],
+    "object_on_rail_from_frame_75": [
+     124,
+     126
+    ],
+    "first_alarm_frame": 11,
+    "fp_events": 0
+   },
+   "five_empty": [
+    58,
+    13,
+    16
+   ],
+   "ride": [
+    187,
+    46,
+    39,
+    11271
+   ],
+   "set_O": {
+    "inside_stop_frames": 318,
+    "inside_objects_with_stop": 6,
+    "outside_false_stop_frames": 6,
+    "background_alarm_frames_ids": [
+     3,
+     2
+    ],
+    "objects_stop_frames_first_stop_m": {
+     "big_center": [
+      207,
+      98.0
+     ],
+     "small_center": [
+      19,
+      34.0
+     ],
+     "small_on_rail": [
+      23,
+      42.7
+     ],
+     "small_edge_inside": [
+      0,
+      null
+     ],
+     "small_outside_near": [
+      0,
+      null
+     ],
+     "big_edge_inside": [
+      0,
+      null
+     ],
+     "big_outside": [
+      6,
+      null
+     ],
+     "big_above": [
+      12,
+      101.3
+     ],
+     "long_low_on_rails": [
+      42,
+      82.2
+     ],
+     "thin_hanging": [
+      15,
+      30.1
+     ]
+    }
+   },
+   "set_F_straight": {
+    "person": {
+     "detected": 6,
+     "sequences": 6,
+     "first_median_m": 151.0,
+     "false": 7
+    },
+    "box1.0": {
+     "detected": 6,
+     "sequences": 6,
+     "first_median_m": 123.9,
+     "false": 13
+    },
+    "box0.5": {
+     "detected": 1,
+     "sequences": 6,
+     "first_median_m": 51.9,
+     "false": 0
+    },
+    "trolley": {
+     "detected": 6,
+     "sequences": 6,
+     "first_median_m": 151.4,
+     "false": 12
+    },
+    "cable": {
+     "detected": 6,
+     "sequences": 6,
+     "first_median_m": 98.9,
+     "false": 3
+    }
+   },
+   "verdict": "PASS, exit 0: 2 gated rows better (thin_hanging stop_frames 0 -> 15, first_stop_m none -> 30.1), none worse, none missing"
+  },
+  "new defaults, seven recordings (c0b4f2f, no --set)": {
+   "code": "c0b4f2f",
+   "set": [],
+   "config_sha256": "f93fd5705ff3",
+   "native": "native",
+   "wall_s": 146.9,
+   "recordings_alarm_frames_events_stop_episodes": {
+    "doubleT_obstacle": [
+     188,
+     2,
+     3
+    ],
+    "doubleT_platform": [
+     4,
+     4,
+     1
+    ],
+    "roundT_doubleT": [
+     0,
+     0,
+     0
+    ],
+    "roundT_pressureGate_roundT": [
+     0,
+     0,
+     0
+    ],
+    "roundT_squareT_pressureGate_squareT": [
+     0,
+     0,
+     0
+    ],
+    "squareT_platform_squareT_switch": [
+     54,
+     9,
+     15
+    ]
+   },
+   "doubleT_obstacle_labelled": {
+    "object_on_rail": [
+     127,
+     185
+    ],
+    "person_crossing": [
+     58,
+     61
+    ],
+    "object_on_rail_from_frame_75": [
+     124,
+     126
+    ],
+    "first_alarm_frame": 11,
+    "fp_events": 0
+   },
+   "five_empty": [
+    58,
+    13,
+    16
+   ],
+   "ride": "not run",
+   "set_O": {
+    "inside_stop_frames": 318,
+    "inside_objects_with_stop": 6,
+    "outside_false_stop_frames": 6,
+    "background_alarm_frames_ids": [
+     3,
+     2
+    ],
+    "objects_stop_frames_first_stop_m": {
+     "big_center": [
+      207,
+      98.0
+     ],
+     "small_center": [
+      19,
+      34.0
+     ],
+     "small_on_rail": [
+      23,
+      42.7
+     ],
+     "small_edge_inside": [
+      0,
+      null
+     ],
+     "small_outside_near": [
+      0,
+      null
+     ],
+     "big_edge_inside": [
+      0,
+      null
+     ],
+     "big_outside": [
+      6,
+      null
+     ],
+     "big_above": [
+      12,
+      101.3
+     ],
+     "long_low_on_rails": [
+      42,
+      82.2
+     ],
+     "thin_hanging": [
+      15,
+      30.1
+     ]
+    }
+   },
+   "set_F_straight": "not run",
+   "verdict": "PASS; per-frame output identical to the candidate A run on all 3 998 frames (timing and health excluded)"
+  }
+ },
+ "choice": "A: the first pre-registered candidate; it passed both conditions on its first run (gate exit 0 with the ride and set F straight; set O thin_hanging 0 -> 15 STOP frames, first STOP none -> 30.1 m, held from 31.8 m). B and C were not run. Shipped in c0b4f2f: cluster.hanging_enabled true, hanging_min_voxels 1, hanging_max_lateral 0.8, hanging_max_size 0.5, hanging_max_distance 60.0, hanging_min_height 1.8, hanging_link_band 0.6 (resense/config.py, configs/default.yaml, the ROS copy). c0b4f2f also moved the stage's point selection to the native range test and the strict-gauge lookup after it; the seven-recording run on the new defaults is identical frame by frame to the candidate run.",
+ "target_frames": {
+  "note": "set O thin_hanging with the shipped defaults of 1c96233 (before the rule): points = the organizers' object points in the frame; inside = in the strict envelope measured from the rails (edge margin included); voxels = cluster.voxel in range-normalised space",
+  "by_range": [
+   {
+    "range_m": "137-200",
+    "frames_with_returns": 10,
+    "points": "1-6",
+    "h_above_rail_m": "3.5-6.4",
+    "inside": 0
+   },
+   {
+    "range_m": "67-95",
+    "frames_with_returns": 8,
+    "points": "1-8",
+    "h_above_rail_m": "3.3-5.6",
+    "inside": 0
+   },
+   {
+    "range_m": "48-61",
+    "frames_with_returns": 6,
+    "points": "1-7",
+    "h_above_rail_m": "2.94-4.69",
+    "inside": "1 in frames 777-778"
+   },
+   {
+    "range_m": "40-43",
+    "frames_with_returns": 3,
+    "points": "1",
+    "h_above_rail_m": "4.48-4.67",
+    "inside": 0
+   },
+   {
+    "range_m": "30-37",
+    "frames_with_returns": 5,
+    "points": "3-5",
+    "h_above_rail_m": "2.75-4.5",
+    "inside": "1 a frame (785-789)"
+   },
+   {
+    "range_m": "17-28",
+    "frames_with_returns": 8,
+    "points": "5-20",
+    "h_above_rail_m": "2.63-4.65",
+    "inside": "1-3 voxels (790: none)"
+   },
+   {
+    "range_m": "7-15",
+    "frames_with_returns": 6,
+    "points": "9-27",
+    "h_above_rail_m": "2.61-4.6",
+    "inside": "6-13 points, 3-8 voxels; a corridor gauge cluster (5-8 voxels) in 798-802, not confirmed; 803 (6.7 m) has nothing above 3.0 m (top of the field of view)"
+   }
+  ],
+  "frames_with_returns": "46 of the 118 frames 686-803 (42 plausible); the others have no return from it",
+  "rule_A": "groups in frames 777, 778, 785-789, 791-797 (14); STOP in 789-803 (15 frames: 798-802 on the corridor cluster, 790 and 803 held over one miss)"
+ },
+ "imitators": {
+  "note": "every group the stage kept (after the overlap test) in the full gate run of A: frame id, nearest X (m), lateral (m), size (m), heights above the rail head (m), voxels, voxels inside, score; rail_slabs 0 = no rail pair in the near range (stations, switch caverns: the axis rests on the walls)",
+  "set_O": "14 groups, all the target (frames 777-797)",
+  "six_recordings": "none",
+  "ride": [
+   {
+    "frame": "new_data_54_0029",
+    "X": 39.83,
+    "lat": 0.63,
+    "size": [
+     0.06,
+     0.12,
+     1.58
+    ],
+    "h": [
+     1.84,
+     3.42
+    ],
+    "vox": 12,
+    "in": 10,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_109_0035",
+    "X": 55.34,
+    "lat": 0.76,
+    "size": [
+     0.1,
+     0.02,
+     0.25
+    ],
+    "h": [
+     2.81,
+     3.06
+    ],
+    "vox": 2,
+    "in": 1,
+    "score": 1.0,
+    "rail_slabs": 3
+   },
+   {
+    "frame": "new_data_113_0012",
+    "X": 39.72,
+    "lat": 0.73,
+    "size": [
+     0.06,
+     0.1,
+     1.41
+    ],
+    "h": [
+     1.87,
+     3.28
+    ],
+    "vox": 12,
+    "in": 11,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_113_0020",
+    "X": 37.33,
+    "lat": 0.77,
+    "size": [
+     0.18,
+     0.05,
+     1.25
+    ],
+    "h": [
+     1.84,
+     3.09
+    ],
+    "vox": 10,
+    "in": 9,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_113_0024",
+    "X": 39.32,
+    "lat": 0.62,
+    "size": [
+     0.26,
+     0.35,
+     1.56
+    ],
+    "h": [
+     1.85,
+     3.41
+    ],
+    "vox": 28,
+    "in": 24,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_113_0030",
+    "X": 39.53,
+    "lat": 0.09,
+    "size": [
+     0.02,
+     0.15,
+     0.69
+    ],
+    "h": [
+     2.77,
+     3.46
+    ],
+    "vox": 5,
+    "in": 2,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_113_0033",
+    "X": 32.44,
+    "lat": 0.01,
+    "size": [
+     0.19,
+     0.01,
+     0.3
+    ],
+    "h": [
+     2.96,
+     3.26
+    ],
+    "vox": 2,
+    "in": 1,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_113_0038",
+    "X": 16.17,
+    "lat": 0.79,
+    "size": [
+     0.21,
+     0.02,
+     1.53
+    ],
+    "h": [
+     1.96,
+     3.49
+    ],
+    "vox": 9,
+    "in": 5,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_113_0039",
+    "X": 15.44,
+    "lat": 0.79,
+    "size": [
+     0.05,
+     0.01,
+     0.53
+    ],
+    "h": [
+     2.73,
+     3.26
+    ],
+    "vox": 5,
+    "in": 3,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_113_0039",
+    "X": 25.24,
+    "lat": 0.33,
+    "size": [
+     0.26,
+     0.43,
+     1.56
+    ],
+    "h": [
+     1.89,
+     3.44
+    ],
+    "vox": 40,
+    "in": 29,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_113_0040",
+    "X": 14.57,
+    "lat": 0.8,
+    "size": [
+     0.04,
+     0.0,
+     0.37
+    ],
+    "h": [
+     2.75,
+     3.12
+    ],
+    "vox": 4,
+    "in": 2,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_114_0008",
+    "X": 34.34,
+    "lat": -0.53,
+    "size": [
+     0.38,
+     0.05,
+     0.91
+    ],
+    "h": [
+     2.27,
+     3.18
+    ],
+    "vox": 4,
+    "in": 3,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_114_0015",
+    "X": 33.9,
+    "lat": -0.41,
+    "size": [
+     0.04,
+     0.28,
+     1.49
+    ],
+    "h": [
+     1.97,
+     3.46
+    ],
+    "vox": 15,
+    "in": 9,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_114_0015",
+    "X": 35.34,
+    "lat": -0.65,
+    "size": [
+     0.36,
+     0.05,
+     1.56
+    ],
+    "h": [
+     2.01,
+     3.57
+    ],
+    "vox": 5,
+    "in": 3,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_114_0016",
+    "X": 33.21,
+    "lat": -0.43,
+    "size": [
+     0.41,
+     0.3,
+     1.49
+    ],
+    "h": [
+     2.02,
+     3.5
+    ],
+    "vox": 18,
+    "in": 12,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_114_0016",
+    "X": 39.21,
+    "lat": -0.74,
+    "size": [
+     0.03,
+     0.07,
+     1.38
+    ],
+    "h": [
+     2.16,
+     3.54
+    ],
+    "vox": 5,
+    "in": 3,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_114_0017",
+    "X": 32.52,
+    "lat": -0.42,
+    "size": [
+     0.28,
+     0.28,
+     1.43
+    ],
+    "h": [
+     1.93,
+     3.36
+    ],
+    "vox": 16,
+    "in": 11,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_114_0018",
+    "X": 37.83,
+    "lat": -0.76,
+    "size": [
+     0.05,
+     0.12,
+     1.34
+    ],
+    "h": [
+     2.06,
+     3.4
+    ],
+    "vox": 5,
+    "in": 3,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_114_0019",
+    "X": 37.18,
+    "lat": -0.73,
+    "size": [
+     0.03,
+     0.13,
+     1.63
+    ],
+    "h": [
+     1.8,
+     3.43
+    ],
+    "vox": 7,
+    "in": 5,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_114_0021",
+    "X": 35.84,
+    "lat": -0.71,
+    "size": [
+     0.06,
+     0.2,
+     1.57
+    ],
+    "h": [
+     1.97,
+     3.54
+    ],
+    "vox": 10,
+    "in": 6,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_114_0022",
+    "X": 35.21,
+    "lat": -0.73,
+    "size": [
+     0.06,
+     0.15,
+     1.55
+    ],
+    "h": [
+     1.96,
+     3.51
+    ],
+    "vox": 9,
+    "in": 6,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_114_0024",
+    "X": 33.95,
+    "lat": -0.67,
+    "size": [
+     0.02,
+     0.23,
+     1.49
+    ],
+    "h": [
+     1.82,
+     3.31
+    ],
+    "vox": 13,
+    "in": 8,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_114_0042",
+    "X": 19.69,
+    "lat": 0.76,
+    "size": [
+     0.44,
+     0.12,
+     0.9
+    ],
+    "h": [
+     2.59,
+     3.48
+    ],
+    "vox": 5,
+    "in": 2,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_115_0002",
+    "X": 14.69,
+    "lat": 0.8,
+    "size": [
+     0.01,
+     0.0,
+     0.26
+    ],
+    "h": [
+     2.74,
+     3.0
+    ],
+    "vox": 3,
+    "in": 2,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_115_0003",
+    "X": 14.24,
+    "lat": 0.8,
+    "size": [
+     0.04,
+     0.0,
+     0.36
+    ],
+    "h": [
+     2.69,
+     3.05
+    ],
+    "vox": 3,
+    "in": 2,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_115_0004",
+    "X": 13.83,
+    "lat": 0.79,
+    "size": [
+     0.07,
+     0.02,
+     0.95
+    ],
+    "h": [
+     2.65,
+     3.6
+    ],
+    "vox": 6,
+    "in": 3,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_115_0005",
+    "X": 13.45,
+    "lat": 0.8,
+    "size": [
+     0.03,
+     0.0,
+     0.94
+    ],
+    "h": [
+     2.57,
+     3.51
+    ],
+    "vox": 4,
+    "in": 2,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_115_0009",
+    "X": 34.62,
+    "lat": -0.52,
+    "size": [
+     0.28,
+     0.44,
+     0.59
+    ],
+    "h": [
+     2.79,
+     3.38
+    ],
+    "vox": 3,
+    "in": 1,
+    "score": 1.0,
+    "rail_slabs": 0
+   },
+   {
+    "frame": "new_data_115_0026",
+    "X": 24.21,
+    "lat": 0.57,
+    "size": [
+     0.3,
+     0.5,
+     1.06
+    ],
+    "h": [
+     2.41,
+     3.47
+    ],
+    "vox": 9,
+    "in": 3,
+    "score": 1.0,
+    "rail_slabs": 0
+   }
+  ],
+  "ride_summary": "29 single-frame groups in 11 271 frames: 28 with rail_slabs 0 (new_data_54, 113-115: tops of platform columns and structures 13-40 m ahead at |dy| 0.4-0.8 m, 1.2-1.6 m of them in the band; 4 consecutive frames at 13-15 m, |dy| 0.8 m in new_data_115 0002-0005), 1 with rails (new_data_109_0035, 55.3 m, |dy| 0.76 m, 2 voxels); every one joined a track that was already advisory (column history, beyond_axis), so no event or STOP episode was added (ride 187 / 46 / 39 = the baseline). Not measured: a rail-lock condition would remove 28 of the 29."
+ },
+ "cost": "Detector._hanging, best of 5 per frame, native path: median 0.50-0.55 ms, max 1.6 ms (set O frames 760-803, squareT_platform_squareT_switch frames 0-39), the dev VM at load ~2-3",
+ "tests": "tests/test_thin_hanging.py (4): the shipped defaults in the code and both parameter files; the shapes (a 5 cm rod dipping 0.35 m at 25 m found; above the top, a 2 m duct, at |dy| 0.95 m, at 75 m, nothing above the top: not; one return inside: found with 1, not with 2); ray-cast into the synthetic tunnel (5 cm, 1.5 m, bottom 0.35 m below the top, 16.5 m/s from 40 m): STOP from 30.1 m in 13 of 19 frames, none with the rule off; a 0.4 x 0.5 x 1.7 m person 3 m beyond it: first STOP on the same frame as without the rule, the person reported in every frame after"
 }

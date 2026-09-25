@@ -52,7 +52,7 @@ every gated metric the same ([its JSON](evidence/results/regression_gate_2026-09
 | health, `CAUTION` | non-latency health warnings on 196 of 13 759 frames (1.4 %: rails lost at stations and switches); `CAUTION` on 27–68 % of the frames of the empty bags, 41 % of the ride | real, 24.09 | "Re-measurement" |
 | current code against v0.6.3 | identical per-frame output on all 13 759 frames | real, 24.09 | "Re-measurement" |
 | regression gate with the ride and set F straight (native, 25.09) | current baseline [`regression_baseline_2026-09-25_ride_column.json`](evidence/results/regression_baseline_2026-09-25_ride_column.json) on `d117c8c` (`tracking.column_hold` 2, pre-registered 3 / 2 / 1, [`column_hold_2026-09-25.json`](evidence/results/column_hold_2026-09-25.json)): PASS against the one before with 7 gated rows better (`roundT_doubleT` events and STOP episodes, set F false detections of every kind), none worse, §3a. Before it: [`regression_baseline_2026-09-25_ride.json`](evidence/results/regression_baseline_2026-09-25_ride.json) on `935eecf`: PASS against the shipped-defaults run of the same day (3 gated rows better: `squareT_platform_squareT_switch` events and STOP episodes, ride events); decision evidence [`rules_decision_2026-09-25.json`](evidence/results/rules_decision_2026-09-25.json); the review fix `cluster.floating_long_min_bottom` 1.6 m (`0bb1ba3`) passes against the same baseline with every number but latency identical and the same per-frame output, so the baseline stands ([`long_rule_bottom_2026-09-25.json`](evidence/results/long_rule_bottom_2026-09-25.json)) | real, organizers' synthetic and synthetic, 25.09 | §1f |
-| organizers' objects (set O, `cloud_with_fake_obj`, 10 objects in 1 510 frames) | STOP for **5 of 8** in-envelope objects: 2 × 2 m box from 98 m (first sight), plank across the rails from 82 m, 0.3 m cubes from 34–43 m, 2 × 2 m box at the envelope top in 12 of 124 frames; the edge 2 × 2 m box and the 5 cm hanging object missed, the edge 0.3 m cube advisory only; STOP in 303 of 801 visible in-envelope object-frames, 1 of 236 beyond 100 m; 6 false STOP frames on the 2 × 2 m box outside, 3 background alarm frames | organizers' synthetic, 24.09 | §2e |
+| organizers' objects (set O, `cloud_with_fake_obj`, 10 objects in 1 510 frames) | STOP for **6 of 8** in-envelope objects: 2 × 2 m box from 98 m (first sight), plank across the rails from 82 m, 0.3 m cubes from 34–43 m, 2 × 2 m box at the envelope top in 12 of 124 frames, the 5 cm hanging object from 30.1 m (15 frames; `cluster.hanging_enabled`, on since 25.09, §1i); the edge 2 × 2 m box missed, the edge 0.3 m cube advisory only; STOP in 318 of 801 visible in-envelope object-frames (303 before the hanging stage), 1 of 236 beyond 100 m; 6 false STOP frames on the 2 × 2 m box outside, 3 background alarm frames | organizers' synthetic, 24.09; hanging object 25.09 [measured 25.09] | §2e, §1i |
 | long range, straight track | person first confirmed at **148 m** median (6 of 6), held in ≥ 90 % of the frames from 149 m and in every 10 m band from 115 m; trolley 144 m; 1 m crate 111 m; 3 cm hanging cable 95 m, held from 53 m (4 of 6); 0.5 m box on the bed 1 of 6; re-measured 25.09 by the gate on the current `far_range_eval.py` (changed by the P4 audit after 24.09; same files, seed, stamps, speeds): person 151.0 m median (6 of 6), held from 142.6 m; trolley 151.4 m; 1 m crate 123.9 m; cable 98.9 m, held from 34.2 m (6 of 6); 0.5 m box 1 of 6 (51.9 m); identical with and without either 25.09 rule [measured 25.09] | synthetic, set F round 3, legacy placement, 24.09; gate 25.09 | §2d |
 | same, object anchored on the near rails | person **154 m** (legacy 150 m in the same 5 pairs), trolley 148 m (148 m), crate 110 m (116 m), cable 102 m (104 m) | synthetic, set F round 4, anchored placement, 24.09 | §2d |
 | curves and the envelope edge, paired | no visible object matched at 100–150 m in either placement mode (6 paired R ≈ 350 m curve approaches per kind, lateral to the envelope edge); first confirmed person 74 → 68 m, 1 m box 75 → 80 m (legacy → anchored) | synthetic, set F paired, 24.09 | §2d |
@@ -953,6 +953,32 @@ Reproduce the six-bag checks with `python scripts/robustness_check.py --cache <c
 the held-out measurement with `resense run --bag <cloud_with_fake_obj> --out <full.jsonl>
 --quiet`, filter its JSONL rows to `804 <= frame <= 1509`, and run `resense summarize` on the
 filtered file. The raw bags and caches stay outside Git.
+
+### 1i. P3 items of 25.09, round 2
+
+**Thin hanging objects (SCORECARD #11, `cluster.hanging_enabled`; shipped, on)** [measured
+25.09]. The organizers' 5 cm object hanging from the roof of set O read `GO` in all 42 visible
+frames. Beyond ~50 m none of its returns is inside the envelope measured from the rails. At
+30–61 m 1 of 1–7 returns a frame is inside, at 17–28 m 1–3 voxels: the rings above +2° are 0.5°
+apart. The corridor cluster (5–8 voxels) forms only at 8–15 m, too late to confirm. The new stage
+(`clustering.find_hanging`, ALGORITHM §3.3 item 8) links those returns to the part above the
+envelope top (\|dy\| < 0.8 m, 1.8 m to 0.6 m above the top, ≤ 0.5 m along and across, ≤ 60 m).
+It drops a group that another stage already has, and confirms over 5 frames. *Pre-registered*
+at 20:53 UTC ([`p3_thin_hanging_2026-09-25.json`](evidence/results/p3_thin_hanging_2026-09-25.json),
+with the points per frame by range): A (≥ 1 voxel inside), B (≥ 2), C (B nearer the axis,
+thinner, ≤ 40 m); ship the first with gate exit 0 and a STOP on the target. **A passed first**
+(`--jobs 1`, the ride and set F straight included,
+[gate JSON](evidence/results/regression_gate_2026-09-25_thin_hanging.json)): `thin_hanging` 0 →
+**15 STOP frames, first STOP 30.1 m**; set O 303 → 318 inside STOP frames (6 of 8 objects).
+Every other gated row is the same: five bags 58 / 13 / 16, ride 187 / 46 / 39, `doubleT_obstacle`,
+the other set O objects, set F straight. B and C were not run. **Imitators** (every group kept,
+logged): in set O only the target, none in the six recordings, 29 single-frame groups on the ride.
+28 of those are tops of station columns 13–40 m ahead at \|dy\| 0.4–0.8 m, in frames without a
+rail pair. All joined tracks already advisory, so nothing was added. A fresh track there could
+confirm; a rail-lock condition (not measured) would remove 28 of the 29. Cost 0.5 ms a frame.
+The new defaults (`c0b4f2f`) reproduce A frame by frame on the seven recordings. Tests
+(`tests/test_thin_hanging.py`): shapes, and ray-cast at 16.5 m/s, where the object STOPs from
+30.1 m and a person 3 m beyond it STOPs on the same frame as without the rule.
 
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 
@@ -1982,9 +2008,11 @@ v0.6).
   with `scripts/regression_gate.py --set …`, then the go / no-go~~ decided 25.09 on the ride
   (§1f): the long overhead rule on (ride 47 → 46 events), short signatures off (ride STOP
   episodes +6 for +49 set O STOP frames);
-- **thin hanging objects** (P3, P4; §2e): the organizers' 5 cm object dips only 0.2–0.36 m into the
-  envelope with 1–4 points a frame and never becomes a candidate; a rule for thin clusters near
-  the axis linked to points above the envelope, measured on set O, the empty bags and the ride;
+- ~~**thin hanging objects** (P3, P4; §2e): a rule for thin clusters near the axis linked to
+  points above the envelope, measured on set O, the empty bags and the ride~~ shipped 25.09
+  (§1i, `cluster.hanging_enabled`): the organizers' 5 cm object STOPs from 30.1 m, no gate row
+  worse. Left open: 28 of the 29 groups it takes on the ride are station column tops in frames
+  without a rail pair; a rail-lock condition is not measured;
 - **the rail shadow of a large near object** (P3; §2e): a 2 × 2 m box 10–20 m ahead hides the
   rails, the rail-height fit drifts by ~0.5 m and a wrong 3.0 m distance is reported;
 - ~~**the near-bed path with the current gates** (`537e220` + `7df1796`; P3; §1e): the ride and set F
