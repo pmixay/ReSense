@@ -718,7 +718,10 @@ data: [`SCORECARD.md`](SCORECARD.md).
   the far curvature follows. On the moving ride this made edge fixtures 30–65 m *beyond* an
   injected object alarm in 19 of 3 060 frames (v0.6.1, EXPERIMENTS §2d) — while the object
   itself was confirmed, so the decision was unchanged. A bed bin should span the bed's width to
-  count.
+  count; tried 25.09 and not shipped (`track.floor_far_min_width`, off; EXPERIMENTS §1h): the
+  width alone drops the real far bed (most real bins beyond 90 m are narrower than 1.1 m), and
+  dropping only an object's foot removes these detections but lets other fixtures beyond the
+  object confirm instead.
 * **A sensor mounted on its side** (spin axis horizontal) is not recognised: in a square
   tunnel its "down" is a flat wall that passes for the bed, the configured mapping looks valid
   and the detector alarms on the wall (EXPERIMENTS §6). Such a mount is set with
