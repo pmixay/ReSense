@@ -298,11 +298,16 @@ def _advisory_reason(b: _Blob, dist: float, lateral: float, zone: str, dy, h, cf
     if cfg.column_min_height > 0 and size[2] > cfg.column_min_height and size[1] < cfg.column_max_width \
             and (off_centre or size[1] >= cfg.column_min_width):
         return "column"                    # column, post, gate leg: taller than any listed object, narrow
+    # opt-in, off by default: a cluster as short as the organizers' test objects (and near enough)
+    # that the elevated or floating shape would demote stays an obstacle (the rules after them
+    # are not tried either: scripts/short_signature_experiment.py, measured in docs/P4_AUDIT.md)
+    short = (cfg.short_signature_max_length > 0 and size[0] <= cfg.short_signature_max_length
+             and dist <= cfg.short_signature_max_distance)
     if cfg.elevated_min_height > 0 and h_min > cfg.elevated_min_height and size[1] > cfg.elevated_min_width:
-        return "elevated"                  # beam / roof strip / gantry spanning the corridor above the rails
+        return "" if short else "elevated"   # beam / roof strip / gantry spanning the corridor above the rails
     if cfg.floating_min_height > 0 and h_min > cfg.floating_min_height and size[2] < cfg.floating_max_height \
             and size[1] < cfg.floating_max_width and off_centre:
-        return "floating"                  # sign, lamp, bracket: small and not touching the ground
+        return "" if short else "floating"   # sign, lamp, bracket: small and not touching the ground
     if cfg.edge_min_lateral > 0 and abs(lateral) > cfg.edge_min_lateral \
             and size[0] > cfg.edge_min_aspect * max(float(size[1]), 0.05) and size[2] < cfg.edge_max_height:
         return "edge"                      # duct / bench / platform-edge fragment along the corridor edge

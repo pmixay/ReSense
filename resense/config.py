@@ -167,6 +167,8 @@ class ClusterConfig:
     far_max_length: float = 3.0        # m, ... at most this long along the track (a face seen head-on, not a surface at grazing incidence),
     far_max_bottom: float = 1.0        # m, ... and reaching down below this height (not a sign hanging above the far corridor)
     signature_min_lateral: float = 0.6  # m, v0.6: the column and floating signatures apply only off the track centre (a cable / object hanging into the envelope near the axis is an obstacle)
+    short_signature_max_length: float = 0.0   # m, candidate of 24.09 (P3 / P4), off: > 0 = the elevated and floating signatures do not demote a cluster at most this long along the track
+    short_signature_max_distance: float = 100.0  # m, ... and at most this far (the organizers' test objects are 0.3-2.2 m long; the platform structure these signatures must keep demoting is 3.9-5.7 m long at ~104 m); docs/P4_AUDIT.md, scripts/short_signature_experiment.py
     wall_face_min_height: float = 2.0  # m, taller than a person (1.5 demoted a person standing on a 1.1 m platform edge, review 22.09); taller than this, reaching above overhead_min_height, and its part below that level hugs the corridor edge (|dy| from wall_face_min_inner to beyond wall_face_edge) = wall / portal face pulled in by the axis
     wall_face_min_top: float = 2.8     # m, v0.6: the face reaches above this (just under the 3.0 m envelope top; v0.5 used overhead_min_height = 2.4 under a 3.5 m top)
     wall_face_edge: float = 1.3        # m (v0.6: the advisory zone now ends at 1.40 m; 1.6 with the 1.75 m zone of v0.5)
