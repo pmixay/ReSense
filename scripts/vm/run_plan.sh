@@ -489,7 +489,7 @@ cmd_export() {
     version="${VERSION_ARG:-$REF}"
   else
     version="${VERSION_ARG:-$(sed -n 's/^version[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' pyproject.toml | head -n 1)-$(git rev-parse --short HEAD)}"
-    note "no --ref: exported from the checkout at $(git rev-parse --short HEAD) as $version (the upload uses --ref v1.0-rc1 / v1.0-final)"
+    note "no --ref: exported from the checkout at $(git rev-parse --short HEAD) as $version (the upload uses --ref v1.0.0-rc1 / v1.0.0; the release workflow makes the same archive on a tag push)"
   fi
   archive="$DIST_DIR/resense-image-$version.tar.gz"
   run mkdir -p "$DIST_DIR"

@@ -4,7 +4,7 @@
 # from Docker Hub, apt, PyPI), so the jury gets the image itself and runs `docker load`.
 #
 #   scripts/export_image.sh                     # build from HEAD, tag, save, checksum
-#   VERSION=v1.0-rc1 scripts/export_image.sh    # tag / file name (default: pyproject.toml version)
+#   VERSION=v1.0.0-rc1 scripts/export_image.sh  # tag / file name (default: pyproject.toml version)
 #   SKIP_BUILD=1 SOURCE_IMAGE=resense:ci scripts/export_image.sh   # save an existing image
 #
 # Writes $OUT_DIR/resense-image-<version>.tar.gz (tags resense:<version> and resense:latest) and
