@@ -14,8 +14,8 @@ the case moderator (Telegram [@gorbatovaol](https://t.me/gorbatovaol)) or to
 info.leaders@develop.mos.ru. When an answer comes, record it in `organizers/answers.md`, delete the
 question from the message and list it under "Answered" with a link.
 
-Status (25.09): two questions open, Q1–Q2; **not known whether they were sent (captain to
-confirm)** — the repository records no sending. Q1–Q2 come from the organizers' synthetic-obstacle
+Status (25.09): two questions open, Q1–Q2, **sent by the captain on 25.09**; their answers are
+awaited and go to [`organizers/answers.md`](organizers/answers.md) when they come. Q1–Q2 come from the organizers' synthetic-obstacle
 recording of 24.09 ([`DATASET.md`](DATASET.md) "Synthetic-obstacle recording",
 [`P4_AUDIT.md`](P4_AUDIT.md)). Q3 (the bed / envelope floor) was answered on 25.09 and has left the
 message (see "Answered" below). Q1 lost its second sentence on 24.09: it assumed the objects move
