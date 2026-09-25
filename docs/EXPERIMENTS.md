@@ -782,8 +782,8 @@ rule: capping wall curvature in stations would also cut range in real R ≈ 350�
 
 **Flipping a flag needs no code**: both are in `configs/default.yaml`, the ROS copy is synced by
 `scripts/sync_params.sh`, the node reads `config_file`. The one measurement left, the ride with
-`regression_gate.py --set …`, was measured 25.09 on the dev VM (the ride streamed with
-`scripts/vm/stream_cache.py`).
+`regression_gate.py --set …`, was measured 25.09 on the dev VM (the ride streamed split by split
+as in [`VM_GUIDE.md`](VM_GUIDE.md) §2.3).
 
 **Decision of 25.09 on the ride** [measured 25.09]. Raw: the four gate summaries, the criteria, the
 verdicts and the ride episodes each variant adds or removes in

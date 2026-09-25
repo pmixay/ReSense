@@ -222,8 +222,8 @@ validity over each sequence before interpreting range or edge results.
    **Rules for PRs.** Every PR that touches `resense/` or `configs/` attaches the gate's JSON and
    table. A PR that is meant to move the numbers commits a new baseline with them. Set S is not in
    the gate: re-run step 2 when a change targets it. Nothing in the gate needs the organizers'
-   stand; the ride and set F need the `new_data` cache (the 4-vCPU dev VM streams it with
-   `scripts/vm/stream_cache.py`). Do not compare the 2.1 m-envelope
+   stand; the ride and set F need the `new_data` cache (streamed split by split as in
+   [`VM_GUIDE.md`](VM_GUIDE.md) §2.3). Do not compare the 2.1 m-envelope
    counts to older 1.4 m-envelope runs as if the labels were identical.
 
 ## 4. Targets of the sprints (17–24.09) and their status on 24.09
