@@ -217,7 +217,7 @@ class Detector:
         clusters = self._cluster(merged, n_acc, valid, floor_valid, straddle, near)
         if cfg.cluster.far_axis_both_sides == 2:
             valid = self._far_both_sides(clusters, valid, floor_valid)
-        if cfg.cluster.hanging_enabled:
+        if cfg.cluster.hanging_enabled and (not cfg.cluster.hanging_needs_rails or self.track.rail_slabs > 0):
             clusters = self._hanging(xyz, frame.intensity, dy_all, h_all, cand, clusters, min(valid, floor_valid))
         t5 = time.perf_counter()
         gauge, warn = self._confirm(clusters, speed, dt)
@@ -447,7 +447,9 @@ class Detector:
         the envelope near the axis (``clustering.find_hanging``), from the current frame's points
         within ``hanging_max_distance`` and where the corridor's axis and height reference are
         trusted. Strict-envelope membership is the corridor's (edge margin included). A hanging
-        cluster that overlaps a cluster of the other stages is dropped: those stages decide."""
+        cluster that overlaps a cluster of the other stages is dropped: those stages decide.
+        With ``cluster.hanging_needs_rails`` the stage is skipped on a frame without the rail
+        pair in the near range (``track.rail_slabs == 0``: stations, switch caverns)."""
         cfg = self.cfg
         top = float(np.asarray(cfg.gauge.profile, dtype=np.float64)[:, 1].max())
         hang = find_hanging(xyz, intensity, dy_all, h_all, cfg.cluster, top, cfg.gauge.range_min,

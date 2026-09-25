@@ -224,6 +224,7 @@ class ClusterConfig:
     hanging_min_voxels: int = 1        # voxels inside the strict envelope, with at least one more above its top (2: candidate B)
     hanging_max_size: float = 0.5      # m, along and across the track (a cable or rod, not a duct, tray or ceiling)
     hanging_max_distance: float = 60.0  # m; beyond it the rings above the sensor (0.5 deg) are too sparse for a 0.3 m dip
+    hanging_needs_rails: bool = False  # 25.09, round 2 (the captain's delegate; pre-registered in p3_thin_hanging_2026-09-25.json addendum_rail_lock): true = the hanging stage runs only on frames whose track model found the rail pair in the near range (track.rail_slabs > 0): 28 of the ride's 29 hanging groups were station column tops in frames without one
     wall_face_min_height: float = 2.0  # m, taller than a person (1.5 demoted a person standing on a 1.1 m platform edge, review 22.09); taller than this, reaching above overhead_min_height, and its part below that level hugs the corridor edge (|dy| from wall_face_min_inner to beyond wall_face_edge) = wall / portal face pulled in by the axis
     wall_face_min_top: float = 2.8     # m, v0.6: the face reaches above this (just under the 3.0 m envelope top; v0.5 used overhead_min_height = 2.4 under a 3.5 m top)
     wall_face_edge: float = 1.3        # m (v0.6: the advisory zone now ends at 1.40 m; 1.6 with the 1.75 m zone of v0.5)
