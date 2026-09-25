@@ -212,3 +212,85 @@ def test_column_hold_person_beside_a_column_is_a_stop(tunnel):
             assert got == base, (m, got, base)
         else:
             assert base < got <= zw - hold, (m, got, base)
+
+
+# --- track.floor_far_min_width (P3 bed_bin, 25.09): a far bed bin that is the foot of an object -------
+FAR_RULE = dict(floor_far_min_width=1.1, floor_far_from=90.0, floor_far_min_standing=2)
+
+
+def test_bed_bin_rule_is_off_by_default():
+    for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
+                DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
+        assert cfg.track.floor_far_min_width == 0.0
+
+
+def _far_bed_cloud(obj: bool = True, rail: bool = True) -> np.ndarray:
+    """Bed at z = -1.9 across |dy| <= 0.9 from 3 to 90 m and a vault at z = +2.6 to 120 m; beyond
+    90 m the bed does not return: one rail head (dy = 0.75, 0.3 m above the bed) at 100-104.5 m
+    and the front face of a 1.0 x 1.0 m box standing on the bed at 105 m."""
+    X, Y = np.meshgrid(np.arange(3.0, 90.0, 0.25), np.linspace(-0.9, 0.9, 7), indexing="ij")
+    parts = [np.stack([X.ravel(), Y.ravel(), np.full(X.size, -1.9)], 1)]
+    xv = np.arange(3.0, 120.0, 0.5)
+    parts.append(np.stack([np.repeat(xv, 3), np.tile([-0.5, 0.0, 0.5], xv.size), np.full(3 * xv.size, 2.6)], 1))
+    if rail:
+        xr = np.linspace(100.0, 104.5, 20)
+        parts.append(np.stack([xr, np.full(xr.size, 0.75), np.full(xr.size, -1.6)], 1))
+    if obj:
+        Yf, Zf = np.meshgrid(np.linspace(-0.2, 0.8, 6), np.linspace(-1.9, -0.9, 11), indexing="ij")
+        parts.append(np.stack([np.full(Yf.size, 105.0), Yf.ravel(), Zf.ravel()], 1))
+    return np.concatenate(parts).astype(np.float32)
+
+
+def test_bed_bin_rule_drops_an_object_foot_not_a_rail_head():
+    """The box's bin (1.0 m wide low points with its face standing on them) no longer extends the
+    bed fit; the narrow rail-head bin with nothing on it is kept (dropped only by the plain width
+    rule, floor_far_min_standing 0); the fit ends where the bed ends without the box. Both paths."""
+    from resense import _native
+    from resense.config import TrackConfig
+    from resense.track import _fit_floor, default_track_model
+    base = replace(TrackConfig(), lateral_center=0.0)
+    prior = default_track_model(base)
+    was = _native.enabled()
+    try:
+        for native in (True, False):
+            _native.set_enabled(native)
+            for obj, off_end, on_end, width_only_end in ((True, 107.5, 102.5, 87.5), (False, 102.5, 102.5, 87.5)):
+                xyz = _far_bed_cloud(obj=obj)
+                assert _fit_floor(xyz, base, prior)[1][1] == off_end
+                assert _fit_floor(xyz, replace(base, **FAR_RULE), prior)[1][1] == on_end
+                width_only = replace(base, **dict(FAR_RULE, floor_far_min_standing=0))
+                assert _fit_floor(xyz, width_only, prior)[1][1] == width_only_end
+            # beyond floor_far_from only: the same box at 105 m with the check from 110 m extends the fit
+            later = replace(base, **dict(FAR_RULE, floor_far_from=110.0))
+            assert _fit_floor(_far_bed_cloud(), later, prior)[1][1] == 107.5
+    finally:
+        _native.set_enabled(was)
+
+
+def _trim_far_bed(frame: Frame, beyond: float = 90.0) -> Frame:
+    """The ray-cast tunnel with the bed and rail returns beyond ``beyond`` removed near the axis,
+    as the real bed stops returning beyond ~90 m (EXPERIMENTS §2d)."""
+    x, y, z = frame.xyz[:, 0], frame.xyz[:, 1], frame.xyz[:, 2]
+    keep = ~((x > beyond) & (np.abs(y - AXIS_Y) < 1.2) & (z < RAIL_HEAD_Z + 0.3))
+    return Frame(xyz=frame.xyz[keep], intensity=frame.intensity[keep])
+
+
+def test_bed_bin_rule_keeps_the_stop(tunnel):
+    """Safety, end to end on the ray-cast tunnel with the rule on: a person-size box (0.3 x 0.5 x
+    1.8 m) standing on the bed on the axis at 60 m (bed visible) and at 105 m (bed trimmed beyond
+    90 m, the box's foot alone fills the bin) is a STOP on the same frame as with the rule off; at
+    105 m the box's foot extends the bed fit from 82.5 to 107.5 m with the rule off and not with
+    it on."""
+    frame, _, _ = tunnel
+    far = _trim_far_bed(frame)
+    off, on = DetectorConfig(), DetectorConfig()
+    on.track = replace(on.track, **FAR_RULE)
+    confirm = on.tracking.frames_to_confirm() - 1
+    for bg, dist in ((frame, 60.0), (far, 105.0)):
+        person = _box_surface(dist, 0.3, 0.0, -0.18, 1.8, 0.5)               # standing on the bed
+        k_off, k_on = _first_stop(bg, [person] * 8, off), _first_stop(bg, [person] * 8, on)
+        assert k_on is not None and k_on == k_off <= confirm + 1, (dist, k_off, k_on)
+        res = _run_with(bg, person, on)
+        assert res.obstacle and abs(res.detections[0].distance - dist) < 0.5
+        if dist > 90.0:
+            assert res.track.floor_range[1] < dist < _run_with(bg, person, off).track.floor_range[1]

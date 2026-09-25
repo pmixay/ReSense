@@ -43,6 +43,12 @@ class TrackConfig:
     floor_poly_degree: int = 2
     floor_max_residual: float = 0.35  # m, bins further from the fit are rejected (2nd pass)
     floor_smoothing: float = 0.5   # exponential smoothing of coefficients across frames (0 = off)
+    # 25.09 (P3 bed_bin): a far bed bin (centre >= floor_far_from) whose low points span less than
+    # floor_far_min_width laterally, with >= floor_far_min_standing points standing on them, is the
+    # foot of an object, not the bed, and is dropped from the fit (track._narrow_far_bins); 0 = off
+    floor_far_min_width: float = 0.0
+    floor_far_from: float = 90.0
+    floor_far_min_standing: int = 2
     # --- rail-based self-calibration of the track axis (near range) ---
     rails_enabled: bool = True
     rails_range: Tuple[float, float] = (4.0, 30.0)   # m along track
