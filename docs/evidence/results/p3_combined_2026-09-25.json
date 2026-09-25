@@ -1,0 +1,46 @@
+{
+  "schema": "resense-p3-item-v1",
+  "key": "combined",
+  "date": "2026-09-25",
+  "owner": "P3 (integrator)",
+  "question": "The four P3 items of 25.09 merged on wf7/p3 (rail_shadow shipped; platform_end, far_switch, bed_bin tried and not shipped, flags off): does the combined default config pass the full regression gate, with the rail-shadow target kept, and what is the new gate baseline?",
+  "preregistered": {
+    "written_at_utc": "2026-09-25T19:03:24Z",
+    "before_any_result": "No gate or detector run on the merged code yet. The merges were checked only with the unit tests of tests/test_late_candidates.py and tests/test_native.py.",
+    "code": "489fef3 (wf7/p3 = claude/nifty-pascal-lzgl78 d4b396e + --no-ff merges of wf7/rail-shadow f9e17a8, wf7/platform-end 95e4fe1, wf7/far-switch b77166e, wf7/bed-bin 8211560), native path",
+    "merged_code_interactions": [
+      "resense/track.py: estimate_axis_from_walls returns 8 values (tan_yaw, curvature, quality, x_valid, n_sides, disagreement, x_valid_min, run): far_switch's x_valid_min and platform_end's persistence run; estimate_track unpacks both",
+      "resense/track.py: _fit_floor keeps rail_shadow's signature (shadow_ref, info) and bed_bin's _narrow_far_bins drop before the shadow check; each acts only with its own flag",
+      "TrackModel gains floor_shadow, floor_held (rail_shadow), far_support_run (platform_end), axis_valid_both, axis_valid_bent (far_switch)"
+    ],
+    "candidate": {
+      "id": "combined defaults",
+      "set": [],
+      "effective": {
+        "track.floor_shadow_height": 1.0,
+        "track.floor_shadow_range": 30.0,
+        "track.floor_shadow_min_bins": 5,
+        "cluster.oversize_split_max_length": 3.0,
+        "cluster.oversize_split_max_distance": 30.0,
+        "cluster.gauge_distance": true,
+        "track.walls_min_far_support": 0.0,
+        "cluster.far_axis_both_sides": 0,
+        "track.floor_far_min_width": 0.0
+      }
+    },
+    "command": "python scripts/regression_gate.py --cache /data/cache --jobs 3 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json --work <scratch> --out <scratch>/result.json (on the clean commit of this file)",
+    "ship_rule": {
+      "gate": "exits 0 against regression_baseline_2026-09-25_ride_column.json: no gated row worse or missing (the six recordings, set O, the ride in 8 pieces, set F straight)",
+      "target": "set O #1 (big_center) over all 229 labelled frames, measured on the gate's set O JSONL with the rail_shadow target script: STOP frames with a wrong distance < 12 (expected 0), largest error < 14.11 m (expected 0.46 m), no #1 STOP frame lost (224)",
+      "expected": "every gated row equal to regression_gate_2026-09-25_rail_shadow.json (the rail_shadow candidate B2 = these defaults; the other three flags are off and their branches showed byte-identical output when off)"
+    },
+    "safety_conditions": [
+      "doubleT_obstacle labelled hits per label (person_crossing 58, object_on_rail 127, object_on_rail_from_frame_75 124) and first alarm frame (11) identical or better",
+      "set O: every inside object's STOP frames and first STOP distance identical or better; outside false STOP frames (6) and background (3 frames / 2 ids) not higher",
+      "set F straight per kind: detected, median first confirmation identical or better; false detections not higher",
+      "no new false alarm: alarm events and STOP episodes of the five obstacle-free recordings (13 / 16) and the ride (46 / 39) not higher"
+    ],
+    "if_worse": "A gated row worse because two changes interact: find the pair (the only item on is rail_shadow; the others are off, so first re-check each off flag's byte-identity against the rail_shadow-only branch on the failing data set) and turn the lesser item's default back off; if the rail_shadow item itself is the cause on this merged base, its defaults go back off (a safety row wins over a false-alarm gain) and the combination equals the baseline.",
+    "baseline_rule": "If the gate passes and the numbers move (expected: set O #1 207 -> 208 and #9 42 -> 49 STOP frames, set F straight false detections 35 -> 24), the gate's result JSON of this clean commit becomes docs/evidence/results/regression_baseline_2026-09-25_ride_p3.json and every 'current baseline' reference is repointed to it."
+  }
+}
