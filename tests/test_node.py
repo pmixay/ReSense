@@ -559,9 +559,10 @@ def test_catchup_skips_are_reported_apart_from_frames_never_received(node_cls, m
 
 
 def test_socket_buffer_warning(node_cls, tmp_path, monkeypatch):
-    """25.09: with a host `ros2 bag play` on CycloneDDS the node received none of the 360-degree
-    clouds at Ubuntu's net.core.rmem_max / rmem_default 212992 and all of them at 32 MiB. The
-    node says so once at start, with the host fix; unreadable values are no failure."""
+    """25.09: with a host `ros2 bag play` on CycloneDDS (and on stock Fast DDS on one of two team
+    VMs) the node received none or almost none of the 360-degree clouds at Ubuntu's
+    net.core.rmem_max / rmem_default 212992 and all of them at 32 MiB. The node says so once at
+    start, with the host fix; unreadable values are no failure."""
     warn = node_cls.socket_buffer_warning
     msg = warn({"rmem_max": 212992, "rmem_default": 212992})
     assert "sudo sysctl -w net.core.rmem_max=33554432 net.core.rmem_default=33554432" in msg

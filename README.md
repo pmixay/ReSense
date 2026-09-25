@@ -22,6 +22,7 @@ ReSense 10 раз в секунду отвечает беспилотному п
 его `.sha256`) и загружается без сети; нода и всё, что ей нужно при работе, сети не требуют.
 
 ```bash
+sudo sysctl -w net.core.rmem_max=33554432                # 0. на хосте, до перезагрузки: буфер UDP для 360° облаков
 docker load -i resense-image-<версия>.tar.gz             # 1. один раз, без интернета
 docker run --rm -it --net=host --ipc=host resense        # 2. консоль 1: нода, без аргументов
 ros2 bag play <бэг> --delay 3                            # 3. консоль 2: любой пользователь, ROS 2 Humble
@@ -42,10 +43,10 @@ ros2 topic echo /resense/nearest_distance --field data   # 5. расстояни
 находит ноду, и `/resense/decision` остаётся `FAULT`. `ROS_DOMAIN_ID` плеера и ноды должен
 совпадать (по умолчанию 0). Нет ROS 2 на хосте — плеер из того же образа: `docker run --rm
 --net=host -v <папка с бэгами>:/data:ro resense ros2 bag play /data/<бэг> --delay 3`.
-Плееру на CycloneDDS (`RMW_IMPLEMENTATION=rmw_cyclonedds_cpp`) для 360-градусных облаков (24 МБ)
-нужен буфер приёма UDP на хосте не меньше 32 МиБ: `sudo sysctl -w net.core.rmem_max=33554432
-net.core.rmem_default=33554432` (при 212992 по умолчанию в Ubuntu не дошло ни одного облака; нода
-пишет об этом WARN при старте); плееру на Fast DDS, по умолчанию в Humble, это не нужно.
+**Шаг 0 нужен для 360-градусных облаков (24 МБ) с плеером на любом DDS:** при `rmem_max` 212992
+(по умолчанию в Ubuntu) нода получала 0–1 из 201 такого облака — с CycloneDDS всегда, со штатным
+Fast DDS на одной из двух проверенных машин; при 32 МиБ — все (25.09, [EXPERIMENTS](docs/EXPERIMENTS.md)
+§3b). 120-градусные облака (3 МБ) доходят и без него. Нода пишет WARN при старте, если буфер меньше.
 
 Ожидаемый вывод шага 4 на `doubleT_obstacle` (сокращён; сообщения идут 10 раз в секунду):
 
@@ -89,10 +90,11 @@ ros2 bag play <bag>  ──PointCloud2 (either topic / frame pair), 10 Hz──�
    1000 from a second container of the image, with the image's profile and with the stock Humble
    RMW (`rmw_fastrtps_cpp`, no XML profile, shared memory on: `PLAYER_DDS=stock
    scripts/console_test.sh`), as a host console does; stock clients reach the node over UDP
-   because the node announces no shared-memory locators. A player on CycloneDDS needs
-   `net.core.rmem_max` ≥ 32 MiB on the host for the 24 MB 360° clouds (`sudo sysctl -w
-   net.core.rmem_max=33554432 net.core.rmem_default=33554432`: at Ubuntu's 212992 none arrived,
-   25.09); the node logs a WARN at start below that.
+   because the node announces no shared-memory locators. A 360° recording needs
+   `net.core.rmem_max` ≥ 32 MiB on the host for its 24 MB clouds (jury step 0, `sudo sysctl -w
+   net.core.rmem_max=33554432`): at Ubuntu's 212992 a CycloneDDS player delivered none and a stock
+   Fast DDS player 0–1 of 201 on one of two team VMs (25.09, EXPERIMENTS §3b); the 120° clouds
+   arrive either way; the node logs a WARN at start below 32 MiB.
 4. **Read the answer** ("What to look at"). `ros2 bag play` (Humble) preloads up to 1 000 messages,
    all of a short recording, while its clock runs, then sends the overdue first seconds back to
    back: `FAULT` until then (2.6–4 s for 1.9 GB in the page cache, longer from a slow disk). The

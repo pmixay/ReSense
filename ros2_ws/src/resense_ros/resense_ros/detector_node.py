@@ -84,9 +84,9 @@ bags carry different ``frame_id`` values (``hesai_lidar``, ``lidar_livox``); the
 ``resense_lidar`` as the fixed frame and the node links it to whatever frame the input has.
 
 Socket buffers (25.09): at start the node reads ``net.core.rmem_max`` (and ``rmem_default``) and
-logs one WARN below 32 MiB: a player on CycloneDDS got none of the ~24 MB 360-degree clouds
-through to the node at Ubuntu's 212992 and all of them at 32 MiB (25.09, EXPERIMENTS.md section
-3b); a Fast DDS player is not affected. Never fatal.
+logs one WARN below 32 MiB: at Ubuntu's 212992 a player on CycloneDDS got none of the ~24 MB
+360-degree clouds through to the node, a stock Fast DDS player 0-1 of 201 on one of two team VMs,
+and both all of them at 32 MiB (25.09, EXPERIMENTS.md section 3b). Never fatal.
 
 Threads (25.09): ``OMP_NUM_THREADS`` / ``OPENBLAS_NUM_THREADS`` / ``MKL_NUM_THREADS`` default to 1
 (``resense_ros/__init__.py``, before numpy is imported; an explicit value in the environment
@@ -298,14 +298,14 @@ class DetectorNode(Node):
         if not any(values.get(k) is not None and values[k] < RMEM_WANT for k in keys):
             return None
         now = ", ".join(f"net.core.{k} = {values[k]}" for k in ("rmem_max", "rmem_default") if values.get(k) is not None)
-        return (f"{now}: below 32 MiB. A bag player on CycloneDDS (RMW_IMPLEMENTATION=rmw_cyclonedds_cpp) "
-                "then delivers none of the ~24 MB 360-degree clouds to this node (a Fast DDS player, the "
-                "Humble default, is not affected). Fix on the host: sudo sysctl -w "
+        return (f"{now}: below 32 MiB. A bag player may then deliver few or none of the ~24 MB "
+                "360-degree clouds to this node (CycloneDDS always, stock Fast DDS on some hosts; the "
+                "120-degree clouds arrive). Fix on the host, before playing: sudo sysctl -w "
                 f"net.core.rmem_max={RMEM_WANT} net.core.rmem_default={RMEM_WANT}")
 
     def check_socket_buffers(self):
-        """Read the kernel's receive-buffer limits and log one WARN when a CycloneDDS player could
-        not deliver the 360-degree clouds (EXPERIMENTS.md section 3b, 25.09). Never fails."""
+        """Read the kernel's receive-buffer limits and log one WARN when a host player might not
+        deliver the 360-degree clouds (EXPERIMENTS.md section 3b, 25.09). Never fails."""
         values = {}
         for key in ("rmem_max", "rmem_default"):
             try:

@@ -123,11 +123,11 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   any user reaches the root node) and sets 32 MiB socket receive buffers (8 MiB until 25.09); the
   kernel caps them at `net.core.rmem_max`, 212992 on a stock Ubuntu, silently, and Fast DDS 2.6
   keeps going with the capped buffer (`rmem_default` does not matter to a buffer set explicitly).
-  A Fast DDS player delivers every cloud at that; a CycloneDDS player delivered none of the 24 MB
-  360° clouds until `rmem_max` and `rmem_default` were raised to 32 MiB (25.09, EXPERIMENTS §3b),
-  so the requirement is `sudo sysctl -w net.core.rmem_max=33554432
-  net.core.rmem_default=33554432` on a host that plays with CycloneDDS; the node logs a WARN at
-  start when `rmem_max` is below 32 MiB.
+  At that a CycloneDDS player delivered none of the 24 MB 360° clouds and a stock Fast DDS player
+  0–1 of 201 on the second of two team VMs (the first passed), all of them at `rmem_max` 32 MiB
+  (25.09, EXPERIMENTS §3b); the 120° clouds arrive either way. So the jury commands start with
+  `sudo sysctl -w net.core.rmem_max=33554432` (README step 0), and the node logs a WARN at start
+  when `rmem_max` is below 32 MiB.
 * Ego speed for multi-frame accumulation: the node passes `Detector.process(frame, ego_speed=v)`
   the value of the `ego_speed_mps` parameter, else the latest `speed_topic` / `odom_topic`
   message younger than `speed_timeout`, else `None` (single-frame path); the status JSON reports
