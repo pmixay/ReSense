@@ -72,5 +72,14 @@
        "run_only_if": "K3c leaves a stress mode above 13 false events on the five empty bags, or roundT_doubleT above 0 at pitch_3"}
     ],
     "unchanged": "target, ship rule, safety conditions; K3b (roll_3 and 5 Hz) and K4b are still run as registered, since K3b leaves pitch_3 at 16 > 13. K2c-K4c are post hoc to the K2b 5 Hz numbers and reported as such."
+  },
+  "addendum_3": {
+    "written_at_utc": "2026-09-25T21:34:36Z",
+    "why": "Stress runs (five empty bags events / STOP episodes, roundT_doubleT events, doubleT_obstacle hits and first alarm): K3c 5 Hz 11 / 13, 0, 92/123 @12; roll_3 11 / 13, 1, 183/246 @12; pitch_3 16 / 17, 0, 186/246 @11 (sum 38 < 46, no mode up). K4c: roll_3 19 / 14, pitch_3 19 / 17, 5 Hz doubleT_obstacle 89/123: worse, not eligible; K4b not run (its 10 Hz tilt runs equal K4c's but for two stamp gaps). K3c 10 Hz gate (--jobs 1, the ride in 8 pieces, set F straight): FAIL, ride alarm events 46 -> 48 and STOP episodes 39 -> 42; five bags, set O and set F straight identical; doubleT_obstacle labelled 185 -> 186, first alarm 11. The ride has no provisional tilt in any piece (refine and keep_within never engage; every piece is final 'identity'), so the change comes from the per-frame interval: the cached ride stamps are bag receive times delivered in bursts (0.2-0.45 s followed by 0.02 s; 55 intervals >= 0.15 s in pieces 0, 5, 6, 7), so round(dt / 0.1) counts 2-4 periods on the frame before a near-zero interval, and the axis rate limits and the yaw EMA open up there.",
+    "change": "the periods k of track.rates_per_period, track.walls_smoothing_per_period and calibration.time_cadence become the input rate, not the individual interval: k = max(1, round(median of the last 9 stamp intervals inside accumulation.stamp_dt_range / tracking.frame_dt)); 1 on the first frame. 10 Hz gives 1 whatever the bursts and single drops, 5 Hz gives 2. Flags and values unchanged.",
+    "candidates_in_order": [
+      {"id": "K3d", "set": {"calibration.time_cadence": true, "calibration.keep_within_deg": 0.25, "track.rates_per_period": true, "track.walls_smoothing_per_period": true, "calibration.refine_min_deg": 0.5}, "periods": "median interval"}
+    ],
+    "unchanged": "target, ship rule and safety conditions; K3d is re-measured at 5 Hz / roll_3 / pitch_3 and through the 10 Hz gate. Post hoc to the K3c gate and reported as such."
   }
 }
