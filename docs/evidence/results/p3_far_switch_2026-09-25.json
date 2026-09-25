@@ -1,0 +1,32 @@
+{
+  "schema": "resense-p3-item-v1",
+  "key": "far_switch",
+  "date": "2026-09-25",
+  "question": "The 147.5 m switch parts of squareT_platform_squareT_switch (a 0.07 x 0.41 x 0.96 m face, bottom 0.27 m, lateral -0.29 m; EXPERIMENTS 1f) lie beyond the verified height reference and pass the far-field rule (>= far_min_height 0.6 m tall, <= 3 m long, bottom <= 1.0 m) like a person. Fewer STOP episodes from them without losing any set F straight object or range.",
+  "preregistered": {
+    "written_at_utc": "2026-09-25T17:19:00Z",
+    "code": "be39362 (claude/nifty-pascal-lzgl78; no detector change since the baseline commit d117c8c)",
+    "note": "written before any candidate run; only the shipped defaults were run before it (diagnostics below)",
+    "candidates": [
+      {"order": 1, "set": {"cluster.far_min_height": 0.8}},
+      {"order": 2, "set": {"cluster.far_min_height": 0.9}},
+      {"order": 3, "set": {"cluster.far_min_height": 1.0}}
+    ],
+    "today": {"cluster.far_min_height": 0.6},
+    "flag": "cluster.far_min_height exists (0.6 since v0.6); no new flag and no code for approach (b). Approach (a), a bed from the side-structure base, is not a candidate: see diagnostics_before_registration.",
+    "target": "Switch-part STOP episodes in squareT_platform_squareT_switch: STOP episodes (runs of consecutive frames with obstacle true) in which any frame has a confirmed gauge detection at 140-155 m, counted by the attached definition on the per-frame JSONL. Shipped defaults: 4 episodes (frames 500-501, 580, 640-642, 692-708), 19 STOP frames with such a detection. The target improves when the episode count is < 4.",
+    "ship_rule": "A candidate is shippable when (1) python scripts/regression_gate.py --cache /data/cache --jobs 1 --set cluster.far_min_height=<v> --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json exits 0 (no gated row worse, none missing; the six recordings, set O, the ride and set F straight), (2) the target improves as defined, and (3) every safety condition holds. Among shippable candidates: the one with the fewest switch-part STOP episodes; a tie goes to the lower threshold (the least intrusive). If none is shippable: far_min_height stays 0.6 and the numbers are recorded.",
+    "safety_conditions": [
+      "doubleT_obstacle: labelled hits per label (person_crossing, object_on_rail, object_on_rail_from_frame_75) identical or better; first alarm frame identical or earlier; fp events not higher",
+      "set O: every inside object's STOP frames not fewer and first STOP not at a shorter distance; outside false STOP frames, background alarm frames and track ids not higher",
+      "set F straight, every kind (person, box1.0, box0.5, trolley, cable): detected sequences not fewer; median first confirmation not shorter (the person's ~151 m headline must not drop); false detections not higher",
+      "no new false alarm: alarm events and STOP episodes not higher in each of the five obstacle-free recordings and in the ride"
+    ],
+    "procedure": "Cheaper stages first, each only for a candidate that survived the previous one: (1) squareT_platform_squareT_switch alone (scripts/eval_real.py --bags squareT_platform_squareT_switch --set ...): the target; (2) set F straight alone (scripts/far_range_eval.py with the gate's parameters and the effective config): the hard safety condition; (3) the full gate with the ride. A candidate that fails a stage is recorded with the stage's numbers and not run further. Native path, --jobs 1, receive stamps, the 4-vCPU dev VM.",
+    "diagnostics_before_registration": {
+      "switch_part_clusters": "defaults, frames 690-705: 6-8 voxels, 0.05-0.09 m along, 0.33-0.41 m wide, measured height quantised by the ring spacing at 145-147 m (0.125 deg = 0.32 m): 0.38, 0.67-0.69 or 0.96-0.98 m; bottom 0.12-0.57 m above the extrapolated rail head; fixed in the vehicle frame (y +1.39...+1.43 m, z -2.05...-1.07 m) while its corridor lateral moves -0.86...+0.98 m with the wall-derived curvature 1.3e-4...3.2e-4 /m; fit end 67-118 m, floor_verified 110-140 m, axis_valid 120-167 m",
+      "side_base_at_the_switch": "frames 690-705: the side band (|dy| 1.6-3.5 m) holds the wall foot within +-0.3 m of its near offset to 122-127 m, then only vault returns (+3.8...+4.3 m) from 127-137 m on: no side-structure base reaches 147.5 m, so a bed taken from it (approach a) cannot change the switch parts",
+      "side_base_on_straight_track": "set F straight backgrounds (files 46, 68, 98, 140, 168, 172, 110 frames each, no object): floor_verified median 105-120 m; with the verification tolerance loosened to 1.0 m the side base agrees to 125-145 m (median), 1.5 m to 130-165 m. File 46 frames 2386-2390: side base +0.5 m at 100 m, +0.7 at 120, +1.0-1.2 at 127-132, +1.3-1.5 at 137-147, +1.6-1.9 at 150, +2.3-3.3 at 177-187 m against the vault drift of +0.49 at 115 and +0.79 at 135 m (EXPERIMENTS 2d): the lowest side point rises 1.5-2x faster than the rail level drifts, so z_base - offset is not a bed height beyond ~120 m either"
+    }
+  }
+}
