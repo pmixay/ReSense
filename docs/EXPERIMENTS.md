@@ -784,8 +784,8 @@ rule: capping wall curvature in stations would also cut range in real R ≈ 350�
 
 **Flipping a flag needs no code**: both are in `configs/default.yaml`, the ROS copy is synced by
 `scripts/sync_params.sh`, the node reads `config_file`. The one measurement left, the ride with
-`regression_gate.py --set …`, was measured 25.09 on the dev VM (the ride streamed with
-`scripts/vm/stream_cache.py`).
+`regression_gate.py --set …`, was measured 25.09 on the dev VM (the ride streamed split by split
+as in [`VM_GUIDE.md`](VM_GUIDE.md) §2.3).
 
 **Decision of 25.09 on the ride** [measured 25.09]. Raw: the four gate summaries, the criteria, the
 verdicts and the ride episodes each variant adds or removes in
@@ -1540,8 +1540,8 @@ here, §1f). The i7-9700E has 8 physical cores without SMT at 2.6–4.4 GHz, so 
 8-core analogue C8 asks for: the node's own work is one thread, but in `dry_run.sh` the node, the
 player and the recorder share these 4 cores. The bags were played from a RAM tmpfs: the VM's network
 disk reads 64 MB/s sequentially (`dd`, direct I/O), below the ~220 MB/s at which `ros2 bag play`
-reads the 4.5 GB 360° bag. `scripts/vm/run_plan.sh bench` → `scripts/bench_8core.sh` (image from
-the layer cache); raw: [`evidence/bench_2026-09-25/`](evidence/bench_2026-09-25/) (`summary.txt`).
+reads the 4.5 GB 360° bag. `scripts/bench_8core.sh` through the VM kit of 25.09 (removed the same
+day; now [`VM_GUIDE.md`](VM_GUIDE.md) §4.3), image from the layer cache; raw: [`evidence/bench_2026-09-25/`](evidence/bench_2026-09-25/) (`summary.txt`).
 
 | run (Docker chain, rate 1.0) | kernels | frames processed | fps | decode + detect mean / p95 / max | detector mean / p95 | dropped (after 5 s) | container CPU % mean / max | memory MB | check |
 |---|---|---|---|---|---|---|---|---|---|
@@ -1733,7 +1733,8 @@ the ROS 2 image. Offline latency needs no Docker: `resense bench --npy <cache>` 
 `scripts/bench_node_path.py --npy <cache>` on a non-empty cache.
 
 **Dry run with the original bags and the offline rehearsal, 25.09 (team VM, a rehearsal of the later
-deployment).** `scripts/vm/run_plan.sh dryrun` and `offline`, code `7290873`, on the VM of §3a
+deployment).** The VM kit's `dryrun` and `offline` steps (kit removed 25.09; now
+[`VM_GUIDE.md`](VM_GUIDE.md) §4.1 / §5), code `7290873`, on the VM of §3a
 (8 vCPU = 4 physical cores, Ubuntu 22.04 with stock ROS 2 Humble on the host), the **original** bags
 played from a RAM tmpfs (the VM disk reads 64 MB/s); raw:
 [`evidence/dry_run_2026-09-25/`](evidence/dry_run_2026-09-25/),

@@ -200,7 +200,7 @@ teams (23.09). Decision logic and thresholds: [`docs/ALGORITHM.md`](docs/ALGORIT
 | [`resense/`](resense/) | core library (numpy / scipy / scikit-learn, no ROS): PointCloud2 decoding, mount calibration, track model, gauge corridor, low-object stage, clustering, tracking, health, detector, synthetic obstacle injection, metrics, CLI |
 | [`ros2_ws/src/resense_ros/`](ros2_ws/src/resense_ros/) | ROS 2 Humble node, launch file, parameters, RViz layout |
 | [`docker/`](docker/), [`docker-compose.yml`](docker-compose.yml), [`scripts/`](scripts/) | reproducible build and demo |
-| [`scripts/vm/`](scripts/vm/) | kit for the team's temporary cloud VM: setup, data fetch, 8-core bench, dry run with the original bags and a host-console player, full regression gate, image export, offline rehearsal, results pack ([`AGENT_BRIEF.md`](scripts/vm/AGENT_BRIEF.md)) |
+| [`docs/VM_GUIDE.md`](docs/VM_GUIDE.md) | instructions for the team's temporary cloud VM (a person or an agent), plain commands of the tools above: data (the ride streamed split by split), 8-core bench, dry run with the original bags, stock-player and host console, regression gate with the ride, image archive, offline rehearsal, results into a PR |
 | [`configs/default.yaml`](configs/default.yaml) | the tunable parameters, copied into the ROS package at build time (`scripts/sync_params.sh`, checked in CI) |
 | [`native/`](native/) | optional C++ kernels for the per-frame hot spots (track stage, corridor selection, health visibility): about half the detector time, bit-identical output; built by `pip install`, numpy fallback without a compiler or with `RESENSE_NATIVE=0` ([ARCHITECTURE](docs/ARCHITECTURE.md) "Native kernels") |
 | [`tests/`](tests/) | 352 pytest tests on a synthetic ray-cast tunnel, no dataset needed (algorithm, envelope, calibration, guards, the native kernels and the cKDTree DBSCAN against their reference code, the regression gate's rules, the release tooling, the overview video's table, the ROS node against stand-ins, the dry-run checker) |
@@ -334,9 +334,8 @@ SKIP_BUILD=1 OFFLINE=1 ./scripts/dry_run.sh <bags>/roundT_doubleT --expect-clear
 ```
 
 `IMAGE_TAR` loads the archive (`scripts/load_image.sh`) instead of building; `OFFLINE=1` runs node,
-player and recorder with `--network none` and refuses to build. The team VM kit runs the same
-(`scripts/vm/run_plan.sh dryrun`, `offline`:
-[`scripts/vm/AGENT_BRIEF.md`](scripts/vm/AGENT_BRIEF.md)).
+player and recorder with `--network none` and refuses to build. On the team's VM the same steps,
+with the offline rehearsal's safety net: [`docs/VM_GUIDE.md`](docs/VM_GUIDE.md).
 
 CI runs the chain without the dataset on every push: 40-frame synthetic bags in the organizers'
 exact layout (clear, then a person at 60 m; both topic / frame pairs) played through the node in
