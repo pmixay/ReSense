@@ -4,7 +4,7 @@
 > [`EXPERIMENTS.md`](../EXPERIMENTS.md): the result summaries in `results/`, the logs, captures and
 > bench output of each run, and the recordings' original metadata.
 > **Audience:** team, jury · **Owner:** P1 (runs, timing), P4 (result summaries) · **Language:** EN
-> **Last verified:** 2026-09-24 against `537e220` (every file is the record of its own date) ·
+> **Last verified:** 2026-09-25 against `8932f3a` (every file is the record of its own date) ·
 > **Status:** current
 
 Every file here is the record of one run and is not rewritten: a new run gets a new file or folder
@@ -19,6 +19,8 @@ One JSON per experiment, each with a `note`, `_meta` or `source` block that name
 
 | file | date | code | script | cited by |
 |---|---|---|---|---|
+| [`regression_gate_2026-09-25_8932f3a.json`](results/regression_gate_2026-09-25_8932f3a.json) | 25.09 | `8932f3a` (the four merges of 25.09: DBSCAN on cKDTree, the two opt-in flags off), native path, config sha256 `fa64b1be…` (two new keys, both 0) | `scripts/regression_gate.py --baseline results/regression_baseline_2026-09-25.json` (`--jobs 3`, 46 s, dev VM under load; ride and set F not cached) | GATE PASS: all 82 gated rows the same, only latency moved (17–26 ms mean per frame, information only); EXPERIMENTS "Current results"; CAPTAIN §2 |
+| [`regression_baseline_2026-09-25.json`](results/regression_baseline_2026-09-25.json) | 25.09 | `ca557cb` (detector as `e3929f2`), native path, config sha256 `05edeae1…` | `scripts/regression_gate.py` (six recordings + `cloud_with_fake_obj`; ride and set F not cached) | EVALUATION §3 step 6; EXPERIMENTS "Current results"; CAPTAIN §6 |
 | [`experiments_2026-09-24_train_speed.json`](results/experiments_2026-09-24_train_speed.json) | 24.09 | `537e220` (detector unchanged) + the scripts of `396755f` | `scripts/speed_reference.py`, `speed_accuracy.py`, `eval_real.py --nominal-stamps --speed-ref`, `score_fake_objects.py`, `speed_setf.py`, `speed_static_check.py`, `speed_timing.py` | EXPERIMENTS §9; CHANGELOG; SCORECARD §8 |
 | [`experiments_2026-09-24_remeasure.json`](results/experiments_2026-09-24_remeasure.json) | 24.09 | `4cd32d6` (current) against `1210580` (v0.6.3) | `scripts/eval_real.py`, `start_offsets.py`, `far_range_eval.py`, `lying_person_eval.py`, `resense bench` | EXPERIMENTS "Re-measurement", §2d round 3; SCORECARD §1 |
 | [`experiments_p4_fake_labelled.json`](results/experiments_p4_fake_labelled.json) | 24.09 | `07b5e0c` + P4's evaluation fixes of 24.09 (detector unchanged) | `resense run`, `scripts/score_fake_objects.py`, `resense summarize --gt`, `scripts/eval_real.py`, `short_signature_experiment.py` | EXPERIMENTS §1e, §2e; P4_AUDIT; DATASET |
@@ -66,6 +68,34 @@ files are `scripts/calib_check.py` on three recordings before and after the v0.6
 change (EXPERIMENTS §6): every supported mount gives the same residuals.
 `scripts/record_rviz_chain.sh` re-records `../video/docker_chain_rviz.mp4`.
 
+### `regression_gate_2026-09-25/`: the gate against the baseline
+
+`scripts/regression_gate.py --from-json <run> --baseline results/regression_baseline_2026-09-25.json
+--changed-only` for three runs of 25.09 (4-vCPU dev VM, `--jobs 2`):
+
+| file | run | result |
+|---|---|---|
+| `pass_native.txt` | the same code | exit 0 |
+| `pass_numpy.txt` | the same code with `RESENSE_NATIVE=0` | exit 0; every gated metric identical, only latency differs |
+| `fail_cluster_min_points_8.txt` | `--set cluster.min_points=8` | exit 1 |
+
+In the failing run `squareT_platform_squareT_switch` goes from 15 to 19 events and from 25 to 29
+STOP episodes; the 0.3 m floating cube goes from 19 to 18 STOP frames, with the first STOP at
+32.3 m instead of 34.0 m. The run on the merged `8932f3a` (GATE PASS) is
+[`regression_gate_2026-09-25_8932f3a.json`](results/regression_gate_2026-09-25_8932f3a.json) in
+`results/`.
+
+### `bench_<date>/`: the 8-core bench (C7 / C8; written when the kit is run)
+
+`scripts/bench_8core.sh <bags>/doubleT_obstacle <bags>/roundT_doubleT` writes one folder:
+`system.txt` / `facts.txt` (machine, Docker, commit), `build/`,
+`dry_{obstacle,clear}_{native,numpy}/` and `ct_{image,stock}/` (each: `run.txt` with the check,
+`status.jsonl.gz`, `node_log.txt`, `docker_stats.tsv`; `ct_stock` also `player_log.txt` /
+`listener_log.txt`), `offline/` (`bench_node_path.py` and `resense bench`, native and numpy, peak
+RSS), `runs.tsv`, and `summary.txt` / `summary.json` (`scripts/bench_summary.py`). None exists yet:
+the kit needs Docker and the data on the team's 8-core machine ([`../CAPTAIN.md`](../CAPTAIN.md)
+action 7).
+
 ### `bag_metadata/`: the original `metadata.yaml` of the six recordings
 
 These files are copied unchanged from the organizers' dataset. Every recording was made with
@@ -86,3 +116,5 @@ the repository.
 | the opt-in near-bed path with the gates of `537e220` and of the fix `7df1796` on the six recordings and set O (five bags 141 / 28 / 33 and 459 / 107 / 72) | 24.09 | EXPERIMENTS §1e; ALGORITHM §3.3b, §6; CHANGELOG | the per-frame outputs and summaries of the fix's runs |
 | the GPU study and the C++ kernels' A/B timing and identity runs (3 998 frames) | 24.09 | ARCHITECTURE "Native kernels", "GPU: evaluated, not used"; EXPERIMENTS §3 | the profiles, A/B logs and per-frame diffs |
 | the judges' own runs (bench under load, 5 Hz and tilt stress tests, `clear_distance` audit) | 24.09 | [`../SCORECARD.md`](../SCORECARD.md) §1–§3 | their outputs (the judges' VM only) |
+| the late candidates of 25.09: DBSCAN on cKDTree (identity on 9 240 real calls and 3 998 frames × 2 paths, interleaved A/B timing), the forward crop and `zf` reuse, the gate runs of the two opt-in flags (`short_signature_max_length`, `floating_long_min_length`) and of `far_min_height` 1.0, the far-rail check probe | 25.09 | EXPERIMENTS §1f, §3, §7; ARCHITECTURE "Native kernels"; ALGORITHM §3.3, §6; CHANGELOG | the per-frame dumps, A/B logs and gate JSONs (agent scratch space) |
+| the stock-Fast-DDS console mode and the 8-core bench kit against a mock `docker` (fail-fast paths, file layout, summary) | 25.09 | CHANGELOG | the mock harness; the real proof is CI (stock mode) and the first run of the kit |

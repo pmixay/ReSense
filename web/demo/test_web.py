@@ -298,7 +298,7 @@ def test_dashboard_uses_supplied_moscow_sans_visual_system():
 
 
 def test_presentation_artifact_uses_the_organizers_slide_sequence():
-    """The committed v0.6 deck is a valid 15-slide subset of the organizers' template."""
+    """The committed deck is a valid 16-slide subset of the organizers' template (rebuilt 25.09)."""
     assert os.path.getsize(PRESENTATION) > 1_000_000
     with zipfile.ZipFile(PRESENTATION) as zf:
         assert zf.testzip() is None
@@ -306,7 +306,7 @@ def test_presentation_artifact_uses_the_organizers_slide_sequence():
         ns = {"p": "http://schemas.openxmlformats.org/presentationml/2006/main",
               "r": "http://schemas.openxmlformats.org/officeDocument/2006/relationships"}
         slide_ids = list(root.find("p:sldIdLst", ns))
-        assert len(slide_ids) == 15
+        assert len(slide_ids) == 16
         rel_root = ET.fromstring(zf.read("ppt/_rels/presentation.xml.rels"))
         rels = {rel.attrib["Id"]: rel.attrib["Target"] for rel in rel_root}
         slide_paths = ["ppt/" + rels[s.attrib[f"{{{ns['r']}}}id"]] for s in slide_ids]

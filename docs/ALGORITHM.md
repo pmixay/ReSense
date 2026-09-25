@@ -4,7 +4,7 @@
 > after spec §5 "Описание алгоритма": problem → input data → point-cloud processing → decision
 > rule → parameters → limitations.
 > **Audience:** jury, P3 · **Owner:** P1 (structure), P3 (content) · **Language:** EN, summary RU
-> **Last verified:** 2026-09-24 against `537e220` (detector v0.6.3, node v0.6.4) · **Status:** current
+> **Last verified:** 2026-09-25 against `8932f3a` (detector v0.6.3, node v0.6.4) · **Status:** current
 
 **Кратко.** ReSense описывает не объекты, а окружение: в каждом кадре лидара заново строится
 модель пути (полотно, рельсы, ось с кривизной по стенам), вдоль оси откладывается габарит поезда
@@ -218,7 +218,9 @@ Everything is **range-adaptive**, because a 0.5 m object gives ~500 returns at 2
    voxel (`voxel` = 5 cm) and a fixed DBSCAN radius (`eps` = 0.35 m) grow linearly with range:
    `eps(r) = 0.35·(1 + r/40)`;
 2. candidates are voxel-downsampled in that space (merges dual returns; the voxel count is a
-   proxy for distinct rays) and clustered with DBSCAN (`min_samples` = 3);
+   proxy for distinct rays) and clustered with DBSCAN (`min_samples` = 3; since 25.09 on scipy's
+   `cKDTree` with scikit-learn's exact labels, `resense.clustering.dbscan_labels`,
+   [`ARCHITECTURE.md`](ARCHITECTURE.md) "Native kernels");
 3. each cluster gets a bounding box, along-track distance of its nearest point, lateral offset
    of its centroid, lowest and highest point above the rail head and mean intensity;
 4. clusters that describe infrastructure rather than obstacles are removed, in this order:
@@ -250,7 +252,24 @@ Everything is **range-adaptive**, because a 0.5 m object gives ~500 returns at 2
 
    The rules never drop a cluster: it stays an advisory warning with its reason, and a
    persistent object that stops matching a signature (a person stepping away from a column)
-   flips back to `gauge` through the tracker's zone history (§3.5);
+   flips back to `gauge` through the tracker's zone history (§3.5).
+
+   Two opt-in refinements (25.09, 0 = off in both parameter files; the captain's go / no-go after
+   the ride is run on the team's 8-core machine, [`CAPTAIN.md`](CAPTAIN.md) action 11):
+
+   - `short_signature_max_length` / `short_signature_max_distance`: the `elevated` and `floating`
+     shapes do not demote a cluster at most that long along the track and that far away (later
+     rules are not tried). At 3.0 m / 100 m the organizers' 0.3 m floating cube gets a STOP from
+     52.5 m instead of 34 m and the box at the envelope top 43 STOP frames instead of 12; wall
+     signs and lamps up to 3 m long within 100 m then alarm too (five bags 107 / 20 / 27 →
+     113 / 22 / 29 alarm frames / events / STOP episodes);
+   - `floating_long_min_length`: the `floating` shape also applies near the axis to a cluster
+     longer than that along the track: a duct, tray or beam running along the track. A cable
+     hanging from the vault is short along the track or taller than 1.2 m, and keeps its STOP.
+     At 3.0 m the overhead structure at ~104 m of the platform recording is advisory (five bags
+     107 / 20 / 27 → 60 / 14 / 17), every organizer object unchanged.
+
+   [`EXPERIMENTS.md`](EXPERIMENTS.md) §1f has the numbers;
 6. **retro-reflector rule** (v0.4, [`SENSOR.md`](SENSOR.md) §3.3: intensity is reflectivity in
    %, values above 100 come only from retro-reflective material — signs, markers, reflective
    tape, rail-head polish). A cluster is demoted to `warning` and flagged `retro` when
@@ -596,7 +615,7 @@ the CLI and the ROS node; the one exception is `tracking.hold_misses`, a code de
 | `gauge.range_max` | 250 m | how far the corridor is evaluated |
 | `track.walls_*`, `track.axis_valid_margin` | band 1.6–2.8 m, +15 m | how far the curved corridor is trusted; beyond it only warnings |
 | `track.rails_yaw_enabled`, `rails_yaw_slabs` | true, 3 | yaw of the axis from the rail pair (off = free quadratic through the walls, the v0.3 way: 0.8–1.0° yaw error on curve frames) |
-| `track.rails_far_check_enabled` | false | experimental far-rail cross-check for station-wall curvature (§3.1); opt-in, real-data A/B and timing pending ([`EXPERIMENTS.md`](EXPERIMENTS.md) §1e) |
+| `track.rails_far_check_enabled` | false | experimental far-rail cross-check for station-wall curvature (§3.1); opt-in; never fires on the six recordings and set O (25.09, [`EXPERIMENTS.md`](EXPERIMENTS.md) §1f) |
 | `track.axis_max_yaw_rate`, `axis_max_curvature_rate` | 0.003 rad, 1e-4 m⁻¹ per frame | how fast the corridor may swing between frames; 0 = unlimited |
 | `track.axis_sides_max_disagreement`, `axis_disagree_range`, `axis_one_side_range` | 6.7e-4 m⁻¹, 60 m, 120 m | trusted range when the two boundaries disagree or only one is seen |
 | `track.floor_valid_margin` | 20 m (60 in v0.3) | how far beyond the fitted bed the height reference is trusted without verification |
@@ -620,6 +639,8 @@ the CLI and the ROS node; the one exception is `tracking.hold_misses`, a code de
 | `lowobj.min_point_top`, `min_top`, `min_excess`, `eps`, `range_max` (v0.6) | 0.03 m, 0.0 m, 0.05 m, 0.2, 60 m | every low candidate ≥ 3 cm above the rail head, the cluster's top at the rail-head plane (both −1 = any bump above the bed); excess over the bed template; clustering radius; how far the bed is used |
 | `cluster.far_min_height`, `far_max_length`, `far_max_bottom` (v0.6) | 0.6 m, 3 m, 1.0 m | what may alarm between the trusted height reference and the trusted axis range (0 = v0.5 behaviour: nothing) |
 | `cluster.signature_min_lateral`, `column_min_width` (v0.6) | 0.6 m, 0.25 m | where the column / floating signatures apply (hanging cables near the axis are obstacles) |
+| `cluster.short_signature_max_length`, `short_signature_max_distance` (25.09) | 0 (off), 100 m | opt-in: `elevated` / `floating` spare a cluster at most this long along the track and this far (§3.3); measured at 3.0 m: set O 303 → 352 inside STOP frames, five bags 20 → 22 events, gate FAIL on 5 rows (EXPERIMENTS §1f) |
+| `cluster.floating_long_min_length` (25.09) | 0 (off) | opt-in: `floating` also demotes a cluster near the axis longer than this along the track (§3.3); measured at 3.0 m: five bags 20 → 14 events, 27 → 17 STOP episodes, set O unchanged, gate PASS (EXPERIMENTS §1f) |
 | `calibration.enabled`, `frames` × `obs_spacing`, `provisional_min_deg`, `min_yaw_deg`, `drift_warn_deg` / `drift_window` (v0.6.1) | true, 20 × 10 frames, 2.5°, 3°, 1.5° / 10 checks | mount auto-calibration (final tilt over 20 s, provisional only for a clearly tilted rig); `sensor.roll_deg/pitch_deg/yaw_deg` freeze a known mount |
 | `lowobj.straddle_enabled`, `straddle_min_top`, `straddle_min_width`, `straddle_max_length`, `straddle_band` (v0.6.2) | true, 0.10 m, 0.35 m, 0.8 m, 0.30 m | an object across a rail, straddling the envelope floor, clustered whole (§3.3b) |
 | `lowobj.near_enabled`, `near_range`, `near_half_width`, `near_min_excess`, `near_min_width`, `near_max_width`, `near_min_length`, `near_min_height`, `near_min_bed_lateral_bins`, `near_min_points`, `near_max_length` | false, 30 m, 0.55 m, 0.05 m, 0.24 / 0.55 m, 0.0 m, 0.0 m, 20, 5, 0.75 m | opt-in central near-bed path (§3.3b), off: its first gates added 620 events on the ride; the width and bed-support gates halve its alarm frames, 107 events on the five recordings against 20 (§3.3b, §6) |
@@ -699,7 +720,8 @@ causes, each a limitation of the current rules:
   standing at the platform of `squareT_platform_squareT_switch` (five empty bags 107 / 20 →
   139–186 alarm frames / 23–26 events); a "short signature" variant that keeps both rules only
   for clusters longer than 3 m or farther than 100 m gives 352 instead of 303 STOP frames on the
-  inside objects for 113 / 22 and is not shipped until it is re-run on the ride (EXPERIMENTS §5).
+  inside objects for 113 / 22; since 25.09 it is the flag `cluster.short_signature_max_length`
+  (off, §3.3), and it is not switched on until it is re-run on the ride (EXPERIMENTS §1f).
 * **A 5 cm object hanging from the roof is never a candidate** (#10, missed in all 42 visible
   frames). Only its lowest 0.2–0.36 m dips into the 3.0 m envelope, with 1–4 points a frame,
   below the cluster minimum of 5 voxels; with `cluster.min_points` 3 it alarms in 3 frames at
@@ -739,7 +761,13 @@ causes, each a limitation of the current rules:
   ([`organizers/mount_and_switch_qa.md`](organizers/mount_and_switch_qa.md) §5), so false alarms
   at stations and platforms come first: on `squareT_platform_squareT_switch` the 25 STOP
   episodes in 88 s sit at the platform end (82–84 m), on an overhead structure at ~104 m and on
-  switch parts at 147.5 m while the train stands at the platform [real, 24.09].
+  switch parts at 147.5 m while the train stands at the platform [real, 24.09]. The ~104 m
+  structure (10 of the 25 episodes) is an overhead element running along the track near the axis,
+  5.5 m long with its bottom at 2.2 m; the opt-in `cluster.floating_long_min_length: 3.0` removes
+  it (25 → 15 episodes, set O unchanged). The 82.9 m platform end (10 episodes) is an axis error
+  from the hall walls' curvature (0.5 m at 83 m), which the far-rail check cannot correct here:
+  the station's far rails are not found in two slabs. The switch parts at 147.5 m pass the
+  far-field rule like a person [real, 25.09, EXPERIMENTS §1f].
 * **Mount.** The test recordings use the mounts of the provided ones, the LiDAR 1 075 mm above
   the rail head on the train's centreline, with no numeric orientation (24.09, same source; §2).
   The unknown-mount case is gone, but the provided data hold two rigs (1.12 m and 1.51 m by the

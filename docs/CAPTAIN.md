@@ -3,7 +3,7 @@
 > **Purpose:** P1's board: criteria, plan to 29.09, runbook, rules, contracts, owners, decisions;
 > history of 16–24.09 in [`archive/CAPTAIN_log_2026-09.md`](archive/CAPTAIN_log_2026-09.md).
 > **Audience:** P1, team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-24 against `537e220` · **Status:** current
+> **Last verified:** 2026-09-25 against `8932f3a` · **Status:** current
 
 ## 1. Role and dates
 
@@ -19,72 +19,89 @@ upload by 29.09 23:59 (target 18:00), technical expertise 30.09–14.10, pitch 2
 |---|---|---|---|---|---|---|---|---|---|
 | score / max (maxima follow the spec's emphasis; the organizers publish no weights) | 13 / 25 | 7 / 15 | 6 / 10 | 8.5 / 15 | 7 / 10 | 7.5 / 10 | 8 / 10 | 3 / 5 | **60 / 100** |
 
-## 2. Criteria board (24.09)
+## 2. Criteria board (25.09)
+
+Statuses as of 25.09 ~08:35 UTC on `8932f3a` (the four merges of the day), checked against CI
+and the repository; they start from the independent progress check of 25.09 08:05 UTC and add
+what merged after it (ci-bench, regression-gate, deck, late-changes). HUMAN = only a person can
+close it.
 
 | # | criterion (spec) | status | evidence / gap |
 |---|---|---|---|
-| C1 | image builds from scratch, no manual steps (§3.3.1, §7.2, 8.6) | DONE | `docker/Dockerfile`: pip pinned, non-editable install checked from `/`; CI `docker` job green on `4b5786b`. Gap: the build needs the network, which the stand does not have (C25: the image goes as an archive); apt and base image unpinned |
-| C2 | `docker run` starts the node with no arguments, either topic / frame pair (answers §1 #2) | DONE | default command `ros2 launch resense_ros detector.launch.py`, topic auto-discovery, input switching in `tests/test_node.py` |
-| C3 | every parameter a launch argument; mount configurable (Q&A fact 7) | DONE | `launch/detector.launch.py`: all node parameters plus `bag:=`, `rviz:=`, `loop:=`, `rate:=`, `delay:=` |
-| C4 | organizers' console path: `ros2 bag play` by a normal user on the host | PARTIAL | CI plays as uid 1000 from our image (`scripts/console_test.sh`); a host player with stock Fast DDS or CycloneDDS is not tested (action 5) |
-| C5 | start of a played bag not lost (8.3, 8.6) | DONE | v0.6.4 catch-up: first STOP 4.02 → 1.59 s of recording time (EXPERIMENTS §3b; raw capture not committed) |
-| C6 | acceptance script asserting the result | DONE | `scripts/dry_run.sh` + `scripts/check_dry_run.py` (`--distance 50:62 --max-p95-latency 100 --max-dropped 0`) |
-| C7 | clean-machine dry run with the original bags (§7.2) | NOT DONE | 28.09 on a clean team machine (action 15; the organizers' stand is not available before submission). Rehearsed 23.09 on bags rebuilt from the cache; the 4-vCPU dev VM runs 360° at 7–10 fps, p95 112–130 ms |
-| C8 | timing on an 8-core analogue, the team's own 8-core machine (8.3); the i7-9700E stand is not available before submission ([`organizers/answers.md`](organizers/answers.md) §6, 25.09) | NOT DONE | owed since 16.09; only the 4-vCPU dev VM is measured (EXPERIMENTS §3). 24.09: C++ kernels merged, detector time −38…−57 % on the dev VM (ARCHITECTURE "Native kernels"), built and tested in the CI image (run 36058665640); the 8-core run is still owed (action 7); GPU evaluated, not used (ARCHITECTURE "GPU: evaluated, not used") |
-| C9 | README per §5 (description, build, run, bag processing, parameters) | DONE | [`../README.md`](../README.md) |
-| C10 | architecture and algorithm descriptions (§5) | DONE | [`ARCHITECTURE.md`](ARCHITECTURE.md), [`ALGORITHM.md`](ALGORITHM.md); stale spots and the 24.09 mount answer handled in the docs pass of 24.09 |
-| C11 | evaluation protocol (stream C) | DONE | [`EVALUATION.md`](EVALUATION.md), sets S / E / R / O / F / H |
-| C12 | SUBMISSION matches reality | PARTIAL | intermediate submission unrecorded (C14); the deck row reads "done" while the pptx shows 199 tests (now 266) and 17 `<…>` placeholders |
-| C13 | release tag and upload package (§7.2) | NOT DONE | no tag, no GitHub release; no changes after the deadline (Q&A fact 22), so the upload points at a tag (§5) |
-| C14 | intermediate submission (§7.1) | UNKNOWN | content in SUBMISSION; no tag, no record it was sent; the organizers' timeline has no intermediate stage (H confirms, action 1) |
-| C15 | liaison: questions sent, answers applied (8.7) | PARTIAL | answers of 22–24.09 recorded, and the 25.09 statement on the stand (no access before submission, `organizers/answers.md` §6); Q1–Q2 (24.09) and Q3 (bed / envelope floor) drafted in QUESTIONS, not sent; Q1 corrected on 24.09 (its second sentence assumed moving objects) |
-| C16 | main green, every PR reviewed, captain merges | PARTIAL | 0 GitHub reviews on PRs #3–#10; 5 of the 14 commits on `main` after the initial one were direct pushes (`a92625e`, `769619a`, `dfdebe5`, `41b7ae7`, `537e220`); main red 9 h 46 min on 24.09 after `769619a` (fixed 10:52); red again since `537e220`, fixed on the branch by `7df1796`, not yet on `main` |
-| C17 | one parameter source, lint, tests in CI (8.5) | DONE | 266 tests in `tests/` (green on the native and numpy paths) + 11 in `web/demo`; CI jobs `pytest`, `web`, `lint` (ruff 0.15.8), `params-in-sync`, `docker`; the docker job builds the C++ kernels and runs the suite in the image (run 36058665640) |
+| C1 | image builds from scratch, no manual steps (§3.3.1, §7.2, 8.6) | DONE | `docker/Dockerfile`: pip pinned, non-editable install checked from `/`. CI run 36112092652 (`8932f3a`): the `docker` job builds the image; the `offline-build` job builds the runtime image `--no-cache` from `git archive HEAD` (1.34 GiB). Gap: apt and the base image unpinned (accepted); the stand has no internet, so the image goes as an archive (C25) |
+| C2 | `docker run` starts the node with no arguments, either topic / frame pair (answers §1 #2) | DONE | default command `ros2 launch resense_ros detector.launch.py`, topic auto-discovery; CI (run 36112092652) starts it with no arguments and switches between both pairs ("input switched … detector restarted"); `tests/test_node.py` |
+| C3 | every parameter a launch argument; mount configurable (Q&A fact 7) | DONE | `launch/detector.launch.py`: 31 launch arguments, the node declares exactly those plus `config_file` (checked by script 25.09), plus `bag:=`, `rviz:=`, `loop:=`, `rate:=`, `delay:=` |
+| C4 | organizers' console path: `ros2 bag play` by a normal user on the host | DONE | CI plays as uid 1000 from our image twice. With the image's UDP profile (step 7) and, since 25.09, with stock Fast DDS: `PLAYER_DDS=stock` in `scripts/console_test.sh`, no XML profile, shared memory + UDPv4, a stock uid-1000 listener. Run 36112092652 (`8932f3a`), docker job step 8 green: `RMW_IMPLEMENTATION=rmw_fastrtps_cpp`, both profile variables unset, fastrtps 2.6.12; each play exited 0 and created 5 new shared-memory files of its own; the listener heard 111 `/resense/decision` messages, 42 `STOP`. The node announces no shared-memory locators, so stock clients reach it over UDP. CycloneDDS not tested; a real host console is part of the 28.09 dry run (action 15) |
+| C5 | start of a played bag not lost (8.3, 8.6) | DONE | v0.6.4 catch-up (`input_queue_depth` 40, `catchup_step` 0.3); CI on the synthetic bags: 39–40 frames in the first 5 s, first STOP at +1.9 s (run 36112092652). Caveat: the real-bag figure (first STOP 4.02 → 1.59 s, EXPERIMENTS §3b) has no committed raw capture |
+| C6 | acceptance script asserting the result | DONE | `scripts/dry_run.sh` + `scripts/check_dry_run.py` (`--distance 50:62 --max-p95-latency 100 --max-dropped 0`); `IMAGE_TAR` / `OFFLINE` (offline stand) and `DOCKER_ARGS` (25.09); `scripts/bench_8core.sh` runs it on both bags, native and numpy. Gap: it needs the dataset, so CI never runs it; its offline path is first used on 28.09 (H) |
+| C7 | clean-machine dry run with the original bags (§7.2) | NOT DONE · HUMAN | 28.09 (action 15) on the team's 8-core machine, offline, from the rc1 archive: the organizers' stand is not available before the upload (organizers, 25.09). Rehearsed 23.09 on bags rebuilt from the cache; the 4-vCPU dev VM runs 360° at 7–10 fps, p95 112–130 ms. No `docs/evidence/dry_run_2026-09-28/` yet |
+| C8 | timing on an 8-core analogue of the i7-9700E (8.3; the stand is not available before the upload, [`organizers/answers.md`](organizers/answers.md) §6) | NOT DONE (kit ready) · HUMAN | one command, `scripts/bench_8core.sh` (`8242c3e`, merged 25.09): build, dry runs on both bags with the node native and numpy, console tests with the image's and a stock player, `docker stats` every 2 s, offline `bench_node_path.py` / `resense bench` native and numpy with peak RSS → `docs/evidence/bench_<date>/summary.txt`; tested only against a mock `docker`. Only the 4-vCPU dev VM is measured so far (EXPERIMENTS §3): C++ kernels −38…−57 % there, DBSCAN on cKDTree −1.3…−2.6 ms more; GPU evaluated, not used. DONE when `dry_obstacle_native` passes (p95 ≤ 100 ms, no frame dropped after 5 s) |
+| C9 | README per §5 (description, build, run, bag processing, parameters) | DONE | [`../README.md`](../README.md): jury commands first (step 1 `docker load`), how a bag is processed, build / run, node and config parameters; verified 25.09 against `8932f3a` |
+| C10 | architecture and algorithm descriptions (§5) | DONE | [`ARCHITECTURE.md`](ARCHITECTURE.md) ("Native kernels" with DBSCAN on cKDTree, "GPU: evaluated, not used", "Deployment without internet"), [`ALGORITHM.md`](ALGORITHM.md) (§3.3 the two opt-in rules of 25.09); verified 25.09 |
+| C11 | evaluation protocol (stream C) | DONE | [`EVALUATION.md`](EVALUATION.md), sets S / E / R / O / F / H; §3 step 6 is the regression gate (`scripts/regression_gate.py`, 25.09) |
+| C12 | SUBMISSION matches reality | PARTIAL | 25.09: row 10 (gate, bench kit), 11 (five clips, video script), 13 (deck: 16 slides, 289 tests), 14 (289 tests, CI jobs) and 17 (archive 0.49 GiB in CI) match the repo. Open: the intermediate submission unrecorded (C14); the upload form's size limit (action 1b) |
+| C13 | release tag and upload package (§7.2) | NOT DONE | GitHub: 0 tags, 0 releases; the version is still 0.6.3 in `pyproject.toml`, `resense/__init__.py`, `package.xml`, `setup.py` (bump on 27.09, action 14); no changes after the deadline (Q&A fact 22), so the upload points at a tag (§5) |
+| C14 | intermediate submission (§7.1) | UNKNOWN · HUMAN | content in SUBMISSION; no tag, no record it was sent; the organizers' timeline has no intermediate stage (H records "not held" or the date, action 1) |
+| C15 | liaison: questions sent, answers applied (8.7) | PARTIAL | answers of 22–24.09 recorded, and the two statements of 25.09 (no stand access before the upload, `organizers/answers.md` §6; no internet on the test machine, §7), from the captain's oral report; Q1–Q2 (24.09) and Q3 (bed / envelope floor) drafted in QUESTIONS, **not sent** (1 day overdue, action 2) |
+| C16 | main green, every PR reviewed, captain merges | PARTIAL | **`main` is green again:** PR #11 merged 06:51 UTC (`5de0844`) brought the near-bed gate fix `7df1796` to `main`; run 36104815305 green (`main` was red ~12 h, from run 36044487647 at 18:54 UTC 24.09). **Still failing the §6 rules:** PR #11 had 0 reviews and was merged by its author 3.5 min after opening; branch protection is off; 0 reviews on PRs #1–#11; the branch is 39 commits (without merges) ahead of `main` (offline delivery, kernels, gate, deck not on `main`) and no branch → `main` PR is open (action 3b); P2 pushed 10 dashboard commits straight onto the branch (24.09); the 25.09 agent branches changed files in P2's (deck, video), P3's (`clustering.py`, configs) and P4's (gate) lanes with no recorded owner OK — the owners confirm in the review of that PR |
+| C17 | one parameter source, lint, tests in CI (8.5) | DONE | 289 tests in `tests/` (green on the native and numpy paths) + 11 in `web/demo`; CI jobs `pytest` (with "no test may have been skipped"), `web`, `lint` (ruff 0.15.8), `params-in-sync`, `docker` (289 passed in the image, run 36112092652), `offline-build`. The `web` job was red at `8932f3a` (the test still expected the 15-slide deck); fixed the same day (action 10b) |
 | C18 | demo chain on screen (§4) | DONE | `video/docker_chain_rviz.mp4` (69 s), `scripts/run_demo.sh` |
-| C19 | live remote demo (§4) | PARTIAL | runbook in README (RViz screen share, Foxglove on port 8765); never rehearsed from a second machine |
-| C20 | video of the algorithm (§5, §7.2) | PARTIAL | 4 clips of 20–69 s, all silent; a narrated 2–3 min video is owed (P2) |
-| C21 | pitch: team slides 2–4, captain slides, rehearsal (8.8) | NOT DONE | 17 `<…>` placeholders, photos of P1 and P4 missing; `build_deck.py` now says 266 tests, but the pptx is not rebuilt |
+| C19 | live remote demo (§4) | PARTIAL · HUMAN | runbook in README (RViz screen share, Foxglove on port 8765); Foxglove not yet tried against a live `foxglove_bridge`; never rehearsed from a second machine (28.09, action 15) |
+| C20 | video of the algorithm (§5, §7.2) | PARTIAL | 5 clips, all silent (25.09: `video/fake_objects_cab.mp4`, 20.5 s, the organizers' 2 × 2 m box from the cab on a moving train, STOP from 98 m); RU narration and shot list with timings in PRESENTATION «Сценарий видео (2–3 мин)» (2:50, ~400 words, `8e843d8`). Left: voice (H) and edit (P2) → `video/resense_overview.mp4` (action 9) |
+| C21 | pitch: team slides 2–4, captain slides, rehearsal (8.8) | PARTIAL | public deck rebuilt 25.09 (`16d2a07`, then after the merges): 16 slides, 289 tests, the organizers' objects (slide 13), the anchored 154 m next to 150 m legacy in the same 5 pairs, «~210 м — предел отражений в тоннеле», the real-data UI capture, C++ kernels / train speed / GPU lines; the 17 `<…>` stay only on slides 2–3 of the public build by design. Left: `private/team.json` + photos of P1 and P4, the private `--team` build (action 8), two rehearsals |
 | C22 | decision: train speed | DONE (measured 24.09) | organizers' fact: no odometry in the recordings, some trains have none (Q&A fact 6). Team decision: ship the no-speed path; a given speed is honoured; the LiDAR-only estimator is accurate (median error 0.06–0.08 m/s) but buys nothing on the organizers' check, so it stays opt-in (EXPERIMENTS §9) |
-| C23 | decision: GPU / stand software | DONE (evaluated 24.09) | CPU-only, the image installs no CUDA ([`organizers/test_stand_software.md`](organizers/test_stand_software.md)); GPU evaluated and not used: PCIe 3.0 on the i7, dispatch-bound port, the container would not start without `nvidia-container-toolkit` ([`ARCHITECTURE.md`](ARCHITECTURE.md) "GPU: evaluated, not used") |
-| C24 | captain docs current (CAPTAIN, PLAN) | DONE | rewritten 24.09; the log is in `archive/` |
-| C25 | runs on the offline stand: the test machine has no internet ([`organizers/answers.md`](organizers/answers.md) §7, 25.09) | PARTIAL | 25.09: the image is delivered as `resense-image-<version>.tar.gz` + `.sha256` (`scripts/export_image.sh`), loaded and checked with `--network none` by `scripts/load_image.sh`; no run-time network use in the node, launch file, entrypoint or compose services (audit of 25.09), the dashboard's roslib bundled; CI docker job: `docker save` → `docker rmi` → `docker load`, the synthetic bags through the loaded image with `--network none` and on an internal network; the job `offline-build` tries `docker build --cache-from` from the archive (best effort). Gap: first CI result of these steps; the rc1 / final archives (actions 14b, 16); the upload form's size limit (action 1b); the offline dry run (action 15) |
+| C23 | decision: GPU / stand software | DONE (evaluated 24.09) | CPU-only, the image installs no CUDA ([`organizers/test_stand_software.md`](organizers/test_stand_software.md)); GPU evaluated and not used ([`ARCHITECTURE.md`](ARCHITECTURE.md) "GPU: evaluated, not used"); of the CPU savings that study found, the cKDTree DBSCAN shipped 25.09, the forward crop did not (no gain on the native path) |
+| C24 | captain docs current (CAPTAIN, PLAN) | DONE | refreshed 25.09 against `8932f3a` (this revision and PLAN): every discrepancy of the 08:05 UTC check fixed (C16 `main` state, the stale headers, C25 / action 1b CI results, action 3b's open half, the C1 / C17 evidence, the 148 / 150 / 154 m pairing, the test count) |
+| C25 | runs on the offline stand: the test machine has no internet ([`organizers/answers.md`](organizers/answers.md) §7, 25.09) | PARTIAL | tooling: `export_image.sh`, `load_image.sh`, `check_no_network.py`, `dry_run.sh` `IMAGE_TAR` / `OFFLINE`, roslib bundled; no network use in the node, launch file, entrypoint or compose (audit). CI runs 36109782167 (`2b3cbd0`) and 36112092652 (`8932f3a`), all green: `docker save` → `docker rmi` → `docker load` keeps the layers; the smoke test passes with `--network none`; node and a uid-1000 player pass on an `--internal` network; `offline-build`: runtime archive 521 185 902 bytes (0.49 GiB at gzip -1, 1.34 GiB unpacked, base image included), and after loading it `docker build --cache-from` with Docker Hub blocked took all 18 steps from the cache. Gaps: no bag played through the **runtime** image loaded from an archive (CI plays through the tools image); the rc1 / final archives (actions 14b, 16); the upload form's size limit (action 1b); the offline dry run with the real bags (action 15). Cosmetic: `load_image.sh` prints the Ubuntu base's version label ('22.04') for an image exported with `SKIP_BUILD=1`; a real export labels the version |
 
-13 DONE · 7 PARTIAL · 4 NOT DONE · 1 UNKNOWN; every open item is release, timing, pitch or liaison.
+14 DONE · 7 PARTIAL · 3 NOT DONE · 1 UNKNOWN. Every open item is release, timing, pitch, liaison or
+merge discipline.
+
+**Progress 25.09:** criteria DONE 14 of 25 (board of 24.09: 13 of 24; the independent check at
+08:05 UTC: 12 of 25), new since then C4 (stock-DDS CI step green) and C24 (this refresh), C21 NOT
+DONE → PARTIAL; actions done 5 of 21 (4, 5, 6, 10, 12; at 08:05 UTC: 1 of 20), 4 in progress
+(3b, 7, 9, 11), 5 due or overdue (1, 1b, 2, 3, 8, all human; 10b done), 6 dated 27.09 or later.
 
 ## 3. Next actions to 29.09
 
 | # | date | action | owner (H = human captain only; A = agent, captain merges) | priority |
 |---|---|---|---|---|
-| 1 | 24.09 | read the i.moscow upload form (fields, file or link, limits), settle the intermediate stage (C14); announce the §6 rules; approve branch protection on `main` | H | must |
-| 1b | 25.09 | the stand has no internet (C25): find the upload form's file-size limit and whether it takes a link; the image archive must reach the jury (its size is printed by `export_image.sh`; the runtime image is expected well under 2 GB gzip, unmeasured). Over the limit: a link (Yandex Disk, or a GitHub release asset ≤ 2 GB) with the sha256 in the cover message | H | must |
-| 2 | 24.09 | send QUESTIONS Q1–Q3 as one message to @gorbatovaol, **from the current file** (do not send an older Q1: its second sentence was built on the moving-objects error); file the answers in `organizers/answers.md` | H (A drafted) | must |
-| 3 | 25.09 12:00 | give P3 the frame caches (six bags, ride, `cloud_with_fake_obj`) and the harness (`eval_real.py`, `score_fake_objects.py`, `start_offsets.py`) | P1 → P3 | must |
-| 3b | 25.09 | ~~prove the Docker build with the C++ kernels~~ done: CI run 36058665640 green on the branch (24.09); merge the branch to `main` through a PR | H merges | must |
-| 4 | 25.09 12:00 | stop the verification loop: numbers live in EXPERIMENTS "Current results" + raw JSON; re-measure only when `resense/`, `configs/` or the node change | P1 | must |
-| 5 | 25.09 | CI step with a stock-Fast-DDS player (`PLAYER_ENV` in `console_test.sh`, `ci.yml`) | A | should |
-| 6 | 25.09 18:00 | regression gate: one command, one JSON (six bags, ride, set O, set F straight), run on every P3 PR within 2 h | P4 | must |
-| 7 | 25.09 | 8-core bench on the team's own machine (no stand access before submission, [`organizers/answers.md`](organizers/answers.md) §6), native and numpy (`RESENSE_NATIVE=0`) paths: `build.sh`, `dry_run.sh` on both bags, `console_test.sh`, `docker stats`, `bench_node_path.py`; raw logs to `docs/evidence/bench_2026-09-25/`, summary to EXPERIMENTS §3 | H (+A) | must |
+| 1 | 24.09 | **overdue.** Read the i.moscow upload form (fields, file or link, limits), settle the intermediate stage (C14); announce the §6 rules; turn on branch protection on `main` (API: off) | H | must |
+| 1b | 25.09 | **open.** The stand has no internet (C25): find the upload form's file-size limit and whether it takes a link. The runtime archive is measured: 521 185 902 bytes, 0.49 GiB at gzip -1 (CI run 36109782167; the release default gzip -6 is a little smaller). Over the limit: a link (Yandex Disk, or a GitHub release asset ≤ 2 GB) with the sha256 in the cover message | H | must |
+| 2 | 24.09 | **overdue.** Send QUESTIONS Q1–Q3 as one message to @gorbatovaol, **from the current file** (not an older Q1: its second sentence was built on the moving-objects error); file the answers in `organizers/answers.md` | H (A drafted) | must |
+| 3 | 25.09 12:00 | give P3 / P4 the frame caches (six bags, the ride `new_data`, `cloud_with_fake_obj`) and the harness (`eval_real.py`, `score_fake_objects.py`, `start_offsets.py`, `regression_gate.py`); the ride cache is what actions 6 and 11 still need | P1 → P3, P4 | must |
+| 3b | 25.09 | ~~prove the Docker build with the C++ kernels~~ done (CI since run 36058665640, 24.09; every docker job since); **open:** the branch → `main` PR (39 commits without merges), reviewed by the owners of the lanes the agents touched (P2, P3, P4), CI green, then the captain merges | A opens, owners review, H merges | must |
+| 4 | 25.09 12:00 | ~~stop the verification loop~~ done 25.09: numbers live in EXPERIMENTS "Current results" + raw JSON, and re-measuring is one command, `scripts/regression_gate.py` (one JSON; baseline `docs/evidence/results/regression_baseline_2026-09-25.json`), run only when `resense/`, `configs/` or the node change | P1 (A) | must |
+| 5 | 25.09 | ~~CI step with a stock-Fast-DDS player~~ done 25.09: `PLAYER_DDS=stock` / `PLAYER_ENV` in `console_test.sh`, CI step "the jury's console with stock Fast DDS" (`fbef12b`), green on its first run (36112092652) | A | should |
+| 6 | 25.09 18:00 | ~~regression gate: one command, one JSON~~ done 25.09 (A for P4): `scripts/regression_gate.py`, `tests/test_regression_gate.py`, baseline of the six recordings + set O (native path, equal to the 24.09 numbers; 66 s at `--jobs 2` on the dev VM); the merged `8932f3a` passes. Left (P4 / H): a baseline including the ride and set F straight on the 8-core machine (`--cache` with `new_data`), then the gate on every P3 PR within 2 h | P4 | must |
+| 7 | 25.09 | 8-core bench (stands in for the i7 stand, not available before the upload): kit done (`8242c3e`, A); **run open (H):** `scripts/bench_8core.sh <bags>/doubleT_obstacle <bags>/roundT_doubleT` (it builds and times the build; `SKIP_BUILD=1` reuses an image; ~10–25 min, fails fast without Docker or data; `OFFLINE_ONLY=1` for the host part alone); commit `docs/evidence/bench_<date>/` as written; `summary.txt` numbers into EXPERIMENTS §3; by 26.09 midday, early enough to act before the freeze | H (+A) | must |
 | 8 | 25.09 18:00 | every member sends a photo; fill `docs/presentation/private/team.json`; build the private deck with 0 `<…>` left | H + all | must |
-| 9 | 26.09 | narrated 2–3 min video `docs/video/resense_overview.mp4`; dashboard clip with the new UI | P2 edits, H voice | should |
-| 10 | 26.09 | deck refresh: organizers' objects, anchored 154 m, slide-12 caption, new UI captures; rebuild pptx / pdf ([`PRESENTATION.md`](PRESENTATION.md)) | P2 | should |
-| 11 | 26.09 20:00 | go / no-go on late changes (P3 short-signature rule, station false STOPs, the CPU savings of the GPU study) by the §6 gate | H decides, P3 / P4 measure | must |
+| 9 | 26.09 | narrated 2–3 min video `docs/video/resense_overview.mp4`: script and shot list done 25.09 (PRESENTATION «Сценарий видео (2–3 мин)»; new clip `video/fake_objects_cab.mp4`); left: voice (H) and edit (P2) on 26.09; a new-UI dashboard clip is optional (the stills in `images/` are used) | P2 edits, H voice | should |
+| 10 | 26.09 | ~~deck refresh and rebuild~~ done 25.09 (`16d2a07`, rebuilt again after the merges): pptx and pdf, 16 slides, 289 tests, the 148 / 150 / 154 m wording as in EXPERIMENTS | P2 (A) | should |
+| 10b | 25.09 | ~~the `web` CI job red at `8932f3a` (`web/demo/test_web.py` asserted 15 slides; the rebuilt deck has 16)~~ done 25.09: the expected count follows the deck (16), all 11 web tests pass; P2 informed by this row | A | must |
+| 11 | 26.09 20:00 | go / no-go on late changes by the §6 gate (`scripts/regression_gate.py --baseline …` exits 0 on the change, or every worse row is named with `--allow` and accepted here). 25.09, measured and merged (EXPERIMENTS §1f): DBSCAN on cKDTree shipped (identical, −1.3…−2.6 ms); forward crop and `zf` reuse not shipped (no native gain); `cluster.floating_long_min_length: 3.0` gate PASS, five bags 107 / 20 / 27 → 60 / 14 / 17; `cluster.short_signature_max_length: 3.0` gate FAIL on 5 rows, set O +49 STOP frames; both flags off. **Left:** the ride and set F straight on the 8-core machine with `--set …` (P4 / H, who have the ride cache), then H decides; flipping a flag needs no code (`configs/default.yaml`, `scripts/sync_params.sh`) | H decides, P3 / P4 measure | must |
 | 12 | 26.09 | ~~decide on the saved-image release asset~~ decided 25.09: the image archive is a must, not insurance (no internet on the stand, C25, §5) | H | done |
-| 13 | 27.09 | final consistency pass: every headline number equals EXPERIMENTS "Current results" | A | must |
+| 13 | 27.09 | final consistency pass: every headline number equals EXPERIMENTS "Current results" (the gate's JSON for the real data and set O) | A | must |
 | 14 | 27.09 18:00 | version bump and `v1.0-rc1` tag, whatever the state | A prepares, H tags | must |
 | 14b | 27.09 | export the rc1 image archive from a clean clone of the tag, on a machine with internet: `VERSION=v1.0-rc1 ./scripts/export_image.sh` → `dist/resense-image-v1.0-rc1.tar.gz` + `.sha256`; note size and sha256 here; `scripts/load_image.sh` on a second machine | H (Docker) | must |
-| 15 | 28.09 | **offline** dry run on a clean team machine (the stand is not available), network disconnected: the rc1 archive, `IMAGE_TAR=… OFFLINE=1 ./scripts/dry_run.sh` on both bags, then the README jury commands by hand (SUBMISSION "Dry run"), logs to `docs/evidence/dry_run_2026-09-28/`; remote demo from a second laptop | H | must |
+| 15 | 28.09 | **offline** dry run on a clean team machine (the stand is not available), network disconnected: the rc1 archive, `IMAGE_TAR=… OFFLINE=1 ./scripts/dry_run.sh` on both bags, then the README jury commands by hand from a normal user's host console (stock ROS 2 if installed) (SUBMISSION "Dry run"), logs to `docs/evidence/dry_run_2026-09-28/`; remote demo from a second laptop | H | must |
 | 16 | 29.09 | final tag, the final archive (`VERSION=v1.0-final ./scripts/export_image.sh`) and upload with its sha256 (§5) | H | must |
 | 17 | 30.09–23.10 | answer the organizers daily during the expertise; pitch on 23.10 after two rehearsals (fallback demo `video/docker_chain_rviz.mp4`) | H (+P2) | must |
 
 ## 4. Human-only checklist
 
-- [ ] 24.09: upload form read, intermediate stage settled (C14); Q1–Q3 sent; §6 rules announced
-- [ ] 25.09: 8-core bench and dry runs (no Docker for agents); `private/` team data, photos, deck
-- [ ] 25.09: upload form's file-size limit and link policy checked for the image archive (1b)
-- [ ] 26.09: go / no-go taken; voice-over recorded · 27.09: `v1.0-rc1` pushed, its archive exported
-  (size and sha256 noted), loaded once on a second machine
+- [ ] **overdue (24.09):** upload form read, intermediate stage settled (C14); Q1–Q3 sent; §6
+  rules announced; branch protection on `main`
+- [ ] 25.09: upload form's file-size limit and link policy checked against the 0.49 GiB archive (1b)
+- [ ] 25.09: `scripts/bench_8core.sh` on the 8-core machine (no Docker for agents), its folder
+  committed; the ride cache to P4 / an agent, then `scripts/regression_gate.py` with the ride and
+  set F for the two opt-in flags (action 11)
+- [ ] 25.09: `private/` team data, photos, the private deck
+- [ ] 25.09–26.09: the branch → `main` PR reviewed by the lane owners (P2, P3, P4) and merged (3b)
+- [ ] 26.09: go / no-go taken by 20:00 (action 11); voice-over recorded · 27.09: `v1.0-rc1`
+  pushed, its archive exported (size and sha256 noted), loaded once on a second machine
 - [ ] 28.09: clean team-machine dry run **offline** (network disconnected, from the archive),
-  remote demo · 29.09: `v1.0-final`, its archive + sha256, release, upload by 18:00
+  host console, remote demo · 29.09: `v1.0-final`, its archive + sha256, release, upload by 18:00
 - [ ] 30.09–14.10: reachable for the organizers · 23.10: pitch led after two rehearsals
 
 ## 5. Release and upload runbook
@@ -114,11 +131,18 @@ PRs, then `v1.0-rc2`.
 
 - From 25.09 `main` changes only by a PR with CI green and a GitHub review from another lane; the
   captain merges; branch protection on. A red `main` is fixed by its author within 1 h or reverted.
+  25.09: PR #11 (the `main` fix) went in without a review, 3.5 min after opening, protection still
+  off; the branch → `main` PR (action 3b) is the first to follow the rule.
 - No edits in another lane's files without the owner's OK (§8). Contract changes (§7): `[contract]`
   in the PR title and a heads-up to the consumers; add, never rename or remove.
 - Freeze: detector and config **26.09 20:00**, docs **27.09 20:00**; from 28.09 blockers only.
-- Detector / config gate: identical or better on the 13 759 real frames (`scripts/eval_real.py`),
-  set O (`score_fake_objects.py`) and set F straight; else "tried, not shipped" (EXPERIMENTS §7).
+- Detector / config gate: `python scripts/regression_gate.py --baseline
+  docs/evidence/results/regression_baseline_2026-09-25.json` exits 0 on the change. Every gated
+  metric must be identical or better on the six recordings and set O, and also on the ride and
+  set F straight wherever `/data/cache/new_data` exists. Otherwise the PR names each worse metric
+  with `--allow` and the captain accepts the trade-off, or it is "tried, not shipped"
+  (EXPERIMENTS §7). The JSON and the table go into the PR. A change meant to move the numbers
+  commits a new baseline. Nothing in the gate needs the organizers' stand.
 - Numbers only in EXPERIMENTS "Current results" and the README summary; one sprint numbering (PLAN).
 
 ## 7. Contracts
@@ -136,13 +160,13 @@ PRs, then `v1.0-rc2`.
 
 | path | owner |
 |---|---|
-| `docker/`, `docker-compose.yml`, `ros2_ws/src/resense_ros/` (except `rviz/`), `scripts/*.sh` (except `build_native.sh`), `scripts/{check_dry_run,make_smoke_bag,cache_to_bag,bench_node_path,check_no_network}.py` | P1 |
+| `docker/`, `docker-compose.yml`, `ros2_ws/src/resense_ros/` (except `rviz/`), `scripts/*.sh` (except `build_native.sh`), `scripts/{check_dry_run,make_smoke_bag,cache_to_bag,bench_node_path,bench_summary,check_no_network}.py` | P1 |
 | `README.md`, `CHANGELOG.md`, `docs/{README,ARCHITECTURE,ALGORITHM,EVALUATION,SUBMISSION,SENSOR,PLAN,CAPTAIN,QUESTIONS,SCORECARD}.md`, `docs/archive/`, team notes in `docs/organizers/` | P1 (P3 reviews ALGORITHM) |
 | `.github/workflows/ci.yml` | P4 `pytest`, P2 `web`, P1 the other jobs |
 | `configs/default.yaml` | P3 values, P1 structure |
-| `resense/{track,gauge,clustering,tracking,accumulate,egomotion,lowobj,calibration,health,config,detector,_native}.py`, `native/`, `setup.py`, `scripts/build_native.sh`, `tests/{test_algorithm,test_lowobj_near,test_native}.py` | P3 |
+| `resense/{track,gauge,clustering,tracking,accumulate,egomotion,lowobj,calibration,health,config,detector,_native}.py`, `native/`, `setup.py`, `scripts/build_native.sh`, `tests/{test_algorithm,test_lowobj_near,test_native,test_cpu_savings,test_late_candidates}.py` | P3 |
 | `resense/{frame,pointcloud,sensor}.py` | P1 decoding / P3 geometry |
-| `resense/{synthetic,metrics,io,cli}.py`, other `tests/` (`test_node.py`: P1), `labels/`, `scripts/{cache_frames,eval_real,far_range_eval,compare_setf,label_fake_objects,score_fake_objects,short_signature_experiment,unpack_dataset,start_offsets}.py`, `scripts/speed_*.py` (with `tests/test_speed_eval_helpers.py`), `docs/{P4_AUDIT,DATASET}.md`, `docs/evidence/results/` | P4 |
+| `resense/{synthetic,metrics,io,cli}.py`, other `tests/` (`test_node.py`: P1), `labels/`, `scripts/{cache_frames,eval_real,far_range_eval,compare_setf,label_fake_objects,score_fake_objects,short_signature_experiment,unpack_dataset,start_offsets,regression_gate}.py`, `scripts/speed_*.py` (with `tests/test_speed_eval_helpers.py`), `tests/test_regression_gate.py`, `docs/{P4_AUDIT,DATASET}.md`, `docs/evidence/results/` | P4 |
 | `docs/EXPERIMENTS.md` | P3 / P4; P1 appends timing |
 | `web/` (incl. `web/assets/fonts/`, `web/demo/`), `ros2_ws/src/resense_ros/rviz/`, `docs/{PRESENTATION.md,images/,img/,video/,presentation/}`, `scripts/{build_deck,hero_view}.py` | P2 (`docs/img/` stays in place: scripts read it) |
 
@@ -165,6 +189,11 @@ PRs, then `v1.0-rc2`.
 | 24.09 | C++ kernels merged on the branch (bit-identical, −38…−57 %); to `main` only after the CI docker job and with an 8-core bench to follow; `RESENSE_NATIVE=0` is the fallback | ARCHITECTURE "Native kernels" |
 | 25.09 | no run on the organizers' stand before submission (they give no access): timing on the team's own 8-core machine (action 7), the 28.09 dry run on a clean team machine (action 15), the Docker chain in CI; stand facts and estimates stay, labelled as such | [`organizers/answers.md`](organizers/answers.md) §6 |
 | 25.09 | no internet on the test machine: the image is delivered as a `docker load` archive with its sha256 (`scripts/export_image.sh`, a must in the upload); README step 1 is `docker load`, `docker build` only with internet; CI proves save → load → run with no network; an offline `docker build --cache-from` is best effort only; the 28.09 dry run runs offline from the archive; the dashboard's roslib bundled; the Dockerfile's layers unchanged before the freeze | [`organizers/answers.md`](organizers/answers.md) §7, C25 |
+| 25.09 | the regression gate is the single results check: `scripts/regression_gate.py` against `regression_baseline_2026-09-25.json` (six recordings + set O; ride and set F where cached); a change that moves the numbers commits a new baseline | EVALUATION §3 step 6, §6 |
+| 25.09 | DBSCAN on cKDTree ships (exact scikit-learn labels, per-frame output identical, gate PASS on the merged code); the forward crop and the bed-height reuse do not (no gain on the native path) | ARCHITECTURE "Native kernels", EXPERIMENTS §7 |
+| 25.09 | the long overhead rule and the short-signature rule are merged **off** (`cluster.floating_long_min_length`, `cluster.short_signature_max_length` = 0); go / no-go 26.09 20:00 after the ride and set F on the 8-core machine | EXPERIMENTS §1f, action 11 |
+| 25.09 | the node keeps its UDP-only Fast DDS profile: stock Fast DDS clients (shared memory on) reach it over UDP, proven in CI with a uid-1000 player and listener | C4, `scripts/console_test.sh` |
+| 25.09 | the public deck keeps the 17 team placeholders by design; personal data only in the private `--team` build | PRESENTATION, action 8 |
 
 ## 10. Why we slowed down (analysis of 24.09) and corrective rules
 
@@ -189,3 +218,9 @@ PRs, then `v1.0-rc2`.
 | 6 | P1 | send Q1–Q3; stock-DDS CI step; photos by 25.09 18:00 and the private deck; 8-core timing; rc1 tag on 27.09 | 25–27.09 |
 | 7 | all | freeze-week merge rules (§6); remaining items as GitHub issues with owners | 25.09 morning |
 | 8 | P1 | doc diet: one sprint numbering, current results on one screen, history archived, numbers in one place | 25.09 |
+
+State on 25.09 ~08:35 UTC: 1 done (the gate is the single results check, §3 action 4); 2 open
+(the ride cache, action 3); 3 in progress (both rules measured and merged off, action 11); 4 done
+by an agent for P4 without the ride (action 6); 5 in progress (video script, deck done; the UI kept
+changing on 24.09); 6 partly (stock-DDS CI step, bench kit; Q1–Q3, photos, timing run open); 7 not
+done (0 GitHub issues: §3 is the tracker); 8 done.

@@ -4,7 +4,7 @@
 > written once so that P3 optimises against it, P4 implements it (`resense/metrics.py`,
 > `resense eval`) and the jury's criteria (spec §8) map onto numbers we actually report.
 > **Audience:** team, jury · **Owner:** P1 (protocol), P4 (code) · **Language:** EN, summary RU
-> **Last verified:** 2026-09-24 against `537e220` · **Status:** current
+> **Last verified:** 2026-09-25 against `8932f3a` · **Status:** current
 
 **Кратко.** Как мы измеряем качество. Наборы данных: S — наши синтетические объекты в реальных
 пустых кадрах; E — пять реальных записей без препятствий (ложные срабатывания); R — реальные
@@ -165,19 +165,59 @@ validity over each sequence before interpreting range or edge results.
    a misleading timing result. ROS timing and throughput require a running ROS 2 graph and Docker
    acceptance requires a reachable daemon; when those are unavailable, report the check as
    unmeasured rather than reusing historical FPS/latency values.
-6. **Regression:** the three numbers that must not get worse between versions are recall
-   50–100 m on S, false-alarm frames and events on E (all bags), and p95 latency under the same
-   machine and load; on R the first alarm frame (11) must not get later and the recall (the
-   person 58 of its 61 frames in the envelope, the object on the rail 124 of its 126 frames from
-   frame 75, 127 of its 185 visible frames) must not drop. Do not compare these 2.1 m-envelope
-   counts to older 1.4 m-envelope runs as if the labels were identical. On O, the per-object
-   table of `scripts/score_fake_objects.py` must not lose a detected object or add STOP frames
-   on the two outside objects (default of 24.09: objects 1, 2, 3, 8 and 9 detected, first STOP
-   at 98.0 / 34.0 / 42.7 / 101.3 / 82.2 m; 6 STOP frames on the outside 2 × 2 m box;
-   [`P4_AUDIT.md`](P4_AUDIT.md)).
-   Each PR that touches `resense/` re-runs S, E, R and O on the cached frames
-   (`scripts/cache_frames.py`), adds its numbers to [`EXPERIMENTS.md`](EXPERIMENTS.md) and a line to
-   [`CHANGELOG.md`](../CHANGELOG.md).
+6. **Regression: the gate** ([`CAPTAIN.md`](CAPTAIN.md) §6). One command, one JSON:
+
+   ```bash
+   python scripts/regression_gate.py --cache /data/cache \
+       --baseline docs/evidence/results/regression_baseline_2026-09-25.json \
+       [--config FILE] [--set section.key=value ...] [--allow PATTERN ...] \
+       --out out/gate/<change>.json
+   ```
+
+   `--jobs 2` by default; the per-frame JSONL goes to `--work`; `--from-json F` compares an
+   earlier result without running anything.
+
+   **What it runs.** Every frame, with a fresh detector per recording:
+
+   - required: the six organizer recordings (E, R) and `cloud_with_fake_obj` (O);
+   - only when `<cache>/new_data` exists: the 20-minute ride (8 pieces, as
+     `scripts/eval_real.py`) and set F straight track (`scripts/far_range_eval.py`, the round-3
+     parameters). Otherwise it records "not available".
+
+   **When it fails.** It prints better / same / worse per metric and exits 1 when a gated metric
+   is worse:
+
+   - any frame count changes;
+   - alarm events or STOP episodes rise on any of the five obstacle-free recordings or the ride;
+   - on `doubleT_obstacle`: the labelled hits drop (person 58 of 61; object 127 of 185, and 124
+     of 126 from frame 75), the first alarm frame (11) gets later, or a false-alarm event appears;
+   - on O: an inside object loses STOP frames or its first STOP comes closer (no STOP counts as
+     the worst), or an outside object or the background gains false STOP frames or track IDs;
+   - on F straight: a kind loses a detected sequence, its median first confirmation shrinks, or
+     its false detections rise.
+
+   **What never gates.** Alarm frames, advisory frames, totals, held-from distances, the distance
+   error and latency are printed as information. For latency the jobs run in parallel on a
+   shared machine; clean timing is step 5.
+
+   **Trade-offs and like-for-like.** An intended trade-off passes only with `--allow <metric
+   pattern>`, named in the PR. The comparison reports a set that only one run has, and runs whose
+   stamps (`--nominal-stamps`) or ride pieces differ. A missing required recording, or a failed
+   set F run on a cached ride, exits 2.
+
+   **Baseline of 25.09.** Native path, six recordings and O
+   ([`regression_baseline_2026-09-25.json`](evidence/results/regression_baseline_2026-09-25.json)).
+   It is identical to the 24.09 re-measure on every recording and to EXPERIMENTS §2e on every O
+   object. The same code passes with `RESENSE_NATIVE=0`; `--set cluster.min_points=8` fails
+   ([`evidence/regression_gate_2026-09-25/`](evidence/regression_gate_2026-09-25/)). The merged
+   `8932f3a` (DBSCAN on cKDTree, two opt-in flags off) passes with every gated metric the same
+   ([its JSON](evidence/results/regression_gate_2026-09-25_8932f3a.json)).
+
+   **Rules for PRs.** Every PR that touches `resense/` or `configs/` attaches the gate's JSON and
+   table. A PR that is meant to move the numbers commits a new baseline with them. Set S is not in
+   the gate: re-run step 2 when a change targets it. Nothing in the gate needs the organizers'
+   stand; the ride and set F are run on the team's 8-core machine. Do not compare the 2.1 m-envelope
+   counts to older 1.4 m-envelope runs as if the labels were identical.
 
 ## 4. Targets of the sprints (17–24.09) and their status on 24.09
 
@@ -192,6 +232,6 @@ actual values come from [`EXPERIMENTS.md`](EXPERIMENTS.md) "Current results", §
 | box 0.5 m: recall ≥ 80 % within 80 m | 1 | found at 54–56 m | on the bed 1 of 6 approaches, first confirmed at 52 m [synthetic: set F round 3]; 0 of 13 in set S [synthetic, P4_AUDIT] | not met |
 | false-alarm frames on E ≤ 1 per 100 outside platforms | 1 | 67 of 231 frames (49 in the platform-and-switch bag) | 2 of 1 065 frames = 0.19 per 100 (`roundT_doubleT` and the two pressure-gate bags) [real] | met |
 | p95 latency ≤ 100 ms | 1, 2 | 47–125 ms | offline 53–78 ms on one core, numpy path, health monitor not included [timing: sandbox, 23.09]; ROS node in Docker 76 ms at 120°, 112–130 ms at 360° [timing: sandbox, 23.09]; the i7-9700E stand is not open to the team before submission, the 8-core bench stands in ([`CAPTAIN.md`](CAPTAIN.md) action 7) | met offline and at 120°; not at 360° on the sandbox |
-| person confirmed at ≥ 150 m | 2 | 0 beyond 100 m | median 154 m with the object anchored on the near rails, 148 m with legacy placement, 167 m with a given train speed [synthetic: set F]; no real obstacle beyond 57 m exists | met on synthetic only |
+| person confirmed at ≥ 150 m | 2 | 0 beyond 100 m | median 148 m over the 6 straight approaches with legacy placement (set F round 3); in the 5 paired approaches 154 m anchored on the near rails against 150 m legacy (round 4); 167 m with a given train speed [synthetic: set F]; no real obstacle beyond 57 m exists | met on synthetic only |
 | box 0.5 m confirmed at ≥ 100 m | 2 | — | not beyond 52 m [synthetic: set F]; the organizers' 0.3 m cubes from 34–43 m, their 2 × 2 m box from 98 m [organizers' synthetic: set O] | not met |
 | false-alarm frames on E ≤ 1 per 100 including platforms | 2 | — | 107 of 2 287 frames = 4.7 per 100 (101 of them in `squareT_platform_squareT_switch`, train standing at the platform); the ride 204 of 11 271 = 1.8 per 100 [real] | not met |

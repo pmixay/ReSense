@@ -3,7 +3,7 @@
 > **Purpose:** what changed in ReSense, one entry per version or merge, newest first; the numbers
 > are those measured when the change landed.
 > **Audience:** jury (spec §5 "как менялось качество"), team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-24 against `537e220` · **Status:** current
+> **Last verified:** 2026-09-25 against `8932f3a` · **Status:** current
 
 Versions are the team's labels. The package metadata (`pyproject.toml`) says 0.1.0 up to PR #4 and
 0.6.3 from PR #5 (`1210580`). No git tag exists yet; the release plan is in
@@ -14,8 +14,51 @@ frames, 13 km, no obstacles).
 
 ## Unreleased (after v0.6.4)
 
-The package version stays 0.6.3 (node v0.6.4). Tests: 235 → 266 (+28 native kernels, +3 speed
-evaluation helpers) in `tests/`, 11 in `web/demo`.
+The package version stays 0.6.3 (node v0.6.4). Tests: 235 → 289 (+28 native kernels, +3 speed
+evaluation helpers, +17 regression gate, +3 DBSCAN exactness, +3 late candidates) in `tests/`, 11
+in `web/demo`.
+
+- **Regression gate (`ca557cb` … `5017dec`, 25.09, A for P4):** `scripts/regression_gate.py`, one
+  command and one JSON: the six recordings and set O, plus the ride and set F straight where
+  cached. `--baseline` prints better / same / worse per metric and exits 1 on a gated regression;
+  `--allow` covers intended trade-offs. Baseline
+  `docs/evidence/results/regression_baseline_2026-09-25.json` is identical to the 24.09 numbers;
+  the same code passes on the numpy path, `--set cluster.min_points=8` fails (it adds platform
+  events). The merged `8932f3a` passes with every gated metric the same
+  ([its JSON](docs/evidence/results/regression_gate_2026-09-25_8932f3a.json)).
+  [EVALUATION §3 step 6](docs/EVALUATION.md).
+- **DBSCAN on cKDTree (`508b04a`, 25.09, A for P3):** `resense.clustering.dbscan_labels`
+  replaces scikit-learn's DBSCAN with exactly the same labels (9 240 real calls, random sets with
+  distance ties, and the image's library versions); per-frame output identical on all 3 998
+  cached frames, on both paths; −1.3…−2.6 ms per frame on the native path with the image's
+  libraries. The in-detector forward crop and the bed-height reuse were measured and not shipped
+  (no gain on the native path). [ARCHITECTURE "Native kernels"](docs/ARCHITECTURE.md).
+- **Opt-in detector flags for the go / no-go of 26.09 (`fa99929`, `8631e4c`, 25.09):**
+  `cluster.short_signature_max_length` (P3 / P4 short-signature rule; set O 303 → 352 inside STOP
+  frames, five bags 107 / 20 / 27 → 113 / 22 / 29, gate FAIL on 5 rows) and
+  `cluster.floating_long_min_length` (the overhead structure along the track at the platform;
+  five bags → 60 / 14 / 17, set O unchanged, gate PASS). Both are 0 (off); default output
+  identical. The far-rail check was measured: no effect on the six recordings and set O.
+  [EXPERIMENTS §1f](docs/EXPERIMENTS.md).
+- **Stock Fast DDS console in CI and the 8-core bench kit (`fbef12b`, `8242c3e`, 25.09):**
+  `scripts/console_test.sh` takes `PLAYER_DDS=stock` (a uid-1000 player and listener with Humble's
+  default `rmw_fastrtps_cpp`: no XML profile, shared memory on, their own segments in `/dev/shm`
+  asserted, the listener must hear `STOP`) and `PLAYER_ENV`; a new CI docker step runs it, green on
+  its first run (36112092652, `8932f3a`). The node announces no shared-memory locators, so stock
+  clients reach it over UDP. `scripts/bench_8core.sh` (with `scripts/bench_summary.py`) records
+  the build, the dry runs with the node native and numpy, the console tests, `docker stats` and
+  the offline timing into `docs/evidence/bench_<date>/`; `dry_run.sh` takes `DOCKER_ARGS`,
+  `check_dry_run.py` reads `*.gz` captures.
+- **Deck and video script (`16d2a07`, `8e843d8`, 25.09, A in P2's lane):** the public deck rebuilt
+  (16 slides: the organizers' objects, the anchored 154 m next to 150 m legacy in the same pairs,
+  «~210 м — предел отражений в тоннеле», the real-data UI capture, C++ kernels / train speed /
+  GPU; bar values shown in both charts); a 2–3 min narrated-video script with a shot list in
+  [`docs/PRESENTATION.md`](docs/PRESENTATION.md); a new silent clip
+  `docs/video/fake_objects_cab.mp4` (the organizers' 2 × 2 m box, STOP from 98 m on a moving
+  train). The 17 team placeholders stay in the public build by design.
+- **`main` green again (25.09):** PR #11 (merged 06:51 UTC, `5de0844`) brought the near-bed gate
+  fix `7df1796` to `main`; CI run 36104815305 is green (`main` was red about 12 h). `main` is
+  merged into this branch (`4f004d9`).
 
 - **Offline delivery (25.09):** the test machine has no internet (organizers, 25.09,
   [`docs/organizers/answers.md`](docs/organizers/answers.md) §7), so `docker build` cannot run
@@ -62,9 +105,9 @@ evaluation helpers) in `tests/`, 11 in `web/demo`.
   rotation and the health azimuth histogram are not ported. The Docker build with the kernels is
   proven by CI run 36058665640 (`d1a2d0c`: in-image tests and both ROS smoke tests green).
   [ARCHITECTURE "Native kernels"](docs/ARCHITECTURE.md).
-- **`7df1796` (merged `7415495`, 24.09): near-bed gate fix, `main` green again once this branch
-  is merged.** `537e220` made the opt-in near-bed path miss the synthetic 30 × 30 × 10 cm bed box
-  at 12–28 m (3 failing tests in `tests/test_envelope.py`): `near_min_points` 10 → 5,
+- **`7df1796` (merged `7415495`, 24.09): near-bed gate fix, on `main` through PR #11 (25.09).**
+  `537e220` made the opt-in near-bed path miss the synthetic 30 × 30 × 10 cm bed box at 12–28 m
+  (3 failing tests in `tests/test_envelope.py`): `near_min_points` 10 → 5,
   `near_min_length` 0.18 → 0.0, the other gates kept, the per-bin loop vectorised with identical
   output. Five bags with the path on: 459 / 107 / 72 (`4b5786b` gates 1 035 / 145 / 42, `537e220`
   141 / 28 / 33); defaults unchanged.

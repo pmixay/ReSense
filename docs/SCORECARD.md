@@ -4,7 +4,7 @@
 > criterion, the evidence behind it, the risks on the hidden data and the fastest points to gain.
 > It replaces every earlier scorecard and review.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, summary RU
-> **Last verified:** 2026-09-24 against `537e220` (judged on `4b5786b`) · **Status:** dated record
+> **Last verified:** 2026-09-25 against `8932f3a` (judged on `4b5786b`) · **Status:** dated record
 
 **Кратко.** Итог по восьми критериям ТЗ §8 на 24.09 — **60 / 100** (два независимых судьи: 63 и
 58,5). Сильная сторона — инженерия (8.5–8.7): 235 тестов, CI с ROS в Docker, результаты
@@ -273,7 +273,8 @@ head), and the `docker` job stopped at the in-image tests, skipping the smoke st
 branch `claude/nifty-pascal-lzgl78` by `7df1796` (`near_min_points` 10 → 5, `near_min_length`
 0.18 → 0, the other gates kept): all 235 tests pass again, and all 266 with the tests added since
 (§8), on the native and the numpy path. Until that branch is merged and CI is green on `main`,
-`4b5786b` stays the last green commit of `main`.
+`4b5786b` stays the last green commit of `main`. 25.09: PR #11 (merged 06:51 UTC, `5de0844`)
+brought `7df1796` to `main`, and CI run 36104815305 on `main` is green; the PR had no review.
 
 ## 8. After the judgement (24.09, night)
 
@@ -289,5 +290,6 @@ judgement.
 | | judge A's suggestion for 8.2 (a speed estimate, e.g. scan-to-scan ICP, to re-enable accumulation for range; §3 8.2: 0.3 m beyond 45 m needs a train speed) was tested with the ICP speed itself | 8.2 | it does not hold on the organizers' check: with the reference speed the 0.3 m cubes are seen 7–16 m earlier but only as advisories, no object gets its first STOP earlier, and the box outside gets 17 false STOP frames instead of 6; no 8.2 gain from a speed |
 | GPU study | no GPU before 29.09: the i7-9700E has PCIe 3.0, ~1 160 array operations per frame make a CuPy port dispatch-bound (≤ 30–45 ms per 360° frame saved against numpy, 5–15 ms against fused CPU code), and a container that requests a GPU does not start without `nvidia-container-toolkit` ([`ARCHITECTURE.md`](ARCHITECTURE.md) "GPU: evaluated, not used") | 8.7, 8.3 | "the GPU is unused" (§3 8.3) becomes an evaluated decision; the CPU savings it found (a forward crop −17 ms at 360°, an exact cKDTree DBSCAN −4…−6 ms) are candidates for §6 row 9 |
 | documentation | one format, one home per fact; `cloud_with_fake_obj` corrected (the objects stand still, the train drives ~2.0 km forward), so QUESTIONS Q1 lost a sentence built on the error; EXPERIMENTS §3 corrected: `timing_ms["total"]` leaves out the 7–14 ms health monitor | 8.7, 8.5 | fewer stale or wrong statements; the old Q1 must not be sent |
-| tests | 235 → 266 in `tests/` (+28 native kernels, +3 speed evaluation helpers), 11 in `web/demo` | 8.5 | the deck's test count (§6 row 5) is now 266 |
+| tests | 235 → 266 in `tests/` (+28 native kernels, +3 speed evaluation helpers), 11 in `web/demo`; 25.09: 289 (+17 regression gate, +3 DBSCAN exactness, +3 late candidates) | 8.5 | the deck's test count (§6 row 5) is 289 since the rebuild of 25.09 |
+| 25.09, merged on the branch | stock Fast DDS player and listener in CI (green, run 36112092652); the 8-core bench kit `scripts/bench_8core.sh` (not yet run); the regression gate `scripts/regression_gate.py` with a baseline (the merged code passes, every gated metric the same); DBSCAN on cKDTree (identical output, −1.3…−2.6 ms per frame); two opt-in rules, off (EXPERIMENTS §1f); the deck rebuilt (16 slides, the organizers' objects, 289 tests) and a video script; the image archive for the offline stand (0.49 GiB, CI) | 8.6, 8.5, 8.3, 8.8 | §3 8.6 "never rehearsed … with a host player" is now covered in CI by a stock-DDS player as uid 1000 (a real host console stays for the 28.09 dry run); §6 rows 5 and 8 are partly done (deck, kit); nothing here is re-scored |
 | organizers' answer (25.09) | the team gets no access to the test stand before submission ([`organizers/answers.md`](organizers/answers.md) §6); every stand run is dropped, the team's 8-core machine and CI stand in | 8.3 | §3 8.3 "To raise" and §6 row 8 now name an 8-core analogue bench (they read "i7-class" when judged); "never measured on the i7-9700E" (§2, §3 8.3, §5) stays true at submission |

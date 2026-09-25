@@ -2,7 +2,7 @@
 
 > **Purpose:** components, data flow and real-time budget of ReSense (spec §5 "Архитектура").
 > **Audience:** jury, team · **Owner:** P1 · **Language:** EN, summary RU
-> **Last verified:** 2026-09-24, `537e220` (detector v0.6.3, node v0.6.4) · **Status:** current
+> **Last verified:** 2026-09-25, `8932f3a` (detector v0.6.3, node v0.6.4) · **Status:** current
 
 **Кратко.** ROS 2-нода `resense_ros` принимает облако `PointCloud2` от `ros2 bag play` (любая из
 двух пар топик / frame id) и передаёт каждый кадр библиотеке `resense` (Python: numpy / scipy /
@@ -12,8 +12,8 @@ scikit-learn и необязательные ядра на C++, без ROS). Б�
 по времени. Нода публикует решение GO / CAUTION / STOP / FAULT, расстояние до препятствия,
 проверенную свободную дальность, состояние входа и JSON-статус. Кадр обрабатывается за 42–64 мс в
 среднем на одном ядре (23.09, numpy, без монитора состояния) при периоде датчика 100 мс; ядра на C++
-(24.09) сокращают время детектора на 38–57 %. Видеокарта не используется, скорость поезда не нужна
-(заданная учитывается).
+(24.09) сокращают время детектора на 38–57 %, DBSCAN на cKDTree (25.09) — ещё на 1–3 мс, выход тот
+же. Видеокарта не используется, скорость поезда не нужна (заданная учитывается).
 
 ```
 ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCloud2, 10 Hz)──▶ resense_ros/detector_node
@@ -43,7 +43,7 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
         that reach the rail-head plane, within the observed bed (≤ 60 m); v0.6.2: an object
         straddling the envelope floor (across a rail) clustered whole
    3b. multi-frame accumulation beyond 40 m (only with a given train speed)  │  accumulate.py
-   4. candidates → voxels (range-normalised) → DBSCAN (eps ∝ 1 + r/40 m)  │  clustering.py
+   4. candidates → voxels (range-normalised) → DBSCAN (eps ∝ 1 + r/40 m; cKDTree)  │  clustering.py
         • filters: max extent, thin linear hardware, low track hardware, wall-like side
           structures, overhead-only clusters, expected-point visibility prior, and the
           infrastructure signatures (column, elevated, floating, corridor edge, wall face;
@@ -239,22 +239,46 @@ load ~3 on 24.09 (it is slower than the idle one of the budget above: the numpy 
 | `doubleT_platform` (164 k, the platform approach) | 27.7 / 14.4 / **66.7 ms** | 10.8 / 7.2 / **41.3 ms** (−38 %) | 74.0 → 45.2 ms |
 | `roundT_doubleT`, speed given (8 m/s: accumulation) | 31.5 / 17.6 / **70.7 ms** | 11.8 / 7.0 / **41.1 ms** (−42 %) | 78.6 → 45.2 ms |
 
-The clustering stage (voxel grid + scikit-learn DBSCAN) is unchanged; on the 120° recordings it
-is now the largest stage. Not ported on purpose: DBSCAN (an exact copy of scikit-learn's border-point
-assignment and `<=` radius test is a rewrite with its own risk), the mount rotation (a float32
-BLAS product: its rounding depends on the BLAS kernel) and the health monitor's azimuth
-histogram (`arctan2` of libm and numpy's SIMD code can differ in the last bit at a sector edge).
+**DBSCAN on cKDTree (25.09, `508b04a`).** With the kernels the clustering stage became the largest
+on the 120° recordings, and it no longer calls scikit-learn. `resense.clustering.dbscan_labels`
+builds scipy's `cKDTree` and keeps a neighbour pair when the float64 squared distance, summed
+x → y → z, is `<= eps²`: scikit-learn's KD-tree test. It joins the core points into connected
+components numbered by their lowest core index, and gives a border point the lowest-numbered
+neighbouring cluster, as scikit-learn's seed loop does. The labels are identical to
+`sklearn.cluster.DBSCAN` on all 9 240 real calls of the seven cached recordings and on random
+sets with distance ties, with the dev VM's libraries and with the image's (numpy 1.26.4 / scipy
+1.13.1 / scikit-learn 1.5.2; `tests/test_cpu_savings.py` runs the comparison in the CI image). The
+detector's per-frame output is identical on all 3 998 frames, on both paths, and the regression
+gate passes on the merged code with every gated metric the same. It costs 0.77 ms per call
+instead of 1.5–1.8 ms, which saves 1.3–2.6 ms per frame (5–10 %) with the image's libraries on the
+native path (interleaved A/B, one pinned core; EXPERIMENTS §3). scikit-learn stays a dependency
+for tests and scripts.
+
+Not ported on purpose: the mount rotation (a float32 BLAS product, whose rounding depends on the
+BLAS kernel) and the health monitor's azimuth histogram (`arctan2` of libm and numpy's SIMD code
+can differ in the last bit at a sector edge). Two more output-identical savings from the GPU study
+were measured on 25.09 and not shipped (EXPERIMENTS §7):
+
+- reusing the track stage's per-point bed height in `corridor_coordinates` is bit-identical, but
+  slower on the native path (0.98 → 1.74 ms at 360°), because `rs_corridor_coordinates` already
+  does it in one pass;
+- cropping the detection stages to X ≥ 2.9 m (41 % of the points at 360°, 11 % at 120°; the
+  calibrator and the health monitor keep the whole cloud) is identical on all 3 998 frames on both
+  paths; it saves 8 ms at 360° on the numpy path, but nothing on the native path
+  (+0.05…+0.65 ms): the gather costs what the cheaper passes save.
 
 **Build and switch.** `pip install .` / `pip install -e .` compile the kernels (`setup.py`, an
 optional extension: without a C++ compiler the install still succeeds and the detector runs on
 numpy with the same results, slower); `scripts/build_native.sh` builds them in a source checkout
 used with `PYTHONPATH=.`. The Docker image installs `g++` and prints the path it took at build
 time; the node logs it at start (`per-frame kernels: native (...)`). `RESENSE_NATIVE=0` forces
-the numpy code. The test suite passes on both paths (266 tests). **Docker:** proven by CI run 36058665640
-(24.09, commit `d1a2d0c`): the image built the kernels, the in-image suite passed with
-`RESENSE_REQUIRE_SYNTHETIC=1` (a missing library would have failed it), and both ROS smoke tests
-passed (synthetic bags, decode + detect 35 ms mean). Neither path can be run on the i7-9700E
-before submission (no stand access); the team's 8-core machine stands in for both.
+the numpy code. The test suite passes on both paths (289 tests, 25.09). **Docker:** proven by CI
+run 36058665640 (24.09, commit `d1a2d0c`): the image built the kernels, the in-image suite passed
+with `RESENSE_REQUIRE_SYNTHETIC=1` (a missing library would have failed it), and both ROS smoke
+tests passed (synthetic bags, decode + detect 35 ms mean); every docker job since does the same
+(run 36112092652 on `8932f3a`, 25.09: 289 passed in the image). Neither path can be run on the
+i7-9700E before submission (no stand access); the team's 8-core machine stands in for both
+(`scripts/bench_8core.sh` times both, EXPERIMENTS §3).
 
 ## GPU: evaluated, not used (24.09)
 
@@ -281,8 +305,10 @@ CPU savings the same study measured as prototypes, identical decisions on 1 701 
 merged: an exact cKDTree DBSCAN (−4…−6 ms per frame), float32 corridor coordinates (−3…−6 ms), a
 forward crop at X ≥ 2.9 m inside the detector (−17 ms at 360°: 42 % of its points lie at X < 3 m)
 and a single-pass C++ decode in the node (−11…−20 ms at 360°). They were measured on the numpy
-path, before the native kernels. With them the expected mean node latency on the i7-9700E at 360°
-is 48–56 ms [estimate; it assumes that numpy path].
+path, before the native kernels. With them the expected mean node latency on the i7-9700E at
+360° is 48–56 ms [estimate; it assumes that numpy path]. 25.09: of these, the cKDTree DBSCAN
+shipped; the in-detector forward crop was identical but brought no gain on the native path, and
+the bed-height reuse was slower there ("Native kernels" above).
 
 ## Deployment without internet (25.09)
 
@@ -330,7 +356,11 @@ stand's version is unknown; (3) the context must be the tag's tree with the same
 (4) no `--pull`, `--no-cache`, `--network` or `WITH_TOOLS` (each changes the cache key); (5) any
 miss makes the build try `apt-get` and fail, and then the loaded image is untouched, so `docker run`
 still works. The CI job `offline-build` tries exactly this on the runner's Docker with Docker Hub
-blocked (continue-on-error). The documented path stays `docker load`.
+blocked (continue-on-error). Its first result, run 36109782167 (25.09, `2b3cbd0`): the runtime
+archive is 521 185 902 bytes (0.49 GiB at `GZIP_LEVEL=1`; the image 1.34 GiB unpacked, the base
+image included), and after all images and the build cache were removed and the archive loaded,
+all 18 steps came from the cache ("every layer identical to the archive's, no step ran"); run
+36112092652 on `8932f3a` repeated it. The documented path stays `docker load`.
 
 ## Known limitations
 
