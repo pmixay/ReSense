@@ -24,6 +24,19 @@ buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hol
 transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
 `cluster.far_axis_both_sides`, +3 far bed bins) in `tests/`, 13 in `web/demo`.
 
+- **The P3 items of 25.09 combined; new gate baseline (P3, 25.09, delegated by the captain):** the
+  four items below merged (`wf7/p3`): the rail-shadow rules ship; `track.walls_min_far_support`,
+  `cluster.far_axis_both_sides` and `track.floor_far_min_width` stay 0 (off). Pre-registered
+  (19:03 UTC, before any run on the merged code); the full gate of the merged defaults (`c598cf6`,
+  `--jobs 3`, 332 s) passes against `regression_baseline_2026-09-25_ride_column.json` with 5 gated
+  rows better (set O 2 × 2 m box 207 → 208 and plank 42 → 49 STOP frames; set F straight false
+  detections person 7 → 6, 1 m box 13 → 10, trolley 12 → 5), none worse, and equals the rail-shadow
+  item's own gate on every row but latency; five bags 58 / 13 / 16, ride 187 / 46 / 39,
+  `doubleT_obstacle` 185 of 246 from frame 11 unchanged; set O #1 wrong-distance STOP frames 12 → 0;
+  per frame no set O inside object loses a matched-alarm or STOP frame. New gate baseline
+  `docs/evidence/results/regression_baseline_2026-09-25_ride_p3.json`.
+  [`p3_combined_2026-09-25.json`](docs/evidence/results/p3_combined_2026-09-25.json),
+  [EXPERIMENTS §1h](docs/EXPERIMENTS.md).
 - **Far bed bins that are an object's foot: `track.floor_far_min_width` (25.09, P3 `bed_bin`,
   default 0 = off, tried and not shipped):** an object standing beyond ~90 m, where the real bed no
   longer returns, fills a bed bin and extends the fit (ALGORITHM §6). The flag drops a bin at or
@@ -35,7 +48,6 @@ transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
   off the full gate equals the baseline in every row but latency.
   [`p3_bed_bin_2026-09-25.json`](docs/evidence/results/p3_bed_bin_2026-09-25.json),
   [EXPERIMENTS §1h](docs/EXPERIMENTS.md).
-
 - **The 147.5 m switch parts: tried, not shipped (25.09, P3; `cluster.far_axis_both_sides` 0 =
   off, output byte-identical):** the 4 switch-part STOP episodes of
   `squareT_platform_squareT_switch` are an axis error (a hall wall seen to 72–92 m sets a
@@ -47,7 +59,6 @@ transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
   gate with 5 rows better (five bags 13 → 9 events, ride 46 → 42 events and 39 → 33 STOP episodes,
   set O and set F straight identical) but costs a person 1.9 m of median first confirmation on six
   gentle-curve approaches (124.1 → 122.2 m), so it stays off (EXPERIMENTS §1h).
-
 - **The 82.9 m platform end: a far-support rule for the wall sides, tried, not shipped (`692feaf`,
   `1ae1952`, P3, 25.09, delegated by the captain):** the axis at the platform of `squareT_platform_squareT_switch` is
   ~0.8 m off at 83 m (curvature 2.5–4e-4 from a platform-side boundary joined to the hall end;
@@ -62,7 +73,6 @@ transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
   curve). Flags off; output with them off identical to before. The far-rail check
   (`track.rails_far_check_enabled`) measured on the ride once: identical output on all 11 271
   frames (gate PASS, every row the same); it stays off.
-
 - **The rail shadow of a large near object (P3, 25.09, delegated by the captain):** on set O the
   organizers' 2 × 2 m box at 26 → 9 m hid the bed behind it, the roof tilted the bed fit (rail head
   at 20 m 0.8–3.5 m off) and the STOP reported the bed at 3.0 m (frames 213–226); with a correct bed
@@ -78,7 +88,6 @@ transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
   `doubleT_obstacle` and set F detections unchanged. +4 tests.
   [`p3_rail_shadow_2026-09-25.json`](docs/evidence/results/p3_rail_shadow_2026-09-25.json),
   [EXPERIMENTS §1h](docs/EXPERIMENTS.md).
-
 - **Dashboard shortcuts after a click, phone gutter (25.09, review of PR #12):** since `46a04bb`
   the page's key handler ignored every key while a button or link had the focus, so after a
   click on «Демо» or ▶ the arrow keys did nothing, and on a view tab Space did nothing, until a

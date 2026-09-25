@@ -42,5 +42,198 @@
     ],
     "if_worse": "A gated row worse because two changes interact: find the pair (the only item on is rail_shadow; the others are off, so first re-check each off flag's byte-identity against the rail_shadow-only branch on the failing data set) and turn the lesser item's default back off; if the rail_shadow item itself is the cause on this merged base, its defaults go back off (a safety row wins over a false-alarm gain) and the combination equals the baseline.",
     "baseline_rule": "If the gate passes and the numbers move (expected: set O #1 207 -> 208 and #9 42 -> 49 STOP frames, set F straight false detections 35 -> 24), the gate's result JSON of this clean commit becomes docs/evidence/results/regression_baseline_2026-09-25_ride_p3.json and every 'current baseline' reference is repointed to it."
+  },
+  "result": {
+    "verdict": "SHIP the combination as merged: the gate passes, the target holds, every safety condition holds; no pair interacts, nothing turned back off",
+    "code": {
+      "measured_on": {
+        "commit": "c598cf650a0c92587366304c636bd2652d5c735e",
+        "branch": "wf7/p3",
+        "version": "1.0.0",
+        "uncommitted_detector_changes": []
+      },
+      "config": {
+        "path": "configs/default.yaml",
+        "set": [],
+        "sha256": "cdada3903d463ab8b7df0e67c2d16e3d9135a8b6e1cce2e23272e664b7af25c7",
+        "file_sha256": "cfb028b495df453ffeb1f60ecb475c68bd0810afdb71b47bf56249f0d34832a7"
+      },
+      "native": "native (_resense_native.so)",
+      "run": {
+        "jobs": 3,
+        "wall_s": 331.8,
+        "machine": "4-vCPU dev VM, no other gate running"
+      }
+    },
+    "gate": {
+      "baseline": "docs/evidence/results/regression_baseline_2026-09-25_ride_column.json",
+      "baseline_commit": "d117c8c462ff9c2483478206991f037fc929bf46",
+      "baseline_config_sha256": "0fd4e64e494f4c39cdab1da9a4fef7328057327b3dc5ac4dc8e21ebd47337b03",
+      "allow": [],
+      "passed": true,
+      "worse_gated": [],
+      "missing_gated": [],
+      "worse_allowed": [],
+      "missing_allowed": [],
+      "better": [
+        "set_O.objects.big_center.stop_frames",
+        "set_O.objects.long_low_on_rails.stop_frames",
+        "set_F_straight.person.false_detections",
+        "set_F_straight.box1.0.false_detections",
+        "set_F_straight.trolley.false_detections"
+      ],
+      "same": 95,
+      "info_changed": [
+        "set_O.objects.big_outside.advisory_frames",
+        "set_O.objects.long_low_on_rails.held_from_m",
+        "set_O.inside_stop_frames",
+        "set_F_straight.person.sustained_median_m",
+        "set_F_straight.trolley.sustained_median_m",
+        "latency_ms.doubleT_obstacle.mean",
+        "latency_ms.doubleT_obstacle.p95",
+        "latency_ms.doubleT_platform.mean",
+        "latency_ms.doubleT_platform.p95",
+        "latency_ms.roundT_doubleT.mean",
+        "latency_ms.roundT_doubleT.p95",
+        "latency_ms.roundT_pressureGate_roundT.mean",
+        "latency_ms.roundT_pressureGate_roundT.p95",
+        "latency_ms.roundT_squareT_pressureGate_squareT.mean",
+        "latency_ms.roundT_squareT_pressureGate_squareT.p95",
+        "latency_ms.squareT_platform_squareT_switch.mean",
+        "latency_ms.squareT_platform_squareT_switch.p95",
+        "latency_ms.cloud_with_fake_obj.mean",
+        "latency_ms.cloud_with_fake_obj.p95",
+        "latency_ms.new_data.mean",
+        "latency_ms.new_data.p95"
+      ]
+    },
+    "headline": {
+      "five_empty": {
+        "frames": 2287,
+        "alarm_frames": 58,
+        "alarm_events": 13,
+        "stop_episodes": 16,
+        "advisory_frames": 997
+      },
+      "ride": {
+        "frames": 11271,
+        "alarm_frames": 187,
+        "alarm_events": 46,
+        "stop_episodes": 39,
+        "monitored_range_median": 127.6
+      },
+      "doubleT_obstacle": {
+        "labelled": {
+          "object_on_rail": {
+            "hits": 127,
+            "frames": 185
+          },
+          "person_crossing": {
+            "hits": 58,
+            "frames": 61
+          },
+          "object_on_rail_from_frame_75": {
+            "hits": 124,
+            "frames": 126
+          }
+        },
+        "first_alarm_frame": 11
+      },
+      "set_O": {
+        "inside_stop_frames": 311,
+        "outside_false_stop_frames": 6,
+        "background": {
+          "alarm_frames": 3,
+          "track_ids": 2
+        },
+        "stop_frames": {
+          "big_center": 208,
+          "small_center": 19,
+          "small_on_rail": 23,
+          "small_edge_inside": 0,
+          "big_edge_inside": 0,
+          "big_above": 12,
+          "long_low_on_rails": 49,
+          "thin_hanging": 0
+        },
+        "first_stop_m": {
+          "big_center": 98.0,
+          "small_center": 34.0,
+          "small_on_rail": 42.7,
+          "small_edge_inside": null,
+          "big_edge_inside": null,
+          "big_above": 101.3,
+          "long_low_on_rails": 82.2,
+          "thin_hanging": null
+        }
+      },
+      "set_F_straight": {
+        "person": {
+          "detected": 6,
+          "first_detection_median_m": 151.0,
+          "false_detections": 6
+        },
+        "box1.0": {
+          "detected": 6,
+          "first_detection_median_m": 123.9,
+          "false_detections": 10
+        },
+        "box0.5": {
+          "detected": 1,
+          "first_detection_median_m": 51.9,
+          "false_detections": 0
+        },
+        "trolley": {
+          "detected": 6,
+          "first_detection_median_m": 151.4,
+          "false_detections": 5
+        },
+        "cable": {
+          "detected": 6,
+          "first_detection_median_m": 98.9,
+          "false_detections": 3
+        }
+      }
+    },
+    "equal_to_rail_shadow_gate": "every leaf of regression_gate_2026-09-25_rail_shadow.json and of this run compared except latency, code, config, run, created, health: 383 leaves, the only 2 that differ are the gate's own lists of latency rows (information)",
+    "target_set_O_1": {
+      "combined": {
+        "label": "big_center",
+        "label_frames": 229,
+        "stop_frames": 224,
+        "stop_frames_plausible": 208,
+        "matched_frames": 224,
+        "matched_frames_plausible": 208,
+        "wrong_distance_frames": 0,
+        "wrong_distance_frame_list": [],
+        "max_abs_err_m": 0.46,
+        "mean_abs_err_m_within_30m": 0.0,
+        "stop_frames_within_30m": 31,
+        "no_stop_frames": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rail_shadow_B2_full_run": "identical rows (the item's target_B2full.json, byte for byte)",
+      "combined_with_the_three_rail_shadow_keys_off": {
+        "stop_frames": 224,
+        "matched_frames": 216,
+        "wrong_distance_frames": 12,
+        "max_abs_err_m": 14.11
+      },
+      "note": "with the rail-shadow keys off the merged code gives the rows of the item's pre-change baseline (its target_base.json, byte for byte): the other three flags do not act on set O"
+    },
+    "safety": {
+      "doubleT_obstacle": "identical: person_crossing 58 of 61, object_on_rail 127 of 185, from frame 75 124 of 126, first alarm frame 11, fp events 0",
+      "set_O_per_frame": "the gate's set O JSONL against scripts/eval_real.py --bags cloud_with_fake_obj --set track.floor_shadow_height=0.0 --set cluster.oversize_split_max_length=0.0 --set cluster.gauge_distance=false on the same code: no inside object loses a matched-alarm frame or a STOP frame; big_center matched 216 -> 224 (gains 217-224), long_low_on_rails 42 -> 49 (gains 704, 707-712); frames with an alarm matching no object 29 -> 9, none new; alarm frames 342 -> 342",
+      "set_O_rows": "every inside object's STOP frames and first STOP identical or better (big_center 207 -> 208, long_low_on_rails 42 -> 49); outside false STOP 6 -> 6; background 3 frames / 2 ids",
+      "set_F_straight": "detected and median first confirmation identical per kind; false detections person 7 -> 6, box1.0 13 -> 10, trolley 12 -> 5, box0.5 0 -> 0, cable 3 -> 3",
+      "no_new_false_alarm": "five bags 58 / 13 / 16 and ride 187 / 46 / 39 (alarm frames / events / STOP episodes) identical to the baseline"
+    },
+    "new_baseline": "docs/evidence/results/regression_baseline_2026-09-25_ride_p3.json: this run's result without its 'gate' block (kept here), as the earlier baselines hold the measurement only",
+    "tests": "pytest 431 passed on the native path and with RESENSE_NATIVE=0 (416 before the four items + 4 rail shadow + 3 far-support + 5 far_axis_both_sides + 3 far bed bins); ruff check clean; scripts/sync_params.sh --check in sync; the docs link check clean"
   }
 }

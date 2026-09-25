@@ -327,7 +327,7 @@ VM (the captain: a machine with half the stand's cores is enough); a run here co
 
 ```bash
 BASELINE=$(ls docs/evidence/results/regression_baseline_*_ride*.json | LC_ALL=C sort | tail -n 1)   # the newest baseline with the ride
-echo "$BASELINE"      # since 25.09 (tracking.column_hold 2): regression_baseline_2026-09-25_ride_column.json
+echo "$BASELINE"      # since 25.09 (the P3 items, rail shadow on): regression_baseline_2026-09-25_ride_p3.json
 mkdir -p "$EV/gate_$DAY"
 python scripts/regression_gate.py --cache "$CACHE" --jobs 6 --baseline "$BASELINE" \
   --out "$EV/gate_$DAY/gate_$(git rev-parse --short HEAD).json" 2>&1 | tee "$EV/gate_$DAY/gate_table.txt"

@@ -151,7 +151,7 @@ the voice-over and the rehearsals (the presentation, later, the team: C21).
   in the PR title and a heads-up to the consumers; add, never rename or remove.
 - Freeze: detector and config **26.09 20:00**, docs **27.09 20:00**; from 28.09 blockers only.
 - Detector / config gate: `python scripts/regression_gate.py --baseline
-  docs/evidence/results/regression_baseline_2026-09-25_ride_column.json` exits 0 on the change. Every
+  docs/evidence/results/regression_baseline_2026-09-25_ride_p3.json` exits 0 on the change. Every
   gated metric must be identical or better on the six recordings, set O, the ride and set F
   straight (the last two need `/data/cache/new_data`, streamed split by split as in
   [`VM_GUIDE.md`](VM_GUIDE.md) §2.3; without it their rows fail as "missing in this run", and a run
