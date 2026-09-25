@@ -780,7 +780,8 @@ episodes (101 frames, 15 events) by structure, with the median shape of its gaug
 Also measured and not proposed: `cluster.far_min_height` 1.0 (for the switch parts) takes the
 platform recording to 78 / 11 / 21 and set O background to 2 / 1 with the objects unchanged (with
 the long rule: five bags 37 / 10 / 13), but the 1 m crate and the 0.5 m box of set F straight
-beyond the height reference would become advisory and set F cannot be run here; the organizers do
+beyond the height reference would become advisory and set F cannot be run here (measured with set
+F on 25.09: person 151.0 → 138.8 m, trolley 151.4 → 104.5 m, crate 123.9 → 104.0 m, §1g); the organizers do
 not count switch glitches. The 82.9 m platform end needs a fix in the axis model, not a shape
 rule: capping wall curvature in stations would also cut range in real R ≈ 350–1 000 m curves.
 
@@ -901,6 +902,57 @@ Tests (`tests/test_late_candidates.py`): the classification of the finding's box
 tunnel: the box's faces injected at 40–60 m (a single ray-cast frame returns only its 0.3 × 0.5 m
 front face there, which the long rule never sees as long) give a STOP with the shipped defaults and
 an advisory `floating` warning with the parameter 0.
+
+### 1g. P3 items of 25.09
+
+**The 147.5 m switch parts (`far_switch`): tried, not shipped** [measured 25.09]. Raw:
+[`p3_far_switch_2026-09-25.json`](evidence/results/p3_far_switch_2026-09-25.json) (the
+pre-registration of 17:19 UTC, two addenda written before their candidates, every stage) and the
+gate of the last candidate,
+[`regression_gate_2026-09-25_far_axis_both_sides_2.json`](evidence/results/regression_gate_2026-09-25_far_axis_both_sides_2.json).
+With the shipped defaults the parts give 4 of the 15 STOP episodes of
+`squareT_platform_squareT_switch` (frames 500–501, 580, 640–642, 692–708; 19 STOP frames with a
+detection at 140–155 m). **The cause is the axis, not the height reference.** The parts stand still
+in the vehicle frame (y +1.42 m) while their corridor lateral jumps −0.86…+0.98 m between frames:
+both tunnel boundaries are fitted, but the left one (a hall wall, \|dy\| 1.7–2.0 m) is seen only to
+72–92 m with a curvature of 3.4–5.4·10⁻⁴ /m and the right one to 128–152 m with 0.2–0.9·10⁻⁴ /m;
+the two "agree" (under 6.7·10⁻⁴), the rms weighting lets the short side set the axis
+(1.3–3.2·10⁻⁴ /m, 1.4–3.4 m at 147 m), and `axis_valid` (147–167 m) is the longer side's. The
+parts are 0.33–0.41 m wide and 0.38, 0.67–0.69 or 0.96–0.98 m tall: 2–4 rings at 0.32 m spacing.
+(a) A bed from the side-structure base is no candidate: at the switch the side band holds the wall
+foot to 122–127 m and only vault returns (+3.8…+4.3 m) beyond, and on straight track (file 46)
+the lowest side point rises +0.5 m at 100 m, +1.0–1.2 m at 127–132 m and +1.6–1.9 m at 150 m
+against the vault's +0.49 m at 115 m and +0.79 m at 135 m (§2d). (b) Five candidates, staged
+(the platform recording, set F straight, the full gate; `--jobs 1`, native, the dev VM):
+
+| candidate | switch-part episodes; platform alarm frames / events / STOP episodes | set F straight: person / trolley / 1 m crate, median first confirmation | verdict |
+|---|---|---|---|
+| shipped defaults | 4; 54 / 9 / 15 | 151.0 / 151.4 / 123.9 m | |
+| `cluster.far_min_height` 0.8 | 1; 42 / 6 / 12 | **143.5 / 106.9 / 107.8 m** | fails set F |
+| 0.9 | 1; 42 / 6 / 12 | **143.5 / 104.5 / 104.0 m** | fails set F |
+| 1.0 | 0; 31 / 5 / 11 | **138.8 / 104.5 / 104.0 m** | fails set F |
+| `cluster.far_axis_both_sides` 1: beyond the height reference the corridor ends at the shorter boundary's last bin + 15 m (+ the straight bonus), every frame | 0; 31 / 5 / 11 | **147.8 / 136.6** / 123.9 m (person file 46 169.2 → 146.0 m) | fails set F; also `roundT_doubleT` 0 / 0 / 0 → 1 / 1 / 1 (a 2.2 m column at 130–141 m turned `beyond_axis` and left the `column_hold` count) |
+| `cluster.far_axis_both_sides` 2: the same limit only on bent frames (no straight bonus), would-be obstacles demoted `beyond_axis`, other reasons kept | 0; 31 / 5 / 11 | 151.0 / 151.4 / 123.9 m (every hit identical; cable false detections 3 → 2) | gate PASS, 5 gated rows better; **fails the gentle-curve check** |
+
+A far height threshold cannot separate the parts from set F's objects: a 1.7 m person at
+150–170 m is measured under 0.8 m in some frames (3 rings, dropout), the 1.0 m trolley and crate
+at 0.64–0.96 m. Mode 2 is the near miss. The gate against
+[`regression_baseline_2026-09-25_ride_column.json`](evidence/results/regression_baseline_2026-09-25_ride_column.json):
+five bags 58 / 13 / 16 → 35 / 9 / 12, the ride 187 / 46 / 39 → 147 / 42 / 33 (3.5 → 3.2 events per
+km), set O and `doubleT_obstacle` identical, set F straight identical; the median verified-clear
+range drops (ride 127.6 → 120.0 m, `doubleT_obstacle` 151 → 139 m) because the limit also ends the
+monitored range. The extra safety condition of its addendum, set F on six gentle-curve approaches
+of the ride (files 5, 16, 45, 97, 100, 137, R 2.1–3.0 km, person / trolley / crate, chosen before
+the run): trolley and crate identical, but the person's median first confirmation 124.1 → 122.2 m
+(file 45 134.9 → 130.5 m, file 97 139.6 → 137.7 m; 3 of 1 950 frames change) — a range loss on
+real curves, so not shipped. Both modes stay in the code, off (`cluster.far_axis_both_sides` 0,
+default output byte-identical); mode 2 is a trade-off for the captain (−4 ride events and −6 STOP
+episodes against ~2 m of a person's first confirmation on gentle curves). The fix without that
+cost is in the axis model (weigh each boundary by the range it is seen to), the same place as the
+82.9 m platform end (§1f). Tests (`tests/test_late_candidates.py`, the ray-cast tunnel with a bent
+hall wall seen to 76 m): a 1.7 m face at 125 m on the extrapolated corridor is a STOP with the flag
+off and advisory `beyond_axis` in either mode; mode 2 keeps a column a `column`; a person at 50 m in
+the same scene STOPs on the same frame and a person at 140 m in the straight tunnel still STOPs.
 
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 
@@ -1918,9 +1970,16 @@ v0.6).
   only the ride is left, and it is not expected to change anything;
 - **the 82.9 m platform end** (P3; §1f): 10 of the 25 STOP episodes at the platform come from the
   axis being ~0.5 m off at 83 m (hall-wall curvature); a fix in the axis model, not a shape rule;
-- **bed correction from the side-structure base** (P3): use `z_base(X) − offset_ref` as
+- ~~**bed correction from the side-structure base** (P3): use `z_base(X) − offset_ref` as
   `z_floor(X)` beyond the fit where the side base is continuous, then re-measure the far bins
-  and the 147.5 m switch structures;
+  and the 147.5 m switch structures~~ measured 25.09 (§1g): the side base does not reach 147.5 m
+  at the switch and rises 1.5–2× faster than the vault drift on straight track (+1.6–1.9 m at
+  150 m), so it is no bed height; the switch parts are an axis error (a hall wall seen to 72–92 m
+  sets the curvature). `far_min_height` 0.8–1.0 and the both-boundaries rule
+  (`cluster.far_axis_both_sides` 1, 2) tried, not shipped; mode 2 passes the gate (ride 46 → 42
+  events, 39 → 33 STOP episodes) but costs 1.9 m of a person's median first confirmation on
+  gentle curves; next: weigh each boundary by its observed range in the axis model (with the
+  82.9 m platform end above);
 - **bed-trough centre vs wall axis** at stations (design in v0.4, not implemented): a second
   lateral axis where the walls are far;
 - ego-speed estimator (measured 24.09, §9): accurate (median error 0.06–0.08 m/s) on 55–96 % of

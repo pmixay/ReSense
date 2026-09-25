@@ -168,6 +168,7 @@ class ClusterConfig:
     far_min_height: float = 0.6        # m, v0.6: beyond the trusted height reference (but within the trusted axis) only clusters at least this tall are obstacles,
     far_max_length: float = 3.0        # m, ... at most this long along the track (a face seen head-on, not a surface at grazing incidence),
     far_max_bottom: float = 1.0        # m, ... and reaching down below this height (not a sign hanging above the far corridor)
+    far_axis_both_sides: int = 0       # 25.09 (far_switch), 0 = off: beyond the height reference, a far obstacle needs both fitted tunnel boundaries to support the axis there (the shorter side's last bin + axis_valid_margin); 1 = on every frame, the corridor itself ends there (+ the straight bonus); 2 = only on bent frames (no straight bonus), would-be obstacles demoted (beyond_axis); both measured, neither shipped (EXPERIMENTS 1g)
     signature_min_lateral: float = 0.6  # m, v0.6: the column and floating signatures apply only off the track centre (a cable / object hanging into the envelope near the axis is an obstacle)
     short_signature_max_length: float = 0.0   # m, candidate of 24.09 (P3 / P4), off (no-go 25.09 on the ride): > 0 = the elevated and floating signatures do not demote a cluster at most this long along the track
     short_signature_max_distance: float = 100.0  # m, ... and at most this far (the organizers' test objects are 0.3-2.2 m long; the platform structure these signatures must keep demoting is 3.9-5.7 m long at ~104 m); docs/P4_AUDIT.md, scripts/short_signature_experiment.py

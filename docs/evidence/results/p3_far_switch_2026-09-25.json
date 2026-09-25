@@ -8,20 +8,32 @@
     "code": "be39362 (claude/nifty-pascal-lzgl78; no detector change since the baseline commit d117c8c)",
     "note": "written before any candidate run; only the shipped defaults were run before it (diagnostics below)",
     "candidates": [
-      {"order": 1, "set": {"cluster.far_min_height": 0.8}},
-      {"order": 2, "set": {"cluster.far_min_height": 0.9}},
-      {"order": 3, "set": {"cluster.far_min_height": 1.0}}
+      {
+        "order": 1,
+        "set": {
+          "cluster.far_min_height": 0.8
+        }
+      },
+      {
+        "order": 2,
+        "set": {
+          "cluster.far_min_height": 0.9
+        }
+      },
+      {
+        "order": 3,
+        "set": {
+          "cluster.far_min_height": 1.0
+        }
+      }
     ],
-    "today": {"cluster.far_min_height": 0.6},
+    "today": {
+      "cluster.far_min_height": 0.6
+    },
     "flag": "cluster.far_min_height exists (0.6 since v0.6); no new flag and no code for approach (b). Approach (a), a bed from the side-structure base, is not a candidate: see diagnostics_before_registration.",
     "target": "Switch-part STOP episodes in squareT_platform_squareT_switch: STOP episodes (runs of consecutive frames with obstacle true) in which any frame has a confirmed gauge detection at 140-155 m, counted by the attached definition on the per-frame JSONL. Shipped defaults: 4 episodes (frames 500-501, 580, 640-642, 692-708), 19 STOP frames with such a detection. The target improves when the episode count is < 4.",
     "ship_rule": "A candidate is shippable when (1) python scripts/regression_gate.py --cache /data/cache --jobs 1 --set cluster.far_min_height=<v> --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json exits 0 (no gated row worse, none missing; the six recordings, set O, the ride and set F straight), (2) the target improves as defined, and (3) every safety condition holds. Among shippable candidates: the one with the fewest switch-part STOP episodes; a tie goes to the lower threshold (the least intrusive). If none is shippable: far_min_height stays 0.6 and the numbers are recorded.",
-    "safety_conditions": [
-      "doubleT_obstacle: labelled hits per label (person_crossing, object_on_rail, object_on_rail_from_frame_75) identical or better; first alarm frame identical or earlier; fp events not higher",
-      "set O: every inside object's STOP frames not fewer and first STOP not at a shorter distance; outside false STOP frames, background alarm frames and track ids not higher",
-      "set F straight, every kind (person, box1.0, box0.5, trolley, cable): detected sequences not fewer; median first confirmation not shorter (the person's ~151 m headline must not drop); false detections not higher",
-      "no new false alarm: alarm events and STOP episodes not higher in each of the five obstacle-free recordings and in the ride"
-    ],
+    "safety_conditions": ["doubleT_obstacle: labelled hits per label (person_crossing, object_on_rail, object_on_rail_from_frame_75) identical or better; first alarm frame identical or earlier; fp events not higher", "set O: every inside object's STOP frames not fewer and first STOP not at a shorter distance; outside false STOP frames, background alarm frames and track ids not higher", "set F straight, every kind (person, box1.0, box0.5, trolley, cable): detected sequences not fewer; median first confirmation not shorter (the person's ~151 m headline must not drop); false detections not higher", "no new false alarm: alarm events and STOP episodes not higher in each of the five obstacle-free recordings and in the ride"],
     "procedure": "Cheaper stages first, each only for a candidate that survived the previous one: (1) squareT_platform_squareT_switch alone (scripts/eval_real.py --bags squareT_platform_squareT_switch --set ...): the target; (2) set F straight alone (scripts/far_range_eval.py with the gate's parameters and the effective config): the hard safety condition; (3) the full gate with the ride. A candidate that fails a stage is recorded with the stage's numbers and not run further. Native path, --jobs 1, receive stamps, the 4-vCPU dev VM.",
     "diagnostics_before_registration": {
       "switch_part_clusters": "defaults, frames 690-705: 6-8 voxels, 0.05-0.09 m along, 0.33-0.41 m wide, measured height quantised by the ring spacing at 145-147 m (0.125 deg = 0.32 m): 0.38, 0.67-0.69 or 0.96-0.98 m; bottom 0.12-0.57 m above the extrapolated rail head; fixed in the vehicle frame (y +1.39...+1.43 m, z -2.05...-1.07 m) while its corridor lateral moves -0.86...+0.98 m with the wall-derived curvature 1.3e-4...3.2e-4 /m; fit end 67-118 m, floor_verified 110-140 m, axis_valid 120-167 m",
@@ -33,17 +45,496 @@
     "written_at_utc": "2026-09-25T17:32:00Z",
     "note": "written before any run of the new candidate (its code was not written yet). Known when writing it: stage 1 of the three far_min_height candidates (squareT_platform_squareT_switch: 0.8 and 0.9 -> 1 switch-part episode, 1.0 -> 0) and stage 2 of 0.8 (set F straight: person median first confirmation 151.0 -> 143.5 m, 1 m crate 123.9 -> 107.8 m, trolley 151.4 -> 106.9 m: fails the hard safety condition); 0.9 and 1.0 stage 2 running.",
     "diagnostics_before_addendum": "defaults, switch-episode frames 498-502, 578-581, 638-643, 690-708: both tunnel boundaries are fitted, but the left one (|dy| 1.7-2.0 m) is observed only to 72-92 m (last 4 m bin) with curvature 3.4e-4...5.4e-4 /m, the right one (|dy| 2.3-3.0 m) to 128-152 m with 2e-5...9e-5 /m; they 'agree' (difference < axis_sides_max_disagreement 6.7e-4), the rms weighting lets the short left side set the curvature (1.3e-4...3.2e-4), and axis_valid (147-167 m) is the longer side's range + 15 m. At 147 m that curvature moves the corridor by 1.4-3.4 m: the parts are fixed in the vehicle frame (y +1.42 m) while their corridor lateral jumps -0.86...+0.98 m. The 138-140 m cluster of frames 693 and 706-708 (1.28-1.29 m tall) belongs to the same episode.",
-    "candidate": {"order": 4, "set": {"cluster.far_axis_both_sides": true},
-                  "rule": "new flag, default false = today's behaviour byte for byte. When true, beyond the height reference (max(fit end + floor_valid_margin, floor_verified)) the corridor, and with it the verified-clear range, ends where BOTH fitted tunnel boundaries stop supporting the axis: min(last bin of the left, last bin of the right) + track.axis_valid_margin (+ track.axis_valid_straight_bonus under today's straight condition: |curvature| < 1e-4, wall rms < 0.2 m, both sides agreeing); with one boundary or none, today's axis_valid. Clusters beyond it are advisory (reason beyond_axis). Nothing changes inside the height reference."},
+    "candidate": {
+      "order": 4,
+      "set": {
+        "cluster.far_axis_both_sides": true
+      },
+      "rule": "new flag, default false = today's behaviour byte for byte. When true, beyond the height reference (max(fit end + floor_valid_margin, floor_verified)) the corridor, and with it the verified-clear range, ends where BOTH fitted tunnel boundaries stop supporting the axis: min(last bin of the left, last bin of the right) + track.axis_valid_margin (+ track.axis_valid_straight_bonus under today's straight condition: |curvature| < 1e-4, wall rms < 0.2 m, both sides agreeing); with one boundary or none, today's axis_valid. Clusters beyond it are advisory (reason beyond_axis). Nothing changes inside the height reference."
+    },
     "ship_rule": "unchanged (the gate exits 0 against regression_baseline_2026-09-25_ride_column.json, the target improves: switch-part STOP episodes < 4, every safety condition of 'preregistered' holds), with the same staged procedure (platform recording, then set F straight, then the full gate). Between shippable candidates: the fewest switch-part STOP episodes; a tie between this candidate and a far_min_height value goes to this candidate (it leaves every object's height test as today).",
     "extra_record": "whichever way it goes: the number of ride frames and of set F straight frames in which the flag moves the corridor end (both-side range below axis_valid beyond the height reference), and the change of the median monitored range per recording."
   },
   "preregistered_addendum_2": {
     "written_at_utc": "2026-09-25T17:48:00Z",
     "note": "written before the code of the new form and before any run of it. Known when writing it: all four registered candidates fail stage 2 (set F straight). far_min_height 0.8 / 0.9 / 1.0: person median first confirmation 151.0 -> 143.5 / 143.5 / 138.8 m, 1 m crate 123.9 -> 107.8 / 104.0 / 104.0 m, trolley 151.4 -> 106.9 / 104.5 / 104.5 m (stage 1: switch-part episodes 4 -> 1 / 1 / 0). far_axis_both_sides (the form of addendum 1, now mode 1): stage 1 4 -> 0 episodes (platform recording 54 / 9 / 15 -> 31 / 5 / 11); stage 2 person 151.0 -> 147.8 m (file 46: 169.2 -> 146.0 m), trolley 151.4 -> 136.6 m, crate 123.9 m unchanged, false detections 7 / 13 / 0 / 12 / 3 -> 4 / 7 / 0 / 12 / 0; an extra check run beside stage 2 (six recordings and set O, no ride): set O and doubleT_obstacle identical, but roundT_doubleT 0 / 0 / 0 -> 1 / 1 / 1 alarm frames / events / STOP episodes: track 82, a 2.2 m column-shaped structure at 130-141 m, whose clusters beyond the both-side range became beyond_axis instead of column and stopped counting as column hits for tracking.column_hold.",
-    "candidate": {"order": 5, "set": {"cluster.far_axis_both_sides": 2},
-                  "rule": "cluster.far_axis_both_sides becomes a mode: 0 = off (today, byte for byte), 1 = the form of addendum 1 as measured (true reads as 1), 2 = the new form. Mode 2: (i) only on frames whose axis does not get today's straight bonus (|curvature| < 1e-4, wall rms < 0.2 m and both sides agreeing) and has two fitted boundaries; there the far limit is the shorter side's last bin + track.axis_valid_margin (no bonus); on straight frames, and with one boundary or none, no limit; (ii) applied after the clustering as a demotion of would-be obstacles only: a corridor cluster (kind '') that is a gauge obstacle by every other rule and lies beyond max(height reference, far limit) becomes advisory (reason beyond_axis); every other cluster keeps its reason, so a column stays a column hit; (iii) the verified-clear range ends at max(height reference, far limit) on those frames. Inside the height reference nothing changes."},
+    "candidate": {
+      "order": 5,
+      "set": {
+        "cluster.far_axis_both_sides": 2
+      },
+      "rule": "cluster.far_axis_both_sides becomes a mode: 0 = off (today, byte for byte), 1 = the form of addendum 1 as measured (true reads as 1), 2 = the new form. Mode 2: (i) only on frames whose axis does not get today's straight bonus (|curvature| < 1e-4, wall rms < 0.2 m and both sides agreeing) and has two fitted boundaries; there the far limit is the shorter side's last bin + track.axis_valid_margin (no bonus); on straight frames, and with one boundary or none, no limit; (ii) applied after the clustering as a demotion of would-be obstacles only: a corridor cluster (kind '') that is a gauge obstacle by every other rule and lies beyond max(height reference, far limit) becomes advisory (reason beyond_axis); every other cluster keeps its reason, so a column stays a column hit; (iii) the verified-clear range ends at max(height reference, far limit) on those frames. Inside the height reference nothing changes."
+    },
     "ship_rule": "unchanged: the gate exits 0 against regression_baseline_2026-09-25_ride_column.json, switch-part STOP episodes < 4, every safety condition of 'preregistered' holds; staged as registered (platform recording, set F straight, full gate). Extra safety condition for this candidate (it acts on bent axes, which set F straight hardly has): set F on gentle curves of the ride, files 5, 16, 45, 97, 100, 137 (the intake's median |curvature| 3.3e-4...4.7e-4 /m, R 2.1-3.0 km, 13-21 m/s; chosen now from docs/extended_dataset_intake.json, before any run), kinds person, trolley, box1.0, start 220 m, 110 frames, lateral -0.6:0.6, seed 0, legacy placement, place bed: per kind, detected sequences not fewer and the median first confirmation not shorter than the shipped defaults on the same run. If it fails there, not shipped (a range loss on real curves).",
     "order_of_runs": "stage 1, stage 2, the gentle-curve set F (defaults and mode 2), then the full gate"
-  }
+  },
+  "how": "native path (scripts/build_native.sh), receive stamps, --jobs 1, the 4-vCPU dev VM shared with up to three other gates. Stage 1: PYTHONPATH=. python scripts/eval_real.py --cache /data/cache --bags squareT_platform_squareT_switch --jobs 1 --set <candidate> (the far_min_height runs imported the main checkout's resense through the editable install; its resense/*.py and native source are identical to be39362, and the flag-off output of this branch equals it frame by frame). Stage 2: python scripts/far_range_eval.py --cache /data/cache/new_data --config <effective config> --jobs 1 with the gate's set F straight parameters (files 46,68,98,140,168,172, kinds person,box1.0,box0.5,trolley,cable, start 220, frames 110, lateral -0.6:0.6, seed 0, legacy, place bed, speeds docs/extended_dataset_intake.json). Gentle curves: the same with files 5,16,45,97,100,137 and kinds person,trolley,box1.0. Full gate: python scripts/regression_gate.py --cache /data/cache --jobs 1 --set cluster.far_axis_both_sides=2 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json (regression_gate_2026-09-25_far_axis_both_sides_2.json). Code: the far_min_height candidates on be39362, mode 1 on be39362 + the flag as first written (true), re-run as mode 1 of the final code with an identical platform output frame by frame; mode 2 on 12a14ea + the final flag code (committed with this file).",
+  "results": {
+    "stage1_platform": {
+      "definition": "squareT_platform_squareT_switch: alarm frames, alarm events, STOP episodes, switch-part STOP episodes (a detection at 140-155 m in any frame of the episode), STOP frames with such a detection, median monitored range",
+      "defaults": {
+        "alarm_frames": 54,
+        "alarm_events": 9,
+        "stop_episodes": 15,
+        "switch_episodes": 4,
+        "switch_stop_frames": 19,
+        "monitored_range_median": 143.0
+      },
+      "far_min_height_0.8": {
+        "alarm_frames": 42,
+        "alarm_events": 6,
+        "stop_episodes": 12,
+        "switch_episodes": 1,
+        "switch_stop_frames": 10,
+        "monitored_range_median": 143.0
+      },
+      "far_min_height_0.9": {
+        "alarm_frames": 42,
+        "alarm_events": 6,
+        "stop_episodes": 12,
+        "switch_episodes": 1,
+        "switch_stop_frames": 10,
+        "monitored_range_median": 143.0
+      },
+      "far_min_height_1.0": {
+        "alarm_frames": 31,
+        "alarm_events": 5,
+        "stop_episodes": 11,
+        "switch_episodes": 0,
+        "switch_stop_frames": 0,
+        "monitored_range_median": 143.0
+      },
+      "far_axis_both_sides_1": {
+        "alarm_frames": 31,
+        "alarm_events": 5,
+        "stop_episodes": 11,
+        "switch_episodes": 0,
+        "switch_stop_frames": 0,
+        "monitored_range_median": 120.0
+      },
+      "far_axis_both_sides_2": {
+        "alarm_frames": 31,
+        "alarm_events": 5,
+        "stop_episodes": 11,
+        "switch_episodes": 0,
+        "switch_stop_frames": 0,
+        "monitored_range_median": 120.0
+      }
+    },
+    "stage2_setF_straight": {
+      "note": "per kind: detected of 6, median first confirmation (m), median sustained range (m), confirmed detections away from the object, first confirmation per sequence (files 46, 68, 98, 140, 168, 172). The defaults reproduce the baseline exactly.",
+      "defaults": {
+        "person": {
+          "detected": 6,
+          "first_median_m": 151.0,
+          "sustained_median_m": 142.6,
+          "false_detections": 7,
+          "firsts_m": [169.2, 144.1, 152.0, 149.6, 166.3, 149.9]
+        },
+        "box1.0": {
+          "detected": 6,
+          "first_median_m": 123.9,
+          "sustained_median_m": 114.1,
+          "false_detections": 13,
+          "firsts_m": [146.0, 109.9, 101.9, 149.6, 131.8, 116.1]
+        },
+        "box0.5": {
+          "detected": 1,
+          "first_median_m": 51.9,
+          "sustained_median_m": 55.6,
+          "false_detections": 0,
+          "firsts_m": [null, null, null, null, null, 51.9]
+        },
+        "trolley": {
+          "detected": 6,
+          "first_median_m": 151.4,
+          "sustained_median_m": 115.0,
+          "false_detections": 12,
+          "firsts_m": [156.6, 112.0, 103.9, 194.0, 154.8, 148.1]
+        },
+        "cable": {
+          "detected": 6,
+          "first_median_m": 98.9,
+          "sustained_median_m": 34.2,
+          "false_detections": 3,
+          "firsts_m": [56.4, 108.0, 103.9, 93.8, 12.6, 112.5]
+        }
+      },
+      "far_min_height_0.8": {
+        "person": {
+          "detected": 6,
+          "first_median_m": 143.5,
+          "sustained_median_m": 131.2,
+          "false_detections": 3,
+          "firsts_m": [169.2, 112.0, 152.0, 149.6, 137.5, 131.0]
+        },
+        "box1.0": {
+          "detected": 6,
+          "first_median_m": 107.8,
+          "sustained_median_m": 114.1,
+          "false_detections": 11,
+          "firsts_m": [85.3, 109.9, 101.9, 106.9, 110.6, 108.8]
+        },
+        "box0.5": {
+          "detected": 1,
+          "first_median_m": 51.9,
+          "sustained_median_m": 55.6,
+          "false_detections": 0,
+          "firsts_m": [null, null, null, null, null, 51.9]
+        },
+        "trolley": {
+          "detected": 6,
+          "first_median_m": 106.9,
+          "sustained_median_m": 113.2,
+          "false_detections": 11,
+          "firsts_m": [79.1, 112.0, 103.9, 110.5, 104.9, 108.8]
+        },
+        "cable": {
+          "detected": 6,
+          "first_median_m": 98.9,
+          "sustained_median_m": 34.2,
+          "false_detections": 3,
+          "firsts_m": [56.4, 108.0, 103.9, 93.8, 12.6, 112.5]
+        }
+      },
+      "far_min_height_0.9": {
+        "person": {
+          "detected": 6,
+          "first_median_m": 143.5,
+          "sustained_median_m": 127.5,
+          "false_detections": 3,
+          "firsts_m": [169.2, 112.0, 152.0, 149.6, 137.5, 123.5]
+        },
+        "box1.0": {
+          "detected": 6,
+          "first_median_m": 104.0,
+          "sustained_median_m": 113.2,
+          "false_detections": 11,
+          "firsts_m": [85.3, 109.9, 101.9, 105.0, 103.0, 105.2]
+        },
+        "box0.5": {
+          "detected": 1,
+          "first_median_m": 51.9,
+          "sustained_median_m": 55.6,
+          "false_detections": 0,
+          "firsts_m": [null, null, null, null, null, 51.9]
+        },
+        "trolley": {
+          "detected": 6,
+          "first_median_m": 104.5,
+          "sustained_median_m": 111.3,
+          "false_detections": 10,
+          "firsts_m": [79.1, 109.9, 103.9, 108.8, 103.0, 105.2]
+        },
+        "cable": {
+          "detected": 6,
+          "first_median_m": 98.9,
+          "sustained_median_m": 34.2,
+          "false_detections": 3,
+          "firsts_m": [56.4, 108.0, 103.9, 93.8, 12.6, 112.5]
+        }
+      },
+      "far_min_height_1.0": {
+        "person": {
+          "detected": 6,
+          "first_median_m": 138.8,
+          "sustained_median_m": 124.6,
+          "false_detections": 2,
+          "firsts_m": [169.2, 112.0, 152.0, 149.6, 128.0, 116.1]
+        },
+        "box1.0": {
+          "detected": 6,
+          "first_median_m": 104.0,
+          "sustained_median_m": 113.2,
+          "false_detections": 11,
+          "firsts_m": [85.3, 109.9, 101.9, 105.0, 103.0, 105.2]
+        },
+        "box0.5": {
+          "detected": 1,
+          "first_median_m": 51.9,
+          "sustained_median_m": 55.6,
+          "false_detections": 0,
+          "firsts_m": [null, null, null, null, null, 51.9]
+        },
+        "trolley": {
+          "detected": 6,
+          "first_median_m": 104.5,
+          "sustained_median_m": 111.3,
+          "false_detections": 10,
+          "firsts_m": [79.1, 109.9, 103.9, 108.8, 103.0, 105.2]
+        },
+        "cable": {
+          "detected": 6,
+          "first_median_m": 98.9,
+          "sustained_median_m": 34.2,
+          "false_detections": 3,
+          "firsts_m": [56.4, 108.0, 103.9, 93.8, 12.6, 112.5]
+        }
+      },
+      "far_axis_both_sides_1": {
+        "person": {
+          "detected": 6,
+          "first_median_m": 147.8,
+          "sustained_median_m": 142.6,
+          "false_detections": 4,
+          "firsts_m": [146.0, 112.0, 152.0, 149.6, 141.4, 149.9]
+        },
+        "box1.0": {
+          "detected": 6,
+          "first_median_m": 123.9,
+          "sustained_median_m": 114.1,
+          "false_detections": 7,
+          "firsts_m": [146.0, 109.9, 101.9, 149.6, 131.8, 116.1]
+        },
+        "box0.5": {
+          "detected": 1,
+          "first_median_m": 51.9,
+          "sustained_median_m": 55.6,
+          "false_detections": 0,
+          "firsts_m": [null, null, null, null, null, 51.9]
+        },
+        "trolley": {
+          "detected": 6,
+          "first_median_m": 136.6,
+          "sustained_median_m": 115.0,
+          "false_detections": 12,
+          "firsts_m": [137.6, 112.0, 103.9, 156.9, 135.7, 148.1]
+        },
+        "cable": {
+          "detected": 6,
+          "first_median_m": 98.9,
+          "sustained_median_m": 34.2,
+          "false_detections": 0,
+          "firsts_m": [56.4, 108.0, 103.9, 93.8, 12.6, 112.5]
+        }
+      },
+      "far_axis_both_sides_2": {
+        "person": {
+          "detected": 6,
+          "first_median_m": 151.0,
+          "sustained_median_m": 142.6,
+          "false_detections": 7,
+          "firsts_m": [169.2, 144.1, 152.0, 149.6, 166.3, 149.9]
+        },
+        "box1.0": {
+          "detected": 6,
+          "first_median_m": 123.9,
+          "sustained_median_m": 114.1,
+          "false_detections": 13,
+          "firsts_m": [146.0, 109.9, 101.9, 149.6, 131.8, 116.1]
+        },
+        "box0.5": {
+          "detected": 1,
+          "first_median_m": 51.9,
+          "sustained_median_m": 55.6,
+          "false_detections": 0,
+          "firsts_m": [null, null, null, null, null, 51.9]
+        },
+        "trolley": {
+          "detected": 6,
+          "first_median_m": 151.4,
+          "sustained_median_m": 115.0,
+          "false_detections": 12,
+          "firsts_m": [156.6, 112.0, 103.9, 194.0, 154.8, 148.1]
+        },
+        "cable": {
+          "detected": 6,
+          "first_median_m": 98.9,
+          "sustained_median_m": 34.2,
+          "false_detections": 2,
+          "firsts_m": [56.4, 108.0, 103.9, 93.8, 12.6, 112.5]
+        }
+      },
+      "frames_with_a_shorter_monitored_range": {
+        "far_axis_both_sides_1": "1816 of 3060 (38 hit frames lost)",
+        "far_axis_both_sides_2": "181 of 3060 (no hit frame changes)"
+      },
+      "verdicts": {
+        "far_min_height_0.8": "FAIL: person, box1.0, trolley median first confirmation shorter",
+        "far_min_height_0.9": "FAIL: person, box1.0, trolley",
+        "far_min_height_1.0": "FAIL: person, box1.0, trolley",
+        "far_axis_both_sides_1": "FAIL: person 151.0 -> 147.8 m, trolley 151.4 -> 136.6 m",
+        "far_axis_both_sides_2": "PASS: every kind identical, cable false detections 3 -> 2"
+      }
+    },
+    "extra_check_mode1_six_and_setO": {
+      "note": "run beside mode 1's stage 2, cache without the ride (--allow 'ride.*' --allow 'set_F_straight.*'); information, mode 1 had already failed stage 2",
+      "verdict": "GATE FAIL: roundT_doubleT alarm events 0 -> 1 and STOP episodes 0 -> 1 (track 82, a 2.2 m column-shaped structure at 130-141 m: clusters beyond the both-side range became beyond_axis instead of column and left the tracking.column_hold count; one STOP frame, 233); squareT_platform_squareT_switch 54 / 9 / 15 -> 31 / 5 / 11; set O and doubleT_obstacle identical",
+      "five_empty": {
+        "frames": 2287,
+        "alarm_frames": 36,
+        "alarm_events": 10,
+        "stop_episodes": 13,
+        "advisory_frames": 1016
+      }
+    },
+    "gentle_curves_setF": {
+      "note": "files 5, 16, 45, 97, 100, 137 (intake median |curvature| 3.3e-4...4.7e-4 /m), person / trolley / box1.0; the extra safety condition of addendum 2",
+      "defaults": {
+        "person": {
+          "detected": 6,
+          "first_median_m": 124.1,
+          "sustained_median_m": 132.9,
+          "false_detections": 4,
+          "firsts_m": [134.4, 91.6, 134.9, 139.6, 113.8, 64.5]
+        },
+        "trolley": {
+          "detected": 6,
+          "first_median_m": 111.6,
+          "sustained_median_m": 123.4,
+          "false_detections": 5,
+          "firsts_m": [109.5, 95.6, 113.6, 122.6, 113.8, 68.1]
+        },
+        "box1.0": {
+          "detected": 6,
+          "first_median_m": 113.1,
+          "sustained_median_m": 114.9,
+          "false_detections": 7,
+          "firsts_m": [112.6, 93.0, 113.6, 124.5, 117.7, 66.2]
+        }
+      },
+      "far_axis_both_sides_2": {
+        "person": {
+          "detected": 6,
+          "first_median_m": 122.2,
+          "sustained_median_m": 132.9,
+          "false_detections": 2,
+          "firsts_m": [134.4, 91.6, 130.5, 137.7, 113.8, 64.5]
+        },
+        "trolley": {
+          "detected": 6,
+          "first_median_m": 111.6,
+          "sustained_median_m": 123.4,
+          "false_detections": 5,
+          "firsts_m": [109.5, 95.6, 113.6, 122.6, 113.8, 68.1]
+        },
+        "box1.0": {
+          "detected": 6,
+          "first_median_m": 113.1,
+          "sustained_median_m": 114.9,
+          "false_detections": 7,
+          "firsts_m": [112.6, 93.0, 113.6, 124.5, 117.7, 66.2]
+        }
+      },
+      "frames_with_a_shorter_monitored_range": "582 of 1950 (3 hit frames change)",
+      "verdict": "FAIL: person median first confirmation 124.1 -> 122.2 m (file 45 134.9 -> 130.5 m, file 97 139.6 -> 137.7 m); trolley and box1.0 identical; false detections person 4 -> 2"
+    },
+    "full_gate_mode2": {
+      "file": "docs/evidence/results/regression_gate_2026-09-25_far_axis_both_sides_2.json",
+      "verdict": "GATE PASS: no gated metric worse, 5 gated better",
+      "better": ["recordings.squareT_platform_squareT_switch.alarm_events 9 -> 5", "recordings.squareT_platform_squareT_switch.stop_episodes 15 -> 11", "ride.alarm_events 46 -> 42", "ride.stop_episodes 39 -> 33", "set_F_straight.cable.false_detections 3 -> 2"],
+      "five_empty": {
+        "frames": 2287,
+        "alarm_frames": 35,
+        "alarm_events": 9,
+        "stop_episodes": 12,
+        "advisory_frames": 1016
+      },
+      "ride": {
+        "frames": 11271,
+        "alarm_frames": 147,
+        "alarm_events": 42,
+        "stop_episodes": 33,
+        "monitored_range_median": 120.0
+      },
+      "ride_baseline": {
+        "alarm_frames": 187,
+        "alarm_events": 46,
+        "stop_episodes": 39,
+        "monitored_range_median": 127.6
+      },
+      "ride_changes": {
+        "removed_events": [
+          {
+            "chunk": 0,
+            "id": 3,
+            "frames": ["new_data_0_0013", "new_data_0_0030"],
+            "n": 18,
+            "distance": [137.94, 145.11],
+            "size_first": [0.14, 0.4, 0.96],
+            "lateral_first": 0.11
+          },
+          {
+            "chunk": 2,
+            "id": 443,
+            "frames": ["new_data_75_0049", "new_data_76_0005"],
+            "n": 8,
+            "distance": [121.59, 132.91],
+            "size_first": [5.28, 1.9, 2.42],
+            "lateral_first": -0.76
+          },
+          {
+            "chunk": 6,
+            "id": 328,
+            "frames": ["new_data_181_0032", "new_data_181_0043"],
+            "n": 10,
+            "distance": [96.83, 109.59],
+            "size_first": [1.24, 0.63, 1.95],
+            "lateral_first": -0.16
+          },
+          {
+            "chunk": 6,
+            "id": 333,
+            "frames": ["new_data_182_0002", "new_data_182_0004"],
+            "n": 3,
+            "distance": [120.83, 123.38],
+            "size_first": [0.08, 0.56, 0.57],
+            "lateral_first": 0.33
+          }
+        ],
+        "added_events": [],
+        "alarm_frames_changed": 40,
+        "frames_with_a_shorter_monitored_range": "3152 of 11271"
+      },
+      "set_O": {
+        "inside_stop_frames": 303,
+        "outside_false_stop_frames": 6,
+        "background": {
+          "alarm_frames": 3,
+          "track_ids": 2
+        },
+        "note": "identical to the baseline object by object"
+      },
+      "doubleT_obstacle": {
+        "labelled": {
+          "object_on_rail": {
+            "hits": 127,
+            "frames": 185
+          },
+          "person_crossing": {
+            "hits": 58,
+            "frames": 61
+          },
+          "object_on_rail_from_frame_75": {
+            "hits": 124,
+            "frames": 126
+          }
+        },
+        "first_alarm_frame": 11
+      },
+      "monitored_range_median": {
+        "doubleT_obstacle": [151.0, 139.0],
+        "doubleT_platform": [120.0, 120.0],
+        "roundT_doubleT": [145.8, 137.9],
+        "roundT_pressureGate_roundT": [130.3, 127.8],
+        "roundT_squareT_pressureGate_squareT": [157.5, 157.0],
+        "squareT_platform_squareT_switch": [143.0, 120.0]
+      },
+      "code": {
+        "commit": "12a14ea69095a236303c14d349d056a916d185a2",
+        "branch": "wf7/far-switch",
+        "version": "1.0.0",
+        "uncommitted_detector_changes": ["M configs/default.yaml", " M resense/config.py", " M resense/detector.py", " M resense/track.py"]
+      },
+      "config_sha256": "93375ac6f7aa5163b39601b89d1c97c5c4169383dfd352bd52896eb8bf086e10",
+      "wall_s": 981.6
+    }
+  },
+  "choice": {
+    "shipped": false,
+    "text": "No candidate is shippable. far_min_height 0.8 / 0.9 / 1.0 and far_axis_both_sides 1 fail the hard safety condition on set F straight; far_axis_both_sides 2 passes the gate (5 gated rows better) and set F straight (identical) but fails its pre-registered gentle-curve condition (person 124.1 -> 122.2 m). cluster.far_axis_both_sides stays 0 (off; output byte-identical to be39362, checked frame by frame on squareT_platform_squareT_switch and by the unchanged tests); far_min_height stays 0.6. Mode 2 is a trade-off for the captain: ride -4 events / -6 STOP episodes, five bags -4 / -4, against ~2 m of a person's first confirmation on 2 of 6 gentle-curve approaches and a shorter verified-clear range (ride median 127.6 -> 120.0 m).",
+    "cause": "an axis error: in the switch frames the left boundary (a hall wall, |dy| 1.7-2.0 m) is seen only to 72-92 m with 3.4e-4...5.4e-4 /m, the right one to 128-152 m with 2e-5...9e-5 /m; they agree within 6.7e-4, the rms weighting lets the short side set the curvature (1.3e-4...3.2e-4 /m): 1.4-3.4 m at 147 m.",
+    "next": "weigh each boundary by the range it is observed to in the axis model (resense/track.py estimate_axis_from_walls), measured together with the 82.9 m platform end; not a far-field rule."
+  },
+  "tests": "tests/test_late_candidates.py +5: the flag is 0 in the code and both parameter files; the track model's both-side ranges on the ray-cast tunnel with a bent hall wall seen to 76 m and on the straight tunnel; a 1.7 m face at 125 m on the extrapolated corridor: STOP with the flag off, advisory beyond_axis in modes 1 and 2; mode 2 keeps a column a column (mode 1 does not); safety: a person at 50 m in the hall scene STOPs on the same frame in every mode and a person at 140 m beyond the height reference in the straight tunnel still STOPs."
 }
