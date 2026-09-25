@@ -1,0 +1,46 @@
+{
+  "schema": "resense-p3-robustness-v1",
+  "date": "2026-09-25",
+  "item": "SCORECARD #13 (criterion 8.4): 5 Hz input and a +3 deg roll / pitch re-mount (P4: EXPERIMENTS.md section 1g, scorecard13_2026-09-25.json)",
+  "preregistered": {
+    "written_at_utc": "2026-09-25T20:50:23Z",
+    "base": "1c96233 (claude/nifty-pascal-lzgl78), branch wf9/robustness",
+    "note": "written before any candidate run; only the base was measured (below)",
+    "flags": {
+      "calibration.time_cadence": "bool, default false (frame counting, byte-identical). true: calibration.obs_spacing, monitor_period and max_frames count nominal frame periods of sensor time instead of processed frames; each frame adds round(dt / tracking.frame_dt) periods (at least 1), dt from the stamps exactly as the tracker gets it (Detector._frame_dt). 10 Hz adds 1 per frame (the receive-stamp jitter 0.08-0.12 s rounds to 1), 5 Hz adds 2, so the 20 x 10-period final observation window is 20 s at both rates.",
+      "track.rates_per_period": "bool, default false. true: axis_max_yaw_rate and axis_max_curvature_rate are per nominal frame period and the EMA weights floor_smoothing, rails_smoothing and walls_smoothing are per period: over k periods (the same rounding) the limits are x k and the weights a^k, and the model age (axis_warmup_frames) advances by k.",
+      "calibration.refine_min_deg": "float deg, default 0 (off). > 0: while a provisional tilt is applied and at least calibration.provisional_frames spaced observations exist, the tilt the final would set from the spaced observations so far (their median; roll / pitch below apply_min_deg and yaw below min_yaw_deg set to 0, as the final does) replaces the applied tilt when it differs from it by at least this much in roll or pitch. Pre-registered value: 0.5.",
+      "calibration.provisional_per_axis": "bool, default false. true: the provisional tilt corrects roll and pitch each only when that axis itself reaches provisional_min_deg (2.5)."
+    },
+    "candidates_in_order": [
+      {"id": "K1", "set": {"calibration.time_cadence": true}},
+      {"id": "K2", "set": {"calibration.time_cadence": true, "track.rates_per_period": true}},
+      {"id": "K3", "set": {"calibration.time_cadence": true, "track.rates_per_period": true, "calibration.refine_min_deg": 0.5}},
+      {"id": "K4", "set": {"calibration.time_cadence": true, "track.rates_per_period": true, "calibration.refine_min_deg": 0.5, "calibration.provisional_per_axis": true},
+       "run_only_if": "K3 leaves a stress mode above 13 false events on the five empty bags, or roundT_doubleT above 0 at pitch_3"}
+    ],
+    "measurement": {
+      "stress": "python scripts/robustness_check.py --cache /data/cache --jobs 1 --config <configs/default.yaml with the candidate's flags> --out <dir> with --every 2, --mount roll_3, --mount pitch_3 (and as recorded, as a cheap 10 Hz pre-check before the gate)",
+      "gate": "python scripts/regression_gate.py --cache /data/cache --jobs 1 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json --set <flags>, 10 Hz, with the ride and set F straight; run only for the candidate(s) that meet the target on the stress runs"
+    },
+    "target": "re-measured with robustness_check.py: the five empty bags at 5 Hz / roll_3 / pitch_3 at <= 13 false events each (base 13 / 16 / 17); roundT_doubleT 0 / 0 / 0 or as close as possible (base 3 / 2 / 1); doubleT_obstacle under stress not worse than P4: labelled hits 92/123 and first alarm frame 12 at 5 Hz, 181/246 and 12 at roll_3, 186/246 and 11 at pitch_3; and the normal 10 Hz gate passes",
+    "ship_rule": "A candidate is eligible when (1) the 10 Hz gate exits 0 and (2) the target improves: the five-bag false events summed over 5 Hz + roll_3 + pitch_3 fall below the base 46 (13 + 16 + 17), none of the three modes rises, and roundT_doubleT rises in no mode; and (3) every safety condition holds. Ship the eligible candidate with the fewest summed stress false events (tie: the one with fewer flags). No eligible candidate: nothing ships, flags stay off, reported as tried, not shipped, with the numbers.",
+    "safety_conditions": [
+      "10 Hz gate rows: doubleT_obstacle labelled hits per label identical or better, first alarm frame identical or earlier, false-alarm events not up",
+      "10 Hz gate rows: set O (cloud_with_fake_obj) every inside object STOP frames identical or more and first STOP identical or earlier (no shorter first-STOP distance)",
+      "10 Hz gate rows: set F straight detections identical or better",
+      "10 Hz gate rows: no new false event (alarm events, STOP episodes) in any of the five empty recordings or the ride",
+      "stress: doubleT_obstacle labelled hits and first alarm frame at 5 Hz / roll_3 / pitch_3 not worse than P4's numbers above",
+      "a safety loss outweighs any false-alarm gain"
+    ]
+  },
+  "known_before_registration": {
+    "base_measured": "robustness_check.py on 1c96233, --jobs 1: identical to P4 (scorecard13_2026-09-25.json). Five empty bags false events / STOP episodes: as recorded 13 / 16, 5 Hz 13 / 17, roll_3 16 / 17, pitch_3 17 / 18. roundT_doubleT events 0 / 3 / 2 / 1. doubleT_obstacle 185/246 first 11; 92/123 first 12; 181/246 first 12; 186/246 first 11.",
+    "diagnosis": {
+      "5hz_calibration": "at 5 Hz the final 20-observation calibration never completes on roundT_doubleT, roundT_pressureGate_roundT, doubleT_platform, doubleT_obstacle (status stays pending / provisional); on the two long bags it completes at original frame 380 instead of 190",
+      "5hz_roundT_doubleT": "all three events coincide with the track axis lagging the 10 Hz one: the yaw moves by the per-frame limit axis_max_yaw_rate 0.003 on every 5 Hz frame at frames 104-120 (5 Hz yaw -0.0272 vs 10 Hz -0.0365 at frame 112) and the curvature by axis_max_curvature_rate 1e-4 per frame at 126-130; at 186-196 the 5 Hz curvature is 1.0-1.1e-4 larger (0.5 m at 100 m). Track 25 (106-108) is a low cluster at 47 m sweeping laterally 0.7 -> 0.1 m; tracks 41 (186) and 44 (190-196) are far clusters sweeping 1-2 m across the corridor at 83-137 m, confirmed on a 2-of-3 zone vote.",
+      "tilt_roundT_doubleT": "the provisional tilt (median of the first 5 consecutive observations) carries a roll error: the as-recorded first frames measure roll -1.0 ... -2.15 deg (the spaced median settles at -0.5 after 6 observations and -0.19 at 20). pitch_3: provisional roll -1.57 / pitch -2.70 applied (final 0.0 / -2.81) -> track 24, a low cluster at the right rail at 50-54 m, frames 99-100. roll_3: provisional roll -5.03 (final -3.36) -> track 26, a low cluster at the right rail at 39-44 m, frames 111-112; track 18 at 234 is the known far column (column hits 1 of the last 10 at that frame) after the final calibration.",
+      "tilt_other": "doubleT_platform pitch_3: track 4 (frame 19, 112 m) in the first frames after the provisional re-seed, track 156 (185-186, a low cluster at 3-9 m), track 169 (201, a column at 88 m confirmed on a 3-of-5 zone vote before its column hits); roll_3: track 8 (10-11, 81 m) after the re-seed, track 119 (164-165, 49 m). squareT_platform_squareT_switch 9 -> 10 events: the same flickering station structures at 82.9 / 94 / 147 m as recorded. These are not traced to a frame- or tilt-dependent rule."
+    }
+  }
+}
