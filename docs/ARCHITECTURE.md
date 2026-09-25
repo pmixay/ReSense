@@ -74,12 +74,12 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
 |---|---|
 | `resense/` | core library (no ROS dependency): decoding, track model, gauge, clustering, tracking, detector, synthetic data, metrics, CLI, plots |
 | `ros2_ws/src/resense_ros/` | ROS 2 Humble `ament_python` package: node, launch, params, RViz config |
-| `docker/`, `docker-compose.yml`, `scripts/` | reproducible build/run: `docker build → docker run → ros2 bag play → result` |
+| `docker/`, `docker-compose.yml`, `scripts/` | reproducible build/run: `docker build → docker run → ros2 bag play → result`; on the stand, which has no internet, `docker load` of the image archive replaces the build ("Deployment without internet" below) |
 | `configs/default.yaml` | all detector parameters; copied over the ROS package copy at Docker build time, `scripts/sync_params.sh --check` in CI keeps the two identical |
 | `native/`, `setup.py` | optional C++ kernels for the per-frame hot spots, bit-identical to the numpy code they replace ("Native kernels" below); compiled by `pip install`, `RESENSE_NATIVE=0` forces numpy |
 | `tests/` | pytest on a synthetic ray-cast tunnel (no dataset needed) |
 | `docs/` | every document, its purpose and owner: [`docs/README.md`](README.md) |
-| `web/` | the dashboard: replays a `results.jsonl`, or shows the live node through rosbridge — not in the image, and roslib comes from a CDN (`web/README.md`); offline live view: Foxglove |
+| `web/` | the dashboard: replays a `results.jsonl`, or shows the live node through rosbridge — not in the image (`web/README.md`); roslib is bundled (`web/assets/vendor/`, 25.09), so the page needs no internet; live view without rosbridge: Foxglove |
 
 ## Data flow and formats
 
@@ -283,6 +283,54 @@ forward crop at X ≥ 2.9 m inside the detector (−17 ms at 360°: 42 % of its 
 and a single-pass C++ decode in the node (−11…−20 ms at 360°). They were measured on the numpy
 path, before the native kernels. With them the expected mean node latency on the i7-9700E at 360°
 is 48–56 ms [estimate; it assumes that numpy path].
+
+## Deployment without internet (25.09)
+
+The test machine has no internet ([`organizers/answers.md`](organizers/answers.md) §7). Audit of
+25.09, everything the jury path touches:
+
+| stage | needs the network for | source |
+|---|---|---|
+| `docker build` (`docker/Dockerfile`) | base image `ros:humble-ros-base-jammy` | Docker Hub |
+| | `apt-get`: the ROS 2 packages (vision / nav msgs, tf2, RViz, rosbag2 with sqlite3 and mcap, foxglove_bridge), `python3-pip`, `g++` | packages.ros.org, Ubuntu archive |
+| | `pip`: pip ≥ 24, pinned numpy / scipy / scikit-learn / pyyaml (their dependencies joblib and threadpoolctl unpinned), setuptools for `pip install .`; `WITH_TOOLS=1`: rosbags, zstandard, matplotlib, open3d, pytest | PyPI |
+| run time: node, launch file, entrypoint, compose services, RViz, foxglove_bridge | nothing: DDS over UDP on the host's interfaces (the loopback alone is enough), foxglove_bridge serves `ws://…:8765` itself, RViz is local | — |
+| dashboard `web/index.html`, label tool | nothing: fonts local, roslib bundled since 25.09 (it came from a CDN); its live mode needs rosbridge, which is not in the image | — |
+| Foxglove viewer (remote demo) | the desktop app works offline; app.foxglove.dev is a web page on the viewer's laptop | — |
+| not on the jury path | `scripts/unpack_dataset.py` (Yandex Disk), `scripts/build_deck.py` (template), CI | — |
+
+**Delivery.** `scripts/export_image.sh` builds the runtime image from `git archive HEAD`, tags
+`resense:<version>` and `resense:latest`, and writes `dist/resense-image-<version>.tar.gz` (gzip:
+`docker load` reads it on any Docker; zstd would be ~10–20 % smaller but not every Docker reads it)
+with its `.sha256`; `scripts/load_image.sh` checks the sum, loads the archive and runs the image
+with `--network none`. The runtime image keeps `g++` (the C++ kernels are compiled at build time)
+and RViz: a multi-stage build without the compiler would be smaller but changes every layer, so it
+waits until after the freeze. The CI `docker` job proves the chain: `docker save` → `docker rmi`
+→ `docker load`, then the synthetic bags through the loaded image with `--network none` (only the
+loopback: Fast DDS joins its discovery multicast group on the loopback and sends through a
+loopback-bound socket, so the processes find each other with no network interface up) and in
+separate containers on a `docker network create --internal` network (no way out).
+
+**Offline `docker build` (best effort).** If the jury insists on building, after `docker load`:
+
+```bash
+chmod -R u+rwX,go+rX,go-w .                         # in the source tree of the same tag
+docker build --cache-from resense:<version> -t resense -f docker/Dockerfile .
+```
+
+The archive's image was built with `BUILDKIT_INLINE_CACHE=1` on a base image resolved from the local
+store, and the base image's tag is in the archive (its layers are the image's lowest ones, a few KB
+more), so BuildKit resolves `FROM` locally and finds every step in the loaded image's cache;
+nothing is downloaded. Caveats: (1) BuildKit (default since Docker 23; `DOCKER_BUILDKIT=1` on
+20.10–22) with the classic image store; the containerd image store (the default of fresh Docker 29
+installs) is untested; (2) the stand's Docker must turn the Dockerfile into the same build graph as
+the Docker that made the archive: another release may change it and miss the cache, and the
+stand's version is unknown; (3) the context must be the tag's tree with the same permission bits
+(they are part of the cache key: a checkout under `umask 002` differs until the `chmod` above);
+(4) no `--pull`, `--no-cache`, `--network` or `WITH_TOOLS` (each changes the cache key); (5) any
+miss makes the build try `apt-get` and fail, and then the loaded image is untouched, so `docker run`
+still works. The CI job `offline-build` tries exactly this on the runner's Docker with Docker Hub
+blocked (continue-on-error). The documented path stays `docker load`.
 
 ## Known limitations
 

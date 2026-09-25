@@ -17,6 +17,23 @@ frames, 13 km, no obstacles).
 The package version stays 0.6.3 (node v0.6.4). Tests: 235 → 266 (+28 native kernels, +3 speed
 evaluation helpers) in `tests/`, 11 in `web/demo`.
 
+- **Offline delivery (25.09):** the test machine has no internet (organizers, 25.09,
+  [`docs/organizers/answers.md`](docs/organizers/answers.md) §7), so `docker build` cannot run
+  there. `scripts/export_image.sh` writes the runtime image as `dist/resense-image-<version>.tar.gz`
+  + `.sha256` (built from `git archive HEAD`, OCI version / revision labels, BuildKit inline cache,
+  the base image's tag inside); `scripts/load_image.sh` checks the sum, runs `docker load` and
+  checks the image with `--network none`; `scripts/check_no_network.py` asserts that a container
+  reaches nothing; `scripts/dry_run.sh` takes `IMAGE_TAR=<archive>` (load instead of build) and
+  `OFFLINE=1` (node, player and recorder with `--network none`). README step 1 is now `docker load`
+  (`docker build` with internet). CI: the docker job saves, removes and loads the built image and
+  plays the synthetic bags through it with `--network none` and on an internal Docker network; the
+  new job `offline-build` (best effort, continue-on-error) rebuilds from the loaded archive with
+  Docker Hub blocked. Run-time audit: no network use in the node, launch file, entrypoint or
+  compose services; the dashboard's roslib (1.4.1, BSD) is bundled in `web/assets/vendor/`
+  instead of loaded from a CDN. `dist/` is excluded from the Docker build context. The Dockerfile's
+  layers are unchanged (a header comment only). [ARCHITECTURE "Deployment without
+  internet"](docs/ARCHITECTURE.md).
+
 - **Dashboard restyle (`46a04bb`, P2, 24.09):** dashboard and label tool in the Metro style
   (Moscow Sans from the supplied style archive, primary red `#E4000D`, styles in
   `web/assets/dashboard.css` / `label-tool.css`), `web/demo/capture_gallery.py` refreshes the

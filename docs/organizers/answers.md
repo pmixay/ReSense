@@ -15,7 +15,9 @@ from these sources:
 * the experts' answers on the LiDAR mount and switches in
   [`mount_and_switch_qa.md`](mount_and_switch_qa.md), recorded 24.09, consolidated in §5;
 * the **hand-outs of 22.09**: sensor manual, extended dataset, test-stand software;
-* the **organizers' statement of 25.09** on access to the test stand, reported by the captain, §6.
+* the **organizers' statement of 25.09** on access to the test stand, reported by the captain, §6;
+* the **organizers' statement of 25.09** that the test machine has no internet access, reported
+  by the captain, §7.
 
 The questions that are still open are the only ones left in [`../QUESTIONS.md`](../QUESTIONS.md).
 
@@ -85,7 +87,7 @@ withdrawn by the team as an organisational matter.
 | will there be an extended dataset, when, how many recordings | organizers' hand-out: `new_data.zst`, one 20-minute recording, 221 split files, no labels | [`DATASET.md`](../DATASET.md) "Extended dataset", `extended_dataset_intake.json` |
 | GPU / CUDA on the test stand | organizers' hand-out: `nvidia-smi` and `dpkg` state of the stand (driver 580, CUDA 13 runtime, toolkit 12.9); ReSense does not use it (evaluated 24.09 and rejected: ARCHITECTURE.md "GPU: evaluated, not used") | [`organizers/test_stand_software.md`](test_stand_software.md) |
 | train speed, odometry or IMU topic on the train | **organizers' fact** (Q&A 22.09, fact 6): no odometry in the recordings, some trains have none. **Team decision** (22.09): "train-speed data is not technically possible for this case", so the solution operates without it. The deliverable is the no-speed path (single-frame detection + persistence in time); the node's `ego_speed_mps` / `speed_topic` / `odom_topic` inputs stay as optional extras and the multi-frame accumulation stays off unless a speed is given. 24.09: the LiDAR-only estimator was measured accurate, but even a perfect speed does not improve the organizers' check, so it stays opt-in ([`EXPERIMENTS.md`](../EXPERIMENTS.md) §9) | [`SENSOR.md`](../SENSOR.md) §4, [`CAPTAIN_log_2026-09.md`](../archive/CAPTAIN_log_2026-09.md) finding 7, `ARCHITECTURE.md` |
-| intermediate submission (date, form, where), final submission (image vs Dockerfile, size, video), test-stand procedure (launch, internet at build, bag playback, disk) | organisational — the team handles these itself, not a question to the organizers; 25.09: the team gets no run on the stand before submission (§6) | [`SUBMISSION.md`](../SUBMISSION.md), README "Where the data lives" / demo runbook |
+| intermediate submission (date, form, where), final submission (image vs Dockerfile, size, video), test-stand procedure (launch, internet at build, bag playback, disk) | organisational — the team handles these itself, not a question to the organizers; 25.09: the team gets no run on the stand before submission (§6), and the stand has no internet, so the image goes as a `docker load` archive (§7) | [`SUBMISSION.md`](../SUBMISSION.md), README "Where the data lives" / demo runbook |
 | may the given recordings be used for tuning parameters | answered 22.09: yes, acceptable | — |
 | own slides after the template's 7–11 | answered 22.09: yes, acceptable | [`PRESENTATION.md`](../PRESENTATION.md) |
 
@@ -112,3 +114,14 @@ text; the captain's instruction was to remove the stand from the questions and t
 | date | reported by | organizers' statement | status | consequence in ReSense |
 |---|---|---|---|---|
 | 25.09 | the captain (P1) | no access to the test stand before submission: nothing can be built, run or timed on the organizers' machine by the team | **closed** | every stand run is dropped from the plan ([`../CAPTAIN.md`](../CAPTAIN.md) C8, actions 7 and 15; [`../SUBMISSION.md`](../SUBMISSION.md) "Dry run"); the substitute is the team's own 8-core machine (the "8-core analogue": timing on the native and numpy paths, the dry run with the latency and drop criteria) and CI (the `docker` job builds the image and plays synthetic bags through the node as the organizers will); the stand's hardware stays the machine the jury will use, so its facts and the estimates made for it stay in the docs, labelled as such; no stand question is left in [`../QUESTIONS.md`](../QUESTIONS.md) |
+
+## 7. No internet on the test machine (25.09, reported by the captain)
+
+The captain reported on 25.09 what the organizers said: **the test machine has no internet
+access**. No written text. The Q&A of 22.09 had said that the system "must work offline"
+([`QA_session.md`](QA_session.md) fact 10), which we had read as run time only; this statement
+covers the whole machine, the image build included. With §6 we cannot try anything on it first.
+
+| date | reported by | organizers' statement | status | consequence in ReSense |
+|---|---|---|---|---|
+| 25.09 | the captain (P1) | the test machine, the stand of spec §3.1, has no internet access | **closed** | `docker build` cannot work there: it pulls `ros:humble-ros-base-jammy` from Docker Hub, installs ROS and Ubuntu packages with `apt-get` and the pinned wheels (and the build backend) from PyPI. The image is therefore delivered as an archive: `scripts/export_image.sh` → `resense-image-<version>.tar.gz` with its `.sha256`, loaded with `docker load -i` (step 1 of README "Кратко для жюри"; `scripts/load_image.sh` checks the sum and runs the image with `--network none`); the archive is a deliverable of the upload ([`../SUBMISSION.md`](../SUBMISSION.md), [`../CAPTAIN.md`](../CAPTAIN.md) C25). Nothing in the node, the launch file, the entrypoint or the compose services uses the network at run time; the dashboard's roslib is now bundled (`web/assets/vendor/`). CI proves the chain: the built image goes through `docker save` → `docker rmi` → `docker load`, then the synthetic bags are played through the node with `--network none` and on an internal Docker network with no way out. An offline `docker build --cache-from` from the archive is a best-effort extra with caveats ([`../ARCHITECTURE.md`](../ARCHITECTURE.md) "Deployment without internet"); the 28.09 dry run loads the archive with the network disconnected (`IMAGE_TAR=… OFFLINE=1 scripts/dry_run.sh`) |

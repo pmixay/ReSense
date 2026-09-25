@@ -16,13 +16,25 @@ ReSense 10 раз в секунду отвечает беспилотному п
 организаторами, и сообщает о каждом устойчивом объекте в нём: расстояние вдоль пути, боковое
 смещение, размер, уверенность. Классы объектов и обучение на разметке не нужны.
 
+**На стенде нет интернета** (организаторы, 25.09), поэтому `docker build` там не сработает
+(базовый образ, apt, pip). Образ сдаётся готовым архивом `resense-image-<версия>.tar.gz` (рядом
+его `.sha256`) и загружается без сети; нода и всё, что ей нужно при работе, сети не требуют.
+
 ```bash
-docker build -t resense -f docker/Dockerfile .           # 1. один раз; нужен интернет (apt, pip)
+docker load -i resense-image-<версия>.tar.gz             # 1. один раз, без интернета
 docker run --rm -it --net=host --ipc=host resense        # 2. консоль 1: нода, без аргументов
 ros2 bag play <бэг> --delay 3                            # 3. консоль 2: любой пользователь, ROS 2 Humble
 ros2 topic echo /resense/decision --field data           # 4. консоль 3: GO | CAUTION | STOP | FAULT
 ros2 topic echo /resense/nearest_distance --field data   # 5. расстояние до препятствия, м; −1 — нет
 ```
+
+С интернетом шаг 1 можно заменить сборкой: `docker build -t resense -f docker/Dockerfile .`.
+Проверка архива: `sha256sum -c resense-image-<версия>.tar.gz.sha256`, или
+`scripts/load_image.sh <архив>` (сумма, загрузка и запуск образа без сети). Сборка без интернета —
+запасной путь с оговорками ([ARCHITECTURE](docs/ARCHITECTURE.md) «Deployment without internet»):
+после шага 1, в исходниках того же тега, `chmod -R u+rwX,go+rX,go-w . && docker build --cache-from
+resense:<версия> -t resense -f docker/Dockerfile .` берёт все слои из архива; не вышло — образ из
+шага 1 не тронут, шаг 2 работает.
 
 **`--net=host` обязателен.** Образ передаёт DDS только по UDP; без общей с хостом сети плеер не
 находит ноду, и `/resense/decision` остаётся `FAULT`. `ROS_DOMAIN_ID` плеера и ноды должен
@@ -55,7 +67,13 @@ ros2 bag play <bag>  ──PointCloud2 (either topic / frame pair), 10 Hz──�
                                                      └─▶ /resense/detections, /resense/status (JSON), RViz markers
 ```
 
-1. **Build** (command 1, or `./scripts/build.sh`): ROS 2 Humble and exactly pinned Python packages.
+1. **Load the image** (command 1). **The stand has no internet** (organizers, 25.09,
+   [`docs/organizers/answers.md`](docs/organizers/answers.md) §7), so the image comes built, as the
+   archive of `scripts/export_image.sh`; `docker load` reads the gzip directly, and
+   `scripts/load_image.sh <archive>` also checks its `.sha256` and runs the image with
+   `--network none`. With internet, build it instead (`docker build -t resense -f
+   docker/Dockerfile .` or `./scripts/build.sh`: ROS 2 Humble and exactly pinned Python packages).
+   Nothing in the node, the launch file or the entrypoint uses the network at run time.
 2. **Start the node** (command 2), no arguments for any organizers' recording. **`--net=host` is
    required**: the image runs Fast DDS over UDP only (`docker/fastdds_udp.xml`, so that a player run
    by any user reaches the root node), and in Docker's default bridge network the host's player and
@@ -198,6 +216,9 @@ python scripts/mine_objects.py out/eval --bag new_data                  # every 
 ./scripts/run_demo.sh /data/for_hackathon/roundT_doubleT         # detector + RViz + bag playback in one container
 ./scripts/run_headless.sh /data/for_hackathon/doubleT_obstacle   # same, no X11: prints "OBSTACLE 55.7 m"
 ./scripts/dry_run.sh /data/for_hackathon/doubleT_obstacle        # acceptance test (all wrappers: exit 3 without a Docker daemon)
+./scripts/export_image.sh           # offline delivery: dist/resense-image-<ver>.tar.gz + .sha256
+./scripts/load_image.sh dist/resense-image-<ver>.tar.gz    # sha256, docker load, --network none check
+IMAGE_TAR=dist/resense-image-<ver>.tar.gz OFFLINE=1 ./scripts/dry_run.sh <bag>   # as on the stand
 WITH_TOOLS=1 ./scripts/build.sh     # + rosbags / matplotlib / open3d / pytest inside the image
 PULL=1 ./scripts/build.sh           # refresh the ros:humble base first (an old cached one fails apt-get update)
 docker run --rm -w / -e RESENSE_REQUIRE_SYNTHETIC=1 resense python3 -m pytest -q /opt/resense/tests   # WITH_TOOLS=1 image, as CI
@@ -258,7 +279,12 @@ link keep `/resense/corridor_points` instead of the raw cloud ([`web/README.md`]
 the sandbox and the clean-machine procedure: [`docs/SUBMISSION.md`](docs/SUBMISSION.md) "Dry run".
 CI runs the chain without the dataset on every push: 40-frame synthetic bags in the organizers'
 exact layout (clear, then a person at 60 m; both topic / frame pairs) played through the node in
-the image, also by a uid-1000 player from another container, the alarm asserted at 55–66 m.
+the image, also by a uid-1000 player from another container, the alarm asserted at 55–66 m. The
+offline delivery is checked the same way: the built image goes through `docker save` → `docker
+rmi` → `docker load` (`export_image.sh`, `load_image.sh`), then the bags are played through the
+loaded image with `--network none` and on an internal Docker network with no way out; a
+best-effort job (`offline-build`) tries the offline rebuild from the loaded archive with Docker
+Hub blocked. `IMAGE_TAR=<archive> OFFLINE=1 ./scripts/dry_run.sh <bag>` is the same on real bags.
 
 ### Topics published by the node
 
@@ -305,7 +331,7 @@ but no `node` object (so acceptance tools do not count it as a frame), and `/res
 | requirement | where |
 |---|---|
 | project description | this README (top) |
-| build the Docker image, run, process a bag | "Кратко для жюри", "How a bag is processed", "ROS 2 / Docker"; offline: "Quick start" |
+| build the Docker image, run, process a bag | "Кратко для жюри" (the stand has no internet: `docker load` of the image archive; with internet `docker build`), "How a bag is processed", "ROS 2 / Docker"; without ROS: "Quick start" |
 | parameters and configuration | "Node parameters", "Parameters worth knowing", [`docs/ALGORITHM.md`](docs/ALGORITHM.md) §5, `configs/default.yaml` |
 | architecture (components, data flow); algorithm (problem, data, processing, decision, parameters, limitations) | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md); [`docs/ALGORITHM.md`](docs/ALGORITHM.md) |
 | experiments (range, latency, FPS, false alarms, hard cases, evolution) | [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md), protocol in [`docs/EVALUATION.md`](docs/EVALUATION.md) |

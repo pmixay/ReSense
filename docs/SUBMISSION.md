@@ -62,7 +62,7 @@ team gets no run on the stand before submission, §6).
 
 | # | required | where | owner | status |
 |---|---|---|---|---|
-| 1 | Docker container with everything needed; runs in the jury environment without manual dependency installation | `docker/`, `docker-compose.yml` | P1 | done; re-verify on a clean machine on 28.09 |
+| 1 | Docker container with everything needed; runs in the jury environment without manual dependency installation | `docker/`, `docker-compose.yml`; the stand has **no internet** ([`organizers/answers.md`](organizers/answers.md) §7), so the container goes as the image archive of row 17 | P1 | done; `docker save` → `docker rmi` → `docker load` and the node with `--network none` in CI (docker job); re-verify offline on a clean machine on 28.09 |
 | 2 | source code | this repository | all | ongoing |
 | 3 | README: project description | [`README.md`](../README.md) | P1 | done |
 | 4 | README: how to build the image | README "Кратко для жюри", "ROS 2 / Docker" | P1 | done |
@@ -73,11 +73,12 @@ team gets no run on the stand before submission, §6).
 | 9 | algorithm description (problem, data, processing, decision, parameters, limitations) | [`ALGORITHM.md`](ALGORITHM.md) | P1, reviewed by P3 | done for v0.6 (mount calibration §2b, low objects §3.3b, far field §3.3c, decision / clear distance / health §4b, limitations §6) |
 | 10 | experiment results (range, latency, FPS, false alarms, hard cases, improvement over time) | [`EXPERIMENTS.md`](EXPERIMENTS.md), protocol in [`EVALUATION.md`](EVALUATION.md), raw summaries in [`evidence/results/`](evidence/results/), labels in `labels/` | P3 / P4 | v0.6.3 (23.09; re-run on the current code on 24.09, identical on every frame): all 13 759 frames of the organizer data at full rate for every change, with a leave-one-subset-out check and false alarms by the first processed frame (§0); ride tracks classified (`labels/new_data_objects.json`); long range on the moving ride (set F, §2d) and its paired audit ([`P4_AUDIT.md`](P4_AUDIT.md)); the organizers' synthetic-obstacle recording graded per object (set O, P4_AUDIT); mount calibration on re-mounted real frames (§6); learned second-opinion experiment (§8); clean timing (§3); 8-core bench timing pending ([`CAPTAIN.md`](CAPTAIN.md) action 7; the i7-9700E stand is not available before submission, [`organizers/answers.md`](organizers/answers.md) §6) |
 | 11 | video of the algorithm at work | [`video/`](video/): the Docker chain with RViz, `docker_chain_rviz.mp4` (69 s, node container + `ros2 bag play` as uid 1000 from another container + `/resense/decision`, sandbox, bag at 0.5×, EXPERIMENTS §3b); `doubleT_obstacle_cab.mp4` (the real bag from the cab: envelope, obstacle, STOP / distance, 20 s), `doubleT_obstacle_offline.mp4` (top and side view), `dashboard_doubleT_obstacle.mp4` (dashboard replay); recipes in `scripts/hero_view.py` and [`web/README.md`](../web/README.md) | P2 | done on real data (v0.6.2; the Docker chain v0.6.3); all four clips are silent, and the dashboard clip shows the earlier UI |
-| 12 | full demonstration on the control bag: `docker build → docker run → ros2 bag play → result` | `scripts/build.sh`, `scripts/run_demo.sh`; the same chain on synthetic bags in CI (`scripts/smoke_test.sh`, `scripts/console_test.sh`) | P1 | proven in CI on synthetic bags (since 21.09) and on the real frames in Docker, with RViz on screen (23.09, EXPERIMENTS §3b, `video/docker_chain_rviz.mp4`); left: the dry run with the original bags on a clean team machine (28.09; no run on the organizers' stand before submission, [`organizers/answers.md`](organizers/answers.md) §6) |
+| 12 | full demonstration on the control bag: `docker build → docker run → ros2 bag play → result` (on the stand, with no internet: `docker load` of row 17 instead of the build) | `scripts/build.sh`, `scripts/run_demo.sh`; the same chain on synthetic bags in CI (`scripts/smoke_test.sh`, `scripts/console_test.sh`; since 25.09 also after `docker load`, with no network) | P1 | proven in CI on synthetic bags (since 21.09) and on the real frames in Docker, with RViz on screen (23.09, EXPERIMENTS §3b, `video/docker_chain_rviz.mp4`); left: the dry run with the original bags on a clean team machine (28.09; no run on the organizers' stand before submission, [`organizers/answers.md`](organizers/answers.md) §6) |
 | 13 | presentation, slides 7–11 exactly per template | [`presentation/ReSense_LCT2026.pptx`](presentation/ReSense_LCT2026.pptx) (15 slides in the organizers' template, built by `scripts/build_deck.py`; PDF next to it), drafts and speaker text in [`PRESENTATION.md`](PRESENTATION.md) | P2 | built; open: the personal data and photos on slides 2–4 (17 `<…>` placeholders, P1), the slides still print 199 tests (266 now), rebuild (P2) |
 | 14 | tests (spec §8.5) | `tests/` (266 tests: algorithm on the ray-cast tunnel, envelope and low objects, mount calibration and guards, the native kernels against their numpy code, P4 placement, evaluation, the synthetic-obstacle labels and the speed-evaluation helpers, the node's decision / fault / watchdog / input-switching logic against ROS stand-ins in `tests/test_node.py`) + `web/demo/` (11); CI jobs `pytest`, `web`, `lint` (ruff), `params-in-sync`, `docker` (the Docker job also plays synthetic bags through the node, the second time the organizers' way: node and a uid-1000 player in separate containers) | P4 / P1 / P2 | done |
 | 15 | input data description | [`DATASET.md`](DATASET.md) (the organizers' links: Google Drive bags, the Yandex Disk extended dataset and the synthetic-obstacle recording of 24.09, labelled in `labels/cloud_with_fake_obj.json`), sensor: [`SENSOR.md`](SENSOR.md) with the Hesai manual in [`sensor/`](sensor/); the test stand's driver / CUDA state in [`organizers/test_stand_software.md`](organizers/test_stand_software.md) | P4 / P1 | done |
-| 16 | the organizers' answers applied (envelope 2.1 × 3.0 m, 30 × 30 × 10 cm, hanging cables, mount, object on the rail, decision output; 24.09: mounts as in the provided bags, switches) | [`organizers/answers.md`](organizers/answers.md), [`organizers/QA_session.md`](organizers/QA_session.md) (the Q&A of 22.09 and the facts that changed the code), [`organizers/mount_and_switch_qa.md`](organizers/mount_and_switch_qa.md); criteria judgement: [`SCORECARD.md`](SCORECARD.md) (24.09) | all | done (22.09; 24.09 answers recorded; 25.09: no stand access before submission, `organizers/answers.md` §6) |
+| 16 | the organizers' answers applied (envelope 2.1 × 3.0 m, 30 × 30 × 10 cm, hanging cables, mount, object on the rail, decision output; 24.09: mounts as in the provided bags, switches) | [`organizers/answers.md`](organizers/answers.md), [`organizers/QA_session.md`](organizers/QA_session.md) (the Q&A of 22.09 and the facts that changed the code), [`organizers/mount_and_switch_qa.md`](organizers/mount_and_switch_qa.md); criteria judgement: [`SCORECARD.md`](SCORECARD.md) (24.09) | all | done (22.09; 24.09 answers recorded; 25.09: no stand access before submission, `organizers/answers.md` §6; no internet on the stand, §7) |
+| 17 | **the image archive** (the stand has no internet, so `docker build` cannot run there): `resense-image-<version>.tar.gz` and its `.sha256` in the upload package, loaded with `docker load -i` | `scripts/export_image.sh` (from a clean clone of the tag, on a machine with internet), `scripts/load_image.sh`; README "Кратко для жюри" step 1 | P1 | tooling done (25.09); the rc1 archive on 27.09, the final one on 29.09; the upload form's size limit unknown ([`CAPTAIN.md`](CAPTAIN.md) action 1b) |
 
 ## Dry run (28.09)
 
@@ -92,6 +93,28 @@ SKIP_BUILD=1 ./scripts/dry_run.sh /data/for_hackathon/roundT_doubleT --expect-cl
 ./scripts/run_demo.sh /data/for_hackathon/doubleT_obstacle     # RViz shows OBSTACLE ~55 m (needs X11)
 RVIZ=0 ./scripts/run_demo.sh /data/for_hackathon/doubleT_obstacle   # the same over ssh
 ```
+
+**Offline, as on the stand** (no internet there, [`organizers/answers.md`](organizers/answers.md)
+§7): the archive is made where there is internet; the dry-run machine gets a clone of the tag (for
+the scripts), the archive and the bags, and its network is disconnected (cable out, Wi-Fi off)
+before the load:
+
+```bash
+# on a machine with internet, from a clean clone of the tag
+git clone --branch v1.0-rc1 <repo> && cd ReSense && VERSION=v1.0-rc1 ./scripts/export_image.sh
+# copy dist/resense-image-v1.0-rc1.tar.gz and its .sha256 to the dry-run machine; disconnect it
+A=dist/resense-image-v1.0-rc1.tar.gz; B=/data/for_hackathon
+IMAGE_TAR=$A OFFLINE=1 ./scripts/dry_run.sh $B/doubleT_obstacle
+SKIP_BUILD=1 OFFLINE=1 ./scripts/dry_run.sh $B/roundT_doubleT --expect-clear --max-alarm-frames 2
+# then the jury's own commands by hand: README "Кратко для жюри" 1-5, the player from a normal
+# user's console, still without network
+```
+
+`IMAGE_TAR` makes `dry_run.sh` load the archive (`scripts/load_image.sh`: sha256, `docker load`, a
+check with `--network none`) instead of building; `OFFLINE=1` runs node, player and recorder in a
+container with `--network none` (loopback only), so a PASS shows that nothing is fetched at run
+time even if the host were still connected; it refuses to build. The pass criteria below are the
+same, except that the image is loaded instead of built.
 
 Pass criteria, all asserted by `dry_run.sh` (it exits non-zero otherwise): the image builds from
 scratch with no manual steps, the node starts on the default command, the person in
@@ -121,7 +144,14 @@ not decide whether the dry run passed.
 
 ## Upload
 
-Deadline 29.09 23:59; target 18:00. **Deferred (24.09): no release tag until development
-settles.** When it does: tag the commit `v1.0-final`, build the image from that tag, save it with
-`docker save resense:latest | zstd > resense-v1.0.tar.zst` if the organizers want an image file,
-and attach the README section list above in the cover message.
+Deadline 29.09 23:59; target 18:00; the tags and times are in [`CAPTAIN.md`](CAPTAIN.md) §5. The
+package: the repository link at the tag `v1.0-final` with its commit hash, **the image archive**
+`resense-image-v1.0-final.tar.gz` with its `.sha256` (`VERSION=v1.0-final
+./scripts/export_image.sh` from a clean clone of the tag; the stand has no internet, so this is
+what the jury runs, not an extra), the video and the deck as the form asks, and the README section
+list above in the cover message. The cover message gives step 1 as `docker load -i
+resense-image-v1.0-final.tar.gz` and the sha256. The archive is gzip because `docker load` reads it
+on any Docker version (zstd would be ~10–20 % smaller but is not read everywhere); its size is
+printed by `export_image.sh`. If the form's file limit is below that size, upload a link (Yandex
+Disk, or a GitHub release asset, at most 2 GB per file) and keep the sha256 in the message.
+Before uploading, load the archive once on a second machine (`scripts/load_image.sh`).

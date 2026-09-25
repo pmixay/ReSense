@@ -8,8 +8,9 @@
 ## 1. Role and dates
 
 P1 is the system analyst and ROS 2 / integration developer ([`PLAN.md`](PLAN.md)): the jury chain
-`docker build → docker run → ros2 bag play → /resense/decision`, the evaluation protocol, liaison
-with the organizers ([`QUESTIONS.md`](QUESTIONS.md), [`organizers/answers.md`](organizers/answers.md)),
+`docker load` (or `docker build`) `→ docker run → ros2 bag play → /resense/decision`, the
+evaluation protocol, liaison with the organizers ([`QUESTIONS.md`](QUESTIONS.md),
+[`organizers/answers.md`](organizers/answers.md)),
 merges, the submission ([`SUBMISSION.md`](SUBMISSION.md)) and the pitch; in the criteria: 8.3
 (node side), 8.5 (CI, Docker, docs), 8.6, the §7 deliverables and 8.8. Dates (organizers' README):
 upload by 29.09 23:59 (target 18:00), technical expertise 30.09–14.10, pitch 23.10.
@@ -22,7 +23,7 @@ upload by 29.09 23:59 (target 18:00), technical expertise 30.09–14.10, pitch 2
 
 | # | criterion (spec) | status | evidence / gap |
 |---|---|---|---|
-| C1 | image builds from scratch, no manual steps (§3.3.1, §7.2, 8.6) | DONE | `docker/Dockerfile`: pip pinned, non-editable install checked from `/`; CI `docker` job green on `4b5786b`. Gap: the build needs the network, apt and base image unpinned (image insurance, §5) |
+| C1 | image builds from scratch, no manual steps (§3.3.1, §7.2, 8.6) | DONE | `docker/Dockerfile`: pip pinned, non-editable install checked from `/`; CI `docker` job green on `4b5786b`. Gap: the build needs the network, which the stand does not have (C25: the image goes as an archive); apt and base image unpinned |
 | C2 | `docker run` starts the node with no arguments, either topic / frame pair (answers §1 #2) | DONE | default command `ros2 launch resense_ros detector.launch.py`, topic auto-discovery, input switching in `tests/test_node.py` |
 | C3 | every parameter a launch argument; mount configurable (Q&A fact 7) | DONE | `launch/detector.launch.py`: all node parameters plus `bag:=`, `rviz:=`, `loop:=`, `rate:=`, `delay:=` |
 | C4 | organizers' console path: `ros2 bag play` by a normal user on the host | PARTIAL | CI plays as uid 1000 from our image (`scripts/console_test.sh`); a host player with stock Fast DDS or CycloneDDS is not tested (action 5) |
@@ -46,14 +47,16 @@ upload by 29.09 23:59 (target 18:00), technical expertise 30.09–14.10, pitch 2
 | C22 | decision: train speed | DONE (measured 24.09) | organizers' fact: no odometry in the recordings, some trains have none (Q&A fact 6). Team decision: ship the no-speed path; a given speed is honoured; the LiDAR-only estimator is accurate (median error 0.06–0.08 m/s) but buys nothing on the organizers' check, so it stays opt-in (EXPERIMENTS §9) |
 | C23 | decision: GPU / stand software | DONE (evaluated 24.09) | CPU-only, the image installs no CUDA ([`organizers/test_stand_software.md`](organizers/test_stand_software.md)); GPU evaluated and not used: PCIe 3.0 on the i7, dispatch-bound port, the container would not start without `nvidia-container-toolkit` ([`ARCHITECTURE.md`](ARCHITECTURE.md) "GPU: evaluated, not used") |
 | C24 | captain docs current (CAPTAIN, PLAN) | DONE | rewritten 24.09; the log is in `archive/` |
+| C25 | runs on the offline stand: the test machine has no internet ([`organizers/answers.md`](organizers/answers.md) §7, 25.09) | PARTIAL | 25.09: the image is delivered as `resense-image-<version>.tar.gz` + `.sha256` (`scripts/export_image.sh`), loaded and checked with `--network none` by `scripts/load_image.sh`; no run-time network use in the node, launch file, entrypoint or compose services (audit of 25.09), the dashboard's roslib bundled; CI docker job: `docker save` → `docker rmi` → `docker load`, the synthetic bags through the loaded image with `--network none` and on an internal network; the job `offline-build` tries `docker build --cache-from` from the archive (best effort). Gap: first CI result of these steps; the rc1 / final archives (actions 14b, 16); the upload form's size limit (action 1b); the offline dry run (action 15) |
 
-13 DONE · 6 PARTIAL · 4 NOT DONE · 1 UNKNOWN; every open item is release, timing, pitch or liaison.
+13 DONE · 7 PARTIAL · 4 NOT DONE · 1 UNKNOWN; every open item is release, timing, pitch or liaison.
 
 ## 3. Next actions to 29.09
 
 | # | date | action | owner (H = human captain only; A = agent, captain merges) | priority |
 |---|---|---|---|---|
 | 1 | 24.09 | read the i.moscow upload form (fields, file or link, limits), settle the intermediate stage (C14); announce the §6 rules; approve branch protection on `main` | H | must |
+| 1b | 25.09 | the stand has no internet (C25): find the upload form's file-size limit and whether it takes a link; the image archive must reach the jury (its size is printed by `export_image.sh`; the runtime image is expected well under 2 GB gzip, unmeasured). Over the limit: a link (Yandex Disk, or a GitHub release asset ≤ 2 GB) with the sha256 in the cover message | H | must |
 | 2 | 24.09 | send QUESTIONS Q1–Q3 as one message to @gorbatovaol, **from the current file** (do not send an older Q1: its second sentence was built on the moving-objects error); file the answers in `organizers/answers.md` | H (A drafted) | must |
 | 3 | 25.09 12:00 | give P3 the frame caches (six bags, ride, `cloud_with_fake_obj`) and the harness (`eval_real.py`, `score_fake_objects.py`, `start_offsets.py`) | P1 → P3 | must |
 | 3b | 25.09 | ~~prove the Docker build with the C++ kernels~~ done: CI run 36058665640 green on the branch (24.09); merge the branch to `main` through a PR | H merges | must |
@@ -65,19 +68,23 @@ upload by 29.09 23:59 (target 18:00), technical expertise 30.09–14.10, pitch 2
 | 9 | 26.09 | narrated 2–3 min video `docs/video/resense_overview.mp4`; dashboard clip with the new UI | P2 edits, H voice | should |
 | 10 | 26.09 | deck refresh: organizers' objects, anchored 154 m, slide-12 caption, new UI captures; rebuild pptx / pdf ([`PRESENTATION.md`](PRESENTATION.md)) | P2 | should |
 | 11 | 26.09 20:00 | go / no-go on late changes (P3 short-signature rule, station false STOPs, the CPU savings of the GPU study) by the §6 gate | H decides, P3 / P4 measure | must |
-| 12 | 26.09 | decide on the saved-image release asset (§5) | H | should |
+| 12 | 26.09 | ~~decide on the saved-image release asset~~ decided 25.09: the image archive is a must, not insurance (no internet on the stand, C25, §5) | H | done |
 | 13 | 27.09 | final consistency pass: every headline number equals EXPERIMENTS "Current results" | A | must |
 | 14 | 27.09 18:00 | version bump and `v1.0-rc1` tag, whatever the state | A prepares, H tags | must |
-| 15 | 28.09 | dry run on a clean team machine (the stand is not available) from `git clone --branch v1.0-rc1` (SUBMISSION "Dry run"), logs to `docs/evidence/dry_run_2026-09-28/`; remote demo from a second laptop | H | must |
-| 16 | 29.09 | final tag and upload (§5) | H | must |
+| 14b | 27.09 | export the rc1 image archive from a clean clone of the tag, on a machine with internet: `VERSION=v1.0-rc1 ./scripts/export_image.sh` → `dist/resense-image-v1.0-rc1.tar.gz` + `.sha256`; note size and sha256 here; `scripts/load_image.sh` on a second machine | H (Docker) | must |
+| 15 | 28.09 | **offline** dry run on a clean team machine (the stand is not available), network disconnected: the rc1 archive, `IMAGE_TAR=… OFFLINE=1 ./scripts/dry_run.sh` on both bags, then the README jury commands by hand (SUBMISSION "Dry run"), logs to `docs/evidence/dry_run_2026-09-28/`; remote demo from a second laptop | H | must |
+| 16 | 29.09 | final tag, the final archive (`VERSION=v1.0-final ./scripts/export_image.sh`) and upload with its sha256 (§5) | H | must |
 | 17 | 30.09–23.10 | answer the organizers daily during the expertise; pitch on 23.10 after two rehearsals (fallback demo `video/docker_chain_rviz.mp4`) | H (+P2) | must |
 
 ## 4. Human-only checklist
 
 - [ ] 24.09: upload form read, intermediate stage settled (C14); Q1–Q3 sent; §6 rules announced
 - [ ] 25.09: 8-core bench and dry runs (no Docker for agents); `private/` team data, photos, deck
-- [ ] 26.09: go / no-go taken; voice-over recorded; image-asset decision · 27.09: `v1.0-rc1` pushed
-- [ ] 28.09: clean team-machine dry run, remote demo · 29.09: `v1.0-final`, release, upload by 18:00
+- [ ] 25.09: upload form's file-size limit and link policy checked for the image archive (1b)
+- [ ] 26.09: go / no-go taken; voice-over recorded · 27.09: `v1.0-rc1` pushed, its archive exported
+  (size and sha256 noted), loaded once on a second machine
+- [ ] 28.09: clean team-machine dry run **offline** (network disconnected, from the archive),
+  remote demo · 29.09: `v1.0-final`, its archive + sha256, release, upload by 18:00
 - [ ] 30.09–14.10: reachable for the organizers · 23.10: pitch led after two rehearsals
 
 ## 5. Release and upload runbook
@@ -85,14 +92,23 @@ upload by 29.09 23:59 (target 18:00), technical expertise 30.09–14.10, pitch 2
 ```bash
 # 27.09 18:00, CI green; version bumped in pyproject.toml, __init__.py, package.xml, setup.py
 git tag -a v1.0-rc1 -m "release candidate" && git push origin v1.0-rc1
+git clone --branch v1.0-rc1 <repo> rc1 && cd rc1                # clean clone, machine with internet
+VERSION=v1.0-rc1 ./scripts/export_image.sh      # dist/resense-image-v1.0-rc1.tar.gz + .sha256
 git tag -a v1.0-final -m "LCT-2026 case 05 final" && git push origin v1.0-final   # 29.09 13:00
-docker build -t resense:v1.0 -f docker/Dockerfile .           # from the tag
-docker save resense:v1.0 | zstd -19 > resense-v1.0.tar.zst   # optional release asset (limit 2 GB)
+VERSION=v1.0-final ./scripts/export_image.sh    # from a clean clone of v1.0-final: the upload
+./scripts/load_image.sh dist/resense-image-v1.0-final.tar.gz    # second machine: sum, load, run
 ```
 
-29.09: last merge 12:00; CI green on the tag 14:00; upload on i.moscow 15:00 (link with the tag and
-commit hash, SUBMISSION cover message, video and deck as the form asks); 16:00 open it logged out
-and clone the tag. Then no pushes to `main` (Q&A fact 22). After rc1: blocker PRs, then `v1.0-rc2`.
+**The image archive is a must, not insurance** (25.09): the stand has no internet
+([`organizers/answers.md`](organizers/answers.md) §7), so `docker build` cannot run there and the
+jury's step 1 is `docker load -i resense-image-<version>.tar.gz`. gzip, not zstd: `docker load`
+reads gzip on any Docker. The archive also holds the base image's tag and the build's layer cache,
+so an offline `docker build --cache-from` may work (best effort, ARCHITECTURE "Deployment without
+internet"). 29.09: last merge 12:00; CI green on the tag 14:00; the final archive and its sha256
+13:00–14:30; upload on i.moscow 15:00 (link with the tag and commit hash, the archive or its link
+with the sha256, SUBMISSION cover message, video and deck as the form asks); 16:00 open it logged
+out, clone the tag and load the archive. Then no pushes to `main` (Q&A fact 22). After rc1: blocker
+PRs, then `v1.0-rc2`.
 
 ## 6. Freeze and merge rules
 
@@ -109,7 +125,7 @@ and clone the tag. Then no pushes to `main` (Q&A fact 22). After rc1: blocker PR
 
 | contract | where | consumers |
 |---|---|---|
-| jury path `docker build → docker run → ros2 bag play → /resense/decision` | README, SUBMISSION "Dry run" | jury, P2 video |
+| jury path `docker load` (no internet on the stand; `docker build` where there is) `→ docker run → ros2 bag play → /resense/decision` | README, SUBMISSION "Dry run" | jury, P2 video |
 | 12 topics `/resense/{decision, obstacle_detected, warning, nearest_distance, clear_distance, detections, status, health, markers, corridor_points, latency_ms, fps}` + `/tf_static` | `detector_node.py`, README "Topics published by the node" | P2, jury |
 | status JSON: `stamp, obstacle, warning, nearest_distance, clear_distance, detections[], warnings[], track, health, mount, timing_ms, ego_speed*, n_accumulated, n_*` + `node` (added by the node) | `FrameResult.to_dict()` in `resense/detector.py` | P2 dashboard, `resense run --out` |
 | `Frame` (xyz in the vehicle frame, intensity, ring, stamp) | `resense/frame.py` | P3, P4 |
@@ -120,7 +136,7 @@ and clone the tag. Then no pushes to `main` (Q&A fact 22). After rc1: blocker PR
 
 | path | owner |
 |---|---|
-| `docker/`, `docker-compose.yml`, `ros2_ws/src/resense_ros/` (except `rviz/`), `scripts/*.sh` (except `build_native.sh`), `scripts/{check_dry_run,make_smoke_bag,cache_to_bag,bench_node_path}.py` | P1 |
+| `docker/`, `docker-compose.yml`, `ros2_ws/src/resense_ros/` (except `rviz/`), `scripts/*.sh` (except `build_native.sh`), `scripts/{check_dry_run,make_smoke_bag,cache_to_bag,bench_node_path,check_no_network}.py` | P1 |
 | `README.md`, `CHANGELOG.md`, `docs/{README,ARCHITECTURE,ALGORITHM,EVALUATION,SUBMISSION,SENSOR,PLAN,CAPTAIN,QUESTIONS,SCORECARD}.md`, `docs/archive/`, team notes in `docs/organizers/` | P1 (P3 reviews ALGORITHM) |
 | `.github/workflows/ci.yml` | P4 `pytest`, P2 `web`, P1 the other jobs |
 | `configs/default.yaml` | P3 values, P1 structure |
@@ -148,6 +164,7 @@ and clone the tag. Then no pushes to `main` (Q&A fact 22). After rc1: blocker PR
 | 24.09 | no GPU before 29.09 (≤ 30–45 ms per 360° frame at best, untestable in CI, container start depends on the host toolkit) | ARCHITECTURE "GPU: evaluated, not used" |
 | 24.09 | C++ kernels merged on the branch (bit-identical, −38…−57 %); to `main` only after the CI docker job and with an 8-core bench to follow; `RESENSE_NATIVE=0` is the fallback | ARCHITECTURE "Native kernels" |
 | 25.09 | no run on the organizers' stand before submission (they give no access): timing on the team's own 8-core machine (action 7), the 28.09 dry run on a clean team machine (action 15), the Docker chain in CI; stand facts and estimates stay, labelled as such | [`organizers/answers.md`](organizers/answers.md) §6 |
+| 25.09 | no internet on the test machine: the image is delivered as a `docker load` archive with its sha256 (`scripts/export_image.sh`, a must in the upload); README step 1 is `docker load`, `docker build` only with internet; CI proves save → load → run with no network; an offline `docker build --cache-from` is best effort only; the 28.09 dry run runs offline from the archive; the dashboard's roslib bundled; the Dockerfile's layers unchanged before the freeze | [`organizers/answers.md`](organizers/answers.md) §7, C25 |
 
 ## 10. Why we slowed down (analysis of 24.09) and corrective rules
 
