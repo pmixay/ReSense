@@ -1,0 +1,43 @@
+{
+  "schema": "resense-p3-item-v1",
+  "key": "rail_shadow",
+  "date": "2026-09-25",
+  "owner": "P3",
+  "question": "Set O (cloud_with_fake_obj): while the organizers' 2 x 2 m box (#1, big_center) is 10-20 m ahead, its shadow hides the rails and the bed, the floor fit tilts and the bed 2.5-8 m ahead reads as an obstacle: the STOP is right, the reported nearest_distance is 3.0 m instead of the box's distance (EXPERIMENTS 2e, ALGORITHM 6, P4_AUDIT).",
+  "diagnosis_before_registration": {
+    "code": "7466979 (claude/nifty-pascal-lzgl78), default config, set O every frame; only the target frames 180-232 were looked at",
+    "floor": "The floor band (|dy| < 1 m) behind the box holds only tunnel-roof returns, 3-4 m above the bed. Until frame 202 (box at 26.6 m) enough bed bins lie in front and the roof bins fail the 0.35 m residual; from frame 203 the roof bins outnumber the bed bins, the near line tilts, the rail head at 20 m moves from -1.34 m to +0.1..+2.4 m (frames 209-219), the bed 3-10 m ahead enters the envelope (track 73 at 3.0 m, frames 213-226) and the box drops below the (wrong) rail head (box unmatched in frames 217-224).",
+    "merge": "With a correct bed, a line at dy 1.35-1.40 m, h 0.16-0.38 m above the rail head (a conductor-rail-like line at the corridor edge, 3-26 m) is in the advisory margin; the box's face reaches it, and from frame 210 (box at 19.8 m) box + line form one cluster longer than cluster.max_extent (8 m), which is dropped whole: with the floor fix alone the box has no STOP in frames 211-226 (prototype). In frames 223-226 (box at 5-8 m) the merged cluster is shorter than 8 m and its nearest point is the line at 3.0 m.",
+    "prototype": "The three parts below were prototyped on set O frames 180-232 only (no gate, no other recording): with all three the reported distance equals the box's true distance within 0.01 m in frames 200-228 and the box keeps a STOP in every frame; the floor part alone loses the STOP in frames 211-226."
+  },
+  "change": {
+    "track.floor_shadow_height": "m, 0 = off (today). > 0: in the floor fit, the first populated bed-band bin within track.floor_shadow_range that lies more than this above the previous frame's bed (previous model older than axis_warmup_frames), followed by another such bin, starts a shadow; that bin, the bin before it (the object's face) and every later bin more than this above the previous bed are left out of the fit; with fewer than track.floor_shadow_min_bins bed bins in front of the shadow the previous frame's bed is held unchanged",
+    "track.floor_shadow_range": "m, 40 (fixed in every candidate)",
+    "track.floor_shadow_min_bins": "5 (fixed in every candidate)",
+    "cluster.oversize_split_max_length": "m, 0 = off (today). > 0: a corridor cluster larger than cluster.max_extent is not dropped when its part inside the strict gauge is at most this long along the track; it is re-described from that part (all other filters, signatures and the zone vote apply unchanged)",
+    "cluster.gauge_distance": "bool, false = off (today). true: the distance of a cluster in the strict gauge (zone 'gauge') is that of its nearest point inside the gauge, not of a point in the advisory margin it touches; it can only grow (a subset's minimum)"
+  },
+  "preregistered": {
+    "written_at_utc": "2026-09-25T16:07:48Z",
+    "code": "7466979 + the three flags, all off by default (byte-identical output when off)",
+    "candidates_in_order_of_preference": [
+      {"id": "A", "set": {"track.floor_shadow_height": 1.0, "cluster.oversize_split_max_length": 3.0, "cluster.gauge_distance": true}},
+      {"id": "B", "set": {"track.floor_shadow_height": 1.5, "cluster.oversize_split_max_length": 3.0, "cluster.gauge_distance": true}},
+      {"id": "C", "set": {"track.floor_shadow_height": 1.0, "cluster.oversize_split_max_length": 1.0, "cluster.gauge_distance": true}},
+      {"id": "D", "set": {"track.floor_shadow_height": 1.0, "cluster.oversize_split_max_length": 3.0, "cluster.gauge_distance": false}}
+    ],
+    "order_of_runs": "Per candidate in the order A, B, C, D: first the cheap subset (the six recordings and set O: the gate with a cache of those seven only and --allow 'ride.*' --allow 'set_F_straight.*'), then, only for a candidate that passes the subset and the target, the full gate with the ride and set F straight. Stop at the first candidate that passes everything; it ships. If none passes, nothing ships (flags stay off) and the numbers are recorded.",
+    "ship_rule": {
+      "gate": "python scripts/regression_gate.py --cache /data/cache --jobs 1 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json --set <each key=value of the candidate> exits 0: no gated row worse and none missing (the six recordings, set O, the ride, set F straight).",
+      "target": "Set O object #1 (big_center), over all its 229 labelled frames (0-228; plausible or not), with the matching rule of resense eval (tolerance max(2 m, 3 % of the distance) + 1 m, half the box's 2 m length): (1) 'wrong-distance frames' = STOP frames (obstacle true) whose nearest_distance differs from #1's labelled distance by more than that tolerance; baseline 12 (frames 213-224); must be strictly fewer; (2) the largest |nearest_distance - true distance| over #1's STOP frames; baseline 14.11 m (frame 213); must be smaller; (3) #1's STOP frames over all 229 labelled frames; baseline 224 (no STOP in frames 0-4 only); must not drop, and every baseline STOP frame of #1 must stay a STOP frame.",
+      "safety": [
+        "doubleT_obstacle: labelled hits per label (person crossing, object on the rail, the object from frame 75) identical or better, first alarm frame identical or earlier, false-alarm events not up (gated rows)",
+        "set O: every inside object's STOP frames (plausible frames, gated) not down and first STOP not at a shorter distance; in addition, over ALL labelled frames of each inside object (plausible or not), the frames matched by an alarm must be a superset of the baseline's; the outside objects' false STOP frames and the background alarm frames / track ids not up",
+        "set F straight: sequences detected per kind not down, median first-confirmation distance not shorter, false detections not up (gated rows)",
+        "no new false alarm: alarm events and STOP episodes not up on any of the five obstacle-free recordings and on the ride (gated rows)"
+      ],
+      "information_only": "Each part alone on set O (floor alone, split alone, gauge distance alone) and on the six recordings; alarm frames and advisory frames per recording; how often the shadow rule fires (frames with track.floor_shadow > 0, held frames) on the six recordings, set O and the ride; latency."
+    },
+    "target_measurement": "The target is computed from the gate's set O JSONL (work dir) by a short script (matching with resense.metrics._assign_detections; per-frame rows of #1 in this file). Baseline (7466979, default): wrong-distance frames 12 (213-224), max |error| 14.11 m, #1 STOP frames 224 of 229, #1 matched alarm frames 216 of 229 (207 of the 213 plausible)."
+  }
+}
