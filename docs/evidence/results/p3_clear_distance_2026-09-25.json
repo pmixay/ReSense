@@ -1,0 +1,95 @@
+{
+ "schema": "resense-clear-distance-v1",
+ "date": "2026-09-25",
+ "item": "SCORECARD §6 row 6: conservative clear_distance (criteria 8.1 / 8.4, judges' estimate +1)",
+ "question": "clear_distance (/resense/clear_distance, status JSON) is the nearest confirmed obstacle, else the monitored range (resense/health.py); an unconfirmed or advisory object inside the envelope does not shorten it (ALGORITHM §6). On set O the criteria judgement of 24.09 found 184 object-frames with decision GO and clear_distance beyond an in-envelope object, 89 with object points inside the measured envelope (the 5 cm hanging object at 6.7-30 m read 150-170 m).",
+ "facts_read_before_registration": [
+  "The node's decision (DetectorNode.decision) is STOP if obstacle, FAULT on health error, CAUTION on warning or health warn, else GO: it does not read clear_distance, so a rule acting on clear_distance alone cannot change a GO / CAUTION / STOP frame (web/index.html decisionOf is the same rule).",
+  "clear_distance does not feed back into tracking or clustering: a cap computed after _confirm changes no detection."
+ ],
+ "rule": "health.clear_cap (bool, default false = byte-identical output): clear_distance = min(nearest confirmed obstacle, monitored range, cap), where cap is the distance (Cluster.distance, the nearest point along X) of the nearest candidate cluster of this frame that touches the envelope, excluding the cluster of a confirmed in-envelope obstacle (its distance is the obstacle's, whatever rule sets it: compatible with cluster.gauge_distance of wf7/p3); optionally the X of the k-th nearest strict-envelope return. Parameters: health.clear_cap_min_gauge (voxels of the cluster inside the strict envelope, Cluster.n_gauge, with the edge margin), health.clear_cap_min_hits (frames its track was matched, this frame included), health.clear_cap_margin (m; >= 0: a cluster also touches when one of its points of this frame lies inside the envelope polygon widened laterally by this much, without the edge margin; < 0 = n_gauge only), health.clear_cap_points (k; > 0: also cap at the X of the k-th nearest corridor return of this frame inside the strict envelope, low candidates excluded; 0 = off). STOP / obstacle decisions are not changed.",
+ "preregistered": {
+  "written_at_utc": "2026-09-25T20:42:20Z",
+  "note": "written before any run of any candidate or of the flag-off target on this code (1c96233); only the code and the docs had been read",
+  "candidates_in_order": [
+   {
+    "id": "C0",
+    "set": [
+     "health.clear_cap=true",
+     "health.clear_cap_points=3",
+     "health.clear_cap_min_gauge=1",
+     "health.clear_cap_min_hits=1",
+     "health.clear_cap_margin=-1"
+    ],
+    "what": "point level: the 3rd nearest strict-envelope return, and any cluster with >= 1 strict voxel"
+   },
+   {
+    "id": "C1",
+    "set": [
+     "health.clear_cap=true",
+     "health.clear_cap_points=0",
+     "health.clear_cap_min_gauge=1",
+     "health.clear_cap_min_hits=1",
+     "health.clear_cap_margin=0.1"
+    ],
+    "what": "any cluster with >= 1 strict voxel or a point inside the envelope + 0.1 m"
+   },
+   {
+    "id": "C2",
+    "set": [
+     "health.clear_cap=true",
+     "health.clear_cap_points=0",
+     "health.clear_cap_min_gauge=1",
+     "health.clear_cap_min_hits=1",
+     "health.clear_cap_margin=-1"
+    ],
+    "what": "any cluster with >= 1 strict voxel"
+   },
+   {
+    "id": "C3",
+    "set": [
+     "health.clear_cap=true",
+     "health.clear_cap_points=0",
+     "health.clear_cap_min_gauge=1",
+     "health.clear_cap_min_hits=2",
+     "health.clear_cap_margin=-1"
+    ],
+    "what": "... seen in >= 2 frames"
+   },
+   {
+    "id": "C4",
+    "set": [
+     "health.clear_cap=true",
+     "health.clear_cap_points=0",
+     "health.clear_cap_min_gauge=3",
+     "health.clear_cap_min_hits=2",
+     "health.clear_cap_margin=-1"
+    ],
+    "what": ">= 3 strict voxels (cluster.gauge_min_points), >= 2 frames"
+   },
+   {
+    "id": "C5",
+    "set": [
+     "health.clear_cap=true",
+     "health.clear_cap_points=0",
+     "health.clear_cap_min_gauge=3",
+     "health.clear_cap_min_hits=3",
+     "health.clear_cap_margin=-1"
+    ],
+    "what": ">= 3 strict voxels, >= 3 frames"
+   }
+  ],
+  "choice": "The FIRST candidate in the order C0 .. C5 (most conservative first) that satisfies every ship condition ships with health.clear_cap default true and its parameters as defaults; if none does, the flag stays off and the result is reported as tried, not shipped.",
+  "target": "T = set O (cloud_with_fake_obj, every frame) object-frames of the objects the organizers put inside the envelope (in_gauge), visible (n_points > 0), plausible, with points inside the envelope measured from the rails (n_in_envelope > 0), whose clear_distance exceeds the object's distance (label 'distance', nearest point along X) by more than 0.5 m, any decision: scripts/score_clear_distance.py <set O JSONL> --gt labels/cloud_with_fake_obj.json, 'overclaim.totals.target'. Also recorded: 'intent' (without the n_in_envelope condition) and 'go_judge' (decision GO, no tolerance: the judgement's 184 / 89 count).",
+  "ship_conditions": {
+   "S1_gate": "python scripts/regression_gate.py --cache /data/cache --jobs 1 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json --set <candidate> exits 0 (ride and set F straight included).",
+   "S2_target": "T of the candidate < T with the flag off (strictly lower).",
+   "S3_safety": "identical or better, read from the gate JSON: doubleT_obstacle labelled hits per label and first alarm frame; set O inside-object STOP frames and first STOP distance / frame; set F straight sequences detected, first-confirmation median and false detections; no new alarm event or STOP episode on the five empty recordings or the ride. A safety regression is never traded for the target (the rule cannot change a detection; any such change is a bug).",
+   "S4_clutter": "the verified-clear range must not collapse on empty track: on the ride (new_data, 8 pieces as the gate) and on the five obstacle-free recordings (each group as a whole), against the flag-off run of the same frames: the median clear_distance shrinks by <= 5 %, and the frames the cap moves from >= 60 m to < 60 m (health.min_visibility) are <= 2 % of the group's frames (scripts/score_clear_distance.py --base).",
+   "S5_decision": "recorded, expected identical: GO / CAUTION / STOP / FAULT frames on the five empty recordings, the ride and set O; a changed decision frame is a bug and blocks shipping."
+  },
+  "procedure": "The cap changes nothing upstream of clear_distance, so every candidate is evaluated in one flag-off pass per recording (set O, the five empty recordings, the ride in the gate's 8 pieces) that applies the detector's own cap function with each candidate's parameters to the frame's clusters and tracks (scratch script; exact). The chosen candidate is then run through the gate with --set, and its per-frame JSONL re-scored with scripts/score_clear_distance.py against the flag-off pass; the numbers must agree with the sweep. Flag off must stay byte-identical (scripts/output_fingerprint.py against 1c96233).",
+  "if_shipped": "default on, with tests: a ray-cast test in which clear_distance now stops at an unconfirmed in-envelope object, and one in which a nearby real obstacle still STOPs with clear_distance at its distance.",
+  "known_before_registration": "Nothing measured on this code. From the docs only: the 184 / 89 counts of 24.09 (judge B), set O objects #1-#10 (SCORECARD §4), the ride's median monitored range 127.6 m and 4742 advisory frames of 11 271 (gate baseline JSON)."
+ }
+}
