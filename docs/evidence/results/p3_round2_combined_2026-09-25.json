@@ -147,7 +147,8 @@
           "machine": "4-vCPU dev VM, no other job running"
         },
         "equal_to_the_guard_run": "every frame of every recording identical (decisions, detections, warnings, clear_distance, track model)"
-      }
+      },
+      "check_on_the_docs_commit": "d635d20 (the results and docs commit after 30d0cac; no detector file changed): the full gate against regression_baseline_2026-09-25_ride_p3b.json exits 0 with 105 gated rows the same and only latency changed; every frame identical to the 30d0cac run"
     },
     "gate": {
       "baseline": "docs/evidence/results/regression_baseline_2026-09-25_ride_p3.json",
