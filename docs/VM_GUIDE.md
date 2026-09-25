@@ -25,6 +25,7 @@ internet**, and the team gets **no access** to it before the upload
 | 8-core bench, native and numpy kernels | `scripts/bench_8core.sh` | C8, action 7 | §4.3 |
 | regression gate with the ride | `scripts/regression_gate.py` | §6 (the gate), action 11 | §4.4 |
 | image archive and its check | `scripts/export_image.sh`, `scripts/load_image.sh` | C25, action 15 | §4.5 |
+| shared-memory mode (opt-in): host console at Ubuntu's `rmem_max` | `docker run … -e RESENSE_DDS=shm`, `ros2 bag play` | C4 | §4.6 |
 | offline rehearsal from the archive | `IMAGE_TAR=… OFFLINE=1 scripts/dry_run.sh` with outbound traffic blocked | C25, action 15 | §5 |
 
 **When** (the captain, 25.09): deployment and the presentation come later. The dry run, the
@@ -359,6 +360,71 @@ mkdir -p "$EV/export_$DAY"
 image is built from `git archive HEAD`). **Done:** both scripts exit 0. **Evidence:**
 `docs/evidence/export_<date>/archive.txt` (size, sha256, commit); **never** the archive itself
 (`dist/` is ignored by git). No tag and no release: they are deferred by the captain (C13).
+
+### 4.6 Shared-memory mode (opt-in `RESENSE_DDS=shm`)
+
+On the second VM of 25.09 the host console of §4.2 with stock Fast DDS got 0–1 of the 201 360°
+clouds over UDP at Ubuntu's `net.core.rmem_max` 212992 (5 of 5 runs) and all of them at 32 MiB
+(§4.0). `docker run … -e RESENSE_DDS=shm` puts the node on shared memory + UDP and opens its Fast
+DDS files in `/dev/shm` to other users (`docker/dds_transport.sh`, header of
+`docker/fastdds_shm_share.py`), so that such a player hands the clouds over `/dev/shm`, where
+socket buffers play no part. This run decides whether it becomes the default. The host console of
+§4.2, the node started with the variable, `rmem_max` left at the default, the player uid 1000:
+
+```bash
+sudo sysctl -w net.core.rmem_max=212992                  # Ubuntu's default (§4.0 raised it for CycloneDDS)
+docker run --rm --name resense_node --net=host --ipc=host -e RESENSE_DDS=shm resense:latest 2>&1 |
+  tee "$EV/dry_run_$DAY/host_shm_node_log.txt"                                                 # console 1
+```
+
+Its log starts with `[INFO] [resense.dds]: DDS transport: shm, shared memory + UDPv4 …` and then
+`[resense.shm] fastrtps_port<N>: mode 666 …` lines (the node's port segments, their semaphores
+and its data segment). No `[WARN] [resense.dds]` line: that one says the node fell back to UDP.
+
+```bash
+# console 2: the player, a normal user, stock RMW, no Fast DDS profile (as §4.2)
+source /opt/ros/humble/setup.bash
+unset FASTRTPS_DEFAULT_PROFILES_FILE FASTDDS_DEFAULT_PROFILES_FILE RMW_FASTRTPS_USE_QOS_FROM_XML RMW_IMPLEMENTATION
+mkdir -p out/host_shm
+ls -l /dev/shm > "$EV/dry_run_$DAY/host_shm_ls.txt"
+ros2 topic echo /resense/status --field data > out/host_shm/status.jsonl & ECHO=$!
+sleep 4
+ros2 bag play "$BAGS/roundT_doubleT" --delay 3 --disable-keyboard-controls && sleep 5 &&
+  ros2 bag play "$BAGS/doubleT_obstacle" --delay 3 --disable-keyboard-controls
+sleep 3; kill "$ECHO"
+python3 scripts/check_dry_run.py out/host_shm/status.jsonl --expect-obstacle --obstacle-in 2 --expect-inputs 2 \
+  --min-frames 20 --max-p95-latency 1000 --max-dropped 100000 | tee "$EV/dry_run_$DAY/host_console_shm.txt"
+```
+
+```bash
+source /opt/ros/humble/setup.bash && ros2 topic echo /resense/decision --field data   # console 3: GO | CAUTION | STOP | FAULT
+```
+
+```bash
+# console 4, while doubleT_obstacle plays: the node's queues the player writes into
+P=$(pgrep -n -f "bag play"); grep -o '/dev/shm/fastrtps_port[0-9]*$' "/proc/$P/maps" | sort -u | xargs -r stat -c '%U %a %n'
+```
+
+**Done:** the check passes at `rmem_max` 212992: both recordings seen, the obstacle in the second,
+about as many status messages and alarm frames as the 32 MiB run of 25.09 (391 and 144,
+[`evidence/dry_run_2026-09-25_2/diag_host_fastdds/host_console_fastdds_rmem32.txt`](evidence/dry_run_2026-09-25_2/diag_host_fastdds/host_console_fastdds_rmem32.txt)),
+not 0–1 of the 201 clouds; console 3 shows `STOP` during the obstacle recording; console 4 prints
+`root 666 /dev/shm/fastrtps_port<N>` lines. The node's rmem WARN still appears (it is about UDP
+players). Then the same consoles 2 and 3 with `export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp`, to
+show that a player without shared memory still reaches the node over UDP: it needs the 32 MiB of
+§4.0 (`sudo sysctl -w net.core.rmem_max=33554432` for the run, `…=212992` afterwards), result into
+`host_console_shm_cyclonedds.txt`; **done:** PASS with `STOP`, as the UDP-mode run of §4.0 (144
+`STOP`), and console 4 prints nothing. The same in Docker, which CI runs on the synthetic bags:
+`NODE_DDS=shm PLAYER_DDS=stock OUT=out/ct_shm ./scripts/console_test.sh "$BAGS/roundT_doubleT"
+"$BAGS/doubleT_obstacle" -- <the arguments of §4.2>`, exit 0.
+
+Stop the node with Ctrl+C in console 1, not `docker rm -f`: Fast DDS then removes its files.
+After a hard kill, root-owned `fastrtps_*` files stay in `/dev/shm`; a normal user's Fast DDS
+cannot remove them and skips those port numbers, the next node in shm mode clears them. **Evidence:**
+`host_console_shm.txt`, `host_console_shm_cyclonedds.txt`, `host_shm_ls.txt`, the node logs
+(`host_shm_node_log.txt`, one per run) and console 4's lines in `docs/evidence/dry_run_<date>/`. Both PASS: the
+default can flip (one line, `docker/dds_transport.sh`: `${RESENSE_DDS:-udp}` → `${RESENSE_DDS:-shm}`);
+a FAIL is recorded and the mode stays opt-in.
 
 ## 5. Offline rehearsal
 

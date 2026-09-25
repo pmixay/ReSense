@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Fast DDS profile of the opt-in shared-memory mode (docker run -e RESENSE_DDS=shm; docker/dds_transport.sh
+  sets FASTRTPS_DEFAULT_PROFILES_FILE to this file). The image's default stays docker/fastdds_udp.xml.
+
+  Shared memory + UDPv4, as Humble's builtin transports, with the UDP settings of fastdds_udp.xml.
+  A stock Fast DDS player on the same host (Humble's default rmw_fastrtps_cpp, shared memory on)
+  then keeps only the node's shared-memory locators (Fast DDS 2.6 ProxyDataFilters.hpp) and hands
+  the clouds over /dev/shm, so the kernel's socket buffers (net.core.rmem_max) do not limit it; on
+  one team VM that player delivered 0-1 of the 201 24 MB 360-degree clouds over UDP at Ubuntu's
+  rmem_max 212992 (25.09, EXPERIMENTS.md section 3b). Players without shared memory (CycloneDDS,
+  a UDP-only Fast DDS profile such as the image's own, another machine, a container with its own
+  network) announce no shared-memory locators and are served over UDP as before.
+
+  Needs ipc=host (the host's /dev/shm), and a player of another uid can write into the root
+  node's segments only because docker/fastdds_shm_share.py sets them to 0666 (Fast DDS creates them
+  0644, with no option to change that). The SHM descriptor keeps Fast DDS's defaults: the node's own
+  segment (512 KB) carries only what the node publishes; an incoming cloud is carried in the
+  PLAYER's segment, sized by the player's settings, which the node cannot change.
+-->
+<profiles xmlns="http://www.eprosima.com/XMLSchemas/fastRTPS_Profiles">
+  <transport_descriptors>
+    <transport_descriptor>
+      <transport_id>resense_shm</transport_id>
+      <type>SHM</type>
+    </transport_descriptor>
+    <transport_descriptor>
+      <transport_id>resense_udp</transport_id>
+      <type>UDPv4</type>
+      <sendBufferSize>8388608</sendBufferSize>
+      <receiveBufferSize>33554432</receiveBufferSize>
+    </transport_descriptor>
+  </transport_descriptors>
+  <participant profile_name="resense_shm_udp" is_default_profile="true">
+    <rtps>
+      <userTransports>
+        <transport_id>resense_shm</transport_id>
+        <transport_id>resense_udp</transport_id>
+      </userTransports>
+      <useBuiltinTransports>false</useBuiltinTransports>
+    </rtps>
+  </participant>
+</profiles>

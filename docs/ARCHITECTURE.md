@@ -127,7 +127,16 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   360° clouds until `rmem_max` and `rmem_default` were raised to 32 MiB (25.09, EXPERIMENTS §3b),
   so the requirement is `sudo sysctl -w net.core.rmem_max=33554432
   net.core.rmem_default=33554432` on a host that plays with CycloneDDS; the node logs a WARN at
-  start when `rmem_max` is below 32 MiB.
+  start when `rmem_max` is below 32 MiB. **Opt-in shared memory** (`docker run … -e
+  RESENSE_DDS=shm`, default off until the VM run of [`VM_GUIDE.md`](VM_GUIDE.md) §4.6): the
+  entrypoint switches to shared memory + UDPv4 (`docker/dds_transport.sh`,
+  `docker/fastdds_shm_udp.xml`), so a stock Fast DDS player on the host hands the clouds over
+  `/dev/shm`, whatever `rmem_max` is (on the second team VM of 25.09 its 360° clouds did not arrive
+  over UDP at 212992). Fast DDS 2.6 creates its segments 0644 with no option to change that, so
+  `docker/fastdds_shm_share.py` sets the node's own port and data segments to 0666 for a player of
+  another uid. It needs `--ipc=host` (without it the entrypoint stays on UDP with a WARN); players
+  without shared memory (CycloneDDS, the image's profile, another machine) are served over UDP as
+  before. One INFO line at start names the mode.
 * Ego speed for multi-frame accumulation: the node passes `Detector.process(frame, ego_speed=v)`
   the value of the `ego_speed_mps` parameter, else the latest `speed_topic` / `odom_topic`
   message younger than `speed_timeout`, else `None` (single-frame path); the status JSON reports
