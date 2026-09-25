@@ -1,0 +1,84 @@
+{
+  "schema": "resense-p3-item-v1",
+  "key": "round2_combined",
+  "date": "2026-09-25",
+  "owner": "P3 (integrator, delegated by the captain)",
+  "question": "The four P3 round-2 items of 25.09 merged on wf10/p3-round2 (signatures, thin-hanging, clear-distance, robustness) on top of wf7/p3 (f46a669), with the captain's delegate's decision A (health.clear_cap on, candidate R1): does the combined default config pass the full regression gate against regression_baseline_2026-09-25_ride_p3.json with every safety condition, and what is the new gate baseline?",
+  "preregistered": {
+    "written_at_utc": "2026-09-25T22:13:25Z",
+    "before_any_result": "No gate, detector or stress run on the merged code yet. The merges were checked only with the unit tests (454 passed on the native path) and ruff.",
+    "code": "e136fcb = f46a669 (wf7/p3 merged, baseline _ride_p3) + --no-ff merges of wf9/signatures 468d346 (4c33541), wf9/thin-hanging d29a627 (ae69000), wf9/clear-distance c926b0e (19d2dd7), wf9/robustness 83c360a (e136fcb); all four branches from 1c96233, i.e. measured on their branches before wf7/p3. Measured on the first clean commit after this file that applies decision A (health.clear_cap true) and adds decision B's flag cluster.hanging_needs_rails (default false, byte-identical when false); native path",
+    "merged_code_interactions": [
+      "resense/detector.py process(): wf7/p3's far_axis_both_sides mode-2 step (off) runs before the hanging stage 5b, which reads the verified range min(valid, floor_valid); with mode 2 off the order does not matter",
+      "resense/detector.py: the hanging clusters (kind 'hanging') join the cluster list the tracker, _far_both_sides (skips kind != '') and clear_cap read; a hanging cluster's distance is its nearest point (including the part above the envelope top), not wf7/p3's gauge_distance",
+      "resense/detector.py: robustness moved _frame_dt before _fit_track and passes periods (median of the last 9 sane stamp intervals / tracking.frame_dt) to estimate_track and the calibration; 1 at 10 Hz",
+      "resense/track.py estimate_track: the model age counts nominal periods (rates_per_period), so wf7/p3's floor-shadow warm-up (prev.age >= axis_warmup_frames) counts periods too; floor_hold_run (floor_shadow_max_hold) stays per processed frame like the bed / rail smoothing; walls_smoothing ** k for the yaw / curvature EMA; the axis rate limits x k",
+      "resense/health.py: clear_cap's candidate_distance next to wf7/p3's floor-shadow counters in the status dict (both additive)",
+      "resense/clustering.py: floating_free (signatures) inside _advisory_reason, independent of wf7/p3's _gauge_part / gauge_reach_mask",
+      "tests/test_late_candidates.py: wf9/signatures' floating_free_max_size=0 in the three cube examples merged cleanly with wf7/p3's added tests",
+      "the axis filter is chaotic: a tiny change of the track model (robustness at 10 Hz: keep_within_deg on doubleT_obstacle) can persist for hundreds of frames, so the combination may differ from the sum of the items on any recording"
+    ],
+    "candidate": {
+      "id": "combined defaults with decision A",
+      "set": [],
+      "effective": {
+        "cluster.floating_free_max_size": 0.5,
+        "cluster.floating_free_max_dy": 0.95,
+        "cluster.floating_free_max_top": 2.5,
+        "cluster.hanging_enabled": true,
+        "cluster.hanging_max_lateral": 0.8,
+        "cluster.hanging_min_height": 1.8,
+        "cluster.hanging_link_band": 0.6,
+        "cluster.hanging_min_voxels": 1,
+        "cluster.hanging_max_size": 0.5,
+        "cluster.hanging_max_distance": 60.0,
+        "cluster.hanging_needs_rails": false,
+        "health.clear_cap": true,
+        "health.clear_cap_min_gauge": 1,
+        "health.clear_cap_min_hits": 1,
+        "health.clear_cap_margin": -1.0,
+        "health.clear_cap_points": 0,
+        "health.clear_cap_skip_columns": true,
+        "calibration.time_cadence": true,
+        "calibration.refine_min_deg": 0.5,
+        "calibration.provisional_per_axis": false,
+        "calibration.keep_within_deg": 0.25,
+        "track.rates_per_period": true,
+        "track.walls_smoothing_per_period": true,
+        "unchanged from _ride_p3": "track.floor_shadow_height 1.0, floor_shadow_max_hold 20, cluster.oversize_split_max_length 3.0, oversize_split_max_distance 30, gauge_distance true; walls_min_far_support 0, far_axis_both_sides 0, floor_far_min_width 0"
+      }
+    },
+    "command": "python scripts/regression_gate.py --cache /data/cache --jobs 3 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_p3.json --work <scratch> --out <scratch>/result.json (on the clean commit named above; the six recordings, set O, the ride in 8 pieces, set F straight)",
+    "ship_rule": {
+      "gate": "exit 0 against regression_baseline_2026-09-25_ride_p3.json: no gated row worse or missing, no --allow",
+      "safety_conditions": [
+        "doubleT_obstacle: labelled hits per label (person_crossing 58, object_on_rail 127, object_on_rail_from_frame_75 124) and the first alarm frame (11) identical or better; false-alarm events not higher",
+        "set O: every inside object's STOP frames and first STOP distance identical or better (big_center 208 @ 98.0 m, small_center 19 @ 34.0 m, small_on_rail 23 @ 42.7 m, big_above 12 @ 101.3 m, long_low_on_rails 49 @ 82.2 m, thin_hanging 0, small_edge_inside 0, big_edge_inside 0); outside false STOP frames (6) and background (3 frames / 2 track ids) not higher",
+        "set F straight: per kind detected sequences, median first confirmation and false detections identical or better",
+        "no new false event in the five obstacle-free recordings or the ride: alarm events and STOP episodes not higher (58 / 13 / 16 and 187 / 46 / 39 alarm frames / events / STOP episodes), checked also per event id against the baseline run where the counts are equal"
+      ],
+      "the safety rule decides": "a row worse is not traded against a row better"
+    },
+    "expected_from_the_items": {
+      "note": "each item's own gate ran against regression_baseline_2026-09-25_ride_column.json on 1c96233 (before wf7/p3); the rows it moved are expected to move the same way here, every other row equal to _ride_p3",
+      "signatures": "set O small_center 19 -> 30 STOP frames, first STOP 34.0 -> 52.5 m; the six recordings and the ride identical",
+      "thin_hanging": "set O thin_hanging 0 -> 15 STOP frames, first STOP none -> 30.1 m (set O objects with a STOP 5 -> 6 of 8); everything else identical",
+      "clear_distance": "no gated row (clear_distance is not gated; no decision reads it); set O overclaim (scripts/score_clear_distance.py --gt on the gate's set O JSONL) 172 -> about 82",
+      "robustness": "doubleT_obstacle object_on_rail 127 -> 128 hits (185 -> 186 of 246); everything else identical at 10 Hz",
+      "combined": "set O inside STOP frames 311 -> about 337 (311 + 11 + 15); inside objects with a STOP 5 -> 6 of 8 (small_edge_inside and big_edge_inside stay 0)"
+    },
+    "if_worse": "A gated row worse because items interact: find the pair by re-running the gate (or the failing data set with scripts/eval_real.py) with each round-2 item's default turned off in turn with --set (signatures: cluster.floating_free_max_size=0; thin_hanging: cluster.hanging_enabled=false; robustness: the five flags false / 0; clear_cap cannot move a gated row), then turn off the default of the lesser item of the interacting pair (the one whose own gain is smaller on the safety rows; the safety rule decides), re-run the full gate on the new clean commit and record every run here.",
+    "decision_B": "cluster.hanging_needs_rails (the thin-hanging rail-lock guard) is pre-registered separately, as an addendum to p3_thin_hanging_2026-09-25.json, committed alone after this file: the same gate command with --set cluster.hanging_needs_rails=true on the same commit, compared with this run (--from-json <with> --baseline <this run>); adopted only under that addendum's rule, then the full gate re-runs on the commit that sets it",
+    "stress_check": {
+      "commands": [
+        "python scripts/robustness_check.py --cache /data/cache --out <scratch>/every2 --every 2",
+        "python scripts/robustness_check.py --cache /data/cache --out <scratch>/roll3 --mount roll_3",
+        "python scripts/robustness_check.py --cache /data/cache --out <scratch>/pitch3 --mount pitch_3"
+      ],
+      "compare_with": "the robustness branch's shipped numbers (p3_robustness_2026-09-25.json results.stress.ship): five empty bags false events / STOP episodes 5 Hz 10 / 10, +3 deg roll 11 / 13, +3 deg pitch 16 / 17; doubleT_obstacle labelled hits @ first alarm frame 92/123 @ 12, 181/246 @ 12, 186/246 @ 11",
+      "role": "recorded, not a ship condition of the gate; a count worse than the branch's is reported with the recording and event it comes from, and traced to an item where one run can tell"
+    },
+    "clear_distance_record": "decision A is recorded, not tested: the set O overclaim, and the five bags' and the ride's median clear_distance with the cap against the uncapped value of the same frames (min(monitored_range, nearest confirmed obstacle)), from the gate's JSONL",
+    "baseline_rule": "If the gate passes (after any turn-off), the gate's result JSON of the final clean commit, without its 'gate' block, becomes docs/evidence/results/regression_baseline_2026-09-25_ride_p3b.json and every 'current baseline' reference is repointed to it (EVALUATION section 3 step 6, README, VM_GUIDE, EXPERIMENTS 'Current results', CHANGELOG, docs/evidence/README.md, the scripts/regression_gate.py docstring, CAPTAIN section 6 gate-rule line)"
+  }
+}
