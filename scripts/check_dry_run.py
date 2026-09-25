@@ -14,6 +14,7 @@ Needs nothing but python3 — it runs on the host, not in the container.
 from __future__ import annotations
 
 import argparse
+import gzip
 import json
 import math
 import sys
@@ -33,9 +34,11 @@ def percentile(values, q):
 
 
 def load(path):
-    """Parse frame results, excluding watchdog/error snapshots (not processed frames)."""
+    """Parse frame results, excluding watchdog/error snapshots (not processed frames).
+    A ``*.gz`` capture (the committed evidence, ``docs/evidence/``) is read as is."""
     frames, skipped = [], 0
-    with open(path, encoding="utf-8") as fh:
+    opener = gzip.open if str(path).endswith(".gz") else open
+    with opener(path, "rt", encoding="utf-8") as fh:
         for line in fh:
             line = line.strip()
             if not line or line == "---":

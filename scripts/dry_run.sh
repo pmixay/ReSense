@@ -9,6 +9,8 @@
 #   SKIP_BUILD=1     reuse the existing resense:latest instead of rebuilding
 #   RATE=1.0         bag playback rate passed to `ros2 bag play`
 #   OUT=out/dry_run  where status.jsonl and node.log are written on the host
+#   DOCKER_ARGS=""   extra `docker run` arguments, split on whitespace, e.g. "-e RESENSE_NATIVE=0"
+#                    (the node on the numpy path) or "--name resense_bench_dry" (scripts/bench_8core.sh)
 #   RESENSE_DATA     ignored here: the bag path given on the command line decides the mount
 #
 # Any argument after the bag path is forwarded to scripts/check_dry_run.py, so the acceptance
@@ -20,7 +22,7 @@ cd "$(dirname "$0")/.."
 . "$(dirname "${BASH_SOURCE[0]}")/require_docker.sh"
 
 if [ $# -lt 1 ]; then
-  sed -n '2,16p' "$0" >&2
+  sed -n '2,18p' "$0" >&2
   exit 2
 fi
 
@@ -33,6 +35,7 @@ require_docker_daemon
 BAG_DIR="$(cd "$(dirname "$BAG_PATH")" && pwd)"
 BAG_NAME="$(basename "$BAG_PATH")"
 RATE="${RATE:-1.0}"
+read -r -a EXTRA_ARGS <<< "${DOCKER_ARGS:-}"
 OUT="${OUT:-out/dry_run}"
 mkdir -p "$OUT"
 OUT_ABS="$(cd "$OUT" && pwd)"
@@ -49,7 +52,7 @@ echo "== playing $BAG_NAME at rate $RATE through the node (headless) =="
 # One container so that discovery cannot be the thing that fails. The node is started first and
 # we wait for it to advertise before playing: the launch file's own bag:= argument races the
 # node's startup and silently loses the first frames.
-docker run --rm -i --net=host --ipc=host \
+docker run --rm -i --net=host --ipc=host ${EXTRA_ARGS[@]+"${EXTRA_ARGS[@]}"} \
   -v "$BAG_DIR":/data:ro \
   -v "$OUT_ABS":/out \
   -e BAG_NAME="$BAG_NAME" -e RATE="$RATE" \
