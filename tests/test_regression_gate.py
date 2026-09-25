@@ -252,6 +252,26 @@ def test_set_f_straight_detected_first_confirmation_and_false_detections():
     assert failing(base, with_set_f(result(), median=150.0, false=8)) == []
 
 
+def test_notes_on_runs_that_are_not_like_for_like():
+    base = with_ride(result())
+    new = with_ride(result())
+    new["run"]["nominal_stamps"] = True
+    new["ride"]["chunks"] = 4
+    notes = gate.unavailable(base, new)
+    assert any(n.startswith("stamps differ") for n in notes)
+    assert any(n.startswith("ride pieces differ (8 -> 4)") for n in notes)
+
+
+def test_a_failed_set_f_run_on_a_cached_ride_exits_2(tmp_path):
+    broken = result()
+    broken["set_F_straight"] = {"available": False, "error": True, "reason": "far_range_eval.py failed: x"}
+    p = tmp_path / "broken.json"
+    p.write_text(json.dumps(broken))
+    b = tmp_path / "base.json"
+    b.write_text(json.dumps(result()))
+    assert gate.main(["--from-json", str(p), "--baseline", str(b)]) == 2
+
+
 def test_verdict_none_handling():
     assert gate.verdict(None, None, gate.HIGHER) == "same"
     assert gate.verdict(None, 5.0, gate.HIGHER) == "better"

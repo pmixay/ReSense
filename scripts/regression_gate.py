@@ -42,7 +42,9 @@ patterns of metric names). Gated, i.e. "identical or better" required:
   first-confirmation distance must not shrink, false detections must not rise.
 
 Everything else (alarm frames, advisory frames, totals, held-from distances, latency) is printed
-as information. Exit codes: 0 pass, 1 a gated metric is worse, 2 usage or missing data.
+as information. A set that only one of the two runs has is listed as "not compared". Exit codes:
+0 pass, 1 a gated metric is worse, 2 usage, a missing required recording, or a set F run that
+failed although the ride is cached.
 """
 from __future__ import annotations
 
@@ -248,12 +250,12 @@ def run_set_f_straight(cache, cfg_path, work, jobs) -> dict:
     out = os.path.join(work, "setF_straight.json")
     cmd = [sys.executable, os.path.join(HERE, "far_range_eval.py"), "--cache", os.path.join(cache, RIDE),
            "--config", cfg_path, "--jobs", str(jobs), "--out", out]
-    for k, v in SET_F_STRAIGHT.items():
-        cmd += [f"--{k}", v]
+    cmd += [f"--{k}={v}" for k, v in SET_F_STRAIGHT.items()]      # "=": "--lateral -0.6:0.6" reads as an option
     env = dict(os.environ, PYTHONPATH=ROOT + os.pathsep + os.environ.get("PYTHONPATH", ""))
     r = subprocess.run(cmd, cwd=ROOT, env=env, capture_output=True, text=True)
-    if r.returncode != 0:
-        return {"available": False, "reason": f"far_range_eval.py failed: {r.stderr.strip()[-400:]}"}
+    if r.returncode != 0:            # the ride is cached, so this is a broken run, not missing data
+        return {"available": False, "error": True,
+                "reason": f"far_range_eval.py failed: {r.stderr.strip()[-400:]}"}
     with open(out, encoding="utf-8") as fh:
         rep = json.load(fh)
     kinds = {}
@@ -307,7 +309,9 @@ def measure(a) -> dict:
     set_o = set_o_entry(pieces[SET_O], os.path.join(ROOT, SET_O_LABELS))
     if have_ride:
         r = recording_entry(RIDE, pieces[RIDE], cfg)
-        ride = {"available": True, "chunks": a.chunks, **{k: v for k, v in r.items() if k != "labelled"}}
+        # the frame index of a ride piece is its position in the piece: no meaningful first alarm frame
+        ride = {"available": True, "chunks": a.chunks,
+                **{k: v for k, v in r.items() if k not in ("labelled", "first_alarm_frame")}}
         set_f = run_set_f_straight(a.cache, cfg_path, a.work, a.jobs)
     else:
         why = f"no cache in {ride_dir}"
@@ -445,7 +449,8 @@ def compare(base: dict, new: dict, allow=()) -> list:
 
 
 def unavailable(base: dict, new: dict) -> list:
-    """Optional sets present in one run and not in the other (not compared; said so)."""
+    """Optional sets present in one run and not in the other (not compared; said so), and run
+    settings that make the two runs unlike (the ride's pieces, the stamps)."""
     out = []
     for key, label in (("ride", "ride (set E)"), ("set_F_straight", "set F straight")):
         b = bool((base.get(key) or {}).get("available"))
@@ -455,6 +460,13 @@ def unavailable(base: dict, new: dict) -> list:
         elif not b:
             reason = (new.get(key) or {}).get("reason") or (base.get(key) or {}).get("reason") or ""
             out.append(f"{label}: not available in either run ({reason})")
+    rb, rn = base.get("run") or {}, new.get("run") or {}
+    if bool(rb.get("nominal_stamps")) != bool(rn.get("nominal_stamps")):
+        out.append(f"stamps differ (nominal_stamps {rb.get('nominal_stamps')} -> {rn.get('nominal_stamps')}): "
+                   "not like for like")
+    cb, cn = (base.get("ride") or {}).get("chunks"), (new.get("ride") or {}).get("chunks")
+    if cb and cn and cb != cn:
+        out.append(f"ride pieces differ ({cb} -> {cn}): events split at piece boundaries differ")
     return out
 
 
@@ -486,7 +498,8 @@ def gate_summary(rows, base: dict, baseline_path: str, allow) -> dict:
             "worse_allowed": [r["metric"] for r in rows if r["allowed"]],
             "better": [r["metric"] for r in rows if r["gated"] and r["verdict"] == "better"],
             "same": sum(1 for r in rows if r["verdict"] == "same"),
-            "info_changed": [r["metric"] for r in rows if not r["gated"] and r["verdict"] != "same"]}
+            "info_changed": [r["metric"] for r in rows if not r["gated"]
+                             and r["verdict"] not in ("same", "not in baseline", "not in this run")]}
 
 
 # --------------------------------------------------------------------------------------------
@@ -580,6 +593,10 @@ def main(argv=None) -> int:
             json.dump(res, fh, ensure_ascii=False, indent=1)
             fh.write("\n")
         print(f"wrote {out}")
+    if (res.get("set_F_straight") or {}).get("error"):
+        print(f"ERROR: the ride is cached but set F straight did not run: {res['set_F_straight']['reason']}",
+              file=sys.stderr)
+        return 2
     return code
 
 
