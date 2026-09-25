@@ -10,9 +10,17 @@
     "far_rail_check": "track.rails_far_check_enabled never fires here (1f): no far rail pair in two slabs",
     "open_loop_count_of_frames_the_rule_would_touch": {
       "note": "both sides fitted with a rail tangent, each with >= walls_min_bins far bins, exactly one below the threshold, the other at or above it with |k| <= 2e-4; counted on the default per-frame fits (open loop: the closed loop can differ)",
-      "squareT_platform_squareT_switch_877_frames": {"0.4": 135, "0.5": 271, "0.6": 404},
-      "ride_11271_frames": {"0.4": 187, "0.5": 333, "0.6": 511},
-      "ride_max_abs_model_curvature_on_touched_frames": 5.16e-4
+      "squareT_platform_squareT_switch_877_frames": {
+        "0.4": 135,
+        "0.5": 271,
+        "0.6": 404
+      },
+      "ride_11271_frames": {
+        "0.4": 187,
+        "0.5": 333,
+        "0.6": 511
+      },
+      "ride_max_abs_model_curvature_on_touched_frames": 0.000516
     }
   },
   "fix": "track.walls_min_far_support (float, 0 = off = today's code path; resense/track.py _far_supported_side): with both wall sides fitted and a rail tangent, a side whose boundary bins beyond rails_range[1] lie within walls_max_residual of its own fit in fewer than this fraction (sides with >= walls_min_bins far bins are judged) does not set the axis shape when the other side meets the fraction and is nearly straight (|k| <= track.walls_far_support_max_curvature = 2e-4 /m, R >= 5 km: a real R 350-1 000 m curve is never overruled). As for the existing nearer-side rule, only the shape (tangent, curvature, fit quality, supported range) comes from the one side; the side count and the disagreement that set the trusted range stay as fitted.",
@@ -20,9 +28,18 @@
     "written_at_utc": "2026-09-25T16:18:01Z",
     "note": "written before any candidate run; the design numbers above come from the default per-frame output and point clouds only",
     "candidates_in_order_of_preference": [
-      {"track.walls_min_far_support": 0.5, "track.walls_far_support_max_curvature": 0.0002},
-      {"track.walls_min_far_support": 0.4, "track.walls_far_support_max_curvature": 0.0002},
-      {"track.walls_min_far_support": 0.6, "track.walls_far_support_max_curvature": 0.0002}
+      {
+        "track.walls_min_far_support": 0.5,
+        "track.walls_far_support_max_curvature": 0.0002
+      },
+      {
+        "track.walls_min_far_support": 0.4,
+        "track.walls_far_support_max_curvature": 0.0002
+      },
+      {
+        "track.walls_min_far_support": 0.6,
+        "track.walls_far_support_max_curvature": 0.0002
+      }
     ],
     "procedure": "each candidate first on the six recordings and set O (the gate on a cache without new_data, --allow 'ride.*' --allow 'set_F_straight.*'); the full gate with the ride and set F straight only for the candidate(s) that pass there; then set F curves and station stops (below) for that candidate and the defaults. python scripts/regression_gate.py --cache /data/cache --jobs 1 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json --set track.walls_min_far_support=<v>; native path, receive stamps, the ride in 8 pieces.",
     "ship_rule": "ship the first candidate in the order above that meets all of: (1) the full gate exits 0 against regression_baseline_2026-09-25_ride_column.json, no gated row worse; (2) the target: squareT_platform_squareT_switch STOP episodes fewer than 15 and alarm events not more than 9; (3) every safety condition below. If none does, the flag stays 0 and the numbers are recorded.",
@@ -35,5 +52,65 @@
       "set F station stops, anchored placement: the same with --files 29,52,81,111,144,183 --kinds person,box1.0 --start 150 --frames 110 --lateral=-0.6:0.6: the same three conditions"
     ],
     "also_run_once": "the far-rail check on the ride: the full gate with --set track.rails_far_check_enabled=true against the same baseline; recorded, no decision"
+  },
+  "round_1_results": {
+    "how": "scripts/regression_gate.py on the six recordings and set O (a cache of symlinks without new_data, --allow 'ride.*' --allow 'set_F_straight.*'), --jobs 1, native path, receive stamps, code 692feaf (the flag, off by default), against regression_baseline_2026-09-25_ride_column.json; the flag-off control run is identical to the baseline in every gated row",
+    "format": "alarm frames / events / STOP episodes",
+    "rows": {
+      "control (flag off)": {
+        "squareT_platform_squareT_switch": "54 / 9 / 15",
+        "doubleT_platform": "4 / 4 / 1",
+        "five_obstacle_free": "58 / 13 / 16",
+        "set_O_big_above_stop_frames": 12,
+        "gate": "PASS, every gated row the same"
+      },
+      "0.5": {
+        "squareT_platform_squareT_switch": "37 / 4 / 9",
+        "doubleT_platform": "6 / 5 / 2",
+        "five_obstacle_free": "43 / 9 / 11",
+        "set_O_big_above_stop_frames": 11,
+        "gate": "FAIL: doubleT_platform events and STOP episodes, set O big_above STOP frames"
+      },
+      "0.4": {
+        "squareT_platform_squareT_switch": "39 / 7 / 8",
+        "doubleT_platform": "5 / 2 / 1",
+        "five_obstacle_free": "44 / 9 / 9",
+        "set_O_big_above_stop_frames": 11,
+        "gate": "FAIL: set O big_above STOP frames"
+      },
+      "0.6": {
+        "squareT_platform_squareT_switch": "3 / 1 / 1",
+        "doubleT_platform": "8 / 6 / 2",
+        "five_obstacle_free": "11 / 7 / 3",
+        "set_O_big_above_stop_frames": 11,
+        "gate": "FAIL: doubleT_platform events and STOP episodes, set O big_above STOP frames"
+      }
+    },
+    "unchanged_in_all_three": "doubleT_obstacle (person 58 of 61, rail object from frame 75 124 of 126, first alarm frame 11, 0 fp events), every other set O object, roundT_doubleT, roundT_pressureGate_roundT, roundT_squareT_pressureGate_squareT",
+    "verdict": "none of the three meets the ship rule: not shipped in round 1 (the full gate was not run)",
+    "why": "the rule fires on short, spurious stretches outside the platform stop and the axis filter carries the change on: set O frame 146 (a left side fitted for one frame, far support 5 of 15, k -5.8e-4) changes the track model of the next 1 364 frames by millimetres, and at frame 643 the organizers' 2 x 2 m box at the envelope top (79.2 m) is classed 'elevated' instead of a STOP; doubleT_platform frames 0-6 (7 consecutive frames at the start) send its axis on another path, and at frames 182-183 a new event at 5.9-6.8 m appears (0.5, 0.6). Closed loop at the platform the rule holds in long runs (0.6: 28 runs, 11 of 10 frames or more, the longest 52); on doubleT_platform the longest run is 7 frames, on set O 1 frame (open loop, default fits)"
+  },
+  "round_2": {
+    "preregistered": {
+      "written_at_utc": "2026-09-25T16:32:49Z",
+      "note": "written after round 1 and before any round-2 run; motivated by the round-1 failures above (short spurious firings): the rule applies only after its condition has held in walls_far_support_frames consecutive frames",
+      "fix_addition": "track.walls_far_support_frames (int, >= 1; 1 = round 1): the far-support rule sets the axis shape only from the N-th consecutive frame in which its condition holds (both sides fitted with a rail tangent, one unsupported, the other supported and |k| <= 2e-4); any frame without it resets the count. 10 frames = 1 s at 10 Hz, the tracker's zone window; round 1's spurious runs were 1 (set O) and 7 (doubleT_platform) frames long.",
+      "candidates_in_order_of_preference": [
+        {
+          "track.walls_min_far_support": 0.6,
+          "track.walls_far_support_frames": 10
+        },
+        {
+          "track.walls_min_far_support": 0.6,
+          "track.walls_far_support_frames": 20
+        },
+        {
+          "track.walls_min_far_support": 0.5,
+          "track.walls_far_support_frames": 10
+        }
+      ],
+      "procedure": "as round 1: six recordings and set O first; the full gate (ride, set F straight) for the first candidate that passes there; then set F curves and station stops (round-1 commands) for that candidate and the defaults.",
+      "ship_rule": "unchanged from round 1: the first candidate in this order meeting (1) the full gate exits 0 against regression_baseline_2026-09-25_ride_column.json, (2) squareT_platform_squareT_switch STOP episodes fewer than 15 and events not more than 9, (3) every round-1 safety condition (including no new false-alarm event on the five obstacle-free recordings and the ride per frame, set F curves and station stops per sequence). Else the flags stay off and the numbers are recorded."
+    }
   }
 }
