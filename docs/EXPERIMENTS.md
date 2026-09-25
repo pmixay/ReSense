@@ -1884,15 +1884,40 @@ catch-up end +7.7 s, 4 missing frames; 0 alarm frames). The regression gate with
 `regression_baseline_2026-09-25_ride_column.json` **PASS**: all 105 gated rows the same on this second
 machine (ride 187 / 46 / 39), only latency information rows differ. The console: `console_test.sh`
 with a stock Fast DDS player in Docker **PASS**; the host console with `rmw_cyclonedds_cpp` at
-`rmem_max` 32 MiB (`rmem_default` left at 212992) **PASS** (144 `STOP`, no rmem WARN). **New:** the
-host console with **stock Fast DDS** at Ubuntu's `rmem_max` 212992 **FAILED 5 of 5** (0–1 of the
-201 360° clouds processed; the 120° recording always arrives), with the node on the 25.09 8 MiB
-profile too (2 of 2, a runtime mount over the image's file), and passed at 32 MiB (1 of 1); the
-offline README jury console failed the same way (6 of 201 clouds). On the first VM that console had
-passed at 212992 (137 `STOP`), so at the default buffer a stock Fast DDS player's 360° clouds reach
-the node or not depending on the host: the node's WARN (and its `sudo sysctl -w
-net.core.rmem_max=33554432`) applies to Fast DDS players as well as CycloneDDS ones
-([`diag_host_fastdds/README.txt`](evidence/dry_run_2026-09-25_2/diag_host_fastdds/README.txt)).
+`rmem_max` 32 MiB (`rmem_default` left at 212992) **PASS** (144 `STOP`, no rmem WARN). The host
+console labelled "stock Fast DDS" failed at Ubuntu's `rmem_max` 212992 in 5 of 5 runs (0–1 of the
+201 360° clouds) and passed at 32 MiB, and so did the offline README jury console (6 of 201), but
+**corrected 25.09 evening: those players were CycloneDDS.** The host's ROS 2 was installed as
+VM_GUIDE §1 then said (`ros-humble-ros-base` with `ros-humble-rmw-cyclonedds-cpp` in one apt call;
+`ros-humble-rmw-implementation` takes either RMW), so no Fast DDS RMW was on the host and a player
+with `RMW_IMPLEMENTATION` unset loaded `rmw_cyclonedds_cpp`
+([`diag_host_fastdds/README.txt`](evidence/dry_run_2026-09-25_2/diag_host_fastdds/README.txt)): the
+runs repeat the CycloneDDS result above, not a Fast DDS one.
+
+**Transport fixes on a third team VM (25.09 evening, code `d4b396e`: README jury step 0 and the
+opt-in `RESENSE_DDS=shm` of `be39362`).** Same VM type, the image built by `dry_run.sh --no-cache` as
+its first build, the original bags from a RAM tmpfs; the player's RMW checked in `/proc/<pid>/maps`
+(raw: [`evidence/dry_run_2026-09-25_3/`](evidence/dry_run_2026-09-25_3/), its `README.txt`). The
+host first had the same install and again ran CycloneDDS; with `ros-humble-rmw-fastrtps-cpp` added,
+a **genuine stock Fast DDS player** (`librmw_fastrtps_cpp.so`, `libfastrtps.so.2.6.12`, the image's
+version):
+
+| node | host player | `rmem_max` | result |
+|---|---|---|---|
+| UDP (default) | stock Fast DDS | 212992 | **PASS, 2 of 2** (152 / 150 `STOP`, 55.5–56.6 m) |
+| UDP | stock Fast DDS, README steps 0–5 | 32 MiB | PASS (153 `STOP`) |
+| `RESENSE_DDS=shm` | stock Fast DDS | 212992 | **PASS, 2 of 2** (148 / 146 `STOP`); the player maps the node's `root 666 /dev/shm/fastrtps_port7411`: the clouds go over shared memory |
+| shm | CycloneDDS | 212992 | FAIL: the 360° recording never arrives (CycloneDDS cannot use Fast DDS shared memory) |
+| shm | CycloneDDS | 32 MiB | PASS (153 `STOP`); no Fast DDS port mapped |
+| UDP | CycloneDDS, README steps 0–5 | 32 MiB | PASS (152 `STOP`) |
+| shm | stock Fast DDS in Docker (`NODE_DDS=shm console_test.sh`) | 212992 | PASS over shared memory |
+
+`dry_run.sh` on both bags (UDP, in the container): PASS and PASS (55.6–56.5 m, p95 65 ms, 4 drops
+after the catch-up = the recording's own missing frames; 0 alarm frames). **Reading:** a stock Fast
+DDS player reaches the node at Ubuntu's default buffer over UDP (the first and this third VM) and in
+shm mode; a CycloneDDS player needs `rmem_max` 32 MiB in either mode. README step 0 covers
+CycloneDDS and costs Fast DDS nothing; the shm mode passes [`VM_GUIDE.md`](VM_GUIDE.md) §4.6, but no
+Fast DDS failure over UDP is left for it to fix, so it stays opt-in until the captain decides.
 
 ## 4. What we learned / hard cases
 

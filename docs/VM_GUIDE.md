@@ -70,8 +70,13 @@ hello-world` works as your user.
 
 **ROS 2 Humble on the host**, only for the host-console player of §4.2: the
 [Debian-package installation](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html)
-(`ros-humble-ros-base` is enough; `ros-humble-rmw-cyclonedds-cpp` for the CycloneDDS variant).
-Everything else needs no ROS on the host.
+**name the Fast DDS RMW explicitly**: `sudo apt-get install -y ros-humble-ros-base
+ros-humble-rmw-fastrtps-cpp` (plus `ros-humble-rmw-cyclonedds-cpp` for the CycloneDDS variant).
+`ros-humble-rmw-implementation` takes any one RMW, so `ros-base` together with the CycloneDDS package
+installs **no** Fast DDS and a player with `RMW_IMPLEMENTATION` unset then runs CycloneDDS (25.09: the
+second team VM's "Fast DDS" host runs were CycloneDDS). Check which one a player loads:
+`ros2 topic echo /x std_msgs/msg/String & sleep 4; grep -oE 'librmw_[a-z]+_cpp\.so' /proc/$!/maps | sort -u`
+(`librmw_fastrtps_cpp.so` expected). Everything else needs no ROS on the host.
 
 **The clone and the Python environment:**
 
@@ -234,8 +239,9 @@ Commit the evidence as in §6 (`dry_run_<date>/`, `bench_<date>/`, `offline_<dat
 
 **Done 25.09 afternoon** on a second team VM, code `76bf24e` (`docs/evidence/*_2026-09-25_2/`,
 EXPERIMENTS §3a / §3b): drops and false alarm PASS, online and offline; the bench PASS on the native
-path; the gate with the ride PASS; CycloneDDS at 32 MiB PASS. New: the host console with **stock
-Fast DDS** failed at Ubuntu's `rmem_max` 212992 on that VM (5 of 5) and passed at 32 MiB (CAPTAIN C4).
+path; the gate with the ride PASS; CycloneDDS at 32 MiB PASS. Its host console labelled "stock Fast
+DDS" (FAIL at 212992, 5 of 5) was a CycloneDDS player (§1: no Fast DDS RMW on that host); a genuine
+stock Fast DDS player passed at 212992 on the third VM (25.09 evening, §4.6, EXPERIMENTS §3b).
 
 ### 4.1 Dry run with the original bags
 
@@ -304,9 +310,9 @@ source /opt/ros/humble/setup.bash && ros2 topic echo /resense/decision --field d
 **Done:** the check passes and console 3 shows `STOP` during the obstacle recording. Optional:
 the same with `export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp` in consoles 2 and 3 (the node stays
 on Fast DDS). A CycloneDDS player needs `net.core.rmem_max` ≥ 32 MiB on the host for the 360° clouds
-(25.09: none arrived at Ubuntu's 212992, all at 32 MiB; the node logs a WARN below it), and on some
-hosts a stock Fast DDS player does too (the second VM of 25.09: 0–1 of 201 clouds at 212992 in 5 of 5
-runs, all at 32 MiB; the first VM passed at 212992):
+(25.09: none arrived at Ubuntu's 212992, all at 32 MiB; the node logs a WARN below it); a stock Fast
+DDS player does not (all clouds at 212992 on the first and third team VMs; the second VM's failing
+"Fast DDS" runs were CycloneDDS, §1):
 `sudo sysctl -w net.core.rmem_max=33554432` for the run, restored afterwards (§4.0). **Evidence:** with the dry run's.
 
 ### 4.3 8-core bench
@@ -363,9 +369,12 @@ image is built from `git archive HEAD`). **Done:** both scripts exit 0. **Eviden
 
 ### 4.6 Shared-memory mode (opt-in `RESENSE_DDS=shm`)
 
-On the second VM of 25.09 the host console of §4.2 with stock Fast DDS got 0–1 of the 201 360°
-clouds over UDP at Ubuntu's `net.core.rmem_max` 212992 (5 of 5 runs) and all of them at 32 MiB
-(§4.0). `docker run … -e RESENSE_DDS=shm` puts the node on shared memory + UDP and opens its Fast
+**Run 25.09 evening on a third team VM** (`evidence/dry_run_2026-09-25_3/`, EXPERIMENTS §3b): PASS,
+both parts: a genuine stock Fast DDS player 2 of 2 at `rmem_max` 212992 with console 4 showing the
+node's `root 666 fastrtps_port7411`; CycloneDDS at 32 MiB PASS with no port mapped; the Docker
+variant PASS. The UDP default passed as well with that player at 212992 (2 of 2), so the flip below
+is the captain's call. The motivating failure (§4.0: a "stock Fast DDS" host console with 0–1 of
+201 clouds at 212992 on the second VM) was a CycloneDDS player (§1). `docker run … -e RESENSE_DDS=shm` puts the node on shared memory + UDP and opens its Fast
 DDS files in `/dev/shm` to other users (`docker/dds_transport.sh`, header of
 `docker/fastdds_shm_share.py`), so that such a player hands the clouds over `/dev/shm`, where
 socket buffers play no part. This run decides whether it becomes the default. The host console of

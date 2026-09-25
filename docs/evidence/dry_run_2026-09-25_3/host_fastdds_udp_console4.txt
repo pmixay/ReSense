@@ -1,0 +1,6 @@
+player pid 18783 (kladmin), RMW loaded: libfastrtps.so.2.6.12 librmw_fastrtps_cpp.so 
+kladmin 644 /dev/shm/fastrtps_port7413
+kladmin 644 /dev/shm/fastrtps_port7415
+kladmin 644 /dev/shm/fastrtps_port7417
+kladmin 644 /dev/shm/fastrtps_port7419
+kladmin 644 /dev/shm/fastrtps_port7421

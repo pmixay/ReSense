@@ -33,9 +33,16 @@ transport, 19 of them in the image) in `tests/`, 13 in `web/demo`.
   the frame). At phone width the page gutter is 16 px like the header (was 14 px).
   `web/README.md`: roslib is bundled (it still said CDN), the report button is «Скачать отчёт».
   Web tests 11 → 13.
-- **Opt-in shared-memory transport, `RESENSE_DDS=shm` (25.09, default off):** on the second team VM
-  a stock Fast DDS host player delivered 0–1 of the 201 360° clouds over UDP at Ubuntu's
-  `rmem_max` 212992 (EXPERIMENTS §3b). `docker run … -e RESENSE_DDS=shm` (with `--ipc=host`): the
+- **Correction of the "stock Fast DDS" host-console finding (25.09 evening):** the second team
+  VM's host had no Fast DDS RMW (`ros-humble-ros-base` and `ros-humble-rmw-cyclonedds-cpp` in one apt
+  call install none), so its "Fast DDS" host players, which delivered 0–1 of the 201 360° clouds at
+  `rmem_max` 212992, were CycloneDDS. A genuine stock Fast DDS player passed at 212992 on the first
+  and third team VMs, over UDP and in shm mode (EXPERIMENTS §3b, `evidence/dry_run_2026-09-25_3/`);
+  README step 0 stays (CycloneDDS needs it, Fast DDS does not mind); VM_GUIDE §1 now installs
+  `ros-humble-rmw-fastrtps-cpp` explicitly and checks the loaded RMW.
+- **Opt-in shared-memory transport, `RESENSE_DDS=shm` (25.09, default off):** built after a host
+  player on the second team VM delivered 0–1 of the 201 360° clouds over UDP at Ubuntu's `rmem_max`
+  212992; that player turned out to be CycloneDDS (entry above). `docker run … -e RESENSE_DDS=shm` (with `--ipc=host`): the
   entrypoint switches to shared memory + UDPv4 (`docker/dds_transport.sh`,
   `docker/fastdds_shm_udp.xml`) and starts `docker/fastdds_shm_share.py`, which sets the node's own
   Fast DDS port and data segments in `/dev/shm` to 0666: Fast DDS 2.6 creates them 0644 (Boost's

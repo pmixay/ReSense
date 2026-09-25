@@ -1,0 +1,59 @@
+[INFO] [resense.dds]: DDS transport: shm, shared memory + UDPv4 (/opt/resense/fastdds_shm_udp.xml); this container's Fast DDS files in /dev/shm are opened to other users (fastdds_shm_share.py, pid 25)
+[INFO] [launch]: All log files can be found below /root/.ros/log/2026-09-25-18-34-24-193984-compute-vm-2-2-90-ssd-1790359373525df-1
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [detector_node-1]: process started with pid [26]
+[detector_node-1] [INFO] [1790361264.886594886] [resense_detector]: sensor mount: forward=-y left=+x up=+z roll/pitch/yaw=0.0/0.0/0.0 deg; auto-calibration on
+[detector_node-1] [INFO] [1790361264.907311427] [resense_detector]: ReSense detector listening on /lidar_points, /sensing/lidar/hesai128/pointcloud (+ auto-discovery); input reliability auto; per-frame kernels: native (_resense_native.cpython-310-x86_64-linux-gnu.so); resense 1.0.0
+[resense.shm] fastrtps_0520788b2b53abf1: mode 666 (other users' Fast DDS participants may open it)
+[resense.shm] fastrtps_port7411: mode 666 (other users' Fast DDS participants may open it)
+[resense.shm] sem.fastrtps_port7411_mutex: mode 666 (other users' Fast DDS participants may open it)
+[detector_node-1] [INFO] [1790361274.645488422] [resense_detector]: 0.7 s of recording waiting: catching up, one frame every 0.3 s of recording
+[detector_node-1] [INFO] [1790361274.645954357] [resense_detector]: input 1: /lidar_points (frame_id=hesai_lidar, 307200 points)
+[detector_node-1] [INFO] [1790361274.646756393] [resense_detector]: static TF resense_lidar -> hesai_lidar (identity)
+[detector_node-1] [INFO] [1790361274.696560789] [resense_detector]: mount calibration: pending - 
+[detector_node-1] [INFO] [1790361274.980659026] [resense_detector]: frame 5: clear; axis y=+0.05 R=6247; 2.4 fps; latency mean 54 / p95 56 / max 57 ms; input period 100 ms; dropped 4 (4 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361275.229269513] [resense_detector]: caught up in 0.6 s: 11 frames processed, 13 skipped, at most 1.7 s of recording behind
+[detector_node-1] [INFO] [1790361276.907821566] [resense_detector]: frame 28: clear; axis y=-0.01 R=73740; 11.9 fps; latency mean 42 / p95 50 / max 54 ms; input period 100 ms; dropped 13 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361278.908259629] [resense_detector]: frame 48: clear; axis y=-0.01 R=106697; 10.0 fps; latency mean 41 / p95 51 / max 52 ms; input period 100 ms; dropped 13 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361280.907899453] [resense_detector]: frame 68: warning; axis y=-0.05 R=-1989; 10.0 fps; latency mean 40 / p95 48 / max 49 ms; input period 100 ms; dropped 13 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361282.907896606] [resense_detector]: frame 88: warning; axis y=-0.00 R=-1103; 10.0 fps; latency mean 44 / p95 49 / max 54 ms; input period 100 ms; dropped 13 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361284.907891722] [resense_detector]: frame 108: warning; axis y=+0.06 R=-1551; 10.0 fps; latency mean 47 / p95 56 / max 57 ms; input period 100 ms; dropped 13 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361286.907969957] [resense_detector]: frame 128: warning; axis y=+0.02 R=-1451; 10.0 fps; latency mean 44 / p95 53 / max 54 ms; input period 100 ms; dropped 13 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361288.908066783] [resense_detector]: frame 148: warning; axis y=+0.04 R=-1586; 10.0 fps; latency mean 44 / p95 53 / max 53 ms; input period 100 ms; dropped 13 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361290.907921047] [resense_detector]: frame 168: clear; axis y=-0.04 R=-910; 10.0 fps; latency mean 44 / p95 52 / max 53 ms; input period 100 ms; dropped 13 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361292.908020475] [resense_detector]: frame 188: warning; axis y=-0.06 R=-6072; 10.0 fps; latency mean 43 / p95 50 / max 52 ms; input period 100 ms; dropped 13 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361293.194326041] [resense_detector]: mount calibration: identity - configured mapping confirmed
+[detector_node-1] [INFO] [1790361294.908126607] [resense_detector]: frame 208: warning; axis y=-0.03 R=83397; 10.0 fps; latency mean 42 / p95 44 / max 53 ms; input period 100 ms; dropped 13 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361296.907970967] [resense_detector]: frame 228: warning; axis y=-0.02 R=-69870; 10.0 fps; latency mean 39 / p95 41 / max 41 ms; input period 100 ms; dropped 13 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361298.908161959] [resense_detector]: frame 239: FAULT: no LiDAR frame for 0.6 s (> 0.5 s): path not monitored; 5.5 fps; latency mean 39 / p95 41 / max 42 ms; input period 100 ms; dropped 13 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361310.940727082] [resense_detector]: 0.7 s of recording waiting: catching up, one frame every 0.3 s of recording
+[detector_node-1] [INFO] [1790361310.943178342] [resense_detector]: input 2: /sensing/lidar/hesai128/pointcloud (frame_id=lidar_livox, 921600 points) - input switched from /lidar_points: detector restarted
+[detector_node-1] [INFO] [1790361310.944057042] [resense_detector]: static TF resense_lidar -> lidar_livox (identity)
+[detector_node-1] [INFO] [1790361311.012117712] [resense_detector]: mount calibration: pending - 
+[detector_node-1] [INFO] [1790361311.020441395] [resense_detector]: frame 240: clear; axis y=+0.07 R=51304; 0.5 fps; latency mean 74 / p95 74 / max 74 ms; input period 100 ms; dropped 13 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361311.734370703] [resense_detector]: mount calibration: provisional - provisional tilt: roll +3.51, pitch -0.84 deg (final after 20 observations)
+[detector_node-1] [INFO] [1790361313.011966563] [resense_detector]: frame 261: OBSTACLE at 55.9 m; axis y=+0.04 R=-8489; 10.5 fps; latency mean 65 / p95 75 / max 87 ms; input period 100 ms; dropped 42 (42 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361313.473771659] [resense_detector]: caught up in 2.5 s: 30 frames processed, 40 skipped, at most 4.3 s of recording behind
+[detector_node-1] [INFO] [1790361314.908817812] [resense_detector]: frame 283: OBSTACLE at 56.1 m; axis y=+0.03 R=-5872; 11.6 fps; latency mean 60 / p95 69 / max 70 ms; input period 100 ms; dropped 53 (53 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361316.908041258] [resense_detector]: frame 303: OBSTACLE at 56.2 m; axis y=+0.04 R=-7146; 10.0 fps; latency mean 59 / p95 70 / max 71 ms; input period 100 ms; dropped 53 (53 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361318.908048290] [resense_detector]: frame 323: OBSTACLE at 56.1 m; axis y=+0.04 R=-7255; 10.0 fps; latency mean 59 / p95 69 / max 71 ms; input period 100 ms; dropped 53 (53 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361320.908098782] [resense_detector]: frame 342: OBSTACLE at 56.1 m; axis y=+0.04 R=-5869; 9.5 fps; latency mean 59 / p95 69 / max 69 ms; input period 100 ms; dropped 54 (53 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361322.907944464] [resense_detector]: frame 362: OBSTACLE at 56.1 m; axis y=+0.04 R=-5810; 10.0 fps; latency mean 59 / p95 70 / max 71 ms; input period 100 ms; dropped 54 (53 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361324.907986450] [resense_detector]: frame 379: OBSTACLE at 56.1 m; axis y=+0.04 R=-5452; 8.5 fps; latency mean 57 / p95 60 / max 68 ms; input period 100 ms; dropped 57 (53 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361326.908126296] [resense_detector]: frame 399: OBSTACLE at 56.1 m; axis y=+0.04 R=-5818; 10.0 fps; latency mean 59 / p95 69 / max 69 ms; input period 100 ms; dropped 57 (53 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361328.908243551] [resense_detector]: frame 400: FAULT: no LiDAR frame for 1.7 s (> 0.5 s): path not monitored; 0.5 fps; latency mean 71 / p95 71 / max 71 ms; input period 100 ms; dropped 57 (53 skipped by the catch-up)
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [detector_node-1]: sending signal 'SIGINT' to process[detector_node-1]
+[detector_node-1] Traceback (most recent call last):
+[detector_node-1]   File "/opt/resense/ros2_ws/install/resense_ros/lib/resense_ros/detector_node", line 33, in <module>
+[detector_node-1]     sys.exit(load_entry_point('resense-ros', 'console_scripts', 'detector_node')())
+[detector_node-1]   File "/opt/resense/ros2_ws/build/resense_ros/resense_ros/detector_node.py", line 922, in main
+[detector_node-1]     rclpy.shutdown()
+[detector_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+[detector_node-1]     _shutdown(context=context)
+[detector_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+[detector_node-1]     return context.shutdown()
+[detector_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+[detector_node-1]     self.__context.shutdown()
+[detector_node-1] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241
+[ERROR] [detector_node-1]: process has died [pid 26, exit code 1, cmd '/opt/resense/ros2_ws/install/resense_ros/lib/resense_ros/detector_node --ros-args -r __node:=resense_detector --params-file /tmp/launch_params_pojldkls'].

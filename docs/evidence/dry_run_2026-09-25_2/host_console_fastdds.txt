@@ -1,3 +1,4 @@
+CORRECTION (25.09 evening): the player of this run was CycloneDDS, not rmw_fastrtps_cpp: the host had no Fast DDS RMW installed (ros-base + rmw-cyclonedds-cpp in one apt call; see ../dry_run_2026-09-25_3/README.txt). The label below is wrong.
 host console: admn uid 1000, RMW rmw_fastrtps_cpp (default), no Fast DDS profile; net.core.rmem_max 212992, rmem_default 212992
 decisions seen:     151 CAUTION      77 FAULT      34 GO       3 STOP 
 [detector_node-1] [WARN] [1790347280.105964798] [resense_detector]: net.core.rmem_max = 212992, net.core.rmem_default = 212992: below 32 MiB. A bag player on CycloneDDS (RMW_IMPLEMENTATION=rmw_cyclonedds_cpp) then delivers none of the ~24 M

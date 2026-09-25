@@ -1,3 +1,12 @@
+CORRECTION (25.09 evening, third team VM, ../dry_run_2026-09-25_3/README.txt): every "fastdds" host run in
+this folder, and ../host_console_fastdds.txt, ran a CycloneDDS player. The host's ROS 2 was installed with
+ros-humble-ros-base and ros-humble-rmw-cyclonedds-cpp in one apt call; ros-humble-rmw-implementation takes
+"rmw-fastrtps-cpp | rmw-cyclonedds-cpp | ...", so no Fast DDS RMW was installed and RMW_IMPLEMENTATION unset
+loaded rmw_cyclonedds_cpp. The table below therefore shows CycloneDDS at rmem_max 212992 (FAIL, as on 25.09
+morning) and at 32 MiB (PASS), not stock Fast DDS. A genuine stock Fast DDS player (rmw_fastrtps_cpp,
+fastrtps 2.6.12, checked in /proc/<pid>/maps) passed at 212992 on the third VM, 2 of 2 over UDP and 2 of 2 in
+shm mode, as it had on the first VM (../../dry_run_2026-09-25/host_fastdds.txt).
+
 Diagnostic follow-up of the host console with stock Fast DDS (VM_GUIDE §4.2), 25.09 afternoon, second
 team VM (8 vCPU = 4 physical cores, Ubuntu 22.04, kernel 5.15.0-191, host ROS 2 Humble from apt: rosbag2
 0.15.17, fastrtps 2.6.12), code 76bf24e, image resense:latest built on this VM. Bags from a RAM tmpfs.

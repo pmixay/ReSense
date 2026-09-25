@@ -85,8 +85,8 @@ bags carry different ``frame_id`` values (``hesai_lidar``, ``lidar_livox``); the
 
 Socket buffers (25.09): at start the node reads ``net.core.rmem_max`` (and ``rmem_default``) and
 logs one WARN below 32 MiB: at Ubuntu's 212992 a player on CycloneDDS got none of the ~24 MB
-360-degree clouds through to the node, a stock Fast DDS player 0-1 of 201 on one of two team VMs,
-and both all of them at 32 MiB (25.09, EXPERIMENTS.md section 3b). Never fatal.
+360-degree clouds through to the node and all of them at 32 MiB; a stock Fast DDS player got all of
+them at 212992 too (25.09, EXPERIMENTS.md section 3b). Never fatal.
 
 Threads (25.09): ``OMP_NUM_THREADS`` / ``OPENBLAS_NUM_THREADS`` / ``MKL_NUM_THREADS`` default to 1
 (``resense_ros/__init__.py``, before numpy is imported; an explicit value in the environment
@@ -299,7 +299,7 @@ class DetectorNode(Node):
             return None
         now = ", ".join(f"net.core.{k} = {values[k]}" for k in ("rmem_max", "rmem_default") if values.get(k) is not None)
         return (f"{now}: below 32 MiB. A bag player may then deliver few or none of the ~24 MB "
-                "360-degree clouds to this node (CycloneDDS always, stock Fast DDS on some hosts; the "
+                "360-degree clouds to this node (a CycloneDDS player; stock Fast DDS was not affected; the "
                 "120-degree clouds arrive). Fix on the host, before playing: sudo sysctl -w "
                 f"net.core.rmem_max={RMEM_WANT} net.core.rmem_default={RMEM_WANT}")
 

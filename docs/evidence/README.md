@@ -135,11 +135,26 @@ resolvers and multicast / loopback addresses only.
 | folder | run | result |
 |---|---|---|
 | `vm_2026-09-25_2/` | §3 machine facts (`lscpu`, `vmstat`, `rmem`, commit) | 4 cores, steal 0, `rmem_max` 212992 |
-| `dry_run_2026-09-25_2/` | §4.1 (`dry_obstacle.txt` with the `--no-cache` build, `dry_clear.txt`, `replay_dry_clear.txt`), §4.2 (`ct_stock.txt`; `host_console_fastdds.txt`, `host_console_cyclonedds.txt` at `rmem_max` 32 MiB), node logs and gzipped captures; `diag_host_fastdds/`: the stock Fast DDS host console repeated, at 32 MiB and with the 25.09 8 MiB profile mounted over the image's (its `README.txt`, the script `g_runs.sh`) | PASS: `dry_obstacle`, `dry_clear` (0 alarm frames; replay equal), `ct_stock`, CycloneDDS at 32 MiB; FAIL: the Fast DDS host console at 212992 (5 of 5), PASS at 32 MiB |
+| `dry_run_2026-09-25_2/` | §4.1 (`dry_obstacle.txt` with the `--no-cache` build, `dry_clear.txt`, `replay_dry_clear.txt`), §4.2 (`ct_stock.txt`; `host_console_fastdds.txt`, `host_console_cyclonedds.txt` at `rmem_max` 32 MiB), node logs and gzipped captures; `diag_host_fastdds/`: the stock Fast DDS host console repeated, at 32 MiB and with the 25.09 8 MiB profile mounted over the image's (its `README.txt`, the script `g_runs.sh`) | PASS: `dry_obstacle`, `dry_clear` (0 alarm frames; replay equal), `ct_stock`, CycloneDDS at 32 MiB; FAIL: the host console labelled Fast DDS at 212992 (5 of 5), PASS at 32 MiB; corrected 25.09 evening: those players were CycloneDDS (no Fast DDS RMW on that host; the files carry a CORRECTION line) |
 | `bench_2026-09-25_2/` | §4.3, `scripts/bench_8core.sh` (its `build/run.txt` force-added past `.gitignore`'s `build/`) | PASS but `dry_obstacle_numpy` (p95 119 ms) |
 | `gate_2026-09-25_2/` | §4.4, `regression_gate.py --jobs 4` against `regression_baseline_2026-09-25_ride_column.json` | PASS: 105 gated rows the same, ride 187 / 46 / 39 |
 | `export_2026-09-25_2/` | §4.5, `export_image.sh` + `load_image.sh` | PASS: 475 515 293 bytes, sha256 in `archive.txt` |
 | `offline_2026-09-25_2/` | §5 steps 1–7 (no host allowed): `steps.txt`, `check_no_network.txt`, both `OFFLINE=1` dry runs, `jury_console.txt` (README steps 2–5 from the host), `rules_ipv4.txt` / `rules_ipv6.txt` (packet counters) | PASS: block, both dry runs; FAIL: `jury_console` (6 of 201 clouds: the host buffer, as online); restored after 4 min |
+
+### `*_2026-09-25_3/`: the transport fixes on a third team VM (25.09 evening)
+
+Code `d4b396e` (README jury step 0 and the opt-in `RESENSE_DDS=shm` of `be39362`), the same VM type
+(4 physical cores, Ubuntu 22.04), the image built by `dry_run.sh --no-cache` as the VM's first build,
+the two original bags from a RAM tmpfs. `dry_run_2026-09-25_3/README.txt` has the table of every run
+and the host-ROS note: installed as VM_GUIDE §1 then said, the host had no Fast DDS RMW and its first
+two host runs were CycloneDDS players (renamed `*_cyclonedds*`, with a CORRECTION line); after
+`ros-humble-rmw-fastrtps-cpp` was added, each host run records the RMW its player loaded
+(`*_console4.txt`). `g_fix.sh` is the script that ran them.
+
+| folder | run | result |
+|---|---|---|
+| `vm_2026-09-25_3/` | machine facts | 4 cores, `rmem_max` 212992 |
+| `dry_run_2026-09-25_3/` | `dry_run.sh` on both bags; host consoles: the node UDP or `RESENSE_DDS=shm`, the player stock Fast DDS or CycloneDDS, `rmem_max` 212992 or 32 MiB (README step 0); `NODE_DDS=shm console_test.sh` | PASS: both dry runs; stock Fast DDS at 212992 over UDP (2 of 2) and in shm mode (2 of 2, the player maps the node's `root 666` port); step 0 with either player; CycloneDDS in shm mode at 32 MiB; the Docker shm test. FAIL: CycloneDDS at 212992 (shm mode) |
 
 ### `bag_metadata/`: the original `metadata.yaml` of the six recordings
 

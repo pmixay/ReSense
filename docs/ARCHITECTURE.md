@@ -123,12 +123,15 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   any user reaches the root node) and sets 32 MiB socket receive buffers (8 MiB until 25.09); the
   kernel caps them at `net.core.rmem_max`, 212992 on a stock Ubuntu, silently, and Fast DDS 2.6
   keeps going with the capped buffer (`rmem_default` does not matter to a buffer set explicitly).
-  At that a CycloneDDS player delivered none of the 24 MB 360° clouds and a stock Fast DDS player
-  0–1 of 201 on the second of two team VMs (the first passed), all of them at `rmem_max` 32 MiB
-  (25.09, EXPERIMENTS §3b); the 120° clouds arrive either way. So the jury commands start with
+  At that a CycloneDDS player delivered none of the 24 MB 360° clouds, all of them at `rmem_max`
+  32 MiB, and a stock Fast DDS player (`rmw_fastrtps_cpp`, fastrtps 2.6.12) all of them at 212992 on
+  the first and third team VMs (25.09, EXPERIMENTS §3b; the second VM's "Fast DDS" host runs were
+  CycloneDDS players, its host had no Fast DDS RMW); the 120° clouds arrive either way. So the jury commands start with
   `sudo sysctl -w net.core.rmem_max=33554432` (README step 0), and the node logs a WARN at start
   when `rmem_max` is below 32 MiB. **Opt-in shared memory** (`docker run … -e
-  RESENSE_DDS=shm`, default off until the VM run of [`VM_GUIDE.md`](VM_GUIDE.md) §4.6): the
+  RESENSE_DDS=shm`, default off; the VM run of [`VM_GUIDE.md`](VM_GUIDE.md) §4.6 passed on 25.09
+  evening, but so did the UDP default with a genuine Fast DDS player, so it stays opt-in until the
+  captain decides): the
   entrypoint switches to shared memory + UDPv4 (`docker/dds_transport.sh`,
   `docker/fastdds_shm_udp.xml`), so a stock Fast DDS player on the host hands the clouds over
   `/dev/shm`, whatever `rmem_max` is. Fast DDS 2.6 creates its segments 0644 with no option to

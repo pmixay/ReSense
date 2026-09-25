@@ -1,3 +1,4 @@
+CORRECTION (25.09 evening): the player of this run was CycloneDDS, not rmw_fastrtps_cpp: the host had no Fast DDS RMW installed (ros-base + rmw-cyclonedds-cpp in one apt call; see ../dry_run_2026-09-25_3/README.txt). The label below is wrong.
 host console: admn uid 1000, RMW rmw_fastrtps_cpp (default), no Fast DDS profile; net.core.rmem_max 33554432, rmem_default 212992
 decisions seen:     175 CAUTION      44 FAULT      72 GO     144 STOP 
 status messages      : 391 (44 lines skipped)
