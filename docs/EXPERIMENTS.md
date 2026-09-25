@@ -1266,6 +1266,46 @@ The new defaults (`c0b4f2f`) reproduce A frame by frame on the seven recordings.
 (`tests/test_thin_hanging.py`): shapes, and ray-cast at 16.5 m/s, where the object STOPs from
 30.1 m and a person 3 m beyond it STOPs on the same frame as without the rule.
 
+**Conservative `clear_distance` (SCORECARD §6 row 6; 25.09, tried, not shipped).** The verified-clear
+distance counts confirmed obstacles only (ALGORITHM §6). On set O, current code, 172 of the 505
+object-frames of in-envelope objects with points inside the measured envelope report a
+`clear_distance` more than 0.5 m beyond the object (`scripts/score_clear_distance.py`; the
+judgement's count, decision `GO` without tolerance: 192, 89 of them inside the measured envelope;
+184 / 89 on 24.09). The opt-in `health.clear_cap` caps it at the nearest cluster of the frame that
+touches the strict envelope and is not a confirmed obstacle's own (the obstacle keeps its own
+distance, so the rule is independent of how that distance is defined). The node's decision does not
+read `clear_distance`: 0 frames change between GO, CAUTION and STOP on set O, the five
+obstacle-free recordings and the ride, for every candidate. Pre-registered at 20:42 UTC (C0–C5) and,
+after round 1, at 21:07 UTC (R1–R4, the same without column-demoted clusters); shipping needed the
+set O count to drop, the gate to pass, and on the five recordings and on the ride a median
+`clear_distance` shrinking by ≤ 5 % with ≤ 2 % of the frames pushed under 60 m
+([`p3_clear_distance_2026-09-25.json`](evidence/results/p3_clear_distance_2026-09-25.json)):
+
+| candidate | set O overclaim | five recordings: median 127.0 m, change / frames pushed < 60 m | ride: median 127.0 m, change / < 60 m |
+|---|---:|---:|---:|
+| C0 3rd strict-envelope return + clusters | 46 | −23.9 % / 4.59 % | −12.7 % / 4.87 % |
+| C1 clusters ≥ 1 voxel or a point within envelope + 0.1 m | 76 | −16.6 % / 4.24 % | −5.5 % / 4.53 % |
+| C2 / C3 clusters ≥ 1 strict voxel, seen ≥ 1 / ≥ 2 frames | 82 / 92 | −5.5 % / 3.02, 2.62 % | −5.5, −5.4 % / 3.42, 3.02 % |
+| C4 / C5 ≥ 3 voxels, ≥ 2 / ≥ 3 frames | 92 / 101 | −5.5 % / 2.45, 2.14 % | −3.5, −3.1 % / 2.80, 2.53 % |
+| R1 = C2 without columns | 82 | −5.5 % / 1.22 % | −3.1 % / 1.49 % |
+| R2 / R3 / R4 | 92 / 92 / 101 | −5.5 % / 0.79, 0.66, 0.35 % | −1.8, −0.9, −0.2 % / 1.04, 0.86, 0.59 % |
+
+No candidate passed. In round 1 the column row of the double-track tunnels, which the far axis puts
+0–1.1 m off the axis at 40–60 m with up to 79 strict voxels, made 228 of the 293 ride frames pushed
+under 60 m (C5). In round 2 only the five recordings' median fails: 17 % of their frames sit on the
+120.0 m plateau of the monitored range, and `squareT_platform_squareT_switch`, standing at the
+platform, is capped at the platform-end and overhead structures at ~80–150 m that also cause its
+false STOPs. R1 would have cut the overclaim from 172 to 82 (judgement count 192 → 172, 76 inside)
+and the ride's median clear distance from 127.0 to 123.0 m; of the 90 frames it fixes, the cap
+comes from `elevated` clusters in 38, `floating` in 21, not-yet-confirmed clusters in 26 and an
+advisory track in 5. Of the 82 left, the far 0.3 m floating cube (30) and the 5 cm hanging object (15) mostly form no cluster
+that touches the envelope; the point-level C0 brings them only to 17 and 11 and shortens the
+empty-track range by 13–24 %. The flag stays off, byte-identical to `1c96233`
+(`scripts/output_fingerprint.py`, 2 930 frames); `health.clear_cap: true` alone runs R1. The gate
+with R1 on (`--jobs 1`, 1 093 s) passes with no gated row changed (five recordings 58 / 13 / 16,
+ride 187 / 46 / 39, set O 303 STOP frames, set F straight identical), and its per-frame
+`clear_distance` equals the sweep's on all 15 068 frames.
+
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 
 ### 2a. Day-1 numbers (v0.3, 26 frames of `roundT_doubleT`, every 10th, synthetic objects)
@@ -2303,6 +2343,12 @@ v0.6).
   (§1i, `cluster.hanging_enabled`): the organizers' 5 cm object STOPs from 30.1 m, no gate row
   worse. Left open: 28 of the 29 groups it takes on the ride are station column tops in frames
   without a rail pair; a rail-lock condition is not measured;
+- **conservative `clear_distance`** (P3; §1i, 25.09): tried, not shipped. `health.clear_cap` (R1)
+  cuts the set O overclaim from 172 to 82 object-frames with no decision changed. It fails only the
+  pre-registered median limit on the five obstacle-free recordings (−5.5 % against 5 %: at the
+  platform the train stands capped at the platform-end structures). Open: a captain's trade-off call
+  on that limit, and a cap for objects that form no cluster (the 5 cm hanging object, far 0.3 m
+  cubes);
 - ~~**the rail shadow of a large near object** (P3; §2e): a 2 × 2 m box 10–20 m ahead hides the
   rails, the rail-height fit drifts by ~0.5 m and a wrong 3.0 m distance is reported~~ shipped
   25.09 (§1h): set O #1 wrong-distance STOP frames 12 → 0, gate PASS with the ride; a shadow that

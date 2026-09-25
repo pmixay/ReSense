@@ -25,6 +25,16 @@ transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
 `cluster.far_axis_both_sides`, +3 far bed bins, +5 the rail-shadow review fixes) in `tests/`, 13
 in `web/demo`.
 
+- **Conservative `clear_distance`, tried and not shipped (25.09, SCORECARD §6 row 6):** the opt-in
+  `health.clear_cap` (default false, output byte-identical) caps the verified-clear distance at
+  the nearest unconfirmed or advisory cluster touching the envelope, columns excluded
+  (`clear_cap_*` sub-parameters, `health.candidate_distance` in the status JSON when on); it
+  changes no detection and no decision. Pre-registered (C0–C5, then R1–R4): set O overclaim
+  172 → 82 object-frames, ride median clear distance 127.0 → 123.0 m, but the five
+  obstacle-free recordings' median −5.5 % against the 5 % limit, so off. New
+  `scripts/score_clear_distance.py`; evidence `docs/evidence/results/p3_clear_distance_2026-09-25.json`;
+  EXPERIMENTS §1i.
+
 - **Thin hanging objects (25.09 evening, P3, SCORECARD #11):** new stage
   `clustering.find_hanging`, on (`cluster.hanging_enabled`, `hanging_*`). It covers a thin object
   hanging from above that dips into the envelope near the axis with only 1–3 returns: those

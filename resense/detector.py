@@ -13,7 +13,7 @@ from resense.clustering import Cluster, find_clusters, find_hanging
 from resense.config import DetectorConfig
 from resense.egomotion import EgoSpeedEstimate, EgoSpeedEstimator
 from resense.frame import Frame
-from resense.gauge import corridor_coordinates, corridor_mask, gauge_core_mask
+from resense.gauge import corridor_coordinates, corridor_mask, gauge_core_mask, point_in_polygon, widened_profile
 from resense.health import HealthMonitor
 from resense.lowobj import BedTemplate, low_candidates
 from resense.track import TrackModel, estimate_track
@@ -217,10 +217,11 @@ class Detector:
             clusters = self._hanging(xyz, frame.intensity, dy_all, h_all, cand, clusters, min(valid, floor_valid))
         t5 = time.perf_counter()
         gauge, warn = self._confirm(clusters, speed, dt)
+        cap = self._clear_cap(clusters, cand, dy_all, h_all) if cfg.health.clear_cap else None
         t6 = time.perf_counter()
         mount = self.calib.state.to_dict()
         health = self.health.update(xyz, frame.meta, self.track, cfg.gauge, valid, cfg.track.rails_min_score,
-                                    (t6 - t0) * 1e3, mount, gauge[0].distance if gauge else None)
+                                    (t6 - t0) * 1e3, mount, gauge[0].distance if gauge else None, cap)
 
         return FrameResult(
             stamp=frame.stamp, obstacle=len(gauge) > 0, warning=len(warn) > 0,
@@ -480,3 +481,52 @@ class Detector:
             ))
         dets.sort(key=lambda d: d.distance)
         return [d for d in dets if d.zone == "gauge"], [d for d in dets if d.zone != "gauge"]
+
+    # -- 6b ------------------------------------------------------------------------------------
+    def _clear_cap(self, clusters: List[Cluster], cand: Candidates, dy_all: np.ndarray,
+                   h_all: np.ndarray) -> Optional[float]:
+        """``health.clear_cap`` (25.09): the distance the verified-clear distance is capped at
+        (None = no cap), see :func:`clear_cap_distance`. Runs after the tracker and changes
+        nothing it or the decision reads."""
+        return clear_cap_distance(clusters, self.tracker.tracks, cand, dy_all, h_all, self.cfg.gauge, self.cfg.health)
+
+
+def clear_cap_distance(clusters: List[Cluster], tracks, cand: Candidates, dy_all: np.ndarray,
+                       h_all: np.ndarray, gauge_cfg, hcfg) -> Optional[float]:
+    """The nearest thing in the envelope that is not a confirmed obstacle (``health.clear_cap``,
+    25.09; docs/evidence/results/p3_clear_distance_2026-09-25.json): the distance of the nearest
+    cluster of this frame that touches the strict envelope (``clear_cap_min_gauge`` voxels of
+    ``Cluster.n_gauge``, or with ``clear_cap_margin`` >= 0 a point of this frame inside the
+    envelope widened by it) and whose track has been matched in ``clear_cap_min_hits`` frames,
+    unconfirmed or advisory alike; with ``clear_cap_points`` = k > 0 also the X of the k-th
+    nearest strict-envelope corridor return. The cluster of a confirmed in-envelope obstacle is
+    skipped: its distance is the obstacle's (``Detection.distance``), whatever rule sets it; with
+    ``clear_cap_skip_columns`` so is a column (``reason == 'column'`` or a track held advisory by
+    ``tracking.column_hold``): the column row of a double-track tunnel is known infrastructure."""
+    owner = {id(t.last): t for t in tracks if t.last is not None and t.misses == 0}
+    poly = widened_profile(gauge_cfg, hcfg.clear_cap_margin) if hcfg.clear_cap_margin >= 0 else None
+    best: Optional[float] = None
+    for c in clusters:
+        if best is not None and c.distance >= best:
+            continue
+        t = owner.get(id(c))
+        if t is not None and t.reported and t.zone == "gauge":
+            continue
+        if (t.hits if t is not None else 1) < hcfg.clear_cap_min_hits:
+            continue
+        if hcfg.clear_cap_skip_columns and (c.reason == "column" or (
+                t is not None and t.column_hold > 0 and sum(t.column_hist) >= t.column_hold)):
+            continue
+        touch = c.n_gauge >= hcfg.clear_cap_min_gauge
+        if not touch and poly is not None and c.points_idx.size:
+            pi = c.points_idx
+            touch = bool(point_in_polygon(dy_all[pi], h_all[pi], poly).any())
+        if touch:
+            best = float(c.distance)
+    k = int(hcfg.clear_cap_points)
+    if k > 0:
+        X = cand.xyz[cand.in_gauge & ~cand.low, 0]
+        if X.size >= k:
+            xk = float(np.partition(X, k - 1)[k - 1])
+            best = xk if best is None else min(best, xk)
+    return best
