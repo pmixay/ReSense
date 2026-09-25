@@ -17,12 +17,24 @@ frames, 13 km, no obstacles).
 ## Unreleased (in development; package version 1.0.0)
 
 Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
-overhead rule on, node v0.6.4). Tests: 235 → 423 (+28 native kernels, +3 speed evaluation
+overhead rule on, node v0.6.4). Tests: 235 → 428 (+28 native kernels, +3 speed evaluation
 helpers, +23 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5
 overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting and socket
 buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`, +20 DDS
-transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule) in `tests/`, 13 in
-`web/demo`.
+transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
+`cluster.far_axis_both_sides`) in `tests/`, 13 in `web/demo`.
+
+- **The 147.5 m switch parts: tried, not shipped (25.09, P3; `cluster.far_axis_both_sides` 0 =
+  off, output byte-identical):** the 4 switch-part STOP episodes of
+  `squareT_platform_squareT_switch` are an axis error (a hall wall seen to 72–92 m sets a
+  curvature that moves the far corridor 1.4–3.4 m at 147 m), not a height one. Pre-registered
+  (`docs/evidence/results/p3_far_switch_2026-09-25.json`): `cluster.far_min_height` 0.8 / 0.9 /
+  1.0 (episodes 4 → 1 / 1 / 0) cut set F straight's person 151.0 → 143.5 / 143.5 / 138.8 m and the
+  trolley to 104.5–106.9 m; the new opt-in `cluster.far_axis_both_sides` (a far obstacle needs both
+  tunnel boundaries to reach it) mode 1 loses 3–15 m of set F; mode 2 (bent frames only) passes the
+  gate with 5 rows better (five bags 13 → 9 events, ride 46 → 42 events and 39 → 33 STOP episodes,
+  set O and set F straight identical) but costs a person 1.9 m of median first confirmation on six
+  gentle-curve approaches (124.1 → 122.2 m), so it stays off (EXPERIMENTS §1h).
 
 - **The 82.9 m platform end: a far-support rule for the wall sides, tried, not shipped (`692feaf`,
   `1ae1952`, P3, 25.09, delegated by the captain):** the axis at the platform of `squareT_platform_squareT_switch` is

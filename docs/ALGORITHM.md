@@ -714,7 +714,9 @@ data: [`SCORECARD.md`](SCORECARD.md).
   (0.125° = 5 cm at 25 m) — the physical limit of the sensor's vertical resolution.
 * **Far field**: between the height reference and the axis range only tall, grounded, short
   clusters alarm (§3.3c); a small box (< 0.6 m) at 120–200 m is advisory until the height
-  reference reaches it.
+  reference reaches it. There the corridor follows the extrapolated curvature, also where one
+  boundary ends early: a hall wall seen to 72–92 m puts switch parts at 147.5 m into it
+  (4 STOP episodes of `squareT_platform_squareT_switch`, EXPERIMENTS §1h, 25.09).
 * **An obstacle far ahead can extend the bed fit.** Beyond ~90 m the real bed stops
   returning; the base of an object standing there fills a bed bin and lengthens the fit, and
   the far curvature follows. On the moving ride this made edge fixtures 30–65 m *beyond* an
@@ -804,7 +806,12 @@ causes, each a limitation of the current rules:
   slabs), and a rule letting the wall side whose far bins follow its fit set the shape was tried
   and not shipped: it removes up to 14 of the 15 episodes but moves marginal frames of set O and
   new events onto the ride (EXPERIMENTS §1h, 25.09). The switch parts at 147.5 m
-  pass the far-field rule like a person [real, 25.09, EXPERIMENTS §1f].
+  pass the far-field rule like a person [real, 25.09, EXPERIMENTS §1f]; they are an axis error of
+  the same kind: a hall wall seen only to 72–92 m sets a curvature that moves the corridor by
+  1.4–3.4 m at 147 m. A far height threshold (0.8–1.0 m) costs set F 8–47 m of first confirmation,
+  and the opt-in `cluster.far_axis_both_sides` 2 (a far obstacle on a bent axis needs both
+  boundaries to reach it) removes them and 4 ride events but costs a person 1.9 m on gentle
+  curves: tried, not shipped [real and synthetic, 25.09, EXPERIMENTS §1h].
 * **Mount.** The test recordings use the mounts of the provided ones, the LiDAR 1 075 mm above
   the rail head on the train's centreline, with no numeric orientation (24.09, same source; §2).
   The unknown-mount case is gone, but the provided data hold two rigs (1.12 m and 1.51 m by the

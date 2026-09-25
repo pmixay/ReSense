@@ -45,6 +45,8 @@ class TrackModel:
     floor_shadow: float = 0.0        # 25.09: X where a near occluder's shadow starts in the bed band (0 = none; floor_shadow_height)
     floor_held: bool = False         # 25.09: the bed profile was held from the previous frame (too little bed in front of the shadow)
     far_support_run: int = 0         # 25.09: consecutive frames with the walls_min_far_support condition (not reported)
+    axis_valid_both: float = 1e9     # 25.09: X up to which BOTH fitted boundaries support the axis (= axis_valid with one or none); read only with cluster.far_axis_both_sides 1, not serialised
+    axis_valid_bent: float = 1e9     # 25.09: the same without the straight bonus, on a bent axis with two boundaries only (1e9 otherwise); cluster.far_axis_both_sides 2, not serialised
 
     def floor_z(self, X) -> np.ndarray:
         """Bed reference height at along-track coordinate X, linearly extrapolated beyond
@@ -324,11 +326,12 @@ def estimate_axis_from_walls(xyz: np.ndarray, model: TrackModel, cfg: TrackConfi
     boundary of each side is a high percentile of |dy| in a height band above the platform
     level; each side is fitted with a robust quadratic (tangent fixed to ``t_fixed`` when the
     rails gave one) and the two are averaged by fit quality; when they disagree the nearer
-    boundary wins. Returns (tan_yaw, curvature, quality, x_valid, n_sides, disagreement, run)
-    or None; ``disagreement`` is the curvature difference of the two sides when both were
-    fitted; ``run`` counts the consecutive frames (``far_support_run`` of the previous frame + 1,
-    or 0) in which the ``walls_min_far_support`` condition held: the rule applies from the
-    ``walls_far_support_frames``-th.
+    boundary wins. Returns (tan_yaw, curvature, quality, x_valid, n_sides, disagreement,
+    x_valid_min, run) or None; ``disagreement`` is the curvature difference of the two sides
+    when both were fitted; ``x_valid`` / ``x_valid_min`` are the last observed bin of the longer
+    / shorter side kept; ``run`` counts the consecutive frames (``far_support_run`` of the
+    previous frame + 1, or 0) in which the ``walls_min_far_support`` condition held: the rule
+    applies from the ``walls_far_support_frames``-th.
     """
     X, Y, Z = xyz[:, 0], xyz[:, 1], xyz[:, 2]
     x0, x1 = cfg.walls_range
@@ -394,7 +397,8 @@ def estimate_axis_from_walls(xyz: np.ndarray, model: TrackModel, cfg: TrackConfi
     c2 = float(np.clip(c2, -1.0 / cfg.walls_min_radius, 1.0 / cfg.walls_min_radius))
     quality = float(min(f[2] for f in sides.values()))
     x_valid = float(max(f[4] for f in sides.values()))
-    return c1, c2, quality, x_valid, n_sides, disagreement, run
+    x_valid_min = float(min(f[4] for f in sides.values()))
+    return c1, c2, quality, x_valid, n_sides, disagreement, x_valid_min, run
 
 
 def verify_floor_extrapolation(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig,
@@ -723,15 +727,21 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
     if cfg.walls_enabled:
         est = estimate_axis_from_walls(xyz, model, cfg, t_fixed, floor_z_all=zf, far_support_run=prior.far_support_run)
         if est is not None:
-            tan_yaw, curv, q, x_valid, n_sides, disagreement, model.far_support_run = est
+            tan_yaw, curv, q, x_valid, n_sides, disagreement, x_valid_min, model.far_support_run = est
             model.yaw = a_w * prior.yaw + (1 - a_w) * np.arctan(tan_yaw)
             model.curvature = a_w * prior.curvature + (1 - a_w) * curv
             model.wall_quality = q
             model.axis_sides = n_sides
             model.axis_valid = x_valid + cfg.axis_valid_margin
             agree = n_sides == 2 and (cfg.axis_sides_max_disagreement <= 0 or disagreement <= cfg.axis_sides_max_disagreement)
-            if abs(model.curvature) < 1e-4 and q < 0.2 and (agree or cfg.axis_one_side_range <= 0):
-                model.axis_valid += cfg.axis_valid_straight_bonus
+            straight = abs(model.curvature) < 1e-4 and q < 0.2 and (agree or cfg.axis_one_side_range <= 0)
+            bonus = cfg.axis_valid_straight_bonus if straight else 0.0
+            model.axis_valid += bonus
+            # 25.09: the range both boundaries support (cluster.far_axis_both_sides); the caps
+            # below apply to it through min(axis_valid, ...) where it is read
+            model.axis_valid_both = (x_valid_min + cfg.axis_valid_margin + bonus) if n_sides == 2 else model.axis_valid
+            if n_sides == 2 and not straight:
+                model.axis_valid_bent = x_valid_min + cfg.axis_valid_margin
             if n_sides == 1 and cfg.axis_one_side_range > 0:
                 # one boundary alone cannot tell a parallel wall from a diverging one
                 model.axis_valid = min(model.axis_valid, cfg.axis_one_side_range)
@@ -749,7 +759,7 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
                 model.curvature = a_w * prior.curvature
                 floor_valid = cfg.rails_range[1] + cfg.axis_valid_margin
             model.axis_valid = max(floor_valid, prior.axis_valid - 20.0)
-            model.axis_sides = 0
+            model.axis_sides = 0            # axis_valid_both keeps its default: no second limit
     else:
         model.yaw = np.radians(cfg.yaw_deg)
         model.curvature = cfg.curvature

@@ -145,6 +145,7 @@ resense:
     far_min_height: 0.6            # v0.6 far field (beyond the trusted height reference, within the trusted axis): at least this tall,
     far_max_length: 3.0            #   at most this long along the track,
     far_max_bottom: 1.0            #   and reaching below this height
+    far_axis_both_sides: 0         # 25.09 (far_switch), off: 1 / 2 = a far obstacle needs both tunnel boundaries to support the axis (1 every frame, 2 bent frames only); tried, not shipped (EXPERIMENTS 1h)
     signature_min_lateral: 0.6     # v0.6: column / floating signatures only off the track centre (hanging cables are obstacles)
     short_signature_max_length: 0.0   # off, decided 25.09 on the ride (3.0 / 100 tried, not shipped: ride STOP episodes 39 -> 45 on top of the long rule, over the +5 limit; set O +49 STOP frames): > 0 = the elevated / floating signatures do not demote a cluster at most this long (m) ...
     short_signature_max_distance: 100.0   # ... and at most this far (m); the measured candidate is 3.0 / 100.0 (docs/P4_AUDIT.md)

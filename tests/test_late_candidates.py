@@ -17,6 +17,11 @@
   ``cluster.oversize_split_max_length`` (an object touching a long line at the corridor edge is
   not dropped with it) and ``cluster.gauge_distance`` (the distance is that of the part inside
   the envelope); docs/evidence/results/p3_rail_shadow_2026-09-25.json.
+* ``cluster.far_axis_both_sides`` (25.09, far_switch; 0 = off): beyond the height reference a far
+  obstacle needs both fitted tunnel boundaries to support the axis (mode 1 on every frame, the
+  corridor ends there; mode 2 on bent frames only, would-be obstacles demoted); at the 147.5 m
+  switch parts of ``squareT_platform_squareT_switch`` the curvature came from a hall wall seen only
+  to 72-92 m.
 """
 from __future__ import annotations
 
@@ -454,10 +459,10 @@ def test_far_support_keeps_the_station_axis_on_the_supported_side():
     tan = float(np.tan(on.yaw))
     first = estimate_axis_from_walls(station, on, _far_support_cfg().track, tan)
     average = estimate_axis_from_walls(station, on, DetectorConfig().track, tan)
-    assert first[6] == 1 and average[6] == 0 and first[1] != average[1]      # the supported side vs the average
+    assert first[-1] == 1 and average[-1] == 0 and first[1] != average[1]      # the supported side vs the average
     assert estimate_axis_from_walls(station, on, held, tan, far_support_run=0)[:6] == average[:6]
     tenth = estimate_axis_from_walls(station, on, held, tan, far_support_run=9)
-    assert tenth[6] == 10 and tenth[:6] == first[:6]
+    assert tenth[-1] == 10 and tenth[:6] == first[:6]
     for curvature, platform in ((1 / 1000, False), (1 / 350, False), (-1 / 1000, False), (1 / 1000, True)):
         scene = _station_scene(curvature, platform)
         a = _settled_track(scene, DetectorConfig()).to_dict()
@@ -499,3 +504,114 @@ def test_far_support_station_obstacle_still_stops():
             res = last(np.concatenate([end, box(dist, lateral, 0.4, 0.5, 1.7)]), on)
             assert res.obstacle and abs(res.nearest_distance - dist) < 1.0, (
                 dist, lateral, res.track.to_dict(), [(c.distance, c.lateral, c.zone, c.reason) for c in res.candidates])
+
+
+# --- cluster.far_axis_both_sides (25.09, far_switch; 0 = off) ---------------------------------
+
+def _far_scene(tunnel_frame: Frame, hall: bool) -> Frame:
+    """The ray-cast tunnel with the bed cut beyond 70 m and the low side structure beyond 100 m,
+    so that the height reference ends at ~110 m as on the ride (fit end + 20 m, side-base
+    verification); with ``hall`` the left lining is replaced by a boundary bent at 4e-4 /m and
+    seen only to 76 m: the platform-hall wall whose curvature carried the corridor onto the
+    147.5 m switch parts of ``squareT_platform_squareT_switch`` (EXPERIMENTS §1h)."""
+    xyz = tunnel_frame.xyz
+    X, dy, h = xyz[:, 0], xyz[:, 1] - AXIS_Y, xyz[:, 2] - RAIL_HEAD_Z
+    drop = ((X > 70.0) & (np.abs(dy) < 1.6) & (h < 0.3)) | ((X > 100.0) & (np.abs(dy) >= 1.6) & (h < 1.5))
+    if hall:
+        drop |= (dy > 1.2) & (X > 4.0)
+    pts = [xyz[~drop]]
+    if hall:
+        xs = np.arange(6.0, 76.0, 0.25)
+        for z in np.arange(1.7, 2.75, 0.1):
+            pts.append(np.stack([xs, AXIS_Y + 2.0 + 0.5 * 4e-4 * xs * xs, np.full(xs.size, RAIL_HEAD_Z + z)], 1))
+    p = np.concatenate(pts).astype(np.float32)
+    return Frame(xyz=p, intensity=np.full(len(p), 12.0, np.float32))
+
+
+def _both_sides(mode: int) -> DetectorConfig:
+    cfg = DetectorConfig()
+    cfg.cluster = replace(cfg.cluster, far_axis_both_sides=mode)
+    return cfg
+
+
+def _height_ref(track, cfg: DetectorConfig) -> float:
+    return max(track.floor_range[1] + cfg.track.floor_valid_margin, track.floor_verified)
+
+
+def test_far_axis_both_sides_is_off_by_default():
+    for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
+                DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
+        assert cfg.cluster.far_axis_both_sides == 0
+
+
+def test_far_axis_both_sides_range_of_the_track_model(tunnel):
+    """Both tunnel boundaries fitted: on the bent hall axis both ranges are the shorter side's last
+    bin + 15 m (no straight bonus: the short bent side sets the curvature), ``axis_valid`` is the
+    longer side's; in the straight tunnel mode 1's range is within a few metres of ``axis_valid``
+    and mode 2 sets no limit."""
+    frame, _, _ = tunnel
+    cfg = DetectorConfig()
+    t = Detector(cfg).process(_far_scene(frame, hall=True)).track
+    assert t.axis_sides == 2 and abs(t.curvature) > 1e-4
+    short = 76.0 + cfg.track.axis_valid_margin
+    assert short - 5.0 <= t.axis_valid_both <= short and t.axis_valid_bent == t.axis_valid_both
+    assert t.axis_valid > 120.0 and _height_ref(t, cfg) < 120.0
+    assert "axis_valid_both" not in t.to_dict() and "axis_valid_bent" not in t.to_dict()   # output unchanged
+    t = Detector(cfg).process(_far_scene(frame, hall=False)).track
+    assert t.axis_sides == 2 and t.axis_valid_both >= 170.0 and t.axis_valid - t.axis_valid_both <= 10.0
+    assert t.axis_valid_bent == 1e9
+
+
+def test_far_axis_both_sides_hall_curvature_no_longer_carries_a_far_stop(tunnel):
+    """A 0.5 x 1.7 m face on the corridor the bent hall wall extrapolates to 125 m (beyond the height
+    reference, inside axis_valid): a STOP through the far-field rule with the flag off; in either
+    mode advisory ``beyond_axis``, and the verified-clear range ends at the height reference."""
+    frame, _, _ = tunnel
+    scene = _far_scene(frame, hall=True)
+    t = Detector(DetectorConfig()).process(scene).track
+    lat = float(t.center_y(np.array([125.0]))[0]) - AXIS_Y            # ~1 m left of the real track axis
+    pts = _box_surface(125.0, 0.3, lat, 0.3, 1.7, 0.5)
+    off = _run_with(scene, pts, DetectorConfig(), n=5)            # the 5th frame confirms it
+    assert off.obstacle and off.detections[0].reason == "" and abs(off.detections[0].distance - 125.0) < 1.0
+    for mode in (1, 2):
+        on = _run_with(scene, pts, _both_sides(mode), n=5)
+        assert not on.obstacle and on.warning and on.warnings[0].reason == "beyond_axis", mode
+        assert on.health["monitored_range"] < off.health["monitored_range"]
+        assert on.health["monitored_range"] >= _height_ref(on.track, DetectorConfig()) - 1e-6
+
+
+def test_far_axis_both_sides_mode_2_keeps_other_reasons(tunnel):
+    """Mode 2 demotes only would-be obstacles: a 2.6 m column-shaped cluster at 125 m on the bent
+    hall corridor stays advisory ``column`` (a column hit for tracking.column_hold); mode 1 turned
+    it into ``beyond_axis``, which hid a column from the hold on roundT_doubleT (EXPERIMENTS §1h)."""
+    frame, _, _ = tunnel
+    scene = _far_scene(frame, hall=True)
+    t = Detector(DetectorConfig()).process(scene).track
+    lat = float(t.center_y(np.array([125.0]))[0]) - AXIS_Y
+    column = _box_surface(125.0, 0.3, lat + 0.8, 0.0, 2.6, 0.3)
+    reasons = {}
+    for mode in (0, 1, 2):
+        res = _run_with(scene, column, _both_sides(mode))
+        assert not res.obstacle
+        reasons[mode] = [c.reason for c in res.candidates if abs(c.distance - 125.0) < 1.0]
+    assert reasons[0] == ["column"] and reasons[2] == ["column"] and reasons[1] == ["beyond_axis"], reasons
+
+
+def test_far_axis_both_sides_keeps_a_near_stop_and_the_straight_far_field(tunnel):
+    """Safety, in either mode: a person-size box at 50 m in the same hall scene is a STOP on the
+    same frame as with the flag off; in the straight tunnel (both boundaries to the end) a person
+    at 140 m, beyond the height reference, is still a STOP through the far-field rule."""
+    frame, _, _ = tunnel
+    hall = _far_scene(frame, hall=True)
+    t = Detector(DetectorConfig()).process(hall).track
+    near = _box_surface(50.0, 0.3, float(t.center_y(np.array([50.0]))[0]) - AXIS_Y, 0.0, 1.7, 0.5)
+    k_off = _first_stop(hall, [near] * 8, DetectorConfig())
+    straight = _far_scene(frame, hall=False)
+    far = _box_surface(140.0, 0.3, 0.0, 0.4, 1.7, 0.5)
+    assert k_off is not None
+    for mode in (0, 1, 2):
+        cfg = _both_sides(mode)
+        assert _first_stop(hall, [near] * 8, cfg) == k_off, mode
+        res = _run_with(straight, far, cfg)
+        assert _height_ref(res.track, cfg) < 139.0
+        assert res.obstacle and abs(res.detections[0].distance - 140.0) < 1.0 and res.detections[0].reason == ""

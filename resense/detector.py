@@ -211,6 +211,8 @@ class Detector:
         merged, n_acc = self._accumulate(cand, speed, dt)
         t4 = time.perf_counter()
         clusters = self._cluster(merged, n_acc, valid, floor_valid, straddle, near)
+        if cfg.cluster.far_axis_both_sides == 2:
+            valid = self._far_both_sides(clusters, valid, floor_valid)
         t5 = time.perf_counter()
         gauge, warn = self._confirm(clusters, speed, dt)
         t6 = time.perf_counter()
@@ -268,6 +270,11 @@ class Detector:
         floor_valid = max(self.track.floor_range[1] + cfg.track.floor_valid_margin, self.track.floor_verified)
         axis_valid = min(self.track.axis_valid, cfg.gauge.range_max)
         valid = min(axis_valid, floor_valid) if cfg.cluster.far_min_height <= 0 else axis_valid
+        if cfg.cluster.far_axis_both_sides == 1:
+            # 25.09 (far_switch), opt-in, mode 1: beyond the height reference only as far as both
+            # tunnel boundaries support the axis (a hall wall seen to 76 m bent the corridor by
+            # 1.4-3.4 m at the 147.5 m switch parts); inside the height reference nothing changes
+            valid = min(valid, max(min(self.track.axis_valid_both, cfg.gauge.range_max), floor_valid))
         if cfg.gauge.no_rail_range > 0 and self.track.rail_slabs == 0:
             # v0.6.2: no rail pair in the near range (station, switch cavern): the axis rests on
             # the walls alone, so far clusters are advisory (the tracker's zone vote smooths it)
@@ -399,6 +406,21 @@ class Detector:
             keep = self._not_part_of_corridor_objects(lows, straddling, clusters, corr)
             clusters = sorted(clusters + keep, key=lambda c: c.distance)
         return clusters
+
+    def _far_both_sides(self, clusters: List[Cluster], valid: float, floor_valid: float) -> float:
+        """``cluster.far_axis_both_sides`` 2 (25.09, far_switch, opt-in): on a bent axis (no
+        straight bonus) fitted to two boundaries, a corridor obstacle beyond the height reference
+        and beyond the shorter boundary's range (+ ``axis_valid_margin``) is demoted to advisory
+        ``beyond_axis``: the curvature that puts it in the corridor is not supported that far on
+        both sides. Other clusters keep their reasons (a column stays a column hit). Returns the
+        range the corridor is verified to (for the verified-clear distance)."""
+        limit = max(min(self.track.axis_valid_bent, self.cfg.gauge.range_max), floor_valid)
+        if limit >= valid:
+            return valid
+        for c in clusters:
+            if c.kind == "" and c.zone == "gauge" and not c.reason and c.distance > limit:
+                c.zone, c.reason = "warning", "beyond_axis"
+        return limit
 
     def _not_part_of_corridor_objects(self, lows: List[Cluster], straddling: List[Cluster],
                                       clusters: List[Cluster], corr: Candidates) -> List[Cluster]:
