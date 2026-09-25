@@ -1180,5 +1180,22 @@
   "ride_summary": "29 single-frame groups in 11 271 frames: 28 with rail_slabs 0 (new_data_54, 113-115: tops of platform columns and structures 13-40 m ahead at |dy| 0.4-0.8 m, 1.2-1.6 m of them in the band; 4 consecutive frames at 13-15 m, |dy| 0.8 m in new_data_115 0002-0005), 1 with rails (new_data_109_0035, 55.3 m, |dy| 0.76 m, 2 voxels); every one joined a track that was already advisory (column history, beyond_axis), so no event or STOP episode was added (ride 187 / 46 / 39 = the baseline). Not measured: a rail-lock condition would remove 28 of the 29."
  },
  "cost": "Detector._hanging, best of 5 per frame, native path: median 0.50-0.55 ms, max 1.6 ms (set O frames 760-803, squareT_platform_squareT_switch frames 0-39), the dev VM at load ~2-3",
- "tests": "tests/test_thin_hanging.py (4): the shipped defaults in the code and both parameter files; the shapes (a 5 cm rod dipping 0.35 m at 25 m found; above the top, a 2 m duct, at |dy| 0.95 m, at 75 m, nothing above the top: not; one return inside: found with 1, not with 2); ray-cast into the synthetic tunnel (5 cm, 1.5 m, bottom 0.35 m below the top, 16.5 m/s from 40 m): STOP from 30.1 m in 13 of 19 frames, none with the rule off; a 0.4 x 0.5 x 1.7 m person 3 m beyond it: first STOP on the same frame as without the rule, the person reported in every frame after"
+ "tests": "tests/test_thin_hanging.py (4): the shipped defaults in the code and both parameter files; the shapes (a 5 cm rod dipping 0.35 m at 25 m found; above the top, a 2 m duct, at |dy| 0.95 m, at 75 m, nothing above the top: not; one return inside: found with 1, not with 2); ray-cast into the synthetic tunnel (5 cm, 1.5 m, bottom 0.35 m below the top, 16.5 m/s from 40 m): STOP from 30.1 m in 13 of 19 frames, none with the rule off; a 0.4 x 0.5 x 1.7 m person 3 m beyond it: first STOP on the same frame as without the rule, the person reported in every frame after",
+ "addendum_rail_lock": {
+  "written_at_utc": "2026-09-25T22:13:58Z",
+  "by": "P3 integrator (wf10/p3-round2), on the decision of the captain's delegate",
+  "before_any_result": "written before any run of the guard and before any gate or detector run on the merged round-2 code (wf10/p3-round2 e136fcb + the combined pre-registration cdc4151 only); the guard's code does not exist yet",
+  "why": "the ride's 29 single-frame hanging groups of candidate A (imitators.ride_summary): 28 in frames with track.rail_slabs 0 (tops of platform columns and structures 13-40 m ahead at stations), 1 with a rail pair; none confirmed, because each joined a track that was already advisory, but a fresh track there could confirm",
+  "rule": "new flag cluster.hanging_needs_rails (default false = byte-identical output): when true, the hanging stage (Detector._hanging, 5b) runs only on frames with a rail lock, i.e. the current frame's track model found the rail pair in the near range: track.rail_slabs > 0 (the test gauge.no_rail_range uses; it implies track.rail_score >= track.rails_min_score). Nothing else changes.",
+  "candidate": {
+   "name": "R",
+   "set": [
+    "cluster.hanging_needs_rails=true"
+   ],
+   "on_top_of": "the combined round-2 defaults (p3_round2_combined_2026-09-25.json, decision A applied)"
+  },
+  "measurement": "the combined gate command of p3_round2_combined_2026-09-25.json with --set cluster.hanging_needs_rails=true on the same clean commit (--jobs 3, the six recordings, set O, the ride in 8 pieces, set F straight); its rows compared with the run without the guard (python scripts/regression_gate.py --from-json <with> --baseline <without>); informational: the hanging groups per recording with and without the guard where an instrumented run is affordable",
+  "adopt_rule": "cluster.hanging_needs_rails becomes true only if BOTH hold: (a) set O thin_hanging keeps at least 15 STOP frames and a first STOP at 30.1 m or farther; (b) the combined gate with the guard has no gated row worse than the combined gate without it (the --from-json comparison exits 0; no --allow). Otherwise the flag stays false and the numbers of (a) and (b) are recorded here and in EXPERIMENTS 1i.",
+  "if_adopted": "the default is set in resense/config.py, configs/default.yaml and the ROS copy; the full combined gate re-runs on that clean commit and its result is the one the new baseline is cut from"
+ }
 }
