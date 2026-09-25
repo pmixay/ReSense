@@ -23,8 +23,12 @@ has no Docker daemon and too little disk for the 20-minute ride. This VM is the 
 | clean-machine dry run with the **original** bags | `run_plan.sh dryrun` | action 15 rehearsal, C7 |
 | `ros2 bag play` from the host console, stock Fast DDS (and CycloneDDS) | `run_plan.sh dryrun` (steps `host_*`) | C4 |
 | regression gate over all 13 759 real frames incl. the ride | `run_plan.sh gate [--ref <branch>]` | action 11 (P3 / P4 go / no-go) |
-| image archive + sha256 | `run_plan.sh export [--ref <tag>]` | actions 14b, 16 |
+| image archive + sha256 (for the later deployment; releases deferred, 25.09) | `run_plan.sh export [--ref <tag>]` | C13, action 15 |
 | offline rehearsal: archive loaded and run with outbound internet blocked | `run_plan.sh offline` | C25, action 15 |
+
+**When (the captain, 25.09):** deployment comes later, so the dry run, the bench, the archive and
+the offline rehearsal (T3, T4, T6, T7) run when the team deploys; no tag or release is planned now,
+and the submission is the captain's own ([`CAPTAIN.md`](../../docs/CAPTAIN.md) §5).
 
 All commands below run from the checkout (`~/ReSense`). Every run writes
 `~/resense_results/<date>/<subcommand>/` (`result.txt` says PASS / FAIL per step; `run_log.txt` has
@@ -133,15 +137,15 @@ note says the ride was included (221 split files).
 
 ```bash
 scripts/vm/run_plan.sh export                        # rehearsal: HEAD as <version>-<sha>
-scripts/vm/run_plan.sh export --ref v1.0.0-rc1       # after the tag (action 14b); --ref v1.0.0 on 29.09
+scripts/vm/run_plan.sh export --ref <tag>            # a clean clone of a tag (none yet: releases deferred, 25.09)
 ```
 
 Calls `scripts/export_image.sh` (clean `--no-cache` build from `git archive`, gzip, `.sha256`) into
 `~/resense_dist/`, then `scripts/load_image.sh` on it. `--ref` builds from a clean clone of the tag.
 A dirty checkout is refused by `export_image.sh`: commit first, or use `--ref`. Done: `archive.txt`
-with the size and the sha256, `load_check` PASS. Since 25.09 a pushed `v1.0.0-rcN` / `v1.0.0` tag
-also gets its archive published by `.github/workflows/release.yml`; `scripts/verify_release.sh
-<tag>` fetches it into `dist/` with its sum checked, and this task is then the cross-check.
+with the size and the sha256, `load_check` PASS. A pushed `v1.0.0-rcN` / `v1.0.0` tag would also
+get its archive published by `.github/workflows/release.yml` (`scripts/verify_release.sh <tag>`
+fetches it), but releases are deferred by the captain (25.09), so this task makes the archive.
 
 **T7. Offline rehearsal (10–20 min; after T6).**
 
@@ -190,10 +194,10 @@ git add docs/evidence/*_$(date +%F)
 |---|---|---|
 | `docs/evidence/bench_<date>/` | [`EXPERIMENTS.md`](../../docs/EXPERIMENTS.md) §3 | append one subsection "8-core bench on the team VM (<date>)": machine (CPU model, vCPU / physical cores, RAM), the table of fps, latency mean / p95 / max, dropped frames, CPU %, memory, native vs numpy; P1 appends timing only |
 | same | [`CAPTAIN.md`](../../docs/CAPTAIN.md) C8, action 7 | DONE only with ≥ 8 physical cores; otherwise PARTIAL with the core count; link the folder |
-| `docs/evidence/dry_run_<date>/` | [`SUBMISSION.md`](../../docs/SUBMISSION.md) "Dry run" | one paragraph: date, VM, original bags, each criterion's number, PASS / FAIL |
-| same | CAPTAIN C7, C4, action 15 | C7 = the dry run on the original bags; C4 = `host_fastdds` (and `host_cyclonedds`); action 15 stays open for 28.09 unless that was the run |
-| `docs/evidence/offline_<date>/` | CAPTAIN C25; SUBMISSION "Dry run" | the offline result, what was allowed (`--allow-host`), the blocked attempts |
-| `docs/evidence/export_<date>/` | CAPTAIN actions 14b / 16, §5 | size and sha256 of the archive (never commit the archive) |
+| `docs/evidence/dry_run_<date>/` | [`EXPERIMENTS.md`](../../docs/EXPERIMENTS.md) §3b | one paragraph: date, VM, original bags, each criterion's number, PASS / FAIL (procedure: README "Acceptance test and CI") |
+| same | CAPTAIN C7, C4, action 15 | C7 = the dry run on the original bags; C4 = `host_fastdds` (and `host_cyclonedds`); action 15 (the later deployment) closes with the offline run below |
+| `docs/evidence/offline_<date>/` | CAPTAIN C25, action 15; EXPERIMENTS §3b | the offline result, what was allowed (`--allow-host`), the blocked attempts |
+| `docs/evidence/export_<date>/` | CAPTAIN C13 | size and sha256 of the archive (never commit the archive) |
 | `docs/evidence/gate_<date>/` | CAPTAIN action 11 | the numbers only; the go / no-go itself is the human captain's decision (§9) |
 | `docs/evidence/vm_<date>/` | — | machine facts, data plan and inventory |
 | all | [`../../docs/evidence/README.md`](../../docs/evidence/README.md) §2 | one short subsection per new folder: how it ran and the result |
@@ -208,8 +212,8 @@ EXPERIMENTS "Current results", say so in the PR instead of editing the current r
 * **PR only.** Never push to `main`, never force-push, never merge your own PR (the captain merges
   after CI is green and another lane reviewed it; CAPTAIN §6).
 * **Freeze** (CAPTAIN §6): detector and config 26.09 20:00, docs 27.09 20:00, from 28.09 blockers
-  only, last merge 29.09 12:00. Evidence of the planned runs (actions 14b, 15, 16) is expected
-  after the docs freeze; nothing else is.
+  only, last merge 29.09 12:00. Evidence of the deployment runs (actions 7 and 15, later: the
+  captain, 25.09) may come after the docs freeze; nothing else may.
 * **Lanes.** This session adds evidence and edits the P1 rows above. It does not change
   `resense/`, `configs/`, `native/`, `labels/`, `docs/evidence/results/`, `web/`, the deck or the
   tests; a finding for another lane goes into the PR description.
@@ -254,7 +258,7 @@ scripts/vm/fetch_data.sh --plan && scripts/vm/fetch_data.sh
 scripts/vm/run_plan.sh dryrun
 scripts/vm/run_plan.sh bench
 scripts/vm/run_plan.sh gate                         # and: gate --ref <candidate branch>
-scripts/vm/run_plan.sh export                       # and after the rc1 tag: export --ref v1.0.0-rc1
+scripts/vm/run_plan.sh export                       # or export --ref <tag> (no tag yet: releases deferred)
 scripts/vm/run_plan.sh offline --minutes 30         # answer 'yes' from a second SSH session
 scripts/vm/run_plan.sh collect --to-repo            # then §3
 ```

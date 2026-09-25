@@ -12,7 +12,7 @@
 #                          python / numpy, git commit; the image's kernel path
 #   build/                 scripts/build.sh, timed (SKIP_BUILD=1 reuses resense:latest)
 #   dry_<bag>_<kernels>/   scripts/dry_run.sh (reusing the image) with the node on the native kernels and on
-#                          numpy (RESENSE_NATIVE=0): doubleT_obstacle with the SUBMISSION criteria,
+#                          numpy (RESENSE_NATIVE=0): doubleT_obstacle with the dry-run criteria,
 #                          roundT_doubleT with --expect-clear --max-alarm-frames 2
 #   ct_<image|stock>/      scripts/console_test.sh roundT_doubleT then doubleT_obstacle into one node, the
 #                          player as uid 1000 with the image's Fast DDS profile and with stock Fast DDS

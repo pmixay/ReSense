@@ -30,15 +30,13 @@ ros2 topic echo /resense/nearest_distance --field data   # 5. расстояни
 ```
 
 С интернетом шаг 1 можно заменить сборкой: `docker build -t resense -f docker/Dockerfile .`.
-Проверка архива: `sha256sum -c resense-image-<версия>.tar.gz.sha256`, или
-`scripts/load_image.sh <архив>` (сумма, загрузка и запуск образа без сети). Архив, его `.sha256` и
-`SHA256SUMS` — ассеты GitHub-релиза тега: https://github.com/pmixay/ReSense/releases (тег
-`v1.0.0` — финальный, `v1.0.0-rcN` — кандидаты). Скачать и проверить сумму без Docker:
-`scripts/verify_release.sh <тег>`. Сборка без интернета — запасной путь с оговорками
-([ARCHITECTURE](docs/ARCHITECTURE.md) «Deployment without internet»): после шага 1, в исходниках
-того же тега, `chmod -R u+rwX,go+rX,go-w . && docker build --cache-from resense:<версия> -t
-resense -f docker/Dockerfile .` берёт все слои из архива; не вышло — образ из шага 1 не тронут,
-шаг 2 работает.
+Архив делает `scripts/export_image.sh` на машине с интернетом (`dist/resense-image-<версия>.tar.gz`
+и его `.sha256`). Проверка архива: `sha256sum -c resense-image-<версия>.tar.gz.sha256`, или
+`scripts/load_image.sh <архив>` (сумма, загрузка и запуск образа без сети). Сборка без интернета —
+запасной путь с оговорками ([ARCHITECTURE](docs/ARCHITECTURE.md) «Deployment without internet»):
+после шага 1, в исходниках того же коммита, `chmod -R u+rwX,go+rX,go-w . && docker build
+--cache-from resense:<версия> -t resense -f docker/Dockerfile .` берёт все слои из архива; не
+вышло — образ из шага 1 не тронут, шаг 2 работает.
 
 **`--net=host` обязателен.** Образ передаёт DDS только по UDP; без общей с хостом сети плеер не
 находит ноду, и `/resense/decision` остаётся `FAULT`. `ROS_DOMAIN_ID` плеера и ноды должен
@@ -240,8 +238,8 @@ PLAYER_DDS=stock ./scripts/console_test.sh <bags>/roundT_doubleT <bags>/doubleT_
 ./scripts/bench_8core.sh <bags>/doubleT_obstacle <bags>/roundT_doubleT   # 8-core bench: build, dry runs native + numpy, console tests, docker stats, offline timing -> docs/evidence/bench_<date>/
 ./scripts/export_image.sh           # offline delivery: dist/resense-image-<ver>.tar.gz + .sha256
 ./scripts/load_image.sh dist/resense-image-<ver>.tar.gz    # sha256, docker load, --network none check
-scripts/verify_release.sh v1.0.0    # a release's archive into dist/, sha256 checked (no Docker needed)
-scripts/release.sh v1.0.0           # in a clean clone of the tag: release.yml by hand (DRY_RUN=1 plan, PUBLISH=1 publish)
+scripts/verify_release.sh <tag>     # a published release's archive into dist/, sha256 checked (none yet: releases deferred, 25.09)
+scripts/release.sh <tag>            # in a clean clone of the tag: release.yml by hand (DRY_RUN=1 plan, PUBLISH=1 publish)
 IMAGE_TAR=dist/resense-image-<ver>.tar.gz OFFLINE=1 ./scripts/dry_run.sh <bag>   # as on the stand
 WITH_TOOLS=1 ./scripts/build.sh     # + rosbags / matplotlib / open3d / pytest inside the image
 PULL=1 ./scripts/build.sh           # refresh the ros:humble base first (an old cached one fails apt-get update)
@@ -299,8 +297,29 @@ link keep `/resense/corridor_points` instead of the raw cloud ([`web/README.md`]
 `scripts/dry_run.sh <bag>` builds with `--no-cache`, waits for the node before playing, captures
 `/resense/status` and checks it (`scripts/check_dry_run.py`): on `doubleT_obstacle` the person in
 50–62 m, p95 of decode + detect ≤ 100 ms, no frame dropped after the first 5 s; `--expect-clear
---max-alarm-frames 2` on `roundT_doubleT` is the false-alarm half. Criteria, the 23.09 rehearsal in
-the sandbox and the clean-machine procedure: [`docs/SUBMISSION.md`](docs/SUBMISSION.md) "Dry run".
+--max-alarm-frames 2` on `roundT_doubleT` is the false-alarm half (its 2 known alarm frames at
+128–130 m); thresholds are arguments of `scripts/check_dry_run.py`, the raw capture goes to
+`out/dry_run/` (`status.jsonl`, `node.log`). The 23.09 rehearsal in the sandbox: EXPERIMENTS §3b.
+
+**Clean-machine dry run** (part of the later deployment, [`docs/CAPTAIN.md`](docs/CAPTAIN.md) C7):
+a team machine that has never built the project, 8 cores for the latency and drop criteria (the
+organizers' i7 stand is not available before the upload), the original bags:
+
+```bash
+./scripts/dry_run.sh <bags>/doubleT_obstacle                  # builds --no-cache, plays, checks, exits 0/1
+SKIP_BUILD=1 ./scripts/dry_run.sh <bags>/roundT_doubleT --expect-clear --max-alarm-frames 2
+# offline, as on the stand: ./scripts/export_image.sh with internet (<ver> = the pyproject.toml version), copy
+# dist/resense-image-<ver>.tar.gz and its .sha256 over, disconnect the network (cable out, Wi-Fi off)
+IMAGE_TAR=dist/resense-image-<ver>.tar.gz OFFLINE=1 ./scripts/dry_run.sh <bags>/doubleT_obstacle
+SKIP_BUILD=1 OFFLINE=1 ./scripts/dry_run.sh <bags>/roundT_doubleT --expect-clear --max-alarm-frames 2
+# then "Кратко для жюри" 1-5 by hand, the player from a normal user's console, still offline
+```
+
+`IMAGE_TAR` loads the archive (`scripts/load_image.sh`) instead of building; `OFFLINE=1` runs node,
+player and recorder with `--network none` and refuses to build. The team VM kit runs the same
+(`scripts/vm/run_plan.sh dryrun`, `offline`:
+[`scripts/vm/AGENT_BRIEF.md`](scripts/vm/AGENT_BRIEF.md)).
+
 CI runs the chain without the dataset on every push: 40-frame synthetic bags in the organizers'
 exact layout (clear, then a person at 60 m; both topic / frame pairs) played through the node in
 the image, also by a uid-1000 player from another container, the alarm asserted at 55–66 m, and by
@@ -313,10 +332,11 @@ made as for the release, is loaded after every image was removed, rebuilt offlin
 blocked (every layer from the archive's cache), and both synthetic bags are played through the
 runtime image exactly as loaded, by a uid-1000 player on an internal network.
 `IMAGE_TAR=<archive> OFFLINE=1 ./scripts/dry_run.sh <bag>` is the same on real bags. A pushed
-release tag (`v1.0.0-rcN`, `v1.0.0`) runs `.github/workflows/release.yml`: tests, the runtime
+release tag (`v1.0.0-rcN`, `v1.0.0`) would run `.github/workflows/release.yml`: tests, the runtime
 archive built, removed and loaded back, both bags through the loaded image (internal network and
 `--net=host` with a stock player), then the GitHub release with the archive, its `.sha256` and
-`SHA256SUMS`. `scripts/bench_8core.sh` bundles the acceptance runs and the timing for the team's
+`SHA256SUMS`; no tag or release is planned now (deferred by the captain, 25.09: the system is still
+in development). `scripts/bench_8core.sh` bundles the acceptance runs and the timing for the team's
 8-core machine (the organizers' i7 stand is not available before the upload).
 
 ### Topics published by the node
@@ -372,7 +392,8 @@ but no `node` object (so acceptance tools do not count it as a frame), and `/res
 | experiments (range, latency, FPS, false alarms, hard cases, evolution) | [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md), protocol in [`docs/EVALUATION.md`](docs/EVALUATION.md) |
 | input data format, sensor | [`docs/DATASET.md`](docs/DATASET.md), [`docs/SENSOR.md`](docs/SENSOR.md) (Hesai Pandar128) |
 | video | [`docs/video/resense_overview.mp4`](docs/video/resense_overview.mp4): the 2:50 overview (problem → idea → algorithm → demo → the organizers' objects → numbers → next), 1920×1080, no audio track, Russian subtitles burned in and as [`resense_overview.ru.srt`](docs/video/resense_overview.ru.srt), every number marked real / our synthetic / organizers' synthetic; built by `scripts/make_overview_video.py` from the clips, renders, UI captures and deck. Clips in [`docs/video/`](docs/video/): the jury chain in Docker with RViz (`docker_chain_rviz.mp4`, 69 s, v0.6.3: node, `ros2 bag play` as a normal user from another container, `/resense/decision`; sandbox, bag at 0.5×); the bag from the cab, offline renders, the dashboard replay (v0.6.2); the organizers' 2 × 2 m box from the cab on the moving train, STOP from 98 m (`fake_objects_cab.mp4`, 25.09); all silent; recipes in [`web/README.md`](web/README.md) |
-| submission status | [`docs/SUBMISSION.md`](docs/SUBMISSION.md) |
+| presentation (slides 7–11 per the template) | [`docs/presentation/`](docs/presentation/) (public build of 25.09, `scripts/build_deck.py`; texts in [`docs/PRESENTATION.md`](docs/PRESENTATION.md)); the final presentation comes later (team) |
+| submission | handled by the captain personally, with all its links (25.09; [`docs/CAPTAIN.md`](docs/CAPTAIN.md) C12) |
 
 ## Team
 

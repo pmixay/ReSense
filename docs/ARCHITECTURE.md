@@ -385,6 +385,9 @@ network (`scripts/internal_net_test.sh`) and with `--net=host` and a stock Fast 
 (`scripts/console_test.sh`). It then publishes `resense-image-<tag>.tar.gz`, its `.sha256` and
 `SHA256SUMS` (`scripts/publish_release.sh`; a re-run replaces them) and re-downloads the archive
 to check the sum (`scripts/verify_release.sh`). `scripts/release.sh` is the same chain by hand.
+No tag or release is planned now (deferred by the captain on 25.09: the system is still in
+development), so the workflow is inert and has never run; the same runtime image is built,
+archived, loaded back and played through on every push by the `offline-build` job.
 
 ## Known limitations
 

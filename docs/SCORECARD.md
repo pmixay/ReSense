@@ -175,7 +175,8 @@ Evidence from both judges, merged. The actions that would raise each score are r
   preloads [team record]; seeing the cloud needs X11 / xhost or a Foxglove import.
 * **To raise before 29.09:** jury commands and expected output first in the README, with a host
   RViz one-liner (`rviz2 -d ros2_ws/src/resense_ros/rviz/resense.rviz`), +0.5 to +1; the 28.09
-  clean-machine dry run, transcript in [`SUBMISSION.md`](SUBMISSION.md), +0.5 (§6 rows 3, 7).
+  clean-machine dry run, transcript in SUBMISSION.md (removed 25.09; the submission is handled by
+  the captain), +0.5 (§6 rows 3, 7).
 
 ### 8.7 Team approach: 8 / 10
 

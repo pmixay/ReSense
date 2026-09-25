@@ -26,7 +26,6 @@ rewritten later; **frozen** = kept for reference, not maintained; **archive** = 
 | [`DATASET.md`](DATASET.md) | the organizers' data: recordings, formats, labels, frame cache, unpacking | team, jury | EN + RU summary | P4 | current |
 | [`SENSOR.md`](SENSOR.md) | Hesai Pandar128 facts and what they imply for the detector | team, jury | EN + RU summary | P1 | current |
 | [`SCORECARD.md`](SCORECARD.md) | criteria judgement of 24.09: score per spec §8 criterion, evidence, what is left | team, jury | EN | P1 | dated record |
-| [`SUBMISSION.md`](SUBMISSION.md) | deliverables checklist (spec §5, §7), dry run, upload | team | EN, cover message RU | P1 | current |
 | [`PRESENTATION.md`](PRESENTATION.md) | slide requirements, drafts, speaker text | P2, P1 | RU | P2 | current |
 | [`PLAN.md`](PLAN.md) | roles, sprint calendar, team rules | team | RU | P1 | current |
 | [`CAPTAIN.md`](CAPTAIN.md) | captain's board: criteria, work left, ownership map, frozen interfaces | P1, team | EN | P1 | current |
