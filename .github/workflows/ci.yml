@@ -79,3 +79,111 @@ jobs:
           mkdir -p /tmp/bags && chmod 777 /tmp/bags
           docker run --rm -v /tmp/bags:/bags resense:ci bash -lc "python3 scripts/make_smoke_bag.py /bags/smoke_bag && python3 scripts/make_smoke_bag.py /bags/smoke_bag2 --topic /sensing/lidar/hesai128/pointcloud --frame-id lidar_livox --distance 45"
           IMAGE=resense:ci PLAYER_USER=1000:1000 scripts/console_test.sh /tmp/bags/smoke_bag /tmp/bags/smoke_bag2
+      # ---- offline delivery: the test machine has no internet (organizers, 25.09,
+      # docs/organizers/answers.md section 7), so the jury gets the image as an archive and runs
+      # `docker load`, then the node with no internet. The three steps below prove that chain.
+      - name: offline delivery — docker save, docker rmi, docker load of the image built above
+        id: roundtrip
+        # scripts/export_image.sh saves resense:ci as resense:<version> + resense:latest into a
+        # gzip archive with its .sha256; every tag of the image is then removed and the image must
+        # be gone from the daemon; scripts/load_image.sh checks the sha256, loads the archive and
+        # runs the import / ROS-executables check with --network none; the loaded image must have
+        # the layers (diff IDs) of the one that was built. GZIP_LEVEL=1: speed over size in CI.
+        run: |
+          ID="$(docker image inspect -f '{{.Id}}' resense:ci)"
+          LAYERS="$(docker image inspect -f '{{json .RootFS.Layers}}' resense:ci)"
+          SKIP_BUILD=1 SOURCE_IMAGE=resense:ci GZIP_LEVEL=1 OUT_DIR=/tmp/dist scripts/export_image.sh
+          ARCHIVE="$(ls /tmp/dist/resense-image-*.tar.gz)"
+          docker ps -aq --filter "ancestor=$ID" | xargs -r docker rm -f >/dev/null   # a container left by an earlier step would pin the image
+          read -r -a TAGS <<<"$(docker image inspect -f '{{join .RepoTags " "}}' "$ID")"
+          docker rmi "${TAGS[@]}"
+          if docker image inspect "$ID" >/dev/null 2>&1; then echo "image $ID still present after docker rmi" >&2; exit 1; fi
+          scripts/load_image.sh "$ARCHIVE"
+          test "$(docker image inspect -f '{{json .RootFS.Layers}}' resense:latest)" = "$LAYERS"
+          echo "loaded $(docker image inspect -f '{{.Id}}' resense:latest), built $ID: same layers"
+          docker tag resense:latest resense:ci      # any later step keeps its tag
+          rm -rf /tmp/dist                          # the runner's disk is small
+      - name: no network at all — the smoke test inside the loaded image with --network none
+        # --network none leaves the container one interface, the loopback: no route anywhere, no
+        # DNS, no registry, no LAN (a stand whose network card is down). scripts/check_no_network.py
+        # proves it first (no TCP connection to public addresses, Docker Hub, the apt repositories
+        # or PyPI); then the whole smoke test of this job runs in the loaded image the same way:
+        # both bags made, the node on its launch file, ros2 bag play, the checker. DDS: the image's
+        # Fast DDS profile (docker/fastdds_udp.xml, UDPv4, no interface whitelist) finds only the
+        # loopback, joins the discovery multicast group on it, sends through the loopback-bound
+        # socket Fast DDS opens for this very case ("network cable unplugged",
+        # UDPTransportInterface.cpp, Fast DDS 2.6) and falls back to 127.0.0.1 unicast locators,
+        # so node, player and recorder find each other. The profile the jury runs is unchanged:
+        # ROS_LOCALHOST_ONLY is deliberately not set.
+        if: ${{ !cancelled() && steps.roundtrip.outcome == 'success' }}
+        run: |
+          docker run --rm --network none resense:latest python3 scripts/check_no_network.py
+          docker run --rm --network none resense:latest bash -lc "python3 scripts/make_smoke_bag.py /tmp/smoke_bag && python3 scripts/make_smoke_bag.py /tmp/smoke_bag2 --topic /sensing/lidar/hesai128/pointcloud --frame-id lidar_livox --distance 45 && scripts/smoke_test.sh /tmp/smoke_bag /tmp/smoke_bag2"
+      - name: no internet, the organizers' way — node and a uid-1000 player in separate containers on an internal network
+        # `docker network create --internal`: a bridge with no way out (no NAT; Docker's firewall
+        # rules drop traffic to the outside), so the containers reach each other and nothing else,
+        # as on a stand whose network card is up but not connected to the internet
+        # (scripts/check_no_network.py proves it). Fast DDS discovers over the bridge (multicast
+        # between the containers) and sends the clouds as unicast UDP. The node runs on the image's
+        # default command, the player is a normal user in another container, as in
+        # scripts/console_test.sh.
+        if: ${{ !cancelled() && steps.roundtrip.outcome == 'success' }}
+        run: |
+          cleanup() { docker logs resense_off_node 2>&1 | tail -n 15 || true; docker rm -f resense_off_node resense_off_echo >/dev/null 2>&1 || true; }
+          trap cleanup EXIT
+          docker network create --internal resense-offline
+          mkdir -p /tmp/offline_bags /tmp/offline_out && chmod 777 /tmp/offline_bags /tmp/offline_out
+          docker run --rm --network resense-offline resense:latest python3 scripts/check_no_network.py
+          docker run --rm --network resense-offline -v /tmp/offline_bags:/bags resense:latest bash -lc "python3 scripts/make_smoke_bag.py /bags/smoke_bag && python3 scripts/make_smoke_bag.py /bags/smoke_bag2 --topic /sensing/lidar/hesai128/pointcloud --frame-id lidar_livox --distance 45"
+          docker run -d --name resense_off_node --network resense-offline resense:latest >/dev/null
+          for _ in $(seq 1 60); do docker logs resense_off_node 2>&1 | grep -q "ReSense detector listening" && break; sleep 1; done
+          docker logs resense_off_node 2>&1 | grep -q "ReSense detector listening"
+          docker run -d --name resense_off_echo --network resense-offline -v /tmp/offline_out:/out resense:latest bash -c "ros2 topic echo /resense/status --field data > /out/status.jsonl" >/dev/null
+          sleep 4
+          docker run --rm --network resense-offline --user 1000:1000 -e HOME=/tmp -v /tmp/offline_bags:/data:ro resense:latest bash -c "ros2 bag play /data/smoke_bag --delay 3 --disable-keyboard-controls && sleep 5 && ros2 bag play /data/smoke_bag2 --delay 3 --disable-keyboard-controls"
+          sleep 4
+          python3 scripts/check_dry_run.py /tmp/offline_out/status.jsonl --expect-obstacle --min-frames 20 --max-p95-latency 1000 --max-dropped 100000 --expect-inputs 2
+  offline-build:
+    # Best effort (docs/ARCHITECTURE.md "Deployment without internet"): can a machine with no
+    # internet run `docker build` after `docker load` of our archive? The archive is made as for
+    # the release (scripts/export_image.sh: runtime image, base image pulled first so that it is
+    # resolved locally, inline layer cache, the base image's tag inside); every image and the build
+    # cache are removed, the archive is loaded, Docker Hub is made unreachable, and the documented
+    # command must rebuild the image from the loaded layers alone, from a checkout extracted under
+    # umask 002 and normalised with the documented chmod: every layer identical to the archive's
+    # means that no step ran (a RUN that ran would need the network and would write new files).
+    # RUN is not given --network none here: the network mode is part of BuildKit's cache key, so
+    # it would miss the cache. Same Docker release for both builds, so this proves the mechanism,
+    # not the stand's Docker. The primary path, `docker load`, does not depend on this job:
+    # continue-on-error, read its result explicitly.
+    runs-on: ubuntu-22.04
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: the release archive (scripts/export_image.sh; GZIP_LEVEL=1 for speed)
+        run: OUT_DIR=/tmp/dist GZIP_LEVEL=1 scripts/export_image.sh
+      - name: remove every image and the build cache, load the archive (scripts/load_image.sh)
+        run: |
+          VER="$(sed -n 's/^version[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' pyproject.toml | head -n 1)"
+          echo "VER=$VER" >> "$GITHUB_ENV"
+          docker image inspect -f '{{json .RootFS.Layers}}' "resense:$VER" > /tmp/layers_built.json
+          docker rmi "resense:$VER" resense:latest ros:humble-ros-base-jammy
+          docker builder prune -af >/dev/null
+          docker image ls
+          scripts/load_image.sh "/tmp/dist/resense-image-$VER.tar.gz"
+          docker image inspect ros:humble-ros-base-jammy >/dev/null
+      - name: docker build with no internet from the loaded archive (the documented command)
+        run: |
+          set -o pipefail
+          echo "0.0.0.0 registry-1.docker.io auth.docker.io index.docker.io production.cloudflare.docker.com" | sudo tee -a /etc/hosts
+          sleep 6       # Go's resolver in dockerd re-reads /etc/hosts at most every 5 s
+          if docker pull hello-world >/dev/null 2>&1; then echo "Docker Hub is still reachable" >&2; exit 1; fi
+          mkdir /tmp/jury_src
+          git archive HEAD | (umask 002 && tar -x -C /tmp/jury_src -f -)
+          cd /tmp/jury_src
+          chmod -R u+rwX,go+rX,go-w .
+          docker build --progress=plain --cache-from "resense:$VER" -t resense:offline -f docker/Dockerfile . 2>&1 | tee /tmp/offline_build.log
+          grep -E '^#[0-9]+ (CACHED|\[)' /tmp/offline_build.log || true
+          docker image inspect -f '{{json .RootFS.Layers}}' resense:offline > /tmp/layers_offline.json
+          diff /tmp/layers_built.json /tmp/layers_offline.json
+          echo "offline rebuild: every layer identical to the archive's, no step ran"

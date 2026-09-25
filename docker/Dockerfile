@@ -4,6 +4,9 @@
 #   docker build -t resense --build-arg WITH_TOOLS=1 -f docker/Dockerfile . # + offline tools and the test suite (CI)
 #   docker run --rm -it --net=host --ipc=host resense            # the node; play the bag from the host console
 #   (RViz from the image needs the X11 socket: README "Remote real-time demo", scripts/run_demo.sh)
+# The build needs the internet (base image, apt, pip); the test stand has none, so the jury gets
+# this image as an archive instead: scripts/export_image.sh here, `docker load -i` there
+# (docs/ARCHITECTURE.md "Deployment without internet").
 #
 # The runtime image contains only what the node needs: pinned numpy / scipy / scikit-learn /
 # pyyaml, the ROS 2 packages, RViz, rosbag2, foxglove_bridge. WITH_TOOLS=1 adds the pure python

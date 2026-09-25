@@ -7,6 +7,7 @@ docs
 web
 out
 data
+dist
 **/__pycache__
 **/*.pyc
 resense/_resense_native*
