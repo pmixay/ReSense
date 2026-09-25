@@ -21,6 +21,7 @@ from typing import Optional
 
 import numpy as np
 
+from resense import _native
 from resense.config import TrackConfig
 
 
@@ -45,10 +46,14 @@ class TrackModel:
     def floor_z(self, X) -> np.ndarray:
         """Bed reference height at along-track coordinate X, linearly extrapolated beyond
         the supported range (a quadratic extrapolated to 250 m is not trustworthy)."""
+        c = np.asarray(self.floor_coef, dtype=np.float64)
+        if c.size == 3 and _native.enabled():     # the same arithmetic in one pass (resense/_native.py)
+            z = _native.floor_z(X, self.floor_range, c)
+            if z is not None:
+                return z
         X = np.asarray(X, dtype=np.float64)
         x0, x1 = self.floor_range
         Xc = np.clip(X, x0, x1)
-        c = np.asarray(self.floor_coef, dtype=np.float64)
         if c.size == 3:                           # the common case, written out (2x faster than polyval)
             a2, a1, a0 = c
             return (a2 * Xc + a1) * Xc + a0 + (2.0 * a2 * Xc + a1) * (X - Xc)
@@ -61,8 +66,16 @@ class TrackModel:
         return self.floor_z(X) + self.rail_offset
 
     def center_y(self, X) -> np.ndarray:
+        if _native.enabled():
+            y = _native.center_y(X, *self.center_coefs())
+            if y is not None:
+                return y
         X = np.asarray(X, dtype=np.float64)
         return self.center + np.tan(self.yaw) * X + 0.5 * self.curvature * X * X
+
+    def center_coefs(self) -> tuple:
+        """(c, t, k2) with ``center_y(X) = c + t X + k2 X X``, exactly as ``center_y`` rounds them."""
+        return float(self.center), float(np.tan(self.yaw)), float(0.5 * self.curvature)
 
     def to_dict(self) -> dict:
         return {
@@ -96,6 +109,10 @@ def bin_percentile(values: np.ndarray, bins: np.ndarray, nb: int, percentile: fl
     one sort instead of a Python loop with a percentile call per bin. Returns (prof, counts)
     with ``prof`` NaN where a bin holds fewer than ``min_points`` values; with ``payload`` the
     payload of the value at the percentile rank is returned as a third array (nearest rank)."""
+    if _native.enabled():                          # counting sort + selection, the same values (resense/_native.py)
+        res = _native.bin_percentile(values, bins, nb, percentile, min_points, payload)
+        if res is not None:
+            return res
     prof = np.full(nb, np.nan)
     counts = np.bincount(bins, minlength=nb)[:nb]
     if values.size == 0:
@@ -127,18 +144,25 @@ def _fit_floor(xyz: np.ndarray, cfg: TrackConfig, prior: TrackModel):
     """
     X, Y, Z = xyz[:, 0], xyz[:, 1], xyz[:, 2]
     x0, x1 = cfg.floor_fit_range
-    dy = Y - prior.center_y(X)
-    band = (X >= x0) & (X < x1) & (np.abs(dy) < cfg.floor_halfwidth)
-    Xb, Zb = X[band], Z[band]
-    if Xb.size < cfg.floor_min_points * 3:
-        return None
     # bins grow with range (2 m near, 2.5x beyond 40 m) so that the sparse far bed still fills them
     edges = np.concatenate([np.arange(x0, min(40.0, x1), cfg.floor_bin),
                             np.arange(max(40.0, x0), x1 + 2.5 * cfg.floor_bin, 2.5 * cfg.floor_bin)])
     nb = edges.size - 1
-    idx = np.digitize(Xb, edges) - 1
-    inb = (idx >= 0) & (idx < nb)
-    prof, counts = bin_percentile(Zb[inb].astype(np.float64), idx[inb], nb, cfg.floor_percentile, cfg.floor_min_points)
+    fast = (_native.floor_band(xyz, x0, x1, prior.center_coefs(), cfg.floor_halfwidth, edges)
+            if _native.enabled() else None)                 # the band below in one pass (resense/_native.py)
+    if fast is not None:
+        n_band, Zin, idx_in = fast
+    else:
+        dy = Y - prior.center_y(X)
+        band = (X >= x0) & (X < x1) & (np.abs(dy) < cfg.floor_halfwidth)
+        Xb, Zb = X[band], Z[band]
+        n_band = Xb.size
+        idx = np.digitize(Xb, edges) - 1
+        inb = (idx >= 0) & (idx < nb)
+        Zin, idx_in = Zb[inb].astype(np.float64), idx[inb]
+    if n_band < cfg.floor_min_points * 3:
+        return None
+    prof, counts = bin_percentile(Zin, idx_in, nb, cfg.floor_percentile, cfg.floor_min_points)
     ok = np.isfinite(prof)
     if ok.sum() < 3:
         return None
@@ -227,12 +251,19 @@ def estimate_axis_from_walls(xyz: np.ndarray, model: TrackModel, cfg: TrackConfi
     X, Y, Z = xyz[:, 0], xyz[:, 1], xyz[:, 2]
     x0, x1 = cfg.walls_range
     zf = model.floor_z(X) if floor_z_all is None else floor_z_all
-    h = Z - (zf + model.rail_offset)
-    band = (X > x0) & (X < x1) & (h > cfg.walls_band[0]) & (h < cfg.walls_band[1])
-    if band.sum() < 50:
-        return None
-    Xb, Yb = X[band], Y[band]
-    dy = Yb - model.center_y(Xb)
+    fast = (_native.walls_band(xyz, zf, model.rail_offset, x0, x1, cfg.walls_band[0], cfg.walls_band[1],
+                               model.center_coefs()) if _native.enabled() else None)
+    if fast is not None:                                   # the band below in one pass (resense/_native.py)
+        Xb, Yb, dy = fast
+        if Xb.size < 50:
+            return None
+    else:
+        h = Z - (zf + model.rail_offset)
+        band = (X > x0) & (X < x1) & (h > cfg.walls_band[0]) & (h < cfg.walls_band[1])
+        if band.sum() < 50:
+            return None
+        Xb, Yb = X[band], Y[band]
+        dy = Yb - model.center_y(Xb)
     edges = np.arange(x0, x1 + cfg.walls_bin, cfg.walls_bin)
     nb = edges.size - 1
     idx = np.digitize(Xb, edges) - 1
@@ -295,27 +326,34 @@ def verify_floor_extrapolation(xyz: np.ndarray, model: TrackModel, cfg: TrackCon
         return x_fit
     x0 = 10.0
     X = xyz[:, 0]
-    sel = (X > x0) & (X < cfg.floor_verify_max_range)
-    if sel.sum() < 100:
-        return x_fit
-    P = xyz[sel]
-    Xs = P[:, 0].astype(np.float64)
-    ady = np.abs(P[:, 1] - model.center_y(Xs))
     b0, b1 = cfg.floor_verify_band
-    side = (ady > b0) & (ady < b1)
-    if side.sum() < 50:
-        return x_fit
-    Xs = Xs[side]
-    zf = model.floor_z(Xs) if floor_z_all is None else floor_z_all[sel][side]
-    hs = P[side, 2] - zf                          # height above the extrapolated bed
-    keep = hs > -1.0                              # drop returns from below the bed (noise, drains)
-    Xs, hs = Xs[keep], hs[keep]
     edges = np.arange(x0, cfg.floor_verify_max_range + cfg.floor_verify_bin, cfg.floor_verify_bin)
     nb = edges.size - 1
-    b = np.clip(np.digitize(Xs, edges) - 1, 0, nb - 1)
-    counts = np.bincount(b, minlength=nb)
-    base = np.full(nb, np.inf)
-    np.minimum.at(base, b, hs)
+    fast = (_native.verify_profile(xyz, floor_z_all, x0, cfg.floor_verify_max_range, model.center_coefs(), b0, b1,
+                                   edges) if _native.enabled() and floor_z_all is not None else None)
+    if fast is not None:                                   # the selection and binning below in one pass
+        n_sel, n_side, counts, base = fast
+        if n_sel < 100 or n_side < 50:
+            return x_fit
+    else:
+        sel = (X > x0) & (X < cfg.floor_verify_max_range)
+        if sel.sum() < 100:
+            return x_fit
+        P = xyz[sel]
+        Xs = P[:, 0].astype(np.float64)
+        ady = np.abs(P[:, 1] - model.center_y(Xs))
+        side = (ady > b0) & (ady < b1)
+        if side.sum() < 50:
+            return x_fit
+        Xs = Xs[side]
+        zf = model.floor_z(Xs) if floor_z_all is None else floor_z_all[sel][side]
+        hs = P[side, 2] - zf                      # height above the extrapolated bed
+        keep = hs > -1.0                          # drop returns from below the bed (noise, drains)
+        Xs, hs = Xs[keep], hs[keep]
+        b = np.clip(np.digitize(Xs, edges) - 1, 0, nb - 1)
+        counts = np.bincount(b, minlength=nb)
+        base = np.full(nb, np.inf)
+        np.minimum.at(base, b, hs)
     centres = 0.5 * (edges[:-1] + edges[1:])
     valid = (counts >= cfg.floor_verify_min_points) & np.isfinite(base)
     # half a vertical ring spacing (0.125 deg in the fine band) at that range
@@ -413,21 +451,25 @@ def estimate_rails(xyz: np.ndarray, floor: TrackModel, cfg: TrackConfig,
     X, Y, Z = xyz[:, 0], xyz[:, 1], xyz[:, 2]
     x0, x1 = cfg.rails_range
     half, step = cfg.rails_search_halfwidth, cfg.rails_bin
-    near = (X > x0) & (X < x1)                    # the near range only: the profile needs ~1/3 of the frame
-    Xd = X[near].astype(np.float64)
-    Yn, Zn = Y[near].astype(np.float64), Z[near]
-    h = Zn - (floor.floor_z(Xd) if floor_z_all is None else floor_z_all[near])
-    if prior is not None:
-        shape = np.tan(prior.yaw) * Xd + 0.5 * prior.curvature * Xd * Xd
-        Yp = Yn - shape
-        kap = float(prior.curvature)
+    kap = float(prior.curvature) if prior is not None else 0.0
+    fast = (_native.rails_band(xyz, floor_z_all, x0, x1, None if prior is None else prior.center_coefs(),
+                               prior_center, half) if _native.enabled() and floor_z_all is not None else None)
+    if fast is not None:                                   # the selection below in one pass (resense/_native.py)
+        xs, y, hh = fast
     else:
-        Yp = Yn
-        kap = 0.0
-    sel = (np.abs(Yp - prior_center) < half) & (h > -0.4) & (h < 0.8)
-    if sel.sum() < 200:
+        near = (X > x0) & (X < x1)                # the near range only: the profile needs ~1/3 of the frame
+        Xd = X[near].astype(np.float64)
+        Yn, Zn = Y[near].astype(np.float64), Z[near]
+        h = Zn - (floor.floor_z(Xd) if floor_z_all is None else floor_z_all[near])
+        if prior is not None:
+            shape = np.tan(prior.yaw) * Xd + 0.5 * prior.curvature * Xd * Xd
+            Yp = Yn - shape
+        else:
+            Yp = Yn
+        sel = (np.abs(Yp - prior_center) < half) & (h > -0.4) & (h < 0.8)
+        y, hh, xs = Yp[sel], h[sel], Xd[sel]
+    if xs.size < 200:
         return RailsFit(-1.0, prior_center, floor.rail_offset)
-    y, hh, xs = Yp[sel], h[sel], Xd[sel]
     edges = np.arange(prior_center - half, prior_center + half + step, step)
     nb = edges.size - 1
     prof = _height_profile(y, hh, edges, cfg.rails_percentile)

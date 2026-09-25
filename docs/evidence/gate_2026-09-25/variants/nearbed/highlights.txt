@@ -1,0 +1,8 @@
+## gate_native
+doubleT_obstacle                          201    193      8      1     84    8
+doubleT_platform                          345    111     41     11    180   11
+roundT_doubleT                            252     40      6      5    173   38
+roundT_pressureGate_roundT                268     34      3      4    104   95
+roundT_squareT_pressureGate_squareT       545     44     10      5    146  189
+squareT_platform_squareT_switch           877    230     47     47    396    4
+GATE FAIL: 21 gated metric(s) worse: recordings.doubleT_obstacle.labelled.fp_events, recordings.doubleT_platform.alarm_events, recordings.doubleT_platform.stop_episodes, recordings.roundT_doubleT.alarm_events, recordings.roundT_doubleT.stop_episodes, recordings.roundT_pressureGate_roundT.alarm_events, recordings.roundT_pressureGate_roundT.stop_episodes, recordings.roundT_squareT_pressureGate_squareT.alarm_events, recordings.roundT_squareT_pressureGate_squareT.stop_episodes, recordings.squareT_platform_squareT_switch.alarm_events, recordings.squareT_platform_squareT_switch.stop_episodes, ride.alarm_events, ride.stop_episodes, set_O.background.alarm_frames, set_O.background.track_ids, set_F_straight.person.false_detections, set_F_straight.box1.0.false_detections, set_F_straight.box0.5.first_detection_median_m, set_F_straight.box0.5.false_detections, set_F_straight.trolley.false_detections, set_F_straight.cable.false_detections (2 gated better, 0 worse but allowed, 30 information rows changed)

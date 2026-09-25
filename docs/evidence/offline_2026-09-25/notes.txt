@@ -1,0 +1,2 @@
+image archive: /home/mdm/resense_dist/resense-image-0.6.3-7290873.tar.gz
+outbound attempts blocked and logged (rate-limited; they include the deliberate ones of check_no_network.py): 54, by uid:  7 UID=1000 47 UID=101 

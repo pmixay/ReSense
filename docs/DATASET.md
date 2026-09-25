@@ -1,10 +1,24 @@
-# Dataset notes (organizers' bags, 2026-09)
+# Dataset Notes
 
-**Download:** [`Датасет.zip`, 3.7 GB, Google Drive](https://drive.google.com/file/d/1WTlR2wDSuEHTOARGK_gZeXDTZ9RZpswu/view)
-(organizers' link, shared with the team — the bags themselves are never committed, see
-`.gitignore`).
+> **Purpose:** the organizers' data: the recordings, their topics, formats and point budget, the
+> labels, the frame cache, the synthetic-obstacle injector and the intake recipe for a new bag.
+> **Audience:** team, jury · **Owner:** P4 · **Language:** EN, summary RU
+> **Last verified:** 2026-09-24 against `537e220` · **Status:** current
 
-**Extended dataset (recorded 2026-09-17, link received 22.09):**
+**Кратко.** От организаторов у нас шесть записей по 20–88 с из разных участков метро (2 488
+кадров, 250 с), 20-минутная поездка `new_data` (11 271 кадр, ~13 км, семь остановок, препятствий
+нет) и запись `cloud_with_fake_obj` (1 510 кадров) с десятью объектами, добавленными
+инструментом самих организаторов. Реальные препятствия есть только в `doubleT_obstacle`: человек
+пересекает путь на 55–57 м, а предмет лежит поперёк правого рельса на 56 м; разметка обоих — в
+`labels/`. Лидар — Hesai Pandar128, ~190 тыс. точек в кадре при 10 Гц, дальше 210 м точек нет.
+Для других дальностей и объектов мы вставляем синтетические объекты в реальные пустые кадры
+(`resense inject`, трассировка лучей по сетке самого датчика).
+
+**Download:** [`Датасет.zip`, 3.7 GB, Google
+Drive](https://drive.google.com/file/d/1WTlR2wDSuEHTOARGK_gZeXDTZ9RZpswu/view) (organizers' link,
+shared with the team — the bags themselves are never committed, see `.gitignore`).
+
+**Extended dataset (recorded 17.09, link received 22.09):**
 [`new_data.zst`, 17.1 GB, Yandex Disk](https://disk.yandex.ru/d/N8IUpAyd7jyvow) — a
 zstd-compressed tar of **one 20-minute rosbag2 bag `new_data/`** split into 221 sqlite3 files
 `new_data_<N>.db3` (408 MB / 51 frames each) plus its `metadata.yaml` (90 GB unpacked); what
@@ -17,7 +31,7 @@ unpacked directory is an ordinary bag (`resense info /data/new_data`, `ros2 bag 
 
 **Synthetic-obstacle recording (24.09):**
 [`cloud_with_fake_obj.zst`, 1.75 GB, Yandex Disk](https://disk.yandex.ru/d/KpkG_yKoGk-vHQ) —
-a 151-second, 1,510-frame bag with ten obstacles the organizers ray-cast into a real
+a 151-second, 1 510-frame bag with ten obstacles the organizers ray-cast into a real
 recording, in a known order. Labelled by P4 in
 [`labels/cloud_with_fake_obj.json`](../labels/cloud_with_fake_obj.json); see
 ["Synthetic-obstacle recording"](#synthetic-obstacle-recording-cloud_with_fake_obj-labelled).
@@ -52,15 +66,16 @@ both labelled in `labels/doubleT_obstacle.json`); every alarm on the other five 
 alarm.
 The organizers confirmed that the extended `new_data` recording has no obstacles. Positive
 examples at other ranges and for other objects therefore come from `resense inject` (synthetic
-obstacles ray-cast into real frames, see ARCHITECTURE.md and "Set S" below).
+obstacles ray-cast into real frames, see "Synthetic obstacles" below and
+[`EVALUATION.md`](EVALUATION.md) §1).
 
 ## Synthetic-obstacle recording (`cloud_with_fake_obj`, labelled)
 
 **Download:** [Yandex Disk](https://disk.yandex.ru/d/KpkG_yKoGk-vHQ) (the organizers' link of
-24.09): `cloud_with_fake_obj.zst`, 1,746,145,824 bytes, SHA-256
+24.09): `cloud_with_fake_obj.zst`, 1 746 145 824 bytes, SHA-256
 `d41c2fb28475194a98efeca5d2ee3fd175c0aef350ffb92fff4c26d497e696e9` (MD5
 `5c0cefe7ef10fae249b5ae653cbd165d`). The archive holds `cloud_with_fake_obj/metadata.yaml` and
-one 7.42 GB `cloud_with_fake_obj_0.db3`. The bag has 1,510 PointCloud2 messages on
+one 7.42 GB `cloud_with_fake_obj_0.db3`. The bag has 1 510 PointCloud2 messages on
 `/lidar_points`, frame `hesai_lidar` (the 120° pair), spanning 150.851 s. Unlike the original
 bags, its cloud fields are `x,y,z,intensity` **without a ring field**; the reader fills a zero ring.
 
@@ -89,13 +104,13 @@ resense eval --npy /data/cache/cloud_with_fake_obj --gt labels/cloud_with_fake_o
 | 9 | длинный низкий предмет лежит на рельсах (2х0.2) | `long_low_on_rails` | inside (across both rails) |
 | 10 | узкий длинный свисает с потолка (ширина 0.05 м) | `thin_hanging` | inside (hangs to 2.7 m above the rail head) |
 
-**How the labels are made.** Each message is the organized real scan (128 × 2 400 points,
+**How the labels are made.** Each message is the organizers' real scan (128 × 2 400 points,
 no-return points kept as zeros, the returns an object hides removed) **followed by the object
 points, all with intensity 1**. `scripts/label_fake_objects.py` takes every point after the last
 zero point of a message as object points, splits them into objects at X gaps over 8 m and links
 them into tracks. Exactly ten tracks come out, and they pass the sensor in the organizers'
 order. Frames 0–803 carry object points; frames 804–1509 are the real recording alone. Each
-visible object-frame gets a row in the "Label format" below, 1,206 rows in all. `distance` and
+visible object-frame gets a row in the "Label format" below, 1 206 rows in all. `distance` and
 `lateral` are measured in the detector's mount-calibrated frame from its per-frame track axis,
 as for `doubleT_obstacle`. `in_gauge` is the organizers' intent. Extra keys:
 
@@ -106,14 +121,18 @@ as for `doubleT_obstacle`. `in_gauge` is the organizers' intent. Extra keys:
 
 Three properties of the recording decide how it can be scored:
 
-* **The objects move, the train does not follow them.** They approach at 14–20 m/s (object 1
-  at 2–7 m/s). Frame-to-frame ICP on the real points shows the train itself slowing, backing up
-  ~70 m over frames 300–650, creeping at under 1 m/s from frame ~850 to ~1200 and then moving on. The injected
-  motion is therefore not ego-motion: a given train speed or the LiDAR speed estimator would
-  accumulate the background wrongly. The shipped single-frame path is what can be scored.
+* **The objects stand still in the tunnel; the train drives up to them.** The real ride is one
+  station-to-station run: 1.4 m/s at frame 0, 14–20 m/s from frame ~300 to ~1300, 2 m/s at the
+  end, 2.0 km in 151 s, never backing up (frame-to-frame point-to-plane ICP, re-measured 24.09
+  with `scripts/speed_reference.py`, and independently by the LiDAR-only speed estimator; an
+  earlier frame-to-frame ICP of 24.09 had reported the train backing up, which was wrong). Each
+  object approaches by exactly the train's displacement (median difference 0.00–0.04 m per frame
+  for all ten), so the organizers' tool places obstacles fixed in the world. This is the first
+  moving recording with obstacles on which a train speed (given or estimated) can be tested:
+  [`EXPERIMENTS.md`](EXPERIMENTS.md) §9.
 * **The objects were placed from the sensor's axis, not from the rails.** Near the train the
   objects are centred on the sensor's Y = 0, as the organizers' mount answer suggests (the
-  LiDAR is 1075 mm above the rail head on the train's centreline,
+  LiDAR is 1 075 mm above the rail head on the train's centreline,
   [`organizers/mount_and_switch_qa.md`](organizers/mount_and_switch_qa.md); the detector measures
   1.08 m here). The rails of this recording, fitted directly
   (0.76–0.81 m either side), run at **−0.24°** to that axis in frames 0–100, 400–500 and
@@ -131,9 +150,10 @@ Three properties of the recording decide how it can be scored:
 
 The first P4 pass (24.09, before the description arrived) scored the bag unlabelled: 342 alarm
 frames / 9 track IDs / 459 advisory frames with the shipped detector
-([`experiments_p4_fake_unlabelled.json`](experiments_p4_fake_unlabelled.json)). The per-object
+([`experiments_p4_fake_unlabelled.json`](evidence/results/experiments_p4_fake_unlabelled.json)).
+The per-object
 grade is now in [`P4_AUDIT.md`](P4_AUDIT.md) "Organizer synthetic-obstacle recording" and
-[`experiments_p4_fake_labelled.json`](experiments_p4_fake_labelled.json).
+[`experiments_p4_fake_labelled.json`](evidence/results/experiments_p4_fake_labelled.json).
 
 ## Extended dataset: `new_data` (recorded 17.09, streamed and run on 22.09)
 
@@ -167,7 +187,7 @@ fresh detector per file, every 10th frame cached as `new_data_<N>_<i>.npy` (1 32
 | rings / range / intensity | 128 rings; last returns to 210 m (every recording stops at 209.2–210.0 m); p99 of ranges ≈ 65 m; intensity median 8, retro-reflectors 255 (linear reflectivity mapping, `SENSOR.md` §2) |
 | clock | bag receive time starts 2026-09-17 11:02:06 UTC; `header.stamp` is still the year-2000 sensor clock — use the bag time, as before |
 | frame period | 0.100 s inside a file and 0.100 s from the last frame of file N to the first of N+1 (max 0.12 s): **one continuous recording** — except **recording holes in the last third**: from file 156 (t ≈ 800 s) on, 26 files span 6–12 s instead of 5.1 s, with gaps of 1.2–7.1 s between consecutive frames (`period_max` per file in the JSON). 51 frames still sit in every file, so ≈ 70 s of the 1 200 s carry no frames; `ros2 bag play` pauses there and the tracker's gate (measured frame interval, `tracking.py`) is what keeps a track alive across such a gap |
-| the ride | from the drift of static tracks (m/s per file, `speed_tracks` in the JSON — the estimator in the detector is off, `EXPERIMENTS.md` §1b): departs from standstill at t = 0, stops at 168–209 s, 291–306, 439–459, 592–648, 760–775, 984–1007 and 1106–1117 s (seven stops: stations or signals), top speed 21.3 m/s (77 km/h) at t ≈ 230 s, mean 11.5 m/s, ≈ 13 km covered |
+| the ride | from the drift of static tracks (m/s per file, `speed_tracks` in the JSON — the estimator in the detector is off, `EXPERIMENTS.md` §1b, §9): departs from standstill at t = 0, stops at 168–209 s, 291–306, 439–459, 592–648, 760–775, 984–1007 and 1106–1117 s (seven stops: stations or signals), top speed 21.3 m/s (77 km/h) at t ≈ 230 s, mean 11.5 m/s, ≈ 13 km covered |
 | scenes | tunnels of both kinds, curves down to R ≈ 350 m (median \|curvature\| up to 3·10⁻³ m⁻¹ in files 129–134, 176–180), stations and a switch — files 22, 55, 113–114 and 155 have the track model unlocked (median `rail_score` < 0.1, platforms / switch, as in `squareT_platform_squareT_switch`). **No labels and no obstacles**: confirmed by the organizers (Q&A session 22.09; written answer 23.09 "В new_data препятствий нет", [`organizers/answers.md`](organizers/answers.md)) |
 
 **v0.5 defaults at full rate** (every frame, fresh detector per 51-frame file, no speed given;
@@ -177,10 +197,10 @@ raw per-frame JSONL kept out of git, 442 files / 17 MB):
 |---|---|---|---|---|---|---|
 | 11 271 (1 200 s) | 358 (3.2 %) | 102 | 306 | 7.9 | 8 564 (76 %) | 41 / 74 / 157 ms |
 
-For scale: the five obstacle-free organizer bags give v0.5 96 alarm frames / 32 events in
-230 s, ≈ 500 events per hour (`EXPERIMENTS.md` §1). Where the 102 events sit (median lateral
-offset of each event, `events` in the JSON; 27 last one frame, 31 last ≥ 5 frames, the longest
-21 frames):
+For scale: the five obstacle-free organizer bags give v0.5 96 alarm frames / 32 events in 230 s, ≈
+500 events per hour ([`EXPERIMENTS.md`](EXPERIMENTS.md) §1). Where the 102 events sit (median
+lateral offset of each event, `events` in the JSON; 27 last one frame, 31 last ≥ 5 frames, the
+longest 21 frames):
 
 * **40 at the left gauge edge** (lateral −1.35 … −1.65 m, bottom ≈ 0.6 m above the rail head,
   median 0.9 m long × 0.7 m tall, median first distance 61 m): the contact-rail side — brackets
@@ -203,7 +223,7 @@ offset of each event, `events` in the JSON; 27 last one frame, 31 last ≥ 5 fra
 is more empty tunnel"; no labels exist; the hidden check adds synthetic obstacles made with the
 organizers' own tool. Every alarm on this ride is therefore a false alarm. The v0.6 object list
 of the ride (every confirmed track, alarm or advisory, with geometry and cause class) is
-`labels/new_data_objects.json`; the classes and counts are in EXPERIMENTS.md §1d.
+`labels/new_data_objects.json`; the classes and counts are in EXPERIMENTS §1d.
 
 Renders looked at (from the cache, `resense run --npy … --render`): file 22 frame 10 (switch:
 diverging track, axis wanders), 55 frames 10 and 20 (platform: the axis bends into the
@@ -212,23 +232,23 @@ platform, a straight fit two frames later), 81 frame 10 (double-track, columns o
 brackets, rejected as elevated). Nothing person- or box-like sits in the gauge for more than a
 few frames below 60 m outside station ends — as far as one can say without labels.
 
-**What follows.** (1) `new_data` has no staged obstacles, so it supports false-alarm and
-generalisation checks but cannot add real positive recall; the known positive labels are in
-`labels/doubleT_obstacle.json`. (2) P3: the left-edge family is now the largest cause
-(40 of 102 events) — the contact-rail side needs the same treatment as the column row (`edge`
-signature with the rail-side offset), and the switch / platform-end cases need the track model
-to declare itself unlocked rather than fit a platform. (3) Run the bag in one go
-(`resense run --bag /data/new_data --out …`) on a machine with 90 GB free: the per-file numbers
-above reset the tracker every 5.1 s (6 events start in frames 0–2 and 12 end in frames 49–50
-of a file, so a continuous run can only merge a few of them). (4) `ros2 bag play
-/data/new_data` through the container is the closest thing to the control run we have: 20 min,
-seven stops, curves, stations, recording holes — the dry run should use it once the stand has
-the disk.
+**What follows (22.09, v0.5).** (1) `new_data` has no staged obstacles, so it supports
+false-alarm and generalisation checks but cannot add real positive recall; the known positive
+labels are in `labels/doubleT_obstacle.json`. (2) Superseded: with the 1.05 m envelope of v0.6
+the contact-rail brackets at 1.35–1.65 m from the axis are outside the strict envelope (advisory
+at most); the ride's current false alarms by cause are in EXPERIMENTS "Current results".
+(3) Since v0.6 (22.09) the ride is evaluated from the full-rate cache in eight ~2.5-minute pieces
+(`scripts/eval_real.py`), not per 51-frame file; one run of the whole bag in one go
+(`resense run --bag /data/new_data --out …`, 90 GB free) is still open: the per-file numbers
+above reset the tracker every 5.1 s (6 events start in frames 0–2 and 12 end in frames 49–50 of
+a file). (4) Open: `ros2 bag play /data/new_data` through the
+container is the closest thing to the control run we have — 20 min, seven stops, curves,
+stations, recording holes — and the dry run should use it once the dry-run machine has the disk.
 
 ## Topic and sensor
 
-* **Organizers, 23.09 (written answer, [`organizers/answers.md`](organizers/answers.md)):** the control data may contain
-  **both (topic, frame) pairs** — `/lidar_points` + `hesai_lidar` and
+* **Organizers, 23.09 (written answer, [`organizers/answers.md`](organizers/answers.md)):** the
+  control data may contain **both (topic, frame) pairs** — `/lidar_points` + `hesai_lidar` and
   `/sensing/lidar/hesai128/pointcloud` + `lidar_livox`; **all data were recorded with the same
   LiDAR**; the storage format matters little, the bag will most likely be played from the
   console. The two layouts below (120° window vs full turn, 307 200 vs 921 600 slots) are
@@ -236,43 +256,47 @@ the disk.
   handles both and restarts per recording (README "How a bag is processed"). Also 23.09:
   **`new_data` has no obstacles** (item 1).
 * **The bags do not agree on the topic name, the frame id or the azimuth window.** Topics
-  from every bag's `metadata.yaml` (read by the captain on 2026-09-21, CAPTAIN.md finding 3 of
-  21.09); `frame_id` and `width` read from the messages of two bags only (2026-09-20); the
-  window and the point counts measured on the cached frames of all six bags (P4, 21.09: five
-  frames per bag, azimuth `atan2(x, −y)` in the sensor frame, 0.5–99.5 percentiles):
+  from every bag's `metadata.yaml` (read by P1 on 21.09, finding 3 of 21.09 in
+  [`archive/CAPTAIN_log_2026-09.md`](archive/CAPTAIN_log_2026-09.md)); `width` read from the
+  messages of two bags (20.09); `frame_id` of all six read from the messages on 24.09
+  (`scripts/cache_frames.py --stamps` writes it to `<bag>_stamps.json`); the window and the point
+  counts measured on the cached frames of all six bags (P4, 21.09: five frames per bag, azimuth
+  `atan2(x, −y)` in the sensor frame, 0.5–99.5 percentiles):
 
   | bag | topic (`metadata.yaml`) | `frame_id` | `width` | azimuth window | valid points / frame |
   |---|---|---|---|---|---|
-  | `doubleT_obstacle` | `/sensing/lidar/hesai128/pointcloud` | `lidar_livox` (read) | 921 600 | full turn; valid returns over ~210° (−104°…+106°) | ~347 k |
-  | `doubleT_platform` | `/lidar_points` | not verified | not read | ±50° | 160–186 k |
-  | `roundT_doubleT` | `/lidar_points` | `hesai_lidar` (read) | 307 200 | ±50° | 180–190 k |
-  | `roundT_pressureGate_roundT` | `/lidar_points` | not verified | not read | ±50° | 182–190 k |
-  | `roundT_squareT_pressureGate_squareT` | `/lidar_points` | not verified | not read | ±50° | 181–190 k |
-  | `squareT_platform_squareT_switch` | `/lidar_points` | not verified | not read | ±50° | 160–182 k |
+  | `doubleT_obstacle` | `/sensing/lidar/hesai128/pointcloud` | `lidar_livox` | 921 600 | full turn; valid returns over ~210° (−104°…+106°) | ~347 k |
+  | `doubleT_platform` | `/lidar_points` | `hesai_lidar` | not read | ±50° | 160–186 k |
+  | `roundT_doubleT` | `/lidar_points` | `hesai_lidar` | 307 200 | ±50° | 180–190 k |
+  | `roundT_pressureGate_roundT` | `/lidar_points` | `hesai_lidar` | not read | ±50° | 182–190 k |
+  | `roundT_squareT_pressureGate_squareT` | `/lidar_points` | `hesai_lidar` | not read | ±50° | 181–190 k |
+  | `squareT_platform_squareT_switch` | `/lidar_points` | `hesai_lidar` | not read | ±50° | 160–182 k |
 
   `doubleT_obstacle` is a **full-turn recording** (3600 azimuth columns × 128 rings × 2 returns
   = 921 600 slots, ~347 k valid points) with a `lidar_livox` frame id left over from an earlier
   rig; the others use the 120° window (1200 columns, valid returns within ±50°, 160–190 k
-  points — fewer at the platforms, where the near walls are missing). **Only two of the six bags
-  have had their frame id verified by reading the bag**; for the other four the topic comes
-  from `metadata.yaml` and the frame id is unknown — **do not assume, read the messages**
-  (recipe below). Consequences: the node takes a candidate topic list and auto-discovers
-  PointCloud2 topics, and the RViz layout must not hard-code the topic or the fixed frame.
+  points — fewer at the platforms, where the near walls are missing). The `cloud_with_fake_obj`
+  bag and the ride also use `/lidar_points` + `hesai_lidar`. For a new bag, read the topic and the
+  frame id from its messages (intake recipe below). Consequences: the node takes a candidate
+  topic list and auto-discovers PointCloud2 topics, and the RViz layout must not hard-code the
+  topic or the fixed frame.
 * `sensor_msgs/msg/PointCloud2`, ~10 Hz (frame period 80–120 ms in the bag clock).
-* Fields: `x y z` float32, `intensity` float32 (0–255, median 6–7, rails/retro-reflectors up to 255),
-  `ring` uint16 (0–127), `timestamp` float64 (sensor clock, **not synchronised**: year 2000 epoch —
-  use the bag receive time, not `header.stamp`).
-* Layout: `height=1, width=307200`, `point_step=26`. 1200 azimuth columns × 128 rings × **2 returns**
-  (dual-return mode). Missing returns are stored as `(0,0,0)` — ~38 % of the slots. A frame therefore
-  holds ~190 000 valid points, but only 85 000–95 000 distinct ones: 96–98 % of the points come in
-  identical pairs, one echo stored in both return slots (measured on 24.09 in all seven
-  recordings; the organizers' answer on the return mode is in [`SENSOR.md`](SENSOR.md) §4).
-* Angular grid (measured): azimuth step **0.1°**, valid returns only within **±50°**; 128 rings with
-  elevation **+14.4° … −25.1°**, **0.125° step in the ROI (+2° … −6.2°)**, 0.5° outside. The sweep
-  of one frame takes 33 ms. The unit is a **Hesai Pandar128 (E3X)** — identified from the manual and the
-  angle correction file, see [`SENSOR.md`](SENSOR.md).
-* Range: last returns at 209–210 m (every recording stops at 209.2–210.0 m); the tunnel walls return points to ~150–200 m, the track bed to
-  ~100 m; p99 of ranges is only ~48 m (most points are the near walls).
+* Fields: `x y z` float32, `intensity` float32 (0–255, median 6–7, rails/retro-reflectors up to
+  255), `ring` uint16 (0–127), `timestamp` float64 (sensor clock, **not synchronised**: year 2000
+  epoch — use the bag receive time, not `header.stamp`).
+* Layout: `height=1, width=307200`, `point_step=26`. 1200 azimuth columns × 128 rings × **2
+  returns** (dual-return mode). Missing returns are stored as `(0,0,0)` — ~38 % of the slots. A
+  frame therefore holds ~190 000 valid points, but only 85 000–95 000 distinct ones: 96–98 % of
+  the points come in identical pairs, one echo stored in both return slots (measured on 24.09 in
+  all seven recordings; the organizers' answer on the return mode is in
+  [`SENSOR.md`](SENSOR.md) §4).
+* Angular grid (measured): azimuth step **0.1°**, valid returns only within **±50°**; 128 rings
+  with elevation **+14.4° … −25.1°**, **0.125° step in the ROI (+2° … −6.2°)**, 0.5° outside. The
+  sweep of one frame takes 33 ms. The unit is a **Hesai Pandar128 (E3X)** — identified from the
+  manual and the angle correction file, see SENSOR §1.
+* Range: last returns at 209–210 m (every recording stops at 209.2–210.0 m); the tunnel walls
+  return points to ~150–200 m, the track bed to ~100 m; p99 of ranges is only ~48 m (most points
+  are the near walls).
 * Sensor frame: **−y is forward, +x is left, +z is up** (right-handed). The package converts
   this to the vehicle frame X-forward / Y-left / Z-up (`SensorConfig.forward = "-y"`).
 
@@ -280,14 +304,17 @@ the disk.
 
 * Round tunnel: inner radius ≈ 2.5–2.7 m, crown ≈ 3.4 m above the sensor, track bed ≈ 1.5 m below
   the sensor (moving bags) and ≈ 2.0 m below in `doubleT_obstacle` (different mount!). The
-  detector therefore self-calibrates the bed and rail level per frame.
+  detector therefore self-calibrates the bed and rail level per frame. The organizers give the
+  test mount as 1 075 mm above the rail head on the centreline; the calibration measures 1.12 m
+  and 1.51 m on the two rigs ([`SENSOR.md`](SENSOR.md) §4).
 * Track axis is **0.05–0.25 m to the right of the sensor axis** (rail ridge template, gauge 1.52 m
   → 1.59 m between rail-head centres); rail head ≈ 0.30–0.42 m above the 20th-percentile bed level
   (the bed has a central drainage trough).
-* Contact (third) rail with its cover: ~1.6–2.0 m left of the track axis, top ≈ 0.35–0.5 m above rail head.
+* Contact (third) rail with its cover: ~1.6–2.0 m left of the track axis, top ≈ 0.35–0.5 m above
+  rail head.
 * Column row in the double-track tunnel: inner faces ≈ 1.7 m from the track axis, floor to ceiling.
 * Platform edge: ≈ 1.6 m from the track axis, 1.1 m above rail head (long, straight, thin → the
-  v0.5 gauge polygon was 1.4 m wide there; the v0.6 envelope is 1.05 m).
+  v0.5 gauge polygon reached 1.40 m from the axis there; the v0.6 envelope ends at 1.05 m).
 * Pressure gate: frame narrows the tunnel to roughly the structure gauge.
 * Curves: at least three bags contain curves with R ≈ 700–3000 m; a straight corridor cuts into
   the wall / column row beyond 50–100 m, hence the wall-based yaw/curvature estimator.
@@ -336,7 +363,8 @@ bag, 0-based, in message order). `resense eval --npy <dir> --gt gt.json` reads t
 back to find the frame's labels. `scripts/eval_real.py --cache <dir>` runs one configuration
 over every cached recording (the ride split into parallel pieces) and prints the real-data
 report card; `scripts/far_range_eval.py` builds set F (objects approaching on the moving ride,
-EXPERIMENTS.md §2d); `scripts/mine_objects.py` lists every confirmed object of a run.
+[`EXPERIMENTS.md`](EXPERIMENTS.md) §2d); `scripts/mine_objects.py` lists every confirmed object of
+a run.
 
 ## Synthetic obstacles (`resense inject`)
 
@@ -357,7 +385,7 @@ are selected by name with `--kinds`; the catalogue is `resense.synthetic.OBJECT_
 |---|---|---|---|---|
 | `person` | cylinder body + head sphere | 0.4 × 0.5 × 1.7 | 10–60 | person in dark / ordinary clothing |
 | `hivis` | same | 0.4 × 0.5 × 1.7 | 150–250 | person in a hi-vis vest (retro-reflective) |
-| `box0.2` | box | 0.2 × 0.2 × 0.2 | 20–40 | cardboard box (top below the `hardware` filter's 0.35 m: invisible by design in v0, EXPERIMENTS.md §4 item 5) |
+| `box0.2` | box | 0.2 × 0.2 × 0.2 | 20–40 | cardboard box (top below the `hardware` filter's 0.35 m: invisible by design in v0, [`EXPERIMENTS.md`](EXPERIMENTS.md) §4 item 6) |
 | `box0.5` (alias `box`) | box | 0.5 × 0.5 × 0.5 | 20–40 | cardboard box |
 | `box1.0` | box | 1.0 × 1.0 × 1.0 | 20–40 | cardboard crate |
 | `plank` | box | 2.0 × 0.25 × 0.30 | 30–60 | wooden plank / sleeper |
@@ -402,31 +430,15 @@ injector puts ground objects on the measured local bed, or uses the model's rail
 stores the resulting `base_z`. Earlier set S runs used rail head − 0.15 m and need re-evaluation
 before comparison with new results.
 
-**Current set S rebuild recipe using the 21.09 frame selection** (EVALUATION.md §3;
-historical scores in
-[`experiments_v0.4_synthetic_on_real.json`](experiments_v0.4_synthetic_on_real.json) were
-made with older placement and evaluation logic and must be re-run for a comparison; the
-seeds still fix the same frame selection):
+**Set S** (static sets on every 10th frame of three empty bags and approach sequences on
+`roundT_doubleT`, seeds 1–3): the rebuild recipe using the 21.09 frame selection is
+[`EVALUATION.md`](EVALUATION.md) §3 step 2. The historical scores in
+[`experiments_v0.4_synthetic_on_real.json`](evidence/results/experiments_v0.4_synthetic_on_real.json)
+were made with older placement and evaluation logic and must be re-run for a comparison; the seeds
+still fix the same frame selection. Robustness variant with augmented backgrounds (5 % dropout, 1 cm
+range noise, ±0.3° yaw/pitch, ±0.2° roll, 10 % intensity jitter):
 
 ```bash
-# static sets (recall by range per kind): every 10th frame of three empty bags, one catalogue
-# object per frame, 20 % negatives outside the gauge; 26 / 27 / 55 frames, ~1.1 MB each
-for bag in roundT_doubleT roundT_pressureGate_roundT roundT_squareT_pressureGate_squareT; do
-  resense inject --npy /data/cache/$bag --every 10 --out data/S_$bag \
-      --kinds person,box0.5,box1.0,plank,trolley --distances 10:250 --negative-fraction 0.2 --seed 1
-  resense eval data/S_$bag --text                   # five repeats emulate current persistence
-done
-
-# approach sequences (first-detection distance) on roundT_doubleT: 8 steps of 1.5 m (15 m/s)
-# per background, one kind per set, seeds 1-3; 208 frames per set, deleted after the evaluation
-for kind in person box0.5 box1.0 plank trolley; do for seed in 1 2 3; do
-  resense inject --npy /data/cache/roundT_doubleT --every 10 --out data/SEQ_${kind}_s$seed --kinds $kind \
-      --distances 10:250 --negative-fraction 0.2 --sequence 8 --speed 15 --seed $seed
-  resense eval data/SEQ_${kind}_s$seed --repeat 1 --text                 # rows' speed_mps given to the detector
-  resense eval data/SEQ_${kind}_s$seed --repeat 1 --no-gt-speed --text   # single-frame by default; estimator only if explicitly enabled
-done; done
-
-# robustness: augmented backgrounds (5 % dropout, 1 cm range noise, ±0.3° yaw/pitch, ±0.2° roll, 10 % intensity jitter)
 resense inject --npy /data/cache/<bag> --every 10 --out data/synth_aug/<bag> --augment
 ```
 
@@ -507,18 +519,19 @@ track IDs to each sequence when counting false-alarm events.
 ## Real labels (set R): `labels/doubleT_obstacle.json`
 
 **v0.6 update (22.09).** (1) **`object_on_rail`**: the organizers pointed out in the Q&A session
-(`organizers/QA_session.md` fact 8) that besides the person "an object lies on the rails where
-the person stands". It is there for the whole bag: ~0.45 × 0.6 × 0.3 m at X 56.1–56.6 m,
-lateral −0.6…−1.2 m (on the right rail), top 0.15–0.2 m above the mean rail-head level
-(5–10 cm above its own rail once the 3° roll of this mount is corrected), 19–23 points per
-frame; visible (≥ 5 points) in 183 of 201 frames, hidden by the person in 16 (`n_points` 0,
-excluded from recall). Rows were added to every frame from the points in X 55.9–56.8 m,
-dy −1.3…−0.55 m, h −0.15…+0.45 m of the per-frame track model. (2) **`in_gauge` now means the
-organizers' 2.1 × 3.0 m envelope** (half-width 1.05 m): the crossing person is inside it in
-frames 8–68 (61 frames; 71 frames 2–72 with the 1.40 m polygon of v0.5, kept as `in_gauge_v05`
-/ `gauge_margin_v05`).
+([`organizers/QA_session.md`](organizers/QA_session.md) fact 8) that besides the person "an object
+lies on the rails where the person stands". It is there for the whole bag: ~0.45 × 0.6 × 0.3 m at X
+56.1–56.6 m, lateral −0.6…−1.2 m (on the right rail), top 0.10–0.15 m (median 0.13 m) above the
+detector's rail-head plane after the mount calibration ([`ALGORITHM.md`](ALGORITHM.md) §3.3b,
+[`EXPERIMENTS.md`](EXPERIMENTS.md) §1d); measured against the per-frame track model the labels give
+0.07–0.22 m (median 0.17 m); 19–23 points per frame; visible (≥ 5 points) in 183 of 201 frames,
+hidden by the person in 16 (`n_points` 0, excluded from recall). Rows were added to every frame from
+the points in X 55.9–56.8 m, dy −1.3…−0.55 m, h −0.15…+0.45 m of the per-frame track model. (2)
+**`in_gauge` now means the organizers' 2.1 × 3.0 m envelope** (half-width 1.05 m): the crossing
+person is inside it in frames 8–68 (61 frames; 71 frames 2–72 with the 1.40 m polygon of v0.5, kept
+as `in_gauge_v05` / `gauge_margin_v05`).
 
-Made on 2026-09-21 (P4) from the cached frames of `doubleT_obstacle`, **not** from the
+Made on 21.09 (P4) from the cached frames of `doubleT_obstacle`, **not** from the
 detector's output: every one of the 201 frames was searched for person-sized clusters with the
 recipe below and every frame carries a label list (74 KB, one line per frame). The recipe uses
 the package only, so the file can be rebuilt and checked:
@@ -563,7 +576,7 @@ the package only, so the file can be rebuilt and checked:
 | `person_walkway` | 146–200 | walks away from the train along the left side: X 0.9 → 15.4 m, lateral +2.2…+2.5 m, ~2.8 m/s | false (edge 0.4–0.8 m outside the gauge) |
 
 Two corrections to earlier notes: the walking person is in the **last** 55 frames, not the
-first ones, and the standing person of `EXPERIMENTS.md` §1 (frame 165, "~1.8 m left") is
+first ones, and the standing person of EXPERIMENTS §1 (frame 165, "~1.8 m left") is
 2.33 m left of the axis, 0.6 m outside the advisory corridor.
 
 **Historical v0.4 results with the old 1.4 m polygon** (21.09, every frame of the cached bag,
@@ -584,14 +597,14 @@ frame 2 with a 0.04 m margin; `confirm_hits = 3` confirms at frame 9) plus frame
 structures on the right, 17.4–19.5 m (−1.6 m, track id 1, 40 frames between 10 and 159) and
 33.6–33.9 m (id 3, frames 13–14), which flip from the advisory zone into the gauge. The three
 extra FP frames of v0.4 (73–75) are the person himself, 0.12–0.22 m outside the gauge by the
-label and still reported inside by the laterally accumulated track (EXPERIMENTS.md §2b:
+label and still reported inside by the laterally accumulated track (EXPERIMENTS §2b:
 "stays in gauge four frames longer"); they are borderline, not phantoms. The distance bias of
 v0.4 (−0.07 m) comes from the same accumulation.
 
 ## How to check a new bag (intake recipe)
 
 For every bag of the extended dataset, before anything is labelled or run
-(captain's item 16, [`CAPTAIN.md`](CAPTAIN.md)):
+(captain's item 16 of 21.09, [`archive/CAPTAIN_log_2026-09.md`](archive/CAPTAIN_log_2026-09.md)):
 
 ```bash
 resense info /data/for_hackathon/<bag>          # metadata.yaml + first frame
@@ -601,13 +614,14 @@ Record in the table at the top of this file: **duration, frame count, size**, th
 **topic name(s)** and message count, the **`frame_id`**, the **`width`** of the first
 message (307 200 = 120° window, 921 600 = full turn), the **point count** of the first frame
 and the **azimuth span** of its valid returns (`atan2(x, -y)` in the sensor frame — a 120°
-window spans about 100° of valid returns, well over 120° for the full-turn recording: about 210° of valid returns in `doubleT_obstacle`), and the **frame period**
-(stamp gaps ≈ 0.1 s). Then:
+window spans about 100° of valid returns, well over 120° for the full-turn recording: about 210°
+of valid returns in `doubleT_obstacle`), and the **frame period** (stamp gaps ≈ 0.1 s). Then:
 
 1. `resense run --bag <bag> --limit 30` — the track model must lock (`yc` stable within a
-   few cm, median `track.rail_score` of 0.15–0.19 over the run in the JSONL; single frames can drop to 0) and no alarm should appear on an empty tunnel
-   start; if `track.center` jumps or `n_corridor` is 0 in the JSONL (`yc` / `corr` in the `resense run` output), the axis mapping (`sensor.forward/left/up`) or the
-   topic is wrong for that bag.
+   few cm, median `track.rail_score` of 0.15–0.19 over the run in the JSONL; single frames can
+   drop to 0) and no alarm should appear on an empty tunnel start; if `track.center` jumps or
+   `n_corridor` is 0 in the JSONL (`yc` / `corr` in the `resense run` output), the axis mapping
+   (`sensor.forward/left/up`) or the topic is wrong for that bag.
 2. `scripts/cache_frames.py <bag> cache/<bag> --every 10` — cached frames for P3/P4.
 3. If the bag contains an obstacle: label it with the tool (format above), keep the file as
    `labels/<bag>.json` (not in git if it is large; a few KB is fine), and run

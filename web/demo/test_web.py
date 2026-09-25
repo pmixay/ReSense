@@ -20,9 +20,9 @@ RVIZ = os.path.join(ROOT, "ros2_ws", "src", "resense_ros", "rviz", "resense.rviz
 FOX = os.path.join(ROOT, "web", "foxglove_layout.json")
 LABEL_TOOL = os.path.join(ROOT, "web", "label_tool.html")
 PRESENTATION = os.path.join(ROOT, "docs", "presentation", "ReSense_LCT2026.pptx")
-MONTSERRAT = (
-    os.path.join(ROOT, "web", "assets", "fonts", "montserrat-cyrillic.woff2"),
-    os.path.join(ROOT, "web", "assets", "fonts", "montserrat-latin.woff2"),
+MOSCOW_SANS = (
+    os.path.join(ROOT, "web", "assets", "fonts", "MoscowSansRegular.otf"),
+    os.path.join(ROOT, "web", "assets", "fonts", "MoscowSansExtraBold.otf"),
 )
 RAW_TOPICS = ("/lidar_points", "/sensing/lidar/hesai128/pointcloud")
 
@@ -184,6 +184,7 @@ def test_dashboard_rejects_garbage_lines(tmp_path):
         n = page.evaluate("window.resense.loadText(%s, 'x.jsonl')" % json.dumps(text))
         assert n == 1
         assert check_dashboard.banner_text(page) == "ПРЕПЯТСТВИЕ  55.6 м"
+        page.locator("#node-card summary").click()
         assert page.inner_text("#n-dropped").startswith("2")       # node stats are shown when present
         assert "notice" in page.get_attribute("#node-card", "class")
         b.close()
@@ -208,6 +209,7 @@ def test_dashboard_builtin_demo_and_summary():
             "frames": 60, "alarm_events": 1, "alarm_frames": 36, "warning_frames": 4,
             "nearest_m": pytest.approx(40.0), "max_detect_ms": 49,
         }
+        page.locator("#summary-card summary").click()
         assert page.inner_text("#s-alarms") == "1 / 36"
         assert page.inner_text("#s-nearest") == "40.0 м"
         assert page.inner_text("#decision") == "ДВИЖЕНИЕ"
@@ -216,29 +218,26 @@ def test_dashboard_builtin_demo_and_summary():
         b.close()
 
 
-COLUMN_BOTTOMS = """() => { const r = s => document.querySelector(s).getBoundingClientRect();
-    return [r('.visual-column > :last-child').bottom, r('.side-column > :last-child').bottom]; }"""
-
-
-def test_dashboard_desktop_columns_end_together_and_cab_view_marks_the_obstacle():
-    """Desktop layout: no empty block under the shorter column (the cab view and the event log take up
-    the difference), and the cab view draws the confirmed obstacle with its distance and a close-up."""
+def test_dashboard_fits_169_screen_and_cab_view_marks_the_obstacle():
+    """A presentation screen shows the full dashboard; extra detail remains available in the side list."""
     if not _browser_available():
         pytest.skip("playwright + chromium not available")
     from playwright.sync_api import sync_playwright
     import check_dashboard
     with sync_playwright() as p:
         b = _launch(p)
-        for width, height in ((1366, 768), (1600, 1000), (1920, 1080)):
+        for width, height in ((1280, 720), (1366, 768), (1600, 900), (1920, 1080)):
             page = b.new_page(viewport={"width": width, "height": height})
             page.goto("file://" + check_dashboard.INDEX, wait_until="domcontentloaded")
             page.wait_for_function("window.resense !== undefined")
             page.click("#demo")
             page.evaluate("window.resense.pause(); window.resense.seek(30)")   # STOP, person at 79 m
-            left, right = page.evaluate(COLUMN_BOTTOMS)
-            assert abs(left - right) <= 1, (width, left, right)
+            layout = page.evaluate("""() => ({ pageHeight: document.documentElement.scrollHeight,
+                pageWidth: document.documentElement.scrollWidth, viewportHeight: innerHeight,
+                viewportWidth: innerWidth })""")
+            assert layout["pageHeight"] <= height + 1 and layout["pageWidth"] <= width + 1, layout
             cab = page.evaluate("window.resense.state.cab")
-            assert cab["width"] > 800 and cab["height"] >= 360
+            assert cab["width"] > 600 and cab["height"] >= 360
             (box,) = cab["boxes"]
             assert box["zone"] == "gauge" and box["label"] == "ПРЕПЯТСТВИЕ · 79.0 м"
             assert 0 <= box["x0"] < box["x1"] <= cab["width"] and 0 <= box["y0"] < box["y1"] <= cab["height"]
@@ -246,6 +245,14 @@ def test_dashboard_desktop_columns_end_together_and_cab_view_marks_the_obstacle(
             assert abs((box["x0"] + box["x1"]) / 2 - cab["width"] / 2) < cab["width"] / 10
             assert cab["clearEnd"] == pytest.approx(79.0, abs=0.1)
             assert cab["inset"] and cab["inset"]["zone"] == "gauge"
+            page.click("#tab-plan")
+            assert page.is_visible("#panel-plan") and not page.is_visible("#panel-cab")
+            page.wait_for_function("Math.abs(document.querySelector('#top').width - document.querySelector('#top').clientWidth) <= 1")
+            page.locator("#detector-card summary").click()
+            assert page.locator("#detector-card").evaluate("section => section.open")
+            page.locator('.top-nav a[href="#node-card"]').click()
+            assert page.locator("#node-card").evaluate("section => section.open")
+            page.click("#tab-cab")
             page.evaluate("window.resense.seek(59)")                           # GO again
             cab = page.evaluate("window.resense.state.cab")
             assert cab["boxes"] == [] and cab["inset"] is None and cab["clearEnd"] == pytest.approx(145.0)
@@ -278,22 +285,20 @@ def test_dashboard_cab_view_on_the_real_node_stream():
         b.close()
 
 
-def test_dashboard_uses_flat_local_montserrat_visual_system():
-    """The jury UI stays usable offline and does not regress to outlined/glowing cards."""
+def test_dashboard_uses_supplied_moscow_sans_visual_system():
+    """The dashboard uses the supplied local fonts and Metro red with flat panels."""
     html = open(os.path.join(ROOT, "web", "index.html"), encoding="utf-8").read()
-    compact = html.replace(" ", "")
-    assert "font-family:'Montserrat'" in compact
-    assert "box-shadow" not in html
-    assert "text-shadow" not in html
-    assert "outline:0" in compact
-    for width in range(1, 10):
-        assert f"border:{width}px" not in compact
-    for path in MONTSERRAT:
+    css = open(os.path.join(ROOT, "web", "assets", "dashboard.css"), encoding="utf-8").read()
+    assert 'href="assets/dashboard.css"' in html
+    assert 'font-family: "Moscow Sans"' in css
+    assert "--red: #e4000d" in css
+    assert "box-shadow" not in css and "text-shadow" not in css
+    for path in MOSCOW_SANS:
         assert os.path.getsize(path) > 20_000
 
 
 def test_presentation_artifact_uses_the_organizers_slide_sequence():
-    """The committed v0.6 deck is a valid 15-slide subset of the organizers' template."""
+    """The committed deck is a valid 16-slide subset of the organizers' template (rebuilt 25.09)."""
     assert os.path.getsize(PRESENTATION) > 1_000_000
     with zipfile.ZipFile(PRESENTATION) as zf:
         assert zf.testzip() is None
@@ -301,7 +306,7 @@ def test_presentation_artifact_uses_the_organizers_slide_sequence():
         ns = {"p": "http://schemas.openxmlformats.org/presentationml/2006/main",
               "r": "http://schemas.openxmlformats.org/officeDocument/2006/relationships"}
         slide_ids = list(root.find("p:sldIdLst", ns))
-        assert len(slide_ids) == 15
+        assert len(slide_ids) == 16
         rel_root = ET.fromstring(zf.read("ppt/_rels/presentation.xml.rels"))
         rels = {rel.attrib["Id"]: rel.attrib["Target"] for rel in rel_root}
         slide_paths = ["ppt/" + rels[s.attrib[f"{{{ns['r']}}}id"]] for s in slide_ids]

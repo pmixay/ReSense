@@ -1,0 +1,8 @@
+doubleT_obstacle: metadata.yaml identical to docs/evidence/bag_metadata/doubleT_obstacle_metadata.yaml (original recording)
+total 4708256
+-rw-r--r-- 1 mdm mdm 4821250048 Sep 25 09:25 doubleT_obstacle_0.db3
+-rw-r--r-- 1 mdm mdm       1027 Sep 25 09:25 metadata.yaml
+roundT_doubleT: metadata.yaml identical to docs/evidence/bag_metadata/roundT_doubleT_metadata.yaml (original recording)
+total 1967648
+-rw-r--r-- 1 mdm mdm       1002 Sep 25 09:25 metadata.yaml
+-rw-r--r-- 1 mdm mdm 2014867456 Sep 25 09:25 roundT_doubleT_0.db3

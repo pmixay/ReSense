@@ -1,0 +1,194 @@
+name: release
+# One tag push = one GitHub release with the image archive the jury loads. The test stand has no
+# internet (organizers, 25.09, docs/organizers/answers.md section 7), so the deliverable is the
+# runtime image as `docker save | gzip` (scripts/export_image.sh), downloaded by link (the upload
+# form takes links, no size limit) and loaded there with `docker load`.
+#
+# Tags: v<version>-rcN (a GitHub pre-release) and v<version> (the final release), where <version>
+# is the package version (pyproject.toml, resense/__init__.py, package.xml, setup.py: they must
+# agree, scripts/release_meta.py); any other v* tag fails the first step and publishes nothing.
+# workflow_dispatch re-runs an existing tag: the release is updated and its assets replaced.
+#
+# The job: the tag's unit tests; two dataset-free smoke bags; the runtime image built from the tag
+# and exported; the image and the build cache removed; the archive loaded back (sha256, docker load,
+# a --network none run, same layers); the bags played through the LOADED image with no internet
+# (--internal network, player uid 1000 in its own container) and in the jury's form (--net=host
+# --ipc=host, a stock Fast DDS player and listener as uid 1000); then the release with the archive,
+# its .sha256 and SHA256SUMS, and the published archive downloaded again and its sum checked.
+# Manual fallback with the same steps: scripts/release.sh.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "existing tag to build and (re)publish, e.g. v1.0.0-rc1 (its release assets are replaced)"
+        required: true
+        type: string
+permissions:
+  contents: write
+concurrency:
+  group: release-${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+    defaults:
+      run:
+        # explicit: `bash --noprofile --norc -eo pipefail {0}`; the implicit default is `bash -e {0}`,
+        # without pipefail, and `check-tag ... | tee` must fail on a bad tag
+        shell: bash
+    env:
+      TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+      GH_TOKEN: ${{ github.token }}
+      RESENSE_REQUIRE_SYNTHETIC: "1"
+      BAGS: /tmp/release_bags
+    steps:
+      - name: the tag
+        run: |
+          re='^v[0-9A-Za-z][0-9A-Za-z._-]{0,126}$'
+          if ! [[ "$TAG" =~ $re ]]; then
+            printf '::error::not a release tag (v<version>[-rcN]): %q\n' "$TAG"
+            exit 2
+          fi
+          echo "release tag: $TAG (event: $GITHUB_EVENT_NAME)"
+      - uses: actions/checkout@v4
+        with:
+          ref: refs/tags/${{ env.TAG }}
+      - name: the tag names the package version (scripts/release_meta.py)
+        id: meta
+        run: |
+          python3 scripts/release_meta.py check-tag "$TAG" | tee -a "$GITHUB_OUTPUT"
+          echo "commit=$(git rev-parse HEAD)" | tee -a "$GITHUB_OUTPUT"
+      - name: disk space (the image is ~1.3 GiB, the archive ~0.45 GiB, plus Open3D and the build)
+        run: |
+          df -h /
+          FREE_GB="$(df -BG --output=avail / | tail -n 1 | tr -dc '0-9')"
+          if [ "$FREE_GB" -lt 15 ]; then
+            echo "only $FREE_GB GB free: removing preinstalled toolchains this job does not use"
+            sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc /usr/local/.ghcup /opt/hostedtoolcache/CodeQL
+            df -h /
+          fi
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: host Python with Open3D for the tests and the smoke bags (as the ci.yml pytest job)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libegl1 libgl1 libgomp1 libusb-1.0-0 pigz
+          pip install -e ".[dev]"
+          python -c "import open3d, rosbags, resense; print('open3d', open3d.__version__, 'resense', resense.__version__)"
+      - name: unit tests of the tagged commit (RESENSE_REQUIRE_SYNTHETIC=1, no skips)
+        run: python -m pytest -q -rs
+      - name: two dataset-free smoke bags, both topic / frame pairs (scripts/make_smoke_bag.py)
+        run: |
+          mkdir -p "$BAGS"
+          python scripts/make_smoke_bag.py "$BAGS/smoke_bag"
+          python scripts/make_smoke_bag.py "$BAGS/smoke_bag2" --topic /sensing/lidar/hesai128/pointcloud --frame-id lidar_livox --distance 45
+          chmod -R a+rX "$BAGS"
+          du -sh "$BAGS"/*
+      - name: build and export the runtime image (scripts/export_image.sh, gzip -6)
+        id: export
+        run: |
+          VERSION="$TAG" OUT_DIR=dist scripts/export_image.sh
+          ARCHIVE="dist/resense-image-$TAG.tar.gz"
+          test -s "$ARCHIVE"
+          test -s "$ARCHIVE.sha256"
+          BASE_IMAGE="$(sed -n 's/^FROM[[:space:]]\{1,\}\([^[:space:]]\{1,\}\).*/\1/p' docker/Dockerfile | head -n 1)"
+          docker image inspect -f '{{json .RootFS.Layers}}' "resense:$TAG" > /tmp/layers_built.json
+          {
+            echo "sha256=$(cut -d' ' -f1 "$ARCHIVE.sha256")"
+            echo "bytes=$(wc -c < "$ARCHIVE" | tr -d ' ')"
+            echo "image_id=$(docker image inspect -f '{{.Id}}' "resense:$TAG")"
+            echo "base_image=$BASE_IMAGE"
+            echo "base_digest=$(docker image inspect -f '{{index .RepoDigests 0}}' "$BASE_IMAGE" 2>/dev/null || true)"
+            echo "docker=$(docker version -f '{{.Server.Version}}')"
+          } | tee -a "$GITHUB_OUTPUT"
+          df -h /
+      - name: remove the image, the base image and the build cache
+        env:
+          BASE_IMAGE: ${{ steps.export.outputs.base_image }}
+          IMAGE_ID: ${{ steps.export.outputs.image_id }}
+        run: |
+          docker ps -aq --filter "ancestor=$IMAGE_ID" | xargs -r docker rm -f >/dev/null
+          docker rmi "resense:$TAG" resense:latest "$BASE_IMAGE"
+          docker builder prune -af >/dev/null
+          if docker image inspect "$IMAGE_ID" >/dev/null 2>&1; then echo "::error::image $IMAGE_ID still present"; exit 1; fi
+          docker image ls
+          df -h /
+      - name: load the archive back (scripts/load_image.sh; sha256, docker load, a --network none run)
+        env:
+          COMMIT: ${{ steps.meta.outputs.commit }}
+          VERSION: ${{ steps.meta.outputs.version }}
+        run: |
+          scripts/load_image.sh "dist/resense-image-$TAG.tar.gz"
+          docker image inspect -f '{{json .RootFS.Layers}}' "resense:$TAG" > /tmp/layers_loaded.json
+          diff /tmp/layers_built.json /tmp/layers_loaded.json
+          test "$(docker image inspect -f '{{.Id}}' resense:latest)" = "$(docker image inspect -f '{{.Id}}' "resense:$TAG")"
+          label() { docker image inspect -f "{{with .Config.Labels}}{{index . \"$1\"}}{{end}}" "resense:$TAG"; }
+          test "$(label org.opencontainers.image.version)" = "$TAG"
+          test "$(label org.opencontainers.image.revision)" = "$COMMIT"
+          docker run --rm --network none -w / -e VERSION="$VERSION" "resense:$TAG" \
+            python3 -c "import os, resense; assert resense.__version__ == os.environ['VERSION'], resense.__version__; print('resense', resense.__version__)"
+          echo "resense:$TAG loaded from the archive: the built layers, tag $TAG, commit $COMMIT"
+      - name: no internet - the loaded image, node and a uid-1000 player in separate containers on an --internal network
+        run: IMAGE="resense:$TAG" OUT=out/release_internal scripts/internal_net_test.sh "$BAGS/smoke_bag" "$BAGS/smoke_bag2"
+      - name: the jury's form - the loaded image with --net=host --ipc=host, a stock Fast DDS player and listener as uid 1000
+        run: |
+          IMAGE="resense:$TAG" PLAYER_USER=1000:1000 PLAYER_DDS=stock PLAYER_ENV="-e RMW_IMPLEMENTATION=rmw_fastrtps_cpp" \
+            OUT=out/release_console scripts/console_test.sh "$BAGS/smoke_bag" "$BAGS/smoke_bag2"
+      - name: release notes (scripts/release_meta.py notes)
+        env:
+          COMMIT: ${{ steps.meta.outputs.commit }}
+          SHA256: ${{ steps.export.outputs.sha256 }}
+          BYTES: ${{ steps.export.outputs.bytes }}
+          IMAGE_ID: ${{ steps.export.outputs.image_id }}
+          BASE_DIGEST: ${{ steps.export.outputs.base_digest }}
+          DOCKER_VERSION: ${{ steps.export.outputs.docker }}
+        run: |
+          python3 scripts/release_meta.py notes --tag "$TAG" --commit "$COMMIT" --sha256 "$SHA256" --bytes "$BYTES" \
+            --repo "$GITHUB_REPOSITORY" --image-id "$IMAGE_ID" --base-digest "$BASE_DIGEST" --docker "$DOCKER_VERSION" \
+            --ci-run "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" > "dist/release-notes-$TAG.md"
+          cat "dist/release-notes-$TAG.md"
+      - name: publish the GitHub release (scripts/publish_release.sh; an existing release gets its assets replaced)
+        run: REPO="$GITHUB_REPOSITORY" scripts/publish_release.sh "$TAG" dist
+      - name: download the published archive and check its sum (scripts/verify_release.sh)
+        env:
+          SHA256: ${{ steps.export.outputs.sha256 }}
+        run: |
+          EXPECT_SHA256="$SHA256" REPO="$GITHUB_REPOSITORY" scripts/verify_release.sh "$TAG" /tmp/release_download
+          rm -rf /tmp/release_download
+      - name: summary
+        if: ${{ always() }}
+        env:
+          SHA256: ${{ steps.export.outputs.sha256 }}
+          BYTES: ${{ steps.export.outputs.bytes }}
+          PRERELEASE: ${{ steps.meta.outputs.prerelease }}
+          COMMIT: ${{ steps.meta.outputs.commit }}
+          OUTCOME: ${{ job.status }}
+        run: |
+          {
+            echo "## ReSense $TAG: $OUTCOME"
+            echo
+            echo "| | |"
+            echo "|---|---|"
+            echo "| commit | \`${COMMIT:-?}\` |"
+            echo "| pre-release | ${PRERELEASE:-?} |"
+            echo "| archive | \`resense-image-$TAG.tar.gz\`, ${BYTES:-?} bytes |"
+            echo "| sha256 | \`${SHA256:-?}\` |"
+            echo "| release | $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/tag/$TAG |"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: keep the logs and the checksums (not the archive)
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ env.TAG }}-logs
+          path: |
+            out/release_internal
+            out/release_console
+            dist/release-notes-*.md
+            dist/*.sha256
+            dist/SHA256SUMS
+          if-no-files-found: ignore
+          retention-days: 30

@@ -1,14 +1,29 @@
-# Organizers' answers to our questions (case 05)
+# Organizers' Answers
+
+> **Purpose:** every answer the organizers gave to our questions (case 05), verbatim where it was
+> written, and what each answer changed in ReSense.
+> **Audience:** team, jury · **Owner:** P1 · **Language:** EN, the answers verbatim in RU
+> **Last verified:** 2026-09-25 against `7290873` · **Status:** current
 
 Everything the organizers answered to the questions of [`../QUESTIONS.md`](../QUESTIONS.md),
 from these sources:
 
-* the recorded **Q&A session of 22.09**: summary with timestamps in [`QA_session.md`](QA_session.md),
-  transcript in [`QA_session_transcript_ru.md`](QA_session_transcript_ru.md);
+* the recorded **Q&A session of 22.09**: summary with timestamps in
+  [`QA_session.md`](QA_session.md), transcript in
+  [`QA_session_transcript_ru.md`](QA_session_transcript_ru.md);
 * the **written answers of 23.09 and 24.09**, verbatim below;
-* the experts' answers on the LiDAR mount and switches in [`mount_and_switch_qa.md`](mount_and_switch_qa.md);
-* the **hand-outs of 22.09**: sensor manual, extended dataset, test-stand software. The questions that are still open are the only ones
-left in [`../QUESTIONS.md`](../QUESTIONS.md).
+* the experts' answers on the LiDAR mount and switches in
+  [`mount_and_switch_qa.md`](mount_and_switch_qa.md), recorded 24.09, consolidated in §5;
+* the **hand-outs of 22.09**: sensor manual, extended dataset, test-stand software;
+* the **organizers' statement of 25.09** on access to the test stand, reported by the captain, §6;
+* the **organizers' statement of 25.09** that the test machine has no internet access, reported
+  by the captain, §7;
+* the **organizers' statement of 25.09** that the upload form takes links and has no file-size
+  limit, reported by the captain, §8;
+* the **organizers' answer of 25.09** to our Q3 (a 30 × 30 × 10 cm object lying on the bed between
+  the rails is not an obstacle), reported by the captain, §8.
+
+The questions that are still open are the only ones left in [`../QUESTIONS.md`](../QUESTIONS.md).
 
 ## 1. Answers by question (Q&A session 22.09 + written answers 23.09)
 
@@ -16,19 +31,20 @@ left in [`../QUESTIONS.md`](../QUESTIONS.md).
 |---|---|---|---|---|---|
 | 1 | staged obstacles in `new_data`, labels, a recording with obstacles before the control run? | none: "all we can give is more empty tunnel"; no labels exist; no more data with obstacles; the hidden check adds the organizers' own **synthetic obstacles** | **"В new_data препятствий нет"** — no obstacles | **closed** | every `new_data` alarm is a false alarm; synthetic positives ray-cast into the moving ride (set F); the injector follows the organizers' definitions |
 | 2 | control-bag format: topic, frame id, 120° window, sqlite3 — or also the `doubleT_obstacle` variant? | same conditions as the provided data, the LiDAR mount of the empty-tunnel rides; **full rides** through other tunnels too | **both (topic, frame) pairs may occur; one and the same LiDAR; the bag will most likely be played from the console; describe the pipeline if the code reads bags directly** | **closed** | input switching between recordings and per-recording restart (v0.6.1); "How a bag is processed" in the README; no map-based logic |
-| 3 | return mode; mount height / pitch / offset | the LiDAR position "is not fixed, differs even in the provided clouds, not yet approved — count on a variable position, set it in the launch parameters" | 24.09: **Last and Strongest now**; the provided recordings (especially the one with people) are old and may have used another mode; **the control data will have all the same settings** | **closed** (§3) | `resense/calibration.py` (orientation + tilt from rails and bed) and the mount launch arguments; the detector counts occupied voxels, so duplicated returns change no decision |
+| 3 | return mode; mount height / pitch / offset | the LiDAR position "is not fixed, differs even in the provided clouds, not yet approved — count on a variable position, set it in the launch parameters" | 24.09: **Last and Strongest now**; the provided recordings (especially the one with people) are old and may have used another mode; **the control data will have all the same settings**; mount (experts, recorded 24.09, §5): **the test bags use the same positions as the provided ones; the LiDAR is 1075 mm above the rail head, on the train's centreline** | **closed** (§3, §5) | `resense/calibration.py` (orientation + tilt from rails and bed) and the mount launch arguments; the detector counts occupied voxels, so duplicated returns change no decision |
 | 4 | PTP / GNSS time sync on the train | not answered | 24.09: **there will be, but not within this hackathon**; work with what there is | **closed** (§3) | the header stamps (sensor clock, year-2000 epoch) and the bag receive time remain the clocks; no deskew |
 | 5 | which obstacles, which ranges, a person on a platform | anything inside the **2.1 m × 3.0 m train envelope**, at least **30 × 30 × 10 cm**; **broken hanging cables must be detected**; people, animals, objects thrown on the track; a person on a platform is not an obstacle unless inside the envelope; range: < 100 m rated poorly, farther is better, the visible limit in a curve is acceptable | — | **closed** | `gauge.profile` = the envelope, `resense/lowobj.py`, signature changes, far-field rule (ALGORITHM.md §3.2–3.3c) |
 | 6 | how is the result evaluated, which messages, which frame | "can we go / obstacle or not / distance", any ROS topic, per-frame yes/no is enough, extra logic must be described | **outputs are the participants' choice; state everything in the algorithm and launch descriptions** | **closed** | `/resense/decision`, `/resense/obstacle_detected`, `/resense/nearest_distance`, `/resense/clear_distance`, `/resense/status`, `/resense/health`, all in README "What to look at" and ALGORITHM.md §4b |
 | 7 | remote demo, duration | acceptable, but the organizers run every solution themselves | — | closed for the demo; the duration was **withdrawn by the team on 24.09** as an organisational matter, not a question for the case experts | README demo sections unchanged |
-| — | (new, Q&A) train speed | regulated 80 km/h; plan for 85 km/h = 2.3 m between frames; some trains have no odometry | — | noted | tracker gate 25 m/s; the no-speed path is the default, a speed input is optional (EXPERIMENTS.md §2d: 167 m with it in v0.6.2, 177 m in v0.6.1) |
+| — | (new, Q&A) train speed | regulated 80 km/h; plan for 85 km/h = 2.3 m between frames; some trains have no odometry | — | noted | tracker gate 25 m/s; the no-speed path is the default, a speed input is optional (EXPERIMENTS.md §2d: 167 m with it in v0.6.2, 177 m in v0.6.1); our LiDAR-only estimate, measured 24.09, is accurate but buys nothing on the organizers' check (EXPERIMENTS.md §9) |
 | — | (new, Q&A) the obstacle recording | besides the person, **an object lies on the rails** where the person stands | — | noted | labelled (`labels/doubleT_obstacle.json`, `object_on_rail`) |
 | — | (new, Q&A) evaluation environment, run conditions | the spec's test stand (i7-9700E, RTX 4070 Ti SUPER); offline; "the less magic the better — `docker run`, `ros2 launch`, check"; compute is a tie-breaker | — | noted | CPU-only image, no network at run time, one launch command |
 
 ## 2. Written answers (23.09)
 
 Verbatim, numbered as our questions of 21.09 (the original message is in the git history of
-`docs/QUESTIONS.md`: 1 = staged obstacles in `new_data`, 2 = control-bag format, 6 = evaluation format):
+`docs/QUESTIONS.md`: 1 = staged obstacles in `new_data`, 2 = control-bag format, 6 = evaluation
+format):
 
 > 1\) В new_data препятствий нет.
 >
@@ -73,8 +89,57 @@ withdrawn by the team as an organisational matter.
 |---|---|---|
 | lidar model and specifications | organizers' hand-out: the Pandar128E3X user manual (Hesai doc 128-en-240710) — model confirmed, every number re-checked | [`SENSOR.md`](../SENSOR.md), the PDF in [`sensor/`](../sensor/) |
 | will there be an extended dataset, when, how many recordings | organizers' hand-out: `new_data.zst`, one 20-minute recording, 221 split files, no labels | [`DATASET.md`](../DATASET.md) "Extended dataset", `extended_dataset_intake.json` |
-| GPU / CUDA on the test stand | organizers' hand-out: `nvidia-smi` and `dpkg` state of the stand (driver 580, CUDA 13 runtime, toolkit 12.9); ReSense does not use it | [`organizers/test_stand_software.md`](test_stand_software.md) |
-| train speed, odometry or IMU topic on the train | **team decision: train-speed data is not technically possible for this case — the solution operates without it.** The deliverable is the no-speed path (single-frame detection + persistence in time); the node's `ego_speed_mps` / `speed_topic` / `odom_topic` inputs stay as optional extras and the multi-frame accumulation stays off unless a speed is given | [`SENSOR.md`](../SENSOR.md) §4, [`CAPTAIN.md`](../CAPTAIN.md) finding 7, `ARCHITECTURE.md` |
-| intermediate submission (date, form, where), final submission (image vs Dockerfile, size, video), test-stand procedure (launch, internet at build, bag playback, disk) | organisational — the team handles these itself, not a question to the organizers | [`SUBMISSION.md`](../SUBMISSION.md), README "Where the data lives" / demo runbook |
+| GPU / CUDA on the test stand | organizers' hand-out: `nvidia-smi` and `dpkg` state of the stand (driver 580, CUDA 13 runtime, toolkit 12.9); ReSense does not use it (evaluated 24.09 and rejected: ARCHITECTURE.md "GPU: evaluated, not used") | [`organizers/test_stand_software.md`](test_stand_software.md) |
+| train speed, odometry or IMU topic on the train | **organizers' fact** (Q&A 22.09, fact 6): no odometry in the recordings, some trains have none. **Team decision** (22.09): "train-speed data is not technically possible for this case", so the solution operates without it. The deliverable is the no-speed path (single-frame detection + persistence in time); the node's `ego_speed_mps` / `speed_topic` / `odom_topic` inputs stay as optional extras and the multi-frame accumulation stays off unless a speed is given. 24.09: the LiDAR-only estimator was measured accurate, but even a perfect speed does not improve the organizers' check, so it stays opt-in ([`EXPERIMENTS.md`](../EXPERIMENTS.md) §9) | [`SENSOR.md`](../SENSOR.md) §4, [`CAPTAIN_log_2026-09.md`](../archive/CAPTAIN_log_2026-09.md) finding 7, `ARCHITECTURE.md` |
+| intermediate submission (date, form, where), final submission (image vs Dockerfile, size, video), test-stand procedure (launch, internet at build, bag playback, disk) | organisational — the team handles these itself, not a question to the organizers; 25.09: the team gets no run on the stand before submission (§6), the stand has no internet, so the image goes as a `docker load` archive (§7), and the upload form takes links with no size limit (§8); the organizers' timeline has no intermediate stage ([`README_organizers.md`](README_organizers.md) "Ключевые этапы конкурса"), so no separate intermediate upload is made ([`../CAPTAIN.md`](../CAPTAIN.md) C14); the submission itself is handled by the captain personally (25.09, C12) | [`../CAPTAIN.md`](../CAPTAIN.md) C12, C14, README "Where the data lives" / demo runbook |
 | may the given recordings be used for tuning parameters | answered 22.09: yes, acceptable | — |
 | own slides after the template's 7–11 | answered 22.09: yes, acceptable | [`PRESENTATION.md`](../PRESENTATION.md) |
+
+## 5. Experts' answers on the LiDAR mount and switches (recorded 24.09)
+
+Verbatim from [`mount_and_switch_qa.md`](mount_and_switch_qa.md) (questions as the team passed them
+on; the date of the answers is not given; recorded in `41b7ae7`, 24.09).
+
+| # | our question | answer (verbatim) | answer (English) | consequence in ReSense |
+|---|---|---|---|---|
+| 1 | will the mount position be passed to the algorithm, or found from the cloud every time? | «Лучше, если позиция будет определяться автоматически. Если нет - то в конфиг мы всё, что надо пропишем.» | automatic detection is preferred; otherwise the organizers write what is needed into the config | mount auto-calibration stays on (`calibration.enabled`); the mount launch arguments stay (`sensor_forward/left/up`, `mount_roll/pitch/yaw_deg`, `auto_calibrate`) |
+| 2 | the range of possible positions and orientations (x, y, z, roll, pitch, yaw)? | «В тестовых бэгах позиции такие же, как в тех, что мы предоставили вам.» | the test bags use the same positions as the provided ones | the two mounts in the data (the empty-tunnel rides and `doubleT_obstacle`) cover the test bags; the calibration stays as a safeguard |
+| 3 | will the LiDAR height above the rail head be known? | «Я же уже писал, что лидар установлен в 1075 мм над головкой рельса и ровно посередине состава.» (common answer to questions 3–4) | 1075 mm above the rail head, exactly on the train's centreline | the calibration measures 1.12 m and −0.02 m lateral on `roundT_doubleT` (4.5 cm from the answer) and 1.51 m on the older `doubleT_obstacle` mount; [`../QUESTIONS.md`](../QUESTIONS.md) Q1 asks whether the envelope follows the LiDAR's axis or the rails |
+| 4 | will the orientation relative to the train's longitudinal axis be known? | the common answer to questions 3–4 above; no numeric orientation is given | no orientation value | roll, pitch and yaw keep coming from the calibration |
+| 5 | switches: without the switch state, is an obstacle on only one branch an obstacle (union of the possible paths or the chosen branch)? | «Сейчас состояния стрелок неизвестны, поэтому если решение будет глючить на стрелках - то мы не будем учитывать это как минус.» | switch states are unknown; glitches at switches will not count against the solution | station and platform false STOPs come before switch ones in P3's work ([`../CAPTAIN.md`](../CAPTAIN.md) §9) |
+
+## 6. Access to the test stand (25.09, reported by the captain)
+
+The captain reported on 25.09 what the organizers said: the team will **not** be able to test on
+the organizers' machine, the test stand of spec §3.1 (i7-9700E, RTX 4070 Ti SUPER,
+[`test_stand_software.md`](test_stand_software.md)), before submitting the solution. No written
+text; the captain's instruction was to remove the stand from the questions and the requirements.
+
+| date | reported by | organizers' statement | status | consequence in ReSense |
+|---|---|---|---|---|
+| 25.09 | the captain (P1) | no access to the test stand before submission: nothing can be built, run or timed on the organizers' machine by the team | **closed** | every stand run is dropped from the plan ([`../CAPTAIN.md`](../CAPTAIN.md) C8, actions 7 and 15; README "Acceptance test and CI"); the substitute is the team's own 8-core machine (the "8-core analogue": timing on the native and numpy paths, the dry run with the latency and drop criteria) and CI (the `docker` job builds the image and plays synthetic bags through the node as the organizers will); the stand's hardware stays the machine the jury will use, so its facts and the estimates made for it stay in the docs, labelled as such; no stand question is left in [`../QUESTIONS.md`](../QUESTIONS.md) |
+
+## 7. No internet on the test machine (25.09, reported by the captain)
+
+The captain reported on 25.09 what the organizers said: **the test machine has no internet
+access**. No written text. The Q&A of 22.09 had said that the system "must work offline"
+([`QA_session.md`](QA_session.md) fact 10), which we had read as run time only; this statement
+covers the whole machine, the image build included. With §6 we cannot try anything on it first.
+
+| date | reported by | organizers' statement | status | consequence in ReSense |
+|---|---|---|---|---|
+| 25.09 | the captain (P1) | the test machine, the stand of spec §3.1, has no internet access | **closed** | `docker build` cannot work there: it pulls `ros:humble-ros-base-jammy` from Docker Hub, installs ROS and Ubuntu packages with `apt-get` and the pinned wheels (and the build backend) from PyPI. The image is therefore delivered as an archive: `scripts/export_image.sh` → `resense-image-<version>.tar.gz` with its `.sha256`, loaded with `docker load -i` (step 1 of README "Кратко для жюри"; `scripts/load_image.sh` checks the sum and runs the image with `--network none`); the archive is what the jury runs ([`../CAPTAIN.md`](../CAPTAIN.md) C25; the upload is the captain's, C12). Nothing in the node, the launch file, the entrypoint or the compose services uses the network at run time; the dashboard's roslib is now bundled (`web/assets/vendor/`). CI proves the chain: the built image goes through `docker save` → `docker rmi` → `docker load`, then the synthetic bags are played through the node with `--network none` and on an internal Docker network with no way out. An offline `docker build --cache-from` from the archive is a best-effort extra with caveats ([`../ARCHITECTURE.md`](../ARCHITECTURE.md) "Deployment without internet"); the offline dry run, part of the later deployment (CAPTAIN C7, action 15), loads the archive with the network disconnected (`IMAGE_TAR=… OFFLINE=1 scripts/dry_run.sh`) |
+
+## 8. Upload form and the bed object (25.09, reported by the captain)
+
+The captain reported on 25.09 two things the organizers said. No written text. (a) is about the
+upload form of i.moscow; (b) answers Q3 of [`../QUESTIONS.md`](../QUESTIONS.md) (the bed / envelope
+floor question of the criteria review of 24.09). The captain's words for (b), typos corrected: "no,
+this small object isn't in the train's sizes, so it isn't an obstacle"; "the train's sizes" is the
+train's clearance envelope (габарит), 2.1 m wide × 3.0 m high ([`QA_session.md`](QA_session.md)
+facts 1–2, §1 #5), which the detector measures from the rail head.
+
+| date | reported by | organizers' statement | status | consequence in ReSense |
+|---|---|---|---|---|
+| 25.09 | the captain (P1) | (a) the upload form has **no file-size limit**: the team types **links** into the form | **closed** | nothing is uploaded as a file: the form gets links — the repository with its commit hash, the image archive `resense-image-<version>.tar.gz` and its `.sha256` (§7), the video and the presentation. Which links, and when, is the captain's: he sends the submission himself (25.09, [`../CAPTAIN.md`](../CAPTAIN.md) C12); GitHub releases are deferred (C13). The archive's size (0.49 GiB at gzip -1 in CI) is no longer a constraint on the form; a GitHub release asset holds up to 2 GB per file. Each link must open for a logged-out visitor, and the archive is loaded once on a second machine before submitting ([`../CAPTAIN.md`](../CAPTAIN.md) action 1b) |
+| 25.09 | the captain (P1) | (b) a **30 × 30 × 10 cm object lying on the bed between the rails** (below the rail head) is **not an obstacle**: it is not inside the train's clearance envelope | **closed** | the shipped bed policy is the organizers' own: nothing below the envelope floor (0.12 m above the rail head) between the rails is reported ([`../ALGORITHM.md`](../ALGORITHM.md) §3.3b, `gauge.profile`, `lowobj.*` unchanged). The opt-in central near-bed path (`lowobj.near_enabled`, off; [`../EXPERIMENTS.md`](../EXPERIMENTS.md) §1e) stays off and is no longer an open question: it is not needed for the organizers' check, and its ride and set F re-run is dropped. The criteria judgement's 8.1 hold-down "the 30 × 30 × 10 cm object below the rail head is not detected by default" is answered by the organizers ([`../SCORECARD.md`](../SCORECARD.md) §8; no re-score). Objects that reach the envelope — across a rail, straddling the floor, on a rail head, taller than the floor — are reported as before |
