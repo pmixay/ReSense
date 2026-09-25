@@ -223,10 +223,10 @@ after `cb9e4ab`), the build `--no-cache` again:
 
 | step | command | expected |
 |---|---|---|
-| drops (C7, C8) | §4.1, first command | `dropped input settle : start-up catch-up back on the newest frame at +7–8 s`; `dropped input vs bag : … 4 frame(s) missing from the recording itself; 0 of its messages not processed`; `PASS`; the node log says `dropped N (M skipped by the catch-up)` |
+| drops (C7) | §4.1, first command | `dropped input settle : start-up catch-up back on the newest frame at +7–8 s`; `dropped input vs bag : … 4 frame(s) missing from the recording itself; 0 of its messages not processed`; `PASS`; the node log says `dropped N (M skipped by the catch-up)` |
 | false alarm (C7) | §4.1, second command, then the `replay_node_frames.py` line | `PASS` with at most 1 alarm frame (was 3 at 111–115 m: the column at 101–149 m, advisory since `tracking.column_hold` 2); the node's and the replay's alarm lists equal |
 | CycloneDDS player (C4) | `sudo sysctl -w net.core.rmem_max=33554432` (leave `rmem_default`), the host console of §4.2 with `RMW_IMPLEMENTATION=rmw_cyclonedds_cpp`, then `sudo sysctl -w net.core.rmem_max=212992` | both recordings arrive, `STOP` on the obstacle; no rmem WARN in the node log (the image now asks for a 32 MiB receive buffer, so `rmem_max` alone decides) |
-| bench (C8) | §4.3 | `dry_obstacle_native` PASS; write down the physical core count |
+| bench (C8, closed; a confirmation) | §4.3 | `dry_obstacle_native` PASS; write down the physical core count |
 | offline (C25) | §4.5 then §5 with the new archive | as in §5 |
 
 Commit the evidence as in §6 (`dry_run_<date>/`, `bench_<date>/`, `offline_<date>/`), one PR.
@@ -310,10 +310,9 @@ RESENSE_DATA="$BAGS" RESENSE_CACHE="$CACHE" ./scripts/bench_8core.sh; echo "exit
 Builds the image (timed), runs `dry_run.sh` on both bags with the node on the native kernels and
 on numpy, `console_test.sh` with the image's and the stock player, samples `docker stats`, times
 the detector on the host with peak RSS, and summarises (10–25 min; its header has the details).
-Keep the VM otherwise idle. **Done:** exit 0 and `summary.txt`; C8 closes when
-`dry_obstacle_native` passes (p95 ≤ 100 ms, no frame dropped after the settle point, §4.1) on ≥ 8
-physical cores, or on fewer if the captain accepts a pass on a machine weaker than the stand (the
-proposal of 25.09, CAPTAIN C8).
+Keep the VM otherwise idle. **Done:** exit 0 and `summary.txt`: `dry_obstacle_native` passes (p95
+≤ 100 ms, no frame dropped after the settle point, §4.1). C8 was closed on 25.09 on the 4-core team
+VM (the captain: a machine with half the stand's cores is enough); a run here confirms it.
 **Evidence:** the script writes `docs/evidence/bench_<date>/` itself, ready to commit.
 
 ### 4.4 Regression gate with the ride

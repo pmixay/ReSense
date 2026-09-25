@@ -1645,8 +1645,8 @@ OpenMP, `cKDTree.query_pairs` one thread, the image pins BLAS to one; numpy's de
 busy box made the same path 256 ms per frame against 67 ms (5 runs each), so the ROS package now
 defaults OMP / OpenBLAS / MKL to one thread outside the image too.
 
-The 8-core figure (C8) still needs 16 vCPU (8 physical cores) or the team's own 8-core machine; the
-kit runs unchanged there.
+C8 is closed on this run (the captain, 25.09): a machine with half the i7-9700E's cores meets the
+latency criterion, and its drops were no losses of the node (above); no 8-core run is needed.
 
 ### 3b. The ROS 2 node in Docker on real recordings (23–24.09, v0.6.2–v0.6.4)
 
