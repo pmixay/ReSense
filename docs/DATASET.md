@@ -243,7 +243,7 @@ at most); the ride's current false alarms by cause are in EXPERIMENTS "Current r
 above reset the tracker every 5.1 s (6 events start in frames 0–2 and 12 end in frames 49–50 of
 a file). (4) Open: `ros2 bag play /data/new_data` through the
 container is the closest thing to the control run we have — 20 min, seven stops, curves,
-stations, recording holes — and the dry run should use it once the stand has the disk.
+stations, recording holes — and the dry run should use it once the dry-run machine has the disk.
 
 ## Topic and sensor
 

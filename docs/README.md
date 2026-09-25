@@ -71,7 +71,7 @@ rewritten later; **frozen** = kept for reference, not maintained; **archive** = 
 | term | meaning |
 |---|---|
 | sandbox | the team's 4-vCPU development VM, where the offline timings and the Docker rehearsal of 23.09 ran; not the jury's stand |
-| stand | the organizers' test machine: Intel Core i7-9700E, 8 cores (spec §3.1, [`organizers/test_stand_software.md`](organizers/test_stand_software.md)); not measured yet |
+| stand | the organizers' test machine: Intel Core i7-9700E, 8 cores (spec §3.1, [`organizers/test_stand_software.md`](organizers/test_stand_software.md)); not open to the team before submission (organizers, 25.09: [`organizers/answers.md`](organizers/answers.md) §6), so the team's own 8-core machine, the "8-core analogue", stands in for timing |
 | ride | `new_data`, the organizers' extended 20-minute, 13 km recording (11 271 frames, no obstacles) |
 | envelope, gauge | the organizers' train envelope, 2.1 m wide × 3.0 m high around the track axis above the rail head: the strict zone of `STOP`; the advisory zone adds 0.35 m on each side |
 | alarm frame | a frame with `obstacle = true`, i.e. decision `STOP` |

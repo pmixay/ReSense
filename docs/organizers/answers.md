@@ -14,7 +14,8 @@ from these sources:
 * the **written answers of 23.09 and 24.09**, verbatim below;
 * the experts' answers on the LiDAR mount and switches in
   [`mount_and_switch_qa.md`](mount_and_switch_qa.md), recorded 24.09, consolidated in §5;
-* the **hand-outs of 22.09**: sensor manual, extended dataset, test-stand software.
+* the **hand-outs of 22.09**: sensor manual, extended dataset, test-stand software;
+* the **organizers' statement of 25.09** on access to the test stand, reported by the captain, §6.
 
 The questions that are still open are the only ones left in [`../QUESTIONS.md`](../QUESTIONS.md).
 
@@ -84,7 +85,7 @@ withdrawn by the team as an organisational matter.
 | will there be an extended dataset, when, how many recordings | organizers' hand-out: `new_data.zst`, one 20-minute recording, 221 split files, no labels | [`DATASET.md`](../DATASET.md) "Extended dataset", `extended_dataset_intake.json` |
 | GPU / CUDA on the test stand | organizers' hand-out: `nvidia-smi` and `dpkg` state of the stand (driver 580, CUDA 13 runtime, toolkit 12.9); ReSense does not use it (evaluated 24.09 and rejected: ARCHITECTURE.md "GPU: evaluated, not used") | [`organizers/test_stand_software.md`](test_stand_software.md) |
 | train speed, odometry or IMU topic on the train | **organizers' fact** (Q&A 22.09, fact 6): no odometry in the recordings, some trains have none. **Team decision** (22.09): "train-speed data is not technically possible for this case", so the solution operates without it. The deliverable is the no-speed path (single-frame detection + persistence in time); the node's `ego_speed_mps` / `speed_topic` / `odom_topic` inputs stay as optional extras and the multi-frame accumulation stays off unless a speed is given. 24.09: the LiDAR-only estimator was measured accurate, but even a perfect speed does not improve the organizers' check, so it stays opt-in ([`EXPERIMENTS.md`](../EXPERIMENTS.md) §9) | [`SENSOR.md`](../SENSOR.md) §4, [`CAPTAIN_log_2026-09.md`](../archive/CAPTAIN_log_2026-09.md) finding 7, `ARCHITECTURE.md` |
-| intermediate submission (date, form, where), final submission (image vs Dockerfile, size, video), test-stand procedure (launch, internet at build, bag playback, disk) | organisational — the team handles these itself, not a question to the organizers | [`SUBMISSION.md`](../SUBMISSION.md), README "Where the data lives" / demo runbook |
+| intermediate submission (date, form, where), final submission (image vs Dockerfile, size, video), test-stand procedure (launch, internet at build, bag playback, disk) | organisational — the team handles these itself, not a question to the organizers; 25.09: the team gets no run on the stand before submission (§6) | [`SUBMISSION.md`](../SUBMISSION.md), README "Where the data lives" / demo runbook |
 | may the given recordings be used for tuning parameters | answered 22.09: yes, acceptable | — |
 | own slides after the template's 7–11 | answered 22.09: yes, acceptable | [`PRESENTATION.md`](../PRESENTATION.md) |
 
@@ -100,3 +101,14 @@ on; the date of the answers is not given; recorded in `41b7ae7`, 24.09).
 | 3 | will the LiDAR height above the rail head be known? | «Я же уже писал, что лидар установлен в 1075 мм над головкой рельса и ровно посередине состава.» (common answer to questions 3–4) | 1075 mm above the rail head, exactly on the train's centreline | the calibration measures 1.12 m and −0.02 m lateral on `roundT_doubleT` (4.5 cm from the answer) and 1.51 m on the older `doubleT_obstacle` mount; [`../QUESTIONS.md`](../QUESTIONS.md) Q1 asks whether the envelope follows the LiDAR's axis or the rails |
 | 4 | will the orientation relative to the train's longitudinal axis be known? | the common answer to questions 3–4 above; no numeric orientation is given | no orientation value | roll, pitch and yaw keep coming from the calibration |
 | 5 | switches: without the switch state, is an obstacle on only one branch an obstacle (union of the possible paths or the chosen branch)? | «Сейчас состояния стрелок неизвестны, поэтому если решение будет глючить на стрелках - то мы не будем учитывать это как минус.» | switch states are unknown; glitches at switches will not count against the solution | station and platform false STOPs come before switch ones in P3's work ([`../CAPTAIN.md`](../CAPTAIN.md) §9) |
+
+## 6. Access to the test stand (25.09, reported by the captain)
+
+The captain reported on 25.09 what the organizers said: the team will **not** be able to test on
+the organizers' machine, the test stand of spec §3.1 (i7-9700E, RTX 4070 Ti SUPER,
+[`test_stand_software.md`](test_stand_software.md)), before submitting the solution. No written
+text; the captain's instruction was to remove the stand from the questions and the requirements.
+
+| date | reported by | organizers' statement | status | consequence in ReSense |
+|---|---|---|---|---|
+| 25.09 | the captain (P1) | no access to the test stand before submission: nothing can be built, run or timed on the organizers' machine by the team | **closed** | every stand run is dropped from the plan ([`../CAPTAIN.md`](../CAPTAIN.md) C8, actions 7 and 15; [`../SUBMISSION.md`](../SUBMISSION.md) "Dry run"); the substitute is the team's own 8-core machine (the "8-core analogue": timing on the native and numpy paths, the dry run with the latency and drop criteria) and CI (the `docker` job builds the image and plays synthetic bags through the node as the organizers will); the stand's hardware stays the machine the jury will use, so its facts and the estimates made for it stay in the docs, labelled as such; no stand question is left in [`../QUESTIONS.md`](../QUESTIONS.md) |

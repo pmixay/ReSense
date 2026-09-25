@@ -194,8 +194,10 @@ in the image), about 160–180 MB resident, no GPU. **Through ROS in Docker** (2
 v0.6.2–v0.6.4, EXPERIMENTS §3b): the 120° recording at the full 10 Hz (p95 76 ms), the 360° one at
 7–10 fps in steady state (~96 ms mean: the node skips frames rather than lagging), the node
 container at ~100 % of one core while frames arrive, 186 MB (v0.6.3); the v0.6.4 catch-up queue
-raises the peak to 403–434 MB at 360°. The jury's i7-9700E (8 faster cores) has not been measured.
-The table is the numpy path; the optional native kernels (next section) roughly halve it.
+raises the peak to 403–434 MB at 360°. The jury's i7-9700E (8 faster cores) is not open to the
+team before submission ([`organizers/answers.md`](organizers/answers.md) §6); the 8-core figures
+come from the team's own 8-core machine ([`CAPTAIN.md`](CAPTAIN.md) action 7). The table is the
+numpy path; the optional native kernels (next section) roughly halve it.
 
 ## Native kernels (optional, C++; 24.09)
 
@@ -251,8 +253,8 @@ time; the node logs it at start (`per-frame kernels: native (...)`). `RESENSE_NA
 the numpy code. The test suite passes on both paths (266 tests). **Docker:** proven by CI run 36058665640
 (24.09, commit `d1a2d0c`): the image built the kernels, the in-image suite passed with
 `RESENSE_REQUIRE_SYNTHETIC=1` (a missing library would have failed it), and both ROS smoke tests
-passed (synthetic bags, decode + detect 35 ms mean). The i7-9700E has not been measured on either
-path.
+passed (synthetic bags, decode + detect 35 ms mean). Neither path can be run on the i7-9700E
+before submission (no stand access); the team's 8-core machine stands in for both.
 
 ## GPU: evaluated, not used (24.09)
 

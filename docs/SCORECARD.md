@@ -129,9 +129,10 @@ Evidence from both judges, merged. The actions that would raise each score are r
   76 ms; `docker_2026-09-23/checks.txt`) [team record, re-checked]; never measured on the
   i7-9700E; the GPU is unused, pure Python on one thread; over-budget latency turns the decision
   into `CAUTION` (97 % of frames at load average 8–11) [measured 24.09]; confirmation takes 0.5 s.
-* **To raise before 29.09:** forward-sector crop at 360° (track stage 49 of 81 ms) +1; an i7-class
-  bench through ROS, latency kept out of the decision, +0.5 to +1.5 (§6 rows 8, 9); parallel, GPU
-  or C++ stages only if equivalent frame for frame.
+* **To raise before 29.09:** forward-sector crop at 360° (track stage 49 of 81 ms) +1; an 8-core
+  analogue bench through ROS (the stand is not available before submission, organizers 25.09),
+  latency kept out of the decision, +0.5 to +1.5 (§6 rows 8, 9); parallel, GPU or C++ stages only
+  if equivalent frame for frame.
 
 ### 8.4 Generalisation: 8.5 / 15
 
@@ -253,7 +254,7 @@ a rough size (≤ 1 h, hours, half a day, 1 day); ranked by gain per effort.
 | 5 | deck: team data, 235 tests, range slide led by the organizers' numbers, §4 slide, moving-train STOP beyond 80 m, rehearsal | 8.8, 8.2 | +1 to +2 | 1 day | P2, P1 |
 | 6 | conservative `clear_distance`: cap it at the nearest unconfirmed or advisory candidate touching the envelope; STOP unchanged | 8.1, 8.4 | +1 | half a day | P3, P4 |
 | 7 | clean-machine dry run on 28.09 with a real 360° bag and a host player | 8.6 | +0.5 | half a day | P1 |
-| 8 | i7-class bench through ROS (`resense bench`, `scripts/console_test.sh`, 360° bag); latency kept in `/resense/health`, no longer turning the decision into `CAUTION` | 8.3 | +0.5 to +1.5 | half a day | P1 |
+| 8 | an 8-core analogue bench through ROS (`resense bench`, `scripts/console_test.sh`, 360° bag; the stand is not available before submission, organizers 25.09); latency kept in `/resense/health`, no longer turning the decision into `CAUTION` | 8.3 | +0.5 to +1.5 | half a day | P1 |
 | 9 | forward-sector crop at 360° before the track fit; identical output checked with `scripts/output_fingerprint.py` | 8.3 | +1 | half a day | P3, P1 |
 | 10 | length-limited `elevated` / `floating` rule (`scripts/short_signature_experiment.py`), shipped after a ride re-run | 8.1, 8.4 | +0.5 to +2.5 | 1 day | P3, P4 |
 | 11 | thin-hanging rule: \|dy\| < 0.8 m, h > 1.8 m, linked to points above 3.0 m, ≥ 2 voxels, 5 frames; measured on the organizers' bag, the empty bags and the ride | 8.1 | +1.5 | 1 day | P3, P4 |
@@ -283,9 +284,10 @@ judgement.
 | change | what it is | criterion | expected effect |
 |---|---|---|---|
 | `537e220`, then `7df1796` | the near-bed gates that turned `main` red, and their fix: all tests green again; five bags with the opt-in path on 459 / 107 / 72 instead of 1 035 / 145 / 42 (EXPERIMENTS §1e) | 8.5 | the "`main` red at `537e220`" item of §3 8.5 is fixed on the branch; the first part of §6 row 1 (fix or revert `537e220`) is done once it is merged with CI green; its other parts (branch protection, one version) are still open |
-| C++ kernels (merge `d1a2d0c`) | optional kernels for the full-cloud passes and percentiles; detector time −38…−57 %, p95 at 360° 107 → 51 ms on the sandbox under load; 0 differing frames of 3 998; `RESENSE_NATIVE=0` falls back to numpy ([`ARCHITECTURE.md`](ARCHITECTURE.md) "Native kernels") | 8.3 | addresses "360° through ROS at the frame period" and "pure Python on one thread" of §3 8.3, the image builds them (CI run 36058665640, 24.09); an i7 run must still confirm the latency |
+| C++ kernels (merge `d1a2d0c`) | optional kernels for the full-cloud passes and percentiles; detector time −38…−57 %, p95 at 360° 107 → 51 ms on the sandbox under load; 0 differing frames of 3 998; `RESENSE_NATIVE=0` falls back to numpy ([`ARCHITECTURE.md`](ARCHITECTURE.md) "Native kernels") | 8.3 | addresses "360° through ROS at the frame period" and "pure Python on one thread" of §3 8.3, the image builds them (CI run 36058665640, 24.09); an 8-core analogue run must still confirm the latency (the stand is not available before submission, organizers 25.09) |
 | train-speed study | the LiDAR-only estimator measured against an ICP reference: median error 0.06–0.08 m/s on 55–96 % of the moving frames; even a perfect speed buys nothing on the organizers' check (EXPERIMENTS §9; raw: [`experiments_2026-09-24_train_speed.json`](evidence/results/experiments_2026-09-24_train_speed.json)) | 8.7 | a hypothesis → experiment → decision record with raw data |
 | | judge A's suggestion for 8.2 (a speed estimate, e.g. scan-to-scan ICP, to re-enable accumulation for range; §3 8.2: 0.3 m beyond 45 m needs a train speed) was tested with the ICP speed itself | 8.2 | it does not hold on the organizers' check: with the reference speed the 0.3 m cubes are seen 7–16 m earlier but only as advisories, no object gets its first STOP earlier, and the box outside gets 17 false STOP frames instead of 6; no 8.2 gain from a speed |
 | GPU study | no GPU before 29.09: the i7-9700E has PCIe 3.0, ~1 160 array operations per frame make a CuPy port dispatch-bound (≤ 30–45 ms per 360° frame saved against numpy, 5–15 ms against fused CPU code), and a container that requests a GPU does not start without `nvidia-container-toolkit` ([`ARCHITECTURE.md`](ARCHITECTURE.md) "GPU: evaluated, not used") | 8.7, 8.3 | "the GPU is unused" (§3 8.3) becomes an evaluated decision; the CPU savings it found (a forward crop −17 ms at 360°, an exact cKDTree DBSCAN −4…−6 ms) are candidates for §6 row 9 |
 | documentation | one format, one home per fact; `cloud_with_fake_obj` corrected (the objects stand still, the train drives ~2.0 km forward), so QUESTIONS Q1 lost a sentence built on the error; EXPERIMENTS §3 corrected: `timing_ms["total"]` leaves out the 7–14 ms health monitor | 8.7, 8.5 | fewer stale or wrong statements; the old Q1 must not be sent |
 | tests | 235 → 266 in `tests/` (+28 native kernels, +3 speed evaluation helpers), 11 in `web/demo` | 8.5 | the deck's test count (§6 row 5) is now 266 |
+| organizers' answer (25.09) | the team gets no access to the test stand before submission ([`organizers/answers.md`](organizers/answers.md) §6); every stand run is dropped, the team's 8-core machine and CI stand in | 8.3 | §3 8.3 "To raise" and §6 row 8 now name an 8-core analogue bench (they read "i7-class" when judged); "never measured on the i7-9700E" (§2, §3 8.3, §5) stays true at submission |

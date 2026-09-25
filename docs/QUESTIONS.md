@@ -20,7 +20,9 @@ question of the criteria review of 24.09. Q1 lost its second sentence on 24.09: 
 objects move independently of the train, which is wrong (they stand still in the tunnel), so an
 older copy of the message must not be sent. The return-mode and time questions were answered on
 24.09 ([`organizers/answers.md`](organizers/answers.md) §3); the question on the length of the talk
-and the demo was withdrawn as an organisational matter.
+and the demo was withdrawn as an organisational matter. Testing on the organizers' stand is not a
+question either: on 25.09 they said the team gets no access to it before submission
+([`organizers/answers.md`](organizers/answers.md) §6).
 
 ---
 

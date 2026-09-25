@@ -806,6 +806,8 @@ causes, each a limitation of the current rules:
 9. **Python and numpy, optional C++ kernels, no GPU**: per-frame cost on the 4-core sandbox is in
    EXPERIMENTS §3; the optional C++ kernels cut the detector time by 38–57 % with identical output
    and the GPU was evaluated and not used ([`ARCHITECTURE.md`](ARCHITECTURE.md) "Native kernels",
-   "GPU: evaluated, not used"); the i7-9700E bench is still owed.
+   "GPU: evaluated, not used"); the jury's i7-9700E stand is not open to the team before
+   submission ([`organizers/answers.md`](organizers/answers.md) §6), so the 8-core figures come
+   from the team's own 8-core machine ([`CAPTAIN.md`](CAPTAIN.md) action 7).
 10. **No semantics**: a legitimately parked train, a maintenance trolley or a worker on the
     track are all "obstacles", which is the intended behaviour for a safety function.

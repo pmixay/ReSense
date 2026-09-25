@@ -6,10 +6,12 @@
 > **Last verified:** 2026-09-24 against `537e220` · **Status:** current
 
 Hardware per the specification (§3.1): Intel Core i7-9700E (8 cores, 2.60 GHz), 128 GiB RAM,
-NVIDIA GeForce RTX 4070 Ti SUPER, Ubuntu 22.04.5 LTS, ROS 2 Humble, Docker. The software
-below was reported to the team on 22.09 (`nvidia-smi` header and `dpkg -l` rows); the rest of
-the stand procedure (launch, internet access at build time, bag playback, disk) is the team's
-own to settle, not an organizer question ([`answers.md`](answers.md) §4):
+NVIDIA GeForce RTX 4070 Ti SUPER, Ubuntu 22.04.5 LTS, ROS 2 Humble, Docker. The team cannot run
+anything on the stand before submission (organizers, 25.09, [`answers.md`](answers.md) §6): the
+team's own 8-core machine and CI stand in for it. The software below was reported to the team on
+22.09 (`nvidia-smi` header and `dpkg -l` rows); the rest of the stand procedure (launch, internet
+access at build time, bag playback, disk) is the team's own to settle, not an organizer question
+([`answers.md`](answers.md) §4):
 
 ```
 NVIDIA-SMI 580.173.02             Driver Version: 580.173.02     CUDA Version: 13.0

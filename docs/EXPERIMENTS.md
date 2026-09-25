@@ -14,9 +14,10 @@
 объектах самих организаторов (набор O) STOP получают 5 из 8 объектов в габарите: ящик 2 × 2 м
 с 98 м, кубы 0,3 м только с 34–43 м. Человек на 148–154 м — только на нашей синтетике. Время
 кадра 42–64 мс (p95 53–78 мс) на одном ядре машины разработки без монитора состояния; ядра на C++
-(24.09) сокращают его на 38–57 %; стенд i7-9700E не измерен. Собственная оценка скорости поезда по
-лидару точна (ошибка 0,06–0,08 м/с), но даже точная скорость не улучшает проверку организаторов
-(§9), поэтому по умолчанию она выключена.
+(24.09) сокращают его на 38–57 %; стенд i7-9700E до сдачи команде недоступен (организаторы,
+25.09), замер — на 8-ядерной машине команды. Собственная оценка скорости поезда по лидару точна
+(ошибка 0,06–0,08 м/с), но даже точная скорость не улучшает проверку организаторов (§9), поэтому
+по умолчанию она выключена.
 
 ## Current results (detector v0.6.3, node v0.6.4; re-measured 24.09)
 
@@ -1143,7 +1144,12 @@ those frames). **Not shipped**: the 20-minute ride, where most infrastructure li
 re-run with it (§5). None of the ten objects lies on the bed between the rails, so the shipped bed
 policy is not tested by this set.
 
-## 3. Timing (4-core sandbox, numpy path, every frame; the i7-9700E bench is still owed)
+## 3. Timing (4-core sandbox, numpy path, every frame; the 8-core bench is still owed)
+
+**Which machine.** Every figure below comes from the team's 4-vCPU sandbox. The jury's stand
+(i7-9700E, 8 cores) is not open to the team before submission (organizers, 25.09:
+[`organizers/answers.md`](organizers/answers.md) §6), so the 8-core figures will come from the
+team's own 8-core machine ([`CAPTAIN.md`](CAPTAIN.md) action 7).
 
 **What is timed.** `resense bench` prints the `timing_ms` of each frame. Its `total` runs from the
 first stage through tracking and **leaves out the health monitor**, which `Detector.process` runs
@@ -1209,7 +1215,7 @@ busy on the 347 k-point frames (250 ms of CPU per frame) for no speed-up (64 vs 
 the image therefore sets `OMP_NUM_THREADS=OPENBLAS_NUM_THREADS=MKL_NUM_THREADS=1`. The ROS node adds
 ~20–25 ms per 360° frame (message conversion, decode, publishing; §3b), part of which is the health
 monitor that the node's latency includes and `total` does not; the jury's i7-9700E (8 faster cores)
-is not measured.
+is not open to the team before submission, the team's 8-core machine stands in (top of §3).
 
 **v0.5 (history).**
 
@@ -1242,7 +1248,7 @@ attribution runs); the reviewer's pairs under load 4–7 gave the same picture (
 merged-cloud clustering (+12 ms mean on `roundT_doubleT` at load 8, reviewer's run). The frame
 period is 100 ms: p95 is inside it on the tunnel bags and above it on the two platform bags on
 this machine, where the node drops frames rather than queueing; the jury's i7-9700E (8 faster
-cores) has not been measured (P1).
+cores) is not open to the team before submission (top of §3).
 
 Per-stage means of the same runs are in the table; the platform bags remain the expensive ones
 because their corridor holds 15–20 k candidates per frame (DBSCAN 45–70 ms in v0.3 and v0.5 alike).
@@ -1348,7 +1354,7 @@ above): over a whole 360° recording it processes 103–142 of 201 frames (v0.6.
 included; v0.6.4: 171–175), 7–10 fps in steady state; the 120° recordings run at the full 10 Hz.
 Captures, node logs and the checker output:
 [`evidence/docker_2026-09-23/`](evidence/docker_2026-09-23/). The jury's i7-9700E (8 cores, higher
-clock) has not been measured.
+clock) is not open to the team before submission; the 8-core bench of the team stands in (§3).
 
 **With RViz, on screen** ([`video/docker_chain_rviz.mp4`](video/docker_chain_rviz.mp4), 69 s, image
 built from the current tree). The node container started with `rviz:=true` on a virtual display
@@ -1455,10 +1461,11 @@ v0.6).
 - more *labelled obstacle* materials, if provided in future → calibrate dropout / intensity
   in `inject` and measure real recall by range and class. The delivered `new_data` ride has
   no obstacles, but supports false alarms per km and FP taxonomy by scene with the label tool;
-- timing on the i7-9700E bench, native and numpy paths; further CPU savings measured as
-  prototypes, not merged ([`ARCHITECTURE.md`](ARCHITECTURE.md) "GPU: evaluated, not used"): an
-  exact cKDTree DBSCAN (−4…−6 ms), float32 corridor coordinates, a forward crop at X ≥ 2.9 m inside
-  the detector (−17 ms at 360°) and a single-pass C++ decode in the node (−11…−20 ms at 360°).
+- timing on the team's 8-core machine (the i7-9700E stand is not open to the team before
+  submission, §3), native and numpy paths; further CPU savings measured as prototypes, not merged
+  ([`ARCHITECTURE.md`](ARCHITECTURE.md) "GPU: evaluated, not used"): an exact cKDTree DBSCAN
+  (−4…−6 ms), float32 corridor coordinates, a forward crop at X ≥ 2.9 m inside the detector
+  (−17 ms at 360°) and a single-pass C++ decode in the node (−11…−20 ms at 360°).
 
 **Independent set F placement** (P4): needs a separately surveyed vehicle-frame axis and rail
 profile of the ride, not the detector's far fit (protocol: [`EVALUATION.md`](EVALUATION.md) §3).

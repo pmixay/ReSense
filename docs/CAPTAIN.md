@@ -28,15 +28,15 @@ upload by 29.09 23:59 (target 18:00), technical expertise 30.09–14.10, pitch 2
 | C4 | organizers' console path: `ros2 bag play` by a normal user on the host | PARTIAL | CI plays as uid 1000 from our image (`scripts/console_test.sh`); a host player with stock Fast DDS or CycloneDDS is not tested (action 5) |
 | C5 | start of a played bag not lost (8.3, 8.6) | DONE | v0.6.4 catch-up: first STOP 4.02 → 1.59 s of recording time (EXPERIMENTS §3b; raw capture not committed) |
 | C6 | acceptance script asserting the result | DONE | `scripts/dry_run.sh` + `scripts/check_dry_run.py` (`--distance 50:62 --max-p95-latency 100 --max-dropped 0`) |
-| C7 | clean-machine dry run with the original bags (§7.2) | NOT DONE | 28.09 (action 15). Rehearsed 23.09 on bags rebuilt from the cache; the 4-vCPU dev VM runs 360° at 7–10 fps, p95 112–130 ms |
-| C8 | timing on the i7-9700E or an 8-core analogue (8.3) | NOT DONE | owed since 16.09; only the 4-vCPU dev VM is measured (EXPERIMENTS §3). 24.09: C++ kernels merged, detector time −38…−57 % on the dev VM (ARCHITECTURE "Native kernels"), built and tested in the CI image (run 36058665640); an i7 run is still owed; GPU evaluated, not used (ARCHITECTURE "GPU: evaluated, not used") |
+| C7 | clean-machine dry run with the original bags (§7.2) | NOT DONE | 28.09 on a clean team machine (action 15; the organizers' stand is not available before submission). Rehearsed 23.09 on bags rebuilt from the cache; the 4-vCPU dev VM runs 360° at 7–10 fps, p95 112–130 ms |
+| C8 | timing on an 8-core analogue, the team's own 8-core machine (8.3); the i7-9700E stand is not available before submission ([`organizers/answers.md`](organizers/answers.md) §6, 25.09) | NOT DONE | owed since 16.09; only the 4-vCPU dev VM is measured (EXPERIMENTS §3). 24.09: C++ kernels merged, detector time −38…−57 % on the dev VM (ARCHITECTURE "Native kernels"), built and tested in the CI image (run 36058665640); the 8-core run is still owed (action 7); GPU evaluated, not used (ARCHITECTURE "GPU: evaluated, not used") |
 | C9 | README per §5 (description, build, run, bag processing, parameters) | DONE | [`../README.md`](../README.md) |
 | C10 | architecture and algorithm descriptions (§5) | DONE | [`ARCHITECTURE.md`](ARCHITECTURE.md), [`ALGORITHM.md`](ALGORITHM.md); stale spots and the 24.09 mount answer handled in the docs pass of 24.09 |
 | C11 | evaluation protocol (stream C) | DONE | [`EVALUATION.md`](EVALUATION.md), sets S / E / R / O / F / H |
 | C12 | SUBMISSION matches reality | PARTIAL | intermediate submission unrecorded (C14); the deck row reads "done" while the pptx shows 199 tests (now 266) and 17 `<…>` placeholders |
 | C13 | release tag and upload package (§7.2) | NOT DONE | no tag, no GitHub release; no changes after the deadline (Q&A fact 22), so the upload points at a tag (§5) |
 | C14 | intermediate submission (§7.1) | UNKNOWN | content in SUBMISSION; no tag, no record it was sent; the organizers' timeline has no intermediate stage (H confirms, action 1) |
-| C15 | liaison: questions sent, answers applied (8.7) | PARTIAL | answers of 22–24.09 recorded; Q1–Q2 (24.09) and Q3 (bed / envelope floor) drafted in QUESTIONS, not sent; Q1 corrected on 24.09 (its second sentence assumed moving objects) |
+| C15 | liaison: questions sent, answers applied (8.7) | PARTIAL | answers of 22–24.09 recorded, and the 25.09 statement on the stand (no access before submission, `organizers/answers.md` §6); Q1–Q2 (24.09) and Q3 (bed / envelope floor) drafted in QUESTIONS, not sent; Q1 corrected on 24.09 (its second sentence assumed moving objects) |
 | C16 | main green, every PR reviewed, captain merges | PARTIAL | 0 GitHub reviews on PRs #3–#10; 5 of the 14 commits on `main` after the initial one were direct pushes (`a92625e`, `769619a`, `dfdebe5`, `41b7ae7`, `537e220`); main red 9 h 46 min on 24.09 after `769619a` (fixed 10:52); red again since `537e220`, fixed on the branch by `7df1796`, not yet on `main` |
 | C17 | one parameter source, lint, tests in CI (8.5) | DONE | 266 tests in `tests/` (green on the native and numpy paths) + 11 in `web/demo`; CI jobs `pytest`, `web`, `lint` (ruff 0.15.8), `params-in-sync`, `docker`; the docker job builds the C++ kernels and runs the suite in the image (run 36058665640) |
 | C18 | demo chain on screen (§4) | DONE | `video/docker_chain_rviz.mp4` (69 s), `scripts/run_demo.sh` |
@@ -47,7 +47,7 @@ upload by 29.09 23:59 (target 18:00), technical expertise 30.09–14.10, pitch 2
 | C23 | decision: GPU / stand software | DONE (evaluated 24.09) | CPU-only, the image installs no CUDA ([`organizers/test_stand_software.md`](organizers/test_stand_software.md)); GPU evaluated and not used: PCIe 3.0 on the i7, dispatch-bound port, the container would not start without `nvidia-container-toolkit` ([`ARCHITECTURE.md`](ARCHITECTURE.md) "GPU: evaluated, not used") |
 | C24 | captain docs current (CAPTAIN, PLAN) | DONE | rewritten 24.09; the log is in `archive/` |
 
-13 DONE · 6 PARTIAL · 4 NOT DONE · 1 UNKNOWN; every open item is release, stand, pitch or liaison.
+13 DONE · 6 PARTIAL · 4 NOT DONE · 1 UNKNOWN; every open item is release, timing, pitch or liaison.
 
 ## 3. Next actions to 29.09
 
@@ -60,7 +60,7 @@ upload by 29.09 23:59 (target 18:00), technical expertise 30.09–14.10, pitch 2
 | 4 | 25.09 12:00 | stop the verification loop: numbers live in EXPERIMENTS "Current results" + raw JSON; re-measure only when `resense/`, `configs/` or the node change | P1 | must |
 | 5 | 25.09 | CI step with a stock-Fast-DDS player (`PLAYER_ENV` in `console_test.sh`, `ci.yml`) | A | should |
 | 6 | 25.09 18:00 | regression gate: one command, one JSON (six bags, ride, set O, set F straight), run on every P3 PR within 2 h | P4 | must |
-| 7 | 25.09 | 8-core bench, native and numpy (`RESENSE_NATIVE=0`) paths: `build.sh`, `dry_run.sh` on both bags, `console_test.sh`, `docker stats`, `bench_node_path.py`; raw logs to `docs/evidence/bench_2026-09-25/`, summary to EXPERIMENTS §3 | H (+A) | must |
+| 7 | 25.09 | 8-core bench on the team's own machine (no stand access before submission, [`organizers/answers.md`](organizers/answers.md) §6), native and numpy (`RESENSE_NATIVE=0`) paths: `build.sh`, `dry_run.sh` on both bags, `console_test.sh`, `docker stats`, `bench_node_path.py`; raw logs to `docs/evidence/bench_2026-09-25/`, summary to EXPERIMENTS §3 | H (+A) | must |
 | 8 | 25.09 18:00 | every member sends a photo; fill `docs/presentation/private/team.json`; build the private deck with 0 `<…>` left | H + all | must |
 | 9 | 26.09 | narrated 2–3 min video `docs/video/resense_overview.mp4`; dashboard clip with the new UI | P2 edits, H voice | should |
 | 10 | 26.09 | deck refresh: organizers' objects, anchored 154 m, slide-12 caption, new UI captures; rebuild pptx / pdf ([`PRESENTATION.md`](PRESENTATION.md)) | P2 | should |
@@ -68,7 +68,7 @@ upload by 29.09 23:59 (target 18:00), technical expertise 30.09–14.10, pitch 2
 | 12 | 26.09 | decide on the saved-image release asset (§5) | H | should |
 | 13 | 27.09 | final consistency pass: every headline number equals EXPERIMENTS "Current results" | A | must |
 | 14 | 27.09 18:00 | version bump and `v1.0-rc1` tag, whatever the state | A prepares, H tags | must |
-| 15 | 28.09 | clean-machine dry run from `git clone --branch v1.0-rc1` (SUBMISSION "Dry run"), logs to `docs/evidence/dry_run_2026-09-28/`; remote demo from a second laptop | H | must |
+| 15 | 28.09 | dry run on a clean team machine (the stand is not available) from `git clone --branch v1.0-rc1` (SUBMISSION "Dry run"), logs to `docs/evidence/dry_run_2026-09-28/`; remote demo from a second laptop | H | must |
 | 16 | 29.09 | final tag and upload (§5) | H | must |
 | 17 | 30.09–23.10 | answer the organizers daily during the expertise; pitch on 23.10 after two rehearsals (fallback demo `video/docker_chain_rviz.mp4`) | H (+P2) | must |
 
@@ -77,7 +77,7 @@ upload by 29.09 23:59 (target 18:00), technical expertise 30.09–14.10, pitch 2
 - [ ] 24.09: upload form read, intermediate stage settled (C14); Q1–Q3 sent; §6 rules announced
 - [ ] 25.09: 8-core bench and dry runs (no Docker for agents); `private/` team data, photos, deck
 - [ ] 26.09: go / no-go taken; voice-over recorded; image-asset decision · 27.09: `v1.0-rc1` pushed
-- [ ] 28.09: clean-machine dry run, remote demo · 29.09: `v1.0-final`, release, upload by 18:00
+- [ ] 28.09: clean team-machine dry run, remote demo · 29.09: `v1.0-final`, release, upload by 18:00
 - [ ] 30.09–14.10: reachable for the organizers · 23.10: pitch led after two rehearsals
 
 ## 5. Release and upload runbook
@@ -146,7 +146,8 @@ and clone the tag. Then no pushes to `main` (Q&A fact 22). After rc1: blocker PR
 | 24.09 | the criteria judgement in SCORECARD (60 / 100) replaces every earlier scorecard; the release tag is no longer deferred (`v1.0-rc1` on 27.09 18:00) | §1, §5 |
 | 24.09 | train speed, measured: estimator accurate, but even a perfect speed gives no earlier STOP on set O and more false STOPs; `estimate_speed` stays `false`, a given speed is honoured | EXPERIMENTS §9 |
 | 24.09 | no GPU before 29.09 (≤ 30–45 ms per 360° frame at best, untestable in CI, container start depends on the host toolkit) | ARCHITECTURE "GPU: evaluated, not used" |
-| 24.09 | C++ kernels merged on the branch (bit-identical, −38…−57 %); to `main` only after the CI docker job and with an i7 bench to follow; `RESENSE_NATIVE=0` is the fallback | ARCHITECTURE "Native kernels" |
+| 24.09 | C++ kernels merged on the branch (bit-identical, −38…−57 %); to `main` only after the CI docker job and with an 8-core bench to follow; `RESENSE_NATIVE=0` is the fallback | ARCHITECTURE "Native kernels" |
+| 25.09 | no run on the organizers' stand before submission (they give no access): timing on the team's own 8-core machine (action 7), the 28.09 dry run on a clean team machine (action 15), the Docker chain in CI; stand facts and estimates stay, labelled as such | [`organizers/answers.md`](organizers/answers.md) §6 |
 
 ## 10. Why we slowed down (analysis of 24.09) and corrective rules
 
