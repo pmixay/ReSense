@@ -1648,6 +1648,23 @@ defaults OMP / OpenBLAS / MKL to one thread outside the image too.
 C8 is closed on this run (the captain, 25.09): a machine with half the i7-9700E's cores meets the
 latency criterion, and its drops were no losses of the node (above); no 8-core run is needed.
 
+**Confirmation re-run (25.09 afternoon, a second team VM, code `76bf24e`)** after the fixes above
+([`VM_GUIDE.md`](VM_GUIDE.md) §4.0 / §4.3; same VM type: Xeon Icelake 2.0 GHz, 8 vCPU = 4 physical
+cores, 15.6 GiB, CPU steal 0.0 %; bags from a RAM tmpfs as before; raw:
+[`evidence/bench_2026-09-25_2/`](evidence/bench_2026-09-25_2/)):
+
+| run (Docker chain, rate 1.0) | kernels | frames processed | fps | decode + detect mean / p95 / max | dropped input frames | check |
+|---|---|---|---|---|---|---|
+| `dry_run.sh doubleT_obstacle` | native | 147 / 201 | 9.8 | 60 / 73 / 84 ms | 51, 43 of them the catch-up's; after +7.7 s only the 4 frames missing from the recording, 0 of its messages not processed | **PASS** |
+| same | numpy | 120 / 201 | 8.3 | 104 / 119 / 162 ms | 79, 69 of them the catch-up's; 12 of the recording's messages not processed after +10.6 s | FAIL: p95, drops |
+| `dry_run.sh roundT_doubleT --expect-clear --max-alarm-frames 2` | native | 234 / 252 | 10.0 | 38 / 48 / 53 ms | 13 (0) | **PASS** (0 alarm frames) |
+| same | numpy | 232 / 252 | 10.0 | 67 / 79 / 83 ms | 16 (0) | PASS |
+| `console_test.sh`, image's DDS / stock Fast DDS player | native | 382 / 384 of 453 | 10.0 | 47 / 68–69 / 87–115 ms | — | PASS / PASS |
+
+Offline node path at 360° 45.1 ms native, 90.9 ms numpy (×2.02); `resense bench` stages 26.5 / 64.2
+ms. The native path meets every criterion on 4 physical cores; numpy stays short at 360°, as on the
+first run.
+
 ### 3b. The ROS 2 node in Docker on real recordings (23–24.09, v0.6.2–v0.6.4)
 
 **Setup.** A Docker daemon runs on the sandbox (4 vCPU, 16 GB), so on 23.09 the organizers'
@@ -1795,6 +1812,35 @@ in 29 s after every image was deleted, `load_image.sh` PASS; the README jury com
 console **PASS** (134 `STOP`, 55.7–56.5 m, first `STOP` +2.3 s, p95 71 ms); `IMAGE_TAR=… OFFLINE=1
 dry_run.sh` fails the same two criteria as online (22 dropped after 5 s; 3 alarm frames at
 111–115 m).
+
+**Confirmation re-run with the original bags, 25.09 afternoon (a second team VM, code `76bf24e`).**
+[`VM_GUIDE.md`](VM_GUIDE.md) §4.0 as written: §2 data on the VM (the ride's cache 221 of 221 split
+files), §4.1 with the `--no-cache` build as the VM's first build, §4.2, §4.3 (§3a), §4.4, §4.5, §5;
+the VM of §3a's re-run, the bags from a RAM tmpfs; raw:
+[`evidence/dry_run_2026-09-25_2/`](evidence/dry_run_2026-09-25_2/),
+[`evidence/offline_2026-09-25_2/`](evidence/offline_2026-09-25_2/),
+[`evidence/gate_2026-09-25_2/`](evidence/gate_2026-09-25_2/),
+[`evidence/export_2026-09-25_2/`](evidence/export_2026-09-25_2/). **Both fixes hold:**
+`doubleT_obstacle` **PASS** (person 55.5–56.5 m, first `STOP` +0.4 s, p95 70 ms, 10.07 fps; the node
+log `dropped 46 (39 skipped by the catch-up)`; back on the newest frame at +6.9 s, then the 4 frames
+missing from the recording itself and 0 of its messages not processed); `roundT_doubleT` **PASS** with
+0 alarm frames, and `replay_node_frames.py` on the node's 234 processed frames gives the same (0 and
+0). Offline from the new archive (`resense-image-1.0.0.tar.gz`, 475 515 293 bytes, loaded after every
+`resense` image was deleted; outbound blocked on IPv4 and IPv6, no host allowed, a new SSH login
+worked during the block, restored after 4 min): both dry runs **PASS** again (55.6–56.5 m, p95 73 ms,
+catch-up end +7.7 s, 4 missing frames; 0 alarm frames). The regression gate with the ride against
+`regression_baseline_2026-09-25_ride_column.json` **PASS**: all 105 gated rows the same on this second
+machine (ride 187 / 46 / 39), only latency information rows differ. The console: `console_test.sh`
+with a stock Fast DDS player in Docker **PASS**; the host console with `rmw_cyclonedds_cpp` at
+`rmem_max` 32 MiB (`rmem_default` left at 212992) **PASS** (144 `STOP`, no rmem WARN). **New:** the
+host console with **stock Fast DDS** at Ubuntu's `rmem_max` 212992 **FAILED 5 of 5** (0–1 of the
+201 360° clouds processed; the 120° recording always arrives), with the node on the 25.09 8 MiB
+profile too (2 of 2, a runtime mount over the image's file), and passed at 32 MiB (1 of 1); the
+offline README jury console failed the same way (6 of 201 clouds). On the first VM that console had
+passed at 212992 (137 `STOP`), so at the default buffer a stock Fast DDS player's 360° clouds reach
+the node or not depending on the host: the node's WARN (and its `sudo sysctl -w
+net.core.rmem_max=33554432`) applies to Fast DDS players as well as CycloneDDS ones
+([`diag_host_fastdds/README.txt`](evidence/dry_run_2026-09-25_2/diag_host_fastdds/README.txt)).
 
 ## 4. What we learned / hard cases
 

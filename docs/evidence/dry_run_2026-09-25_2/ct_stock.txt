@@ -1,0 +1,25 @@
+== playing as user 1000:1000 (stock Fast DDS settings) from a separate container: roundT_doubleT then doubleT_obstacle
+[detector_node-1] [INFO] [1790347210.065218736] [resense_detector]: ReSense detector listening on /lidar_points, /sensing/lidar/hesai128/pointcloud (+ auto-discovery); input reliability auto; per-frame kernels: native (_
+[detector_node-1] [INFO] [1790347221.752352057] [resense_detector]: input 1: /lidar_points (frame_id=hesai_lidar, 307200 points)
+[detector_node-1] [INFO] [1790347258.195022247] [resense_detector]: input 2: /sensing/lidar/hesai128/pointcloud (frame_id=lidar_livox, 921600 points) - input switched from /lidar_points: detector restarted
+status messages      : 385 (47 lines skipped)
+alarm frames         : 141
+obstacle distance    : 55.5 .. 56.6 m
+latency decode+detect: mean 46 / p95 64 / max 89 ms
+detector stage total : mean 25 / p95 37 ms
+dropped input frames : 68 (60 of them skipped by the node's catch-up); 52 after the first 5 s
+dropped input settle : start-up catch-up back on the newest frame at +2.7 s; drops counted after +5.0 s (the later of 5 s and that, at most 15 s)
+fps (last report)    : 10.24
+start of the input   : 35 frames in the first 5 s after the first one, largest gap 0.3 s
+recordings seen      : 2 ['/lidar_points', '/sensing/lidar/hesai128/pointcloud']
+
+PASS: all dry-run criteria met
+
+== stock Fast DDS client (uid 1000): player and listener without the image's profile
+player   DDS uid=1000 RMW_IMPLEMENTATION=rmw_fastrtps_cpp FASTRTPS_DEFAULT_PROFILES_FILE=unset FASTDDS_DEFAULT_PROFILES_FILE=unset cwd=/tmp/tmp.rTU4GlrVRf profile_in_cwd=none fastrtps=2.6.12-1jammy.20260723.233918
+listener DDS uid=1000 RMW_IMPLEMENTATION=rmw_fastrtps_cpp FASTRTPS_DEFAULT_PROFILES_FILE=unset FASTDDS_DEFAULT_PROFILES_FILE=unset cwd=/tmp/tmp.UAlp9imUZG profile_in_cwd=none fastrtps=2.6.12-1jammy.20260723.233918
+PLAY bag=roundT_doubleT rc=0 new_shm_files=5
+PLAY bag=doubleT_obstacle rc=0 new_shm_files=5
+listener /resense/decision: 430 messages, 141 STOP
+PASS: a stock Fast DDS player and listener (shared memory on) reached the UDP-only node
+exit 0

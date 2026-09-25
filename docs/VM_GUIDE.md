@@ -231,6 +231,11 @@ after `cb9e4ab`), the build `--no-cache` again:
 
 Commit the evidence as in §6 (`dry_run_<date>/`, `bench_<date>/`, `offline_<date>/`), one PR.
 
+**Done 25.09 afternoon** on a second team VM, code `76bf24e` (`docs/evidence/*_2026-09-25_2/`,
+EXPERIMENTS §3a / §3b): drops and false alarm PASS, online and offline; the bench PASS on the native
+path; the gate with the ride PASS; CycloneDDS at 32 MiB PASS. New: the host console with **stock
+Fast DDS** failed at Ubuntu's `rmem_max` 212992 on that VM (5 of 5) and passed at 32 MiB (CAPTAIN C4).
+
 ### 4.1 Dry run with the original bags
 
 ```bash
@@ -298,7 +303,9 @@ source /opt/ros/humble/setup.bash && ros2 topic echo /resense/decision --field d
 **Done:** the check passes and console 3 shows `STOP` during the obstacle recording. Optional:
 the same with `export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp` in consoles 2 and 3 (the node stays
 on Fast DDS). A CycloneDDS player needs `net.core.rmem_max` ≥ 32 MiB on the host for the 360° clouds
-(25.09: none arrived at Ubuntu's 212992, all at 32 MiB; the node logs a WARN below it):
+(25.09: none arrived at Ubuntu's 212992, all at 32 MiB; the node logs a WARN below it), and on some
+hosts a stock Fast DDS player does too (the second VM of 25.09: 0–1 of 201 clouds at 212992 in 5 of 5
+runs, all at 32 MiB; the first VM passed at 212992):
 `sudo sysctl -w net.core.rmem_max=33554432` for the run, restored afterwards (§4.0). **Evidence:** with the dry run's.
 
 ### 4.3 8-core bench

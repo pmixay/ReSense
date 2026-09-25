@@ -121,6 +121,25 @@ address in `offline_2026-09-25/blocked_attempts.txt` is replaced by `<vpc-dns>`.
 | `export_2026-09-25/` | `run_plan.sh export`: `export_image.sh` (`--no-cache`, gzip -6) + `load_image.sh` | PASS: 475 489 127 bytes, sha256 in `archive.txt` (the archive is not committed) |
 | `offline_2026-09-25/` | `run_plan.sh offline --minutes 30`: outbound blocked (`rules.txt`), images deleted, the archive loaded, `OFFLINE=1 dry_run.sh` on both bags, the README jury commands from the host console | FAIL: the two `dry_run.sh` runs (as online); PASS: block verified, load, `jury_console`; `blocked_attempts.txt`: only the kit's own probes; restored after 4 min (`window.txt`) |
 
+### `*_2026-09-25_2/`: the confirmation re-run on a second team VM (VM_GUIDE §4.0)
+
+25.09 afternoon, a second VM of the same type (Xeon Icelake 2.0 GHz, 8 vCPU = 4 physical cores, 15.6
+GiB, Ubuntu 22.04, Docker 29.8.1, stock ROS 2 Humble on the host), code `76bf24e`, every step as
+[`../VM_GUIDE.md`](../VM_GUIDE.md) writes it (§1 setup, §2 data with the ride's cache complete, §4.0
+runs, §6 collection; the `_2` suffix because the first run's folders carry the same date). The two
+bags were played from a RAM tmpfs copy, checked byte-identical to the originals. No archive, bag,
+cache or `out/` is committed; the personal-data scan of §6 found package versions, public DNS
+resolvers and multicast / loopback addresses only.
+
+| folder | run | result |
+|---|---|---|
+| `vm_2026-09-25_2/` | §3 machine facts (`lscpu`, `vmstat`, `rmem`, commit) | 4 cores, steal 0, `rmem_max` 212992 |
+| `dry_run_2026-09-25_2/` | §4.1 (`dry_obstacle.txt` with the `--no-cache` build, `dry_clear.txt`, `replay_dry_clear.txt`), §4.2 (`ct_stock.txt`; `host_console_fastdds.txt`, `host_console_cyclonedds.txt` at `rmem_max` 32 MiB), node logs and gzipped captures; `diag_host_fastdds/`: the stock Fast DDS host console repeated, at 32 MiB and with the 25.09 8 MiB profile mounted over the image's (its `README.txt`, the script `g_runs.sh`) | PASS: `dry_obstacle`, `dry_clear` (0 alarm frames; replay equal), `ct_stock`, CycloneDDS at 32 MiB; FAIL: the Fast DDS host console at 212992 (5 of 5), PASS at 32 MiB |
+| `bench_2026-09-25_2/` | §4.3, `scripts/bench_8core.sh` (its `build/run.txt` force-added past `.gitignore`'s `build/`) | PASS but `dry_obstacle_numpy` (p95 119 ms) |
+| `gate_2026-09-25_2/` | §4.4, `regression_gate.py --jobs 4` against `regression_baseline_2026-09-25_ride_column.json` | PASS: 105 gated rows the same, ride 187 / 46 / 39 |
+| `export_2026-09-25_2/` | §4.5, `export_image.sh` + `load_image.sh` | PASS: 475 515 293 bytes, sha256 in `archive.txt` |
+| `offline_2026-09-25_2/` | §5 steps 1–7 (no host allowed): `steps.txt`, `check_no_network.txt`, both `OFFLINE=1` dry runs, `jury_console.txt` (README steps 2–5 from the host), `rules_ipv4.txt` / `rules_ipv6.txt` (packet counters) | PASS: block, both dry runs; FAIL: `jury_console` (6 of 201 clouds: the host buffer, as online); restored after 4 min |
+
 ### `bag_metadata/`: the original `metadata.yaml` of the six recordings
 
 These files are copied unchanged from the organizers' dataset. Every recording was made with

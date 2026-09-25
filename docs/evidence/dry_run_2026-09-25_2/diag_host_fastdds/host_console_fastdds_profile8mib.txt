@@ -1,0 +1,19 @@
+DIAGNOSTIC: node started with extra docker arguments: -v /home/admn/fastdds_udp_8mib.xml:/opt/resense/fastdds_udp.xml:ro
+host console: admn uid 1000, RMW rmw_fastrtps_cpp (default), no Fast DDS profile; net.core.rmem_max 212992, rmem_default 212992
+decisions seen:     152 CAUTION      79 FAULT      31 GO 
+[detector_node-1] [WARN] [1790347624.758602156] [resense_detector]: net.core.rmem_max = 212992, net.core.rmem_default = 212992: below 32 MiB. A bag player on CycloneDDS (RMW_IMPLEMENTATION=rmw_cyclonedds_cpp) then delivers none of the ~24 M
+[detector_node-1] [WARN] [1790347675.748642298] [resense_detector]: 2.8 s hole in the input: scene state reset, calibration kept
+[detector_node-1] [WARN] [1790347680.749902880] [resense_detector]: 4.9 s hole in the input: scene state reset, calibration kept
+[detector_node-1] [WARN] [1790347681.752449698] [resense_detector]: 1.1 s hole in the input: scene state reset, calibration kept
+status messages      : 183 (79 lines skipped)
+alarm frames         : 0
+latency decode+detect: mean 40 / p95 51 / max 86 ms
+detector stage total : mean 25 / p95 36 ms
+dropped input frames : 116 (19 of them skipped by the node's catch-up); 96 after the first 5 s
+fps (last report)    : 0.48
+start of the input   : 30 frames in the first 5 s after the first one, largest gap 0.6 s
+recordings seen      : 2 ['/lidar_points', '/sensing/lidar/hesai128/pointcloud']
+
+FAIL: 0 alarm frames, expected >= 3
+FAIL: recording 2: 0 alarm frames, expected >= 3
+exit 1
