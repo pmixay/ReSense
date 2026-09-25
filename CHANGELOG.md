@@ -6,20 +6,30 @@
 > **Last verified:** 2026-09-25 against `79109f5` · **Status:** current
 
 Versions are the team's labels. The package metadata (`pyproject.toml`) says 0.1.0 up to PR #4,
-0.6.3 from PR #5 (`1210580`) and 1.0.0 from `65a5305` (25.09). Tags `v1.0.0-rcN` / `v1.0.0` are
-released by `.github/workflows/release.yml` ([`docs/CAPTAIN.md`](docs/CAPTAIN.md) §5); no tag is
-pushed yet. Results: [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md);
+0.6.3 from PR #5 (`1210580`) and 1.0.0 from `65a5305` (25.09). A pushed tag `v1.0.0-rcN` /
+`v1.0.0` would be released by `.github/workflows/release.yml`; no tag or release is planned now
+(deferred by the captain on 25.09: the system is still in development;
+[`docs/CAPTAIN.md`](docs/CAPTAIN.md) §5). Results: [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md);
 counts are "alarm frames / events (/ STOP episodes)" at full rate unless said. "Five bags" = the
 five obstacle-free recordings (2 287 frames); "ride" = the 20-minute recording `new_data` (11 271
 frames, 13 km, no obstacles).
 
-## 1.0.0 (release candidate, 25.09)
+## Unreleased (in development; package version 1.0.0)
 
-Package version 1.0.0 (tags `v1.0.0-rcN`, final `v1.0.0`; detector v0.6.3 with the long overhead
-rule on, node v0.6.4). Tests: 235 → 347 (+28 native kernels, +3 speed evaluation helpers, +17
-regression gate, +3 DBSCAN exactness, +3 late candidates, +53 release tooling, +5 overview video,
-2 of them in the image, which has no `docs/`) in `tests/`, 11 in `web/demo`.
+Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
+overhead rule on, node v0.6.4). Tests: 235 → 347 (+28 native kernels, +3 speed evaluation
+helpers, +17 regression gate, +3 DBSCAN exactness, +3 late candidates, +53 release tooling, +5
+overview video, 2 of them in the image, which has no `docs/`) in `tests/`, 11 in `web/demo`.
 
+- **The captain's decisions (25.09):** no tags or releases now, the system is still in
+  development: `.github/workflows/release.yml` and the release scripts stay, inert until a tag is
+  pushed, and every plan item that scheduled a tag or a release is deferred. The submission is
+  handled by the captain personally with all its links: `docs/SUBMISSION.md` removed, its links
+  replaced (the jury commands in the README, the dry-run procedure in README "Acceptance test and
+  CI", `scripts/dry_run.sh` and `scripts/vm/AGENT_BRIEF.md`, the offline delivery in ARCHITECTURE
+  "Deployment without internet"). Deployment (image archive, clean-machine and offline dry run on
+  the 8-core stand-in) and the presentation (deck, team slides, video voice-over) come later.
+  [`docs/CAPTAIN.md`](docs/CAPTAIN.md) C12, C13, C21, §9.
 - **Long overhead rule on, short signatures off (`935eecf`, `48411f2`, 25.09, A for the
   captain):** decided on the 20-minute ride with the regression gate against pre-registered
   criteria

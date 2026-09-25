@@ -1638,6 +1638,27 @@ and exit 3 with a diagnostic instead of reporting a result; `scripts/smoke_test.
 the ROS 2 image. Offline latency needs no Docker: `resense bench --npy <cache>` or
 `scripts/bench_node_path.py --npy <cache>` on a non-empty cache.
 
+**Dry run with the original bags and the offline rehearsal, 25.09 (team VM, a rehearsal of the later
+deployment).** `scripts/vm/run_plan.sh dryrun` and `offline`, code `7290873`, on the VM of §3a
+(8 vCPU = 4 physical cores, Ubuntu 22.04 with stock ROS 2 Humble on the host), the **original** bags
+played from a RAM tmpfs (the VM disk reads 64 MB/s); raw:
+[`evidence/dry_run_2026-09-25/`](evidence/dry_run_2026-09-25/),
+[`evidence/offline_2026-09-25/`](evidence/offline_2026-09-25/). Online, after a `--no-cache` build:
+`doubleT_obstacle` person 55.7–56.5 m, first `STOP` +1.6 s, p95 69 ms, 10 fps, but 20 frames dropped
+after 5 s → **FAIL** (the drop criterion only; §3a: the start-up catch-up runs past 5 s, plus 4
+frames later); `roundT_doubleT` 3 alarm frames at 111.0–114.9 m against 2 allowed → **FAIL**;
+`console_test.sh` with the image's and with a stock player **PASS**; the host console as a normal
+user (`ros2 bag play` + `ros2 topic echo`, stock `rmw_fastrtps_cpp`, no profile) **PASS** (137
+`STOP`, 55.7 m); the same with **`rmw_cyclonedds_cpp`: FAIL**, only 0–1 of the 201 360° clouds
+reached the node (the 120° clouds did); with `net.core.rmem_default` / `rmem_max` raised to 32 MB for
+one run they all arrived (`dry_run_2026-09-25/diag_cyclonedds_buffers/`). Offline (outbound blocked
+by the kit's iptables chain, no host allowed, restored after 4 min; nothing but the kit's own probes
+tried to go out): the archive of [`evidence/export_2026-09-25/`](evidence/export_2026-09-25/) loaded
+in 29 s after every image was deleted, `load_image.sh` PASS; the README jury commands from the host
+console **PASS** (134 `STOP`, 55.7–56.5 m, first `STOP` +2.3 s, p95 71 ms); `IMAGE_TAR=… OFFLINE=1
+dry_run.sh` fails the same two criteria as online (22 dropped after 5 s; 3 alarm frames at
+111–115 m).
+
 ## 4. What we learned / hard cases
 
 1. **Sensor mounts differ between bags** (bed 1.5 m vs 2.0 m below the sensor, axis 0.05–0.25 m

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Acceptance test for the submission (docs/SUBMISSION.md): build the image from scratch, play a
+# Acceptance test (README "Acceptance test and CI"): build the image from scratch, play a
 # bag through the node headlessly, capture /resense/status and assert the numbers we promise.
 #
 #   ./scripts/dry_run.sh /data/for_hackathon/doubleT_obstacle          # the known obstacle at 55-57 m
@@ -22,9 +22,9 @@
 # Any argument after the bag path is forwarded to scripts/check_dry_run.py, so the acceptance
 # thresholds live in one place. With no extra arguments the doubleT_obstacle criteria are used.
 #
-# Needs the dataset, so this runs on a team machine, not in GitHub CI. The 28.09 dry run simulates
-# the stand: scripts/export_image.sh on a machine with internet, the archive copied to the dry-run
-# machine, its network disconnected, then IMAGE_TAR=<archive> OFFLINE=1 (docs/SUBMISSION.md).
+# Needs the dataset, so this runs on a team machine, not in GitHub CI. The offline dry run (later
+# deployment) simulates the stand: scripts/export_image.sh with internet, the archive copied to the
+# dry-run machine, its network disconnected, then IMAGE_TAR=<archive> OFFLINE=1 (README, as above).
 set -euo pipefail
 cd "$(dirname "$0")/.."
 . "$(dirname "${BASH_SOURCE[0]}")/require_docker.sh"

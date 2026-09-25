@@ -489,7 +489,7 @@ cmd_export() {
     version="${VERSION_ARG:-$REF}"
   else
     version="${VERSION_ARG:-$(sed -n 's/^version[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' pyproject.toml | head -n 1)-$(git rev-parse --short HEAD)}"
-    note "no --ref: exported from the checkout at $(git rev-parse --short HEAD) as $version (the upload uses --ref v1.0.0-rc1 / v1.0.0; the release workflow makes the same archive on a tag push)"
+    note "no --ref: exported from the checkout at $(git rev-parse --short HEAD) as $version (--ref <tag> builds a clean clone of a tag; releases are deferred, 25.09: no tag yet)"
   fi
   archive="$DIST_DIR/resense-image-$version.tar.gz"
   run mkdir -p "$DIST_DIR"
@@ -786,11 +786,11 @@ cmd_collect() {
       [ -f "$d/$s/inventory.txt" ] && [ "$s" = fetch ] && r="$(tail -n 1 "$d/$s/fetch_log.txt" 2>/dev/null)"
       case "$s" in
         setup|fetch) echo "| $s | $r | \`docs/evidence/vm_$day/\` | — |" ;;
-        dryrun) echo "| dryrun | $r | \`docs/evidence/dry_run_$day/\` | SUBMISSION \"Dry run\"; CAPTAIN C7 (C4 when host_fastdds passed), action 15 |" ;;
+        dryrun) echo "| dryrun | $r | \`docs/evidence/dry_run_$day/\` | EXPERIMENTS §3b (one paragraph); CAPTAIN C7 (C4 when host_fastdds passed), action 15 |" ;;
         bench) echo "| bench | $r | \`docs/evidence/bench_$day/\` | EXPERIMENTS §3 (append the 8-core table); CAPTAIN C8, action 7 |" ;;
         gate) echo "| gate | $r | \`docs/evidence/gate_$day/\` (JSON, no work dirs) | CAPTAIN action 11 (go / no-go is the human's) |" ;;
-        export) echo "| export | $r | \`docs/evidence/export_$day/\` (archive.txt, .sha256; never the archive) | CAPTAIN actions 14b / 16 and §5 (size, sha256); SUBMISSION \"Upload\" |" ;;
-        offline) echo "| offline | $r | \`docs/evidence/offline_$day/\` | CAPTAIN C25 (and action 15 on 28.09); SUBMISSION \"Dry run\" |" ;;
+        export) echo "| export | $r | \`docs/evidence/export_$day/\` (archive.txt, .sha256; never the archive) | CAPTAIN C13 (size, sha256; releases deferred) |" ;;
+        offline) echo "| offline | $r | \`docs/evidence/offline_$day/\` | CAPTAIN C25 (and action 15: the later deployment) |" ;;
         all) echo "| all | $r | — | — |" ;;
       esac
     done

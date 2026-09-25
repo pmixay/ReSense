@@ -43,7 +43,7 @@ context. Timestamps below are `mm:ss` of the recording.
 | 19 | Evaluation hardware = the test stand of the spec (i7-9700E, RTX 4070 Ti SUPER); compute / memory are secondary criteria (tie-breakers only). No public leaderboard; the metrics are the spec's (§8: detection, range, speed, generalisation) | 16:26–16:53, 53:40–55:30 | CPU only (Python with optional C++ kernels; GPU evaluated on 24.09 and not used, ARCHITECTURE.md); latency and FPS reported |
 | 20 | Organizers' own solution is **purely algorithmic, no neural networks** | 52:03 | our geometric approach is aligned with what they consider workable |
 | 21 | Use of any external data / models is allowed if everything ships with the solution and runs offline; closed-source model weights are acceptable if the solution runs | 08:43–13:15, 38:20–40:40 | nothing external needed |
-| 22 | **No changes after the 29.09 deadline**; upload the link early (platform overload near the deadline) | 02:26–03:07, 50:22–51:10 | SUBMISSION.md: upload by 18:00 on 29.09 |
+| 22 | **No changes after the 29.09 deadline**; upload the link early (platform overload near the deadline) | 02:26–03:07, 50:22–51:10 | upload target 18:00 on 29.09; the upload is the captain's own (25.09, [`../CAPTAIN.md`](../CAPTAIN.md) C12) |
 | 23 | A live remote-desktop demo is fine, but the organizers will run every solution themselves | 15:34–16:22 | the jury path (`docker build → run → ros2 launch`) is primary |
 
 ## 2. Answers to our questions

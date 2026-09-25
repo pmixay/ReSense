@@ -3,7 +3,7 @@
 
 Reads the JSONL produced by ``ros2 topic echo /resense/status --field data`` (one status
 JSON per line; ``---`` separators and blank lines are ignored) and asserts the numbers the
-submission dry run promises (docs/SUBMISSION.md): the bag was processed at the expected rate,
+dry run promises (README "Acceptance test and CI"): the bag was processed at the expected rate,
 the node kept up, and the known obstacle was reported at the expected distance.
 
 Needs nothing but python3 — it runs on the host, not in the container.
