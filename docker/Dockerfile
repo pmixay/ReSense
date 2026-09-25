@@ -75,9 +75,12 @@ COPY labels/doubleT_obstacle.json ./labels/doubleT_obstacle.json
 
 COPY docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
-# DDS over UDP only: a bag played by a normal user on the host cannot write into the shared-memory
-# segments of a root process (docker/fastdds_udp.xml); unset the variable to use shared memory
-COPY docker/fastdds_udp.xml /opt/resense/fastdds_udp.xml
+# DDS over UDP only by default: a bag played by a normal user on the host cannot write into the
+# shared-memory segments of a root process (docker/fastdds_udp.xml). Opt-in `docker run -e
+# RESENSE_DDS=shm`: shared memory + UDP (docker/fastdds_shm_udp.xml), the node's Fast DDS files in
+# /dev/shm opened to other users (docker/fastdds_shm_share.py); the entrypoint picks the mode
+# (docker/dds_transport.sh).
+COPY docker/fastdds_udp.xml docker/fastdds_shm_udp.xml docker/dds_transport.sh docker/fastdds_shm_share.py /opt/resense/
 ENV FASTRTPS_DEFAULT_PROFILES_FILE=/opt/resense/fastdds_udp.xml
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["ros2", "launch", "resense_ros", "detector.launch.py"]

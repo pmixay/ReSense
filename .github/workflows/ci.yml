@@ -89,6 +89,22 @@ jobs:
         run: |
           IMAGE=resense:ci PLAYER_USER=1000:1000 PLAYER_DDS=stock PLAYER_ENV="-e RMW_IMPLEMENTATION=rmw_fastrtps_cpp" \
             OUT=out/console_test_stock scripts/console_test.sh /tmp/bags/smoke_bag /tmp/bags/smoke_bag2
+      - name: opt-in shared-memory mode (RESENSE_DDS=shm) — the stock uid-1000 player and listener reach the root node through /dev/shm
+        # the node runs with -e RESENSE_DDS=shm: Fast DDS with shared memory + UDPv4 (docker/fastdds_shm_udp.xml),
+        # its Fast DDS files in the host's /dev/shm opened to other users (docker/fastdds_shm_share.py). NODE_DDS=shm
+        # in console_test.sh asserts on top of the stock step's criteria: the entrypoint's "DDS transport: shm"
+        # line, root-owned port and data segments of mode 0666 in /dev/shm while the node runs (ls -l in
+        # out/console_test_shm/shm_ls.txt), and that every play mapped a root-owned port segment, i.e. the
+        # uid-1000 player opened the node's queue for writing; Fast DDS 2.6 then sends to a participant on the
+        # same host through shared memory only (ProxyDataFilters.hpp). The listener hears STOP only if it could
+        # open the node's data segment. The default (the steps above) stays UDP only
+        run: |
+          IMAGE=resense:ci PLAYER_USER=1000:1000 PLAYER_DDS=stock NODE_DDS=shm PLAYER_ENV="-e RMW_IMPLEMENTATION=rmw_fastrtps_cpp" \
+            OUT=out/console_test_shm scripts/console_test.sh /tmp/bags/smoke_bag /tmp/bags/smoke_bag2
+      - name: opt-in shared-memory mode — a player without shared memory (the image's UDP-only profile) still reaches the node
+        run: |
+          IMAGE=resense:ci PLAYER_USER=1000:1000 NODE_DDS=shm OUT=out/console_test_shm_udp \
+            scripts/console_test.sh /tmp/bags/smoke_bag /tmp/bags/smoke_bag2
       # ---- offline delivery: the test machine has no internet (organizers, 25.09,
       # docs/organizers/answers.md section 7), so the jury gets the image as an archive and runs
       # `docker load`, then the node with no internet. The three steps below prove that chain.

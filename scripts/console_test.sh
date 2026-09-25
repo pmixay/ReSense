@@ -23,7 +23,10 @@
 #   PLAYER_DDS=image         image: the player uses the image's Fast DDS profile (UDP only, like the node)
 #                            stock: Humble's default rmw_fastrtps_cpp settings, as a host console with a
 #                            stock ROS 2 install (below)
-#   OUT=out/console_test     status.jsonl, node.log (+ player.log, listener.log with PLAYER_DDS=stock)
+#   NODE_DDS=udp             udp: the node on the image's default, Fast DDS over UDP only
+#                            shm: the node with `-e RESENSE_DDS=shm`, the opt-in shared-memory mode (below)
+#   OUT=out/console_test     status.jsonl, node.log (+ player.log, listener.log with PLAYER_DDS=stock,
+#                            shm_ls.txt with NODE_DDS=shm)
 #
 # PLAYER_DDS=stock. The image sets FASTRTPS_DEFAULT_PROFILES_FILE=/opt/resense/fastdds_udp.xml (UDP
 # only); `docker run -e VAR=` could only empty it, so the player's shell unsets it, together with
@@ -40,18 +43,41 @@
 # profile use PLAYER_DDS=image PLAYER_ENV="-e FASTRTPS_DEFAULT_PROFILES_FILE=/data/<profile>.xml"
 # (a file in the bag directory, mounted at /data). Another RMW, if installed in the image:
 # PLAYER_DDS=stock PLAYER_ENV="-e RMW_IMPLEMENTATION=rmw_cyclonedds_cpp" (no shared-memory check then).
+# PLAYER_DDS=stock also prints the UDP datagrams this host received while the player ran next to
+# the number the bags' clouds alone would need over UDP (/proc/net/snmp; information, not a check).
+#
+# NODE_DDS=shm: the node runs with `-e RESENSE_DDS=shm` (docker/dds_transport.sh: shared memory +
+# UDPv4, its Fast DDS files in /dev/shm opened to other users by docker/fastdds_shm_share.py).
+# Asserted on top of the above:
+#   - the node's log names the mode (the entrypoint's "DDS transport: shm" line);
+#   - while the node runs, /dev/shm holds root-owned Fast DDS port segments (fastrtps_port<N>) and a
+#     root-owned data segment (fastrtps_<16 hex>) made since it started, with mode 0666 (ls -l in
+#     shm_ls.txt);
+#   - with PLAYER_DDS=stock on Fast DDS: every play mapped a root-owned port segment, i.e. the
+#     uid-1000 player opened the node's shared-memory queue for writing; Fast DDS 2.6 then sends to
+#     a participant on its own host through shared memory only (ProxyDataFilters.hpp), so the
+#     clouds went through /dev/shm.
+# With PLAYER_DDS=image the same node is reached by a player without shared memory, over UDP.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 . "$(dirname "${BASH_SOURCE[0]}")/require_docker.sh"
 IMAGE="${IMAGE:-resense:latest}"
 PLAYER_USER="${PLAYER_USER:-1000:1000}"
 PLAYER_DDS="${PLAYER_DDS:-image}"
+NODE_DDS="${NODE_DDS:-udp}"
 OUT="${OUT:-out/console_test}"
 case "$PLAYER_DDS" in
   image|stock) ;;
   *) echo "ERROR: PLAYER_DDS must be 'image' or 'stock', not '$PLAYER_DDS'" >&2; exit 2 ;;
 esac
+case "$NODE_DDS" in
+  udp|shm) ;;
+  *) echo "ERROR: NODE_DDS must be 'udp' or 'shm', not '$NODE_DDS'" >&2; exit 2 ;;
+esac
 read -r -a PLAYER_ARGS <<< "${PLAYER_ENV:-}"
+NODE_ARGS=()
+CT_ARGS=()      # tells the stock player to look for the node's shared-memory queues
+if [ "$NODE_DDS" = shm ]; then NODE_ARGS=(-e RESENSE_DDS=shm); CT_ARGS=(-e CT_NODE_DDS=shm); fi
 BAG1="${1:?usage: scripts/console_test.sh <bag dir> [<second bag dir>] [-- check args]}"; shift
 if [ ! -d "$BAG1" ] || [ ! -f "$BAG1/metadata.yaml" ]; then
   echo "ERROR: $BAG1 is not a ROS 2 bag directory (no metadata.yaml)" >&2
@@ -67,7 +93,7 @@ fi
 require_docker_daemon
 PARENT="$(cd "$(dirname "$BAG1")" && pwd)"
 mkdir -p "$OUT"; OUT_ABS="$(cd "$OUT" && pwd)"
-rm -f "$OUT_ABS/status.jsonl" "$OUT_ABS/node.log" "$OUT_ABS/player.log" "$OUT_ABS/listener.log"
+rm -f "$OUT_ABS/status.jsonl" "$OUT_ABS/node.log" "$OUT_ABS/player.log" "$OUT_ABS/listener.log" "$OUT_ABS/shm_ls.txt"
 cleanup() { docker rm -f resense_ct_node resense_ct_echo resense_ct_listen >/dev/null 2>&1 || true; }
 trap cleanup EXIT
 cleanup
@@ -81,10 +107,17 @@ cd "$(mktemp -d)"
 echo "DDS uid=$(id -u) RMW_IMPLEMENTATION=$RMW_IMPLEMENTATION FASTRTPS_DEFAULT_PROFILES_FILE=${FASTRTPS_DEFAULT_PROFILES_FILE-unset} FASTDDS_DEFAULT_PROFILES_FILE=${FASTDDS_DEFAULT_PROFILES_FILE-unset} cwd=$PWD profile_in_cwd=$(ls DEFAULT_FASTRTPS_PROFILES.xml 2>/dev/null || echo none) fastrtps=$(dpkg-query -W -f="\${Version}" ros-humble-fastrtps 2>/dev/null || echo unknown)"
 '
 # The stock player: every play is watched for new Fast DDS shared-memory files of the player's uid.
+# With NODE_DDS=shm (CT_NODE_DDS) also for the root-owned port segments the player maps, i.e. the
+# node's queues it opened read-write to send to (PLAY ... node_ports=<names>|none).
 # shellcheck disable=SC2016
 STOCK_PLAYER="$STOCK_DDS"'
 export LC_ALL=C
 shm_files() { find /dev/shm -maxdepth 1 -user "$(id -u)" \( -name "*fastrtps*" -o -name "*fastdds*" \) -printf "%f\n" 2>/dev/null | sort; }
+root_ports() {
+  grep -o "/dev/shm/fastrtps_port[0-9]*$" "/proc/$1/maps" 2>/dev/null | sort -u | while read -r f; do
+    [ "$(stat -c %u "$f" 2>/dev/null)" = 0 ] && echo "${f#/dev/shm/}"
+  done | paste -sd, -
+}
 play() {
   shm_files > shm_before.txt
   ros2 bag play "/data/$1" --delay 3 --disable-keyboard-controls > "play_$1.txt" 2>&1 &
@@ -95,15 +128,25 @@ play() {
     kill -0 "$pid" 2>/dev/null || break
     sleep 0.25
   done
+  if [ "${CT_NODE_DDS:-}" = shm ]; then
+    local ports=""
+    for _ in $(seq 1 240); do
+      ports=$(root_ports "$pid")
+      [ -n "$ports" ] && break
+      kill -0 "$pid" 2>/dev/null || break
+      sleep 0.25
+    done
+  fi
   wait "$pid" || rc=$?
-  echo "PLAY bag=$1 rc=$rc new_shm_files=$new"
+  echo "PLAY bag=$1 rc=$rc new_shm_files=$new${CT_NODE_DDS:+ node_ports=${ports:-none}}"
   sed "s/^/  play: /" "play_$1.txt" | tail -n 20
 }
 play "$CT_BAG1"
 if [ -n "$CT_BAG2" ]; then sleep 5; play "$CT_BAG2"; fi
 '
 
-docker run -d --name resense_ct_node --net=host --ipc=host "$IMAGE" >/dev/null
+[ "$NODE_DDS" = shm ] && touch "$OUT_ABS/.node_started"     # older /dev/shm files are not this node's
+docker run -d --name resense_ct_node --net=host --ipc=host ${NODE_ARGS[@]+"${NODE_ARGS[@]}"} "$IMAGE" >/dev/null
 READY=0
 for _ in $(seq 1 60); do
   if docker logs resense_ct_node 2>&1 | grep -q "ReSense detector listening"; then
@@ -126,6 +169,16 @@ if [ "$PLAYER_DDS" = stock ]; then
 exec ros2 topic echo /resense/decision std_msgs/msg/String --field data" >/dev/null
 fi
 sleep 4
+if [ "$NODE_DDS" = shm ]; then
+  # the host's /dev/shm (--ipc=host) while the node runs: the root-owned Fast DDS files made since it
+  # started, and their modes
+  ROOT_SHM="$(find /dev/shm -maxdepth 1 -user 0 -newer "$OUT_ABS/.node_started" \( -name "fastrtps_*" -o -name "sem.fastrtps_*" \) \
+    -printf "%m %f\n" 2>/dev/null | sort -k2 || true)"
+  { echo "# ls -l /dev/shm, the node (RESENSE_DDS=shm) ready, before the player"; ls -l /dev/shm; } > "$OUT_ABS/shm_ls.txt" 2>&1 || true
+fi
+# UDP datagrams this host receives while the player runs (all containers share its network: --net=host)
+udp_in() { awk '$1 == "Udp:" && $2 ~ /^[0-9]+$/ {print $2 + $4; exit}' /proc/net/snmp 2>/dev/null || true; }
+UDP0="$(udp_in)"
 PLAY="ros2 bag play /data/$(basename "$BAG1") --delay 3 --disable-keyboard-controls"
 if [ -n "$BAG2" ]; then
   PLAY="$PLAY; sleep 5; ros2 bag play /data/$(basename "$BAG2") --delay 3 --disable-keyboard-controls"
@@ -134,7 +187,7 @@ echo "== playing as user $PLAYER_USER ($PLAYER_DDS Fast DDS settings) from a sep
 PLAYER_RC=0
 if [ "$PLAYER_DDS" = stock ]; then
   docker run --rm --net=host --ipc=host --user "$PLAYER_USER" -e HOME=/tmp \
-    -e CT_BAG1="$(basename "$BAG1")" -e CT_BAG2="${BAG2:+$(basename "$BAG2")}" \
+    -e CT_BAG1="$(basename "$BAG1")" -e CT_BAG2="${BAG2:+$(basename "$BAG2")}" ${CT_ARGS[@]+"${CT_ARGS[@]}"} \
     ${PLAYER_ARGS[@]+"${PLAYER_ARGS[@]}"} -v "$PARENT":/data:ro "$IMAGE" \
     bash -c "$STOCK_PLAYER" > "$OUT_ABS/player.log" 2>&1 || PLAYER_RC=$?
 else
@@ -142,7 +195,11 @@ else
     ${PLAYER_ARGS[@]+"${PLAYER_ARGS[@]}"} -v "$PARENT":/data:ro "$IMAGE" \
     bash -c "$PLAY >/dev/null 2>&1"
 fi
+UDP1="$(udp_in)"
 sleep 4
+if [ "$NODE_DDS" = shm ]; then
+  { echo; echo "# ls -l /dev/shm, after the player"; ls -l /dev/shm; } >> "$OUT_ABS/shm_ls.txt" 2>&1 || true
+fi
 docker logs resense_ct_node > "$OUT_ABS/node.log" 2>&1
 grep -E "input [0-9]+:|re-created|NO_INPUT|per-frame kernels" "$OUT_ABS/node.log" | cut -c1-220 || true
 
@@ -154,11 +211,37 @@ else
 fi
 CHECK_RC=0
 python3 scripts/check_dry_run.py "$OUT_ABS/status.jsonl" "${CHECK_ARGS[@]}" || CHECK_RC=$?
-[ "$PLAYER_DDS" = stock ] || exit "$CHECK_RC"
+
+# ---- NODE_DDS=shm: did the entrypoint switch the node to shared memory, open up its files?
+SHM_FAIL=()
+if [ "$NODE_DDS" = shm ]; then
+  echo
+  echo "== the node in shared-memory mode (RESENSE_DDS=shm)"
+  grep -E "\[resense\.(dds|shm)\]" "$OUT_ABS/node.log" | cut -c1-220 || true
+  echo "root-owned Fast DDS files made in /dev/shm since the node started, before the player (mode name; the lock files *_el / *_sl stay 644:"
+  echo "others open them read-only; the full listing: $OUT/shm_ls.txt):"
+  if [ -n "$ROOT_SHM" ]; then awk '{print "  " $0}' <<<"$ROOT_SHM"; else echo "  none"; fi
+  if ! grep -q "DDS transport: shm" "$OUT_ABS/node.log"; then
+    SHM_FAIL+=("the node's log has no 'DDS transport: shm' line: the entrypoint did not switch it to shared memory (see $OUT/node.log)")
+  fi
+  if ! grep -qE "^666 fastrtps_port[0-9]+$" <<<"$ROOT_SHM" || ! grep -qE "^666 fastrtps_[0-9a-f]{16}$" <<<"$ROOT_SHM"; then
+    SHM_FAIL+=("no root-owned Fast DDS port segment and data segment with mode 666 in /dev/shm while the node ran: other users cannot write into its queues")
+  fi
+  NOT_OPEN="$(grep -vE "_(el|sl)$" <<<"$ROOT_SHM" | grep -vE "^666 " || true)"
+  if [ -n "$NOT_OPEN" ]; then
+    echo "note: a root-owned port or segment above is not at 666: not opened up by fastdds_shm_share.py (another root process's, or the node's when it failed below)"
+  fi
+fi
+if [ "$PLAYER_DDS" != stock ]; then
+  for f in ${SHM_FAIL[@]+"${SHM_FAIL[@]}"}; do echo "FAIL: $f"; done
+  if [ ${#SHM_FAIL[@]} -gt 0 ] && [ "$CHECK_RC" -eq 0 ]; then exit 1; fi
+  [ "$NODE_DDS" = shm ] && [ "$CHECK_RC" -eq 0 ] && echo "PASS: a player without shared memory reached the shared-memory node over UDP"
+  exit "$CHECK_RC"
+fi
 
 # ---- PLAYER_DDS=stock: did the player run with stock Fast DDS, shared memory on, and was it heard?
 docker logs resense_ct_listen > "$OUT_ABS/listener.log" 2>&1 || true
-STOCK_FAIL=()
+STOCK_FAIL=(${SHM_FAIL[@]+"${SHM_FAIL[@]}"})
 echo
 echo "== stock Fast DDS client (uid ${PLAYER_USER%%:*}): player and listener without the image's profile"
 grep -m1 "^DDS " "$OUT_ABS/player.log" | sed 's/^/player   /' || true
@@ -176,6 +259,18 @@ if [ "$PLAYER_RC" -ne 0 ] || [ "$N_PLAYS" -ne "$N_WANT" ] || [ "$N_BAD" -ne 0 ];
 fi
 if grep -q "^DDS .*RMW_IMPLEMENTATION=rmw_fastrtps_cpp " "$OUT_ABS/player.log" && [ "$N_NOSHM" -ne 0 ]; then
   STOCK_FAIL+=("$N_NOSHM play(s) created no Fast DDS shared-memory file in /dev/shm: shared memory was not on in the player, so this run does not show the stock transports")
+fi
+# NODE_DDS=shm, PLAY lines end in "node_ports=<root-owned port segments the player mapped>|none"
+if [ "$NODE_DDS" = shm ] && grep -q "^DDS .*RMW_IMPLEMENTATION=rmw_fastrtps_cpp " "$OUT_ABS/player.log"; then
+  N_NOPORT="$(awk '/^PLAY / && $5 !~ /^node_ports=fastrtps_port/ {n++} END {print n + 0}' "$OUT_ABS/player.log")"
+  if [ "$N_NOPORT" -ne 0 ]; then
+    STOCK_FAIL+=("$N_NOPORT play(s) never mapped a root-owned port segment of the node: the player did not send through shared memory")
+  fi
+fi
+if [ -n "$UDP0" ] && [ -n "$UDP1" ]; then
+  BAG_BYTES="$(du -cb "$BAG1" ${BAG2:+"$BAG2"} 2>/dev/null | tail -n 1 | cut -f1 || true)"
+  echo "UDP datagrams this host received while the player ran: $((UDP1 - UDP0)); over UDP the bags'" \
+       "${BAG_BYTES:-?} bytes alone would need at least $(( ${BAG_BYTES:-0} / 65500 )) (65500-byte datagrams; information)"
 fi
 N_DEC="$(grep -cxE "GO|CAUTION|STOP|FAULT" "$OUT_ABS/listener.log" || true)"
 N_STOP="$(grep -cx "STOP" "$OUT_ABS/listener.log" || true)"
@@ -195,5 +290,11 @@ if [ ${#STOCK_FAIL[@]} -gt 0 ]; then
   [ "$CHECK_RC" -ne 0 ] && exit "$CHECK_RC"
   exit 1
 fi
-echo "PASS: a stock Fast DDS player and listener (shared memory on) reached the UDP-only node"
+if [ "$NODE_DDS" = shm ] && grep -q "^DDS .*RMW_IMPLEMENTATION=rmw_fastrtps_cpp " "$OUT_ABS/player.log"; then
+  echo "PASS: a stock Fast DDS player and listener (shared memory on) reached the node (RESENSE_DDS=shm) over shared memory"
+elif [ "$NODE_DDS" = shm ]; then
+  echo "PASS: a stock player and listener without Fast DDS reached the node (RESENSE_DDS=shm) over UDP"
+else
+  echo "PASS: a stock Fast DDS player and listener (shared memory on) reached the UDP-only node"
+fi
 exit "$CHECK_RC"

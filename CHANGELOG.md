@@ -17,12 +17,25 @@ frames, 13 km, no obstacles).
 ## Unreleased (in development; package version 1.0.0)
 
 Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
-overhead rule on, node v0.6.4). Tests: 235 → 396 (+28 native kernels, +3 speed evaluation
+overhead rule on, node v0.6.4). Tests: 235 → 416 (+28 native kernels, +3 speed evaluation
 helpers, +23 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5
 overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting and socket
-buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`) in `tests/`,
-11 in `web/demo`.
+buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`, +20 DDS
+transport, 19 of them in the image) in `tests/`, 11 in `web/demo`.
 
+- **Opt-in shared-memory transport, `RESENSE_DDS=shm` (25.09, default off):** on the second team VM
+  a stock Fast DDS host player delivered 0–1 of the 201 360° clouds over UDP at Ubuntu's
+  `rmem_max` 212992 (EXPERIMENTS §3b). `docker run … -e RESENSE_DDS=shm` (with `--ipc=host`): the
+  entrypoint switches to shared memory + UDPv4 (`docker/dds_transport.sh`,
+  `docker/fastdds_shm_udp.xml`) and starts `docker/fastdds_shm_share.py`, which sets the node's own
+  Fast DDS port and data segments in `/dev/shm` to 0666: Fast DDS 2.6 creates them 0644 (Boost's
+  default, then `fchmod`) with no option to change it, and a player of another uid must open them
+  read-write, with no UDP fallback once it sees shared-memory locators of its own host. Falls back
+  to UDP with a WARN without `--ipc=host`; an invalid value means UDP; one INFO line names the mode.
+  The default (UDP only) is unchanged. CI: `NODE_DDS=shm scripts/console_test.sh` with the stock
+  uid-1000 player (asserts the mode line, the 0666 segments and that each play mapped a root-owned
+  port of the node) and with the image's UDP-only player. The VM run that decides the default:
+  [`docs/VM_GUIDE.md`](docs/VM_GUIDE.md) §4.6. +20 tests (`tests/test_dds_transport.py`).
 - **`tracking.column_hold` 2: the `roundT_doubleT` dry-run alarm (`fce04aa`, `d117c8c`, 25.09,
   delegated by the captain):** the VM dry run of 25.09 failed `--expect-clear --max-alarm-frames 2`
   on `roundT_doubleT` with 3 alarm frames at 111–115 m in all 10 ROS captures. Replayed offline
