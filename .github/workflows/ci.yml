@@ -79,6 +79,16 @@ jobs:
           mkdir -p /tmp/bags && chmod 777 /tmp/bags
           docker run --rm -v /tmp/bags:/bags resense:ci bash -lc "python3 scripts/make_smoke_bag.py /bags/smoke_bag && python3 scripts/make_smoke_bag.py /bags/smoke_bag2 --topic /sensing/lidar/hesai128/pointcloud --frame-id lidar_livox --distance 45"
           IMAGE=resense:ci PLAYER_USER=1000:1000 scripts/console_test.sh /tmp/bags/smoke_bag /tmp/bags/smoke_bag2
+      - name: the jury's console with stock Fast DDS — a uid-1000 player and listener without our profile, shared memory on
+        # the organizers play from a host console with Humble's default rmw_fastrtps_cpp (no XML profile: shared
+        # memory + UDPv4). PLAYER_DDS=stock unsets the image's FASTRTPS_DEFAULT_PROFILES_FILE in the player and in a
+        # /resense/decision listener (both uid 1000, --net=host --ipc=host like a host console) and asserts that the
+        # player really had shared memory on (its own segments in /dev/shm while it played) and the listener heard
+        # STOP. The node keeps its UDP-only profile and announces no shared-memory locators, so the stock
+        # participants must reach it over UDP; the bags are the previous step's
+        run: |
+          IMAGE=resense:ci PLAYER_USER=1000:1000 PLAYER_DDS=stock PLAYER_ENV="-e RMW_IMPLEMENTATION=rmw_fastrtps_cpp" \
+            OUT=out/console_test_stock scripts/console_test.sh /tmp/bags/smoke_bag /tmp/bags/smoke_bag2
       # ---- offline delivery: the test machine has no internet (organizers, 25.09,
       # docs/organizers/answers.md section 7), so the jury gets the image as an archive and runs
       # `docker load`, then the node with no internet. The three steps below prove that chain.
