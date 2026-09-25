@@ -81,5 +81,337 @@
     "order_of_runs": "A2, B2, C2: the subset first (as round 1); the full gate (the six recordings, set O, the ride in pieces, set F straight) only for a candidate that passes the subset, the target and the per-frame set O check; stop at the first candidate that passes everything and ship it. If none passes, nothing ships.",
     "ship_rule": "Unchanged from 'preregistered.ship_rule' (the full gate exits 0 against regression_baseline_2026-09-25_ride_column.json with no gated row worse or missing; the target: wrong-distance frames of #1 < 12, max |error| < 14.11 m, no #1 STOP frame lost over its 229 labelled frames; the safety conditions, including the per-frame superset of matched alarm frames for every inside object of set O).",
     "known_before_registration": "Round 1 numbers above. A2-C2 not run; A2's set O target frames are expected to be as A's (shadow start 29 m at the onset, splits at 8.8-20.7 m)."
-  }
+  },
+  "round_2_results": {
+    "code": "9f2e2e4 + cluster.oversize_split_max_distance (the committed code of this branch), native path, receive stamps, --jobs 1, the 4-vCPU dev VM shared with other agents",
+    "A2": "subset FAIL: set O #8 (big_above, inside) STOP frames 12 -> 11 (frame 643, 79.2 m); everything else as B2 below (five bags 58 / 13 / 16 identical, #1 207 -> 208, #9 42 -> 49). Cause: with the shadow start allowed up to 35 m the rule first fires at set O frame 199 (B2: 204); the track model then differs from the baseline by up to ~0.03 deg of yaw for the rest of the recording (the axis fit is chaotic at that level: the A2 output differs from the baseline in 1 316 of 1 510 frames), and at frame 640 four more points join #8's 2 m wide cluster (2.02 m > cluster.elevated_min_width 2.0), which is demoted `elevated` and turns the track advisory at 643. Not the rule acting on #8: a perturbation of a marginal decision.",
+    "B2_subset": "PASS: no gated row worse, 2 better (#1 STOP frames 207 -> 208, #9 42 -> 49); the six recordings identical on every row; set O per frame over all labelled frames: no inside object loses a matched alarm or a STOP frame, frames with an alarm matching no object 29 -> 9, alarm frames 342 -> 342",
+    "B2_full": {
+      "command": "python scripts/regression_gate.py --cache /data/cache --jobs 1 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json --set track.floor_shadow_height=1.0 --set track.floor_shadow_range=30.0 --set cluster.oversize_split_max_length=3.0 --set cluster.oversize_split_max_distance=30.0 --set cluster.gauge_distance=true (1 084 s)",
+      "verdict": "GATE PASS: no gated metric worse, 5 gated rows better, 19 information rows changed; raw: regression_gate_2026-09-25_rail_shadow.json",
+      "better": [
+        "set_O big_center stop_frames 207 -> 208",
+        "set_O long_low_on_rails stop_frames 42 -> 49 (held from 58.6 -> 90.8 m)",
+        "set_F_straight person false_detections 7 -> 6",
+        "set_F_straight box1.0 false_detections 13 -> 10",
+        "set_F_straight trolley false_detections 12 -> 5"
+      ],
+      "same": "the ride 187 / 46 / 39 (alarm frames / events / STOP episodes); five bags 58 / 13 / 16; squareT_platform_squareT_switch 54 / 9 / 15; doubleT_obstacle labelled hits 185 of 246 (person 58 / 61, rail object from frame 75 124 / 126), first alarm frame 11, fp events 0; set O first STOPs, outside false STOP frames 6, background 3 frames / 2 ids; set F straight detected 6 / 6 / 6 / 6 / 1 and first-detection medians 151.0 / 123.9 / 51.9 / 151.4 / 98.9 m (person, 1 m box, 0.5 m box, trolley, cable)",
+      "information": "set O inside STOP frames 303 -> 311, #7 advisory frames 44 -> 43; set F sustained medians person 142.6 -> 157.1 m, trolley 115.0 -> 120.9 m; latency rows differ by run noise (shared machine)"
+    },
+    "where_the_rules_act": {
+      "floor_shadow": "set O 29 frames (204-231 and 369; the bed held in 14); never on the six recordings or the ride",
+      "per_frame_vs_default": "doubleT_platform 8 of 345 frames and roundT_doubleT 2 of 252 differ, only in the distance of an advisory track whose current cluster lies in the gauge (cluster.gauge_distance: 0.02-3.1 m farther); no decision, alarm or clear_distance changes; set O 1 311 of 1 510 frames differ (the track model from frame 204 on, distances)"
+    },
+    "target": {
+      "baseline": {
+        "label": "big_center",
+        "label_frames": 229,
+        "stop_frames": 224,
+        "stop_frames_plausible": 208,
+        "matched_frames": 216,
+        "matched_frames_plausible": 207,
+        "wrong_distance_frames": 12,
+        "wrong_distance_frame_list": [
+          213,
+          214,
+          215,
+          216,
+          217,
+          218,
+          219,
+          220,
+          221,
+          222,
+          223,
+          224
+        ],
+        "max_abs_err_m": 14.11,
+        "mean_abs_err_m_within_30m": 3.71,
+        "stop_frames_within_30m": 31,
+        "no_stop_frames": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "shipped": {
+        "label": "big_center",
+        "label_frames": 229,
+        "stop_frames": 224,
+        "stop_frames_plausible": 208,
+        "matched_frames": 224,
+        "matched_frames_plausible": 208,
+        "wrong_distance_frames": 0,
+        "wrong_distance_frame_list": [],
+        "max_abs_err_m": 0.46,
+        "mean_abs_err_m_within_30m": 0.0,
+        "stop_frames_within_30m": 31,
+        "no_stop_frames": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rows_200_228": {
+        "columns": [
+          "frame",
+          "#1 true distance m",
+          "nearest_distance baseline m",
+          "nearest_distance shipped m",
+          "#1 matched baseline",
+          "#1 matched shipped"
+        ],
+        "rows": [
+          [
+            200,
+            28.25,
+            28.25,
+            28.25,
+            1,
+            1
+          ],
+          [
+            201,
+            27.44,
+            27.44,
+            27.44,
+            1,
+            1
+          ],
+          [
+            202,
+            26.61,
+            26.62,
+            26.62,
+            1,
+            1
+          ],
+          [
+            203,
+            25.78,
+            25.78,
+            25.78,
+            1,
+            1
+          ],
+          [
+            204,
+            24.94,
+            24.94,
+            24.94,
+            1,
+            1
+          ],
+          [
+            205,
+            24.09,
+            24.09,
+            24.09,
+            1,
+            1
+          ],
+          [
+            206,
+            23.24,
+            23.24,
+            23.24,
+            1,
+            1
+          ],
+          [
+            207,
+            22.38,
+            22.39,
+            22.39,
+            1,
+            1
+          ],
+          [
+            208,
+            21.53,
+            21.53,
+            21.53,
+            1,
+            1
+          ],
+          [
+            209,
+            20.66,
+            20.66,
+            20.66,
+            1,
+            1
+          ],
+          [
+            210,
+            19.78,
+            19.79,
+            19.78,
+            1,
+            1
+          ],
+          [
+            211,
+            18.89,
+            18.9,
+            18.89,
+            1,
+            1
+          ],
+          [
+            212,
+            18.0,
+            18.01,
+            18.0,
+            1,
+            1
+          ],
+          [
+            213,
+            17.11,
+            3.0,
+            17.11,
+            1,
+            1
+          ],
+          [
+            214,
+            16.21,
+            3.0,
+            16.21,
+            1,
+            1
+          ],
+          [
+            215,
+            15.3,
+            3.0,
+            15.3,
+            1,
+            1
+          ],
+          [
+            216,
+            14.39,
+            3.0,
+            14.39,
+            1,
+            1
+          ],
+          [
+            217,
+            13.48,
+            3.0,
+            13.48,
+            0,
+            1
+          ],
+          [
+            218,
+            12.56,
+            3.0,
+            12.56,
+            0,
+            1
+          ],
+          [
+            219,
+            11.63,
+            3.0,
+            11.63,
+            0,
+            1
+          ],
+          [
+            220,
+            10.7,
+            3.02,
+            10.7,
+            0,
+            1
+          ],
+          [
+            221,
+            9.76,
+            3.0,
+            9.76,
+            0,
+            1
+          ],
+          [
+            222,
+            8.81,
+            3.0,
+            8.81,
+            0,
+            1
+          ],
+          [
+            223,
+            7.86,
+            3.0,
+            7.86,
+            0,
+            1
+          ],
+          [
+            224,
+            6.9,
+            3.01,
+            6.9,
+            0,
+            1
+          ],
+          [
+            225,
+            5.94,
+            3.0,
+            5.94,
+            1,
+            1
+          ],
+          [
+            226,
+            4.97,
+            2.92,
+            4.97,
+            1,
+            1
+          ],
+          [
+            227,
+            3.98,
+            3.0,
+            3.98,
+            1,
+            1
+          ],
+          [
+            228,
+            3.0,
+            3.0,
+            3.0,
+            1,
+            1
+          ]
+        ]
+      }
+    },
+    "decision": "SHIP B2 (the first candidate in the registered order that passes the subset, the target, the per-frame set O check and the full gate): track.floor_shadow_height 1.0, floor_shadow_range 30, floor_shadow_min_bins 5, cluster.oversize_split_max_length 3.0, oversize_split_max_distance 30, cluster.gauge_distance true, as the defaults in resense/config.py, configs/default.yaml and the ROS copy. The effective config of the B2 gate run equals the new configs/default.yaml; `resense run` with the new defaults reproduces the B2 set O output frame by frame (decision fields and track model)."
+  },
+  "safety": {
+    "why_no_obstacle_loses_its_stop": "The floor rule only acts in a frame where two bed-band bins within 30 m lie > 1 m above the previous bed (a wide object hiding the bed), and then fits the bed and the rail pair on the track in front of the object or holds the previous model: the rail head near the object stays where it was before the shadow instead of rising 0.5-2 m and lifting the object's lower part out of the envelope (baseline: the box itself unmatched in frames 217-224, the STOP held only by the bed at 3 m). The split can only add a cluster (one the old code dropped whole), within 30 m. gauge_distance changes no zone, only the reported distance, and only to a larger value (a subset's minimum). Measured: no inside object of set O loses a matched alarm frame or a STOP frame over all 1 510 frames (#1: 224 of 229 STOP frames as before, matched 216 -> 224); doubleT_obstacle identical; set F detections identical.",
+    "tests": "tests/test_late_candidates.py (+4): test_rail_shadow_rules_shipped; test_oversize_split_and_gauge_distance (the set O face touching a 12 m edge line at 15 m: dropped whole with the split off, the face at 15 m with it on, dropped beyond 30 m; gauge_distance 3.0 -> 9.0 m on a shorter line); test_rail_shadow_bed_and_distance (ray-cast approach of a 0.5 x 2 x 2 m box 36 -> 6 m at 2 m per frame: off, the rail head at 20 m > 1 m off and the bed at 3 m reported; on, the same first STOP frame, every STOP at the box's distance +- 0.5 m, the rail head never worse than off and within 0.1 m once the shadow is found, the bed held at the end); test_rail_shadow_person_in_front_of_the_box_stops (safety: a person 6 m in front of the approaching box is a STOP at the person's distance in every frame from the frame the rules off confirm it; a person at the corridor edge next to a 12 m line: no STOP with the rules off, a STOP at 20 m with them on)"
+  },
+  "files": [
+    "resense/track.py (_floor_shadow, _fit_floor shadow_ref / info, estimate_track: the rail range cut at the face or the rail model held; TrackModel.floor_shadow / floor_held, in to_dict only in a frame with a shadow)",
+    "resense/clustering.py (_gauge_part, the split in _corridor_cluster, gauge_distance)",
+    "resense/config.py, configs/default.yaml, ros2_ws/src/resense_ros/config/detector.yaml",
+    "tests/test_late_candidates.py"
+  ]
 }

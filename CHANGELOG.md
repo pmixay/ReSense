@@ -17,11 +17,27 @@ frames, 13 km, no obstacles).
 ## Unreleased (in development; package version 1.0.0)
 
 Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
-overhead rule on, node v0.6.4). Tests: 235 → 396 (+28 native kernels, +3 speed evaluation
+overhead rule on, node v0.6.4). Tests: 235 → 400 (+28 native kernels, +3 speed evaluation
 helpers, +23 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5
 overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting and socket
-buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`) in `tests/`,
-11 in `web/demo`.
+buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`, +4 rail
+shadow) in `tests/`, 11 in `web/demo`.
+
+- **The rail shadow of a large near object (P3, 25.09, delegated by the captain):** on set O the
+  organizers' 2 × 2 m box at 26 → 9 m hid the bed behind it, the roof tilted the bed fit (rail head
+  at 20 m 0.8–3.5 m off) and the STOP reported the bed at 3.0 m (frames 213–226); with a correct bed
+  the box and a line at the corridor edge formed one cluster > 8 m that was dropped. Three rules, on:
+  `track.floor_shadow_height` 1.0 (`floor_shadow_range` 30 m, `floor_shadow_min_bins` 5: the bed and
+  the rail pair are fitted in front of the shadow or held), `cluster.oversize_split_max_length` 3.0
+  (`oversize_split_max_distance` 30 m: the part inside the gauge of such a cluster is kept),
+  `cluster.gauge_distance` true (the distance of the part inside the envelope). Set O #1 STOP frames
+  with a wrong distance 12 → 0 (largest error 14.1 → 0.46 m), no STOP frame lost. Pre-registered;
+  round 1 (40 m, split at any range) added false alarms on `doubleT_platform`, `roundT_doubleT` and
+  set O #7, 35 m cost set O #8 one STOP frame; 30 m passes the gate with 5 rows better (#1 207 → 208,
+  #9 42 → 49 STOP frames, set F straight false detections 35 → 24) and the ride, five bags,
+  `doubleT_obstacle` and set F detections unchanged. +4 tests.
+  [`p3_rail_shadow_2026-09-25.json`](docs/evidence/results/p3_rail_shadow_2026-09-25.json),
+  [EXPERIMENTS §1g](docs/EXPERIMENTS.md).
 
 - **`tracking.column_hold` 2: the `roundT_doubleT` dry-run alarm (`fce04aa`, `d117c8c`, 25.09,
   delegated by the captain):** the VM dry run of 25.09 failed `--expect-clear --max-alarm-frames 2`

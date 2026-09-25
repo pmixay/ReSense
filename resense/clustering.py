@@ -339,12 +339,34 @@ def _is_retro(b: _Blob, intensity, cfg: ClusterConfig) -> bool:
     return frac >= cfg.retro_min_fraction and size[2] < cfg.retro_max_height and size[1] < cfg.retro_max_width
 
 
+def _gauge_part(b: _Blob, in_gauge, inv, cfg: ClusterConfig) -> Optional[_Blob]:
+    """The part of an oversized cluster inside the strict gauge (25.09,
+    ``oversize_split_max_length``), when it is at most that long along the track: an object
+    in the envelope that touches a long line at the corridor edge (a conductor rail, a duct
+    edge) forms one cluster longer than ``max_extent`` with it and would be dropped whole.
+    Only within ``oversize_split_max_distance``: the far corridor holds long sparse clusters
+    with a few gauge voxels. ``None`` = no such part (the cluster stays dropped)."""
+    m = in_gauge[b.idx]
+    if not m.any():
+        return None
+    idx, pts = b.idx[m], b.pts[m]
+    part = _Blob(idx, int(np.unique(inv[idx]).size), pts, pts.min(axis=0), pts.max(axis=0))
+    if float(part.size[0]) > cfg.oversize_split_max_length or float(part.bmin[0]) > cfg.oversize_split_max_distance:
+        return None
+    return part
+
+
 def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg: ClusterConfig,
                       factor: float, factor_range: float, axis_valid: float,
                       height_valid: Optional[float]) -> Optional[Cluster]:
     """A corridor cluster: size and point-count bars, the infrastructure shapes, then the zone
     (enough voxels in the strict gauge) and the reason that demotes it to advisory."""
     size = b.size
+    if size.max() > cfg.max_extent and cfg.oversize_split_max_length > 0:
+        b = _gauge_part(b, in_gauge, inv, cfg)
+        if b is None:
+            return None
+        size = b.size
     if size.max() > cfg.max_extent or size[2] < cfg.min_height:
         return None
     dist = float(b.pts[:, 0].min())
@@ -370,6 +392,10 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
         reason = reason or "retro"
     n_exp, score = _visibility(b, max(float(size[1]), 0.15), max(float(size[2]), 0.15), cfg)
     fi = frame_idx[b.idx]
+    if cfg.gauge_distance and zone == "gauge":
+        # 25.09: an obstacle is as near as its part inside the envelope, not as a line at the
+        # corridor edge it touches (set O: a conductor-rail line 3-8 m ahead of the box at 5-8 m)
+        dist = float(b.pts[in_gauge[b.idx], 0].min())
     return Cluster(
         points_idx=fi[fi >= 0], n=b.n_vox, n_raw=int(b.idx.size), centroid=b.pts.mean(axis=0),
         bbox_min=b.bmin, bbox_max=b.bmax, distance=dist, lateral=lateral,

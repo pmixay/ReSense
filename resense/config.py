@@ -43,6 +43,16 @@ class TrackConfig:
     floor_poly_degree: int = 2
     floor_max_residual: float = 0.35  # m, bins further from the fit are rejected (2nd pass)
     floor_smoothing: float = 0.5   # exponential smoothing of coefficients across frames (0 = off)
+    # on since 25.09 (P3, docs/evidence/results/p3_rail_shadow_2026-09-25.json): the shadow of a large near
+    # object in the bed band (set O, the 2 x 2 m box at 10-20 m tilted the fit through the roof behind
+    # it): bins this far above the previous bed, two in a row starting within floor_shadow_range, start a
+    # shadow; then only bed bins (within floor_max_residual of the previous bed) are fitted, never the
+    # object's face, and the rail pair is searched in front of the face; with fewer than
+    # floor_shadow_min_bins bed bins (or 2 m x that much track) in front the previous bed / rail model is
+    # held. 0 = off
+    floor_shadow_height: float = 1.0
+    floor_shadow_range: float = 30.0   # m (40 fired at 37-38.5 m on doubleT_platform and added a false alarm, round 1)
+    floor_shadow_min_bins: int = 5
     # --- rail-based self-calibration of the track axis (near range) ---
     rails_enabled: bool = True
     rails_range: Tuple[float, float] = (4.0, 30.0)   # m along track
@@ -130,6 +140,15 @@ class ClusterConfig:
     min_points_far: int = 3        # minimum cluster size beyond ``far_range``
     far_range: float = 100.0
     max_extent: float = 8.0        # m, larger clusters are tunnel structure, not obstacles
+    # on since 25.09 (P3): > 0 = a cluster larger than max_extent is not dropped when its part inside the
+    # strict gauge is at most this long along the track: an object touching a long line at the corridor
+    # edge (the set O box at 9-21 m next to the line at 1.35-1.40 m; a person next to a conductor rail)
+    # is re-described from that part; 0 = off (the whole cluster dropped)
+    oversize_split_max_length: float = 3.0
+    oversize_split_max_distance: float = 30.0  # m, ... and only when that part starts within this distance (the far corridor holds long sparse clusters with a few gauge voxels, round 1 of 25.09)
+    # on since 25.09 (P3): true = the distance of a cluster inside the strict gauge is that of its nearest
+    # point inside the gauge, not of a point in the advisory margin it touches; false = the nearest point (v0.1)
+    gauge_distance: bool = True
     min_height: float = 0.08       # m, vertical extent (very flat clusters = floor noise)
     # linear infrastructure (rails, pipes, cables): long, thin, flat
     thin_min_length: float = 3.0

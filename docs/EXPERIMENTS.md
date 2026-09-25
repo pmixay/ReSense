@@ -902,6 +902,43 @@ tunnel: the box's faces injected at 40–60 m (a single ray-cast frame returns o
 front face there, which the long rule never sees as long) give a STOP with the shipped defaults and
 an advisory `floating` warning with the parameter 0.
 
+### 1g. P3 items of 25.09
+
+**The rail shadow of a large near object (set O #1; shipped 25.09).** While the organizers'
+2 × 2 m box is 26 → 9 m ahead, the bed band (\|dy\| < 1 m) behind it holds only roof returns 3–4 m
+above the bed. From frame 203 (box at 25.8 m) they outnumber the bed bins in front and tilt the
+floor line: the rail head at 20 m is 0.8–3.5 m off (frames 208–226), the bed 3–10 m ahead enters the
+envelope (a track at 3.0 m, frames 213–226) and the box falls below the wrong rail head (unmatched
+in 217–224; the STOP held by the bed alone). With a correct bed a second fault shows: the box's
+face touches a line at the corridor edge (dy 1.35–1.40 m, 0.16–0.38 m above the rail head, 3–26 m)
+and from 20 m box + line are one cluster > 8 m (`max_extent`), dropped whole. Three rules, on since
+25.09 (ALGORITHM §3.1, §3.3): `track.floor_shadow_height` 1.0 (two bed bins > 1 m above the
+previous bed, starting within `floor_shadow_range` 30 m: only bed bins within 0.35 m of the previous
+bed are fitted, never the object's face; the rail pair is searched in front of the face; with < 5
+bed bins / 10 m of track in front the previous bed and rail model are held);
+`cluster.oversize_split_max_length` 3.0 (a cluster > 8 m keeps its part inside the gauge when that
+part is ≤ 3 m long and starts within `oversize_split_max_distance` 30 m); `cluster.gauge_distance`
+(a gauge cluster's distance is its nearest point inside the envelope). Set O #1 over its 229
+labelled frames: STOP frames whose distance is off by more than the matching tolerance 12 → 0,
+largest error 14.1 → 0.46 m, STOP frames 224 → 224, matched by an alarm 216 → 224. Pre-registered
+(16:07 UTC, amended 16:16 before any result). Round 1 (shadow start within 40 m, split at any range;
+4 candidates) failed the six-recording subset on the same rows: `doubleT_platform` +1 event and STOP
+episode (the rule fired at 37–38.5 m; the millimetre model change moved a marginal low-object
+alarm), `roundT_doubleT` +1 (a 0.08 m gauge fragment of a 10–40 m far cluster, 125 m), set O #7
++1 false STOP frame (split at 154 m). Round 2 (16:32 UTC): 35 m fails (set O #8 loses frame 643:
+the axis then differs by ~0.03° for the rest of the recording and #8's cluster reads 2.02 m wide,
+`elevated`), **30 m passes the full gate**: 5 gated rows better (#1 207 → 208, #9 42 → 49 STOP
+frames, held from 58.6 → 90.8 m; set F straight false detections person 7 → 6, 1 m box 13 → 10,
+trolley 12 → 5), none worse; ride 187 / 46 / 39, five bags 58 / 13 / 16, `doubleT_obstacle` and set F
+detections identical. The shadow rule fires only on set O (29 frames); per frame on
+`doubleT_platform` and `roundT_doubleT` only advisory distances move (`gauge_distance`, 10 frames;
+the rest compared on the gate's rows). Tests: +4 in
+`tests/test_late_candidates.py` (ray-cast approach; a person in front of the box and a person next
+to an edge line stay STOPs). Left: a shadow starting beyond 30 m; the axis fit is chaotic at the
+~0.03° level, so any change flips marginal decisions hundreds of frames later (a noise floor of the
+gate). Raw: [`p3_rail_shadow_2026-09-25.json`](evidence/results/p3_rail_shadow_2026-09-25.json),
+[`regression_gate_2026-09-25_rail_shadow.json`](evidence/results/regression_gate_2026-09-25_rail_shadow.json).
+
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 
 ### 2a. Day-1 numbers (v0.3, 26 frames of `roundT_doubleT`, every 10th, synthetic objects)
@@ -1369,7 +1406,8 @@ What the grade says (the causes in detail: P4_AUDIT "Organizer synthetic-obstacl
 * **The 5 cm hanging object never becomes a candidate**: only its lowest 0.2–0.36 m is inside the
   envelope, 1–4 points a frame.
 * **A 2 × 2 m box 10–20 m ahead shadows the rails**: the rail-height fit drifts by ~0.5 m and the
-  bed 2.5–8 m ahead reads as an obstacle — the STOP is right, the reported 3.0 m is not.
+  bed 2.5–8 m ahead reads as an obstacle — the STOP is right, the reported 3.0 m is not. Fixed
+  25.09 (§1g): the bed is fitted in front of the shadow or held; every STOP on #1 reports the box.
 * **The edge tests (#4–#7) depend on the reference**: measured from the rails, #6 is outside in 117
   of 125 frames and #5 inside in 101 of 112.
 
@@ -1908,8 +1946,10 @@ v0.6).
 - **thin hanging objects** (P3, P4; §2e): the organizers' 5 cm object dips only 0.2–0.36 m into the
   envelope with 1–4 points a frame and never becomes a candidate; a rule for thin clusters near
   the axis linked to points above the envelope, measured on set O, the empty bags and the ride;
-- **the rail shadow of a large near object** (P3; §2e): a 2 × 2 m box 10–20 m ahead hides the
-  rails, the rail-height fit drifts by ~0.5 m and a wrong 3.0 m distance is reported;
+- ~~**the rail shadow of a large near object** (P3; §2e): a 2 × 2 m box 10–20 m ahead hides the
+  rails, the rail-height fit drifts by ~0.5 m and a wrong 3.0 m distance is reported~~ shipped
+  25.09 (§1g): set O #1 wrong-distance STOP frames 12 → 0, gate PASS with the ride; a shadow that
+  starts beyond 30 m is not handled;
 - ~~**the near-bed path with the current gates** (`537e220` + `7df1796`; P3; §1e): the ride and set F
   on the bed before any change of its default~~ dropped 25.09: a bed object below the rail head is
   not an obstacle (organizers' answer to Q3, [`organizers/answers.md`](organizers/answers.md) §8),
