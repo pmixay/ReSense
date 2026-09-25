@@ -547,8 +547,9 @@ never reported), and it must be matched now. The zone of a track is decided over
 `zone_window` = 10 hits: `gauge` when `zone_min_fraction` = 60 % of them were inside the strict
 polygon (v0.3: the majority of the last 5) — an object first seen beyond the trusted corridor, or a
 corridor-edge structure whose gauge membership flickers with the axis, is advisory until the history
-is clear. Accumulation changes what the tracker sees (denser clusters), not the persistence
-semantics.
+is clear; it also stays advisory while `tracking.column_hold` = 2 of those hits were demoted as a
+column (25.09: a column far away shows more than 2.2 m of itself in some frames only, EXPERIMENTS
+§3a). Accumulation changes what the tracker sees (denser clusters), not the persistence semantics.
 
 ## 4. Decision rule
 
@@ -637,7 +638,7 @@ the CLI and the ROS node; the one exception is `tracking.hold_misses`, a code de
 | `track.floor_valid_margin` | 20 m (60 in v0.3) | how far beyond the fitted bed the height reference is trusted without verification |
 | `cluster.column_*`, `elevated_*`, `floating_*`, `edge_*`, `wall_face_*` | see §3.3 | infrastructure signatures (advisory only); 0 switches a rule off |
 | `gauge.edge_margin`, `edge_margin_per_100m` | 0, 0.15 m (v0.6; 0, 0 in v0.5) | lateral margin inside the polygon edge required for the strict decision, growing with range (option, EXPERIMENTS §1b) |
-| `tracking.confirm_time_s`, `min_hit_fraction`, `zone_window`, `zone_min_fraction` | 0.5 s, 0.6, 10, 0.6 | persistence in seconds and over the track's history (0.3 s before v0.6.2) |
+| `tracking.confirm_time_s`, `min_hit_fraction`, `zone_window`, `zone_min_fraction`, `column_hold` | 0.5 s, 0.6, 10, 0.6, 2 | persistence in seconds and over the track's history (0.3 s before v0.6.2); column hits that keep a track advisory (25.09) |
 | `accumulation.min_speed`, `tracks_min_speed` | 1 m/s, 1 m/s | no merging and no tracks-cue estimate for a stopped train |
 | `cluster.eps`, `cluster.range_scale`, `cluster.voxel` | 0.35 m, 40 m, 5 cm | cluster granularity vs range |
 | `cluster.min_points`, `cluster.min_points_far`, `cluster.far_range` | 5, 3, 100 m | sensitivity at range vs noise |

@@ -181,7 +181,8 @@ def main(argv=None) -> int:
                    help="require no frame with obstacle = true (false-alarm check on an empty bag)")
     p.add_argument("--max-alarm-frames", type=int, default=None, metavar="N",
                    help="with --expect-clear: allow up to N alarm frames (the known ones of a recording, "
-                        "e.g. 2 at 128-130 m in roundT_doubleT, EXPERIMENTS.md section 0)")
+                        "e.g. roundT_doubleT: the trackside frame at 53 m in 3 of 10 ROS runs of 25.09, "
+                        "EXPERIMENTS.md section 3a)")
     p.add_argument("--distance", default=None, metavar="LO:HI",
                    help="expected obstacle distance window in metres, e.g. 50:62")
     p.add_argument("--min-alarm-frames", type=int, default=3,

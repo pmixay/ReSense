@@ -227,8 +227,12 @@ echo "exit ${PIPESTATUS[0]}"
 The first builds the image with `--no-cache` (20–35 min with the build), plays the bag through
 the node and checks `/resense/status` with `scripts/check_dry_run.py`. **Done:** both exit 0: the
 person at 50–62 m in ≥ 3 frames, p95 of decode + detect ≤ 100 ms, no frame dropped after the first
-5 s; on `roundT_doubleT` at most its 2 known alarm frames. A latency or drop failure is a result
-to record with the core count. **Evidence:** `docs/evidence/dry_run_<date>/` (the two outputs,
+5 s; on `roundT_doubleT` at most 2 alarm frames (since `tracking.column_hold` 2 the column at
+101–149 m, 3 frames at 111–115 m on 25.09, is advisory; the trackside frame at 53 m came in 3 of 10
+runs). Then `python scripts/replay_node_frames.py out/dry_clear/status.jsonl --bag
+"$BAGS/roundT_doubleT"` replays the frames the node processed offline and prints both alarm lists:
+equal lists mean the offline path matches the node (EXPERIMENTS §3a). A latency or drop failure is
+a result to record with the core count. **Evidence:** `docs/evidence/dry_run_<date>/` (the two outputs,
 plus the node logs and captures of `out/dry_*`, §6).
 
 ### 4.2 The organizers' console: stock-DDS player, host console
@@ -292,6 +296,7 @@ Keep the VM otherwise idle. **Done:** exit 0 and `summary.txt`; C8 closes when
 
 ```bash
 BASELINE=$(ls docs/evidence/results/regression_baseline_*_ride*.json | sort | tail -n 1)   # the newest baseline with the ride
+echo "$BASELINE"      # since 25.09 (tracking.column_hold 2): regression_baseline_2026-09-25_ride_column.json
 mkdir -p "$EV/gate_$DAY"
 python scripts/regression_gate.py --cache "$CACHE" --jobs 6 --baseline "$BASELINE" \
   --out "$EV/gate_$DAY/gate_$(git rev-parse --short HEAD).json" 2>&1 | tee "$EV/gate_$DAY/gate_table.txt"

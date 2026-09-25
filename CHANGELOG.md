@@ -20,7 +20,26 @@ Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 w
 overhead rule on, node v0.6.4). Tests: 235 → 392 (+28 native kernels, +3 speed evaluation
 helpers, +23 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5
 overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting and socket
-buffers, +21 `load_image.sh`, +11 `check_no_network.py`) in `tests/`, 11 in `web/demo`.
+buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`) in `tests/`,
+11 in `web/demo`.
+
+- **`tracking.column_hold` 2: the `roundT_doubleT` dry-run alarm (`fce04aa`, `d117c8c`, 25.09,
+  delegated by the captain):** the VM dry run of 25.09 failed `--expect-clear --max-alarm-frames 2`
+  on `roundT_doubleT` with 3 alarm frames at 111–115 m in all 10 ROS captures. Replayed offline
+  (new `scripts/replay_node_frames.py`, the frames the node processed): a column 0.3–1.1 m off the
+  far axis, tracked from 149 to 101 m, demoted as `column` in the frames that show more than 2.2 m
+  of it and in the gauge in the others; the "2 known frames at 128–130 m" were the same column seen
+  from the cache (1 cm coordinates), not the catch-up. New `tracking.column_hold`: a track demoted as
+  a column in that many of its last 10 hits stays advisory. Pre-registered 3 / 2 / 1, the highest
+  keeping every capture at ≤ 2 alarm frames and passing the gate chosen: 3 fails the gate (ride STOP
+  episodes 39 → 40), 2 passes with 7 gated rows better: `roundT_doubleT` 2 / 1 / 1 → 0 / 0 / 0, five
+  bags 60 / 14 / 17 → 58 / 13 / 16, ride 197 / 46 / 39 → 187 / 46 / 39, set F straight false
+  detections 56 → 35; `doubleT_obstacle`, set O and set F detections identical; the captures keep at
+  most 1 alarm frame (the trackside frame at 53 m). Cost: a person who stood in front of a column for
+  ≥ 2 frames and steps onto the axis is a STOP 8 frames after the step instead of 4. New gate
+  baseline `docs/evidence/results/regression_baseline_2026-09-25_ride_column.json`.
+  [`column_hold_2026-09-25.json`](docs/evidence/results/column_hold_2026-09-25.json),
+  [EXPERIMENTS §3a](docs/EXPERIMENTS.md).
 
 - **Long overhead rule only above 1.6 m (`3bf6324`, `0bb1ba3`, 25.09, code review, approved by the
   captain):** the along-track branch of the `floating` signature skipped the

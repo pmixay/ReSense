@@ -22,7 +22,7 @@ cKDTree (25.09) — ещё на 1–3 мс, выход тот же; стенд i
 25.09 с поездкой). Собственная оценка скорости поезда по лидару точна (ошибка 0,06–0,08 м/с), но
 даже точная скорость не улучшает проверку организаторов (§9), поэтому по умолчанию она выключена.
 
-## Current results (detector v0.6.3 with the long overhead rule on since 25.09, node v0.6.4)
+## Current results (detector v0.6.3 with the long overhead rule and `tracking.column_hold` on since 25.09, node v0.6.4)
 
 The shipped configuration, no train speed given unless said. Kinds: **real** = the organizers'
 recordings as recorded; **synthetic** = our objects ray-cast into real frames (set F: into the
@@ -32,23 +32,25 @@ and terms: [`README.md`](README.md) §3 (glossary), [`EVALUATION.md`](EVALUATION
 **Re-run in one command.** `scripts/regression_gate.py` (EVALUATION §3 step 6) re-measures the
 real-data rows (five obstacle-free bags, the person, the object on the rail, the ride), the set O
 row and set F straight track in one run, and gates every detector change against
+[`regression_baseline_2026-09-25_ride_column.json`](evidence/results/regression_baseline_2026-09-25_ride_column.json)
+(the shipped defaults of `d117c8c`, `tracking.column_hold` 2: six recordings, set O, the ride and
+set F straight; 25.09). It is the single check of these results: a change that moves them commits
+a new baseline, one that does not leaves this table as it is. The two before it,
 [`regression_baseline_2026-09-25_ride.json`](evidence/results/regression_baseline_2026-09-25_ride.json)
-(the shipped defaults of `935eecf`: six recordings, set O, the ride and set F straight; 25.09). It
-is the single check of these results: a change that moves them commits a new baseline, one that
-does not leaves this table as it is. The older
+(`935eecf`, before `column_hold`) and
 [`regression_baseline_2026-09-25.json`](evidence/results/regression_baseline_2026-09-25.json)
-(six recordings and set O, no ride) is kept for history; the merged `8932f3a` passed against it with
+(six recordings and set O, no ride), are kept for history; the merged `8932f3a` passed against the latter with
 every gated metric the same ([its JSON](evidence/results/regression_gate_2026-09-25_8932f3a.json)).
 
 | metric | value | kind, date | where |
 |---|---|---|---|
-| false alarms, five obstacle-free bags (2 287 frames) | **14 events**, 60 alarm frames, 17 STOP episodes (long overhead rule on since 25.09; 20 / 107 / 27 without it); the start-offset spread 14–20 events was measured without the rule (24.09), not re-run | real, 25.09 [measured 25.09] | §1f |
-| false alarms, 20-minute ride (11 271 frames, 13.0 km) | **46 events, 3.5 per km**, 197 alarm frames (1.7 %), 39 STOP episodes (without the long overhead rule 47 / 204 / 39, equal to the 24.09 record); 15 of the 46 first confirmed beyond 100 m (the removed event, an overhead structure 4–5 m along the track at 105–110 m, was one of the 16 of 24.09); causes: the 24.09 classification of the 47 (corridor-edge structures 18, bed-level fixtures 11, far small clusters 7, other 6, tall 2, hanging 2, person-like 1), not redone | real, 25.09 [measured 25.09] | §1f |
+| false alarms, five obstacle-free bags (2 287 frames) | **13 events**, 58 alarm frames, 16 STOP episodes with `tracking.column_hold` 2 (on since 25.09, §3a: the `roundT_doubleT` column); without it 14 events, 60 alarm frames, 17 STOP episodes (long overhead rule on since 25.09; 20 / 107 / 27 without it); the start-offset spread 14–20 events was measured without the rule (24.09), not re-run | real, 25.09 [measured 25.09] | §1f |
+| false alarms, 20-minute ride (11 271 frames, 13.0 km) | **46 events, 3.5 per km**, 187 alarm frames (1.7 %), 39 STOP episodes with `tracking.column_hold` 2 (on since 25.09, §3a); without it 46 / 197 / 39 (without the long overhead rule 47 / 204 / 39, equal to the 24.09 record); 15 of the 46 first confirmed beyond 100 m (the removed event, an overhead structure 4–5 m along the track at 105–110 m, was one of the 16 of 24.09); causes: the 24.09 classification of the 47 (corridor-edge structures 18, bed-level fixtures 11, far small clusters 7, other 6, tall 2, hanging 2, person-like 1), not redone | real, 25.09 [measured 25.09] | §1f |
 | crossing person, `doubleT_obstacle` | STOP in **58 of 61** frames inside the envelope, first alarm frame 11 (0.3 s after entering), 55.5–56.6 m, distance error ≤ 0.23 m | real, 24.09 | §0 |
 | object lying across the rail (0.45 × 0.6 × 0.3 m, 56 m) | **124 of the 126** frames after the person leaves it (from frame 75)¹; 3 STOP episodes in the recording | real, 24.09 | §0 |
 | health, `CAUTION` | non-latency health warnings on 196 of 13 759 frames (1.4 %: rails lost at stations and switches); `CAUTION` on 27–68 % of the frames of the empty bags, 41 % of the ride | real, 24.09 | "Re-measurement" |
 | current code against v0.6.3 | identical per-frame output on all 13 759 frames | real, 24.09 | "Re-measurement" |
-| regression gate with the ride and set F straight (native, 25.09) | new baseline [`regression_baseline_2026-09-25_ride.json`](evidence/results/regression_baseline_2026-09-25_ride.json) on `935eecf`: PASS against the shipped-defaults run of the same day (3 gated rows better: `squareT_platform_squareT_switch` events and STOP episodes, ride events); decision evidence [`rules_decision_2026-09-25.json`](evidence/results/rules_decision_2026-09-25.json); the review fix `cluster.floating_long_min_bottom` 1.6 m (`0bb1ba3`) passes against the same baseline with every number but latency identical and the same per-frame output, so the baseline stands ([`long_rule_bottom_2026-09-25.json`](evidence/results/long_rule_bottom_2026-09-25.json)) | real, organizers' synthetic and synthetic, 25.09 | §1f |
+| regression gate with the ride and set F straight (native, 25.09) | current baseline [`regression_baseline_2026-09-25_ride_column.json`](evidence/results/regression_baseline_2026-09-25_ride_column.json) on `d117c8c` (`tracking.column_hold` 2, pre-registered 3 / 2 / 1, [`column_hold_2026-09-25.json`](evidence/results/column_hold_2026-09-25.json)): PASS against the one before with 7 gated rows better (`roundT_doubleT` events and STOP episodes, set F false detections of every kind), none worse, §3a. Before it: [`regression_baseline_2026-09-25_ride.json`](evidence/results/regression_baseline_2026-09-25_ride.json) on `935eecf`: PASS against the shipped-defaults run of the same day (3 gated rows better: `squareT_platform_squareT_switch` events and STOP episodes, ride events); decision evidence [`rules_decision_2026-09-25.json`](evidence/results/rules_decision_2026-09-25.json); the review fix `cluster.floating_long_min_bottom` 1.6 m (`0bb1ba3`) passes against the same baseline with every number but latency identical and the same per-frame output, so the baseline stands ([`long_rule_bottom_2026-09-25.json`](evidence/results/long_rule_bottom_2026-09-25.json)) | real, organizers' synthetic and synthetic, 25.09 | §1f |
 | organizers' objects (set O, `cloud_with_fake_obj`, 10 objects in 1 510 frames) | STOP for **5 of 8** in-envelope objects: 2 × 2 m box from 98 m (first sight), plank across the rails from 82 m, 0.3 m cubes from 34–43 m, 2 × 2 m box at the envelope top in 12 of 124 frames; the edge 2 × 2 m box and the 5 cm hanging object missed, the edge 0.3 m cube advisory only; STOP in 303 of 801 visible in-envelope object-frames, 1 of 236 beyond 100 m; 6 false STOP frames on the 2 × 2 m box outside, 3 background alarm frames | organizers' synthetic, 24.09 | §2e |
 | long range, straight track | person first confirmed at **148 m** median (6 of 6), held in ≥ 90 % of the frames from 149 m and in every 10 m band from 115 m; trolley 144 m; 1 m crate 111 m; 3 cm hanging cable 95 m, held from 53 m (4 of 6); 0.5 m box on the bed 1 of 6; re-measured 25.09 by the gate on the current `far_range_eval.py` (changed by the P4 audit after 24.09; same files, seed, stamps, speeds): person 151.0 m median (6 of 6), held from 142.6 m; trolley 151.4 m; 1 m crate 123.9 m; cable 98.9 m, held from 34.2 m (6 of 6); 0.5 m box 1 of 6 (51.9 m); identical with and without either 25.09 rule [measured 25.09] | synthetic, set F round 3, legacy placement, 24.09; gate 25.09 | §2d |
 | same, object anchored on the near rails | person **154 m** (legacy 150 m in the same 5 pairs), trolley 148 m (148 m), crate 110 m (116 m), cable 102 m (104 m) | synthetic, set F round 4, anchored placement, 24.09 | §2d |
@@ -1576,8 +1578,44 @@ of the same day ([`evidence/dry_run_2026-09-25/`](evidence/dry_run_2026-09-25/),
   VM with the player on the same 4 cores.
 * `roundT_doubleT`: every run through ROS on this VM (6 of 6, both paths, both player modes) has 3
   alarm frames at 111.0–114.9 m, 23.6–23.9 s into the recording; offline the same recording has
-  its 2 known frames at 128.3–130.2 m (§0). The catch-up at the start changes which frames the
-  tracker sees. One native run also had a frame at 53.0 m: the trackside start-frame case of §0.
+  its 2 known frames at 128.3–130.2 m (§0). Not the catch-up at the start: the same column, see
+  the replay below. One native run also had a frame at 53.0 m: the trackside start-frame case of §0.
+
+**`roundT_doubleT` replayed offline [measured 25.09].** `scripts/replay_node_frames.py` feeds the
+frames a ROS run processed (the header stamps of its `status.jsonl`; here `946692931.6334 + 0.1·i`
+s is cache frame `i`) to the detector as the node does. The 10 captures of this recording on the VM
+(first frame 2–41, 192–235 of 252 processed) all alarm on frames 241–243 (114.93 / 112.99 /
+111.04 m); 3 add frame 159 (53.0 m), one frame 234 (128.27 m). The same sequences from the cache,
+with `7290873`'s parameters, the current ones or `3bf6324`'s `floating_long_min_bottom` 1.6–2.0
+(the same decisions frame by frame: the long rule needs a cluster over 3 m long), give 1–2 frames
+at 128.3–130.2 m (233–234; one sequence also 4 at 49–54 m), as every frame from frame 0 does
+(`resense run --npy`: 2 frames, 1 event). Replay and node part on the first processed frame (142
+vs 145 corridor points), before any state: the cache's 1 cm coordinates, not the frame spacing;
+±5 mm of noise on them (`--dither-mm 5`, 10 seeds, every frame) gives 0–10 alarm frames, the
+node's three to the centimetre in 4. The object: a column 0.3–1.1 m off the far axis, an advisory
+track from 149 to 101 m (frames 223–248), mostly 0.1–0.4 m along the track, its top at the envelope
+top (2.7–3.0 m), its bottom at 0.1–1.7 m. A frame showing more than 2.2 m of it (`column_min_height`)
+demotes it as a `column`; one showing 1.6–2.2 m matches no signature and puts it in the gauge; 6
+such hits of the last 10 (`zone_min_fraction` 0.6) make it an obstacle. **`tracking.column_hold:
+2`**: a track demoted as a column in 2 of its last 10 hits stays advisory. Chosen by a rule
+registered before the runs
+([`column_hold_2026-09-25.json`](evidence/results/column_hold_2026-09-25.json), 12:18 UTC): of 3, 2,
+1 the highest with (a) at most 2 alarm frames left in each of the 10 captures, counted from the
+column hits in their windows, and (b) the gate against the `_ride` baseline passing. 3: (a) at
+most 2 left (frames 159 and 234 of `ct_stock`), (b) FAIL, ride STOP episodes 39 → 40. **2**: (a)
+at most 1 left (frame 159, 3 of 10; 241–243 have 4 column hits in the window, 234 has 2), (b)
+PASS, 7 gated rows better: `roundT_doubleT` 2 / 1 / 1 → 0 / 0 / 0, five bags 60 / 14 / 17 →
+58 / 13 / 16 alarm frames / events / STOP episodes, ride 197 / 46 / 39 → 187 / 46 / 39, set F
+false detections 56 → 35; `doubleT_obstacle`, set O and set F detections identical. 1 was not
+run under the rule (measured before it: five bags 57 / 13 / 15, ride 176 / 45 / 37,
+[JSON](evidence/results/regression_gate_2026-09-25_column_hold.json)). With 2, from the cache no
+alarm on the column on any of the 11 sequences or 20 noise runs. The cost (ray-cast tunnel, 60 m,
+`tests/test_late_candidates.py`): a person who stood in front of a column for 2 or more frames (one
+narrow `column` cluster) and steps onto the axis gets the STOP 8 frames after the step instead of 4
+(1 would hold it back after a single such frame, to frame 9); a person beside a column is one
+cluster, never a column, and a STOP on its usual frame at 40–80 m. New gate baseline
+[`regression_baseline_2026-09-25_ride_column.json`](evidence/results/regression_baseline_2026-09-25_ride_column.json)
+(`d117c8c`). Left: the trackside device at 38–54 m (§0), 3 and 6 frames on 2 of the 10 noise runs.
 
 **The `doubleT_obstacle` drops, diagnosed [measured 25.09].** From the node logs, captures and
 `docker stats` of the dry run and the native bench run (numbers in that order). *Start-up*: the

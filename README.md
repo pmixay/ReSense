@@ -230,7 +230,7 @@ python scripts/far_range_eval.py --cache /data/cache/new_data --files 46,68,98 -
     --start 220 --out out/far.json                                    # set F: synthetic positives, legacy placement by default
 python scripts/mine_objects.py out/eval --bag new_data                  # every confirmed object of a ride, by cause
 python scripts/regression_gate.py --cache /data/cache \
-    --baseline docs/evidence/results/regression_baseline_2026-09-25_ride.json   # the gate for every detector change (exit 1 = worse, or a baseline set missing here)
+    --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json   # the gate for every detector change (exit 1 = worse, or a baseline set missing here)
 ```
 
 ## ROS 2 / Docker
@@ -304,10 +304,12 @@ link keep `/resense/corridor_points` instead of the raw cloud ([`web/README.md`]
 `scripts/dry_run.sh <bag>` builds with `--no-cache`, waits for the node before playing, captures
 `/resense/status` and checks it (`scripts/check_dry_run.py`): on `doubleT_obstacle` the person in
 50–62 m, p95 of decode + detect ≤ 100 ms, no frame of the recording left unprocessed after the
-start-up; `--expect-clear --max-alarm-frames 2` on `roundT_doubleT` is the false-alarm half (its 2
-known alarm frames at 128–130 m); thresholds are arguments of `scripts/check_dry_run.py`, the raw
-capture goes to `out/dry_run/` (`status.jsonl`, `node.log`). The 23.09 rehearsal in the sandbox:
-EXPERIMENTS §3b.
+start-up; `--expect-clear --max-alarm-frames 2` on `roundT_doubleT` is the false-alarm half (the
+allowance covers the trackside device at 48–54 m, 1 frame in 3 of the 10 ROS runs of 25.09; the
+column at 101–149 m, 3 frames at 111–115 m from the original bag and 2 at 128–130 m from the cache,
+is advisory since `tracking.column_hold`, EXPERIMENTS §3a); thresholds are arguments of
+`scripts/check_dry_run.py`, the raw capture goes to `out/dry_run/` (`status.jsonl`, `node.log`).
+The 23.09 rehearsal in the sandbox: EXPERIMENTS §3b.
 
 **"After the start-up"** (25.09): `ros2 bag play` (Humble) preloads the bag with its clock running
 and then sends the overdue first seconds back to back; the node works through that burst one frame

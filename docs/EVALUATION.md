@@ -169,7 +169,7 @@ validity over each sequence before interpreting range or edge results.
 
    ```bash
    python scripts/regression_gate.py --cache /data/cache \
-       --baseline docs/evidence/results/regression_baseline_2026-09-25_ride.json \
+       --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json \
        [--config FILE] [--set section.key=value ...] [--allow PATTERN ...] \
        --out out/gate/<change>.json
    ```
@@ -212,9 +212,13 @@ validity over each sequence before interpreting range or edge results.
    recording, or a failed set F run on a cached ride, exits 2.
 
    **Baselines of 25.09.** The current one is
+   [`regression_baseline_2026-09-25_ride_column.json`](evidence/results/regression_baseline_2026-09-25_ride_column.json):
+   the shipped defaults of `d117c8c` (long overhead rule on, `tracking.column_hold` 2) on the six
+   recordings, O, the ride and F straight, native path, 4-vCPU dev VM, `--jobs 3`, 348 s. It
+   passes against the one before with 7 gated rows better and none worse (EXPERIMENTS §3a,
+   [`column_hold_2026-09-25.json`](evidence/results/column_hold_2026-09-25.json)). The one before,
    [`regression_baseline_2026-09-25_ride.json`](evidence/results/regression_baseline_2026-09-25_ride.json):
-   the shipped defaults of `935eecf` (long overhead rule on) on the six recordings, O, the ride
-   and F straight, native path, 4-vCPU dev VM, `--jobs 3`, 394 s. It passes against the
+   the shipped defaults of `935eecf` (long overhead rule on), 394 s; it passes against the
    shipped-defaults run of the same day with 3 gated rows better (EXPERIMENTS §1f,
    [`rules_decision_2026-09-25.json`](evidence/results/rules_decision_2026-09-25.json)). The first
    one, six recordings and O only

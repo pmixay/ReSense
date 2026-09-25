@@ -158,3 +158,57 @@ def test_long_box_hanging_on_the_axis_is_a_stop(tunnel):
         assert not res.obstacle and res.warning and res.warnings[0].reason == "floating"
     res = _run_with(frame, _box_surface(60.0, 5.5, 0.5, 2.2, 0.65, 0.2), DetectorConfig())
     assert not res.obstacle and res.warning and res.warnings[0].reason == "floating"
+
+
+def _first_stop(tunnel_frame: Frame, seq, cfg: DetectorConfig):
+    """Index of the first STOP frame of a sequence of injected point sets (10 Hz), or None."""
+    det = Detector(cfg)
+    for k, pts in enumerate(seq):
+        res = det.process(Frame(xyz=np.concatenate([tunnel_frame.xyz, pts]),
+                                intensity=np.concatenate([tunnel_frame.intensity, np.full(len(pts), 30.0, np.float32)]),
+                                stamp=0.1 * k))
+        if res.obstacle:
+            return k
+    return None
+
+
+def test_column_hold_person_beside_a_column_is_a_stop(tunnel):
+    """End to end on the ray-cast tunnel with the shipped tracking.column_hold (25.09, EXPERIMENTS
+    3a): a person-size box (0.3 x 0.5 x 1.8 m) on the axis at 40-80 m with a column (0.3 x 0.3 m,
+    2.8 m tall) straddling the envelope edge at the same distance is a STOP on the frame that
+    confirms the person alone; the column alone is advisory ``column``. A person who stood in
+    front of the column (one narrow 'column' cluster) and steps onto the axis: fewer than
+    column_hold such frames cost nothing; column_hold or more hold the STOP back until those hits
+    leave the 10-hit zone window, zone_window - column_hold frames after the step at the latest
+    (the shipped 2: 8 frames after the step instead of 4, +0.4 s; 1 would hold it back after a single
+    such frame)."""
+    frame, _, _ = tunnel
+    cfg = DetectorConfig()
+    hold, zw = cfg.tracking.column_hold, cfg.tracking.zone_window
+    assert hold >= 1
+    off = DetectorConfig()
+    off.tracking = replace(off.tracking, column_hold=0)
+    confirm = cfg.tracking.frames_to_confirm() - 1                  # frame index of the first STOP: 4
+    for dist in (40.0, 60.0, 80.0):
+        column = _box_surface(dist, 0.3, 0.95, 0.0, 2.8, 0.3)
+        person = _box_surface(dist, 0.3, 0.0, 0.0, 1.8, 0.5)
+        det = Detector(cfg)
+        for k in range(8):
+            res = det.process(Frame(xyz=np.concatenate([frame.xyz, column]), stamp=0.1 * k,
+                                    intensity=np.concatenate([frame.intensity, np.full(len(column), 30.0, np.float32)])))
+            assert not res.obstacle
+        assert res.warning and res.warnings[0].reason == "column"
+        assert _first_stop(frame, [person] * 8, cfg) == confirm
+        assert _first_stop(frame, [np.concatenate([column, person])] * 8, cfg) == confirm, dist
+    column = _box_surface(60.0, 0.3, 0.95, 0.0, 2.8, 0.3)
+    front = np.concatenate([column, _box_surface(59.65, 0.3, 0.95, 0.0, 1.8, 0.5)])   # the person in front of it
+    stepped = np.concatenate([column, _box_surface(60.0, 0.3, 0.0, 0.0, 1.8, 0.5)])
+    for m in sorted({max(hold - 1, 1), hold}):
+        seq = [front] * m + [stepped] * (zw + 2)
+        base = _first_stop(frame, seq, off) - m                          # without the hold: 3-5 frames after the step
+        got = _first_stop(frame, seq, cfg) - m
+        assert base <= confirm
+        if m < hold:
+            assert got == base, (m, got, base)
+        else:
+            assert base < got <= zw - hold, (m, got, base)
