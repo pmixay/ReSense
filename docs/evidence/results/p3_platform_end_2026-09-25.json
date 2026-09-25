@@ -1,0 +1,39 @@
+{
+  "schema": "resense-p3-item-v1",
+  "key": "platform_end",
+  "date": "2026-09-25",
+  "question": "10 of the 15 STOP episodes left in squareT_platform_squareT_switch (26 frames, the train standing at the platform) come from a 2.2 x 0.41 x 1.25 m platform-end structure at 82.9 m, reported at lateral +0.96 m (envelope edge 1.05 m): the corridor axis is off at 83 m (EXPERIMENTS 1f, ALGORITHM 6). Fix it in the axis model without losing range on real curves.",
+  "diagnosis": {
+    "measured_on": "the shipped defaults at 7466979 (native path), per frame; no candidate had run when this was written",
+    "track_model_at_the_alarm_frames": "curvature 2.5e-4 to 4.0e-4 /m (not 1.6e-4 as in 1f), rails in 3 slabs, two wall sides fitted; the axis is +0.47 m (absolute Y) at 83 m in frame 445 while the running tunnel beyond the hall (walls at +1.6 and -2.5 m, 90-120 m, frames 400-600 accumulated) is centred at about -0.45 m: the axis is ~0.8 m off, and the reported structure lies at ~1.8 m from the tunnel centre (its left wall / hall end face)",
+    "cause": "the left boundary: a near structure at +1.6 m (6-33 m) joined by the robust quadratic to one bin at 44 m and one bin of the diverging hall end at 76 m; its far bins at 80-108 m lie off its own fit. Far support (boundary bins beyond rails_range[1] = 30 m within walls_max_residual of the side's final fit): left 2-4 of 7-10, right 15-23 of 17-24, on every standing frame 310-700. The two sides disagree by 2.4e-4 to 3.6e-4 (< axis_sides_max_disagreement 6.7e-4), so they are averaged by rms and the better-rms left side dominates (left k ~4e-4, right k 2e-5 to 1.5e-4). The rails' tangent is computed with the prior curvature held fixed, which feeds the bend back (yaw -0.0038 before the stop, -0.0065 to -0.0085 during it).",
+    "far_rail_check": "track.rails_far_check_enabled never fires here (1f): no far rail pair in two slabs",
+    "open_loop_count_of_frames_the_rule_would_touch": {
+      "note": "both sides fitted with a rail tangent, each with >= walls_min_bins far bins, exactly one below the threshold, the other at or above it with |k| <= 2e-4; counted on the default per-frame fits (open loop: the closed loop can differ)",
+      "squareT_platform_squareT_switch_877_frames": {"0.4": 135, "0.5": 271, "0.6": 404},
+      "ride_11271_frames": {"0.4": 187, "0.5": 333, "0.6": 511},
+      "ride_max_abs_model_curvature_on_touched_frames": 5.16e-4
+    }
+  },
+  "fix": "track.walls_min_far_support (float, 0 = off = today's code path; resense/track.py _far_supported_side): with both wall sides fitted and a rail tangent, a side whose boundary bins beyond rails_range[1] lie within walls_max_residual of its own fit in fewer than this fraction (sides with >= walls_min_bins far bins are judged) does not set the axis shape when the other side meets the fraction and is nearly straight (|k| <= track.walls_far_support_max_curvature = 2e-4 /m, R >= 5 km: a real R 350-1 000 m curve is never overruled). As for the existing nearer-side rule, only the shape (tangent, curvature, fit quality, supported range) comes from the one side; the side count and the disagreement that set the trusted range stay as fitted.",
+  "preregistered": {
+    "written_at_utc": "2026-09-25T16:18:01Z",
+    "note": "written before any candidate run; the design numbers above come from the default per-frame output and point clouds only",
+    "candidates_in_order_of_preference": [
+      {"track.walls_min_far_support": 0.5, "track.walls_far_support_max_curvature": 0.0002},
+      {"track.walls_min_far_support": 0.4, "track.walls_far_support_max_curvature": 0.0002},
+      {"track.walls_min_far_support": 0.6, "track.walls_far_support_max_curvature": 0.0002}
+    ],
+    "procedure": "each candidate first on the six recordings and set O (the gate on a cache without new_data, --allow 'ride.*' --allow 'set_F_straight.*'); the full gate with the ride and set F straight only for the candidate(s) that pass there; then set F curves and station stops (below) for that candidate and the defaults. python scripts/regression_gate.py --cache /data/cache --jobs 1 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json --set track.walls_min_far_support=<v>; native path, receive stamps, the ride in 8 pieces.",
+    "ship_rule": "ship the first candidate in the order above that meets all of: (1) the full gate exits 0 against regression_baseline_2026-09-25_ride_column.json, no gated row worse; (2) the target: squareT_platform_squareT_switch STOP episodes fewer than 15 and alarm events not more than 9; (3) every safety condition below. If none does, the flag stays 0 and the numbers are recorded.",
+    "safety_conditions": [
+      "doubleT_obstacle: labelled hits per label (person, rail object, rail object from frame 75) identical or more, first alarm frame identical or earlier, false-alarm events not more",
+      "set O: every inside object's STOP frames identical or more and first STOP at an identical or longer distance; outside false STOP frames, background alarm frames and IDs not more",
+      "set F straight (gate): per kind detected not fewer, median first confirmation not shorter, false detections not more",
+      "no new false alarm: in the five obstacle-free recordings and the ride, every candidate alarm event (track id per recording / ride piece) shares at least one alarm frame with an alarm event of the default run (per-frame outputs compared), and alarm events and STOP episodes do not rise; this covers the ride's curved sections",
+      "set F curves, anchored placement (P4_AUDIT): python scripts/far_range_eval.py --cache /data/cache/new_data --files 127,129,131,160,164,175,177 --kinds person,box1.0 --start 160 --frames 220 --lateral=-1.0:1.0 --seed 0 --placement-mode anchored --jobs 1, defaults vs candidate (--config): no sequence detected by the defaults is missed, no first confirmation comes at a shorter distance (per sequence), no more false detections",
+      "set F station stops, anchored placement: the same with --files 29,52,81,111,144,183 --kinds person,box1.0 --start 150 --frames 110 --lateral=-0.6:0.6: the same three conditions"
+    ],
+    "also_run_once": "the far-rail check on the ride: the full gate with --set track.rails_far_check_enabled=true against the same baseline; recorded, no decision"
+  }
+}
