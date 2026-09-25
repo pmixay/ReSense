@@ -410,12 +410,9 @@ class Detector:
         trusted. Strict-envelope membership is the corridor's (edge margin included). A hanging
         cluster that overlaps a cluster of the other stages is dropped: those stages decide."""
         cfg = self.cfg
-        inside = np.zeros(xyz.shape[0], dtype=bool)
-        cur = cand.idx >= 0
-        inside[cand.idx[cur]] = cand.in_gauge[cur]
         top = float(np.asarray(cfg.gauge.profile, dtype=np.float64)[:, 1].max())
         hang = find_hanging(xyz, intensity, dy_all, h_all, cfg.cluster, top, cfg.gauge.range_min,
-                            min(cfg.cluster.hanging_max_distance, valid), inside)
+                            min(cfg.cluster.hanging_max_distance, valid), cand.idx[cand.in_gauge & (cand.idx >= 0)])
         keep = [c for c in hang if not any(_overlap(c, k) for k in clusters)]
         return sorted(clusters + keep, key=lambda c: c.distance) if keep else clusters
 

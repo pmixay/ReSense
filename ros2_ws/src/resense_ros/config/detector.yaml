@@ -139,11 +139,11 @@ resense:
     signature_min_lateral: 0.6     # v0.6: column / floating signatures only off the track centre (hanging cables are obstacles)
     short_signature_max_length: 0.0   # off, decided 25.09 on the ride (3.0 / 100 tried, not shipped: ride STOP episodes 39 -> 45 on top of the long rule, over the +5 limit; set O +49 STOP frames): > 0 = the elevated / floating signatures do not demote a cluster at most this long (m) ...
     short_signature_max_distance: 100.0   # ... and at most this far (m); the measured candidate is 3.0 / 100.0 (docs/P4_AUDIT.md)
-    hanging_enabled: false         # 25.09 (SCORECARD #11), opt-in: thin objects hanging from above into the envelope near the axis (clustering.find_hanging); the organizers' 5 cm object dips 0.2-0.4 m below the envelope top with 1-3 returns a frame and never reaches min_points (docs/evidence/results/p3_thin_hanging_2026-09-25.json)
+    hanging_enabled: true          # on since 25.09 (SCORECARD #11; false = off): thin objects hanging from above into the envelope near the axis (clustering.find_hanging); the organizers' 5 cm object dips 0.2-0.4 m below the envelope top with 1-3 returns a frame and never reached min_points; pre-registered A / B / C, A the first to pass the gate: set O thin_hanging 0 -> 15 STOP frames, first STOP 30.1 m, five bags 58 / 13 / 16, ride 187 / 46 / 39, doubleT_obstacle, the other set O objects and set F straight identical (docs/evidence/results/p3_thin_hanging_2026-09-25.json)
     hanging_max_lateral: 0.8       # m, |dy| of the points searched
     hanging_min_height: 1.8        # m above the rail head, lowest point searched
     hanging_link_band: 0.6         # m above the envelope top where the linking points are searched (the roof stays out)
-    hanging_min_voxels: 2          # voxels inside the strict envelope (and at least one above its top)
+    hanging_min_voxels: 1          # voxels inside the strict envelope, with at least one more above its top (candidate A; 2 = candidate B)
     hanging_max_size: 0.5          # m along and across the track (a cable or rod, not a duct, tray or ceiling)
     hanging_max_distance: 60.0     # m; beyond it the rings above the sensor (0.5 deg apart) are too sparse for a 0.3 m dip
     wall_face_min_height: 2.0

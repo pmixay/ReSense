@@ -24,12 +24,15 @@ TOP = 3.0                       # the envelope top above the rail head
 
 
 def _on(**kw) -> DetectorConfig:
+    """The shipped configuration (the rule on since 25.09), with optional overrides."""
     cfg = DetectorConfig()
-    cfg.cluster = replace(cfg.cluster, hanging_enabled=True, **kw)
+    assert cfg.cluster.hanging_enabled
+    cfg.cluster = replace(cfg.cluster, **kw)
     return cfg
 
 
 def _off() -> DetectorConfig:
+    """The shipped configuration with the rule off (the output before 25.09)."""
     cfg = DetectorConfig()
     cfg.cluster = replace(cfg.cluster, hanging_enabled=False)
     return cfg
@@ -44,14 +47,29 @@ def _line(x: float, lateral: float, h0: float, h1: float, n: int, length: float 
 
 
 def _find(cfg: ClusterConfig, xyz, dy, h, inten):
-    return find_hanging(xyz, inten, dy, h, cfg, TOP, 3.0, cfg.hanging_max_distance, inside=h <= TOP)
+    return find_hanging(xyz, inten, dy, h, cfg, TOP, 3.0, cfg.hanging_max_distance)
+
+
+def test_shipped_defaults():
+    """On since 25.09 with the pre-registered candidate A, in the code and in both parameter files."""
+    import yaml
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[1]
+    for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(root / "configs/default.yaml")),
+                DetectorConfig.from_yaml(str(root / "ros2_ws/src/resense_ros/config/detector.yaml"))):
+        c = cfg.cluster
+        assert c.hanging_enabled is True
+        assert (c.hanging_min_voxels, c.hanging_max_lateral, c.hanging_max_size, c.hanging_max_distance) == (1, 0.8, 0.5, 60.0)
+        assert (c.hanging_min_height, c.hanging_link_band) == (1.8, 0.6)
+    assert yaml.safe_load((root / "configs/default.yaml").read_text())["resense"]["cluster"]["hanging_enabled"] is True
 
 
 def test_find_hanging_shapes():
     """A vertical 5 cm object dipping 0.35 m into the envelope on the axis at 25 m is a hanging
-    cluster; the same object entirely above the top, a duct along the track, one off the axis,
-    one too far, and one with a single return inside the envelope (the default needs two) are not."""
-    cfg = replace(ClusterConfig(), hanging_enabled=True)
+    cluster; the same object entirely above the top, a duct along the track, one off the axis and
+    one too far are not; one with a single return inside the envelope is one with the shipped
+    minimum (candidate A) and not with two (candidate B)."""
+    cfg = ClusterConfig()
     rod = _line(25.0, 0.05, TOP - 0.35, TOP + 0.55, 5)              # 0.225 m apart: 2 returns inside
     out = _find(cfg, *rod)
     assert len(out) == 1
@@ -63,8 +81,9 @@ def test_find_hanging_shapes():
     assert not _find(cfg, *_line(25.0, 0.95, TOP - 0.35, TOP + 0.55, 5))            # beside the axis
     assert not _find(cfg, *_line(75.0, 0.05, TOP - 0.35, TOP + 0.55, 5))            # beyond 60 m
     one = _line(25.0, 0.05, TOP - 0.15, TOP + 0.55, 4)                                # 1 return inside
-    assert not _find(cfg, *one)
-    assert len(_find(replace(cfg, hanging_min_voxels=1), *one)) == 1
+    assert len(_find(cfg, *one)) == 1
+    assert not _find(replace(cfg, hanging_min_voxels=2), *one)
+    assert not _find(cfg, *_line(25.0, 0.05, TOP - 0.15, TOP - 0.05, 2))              # nothing above the top
 
 
 def _cable(dist: float, bottom: float = 2.65, length: float = 1.5, lateral: float = 0.0):

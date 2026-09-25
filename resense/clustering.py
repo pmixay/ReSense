@@ -9,6 +9,7 @@ from scipy.sparse import coo_matrix
 from scipy.sparse.csgraph import connected_components
 from scipy.spatial import cKDTree
 
+from resense import _native
 from resense.config import ClusterConfig
 from resense.sensor import expected_points
 
@@ -330,7 +331,7 @@ def _advisory_reason(b: _Blob, dist: float, lateral: float, zone: str, dy, h, cf
 
 def find_hanging(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.ndarray,
                  cfg: ClusterConfig, top: float, range_min: float, max_distance: float,
-                 inside: Optional[np.ndarray] = None) -> List[Cluster]:
+                 in_gauge_idx: Optional[np.ndarray] = None) -> List[Cluster]:
     """Thin objects hanging from above into the envelope near the axis (opt-in,
     ``cluster.hanging_enabled``; SCORECARD #11, 25.09).
 
@@ -341,10 +342,11 @@ def find_hanging(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.n
     (``|dy| < hanging_max_lateral``), above ``hanging_min_height`` and up to ``hanging_link_band``
     above the top are linked at the corridor's range-scaled radius (every point a core point:
     two returns a metre apart at 25 m are one object). A group is a hanging object when it has at
-    least ``hanging_min_voxels`` voxels inside the strict envelope (``inside``: the caller's
-    strict-gauge test of the frame's points, edge margin included), at least one voxel above the
-    top, and is at most ``hanging_max_size`` along and across the track (a cable or a rod, not a
-    duct, a tray or a ceiling). Only frame points up to ``max_distance`` are used: the returns
+    least ``hanging_min_voxels`` voxels inside the strict envelope (at or below the top and, when
+    ``in_gauge_idx`` is given, among those frame indices: the corridor's strict-gauge points, edge
+    margin included), at least one voxel above the top, and is at most ``hanging_max_size`` along
+    and across the track (a cable or a rod, not a duct, a tray or a ceiling). Only frame points up
+    to ``max_distance`` are used: the returns
     above the sensor are 0.5 deg apart, so beyond ~60 m a 0.3 m dip is one ring or none.
     The clusters are gauge obstacles of ``kind = 'hanging'``; the caller drops those that
     overlap a cluster of the other stages (they decide) and the tracker confirms them like any
@@ -352,15 +354,21 @@ def find_hanging(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.n
     """
     out: List[Cluster] = []
     X = xyz[:, 0]
-    sel = np.flatnonzero((X >= range_min) & (X <= max_distance) & (np.abs(dy) < cfg.hanging_max_lateral)
-                         & (h > cfg.hanging_min_height) & (h <= top + cfg.hanging_link_band))
+    lo, hi, lat = float(cfg.hanging_min_height), float(top + cfg.hanging_link_band), float(cfg.hanging_max_lateral)
+    x0, x1 = float(range_min), float(max_distance)
+    sel = _native.select(X.size, (h, ">", lo, "<=", hi), (dy, None, None, "<", lat, True), (X, ">=", x0, "<=", x1))
+    if sel is None:
+        sel = np.flatnonzero((h > lo) & (h <= hi) & (np.abs(dy) < lat) & (X >= x0) & (X <= x1))
+    need = max(1, int(cfg.hanging_min_voxels))
     if sel.size < 2:
         return out
     ins = h[sel] <= top
-    if inside is not None:
-        ins &= inside[sel]
-    if int(ins.sum()) < max(1, cfg.hanging_min_voxels):
+    if int(ins.sum()) < need:
         return out
+    if in_gauge_idx is not None:
+        ins &= np.isin(sel, in_gauge_idx)
+        if int(ins.sum()) < need:
+            return out
     pts = xyz[sel]
     vox, inv = voxelize(pts, cfg)
     vlabels = dbscan_labels(_scaled(vox, cfg.range_scale), cfg.eps, 1)
