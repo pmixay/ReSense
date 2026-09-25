@@ -12,7 +12,7 @@ counts are "alarm frames / events (/ STOP episodes)" at full rate unless said. "
 five obstacle-free recordings (2 287 frames); "ride" = the 20-minute recording `new_data` (11 271
 frames, 13 km, no obstacles).
 
-## Unreleased (after v0.6.4)
+## 1.0.0 (release candidate, 25.09)
 
 The package version stays 0.6.3 (node v0.6.4). Tests: 235 → 289 (+28 native kernels, +3 speed
 evaluation helpers, +17 regression gate, +3 DBSCAN exactness, +3 late candidates) in `tests/`, 11
