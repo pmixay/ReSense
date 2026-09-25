@@ -1,0 +1,8 @@
+original_bags	0	PASS	0	
+dry_obstacle	1	FAIL	217	
+dry_clear	1	FAIL	39	
+console_image	0	PASS	69	
+console_stock_dds	0	PASS	70	
+host_fastdds	0	PASS	75	
+host_cyclonedds	1	FAIL	73	
+ride_replay	-	SKIPPED	0	the 20-minute bag is not kept on this disk (fetch_data.sh --ride keep needs ~90 GB)

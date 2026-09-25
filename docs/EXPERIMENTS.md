@@ -1332,7 +1332,7 @@ infrastructure lives, it adds 6 STOP episodes on top of the long overhead rule (
 stays off (decision of 25.09, §1f). None of the ten
 objects lies on the bed between the rails, so the shipped bed policy is not tested by this set.
 
-## 3. Timing (4-core sandbox, numpy path, every frame; the 8-core bench kit is ready, its run owed)
+## 3. Timing (4-core sandbox, numpy path, every frame; the team VM bench of 25.09 in §3a; the 8-core run owed)
 
 **Which machine.** Every figure below comes from the team's 4-vCPU sandbox. The jury's stand
 (i7-9700E, 8 cores) is not open to the team before submission (organizers, 25.09:
@@ -1342,8 +1342,8 @@ team's own 8-core machine ([`CAPTAIN.md`](CAPTAIN.md) action 7). One command rec
 dry runs on both bags with the node on the native and the numpy path, the console tests with the
 image's and a stock Fast DDS player, `docker stats` every 2 s, and the offline timing
 (`bench_node_path.py`, `resense bench`, native and numpy, peak RSS) into
-`docs/evidence/bench_<date>/summary.txt`. Its tables go here when it has run; until then every
-number below is from the 4-vCPU dev VM.
+`docs/evidence/bench_<date>/summary.txt`. Its first run (25.09, a team VM with 8 vCPU = 4 physical
+cores, so not yet the 8-core figure) is §3a; every other number below is from the 4-vCPU dev VM.
 
 **What is timed.** `resense bench` prints the `timing_ms` of each frame. Its `total` runs from the
 first stage through tracking and **leaves out the health monitor**, which `Detector.process` runs
@@ -1464,6 +1464,57 @@ because their corridor holds 15–20 k candidates per frame (DBSCAN 45–70 ms i
 The frame period is 100 ms; the ROS node adds message conversion, decode and publishing (~20–25 ms
 at 360°, §3b; part of which is the health monitor, 7–14 ms, not in `total`), and drops frames
 rather than queueing, so the node's dropped-frame counter is the number to watch on the bench.
+
+### 3a. The bench kit on the team VM (25.09): 8 vCPU = 4 physical cores, not yet the 8-core analogue
+
+**Machine.** A Yandex Cloud VM: Intel Xeon (Icelake) at 2.0 GHz, **8 vCPU = 4 physical cores × 2
+threads**, 15.6 GiB RAM, Ubuntu 22.04, Docker 29.8.1, CPU steal 0.0 % before the runs; code
+`7290873` (the long overhead rule shipped later, `935eecf`, changes no frame of the two bags played
+here, §1f). The i7-9700E has 8 physical cores without SMT at 2.6–4.4 GHz, so this is **not** the
+8-core analogue C8 asks for: the node's own work is one thread, but in `dry_run.sh` the node, the
+player and the recorder share these 4 cores. The bags were played from a RAM tmpfs: the VM's network
+disk reads 64 MB/s sequentially (`dd`, direct I/O), below the ~220 MB/s at which `ros2 bag play`
+reads the 4.5 GB 360° bag. `scripts/vm/run_plan.sh bench` → `scripts/bench_8core.sh` (image from
+the layer cache); raw: [`evidence/bench_2026-09-25/`](evidence/bench_2026-09-25/) (`summary.txt`).
+
+| run (Docker chain, rate 1.0) | kernels | frames processed | fps | decode + detect mean / p95 / max | detector mean / p95 | dropped (after 5 s) | container CPU % mean / max | memory MB | check |
+|---|---|---|---|---|---|---|---|---|---|
+| `dry_run.sh doubleT_obstacle` (360°) | native | 146 / 201 | 10.0 | 58 / 70 / 171 ms | 27 / 38 ms | 53 (20) | 93 / 190 | 4 806 | FAIL: drops |
+| same | numpy | 116 / 201 | 8.3 | 104 / 118 / 154 ms | 65 / 78 ms | 76 (45) | 123 / 238 | 4 463 | FAIL: p95, drops |
+| `dry_run.sh roundT_doubleT --expect-clear --max-alarm-frames 2` (120°) | native | 233 / 252 | 10.0 | 38 / 48 / 57 ms | 24 / 34 ms | 14 (0) | 58 / 100 | 2 106 | FAIL: 4 alarm frames |
+| same | numpy | 231 / 252 | 10.0 | 65 / 77 / 81 ms | 48 / 60 ms | 17 (0) | 86 / 122 | 2 159 | FAIL: 3 alarm frames |
+| `console_test.sh` `roundT_doubleT` → `doubleT_obstacle`, player uid 1000, image's DDS profile | native | 378 / 453 | 10.0 | 46 / 68 / 84 ms | 25 / 36 ms | 70 (55) | 55 / 106 | 1 055 | PASS |
+| same, stock Fast DDS player (`PLAYER_DDS=stock`) | native | 381 / 453 | 10.0 | 47 / 68 / 104 ms | 25 / 36 ms | 72 (55) | 54 / 123 | 1 113 | PASS |
+
+In `dry_run.sh` the container holds the node, the player and the recorder, hence its CPU above
+100 % and its memory: the player preloads the whole 4.5 GB recording (§3b). `console_test.sh`
+measures the node container alone: about half a core at 10 Hz on the native path.
+
+Offline on the host (python 3.10, numpy 2.2.6, one BLAS thread, every frame; peak RSS):
+
+| recording | node path (`bench_node_path.py`: decode + crop + rotate + detect) native / numpy, mean / p95 | stages (`resense bench`, health monitor not included) native / numpy, mean / p95 | numpy ÷ native |
+|---|---|---|---|
+| `doubleT_obstacle` (360°) | 43.4 / 54.7 ms · 84.3 / 97.4 ms (238 MB) | 25.4 / 36.5 ms · 61.9 / 75.3 ms | 1.94× · 2.44× |
+| `roundT_doubleT` (120°) | 33.6 / 44.0 ms · 59.3 / 70.9 ms (150 MB) | 23.4 / 34.4 ms · 47.0 / 59.4 ms | 1.76× · 2.01× |
+
+**What fails, and why.** Every `dry_run.sh` failure repeats in the dry run and the offline rehearsal
+of the same day ([`evidence/dry_run_2026-09-25/`](evidence/dry_run_2026-09-25/),
+[`evidence/offline_2026-09-25/`](evidence/offline_2026-09-25/)):
+
+* `doubleT_obstacle`, native: p95 70 ms and 10 fps pass; the drop criterion does not. The player's
+  preload leaves the node 4.8 s of recording behind; the v0.6.4 catch-up (one frame per 0.3 s of
+  recording) ends at 7.7–7.9 s, so ~16–18 of its skips fall after the checker's 5 s window. The
+  rest is 4 frames at 13.1–13.4 s (1) and 16.0–16.3 s (3) of the recording, in the same place in both
+  native runs of the day (`status.jsonl.gz`, counter `node.dropped_frames`).
+* `doubleT_obstacle`, numpy: 8.3 fps, p95 118 ms: the numpy path does not keep up at 360° on this
+  VM with the player on the same 4 cores.
+* `roundT_doubleT`: every run through ROS on this VM (6 of 6, both paths, both player modes) has 3
+  alarm frames at 111.0–114.9 m, 23.6–23.9 s into the recording; offline the same recording has
+  its 2 known frames at 128.3–130.2 m (§0). The catch-up at the start changes which frames the
+  tracker sees. One native run also had a frame at 53.0 m: the trackside start-frame case of §0.
+
+The 8-core figure (C8) still needs 16 vCPU (8 physical cores) or the team's own 8-core machine; the
+kit runs unchanged there.
 
 ### 3b. The ROS 2 node in Docker on real recordings (23–24.09, v0.6.2–v0.6.4)
 

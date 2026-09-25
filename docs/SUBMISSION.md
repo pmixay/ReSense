@@ -154,6 +154,26 @@ page cache, longer from a slow disk), then the first `STOP` on `doubleT_obstacle
 the recording (v0.6.4). The RViz run stays in the procedure because the jury sees it, but it does
 not decide whether the dry run passed.
 
+**Rehearsed on 25.09 on a team VM** (`scripts/vm/run_plan.sh dryrun` and `offline`, code `7290873`;
+Yandex Cloud, 8 vCPU = 4 physical cores, Ubuntu 22.04 with stock ROS 2 Humble on the host; the
+**original** bags, played from a RAM tmpfs because the VM disk reads only 64 MB/s; raw:
+[`evidence/dry_run_2026-09-25/`](evidence/dry_run_2026-09-25/),
+[`evidence/offline_2026-09-25/`](evidence/offline_2026-09-25/)). Online, with a `--no-cache` build:
+`doubleT_obstacle` person 55.7–56.5 m, first `STOP` +1.6 s, p95 69 ms, 10 fps, but 20 frames dropped
+after 5 s → **FAIL** (drop criterion only; EXPERIMENTS §3a: the start-up catch-up runs past 5 s, plus
+4 frames later); `roundT_doubleT` 3 alarm frames at 111.0–114.9 m against 2 allowed → **FAIL**;
+`console_test.sh` with the image's and with a stock player **PASS**; the host console as this user
+(`ros2 bag play` + `ros2 topic echo`, stock `rmw_fastrtps_cpp`, no profile) **PASS** (137 `STOP`,
+55.7 m); the same with **`rmw_cyclonedds_cpp`: FAIL**, only 0–1 of the 201 360° clouds reached the
+node (the 120° clouds did); with `net.core.rmem_default` / `rmem_max` raised to 32 MB for one run they
+all arrived (`dry_run_2026-09-25/diag_cyclonedds_buffers/`). Offline (outbound blocked by the kit's
+iptables chain, restored after 4 min, nothing but the kit's own probes tried to go out): the archive
+of `export_2026-09-25` loaded in 29 s after every image was deleted, `load_image.sh` PASS; the
+README jury commands from the host console **PASS** (134 `STOP`, 55.7–56.5 m, first `STOP` +2.3 s,
+p95 71 ms); `IMAGE_TAR=… OFFLINE=1 dry_run.sh` fails the same two criteria as online (22 dropped after
+5 s; 3 alarm frames at 111–115 m). The 28.09 dry run (action 15) still owes the rc1 archive and an
+8-core machine.
+
 ## Upload
 
 Deadline 29.09 23:59; target 18:00; the tags and times are in [`CAPTAIN.md`](CAPTAIN.md) §5. The
