@@ -54,6 +54,14 @@ transport, 19 of them in the image) in `tests/`, 11 in `web/demo`.
   [`column_hold_2026-09-25.json`](docs/evidence/results/column_hold_2026-09-25.json),
   [EXPERIMENTS §3a](docs/EXPERIMENTS.md).
 
+- **P4: SCORECARD #13 robustness measured (`b26dc16`, 25.09, P4):** `scripts/robustness_check.py`
+  replays the six bags at 5 Hz and with a +3° roll / pitch re-mount before calibration: the five
+  empty bags go from 13 false events as recorded to 13 / 16 / 17 (`roundT_doubleT` 0 → 3 / 2 / 1;
+  frames recorded for P3); a `tracking.zone_min_fraction` 0.7 trial was rejected (it cost
+  `doubleT_obstacle` 2 labelled hits and delayed its first alarm 11 → 13); frames 804–1 509 of
+  `cloud_with_fake_obj` (706, not used for tuning) give 0 false frames. Fix open.
+  [`scorecard13_2026-09-25.json`](docs/evidence/results/scorecard13_2026-09-25.json), [EXPERIMENTS
+  §1g](docs/EXPERIMENTS.md).
 - **Long overhead rule only above 1.6 m (`3bf6324`, `0bb1ba3`, 25.09, code review, approved by the
   captain):** the along-track branch of the `floating` signature skipped the
   `signature_min_lateral` guard, so a cable tray, duct or pipe fallen onto the axis and hanging
