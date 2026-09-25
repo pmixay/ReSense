@@ -1,0 +1,17 @@
+{
+  "schema": "resense-column-hold-v1",
+  "date": "2026-09-25",
+  "question": "Dry run of 25.09 on the team VM (7290873): `scripts/dry_run.sh <bags>/roundT_doubleT --expect-clear --max-alarm-frames 2` failed with 3 alarm frames at 111.0-114.9 m in every ROS capture. The alarm is one column 0.3-1.1 m off the far axis, tracked 149 -> 101 m: frames that show more than cluster.column_min_height (2.2 m) of it demote it as 'column', frames that show 1.6-2.2 m match no signature, and 6 of the last 10 hits in the gauge make an obstacle (EXPERIMENTS.md section 3a).",
+  "fix": "tracking.column_hold (int, 0 = off): a track whose cluster was demoted as a column in at least column_hold of its last tracking.zone_window (10) hits is advisory (zone 'warning'); it can only turn a gauge track advisory, never add an alarm",
+  "preregistered": {
+    "written_at_utc": "2026-09-25T12:18:11Z",
+    "note": "written before any candidate run on this code (748bb3c: wf5/clear-alarm with claude/nifty-pascal-lzgl78 afa5ae1 merged, cluster.floating_long_min_bottom 1.6); applied as written",
+    "text": "Candidates: tracking.column_hold 3, 2, 1. Choice: the HIGHEST candidate that satisfies both (a) and (b); if none does, ship 0 (off) and report.\n(a) On every one of the 10 ROS captures of roundT_doubleT of 25.09 on the team VM (docs/evidence: dry_run_2026-09-25/{dry_clear, host_cyclonedds, host_fastdds, console_image, console_stock_dds}, bench_2026-09-25/{dry_clear_native, dry_clear_numpy, ct_image, ct_stock}, offline_2026-09-25/dry_clear; recording 1 = /lidar_points), the frames that would stay alarms number <= 2. Counted from the captures: an alarm frame (obstacle true) stays an alarm when at least one of its gauge detections belongs to a track with fewer than column_hold column hits among its last 10 hits up to and including this frame. The hits of a track are its reports in the capture (detections + warnings with the same id, one per frame); a report whose cluster is identical to the track's previous report (size, n_points, height_min, lateral) is a hold over a missed frame, not a hit; a column hit is a hit with reason 'column'. (The column_hold rule cannot create an alarm, so no other frame can become one.)\n(b) python scripts/regression_gate.py --cache /data/cache --jobs 3 --set tracking.column_hold=<v> --baseline docs/evidence/results/regression_baseline_2026-09-25_ride.json: no gated row worse and none missing (exit 0), with the ride (new_data, 8 pieces) and set F straight included.\nOrder: 3 first; (a) is evaluated first and the gate is run only for a candidate that passes (a); stop at the first candidate that passes both (higher is preferred).\nRecorded per candidate: the capture counts, the gate summary (verdict, gated rows better / worse), five bags, ride, set O, set F straight.",
+    "known_before_registration": "Measured earlier the same day on ead8502 (no floating_long_min_bottom, which is identical frame by frame to the old baseline): column_hold 1 regression gate PASS, 10 gated rows better, none worse (regression_gate_2026-09-25_column_hold.json); in the captures every column alarm frame had 3-5 column reports among the track's previous 10 reports (current frame excluded, holds not separated); frame 159 (53.0 m, 3 of the 10 captures) has no column report. Candidates 2 and 3 not measured."
+  },
+  "how": {},
+  "baseline": {"file": "docs/evidence/results/regression_baseline_2026-09-25_ride.json", "code": "935eecf"},
+  "candidates": {},
+  "choice": {},
+  "tests": ""
+}
