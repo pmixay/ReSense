@@ -1,0 +1,59 @@
+{
+ "schema": "resense-p3-item-v1",
+ "key": "review_fixes",
+ "date": "2026-09-25",
+ "owner": "P3 (integrator)",
+ "question": "The adversarial safety review of the rail-shadow rules shipped on wf7/p3 (8556773) returned 'concerns': (1) MAJOR, cluster.gauge_distance can report a distance beyond the envelope entry; (2) the floor-shadow hold can lock; (3) the shadow start and the face bin are chosen too loosely; (4) no diagnostic of how often the rule fires. Do the fixes (95ff725) keep the full gate and the set O #1 distance target?",
+ "review_findings": {
+  "1_major_gauge_distance": "clustering.py: the distance was taken from cand.in_gauge, the strict polygon SHRUNK by the axis-uncertainty edge margin (detector.py, gauge.edge_margin_per_100m 0.15), so it can be later than the true envelope entry (reviewer: +0.31 m at 42 m, +0.55 m at 81 m, +1.21 m at 121 m on diagonal bars; with a wrong lateral estimate up to the object's part in the margin, at most 8 m). The old rule (minimum over all points) was never later than the entry.",
+  "2_minor_hold_lock": "track.py: shadow_ref = prev and the held model becomes the next prev, no maximum hold age; a relative pitch step of ~3.4 deg (grade 0 -> 6 %) after warm-up keeps floor_held for every following frame: a lasting (fail-safe) false STOP at ~4.3 m.",
+  "3_minor_shadow_start_and_face": "track.py: the 'two in a row' test ran over consecutive POPULATED bins (two high bins separated by empty bins, e.g. 29 and 60 m, started a shadow), and the face was the first off-bed bin before the shadow, not the one nearest the object (a nearer switch part or low object cut the rail search).",
+  "4_diagnostic": "a status / health counter of how often the rule fires, if cheap and additive."
+ },
+ "diagnosis_before_registration": {
+  "code_measured": "8556773 (shipped) and 95ff725 (the fixes), synthetic ray-cast tunnel only; on real data only the shipped code's set O track fields (floor_shadow / floor_held per frame) were read, to size the hold cap; no gate, no set O decision or distance of the fixed code has been run or seen",
+  "oblique_bar": "tests: a 1.2 m tall bar (0.2-1.4 m above the rail head) crossing the 1.05 m edge at x_entry with 0.15 m of |dy| per m, starting 2 m before the entry at |dy| 1.35 m, both sides: 8556773 reports x_entry +0.38 / +0.42 (40 m), +0.80 / +0.84 (80 m), +1.20 / +1.24 m (120 m); 95ff725 -0.38..-0.42 / -0.76..-0.80 / -1.16..-1.20 m (the widened envelope; the bar's nearest point is x_entry - 2 m)",
+  "pitch_step": "tests: 10 clear frames, then the cloud pitched by atan(0.06) = 3.4 deg: 8556773 floor_held in all 45 following frames, STOP at 4.45-4.49 m from the 8th frame on; 95ff725 held 20 frames, released on the 21st (bed at 20 m -0.91 m, then -0.33 m, true -0.30 m), no STOP from the 22nd frame on; also released at grade 4 % and 10 %",
+  "set_O_holds_on_8556773": "scripts/eval_real.py --bags cloud_with_fake_obj on 8556773: a shadow in frames 204-231 and 369 (29 frames), the bed held in 218-231: 14 frames in a row while #1 closes from 12.6 m to under 3 m at ~0.95 m per frame; hence the cap 20 (~19 m of approach, 2 s at 10 Hz) leaves set O as it was",
+  "face_and_adjacency": "unit (track._fit_floor): 8556773 finds a shadow at 27 m from two high bins at 28 and 62.5 m with 15 empty bins between; with an off-bed bin at 8 m and the box face at 16 m it puts the face at 7 m (rail search 4-7 m, rail model held); 95ff725: no shadow, face at 15 m"
+ },
+ "preregistered": {
+  "written_at_utc": "2026-09-25T19:47:39Z",
+  "before_any_result": "No gate, eval_real or target run of 95ff725 on any organizer recording, set O, the ride or set F; only the synthetic tests above and the shipped code's set O hold frames.",
+  "code": "95ff725 (wf7/p3 = 8556773 + the fixes), native path; this registration is committed alone on top of it and the runs use that clean commit",
+  "candidates_in_order_of_preference": [
+   {
+    "id": "R1",
+    "what": "95ff725 as committed (the defaults): cluster.gauge_distance on the envelope widened by the edge margin (gauge_reach_mask, the polygon itself included), track.floor_shadow_max_hold 20 with the release, adjacent shadow bins, the face nearest the shadow, the health counters"
+   },
+   {
+    "id": "R2",
+    "what": "R1 with gauge_reach_mask reduced to the unshrunk polygon (no widening); run only if R1 fails the target or a gated row and the per-frame diff traces the failure to the widening"
+   },
+   {
+    "id": "R3",
+    "what": "R1 with cluster.gauge_distance false (the nearest point of the cluster: never beyond the entry); run only if R1 and R2 both fail because of gauge_distance"
+   },
+   {
+    "id": "R1b",
+    "what": "R1 with one empty bin allowed between the two high shadow bins; run only if R1 fails the #1 target and the per-frame diff traces it to the adjacency (the set O shadow frames 204-231 changed)"
+   }
+  ],
+  "command": "python scripts/regression_gate.py --cache /data/cache --jobs 3 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json --work <scratch> --out <scratch>/result.json (on the clean commit of this file)",
+  "ship_rule": {
+   "gate": "exits 0 against regression_baseline_2026-09-25_ride_column.json: no gated row worse or missing (the six recordings, set O, the ride in 8 pieces, set F straight)",
+   "target": "set O #1 (big_center) over all 229 labelled frames, from the gate's set O JSONL with the rail-shadow target script (resense.metrics._assign_detections): no STOP frame whose nearest_distance differs from #1's labelled distance by more than 1 m (8556773: largest 0.46 m), hence also 0 wrong-distance frames by the item's tolerance max(2 m, 3 %) + 1 m; #1 STOP frames 224 of 229 kept",
+   "tests": "the new safety tests pass (test_gauge_distance_is_never_beyond_the_envelope_entry at 40 / 80 / 120 m, test_floor_shadow_hold_is_released_after_the_cap, test_floor_shadow_needs_adjacent_bins_and_takes_the_face_nearest_the_shadow), pytest on the native and numpy paths, ruff, scripts/sync_params.sh --check, the docs link check",
+   "safety_first": "if the widening (R1) or the unshrunk envelope (R2) costs the #1 target, the distance stays safe rather than precise: R3 (gauge_distance off) ships and the #1 error is reported"
+  },
+  "safety_conditions": [
+   "doubleT_obstacle labelled hits per label (58 / 127 / 124) and first alarm frame (11) identical or better",
+   "set O: every inside object's STOP frames and first STOP identical or better against the baseline; per frame against 8556773's set O output (scripts/eval_real.py on 8556773): no inside object loses a matched-alarm or a STOP frame",
+   "set F straight per kind: detected, median first confirmation identical or better; false detections not higher",
+   "no new false alarm: alarm events and STOP episodes of the five obstacle-free recordings (13 / 16) and the ride (46 / 39) not higher"
+  ],
+  "expected": "The floor-shadow rule fires only on set O (8556773: frames 204-231 and 369, held 14 in a row), so the cap and the adjacency should change nothing there if the roof bins behind the box are all populated; the widened distance can only shorten a gauge cluster's distance against 8556773 (the rows that depend on it: set O #9 long_low_on_rails 49 STOP frames may fall back towards the 42 of the _ride_column baseline if its extra frames came from margin points within 0.09-0.14 m of the edge at 58-91 m; not a gated regression against _ride_column). Every other gated row equal to regression_baseline_2026-09-25_ride_p3.json.",
+  "information": "how often the floor-shadow rule fires (frames with a shadow, held, released) per data set, from the gate's JSONL; the rows that differ from _ride_p3; latency",
+  "baseline_rule": "If the gate passes and any gated or information row other than latency / code / config / run differs from regression_baseline_2026-09-25_ride_p3.json, the gate is re-run on the final clean commit and its result (without the 'gate' block) replaces regression_baseline_2026-09-25_ride_p3.json under the same name; the numbers quoted in EXPERIMENTS §1h / 'Current results', README and CHANGELOG follow. Otherwise the baseline stands."
+ }
+}
