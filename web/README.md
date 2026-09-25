@@ -7,7 +7,7 @@
 
 Everything the jury sees: the RViz layout the launch file loads, a Foxglove layout for remote
 demos, a browser dashboard that works live (rosbridge) and offline (replay of `results.jsonl`),
-the scripts that verify the dashboard headlessly (11 tests in `web/demo/`, CI job `web`), and the
+the scripts that verify the dashboard headlessly (13 tests in `web/demo/`, CI job `web`), and the
 video recipes.
 
 | file | what |
@@ -18,7 +18,7 @@ video recipes.
 | [`demo/make_demo_run.py`](demo/make_demo_run.py) | synthetic approach sequence → `out/demo_run.jsonl` in the `resense run --out` format |
 | [`demo/check_dashboard.py`](demo/check_dashboard.py) | Playwright + headless Chromium: loads the JSONL into the dashboard, plays it, asserts the banner, screenshot / video |
 | [`demo/capture_gallery.py`](demo/capture_gallery.py) | Playwright + Chromium: refreshes the dashboard screenshots in `docs/images` from the built-in demo and the recorded real status stream |
-| [`demo/test_web.py`](demo/test_web.py) | pytest for the layouts, the JSONL format and the browser replay (11 tests): `python -m pytest -q web/demo` |
+| [`demo/test_web.py`](demo/test_web.py) | pytest for the layouts, the JSONL format and the browser replay (13 tests): `python -m pytest -q web/demo` |
 | `../ros2_ws/src/resense_ros/rviz/resense.rviz` | RViz2 layout (P2-owned, loaded by `detector.launch.py rviz:=true` and the compose `rviz` service) |
 
 ![current ReSense dashboard showing a STOP decision in the built-in synthetic UI demo](../docs/images/dashboard-stop.png)
@@ -46,21 +46,24 @@ On phones, the panels stack and the plots redraw at their displayed width. Two m
   `ros2 launch rosbridge_server rosbridge_websocket_launch.xml` on the machine running the
   detector) and press *Подключить*. The page subscribes to `/resense/status` (`std_msgs/String`,
   one JSON `FrameResult` per frame plus the node's `node` object) and needs nothing else — no
-  point cloud is streamed to the browser. roslibjs comes from a CDN; without internet the
-  live mode is unavailable and the page says so, the replay mode still works. rosbridge is
-  **not** in the ReSense image (`apt install ros-humble-rosbridge-suite` where ROS runs); for a
-  live view on an offline stand use Foxglove, whose bridge the image has (`foxglove_layout.json`).
+  point cloud is streamed to the browser. roslibjs 1.4.1 is bundled (`assets/vendor/`), so the
+  live mode needs no internet; if it fails to load, the page says so and replay still works.
+  rosbridge is **not** in the ReSense image (`apt install ros-humble-rosbridge-suite` where ROS
+  runs); for a live view on an offline stand use Foxglove, whose bridge the image has
+  (`foxglove_layout.json`).
 * **Replay**: *Выбрать файл* (or drop the file anywhere) → a `results.jsonl` written by
   `python -m resense.cli run --bag <bag> --out results.jsonl` (one `FrameResult` JSON per line
-  with the extra `frame` and `frame_id` keys). Play / pause (space), step (◀ ▶, arrow keys),
-  seek slider, speed 0.25×–10×, loop. Playback is 10 Hz × speed; the timeline's x-axis is the
-  message `stamp` (seconds relative to the first frame), in live mode it is the wall clock.
-  Broken or blank lines are skipped.
+  with the extra `frame` and `frame_id` keys). Play / pause (space), step (◀ ▶, arrow keys;
+  not while typing in a field, and on a focused view tab ←/→ switch the view), seek slider,
+  speed 0.25×–10×, loop. Playback is 10 Hz × speed; the timeline's x-axis is the message `stamp`
+  (seconds relative to the first frame), in live mode it is the wall clock. Broken or blank lines
+  are skipped.
 * **Built-in demo**: press *Демо* for a 60-frame synthetic approach (120 → 40 m). It exercises
   GO / CAUTION / STOP, mount/health fields, playback and the summary card without ROS, Python or
   a dataset. It is a UI fallback for a jury laptop, not an evaluation result.
-* **Отчёт** downloads `resense_run_report.json`: source, frame count, alarm events/frames,
-  warning frames, nearest confirmed distance, peak detector time and time span.
+* **Скачать отчёт** (section *Сводка запуска*) downloads `resense_run_report.json`: source,
+  frame count, alarm events/frames, warning frames, nearest confirmed distance, peak detector
+  time and time span.
 
 What is shown:
 

@@ -159,12 +159,12 @@ body.dragging #drop-overlay { display: grid; }
   .top-nav { order: 3; width: 100%; margin: 0; overflow-x: auto; }
   .top-nav a { min-height: 37px; padding: 0 10px; }
   .health { order: 2; flex-wrap: wrap; }
-  .page { display: block; height: auto; min-height: 0; padding: 18px 14px 20px; }
+  .page { display: block; height: auto; min-height: 0; padding: 18px 16px 20px; }
   main { display: grid; grid-template-columns: 1fr; gap: 10px; }
   .cab-stage { min-height: 360px; aspect-ratio: 16 / 9; }
   .plan-card { grid-template-rows: auto 280px 150px; }
   .side-column { overflow: visible; padding-right: 0; }
-  .site-footer { height: auto; padding: 0 14px 20px; }
+  .site-footer { height: auto; padding: 0 16px 20px; }
 }
 @media (max-width: 620px) {
   body { font-size: 14px; }
