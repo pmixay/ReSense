@@ -305,8 +305,11 @@ def _advisory_reason(b: _Blob, dist: float, lateral: float, zone: str, dy, h, cf
              and dist <= cfg.short_signature_max_distance)
     if cfg.elevated_min_height > 0 and h_min > cfg.elevated_min_height and size[1] > cfg.elevated_min_width:
         return "" if short else "elevated"   # beam / roof strip / gantry spanning the corridor above the rails
+    # opt-in, off by default: longer than floating_long_min_length along the track, the floating
+    # shape is an overhead duct / tray / beam along the track wherever it is across it
+    along = cfg.floating_long_min_length > 0 and size[0] > cfg.floating_long_min_length
     if cfg.floating_min_height > 0 and h_min > cfg.floating_min_height and size[2] < cfg.floating_max_height \
-            and size[1] < cfg.floating_max_width and off_centre:
+            and size[1] < cfg.floating_max_width and (off_centre or along):
         return "" if short else "floating"   # sign, lamp, bracket: small and not touching the ground
     if cfg.edge_min_lateral > 0 and abs(lateral) > cfg.edge_min_lateral \
             and size[0] > cfg.edge_min_aspect * max(float(size[1]), 0.05) and size[2] < cfg.edge_max_height:

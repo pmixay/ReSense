@@ -3,6 +3,10 @@
 * ``cluster.short_signature_max_length`` (P3 / P4 candidate of 24.09): the ``elevated`` and
   ``floating`` signatures do not demote a cluster as short and as near as the organizers' test
   objects. Off by default; the default output must not change.
+* ``cluster.floating_long_min_length`` (25.09, station false STOPs): the ``floating`` shape also
+  demotes a cluster near the axis when it is long along the track (an overhead duct / tray / beam
+  along the track, ~104 m ahead of the standing train in ``squareT_platform_squareT_switch``).
+  Off by default.
 """
 from __future__ import annotations
 
@@ -49,3 +53,19 @@ def test_short_signature_rule_when_on():
     assert _reason(cfg, 60.0, 5.5, 0.75, 2.0, 0.6, 0.2) == "floating"       # 5.5 m long structure: demoted
     assert _reason(cfg, 40.0, 4.0, 0.0, 2.3, 0.7, 2.2) == "elevated"
     assert _reason(cfg, 50.0, 0.3, 0.2, 1.0, 0.3, 0.3) == ""                # near the axis: never floating
+
+
+def test_long_floating_rule():
+    for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
+                DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
+        assert cfg.cluster.floating_long_min_length == 0.0
+    # the 104 m structure: 5.5 m along the track, 0.2 m wide, 0.65 m tall, bottom 2.2 m, 0.5 m off the axis
+    off = ClusterConfig()
+    assert _reason(off, 104.0, 5.5, 0.5, 2.2, 0.65, 0.2) == ""               # default: an obstacle
+    on = replace(ClusterConfig(), floating_long_min_length=3.0)
+    assert _reason(on, 104.0, 5.5, 0.5, 2.2, 0.65, 0.2) == "floating"
+    assert _reason(on, 50.0, 0.3, 0.0, 1.0, 0.3, 0.3) == ""                  # the organizers' floating cube
+    assert _reason(on, 30.0, 0.1, 0.0, 1.0, 1.1, 0.05) == ""                 # a cable hanging near the axis
+    assert _reason(on, 104.0, 5.5, 0.5, 1.0, 1.6, 0.2) == ""                 # taller than a floating shape
+    both = replace(on, short_signature_max_length=3.0)
+    assert _reason(both, 104.0, 5.5, 0.5, 2.2, 0.65, 0.2) == "floating"     # long: not exempt as short

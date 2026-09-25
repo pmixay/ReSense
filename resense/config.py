@@ -160,6 +160,7 @@ class ClusterConfig:
     floating_min_height: float = 0.7   # m, lowest point above this, lower than floating_max_height and narrower than floating_max_width = sign / lamp / bracket on the wall
     floating_max_height: float = 1.2   # m (a person is taller: a 1.5 m limit demoted a person on a platform edge, review 22.09)
     floating_max_width: float = 1.0    # m
+    floating_long_min_length: float = 0.0  # m, candidate of 25.09 (station false STOPs), off: > 0 = the floating shape also demotes a cluster longer than this along the track near the axis (an overhead duct / tray / beam running along the track; the lateral condition keeps shorter ones, e.g. a hanging cable)
     edge_min_lateral: float = 1.0      # m (v0.6: 1.2 with the 1.40 m polygon), |lateral| beyond this, longer than edge_min_aspect x width and lower than edge_max_height = duct / bench / platform-edge fragment
     edge_min_aspect: float = 2.5
     edge_max_height: float = 1.0       # m
