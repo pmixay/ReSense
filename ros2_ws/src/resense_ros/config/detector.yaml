@@ -159,6 +159,7 @@ resense:
     min_hit_fraction: 0.6
     zone_window: 10
     zone_min_fraction: 0.6
+    column_hold: 1                 # 25.09 (0 = off): a track demoted as a column in >= this many of its last zone_window hits stays advisory; roundT_doubleT's column at 101-149 m, a column in some frames and 1.6-2.2 m of it in others: 3 alarm frames at 111-115 m through ROS (original bag), 2 at 128-130 m from the cache -> 0; gate PASS, five bags 60 / 14 / 17 -> 57 / 13 / 15, ride 197 / 46 / 39 -> 176 / 45 / 37 alarm frames / events / STOP episodes, doubleT_obstacle, set O and set F detections identical (EXPERIMENTS.md 3a)
     max_misses: 3
     conf_gain: 0.35
     conf_decay: 0.25

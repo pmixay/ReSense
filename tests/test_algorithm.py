@@ -553,6 +553,27 @@ def test_flickering_track_is_not_confirmed_and_zone_needs_a_clear_majority():
     assert t.confirmed()[0].zone == "gauge"             # 7 of the last 10 hits inside
 
 
+def test_column_hold_keeps_a_column_track_advisory():
+    """A column seen at range is 'column' only in the frames that show more than
+    column_min_height of it; with tracking.column_hold its gauge frames in between do not make
+    the track an obstacle while column frames stay in the zone window (roundT_doubleT, 25.09)."""
+    def col(x, column):
+        c = _cluster_at(x, "warning" if column else "gauge")
+        c.reason = "column" if column else ""
+        return c
+    pattern = [True, False, False, True, False, True, False, False, False, False, False, False]
+    for hold, zones in ((0, "gauge"), (1, "warning"), (2, "warning"), (3, "gauge")):
+        t = Tracker(TrackingConfig(column_hold=hold))
+        for k, c in enumerate(pattern):
+            t.update([col(100.0 - 1.9 * k, c)], frame_dt=0.1)
+        assert t.confirmed()[0].zone == zones, hold
+    t = Tracker(TrackingConfig(column_hold=1))           # the column frames leave the window: an obstacle again
+    for k, c in enumerate(pattern + [False] * 8):
+        t.update([col(100.0 - 1.9 * k, c)], frame_dt=0.1)
+    assert t.confirmed()[0].zone == "gauge"
+    assert TrackingConfig().column_hold == 1               # on since 25.09
+
+
 def _box(x, y, z, L, W, H, step=0.05):
     """Dense box of points (nearest face at X = x, centre at Y = y, bottom at Z = z) in a frame
     whose track axis is Y = 0 and rail head Z = 0, so dy = Y and h = Z."""

@@ -12,7 +12,9 @@ at any lower rate too; a caller that never passes an interval gets hit counting 
 was matched in at least ``min_hit_fraction`` of its last ``hit_window`` frames, and it is
 matched now. Its zone is 'gauge' when at least ``zone_min_fraction`` of its last
 ``zone_window`` hits were inside the strict gauge, so a corridor-edge structure that
-flickers into the gauge every other frame is advisory (docs/EXPERIMENTS.md section 1b).
+flickers into the gauge every other frame is advisory (docs/EXPERIMENTS.md section 1b), and
+fewer than ``column_hold`` (1 since 25.09) of those hits were demoted as a column: a column far
+away shows more than ``column_min_height`` of itself in some frames only (EXPERIMENTS.md 3a).
 """
 from __future__ import annotations
 
@@ -43,10 +45,14 @@ class Track:
     span_s: float = 0.0             # seconds of sensor time the track has been observed (frames x interval, first frame included)
     zone_min_fraction: float = 0.5  # share of zone_hist that must be inside the gauge
     reported: bool = False          # reported as an obstacle / advisory after the last update
+    column_hist: List[bool] = field(default_factory=list)  # last zone_window hits: demoted as a column?
+    column_hold: int = 0            # this many column hits in column_hist keep the track advisory (0 = off)
 
     @property
     def zone(self) -> str:
         if not self.zone_hist:
+            return "warning"
+        if self.column_hold > 0 and sum(self.column_hist) >= self.column_hold:
             return "warning"
         return "gauge" if sum(self.zone_hist) >= self.zone_min_fraction * len(self.zone_hist) - 1e-9 else "warning"
 
@@ -114,6 +120,7 @@ class Tracker:
                 t.last = cl
                 t.gauge_hits += int(cl.zone == "gauge")
                 t.zone_hist = (t.zone_hist + [cl.zone == "gauge"])[-zw:]
+                t.column_hist = (t.column_hist + [cl.reason == "column"])[-zw:]
                 t.hit_hist = (t.hit_hist + [True])[-hw:]
                 t.history.append(cl.distance)
                 matched_t[i] = matched_c[j] = True
@@ -137,6 +144,7 @@ class Tracker:
                     confidence=c.conf_gain * cl.score, last=cl, history=[cl.distance],
                     gauge_hits=int(cl.zone == "gauge"), zone_hist=[cl.zone == "gauge"], hit_hist=[True],
                     span_s=dt, zone_min_fraction=c.zone_min_fraction,
+                    column_hist=[cl.reason == "column"], column_hold=int(c.column_hold),
                 ))
                 self._next_id += 1
         # reported: confirmed now, or reported in the previous frame and missed for at most

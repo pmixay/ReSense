@@ -42,8 +42,8 @@ every gated metric the same ([its JSON](evidence/results/regression_gate_2026-09
 
 | metric | value | kind, date | where |
 |---|---|---|---|
-| false alarms, five obstacle-free bags (2 287 frames) | **14 events**, 60 alarm frames, 17 STOP episodes (long overhead rule on since 25.09; 20 / 107 / 27 without it); the start-offset spread 14–20 events was measured without the rule (24.09), not re-run | real, 25.09 [measured 25.09] | §1f |
-| false alarms, 20-minute ride (11 271 frames, 13.0 km) | **46 events, 3.5 per km**, 197 alarm frames (1.7 %), 39 STOP episodes (without the long overhead rule 47 / 204 / 39, equal to the 24.09 record); 15 of the 46 first confirmed beyond 100 m (the removed event, an overhead structure 4–5 m along the track at 105–110 m, was one of the 16 of 24.09); causes: the 24.09 classification of the 47 (corridor-edge structures 18, bed-level fixtures 11, far small clusters 7, other 6, tall 2, hanging 2, person-like 1), not redone | real, 25.09 [measured 25.09] | §1f |
+| false alarms, five obstacle-free bags (2 287 frames) | **13 events**, 57 alarm frames, 15 STOP episodes with `tracking.column_hold` (on since 25.09, §3a); without it 14 events, 60 alarm frames, 17 STOP episodes (long overhead rule on since 25.09; 20 / 107 / 27 without it); the start-offset spread 14–20 events was measured without the rule (24.09), not re-run | real, 25.09 [measured 25.09] | §1f |
+| false alarms, 20-minute ride (11 271 frames, 13.0 km) | **45 events, 3.5 per km**, 176 alarm frames, 37 STOP episodes with `tracking.column_hold` (on since 25.09, §3a); without it 46 events, 197 alarm frames (1.7 %), 39 STOP episodes (without the long overhead rule 47 / 204 / 39, equal to the 24.09 record); 15 of the 46 first confirmed beyond 100 m (the removed event, an overhead structure 4–5 m along the track at 105–110 m, was one of the 16 of 24.09); causes: the 24.09 classification of the 47 (corridor-edge structures 18, bed-level fixtures 11, far small clusters 7, other 6, tall 2, hanging 2, person-like 1), not redone | real, 25.09 [measured 25.09] | §1f |
 | crossing person, `doubleT_obstacle` | STOP in **58 of 61** frames inside the envelope, first alarm frame 11 (0.3 s after entering), 55.5–56.6 m, distance error ≤ 0.23 m | real, 24.09 | §0 |
 | object lying across the rail (0.45 × 0.6 × 0.3 m, 56 m) | **124 of the 126** frames after the person leaves it (from frame 75)¹; 3 STOP episodes in the recording | real, 24.09 | §0 |
 | health, `CAUTION` | non-latency health warnings on 196 of 13 759 frames (1.4 %: rails lost at stations and switches); `CAUTION` on 27–68 % of the frames of the empty bags, 41 % of the ride | real, 24.09 | "Re-measurement" |
@@ -1510,8 +1510,33 @@ of the same day ([`evidence/dry_run_2026-09-25/`](evidence/dry_run_2026-09-25/),
   VM with the player on the same 4 cores.
 * `roundT_doubleT`: every run through ROS on this VM (6 of 6, both paths, both player modes) has 3
   alarm frames at 111.0–114.9 m, 23.6–23.9 s into the recording; offline the same recording has
-  its 2 known frames at 128.3–130.2 m (§0). The catch-up at the start changes which frames the
-  tracker sees. One native run also had a frame at 53.0 m: the trackside start-frame case of §0.
+  its 2 known frames at 128.3–130.2 m (§0). Not the catch-up at the start: the same column, see
+  the replay below. One native run also had a frame at 53.0 m: the trackside start-frame case of §0.
+
+**`roundT_doubleT` replayed offline [measured 25.09].** `scripts/replay_node_frames.py` feeds the
+frames a ROS run processed (the header stamps of its `status.jsonl`; here `946692931.6334 + 0.1·i`
+s is cache frame `i`) to the detector as the node does. The 10 captures of this recording on the VM
+(first frame 2–41, 192–235 of 252 processed) all alarm on frames 241–243 (114.93 / 112.99 /
+111.04 m); 3 add frame 159 (53.0 m), one frame 234 (128.27 m). The same sequences from the cache,
+with `7290873`'s parameters, the current ones or `3bf6324`'s `floating_long_min_bottom` 1.6–2.0
+(the same decisions frame by frame: the long rule needs a cluster over 3 m long), give 1–2 frames
+at 128.3–130.2 m (233–234; one sequence also 4 at 49–54 m), as every frame from frame 0 does
+(`resense run --npy`: 2 frames, 1 event). Replay and node part on the first processed frame (142
+vs 145 corridor points), before any state: the cache's 1 cm coordinates, not the frame spacing;
+±5 mm of noise on them (`--dither-mm 5`, 10 seeds, every frame) gives 0–10 alarm frames, the
+node's three to the centimetre in 4. The object: a column 0.3–1.1 m off the far axis, an advisory
+track from 149 to 101 m (frames 223–248), mostly 0.1–0.4 m along the track, its top at the envelope
+top (2.7–3.0 m), its bottom at 0.1–1.7 m. A frame showing more than 2.2 m of it (`column_min_height`)
+demotes it as a `column`; one showing 1.6–2.2 m matches no signature and puts it in the gauge; 6
+such hits of the last 10 (`zone_min_fraction` 0.6) make it an obstacle. **`tracking.column_hold:
+1`**: a track demoted as a column in one of its last 10 hits stays advisory. In the node's captures
+every one of these alarm frames has 3–5 column hits among the track's previous 10 reports, so the
+10 runs would have had 0–1 alarm frames (frame 159); from the cache no alarm on the column on
+any of the 11 sequences or 20 noise runs. Regression gate PASS, 10 gated rows better, none worse
+([JSON](evidence/results/regression_gate_2026-09-25_column_hold.json)): five bags 60 / 14 / 17 →
+57 / 13 / 15 alarm frames / events / STOP episodes, ride 197 / 46 / 39 → 176 / 45 / 37, set F
+false detections 56 → 27; `doubleT_obstacle`, set O and set F detections identical. Left: the
+trackside device at 38–54 m (§0), 3 and 6 frames on 2 of the 10 noise runs.
 
 The 8-core figure (C8) still needs 16 vCPU (8 physical cores) or the team's own 8-core machine; the
 kit runs unchanged there.
