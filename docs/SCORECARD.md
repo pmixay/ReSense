@@ -260,7 +260,7 @@ a rough size (≤ 1 h, hours, half a day, 1 day); ranked by gain per effort.
 | 10 | length-limited `elevated` / `floating` rule (`scripts/short_signature_experiment.py`), shipped after a ride re-run | 8.1, 8.4 | +0.5 to +2.5 | 1 day | P3, P4 |
 | 11 | thin-hanging rule: \|dy\| < 0.8 m, h > 1.8 m, linked to points above 3.0 m, ≥ 2 voxels, 5 frames; measured on the organizers' bag, the empty bags and the ride | 8.1 | +1.5 | 1 day | P3, P4 |
 | 12 | platform and switch STOPs beyond 80 m advisory unless confirmed nearer; re-checked on all 13 759 frames | 8.1 | +1 | 1 day | P3, P4 |
-| 13 | 5 Hz and 3° tilt checks on all bags, extra events fixed; frozen parameters, false alarms on frames 804–1 509 of `cloud_with_fake_obj` reported as held out | 8.4 | +0.5 to +1 | 1 day | P4 |
+| 13 | **Measured, fix open (25.09):** 5 Hz and +3° roll/pitch checks on all six original bags; extra events localized but not fixed without harming real detections. Parameters frozen; frames 804–1 509 of `cloud_with_fake_obj` report 0/706 false-alarm frames (EXPERIMENTS §1g and [raw summary](evidence/results/scorecard13_2026-09-25.json)). This suffix was previously inspected, so it is held out from this parameter decision, not an unseen route. | 8.4 | +0.5 to +1 still open | 1 day | P4 measures; P3 fixes detector behavior |
 | 14 | far-field rule for tall objects with a high bottom (#8) | 8.2 | +0.5 | 1 day | P3 |
 
 ## 7. State of `main` when judged

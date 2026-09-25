@@ -45,6 +45,7 @@ every gated metric the same ([its JSON](evidence/results/regression_gate_2026-09
 | metric | value | kind, date | where |
 |---|---|---|---|
 | false alarms, five obstacle-free bags (2 287 frames) | **13 events**, 58 alarm frames, 16 STOP episodes with `tracking.column_hold` 2 (on since 25.09, §3a: the `roundT_doubleT` column); without it 14 events, 60 alarm frames, 17 STOP episodes (long overhead rule on since 25.09; 20 / 107 / 27 without it); the start-offset spread 14–20 events was measured without the rule (24.09), not re-run | real, 25.09 [measured 25.09] | §1f |
+| P4 rate / mount stress and empty suffix | 5 Hz: 13 false events total, including 3 new ones in `roundT_doubleT`; +3° roll: 16; +3° pitch: 17. Frames 804–1 509 of `cloud_with_fake_obj`: **0 false frames / 0 events in 706 frames**, both from a fresh start and after continuous playback | real backgrounds, 25.09 [measured] | §1g; [`scorecard13_2026-09-25.json`](evidence/results/scorecard13_2026-09-25.json) |
 | false alarms, 20-minute ride (11 271 frames, 13.0 km) | **46 events, 3.5 per km**, 187 alarm frames (1.7 %), 39 STOP episodes with `tracking.column_hold` 2 (on since 25.09, §3a); without it 46 / 197 / 39 (without the long overhead rule 47 / 204 / 39, equal to the 24.09 record); 15 of the 46 first confirmed beyond 100 m (the removed event, an overhead structure 4–5 m along the track at 105–110 m, was one of the 16 of 24.09); causes: the 24.09 classification of the 47 (corridor-edge structures 18, bed-level fixtures 11, far small clusters 7, other 6, tall 2, hanging 2, person-like 1), not redone | real, 25.09 [measured 25.09] | §1f |
 | crossing person, `doubleT_obstacle` | STOP in **58 of 61** frames inside the envelope, first alarm frame 11 (0.3 s after entering), 55.5–56.6 m, distance error ≤ 0.23 m | real, 24.09 | §0 |
 | object lying across the rail (0.45 × 0.6 × 0.3 m, 56 m) | **124 of the 126** frames after the person leaves it (from frame 75)¹; 3 STOP episodes in the recording | real, 24.09 | §0 |
@@ -901,6 +902,57 @@ Tests (`tests/test_late_candidates.py`): the classification of the finding's box
 tunnel: the box's faces injected at 40–60 m (a single ray-cast frame returns only its 0.3 × 0.5 m
 front face there, which the long rule never sees as long) give a STOP with the shipped defaults and
 an advisory `floating` warning with the parameter 0.
+
+### 1g. P4 SCORECARD #13: 5 Hz, 3° re-mount, and an empty suffix (25.09)
+
+P4 replayed all **six original bags** from full-rate caches on `7466979` with the shipped
+`configs/default.yaml` (SHA-256 `b7c393594d5ae45aabca57e932e21c06c700b28458c797e06f719ef21d623f97`).
+Each bag starts a fresh detector. The 5 Hz run takes every second frame while keeping the
+original timestamps. The mount runs rotate the input points by +3° roll or +3° pitch *before*
+automatic calibration, as in `scripts/calib_check.py`; they do not feed a known correction to
+the detector. Source and per-track first/last frames are in
+[`scorecard13_2026-09-25.json`](evidence/results/scorecard13_2026-09-25.json); the replay tool is
+[`scripts/robustness_check.py`](../scripts/robustness_check.py).
+
+| bag | as recorded: frames / false events / STOP episodes | 5 Hz | +3° roll | +3° pitch |
+|---|---:|---:|---:|---:|
+| `doubleT_platform` | 345 / 4 / 1 | 173 / 2 / 1 | 345 / 4 / 3 | 345 / 6 / 4 |
+| `roundT_doubleT` | 252 / 0 / 0 | 126 / **3** / 4 | 252 / **2** / 2 | 252 / **1** / 1 |
+| `roundT_pressureGate_roundT` | 268 / 0 / 0 | 134 / 0 / 0 | 268 / 0 / 0 | 268 / 0 / 0 |
+| `roundT_squareT_pressureGate_squareT` | 545 / 0 / 0 | 273 / 0 / 0 | 545 / 0 / 0 | 545 / 0 / 0 |
+| `squareT_platform_squareT_switch` | 877 / 9 / 15 | 439 / 8 / 12 | 877 / **10** / 12 | 877 / **10** / 13 |
+| **five empty bags** | **2 287 / 13 / 16** | **1 145 / 13 / 17** | **2 287 / 16 / 17** | **2 287 / 17 / 18** |
+
+The real-positive `doubleT_obstacle` was also replayed: labelled hits / labelled frames and
+first alarm frame were 185/246, 11 as recorded; 92/123, 12 at 5 Hz; 181/246, 12 at +3° roll;
+186/246, 11 at +3° pitch. The 5 Hz denominators are halved; do not compare their raw hit
+counts to the 10 Hz counts. In `roundT_doubleT`, the 5 Hz extra STOPs are at original frames
+106–108 (a low cluster), 186 and 190–196 (far clusters); at 10 Hz these are advisory or absent.
+The final 20-observation calibration never completes on that 25 s bag at 5 Hz because its
+spacing is 10 processed frames, so the stress result includes a calibration cadence problem.
+
+**Parameter decision.** A trial raising `tracking.zone_min_fraction` from 0.6 to 0.7 reduced
+some stress alarms but left one 5 Hz event in `roundT_doubleT`. More seriously, on the unrotated
+real-positive bag it reduced labelled hits from 185 to 183 of 246 and delayed the first alarm
+from frame 11 to 13. This breaches the regression gate's real-positive criteria, so the trial
+was rejected. The shipped parameters remain frozen at the hash above. The extra 5 Hz and tilt
+events are **open**, with their exact frames recorded for P3; this check does not claim #13 is
+fully fixed or increase the 8.4 score.
+
+**Empty suffix after the freeze.** The organizers' labels contain no object points in frames
+804–1 509 of `cloud_with_fake_obj`. At 10 Hz with the frozen configuration, those 706 frames
+(70.48 s) have **0 alarm frames, 0 false events**. A detector started at frame 804 and a detector
+run continuously from frame 0 both give zero; the latter has 220 advisory frames, the former
+218. This is a held-out *segment for this parameter decision*, not an independent unseen route:
+the team's earlier audit inspected this recording and mentioned frame 1131. No parameters were
+selected from this suffix. An observation of zero in 70 s is not a reliable per-hour false-alarm
+rate or evidence that the 5 Hz / tilt cases are fixed.
+
+Reproduce the six-bag checks with `python scripts/robustness_check.py --cache <cache> --out
+<out>`; add `--every 2`, `--mount roll_3`, or `--mount pitch_3` for the other columns. Reproduce
+the held-out measurement with `resense run --bag <cloud_with_fake_obj> --out <full.jsonl>
+--quiet`, filter its JSONL rows to `804 <= frame <= 1509`, and run `resense summarize` on the
+filtered file. The raw bags and caches stay outside Git.
 
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 
