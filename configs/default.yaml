@@ -26,6 +26,9 @@ resense:
     floor_shadow_height: 1.0       # on since 25.09 (P3, rail shadow; 0 = off): bed bins this far above the previous bed, two in a row starting within floor_shadow_range, start a shadow; the bed fit and the rail pair then use the track in front of the object, or hold the previous model (set O #1: wrong-distance frames 12 -> 0)
     floor_shadow_range: 30.0       # 25.09: m (40 fired at 37-38.5 m on doubleT_platform and added a false alarm)
     floor_shadow_min_bins: 5
+    floor_far_min_width: 0.0       # 25.09 (P3 bed_bin): m; a far bed bin narrower than this with an object standing on it is dropped from the fit; 0 = off
+    floor_far_from: 90.0           # m, bin centre from which that check applies (the real bed stops returning beyond ~90 m)
+    floor_far_min_standing: 2      # points 0.3-1.5 m above the narrow bin's low points needed to drop it (0 = drop every narrow far bin)
     rails_enabled: true
     rails_range:
     - 4.0

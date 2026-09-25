@@ -173,6 +173,56 @@ def _floor_shadow(xs: np.ndarray, zs: np.ndarray, ref: TrackModel, cfg: TrackCon
     return keep, x_s, x_face, int((keep & (xs < x_s)).sum()) < cfg.floor_shadow_min_bins
 
 
+FAR_LOW_BAND = 0.2            # m above a far bin's level: its low points
+FAR_STANDING = (0.3, 1.5)     # m above the level: points standing on the low points (an object's face)
+FAR_STANDING_MARGIN = 0.2     # m, lateral tolerance of "on the low points"
+
+
+def _narrow_far_bins(xyz: np.ndarray, cfg: TrackConfig, prior: TrackModel, edges: np.ndarray,
+                     prof: np.ndarray) -> np.ndarray:
+    """Far bed bins that are the foot of an object, not the bed (25.09, ``floor_far_min_width``).
+
+    Beyond ~90 m the real bed stops returning and the base of an object standing there can fill a
+    bin: the fit then lengthens to it and the far curvature follows (EXPERIMENTS §2d). A bin whose
+    centre lies at or beyond ``floor_far_from`` is dropped when its low points (at most
+    ``FAR_LOW_BAND`` above the bin's level) span less than ``floor_far_min_width`` laterally and
+    at least ``floor_far_min_standing`` points stand on them (``FAR_STANDING`` above the level,
+    within ``FAR_STANDING_MARGIN`` of their lateral extent; 0 = every narrow far bin is dropped).
+    A narrow far bin with nothing on it (a rail head or a patch of bed near the axis, the common
+    real case) is kept. The band is recomputed here in numpy on the far points only, so the
+    native and numpy paths agree. Returns the indices of the bins to drop."""
+    centres = 0.5 * (edges[:-1] + edges[1:])
+    far = np.flatnonzero(np.isfinite(prof) & (centres >= cfg.floor_far_from))
+    if far.size == 0:
+        return far
+    X = xyz[:, 0]
+    sel = (X >= edges[far[0]]) & (X < min(float(edges[far[-1] + 1]), cfg.floor_fit_range[1]))
+    P = xyz[sel]
+    Xs = P[:, 0].astype(np.float64)
+    dy = P[:, 1] - prior.center_y(Xs)
+    band = np.abs(dy) < cfg.floor_halfwidth
+    Xs, dy, Z = Xs[band], dy[band], P[band, 2].astype(np.float64)
+    idx = np.digitize(Xs, edges) - 1
+    drop = []
+    for b in far:
+        inb = idx == b
+        z, d = Z[inb], dy[inb]
+        level = float(prof[b])
+        low = z <= level + FAR_LOW_BAND
+        if not low.any():
+            continue
+        lo, hi = float(d[low].min()), float(d[low].max())
+        if hi - lo >= cfg.floor_far_min_width:
+            continue                                  # spans the bed: the bed (or the bed with something on it)
+        if cfg.floor_far_min_standing > 0:
+            up = ((z > level + FAR_STANDING[0]) & (z < level + FAR_STANDING[1])
+                  & (d >= lo - FAR_STANDING_MARGIN) & (d <= hi + FAR_STANDING_MARGIN))
+            if int(up.sum()) < cfg.floor_far_min_standing:
+                continue                              # narrow, nothing standing on it: a rail head or a bed patch
+        drop.append(b)
+    return np.asarray(drop, dtype=np.intp)
+
+
 def _fit_floor(xyz: np.ndarray, cfg: TrackConfig, prior: TrackModel,
                shadow_ref: Optional[TrackModel] = None, info: Optional[dict] = None):
     """Robust per-bin percentile fit of the track bed. Returns (coef, range, n_bins, rms).
@@ -206,6 +256,11 @@ def _fit_floor(xyz: np.ndarray, cfg: TrackConfig, prior: TrackModel,
     if n_band < cfg.floor_min_points * 3:
         return None
     prof, counts = bin_percentile(Zin, idx_in, nb, cfg.floor_percentile, cfg.floor_min_points)
+    if cfg.floor_far_min_width > 0:
+        drop = _narrow_far_bins(xyz, cfg, prior, edges, prof)
+        if drop.size:
+            prof = np.array(prof, dtype=np.float64)
+            prof[drop] = np.nan
     ok = np.isfinite(prof)
     if ok.sum() < 3:
         return None

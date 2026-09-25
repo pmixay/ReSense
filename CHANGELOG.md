@@ -17,12 +17,24 @@ frames, 13 km, no obstacles).
 ## Unreleased (in development; package version 1.0.0)
 
 Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
-overhead rule on, node v0.6.4). Tests: 235 → 428 (+28 native kernels, +3 speed evaluation
+overhead rule on, node v0.6.4). Tests: 235 → 431 (+28 native kernels, +3 speed evaluation
 helpers, +23 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5
 overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting and socket
 buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`, +20 DDS
 transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
-`cluster.far_axis_both_sides`) in `tests/`, 13 in `web/demo`.
+`cluster.far_axis_both_sides`, +3 far bed bins) in `tests/`, 13 in `web/demo`.
+
+- **Far bed bins that are an object's foot: `track.floor_far_min_width` (25.09, P3 `bed_bin`,
+  default 0 = off, tried and not shipped):** an object standing beyond ~90 m, where the real bed no
+  longer returns, fills a bed bin and extends the fit (ALGORITHM §6). The flag drops a bin at or
+  beyond `floor_far_from` whose low points span less than the width with its face standing on
+  them. Pre-registered (17:50 UTC) 1.1 m from 90 m with ≥ 2 / ≥ 3 standing points / width only:
+  each fails on set F straight (false detections 35 → 43 / 36 / 27 with the trolley 12 → 21 / 18 /
+  14; the crate's six file-98 detections this item is about do go in B) and on a set O row;
+  station STOP episodes 15 → 9–10; the ride with A 187 / 46 / 39 → 171 / 45 / 40. With the flag
+  off the full gate equals the baseline in every row but latency.
+  [`p3_bed_bin_2026-09-25.json`](docs/evidence/results/p3_bed_bin_2026-09-25.json),
+  [EXPERIMENTS §1h](docs/EXPERIMENTS.md).
 
 - **The 147.5 m switch parts: tried, not shipped (25.09, P3; `cluster.far_axis_both_sides` 0 =
   off, output byte-identical):** the 4 switch-part STOP episodes of

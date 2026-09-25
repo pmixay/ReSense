@@ -1094,6 +1094,55 @@ hall wall seen to 76 m): a 1.7 m face at 125 m on the extrapolated corridor is a
 off and advisory `beyond_axis` in either mode; mode 2 keeps a column a `column`; a person at 50 m in
 the same scene STOPs on the same frame and a person at 140 m in the straight tunnel still STOPs.
 
+**An obstacle far ahead extends the bed fit (`bed_bin`; ALGORITHM §6): tried, not shipped**
+[synthetic (set F) and real, measured 25.09]. Pre-registered at 17:50 UTC before any candidate run;
+candidates, rule, runs:
+[`p3_bed_bin_2026-09-25.json`](evidence/results/p3_bed_bin_2026-09-25.json). *Diagnosis* on the
+shipped code: of set F straight's 35 false detections only 6 are this mechanism (file 98, the
+1 m crate at 100–110 m: its bin extends the fit from 82.5–92.5 to 102.5–107.5 m, the curvature
+doubles, −8.3e-5 against −3.5e-5 /m, and edge fixtures at 150–160 m confirm); 18 are the object
+reported 3–8 m short, 3 are fixtures at 132–136 m that the same frames confirm with no object, 8
+are detections at 90–96 m (lateral −1.3 m) after the 3.4 s recording hole of file 168. *Rule*
+(`track.floor_far_min_width`, 0 = off, output identical; `track._narrow_far_bins`): a bed bin at
+or beyond `floor_far_from` (90 m) is dropped when its low points (≤ 0.2 m above its level) span
+less than 1.1 m laterally and ≥ `floor_far_min_standing` points stand on them (0.3–1.5 m above,
+over the same lateral span: an object's face). The width rule alone, as ALGORITHM §6 proposed it,
+drops the real far bed: on the set F backgrounds (3 060 frames) 501 of the 712 accepted bins at
+90–125 m are narrower than 1.1 m, 452 of them with nothing on them (4–10 low points near the axis
+or on one rail); of the 139 bins the objects fill beyond 90 m, 127 are narrower (median 0.74 m)
+and 114 carry ≥ 2 standing points. Set F straight with the gate's parameters, and
+`regression_gate.py` on the six recordings and set O against
+`regression_baseline_2026-09-25_ride_column.json` (`--jobs 1`, native path):
+
+| 1.1 m from 90 m | set F false: person / crate / box 0.5 / trolley / cable | set F rows worse | five empty bags: alarm frames / events / STOP episodes | gate, six recordings + set O |
+|---|---|---|---:|---|
+| shipped (flag 0) | 7 / 13 / 0 / 12 / 3 = **35** | — | 58 / 13 / 16 | PASS, identical |
+| A: ≥ 2 standing | 7 / 12 / 0 / **21** / 3 = **43** | cable first 98.9 → 96.9 m | **32 / 9 / 10** | FAIL: `big_outside` false STOP 6 → 9 |
+| B: ≥ 3 standing | 7 / **8** / 0 / **18** / 3 = **36** | trolley false 12 → 18 | 42 / 10 / 11 | FAIL: `big_above` STOP 12 → 11 |
+| C: width only | 6 / 7 / 0 / **14** / 0 = **27** | trolley false 12 → 14; first trolley 151.4 → 149.5, cable 98.9 → 94.9 m | 43 / 13 / 11 | FAIL, 4 rows: set O background 3 → 12 frames, `big_above` 12 → 11, `doubleT_platform` STOP 1 → 2, `squareT…` events 9 → 10 |
+
+Reading. The rule removes what it is for: with B the crate's six file-98 false detections go and
+the crate is confirmed from 108.0 m instead of 101.9 m (A: 110.0 m; the 0.5 m box in 2 of 6
+approaches instead of 1 in A and B). But a dropped bin changes the smoothed fit and curvature of
+the next frames, and other marginal fixtures 40–55 m beyond the object confirm instead (trolley in
+file 98: 0 → 7 in A, 4 in B); C moves 19 of the 30 first confirmations (trolley in file 172: 148.1
+→ 103.3 m). On the real recordings the rule drops station structure feet from the fit:
+`squareT_platform_squareT_switch` STOP episodes fall 15 → 9 (A: detections of the 82.9 m platform
+end 27 → 13, of the 147.5 m switch parts 23 → 9), so these two STOP sources (§1f) sit in the far
+bed fit, not in a shape rule; but set O loses a STOP frame (B, C) or gains false STOP frames (A),
+advisory frames rise on 3–5 recordings and the per-frame height-reference range
+`max(fit + 20 m, floor_verified)` shortens (C: median 127.5 → 115.0 m on
+`squareT_platform_squareT_switch`). `doubleT_obstacle` is identical in A and B. The full gate
+with the ride, run for A as information, fails on 4 gated rows: the ride 187 / 46 / 39 → 171 / 45
+/ **40** (one STOP episode more; the fit range changes in 1 349 of its 11 271 frames, the median
+height-reference range stays 120 m), set O `big_outside` false STOP 6 → 9, set F trolley false
+12 → 21, cable first 98.9 → 96.9 m. With the flag off the full gate equals the baseline in every
+row but latency. **Not shipped** by the pre-registered rule: no candidate lowers set F's false detections without a
+kind or a gated row getting worse; `floor_far_min_width` stays 0. Tests: the rule on a synthetic
+far bed (the crate's foot dropped, a rail head kept, both paths) and end to end on the ray-cast
+tunnel (a person-size box standing at 60 m and, with the bed trimmed beyond 90 m, at 105 m is a
+STOP on the same frame with the rule on; `tests/test_late_candidates.py`).
+
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 
 ### 2a. Day-1 numbers (v0.3, 26 frames of `roundT_doubleT`, every 10th, synthetic objects)
@@ -2111,12 +2160,17 @@ v0.6).
   the path stays off;
 - ~~**the far-rail check** (P3; §1e, §1f): never fires on the six recordings and set O (25.09);
   only the ride is left~~ measured on the ride 25.09 (§1h): identical frame by frame there too, the flag stays off;
+- ~~**an obstacle far ahead extends the bed fit** (P3; §2d, ALGORITHM §6)~~ tried 25.09, not
+  shipped (§1h): dropping a far bin that is an object's foot (narrow, with its face standing on
+  it; `track.floor_far_min_width`, off) removes the mechanism's 6 set F false detections, but other
+  fixtures 40–55 m beyond the object confirm instead (set F 35 → 36–43) and a set O row gets worse;
 - **the 82.9 m platform end** (P3; §1f, §1h): 10 of the 15 STOP episodes at the platform come from
   the axis being ~0.8 m off at 83 m (a platform-side boundary joined to the hall end, 2.5–4e-4 /m);
   a far-support rule for the wall sides was tried in two pre-registered rounds on 25.09 and not
   shipped (platform episodes 15 → 1–10, but set O, `doubleT_platform` or the ride move every
   time); next: break the rails–walls feedback with a joint fit of tangent and curvature, after the
-  freeze;
+  freeze. Lead (25.09, §1h): dropping station structure feet beyond 90 m from the bed fit
+  (`track.floor_far_min_width` 1.1) takes the platform recording's STOP episodes 15 → 9;
 - ~~**bed correction from the side-structure base** (P3): use `z_base(X) − offset_ref` as
   `z_floor(X)` beyond the fit where the side base is continuous, then re-measure the far bins
   and the 147.5 m switch structures~~ measured 25.09 (§1h): the side base does not reach 147.5 m
