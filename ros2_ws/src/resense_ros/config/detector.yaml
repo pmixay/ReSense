@@ -253,4 +253,16 @@ resense:
     min_lock_rate: 0.3
     latency_budget_ms: 100.0
     latency_window: 50
+    # 25.09 (SCORECARD §6 row 6; docs/evidence/results/p3_clear_distance_2026-09-25.json): cap
+    # clear_distance at the nearest unconfirmed / advisory candidate touching the envelope;
+    # never changes a detection or the decision; false = confirmed obstacles only (v0.6).
+    # Tried, not shipped (25.09, EXPERIMENTS §1i): set O overclaim 172 -> 82 object-frames, but
+    # the five obstacle-free recordings' median clear distance -5.5 % (limit 5 %); the values
+    # below are candidate R1, so clear_cap: true alone runs it
+    clear_cap: false
+    clear_cap_min_gauge: 1           # voxels inside the strict envelope (Cluster.n_gauge)
+    clear_cap_min_hits: 1            # frames the candidate's track was matched, this one included
+    clear_cap_margin: -1.0           # m; >= 0: a point inside the envelope widened by this also touches; < 0 = n_gauge only
+    clear_cap_points: 0              # k > 0: also cap at the k-th nearest strict-envelope return; 0 = off
+    clear_cap_skip_columns: true     # a column-demoted cluster (or a column_hold track) does not cap (round 2)
   voxel: 0.0

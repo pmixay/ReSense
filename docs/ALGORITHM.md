@@ -604,7 +604,8 @@ flag and the distance, every frame carries:
   driver", fact 14), so the output says how far the path was actually checked. A consumer that
   brakes on `clear_distance` < stopping distance gets fail-safe behaviour for free: a blinded
   sensor, a lost track model or a stale input shrink it to 0. Only a *confirmed* obstacle
-  shortens it: an unconfirmed or advisory object inside the envelope does not (§6);
+  shortens it: an unconfirmed or advisory object inside the envelope does not (§6; the opt-in
+  `health.clear_cap` of 25.09 would, EXPERIMENTS §1i);
 * **`health`** (`resense/health.py`, `/resense/health` as `diagnostic_msgs/DiagnosticArray`):
   `ok` / `warn` / `error` with messages — valid returns per frame (error below 20 000 = a
   blinded sensor or a truncated message, warning below half the running median), returns closer
@@ -775,8 +776,12 @@ causes, each a limitation of the current rules:
   `clear_distance` beyond an in-envelope object, 89 of them with object points inside the
   measured envelope: the 5 cm hanging object at 6.7–30 m (3–27 points, up to 13 inside the
   envelope) read `GO` with a clear distance of 150–170 m, the 0.3 m cube on the rail at 46–67 m
-  `GO` with 165–185 m. The proposed fix caps it at the nearest unconfirmed or advisory candidate
-  that touches the envelope; STOP does not change (SCORECARD §6).
+  `GO` with 165–185 m. The fix of SCORECARD §6 row 6 was measured on 25.09 and not shipped
+  (EXPERIMENTS §1i). The opt-in `health.clear_cap` caps the distance at the nearest unconfirmed or
+  advisory cluster touching the envelope, columns excluded, and changes no decision. It cuts the set O
+  overclaim from 172 to 82 object-frames, but it also shortens the verified range on empty track:
+  the five recordings' median −5.5 %, where the pre-registered limit was 5 %. The objects that form
+  no cluster (the hanging object, far 0.3 m cubes) stay uncapped either way.
 
 ### What the organizers' answers settle
 

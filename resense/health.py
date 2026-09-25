@@ -19,7 +19,9 @@ per frame and without touching any detection:
 * ``monitored_range`` - the distance up to which the corridor was checked this frame:
   ``min(visibility, trusted axis range, trusted height-reference range, gauge range)``; and
   ``clear_distance`` - the nearest confirmed obstacle, or ``monitored_range`` when there is
-  none. A consumer that brakes on ``clear_distance < stopping distance`` gets the fail-safe
+  none; with the opt-in ``clear_cap`` (25.09, off) also no farther than the nearest unconfirmed
+  or advisory candidate touching the envelope (``candidate_distance``, from the detector). A
+  consumer that brakes on ``clear_distance < stopping distance`` gets the fail-safe
   behaviour for free: a blinded sensor, a lost track model or a stale input shrink it.
 
 ``level`` is ``ok`` / ``warn`` / ``error`` with human-readable ``messages``; the ROS node
@@ -73,7 +75,7 @@ class HealthMonitor:
 
     def update(self, xyz: np.ndarray, meta: dict, track, gauge: GaugeConfig, trusted_range: float,
                rails_min_score: float, latency_ms: float, calibration: Optional[dict] = None,
-               obstacle_distance: Optional[float] = None) -> dict:
+               obstacle_distance: Optional[float] = None, candidate_distance: Optional[float] = None) -> dict:
         cfg = self.cfg
         msgs, level = [], 0
 
@@ -132,9 +134,14 @@ class HealthMonitor:
         if level >= 2:
             monitored = 0.0                     # an input fault: nothing is verified
         clear = monitored if obstacle_distance is None else float(min(obstacle_distance, monitored))
-        return {
+        if candidate_distance is not None:     # clear_cap (25.09): an unconfirmed / advisory object in the envelope
+            clear = float(max(0.0, min(clear, candidate_distance)))
+        out = {
             "level": LEVELS[level], "messages": msgs,
             "points": n, "near_fraction": round(near_frac, 3), "blocked_sectors": blocked,
             "visibility": round(vis, 1), "rail_lock": round(lock, 2), "latency_p95_ms": round(p95, 1),
             "monitored_range": round(monitored, 1), "clear_distance": round(clear, 1),
         }
+        if cfg.clear_cap:
+            out["candidate_distance"] = None if candidate_distance is None else round(float(candidate_distance), 1)
+        return out

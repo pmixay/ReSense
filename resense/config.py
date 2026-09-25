@@ -318,6 +318,19 @@ class HealthConfig:
     min_lock_rate: float = 0.3     # warn below this share of frames with a rail pair
     latency_budget_ms: float = 100.0   # warn when the p95 of the recent frames exceeds it
     latency_window: int = 50
+    # 25.09 (SCORECARD §6 row 6, docs/evidence/results/p3_clear_distance_2026-09-25.json): cap the
+    # verified-clear distance at the nearest candidate of this frame that touches the envelope
+    # although it is not a confirmed obstacle (unconfirmed, advisory); never changes a detection
+    # or the decision. false = clear_distance counts confirmed obstacles only (v0.6). Tried, not
+    # shipped (25.09): set O overclaim 172 -> 82 object-frames, but the median clear distance of
+    # the five obstacle-free recordings -5.5 % (limit 5 %; EXPERIMENTS §1i). The sub-parameters
+    # below are the first candidate (R1): clear_cap = true alone runs it
+    clear_cap: bool = False
+    clear_cap_min_gauge: int = 1       # voxels of the cluster inside the strict envelope (Cluster.n_gauge, edge margin applied)
+    clear_cap_min_hits: int = 1        # frames the cluster's track has been matched, this one included
+    clear_cap_margin: float = -1.0     # m; >= 0: a cluster also touches with a point of this frame inside the envelope widened laterally by this (no edge margin); < 0 = n_gauge only
+    clear_cap_points: int = 0          # > 0: also cap at the X of the k-th nearest strict-envelope corridor return of the frame (low candidates excluded); 0 = off
+    clear_cap_skip_columns: bool = True    # a cluster demoted as a column (or its track held advisory by tracking.column_hold) does not cap (round 2; false = round 1)
 
 
 @dataclass

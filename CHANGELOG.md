@@ -17,12 +17,21 @@ frames, 13 km, no obstacles).
 ## Unreleased (in development; package version 1.0.0)
 
 Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
-overhead rule on, node v0.6.4). Tests: 235 → 416 (+28 native kernels, +3 speed evaluation
+overhead rule on, node v0.6.4). Tests: 235 → 420 (+28 native kernels, +3 speed evaluation
 helpers, +23 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5
 overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting and socket
 buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`, +20 DDS
-transport, 19 of them in the image) in `tests/`, 13 in `web/demo`.
+transport, 19 of them in the image, +4 `health.clear_cap`) in `tests/`, 13 in `web/demo`.
 
+- **Conservative `clear_distance`, tried and not shipped (25.09, SCORECARD §6 row 6):** the opt-in
+  `health.clear_cap` (default false, output byte-identical) caps the verified-clear distance at
+  the nearest unconfirmed or advisory cluster touching the envelope, columns excluded
+  (`clear_cap_*` sub-parameters, `health.candidate_distance` in the status JSON when on); it
+  changes no detection and no decision. Pre-registered (C0–C5, then R1–R4): set O overclaim
+  172 → 82 object-frames, ride median clear distance 127.0 → 123.0 m, but the five
+  obstacle-free recordings' median −5.5 % against the 5 % limit, so off. New
+  `scripts/score_clear_distance.py`; evidence `docs/evidence/results/p3_clear_distance_2026-09-25.json`;
+  EXPERIMENTS §1i.
 - **Dashboard shortcuts after a click, phone gutter (25.09, review of PR #12):** since `46a04bb`
   the page's key handler ignored every key while a button or link had the focus, so after a
   click on «Демо» or ▶ the arrow keys did nothing, and on a view tab Space did nothing, until a
