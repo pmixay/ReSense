@@ -94,9 +94,28 @@ STOP episodes; the 0.3 m floating cube goes from 19 to 18 STOP frames, with the 
 `dry_{obstacle,clear}_{native,numpy}/` and `ct_{image,stock}/` (each: `run.txt` with the check,
 `status.jsonl.gz`, `node_log.txt`, `docker_stats.tsv`; `ct_stock` also `player_log.txt` /
 `listener_log.txt`), `offline/` (`bench_node_path.py` and `resense bench`, native and numpy, peak
-RSS), `runs.tsv`, and `summary.txt` / `summary.json` (`scripts/bench_summary.py`). None exists yet:
-the kit needs Docker and the data on the team's 8-core machine ([`../CAPTAIN.md`](../CAPTAIN.md)
-action 7).
+RSS), `runs.tsv`, and `summary.txt` / `summary.json` (`scripts/bench_summary.py`). The first one is
+`bench_2026-09-25/` (below), from a VM with 4 physical cores; the 8-core run is still owed
+([`../CAPTAIN.md`](../CAPTAIN.md) action 7).
+
+### `*_2026-09-25/`: the VM kit on a team VM (`scripts/vm/`, AGENT_BRIEF.md)
+
+One Yandex Cloud VM (Intel Xeon Icelake 2.0 GHz, 8 vCPU = 4 physical cores × 2 threads, 15.6 GiB,
+Ubuntu 22.04, Docker 29.8.1, stock ROS 2 Humble on the host), code `7290873`, the organizers' data
+fetched on the VM (the ride's cache complete, 221 of 221 split files, archive sha256 as published).
+The two dry-run bags were played from a RAM tmpfs (`DATA_DIR=/mnt/ramdata`): the VM disk reads 64
+MB/s. Written by `scripts/vm/run_plan.sh <step>` and staged by `run_plan.sh collect --to-repo`
+(`*.log` renamed `*_log.txt`, `*.jsonl` gzipped, gate work directories left out); the VPC's DNS
+address in `offline_2026-09-25/blocked_attempts.txt` is replaced by `<vpc-dns>`.
+
+| folder | run | result |
+|---|---|---|
+| `vm_2026-09-25/` | `setup_vm.sh`, `fetch_data.sh`, `summary.md` of `collect` | READY; DATA READY (every cache, the ride 221 of 221) |
+| `dry_run_2026-09-25/` | `run_plan.sh dryrun`: `--no-cache` build + `dry_run.sh` on both original bags, `console_test.sh` (image's and stock DDS), the host console with `rmw_fastrtps_cpp` and `rmw_cyclonedds_cpp`; `diag_cyclonedds_buffers/`: the CycloneDDS host console once more at the default and at 32 MB socket buffers (its `README.txt`) | FAIL: `dry_obstacle` (drops after 5 s), `dry_clear` (3 alarm frames at 111–115 m), `host_cyclonedds` (360° clouds lost); PASS: `original_bags`, both console tests, `host_fastdds` |
+| `bench_2026-09-25/` | `run_plan.sh bench` → `scripts/bench_8core.sh` (`vm_result.txt`: the kit's notes) | FAIL on the four `dry_run.sh` runs, PASS on both console tests; numbers in EXPERIMENTS §3a |
+| `gate_2026-09-25/` | `run_plan.sh gate`: `regression_gate.py` with the ride and set F straight against `regression_baseline_2026-09-25.json`; `variants/<name>/`: the same with `--set` for the long rule, the short rule, both, and the near-bed path, each against the HEAD run (`variant.txt`) | HEAD PASS (81 rows the same); long PASS; short, both and near-bed FAIL (CAPTAIN action 11) |
+| `export_2026-09-25/` | `run_plan.sh export`: `export_image.sh` (`--no-cache`, gzip -6) + `load_image.sh` | PASS: 475 489 127 bytes, sha256 in `archive.txt` (the archive is not committed) |
+| `offline_2026-09-25/` | `run_plan.sh offline --minutes 30`: outbound blocked (`rules.txt`), images deleted, the archive loaded, `OFFLINE=1 dry_run.sh` on both bags, the README jury commands from the host console | FAIL: the two `dry_run.sh` runs (as online); PASS: block verified, load, `jury_console`; `blocked_attempts.txt`: only the kit's own probes; restored after 4 min (`window.txt`) |
 
 ### `bag_metadata/`: the original `metadata.yaml` of the six recordings
 

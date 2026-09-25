@@ -1,0 +1,16 @@
+subcommand: export
+command:    /home/mdm/ReSense/scripts/vm/run_plan.sh export 
+date:       2026-09-25T09:43:59+00:00
+commit:    72908737f2f8d1caf2b513f730abd930c8dac20d (claude/nifty-pascal-lzgl78)
+worktree:  clean
+os:        Ubuntu 22.04.5 LTS (id ubuntu 22.04, codename jammy), arch amd64, kernel 5.15.0-191-generic
+cpu:       Intel Xeon Processor (Icelake); 8 vCPU, 4 physical cores, 2 thread(s) per core
+ram:       15.6 GiB
+disk:      / -> /dev/vda1 /: 36.4 GiB free of 96.3 GiB
+disk:      /data -> /dev/vda1 /: 36.4 GiB free of 96.3 GiB
+disk:      /home/mdm -> /dev/vda1 /: 36.4 GiB free of 96.3 GiB
+disk:      /var/lib/docker -> /dev/vda1 /: 36.4 GiB free of 96.3 GiB
+docker:     29.8.1
+ros mode:   host (host ROS 2 Humble: yes)
+kit:        scripts/bench_8core.sh present; scripts/regression_gate.py present
+dry run:    0
