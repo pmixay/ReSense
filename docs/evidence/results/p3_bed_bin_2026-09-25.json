@@ -1,0 +1,52 @@
+{
+ "schema": "resense-p3-item-v1",
+ "key": "bed_bin",
+ "date": "2026-09-25",
+ "owner": "P3 (detector-rule decision delegated by the captain; no stand hardware needed)",
+ "question": "An obstacle far ahead can extend the bed fit (ALGORITHM §6, EXPERIMENTS §2d): beyond ~90 m the real bed stops returning, the base of an object standing there fills a 5 m bed bin, the fit lengthens and the far curvature follows; on set F this confirms edge fixtures 30-65 m beyond the object. Documented remedy: a far bed bin counts only when its bed points span the bed's width.",
+ "preregistered": {
+  "written_at_utc": "2026-09-25T17:50:21Z",
+  "code": "a0f701f (branch wf7/bed-bin off claude/nifty-pascal-lzgl78); the flag is added after this file is committed",
+  "note": "written before any candidate run; only the shipped defaults were run before it (set F straight once, and the bin statistics below, which instrument the shipped fit without changing it)",
+  "flag": {
+   "track.floor_far_min_width": "m; 0 = off (default, today's fit byte for byte). A bed bin whose centre lies at or beyond track.floor_far_from is dropped from the bed fit when the lateral extent (max - min of dy) of its low points (Z at most 0.2 m above the bin's 20th-percentile level) is below this width AND at least track.floor_far_min_standing points stand on them: 0.3-1.5 m above the level, within 0.2 m of the low points' lateral extent (the face of an object standing on its foot; an overhead structure 1.6+ m up is not counted). floor_far_min_standing 0 = every narrow far bin is dropped (the remedy exactly as documented).",
+   "track.floor_far_from": "m, bin centre from which the check applies",
+   "track.floor_far_min_standing": "points, see above"
+  },
+  "candidates_in_order_of_preference": [
+   {"name": "A", "set": ["track.floor_far_min_width=1.1", "track.floor_far_from=90", "track.floor_far_min_standing=2"]},
+   {"name": "B", "set": ["track.floor_far_min_width=1.1", "track.floor_far_from=90", "track.floor_far_min_standing=3"]},
+   {"name": "C", "set": ["track.floor_far_min_width=1.1", "track.floor_far_from=90", "track.floor_far_min_standing=0"], "note": "the documented remedy as written: every far bin narrower than 1.1 m is dropped"}
+  ],
+  "order_of_work": "per candidate in the order above: set F straight alone (scripts/far_range_eval.py with the gate's round-3 parameters), then the six recordings and set O (regression_gate.py on a cache without new_data, --allow 'ride.*' --allow 'set_F_straight.*'), then the full gate with the ride only for the candidate(s) that pass the cheap checks; all with --jobs 1, native path, receive stamps",
+  "ship_rule": "Ship the FIRST candidate in the order above that meets every condition; if none does, ship nothing (flag stays 0) and record the numbers. Conditions: (1) python scripts/regression_gate.py --cache /data/cache --jobs 1 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json --set <candidate> exits 0, no gated row worse; (2) the target improves: the set F straight false detections summed over the five kinds (the gate's rows; 35 in the baseline: person 7, box1.0 13, box0.5 0, trolley 12, cable 3) drop below 35 with no kind higher; (3) the safety conditions below; (4) the verified range is not shortened (below).",
+  "safety_conditions": [
+   "doubleT_obstacle: labelled hits per label (person_crossing, object_on_rail, object_on_rail_from_frame_75) identical or higher, first alarm frame identical or earlier, false-alarm events not higher",
+   "set O (cloud_with_fake_obj): every inside object's STOP frames not lower and first STOP not at a shorter distance; outside objects' false STOP frames and background alarm frames / ids not higher",
+   "set F straight, every kind (person, box1.0, box0.5, trolley, cable): sequences detected not lower, median first confirmation not shorter, median held-from (sustained) distance not shorter",
+   "no new false alarm: on each of the five obstacle-free recordings and on the ride, alarm frames, alarm events and STOP episodes not higher",
+   "no real or synthetic obstacle loses its STOP: a safety fix wins over a false-alarm gain; if unsure, do not ship"
+  ],
+  "verified_range_conditions": [
+   "advisory frames not higher on any of the six recordings and on the ride",
+   "the median of the per-frame height-reference range max(floor_range[1] + floor_valid_margin, floor_verified) not shorter on any of the six recordings, set O and the ride (from the gate's per-frame JSONL against the shipped defaults run through the same code)"
+  ]
+ },
+ "diagnosis_before_candidates": {
+  "set_F_straight_false_detections_baseline": {
+   "total": 35,
+   "how": "scripts/far_range_eval.py, the gate's round-3 parameters, shipped defaults, a0f701f, native path, --jobs 1; identical to the baseline JSON (person 7, box1.0 13, box0.5 0, trolley 12, cable 3)",
+   "by_cause": {
+    "object reported 3-8 m short (its cluster merged with returns in front; 4-8 m long clusters), 62-141 m": 18,
+    "file 98, box1.0 at 99.8-110.0 m: edge fixtures at 150.3-160.4 m, the bed fit extended by the box's bin from 92.5 to 107.5 m (82.5-92.5 m in the same frames without the box) and the curvature doubled (-8.3e-5 against -3.5e-5 /m): the item's mechanism": 6,
+    "file 98, cable: fixtures at 132.0-136.1 m that the same frames also confirm with no object (new_data_99_0016-0017): background": 3,
+    "file 168, frames new_data_169_0015-0018 right after the 3.4 s recording hole (object jumps to 24-30 m): detections at 90.2-95.8 m, lateral -1.27 to -1.32 m, absent without the object": 8
+   }
+  },
+  "far_bin_statistics": {
+   "how": "the shipped fit instrumented (a numpy replica of _fit_floor, range identical on every frame checked) over every frame of the six recordings, set O and the set F straight sequences; low points = Z <= bin level + 0.2 m; width = lateral extent of the low points; standing = points 0.3-3.0 m above the level within 0.2 m of the low points' extent",
+   "object_bins": "accepted bins holding the injected object's points at >= 80 m: width 0.38-1.0 m (1.14-1.55 m when real low points join); in the six harmful file-98 frames the box's bin is 0.53-0.96 m wide with 2-10 standing points, the real bins before it (87.5-97.5 m) 1.39-1.82 m wide with 0 standing",
+   "real_bins": "set F backgrounds (straight ride sections): 179 of the 306 accepted bins at 90-125 m are narrower than 1.1 m (mostly 4-10 low points near the axis, 0 standing), 147 of them the last bin of the fit; 39 of the 306 are narrow with >= 3 standing points (structures at 102-117 m in new_data_169). Six recordings (every frame): 2 475 accepted bins at 80-125 m, 1 209 narrower than 1.1 m, 510 of them with >= 2 and 355 with >= 3 standing points (station and pressure-gate structures). Hence the standing condition in candidates A and B: the width rule alone (C) would drop most real far bins"
+  }
+ }
+}
