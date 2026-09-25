@@ -8,6 +8,10 @@
   along the track, ~104 m ahead of the standing train in ``squareT_platform_squareT_switch``).
   On (3.0 m) since 25.09: decided on the ride with the regression gate
   (docs/evidence/results/rules_decision_2026-09-25.json); the short-signature rule stays off.
+* ``cluster.floating_long_min_bottom`` (review 25.09): that along-track branch skipped the
+  ``signature_min_lateral`` guard, so a tray / duct / pipe fallen onto the axis and hanging 0.7-1.9 m
+  above the rail was demoted to advisory; the branch now needs the lowest point above this height
+  (overhead infrastructure: the station structure has its bottom at ~2.2 m).
 """
 from __future__ import annotations
 
@@ -18,6 +22,8 @@ import numpy as np
 
 from resense.clustering import _advisory_reason, _Blob
 from resense.config import ClusterConfig, DetectorConfig
+from resense.detector import Detector
+from resense.frame import Frame
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -70,3 +76,85 @@ def test_long_floating_rule():
     assert _reason(on, 104.0, 5.5, 0.5, 1.0, 1.6, 0.2) == ""                 # taller than a floating shape
     both = replace(on, short_signature_max_length=3.0)
     assert _reason(both, 104.0, 5.5, 0.5, 2.2, 0.65, 0.2) == "floating"     # long: not exempt as short
+
+
+LONG_MIN_BOTTOM = 1.6     # the shipped cluster.floating_long_min_bottom (m above the rail head, 25.09)
+
+
+def test_long_floating_rule_needs_an_overhead_bottom():
+    """Review 25.09: the along-track branch applies only to a cluster whose lowest point is as high
+    as overhead infrastructure; the off-centre floating path is unchanged."""
+    for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
+                DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
+        assert cfg.cluster.floating_long_min_bottom == LONG_MIN_BOTTOM
+    on = ClusterConfig()
+    old = replace(on, floating_long_min_bottom=0.0)                          # the 25.09 rule
+    for bottom in (1.0, 1.5):
+        # the finding: a 4.0 x 0.3 x 0.5 m tray / duct / pipe on the axis hanging in the envelope
+        assert _reason(old, 60.0, 4.0, 0.0, bottom, 0.5, 0.3) == "floating"
+        assert _reason(on, 60.0, 4.0, 0.0, bottom, 0.5, 0.3) == ""           # now an obstacle
+        assert _reason(on, 45.0, 4.0, 0.3, bottom, 0.5, 0.3) == ""
+    # just below / above the threshold
+    assert _reason(on, 60.0, 4.0, 0.0, LONG_MIN_BOTTOM - 0.05, 0.5, 0.3) == ""
+    assert _reason(on, 60.0, 4.0, 0.0, LONG_MIN_BOTTOM + 0.05, 0.5, 0.3) == "floating"
+    # the station structure (~104 m in squareT_platform_squareT_switch): bottom 2.2 m, still demoted
+    assert _reason(on, 104.0, 5.5, 0.5, 2.2, 0.65, 0.2) == "floating"
+    assert _reason(on, 104.0, 3.9, 0.0, 2.2, 0.65, 0.3) == "floating"
+    # off the centre the floating shape needs neither the length nor the bottom height
+    assert _reason(on, 50.0, 4.0, 0.75, 1.0, 0.5, 0.3) == "floating"
+    assert _reason(on, 50.0, 0.3, 0.75, 1.0, 0.3, 0.3) == "floating"
+
+
+AXIS_Y = 0.25                   # synthetic_tunnel_frame: the track axis
+RAIL_HEAD_Z = -1.5 + 0.18       # the bed at -1.5, rails 0.18 m tall
+
+
+def _box_surface(x0: float, length: float, lateral: float, bottom: float, height: float, width: float,
+                 step: float = 0.1) -> np.ndarray:
+    """Points on the faces of a box (front, both sides, top, bottom) every ``step`` m, in the
+    vehicle frame of ``synthetic_tunnel_frame``; ``bottom`` is above the rail head. A single
+    ray-cast frame at 40-60 m returns only the 0.3 x 0.5 m front face of a box hanging near the
+    sensor height, which the long rule never sees as long; the injected faces are the whole box
+    as the approach (or a sensor above or below it) sees it."""
+    xs = np.arange(0.0, length + 1e-6, step)
+    ys = np.linspace(-width / 2, width / 2, max(int(round(width / step)) + 1, 2))
+    zs = np.linspace(0.0, height, max(int(round(height / step)) + 1, 2))
+    faces = []
+    X, Z = np.meshgrid(xs, zs, indexing="ij")
+    faces += [np.stack([X.ravel(), np.full(X.size, y), Z.ravel()], 1) for y in (ys[0], ys[-1])]
+    X, Y = np.meshgrid(xs, ys, indexing="ij")
+    faces += [np.stack([X.ravel(), Y.ravel(), np.full(X.size, z)], 1) for z in (zs[0], zs[-1])]
+    Y, Z = np.meshgrid(ys, zs, indexing="ij")
+    faces.append(np.stack([np.zeros(Y.size), Y.ravel(), Z.ravel()], 1))
+    return (np.concatenate(faces) + np.array([x0, AXIS_Y + lateral, RAIL_HEAD_Z + bottom])).astype(np.float32)
+
+
+def _run_with(tunnel_frame: Frame, pts: np.ndarray, cfg: DetectorConfig, n: int = 6):
+    frame = Frame(xyz=np.concatenate([tunnel_frame.xyz, pts]),
+                  intensity=np.concatenate([tunnel_frame.intensity, np.full(len(pts), 30.0, np.float32)]))
+    det = Detector(cfg)
+    res = None
+    for k in range(n):
+        res = det.process(Frame(xyz=frame.xyz, intensity=frame.intensity, stamp=0.1 * k))
+    return res
+
+
+def test_long_box_hanging_on_the_axis_is_a_stop(tunnel):
+    """End to end on the ray-cast tunnel: an on-axis 4.0 x 0.3 x 0.5 m box (a fallen cable tray /
+    duct / pipe) with its bottom 1.0 or 1.5 m above the rail head at 40-60 m is a STOP with the
+    shipped defaults; the 25.09 rule (no bottom condition) demoted it to advisory ``floating``.
+    The station-like structure with its bottom at 2.2 m stays advisory."""
+    frame, _, _ = tunnel
+    old = DetectorConfig()
+    old.cluster = replace(old.cluster, floating_long_min_bottom=0.0)
+    for dist, bottom in ((60.0, 1.0), (45.0, 1.5), (40.0, 1.0)):
+        pts = _box_surface(dist, 4.0, 0.0, bottom, 0.5, 0.3)
+        res = _run_with(frame, pts, DetectorConfig())
+        assert res.obstacle, [(c.distance, c.zone, c.reason, c.size.round(2).tolist()) for c in res.candidates]
+        d = res.detections[0]
+        assert d.zone == "gauge" and d.reason == "" and abs(d.distance - dist) < 0.5
+        assert d.size[0] > 3.0 and abs(d.height_min - bottom) < 0.1           # seen whole, not a fragment
+        res = _run_with(frame, pts, old)
+        assert not res.obstacle and res.warning and res.warnings[0].reason == "floating"
+    res = _run_with(frame, _box_surface(60.0, 5.5, 0.5, 2.2, 0.65, 0.2), DetectorConfig())
+    assert not res.obstacle and res.warning and res.warnings[0].reason == "floating"

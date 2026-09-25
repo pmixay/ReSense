@@ -156,7 +156,10 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
     rule in ``Cluster.reason``; nothing is dropped by them. Since v0.6 the ``column`` and
     ``floating`` signatures only apply off the track centre (``|lateral| >
     signature_min_lateral``): a broken cable or an object hanging into the envelope near the
-    axis is an obstacle whatever its shape (organizers' Q&A: hanging cables must be detected).
+    axis is an obstacle whatever its shape (organizers' Q&A: hanging cables must be detected);
+    since 25.09 the ``floating`` shape also applies near the axis to a cluster longer than
+    ``floating_long_min_length`` whose lowest point is above ``floating_long_min_bottom``
+    (overhead infrastructure along the track).
 
     ``low`` (v0.6) flags candidates that are bumps above the track bed below the polygon
     bottom (``resense/lowobj.py``); a cluster made mostly of them skips the infrastructure
@@ -308,8 +311,8 @@ def _advisory_reason(b: _Blob, dist: float, lateral: float, zone: str, dy, h, cf
     # on by default since 25.09 (3.0 m, decided on the ride; 0 = off): longer than
     # floating_long_min_length along the track, the floating shape is an overhead duct / tray /
     # beam along the track wherever it is across it - but only when its lowest point is as high
-    # as overhead infrastructure (floating_long_min_bottom, review 25.09): a cable tray, duct or
-    # pipe fallen onto the axis and hanging lower in the envelope is an obstacle
+    # as overhead infrastructure (floating_long_min_bottom, 1.6 m since the review of 25.09): a
+    # cable tray, duct or pipe fallen onto the axis and hanging lower in the envelope is an obstacle
     along = (cfg.floating_long_min_length > 0 and size[0] > cfg.floating_long_min_length
              and h_min > cfg.floating_long_min_bottom)
     if cfg.floating_min_height > 0 and h_min > cfg.floating_min_height and size[2] < cfg.floating_max_height \
