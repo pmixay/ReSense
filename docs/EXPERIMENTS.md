@@ -36,7 +36,8 @@ real-data rows (five obstacle-free bags, the person, the object on the rail, the
 row and set F straight track in one run, and gates every detector change against
 [`regression_baseline_2026-09-25_ride_p3.json`](evidence/results/regression_baseline_2026-09-25_ride_p3.json)
 (the shipped defaults of `c598cf6`, the four P3 items of 25.09 merged with the rail-shadow rules
-on: six recordings, set O, the ride and set F straight; 25.09, §1h). It is the single check of
+on, re-cut after the rules' review fixes on the final commit of those fixes: six recordings, set O,
+the ride and set F straight; 25.09, §1h). It is the single check of
 these results: a change that moves them commits a new baseline, one that does not leaves this
 table as it is. The three before it,
 [`regression_baseline_2026-09-25_ride_column.json`](evidence/results/regression_baseline_2026-09-25_ride_column.json)
@@ -56,7 +57,7 @@ every gated metric the same ([its JSON](evidence/results/regression_gate_2026-09
 | object lying across the rail (0.45 × 0.6 × 0.3 m, 56 m) | **124 of the 126** frames after the person leaves it (from frame 75)¹; 3 STOP episodes in the recording | real, 24.09 | §0 |
 | health, `CAUTION` | non-latency health warnings on 196 of 13 759 frames (1.4 %: rails lost at stations and switches); `CAUTION` on 27–68 % of the frames of the empty bags, 41 % of the ride | real, 24.09 | "Re-measurement" |
 | current code against v0.6.3 | identical per-frame output on all 13 759 frames | real, 24.09 | "Re-measurement" |
-| regression gate with the ride and set F straight (native, 25.09) | current baseline [`regression_baseline_2026-09-25_ride_p3.json`](evidence/results/regression_baseline_2026-09-25_ride_p3.json) on `c598cf6` (the four P3 items of 25.09 merged, the rail-shadow rules on, [`p3_combined_2026-09-25.json`](evidence/results/p3_combined_2026-09-25.json)): PASS against the one before with 5 gated rows better (set O 2 × 2 m box 207 → 208 and plank 42 → 49 STOP frames; set F straight false detections person 7 → 6, 1 m box 13 → 10, trolley 12 → 5), none worse, every gated row equal to the rail-shadow item's own gate, §1h. Before it: [`regression_baseline_2026-09-25_ride_column.json`](evidence/results/regression_baseline_2026-09-25_ride_column.json) on `d117c8c` (`tracking.column_hold` 2, pre-registered 3 / 2 / 1, [`column_hold_2026-09-25.json`](evidence/results/column_hold_2026-09-25.json)): PASS against the one before with 7 gated rows better (`roundT_doubleT` events and STOP episodes, set F false detections of every kind), none worse, §3a. Before it: [`regression_baseline_2026-09-25_ride.json`](evidence/results/regression_baseline_2026-09-25_ride.json) on `935eecf`: PASS against the shipped-defaults run of the same day (3 gated rows better: `squareT_platform_squareT_switch` events and STOP episodes, ride events); decision evidence [`rules_decision_2026-09-25.json`](evidence/results/rules_decision_2026-09-25.json); the review fix `cluster.floating_long_min_bottom` 1.6 m (`0bb1ba3`) passes against the same baseline with every number but latency identical and the same per-frame output, so the baseline stands ([`long_rule_bottom_2026-09-25.json`](evidence/results/long_rule_bottom_2026-09-25.json)) | real, organizers' synthetic and synthetic, 25.09 | §1f |
+| regression gate with the ride and set F straight (native, 25.09) | current baseline [`regression_baseline_2026-09-25_ride_p3.json`](evidence/results/regression_baseline_2026-09-25_ride_p3.json) on `c598cf6` (the four P3 items of 25.09 merged, the rail-shadow rules on, [`p3_combined_2026-09-25.json`](evidence/results/p3_combined_2026-09-25.json)): PASS against the one before with 5 gated rows better (set O 2 × 2 m box 207 → 208 and plank 42 → 49 STOP frames; set F straight false detections person 7 → 6, 1 m box 13 → 10, trolley 12 → 5), none worse, every gated row equal to the rail-shadow item's own gate, §1h; re-cut after the review fixes of the rail-shadow rules ([`p3_review_fixes_2026-09-25.json`](evidence/results/p3_review_fixes_2026-09-25.json)): the same 5 rows better, the 1 m box 13 → 12 (10 in the first cut: a STOP reported 4 m short), every decision and the track model identical frame by frame, gauge distances only shorter, §1h. Before it: [`regression_baseline_2026-09-25_ride_column.json`](evidence/results/regression_baseline_2026-09-25_ride_column.json) on `d117c8c` (`tracking.column_hold` 2, pre-registered 3 / 2 / 1, [`column_hold_2026-09-25.json`](evidence/results/column_hold_2026-09-25.json)): PASS against the one before with 7 gated rows better (`roundT_doubleT` events and STOP episodes, set F false detections of every kind), none worse, §3a. Before it: [`regression_baseline_2026-09-25_ride.json`](evidence/results/regression_baseline_2026-09-25_ride.json) on `935eecf`: PASS against the shipped-defaults run of the same day (3 gated rows better: `squareT_platform_squareT_switch` events and STOP episodes, ride events); decision evidence [`rules_decision_2026-09-25.json`](evidence/results/rules_decision_2026-09-25.json); the review fix `cluster.floating_long_min_bottom` 1.6 m (`0bb1ba3`) passes against the same baseline with every number but latency identical and the same per-frame output, so the baseline stands ([`long_rule_bottom_2026-09-25.json`](evidence/results/long_rule_bottom_2026-09-25.json)) | real, organizers' synthetic and synthetic, 25.09 | §1f |
 | organizers' objects (set O, `cloud_with_fake_obj`, 10 objects in 1 510 frames) | STOP for **5 of 8** in-envelope objects: 2 × 2 m box from 98 m (first sight), plank across the rails from 82 m, 0.3 m cubes from 34–43 m, 2 × 2 m box at the envelope top in 12 of 124 frames; the edge 2 × 2 m box and the 5 cm hanging object missed, the edge 0.3 m cube advisory only; STOP in 303 of 801 visible in-envelope object-frames, 1 of 236 beyond 100 m; 6 false STOP frames on the 2 × 2 m box outside, 3 background alarm frames. With the rail-shadow rules (25.09): **311 of 801** (the 2 × 2 m box 207 → 208, the plank 42 → 49, held from 90.8 m instead of 58.6 m) and every STOP on the 2 × 2 m box at its own distance (12 STOP frames at the bed's 3.0 m before, largest error 14.1 → 0.46 m); the rest identical | organizers' synthetic, 24.09; gate 25.09 | §2e, §1h |
 | long range, straight track | person first confirmed at **148 m** median (6 of 6), held in ≥ 90 % of the frames from 149 m and in every 10 m band from 115 m; trolley 144 m; 1 m crate 111 m; 3 cm hanging cable 95 m, held from 53 m (4 of 6); 0.5 m box on the bed 1 of 6; re-measured 25.09 by the gate on the current `far_range_eval.py` (changed by the P4 audit after 24.09; same files, seed, stamps, speeds): person 151.0 m median (6 of 6), held from 142.6 m; trolley 151.4 m; 1 m crate 123.9 m; cable 98.9 m, held from 34.2 m (6 of 6); 0.5 m box 1 of 6 (51.9 m); identical with and without either 25.09 rule [measured 25.09] | synthetic, set F round 3, legacy placement, 24.09; gate 25.09 | §2d |
 | same, object anchored on the near rails | person **154 m** (legacy 150 m in the same 5 pairs), trolley 148 m (148 m), crate 110 m (116 m), cable 102 m (104 m) | synthetic, set F round 4, anchored placement, 24.09 | §2d |
@@ -96,8 +97,9 @@ obstacle-frames of the recording (person 58 of 61 + object 127 of 185).
 * The rail-shadow rules are on since 25.09 (`track.floor_shadow_height` 1.0 within 30 m,
   `cluster.oversize_split_max_length` 3.0 within 30 m, `cluster.gauge_distance` true; §1h): they
   change only set O (two objects' STOP frames, #1's distances) and set F straight's false
-  detections (35 → 24); the six recordings, the ride and set F detections are identical with and
-  without them (the gate of 25.09).
+  detections (35 → 24; 26 since the review fixes, which measure a gauge distance on the envelope
+  widened by the axis margin, so distances only get shorter, §1h); the six recordings, the ride
+  and set F detections are identical with and without them (the gate of 25.09).
 * Set F uses legacy placement unless said (protocol: EVALUATION §3; paired check: §2d round 4 and
   [`P4_AUDIT.md`](P4_AUDIT.md)); synthetic objects are not a real long-range test.
 * ROS and Docker numbers are dated runs on the sandbox, not re-measured on every change.
@@ -1173,6 +1175,39 @@ frames with an alarm matching no object 29 → 9; with those keys off the #1 row
 pre-change baseline, so the three other flags do not act. No pair interacts: nothing was turned
 back off. New baseline
 [`regression_baseline_2026-09-25_ride_p3.json`](evidence/results/regression_baseline_2026-09-25_ride_p3.json).
+
+**Review fixes of the rail-shadow rules** [measured 25.09]. A safety review of the shipped rules
+found three faults. (1) `cluster.gauge_distance` took the nearest point of the strict-gauge mask,
+which is the envelope *shrunk* by the axis-uncertainty margin (0.15 m per 100 m, §3.2 of
+ALGORITHM), so an object entering the envelope obliquely was reported beyond its entry: a 1.2 m
+bar crossing the 1.05 m edge at 0.15 m per m of X, +0.38 / +0.80 / +1.20 m at 40 / 80 / 120 m; on
+set O the false STOP on the outside 2 × 2 m box (#7) at 136–144 m was reported 1.2–1.5 m beyond it.
+(2) A held bed is the next frame's reference and nothing ended a hold: a 3.4° pitch step after the
+warm-up held the flat bed for good (a lasting false STOP at 4.5 m, the rising bed). (3) The two
+high bins that start a shadow need not be adjacent (28 and 62.5 m made one), and the object's face
+was the first off-bed bin, not the one nearest the shadow (an off-bed bin at 8 m cut the rail
+search to 4–7 m). Fixes (`95ff725`, ALGORITHM §3.1, §3.3, §4b): the distance is measured on the
+envelope *widened* by that margin (never beyond where the object enters the envelope while the axis
+error stays within the margin; the set O edge line at 1.35–1.40 m stays out);
+`track.floor_shadow_max_hold` 20 frames, then the rule is released until no shadow is found (set O
+#1 holds the bed 14 frames in a row, 11 of them fits, at ~0.95 m of approach per frame); adjacent bins and the face nearest the
+shadow; health counters `floor_shadow_frames` / `floor_held_frames` / `floor_released_frames`.
+Pre-registered at 19:47 UTC before any run of the fixed code on the organizer data, with the
+unshrunk envelope and `gauge_distance` off as fallbacks. The full gate (`b718a37`, `--jobs 3`,
+331 s) against `regression_baseline_2026-09-25_ride_column.json`: **PASS**, the same 5 gated rows
+better, none worse. Against the first `_ride_p3` cut 4 values differ, all distances: the platform
+end alarm 82.9 → 82.0 m and the ride's farthest alarm 160.5 → 158.3 m (both back to the
+`_ride_column` values), and set F straight's 1 m box 10 → 12 false detections (file 168: the box at
+112.6–114.4 m is one 6.6 m cluster with structure in front of it, part of which lies within the
+widened reach, and the STOP is reported 4 m short). Per frame against `8556773` (its gate re-run
+reproduces the first cut): decisions and the track model identical in all 15 269 frames; a gauge
+detection's distance changes in 124 detection-frames, always shorter (the person of
+`doubleT_obstacle` by ≤ 0.12 m, #7's false STOP to its labelled distance). Set O #1: every row
+identical (224 STOP frames, 0 beyond 1 m, largest error 0.46 m); no inside object loses a
+matched-alarm or STOP frame. The floor-shadow rule still fires only on set O (29 frames, held 14,
+released 0). Tests 431 → 436, each new one failing on `8556773`. The baseline
+`regression_baseline_2026-09-25_ride_p3.json` is re-cut on the final commit (same name). Raw:
+[`p3_review_fixes_2026-09-25.json`](evidence/results/p3_review_fixes_2026-09-25.json).
 
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 

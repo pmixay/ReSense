@@ -226,7 +226,10 @@ to an object in others:
 * one is #9, whose 4 m-long low cluster starts 4 m in front of it at 65 m;
 * one (frames 213–226, reported at 3.0 m) is caused by the 2 × 2 m box. While the box is
   10–20 m ahead, its shadow hides the rails, the rail-height fit drifts by ~0.5 m and the bed
-  2.5–8 m ahead reads as an obstacle. The STOP is right, but the distance is wrong.
+  2.5–8 m ahead reads as an obstacle. The STOP is right, but the distance is wrong. *(25.09: fixed
+  since the rail-shadow rules of wf7/p3, kept by their review fixes `95ff725`: every STOP on #1 now
+  reports the box at its own distance, largest error 0.46 m, none more than 1 m off; EXPERIMENTS
+  §1h.)*
 
 Standard metrics
 (`resense summarize --gt`): recall 0.378 of visible in-gauge object-frames (0–50 m 113/227,

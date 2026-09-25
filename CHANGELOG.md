@@ -17,12 +17,31 @@ frames, 13 km, no obstacles).
 ## Unreleased (in development; package version 1.0.0)
 
 Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
-overhead rule on, node v0.6.4). Tests: 235 → 431 (+28 native kernels, +3 speed evaluation
+overhead rule on, node v0.6.4). Tests: 235 → 436 (+28 native kernels, +3 speed evaluation
 helpers, +23 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5
 overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting and socket
 buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`, +20 DDS
 transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
-`cluster.far_axis_both_sides`, +3 far bed bins) in `tests/`, 13 in `web/demo`.
+`cluster.far_axis_both_sides`, +3 far bed bins, +5 the rail-shadow review fixes) in `tests/`, 13
+in `web/demo`.
+
+- **Review fixes of the rail-shadow rules (P3, 25.09):** a safety review found three faults.
+  `cluster.gauge_distance` measured on the strict-gauge mask, the envelope shrunk by the axis
+  margin (0.15 m per 100 m), so an object entering obliquely was reported beyond its entry (+0.4 /
+  +0.8 / +1.2 m at 40 / 80 / 120 m; set O #7's false STOP 1.2–1.5 m too far): it now measures on
+  the envelope widened by that margin, never beyond the entry. A held bed had no end (a 3.4° pitch
+  step held it for good: a lasting false STOP): `track.floor_shadow_max_hold` 20 frames, then the
+  rule is released until no shadow is found. The two shadow bins must be adjacent, and the face is
+  the one nearest the shadow. Health counters `floor_shadow_frames` / `floor_held_frames` /
+  `floor_released_frames` (additive). Pre-registered (19:47 UTC); the full gate (`b718a37`) passes
+  against `regression_baseline_2026-09-25_ride_column.json` with the same 5 gated rows better and
+  none worse; decisions and the track model identical in all 15 269 frames of the six recordings,
+  set O and the ride, gauge distances only shorter (124 detection-frames); set O #1 unchanged (no
+  STOP more than 1 m off); set F straight's 1 m box 10 → 12 false detections against the first
+  `_ride_p3` cut (a STOP at 112–114 m reported 4 m short). `regression_baseline_2026-09-25_ride_p3.json`
+  re-cut under the same name. +5 tests, each failing before the fix.
+  [`p3_review_fixes_2026-09-25.json`](docs/evidence/results/p3_review_fixes_2026-09-25.json),
+  [EXPERIMENTS §1h](docs/EXPERIMENTS.md).
 
 - **The P3 items of 25.09 combined; new gate baseline (P3, 25.09, delegated by the captain):** the
   four items below merged (`wf7/p3`): the rail-shadow rules ship; `track.walls_min_far_support`,
