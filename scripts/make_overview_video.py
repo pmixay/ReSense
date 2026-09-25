@@ -53,7 +53,7 @@ FPS = 25
 XFADE = 0.4                                             # cross-fade between shots, s
 STILL_HZ = 10                                           # a zooming still changes this often (as the clips)
 CRF = 23                                                # x264 quality (shots with ``bits`` scale it)
-REPO_LINE = "github.com/pmixay/ReSense · релиз v1.0-final"   # the release tag of docs/CAPTAIN.md §5
+REPO_LINE = "github.com/pmixay/ReSense · релиз v1.0.0"   # the final release tag (docs/CAPTAIN.md §5, release.yml)
 
 REAL, OURS, ORG = "real", "ours", "org"                 # how a number was measured (the script's marks)
 DEMO = "демо-данные интерфейса"                         # badge on the web-UI captures of the built-in demo
