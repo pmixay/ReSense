@@ -213,6 +213,24 @@ In this order on a fresh VM: the dry run's `--no-cache` build (§4.1) should be 
 there, so that it is the clean machine of C7. Each run says what "done" means and where its
 evidence goes; §6 turns the evidence into a PR.
 
+### 4.0 Owed now: the confirmation re-run of the 25.09 fixes
+
+The first VM run (25.09, code `7290873`; [`evidence/vm_2026-09-25/summary.md`](evidence/vm_2026-09-25/summary.md))
+failed three criteria; each was root-caused and fixed in the repository the same day
+(EXPERIMENTS §3a / §3b), but only on cached frames and bags rebuilt from them. One run on the VM
+confirms them with the original bags, on the commit the captain names (a head of PR #12 or `main`
+after `cb9e4ab`), the build `--no-cache` again:
+
+| step | command | expected |
+|---|---|---|
+| drops (C7, C8) | §4.1, first command | `dropped input settle : start-up catch-up back on the newest frame at +7–8 s`; `dropped input vs bag : … 4 frame(s) missing from the recording itself; 0 of its messages not processed`; `PASS`; the node log says `dropped N (M skipped by the catch-up)` |
+| false alarm (C7) | §4.1, second command, then the `replay_node_frames.py` line | `PASS` with at most 1 alarm frame (was 3 at 111–115 m: the column at 101–149 m, advisory since `tracking.column_hold` 2); the node's and the replay's alarm lists equal |
+| CycloneDDS player (C4) | `sudo sysctl -w net.core.rmem_max=33554432` (leave `rmem_default`), the host console of §4.2 with `RMW_IMPLEMENTATION=rmw_cyclonedds_cpp`, then `sudo sysctl -w net.core.rmem_max=212992` | both recordings arrive, `STOP` on the obstacle; no rmem WARN in the node log (the image now asks for a 32 MiB receive buffer, so `rmem_max` alone decides) |
+| bench (C8) | §4.3 | `dry_obstacle_native` PASS; write down the physical core count |
+| offline (C25) | §4.5 then §5 with the new archive | as in §5 |
+
+Commit the evidence as in §6 (`dry_run_<date>/`, `bench_<date>/`, `offline_<date>/`), one PR.
+
 ### 4.1 Dry run with the original bags
 
 ```bash
@@ -226,8 +244,10 @@ echo "exit ${PIPESTATUS[0]}"
 
 The first builds the image with `--no-cache` (20–35 min with the build), plays the bag through
 the node and checks `/resense/status` with `scripts/check_dry_run.py`. **Done:** both exit 0: the
-person at 50–62 m in ≥ 3 frames, p95 of decode + detect ≤ 100 ms, no frame dropped after the first
-5 s; on `roundT_doubleT` at most 2 alarm frames (since `tracking.column_hold` 2 the column at
+person at 50–62 m in ≥ 3 frames, p95 of decode + detect ≤ 100 ms, no frame dropped after the settle
+point (the later of 5 s and the end of the node's start-up catch-up, at most 15 s; `dry_run.sh`
+passes `--bag`, so the frames missing from the recording itself, 4 in `doubleT_obstacle`, are not
+drops); on `roundT_doubleT` at most 2 alarm frames (since `tracking.column_hold` 2 the column at
 101–149 m, 3 frames at 111–115 m on 25.09, is advisory; the trackside frame at 53 m came in 3 of 10
 runs). Then `python scripts/replay_node_frames.py out/dry_clear/status.jsonl --bag
 "$BAGS/roundT_doubleT"` replays the frames the node processed offline and prints both alarm lists:
@@ -277,7 +297,9 @@ source /opt/ros/humble/setup.bash && ros2 topic echo /resense/decision --field d
 
 **Done:** the check passes and console 3 shows `STOP` during the obstacle recording. Optional:
 the same with `export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp` in consoles 2 and 3 (the node stays
-on Fast DDS; not tested so far, C4). **Evidence:** with the dry run's.
+on Fast DDS). A CycloneDDS player needs `net.core.rmem_max` ≥ 32 MiB on the host for the 360° clouds
+(25.09: none arrived at Ubuntu's 212992, all at 32 MiB; the node logs a WARN below it):
+`sudo sysctl -w net.core.rmem_max=33554432` for the run, restored afterwards (§4.0). **Evidence:** with the dry run's.
 
 ### 4.3 8-core bench
 
@@ -289,13 +311,15 @@ Builds the image (timed), runs `dry_run.sh` on both bags with the node on the na
 on numpy, `console_test.sh` with the image's and the stock player, samples `docker stats`, times
 the detector on the host with peak RSS, and summarises (10–25 min; its header has the details).
 Keep the VM otherwise idle. **Done:** exit 0 and `summary.txt`; C8 closes when
-`dry_obstacle_native` passes (p95 ≤ 100 ms, no frame dropped after 5 s) on ≥ 8 physical cores.
+`dry_obstacle_native` passes (p95 ≤ 100 ms, no frame dropped after the settle point, §4.1) on ≥ 8
+physical cores, or on fewer if the captain accepts a pass on a machine weaker than the stand (the
+proposal of 25.09, CAPTAIN C8).
 **Evidence:** the script writes `docs/evidence/bench_<date>/` itself, ready to commit.
 
 ### 4.4 Regression gate with the ride
 
 ```bash
-BASELINE=$(ls docs/evidence/results/regression_baseline_*_ride*.json | sort | tail -n 1)   # the newest baseline with the ride
+BASELINE=$(ls docs/evidence/results/regression_baseline_*_ride*.json | LC_ALL=C sort | tail -n 1)   # the newest baseline with the ride
 echo "$BASELINE"      # since 25.09 (tracking.column_hold 2): regression_baseline_2026-09-25_ride_column.json
 mkdir -p "$EV/gate_$DAY"
 python scripts/regression_gate.py --cache "$CACHE" --jobs 6 --baseline "$BASELINE" \

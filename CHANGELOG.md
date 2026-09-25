@@ -17,7 +17,7 @@ frames, 13 km, no obstacles).
 ## Unreleased (in development; package version 1.0.0)
 
 Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
-overhead rule on, node v0.6.4). Tests: 235 → 392 (+28 native kernels, +3 speed evaluation
+overhead rule on, node v0.6.4). Tests: 235 → 396 (+28 native kernels, +3 speed evaluation
 helpers, +23 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5
 overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting and socket
 buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`) in `tests/`,
