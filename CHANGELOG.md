@@ -17,19 +17,58 @@ frames, 13 km, no obstacles).
 ## Unreleased (in development; package version 1.0.0)
 
 Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
-overhead rule on, node v0.6.4). Tests: 235 → 347 (+28 native kernels, +3 speed evaluation
-helpers, +17 regression gate, +3 DBSCAN exactness, +3 late candidates, +53 release tooling, +5
-overview video, 2 of them in the image, which has no `docs/`) in `tests/`, 11 in `web/demo`.
+overhead rule on, node v0.6.4). Tests: 235 → 392 (+28 native kernels, +3 speed evaluation
+helpers, +23 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5
+overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting and socket
+buffers, +21 `load_image.sh`, +11 `check_no_network.py`) in `tests/`, 11 in `web/demo`.
 
+- **Long overhead rule only above 1.6 m (`3bf6324`, `0bb1ba3`, 25.09, code review, approved by the
+  captain):** the along-track branch of the `floating` signature skipped the
+  `signature_min_lateral` guard, so a cable tray, duct or pipe fallen onto the axis and hanging
+  0.7–1.9 m above the rail (e.g. 4.0 × 0.3 × 0.5 m at 60 m) was advisory instead of a STOP. New
+  `cluster.floating_long_min_bottom` 1.6: the branch needs the cluster's lowest point above it.
+  Pre-registered 2.0 / 1.8 / 1.6 m, the highest keeping every gain chosen: 2.0 and 1.8 m bring back
+  the ride event at 105–110 m (bottom 1.68–1.92 m; ride 197 / 46 / 39 → 204 / 47 / 39 and
+  202 / 47 / 40); 1.6 m is identical frame by frame on the six recordings, the ride, set O and set F
+  straight, so `regression_baseline_2026-09-25_ride.json` stays the baseline. A long cluster near
+  the axis with its bottom above 1.6 m stays advisory (ALGORITHM §6). +2 tests in
+  `tests/test_late_candidates.py` (the classification; the box end to end on the ray-cast tunnel).
+  [`long_rule_bottom_2026-09-25.json`](docs/evidence/results/long_rule_bottom_2026-09-25.json),
+  [EXPERIMENTS §1f](docs/EXPERIMENTS.md).
 - **The captain's decisions (25.09):** no tags or releases now, the system is still in
   development: `.github/workflows/release.yml` and the release scripts stay, inert until a tag is
   pushed, and every plan item that scheduled a tag or a release is deferred. The submission is
   handled by the captain personally with all its links: `docs/SUBMISSION.md` removed, its links
   replaced (the jury commands in the README, the dry-run procedure in README "Acceptance test and
-  CI", `scripts/dry_run.sh` and `scripts/vm/AGENT_BRIEF.md`, the offline delivery in ARCHITECTURE
+  CI", `scripts/dry_run.sh` and the VM brief (now `docs/VM_GUIDE.md`), the offline delivery in ARCHITECTURE
   "Deployment without internet"). Deployment (image archive, clean-machine and offline dry run on
   the 8-core stand-in) and the presentation (deck, team slides, video voice-over) come later.
   [`docs/CAPTAIN.md`](docs/CAPTAIN.md) C12, C13, C21, §9.
+- **VM kit reduced to instructions (25.09, the captain):** `scripts/vm/` removed (`setup_vm.sh`,
+  `fetch_data.sh`, `run_plan.sh`, `lib.sh`, `stream_cache.py`; the code review had found the
+  feature branch built in as the default clone target). Its brief is now
+  [`docs/VM_GUIDE.md`](docs/VM_GUIDE.md): plain commands of the repository's tools with variables
+  the reader sets, the ride streamed split by split (`curl | zstd | tar --to-command` into
+  `scripts/cache_frames.py`, one split file on disk at a time), the offline rehearsal as steps with
+  the restore armed first (IPv4 and IPv6, never saved). [`docs/CAPTAIN.md`](docs/CAPTAIN.md) §9.
+- **Script fixes (`1fc127f`, `163f34b`, `ade8a97`, 25.09, code review):** `regression_gate.py`
+  fails a gated baseline metric missing in this run ("missing in this run", exit 1; `--allow
+  'ride.*' --allow 'set_F_straight.*'` accepts a run without the ride on purpose), so a machine
+  without `new_data` no longer passes the `_ride` baseline unchecked; `load_image.sh` normalises
+  the expected sha256 (any case; Get-FileHash / certutil / sha256sum / BSD forms; no sum = exit
+  2); `check_no_network.py` probes IPv6 (literals and each host's AAAA addresses) as well as IPv4
+  and prints the result per family. +6 gate tests, `tests/test_load_image.py` (21),
+  `tests/test_check_no_network.py` (11).
+- **Drops of the 25.09 dry run explained; the node and the checker count them apart (25.09):** of
+  the 20 frames "dropped after 5 s" on `doubleT_obstacle`, 16 were the start-up catch-up's own skips
+  (it ran to +7.7–7.9 s after the player's preload) and 4 are frames the recording itself lacks.
+  The status adds `node.catchup_skipped` and `node.catchup`; `scripts/check_dry_run.py` counts drops
+  after the later of 5 s and the end of the start-up catch-up (at most 15 s, `--max-settle-s`) and,
+  with `--bag` (passed by `dry_run.sh`), the recording's messages not processed. The node warns at
+  start when `net.core.rmem_max` is below 32 MiB (a CycloneDDS player then delivers no 360° cloud),
+  the image asks for 32 MiB receive buffers, and the ROS package defaults BLAS / OpenMP to one
+  thread outside the image. No processed frame or decision changes.
+  [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) §3a, §3b.
 - **Long overhead rule on, short signatures off (`935eecf`, `48411f2`, 25.09, A for the
   captain):** decided on the 20-minute ride with the regression gate against pre-registered
   criteria

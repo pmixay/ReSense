@@ -101,9 +101,11 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   orientation, roll / pitch / yaw, height, drift), and `detections[].kind` (`low` for a bed-level
   object). All older keys are unchanged.
   The ROS node adds a `node` object: `latency_ms` (decode + detect of this frame), `fps`,
-  `frames`, `dropped_frames` (estimated from gaps in the input stamps), `input_period_ms`,
-  `ego_speed_mps`, `ego_speed_source`, `input_topic`, `recording` (recordings seen); a fault
-  snapshot has no `node` object.
+  `frames`, `dropped_frames` (estimated from gaps in the input stamps, any cause),
+  `catchup_skipped` (25.09: the part of them the node received and skipped while catching up),
+  `catchup` (25.09: this frame was processed while behind), `input_period_ms`, `ego_speed_mps`,
+  `ego_speed_source`, `input_topic`, `recording` (recordings seen); a fault snapshot has no `node`
+  object.
 * Node runtime statistics (spec §8.3): `/resense/latency_ms` per frame (decode + detect + publish),
   `/resense/fps` and a log line with latency mean / p95 / max and dropped frames every
   `stats_period` seconds. A frame that waits alone is processed at once, so if a frame takes longer
@@ -117,6 +119,15 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   `doubleT_obstacle` in Docker ([`EXPERIMENTS.md`](EXPERIMENTS.md) §3b) — and best-effort when a
   publisher is (a live sensor-data driver). The shipped RViz config subscribes to the raw clouds
   reliable too (a live best-effort driver needs the display's Reliability Policy switched in RViz).
+* Transport: the image runs Fast DDS over UDP only (`docker/fastdds_udp.xml`, so that a player of
+  any user reaches the root node) and sets 32 MiB socket receive buffers (8 MiB until 25.09); the
+  kernel caps them at `net.core.rmem_max`, 212992 on a stock Ubuntu, silently, and Fast DDS 2.6
+  keeps going with the capped buffer (`rmem_default` does not matter to a buffer set explicitly).
+  A Fast DDS player delivers every cloud at that; a CycloneDDS player delivered none of the 24 MB
+  360° clouds until `rmem_max` and `rmem_default` were raised to 32 MiB (25.09, EXPERIMENTS §3b),
+  so the requirement is `sudo sysctl -w net.core.rmem_max=33554432
+  net.core.rmem_default=33554432` on a host that plays with CycloneDDS; the node logs a WARN at
+  start when `rmem_max` is below 32 MiB.
 * Ego speed for multi-frame accumulation: the node passes `Detector.process(frame, ego_speed=v)`
   the value of the `ego_speed_mps` parameter, else the latest `speed_topic` / `odom_topic`
   message younger than `speed_timeout`, else `None` (single-frame path); the status JSON reports

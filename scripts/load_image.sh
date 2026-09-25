@@ -4,7 +4,8 @@
 #
 #   scripts/load_image.sh dist/resense-image-<version>.tar.gz
 #
-# 1. checks the archive against <archive>.sha256 next to it (or SHA256=<hex>; NO_VERIFY=1 skips);
+# 1. checks the archive against <archive>.sha256 next to it, or SHA256=<sum> (any case, as
+#    Get-FileHash / certutil print it; a '<sum>  <file>' line too); NO_VERIFY=1 skips;
 # 2. docker load -i <archive> (gzip is read directly);
 # 3. checks that $IMAGE (default resense:latest) exists;
 # 4. with --network none: the resense package imports (with its C++ kernels) and the ROS 2
@@ -14,7 +15,7 @@
 set -euo pipefail
 IMAGE="${IMAGE:-resense:latest}"
 if [ $# -ne 1 ]; then
-  sed -n '2,13p' "$0" >&2
+  sed -n '2,14p' "$0" >&2
   exit 2
 fi
 ARCHIVE="$1"
@@ -26,24 +27,68 @@ ARCHIVE_DIR="$(cd "$(dirname "$ARCHIVE")" && pwd)"
 ARCHIVE_NAME="$(basename "$ARCHIVE")"
 . "$(dirname "${BASH_SOURCE[0]}")/require_docker.sh"
 
+# sha256_in <text> <archive name>: the sha256 that <text> gives, as 64 lowercase hex digits, or
+# nothing. Accepts a bare sum in any case (Windows Get-FileHash and certutil print upper case)
+# with spaces, tabs, CR or newlines around or inside it (certutil's "a1 b2 c3 ..."), the
+# sha256sum line "<sum>  <name>" / "<sum> *<name>" of a .sha256 file (of several lines, the one
+# naming the archive), and the BSD "SHA256 (<name>) = <sum>" line. bash 3.2 compatible (macOS).
+sha256_in() {
+  local text name squeezed line tok found first="" f
+  local -a toks
+  text="$(printf '%s\n' "$1" | tr -d '\r' | tr '[:upper:]' '[:lower:]')"
+  name="$(printf '%s' "$2" | tr '[:upper:]' '[:lower:]')"
+  squeezed="${text//[[:space:]]/}"
+  if [[ "$squeezed" =~ ^[0-9a-f]{64}$ ]]; then
+    printf '%s' "$squeezed"
+    return
+  fi
+  while IFS= read -r line; do
+    found=""
+    squeezed="${line//[[:space:]]/}"
+    read -r -a toks <<< "$line" || true
+    if [[ "$squeezed" =~ ^[0-9a-f]{64}$ ]]; then
+      found="$squeezed"
+    else
+      for tok in ${toks[@]+"${toks[@]}"}; do
+        tok="${tok#\\}"                    # sha256sum escapes a line whose name has a backslash
+        if [[ "$tok" =~ ^[0-9a-f]{64}$ ]]; then found="$tok"; break; fi
+      done
+    fi
+    [ -n "$found" ] || continue
+    [ -n "$first" ] || first="$found"
+    for tok in ${toks[@]+"${toks[@]}"}; do
+      f="${tok#\*}"; f="${f#(}"; f="${f%)}"
+      if [ "$f" = "$name" ]; then printf '%s' "$found"; return; fi
+    done
+  done <<< "$text"
+  printf '%s' "$first"
+}
+
 if command -v sha256sum >/dev/null 2>&1; then SHA=(sha256sum); else SHA=(shasum -a 256); fi
 if [ "${NO_VERIFY:-0}" = "1" ]; then
   echo "== NO_VERIFY=1: checksum not checked"
 else
   if [ -n "${SHA256:-}" ]; then
-    EXPECTED="$SHA256"
+    SOURCE="SHA256"
+    EXPECTED="$(sha256_in "$SHA256" "$ARCHIVE_NAME")"
   elif [ -f "$ARCHIVE_DIR/$ARCHIVE_NAME.sha256" ]; then
-    EXPECTED="$(cut -d' ' -f1 "$ARCHIVE_DIR/$ARCHIVE_NAME.sha256")"
+    SOURCE="$ARCHIVE_NAME.sha256"
+    EXPECTED="$(sha256_in "$(cat "$ARCHIVE_DIR/$ARCHIVE_NAME.sha256")" "$ARCHIVE_NAME")"
   else
     echo "ERROR: no $ARCHIVE_NAME.sha256 next to the archive; copy it along, or pass SHA256=<hex>" >&2
     echo "       (NO_VERIFY=1 loads without the check)" >&2
     exit 2
   fi
+  if [ -z "$EXPECTED" ]; then
+    echo "ERROR: $SOURCE holds no sha256 (64 hex digits, any case; '<sum>  <file>' lines are fine)" >&2
+    exit 2
+  fi
   echo "== checking the sha256 of $ARCHIVE_NAME ($(wc -c < "$ARCHIVE_DIR/$ARCHIVE_NAME" | tr -d ' ') bytes)"
-  ACTUAL="$(cd "$ARCHIVE_DIR" && "${SHA[@]}" "$ARCHIVE_NAME" | cut -d' ' -f1)"
+  ACTUAL="$(cd "$ARCHIVE_DIR" && "${SHA[@]}" "$ARCHIVE_NAME")"
+  ACTUAL="$(sha256_in "$ACTUAL" "$ARCHIVE_NAME")"
   if [ "$ACTUAL" != "$EXPECTED" ]; then
     echo "ERROR: checksum mismatch: the archive is damaged or incomplete (copy it again)" >&2
-    echo "       expected $EXPECTED" >&2
+    echo "       expected $EXPECTED ($SOURCE)" >&2
     echo "       actual   $ACTUAL" >&2
     exit 4
   fi

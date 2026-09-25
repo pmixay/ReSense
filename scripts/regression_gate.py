@@ -6,6 +6,7 @@
     python scripts/regression_gate.py --set cluster.min_points=8 --baseline <FILE>     # a variant
     python scripts/regression_gate.py --from-json out/gate/current.json --baseline <FILE>   # compare only
     python scripts/regression_gate.py ... --allow 'recordings.doubleT_platform.*'      # an intended trade-off
+    python scripts/regression_gate.py ... --allow 'ride.*' --allow 'set_F_straight.*'   # no <cache>/new_data: accept running without the ride
 
 What it runs (every frame, a fresh detector per recording, the ``scripts/eval_real.py`` machinery;
 the per-frame JSONL results go to ``--work``):
@@ -15,7 +16,8 @@ the per-frame JSONL results go to ``--work``):
   with ``scripts/score_fake_objects.py``;
 * the 20-minute ride ``new_data`` (set E ride, in ``--chunks`` pieces as eval_real) and the set F
   straight-track approaches (``scripts/far_range_eval.py``, the parameters of set F round 3) only
-  when ``<cache>/new_data`` exists; otherwise both are reported "not available".
+  when ``<cache>/new_data`` exists; otherwise both are reported "not available" (and against a
+  baseline that has them, their gated rows are missing: see below).
 
 The JSON (``--out``) holds per recording: frames, alarm frames, alarm events (distinct confirmed
 track ids), STOP episodes (GO -> STOP transitions), advisory frames, first alarm frame, alarm
@@ -38,13 +40,18 @@ patterns of metric names). Gated, i.e. "identical or better" required:
 * set O, every inside object: STOP frames must not drop and the first STOP must not come at a
   shorter distance (no STOP counts as the worst); every outside object: false STOP frames must not
   rise; background alarm frames and background track ids must not rise;
-* set F straight (when both runs have it), per kind: sequences detected must not drop, the median
-  first-confirmation distance must not shrink, false detections must not rise.
+* set F straight, per kind: sequences detected must not drop, the median first-confirmation
+  distance must not shrink, false detections must not rise.
+
+A gated metric of the baseline that this run does not have fails as "missing in this run": the
+gate cannot tell that it is not worse. This is what happens to the ride and set F straight rows of
+a baseline with the ride when ``<cache>/new_data`` is absent; the gate names the missing data set.
+Running without the ride is accepted only on purpose, with
+``--allow 'ride.*' --allow 'set_F_straight.*'``. A metric that only this run has is information.
 
 Everything else (alarm frames, advisory frames, totals, held-from distances, latency) is printed
-as information. A set that only one of the two runs has is listed as "not compared". Exit codes:
-0 pass, 1 a gated metric is worse, 2 usage, a missing required recording, or a set F run that
-failed although the ride is cached.
+as information. Exit codes: 0 pass, 1 a gated metric is worse or missing in this run, 2 usage, a
+missing required recording, or a set F run that failed although the ride is cached.
 """
 from __future__ import annotations
 
@@ -425,39 +432,96 @@ def verdict(base, new, direction) -> str:
     return "better" if new < base else "worse"
 
 
+MISSING = "missing in this run"           # the verdict of a gated baseline metric this run lacks
+DATA_SETS = {"ride": "ride (set E)", "set_O": "set O", "set_F_straight": "set F straight"}
+
+
 def compare(base: dict, new: dict, allow=()) -> list:
-    """One row per metric of either run: metric, baseline, current, verdict, gated, allowed, fails."""
+    """One row per metric of either run: metric, baseline, current, verdict, gated, allowed, fails.
+
+    A gated metric of the baseline that this run lacks (its data set did not run: the ride and set
+    F straight without ``<cache>/new_data``) is a gated row with the verdict "missing in this run"
+    that fails unless ``allow`` covers it. A metric only this run has is information."""
     mb, mn = metrics(base), metrics(new)
     rows = []
     for key in list(mb) + [k for k in mn if k not in mb]:
-        if key not in mb or key not in mn:
-            vb = mb[key][0] if key in mb else None
-            vn = mn[key][0] if key in mn else None
-            rows.append({"metric": key, "baseline": vb, "current": vn,
-                         "verdict": "not in baseline" if key not in mb else "not in this run",
+        allowed = any(fnmatch.fnmatchcase(key, p) for p in allow)
+        if key not in mn:
+            vb, _, gated = mb[key]
+            rows.append({"metric": key, "baseline": vb, "current": None,
+                         "verdict": MISSING if gated else "not in this run", "gated": gated,
+                         "allowed": gated and allowed, "fails": gated and not allowed})
+            continue
+        if key not in mb:
+            rows.append({"metric": key, "baseline": None, "current": mn[key][0], "verdict": "not in baseline",
                          "gated": False, "allowed": False, "fails": False})
             continue
         vb, direction, gated_b = mb[key]
         vn, _, gated_n = mn[key]
         gated = gated_b or gated_n
         v = verdict(vb, vn, direction)
-        allowed = any(fnmatch.fnmatchcase(key, p) for p in allow)
         bad = gated and v in ("worse", "differs")
         rows.append({"metric": key, "baseline": vb, "current": vn, "verdict": v, "gated": gated,
                      "allowed": bad and allowed, "fails": bad and not allowed})
     return rows
 
 
+def data_set(metric: str) -> tuple:
+    """(the data set a metric belongs to, the --allow pattern that covers all of its metrics)."""
+    head, _, rest = metric.partition(".")
+    if head == "recordings":
+        bag = rest.split(".", 1)[0]
+        return f"recording {bag}", f"recordings.{bag}.*"
+    return DATA_SETS.get(head, head), f"{head}.*"
+
+
+def missing_sets(rows, new: dict) -> list:
+    """The data sets with gated rows missing in this run, in row order: data set, --allow pattern,
+    gated rows missing, how many of them --allow covers, why the set is absent (when the run says)."""
+    groups = {}
+    for r in rows:
+        if r["verdict"] != MISSING:
+            continue
+        label, pattern = data_set(r["metric"])
+        head = r["metric"].partition(".")[0]
+        reason = (new.get(head) or {}).get("reason") if head in DATA_SETS else None
+        g = groups.setdefault(label, {"data_set": label, "allow": pattern, "rows": 0, "allowed": 0,
+                                      "reason": reason})
+        g["rows"] += 1
+        g["allowed"] += int(r["allowed"])
+    return list(groups.values())
+
+
+def missing_lines(rows, new: dict) -> list:
+    """One line per data set of the baseline that this run lacks (what, why, whether --allow
+    accepted it), then, when any of it fails, the --allow that accepts running without it."""
+    out, patterns = [], []
+    for g in missing_sets(rows, new):
+        why = f" ({g['reason']})" if g["reason"] else ""
+        what = f"{g['data_set']}: {g['rows']} gated row(s) of the baseline not checked{why}"
+        if g["allowed"] == g["rows"]:
+            out.append(f"missing in this run, accepted by --allow: {what}")
+            continue
+        out.append(f"MISSING in this run: {what}" + (f", {g['allowed']} of them allowed" if g["allowed"] else ""))
+        patterns.append(g["allow"])
+    if patterns:
+        out.append("   these rows fail the gate; to accept running without them on purpose: "
+                   + " ".join(f"--allow '{p}'" for p in patterns))
+    return out
+
+
 def unavailable(base: dict, new: dict) -> list:
-    """Optional sets present in one run and not in the other (not compared; said so), and run
-    settings that make the two runs unlike (the ride's pieces, the stamps)."""
+    """Optional sets that this run has and the baseline has not (not compared, information) or
+    that neither has, and run settings that make the two runs unlike (the ride's pieces, the
+    stamps). A set of the baseline that this run lacks is not a note: its gated rows are missing
+    in this run and fail (``missing_lines``)."""
     out = []
     for key, label in (("ride", "ride (set E)"), ("set_F_straight", "set F straight")):
         b = bool((base.get(key) or {}).get("available"))
         n = bool((new.get(key) or {}).get("available"))
-        if b != n:
-            out.append(f"{label}: {'baseline only' if b else 'this run only'}; not compared")
-        elif not b:
+        if n and not b:
+            out.append(f"{label}: this run only; not compared")
+        elif not b and not n:
             reason = (new.get(key) or {}).get("reason") or (base.get(key) or {}).get("reason") or ""
             out.append(f"{label}: not available in either run ({reason})")
     rb, rn = base.get("run") or {}, new.get("run") or {}
@@ -490,12 +554,17 @@ def table(rows, changed_only=False) -> str:
 
 
 def gate_summary(rows, base: dict, baseline_path: str, allow) -> dict:
+    """``passed`` is False when any gated row fails: worse (``worse_gated``) or missing in this
+    run (``missing_gated``); the rows --allow accepted are listed apart."""
     fails = [r["metric"] for r in rows if r["fails"]]
     return {"baseline": baseline_path,
             "baseline_commit": (base.get("code") or {}).get("commit"),
             "baseline_config_sha256": (base.get("config") or {}).get("sha256"),
-            "allow": list(allow), "passed": not fails, "worse_gated": fails,
-            "worse_allowed": [r["metric"] for r in rows if r["allowed"]],
+            "allow": list(allow), "passed": not fails,
+            "worse_gated": [r["metric"] for r in rows if r["fails"] and r["verdict"] != MISSING],
+            "missing_gated": [r["metric"] for r in rows if r["fails"] and r["verdict"] == MISSING],
+            "worse_allowed": [r["metric"] for r in rows if r["allowed"] and r["verdict"] != MISSING],
+            "missing_allowed": [r["metric"] for r in rows if r["allowed"] and r["verdict"] == MISSING],
             "better": [r["metric"] for r in rows if r["gated"] and r["verdict"] == "better"],
             "same": sum(1 for r in rows if r["verdict"] == "same"),
             "info_changed": [r["metric"] for r in rows if not r["gated"]
@@ -557,7 +626,9 @@ def main(argv=None) -> int:
     ap.add_argument("--from-json", default=None, metavar="FILE", help="do not run: compare this earlier result")
     ap.add_argument("--baseline", default=None, metavar="FILE", help="compare and gate against this JSON")
     ap.add_argument("--allow", action="append", default=[], metavar="PATTERN",
-                    help="metric names (fnmatch) allowed to get worse: an intended, documented trade-off")
+                    help="metric names (fnmatch) allowed to get worse or to be missing in this run: an intended, "
+                         "documented trade-off; --allow 'ride.*' --allow 'set_F_straight.*' accepts running "
+                         "without the ride against a baseline that has it")
     ap.add_argument("--changed-only", action="store_true", help="print only the rows that changed")
     a = ap.parse_args(argv)
     if a.from_json:
@@ -577,14 +648,23 @@ def main(argv=None) -> int:
         print(table(rows, a.changed_only))
         for line in unavailable(base, res):
             print("note:", line)
+        for line in missing_lines(rows, res):
+            print(line)
         g = gate_summary(rows, base, a.baseline, a.allow)
         res["gate"] = g
         counts = (f"{len(g['better'])} gated better, {len(g['worse_allowed'])} worse but allowed, "
-                  f"{len(g['info_changed'])} information rows changed")
+                  + (f"{len(g['missing_allowed'])} missing but allowed, " if g["missing_allowed"] else "")
+                  + f"{len(g['info_changed'])} information rows changed")
         if g["passed"]:
             print(f"GATE PASS: no gated metric worse ({counts})")
         else:
-            print(f"GATE FAIL: {len(g['worse_gated'])} gated metric(s) worse: {', '.join(g['worse_gated'])} ({counts})")
+            why = []
+            if g["worse_gated"]:
+                why.append(f"{len(g['worse_gated'])} gated metric(s) worse: {', '.join(g['worse_gated'])}")
+            if g["missing_gated"]:
+                sets = [s["data_set"] for s in missing_sets(rows, res) if s["allowed"] < s["rows"]]
+                why.append(f"{len(g['missing_gated'])} gated metric(s) missing in this run ({', '.join(sets)})")
+            print(f"GATE FAIL: {'; '.join(why)} ({counts})")
             code = 1
     out = a.out or (None if a.from_json else os.path.join(a.work, "result.json"))
     if out:

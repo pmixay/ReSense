@@ -42,6 +42,10 @@ ros2 topic echo /resense/nearest_distance --field data   # 5. расстояни
 находит ноду, и `/resense/decision` остаётся `FAULT`. `ROS_DOMAIN_ID` плеера и ноды должен
 совпадать (по умолчанию 0). Нет ROS 2 на хосте — плеер из того же образа: `docker run --rm
 --net=host -v <папка с бэгами>:/data:ro resense ros2 bag play /data/<бэг> --delay 3`.
+Плееру на CycloneDDS (`RMW_IMPLEMENTATION=rmw_cyclonedds_cpp`) для 360-градусных облаков (24 МБ)
+нужен буфер приёма UDP на хосте не меньше 32 МиБ: `sudo sysctl -w net.core.rmem_max=33554432
+net.core.rmem_default=33554432` (при 212992 по умолчанию в Ubuntu не дошло ни одного облака; нода
+пишет об этом WARN при старте); плееру на Fast DDS, по умолчанию в Humble, это не нужно.
 
 Ожидаемый вывод шага 4 на `doubleT_obstacle` (сокращён; сообщения идут 10 раз в секунду):
 
@@ -85,7 +89,10 @@ ros2 bag play <bag>  ──PointCloud2 (either topic / frame pair), 10 Hz──�
    1000 from a second container of the image, with the image's profile and with the stock Humble
    RMW (`rmw_fastrtps_cpp`, no XML profile, shared memory on: `PLAYER_DDS=stock
    scripts/console_test.sh`), as a host console does; stock clients reach the node over UDP
-   because the node announces no shared-memory locators.
+   because the node announces no shared-memory locators. A player on CycloneDDS needs
+   `net.core.rmem_max` ≥ 32 MiB on the host for the 24 MB 360° clouds (`sudo sysctl -w
+   net.core.rmem_max=33554432 net.core.rmem_default=33554432`: at Ubuntu's 212992 none arrived,
+   25.09); the node logs a WARN at start below that.
 4. **Read the answer** ("What to look at"). `ros2 bag play` (Humble) preloads up to 1 000 messages,
    all of a short recording, while its clock runs, then sends the overdue first seconds back to
    back: `FAULT` until then (2.6–4 s for 1.9 GB in the page cache, longer from a slow disk). The
@@ -193,10 +200,10 @@ teams (23.09). Decision logic and thresholds: [`docs/ALGORITHM.md`](docs/ALGORIT
 | [`resense/`](resense/) | core library (numpy / scipy / scikit-learn, no ROS): PointCloud2 decoding, mount calibration, track model, gauge corridor, low-object stage, clustering, tracking, health, detector, synthetic obstacle injection, metrics, CLI |
 | [`ros2_ws/src/resense_ros/`](ros2_ws/src/resense_ros/) | ROS 2 Humble node, launch file, parameters, RViz layout |
 | [`docker/`](docker/), [`docker-compose.yml`](docker-compose.yml), [`scripts/`](scripts/) | reproducible build and demo |
-| [`scripts/vm/`](scripts/vm/) | kit for the team's temporary cloud VM: setup, data fetch, 8-core bench, dry run with the original bags and a host-console player, full regression gate, image export, offline rehearsal, results pack ([`AGENT_BRIEF.md`](scripts/vm/AGENT_BRIEF.md)) |
+| [`docs/VM_GUIDE.md`](docs/VM_GUIDE.md) | instructions for the team's temporary cloud VM (a person or an agent), plain commands of the tools above: data (the ride streamed split by split), 8-core bench, dry run with the original bags, stock-player and host console, regression gate with the ride, image archive, offline rehearsal, results into a PR |
 | [`configs/default.yaml`](configs/default.yaml) | the tunable parameters, copied into the ROS package at build time (`scripts/sync_params.sh`, checked in CI) |
 | [`native/`](native/) | optional C++ kernels for the per-frame hot spots (track stage, corridor selection, health visibility): about half the detector time, bit-identical output; built by `pip install`, numpy fallback without a compiler or with `RESENSE_NATIVE=0` ([ARCHITECTURE](docs/ARCHITECTURE.md) "Native kernels") |
-| [`tests/`](tests/) | 347 pytest tests on a synthetic ray-cast tunnel, no dataset needed (algorithm, envelope, calibration, guards, the native kernels and the cKDTree DBSCAN against their reference code, the regression gate's rules, the release tooling, the overview video's table, the ROS node against stand-ins) |
+| [`tests/`](tests/) | 392 pytest tests on a synthetic ray-cast tunnel, no dataset needed (algorithm, envelope, calibration, guards, the native kernels and the cKDTree DBSCAN against their reference code, the regression gate's rules, the release tooling, the overview video's table, the ROS node against stand-ins, the dry-run checker) |
 | [`web/`](web/) | browser dashboard (offline replay; live via rosbridge, installed separately), Foxglove layout, label tool, 11 headless tests |
 | [`docs/`](docs/) | [`docs/README.md`](docs/README.md): every document, its purpose and owner; organizers' material in [`docs/organizers/`](docs/organizers/) |
 | [`labels/`](labels/) | `doubleT_obstacle.json` (real labels), `new_data_objects.json` (every object confirmed on the ride, by cause), `cloud_with_fake_obj.json` (the organizers' synthetic objects) |
@@ -223,7 +230,7 @@ python scripts/far_range_eval.py --cache /data/cache/new_data --files 46,68,98 -
     --start 220 --out out/far.json                                    # set F: synthetic positives, legacy placement by default
 python scripts/mine_objects.py out/eval --bag new_data                  # every confirmed object of a ride, by cause
 python scripts/regression_gate.py --cache /data/cache \
-    --baseline docs/evidence/results/regression_baseline_2026-09-25_ride.json   # the gate for every detector change (exit 1 = worse)
+    --baseline docs/evidence/results/regression_baseline_2026-09-25_ride.json   # the gate for every detector change (exit 1 = worse, or a baseline set missing here)
 ```
 
 ## ROS 2 / Docker
@@ -296,13 +303,23 @@ link keep `/resense/corridor_points` instead of the raw cloud ([`web/README.md`]
 
 `scripts/dry_run.sh <bag>` builds with `--no-cache`, waits for the node before playing, captures
 `/resense/status` and checks it (`scripts/check_dry_run.py`): on `doubleT_obstacle` the person in
-50–62 m, p95 of decode + detect ≤ 100 ms, no frame dropped after the first 5 s; `--expect-clear
---max-alarm-frames 2` on `roundT_doubleT` is the false-alarm half (the allowance covers the
-trackside device at 48–54 m, 1 frame in 3 of the 10 ROS runs of 25.09; the column at 101–149 m,
-3 frames at 111–115 m from the original bag and 2 at 128–130 m from the cache, is advisory since
-`tracking.column_hold`, EXPERIMENTS §3a); thresholds are arguments of `scripts/check_dry_run.py`,
-the raw capture goes to `out/dry_run/` (`status.jsonl`, `node.log`). The 23.09 rehearsal in the
-sandbox: EXPERIMENTS §3b.
+50–62 m, p95 of decode + detect ≤ 100 ms, no frame of the recording left unprocessed after the
+start-up; `--expect-clear --max-alarm-frames 2` on `roundT_doubleT` is the false-alarm half (the
+allowance covers the trackside device at 48–54 m, 1 frame in 3 of the 10 ROS runs of 25.09; the
+column at 101–149 m, 3 frames at 111–115 m from the original bag and 2 at 128–130 m from the cache,
+is advisory since `tracking.column_hold`, EXPERIMENTS §3a); thresholds are arguments of
+`scripts/check_dry_run.py`, the raw capture goes to `out/dry_run/` (`status.jsonl`, `node.log`).
+The 23.09 rehearsal in the sandbox: EXPERIMENTS §3b.
+
+**"After the start-up"** (25.09): `ros2 bag play` (Humble) preloads the bag with its clock running
+and then sends the overdue first seconds back to back; the node works through that burst one frame
+per 0.3 s of recording and skips the rest on purpose (`node.catchup_skipped`), at 360° on a 4-core
+VM until +7.7–7.9 s. So `--max-dropped` counts from the later of `--settle-s` (5 s) and the frame on
+which the node is back on the newest one (`node.catchup` false), at most `--max-settle-s` (15 s): a
+catch-up still running then fails, one that never ends does not move the settle point at all.
+`dry_run.sh` also passes `--bag`: the checker then counts the recording's own messages the node did
+not process, so the 4 frames `doubleT_obstacle` itself lacks (at +14.0 and +16.9 s) are not drops.
+The node's stamp-gap count `node.dropped_frames` is printed as before (EXPERIMENTS §3a).
 
 **Clean-machine dry run** (part of the later deployment, [`docs/CAPTAIN.md`](docs/CAPTAIN.md) C7):
 a team machine that has never built the project, 8 cores for the latency and drop criteria (the
@@ -319,9 +336,8 @@ SKIP_BUILD=1 OFFLINE=1 ./scripts/dry_run.sh <bags>/roundT_doubleT --expect-clear
 ```
 
 `IMAGE_TAR` loads the archive (`scripts/load_image.sh`) instead of building; `OFFLINE=1` runs node,
-player and recorder with `--network none` and refuses to build. The team VM kit runs the same
-(`scripts/vm/run_plan.sh dryrun`, `offline`:
-[`scripts/vm/AGENT_BRIEF.md`](scripts/vm/AGENT_BRIEF.md)).
+player and recorder with `--network none` and refuses to build. On the team's VM the same steps,
+with the offline rehearsal's safety net: [`docs/VM_GUIDE.md`](docs/VM_GUIDE.md).
 
 CI runs the chain without the dataset on every push: 40-frame synthetic bags in the organizers'
 exact layout (clear, then a person at 60 m; both topic / frame pairs) played through the node in
@@ -353,7 +369,7 @@ in development). `scripts/bench_8core.sh` bundles the acceptance runs and the ti
 | `/resense/clear_distance` | `std_msgs/Float32` | m of track verified clear (the obstacle, else the monitored range; 0 on a fault) |
 | `/resense/health` | `diagnostic_msgs/DiagnosticArray` | OK / WARN / ERROR / STALE with messages and values: points, window dirt, blocked sectors, visibility, rail lock, latency p95, monitored range, mount calibration |
 | `/resense/detections` | `vision_msgs/Detection3DArray` | boxes in the sensor frame, `class_id` = `gauge_obstacle` / `warning_obstacle`, score = confidence |
-| `/resense/status` | `std_msgs/String` | JSON: full per-frame result (detections, track model, health, mount, per-stage timing) plus `node` = `{latency_ms, fps, frames, dropped_frames, input_period_ms, ego_speed_mps, ego_speed_source, input_topic, recording}` |
+| `/resense/status` | `std_msgs/String` | JSON: full per-frame result (detections, track model, health, mount, per-stage timing) plus `node` = `{latency_ms, fps, frames, dropped_frames, catchup_skipped, catchup, input_period_ms, ego_speed_mps, ego_speed_source, input_topic, recording}` (`catchup_skipped`: the part of `dropped_frames` the node received and skipped while catching up; `catchup`: this frame was processed while behind) |
 | `/resense/latency_ms`, `/resense/fps` | `std_msgs/Float32` | per frame: decode + detect + publish, ms; frames processed per second, every `stats_period` s |
 | `/resense/markers`, `/resense/corridor_points` | `MarkerArray`, `PointCloud2` | RViz: boxes, labels, corridor outline, status text; points inside the corridor |
 | `/tf_static` | `tf2_msgs/TFMessage` | identity `resense_lidar` → the input cloud's `frame_id`, once per frame id |
@@ -379,7 +395,8 @@ but no `node` object (so acceptance tools do not count it as a frame), and `/res
 | `lowobj.near_enabled` | false | experimental central near-bed path, off: its first gates raised the ride's false events from 47 to 667 [24.09, raw not committed]; with the current gates (`537e220`, box fix `7df1796`) the five bags give 107 instead of 145 events, the ride not re-run (EXPERIMENTS §1e) |
 | `accumulation.estimate_speed` | false | LiDAR-only speed estimation opt-in (median error 0.06–0.08 m/s, +6.6–6.8 ms per frame, no gain on the organizers' check, EXPERIMENTS §9); without a supplied speed, single-frame detection |
 | `cluster.far_*` | 0.6 m tall, ≤ 3 m long | what may alarm beyond the height reference (far field of straight track) |
-| `cluster.floating_long_min_length` | 3.0 | on since 25.09 (decided on the ride): an overhead duct / tray / beam > 3 m along the track near the axis is advisory; five bags 20 → 14 events, ride 47 → 46 (EXPERIMENTS §1f) |
+| `cluster.floating_long_min_length` | 3.0 | on since 25.09 (decided on the ride): an overhead duct / tray / beam > 3 m along the track near the axis with its bottom above `floating_long_min_bottom` is advisory; five bags 20 → 14 events, ride 47 → 46 (EXPERIMENTS §1f) |
+| `cluster.floating_long_min_bottom` | 1.6 | since the review of 25.09: the long rule applies only when the cluster's lowest point is above 1.6 m, so a tray or duct fallen onto the axis lower down is a STOP; five bags, ride, set O and set F straight unchanged (2.0 / 1.8 m would bring back a ride event; EXPERIMENTS §1f) |
 | `cluster.short_signature_max_length` | 0 (off) | tried, not shipped (25.09): set O 303 → 352 STOP frames, but ride STOP episodes 39 → 45 (EXPERIMENTS §1f) |
 | `cluster.eps / range_scale / voxel`; `cluster.*_max_*`, signatures | 0.35 / 40 / 0.05 | range-adaptive DBSCAN: ε(r) = eps·(1 + r/40 m); infrastructure filters (thin hardware, low hardware, wall-like, column, floating, edge, wall face); thin objects hanging near the axis are never demoted |
 | `tracking.confirm_time_s / confirm_hits / conf_threshold` | 0.5 s / 3 / 0.6 | persistence before an alarm (low objects: 5 hits); `tracking.hold_misses` 1 (code default in `resense/config.py`) keeps a reported obstacle over one missed frame |

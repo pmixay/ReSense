@@ -29,6 +29,7 @@ rewritten later; **frozen** = kept for reference, not maintained; **archive** = 
 | [`PRESENTATION.md`](PRESENTATION.md) | slide requirements, drafts, speaker text | P2, P1 | RU | P2 | current |
 | [`PLAN.md`](PLAN.md) | roles, sprint calendar, team rules | team | RU | P1 | current |
 | [`CAPTAIN.md`](CAPTAIN.md) | captain's board: criteria, work left, ownership map, frozen interfaces | P1, team | EN | P1 | current |
+| [`VM_GUIDE.md`](VM_GUIDE.md) | instructions for the team's temporary cloud VM, plain commands of the repository's tools: prerequisites, data (the ride streamed split by split), dry run, stock-player and host console, 8-core bench, regression gate with the ride, image archive, offline rehearsal, results into a PR | team (a person or an agent on the VM) | EN | P1 | current |
 | [`QUESTIONS.md`](QUESTIONS.md) | open questions to the organizers | P1 | RU message, EN rationale | P1 | current |
 | [`P4_AUDIT.md`](P4_AUDIT.md) | audit of synthetic placement and evaluation accounting, set O grade | team, jury | EN | P4 | dated record |
 | [`RESEARCH.md`](RESEARCH.md) | day-1 literature survey (15.09) | team | EN | P3 | frozen |
@@ -36,7 +37,6 @@ rewritten later; **frozen** = kept for reference, not maintained; **archive** = 
 | [`images/README.md`](images/README.md) | dashboard UI screenshots and their data provenance | jury, team | EN | P2 | current |
 | [`archive/README.md`](archive/README.md) | superseded material kept for the record (captain's log of 16–24.09, day-1 results) | team | EN | P1 | archive |
 | [`web/README.md`](../web/README.md) | dashboard, RViz / Foxglove layouts, label tool, headless checks, video recipes | team, jury (demo) | EN | P2 | current |
-| [`scripts/vm/AGENT_BRIEF.md`](../scripts/vm/AGENT_BRIEF.md) | brief and runbook for the team's temporary cloud VM: setup, data fetch, 8-core bench, dry run, full regression gate with the ride, image export, offline rehearsal | team (the agent or a human on the VM) | EN | P1 | current |
 
 ### Organizers' material ([`organizers/`](organizers/))
 

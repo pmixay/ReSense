@@ -194,16 +194,22 @@ validity over each sequence before interpreting range or edge results.
    - on O: an inside object loses STOP frames or its first STOP comes closer (no STOP counts as
      the worst), or an outside object or the background gains false STOP frames or track IDs;
    - on F straight: a kind loses a detected sequence, its median first confirmation shrinks, or
-     its false detections rise.
+     its false detections rise;
+   - a gated metric of the baseline is missing in this run (the ride and set F straight rows of
+     the `_ride` baseline when `<cache>/new_data` is absent), unless `--allow` covers it.
 
    **What never gates.** Alarm frames, advisory frames, totals, held-from distances, the distance
    error and latency are printed as information. For latency the jobs run in parallel on a
    shared machine; clean timing is step 5.
 
    **Trade-offs and like-for-like.** An intended trade-off passes only with `--allow <metric
-   pattern>`, named in the PR. The comparison reports a set that only one run has, and runs whose
-   stamps (`--nominal-stamps`) or ride pieces differ. A missing required recording, or a failed
-   set F run on a cached ride, exits 2.
+   pattern>`, named in the PR. A gated metric of the baseline that the run does not have fails as
+   "missing in this run" (exit 1), and the gate names the missing data set: against the `_ride`
+   baseline a machine without `<cache>/new_data` fails on the ride and set F straight rows unless
+   the run is accepted without the ride on purpose with `--allow 'ride.*' --allow
+   'set_F_straight.*'`. A set that only the new run has is information. The comparison also
+   reports runs whose stamps (`--nominal-stamps`) or ride pieces differ. A missing required
+   recording, or a failed set F run on a cached ride, exits 2.
 
    **Baselines of 25.09.** The current one is
    [`regression_baseline_2026-09-25_ride.json`](evidence/results/regression_baseline_2026-09-25_ride.json):
@@ -222,8 +228,8 @@ validity over each sequence before interpreting range or edge results.
    **Rules for PRs.** Every PR that touches `resense/` or `configs/` attaches the gate's JSON and
    table. A PR that is meant to move the numbers commits a new baseline with them. Set S is not in
    the gate: re-run step 2 when a change targets it. Nothing in the gate needs the organizers'
-   stand; the ride and set F need the `new_data` cache (the 4-vCPU dev VM streams it with
-   `scripts/vm/stream_cache.py`). Do not compare the 2.1 m-envelope
+   stand; the ride and set F need the `new_data` cache (streamed split by split as in
+   [`VM_GUIDE.md`](VM_GUIDE.md) §2.3). Do not compare the 2.1 m-envelope
    counts to older 1.4 m-envelope runs as if the labels were identical.
 
 ## 4. Targets of the sprints (17–24.09) and their status on 24.09
