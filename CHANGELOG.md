@@ -21,8 +21,18 @@ overhead rule on, node v0.6.4). Tests: 235 → 416 (+28 native kernels, +3 speed
 helpers, +23 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5
 overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting and socket
 buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`, +20 DDS
-transport, 19 of them in the image) in `tests/`, 11 in `web/demo`.
+transport, 19 of them in the image) in `tests/`, 13 in `web/demo`.
 
+- **Dashboard shortcuts after a click, phone gutter (25.09, review of PR #12):** since `46a04bb`
+  the page's key handler ignored every key while a button or link had the focus, so after a
+  click on «Демо» or ▶ the arrow keys did nothing, and on a view tab Space did nothing, until a
+  click on empty space. Now
+  only text entry (`input`, `select`, `textarea`, contenteditable, `role=textbox`) keeps every
+  key; a focused button or link keeps only Space (its own click, so play/pause never fires
+  twice); a view tab leaves Space to play/pause and keeps its own ←/→ (they switch the view, not
+  the frame). At phone width the page gutter is 16 px like the header (was 14 px).
+  `web/README.md`: roslib is bundled (it still said CDN), the report button is «Скачать отчёт».
+  Web tests 11 → 13.
 - **Opt-in shared-memory transport, `RESENSE_DDS=shm` (25.09, default off):** on the second team VM
   a stock Fast DDS host player delivered 0–1 of the 201 360° clouds over UDP at Ubuntu's
   `rmem_max` 212992 (EXPERIMENTS §3b). `docker run … -e RESENSE_DDS=shm` (with `--ipc=host`): the

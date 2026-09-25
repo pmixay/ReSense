@@ -260,6 +260,70 @@ def test_dashboard_fits_169_screen_and_cab_view_marks_the_obstacle():
         b.close()
 
 
+def test_dashboard_shortcuts_work_after_clicking_a_control():
+    """A clicked button keeps the focus (review of PR #12): ←/→ still step the replay, and Space
+    toggles play/pause exactly once, on the play button (its own click) and on a view tab."""
+    if not _browser_available():
+        pytest.skip("playwright + chromium not available")
+    from playwright.sync_api import sync_playwright
+    import check_dashboard
+    idx, playing = "window.resense.state.idx", "window.resense.state.playing"
+    with sync_playwright() as p:
+        b = _launch(p)
+        page = b.new_page()
+        page.goto("file://" + check_dashboard.INDEX, wait_until="domcontentloaded")
+        page.wait_for_function("window.resense !== undefined")
+        page.click("#demo")
+        page.evaluate("window.resense.pause(); window.resense.seek(5)")
+        assert page.evaluate("document.activeElement.id") == "demo"
+        page.keyboard.press("ArrowRight")
+        assert page.evaluate(idx) == 6
+        page.keyboard.press("ArrowLeft")
+        assert page.evaluate(idx) == 5
+        page.click("#stepfwd")
+        page.keyboard.press("ArrowRight")
+        assert page.evaluate(idx) == 7
+        page.click("#play")
+        assert page.evaluate(playing) is True
+        page.keyboard.press("Space")                    # the button's own click, not a second toggle
+        assert page.evaluate(playing) is False
+        page.click("#tab-plan")
+        page.keyboard.press("Space")
+        assert page.evaluate(playing) is True
+        page.keyboard.press("Space")
+        assert page.evaluate(playing) is False
+        at = page.evaluate(idx)
+        page.keyboard.press("ArrowLeft")                # the tabs' own key: switches the view, no step
+        assert page.is_visible("#panel-cab") and page.evaluate(idx) == at
+        page.click("#url")                              # text entry keeps its keys
+        page.keyboard.press("ArrowRight")
+        page.keyboard.press("Space")
+        assert page.evaluate(idx) == at and page.evaluate(playing) is False
+        b.close()
+
+
+def test_dashboard_phone_width_has_16px_gutter_and_no_horizontal_scroll():
+    if not _browser_available():
+        pytest.skip("playwright + chromium not available")
+    from playwright.sync_api import sync_playwright
+    import check_dashboard
+    with sync_playwright() as p:
+        b = _launch(p)
+        page = b.new_page(viewport={"width": 390, "height": 844})
+        page.goto("file://" + check_dashboard.INDEX, wait_until="domcontentloaded")
+        page.wait_for_function("window.resense !== undefined")
+        page.click("#demo")
+        page.evaluate("window.resense.pause(); window.resense.seek(30)")
+        for tab in ("#tab-plan", "#tab-cab"):
+            page.click(tab)
+            layout = page.evaluate("""() => { const r = s => document.querySelector(s).getBoundingClientRect();
+                return { scrollWidth: document.documentElement.scrollWidth, brand: r('.brand').left,
+                         main: [r('main').left, r('main').right] }; }""")
+            assert layout["scrollWidth"] <= 390, layout
+            assert layout["brand"] == layout["main"][0] == 16 and layout["main"][1] == 390 - 16, layout
+        b.close()
+
+
 def test_dashboard_cab_view_on_the_real_node_stream():
     """The node's /resense/status stream from the Docker dry run on doubleT_obstacle: the fitted bed
     profile (floor_coef) places the 56 m object in the cab view."""
