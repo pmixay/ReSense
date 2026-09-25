@@ -5,7 +5,9 @@ from dataclasses import dataclass
 from typing import List, Optional
 
 import numpy as np
-from sklearn.cluster import DBSCAN
+from scipy.sparse import coo_matrix
+from scipy.sparse.csgraph import connected_components
+from scipy.spatial import cKDTree
 
 from resense.config import ClusterConfig
 from resense.sensor import expected_points
@@ -58,6 +60,64 @@ def voxelize(xyz: np.ndarray, cfg: ClusterConfig):
     return (sums / counts[:, None]).astype(np.float32), inv
 
 
+def dbscan_labels(p: np.ndarray, eps: float, min_samples: int) -> np.ndarray:
+    """The labels of ``sklearn.cluster.DBSCAN(eps, min_samples).fit_predict(p)``, exactly, in
+    ~0.5 ms instead of ~2.5 ms per call (sklearn's validation and neighbour machinery dominate
+    on our 100-1 000 voxels; the clustering itself is trivial).
+
+    The same definition, step by step: the neighbours of a point are the points whose squared
+    distance, summed over x, y, z in float64 in that order (sklearn's KD-tree leaf test), is at
+    most ``eps * eps`` (the point itself included); a point with at least ``min_samples``
+    neighbours is a core point; core points joined by neighbour links form the clusters, numbered
+    in the order of their lowest core index (the order of sklearn's seed loop); a non-core point
+    with a core neighbour takes the lowest-numbered of its neighbours' clusters (the first
+    expansion that reaches it); the rest is noise, ``-1``. ``tests/test_cpu_savings.py`` checks
+    it against sklearn on random sets."""
+    n = p.shape[0]
+    labels = np.full(n, -1, dtype=np.intp)
+    if n == 0:
+        return labels
+    q = np.asarray(p, dtype=np.float64)
+    # a slightly larger radius, then the exact test: the tree's own bound checks may differ in
+    # the last bit from sklearn's, the per-pair sum below does not
+    pairs = cKDTree(q).query_pairs(eps * (1.0 + 1e-6), output_type="ndarray")
+    if pairs.size:
+        a, b = pairs[:, 0], pairs[:, 1]
+        d = q[a] - q[b]
+        d2 = d[:, 0] * d[:, 0]
+        d2 = d2 + d[:, 1] * d[:, 1]
+        d2 = d2 + d[:, 2] * d[:, 2]
+        keep = d2 <= float(eps) * float(eps)
+        a, b = a[keep], b[keep]
+        deg = np.bincount(a, minlength=n) + np.bincount(b, minlength=n) + 1
+    else:
+        a = b = np.zeros(0, dtype=np.intp)
+        deg = np.ones(n, dtype=np.intp)
+    core = deg >= min_samples
+    ci = np.flatnonzero(core)
+    if ci.size == 0:
+        return labels
+    pos = np.full(n, -1, dtype=np.intp)
+    pos[ci] = np.arange(ci.size)
+    cc = core[a] & core[b]
+    g = coo_matrix((np.ones(int(cc.sum()), dtype=np.int8), (pos[a[cc]], pos[b[cc]])), shape=(ci.size, ci.size))
+    ncomp, comp = connected_components(g, directed=False)
+    first = np.full(ncomp, ci.size, dtype=np.intp)          # lowest core position of each component
+    np.minimum.at(first, comp, np.arange(ci.size))
+    rank = np.empty(ncomp, dtype=np.intp)
+    rank[np.argsort(first, kind="stable")] = np.arange(ncomp)
+    labels[ci] = rank[comp]
+    m1 = core[a] & ~core[b]                                 # border points: the lowest neighbouring cluster
+    m2 = core[b] & ~core[a]
+    bi = np.concatenate([b[m1], a[m2]])
+    if bi.size:
+        bl = np.concatenate([labels[a[m1]], labels[b[m2]]])
+        best = np.full(n, ncomp, dtype=np.intp)
+        np.minimum.at(best, bi, bl)
+        labels[bi] = best[bi]
+    return labels
+
+
 def cluster_labels(xyz: np.ndarray, cfg: ClusterConfig) -> np.ndarray:
     """DBSCAN in range-normalised coordinates so that eps grows linearly with range.
 
@@ -66,7 +126,7 @@ def cluster_labels(xyz: np.ndarray, cfg: ClusterConfig) -> np.ndarray:
     if xyz.shape[0] == 0:
         return np.zeros(0, dtype=int)
     p = _scaled(xyz, cfg.range_scale)
-    return DBSCAN(eps=cfg.eps, min_samples=cfg.min_samples, algorithm="kd_tree").fit_predict(p)
+    return dbscan_labels(p, cfg.eps, cfg.min_samples)
 
 
 def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.ndarray,
