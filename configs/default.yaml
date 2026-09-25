@@ -128,7 +128,7 @@ resense:
     floating_min_height: 0.7
     floating_max_height: 1.2
     floating_max_width: 1.0
-    floating_long_min_length: 0.0  # off (candidate of 25.09, captain's go / no-go): > 0 = the floating shape also demotes clusters longer than this (m) along the track near the axis (overhead duct / tray / beam)
+    floating_long_min_length: 3.0  # on, decided 25.09 on the ride (0 = off): the floating shape also demotes clusters longer than this (m) along the track near the axis (overhead duct / tray / beam); ride 204 / 47 / 39 -> 197 / 46 / 39 alarm frames / events / STOP episodes, five bags 107 / 20 / 27 -> 60 / 14 / 17, set O, doubleT_obstacle and set F straight identical (docs/evidence/results/rules_decision_2026-09-25.json)
     edge_min_lateral: 1.0          # v0.6 (1.2 with the 1.40 m polygon)
     edge_min_aspect: 2.5
     edge_max_height: 1.0
@@ -136,7 +136,7 @@ resense:
     far_max_length: 3.0            #   at most this long along the track,
     far_max_bottom: 1.0            #   and reaching below this height
     signature_min_lateral: 0.6     # v0.6: column / floating signatures only off the track centre (hanging cables are obstacles)
-    short_signature_max_length: 0.0   # off (candidate of 24.09, captain's go / no-go): > 0 = the elevated / floating signatures do not demote a cluster at most this long (m) ...
+    short_signature_max_length: 0.0   # off, decided 25.09 on the ride (3.0 / 100 tried, not shipped: ride STOP episodes 39 -> 45 on top of the long rule, over the +5 limit; set O +49 STOP frames): > 0 = the elevated / floating signatures do not demote a cluster at most this long (m) ...
     short_signature_max_distance: 100.0   # ... and at most this far (m); the measured candidate is 3.0 / 100.0 (docs/P4_AUDIT.md)
     wall_face_min_height: 2.0
     wall_face_min_top: 2.8         # v0.6: reaches above this (just under the envelope top)

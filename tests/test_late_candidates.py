@@ -6,7 +6,8 @@
 * ``cluster.floating_long_min_length`` (25.09, station false STOPs): the ``floating`` shape also
   demotes a cluster near the axis when it is long along the track (an overhead duct / tray / beam
   along the track, ~104 m ahead of the standing train in ``squareT_platform_squareT_switch``).
-  Off by default.
+  On (3.0 m) since 25.09: decided on the ride with the regression gate
+  (docs/evidence/results/rules_decision_2026-09-25.json); the short-signature rule stays off.
 """
 from __future__ import annotations
 
@@ -58,11 +59,11 @@ def test_short_signature_rule_when_on():
 def test_long_floating_rule():
     for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
                 DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
-        assert cfg.cluster.floating_long_min_length == 0.0
+        assert cfg.cluster.floating_long_min_length == 3.0                     # shipped on since 25.09
     # the 104 m structure: 5.5 m along the track, 0.2 m wide, 0.65 m tall, bottom 2.2 m, 0.5 m off the axis
-    off = ClusterConfig()
-    assert _reason(off, 104.0, 5.5, 0.5, 2.2, 0.65, 0.2) == ""               # default: an obstacle
-    on = replace(ClusterConfig(), floating_long_min_length=3.0)
+    off = replace(ClusterConfig(), floating_long_min_length=0.0)
+    assert _reason(off, 104.0, 5.5, 0.5, 2.2, 0.65, 0.2) == ""               # rule off: an obstacle
+    on = ClusterConfig()                                                     # the shipped default (3.0)
     assert _reason(on, 104.0, 5.5, 0.5, 2.2, 0.65, 0.2) == "floating"
     assert _reason(on, 50.0, 0.3, 0.0, 1.0, 0.3, 0.3) == ""                  # the organizers' floating cube
     assert _reason(on, 30.0, 0.1, 0.0, 1.0, 1.1, 0.05) == ""                 # a cable hanging near the axis
