@@ -55,14 +55,14 @@ the gate runs on the team's 8-core machine.
 | curves and the envelope edge, paired | no visible object matched at 100–150 m in either placement mode (6 paired R ≈ 350 m curve approaches per kind, lateral to the envelope edge); first confirmed person 74 → 68 m, 1 m box 75 → 80 m (legacy → anchored) | synthetic, set F paired, 24.09 | §2d |
 | long range with a given train speed | person 167 m, trolley 175 m, crate 182 m (held only from 79 m) | synthetic, set F round 3, legacy, 24.09 | §2d |
 | train speed (opt-in LiDAR-only estimate) | median error 0.06–0.08 m/s, p90 ≤ 0.20 m/s against an ICP reference on 55–96 % of the moving frames, +6.6–6.8 ms per frame; even the reference speed handed in as odometry buys nothing on the organizers' check: five bags 103 / 18 → 111 / 16 alarm frames / events, no organizers' object STOPs earlier, 6 → 17 false STOP frames on the 2 × 2 m box outside; only far-field frame recall rises | real, organizers' synthetic and synthetic, 24.09 | §9 |
-| curves, stations, small and low objects | R ≈ 350 m curves 6 of 7 from 58–86 m (the sightline); station stops 6 of 6 from 113 m; 30 cm objects on a rail head 6 of 6 from 42–49 m; a person lying across the rails 6 of 6 from 64 m; objects on the bed between the rails stay below the envelope (policy) | synthetic, set F round 3, legacy, 24.09 | §2d |
+| curves, stations, small and low objects | R ≈ 350 m curves 6 of 7 from 58–86 m (the sightline); station stops 6 of 6 from 113 m; 30 cm objects on a rail head 6 of 6 from 42–49 m; a person lying across the rails 6 of 6 from 64 m; objects on the bed between the rails stay below the envelope (policy, confirmed by the organizers on 25.09: not an obstacle, [`organizers/answers.md`](organizers/answers.md) §8) | synthetic, set F round 3, legacy, 24.09 | §2d |
 | set S (108 real empty frames) | 22 of 67 visible in-gauge objects with bed placement, 29 of 68 with the old legacy height (small samples) | synthetic, 24.09 | [`P4_AUDIT.md`](P4_AUDIT.md) |
 | sensor reach | no return beyond 210 m in any of the 13 759 frames: 300 m is beyond this sensor | real | §2d |
 | other mounts | upside down, `+x` forward, backwards found; tilt recovered to 0.0–0.5° | real, re-mounted, 22–23.09 | §6 |
 | offline timing per frame | 42–64 ms mean, p95 53–78 ms on every recording, one core, numpy path (v0.6.3), health monitor not included (7–14 ms more); on another idle VM on 24.09 36.5–52.2 ms mean, p95 50.3–67.1 ms; the optional C++ kernels (merged 24.09, after v0.6.3) cut the detector time by 38–57 % with identical output | timing: sandbox, 23.09 (kernels: 24.09, under load) | §3; [`ARCHITECTURE.md`](ARCHITECTURE.md) "Native kernels" |
 | ROS 2 node in Docker | 120°: 10 fps, p95 76 ms; 360°: 7–10 fps, p95 112–130 ms in `dry_run.sh` (the sandbox is at the frame period); ~100 % of one core, 186 MB | timing: sandbox, 23.09 (v0.6.2 image) | §3b |
 | node start-up (v0.6.4) | first STOP on `doubleT_obstacle` 1.59 s into the recording (v0.6.3: 4.02 s), no scene reset; peak RSS 403–434 MB at 360° | timing: sandbox, 24.09 [team record, unverified: raw captures not committed] | §3b |
-| opt-in near-bed path (off) | first gates: five bags 20 → 145 events, ride 47 → 667, a 30 × 30 × 10 cm box on the bed in 0 of 6 set F approaches [team record, unverified]; current gates (`537e220` with the box fix `7df1796`): five bags 459 alarm frames / 107 events / 72 STOP episodes, the box found in the synthetic-tunnel test at 12–28 m; ride and set F not re-run | real + synthetic, 24.09 | §1e |
+| opt-in near-bed path (off) | first gates: five bags 20 → 145 events, ride 47 → 667, a 30 × 30 × 10 cm box on the bed in 0 of 6 set F approaches [team record, unverified]; current gates (`537e220` with the box fix `7df1796`): five bags 459 alarm frames / 107 events / 72 STOP episodes, the box found in the synthetic-tunnel test at 12–28 m; ride and set F not re-run, and no longer needed: a bed object is not an obstacle (organizers, 25.09, [`organizers/answers.md`](organizers/answers.md) §8) | real + synthetic, 24.09 | §1e |
 
 ¹ The same scene is counted three ways: 124 of 126 frames after the person leaves (the headline);
 127 of the object's 185 visible frames by its own detection; 185 of the 246 labelled
@@ -73,7 +73,9 @@ obstacle-frames of the recording (person 58 of 61 + object 127 of 185).
 * The opt-in paths `track.rails_far_check_enabled`, `lowobj.near_enabled` and
   `accumulation.estimate_speed` are `false` in both parameter files and the code defaults; the
   far-rail check was measured on 25.09 on the six recordings and set O and never fires (§1f), the
-  near-bed path is §1e, the speed estimator §9. Two more opt-in flags,
+  near-bed path is §1e (off for good: the organizers do not count an object on the bed between the
+  rails as an obstacle, 25.09, [`organizers/answers.md`](organizers/answers.md) §8), the speed
+  estimator §9. Two more opt-in flags,
   `cluster.short_signature_max_length` and `cluster.floating_long_min_length`, are 0 (off) in both
   parameter files; they await the captain's go / no-go after the ride is run on the team's 8-core
   machine (§1f). No number in this table uses any of them.
@@ -630,7 +632,10 @@ since v0.5: the station-curvature limitation of [`ALGORITHM.md`](ALGORITHM.md) �
 ### 1e. Opt-in paths (24.09): the near-bed path measured, the far-rail check (measured in §1f)
 
 Two stages added by `a92625e` (24.09) ship switched off (`false` in both parameter files and the
-code defaults); neither changes a default number of this file.
+code defaults); neither changes a default number of this file. 25.09: the organizers answered that
+a 30 × 30 × 10 cm object on the bed between the rails is not an obstacle
+([`organizers/answers.md`](organizers/answers.md) §8), so the near-bed path below is not needed; it
+stays off for good, its ride and set F re-run is dropped, and the measurements stay as the record.
 
 **Central near-bed path** (`lowobj.near_enabled`, ALGORITHM §3.3b): it accepts a bed anomaly
 lying entirely within ±0.55 m of the axis and 30 m of the train, below the rail head — meant for the
@@ -1082,10 +1087,11 @@ are below the envelope**: measured under these placements (files 46–172, 20–
 0.26–0.34 m below the rail head half a metre off the axis and the central drainage trough 0.57–0.60
 m (the track model's `rail_offset`: 0.35–0.38 m), so a 10 cm box, a 30 cm cube and even a 45 cm
 dog-sized box stay below the envelope floor (0.12 m above the rail head) or barely reach the
-rail-head plane — not reported by the default policy (ALGORITHM §3.3b, §6), which a line with a
-clean bed can switch (`lowobj.min_top: -1`, `min_point_top: -1`). An attempt to exempt low clusters
-centred between the rails from the track-hardware rule changed nothing (no candidate reaches the
-corridor) and was not kept. (6) **A person lying on the track** (the review's case, 0.5 × 1.8 × 0.35
+rail-head plane — not reported by the default policy (ALGORITHM §3.3b, §6; the organizers confirmed
+on 25.09 that such an object is not an obstacle, [`organizers/answers.md`](organizers/answers.md)
+§8), which a line with a clean bed can switch (`lowobj.min_top: -1`, `min_point_top: -1`). An
+attempt to exempt low clusters centred between the rails from the track-hardware rule changed
+nothing (no candidate reaches the corridor) and was not kept. (6) **A person lying on the track** (the review's case, 0.5 × 1.8 × 0.35
 m, placed by `far_range_eval.py` with the bed depth fixed; shallow-bed runs with `local_bed_z`
 replaced by "rail level − depth"): across the rail heads the corridor stage sees it (6 / 6, from ~60
 m); on these tunnels' deep bed the whole body is below the rail head and not reported (policy);
@@ -1544,10 +1550,11 @@ the ROS 2 image. Offline latency needs no Docker: `resense bench --npy <cache>` 
    borderline frames of a real object.
 6. **Small objects**: anything below rail head + 12 cm inside the rails and low/narrow hardware
    (< 0.35 m top, < 0.4 m wide) is filtered — a 20 cm object on the sleepers is invisible by
-   design; revisit with the extended dataset. (The ride has no obstacles; none of the organizers'
-   ten test objects of set O lies on the bed, §2e; the opt-in near-bed path with its first gates
-   raised the ride's false events from 47 to 667 [team record, unverified], and with the current
-   gates the five bags' from 20 to 107, §1e.)
+   design, and an object below the envelope between the rails is not an obstacle by the
+   organizers' answer of 25.09 ([`organizers/answers.md`](organizers/answers.md) §8). (The ride
+   has no obstacles; none of the organizers' ten test objects of set O lies on the bed, §2e; the
+   opt-in near-bed path with its first gates raised the ride's false events from 47 to 667 [team
+   record, unverified], and with the current gates the five bags' from 20 to 107, §1e.)
 7. **Point budget** is the physical limit: 0.5 m object = 7 pts @100 m, 1.6 pts @200 m.
 8. **Injected objects beyond ~80 m are often fully occluded** because the v0.5 injector placed
    them 0.15 m below the per-frame extrapolated rail head, which lies under the real bed there
@@ -1576,9 +1583,10 @@ v0.6).
   the axis linked to points above the envelope, measured on set O, the empty bags and the ride;
 - **the rail shadow of a large near object** (P3; §2e): a 2 × 2 m box 10–20 m ahead hides the
   rails, the rail-height fit drifts by ~0.5 m and a wrong 3.0 m distance is reported;
-- **the near-bed path with the current gates** (`537e220` + `7df1796`; P3; §1e): the ride and set F
-  on the bed before any change of its default (the five bags give 107 events against 20); whether a
-  bed object below the rail head counts at all is asked as Q3 in [`QUESTIONS.md`](QUESTIONS.md);
+- ~~**the near-bed path with the current gates** (`537e220` + `7df1796`; P3; §1e): the ride and set F
+  on the bed before any change of its default~~ dropped 25.09: a bed object below the rail head is
+  not an obstacle (organizers' answer to Q3, [`organizers/answers.md`](organizers/answers.md) §8),
+  the path stays off;
 - **the far-rail check** (P3; §1e, §1f): never fires on the six recordings and set O (25.09);
   only the ride is left, and it is not expected to change anything;
 - **the 82.9 m platform end** (P3; §1f): 10 of the 25 STOP episodes at the platform come from the

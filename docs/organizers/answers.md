@@ -3,7 +3,7 @@
 > **Purpose:** every answer the organizers gave to our questions (case 05), verbatim where it was
 > written, and what each answer changed in ReSense.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, the answers verbatim in RU
-> **Last verified:** 2026-09-24 against `537e220` · **Status:** current
+> **Last verified:** 2026-09-25 against `7290873` · **Status:** current
 
 Everything the organizers answered to the questions of [`../QUESTIONS.md`](../QUESTIONS.md),
 from these sources:
@@ -17,7 +17,11 @@ from these sources:
 * the **hand-outs of 22.09**: sensor manual, extended dataset, test-stand software;
 * the **organizers' statement of 25.09** on access to the test stand, reported by the captain, §6;
 * the **organizers' statement of 25.09** that the test machine has no internet access, reported
-  by the captain, §7.
+  by the captain, §7;
+* the **organizers' statement of 25.09** that the upload form takes links and has no file-size
+  limit, reported by the captain, §8;
+* the **organizers' answer of 25.09** to our Q3 (a 30 × 30 × 10 cm object lying on the bed between
+  the rails is not an obstacle), reported by the captain, §8.
 
 The questions that are still open are the only ones left in [`../QUESTIONS.md`](../QUESTIONS.md).
 
@@ -87,7 +91,7 @@ withdrawn by the team as an organisational matter.
 | will there be an extended dataset, when, how many recordings | organizers' hand-out: `new_data.zst`, one 20-minute recording, 221 split files, no labels | [`DATASET.md`](../DATASET.md) "Extended dataset", `extended_dataset_intake.json` |
 | GPU / CUDA on the test stand | organizers' hand-out: `nvidia-smi` and `dpkg` state of the stand (driver 580, CUDA 13 runtime, toolkit 12.9); ReSense does not use it (evaluated 24.09 and rejected: ARCHITECTURE.md "GPU: evaluated, not used") | [`organizers/test_stand_software.md`](test_stand_software.md) |
 | train speed, odometry or IMU topic on the train | **organizers' fact** (Q&A 22.09, fact 6): no odometry in the recordings, some trains have none. **Team decision** (22.09): "train-speed data is not technically possible for this case", so the solution operates without it. The deliverable is the no-speed path (single-frame detection + persistence in time); the node's `ego_speed_mps` / `speed_topic` / `odom_topic` inputs stay as optional extras and the multi-frame accumulation stays off unless a speed is given. 24.09: the LiDAR-only estimator was measured accurate, but even a perfect speed does not improve the organizers' check, so it stays opt-in ([`EXPERIMENTS.md`](../EXPERIMENTS.md) §9) | [`SENSOR.md`](../SENSOR.md) §4, [`CAPTAIN_log_2026-09.md`](../archive/CAPTAIN_log_2026-09.md) finding 7, `ARCHITECTURE.md` |
-| intermediate submission (date, form, where), final submission (image vs Dockerfile, size, video), test-stand procedure (launch, internet at build, bag playback, disk) | organisational — the team handles these itself, not a question to the organizers; 25.09: the team gets no run on the stand before submission (§6), and the stand has no internet, so the image goes as a `docker load` archive (§7) | [`SUBMISSION.md`](../SUBMISSION.md), README "Where the data lives" / demo runbook |
+| intermediate submission (date, form, where), final submission (image vs Dockerfile, size, video), test-stand procedure (launch, internet at build, bag playback, disk) | organisational — the team handles these itself, not a question to the organizers; 25.09: the team gets no run on the stand before submission (§6), the stand has no internet, so the image goes as a `docker load` archive (§7), and the upload form takes links with no size limit (§8); the organizers' timeline has no intermediate stage ([`README_organizers.md`](README_organizers.md) "Ключевые этапы конкурса"), so no separate intermediate upload is made ([`../SUBMISSION.md`](../SUBMISSION.md)) | [`SUBMISSION.md`](../SUBMISSION.md), README "Where the data lives" / demo runbook |
 | may the given recordings be used for tuning parameters | answered 22.09: yes, acceptable | — |
 | own slides after the template's 7–11 | answered 22.09: yes, acceptable | [`PRESENTATION.md`](../PRESENTATION.md) |
 
@@ -125,3 +129,17 @@ covers the whole machine, the image build included. With §6 we cannot try anyth
 | date | reported by | organizers' statement | status | consequence in ReSense |
 |---|---|---|---|---|
 | 25.09 | the captain (P1) | the test machine, the stand of spec §3.1, has no internet access | **closed** | `docker build` cannot work there: it pulls `ros:humble-ros-base-jammy` from Docker Hub, installs ROS and Ubuntu packages with `apt-get` and the pinned wheels (and the build backend) from PyPI. The image is therefore delivered as an archive: `scripts/export_image.sh` → `resense-image-<version>.tar.gz` with its `.sha256`, loaded with `docker load -i` (step 1 of README "Кратко для жюри"; `scripts/load_image.sh` checks the sum and runs the image with `--network none`); the archive is a deliverable of the upload ([`../SUBMISSION.md`](../SUBMISSION.md), [`../CAPTAIN.md`](../CAPTAIN.md) C25). Nothing in the node, the launch file, the entrypoint or the compose services uses the network at run time; the dashboard's roslib is now bundled (`web/assets/vendor/`). CI proves the chain: the built image goes through `docker save` → `docker rmi` → `docker load`, then the synthetic bags are played through the node with `--network none` and on an internal Docker network with no way out. An offline `docker build --cache-from` from the archive is a best-effort extra with caveats ([`../ARCHITECTURE.md`](../ARCHITECTURE.md) "Deployment without internet"); the 28.09 dry run loads the archive with the network disconnected (`IMAGE_TAR=… OFFLINE=1 scripts/dry_run.sh`) |
+
+## 8. Upload form and the bed object (25.09, reported by the captain)
+
+The captain reported on 25.09 two things the organizers said. No written text. (a) is about the
+upload form of i.moscow; (b) answers Q3 of [`../QUESTIONS.md`](../QUESTIONS.md) (the bed / envelope
+floor question of the criteria review of 24.09). The captain's words for (b), typos corrected: "no,
+this small object isn't in the train's sizes, so it isn't an obstacle"; "the train's sizes" is the
+train's clearance envelope (габарит), 2.1 m wide × 3.0 m high ([`QA_session.md`](QA_session.md)
+facts 1–2, §1 #5), which the detector measures from the rail head.
+
+| date | reported by | organizers' statement | status | consequence in ReSense |
+|---|---|---|---|---|
+| 25.09 | the captain (P1) | (a) the upload form has **no file-size limit**: the team types **links** into the form | **closed** | nothing is uploaded as a file: the form gets links — the repository at the release tag with its commit hash, the tag's GitHub release page carrying the image archive `resense-image-<tag>.tar.gz` and its `.sha256` (§7), the video and the presentation ([`../SUBMISSION.md`](../SUBMISSION.md) "Upload"). The archive's size (0.49 GiB at gzip -1 in CI) is no longer a constraint on the form; a GitHub release asset holds up to 2 GB per file. Each link must open for a logged-out visitor, and the archive is loaded once on a second machine before submitting ([`../CAPTAIN.md`](../CAPTAIN.md) action 1b) |
+| 25.09 | the captain (P1) | (b) a **30 × 30 × 10 cm object lying on the bed between the rails** (below the rail head) is **not an obstacle**: it is not inside the train's clearance envelope | **closed** | the shipped bed policy is the organizers' own: nothing below the envelope floor (0.12 m above the rail head) between the rails is reported ([`../ALGORITHM.md`](../ALGORITHM.md) §3.3b, `gauge.profile`, `lowobj.*` unchanged). The opt-in central near-bed path (`lowobj.near_enabled`, off; [`../EXPERIMENTS.md`](../EXPERIMENTS.md) §1e) stays off and is no longer an open question: it is not needed for the organizers' check, and its ride and set F re-run is dropped. The criteria judgement's 8.1 hold-down "the 30 × 30 × 10 cm object below the rail head is not detected by default" is answered by the organizers ([`../SCORECARD.md`](../SCORECARD.md) §8; no re-score). Objects that reach the envelope — across a rail, straddling the floor, on a rail head, taller than the floor — are reported as before |

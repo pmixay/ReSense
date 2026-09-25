@@ -9,10 +9,17 @@ Owner codes as in [`PLAN.md`](PLAN.md). Update this file in the PR that complete
 
 ## Intermediate submission (spec §7.1)
 
-**Status (24.09): not recorded.** No tag `v0.1-intermediate` exists and nothing records that the
-package was sent; the organizers' timeline
-([`organizers/README_organizers.md`](organizers/README_organizers.md) "Ключевые этапы") has no
-intermediate stage. P1 confirms and records the date here, or marks it "not held".
+**Status (25.09): resolved — not held as a separate upload.** The organizers' timeline has no
+intermediate upload stage; its stages are, verbatim
+([`organizers/README_organizers.md`](organizers/README_organizers.md) "Ключевые этапы конкурса"):
+«Приём заявок | до 14 сентября», «Разработка решений | 15–29 сентября», «Техническая экспертиза |
+30 сентября – 14 октября», «Презентация проектов | 23 октября», «Церемония награждения | 30
+октября». Spec §7.1 («7.1. Промежуточная сдача», «К промежуточной сдаче необходимо
+предоставить: …») lists what an intermediate package holds but gives no date, form or place.
+Decision (25.09, [`CAPTAIN.md`](CAPTAIN.md) C14): no separate intermediate upload in the
+organizers' timeline; the §7.1 content (Dockerfile, prototype, description, mini-demo, first
+experiments) is in the repository (the table below) and is part of the final upload. No
+`v0.1-intermediate` tag is made.
 
 | # | required | where | owner | status |
 |---|---|---|---|---|
@@ -22,14 +29,11 @@ intermediate stage. P1 confirms and records the date here, or marks it "not held
 | 4 | minimal demonstration on the provided data | `scripts/run_demo.sh doubleT_obstacle`; real renders in [`img/`](img/) (`hero_person.png` from the cab, `doubleT_obstacle_0024_v062.png` top / side view), videos in [`video/`](video/), dashboard (`web/index.html`, screenshots [`images/dashboard-stop.png`](images/dashboard-stop.png), [`images/dashboard-cab-real.png`](images/dashboard-cab-real.png)) | P1 / P2 | done offline on the real bag (v0.6.2), and in Docker with RViz on the real frames (23.09, [`video/docker_chain_rviz.mp4`](video/docker_chain_rviz.mp4)) |
 | 5 | first experiment results | [`EXPERIMENTS.md`](EXPERIMENTS.md) | P3 / P4 | done, v0.3 |
 
-Package to send: link to the repository at a tagged commit (`v0.1-intermediate`), plus the five
-rows above quoted in the cover message. On the day: `git tag -a v0.1-intermediate -m
-"intermediate submission" && git push origin v0.1-intermediate`, then send the text below with
-the commit hash filled in (the intermediate deadline, the form of the final package and the stand
-procedure are the team's own to settle, not organizer questions: `organizers/answers.md` §4; the
-team gets no run on the stand before submission, §6).
+Nothing is sent separately. The cover message drafted for an intermediate package (below; not sent
+as one) is kept as the base of the final one: replace «промежуточная сдача» and the tag, add step 1
+`docker load -i resense-image-v1.0-final.tar.gz` and the sha256 (see "Upload").
 
-### Cover message (draft, Russian — the organizers' language)
+### Cover message (draft, Russian — the organizers' language; not sent, base of the final one)
 
 > Команда «Молоток» (решение ReSense), кейс 05 («Обнаружение посторонних объектов в тоннеле метро
 > по данным 3D-лидара») — промежуточная сдача.
@@ -78,7 +82,7 @@ team gets no run on the stand before submission, §6).
 | 14 | tests (spec §8.5) | `tests/` (289 tests: algorithm on the ray-cast tunnel, envelope and low objects, mount calibration and guards, the native kernels against their numpy code, the cKDTree DBSCAN against scikit-learn, the two opt-in rules, the regression gate's rules, P4 placement, evaluation, the synthetic-obstacle labels and the speed-evaluation helpers, the node's decision / fault / watchdog / input-switching logic against ROS stand-ins in `tests/test_node.py`) + `web/demo/` (11); CI jobs `pytest`, `web`, `lint` (ruff), `params-in-sync`, `docker` (the Docker job also plays synthetic bags through the node: the organizers' way with node and a uid-1000 player in separate containers, with a stock Fast DDS player and listener, and after `docker save` / `docker load` with no network), `offline-build` | P4 / P1 / P2 | done (CI state: [`CAPTAIN.md`](CAPTAIN.md) C17) |
 | 15 | input data description | [`DATASET.md`](DATASET.md) (the organizers' links: Google Drive bags, the Yandex Disk extended dataset and the synthetic-obstacle recording of 24.09, labelled in `labels/cloud_with_fake_obj.json`), sensor: [`SENSOR.md`](SENSOR.md) with the Hesai manual in [`sensor/`](sensor/); the test stand's driver / CUDA state in [`organizers/test_stand_software.md`](organizers/test_stand_software.md) | P4 / P1 | done |
 | 16 | the organizers' answers applied (envelope 2.1 × 3.0 m, 30 × 30 × 10 cm, hanging cables, mount, object on the rail, decision output; 24.09: mounts as in the provided bags, switches) | [`organizers/answers.md`](organizers/answers.md), [`organizers/QA_session.md`](organizers/QA_session.md) (the Q&A of 22.09 and the facts that changed the code), [`organizers/mount_and_switch_qa.md`](organizers/mount_and_switch_qa.md); criteria judgement: [`SCORECARD.md`](SCORECARD.md) (24.09) | all | done (22.09; 24.09 answers recorded; 25.09: no stand access before submission, `organizers/answers.md` §6; no internet on the stand, §7) |
-| 17 | **the image archive** (the stand has no internet, so `docker build` cannot run there): `resense-image-<version>.tar.gz` and its `.sha256` in the upload package, loaded with `docker load -i` | `scripts/export_image.sh` (from a clean clone of the tag, on a machine with internet), `scripts/load_image.sh`; README "Кратко для жюри" step 1 | P1 | tooling done (25.09); the runtime archive measured in CI: 521 185 902 bytes, 0.49 GiB at `GZIP_LEVEL=1` (1.34 GiB unpacked, run 36109782167); the rc1 archive on 27.09, the final one on 29.09; the upload form's size limit unknown ([`CAPTAIN.md`](CAPTAIN.md) action 1b) |
+| 17 | **the image archive** (the stand has no internet, so `docker build` cannot run there): `resense-image-<tag>.tar.gz` and its `.sha256`, linked from the upload form as assets of the tag's GitHub release, loaded with `docker load -i` | `.github/workflows/release.yml` (pushing a `v*` tag attaches both files to the tag's release; being added 25.09), or by hand: `scripts/export_image.sh` (from a clean clone of the tag, on a machine with internet) and `gh release upload`; `scripts/load_image.sh`; README "Кратко для жюри" step 1 | P1 | tooling done (25.09); the runtime archive measured in CI: 521 185 902 bytes, 0.49 GiB at `GZIP_LEVEL=1` (1.34 GiB unpacked, run 36109782167); the form takes links and has no size limit (organizers, 25.09, [`organizers/answers.md`](organizers/answers.md) §8), a GitHub release asset holds up to 2 GB; the rc1 archive on 27.09, the final one on 29.09 |
 
 ## Dry run (28.09)
 
@@ -150,13 +154,32 @@ not decide whether the dry run passed.
 ## Upload
 
 Deadline 29.09 23:59; target 18:00; the tags and times are in [`CAPTAIN.md`](CAPTAIN.md) §5. The
-package: the repository link at the tag `v1.0-final` with its commit hash, **the image archive**
-`resense-image-v1.0-final.tar.gz` with its `.sha256` (`VERSION=v1.0-final
-./scripts/export_image.sh` from a clean clone of the tag; the stand has no internet, so this is
-what the jury runs, not an extra), the video and the deck as the form asks, and the README section
-list above in the cover message. The cover message gives step 1 as `docker load -i
-resense-image-v1.0-final.tar.gz` and the sha256. The archive is gzip because `docker load` reads it
-on any Docker version (zstd would be ~10–20 % smaller but is not read everywhere); its size is
-printed by `export_image.sh`. If the form's file limit is below that size, upload a link (Yandex
-Disk, or a GitHub release asset, at most 2 GB per file) and keep the sha256 in the message.
-Before uploading, load the archive once on a second machine (`scripts/load_image.sh`).
+i.moscow form takes **links** and has **no file-size limit** (organizers, 25.09,
+[`organizers/answers.md`](organizers/answers.md) §8): nothing is attached as a file. Links to type
+(`<sha>` = `git rev-list -n 1 v1.0-final`):
+
+| # | item | link to type | made by |
+|---|---|---|---|
+| 1 | the repository at the release tag, with its commit hash | `https://github.com/pmixay/ReSense/tree/v1.0-final` and «коммит `<sha>`» | the tag pushed on 29.09 (CAPTAIN §5) |
+| 2 | **the image archive** (row 17; the stand has no internet, so this is what the jury runs, not an extra) | the tag's release page `https://github.com/pmixay/ReSense/releases/tag/v1.0-final`, carrying `resense-image-v1.0-final.tar.gz` and `resense-image-v1.0-final.tar.gz.sha256`; the sha256 value also typed next to the link | `.github/workflows/release.yml` on the tag push (being added 25.09); if it did not run or failed: `VERSION=v1.0-final ./scripts/export_image.sh` from a clean clone of the tag, then `gh release upload v1.0-final dist/resense-image-v1.0-final.tar.gz dist/resense-image-v1.0-final.tar.gz.sha256` (Yandex Disk only as a second mirror) |
+| 3 | the video | `docs/video/resense_overview.mp4` at the tag (`https://github.com/pmixay/ReSense/blob/v1.0-final/docs/video/resense_overview.mp4`), or a video-hosting link | P2 edit, H voice (row 11, CAPTAIN action 9) |
+| 4 | the presentation | to be filled later: the private `--team` build (row 13) carries the team's personal data, so it goes by a link that opens without a sign-in but is not in the public repository (e.g. Yandex Disk); the public build is `docs/presentation/ReSense_LCT2026.pptx` / `.pdf` at the tag | P2, P1 (row 13, CAPTAIN action 8) |
+
+If the form has a description field, it takes the cover message (above, adapted) with the README
+section list of the final submission, step 1 as `docker load -i resense-image-v1.0-final.tar.gz`
+and the sha256. The archive is gzip because `docker load` reads it on any Docker version (zstd
+would be ~10–20 % smaller but is not read everywhere); its size and sha256 are printed by
+`export_image.sh` (and by the release job).
+
+**Check before submitting** (29.09, before 16:00; CAPTAIN §5):
+
+1. open every link in a private browser window, **logged out** of GitHub and Yandex: the
+   repository at the tag, the release page, both assets (each downloads), the video (plays), the
+   presentation (opens); a link that asks for a sign-in is a failed link (a private repository or
+   release is invisible to the jury);
+2. the commit hash typed in the form equals `git rev-list -n 1 v1.0-final` and the tag's CI run is
+   green;
+3. on a second machine: download both assets from the release page logged out (e.g. `curl -LO`),
+   `sha256sum -c resense-image-v1.0-final.tar.gz.sha256`, then
+   `./scripts/load_image.sh resense-image-v1.0-final.tar.gz` (sum, `docker load`, a run with
+   `--network none`); the sha256 typed in the form equals the file's.

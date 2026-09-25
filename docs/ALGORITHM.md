@@ -352,7 +352,9 @@ The rail-head path keeps (c): a safety function that stops the train every 1.5 s
 track is not usable. The opt-in central near-bed path below is off in the shipped
 configuration: with its first gates it raised the ride's false events from 47 to 667, and with the
 current gates the five obstacle-free recordings give 107 events instead of 20 (the ride not re-run;
-§6, EXPERIMENTS §1e).
+§6, EXPERIMENTS §1e). The organizers confirmed the policy on 25.09: a 30 × 30 × 10 cm object on the
+bed between the rails is not inside the train's envelope, so it is not an obstacle
+([`organizers/answers.md`](organizers/answers.md) §8).
 `min_top: -1` and `min_point_top: -1` restore the unrestricted bed-level policy for a line
 with a clean bed.
 
@@ -393,7 +395,9 @@ lying across a rail is found at 25, 40 and 50 m in the synthetic tunnel
 (`tests/test_envelope.py`); beyond ~50–60 m the bed stops returning (grazing incidence) and a
 0.3 m-high object has one or two rings above the rail head, which is where the stage ends.
 
-**Central near-bed objects (experimental, off by default; 24.09).** Set
+**Central near-bed objects (experimental, off by default; 24.09).** Not needed for the organizers'
+check (such an object is not an obstacle, 25.09, [`organizers/answers.md`](organizers/answers.md)
+§8): the path stays off and is kept as a measured experiment. Set
 `lowobj.near_enabled: true` explicitly to test a separate low path for compact objects lying on
 the bed between the rails, below the rail head. It accepts bed anomalies entirely within
 `near_half_width` = 0.55 m of the axis (the rail heads and their fastenings at ±0.8 m stay out)
@@ -656,9 +660,10 @@ The v0.6–v0.6.3 limitations first, then what the organizers' own test objects 
 data: [`SCORECARD.md`](SCORECARD.md).
 
 * **Low objects below the rail head** (§3.3b): the shipped default does not report compact objects
-  on the bed between the rails. The opt-in central near-bed path can report them within 30 m,
-  provided the local bed is observed and the rails are locked, but a fixture with the same geometry
-  can still cause a false alarm, and on real data it does. With its first gates (`a92625e`) it was
+  on the bed between the rails, and by the organizers' answer of 25.09 they are not obstacles
+  (below, "What the organizers' answers settle"). The opt-in central near-bed path can report them
+  within 30 m, provided the local bed is observed and the rails are locked, but a fixture with the
+  same geometry can still cause a false alarm, and on real data it does. With its first gates (`a92625e`) it was
   measured on 24.09 on all 13 759 frames by the criteria review (EXPERIMENTS §1e [team record,
   unverified: raw not committed]): the five obstacle-free recordings give 145 events (20 with the
   defaults), the ride 667 events and 247 STOP episodes (47 and 39), while the 30 × 30 × 10 cm box
@@ -667,7 +672,7 @@ data: [`SCORECARD.md`](SCORECARD.md).
   With the width (≤ 0.55 m) and bed-support gates added on 24.09 (`537e220`, box fix `7df1796`) the
   five recordings give 459 alarm frames / 107 events / 72 STOP episodes (1 035 / 145 / 42 before,
   107 / 20 / 27 with the defaults) and set O 319 background alarm frames; the ride has not been
-  re-run, and the path stays off.
+  re-run, and the path stays off (for good since the organizers' answer).
   Beyond 30 m or beside a rail the rail-head rule applies. On a line with a clean bed,
   `lowobj.min_top: -1` with `min_point_top: -1` reports all bed bumps. An object lying *across* a
   rail (the organizers' object in `doubleT_obstacle`) is reported since v0.6.2 (§3.3b: 124 of the
@@ -772,6 +777,9 @@ causes, each a limitation of the current rules:
   the rail head on the train's centreline, with no numeric orientation (24.09, same source; §2).
   The unknown-mount case is gone, but the provided data hold two rigs (1.12 m and 1.51 m by the
   calibration), so the auto-calibration stays on as a safeguard.
+* **The bed.** A 30 × 30 × 10 cm object lying on the bed between the rails is not an obstacle: it
+  is not inside the train's envelope (25.09, [`organizers/answers.md`](organizers/answers.md) §8).
+  The shipped envelope-floor policy (§3.3b) is theirs; the near-bed path stays off.
 
 ### Limitations of v0.5 (still valid)
 
