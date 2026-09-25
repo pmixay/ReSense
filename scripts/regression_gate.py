@@ -6,6 +6,7 @@
     python scripts/regression_gate.py --set cluster.min_points=8 --baseline <FILE>     # a variant
     python scripts/regression_gate.py --from-json out/gate/current.json --baseline <FILE>   # compare only
     python scripts/regression_gate.py ... --allow 'recordings.doubleT_platform.*'      # an intended trade-off
+    python scripts/regression_gate.py ... --allow 'ride.*' --allow 'set_F_straight.*'   # no <cache>/new_data: accept running without the ride
 
 What it runs (every frame, a fresh detector per recording, the ``scripts/eval_real.py`` machinery;
 the per-frame JSONL results go to ``--work``):

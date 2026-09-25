@@ -302,9 +302,10 @@ Every frame of the six recordings, set O, the ride (in 8 pieces) and set F strai
 the baseline. `--jobs` about the physical core count (the dev VM: 394 s at `--jobs 3` on 4 vCPU).
 Needs no Docker. **Done:** exit 0, every gated metric identical or better; on the commit the
 baseline was measured on, identical apart from latency. Exit 1: a gated metric is worse (the rows
-are in the table: report them); 2: a recording's cache is missing or incomplete (§2.4). The ride
-and set F are compared only when `$CACHE/new_data` exists: the JSON says "not available"
-otherwise. A candidate branch runs in its own worktree: `git worktree add ../candidate <branch>`,
+are in the table: report them) or a gated metric of the baseline is missing in this run (the ride
+and set F straight need `$CACHE/new_data`; a run without the ride on purpose passes only with
+`--allow 'ride.*' --allow 'set_F_straight.*'`, said in the report); 2: a recording's cache is
+missing or incomplete (§2.4). A candidate branch runs in its own worktree: `git worktree add ../candidate <branch>`,
 then `scripts/build_native.sh` and the same command there. **Evidence:** the JSON and the table in
 `docs/evidence/gate_<date>/`; the per-frame results in `out/regression_gate/` stay out of git.
 

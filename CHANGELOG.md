@@ -40,10 +40,25 @@ buffers, +21 `load_image.sh`, +11 `check_no_network.py`) in `tests/`, 11 in `web
   pushed, and every plan item that scheduled a tag or a release is deferred. The submission is
   handled by the captain personally with all its links: `docs/SUBMISSION.md` removed, its links
   replaced (the jury commands in the README, the dry-run procedure in README "Acceptance test and
-  CI", `scripts/dry_run.sh` and `scripts/vm/AGENT_BRIEF.md`, the offline delivery in ARCHITECTURE
+  CI", `scripts/dry_run.sh` and the VM brief (now `docs/VM_GUIDE.md`), the offline delivery in ARCHITECTURE
   "Deployment without internet"). Deployment (image archive, clean-machine and offline dry run on
   the 8-core stand-in) and the presentation (deck, team slides, video voice-over) come later.
   [`docs/CAPTAIN.md`](docs/CAPTAIN.md) C12, C13, C21, §9.
+- **VM kit reduced to instructions (25.09, the captain):** `scripts/vm/` removed (`setup_vm.sh`,
+  `fetch_data.sh`, `run_plan.sh`, `lib.sh`, `stream_cache.py`; the code review had found the
+  feature branch built in as the default clone target). Its brief is now
+  [`docs/VM_GUIDE.md`](docs/VM_GUIDE.md): plain commands of the repository's tools with variables
+  the reader sets, the ride streamed split by split (`curl | zstd | tar --to-command` into
+  `scripts/cache_frames.py`, one split file on disk at a time), the offline rehearsal as steps with
+  the restore armed first (IPv4 and IPv6, never saved). [`docs/CAPTAIN.md`](docs/CAPTAIN.md) §9.
+- **Script fixes (`1fc127f`, `163f34b`, `ade8a97`, 25.09, code review):** `regression_gate.py`
+  fails a gated baseline metric missing in this run ("missing in this run", exit 1; `--allow
+  'ride.*' --allow 'set_F_straight.*'` accepts a run without the ride on purpose), so a machine
+  without `new_data` no longer passes the `_ride` baseline unchecked; `load_image.sh` normalises
+  the expected sha256 (any case; Get-FileHash / certutil / sha256sum / BSD forms; no sum = exit
+  2); `check_no_network.py` probes IPv6 (literals and each host's AAAA addresses) as well as IPv4
+  and prints the result per family. +6 gate tests, `tests/test_load_image.py` (21),
+  `tests/test_check_no_network.py` (11).
 - **Drops of the 25.09 dry run explained; the node and the checker count them apart (25.09):** of
   the 20 frames "dropped after 5 s" on `doubleT_obstacle`, 16 were the start-up catch-up's own skips
   (it ran to +7.7–7.9 s after the player's preload) and 4 are frames the recording itself lacks.
