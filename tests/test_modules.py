@@ -120,7 +120,7 @@ def person_or_column(x, column):
     return c
 
 
-@pytest.mark.parametrize("hold", [1, 2, 3, DetectorConfig().tracking.column_hold])
+@pytest.mark.parametrize("hold", sorted({1, 2, 3, DetectorConfig().tracking.column_hold}))   # 2 shipped
 def test_column_hold_gauge_below_the_hold_advisory_at_it(hold):
     """tracking.column_hold (roundT_doubleT, 25.09, EXPERIMENTS 3a): a track with fewer than
     ``hold`` column hits among its last zone_window (10) hits, then gauge hits of a person-size

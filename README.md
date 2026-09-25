@@ -230,7 +230,7 @@ python scripts/far_range_eval.py --cache /data/cache/new_data --files 46,68,98 -
     --start 220 --out out/far.json                                    # set F: synthetic positives, legacy placement by default
 python scripts/mine_objects.py out/eval --bag new_data                  # every confirmed object of a ride, by cause
 python scripts/regression_gate.py --cache /data/cache \
-    --baseline docs/evidence/results/regression_baseline_2026-09-25_ride.json   # the gate for every detector change (exit 1 = worse, or a baseline set missing here)
+    --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json   # the gate for every detector change (exit 1 = worse, or a baseline set missing here)
 ```
 
 ## ROS 2 / Docker
