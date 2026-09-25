@@ -130,6 +130,9 @@ resense:
     floating_max_width: 1.0
     floating_long_min_length: 3.0  # on, decided 25.09 on the ride (0 = off): the floating shape also demotes clusters longer than this (m) along the track near the axis (overhead duct / tray / beam); ride 204 / 47 / 39 -> 197 / 46 / 39 alarm frames / events / STOP episodes, five bags 107 / 20 / 27 -> 60 / 14 / 17, set O, doubleT_obstacle and set F straight identical (docs/evidence/results/rules_decision_2026-09-25.json)
     floating_long_min_bottom: 1.6  # review 25.09: the long branch only for clusters whose lowest point is above this (m; 0 = no bottom condition); pre-registered 2.0 / 1.8 / 1.6, the highest keeping every gain: 2.0 ride 197 / 46 / 39 -> 204 / 47 / 39, 1.8 -> 202 / 47 / 40, 1.6 identical on every recording, the ride, set O and set F straight; what the long branch demotes on them has its bottom at 1.68-2.65 m but one unconfirmed single-frame cluster (docs/evidence/results/long_rule_bottom_2026-09-25.json)
+    floating_free_max_size: 0.0    # 25.09 round 2, off (0): > 0 = the floating shape does not demote a compact cluster (every extent at most this, m) hanging free inside the envelope (the organizers' 0.3 m cube #2 of set O) ...
+    floating_free_max_dy: 0.95     # ... whose outermost point is at most this far off the axis (m; not reaching the wall side of the corridor) ...
+    floating_free_max_top: 2.5     # ... and whose top is at most this high (m; not hanging from the vault); docs/evidence/results/p3_signatures_2026-09-25.json
     edge_min_lateral: 1.0          # v0.6 (1.2 with the 1.40 m polygon)
     edge_min_aspect: 2.5
     edge_max_height: 1.0
