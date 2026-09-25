@@ -1,0 +1,49 @@
+{
+ "schema": "resense-thin-hanging-v1",
+ "date": "2026-09-25",
+ "question": "SCORECARD #11 (criterion 8.1): the organizers' 5 cm object hanging from the roof in set O (cloud_with_fake_obj, thin_hanging, frames 686-803) reads GO at 6.7-30 m with clear_distance 150-170 m. Only its lowest 0.2-0.36 m dips into the 3.0 m envelope, 1-4 points a frame; it never reaches the corridor clustering's 5-voxel minimum. Can a rule for a thin structure hanging from above into the envelope near the axis give it a STOP without a new false event?",
+ "preregistered": {
+  "written_at_utc": "2026-09-25T20:53:00Z",
+  "note": "written before any run of a candidate rule on recorded data (set O, the six recordings, the ride, set F) and before any gate run; branch wf9/thin-hanging off claude/nifty-pascal-lzgl78 1c96233",
+  "rule": "cluster.hanging_enabled (new flag, default false = byte-identical output). Per frame, the points of the current frame with range_min <= X <= min(hanging_max_distance, the corridor's trusted range), |dy| < hanging_max_lateral, h > hanging_min_height and h <= envelope top (3.0 m) + hanging_link_band are linked at the corridor's range-scaled radius (cluster.eps, range_scale; every point a core point). A group is a hanging object when it has >= hanging_min_voxels voxels inside the strict envelope (the corridor's strict-gauge test, edge margin included), >= 1 voxel above the envelope top, and is at most hanging_max_size along and across the track. It becomes a gauge cluster of kind 'hanging' unless it overlaps a cluster of the existing stages (they decide); the tracker confirms it like any other track (confirm_hits 3 and confirm_time_s 0.5 s = 5 frames at 10 Hz). Fixed for every candidate: hanging_min_height 1.8 m, hanging_link_band 0.6 m.",
+  "candidates_in_order": [
+   {
+    "name": "A",
+    "set": [
+     "cluster.hanging_enabled=true",
+     "cluster.hanging_min_voxels=1",
+     "cluster.hanging_max_lateral=0.8",
+     "cluster.hanging_max_size=0.5",
+     "cluster.hanging_max_distance=60"
+    ],
+    "note": ">= 2 voxels in the linked group, at least 1 of them inside the envelope"
+   },
+   {
+    "name": "B",
+    "set": [
+     "cluster.hanging_enabled=true",
+     "cluster.hanging_min_voxels=2",
+     "cluster.hanging_max_lateral=0.8",
+     "cluster.hanging_max_size=0.5",
+     "cluster.hanging_max_distance=60"
+    ],
+    "note": "the judges' rule as written: >= 2 voxels inside the envelope"
+   },
+   {
+    "name": "C",
+    "set": [
+     "cluster.hanging_enabled=true",
+     "cluster.hanging_min_voxels=2",
+     "cluster.hanging_max_lateral=0.5",
+     "cluster.hanging_max_size=0.3",
+     "cluster.hanging_max_distance=40"
+    ],
+    "note": "B, tighter: nearer the axis, thinner, nearer the train"
+   }
+  ],
+  "ship_rule": "Evaluate in the order A, B, C and ship the FIRST candidate that satisfies both: (1) python scripts/regression_gate.py --cache /data/cache --jobs 1 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json --set <candidate> exits 0 (no gated row worse or missing, the ride and set F straight included, no --allow); (2) the target improves: set O thin_hanging STOP frames rise above 0 (first STOP distance from none to a distance). Cheap subset first: a candidate is run on the seven recordings without the ride (a cache directory of symlinks, --allow 'ride.*' --allow 'set_F_straight.*'); only a candidate whose subset run passes (1) on those rows and (2) is run through the full gate. If none passes: nothing ships (the flag stays false), reported as 'tried, not shipped' with the points per frame by range and what imitates the object.",
+  "safety_conditions": "Each is required, and (1) already gates all but the last clause: doubleT_obstacle labelled hits per label and the first alarm frame identical or better; set O inside-object STOP frames and first STOP distances identical or better, outside-object false STOP frames and background alarms not higher; set F straight detections per kind identical or better (sequences detected, median first confirmation, false detections); no new false event (alarm events and STOP episodes) in the five obstacle-free recordings or the ride. A safety fix wins over a false-alarm gain; the choice between passing candidates is by order only (A is the most sensitive).",
+  "if_shipped": "default on in resense/config.py, configs/default.yaml (dated comment) and the ROS copy (scripts/sync_params.sh); the seven-recording gate re-run on the new defaults without --set must reproduce the candidate run; tests: a ray-cast test that the thin hanging object now STOPs and one that a real obstacle nearby still STOPs."
+ },
+ "known_before_registration": "Looked at before this registration (the brief's investigation; no candidate rule run on recorded data): (1) the target frame by frame with the shipped defaults (1c96233): 46 frames with returns (686-803), 1-6 points at 137-200 m and 1-8 at 67-95 m, all 3.3-6.4 m above the detector's rail head (the extrapolated rail level there is 0.7-2 m lower than near the train), so none inside the envelope; 48-61 m 1-7 points, 1 inside in frames 777-778; 30-37 m 3-5 points, 1 inside a frame; 17-27 m 5-20 points, 1-3 inside (1-3 voxels); 8-15 m 22-27 points, 6-13 inside: the corridor stage forms a gauge cluster of 5-8 voxels in frames 798-802 only, which does not confirm before the object leaves the top of the sensor's field of view (frame 803, 6.7 m: 9 points, 3 voxels, none above 3.0 m); frames 779-780 and 784 have no return, 781-783 and 790 none inside. (2) An imitator survey on the six recordings and set O with the shipped defaults: per frame the point groups near the axis (|dy| < 0.8 m, 1.8 < h <= 3.6 m, 3-120 m, linked at the corridor radius) with a point inside the envelope. Linked to a point above 3.0 m: doubleT_platform 81, roundT_doubleT 211, roundT_pressureGate_roundT 148, roundT_squareT_pressureGate_squareT 68, squareT_platform_squareT_switch 711, set O 315 groups, doubleT_obstacle 0. Within 60 m 10 / 43 / 0 / 0 / 0 / 65: station and tunnel-transition structure at lateral 0.2-0.8 m, 1-23 m long along the track; at most 0.5 m along and across only 2 (roundT_doubleT, both overlapping a corridor cluster) and, in set O, the target in 14 frames (777-797; >= 2 voxels inside in 6 of them, 792-797). The ride was not surveyed: its imitators are logged in the gate runs. (3) A ray-cast prototype on the synthetic tunnel (5 cm, 1.5 m, bottom 0.33 m below the top, 16.5 m/s from 40 m): with min_voxels 2 a STOP from 20.2 m, none with the flag off."
+}
