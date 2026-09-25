@@ -127,6 +127,15 @@ The track model is seeded again after the correction; since v0.6 its rate limits
 (§3.1) apply only after `track.axis_warmup_frames` = 5 frames, so a wrong first-frame
 estimate (a cold start mid-ride) is not locked in for 30+ frames.
 
+**Input rate and re-mount (25.09, SCORECARD #13).** The spacing, the drift-check period and the
+give-up limit count nominal periods of the input rate (`time_cadence`: the median of the last 9
+stamp intervals over `tracking.frame_dt`, 1 at 10 Hz, 2 at 5 Hz; single intervals are not used,
+recorded receive stamps come in bursts), and so do the axis rate limits, the warm-up and the
+yaw / curvature EMA (`track.rates_per_period`, `walls_smoothing_per_period`; the bed and rail EMA
+average noise and stay per frame). While a provisional tilt is applied, the spaced observations
+replace it once there are 5 of them and the tilt they give differs by ≥ `refine_min_deg` = 0.5°, and a final
+within `keep_within_deg` = 0.25° of it keeps it (no re-seed) (EXPERIMENTS §1i).
+
 ## 3. Processing pipeline
 
 ### 3.1 Track model (`resense/track.py`, section `track`)
@@ -726,7 +735,14 @@ data: [`SCORECARD.md`](SCORECARD.md).
 * **Mount calibration** needs a rail pair within `calibration.max_frames` = 400 frames (40 s; a
   start inside a pressure gate or a switch cavern delays it) and corrects roll / pitch / yaw only
   as a whole-run constant; the cant of a curve is part of the rail plane and is not separated
-  from the mount roll.
+  from the mount roll. Since 25.09 (`calibration.time_cadence`) its spacing and limits count
+  periods of the input rate, so 5 Hz calibrates in the same 20 / 40 s as 10 Hz.
+* **A lower input rate or a re-mounted rig** (SCORECARD #13, 25.09, EXPERIMENTS §1i): at 5 Hz
+  the five obstacle-free recordings give 10 false events (13 at 10 Hz); with the rig rolled 3°
+  11, pitched 3° 16. The pitch excess is marginal clusters in the platform and switch recordings
+  that change when the rig's own sub-degree tilt is corrected; a provisional tilt taken on a
+  canted stretch can be ~2° off in roll for the first 4–6 s, until the spaced observations
+  replace it (`refine_min_deg`).
 
 ### Found by the organizers' test objects (set O, 24.09)
 

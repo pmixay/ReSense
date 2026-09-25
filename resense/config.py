@@ -79,6 +79,8 @@ class TrackConfig:
     axis_max_yaw_rate: float = 0.003                 # rad per frame (0.17 deg; a train at 15 m/s on R = 700 m yaws 0.12 deg per frame); larger changes are clipped; 0 = off
     axis_max_curvature_rate: float = 1.0e-4          # 1/m per frame, larger changes of the smoothed curvature are clipped; 0 = off
     axis_warmup_frames: int = 5                      # frames after a (re)seed of the track model during which the rate limits do not apply (v0.6)
+    rates_per_period: bool = True                    # on since 25.09 (P3, SCORECARD #13): the two rate limits above and axis_warmup_frames count nominal frame periods (tracking.frame_dt), not processed frames: x k with k = the input rate in periods (median of the last 9 stamp intervals, rounded: 1 at 10 Hz, 2 at 5 Hz); the bed / rail smoothing stays per frame (it averages noise); 5 Hz five bags 13 / 17 -> 10 / 10 events / STOP episodes with walls_smoothing_per_period, 10 Hz gate identical (EXPERIMENTS.md section 1i, docs/evidence/results/p3_robustness_2026-09-25.json); false = per processed frame
+    walls_smoothing_per_period: bool = True          # on since 25.09 (P3): walls_smoothing (the EMA of the axis yaw / curvature, which change with the distance travelled) per nominal frame period, a^k; floor_ / rails_smoothing stay per frame (squared at 5 Hz they lost 5 labelled frames of the object on the rail); false = per processed frame
     axis_sides_max_disagreement: float = 6.7e-4      # 1/m, both boundaries fitted and their curvatures differ by more (R 1500 m): axis trusted only to axis_disagree_range; 0 = off
     axis_disagree_range: float = 60.0                # m, trusted range of the axis when the two boundaries disagree
     axis_one_side_range: float = 120.0               # m, trusted range when only one boundary was fitted (it cannot tell a parallel wall from a diverging one); 0 = no cap
@@ -301,6 +303,10 @@ class CalibrationConfig:
     monitor_period: int = 50       # frames between drift checks after freezing; 0 = off
     drift_warn_deg: float = 1.5    # residual tilt (median of the last checks) that raises a health warning
     drift_window: int = 10         # checks in that median (10 x 50 frames = 50 s: a curve is not a drift)
+    time_cadence: bool = True      # on since 25.09 (P3, SCORECARD #13): obs_spacing, monitor_period and max_frames count nominal frame periods (tracking.frame_dt) at the input rate from the stamps, not processed frames, so 5 Hz calibrates in the same 20 s as 10 Hz (the 20 x 10-frame window took 40 s at 5 Hz and never completed on a 25 s bag); false = processed frames
+    refine_min_deg: float = 0.5    # on since 25.09 (P3): while a provisional tilt is applied (at least provisional_frames spaced observations), the tilt the final would set from the spaced observations so far replaces it when it differs by at least this (deg) in roll or pitch: the first 5 consecutive frames of roundT_doubleT are 1.6-2 deg off in roll; +3 deg roll five bags 16 / 17 -> 11 / 13, pitch 17 / 18 -> 16 / 17; 0 = off
+    provisional_per_axis: bool = False  # 25.09 (P3), tried, not shipped: the provisional tilt corrects roll and pitch each only when that axis reaches provisional_min_deg (+3 deg roll / pitch five bags 11 -> 19 / 16 -> 19 events on top of the other flags); false = both when either does
+    keep_within_deg: float = 0.25  # on since 25.09 (P3): a final tilt within this (deg, roll and pitch) of the applied provisional one keeps the applied correction: no re-seed of the track model for a change below the final's own error (doubleT_obstacle: +3.02 / -0.88 over +3.18 / -0.81 re-seeded and lost frame 191; 185 -> 186 labelled hits); 0 = off
 
 
 @dataclass

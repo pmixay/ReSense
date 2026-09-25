@@ -583,9 +583,18 @@ def _check_far_rails(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig, near:
             model.axis_valid = min(model.axis_valid, end + cfg.axis_valid_margin)
 
 
-def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel] = None) -> TrackModel:
+def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel] = None,
+                   periods: int = 1) -> TrackModel:
     """Fit floor + rails + boundary-based yaw/curvature for one frame, smoothing against the
-    previous model."""
+    previous model. ``periods`` is the number of nominal frame periods since ``prev`` (1 at
+    the nominal rate); with ``cfg.rates_per_period`` the yaw / curvature rate limits and the
+    warm-up age scale with it (physical rates per second), and with
+    ``cfg.walls_smoothing_per_period`` the yaw / curvature EMA weight is ``walls_smoothing ** k``
+    (the axis changes with the distance travelled); else it is ignored. The bed and rail-head
+    weights stay per processed frame: they average the per-frame noise (squaring them at 5 Hz
+    made the bed fit noisy enough to lose the object on the rail, EXPERIMENTS.md section 1i)."""
+    k = max(1, int(periods)) if cfg.rates_per_period else 1
+    kw = max(1, int(periods)) if cfg.walls_smoothing_per_period else 1
     prior = prev if prev is not None else default_track_model(cfg)
     fit = _fit_floor(xyz, cfg, prior)
     if fit is None:
@@ -598,10 +607,10 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
         floor_coef=coef, floor_range=frange, center=prior.center, yaw=prior.yaw,
         curvature=prior.curvature, rail_offset=prior.rail_offset, n_bins=n_bins, residual=rms,
         wall_quality=prior.wall_quality, axis_valid=prior.axis_valid,
-        age=(prev.age + 1) if prev is not None else 0,
+        age=(prev.age + k) if prev is not None else 0,
     )
     a_r = cfg.rails_smoothing if prev is not None else 0.0
-    a_w = cfg.walls_smoothing if prev is not None else 0.0
+    a_w = cfg.walls_smoothing ** kw if prev is not None else 0.0
     t_fixed: Optional[float] = None
     zf = model.floor_z(xyz[:, 0])                  # the bed height of every point, shared by the three steps below
     rails = None
@@ -656,10 +665,11 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
         # wall fit clipped at 5 deg on a cold start mid-ride) would otherwise take 30+ frames
         # to unwind at 0.17 deg per frame.
         if cfg.axis_max_yaw_rate > 0:
-            model.yaw = float(np.clip(model.yaw, prev.yaw - cfg.axis_max_yaw_rate, prev.yaw + cfg.axis_max_yaw_rate))
+            r = k * cfg.axis_max_yaw_rate
+            model.yaw = float(np.clip(model.yaw, prev.yaw - r, prev.yaw + r))
         if cfg.axis_max_curvature_rate > 0:
-            model.curvature = float(np.clip(model.curvature, prev.curvature - cfg.axis_max_curvature_rate,
-                                            prev.curvature + cfg.axis_max_curvature_rate))
+            r = k * cfg.axis_max_curvature_rate
+            model.curvature = float(np.clip(model.curvature, prev.curvature - r, prev.curvature + r))
     if cfg.rails_far_check_enabled and rails is not None and cfg.walls_enabled:
         _check_far_rails(xyz, model, cfg, rails)
     model.floor_verified = verify_floor_extrapolation(xyz, model, cfg, floor_z_all=zf)

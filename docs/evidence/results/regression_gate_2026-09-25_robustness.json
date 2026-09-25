@@ -1,0 +1,798 @@
+{
+ "schema": "resense-regression-gate-v1",
+ "created": "2026-09-25T21:51:56+00:00",
+ "code": {
+  "commit": "ed3affea4d625688e0cdcf939c04fa62299d20d0",
+  "branch": "wf9/robustness",
+  "version": "1.0.0",
+  "uncommitted_detector_changes": [
+   "M configs/default.yaml",
+   " M resense/calibration.py",
+   " M resense/config.py",
+   " M resense/detector.py",
+   " M resense/track.py"
+  ]
+ },
+ "config": {
+  "path": "configs/default.yaml",
+  "set": [
+   "calibration.time_cadence=true",
+   "calibration.keep_within_deg=0.25",
+   "track.rates_per_period=true",
+   "track.walls_smoothing_per_period=true",
+   "calibration.refine_min_deg=0.5"
+  ],
+  "sha256": "8b1047afe4e62c80a34743491b729ec2f18a3e1fafa0c18a59fce048a3ad7eb3",
+  "file_sha256": "6f2421ab46b2ea83e2adffae81d8ca5c57971415fab071198fd3f469e4738f2d"
+ },
+ "native": {
+  "path": "native",
+  "status": "native (_resense_native.so)"
+ },
+ "run": {
+  "cache": "/data/cache",
+  "jobs": 1,
+  "nominal_stamps": false,
+  "wall_s": 988.1,
+  "machine": {
+   "cpus": 4,
+   "platform": "Linux-6.18.44-fc-v37-x86_64-with-glibc2.39",
+   "python": "3.11.15",
+   "numpy": "2.4.6"
+  }
+ },
+ "recordings": {
+  "doubleT_obstacle": {
+   "frames": 201,
+   "alarm_frames": 189,
+   "alarm_events": 2,
+   "stop_episodes": 2,
+   "first_alarm_frame": 11,
+   "advisory_frames": 94,
+   "alarm_dist": [
+    55.5,
+    56.6
+   ],
+   "health": {
+    "ok": 201,
+    "warn": 0,
+    "error": 0
+   },
+   "monitored_range_median": 151.0,
+   "labelled": {
+    "per_label": {
+     "object_on_rail": {
+      "hits": 128,
+      "frames": 185
+     },
+     "person_crossing": {
+      "hits": 58,
+      "frames": 61
+     },
+     "object_on_rail_from_frame_75": {
+      "hits": 125,
+      "frames": 126
+     }
+    },
+    "hits": 186,
+    "frames": 246,
+    "fp_frames": 0,
+    "fp_events": 0,
+    "distance_error_max_m": 0.23
+   }
+  },
+  "doubleT_platform": {
+   "frames": 345,
+   "alarm_frames": 4,
+   "alarm_events": 4,
+   "stop_episodes": 1,
+   "first_alarm_frame": 34,
+   "advisory_frames": 180,
+   "alarm_dist": [
+    34.5,
+    41.7
+   ],
+   "health": {
+    "ok": 322,
+    "warn": 23,
+    "error": 0
+   },
+   "monitored_range_median": 120.0,
+   "labelled": null
+  },
+  "roundT_doubleT": {
+   "frames": 252,
+   "alarm_frames": 0,
+   "alarm_events": 0,
+   "stop_episodes": 0,
+   "first_alarm_frame": null,
+   "advisory_frames": 173,
+   "alarm_dist": null,
+   "health": {
+    "ok": 252,
+    "warn": 0,
+    "error": 0
+   },
+   "monitored_range_median": 145.8,
+   "labelled": null
+  },
+  "roundT_pressureGate_roundT": {
+   "frames": 268,
+   "alarm_frames": 0,
+   "alarm_events": 0,
+   "stop_episodes": 0,
+   "first_alarm_frame": null,
+   "advisory_frames": 104,
+   "alarm_dist": null,
+   "health": {
+    "ok": 268,
+    "warn": 0,
+    "error": 0
+   },
+   "monitored_range_median": 130.3,
+   "labelled": null
+  },
+  "roundT_squareT_pressureGate_squareT": {
+   "frames": 545,
+   "alarm_frames": 0,
+   "alarm_events": 0,
+   "stop_episodes": 0,
+   "first_alarm_frame": null,
+   "advisory_frames": 146,
+   "alarm_dist": null,
+   "health": {
+    "ok": 545,
+    "warn": 0,
+    "error": 0
+   },
+   "monitored_range_median": 157.5,
+   "labelled": null
+  },
+  "squareT_platform_squareT_switch": {
+   "frames": 877,
+   "alarm_frames": 54,
+   "alarm_events": 9,
+   "stop_episodes": 15,
+   "first_alarm_frame": 312,
+   "advisory_frames": 394,
+   "alarm_dist": [
+    82.0,
+    147.5
+   ],
+   "health": {
+    "ok": 877,
+    "warn": 0,
+    "error": 0
+   },
+   "monitored_range_median": 143.0,
+   "labelled": null
+  }
+ },
+ "five_empty": {
+  "frames": 2287,
+  "alarm_frames": 58,
+  "alarm_events": 13,
+  "stop_episodes": 16,
+  "advisory_frames": 997
+ },
+ "ride": {
+  "available": true,
+  "chunks": 8,
+  "frames": 11271,
+  "alarm_frames": 187,
+  "alarm_events": 46,
+  "stop_episodes": 39,
+  "advisory_frames": 4742,
+  "alarm_dist": [
+   2.9,
+   158.3
+  ],
+  "health": {
+   "ok": 11098,
+   "warn": 173,
+   "error": 0
+  },
+  "monitored_range_median": 127.6
+ },
+ "set_O": {
+  "available": true,
+  "frames": 1510,
+  "alarm_frames": 342,
+  "inside_stop_frames": 303,
+  "inside_visible_frames": 801,
+  "inside_objects_with_stop": 5,
+  "inside_objects": 8,
+  "outside_false_stop_frames": 6,
+  "background": {
+   "alarm_frames": 3,
+   "track_ids": 2
+  },
+  "objects": {
+   "big_center": {
+    "in_gauge": true,
+    "visible_frames": 213,
+    "first_visible_m": 98.7,
+    "frames_in_envelope": 213,
+    "stop_frames": 207,
+    "advisory_frames": 0,
+    "first_stop_m": 98.0,
+    "first_stop_frame": 5,
+    "held_from_m": 98.7,
+    "verdict": "detected",
+    "bins": {
+     "0-50": {
+      "alarm": 42,
+      "advisory_only": 0,
+      "visible": 43
+     },
+     "50-100": {
+      "alarm": 165,
+      "advisory_only": 0,
+      "visible": 170
+     }
+    }
+   },
+   "small_center": {
+    "in_gauge": true,
+    "visible_frames": 79,
+    "first_visible_m": 128.9,
+    "frames_in_envelope": 63,
+    "stop_frames": 19,
+    "advisory_frames": 11,
+    "first_stop_m": 34.0,
+    "first_stop_frame": 350,
+    "held_from_m": 37.4,
+    "verdict": "detected",
+    "bins": {
+     "0-50": {
+      "alarm": 19,
+      "advisory_only": 9,
+      "visible": 28
+     },
+     "50-100": {
+      "alarm": 0,
+      "advisory_only": 2,
+      "visible": 31
+     },
+     "100-150": {
+      "alarm": 0,
+      "advisory_only": 0,
+      "visible": 20
+     }
+    }
+   },
+   "small_on_rail": {
+    "in_gauge": true,
+    "visible_frames": 49,
+    "first_visible_m": 237.3,
+    "frames_in_envelope": 33,
+    "stop_frames": 23,
+    "advisory_frames": 0,
+    "first_stop_m": 42.7,
+    "first_stop_frame": 403,
+    "held_from_m": 46.2,
+    "verdict": "detected",
+    "bins": {
+     "0-50": {
+      "alarm": 23,
+      "advisory_only": 0,
+      "visible": 27
+     },
+     "50-100": {
+      "alarm": 0,
+      "advisory_only": 0,
+      "visible": 19
+     },
+     "100-150": {
+      "alarm": 0,
+      "advisory_only": 0,
+      "visible": 1
+     },
+     "200-300": {
+      "alarm": 0,
+      "advisory_only": 0,
+      "visible": 2
+     }
+    }
+   },
+   "small_edge_inside": {
+    "in_gauge": true,
+    "visible_frames": 83,
+    "first_visible_m": 154.7,
+    "frames_in_envelope": 16,
+    "stop_frames": 0,
+    "advisory_frames": 25,
+    "first_stop_m": null,
+    "first_stop_frame": null,
+    "held_from_m": null,
+    "verdict": "advisory only",
+    "bins": {
+     "0-50": {
+      "alarm": 0,
+      "advisory_only": 25,
+      "visible": 26
+     },
+     "50-100": {
+      "alarm": 0,
+      "advisory_only": 0,
+      "visible": 27
+     },
+     "100-150": {
+      "alarm": 0,
+      "advisory_only": 0,
+      "visible": 27
+     },
+     "150-200": {
+      "alarm": 0,
+      "advisory_only": 0,
+      "visible": 3
+     }
+    }
+   },
+   "small_outside_near": {
+    "in_gauge": false,
+    "visible_frames": 112,
+    "first_visible_m": 238.4,
+    "frames_in_envelope": 101,
+    "stop_frames": 0,
+    "advisory_frames": 24,
+    "false_stop_frames": 0,
+    "false_stop_from_m": null,
+    "verdict": "advisory",
+    "bins": {
+     "0-50": {
+      "alarm": 0,
+      "advisory_only": 24,
+      "visible": 25
+     },
+     "50-100": {
+      "alarm": 0,
+      "advisory_only": 0,
+      "visible": 27
+     },
+     "100-150": {
+      "alarm": 0,
+      "advisory_only": 0,
+      "visible": 25
+     },
+     "150-200": {
+      "alarm": 0,
+      "advisory_only": 0,
+      "visible": 23
+     },
+     "200-300": {
+      "alarm": 0,
+      "advisory_only": 0,
+      "visible": 12
+     }
+    }
+   },
+   "big_edge_inside": {
+    "in_gauge": true,
+    "visible_frames": 125,
+    "first_visible_m": 248.6,
+    "frames_in_envelope": 8,
+    "stop_frames": 0,
+    "advisory_frames": 0,
+    "first_stop_m": null,
+    "first_stop_frame": null,
+    "held_from_m": null,
+    "verdict": "missed",
+    "bins": {
+     "0-50": {
+      "alarm": 0,
+      "advisory_only": 0,
+      "visible": 25
+     },
+     "50-100": {
+      "alarm": 0,
+      "advisory_only": 0,
+      "visible": 26
+     },
+     "100-150": {
+      "alarm": 0,
+      "advisory_only": 0,
+      "visible": 26
+     },
+     "150-200": {
+      "alarm": 0,
+      "advisory_only": 0,
+      "visible": 26
+     },
+     "200-300": {
+      "alarm": 0,
+      "advisory_only": 0,
+      "visible": 22
+     }
+    }
+   },
+   "big_outside": {
+    "in_gauge": false,
+    "visible_frames": 104,
+    "first_visible_m": 249.4,
+    "frames_in_envelope": 52,
+    "stop_frames": 6,
+    "advisory_frames": 44,
+    "false_stop_frames": 6,
+    "false_stop_from_m": 142.3,
+    "verdict": "false alarm",
+    "bins": {
+     "0-50": {
+      "alarm": 0,
+      "advisory_only": 0,
+      "visible": 24
+     },
+     "50-100": {
+      "alarm": 0,
+      "advisory_only": 19,
+      "visible": 25
+     },
+     "100-150": {
+      "alarm": 6,
+      "advisory_only": 16,
+      "visible": 25
+     },
+     "150-200": {
+      "alarm": 0,
+      "advisory_only": 3,
+      "visible": 4
+     },
+     "200-300": {
+      "alarm": 0,
+      "advisory_only": 6,
+      "visible": 26
+     }
+    }
+   },
+   "big_above": {
+    "in_gauge": true,
+    "visible_frames": 124,
+    "first_visible_m": 248.2,
+    "frames_in_envelope": 75,
+    "stop_frames": 12,
+    "advisory_frames": 37,
+    "first_stop_m": 101.3,
+    "first_stop_frame": 632,
+    "held_from_m": null,
+    "verdict": "detected",
+    "bins": {
+     "0-50": {
+      "alarm": 0,
+      "advisory_only": 17,
+      "visible": 25
+     },
+     "50-100": {
+      "alarm": 11,
+      "advisory_only": 14,
+      "visible": 25
+     },
+     "100-150": {
+      "alarm": 1,
+      "advisory_only": 0,
+      "visible": 25
+     },
+     "150-200": {
+      "alarm": 0,
+      "advisory_only": 0,
+      "visible": 24
+     },
+     "200-300": {
+      "alarm": 0,
+      "advisory_only": 6,
+      "visible": 25
+     }
+    }
+   },
+   "long_low_on_rails": {
+    "in_gauge": true,
+    "visible_frames": 86,
+    "first_visible_m": 248.5,
+    "frames_in_envelope": 77,
+    "stop_frames": 42,
+    "advisory_frames": 0,
+    "first_stop_m": 82.2,
+    "first_stop_frame": 696,
+    "held_from_m": 58.6,
+    "verdict": "detected",
+    "bins": {
+     "0-50": {
+      "alarm": 29,
+      "advisory_only": 0,
+      "visible": 29
+     },
+     "50-100": {
+      "alarm": 13,
+      "advisory_only": 0,
+      "visible": 30
+     },
+     "100-150": {
+      "alarm": 0,
+      "advisory_only": 0,
+      "visible": 15
+     },
+     "200-300": {
+      "alarm": 0,
+      "advisory_only": 0,
+      "visible": 12
+     }
+    }
+   },
+   "thin_hanging": {
+    "in_gauge": true,
+    "visible_frames": 42,
+    "first_visible_m": 199.7,
+    "frames_in_envelope": 20,
+    "stop_frames": 0,
+    "advisory_frames": 0,
+    "first_stop_m": null,
+    "first_stop_frame": null,
+    "held_from_m": null,
+    "verdict": "missed",
+    "bins": {
+     "0-50": {
+      "alarm": 0,
+      "advisory_only": 0,
+      "visible": 24
+     },
+     "50-100": {
+      "alarm": 0,
+      "advisory_only": 0,
+      "visible": 10
+     },
+     "100-150": {
+      "alarm": 0,
+      "advisory_only": 0,
+      "visible": 3
+     },
+     "150-200": {
+      "alarm": 0,
+      "advisory_only": 0,
+      "visible": 5
+     }
+    }
+   }
+  }
+ },
+ "set_F_straight": {
+  "available": true,
+  "parameters": {
+   "files": "46,68,98,140,168,172",
+   "kinds": "person,box1.0,box0.5,trolley,cable",
+   "start": "220",
+   "frames": "110",
+   "lateral": "-0.6:0.6",
+   "seed": "0",
+   "placement-mode": "legacy",
+   "place": "bed",
+   "speeds": "docs/extended_dataset_intake.json"
+  },
+  "kinds": {
+   "person": {
+    "sequences": 6,
+    "detected": 6,
+    "first_detection_median_m": 151.0,
+    "sustained_median_m": 142.6,
+    "false_detections": 7,
+    "recall_by_bin": {
+     "0-50": [
+      106,
+      110
+     ],
+     "50-100": [
+      125,
+      133
+     ],
+     "100-150": [
+      119,
+      151
+     ],
+     "150-200": [
+      13,
+      125
+     ],
+     "200-250": [
+      0,
+      40
+     ]
+    }
+   },
+   "box1.0": {
+    "sequences": 6,
+    "detected": 6,
+    "first_detection_median_m": 123.9,
+    "sustained_median_m": 114.1,
+    "false_detections": 13,
+    "recall_by_bin": {
+     "0-50": [
+      106,
+      110
+     ],
+     "50-100": [
+      125,
+      133
+     ],
+     "100-150": [
+      40,
+      151
+     ],
+     "150-200": [
+      0,
+      135
+     ],
+     "200-250": [
+      0,
+      36
+     ]
+    }
+   },
+   "box0.5": {
+    "sequences": 6,
+    "detected": 1,
+    "first_detection_median_m": 51.9,
+    "sustained_median_m": 55.6,
+    "false_detections": 0,
+    "recall_by_bin": {
+     "0-50": [
+      18,
+      110
+     ],
+     "50-100": [
+      2,
+      133
+     ],
+     "100-150": [
+      0,
+      145
+     ],
+     "150-200": [
+      0,
+      70
+     ],
+     "200-250": [
+      0,
+      15
+     ]
+    }
+   },
+   "trolley": {
+    "sequences": 6,
+    "detected": 6,
+    "first_detection_median_m": 151.4,
+    "sustained_median_m": 115.0,
+    "false_detections": 12,
+    "recall_by_bin": {
+     "0-50": [
+      106,
+      110
+     ],
+     "50-100": [
+      117,
+      133
+     ],
+     "100-150": [
+      59,
+      151
+     ],
+     "150-200": [
+      9,
+      132
+     ],
+     "200-250": [
+      0,
+      48
+     ]
+    }
+   },
+   "cable": {
+    "sequences": 6,
+    "detected": 6,
+    "first_detection_median_m": 98.9,
+    "sustained_median_m": 34.2,
+    "false_detections": 3,
+    "recall_by_bin": {
+     "0-50": [
+      43,
+      73
+     ],
+     "50-100": [
+      47,
+      72
+     ],
+     "100-150": [
+      12,
+      97
+     ],
+     "150-200": [
+      0,
+      65
+     ],
+     "200-250": [
+      0,
+      24
+     ]
+    }
+   }
+  }
+ },
+ "latency_ms": {
+  "note": "timing_ms.total per frame; informational, never gated: the workers run in parallel on a shared machine (clean timing: EXPERIMENTS §3)",
+  "doubleT_obstacle": {
+   "mean_ms": 23.7,
+   "p95_ms": 33.7,
+   "max_ms": 52.0
+  },
+  "doubleT_platform": {
+   "mean_ms": 26.8,
+   "p95_ms": 41.4,
+   "max_ms": 114.6
+  },
+  "roundT_doubleT": {
+   "mean_ms": 20.8,
+   "p95_ms": 30.2,
+   "max_ms": 33.2
+  },
+  "roundT_pressureGate_roundT": {
+   "mean_ms": 19.6,
+   "p95_ms": 28.7,
+   "max_ms": 41.2
+  },
+  "roundT_squareT_pressureGate_squareT": {
+   "mean_ms": 18.1,
+   "p95_ms": 25.9,
+   "max_ms": 36.7
+  },
+  "squareT_platform_squareT_switch": {
+   "mean_ms": 19.3,
+   "p95_ms": 26.0,
+   "max_ms": 50.5
+  },
+  "cloud_with_fake_obj": {
+   "mean_ms": 23.5,
+   "p95_ms": 40.2,
+   "max_ms": 84.6
+  },
+  "new_data": {
+   "mean_ms": 22.1,
+   "p95_ms": 34.3,
+   "max_ms": 129.6
+  }
+ },
+ "gate": {
+  "baseline": "docs/evidence/results/regression_baseline_2026-09-25_ride_column.json",
+  "baseline_commit": "d117c8c462ff9c2483478206991f037fc929bf46",
+  "baseline_config_sha256": "0fd4e64e494f4c39cdab1da9a4fef7328057327b3dc5ac4dc8e21ebd47337b03",
+  "allow": [],
+  "passed": true,
+  "worse_gated": [],
+  "missing_gated": [],
+  "worse_allowed": [],
+  "missing_allowed": [],
+  "better": [
+   "recordings.doubleT_obstacle.labelled.object_on_rail.hits",
+   "recordings.doubleT_obstacle.labelled.object_on_rail_from_frame_75.hits"
+  ],
+  "same": 99,
+  "info_changed": [
+   "recordings.doubleT_obstacle.stop_episodes",
+   "recordings.doubleT_obstacle.alarm_frames",
+   "recordings.doubleT_obstacle.advisory_frames",
+   "recordings.doubleT_obstacle.labelled.hits",
+   "latency_ms.doubleT_obstacle.mean",
+   "latency_ms.doubleT_obstacle.p95",
+   "latency_ms.doubleT_platform.mean",
+   "latency_ms.doubleT_platform.p95",
+   "latency_ms.roundT_doubleT.mean",
+   "latency_ms.roundT_doubleT.p95",
+   "latency_ms.roundT_pressureGate_roundT.mean",
+   "latency_ms.roundT_pressureGate_roundT.p95",
+   "latency_ms.roundT_squareT_pressureGate_squareT.mean",
+   "latency_ms.roundT_squareT_pressureGate_squareT.p95",
+   "latency_ms.squareT_platform_squareT_switch.mean",
+   "latency_ms.squareT_platform_squareT_switch.p95",
+   "latency_ms.cloud_with_fake_obj.mean",
+   "latency_ms.cloud_with_fake_obj.p95",
+   "latency_ms.new_data.mean",
+   "latency_ms.new_data.p95"
+  ]
+ }
+}
