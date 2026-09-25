@@ -1196,6 +1196,18 @@
   },
   "measurement": "the combined gate command of p3_round2_combined_2026-09-25.json with --set cluster.hanging_needs_rails=true on the same clean commit (--jobs 3, the six recordings, set O, the ride in 8 pieces, set F straight); its rows compared with the run without the guard (python scripts/regression_gate.py --from-json <with> --baseline <without>); informational: the hanging groups per recording with and without the guard where an instrumented run is affordable",
   "adopt_rule": "cluster.hanging_needs_rails becomes true only if BOTH hold: (a) set O thin_hanging keeps at least 15 STOP frames and a first STOP at 30.1 m or farther; (b) the combined gate with the guard has no gated row worse than the combined gate without it (the --from-json comparison exits 0; no --allow). Otherwise the flag stays false and the numbers of (a) and (b) are recorded here and in EXPERIMENTS 1i.",
-  "if_adopted": "the default is set in resense/config.py, configs/default.yaml and the ROS copy; the full combined gate re-runs on that clean commit and its result is the one the new baseline is cut from"
+  "if_adopted": "the default is set in resense/config.py, configs/default.yaml and the ROS copy; the full combined gate re-runs on that clean commit and its result is the one the new baseline is cut from",
+  "result": {
+   "measured_utc": "2026-09-25T22:30:48Z",
+   "code": "e29d932 (wf10/p3-round2: the four round-2 merges, decision A, the guard's flag default false), native path, clean",
+   "runs": {
+    "without": "python scripts/regression_gate.py --cache /data/cache --jobs 3 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_p3.json (config sha256 9e999000...; 341 s): PASS, 6 gated rows better",
+    "with": "the same with --set cluster.hanging_needs_rails=true (config sha256 591a26e1...; 334 s): PASS, the same 6 gated rows better"
+   },
+   "a_target": "set O thin_hanging with the guard: 15 STOP frames, first STOP 30.1 m (frame 789), held from 31.8 m; without it the same: HOLDS",
+   "b_gate": "python scripts/regression_gate.py --from-json <with> --baseline <without>: exit 0, 0 gated rows worse, 0 better, 107 the same, only latency rows changed: HOLDS",
+   "per_frame": "decisions (GO / CAUTION / STOP) identical in all 15 068 frames of the six recordings, set O and the ride; set O, the six recordings and ride pieces 0, 2, 3, 5, 6, 7 identical frame by frame; ride piece 1: the warnings list differs in 31 frames and piece 4 in 671 (track ids renumbered after the hanging tracks the guard removes; the same objects and distances), the warning flag in 4 frames (ride advisory frames 4 747 -> 4 743; 4 742 in _ride_p3) and clear_distance in 22 frames (hanging groups at a station no longer cap it)",
+   "decision": "ADOPTED: both conditions hold; cluster.hanging_needs_rails true in resense/config.py, configs/default.yaml and the ROS copy. The full combined gate re-runs on that clean commit (p3_round2_combined_2026-09-25.json)"
+  }
  }
 }

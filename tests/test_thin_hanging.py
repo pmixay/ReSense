@@ -145,18 +145,18 @@ def test_raycast_real_obstacle_near_a_hanging_object_still_stops(tunnel):
         assert person, (k, [(d.distance, d.kind) for d in on[k].detections])
 
 
-def test_rail_lock_guard_off_by_default_and_skips_frames_without_rails(tunnel, monkeypatch):
-    """``cluster.hanging_needs_rails`` (25.09, round 2): off by default (code and both parameter
-    files); on, the stage runs where the track model has the rail pair in the near range (the
-    synthetic tunnel: the same STOP frames as without the guard) and is skipped on a frame
+def test_rail_lock_guard_on_by_default_and_skips_frames_without_rails(tunnel, monkeypatch):
+    """``cluster.hanging_needs_rails`` (on since 25.09, round 2): on by default (code and both
+    parameter files); the stage runs where the track model has the rail pair in the near range
+    (the synthetic tunnel: the same STOP frames as without the guard) and is skipped on a frame
     without it (``track.rail_slabs == 0``: here forced after the track fit)."""
     from pathlib import Path
     root = Path(__file__).resolve().parents[1]
     for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(root / "configs/default.yaml")),
                 DetectorConfig.from_yaml(str(root / "ros2_ws/src/resense_ros/config/detector.yaml"))):
-        assert cfg.cluster.hanging_needs_rails is False
-    plain = [r.obstacle for r in _approach(tunnel, _on(), lambda d: [_cable(d)], DISTS)]
-    guarded = _approach(tunnel, _on(hanging_needs_rails=True), lambda d: [_cable(d)], DISTS)
+        assert cfg.cluster.hanging_needs_rails is True
+    plain = [r.obstacle for r in _approach(tunnel, _on(hanging_needs_rails=False), lambda d: [_cable(d)], DISTS)]
+    guarded = _approach(tunnel, _on(), lambda d: [_cable(d)], DISTS)
     assert all(r.track.rail_slabs > 0 for r in guarded)
     assert [r.obstacle for r in guarded] == plain and any(plain)
 
@@ -168,7 +168,7 @@ def test_rail_lock_guard_off_by_default_and_skips_frames_without_rails(tunnel, m
         return xyz
 
     monkeypatch.setattr(Detector, "_fit_track", no_rails)
-    lost = _approach(tunnel, _on(hanging_needs_rails=True), lambda d: [_cable(d)], DISTS)
+    lost = _approach(tunnel, _on(), lambda d: [_cable(d)], DISTS)
     assert not any(d.kind == "hanging" for r in lost for d in r.detections)
-    kept = _approach(tunnel, _on(), lambda d: [_cable(d)], DISTS)
+    kept = _approach(tunnel, _on(hanging_needs_rails=False), lambda d: [_cable(d)], DISTS)
     assert any(d.kind == "hanging" for r in kept for d in r.detections)
