@@ -9,6 +9,7 @@ from scipy.sparse import coo_matrix
 from scipy.sparse.csgraph import connected_components
 from scipy.spatial import cKDTree
 
+from resense import _native
 from resense.config import ClusterConfig, GaugeConfig
 from resense.gauge import gauge_reach_mask
 from resense.sensor import expected_points
@@ -338,6 +339,77 @@ def _advisory_reason(b: _Blob, dist: float, lateral: float, zone: str, dy, h, cf
         if below.sum() >= 3 and ady[below].min() > cfg.wall_face_min_inner and ady[below].max() > cfg.wall_face_edge:
             return "wall_face"             # wall / portal face pulled in by the axis: hugs the edge, centre clear
     return ""
+
+
+def find_hanging(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.ndarray,
+                 cfg: ClusterConfig, top: float, range_min: float, max_distance: float,
+                 in_gauge_idx: Optional[np.ndarray] = None) -> List[Cluster]:
+    """Thin objects hanging from above into the envelope near the axis
+    (``cluster.hanging_enabled``, on since 25.09; SCORECARD #11).
+
+    The organizers' 5 cm object hanging from the roof dips only 0.2-0.4 m below the envelope top
+    (``top``), with 1-3 returns there a frame, so it never reaches the corridor clustering's
+    5-voxel minimum; the part that shows it is an object and not noise is above the envelope,
+    where the corridor stops. Here the points of the whole frame near the axis
+    (``|dy| < hanging_max_lateral``), above ``hanging_min_height`` and up to ``hanging_link_band``
+    above the top are linked at the corridor's range-scaled radius (every point a core point:
+    two returns a metre apart at 25 m are one object). A group is a hanging object when it has at
+    least ``hanging_min_voxels`` voxels inside the strict envelope (at or below the top and, when
+    ``in_gauge_idx`` is given, among those frame indices: the corridor's strict-gauge points, edge
+    margin included), at least one voxel above the top, and is at most ``hanging_max_size`` along
+    and across the track (a cable or a rod, not a duct, a tray or a ceiling). Only frame points up
+    to ``max_distance`` are used: the returns
+    above the sensor are 0.5 deg apart, so beyond ~60 m a 0.3 m dip is one ring or none.
+    The clusters are gauge obstacles of ``kind = 'hanging'``; the caller drops those that
+    overlap a cluster of the other stages (they decide) and the tracker confirms them like any
+    other (``tracking.confirm_hits``, ``confirm_time_s``: 5 frames at 10 Hz).
+    """
+    out: List[Cluster] = []
+    X = xyz[:, 0]
+    lo, hi, lat = float(cfg.hanging_min_height), float(top + cfg.hanging_link_band), float(cfg.hanging_max_lateral)
+    x0, x1 = float(range_min), float(max_distance)
+    sel = _native.select(X.size, (h, ">", lo, "<=", hi), (dy, None, None, "<", lat, True), (X, ">=", x0, "<=", x1))
+    if sel is None:
+        sel = np.flatnonzero((h > lo) & (h <= hi) & (np.abs(dy) < lat) & (X >= x0) & (X <= x1))
+    need = max(1, int(cfg.hanging_min_voxels))
+    if sel.size < 2:
+        return out
+    ins = h[sel] <= top
+    if int(ins.sum()) < need:
+        return out
+    if in_gauge_idx is not None:
+        ins &= np.isin(sel, in_gauge_idx)
+        if int(ins.sum()) < need:
+            return out
+    pts = xyz[sel]
+    vox, inv = voxelize(pts, cfg)
+    vlabels = dbscan_labels(_scaled(vox, cfg.range_scale), cfg.eps, 1)
+    labels = vlabels[inv]
+    above = h[sel] > top
+    for lab in np.unique(vlabels):
+        m = labels == lab
+        n_in = int(np.unique(inv[m & ins]).size)
+        if n_in < cfg.hanging_min_voxels or not (m & above).any():
+            continue
+        b = _Blob.of(pts, np.flatnonzero(m), int((vlabels == lab).sum()))
+        size = b.size
+        if size[0] > cfg.hanging_max_size or size[1] > cfg.hanging_max_size:
+            continue
+        k = sel[m]
+        rng = float(np.linalg.norm(b.pts.mean(axis=0)))
+        # the returns above the sensor are 0.5 deg apart (sensor.py): the prior with that elevation
+        el = float(np.degrees(np.arctan2(float(b.pts[:, 2].mean()), max(rng, 1e-3))))
+        n_exp = float(expected_points(rng, max(float(size[1]), 0.05), max(float(size[2]), 0.15), elevation_deg=el))
+        score = float(np.clip(b.n_vox / max(n_exp, 1.0) / cfg.visibility_ratio, 0.0, 1.0)) if n_exp > 1.0 else 1.0
+        out.append(Cluster(
+            points_idx=k, n=b.n_vox, n_raw=int(k.size), centroid=b.pts.mean(axis=0),
+            bbox_min=b.bmin, bbox_max=b.bmax, distance=float(b.pts[:, 0].min()), lateral=float(dy[k].mean()),
+            height_min=float(h[k].min()), height_max=float(h[k].max()),
+            intensity=float(intensity[k].mean()) if intensity is not None else 0.0,
+            n_expected=n_exp, score=score, zone="gauge", n_gauge=n_in, kind="hanging",
+        ))
+    out.sort(key=lambda c: c.distance)
+    return out
 
 
 def _is_retro(b: _Blob, intensity, cfg: ClusterConfig) -> bool:

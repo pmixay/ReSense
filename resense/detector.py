@@ -9,7 +9,7 @@ import numpy as np
 
 from resense.accumulate import CandidateBuffer
 from resense.calibration import MountCalibrator
-from resense.clustering import Cluster, find_clusters
+from resense.clustering import Cluster, find_clusters, find_hanging
 from resense.config import DetectorConfig
 from resense.egomotion import EgoSpeedEstimate, EgoSpeedEstimator
 from resense.frame import Frame
@@ -194,7 +194,7 @@ class Detector:
 
         The stages are the methods below, in this order (docs/ALGORITHM.md has the reasoning):
         ``_fit_track`` (1, 1b), ``_corridor`` (2), ``_low_stage`` (2b), ``_speed`` (3),
-        ``_accumulate`` (4), ``_cluster`` (5), ``_confirm`` (6).
+        ``_accumulate`` (4), ``_cluster`` (5), ``_hanging`` (5b, 25.09), ``_confirm`` (6).
         """
         cfg = self.cfg
         t0 = time.perf_counter()
@@ -213,6 +213,8 @@ class Detector:
         clusters = self._cluster(merged, n_acc, valid, floor_valid, straddle, near)
         if cfg.cluster.far_axis_both_sides == 2:
             valid = self._far_both_sides(clusters, valid, floor_valid)
+        if cfg.cluster.hanging_enabled:
+            clusters = self._hanging(xyz, frame.intensity, dy_all, h_all, cand, clusters, min(valid, floor_valid))
         t5 = time.perf_counter()
         gauge, warn = self._confirm(clusters, speed, dt)
         t6 = time.perf_counter()
@@ -421,6 +423,20 @@ class Detector:
             if c.kind == "" and c.zone == "gauge" and not c.reason and c.distance > limit:
                 c.zone, c.reason = "warning", "beyond_axis"
         return limit
+
+    def _hanging(self, xyz, intensity, dy_all, h_all, cand: Candidates, clusters: List[Cluster],
+                 valid: float) -> List[Cluster]:
+        """5b (``cluster.hanging_enabled``, on since 25.09): thin objects hanging from above into
+        the envelope near the axis (``clustering.find_hanging``), from the current frame's points
+        within ``hanging_max_distance`` and where the corridor's axis and height reference are
+        trusted. Strict-envelope membership is the corridor's (edge margin included). A hanging
+        cluster that overlaps a cluster of the other stages is dropped: those stages decide."""
+        cfg = self.cfg
+        top = float(np.asarray(cfg.gauge.profile, dtype=np.float64)[:, 1].max())
+        hang = find_hanging(xyz, intensity, dy_all, h_all, cfg.cluster, top, cfg.gauge.range_min,
+                            min(cfg.cluster.hanging_max_distance, valid), cand.idx[cand.in_gauge & (cand.idx >= 0)])
+        keep = [c for c in hang if not any(_overlap(c, k) for k in clusters)]
+        return sorted(clusters + keep, key=lambda c: c.distance) if keep else clusters
 
     def _not_part_of_corridor_objects(self, lows: List[Cluster], straddling: List[Cluster],
                                       clusters: List[Cluster], corr: Candidates) -> List[Cluster]:

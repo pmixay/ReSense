@@ -1209,6 +1209,7 @@ released 0). Tests 431 → 436, each new one failing on `8556773`. The baseline
 `regression_baseline_2026-09-25_ride_p3.json` is re-cut on `154db25` (same name; that run equals
 the `b718a37` one on every value but latency and in every frame). Raw:
 [`p3_review_fixes_2026-09-25.json`](evidence/results/p3_review_fixes_2026-09-25.json).
+
 ### 1i. P3 items of 25.09, round 2
 
 **The free-hanging exemption of `floating` (set O cube #2, 25.09)** [organizers' synthetic and
@@ -1240,6 +1241,30 @@ C were not run. **Shipped** (0.5 / 0.95 / 2.5 m; the new defaults resolve to the
 that gate run). Not won: #4 stays advisory, its outermost point 1.18–1.32 m off the axis like the
 outside cube #5's (Q1); #8 waits on Q2. Tests: `tests/test_floating_free.py` (ray-cast: the cube at
 30–55 m is a STOP, a person beside it a STOP, a plate fixed to the wall stays `floating`).
+
+**Thin hanging objects (SCORECARD #11, `cluster.hanging_enabled`; shipped, on)** [measured
+25.09]. The organizers' 5 cm object hanging from the roof of set O read `GO` in all 42 visible
+frames. Beyond ~50 m none of its returns is inside the envelope measured from the rails. At
+30–61 m 1 of 1–7 returns a frame is inside, at 17–28 m 1–3 voxels: the rings above +2° are 0.5°
+apart. The corridor cluster (5–8 voxels) forms only at 8–15 m, too late to confirm. The new stage
+(`clustering.find_hanging`, ALGORITHM §3.3 item 8) links those returns to the part above the
+envelope top (\|dy\| < 0.8 m, 1.8 m to 0.6 m above the top, ≤ 0.5 m along and across, ≤ 60 m).
+It drops a group that another stage already has, and confirms over 5 frames. *Pre-registered*
+at 20:53 UTC ([`p3_thin_hanging_2026-09-25.json`](evidence/results/p3_thin_hanging_2026-09-25.json),
+with the points per frame by range): A (≥ 1 voxel inside), B (≥ 2), C (B nearer the axis,
+thinner, ≤ 40 m); ship the first with gate exit 0 and a STOP on the target. **A passed first**
+(`--jobs 1`, the ride and set F straight included,
+[gate JSON](evidence/results/regression_gate_2026-09-25_thin_hanging.json)): `thin_hanging` 0 →
+**15 STOP frames, first STOP 30.1 m**; set O 303 → 318 inside STOP frames (6 of 8 objects).
+Every other gated row is the same: five bags 58 / 13 / 16, ride 187 / 46 / 39, `doubleT_obstacle`,
+the other set O objects, set F straight. B and C were not run. **Imitators** (every group kept,
+logged): in set O only the target, none in the six recordings, 29 single-frame groups on the ride.
+28 of those are tops of station columns 13–40 m ahead at \|dy\| 0.4–0.8 m, in frames without a
+rail pair. All joined tracks already advisory, so nothing was added. A fresh track there could
+confirm; a rail-lock condition (not measured) would remove 28 of the 29. Cost 0.5 ms a frame.
+The new defaults (`c0b4f2f`) reproduce A frame by frame on the seven recordings. Tests
+(`tests/test_thin_hanging.py`): shapes, and ray-cast at 16.5 m/s, where the object STOPs from
+30.1 m and a person 3 m beyond it STOPs on the same frame as without the rule.
 
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 
@@ -2273,9 +2298,11 @@ v0.6).
 - ~~**the `floating` signature on the organizers' hanging cube** (P3; §2e)~~ done 25.09, round 2
   (§1i): `cluster.floating_free_max_size` 0.5 m, #2 a STOP from 52.5 m (34.0 m), every recording
   and the ride identical; #4 (edge, Q1) and #8 (`elevated`, Q2) wait on the organizers;
-- **thin hanging objects** (P3, P4; §2e): the organizers' 5 cm object dips only 0.2–0.36 m into the
-  envelope with 1–4 points a frame and never becomes a candidate; a rule for thin clusters near
-  the axis linked to points above the envelope, measured on set O, the empty bags and the ride;
+- ~~**thin hanging objects** (P3, P4; §2e): a rule for thin clusters near the axis linked to
+  points above the envelope, measured on set O, the empty bags and the ride~~ shipped 25.09
+  (§1i, `cluster.hanging_enabled`): the organizers' 5 cm object STOPs from 30.1 m, no gate row
+  worse. Left open: 28 of the 29 groups it takes on the ride are station column tops in frames
+  without a rail pair; a rail-lock condition is not measured;
 - ~~**the rail shadow of a large near object** (P3; §2e): a 2 × 2 m box 10–20 m ahead hides the
   rails, the rail-height fit drifts by ~0.5 m and a wrong 3.0 m distance is reported~~ shipped
   25.09 (§1h): set O #1 wrong-distance STOP frames 12 → 0, gate PASS with the ride; a shadow that

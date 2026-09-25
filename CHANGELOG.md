@@ -25,6 +25,19 @@ transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
 `cluster.far_axis_both_sides`, +3 far bed bins, +5 the rail-shadow review fixes) in `tests/`, 13
 in `web/demo`.
 
+- **Thin hanging objects (25.09 evening, P3, SCORECARD #11):** new stage
+  `clustering.find_hanging`, on (`cluster.hanging_enabled`, `hanging_*`). It covers a thin object
+  hanging from above that dips into the envelope near the axis with only 1–3 returns: those
+  returns are linked to the object's part above the envelope top and reported as an obstacle.
+  Pre-registered candidates A / B / C (20:53 UTC); A, the first, passed the regression gate
+  (`--jobs 1`, the ride included). The organizers' 5 cm object in set O goes from `GO` in all
+  42 visible frames to a STOP in 15 frames from 30.1 m (set O inside STOP frames 303 → 318, 6 of 8
+  objects). Five bags 58 / 13 / 16, ride 187 / 46 / 39, `doubleT_obstacle`, the other set O
+  objects and set F straight are the same. On the ride it takes 29 single-frame groups, 28 of
+  them station column tops without a rail pair; none confirmed. Cost 0.5 ms a frame. Tests
+  416 → 420 (`tests/test_thin_hanging.py`). EXPERIMENTS §1i,
+  [`p3_thin_hanging_2026-09-25.json`](docs/evidence/results/p3_thin_hanging_2026-09-25.json).
+
 - **Free-hanging exemption of `floating` (25.09, round 2, P3):** `cluster.floating_free_max_size`
   0.5 m (with `floating_free_max_dy` 0.95 m, `floating_free_max_top` 2.5 m): the `floating`
   signature no longer demotes a compact cluster hanging free inside the envelope. The organizers'
