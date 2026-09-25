@@ -320,8 +320,15 @@ def _advisory_reason(b: _Blob, dist: float, lateral: float, zone: str, dy, h, cf
     # cable tray, duct or pipe fallen onto the axis and hanging lower in the envelope is an obstacle
     along = (cfg.floating_long_min_length > 0 and size[0] > cfg.floating_long_min_length
              and h_min > cfg.floating_long_min_bottom)
+    # opt-in (25.09, round 2; 0 = off): a compact cluster hanging free inside the envelope - every
+    # extent at most floating_free_max_size, its outermost point at most floating_free_max_dy off the
+    # axis and its top at most floating_free_max_top - reaches neither the wall side of the corridor
+    # nor up to the vault, so it is not a sign, lamp or bracket fixed to them: the floating shape
+    # does not demote it (the organizers' 0.3 m cube hanging 1.0-1.4 m up, 0.6-0.8 m off the axis)
+    free = (cfg.floating_free_max_size > 0 and float(size.max()) <= cfg.floating_free_max_size
+            and float(ady.max()) <= cfg.floating_free_max_dy and h_max <= cfg.floating_free_max_top)
     if cfg.floating_min_height > 0 and h_min > cfg.floating_min_height and size[2] < cfg.floating_max_height \
-            and size[1] < cfg.floating_max_width and (off_centre or along):
+            and size[1] < cfg.floating_max_width and (off_centre or along) and not free:
         return "" if short else "floating"   # sign, lamp, bracket: small and not touching the ground
     if cfg.edge_min_lateral > 0 and abs(lateral) > cfg.edge_min_lateral \
             and size[0] > cfg.edge_min_aspect * max(float(size[1]), 0.05) and size[2] < cfg.edge_max_height:

@@ -25,6 +25,13 @@ transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
 `cluster.far_axis_both_sides`, +3 far bed bins, +5 the rail-shadow review fixes) in `tests/`, 13
 in `web/demo`.
 
+- **Free-hanging exemption of `floating` (25.09, round 2, P3):** `cluster.floating_free_max_size`
+  0.5 m (with `floating_free_max_dy` 0.95 m, `floating_free_max_top` 2.5 m): the `floating`
+  signature no longer demotes a compact cluster hanging free inside the envelope. The organizers'
+  0.3 m cube hanging 1.0–1.4 m up (set O #2) is a STOP from 52.5 m instead of 34.0 m (19 → 30 STOP
+  frames); the six recordings and the ride are identical frame by frame, gate PASS. Pre-registered
+  (A / B / C, A shipped): `docs/evidence/results/p3_signatures_2026-09-25.json`, EXPERIMENTS §1i.
+  Tests +4 (`tests/test_floating_free.py`).
 - **Review fixes of the rail-shadow rules (P3, 25.09):** a safety review found three faults.
   `cluster.gauge_distance` measured on the strict-gauge mask, the envelope shrunk by the axis
   margin (0.15 m per 100 m), so an object entering obliquely was reported beyond its entry (+0.4 /

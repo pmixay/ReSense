@@ -63,14 +63,15 @@ def test_short_signature_rule_is_off_by_default():
     for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
                 DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
         assert cfg.cluster.short_signature_max_length == 0.0
-    cfg = ClusterConfig()
+    cfg = replace(ClusterConfig(), floating_free_max_size=0.0)   # the free-hanging exemption (on since 25.09, round 2) spares the cube
     # the organizers' 0.3 m cube floating mid-envelope off the centre, their 2 x 2 m box at the top
     assert _reason(cfg, 50.0, 0.3, 0.75, 1.0, 0.3, 0.3) == "floating"
     assert _reason(cfg, 40.0, 2.0, 0.0, 2.3, 0.7, 2.2) == "elevated"
 
 
 def test_short_signature_rule_when_on():
-    cfg = replace(ClusterConfig(), short_signature_max_length=3.0, short_signature_max_distance=100.0)
+    cfg = replace(ClusterConfig(), short_signature_max_length=3.0, short_signature_max_distance=100.0,
+                  floating_free_max_size=0.0)
     assert _reason(cfg, 50.0, 0.3, 0.75, 1.0, 0.3, 0.3) == ""               # short, near: an obstacle
     assert _reason(cfg, 40.0, 2.0, 0.0, 2.3, 0.7, 2.2) == ""
     assert _reason(cfg, 104.0, 0.3, 0.75, 1.0, 0.3, 0.3) == "floating"      # beyond 100 m: demoted as before
@@ -119,7 +120,8 @@ def test_long_floating_rule_needs_an_overhead_bottom():
     assert _reason(on, 104.0, 3.9, 0.0, 2.2, 0.65, 0.3) == "floating"
     # off the centre the floating shape needs neither the length nor the bottom height
     assert _reason(on, 50.0, 4.0, 0.75, 1.0, 0.5, 0.3) == "floating"
-    assert _reason(on, 50.0, 0.3, 0.75, 1.0, 0.3, 0.3) == "floating"
+    assert _reason(replace(on, floating_free_max_size=0.0), 50.0, 0.3, 0.75, 1.0, 0.3, 0.3) == "floating"
+    assert _reason(on, 50.0, 0.3, 0.75, 1.0, 0.3, 0.3) == ""         # hanging free: tests/test_floating_free.py
 
 
 AXIS_Y = 0.25                   # synthetic_tunnel_frame: the track axis

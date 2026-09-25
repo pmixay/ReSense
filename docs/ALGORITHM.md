@@ -258,7 +258,7 @@ Everything is **range-adaptive**, because a 0.5 m object gives ~500 returns at 2
    persistent object that stops matching a signature (a person stepping away from a column)
    flips back to `gauge` through the tracker's zone history (§3.5).
 
-   Two refinements of 25.09, decided on the ride ([`EXPERIMENTS.md`](EXPERIMENTS.md) §1f):
+   Refinements of 25.09, decided on the ride ([`EXPERIMENTS.md`](EXPERIMENTS.md) §1f, §1i):
 
    - `short_signature_max_length` / `short_signature_max_distance`: the `elevated` and `floating`
      shapes do not demote a cluster at most that long along the track and that far away (later
@@ -284,6 +284,13 @@ Everything is **range-adaptive**, because a 0.5 m object gives ~500 returns at 2
      1.6 m, 2.0 and 1.8 m bring back the ride event at 105–110 m (bottom 1.68–1.92 m), and 1.6 m
      leaves every recording, the ride, set O and set F straight identical frame by frame. A long
      object near the axis whose bottom is above 1.6 m is still advisory (§6).
+   - `floating_free_max_size` with `floating_free_max_dy` / `floating_free_max_top` (25.09,
+     round 2): the `floating` shape does not demote a compact cluster hanging free inside the
+     envelope: every extent ≤ 0.5 m, its outermost point ≤ 0.95 m off the axis and its top
+     ≤ 2.5 m. The signs, lamps and brackets `floating` is for are fixed to the wall or the vault,
+     so their clusters reach the wall side of the corridor or its top (or are longer). On since
+     25.09: the organizers' 0.3 m cube hanging 1.0–1.4 m up gets a STOP from 52.5 m instead of
+     34.0 m; the six recordings and the ride are identical frame by frame (EXPERIMENTS §1i).
 
    [`EXPERIMENTS.md`](EXPERIMENTS.md) §1f has the numbers;
 6. **retro-reflector rule** (v0.4, [`SENSOR.md`](SENSOR.md) §3.3: intensity is reflectivity in
@@ -667,6 +674,7 @@ the CLI and the ROS node; the one exception is `tracking.hold_misses`, a code de
 | `cluster.short_signature_max_length`, `short_signature_max_distance` (25.09) | 0 (off), 100 m | tried, not shipped: `elevated` / `floating` spare a cluster at most this long along the track and this far (§3.3); at 3.0 m set O 303 → 352 inside STOP frames, but ride STOP episodes 39 → 45 with the long rule (EXPERIMENTS §1f) |
 | `cluster.floating_long_min_length` (25.09) | 3.0 m (on since 25.09) | `floating` also demotes a cluster near the axis longer than this along the track (§3.3): five bags 20 → 14 events, ride 47 → 46, set O and set F straight unchanged, gate PASS (EXPERIMENTS §1f) |
 | `cluster.floating_long_min_bottom` (25.09, review) | 1.6 m | ... only when the cluster's lowest point is above this (overhead infrastructure; a tray or duct fallen onto the axis lower down is a STOP): 2.0 / 1.8 m bring back a ride event (ride 46 → 47), 1.6 m changes nothing on the recordings, the ride, set O and set F straight (§3.3, EXPERIMENTS §1f); 0 = no bottom condition |
+| `cluster.floating_free_max_size`, `floating_free_max_dy`, `floating_free_max_top` (25.09, round 2) | 0.5 m (on), 0.95 m, 2.5 m | `floating` spares a compact cluster hanging free inside the envelope (§3.3): the organizers' floating cube a STOP from 52.5 m instead of 34.0 m, every recording and the ride identical, gate PASS (EXPERIMENTS §1i) |
 | `calibration.enabled`, `frames` × `obs_spacing`, `provisional_min_deg`, `min_yaw_deg`, `drift_warn_deg` / `drift_window` (v0.6.1) | true, 20 × 10 frames, 2.5°, 3°, 1.5° / 10 checks | mount auto-calibration (final tilt over 20 s, provisional only for a clearly tilted rig); `sensor.roll_deg/pitch_deg/yaw_deg` freeze a known mount |
 | `lowobj.straddle_enabled`, `straddle_min_top`, `straddle_min_width`, `straddle_max_length`, `straddle_band` (v0.6.2) | true, 0.10 m, 0.35 m, 0.8 m, 0.30 m | an object across a rail, straddling the envelope floor, clustered whole (§3.3b) |
 | `lowobj.near_enabled`, `near_range`, `near_half_width`, `near_min_excess`, `near_min_width`, `near_max_width`, `near_min_length`, `near_min_height`, `near_min_bed_lateral_bins`, `near_min_points`, `near_max_length` | false, 30 m, 0.55 m, 0.05 m, 0.24 / 0.55 m, 0.0 m, 0.0 m, 20, 5, 0.75 m | opt-in central near-bed path (§3.3b), off: its first gates added 620 events on the ride; the width and bed-support gates halve its alarm frames, 107 events on the five recordings against 20 (§3.3b, §6) |
@@ -750,9 +758,12 @@ envelope [organizers' synthetic: set O, 24.09]. Per-object grade and the config 
 causes, each a limitation of the current rules:
 
 * **Two infrastructure signatures demote in-envelope test objects** (§3.3 item 5b). `floating`
-  makes the 0.3 m cube hanging 1.0–1.4 m above the rail head (#2) advisory at 47–52 m, because
-  its lateral offset of 0.70–0.78 m exceeds `signature_min_lateral` = 0.6 m, and the 0.3 m cube
-  at the envelope edge (#4) advisory in every frame. `elevated` demotes the 2 × 2 m box at the
+  made the 0.3 m cube hanging 1.0–1.4 m above the rail head (#2) advisory at 44–59 m (its
+  lateral offset of 0.61–0.82 m exceeds `signature_min_lateral` = 0.6 m); since 25.09 (round 2,
+  `floating_free_max_size`) it spares a compact cluster hanging free inside the envelope and #2
+  is a STOP from 52.5 m (EXPERIMENTS §1i). It still makes the 0.3 m cube at the envelope edge
+  (#4) advisory in every frame: its outermost point is 1.18–1.32 m off the axis measured from
+  the rails, like the outside cube #5's (Q1 below). `elevated` demotes the 2 × 2 m box at the
   envelope top (#8) in 36 frames: a 2 m wide cluster with its bottom above 1.2 m, although that
   bottom is 2.2–2.9 m above the rail head, inside the envelope. Relaxing either rule wins those
   frames back but alarms on a 3.9–5.7 m long overhead structure ~104 m ahead of the train
@@ -766,10 +777,11 @@ causes, each a limitation of the current rules:
   below the cluster minimum of 5 voxels; with `cluster.min_points` 3 it alarms in 3 frames at
   10 m. The exemption of thin hanging cables from the `column` signature (§3.3) cannot help a
   cluster that never forms.
-* **0.3 m cubes are confirmed only from 34–43 m** (#2 from 34.0 m, #3 on the rail from
-  42.7 m). At 60–115 m such a cube returns 2–4 points a frame, below the 5-voxel minimum within
-  100 m, so a single frame cannot confirm a 0.3 m object much beyond 50 m with this sensor;
-  lowering `min_points`, `min_points_far` or `gauge_min_points` changed nothing for them.
+* **0.3 m cubes are confirmed only from 43–53 m** (#3 on the rail from 42.7 m; #2 from 52.5 m
+  since 25.09, round 2, 34.0 m before). At 60–115 m such a cube returns 2–4 points a frame,
+  below the 5-voxel minimum within 100 m, so a single frame cannot confirm a 0.3 m object much
+  beyond 50 m with this sensor; lowering `min_points`, `min_points_far` or `gauge_min_points`
+  changed nothing for them.
 * ~~**A large near object shadows the rails.**~~ Fixed 25.09 (§3.1, §3.3; EXPERIMENTS §1h):
   while the 2 × 2 m box (#1) was 26 → 9 m ahead, the roof behind it tilted the bed fit (rail head
   at 20 m 0.8–3.5 m off), the bed 3–10 m ahead read as the obstacle (3.0 m reported in frames

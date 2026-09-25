@@ -1209,6 +1209,37 @@ released 0). Tests 431 → 436, each new one failing on `8556773`. The baseline
 `regression_baseline_2026-09-25_ride_p3.json` is re-cut on `154db25` (same name; that run equals
 the `b718a37` one on every value but latency and in every frame). Raw:
 [`p3_review_fixes_2026-09-25.json`](evidence/results/p3_review_fixes_2026-09-25.json).
+### 1i. P3 items of 25.09, round 2
+
+**The free-hanging exemption of `floating` (set O cube #2, 25.09)** [organizers' synthetic and
+real, measured 25.09]. `floating` demoted the organizers' 0.3 m cube hanging 1.0–1.4 m above the
+rail head (#2) at 44–59 m: measured from the rails it is 0.61–0.82 m off the axis, beyond
+`signature_min_lateral` 0.6 m. The shipped rule, instrumented in one run on the six recordings,
+set O and the ride (decisions identical to the baseline), shows what the cube is not: the ride's
+43 `floating` cluster-frames (56.7–152.4 m) are 0.35–5.7 m in their largest extent (median 1.7 m),
+24 of them reach up to the vault (top above 2.5 m) and 12 the wall side of the corridor (outermost
+point beyond 0.95 m); the platform recording's 154 are mostly the ~104 m overhead structure. The cube is compact
+(extents 0.04–0.33 m, 5–7 voxels), hangs free mid-envelope (top 1.37–1.40 m, outermost point
+0.73–0.98 m, the wall 2.0–2.2 m off the axis, every other return ≥ 1.07 m away) and is a cluster
+in 9 of the 10 frames from 59 m. Of the ride's two compact `floating` clusters, one hangs from the
+vault (56.7 m, top 3.0 m, 0.13 m from the next return, a confirmed track), the other reaches
+1.26 m off the axis. Rule (`cluster.floating_free_max_size`, with `floating_free_max_dy`,
+`floating_free_max_top`): `floating` does not demote a cluster whose every extent is ≤ 0.5 m, whose
+outermost point is ≤ 0.95 m off the axis and whose top is ≤ 2.5 m. Pre-registered at 20:52 UTC,
+after the instrumented run and before any candidate run
+([`p3_signatures_2026-09-25.json`](evidence/results/p3_signatures_2026-09-25.json)): A 0.5 /
+0.95 / 2.5 m, B 0.4 / 0.95 / 2.5, C 0.5 / 0.90 / 2.2 in that order; ship the first with gate exit
+0, #2 improved and the safety conditions (`doubleT_obstacle`, set O inside objects and set F
+straight identical or better, no new false event on the five bags or the ride). A, on `edec4da`
+with `--jobs 1`: **gate PASS**, 2 gated rows better, none worse. #2: 19 → **30 STOP frames**, first
+STOP **34.0 → 52.5 m**, held from 37.4 → 57.5 m (inside STOP frames 303 → 314, still 5 of 8
+objects). The six recordings and all 11 271 ride frames are identical frame by frame (decisions,
+detections, warnings); set O differs in 11 frames, all #2; `doubleT_obstacle` 58 / 127 / 124 hits,
+first frame 11; set F straight identical; #5 0 and #7 6 false STOP frames, background 3 / 2. B and
+C were not run. **Shipped** (0.5 / 0.95 / 2.5 m; the new defaults resolve to the configuration of
+that gate run). Not won: #4 stays advisory, its outermost point 1.18–1.32 m off the axis like the
+outside cube #5's (Q1); #8 waits on Q2. Tests: `tests/test_floating_free.py` (ray-cast: the cube at
+30–55 m is a STOP, a person beside it a STOP, a plate fixed to the wall stays `floating`).
 
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 
@@ -2239,6 +2270,9 @@ v0.6).
   with `scripts/regression_gate.py --set …`, then the go / no-go~~ decided 25.09 on the ride
   (§1f): the long overhead rule on (ride 47 → 46 events), short signatures off (ride STOP
   episodes +6 for +49 set O STOP frames);
+- ~~**the `floating` signature on the organizers' hanging cube** (P3; §2e)~~ done 25.09, round 2
+  (§1i): `cluster.floating_free_max_size` 0.5 m, #2 a STOP from 52.5 m (34.0 m), every recording
+  and the ride identical; #4 (edge, Q1) and #8 (`elevated`, Q2) wait on the organizers;
 - **thin hanging objects** (P3, P4; §2e): the organizers' 5 cm object dips only 0.2–0.36 m into the
   envelope with 1–4 points a frame and never becomes a candidate; a rule for thin clusters near
   the axis linked to points above the envelope, measured on set O, the empty bags and the ride;
