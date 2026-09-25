@@ -1,0 +1,30 @@
+{
+  "schema": "resense-p3-signatures-v1",
+  "date": "2026-09-25",
+  "owner": "P3 (detector rules delegated by the captain; no stand hardware needed)",
+  "question": "The floating signature (cluster.floating_*: lowest point > 0.7 m, < 1.2 m tall, < 1.0 m wide, |lateral| > signature_min_lateral 0.6 m) demotes the organizers' 0.3 m cube hanging 1.0-1.4 m above the rail head (set O #2, small_center) to advisory at 44-59 m because its lateral offset measured from the rails is 0.61-0.82 m; it gets a STOP only from 34.0 m (19 STOP frames). #4 (small_edge_inside) is advisory in every frame; it also depends on the organizers' open edge-reference question Q1 and is a bonus, not a target. #8 (elevated) waits on Q2 and is not a target. Criteria 8.1 / 8.4.",
+  "preregistered": {
+    "written_at_utc": "2026-09-25T20:52:00Z",
+    "note": "written before any candidate run on a recording, set O, the ride or set F; applied as written. Before it: the shipped rule instrumented (no parameter changed) on the six recordings, set O and the ride (every cluster with its lowest point above 0.5 m: extents, points, height, lateral edges, track, and the whole-frame context: returns just above / beside it and the nearest return not in it); the candidates were designed from those features (offline: which shipped floating demotions each would exempt), and ray-cast unit tests on the synthetic tunnel were written. Base code 1c96233 (claude/nifty-pascal-lzgl78), branch wf9/signatures.",
+    "rule": "cluster.floating_free_max_size > 0 (0 = off, byte-identical output): the floating shape does not demote a cluster when every extent (along, across, height) is <= floating_free_max_size AND its outermost point is <= floating_free_max_dy off the axis (not reaching the wall side of the corridor; the envelope edge is 1.05 m, the corridor 1.40 m) AND its top is <= floating_free_max_top above the rail head (not reaching up to the vault; the envelope top is 3.0 m). Everything else about floating (and every other signature) is unchanged; the later rules (edge, wall_face, retro) are still tried.",
+    "candidates_in_order": [
+      {"id": "A", "set": {"cluster.floating_free_max_size": 0.5, "cluster.floating_free_max_dy": 0.95, "cluster.floating_free_max_top": 2.5},
+       "why": "a 0.3 m cube seen from any side (its measured extents 0.04-0.33 m on set O; face diagonal 0.42 m), 0.10 m inside the envelope edge, 0.5 m under the envelope top"},
+      {"id": "B", "set": {"cluster.floating_free_max_size": 0.4, "cluster.floating_free_max_dy": 0.95, "cluster.floating_free_max_top": 2.5},
+       "why": "fallback, narrower in size"},
+      {"id": "C", "set": {"cluster.floating_free_max_size": 0.5, "cluster.floating_free_max_dy": 0.9, "cluster.floating_free_max_top": 2.2},
+       "why": "fallback, narrower in position (0.15 m inside the edge, 0.8 m under the top); predicted to win less of #2"}
+    ],
+    "procedure": "Candidates in order; the first that meets the ship rule is shipped and the later ones are not run on the full gate. Cheap subset first for each (set O and doubleT_platform with the candidate), then the full gate: python scripts/regression_gate.py --cache /data/cache --jobs 1 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json --set cluster.floating_free_max_size=<s> --set cluster.floating_free_max_dy=<dy> --set cluster.floating_free_max_top=<top> (native path, receive stamps, the ride in 8 pieces, set F straight round 3), on the commit that adds the parameters with 0 = off.",
+    "ship_rule": "gate exit 0 AND the target improves: set O small_center (#2) STOP frames rise above 19 and its first STOP is not at a shorter distance than 34.0 m; AND every safety condition holds.",
+    "safety_conditions": [
+      "doubleT_obstacle: labelled hits per label (person_crossing 58, object_on_rail 127, object_on_rail_from_frame_75 124) identical or better, first alarm frame 11 identical or earlier",
+      "set O: every inside object's STOP frames and first STOP distance identical or better",
+      "set F straight: per kind, sequences detected, median first-confirmation distance and false detections identical or better",
+      "no new false event in the five obstacle-free recordings or the ride: every alarm event of the candidate run overlaps (same recording / ride piece, overlapping frames) an alarm event of the defaults run; alarm events and STOP episodes not above the baseline (13 / 16 on the five, 46 / 39 on the ride)",
+      "no false STOP frames on set O outside objects #5 (small_outside_near) and #7 (big_outside) beyond the baseline (0 and 6), background alarm frames / track ids not above 3 / 2"
+    ],
+    "priority": "a safety fix wins over a false-alarm gain; 'tried, not shipped' with the numbers is a valid outcome. #4 is reported, not required.",
+    "if_shipped": "default on in resense/config.py, configs/default.yaml (+ sync_params.sh), a ray-cast test that the cube now STOPs and one that a nearby real obstacle still STOPs"
+  }
+}
