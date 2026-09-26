@@ -4,25 +4,21 @@
 > range, latency, FPS, hard cases and how the quality changed (spec §5 "Эксперименты").
 > **Audience:** jury, team · **Owner:** P3, P4 (content), P1 (structure, timing) · **Language:** EN,
 > summary RU
-> **Last verified:** 2026-09-25 against `154db25` (detector v0.6.3 with the long overhead rule,
+> **Last verified:** 2026-09-26 against the integrated P3c baseline (`ed03bc2`),
+> detector v0.6.3 with the long overhead rule,
 > `tracking.column_hold` and the rail-shadow rules on since 25.09, node v0.6.4, package 1.0.0;
 > re-measured by the regression gate with the ride) ·
 > **Status:** current
 
-**Кратко.** Здесь все измерения ReSense с датой и видом данных. На всех 13 759 реальных кадрах
-организаторов пять бэгов без препятствий дают 13 ложных событий (20 до правила длинных навесных
-конструкций и удержания колонн, 25.09), 20-минутная поездка — 46 (3,5 на км); человек на пути найден в 58 из 61 кадра
-с 11-го, предмет на рельсе — в 124 из 126 кадров после ухода человека, ошибка расстояния ≤ 0,23 м.
-На синтетических объектах самих организаторов (набор O) STOP получают 5 из 8 объектов в габарите:
-ящик 2 × 2 м с 98 м (с 25.09 и вблизи — на своём расстоянии, а не 3,0 м), кубы 0,3 м только с
-34–43 м. Человек на 148–154 м — только на нашей синтетике
-(151 м по текущему скрипту оценки, 25.09). Время кадра 42–64 мс (p95 53–78 мс) на одном ядре
-машины разработки без монитора состояния; ядра на C++ (24.09) сокращают его на 38–57 %, DBSCAN на
-cKDTree (25.09) — ещё на 1–3 мс, выход тот же; стенд i7-9700E до сдачи команде недоступен
-(организаторы, 25.09), замер — на 8-ядерной машине команды. Все числа по реальным записям, набору O,
-поездке и набору F на прямой перепроверяются одной командой (`scripts/regression_gate.py`, эталон
-25.09 с поездкой). Собственная оценка скорости поезда по лидару точна (ошибка 0,06–0,08 м/с), но
-даже точная скорость не улучшает проверку организаторов (§9), поэтому по умолчанию она выключена.
+**Кратко.** Здесь все измерения ReSense с датой и видом данных. По интегрированной версии P3c
+пять пустых записей дают 13 ложных событий, поездка 20 минут — 45 (3,5 на км); человек на пути
+найден в 58 из 61 кадра с 11-го, предмет на рельсе — в 125 из 126 кадров после ухода человека,
+ошибка расстояния ≤ 0,23 м. На синтетических объектах организаторов (набор O) STOP получают все
+8 объектов в габарите, но два краевых объекта получают лишь 2 и 6 STOP-кадров, а верхний ящик —
+22 из 124; за 100 м есть только один STOP-кадр. Человек на 148–154 м подтверждён только на нашей
+синтетике. Независимая оценка 65/100 предшествует интеграции P3c и не переоценена. Собственная
+оценка скорости поезда по лидару точна (ошибка 0,06–0,08 м/с), но даже точная скорость не
+улучшает проверку организаторов (§9), поэтому по умолчанию она выключена.
 
 ## Current results (detector v0.6.3 with the long overhead rule, `tracking.column_hold`, the rail-shadow rules and the P3 round-2 items on since 25.09, the P3 items of 26.09 since 26.09, node v0.6.4)
 
@@ -38,8 +34,9 @@ row and set F straight track in one run, and gates every detector change against
 (the shipped defaults of `ed03bc2`: the P3 items of 26.09 merged with the fixes of their safety
 review, `lowobj.rail_start_within`, `tracking.near_escalate_*` and `cluster.wall_keep_*` on,
 `gauge.axis_union` off: six recordings, set O, the ride and set F straight; 26.09, §1n). It is the
-single check of these results: a change that moves them commits a new baseline, one that does
-not leaves this table as it is. The five before it,
+single check of these results: set O now also gates per-object sustained STOP distance, longest
+missed interval, and visible / STOP counts in every distance bin. A change that moves them commits
+a new baseline, one that does not leaves this table as it is. The five before it,
 [`regression_baseline_2026-09-25_ride_p3b.json`](evidence/results/regression_baseline_2026-09-25_ride_p3b.json)
 (`30d0cac`, the P3 round-2 items, re-cut on `0c8f8e1` after their safety review, §1i),
 [`regression_baseline_2026-09-25_ride_p3.json`](evidence/results/regression_baseline_2026-09-25_ride_p3.json)
