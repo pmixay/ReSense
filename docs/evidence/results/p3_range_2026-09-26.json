@@ -528,8 +528,27 @@
     }
   },
   "decision_round_1": {
-    "written_at_utc": "2026-09-26T10:20:00Z",
+    "written_at_utc": "2026-09-26T10:11:49Z",
     "verdict": "NOT SHIPPED",
     "why": "B passes every gated row and the set O minimum gain (big_above held from 23.9 -> 111.4 m, +87.5 m) but fails the pre-registered ride condition: ride alarm frames 183 -> 192 (+9, two existing false STOPs extended; events and episodes unchanged). A range rule must not add false STOP frames on the ride. A does not meet the minimum gain (big_above 22 -> 39 STOP frames, held-from unchanged); C fails the cheap stage (doubleT_platform STOP episodes 1 -> 2). Every flag stays off; the default output is identical to 208152d."
+  },
+  "preregistered_round_2": {
+    "written_at_utc": "2026-09-26T10:12:18Z",
+    "before_any_result": "Written after round 1's full gate and its ride frames (decision_round_1, runs.full_gate_B): round 2 is designed knowing the two ride tracks B extended, so it is in-sample on them. No round-2 code exists and nothing of round 2 has been run.",
+    "rule": {
+      "tracking.stop_keep_min_voxels": "int, 0 = no bar (round 1's rules). > 0: a cluster counts for a STOP track through stop_keep_signature or stop_keep_thin only when it has at least this many voxels inside the strict envelope (Cluster.n_gauge). The value is not tuned here: it is the evidence bar the shipped near escalation already uses (tracking.near_escalate_voxels 10: a cluster with >= 10 strict voxels is an obstacle within 35 m whatever demoted it). What it removes, from round 1's data: the kept `floating` cluster of the ride's 113-115 m false STOP had 6 voxels in all, the bed scan line at 99.9 m 7; set O's box at the envelope top keeps 16-66 strict voxels in its elevated and single-ring frames at 33-87 m."
+    },
+    "candidate": {
+      "id": "B10",
+      "set": {
+        "tracking.stop_keep_signature": true,
+        "tracking.stop_keep_thin": 1,
+        "tracking.stop_keep_min_voxels": 10
+      }
+    },
+    "not_candidates": "C stays failed (its doubleT_platform STOP is a new confirmation, not an extension); no other value of the bar is tried",
+    "stages": "flags-off identity (output_fingerprint against 208152d, --jobs 1), the cheap stage (six recordings + set O against _ride_p3c), then the full gate against _ride_p3c, all --jobs 1, only if the verdict can be committed by 13:30 UTC",
+    "ship_rule": "unchanged from round 1 (preregistered.ship_rule): gate exit 0; ride alarm frames, events and STOP episodes each not up; five recordings, doubleT_obstacle and set F straight not worse; set O safety rows; set O minimum gain (one inside object's held-from or first STOP >= 10 m farther, or two >= 1 m)",
+    "caveat_for_the_record": "if B10 passes, the ride shows only that it does not extend the two false STOPs round 1 found; it is not out-of-sample evidence"
   }
 }
