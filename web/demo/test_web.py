@@ -245,6 +245,10 @@ def test_dashboard_freshness_and_live_stream_stall():
         assert page.evaluate("state.last.freshness.reason") == "status_clock_skew"
         page.evaluate("f => onStatus({data: JSON.stringify(f)})", base)
         assert page.evaluate("state.last.freshness.reason") == "status_clock_unknown"
+        page.evaluate("f => { f.freshness.evaluated_at_utc_s = Date.now()/1000 - 2; onStatus({data: JSON.stringify(f)}); }", stop)
+        assert "СТОП СОХРАНЁН" in check_dashboard.banner_text(page)
+        assert page.evaluate("state.last.stop_source_stamp") == 1.0
+        page.evaluate(deliver, base)
         # The explicit contract takes precedence over a contradictory GO field.
         invalid = dict(base, freshness={"valid": False, "reason": "source_stale"})
         page.evaluate("f => onStatus({data: JSON.stringify(f)})", invalid)

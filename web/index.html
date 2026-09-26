@@ -579,6 +579,7 @@ function onStatus(msg) {
       invalid = 'status_clock_unknown';
     else {
       const transport = Date.now() / 1000 - f.evaluated_at_utc_s;
+      if (transport >= 0) f.transport_age_s = transport;
       if (transport < -f.future_tolerance_s || f.source_age_s < -f.future_tolerance_s || f.residence_age_s < 0)
         invalid = 'status_clock_skew';
       else if (Math.max(f.source_age_s, f.residence_age_s) + Math.max(0, transport) > f.max_result_age_s)
@@ -588,10 +589,16 @@ function onStatus(msg) {
   }
   if (invalid) {
     res.freshness = { ...(f || {}), valid: false, go_allowed: false, reason: invalid };
+    if (invalid !== 'status_transport_stale') res.freshness.source_age_s = null;
     res.clear_distance = 0;
     res.health = { ...(res.health || {}), level: 'error', decision_level: 'error', clear_distance: 0,
       messages: ['Возраст результата неизвестен, срок истёк или часы не синхронизированы'] };
     res.decision = res.obstacle || res.decision === 'STOP' ? 'STOP' : 'FAULT';
+    if (res.decision === 'STOP') {
+      res.stop_held = true;
+      res.stop_source_stamp = res.stop_source_stamp ?? res.stamp;
+      res.stop_source_frame_id = res.stop_source_frame_id ?? res.frame_id;
+    }
   }
   if (res.obstacle || res.decision === 'STOP') {
     state.stopLatch = { nearest_distance: res.nearest_distance, detections: structuredClone(res.detections || []),
