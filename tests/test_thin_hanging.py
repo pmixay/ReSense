@@ -172,3 +172,66 @@ def test_rail_lock_guard_on_by_default_and_skips_frames_without_rails(tunnel, mo
     assert not any(d.kind == "hanging" for r in lost for d in r.detections)
     kept = _approach(tunnel, _on(hanging_needs_rails=False), lambda d: [_cable(d)], DISTS)
     assert any(d.kind == "hanging" for r in kept for d in r.detections)
+
+
+# --- safety review of 26.09: the overlap rule (cluster.hanging_yield_gauge_only) -------------------
+
+def _blob(x: float, lateral: float, h0: float, h1: float, zone: str, reason: str = "", kind: str = ""):
+    from resense.clustering import Cluster
+    lo, hi = np.array([x, lateral - 0.03, h0]), np.array([x + 0.05, lateral + 0.03, h1])
+    return Cluster(points_idx=np.arange(4), n=4, n_raw=6, centroid=0.5 * (lo + hi), bbox_min=lo, bbox_max=hi,
+                   distance=x, lateral=lateral, height_min=h0, height_max=h1, intensity=20.0, n_expected=4.0,
+                   score=1.0, zone=zone, n_gauge=2, reason=reason, kind=kind)
+
+
+def test_hanging_cluster_yields_only_to_an_obstacle(monkeypatch):
+    """Unit (``Detector._hanging``): the hanging cluster of an object is dropped when the other
+    stages already have it as an obstacle (zone gauge, no reason: one detection, not two), and
+    kept when they have it only as an advisory cluster (demoted as floating, or outside the strict
+    gauge) - on 17a850d any overlapping cluster removed it. Without the rule
+    (``hanging_yield_gauge_only`` false) any overlap drops it, as before; a cluster elsewhere never
+    does."""
+    import resense.detector as detmod
+    from resense.detector import Candidates
+    hang = _blob(25.0, 0.7, 1.9, 3.4, "gauge", kind="hanging")
+    monkeypatch.setattr(detmod, "find_hanging", lambda *a, **k: [hang])
+    cand = Candidates(xyz=np.zeros((0, 3), np.float32), dy=np.zeros(0), h=np.zeros(0), in_gauge=np.zeros(0, bool),
+                      intensity=np.zeros(0, np.float32), idx=np.zeros(0, np.int64), low=np.zeros(0, bool))
+    z = np.zeros(0)
+
+    def kept(cfg: DetectorConfig, other) -> bool:
+        out = Detector(cfg)._hanging(np.zeros((0, 3), np.float32), np.zeros(0, np.float32), z, z, cand,
+                                     [other], 60.0)
+        return any(c is hang for c in out)
+
+    obstacle = _blob(25.0, 0.7, 1.9, 2.5, "gauge")
+    floating = _blob(25.0, 0.7, 1.9, 2.5, "warning", reason="floating")
+    outside = _blob(25.0, 0.7, 1.9, 2.5, "warning")
+    elsewhere = _blob(40.0, -0.5, 0.2, 1.8, "gauge")
+    assert _on().cluster.hanging_yield_gauge_only is True
+    assert not kept(_on(), obstacle)
+    assert kept(_on(), floating) and kept(_on(), outside) and kept(_on(), elsewhere)
+    old = _on(hanging_yield_gauge_only=False)
+    assert not kept(old, obstacle) and not kept(old, floating) and not kept(old, outside)
+    assert kept(old, elsewhere)
+
+
+def test_raycast_cable_off_the_axis_demoted_as_floating_stops(tunnel):
+    """The reviewer's case: a cable hanging from the roof to 1.85-2.2 m above the rail head,
+    0.65-0.75 m off the axis. The corridor stage demotes its lower part as ``floating``; the
+    hanging stage found it but dropped its own cluster for that advisory one, so the detector never
+    stopped. With the rule it STOPs from 31-34 m (12-15 of the 19 frames, reported as a hanging
+    object); without it, none."""
+    for lateral, bottom in ((0.65, 2.2), (0.65, 1.85), (0.75, 1.85)):
+        length = 3.6 - bottom + 1.0                                 # up into the vault
+
+        def spec(d, lateral=lateral, bottom=bottom, length=length):
+            return [_cable(d, bottom=bottom, length=length, lateral=lateral)]
+
+        on = _approach(tunnel, _on(), spec, DISTS)
+        stops = [k for k, r in enumerate(on) if r.obstacle]
+        assert len(stops) >= 10 and DISTS[stops[0]] > 30.0, (lateral, bottom, stops)
+        assert any(d.kind == "hanging" for r in on for d in r.detections)
+        assert any(w.reason == "floating" for r in on for w in r.warnings)
+        off = _approach(tunnel, _on(hanging_yield_gauge_only=False), spec, DISTS)
+        assert not any(r.obstacle for r in off), (lateral, bottom)

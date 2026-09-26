@@ -17,7 +17,7 @@ from resense.frame import Frame
 from resense.gauge import corridor_coordinates, corridor_mask, gauge_core_mask, point_in_polygon, widened_profile
 from resense.health import HealthMonitor
 from resense.lowobj import BedTemplate, low_candidates
-from resense.track import TrackModel, estimate_track
+from resense.track import TrackModel, estimate_track, rotate_track_model
 from resense.tracking import Tracker
 
 
@@ -157,7 +157,7 @@ class Detector:
         self.bed = BedTemplate(self.cfg.lowobj)
         self.low_range = 0.0            # m, how far the bed was observed for the low-object stage (last frame)
         self._prev_stamp: Optional[float] = None
-        self._gaps: deque = deque(maxlen=9)   # the last sane stamp intervals (s): the input rate
+        self._gaps: deque = deque(maxlen=14)  # the last stamp intervals within [0, stamp_dt_range[1]] (s): the input rate
 
     @property
     def mount_rotation(self) -> np.ndarray:
@@ -185,7 +185,8 @@ class Detector:
             lo, hi = self.cfg.accumulation.stamp_dt_range
             if lo <= gap <= hi:
                 dt = gap
-                self._gaps.append(gap)
+            if 0.0 <= gap <= hi:
+                self._gaps.append(gap)          # the input rate: in-burst intervals included (_periods)
         self._prev_stamp = float(stamp)
         return dt
 
@@ -244,15 +245,22 @@ class Detector:
 
     def _periods(self) -> int:
         """Nominal frame periods (``tracking.frame_dt``) per processed frame at the current input
-        rate: the median of the last 9 sane stamp intervals, rounded, at least 1 (1 on the first
-        frame). 1 at 10 Hz, 2 at 5 Hz; a single interval is not used, because recorded receive
-        stamps come in bursts (0.2-0.45 s, then 0.02 s: the ride). The track model
-        (``rates_per_period``, ``walls_smoothing_per_period``) and the mount calibration
-        (``time_cadence``) count these instead of frames when enabled."""
+        rate: the mean of the last 14 stamp intervals between 0 and the upper end of
+        ``accumulation.stamp_dt_range`` (= (t_last - t_first) / (n - 1) over the last 15 stamps of
+        a run without a pause or a step back), rounded, clamped to 1-5 (1 on the first frame). 1 at
+        10 Hz, 2 at 5 Hz. Recorded receive stamps come in bursts (0.2-0.45 s, then 0.02 s: the
+        ride): a single interval is not used, and since 26.09 (safety review) the short in-burst
+        intervals are counted too - the median of the last 9 without the ones under 0.02 s made
+        alternating 0.19 / 0.01 s stamps 2 periods and 0.29 / 0.005 / 0.005 s 3. (Over 10 stamps
+        one ride frame, after a run of late receive stamps with a mean of 0.151 s, became 2
+        periods; over 15 every 10 Hz frame of the seven recordings and the ride is 1, as before.)
+        The track model (``rates_per_period``,
+        ``walls_smoothing_per_period``) and the mount calibration (``time_cadence``) count these
+        instead of frames when enabled."""
         nominal = self.cfg.tracking.frame_dt
         if not self._gaps or nominal <= 0:
             return 1
-        return max(1, int(round(float(np.median(self._gaps)) / nominal)))
+        return min(5, max(1, int(round(float(np.mean(self._gaps)) / nominal))))
 
     # -- 1, 1b ---------------------------------------------------------------------------------
     def _fit_track(self, xyz_cfg: np.ndarray, periods: int = 1) -> np.ndarray:
@@ -261,11 +269,24 @@ class Detector:
         cfg = self.cfg
         xyz = self.calib.apply(xyz_cfg)
         self.track = estimate_track(xyz, cfg.track, prev=self.track, periods=periods)
+        R_old = self.calib.R.copy()
         if self.calib.update(xyz_cfg, xyz, self.track, periods=periods):
             xyz = self.calib.apply(xyz_cfg)
-            self.track = estimate_track(xyz, cfg.track, prev=None)      # re-seed in the corrected frame
-            self.buffer.clear()                                         # merged clouds are in the old frame
-            if self.calib.last_change_deg > 1.0:                        # a new orientation or a large tilt:
+            dR = self.calib.R @ R_old.T                                 # p_new = dR @ p_old
+            change, orient = self.calib.last_change_deg, self.calib.last_change_orientation
+            keep = cfg.calibration.reseed_keep_max_deg
+            if keep > 0 and not orient and change <= keep:
+                # 26.09 (safety review): a sub-degree change keeps the model, rotated into the
+                # corrected frame (bed, rail head, axis, age, the floor-shadow reference); the
+                # accumulation buffer is in track coordinates, which the rotation leaves as they are
+                self.track = rotate_track_model(self.track, dR)
+            else:
+                self.track = estimate_track(xyz, cfg.track, prev=None)  # re-seed in the corrected frame
+                self.buffer.clear()                                     # merged clouds are in the old frame
+            if cfg.tracking.reseed_hold > 0 and not orient:
+                # 26.09: the tracks follow the rotation; a reported one is held through the re-seed
+                self.tracker.reseed(dR, cfg.tracking.reseed_hold, keep_unreported=change <= 1.0)
+            elif orient or change > 1.0:                                # a new orientation or a large tilt:
                 self.tracker.reset()                                    # the tracks' positions are meaningless
         return xyz
 
@@ -449,12 +470,20 @@ class Detector:
         trusted. Strict-envelope membership is the corridor's (edge margin included). A hanging
         cluster that overlaps a cluster of the other stages is dropped: those stages decide.
         With ``cluster.hanging_needs_rails`` the stage is skipped on a frame without the rail
-        pair in the near range (``track.rail_slabs == 0``: stations, switch caverns)."""
+        pair in the near range (``track.rail_slabs == 0``: stations, switch caverns). With
+        ``cluster.hanging_yield_gauge_only`` (26.09) only an overlapping obstacle (zone ``gauge``,
+        no demotion reason) takes the object over; an advisory cluster there does not."""
         cfg = self.cfg
         top = float(np.asarray(cfg.gauge.profile, dtype=np.float64)[:, 1].max())
         hang = find_hanging(xyz, intensity, dy_all, h_all, cfg.cluster, top, cfg.gauge.range_min,
                             min(cfg.cluster.hanging_max_distance, valid), cand.idx[cand.in_gauge & (cand.idx >= 0)])
-        keep = [c for c in hang if not any(_overlap(c, k) for k in clusters)]
+        if cfg.cluster.hanging_yield_gauge_only:
+            # 26.09 (safety review): only an obstacle of the other stages takes the object over; an
+            # advisory cluster there (a cable demoted as floating) must not remove the hanging one
+            others = [k for k in clusters if k.zone == "gauge" and not k.reason]
+        else:
+            others = clusters
+        keep = [c for c in hang if not any(_overlap(c, k) for k in others)]
         return sorted(clusters + keep, key=lambda c: c.distance) if keep else clusters
 
     def _not_part_of_corridor_objects(self, lows: List[Cluster], straddling: List[Cluster],
@@ -520,7 +549,11 @@ def clear_cap_distance(clusters: List[Cluster], tracks, cand: Candidates, dy_all
     nearest strict-envelope corridor return. The cluster of a confirmed in-envelope obstacle is
     skipped: its distance is the obstacle's (``Detection.distance``), whatever rule sets it; with
     ``clear_cap_skip_columns`` so is a column (``reason == 'column'`` or a track held advisory by
-    ``tracking.column_hold``): the column row of a double-track tunnel is known infrastructure."""
+    ``tracking.column_hold``): the column row of a double-track tunnel is known infrastructure.
+    With ``clear_cap_lost`` (26.09) also the predicted distance of a track that was reported when
+    it was last matched and missed this frame (its last cluster touching the envelope, columns
+    skipped as above), until the tracker drops it: a STOP lost for a few frames does not turn
+    into a verified-clear distance beyond the object."""
     owner = {id(t.last): t for t in tracks if t.last is not None and t.misses == 0}
     poly = widened_profile(gauge_cfg, hcfg.clear_cap_margin) if hcfg.clear_cap_margin >= 0 else None
     best: Optional[float] = None
@@ -541,6 +574,19 @@ def clear_cap_distance(clusters: List[Cluster], tracks, cand: Candidates, dy_all
             touch = bool(point_in_polygon(dy_all[pi], h_all[pi], poly).any())
         if touch:
             best = float(c.distance)
+    if getattr(hcfg, "clear_cap_lost", False):
+        # 26.09 (safety review): a track that was reported when last matched and missed this frame
+        # (not reported any more, or held) caps at its predicted distance while the tracker keeps it
+        for t in tracks:
+            if t.misses == 0 or not t.seen_reported or t.last is None:
+                continue
+            if t.last.n_gauge < hcfg.clear_cap_min_gauge:
+                continue
+            if hcfg.clear_cap_skip_columns and (t.last.reason == "column" or (
+                    t.column_hold > 0 and sum(t.column_hist) >= t.column_hold)):
+                continue
+            d = float(t.last.distance + (t.centroid[0] - t.last.centroid[0]))
+            best = d if best is None else min(best, d)
     k = int(hcfg.clear_cap_points)
     if k > 0:
         X = cand.xyz[cand.in_gauge & ~cand.low, 0]

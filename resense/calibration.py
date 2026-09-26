@@ -203,6 +203,9 @@ class MountCalibrator:
         self._applied = (0.0, 0.0, 0.0)  # rad: the tilt part of the current correction (roll, pitch, yaw)
         self._checks: List[tuple] = []   # drift monitor: residual (roll, pitch) of the last checks
         self.last_change_deg = 0.0       # how far the last correction change rotated the cloud
+        self.last_change_orientation = False   # the last change adopted a new axis orientation
+        self._refine_run = 0             # spaced observations in a row with the refinement condition
+        self._ref_raw: Optional[List[float]] = None   # rad: raw medians (roll, pitch, yaw) behind the applied provisional / refined tilt
         self._frames = 0
         self._frozen = not cfg.enabled
         self._since_check = 0
@@ -229,6 +232,7 @@ class MountCalibrator:
         R = rot_z(yaw) @ rot_y(pitch) @ rot_x(roll) @ self._R_orient
         d = R @ self.state.R.T
         self.last_change_deg = float(np.degrees(np.arccos(np.clip((np.trace(d) - 1.0) / 2.0, -1.0, 1.0))))
+        self.last_change_orientation = False
         self.state.R = R
         self._applied = (roll, pitch, yaw)
         self.state.roll_deg, self.state.pitch_deg, self.state.yaw_deg = (float(np.degrees(v)) for v in (roll, pitch, yaw))
@@ -306,6 +310,7 @@ class MountCalibrator:
                     self.state.orientation = axis_label(self._R_orient)
                     self.state.message = f"sensor orientation found from the data: {self.state.orientation}"
                     self.last_change_deg = 90.0
+                    self.last_change_orientation = True
                     self._obs.clear()
                     self._recent.clear()
                     self._since_obs = 0
@@ -343,7 +348,17 @@ class MountCalibrator:
         """``refine_min_deg`` (25.09): while a provisional tilt is applied, the spaced
         observations so far replace it once they are as many as the provisional ones and say
         something at least ``refine_min_deg`` different in roll or pitch (the first consecutive
-        frames can see one canted stretch of rail). True when the correction changed."""
+        frames can see one canted stretch of rail). True when the correction changed.
+
+        With ``refine_raw_trigger`` (26.09, safety review) the trigger is on the RAW medians with
+        hysteresis: an axis whose raw median has moved at least ``refine_min_deg`` from the raw
+        median behind its applied value (the provisional's, or the last refinement's) takes the
+        value the final would set (zeroed below ``apply_min_deg``); the other axes keep theirs.
+        Comparing the zeroed target with the applied tilt made every crossing of
+        ``apply_min_deg`` a jump of at least 0.75 deg, so a median hovering there flipped the
+        correction (and re-seeded the track model) again and again (4 times on roundT_doubleT,
+        +3 deg pitch). The condition must hold on ``refine_confirm_obs`` spaced observations in a
+        row (a bimodal median, an obstacle fooling the rail observation, alternated otherwise)."""
         cfg = self.cfg
         if (cfg.refine_min_deg <= 0 or self.state.status != "provisional"
                 or len(self._obs) < max(cfg.provisional_frames, 1) or len(self._obs) >= cfg.frames):
@@ -352,9 +367,24 @@ class MountCalibrator:
         max_t = np.radians(cfg.max_tilt_deg)
         if abs(roll) > max_t or abs(pitch) > max_t:
             return False
-        a_r, a_p, _ = self._applied
-        if np.degrees(max(abs(roll - a_r), abs(pitch - a_p))) < cfg.refine_min_deg:
+        applied = self._applied
+        raw_trigger = bool(getattr(cfg, "refine_raw_trigger", False))
+        if raw_trigger:
+            raw = self._medians(self._obs)[:3]
+            ref = self._ref_raw if self._ref_raw is not None else list(applied)
+            step = np.radians(cfg.refine_min_deg)
+            moved = [abs(r - f) >= step for r, f in zip(raw, ref)]
+            roll, pitch, yaw = (t if m else a for t, m, a in zip((roll, pitch, yaw), moved, applied))
+            due = max(abs(roll - applied[0]), abs(pitch - applied[1]), abs(yaw - applied[2])) > 1e-9
+        else:
+            due = not np.degrees(max(abs(roll - applied[0]), abs(pitch - applied[1]))) < cfg.refine_min_deg
+        self._refine_run = self._refine_run + 1 if due else 0
+        if not due or self._refine_run < max(1, int(getattr(cfg, "refine_confirm_obs", 1))):
             return False
+        self._refine_run = 0
+        if raw_trigger:
+            new = (roll, pitch, yaw)
+            self._ref_raw = [r if abs(n - a) > 1e-9 else f for r, f, n, a in zip(raw, ref, new, applied)]
         changed = self._set_tilt(roll, pitch, yaw)
         self.state.message = (f"provisional tilt refined from {len(self._obs)} spaced observations: roll "
                               f"{self.state.roll_deg:+.2f}, pitch {self.state.pitch_deg:+.2f} deg "
@@ -370,6 +400,7 @@ class MountCalibrator:
         if not self._provisional_done and len(self._recent) >= cfg.provisional_frames:
             self._provisional_done = True
             roll, pitch, yaw, _, _ = self._medians(self._recent)
+            self._ref_raw = [roll, pitch, yaw]
             if (np.degrees(max(abs(roll), abs(pitch))) >= cfg.provisional_min_deg
                     and abs(roll) <= max_t and abs(pitch) <= max_t):
                 yaw = yaw if abs(yaw) >= np.radians(cfg.min_yaw_deg) else 0.0

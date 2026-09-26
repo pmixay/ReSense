@@ -751,6 +751,32 @@ def _check_far_rails(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig, near:
             model.axis_valid = min(model.axis_valid, end + cfg.axis_valid_margin)
 
 
+def rotate_track_model(model: TrackModel, dR: np.ndarray, n: int = 64) -> TrackModel:
+    """The same bed, rail head and axis seen through a change of the mount correction ``dR``
+    (``p_new = dR @ p_old``; 26.09, ``calibration.reseed_keep_max_deg``). Points on the bed
+    profile and on the axis are rotated and the model's polynomials refitted to them (same
+    degrees); everything else - the rail offset, the rail and wall state, the age and the
+    floor-shadow state - is kept, so the next frame has its previous model, its floor-shadow
+    reference and its rate limits as without the change. Meant for sub-degree changes."""
+    dR = np.asarray(dR, dtype=np.float64)
+    coef = np.asarray(model.floor_coef, dtype=np.float64)
+    x0, x1 = float(model.floor_range[0]), float(model.floor_range[1])
+    X = np.linspace(x0, x1, n) if x1 > x0 else np.array([x0, x0 + 1.0])
+    bed = np.stack([X, model.center_y(X), model.floor_z(X)], axis=1) @ dR.T
+    deg = 2 if (coef.size == 3 and coef[0] != 0.0) else 1
+    fc = np.polyfit(bed[:, 0], bed[:, 2], deg)
+    floor_coef = np.concatenate([np.zeros(3 - fc.size), fc]) if coef.size == 3 else fc
+    frange = (float(bed[0, 0]), float(bed[-1, 0])) if x1 > x0 else tuple(model.floor_range)
+    xa = np.linspace(0.0, max(x1, 60.0), n)
+    axis = np.stack([xa, model.center_y(xa), model.rail_z(xa)], axis=1) @ dR.T
+    if model.curvature != 0.0:
+        k2, t, c = np.polyfit(axis[:, 0], axis[:, 1], 2)
+    else:
+        (t, c), k2 = np.polyfit(axis[:, 0], axis[:, 1], 1), 0.0
+    return replace(model, floor_coef=floor_coef, floor_range=frange, center=float(c),
+                   yaw=float(np.arctan(t)), curvature=float(2.0 * k2))
+
+
 def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel] = None,
                    periods: int = 1) -> TrackModel:
     """Fit floor + rails + boundary-based yaw/curvature for one frame, smoothing against the

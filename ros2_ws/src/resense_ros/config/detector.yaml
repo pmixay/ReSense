@@ -166,6 +166,7 @@ resense:
     hanging_max_size: 0.5          # m along and across the track (a cable or rod, not a duct, tray or ceiling)
     hanging_max_distance: 60.0     # m; beyond it the rings above the sensor (0.5 deg apart) are too sparse for a 0.3 m dip
     hanging_needs_rails: true      # on since 25.09, round 2: the hanging stage only on frames with the rail pair found in the near range (track.rail_slabs > 0; 28 of the ride's 29 hanging groups were station column tops without one); pre-registered (p3_thin_hanging_2026-09-25.json, addendum_rail_lock): set O thin_hanging keeps 15 STOP frames from 30.1 m, the combined gate identical with and without it; false = every frame
+    hanging_yield_gauge_only: true  # 26.09 (safety review): a hanging cluster yields only to an overlapping obstacle (zone gauge, no reason), not to an advisory cluster (a cable demoted as floating lost its STOP); false = to any
     wall_face_min_height: 2.0
     wall_face_min_top: 2.8         # v0.6: reaches above this (just under the envelope top)
     wall_face_edge: 1.3            # v0.6: the advisory zone ends at 1.40 m
@@ -188,6 +189,7 @@ resense:
     zone_window: 10
     zone_min_fraction: 0.6
     column_hold: 2                 # 25.09 (0 = off): a track demoted as a column in >= this many of its last zone_window hits stays advisory; roundT_doubleT's column at 101-149 m is a column in some frames and 1.6-2.2 m of it in others: 3 alarm frames at 111-115 m through ROS (original bag), 2 at 128-130 m from the cache -> 0 (4 column hits in its window); pre-registered 3 / 2 / 1, the highest passing: 3 fails the gate (ride STOP episodes 39 -> 40), 2 PASS: five bags 60 / 14 / 17 -> 58 / 13 / 16, ride 197 / 46 / 39 -> 187 / 46 / 39 alarm frames / events / STOP episodes, doubleT_obstacle, set O and set F detections identical (docs/evidence/results/column_hold_2026-09-25.json)
+    reseed_hold: 5                 # 26.09 (safety review): after a mount-calibration change the tracks follow the rotation and a reported one stays reported up to 5 frames after its last match (the geometry re-seed must not drop a confirmed STOP); 0 = reset the tracker above 1 deg, hold nothing
     max_misses: 3
     conf_gain: 0.35
     conf_decay: 0.25
@@ -273,6 +275,10 @@ resense:
     refine_min_deg: 0.5              # on since 25.09 (P3): a provisional tilt is replaced by the spaced observations so far when they differ by at least this (deg); +3 deg roll five bags 16 -> 11 events, pitch 17 -> 16; 0 = off
     provisional_per_axis: false      # 25.09 (P3), tried, not shipped: the provisional tilt corrects only the axis that reaches provisional_min_deg (roll / pitch five bags -> 19 / 19 events)
     keep_within_deg: 0.25            # on since 25.09 (P3): a final tilt within this (deg) of the applied provisional keeps it, no track re-seed (doubleT_obstacle 185 -> 186 labelled hits); 0 = off
+    # 26.09 (safety review of the round-2 items; docs/evidence/results/p3_round2_review_fixes_2026-09-26.json)
+    refine_raw_trigger: true         # the refinement compares each axis's RAW median with the applied tilt (a median hovering at apply_min_deg flipped the correction); false = the zeroed target
+    refine_confirm_obs: 2            # spaced observations in a row with the refinement condition before it is applied (1 = at once)
+    reseed_keep_max_deg: 1.0         # a change up to this (deg) rotates the track model into the corrected frame instead of re-seeding it (a sub-degree refinement lost a confirmed STOP for 2 frames); 0 = always re-seed
   health:                          # v0.6: production guards (resense/health.py)
     min_points: 20000
     low_points_fraction: 0.5
@@ -297,4 +303,5 @@ resense:
     clear_cap_margin: -1.0           # m; >= 0: a point inside the envelope widened by this also touches; < 0 = n_gauge only
     clear_cap_points: 0              # k > 0: also cap at the k-th nearest strict-envelope return; 0 = off
     clear_cap_skip_columns: true     # a column-demoted cluster (or a column_hold track) does not cap (round 2)
+    clear_cap_lost: true             # 26.09 (safety review): also cap at a track reported when last matched that missed this frame, at its predicted distance
   voxel: 0.0
