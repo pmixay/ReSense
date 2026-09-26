@@ -1,13 +1,14 @@
-# Detector freeze — 26 September 2026
+# Detector baseline seal — 26 September 2026
 
-**Release hold, latest user instruction:** do not publish. This seal preserves a reproducible
-baseline; final quality acceptance is under review while the team considers more detector work.
-No release tag has been created or pushed. See [CAPTAIN §5](CAPTAIN.md#5-release-and-submission--on-hold).
+**Current decision: final freeze and release remain on hold.** The user authorized further
+detector work. The [quality cycle](QUALITY_CYCLE_2026-09-26.md) retains this seal as its comparison
+baseline. Its combined candidate failed the standalone clear-bag zero-alarm criterion; no
+replacement detector is accepted. No release tag has been created or pushed.
 
-**Decision: freeze the validated detector and default configuration.** The user delegated the
-captain's decision on 26 September. Detector behavior remains that of `fa18832`; the acceptance
+**Earlier baseline decision:** preserve the validated detector and default configuration.
+Detector behavior remains that of `fa18832`; the acceptance
 baseline is [`regression_baseline_2026-09-26_ride_p3d.json`](evidence/results/regression_baseline_2026-09-26_ride_p3d.json).
-Only blocker fixes may change the frozen sources after this decision.
+Further authorized candidates use isolated worktrees and must pass acceptance before integration.
 
 The [manifest](evidence/detector_freeze_2026-09-26.json) identifies every frozen file by SHA256,
 the measured source commit, the complete validation record and its hash. It covers `resense/`,
@@ -50,7 +51,7 @@ is added, changed or removed, a config copy differs, or the baseline or validati
 It does not execute the regression gate. Review of the manifest remains required: checksums do
 not prevent someone from deliberately replacing both a file and its recorded hash.
 
-For an authorized blocker fix: describe the defect and its acceptance test, review the patch,
+For an authorized replacement: describe the defect and its acceptance test, review the patch,
 run the affected tests, commit the detector, then run the complete strict regression gate and
 create and review the replacement seal. The gate must name a commit with no uncommitted detector
 changes and use the default config without overrides. For example:

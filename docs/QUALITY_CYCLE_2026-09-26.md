@@ -8,10 +8,10 @@ This record separates measured improvements from goals that remain open.
 
 | Work | Result | Disposition |
 |---|---|---|
-| Node freshness | Explicit live/replay clocks, source and residence age, queue validity, output expiry metadata, STOP retention and valid recovery. Stock Humble/Fast DDS functional trial passes all 15 checks. | Implemented; combined-image original-bag acceptance pending. |
+| Node freshness | Explicit live/replay clocks, source and residence age, queue validity, output expiry metadata, STOP retention and valid recovery. Stock Humble/Fast DDS functional trial passes all 15 checks. All six original-bag captures pass freshness and post-settle delivery checks. | Implemented; the combined image fails its separate clear-bag detector alarm criterion. |
 | Dashboard freshness | Checks transport age under the synchronized-UTC contract, expires stale status locally, retains STOP across invalid input and labels old distances. | Implemented; 15 browser tests pass. |
 | M1: every raw envelope return limits range | Removes all 46 GO diagnostic overclaims, but adds 14.8–49.6 percentage points uncertainty on empty bags and sharply reduces range. | Rejected; no production change. |
-| M2: existing supported thin clusters limit range | Target overclaims 54→44; GO overclaims 46→36. Ride adds 0.612 percentage points uncertainty and retains 99.02% of median range. Detection output stays identical. | Eligible as a partial improvement; final validation pending. |
+| M2: existing supported thin clusters limit range | Target overclaims 54→44; GO overclaims 46→36. Ride adds 0.612 percentage points uncertainty and retains 99.02% of median range. Offline detection output stays identical. | Offline gates pass; combined runtime acceptance fails. Source remains outside the main branch. |
 | A1: restrict extra tracking allowance to forward motion | Ride 45→44 events, 183→180 alarm frames; aggregate placement matches improve. One fixed case loses 2→1 matches and fails the registered per-case gate. | Rejected; source remains unmerged. |
 | D1: full-cloud context for clipped thin/floating candidates | Small edge object gains five STOP frames; synthetic matches 544→591. Outside-object false STOPs rise 6→9 and ride STOP episodes 38→40. | Rejected; source remains unmerged. |
 
@@ -40,10 +40,32 @@ M2 production output exactly matches its observer on **15,269 frames**. The full
 retains **199 rows, including all 146 enforced metrics**, with no regression, omission or waiver.
 All 72 placement case dictionaries, including their per-frame results, are exactly unchanged.
 The combined detector/node code passes **668 tests plus six subtests**, with zero skips.
-Original-bag raw comparison, stress checks and idle runtime results are being added before
-an integration decision. The earlier phrase “183 gated metrics” counted unchanged informational
+Raw Set O detection/warning output is identical to its reference across all 1,510 frames.
+All 18 rate/positive-roll/positive-pitch summaries and all 30 startup-offset summaries preserve
+their detection metrics. Raw and quantized-cache scores retain their earlier differences.
+The earlier phrase “183 gated metrics” counted unchanged informational
 rows too; the [clarification](evidence/results/quality_cycle_2026-09-26_clarifications.json)
 records the correction without changing the gate.
+
+### Combined runtime failure
+
+The preregistered image built at `0145cbb` passes cold, warm, bounded-load and stock Fast DDS
+switch trials. Across all six per-bag captures, decode+detect p95 is below 39 ms, source freshness
+checks pass and no original-header messages are lost after settling. These are controlled
+measurements on this machine, not organizer-hardware results.
+
+**Standalone clear replay fails:** one genuine detector STOP at 53.0 m where the registered
+limit is zero. It occurs at header stamp `946692947.533395`; freshness is valid and the STOP is
+not held from an earlier result. The same source frame caused an identical geometric alarm in
+the older baseline's stock-console capture. An older successful clear trial processed that frame
+as advisory. Exact processing-history attribution is underway. The failure remains a failure;
+it is not waived because an older detector also exhibits it.
+
+The local image archive is an offline review artifact with `runtime_acceptance_passed: false`.
+Its source/native checks and load test pass; packaging does not confer detector acceptance.
+The prior baseline image remains separately preserved. No tag or release is published.
+[Captures, exact image identity and archive receipt](evidence/results/quality_freshness_2026-09-26/README.md).
+The combined image contains M2; it is not an acceptance record for the main branch's P3d core.
 
 Freshness is validated at publication. The watchdog shares the detector executor and cannot
 run while that executor is blocked. An actionable consumer must expire timestamped status on
@@ -71,5 +93,8 @@ dashboard UTC clocks must be synchronized. These mechanisms are not a braking sa
 - [M1 rejection](evidence/results/quality_monitoring_M1_2026-09-26/README.md)
 - [M2 observer](evidence/results/quality_monitoring_M2_2026-09-26/README.md)
 - [M2 production validation](evidence/results/quality_monitoring_M2_production_2026-09-26/README.md)
+- [M2 raw, stress and startup checks](evidence/results/quality_cycle_2026-09-26_M2_validation/README.md)
+- [Combined runtime protocol](evidence/results/quality_combined_runtime_2026-09-26_protocol.json)
+- [Freshness and runtime results](evidence/results/quality_freshness_2026-09-26/README.md)
 - [A1 rejection](evidence/results/p4_A1_2026-09-26/README.md)
 - [D1 rejection](evidence/results/quality_cycle_2026-09-26_D1/README.md)

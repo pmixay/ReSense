@@ -4,7 +4,7 @@
 > decisions; history of 16–24.09 in
 > [`archive/CAPTAIN_log_2026-09.md`](archive/CAPTAIN_log_2026-09.md).
 > **Audience:** P1, team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-26 night, delegated detector freeze and fresh validation (baseline `_ride_p3d`) · **Status:** current; earlier tables retain dated evidence
+> **Last verified:** 2026-09-26 night, further detector quality cycle (baseline `_ride_p3d`) · **Status:** final acceptance on hold; earlier tables retain dated evidence
 
 ## Current delegated work — 26.09 night
 
@@ -15,23 +15,26 @@ the measured weaknesses and acceptance conditions. Keep the sealed baseline and 
 an RC or treat it as final quality acceptance. Review priorities are detection coverage, envelope
 uncertainty, false alarms, output freshness and independent evaluation.
 
-The user delegated captain work and explicitly requested the detector freeze. The detector and
-configuration are **frozen** at the existing `_ride_p3d` behavior; the source manifest and decisions
-are in [DETECTOR_FREEZE.md](DETECTOR_FREEZE.md). Candidate B is rejected (one extra STOP frame at
-7.1 m); the axis union stays off. The user confirmed on this pass that Q1 still has no answer.
-The new CI check rejects changed, missing or added frozen sources and changed gate evidence.
+The main branch retains `_ride_p3d` detector behavior and its default configuration; the source
+manifest is in [DETECTOR_FREEZE.md](DETECTOR_FREEZE.md). M1, A1 and D1 were rejected. M2 passes its
+offline comparison but remains unmerged because the combined runtime trial fails. The original
+near-escalation threshold remains 10 and the axis union stays off. Q1 remains unanswered.
 
-Action 21 is complete: the startup-only 20 s allowance closes after catch-up, later stalls keep
-the existing 5 s limit, and short queues preserve every frame. Header-to-header bag grading fixes
-false drop reports caused by receive-clock drift. Final idle cold/warm/clear and stock Fast DDS
-checks pass; [captures and limits](evidence/freeze_2026-09-26/README.md). A final cold trial under two direct readers (127.4 MiB/s combined) also passes unchanged
-criteria; arbitrary contention and the organizer hardware remain unmeasured. Detector results are unchanged.
+Node and dashboard freshness controls are implemented: explicit live/replay clocks, bounded age,
+invalid-range suppression, consumer expiry and held STOP. All 15 functional checks pass. The
+combined candidate passes cold, warm, bounded-load and stock Fast DDS switch checks, with zero
+post-settle message loss in every capture. **Standalone clear fails with one raw detector STOP
+at 53 m against the registered zero-alarm limit.** The same geometry appears in older baseline
+captures; causal diagnosis continues. Neither its older occurrence nor successful image loading
+waives this failure. The local archive is marked as a failed candidate for review.
 
-P4 completed its fixed 72-case synthetic study: 45 cases with any match, 544/2,458 visible frames,
-zero control matches; all results retained, no tuning. All 45 ride false events have scene
-annotations, including nine uncertain. The fresh full gate reproduces all 146 gated rows without
-waivers; 621 tests and 6 subtests pass. Deck, PDF, video and dashboard wording are refreshed.
-The requested 75/100 is not established; use the [current independent scorecard](SCORECARD.md#freeze-review-26-september-night).
+P4 traced the exact target points and histories of all 45 ride false events; 14 causes remain
+unresolved. P3 traced all organizer-object frames and all 72 placement cases. M2 preserves all
+146 enforced gate metrics and all original placement results; its combined code passes 668 tests
+and six subtests. Its monitoring change still leaves 36 GO diagnostic overclaims and adds no
+detection recall. The public presentation retains the earlier dated detector evidence; approved
+team identities/photos and human rehearsals are pending. The requested 75/100 is not established;
+use the [independent scorecard](SCORECARD.md).
 Earlier tables below retain their dated evidence; this section and §4 govern current status.
 
 ## 1. Role and dates

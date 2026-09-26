@@ -2,9 +2,9 @@
 
 > **Purpose:** what ReSense does, how the jury runs it, what to look at, headline results.
 > **Audience:** jury, team · **Owner:** P1 · **Language:** EN, RU block «Кратко для жюри»
-> **Last verified:** 2026-09-26 night: full regression gate, 621 tests, original-bag cold/warm
-> and stock Fast DDS checks. Package 1.0.0, frozen detector behavior `fa18832`,
-> node startup correction `0f808fe` · **Status:** current
+> **Last verified:** 2026-09-26 night. Package 1.0.0; P3d detector baseline with node freshness
+> controls. **Status:** further detector work authorized; final freeze and release on hold.
+> [Current quality results and failed acceptance trial](docs/QUALITY_CYCLE_2026-09-26.md).
 
 ЛЦТ 2026 · Кейс 05 · «Обнаружение посторонних объектов в тоннеле метро по данным 3D-лидара»
 (Московский транспорт / ГУП «Московский метрополитен»). Organizers' material:
@@ -31,6 +31,11 @@ ros2 bag play <бэг> --delay 3                            #    и проигр
 ros2 topic echo /resense/decision --field data           # 4. консоль 3: GO | CAUTION | STOP | FAULT
 ros2 topic echo /resense/nearest_distance --field data   # 5. расстояние до препятствия, м; −1 — нет
 ```
+
+Для автоматического потребителя одного `/resense/decision` недостаточно: читайте временные
+поля и `freshness.valid` из `/resense/status` и ограничивайте срок действия результата своим
+таймером. При остановке входа STOP может удерживаться с последним расстоянием.
+[Контракт свежести](#topics-published-by-the-node) описывает часы, срок действия и восстановление.
 
 Увидеть облако, коридор габарита и препятствия в RViz (нужен X11): вместо шага 2 — одна строка:
 
@@ -154,9 +159,15 @@ control bags can be played one after another into one running node. The offline 
 
 ## Status (26.09): package 1.0.0, detector v0.6.3 with integrated P3d rules, node v0.6.4
 
-The detector and default configuration are **frozen**. The [source seal](docs/DETECTOR_FREEZE.md)
-and fresh full gate reproduce all **146 gated values (199 total comparison rows)**, with no missing rows or waivers.
-The startup fix passes original-bag idle cold/warm replays: first STOP +0.4 s after the first
+The detector and defaults retain the sealed P3d baseline while further candidates are evaluated.
+**Final quality acceptance is on hold:** the combined M2/freshness candidate produced one false
+STOP at 53 m in a clear-bag trial whose registered limit is zero. M2 remains unmerged. Node and
+dashboard freshness controls are implemented; [the quality-cycle record](docs/QUALITY_CYCLE_2026-09-26.md)
+contains their evidence and limits. No release is published.
+
+The [baseline source seal](docs/DETECTOR_FREEZE.md) and full gate reproduce all **146 gated values
+(199 total comparison rows)**, with no missing rows or waivers. Earlier startup-fix measurements
+pass original-bag idle cold/warm replays: first STOP +0.4 s after the first
 processed cloud, decode+detect p95 36 ms, no recorded messages lost after catch-up settles.
 The clear replay has zero alarms and p95 24 ms. Stock Fast DDS playback also passes; its clear
 recording has one false alarm within the existing allowance of two. Startup still skips frames;
@@ -167,7 +178,7 @@ these timings exclude the player's disk preloading. [Raw evidence](docs/evidence
 The current combined estimate is **64.5/100**; the requested 75/100 is not met. P4's preregistered experiment finds the target
 in **45/72 cases and 544/2,458 visible frames**, with zero paired-control matches. This tests
 synthetic combinations on seen backgrounds; it provides no real unseen-route recall result.
-All 45 ride false events now have a visual scene review, with nine uncertain labels retained.
+All 45 ride false targets now have exact point/history traces; 14 causes remain unresolved.
 See [P4 audit](docs/P4_AUDIT.md), [experiments](docs/EXPERIMENTS.md) and
 [decision history](docs/DECISIONS.md).
 
@@ -182,7 +193,7 @@ false STOPs, the P3 rules of 25–26.09 for the organizers' objects (ALGORITHM �
 and set F straight in one command. All current numbers:
 [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) "Current results" and §0.
 
-**Final local checks:** 621 tests and 6 subtests pass, with no skips or deselections; the full
+**Earlier baseline checks:** 621 tests and 6 subtests pass, with no skips or deselections; the full
 regression gate includes all six recordings, set O, the 11,271-frame ride and set F straight.
 The five empty bags still have 13 false events / 16 STOP episodes, the ride 45 / 38; the person
 58/61, rail object 125/126, and set O 384/801 visible in-envelope STOP frames. Edge objects still
