@@ -84,5 +84,6 @@ their timings are not performance evidence. The original-bag trials above used t
   locally; the `/decision` string alone is insufficient for motion control.
 - Held STOP remains visible through invalid input but cannot count as new positive detector
   evidence. Exposed held STOP still counts against clear-run false-alarm criteria.
-- Compressed captures retain complete JSONL/log bytes. The standalone clear failure remains a
+- Compressed captures and logs retain complete JSONL/log bytes, including original carriage
+  returns and trailing spaces. Build and functional/development logs with those bytes use `.gz`. The standalone clear failure remains a
   blocker to claiming that all registered criteria passed; this packet does not authorize release.
