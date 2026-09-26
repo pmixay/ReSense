@@ -40,7 +40,7 @@ class Detection:
     zone: str                  # 'gauge' or 'warning'
     height_min: float          # lowest point above the rail head
     intensity: float
-    reason: str = ""           # v0.5 (additive): why the last cluster of an advisory track was demoted ('' = none)
+    reason: str = ""           # v0.5 (additive): why the last cluster of an advisory track was demoted ('' = none); 26.09: 'stop_hold' on an obstacle kept by tracking.stop_keep_* (its last cluster was demoted by a signature or a scan line)
     kind: str = ""             # v0.6 (additive): 'low' = a bump above the track bed, '' = corridor object
 
     def to_dict(self) -> dict:
@@ -156,6 +156,7 @@ class Detector:
         self.health = HealthMonitor(self.cfg.health)
         self.bed = BedTemplate(self.cfg.lowobj)
         self.low_range = 0.0            # m, how far the bed was observed for the low-object stage (last frame)
+        self._thin: List[Cluster] = []  # 26.09 (tracking.stop_keep_thin): this frame's corridor clusters flatter than min_height
         self._prev_stamp: Optional[float] = None
         self._gaps: deque = deque(maxlen=14)  # the last stamp intervals within [0, stamp_dt_range[1]] (s): the input rate
 
@@ -173,6 +174,7 @@ class Detector:
         self.ego.reset()
         self.health.reset()
         self.bed.reset()
+        self._thin = []
         self._prev_stamp = None
         self._gaps.clear()
 
@@ -419,11 +421,18 @@ class Detector:
         acc = cfg.accumulation
         factor = max(1.0, n_acc * acc.min_points_scale) if n_acc > 1 else 1.0
         corr = cand.subset(~cand.low)
+        keep_thin = cfg.tracking.stop_keep_thin > 0
         clusters = _clusters_of(corr, cfg.cluster, axis_valid=valid,
                                 height_valid=floor_valid if cfg.cluster.far_min_height > 0 else None,
                                 min_points_factor=factor, factor_range=acc.min_range,
                                 smear_max_length=acc.smear_max_length if n_acc > 1 else 0.0,
-                                smear_max_width=acc.smear_max_width if n_acc > 1 else 0.0, gauge=cfg.gauge)
+                                smear_max_width=acc.smear_max_width if n_acc > 1 else 0.0, gauge=cfg.gauge,
+                                keep_thin=keep_thin)
+        if keep_thin:
+            # 26.09 (tracking.stop_keep_thin, off by default): the clusters flatter than min_height go
+            # to the tracker only, to continue a track (Tracker._continue_thin); no other stage sees them
+            self._thin = [c for c in clusters if c.thin]
+            clusters = [c for c in clusters if not c.thin]
         lows: List[Cluster] = []
         straddling: List[Cluster] = []
         lcfg = replace(cfg.cluster, eps=cfg.lowobj.eps)
@@ -521,7 +530,8 @@ class Detector:
         Returns the confirmed detections in the strict gauge and in the advisory zone."""
         low = self.cfg.lowobj
         low_ok = low.min_model_age <= 0 or self.track.age >= low.min_model_age
-        self.tracker.update(clusters, ego_shift=(speed or 0.0) * dt, frame_dt=dt, low_ok=low_ok)
+        self.tracker.update(clusters, ego_shift=(speed or 0.0) * dt, frame_dt=dt, low_ok=low_ok,
+                            thin=self._thin if self.cfg.tracking.stop_keep_thin > 0 else None)
         pending = low.pending_advisory and self.calib.state.status == "pending"
         dets: List[Detection] = []
         for t in self.tracker.confirmed():
@@ -534,7 +544,7 @@ class Detector:
                 center=t.centroid if t.misses else t.last.centroid,
                 size=t.last.size, n_points=t.last.n, confidence=t.confidence, age=t.age,
                 zone=t.zone, height_min=t.last.height_min, intensity=t.last.intensity,
-                reason=t.last.reason, kind=t.last.kind,
+                reason="stop_hold" if (t.kept and t.zone == "gauge") else t.last.reason, kind=t.last.kind,
             ))
             d = dets[-1]
             if pending and d.kind == "low" and d.zone == "gauge" and d.distance > low.pending_advisory_within:

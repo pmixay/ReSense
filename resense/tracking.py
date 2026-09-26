@@ -18,6 +18,13 @@ away shows more than ``column_min_height`` of itself in some frames only (EXPERI
 With ``low_min_seen_distance`` > 0 (tried 26.09, off: EXPERIMENTS.md 1j) a low (bed-level) track
 is reported only once it has been matched at or beyond it; 4 m never reports a low object that
 stays nearer (a standing train), so it is not shipped.
+With ``stop_keep_signature`` (26.09, P3 range, off: EXPERIMENTS.md 1n) a track reported as an
+obstacle in the previous frame counts a hit whose cluster is inside the gauge by its voxels but
+demoted only by a shape signature (``Cluster.demoted``) as inside the gauge. With
+``stop_keep_thin`` 1 such a track, unmatched otherwise, may be continued by a cluster flatter than
+``cluster.min_height`` (``Cluster.thin``: one scan line) inside the gauge; with 2 also a track not
+yet reported whose previous hit was an obstacle cluster inside the gauge. None of them starts a
+track.
 """
 from __future__ import annotations
 
@@ -52,6 +59,7 @@ class Track:
     column_hold: int = 0            # this many column hits in column_hist keep the track advisory (0 = off)
     hold: int = 0                   # 26.09: frames left of a calibration re-seed hold window (Tracker.reseed)
     seen_reported: bool = False     # 26.09: reported in the frame of its last match (health.clear_cap_lost)
+    kept: bool = False              # 26.09 (stop_keep_*): the last hit kept a reported obstacle only by the keep rules
 
     @property
     def zone(self) -> str:
@@ -106,15 +114,24 @@ class Tracker:
         c = self.cfg
         return c.gate_base + c.gate_per_m * max(distance, 0.0)
 
+    def _keeps(self, t: Track, cl: Cluster) -> bool:
+        """26.09 (``stop_keep_signature``): ``cl`` counts as inside the gauge for ``t`` although a
+        shape signature demoted it, because ``t`` was reported as an obstacle in the previous frame."""
+        return self.cfg.stop_keep_signature and cl.demoted and t.reported and t.zone == "gauge"
+
     def update(self, clusters: List[Cluster], ego_shift: float = 0.0,
-               frame_dt: Optional[float] = None, low_ok: bool = True) -> List[Track]:
+               frame_dt: Optional[float] = None, low_ok: bool = True,
+               thin: Optional[List[Cluster]] = None) -> List[Track]:
         """Associate ``clusters`` with the tracks. ``ego_shift`` (m) is the distance the
         vehicle travelled since the previous frame when it is known: a track seen once has no
         velocity yet and is then predicted as a static object approaching by that much.
         ``frame_dt`` (s) is the interval since the previous frame; it accumulates each track's
         observed time for the ``confirm_time_s`` rule (without it persistence counts hits only).
         ``low_ok`` False (``lowobj.min_model_age``, 26.09, off) keeps a low track that was not
-        reported in the previous frame from being reported in this one."""
+        reported in the previous frame from being reported in this one. ``thin``
+        (``stop_keep_thin``, 26.09, off) are clusters flatter than ``cluster.min_height``: after the
+        association of ``clusters`` they may continue a track that nothing matched
+        (:meth:`_continue_thin`), never start one."""
         c = self.cfg
         # widen the gate by the distance a static object travels in the *measured* interval, so a
         # dropped frame (0.2-0.3 s gap in the node) does not throw a 17 m/s approach out of the gate
@@ -141,6 +158,7 @@ class Tracker:
                     break
                 i, j = np.unravel_index(np.argmin(d), d.shape)
                 t, cl = self.tracks[i], clusters[j]
+                keep = self._keeps(t, cl)
                 t.velocity = 0.5 * t.velocity + 0.5 * (cl.centroid - t.centroid) if t.hits > 1 else (cl.centroid - t.centroid)
                 t.centroid = cl.centroid
                 t.hits += 1
@@ -149,14 +167,18 @@ class Tracker:
                 t.span_s += dt
                 t.confidence = min(1.0, t.confidence + c.conf_gain * cl.score)
                 t.last = cl
-                t.gauge_hits += int(cl.zone == "gauge")
-                t.zone_hist = (t.zone_hist + [cl.zone == "gauge"])[-zw:]
+                g = cl.zone == "gauge" or keep
+                t.kept = keep
+                t.gauge_hits += int(g)
+                t.zone_hist = (t.zone_hist + [g])[-zw:]
                 t.column_hist = (t.column_hist + [cl.reason == "column"])[-zw:]
                 t.hit_hist = (t.hit_hist + [True])[-hw:]
                 t.history.append(cl.distance)
                 matched_t[i] = matched_c[j] = True
                 d[i, :] = np.inf
                 d[:, j] = np.inf
+        if c.stop_keep_thin and thin:
+            self._continue_thin(thin, matched_t, ego_shift, step, dt, zw, hw)
         # unmatched tracks
         for i, t in enumerate(self.tracks):
             if not matched_t[i]:
@@ -194,6 +216,67 @@ class Tracker:
             if t.hold > 0:
                 t.hold -= 1
         return self.tracks
+
+    def _continue_thin(self, thin: List[Cluster], matched_t: np.ndarray, ego_shift: float, step: float,
+                       dt: float, zw: int, hw: int) -> None:
+        """26.09 (``stop_keep_thin``): tracks that no cluster matched in this frame are associated,
+        greedily and with the same gate and prediction, with the clusters flatter than
+        ``cluster.min_height`` (one scan line: the part of an object inside the envelope thinner than
+        the ring spacing at range) that are inside the gauge (zone ``gauge``, or with
+        ``stop_keep_signature`` demoted only by a shape signature). Mode 1: only tracks reported as
+        obstacles in the previous frame; mode 2: also a track not yet reported whose previous hit
+        was inside the gauge (zone ``gauge``), so that one scan line counts towards its confirmation.
+        A match is a hit like any other.
+        Nothing else sees these clusters: they never start a track."""
+        c = self.cfg
+        mode = int(c.stop_keep_thin)
+        cand = []
+        for i, t in enumerate(self.tracks):
+            if matched_t[i] or t.last is None:
+                continue
+            stop = t.reported and t.zone == "gauge"
+            if stop or (mode >= 2 and not t.reported and t.last.zone == "gauge"):
+                cand.append(i)
+        ok = [j for j, cl in enumerate(thin) if cl.zone == "gauge" or (c.stop_keep_signature and cl.demoted)]
+        if not cand or not ok:
+            return
+        static = np.array([-float(ego_shift), 0.0, 0.0])
+        pred = np.stack([self.tracks[i].centroid + (self.tracks[i].velocity if self.tracks[i].hits > 1 else static)
+                         for i in cand])
+        cen = np.stack([thin[j].centroid for j in ok])
+        d = np.linalg.norm(pred[:, None, :] - cen[None, :, :], axis=2)
+        dx = cen[None, :, 0] - pred[:, 0][:, None]
+        allowed = np.array([self._gate(self.tracks[i].centroid[0]) for i in cand])[:, None] + np.where(dx < 0, step, 0.0)
+        d = np.where(d <= allowed, d, np.inf)
+        for a, i in enumerate(cand):
+            t = self.tracks[i]
+            if not (t.reported and t.zone == "gauge"):
+                # mode 2: a thin cluster demoted by a signature never counts for a track not reported
+                for b, j in enumerate(ok):
+                    if thin[j].zone != "gauge":
+                        d[a, b] = np.inf
+        while np.isfinite(d).any():
+            a, b = np.unravel_index(np.argmin(d), d.shape)
+            i = cand[a]
+            t, cl = self.tracks[i], thin[ok[b]]
+            stop = t.reported and t.zone == "gauge"
+            t.velocity = 0.5 * t.velocity + 0.5 * (cl.centroid - t.centroid) if t.hits > 1 else (cl.centroid - t.centroid)
+            t.centroid = cl.centroid
+            t.hits += 1
+            t.misses = 0
+            t.age += 1
+            t.span_s += dt
+            t.confidence = min(1.0, t.confidence + c.conf_gain * cl.score)
+            t.last = cl
+            t.kept = stop
+            t.gauge_hits += 1
+            t.zone_hist = (t.zone_hist + [True])[-zw:]
+            t.column_hist = (t.column_hist + [cl.reason == "column"])[-zw:]
+            t.hit_hist = (t.hit_hist + [True])[-hw:]
+            t.history.append(cl.distance)
+            matched_t[i] = True
+            d[a, :] = np.inf
+            d[:, b] = np.inf
 
     def _qualifies(self, t: Track) -> bool:
         c = self.cfg
