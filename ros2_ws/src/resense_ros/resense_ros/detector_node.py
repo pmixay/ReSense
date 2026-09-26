@@ -56,9 +56,19 @@ the alarm is ``STOP`` (``/resense/obstacle_detected``). Since 26.09 latency over
 health warning only (``/resense/health``, the status JSON), not ``CAUTION``, unless
 ``health.latency_affects_decision`` (the parameter file) is true. The node never
 dies on a bad frame: the exception is logged, ``FAULT`` published, and after
-``max_consecutive_errors`` the detector is reset. The watchdog publishes ``FAULT`` / health
-``STALE`` while the input is silent, and ``FAULT`` / ``NO_INPUT`` before the first frame
-(after ``startup_grace`` s).
+``max_consecutive_errors`` the detector is reset. The watchdog marks monitoring invalid / health
+``STALE`` while input is silent. A previous STOP stays held until a fresh valid non-STOP result;
+without a previous STOP the decision is ``FAULT``. Before the first frame it publishes
+``FAULT`` / ``NO_INPUT`` after ``startup_grace`` s.
+
+Freshness: ``freshness_mode`` defaults to ``live`` (acquisition header versus system UTC).
+Historical playback explicitly selects ``replay`` (DDS publisher UTC; acquisition age unknown).
+Source age and Python residence must be <= ``max_result_age`` (0.5 s), future skew <=
+``future_tolerance`` (0.05 s). A first/resumed/jumped epoch needs progression before GO.
+Queued older frames cannot allow GO; invalid/unknown/stale clocks give FAULT, current clocks
+in catch-up give CAUTION, and STOP has priority. JSON ``freshness`` explains validity and
+``go_allowed``. Exposed monitored range is zero while invalid; ``detector_clear_distance``
+retains the raw estimate. ``snapshot_kind`` separates frames from watchdog/error snapshots.
 
 Sensor mount (v0.6): ``sensor_forward`` / ``sensor_left`` / ``sensor_up`` override the axis
 mapping of the parameter file, ``mount_roll_deg`` / ``mount_pitch_deg`` / ``mount_yaw_deg`` a
@@ -101,6 +111,7 @@ wins), as the image sets them.
 """
 from __future__ import annotations
 
+import copy
 import inspect
 import json
 import math
@@ -113,6 +124,7 @@ import rclpy
 from geometry_msgs.msg import Point, TransformStamped
 from nav_msgs.msg import Odometry
 from rclpy.node import Node
+from rclpy.executors import SingleThreadedExecutor, await_or_execute
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy
 from sensor_msgs.msg import PointCloud2, PointField
 from std_msgs.msg import Bool, Float32, String, Header
@@ -131,6 +143,26 @@ from resense.pointcloud import pointcloud2_to_arrays
 UNSET = -999.0   # sentinel of the mount_*_deg parameters: keep the value of the parameter file
 PROC_NET_CORE = "/proc/sys/net/core"
 RMEM_WANT = 33554432   # 32 MiB: with it a CycloneDDS player delivered every 360-degree cloud (25.09)
+
+
+class SourceInfoExecutor(SingleThreadedExecutor):
+    """Humble adapter: preserve RMW metadata for our LiDAR subscriptions only.
+
+    Humble's executor takes (message, metadata) but forwards only the message.
+    Keep the original pair for explicitly marked subscriptions. Other callbacks
+    retain upstream behavior; unavailable metadata fails closed in replay mode.
+    """
+    def _take_subscription(self, sub):
+        if not getattr(sub, "_resense_with_info", False):
+            return super()._take_subscription(sub)
+        with sub.handle:
+            return sub.handle.take_message(sub.msg_type, sub.raw)
+
+    async def _execute_subscription(self, sub, taken):
+        if not getattr(sub, "_resense_with_info", False):
+            return await super()._execute_subscription(sub, taken)
+        if taken is not None:
+            await await_or_execute(sub.callback, *taken)
 
 
 class DetectorNode(Node):
@@ -160,6 +192,9 @@ class DetectorNode(Node):
         self.declare_parameter("mount_yaw_deg", UNSET)
         self.declare_parameter("auto_calibrate", True)  # find orientation / tilt from rails and bed in the first frames
         # --- v0.6: production guards
+        self.declare_parameter("freshness_mode", "live")  # live acquisition UTC | replay publisher UTC
+        self.declare_parameter("max_result_age", 0.5)  # s: source/residence/recording lag limit
+        self.declare_parameter("future_tolerance", 0.05)  # s: permitted clock skew into the future
         self.declare_parameter("stale_timeout", 0.5)    # s without an input frame before FAULT / STALE
         self.declare_parameter("startup_grace", 2.0)    # s after start before "no input yet" is a FAULT
         self.declare_parameter("max_consecutive_errors", 5)   # processing exceptions in a row before the detector is reset
@@ -233,6 +268,23 @@ class DetectorNode(Node):
         self.startup_catchup_active = False
         self.startup_catchup_until = 0.0  # first cloud may arrive alone just before the preload burst
         self.pending = []              # (topic, msg) taken from the input queues, not processed yet, oldest first
+        self.arrivals = {}             # message id -> (first Python arrival monotonic, DDS source UTC)
+        self.current_arrival = None
+        self.current_queue_lag = 0.0
+        self.freshness_previous = None  # (header stamp, source UTC, monotonic, UTC) of accepted input
+        self.epoch_reason = "epoch_unconfirmed"
+        self.stop_latch = None          # small output snapshot; never retains point-cloud arrays
+        self.stop_ros = None
+        self.last_result_clock = None  # (source UTC, Python arrival monotonic) for watchdog expiry
+        self.last_published_valid = False
+        self.freshness_mode = self.get_parameter("freshness_mode").get_parameter_value().string_value
+        if self.freshness_mode not in ("live", "replay"):
+            raise ValueError("freshness_mode must be live or replay")
+        self.max_result_age = self.get_parameter("max_result_age").get_parameter_value().double_value
+        self.future_tolerance = self.get_parameter("future_tolerance").get_parameter_value().double_value
+        if (not math.isfinite(self.max_result_age) or self.max_result_age <= 0
+                or not math.isfinite(self.future_tolerance) or self.future_tolerance < 0):
+            raise ValueError("freshness age must be positive and future tolerance nonnegative")
         self.pending_last = None       # (topic, frame_id, stamp) of the last frame handed to processing
         self.catchup = None            # [frames processed, max s behind, start time] of the current catch-up
         self.catchup_skipped = 0       # frames skipped since the current catch-up started (its log line)
@@ -360,7 +412,9 @@ class DetectorNode(Node):
                            else self.publisher_reliability(topic) or "reliable")
         self.sub_rel[topic] = reliability
         self.subs[topic] = self.create_subscription(
-            PointCloud2, topic, lambda msg, t=topic: self.on_cloud(msg, t), self.input_qos(reliability))
+            PointCloud2, topic, lambda msg, info=None, t=topic: self.on_cloud(msg, t, info),
+            self.input_qos(reliability))
+        self.subs[topic]._resense_with_info = True
 
     def on_match_qos(self) -> None:
         """(input_reliability auto) Re-create a subscription whose reliability differs from its
@@ -489,6 +543,7 @@ class DetectorNode(Node):
             self.consecutive_errors = 0
             self.mount_logged = ""
         self.last_stamp = None
+        self.freshness_previous = None
         self.startup_catchup_active = True
         self.startup_catchup_until = time.perf_counter() + 1.0
         self.get_logger().info(
@@ -559,9 +614,20 @@ class DetectorNode(Node):
             cur, i = stamps[j], j + 1
         return plan
 
-    def on_cloud(self, msg: PointCloud2, topic: str = "") -> None:
+    def remember_arrival(self, msg, info=None):
+        source = info.get("source_timestamp") if isinstance(info, dict) else getattr(info, "source_timestamp", None)
+        try:
+            source = float(source) * 1e-9
+            if not math.isfinite(source) or source <= 0:
+                source = None
+        except (TypeError, ValueError, OverflowError):
+            source = None
+        self.arrivals[id(msg)] = (time.perf_counter(), source)
+
+    def on_cloud(self, msg: PointCloud2, topic: str = "", info=None) -> None:
         """Input callback: the frame joins the ones already waiting behind it, then the next one
         is processed (``catchup_step``)."""
+        self.remember_arrival(msg, info)
         self.pending.append((topic, msg))
         self.take_waiting(topic)
         self.process_next()
@@ -585,6 +651,7 @@ class DetectorNode(Node):
                     got = handle.take_message(sub.msg_type, sub.raw)
                 if got is None:
                     return
+                self.remember_arrival(got[0], got[1])
                 self.pending.append((topic, got[0]))
                 if len(self.pending) > 2:
                     self.prune()                # hold the chain's frames only, not the whole burst
@@ -623,6 +690,9 @@ class DetectorNode(Node):
             self.catchup_skipped += n - len(plan)
             key, kept = (topic0, m0.header.frame_id), set(plan)
             self.skipped.extend((key, stamps[i]) for i in range(n) if i not in kept)
+            for i in range(n):
+                if i not in kept:
+                    self.arrivals.pop(id(run[i][1]), None)
             if len(self.skipped) > 4 * self.qos_depth + 100:     # entries of an input that never came
                 del self.skipped[:len(self.skipped) - 4 * self.qos_depth - 100]
         return [stamps[i] for i in plan]
@@ -634,9 +704,12 @@ class DetectorNode(Node):
         stamps = self.prune()
         self.track_catchup(stamps[-1] - stamps[0], len(stamps))
         topic, msg = self.pending.pop(0)
+        self.current_queue_lag = max(0.0, stamps[-1] - stamps[0])
+        self.current_arrival = self.arrivals.pop(id(msg), None)
         try:
             self.process_cloud(msg, topic)
         finally:
+            self.current_arrival = None
             self.frame_in_catchup = False
             if topic == self.active_topic:
                 self.pending_last = (topic, msg.header.frame_id, self._stamp(msg))
@@ -671,6 +744,7 @@ class DetectorNode(Node):
             return
         self.send_static_tf(msg.header.frame_id)
         t0 = time.perf_counter()
+        self.begin_freshness(msg, t0)
         self.last_frame_wall = t0
         try:
             xyz_s, inten, ring, n_raw, n_near = pointcloud2_to_arrays(
@@ -702,14 +776,78 @@ class DetectorNode(Node):
         latency_ms = (time.perf_counter() - t0) * 1e3               # + publishing, goes to /resense/latency_ms
         self.win_latency.append(latency_ms)
         self.pub_latency.publish(Float32(data=float(latency_ms)))
-        self.last_status = (f"OBSTACLE at {res.nearest_distance:.1f} m" if res.obstacle
-                            else ("warning" if res.warning else "clear"))
         self.last_status += (f"; axis y={res.track.center:+.2f} "
                              f"R={'inf' if abs(res.track.curvature) < 1e-6 else '%.0f' % (1 / res.track.curvature)}")
+
+    def begin_freshness(self, msg, now):
+        """Require progression within each clock/input epoch, including after silence."""
+        stamp, wall = self._stamp(msg), time.time()
+        source = stamp if self.freshness_mode == "live" else (
+            self.current_arrival[1] if self.current_arrival is not None else None)
+        previous = self.freshness_previous
+        reason = "epoch_unconfirmed"
+        if previous is not None:
+            ph, ps, pm, pw = previous
+            if self.last_frame_wall is not None and now - self.last_frame_wall > self.max_result_age:
+                reason = "resumed_after_silence"
+            elif abs((wall - pw) - (now - pm)) > self.future_tolerance:
+                reason = "system_clock_jump"
+            elif stamp <= ph:
+                reason = "header_not_progressing"
+            elif stamp - ph > self.get_parameter("hole_reset_gap").get_parameter_value().double_value:
+                reason = "header_jump"
+            elif source is None or ps is None or source <= 0 or ps <= 0:
+                reason = "epoch_unconfirmed"
+            elif source <= ps:
+                reason = "source_not_progressing"
+            else:
+                reason = ""
+        self.epoch_reason = reason
+        self.freshness_previous = (stamp, source, now, wall)
+
+    def result_freshness(self, res):
+        now, wall = time.perf_counter(), time.time()
+        arrival = self.current_arrival
+        source = self.freshness_previous[1] if self.freshness_previous is not None else None
+        age = wall - source if source is not None and math.isfinite(source) and source > 0 else None
+        residence = now - arrival[0] if arrival is not None else None
+        reason = ""
+        clock_jump = (self.freshness_previous is not None and
+                      abs((wall - self.freshness_previous[3]) -
+                          (now - self.freshness_previous[2])) > self.future_tolerance)
+        if clock_jump:
+            reason = "system_clock_jump"
+        elif age is None:
+            reason = "source_clock_unknown"
+        elif age < -self.future_tolerance:
+            reason = "source_clock_future"
+        elif age > self.max_result_age:
+            reason = "source_stale"
+        elif residence is None or not math.isfinite(residence) or residence < 0:
+            reason = "residence_unknown"
+        elif residence > self.max_result_age:
+            reason = "residence_stale"
+        elif self.current_queue_lag > self.max_result_age:
+            reason = "queue_stale"
+        elif self.epoch_reason:
+            reason = self.epoch_reason
+        elif (getattr(res, "health", {}) or {}).get("level") == "error":
+            reason = "detector_error"
+        elif self.frame_in_catchup or self.current_queue_lag > 1e-6:
+            reason = "catchup"
+        valid = not reason
+        return {"mode": self.freshness_mode, "evaluated_at_utc_s": wall,
+                "max_result_age_s": self.max_result_age, "future_tolerance_s": self.future_tolerance,
+                "clock_reference": "acquisition_utc" if self.freshness_mode == "live" else "publisher_utc",
+                "source_age_s": age, "acquisition_age_s": age if self.freshness_mode == "live" else None,
+                "publication_age_s": age if self.freshness_mode == "replay" else None,
+                "residence_age_s": residence, "queue_lag_s": self.current_queue_lag,
+                "valid": valid, "reason": reason or "current", "go_allowed": False}
 
     # ------------------------------------------------------------------
     def on_processing_error(self, header: Header, err: Exception) -> None:
         """Guard: log, publish FAULT, and reset the detector after repeated failures."""
+        self.freshness_previous = None
         self.consecutive_errors += 1
         self.get_logger().error(f"frame processing failed ({self.consecutive_errors} in a row): {err!r}\n"
                                 + traceback.format_exc(limit=4))
@@ -721,18 +859,17 @@ class DetectorNode(Node):
             self.consecutive_errors = 0
 
     def publish_fault(self, header: Header, message: str, level_name: str = "ERROR") -> None:
-        """Publish a fault as a complete output snapshot.
-
-        A fault must not leave the last successful decision visible on any of the
-        alarm topics or in RViz.  In particular, publishing only ``/decision``
-        used to leave the previous warning, distance, detections, markers and
-        status JSON latched at their old values.
-        """
-        self.pub_decision.publish(String(data="FAULT"))
+        """Invalidate monitoring while preserving a previously detected STOP."""
+        self.last_published_valid = False
+        self.freshness_previous = None
+        held = self.stop_latch is not None
+        decision = "STOP" if held else "FAULT"
+        distance = self.stop_latch["nearest_distance"] if held else None
+        self.pub_decision.publish(String(data=decision))
         self.pub_clear.publish(Float32(data=0.0))
-        self.pub_flag.publish(Bool(data=False))
+        self.pub_flag.publish(Bool(data=held))
         self.pub_warn.publish(Bool(data=False))
-        self.pub_dist.publish(Float32(data=-1.0))
+        self.pub_dist.publish(Float32(data=float(distance) if distance is not None else -1.0))
         arr = DiagnosticArray(header=Header(stamp=self.get_clock().now().to_msg(), frame_id=header.frame_id))
         diag_level = (DiagnosticStatus.STALE if level_name == "STALE" else DiagnosticStatus.ERROR)
         st = DiagnosticStatus(level=diag_level, name="resense/detector", message=message,
@@ -742,8 +879,8 @@ class DetectorNode(Node):
         self.pub_health.publish(arr)
 
         # Keep the status stream useful to headless consumers as well.  A
-        # watchdog/error snapshot is not a frame from a recording, so it has no
-        # ``node`` timing object: acceptance tooling must not count it as a
+        # watchdog/error snapshot is not a frame from a recording. snapshot_kind
+        # identifies it and there is no ``node`` object; tools must not count it as a
         # zero-latency frame or include it in per-recording criteria.
         try:
             stamp = float(header.stamp.sec) + float(header.stamp.nanosec) * 1e-9
@@ -751,10 +888,10 @@ class DetectorNode(Node):
             stamp = 0.0
         fault_status = {
             "stamp": stamp,
-            "obstacle": False,
+            "obstacle": held,
             "warning": False,
-            "nearest_distance": None,
-            "detections": [],
+            "nearest_distance": distance,
+            "detections": self.stop_latch["detections"] if held else [],
             "warnings": [],
             "n_candidates": 0,
             "n_points": 0,
@@ -763,17 +900,37 @@ class DetectorNode(Node):
             "health": {"level": "error", "messages": [message]},
             "mount": {},
             "clear_distance": 0.0,
-            "decision": "FAULT",
+            "decision": decision,
+            "detector_clear_distance": None,
+            "stop_held": held,
+            "snapshot_kind": "processing_error" if level_name == "ERROR" else "watchdog",
+            "freshness": {"mode": self.freshness_mode, "evaluated_at_utc_s": time.time(),
+                          "max_result_age_s": self.max_result_age, "future_tolerance_s": self.future_tolerance,
+                          "clock_reference": "acquisition_utc" if self.freshness_mode == "live" else "publisher_utc",
+                          "valid": False, "reason": level_name.lower(),
+                          "go_allowed": False, "source_age_s": None, "acquisition_age_s": None,
+                          "publication_age_s": None, "residence_age_s": None, "queue_lag_s": None},
         }
+        if held:
+            fault_status["stop_source_stamp"] = self.stop_latch["stamp"]
+            fault_status["stop_source_frame_id"] = self.stop_latch["frame_id"]
         self.pub_status.publish(String(data=json.dumps(fault_status)))
-        self.pub_det.publish(Detection3DArray(header=header))
+        self.pub_det.publish(self.stop_ros if held and self.stop_ros is not None else Detection3DArray(header=header))
         if self.get_parameter("publish_markers").get_parameter_value().bool_value:
             clear = Marker(header=header, ns="resense", id=0, action=Marker.DELETEALL)
-            self.pub_markers.publish(MarkerArray(markers=[clear]))
-        self.last_status = "FAULT: " + message
+            markers = [clear]
+            if held:
+                label = Marker(header=header, ns="resense", id=1, type=Marker.TEXT_VIEW_FACING, action=Marker.ADD)
+                label.pose.orientation.w = 1.0
+                label.scale.z = 1.2
+                label.color.r, label.color.a = 1.0, 1.0
+                label.text = "STOP HELD: previous obstacle; monitoring invalid"
+                markers.append(label)
+            self.pub_markers.publish(MarkerArray(markers=markers))
+        self.last_status = decision + ": " + message
 
     def on_watchdog(self) -> None:
-        """Guard: the input went silent (sensor, driver or bag stopped) -> FAULT / STALE at 2 Hz;
+        """Guard: silent input -> invalid monitoring at 2 Hz; preserve a held STOP;
         before the first frame, after ``startup_grace`` s, FAULT / NO_INPUT (v0.6.2: silence is
         not an answer to "can we go")."""
         timeout = self.get_parameter("stale_timeout").get_parameter_value().double_value
@@ -786,10 +943,18 @@ class DetectorNode(Node):
                                    + ", ".join(self.subs) + "): path not monitored", "NO_INPUT")
             return
         silent = now - self.last_frame_wall
-        if silent > timeout and now - self.last_stale_pub > 0.5:
+        source_expired = False
+        if self.last_result_clock is not None:
+            source, arrival = self.last_result_clock
+            age = time.time() - source if source is not None else None
+            source_expired = (age is None or age > self.max_result_age or age < -self.future_tolerance
+                              or arrival is None or now - arrival > self.max_result_age)
+        if (silent > timeout or source_expired) and (self.last_published_valid or now - self.last_stale_pub > 0.5):
             self.last_stale_pub = now
-            self.publish_fault(Header(frame_id=self.active_topic or ""),
-                               f"no LiDAR frame for {silent:.1f} s (> {timeout:.1f} s): path not monitored", "STALE")
+            message = (f"last result expired (> {self.max_result_age:.1f} s source/residence age): path not monitored"
+                       if source_expired else
+                       f"no LiDAR frame for {silent:.1f} s (> {timeout:.1f} s): path not monitored")
+            self.publish_fault(Header(frame_id=self.active_frame_id or ""), message, "STALE")
 
     @staticmethod
     def decision(res: FrameResult) -> str:
@@ -813,7 +978,7 @@ class DetectorNode(Node):
         st = DiagnosticStatus(level=lv.get(h.get("level", "ok"), DiagnosticStatus.OK), name="resense/detector",
                               message="; ".join(h.get("messages", [])) or "ok", hardware_id=hdr.frame_id or "lidar")
         for k in ("points", "near_fraction", "blocked_sectors", "visibility", "rail_lock", "latency_p95_ms",
-                  "monitored_range", "clear_distance", "decision_level"):
+                  "monitored_range", "clear_distance", "decision_level", "freshness_valid", "freshness_reason"):
             if k in h:
                 st.values.append(KeyValue(key=k, value=str(h[k])))
         m = getattr(res, "mount", {}) or {}
@@ -829,15 +994,52 @@ class DetectorNode(Node):
     def publish(self, header: Header, frame: Frame, res: FrameResult) -> None:
         out_frame = self.get_parameter("output_frame").get_parameter_value().string_value or header.frame_id
         hdr = Header(stamp=header.stamp, frame_id=out_frame)
+        freshness = self.result_freshness(res)
+        raw_range = float(getattr(res, "clear_distance", 0.0))
+        raw_obstacle = bool(res.obstacle)
+        status = res.to_dict()
+        if raw_obstacle:
+            self.stop_latch = {"nearest_distance": res.nearest_distance, "detections": status["detections"],
+                               "stamp": status["stamp"], "frame_id": header.frame_id}
+        elif freshness["valid"]:
+            self.stop_latch, self.stop_ros = None, None
+        held = not raw_obstacle and self.stop_latch is not None
+        # Do not mutate the detector's FrameResult or health dictionary.
+        res = copy.copy(res)
+        res.health = copy.deepcopy(getattr(res, "health", {}) or {})
+        if not freshness["valid"]:
+            level = "warn" if freshness["reason"] == "catchup" else "error"
+            res.health.update(level=level, decision_level=level)
+            res.health.setdefault("messages", []).append("freshness: " + freshness["reason"])
+            res.clear_distance = 0.0
+            res.health["clear_distance"] = 0.0
+            res.health["monitored_range"] = 0.0
+        res.health.update(freshness_valid=freshness["valid"], freshness_reason=freshness["reason"])
+        if held:
+            res.obstacle, res.nearest_distance = True, self.stop_latch["nearest_distance"]
+            # Old boxes keep their original header through stop_ros; never transform them
+            # using a later recording's mount or frame.
+            res.detections = []
+            status.update(obstacle=True, nearest_distance=res.nearest_distance,
+                          detections=self.stop_latch["detections"],
+                          stop_source_stamp=self.stop_latch["stamp"],
+                          stop_source_frame_id=self.stop_latch["frame_id"])
+        decision = self.decision(res)
+        freshness["go_allowed"] = freshness["valid"] and decision == "GO"
+        status.update(node=self.node_stats(), decision=decision, snapshot_kind="frame", freshness=freshness,
+                      stop_held=held, detector_obstacle=raw_obstacle, detector_clear_distance=raw_range,
+                      clear_distance=float(res.clear_distance), health=res.health)
         self.pub_flag.publish(Bool(data=bool(res.obstacle)))
         self.pub_warn.publish(Bool(data=bool(res.warning)))
         self.pub_dist.publish(Float32(data=float(res.nearest_distance) if res.nearest_distance is not None else -1.0))
-        status = res.to_dict()
-        status["node"] = self.node_stats()
-        status["decision"] = self.decision(res)
+        self.last_published_valid = freshness["valid"]
+        self.last_result_clock = (self.freshness_previous[1] if self.freshness_previous else None,
+                                  self.current_arrival[0] if self.current_arrival else None)
+        self.last_status = decision + (f" at {res.nearest_distance:.1f} m" if res.obstacle else "")
+        self.last_status += "; freshness " + freshness["reason"]
         self.pub_status.publish(String(data=json.dumps(status)))
-        self.pub_decision.publish(String(data=status["decision"]))
-        self.pub_clear.publish(Float32(data=float(getattr(res, "clear_distance", -1.0))))
+        self.pub_decision.publish(String(data=decision))
+        self.pub_clear.publish(Float32(data=float(res.clear_distance)))
         self.pub_health.publish(self.health_msg(hdr, res))
         # vehicle frame of the detector (after the mount calibration) -> sensor frame
         R_out = self.R_sv @ np.asarray(getattr(self.detector, "mount_rotation", np.eye(3))).T
@@ -856,10 +1058,15 @@ class DetectorNode(Node):
             det.results.append(hyp)
             det.id = str(d.id)
             det_msg.detections.append(det)
-        self.pub_det.publish(det_msg)
+        if raw_obstacle:
+            self.stop_ros = det_msg
+        self.pub_det.publish(self.stop_ros if held and self.stop_ros is not None else det_msg)
 
         if self.get_parameter("publish_markers").get_parameter_value().bool_value:
-            self.pub_markers.publish(self.make_markers(hdr, res, R_out))
+            markers = self.make_markers(hdr, res, R_out)
+            if held:
+                markers.markers[-1].text = "STOP HELD: previous obstacle; monitoring invalid"
+            self.pub_markers.publish(markers)
         if self.get_parameter("publish_corridor_cloud").get_parameter_value().bool_value and res.corridor_idx.size:
             pts = res.xyz if getattr(res, "xyz", None) is not None else frame.xyz
             self.pub_corridor.publish(self.make_cloud(hdr, pts[res.corridor_idx] @ R_out.T.astype(np.float32),
@@ -901,7 +1108,10 @@ class DetectorNode(Node):
         for k, side in enumerate((half, -half)):
             line = Marker(header=hdr, ns="resense", id=mid, type=Marker.LINE_STRIP, action=Marker.ADD)
             line.scale.x = 0.08
-            line.color.r, line.color.g, line.color.b, line.color.a = 0.2, 1.0, 0.3, 0.8
+            if (getattr(res, "health", {}) or {}).get("freshness_valid") is False:
+                line.color.r, line.color.g, line.color.b, line.color.a = 0.5, 0.5, 0.5, 0.4
+            else:
+                line.color.r, line.color.g, line.color.b, line.color.a = 0.2, 1.0, 0.3, 0.8
             line.pose.orientation.w = 1.0
             for x in xs:
                 p_v = np.array([x, res.track.center_y(x) + side, res.track.rail_z(x) + 1.0])
@@ -947,11 +1157,14 @@ class DetectorNode(Node):
 def main(args=None) -> None:
     rclpy.init(args=args)
     node = DetectorNode()
+    executor = SourceInfoExecutor()
+    executor.add_node(node)
     try:
-        rclpy.spin(node)
+        executor.spin()
     except KeyboardInterrupt:
         pass
     finally:
+        executor.shutdown()
         node.destroy_node()
         rclpy.shutdown()
 

@@ -100,7 +100,7 @@ def release_notes(tag: str, commit: str, sha256: str, size_bytes: int, repo: str
     commands = [
         (f"sha256sum -c {archive}.sha256", "0. optional: the archive is intact (both files in one folder)"),
         (f"docker load -i {archive}", "1. once, no internet needed"),
-        ("docker run --rm -it --net=host --ipc=host resense", "2. console 1: the node, no arguments"),
+        ("docker run --rm -it --net=host --ipc=host resense ros2 launch resense_ros detector.launch.py freshness_mode:=replay", "2. console 1: explicit historical replay mode"),
         ("ros2 bag play <bag> --delay 3", "3. console 2: any user, ROS 2 Humble"),
         ("ros2 topic echo /resense/decision --field data", "4. console 3: GO | CAUTION | STOP | FAULT"),
         ("ros2 topic echo /resense/nearest_distance --field data", "5. distance to the obstacle, m; -1 = none"),

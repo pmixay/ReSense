@@ -762,3 +762,61 @@ def test_cli_inject_and_eval(synth_npy_dir, tmp_path, capsys):
     res = run_cli(["eval", str(out), "--text"])
     assert res["frames"] == 1 and res["recall"] == 1.0
     assert "recall            : 100.0%" in capsys.readouterr().out
+
+
+
+def test_watchdog_stop_snapshots_are_not_processed_frame_evidence(tmp_path):
+    from scripts import check_dry_run
+    p = tmp_path / "snapshots.jsonl"
+    frame = {"obstacle": True, "decision": "STOP", "node": {}, "snapshot_kind": "frame"}
+    snapshots = [dict(frame, snapshot_kind=kind) for kind in ("watchdog", "processing_error")]
+    p.write_text("\n".join(json.dumps(row) for row in snapshots + [frame]))
+    frames, skipped = check_dry_run.load(p)
+    assert frames == [frame] and skipped == 2
+
+
+@pytest.mark.parametrize("change,fragment", [
+    ({"valid": False}, "GO"),
+    ({"source_age_s": 0.501}, "age/queue"),
+    ({"source_age_s": -0.051}, "age/queue"),
+    ({"residence_age_s": 0.501}, "age/queue"),
+    ({"queue_lag_s": 0.1}, "age/queue"),
+    ({"clock_reference": "guessed"}, "clock reference"),
+    ({"publication_age_s": None}, "mode-specific"),
+])
+def test_runtime_freshness_checker_rejects_unsafe_go(change, fragment):
+    from scripts import check_dry_run
+    f = {"mode": "replay", "clock_reference": "publisher_utc", "valid": True,
+         "go_allowed": True, "reason": "current", "source_age_s": 0.1,
+         "evaluated_at_utc_s": 1000.0, "max_result_age_s": 0.5, "future_tolerance_s": 0.05,
+         "publication_age_s": 0.1, "acquisition_age_s": None,
+         "residence_age_s": 0.02, "queue_lag_s": 0.0}
+    frame = {"snapshot_kind": "frame", "obstacle": False, "decision": "GO", "freshness": f,
+             "detector_obstacle": False, "stop_held": False,
+             "node": {"recording": 1, "catchup": False}, "detector_clear_distance": 100.0,
+             "clear_distance": 100.0, "health": {"level": "ok"}}
+    assert not check_dry_run.freshness_failures([frame])
+    f.update(change)
+    assert any(fragment in s for s in check_dry_run.freshness_failures([frame]))
+
+
+def test_runtime_freshness_checker_rejects_all_fault_or_missing_schema():
+    from scripts import check_dry_run
+    failures = check_dry_run.freshness_failures([{"obstacle": False, "decision": "FAULT", "node": {"recording": 1}}])
+    assert any("schema missing" in s for s in failures)
+    assert any("no valid result" in s for s in failures)
+
+
+def test_held_stop_cannot_supply_positive_evidence_for_next_recording(check_dry_run, tmp_path, capsys):
+    path = _capture(tmp_path / "held.jsonl", n=80, alarms=range(20, 80), recording=lambda i: 1 + (i >= 40))
+    frames, _ = check_dry_run.load(path)
+    for f in frames:
+        f["freshness"] = {"valid": False}
+        f["detector_obstacle"] = bool(f["obstacle"] and f["node"]["recording"] == 1)
+        f["stop_held"] = f["obstacle"] and not f["detector_obstacle"]
+    Path(path).write_text("".join(json.dumps(f)+"\n" for f in frames))
+    assert check_dry_run.main([path, "--expect-obstacle", "--expect-inputs", "2"]) == 1
+    assert "recording 2: 0 alarm frames" in capsys.readouterr().out
+    # Exposed held STOP is still counted against a clear-bag criterion.
+    assert check_dry_run.main([path, "--expect-clear"]) == 1
+    assert "60 false alarms" in capsys.readouterr().out

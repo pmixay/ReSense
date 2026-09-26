@@ -95,7 +95,7 @@ docker run --rm -i "${NET_ARGS[@]}" ${EXTRA_ARGS[@]+"${EXTRA_ARGS[@]}"} \
   -e BAG_NAME="$BAG_NAME" -e RATE="$RATE" \
   resense:latest bash -s <<'INNER'
 set -euo pipefail
-ros2 launch resense_ros detector.launch.py rviz:=false >/out/node.log 2>&1 &
+ros2 launch resense_ros detector.launch.py rviz:=false freshness_mode:=replay >/out/node.log 2>&1 &
 LAUNCH_PID=$!
 
 for _ in $(seq 1 60); do
@@ -130,4 +130,4 @@ if [ $# -gt 0 ]; then
 else
   CHECK_ARGS=(--expect-obstacle --distance 50:62 --max-p95-latency 100 --max-dropped 0)
 fi
-python3 scripts/check_dry_run.py "$OUT_ABS/status.jsonl" "${CHECK_ARGS[@]}" --bag "$BAG_PATH"
+python3 scripts/check_dry_run.py "$OUT_ABS/status.jsonl" --require-freshness "${CHECK_ARGS[@]}" --bag "$BAG_PATH"

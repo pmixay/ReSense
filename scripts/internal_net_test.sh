@@ -65,7 +65,7 @@ if ! docker run --rm --network "$NET" "$IMAGE" python3 scripts/check_no_network.
   echo "ERROR: the internal network reaches the internet; this run would prove nothing" >&2
   exit 1
 fi
-docker run -d --name "$NODE" --network "$NET" "$IMAGE" >/dev/null
+docker run -d --name "$NODE" --network "$NET" "$IMAGE" ros2 launch resense_ros detector.launch.py freshness_mode:=replay >/dev/null
 READY=0
 for _ in $(seq 1 60); do
   if docker logs "$NODE" 2>&1 | grep -q "ReSense detector listening"; then READY=1; break; fi
@@ -97,4 +97,4 @@ else
   CHECK_ARGS=(--expect-obstacle --min-frames 20 --max-p95-latency 1000 --max-dropped 100000)
   [ -n "$BAG2" ] && CHECK_ARGS+=(--expect-inputs 2)
 fi
-python3 scripts/check_dry_run.py "$OUT_ABS/status.jsonl" "${CHECK_ARGS[@]}"
+python3 scripts/check_dry_run.py "$OUT_ABS/status.jsonl" --require-freshness "${CHECK_ARGS[@]}"
