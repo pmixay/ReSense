@@ -272,7 +272,7 @@ resense:
     drift_warn_deg: 1.5
     drift_window: 10                 # median of the last 10 checks (50 s): a curve is not a drift
     time_cadence: true               # on since 25.09 (P3, SCORECARD #13): obs_spacing / monitor_period / max_frames in nominal frame periods at the input rate (from the stamps), not processed frames: 5 Hz calibrates in 20 s as 10 Hz does (it never completed on a 25 s bag)
-    refine_min_deg: 0.5              # on since 25.09 (P3): a provisional tilt is replaced by the spaced observations so far when they differ by at least this (deg); +3 deg roll five bags 16 -> 11 events, pitch 17 -> 16; 0 = off
+    refine_min_deg: 0.0              # OFF since 26.09 (safety review): 0.5 in round 2 replaced the provisional tilt by the spaced observations (+3 deg roll five bags 16 -> 11 events), but a refined tilt lost a doubleT_obstacle STOP frame the provisional one keeps (5 Hz, rig (0, -1.5 deg), frame 182, every variant tried); 0 = off
     provisional_per_axis: false      # 25.09 (P3), tried, not shipped: the provisional tilt corrects only the axis that reaches provisional_min_deg (roll / pitch five bags -> 19 / 19 events)
     keep_within_deg: 0.25            # on since 25.09 (P3): a final tilt within this (deg) of the applied provisional keeps it, no track re-seed (doubleT_obstacle 185 -> 186 labelled hits); 0 = off
     # 26.09 (safety review of the round-2 items; docs/evidence/results/p3_round2_review_fixes_2026-09-26.json)

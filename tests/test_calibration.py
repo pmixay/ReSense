@@ -283,17 +283,18 @@ def test_a_final_within_keep_within_deg_keeps_the_provisional_tilt(tunnel):
 
 def test_robustness_flags_are_on_by_default():
     """Shipped 25.09 after the 10 Hz gate (identical but doubleT_obstacle 185 -> 186 labelled
-    hits); the per-axis provisional gating was tried and is off (EXPERIMENTS.md section 1i)."""
+    hits); the per-axis provisional gating was tried and is off (EXPERIMENTS.md section 1i). The
+    refinement (refine_min_deg 0.5 in round 2) is off since the safety review of 26.09."""
     cfg = DetectorConfig()
     assert cfg.calibration.time_cadence and cfg.track.rates_per_period and cfg.track.walls_smoothing_per_period
-    assert cfg.calibration.refine_min_deg == 0.5 and cfg.calibration.keep_within_deg == 0.25
+    assert cfg.calibration.refine_min_deg == 0.0 and cfg.calibration.keep_within_deg == 0.25   # the refinement off since 26.09
     assert not cfg.calibration.provisional_per_axis
 
 
 @pytest.mark.synthetic
 def test_nearby_obstacle_still_stops_at_5hz_on_a_tilted_rig():
     """A 0.6 m box 30 m ahead, rig pitched 3 deg, 5 Hz stamps, the shipped defaults (time
-    cadence, rates and yaw / curvature smoothing per period, refinement, keep-within): the
+    cadence, rates and yaw / curvature smoothing per period, keep-within): the
     provisional tilt comes after 5 frames, the tracker restarts, and the box is a STOP at the
     right distance within 0.6 s of sensor time after that, and stays one."""
     from resense.synthetic import ObstacleSpec, synthetic_tunnel_frame

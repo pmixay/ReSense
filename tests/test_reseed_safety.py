@@ -33,20 +33,27 @@ def _remount(xyz: np.ndarray, M: np.ndarray) -> np.ndarray:
     return (xyz @ M.T).astype(np.float32)
 
 
+@pytest.mark.parametrize("stage", ["final", "refinement"])
 @pytest.mark.parametrize("extra", [0.7, 1.5])
-def test_a_refinement_while_a_stop_is_confirmed_keeps_it(extra):
+def test_a_calibration_change_while_a_stop_is_confirmed_keeps_it(stage, extra):
     """Ray-cast: a 0.6 m box 30 m ahead, rig rolled 3 deg, the first 5 frames see ``extra`` deg
     more (one canted stretch: the provisional tilt is off by that much). The spaced observations
-    (every 3 frames here) refine it at frame 15, while the box has been a STOP since frame 8. The
-    STOP is kept on every frame from its first confirmation and ``clear_distance`` is never
-    beyond the box. A sub-degree refinement keeps the track model (rotated: its age and the
-    floor-shadow reference continue); 1.5 deg re-seeds it but the tracks are kept. On 17a850d
-    the 1.5 deg refinement reset the tracker: no STOP on 4 frames."""
+    (every 3 frames here) correct it while the box has been a STOP since frame 8: the final
+    calibration (after 7 observations here, frame 18; the shipped defaults) or, with the
+    refinement turned on (``refine_min_deg`` 0.5, off since 26.09), the refinement at frame 15.
+    The STOP is kept on every frame from its first confirmation and ``clear_distance`` is never
+    beyond the box. A sub-degree change keeps the track model (rotated: its age and the
+    floor-shadow reference continue); 1.5 deg re-seeds it but the STOP track is kept. On 17a850d
+    the 1.5 deg change reset the tracker: no STOP on 4 frames."""
     from resense.synthetic import ObstacleSpec, synthetic_tunnel_frame
     frame, _, _ = synthetic_tunnel_frame(rng=np.random.default_rng(5),
                                          specs=[ObstacleSpec(kind="box", size=(0.6, 0.6, 0.6), distance=30.0)])
     cfg = DetectorConfig()
     cfg.calibration.obs_spacing = 3
+    if stage == "final":
+        cfg.calibration.frames, cfg.calibration.refine_min_deg = 7, 0.0
+    else:
+        cfg.calibration.refine_min_deg = 0.5
     det = Detector(cfg)
     true, canted = rot_x(np.radians(3.0)), rot_x(np.radians(3.0 + extra))
     res, changes = [], []
@@ -58,19 +65,22 @@ def test_a_refinement_while_a_stop_is_confirmed_keeps_it(extra):
         if not np.allclose(before, det.mount_rotation):
             changes.append((k, det.calib.last_change_deg, age, res[-1].track.age))
     assert [c[0] for c in changes][0] == 4                      # the provisional tilt
-    refine = [c for c in changes if c[0] > 4]
-    assert len(refine) == 1 and abs(refine[0][1] - extra) < 0.3, changes
-    k_ref = refine[0][0]
+    later = [c for c in changes if c[0] > 4]
+    assert len(later) == 1 and abs(later[0][1] - extra) < 0.3, changes
+    k_ch = later[0][0]
+    confirm = getattr(cfg.calibration, "refine_confirm_obs", 1)      # 2 since 26.09: one observation later
+    assert k_ch == (18 if stage == "final" else 12 + 3 * (confirm - 1))
     first = next(k for k, r in enumerate(res) if r.obstacle)
-    assert first < k_ref - 2, (first, k_ref)
+    assert first < k_ch - 2, (first, k_ch)
     for k in range(first, len(res)):
         r = res[k]
-        assert r.obstacle, (k, k_ref, [c[0] for c in changes])
+        assert r.obstacle, (k, k_ch, [c[0] for c in changes])
         assert 29.5 < r.nearest_distance < 30.5
         assert r.clear_distance <= r.nearest_distance + 0.1, (k, r.clear_distance)
     if extra < 1.0:
-        assert refine[0][3] == refine[0][2] + 1                  # the model was kept, not re-seeded
-    assert res[-1].mount["status"] == "provisional" and abs(res[-1].mount["roll_deg"] + 3.0) < 0.3
+        assert later[0][3] == later[0][2] + 1                    # the model was kept, not re-seeded
+    assert res[-1].mount["status"] == ("ok" if stage == "final" else "provisional")
+    assert abs(res[-1].mount["roll_deg"] + 3.0) < 0.3
 
 
 def test_rotate_track_model_is_the_same_bed_and_axis():
@@ -221,14 +231,15 @@ def test_refinement_does_not_flap():
     """The reviewer's flapping: the median roll of the spaced observations hovers around
     apply_min_deg (0.75 deg). Compared after the zeroing below 0.75 every crossing was a jump of
     at least 0.75 deg and re-seeded the track model (4 re-seeds on roundT_doubleT +3 deg pitch;
-    here 5 changes). Shipped since the review: the condition must hold on two spaced
-    observations in a row and at most one refinement is made - one change. The opt-in raw
+    here 5 changes). The refinement is off since the review; turned on (refine_min_deg 0.5) the
+    condition must hold on two spaced observations in a row and at most one refinement is made -
+    one change. The opt-in raw
     trigger (tried, not shipped) makes one change on a median hovering by 0.2 deg but still
     flaps on one swinging by its whole 0.5 deg deadband."""
     cfg = DetectorConfig()
 
     def changes(rolls, **kw) -> int:
-        c = replace(cfg.calibration, **kw)
+        c = replace(cfg.calibration, **{"refine_min_deg": 0.5, **kw})
         return sum(ch for ch, _ in _feed(_calibrator_with_provisional(replace(cfg, calibration=c), 0.0), rolls))
 
     old = dict(refine_confirm_obs=1, refine_max=0)
@@ -240,10 +251,10 @@ def test_refinement_does_not_flap():
     assert changes(hover, refine_raw_trigger=True, **old) == 1
     assert changes(swing, refine_raw_trigger=True, **old) == 5
     c = cfg.calibration
-    assert (c.refine_raw_trigger, c.refine_confirm_obs, c.refine_max, c.refine_min_deg) == (False, 2, 1, 0.5)
+    assert (c.refine_raw_trigger, c.refine_confirm_obs, c.refine_max, c.refine_min_deg) == (False, 2, 1, 0.0)
     # a real correction (the canted-stretch case: provisional roll 2 deg off) is still made, on
     # the second observation that says so
-    cal = _calibrator_with_provisional(cfg, -1.0)
+    cal = _calibrator_with_provisional(replace(cfg, calibration=replace(cfg.calibration, refine_min_deg=0.5)), -1.0)
     out = _feed(cal, [-3.0, -3.1, -2.9, -3.0, -3.05, -2.95, -3.0])
     assert [ch for ch, _ in out] == [False] * 5 + [True, False] and abs(cal.state.roll_deg + 3.0) < 0.1, out
 
