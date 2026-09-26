@@ -17,7 +17,7 @@ frames, 13 km, no obstacles).
 ## Unreleased (in development; package version 1.0.0)
 
 Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
-overhead rule on, node v0.6.4). Tests: 235 → 500 (+28 native kernels, +3 speed evaluation
+overhead rule on, node v0.6.4). Tests: 235 → 527 (+28 native kernels, +3 speed evaluation
 helpers, +23 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5
 overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting and socket
 buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`, +20 DDS
@@ -25,8 +25,20 @@ transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
 `cluster.far_axis_both_sides`, +3 far bed bins, +5 the rail-shadow review fixes, +4 the
 free-hanging exemption of `floating`, +4 thin hanging objects, +5 `health.clear_cap`, +6 the rate
 and re-mount flags, +1 the rail-lock guard of the hanging stage, +13 the review fixes of the
-round-2 items, +17 their re-review, +6 latency out of the decision, +8 the start-up census) in
-`tests/`, 13 in `web/demo`.
+round-2 items, +17 their re-review, +6 latency out of the decision, +8 the start-up census, +27
+the rail-start rule) in `tests/`, 13 in `web/demo`.
+
+- **Rail heads ahead of a standing train at a fresh start (26.09, P3): `lowobj.rail_start_within`
+  4 m, on.** Fixes the open finding of the start-up census: from the gate's piece-2 cut a fresh
+  detector STOPped at 2.9–3.1 m on the rail heads. A `low` cluster under 4 m that reaches a rail
+  line, is at most 0.45 m wide and rises at most 0.05 m above the rail head's own returns along
+  the track is rail geometry. A low track on it that was never matched at ≥ 4 m is not newly
+  reported. The finding's 4 STOP frames → 0. The blind-zone cases of rule c still STOP on the same
+  frames: all 40 ray-cast cases (30 × 30 × 10 cm object, objects across a rail, 0.5 m box;
+  3.0–3.9 m ahead; standing or slow train) identical. Gate PASS against `_p3b`: ride 46 → 45 events (187 / 39 → 183 / 38), every other row the same. Off (0): output identical to
+  `bd67fb0`; baseline not re-cut. +27 tests.
+  [`p3_rail_start_2026-09-26.json`](docs/evidence/results/p3_rail_start_2026-09-26.json),
+  [EXPERIMENTS §1k](docs/EXPERIMENTS.md).
 
 - **Start-up of a fresh bag (26.09, P3 / P4): census; three rules tried, none shipped.** A
   judge's fresh start at ride piece 2 STOPped at 2.9–3.1 m. The cause: the rail heads 3.0–3.6 m
