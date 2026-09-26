@@ -67,7 +67,7 @@ python scripts/detector_freeze.py verify
 
 ## Limits retained at the freeze
 
-The current independent combined score is 64.5/100; the 75-point target is not met. Set O edge objects STOP only at 5–10 m;
+The current provisional independent combined score is 64/100; the 75-point target is not met. Set O edge objects STOP only at 5–10 m;
 the ride has 45 false events and has no real obstacles. There is no unseen-route recall result.
 `clear_distance` estimates the monitored region capped by detected candidates; it can extend
 past objects that do not form a cluster. It must not be described as a guarantee of empty track.

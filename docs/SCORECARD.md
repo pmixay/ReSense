@@ -3,12 +3,55 @@
 > **Purpose:** the independent judgements of ReSense against the eight criteria of spec §8: score
 > per criterion, the evidence behind it, the risks on the hidden data and the fastest points to gain.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, summary RU
-> **Last independent judgement:** 2026-09-26 night, frozen detector and final integration worktree.
+> **Last independent judgement:** 2026-09-26 night, freshness work and failed combined candidate acceptance.
 > **Status:** current review below; earlier numbered sections are dated records.
 
 ## Freeze review: 26 September night
 
-**Current combined score: 64.5/100. The target of 75 is not met.** Two independent reviewers
+**Current provisional combined score: 64/100. The target of 75 is not met.** This review covers
+the P3d detector with implemented freshness controls and the evidence from rejected/unaccepted
+candidates. T1's new boundary-trust experiment and final CI are pending; neither receives credit.
+The fixed aggregation rule averages each criterion and rounds it down to the nearest 0.5.
+The organizers provide no numerical weights; these remain internal estimates.
+
+| Criterion | Maximum | Judge A | Judge B | Combined |
+|---|---:|---:|---:|---:|
+| Functionality |25|15|14|14.5|
+| Range |15|6|6|6|
+| Speed |10|8.5|8|8|
+| Generalization |15|6|6|6|
+| Technical quality |10|9|8.5|8.5|
+| Ease of launch |10|8|8|8|
+| Team approach |10|9|9|9|
+| Pitch |5|4|4|4|
+| **Total** |**100**|**65.5**|**63.5**|**64**|
+
+Independent reports: [judge A](evidence/results/rejudge_quality_cycle_2026-09-26.json),
+[judge B](evidence/results/rejudge_quality_cycle_b_2026-09-26.json). Their methods and reading
+limits are explicit. The main detector is unchanged; the new clear-run failure and its exact
+processing-history reproduction strengthen the evidence about an existing weakness.
+
+### Current strengths and limits
+
+- Source/residence/transport age, invalid-result handling and STOP retention now have explicit
+  contracts and tests. These establish evidence freshness, not obstacle-detection completeness.
+- M2 preserves all 146 enforced metrics and all 72 placement-case outputs. It reduces cached
+  GO range overclaims from 46 to 36, but remains unmerged after the combined runtime failure.
+- Standalone clear playback produced one raw STOP at 53 m against a zero-alarm limit. The
+  exact processed sequence reproduces it in both the baseline and M2. Losing a contradictory
+  boundary can increase axis trust from 60 to 120 m; a joined fragment also defeats the existing
+  column rule. [Causal evidence](evidence/results/quality_cycle_2026-09-26_clear_failure/README.md).
+- No detection-changing candidate is accepted. Edge first STOPs remain at 5.2/10.3 m, ride
+  false events at 45 and STOP episodes at 38. Real-positive evidence remains near 56 m.
+- No untouched real-obstacle recording is available. Q1, approved team photos/contacts and
+  human rehearsals remain unresolved. Packaging alone cannot close the detection/range gaps.
+
+Final freeze remains on hold. The local archive is explicitly a failed candidate for offline
+review. No release is published. [Current work and acceptance results](QUALITY_CYCLE_2026-09-26.md).
+
+## Earlier baseline review: 26 September night
+
+**Earlier combined score: 64.5/100. The target of 75 was not met.** Two independent reviewers
 read the specification, code and raw results before scoring, without using the previous score
 as a baseline. The organizers publish no numerical weights; the maxima below are the team's
 unchanged rubric. As in the previous review, combine the two scores per criterion and round
@@ -72,7 +115,7 @@ O_DIRECT readers (127.4 MiB/s combined) passes unchanged criteria: p95 36.37 ms,
 No score change is assigned automatically. The user confirmed there is no additional untouched
 real-obstacle recording available for this pass.
 
-**Кратко:** заморозка и воспроизводимость подтверждены, но оценка после новых проверок —
+**Историческое резюме:** целостность базовой версии и воспроизводимость подтверждены; оценка того этапа —
 **64,5/100**. Исправлены запуск с холодного диска и индикация; новый эксперимент выявил пропуски,
 поэтому критерий переноса на новые данные нельзя закрыть. Исторические оценки ниже сохранены
 со своими датами и условиями.

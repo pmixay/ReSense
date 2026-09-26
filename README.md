@@ -175,7 +175,7 @@ these timings exclude the player's disk preloading. [Raw evidence](docs/evidence
 
 **Criteria judgement:** the new independent reviews and remaining gaps are in
 [the current scorecard](docs/SCORECARD.md#freeze-review-26-september-night).
-The current combined estimate is **64.5/100**; the requested 75/100 is not met. P4's preregistered experiment finds the target
+The current provisional combined estimate is **64/100**; the requested 75/100 is not met. P4's preregistered experiment finds the target
 in **45/72 cases and 544/2,458 visible frames**, with zero paired-control matches. This tests
 synthetic combinations on seen backgrounds; it provides no real unseen-route recall result.
 All 45 ride false targets now have exact point/history traces; 14 causes remain unresolved.

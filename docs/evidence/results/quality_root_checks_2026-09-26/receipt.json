@@ -1,0 +1,36 @@
+{
+  "scope": "Main P3d detector with new node and browser freshness controls; M2 and T1 source are not integrated.",
+  "full_suite_source_commit": "36a88f031c5feee5c331678032a4dfdb4b372909",
+  "full_suite_command": "RESENSE_REQUIRE_SYNTHETIC=1 RESENSE_RIDE_CACHE=/home/resense/data/cache/new_data OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 /home/resense/.venv/bin/python -m pytest -q -rs tests web/demo --junitxml=/home/resense/validation/quality_cycle/root_final_pytest.xml",
+  "initial_result": {
+    "passed": 681,
+    "failed": 1,
+    "subtests_passed": 6,
+    "skipped": 0,
+    "deselected": 0,
+    "duration_s": 89.66
+  },
+  "failure": "Browser rejection reason was read in a later event-loop turn; the live timer correctly replaced status_transport_stale with status_stream_stale while the UI remained FAULT.",
+  "correction_commit": "f66e982211013542e8b130dcbe3fec1c7d8711da",
+  "correction": "Test reads the rejection reason atomically with message delivery. No browser product code or acceptance decision changed.",
+  "affected_suite_rerun": {
+    "path": "web/demo",
+    "passed": 15,
+    "failed": 0,
+    "skipped": 0,
+    "duration_s": 10.53
+  },
+  "combined_coverage": {
+    "core_and_tool_tests_passed": 667,
+    "browser_tests_passed": 15,
+    "subtests_passed": 6,
+    "note": "Combined evidence from the full suite and the corrected browser suite; not one all-green invocation."
+  },
+  "source_sha256": {
+    "web/index.html": "767fbd25699bde6afcb323aad0260d80de2172a67cdfb9a72c4d2c504a699a76",
+    "resense/detector.py": "f809fd1e0382ee623e3e382afe1f35616ba8d74321f03eaaf1a5afd7a969afdc",
+    "resense/health.py": "d73b7ed3fae37d27b5b7f8106f4896bcedc18c2dba980ac1da8ee1ada8e22421"
+  },
+  "integrity": "27-file original detector seal passes; 16 M2 observer, 24 M2 production, 34 M2 stress/raw and 42 clear-diagnosis artifact hashes verified.",
+  "runtime_acceptance": "The separate combined M2 runtime candidate remains failed; these tests do not waive the original clear-bag alarm."
+}
