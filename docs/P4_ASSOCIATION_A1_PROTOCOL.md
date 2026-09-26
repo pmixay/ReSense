@@ -62,3 +62,13 @@ bound explicitly. No parameter sweep or post-result radius adjustment belongs to
 Run the full gate first. If it fails, retain the failed artifacts and stop A1; do not spend time
 claiming secondary acceptance on a rejected candidate. If it passes, run all72 placements and the
 aligned coverage scorer. Preserve one candidate and its tests in an isolated worktree.
+
+### Code receipt for the repeated 72-case study
+
+The original plan validates detector source hashes, so it intentionally cannot execute changed
+code. Before any A1 evaluation, specify this repetition procedure: retain the original plan file
+unchanged; create an A1 receipt that copies every case, input hash, source fixture, configuration,
+window and limitation exactly, replaces only `code_sha256` with the A1 code hashes, and adds
+`parent_plan_sha256` plus the candidate commit. Assert all remaining original fields are equal.
+This is a new code receipt for the identical planned data, not a new placement selection. Commit
+the receipt before the repeated study. Keep the evaluator and its code-hash validation unchanged.
