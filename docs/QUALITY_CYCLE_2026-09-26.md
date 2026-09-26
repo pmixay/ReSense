@@ -14,6 +14,7 @@ This record separates measured improvements from goals that remain open.
 | M2: existing supported thin clusters limit range | Target overclaims 54→44; GO overclaims 46→36. Ride adds 0.612 percentage points uncertainty and retains 99.02% of median range. Offline detection output stays identical. | Offline gates pass; combined runtime acceptance fails. Source remains outside the main branch. |
 | A1: restrict extra tracking allowance to forward motion | Ride 45→44 events, 183→180 alarm frames; aggregate placement matches improve. One fixed case loses 2→1 matches and fails the registered per-case gate. | Rejected; source remains unmerged. |
 | D1: full-cloud context for clipped thin/floating candidates | Small edge object gains five STOP frames; synthetic matches 544→591. Outside-object false STOPs rise 6→9 and ride STOP episodes 38→40. | Rejected; source remains unmerged. |
+| T1: retain observed boundary disagreement | Losing a fitted boundary can raise trusted range from 60 to 120 m and supply the decisive historical vote for a false STOP. The candidate retains that contradiction until fresh boundaries agree or the scene resets. | Preregistered; isolated implementation and independent review underway. No result claimed. |
 
 All candidates were specified before their evaluations. Failures remain in the repository;
 no acceptance threshold was relaxed to turn a failed candidate into a pass.
@@ -58,8 +59,13 @@ measurements on this machine, not organizer-hardware results.
 limit is zero. It occurs at header stamp `946692947.533395`; freshness is valid and the STOP is
 not held from an earlier result. The same source frame caused an identical geometric alarm in
 the older baseline's stock-console capture. An older successful clear trial processed that frame
-as advisory. Exact processing-history attribution is underway. The failure remains a failure;
+as advisory. Exact replay now reproduces all three processed sequences in both the baseline and
+M2 with zero detector mismatches: 233/243/234 frames and 1/1/0 STOPs. The failure remains a failure;
 it is not waived because an older detector also exhibits it.
+
+The trace identifies a trust increase after boundary loss and a merged fragment that changes the
+column's apparent width. [Point-level diagnosis and figure](evidence/results/quality_cycle_2026-09-26_clear_failure/README.md).
+T1 tests the trust mechanism with unchanged numerical limits; it does not tune the column rule.
 
 The local image archive is an offline review artifact with `runtime_acceptance_passed: false`.
 Its source/native checks and load test pass; packaging does not confer detector acceptance.
@@ -98,3 +104,6 @@ dashboard UTC clocks must be synchronized. These mechanisms are not a braking sa
 - [Freshness and runtime results](evidence/results/quality_freshness_2026-09-26/README.md)
 - [A1 rejection](evidence/results/p4_A1_2026-09-26/README.md)
 - [D1 rejection](evidence/results/quality_cycle_2026-09-26_D1/README.md)
+- [Clear-failure attribution](evidence/results/quality_cycle_2026-09-26_clear_failure/README.md)
+- [T1 protocol](evidence/results/quality_cycle_2026-09-26_T1_protocol.json)
+- [Main branch test evidence](evidence/results/quality_root_checks_2026-09-26/README.md)
