@@ -1,0 +1,590 @@
+{
+  "status": "diagnostic observations only; no candidate selected or evaluated",
+  "selection": "Seven explicitly selected appended-source positive snapshots and four reviewed real-object bbox regions; this is not exhaustive positive validation.",
+  "synthetic_points": "Exact appended source identities mapped into cache with multiplicity by P3 trace helper.",
+  "real_points": "Reviewed physical XYZ boxes expanded by 0.02 m; selected counts equal labeled counts in these four frames, but the region is not an exact semantic object mask.",
+  "method": "Complete baseline chronological replay; same support_stats function as false-target trace, with exact current detector coordinates. No rounded rail-model reconstruction.",
+  "synthetic": [
+    {
+      "frame": 397,
+      "source": "setO_small_on_rail_397.npz",
+      "target_points": 6,
+      "support": {
+        "dy_min": 0.9466744817884056,
+        "dy_max": 1.2280558267049433,
+        "height_max": 1.2477347231365872,
+        "same_band_reference_bins": 4,
+        "same_band_reference_p90_median": -0.16666460293506027,
+        "height_excess_over_same_band": 1.4143993260716474,
+        "snapshot_points": 6
+      },
+      "target_xyz_min": [
+        53.27000045776367,
+        0.5600000023841858,
+        -0.22999998927116394
+      ],
+      "target_xyz_max": [
+        53.52000045776367,
+        0.8399999737739563,
+        -0.11999999731779099
+      ],
+      "track": {
+        "floor_coef": [
+          -1.4235808358558445e-06,
+          -0.005080117122466617,
+          -1.3387278028159222
+        ],
+        "floor_range": [
+          4.0,
+          82.5
+        ],
+        "center": -0.025,
+        "yaw": -0.006986345315215637,
+        "curvature": 7.64917395610835e-06,
+        "rail_offset": 0.247,
+        "rail_score": 0.182,
+        "wall_quality": 0.047,
+        "axis_valid": 177.0,
+        "n_bins": 26,
+        "residual": 0.016,
+        "floor_verified": 150.0,
+        "rail_slabs": 3,
+        "axis_sides": 2,
+        "age": 394
+      },
+      "mount": {
+        "status": "identity",
+        "orientation": "configured",
+        "roll_deg": 0.0,
+        "pitch_deg": 0.0,
+        "yaw_deg": 0.0,
+        "height": 1.08,
+        "lateral": -0.04,
+        "frames_used": 20,
+        "drift_deg": 0.21,
+        "message": "configured mapping confirmed"
+      }
+    },
+    {
+      "frame": 403,
+      "source": "setO_small_on_rail_403.npz",
+      "target_points": 12,
+      "support": {
+        "dy_min": 0.7710677920923904,
+        "dy_max": 1.1117595165316,
+        "height_max": 0.7404694225632404,
+        "same_band_reference_bins": 13,
+        "same_band_reference_p90_median": -0.11357366626018783,
+        "height_excess_over_same_band": 0.8540430888234283,
+        "snapshot_points": 12
+      },
+      "target_xyz_min": [
+        42.65999984741211,
+        0.5600000023841858,
+        -0.75
+      ],
+      "target_xyz_max": [
+        42.869998931884766,
+        0.8999999761581421,
+        -0.5600000023841858
+      ],
+      "track": {
+        "floor_coef": [
+          -1.643516148487694e-06,
+          -0.004823080625802589,
+          -1.3366906055545074
+        ],
+        "floor_range": [
+          4.0,
+          82.5
+        ],
+        "center": -0.02,
+        "yaw": -0.004613501507187753,
+        "curvature": 6.779351835990424e-06,
+        "rail_offset": 0.246,
+        "rail_score": 0.178,
+        "wall_quality": 0.038,
+        "axis_valid": 201.0,
+        "n_bins": 26,
+        "residual": 0.019,
+        "floor_verified": 180.0,
+        "rail_slabs": 3,
+        "axis_sides": 2,
+        "age": 400
+      },
+      "mount": {
+        "status": "identity",
+        "orientation": "configured",
+        "roll_deg": 0.0,
+        "pitch_deg": 0.0,
+        "yaw_deg": 0.0,
+        "height": 1.08,
+        "lateral": -0.04,
+        "frames_used": 20,
+        "drift_deg": 0.21,
+        "message": "configured mapping confirmed"
+      }
+    },
+    {
+      "frame": 688,
+      "source": "setO_long_low_on_rails_688.npz",
+      "target_points": 8,
+      "support": {
+        "dy_min": -0.4437411634610935,
+        "dy_max": 1.3141286812223747,
+        "height_max": 0.21220831263765083,
+        "same_band_reference_bins": 2,
+        "same_band_reference_p90_median": -0.14855462137664793,
+        "height_excess_over_same_band": 0.36076293401429876,
+        "snapshot_points": 8
+      },
+      "target_xyz_min": [
+        95.93000030517578,
+        -1.0099999904632568,
+        -1.0499999523162842
+      ],
+      "target_xyz_max": [
+        96.36000061035156,
+        0.75,
+        -1.0499999523162842
+      ],
+      "track": {
+        "floor_coef": [
+          -6.483676615540336e-06,
+          -0.0012157666215385815,
+          -1.3357689870713954
+        ],
+        "floor_range": [
+          4.0,
+          87.5
+        ],
+        "center": -0.008,
+        "yaw": -0.006634054155017371,
+        "curvature": 1.747701484968804e-05,
+        "rail_offset": 0.25,
+        "rail_score": 0.18,
+        "wall_quality": 0.033,
+        "axis_valid": 209.0,
+        "n_bins": 26,
+        "residual": 0.015,
+        "floor_verified": 145.0,
+        "rail_slabs": 3,
+        "axis_sides": 2,
+        "age": 685
+      },
+      "mount": {
+        "status": "identity",
+        "orientation": "configured",
+        "roll_deg": 0.0,
+        "pitch_deg": 0.0,
+        "yaw_deg": 0.0,
+        "height": 1.08,
+        "lateral": -0.04,
+        "frames_used": 20,
+        "drift_deg": 0.5,
+        "message": "configured mapping confirmed"
+      }
+    },
+    {
+      "frame": 690,
+      "source": "setO_long_low_on_rails_690.npz",
+      "target_points": 8,
+      "support": {
+        "dy_min": -0.47404143444721925,
+        "dy_max": 1.2237993484089738,
+        "height_max": 0.3226543829066877,
+        "same_band_reference_bins": 1,
+        "same_band_reference_p90_median": -0.26711348870829266,
+        "height_excess_over_same_band": 0.5897678716149803,
+        "snapshot_points": 8
+      },
+      "target_xyz_min": [
+        92.47000122070312,
+        -0.9699999690055847,
+        -1.2200000286102295
+      ],
+      "target_xyz_max": [
+        92.88999938964844,
+        0.7299999594688416,
+        -1.0099999904632568
+      ],
+      "track": {
+        "floor_coef": [
+          -4.172007677409225e-07,
+          -0.0026204143750241087,
+          -1.3318259668733337
+        ],
+        "floor_range": [
+          4.0,
+          87.5
+        ],
+        "center": -0.023,
+        "yaw": -0.005049906353400264,
+        "curvature": -9.807513153332682e-07,
+        "rail_offset": 0.246,
+        "rail_score": 0.177,
+        "wall_quality": 0.043,
+        "axis_valid": 205.0,
+        "n_bins": 25,
+        "residual": 0.014,
+        "floor_verified": 135.0,
+        "rail_slabs": 3,
+        "axis_sides": 2,
+        "age": 687
+      },
+      "mount": {
+        "status": "identity",
+        "orientation": "configured",
+        "roll_deg": 0.0,
+        "pitch_deg": 0.0,
+        "yaw_deg": 0.0,
+        "height": 1.08,
+        "lateral": -0.04,
+        "frames_used": 20,
+        "drift_deg": 0.45,
+        "message": "configured mapping confirmed"
+      }
+    },
+    {
+      "frame": 695,
+      "source": "setO_long_low_on_rails_695.npz",
+      "target_points": 11,
+      "support": {
+        "dy_min": -0.48482421108175344,
+        "dy_max": 1.2733014072246231,
+        "height_max": 0.35038274376188605,
+        "same_band_reference_bins": 2,
+        "same_band_reference_p90_median": -0.22349888480081437,
+        "height_excess_over_same_band": 0.5738816285627004,
+        "snapshot_points": 11
+      },
+      "target_xyz_min": [
+        83.83999633789062,
+        -0.8799999952316284,
+        -1.2899999618530273
+      ],
+      "target_xyz_max": [
+        84.27999877929688,
+        0.8799999952316284,
+        -1.100000023841858
+      ],
+      "track": {
+        "floor_coef": [
+          2.4862500111052814e-06,
+          -0.004488012205303711,
+          -1.334157543303156
+        ],
+        "floor_range": [
+          4.0,
+          77.5
+        ],
+        "center": -0.034,
+        "yaw": -0.004320441286439741,
+        "curvature": 7.203793371182863e-07,
+        "rail_offset": 0.244,
+        "rail_score": 0.176,
+        "wall_quality": 0.049,
+        "axis_valid": 221.0,
+        "n_bins": 24,
+        "residual": 0.017,
+        "floor_verified": 135.0,
+        "rail_slabs": 3,
+        "axis_sides": 2,
+        "age": 692
+      },
+      "mount": {
+        "status": "identity",
+        "orientation": "configured",
+        "roll_deg": 0.0,
+        "pitch_deg": 0.0,
+        "yaw_deg": 0.0,
+        "height": 1.08,
+        "lateral": -0.04,
+        "frames_used": 20,
+        "drift_deg": 0.45,
+        "message": "configured mapping confirmed"
+      }
+    },
+    {
+      "frame": 699,
+      "source": "setO_long_low_on_rails_699.npz",
+      "target_points": 14,
+      "support": {
+        "dy_min": -0.415661289487547,
+        "dy_max": 1.2024226106984384,
+        "height_max": 0.4626485516736103,
+        "same_band_reference_bins": 3,
+        "same_band_reference_p90_median": -0.23893711403752937,
+        "height_excess_over_same_band": 0.7015856657111397,
+        "snapshot_points": 14
+      },
+      "target_xyz_min": [
+        77.0999984741211,
+        -0.8100000023841858,
+        -1.1799999475479126
+      ],
+      "target_xyz_max": [
+        77.5,
+        0.8100000023841858,
+        -1.0099999904632568
+      ],
+      "track": {
+        "floor_coef": [
+          -2.167827903043085e-06,
+          -0.004729058486702054,
+          -1.3408433738460688
+        ],
+        "floor_range": [
+          4.0,
+          72.5
+        ],
+        "center": -0.028,
+        "yaw": -0.004656341008271921,
+        "curvature": -1.7318049576357679e-06,
+        "rail_offset": 0.247,
+        "rail_score": 0.182,
+        "wall_quality": 0.055,
+        "axis_valid": 221.0,
+        "n_bins": 24,
+        "residual": 0.019,
+        "floor_verified": 135.0,
+        "rail_slabs": 3,
+        "axis_sides": 2,
+        "age": 696
+      },
+      "mount": {
+        "status": "identity",
+        "orientation": "configured",
+        "roll_deg": 0.0,
+        "pitch_deg": 0.0,
+        "yaw_deg": 0.0,
+        "height": 1.08,
+        "lateral": -0.04,
+        "frames_used": 20,
+        "drift_deg": 0.45,
+        "message": "configured mapping confirmed"
+      }
+    },
+    {
+      "frame": 720,
+      "source": "setO_long_low_on_rails_720.npz",
+      "target_points": 36,
+      "support": {
+        "dy_min": -0.7054550008583012,
+        "dy_max": 1.1732288963279969,
+        "height_max": 0.38830532241811744,
+        "same_band_reference_bins": 16,
+        "same_band_reference_p90_median": -0.07883151680002132,
+        "height_excess_over_same_band": 0.46713683921813876,
+        "snapshot_points": 36
+      },
+      "target_xyz_min": [
+        42.06999969482422,
+        -0.8899999856948853,
+        -1.209999918937683
+      ],
+      "target_xyz_max": [
+        42.5,
+        0.9899999499320984,
+        -1.100000023841858
+      ],
+      "track": {
+        "floor_coef": [
+          -3.8452237770514897e-05,
+          -0.009007058898223553,
+          -1.29329741368131
+        ],
+        "floor_range": [
+          4.0,
+          52.5
+        ],
+        "center": -0.015,
+        "yaw": -0.004231831240391904,
+        "curvature": 1.114639748550013e-05,
+        "rail_offset": 0.253,
+        "rail_score": 0.162,
+        "wall_quality": 0.051,
+        "axis_valid": 217.0,
+        "n_bins": 22,
+        "residual": 0.08,
+        "floor_verified": 155.0,
+        "rail_slabs": 3,
+        "axis_sides": 2,
+        "age": 717
+      },
+      "mount": {
+        "status": "identity",
+        "orientation": "configured",
+        "roll_deg": 0.0,
+        "pitch_deg": 0.0,
+        "yaw_deg": 0.0,
+        "height": 1.08,
+        "lateral": -0.04,
+        "frames_used": 20,
+        "drift_deg": 0.45,
+        "message": "configured mapping confirmed"
+      }
+    }
+  ],
+  "real": [
+    {
+      "frame": 50,
+      "selection": "reviewed physical XYZ bbox +0.02m margin; region may include nearby background, not exact object identity",
+      "labeled_points": 10,
+      "selected_points": 10,
+      "support": {
+        "dy_min": -1.1280138290456383,
+        "dy_max": -0.8343252171083879,
+        "height_max": 0.05827765409363428,
+        "same_band_reference_bins": 5,
+        "same_band_reference_p90_median": -0.23501904779559624,
+        "height_excess_over_same_band": 0.2932967018892305,
+        "snapshot_points": 10
+      },
+      "mount": {
+        "status": "provisional",
+        "orientation": "configured",
+        "roll_deg": 3.18,
+        "pitch_deg": -0.81,
+        "yaw_deg": 0.0,
+        "height": null,
+        "lateral": null,
+        "frames_used": 0,
+        "drift_deg": 0.0,
+        "message": "provisional tilt: roll +3.18, pitch -0.81 deg (final after 20 observations)"
+      }
+    },
+    {
+      "frame": 100,
+      "selection": "reviewed physical XYZ bbox +0.02m margin; region may include nearby background, not exact object identity",
+      "labeled_points": 19,
+      "selected_points": 19,
+      "support": {
+        "dy_min": -1.2411446058290676,
+        "dy_max": -0.6486165839435267,
+        "height_max": 0.14313209952667827,
+        "same_band_reference_bins": 7,
+        "same_band_reference_p90_median": -0.12884095630257764,
+        "height_excess_over_same_band": 0.2719730558292559,
+        "snapshot_points": 19
+      },
+      "mount": {
+        "status": "provisional",
+        "orientation": "configured",
+        "roll_deg": 3.18,
+        "pitch_deg": -0.81,
+        "yaw_deg": 0.0,
+        "height": null,
+        "lateral": null,
+        "frames_used": 0,
+        "drift_deg": 0.0,
+        "message": "provisional tilt: roll +3.18, pitch -0.81 deg (final after 20 observations)"
+      }
+    },
+    {
+      "frame": 150,
+      "selection": "reviewed physical XYZ bbox +0.02m margin; region may include nearby background, not exact object identity",
+      "labeled_points": 21,
+      "selected_points": 21,
+      "support": {
+        "dy_min": -1.2529927369952212,
+        "dy_max": -0.6619901017193786,
+        "height_max": 0.13769606039931137,
+        "same_band_reference_bins": 8,
+        "same_band_reference_p90_median": -0.18580521991008836,
+        "height_excess_over_same_band": 0.32350128030939973,
+        "snapshot_points": 21
+      },
+      "mount": {
+        "status": "provisional",
+        "orientation": "configured",
+        "roll_deg": 3.18,
+        "pitch_deg": -0.81,
+        "yaw_deg": 0.0,
+        "height": null,
+        "lateral": null,
+        "frames_used": 0,
+        "drift_deg": 0.0,
+        "message": "provisional tilt: roll +3.18, pitch -0.81 deg (final after 20 observations)"
+      }
+    },
+    {
+      "frame": 200,
+      "selection": "reviewed physical XYZ bbox +0.02m margin; region may include nearby background, not exact object identity",
+      "labeled_points": 23,
+      "selected_points": 23,
+      "support": {
+        "dy_min": -1.3218190548634219,
+        "dy_max": -0.6293824122903142,
+        "height_max": 0.09114577512489008,
+        "same_band_reference_bins": 7,
+        "same_band_reference_p90_median": -0.1832920804036018,
+        "height_excess_over_same_band": 0.27443785552849187,
+        "snapshot_points": 23
+      },
+      "mount": {
+        "status": "ok",
+        "orientation": "configured",
+        "roll_deg": 3.18,
+        "pitch_deg": -0.81,
+        "yaw_deg": 0.0,
+        "height": 1.51,
+        "lateral": 0.04,
+        "frames_used": 20,
+        "drift_deg": 0.0,
+        "message": "tilt corrected: roll +3.18, pitch -0.81, yaw +0.00 deg"
+      }
+    }
+  ],
+  "observations": [
+    "The real rail object has fitted tops 0.058\u20130.143 m on selected frames, overlapping the 0.030\u20130.120 m tops of low false targets. A simple minimum-height increase is not justified.",
+    "Selected real-object regions rise 0.272\u20130.324 m above the same-band reference. Selected organizer positives rise 0.361\u20131.414 m. Several false rail fragments do not rise above that reference.",
+    "Local support can be sparse or contaminated; one false identity has only one reference bin and another has none. A safe local-context predicate is not established by these selected observations."
+  ],
+  "local_reproduction_scripts": [
+    "/home/resense/validation/quality_cycle/fp/compare_positive_context.py",
+    "/home/resense/validation/quality_cycle/fp/compare_real_context.py"
+  ],
+  "archived_scripts": [
+    "compare_positive_context.py.txt",
+    "compare_real_context.py.txt"
+  ],
+  "selected_cache_inputs": {
+    "setO_long_low_on_rails_688": {
+      "frame": 688,
+      "cache_sha256": "e48ad2d5f5df83745da609b714f61f3f1fd3e7a13e6731c892622d420fec8f82",
+      "indices": 8
+    },
+    "setO_long_low_on_rails_690": {
+      "frame": 690,
+      "cache_sha256": "96e8fe346a541554b3795c53408a7811eb752fb39b0d6b4432a094ca119037f9",
+      "indices": 8
+    },
+    "setO_long_low_on_rails_695": {
+      "frame": 695,
+      "cache_sha256": "adb7c3cb77daa301cc7a38655664e33f169566fcc27466a15815fe498d739aee",
+      "indices": 11
+    },
+    "setO_long_low_on_rails_699": {
+      "frame": 699,
+      "cache_sha256": "2d3c0772af5e9e81cfbf806dbe1f6e35292f3202541a645a04822986514c5e5c",
+      "indices": 14
+    },
+    "setO_long_low_on_rails_720": {
+      "frame": 720,
+      "cache_sha256": "ff9a3556192999a8b2963b6ac4b91211aa7a66cc8f34581e77bc99bf401f4023",
+      "indices": 36
+    },
+    "setO_small_on_rail_397": {
+      "frame": 397,
+      "cache_sha256": "25f094d4707d34273d39890b0026e83be8103b7198bbd96fd80a2fd45be2df45",
+      "indices": 6
+    },
+    "setO_small_on_rail_403": {
+      "frame": 403,
+      "cache_sha256": "bc302a61c848b64a207fb4f081df8bba14dbb23751ad1c42098e811809ebd8ed",
+      "indices": 12
+    }
+  },
+  "index_sha256": "3d3dc5bfaa4cb16c074d4e2077fc2f97b69f5f1beb0872c97de0a983405ef05e"
+}

@@ -30,3 +30,19 @@ Original `.npz` target/context snapshots are retained under the local validation
 can be reconstructed with the documented script and exact frozen input caches. They are omitted
 from Git to avoid another copy of the point-cloud data. All snapshots are selected from the
 baseline before candidate evaluation; no candidate output informed the review labels.
+
+## Selected low-object follow-up
+
+`low_context_followup.json` compares seven selected organizer-positive snapshots and four
+reviewed real rail-object regions with the same local height reference used in the diagnosis.
+It is exploratory, not an exhaustive positive evaluation. The real object's fitted height
+overlaps the false fragments: increasing the height threshold would put known positives at
+risk. The local-reference difference is a future hypothesis; sparse/contaminated reference
+support has not been resolved, and no new rejection rule was selected.
+
+The exact local scripts are archived as `.py.txt` with their original machine paths. The
+compact `selected_positive_indices.npz` and cache hashes preserve the seven exact selections.
+To reconstruct their original inputs, load the matching cache with `frame_from_compact` and
+write each named NPZ with `xyz=frame.xyz` and its archived `target` indices. The four real
+regions use the committed reviewed label boxes plus the recorded 0.02 m margin; their
+selection is not an exact semantic mask. Use the sealed P3d detector and traced source hashes.
