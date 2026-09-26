@@ -123,3 +123,35 @@ def test_clear_cap_off_adds_no_output_key(tunnel):
     frame, _, _ = tunnel
     res = _run(Detector(_cfg(False)), frame, 2)
     assert "candidate_distance" not in res.health
+
+
+def test_supported_thin_evidence_limits_production_output_without_starting_stop(monkeypatch, tunnel):
+    """Exercise Detector.process after a thin cluster survives the classification stage."""
+    import resense.detector as detector_module
+    frame, _, _ = tunnel
+    active = True
+
+    def classified(candidates, cfg, **kwargs):
+        if not active or "low" in kwargs:
+            return []
+        c = _cluster(30.0, cfg.gauge_min_points)
+        c.thin = True
+        return [c]
+
+    monkeypatch.setattr(detector_module, "_clusters_of", classified)
+    det = Detector(_cfg(True))
+    observed = det.process(frame)
+    assert not observed.obstacle and not observed.detections and not det.tracker.tracks
+    assert observed.clear_distance == 30
+    assert observed.health["monitoring_status"] == "unresolved_thin_cluster"
+    assert observed.health["decision_level"] == "warn"
+    active = False
+    recovered = det.process(frame)
+    assert recovered.health["thin_cluster_distance"] is None
+    assert "monitoring_status" not in recovered.health
+    assert recovered.clear_distance > 30
+    active = True
+    off = Detector(_cfg(False)).process(frame)
+    assert off.clear_distance > 30
+    assert "thin_cluster_distance" not in off.health and "monitoring_status" not in off.health
+    assert not off.obstacle
