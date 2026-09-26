@@ -1,0 +1,88 @@
+[INFO] [1790457140.048599038] [resense_detector]: sensor mount: forward=-y left=+x up=+z roll/pitch/yaw=0.0/0.0/0.0 deg; auto-calibration on
+[INFO] [1790457140.065228881] [resense_detector]: ReSense detector listening on /lidar_points, /sensing/lidar/hesai128/pointcloud; input reliability auto; per-frame kernels: native (_resense_native.cpython-310-x86_64-linux-gnu.so); resense 1.0.0
+[INFO] [1790457141.250610123] [resense_detector]: input 1: /lidar_points (frame_id=lidar, 127145 points)
+[INFO] [1790457141.251216219] [resense_detector]: static TF resense_lidar -> lidar (identity)
+[INFO] [1790457141.274737912] [resense_detector]: mount calibration: pending - 
+[INFO] [1790457142.092253165] [resense_detector]: frame 3: GO; freshness current; axis y=+0.25 R=inf; 1.5 fps; latency mean 19 / p95 25 / max 26 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up)
+[INFO] [1790457144.368520091] [resense_detector]: frame 6: FAULT: last result expired (> 0.5 s source/residence age): path not monitored; 1.3 fps; latency mean 17 / p95 20 / max 20 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up)
+[INFO] [1790457144.378113272] [resense_detector]: 0.4 s of recording waiting: catching up, one frame every 0.3 s of recording
+[INFO] [1790457144.404874644] [resense_detector]: caught up in 0.0 s: 3 frames processed, 4 skipped, at most 0.4 s of recording behind
+[INFO] [1790457146.131516854] [resense_detector]: frame 13: GO; freshness current; axis y=+0.25 R=inf; 4.0 fps; latency mean 13 / p95 16 / max 17 ms; input period 100 ms; dropped 4 (4 skipped by the catch-up)
+[INFO] [1790457148.065801155] [resense_detector]: frame 18: GO; freshness current; axis y=+0.25 R=inf; 2.6 fps; latency mean 13 / p95 14 / max 15 ms; input period 100 ms; dropped 4 (4 skipped by the catch-up)
+[INFO] [1790457148.993560555] [resense_detector]: 0.4 s of recording waiting: catching up, one frame every 0.3 s of recording
+[INFO] [1790457149.025076194] [resense_detector]: caught up in 0.0 s: 3 frames processed, 4 skipped, at most 0.4 s of recording behind
+[INFO] [1790457150.115202318] [resense_detector]: frame 23: GO; freshness current; axis y=+0.25 R=-278032; 2.4 fps; latency mean 15 / p95 18 / max 18 ms; input period 100 ms; dropped 8 (8 skipped by the catch-up)
+[INFO] [1790457152.066084419] [resense_detector]: frame 31: STOP at 40.0 m; freshness current; axis y=+0.25 R=-277953; 4.1 fps; latency mean 16 / p95 18 / max 18 ms; input period 100 ms; dropped 8 (8 skipped by the catch-up)
+[INFO] [1790457154.067010713] [resense_detector]: frame 35: STOP: last result expired (> 0.5 s source/residence age): path not monitored; 2.0 fps; latency mean 15 / p95 15 / max 15 ms; input period 100 ms; dropped 8 (8 skipped by the catch-up)
+[INFO] [1790457154.482401617] [resense_detector]: input 2: /sensing/lidar/hesai128/pointcloud (frame_id=another_lidar, 127145 points) - input switched from /lidar_points: detector restarted
+[INFO] [1790457154.483010758] [resense_detector]: static TF resense_lidar -> another_lidar (identity)
+[INFO] [1790457154.499664567] [resense_detector]: mount calibration: pending - 
+[INFO] [1790457156.119388707] [resense_detector]: frame 41: GO; freshness current; axis y=+0.25 R=inf; 2.9 fps; latency mean 16 / p95 18 / max 19 ms; input period 100 ms; dropped 8 (8 skipped by the catch-up)
+[INFO] [1790457156.121399193] [resense_detector]: input 3: /sensing/lidar/hesai128/pointcloud (frame_id=another_lidar, 127145 points) - header stamps jumped by -4.5 s (a new recording): detector restarted
+[INFO] [1790457156.135076995] [resense_detector]: mount calibration: pending - 
+{
+  "checks": [
+    {
+      "name": "first frame epoch invalid",
+      "passed": true
+    },
+    {
+      "name": "steady historical replay becomes current with publication UTC",
+      "passed": true
+    },
+    {
+      "name": "later DDS backlog fails closed on source age",
+      "passed": true
+    },
+    {
+      "name": "fresh progression recovers",
+      "passed": true
+    },
+    {
+      "name": "pause expires GO",
+      "passed": true
+    },
+    {
+      "name": "resume first frame invalid then recovers",
+      "passed": true
+    },
+    {
+      "name": "current burst cannot GO while behind",
+      "passed": true
+    },
+    {
+      "name": "real obstacle STOP",
+      "passed": true
+    },
+    {
+      "name": "watchdog preserves STOP with invalid monitoring",
+      "passed": true
+    },
+    {
+      "name": "input switch first frame retains STOP",
+      "passed": true
+    },
+    {
+      "name": "fresh clear switched recording releases STOP",
+      "passed": true
+    },
+    {
+      "name": "backward jump invalidates epoch",
+      "passed": true
+    },
+    {
+      "name": "no invalid GO anywhere",
+      "passed": true
+    },
+    {
+      "name": "invalid monitored range always zero",
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "frames": 45,
+  "snapshots": 7,
+  "stock_profile": true,
+  "rmw": "rmw_fastrtps_cpp",
+  "node_sha256": "728d401dbcb527b3b3640244898aa5afd093052347a506514182fe17213f2b2b"
+}

@@ -1,0 +1,139 @@
+{
+  "stamp": 946692947.533395,
+  "obstacle": true,
+  "warning": false,
+  "nearest_distance": 53.0,
+  "detections": [
+    {
+      "id": 40,
+      "zone": "gauge",
+      "distance": 53.0,
+      "lateral": 0.46,
+      "center": [
+        54.94,
+        -3.64,
+        0.75
+      ],
+      "size": [
+        2.4,
+        1.1,
+        2.69
+      ],
+      "n_points": 78,
+      "confidence": 1.0,
+      "age": 13,
+      "height_min": 0.25,
+      "intensity": 14.7,
+      "reason": "",
+      "kind": ""
+    }
+  ],
+  "warnings": [],
+  "n_candidates": 2,
+  "n_points": 189888,
+  "n_corridor": 1136,
+  "track": {
+    "floor_coef": [
+      1.2623506995636868e-05,
+      0.0007561657124253812,
+      -1.4726251289070669
+    ],
+    "floor_range": [
+      4.0,
+      112.5
+    ],
+    "center": 0.028,
+    "yaw": -0.05677376871855049,
+    "curvature": -0.0006604565107659864,
+    "rail_offset": 0.367,
+    "rail_score": 0.188,
+    "wall_quality": 0.176,
+    "axis_valid": 60.0,
+    "n_bins": 31,
+    "residual": 0.139,
+    "floor_verified": 120.0,
+    "rail_slabs": 3,
+    "axis_sides": 2,
+    "age": 168
+  },
+  "timing_ms": {
+    "track": 4.54,
+    "corridor": 2.33,
+    "egomotion": 0.0,
+    "accumulate": 0.0,
+    "cluster": 4.9,
+    "tracking": 0.11,
+    "total": 11.88
+  },
+  "ego_speed": null,
+  "ego_speed_source": "none",
+  "n_accumulated": 1,
+  "ego_speed_estimate": null,
+  "ego_speed_confidence": 0.0,
+  "clear_distance": 53.0,
+  "health": {
+    "level": "ok",
+    "decision_level": "ok",
+    "messages": [],
+    "points": 189888,
+    "near_fraction": 0.001,
+    "blocked_sectors": 0,
+    "visibility": 147.2,
+    "rail_lock": 1.0,
+    "latency_p95_ms": 16.8,
+    "monitored_range": 60.0,
+    "clear_distance": 53.0,
+    "floor_shadow_frames": 0,
+    "floor_held_frames": 0,
+    "floor_released_frames": 0,
+    "candidate_distance": null,
+    "thin_cluster_distance": null,
+    "freshness_valid": true,
+    "freshness_reason": "current"
+  },
+  "mount": {
+    "status": "pending",
+    "orientation": "configured",
+    "roll_deg": 0.0,
+    "pitch_deg": 0.0,
+    "yaw_deg": 0.0,
+    "height": null,
+    "lateral": null,
+    "frames_used": 0,
+    "drift_deg": 0.0,
+    "message": ""
+  },
+  "node": {
+    "latency_ms": 20.93,
+    "fps": 10.4,
+    "frames": 141,
+    "dropped_frames": 15,
+    "catchup_skipped": 11,
+    "catchup": false,
+    "input_period_ms": 100.0,
+    "ego_speed_mps": null,
+    "ego_speed_source": null,
+    "input_topic": "/lidar_points",
+    "recording": 1
+  },
+  "decision": "STOP",
+  "snapshot_kind": "frame",
+  "freshness": {
+    "mode": "replay",
+    "evaluated_at_utc_s": 1790458102.7175708,
+    "max_result_age_s": 0.5,
+    "future_tolerance_s": 0.05,
+    "clock_reference": "publisher_utc",
+    "source_age_s": 0.025539398193359375,
+    "acquisition_age_s": null,
+    "publication_age_s": 0.025539398193359375,
+    "residence_age_s": 0.021036348000052385,
+    "queue_lag_s": 0.0,
+    "valid": true,
+    "reason": "current",
+    "go_allowed": false
+  },
+  "stop_held": false,
+  "detector_obstacle": true,
+  "detector_clear_distance": 53.0
+}

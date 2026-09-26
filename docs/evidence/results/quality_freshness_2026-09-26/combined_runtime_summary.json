@@ -1,0 +1,140 @@
+{
+  "image_id": "sha256:9919631de63f97b1e4d79699c3f556b40537c2853808c5e3e65902f9dc17b916",
+  "source_commit": "0145cbb8dd26b3777084aedb3945f49dda741caf",
+  "runs": [
+    {
+      "name": "original_cold",
+      "frames": 149,
+      "detector_positive_frames": 144,
+      "exposed_stop_frames": 145,
+      "held_stop_frames": 1,
+      "valid_frames": 118,
+      "invalid_reasons": {
+        "epoch_unconfirmed": 1,
+        "source_stale": 27,
+        "catchup": 3
+      },
+      "first_detector_stop_s": 1.0001839399337769,
+      "latency_p95_ms": 37.267999999999994,
+      "fps_last": 10.0,
+      "postsettle_recorded_messages_missed": 0,
+      "freshness_violations": [],
+      "valid_source_age_p95_s": 0.05757589340209963,
+      "valid_source_age_max_s": 0.09867501258850098,
+      "valid_residence_age_p95_s": 0.03625660070156301,
+      "exit_code": 0,
+      "scene_resets": 0
+    },
+    {
+      "name": "original_warm",
+      "frames": 171,
+      "detector_positive_frames": 164,
+      "exposed_stop_frames": 164,
+      "held_stop_frames": 0,
+      "valid_frames": 153,
+      "invalid_reasons": {
+        "source_stale": 16,
+        "catchup": 2
+      },
+      "first_detector_stop_s": 1.3001320362091064,
+      "latency_p95_ms": 36.805,
+      "fps_last": 8.5,
+      "postsettle_recorded_messages_missed": 0,
+      "freshness_violations": [],
+      "valid_source_age_p95_s": 0.0744100570678711,
+      "valid_source_age_max_s": 0.10523176193237305,
+      "valid_residence_age_p95_s": 0.036469223399762996,
+      "exit_code": 0,
+      "scene_resets": 0
+    },
+    {
+      "name": "original_clear",
+      "frames": 233,
+      "detector_positive_frames": 1,
+      "exposed_stop_frames": 1,
+      "held_stop_frames": 0,
+      "valid_frames": 224,
+      "invalid_reasons": {
+        "epoch_unconfirmed": 1,
+        "queue_stale": 7,
+        "catchup": 1
+      },
+      "first_detector_stop_s": 15.59996509552002,
+      "latency_p95_ms": 25.248,
+      "fps_last": 9.94,
+      "postsettle_recorded_messages_missed": 0,
+      "freshness_violations": [],
+      "valid_source_age_p95_s": 0.03170965909957886,
+      "valid_source_age_max_s": 0.11366915702819824,
+      "valid_residence_age_p95_s": 0.02529010504913458,
+      "exit_code": 1,
+      "scene_resets": 0
+    },
+    {
+      "name": "original_cold_load",
+      "frames": 153,
+      "detector_positive_frames": 148,
+      "exposed_stop_frames": 149,
+      "held_stop_frames": 1,
+      "valid_frames": 124,
+      "invalid_reasons": {
+        "source_stale": 27,
+        "catchup": 2
+      },
+      "first_detector_stop_s": 0.5001230239868164,
+      "latency_p95_ms": 37.898,
+      "fps_last": 10.0,
+      "postsettle_recorded_messages_missed": 0,
+      "freshness_violations": [],
+      "valid_source_age_p95_s": 0.05919657945632934,
+      "valid_source_age_max_s": 0.12639522552490234,
+      "valid_residence_age_p95_s": 0.03615821974835853,
+      "exit_code": 0,
+      "scene_resets": 0
+    },
+    {
+      "name": "stock_switch_recording1",
+      "frames": 235,
+      "detector_positive_frames": 0,
+      "exposed_stop_frames": 0,
+      "held_stop_frames": 0,
+      "valid_frames": 224,
+      "invalid_reasons": {
+        "queue_stale": 10,
+        "catchup": 1
+      },
+      "first_detector_stop_s": null,
+      "latency_p95_ms": 25.847000000000005,
+      "fps_last": 9.98,
+      "postsettle_recorded_messages_missed": 0,
+      "freshness_violations": [],
+      "valid_source_age_p95_s": 0.03501806259155273,
+      "valid_source_age_max_s": 0.1126565933227539,
+      "valid_residence_age_p95_s": 0.026108029748502303,
+      "exit_code": 0
+    },
+    {
+      "name": "stock_switch_recording2",
+      "frames": 169,
+      "detector_positive_frames": 162,
+      "exposed_stop_frames": 162,
+      "held_stop_frames": 0,
+      "valid_frames": 147,
+      "invalid_reasons": {
+        "source_stale": 20,
+        "catchup": 2
+      },
+      "first_detector_stop_s": 1.2001980543136597,
+      "latency_p95_ms": 36.608,
+      "fps_last": 9.5,
+      "postsettle_recorded_messages_missed": 0,
+      "freshness_violations": [],
+      "valid_source_age_p95_s": 0.06324455738067628,
+      "valid_source_age_max_s": 0.12301516532897949,
+      "valid_residence_age_p95_s": 0.03652806380050606,
+      "exit_code": 0
+    }
+  ],
+  "all_registered_per_bag_criteria_pass": false,
+  "release_hold": true
+}

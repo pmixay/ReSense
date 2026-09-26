@@ -1,0 +1,113 @@
+{
+  "protocol": "quality_combined_runtime_2026-09-26",
+  "registered_at_utc": "2026-09-26T21:22:37.330283+00:00",
+  "source_commit": "0145cbb8dd26b3777084aedb3945f49dda741caf",
+  "image": "resense:quality-candidate",
+  "image_identity": "candidate_image_receipt.json recorded after build, before replay",
+  "sources": {
+    "ros2_ws/src/resense_ros/resense_ros/detector_node.py": "95d1721d3b3238a0fa0358f98740a83b6069404411767e94bd5dd227d2de9274",
+    "resense/health.py": "39341422d0026ab3c9371533dff43d4f52a3b191b5623737d0250ca6456e71f3",
+    "resense/detector.py": "1b38ceda1e368601dbccf792c177adfe19775fea897364aabc567b8bf486ea25",
+    "scripts/dry_run.sh": "18093d8ae8fee0395f5e4dd5b537015ca53a37df64d206f47ee106483e1cf34f",
+    "scripts/check_dry_run.py": "77afeb5a7520d61b858e8de195a5176abd0afedcb278a071989f217b0fd408be"
+  },
+  "prerequisites": [
+    "M2 gate146gated/199total unchanged",
+    "M2 stress/raw checks completed; no heavy workers active",
+    "native AVAILABLE and enabled in candidate runtime",
+    "node and detector source hashes match worktree"
+  ],
+  "mode": "replay explicitly; publisher UTC, unknown original acquisition age; strict freshness schema required",
+  "runs": [
+    {
+      "name": "original_cold",
+      "bag": "doubleT_obstacle",
+      "cold": true,
+      "expect_obstacle": true
+    },
+    {
+      "name": "original_warm",
+      "bag": "doubleT_obstacle",
+      "cold": false,
+      "expect_obstacle": true
+    },
+    {
+      "name": "original_clear",
+      "bag": "roundT_doubleT",
+      "cold": false,
+      "expect_clear": true,
+      "max_alarm_frames": 0
+    },
+    {
+      "name": "original_cold_load",
+      "bag": "doubleT_obstacle",
+      "cold": true,
+      "expect_obstacle": true,
+      "workload": "two bounded readers specified below"
+    },
+    {
+      "name": "stock_switch",
+      "bags": [
+        "roundT_doubleT",
+        "doubleT_obstacle"
+      ],
+      "player": "stock Fast DDS uid1000",
+      "transport_smoke_limits": {
+        "p95_ms": 1000,
+        "counter_drops": 100000
+      },
+      "additional_checks": "split captures by recording; original header inventory per bag with p95<=100ms and zero postsettle messages unprocessed; first stock clear recording retains prior allowance2 exposed alarms, second requires detector-positive obstacle"
+    }
+  ],
+  "data_root": "/home/resense/data/for_hackathon",
+  "run_count_per_name": 1,
+  "retry_policy": "No retry-to-green; preserve failure and validity evidence. Any correction requires a recorded reason and distinct follow-up identifier.",
+  "strict_per_bag_limits": {
+    "p95_ms": 100,
+    "post_settle_recorded_messages_unprocessed": 0,
+    "minimum_frames": 50,
+    "minimum_detector_alarm_frames": 3,
+    "obstacle_distance_m": [
+      50,
+      62
+    ],
+    "settle_s": 5,
+    "max_settle_s": 15
+  },
+  "cold_proof": {
+    "method": "file-local POSIX_FADV_DONTNEED then mincore; cold_cache_proof.py",
+    "max_resident_fraction": 0.01,
+    "global_cache_drop": false
+  },
+  "bounded_workload": {
+    "files": [
+      "/home/resense/data/new_data/new_data_0.db3",
+      "/home/resense/data/new_data/new_data_1.db3"
+    ],
+    "readers": 2,
+    "read_only": true,
+    "direct_io": true,
+    "buffer_mib": 1,
+    "per_reader_mib_per_s_cap": 64,
+    "lead_in_s": 3,
+    "max_duration_s": 120,
+    "replay_timeout_s": 110
+  },
+  "report": [
+    "image/source hashes",
+    "commands and cold proof",
+    "checker result and all failures",
+    "processed/current/invalid/heldSTOP counts",
+    "p95 source/residence ages",
+    "first detector STOP offset",
+    "latency and message inventory losses",
+    "reader coverage and rates"
+  ],
+  "limitations": [
+    "Replay publication freshness does not prove original acquisition age.",
+    "Wall clocks must be synchronized.",
+    "Single-thread watchdog cannot run while callbacks are blocked; consumers must enforce expiry.",
+    "One bounded load does not establish arbitrary overload tolerance."
+  ],
+  "release_hold": true
+}

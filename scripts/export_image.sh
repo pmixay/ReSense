@@ -140,4 +140,4 @@ echo "   commit:  $COMMIT"
 echo
 echo "On the machine without internet:"
 echo "   scripts/load_image.sh $(basename "$ARCHIVE")      # or: docker load -i $(basename "$ARCHIVE")"
-echo "   docker run --rm -it --net=host --ipc=host resense"
+echo "   docker run --rm -it --net=host --ipc=host resense ros2 launch resense_ros detector.launch.py freshness_mode:=replay"

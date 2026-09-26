@@ -1,0 +1,29 @@
+{
+  "name": "stock_switch",
+  "started_utc": "2026-09-26T21:29:10.803276+00:00",
+  "command": [
+    "/home/resense/worktrees/monitoring-quality/scripts/console_test.sh",
+    "/home/resense/data/for_hackathon/roundT_doubleT",
+    "/home/resense/data/for_hackathon/doubleT_obstacle",
+    "--",
+    "--expect-obstacle",
+    "--obstacle-in",
+    "2",
+    "--expect-inputs",
+    "2",
+    "--min-frames",
+    "20",
+    "--max-p95-latency",
+    "1000",
+    "--max-dropped",
+    "100000"
+  ],
+  "cwd": "/home/resense/worktrees/monitoring-quality",
+  "env": {
+    "IMAGE": "resense:quality-candidate",
+    "OUT": "/home/resense/validation/quality_cycle/freshness/stock_switch",
+    "PLAYER_DDS": "stock"
+  },
+  "finished_utc": "2026-09-26T21:30:17.839416+00:00",
+  "exit_code": 0
+}

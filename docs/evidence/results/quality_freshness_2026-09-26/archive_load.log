@@ -1,0 +1,67 @@
+Untagged: resense:latest
+Untagged: resense:quality-0145cbb
+Untagged: resense:quality-candidate
+Deleted: sha256:9919631de63f97b1e4d79699c3f556b40537c2853808c5e3e65902f9dc17b916
+Deleted: sha256:70c0b68bdfa73f0eec51afee2a82ca9caa54835a57673a039e6a8bc53f95a264
+Deleted: sha256:16659234bfaf7de862675cd326f2c379ec314ab74f05bf6a359ba9b6b2db9fb6
+Deleted: sha256:cac9958d8a164f2dc3c3ae51af4086cff907290f6e1770d8a8cd9564c04765a6
+Deleted: sha256:69e83259a47589241b78f3cc7cbd4d00000b0bd65923eefe37c872ae1cf5c346
+Deleted: sha256:17aead0b563a6882d6f54bdb7500088e625b61269037346055439734d6f48b1a
+Deleted: sha256:1b26edad6b92298e7a53f8b82e1b67418fc92f2e79b212ebbd6c6e0d921b7353
+Deleted: sha256:229fc38faefaf6867a401452816cc5be1d9049ec6adfc70afa5ccf74a57c8b8b
+Deleted: sha256:d1038111d15fc98237216ebaee68dc7ab2adc8a4be4455b9bb45b317a8d8cf9f
+Deleted: sha256:de5eddcb428bef3b90339bb2d992166456d48309ff73851764f4e19aa6f355a5
+Deleted: sha256:38d530e7cd108b23c4f8ace7e23df456a567d5393f5cd8a80d4fde8a9d599505
+Deleted: sha256:c42eae8c3973e5d5777d57c1fa1aa73fa418462fa41dbf50c9cda3a491855998
+Deleted: sha256:c10e82b0f05f5370ee1b6fd4f4dc3338ef95ab5fd1d0f818d8e7a21f6d8685b2
+Deleted: sha256:5028ccedd1eb83c554bbc86a6bbe800d50b7f574c5863e1509961a3209ea4eec
+Deleted: sha256:47dda285688149b90119158177b2ed42e9e8f9e3786d6f7151565fd79abdae1a
+Deleted: sha256:ce12bfbd1e9ba3d65a2906aa1fc22faeb704e6d74387b39ca3d68b681c66b482
+Deleted: sha256:0cd298f1e96fcd0e564276957866c1b70eac417d046c2cb69630a2ac38470edd
+Deleted: sha256:78e198dedc16c428b4c975c88f85857f43fa87135ff89cff2dfaf7cb6882b31c
+Deleted: sha256:1770f7ea4fd77ab685e1b7c1909b0cf2fabe34f8d3c208617311e8e690adc3b7
+Deleted: sha256:f74ac2ca7841e92d11acf810e68eca273cf18f6b7305b3e94c72ac2d538f7cd8
+Deleted: sha256:092b59dd0cd71661261ce5a84275877392fa579cb8ddf47b5db6a17ee9adb0cb
+Deleted: sha256:e4372686fb5a6038e1cce3befead7f1fb6cd56e6640b004b5394fac739121a47
+Deleted: sha256:d53e4e11609128ac128ecdbd63e4f6933d44ec98c574409d0ff8b7f459f9bf52
+== checking the sha256 of resense-image-quality-0145cbb.tar.gz (475753310 bytes)
+   OK 5cd6078357217f013a96ab66a8a166dcfaa3940e1124f4682ec2761d73840a25
+== docker load -i resense-image-quality-0145cbb.tar.gz
+Loaded image: resense:quality-0145cbb
+Loaded image: resense:latest
+Loaded image: ros:humble-ros-base-jammy
+   resense:latest: sha256:9919631de63f97b1e4d79699c3f556b40537c2853808c5e3e65902f9dc17b916, version label '22.04', commit label '0145cbb8dd26b3777084aedb3945f49dda741caf' (empty when exported with SKIP_BUILD=1)
+== the image with no network (--network none): package import and ROS 2 executables
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+resense 1.0.0 native (_resense_native.cpython-310-x86_64-linux-gnu.so)
+resense_ros detector_node
+
+PASS: resense:latest loaded from resense-image-quality-0145cbb.tar.gz and runs without network. Next:
+   docker run --rm -it --net=host --ipc=host resense ros2 launch resense_ros detector.launch.py freshness_mode:=replay  # then ros2 bag play <bag> --delay 3
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+{
+  "native": "native (_resense_native.cpython-310-x86_64-linux-gnu.so)",
+  "sources": {
+    "ros2_ws/src/resense_ros/resense_ros/detector_node.py": {
+      "path": "/opt/resense/ros2_ws/src/resense_ros/resense_ros/detector_node.py",
+      "sha256": "95d1721d3b3238a0fa0358f98740a83b6069404411767e94bd5dd227d2de9274"
+    },
+    "resense/health.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/health.py",
+      "sha256": "39341422d0026ab3c9371533dff43d4f52a3b191b5623737d0250ca6456e71f3"
+    },
+    "resense/detector.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/detector.py",
+      "sha256": "1b38ceda1e368601dbccf792c177adfe19775fea897364aabc567b8bf486ea25"
+    },
+    "scripts/dry_run.sh": {
+      "path": "/opt/resense/scripts/dry_run.sh",
+      "sha256": "18093d8ae8fee0395f5e4dd5b537015ca53a37df64d206f47ee106483e1cf34f"
+    },
+    "scripts/check_dry_run.py": {
+      "path": "/opt/resense/scripts/check_dry_run.py",
+      "sha256": "77afeb5a7520d61b858e8de195a5176abd0afedcb278a071989f217b0fd408be"
+    }
+  },
+  "passed": true
+}

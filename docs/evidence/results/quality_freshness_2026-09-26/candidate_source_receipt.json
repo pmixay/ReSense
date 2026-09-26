@@ -1,0 +1,26 @@
+{
+  "native": "native (_resense_native.cpython-310-x86_64-linux-gnu.so)",
+  "sources": {
+    "ros2_ws/src/resense_ros/resense_ros/detector_node.py": {
+      "path": "/opt/resense/ros2_ws/src/resense_ros/resense_ros/detector_node.py",
+      "sha256": "95d1721d3b3238a0fa0358f98740a83b6069404411767e94bd5dd227d2de9274"
+    },
+    "resense/health.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/health.py",
+      "sha256": "39341422d0026ab3c9371533dff43d4f52a3b191b5623737d0250ca6456e71f3"
+    },
+    "resense/detector.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/detector.py",
+      "sha256": "1b38ceda1e368601dbccf792c177adfe19775fea897364aabc567b8bf486ea25"
+    },
+    "scripts/dry_run.sh": {
+      "path": "/opt/resense/scripts/dry_run.sh",
+      "sha256": "18093d8ae8fee0395f5e4dd5b537015ca53a37df64d206f47ee106483e1cf34f"
+    },
+    "scripts/check_dry_run.py": {
+      "path": "/opt/resense/scripts/check_dry_run.py",
+      "sha256": "77afeb5a7520d61b858e8de195a5176abd0afedcb278a071989f217b0fd408be"
+    }
+  },
+  "passed": true
+}

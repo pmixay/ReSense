@@ -1,0 +1,119 @@
+....................................FFFFFF.............................. [ 79%]
+...................                                                      [100%]
+=================================== FAILURES ===================================
+________ test_freshness_live_acquisition_and_replay_publication_clocks _________
+
+freshness_driver = (<resense_ros.detector_node.DetectorNode object at 0x70f04b978290>, {'wall': 1000.1, 'mono': 50.1, 'obstacle': False}, <function freshness_driver.<locals>.send at 0x70f04b85e340>)
+
+    def test_freshness_live_acquisition_and_replay_publication_clocks(freshness_driver):
+        node, clock, send = freshness_driver
+        first = send(20.0)
+>       assert first["decision"] == "FAULT" and first["freshness"]["reason"] == "epoch_unconfirmed"
+E       AssertionError: assert ('FAULT' == 'FAULT'
+E         
+E           FAULT and 'error' == 'epoch_unconfirmed'
+E         
+E         - epoch_unconfirmed
+E         + error)
+
+tests/test_node.py:880: AssertionError
+___ test_stale_future_and_unknown_sources_never_allow_go[0.501-source_stale] ___
+
+freshness_driver = (<resense_ros.detector_node.DetectorNode object at 0x70f04ba95760>, {'wall': 1000.3000000000001, 'mono': 50.300000000000004, 'obstacle': False}, <function freshness_driver.<locals>.send at 0x70f04b829b20>)
+age = 0.501, reason = 'source_stale'
+
+    @pytest.mark.parametrize("age,reason", [(0.501, "source_stale"), (-0.051, "source_clock_future")])
+    def test_stale_future_and_unknown_sources_never_allow_go(freshness_driver, age, reason):
+        node, clock, send = freshness_driver
+        send(20.0)
+        send(20.1)
+        bad = send(20.2, age=age)
+>       assert bad["decision"] == "FAULT" and bad["freshness"]["reason"] == reason
+E       AssertionError: assert ('FAULT' == 'FAULT'
+E         
+E           FAULT and 'error' == 'source_stale'
+E         
+E         - source_stale
+E         + error)
+
+tests/test_node.py:901: AssertionError
+_ test_stale_future_and_unknown_sources_never_allow_go[-0.051-source_clock_future] _
+
+freshness_driver = (<resense_ros.detector_node.DetectorNode object at 0x70f04b992900>, {'wall': 1000.3000000000001, 'mono': 50.300000000000004, 'obstacle': False}, <function freshness_driver.<locals>.send at 0x70f04b802700>)
+age = -0.051, reason = 'source_clock_future'
+
+    @pytest.mark.parametrize("age,reason", [(0.501, "source_stale"), (-0.051, "source_clock_future")])
+    def test_stale_future_and_unknown_sources_never_allow_go(freshness_driver, age, reason):
+        node, clock, send = freshness_driver
+        send(20.0)
+        send(20.1)
+        bad = send(20.2, age=age)
+>       assert bad["decision"] == "FAULT" and bad["freshness"]["reason"] == reason
+E       AssertionError: assert ('FAULT' == 'FAULT'
+E         
+E           FAULT and 'error' == 'source_clock_future'
+E         
+E         - source_clock_future
+E         + error)
+
+tests/test_node.py:901: AssertionError
+_________ test_pause_resume_timestamp_jumps_input_switch_and_recovery __________
+
+freshness_driver = (<resense_ros.detector_node.DetectorNode object at 0x70f04b7c21b0>, {'wall': 1000.2, 'mono': 50.2, 'obstacle': False}, <function freshness_driver.<locals>.send at 0x70f04b7fb380>)
+
+    def test_pause_resume_timestamp_jumps_input_switch_and_recovery(freshness_driver):
+        node, clock, send = freshness_driver
+        send(20.0)
+>       assert send(20.1)["decision"] == "GO"
+E       AssertionError: assert 'FAULT' == 'GO'
+E         
+E         - GO
+E         + FAULT
+
+tests/test_node.py:915: AssertionError
+_______ test_startup_and_later_backlogs_and_residence_are_not_actionable _______
+
+freshness_driver = (<resense_ros.detector_node.DetectorNode object at 0x70f04b9a7320>, {'wall': 1000.0, 'mono': 50.0, 'obstacle': False}, <function freshness_driver.<locals>.send at 0x70f04b9734c0>)
+
+    def test_startup_and_later_backlogs_and_residence_are_not_actionable(freshness_driver):
+        node, clock, send = freshness_driver
+        def queue(stamps, residence=0.0, age=0.1):
+            for stamp in stamps:
+                msg, _ = _cloud(np.array([[5.0, 0, 0]], np.float32), stamp, frame_id="lidar")
+                node.remember_arrival(msg, {"source_timestamp": int((clock["wall"]-age) * 1e9)})
+                first, src = node.arrivals[id(msg)]
+                node.arrivals[id(msg)] = first-residence, src
+                node.pending.append(("/lidar_points", msg))
+            node.process_next()
+            return json.loads(node.published["/resense/status"][-1].data)
+        startup = queue([20.0, 20.3, 20.6, 20.9])
+>       assert startup["freshness"]["reason"] == "queue_stale"
+E       AssertionError: assert 'error' == 'queue_stale'
+E         
+E         - queue_stale
+E         + error
+
+tests/test_node.py:947: AssertionError
+_ test_stop_survives_stale_input_errors_and_invalid_clear_then_fresh_recovery __
+
+freshness_driver = (<resense_ros.detector_node.DetectorNode object at 0x70f04b999790>, {'wall': 1000.1, 'mono': 50.1, 'obstacle': True}, <function freshness_driver.<locals>.send at 0x70f04b94f2e0>)
+
+    def test_stop_survives_stale_input_errors_and_invalid_clear_then_fresh_recovery(freshness_driver):
+        node, clock, send = freshness_driver
+        clock["obstacle"] = True
+        stop = send(20.0, age=1.0)
+>       assert stop["decision"] == "STOP" and not stop["freshness"]["valid"]
+E       AssertionError: assert ('FAULT' == 'STOP'
+E         
+E         - STOP
+E         + FAULT)
+
+tests/test_node.py:968: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_node.py::test_freshness_live_acquisition_and_replay_publication_clocks
+FAILED tests/test_node.py::test_stale_future_and_unknown_sources_never_allow_go[0.501-source_stale]
+FAILED tests/test_node.py::test_stale_future_and_unknown_sources_never_allow_go[-0.051-source_clock_future]
+FAILED tests/test_node.py::test_pause_resume_timestamp_jumps_input_switch_and_recovery
+FAILED tests/test_node.py::test_startup_and_later_backlogs_and_residence_are_not_actionable
+FAILED tests/test_node.py::test_stop_survives_stale_input_errors_and_invalid_clear_then_fresh_recovery
+6 failed, 85 passed in 4.40s

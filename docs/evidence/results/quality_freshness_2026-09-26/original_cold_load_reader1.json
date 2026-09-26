@@ -1,0 +1,150 @@
+{
+  "file": "/home/resense/data/new_data/new_data_1.db3",
+  "started_utc": "2026-09-26T21:28:35.665507+00:00",
+  "bytes": 2347229184,
+  "reads": 2239,
+  "passes": 5,
+  "direct_io": true,
+  "error": null,
+  "samples": [
+    {
+      "elapsed_s": 1.0055,
+      "bytes": 68157440
+    },
+    {
+      "elapsed_s": 2.0102,
+      "bytes": 135266304
+    },
+    {
+      "elapsed_s": 3.0152,
+      "bytes": 202375168
+    },
+    {
+      "elapsed_s": 4.0209,
+      "bytes": 269484032
+    },
+    {
+      "elapsed_s": 5.0253,
+      "bytes": 336592896
+    },
+    {
+      "elapsed_s": 6.03,
+      "bytes": 403701760
+    },
+    {
+      "elapsed_s": 7.0327,
+      "bytes": 470704128
+    },
+    {
+      "elapsed_s": 8.0373,
+      "bytes": 537812992
+    },
+    {
+      "elapsed_s": 9.042,
+      "bytes": 604921856
+    },
+    {
+      "elapsed_s": 10.0469,
+      "bytes": 672030720
+    },
+    {
+      "elapsed_s": 11.0517,
+      "bytes": 739139584
+    },
+    {
+      "elapsed_s": 12.0561,
+      "bytes": 806248448
+    },
+    {
+      "elapsed_s": 13.0588,
+      "bytes": 873250816
+    },
+    {
+      "elapsed_s": 14.0634,
+      "bytes": 940359680
+    },
+    {
+      "elapsed_s": 15.0678,
+      "bytes": 1007468544
+    },
+    {
+      "elapsed_s": 16.0726,
+      "bytes": 1074577408
+    },
+    {
+      "elapsed_s": 17.081,
+      "bytes": 1141686272
+    },
+    {
+      "elapsed_s": 18.0855,
+      "bytes": 1208795136
+    },
+    {
+      "elapsed_s": 19.0887,
+      "bytes": 1275797504
+    },
+    {
+      "elapsed_s": 20.0942,
+      "bytes": 1342906368
+    },
+    {
+      "elapsed_s": 21.0988,
+      "bytes": 1410015232
+    },
+    {
+      "elapsed_s": 22.1038,
+      "bytes": 1477124096
+    },
+    {
+      "elapsed_s": 23.1084,
+      "bytes": 1544232960
+    },
+    {
+      "elapsed_s": 24.1134,
+      "bytes": 1611341824
+    },
+    {
+      "elapsed_s": 25.1165,
+      "bytes": 1678344192
+    },
+    {
+      "elapsed_s": 26.1213,
+      "bytes": 1745453056
+    },
+    {
+      "elapsed_s": 27.126,
+      "bytes": 1812561920
+    },
+    {
+      "elapsed_s": 28.131,
+      "bytes": 1879670784
+    },
+    {
+      "elapsed_s": 29.1359,
+      "bytes": 1946779648
+    },
+    {
+      "elapsed_s": 30.1407,
+      "bytes": 2013888512
+    },
+    {
+      "elapsed_s": 31.1439,
+      "bytes": 2080890880
+    },
+    {
+      "elapsed_s": 32.1486,
+      "bytes": 2147999744
+    },
+    {
+      "elapsed_s": 33.1533,
+      "bytes": 2215108608
+    },
+    {
+      "elapsed_s": 34.1582,
+      "bytes": 2282217472
+    }
+  ],
+  "elapsed_s": 35.13504821099923,
+  "finished_utc": "2026-09-26T21:29:10.800551+00:00",
+  "mib_per_s": 63.71108911127742
+}
