@@ -1,0 +1,12 @@
+{
+  "runs": 30,
+  "starts": [
+    0,
+    10,
+    20,
+    30,
+    40
+  ],
+  "all_run_fields_equal": true,
+  "baseline": "docs/evidence/results/p4_p3d_artifacts_2026-09-26/reference/offsets.json"
+}
