@@ -37,10 +37,20 @@ class Cluster:
     kind: str = ""               # v0.6: 'low' = a bump above the track bed (resense/lowobj.py), '' = corridor cluster
     rail_line: bool = False      # 26.09: a low cluster near the train that is rail geometry (lowobj.mark_rail_line; lowobj.rail_start_within)
     wall_kept: bool = False      # 26.09: the wall-at-the-side rule would have dropped it; kept by cluster.wall_keep_gauge_voxels
+    demoted: bool = False        # 26.09 (P3 range): in the strict gauge by its voxels, demoted only by a shape signature (SHAPE_SIGNATURES)
+    thin: bool = False           # 26.09 (tracking.stop_keep_thin): flatter than min_height, kept only to continue a reported obstacle track
 
     @property
     def size(self) -> np.ndarray:
         return self.bbox_max - self.bbox_min
+
+
+# 26.09 (P3 range): the demotion reasons that are shape heuristics for infrastructure, applied to a
+# cluster that has enough voxels inside the strict gauge; ``column`` is not one of them (the column
+# hold of the tracker handles it), nor the far-field and overhead reasons, which say the geometry is
+# not trusted there or the cluster is above the envelope (``Cluster.demoted``,
+# ``tracking.stop_keep_signature``)
+SHAPE_SIGNATURES = ("elevated", "floating", "edge", "wall_face")
 
 
 def _scaled(xyz: np.ndarray, range_scale: float) -> np.ndarray:
@@ -140,7 +150,8 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
                   smear_max_length: float = 0.0, smear_max_width: float = 0.0,
                   low: Optional[np.ndarray] = None, low_cfg=None,
                   height_valid: Optional[float] = None, gauge: Optional[GaugeConfig] = None,
-                  dy_alt: Optional[np.ndarray] = None, in_rail: Optional[np.ndarray] = None) -> List[Cluster]:
+                  dy_alt: Optional[np.ndarray] = None, in_rail: Optional[np.ndarray] = None,
+                  keep_thin: bool = False) -> List[Cluster]:
     """Voxelise candidates, cluster the voxels, describe and filter the clusters.
 
     ``xyz``/``intensity``/``dy``/``h``/``in_gauge`` are the corridor candidates;
@@ -196,6 +207,11 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
     measured from the sensor axis to ``in_gauge``. The wall keep (``cfg.wall_keep_gauge_voxels``)
     counts it, and an oversize cluster whose part in ``in_gauge`` is too long falls back to its part in
     it (safety review of 26.09: the union took in a long edge line beside an object and dropped both).
+
+    ``keep_thin`` (26.09, ``tracking.stop_keep_thin``, off by default): a corridor cluster flatter
+    than ``min_height`` is not dropped but returned with ``thin`` set (every other test applied as
+    usual); the caller hands such clusters to the tracker only to continue an obstacle track (one
+    scan line of an object whose part inside the envelope is thinner than the ring spacing).
     """
     out: List[Cluster] = []
     if xyz.shape[0] == 0:
@@ -222,7 +238,7 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
             c = _low_cluster(b, dy, h, intensity, frame_idx, cfg, low_cfg)
         else:
             c = _corridor_cluster(b, dy, h, in_gauge, intensity, inv, frame_idx, cfg, factor, factor_range,
-                                  axis_valid, height_valid, gauge, dy_alt, in_rail)
+                                  axis_valid, height_valid, gauge, dy_alt, in_rail, keep_thin)
         if c is not None:
             out.append(c)
     out.sort(key=lambda c: c.distance)
@@ -459,10 +475,12 @@ def _gauge_part(b: _Blob, in_gauge, inv, cfg: ClusterConfig) -> Optional[_Blob]:
 def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg: ClusterConfig,
                       factor: float, factor_range: float, axis_valid: float,
                       height_valid: Optional[float], gauge: Optional[GaugeConfig] = None,
-                      dy_alt: Optional[np.ndarray] = None, in_rail: Optional[np.ndarray] = None) -> Optional[Cluster]:
+                      dy_alt: Optional[np.ndarray] = None, in_rail: Optional[np.ndarray] = None,
+                      keep_thin: bool = False) -> Optional[Cluster]:
     """A corridor cluster: size and point-count bars, the infrastructure shapes, then the zone
     (enough voxels in the strict gauge) and the reason that demotes it to advisory. ``in_rail``: the
-    strict membership from the rails only (``find_clusters``)."""
+    strict membership from the rails only (``find_clusters``). With ``keep_thin`` a cluster flatter
+    than ``min_height`` is described with ``thin`` set instead of dropped (:func:`find_clusters`)."""
     if in_rail is None:
         in_rail = in_gauge
     size = b.size
@@ -477,7 +495,8 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
             return None
         b = part
         size = b.size
-    if size.max() > cfg.max_extent or size[2] < cfg.min_height:
+    thin = bool(size[2] < cfg.min_height)
+    if size.max() > cfg.max_extent or (thin and not keep_thin):
         return None
     dist = float(b.pts[:, 0].min())
     min_pts = cfg.min_points if dist < cfg.far_range else cfg.min_points_far
@@ -510,6 +529,7 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
     n_gauge = int(np.unique(inv[b.idx][in_gauge[b.idx]]).size)
     zone = "gauge" if n_gauge >= gauge_min else "warning"
     reason = _advisory_reason(b, dist, lat_rules, zone, dy_rules, h, cfg, axis_valid, height_valid)
+    demoted = zone == "gauge" and reason in SHAPE_SIGNATURES
     if reason:
         zone = "warning"
     retro = _is_retro(b, intensity, cfg)
@@ -534,5 +554,5 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
         height_min=float(h[b.idx].min()), height_max=h_max,
         intensity=float(intensity[b.idx].mean()) if intensity is not None else 0.0,
         n_expected=n_exp, score=score, zone=zone, n_gauge=n_gauge, retro=retro, reason=reason,
-        wall_kept=wall_kept,
+        wall_kept=wall_kept, demoted=demoted and not retro, thin=thin,
     )

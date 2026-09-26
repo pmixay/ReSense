@@ -169,7 +169,7 @@ validity over each sequence before interpreting range or edge results.
 
    ```bash
    python scripts/regression_gate.py --cache /data/cache \
-       --baseline docs/evidence/results/regression_baseline_2026-09-26_ride_p3c.json \
+       --baseline docs/evidence/results/regression_baseline_2026-09-26_ride_p3d.json \
        [--config FILE] [--set section.key=value ...] [--allow PATTERN ...] \
        --out out/gate/<change>.json
    ```
@@ -212,6 +212,14 @@ validity over each sequence before interpreting range or edge results.
    recording, or a failed set F run on a cached ride, exits 2.
 
    **Baselines of 25–26.09.** The current one is
+   [`regression_baseline_2026-09-26_ride_p3d.json`](evidence/results/regression_baseline_2026-09-26_ride_p3d.json):
+   the shipped defaults of `fa18832` (the P3 range item of 26.09, the STOP keep with its 10 s cap, on
+   top of the next one; with P4's set O metrics of 26.09), native path, `--jobs 1`, 791 s. It passes
+   against the next one with 4 gated rows better, all O's box at the envelope top (O:
+   the box at the envelope top 22 → 51 STOP frames, continuous from 101.3 m) and every other row
+   the same, the ride frame by frame (EXPERIMENTS §1o,
+   [`regression_gate_2026-09-26_range_final.json`](evidence/results/regression_gate_2026-09-26_range_final.json)).
+   The one before,
    [`regression_baseline_2026-09-26_ride_p3c.json`](evidence/results/regression_baseline_2026-09-26_ride_p3c.json):
    the shipped defaults of `ed03bc2` (the P3 items of 26.09 merged with the fixes of their safety
    review: the rail-start rule, the near escalation and the wall keep on, the sensor-axis union
