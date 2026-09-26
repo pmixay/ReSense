@@ -48,6 +48,14 @@ class TrackModel:
     far_support_run: int = 0         # 25.09: consecutive frames with the walls_min_far_support condition (not reported)
     axis_valid_both: float = 1e9     # 25.09: X up to which BOTH fitted boundaries support the axis (= axis_valid with one or none); read only with cluster.far_axis_both_sides 1, not serialised
     axis_valid_bent: float = 1e9     # 25.09: the same without the straight bonus, on a bent axis with two boundaries only (1e9 otherwise); cluster.far_axis_both_sides 2, not serialised
+    axis_disagreement: Optional[float] = None  # fresh two-boundary observation; None after a failed fit
+    axis_contradiction_cap: Optional[float] = None  # detector trust state; never used by geometry fitting
+
+    @property
+    def effective_axis_valid(self) -> float:
+        """Observed axis range limited by an unresolved boundary contradiction."""
+        return self.axis_valid if self.axis_contradiction_cap is None else min(
+            self.axis_valid, self.axis_contradiction_cap)
 
     def floor_z(self, X) -> np.ndarray:
         """Bed reference height at along-track coordinate X, linearly extrapolated beyond
@@ -90,7 +98,10 @@ class TrackModel:
             "center": round(float(self.center), 3), "yaw": float(self.yaw),
             "curvature": float(self.curvature), "rail_offset": round(float(self.rail_offset), 3),
             "rail_score": round(float(self.rail_score), 3), "wall_quality": round(float(self.wall_quality), 3),
-            "axis_valid": round(float(min(self.axis_valid, 9999.0)), 1),
+            "axis_valid": round(float(min(self.effective_axis_valid, 9999.0)), 1),
+            **({"axis_observed_range": round(float(min(self.axis_valid, 9999.0)), 1),
+                "axis_contradiction_cap": round(float(self.axis_contradiction_cap), 1)}
+               if self.axis_contradiction_cap is not None else {}),
             "n_bins": int(self.n_bins),
             "residual": round(float(self.residual), 3),
             "floor_verified": round(float(self.floor_verified), 1),
@@ -800,7 +811,8 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
     info: dict = {}
     fit = _fit_floor(xyz, cfg, prior, shadow_ref=shadow_ref, info=info, release=release)
     if fit is None:
-        return prior
+        # Kept geometry is not a fresh observation that can resolve a contradiction.
+        return replace(prior, axis_disagreement=None)
     coef, frange, n_bins, rms = fit
     if prev is not None and cfg.floor_smoothing > 0:
         a = cfg.floor_smoothing
@@ -846,6 +858,7 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
             model.curvature = a_w * prior.curvature + (1 - a_w) * curv
             model.wall_quality = q
             model.axis_sides = n_sides
+            model.axis_disagreement = float(disagreement) if n_sides == 2 else None
             model.axis_valid = x_valid + cfg.axis_valid_margin
             agree = n_sides == 2 and (cfg.axis_sides_max_disagreement <= 0 or disagreement <= cfg.axis_sides_max_disagreement)
             straight = abs(model.curvature) < 1e-4 and q < 0.2 and (agree or cfg.axis_one_side_range <= 0)

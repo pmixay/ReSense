@@ -159,6 +159,7 @@ class Detector:
     def __init__(self, cfg: Optional[DetectorConfig] = None):
         self.cfg = cfg or DetectorConfig()
         self.track: Optional[TrackModel] = None
+        self._axis_contradiction_cap: Optional[float] = None
         self.tracker = Tracker(self.cfg.tracking)
         acc = self.cfg.accumulation
         self.buffer = CandidateBuffer(acc.n_frames if acc.enabled else 1, acc.max_points_per_frame)
@@ -180,6 +181,7 @@ class Detector:
     def reset(self) -> None:
         """Forget the scene (track model, tracks, buffers); the mount calibration is kept."""
         self.track = None
+        self._axis_contradiction_cap = None
         self.tracker.reset()
         self.buffer.clear()
         self.ego.reset()
@@ -331,7 +333,32 @@ class Detector:
                 self.tracker.reseed(dR, hold, keep_unreported=change <= 1.0)
             elif orient or change > 1.0:                                # a new orientation or a large tilt:
                 self.tracker.reset()                                    # the tracks' positions are meaningless
+        self._update_axis_trust()
         return xyz
+
+    def _update_axis_trust(self) -> None:
+        """Losing a boundary cannot resolve a previous two-boundary contradiction.
+
+        Read only the final fit for this frame, after any mount correction. Keep this
+        state across calibration reseeds; only fresh agreement or scene reset releases it.
+        The raw fitter range stays unchanged so this rule cannot feed back into geometry.
+        """
+        cfg, model = self.cfg.track, self.track
+        cap = self._axis_contradiction_cap
+        if not cfg.walls_enabled or cfg.axis_sides_max_disagreement <= 0:
+            cap = None
+        else:
+            disagreement = model.axis_disagreement
+            if model.axis_sides == 2 and disagreement is not None and np.isfinite(disagreement):
+                if disagreement <= cfg.axis_sides_max_disagreement:
+                    cap = None
+                else:
+                    cap = min(model.axis_valid, cfg.axis_disagree_range,
+                              cap if cap is not None else float("inf"))
+            if cap is not None:
+                cap = min(cap, model.axis_valid)
+        self._axis_contradiction_cap = cap
+        model.axis_contradiction_cap = cap
 
     # -- 2 -------------------------------------------------------------------------------------
     def _corridor(self, xyz: np.ndarray, intensity: np.ndarray):
@@ -364,7 +391,7 @@ class Detector:
                 cand.in_rail = cand.in_gauge            # the rails' own envelope (safety review of 26.09)
                 cand.in_gauge = cand.in_gauge | ax
         floor_valid = max(self.track.floor_range[1] + cfg.track.floor_valid_margin, self.track.floor_verified)
-        axis_valid = min(self.track.axis_valid, cfg.gauge.range_max)
+        axis_valid = min(self.track.effective_axis_valid, cfg.gauge.range_max)
         valid = min(axis_valid, floor_valid) if cfg.cluster.far_min_height <= 0 else axis_valid
         if cfg.cluster.far_axis_both_sides == 1:
             # 25.09 (far_switch), opt-in, mode 1: beyond the height reference only as far as both
@@ -524,7 +551,7 @@ class Detector:
         and beyond the shorter boundary's range (+ ``axis_valid_margin``) is demoted to advisory
         ``beyond_axis``: the curvature that puts it in the corridor is not supported that far on
         both sides. Other clusters keep their reasons (a column stays a column hit). Returns the
-        range the corridor is verified to (for the verified-clear distance)."""
+        estimated range supported by the corridor model; obstacle misses remain possible."""
         limit = max(min(self.track.axis_valid_bent, self.cfg.gauge.range_max), floor_valid)
         if limit >= valid:
             return valid

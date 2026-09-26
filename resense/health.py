@@ -153,7 +153,7 @@ class HealthMonitor:
 
         monitored = float(max(0.0, min(vis, trusted_range, gauge.range_max)))
         if level >= 2:
-            monitored = 0.0                     # an input fault: nothing is verified
+            monitored = 0.0                     # an input fault invalidates the monitoring estimate
         clear = monitored if obstacle_distance is None else float(min(obstacle_distance, monitored))
         if candidate_distance is not None:     # clear_cap (25.09): an unconfirmed / advisory object in the envelope
             clear = float(max(0.0, min(clear, candidate_distance)))

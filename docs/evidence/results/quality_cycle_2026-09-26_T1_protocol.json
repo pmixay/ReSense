@@ -10,11 +10,11 @@
     "state": "Detector-owned optional axis contradiction cap, initially absent; not part of fitter geometry feedback.",
     "observation": "Record current fresh two-boundary curvature disagreement on TrackModel; None for fewer than two fitted boundaries or failed floor fit. A returned previous geometry is not fresh agreement. Update trust once per processed frame after mount calibration and its final fit/rotation. A large correction uses only the final corrected-frame fit; a small rotation preserves the observation from that frame.",
     "enter": "With walls_enabled and axis_sides_max_disagreement>0, fresh finite two-boundary disagreement>axis_sides_max_disagreement sets cap=min(current raw axis_valid, axis_disagree_range, previous cap if active).",
-    "hold": "Without a fresh two-boundary agreement, an active cap becomes min(previous cap, current raw axis_valid); it cannot increase, including after one/no boundary, floor-fit failure, mount reseed, tracker reseed or input gap.",
+    "hold": "Without a fresh two-boundary agreement, an active cap becomes min(previous cap, current raw axis_valid); it cannot increase, including after one/no boundary, floor-fit failure, mount reseed, tracker reseed or input gap. Input gaps preserve this state only until an explicit Detector.reset; the node can treat some gaps as scene resets, which release it by the reset contract.",
     "release": "A fresh finite two-boundary disagreement<=axis_sides_max_disagreement clears the cap. Equality is agreement, as in baseline. Detector.reset/new Detector also clears it; mount correction or tracker reset alone never clears it.",
     "disabled": "If walls are disabled or axis_sides_max_disagreement<=0, this mechanism is inactive and its state is absent, matching the disabled disagreement rule.",
     "application": "Keep TrackModel.axis_valid raw so floor, rail, calibration and next-frame geometry fitting are unchanged. Apply min(raw axis_valid, cap if active, gauge.range_max) to the corridor trusted axis range; existing downstream cluster, low-stage, hanging and health paths receive it without additional changes.",
-    "telemetry": "When cap active, serialize axis_valid as the effective min, and add axis_observed_range and axis_contradiction_cap. Raw model attribute remains unchanged for fitter. No change to geometry fields or monitoring health policy beyond inherited range effects.",
+    "telemetry": "When cap active, serialize axis_valid as the effective min, and add axis_observed_range and axis_contradiction_cap. Raw model attribute remains unchanged for fitter. No change to geometry fields or monitoring health policy beyond inherited range effects. axis_observed_range names the raw fitter estimate and does not imply fresh physical observation. Final corridor limits can additionally narrow the serialized axis bound via gauge/floor/no-rail/both-side rules.",
     "constants": "All configuration values unchanged, including existing disagreement6.7e-4, disagreement range60m, one-side range120m. No object-distance, shape, column, voxel, association or axis-union changes.",
     "scope": [
       "resense/track.py: fresh observation metadata and active-cap serialization only",
@@ -56,5 +56,8 @@
     "detector_base_sha256": "1b38ceda1e368601dbccf792c177adfe19775fea897364aabc567b8bf486ea25",
     "native_library_sha256": "511f7766639f0ddab471a77263f7a343de19d0a8217dd7cd3a11635c8a7db2c8"
   },
-  "release": "Remains held; root owns integration and final acceptance."
+  "release": "Remains held; root owns integration and final acceptance.",
+  "review_clarifications": [
+    "Before measurement, independent reviewer requested explicit gap/reset semantics and fresh-fit tests for final calibration reseed. No variant or thresholds changed."
+  ]
 }
