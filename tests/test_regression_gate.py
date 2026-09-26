@@ -31,7 +31,9 @@ def _inside(stop, first_m, held_m, visible=100, advisory=0):
     return {"in_gauge": True, "visible_frames": visible, "first_visible_m": 120.0, "frames_in_envelope": visible,
             "stop_frames": stop, "advisory_frames": advisory, "first_stop_m": first_m,
             "first_stop_frame": None if first_m is None else 10, "held_from_m": held_m,
-            "verdict": "detected" if stop else "missed", "bins": {}}
+            "max_missed_streak_frames": 0, "max_missed_span_m": 0.0, "missed_intervals": [],
+            "verdict": "detected" if stop else "missed",
+            "bins": {"0-50": {"alarm": stop, "advisory_only": advisory, "visible": visible}}}
 
 
 def _outside(false_stop, visible=100, advisory=5):
@@ -115,7 +117,10 @@ def test_the_gated_metrics_are_exactly_the_documented_ones():
     expected |= {"ride.frames", "ride.alarm_events", "ride.stop_episodes", "set_O.frames",
                  "set_O.background.alarm_frames", "set_O.background.track_ids"}
     expected |= {f"set_O.objects.{o}.{m}" for o in ("big_center", "small_center", "thin_hanging")
-                 for m in ("stop_frames", "first_stop_m")}
+                 for m in ("stop_frames", "first_stop_m", "held_from_m",
+                           "max_missed_streak_frames", "max_missed_span_m")}
+    expected |= {f"set_O.objects.{o}.bins.0-50.{m}" for o in ("big_center", "small_center", "thin_hanging")
+                 for m in ("visible_frames", "stop_frames")}
     expected |= {"set_O.objects.big_outside.false_stop_frames"}
     expected |= {f"set_F_straight.person.{m}" for m in ("detected", "first_detection_median_m", "false_detections")}
     assert gated == expected
@@ -182,12 +187,42 @@ def test_set_o_inside_objects_stop_frames_and_first_stop():
     rows = rows_by_metric(base, new)
     assert rows["set_O.objects.thin_hanging.first_stop_m"]["verdict"] == "better"
     assert rows["set_O.objects.thin_hanging.stop_frames"]["verdict"] == "better"
-    new["set_O"]["objects"]["small_center"]["held_from_m"] = 20.0                # held-from: information
+    new["set_O"]["objects"]["small_center"]["held_from_m"] = 20.0                # sustained range is gated
+    new["set_O"]["objects"]["small_center"]["max_missed_streak_frames"] = 4
     new["set_O"]["objects"]["small_center"]["advisory_frames"] = 5
     rows = rows_by_metric(base, new)
     assert rows["set_O.objects.small_center.held_from_m"]["verdict"] == "worse"
     assert rows["set_O.objects.small_center.advisory_frames"]["verdict"] == "changed"
-    assert failing(base, new) == []
+    assert failing(base, new) == ["set_O.objects.small_center.held_from_m",
+                                  "set_O.objects.small_center.max_missed_streak_frames"]
+
+
+def test_set_o_sustained_range_and_per_bin_recall_are_protected():
+    base = result()
+    new = copy.deepcopy(base)
+    new["set_O"]["objects"]["small_center"]["held_from_m"] = 40.0
+    new["set_O"]["objects"]["small_center"]["bins"]["0-50"]["alarm"] -= 1
+    assert failing(base, new) == ["set_O.objects.small_center.bins.0-50.stop_frames"]
+
+    new = copy.deepcopy(base)
+    new["set_O"]["objects"]["small_center"]["bins"]["0-50"]["visible"] += 1
+    assert failing(base, new) == ["set_O.objects.small_center.bins.0-50.visible_frames"]
+
+    new = copy.deepcopy(base)
+    new["set_O"]["objects"]["small_center"]["max_missed_span_m"] = 8.0
+    assert failing(base, new) == ["set_O.objects.small_center.max_missed_span_m"]
+
+
+def test_missed_interval_metrics_added_after_a_legacy_baseline_are_information():
+    base = result()
+    del base["set_O"]["objects"]["small_center"]["max_missed_streak_frames"]
+    del base["set_O"]["objects"]["small_center"]["max_missed_span_m"]
+    new = copy.deepcopy(base)
+    new["set_O"]["objects"]["small_center"]["max_missed_streak_frames"] = 12
+    new["set_O"]["objects"]["small_center"]["max_missed_span_m"] = 10.0
+    rows = rows_by_metric(base, new)
+    assert rows["set_O.objects.small_center.max_missed_streak_frames"]["verdict"] == "not in baseline"
+    assert rows["set_O.objects.small_center.max_missed_span_m"]["verdict"] == "not in baseline"
 
 
 def test_set_o_outside_objects_and_background():
@@ -314,11 +349,16 @@ def test_a_recording_or_object_missing_from_an_earlier_result_fails():
     del new["recordings"]["roundT_doubleT"]
     del new["set_O"]["objects"]["small_center"]
     expected = [f"recordings.roundT_doubleT.{m}" for m in ("frames", "alarm_events", "stop_episodes")]
-    expected += ["set_O.objects.small_center.stop_frames", "set_O.objects.small_center.first_stop_m"]
+    expected += ["set_O.objects.small_center.stop_frames", "set_O.objects.small_center.first_stop_m",
+                 "set_O.objects.small_center.held_from_m",
+                 "set_O.objects.small_center.max_missed_streak_frames",
+                 "set_O.objects.small_center.max_missed_span_m",
+                 "set_O.objects.small_center.bins.0-50.visible_frames",
+                 "set_O.objects.small_center.bins.0-50.stop_frames"]
     assert failing(base, new) == expected
     lines = gate.missing_lines(gate.compare(base, new), new)
     assert lines[0] == "MISSING in this run: recording roundT_doubleT: 3 gated row(s) of the baseline not checked"
-    assert lines[1] == "MISSING in this run: set O: 2 gated row(s) of the baseline not checked"
+    assert lines[1] == "MISSING in this run: set O: 7 gated row(s) of the baseline not checked"
     assert lines[2].endswith("--allow 'recordings.roundT_doubleT.*' --allow 'set_O.*'")
     assert failing(base, new, ["recordings.roundT_doubleT.*", "set_O.objects.small_center.*"]) == []
 

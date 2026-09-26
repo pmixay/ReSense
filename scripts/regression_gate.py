@@ -38,8 +38,10 @@ patterns of metric names). Gated, i.e. "identical or better" required:
   object from frame 75, after the person has left it) must not drop; the first alarm frame must not
   get later; false-alarm events (alarm tracks never matched to a label) must not rise;
 * set O, every inside object: STOP frames must not drop and the first STOP must not come at a
-  shorter distance (no STOP counts as the worst); every outside object: false STOP frames must not
-  rise; background alarm frames and background track ids must not rise;
+  shorter distance (no STOP counts as the worst); sustained STOP range must not shrink, visible
+  denominators must match, per-range-bin STOP frames must not drop and the longest consecutive
+  missed interval must not grow; every outside object: false STOP frames must not rise; background
+  alarm frames and background track ids must not rise;
 * set F straight, per kind: sequences detected must not drop, the median first-confirmation
   distance must not shrink, false detections must not rise.
 
@@ -234,7 +236,11 @@ def set_o_entry(paths, labels_path) -> dict:
              "stop_frames": o["alarm_frames"], "advisory_frames": o["advisory_only_frames"]}
         if o["in_gauge"]:
             e.update({"first_stop_m": o["first_alarm_m"], "first_stop_frame": o["first_alarm_frame"],
-                      "held_from_m": o["alarm_held_from_m"]})
+                      "held_from_m": o["alarm_held_from_m"],
+                      "missed_intervals": o.get("missed_intervals", [])})
+            misses = e["missed_intervals"]
+            e["max_missed_streak_frames"] = max((m["frames"] for m in misses), default=0)
+            e["max_missed_span_m"] = round(max((m["from_m"] - m["to_m"] for m in misses), default=0.0), 1)
         else:
             e.update({"false_stop_frames": o["false_alarm_frames"], "false_stop_from_m": o["false_alarm_from_m"]})
         e["verdict"] = o["verdict"]
@@ -391,8 +397,16 @@ def metrics(result: dict) -> dict:
             if o.get("in_gauge"):
                 put(f"{k}.stop_frames", o.get("stop_frames"), HIGHER, True)
                 put(f"{k}.first_stop_m", o.get("first_stop_m"), HIGHER, True)
-                put(f"{k}.held_from_m", o.get("held_from_m"), HIGHER, False)
+                put(f"{k}.held_from_m", o.get("held_from_m"), HIGHER, True)
+                if "max_missed_streak_frames" in o:
+                    put(f"{k}.max_missed_streak_frames", o["max_missed_streak_frames"], LOWER, True)
+                if "max_missed_span_m" in o:
+                    put(f"{k}.max_missed_span_m", o["max_missed_span_m"], LOWER, True)
                 put(f"{k}.advisory_frames", o.get("advisory_frames"), INFO, False)
+                for distance_bin, counts in (o.get("bins") or {}).items():
+                    bin_key = f"{k}.bins.{distance_bin}"
+                    put(f"{bin_key}.visible_frames", counts.get("visible"), EQUAL, True)
+                    put(f"{bin_key}.stop_frames", counts.get("alarm"), HIGHER, True)
             elif o.get("in_gauge") is False:
                 put(f"{k}.false_stop_frames", o.get("false_stop_frames"), LOWER, True)
                 put(f"{k}.advisory_frames", o.get("advisory_frames"), INFO, False)

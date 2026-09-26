@@ -4,25 +4,21 @@
 > range, latency, FPS, hard cases and how the quality changed (spec §5 "Эксперименты").
 > **Audience:** jury, team · **Owner:** P3, P4 (content), P1 (structure, timing) · **Language:** EN,
 > summary RU
-> **Last verified:** 2026-09-25 against `154db25` (detector v0.6.3 with the long overhead rule,
+> **Last verified:** 2026-09-26 against the integrated P3c baseline (`ed03bc2`),
+> detector v0.6.3 with the long overhead rule,
 > `tracking.column_hold` and the rail-shadow rules on since 25.09, node v0.6.4, package 1.0.0;
 > re-measured by the regression gate with the ride) ·
 > **Status:** current
 
-**Кратко.** Здесь все измерения ReSense с датой и видом данных. На всех 13 759 реальных кадрах
-организаторов пять бэгов без препятствий дают 13 ложных событий (20 до правила длинных навесных
-конструкций и удержания колонн, 25.09), 20-минутная поездка — 46 (3,5 на км); человек на пути найден в 58 из 61 кадра
-с 11-го, предмет на рельсе — в 124 из 126 кадров после ухода человека, ошибка расстояния ≤ 0,23 м.
-На синтетических объектах самих организаторов (набор O) STOP получают 5 из 8 объектов в габарите:
-ящик 2 × 2 м с 98 м (с 25.09 и вблизи — на своём расстоянии, а не 3,0 м), кубы 0,3 м только с
-34–43 м. Человек на 148–154 м — только на нашей синтетике
-(151 м по текущему скрипту оценки, 25.09). Время кадра 42–64 мс (p95 53–78 мс) на одном ядре
-машины разработки без монитора состояния; ядра на C++ (24.09) сокращают его на 38–57 %, DBSCAN на
-cKDTree (25.09) — ещё на 1–3 мс, выход тот же; стенд i7-9700E до сдачи команде недоступен
-(организаторы, 25.09), замер — на 8-ядерной машине команды. Все числа по реальным записям, набору O,
-поездке и набору F на прямой перепроверяются одной командой (`scripts/regression_gate.py`, эталон
-25.09 с поездкой). Собственная оценка скорости поезда по лидару точна (ошибка 0,06–0,08 м/с), но
-даже точная скорость не улучшает проверку организаторов (§9), поэтому по умолчанию она выключена.
+**Кратко.** Здесь все измерения ReSense с датой и видом данных. По интегрированной версии P3c
+пять пустых записей дают 13 ложных событий, поездка 20 минут — 45 (3,5 на км); человек на пути
+найден в 58 из 61 кадра с 11-го, предмет на рельсе — в 125 из 126 кадров после ухода человека,
+ошибка расстояния ≤ 0,23 м. На синтетических объектах организаторов (набор O) STOP получают все
+8 объектов в габарите, но два краевых объекта получают лишь 2 и 6 STOP-кадров, а верхний ящик —
+22 из 124; за 100 м есть только один STOP-кадр. Человек на 148–154 м подтверждён только на нашей
+синтетике. Независимая оценка 65/100 предшествует интеграции P3c и не переоценена. Собственная
+оценка скорости поезда по лидару точна (ошибка 0,06–0,08 м/с), но даже точная скорость не
+улучшает проверку организаторов (§9), поэтому по умолчанию она выключена.
 
 ## Current results (detector v0.6.3 with the long overhead rule, `tracking.column_hold`, the rail-shadow rules and the P3 round-2 items on since 25.09, the P3 items of 26.09 since 26.09, node v0.6.4)
 
@@ -36,8 +32,10 @@ real-data rows (five obstacle-free bags, the person, the object on the rail, the
 row and set F straight track in one run, and gates every detector change against
 [`regression_baseline_2026-09-26_ride_p3d.json`](evidence/results/regression_baseline_2026-09-26_ride_p3d.json)
 (the shipped defaults of `6c76605`: the P3 items of 26.09 with the STOP keep, §1o; six recordings,
-set O, the ride and set F straight). It is the single check of these results: a change that moves
-them commits a new baseline, one that does not leaves this table as it is. The one before it,
+set O, the ride and set F straight). It is the single check of these results: set O also gates
+per-object sustained STOP distance, longest missed interval, and visible / STOP counts in every
+distance bin (P4, 26.09). A change that moves them commits a new baseline, one that does not leaves
+this table as it is. The one before it,
 [`regression_baseline_2026-09-26_ride_p3c.json`](evidence/results/regression_baseline_2026-09-26_ride_p3c.json)
 (the shipped defaults of `ed03bc2`: the P3 items of 26.09 merged with the fixes of their safety
 review, `lowobj.rail_start_within`, `tracking.near_escalate_*` and `cluster.wall_keep_*` on,
@@ -57,7 +55,7 @@ every gated metric the same ([its JSON](evidence/results/regression_gate_2026-09
 | metric | value | kind, date | where |
 |---|---|---|---|
 | false alarms, five obstacle-free bags (2 287 frames) | **13 events**, 58 alarm frames, 16 STOP episodes with `tracking.column_hold` 2 (on since 25.09, §3a: the `roundT_doubleT` column); without it 14 events, 60 alarm frames, 17 STOP episodes (long overhead rule on since 25.09; 20 / 107 / 27 without it); the start-offset spread 14–20 events was measured without the rule (24.09), not re-run | real, 25.09 [measured 25.09] | §1f |
-| P4 rate / mount stress and empty suffix | five bags false events / STOP episodes: 5 Hz **10 / 10**, +3° roll **14 / 16**, +3° pitch **17 / 18** since the safety review of 26.09 turned the refinement off (with it, round 2 of 25.09: 10 / 10, 11 / 13, 16 / 17; P4's run of 25.09 before the rate / re-mount flags: 13 / 17 with 3 new events in `roundT_doubleT`, 16 / 17, 17 / 18); `roundT_doubleT` 0 / 2 / 1 events (0 / 1 / 0 with the refinement); `doubleT_obstacle` labelled hits 92 of 123 @ frame 12, 183 of 246 @ 12, 186 of 246 @ 11 (26.09; 181 of 246 at +3° roll before). Frames 804–1 509 of `cloud_with_fake_obj`: **0 false frames / 0 events in 706 frames**, both from a fresh start and after continuous playback (P4, before round 2) | real backgrounds, 25.09, 26.09 [measured] | §1g, §1i; [`scorecard13_2026-09-25.json`](evidence/results/scorecard13_2026-09-25.json), [`p3_round2_combined_2026-09-25.json`](evidence/results/p3_round2_combined_2026-09-25.json), [`p3_round2_review_fixes_2026-09-26.json`](evidence/results/p3_round2_review_fixes_2026-09-26.json) |
+| P4 rate / mount stress and empty suffix | five bags false events / STOP episodes: 5 Hz **10 / 10**, +3° roll **14 / 16**, +3° pitch **17 / 18** since the safety review of 26.09 turned the refinement off (with it, round 2 of 25.09: 10 / 10, 11 / 13, 16 / 17; P4's run of 25.09 before the rate / re-mount flags: 13 / 17 with 3 new events in `roundT_doubleT`, 16 / 17, 17 / 18); `roundT_doubleT` 0 / 2 / 1 events (0 / 1 / 0 with the refinement); `doubleT_obstacle` labelled hits 92 of 123 @ frame 12, 183 of 246 @ 12, 186 of 246 @ 11 (26.09; 181 of 246 at +3° roll before). Frames 804–1 509 of `cloud_with_fake_obj`: **1 false STOP frame / 1 event in 706 frames**, frame 1131 at 140.72 m; reproduced on the integrated P3 code from both the raw bag and quantized cache (§1g; the earlier zero-alarm report was stale) | real backgrounds, 25.09, 26.09 [measured] | §1g, §1i; [`scorecard13_2026-09-25.json`](evidence/results/scorecard13_2026-09-25.json), [`p3_round2_combined_2026-09-25.json`](evidence/results/p3_round2_combined_2026-09-25.json), [`p3_round2_review_fixes_2026-09-26.json`](evidence/results/p3_round2_review_fixes_2026-09-26.json) |
 | false alarms, 20-minute ride (11 271 frames, 13.0 km) | **45 events, 3.5 per km**, 183 alarm frames (1.6 %), 38 STOP episodes with `lowobj.rail_start_within` 4 m (on since 26.09, §1k: the fresh start's STOP on the rail heads at 2.9–3.1 m removed; the gate's nearest ride alarm 2.9 → 20.7 m); 46 / 187 / 39 before it, with `tracking.column_hold` 2 (on since 25.09, §3a); without that 46 / 197 / 39 (without the long overhead rule 47 / 204 / 39, equal to the 24.09 record); 15 of the 45 first confirmed beyond 100 m (the event removed on 25.09, an overhead structure 4–5 m along the track at 105–110 m, was one of the 16 of 24.09); causes: the 24.09 classification of the 47 (corridor-edge structures 18, bed-level fixtures 11, far small clusters 7, other 6, tall 2, hanging 2, person-like 1), not redone | real, 25.09, 26.09 [measured 26.09] | §1f, §1k, §1n |
 | crossing person, `doubleT_obstacle` | STOP in **58 of 61** frames inside the envelope, first alarm frame 11 (0.3 s after entering), 55.5–56.6 m, distance error ≤ 0.23 m | real, 24.09 | §0 |
 | object lying across the rail (0.45 × 0.6 × 0.3 m, 56 m) | **125 of the 126** frames after the person leaves it (from frame 75)¹, 2 STOP episodes in the recording, since `calibration.keep_within_deg` (25.09, round 2: the final mount calibration no longer re-seeds the track model at frame 190, frame 191 kept); 124 of 126 and 3 STOP episodes before | real, 24.09; gate 25.09 | §0, §1i |
@@ -985,8 +983,11 @@ fully fixed or increase the 8.4 score.
 run continuously from frame 0 both give zero; the latter has 220 advisory frames, the former
 218. This is a held-out *segment for this parameter decision*, not an independent unseen route:
 the team's earlier audit inspected this recording and mentioned frame 1131. No parameters were
-selected from this suffix. An observation of zero in 70 s is not a reliable per-hour false-alarm
-rate or evidence that the 5 Hz / tilt cases are fixed.
+selected from this suffix. This was the P4 measurement on the pre-P3-round-2 code, not the current detector. Replaying the
+same raw bag and its quantized cache on integrated P3 code gives one background STOP at frame 1131,
+140.72 m, on both inputs ([`seto_suffix_p3c_2026-09-26.json`](evidence/results/seto_suffix_p3c_2026-09-26.json)).
+The held-out segment remains a small sample and does not establish a per-hour false-alarm rate or
+show that the 5 Hz / tilt cases are fixed.
 
 Reproduce the six-bag checks with `python scripts/robustness_check.py --cache <cache> --out
 <out>`; add `--every 2`, `--mount roll_3`, or `--mount pitch_3` for the other columns. Reproduce
@@ -1885,6 +1886,23 @@ every new flag off (`lowobj.rail_start_within`, `tracking.near_escalate_voxels`,
 this run without its gate block. `ls docs/evidence/results/regression_baseline_*_ride*.json |
 LC_ALL=C sort | tail -n 1` picks it (VM_GUIDE §4.4). The same run against it
 (`--from-json`): PASS, every row the same.
+
+*Re-review of the fixes* [synthetic and real frames, 26.09; the same safety reviewer, on
+`ed03bc2`]: rail start CLEAN, near escalation (A + D) NON-BLOCKING, edge axis CLEAN as shipped
+(off). Each fix only narrows a rule or keeps more clusters, so none adds a way to remove or delay
+a STOP against `bd67fb0`.
+* Rail start with `rail_start_min_ref` 0.06: the finding (file 2818, frames 12–15) is still fixed;
+  19 real-frame cases (the organizers' 0.3 × 0.3 × 0.1 box on each rail at 3.0 / 3.5 / 3.9 m,
+  fresh and appearing at frame 20, yawed 45°, shifted 12 cm; a brick; a bar along the rail head; a
+  cube flush against the gauge face 4 cm above the rail head) give the same first STOP frame and
+  STOP count with the rule on and off, and no object cluster is marked.
+* The union with the rails-only fallback (union on): the two edge-line scenes 19 → 19 and 16 → 16
+  STOP frames, a 2.5 m line stretch 20 → 20.
+* Left open, not blocking: (1) if the union is ever turned on, a union part that passes the
+  oversize split but took in a stretch of edge line is still judged by the shape rules on that
+  part; a complete fix applies the shape rules to the rails-only part. (2) A blob kept by D that is
+  itself a clean obstacle still takes over an overlapping low or hanging object: the STOP stays,
+  on that blob, so the reported distance or track can change for a few frames.
 
 ### 1o. Range on the organizers' objects (26.09): what limits it; a STOP keep shipped
 

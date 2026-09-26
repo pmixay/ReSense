@@ -134,15 +134,16 @@ recording** (another topic or frame id, stamps that jump back or forward by > `n
 control bags can be played one after another into one running node. The offline tool
 (`resense run --bag <dir>`) reads rosbag2 directly and writes the same per-frame JSON.
 
-## Status (25.09): package 1.0.0, detector v0.6.3 with the long overhead rule, node v0.6.4
+## Status (26.09): package 1.0.0, detector v0.6.3 with integrated P3c rules, node v0.6.4
 
 The v0.6.4 node works through the burst of the first seconds of a played bag instead of losing
 them: the first `STOP` on `doubleT_obstacle` comes 1.3–1.6 s into the recording, was 3.2–4.5 s.
 History: [`CHANGELOG.md`](CHANGELOG.md). Key decisions on one page:
 [`docs/DECISIONS.md`](docs/DECISIONS.md). Criteria judgement of 24.09 (two independent judges,
-reconciled): **60 / 100** (re-judged 26.09: **65 / 100**, SCORECARD §0); strongest 8.7 team
-approach (8 / 10) and 8.6 ease of launch (7.5 / 10), weakest 8.1 "does it work" (13 / 25) and 8.2
-range (7 / 15), mainly on the organizers' synthetic-obstacle recording:
+reconciled): **60 / 100** (last independently re-judged 26.09: **65 / 100**, before the P3c
+integration; no score has been issued for the integrated head); strongest 8.7 team
+approach (8.5 / 10) and 8.6 ease of launch (8 / 10), lowest 8.1 "does it work" (14.5 / 25) and
+8.2 range (7.5 / 15), mainly on the organizers' synthetic-obstacle recording:
 [`docs/SCORECARD.md`](docs/SCORECARD.md). Since then (the 1.0.0 entry of
 [`CHANGELOG.md`](CHANGELOG.md)): optional C++ kernels (38–57 % less detector time,
 identical output, built and tested in the CI image), DBSCAN on scipy's cKDTree with scikit-learn's

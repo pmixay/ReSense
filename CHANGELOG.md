@@ -16,6 +16,16 @@ frames, 13 km, no obstacles).
 
 ## Unreleased (in development; package version 1.0.0)
 
+- **P2 public presentation and P4 consistency pass (26.09):** rebuilt the 16-slide public PPTX
+  and PDF and the 2:50 overview MP4/SRT against the committed `_ride_p3b` regression baseline:
+  13 false events on five empty bags, 46 / 3.5 per km on the ride, 125/126 rail-object frames,
+  STOP for 6/8 organizers' objects (five held), and 492 tests. The 5 cm hanging object is shown
+  from 30 m; the edge box remains a miss. The offline jury chain now says `docker load`, and the
+  video no longer claims a release tag. The P4 audit keeps its dated 24.09 measurements; the
+  25.09 claim of zero alarms in the set O empty suffix is qualified because the current gate
+  records a background STOP at frame 1131. Fresh original-bag and quantized-cache replays both confirm 1 false STOP frame / 1 event
+  in the 706-frame suffix (EXPERIMENTS §1g, `seto_suffix_2026-09-26.json`).
+
 Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
 overhead rule on, node v0.6.4). Tests: 235 → 577 (+28 native kernels, +3 speed evaluation
 helpers, +23 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5

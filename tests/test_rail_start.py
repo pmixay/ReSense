@@ -193,7 +193,7 @@ def test_tracker_keeps_an_object_approached_from_afar():
 
 # --- the real finding (needs the ride cache) --------------------------------------------------------
 
-@pytest.mark.skipif(not os.path.isdir(RIDE), reason="the ride cache /data/cache/new_data is not here")
+@pytest.mark.realdata(RIDE)
 def test_finding_rail_heads_ahead_of_a_standing_fresh_start_do_not_stop():
     """The judge's case: a fresh detector from ``new_data_55_0013`` (the gate's piece-2 cut), 40
     frames. Off: STOP on frames 12-15 at 2.9-3.1 m (low). On: no STOP."""

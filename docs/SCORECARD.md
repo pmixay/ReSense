@@ -1,21 +1,25 @@
 # Criteria Scorecard
 
-> **Purpose:** the judgement of ReSense against the eight criteria of spec §8: the current one of
-> 26.09 (§0) and the first of 24.09 (§1–§8, kept as the record): score per criterion, the evidence
+> **Purpose:** the latest independent judgement of ReSense against the eight criteria of spec §8,
+> plus current-head evidence that has not yet been scored independently: score per criterion, the evidence
 > behind it, the risks on the hidden data and the fastest points to gain.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, summary RU
-> **Last verified:** 2026-09-26 against `867bb8a` (judged on `052e7c5` / `867bb8a`; the detector is
-> the same in both) · **Status:** current (§0); §1–§8 dated record of 24.09
+> **Last independent judgement:** 2026-09-26 against `867bb8a` (judged on `052e7c5` / `867bb8a`;
+> before the P3c integration) · **Status:** dated score record; current-head evidence follows §0
 
-**Кратко.** Итог по восьми критериям ТЗ §8 на 24.09 — **60 / 100** (два независимых судьи: 63 и
-58,5). Сильная сторона — инженерия (8.5–8.7): 235 тестов, CI с ROS в Docker, результаты
-воспроизводятся кадр в кадр, гипотезы и отказы записаны с цифрами. Слабая — 8.1 и 8.2 на
-синтетических препятствиях организаторов: STOP получают 5 из 8 объектов в габарите, дальше ~101 м
-STOP нет, кубы 0,3 м — только с 34–43 м, висящий объект 5 см пропущен. Быстрее всего баллы дают
-зелёный `main`, ответы организаторов, README, слайды и правило коротких сигнатур (§6). Что
-изменилось после оценки и на какие критерии это должно повлиять (без переоценки) — §8.
+**Кратко.** Последняя независимая оценка — **65 / 100** на версии до интеграции P3c. На P3c все
+8 объектов организаторов в габарите получают хотя бы один STOP, но краевые объекты #4 и #6
+получают лишь 2 и 6 STOP-кадров; главный потенциал роста остаётся в надёжности и дальности.
+Текущие метрики после интеграции приведены в §0.1; оценка не пересчитывалась.
 
-## 0. Re-judgement of 26.09 (current): 65 / 100
+## 0. Last independent re-judgement of 26.09: 65 / 100
+
+The score below is the judges' dated result for the pre-integration head. A later P3c consistency
+pass refreshed the public deck, PDF and overview video from current results: five empty bags 13
+events, ride 45 events / 3.5 per km, set O 8/8 inside objects with at least one STOP (two edge
+objects get only 2 and 6 frames), and 555 tests. The empty-suffix replay confirms one background
+STOP on both raw and cached inputs (EXPERIMENTS §1g). These updates have not been independently
+re-scored.
 
 **Кратко.** Повторная независимая оценка 26.09 — **65 / 100** (судьи: 66 и 65; было 60). Выросли
 8.1 (6 из 8 объектов организаторов со STOP вместо 5, висящий объект 5 см — STOP с 30,1 м), 8.3
@@ -40,6 +44,22 @@ and `doubleT_obstacle` at head and matched the gate baseline `_ride_p3b` exactly
 | 8.7 | Team approach | 8 | 8.5 | 8.5 | **8.5 / 10** | tried-and-rejected record with raw JSON, ship rules, safety reviews; dense; some addenda written after the runs they react to |
 | 8.8 | Pitch | 3 | 3 | 3 | **3 / 5** | deck and video stale (5 of 8, 289 tests, "hanging missed", `docker build`, «релиз v1.0.0»), team slides `<…>`, no rehearsal |
 | | **Total** | **60** | **66** | **65** | **65 / 100** | |
+
+## 0.1. Integrated P3c evidence (26.09; not independently re-scored)
+
+The integrated baseline [`regression_baseline_2026-09-26_ride_p3c.json`](evidence/results/regression_baseline_2026-09-26_ride_p3c.json)
+records 125/126 rail-object hits after frame 75, 13 false events on five empty bags, 45 events on
+the 13 km ride, and 355 STOP frames of 801 visible in-envelope object-frames in set O. All 8
+inside objects get a STOP; #4 gets 2 frames, #6 gets 6, and #8 gets 22/124. Only one set O STOP
+frame is beyond 100 m. The longest consecutive visible misses are 77 frames for #4, 110 for #6,
+and 73 for #8. The empty suffix has one background STOP at frame 1131 (140.72 m), reproduced
+from the raw bag and quantized cache.
+
+P4 has strengthened `scripts/regression_gate.py`: set O comparisons now fail if a previously
+measured held-from STOP distance shrinks, a distance-bin denominator changes, or per-bin STOP
+frames fall. The next result-changing work needs the six real recording caches and the ride cache;
+neither is present in this execution environment. The 65/100 remains the last judge score, not a
+score for the integrated head.
 
 **Claims the judges found wrong or overstated** (to fix in the consistency pass after the freeze,
 CAPTAIN action 19):
@@ -320,7 +340,7 @@ a rough size (≤ 1 h, hours, half a day, 1 day); ranked by gain per effort.
 | 10 | length-limited `elevated` / `floating` rule (`scripts/short_signature_experiment.py`), shipped after a ride re-run | 8.1, 8.4 | +0.5 to +2.5 | 1 day | P3, P4 |
 | 11 | thin-hanging rule: \|dy\| < 0.8 m, h > 1.8 m, linked to points above 3.0 m, ≥ 2 voxels, 5 frames; measured on the organizers' bag, the empty bags and the ride | 8.1 | +1.5 | 1 day | P3, P4 |
 | 12 | platform and switch STOPs beyond 80 m advisory unless confirmed nearer; re-checked on all 13 759 frames | 8.1 | +1 | 1 day | P3, P4 |
-| 13 | **Measured, fix open (25.09):** 5 Hz and +3° roll/pitch checks on all six original bags; extra events localized but not fixed without harming real detections. Parameters frozen; frames 804–1 509 of `cloud_with_fake_obj` report 0/706 false-alarm frames (EXPERIMENTS §1g and [raw summary](evidence/results/scorecard13_2026-09-25.json)). This suffix was previously inspected, so it is held out from this parameter decision, not an unseen route. | 8.4 | +0.5 to +1 still open | 1 day | P4 measures; P3 fixes detector behavior |
+| 13 | **Measured, fix open (25.09):** 5 Hz and +3° roll/pitch checks on all six original bags; extra events localized but not fixed without harming real detections. The 25.09 playback report claimed 0/706 false-alarm frames in the empty suffix of `cloud_with_fake_obj` ([raw summary](evidence/results/scorecard13_2026-09-25.json)); the current cached-frame gate has a background STOP at frame 1131 in that suffix (EXPERIMENTS §1g). It was previously inspected, so neither result is an unseen-route check. | 8.4 | +0.5 to +1 still open | 1 day | P4 measures; P3 fixes detector behavior |
 | 14 | far-field rule for tall objects with a high bottom (#8) | 8.2 | +0.5 | 1 day | P3 |
 
 ## 7. State of `main` when judged

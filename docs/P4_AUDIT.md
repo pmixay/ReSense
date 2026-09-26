@@ -3,16 +3,54 @@
 > **Purpose:** P4's audit of synthetic placement, evaluation accounting and the organizers'
 > synthetic-obstacle recording, with the corrections made and what they change.
 > **Audience:** team, jury (spec §8.7) · **Owner:** P4 · **Language:** EN
-> **Last verified:** 2026-09-24 against `537e220` (numbers as measured on 23–24.09) ·
-> **Status:** dated record, 23–24.09
+> **Last verified:** 2026-09-26 against the integrated P3c evidence ·
+> **Status:** dated audit with the current-head addendum below
 
 Initial audit base: `a81108f` (v0.6.3, 23.09); integrated on `4cd32d6` (`main`, 24.09); merged as
 `4b5786b` (PR #9, 24.09).
+
+**Current-result addendum (26.09).** This audit preserves its 24.09 measurements. The current
+[`_ride_p3c` regression baseline](evidence/results/regression_baseline_2026-09-26_ride_p3c.json)
+records 125/126 rail-object hits after frame 75, 45 false events in the 13 km ride, 13 false
+events in five empty bags, and STOP for all 8 in-envelope organizers' objects (355/801 visible
+object-frames). The 5 cm hanging object gets a STOP from 30.1 m; the two edge objects produce 2
+and 6 STOP frames, and the top box gets STOP in 22/124 frames. The current headline table is
+[`EXPERIMENTS.md` “Current results”](EXPERIMENTS.md); the original numbers below remain the
+dated evidence for what this audit changed. The 25.09 report of zero alarms in the empty suffix
+of `cloud_with_fake_obj` is superseded: on integrated P3 code both the original bag and quantized
+cache give 1 false STOP frame / 1 event in 706 frames, frame 1131 at 140.72 m; see EXPERIMENTS §1g
+and [the measured evidence](evidence/results/seto_suffix_p3c_2026-09-26.json).
 The detector, ROS node and default detection parameters were not changed in this P4 pass.
 The original six organizer bags were downloaded from the
 public link, unpacked and cached at every frame; the new measurements on them are below.
 The 20-minute extended ride and its set F range claims are separate and must not be inferred
 from this six-bag rerun.
+
+## P4 follow-up for score improvement
+
+The regression gate now protects set O's per-object held-from STOP distance, longest consecutive
+missed interval, and each object's visible-frame denominator and STOP count in every distance bin.
+The scorer also lists each contiguous visible interval without a STOP, with its frame and distance
+limits. This prevents a gain in total STOP frames from hiding a regression at a particular range.
+Existing false-alarm, outside-object and background checks remain in place; startup and mount/rate stress continue to use
+[`startup_census.py`](../scripts/startup_census.py) and
+[`robustness_check.py`](../scripts/robustness_check.py).
+
+The P3c replay matched every previously recorded set O value exactly. The longest consecutive
+visible misses are #4: 77 frames / 138.7 m of approach, #6: 110 / 210.3 m, and #8: 73 / 144.8 m.
+These intervals explain why a binary “8 of 8” detection count overstates reliability.
+A fresh-start replay of the first 40 set O frames reports one STOP from frame 5, matched to the
+large centre box, and zero background alarms. It does not replace the 221-start ride census.
+
+The remaining result work is to restore the six original recording caches and the `new_data` ride,
+reproduce the P3c gate, and then evaluate any targeted detector proposal on the complete data before
+accepting it. The known score opportunities are sustained detection of edge objects #4 and #6 and
+the box at the top (#8), fewer false STOPs on the ride, and stronger unseen-condition evidence.
+The axis-union candidate remains off: its earlier safety review found regressions when widened
+envelope membership joined long edge structures to real objects. P4 has not changed detector
+parameters or assigned a new score; **65/100 remains the last independent judgement, from before
+P3c integration**. A current score needs independent re-scoring after the full gate and evidence
+refresh.
 
 ## Findings and corrections
 
