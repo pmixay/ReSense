@@ -6,6 +6,25 @@
 > **Audience:** P1, team · **Owner:** P1 · **Language:** EN
 > **Last verified:** 2026-09-26 evening, the re-judgement on `be5f5fc` (baseline `_ride_p3d`; SCORECARD §0) · **Status:** current
 
+## Current delegated work — 26.09 night
+
+The user delegated captain work and explicitly requested the detector freeze. The detector and
+configuration are **frozen** at the existing `_ride_p3d` behavior; the source manifest and decisions
+are in [DETECTOR_FREEZE.md](DETECTOR_FREEZE.md). Candidate B is rejected (one extra STOP frame at
+7.1 m); the axis union stays off. The user confirmed on this pass that Q1 still has no answer.
+The new CI check rejects changed, missing or added frozen sources and changed gate evidence.
+
+Action 21 now has an implemented, reviewed node fix: a 20 s initial catch-up allowance closes when
+the first backlog drains, with the existing 5 s limit for later stalls. Header-stamp grading also
+fixes false dropped-frame reports when recording receive timestamps drift. Fresh ROS acceptance
+runs are being recorded before this action is marked complete. Detector results are unchanged.
+
+P4 has fixed a 72-case protocol for new combinations of organizer object points and seen empty
+backgrounds. It is a synthetic sensitivity experiment, not unseen-route validation. The complete
+cache and code manifest is committed before evaluating; every result is retained without tuning.
+The requested 75/100 is a target, not an achieved score; the independent re-judgement must follow
+the measured results. Earlier rows below retain their dated decisions and evidence.
+
 ## 1. Role and dates
 
 P1 is the system analyst and ROS 2 / integration developer ([`PLAN.md`](PLAN.md)): the jury chain

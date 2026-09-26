@@ -15,7 +15,8 @@ spec.loader.exec_module(novel)
 
 
 def test_transplant_preserves_scale_range_and_intensity_without_upsampling():
-    bg = Frame(np.array([[10, 8, -2]], dtype=np.float32), np.array([12], dtype=np.float32), stamp=3.2)
+    bg = Frame(np.array([[10, 8, -2]], dtype=np.float32), np.array([12], dtype=np.float32),
+               stamp=3.2, meta={"n_raw": 4, "n_near": 3})
     obj = np.array([[20, 3, 0, 1], [20.3, 3.3, 0.3, 2]], dtype=np.float32)
     original = obj.copy()
     result, visible = novel.transplant(bg, obj, lateral=-0.65)
@@ -25,6 +26,8 @@ def test_transplant_preserves_scale_range_and_intensity_without_upsampling():
     assert (visible[:, 1].min() + visible[:, 1].max()) / 2 == pytest.approx(-0.65)
     np.testing.assert_array_equal(result.intensity[-2:], original[:, 3])
     assert result.stamp == 3.2 and len(visible) == len(obj)
+    assert result.meta == {"n_raw": 6, "n_near": 3}
+    assert bg.meta == {"n_raw": 4, "n_near": 3}
 
 
 def test_occlusion_removes_background_behind_target_and_target_behind_foreground():
@@ -80,4 +83,23 @@ def test_plan_refuses_missing_data_and_nondefault_sensor_coordinates(tmp_path):
     config.write_text("sensor:\n  pitch_deg: 3\n")
     with pytest.raises(ValueError, match="fixed sensor-axis"):
         novel.make_plan(tmp_path, tmp_path, tmp_path / "plan.json", config)
+    assert not (tmp_path / "plan.json").exists()
+
+
+def test_plan_refuses_missing_or_discontinuous_timestamps(tmp_path, monkeypatch):
+    bag = "empty"
+    monkeypatch.setattr(novel, "BACKGROUNDS", (bag,))
+    monkeypatch.setattr(novel, "OBJECTS", ("shape",))
+    monkeypatch.setattr(novel, "EXPECTED_FRAMES", {bag: 73})
+    novel.write_json(tmp_path / "manifest.json", {"objects": {"shape": {"frames": [0, 1, 2]}}})
+    directory = tmp_path / bag
+    directory.mkdir()
+    for k in range(73):
+        np.save(directory / f"{bag}_{k:04d}.npy", np.zeros((1, 3)))
+    with pytest.raises(ValueError, match="timestamps"):
+        novel.make_plan(tmp_path, tmp_path, tmp_path / "plan.json")
+    stamps = {f"{k:04d}": 10.0 + k * 0.1 + (2.0 if k >= 45 else 0) for k in range(73)}
+    novel.write_json(directory / f"{bag}_stamps.json", {"bag": bag, "stamps": stamps})
+    with pytest.raises(ValueError, match="timestamps"):
+        novel.make_plan(tmp_path, tmp_path, tmp_path / "plan.json")
     assert not (tmp_path / "plan.json").exists()

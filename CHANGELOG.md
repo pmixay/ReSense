@@ -14,7 +14,17 @@ counts are "alarm frames / events (/ STOP episodes)" at full rate unless said. "
 five obstacle-free recordings (2 287 frames); "ride" = the 20-minute recording `new_data` (11 271
 frames, 13 km, no obstacles).
 
-## Unreleased (in development; package version 1.0.0)
+## Unreleased (detector frozen; package version 1.0.0)
+
+- **Detector freeze and remaining integration (26.09 night, delegated by the user):**
+  frozen the existing `_ride_p3d` detector and defaults with a source/evidence SHA256 manifest
+  and a CI integrity check. Candidate B is not shipped; the envelope union stays off pending Q1.
+  The node now allows 20 s only for a new recording's initial catch-up, then returns to the
+  existing 5 s backlog limit. The bag acceptance checker matches each message's header timestamp,
+  fixing false loss reports from receive-clock drift. P4 registered 72 new object/background
+  combinations before evaluation. Fresh validation and the score are recorded separately;
+  none of these changes claims better detector recall.
+
 
 - **Re-judgement and the P1 / P2 completion pass (26.09 evening):** two independent judges
   re-scored the integrated head (`be5f5fc`) against spec §8 without trusting the documents, one

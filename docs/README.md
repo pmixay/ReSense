@@ -29,6 +29,7 @@ rewritten later; **frozen** = kept for reference, not maintained; **archive** = 
 | [`SCORECARD.md`](SCORECARD.md) | criteria judgements: the re-judgement of 26.09 evening on the integrated head (§0, measured by two independent judges), the one of 26.09 morning (§0a, 65 / 100, pre-integration head) and the first of 24.09 (§1–§8, 60 / 100): score per spec §8 criterion, evidence, what is left | team, jury | EN | P1 | current (§0), dated record (§1–§8) |
 | [`PRESENTATION.md`](PRESENTATION.md) | slide requirements, drafts, speaker text | P2, P1 | RU | P2 | current |
 | [`PLAN.md`](PLAN.md) | roles, sprint calendar, team rules | team | RU | P1 | current |
+| [`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md) | frozen source/config manifest, acceptance provenance, candidate decisions and blocker policy | team, jury | EN | P1 / P3 | frozen |
 | [`CAPTAIN.md`](CAPTAIN.md) | captain's board: criteria, work left, ownership map, frozen interfaces | P1, team | EN | P1 | current |
 | [`VM_GUIDE.md`](VM_GUIDE.md) | instructions for the team's temporary cloud VM, plain commands of the repository's tools: prerequisites, data (the ride streamed split by split), dry run, stock-player and host console, 8-core bench, regression gate with the ride, image archive, offline rehearsal, results into a PR | team (a person or an agent on the VM) | EN | P1 | current |
 | [`QUESTIONS.md`](QUESTIONS.md) | open questions to the organizers | P1 | RU message, EN rationale | P1 | current |

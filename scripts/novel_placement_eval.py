@@ -34,6 +34,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OBJECTS = ("small_center", "small_on_rail", "big_above", "thin_hanging")
 BACKGROUNDS = ("doubleT_platform", "roundT_doubleT", "roundT_pressureGate_roundT",
                "roundT_squareT_pressureGate_squareT", "squareT_platform_squareT_switch", "new_data")
+EXPECTED_FRAMES = dict(zip(BACKGROUNDS, (345, 252, 268, 545, 877, 11271)))
 OFFSETS = (-0.65, 0.0, 0.65)
 WARMUP = 30
 LIMITATIONS = [
@@ -129,6 +130,8 @@ def make_plan(source, cache, out, config=None):
     cases, inputs = [], {}
     for bag in BACKGROUNDS:
         files = sorted((cache / bag).glob("*.npy"), key=lambda p: _natural_key(str(p)))
+        if len(files) != EXPECTED_FRAMES[bag]:
+            raise ValueError(f"{bag}: incomplete background cache: {len(files)}/{EXPECTED_FRAMES[bag]}")
         stamps = load_cache_stamps(str(cache / bag))
         for oi, label in enumerate(OBJECTS):
             ids = manifest["objects"][label]["frames"]
@@ -180,9 +183,13 @@ def transplant(background, source, lateral, angular_cell_deg=0.1):
     keep_bg = np.ones(n, dtype=bool)
     keep_bg[near] = r[near] <= obj_min[inv[:m]]
     keep_obj = r[n:] <= bg_min[inv[m:]]
+    meta = dict(background.meta)
+    # Only already range-filtered background returns are removed; all source returns are
+    # 15–80 m away, so the original near-return numerator is unchanged.
+    meta["n_raw"] = int(meta.get("n_raw", background.n)) - int((~keep_bg).sum()) + int(keep_obj.sum())
     frame = Frame(np.concatenate([background.xyz[keep_bg], pts[keep_obj]]),
                   np.concatenate([background.intensity[keep_bg], source[keep_obj, 3]]),
-                  stamp=background.stamp, frame_id=background.frame_id, meta=dict(background.meta))
+                  stamp=background.stamp, frame_id=background.frame_id, meta=meta)
     return frame, pts[keep_obj]
 
 
@@ -246,7 +253,7 @@ def run(plan_path, out):
                       target_matched_frames=sum(r["target_matched"] for r in rows),
                       injected_only_matched_frames=sum(r["target_matched"] and not r["control_target_matched"] for r in rows),
                       control_matched_frames=sum(r["control_target_matched"] for r in rows), rows=rows)
-        record["first_matched_sensor_x_m"] = max(
+        record["farthest_matched_sensor_x_m"] = max(
             (r["nearest_sensor_x_m"] for r in rows if r["target_matched"]), default=None)
         cases.append(record)
         print(f"case {ci + 1}/{len(plan['cases'])}: {case['bag']} {case['object']} {case['lateral_m']}", flush=True)
