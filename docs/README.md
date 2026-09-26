@@ -22,10 +22,11 @@ rewritten later; **frozen** = kept for reference, not maintained; **archive** = 
 | [`ARCHITECTURE.md`](ARCHITECTURE.md) | components, data flow, real-time budget (spec §5 "Архитектура") | jury, team | EN + RU summary | P1 | current |
 | [`ALGORITHM.md`](ALGORITHM.md) | how the detector decides, stage by stage; parameters; limitations (spec §5 "Описание алгоритма") | jury, P3 | EN + RU summary | P1 (structure), P3 (content) | current |
 | [`EXPERIMENTS.md`](EXPERIMENTS.md) | every measured result: false alarms, range, latency, FPS, hard cases, evolution (spec §5 "Эксперименты") | jury, team | EN + RU summary | P3 / P4 | current |
+| [`DECISIONS.md`](DECISIONS.md) | the 16 key decisions on one page: question, what was measured, result, decision, evidence | jury, team | EN + RU summary | P1 | current |
 | [`EVALUATION.md`](EVALUATION.md) | evaluation protocol: data sets, metrics, procedure, targets | team, jury | EN + RU summary | P1 / P4 | current |
 | [`DATASET.md`](DATASET.md) | the organizers' data: recordings, formats, labels, frame cache, unpacking | team, jury | EN + RU summary | P4 | current |
 | [`SENSOR.md`](SENSOR.md) | Hesai Pandar128 facts and what they imply for the detector | team, jury | EN + RU summary | P1 | current |
-| [`SCORECARD.md`](SCORECARD.md) | criteria judgement of 24.09: score per spec §8 criterion, evidence, what is left | team, jury | EN | P1 | dated record |
+| [`SCORECARD.md`](SCORECARD.md) | criteria judgements: the re-judgement of 26.09 (§0, 65 / 100) and the first of 24.09 (§1–§8, 60 / 100): score per spec §8 criterion, evidence, what is left | team, jury | EN | P1 | current (§0), dated record (§1–§8) |
 | [`PRESENTATION.md`](PRESENTATION.md) | slide requirements, drafts, speaker text | P2, P1 | RU | P2 | current |
 | [`PLAN.md`](PLAN.md) | roles, sprint calendar, team rules | team | RU | P1 | current |
 | [`CAPTAIN.md`](CAPTAIN.md) | captain's board: criteria, work left, ownership map, frozen interfaces | P1, team | EN | P1 | current |

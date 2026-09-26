@@ -28,6 +28,26 @@ and re-mount flags, +1 the rail-lock guard of the hanging stage, +13 the review 
 round-2 items, +17 their re-review, +6 latency out of the decision, +8 the start-up census) in
 `tests/`, 13 in `web/demo`.
 
+- **The image archive as a CI download (26.09, P1):** on a push to `claude/nifty-pascal-lzgl78` or
+  `main`, when every step passed, the `offline-build` job uploads the runtime archive it made,
+  loaded, rebuilt offline and played through as the run artifact
+  `resense-image-<version>-<short commit>` (`actions/upload-artifact@v4`, 30 days, not
+  re-compressed): the `.tar.gz` named after the commit and its `.sha256` in the form
+  `scripts/load_image.sh` and `sha256sum -c` read, checked against the sum `load_image.sh`
+  verified. The stand has no internet; the archive of the frozen commit no longer needs a machine
+  with Docker. [ARCHITECTURE](docs/ARCHITECTURE.md) "Deployment without internet", README
+  «Кратко для жюри».
+
+- **Docs after the re-judgement of 26.09 (P1):** README «Кратко для жюри» as a one-page guide (the
+  four decisions as a table, the topics to score, RViz from the image in one line, where the
+  archive comes from); [`docs/DECISIONS.md`](docs/DECISIONS.md), the 16 key decisions on one page;
+  the claims the judges found stale or overstated corrected: the README header (`bd67fb0`,
+  package 1.0.0), hanging objects (the hanging stage covers groups ≤ 0.5 m within 0.8 m of the
+  axis, ≤ 60 m, with a rail lock; ALGORITHM §6), the ~200 m range (no STOP beyond ~101 m on the
+  organizers' objects), the start-up skips (39–53 frames by design, none lost in transport after
+  the start-up), set O (6 of 8 objects with a STOP, 5 of them held), the ride's 3.5 per km
+  (in-sample), 500 tests.
+
 - **Start-up of a fresh bag (26.09, P3 / P4): census; three rules tried, none shipped.** A
   judge's fresh start at ride piece 2 STOPped at 2.9–3.1 m. The cause: the rail heads 3.0–3.6 m
   ahead of a standing train, above a young model's rail plane. Census of the first 4 s of 221 ride
@@ -102,7 +122,8 @@ round-2 items, +17 their re-review, +6 latency out of the decision, +8 the start
   gate of the final defaults (`30d0cac`, `--jobs 3`, 333 s) passes against
   `regression_baseline_2026-09-25_ride_p3.json` with 6 gated rows better and none worse: set O
   hanging 0.3 m cube 19 → 30 STOP frames, first STOP 34.0 → 52.5 m; 5 cm hanging object 0 → 15,
-  first STOP 30.1 m (set O inside STOP frames 311 → 337 of 801, objects with a STOP 5 → 6 of 8);
+  first STOP 30.1 m (set O inside STOP frames 311 → 337 of 801, objects with a STOP 5 → 6 of 8,
+  5 of them held: the 2 × 2 m box at the envelope top STOPs in 12 of its 124 frames);
   `doubleT_obstacle` 185 → 186 of 246 labelled hits (object on the rail 124 → 125 of 126 from
   frame 75), first alarm frame 11. Five bags 58 / 13 / 16, ride 187 / 46 / 39 and set F straight
   identical, decisions on the five bags and the ride identical frame by frame; no item interacts,
