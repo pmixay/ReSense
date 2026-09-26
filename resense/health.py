@@ -30,6 +30,10 @@ per frame and without touching any detection:
 
 ``level`` is ``ok`` / ``warn`` / ``error`` with human-readable ``messages``; the ROS node
 publishes it as ``diagnostic_msgs/DiagnosticArray`` and adds the input-staleness watchdog.
+``decision_level`` (26.09) is the level the node's decision reads (``DetectorNode.decision``: a
+``warn`` there is ``CAUTION``): ``level`` without the latency warning unless
+``health.latency_affects_decision``. Latency over the budget is the machine being slow, not the
+path being unsafe; it stays in ``level``, ``messages`` and ``latency_p95_ms``.
 """
 from __future__ import annotations
 
@@ -83,11 +87,13 @@ class HealthMonitor:
                rails_min_score: float, latency_ms: float, calibration: Optional[dict] = None,
                obstacle_distance: Optional[float] = None, candidate_distance: Optional[float] = None) -> dict:
         cfg = self.cfg
-        msgs, level = [], 0
+        msgs, level, dlevel = [], 0, 0
 
-        def flag(lv: int, text: str):
-            nonlocal level
+        def flag(lv: int, text: str, decision: bool = True):
+            nonlocal level, dlevel
             level = max(level, lv)
+            if decision:
+                dlevel = max(dlevel, lv)
             msgs.append(text)
 
         n = int(xyz.shape[0])
@@ -134,7 +140,8 @@ class HealthMonitor:
         self._lat.append(float(latency_ms))
         p95 = float(np.percentile(self._lat, 95))
         if len(self._lat) >= 10 and p95 > cfg.latency_budget_ms:
-            flag(1, f"latency p95 {p95:.0f} ms over the {cfg.latency_budget_ms:.0f} ms budget")
+            flag(1, f"latency p95 {p95:.0f} ms over the {cfg.latency_budget_ms:.0f} ms budget",
+                 decision=cfg.latency_affects_decision)
 
         if calibration:
             st = calibration.get("status")
@@ -150,7 +157,7 @@ class HealthMonitor:
         if candidate_distance is not None:     # clear_cap (25.09): an unconfirmed / advisory object in the envelope
             clear = float(max(0.0, min(clear, candidate_distance)))
         out = {
-            "level": LEVELS[level], "messages": msgs,
+            "level": LEVELS[level], "decision_level": LEVELS[dlevel], "messages": msgs,
             "points": n, "near_fraction": round(near_frac, 3), "blocked_sectors": blocked,
             "visibility": round(vis, 1), "rail_lock": round(lock, 2), "latency_p95_ms": round(p95, 1),
             "monitored_range": round(monitored, 1), "clear_distance": round(clear, 1),

@@ -59,7 +59,10 @@ FAULT     # через 0,5 с после конца бэга: входа нет,
 ```
 
 `STOP` — тревога; `CAUTION` — подсказка (объект у габарита или за проверенной дальностью), в
-обычном тоннеле частая; `FAULT` — входа нет или ему нельзя доверять. Дальше:
+обычном тоннеле частая; `FAULT` — входа нет или ему нельзя доверять. Тревогу считать по `STOP` в
+`/resense/decision` (или `true` в `/resense/obstacle_detected`), `CAUTION` — не тревога. Задержка
+сверх бюджета (p95 > 100 мс, нагруженная машина) с 26.09 видна только в `/resense/health` и
+`/resense/status` и решение не меняет. Дальше:
 [архитектура](docs/ARCHITECTURE.md), [алгоритм](docs/ALGORITHM.md),
 [эксперименты](docs/EXPERIMENTS.md), [оценка по критериям](docs/SCORECARD.md).
 
@@ -192,7 +195,7 @@ teams (23.09). Decision logic and thresholds: [`docs/ALGORITHM.md`](docs/ALGORIT
 
 | question | topic | values |
 |---|---|---|
-| can the train go? | **`/resense/decision`** (`std_msgs/String`) | `GO` (clear), `CAUTION` (advisory: a confirmed object in the band just outside the envelope, a far cluster beyond the verified range, known infrastructure or degraded health; on 27–68 % of the frames of the obstacle-free recordings and 41 % of the ride, so it is not an alarm), `STOP` (obstacle inside the 2.1 × 3.0 m envelope), `FAULT` (input cannot be trusted or stopped arriving, and before the first frame) |
+| can the train go? | **`/resense/decision`** (`std_msgs/String`) | `GO` (clear), `CAUTION` (advisory: a confirmed object in the band just outside the envelope, a far cluster beyond the verified range, known infrastructure or degraded health (since 26.09 not latency: that shows in `/resense/health` and the status JSON only); on 27–68 % of the frames of the obstacle-free recordings and 41 % of the ride, so it is not an alarm), `STOP` (obstacle inside the 2.1 × 3.0 m envelope), `FAULT` (input cannot be trusted or stopped arriving, and before the first frame) |
 | is there an obstacle? | **`/resense/obstacle_detected`** (`std_msgs/Bool`) | per processed frame, confirmed over 0.5 s, held over one missed frame; `false` while no frame arrives (then `decision` says `FAULT`) |
 | how far is it? | **`/resense/nearest_distance`** (`std_msgs/Float32`) | m along the track, −1 if none |
 | how far is the path verified clear? | **`/resense/clear_distance`** (`std_msgs/Float32`) | the obstacle distance, else how far the corridor was actually checked (sightline, trusted track model), since 25.09 no farther than an unconfirmed or advisory object in the envelope (`health.clear_cap`); 0 on a fault |

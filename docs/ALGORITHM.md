@@ -665,7 +665,9 @@ flag and the distance, every frame carries:
   central ±30° (view blocked), visibility < 60 m, rail lock in < 30 % of the last 20 frames
   (track model on its prior: stations, switches, pressure gates — where "the rails are flush
   with the gate floor", Q&A fact 16), latency p95 over the 100 ms budget, mount calibration
-  fallback or drift; an error sets the monitored range to 0. Counters only (review 25.09, in the
+  fallback or drift; an error sets the monitored range to 0. Since 26.09 `decision_level` is the
+  level the decision reads: `level` without the latency warning (a slow machine, not an unsafe
+  path; `health.latency_affects_decision: true` puts it back). Counters only (review 25.09, in the
   status JSON's `health`, never a message or a level): `floor_shadow_frames`,
   `floor_held_frames` and `floor_released_frames`, the frames since the start in which the
   floor-shadow rule of §3.1 found a shadow, held the previous bed, or was released by its
@@ -673,8 +675,11 @@ flag and the distance, every frame carries:
 * **`decision`** (node, `/resense/decision`): `STOP` when a confirmed obstacle is inside the
   envelope; `FAULT` on a health error, on an exception while processing (logged, the node
   keeps running and resets the detector after 5 in a row) and from the watchdog when no frame
-  arrived for `stale_timeout` = 0.5 s; `CAUTION` for an advisory object or a health warning;
-  else `GO`.
+  arrived for `stale_timeout` = 0.5 s; `CAUTION` for an advisory object or a warning in
+  `decision_level`; else `GO`. `CAUTION` is advisory, not an alarm; the alarm is `STOP`
+  (`/resense/obstacle_detected`). Latency over the budget stays in `/resense/health` and the
+  status JSON only (26.09, the judgements of 24.09 and 26.09: on a loaded machine it made most
+  frames `CAUTION`, set O 690 of 1 510).
 
 ## 5. Parameters that matter most
 

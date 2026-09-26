@@ -291,6 +291,9 @@ resense:
     min_lock_rate: 0.3
     latency_budget_ms: 100.0
     latency_window: 50
+    # 26.09 (judgements of 24.09 and 26.09): latency over the budget stays a health warning
+    # (/resense/health, status JSON) but no longer turns GO into CAUTION; true = v0.6 behaviour
+    latency_affects_decision: false
     # 25.09 (SCORECARD §6 row 6; docs/evidence/results/p3_clear_distance_2026-09-25.json): cap
     # clear_distance at the nearest unconfirmed / advisory candidate touching the envelope;
     # never changes a detection or the decision; false = confirmed obstacles only (v0.6).
