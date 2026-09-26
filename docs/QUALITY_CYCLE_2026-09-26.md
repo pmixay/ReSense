@@ -112,5 +112,6 @@ dashboard UTC clocks must be synchronized. These mechanisms are not a braking sa
 - [D1 rejection](evidence/results/quality_cycle_2026-09-26_D1/README.md)
 - [Clear-failure attribution](evidence/results/quality_cycle_2026-09-26_clear_failure/README.md)
 - [T1 protocol](evidence/results/quality_cycle_2026-09-26_T1_protocol.json)
+- [T1 rejection and full results](evidence/results/quality_cycle_2026-09-26_T1/README.md)
 - [Main branch test evidence](evidence/results/quality_root_checks_2026-09-26/README.md)
 - [Comment-only baseline refresh](evidence/results/quality_comment_baseline_2026-09-26/README.md)
