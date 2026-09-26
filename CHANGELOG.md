@@ -26,7 +26,7 @@ frames, 13 km, no obstacles).
   All 45 ride false events have scene reviews. Fresh full gate: 183 unchanged values, no waivers.
   Final idle cold/warm original-bag replays and stock DDS pass; the earlier loaded failure is
   retained. The full-data run on the second machine passed 621 tests and 6 subtests; this checkout
-  passed 620 tests and 6 subtests, with one ride-cache test deselected because `/data/cache/new_data`
+  passed 628 tests and 6 subtests, with one ride-cache test deselected because `/data/cache/new_data`
   is unavailable. Dashboard FAULT/CAUTION banners and estimated-range
   wording are corrected; live status validation, 2 s stale indication, and reconnect guards have
   3 new Chromium tests (17 pass). CI now has branch-scoped cold-bag and remote-viewer outage /
