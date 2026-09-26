@@ -96,5 +96,367 @@
    "region": "unchanged (rail pair, |curvature| <= 2e-4 /m, X <= 50 m, |c(X)| <= 0.30 m)"
   },
   "ship_rule": "unchanged; B2 runs the same stages (cheap stage, set F gentle curves, full gate). If A and B2 both pass, the one with more #4 + #6 STOP frames ships (a tie ships A)."
+ },
+ "runs": {
+  "set_F_gentle_curves": {
+   "command": "PYTHONPATH=. python scripts/far_range_eval.py --cache /data/cache/new_data --config <configs/default.yaml, or a copy with gauge.axis_union 1 / 3> --jobs 1 --files=5,16,45,97,100,137 --kinds=person,trolley,box1.0 --start=220 --frames=110 --lateral=-0.6:0.6 --seed=0 --placement-mode=legacy --place=bed --speeds=docs/extended_dataset_intake.json",
+   "defaults": {
+    "person": {
+     "detected": 6,
+     "sequences": 6,
+     "first_detection_median_m": 124.1,
+     "first_detection_m": [
+      64.5,
+      91.6,
+      113.8,
+      134.4,
+      134.9,
+      139.6
+     ],
+     "sustained_median_m": 132.9,
+     "false_detections": 4
+    },
+    "trolley": {
+     "detected": 6,
+     "sequences": 6,
+     "first_detection_median_m": 111.6,
+     "first_detection_m": [
+      68.1,
+      95.6,
+      109.5,
+      113.6,
+      113.8,
+      122.6
+     ],
+     "sustained_median_m": 118.7,
+     "false_detections": 1
+    },
+    "box1.0": {
+     "detected": 6,
+     "sequences": 6,
+     "first_detection_median_m": 113.1,
+     "first_detection_m": [
+      66.2,
+      94.4,
+      112.6,
+      113.6,
+      117.7,
+      124.5
+     ],
+     "sustained_median_m": 119.5,
+     "false_detections": 0
+    }
+   },
+   "A": {
+    "person": {
+     "detected": 6,
+     "sequences": 6,
+     "first_detection_median_m": 124.1,
+     "first_detection_m": [
+      64.5,
+      91.6,
+      113.8,
+      134.4,
+      134.9,
+      139.6
+     ],
+     "sustained_median_m": 132.9,
+     "false_detections": 4
+    },
+    "trolley": {
+     "detected": 6,
+     "sequences": 6,
+     "first_detection_median_m": 111.6,
+     "first_detection_m": [
+      68.1,
+      95.6,
+      109.5,
+      113.6,
+      113.8,
+      122.6
+     ],
+     "sustained_median_m": 118.7,
+     "false_detections": 1
+    },
+    "box1.0": {
+     "detected": 6,
+     "sequences": 6,
+     "first_detection_median_m": 113.1,
+     "first_detection_m": [
+      66.2,
+      94.4,
+      112.6,
+      113.6,
+      117.7,
+      124.5
+     ],
+     "sustained_median_m": 119.5,
+     "false_detections": 0
+    }
+   },
+   "B2": {
+    "person": {
+     "detected": 6,
+     "sequences": 6,
+     "first_detection_median_m": 124.1,
+     "first_detection_m": [
+      64.5,
+      91.6,
+      113.8,
+      134.4,
+      134.9,
+      139.6
+     ],
+     "sustained_median_m": 132.9,
+     "false_detections": 4
+    },
+    "trolley": {
+     "detected": 6,
+     "sequences": 6,
+     "first_detection_median_m": 111.6,
+     "first_detection_m": [
+      68.1,
+      95.6,
+      109.5,
+      113.6,
+      113.8,
+      122.6
+     ],
+     "sustained_median_m": 118.7,
+     "false_detections": 1
+    },
+    "box1.0": {
+     "detected": 6,
+     "sequences": 6,
+     "first_detection_median_m": 113.1,
+     "first_detection_m": [
+      66.2,
+      94.4,
+      112.6,
+      113.6,
+      117.7,
+      124.5
+     ],
+     "sustained_median_m": 119.5,
+     "false_detections": 0
+    }
+   },
+   "verdict": "A and B2 identical to the defaults for every kind and approach (person 124.1 m, trolley 111.6 m, 1 m box 113.1 m median first confirmation; false detections 4 / 1 / 0): the curves of these approaches (|curvature| 3.3e-4 ... 4.7e-4 /m) are beyond axis_union_max_curvature"
+  },
+  "full_gate_B2": {
+   "code": "f48ec89",
+   "set": [
+    "gauge.axis_union=3"
+   ],
+   "config_sha256": "9b2d67106521c160",
+   "wall_s": 1269.9,
+   "passed": false,
+   "worse_gated": [
+    "ride.alarm_events"
+   ],
+   "better": [
+    "set_O.objects.big_edge_inside.stop_frames",
+    "set_O.objects.big_edge_inside.first_stop_m"
+   ],
+   "info_changed_without_latency": [
+    "ride.alarm_frames",
+    "set_O.objects.big_edge_inside.held_from_m",
+    "set_O.objects.big_edge_inside.advisory_frames",
+    "set_O.inside_stop_frames"
+   ],
+   "five_empty": {
+    "frames": 2287,
+    "alarm_frames": 58,
+    "alarm_events": 13,
+    "stop_episodes": 16,
+    "advisory_frames": 997
+   },
+   "ride": {
+    "frames": 11271,
+    "alarm_frames": 189,
+    "alarm_events": 49,
+    "stop_episodes": 39,
+    "advisory_frames": 4741
+   },
+   "doubleT_obstacle": {
+    "first_alarm_frame": 11,
+    "per_label": {
+     "object_on_rail": {
+      "hits": 128,
+      "frames": 185
+     },
+     "person_crossing": {
+      "hits": 58,
+      "frames": 61
+     },
+     "object_on_rail_from_frame_75": {
+      "hits": 125,
+      "frames": 126
+     }
+    }
+   },
+   "set_O": {
+    "inside_stop_frames": 344,
+    "inside_objects_with_stop": 7,
+    "outside_false_stop_frames": 6,
+    "background": {
+     "alarm_frames": 3,
+     "track_ids": 2
+    },
+    "big_edge_inside": {
+     "stop_frames": 7,
+     "first_stop_m": 18.3,
+     "first_stop_frame": 574
+    },
+    "small_edge_inside": {
+     "stop_frames": 0,
+     "advisory_frames": 25
+    }
+   },
+   "set_F_straight": {
+    "person": {
+     "detected": 6,
+     "first_detection_median_m": 151.0,
+     "false_detections": 6
+    },
+    "box1.0": {
+     "detected": 6,
+     "first_detection_median_m": 123.9,
+     "false_detections": 12
+    },
+    "box0.5": {
+     "detected": 1,
+     "first_detection_median_m": 51.9,
+     "false_detections": 0
+    },
+    "trolley": {
+     "detected": 6,
+     "first_detection_median_m": 151.4,
+     "false_detections": 5
+    },
+    "cable": {
+     "detected": 6,
+     "first_detection_median_m": 98.9,
+     "false_detections": 3
+    }
+   },
+   "verdict": "FAIL: ride.alarm_events 46 -> 49 (alarm frames 187 -> 189, STOP episodes 39 the same)",
+   "ride_events_added": "by a frame-by-frame comparison with A's ride run (whose counts equal the baseline), 12 frames differ, all in new_data_81 frames 26-32 and new_data_112 frames 1-3, 18-40 m ahead, on straight track with the rail pair. The 3 new events: piece 2 track 584 (new_data_81 frames 28-29, 29.5-30.2 m, 0.93 m from the rails, 3.6 x 0.6 x 0.4 m, 0.13 m above the rail head), piece 2 track 583 (frames 29-31, 36.6-38.4 m, -0.78 m, 0.55 x 0.24 x 0.02 m at rail level) and piece 4 track 49 (new_data_112 frames 1-2, 39-40 m, 1.34 m from the rails, 0.47 x 0.10 x 0.17 m, 0.39 m up: a thin fixture at the corridor edge). Existing edge-line tracks alarm in more frames too (566, 575: 0.15-0.24 m long fragments 1.39 m from the rails, 0.28-0.30 m up). Measured from the rails the shape rules keep these advisory or drop them; measured from the sensor axis (~0.15-0.25 m nearer the centre on that side) they pass"
+  },
+  "full_gate_A": {
+   "code": "f48ec89",
+   "set": [
+    "gauge.axis_union=1"
+   ],
+   "config_sha256": "8925f8fdc7d67269",
+   "wall_s": 1205.7,
+   "passed": true,
+   "worse_gated": [],
+   "better": [
+    "set_O.objects.big_edge_inside.stop_frames",
+    "set_O.objects.big_edge_inside.first_stop_m"
+   ],
+   "info_changed_without_latency": [
+    "set_O.inside_stop_frames"
+   ],
+   "five_empty": {
+    "frames": 2287,
+    "alarm_frames": 58,
+    "alarm_events": 13,
+    "stop_episodes": 16,
+    "advisory_frames": 997
+   },
+   "ride": {
+    "frames": 11271,
+    "alarm_frames": 187,
+    "alarm_events": 46,
+    "stop_episodes": 39,
+    "advisory_frames": 4743
+   },
+   "doubleT_obstacle": {
+    "first_alarm_frame": 11,
+    "per_label": {
+     "object_on_rail": {
+      "hits": 128,
+      "frames": 185
+     },
+     "person_crossing": {
+      "hits": 58,
+      "frames": 61
+     },
+     "object_on_rail_from_frame_75": {
+      "hits": 125,
+      "frames": 126
+     }
+    }
+   },
+   "set_O": {
+    "inside_stop_frames": 338,
+    "inside_objects_with_stop": 7,
+    "outside_false_stop_frames": 6,
+    "background": {
+     "alarm_frames": 3,
+     "track_ids": 2
+    },
+    "big_edge_inside": {
+     "stop_frames": 1,
+     "first_stop_m": 14.3,
+     "first_stop_frame": 576
+    },
+    "small_edge_inside": {
+     "stop_frames": 0,
+     "advisory_frames": 25
+    }
+   },
+   "set_F_straight": {
+    "person": {
+     "detected": 6,
+     "first_detection_median_m": 151.0,
+     "false_detections": 6
+    },
+    "box1.0": {
+     "detected": 6,
+     "first_detection_median_m": 123.9,
+     "false_detections": 12
+    },
+    "box0.5": {
+     "detected": 1,
+     "first_detection_median_m": 51.9,
+     "false_detections": 0
+    },
+    "trolley": {
+     "detected": 6,
+     "first_detection_median_m": 151.4,
+     "false_detections": 5
+    },
+    "cable": {
+     "detected": 6,
+     "first_detection_median_m": 98.9,
+     "false_detections": 3
+    }
+   },
+   "verdict": "PASS: 2 gated rows better (set O #6 STOP frames 0 -> 1, first STOP 14.3 m), none worse; the only other non-latency row changed is set_O.inside_stop_frames 337 -> 338; five bags 58 / 13 / 16, ride 187 / 46 / 39 (advisory frames 4 743), doubleT_obstacle, set F straight identical"
+  },
+  "region_activity": {
+   "how": "from the serialised track model of every frame of the gate runs (the model does not depend on the flag): eligible = rail pair and |curvature| <= 2e-4; reach = the largest X <= 50 m with |c(X)| <= 0.30 m",
+   "ride": "eligible in 4 745 of 11 271 frames, the region reaching 50 m in 3 782; |c(50 m)| median 0.25 m, p90 0.40 m",
+   "set_O": "eligible in 1 031 of 1 510 frames, to 50 m in 877; |c(50 m)| median 0.26 m",
+   "recordings": "rails at a median -0.23 ... -0.36 deg to the sensor axis on roundT_doubleT, roundT_pressureGate_roundT, roundT_squareT_pressureGate_squareT, squareT_platform_squareT_switch (and set O's -0.24); -1.16 deg on doubleT_obstacle (the ~3 deg rig; the region reaches 15 m there), -1.7 deg on doubleT_platform (stations, curves)"
+  }
+ },
+ "decision": {
+  "shipped": "A: gauge.axis_union 1, on (default)",
+  "why": "the pre-registered ship rule: A passes every stage (cheap stage, set F gentle curves identical, full gate PASS with 2 gated rows better and none worse, every safety condition identical); B fails the cheap stage and B2 the full gate (ride +3 events), so A is the only candidate left",
+  "what_it_buys": "set O #6 0 -> 1 STOP frame, and that frame is weak evidence: the strict envelope measured from the sensor axis turns the box's in-envelope strip into a gauge cluster in frames 572-574, the track confirmed on those hits is reported in frame 576 on an edge-line fragment 2.4 m in front of the box (11.87 m against 14.3 m; nearer, so on the safe side) and once more in 577 at 8.51 m; the box itself is still dropped as a wall in 575-579. #4 is not won (floating, whatever the reference). Nothing else changes on the six recordings, set O, the ride or set F",
+  "what_it_costs": "nothing measured: no gated or recorded count changed besides #6; per frame the union adds strict membership only (it can never remove a STOP) within 50 m on straight track with the rail pair locked, at most 0.30 m beyond the rail envelope on one side",
+  "not_shipped": "B (gauge.axis_union 2) and B2 (3) stay in the code, off. B2 is the one that turns #6 into a real detection (a STOP track on the box from 30.65 m, frame 568, to the end: 16 frames, 7 matched by the scorer) at the price of 3 ride false events 30-40 m ahead (runs.full_gate_B2.ride_events_added)",
+  "for_Q1": "measured from the sensor axis the organizers' four edge tests are exactly their intent at every range (#4 74 / 83 and #6 93 / 125 frames inside, #5 and #7 0); from the rails #4 16, #6 8, #5 98, #7 58. The rails run at ~-0.25 deg to the sensor axis on most recordings (the rig's own yaw), i.e. 0.1 m at 25 m, 0.2 m at 50 m, 0.4 m at 100 m: the train sweeps the rail envelope, the organizers' objects are placed from the sensor axis. The detector now takes the union within 50 m on straight track; beyond 50 m, on curves and without the rail pair it stays with the rails"
+ },
+ "final": {
+  "code": "the commit that carries this block: gauge.axis_union 1 by default in resense/config.py, configs/default.yaml and the ROS copy",
+  "config_sha256": "8925f8fdc7d67269904ba62d6b0cf976044b19e015f40c30c7f54f4b3eb3324f (the effective config of the new defaults = that of the full gate of A with --set gauge.axis_union=1)",
+  "identity": "the new defaults' output on the six recordings and set O (scripts/regression_gate.py on the seven-recording cache, no --set) is identical frame by frame (timing excluded) to the full gate of A: 3 998 frames; GATE PASS there, the same 2 gated rows better",
+  "gate": "runs.full_gate_A; raw JSON docs/evidence/results/regression_gate_2026-09-26_edge_axis.json; the baseline regression_baseline_2026-09-25_ride_p3b.json is not re-cut",
+  "checks": "ruff check . clean; pytest 508 passed with the native kernels and 508 with RESENSE_NATIVE=0 (500 + 8 in tests/test_edge_axis.py); scripts/sync_params.sh --check in sync"
  }
 }

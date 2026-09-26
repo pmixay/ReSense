@@ -30,12 +30,16 @@ def _gauge(mode):
     return g
 
 
-def test_off_by_default():
-    assert DetectorConfig().gauge.axis_union == 0
+def test_shipped_mode_and_off_switch():
+    """A (1) is the default since 26.09; 0 switches the union off; the coordinate map is B's (2) only."""
+    assert DetectorConfig().gauge.axis_union == 1
     X = np.linspace(3.0, 60.0, 50)
-    assert axis_union_offset(X, _track(), GaugeConfig()) is None
+    assert axis_union_offset(X, _track(), _gauge(0)) is None
+    ok, c = axis_union_offset(X, _track(), GaugeConfig())
+    assert ok[X <= 50.0].all() and not ok[X > 50.0].any()
     dy = np.linspace(-2.0, 2.0, 50)
-    assert axis_union_coordinates(X, dy, _track(), GaugeConfig()) is dy
+    assert axis_union_coordinates(X, dy, _track(), _gauge(0)) is dy
+    assert axis_union_strict(X, dy, np.full(50, 1.0), _track(), _gauge(0)) is None
 
 
 @pytest.mark.parametrize("track", [_track(curvature=5e-4), _track(rail_slabs=0)])
@@ -103,8 +107,8 @@ def _run(frame, mode, n=6):
 def test_object_at_the_axis_referenced_edge():
     """Sensor yawed 0.5 deg against straight rails (0.26 m at 30 m): a 0.5 x 0.6 x 1.0 m box at 30 m
     whose inner face is 0.2 m inside the envelope measured from the sensor axis and ~0.06 m outside
-    the one measured from the rails. Rails only: advisory; the union (A and B): STOP. The empty
-    tunnel stays clear."""
+    the one measured from the rails. Rails only: advisory; the union (A, the default since 26.09, B
+    and B2): STOP. The empty tunnel stays clear."""
     box = ObstacleSpec(kind="box", size=(0.5, 0.6, 1.0), distance=30.0, lateral=-1.41)
     frame = _yawed_scene(0.5, [box])
     off = _run(frame, 0)
@@ -116,6 +120,24 @@ def test_object_at_the_axis_referenced_edge():
     empty = _yawed_scene(0.5, [])
     for mode in (1, 2, 3):
         assert not any(r.obstacle or r.warning for r in _run(empty, mode))
+
+
+@pytest.mark.synthetic
+def test_tall_box_at_the_axis_referenced_edge():
+    """Set O #6 in the ray-cast tunnel: a 2 x 2 x 2.3 m box at 20 m whose inner face is 0.1 m inside
+    the envelope measured from the sensor axis (0.07 m outside the one from the rails; sensor yawed
+    0.5 deg). Its part inside the advisory corridor is ~2 m tall at ~1.2 m from the rails, so the wall
+    rule drops it with the rails only and with A (the default); with B2 (not shipped: +3 ride events)
+    the shape rules read the lateral from the sensor axis (~1.05 m) and it STOPs."""
+    x, inner = 20.0, -0.95
+    box = ObstacleSpec(kind="box", size=(2.0, 2.0, 2.3), distance=x,
+                       lateral=inner - 1.0 - x * np.tan(np.radians(0.5)))
+    frame = _yawed_scene(0.5, [box])
+    assert not any(r.obstacle for r in _run(frame, 0, n=8))
+    assert not any(r.obstacle for r in _run(frame, 1, n=8))       # the shipped A: still a wall
+    res = _run(frame, 3, n=8)
+    assert res[-1].obstacle, [(c.distance, c.lateral, c.zone, c.reason) for c in res[-1].candidates]
+    assert abs(res[-1].detections[0].distance - x) < 0.6
 
 
 @pytest.mark.synthetic

@@ -17,7 +17,7 @@ frames, 13 km, no obstacles).
 ## Unreleased (in development; package version 1.0.0)
 
 Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
-overhead rule on, node v0.6.4). Tests: 235 → 500 (+28 native kernels, +3 speed evaluation
+overhead rule on, node v0.6.4). Tests: 235 → 508 (+28 native kernels, +3 speed evaluation
 helpers, +23 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5
 overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting and socket
 buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`, +20 DDS
@@ -25,9 +25,27 @@ transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
 `cluster.far_axis_both_sides`, +3 far bed bins, +5 the rail-shadow review fixes, +4 the
 free-hanging exemption of `floating`, +4 thin hanging objects, +5 `health.clear_cap`, +6 the rate
 and re-mount flags, +1 the rail-lock guard of the hanging stage, +13 the review fixes of the
-round-2 items, +17 their re-review, +6 latency out of the decision, +8 the start-up census) in
-`tests/`, 13 in `web/demo`.
+round-2 items, +17 their re-review, +6 latency out of the decision, +8 the start-up census, +8
+the sensor-axis envelope) in `tests/`, 13 in `web/demo`.
 
+- **The envelope also measured from the sensor axis (26.09, P3; judge A, action 7): A shipped
+  (`gauge.axis_union` 1).** The organizers place their edge tests from the sensor axis, which runs
+  at −0.24° to the rails in set O. Measured from it, the four edge tests are exactly their intent:
+  #4 and #6 inside in 74 / 93 frames, #5 and #7 in none; from the rails 16 / 8 and 98 / 58. Now a
+  point is also inside when it is inside the envelope measured from the sensor axis. This applies
+  only within 50 m, on straight track (|curvature| ≤ 2e-4 /m), with the rail pair locked and the
+  two axes ≤ 0.30 m apart. Pre-registered A / B / B2:
+  - A (the union) passes the gate: 2 gated rows better, none worse; set F on gentle curves is
+    identical. #6 gains 1 STOP frame (0 → 1, 14.3 m). It is a track confirmed on three gauge hits
+    of the box and reported on an edge-line fragment 2.4 m in front of it. Nothing else changes.
+  - B (the corridor coordinate re-measured) loses a plank STOP frame.
+  - B2 (A, and the shape rules read the nearer axis) STOPs on #6 from 30.65 m (7 frames
+    credited), but the ride gets 187 / 46 / 39 → 189 / 49 / 39.
+
+  #4 stays advisory (`floating`) under every variant. B and B2 stay off. The baseline is not
+  re-cut: set O now counts 338 of 801 inside STOP frames, 7 of 8 objects. Tests +8
+  (`tests/test_edge_axis.py`). EXPERIMENTS §1k,
+  [`p3_edge_axis_2026-09-26.json`](docs/evidence/results/p3_edge_axis_2026-09-26.json).
 - **Start-up of a fresh bag (26.09, P3 / P4): census; three rules tried, none shipped.** A
   judge's fresh start at ride piece 2 STOPped at 2.9–3.1 m. The cause: the rail heads 3.0–3.6 m
   ahead of a standing train, above a young model's rail plane. Census of the first 4 s of 221 ride
