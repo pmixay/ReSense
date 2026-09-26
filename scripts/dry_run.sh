@@ -7,7 +7,8 @@
 #   IMAGE_TAR=dist/resense-image-<ver>.tar.gz OFFLINE=1 ./scripts/dry_run.sh <bag>   # the stand
 #
 # Environment:
-#   SKIP_BUILD=1     reuse the existing resense:latest instead of rebuilding
+#   IMAGE=<tag>      image to build/run (default resense:latest); use with SKIP_BUILD for a candidate
+#   SKIP_BUILD=1     reuse the existing IMAGE instead of rebuilding
 #   IMAGE_TAR=<tgz>  load the image from an archive of scripts/export_image.sh instead of building
 #                    (scripts/load_image.sh: sha256, docker load, check with --network none)
 #   OFFLINE=1        the test stand has no internet (docs/organizers/answers.md section 7): run
@@ -42,6 +43,7 @@ if [ ! -d "$BAG_PATH" ] || [ ! -f "$BAG_PATH/metadata.yaml" ]; then
   echo "ERROR: $BAG_PATH is not a ROS 2 bag directory (no metadata.yaml)" >&2
   exit 2
 fi
+IMAGE="${IMAGE:-resense:latest}"
 OFFLINE="${OFFLINE:-0}"
 IMAGE_TAR="${IMAGE_TAR:-}"
 if [ -n "$IMAGE_TAR" ] && [ ! -f "$IMAGE_TAR" ]; then
@@ -67,10 +69,10 @@ if [ -n "$IMAGE_TAR" ]; then
   echo "== IMAGE_TAR: loading resense:latest from $IMAGE_TAR instead of building =="
   scripts/load_image.sh "$IMAGE_TAR"
 elif [ "${SKIP_BUILD:-0}" != "1" ]; then
-  echo "== building resense:latest from scratch =="
-  docker build --no-cache -t resense:latest -f docker/Dockerfile .
+  echo "== building $IMAGE from scratch =="
+  docker build --no-cache -t "$IMAGE" -f docker/Dockerfile .
 else
-  echo "== SKIP_BUILD=1: reusing resense:latest =="
+  echo "== SKIP_BUILD=1: reusing $IMAGE =="
 fi
 
 NET_ARGS=(--net=host --ipc=host)
@@ -82,7 +84,7 @@ if [ "$OFFLINE" = "1" ]; then
   else
     echo "   (this host does not reach the internet either)"
   fi
-  docker run --rm --network none resense:latest python3 scripts/check_no_network.py
+  docker run --rm --network none "$IMAGE" python3 scripts/check_no_network.py
 fi
 
 echo "== playing $BAG_NAME at rate $RATE through the node (headless) =="
@@ -93,7 +95,7 @@ docker run --rm -i "${NET_ARGS[@]}" ${EXTRA_ARGS[@]+"${EXTRA_ARGS[@]}"} \
   -v "$BAG_DIR":/data:ro \
   -v "$OUT_ABS":/out \
   -e BAG_NAME="$BAG_NAME" -e RATE="$RATE" \
-  resense:latest bash -s <<'INNER'
+  "$IMAGE" bash -s <<'INNER'
 set -euo pipefail
 ros2 launch resense_ros detector.launch.py rviz:=false freshness_mode:=replay >/out/node.log 2>&1 &
 LAUNCH_PID=$!
