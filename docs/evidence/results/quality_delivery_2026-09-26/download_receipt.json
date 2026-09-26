@@ -1,0 +1,18 @@
+{
+  "downloaded_utc": "2026-09-26T22:42:36.940628+00:00",
+  "elapsed_s": 889.9640364750012,
+  "source_sha": "d480b1330491da838d6fb4996e34e37b3c060915",
+  "run_id": 36275557220,
+  "run_attempt": 1,
+  "artifact_id": 10917252513,
+  "artifact_name": "resense-image-1.0.0-d480b13",
+  "artifact_created_at": "2026-09-26T22:17:19Z",
+  "artifact_expires_at": "2026-10-26T22:17:15Z",
+  "artifact_zip_sha256": "823f580fffa61faf1904000599f6a6b44aac5b70133a17343e2028106262d9d4",
+  "github_artifact_digest": "sha256:823f580fffa61faf1904000599f6a6b44aac5b70133a17343e2028106262d9d4",
+  "archive": "/home/resense/validation/quality_cycle/current_source_ci/d480b1330491da838d6fb4996e34e37b3c060915/resense-image-1.0.0-d480b13.tar.gz",
+  "archive_bytes": 521627210,
+  "archive_sha256": "385167aa23582ec965347ea75a39d855cd430d533b0a94389dab96042d2f3c73",
+  "github_authorization_forwarded_to_storage": false,
+  "purpose": "Current P3d plus freshness source review artifact; no detector acceptance or public release"
+}

@@ -1,0 +1,275 @@
+"""Fetch exact green CI evidence; verify its local review image without promotion.
+
+Network and Docker operations are explicit phases for the parent agent to run.
+No Git reference or public release is written. Run from any working directory.
+"""
+
+import argparse
+import datetime as dt
+import hashlib
+import importlib
+import json
+import os
+from pathlib import Path
+import re
+import shutil
+import subprocess
+import sys
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
+import zipfile
+
+
+REPO = Path('/home/resense/ReSense')
+OUT = Path('/home/resense/validation/quality_cycle/current_source_ci')
+API = 'https://api.github.com/repos/pmixay/ReSense/'
+EXPECTED_JOBS = {'pytest', 'web', 'lint', 'params-in-sync', 'docker', 'offline-build'}
+
+
+def utc():
+    return dt.datetime.now(dt.timezone.utc).isoformat()
+
+
+def save(path, value):
+    path.write_text(json.dumps(value, indent=2) + '\n')
+
+
+def digest(path):
+    h = hashlib.sha256()
+    with path.open('rb') as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b''):
+            h.update(block)
+    return h.hexdigest()
+
+
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
+def api(path, *, redirect=False):
+    assert not path.startswith('/') and '..' not in path
+    token = Path('/tmp/resense_github_token').read_text().strip()
+    req = urllib.request.Request(API + path, headers={
+        'Authorization': 'Bearer ' + token,
+        'Accept': 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+    })
+    try:
+        with urllib.request.build_opener(NoRedirect).open(req, timeout=60) as response:
+            assert not redirect, 'expected a signed download redirect'
+            return json.load(response)
+    except urllib.error.HTTPError as exc:
+        if redirect and exc.code == 302:
+            location = exc.headers['Location']
+            parsed = urllib.parse.urlparse(location)
+            assert parsed.scheme == 'https' and not parsed.username and not parsed.password
+            assert parsed.hostname and (
+                parsed.hostname.endswith('.blob.core.windows.net')
+                or parsed.hostname.endswith('.githubusercontent.com')
+            ), 'unexpected artifact storage host'
+            return location
+        raise RuntimeError(f'GitHub API HTTP {exc.code}') from None
+    except urllib.error.URLError:
+        raise RuntimeError('GitHub API network access failed') from None
+
+
+def git_bytes(sha, rel):
+    return subprocess.check_output(['git', 'show', f'{sha}:{rel}'], cwd=REPO)
+
+
+def status(args, folder):
+    if args.run:
+        run = api(f'actions/runs/{args.run}')
+    else:
+        runs = api(f'actions/runs?head_sha={args.sha}&per_page=100')['workflow_runs']
+        runs = [r for r in runs if r['path'] == '.github/workflows/ci.yml']
+        assert runs, 'no CI run exists for this exact SHA'
+        run = max(runs, key=lambda r: (r['run_number'], r['run_attempt']))
+    assert run['head_sha'] == args.sha, 'run SHA does not match requested source'
+    assert run['path'] == '.github/workflows/ci.yml' and run['event'] == 'push'
+    assert run['head_branch'] == 'claude/nifty-pascal-lzgl78'
+    data = api(f"actions/runs/{run['id']}/jobs?filter=latest&per_page=100")
+    assert data['total_count'] <= 100, 'unexpected jobs pagination'
+    jobs = data['jobs']
+    assert {j['name'] for j in jobs} == EXPECTED_JOBS, 'expected exactly six CI job names'
+    assert len(jobs) == 6
+    assert all(j['head_sha'] == args.sha for j in jobs)
+    passed = run['status'] == 'completed' and run['conclusion'] == 'success'
+    passed = passed and all(j['status'] == 'completed' and j['conclusion'] == 'success' for j in jobs)
+    receipt = {
+        'checked_utc': utc(), 'source_sha': args.sha, 'run_id': run['id'],
+        'run_attempt': run['run_attempt'], 'run_url': run['html_url'],
+        'status': run['status'], 'conclusion': run['conclusion'], 'all_six_passed': passed,
+        'jobs': [{k: j.get(k) for k in ('id', 'name', 'status', 'conclusion', 'started_at', 'completed_at', 'html_url', 'steps')} for j in jobs],
+        'acceptance_or_release_claim': False,
+    }
+    save(folder / 'ci_status.json', receipt)
+    print(json.dumps({k: receipt[k] for k in ('source_sha', 'run_id', 'status', 'conclusion', 'all_six_passed')}), flush=True)
+    return receipt
+
+
+def download(args, folder):
+    state = status(args, folder)
+    assert state['all_six_passed'], 'archive download requires all six exact-head jobs green'
+    version = re.search(rb'^version\s*=\s*"([^"]+)"', git_bytes(args.sha, 'pyproject.toml'), re.M).group(1).decode()
+    name = f'resense-image-{version}-{args.sha[:7]}'
+    listing = api(f"actions/runs/{state['run_id']}/artifacts?per_page=100")
+    assert listing['total_count'] <= 100
+    candidates = [a for a in listing['artifacts'] if a['name'] == name and not a['expired']]
+    assert len(candidates) == 1, 'expected one exact-head runtime archive artifact'
+    artifact = candidates[0]
+    assert artifact['workflow_run']['head_sha'] == args.sha
+    archive = folder / f'{name}.tar.gz'
+    receipt_path = folder / 'download_receipt.json'
+    if receipt_path.exists():
+        prior = json.loads(receipt_path.read_text())
+        assert prior['artifact_id'] == artifact['id'] and prior['source_sha'] == args.sha
+        assert digest(archive) == prior['archive_sha256'], 'existing archive changed'
+        print('Existing verified archive retained; no duplicate download.', flush=True)
+        return
+    location = api(f"actions/artifacts/{artifact['id']}/zip", redirect=True)
+    zipped = folder / f'{name}.zip'
+    started = time.monotonic()
+    # A fresh, unauthenticated request: the GitHub token never reaches the signed host.
+    try:
+        with urllib.request.urlopen(urllib.request.Request(location), timeout=60) as source, zipped.open('xb') as target:
+            shutil.copyfileobj(source, target, 1024 * 1024)
+    except urllib.error.URLError:
+        raise RuntimeError('Signed artifact download failed; no credential was forwarded') from None
+    zip_digest = digest(zipped)
+    advertised_digest = artifact.get('digest')
+    if advertised_digest:
+        assert advertised_digest == 'sha256:' + zip_digest, 'GitHub artifact digest mismatch'
+    expected_names = {archive.name, archive.name + '.sha256'}
+    with zipfile.ZipFile(zipped) as package:
+        assert set(package.namelist()) == expected_names
+        for entry in package.infolist():
+            assert entry.file_size < 3 * 1024**3 and not entry.is_dir()
+            with package.open(entry) as source, (folder / entry.filename).open('xb') as target:
+                shutil.copyfileobj(source, target, 1024 * 1024)
+    checksum_line = Path(str(archive) + '.sha256').read_text().split()
+    assert len(checksum_line) == 2 and checksum_line[1] == archive.name
+    archive_digest = digest(archive)
+    assert checksum_line[0] == archive_digest, 'archive checksum mismatch'
+    receipt = {
+        'downloaded_utc': utc(), 'elapsed_s': time.monotonic() - started,
+        'source_sha': args.sha, 'run_id': state['run_id'], 'run_attempt': state['run_attempt'],
+        'artifact_id': artifact['id'], 'artifact_name': name,
+        'artifact_created_at': artifact['created_at'], 'artifact_expires_at': artifact['expires_at'],
+        'artifact_zip_sha256': zip_digest, 'github_artifact_digest': advertised_digest,
+        'archive': str(archive), 'archive_bytes': archive.stat().st_size,
+        'archive_sha256': archive_digest, 'github_authorization_forwarded_to_storage': False,
+        'purpose': 'Current P3d plus freshness source review artifact; no detector acceptance or public release',
+    }
+    save(receipt_path, receipt)
+    print(json.dumps({'archive': str(archive), 'sha256': archive_digest, 'elapsed_s': receipt['elapsed_s']}), flush=True)
+
+
+SOURCES = [
+    'resense/detector.py', 'resense/health.py', 'resense/_native.py',
+    'configs/default.yaml', 'native/resense_native.cpp',
+    'ros2_ws/src/resense_ros/resense_ros/detector_node.py',
+    'ros2_ws/src/resense_ros/launch/detector.launch.py',
+    'scripts/check_dry_run.py', 'scripts/smoke_test.sh', 'docker/entrypoint.sh',
+]
+
+
+def native_check():
+    import inspect
+    import resense
+    from resense import _native
+
+    request = json.loads(Path('/evidence/source_expected.json').read_text())
+    assert _native.AVAILABLE and _native.enabled(), _native.status()
+    assert resense.__version__ == request['package_version']
+    actual = {}
+    for rel, expected in request['sources'].items():
+        if rel.startswith('resense/'):
+            path = Path(inspect.getfile(importlib.import_module(rel[:-3].replace('/', '.'))))
+            assert not str(path).startswith('/opt/resense/resense/'), 'must inspect installed package'
+        elif rel == 'ros2_ws/src/resense_ros/resense_ros/detector_node.py':
+            path = Path(inspect.getfile(importlib.import_module('resense_ros.detector_node')))
+        elif rel == 'docker/entrypoint.sh':
+            path = Path('/entrypoint.sh')
+        else:
+            path = Path('/opt/resense') / rel
+        actual[rel] = {'path': str(path), 'sha256': digest(path)}
+        assert actual[rel]['sha256'] == expected, f'source mismatch: {rel}'
+    print(json.dumps({'package_version': resense.__version__, 'native': _native.status(), 'native_available': _native.AVAILABLE, 'native_enabled': _native.enabled(), 'sources': actual, 'passed': True}, indent=2))
+
+
+def verify(args, folder):
+    downloaded = json.loads((folder / 'download_receipt.json').read_text())
+    assert downloaded['source_sha'] == args.sha
+    archive = Path(downloaded['archive'])
+    assert digest(archive) == downloaded['archive_sha256']
+    version = re.search(rb'^version\s*=\s*"([^"]+)"', git_bytes(args.sha, 'pyproject.toml'), re.M).group(1).decode()
+    expected = {'source_sha': args.sha, 'package_version': version, 'sources': {p: hashlib.sha256(git_bytes(args.sha, p)).hexdigest() for p in SOURCES}}
+    save(folder / 'source_expected.json', expected)
+    shutil.copyfile(Path(__file__), folder / 'review_ci_artifact.py')
+
+    def output(cmd):
+        return subprocess.check_output(cmd, cwd=REPO, text=True).strip()
+
+    def image(tag):
+        return json.loads(output(['docker', 'image', 'inspect', tag]))[0]
+
+    previous = image('resense:latest')['Id']
+    preserve = f'resense:before-review-{args.sha[:7]}'
+    subprocess.check_call(['docker', 'tag', previous, preserve])
+    receipt = {'started_utc': utc(), 'source_sha': args.sha, 'archive_sha256': downloaded['archive_sha256'], 'previous_latest_image_id': previous, 'preserved_tag': preserve, 'promoted': False, 'public_release': False, 'original_bag_acceptance': False}
+    save(folder / 'offline_started.json', receipt)
+    try:
+        with (folder / 'offline_load.log').open('w') as log:
+            env = os.environ.copy()
+            env['IMAGE'] = f'resense:{version}'
+            subprocess.check_call([str(REPO / 'scripts/load_image.sh'), str(archive)], cwd=REPO, env=env, stdout=log, stderr=subprocess.STDOUT)
+        loaded = image(f'resense:{version}')
+        labels = loaded['Config']['Labels']
+        assert labels['org.opencontainers.image.revision'] == args.sha
+        assert labels['org.opencontainers.image.version'] == version
+        assert image('resense:latest')['Id'] == loaded['Id']
+        review_tag = f'resense:review-{args.sha[:7]}'
+        subprocess.check_call(['docker', 'tag', loaded['Id'], review_tag])
+        command = ['docker', 'run', '--rm', '--network', 'none', '-w', '/', '-v', f'{folder}:/evidence:ro', loaded['Id'], 'python3', '/evidence/review_ci_artifact.py', 'native-check']
+        checked = output(command)
+        native = json.loads(checked)
+        save(folder / 'native_source_receipt.json', native)
+        save(folder / 'loaded_image_inspect.json', loaded)
+        receipt.update({'verified': True, 'loaded_image_id': loaded['Id'], 'review_tag': review_tag, 'source_and_native_check': native['passed'], 'layers': loaded['RootFS']['Layers']})
+    finally:
+        subprocess.check_call(['docker', 'tag', previous, 'resense:latest'])
+        receipt['restored_latest_image_id'] = image('resense:latest')['Id']
+        assert receipt['restored_latest_image_id'] == previous
+        assert image(preserve)['Id'] == previous
+        receipt['finished_utc'] = utc()
+        save(folder / 'offline_receipt.json', receipt)
+    print(json.dumps(receipt, indent=2))
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('phase', choices=['status', 'download', 'verify', 'native-check'])
+    parser.add_argument('--sha')
+    parser.add_argument('--run', type=int)
+    args = parser.parse_args()
+    if args.phase == 'native-check':
+        native_check()
+        return
+    assert args.sha and re.fullmatch('[0-9a-f]{40}', args.sha), 'exact 40-character source SHA required'
+    folder = OUT / args.sha
+    folder.mkdir(exist_ok=True)
+    if args.phase == 'status':
+        state = status(args, folder)
+        sys.exit(0 if state['all_six_passed'] else 3)
+    elif args.phase == 'download':
+        download(args, folder)
+    else:
+        verify(args, folder)
+
+
+if __name__ == '__main__':
+    main()

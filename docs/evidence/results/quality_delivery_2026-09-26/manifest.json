@@ -1,0 +1,38 @@
+{
+  "source_sha": "d480b1330491da838d6fb4996e34e37b3c060915",
+  "purpose": "Delivery verification only; final detector quality acceptance remains on hold",
+  "files": {
+    "ci_status.json": {
+      "bytes": 19369,
+      "sha256": "d2a47a8a83f3bf761195b86dc6447f7a17e9e5f8cad3cc9d4f42aec65d318841"
+    },
+    "documentation_followup_receipt.json": {
+      "bytes": 538,
+      "sha256": "f6dd7a2d4efa56e2e505bbe230c1791b9856420f4889693eb4baa7272d991981"
+    },
+    "download_receipt.json": {
+      "bytes": 1001,
+      "sha256": "2f447138fd78935d6cad1e35ddbe7617e902b4ac7a95a907af08d4b959854278"
+    },
+    "native_source_receipt.json": {
+      "bytes": 2100,
+      "sha256": "1ecc776f2fdf1de4ef426c3b059b21b53694fc35b2fc48045b2b6f68fa9ac612"
+    },
+    "offline_load.log": {
+      "bytes": 1071,
+      "sha256": "21fe809368ecd6d4e749b92e7d502c8bbcc234896327e86c283fd0792c231ddb"
+    },
+    "offline_receipt.json": {
+      "bytes": 2948,
+      "sha256": "4581812e9f76cace56ad0f126f1c43566eedc1229482d79f42aa6a1ebf2f758f"
+    },
+    "review_ci_artifact.py.txt": {
+      "bytes": 13296,
+      "sha256": "dadb103b56125eb81096dd767498084d21743b62585c66b47d492808a20cce67"
+    },
+    "source_expected.json": {
+      "bytes": 1137,
+      "sha256": "a8df95c92cc90af66834ca44ce06e456689eb17304fc176eb469b9834fcc2163"
+    }
+  }
+}

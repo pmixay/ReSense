@@ -1,0 +1,14 @@
+== checking the sha256 of resense-image-1.0.0-d480b13.tar.gz (521627210 bytes)
+   OK 385167aa23582ec965347ea75a39d855cd430d533b0a94389dab96042d2f3c73
+== docker load -i resense-image-1.0.0-d480b13.tar.gz
+Loaded image: resense:1.0.0
+Loaded image: resense:latest
+Loaded image: ros:humble-ros-base-jammy
+   resense:1.0.0: sha256:4f79c1e3ece269d1187d03eaa7d74ef060f1ea7727cce69c71e3d661988754cd, version label '1.0.0', commit label 'd480b1330491da838d6fb4996e34e37b3c060915' (empty when exported with SKIP_BUILD=1)
+== the image with no network (--network none): package import and ROS 2 executables
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+resense 1.0.0 native (_resense_native.cpython-310-x86_64-linux-gnu.so)
+resense_ros detector_node
+
+PASS: resense:1.0.0 loaded from resense-image-1.0.0-d480b13.tar.gz and runs without network. Next:
+   docker run --rm -it --net=host --ipc=host resense ros2 launch resense_ros detector.launch.py freshness_mode:=replay  # then ros2 bag play <bag> --delay 3

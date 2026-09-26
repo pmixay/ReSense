@@ -1,0 +1,16 @@
+{
+  "source_sha": "d480b1330491da838d6fb4996e34e37b3c060915",
+  "package_version": "1.0.0",
+  "sources": {
+    "resense/detector.py": "0e034c192803126f762caddb22ecc47087606716c2698248f0c813877dfd5565",
+    "resense/health.py": "dd8f34dac8c886ebd88ba49d0a950b6bc9c12a810bb1b583f6a6c076f7e61546",
+    "resense/_native.py": "7417a55c2b0ddc9b95a5d46d78b6af9b724203475890a59a0be4a022c6d4fd58",
+    "configs/default.yaml": "c7ca5ad4f332b7025f66ab0addeb21025daf23a36aca4dbcc2d49fe5b8831f40",
+    "native/resense_native.cpp": "85688be18c41c68111f30e2bc45b83186650c1eead8b24a254d15c97cb2592f1",
+    "ros2_ws/src/resense_ros/resense_ros/detector_node.py": "95d1721d3b3238a0fa0358f98740a83b6069404411767e94bd5dd227d2de9274",
+    "ros2_ws/src/resense_ros/launch/detector.launch.py": "c6148e4edd7d7b95e607a4950fd9e1be108f649aa07bd6cd6d3e7a914f3748dd",
+    "scripts/check_dry_run.py": "77afeb5a7520d61b858e8de195a5176abd0afedcb278a071989f217b0fd408be",
+    "scripts/smoke_test.sh": "0f24081f98cba493dfd01b7e457047e3bd0af7b7fd9e5d0fae97f74160b6fd90",
+    "docker/entrypoint.sh": "100c1a5584e26ffd3bc6358734efd4846fc4ece23e2c7552e74e39d7b2394ff9"
+  }
+}
