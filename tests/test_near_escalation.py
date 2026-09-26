@@ -174,3 +174,37 @@ def test_off_changes_nothing():
         tr.update([_cluster(30.0, 120)], ego_shift=0.0, frame_dt=0.1)
     t = tr.tracks[0]
     assert t.near_hits == 0 and t.near_hist == [] and t.zone == "warning" and not t.escalated
+
+
+def _low_rail(x: float) -> Cluster:
+    """A low (bed-level) cluster that ``lowobj.mark_rail_line`` marked as rail geometry, with >= N
+    strict voxels, where ``_cluster`` puts its cluster (so the tracker associates the two)."""
+    c = _cluster(x, 12, reason="", zone="gauge")
+    c.kind, c.rail_line = "low", True
+    return c
+
+
+def _mixed(rail_within: float):
+    tr = Tracker(TrackingConfig(near_escalate_voxels=10, near_escalate_distance=35.0, near_escalate_hits=5))
+    out = []
+    for cl in [_cluster(3.5, 12)] * 6 + [_low_rail(3.5)] + [_cluster(3.5, 12)] * 6:
+        tr.update([cl], ego_shift=0.0, frame_dt=0.1, rail_within=rail_within)
+        out.append([(t.id, t.reported, t.zone, t.escalated) for t in tr.tracks])
+    return out
+
+
+def test_near_escalation_and_rail_start_act_on_disjoint_clusters():
+    """Integration of 26.09 (EXPERIMENTS §1k, §1l): both rules decide in the tracker. A low cluster
+    never counts as a near hit, so a track of rail-line clusters under 4 m is never escalated (the
+    rail-start rule withholds it); and the rail-start rule only withholds a track not yet reported
+    whose last hit is a rail-line cluster, in a frame where the escalation's last hits are broken
+    anyway. A track escalated to a STOP whose clusters are once a rail-line cluster under 4 m
+    behaves the same with the rail-start rule on as off."""
+    tr = Tracker(TrackingConfig(near_escalate_voxels=10, near_escalate_distance=35.0, near_escalate_hits=5))
+    assert not tr._near(_low_rail(3.0))
+    for _ in range(8):
+        tr.update([_low_rail(3.0)], ego_shift=0.0, frame_dt=0.1, rail_within=4.0)
+    assert len(tr.tracks) == 1 and not tr.tracks[0].near_escalated and not tr.tracks[0].reported
+    on, off = _mixed(4.0), _mixed(0.0)
+    assert on == off
+    assert on[5] == [(1, True, "gauge", True)] and on[-1] == [(1, True, "gauge", True)]
