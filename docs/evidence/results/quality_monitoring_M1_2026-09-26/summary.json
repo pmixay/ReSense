@@ -1,0 +1,328 @@
+{
+  "candidate": "M1",
+  "script_sha256": "2810da9bab3533b756229f5b4993541c89841bc7f5418a5c14ba9b028b363086",
+  "native": "native (_resense_native.cpython-312-x86_64-linux-gnu.so)",
+  "recordings": {
+    "cloud_with_fake_obj": {
+      "frames": 1510,
+      "upstream_identical": true,
+      "monitoring_cost": {
+        "frames": 1510,
+        "reference_decisions": {
+          "GO": 747,
+          "STOP": 415,
+          "FAULT": 2,
+          "CAUTION": 346
+        },
+        "candidate_decisions": {
+          "GO": 474,
+          "STOP": 415,
+          "FAULT": 2,
+          "CAUTION": 619
+        },
+        "newly_uncertain_frames": 273,
+        "newly_uncertain_percentage_points": 18.079470198675498,
+        "reference_clear_median_m": 97.7,
+        "candidate_clear_median_m": 86.1,
+        "clear_median_fraction": 0.8812691914022517,
+        "passed": false
+      },
+      "reference_overclaim": {
+        "tolerance_m": 0.5,
+        "totals": {
+          "target": 54,
+          "target_frames": 505,
+          "intent": 223,
+          "intent_frames": 801,
+          "go_judge": 150,
+          "go_judge_in_envelope": 62,
+          "target_by_decision": {
+            "GO": 46,
+            "CAUTION": 6,
+            "STOP": 2
+          }
+        },
+        "inside_objects": {
+          "big_center": {
+            "frames": 213,
+            "frames_in_envelope": 213,
+            "overclaim": 0,
+            "overclaim_in_envelope": 0,
+            "overclaim_in_envelope_go": 0,
+            "max_excess_m": 0.0
+          },
+          "small_on_rail": {
+            "frames": 49,
+            "frames_in_envelope": 33,
+            "overclaim": 17,
+            "overclaim_in_envelope": 4,
+            "overclaim_in_envelope_go": 4,
+            "max_excess_m": 126.0
+          },
+          "small_center": {
+            "frames": 79,
+            "frames_in_envelope": 63,
+            "overclaim": 45,
+            "overclaim_in_envelope": 30,
+            "overclaim_in_envelope_go": 29,
+            "max_excess_m": 66.7
+          },
+          "small_edge_inside": {
+            "frames": 83,
+            "frames_in_envelope": 16,
+            "overclaim": 41,
+            "overclaim_in_envelope": 4,
+            "overclaim_in_envelope_go": 0,
+            "max_excess_m": 174.8
+          },
+          "big_edge_inside": {
+            "frames": 125,
+            "frames_in_envelope": 8,
+            "overclaim": 73,
+            "overclaim_in_envelope": 2,
+            "overclaim_in_envelope_go": 0,
+            "max_excess_m": 180.8
+          },
+          "big_above": {
+            "frames": 124,
+            "frames_in_envelope": 75,
+            "overclaim": 27,
+            "overclaim_in_envelope": 7,
+            "overclaim_in_envelope_go": 6,
+            "max_excess_m": 53.9
+          },
+          "long_low_on_rails": {
+            "frames": 86,
+            "frames_in_envelope": 77,
+            "overclaim": 7,
+            "overclaim_in_envelope": 7,
+            "overclaim_in_envelope_go": 7,
+            "max_excess_m": 114.8
+          },
+          "thin_hanging": {
+            "frames": 42,
+            "frames_in_envelope": 20,
+            "overclaim": 13,
+            "overclaim_in_envelope": 0,
+            "overclaim_in_envelope_go": 0,
+            "max_excess_m": 136.6
+          }
+        },
+        "outside_objects": {
+          "small_outside_near": {
+            "frames": 112,
+            "clear_stops_at_object": 11
+          },
+          "big_outside": {
+            "frames": 104,
+            "clear_stops_at_object": 8
+          }
+        }
+      },
+      "candidate_overclaim": {
+        "tolerance_m": 0.5,
+        "totals": {
+          "target": 3,
+          "target_frames": 505,
+          "intent": 123,
+          "intent_frames": 801,
+          "go_judge": 51,
+          "go_judge_in_envelope": 15,
+          "target_by_decision": {
+            "CAUTION": 2,
+            "STOP": 1
+          }
+        },
+        "inside_objects": {
+          "big_center": {
+            "frames": 213,
+            "frames_in_envelope": 213,
+            "overclaim": 0,
+            "overclaim_in_envelope": 0,
+            "overclaim_in_envelope_go": 0,
+            "max_excess_m": 0.0
+          },
+          "small_on_rail": {
+            "frames": 49,
+            "frames_in_envelope": 33,
+            "overclaim": 13,
+            "overclaim_in_envelope": 0,
+            "overclaim_in_envelope_go": 0,
+            "max_excess_m": 123.3
+          },
+          "small_center": {
+            "frames": 79,
+            "frames_in_envelope": 63,
+            "overclaim": 5,
+            "overclaim_in_envelope": 0,
+            "overclaim_in_envelope_go": 0,
+            "max_excess_m": 20.6
+          },
+          "small_edge_inside": {
+            "frames": 83,
+            "frames_in_envelope": 16,
+            "overclaim": 35,
+            "overclaim_in_envelope": 0,
+            "overclaim_in_envelope_go": 0,
+            "max_excess_m": 134.3
+          },
+          "big_edge_inside": {
+            "frames": 125,
+            "frames_in_envelope": 8,
+            "overclaim": 54,
+            "overclaim_in_envelope": 2,
+            "overclaim_in_envelope_go": 0,
+            "max_excess_m": 171.6
+          },
+          "big_above": {
+            "frames": 124,
+            "frames_in_envelope": 75,
+            "overclaim": 2,
+            "overclaim_in_envelope": 0,
+            "overclaim_in_envelope_go": 0,
+            "max_excess_m": 24.8
+          },
+          "long_low_on_rails": {
+            "frames": 86,
+            "frames_in_envelope": 77,
+            "overclaim": 1,
+            "overclaim_in_envelope": 1,
+            "overclaim_in_envelope_go": 0,
+            "max_excess_m": 42.2
+          },
+          "thin_hanging": {
+            "frames": 42,
+            "frames_in_envelope": 20,
+            "overclaim": 13,
+            "overclaim_in_envelope": 0,
+            "overclaim_in_envelope_go": 0,
+            "max_excess_m": 107.5
+          }
+        },
+        "outside_objects": {
+          "small_outside_near": {
+            "frames": 112,
+            "clear_stops_at_object": 59
+          },
+          "big_outside": {
+            "frames": 104,
+            "clear_stops_at_object": 8
+          }
+        }
+      }
+    },
+    "doubleT_platform": {
+      "frames": 345,
+      "upstream_identical": true,
+      "monitoring_cost": {
+        "frames": 345,
+        "reference_decisions": {
+          "GO": 149,
+          "CAUTION": 192,
+          "STOP": 4
+        },
+        "candidate_decisions": {
+          "CAUTION": 279,
+          "GO": 62,
+          "STOP": 4
+        },
+        "newly_uncertain_frames": 87,
+        "newly_uncertain_percentage_points": 25.217391304347824,
+        "reference_clear_median_m": 119.0,
+        "candidate_clear_median_m": 74.2,
+        "clear_median_fraction": 0.6235294117647059,
+        "passed": false
+      }
+    },
+    "roundT_doubleT": {
+      "frames": 252,
+      "upstream_identical": true,
+      "monitoring_cost": {
+        "frames": 252,
+        "reference_decisions": {
+          "GO": 79,
+          "CAUTION": 173
+        },
+        "candidate_decisions": {
+          "GO": 9,
+          "CAUTION": 243
+        },
+        "newly_uncertain_frames": 70,
+        "newly_uncertain_percentage_points": 27.77777777777778,
+        "reference_clear_median_m": 135.5,
+        "candidate_clear_median_m": 78.65,
+        "clear_median_fraction": 0.5804428044280443,
+        "passed": false
+      }
+    },
+    "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "upstream_identical": true,
+      "monitoring_cost": {
+        "frames": 268,
+        "reference_decisions": {
+          "GO": 164,
+          "CAUTION": 104
+        },
+        "candidate_decisions": {
+          "CAUTION": 237,
+          "GO": 31
+        },
+        "newly_uncertain_frames": 133,
+        "newly_uncertain_percentage_points": 49.62686567164179,
+        "reference_clear_median_m": 128.05,
+        "candidate_clear_median_m": 90.35,
+        "clear_median_fraction": 0.7055837563451776,
+        "passed": false
+      }
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "upstream_identical": true,
+      "monitoring_cost": {
+        "frames": 545,
+        "reference_decisions": {
+          "GO": 399,
+          "CAUTION": 146
+        },
+        "candidate_decisions": {
+          "GO": 163,
+          "CAUTION": 382
+        },
+        "newly_uncertain_frames": 236,
+        "newly_uncertain_percentage_points": 43.30275229357798,
+        "reference_clear_median_m": 148.9,
+        "candidate_clear_median_m": 111.5,
+        "clear_median_fraction": 0.7488247145735393,
+        "passed": false
+      }
+    },
+    "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "upstream_identical": true,
+      "monitoring_cost": {
+        "frames": 877,
+        "reference_decisions": {
+          "GO": 458,
+          "CAUTION": 365,
+          "STOP": 54
+        },
+        "candidate_decisions": {
+          "GO": 328,
+          "CAUTION": 495,
+          "STOP": 54
+        },
+        "newly_uncertain_frames": 130,
+        "newly_uncertain_percentage_points": 14.823261117445838,
+        "reference_clear_median_m": 88.9,
+        "candidate_clear_median_m": 82.8,
+        "clear_median_fraction": 0.9313835770528683,
+        "passed": false
+      }
+    }
+  },
+  "parameters_changed": false,
+  "empty_cost_passed": false,
+  "zero_GO_overclaim_diagnostic_passed": true,
+  "proceed_to_ride": false
+}
