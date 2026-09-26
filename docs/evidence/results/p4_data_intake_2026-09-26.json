@@ -262,14 +262,32 @@
     "name": "new_data",
     "expected_frames": 11271,
     "expected_splits": 221,
-    "status": "not streamed: insufficient free space while preserving required 3 GiB headroom",
+    "status": "not streamed: latest free space cannot hold the estimated ride cache while preserving required 3 GiB headroom",
     "cache_estimate_bytes": 16500000000,
     "free_bytes_after_six_recording_caches_and_archive_removal": 15700189184,
     "required_headroom_bytes": 3221225472,
     "additional_free_bytes_required": 4021070288,
-    "additional_free_space_recommended": "at least 4.1 GB"
+    "additional_free_space_recommended": "at least 4.1 GB",
+    "initial_capacity_check": {
+      "free_bytes_after_six_recording_caches_and_archive_removal": 15700189184,
+      "required_headroom_bytes": 3221225472,
+      "additional_free_bytes_required_as_reported": 4021070288,
+      "additional_free_space_recommended": "at least 4.1 GB",
+      "note": "Earlier intake-stage measurement, preserved for provenance."
+    },
+    "latest_capacity_check": {
+      "date": "2026-09-26",
+      "free_bytes": 14498832384,
+      "estimated_cache_bytes": 16500000000,
+      "required_headroom_bytes": 3221225472,
+      "additional_free_bytes_required": 5222393088,
+      "additional_free_space_recommended": "at least 5.3 GB",
+      "note": "Latest P3d completion-stage measurement; no unrelated files or caches were removed.",
+      "observed_at": "2026-09-26 13:35:00 UTC"
+    },
+    "capacity_field_scope": "Legacy top-level free-space fields preserve the initial intake-stage check; latest_capacity_check records the current P3d completion-stage measurement."
   },
-  "status": "six original recording caches complete and verified; set O cache replayed; ride unavailable because remaining disk cannot meet 3 GiB headroom",
+  "status": "six original recording caches complete and verified; set O cache replayed; ride unavailable because latest free space is 5.3 GB below the cache plus 3 GiB reserve requirement",
   "set_o": {
     "name": "cloud_with_fake_obj",
     "path": "/data/cache/cloud_with_fake_obj",

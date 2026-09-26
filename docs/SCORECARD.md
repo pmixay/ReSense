@@ -5,13 +5,12 @@
 > behind it, the risks on the hidden data and the fastest points to gain.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, summary RU
 > **Last independent judgement:** 2026-09-26 against `867bb8a` (judged on `052e7c5` / `867bb8a`;
-> before the P3c integration) · **Status:** dated score record; current-head evidence follows §0
+> before the P3c and P3d integrations) · **Status:** dated score record; current-head evidence follows §0
 
-**Кратко.** Последняя независимая оценка — **65 / 100** на версии до интеграции P3c. На P3c все
-8 объектов организаторов в габарите получают хотя бы один STOP, но краевые объекты #4 и #6
-получают лишь 2 и 6 STOP-кадров; главный потенциал роста остаётся в надёжности и дальности.
-Для текущей ветки подготовлена отдельная **предварительная внутренняя оценка 66,5 / 100** в §0.2;
-она не заменяет и не изменяет независимую оценку 65.
+**Кратко.** Последняя независимая оценка — **65 / 100** на версии до интеграции P3c/P3d. В P3d
+все 8 объектов организаторов в габарите получают хотя бы один STOP; верхний объект #8 получает
+51/124 STOP-кадра, а краевые #4 и #6 — 2/83 и 6/125. Текущая **предварительная внутренняя
+оценка — 67 / 100** в §0.3; она не заменяет и не изменяет независимую оценку 65.
 
 ## 0. Last independent re-judgement of 26.09: 65 / 100
 
@@ -63,7 +62,7 @@ available baseline rows. The `new_data` ride cache and set F rows remain absent,
 gate reports three ride and fifteen set F metrics as missing. The 65/100 remains the last
 independent judge score, not a score for the integrated head.
 
-## 0.2. Provisional internal assessment of the available P4 head: 66.5 / 100
+## 0.2. Historical P3c provisional assessment of the available P4 head: 66.5 / 100
 
 This is a **provisional internal assessment**, not an independent organizer or judge score. It
 uses the repository's eight assessment maxima (25, 15, 10, 15, 10, 10, 10, 5); the organizers
@@ -90,6 +89,35 @@ set F placement is not surveyed ground truth. Review packet:
 [`p4_review_packet_2026-09-26.json`](evidence/results/p4_review_packet_2026-09-26.json); full
 criterion notes and limitations:
 [`p4_provisional_score_2026-09-26.json`](evidence/results/p4_provisional_score_2026-09-26.json).
+
+## 0.3. Current provisional internal assessment against inherited P3d: 67 / 100
+
+This is a **provisional internal assessment**, not an independent organizer or judge score. It
+uses the repository's eight assessment maxima (25, 15, 10, 15, 10, 10, 10, 5); the organizers
+have not published criterion weights. The +0.5 Works point over the historical P3c assessment
+comes from inherited upstream P3d STOP-keep behavior; P4 receives no detector-improvement credit.
+P4 receives evidence/process credit only. The independent 65/100 remains unchanged on commit
+`867bb8a`.
+
+| § | criterion | provisional / max | change vs. independent 65 | evidence and reason |
+|---|---|---:|---:|---|
+| 8.1 | Works | **15.5 / 25** | +1.0, inherited P3c and P3d | All 8 in-gauge set O objects receive a STOP. Inherited P3d raises #8 from 22/124 to 51/124 and held-from 23.9→111.4 m, while it still first stops at 101.3 m; total is 384/801. #4 remains 2/83, #6 6/125, and outside #7 has six false STOP frames. No P4 detector gain is claimed. |
+| 8.2 | Range | **7.5 / 15** | 0 | Only one set O STOP frame is beyond 100 m; no real positive obstacle or set F rerun supports long-range recall. The 148–154 m synthetic person is not real validation. |
+| 8.3 | Speed | **7 / 10** | 0 | Existing native and ROS measurements remain dated; P4 did not add a controlled stand or timing run. |
+| 8.4 | Generalisation | **9 / 15** | 0 | Six-recording 5 Hz, mount, and start-offset checks are reproducible, but routes were already available; ride is absent and set O is already inspected. |
+| 8.5 | Technical quality | **8 / 10** | +0.5, P4 evidence | Six recording caches and set O are verified; run provenance, strict-gate results, false-alarm inventory, paired-placement identities, and candidate outcomes are recorded. Ride-dependent gate/test coverage remains incomplete. |
+| 8.6 | Ease of launch | **8 / 10** | 0 | Existing offline image and CI evidence stand; no new operator rehearsal or independent stand run was done. |
+| 8.7 | Team approach | **9 / 10** | +0.5, P4 process | A/B/C were preregistered and screened against P3d. A/C were rejected for no target gain; B improves #4 but remains unaccepted because the strict gate lacks ride/set F rows. |
+| 8.8 | Pitch | **3 / 5** | 0 | No new independent deck review, presentation, or rehearsal was part of this pass. |
+| | **Total** | **67 / 100** | **+2 provisional** | 8.1's point is inherited P3c/P3d detector work; 8.5 and 8.7 reflect P4 evidence and process only. |
+
+The cached P3d set O replay and original raw bag remain score-different: cache 384 inside / 6
+outside / 3 background STOP frames versus raw 387 / 7 / 1. The ride has no real obstacles; set O is
+not unseen validation; anchored placement is not surveyed ground truth. The strict gate still lacks
+3 ride and 15 set F rows. Review material:
+[`p4_review_packet_p3d_2026-09-26.json`](evidence/results/p4_review_packet_p3d_2026-09-26.json),
+[`p4_provisional_score_p3d_2026-09-26.json`](evidence/results/p4_provisional_score_p3d_2026-09-26.json),
+and [`P4_AUDIT.md`](P4_AUDIT.md).
 
 **Claims the judges found wrong or overstated** (to fix in the consistency pass after the freeze,
 CAPTAIN action 19):

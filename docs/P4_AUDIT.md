@@ -3,31 +3,82 @@
 > **Purpose:** P4's audit of synthetic placement, evaluation accounting and the organizers'
 > synthetic-obstacle recording, with the corrections made and what they change.
 > **Audience:** team, jury (spec §8.7) · **Owner:** P4 · **Language:** EN
-> **Last verified:** 2026-09-26 against the integrated P3c evidence ·
-> **Status:** dated audit with the current-head addendum below
+> **Last verified:** 2026-09-26 against inherited P3d detector commit `fa18832` ·
+> **Status:** historical audit plus the current P3d addendum below
 
 Initial audit base: `a81108f` (v0.6.3, 23.09); integrated on `4cd32d6` (`main`, 24.09); merged as
 `4b5786b` (PR #9, 24.09).
 
 **Current-result addendum (26.09).** This audit preserves its 24.09 measurements. The current
-[`_ride_p3c` regression baseline](evidence/results/regression_baseline_2026-09-26_ride_p3c.json)
-records 125/126 rail-object hits after frame 75, 45 false events in the 13 km ride, 13 false
-events in five empty bags, and STOP for all 8 in-envelope organizers' objects (355/801 visible
-object-frames). The 5 cm hanging object gets a STOP from 30.1 m; the two edge objects produce 2
-and 6 STOP frames, and the top box gets STOP in 22/124 frames. The current headline table is
-[`EXPERIMENTS.md` “Current results”](EXPERIMENTS.md); the original numbers below remain the
-dated evidence for what this audit changed. The 25.09 report of zero alarms in the empty suffix
-of `cloud_with_fake_obj` is superseded: on integrated P3 code both the original bag and quantized
-cache give 1 false STOP frame / 1 event in 706 frames, frame 1131 at 140.72 m; see EXPERIMENTS §1g
-and [the measured evidence](evidence/results/seto_suffix_p3c_2026-09-26.json).
-The detector, ROS node and default detection parameters were not changed in this P4 pass.
-The six original organizer bags are now cached and verified at every frame. Their reference
-metrics reproduce the available rows of the P3c baseline. The 20-minute `new_data` ride and its
-set F range claims remain unavailable in this workspace because the estimated ride cache would
-breach the required 3 GiB free-space reserve by about 4.0 GB. Do not infer ride or set F results
-from the six-bag rerun.
+[`_ride_p3d` regression baseline](evidence/results/regression_baseline_2026-09-26_ride_p3d.json)
+records 125/126 rail-object hits after frame 75, the archived ride result of 45 false events in
+13 km, 13 false events in five empty bags, and STOP for all 8 in-envelope organizers' objects
+(384/801 visible object-frames). The inherited P3d STOP-keep rule raises the top box from
+22/124 to 51/124 STOP frames; it first stops at 101.3 m and is held from 111.4 m. The P3c figures
+and P4 reruns against P3c below remain historical. The P3d available-data results, candidate
+decisions and completion checklist are linked in the next section. The 25.09 report of zero alarms
+in the empty suffix of `cloud_with_fake_obj` is superseded: both original bag and quantized cache
+have one false STOP frame / event in frames 804–1509, frame 1131 at 140.72 m; this is inspected
+data, not unseen validation.
+
+P4 did not change detector code or shipped defaults. The latest work-branch P3d detector was
+merged only so that P4's evidence could be checked against the current baseline. All six original
+bags and set O are verified at every frame. The `new_data` ride and set F remain unavailable here:
+at the latest capacity check, the ride cache estimate plus the required 3 GiB reserve need at least
+5.3 GB more free space. Do not infer ride or set F results from the six-bag rerun.
 
 ## P4 follow-up for score improvement
+
+The P3d completion snapshot below is the current reference for this branch. The older P3c
+available-data run later in this document is retained as dated history.
+
+## P3d reference, bounded candidates, and completion (26.09)
+
+The strict P3d reference gate ran without `--allow`. All six original recordings and set O match
+the frozen P3d baseline with no worse gated rows; the gate exits 1 because 3 ride and 15 set F
+straight rows are missing. Set O scores 384/801 inside STOP frames, 6 outside-object false STOP
+frames, and 3 background alarm frames. Object #8 gets 51/124 STOP frames (first 101.3 m, held-from
+111.4 m); #4 gets 2/83 and #6 gets 6/125. Its `clear_distance` audit has 54 overclaims in 505
+target-envelope object-frames and 223 in 801 intent object-frames; 150 GO-judge overclaims include
+62 target-envelope frames. The raw bag differs from its quantized cache (387/7/1 versus 384/6/3
+inside/outside/background); the regression baseline remains cache-based. Full object, bin, missed
+interval, and clear-distance data are in the
+[`P3d available reference`](evidence/results/p4_p3d_available_reference_2026-09-26.json).
+
+The five empty recordings produce 58 alarm frames, 13 events, and 16 STOP episodes over 2,287
+frames and 229.776 s: 5.658 events and 6.963 episodes per 100 s. At 5 Hz they produce 38 / 10 / 10
+over 229.574 s (4.356 / 4.356 events and episodes per 100 s); +3° roll gives 55 / 14 / 16
+(6.093 / 6.963 per 100 s), and +3° pitch gives 44 / 17 / 18 (7.399 / 7.834 per 100 s). Five
+start offsets produce 13/16, 13/14, 13/12, 10/11, and 7/11 events/episodes at offsets 0, 10, 20,
+30, and 40. Rates use summed measured stamp spans. The startup census covers 7 available starts,
+with 3 STOP starts, 6 track events and 3 STOP episodes; no ride starts were available.
+
+The paired set S replay used the same 108 sample identities and trajectories as its P3c run and
+the opposite P3d placement. Bed placement detected 22/67 visible in-gauge objects and legacy
+placement 30/68; among 65 visible in both, eight were legacy-only and none bed-only. The extra
+legacy trolley at 77.7 m has no isolated cause. This small synthetic sample is not surveyed ground
+truth; see the [`P3d paired set S report`](evidence/results/p4_p3d_setS_paired_2026-09-26.json).
+
+P3d candidate A (`tracking.near_escalate_distance` 35→40 m) leaves #8 unchanged at 51/124 and was
+rejected at the set O screen. Candidate B (`tracking.near_escalate_voxels` 10→8) moves #4 from
+2/83 to 3/83 STOP frames and from 5.2 to 7.1 m held-from. All other set O object scores,
+outside/background false alarms, clear-distance overclaims, and six-original metrics stay equal.
+Its strict gate has six better set O rows and zero worse rows, but 3 ride and 15 set F rows remain
+missing, so B is **not accepted** and candidate-specific stress, offset, and paired-placement
+checks were not run. Candidate C (`cluster.wall_keep_gauge_voxels` 10→8) leaves #6 unchanged at
+6/125 and was rejected at the set O screen. No combined candidate or P4 detector change was
+shipped. The short-signature relaxation remains rejected for increasing outside-object false STOPs.
+Exact decisions and output hashes are in the
+[`P3d candidate report`](evidence/results/p4_p3d_candidate_decisions_2026-09-26.json).
+
+The current **67/100 provisional internal assessment** uses the repository's eight criterion
+maxima, not published organizer weights. The inherited P3d gain is attributed to upstream detector
+work, not P4; the independent 65/100 judgement remains on its original commit. See the
+[`P3d scorecard`](SCORECARD.md), [`completion checklist`](evidence/results/p4_completion_checklist_p3d_2026-09-26.json),
+[`independent review packet`](evidence/results/p4_review_packet_p3d_2026-09-26.json), and
+[`P3d validation record`](evidence/results/p4_validation_p3d_2026-09-26.json). The software checks
+pass (585 tests passed), but the ride-dependent rail-start test is deselected while the ride cache
+is absent; the strict gate therefore remains incomplete.
 
 The regression gate now protects set O's per-object held-from STOP distance, longest consecutive
 missed interval, and each object's visible-frame denominator and STOP count in every distance bin.
@@ -53,7 +104,7 @@ were changed. The last independent judgement remains **65/100** on its original 
 separate **66.5/100 provisional internal assessment** is recorded in the scorecard and is not an
 independent organizer score.
 
-## P4 available-data completion (26.09)
+## P4 available-data snapshot against P3c (26.09; historical)
 
 The intake manifest records source URLs, archive/raw/cache hashes, frame identities, timestamp
 coverage, and local paths. The six original bags contain 2,488/2,488 verified frames; set O has
@@ -117,7 +168,7 @@ but outside false STOP frames rose 6→9, including object #5 from 0→3. Decisi
 details are in the
 [`candidate record`](evidence/results/p4_candidate_decisions_2026-09-26.json).
 
-### Completion checklist
+### Historical P3c completion snapshot (26.09; superseded by P3d above)
 
 - **Completed:** six original caches and set O verified; cache-based reference gate, startup,
   stress, start-offset, per-object/set O, clear-distance, false-alarm, and paired set S evidence
@@ -128,8 +179,9 @@ details are in the
 - **Rejected or not accepted:** short signatures rejected for outside-object false STOPs; C rejected
   for no target improvement; A and B remain unaccepted because required data-dependent checks are
   unavailable. Shipped detector and historical baseline stay unchanged.
-- **Open external/resource dependency:** at least 4.1 GB of additional free storage is needed to
-  cache `new_data` while preserving the 3 GiB headroom. Ride and set F straight, 221 ride starts,
+- **Open external/resource dependency at this P3c snapshot:** the initial capacity check estimated
+  at least 4.1 GB of additional free storage to cache `new_data` while preserving the 3 GiB
+  headroom. The latest P3d check estimates at least 5.3 GB. Ride and set F straight, 221 ride starts,
   paired set F curve/edge, and candidate acceptance checks remain open. The ride has no real
   obstacles; synthetic positives cannot establish real long-range recall or material robustness.
 

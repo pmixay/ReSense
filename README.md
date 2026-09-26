@@ -2,8 +2,8 @@
 
 > **Purpose:** what ReSense does, how the jury runs it, what to look at, headline results.
 > **Audience:** jury, team · **Owner:** P1 · **Language:** EN, RU block «Кратко для жюри»
-> **Last verified:** 2026-09-26 against the frozen P4 detector/config at `dcf7f90` (package 1.0.0
-> in `pyproject.toml`: detector v0.6.3 with the rules of 25–26.09, node v0.6.4) · **Status:** current
+> **Last verified:** 2026-09-26 against inherited P3d detector commit `fa18832` and its frozen
+> defaults (package 1.0.0: detector v0.6.3 with the 10 s STOP-keep rule, node v0.6.4) · **Status:** current
 
 ЛЦТ 2026 · Кейс 05 · «Обнаружение посторонних объектов в тоннеле метро по данным 3D-лидара»
 (Московский транспорт / ГУП «Московский метрополитен»). Organizers' material:
@@ -134,14 +134,14 @@ recording** (another topic or frame id, stamps that jump back or forward by > `n
 control bags can be played one after another into one running node. The offline tool
 (`resense run --bag <dir>`) reads rosbag2 directly and writes the same per-frame JSON.
 
-## Status (26.09): package 1.0.0, detector v0.6.3 with integrated P3c rules, node v0.6.4
+## Status (26.09): package 1.0.0, detector v0.6.3 with integrated P3d rules, node v0.6.4
 
 The v0.6.4 node works through the burst of the first seconds of a played bag instead of losing
 them: the first `STOP` on `doubleT_obstacle` comes 1.3–1.6 s into the recording, was 3.2–4.5 s.
 History: [`CHANGELOG.md`](CHANGELOG.md). Key decisions on one page:
 [`docs/DECISIONS.md`](docs/DECISIONS.md). Criteria judgement of 24.09 (two independent judges,
 reconciled): **60 / 100** (last independently re-judged 26.09: **65 / 100**, before the P3c
-integration; no score has been issued for the integrated head); strongest 8.7 team
+and P3d integrations; no score has been issued for the integrated head); strongest 8.7 team
 approach (8.5 / 10) and 8.6 ease of launch (8 / 10), lowest 8.1 "does it work" (14.5 / 25) and
 8.2 range (7.5 / 15), mainly on the organizers' synthetic-obstacle recording:
 [`docs/SCORECARD.md`](docs/SCORECARD.md). Since then (the 1.0.0 entry of
@@ -154,22 +154,26 @@ stand, a CI step with a stock Fast DDS player, the long overhead rule for the st
 rule for the organizers' small objects tried and not shipped, EXPERIMENTS §1f), version 1.0.0
 with a release workflow that publishes the image archive on a tag push, and a captioned 2:50
 overview video. When all caches are present, `scripts/regression_gate.py` re-checks the real-data
-rows, set O, the ride and set F straight. The P4 run reproduced the six original recordings and
-set O but could not load the `new_data` ride, so ride and set F figures below remain the archived
-P3c baseline rather than a new P4 measurement. All current numbers:
+rows, set O, the ride and set F straight. The current P4 rerun reproduces the six original
+recordings and set O against P3d, but could not load the `new_data` ride, so ride and set F figures
+below remain the archived P3d baseline rather than a new P4 measurement. All current numbers:
 [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) "Current results" and §0.
 
-**P4 data and evaluation update (26.09).** The six original caches now contain all 2,488 expected
+**P4 data and evaluation update (26.09).** The six original caches contain all 2,488 expected
 frames, and the set O cache contains all 1,510. Their available regression metrics match the
-frozen P3c baseline. The strict full-gate command exited 1 because the 221-split ride cache is
-absent (3 ride and 15 set F metrics missing); no rows were allowed or waived. The ride cache would
-need about 4.1 GB more free disk while keeping 3 GiB in reserve. No detector change was accepted:
-the short-signature relaxation raised outside-object false STOPs; two other candidates improved
-only set O and remain unaccepted until full ride/set F checks run. The independent score remains
-65/100 on its original pre-P3c commit; the repository's separate provisional internal assessment
-is 66.5/100 and is detailed in [`docs/SCORECARD.md`](docs/SCORECARD.md). See the
+inherited P3d baseline: set O has 384/801 inside STOP frames and object #8 has 51/124 STOP frames,
+held from 111.4 m. The strict full-gate command exited 1 because the 221-split ride cache is
+absent (3 ride and 15 set F metrics missing); no rows were allowed or waived. At the latest capacity
+check, the cache estimate and 3 GiB reserve require at least 5.3 GB more free disk. No P4 detector
+change was accepted: candidate A did not improve its target, candidate C did not improve its
+target, and candidate B improved set O #4 from 2 to 3 STOP frames but remains unaccepted because
+the full gate is incomplete. The independent score remains 65/100 on its original pre-P3c/P3d
+commit; the current **67/100 provisional internal assessment** is detailed in
+[`docs/SCORECARD.md`](docs/SCORECARD.md). See the
 [`P4 data and evaluation audit`](docs/P4_AUDIT.md) for cache integrity, false alarms, stress
-results, candidate decisions and open dependencies.
+results, candidate decisions and open dependencies. The final software checks passed 585 tests;
+the ride-dependent rail-start test is deselected because the ride cache is absent, as recorded in
+the [`P3d validation record`](docs/evidence/results/p4_validation_p3d_2026-09-26.json).
 
 What the organizers' answers changed ([`docs/organizers/answers.md`](docs/organizers/answers.md)):
 
@@ -197,7 +201,7 @@ Headline results (kinds and placement modes: [`docs/README.md`](docs/README.md) 
 | crossing person, `doubleT_obstacle` | STOP in **58 of 61** frames inside the envelope, first alarm frame 11 (0.3 s after entering), distance error ≤ 0.23 m | real | 24.09 | EXPERIMENTS §0 |
 | object lying across the rail (0.45 × 0.6 × 0.3 m) | **125 of the 126** frames after the person leaves it (124 before `calibration.keep_within_deg`, 25.09 round 2) | real | 24.09, 25.09 | EXPERIMENTS §0, §1i |
 | health warnings, `CAUTION` | warnings on 196 of 13 759 frames (1.4 %: stations, switches); `CAUTION` on 27–68 % of the frames of the empty bags, 41 % of the ride | real | 24.09 | EXPERIMENTS §0 |
-| organizers' synthetic objects (set O, 1 510 frames) | STOP for **8 of 8** in-envelope objects since the near escalation of 26.09 (6 of 8 before, 5 of them held; 5 of 8 before the hanging stage of 25.09): 2 × 2 m box from 98 m, plank across the rails 82 m, 0.3 m cubes from 43–53 m (the hanging one from 52.5 m since round 2 of 25.09, 34.0 m before), the 5 cm hanging object from 30.1 m (missed before 25.09), the 2 × 2 m box at the envelope top in 51 of its 124 frames, a STOP on every frame from 101.3 m since the STOP keep of 26.09 (22, held from 23.9 m, with the near escalation alone; 12, none within 50 m, before), the edge 2 × 2 m box from 10.3 m (6 frames; missed before), the edge 0.3 m cube at 5.2 m (2 frames; advisory only before); STOP in 384 of 801 visible in-envelope object-frames (355 before the STOP keep, 337 before 26.09, 311 before round 2, 303 on 24.09); 6 false STOP frames on the outside 2 × 2 m box, 3 background alarm frames; since the rail-shadow rules (25.09) the 2 × 2 m box is reported at its own distance also 9–26 m ahead (was the bed at 3.0 m in 12 STOP frames) and the plank is held from 91 m (was 59 m) | organizers' synthetic | 24.09, 25.09, 26.09 | [P4_AUDIT](docs/P4_AUDIT.md), EXPERIMENTS §1h, §1i, §1l, §1o |
+| organizers' synthetic objects (set O, 1 510 frames) | STOP for **8 of 8** in-envelope objects since the near escalation of 26.09 (6 of 8 before, 5 of them held; 5 of 8 before the hanging stage of 25.09): 2 × 2 m box from 98 m, plank across the rails 82 m, 0.3 m cubes from 43–53 m (the hanging one from 52.5 m since round 2 of 25.09, 34.0 m before), the 5 cm hanging object from 30.1 m (missed before 25.09), the 2 × 2 m box at the envelope top in **51 of 124 frames**, STOP first at 101.3 m and held-from 111.4 m under inherited P3d STOP keep (22 frames, held-from 23.9 m on P3c), the edge 2 × 2 m box from 10.3 m (6 frames), and the edge 0.3 m cube at 5.2 m (2 frames); STOP in **384 of 801** visible in-envelope object-frames, 6 false STOP frames on the outside 2 × 2 m box, 3 background alarm frames; set O has been inspected before and is not unseen validation | organizers' synthetic | 24.09, 25.09, 26.09 | [P4_AUDIT](docs/P4_AUDIT.md), EXPERIMENTS §1h, §1i, §1l, §1o |
 | long range, straight track | person first confirmed at **148 m** median (6 of 6), held in ≥ 90 % of frames from 149 m and of every 10 m band from 115 m; trolley 144 m; 1 m crate 111 m; 3 cm hanging cable 95 m, held only from ~50 m (4 of 6); the regression gate's run of the same set on the current evaluation script (25.09): person 151 m, held from 143 m | synthetic, legacy | 24.09, 25.09 | EXPERIMENTS §2d |
 | long range with a given train speed | person 167 m, crate 182 m (held only from 79 m) | synthetic, legacy | 24.09 | EXPERIMENTS §2d |
 | train speed | none is given (no odometry in the recordings); our LiDAR-only estimate is accurate (median error 0.06–0.08 m/s on 55–96 % of the moving frames), but even a perfect speed does not improve the organizers' check (no earlier first STOP, 6 → 17 false STOP frames on the box outside), so it stays off | real, organizers' synthetic | 24.09 | EXPERIMENTS §9 |
@@ -210,8 +214,9 @@ Headline results (kinds and placement modes: [`docs/README.md`](docs/README.md) 
 Set F uses legacy placement, which can flatter curves and envelope edges: P4's paired rerun found
 0 matches beyond 100 m on seven curve / edge scenes in either mode, and on straight track a person
 anchored on the near rails first at 154 m (legacy 150 m, 5 approaches; not surveyed ground truth).
-Set S on 108 real empty frames: 22 / 67 bed placement, 29 / 68 legacy (small samples). Details:
-[`docs/P4_AUDIT.md`](docs/P4_AUDIT.md).
+Set S on 108 real empty frames: 22 / 67 bed placement, 30 / 68 legacy (small samples; the P3d
+replay uses the same sample identities as the P3c run). Details:
+[`p3d paired set S report`](docs/evidence/results/p4_p3d_setS_paired_2026-09-26.json).
 
 ![doubleT_obstacle frame 24 seen from the cab: the train envelope (green) swept along the track axis, the points inside it (yellow), the person on the track reported at 55.8 m (STOP) and a close-up of the person's points](docs/img/hero_person.png)
 *Real data, v0.6.2: `doubleT_obstacle` frame 24 from the cab (`scripts/hero_view.py`), the person

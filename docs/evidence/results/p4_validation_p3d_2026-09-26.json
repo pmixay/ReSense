@@ -1,0 +1,68 @@
+{
+ "schema": "resense-p4-validation-record-v1",
+ "date": "2026-09-26",
+ "branch": "claude/p4-data-completion-20260926",
+ "detector_commit": "fa18832f1636c48d0137842e2bd3b857bc70aef7",
+ "configuration": "configs/default.yaml",
+ "effective_configuration_sha256": "d2c8ab8d70954956d71c50cdc074962a3037e7ea2bc0e09568663ab34af53d6e",
+ "checks": [
+  {
+   "name": "full pytest",
+   "command": "RESENSE_REQUIRE_SYNTHETIC=1 /tmp/resense-p4-venv/bin/python -m pytest -q -rs",
+   "result": "PASS: 585 passed; 1 deselected; 5 warnings; 97.04 s",
+   "limitation": "tests/test_rail_start.py::test_finding_rail_heads_ahead_of_a_standing_fresh_start_do_not_stop was deselected because /data/cache/new_data is absent. The ride-dependent test could not execute."
+  },
+  {
+   "name": "pinned Ruff",
+   "command": "/tmp/resense-p4-venv/bin/ruff check . (ruff 0.15.8)",
+   "result": "PASS: All checks passed."
+  },
+  {
+   "name": "parameter synchronization",
+   "command": "scripts/sync_params.sh --check",
+   "result": "PASS: parameter files in sync."
+  },
+  {
+   "name": "browser-backed web tests",
+   "command": "PLAYWRIGHT_BROWSERS_PATH=/tmp/resense-p4-playwright /tmp/resense-p4-venv/bin/python -m pytest -q -rs web/demo",
+   "environment": "Playwright 1.63.0, Chromium v1243",
+   "result": "PASS: 13 passed, 0 skipped."
+  },
+  {
+   "name": "dashboard replay consistency",
+   "command": "PLAYWRIGHT_BROWSERS_PATH=/tmp/resense-p4-playwright /tmp/resense-p4-venv/bin/python web/demo/check_dashboard.py --jsonl /tmp/resense-p4-dashboard.jsonl --screenshot /tmp/resense-p4-dashboard.png",
+   "result": "PASS: 60 frames; expected alert banner and nearest distance shown in accepted range."
+  },
+  {
+   "name": "evidence JSON syntax",
+   "command": "Parse every docs/evidence/results/**/*.json with Python json.loads",
+   "result": "PASS: 130 JSON files parsed."
+  },
+  {
+   "name": "preserved artifact integrity",
+   "command": "Decompress every artifact .jsonl.gz and compare decompressed SHA-256 to its recorded source SHA-256; compare raw artifact hashes directly",
+   "result": "PASS: 70 P3c/P3d preserved artifact hashes verified."
+  },
+  {
+   "name": "edited-document local links",
+   "command": "Resolve local Markdown links in README.md, docs/EXPERIMENTS.md, docs/P4_AUDIT.md, docs/SCORECARD.md, docs/evidence/README.md",
+   "result": "PASS: all local links resolve."
+  },
+  {
+   "name": "diff whitespace",
+   "command": "git diff --check",
+   "result": "PASS."
+  },
+  {
+   "name": "P3d complete regression reference",
+   "command": "/tmp/resense-p4-venv/bin/python scripts/regression_gate.py --cache /data/cache --jobs 1 --chunks 8 --baseline docs/evidence/results/regression_baseline_2026-09-26_ride_p3d.json --work out/p4/p3d/reference/gate --out out/p4/p3d/reference/gate.json",
+   "result": "INCOMPLETE: exit 1, no --allow, 0 worse available gated rows; 3 ride and 15 set_F_straight rows missing."
+  },
+  {
+   "name": "candidate B complete gate",
+   "command": "/tmp/resense-p4-venv/bin/python scripts/regression_gate.py --cache /data/cache --config out/p4/p3d/candidates/B.yaml --jobs 1 --chunks 8 --baseline docs/evidence/results/regression_baseline_2026-09-26_ride_p3d.json --work out/p4/p3d/candidates/B/gate --out out/p4/p3d/candidates/B/gate.json",
+   "result": "INCOMPLETE: exit 1, no --allow, 0 worse available gated rows, 6 set O rows better; same 3 ride and 15 set_F_straight rows missing."
+  }
+ ],
+ "overall": "Available-data replay, paired experiment, bounded candidate screens, and software checks are reproducible. Full ride/set F gate acceptance and the single ride-dependent test remain incomplete because the existing storage capacity cannot hold the full ride cache while preserving 3 GiB headroom; current measured capacity needs at least 5.3 GB additional free space."
+}

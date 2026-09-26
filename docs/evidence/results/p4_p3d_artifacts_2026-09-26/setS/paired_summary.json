@@ -1,0 +1,213 @@
+{
+ "schema": "resense-p4-p3d-sets-paired-replay-v1",
+ "date": "2026-09-26",
+ "detector_commit": "fa18832f1636c48d0137842e2bd3b857bc70aef7",
+ "branch_commit_at_replay": "1cce77e",
+ "configuration": {
+  "path": "configs/default.yaml",
+  "file_sha256": "c7ca5ad4f332b7025f66ab0addeb21025daf23a36aca4dbcc2d49fe5b8831f40",
+  "effective_sha256": "d2c8ab8d70954956d71c50cdc074962a3037e7ea2bc0e09568663ab34af53d6e"
+ },
+ "backgrounds": [
+  "roundT_doubleT",
+  "roundT_pressureGate_roundT",
+  "roundT_squareT_pressureGate_squareT"
+ ],
+ "sampling": {
+  "every": 10,
+  "kinds": [
+   "person",
+   "box0.5",
+   "box1.0",
+   "plank",
+   "trolley"
+  ],
+  "distances_m": [
+   10,
+   250
+  ],
+  "negative_fraction": 0.2,
+  "seed": 1,
+  "per_frame": 1,
+  "rng_protocol": "separate_planning_and_per_frame_rendering_v1",
+  "repeats": 5
+ },
+ "commands": [
+  "/tmp/resense-p4-venv/bin/resense inject --npy /data/cache/roundT_doubleT --every 10 --out out/p4/p3d/setS/bed/roundT_doubleT --kinds person,box0.5,box1.0,plank,trolley --distances 10:250 --per-frame 1 --negative-fraction 0.2 --seed 1 --placement bed --config configs/default.yaml",
+  "/tmp/resense-p4-venv/bin/resense eval out/p4/p3d/setS/bed/roundT_doubleT --config configs/default.yaml --out out/p4/p3d/setS/bed/roundT_doubleT.jsonl --text",
+  "/tmp/resense-p4-venv/bin/resense inject --npy /data/cache/roundT_pressureGate_roundT --every 10 --out out/p4/p3d/setS/bed/roundT_pressureGate_roundT --kinds person,box0.5,box1.0,plank,trolley --distances 10:250 --per-frame 1 --negative-fraction 0.2 --seed 1 --placement bed --config configs/default.yaml",
+  "/tmp/resense-p4-venv/bin/resense eval out/p4/p3d/setS/bed/roundT_pressureGate_roundT --config configs/default.yaml --out out/p4/p3d/setS/bed/roundT_pressureGate_roundT.jsonl --text",
+  "/tmp/resense-p4-venv/bin/resense inject --npy /data/cache/roundT_squareT_pressureGate_squareT --every 10 --out out/p4/p3d/setS/bed/roundT_squareT_pressureGate_squareT --kinds person,box0.5,box1.0,plank,trolley --distances 10:250 --per-frame 1 --negative-fraction 0.2 --seed 1 --placement bed --config configs/default.yaml",
+  "/tmp/resense-p4-venv/bin/resense eval out/p4/p3d/setS/bed/roundT_squareT_pressureGate_squareT --config configs/default.yaml --out out/p4/p3d/setS/bed/roundT_squareT_pressureGate_squareT.jsonl --text",
+  "/tmp/resense-p4-venv/bin/resense inject --npy /data/cache/roundT_doubleT --every 10 --out out/p4/p3d/setS/legacy/roundT_doubleT --kinds person,box0.5,box1.0,plank,trolley --distances 10:250 --per-frame 1 --negative-fraction 0.2 --seed 1 --placement legacy --config configs/default.yaml",
+  "/tmp/resense-p4-venv/bin/resense eval out/p4/p3d/setS/legacy/roundT_doubleT --config configs/default.yaml --out out/p4/p3d/setS/legacy/roundT_doubleT.jsonl --text",
+  "/tmp/resense-p4-venv/bin/resense inject --npy /data/cache/roundT_pressureGate_roundT --every 10 --out out/p4/p3d/setS/legacy/roundT_pressureGate_roundT --kinds person,box0.5,box1.0,plank,trolley --distances 10:250 --per-frame 1 --negative-fraction 0.2 --seed 1 --placement legacy --config configs/default.yaml",
+  "/tmp/resense-p4-venv/bin/resense eval out/p4/p3d/setS/legacy/roundT_pressureGate_roundT --config configs/default.yaml --out out/p4/p3d/setS/legacy/roundT_pressureGate_roundT.jsonl --text",
+  "/tmp/resense-p4-venv/bin/resense inject --npy /data/cache/roundT_squareT_pressureGate_squareT --every 10 --out out/p4/p3d/setS/legacy/roundT_squareT_pressureGate_squareT --kinds person,box0.5,box1.0,plank,trolley --distances 10:250 --per-frame 1 --negative-fraction 0.2 --seed 1 --placement legacy --config configs/default.yaml",
+  "/tmp/resense-p4-venv/bin/resense eval out/p4/p3d/setS/legacy/roundT_squareT_pressureGate_squareT --config configs/default.yaml --out out/p4/p3d/setS/legacy/roundT_squareT_pressureGate_squareT.jsonl --text"
+ ],
+ "paired_geometry_check": {
+  "sampled_object_count": 108,
+  "common_frame_keys_identical": true,
+  "labels_kind_distance_lateral_yaw_size_reflectivity_in_gauge_identical": true,
+  "p3c_to_p3d_sample_identity_and_trajectory_identical": true,
+  "only_expected_gt_differences": {
+   "bed_base_z_vs_legacy_absent": 108,
+   "rendered_point_count": 62
+  },
+  "normalized_sample_trajectory_sha256": "c856ed222424da5cbfef239411b932cc7b8ab8ae39cb5b4ccc72357759b484ff",
+  "placement_height_is_intended_experimental_change": true
+ },
+ "results": {
+  "bed": {
+   "total_objects": 77,
+   "in_gauge_objects": 67,
+   "visible_in_gauge_objects": 67,
+   "visible_in_gauge_hits": 22,
+   "per_class": {
+    "box0.5": {
+     "hits": 0,
+     "visible": 13
+    },
+    "box1.0": {
+     "hits": 5,
+     "visible": 14
+    },
+    "person": {
+     "hits": 8,
+     "visible": 9
+    },
+    "plank": {
+     "hits": 0,
+     "visible": 13
+    },
+    "trolley": {
+     "hits": 9,
+     "visible": 18
+    }
+   },
+   "static_fp_events": 3,
+   "alarm_events_across_three_runs": 25,
+   "per_recording": {
+    "roundT_doubleT": {
+     "alarm_events": 7,
+     "static_fp_events": 2,
+     "frames": 26
+    },
+    "roundT_pressureGate_roundT": {
+     "alarm_events": 7,
+     "static_fp_events": 1,
+     "frames": 27
+    },
+    "roundT_squareT_pressureGate_squareT": {
+     "alarm_events": 11,
+     "static_fp_events": 0,
+     "frames": 55
+    }
+   }
+  },
+  "legacy": {
+   "total_objects": 76,
+   "in_gauge_objects": 68,
+   "visible_in_gauge_objects": 68,
+   "visible_in_gauge_hits": 30,
+   "per_class": {
+    "box0.5": {
+     "hits": 0,
+     "visible": 13
+    },
+    "box1.0": {
+     "hits": 5,
+     "visible": 14
+    },
+    "person": {
+     "hits": 8,
+     "visible": 9
+    },
+    "plank": {
+     "hits": 4,
+     "visible": 14
+    },
+    "trolley": {
+     "hits": 13,
+     "visible": 18
+    }
+   },
+   "static_fp_events": 3,
+   "alarm_events_across_three_runs": 33,
+   "per_recording": {
+    "roundT_doubleT": {
+     "alarm_events": 7,
+     "static_fp_events": 1,
+     "frames": 26
+    },
+    "roundT_pressureGate_roundT": {
+     "alarm_events": 11,
+     "static_fp_events": 1,
+     "frames": 27
+    },
+    "roundT_squareT_pressureGate_squareT": {
+     "alarm_events": 15,
+     "static_fp_events": 1,
+     "frames": 55
+    }
+   }
+  }
+ },
+ "paired_visible_objects": {
+  "count": 65,
+  "bed_hits": 22,
+  "legacy_hits": 30,
+  "bed_only_hits": 0,
+  "legacy_only_hits": 8
+ },
+ "runs": {
+  "bed": {
+   "roundT_doubleT": {
+    "frames": 26,
+    "ground_truth_sha256": "27b6ae6d00825041dbc8274eb4101b3467badb4a4451dbd130ba1c5923c28d3d",
+    "results_sha256": "b28c1e92306639a32d2cec63e037998dae72c013835f5f0afe21e63a7b7c9d11",
+    "visible_objects": 17,
+    "visible_in_gauge_hits": 5
+   },
+   "roundT_pressureGate_roundT": {
+    "frames": 27,
+    "ground_truth_sha256": "bab49db08f886e22c50c77142b5d5022987485d4d1187c85b30ed971bb44ff94",
+    "results_sha256": "af06f0d4a9bc75a9112ec95576414c2dfe8c5a0b4f45b56001411b8dc89018a4",
+    "visible_objects": 19,
+    "visible_in_gauge_hits": 6
+   },
+   "roundT_squareT_pressureGate_squareT": {
+    "frames": 55,
+    "ground_truth_sha256": "7c3bcfc7d9556047eb51c988cdd723dfcdb9dd093b29d9806b57d8315d71bc5a",
+    "results_sha256": "668fdffab033ce92b57cb64cfb462a40aa24b81a60401395f066dcff6e54c6ef",
+    "visible_objects": 31,
+    "visible_in_gauge_hits": 11
+   }
+  },
+  "legacy": {
+   "roundT_doubleT": {
+    "frames": 26,
+    "ground_truth_sha256": "3ccbe9a01771cff9fca5ffeeb94c3327886f8fd4ade660f8b00ab65e2f8734eb",
+    "results_sha256": "b7ba729fa3b123d02fd10dd37c17b9addee0ef0a47e73731c7deaae5c1fb6452",
+    "visible_objects": 17,
+    "visible_in_gauge_hits": 6
+   },
+   "roundT_pressureGate_roundT": {
+    "frames": 27,
+    "ground_truth_sha256": "4d38c18fae75b9a0d704f679b6d4a53c9e881a33fade752b7e774a4c5cd928bc",
+    "results_sha256": "a71e9552fa05a3d9d78362fd2109979a68124f490594c8c7721cb98849590248",
+    "visible_objects": 20,
+    "visible_in_gauge_hits": 10
+   },
+   "roundT_squareT_pressureGate_squareT": {
+    "frames": 55,
+    "ground_truth_sha256": "d1dbdfc34932997e2a163e6413871ee7858f83457788192e937f2316c23462a0",
+    "results_sha256": "1d062105e2c5c94cd4a47415176a6d86c86c1850147f79258ab906c307c6c5ab",
+    "visible_objects": 31,
+    "visible_in_gauge_hits": 14
+   }
+  }
+ },
+ "historical_note": "The P3d replay reproduces the P3c set S counts exactly: bed 22/67 and legacy 30/68, with eight legacy-only detections and no bed-only detections among 65 objects visible in both. The P3d STOP-keep change does not change this sampled placement result. Placement is not surveyed ground truth; the additional legacy-only trolley at 77.7 m has no isolated cause. Static repeated-frame alarm-event totals are experiment bookkeeping, not operational rates."
+}

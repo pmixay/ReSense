@@ -4,24 +4,25 @@
 > range, latency, FPS, hard cases and how the quality changed (spec §5 "Эксперименты").
 > **Audience:** jury, team · **Owner:** P3, P4 (content), P1 (structure, timing) · **Language:** EN,
 > summary RU
-> **Last verified:** 2026-09-26 against the integrated P3c baseline (`ed03bc2`),
-> detector v0.6.3 with the long overhead rule, `tracking.column_hold` and the rail-shadow rules;
-> the P4 available-data rerun reproduced the six original recordings and set O, but could not
-> load the ride or set F straight because `new_data` is not cached ·
+> **Last verified:** 2026-09-26 against inherited P3d detector commit `fa18832` and its frozen
+> baseline; P4 reproduced available six-recording and set O rows but could not load the ride or
+> set F straight because `new_data` is not cached ·
 > **Status:** current
 
-**Кратко.** Здесь все измерения ReSense с датой и видом данных. По интегрированной версии P3c
+**Кратко.** Здесь все измерения ReSense с датой и видом данных. По интегрированной версии P3d
 пять пустых записей дают 13 ложных событий; последний сохранённый результат поездки 20 минут —
 45 (3,5 на км), но в P4-перезапуске кеш поездки отсутствовал; человек на пути
 найден в 58 из 61 кадра с 11-го, предмет на рельсе — в 125 из 126 кадров после ухода человека,
 ошибка расстояния ≤ 0,23 м. На синтетических объектах организаторов (набор O) STOP получают все
 8 объектов в габарите, но два краевых объекта получают лишь 2 и 6 STOP-кадров, а верхний ящик —
-22 из 124; за 100 м есть только один STOP-кадр. Человек на 148–154 м подтверждён только на нашей
-синтетике. Независимая оценка 65/100 предшествует интеграции P3c и не переоценена. Собственная
+22 из 124 на P3c, а на P3d STOP удерживается на верхнем объекте 51 из 124 кадров; за 100 м есть
+только один STOP-кадр. Человек на 148–154 м подтверждён только на нашей синтетике. Независимая
+оценка 65/100 предшествует интеграции P3c/P3d и не переоценена; внутренняя предварительная оценка
+P3d — 67/100. Собственная
 оценка скорости поезда по лидару точна (ошибка 0,06–0,08 м/с), но даже точная скорость не
 улучшает проверку организаторов (§9), поэтому по умолчанию она выключена.
 
-## Current results (detector v0.6.3 with the long overhead rule, `tracking.column_hold`, the rail-shadow rules and the P3 round-2 items on since 25.09, the P3 items of 26.09 since 26.09, node v0.6.4)
+## Current results (detector v0.6.3 with inherited P3d STOP keep and its 10 s cap, plus the P3 items of 25–26.09; node v0.6.4)
 
 The shipped configuration, no train speed given unless said. Kinds: **real** = the organizers'
 recordings as recorded; **synthetic** = our objects ray-cast into real frames (set F: into the
@@ -53,14 +54,18 @@ review, `lowobj.rail_start_within`, `tracking.near_escalate_*` and `cluster.wall
 (six recordings and set O, no ride), are kept for history; the merged `8932f3a` passed against the latter with
 every gated metric the same ([its JSON](evidence/results/regression_gate_2026-09-25_8932f3a.json)).
 
-**P4 available-data rerun (26.09).** The strict command was run against the frozen P3c baseline
-with no `--allow`. It reproduced the available six original recordings and set O, but exited 1
+**P4 P3c snapshot (26.09; historical).** The earlier strict command against the frozen P3c
+baseline reproduced available rows but missed the ride and set F straight. It remains dated evidence
+in [`p4_available_reference_2026-09-26.json`](evidence/results/p4_available_reference_2026-09-26.json).
+
+**P4 P3d available-data rerun (26.09).** The current strict command ran against the frozen P3d
+baseline with no `--allow`. It reproduced all six original recordings and set O, but exited 1
 because three ride and fifteen set F straight metrics were missing. The 45-event, 3.5-per-km ride
-result in the table is the archived P3c baseline, not a new P4 measurement. The P4 replay also
-found that the raw set O bag and its 5 mm int16 cache are not score-identical; the committed gate
-remains cache-based. Commands and results are linked from
+result in the table is the archived P3d baseline, not a new P4 measurement. The raw set O bag and
+its 5 mm int16 cache are not score-identical; the committed gate remains cache-based. Commands and
+results are linked from
 [`P4_AUDIT.md`](P4_AUDIT.md) and
-[`p4_available_reference_2026-09-26.json`](evidence/results/p4_available_reference_2026-09-26.json).
+[`p4_p3d_available_reference_2026-09-26.json`](evidence/results/p4_p3d_available_reference_2026-09-26.json).
 
 | metric | value | kind, date | where |
 |---|---|---|---|
@@ -80,7 +85,7 @@ remains cache-based. Commands and results are linked from
 | long range with a given train speed | person 167 m, trolley 175 m, crate 182 m (held only from 79 m) | synthetic, set F round 3, legacy, 24.09 | §2d |
 | train speed (opt-in LiDAR-only estimate) | median error 0.06–0.08 m/s, p90 ≤ 0.20 m/s against an ICP reference on 55–96 % of the moving frames, +6.6–6.8 ms per frame; even the reference speed handed in as odometry buys nothing on the organizers' check: five bags 103 / 18 → 111 / 16 alarm frames / events, no organizers' object STOPs earlier, 6 → 17 false STOP frames on the 2 × 2 m box outside; only far-field frame recall rises | real, organizers' synthetic and synthetic, 24.09 | §9 |
 | curves, stations, small and low objects | R ≈ 350 m curves 6 of 7 from 58–86 m (the sightline); station stops 6 of 6 from 113 m; 30 cm objects on a rail head 6 of 6 from 42–49 m; a person lying across the rails 6 of 6 from 64 m; objects on the bed between the rails stay below the envelope (policy, confirmed by the organizers on 25.09: not an obstacle, [`organizers/answers.md`](organizers/answers.md) §8) | synthetic, set F round 3, legacy, 24.09 | §2d |
-| set S (108 paired real empty frames; integrated replay) | 22 of 67 visible in-gauge objects with bed placement, 30 of 68 with the old legacy height; 8 legacy-only and 0 bed-only among 65 visible in both (small samples; one extra legacy trolley match is unexplained) | synthetic, 26.09 | [`P4_AUDIT.md`](P4_AUDIT.md) |
+| set S (108 paired real empty frames; P3d replay) | 22 of 67 visible in-gauge objects with bed placement, 30 of 68 with the old legacy height; 8 legacy-only and 0 bed-only among 65 visible in both (same sampled identities as P3c; one extra legacy trolley match is unexplained) | synthetic, 26.09 | [`p4_p3d_setS_paired_2026-09-26.json`](evidence/results/p4_p3d_setS_paired_2026-09-26.json) |
 | sensor reach | no return beyond 210 m in any of the 13 759 frames: 300 m is beyond this sensor | real | §2d |
 | other mounts | upside down, `+x` forward, backwards found; tilt recovered to 0.0–0.5° | real, re-mounted, 22–23.09 | §6 |
 | offline timing per frame | 42–64 ms mean, p95 53–78 ms on every recording, one core, numpy path (v0.6.3), health monitor not included (7–14 ms more); on another idle VM on 24.09 36.5–52.2 ms mean, p95 50.3–67.1 ms; the optional C++ kernels (merged 24.09, after v0.6.3) cut the detector time by 38–57 % with identical output | timing: sandbox, 23.09 (kernels: 24.09, under load) | §3; [`ARCHITECTURE.md`](ARCHITECTURE.md) "Native kernels" |
@@ -137,7 +142,7 @@ by its own detection (127 before); 186 of the 246 labelled obstacle-frames of th
   [`P4_AUDIT.md`](P4_AUDIT.md)); synthetic objects are not a real long-range test.
 * ROS and Docker numbers are dated runs on the sandbox, not re-measured on every change.
 
-### P4 available-data completion (26.09)
+### P4 available-data snapshot against P3c (26.09; historical)
 
 The verified six original caches contain 2,488 frames, and the set O cache contains 1,510.
 The empty recordings produced 58 alarm frames, 13 events, and 16 STOP episodes over 2,287 frames
@@ -171,6 +176,37 @@ legacy-only and no bed-only hits among 65 visible in both. One added legacy trol
 77.7 m is unexplained and is not credited. Anchored placement remains an estimate rather than
 surveyed ground truth. The ride contains no real obstacles, so synthetic positives do not establish
 real long-range recall or material robustness.
+
+### P4 P3d reference and candidate rescreen (26.09)
+
+The P3d reference gate is incomplete only because ride and set F straight data are absent: 3 ride
+and 15 set F metrics are missing, with zero worse available gated rows. Set O has 384/801 inside
+STOP frames, 6 outside-object false STOP frames, 3 background alarm frames, and clear-distance
+overclaims of 54/505 target-envelope object-frames and 223/801 intent object-frames. Object #8 has
+51/124 STOP frames (first 101.3 m, held-from 111.4 m); #4 has 2/83 and #6 has 6/125. The P3d rule
+is inherited upstream detector work, not a P4 change.
+
+The six-recording as-recorded, 5 Hz, +3° roll and +3° pitch checks produced 13/16, 10/10, 14/16
+and 17/18 empty-bag events/STOP episodes. Measured-time rates were 5.658/6.963, 4.356/4.356,
+6.093/6.963 and 7.399/7.834 per 100 s. Start offsets 0, 10, 20, 30 and 40 produced 13/16,
+13/14, 13/12, 10/11 and 7/11 events/episodes, with timestamp denominators in the linked reference.
+The startup census covered seven available recording starts, not the unavailable 221 ride starts.
+
+P3d candidate A left #8 unchanged at 51/124; C left #6 unchanged at 6/125. Both were rejected at
+the set O screen. Candidate B raised #4 from 2/83 to 3/83 STOP frames and held-from 5.2→7.1 m; its
+six original recordings match baseline and the strict gate reports six better, no worse, but the
+same 18 missing ride/set F rows. B is not accepted, and preregistered candidate-specific robustness
+checks were not run. The pair of 108 set S samples remains 22/67 bed versus 30/68 legacy, with
+eight legacy-only and zero bed-only hits among 65 shared-visible objects.
+
+The current internal score is **67/100 provisional**, with the 0.5-point Works increase attributed
+to inherited P3d and no P4 detector credit. The independent 65/100 remains on its original commit.
+At the latest capacity check, at least 5.3 GB more free disk is needed while preserving the 3 GiB
+reserve before streaming `new_data`. The full gate result, cache/raw comparison, candidate decisions,
+paired set S evidence and completion checklist are linked from
+[`P4_AUDIT.md`](P4_AUDIT.md). Software checks passed with 585 tests; the ride-dependent test was
+deselected because `/data/cache/new_data` is absent. The command-level results are in the
+[`P3d validation record`](evidence/results/p4_validation_p3d_2026-09-26.json).
 
 ## Re-measurement on the current code (24.09)
 
