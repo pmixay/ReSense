@@ -534,7 +534,7 @@ class Detector:
                 center=t.centroid if t.misses else t.last.centroid,
                 size=t.last.size, n_points=t.last.n, confidence=t.confidence, age=t.age,
                 zone=t.zone, height_min=t.last.height_min, intensity=t.last.intensity,
-                reason=t.last.reason, kind=t.last.kind,
+                reason="near_envelope" if t.escalated else t.last.reason, kind=t.last.kind,
             ))
             d = dets[-1]
             if pending and d.kind == "low" and d.zone == "gauge" and d.distance > low.pending_advisory_within:

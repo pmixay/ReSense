@@ -267,17 +267,19 @@ def _low_cluster(b: _Blob, dy, h, intensity, frame_idx, cfg: ClusterConfig, low_
     )
 
 
-def _is_infrastructure(size: np.ndarray, lateral: float, h_max: float, cfg: ClusterConfig) -> bool:
+def _is_infrastructure(size: np.ndarray, lateral: float, h_max: float, cfg: ClusterConfig,
+                       spare_wall: bool = False) -> bool:
     """Shapes dropped outright: linear infrastructure along the track (rails, pipes, cables,
     duct edges), low narrow track hardware, wall-like structure at the side, a tall long narrow
     wall segment that a mis-estimated axis pulled into the corridor, and long linear structure
-    at the side (platform edge, duct, cabinet row)."""
+    at the side (platform edge, duct, cabinet row). ``spare_wall`` (26.09,
+    ``cluster.wall_keep_gauge_voxels``) skips the wall-at-the-side rule."""
     if size[0] > cfg.thin_min_length and size[1] < cfg.thin_max_width and size[2] < cfg.thin_max_height:
         return True
     # rail clamps, cables, joint bars — tune with injected data
     if h_max < cfg.hardware_max_top and size[1] < cfg.hardware_max_width and size[2] < cfg.hardware_max_height:
         return True
-    if size[2] > cfg.wall_min_height and abs(lateral) > cfg.wall_min_lateral:
+    if size[2] > cfg.wall_min_height and abs(lateral) > cfg.wall_min_lateral and not spare_wall:
         return True
     if size[2] > cfg.wall_min_height and size[0] > cfg.wall_segment_min_length and size[1] < cfg.wall_segment_max_width:
         return True
@@ -463,7 +465,13 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
         return None
     lateral = float(dy[b.idx].mean())
     h_max = float(h[b.idx].max())
-    if _is_infrastructure(size, lateral, h_max, cfg):
+    spare = False
+    if cfg.wall_keep_gauge_voxels > 0 and dist <= cfg.wall_keep_distance:
+        # 26.09 (P3 near escalation, candidate D): a tall cluster at the corridor side with this many
+        # voxels inside the strict envelope near the train is not dropped as a wall (set O #6, the
+        # 2 x 2 m box at the envelope edge: 10-31 such voxels at 14-8 m); the signatures still apply
+        spare = int(np.unique(inv[b.idx][in_gauge[b.idx]]).size) >= cfg.wall_keep_gauge_voxels
+    if _is_infrastructure(size, lateral, h_max, cfg, spare_wall=spare):
         return None
     n_gauge = int(np.unique(inv[b.idx][in_gauge[b.idx]]).size)
     zone = "gauge" if n_gauge >= gauge_min else "warning"

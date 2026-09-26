@@ -52,14 +52,38 @@ class Track:
     column_hold: int = 0            # this many column hits in column_hist keep the track advisory (0 = off)
     hold: int = 0                   # 26.09: frames left of a calibration re-seed hold window (Tracker.reseed)
     seen_reported: bool = False     # 26.09: reported in the frame of its last match (health.clear_cap_lost)
+    near_hist: List[bool] = field(default_factory=list)  # 26.09: last near_hits hits: near the envelope (Tracker._near)?
+    near_hits: int = 0              # 26.09: this many near hits in a row make the track an obstacle (0 = off)
+
+    @property
+    def near_escalated(self) -> bool:
+        """26.09 (``tracking.near_escalate_voxels``): the last ``near_hits`` hits of the track were
+        all near the envelope (``Tracker._near``)."""
+        k = self.near_hits
+        return k > 0 and len(self.near_hist) >= k and all(self.near_hist[-k:])
+
+    @property
+    def column_held(self) -> bool:
+        return self.column_hold > 0 and sum(self.column_hist) >= self.column_hold
+
+    @property
+    def vote_zone(self) -> str:
+        """'gauge' when at least ``zone_min_fraction`` of the last hits were inside the strict gauge."""
+        return "gauge" if sum(self.zone_hist) >= self.zone_min_fraction * len(self.zone_hist) - 1e-9 else "warning"
 
     @property
     def zone(self) -> str:
-        if not self.zone_hist:
+        if not self.zone_hist or self.column_held:
             return "warning"
-        if self.column_hold > 0 and sum(self.column_hist) >= self.column_hold:
-            return "warning"
-        return "gauge" if sum(self.zone_hist) >= self.zone_min_fraction * len(self.zone_hist) - 1e-9 else "warning"
+        if self.near_escalated:
+            return "gauge"
+        return self.vote_zone
+
+    @property
+    def escalated(self) -> bool:
+        """An obstacle only by the near escalation (its vote says advisory)."""
+        return (self.near_escalated and bool(self.zone_hist) and not self.column_held
+                and self.vote_zone != "gauge")
 
     @property
     def hit_fraction(self) -> float:
@@ -102,6 +126,16 @@ class Tracker:
             if t.reported and t.zone == "gauge":
                 t.hold = max(t.hold, int(hold) - t.misses)
 
+    def _near(self, cl: Cluster) -> bool:
+        """26.09 (``tracking.near_escalate_voxels`` > 0): a corridor cluster with at least that many
+        voxels inside the strict envelope (``Cluster.n_gauge``, edge margin applied) and within
+        ``near_escalate_distance``, whatever its zone or demotion reason except a column (a column
+        row seen through a wrong axis at a crossover has 50-150 such voxels at 20-40 m on the ride;
+        the column hold keeps precedence too)."""
+        c = self.cfg
+        return (c.near_escalate_voxels > 0 and cl.kind == "" and cl.n_gauge >= c.near_escalate_voxels
+                and cl.distance <= c.near_escalate_distance and cl.reason != "column")
+
     def _gate(self, distance: float) -> float:
         c = self.cfg
         return c.gate_base + c.gate_per_m * max(distance, 0.0)
@@ -126,6 +160,7 @@ class Tracker:
         matched_t = np.zeros(n_t, dtype=bool)
         matched_c = np.zeros(n_c, dtype=bool)
         zw, hw = max(1, int(c.zone_window)), max(1, int(c.hit_window))
+        nk = max(1, int(c.near_escalate_hits)) if c.near_escalate_voxels > 0 else 0
         if n_t and n_c:
             # greedy nearest-neighbour association on predicted positions
             static = np.array([-float(ego_shift), 0.0, 0.0])
@@ -153,6 +188,8 @@ class Tracker:
                 t.zone_hist = (t.zone_hist + [cl.zone == "gauge"])[-zw:]
                 t.column_hist = (t.column_hist + [cl.reason == "column"])[-zw:]
                 t.hit_hist = (t.hit_hist + [True])[-hw:]
+                if nk:
+                    t.near_hist = (t.near_hist + [self._near(cl)])[-nk:]
                 t.history.append(cl.distance)
                 matched_t[i] = matched_c[j] = True
                 d[i, :] = np.inf
@@ -178,6 +215,7 @@ class Tracker:
                     gauge_hits=int(cl.zone == "gauge"), zone_hist=[cl.zone == "gauge"], hit_hist=[True],
                     span_s=dt, zone_min_fraction=c.zone_min_fraction,
                     column_hist=[cl.reason == "column"], column_hold=int(c.column_hold),
+                    near_hist=[self._near(cl)] if nk else [], near_hits=nk,
                 ))
                 self._next_id += 1
         # reported: confirmed now, or reported in the previous frame and missed for at most
