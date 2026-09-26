@@ -237,14 +237,16 @@ def test_dashboard_freshness_and_live_stream_stall():
         page.evaluate("checkLiveStream(state.lastStatusArrival + 101)")
         assert page.inner_text("#decision") == "ОШИБКА"
         # A buffered message must not receive a new freshness window on arrival.
-        page.evaluate("f => { f.freshness.evaluated_at_utc_s = Date.now()/1000 - 2; onStatus({data: JSON.stringify(f)}); }", base)
+        # Read the rejection reason in the same browser task as delivery: the live expiry
+        # timer may subsequently replace it with status_stream_stale, still correctly FAULT.
+        reason = page.evaluate("f => { f.freshness.evaluated_at_utc_s = Date.now()/1000 - 2; onStatus({data: JSON.stringify(f)}); return state.last.freshness.reason; }", base)
         assert page.inner_text("#decision") == "ОШИБКА"
-        assert page.evaluate("state.last.freshness.reason") == "status_transport_stale"
-        page.evaluate("f => { f.freshness.evaluated_at_utc_s = Date.now()/1000 + 2; onStatus({data: JSON.stringify(f)}); }", base)
+        assert reason == "status_transport_stale"
+        reason = page.evaluate("f => { f.freshness.evaluated_at_utc_s = Date.now()/1000 + 2; onStatus({data: JSON.stringify(f)}); return state.last.freshness.reason; }", base)
         assert page.inner_text("#decision") == "ОШИБКА"
-        assert page.evaluate("state.last.freshness.reason") == "status_clock_skew"
-        page.evaluate("f => onStatus({data: JSON.stringify(f)})", base)
-        assert page.evaluate("state.last.freshness.reason") == "status_clock_unknown"
+        assert reason == "status_clock_skew"
+        reason = page.evaluate("f => { onStatus({data: JSON.stringify(f)}); return state.last.freshness.reason; }", base)
+        assert reason == "status_clock_unknown"
         page.evaluate("f => { f.freshness.evaluated_at_utc_s = Date.now()/1000 - 2; onStatus({data: JSON.stringify(f)}); }", stop)
         assert "СТОП СОХРАНЁН" in check_dashboard.banner_text(page)
         assert page.evaluate("state.last.stop_source_stamp") == 1.0
