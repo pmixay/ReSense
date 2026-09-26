@@ -1,0 +1,21 @@
+........................................................................ [ 10%]
+.................................................................. [ 20%]
+........................................................................ [ 31%]
+........................................................................ [ 42%]
+........................................................................ [ 52%]
+........................................................................ [ 63%]
+........................................................................ [ 74%]
+........................................................................ [ 85%]
+........................................................................ [ 96%]
+..........................                                               [100%]
+=============================== warnings summary ===============================
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[new_data-expected0]
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[new_data-expected0]
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[new_data-expected0]
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[new_data_127.db3-expected1]
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[doubleT_obstacle-expected2]
+  /usr/lib/python3.12/tarfile.py:2301: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+668 passed, 5 warnings, 6 subtests passed in 81.84s (0:01:21)
