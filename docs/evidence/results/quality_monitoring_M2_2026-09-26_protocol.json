@@ -1,0 +1,28 @@
+{
+  "schema": "resense-monitoring-candidate-v1",
+  "candidate": "M2: explicit uncertainty from supported thin corridor clusters",
+  "baseline_commit": "2d25c13",
+  "registered_before_implementation": true,
+  "hypothesis": "The detector retains some flat corridor clusters solely to continue an existing STOP. These clusters already have strict envelope support but currently provide no monitoring cap. Marking this specific surviving evidence uncertain may reduce top-box and plank range overclaims without the coverage loss of every raw return in rejected M1.",
+  "prior_failure": "M1 removed all46 GO diagnostic overclaims but failed every empty-recording uncertainty/range budget. M2 tests a different evidence stage with existing spatial support; it is not a retuned raw-point threshold. The diagnosis suggests only partial coverage of overclaim causes; sparse cubes and confidence-margin losses remain unresolved.",
+  "implementation": [
+    "Observer of the unchanged default detector only; no production change during measurement.",
+    "Capture original _cluster arguments valid and floor_valid; trust range is their minimum. Only single-frame accumulation (n_acc=1) is eligible.",
+    "After unchanged process, inspect only this frame's existing _thin clusters. Require thin=true, kind empty, zone=gauge, reason empty, n_gauge>=existing cluster.gauge_min_points, finite nonnegative distance<=trust range. No new clusters or lower point thresholds.",
+    "Cap the raw detector estimate at the nearest eligible cluster's existing distance. If the cap shortens the original estimate by more than0.5m, expose unresolved_thin_cluster monitoring status and health warning/CAUTION. STOP and core FAULT retain priority.",
+    "Never send additional objects to the tracker, start/extend a STOP, change reported detections, exempt columns, or use labels in behavior. Compare every unchanged upstream output to the sealed captures, excluding informational timing."
+  ],
+  "acceptance": {
+    "partial_benefit": "Diagnostic target GO overclaim count must fall below46, target total below54; no new overclaim frames. This is a bounded partial improvement and does not satisfy the central zero-overclaim objective.",
+    "max_newly_uncertain_percentage_points_each_empty_recording_and_ride": 5.0,
+    "min_clear_median_fraction_each_empty_recording_and_ride": 0.95,
+    "detection": "Every frame's upstream detections and tracking output remain equal. Any eventual integration still requires full183-row gate, all72 cases, raw/cache and runtime checks, and independent review.",
+    "sequence": "Evaluate setO and all five empty recordings first; if partial benefit or any empty cost fails, reject and retain those results. Otherwise evaluate original positive and all eight ride pieces with unchanged reset boundaries, then review for possible partial integration. No threshold sweep."
+  },
+  "limits": [
+    "SetO envelope labels use a previous detector rail fit, not surveyed truth.",
+    "No fresh real positive recording is available.",
+    "Passing M2 alone cannot close monitoring validity or justify final detector freeze."
+  ],
+  "release": "on hold"
+}
