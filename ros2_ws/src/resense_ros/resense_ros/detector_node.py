@@ -89,12 +89,13 @@ Backlog (v0.6.4): ``ros2 bag play`` (Humble) reads up to 1000 messages before it
 while its clock runs, then sends the overdue first seconds of the recording back to back. The
 input queue holds ``input_queue_depth`` frames and every frame waiting is taken; one frame waiting
 is processed at once. Short backlogs spanning at most ``catchup_step`` are processed in full;
-longer backlogs are worked through ``catchup_step`` s of recording apart (the ones
-in between skipped, none older than ``catchup_max_lag`` s behind the newest) until the node is
-back on the newest frame. At the start of each recording ``catchup_startup_max_lag`` allows up
-to 20 s of backlog: a cold disk can make the player send the entire recording overdue. This
-allowance closes when that first catch-up drains, or after 1 s without a catch-up starting;
-later stalls retain the normal 5 s limit. ``catchup_step: 0`` processes the newest only.
+longer live backlogs are worked through ``catchup_step`` s of recording apart (the ones in between
+skipped, none older than ``catchup_max_lag`` s behind the newest). On the first backlog of a new
+recording, the node instead preserves every observed input-period frame within the startup lag
+allowance: cold-disk bag playback can deliver the whole recording overdue, and thinning it to
+``catchup_step`` can leave it behind until playback ends. The startup allowance closes when that
+first catch-up drains, or after 1 s without a catch-up starting; later stalls retain the normal
+5 s limit. ``catchup_step: 0`` keeps the newest-only behavior.
 
 The static TF exists so that one RViz / Foxglove layout works for every bag: the organizers'
 bags carry different ``frame_id`` values (``hesai_lidar``, ``lidar_livox``); the layouts use
@@ -683,7 +684,16 @@ class DetectorNode(Node):
         max_lag = self.catchup_max_lag
         if (last is None or self.startup_catchup_active) and 0 < max_lag < self.catchup_startup_max_lag:
             max_lag = self.catchup_startup_max_lag
-        plan = self.catchup_plan(stamps, last, self.catchup_step, max_lag)
+        step = self.catchup_step
+        if step > 0 and (last is None or self.startup_catchup_active):
+            # Do not thin the first cold-disk burst: it may be the whole recording sent overdue,
+            # so 0.3 s sampling can keep the node behind until playback has already ended. Use
+            # the smallest observed gap as well as the running estimate: the latter may still
+            # describe a previous recording with a different sensor rate.
+            observed = min((b - a for a, b in zip(stamps, stamps[1:]) if b > a),
+                           default=self.input_period)
+            step = min(step, self.input_period, observed)
+        plan = self.catchup_plan(stamps, last, step, max_lag)
         if len(plan) < n:
             run, self.pending = self.pending[:n], self.pending[n:]
             self.pending[:0] = [run[i] for i in plan]

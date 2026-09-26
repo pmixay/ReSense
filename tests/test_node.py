@@ -537,12 +537,10 @@ def test_input_queue_depth(node_cls):
     assert node_cls().subs["/lidar_points"].qos["depth"] == 3
 
 
-def test_backlog_is_worked_through_catchup_step_apart(node_cls):
-    """`ros2 bag play` (Humble) preloads the bag, then sends the overdue first seconds back to back
-    (doubleT_obstacle: 41 clouds in 0.4 s, EXPERIMENTS.md section 3b). The node takes every waiting
-    frame and processes one every catchup_step s of recording from the first frame on, instead of
-    the newest only (the first 2-4 s of every played bag were lost); a frame that waits alone is
-    processed at once, and catchup_step 0 restores the newest-only behaviour."""
+def test_first_backlog_preserves_input_period_and_zero_step_keeps_latest(node_cls):
+    """The first cold-disk burst may contain the whole overdue recording, so preserve every frame
+    at the observed input period. Later live bursts still use the configured catch-up step; the
+    pure planner checks below keep that behavior explicit. ``catchup_step: 0`` remains newest-only."""
     plan = node_cls.catchup_plan
     assert plan([5.0], 4.9, 0.3, 5.0) == [0]
     t = [0.1 * k for k in range(41)]
@@ -556,11 +554,13 @@ def test_backlog_is_worked_through_catchup_step_apart(node_cls):
     def stamp_msg(s):
         return _Msg(header=_Msg(frame_id="lidar_livox", stamp=_Msg(sec=int(s), nanosec=int(round((s % 1) * 1e9)))))
 
-    for step, expect in ((0.3, chain), (0.0, [4.0])):
+    startup_frames = [round(0.1 * k, 1) for k in range(201)]
+    for step, expect in ((0.3, startup_frames), (0.0, [20.0])):
         _Node.overrides = {"catchup_step": step}
         node = node_cls()
+        node.input_period = 0.3  # a previous input ran slower than this recording's 10 Hz stream
         topic = "/sensing/lidar/hesai128/pointcloud"
-        queue = [stamp_msg(0.1 * k) for k in range(1, 41)]       # waiting behind the first frame
+        queue = [stamp_msg(0.1 * k) for k in range(1, 201)]      # the full 20 s bag burst is waiting
         sub = node.subs[topic]
         sub.msg_type, sub.raw = None, False
 
@@ -579,6 +579,10 @@ def test_backlog_is_worked_through_catchup_step_apart(node_cls):
         seen = []
 
         def process(msg, t, node=node):
+            if node.active_topic is None:
+                node.active_frame_id = msg.header.frame_id
+                node.startup_catchup_active = True
+                node.startup_catchup_until = time.perf_counter() + 1.0
             node.active_topic = t
             seen.append(round(node._stamp(msg), 1))
         node.process_cloud = process
@@ -586,16 +590,13 @@ def test_backlog_is_worked_through_catchup_step_apart(node_cls):
         while node.pending:
             node.on_pending()
         assert seen == expect
-        assert max(held) <= len(expect) + 1                     # the frames to be skipped are not held
+        assert max(held) <= len(expect) + 1                     # bounded by the retained startup chain
         assert not node.pending and node.pending_gc.triggered == len(expect) - 1
 
 
 def test_catchup_skips_are_reported_apart_from_frames_never_received(node_cls, monkeypatch):
-    """25.09, the dry run on the team VM: the start-up catch-up's own skips were counted as dropped
-    frames and failed the acceptance check. ``node.catchup_skipped`` is the part of
-    ``dropped_frames`` the node received and skipped on purpose; ``node.catchup`` marks the frames
-    processed while behind and is false from the frame that is back on the newest one (where
-    scripts/check_dry_run.py starts counting). Which frames are processed does not change."""
+    """The start-up burst preserves every available input frame; a later live gap still counts
+    missing recording messages separately from frames deliberately thinned by catch-up."""
     node = node_cls()
     topic = "/sensing/lidar/hesai128/pointcloud"
     xyz = np.random.default_rng(0).uniform(5.0, 30.0, (64, 3)).astype(np.float32)
@@ -627,14 +628,14 @@ def test_catchup_skips_are_reported_apart_from_frames_never_received(node_cls, m
         node.on_pending()
     for s in (4.1, 4.2, 4.5, 4.6):                               # 4.3 and 4.4 never arrive
         node.on_cloud(cloud(s), topic)
-    chain = [round(0.3 * k, 1) for k in range(14)] + [4.0]
-    assert [s for s, _ in seen] == chain + [4.1, 4.2, 4.5, 4.6]
-    assert [st["catchup"] for _, st in seen] == [True] * 14 + [False] * 5
+    startup = [round(0.1 * k, 1) for k in range(41)]
+    assert [s for s, _ in seen] == startup + [4.1, 4.2, 4.5, 4.6]
+    assert [st["catchup"] for _, st in seen] == [True] * 40 + [False] * 5
+    assert seen[40][1]["dropped_frames"] == seen[40][1]["catchup_skipped"] == 0
     last = seen[-1][1]
-    assert last["dropped_frames"] == 26 + 2 and last["catchup_skipped"] == 26
-    assert seen[14][1]["dropped_frames"] == seen[14][1]["catchup_skipped"] == 26
+    assert last["dropped_frames"] == 2 and last["catchup_skipped"] == 0
     assert not node.skipped                                     # every skipped frame accounted
-    assert any("caught up" in s and "26 skipped" in s for _, s in node.get_logger().lines)
+    assert any("caught up" in s and "0 skipped" in s for _, s in node.get_logger().lines)
 
 
 def test_short_live_backlog_keeps_every_frame_and_still_obeys_lag_limit(node_cls, monkeypatch):
@@ -699,8 +700,8 @@ def test_cold_recording_burst_keeps_a_continuous_startup_chain(node_cls, monkeyp
     """Replay the failure's arrival pattern: each callback gets another 1.5 s of recording.
 
     The old 5 s cutoff repeatedly jumps over a second of scene history. The startup allowance
-    preserves a 0.3 s chain even after its one-second entry window has elapsed, and closes when
-    caught up. A later live backlog still uses the 5 s bound and resets over its real gap.
+    preserves every 0.1 s input-period frame even after its one-second entry window has elapsed,
+    and closes when caught up. A later live backlog still uses the 0.3 s step and 5 s bound.
     """
     _Node.overrides = {"catchup_startup_max_lag": startup_lag}
     node = node_cls()
@@ -719,8 +720,9 @@ def test_cold_recording_burst_keeps_a_continuous_startup_chain(node_cls, monkeyp
     assert next_frame == 201 and seen[-1] == 20.0
     assert bool(resets) is expect_resets
     if not expect_resets:
-        assert max(np.diff(seen)) <= 0.300001
-        assert seen[0] == 0.0 and len(seen) >= 67
+        assert max(np.diff(seen)) <= 0.100001
+        assert seen[0] == 0.0 and len(seen) == 201
+        assert node.dropped == node.dropped_skipped == 0 and not node.skipped
     assert not node.startup_catchup_active and node.catchup is None
     # An independent stall in this recording must not inherit the startup allowance.
     queue.extend(cloud(k / 10) for k in range(202, 351))
@@ -736,10 +738,25 @@ def test_startup_burst_can_follow_an_isolated_first_cloud(node_cls, monkeypatch)
     now[0] += 0.1
     queue.extend(cloud(k / 10) for k in range(2, 151))
     node.on_cloud(cloud(0.1), "/lidar_points")
-    assert seen[:2] == pytest.approx([0.0, 0.3])  # preserve the beginning, not just the final five seconds
     while node.pending:
         node.on_pending()
+    assert seen[:3] == pytest.approx([0.0, 0.1, 0.2])  # preserve input-period frames at the start
     assert seen[-1] == 15.0 and not node.startup_catchup_active
+
+
+def test_live_catchup_returns_to_configured_step_after_startup(node_cls, monkeypatch):
+    node = node_cls()
+    now = [100.0]
+    queue, seen, cloud = _catchup_stream(node, monkeypatch, now)
+    node.on_cloud(cloud(0.0), "/lidar_points")
+    now[0] += 2.0  # the isolated first cloud's one-second startup entry window expired
+    queue.extend(cloud(k / 10) for k in range(2, 22))
+    node.on_cloud(cloud(0.1), "/lidar_points")
+    while node.pending:
+        node.on_pending()
+    assert seen[0] == 0.0 and seen[1:3] == pytest.approx([0.3, 0.6])
+    assert seen[-1] == 2.1 and max(np.diff(seen[1:])) <= 0.300001
+    assert node.dropped_skipped > 0 and not node.startup_catchup_active
 
 
 def test_live_input_without_startup_backlog_expires_the_extra_allowance(node_cls, monkeypatch):
