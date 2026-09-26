@@ -1,0 +1,327 @@
+{
+ "starts": [
+  0,
+  10,
+  20,
+  30,
+  40
+ ],
+ "config": "configs/default.yaml",
+ "runs": [
+  {
+   "bag": "doubleT_platform",
+   "start": 0,
+   "frames": 345,
+   "alarm_frames": 4,
+   "events": 4,
+   "episodes": 1,
+   "hits": null
+  },
+  {
+   "bag": "doubleT_platform",
+   "start": 10,
+   "frames": 335,
+   "alarm_frames": 6,
+   "events": 2,
+   "episodes": 2,
+   "hits": null
+  },
+  {
+   "bag": "doubleT_platform",
+   "start": 20,
+   "frames": 325,
+   "alarm_frames": 12,
+   "events": 3,
+   "episodes": 1,
+   "hits": null
+  },
+  {
+   "bag": "doubleT_platform",
+   "start": 30,
+   "frames": 315,
+   "alarm_frames": 4,
+   "events": 1,
+   "episodes": 1,
+   "hits": null
+  },
+  {
+   "bag": "doubleT_platform",
+   "start": 40,
+   "frames": 305,
+   "alarm_frames": 0,
+   "events": 0,
+   "episodes": 0,
+   "hits": null
+  },
+  {
+   "bag": "roundT_doubleT",
+   "start": 0,
+   "frames": 252,
+   "alarm_frames": 0,
+   "events": 0,
+   "episodes": 0,
+   "hits": null
+  },
+  {
+   "bag": "roundT_doubleT",
+   "start": 10,
+   "frames": 242,
+   "alarm_frames": 2,
+   "events": 1,
+   "episodes": 1,
+   "hits": null
+  },
+  {
+   "bag": "roundT_doubleT",
+   "start": 20,
+   "frames": 232,
+   "alarm_frames": 2,
+   "events": 1,
+   "episodes": 1,
+   "hits": null
+  },
+  {
+   "bag": "roundT_doubleT",
+   "start": 30,
+   "frames": 222,
+   "alarm_frames": 0,
+   "events": 0,
+   "episodes": 0,
+   "hits": null
+  },
+  {
+   "bag": "roundT_doubleT",
+   "start": 40,
+   "frames": 212,
+   "alarm_frames": 0,
+   "events": 0,
+   "episodes": 0,
+   "hits": null
+  },
+  {
+   "bag": "roundT_pressureGate_roundT",
+   "start": 0,
+   "frames": 268,
+   "alarm_frames": 0,
+   "events": 0,
+   "episodes": 0,
+   "hits": null
+  },
+  {
+   "bag": "roundT_pressureGate_roundT",
+   "start": 10,
+   "frames": 258,
+   "alarm_frames": 0,
+   "events": 0,
+   "episodes": 0,
+   "hits": null
+  },
+  {
+   "bag": "roundT_pressureGate_roundT",
+   "start": 20,
+   "frames": 248,
+   "alarm_frames": 0,
+   "events": 0,
+   "episodes": 0,
+   "hits": null
+  },
+  {
+   "bag": "roundT_pressureGate_roundT",
+   "start": 30,
+   "frames": 238,
+   "alarm_frames": 0,
+   "events": 0,
+   "episodes": 0,
+   "hits": null
+  },
+  {
+   "bag": "roundT_pressureGate_roundT",
+   "start": 40,
+   "frames": 228,
+   "alarm_frames": 0,
+   "events": 0,
+   "episodes": 0,
+   "hits": null
+  },
+  {
+   "bag": "roundT_squareT_pressureGate_squareT",
+   "start": 0,
+   "frames": 545,
+   "alarm_frames": 0,
+   "events": 0,
+   "episodes": 0,
+   "hits": null
+  },
+  {
+   "bag": "roundT_squareT_pressureGate_squareT",
+   "start": 10,
+   "frames": 535,
+   "alarm_frames": 0,
+   "events": 0,
+   "episodes": 0,
+   "hits": null
+  },
+  {
+   "bag": "roundT_squareT_pressureGate_squareT",
+   "start": 20,
+   "frames": 525,
+   "alarm_frames": 0,
+   "events": 0,
+   "episodes": 0,
+   "hits": null
+  },
+  {
+   "bag": "roundT_squareT_pressureGate_squareT",
+   "start": 30,
+   "frames": 515,
+   "alarm_frames": 0,
+   "events": 0,
+   "episodes": 0,
+   "hits": null
+  },
+  {
+   "bag": "roundT_squareT_pressureGate_squareT",
+   "start": 40,
+   "frames": 505,
+   "alarm_frames": 0,
+   "events": 0,
+   "episodes": 0,
+   "hits": null
+  },
+  {
+   "bag": "squareT_platform_squareT_switch",
+   "start": 0,
+   "frames": 877,
+   "alarm_frames": 54,
+   "events": 9,
+   "episodes": 15,
+   "hits": null
+  },
+  {
+   "bag": "squareT_platform_squareT_switch",
+   "start": 10,
+   "frames": 867,
+   "alarm_frames": 38,
+   "events": 10,
+   "episodes": 11,
+   "hits": null
+  },
+  {
+   "bag": "squareT_platform_squareT_switch",
+   "start": 20,
+   "frames": 857,
+   "alarm_frames": 51,
+   "events": 9,
+   "episodes": 10,
+   "hits": null
+  },
+  {
+   "bag": "squareT_platform_squareT_switch",
+   "start": 30,
+   "frames": 847,
+   "alarm_frames": 47,
+   "events": 9,
+   "episodes": 10,
+   "hits": null
+  },
+  {
+   "bag": "squareT_platform_squareT_switch",
+   "start": 40,
+   "frames": 837,
+   "alarm_frames": 44,
+   "events": 7,
+   "episodes": 11,
+   "hits": null
+  },
+  {
+   "bag": "doubleT_obstacle",
+   "start": 0,
+   "frames": 201,
+   "alarm_frames": 189,
+   "events": 2,
+   "episodes": 2,
+   "hits": {
+    "person_crossing": [
+     58,
+     61
+    ],
+    "object_on_rail": [
+     128,
+     185
+    ]
+   }
+  },
+  {
+   "bag": "doubleT_obstacle",
+   "start": 10,
+   "frames": 191,
+   "alarm_frames": 182,
+   "events": 2,
+   "episodes": 1,
+   "hits": {
+    "person_crossing": [
+     50,
+     59
+    ],
+    "object_on_rail": [
+     129,
+     176
+    ]
+   }
+  },
+  {
+   "bag": "doubleT_obstacle",
+   "start": 20,
+   "frames": 181,
+   "alarm_frames": 172,
+   "events": 2,
+   "episodes": 1,
+   "hits": {
+    "person_crossing": [
+     40,
+     49
+    ],
+    "object_on_rail": [
+     129,
+     174
+    ]
+   }
+  },
+  {
+   "bag": "doubleT_obstacle",
+   "start": 30,
+   "frames": 171,
+   "alarm_frames": 163,
+   "events": 2,
+   "episodes": 1,
+   "hits": {
+    "person_crossing": [
+     31,
+     39
+    ],
+    "object_on_rail": [
+     129,
+     171
+    ]
+   }
+  },
+  {
+   "bag": "doubleT_obstacle",
+   "start": 40,
+   "frames": 161,
+   "alarm_frames": 151,
+   "events": 2,
+   "episodes": 2,
+   "hits": {
+    "person_crossing": [
+     20,
+     29
+    ],
+    "object_on_rail": [
+     128,
+     161
+    ]
+   }
+  }
+ ]
+}

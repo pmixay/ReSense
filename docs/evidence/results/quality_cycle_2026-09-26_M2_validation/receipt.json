@@ -1,0 +1,57 @@
+{
+  "created_utc": "2026-09-26T21:21:06.584910+00:00",
+  "candidate_code_commit": "482caab7b7548b5eb3a272b8f30957711dad958f",
+  "checkout_commit": "0145cbb8dd26b3777084aedb3945f49dda741caf",
+  "plan": "docs/evidence/results/quality_monitoring_M2_novel_plan_2026-09-26.json",
+  "plan_sha256": "00f3eb584ef965cc99203a4316eef9e4f21ee78574d123bcef56ee2b95ff053a",
+  "source_sha256": {
+    "resense/__init__.py": "fdf04a88071df1d8300d46f75d34cc00bf9fa205369be99b3cfef6db514ae306",
+    "resense/_native.py": "7417a55c2b0ddc9b95a5d46d78b6af9b724203475890a59a0be4a022c6d4fd58",
+    "resense/accumulate.py": "5cc507d81e330b9e23b909e06cfbdb14cebdb553af179d512e34fb7c22e5b0bd",
+    "resense/calibration.py": "9e84d7754f59fbc767db9fbc0a1bdfac5ef0dd0db70e27ce6b29238bc1731c8a",
+    "resense/cli.py": "1fd89acade866a2babe0566d15666bcdd50b167a26664d91880ec2504138b33f",
+    "resense/clustering.py": "44e81d17c2bd0016be114b226d1557421ab4b9c3fe8755202bac75b01d70a2c1",
+    "resense/config.py": "806cf92164d95a0ce74bdffafb5886c2ad2d6d5354122000762220543ca832cb",
+    "resense/detector.py": "1b38ceda1e368601dbccf792c177adfe19775fea897364aabc567b8bf486ea25",
+    "resense/egomotion.py": "fba03d8f0657358aeeaa24956dc2ea5f224673dbeb3452d0d6eb6f5ec515a25a",
+    "resense/frame.py": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9",
+    "resense/gauge.py": "08a67b885cf744b2439ddfa2e534f04c3b3a1f883925392a8a7adbe2a8600abe",
+    "resense/health.py": "39341422d0026ab3c9371533dff43d4f52a3b191b5623737d0250ca6456e71f3",
+    "resense/io.py": "032def133b9148dc43a0714f6ff8c84e049e4be11640093bdd8fe70bf9756b34",
+    "resense/lowobj.py": "f943a33bf660c0d63e9f37aaa16297a508ec75ce2dfb3475b65b30a65ad660d8",
+    "resense/metrics.py": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a",
+    "resense/pointcloud.py": "2f20a0e6aa3ceab96b625fc85eff3ea24cb0a7ae6675467415f53f8cd464a053",
+    "resense/sensor.py": "0c5acd4d937d2c6946422018a2a394c71f4de351d338899e436bc1b2a34115b0",
+    "resense/synthetic.py": "6f6c86fefd70b26b6c6b2f51f01a6de43def587a8ae49f2eb2523e830a30c747",
+    "resense/track.py": "0f23ee8ad73a22e271b69aac31c1230ae8b0c2ebe5d047f2f4d2a6c78ec1cb67",
+    "resense/tracking.py": "a0bffd4e2ddab90fc4ae1e49f81f9673abdc2b1b0579da1979379531a7f130f7",
+    "resense/viz.py": "3a5df9d0acb1a0d0f0dc9568131c17906bda49ac2dba65f5eb49343abe3d36db",
+    "native/resense_native.cpp": "85688be18c41c68111f30e2bc45b83186650c1eead8b24a254d15c97cb2592f1",
+    "scripts/novel_placement_eval.py": "8bbfae984f3d604c0b49caebd142948f8f3472559a9a7cbe63b7038708f3050d"
+  },
+  "detector_import": "/home/resense/worktrees/monitoring-quality/resense/detector.py",
+  "native_library": "/home/resense/worktrees/monitoring-quality/resense/_resense_native.cpython-312-x86_64-linux-gnu.so",
+  "native_library_sha256": "511f7766639f0ddab471a77263f7a343de19d0a8217dd7cd3a11635c8a7db2c8",
+  "config_file_sha256": "c7ca5ad4f332b7025f66ab0addeb21025daf23a36aca4dbcc2d49fe5b8831f40",
+  "evaluator_sha256": {
+    "scripts/robustness_check.py": "73d2ad09ce9a7fe84649e4b041e8760327ef253c70d8920a59545fdc78101708",
+    "scripts/start_offsets.py": "994003893b060fad9bfdb4bf14897f609f2e3f1e261f0d3322db8e27b5a45450",
+    "scripts/score_fake_objects.py": "300660b7e77be1356e7be2fd239c3fe5689a6c990b63c654e207df43fbc7833a",
+    "scripts/score_clear_distance.py": "67f4df6f4d1412bb1998dc0c974ae3434cb075606bf2b6ec8395b4672891d36a"
+  },
+  "reference_sha256": {
+    "docs/evidence/results/p4_p3d_artifacts_2026-09-26/reference/offsets.json": "779b92e2bbefba084e5da70681d2201fd69b10f878f9b82a2976877b4f04426e",
+    "docs/evidence/results/p4_p3d_artifacts_2026-09-26/reference/seto_raw.jsonl.gz": "b7aca1b84eb4278cec1c743ec30ef209a2d6d4e25ef5bc4b66aa9d3409dd8cc2",
+    "docs/evidence/results/p4_p3d_artifacts_2026-09-26/reference/seto_cached.jsonl.gz": "a2b06b6e1c3e115650a32497027b21cd392374fb751709a27348ebf54056c430",
+    "docs/evidence/results/p4_p3d_artifacts_2026-09-26/reference/stress/5hz.json": "20a6d3224944a8a19e8363af6377cacfdd838fda483f95b3aa85544cf375e211",
+    "docs/evidence/results/p4_p3d_artifacts_2026-09-26/reference/stress/roll_plus_3.json": "854dd7eb0aadc069580c9e10d250dcc4fea6df022ee2fd08b10d8cd9196b12d0",
+    "docs/evidence/results/p4_p3d_artifacts_2026-09-26/reference/stress/pitch_plus_3.json": "793ce062589bb7c0d49fa32cfef08a044803aff4b2257804b3f705bb9a30a33a"
+  },
+  "commands": [
+    "python scripts/robustness_check.py --cache DATA/cache --out OUT/5hz --every 2 --jobs 1",
+    "python scripts/robustness_check.py --cache DATA/cache --out OUT/roll_plus_3 --mount roll_3 --jobs 1",
+    "python scripts/robustness_check.py --cache DATA/cache --out OUT/pitch_plus_3 --mount pitch_3 --jobs 1",
+    "python scripts/start_offsets.py --cache DATA/cache --starts 0,10,20,30,40 --jobs 1 --json OUT/offsets.json",
+    "python -m resense.cli run --bag DATA/cloud_with_fake_obj --out OUT/seto_raw.jsonl --quiet"
+  ]
+}
