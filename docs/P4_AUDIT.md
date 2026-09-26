@@ -60,7 +60,7 @@ metadata files and six timestamp manifests match the prior intake hashes byte fo
 has 1,510 frames; the ride has 11,271 frames and 221 timestamp manifests. The source fixture is
 120 KB including its provenance; raw bags and background caches stay outside the repository.
 The [fresh strict regression gate](evidence/results/regression_gate_2026-09-26_freeze.json)
-passes with no overrides or missing rows: all **183 gated values equal** the P3d baseline.
+passes with no overrides or missing rows: all **146 gated values equal** the P3d baseline (199 total comparison rows; the earlier 183 count included unchanged informational rows).
 
 **All 45 ride false events reviewed.** The
 [inventory and eight cloud contact sheets](evidence/results/p4_ride_scenes_2026-09-26/README.md)

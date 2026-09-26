@@ -203,6 +203,11 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   Default `freshness_mode=live` compares acquisition UTC to system UTC. Explicit `replay` uses
   DDS publication UTC; historical acquisition age is unavailable. The Humble executor adapter
   preserves publication metadata for the LiDAR subscriptions, including drained queued messages.
+  Validity is checked at publication. The watchdog shares the detector executor and cannot run
+  during a blocked callback. An actionable consumer must expire timestamped status locally;
+  `/resense/decision` alone cannot establish current validity. Source, node and browser UTC
+  clocks must be synchronized. The dashboard checks transport age and expires the remaining
+  lifetime on its own timer, retaining STOP through invalid input.
   See the [registered contract](evidence/results/quality_freshness_2026-09-26_protocol.json).
 * **Curvature from parallel references**: rails are visible only to ~30–40 m, walls/column rows
   to 150–200 m (Shen et al. 2024). This is what makes a corridor at 100+ m meaningful; where no

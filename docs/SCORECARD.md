@@ -33,7 +33,7 @@ must cite their actual evidence; packaging cannot improve functionality, range o
 
 ### Evidence gained
 
-- The fresh complete gate reproduces **183 gated values**, no missing rows, regressions or waivers.
+- The fresh complete gate reproduces **146 gated values** across 199 comparison rows, with no missing rows, regressions or waivers. The earlier count of 183 included unchanged informational rows.
   The [detector seal](DETECTOR_FREEZE.md) verifies 27 source/config/build-input files.
 - Final local suite: **621 tests and 6 subtests pass**, no skips/deselections. Current original-bag
   idle cold/warm checks pass with first STOP +0.4 s and decode+detect p95 36 ms; clear replay has

@@ -29,7 +29,7 @@ criteria; arbitrary contention and the organizer hardware remain unmeasured. Det
 
 P4 completed its fixed 72-case synthetic study: 45 cases with any match, 544/2,458 visible frames,
 zero control matches; all results retained, no tuning. All 45 ride false events have scene
-annotations, including nine uncertain. The fresh full gate reproduces all 183 gated rows without
+annotations, including nine uncertain. The fresh full gate reproduces all 146 gated rows without
 waivers; 621 tests and 6 subtests pass. Deck, PDF, video and dashboard wording are refreshed.
 The requested 75/100 is not established; use the [current independent scorecard](SCORECARD.md#freeze-review-26-september-night).
 Earlier tables below retain their dated evidence; this section and §4 govern current status.

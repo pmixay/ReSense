@@ -143,6 +143,7 @@ const state = {
   last: null,                                // last result applied (for redraws)
   lastStatusArrival: null,
   streamStale: false,
+  stopLatch: null,
   cab: null,                                 // cab view: size, focal length and the labelled boxes of the last draw
   sourceName: null,
   summary: null,
@@ -523,7 +524,7 @@ function applySafety(res) {
   $('freshness').textContent = !fresh ? 'не проверялась' : fresh.valid ? 'проверена при обработке' : fresh.reason === 'catchup' ? 'обработка очереди' : 'нет актуальных данных';
   $('freshness').className = !fresh || fresh.reason === 'catchup' ? 'warn' : fresh.valid ? '' : 'bad';
   $('age-label').textContent = fresh?.mode === 'replay' ? 'После публикации записи' : 'После измерения';
-  $('source-age').textContent = fresh?.source_age_s == null ? '—' : (fresh.source_age_s * 1000).toFixed(0) + ' мс';
+  $('source-age').textContent = fresh?.source_age_s == null ? '—' : ((fresh.source_age_s + (fresh.transport_age_s || 0)) * 1000).toFixed(0) + ' мс';
   $('health').textContent = { ok: 'норма', warn: 'предупреждение', error: 'ошибка' }[h.level] || '—';
   $('health').className = { error: 'bad', warn: 'warn' }[h.level] || '';
   $('vis').textContent = h.visibility == null ? '—' : `${h.visibility.toFixed(0)} м / ${(100 * (h.rail_lock ?? 0)).toFixed(0)} %`;
@@ -567,6 +568,40 @@ function applyNode(node) {
 function onStatus(msg) {
   if (state.mode !== 'live') return;
   let res; try { res = JSON.parse(msg.data); } catch (e) { return; }
+  if (!res || typeof res !== 'object' || typeof res.obstacle !== 'boolean') return;
+  const f = res.freshness, finite = v => typeof v === 'number' && Number.isFinite(v);
+  let invalid = '';
+  if (!f || typeof f.valid !== 'boolean') invalid = 'status_clock_unknown';
+  else if (f.valid) {
+    if (!finite(f.evaluated_at_utc_s) || !finite(f.source_age_s) || !finite(f.residence_age_s)
+        || !finite(f.max_result_age_s) || f.max_result_age_s <= 0 || f.max_result_age_s > .5
+        || !finite(f.future_tolerance_s) || f.future_tolerance_s < 0 || f.future_tolerance_s > .05)
+      invalid = 'status_clock_unknown';
+    else {
+      const transport = Date.now() / 1000 - f.evaluated_at_utc_s;
+      if (transport < -f.future_tolerance_s || f.source_age_s < -f.future_tolerance_s || f.residence_age_s < 0)
+        invalid = 'status_clock_skew';
+      else if (Math.max(f.source_age_s, f.residence_age_s) + Math.max(0, transport) > f.max_result_age_s)
+        invalid = 'status_transport_stale';
+      else f.transport_age_s = Math.max(0, transport);
+    }
+  }
+  if (invalid) {
+    res.freshness = { ...(f || {}), valid: false, go_allowed: false, reason: invalid };
+    res.clear_distance = 0;
+    res.health = { ...(res.health || {}), level: 'error', decision_level: 'error', clear_distance: 0,
+      messages: ['Возраст результата неизвестен, срок истёк или часы не синхронизированы'] };
+    res.decision = res.obstacle || res.decision === 'STOP' ? 'STOP' : 'FAULT';
+  }
+  if (res.obstacle || res.decision === 'STOP') {
+    state.stopLatch = { nearest_distance: res.nearest_distance, detections: structuredClone(res.detections || []),
+      stamp: res.stop_source_stamp ?? res.stamp, frame_id: res.stop_source_frame_id ?? res.frame_id };
+  } else if (res.freshness?.valid === true) state.stopLatch = null;
+  if (state.stopLatch && !res.obstacle && res.decision !== 'STOP') {
+    res.obstacle = true; res.decision = 'STOP'; res.stop_held = true;
+    res.nearest_distance = state.stopLatch.nearest_distance; res.detections = state.stopLatch.detections;
+    res.stop_source_stamp = state.stopLatch.stamp; res.stop_source_frame_id = state.stopLatch.frame_id;
+  }
   state.lastStatusArrival = performance.now(); state.streamStale = false;
   $('health-source').className = 'pill ok'; $('health-source').textContent = 'Прямой эфир';
   applyResult(res);
@@ -574,7 +609,7 @@ function onStatus(msg) {
 function checkLiveStream(now = performance.now(), disconnected = false) {
   if (state.mode !== 'live' || !state.last || state.lastStatusArrival == null || state.streamStale) return;
   const f = state.last.freshness || {}, ages = [f.source_age_s, f.residence_age_s].filter(v => typeof v === 'number' && Number.isFinite(v));
-  const remainingMs = Math.max(0, 500 - 1000 * Math.max(0, ...ages));
+  const remainingMs = Math.max(0, 1000 * ((f.max_result_age_s || .5) - Math.max(0, ...ages) - (f.transport_age_s || 0)));
   if (!disconnected && now - state.lastStatusArrival <= remainingMs) return;
   state.streamStale = true;
   const res = structuredClone(state.last), held = decisionOf(res) === 'STOP';
@@ -607,6 +642,7 @@ $('connect').onclick = () => {
 function resetView() {
   state.hist = []; state.shown = 0; state.alarmFrames = 0; state.lastObstacle = false; state.last = null;
   state.lastStatusArrival = null; state.streamStale = false;
+  state.stopLatch = null;
   state.node = { lastDropped: null, alertUntil: 0 };
   $('log').innerHTML = '<span class="empty-log">Событий пока нет.</span>';
   setBanner('idle', 'ОЖИДАНИЕ ДАННЫХ');

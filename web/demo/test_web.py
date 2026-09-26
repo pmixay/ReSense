@@ -207,8 +207,10 @@ def test_dashboard_freshness_and_live_stream_stall():
         base = {"stamp": 1.0, "obstacle": False, "warning": False, "nearest_distance": None,
                 "detections": [], "warnings": [], "clear_distance": 120, "decision": "GO",
                 "health": {"level": "ok"}, "freshness": {"valid": True, "reason": "current",
-                "mode": "replay", "source_age_s": .02}}
-        page.evaluate("f => onStatus({data: JSON.stringify(f)})", base)
+                "mode": "replay", "source_age_s": .02, "residence_age_s": .01,
+                "max_result_age_s": .5, "future_tolerance_s": .05}}
+        deliver = "f => { f.freshness.evaluated_at_utc_s = Date.now()/1000; onStatus({data: JSON.stringify(f)}); }"
+        page.evaluate(deliver, base)
         assert page.inner_text("#age-label") == "После публикации записи"
         assert page.inner_text("#source-age") == "20 мс"
         page.evaluate("checkLiveStream(state.lastStatusArrival + 501)")
@@ -217,18 +219,32 @@ def test_dashboard_freshness_and_live_stream_stall():
         assert page.evaluate("state.cab.clearEnd") == 0
         # A new fresh message permits recovery; a later pause holds an outstanding STOP.
         stop = dict(base, obstacle=True, decision="STOP", nearest_distance=50, clear_distance=50)
-        page.evaluate("f => onStatus({data: JSON.stringify(f)})", stop)
+        page.evaluate(deliver, stop)
         page.evaluate("checkLiveStream(state.lastStatusArrival + 501)")
         assert page.inner_text("#decision") == "СТОП"
         assert "СТОП СОХРАНЁН" in check_dashboard.banner_text(page)
         assert page.evaluate("state.cab.clearEnd") == 0
         assert "последнее" in page.text_content("#dist")
-        page.evaluate("f => onStatus({data: JSON.stringify(f)})", base)
+        # Restart/first-epoch invalid clear cannot release the browser's held STOP.
+        invalid_epoch = dict(base, freshness=dict(base["freshness"], valid=False, reason="epoch_unconfirmed"))
+        page.evaluate(deliver, invalid_epoch)
+        assert page.inner_text("#decision") == "СТОП"
+        assert "СТОП СОХРАНЁН" in check_dashboard.banner_text(page)
+        page.evaluate(deliver, base)
         assert page.inner_text("#decision") == "НЕ ОБНАРУЖЕНО"
         aging = dict(base, freshness=dict(base["freshness"], source_age_s=.4))
-        page.evaluate("f => onStatus({data: JSON.stringify(f)})", aging)
+        page.evaluate(deliver, aging)
         page.evaluate("checkLiveStream(state.lastStatusArrival + 101)")
         assert page.inner_text("#decision") == "ОШИБКА"
+        # A buffered message must not receive a new freshness window on arrival.
+        page.evaluate("f => { f.freshness.evaluated_at_utc_s = Date.now()/1000 - 2; onStatus({data: JSON.stringify(f)}); }", base)
+        assert page.inner_text("#decision") == "ОШИБКА"
+        assert page.evaluate("state.last.freshness.reason") == "status_transport_stale"
+        page.evaluate("f => { f.freshness.evaluated_at_utc_s = Date.now()/1000 + 2; onStatus({data: JSON.stringify(f)}); }", base)
+        assert page.inner_text("#decision") == "ОШИБКА"
+        assert page.evaluate("state.last.freshness.reason") == "status_clock_skew"
+        page.evaluate("f => onStatus({data: JSON.stringify(f)})", base)
+        assert page.evaluate("state.last.freshness.reason") == "status_clock_unknown"
         # The explicit contract takes precedence over a contradictory GO field.
         invalid = dict(base, freshness={"valid": False, "reason": "source_stale"})
         page.evaluate("f => onStatus({data: JSON.stringify(f)})", invalid)

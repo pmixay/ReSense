@@ -84,12 +84,14 @@ Health warnings: latency above 100 ms (the 10 Hz period) and fps below 9 turn or
 `dropped_frames` **grows** the node card flashes red for 3 s and the log gets a line, and it
 keeps a pale-yellow background while the count is above zero.
 
-The validity panel distinguishes live acquisition age from replay publication age. It reports
-validity at processing time; it cannot measure unknown transport delay to the browser. In live
-view, a missing status stream or expiry of the remaining 0.5 s age allowance invalidates the
-display (checked every 100 ms). It holds an outstanding STOP with its last distance explicitly
-labelled; otherwise it shows FAULT. A fresh message permits recovery. Historical file playback
-keeps the recorded snapshot. Invalid monitoring never shows a green range, including a held STOP.
+The validity panel distinguishes live acquisition age from replay publication age. Live view
+requires synchronized UTC clocks on the node and browser. It adds status transport age to the
+node's reported source/residence age, then expires the remaining 0.5 s allowance using a local
+monotonic timer (checked every 100 ms). Missing timing metadata, clock skew or an expired result
+invalidates the display. It holds an outstanding STOP through invalid non-STOP messages, with
+the last distance explicitly labelled; otherwise it shows FAULT. A fresh validated message
+permits recovery. Historical file playback keeps the recorded snapshot. Invalid monitoring
+never shows a green range, including a held STOP. Timer scheduling is not a hard real-time bound.
 
 `GO` means no obstacle was detected. The green range is an estimate from visibility and the track
 model, capped by eligible detected candidates; objects that form no such candidate may be missed
