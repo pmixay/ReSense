@@ -215,7 +215,7 @@ validity over each sequence before interpreting range or edge results.
    [`regression_baseline_2026-09-26_ride_p3d.json`](evidence/results/regression_baseline_2026-09-26_ride_p3d.json):
    the shipped defaults of `6c76605` (the P3 range item of 26.09, the STOP keep, on top of the next
    one), native path, `--jobs 1`, 792 s. It passes against the next one with 1 gated row better (O:
-   the box at the envelope top 22 → 51 STOP frames, held from 23.9 → 111.4 m) and every other row
+   the box at the envelope top 22 → 51 STOP frames, continuous from 101.3 m) and every other row
    the same, the ride frame by frame (EXPERIMENTS §1o,
    [`regression_gate_2026-09-26_range_b10.json`](evidence/results/regression_gate_2026-09-26_range_b10.json)).
    The one before,

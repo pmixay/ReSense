@@ -1935,12 +1935,17 @@ tracker flags:
 The candidates were A (signature), B (A + thin 1) and C (A + thin 2). The ship rule: the full gate
 against `_ride_p3c` passes with no gated row worse; ride alarm frames, events and STOP episodes
 not up; five bags, `doubleT_obstacle` and set F straight not worse; and one inside object's
-first STOP or hold moves out by ≥ 10 m (or two by ≥ 1 m).
+first STOP or hold moves out by ≥ 10 m (or two by ≥ 1 m). The hold was read from
+`score_fake_objects.py`'s held-from: the largest D such that ≥ 90 % of the visible frames nearer
+than D are STOPs. It can lie beyond the farthest STOP: for #8 with B / B10 it reads 111.4 m (bins
+100–150 m 1 / 25 STOP frames, 50–100 m 25 / 25, 0–50 m 25 / 25). In plain terms #8's STOP is
+continuous from its first STOP at 101.3 m, against continuous from 23.9 m before; the gain meets the
+rule either way.
 
 | stage (`--jobs 1`, native) | A: signature | B: A + thin 1 | C: A + thin 2 | B10: B + bar 10 (round 2) |
 |---|---|---|---|---|
-| six recordings + set O, `00143b0` vs `_p3b` | PASS; #8 12 → 29 STOP frames, no hold gain | PASS; #8 12 → 51, held from 111.4 m | **FAIL**: `doubleT_platform` STOP episodes 1 → 2 | not run |
-| the same on the merged head vs `_p3c` | PASS; #8 22 → 39, held 23.9 m | PASS; #8 22 → 51, held 23.9 → 111.4 m | **FAIL**, the same row | PASS; as B, frame by frame on set O |
+| six recordings + set O, `00143b0` vs `_p3b` | PASS; #8 12 → 29 STOP frames, no hold gain | PASS; #8 12 → 51, continuous from 101.3 m | **FAIL**: `doubleT_platform` STOP episodes 1 → 2 | not run |
+| the same on the merged head vs `_p3c` | PASS; #8 22 → 39, continuous from 23.9 m | PASS; #8 22 → 51, continuous from 101.3 m | **FAIL**, the same row | PASS; as B, frame by frame on set O |
 | full gate vs `_p3c` | not run (no minimum gain) | gate PASS, but **ride alarm frames 183 → 192** | not run | **PASS**; ride 183 / 45 / 38, identical frame by frame |
 
 With C, a scan line helped confirm a new track: a corridor STOP at 20–23 m on `doubleT_platform`
@@ -1968,7 +1973,7 @@ strict voxels.
 
 | row | `_ride_p3c` | B10 |
 |---|---|---|
-| set O #8 (box at the envelope top): STOP frames, first STOP, held from | 22, 101.3 m, 23.9 m | **51, 101.3 m, 111.4 m** |
+| set O #8 (box at the envelope top): STOP frames, advisory frames, first STOP, continuous STOP from | 22, 27, 101.3 m, 23.9 m | **51, 6, 101.3 m, 101.3 m** |
 | set O inside STOP frames | 355 | **384** |
 | ride alarm frames / events / STOP episodes | 183 / 45 / 38 | 183 / 45 / 38 (identical frame by frame) |
 | five bags, `doubleT_obstacle` (frame 11, 186 hits), set F straight, #5 / #7 / background | | identical |
@@ -1977,8 +1982,9 @@ strict voxels.
   `stop_hold` detection; 42 of them STOP only through it.
 * Its reported distance is within 0.34 m of the label in every kept frame but one: frame 663 is
   +1.55 m, a missed frame held at its predicted distance.
-* **No first STOP moves.** Beyond 100 m set O still has one STOP frame (#8 at 101.3 m). The limits
-  there are the height reference and the returns (the table above), not a rule this item relaxes.
+* **No first STOP moves.** Beyond 100 m set O still has one STOP frame (#8 at 101.3 m). The gain
+  is a hold: 22 → 51 STOP frames, advisory 27 → 6. The limits beyond 100 m are the height reference
+  and the returns (the table above), not a rule this item relaxes.
 
 *Checks.* With the flags off the output is identical to `00143b0` and to `208152d`
 (`scripts/output_fingerprint.py --cache /data/cache --jobs 1`, 2 930 frames each). Tests 555 →

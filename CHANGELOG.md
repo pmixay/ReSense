@@ -31,13 +31,15 @@ combined and their safety review, +22 the STOP keep) in `tests/`, 13 in `web/dem
 
 - **STOP keep against shape signatures and scan lines (26.09, P3 range; shipped, round 2).**
   `tracking.stop_keep_signature` true, `tracking.stop_keep_thin` 1, `tracking.stop_keep_min_voxels`
-  10. A track that was a STOP in the previous frame keeps its zone vote when its cluster is demoted
+  10, `tracking.stop_keep_max_s` 10 s. A track that was a STOP in the previous frame keeps its zone vote when its cluster is demoted
   only by a shape signature, and a scan line inside the envelope (flatter than `min_height`) may
-  continue it; either needs ≥ 10 strict voxels, the near escalation's bar. Neither starts or
-  confirms a track (reason `stop_hold`). Investigation first: on set O, physics limits four objects
+  continue it; either needs ≥ 10 strict voxels, the near escalation's bar, and acts only within
+  10 s of sensor time of the track's last clean hit (the safety review's cap, non-blocking review).
+  Neither starts or confirms a track (reason `stop_hold`). Investigation first: on set O, physics limits four objects
   (≤ 4 returns a frame where missed), the height reference two; nothing moves a first STOP. Set O
-  box at the envelope top 22 → 51 STOP frames, a STOP on every frame from 101.3 m (held from
-  23.9 → 111.4 m); inside STOP frames 355 → 384. Gate PASS against `_ride_p3c`: the ride (183 / 45 /
+  box at the envelope top 22 → 51 STOP frames (advisory 27 → 6), continuous from its first STOP at
+  101.3 m (from 23.9 m before); inside STOP frames 355 → 384. No first STOP moves: set O still has
+  one STOP frame beyond 100 m; the gain is a hold. Gate PASS against `_ride_p3c`: the ride (183 / 45 /
   38, frame by frame), five bags, `doubleT_obstacle` and set F straight identical. Round 1 (no bar)
   failed its pre-registered ride rule (alarm frames 183 → 192); round 2 was written after it, so
   its ride result is in-sample. Off: output identical to `208152d`. New gate baseline

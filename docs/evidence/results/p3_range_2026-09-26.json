@@ -613,5 +613,23 @@
       "a kept STOP is reported with reason 'stop_hold'"
     ],
     "commit": "6c76605 (the defaults flipped)"
+  },
+  "held_from_note": "'held_from_m' is the raw field of scripts/score_fake_objects.py: the largest distance D such that >= 90 % of the object's visible frames nearer than D are STOPs; it can lie beyond the farthest STOP. For big_above with B / B10 it reads 111.4 m while the first STOP is at 101.3 m (bins 100-150 m 1 / 25 STOP frames, 50-100 m 25 / 25, 0-50 m 25 / 25): in plain terms the STOP is continuous from 101.3 m (frame 632) to the end, against continuous from 23.9 m with the defaults of 208152d. No first STOP moves; set O still has one STOP frame beyond 100 m; the gain is a hold (22 -> 51 STOP frames, advisory 27 -> 6). The minimum-gain condition of the ship rule holds on either reading.",
+  "safety_review": {
+    "date": "2026-09-26",
+    "verdict": "NON-BLOCKING (clean on safety); one recommendation taken before the merge: a time cap",
+    "findings": [
+      "the association is unchanged: the signature keep only changes the zone vote of a matched track that was a STOP in the previous frame; scan lines only continue STOP tracks that nothing else matched (mode 1); neither starts or confirms a track",
+      "distance: frame 663's +1.55 m is a scan-line continuation within the 3 m match tolerance; a scan line inside the association gate can continue a track after its object is gone: accuracy, not safety",
+      "the 10-voxel bar is in-sample (round 2 written after round 1's two ride tracks)",
+      "exposure on 1 200 ride frames (the reviewer's sample): 0 qualifying scan lines, 1 elevated cluster",
+      "nothing ended a kept STOP in time: at a standing train a false STOP beyond 35 m kept by demoted or scan-line clusters with >= 10 strict voxels could last indefinitely"
+    ],
+    "cap": {
+      "flag": "tracking.stop_keep_max_s 10.0 (0 = no cap), commit dd3d18f",
+      "rule": "the keep rules act on a track only while its last clean hit (an obstacle cluster inside the envelope, zone gauge, not a scan line) is at most 10 s of sensor time ago, summed from the measured frame intervals (the nominal period without one): the same at 10 and 5 Hz (the rate-independence rule of 25.09); past it the track falls back to the behaviour without the keep rules; a clean hit resets it; a track never seen clean is never kept",
+      "big_above": "its longest keep-only stretch is 4.29 s by the receive stamps (after its last clean hit, frame 640 at 85.2 m, to frame 683); its whole STOP run 632-683 is 5.08 s: under the cap",
+      "tests": "+6 in tests/test_stop_keep.py: a kept STOP at a standing train ends after 10 s at 10 and 5 Hz, a scan-line continuation too, a 5.1 s moving approach is unchanged, a clean hit resets the cap, the default"
+    }
   }
 }
