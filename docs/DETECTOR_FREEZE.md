@@ -1,5 +1,9 @@
 # Detector freeze — 26 September 2026
 
+**Release hold, latest user instruction:** do not publish. This seal preserves a reproducible
+baseline; final quality acceptance is under review while the team considers more detector work.
+No release tag has been created or pushed. See [CAPTAIN §5](CAPTAIN.md#5-release-and-submission--on-hold).
+
 **Decision: freeze the validated detector and default configuration.** The user delegated the
 captain's decision on 26 September. Detector behavior remains that of `fa18832`; the acceptance
 baseline is [`regression_baseline_2026-09-26_ride_p3d.json`](evidence/results/regression_baseline_2026-09-26_ride_p3d.json).

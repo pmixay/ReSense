@@ -8,6 +8,13 @@
 
 ## Current delegated work — 26.09 night
 
+**Latest user decision: release publication is on hold.** No release tag has been created or
+pushed. The user asked for a deeper review of system weaknesses and whether detector development
+should continue before a final freeze. The [proposed next cycle](NEXT_DETECTOR_WORK.md) records
+the measured weaknesses and acceptance conditions. Keep the sealed baseline and its evidence; do not publish
+an RC or treat it as final quality acceptance. Review priorities are detection coverage, envelope
+uncertainty, false alarms, output freshness and independent evaluation.
+
 The user delegated captain work and explicitly requested the detector freeze. The detector and
 configuration are **frozen** at the existing `_ride_p3d` behavior; the source manifest and decisions
 are in [DETECTOR_FREEZE.md](DETECTOR_FREEZE.md). Candidate B is rejected (one extra STOP frame at
@@ -160,13 +167,17 @@ retained there and belongs to the node before its short-backlog correction.
 - [ ] People conduct two pitch rehearsals, the live remote demo and any voice-over; answer the
   organizers during the expertise 30.09–14.10. Documentation does not substitute for these actions.
 
-## 5. Release and submission
+## 5. Release and submission — on hold
 
-The 25.09 release deferral is superseded by the user's 26.09 instruction to complete the freeze
-and remaining captain work. Prepare `v1.0.0-rc1` from the final reviewed commit after its CI is
-green. The tag workflow builds from Git, saves/removes/loads the image, tests the loaded image
-offline and with stock DDS, publishes the archive/checksum, then downloads and verifies them.
-Record the resulting public link and exact commit. Do not label unmet detection criteria passed.
+The user's latest instruction on 26.09 is **do not publish a release**. This supersedes the
+release preparation earlier in the night. No release tag was created or pushed. CI artifacts
+remain validation outputs. The prepared release workflow and native-runtime guard are retained
+for later use, but publication requires the user's new authorization.
+
+The sealed P3d version remains a reproducible baseline. Its known detection failures and lack of
+untouched real-obstacle data prevent calling every criterion complete. The user confirmed no
+additional untouched recording is available. Further detector work should use a preregistered
+candidate and acceptance checks; replacing the seal requires a new complete gate and review.
 
 The captain's personal submission remains separate: it requires the organizer upload portal,
 all final links, approved team details and human confirmation that the form was submitted.
