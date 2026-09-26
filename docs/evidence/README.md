@@ -204,6 +204,14 @@ two host runs were CycloneDDS players (renamed `*_cyclonedds*`, with a CORRECTIO
 | `vm_2026-09-25_3/` | machine facts | 4 cores, `rmem_max` 212992 |
 | `dry_run_2026-09-25_3/` | `dry_run.sh` on both bags; host consoles: the node UDP or `RESENSE_DDS=shm`, the player stock Fast DDS or CycloneDDS, `rmem_max` 212992 or 32 MiB (README step 0); `NODE_DDS=shm console_test.sh` | PASS: both dry runs; stock Fast DDS at 212992 over UDP (2 of 2) and in shm mode (2 of 2, the player maps the node's `root 666` port); step 0 with either player; CycloneDDS in shm mode at 32 MiB; the Docker shm test. FAIL: CycloneDDS at 212992 (shm mode) |
 
+**The re-judgement of 26.09 evening** (a fresh 4-core sandbox, `be5f5fc`, the organizers'
+original data downloaded from their links; [`rejudge_2026-09-26/README.txt`](rejudge_2026-09-26/README.txt)
+lists every file, the machine and the one sandbox-only deviation of the image build):
+
+| folder | run | result |
+|---|---|---|
+| `rejudge_2026-09-26/` | `pytest`; `OFFLINE=1 dry_run.sh` on both bags (page cache warm, dropped, unknown; `rmem_max` 4 MiB and 32 MiB); `PLAYER_DDS=stock console_test.sh` on both bags; `resense run --bag` on `cloud_with_fake_obj` with `score_fake_objects.py` and `score_clear_distance.py`; the full regression gate with the ride and set F straight; `resense bench` | 587 tests green; dry runs and the stock console PASS with the bag in the page cache, `doubleT_obstacle` FAIL from a cold disk (34 of 201 frames processed: CAPTAIN C7, action 21); set O from the float bag 387 / 7 / 1; the gate against `_ride_p3d`: SCORECARD §0 |
+
 ### `bag_metadata/`: the original `metadata.yaml` of the six recordings
 
 These files are copied unchanged from the organizers' dataset. Every recording was made with

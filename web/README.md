@@ -3,7 +3,7 @@
 > **Purpose:** the dashboard, the RViz and Foxglove layouts, the label tool, their headless checks
 > and the video recipes.
 > **Audience:** team, jury (demo) · **Owner:** P2 · **Language:** EN
-> **Last verified:** 2026-09-24, `537e220` (detector v0.6.3, node v0.6.4) · **Status:** current
+> **Last verified:** 2026-09-26 (re-judgement: the 13 `web/demo` tests and `check_dashboard.py` pass in headless Chromium) · **Status:** current
 
 Everything the jury sees: the RViz layout the launch file loads, a Foxglove layout for remote
 demos, a browser dashboard that works live (rosbridge) and offline (replay of `results.jsonl`),

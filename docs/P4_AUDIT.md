@@ -62,7 +62,7 @@ cloud container (4 vCPU, 15 GB, no Docker daemon) from the organizers' links: se
   fresh-start finding of EXPERIMENTS §1j is gone with the rail-start rule; the rest equals the
   census of `867bb8a`.
 * `tests/test_rail_start.py` with the ride cache: 28 passed (the ride-dependent test included); the
-  whole suite 586 with it.
+  whole suite 586 with it at the time (587 since the video test added the same evening).
 * Also measured, for P3: the envelope union with the review fixes passes the full gate for the
   first time (set O #4 2 → 9 STOP frames; off, EXPERIMENTS §1p).
 

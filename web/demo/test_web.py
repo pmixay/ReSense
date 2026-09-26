@@ -391,16 +391,21 @@ def test_presentation_artifact_uses_the_organizers_slide_sequence():
     with open(latest) as source:
         baseline = json.load(source)
     rail = baseline["recordings"]["doubleT_obstacle"]["labelled"]["per_label"]["object_on_rail_from_frame_75"]
+    top = baseline["set_O"]["objects"]["big_above"]
     for required in (
         str(baseline["five_empty"]["alarm_events"]),
         str(baseline["ride"]["alarm_events"]),
         f"{baseline['ride']['alarm_events'] / 13:.1f}".replace(".", ","),
         f"{rail['hits']} из {rail['frames']}",
         f"{baseline['set_O']['inside_objects_with_stop']} из {baseline['set_O']['inside_objects']}",
-        "555", "docker load",
+        f"{top['stop_frames']} из {top['visible_frames']}",          # the 2 x 2 m box at the envelope top
+        "587", "docker load",
     ):
         assert required in text
     assert "релиз v1.0.0" not in text
+    assert "пропущен" not in text                               # every in-envelope object gets a STOP
+    assert "42–64" not in text                                  # the numpy timing of 23.09, not the shipped path
+    assert "~149" not in text                                   # the 90 % hold counts misses before the first STOP
     assert "Привет, участник хакатона" not in text
 
 

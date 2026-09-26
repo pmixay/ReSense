@@ -3,7 +3,7 @@
 > **Purpose:** what changed in ReSense, one entry per version or merge, newest first; the numbers
 > are those measured when the change landed.
 > **Audience:** jury (spec §5 "как менялось качество"), team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-25 against `79109f5` · **Status:** current
+> **Last verified:** 2026-09-26, the re-judgement pass (the Unreleased entries; older entries record their own date) · **Status:** current
 
 Versions are the team's labels. The package metadata (`pyproject.toml`) says 0.1.0 up to PR #4,
 0.6.3 from PR #5 (`1210580`) and 1.0.0 from `65a5305` (25.09). A pushed tag `v1.0.0-rcN` /
@@ -16,6 +16,37 @@ frames, 13 km, no obstacles).
 
 ## Unreleased (in development; package version 1.0.0)
 
+- **Re-judgement and the P1 / P2 completion pass (26.09 evening):** two independent judges
+  re-scored the integrated head (`be5f5fc`) against spec §8 without trusting the documents, one
+  from the code and the committed evidence, one by re-running everything on a fresh 4-core machine
+  with the organizers' data downloaded again ([`docs/SCORECARD.md`](docs/SCORECARD.md) §0,
+  [`docs/evidence/rejudge_2026-09-26/`](docs/evidence/rejudge_2026-09-26/)). Measured: 587 tests
+  green, the full regression gate with the ride and set F straight against `_ride_p3d`, set O from
+  the float bag (387 / 7 / 1), the jury chain offline on the original bags and the organizers'
+  console with a stock Fast DDS uid-1000 player (PASS with the bag in the page cache). **New
+  finding:** from a cold disk the 360° `doubleT_obstacle` FAILS the dry run (34 of 201 frames
+  processed, first STOP +15.5 s): the player sends the whole overdue recording at once and the
+  catch-up's 1.0–1.4 s steps reset the scene; README jury step 3 now reads the bag first, the node
+  fix is the captain's decision ([`docs/CAPTAIN.md`](docs/CAPTAIN.md) action 21). **P2:** the deck,
+  PDF, video and `.srt` rebuilt on `_ride_p3d` (the box at the envelope top 51 of 124, continuous
+  from 101 m; the edge objects «лишь 2 и 6 кадров» on every slide and note instead of «пропущен»;
+  the video's ride card 46 → 45; the subtitles say that 3.5 per km is in-sample and 148 m our
+  synthetic; 555 → 587 tests); `web/demo/test_web.py` and `tests/test_overview_video.py` (+1 test)
+  now tie them to the newest gate baseline. **P1:** the claims the judges found wrong or stale
+  fixed (README's "stock Fast DDS 0–1 of 201", ALGORITHM §3.5 without the rules of 26.09 and its
+  set O limits, DECISIONS row 15 "none shipped" although `lowobj.rail_start_within` is on, a row 17
+  for the near-field and STOP-keep rules, ARCHITECTURE's test count, PRESENTATION's "6 из 8"); the
+  captain board, PLAN and the documentation index brought to this state. No detector or config
+  change. The deck and video of `e5f0f02` (26.09 morning, on `_ride_p3c`: 45 ride events, 8 of 8,
+  555 tests) had no entry of their own. **Second round** after judge B re-checked the first commit
+  (10 of 17 claims fixed, 4 partly, 3 not, 5 new): the timing on the deck, the video and in README /
+  EXPERIMENTS is now the shipped C++ path (23–31 ms per frame, p95 ≤ 42 ms; the numpy 42–64 ms of
+  23.09 kept only as history), the set F person's "held from 149 m" artefact replaced by the band
+  figure, «3,5 на км» labelled in-sample on every slide, the slide 13 title qualified, ALGORITHM §4
+  names its exceptions, the drop-criterion change disclosed next to the bench PASS, the stamps file
+  of the through-ROS grade committed; the catch-up variants for CAPTAIN action 21 measured
+  (`catchup_max_lag:=20`: no scene resets cold, PASS warm). Final: 62.5 / 100.
+
 - **P2 public presentation and P4 consistency pass (26.09):** rebuilt the 16-slide public PPTX
   and PDF and the 2:50 overview MP4/SRT against the committed `_ride_p3b` regression baseline:
   13 false events on five empty bags, 46 / 3.5 per km on the ride, 125/126 rail-object frames,
@@ -27,7 +58,7 @@ frames, 13 km, no obstacles).
   in the 706-frame suffix (EXPERIMENTS §1g, `seto_suffix_2026-09-26.json`).
 
 Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
-overhead rule on, node v0.6.4). Tests: 235 → 586 (+28 native kernels, +3 speed evaluation
+overhead rule on, node v0.6.4). Tests: 235 → 587 (+28 native kernels, +3 speed evaluation
 helpers, +23 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5
 overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting and socket
 buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`, +20 DDS
@@ -37,7 +68,7 @@ free-hanging exemption of `floating`, +4 thin hanging objects, +5 `health.clear_
 and re-mount flags, +1 the rail-lock guard of the hanging stage, +13 the review fixes of the
 round-2 items, +17 their re-review, +6 latency out of the decision, +8 the start-up census, +27
 the rail-start rule, +12 the near escalation, +8 the sensor-axis envelope, +8 the P3 items of 26.09
-combined and their safety review, +28 the STOP keep and its cap, +3 P4's sustained set O gates) in `tests/`, 13 in `web/demo`.
+combined and their safety review, +28 the STOP keep and its cap, +3 P4's sustained set O gates, +1 the video's ride card against the gate baseline) in `tests/`, 13 in `web/demo`.
 
 - **STOP keep against shape signatures and scan lines (26.09, P3 range; shipped, round 2).**
   `tracking.stop_keep_signature` true, `tracking.stop_keep_thin` 1, `tracking.stop_keep_min_voxels`

@@ -1,0 +1,46 @@
+== SKIP_BUILD=1: reusing resense:latest ==
+== OFFLINE=1: the container gets no network at all (--network none, loopback only) ==
+   (this host still reaches the internet; the container cannot)
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+interfaces: lo
+  1.1.1.1:443: unreachable (ENETUNREACH)
+  8.8.8.8:443: unreachable (ENETUNREACH)
+  9.9.9.9:443: unreachable (ENETUNREACH)
+  [2606:4700:4700::1111]:443: unreachable (no IPv6 here: EAFNOSUPPORT)
+  [2001:4860:4860::8888]:443: unreachable (no IPv6 here: EAFNOSUPPORT)
+  [2620:fe::fe]:443: unreachable (no IPv6 here: EAFNOSUPPORT)
+  registry-1.docker.io IPv4: no name resolution (gaierror)
+  registry-1.docker.io IPv6: no name resolution (gaierror)
+  archive.ubuntu.com IPv4: no name resolution (gaierror)
+  archive.ubuntu.com IPv6: no name resolution (gaierror)
+  packages.ros.org IPv4: no name resolution (gaierror)
+  packages.ros.org IPv6: no name resolution (gaierror)
+  pypi.org IPv4: no name resolution (gaierror)
+  pypi.org IPv6: no name resolution (gaierror)
+  files.pythonhosted.org IPv4: no name resolution (gaierror)
+  files.pythonhosted.org IPv6: no name resolution (gaierror)
+  cdn.jsdelivr.net IPv4: no name resolution (gaierror)
+  cdn.jsdelivr.net IPv6: no name resolution (gaierror)
+IPv4: blocked (0 of 3 connections succeeded)
+IPv6: blocked, no IPv6 on this machine (3 of 3 attempts: no IPv6 socket, route or address)
+OK: no internet from here
+== playing doubleT_obstacle at rate 1.0 through the node (headless) ==
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1790436926.612859805] [rosbag2_storage]: Opened database '/data/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.
+[INFO] [1790436926.612962505] [rosbag2_player]: Set rate to 1
+[INFO] [1790436926.623738764] [rosbag2_player]: Sleep 3000000000 ns
+[INFO] [1790436929.624611608] [rosbag2_storage]: Opened database '/data/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.
+
+== checking /tmp/claude-0/work/dry_obstacle_warm/status.jsonl ==
+status messages      : 139 (24 lines skipped)
+alarm frames         : 126
+obstacle distance    : 55.7 .. 56.5 m
+latency decode+detect: mean 66 / p95 81 / max 111 ms
+detector stage total : mean 29 / p95 42 ms
+dropped input frames : 66 (62 of them skipped by the node's catch-up); 4 after +9.5 s (the end of the start-up catch-up)
+dropped input settle : start-up catch-up back on the newest frame at +9.5 s; drops counted after +9.5 s (the later of 5 s and that, at most 15 s)
+dropped input vs bag : 106 messages of /sensing/lidar/hesai128/pointcloud after +9.5 s (the end of the start-up catch-up), 4 frame(s) missing from the recording itself; 0 of its messages not processed
+fps (last report)    : 9.97
+start of the input   : 14 frames in the first 5 s after the first one, largest gap 1.2 s, first STOP at +2.9 s
+
+PASS: all dry-run criteria met

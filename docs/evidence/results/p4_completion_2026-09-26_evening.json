@@ -60,7 +60,7 @@
   "Candidate B (tracking.near_escalate_voxels 10 -> 8): full gate PASS, 6 gated rows better (set O #4 2 -> 3 STOP frames, first STOP 5.2 -> 7.1 m), none worse, the ride identical; candidate-specific checks all identical to the head: census 18/120/35/28 (221 ride splits), robustness 13/16, 10/10, 14/16, 17/18, start offsets 13/16, 13/14, 13/12, 10/11, 7/11 (regression_gate_2026-09-26_p4_candidate_B_full.json, p4_candidate_B_checks_2026-09-26/).",
   "Rate / re-mount checks on the head: as recorded 13/16, 5 Hz 10/10, +3 deg roll 14/16, +3 deg pitch 17/18 events / STOP episodes (p4_robustness_2026-09-26_evening/), the added pitch and roll events listed per event (events_pitch_roll.txt).",
   "The 221-start ride census on the head: 18 starts with a STOP, 120 STOP frames / 35 events / 28 episodes, 8 events in the first 1.5 s, 0 within 10 m; the eight ride pieces 1/18/1/1; the seven recordings 3/68/6/3 (p4_census_p3d_2026-09-26.json).",
-  "tests/test_rail_start.py with the ride cache: 28 passed (the ride-dependent test included); the whole suite 586 (585 + 1 deselected without the ride cache); ruff 0.15.8 clean; sync_params --check in sync; the deck test passes.",
+  "tests/test_rail_start.py with the ride cache: 28 passed (the ride-dependent test included); the whole suite 586 at the time (585 + 1 deselected without the ride cache; 587 since the video test the parallel P1 / P2 pass added the same evening); ruff 0.15.8 clean; sync_params --check in sync; the deck test passes.",
   "For P3: the envelope union (gauge.axis_union 1) with the review fixes of EXPERIMENTS 1m passes the full gate with the ride for the first time: set O #4 2 -> 9 STOP frames, first STOP 18.2 m, held from 20.1 m, nothing else moves (regression_gate_2026-09-26_axis_union_fixed_full.json); stays off.",
   "Docs updated: EXPERIMENTS (Current results, 1p, 5), P4_AUDIT (completion section), README (P4 paragraph), CAPTAIN (C16, C17, action 19, decision log), SCORECARD 0 (measured 67/100), docs/README, evidence/README."
  ],
@@ -85,5 +85,6 @@
  "not_run_here": [
   "Docker image and the ROS 2 node (no daemon in the container): CI run 36248096431 on be5f5fc and the VM captures of 25.09 stand in.",
   "The i7-9700E stand (never available)."
- ]
+ ],
+ "note_on_the_parallel_pass": "A parallel P1 / P2 session re-judged the same head the same evening (SCORECARD 0, 62.5 / 100, two judges, Docker and ROS included) and its judge A also re-ran the full gate with the ride: PASS, every row the same, on a third machine. This record's judge scored 67 (SCORECARD 0.7); the reconciled 62.5 is the judgement of record."
 }

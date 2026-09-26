@@ -54,3 +54,19 @@ if (ROOT / module.OUT_MP4).is_file():
         assert b"ftyp" in head[:16]
         assert head.find(b"moov") != -1                       # the index before the media data
         assert head.find(b"mdat") == -1 or head.find(b"moov") < head.find(b"mdat")
+
+
+RESULTS = ROOT / "docs" / "evidence" / "results"
+if RESULTS.is_dir():
+
+    def test_ride_card_follows_the_current_gate_baseline():
+        """The ride card is a measured number: it names the ride events of the newest gate baseline
+        (picked as docs/VM_GUIDE.md §4.4 does), so a new baseline without a rebuilt video fails here."""
+        import json
+        latest = sorted(RESULTS.glob("regression_baseline_*_ride*.json"))[-1]
+        events = json.loads(latest.read_text())["ride"]["alarm_events"]
+        cards = [c for b in module.BLOCKS for c in b["cards"] if c["kind"] == "num" and "поездке" in c["label"]]
+        assert cards, "no ride card in the cut table"
+        for c in cards:
+            assert f"({events} за 13 км)" in c["label"]
+            assert c["big"] == f"{events / 13:.1f} на км".replace(".", ",")
