@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "checks": [
+    "inline node explicitly replays",
+    "inline checker requires freshness",
+    "inline node explicitly replays",
+    "inline checker requires freshness",
+    "scripts/smoke_test.sh enforces replay+freshness",
+    "scripts/console_test.sh enforces replay+freshness",
+    "scripts/internal_net_test.sh enforces replay+freshness",
+    "loaded runtime step Bash syntax",
+    "native available=False, enabled=False: reject",
+    "native available=False, enabled=True: reject",
+    "native available=True, enabled=False: reject",
+    "native available=True, enabled=True: accept"
+  ]
+}

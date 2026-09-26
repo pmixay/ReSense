@@ -153,7 +153,7 @@ jobs:
         # as on a stand whose network card is up but not connected to the internet
         # (scripts/check_no_network.py proves it). Fast DDS discovers over the bridge (multicast
         # between the containers) and sends the clouds as unicast UDP. The node runs on the image's
-        # default command, the player is a normal user in another container, as in
+        # explicit replay command, the player is a normal user in another container, as in
         # scripts/console_test.sh.
         if: ${{ !cancelled() && steps.roundtrip.outcome == 'success' }}
         run: |
@@ -186,7 +186,7 @@ jobs:
     #    not the stand's Docker: for the jury the offline build stays best effort, `docker load`
     #    is the documented path.
     # 2. the jury's image plays bags: the runtime image exactly as loaded from the archive (the
-    #    docker job plays through the WITH_TOOLS=1 image) runs the node on its default command on
+    #    docker job plays through the WITH_TOOLS=1 image) runs the node in explicit replay mode on
     #    an --internal network, a uid-1000 player from the same image plays both smoke bags (made
     #    on the runner: the runtime image has no open3d / rosbags to make them), and
     #    scripts/check_dry_run.py reads the recorded /resense/status.
@@ -254,7 +254,7 @@ jobs:
         # commit labels, which resense:offline, the rebuild above, does not carry) and the runtime
         # one (no WITH_TOOLS=1 module), with ros2 bag and the sqlite3 storage plugin the bags need
         # (docker/Dockerfile's apt line). Then, on a `docker network create --internal` network:
-        # scripts/check_no_network.py, the node on the image's default command, a /resense/status
+        # scripts/check_no_network.py, the node in explicit replay mode, a /resense/status
         # recorder, a uid-1000 player that plays both bags into the running node (the input
         # switch), and scripts/check_dry_run.py on the recording.
         if: ${{ !cancelled() && steps.bags.outcome == 'success' }}
@@ -272,19 +272,22 @@ jobs:
           test "$(label org.opencontainers.image.version)" = "$VER"
           test "$(label org.opencontainers.image.revision)" = "$(git rev-parse HEAD)"
           echo "$IMAGE: $(docker image inspect -f '{{.Id}}' "$IMAGE"), the archive's image (version $VER, commit $(git rev-parse HEAD))"
+          # Prove the measured native path in this separately built, loaded runtime archive.
+          docker run --rm --network none -w / "$IMAGE" \
+            python3 -c 'from resense import _native as n; assert n.AVAILABLE and n.enabled(), n.status(); print(n.status())'
           docker run --rm --network none "$IMAGE" python3 -c 'import importlib.util as u, sys; m = [n for n in ("open3d", "rosbags") if u.find_spec(n)]; print("WITH_TOOLS=1 modules in the image:", m or "none"); sys.exit(1 if m else 0)'
           docker run --rm --network none "$IMAGE" bash -c 'dpkg-query -W ros-humble-rosbag2 ros-humble-rosbag2-storage-default-plugins && s="$(ros2 bag list storage)" && echo "rosbag2 storage plugins: $s" && grep -qx sqlite3 <<<"$s"'
           docker network create --internal "$NET" >/dev/null
           mkdir -p /tmp/offline_rt_out && chmod 777 /tmp/offline_rt_out
           docker run --rm --network "$NET" "$IMAGE" python3 scripts/check_no_network.py
-          docker run -d --name resense_rt_node --network "$NET" "$IMAGE" >/dev/null
+          docker run -d --name resense_rt_node --network "$NET" "$IMAGE" ros2 launch resense_ros detector.launch.py freshness_mode:=replay >/dev/null
           for _ in $(seq 1 60); do docker logs resense_rt_node 2>&1 | grep -q "ReSense detector listening" && break; sleep 1; done
           docker logs resense_rt_node 2>&1 | grep -q "ReSense detector listening"
           docker run -d --name resense_rt_echo --network "$NET" -v /tmp/offline_rt_out:/out "$IMAGE" bash -c "ros2 topic echo /resense/status --field data > /out/status.jsonl" >/dev/null
           sleep 4
           docker run --rm --network "$NET" --user 1000:1000 -e HOME=/tmp -v /tmp/offline_bags:/data:ro "$IMAGE" bash -c "ros2 bag play /data/smoke_bag --delay 3 --disable-keyboard-controls && sleep 5 && ros2 bag play /data/smoke_bag2 --delay 3 --disable-keyboard-controls"
           sleep 4
-          python3 scripts/check_dry_run.py /tmp/offline_rt_out/status.jsonl --expect-obstacle --min-frames 20 --max-p95-latency 1000 --max-dropped 100000 --expect-inputs 2
+          python3 scripts/check_dry_run.py /tmp/offline_rt_out/status.jsonl --require-freshness --expect-obstacle --min-frames 20 --max-p95-latency 1000 --max-dropped 100000 --expect-inputs 2
           echo "the release archive's runtime image played both bags with no internet"
       # ---- the archive as a download (26.09): the stand has no internet, and the captain takes the
       # archive of the frozen commit from this job's run instead of building it on a machine with
