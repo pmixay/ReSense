@@ -51,7 +51,10 @@ Decision (v0.6, the organizers' "can we go / is there an obstacle / how far"): `
 confirmed obstacle is inside the train envelope, ``FAULT`` when the input cannot be trusted
 (too few returns, view blocked, no frame for ``stale_timeout`` s, an exception while
 processing), ``CAUTION`` for an advisory object next to the envelope or a degraded health
-(track model on its prior, short visibility, latency over budget), else ``GO``. The node never
+(track model on its prior, short visibility), else ``GO``. ``CAUTION`` is advisory, not an alarm:
+the alarm is ``STOP`` (``/resense/obstacle_detected``). Since 26.09 latency over budget is a
+health warning only (``/resense/health``, the status JSON), not ``CAUTION``, unless
+``health.latency_affects_decision`` (the parameter file) is true. The node never
 dies on a bad frame: the exception is logged, ``FAULT`` published, and after
 ``max_consecutive_errors`` the detector is reset. The watchdog publishes ``FAULT`` / health
 ``STALE`` while the input is silent, and ``FAULT`` / ``NO_INPUT`` before the first frame
@@ -765,12 +768,17 @@ class DetectorNode(Node):
 
     @staticmethod
     def decision(res: FrameResult) -> str:
-        level = (getattr(res, "health", {}) or {}).get("level", "ok")
+        """STOP > FAULT (health ``level`` error) > CAUTION (an advisory object, or a warning in
+        the health ``decision_level``) > GO. ``decision_level`` (26.09) is ``level`` without the
+        latency warning unless ``health.latency_affects_decision``; a result without it (older
+        core) uses ``level``."""
+        h = getattr(res, "health", {}) or {}
+        level = h.get("level", "ok")
         if res.obstacle:
             return "STOP"
         if level == "error":
             return "FAULT"
-        if res.warning or level == "warn":
+        if res.warning or h.get("decision_level", level) == "warn":
             return "CAUTION"
         return "GO"
 
@@ -780,7 +788,7 @@ class DetectorNode(Node):
         st = DiagnosticStatus(level=lv.get(h.get("level", "ok"), DiagnosticStatus.OK), name="resense/detector",
                               message="; ".join(h.get("messages", [])) or "ok", hardware_id=hdr.frame_id or "lidar")
         for k in ("points", "near_fraction", "blocked_sectors", "visibility", "rail_lock", "latency_p95_ms",
-                  "monitored_range", "clear_distance"):
+                  "monitored_range", "clear_distance", "decision_level"):
             if k in h:
                 st.values.append(KeyValue(key=k, value=str(h[k])))
         m = getattr(res, "mount", {}) or {}

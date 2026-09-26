@@ -17,7 +17,7 @@ frames, 13 km, no obstacles).
 ## Unreleased (in development; package version 1.0.0)
 
 Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
-overhead rule on, node v0.6.4). Tests: 235 → 493 (+28 native kernels, +3 speed evaluation
+overhead rule on, node v0.6.4). Tests: 235 → 499 (+28 native kernels, +3 speed evaluation
 helpers, +23 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5
 overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting and socket
 buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`, +20 DDS
@@ -25,7 +25,8 @@ transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
 `cluster.far_axis_both_sides`, +3 far bed bins, +5 the rail-shadow review fixes, +4 the
 free-hanging exemption of `floating`, +4 thin hanging objects, +5 `health.clear_cap`, +6 the rate
 and re-mount flags, +1 the rail-lock guard of the hanging stage, +13 the review fixes of the
-round-2 items, +17 their re-review, +7 the start-up rule) in `tests/`, 13 in `web/demo`.
+round-2 items, +17 their re-review, +6 latency out of the decision, +7 the start-up rule) in
+`tests/`, 13 in `web/demo`.
 
 - **Start-up of a fresh bag (26.09, P3 / P4): `tracking.low_min_seen_distance` 4 m, on.** A
   judge's fresh start at ride piece 2 STOPped at 2.9–3.1 m. The cause: the rail heads 3.0–3.6 m
@@ -39,6 +40,22 @@ round-2 items, +17 their re-review, +7 the start-up rule) in `tests/`, 13 in `we
   frame. New baseline `regression_baseline_2026-09-26_ride_startup.json`. +7 tests.
   [`p3_startup_2026-09-26.json`](docs/evidence/results/p3_startup_2026-09-26.json),
   [EXPERIMENTS §1j](docs/EXPERIMENTS.md).
+
+- **Latency out of the decision (26.09, P1):** a latency p95 over the 100 ms budget no longer
+  turns `GO` into `CAUTION` on `/resense/decision`; it stays a health warning (`level` warn, its
+  message and `latency_p95_ms` in `/resense/health` and the status JSON). The health output has a
+  new `decision_level`, the level without the latency warning, which the node's decision,
+  `scripts/score_clear_distance.py` and the dashboard read; `health.latency_affects_decision:
+  true` restores v0.6. `STOP`, `FAULT` (input errors, processing errors, the watchdog) and every
+  other warning are unchanged. Both judges of 26.09 and the judgement of 24.09: on a loaded
+  machine the latency warning was on 875 of 1 510 set O frames (690 `CAUTION`), at 24.09 on 97 %
+  of the frames, which read as a false-alarm storm. Gate on the six recordings and set O (no
+  ride: `--allow 'ride.*' --allow 'set_F_straight.*'`) against `_p3b`: PASS, every gated row the
+  same, only the informational latency rows moved. On that run (load average ~7) the latency
+  warning was on 2 242 of the 2 287 frames of the five obstacle-free recordings: `CAUTION` 2 189
+  → 980 frames (27–69 % per recording), set O 891 → 393; `STOP` and `FAULT` frames identical in
+  every recording. README (jury section): `CAUTION` is advisory, the alarm is `STOP` /
+  `/resense/obstacle_detected`. +6 tests.
 
 - **Re-review of the safety fixes (26.09, P3):** a match on the change frame ended the
   `tracking.reseed_hold` of a STOP, so a loss starting one frame after a calibration change got

@@ -1,10 +1,11 @@
 # Criteria Scorecard
 
-> **Purpose:** the judgement of ReSense against the eight criteria of spec §8 on 24.09: score per
-> criterion, the evidence behind it, the risks on the hidden data and the fastest points to gain.
-> It replaces every earlier scorecard and review.
+> **Purpose:** the judgement of ReSense against the eight criteria of spec §8: the current one of
+> 26.09 (§0) and the first of 24.09 (§1–§8, kept as the record): score per criterion, the evidence
+> behind it, the risks on the hidden data and the fastest points to gain.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, summary RU
-> **Last verified:** 2026-09-25 against `8932f3a` (judged on `4b5786b`) · **Status:** dated record
+> **Last verified:** 2026-09-26 against `867bb8a` (judged on `052e7c5` / `867bb8a`; the detector is
+> the same in both) · **Status:** current (§0); §1–§8 dated record of 24.09
 
 **Кратко.** Итог по восьми критериям ТЗ §8 на 24.09 — **60 / 100** (два независимых судьи: 63 и
 58,5). Сильная сторона — инженерия (8.5–8.7): 235 тестов, CI с ROS в Docker, результаты
@@ -13,6 +14,65 @@
 STOP нет, кубы 0,3 м — только с 34–43 м, висящий объект 5 см пропущен. Быстрее всего баллы дают
 зелёный `main`, ответы организаторов, README, слайды и правило коротких сигнатур (§6). Что
 изменилось после оценки и на какие критерии это должно повлиять (без переоценки) — §8.
+
+## 0. Re-judgement of 26.09 (current): 65 / 100
+
+**Кратко.** Повторная независимая оценка 26.09 — **65 / 100** (судьи: 66 и 65; было 60). Выросли
+8.1 (6 из 8 объектов организаторов со STOP вместо 5, висящий объект 5 см — STOP с 30,1 м), 8.3
+(C++-ядра, 10 кадр/с через ROS на 4 ядрах), 8.4 (5 Гц), 8.5–8.7 (зелёный CI, 486 тестов, шлюз
+регрессий, отказы с цифрами). Не выросли 8.2 (дальше ~101 м STOP нет) и 8.8 (колода и ролик ждут
+заморозки, слайды команды не заполнены).
+
+Two independent judges re-scored the branch head on 26.09 (A: the jury's view of the hidden data
+and the stand; B: a sceptic checking claims against the raw evidence), without trusting this
+file, CAPTAIN or the README. Both re-ran set O (`resense run --npy` + `score_fake_objects.py`)
+and `doubleT_obstacle` at head and matched the gate baseline `_ride_p3b` exactly; both ran the
+486 tests. Final = the mean, rounded down where only one judge measured a hold-down.
+
+| § | criterion | 24.09 | judge A | judge B | **26.09** | one-line reason |
+|---|---|---:|---:|---:|---:|---|
+| 8.1 | Works | 13 | 14.5 | 14.5 | **14.5 / 25** | 6 of 8 organizers' objects get a STOP (5 held; the box at the envelope top only 12 of 124 frames); the 5 cm hanging object a STOP from 30.1 m; the edge box reads GO; ride false STOPs 3.5 per km (in-sample) |
+| 8.2 | Range | 7 | 7.5 | 7.5 | **7.5 / 15** | 1 STOP frame beyond 100 m on the organizers' objects; 0.3 m cubes at 43–53 m; the injected person at 148–154 m is the team's own |
+| 8.3 | Speed | 6 | 7.5 | 7 | **7 / 10** | C++ kernels halve the detector; 360° through ROS at 9.8–10 fps, p95 70–73 ms on 4 physical cores; over-budget latency turns the decision into CAUTION on a loaded machine; never on the i7-9700E |
+| 8.4 | Generalisation | 8.5 | 9.5 | 8.5 | **9 / 15** | geometry, no map; 5 Hz fixed (13 → 10 events); 264 tuned keys (54 added on 25–26.09 around set O objects), "pre-registration" honest but in-sample; tilt ±3° still 14–17 events |
+| 8.5 | Technical quality | 7 | 7.5 | 7.5 | **7.5 / 10** | clean staged code, 486 tests, 6-job CI, a real regression gate; `main` 169 commits behind, review waived, ~7 800–8 800 lines of docs with stale counts |
+| 8.6 | Ease of launch | 7.5 | 8 | 8.5 | **8 / 10** | jury commands first, `docker load` offline proven in CI and on 3 clean VMs; the final archive does not exist yet; one VM's offline jury console failed (CycloneDDS without step 0) |
+| 8.7 | Team approach | 8 | 8.5 | 8.5 | **8.5 / 10** | tried-and-rejected record with raw JSON, ship rules, safety reviews; dense; some addenda written after the runs they react to |
+| 8.8 | Pitch | 3 | 3 | 3 | **3 / 5** | deck and video stale (5 of 8, 289 tests, "hanging missed", `docker build`, «релиз v1.0.0»), team slides `<…>`, no rehearsal |
+| | **Total** | **60** | **66** | **65** | **65 / 100** | |
+
+**Claims the judges found wrong or overstated** (to fix in the consistency pass after the freeze,
+CAPTAIN action 19):
+- "6 of 8 with a STOP" is a count; 5 are held (the box at the envelope top: 12 of 124 frames).
+- README: hanging objects are obstacles "whatever their shape" — the hanging stage covers groups
+  ≤ 0.5 m, within 0.8 m of the axis, ≤ 60 m, with a rail lock only; "~200 m" for tall objects —
+  set O has no STOP beyond 101 m.
+- "The node lost no frames" — none lost in transport, but 39–53 are skipped by the start-up
+  catch-up by design (the drop check was redefined after the run that failed on drops).
+- EXPERIMENTS §1g "0 of 706 alarm frames" in the held-out suffix of `cloud_with_fake_obj`: on the
+  cached frames frame 1131 is a STOP at 140.7 m (one of set O's 3 background alarm frames, the same
+  in every baseline since 25.09; the §1g figure came from bag playback).
+- "3.5 per km" is in-sample (the ride decided the rules); CAUTION is on 41–48 % of empty-ride
+  frames.
+- Stale: README header (`79109f5`, v0.6.3), CAPTAIN C16 (`main` green at `5de0844`; `main` is at
+  the revert `6962519`), C17 (396 tests; 486 now).
+
+**Top risks on the hidden data:** objects at the envelope edge or top (advisory or GO: the
+organizers place from the sensor axis, ReSense measures from the rails); nothing beyond ~100 m on
+their objects; false STOPs at stations and at the start of a fresh bag (a 2.9–3.1 m STOP in the
+first 1.5 s of one ride chunk while calibration was pending); CAUTION on a loaded stand; delivery
+(no archive from the final commit yet, `main` behind).
+
+**Actions after the judgement** (owner; being done on 26.09 unless noted):
+- before the freeze (26.09 20:00): start-up STOPs of a fresh bag measured on all 221 ride starts
+  and fixed if common (P3 / P4); latency kept out of the decision, CAUTION explained in the README
+  (P1);
+- after the freeze: the consistency pass with the corrections above (P4 or agent, by 27.09 20:00);
+  the deck and the video rebuilt from `_ride_p3b`, team slides, two rehearsals (P2 + captain);
+  the archive from the frozen commit, an offline dry run, PR #12 merged or the commit hash named
+  in the upload (captain);
+- not before the freeze (risky, or waiting on the organizers' Q1 / Q2): the envelope from the
+  sensor axis for edge objects; a far-field rule for the high wide box.
 
 ## 1. How it was judged
 

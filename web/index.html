@@ -204,8 +204,9 @@ const CAB_VHALF = Math.atan(Math.tan(CAB.hfov * Math.PI / 360) * 9 / 16);       
 const TUNNEL = [[-2.3, -0.5], [-2.3, 3.3], [-1.5, 4.3], [1.5, 4.3], [2.3, 3.3], [2.3, -0.5]];   // schematic (dy, h)
 const DECISION_RU = { GO: 'ДВИЖЕНИЕ', CAUTION: 'ВНИМАНИЕ', STOP: 'СТОП', FAULT: 'ОШИБКА' };
 function decisionOf(res) {
-  const h = res.health || {};
-  return res.decision || (res.obstacle ? 'STOP' : (h.level === 'error' ? 'FAULT' : ((res.warning || h.level === 'warn') ? 'CAUTION' : (h.level ? 'GO' : '—'))));
+  // DetectorNode.decision; 26.09: a latency warning is in h.level but not in h.decision_level (no CAUTION)
+  const h = res.health || {}, dl = h.decision_level || h.level;
+  return res.decision || (res.obstacle ? 'STOP' : (h.level === 'error' ? 'FAULT' : ((res.warning || dl === 'warn') ? 'CAUTION' : (h.level ? 'GO' : '—'))));
 }
 function trackModel(t) {
   // resense.track.TrackModel.center_y / rail_z: quadratic bed, extrapolated linearly beyond floor_range
