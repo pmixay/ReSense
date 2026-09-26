@@ -202,6 +202,7 @@ resense:
     near_escalate_hits: 5          # hits in a row
     stop_keep_signature: false     # 26.09 (P3 range, EXPERIMENTS 1o; off): a track that was a STOP in the previous frame counts a cluster with enough strict-envelope voxels demoted only by a shape signature (elevated, floating, edge, wall_face; never a column, the far-field or overhead reasons) as a hit inside the envelope: a signature can keep a track from being confirmed, not take a confirmed obstacle down; it never makes a new obstacle
     stop_keep_thin: 0              # 26.09 (P3 range, EXPERIMENTS 1o; 0 = off): a corridor cluster flatter than cluster.min_height (one scan line) inside the strict envelope may continue a track no other cluster matched (same gate): 1 = a track that was a STOP in the previous frame; 2 = also a track not yet reported whose last hit was inside the envelope (counts towards its confirmation); it never starts a track
+    stop_keep_min_voxels: 0        # 26.09 (P3 range round 2, EXPERIMENTS 1o; 0 = no bar): a kept cluster (stop_keep_signature, stop_keep_thin) needs at least this many strict-envelope voxels; 10 = the near escalation's bar
     max_misses: 3
     conf_gain: 0.35
     conf_decay: 0.25

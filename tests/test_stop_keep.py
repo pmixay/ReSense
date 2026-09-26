@@ -242,3 +242,32 @@ def test_raycast_flags_off_equal_defaults():
     a = _sequence(widths, DetectorConfig())
     b = _sequence(widths, _cfg(False, 0, escalation=True))
     assert [(r.obstacle, r.warning, r.nearest_distance) for r in a] == [(r.obstacle, r.warning, r.nearest_distance) for r in b]
+
+
+def test_min_voxels_bar_round_2():
+    """``tracking.stop_keep_min_voxels`` (round 2, 0 = no bar): a demoted or scan-line cluster
+    keeps a STOP only with at least that many strict voxels. Round 1's ride cases: a `floating`
+    cluster of 6 voxels and a bed scan line of 7 do not keep a STOP with the bar at 10; the box at
+    the envelope top (16-66 strict voxels) does."""
+    assert TrackingConfig().stop_keep_min_voxels == 0
+    xs = _approach(18)
+    few = [([_cl(x)], []) for x in xs[:6]] + [([_cl(x, "warning", "floating", n_gauge=6)], []) for x in xs[6:]]
+    many = [([_cl(x)], []) for x in xs[:6]] + [([_cl(x, "warning", "elevated", n_gauge=20)], []) for x in xs[6:]]
+    assert _run(few, stop_keep_signature=True)[-1] == (True, "gauge")
+    assert _run(few, stop_keep_signature=True, stop_keep_min_voxels=10)[-1] == (True, "warning")
+    assert _run(many, stop_keep_signature=True, stop_keep_min_voxels=10)[-1] == (True, "gauge")
+    thin7 = [([_cl(x)], []) for x in xs[:6]] + [([], [_cl(x, n_gauge=7, thin=True)]) for x in xs[6:11]]
+    thin20 = [([_cl(x)], []) for x in xs[:6]] + [([], [_cl(x, n_gauge=20, thin=True)]) for x in xs[6:11]]
+    assert _run(thin7, stop_keep_thin=1)[10] == (True, "gauge")
+    assert _run(thin7, stop_keep_thin=1, stop_keep_min_voxels=10)[10] == (False, "gone")
+    assert _run(thin20, stop_keep_thin=1, stop_keep_min_voxels=10)[10] == (True, "gauge")
+
+
+@pytest.mark.synthetic
+def test_raycast_box_at_the_top_held_with_the_bar():
+    """Ray-cast, round 2's candidate (signature keep, scan-line keep 1, bar 10): the box at the
+    envelope top is held on every frame after its confirmation, as without the bar."""
+    cfg = _cfg(True, 1)
+    cfg.tracking = replace(cfg.tracking, stop_keep_min_voxels=10)
+    res = _sequence([1.6] * 7 + [2.4] * 13, cfg)
+    assert [k for k, r in enumerate(res) if not r.obstacle] == [0, 1, 2, 3]

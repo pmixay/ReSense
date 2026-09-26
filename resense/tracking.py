@@ -161,8 +161,10 @@ class Tracker:
 
     def _keeps(self, t: Track, cl: Cluster) -> bool:
         """26.09 (``stop_keep_signature``): ``cl`` counts as inside the gauge for ``t`` although a
-        shape signature demoted it, because ``t`` was reported as an obstacle in the previous frame."""
-        return self.cfg.stop_keep_signature and cl.demoted and t.reported and t.zone == "gauge"
+        shape signature demoted it, because ``t`` was reported as an obstacle in the previous frame
+        (and ``cl`` has ``stop_keep_min_voxels`` strict voxels)."""
+        return (self.cfg.stop_keep_signature and cl.demoted and t.reported and t.zone == "gauge"
+                and cl.n_gauge >= self.cfg.stop_keep_min_voxels)
 
     def update(self, clusters: List[Cluster], ego_shift: float = 0.0,
                frame_dt: Optional[float] = None, low_ok: bool = True, rail_within: float = 0.0,
@@ -281,7 +283,8 @@ class Tracker:
         greedily and with the same gate and prediction, with the clusters flatter than
         ``cluster.min_height`` (one scan line: the part of an object inside the envelope thinner than
         the ring spacing at range) that are inside the gauge (zone ``gauge``, or with
-        ``stop_keep_signature`` demoted only by a shape signature). Mode 1: only tracks reported as
+        ``stop_keep_signature`` demoted only by a shape signature) with ``stop_keep_min_voxels``
+        strict voxels. Mode 1: only tracks reported as
         obstacles in the previous frame; mode 2: also a track not yet reported whose previous hit
         was inside the gauge (zone ``gauge``), so that one scan line counts towards its confirmation.
         A match is a hit like any other.
@@ -295,7 +298,8 @@ class Tracker:
             stop = t.reported and t.zone == "gauge"
             if stop or (mode >= 2 and not t.reported and t.last.zone == "gauge"):
                 cand.append(i)
-        ok = [j for j, cl in enumerate(thin) if cl.zone == "gauge" or (c.stop_keep_signature and cl.demoted)]
+        ok = [j for j, cl in enumerate(thin) if (cl.zone == "gauge" or (c.stop_keep_signature and cl.demoted))
+              and cl.n_gauge >= c.stop_keep_min_voxels]
         if not cand or not ok:
             return
         static = np.array([-float(ego_shift), 0.0, 0.0])
