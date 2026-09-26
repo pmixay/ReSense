@@ -14,23 +14,26 @@ counts are "alarm frames / events (/ STOP episodes)" at full rate unless said. "
 five obstacle-free recordings (2 287 frames); "ride" = the 20-minute recording `new_data` (11 271
 frames, 13 km, no obstacles).
 
-## Unreleased (detector frozen; package version 1.0.0)
+## Unreleased (further detector work authorized; package version 1.0.0)
 
-- **Detector freeze and remaining integration (26.09 night, delegated by the user):**
-  frozen the existing `_ride_p3d` detector and defaults with a source/evidence SHA256 manifest
-  and a CI integrity check. Candidate B is not shipped; the envelope union stays off pending Q1.
+- **P3d reference seal and remaining integration (26.09 night, delegated by the user):**
+  sealed the existing `_ride_p3d` detector and defaults as the reproducible reference with a
+  source/evidence SHA256 manifest and CI integrity check. Final freeze and release remain on hold.
+  Candidate B is not shipped; the envelope union stays off pending Q1.
   The node now allows 20 s only for a new recording's initial catch-up, then returns to the
   existing 5 s backlog limit. The bag acceptance checker matches each message's header timestamp,
   fixing false loss reports from receive-clock drift. P4 completed 72 preregistered object/background combinations:
   45 with any match, 544/2,458 visible frames, zero paired-control matches; no tuning followed.
   All 45 ride false events have scene reviews. Fresh full gate: 183 unchanged values, no waivers.
-  Final idle cold/warm original-bag replays and stock DDS pass; the earlier loaded failure is
-  retained. The full-data run on the second machine passed 621 tests and 6 subtests; this checkout
-  passed 666 tests and 6 subtests, with one ride-cache test deselected because `/data/cache/new_data`
-  is unavailable. Dashboard FAULT/CAUTION banners and estimated-range
+  The 25.09 original-bag replay and stock DDS check passed, but a fresh cold-cache replay on 26.09
+  failed its message-count criterion; its logs are retained below. The full-data run on the second
+  machine passed 621 tests and 6 subtests; this checkout's cadence-preserving follow-up passes
+  667 tests and 6 subtests, with one ride-cache test deselected because `/data/cache/new_data` is
+  unavailable. Dashboard FAULT/CAUTION banners and estimated-range
   wording are corrected; live freshness validation, no-data overlays, and reconnect guards have
   16 passing Chromium tests. CI now has branch-scoped cold-bag and remote-viewer outage /
-  recovery checks; final verification on the rebased branch is pending. Deck, PDF and video rebuilt. Independent scores and remaining quality
+  recovery checks; final cold-bag verification of the follow-up is pending. Deck and PDF rebuilt;
+  the video remains the previously verified `_ride_p3d` build. Independent scores and remaining quality
   gaps are in SCORECARD; these changes do not claim improved detector recall.
 
 

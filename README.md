@@ -142,10 +142,12 @@ ros2 bag play <bag>  ──PointCloud2 (either topic / frame pair), 10 Hz──�
    [`docs/evidence/rejudge_2026-09-26/`](docs/evidence/rejudge_2026-09-26/)).
 4. **Read the answer** ("What to look at"). `ros2 bag play` (Humble) preloads up to 1 000 messages,
    all of a short recording, while its clock runs, then sends the overdue first seconds back to
-   back: `FAULT` until then (2.6–4 s for 1.9 GB in the page cache, longer from a slow disk). The
-   node works through the burst from the first frame, one frame every 0.3 s of recording
-   (`catchup_step`), and is back in real time within ~2–10 s (the 26.09 re-judgement, 4 cores,
-   warm cache: 3.4 s on `roundT_doubleT`, 9.5 s on the 360° `doubleT_obstacle`).
+   back: `FAULT` until then (2.6–4 s for 1.9 GB in the page cache, longer from a slow disk). On the
+   P1/P2 follow-up branch, the first backlog preserves each observed input-period frame within the
+   20 s startup cap; later live stalls use the normal 0.3 s sampling step and 5 s limit. The first
+   cold-cache CI run failed before that correction (85/201 frames processed); original-bag
+   validation of the correction is pending. The warm-cache 26.09 re-judgement reached real time
+   in 3.4 s on `roundT_doubleT` and 9.5 s on the 360° `doubleT_obstacle`.
 
 **The bags disagree on the topic and frame id** (`/lidar_points` in `hesai_lidar` for
 `roundT_doubleT` and four more, `/sensing/lidar/hesai128/pointcloud` in `lidar_livox` for
@@ -300,8 +302,8 @@ not authorization to move a train.
 | [`docs/VM_GUIDE.md`](docs/VM_GUIDE.md) | instructions for the team's temporary cloud VM (a person or an agent), plain commands of the tools above: data (the ride streamed split by split), 8-core bench, dry run with the original bags, stock-player and host console, regression gate with the ride, image archive, offline rehearsal, results into a PR |
 | [`configs/default.yaml`](configs/default.yaml) | the tunable parameters, copied into the ROS package at build time (`scripts/sync_params.sh`, checked in CI) |
 | [`native/`](native/) | optional C++ kernels for the per-frame hot spots (track stage, corridor selection, health visibility): about half the detector time, bit-identical output; built by `pip install`, numpy fallback without a compiler or with `RESENSE_NATIVE=0` ([ARCHITECTURE](docs/ARCHITECTURE.md) "Native kernels") |
-| [`tests/`](tests/) | 621 tests in the final full local pytest suite; most use a synthetic ray-cast tunnel (algorithm, envelope, calibration, guards, the native kernels and the cKDTree DBSCAN against their reference code, the regression gate's rules, the release tooling, the overview video's table, the ROS node against stand-ins, the dry-run checker) |
-| [`web/`](web/) | browser dashboard (offline replay; live via rosbridge, installed separately), Foxglove layout, label tool, 17 separate headless browser tests |
+| [`tests/`](tests/) | 667 tests passed on the P1/P2 follow-up branch; one `new_data` cache test is deselected without `/data/cache/new_data`; most use a synthetic ray-cast tunnel (algorithm, envelope, calibration, guards, the native kernels and the cKDTree DBSCAN against their reference code, the regression gate's rules, the release tooling, the overview video's table, the ROS node against stand-ins, the dry-run checker) |
+| [`web/`](web/) | browser dashboard (offline replay; live via rosbridge, installed separately), Foxglove layout, label tool, 16 separate headless browser tests |
 | [`docs/`](docs/) | [`docs/README.md`](docs/README.md): every document, its purpose and owner; organizers' material in [`docs/organizers/`](docs/organizers/) |
 | [`labels/`](labels/) | `doubleT_obstacle.json` (real labels), `new_data_objects.json` (every object confirmed on the ride, by cause), `cloud_with_fake_obj.json` (the organizers' synthetic objects) |
 

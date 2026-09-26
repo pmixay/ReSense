@@ -76,7 +76,7 @@ N = {
     "native_cut": "38–57 %",                 # optional C++ kernels: detector time, identical output
     "gpu_gain": "30–45 мс",                  # the GPU study's upper bound per 360° frame against numpy
     "speed_err": "0,07 м/с",                 # the opt-in LiDAR-only train speed, median error (0.06–0.08)
-    "tests": "666+",                         # latest local full pytest pass; one ride-cache case needs new_data
+    "tests": "667+",                         # latest local full pytest pass; one ride-cache case needs new_data
     # the organizers' own synthetic obstacles, set O (cloud_with_fake_obj: 10 objects, 1 510 frames,
     # the train drives up to them at 1.4–20 m/s, no speed given) [organizers' synthetic, P4_AUDIT]
     "fake_frames": "1 510", "fake_stop": "8 из 8", "fake_box": "98", "fake_plank": "82", "fake_cubes": "43–53",

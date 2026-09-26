@@ -581,7 +581,7 @@ def test_presentation_artifact_uses_the_organizers_slide_sequence():
         f"{rail['hits']} из {rail['frames']}",
         f"{baseline['set_O']['inside_objects_with_stop']} из {baseline['set_O']['inside_objects']}",
         f"{top['stop_frames']} из {top['visible_frames']}",          # the 2 x 2 m box at the envelope top
-        "666", "docker load",
+        "667", "docker load",
     ):
         assert required in text
     assert "релиз v1.0.0" not in text

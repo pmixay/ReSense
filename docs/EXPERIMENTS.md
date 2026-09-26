@@ -3205,6 +3205,27 @@ shm mode; a CycloneDDS player needs `rmem_max` 32 MiB in either mode. README ste
 CycloneDDS and costs Fast DDS nothing; the shm mode passes [`VM_GUIDE.md`](VM_GUIDE.md) §4.6, but no
 Fast DDS failure over UDP is left for it to fix, so it stays opt-in until the captain decides.
 
+### 3c. Cold-cache startup follow-up (26.09, P1/P2 branch)
+
+The branch CI test downloaded the original `doubleT_obstacle` bag, cleared the runner's page
+cache, and played it through the Docker node. On commit `446e0ad`, the detector emitted the first
+STOP at +1.4 s in the labelled 55.6–56.5 m window, but the message-count check failed: 85 of 201
+frames were processed, 110 were deliberately skipped by startup catch-up, 118 total drops were
+reported, and 84 recorded messages were still unprocessed after +5 s. Catch-up did not reach the
+newest message until the end of the recording. The checker correctly enforced `--max-dropped 0`;
+no waiver was applied. Full logs, compressed status stream, bag and archive hashes, and command
+provenance are in [`evidence/p1_p2_completion_2026-09-26/cold_bag_failed_run_36274548282/`](evidence/p1_p2_completion_2026-09-26/cold_bag_failed_run_36274548282/).
+
+The follow-up changes only the node's initial backlog selection: for a new recording, it keeps
+each observed input-period frame within the configured 20 s startup cap, including when the
+previous recording left a slower period estimate. Once startup catch-up drains, live backlog
+sampling remains 0.3 s with the existing 5 s lag bound. All 47 node tests and the local suite
+(667 passed, 1 ride-cache case deselected because `new_data` is absent, 6 subtests) pass. The
+original-bag CI replay of this correction is pending, so this is not yet an accepted cold-start
+result. The distinct P2 second-container viewer test passed in the same failed workflow: it
+detected a paused server and restored the stream after resume. That is a deterministic two-device
+simulation; visual Foxglove layout import on a physical second device remains unverified.
+
 ## 4. What we learned / hard cases
 
 1. **Sensor mounts differ between bags** (bed 1.5 m vs 2.0 m below the sensor, axis 0.05–0.25 m

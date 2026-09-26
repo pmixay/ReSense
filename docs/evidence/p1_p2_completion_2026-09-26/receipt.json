@@ -1,0 +1,98 @@
+{
+  "schema": "resense-p1-p2-completion-v1",
+  "date": "2026-09-26",
+  "branch": "claude/p1-p2-completion-20260926",
+  "tested_commit": "78b48ef8e4f8f588d17fa0c5f67e85a44087e9d0",
+  "current_branch_commit": "78b48ef8e4f8f588d17fa0c5f67e85a44087e9d0",
+  "post_test_rebase_change": "The full suite passed after the P1 cadence-preserving source and node tests were committed; deck-count presentation files were also updated and the browser suite ran afterward.",
+  "local": {
+    "python": "3.12 via /tmp/resense-p4-venv",
+    "suite": {
+      "command": "RESENSE_REQUIRE_SYNTHETIC=1 /tmp/resense-p4-venv/bin/python -m pytest -q -rs",
+      "passed": 667,
+      "failed": 0,
+      "deselected": 1,
+      "deselected_reason": "tests/test_rail_start.py::test_finding_rail_heads_ahead_of_a_standing_fresh_start_do_not_stop requires absent /data/cache/new_data",
+      "subtests_passed": 6,
+      "warnings": 5,
+      "result": "PASS"
+    },
+    "browser": {
+      "command": "PLAYWRIGHT_BROWSERS_PATH=/tmp/resense-p4-playwright /tmp/resense-p4-venv/bin/python -m pytest -q -rs web/demo",
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "result": "PASS"
+    },
+    "dashboard_smoke": {
+      "command": "PLAYWRIGHT_BROWSERS_PATH=/tmp/resense-p4-playwright /tmp/resense-p4-venv/bin/python web/demo/check_dashboard.py --jsonl /tmp/resense-p2-demo.jsonl --screenshot /tmp/resense-p2-dashboard.png",
+      "frames": 60,
+      "result": "PASS; 60 frames, expected banner states, screenshot /tmp/resense-p2-dashboard.png"
+    },
+    "static_checks": [
+      {
+        "command": "/tmp/resense-p4-venv/bin/ruff check .",
+        "result": "PASS"
+      },
+      {
+        "command": "scripts/sync_params.sh --check",
+        "result": "PASS"
+      },
+      {
+        "command": "/tmp/resense-p4-venv/bin/python scripts/detector_freeze.py verify",
+        "result": "PASS; 27 files"
+      },
+      {
+        "command": "bash -n scripts/p1_cold_bag_test.sh scripts/p2_viewer_test.sh",
+        "result": "PASS"
+      },
+      {
+        "command": "git diff --check",
+        "result": "PASS"
+      }
+    ],
+    "deck_builds": {
+      "public_slides": 16,
+      "private_draft_slides": 16,
+      "private_pending_fields": 2,
+      "private_template_placeholders": 0,
+      "private_picture_shapes": 5,
+      "private_assets_tracked_by_git": false,
+      "template_sha256": "1604aa9146b82cacd96f893be2c5e08c6981183ba155cd4a11c245f25cd894d5",
+      "build_script_sha256": "c5886d17365b6efbe4df5ba580ffc2917ed709362cf8d265e06086840eea9300",
+      "public_pptx_sha256": "83beabe13ae99d3155c4ecaf5a0da879a1d391d13e47b807c907f3632bd25222",
+      "public_pptx_bytes": 14374301,
+      "public_pdf_sha256": "5753d5062ec5c99d9d86401e867c6c46cf63b20ba3207eeca61f0653c054a8b9",
+      "public_pdf_bytes": 3094258
+    }
+  },
+  "p1_followup_worktree": {
+    "source_commit": "78b48ef8e4f8f588d17fa0c5f67e85a44087e9d0",
+    "change": "First-recording backlog preserves every observed input-period frame within the 20 s startup cap, including after a slower prior recording; later live backlogs keep catchup_step and the 5 s bound.",
+    "node_tests_passed": 47,
+    "full_suite": {
+      "passed": 667,
+      "failed": 0,
+      "deselected": 1,
+      "subtests_passed": 6,
+      "warnings": 5
+    },
+    "original_bag_cold_ci": "pending; first attempt failed before this correction",
+    "pushed": false
+  },
+  "branch_ci": {
+    "run_id": 36274548282,
+    "url": "https://github.com/pmixay/ReSense/actions/runs/36274548282",
+    "status_at_receipt_creation": "completed",
+    "conclusion": "failure",
+    "non_cold_jobs": "pytest, web, lint, params-in-sync and offline-build passed; Docker passed before the cold-bag criterion.",
+    "viewer_simulation": "PASS",
+    "cold_bag": {
+      "result": "FAIL",
+      "artifact_id": 10917590342,
+      "artifact_url": "https://github.com/pmixay/ReSense/actions/runs/36274548282/artifacts/10917590342",
+      "durable_record": "cold_bag_failed_run_36274548282/README.md"
+    }
+  },
+  "release_and_detector_freeze": "remain on hold; this P1/P2 work makes no detector-quality claim"
+}
