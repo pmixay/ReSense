@@ -421,7 +421,7 @@ class CalibrationConfig:
 class HealthConfig:
     """Production guards (v0.6, ``resense/health.py``): input sanity, visibility, track lock,
     latency budget. They never change a detection; they set ``health.level`` and the
-    monitored (verified-clear) range."""
+    estimated monitored range; obstacle detection can still miss objects."""
     min_points: int = 20000        # valid returns per frame below which the input is a fault
     low_points_fraction: float = 0.5   # warn when a frame has fewer than this share of the running median
     near_range: float = 2.5        # m, returns closer than this are window dirt / the train's nose
@@ -438,7 +438,7 @@ class HealthConfig:
     # FAULT and every other warning are unchanged. true = the v0.6 behaviour
     latency_affects_decision: bool = False
     # 25.09 (SCORECARD §6 row 6, docs/evidence/results/p3_clear_distance_2026-09-25.json): cap the
-    # verified-clear distance at the nearest candidate of this frame that touches the envelope
+    # monitored-range estimate at the nearest candidate of this frame that touches the envelope
     # although it is not a confirmed obstacle (unconfirmed, advisory); never changes a detection
     # or the decision. false = clear_distance counts confirmed obstacles only (v0.6). On since
     # 25.09, round 2, candidate R1 (the sub-parameters below), shipped by the captain's delegate
@@ -451,7 +451,7 @@ class HealthConfig:
     clear_cap_margin: float = -1.0     # m; >= 0: a cluster also touches with a point of this frame inside the envelope widened laterally by this (no edge margin); < 0 = n_gauge only
     clear_cap_points: int = 0          # > 0: also cap at the X of the k-th nearest strict-envelope corridor return of the frame (low candidates excluded); 0 = off
     clear_cap_skip_columns: bool = True    # a cluster demoted as a column (or its track held advisory by tracking.column_hold) does not cap (round 2; false = round 1)
-    clear_cap_lost: bool = True            # 26.09 (safety review): also cap at the predicted distance of a track that was reported when it was last matched and missed this frame (until the tracker drops it after tracking.max_misses), so a lost STOP does not turn into a long verified-clear distance; false = this frame's clusters only
+    clear_cap_lost: bool = True            # 26.09: cap at the predicted distance of a previously reported track until tracking.max_misses; false uses only current clusters. Untracked objects can still be missed.
 
 
 @dataclass

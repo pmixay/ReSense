@@ -79,7 +79,7 @@ class FrameResult:
     # --- additive since v0.6: production guards and mount calibration ---
     health: dict = field(default_factory=dict)   # resense.health.HealthMonitor.update(): level, messages, monitored range
     mount: dict = field(default_factory=dict)    # resense.calibration.MountCalibration.to_dict()
-    clear_distance: float = 0.0            # m: nearest confirmed obstacle, else how far the corridor was verified clear
+    clear_distance: float = 0.0            # m: estimated monitored range capped by obstacle/candidate evidence; missed objects may remain
     xyz: Optional[np.ndarray] = None       # the processed cloud (vehicle frame after the mount correction), not serialised
 
     def to_dict(self) -> dict:
@@ -506,7 +506,7 @@ class Detector:
         and beyond the shorter boundary's range (+ ``axis_valid_margin``) is demoted to advisory
         ``beyond_axis``: the curvature that puts it in the corridor is not supported that far on
         both sides. Other clusters keep their reasons (a column stays a column hit). Returns the
-        range the corridor is verified to (for the verified-clear distance)."""
+        range supported by the corridor model (for the monitored-range estimate)."""
         limit = max(min(self.track.axis_valid_bent, self.cfg.gauge.range_max), floor_valid)
         if limit >= valid:
             return valid
@@ -600,7 +600,7 @@ class Detector:
     # -- 6b ------------------------------------------------------------------------------------
     def _clear_cap(self, clusters: List[Cluster], cand: Candidates, dy_all: np.ndarray,
                    h_all: np.ndarray) -> Optional[float]:
-        """``health.clear_cap`` (25.09): the distance the verified-clear distance is capped at
+        """``health.clear_cap`` (25.09): the cap on the monitored-range estimate
         (None = no cap), see :func:`clear_cap_distance`. Runs after the tracker and changes
         nothing it or the decision reads."""
         return clear_cap_distance(clusters, self.tracker.tracks, cand, dy_all, h_all, self.cfg.gauge, self.cfg.health)
@@ -621,7 +621,8 @@ def clear_cap_distance(clusters: List[Cluster], tracks, cand: Candidates, dy_all
     With ``clear_cap_lost`` (26.09) also the predicted distance of a track that was reported when
     it was last matched and missed this frame (its last cluster touching the envelope, columns
     skipped as above), until the tracker drops it: a STOP lost for a few frames does not turn
-    into a verified-clear distance beyond the object."""
+    into an uncapped monitored-range estimate beyond that tracked object. Other objects can
+    still be missed."""
     owner = {id(t.last): t for t in tracks if t.last is not None and t.misses == 0}
     poly = widened_profile(gauge_cfg, hcfg.clear_cap_margin) if hcfg.clear_cap_margin >= 0 else None
     best: Optional[float] = None

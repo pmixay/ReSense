@@ -1,7 +1,7 @@
-"""Production guards (v0.6): is the detector's answer trustworthy right now?
+"""Input-health checks and an estimate of monitored range.
 
-A safety function must say not only "obstacle at X m" / "clear", but also *how far the path
-was actually checked* and whether the input can be trusted. :class:`HealthMonitor` computes,
+The range estimate describes the available model and surviving evidence; it can extend past
+missed objects. :class:`HealthMonitor` computes,
 per frame and without touching any detection:
 
 * ``points`` - valid returns; a frame far below ``min_points`` (a dead or blinded sensor, a
@@ -20,13 +20,14 @@ per frame and without touching any detection:
   since the start (or a reset), the frames in which the floor-shadow rule of the track model
   (``track.floor_shadow_height``) found the shadow of a large near object, held the previous bed,
   or was released after ``track.floor_shadow_max_hold`` held frames in a row: counters only;
-* ``monitored_range`` - the distance up to which the corridor was checked this frame:
+* ``monitored_range`` - an estimate based on visibility and the supported model this frame:
   ``min(visibility, trusted axis range, trusted height-reference range, gauge range)``; and
   ``clear_distance`` - the nearest confirmed obstacle, or ``monitored_range`` when there is
   none; with ``clear_cap`` (on since 25.09, round 2) also no farther than the nearest unconfirmed
-  or advisory candidate touching the envelope (``candidate_distance``, from the detector). A
-  consumer that brakes on ``clear_distance < stopping distance`` gets the fail-safe
-  behaviour for free: a blinded sensor, a lost track model or a stale input shrink it.
+  or advisory candidate touching the envelope (``candidate_distance``, from the detector).
+  Sparse, filtered or misclassified objects can remain beyond these caps. This estimate does
+  not establish obstacle-free track or a braking guarantee. The node and consumers separately
+  enforce input and result freshness.
 
 ``level`` is ``ok`` / ``warn`` / ``error`` with human-readable ``messages``; the ROS node
 publishes it as ``diagnostic_msgs/DiagnosticArray`` and adds the input-staleness watchdog.
