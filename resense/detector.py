@@ -230,6 +230,12 @@ class Detector:
         merged, n_acc = self._accumulate(cand, speed, dt)
         t4 = time.perf_counter()
         clusters = self._cluster(merged, n_acc, valid, floor_valid, straddle, near)
+        # D1 experimental branch: shape context comes from the full scan, before the corridor
+        # crop. The preregistered check can promote only existing supported candidates.
+        from resense.context import restore_context
+        clusters, self._thin, self.context_stats = restore_context(
+            clusters, self._thin, xyz, frame.intensity, dy_all, h_all, cfg.cluster, valid,
+            floor_valid, n_acc)
         if cfg.cluster.far_axis_both_sides == 2:
             valid = self._far_both_sides(clusters, valid, floor_valid)
         if cfg.cluster.hanging_enabled and (not cfg.cluster.hanging_needs_rails or self.track.rail_slabs > 0):
