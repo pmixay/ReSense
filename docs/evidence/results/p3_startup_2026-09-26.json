@@ -1271,7 +1271,8 @@
   "shipped": "c: tracking.low_min_seen_distance 4.0 m, on (904fd7c); a and b stay off (flags kept, documented as tried, not shipped)",
   "why": "a and b fail S1: they drop or delay a real low object at a fresh start on an untilted rig (the gate cannot see it: its only real low object, doubleT_obstacle's, is on a tilted rig, 'provisional' from frame 4). c passes S1, S2 and S3 and removes exactly the finding",
   "gave_up": "a low object first seen within 4 m of a standing train is not reported (inside the braking distance at any speed and in front of the learned bed cross-section); none in any data",
-  "what_a_would_buy": "41 -> 30 start-window false events (every low one, doubleT_platform's 3 at 34.5-41.7 m included), at the cost of every low STOP in the first ~20 s of an untilted bag"
+  "what_a_would_buy": "41 -> 30 start-window false events (every low one, doubleT_platform's 3 at 34.5-41.7 m included), at the cost of every low STOP in the first ~20 s of an untilted bag",
+  "superseded_by": "addendum_blind_zone: c reverted, nothing shipped"
  },
  "final": {
   "code": "904fd7c87946e959045d12b48085216fb7e5e702",
@@ -1419,7 +1420,7 @@
   "wall_s": 611.4,
   "command": "python scripts/regression_gate.py --cache /data/cache --jobs 2 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_p3b.json (on 904fd7c, the new defaults, no --set)",
   "per_frame_vs_set_run": "identical to S3_gate_c in all 15 269 frames (decision, detections, warnings, clear_distance, track model); same config sha256",
-  "baseline": "regression_baseline_2026-09-26_ride_startup.json = this run without its gate block",
+  "baseline": "cut from this run on 904fd7c as the new gate baseline, then removed with the rule (addendum_blind_zone); the gate baseline stays regression_baseline_2026-09-25_ride_p3b.json",
   "stress": {
    "command": "python scripts/robustness_check.py --cache /data/cache --jobs 2 [--every 2 | --mount roll_3 | --mount pitch_3] (on 904fd7c)",
    "as_recorded": {
@@ -1449,5 +1450,1038 @@
    "before (p3_round2_review_fixes, 5f64ad4)": "13 / 16, 186/246 @ 11; 5 Hz 10 / 10, 92/123 @ 12; roll 14 / 16, 183/246 @ 12; pitch 17 / 18, 186/246 @ 11"
   },
   "tests": "493 passed on the native path and with RESENSE_NATIVE=0 (486 + 7 tests/test_startup.py); web/demo 13 passed; ruff clean; scripts/sync_params.sh --check in sync"
+ },
+ "addendum_blind_zone": {
+  "date": "2026-09-26",
+  "written_at_utc": "2026-09-26T06:43:52Z",
+  "question": "the coordinator, after 31295d4: c (tracking.low_min_seen_distance 4 m) may open a safety blind zone: a low object already within 4 m when a standing train starts, or one that appears within 4 m (falls onto the track just ahead), is never matched at >= 4 m and so never reported. The gain is 1 ride event and 4 frames in 229 starts; a safety fix wins over a false-alarm gain. Rule: if any case STOPs with the rule off and not with it on, the blind zone is real and c is reverted (default 0, the baseline cut on 904fd7c removed, docs 'tried, not shipped').",
+  "method": "ray-cast (resense.synthetic.synthetic_tunnel_frame, sensor 1.5 m above the bed, the lowest ring reaches the bed at 3.2 m and the rail heads at 2.8 m), default configuration of 1bb0c54 (the merge of 11c50a7) with tracking.low_min_seen_distance 0 (off) and 4.0 (on) on the same frames; objects: the organizers' 0.3 x 0.3 x 0.1 m on a rail head (lateral 0.8), a 0.5 m box on the bed at the centre and across a rail (lateral 0.8), a 0.4 x 0.6 x 0.31 m object lying across a rail (lateral -0.8); distances 2.5 / 3.0 / 3.5 / 3.9 m; modes: fresh_standing (a fresh detector, the object there from frame 0, 30 frames, 5 noise realisations cycled), appears_standing (30 empty frames, then the object appears and stays 30 frames: falls onto the track), moving_0.5 / moving_1.0 (20 empty frames, then the object appears at 3.9 m and the train approaches it at 0.5 / 1.0 m/s until 2.5 m, a new ray-cast per frame). A static object in the open is visible from far away, so an approach where it is first visible only inside 4 m exists only when it appears there (the moving modes); agent scratch script blind_zone.py",
+  "cases": [
+   {
+    "mode": "fresh_standing",
+    "object": "organizers_0.3x0.3x0.1_on_rail_head",
+    "distance_m": 2.5,
+    "rule_off": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0,
+     "detections": []
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": false
+   },
+   {
+    "mode": "fresh_standing",
+    "object": "organizers_0.3x0.3x0.1_on_rail_head",
+    "distance_m": 3.0,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 4,
+     "stop_frames": 26,
+     "detections": [
+      [
+       "low",
+       3.0
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": true
+   },
+   {
+    "mode": "fresh_standing",
+    "object": "organizers_0.3x0.3x0.1_on_rail_head",
+    "distance_m": 3.5,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 4,
+     "stop_frames": 26,
+     "detections": [
+      [
+       "low",
+       3.47
+      ],
+      [
+       "low",
+       3.48
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": true
+   },
+   {
+    "mode": "fresh_standing",
+    "object": "organizers_0.3x0.3x0.1_on_rail_head",
+    "distance_m": 3.9,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 4,
+     "stop_frames": 26,
+     "detections": [
+      [
+       "low",
+       3.87
+      ],
+      [
+       "low",
+       3.88
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": true
+   },
+   {
+    "mode": "fresh_standing",
+    "object": "box_0.5_on_bed_centre",
+    "distance_m": 2.5,
+    "rule_off": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0,
+     "detections": []
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": false
+   },
+   {
+    "mode": "fresh_standing",
+    "object": "box_0.5_on_bed_centre",
+    "distance_m": 3.0,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 4,
+     "stop_frames": 26,
+     "detections": [
+      [
+       "corridor",
+       3.0
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": true,
+     "first_stop_frame": 4,
+     "stop_frames": 26
+    },
+    "blind_zone": false
+   },
+   {
+    "mode": "fresh_standing",
+    "object": "box_0.5_on_bed_centre",
+    "distance_m": 3.5,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 4,
+     "stop_frames": 26,
+     "detections": [
+      [
+       "corridor",
+       3.46
+      ],
+      [
+       "corridor",
+       3.47
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": true,
+     "first_stop_frame": 4,
+     "stop_frames": 26
+    },
+    "blind_zone": false
+   },
+   {
+    "mode": "fresh_standing",
+    "object": "box_0.5_on_bed_centre",
+    "distance_m": 3.9,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 4,
+     "stop_frames": 26,
+     "detections": [
+      [
+       "corridor",
+       3.86
+      ],
+      [
+       "corridor",
+       3.87
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": true,
+     "first_stop_frame": 4,
+     "stop_frames": 26
+    },
+    "blind_zone": false
+   },
+   {
+    "mode": "fresh_standing",
+    "object": "box_0.5_on_bed_across_rail",
+    "distance_m": 2.5,
+    "rule_off": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0,
+     "detections": []
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": false
+   },
+   {
+    "mode": "fresh_standing",
+    "object": "box_0.5_on_bed_across_rail",
+    "distance_m": 3.0,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 4,
+     "stop_frames": 26,
+     "detections": [
+      [
+       "corridor",
+       3.0
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": true,
+     "first_stop_frame": 4,
+     "stop_frames": 26
+    },
+    "blind_zone": false
+   },
+   {
+    "mode": "fresh_standing",
+    "object": "box_0.5_on_bed_across_rail",
+    "distance_m": 3.5,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 4,
+     "stop_frames": 26,
+     "detections": [
+      [
+       "corridor",
+       3.47
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": true,
+     "first_stop_frame": 4,
+     "stop_frames": 26
+    },
+    "blind_zone": false
+   },
+   {
+    "mode": "fresh_standing",
+    "object": "box_0.5_on_bed_across_rail",
+    "distance_m": 3.9,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 4,
+     "stop_frames": 26,
+     "detections": [
+      [
+       "low",
+       3.87
+      ],
+      [
+       "low",
+       3.88
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": true
+   },
+   {
+    "mode": "fresh_standing",
+    "object": "lying_across_rail_0.4x0.6x0.31",
+    "distance_m": 2.5,
+    "rule_off": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0,
+     "detections": []
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": false
+   },
+   {
+    "mode": "fresh_standing",
+    "object": "lying_across_rail_0.4x0.6x0.31",
+    "distance_m": 3.0,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 4,
+     "stop_frames": 26,
+     "detections": [
+      [
+       "low",
+       3.0
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": true
+   },
+   {
+    "mode": "fresh_standing",
+    "object": "lying_across_rail_0.4x0.6x0.31",
+    "distance_m": 3.5,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 4,
+     "stop_frames": 26,
+     "detections": [
+      [
+       "low",
+       3.46
+      ],
+      [
+       "low",
+       3.47
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": true
+   },
+   {
+    "mode": "fresh_standing",
+    "object": "lying_across_rail_0.4x0.6x0.31",
+    "distance_m": 3.9,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 4,
+     "stop_frames": 26,
+     "detections": [
+      [
+       "low",
+       3.87
+      ],
+      [
+       "low",
+       3.88
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": true
+   },
+   {
+    "mode": "appears_standing",
+    "object": "organizers_0.3x0.3x0.1_on_rail_head",
+    "distance_m": 2.5,
+    "rule_off": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0,
+     "detections": []
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": false
+   },
+   {
+    "mode": "appears_standing",
+    "object": "organizers_0.3x0.3x0.1_on_rail_head",
+    "distance_m": 3.0,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 34,
+     "stop_frames": 26,
+     "detections": [
+      [
+       "low",
+       3.0
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": true
+   },
+   {
+    "mode": "appears_standing",
+    "object": "organizers_0.3x0.3x0.1_on_rail_head",
+    "distance_m": 3.5,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 34,
+     "stop_frames": 26,
+     "detections": [
+      [
+       "low",
+       3.47
+      ],
+      [
+       "low",
+       3.48
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": true
+   },
+   {
+    "mode": "appears_standing",
+    "object": "organizers_0.3x0.3x0.1_on_rail_head",
+    "distance_m": 3.9,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 34,
+     "stop_frames": 26,
+     "detections": [
+      [
+       "low",
+       3.87
+      ],
+      [
+       "low",
+       3.88
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": true
+   },
+   {
+    "mode": "appears_standing",
+    "object": "box_0.5_on_bed_centre",
+    "distance_m": 2.5,
+    "rule_off": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0,
+     "detections": []
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": false
+   },
+   {
+    "mode": "appears_standing",
+    "object": "box_0.5_on_bed_centre",
+    "distance_m": 3.0,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 34,
+     "stop_frames": 26,
+     "detections": [
+      [
+       "corridor",
+       3.0
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": true,
+     "first_stop_frame": 34,
+     "stop_frames": 26
+    },
+    "blind_zone": false
+   },
+   {
+    "mode": "appears_standing",
+    "object": "box_0.5_on_bed_centre",
+    "distance_m": 3.5,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 34,
+     "stop_frames": 26,
+     "detections": [
+      [
+       "corridor",
+       3.46
+      ],
+      [
+       "corridor",
+       3.47
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": true,
+     "first_stop_frame": 34,
+     "stop_frames": 26
+    },
+    "blind_zone": false
+   },
+   {
+    "mode": "appears_standing",
+    "object": "box_0.5_on_bed_centre",
+    "distance_m": 3.9,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 34,
+     "stop_frames": 26,
+     "detections": [
+      [
+       "corridor",
+       3.86
+      ],
+      [
+       "corridor",
+       3.87
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": true,
+     "first_stop_frame": 34,
+     "stop_frames": 26
+    },
+    "blind_zone": false
+   },
+   {
+    "mode": "appears_standing",
+    "object": "box_0.5_on_bed_across_rail",
+    "distance_m": 2.5,
+    "rule_off": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0,
+     "detections": []
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": false
+   },
+   {
+    "mode": "appears_standing",
+    "object": "box_0.5_on_bed_across_rail",
+    "distance_m": 3.0,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 34,
+     "stop_frames": 26,
+     "detections": [
+      [
+       "corridor",
+       3.0
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": true,
+     "first_stop_frame": 34,
+     "stop_frames": 26
+    },
+    "blind_zone": false
+   },
+   {
+    "mode": "appears_standing",
+    "object": "box_0.5_on_bed_across_rail",
+    "distance_m": 3.5,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 34,
+     "stop_frames": 26,
+     "detections": [
+      [
+       "corridor",
+       3.47
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": true,
+     "first_stop_frame": 34,
+     "stop_frames": 26
+    },
+    "blind_zone": false
+   },
+   {
+    "mode": "appears_standing",
+    "object": "box_0.5_on_bed_across_rail",
+    "distance_m": 3.9,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 34,
+     "stop_frames": 26,
+     "detections": [
+      [
+       "corridor",
+       3.87
+      ],
+      [
+       "corridor",
+       3.88
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": true,
+     "first_stop_frame": 34,
+     "stop_frames": 26
+    },
+    "blind_zone": false
+   },
+   {
+    "mode": "appears_standing",
+    "object": "lying_across_rail_0.4x0.6x0.31",
+    "distance_m": 2.5,
+    "rule_off": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0,
+     "detections": []
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": false
+   },
+   {
+    "mode": "appears_standing",
+    "object": "lying_across_rail_0.4x0.6x0.31",
+    "distance_m": 3.0,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 34,
+     "stop_frames": 26,
+     "detections": [
+      [
+       "low",
+       3.0
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": true
+   },
+   {
+    "mode": "appears_standing",
+    "object": "lying_across_rail_0.4x0.6x0.31",
+    "distance_m": 3.5,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 34,
+     "stop_frames": 26,
+     "detections": [
+      [
+       "low",
+       3.46
+      ],
+      [
+       "low",
+       3.47
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": true
+   },
+   {
+    "mode": "appears_standing",
+    "object": "lying_across_rail_0.4x0.6x0.31",
+    "distance_m": 3.9,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 34,
+     "stop_frames": 26,
+     "detections": [
+      [
+       "low",
+       3.87
+      ],
+      [
+       "low",
+       3.88
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": true
+   },
+   {
+    "mode": "moving_0.5",
+    "object": "organizers_0.3x0.3x0.1_on_rail_head",
+    "distance_m": 3.9,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 24,
+     "stop_frames": 21,
+     "detections": [
+      [
+       "low",
+       2.98
+      ],
+      [
+       "low",
+       3.0
+      ],
+      [
+       "low",
+       3.03
+      ],
+      [
+       "low",
+       3.08
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": true
+   },
+   {
+    "mode": "moving_0.5",
+    "object": "box_0.5_on_bed_centre",
+    "distance_m": 3.9,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 24,
+     "stop_frames": 16,
+     "detections": [
+      [
+       "corridor",
+       2.97
+      ],
+      [
+       "corridor",
+       3.0
+      ],
+      [
+       "corridor",
+       3.02
+      ],
+      [
+       "corridor",
+       3.07
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": true,
+     "first_stop_frame": 24,
+     "stop_frames": 16
+    },
+    "blind_zone": false
+   },
+   {
+    "mode": "moving_0.5",
+    "object": "box_0.5_on_bed_across_rail",
+    "distance_m": 3.9,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 24,
+     "stop_frames": 25,
+     "detections": [
+      [
+       "corridor",
+       2.98
+      ],
+      [
+       "corridor",
+       3.0
+      ],
+      [
+       "corridor",
+       3.02
+      ],
+      [
+       "corridor",
+       3.06
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": true,
+     "first_stop_frame": 24,
+     "stop_frames": 25
+    },
+    "blind_zone": false
+   },
+   {
+    "mode": "moving_0.5",
+    "object": "lying_across_rail_0.4x0.6x0.31",
+    "distance_m": 3.9,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 24,
+     "stop_frames": 23,
+     "detections": [
+      [
+       "low",
+       2.98
+      ],
+      [
+       "low",
+       3.0
+      ],
+      [
+       "low",
+       3.02
+      ],
+      [
+       "low",
+       3.07
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": true
+   },
+   {
+    "mode": "moving_1.0",
+    "object": "organizers_0.3x0.3x0.1_on_rail_head",
+    "distance_m": 3.9,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 24,
+     "stop_frames": 9,
+     "detections": [
+      [
+       "low",
+       2.95
+      ],
+      [
+       "low",
+       3.0
+      ],
+      [
+       "low",
+       3.08
+      ],
+      [
+       "low",
+       3.18
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": true
+   },
+   {
+    "mode": "moving_1.0",
+    "object": "box_0.5_on_bed_centre",
+    "distance_m": 3.9,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 24,
+     "stop_frames": 7,
+     "detections": [
+      [
+       "corridor",
+       2.92
+      ],
+      [
+       "corridor",
+       3.0
+      ],
+      [
+       "corridor",
+       3.07
+      ],
+      [
+       "corridor",
+       3.17
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": true,
+     "first_stop_frame": 24,
+     "stop_frames": 7
+    },
+    "blind_zone": false
+   },
+   {
+    "mode": "moving_1.0",
+    "object": "box_0.5_on_bed_across_rail",
+    "distance_m": 3.9,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 24,
+     "stop_frames": 11,
+     "detections": [
+      [
+       "corridor",
+       2.96
+      ],
+      [
+       "corridor",
+       3.0
+      ],
+      [
+       "corridor",
+       3.07
+      ],
+      [
+       "corridor",
+       3.17
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": true,
+     "first_stop_frame": 24,
+     "stop_frames": 11
+    },
+    "blind_zone": false
+   },
+   {
+    "mode": "moving_1.0",
+    "object": "lying_across_rail_0.4x0.6x0.31",
+    "distance_m": 3.9,
+    "rule_off": {
+     "stop": true,
+     "first_stop_frame": 24,
+     "stop_frames": 10,
+     "detections": [
+      [
+       "low",
+       2.96
+      ],
+      [
+       "low",
+       3.0
+      ],
+      [
+       "low",
+       3.07
+      ],
+      [
+       "low",
+       3.17
+      ]
+     ]
+    },
+    "rule_on_4m": {
+     "stop": false,
+     "first_stop_frame": null,
+     "stop_frames": 0
+    },
+    "blind_zone": true
+   }
+  ],
+  "summary": {
+   "cases": 40,
+   "blind_zone_cases": 17,
+   "blind_zone": [
+    "appears_standing lying_across_rail_0.4x0.6x0.31 3.0 m",
+    "appears_standing lying_across_rail_0.4x0.6x0.31 3.5 m",
+    "appears_standing lying_across_rail_0.4x0.6x0.31 3.9 m",
+    "appears_standing organizers_0.3x0.3x0.1_on_rail_head 3.0 m",
+    "appears_standing organizers_0.3x0.3x0.1_on_rail_head 3.5 m",
+    "appears_standing organizers_0.3x0.3x0.1_on_rail_head 3.9 m",
+    "fresh_standing box_0.5_on_bed_across_rail 3.9 m",
+    "fresh_standing lying_across_rail_0.4x0.6x0.31 3.0 m",
+    "fresh_standing lying_across_rail_0.4x0.6x0.31 3.5 m",
+    "fresh_standing lying_across_rail_0.4x0.6x0.31 3.9 m",
+    "fresh_standing organizers_0.3x0.3x0.1_on_rail_head 3.0 m",
+    "fresh_standing organizers_0.3x0.3x0.1_on_rail_head 3.5 m",
+    "fresh_standing organizers_0.3x0.3x0.1_on_rail_head 3.9 m",
+    "moving_0.5 lying_across_rail_0.4x0.6x0.31 3.9 m",
+    "moving_0.5 organizers_0.3x0.3x0.1_on_rail_head 3.9 m",
+    "moving_1.0 lying_across_rail_0.4x0.6x0.31 3.9 m",
+    "moving_1.0 organizers_0.3x0.3x0.1_on_rail_head 3.9 m"
+   ],
+   "reading": "the blind zone is real: with the rule off the organizers' object and the object lying across a rail STOP from their 5th frame at 3.0, 3.5 and 3.9 m (fresh start and appearing, first STOP frame 4 / 34) and when they appear 3.9 m ahead of a train at 0.5 or 1 m/s (frame 24, 21 / 23 and 9 / 10 STOP frames); with the rule on none of them ever STOPs. The 0.5 m box on the bed is a corridor object and unaffected, except across a rail at 3.9 m from a fresh start, where it is taken as low and lost too. At 2.5 m nothing is visible either way (points under gauge.range_min 3.0 m are not monitored)."
+  },
+  "decision": "c reverted: tracking.low_min_seen_distance default 0 (off) in resense/config.py, configs/default.yaml and the ROS copy; the baseline cut on 904fd7c is removed and every reference points to regression_baseline_2026-09-25_ride_p3b.json again; nothing of the three candidates is shipped, the flags stay in the code, off. The census and its conclusion stand: the start-window STOPs are the ride's ordinary false alarms, not caused by the start; the finding (a STOP on the rail heads 3 m ahead of a standing train at a fresh start from the gate's piece-2 cut) stays open.",
+  "default_output_vs_11c50a7": {
+   "command": "scripts/eval_real.py --cache /data/cache --jobs 2 --bags <the six recordings>,cloud_with_fake_obj on 11c50a7 (an archive of the commit, native kernels built) and on this branch; every per-frame output field compared except timing and the machine-dependent latency part of the health report (latency_p95_ms, latency messages, level; decision_level compared)",
+   "frames": 3998,
+   "differing_frames": 0,
+   "result": "identical",
+   "output_fingerprint": "scripts/output_fingerprint.py --jobs 2 on 11c50a7 and on this branch, --compare: IDENTICAL (obstacle 201, given_speed 252, estimator 877, ride 1 600 frames, 0 differ)"
+  },
+  "tests": "tests/test_startup.py: an empty fresh start never STOPs; a 0.5 m box and the organizers' object 20 m ahead STOP from frame 4; the organizers' object 3 m ahead of a standing fresh start STOPs from frame 4 with the defaults (never with the 4 m rule set); the rule's tracker cases with the flag set explicitly; the three flags off in the dataclass, the YAML and the ROS copy"
  }
 }

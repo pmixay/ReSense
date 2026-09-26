@@ -15,9 +15,9 @@ matched now. Its zone is 'gauge' when at least ``zone_min_fraction`` of its last
 flickers into the gauge every other frame is advisory (docs/EXPERIMENTS.md section 1b), and
 fewer than ``column_hold`` (2 since 25.09) of those hits were demoted as a column: a column far
 away shows more than ``column_min_height`` of itself in some frames only (EXPERIMENTS.md 3a).
-A low (bed-level) track is reported only once it has been matched at or beyond
-``low_min_seen_distance`` (4 m since 26.09, where the bed cross-section is learned from): a fresh
-detector at a standing train took the rail heads 3.0-3.6 m ahead for an object (EXPERIMENTS.md 1j).
+With ``low_min_seen_distance`` > 0 (tried 26.09, off: EXPERIMENTS.md 1j) a low (bed-level) track
+is reported only once it has been matched at or beyond it; 4 m never reports a low object that
+stays nearer (a standing train), so it is not shipped.
 """
 from __future__ import annotations
 
