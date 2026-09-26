@@ -10,7 +10,7 @@ scikit-learn и необязательные ядра на C++, без ROS). Б�
 сама находит крепление LiDAR, строит модель пути (полотно, рельсы, ось и кривизна по стенам),
 вырезает коридор габарита 2,1 × 3,0 м, ищет низкие объекты, кластеризует и подтверждает кандидатов
 по времени. Нода публикует решение GO / CAUTION / STOP / FAULT, расстояние до препятствия,
-проверенную свободную дальность, состояние входа и JSON-статус. Кадр обрабатывается за 42–64 мс в
+оценку дальности контроля, состояние входа и JSON-статус. Кадр обрабатывается за 42–64 мс в
 среднем на одном ядре (23.09, numpy, без монитора состояния) при периоде датчика 100 мс; ядра на C++
 (24.09) сокращают время детектора на 38–57 %, DBSCAN на cKDTree (25.09) — ещё на 1–3 мс, выход тот
 же. Видеокарта не используется, скорость поезда не нужна (заданная учитывается).
@@ -195,10 +195,15 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   so the calibration stays as a safeguard.
 * **The customer's envelope** (v0.6): the strict decision uses the 2.1 × 3.0 m cross-section the
   organizers gave; the wider v0.5 polygon became the advisory zone.
-* **Fail-safe outputs** (v0.6): `clear_distance` shrinks to what was actually checked and to 0 on
-  any input fault; the decision topic says `FAULT` instead of staying silent, and since 24.09 a
-  fault is published on every output at once (no earlier `STOP` stays latched;
-  [`README.md`](../README.md) "Topics published by the node").
+* **Output validity** (26.09 quality cycle): `clear_distance` is an estimate with known obstacle
+  misses, not a free-track guarantee. Invalid or stale input exposes zero monitoring range.
+  An outstanding `STOP` remains explicitly held until a fresh valid non-STOP result clears it;
+  otherwise stale/unknown clocks produce `FAULT`, and a current short queue produces `CAUTION`.
+  The node reports the source age, local queue residence, recording lag and validity reason.
+  Default `freshness_mode=live` compares acquisition UTC to system UTC. Explicit `replay` uses
+  DDS publication UTC; historical acquisition age is unavailable. The Humble executor adapter
+  preserves publication metadata for the LiDAR subscriptions, including drained queued messages.
+  See the [registered contract](evidence/results/quality_freshness_2026-09-26_protocol.json).
 * **Curvature from parallel references**: rails are visible only to ~30–40 m, walls/column rows
   to 150–200 m (Shen et al. 2024). This is what makes a corridor at 100+ m meaningful; where no
   boundary is observed the corridor is explicitly *not trusted* and only warnings are raised.
@@ -211,7 +216,7 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   tracked while it approaches (EXPERIMENTS §0: −35 % false-alarm events on the empty bags, −27 % on
   the ride).
 * **No rails, no far alarm** (v0.6.2): without the rail pair in the near range (stations, switch
-  caverns) the corridor beyond 40 m is advisory and the verified-clear distance says 40 m.
+  caverns) the corridor beyond 40 m is advisory and the monitored-range estimate says 40 m.
 
 ## Real-time budget (v0.6.3, 23.09: every frame of the real bags, idle 4-core sandbox, numpy path)
 

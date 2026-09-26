@@ -69,6 +69,8 @@
           <span>Решение</span><b id="decision">—</b>
           <span title="Оценка по видимости и модели пути, ограниченная найденными объектами. Возможны пропуски препятствий внутри этой дальности.">Дальность контроля</span><b id="clear">—</b>
           <span>Состояние данных</span><b id="health">—</b>
+          <span>Актуальность результата</span><b id="freshness">—</b>
+          <span id="age-label">Возраст данных</span><b id="source-age">—</b>
           <span>Видимость / захват рельсов</span><b id="vis">—</b>
           <span>Калибровка лидара</span><b id="mount">—</b>
         </div><p class="status-line">Дальность — оценка. Препятствия внутри неё могут быть пропущены.</p><div id="health-msgs" class="status-line"></div></div>
@@ -139,6 +141,8 @@ const state = {
   lastObstacle: false,
   node: { lastDropped: null, alertUntil: 0 },
   last: null,                                // last result applied (for redraws)
+  lastStatusArrival: null,
+  streamStale: false,
   cab: null,                                 // cab view: size, focal length and the labelled boxes of the last draw
   sourceName: null,
   summary: null,
@@ -206,6 +210,8 @@ const DECISION_RU = { GO: 'НЕ ОБНАРУЖЕНО', CAUTION: 'ВНИМАНИ�
 function decisionOf(res) {
   // DetectorNode.decision; 26.09: a latency warning is in h.level but not in h.decision_level (no CAUTION)
   const h = res.health || {}, dl = h.decision_level || h.level;
+  if (res.obstacle || res.decision === 'STOP') return 'STOP';
+  if (res.freshness?.valid === false) return res.freshness.reason === 'catchup' ? 'CAUTION' : 'FAULT';
   return res.decision || (res.obstacle ? 'STOP' : (h.level === 'error' ? 'FAULT' : ((res.warning || dl === 'warn') ? 'CAUTION' : (h.level ? 'GO' : '—'))));
 }
 function trackModel(t) {
@@ -260,7 +266,7 @@ function cabScene(ctx, W, H, r, tm, cam, opts) {
   }
   // estimated monitored range in green, capped at the obstacle; the stop zone in red
   // (older results without clear_distance: the trusted corridor range; nothing on a fault or without data)
-  const clearEnd = !r || decisionOf(r) === 'FAULT' ? 0
+  const clearEnd = !r || r.freshness?.valid === false || decisionOf(r) === 'FAULT' ? 0
     : (r.obstacle ? r.nearest_distance : Math.min(r.clear_distance ?? t.axis_valid ?? 0, CAB.far));
   band(CAB.rangeMin, clearEnd, -ENVELOPE.half, ENVELOPE.half, 0.01, 'rgba(19,169,87,0.34)');
   if (r && r.obstacle && r.nearest_distance != null) band(r.nearest_distance, Math.min(r.nearest_distance + 6, CAB.far), -ENVELOPE.half, ENVELOPE.half, 0.01, 'rgba(228,0,13,0.5)');
@@ -364,7 +370,7 @@ function drawCab(res) {
   }
   // decision chip, as the node publishes it on /resense/decision
   let dec = decisionOf(r); if (dec === '—') dec = 'GO';
-  const sub = dec === 'STOP' ? (r.nearest_distance != null ? `препятствие ${r.nearest_distance.toFixed(1)} м` : 'препятствие в габарите')
+  const sub = dec === 'STOP' ? (r.stop_held ? 'СТОП сохранён; актуальные данные отсутствуют' : r.nearest_distance != null ? `препятствие ${r.nearest_distance.toFixed(1)} м` : 'препятствие в габарите')
     : dec === 'CAUTION' ? (r.warning ? 'объект рядом с габаритом' : 'снижена достоверность данных')
     : dec === 'FAULT' ? 'нет достоверных данных'
     : r.clear_distance == null ? 'препятствие не обнаружено'
@@ -472,11 +478,11 @@ function applyResult(res, opts) {
   const dets = res.detections || [], warns = res.warnings || [];
   const detail = state.mode === 'replay' && res.frame != null ? `Кадр ${String(res.frame).padStart(5, '0')} · +${(t - (state.t0 || 0)).toFixed(1)} с · ${res.frame_id || 'без источника'}` : '';
   const decision = decisionOf(res);
-  if (decision === 'STOP') setBanner('bad', res.nearest_distance == null ? 'ПРЕПЯТСТВИЕ В ГАБАРИТЕ' : `ПРЕПЯТСТВИЕ  ${res.nearest_distance.toFixed(1)} м`, detail);
+  if (decision === 'STOP') setBanner('bad', res.stop_held ? 'СТОП СОХРАНЁН: НЕТ АКТУАЛЬНЫХ ДАННЫХ' : res.nearest_distance == null ? 'ПРЕПЯТСТВИЕ В ГАБАРИТЕ' : `ПРЕПЯТСТВИЕ  ${res.nearest_distance.toFixed(1)} м`, detail);
   else if (decision === 'FAULT') setBanner('bad', 'ОШИБКА: НЕТ ДОСТОВЕРНЫХ ДАННЫХ', detail);
   else if (decision === 'CAUTION') setBanner('warn', res.warning ? 'ВНИМАНИЕ: ОБЪЕКТ РЯДОМ С ГАБАРИТОМ' : 'ВНИМАНИЕ: СНИЖЕНА ДОСТОВЕРНОСТЬ ДАННЫХ', detail);
   else setBanner('clear', 'ПРЕПЯТСТВИЕ НЕ ОБНАРУЖЕНО', detail);
-  $('dist').textContent = res.nearest_distance == null ? '—' : res.nearest_distance.toFixed(1) + ' м';
+  $('dist').textContent = res.nearest_distance == null ? '—' : res.nearest_distance.toFixed(1) + ' м' + (res.stop_held ? ' (последнее)' : '');
   $('counts').textContent = `${dets.length} / ${warns.length}`;
   const tr = res.track || {};
   $('axis').textContent = fmt(tr.center, 2);
@@ -512,7 +518,12 @@ function applySafety(res) {
   const decision = decisionOf(res);
   $('decision').textContent = DECISION_RU[decision] || decision;
   $('decision').className = { STOP: 'bad', FAULT: 'bad', CAUTION: 'warn' }[decision] || '';
-  $('clear').textContent = res.clear_distance == null ? '—' : res.clear_distance.toFixed(0) + ' м';
+  $('clear').textContent = res.freshness?.valid === false ? 'не определена' : res.clear_distance == null ? '—' : res.clear_distance.toFixed(0) + ' м';
+  const fresh = res.freshness;
+  $('freshness').textContent = !fresh ? 'не проверялась' : fresh.valid ? 'проверена при обработке' : fresh.reason === 'catchup' ? 'обработка очереди' : 'нет актуальных данных';
+  $('freshness').className = !fresh || fresh.reason === 'catchup' ? 'warn' : fresh.valid ? '' : 'bad';
+  $('age-label').textContent = fresh?.mode === 'replay' ? 'После публикации записи' : 'После измерения';
+  $('source-age').textContent = fresh?.source_age_s == null ? '—' : (fresh.source_age_s * 1000).toFixed(0) + ' мс';
   $('health').textContent = { ok: 'норма', warn: 'предупреждение', error: 'ошибка' }[h.level] || '—';
   $('health').className = { error: 'bad', warn: 'warn' }[h.level] || '';
   $('vis').textContent = h.visibility == null ? '—' : `${h.visibility.toFixed(0)} м / ${(100 * (h.rail_lock ?? 0)).toFixed(0)} %`;
@@ -549,15 +560,35 @@ function applyNode(node) {
   card.classList.toggle('notice', now >= state.node.alertUntil && dropped > 0);
   const unhealthy = node.latency_ms > 100 || (node.fps != null && node.fps > 0 && node.fps < 9) || dropped > 0;
   $('health-realtime').className = 'pill ' + (unhealthy ? 'warn' : 'ok');
-  $('health-realtime').textContent = node.latency_ms == null ? 'Узел в сети' : `Задержка ${node.latency_ms.toFixed(0)} мс`;
+  $('health-realtime').textContent = node.latency_ms == null ? 'Узел в сети' : `Обработка ${node.latency_ms.toFixed(0)} мс`;
 }
 
 // ----------------------------------------------------------------------------- live mode
 function onStatus(msg) {
   if (state.mode !== 'live') return;
   let res; try { res = JSON.parse(msg.data); } catch (e) { return; }
+  state.lastStatusArrival = performance.now(); state.streamStale = false;
+  $('health-source').className = 'pill ok'; $('health-source').textContent = 'Прямой эфир';
   applyResult(res);
 }
+function checkLiveStream(now = performance.now(), disconnected = false) {
+  if (state.mode !== 'live' || !state.last || state.lastStatusArrival == null || state.streamStale) return;
+  const f = state.last.freshness || {}, ages = [f.source_age_s, f.residence_age_s].filter(v => typeof v === 'number' && Number.isFinite(v));
+  const remainingMs = Math.max(0, 500 - 1000 * Math.max(0, ...ages));
+  if (!disconnected && now - state.lastStatusArrival <= remainingMs) return;
+  state.streamStale = true;
+  const res = structuredClone(state.last), held = decisionOf(res) === 'STOP';
+  res.snapshot_kind = 'browser_transport_stale';
+  res.decision = held ? 'STOP' : 'FAULT'; res.obstacle = held; res.stop_held = held;
+  res.clear_distance = 0;
+  res.freshness = { ...(res.freshness || {}), valid: false, go_allowed: false,
+    source_age_s: null, reason: 'status_stream_stale' };
+  res.health = { ...(res.health || {}), level: 'error', decision_level: 'error', clear_distance: 0,
+    messages: ['Срок актуальности результата истёк или соединение закрыто'] };
+  applyResult(res);
+  $('health-source').className = 'pill bad'; $('health-source').textContent = 'Нет актуального состояния';
+}
+setInterval(checkLiveStream, 100);
 let ros = null;
 $('connect').onclick = () => {
   if (typeof ROSLIB === 'undefined') { $('conn').textContent = 'roslib.js не загружен'; return; }
@@ -568,13 +599,14 @@ $('connect').onclick = () => {
   $('health-source').className = 'pill warn'; $('health-source').textContent = 'Подключение к потоку';
   ros.on('connection', () => { $('conn').textContent = 'Подключено'; $('health-source').className = 'pill ok'; $('health-source').textContent = 'Прямой эфир'; });
   ros.on('error', () => { $('conn').textContent = 'Ошибка'; $('health-source').className = 'pill bad'; $('health-source').textContent = 'Ошибка потока'; });
-  ros.on('close', () => { $('conn').textContent = 'Нет подключения'; $('health-source').className = 'pill warn'; $('health-source').textContent = 'Поток отключён'; });
+  ros.on('close', () => { $('conn').textContent = 'Нет подключения'; $('health-source').className = 'pill warn'; $('health-source').textContent = 'Поток отключён'; checkLiveStream(performance.now(), true); });
   new ROSLIB.Topic({ ros, name: '/resense/status', messageType: 'std_msgs/String' }).subscribe(onStatus);
 };
 
 // ----------------------------------------------------------------------------- replay mode
 function resetView() {
   state.hist = []; state.shown = 0; state.alarmFrames = 0; state.lastObstacle = false; state.last = null;
+  state.lastStatusArrival = null; state.streamStale = false;
   state.node = { lastDropped: null, alertUntil: 0 };
   $('log').innerHTML = '<span class="empty-log">Событий пока нет.</span>';
   setBanner('idle', 'ОЖИДАНИЕ ДАННЫХ');

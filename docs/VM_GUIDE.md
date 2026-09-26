@@ -13,8 +13,12 @@
 
 **26.09 tooling update:** the host ride-cache workflow below uses `rosbags==0.11.5`; the node
 has a separate startup catch-up allowance and the dry-run checker matches recorded header
-stamps directly (§4.1). The startup fix's fresh cold/warm Docker validation is still pending.
-Earlier dated measurements remain evidence for the versions actually run.
+stamps directly (§4.1). The sealed baseline's cold/warm/bounded-load results are in
+[freeze evidence](evidence/freeze_2026-09-26/README.md). A later quality cycle adds explicit
+`freshness_mode:=replay` for bag tests; the default `live` mode checks acquisition UTC.
+Rebuild the image before using the updated commands. Current harnesses require freshness
+metadata and at least one valid frame per recording, so an all-FAULT run cannot pass.
+Earlier dated measurements remain evidence for the versions actually run. Release is on hold.
 
 ## 0. What the VM is for, and when
 
@@ -324,7 +328,8 @@ With ROS 2 Humble on the host, the same by hand, as the jury does it (README «�
 with a normal user's stock settings:
 
 ```bash
-docker run --rm --name resense_node --net=host --ipc=host resense:latest     # console 1: the node, no arguments
+docker run --rm --name resense_node --net=host --ipc=host resense:latest \
+  ros2 launch resense_ros detector.launch.py freshness_mode:=replay        # console 1: bag playback
 ```
 
 ```bash
@@ -337,7 +342,7 @@ sleep 4
 ros2 bag play "$BAGS/roundT_doubleT" --delay 3 --disable-keyboard-controls && sleep 5 &&
   ros2 bag play "$BAGS/doubleT_obstacle" --delay 3 --disable-keyboard-controls
 sleep 3; kill "$ECHO"
-python3 scripts/check_dry_run.py out/host_console/status.jsonl --expect-obstacle --obstacle-in 2 --expect-inputs 2 \
+python3 scripts/check_dry_run.py out/host_console/status.jsonl --require-freshness --expect-obstacle --obstacle-in 2 --expect-inputs 2 \
   --min-frames 20 --max-p95-latency 1000 --max-dropped 100000 | tee "$EV/dry_run_$DAY/host_console.txt"
 ```
 
@@ -435,7 +440,8 @@ socket buffers play no part. This run decides whether it becomes the default. Th
 
 ```bash
 sudo sysctl -w net.core.rmem_max=212992                  # Ubuntu's default (§4.0 raised it for CycloneDDS)
-docker run --rm --name resense_node --net=host --ipc=host -e RESENSE_DDS=shm resense:latest 2>&1 |
+docker run --rm --name resense_node --net=host --ipc=host -e RESENSE_DDS=shm resense:latest \
+  ros2 launch resense_ros detector.launch.py freshness_mode:=replay 2>&1 |
   tee "$EV/dry_run_$DAY/host_shm_node_log.txt"                                                 # console 1
 ```
 
@@ -454,7 +460,7 @@ sleep 4
 ros2 bag play "$BAGS/roundT_doubleT" --delay 3 --disable-keyboard-controls && sleep 5 &&
   ros2 bag play "$BAGS/doubleT_obstacle" --delay 3 --disable-keyboard-controls
 sleep 3; kill "$ECHO"
-python3 scripts/check_dry_run.py out/host_shm/status.jsonl --expect-obstacle --obstacle-in 2 --expect-inputs 2 \
+python3 scripts/check_dry_run.py out/host_shm/status.jsonl --require-freshness --expect-obstacle --obstacle-in 2 --expect-inputs 2 \
   --min-frames 20 --max-p95-latency 1000 --max-dropped 100000 | tee "$EV/dry_run_$DAY/host_console_shm.txt"
 ```
 

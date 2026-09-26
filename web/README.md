@@ -75,7 +75,7 @@ What is shown:
 | top-down canvas (100 / 150 / 250 m): track axis, ±1.4 m band (the ±1.05 m train envelope plus the 0.35 m advisory margin), untrusted range shaded, red gauge boxes, orange advisory boxes with distance and confidence | `track.center/yaw/curvature/axis_valid`, `detections[]`, `warnings[]` |
 | timeline (last 30 s): nearest gauge obstacle (red), nearest advisory object (orange) | `nearest_distance`, `warnings[].distance` |
 | detector card: counts, axis, radius, trusted range, points, per-stage timing | `track`, `n_points`, `n_corridor`, `timing_ms` |
-| decision and health: GO / CAUTION / STOP / FAULT, estimated monitored range, visibility, rail lock, calibration | `decision`, `clear_distance`, `health`, `mount` |
+| decision and health: GO / CAUTION / STOP / FAULT, estimated monitored range, validity, source age, visibility, rail lock, calibration | `decision`, `clear_distance`, `freshness`, `stop_held`, `health`, `mount` |
 | **ROS node card**: `latency_ms`, `fps`, `frames`, `dropped_frames`, `input_period_ms` | `node` (only in the node's messages; a replay file says "no node stats") |
 | run summary: alarm events/frames, warning frames, nearest object, peak detector time | all loaded replay frames |
 | alarm log: one line per alarm frame (id, lateral offset, size, points, confidence), one line when the alarm ends | `detections[]` |
@@ -83,6 +83,13 @@ What is shown:
 Health warnings: latency above 100 ms (the 10 Hz period) and fps below 9 turn orange; when
 `dropped_frames` **grows** the node card flashes red for 3 s and the log gets a line, and it
 keeps a pale-yellow background while the count is above zero.
+
+The validity panel distinguishes live acquisition age from replay publication age. It reports
+validity at processing time; it cannot measure unknown transport delay to the browser. In live
+view, a missing status stream or expiry of the remaining 0.5 s age allowance invalidates the
+display (checked every 100 ms). It holds an outstanding STOP with its last distance explicitly
+labelled; otherwise it shows FAULT. A fresh message permits recovery. Historical file playback
+keeps the recorded snapshot. Invalid monitoring never shows a green range, including a held STOP.
 
 `GO` means no obstacle was detected. The green range is an estimate from visibility and the track
 model, capped by eligible detected candidates; objects that form no such candidate may be missed

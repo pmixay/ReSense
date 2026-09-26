@@ -193,6 +193,55 @@ def test_dashboard_rejects_garbage_lines(tmp_path):
         b.close()
 
 
+def test_dashboard_freshness_and_live_stream_stall():
+    """Invalid data and a stalled status stream must not retain a green monitored corridor."""
+    if not _browser_available():
+        pytest.skip("playwright + chromium not available")
+    from playwright.sync_api import sync_playwright
+    import check_dashboard
+    with sync_playwright() as p:
+        b = _launch(p)
+        page = b.new_page()
+        page.goto("file://" + check_dashboard.INDEX, wait_until="domcontentloaded")
+        page.wait_for_function("window.resense !== undefined")
+        base = {"stamp": 1.0, "obstacle": False, "warning": False, "nearest_distance": None,
+                "detections": [], "warnings": [], "clear_distance": 120, "decision": "GO",
+                "health": {"level": "ok"}, "freshness": {"valid": True, "reason": "current",
+                "mode": "replay", "source_age_s": .02}}
+        page.evaluate("f => onStatus({data: JSON.stringify(f)})", base)
+        assert page.inner_text("#age-label") == "После публикации записи"
+        assert page.inner_text("#source-age") == "20 мс"
+        page.evaluate("checkLiveStream(state.lastStatusArrival + 501)")
+        assert page.inner_text("#decision") == "ОШИБКА"
+        assert page.inner_text("#clear") == "не определена"
+        assert page.evaluate("state.cab.clearEnd") == 0
+        # A new fresh message permits recovery; a later pause holds an outstanding STOP.
+        stop = dict(base, obstacle=True, decision="STOP", nearest_distance=50, clear_distance=50)
+        page.evaluate("f => onStatus({data: JSON.stringify(f)})", stop)
+        page.evaluate("checkLiveStream(state.lastStatusArrival + 501)")
+        assert page.inner_text("#decision") == "СТОП"
+        assert "СТОП СОХРАНЁН" in check_dashboard.banner_text(page)
+        assert page.evaluate("state.cab.clearEnd") == 0
+        assert "последнее" in page.text_content("#dist")
+        page.evaluate("f => onStatus({data: JSON.stringify(f)})", base)
+        assert page.inner_text("#decision") == "НЕ ОБНАРУЖЕНО"
+        aging = dict(base, freshness=dict(base["freshness"], source_age_s=.4))
+        page.evaluate("f => onStatus({data: JSON.stringify(f)})", aging)
+        page.evaluate("checkLiveStream(state.lastStatusArrival + 101)")
+        assert page.inner_text("#decision") == "ОШИБКА"
+        # The explicit contract takes precedence over a contradictory GO field.
+        invalid = dict(base, freshness={"valid": False, "reason": "source_stale"})
+        page.evaluate("f => onStatus({data: JSON.stringify(f)})", invalid)
+        assert page.inner_text("#decision") == "ОШИБКА"
+        assert page.evaluate("state.cab.clearEnd") == 0
+        # Historical playback remains a snapshot; the live transport timer cannot alter it.
+        page.evaluate("window.resense.setMode('replay')")
+        page.evaluate("f => window.resense.applyResult(f)", base)
+        page.evaluate("checkLiveStream(performance.now() + 10000)")
+        assert page.inner_text("#decision") == "НЕ ОБНАРУЖЕНО"
+        b.close()
+
+
 def test_dashboard_builtin_demo_and_summary():
     """The jury can exercise the dashboard even when no bag or generated JSONL is available."""
     if not _browser_available():

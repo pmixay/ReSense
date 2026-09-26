@@ -67,13 +67,15 @@ Evidence: [review inventory](evidence/results/p4_false_targets_2026-09-26/invent
 
 ## Reproduce
 
-Use the exact ride caches from the freeze intake, then run from the repository root:
+Use the exact ride caches from the freeze intake and detector source hashes recorded in the
+provenance file. If the main branch has later detector changes, use a baseline worktree and copy
+only the two diagnostic scripts into it. Then run from that worktree's root:
 
 ```sh
-OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 .venv/bin/python scripts/trace_false_targets.py \
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python scripts/trace_false_targets.py \
   --archives docs/evidence/freeze_2026-09-26/gate_frames \
   --cache /path/to/cache/new_data --out /path/to/fp
-.venv/bin/python scripts/render_false_targets.py \
+python scripts/render_false_targets.py \
   --trace /path/to/fp/trace.json \
   --inventory docs/evidence/results/p4_ride_scenes_2026-09-26/inventory.json \
   --out /path/to/fp/sheets
