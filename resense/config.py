@@ -188,8 +188,10 @@ class ClusterConfig:
     # a cluster the wall-at-the-side rule would drop (wall_min_height / wall_min_lateral) is kept when it
     # has at least this many voxels inside the strict envelope and starts within wall_keep_distance
     # (set O #6, the 2 x 2 m box at the envelope edge, is dropped as a wall at 14-8 m with 10-31 of
-    # them); the signatures and the other infrastructure rules still apply; 0 = off
-    wall_keep_gauge_voxels: int = 0
+    # them); the signatures and the other infrastructure rules still apply; on since 26.09 (on top of
+    # tracking.near_escalate_*: gate PASS, #6 0 -> 6 STOP frames from 10.3 m, the ride, the five bags,
+    # doubleT_obstacle, set F, #5 / #7 / background identical); 0 = off
+    wall_keep_gauge_voxels: int = 10
     wall_keep_distance: float = 20.0   # m
     gauge_min_points: int = 3      # voxels inside the strict gauge to classify as 'gauge'
     overhead_min_height: float = 3.0   # clusters entirely above this (m over rail head) are advisory only (v0.6: the envelope top; 2.4 in v0.5)

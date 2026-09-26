@@ -133,7 +133,7 @@ resense:
     wall_min_lateral: 1.2
     wall_segment_min_length: 4.0
     wall_segment_max_width: 1.5
-    wall_keep_gauge_voxels: 0      # 26.09 (P3 near escalation, candidate D for set O #6; 0 = off): a cluster the wall-at-the-side rule would drop is kept when it has >= this many strict-envelope voxels and starts within wall_keep_distance (docs/evidence/results/p3_near_escalation_2026-09-26.json)
+    wall_keep_gauge_voxels: 10     # 26.09 (P3 near escalation, candidate D for set O #6; 0 = off): a cluster the wall-at-the-side rule would drop is kept when it has >= this many strict-envelope voxels and starts within wall_keep_distance; gate PASS on top of tracking.near_escalate_*: the 2 x 2 m box at the envelope edge 0 -> 6 STOP frames from 10.3 m, set O inside STOP frames 349 -> 355, #5 / #7 / background, the ride, the five bags, doubleT_obstacle and set F identical (docs/evidence/results/p3_near_escalation_2026-09-26.json)
     wall_keep_distance: 20.0       # m
     gauge_min_points: 3
     overhead_min_height: 3.0       # v0.6: the envelope top (2.4 in v0.5)

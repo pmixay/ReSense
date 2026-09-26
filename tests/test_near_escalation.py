@@ -148,7 +148,7 @@ def test_wall_keep_spares_a_side_face_with_strict_voxels_near_the_train(x0, dy0,
     xyz, dy, h, ing, g = _edge_face(x0, dy0)
     assert dy.mean() > 1.2
     inten = np.full(len(xyz), 10.0, np.float32)
-    assert find_clusters(xyz, inten, dy, h, ing, ClusterConfig(), gauge=g) == []
+    assert find_clusters(xyz, inten, dy, h, ing, ClusterConfig(wall_keep_gauge_voxels=0), gauge=g) == []
     out = find_clusters(xyz, inten, dy, h, ing, ClusterConfig(wall_keep_gauge_voxels=10, wall_keep_distance=20.0), gauge=g)
     if kept:
         assert len(out) == 1 and out[0].zone == "gauge" and out[0].n_gauge >= 10
@@ -156,14 +156,15 @@ def test_wall_keep_spares_a_side_face_with_strict_voxels_near_the_train(x0, dy0,
         assert out == []
 
 
-def test_shipped_default_is_candidate_a():
-    """Shipped 26.09: candidate A of the pre-registration (N 10, D 35 m, 5 hits), the same in the
-    dataclass and in configs/default.yaml."""
+def test_shipped_defaults_are_candidates_a_and_d():
+    """Shipped 26.09: candidate A of the pre-registration (N 10, D 35 m, 5 hits) and D (10 strict
+    voxels within 20 m), the same in the dataclass and in configs/default.yaml."""
     from pathlib import Path
     root = Path(__file__).resolve().parents[1]
     for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(root / "configs/default.yaml"))):
         t = cfg.tracking
         assert (t.near_escalate_voxels, t.near_escalate_distance, t.near_escalate_hits) == (10, 35.0, 5)
+        assert (cfg.cluster.wall_keep_gauge_voxels, cfg.cluster.wall_keep_distance) == (10, 20.0)
 
 
 def test_off_changes_nothing():
