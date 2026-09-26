@@ -44,5 +44,356 @@
   "ship_rule": "the first of A / B / C (in order) that satisfies all of: (1) full gate exit 0, no gated row worse; (2) set O STOP frames on the inside objects up; (3) no new false STOP frame on #5, #7 or the background (set O background alarm frames and ids); (4) ride STOP episodes and alarm events not up. D ships on top of it only if it satisfies (1)-(4) with #6's STOP frames up. If none passes: nothing ships, the flags stay off",
   "safety_conditions": "identical or better, else no ship whatever the gate says: doubleT_obstacle labelled hits per label and first alarm frame; set O first STOP distance and frame of every inside object; set F straight detections per kind (sequences detected, median first-confirmation distance)",
   "baseline_note": "if it ships and numbers move, the gate baseline is not re-cut here (the integrator will)"
+ },
+ "results": {
+  "measured_utc": "2026-09-26T07:23Z-08:08Z",
+  "baseline_before": {
+   "set_O_inside_stop_frames": 337,
+   "set_O_inside_objects_with_stop": 6,
+   "ride": {
+    "alarm_frames": 187,
+    "alarm_events": 46,
+    "stop_episodes": 39
+   },
+   "five_empty": {
+    "frames": 2287,
+    "alarm_frames": 58,
+    "alarm_events": 13,
+    "stop_episodes": 16,
+    "advisory_frames": 997
+   }
+  },
+  "flags_off_identity": "scripts/output_fingerprint.py --cache /data/cache --jobs 1 on bd67fb0 and on 2797929 (flags off): obstacle 201, given_speed 252, estimator 877, ride 1600 frames, 0 differ: IDENTICAL",
+  "A_subset": "six recordings + set O (--allow 'ride.*' --allow 'set_F_straight.*'): PASS, 3 gated rows better (small_edge_inside STOP frames and first STOP, big_above STOP frames)",
+  "A_full": {
+   "code": "2797929",
+   "config_sha256": "c4c54825",
+   "set": [
+    "tracking.near_escalate_voxels=10",
+    "tracking.near_escalate_distance=35",
+    "tracking.near_escalate_hits=5"
+   ],
+   "wall_s": 1272.3,
+   "jobs": 1,
+   "gate": {
+    "passed": true,
+    "better": [
+     "set_O.objects.small_edge_inside.stop_frames",
+     "set_O.objects.small_edge_inside.first_stop_m",
+     "set_O.objects.big_above.stop_frames"
+    ],
+    "worse_gated": []
+   },
+   "set_O": {
+    "inside_stop_frames": 349,
+    "alarm_frames": 382,
+    "inside_objects_with_stop": 7,
+    "outside_false_stop_frames": 6,
+    "background": {
+     "alarm_frames": 3,
+     "track_ids": 2
+    },
+    "objects": {
+     "big_center": {
+      "stop_frames": 208,
+      "advisory_frames": 0,
+      "first_stop_m": 98.0,
+      "first_stop_frame": 5,
+      "held_from_m": 98.7
+     },
+     "small_center": {
+      "stop_frames": 30,
+      "advisory_frames": 0,
+      "first_stop_m": 52.5,
+      "first_stop_frame": 339,
+      "held_from_m": 57.5
+     },
+     "small_on_rail": {
+      "stop_frames": 23,
+      "advisory_frames": 0,
+      "first_stop_m": 42.7,
+      "first_stop_frame": 403,
+      "held_from_m": 46.2
+     },
+     "small_edge_inside": {
+      "stop_frames": 2,
+      "advisory_frames": 23,
+      "first_stop_m": 5.2,
+      "first_stop_frame": 478,
+      "held_from_m": 5.2
+     },
+     "small_outside_near": {
+      "stop_frames": 0,
+      "advisory_frames": 24,
+      "false_stop_frames": 0
+     },
+     "big_edge_inside": {
+      "stop_frames": 0,
+      "advisory_frames": 0,
+      "first_stop_m": null,
+      "first_stop_frame": null,
+      "held_from_m": null
+     },
+     "big_outside": {
+      "stop_frames": 6,
+      "advisory_frames": 43,
+      "false_stop_frames": 6
+     },
+     "big_above": {
+      "stop_frames": 22,
+      "advisory_frames": 27,
+      "first_stop_m": 101.3,
+      "first_stop_frame": 632,
+      "held_from_m": 23.9
+     },
+     "long_low_on_rails": {
+      "stop_frames": 49,
+      "advisory_frames": 0,
+      "first_stop_m": 82.2,
+      "first_stop_frame": 696,
+      "held_from_m": 90.8
+     },
+     "thin_hanging": {
+      "stop_frames": 15,
+      "advisory_frames": 0,
+      "first_stop_m": 30.1,
+      "first_stop_frame": 789,
+      "held_from_m": 31.8
+     }
+    }
+   },
+   "five_empty": {
+    "frames": 2287,
+    "alarm_frames": 58,
+    "alarm_events": 13,
+    "stop_episodes": 16,
+    "advisory_frames": 997
+   },
+   "doubleT_obstacle": {
+    "first_alarm_frame": 11,
+    "per_label": {
+     "object_on_rail": {
+      "hits": 128,
+      "frames": 185
+     },
+     "person_crossing": {
+      "hits": 58,
+      "frames": 61
+     },
+     "object_on_rail_from_frame_75": {
+      "hits": 125,
+      "frames": 126
+     }
+    },
+    "alarm_events": 2
+   },
+   "ride": {
+    "frames": 11271,
+    "alarm_frames": 187,
+    "alarm_events": 46,
+    "stop_episodes": 39,
+    "advisory_frames": 4743
+   },
+   "set_F_straight": {
+    "person": {
+     "detected": 6,
+     "first_detection_median_m": 151.0,
+     "false_detections": 6
+    },
+    "box1.0": {
+     "detected": 6,
+     "first_detection_median_m": 123.9,
+     "false_detections": 12
+    },
+    "box0.5": {
+     "detected": 1,
+     "first_detection_median_m": 51.9,
+     "false_detections": 0
+    },
+    "trolley": {
+     "detected": 6,
+     "first_detection_median_m": 151.4,
+     "false_detections": 5
+    },
+    "cable": {
+     "detected": 6,
+     "first_detection_median_m": 98.9,
+     "false_detections": 3
+    }
+   }
+  },
+  "A_verdict": "ships: (1) full gate exit 0, no gated row worse; (2) set O inside STOP frames 337 -> 349; (3) #5 0, #7 6, background 3 / 2 unchanged; (4) ride 187 / 46 / 39 unchanged; safety: doubleT_obstacle hits and first alarm frame 11, every set O first STOP, set F straight identical. B and C not run (the rule takes the first that passes)",
+  "D_subset": "on top of A, six recordings + set O: PASS, 5 gated rows better",
+  "D_full": {
+   "code": "33860bc",
+   "config_sha256": "0df01b47",
+   "set": [
+    "tracking.near_escalate_voxels=10",
+    "tracking.near_escalate_distance=35",
+    "tracking.near_escalate_hits=5",
+    "cluster.wall_keep_gauge_voxels=10",
+    "cluster.wall_keep_distance=20"
+   ],
+   "wall_s": 1190.8,
+   "jobs": 1,
+   "gate": {
+    "passed": true,
+    "better": [
+     "set_O.objects.small_edge_inside.stop_frames",
+     "set_O.objects.small_edge_inside.first_stop_m",
+     "set_O.objects.big_edge_inside.stop_frames",
+     "set_O.objects.big_edge_inside.first_stop_m",
+     "set_O.objects.big_above.stop_frames"
+    ],
+    "worse_gated": []
+   },
+   "set_O": {
+    "inside_stop_frames": 355,
+    "alarm_frames": 388,
+    "inside_objects_with_stop": 8,
+    "outside_false_stop_frames": 6,
+    "background": {
+     "alarm_frames": 3,
+     "track_ids": 2
+    },
+    "objects": {
+     "big_center": {
+      "stop_frames": 208,
+      "advisory_frames": 0,
+      "first_stop_m": 98.0,
+      "first_stop_frame": 5,
+      "held_from_m": 98.7
+     },
+     "small_center": {
+      "stop_frames": 30,
+      "advisory_frames": 0,
+      "first_stop_m": 52.5,
+      "first_stop_frame": 339,
+      "held_from_m": 57.5
+     },
+     "small_on_rail": {
+      "stop_frames": 23,
+      "advisory_frames": 0,
+      "first_stop_m": 42.7,
+      "first_stop_frame": 403,
+      "held_from_m": 46.2
+     },
+     "small_edge_inside": {
+      "stop_frames": 2,
+      "advisory_frames": 23,
+      "first_stop_m": 5.2,
+      "first_stop_frame": 478,
+      "held_from_m": 5.2
+     },
+     "small_outside_near": {
+      "stop_frames": 0,
+      "advisory_frames": 24,
+      "false_stop_frames": 0
+     },
+     "big_edge_inside": {
+      "stop_frames": 6,
+      "advisory_frames": 0,
+      "first_stop_m": 10.3,
+      "first_stop_frame": 578,
+      "held_from_m": 10.3
+     },
+     "big_outside": {
+      "stop_frames": 6,
+      "advisory_frames": 43,
+      "false_stop_frames": 6
+     },
+     "big_above": {
+      "stop_frames": 22,
+      "advisory_frames": 27,
+      "first_stop_m": 101.3,
+      "first_stop_frame": 632,
+      "held_from_m": 23.9
+     },
+     "long_low_on_rails": {
+      "stop_frames": 49,
+      "advisory_frames": 0,
+      "first_stop_m": 82.2,
+      "first_stop_frame": 696,
+      "held_from_m": 90.8
+     },
+     "thin_hanging": {
+      "stop_frames": 15,
+      "advisory_frames": 0,
+      "first_stop_m": 30.1,
+      "first_stop_frame": 789,
+      "held_from_m": 31.8
+     }
+    }
+   },
+   "five_empty": {
+    "frames": 2287,
+    "alarm_frames": 58,
+    "alarm_events": 13,
+    "stop_episodes": 16,
+    "advisory_frames": 997
+   },
+   "doubleT_obstacle": {
+    "first_alarm_frame": 11,
+    "per_label": {
+     "object_on_rail": {
+      "hits": 128,
+      "frames": 185
+     },
+     "person_crossing": {
+      "hits": 58,
+      "frames": 61
+     },
+     "object_on_rail_from_frame_75": {
+      "hits": 125,
+      "frames": 126
+     }
+    },
+    "alarm_events": 2
+   },
+   "ride": {
+    "frames": 11271,
+    "alarm_frames": 187,
+    "alarm_events": 46,
+    "stop_episodes": 39,
+    "advisory_frames": 4743
+   },
+   "set_F_straight": {
+    "person": {
+     "detected": 6,
+     "first_detection_median_m": 151.0,
+     "false_detections": 6
+    },
+    "box1.0": {
+     "detected": 6,
+     "first_detection_median_m": 123.9,
+     "false_detections": 12
+    },
+    "box0.5": {
+     "detected": 1,
+     "first_detection_median_m": 51.9,
+     "false_detections": 0
+    },
+    "trolley": {
+     "detected": 6,
+     "first_detection_median_m": 151.4,
+     "false_detections": 5
+    },
+    "cable": {
+     "detected": 6,
+     "first_detection_median_m": 98.9,
+     "false_detections": 3
+    }
+   }
+  },
+  "D_verdict": "ships on top of A: (1) full gate exit 0, no gated row worse; #6 STOP frames 0 -> 6 (first STOP 10.3 m, frame 578); set O inside STOP frames 349 -> 355; (3) #5 / #7 / background unchanged; (4) ride unchanged; safety conditions identical",
+  "shipped": {
+   "tracking.near_escalate_voxels": 10,
+   "tracking.near_escalate_distance": 35.0,
+   "tracking.near_escalate_hits": 5,
+   "cluster.wall_keep_gauge_voxels": 10,
+   "cluster.wall_keep_distance": 20.0
+  },
+  "tests": "tests/test_near_escalation.py +12; tests/test_floating_free.py 'rule off' config also turns the escalation off; tests/test_modules.py infrastructure shapes with the corridor's real strict-envelope membership (the wall 1.35-1.65 m off the axis was marked all inside)",
+  "baseline": "numbers moved (set O rows better): not re-cut here, the integrator will"
  }
 }

@@ -25,8 +25,20 @@ transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
 `cluster.far_axis_both_sides`, +3 far bed bins, +5 the rail-shadow review fixes, +4 the
 free-hanging exemption of `floating`, +4 thin hanging objects, +5 `health.clear_cap`, +6 the rate
 and re-mount flags, +1 the rail-lock guard of the hanging stage, +13 the review fixes of the
-round-2 items, +17 their re-review, +6 latency out of the decision, +8 the start-up census) in
-`tests/`, 13 in `web/demo`.
+round-2 items, +17 their re-review, +6 latency out of the decision, +8 the start-up census, +12
+the near escalation) in `tests/`, 13 in `web/demo`.
+
+- **Near-field escalation (26.09, P3; judge B action 6): shipped.** Within 35 m, a track whose
+  last 5 hits each had ≥ 10 voxels inside the strict envelope is a STOP, whatever demoted it
+  (`tracking.near_escalate_*`; reason `near_envelope`). A column never counts. Also, a tall
+  cluster at the corridor side with ≥ 10 strict voxels within 20 m is no longer dropped as a wall
+  (`cluster.wall_keep_*`). Set O: the box at the envelope top 12 → 22 STOP frames (from 23.9 m),
+  the edge box 0 → 6 (from 10.3 m), the edge cube 0 → 2; inside STOP frames 337 → 355, 8 of 8
+  inside objects STOP. #5, #7 and the background are unchanged. Gate PASS, 5 rows better. The
+  ride (187 / 46 / 39), the five bags, `doubleT_obstacle` and set F are identical. Pre-registered
+  candidate A plus D; B and C not run. Baseline not re-cut (the integrator will). +12 tests.
+  [`p3_near_escalation_2026-09-26.json`](docs/evidence/results/p3_near_escalation_2026-09-26.json),
+  [EXPERIMENTS §1k](docs/EXPERIMENTS.md).
 
 - **Start-up of a fresh bag (26.09, P3 / P4): census; three rules tried, none shipped.** A
   judge's fresh start at ride piece 2 STOPped at 2.9–3.1 m. The cause: the rail heads 3.0–3.6 m
