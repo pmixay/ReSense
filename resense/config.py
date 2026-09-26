@@ -343,7 +343,7 @@ class LowObjectConfig:
     # the track and does not rise more than rail_start_margin above the same lateral band where the
     # band continues along the track (the rail head's own returns) is rail geometry; the tracker does
     # not newly report a low track on such a cluster while it was never matched at >= rail_start_within
-    rail_start_within: float = 0.0       # m; 0 = off (4.0 = template_range[0]: the rail heads 3-4 m ahead of a standing train under a young model)
+    rail_start_within: float = 4.0       # m, on since 26.09 (= template_range[0]: the rail heads 3-4 m ahead of a standing train under a young model); 0 = off
     rail_start_margin: float = 0.05      # m above the band's height along the track (the organizers' 0.10 m object on a rail head rises 0.10)
     rail_start_lateral: float = 0.10     # m; the cluster's lateral extent reaches the model axis +- track.rails_spacing / 2 within this
     rail_start_max_width: float = 0.45   # m across the track; wider is not a rail (an object lying across a rail: 0.5-0.6 m)

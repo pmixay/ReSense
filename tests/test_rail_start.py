@@ -41,13 +41,13 @@ def _on(within: float = 4.0) -> DetectorConfig:
 
 
 def test_rail_start_defaults():
-    """Off by default (0), with its sub-parameters margin 0.05 m, lateral 0.10 m, width 0.45 m, in
-    the dataclass, the YAML and the ROS copy."""
+    """On since 26.09: 4 m, margin 0.05 m, lateral 0.10 m, width 0.45 m, in the dataclass, the
+    YAML and the ROS copy."""
     for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
                 DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
         low = cfg.lowobj
         assert (low.rail_start_within, low.rail_start_margin, low.rail_start_lateral,
-                low.rail_start_max_width) == (0.0, 0.05, 0.10, 0.45)
+                low.rail_start_max_width) == (4.0, 0.05, 0.10, 0.45)
 
 
 # --- the marking itself, on hand-built points ---------------------------------------------------
