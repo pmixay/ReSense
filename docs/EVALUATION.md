@@ -222,6 +222,8 @@ validity over each sequence before interpreting range or edge results.
    `doubleT_obstacle` object on the rail 127 → 128 and 124 → 125 of 126 from frame 75); five bags,
    the ride and F straight identical (EXPERIMENTS §1i,
    [`p3_round2_combined_2026-09-25.json`](evidence/results/p3_round2_combined_2026-09-25.json)).
+   Re-cut on 26.09 on the safety-review fixes (the refinement off): every gated value the same
+   ([`p3_round2_review_fixes_2026-09-26.json`](evidence/results/p3_round2_review_fixes_2026-09-26.json)).
    The one before,
    [`regression_baseline_2026-09-25_ride_p3.json`](evidence/results/regression_baseline_2026-09-25_ride_p3.json):
    the shipped defaults of `c598cf6` (the four P3 items of 25.09 merged: the rail-shadow rules on,

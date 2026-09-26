@@ -284,7 +284,8 @@ class Detector:
                 self.track = estimate_track(xyz, cfg.track, prev=None)  # re-seed in the corrected frame
                 self.buffer.clear()                                     # merged clouds are in the old frame
             if cfg.tracking.reseed_hold > 0 and not orient:
-                # 26.09: the tracks follow the rotation; a reported one is held through the re-seed
+                # 26.09: the tracks follow the rotation; a STOP is held through the re-seed and, above
+                # 1 deg, only STOPs are kept (the others' zone votes were taken in the old frame)
                 self.tracker.reseed(dR, cfg.tracking.reseed_hold, keep_unreported=change <= 1.0)
             elif orient or change > 1.0:                                # a new orientation or a large tilt:
                 self.tracker.reset()                                    # the tracks' positions are meaningless

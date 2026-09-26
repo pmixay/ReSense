@@ -37,7 +37,8 @@ row and set F straight track in one run, and gates every detector change against
 [`regression_baseline_2026-09-25_ride_p3b.json`](evidence/results/regression_baseline_2026-09-25_ride_p3b.json)
 (the shipped defaults of `30d0cac`: the four P3 items of round 2 merged on top of the rail-shadow
 rules, with the captain's delegate's two decisions, `health.clear_cap` on and the thin-hanging
-rail-lock guard on: six recordings, set O, the ride and set F straight; 25.09, §1i). It is the
+rail-lock guard on: six recordings, set O, the ride and set F straight; 25.09, §1i; re-cut on
+26.09 on the review fixes, the refinement off, with every gated value the same, §1i). It is the
 single check of these results: a change that moves them commits a new baseline, one that does
 not leaves this table as it is. The four before it,
 [`regression_baseline_2026-09-25_ride_p3.json`](evidence/results/regression_baseline_2026-09-25_ride_p3.json)
@@ -53,14 +54,14 @@ every gated metric the same ([its JSON](evidence/results/regression_gate_2026-09
 | metric | value | kind, date | where |
 |---|---|---|---|
 | false alarms, five obstacle-free bags (2 287 frames) | **13 events**, 58 alarm frames, 16 STOP episodes with `tracking.column_hold` 2 (on since 25.09, §3a: the `roundT_doubleT` column); without it 14 events, 60 alarm frames, 17 STOP episodes (long overhead rule on since 25.09; 20 / 107 / 27 without it); the start-offset spread 14–20 events was measured without the rule (24.09), not re-run | real, 25.09 [measured 25.09] | §1f |
-| P4 rate / mount stress and empty suffix | five bags false events / STOP episodes: 5 Hz **10 / 10**, +3° roll **11 / 13**, +3° pitch **16 / 17** since the rate / re-mount flags of 25.09, round 2 (P4's run of 25.09 before them: 13 / 17 with 3 new events in `roundT_doubleT`, 16 / 17, 17 / 18); `roundT_doubleT` 0 / 1 / 0 events; `doubleT_obstacle` labelled hits 92 of 123 @ frame 12, 181 of 246 @ 12, 186 of 246 @ 11 (the combined round-2 defaults, 25.09). Frames 804–1 509 of `cloud_with_fake_obj`: **0 false frames / 0 events in 706 frames**, both from a fresh start and after continuous playback (P4, before round 2) | real backgrounds, 25.09 [measured] | §1g, §1i; [`scorecard13_2026-09-25.json`](evidence/results/scorecard13_2026-09-25.json), [`p3_round2_combined_2026-09-25.json`](evidence/results/p3_round2_combined_2026-09-25.json) |
+| P4 rate / mount stress and empty suffix | five bags false events / STOP episodes: 5 Hz **10 / 10**, +3° roll **14 / 16**, +3° pitch **17 / 18** since the safety review of 26.09 turned the refinement off (with it, round 2 of 25.09: 10 / 10, 11 / 13, 16 / 17; P4's run of 25.09 before the rate / re-mount flags: 13 / 17 with 3 new events in `roundT_doubleT`, 16 / 17, 17 / 18); `roundT_doubleT` 0 / 2 / 1 events (0 / 1 / 0 with the refinement); `doubleT_obstacle` labelled hits 92 of 123 @ frame 12, 183 of 246 @ 12, 186 of 246 @ 11 (26.09; 181 of 246 at +3° roll before). Frames 804–1 509 of `cloud_with_fake_obj`: **0 false frames / 0 events in 706 frames**, both from a fresh start and after continuous playback (P4, before round 2) | real backgrounds, 25.09, 26.09 [measured] | §1g, §1i; [`scorecard13_2026-09-25.json`](evidence/results/scorecard13_2026-09-25.json), [`p3_round2_combined_2026-09-25.json`](evidence/results/p3_round2_combined_2026-09-25.json), [`p3_round2_review_fixes_2026-09-26.json`](evidence/results/p3_round2_review_fixes_2026-09-26.json) |
 | false alarms, 20-minute ride (11 271 frames, 13.0 km) | **46 events, 3.5 per km**, 187 alarm frames (1.7 %), 39 STOP episodes with `tracking.column_hold` 2 (on since 25.09, §3a); without it 46 / 197 / 39 (without the long overhead rule 47 / 204 / 39, equal to the 24.09 record); 15 of the 46 first confirmed beyond 100 m (the removed event, an overhead structure 4–5 m along the track at 105–110 m, was one of the 16 of 24.09); causes: the 24.09 classification of the 47 (corridor-edge structures 18, bed-level fixtures 11, far small clusters 7, other 6, tall 2, hanging 2, person-like 1), not redone | real, 25.09 [measured 25.09] | §1f |
 | crossing person, `doubleT_obstacle` | STOP in **58 of 61** frames inside the envelope, first alarm frame 11 (0.3 s after entering), 55.5–56.6 m, distance error ≤ 0.23 m | real, 24.09 | §0 |
 | object lying across the rail (0.45 × 0.6 × 0.3 m, 56 m) | **125 of the 126** frames after the person leaves it (from frame 75)¹, 2 STOP episodes in the recording, since `calibration.keep_within_deg` (25.09, round 2: the final mount calibration no longer re-seeds the track model at frame 190, frame 191 kept); 124 of 126 and 3 STOP episodes before | real, 24.09; gate 25.09 | §0, §1i |
-| verified-clear distance (`clear_distance`, `health.clear_cap` on since 25.09, round 2) | capped at the nearest unconfirmed or advisory cluster in the envelope: set O object-frames with a `clear_distance` past an in-envelope object **147 → 67** of 505 on the current code (172 → 82 on the item's branch); median clear distance five bags 127.0 → 120.0 m (**−5.5 %**, the pre-registered limit was −5 %: failed, shipped by the captain's delegate), ride 127.0 → 123.0 m (−3.1 %, 1.50 % of the frames pushed under 60 m); no decision changes | real and organizers' synthetic, 25.09 | §1i |
+| verified-clear distance (`clear_distance`, `health.clear_cap` on since 25.09, round 2) | capped at the nearest unconfirmed or advisory cluster in the envelope: set O object-frames with a `clear_distance` past an in-envelope object **147 → 67** of 505 on the round-2 code (172 → 82 on the item's branch), **60** since the review fixes of 26.09 (also capped at a lost reported track); median clear distance five bags 127.0 → 120.0 m (**−5.5 %**, the pre-registered limit was −5 %: failed, shipped by the captain's delegate; unchanged by the review fixes), ride 127.0 → 123.0 m (−3.1 %, 1.50 % of the frames pushed under 60 m), 122.6 m since 26.09 (53 more frames under 60 m); no decision changes | real and organizers' synthetic, 25.09, 26.09 | §1i |
 | health, `CAUTION` | non-latency health warnings on 196 of 13 759 frames (1.4 %: rails lost at stations and switches); `CAUTION` on 27–68 % of the frames of the empty bags, 41 % of the ride | real, 24.09 | "Re-measurement" |
 | current code against v0.6.3 | identical per-frame output on all 13 759 frames | real, 24.09 | "Re-measurement" |
-| regression gate with the ride and set F straight (native, 25.09) | current baseline [`regression_baseline_2026-09-25_ride_p3b.json`](evidence/results/regression_baseline_2026-09-25_ride_p3b.json) on `30d0cac` (the four P3 items of round 2 merged, `health.clear_cap` and `cluster.hanging_needs_rails` on, [`p3_round2_combined_2026-09-25.json`](evidence/results/p3_round2_combined_2026-09-25.json)): PASS against the one before with 6 gated rows better (set O hanging 0.3 m cube 19 → 30 STOP frames and first STOP 34.0 → 52.5 m, 5 cm hanging object 0 → 15 and none → 30.1 m; `doubleT_obstacle` object on the rail 127 → 128 and 124 → 125 hits), none worse; five bags, the ride and set F straight identical, decisions on them identical frame by frame, §1i. Before it: [`regression_baseline_2026-09-25_ride_p3.json`](evidence/results/regression_baseline_2026-09-25_ride_p3.json) on `c598cf6` (the four P3 items of 25.09 merged, the rail-shadow rules on, [`p3_combined_2026-09-25.json`](evidence/results/p3_combined_2026-09-25.json)): PASS against the one before with 5 gated rows better (set O 2 × 2 m box 207 → 208 and plank 42 → 49 STOP frames; set F straight false detections person 7 → 6, 1 m box 13 → 10, trolley 12 → 5), none worse, every gated row equal to the rail-shadow item's own gate, §1h; re-cut after the review fixes of the rail-shadow rules ([`p3_review_fixes_2026-09-25.json`](evidence/results/p3_review_fixes_2026-09-25.json)): the same 5 rows better, the 1 m box 13 → 12 (10 in the first cut: a STOP reported 4 m short), every decision and the track model identical frame by frame, gauge distances only shorter, §1h. Before it: [`regression_baseline_2026-09-25_ride_column.json`](evidence/results/regression_baseline_2026-09-25_ride_column.json) on `d117c8c` (`tracking.column_hold` 2, pre-registered 3 / 2 / 1, [`column_hold_2026-09-25.json`](evidence/results/column_hold_2026-09-25.json)): PASS against the one before with 7 gated rows better (`roundT_doubleT` events and STOP episodes, set F false detections of every kind), none worse, §3a. Before it: [`regression_baseline_2026-09-25_ride.json`](evidence/results/regression_baseline_2026-09-25_ride.json) on `935eecf`: PASS against the shipped-defaults run of the same day (3 gated rows better: `squareT_platform_squareT_switch` events and STOP episodes, ride events); decision evidence [`rules_decision_2026-09-25.json`](evidence/results/rules_decision_2026-09-25.json); the review fix `cluster.floating_long_min_bottom` 1.6 m (`0bb1ba3`) passes against the same baseline with every number but latency identical and the same per-frame output, so the baseline stands ([`long_rule_bottom_2026-09-25.json`](evidence/results/long_rule_bottom_2026-09-25.json)) | real, organizers' synthetic and synthetic, 25.09 | §1f |
+| regression gate with the ride and set F straight (native, 25.09) | current baseline [`regression_baseline_2026-09-25_ride_p3b.json`](evidence/results/regression_baseline_2026-09-25_ride_p3b.json), re-cut on 26.09 on the review fixes (the refinement off; every gated value and every decision, detection and track model of the 15 269 frames the same, `clear_distance` shorter in 398 frames, [`p3_round2_review_fixes_2026-09-26.json`](evidence/results/p3_round2_review_fixes_2026-09-26.json), §1i); first cut on `30d0cac` (the four P3 items of round 2 merged, `health.clear_cap` and `cluster.hanging_needs_rails` on, [`p3_round2_combined_2026-09-25.json`](evidence/results/p3_round2_combined_2026-09-25.json)): PASS against the one before with 6 gated rows better (set O hanging 0.3 m cube 19 → 30 STOP frames and first STOP 34.0 → 52.5 m, 5 cm hanging object 0 → 15 and none → 30.1 m; `doubleT_obstacle` object on the rail 127 → 128 and 124 → 125 hits), none worse; five bags, the ride and set F straight identical, decisions on them identical frame by frame, §1i. Before it: [`regression_baseline_2026-09-25_ride_p3.json`](evidence/results/regression_baseline_2026-09-25_ride_p3.json) on `c598cf6` (the four P3 items of 25.09 merged, the rail-shadow rules on, [`p3_combined_2026-09-25.json`](evidence/results/p3_combined_2026-09-25.json)): PASS against the one before with 5 gated rows better (set O 2 × 2 m box 207 → 208 and plank 42 → 49 STOP frames; set F straight false detections person 7 → 6, 1 m box 13 → 10, trolley 12 → 5), none worse, every gated row equal to the rail-shadow item's own gate, §1h; re-cut after the review fixes of the rail-shadow rules ([`p3_review_fixes_2026-09-25.json`](evidence/results/p3_review_fixes_2026-09-25.json)): the same 5 rows better, the 1 m box 13 → 12 (10 in the first cut: a STOP reported 4 m short), every decision and the track model identical frame by frame, gauge distances only shorter, §1h. Before it: [`regression_baseline_2026-09-25_ride_column.json`](evidence/results/regression_baseline_2026-09-25_ride_column.json) on `d117c8c` (`tracking.column_hold` 2, pre-registered 3 / 2 / 1, [`column_hold_2026-09-25.json`](evidence/results/column_hold_2026-09-25.json)): PASS against the one before with 7 gated rows better (`roundT_doubleT` events and STOP episodes, set F false detections of every kind), none worse, §3a. Before it: [`regression_baseline_2026-09-25_ride.json`](evidence/results/regression_baseline_2026-09-25_ride.json) on `935eecf`: PASS against the shipped-defaults run of the same day (3 gated rows better: `squareT_platform_squareT_switch` events and STOP episodes, ride events); decision evidence [`rules_decision_2026-09-25.json`](evidence/results/rules_decision_2026-09-25.json); the review fix `cluster.floating_long_min_bottom` 1.6 m (`0bb1ba3`) passes against the same baseline with every number but latency identical and the same per-frame output, so the baseline stands ([`long_rule_bottom_2026-09-25.json`](evidence/results/long_rule_bottom_2026-09-25.json)) | real, organizers' synthetic and synthetic, 25.09 | §1f |
 | organizers' objects (set O, `cloud_with_fake_obj`, 10 objects in 1 510 frames) | STOP for **6 of 8** in-envelope objects: 2 × 2 m box from 98 m (first sight), plank across the rails from 82 m, 0.3 m cubes from 43–53 m (the hanging one from 52.5 m since round 2 of 25.09, 34.0 m before), 2 × 2 m box at the envelope top in 12 of 124 frames, the 5 cm hanging object from 30.1 m in 15 frames (missed before round 2); the edge 2 × 2 m box missed, the edge 0.3 m cube advisory only; STOP in **337 of 801** visible in-envelope object-frames (311 with the rail-shadow rules, 303 on 24.09), 1 of 236 beyond 100 m; 6 false STOP frames on the 2 × 2 m box outside, 3 background alarm frames. Since the rail-shadow rules (25.09) every STOP on the 2 × 2 m box is at its own distance (12 STOP frames at the bed's 3.0 m before, largest error 14.1 → 0.46 m) and the plank is held from 90.8 m instead of 58.6 m | organizers' synthetic, 24.09; gate 25.09 | §2e, §1h, §1i |
 | long range, straight track | person first confirmed at **148 m** median (6 of 6), held in ≥ 90 % of the frames from 149 m and in every 10 m band from 115 m; trolley 144 m; 1 m crate 111 m; 3 cm hanging cable 95 m, held from 53 m (4 of 6); 0.5 m box on the bed 1 of 6; re-measured 25.09 by the gate on the current `far_range_eval.py` (changed by the P4 audit after 24.09; same files, seed, stamps, speeds): person 151.0 m median (6 of 6), held from 142.6 m; trolley 151.4 m; 1 m crate 123.9 m; cable 98.9 m, held from 34.2 m (6 of 6); 0.5 m box 1 of 6 (51.9 m); identical with and without either 25.09 rule [measured 25.09] | synthetic, set F round 3, legacy placement, 24.09; gate 25.09 | §2d |
 | same, object anchored on the near rails | person **154 m** (legacy 150 m in the same 5 pairs), trolley 148 m (148 m), crate 110 m (116 m), cable 102 m (104 m) | synthetic, set F round 4, anchored placement, 24.09 | §2d |
@@ -108,11 +109,14 @@ by its own detection (127 before); 186 of the 246 labelled obstacle-frames of th
   hanging 0.3 m cube), `cluster.hanging_enabled` with `hanging_needs_rails` (the 5 cm hanging
   object; the stage runs only on frames with the rail pair found), `health.clear_cap` (R1,
   shipped although it missed its pre-registered clutter limit) and the rate / re-mount flags
-  `calibration.time_cadence`, `refine_min_deg` 0.5, `keep_within_deg` 0.25,
-  `track.rates_per_period`, `walls_smoothing_per_period`. They change set O (two objects),
-  `doubleT_obstacle` (one frame of the object on the rail) and `clear_distance`; the five bags,
-  the ride and set F straight are identical with and without them, decisions frame by frame (the
-  gate of 25.09). The 24.09 rows above that they do not touch are not re-dated.
+  `calibration.time_cadence`, `keep_within_deg` 0.25, `track.rates_per_period`,
+  `walls_smoothing_per_period` (`refine_min_deg` 0.5 too until the safety review of 26.09 turned
+  it off; since then `calibration.reseed_keep_max_deg`, `tracking.reseed_hold`,
+  `health.clear_cap_lost` and `cluster.hanging_yield_gauge_only` are on, §1i). They change set O
+  (two objects), `doubleT_obstacle` (one frame of the object on the rail) and `clear_distance`; the
+  five bags, the ride and set F straight are identical with and without them, decisions frame by
+  frame (the gates of 25.09 and 26.09). The 24.09 rows above that they do not touch are not
+  re-dated.
 * Set F uses legacy placement unless said (protocol: EVALUATION §3; paired check: §2d round 4 and
   [`P4_AUDIT.md`](P4_AUDIT.md)); synthetic objects are not a real long-range test.
 * ROS and Docker numbers are dated runs on the sandbox, not re-measured on every change.
@@ -1421,6 +1425,63 @@ equals the robustness branch in every mode: as recorded 13 / 16, 0, 186/246 @ 11
 186/246 @ 11. The new gate baseline is
 [`regression_baseline_2026-09-25_ride_p3b.json`](evidence/results/regression_baseline_2026-09-25_ride_p3b.json)
 (the final run without its gate block). Tests 436 → 456.
+
+**Safety review of the round-2 items and its fixes (26.09): the refinement off; calibration
+changes keep a confirmed STOP** [real, organizers' synthetic and synthetic, measured 26.09]. An
+adversarial review of `17a850d` returned BLOCKING: every refinement of the provisional tilt
+re-seeded the track model from nothing (`prev=None`), and for its warm-up the fresh model had no
+floor-shadow reference and no smoothing. On `doubleT_obstacle` (5 Hz, rig +2° roll / +2° pitch) the
+bed fit then ran to 87.5 m and swallowed the object at 56 m: no STOP on frames 102 and 104, with
+`clear_distance` 151 / 163 m while the object's track was alive; also frame 76, frame 182 (5 Hz,
+(0, −1.5°)) and frame 197 (10 Hz, (0, +2°)); and the refinement flapped (4 re-seeds on
+`roundT_doubleT` +3° pitch). Reproduced on a clean copy of `17a850d` with the reviewer's sweep per
+frame (26 mounts × 10 / 5 Hz): 5 STOP frames lost in 3 runs against the refinement off, 15 gained.
+MAJOR: the hanging stage dropped its own cluster for an overlapping *advisory* one (a cable hanging
+to 1.85–2.2 m, 0.65–0.75 m off the axis, demoted as `floating`: no STOP in 5 of 6 ray-cast cases).
+MINOR: the input-rate estimate dropped stamp intervals under 0.02 s, so bursty 10 Hz stamps read as
+2–3 periods. *Pre-registered* at 00:25 UTC with two dated addenda written before their runs
+([`p3_round2_review_fixes_2026-09-26.json`](evidence/results/p3_round2_review_fixes_2026-09-26.json)).
+Shipped, on: a change of the correction up to 1° rotates the track model into the corrected frame
+instead of re-seeding it (`calibration.reseed_keep_max_deg`); the tracks follow every change and a
+STOP stays reported up to 5 frames after its last match, only STOPs are kept through a change above
+1° (`tracking.reseed_hold`); `clear_distance` is also capped at a lost reported track
+(`health.clear_cap_lost`); a hanging cluster yields only to an overlapping obstacle
+(`cluster.hanging_yield_gauge_only`); the input rate is the mean of the last 14 stamp intervals
+within 0–0.5 s (the periods are identical to the old ones on every 10 Hz frame of the gate and every
+stress frame; alternating 0.19 / 0.01 s stamps give 1). **The refinement could not be made safe
+and is off** (`calibration.refine_min_deg` 0): C1 (a per-axis trigger on the raw medians, two
+observations in a row, every reported track kept) lost no STOP frame against the refinement off,
+but failed the stress rule (5 Hz `doubleT_obstacle` first STOP 12 → 18: an object reported as
+advisory under the 3° tilt kept its advisory vote after the correction; +3° roll 11 / 13 → 14 / 16:
+the per-axis trigger kept noise-level provisional tilts); C1b (the round-2 trigger on two
+observations in a row, at most one refinement, only STOPs kept above 1°) lost frame 182 at 5 Hz
+(0, −1.5°) and gave +3° roll 13 / 16, +3° pitch 17 / 18; C1c (one observation) loses frame 182 too:
+the refined, final-like pitch applied before frame 182 loses it in every variant. The fallback C3
+(`6c19890`): **gate PASS** against `_ride_p3` (the same 6 rows better, none worse), against `_p3b`
+every row but latency the same; per frame against `17a850d`'s gate run, decisions, detections and
+the track model are identical in all 15 269 frames, warnings differ in 2 ride frames (a column
+track's association after a hanging cluster kept by the overlap fix; it keeps one in 2 frames of
+`roundT_doubleT` and 25 of the ride, none confirmed), and `clear_distance` is shorter in 398 frames,
+never longer: five bags median 120.0 m unchanged, the ride 123.0 → 122.6 m (53 more frames under
+60 m), set O overclaim 67 → 60 of 505 object-frames. Reviewer's sweep against `17a850d` with the
+refinement off: in the 18 gating runs 2 frames lost, both frame 197 at 10 Hz ((−2°, 0) and (0, +2°):
+the frame the as-recorded run misses too, which the fresh re-seed at the final correction happened
+to catch and the rotated model does not), 23 gained (frames 190–200 after the final correction of
+the +2° / +3° roll rigs: the STOP held through it); the reviewer's 5 Hz cases keep every STOP frame
+((+2°, +2°) 95 STOP frames as with the refinement off, 76, 102 and 104 among them; (0, −1.5°) 95,
+182 among them); the reviewer's other 17 mounts: 2 lost (frame 197 again), 52 gained. Against
+`17a850d` as shipped, with the refinement on, the refinement's own gains are given up too (10 Hz
+(+2°, +2°) and (0, −3°) frame 117, (+3°, +2°) frame 197, 5 Hz (0, −3°) frames 76, 122 and 182). Stress: 5 Hz five bags
+**10 / 10**, `doubleT_obstacle` 92/123 @ 12 (the same); +3° roll **14 / 16**, 183/246 @ 12; +3°
+pitch **17 / 18**, 186/246 @ 11: the refinement's tilt gain of round 2 (11 / 13, 16 / 17) given up,
+no worse than `17a850d` with the refinement off (16 / 17, 17 / 18). Tests 456 → 469
+(`tests/test_reseed_safety.py`: a final or refined correction of 0.7 / 1.5° while a ray-cast STOP
+is confirmed keeps it and never reports `clear_distance` beyond it — on `17a850d` the 1.5° change
+reset the tracker, 4 frames without the STOP; the rotated model, the hold, the lost-track cap, no
+flapping, the bursty input rate; `tests/test_thin_hanging.py`: the overlap rule, and the reviewer's
+cable STOPs from 31–34 m, never without the rule). The gate baseline
+[`regression_baseline_2026-09-25_ride_p3b.json`](evidence/results/regression_baseline_2026-09-25_ride_p3b.json)
+is re-cut on the final commit (the same gated values; the configuration and the commit changed).
 
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 

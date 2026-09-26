@@ -86,5 +86,41 @@
     "written_at_utc": "2026-09-26T01:49:47Z",
     "decision": "C3 by the pre-registered order: C1b with calibration.refine_min_deg 0 (the refinement off). F1a' (refine_confirm_obs 2, refine_max 1) stays as the protection if the refinement is turned back on. C3 is evaluated with the same commands; its stress counts are compared with the current numbers and with 17a850d with refine_min_deg 0 (to be run: scripts/robustness_check.py --config <default.yaml with refine_min_deg 0> on the 17a850d copy), as pre-registered for C3.",
     "tests": "the ray-cast re-seed test sets refine_min_deg 0.5 (the path stays available) and gains a final-calibration variant (the final changes the tilt by 0.7 / 1.5 deg while the STOP is confirmed), which runs with the shipped defaults"
+  },
+  "base_17a850d_measured": {
+    "note": "the same commands on a clean copy of 17a850d (PYTHONPATH set to the copy: scripts/robustness_check.py run from a checkout otherwise imports an installed resense)",
+    "reviewer_sweep": "26 mounts x 10 / 5 Hz, refine on against off: 5 STOP frames lost in 3 runs (10 Hz (0, +2) frame 197; 5 Hz (0, -1.5) frame 182; 5 Hz (+2, +2) frames 76, 102, 104), 15 gained - the reviewer's finding reproduced",
+    "gate": "exit 0 against _ride_p3b.json, every row but latency the same (the baseline is this code)",
+    "stress": {
+      "5 Hz": "10 / 10, doubleT_obstacle 92/123 @ 12",
+      "+3 deg roll": "11 / 13, 181/246 @ 12",
+      "+3 deg pitch": "16 / 17, 186/246 @ 11",
+      "note": "= the current wf10 numbers"
+    },
+    "stress_refine_off": {
+      "5 Hz": "10 / 10, 92/123 @ 12",
+      "+3 deg roll": "16 / 17 (roundT_doubleT 2 / 2, squareT_platform_squareT_switch 10 / 12), 181/246 @ 12",
+      "+3 deg pitch": "17 / 18 (roundT_doubleT 1 / 1), 186/246 @ 11",
+      "command": "scripts/robustness_check.py --config <17a850d configs/default.yaml with refine_min_deg 0.0>"
+    }
+  },
+  "run_C3": {
+    "commit": "6c19890 (clean; native path; --jobs 3)",
+    "gate": "exit 0 against regression_baseline_2026-09-25_ride_p3.json: 6 gated rows better (set O small_center 19 -> 30 STOP frames and first STOP 34.0 -> 52.5 m, thin_hanging 0 -> 15 and none -> 30.1 m, doubleT_obstacle object_on_rail 127 -> 128 and 124 -> 125 hits), none worse; against _ride_p3b.json every row but latency the same",
+    "per_frame_against_17a850d_gate": "decisions, detections (distance, kind, zone) and the track model identical in all 15 269 frames (five bags 2 287, doubleT_obstacle 201, set O 1 510, the ride 11 271); warnings differ in 2 ride frames (an advisory column track at 59.7 / 58.8 m not reported: its association changed after F2 kept a hanging cluster in an earlier frame; F2 keeps one in 2 frames of roundT_doubleT and 25 ride frames, none confirmed); clear_distance shorter in 398 frames, never longer (F1d, F2): five bags 119 frames, median 120.0 m unchanged, 245 -> 249 frames under 60 m; the ride 247 frames, median 123.0 -> 122.6 m, 53 more under 60 m; doubleT_obstacle 1; set O 31 frames, overclaim (scripts/score_clear_distance.py --gt) 67 -> 60 of 505 object-frames",
+    "sweep_A1": "the refinement is off: no STOP frame lost against refine_min_deg 0 by construction. Against 17a850d with refine_min_deg 0 (recorded): 2 lost, 23 gained in the 18 runs. Lost: frame 197 at 10 Hz with (-2, 0) and (0, +2) - the frame the as-recorded run misses as well (125 of 126 from frame 75, before and after); 17a850d's fresh re-seed at the final correction (frame 190, 0.36 / 0.70 deg) happened to catch it, the rotated model (F1b) does not. Gained: frames 190-200 after the final correction of the +2 / +3 deg roll rigs at both rates (the STOP held through the re-seed, F1c), 10 Hz (0, -1.5) frame 191, 5 Hz (0, -1.5) frame 192. The reviewer's cases: 5 Hz (+2, +2) 95 of 95 STOP frames (76, 102, 104 kept), 5 Hz (0, -1.5) 95 (182 kept), 10 Hz (0, +2) 189 (197 lost as in the as-recorded run). Against 17a850d as shipped (refinement on): 2 lost (10 Hz (-2, 0) frame 197; 10 Hz (+2, +2) frame 117, a refinement gain given up), 26 gained",
+    "stress": {
+      "5 Hz": "five bags 10 / 10, doubleT_obstacle 92/123 @ 12 (= current)",
+      "+3 deg roll": "14 / 16 (current 11 / 13; 17a850d refine off 16 / 17): roundT_doubleT 2 / 2, squareT_platform_squareT_switch 8 / 11, roundT_pressureGate_roundT 0 / 0; doubleT_obstacle 183/246 @ 12 (current 181/246 @ 12)",
+      "+3 deg pitch": "17 / 18 (current 16 / 17; 17a850d refine off 17 / 18): roundT_doubleT 1 / 1; doubleT_obstacle 186/246 @ 11 (= current)"
+    },
+    "tests": "469 passed on the native and the numpy path (456 + 11 tests/test_reseed_safety.py + 2 tests/test_thin_hanging.py); the ray-cast calibration-change test (final and refinement, 0.7 / 1.5 deg) fails on 17a850d (1.5 deg: the tracker reset, no STOP on 4 frames; 0.7 deg: the model re-seeded); the thin-hanging tests fail there too (no STOP for the cable); ruff, sync_params --check, web/demo (13) and the link check pass",
+    "verdict": "meets the C3 ship rule: gate exit 0 with no gated row worse; A1 by construction; the stress counts worse than the current ones (+3 deg roll 11 / 13 -> 14 / 16, +3 deg pitch 16 / 17 -> 17 / 18) are the refinement's tilt gain given up and no worse than 17a850d with the refinement off (16 / 17, 17 / 18); 5 Hz and doubleT_obstacle equal or better. F2 ships (no gated row worse), F3 ships (periods identical on every gate and stress input).",
+    "sweep_extra_mounts": "the reviewer's other 17 mounts x 10 / 5 Hz (recorded): against 17a850d with refine_min_deg 0, 2 STOP frames lost (frame 197 at 10 Hz with (-0.5, 0) and (+1, +2.5), after a final change of 0.29 / 0.27 deg that the model now follows by rotation), 52 gained (frames 190-200 after the final correction, the STOP held through it; 7 runs); against 17a850d as shipped (the refinement on) 7 lost, 44 gained: the refinement's own gains given up (10 Hz (0, -3) frame 117, (+3, +2) frame 197, 5 Hz (0, -3) frames 76, 122, 182) and frame 197 in the two runs above"
+  },
+  "decision": {
+    "shipped": "C3: the refinement OFF (calibration.refine_min_deg 0), with F1b (reseed_keep_max_deg 1.0), F1c' (tracking.reseed_hold 5, STOPs only), F1d (health.clear_cap_lost), F2 (cluster.hanging_yield_gauge_only), F3 (the burst-robust input rate); F1a' (refine_confirm_obs 2, refine_max 1) stays as the refinement's protection if it is turned back on; calibration.refine_raw_trigger tried, off",
+    "why_not_the_refinement": "no refinement variant passes the reviewer's sweep: at 5 Hz with the rig at (0, -1.5 deg) a refined tilt (the final's pitch 0 applied early) loses STOP frame 182 that the provisional tilt keeps (17a850d, C1b, C1c); the re-seed transients themselves are fixed (C1: 0 frames lost), but the tilt a refinement sets is itself a change the acceptance rule does not allow",
+    "given_up": "the refinement's tilt gain of round 2 on the stress check (+3 deg roll 11 / 13 -> 14 / 16, +3 deg pitch 16 / 17 -> 17 / 18 events / STOP episodes)"
   }
 }

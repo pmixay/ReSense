@@ -17,14 +17,37 @@ frames, 13 km, no obstacles).
 ## Unreleased (in development; package version 1.0.0)
 
 Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
-overhead rule on, node v0.6.4). Tests: 235 → 456 (+28 native kernels, +3 speed evaluation
+overhead rule on, node v0.6.4). Tests: 235 → 469 (+28 native kernels, +3 speed evaluation
 helpers, +23 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5
 overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting and socket
 buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`, +20 DDS
 transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
 `cluster.far_axis_both_sides`, +3 far bed bins, +5 the rail-shadow review fixes, +4 the
 free-hanging exemption of `floating`, +4 thin hanging objects, +5 `health.clear_cap`, +6 the rate
-and re-mount flags, +1 the rail-lock guard of the hanging stage) in `tests/`, 13 in `web/demo`.
+and re-mount flags, +1 the rail-lock guard of the hanging stage, +13 the review fixes of the
+round-2 items) in `tests/`, 13 in `web/demo`.
+
+- **Safety review of the round-2 items: calibration changes keep a confirmed STOP; the refinement
+  off (26.09, P3, delegated by the captain):** the review of `17a850d` found that every refinement
+  of the provisional tilt re-seeded the track model from nothing and lost a confirmed STOP on
+  `doubleT_obstacle` (5 Hz, rig +2° / +2°: frames 102 and 104 with `clear_distance` 151 / 163 m),
+  that the refinement flapped, and that a hanging cluster yielded to an advisory one (a cable
+  demoted as `floating`: no STOP). Pre-registered (00:25 UTC, two addenda before their runs). On
+  now: a change up to 1° rotates the track model instead of re-seeding it
+  (`calibration.reseed_keep_max_deg`), a STOP is held through any change and only STOPs are kept
+  through a change above 1° (`tracking.reseed_hold` 5), `clear_distance` is capped at a lost
+  reported track (`health.clear_cap_lost`), a hanging cluster yields only to an obstacle
+  (`cluster.hanging_yield_gauge_only`), and the input rate counts in-burst stamp intervals. No
+  refinement variant passed the reviewer's sweep (a refined tilt loses frame 182 at 5 Hz with the
+  rig at (0, −1.5°)), so `calibration.refine_min_deg` is 0 (off); it gives up the refinement's
+  stress gain: +3° roll 11 / 13 → 14 / 16, +3° pitch 16 / 17 → 17 / 18 events / STOP episodes (no
+  worse than `17a850d` with the refinement off; 5 Hz 10 / 10 unchanged). Full gate: PASS against
+  `_ride_p3` (6 better, none worse), every decision, detection and track model identical to
+  `17a850d` in all 15 269 frames; `clear_distance` shorter in 398 frames (ride median 123.0 → 122.6
+  m, set O overclaim 67 → 60 of 505). `regression_baseline_2026-09-25_ride_p3b.json` re-cut on the
+  final commit. +13 tests.
+  [`p3_round2_review_fixes_2026-09-26.json`](docs/evidence/results/p3_round2_review_fixes_2026-09-26.json),
+  [EXPERIMENTS §1i](docs/EXPERIMENTS.md).
 
 - **The P3 items of round 2 combined; new gate baseline (P3 integrator, 25.09, delegated by the
   captain):** the four items below merged (`wf10/p3-round2`) on top of the rail-shadow rules,
