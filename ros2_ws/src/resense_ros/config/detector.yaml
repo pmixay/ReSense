@@ -258,6 +258,10 @@ resense:
     pending_advisory: false        # tried 26.09 (P3 start-up, candidate a), not shipped: low tracks advisory while the mount calibration is 'pending' (the first ~20 s of an untilted rig): the organizers' 0.3 x 0.3 x 0.1 m object 20 m ahead of a fresh detector lost every STOP frame
     pending_advisory_within: 0.0   # m, (a): a low track at most this far stays a STOP
     min_model_age: 0               # tried 26.09 (candidate b, 16), not shipped: no new low STOP while the track model is younger than this (frames); the same object's first STOP moved from frame 4 to 16
+    rail_start_within: 0.0         # 26.09 (P3 rail start, lowobj.mark_rail_line; 0 = off): m, a low cluster nearer than this that reaches a rail line, is at most rail_start_max_width wide and rises at most rail_start_margin above the rail head's own returns along the track is rail geometry: no new low STOP on it while its track was never matched this far
+    rail_start_margin: 0.05        # m above the band's height where it continues along the track (the organizers' 0.10 m object on a rail head rises 0.10)
+    rail_start_lateral: 0.10       # m, the cluster reaches the axis +- rails_spacing / 2 within this
+    rail_start_max_width: 0.45     # m across the track (an object lying across a rail is wider)
   calibration:                     # v0.6: automatic mount calibration (resense/calibration.py)
     enabled: true
     frames: 20                       # v0.6.1: final tilt = median of 20 observations ...
