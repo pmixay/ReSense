@@ -17,7 +17,7 @@ frames, 13 km, no obstacles).
 ## Unreleased (in development; package version 1.0.0)
 
 Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
-overhead rule on, node v0.6.4). Tests: 235 → 492 (+28 native kernels, +3 speed evaluation
+overhead rule on, node v0.6.4). Tests: 235 → 500 (+28 native kernels, +3 speed evaluation
 helpers, +23 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5
 overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting and socket
 buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`, +20 DDS
@@ -25,7 +25,27 @@ transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
 `cluster.far_axis_both_sides`, +3 far bed bins, +5 the rail-shadow review fixes, +4 the
 free-hanging exemption of `floating`, +4 thin hanging objects, +5 `health.clear_cap`, +6 the rate
 and re-mount flags, +1 the rail-lock guard of the hanging stage, +13 the review fixes of the
-round-2 items, +17 their re-review, +6 latency out of the decision) in `tests/`, 13 in `web/demo`.
+round-2 items, +17 their re-review, +6 latency out of the decision, +8 the start-up census) in
+`tests/`, 13 in `web/demo`.
+
+- **Start-up of a fresh bag (26.09, P3 / P4): census; three rules tried, none shipped.** A
+  judge's fresh start at ride piece 2 STOPped at 2.9–3.1 m. The cause: the rail heads 3.0–3.6 m
+  ahead of a standing train, above a young model's rail plane. Census of the first 4 s of 221 ride
+  bags, 8 gate pieces and 7 recordings (`scripts/startup_census.py`): 18 of 221 bags STOP (35
+  events), but the warm detector STOPs more on the same frames. These are the ride's ordinary
+  false alarms, not caused by the start. Three rules were pre-registered:
+  - a (low advisory while the calibration is pending) fails the ray-cast check;
+  - b (a minimum model age) fails it too: a real low object 20 / 40 m ahead is not STOPped /
+    STOPped 12 frames late;
+  - c (`tracking.low_min_seen_distance` 4 m) passed: census 41 → 40, gate PASS, ride 46 → 45
+    events.
+
+  c was then reverted: it opens a blind zone. A 30 × 30 × 10 cm object, or an object across a
+  rail, 3.0–3.9 m ahead of a standing train (or falling there) never STOPs with it; it STOPs from
+  its 5th frame without it. All three flags are off. Default output identical to `11c50a7` on the
+  six recordings and set O; the `_p3b` baseline stands. +8 tests.
+  [`p3_startup_2026-09-26.json`](docs/evidence/results/p3_startup_2026-09-26.json),
+  [EXPERIMENTS §1j](docs/EXPERIMENTS.md).
 
 - **Latency out of the decision (26.09, P1):** a latency p95 over the 100 ms budget no longer
   turns `GO` into `CAUTION` on `/resense/decision`; it stays a health warning (`level` warn, its

@@ -1493,6 +1493,84 @@ not applied) and `scripts/robustness_check.py` imports its own checkout; on `5f6
 (PASS), the stress check and the reviewer's sweep are identical to `10e2707` frame by frame, so the
 `_p3b` baseline stands; tests 469 → 486.
 
+### 1j. Start-up of a fresh bag (26.09): census; three rules tried, none shipped
+
+[real, organizers' synthetic and ray-cast, measured 26.09; P3 / P4.] An independent judge
+replayed ride piece 2 of 8 from a fresh start. It got a STOP at 2.9–3.1 m in the first 1.5 s,
+with the mount calibration still pending. The jury plays every hidden bag from a fresh start.
+*Census* (`scripts/startup_census.py`, on `867bb8a`): a fresh detector over the first 40 frames
+(4 s) of each of the 221 ride split files (the bags as recorded), the 8 piece starts of the gate,
+the six recordings and set O. Counts are STOP frames / events / episodes.
+
+| starts | with a STOP | STOPs | events `low` / corridor | in the first 1.5 s |
+|---|---|---|---|---|
+| 221 ride splits | 18 | 120 / 35 / 28 | 9 / 26 | 8 events, all corridor, 32–145 m |
+| 8 gate pieces | 2 | 22 / 2 / 2 | 1 / 1 | the finding (`low`, 2.9 m); piece 0 at 138 m |
+| five obstacle-free recordings | 1 | 4 / 4 / 1 | 3 / 1 | none (`doubleT_platform` frames 34–37) |
+
+Every ride and five-bag event happens under calibration status `pending`. On an untilted rig that
+status lasts until the final tilt (~20 s), so it separates nothing. The provisional decision
+comes on frame 4 in 215 of 221 starts, before every event. Real objects in the windows:
+`doubleT_obstacle`'s person from frame 11 (corridor, 55.5 m, provisional rig) and set O's 2 × 2 m
+box from frame 5 (98 m). No real low object is in any window.
+
+**Conclusion: a fresh start does not add false STOPs.** On the same 8 588 frames inside the
+continuous gate run, the warm detector STOPs more: 128 frames / 41 events, against 97 / 31 fresh.
+The start-window STOPs are the ride's ordinary false alarms, at the same places.
+
+**The finding** reproduces only from the gate's cut at `new_data_55_0013`. It does not appear from
+`new_data_55_0000` or warm. The train stands there. The young model (age 12–15, rail score
+0.06–0.09) puts both rail heads 3.0–3.6 m ahead 3–12 cm above its rail-head plane. That is in
+front of the 4–30 m range the bed cross-section is learned from. The low track is matched at
+3.0–3.6 m and never at 4 m. In the gate and in every census start, it is the only confirmed low
+track that stays under 6 m.
+
+*Pre-registered* at 05:47 UTC, before any candidate code
+([`p3_startup_2026-09-26.json`](evidence/results/p3_startup_2026-09-26.json)). The candidates, in
+order:
+
+* (a) `low` tracks advisory while the calibration is `pending`;
+* (b) no new `low` STOP while the track model is younger than 16 frames;
+* (c) a `low` track reported only once it has been matched at ≥ 4 m.
+
+A candidate must pass three checks, in order:
+
+* S1: ray-cast fresh starts. The empty tunnel never STOPs. Objects 20–40 m ahead keep their STOP
+  frames.
+* S2: the census.
+* S3: the full gate.
+
+**(a) fails S1:** a real low object 20 / 40 m ahead of an untilted fresh start never STOPs. For
+information, its census would give 41 → 30 false events.
+
+**(b) fails S1:** the first STOP of the same object moves from frame 4 to frame 16. Its census:
+41 → 39.
+
+**(c) passes S1–S3:** census 41 → 40 false events (the finding's 4 frames), gate PASS, ride
+187 / 46 / 39 → 183 / 45 / 38, every other row the same. It was first shipped on `904fd7c`.
+
+**The coordinator's blind-zone check then reverted it** (addendum of 26.09, same file). The case
+(ray-cast, fresh or warm detector, rule on / off): the organizers' 30 × 30 × 10 cm object on a rail
+head, an object lying across a rail, and a 0.5 m box, each 2.5–3.9 m ahead of a standing train,
+or appearing there (falling onto the track).
+
+* With the rule off, every object at 3.0–3.9 m STOPs from its 5th frame.
+* With it on, the two low objects never STOP, at any of those distances, fresh or appearing. The
+  same holds for objects appearing at 3.9 m ahead of a train at 0.5 and 1 m/s.
+* A 0.5 m box across a rail at 3.9 m from a fresh start is taken as `low` and lost too.
+* At 2.5 m nothing is visible either way (`gauge.range_min` 3 m).
+
+A safety fix wins over a false-alarm gain (1 ride event, 4 frames in 229 starts): **none of the
+three is shipped**. The flags `lowobj.pending_advisory`, `lowobj.min_model_age` and
+`tracking.low_min_seen_distance` stay in the code, off. The default output is identical to
+`11c50a7` frame by frame on the six recordings and set O. The
+[`_p3b`](evidence/results/regression_baseline_2026-09-25_ride_p3b.json) baseline stands.
+
+The finding stays open: a fresh start at a standing train can STOP on the rail heads 3 m ahead.
+The corridor STOPs of the windows are not addressed: delaying them would delay
+`doubleT_obstacle`'s frame 11. Tests 492 → 500 (`tests/test_startup.py`). Among them: the
+organizers' object 3 m ahead of a standing fresh start STOPs from frame 4.
+
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 
 ### 2a. Day-1 numbers (v0.3, 26 frames of `roundT_doubleT`, every 10th, synthetic objects)

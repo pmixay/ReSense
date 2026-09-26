@@ -519,7 +519,10 @@ class Detector:
     def _confirm(self, clusters: List[Cluster], speed: Optional[float], dt: float):
         """Temporal persistence (in seconds: the tracker gets the measured frame interval).
         Returns the confirmed detections in the strict gauge and in the advisory zone."""
-        self.tracker.update(clusters, ego_shift=(speed or 0.0) * dt, frame_dt=dt)
+        low = self.cfg.lowobj
+        low_ok = low.min_model_age <= 0 or self.track.age >= low.min_model_age
+        self.tracker.update(clusters, ego_shift=(speed or 0.0) * dt, frame_dt=dt, low_ok=low_ok)
+        pending = low.pending_advisory and self.calib.state.status == "pending"
         dets: List[Detection] = []
         for t in self.tracker.confirmed():
             if t.last is None:
@@ -533,6 +536,10 @@ class Detector:
                 zone=t.zone, height_min=t.last.height_min, intensity=t.last.intensity,
                 reason=t.last.reason, kind=t.last.kind,
             ))
+            d = dets[-1]
+            if pending and d.kind == "low" and d.zone == "gauge" and d.distance > low.pending_advisory_within:
+                # 26.09 (P3 start-up, candidate a, off): a low track is advisory while the calibration is pending
+                d.zone, d.reason = "warning", "calibration_pending"
         dets.sort(key=lambda d: d.distance)
         return [d for d in dets if d.zone == "gauge"], [d for d in dets if d.zone != "gauge"]
 

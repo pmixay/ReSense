@@ -190,6 +190,7 @@ resense:
     zone_min_fraction: 0.6
     column_hold: 2                 # 25.09 (0 = off): a track demoted as a column in >= this many of its last zone_window hits stays advisory; roundT_doubleT's column at 101-149 m is a column in some frames and 1.6-2.2 m of it in others: 3 alarm frames at 111-115 m through ROS (original bag), 2 at 128-130 m from the cache -> 0 (4 column hits in its window); pre-registered 3 / 2 / 1, the highest passing: 3 fails the gate (ride STOP episodes 39 -> 40), 2 PASS: five bags 60 / 14 / 17 -> 58 / 13 / 16, ride 197 / 46 / 39 -> 187 / 46 / 39 alarm frames / events / STOP episodes, doubleT_obstacle, set O and set F detections identical (docs/evidence/results/column_hold_2026-09-25.json)
     reseed_hold: 5                 # 26.09 (safety review, re-review): after a mount-calibration change the tracks follow the rotation and a STOP (reported in zone gauge) stays reported for a fixed window of 5 frames from the change (the change frame the first), matched or not (a match does not end it), 6 at 10 Hz when the change re-seeds the track model (until its warm-up gives it a floor-shadow reference again); above 1 deg only STOPs are kept (the geometry re-seed must not drop a confirmed STOP); 0 = reset the tracker above 1 deg, hold nothing
+    low_min_seen_distance: 0.0     # tried 26.09 (P3 start-up, candidate c), NOT shipped (0 = off): a low (bed-level) track reported only once matched at or beyond this distance (m); 4 m removed a fresh start's 2.9-3.1 m STOP on the rail heads ahead of a standing train (ride 187 / 46 / 39 -> 183 / 45 / 38, gate PASS) but never STOPs for a 30 x 30 x 10 cm object or an object lying across a rail 3.0-3.9 m ahead of a standing or slow train, or one that falls there: a blind zone; a safety fix wins over a false-alarm gain (docs/evidence/results/p3_startup_2026-09-26.json, addendum_blind_zone)
     max_misses: 3
     conf_gain: 0.35
     conf_decay: 0.25
@@ -254,6 +255,9 @@ resense:
     near_min_bed_lateral_bins: 20  # support must span the central bed, not only the object footprint
     near_min_points: 5             # occupied voxels; the same box returns 5-10 at 12-28 m (10 rejected it)
     near_max_length: 0.75          # m along track, reject linear infrastructure
+    pending_advisory: false        # tried 26.09 (P3 start-up, candidate a), not shipped: low tracks advisory while the mount calibration is 'pending' (the first ~20 s of an untilted rig): the organizers' 0.3 x 0.3 x 0.1 m object 20 m ahead of a fresh detector lost every STOP frame
+    pending_advisory_within: 0.0   # m, (a): a low track at most this far stays a STOP
+    min_model_age: 0               # tried 26.09 (candidate b, 16), not shipped: no new low STOP while the track model is younger than this (frames); the same object's first STOP moved from frame 4 to 16
   calibration:                     # v0.6: automatic mount calibration (resense/calibration.py)
     enabled: true
     frames: 20                       # v0.6.1: final tilt = median of 20 observations ...

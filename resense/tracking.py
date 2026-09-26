@@ -15,6 +15,9 @@ matched now. Its zone is 'gauge' when at least ``zone_min_fraction`` of its last
 flickers into the gauge every other frame is advisory (docs/EXPERIMENTS.md section 1b), and
 fewer than ``column_hold`` (2 since 25.09) of those hits were demoted as a column: a column far
 away shows more than ``column_min_height`` of itself in some frames only (EXPERIMENTS.md 3a).
+With ``low_min_seen_distance`` > 0 (tried 26.09, off: EXPERIMENTS.md 1j) a low (bed-level) track
+is reported only once it has been matched at or beyond it; 4 m never reports a low object that
+stays nearer (a standing train), so it is not shipped.
 """
 from __future__ import annotations
 
@@ -104,12 +107,14 @@ class Tracker:
         return c.gate_base + c.gate_per_m * max(distance, 0.0)
 
     def update(self, clusters: List[Cluster], ego_shift: float = 0.0,
-               frame_dt: Optional[float] = None) -> List[Track]:
+               frame_dt: Optional[float] = None, low_ok: bool = True) -> List[Track]:
         """Associate ``clusters`` with the tracks. ``ego_shift`` (m) is the distance the
         vehicle travelled since the previous frame when it is known: a track seen once has no
         velocity yet and is then predicted as a static object approaching by that much.
         ``frame_dt`` (s) is the interval since the previous frame; it accumulates each track's
-        observed time for the ``confirm_time_s`` rule (without it persistence counts hits only)."""
+        observed time for the ``confirm_time_s`` rule (without it persistence counts hits only).
+        ``low_ok`` False (``lowobj.min_model_age``, 26.09, off) keeps a low track that was not
+        reported in the previous frame from being reported in this one."""
         c = self.cfg
         # widen the gate by the distance a static object travels in the *measured* interval, so a
         # dropped frame (0.2-0.3 s gap in the node) does not throw a 17 m/s approach out of the gate
@@ -179,7 +184,10 @@ class Tracker:
         # hold_misses frames (a single missed frame does not drop a STOP; review 23.09), or inside
         # a re-seed hold window (reseed; matched or not)
         for t in self.tracks:
-            t.reported = (self._qualifies(t) or (t.reported and 0 < t.misses <= c.hold_misses)
+            q = self._qualifies(t)
+            if q and not low_ok and not t.reported and t.last is not None and t.last.kind == "low":
+                q = False
+            t.reported = (q or (t.reported and 0 < t.misses <= c.hold_misses)
                           or (t.reported and t.hold > 0))
             if t.misses == 0:
                 t.seen_reported = t.reported
@@ -189,6 +197,11 @@ class Tracker:
 
     def _qualifies(self, t: Track) -> bool:
         c = self.cfg
+        if (c.low_min_seen_distance > 0 and t.last is not None and t.last.kind == "low" and t.history
+                and max(t.history) < c.low_min_seen_distance):
+            # 26.09 (P3 start-up): a low track never matched as far as the learned bed cross-section
+            # starts (the rail heads just ahead of a standing train under a young model)
+            return False
         need_span = c.confirm_time_s if (self._timed and c.confirm_time_s > 0) else 0.0
         return (t.hits >= (c.low_confirm_hits if (t.last is not None and t.last.kind == "low") else c.confirm_hits)
                 and t.confidence >= c.conf_threshold and t.misses == 0

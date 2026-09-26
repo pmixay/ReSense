@@ -275,6 +275,7 @@ class TrackingConfig:
     max_misses: int = 3            # frames a track survives without a match
     hold_misses: int = 1           # frames a reported track stays reported without a match (at its predicted distance): one missed frame does not drop a STOP (review 23.09); 0 = the v0.6.2 behaviour
     reseed_hold: int = 5           # 26.09 (safety review; a fixed window since the re-review of 26.09): after a mount-calibration change the tracks are rotated into the corrected frame, and a track reported in zone gauge (a STOP) at that moment stays reported for a window of this many frames from the change (the change frame the first; from its last match if it was already missing at the change), matched or not: a match refreshes the track but does not end the window (it did, so a loss from the frame after the change was not covered); when the change re-seeds the track model the window lasts at least until the model has its floor-shadow reference again (1 + ceil(track.axis_warmup_frames / periods) frames: 6 at 10 Hz, 4 at 5 Hz); a missed frame in the window is reported at the predicted distance and not counted against the track: the geometry re-seed must not drop a confirmed STOP; on a change above 1 deg only such tracks are kept (the others dropped, as the reset did); a new orientation still resets the tracker; 0 = the tracker is reset on a change above 1 deg and nothing is held
+    low_min_seen_distance: float = 0.0  # tried 26.09 (P3 start-up, candidate c), NOT shipped: m; a low (bed-level) track is reported only once it has been matched at or beyond this distance; 4 m removed a fresh start's STOP on the rail heads 3.0-3.6 m ahead of a standing train but never reports a real low object that stays within 4 m (standing train, or one that falls there): a blind zone; 0 = off
     conf_gain: float = 0.35        # confidence added per hit
     conf_decay: float = 0.25       # confidence removed per miss
     conf_threshold: float = 0.6    # report obstacles with confidence >= threshold
@@ -333,6 +334,10 @@ class LowObjectConfig:
     near_min_bed_lateral_bins: int = 20  # support must span the central bed, not only the object footprint
     near_min_points: int = 5          # distinct occupied voxels; that box returns 5-10 at 12-28 m (10 rejected it)
     near_max_length: float = 0.75     # m along track; reject cables, guard rails, long drain covers
+    # 26.09 (P3 start-up, docs/evidence/results/p3_startup_2026-09-26.json), candidates a / b:
+    pending_advisory: bool = False       # (a) while the mount calibration is 'pending' a confirmed low track beyond pending_advisory_within is advisory (reason 'calibration_pending'), not STOP
+    pending_advisory_within: float = 0.0  # m; (a) a low track at most this far stays a STOP
+    min_model_age: int = 0               # (b) a low track does not become a STOP while the track model is younger than this (frames since its (re)seed); one already reported stays; 0 = off
 
 
 @dataclass
