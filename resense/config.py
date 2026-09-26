@@ -149,7 +149,7 @@ class GaugeConfig:
     # axis_union_max_curvature, X <= axis_union_range and the rail axis within axis_union_max_offset of
     # the sensor axis. 0 = off; 1 = strict membership only (A); 2 = the corridor coordinate re-measured (B);
     # 3 = A, and the shape rules of a corridor cluster read the lateral from the nearer reference (B2)
-    axis_union: int = 1                     # on since 26.09 (A: gate PASS, set O #6 0 -> 1 STOP frame, nothing else changed); 2 / 3 tried, not shipped
+    axis_union: int = 0                     # tried 26.09, NOT shipped (the safety review: blocking): A (1) passed the gate (set O #6 0 -> 1 STOP frame) but the union takes in a long line at the corridor edge beside an object and the oversize split then dropped both (ray-cast: 19 -> 6 STOP frames); the split falls back to the rails' part since; 2 / 3 tried, not shipped
     axis_union_range: float = 50.0          # m, near field only
     axis_union_max_offset: float = 0.30     # m, |c(X)| = rail axis minus sensor axis (below warning_margin)
     axis_union_max_curvature: float = 2e-4  # 1/m, straight track only (R >= 5 km)
@@ -299,7 +299,8 @@ class TrackingConfig:
     # a track whose last near_escalate_hits hits were each a corridor cluster with at least
     # near_escalate_voxels voxels inside the strict envelope (Cluster.n_gauge) within
     # near_escalate_distance is an obstacle (zone gauge), whatever demoted it (a signature such as
-    # elevated / floating, the zone vote), except a column (never counts) and the column hold (wins);
+    # elevated / floating, the zone vote), except a column (never counts), a beyond_axis or
+    # beyond_height_ref demotion (never counts, safety review of 26.09) and the column hold (wins);
     # on since 26.09 (candidate A, 10 / 35 m / 5: gate PASS, set O inside STOP frames 337 -> 349,
     # #8 12 -> 22, #4 0 -> 2; the ride, the five bags, doubleT_obstacle, set F identical); 0 = off
     near_escalate_voxels: int = 10
@@ -376,6 +377,7 @@ class LowObjectConfig:
     rail_start_margin: float = 0.05      # m above the band's height along the track (the organizers' 0.10 m object on a rail head rises 0.10)
     rail_start_lateral: float = 0.10     # m; the cluster's lateral extent reaches the model axis +- track.rails_spacing / 2 within this
     rail_start_max_width: float = 0.45   # m across the track; wider is not a rail (an object lying across a rail: 0.5-0.6 m)
+    rail_start_min_ref: float = 0.06     # m (safety review of 26.09): only where that band's line is at least this far above the model's rail-head plane, the young-model fault the rule compensates (the finding: 0.135-0.148 m; a correct model ~0)
 
 
 @dataclass

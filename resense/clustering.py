@@ -36,6 +36,7 @@ class Cluster:
     reason: str = ""             # why the cluster is advisory although it has gauge voxels ('' = it has not / it is an obstacle)
     kind: str = ""               # v0.6: 'low' = a bump above the track bed (resense/lowobj.py), '' = corridor cluster
     rail_line: bool = False      # 26.09: a low cluster near the train that is rail geometry (lowobj.mark_rail_line; lowobj.rail_start_within)
+    wall_kept: bool = False      # 26.09: the wall-at-the-side rule would have dropped it; kept by cluster.wall_keep_gauge_voxels
 
     @property
     def size(self) -> np.ndarray:
@@ -139,7 +140,7 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
                   smear_max_length: float = 0.0, smear_max_width: float = 0.0,
                   low: Optional[np.ndarray] = None, low_cfg=None,
                   height_valid: Optional[float] = None, gauge: Optional[GaugeConfig] = None,
-                  dy_alt: Optional[np.ndarray] = None) -> List[Cluster]:
+                  dy_alt: Optional[np.ndarray] = None, in_rail: Optional[np.ndarray] = None) -> List[Cluster]:
     """Voxelise candidates, cluster the voxels, describe and filter the clusters.
 
     ``xyz``/``intensity``/``dy``/``h``/``in_gauge`` are the corridor candidates;
@@ -189,6 +190,12 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
     candidates, measured from the sensor axis: the infrastructure and signature rules of a corridor
     cluster read it instead of ``dy`` when its mean places the cluster nearer the centre; the
     reported lateral and every other quantity keep ``dy``.
+
+    ``in_rail`` (26.09) is the strict membership measured from the rails only; ``None`` = ``in_gauge``.
+    It differs from ``in_gauge`` only with ``gauge.axis_union`` 1 / 3 (off), which adds the envelope
+    measured from the sensor axis to ``in_gauge``. The wall keep (``cfg.wall_keep_gauge_voxels``)
+    counts it, and an oversize cluster whose part in ``in_gauge`` is too long falls back to its part in
+    it (safety review of 26.09: the union took in a long edge line beside an object and dropped both).
     """
     out: List[Cluster] = []
     if xyz.shape[0] == 0:
@@ -215,7 +222,7 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
             c = _low_cluster(b, dy, h, intensity, frame_idx, cfg, low_cfg)
         else:
             c = _corridor_cluster(b, dy, h, in_gauge, intensity, inv, frame_idx, cfg, factor, factor_range,
-                                  axis_valid, height_valid, gauge, dy_alt)
+                                  axis_valid, height_valid, gauge, dy_alt, in_rail)
         if c is not None:
             out.append(c)
     out.sort(key=lambda c: c.distance)
@@ -452,14 +459,23 @@ def _gauge_part(b: _Blob, in_gauge, inv, cfg: ClusterConfig) -> Optional[_Blob]:
 def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg: ClusterConfig,
                       factor: float, factor_range: float, axis_valid: float,
                       height_valid: Optional[float], gauge: Optional[GaugeConfig] = None,
-                      dy_alt: Optional[np.ndarray] = None) -> Optional[Cluster]:
+                      dy_alt: Optional[np.ndarray] = None, in_rail: Optional[np.ndarray] = None) -> Optional[Cluster]:
     """A corridor cluster: size and point-count bars, the infrastructure shapes, then the zone
-    (enough voxels in the strict gauge) and the reason that demotes it to advisory."""
+    (enough voxels in the strict gauge) and the reason that demotes it to advisory. ``in_rail``: the
+    strict membership from the rails only (``find_clusters``)."""
+    if in_rail is None:
+        in_rail = in_gauge
     size = b.size
     if size.max() > cfg.max_extent and cfg.oversize_split_max_length > 0:
-        b = _gauge_part(b, in_gauge, inv, cfg)
-        if b is None:
+        part = _gauge_part(b, in_gauge, inv, cfg)
+        if part is None and in_rail is not in_gauge:
+            # safety review of 26.09 (gauge.axis_union): the sensor-axis envelope can take in a long
+            # line at the corridor edge beside an object, so the part grows past the split length;
+            # the part inside the envelope measured from the rails alone is then the object
+            part = _gauge_part(b, in_rail, inv, cfg)
+        if part is None:
             return None
+        b = part
         size = b.size
     if size.max() > cfg.max_extent or size[2] < cfg.min_height:
         return None
@@ -485,11 +501,12 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
         # 26.09 (P3 near escalation, candidate D): a tall cluster at the corridor side with this many
         # voxels inside the strict envelope near the train is not dropped as a wall (set O #6, the
         # 2 x 2 m box at the envelope edge: 10-31 such voxels at 14-8 m); the signatures still apply.
-        # The strict envelope here is the one of ``in_gauge``: with gauge.axis_union 1 (26.09) the
-        # union of the envelopes measured from the rails and from the sensor axis
-        spare = int(np.unique(inv[b.idx][in_gauge[b.idx]]).size) >= cfg.wall_keep_gauge_voxels
+        # The voxels are counted in the envelope measured from the rails (in_rail; safety review of
+        # 26.09: the wall keep does not change with gauge.axis_union)
+        spare = int(np.unique(inv[b.idx][in_rail[b.idx]]).size) >= cfg.wall_keep_gauge_voxels
     if _is_infrastructure(size, lat_rules, h_max, cfg, spare_wall=spare):
         return None
+    wall_kept = spare and _is_infrastructure(size, lat_rules, h_max, cfg)
     n_gauge = int(np.unique(inv[b.idx][in_gauge[b.idx]]).size)
     zone = "gauge" if n_gauge >= gauge_min else "warning"
     reason = _advisory_reason(b, dist, lat_rules, zone, dy_rules, h, cfg, axis_valid, height_valid)
@@ -517,4 +534,5 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
         height_min=float(h[b.idx].min()), height_max=h_max,
         intensity=float(intensity[b.idx].mean()) if intensity is not None else 0.0,
         n_expected=n_exp, score=score, zone=zone, n_gauge=n_gauge, retro=retro, reason=reason,
+        wall_kept=wall_kept,
     )

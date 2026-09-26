@@ -93,10 +93,26 @@ def _rail_scene(object_top: float = None, across: bool = False, continuation: bo
     return c, X, dy, h
 
 
-def _marked(c, X, dy, h, within: float = 4.0) -> bool:
-    cfg = LowObjectConfig(rail_start_within=within)
+def _marked(c, X, dy, h, within: float = 4.0, min_ref: float = 0.06) -> bool:
+    cfg = LowObjectConfig(rail_start_within=within, rail_start_min_ref=min_ref)
     mark_rail_line([c], X, dy, h, cfg, rails_spacing=1.59, range_min=3.0)
     return c.rail_line
+
+
+def test_nothing_is_marked_under_a_correct_model():
+    """Safety review of 26.09 (``lowobj.rail_start_min_ref`` 0.06 m): the rule compensates a young
+    model whose rail-head plane lies under the real rail heads (the finding: the band's line 0.135-
+    0.148 m above it). With a correct model the rail head's line is ~0: nothing is marked, even the
+    finding's shape; the same scene 0.15 m up is marked (and at min_ref 0 also at ~0)."""
+    c, X, dy, h = _rail_scene()
+    assert _marked(c, X, dy, h)
+    for shift in (0.15, 0.12):                        # the rail head's line at ~0.01 / ~0.04 m
+        c, X, dy, h = _rail_scene()
+        c.height_min, c.height_max = c.height_min - shift, c.height_max - shift
+        assert not _marked(c, X, dy, h - shift), shift
+    c, X, dy, h = _rail_scene()
+    assert _marked(c, X, dy, h - 0.15, min_ref=0.0)
+    assert LowObjectConfig().rail_start_min_ref == 0.06
 
 
 def test_rail_flank_near_the_train_is_rail_geometry():

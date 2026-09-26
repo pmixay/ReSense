@@ -114,6 +114,15 @@ def test_escalation_needs_the_last_hits_in_a_row():
     assert zones.index("gauge") == 9                                 # hits at 35, 34, 33, 32, 31 m
 
 
+@pytest.mark.parametrize("reason", ["beyond_axis", "beyond_height_ref"])
+def test_untrusted_reference_is_never_escalated(reason):
+    """Safety review of 26.09: a cluster demoted because the corridor's axis (``beyond_axis``) or
+    height reference (``beyond_height_ref``) is not trusted there never counts as a near hit: its
+    strict voxels are not trusted either."""
+    assert set(z for _, z in _track_zones([(30.0, 120, reason)] * 10)) == {"warning"}
+    assert not Tracker(TrackingConfig(near_escalate_voxels=10))._near(_cluster(30.0, 120, reason))
+
+
 def test_column_is_never_escalated_and_the_column_hold_keeps_precedence():
     """A column (the ride's column row seen through a wrong axis at a crossover: 50-150 strict
     voxels at 20-40 m) never counts as a near hit, and a track held advisory by the column hold
@@ -151,9 +160,52 @@ def test_wall_keep_spares_a_side_face_with_strict_voxels_near_the_train(x0, dy0,
     assert find_clusters(xyz, inten, dy, h, ing, ClusterConfig(wall_keep_gauge_voxels=0), gauge=g) == []
     out = find_clusters(xyz, inten, dy, h, ing, ClusterConfig(wall_keep_gauge_voxels=10, wall_keep_distance=20.0), gauge=g)
     if kept:
-        assert len(out) == 1 and out[0].zone == "gauge" and out[0].n_gauge >= 10
+        assert len(out) == 1 and out[0].zone == "gauge" and out[0].n_gauge >= 10 and out[0].wall_kept
     else:
         assert out == []
+
+
+def test_wall_keep_counts_the_rails_envelope_only():
+    """Safety review of 26.09: the wall keep counts the voxels inside the envelope measured from the
+    rails (``in_rail``), not the strict membership widened by ``gauge.axis_union``: a face with
+    none there is dropped as a wall however many a wider ``in_gauge`` gives it."""
+    xyz, dy, h, ing, g = _edge_face(10.0, 1.08)
+    assert not ing.any()
+    inten = np.full(len(xyz), 10.0, np.float32)
+    wide = np.abs(dy) <= 1.2
+    ccfg = ClusterConfig(wall_keep_gauge_voxels=10, wall_keep_distance=20.0)
+    assert len(find_clusters(xyz, inten, dy, h, wide, ccfg, gauge=g)) == 1          # in_rail = in_gauge
+    assert find_clusters(xyz, inten, dy, h, wide, ccfg, gauge=g, in_rail=ing) == []
+
+
+def _low_at(x: float, lateral: float) -> Cluster:
+    c = np.array([x + 0.15, lateral, -1.25])
+    return Cluster(points_idx=np.arange(3), n=8, n_raw=12, centroid=c, bbox_min=c - [0.15, 0.15, 0.05],
+                   bbox_max=c + [0.15, 0.15, 0.05], distance=x, lateral=lateral, height_min=0.05,
+                   height_max=0.15, intensity=10.0, n_expected=8.0, score=1.0, zone="gauge", n_gauge=8,
+                   kind="low")
+
+
+def _side_blob(x: float, wall_kept: bool) -> Cluster:
+    c = np.array([x + 0.5, 1.3, 0.0])
+    return Cluster(points_idx=np.arange(3), n=40, n_raw=60, centroid=c, bbox_min=c - [0.5, 0.25, 1.0],
+                   bbox_max=c + [0.5, 0.25, 1.0], distance=x, lateral=1.3, height_min=0.2, height_max=2.2,
+                   intensity=10.0, n_expected=30.0, score=1.0, zone="warning", n_gauge=12, reason="column",
+                   wall_kept=wall_kept)
+
+
+def test_a_demoted_wall_kept_blob_does_not_remove_a_low_object_beside_it():
+    """Safety review of 26.09: a blob kept only by the wall keep and then demoted (here a column) is
+    not a duplicate source for a low object beside it (it would have been dropped without the wall
+    keep, and the low object reported); an ordinary advisory column still is, as before."""
+    from resense.detector import Candidates
+    det = Detector(DetectorConfig())
+    low = _low_at(10.0, 0.7)
+    empty = Candidates(xyz=np.zeros((0, 3), np.float32), dy=np.zeros(0), h=np.zeros(0),
+                       in_gauge=np.zeros(0, bool), intensity=np.zeros(0, np.float32),
+                       idx=np.zeros(0, np.int64), low=np.zeros(0, bool))
+    assert det._not_part_of_corridor_objects([low], [], [_side_blob(10.0, True)], empty) == [low]
+    assert det._not_part_of_corridor_objects([low], [], [_side_blob(10.0, False)], empty) == []
 
 
 def test_shipped_defaults_are_candidates_a_and_d():

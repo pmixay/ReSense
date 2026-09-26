@@ -187,8 +187,12 @@ def mark_rail_line(clusters, X: np.ndarray, dy: np.ndarray, h: np.ndarray, cfg: 
     included - is at most ``rail_start_margin`` above the band's height where the cluster is not
     (the median of those bins' highest returns: the rail head's own line). An object standing on a
     rail rises above that line (the organizers' 0.10 m object by 0.10 m). Only where the heights
-    are 0.3 m below to 0.6 m above the modelled rail head. The tracker withholds a new report of
-    a marked track that was never matched at >= ``rail_start_within`` (``Tracker.update``)."""
+    are 0.3 m below to 0.6 m above the modelled rail head. (6) (safety review of 26.09) That line
+    is at least ``rail_start_min_ref`` above the modelled rail head: the young model's fault the
+    rule compensates (the finding: 0.135-0.148 m); under a correct model (~0) nothing is marked.
+    The tracker withholds a new report of a marked track that was never matched at >=
+    ``rail_start_within`` (``Tracker.update``); that clause is no safeguard (a track deleted after
+    its misses, a detector reset or a re-mount starts again): the margins (5) and (6) are."""
     near = float(cfg.rail_start_within)
     todo = [c for c in clusters if c.kind == "low" and c.distance < near and c.points_idx.size]
     if not todo:
@@ -219,7 +223,8 @@ def mark_rail_line(clusters, X: np.ndarray, dy: np.ndarray, h: np.ndarray, cfg: 
         ok = cnt >= 2
         if int(ok.sum()) < 4:
             continue
-        if float(hs[foot].max()) <= float(np.median(top_bin[ok])) + cfg.rail_start_margin:
+        line = float(np.median(top_bin[ok]))
+        if line >= cfg.rail_start_min_ref and float(hs[foot].max()) <= line + cfg.rail_start_margin:
             c.rail_line = True
             n += 1
     return n

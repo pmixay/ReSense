@@ -107,7 +107,9 @@ class Candidates:
     """The points handed to the clustering: vehicle coordinates, track coordinates (``dy``
     lateral to the axis, ``h`` above the rail head), strict-gauge membership, intensity, the
     index in the frame (``-1``: merged from an earlier frame by the accumulation) and the
-    low-object flag (a bump above the track bed, below the envelope floor)."""
+    low-object flag (a bump above the track bed, below the envelope floor). ``in_rail`` (26.09):
+    the strict membership measured from the rails only, when ``gauge.axis_union`` made
+    ``in_gauge`` the union with the envelope measured from the sensor axis; ``None`` = ``in_gauge``."""
     xyz: np.ndarray
     dy: np.ndarray
     h: np.ndarray
@@ -115,20 +117,28 @@ class Candidates:
     intensity: np.ndarray
     idx: np.ndarray
     low: np.ndarray
+    in_rail: Optional[np.ndarray] = None
 
     def __len__(self) -> int:
         return int(self.idx.size)
 
+    def rail(self) -> np.ndarray:
+        return self.in_gauge if self.in_rail is None else self.in_rail
+
     def concat(self, other: "Candidates") -> "Candidates":
-        return Candidates(**{f.name: np.concatenate([getattr(self, f.name), getattr(other, f.name)])
-                             for f in fields(self)})
+        out = {f.name: np.concatenate([getattr(self, f.name), getattr(other, f.name)])
+               for f in fields(self) if f.name != "in_rail"}
+        if self.in_rail is not None or other.in_rail is not None:
+            out["in_rail"] = np.concatenate([self.rail(), other.rail()])
+        return Candidates(**out)
 
     def subset(self, m: np.ndarray) -> "Candidates":
-        return Candidates(**{f.name: getattr(self, f.name)[m] for f in fields(self)})
+        return Candidates(**{f.name: (None if getattr(self, f.name) is None else getattr(self, f.name)[m])
+                             for f in fields(self)})
 
 
 def _clusters_of(c: Candidates, cfg, **kw) -> List[Cluster]:
-    return find_clusters(c.xyz, c.intensity, c.dy, c.h, c.in_gauge, cfg, frame_idx=c.idx, **kw)
+    return find_clusters(c.xyz, c.intensity, c.dy, c.h, c.in_gauge, cfg, frame_idx=c.idx, in_rail=c.in_rail, **kw)
 
 
 def _finite_only(frame: Frame) -> Frame:
@@ -331,6 +341,7 @@ class Detector:
             # from the sensor axis (near field, straight track, the two axes within axis_union_max_offset)
             ax = axis_union_strict(cand.xyz[:, 0], cand.dy, cand.h, self.track, cfg.gauge)
             if ax is not None:
+                cand.in_rail = cand.in_gauge            # the rails' own envelope (safety review of 26.09)
                 cand.in_gauge = cand.in_gauge | ax
         floor_valid = max(self.track.floor_range[1] + cfg.track.floor_valid_margin, self.track.floor_verified)
         axis_valid = min(self.track.axis_valid, cfg.gauge.range_max)
@@ -420,10 +431,12 @@ class Detector:
                              axis=1).astype(np.float32)
             merged = cand.concat(Candidates(xyz=xyz_o, dy=dyo, h=ho, in_gauge=go, intensity=io,
                                             idx=np.full(Xo.size, -1, dtype=cand.idx.dtype),
-                                            low=np.zeros(Xo.size, dtype=bool)))
+                                            low=np.zeros(Xo.size, dtype=bool),
+                                            in_rail=self.buffer.merged_rail(acc.min_range)))
             n_acc = 1 + len(self.buffer)
         far = (cand.xyz[:, 0] >= acc.min_range) & ~cand.low
-        self.buffer.push(cand.xyz[far, 0], cand.dy[far], cand.h[far], cand.intensity[far], cand.in_gauge[far])
+        self.buffer.push(cand.xyz[far, 0], cand.dy[far], cand.h[far], cand.intensity[far], cand.in_gauge[far],
+                         in_rail=None if cand.in_rail is None else cand.in_rail[far])
         return merged, n_acc
 
     # -- 5 -------------------------------------------------------------------------------------
@@ -514,7 +527,9 @@ class Detector:
             # advisory cluster there (a cable demoted as floating) must not remove the hanging one
             others = [k for k in clusters if k.zone == "gauge" and not k.reason]
         else:
-            others = clusters
+            # 26.09 (safety review): a blob kept only by the wall keep that another rule demoted is not
+            # an object the other stages decided on
+            others = [k for k in clusters if not (k.wall_kept and k.reason)]
         keep = [c for c in hang if not any(_overlap(c, k) for k in others)]
         return sorted(clusters + keep, key=lambda c: c.distance) if keep else clusters
 
@@ -534,8 +549,11 @@ class Detector:
             if int(m.sum()) >= 3:
                 continue
             strad = any(c is k for k in straddling)
+            # 26.09 (safety review): a blob kept only by the wall keep (cluster.wall_keep_gauge_voxels)
+            # counts only as an obstacle, as for a straddling cluster: demoted (a column), it must not
+            # remove a low object beside it
             dup = any(_overlap(c, k) for k in clusters
-                      if not strad or (k.zone == "gauge" and not k.reason))
+                      if not (strad or k.wall_kept) or (k.zone == "gauge" and not k.reason))
             if not dup:
                 keep.append(c)
         return keep

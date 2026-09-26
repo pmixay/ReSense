@@ -34,6 +34,11 @@ from resense.clustering import Cluster
 from resense.config import TrackingConfig
 
 
+# 26.09: demotions a near escalation never overrides (Tracker._near): a column, and a cluster outside
+# the range where the corridor's axis or height reference is trusted
+_NOT_ESCALATED = ("column", "beyond_axis", "beyond_height_ref")
+
+
 @dataclass
 class Track:
     id: int
@@ -135,10 +140,12 @@ class Tracker:
         voxels inside the strict envelope (``Cluster.n_gauge``, edge margin applied) and within
         ``near_escalate_distance``, whatever its zone or demotion reason except a column (a column
         row seen through a wrong axis at a crossover has 50-150 such voxels at 20-40 m on the ride;
-        the column hold keeps precedence too)."""
+        the column hold keeps precedence too) and a cluster demoted because the corridor's axis or
+        height reference is not trusted there (``beyond_axis``, ``beyond_height_ref``; safety review
+        of 26.09: its strict voxels are not trusted either)."""
         c = self.cfg
         return (c.near_escalate_voxels > 0 and cl.kind == "" and cl.n_gauge >= c.near_escalate_voxels
-                and cl.distance <= c.near_escalate_distance and cl.reason != "column")
+                and cl.distance <= c.near_escalate_distance and cl.reason not in _NOT_ESCALATED)
 
     def _gate(self, distance: float) -> float:
         c = self.cfg
