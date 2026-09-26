@@ -1,0 +1,34 @@
+{
+  "schema": "resense-p4-independent-review-packet-v1",
+  "date": "2026-09-26",
+  "branch": "claude/p4-data-completion-20260926",
+  "starting_commit": "dcf7f90f730c675db238691d79357469b489d13f",
+  "independent_score_to_preserve": {
+    "score": 65,
+    "date": "2026-09-26",
+    "commit": "867bb8a"
+  },
+  "provisional_score": "p4_provisional_score_2026-09-26.json",
+  "review_order": [
+    "p4_data_intake_2026-09-26.json",
+    "p4_available_reference_2026-09-26.json",
+    "p4_candidate_decisions_2026-09-26.json",
+    "p4_false_alarm_inventory_2026-09-26.json",
+    "p4_seto_raw_cache_comparison_2026-09-26.json",
+    "p4_setS_paired_2026-09-26.json",
+    "p4_artifacts_2026-09-26/manifest.json"
+  ],
+  "required_to_reassess": [
+    "At least 4.1 GB of additional free disk while keeping 3 GiB headroom, then cache and verify all 221 new_data splits.",
+    "Rerun complete regression gate, 221-start census, ride startup in eight chunks, set F straight and paired curve/edge experiments.",
+    "Run candidate A and B stress, offset, clear-distance and paired-placement checks against identical samples.",
+    "Independently inspect candidate metrics, set O quantization sensitivity, false-alarm causes and the provisional criterion weights."
+  ],
+  "not_claimed": [
+    "No detector/default change accepted.",
+    "No new baseline produced.",
+    "Set O is not unseen validation.",
+    "Set F anchored placement is not surveyed ground truth.",
+    "The empty ride is not positive-obstacle recall evidence."
+  ]
+}

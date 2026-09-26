@@ -5,13 +5,14 @@
 > **Audience:** jury, team · **Owner:** P3, P4 (content), P1 (structure, timing) · **Language:** EN,
 > summary RU
 > **Last verified:** 2026-09-26 against the integrated P3c baseline (`ed03bc2`),
-> detector v0.6.3 with the long overhead rule,
-> `tracking.column_hold` and the rail-shadow rules on since 25.09, node v0.6.4, package 1.0.0;
-> re-measured by the regression gate with the ride) ·
+> detector v0.6.3 with the long overhead rule, `tracking.column_hold` and the rail-shadow rules;
+> the P4 available-data rerun reproduced the six original recordings and set O, but could not
+> load the ride or set F straight because `new_data` is not cached ·
 > **Status:** current
 
 **Кратко.** Здесь все измерения ReSense с датой и видом данных. По интегрированной версии P3c
-пять пустых записей дают 13 ложных событий, поездка 20 минут — 45 (3,5 на км); человек на пути
+пять пустых записей дают 13 ложных событий; последний сохранённый результат поездки 20 минут —
+45 (3,5 на км), но в P4-перезапуске кеш поездки отсутствовал; человек на пути
 найден в 58 из 61 кадра с 11-го, предмет на рельсе — в 125 из 126 кадров после ухода человека,
 ошибка расстояния ≤ 0,23 м. На синтетических объектах организаторов (набор O) STOP получают все
 8 объектов в габарите, но два краевых объекта получают лишь 2 и 6 STOP-кадров, а верхний ящик —
@@ -29,7 +30,7 @@ and terms: [`README.md`](README.md) §3 (glossary), [`EVALUATION.md`](EVALUATION
 
 **Re-run in one command.** `scripts/regression_gate.py` (EVALUATION §3 step 6) re-measures the
 real-data rows (five obstacle-free bags, the person, the object on the rail, the ride), the set O
-row and set F straight track in one run, and gates every detector change against
+row and set F straight track in one run when all caches are present, and gates every detector change against
 [`regression_baseline_2026-09-26_ride_p3c.json`](evidence/results/regression_baseline_2026-09-26_ride_p3c.json)
 (the shipped defaults of `ed03bc2`: the P3 items of 26.09 merged with the fixes of their safety
 review, `lowobj.rail_start_within`, `tracking.near_escalate_*` and `cluster.wall_keep_*` on,
@@ -49,6 +50,15 @@ a new baseline, one that does not leaves this table as it is. The five before it
 (six recordings and set O, no ride), are kept for history; the merged `8932f3a` passed against the latter with
 every gated metric the same ([its JSON](evidence/results/regression_gate_2026-09-25_8932f3a.json)).
 
+**P4 available-data rerun (26.09).** The strict command was run against the frozen P3c baseline
+with no `--allow`. It reproduced the available six original recordings and set O, but exited 1
+because three ride and fifteen set F straight metrics were missing. The 45-event, 3.5-per-km ride
+result in the table is the archived P3c baseline, not a new P4 measurement. The P4 replay also
+found that the raw set O bag and its 5 mm int16 cache are not score-identical; the committed gate
+remains cache-based. Commands and results are linked from
+[`P4_AUDIT.md`](P4_AUDIT.md) and
+[`p4_available_reference_2026-09-26.json`](evidence/results/p4_available_reference_2026-09-26.json).
+
 | metric | value | kind, date | where |
 |---|---|---|---|
 | false alarms, five obstacle-free bags (2 287 frames) | **13 events**, 58 alarm frames, 16 STOP episodes with `tracking.column_hold` 2 (on since 25.09, §3a: the `roundT_doubleT` column); without it 14 events, 60 alarm frames, 17 STOP episodes (long overhead rule on since 25.09; 20 / 107 / 27 without it); the start-offset spread 14–20 events was measured without the rule (24.09), not re-run | real, 25.09 [measured 25.09] | §1f |
@@ -67,7 +77,7 @@ every gated metric the same ([its JSON](evidence/results/regression_gate_2026-09
 | long range with a given train speed | person 167 m, trolley 175 m, crate 182 m (held only from 79 m) | synthetic, set F round 3, legacy, 24.09 | §2d |
 | train speed (opt-in LiDAR-only estimate) | median error 0.06–0.08 m/s, p90 ≤ 0.20 m/s against an ICP reference on 55–96 % of the moving frames, +6.6–6.8 ms per frame; even the reference speed handed in as odometry buys nothing on the organizers' check: five bags 103 / 18 → 111 / 16 alarm frames / events, no organizers' object STOPs earlier, 6 → 17 false STOP frames on the 2 × 2 m box outside; only far-field frame recall rises | real, organizers' synthetic and synthetic, 24.09 | §9 |
 | curves, stations, small and low objects | R ≈ 350 m curves 6 of 7 from 58–86 m (the sightline); station stops 6 of 6 from 113 m; 30 cm objects on a rail head 6 of 6 from 42–49 m; a person lying across the rails 6 of 6 from 64 m; objects on the bed between the rails stay below the envelope (policy, confirmed by the organizers on 25.09: not an obstacle, [`organizers/answers.md`](organizers/answers.md) §8) | synthetic, set F round 3, legacy, 24.09 | §2d |
-| set S (108 real empty frames) | 22 of 67 visible in-gauge objects with bed placement, 29 of 68 with the old legacy height (small samples) | synthetic, 24.09 | [`P4_AUDIT.md`](P4_AUDIT.md) |
+| set S (108 paired real empty frames; integrated replay) | 22 of 67 visible in-gauge objects with bed placement, 30 of 68 with the old legacy height; 8 legacy-only and 0 bed-only among 65 visible in both (small samples; one extra legacy trolley match is unexplained) | synthetic, 26.09 | [`P4_AUDIT.md`](P4_AUDIT.md) |
 | sensor reach | no return beyond 210 m in any of the 13 759 frames: 300 m is beyond this sensor | real | §2d |
 | other mounts | upside down, `+x` forward, backwards found; tilt recovered to 0.0–0.5° | real, re-mounted, 22–23.09 | §6 |
 | offline timing per frame | 42–64 ms mean, p95 53–78 ms on every recording, one core, numpy path (v0.6.3), health monitor not included (7–14 ms more); on another idle VM on 24.09 36.5–52.2 ms mean, p95 50.3–67.1 ms; the optional C++ kernels (merged 24.09, after v0.6.3) cut the detector time by 38–57 % with identical output | timing: sandbox, 23.09 (kernels: 24.09, under load) | §3; [`ARCHITECTURE.md`](ARCHITECTURE.md) "Native kernels" |
@@ -123,6 +133,41 @@ by its own detection (127 before); 186 of the 246 labelled obstacle-frames of th
 * Set F uses legacy placement unless said (protocol: EVALUATION §3; paired check: §2d round 4 and
   [`P4_AUDIT.md`](P4_AUDIT.md)); synthetic objects are not a real long-range test.
 * ROS and Docker numbers are dated runs on the sandbox, not re-measured on every change.
+
+### P4 available-data completion (26.09)
+
+The verified six original caches contain 2,488 frames, and the set O cache contains 1,510.
+The empty recordings produced 58 alarm frames, 13 events, and 16 STOP episodes over 2,287 frames
+and 229.776 seconds: 5.658 events and 6.963 episodes per 100 seconds. `doubleT_platform` had
+4/4/1 alarm frames/events/episodes; `squareT_platform_squareT_switch` had 54/9/15; the other
+three empty recordings had no STOPs. On `doubleT_obstacle`, the gate reports 58/61 person frames,
+128/185 rail-object frames, and 125/126 rail-object frames after frame 75, with at most 0.23 m
+distance error. Track intervals and uncertain cause classifications are in the
+[`false-alarm inventory`](evidence/results/p4_false_alarm_inventory_2026-09-26.json).
+
+For the six available recordings, the as-recorded, 5 Hz, +3° roll, and +3° pitch checks gave
+13/16, 10/10, 14/16, and 17/18 empty-recording events/STOP episodes. Their actual-time rates
+were respectively 5.658/6.963, 4.356/4.356, 6.093/6.963, and 7.399/7.834 per 100 seconds.
+Start offsets 0, 10, 20, 30, 40 yielded 13/16, 13/14, 13/12, 10/11, and 7/11 events/episodes.
+The current startup census has only seven starts; no result from it represents the planned 221
+ride splits. All details and commands are in
+[`p4_available_reference_2026-09-26.json`](evidence/results/p4_available_reference_2026-09-26.json).
+
+The set O cache replay has 355 STOP frames over 801 visible in-envelope object-frames. Edge
+object #4 gets 2/83 STOP frames, #6 gets 6/125, and top object #8 gets 22/124. Frames 804–1509
+include one background STOP at frame 1131, 140.72 m. Candidate A adds two STOP frames for #8
+(held-from range 23.9→27.5 m); B adds one for #4 (5.2→7.1 m); neither is accepted without the
+ride, set F, and candidate-specific stress/offset/paired checks. C leaves #6 unchanged. The
+short-signature trial is rejected: inside STOP frames rise 355→381, but outside false STOP frames
+rise 6→9 (object #5: 0→3). No detector change or new baseline was accepted. See the
+[`candidate decisions`](evidence/results/p4_candidate_decisions_2026-09-26.json).
+
+The set S paired replay kept 108 sampled objects and their labels and geometry paired across
+placement modes: bed matched 22/67 visible in-gauge objects, legacy matched 30/68, with eight
+legacy-only and no bed-only hits among 65 visible in both. One added legacy trolley match at
+77.7 m is unexplained and is not credited. Anchored placement remains an estimate rather than
+surveyed ground truth. The ride contains no real obstacles, so synthetic positives do not establish
+real long-range recall or material robustness.
 
 ## Re-measurement on the current code (24.09)
 

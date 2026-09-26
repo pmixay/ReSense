@@ -21,10 +21,11 @@ of `cloud_with_fake_obj` is superseded: on integrated P3 code both the original 
 cache give 1 false STOP frame / 1 event in 706 frames, frame 1131 at 140.72 m; see EXPERIMENTS §1g
 and [the measured evidence](evidence/results/seto_suffix_p3c_2026-09-26.json).
 The detector, ROS node and default detection parameters were not changed in this P4 pass.
-The original six organizer bags were downloaded from the
-public link, unpacked and cached at every frame; the new measurements on them are below.
-The 20-minute extended ride and its set F range claims are separate and must not be inferred
-from this six-bag rerun.
+The six original organizer bags are now cached and verified at every frame. Their reference
+metrics reproduce the available rows of the P3c baseline. The 20-minute `new_data` ride and its
+set F range claims remain unavailable in this workspace because the estimated ride cache would
+breach the required 3 GiB free-space reserve by about 4.0 GB. Do not infer ride or set F results
+from the six-bag rerun.
 
 ## P4 follow-up for score improvement
 
@@ -42,15 +43,95 @@ These intervals explain why a binary “8 of 8” detection count overstates rel
 A fresh-start replay of the first 40 set O frames reports one STOP from frame 5, matched to the
 large centre box, and zero background alarms. It does not replace the 221-start ride census.
 
-The remaining result work is to restore the six original recording caches and the `new_data` ride,
-reproduce the P3c gate, and then evaluate any targeted detector proposal on the complete data before
-accepting it. The known score opportunities are sustained detection of edge objects #4 and #6 and
-the box at the top (#8), fewer false STOPs on the ride, and stronger unseen-condition evidence.
-The axis-union candidate remains off: its earlier safety review found regressions when widened
-envelope membership joined long edge structures to real objects. P4 has not changed detector
-parameters or assigned a new score; **65/100 remains the last independent judgement, from before
-P3c integration**. A current score needs independent re-scoring after the full gate and evidence
-refresh.
+The remaining data-dependent work is to cache the `new_data` ride, reproduce the ride and set F
+rows, and finish all acceptance checks for candidates A and B. Candidate C did not change its
+target result. The known detector opportunities remain sustained detection of edge objects #4 and
+#6 and the box at the top (#8), fewer false STOPs on the ride, and stronger unseen-condition
+evidence. The axis-union candidate remains off: its earlier safety review found regressions when
+widened envelope membership joined long edge structures to real objects. No detector parameters
+were changed. The last independent judgement remains **65/100** on its original dated head; a
+separate **66.5/100 provisional internal assessment** is recorded in the scorecard and is not an
+independent organizer score.
+
+## P4 available-data completion (26.09)
+
+The intake manifest records source URLs, archive/raw/cache hashes, frame identities, timestamp
+coverage, and local paths. The six original bags contain 2,488/2,488 verified frames; set O has
+1,510/1,510 frames. The full gate was run without `--allow` against the frozen P3c baseline. It
+exited 1 because 3 ride and 15 set F straight metrics are missing; every locally available
+recording and set O metric matched or improved on that baseline. No new baseline was made.
+See [`p4_data_intake_2026-09-26.json`](evidence/results/p4_data_intake_2026-09-26.json),
+[`p4_available_reference_2026-09-26.json`](evidence/results/p4_available_reference_2026-09-26.json),
+and the preserved
+[`artifact manifest`](evidence/results/p4_artifacts_2026-09-26/manifest.json).
+
+The five empty original recordings produced 58 alarm frames, 13 alarm events, and 16 STOP
+episodes over 2,287 frames and 229.776 seconds: 5.658 events and 6.963 episodes per 100 seconds.
+By recording, `doubleT_platform` had 4/4/1 (alarm frames/events/episodes),
+`squareT_platform_squareT_switch` 54/9/15, and the other three had none. These are repeated
+frames on five recordings, not independent encounters. The frame intervals, track IDs, distances,
+reason codes, and explicitly uncertain causes are in the
+[`false-alarm inventory`](evidence/results/p4_false_alarm_inventory_2026-09-26.json).
+On `doubleT_obstacle`, the labelled results are 58/61 person frames, 128/185 rail-object frames,
+and 125/126 rail-object frames after frame 75; maximum reported distance error is 0.23 m and no
+false event matched neither label. This agrees with the gate baseline.
+
+Reference stress checks on the six recordings used timestamp-based elapsed-time rates. As
+recorded: 13 events / 16 episodes in 229.776 s (5.658 / 6.963 per 100 s); 5 Hz: 10 / 10 in
+229.574 s (4.356 / 4.356 per 100 s); +3° roll: 14 / 16 (6.093 / 6.963 per 100 s); +3° pitch:
+17 / 18 (7.399 / 7.834 per 100 s). Across start offsets 0, 10, 20, 30, 40, the five empty
+recordings produced 13/16, 13/14, 13/12, 10/11, and 7/11 events/episodes. The available startup
+census covers only seven starts (six original recordings plus set O): 3 had STOP, with 6 track
+events and 3 STOP episodes. It does not replace the 221-start ride census.
+
+The cached set O replay reproduces 355 STOP frames over its 801 visible in-envelope object-frames;
+objects #4, #6 and #8 receive 2/83, 6/125 and 22/124 STOP frames. The 0–50, 50–100 and
+100–150 m bins, held-from distances, missed intervals, and clear-distance checks are in the
+available reference JSON. Clear-distance overclaim totals were unchanged in the A/B/C screens:
+56 target frames, 505 target frames considered, 225 intent frames, and 62 in-envelope GO-judge
+frames. Set O's empty suffix (frames 804–1509) has one background STOP at frame 1131, 140.72 m;
+it is previously inspected data, not unseen validation.
+
+The original float bag and 5 mm-quantized int16 cache are **not score-identical** under the same
+configuration and timestamps: cache 355 inside STOP frames / 6 outside / 3 background frames in
+2 IDs; raw bag 357 / 7 / 1 in 1 ID. The regression baseline is cache-based, so candidate screening
+used the cache. See the
+[`raw/cache comparison`](evidence/results/p4_seto_raw_cache_comparison_2026-09-26.json).
+
+The paired set S run reused 108 sampled objects and matching labels, kind, distance, lateral,
+yaw, size and reflectivity. Bed placement matched 22/67 visible in-gauge objects; legacy placement
+matched 30/68. Eight of 65 objects visible in both were legacy-only, none bed-only. One additional
+legacy-only trolley hit at 77.7 m was not isolated as a cause and is not credited as a detector
+gain. Anchored placement remains an estimate, not surveyed ground truth. See the
+[`paired set S report`](evidence/results/p4_setS_paired_2026-09-26.json).
+
+Candidate A (`tracking.near_escalate_distance` 35→40) raised object #8 from 22 to 24 STOP frames
+and extended its sustained held-from range from 23.9 to 27.5 m. Candidate B
+(`tracking.near_escalate_voxels` 10→8) raised object #4 from 2 to 3 STOP frames and extended its
+held-from range from 5.2 to 7.1 m. Neither had a gated regression on available recordings and
+set O, but both full gates miss the ride/set F rows and their candidate-specific stress, offset,
+and paired-placement checks were not completed. They are **not accepted and not shipped**.
+Candidate C (`cluster.wall_keep_gauge_voxels` 10→8) made no change to object #6 and was rejected
+at the set O screen. The short-signature relaxation was rejected: inside STOP frames rose 355→381,
+but outside false STOP frames rose 6→9, including object #5 from 0→3. Decisions and score
+details are in the
+[`candidate record`](evidence/results/p4_candidate_decisions_2026-09-26.json).
+
+### Completion checklist
+
+- **Completed:** six original caches and set O verified; cache-based reference gate, startup,
+  stress, start-offset, per-object/set O, clear-distance, false-alarm, and paired set S evidence
+  recorded; A/B/C pre-registered and each screened; rejected signature relaxation recorded;
+  provisional score and independent-review packet prepared. Pinned Ruff, parameter sync,
+  pytest, browser-backed web checks, JSON/hash validation and `git diff --check` are recorded in
+  [`p4_validation_2026-09-26.json`](evidence/results/p4_validation_2026-09-26.json).
+- **Rejected or not accepted:** short signatures rejected for outside-object false STOPs; C rejected
+  for no target improvement; A and B remain unaccepted because required data-dependent checks are
+  unavailable. Shipped detector and historical baseline stay unchanged.
+- **Open external/resource dependency:** at least 4.1 GB of additional free storage is needed to
+  cache `new_data` while preserving the 3 GiB headroom. Ride and set F straight, 221 ride starts,
+  paired set F curve/edge, and candidate acceptance checks remain open. The ride has no real
+  obstacles; synthetic positives cannot establish real long-range recall or material robustness.
 
 ## Findings and corrections
 

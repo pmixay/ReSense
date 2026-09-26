@@ -10,7 +10,8 @@
 **Кратко.** Последняя независимая оценка — **65 / 100** на версии до интеграции P3c. На P3c все
 8 объектов организаторов в габарите получают хотя бы один STOP, но краевые объекты #4 и #6
 получают лишь 2 и 6 STOP-кадров; главный потенциал роста остаётся в надёжности и дальности.
-Текущие метрики после интеграции приведены в §0.1; оценка не пересчитывалась.
+Для текущей ветки подготовлена отдельная **предварительная внутренняя оценка 66,5 / 100** в §0.2;
+она не заменяет и не изменяет независимую оценку 65.
 
 ## 0. Last independent re-judgement of 26.09: 65 / 100
 
@@ -57,9 +58,38 @@ from the raw bag and quantized cache.
 
 P4 has strengthened `scripts/regression_gate.py`: set O comparisons now fail if a previously
 measured held-from STOP distance shrinks, a distance-bin denominator changes, or per-bin STOP
-frames fall. The next result-changing work needs the six real recording caches and the ride cache;
-neither is present in this execution environment. The 65/100 remains the last judge score, not a
-score for the integrated head.
+frames fall. P4 restored and verified all six original recording caches and reproduced the
+available baseline rows. The `new_data` ride cache and set F rows remain absent, so the strict
+gate reports three ride and fifteen set F metrics as missing. The 65/100 remains the last
+independent judge score, not a score for the integrated head.
+
+## 0.2. Provisional internal assessment of the available P4 head: 66.5 / 100
+
+This is a **provisional internal assessment**, not an independent organizer or judge score. It
+uses the repository's eight assessment maxima (25, 15, 10, 15, 10, 10, 10, 5); the organizers
+have not published criterion weights. It assesses the current P3c detector plus the available P4
+evidence, but does not credit P4 with inherited P3 detector changes. The separate 65/100 judgment
+above remains unchanged on its original pre-P3c commit.
+
+| § | criterion | provisional / max | change vs. independent 65 | evidence and reason |
+|---|---|---:|---:|---|
+| 8.1 | Works | **15 / 25** | +0.5, inherited P3c | All 8 in-gauge set O objects receive a STOP, but #4 is 2/83 frames, #6 6/125, and #8 22/124; outside object #7 has six false STOP frames. No P4 detector gain is claimed. |
+| 8.2 | Range | **7.5 / 15** | 0 | Only one set O STOP frame is beyond 100 m; ride and set F could not be rerun. The 148–154 m synthetic person is not real long-range validation. |
+| 8.3 | Speed | **7 / 10** | 0 | Existing native and ROS measurements remain dated; P4 did not add a controlled stand or timing run. |
+| 8.4 | Generalisation | **9 / 15** | 0 | Six-recording 5 Hz, mount and start-offset checks are reproducible, but the ride is absent and set O is already inspected. Synthetic placements do not prove material robustness. |
+| 8.5 | Technical quality | **8 / 10** | +0.5, P4 evidence | Verified cache hashes, run provenance, strict gate results, false-alarm inventory, and candidate outcomes are recorded. The full gate and ride-dependent tests remain incomplete. |
+| 8.6 | Ease of launch | **8 / 10** | 0 | The existing offline image and CI evidence stand; no new operator rehearsal or independent stand run was done. |
+| 8.7 | Team approach | **9 / 10** | +0.5, P4 process | Candidates were preregistered, safety rules held fixed, and unsafe or incomplete outcomes recorded. A and B are not accepted without ride, set F and candidate-specific checks. |
+| 8.8 | Pitch | **3 / 5** | 0 | No new independent deck review, presentation, or rehearsal was part of this pass. |
+| | **Total** | **66.5 / 100** | **+1.5 provisional** | 8.1's half point is inherited P3c detector work; the 8.5 and 8.7 half points reflect P4 evidence and process only. |
+
+The score is limited by the raw/cache sensitivity: the float bag scores 357 inside, 7 outside,
+and 1 background STOP frame, while its 5 mm int16 cache scores 355, 6, and 3. The available
+regression reference is cache-based. The 20-minute ride contains no real obstacles, and anchored
+set F placement is not surveyed ground truth. Review packet:
+[`p4_review_packet_2026-09-26.json`](evidence/results/p4_review_packet_2026-09-26.json); full
+criterion notes and limitations:
+[`p4_provisional_score_2026-09-26.json`](evidence/results/p4_provisional_score_2026-09-26.json).
 
 **Claims the judges found wrong or overstated** (to fix in the consistency pass after the freeze,
 CAPTAIN action 19):

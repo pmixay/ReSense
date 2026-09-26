@@ -1,0 +1,299 @@
+{
+  "schema": "resense-p4-data-intake-v1",
+  "date": "2026-09-26",
+  "source_archive": {
+    "url": "https://drive.usercontent.google.com/download?id=1WTlR2wDSuEHTOARGK_gZeXDTZ9RZpswu&export=download&confirm=t",
+    "bytes": 3940746006,
+    "sha256": "e23166801794cdeb2dcd77a3cc8b40a906b1d9cefab6f26739e368234e9168be",
+    "published_checksum": "none found in docs/DATASET.md",
+    "zip_valid": true,
+    "members": [
+      "\u0414\u0430\u0442\u0430\u0441\u0435\u0442/",
+      "\u0414\u0430\u0442\u0430\u0441\u0435\u0442/\u0434\u0430\u0442\u0430\u0441\u0435\u0442.zip"
+    ],
+    "metadata_match_committed_copies": {
+      "doubleT_obstacle": true,
+      "doubleT_platform": true,
+      "roundT_doubleT": true,
+      "roundT_pressureGate_roundT": true,
+      "roundT_squareT_pressureGate_squareT": true,
+      "squareT_platform_squareT_switch": true
+    },
+    "metadata_extraction_verified": true,
+    "local_path_after_verification": "/data/dataset.zip (removed after extraction and cache verification)"
+  },
+  "recordings": [
+    {
+      "name": "doubleT_obstacle",
+      "expected_frames": 201,
+      "frames": 201,
+      "frame_ids_complete": true,
+      "raw_bag": {
+        "path": "/data/for_hackathon/doubleT_obstacle/doubleT_obstacle_0.db3",
+        "bytes": 4821250048,
+        "sha256": "05f1d7f7d1bbbc5e9453877416cc9f7367c19e31d35a5291271d863fc89c5ad9",
+        "retained": false,
+        "current_status": "removed after validation; acquisition-time path and SHA-256 retained in this manifest"
+      },
+      "metadata_yaml_sha256": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09",
+      "cache": {
+        "path": "/data/cache/doubleT_obstacle",
+        "tree_sha256_filename_plus_file_sha256": "f08acb43938ceb9174920d7e81eed0fce7939e05a66d51ed9f5276098e2551ce",
+        "stamps_sha256": "98efd2cbdcdbb5179cacb0ac4e5a697ad1e5a8704dc27b84a8e9b136204f97a7",
+        "stamps_count": 201,
+        "frame_id_start": "0000",
+        "frame_id_end": "0200",
+        "timestamp_start_unix_s": 1788354623.1100404,
+        "timestamp_end_unix_s": 1788354643.5020707,
+        "timestamp_span_s": 20.39203,
+        "strictly_increasing": true,
+        "gaps_over_0_5s_count": 0,
+        "largest_gap_s": 0.412583,
+        "array_ndim": 1,
+        "point_count_min": 341720,
+        "point_count_max": 346994,
+        "point_count_mean": 346268.7,
+        "array_dtypes": [
+          "[('x', '<i2'), ('y', '<i2'), ('z', '<i2'), ('intensity', 'u1'), ('ring', 'u1')]"
+        ],
+        "all_arrays_readable": true
+      },
+      "cache_command": "python scripts/cache_frames.py /data/for_hackathon/doubleT_obstacle /data/cache/doubleT_obstacle --every 1 --int16 --stamps",
+      "status": "verified",
+      "metadata_matches_committed": true
+    },
+    {
+      "name": "doubleT_platform",
+      "expected_frames": 345,
+      "frames": 345,
+      "frame_ids_complete": true,
+      "raw_bag": {
+        "path": "/data/for_hackathon/doubleT_platform/doubleT_platform_0.db3",
+        "bytes": 2758447104,
+        "sha256": "826e4161822ac39953acbda84d813f77061abbfdd9b47eea3327164ff05ee2c3",
+        "retained": false,
+        "current_status": "removed after validation; acquisition-time path and SHA-256 retained in this manifest"
+      },
+      "metadata_yaml_sha256": "58111dca59feceaeac484f67ee765b01cdbb512a9a576d47dfe7c5c6476d6dcf",
+      "cache": {
+        "path": "/data/cache/doubleT_platform",
+        "tree_sha256_filename_plus_file_sha256": "85b0312a5827c5e39fb8d47483812947a1891843f2a886797afdcd78bd9399de",
+        "stamps_sha256": "a7e77907e84b0bd51a205aca31877ff7e4d5c401d6cbb5a320a917ac1c3b4711",
+        "stamps_count": 345,
+        "frame_id_start": "0000",
+        "frame_id_end": "0344",
+        "timestamp_start_unix_s": 1788359712.5994508,
+        "timestamp_end_unix_s": 1788359747.019017,
+        "timestamp_span_s": 34.419566,
+        "strictly_increasing": true,
+        "gaps_over_0_5s_count": 0,
+        "largest_gap_s": 0.122936,
+        "array_ndim": 1,
+        "point_count_min": 155310,
+        "point_count_max": 190772,
+        "point_count_mean": 166088.7,
+        "array_dtypes": [
+          "[('x', '<i2'), ('y', '<i2'), ('z', '<i2'), ('intensity', 'u1'), ('ring', 'u1')]"
+        ],
+        "all_arrays_readable": true
+      },
+      "cache_command": "python scripts/cache_frames.py /data/for_hackathon/doubleT_platform /data/cache/doubleT_platform --every 1 --int16 --stamps",
+      "status": "verified",
+      "metadata_matches_committed": true
+    },
+    {
+      "name": "roundT_doubleT",
+      "expected_frames": 252,
+      "frames": 252,
+      "frame_ids_complete": true,
+      "raw_bag": {
+        "path": "/data/for_hackathon/roundT_doubleT/roundT_doubleT_0.db3",
+        "bytes": 2014867456,
+        "sha256": "6b5d3780bb8e373fae9c1a72080c34084f5a743efca5899526eb15c148a2b90d",
+        "retained": false,
+        "current_status": "removed after validation; acquisition-time path and SHA-256 retained in this manifest"
+      },
+      "metadata_yaml_sha256": "6ffb15678cae39ac117c33289fdf1aa280211d758fcfd530d9e3fe21cf3bf17d",
+      "cache": {
+        "path": "/data/cache/roundT_doubleT",
+        "tree_sha256_filename_plus_file_sha256": "0d296177f5650b28d6b2c1c7cfbfa6f267cfd650101c8d9d9f71805c68b00edc",
+        "stamps_sha256": "6f20693e0146d8b8c6c64f0797c915446ee947ce392eab9c972cf6f2c807fac7",
+        "stamps_count": 252,
+        "frame_id_start": "0000",
+        "frame_id_end": "0251",
+        "timestamp_start_unix_s": 1788359059.1993961,
+        "timestamp_end_unix_s": 1788359084.2713668,
+        "timestamp_span_s": 25.071971,
+        "strictly_increasing": true,
+        "gaps_over_0_5s_count": 0,
+        "largest_gap_s": 0.119958,
+        "array_ndim": 1,
+        "point_count_min": 177884,
+        "point_count_max": 191154,
+        "point_count_mean": 189041.3,
+        "array_dtypes": [
+          "[('x', '<i2'), ('y', '<i2'), ('z', '<i2'), ('intensity', 'u1'), ('ring', 'u1')]"
+        ],
+        "all_arrays_readable": true
+      },
+      "cache_command": "python scripts/cache_frames.py /data/for_hackathon/roundT_doubleT /data/cache/roundT_doubleT --every 1 --int16 --stamps",
+      "status": "verified",
+      "metadata_matches_committed": true
+    },
+    {
+      "name": "roundT_pressureGate_roundT",
+      "expected_frames": 268,
+      "frames": 268,
+      "frame_ids_complete": true,
+      "raw_bag": {
+        "path": "/data/for_hackathon/roundT_pressureGate_roundT/roundT_pressureGate_roundT_0.db3",
+        "bytes": 2142801920,
+        "sha256": "df41bcc7f5ce83ba83f9440d6ebafb2bb3648ad04fbc248d3777411d876922c6",
+        "retained": false,
+        "current_status": "removed after validation; acquisition-time path and SHA-256 retained in this manifest"
+      },
+      "metadata_yaml_sha256": "bec21b5aa0581936678824b5cb43043dfe99c7b1eb468c3dddf8e25554b703c1",
+      "cache": {
+        "path": "/data/cache/roundT_pressureGate_roundT",
+        "tree_sha256_filename_plus_file_sha256": "352127ad95d3ec855c961b317767b3adbae150c1d4474a6eb87d6d0b37dfa852",
+        "stamps_sha256": "81fd74a3ce67139bf0fe37ea5511d7cdc7a8c61229c3328a8c294b71cf52885a",
+        "stamps_count": 268,
+        "frame_id_start": "0000",
+        "frame_id_end": "0267",
+        "timestamp_start_unix_s": 1788358838.0516672,
+        "timestamp_end_unix_s": 1788358864.7504473,
+        "timestamp_span_s": 26.69878,
+        "strictly_increasing": true,
+        "gaps_over_0_5s_count": 0,
+        "largest_gap_s": 0.146513,
+        "array_ndim": 1,
+        "point_count_min": 160574,
+        "point_count_max": 190786,
+        "point_count_mean": 188193.9,
+        "array_dtypes": [
+          "[('x', '<i2'), ('y', '<i2'), ('z', '<i2'), ('intensity', 'u1'), ('ring', 'u1')]"
+        ],
+        "all_arrays_readable": true
+      },
+      "cache_command": "python scripts/cache_frames.py /data/for_hackathon/roundT_pressureGate_roundT /data/cache/roundT_pressureGate_roundT --every 1 --int16 --stamps",
+      "status": "verified",
+      "metadata_matches_committed": true
+    },
+    {
+      "name": "roundT_squareT_pressureGate_squareT",
+      "expected_frames": 545,
+      "frames": 545,
+      "frame_ids_complete": true,
+      "raw_bag": {
+        "path": "/data/for_hackathon/roundT_squareT_pressureGate_squareT/roundT_squareT_pressureGate_squareT_0.db3",
+        "bytes": 4357537792,
+        "sha256": "364760cfcc682a58ec1efdff5d0940150c009e860868f577aab7732b8a36d266",
+        "retained": false,
+        "current_status": "removed after validation; acquisition-time path and SHA-256 retained in this manifest"
+      },
+      "metadata_yaml_sha256": "9e9cedccc7a02337cd1f1020efebe22a4684c3598b2f7b5562b5fd044eafa616",
+      "cache": {
+        "path": "/data/cache/roundT_squareT_pressureGate_squareT",
+        "tree_sha256_filename_plus_file_sha256": "b07d095a28e0c603b0ed328dd9e7a8b91208e680128059de99578d8ed49f7507",
+        "stamps_sha256": "1510d1be1f301b57145d33b56696a024917cb21b5080a5761ebda32c56b86fa2",
+        "stamps_count": 545,
+        "frame_id_start": "0000",
+        "frame_id_end": "0544",
+        "timestamp_start_unix_s": 1788356943.7811952,
+        "timestamp_end_unix_s": 1788356999.1586952,
+        "timestamp_span_s": 55.3775,
+        "strictly_increasing": true,
+        "gaps_over_0_5s_count": 1,
+        "largest_gap_s": 1.098521,
+        "array_ndim": 1,
+        "point_count_min": 167068,
+        "point_count_max": 191076,
+        "point_count_mean": 186660.1,
+        "array_dtypes": [
+          "[('x', '<i2'), ('y', '<i2'), ('z', '<i2'), ('intensity', 'u1'), ('ring', 'u1')]"
+        ],
+        "all_arrays_readable": true
+      },
+      "cache_command": "python scripts/cache_frames.py /data/for_hackathon/roundT_squareT_pressureGate_squareT /data/cache/roundT_squareT_pressureGate_squareT --every 1 --int16 --stamps",
+      "status": "verified",
+      "metadata_matches_committed": true
+    },
+    {
+      "name": "squareT_platform_squareT_switch",
+      "expected_frames": 877,
+      "frames": 877,
+      "frame_ids_complete": true,
+      "raw_bag": {
+        "path": "/data/for_hackathon/squareT_platform_squareT_switch/squareT_platform_squareT_switch_0.db3",
+        "bytes": 7012012032,
+        "sha256": "df9014f180ea39592c50a5bdfc33a3ae2cab371a5213eb33be624c8fed65aac9",
+        "retained": false,
+        "current_status": "removed after validation; acquisition-time path and SHA-256 retained in this manifest"
+      },
+      "metadata_yaml_sha256": "46b6f276a63bca7642a091e11d78416951bc952e7889d940c0b43309b7060553",
+      "cache": {
+        "path": "/data/cache/squareT_platform_squareT_switch",
+        "tree_sha256_filename_plus_file_sha256": "06978c6b3a19da06db31ed0f54ae014f540a10cde9285ff4d5e7d948538abe98",
+        "stamps_sha256": "76f538169d8a5977bd553e4a6bd181c49b35503b1af1be4df5be42dae820a430",
+        "stamps_count": 877,
+        "timestamp_start_unix_s": 1788358443.3421226,
+        "timestamp_end_unix_s": 1788358531.5500984,
+        "timestamp_span_s": 88.2079758644104,
+        "strictly_increasing": true,
+        "gaps_over_0_5s_count": 1,
+        "largest_gap_s": 0.7044026851654053,
+        "array_dtypes": [
+          "[('x', '<i2'), ('y', '<i2'), ('z', '<i2'), ('intensity', 'u1'), ('ring', 'u1')]"
+        ],
+        "all_arrays_readable": true,
+        "array_ndim": 1,
+        "point_count_min": 156246,
+        "point_count_max": 190018,
+        "point_count_mean": 167232.8,
+        "frame_id_start": "0000",
+        "frame_id_end": "0876"
+      },
+      "cache_command": "python scripts/cache_frames.py /data/for_hackathon/squareT_platform_squareT_switch /data/cache/squareT_platform_squareT_switch --every 1 --int16 --stamps",
+      "status": "verified",
+      "metadata_matches_committed": true
+    }
+  ],
+  "ride": {
+    "name": "new_data",
+    "expected_frames": 11271,
+    "expected_splits": 221,
+    "status": "not streamed: insufficient free space while preserving required 3 GiB headroom",
+    "cache_estimate_bytes": 16500000000,
+    "free_bytes_after_six_recording_caches_and_archive_removal": 15700189184,
+    "required_headroom_bytes": 3221225472,
+    "additional_free_bytes_required": 4021070288,
+    "additional_free_space_recommended": "at least 4.1 GB"
+  },
+  "status": "six original recording caches complete and verified; set O cache replayed; ride unavailable because remaining disk cannot meet 3 GiB headroom",
+  "set_o": {
+    "name": "cloud_with_fake_obj",
+    "path": "/data/cache/cloud_with_fake_obj",
+    "expected_frames": 1510,
+    "frames": 1510,
+    "raw_bag": {
+      "path": "/data/cloud_with_fake_obj/cloud_with_fake_obj_0.db3",
+      "bytes": 7421644800,
+      "sha256": "73ee5bfc2087bb160267110563b298a9629ac9e3df1459d857ec72ce1ef89d60"
+    },
+    "source_archive": {
+      "url": "https://disk.yandex.ru/d/KpkG_yKoGk-vHQ",
+      "published_bytes": 1746145824,
+      "published_sha256": "d41c2fb28475194a98efeca5d2ee3fd175c0aef350ffb92fff4c26d497e696e9"
+    },
+    "cache_tree_sha256_filename_plus_file_sha256": "0135a30054d7919391fb515639d136a3c670a1f7b7f0cd9881f23eedc7023633",
+    "stamps_sha256": "a669bf88916aab970e3b5988eade44881345f99df3424400d244d881c4bba2ed",
+    "raw_vs_cache_scoring_equal": false,
+    "comparison_report": "p4_seto_raw_cache_comparison_2026-09-26.json",
+    "source_raw_bag_retained": true,
+    "cache_retained": true
+  },
+  "timestamps_fabricated": false,
+  "gap_policy": "Only measured bag stamps were retained; no missing intervals were filled. Cache stamp lists are strictly increasing, with original >0.5 s gaps preserved.",
+  "raw_retention_policy": "The six raw DB3 files and downloaded archive were removed after their hashes, metadata, extracted frame identity and cache readability were verified. All six frame caches, timestamps, manifests and results are retained.",
+  "six_recording_cache_root": "/data/cache"
+}

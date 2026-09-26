@@ -2,8 +2,8 @@
 
 > **Purpose:** what ReSense does, how the jury runs it, what to look at, headline results.
 > **Audience:** jury, team · **Owner:** P1 · **Language:** EN, RU block «Кратко для жюри»
-> **Last verified:** 2026-09-26, `bd67fb0` (package 1.0.0 in `pyproject.toml`: detector v0.6.3
-> with the rules of 25–26.09, node v0.6.4) · **Status:** current
+> **Last verified:** 2026-09-26 against the frozen P4 detector/config at `dcf7f90` (package 1.0.0
+> in `pyproject.toml`: detector v0.6.3 with the rules of 25–26.09, node v0.6.4) · **Status:** current
 
 ЛЦТ 2026 · Кейс 05 · «Обнаружение посторонних объектов в тоннеле метро по данным 3D-лидара»
 (Московский транспорт / ГУП «Московский метрополитен»). Organizers' material:
@@ -153,9 +153,23 @@ stand, a CI step with a stock Fast DDS player, the long overhead rule for the st
 (on since 25.09, decided on the ride: five bags 20 → 14 events, ride 47 → 46; the short-signature
 rule for the organizers' small objects tried and not shipped, EXPERIMENTS §1f), version 1.0.0
 with a release workflow that publishes the image archive on a tag push, and a captioned 2:50
-overview video. Every real-data number, set O, the ride and set F straight are re-checked by one
-command, `scripts/regression_gate.py`. All current numbers:
+overview video. When all caches are present, `scripts/regression_gate.py` re-checks the real-data
+rows, set O, the ride and set F straight. The P4 run reproduced the six original recordings and
+set O but could not load the `new_data` ride, so ride and set F figures below remain the archived
+P3c baseline rather than a new P4 measurement. All current numbers:
 [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) "Current results" and §0.
+
+**P4 data and evaluation update (26.09).** The six original caches now contain all 2,488 expected
+frames, and the set O cache contains all 1,510. Their available regression metrics match the
+frozen P3c baseline. The strict full-gate command exited 1 because the 221-split ride cache is
+absent (3 ride and 15 set F metrics missing); no rows were allowed or waived. The ride cache would
+need about 4.1 GB more free disk while keeping 3 GiB in reserve. No detector change was accepted:
+the short-signature relaxation raised outside-object false STOPs; two other candidates improved
+only set O and remain unaccepted until full ride/set F checks run. The independent score remains
+65/100 on its original pre-P3c commit; the repository's separate provisional internal assessment
+is 66.5/100 and is detailed in [`docs/SCORECARD.md`](docs/SCORECARD.md). See the
+[`P4 data and evaluation audit`](docs/P4_AUDIT.md) for cache integrity, false alarms, stress
+results, candidate decisions and open dependencies.
 
 What the organizers' answers changed ([`docs/organizers/answers.md`](docs/organizers/answers.md)):
 
