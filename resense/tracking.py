@@ -47,7 +47,7 @@ class Track:
     reported: bool = False          # reported as an obstacle / advisory after the last update
     column_hist: List[bool] = field(default_factory=list)  # last zone_window hits: demoted as a column?
     column_hold: int = 0            # this many column hits in column_hist keep the track advisory (0 = off)
-    hold: int = 0                   # 26.09: frames left of a calibration re-seed hold (Tracker.reseed)
+    hold: int = 0                   # 26.09: frames left of a calibration re-seed hold window (Tracker.reseed)
     seen_reported: bool = False     # 26.09: reported in the frame of its last match (health.clear_cap_lost)
 
     @property
@@ -82,10 +82,14 @@ class Tracker:
         are kept, the others are dropped as the reset did before (their history, zone votes
         included, was taken in a wrong frame: an object reported as advisory under a 3 deg tilt
         kept its advisory vote 3 frames after the correction at 5 Hz); and a track reported in zone
-        gauge stays reported without a match until ``hold`` frames after its last match: its misses there
-        neither decay its confidence nor enter its hit history, and it is reported at its
-        predicted position. Repeated re-seeds do not extend that. The re-seeded geometry (a fresh
-        track model has no floor-shadow reference for its warm-up) must not drop a confirmed STOP."""
+        gauge is held for a fixed window of ``hold`` frames from the change, the change frame the
+        first (from its last match when it was already missing at the change): it stays reported
+        in the window matched or not - a match refreshes it but does not end the window (re-review
+        26.09: it did, so a loss starting on the frame after the change was not covered) - its
+        misses there neither decay its confidence nor enter its hit history, and a missed frame
+        reports it at its predicted position. Repeated re-seeds do not extend the hold of a track
+        that stays unmatched. The re-seeded geometry (a fresh track model has no floor-shadow
+        reference for its warm-up) must not drop a confirmed STOP."""
         dR = np.asarray(dR, dtype=np.float64)
         if not keep_unreported:
             self.tracks = [t for t in self.tracks if t.reported and t.zone == "gauge"]
@@ -145,7 +149,6 @@ class Tracker:
                 t.column_hist = (t.column_hist + [cl.reason == "column"])[-zw:]
                 t.hit_hist = (t.hit_hist + [True])[-hw:]
                 t.history.append(cl.distance)
-                t.hold = 0
                 matched_t[i] = matched_c[j] = True
                 d[i, :] = np.inf
                 d[:, j] = np.inf
@@ -173,13 +176,14 @@ class Tracker:
                 ))
                 self._next_id += 1
         # reported: confirmed now, or reported in the previous frame and missed for at most
-        # hold_misses frames (a single missed frame does not drop a STOP; review 23.09)
+        # hold_misses frames (a single missed frame does not drop a STOP; review 23.09), or inside
+        # a re-seed hold window (reseed; matched or not)
         for t in self.tracks:
             t.reported = (self._qualifies(t) or (t.reported and 0 < t.misses <= c.hold_misses)
-                          or (t.reported and t.misses > 0 and t.hold > 0))
+                          or (t.reported and t.hold > 0))
             if t.misses == 0:
                 t.seen_reported = t.reported
-            elif t.hold > 0:
+            if t.hold > 0:
                 t.hold -= 1
         return self.tracks
 

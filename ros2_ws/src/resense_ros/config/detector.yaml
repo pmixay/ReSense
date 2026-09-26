@@ -189,7 +189,7 @@ resense:
     zone_window: 10
     zone_min_fraction: 0.6
     column_hold: 2                 # 25.09 (0 = off): a track demoted as a column in >= this many of its last zone_window hits stays advisory; roundT_doubleT's column at 101-149 m is a column in some frames and 1.6-2.2 m of it in others: 3 alarm frames at 111-115 m through ROS (original bag), 2 at 128-130 m from the cache -> 0 (4 column hits in its window); pre-registered 3 / 2 / 1, the highest passing: 3 fails the gate (ride STOP episodes 39 -> 40), 2 PASS: five bags 60 / 14 / 17 -> 58 / 13 / 16, ride 197 / 46 / 39 -> 187 / 46 / 39 alarm frames / events / STOP episodes, doubleT_obstacle, set O and set F detections identical (docs/evidence/results/column_hold_2026-09-25.json)
-    reseed_hold: 5                 # 26.09 (safety review): after a mount-calibration change the tracks follow the rotation and a STOP (reported in zone gauge) stays reported up to 5 frames after its last match; above 1 deg only STOPs are kept (the geometry re-seed must not drop a confirmed STOP); 0 = reset the tracker above 1 deg, hold nothing
+    reseed_hold: 5                 # 26.09 (safety review, re-review): after a mount-calibration change the tracks follow the rotation and a STOP (reported in zone gauge) stays reported for a fixed window of 5 frames from the change (the change frame the first), matched or not (a match does not end it), 6 at 10 Hz when the change re-seeds the track model (until its warm-up gives it a floor-shadow reference again); above 1 deg only STOPs are kept (the geometry re-seed must not drop a confirmed STOP); 0 = reset the tracker above 1 deg, hold nothing
     max_misses: 3
     conf_gain: 0.35
     conf_decay: 0.25

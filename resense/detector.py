@@ -275,6 +275,7 @@ class Detector:
             dR = self.calib.R @ R_old.T                                 # p_new = dR @ p_old
             change, orient = self.calib.last_change_deg, self.calib.last_change_orientation
             keep = cfg.calibration.reseed_keep_max_deg
+            hold = cfg.tracking.reseed_hold
             if keep > 0 and not orient and change <= keep:
                 # 26.09 (safety review): a sub-degree change keeps the model, rotated into the
                 # corrected frame (bed, rail head, axis, age, the floor-shadow reference); the
@@ -283,10 +284,15 @@ class Detector:
             else:
                 self.track = estimate_track(xyz, cfg.track, prev=None)  # re-seed in the corrected frame
                 self.buffer.clear()                                     # merged clouds are in the old frame
+                # re-review 26.09: the hold window covers at least the frames the re-seeded model
+                # has no floor-shadow reference (this one, then until its age reaches
+                # axis_warmup_frames: 6 frames at 10 Hz, 4 at 5 Hz)
+                k = max(1, int(periods)) if cfg.track.rates_per_period else 1
+                hold = max(hold, 1 + -(-int(cfg.track.axis_warmup_frames) // k))
             if cfg.tracking.reseed_hold > 0 and not orient:
                 # 26.09: the tracks follow the rotation; a STOP is held through the re-seed and, above
                 # 1 deg, only STOPs are kept (the others' zone votes were taken in the old frame)
-                self.tracker.reseed(dR, cfg.tracking.reseed_hold, keep_unreported=change <= 1.0)
+                self.tracker.reseed(dR, hold, keep_unreported=change <= 1.0)
             elif orient or change > 1.0:                                # a new orientation or a large tilt:
                 self.tracker.reset()                                    # the tracks' positions are meaningless
         return xyz

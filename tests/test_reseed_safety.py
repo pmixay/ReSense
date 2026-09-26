@@ -63,7 +63,8 @@ def test_a_calibration_change_while_a_stop_is_confirmed_keeps_it(stage, extra):
         res.append(det.process(Frame(xyz=_remount(frame.xyz, canted if k < 5 else true),
                                      intensity=frame.intensity, stamp=0.1 * k)))
         if not np.allclose(before, det.mount_rotation):
-            changes.append((k, det.calib.last_change_deg, age, res[-1].track.age))
+            changes.append((k, det.calib.last_change_deg, age, res[-1].track.age,
+                            [t.hold for t in det.tracker.tracks if t.reported and t.zone == "gauge"]))
     assert [c[0] for c in changes][0] == 4                      # the provisional tilt
     later = [c for c in changes if c[0] > 4]
     assert len(later) == 1 and abs(later[0][1] - extra) < 0.3, changes
@@ -79,6 +80,9 @@ def test_a_calibration_change_while_a_stop_is_confirmed_keeps_it(stage, extra):
         assert r.clear_distance <= r.nearest_distance + 0.1, (k, r.clear_distance)
     if extra < 1.0:
         assert later[0][3] == later[0][2] + 1                    # the model was kept, not re-seeded
+    # the STOP's hold window after the change frame: reseed_hold (5) frames, 6 when the model is
+    # re-seeded at 10 Hz (its warm-up without a floor-shadow reference); 0 on 10e2707 (a match ended it)
+    assert later[0][4] == [(5 if extra < 1.0 else 6) - 1], later
     assert res[-1].mount["status"] == ("ok" if stage == "final" else "provisional")
     assert abs(res[-1].mount["roll_deg"] + 3.0) < 0.3
 
@@ -120,7 +124,8 @@ def test_reseed_hold_is_bounded_and_not_extended():
     """``tracking.reseed_hold``: a track reported at a calibration change stays reported without a
     match for 5 frames after its last match (its confidence and hit history untouched), then goes;
     re-seeding every frame does not extend that. Without the hold it goes after
-    ``hold_misses`` (1) frame. A track matched again during the hold continues as before."""
+    ``hold_misses`` (1) frame. A track matched again during the hold continues as before, its
+    window not ended by the match (re-review 26.09)."""
     cfg = DetectorConfig()
     for every_frame in (False, True):
         tr = _reported_tracker(cfg)
@@ -146,7 +151,77 @@ def test_reseed_hold_is_bounded_and_not_extended():
         tr.update([], frame_dt=0.1)
     tr.update([_cluster(40.0)], frame_dt=0.1)
     (t,) = tr.tracks
-    assert t.reported and t.misses == 0 and t.hold == 0 and t.hit_fraction == 1.0
+    assert t.reported and t.misses == 0 and t.hold == 1 and t.hit_fraction == 1.0
+
+
+def test_reseed_hold_is_a_window_a_match_does_not_end():
+    """Re-review of 26.09: a match on the change frame ended the hold, so a STOP whose object the
+    re-seeded model loses from the next frame on stayed reported one frame more only
+    (``hold_misses``; the reviewer's [T, F, F, F, F] on 10e2707). The hold is a fixed window from
+    the change, the change frame the first: matched on the change frame and then missed for 4
+    frames the STOP is reported on all 4, as when it is missed from the change frame on, with its
+    confidence untouched, and goes after the window. A 6-frame window (a re-seeded model at
+    10 Hz) holds one frame more."""
+    cfg = DetectorConfig()
+    for matched_on_change in (False, True):
+        tr = _reported_tracker(cfg)
+        tr.reseed(np.eye(3), cfg.tracking.reseed_hold)
+        tr.update([_cluster(40.0)] if matched_on_change else [], frame_dt=0.1)     # the change frame
+        assert [t.reported for t in tr.tracks] == [True]
+        conf = tr.tracks[0].confidence
+        reported, confs = [], []
+        for _ in range(5):
+            tr.update([], frame_dt=0.1)
+            reported.append(bool(tr.tracks and tr.tracks[0].reported))
+            confs.append(tr.tracks[0].confidence if tr.tracks else None)
+        assert reported == [True] * 4 + [False], (matched_on_change, reported)
+        assert confs[:4] == [conf] * 4
+    tr = _reported_tracker(cfg)
+    tr.reseed(np.eye(3), 6)
+    tr.update([_cluster(40.0)], frame_dt=0.1)
+    assert [any(t.reported for t in tr.update([], frame_dt=0.1)) for _ in range(6)] == [True] * 5 + [False]
+
+
+@pytest.mark.parametrize("dist", [30.0, 50.0])
+@pytest.mark.parametrize("rig,extra", [(3.0, 0.7), (3.0, -0.7), (3.0, 0.95), (3.5, -0.7)])
+@pytest.mark.parametrize("axis", ["roll", "pitch"])
+def test_a_calibration_change_keeps_the_stop_track_matched(axis, rig, extra, dist):
+    """Re-review of 26.09: nothing guarded the sign of the rotation ``dR`` in
+    ``Detector._fit_track`` (the track model and the tracks): transposed, or not applied, every
+    test passed because the hold kept the STOP reported. Ray-cast, the reviewer's scenario: a
+    0.6 m box at 30 / 50 m, the rig at ``rig`` deg roll or pitch, the first 5 frames ``extra`` deg
+    more; the final calibration corrects the provisional tilt at frame 18 by less than 1 deg (the
+    model rotated, not re-seeded; with the rig at 3 deg and -0.7 the canted 2.3 deg is mostly
+    below provisional_min_deg, so the final is a ~3 deg change that re-seeds the model, hence the
+    3.5 deg rig). From its first STOP the box is a STOP on every frame and its track is MATCHED on
+    every frame, not held. With ``dR`` transposed every pitch case fails, without the rotation the
+    50 m pitch cases (a roll of the rig barely moves a box on the axis)."""
+    from resense.synthetic import ObstacleSpec, synthetic_tunnel_frame
+    frame, _, _ = synthetic_tunnel_frame(rng=np.random.default_rng(5),
+                                         specs=[ObstacleSpec(kind="box", size=(0.6, 0.6, 0.6), distance=dist)])
+    cfg = DetectorConfig()
+    cfg.calibration.obs_spacing, cfg.calibration.frames = 3, 7
+    rot = rot_x if axis == "roll" else rot_y
+    true, canted = rot(np.radians(rig)), rot(np.radians(rig + extra))
+    det = Detector(cfg)
+    changes, first = [], None
+    for k in range(26):
+        before = det.mount_rotation.copy()
+        age = det.track.age if det.track is not None else -1
+        r = det.process(Frame(xyz=_remount(frame.xyz, canted if k < 5 else true),
+                              intensity=frame.intensity, stamp=0.1 * k))
+        if not np.allclose(before, det.mount_rotation):
+            changes.append((k, det.calib.last_change_deg, r.track.age - age))
+        if first is None and r.obstacle:
+            first = k
+        if first is not None:
+            tracks = {t.id: t for t in det.tracker.tracks}
+            assert r.obstacle and all(tracks[d.id].misses == 0 for d in r.detections), (k, changes)
+            assert abs(r.nearest_distance - dist) < 0.5, (k, r.nearest_distance)
+    assert [c[0] for c in changes][-1] == 18 and first < 16, changes
+    if rig + extra >= 2.5:                                  # the provisional tilt, then a sub-degree final
+        assert changes[0][0] == 4 and len(changes) == 2, changes
+        assert abs(changes[1][1] - abs(extra)) < 0.3 and changes[1][1] <= 1.0 and changes[1][2] == 1, changes
 
 
 def test_reseed_rotates_the_tracks_and_a_large_change_drops_only_unreported_ones():

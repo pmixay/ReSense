@@ -115,8 +115,11 @@ review of 26.09 a change up to 1° (a final correction) rotates the current mode
 corrected frame instead (bed, rail head and axis refitted to rotated points; its age and the
 floor-shadow reference kept), because a model re-seeded from nothing has no shadow reference and
 no smoothing for its warm-up (on `doubleT_obstacle` it lost a confirmed STOP for 2 frames). The
-tracks follow every change (rotated); a track reported in zone gauge (a STOP) stays reported up to
-`tracking.reseed_hold` = 5 frames after its last match without one; on a change above 1° only such
+tracks follow every change (rotated); a track reported in zone gauge (a STOP) stays reported for a
+fixed window of `tracking.reseed_hold` = 5 frames from the change, matched or not (since the
+re-review of 26.09 a match no longer ends it), and when the change re-seeds the model at least
+until the model's warm-up gives it a floor-shadow reference again (6 frames at 10 Hz, 4 at 5 Hz);
+its misses in the window are not counted against it; on a change above 1° only such
 tracks are kept (the others' zone votes were taken in a wrong frame), and a new orientation resets
 the tracker. After freezing, the same measurement
 runs every `monitor_period` = 50 frames on the corrected cloud and the **median of the last
@@ -700,7 +703,7 @@ the CLI and the ROS node; the one exception is `tracking.hold_misses`, a code de
 | `cluster.overhead_min_height` | 3.0 m (v0.6: the envelope top; 2.4 m in v0.5) | overhead fixtures are advisory only |
 | `tracking.confirm_hits`, `tracking.conf_threshold` | 3, 0.6 | latency vs false alarms |
 | `tracking.hold_misses` (v0.6.3) | 1 | frames a reported obstacle stays reported without a match; 0 = the v0.6.2 behaviour. Code default in `resense/config.py`, not in `configs/default.yaml` |
-| `tracking.reseed_hold`, `calibration.reseed_keep_max_deg` (26.09) | 5, 1° | after a mount-calibration change a STOP stays reported up to 5 frames after its last match; a change up to 1° rotates the track model instead of re-seeding it (safety review of 26.09, EXPERIMENTS §1i) |
+| `tracking.reseed_hold`, `calibration.reseed_keep_max_deg` (26.09) | 5, 1° | after a mount-calibration change a STOP stays reported for a fixed window of 5 frames from the change, matched or not (6 at 10 Hz when the model is re-seeded: its warm-up); a change up to 1° rotates the track model instead of re-seeding it (safety review of 26.09, EXPERIMENTS §1i) |
 | `calibration.apply_min_deg` | 0.75° | smallest tilt applied (1.5× the p90 noise of the 20-observation median on a moving train; 0.5° until v0.6.3) |
 | `tracking.ego_speed_max` | 25 m/s | association slack without odometry |
 | `track.floor_verify_tolerance`, `track.floor_verify_band` | 0.5 m, \|dy\| 1.6–3.5 m | how far the bed extrapolation is trusted beyond the fit: looser = longer corridor, more phantom objects where the bed bends |
