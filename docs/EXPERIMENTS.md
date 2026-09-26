@@ -17,8 +17,8 @@
 8 объектов в габарите, но два краевых объекта получают лишь 2 и 6 STOP-кадров, а верхний ящик —
 22 из 124 на P3c, а на P3d STOP удерживается на верхнем объекте 51 из 124 кадров; за 100 м есть
 только один STOP-кадр. Человек на 148–154 м подтверждён только на нашей синтетике. Независимая
-оценка 65/100 предшествует интеграции P3c/P3d и не переоценена; внутренняя предварительная оценка
-P3d — 67/100. Собственная
+переоценка 26.09 (вечер) на интегрированной версии — 62/100 ([`SCORECARD.md`](SCORECARD.md) §0);
+все числа эталона `_ride_p3d` судья перемерил сам, с поездкой — шлюз PASS, каждая строка та же. Собственная
 оценка скорости поезда по лидару точна (ошибка 0,06–0,08 м/с), но даже точная скорость не
 улучшает проверку организаторов (§9), поэтому по умолчанию она выключена.
 
@@ -57,6 +57,13 @@ every gated metric the same ([its JSON](evidence/results/regression_gate_2026-09
 **P4 P3c snapshot (26.09; historical).** The earlier strict command against the frozen P3c
 baseline reproduced available rows but missed the ride and set F straight. It remains dated evidence
 in [`p4_available_reference_2026-09-26.json`](evidence/results/p4_available_reference_2026-09-26.json).
+
+**Re-judgement of 26.09 evening: the full gate re-run.** An independent judge downloaded the
+organizers' data again, streamed the ride split by split and ran `scripts/regression_gate.py --jobs 4`
+with every cache (six recordings, set O, the ride in 8 pieces, set F straight) against
+`_ride_p3d`: **PASS, every gated row the same** (302 s on 4 cores): five bags 58 / 13 / 16, the ride 183 / 45 / 38, `doubleT_obstacle` 58 of 61 and 125 of 126, set O 384 of 801 with 8 of 8, set F straight as the baseline; only the informational latency rows differ ([`evidence/rejudge_2026-09-26/`](evidence/rejudge_2026-09-26/),
+[`SCORECARD.md`](SCORECARD.md) §0.3). The ride and set F rows that P4 could not load are therefore
+measured again, not only archived.
 
 **P4 P3d available-data rerun (26.09).** The current strict command ran against the frozen P3d
 baseline with no `--allow`. It reproduced all six original recordings and set O, but exited 1

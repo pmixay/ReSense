@@ -612,6 +612,28 @@ is clear; it also stays advisory while `tracking.column_hold` = 2 of those hits 
 column (25.09: a column far away shows more than 2.2 m of itself in some frames only, EXPERIMENTS
 §3a). Accumulation changes what the tracker sees (denser clusters), not the persistence semantics.
 
+**Rules of 26.09** (each pre-registered, gated on all real data, safety-reviewed; EXPERIMENTS §1k,
+§1l, §1o). Near an obstacle the shape signatures of §3.3 cost more than they save, so three rules
+limit them once a cluster has real mass inside the strict envelope (≥ 10 voxels):
+
+* **near escalation** (`tracking.near_escalate_*`): a track whose last 5 hits were each such a
+  cluster within 35 m is a `STOP` whatever signature demoted it (elevated, floating, the zone
+  vote); a column, a beyond-axis or beyond-height-reference demotion never escalates, and the
+  column hold comes first. `cluster.wall_keep_*` keeps the same kind of cluster within 20 m when
+  the wall-at-the-side rule would drop it (the organizers' 2 × 2 m box at the envelope edge);
+* **STOP keep** (`tracking.stop_keep_*`): a track that was a `STOP` in the previous frame counts
+  such a cluster as a hit inside the envelope when only a shape signature demoted it, and a
+  one-scan-line cluster may continue it when nothing else matched. A signature can keep a track
+  from being confirmed, not take a confirmed obstacle down; the rule never starts a track, and it
+  acts only while the track's last clean hit is at most `stop_keep_max_s` = 10 s of sensor time
+  ago, so a false `STOP` at a standing train cannot be kept for ever (the organizers' box at the
+  envelope top: a `STOP` on every frame from 101.3 m);
+* **rail start** (`lowobj.rail_start_within` = 4 m): a narrow low cluster nearer than 4 m that
+  reaches a rail line and rises at most 5 cm above the rail head's own returns along the track is
+  rail geometry, not a new low obstacle, while its track was never matched farther out (the fresh
+  start of a bag at a standing train reported the rail heads at 2.9–3.1 m); an object lying across
+  a rail is wider than the 0.45 m limit and stays an obstacle.
+
 ## 4. Decision rule
 
 A frame reports `obstacle = true` when at least one track is **confirmed**:
@@ -824,7 +846,10 @@ The organizers' `cloud_with_fake_obj` recording carries ten objects added by the
 the one used for the hidden check; the shipped detector stops for 5 of the 8 objects inside the
 envelope [organizers' synthetic: set O, 24.09], 6 of 8 since the hanging stage of 25.09 (§3.3
 item 8), 5 of them held (the 2 × 2 m box at the envelope top, #8, STOPped in 12 of its 124
-frames), 8 of 8 since the near escalation of 26.09 (below; EXPERIMENTS §1l). Per-object grade
+frames then), 8 of 8 since the near escalation of 26.09 (below; EXPERIMENTS §1l), #8 a STOP on
+every frame from 101.3 m (51 of 124) since the STOP keep of §3.5 (EXPERIMENTS §1o). "8 of 8" counts
+an object with at least one STOP frame: the two edge objects get 2 (#4, at 5.2 m) and 6 (#6, from
+10.3 m) of 83 and 125 visible frames, too late for a moving train. Per-object grade
 and the config sweeps:
 [`P4_AUDIT.md`](P4_AUDIT.md) "Organizer synthetic-obstacle recording", EXPERIMENTS §2e. The
 causes, each a limitation of the current rules:

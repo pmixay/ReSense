@@ -1,0 +1,28 @@
+== doubleT_obstacle (native, OMP 1, every frame)
+track      mean    17.6 ms  p95    28.6 ms  max    44.3 ms
+corridor   mean     7.1 ms  p95     9.9 ms  max    11.5 ms
+egomotion  mean     0.0 ms  p95     0.0 ms  max     0.0 ms
+accumulate mean     0.0 ms  p95     0.0 ms  max     0.5 ms
+cluster    mean     5.8 ms  p95     8.0 ms  max    16.6 ms
+tracking   mean     0.3 ms  p95     0.4 ms  max     1.1 ms
+total      mean    30.7 ms  p95    42.1 ms  max    57.9 ms
+== roundT_doubleT (native, OMP 1, every frame)
+track      mean    11.8 ms  p95    21.4 ms  max    33.9 ms
+corridor   mean     5.9 ms  p95     8.0 ms  max    13.8 ms
+egomotion  mean     0.0 ms  p95     0.0 ms  max     0.0 ms
+accumulate mean     0.0 ms  p95     0.0 ms  max     0.0 ms
+cluster    mean     7.9 ms  p95    11.5 ms  max    17.0 ms
+tracking   mean     0.2 ms  p95     0.3 ms  max     1.6 ms
+total      mean    25.8 ms  p95    37.1 ms  max    58.1 ms
+== cloud_with_fake_obj (native, OMP 1, every frame)
+track      mean    11.3 ms  p95    16.2 ms  max    35.2 ms
+corridor   mean     5.6 ms  p95     8.1 ms  max    14.3 ms
+egomotion  mean     0.0 ms  p95     0.0 ms  max     0.1 ms
+accumulate mean     0.0 ms  p95     0.0 ms  max     0.0 ms
+cluster    mean     5.5 ms  p95    10.1 ms  max    69.7 ms
+tracking   mean     0.2 ms  p95     0.3 ms  max     1.7 ms
+total      mean    22.7 ms  p95    32.8 ms  max    79.8 ms
+== doubleT_obstacle numpy path
+cluster    mean     7.1 ms  p95     8.7 ms  max    13.0 ms
+tracking   mean     0.3 ms  p95     0.4 ms  max     0.5 ms
+total      mean    78.3 ms  p95    95.5 ms  max   135.5 ms

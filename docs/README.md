@@ -3,7 +3,7 @@
 > **Purpose:** every document of the repository, what it is for, who reads and maintains it, and
 > the terms they share.
 > **Audience:** jury, team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-24, `537e220` (detector v0.6.3, node v0.6.4) · **Status:** current
+> **Last verified:** 2026-09-26, the re-judgement pass (the table's rows and owners; package 1.0.0: detector v0.6.3 with the P3 rules of 25–26.09, node v0.6.4) · **Status:** current
 
 Start with the root [`README.md`](../README.md): the jury path, what to look at and the headline
 results. Current numbers live in [`EXPERIMENTS.md`](EXPERIMENTS.md) "Current results"; what changed
@@ -22,11 +22,11 @@ rewritten later; **frozen** = kept for reference, not maintained; **archive** = 
 | [`ARCHITECTURE.md`](ARCHITECTURE.md) | components, data flow, real-time budget (spec §5 "Архитектура") | jury, team | EN + RU summary | P1 | current |
 | [`ALGORITHM.md`](ALGORITHM.md) | how the detector decides, stage by stage; parameters; limitations (spec §5 "Описание алгоритма") | jury, P3 | EN + RU summary | P1 (structure), P3 (content) | current |
 | [`EXPERIMENTS.md`](EXPERIMENTS.md) | every measured result: false alarms, range, latency, FPS, hard cases, evolution (spec §5 "Эксперименты") | jury, team | EN + RU summary | P3 / P4 | current |
-| [`DECISIONS.md`](DECISIONS.md) | the 16 key decisions on one page: question, what was measured, result, decision, evidence | jury, team | EN + RU summary | P1 | current |
+| [`DECISIONS.md`](DECISIONS.md) | the 17 key decisions on one page: question, what was measured, result, decision, evidence | jury, team | EN + RU summary | P1 | current |
 | [`EVALUATION.md`](EVALUATION.md) | evaluation protocol: data sets, metrics, procedure, targets | team, jury | EN + RU summary | P1 / P4 | current |
 | [`DATASET.md`](DATASET.md) | the organizers' data: recordings, formats, labels, frame cache, unpacking | team, jury | EN + RU summary | P4 | current |
 | [`SENSOR.md`](SENSOR.md) | Hesai Pandar128 facts and what they imply for the detector | team, jury | EN + RU summary | P1 | current |
-| [`SCORECARD.md`](SCORECARD.md) | criteria judgements: the re-judgement of 26.09 (§0, 65 / 100) and the first of 24.09 (§1–§8, 60 / 100): score per spec §8 criterion, evidence, what is left | team, jury | EN | P1 | current (§0), dated record (§1–§8) |
+| [`SCORECARD.md`](SCORECARD.md) | criteria judgements: the re-judgement of 26.09 evening on the integrated head (§0, measured by two independent judges), the one of 26.09 morning (§0a, 65 / 100, pre-integration head) and the first of 24.09 (§1–§8, 60 / 100): score per spec §8 criterion, evidence, what is left | team, jury | EN | P1 | current (§0), dated record (§1–§8) |
 | [`PRESENTATION.md`](PRESENTATION.md) | slide requirements, drafts, speaker text | P2, P1 | RU | P2 | current |
 | [`PLAN.md`](PLAN.md) | roles, sprint calendar, team rules | team | RU | P1 | current |
 | [`CAPTAIN.md`](CAPTAIN.md) | captain's board: criteria, work left, ownership map, frozen interfaces | P1, team | EN | P1 | current |
@@ -84,7 +84,7 @@ rewritten later; **frozen** = kept for reference, not maintained; **archive** = 
 | set S / E / R / O / F / H | data sets of [`EVALUATION.md`](EVALUATION.md) §1: S our synthetic objects in real empty frames; E the five obstacle-free organizer bags; R real obstacles (`doubleT_obstacle`); O the organizers' synthetic-obstacle recording `cloud_with_fake_obj`; F our synthetic objects approaching through consecutive frames of the moving ride (EXPERIMENTS §2d); H the hidden control bag |
 | real / synthetic / organizers' synthetic / timing | kind of a result: the organizers' recordings as recorded; our objects ray-cast into real frames; objects added by the organizers' own tool (set O); a latency measurement, always with its machine |
 | legacy / anchored placement | how set F places an object: legacy from the detector's own per-frame far axis (can flatter curves and envelope edges); anchored where a near (≤ 30 m) rail-supported track fit puts it, carried back along the ride (independent of the far axis, not surveyed ground truth); EVALUATION §3, [`P4_AUDIT.md`](P4_AUDIT.md) |
-| detector v0.6.3, node v0.6.4 | the current state: the v0.6.3 detector, and the node's v0.6.4 catch-up of the burst at the start of a played bag ([`CHANGELOG.md`](../CHANGELOG.md)) |
+| detector v0.6.3, node v0.6.4 | the current state: the v0.6.3 detector with the rules of 25–26.09 switched on by `configs/default.yaml` (gate baseline `_ride_p3d`), and the node's v0.6.4 catch-up of the burst at the start of a played bag ([`CHANGELOG.md`](../CHANGELOG.md)) |
 
 ## 4. Conventions
 

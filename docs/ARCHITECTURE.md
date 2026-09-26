@@ -297,8 +297,8 @@ optional extension: without a C++ compiler the install still succeeds and the de
 numpy with the same results, slower); `scripts/build_native.sh` builds them in a source checkout
 used with `PYTHONPATH=.`. The Docker image installs `g++` and prints the path it took at build
 time; the node logs it at start (`per-frame kernels: native (...)`). `RESENSE_NATIVE=0` forces
-the numpy code. The test suite passes on both paths (289 tests, 25.09; the 58 release and video
-tests added later do not touch the kernels). **Docker:** proven by CI run 36058665640 (24.09,
+the numpy code. The test suite passes on both paths (289 tests on 25.09; 586 on 26.09, the whole suite green on
+the native path in the 26.09 re-judgement; the release and video tests do not touch the kernels). **Docker:** proven by CI run 36058665640 (24.09,
 commit `d1a2d0c`): the image built the kernels, the in-image suite passed with
 `RESENSE_REQUIRE_SYNTHETIC=1` (a missing library would have failed it), and both ROS smoke tests
 passed (synthetic bags, decode + detect 35 ms mean); every docker job since does the same (run
