@@ -5,6 +5,7 @@ Run from the repository root:  python -m pytest -q web/demo
 collect this file — add ``web/demo`` there if the team wants it in CI.)  Everything runs
 without the organizers' dataset; the browser tests skip when Playwright or Chromium is missing.
 """
+import glob
 import json
 import os
 import sys
@@ -384,8 +385,10 @@ def test_presentation_artifact_uses_the_organizers_slide_sequence():
         ).replace("\u00a0", " ")
     for required in ("ReSense", "КОМАНДА", "КОРОТКО О РЕШЕНИИ", "ГЛАВНЫЙ КАДР", "13 759", "58 из 61"):
         assert required in text
-    with open(os.path.join(ROOT, "docs", "evidence", "results",
-                           "regression_baseline_2026-09-25_ride_p3b.json")) as source:
+    # the current gate baseline, picked like docs/VM_GUIDE.md §4.4 (LC_ALL=C sort | tail -n 1)
+    latest = sorted(glob.glob(os.path.join(ROOT, "docs", "evidence", "results",
+                                           "regression_baseline_*_ride*.json")))[-1]
+    with open(latest) as source:
         baseline = json.load(source)
     rail = baseline["recordings"]["doubleT_obstacle"]["labelled"]["per_label"]["object_on_rail_from_frame_75"]
     for required in (
@@ -394,7 +397,7 @@ def test_presentation_artifact_uses_the_organizers_slide_sequence():
         f"{baseline['ride']['alarm_events'] / 13:.1f}".replace(".", ","),
         f"{rail['hits']} из {rail['frames']}",
         f"{baseline['set_O']['inside_objects_with_stop']} из {baseline['set_O']['inside_objects']}",
-        "492", "docker load",
+        "555", "docker load",
     ):
         assert required in text
     assert "релиз v1.0.0" not in text
