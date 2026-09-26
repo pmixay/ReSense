@@ -169,7 +169,7 @@ validity over each sequence before interpreting range or edge results.
 
    ```bash
    python scripts/regression_gate.py --cache /data/cache \
-       --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_p3b.json \
+       --baseline docs/evidence/results/regression_baseline_2026-09-26_ride_p3c.json \
        [--config FILE] [--set section.key=value ...] [--allow PATTERN ...] \
        --out out/gate/<change>.json
    ```
@@ -211,7 +211,17 @@ validity over each sequence before interpreting range or edge results.
    reports runs whose stamps (`--nominal-stamps`) or ride pieces differ. A missing required
    recording, or a failed set F run on a cached ride, exits 2.
 
-   **Baselines of 25.09.** The current one is
+   **Baselines of 25–26.09.** The current one is
+   [`regression_baseline_2026-09-26_ride_p3c.json`](evidence/results/regression_baseline_2026-09-26_ride_p3c.json):
+   the shipped defaults of `ed03bc2` (the P3 items of 26.09 merged with the fixes of their safety
+   review: the rail-start rule, the near escalation and the wall keep on, the sensor-axis union
+   off) on the six recordings, O, the ride and F straight, native path, 4-vCPU dev VM, `--jobs 1`,
+   857 s. It passes against the one before with 7 gated rows better and none worse (the ride 46 →
+   45 events, 39 → 38 STOP episodes; O: the box at the envelope top 12 → 22 STOP frames, the edge
+   box 0 → 6 from 10.3 m, the edge cube 0 → 2 at 5.2 m); five bags, `doubleT_obstacle` and F
+   straight identical (EXPERIMENTS §1n,
+   [`regression_gate_2026-09-26_p3_integrated.json`](evidence/results/regression_gate_2026-09-26_p3_integrated.json)).
+   The one before,
    [`regression_baseline_2026-09-25_ride_p3b.json`](evidence/results/regression_baseline_2026-09-25_ride_p3b.json):
    the shipped defaults of `30d0cac` (the four P3 items of round 2 merged on top of the one
    below: the free-hanging exemption of `floating`, the thin-hanging stage with its rail-lock

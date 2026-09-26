@@ -333,7 +333,7 @@ VM (the captain: a machine with half the stand's cores is enough); a run here co
 
 ```bash
 BASELINE=$(ls docs/evidence/results/regression_baseline_*_ride*.json | LC_ALL=C sort | tail -n 1)   # the newest baseline with the ride
-echo "$BASELINE"      # since 25.09 (the P3 items of round 2 on): regression_baseline_2026-09-25_ride_p3b.json
+echo "$BASELINE"      # since 26.09 (the P3 items of 26.09 on): regression_baseline_2026-09-26_ride_p3c.json
 mkdir -p "$EV/gate_$DAY"
 python scripts/regression_gate.py --cache "$CACHE" --jobs 6 --baseline "$BASELINE" \
   --out "$EV/gate_$DAY/gate_$(git rev-parse --short HEAD).json" 2>&1 | tee "$EV/gate_$DAY/gate_table.txt"
@@ -366,6 +366,9 @@ mkdir -p "$EV/export_$DAY"
 image is built from `git archive HEAD`). **Done:** both scripts exit 0. **Evidence:**
 `docs/evidence/export_<date>/archive.txt` (size, sha256, commit); **never** the archive itself
 (`dist/` is ignored by git). No tag and no release: they are deferred by the captain (C13).
+Without a VM: since 26.09 the CI job `offline-build` of a push to the working branch or `main`
+offers the same runtime archive (`GZIP_LEVEL=1`) with its `.sha256` as the run artifact
+`resense-image-<version>-<short commit>` (ARCHITECTURE "Deployment without internet").
 
 ### 4.6 Shared-memory mode (opt-in `RESENSE_DDS=shm`)
 

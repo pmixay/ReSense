@@ -63,7 +63,7 @@ N = {
     "frames": "13 759",
     "person_hits": "58 из 61", "person_first": "0,3 с", "person_err": "0,23 м",
     "object_hits": "125 из 126", "object_before": "2",
-    "ride_events": "46", "ride_per_km": "3,5", "ride_km": "13",
+    "ride_events": "45", "ride_per_km": "3,5", "ride_km": "13",
     "empty_events": "13",
     "first_person": "148", "sustained_person": "149", "band_person": "115", "speed_person": "167",
     # the same straight approaches with the person anchored on the near rails (set F round 4, 5 pairs;
@@ -73,11 +73,11 @@ N = {
     "native_cut": "38–57 %",                 # optional C++ kernels: detector time, identical output
     "gpu_gain": "30–45 мс",                  # the GPU study's upper bound per 360° frame against numpy
     "speed_err": "0,07 м/с",                 # the opt-in LiDAR-only train speed, median error (0.06–0.08)
-    "tests": "492",
+    "tests": "555",
     # the organizers' own synthetic obstacles, set O (cloud_with_fake_obj: 10 objects, 1 510 frames,
     # the train drives up to them at 1.4–20 m/s, no speed given) [organizers' synthetic, P4_AUDIT]
-    "fake_frames": "1 510", "fake_stop": "6 из 8", "fake_box": "98", "fake_plank": "82", "fake_cubes": "43–53",
-    "fake_top_frames": "12 из 124", "fake_outside_false": "6", "fake_background": "3",
+    "fake_frames": "1 510", "fake_stop": "8 из 8", "fake_box": "98", "fake_plank": "82", "fake_cubes": "43–53",
+    "fake_top_frames": "22 из 124", "fake_outside_false": "6", "fake_background": "3",
     # first confirmed detection, straight track, median over the approaches [synthetic in real frames,
     # set F round 3 = the current code, EXPERIMENTS.md §2d; the anchored person: round 4]
     "range_chart": [("человек 1,7 м · от рельсов", 154), ("человек 1,7 м", 148), ("тележка", 144),
@@ -87,8 +87,8 @@ N = {
     # STOP held); the box at the envelope top has a first STOP but is mostly advisory (12 of 124 frames)
     "fake_chart": [("ящик 2 × 2 м, верх габарита", 101, None, False), ("ящик 2 × 2 м в центре", 98, None, True),
                    ("доска поперёк рельсов", 82, None, True), ("куб 0,3 м на рельсе", 43, None, True),
-                   ("куб 0,3 м в воздухе", 53, None, True), ("куб 0,3 м у края", 0, "только CAUTION", False),
-                   ("ящик 2 × 2 м у края", 0, "пропущен", False), ("висящий предмет 5 см", 30, None, True)],
+                   ("куб 0,3 м в воздухе", 53, None, True), ("куб 0,3 м у края", 5, None, False),
+                   ("ящик 2 × 2 м у края", 10, None, False), ("висящий предмет 5 см", 30, None, True)],
 }
 
 # ---- the team (slides 7-10): the team is «Молоток», ReSense is the solution; personal data below are
@@ -746,7 +746,7 @@ def s_fake(sl):             # template slide 21: column chart (turned into bars)
          "на 60–115 м от куба 0,3 м 2–4 точки в кадре, кластеру нужно 5; ящик у верха габарита — "
          f"STOP лишь в {N['fake_top_frames']} кадров, чаще CAUTION"),
         (24, 25, "Ограничения — говорим честно",
-         "ящик 2 × 2 м у края пропущен; висящий предмет 5 см: STOP с 30 м; объекты ставили от оси лидара "
+         "краевые объекты дают лишь 2 и 6 STOP кадров; висящий предмет 5 см: STOP с 30 м; объекты ставили от оси лидара "
          f"(−0,24° к рельсам), мы строим габарит по рельсам. Ложных STOP: {N['fake_outside_false']} кадров "
          f"у ящика снаружи, {N['fake_background']} — вне объектов"),
     ]

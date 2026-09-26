@@ -15,6 +15,13 @@ matched now. Its zone is 'gauge' when at least ``zone_min_fraction`` of its last
 flickers into the gauge every other frame is advisory (docs/EXPERIMENTS.md section 1b), and
 fewer than ``column_hold`` (2 since 25.09) of those hits were demoted as a column: a column far
 away shows more than ``column_min_height`` of itself in some frames only (EXPERIMENTS.md 3a).
+With ``low_min_seen_distance`` > 0 (tried 26.09, off: EXPERIMENTS.md 1j) a low (bed-level) track
+is reported only once it has been matched at or beyond it; 4 m never reports a low object that
+stays nearer (a standing train), so it is not shipped.
+With ``near_escalate_voxels`` N > 0 (on since 26.09, N 10, EXPERIMENTS.md 1l) a track whose last
+``near_escalate_hits`` hits were each a corridor cluster with at least N voxels inside the strict
+envelope within ``near_escalate_distance`` is zone 'gauge' whatever demoted it (a signature such
+as ``elevated`` or ``floating``, the zone vote); a column never counts and the column hold wins.
 """
 from __future__ import annotations
 
@@ -25,6 +32,11 @@ import numpy as np
 
 from resense.clustering import Cluster
 from resense.config import TrackingConfig
+
+
+# 26.09: demotions a near escalation never overrides (Tracker._near): a column, and a cluster outside
+# the range where the corridor's axis or height reference is trusted
+_NOT_ESCALATED = ("column", "beyond_axis", "beyond_height_ref")
 
 
 @dataclass
@@ -49,14 +61,38 @@ class Track:
     column_hold: int = 0            # this many column hits in column_hist keep the track advisory (0 = off)
     hold: int = 0                   # 26.09: frames left of a calibration re-seed hold window (Tracker.reseed)
     seen_reported: bool = False     # 26.09: reported in the frame of its last match (health.clear_cap_lost)
+    near_hist: List[bool] = field(default_factory=list)  # 26.09: last near_hits hits: near the envelope (Tracker._near)?
+    near_hits: int = 0              # 26.09: this many near hits in a row make the track an obstacle (0 = off)
+
+    @property
+    def near_escalated(self) -> bool:
+        """26.09 (``tracking.near_escalate_voxels``): the last ``near_hits`` hits of the track were
+        all near the envelope (``Tracker._near``)."""
+        k = self.near_hits
+        return k > 0 and len(self.near_hist) >= k and all(self.near_hist[-k:])
+
+    @property
+    def column_held(self) -> bool:
+        return self.column_hold > 0 and sum(self.column_hist) >= self.column_hold
+
+    @property
+    def vote_zone(self) -> str:
+        """'gauge' when at least ``zone_min_fraction`` of the last hits were inside the strict gauge."""
+        return "gauge" if sum(self.zone_hist) >= self.zone_min_fraction * len(self.zone_hist) - 1e-9 else "warning"
 
     @property
     def zone(self) -> str:
-        if not self.zone_hist:
+        if not self.zone_hist or self.column_held:
             return "warning"
-        if self.column_hold > 0 and sum(self.column_hist) >= self.column_hold:
-            return "warning"
-        return "gauge" if sum(self.zone_hist) >= self.zone_min_fraction * len(self.zone_hist) - 1e-9 else "warning"
+        if self.near_escalated:
+            return "gauge"
+        return self.vote_zone
+
+    @property
+    def escalated(self) -> bool:
+        """An obstacle only by the near escalation (its vote says advisory)."""
+        return (self.near_escalated and bool(self.zone_hist) and not self.column_held
+                and self.vote_zone != "gauge")
 
     @property
     def hit_fraction(self) -> float:
@@ -99,17 +135,37 @@ class Tracker:
             if t.reported and t.zone == "gauge":
                 t.hold = max(t.hold, int(hold) - t.misses)
 
+    def _near(self, cl: Cluster) -> bool:
+        """26.09 (``tracking.near_escalate_voxels`` > 0): a corridor cluster with at least that many
+        voxels inside the strict envelope (``Cluster.n_gauge``, edge margin applied) and within
+        ``near_escalate_distance``, whatever its zone or demotion reason except a column (a column
+        row seen through a wrong axis at a crossover has 50-150 such voxels at 20-40 m on the ride;
+        the column hold keeps precedence too) and a cluster demoted because the corridor's axis or
+        height reference is not trusted there (``beyond_axis``, ``beyond_height_ref``; safety review
+        of 26.09: its strict voxels are not trusted either)."""
+        c = self.cfg
+        return (c.near_escalate_voxels > 0 and cl.kind == "" and cl.n_gauge >= c.near_escalate_voxels
+                and cl.distance <= c.near_escalate_distance and cl.reason not in _NOT_ESCALATED)
+
     def _gate(self, distance: float) -> float:
         c = self.cfg
         return c.gate_base + c.gate_per_m * max(distance, 0.0)
 
     def update(self, clusters: List[Cluster], ego_shift: float = 0.0,
-               frame_dt: Optional[float] = None) -> List[Track]:
+               frame_dt: Optional[float] = None, low_ok: bool = True, rail_within: float = 0.0) -> List[Track]:
         """Associate ``clusters`` with the tracks. ``ego_shift`` (m) is the distance the
         vehicle travelled since the previous frame when it is known: a track seen once has no
         velocity yet and is then predicted as a static object approaching by that much.
         ``frame_dt`` (s) is the interval since the previous frame; it accumulates each track's
-        observed time for the ``confirm_time_s`` rule (without it persistence counts hits only)."""
+        observed time for the ``confirm_time_s`` rule (without it persistence counts hits only).
+        ``low_ok`` False (``lowobj.min_model_age``, 26.09, off) keeps a low track that was not
+        reported in the previous frame from being reported in this one. ``rail_within`` > 0
+        (``lowobj.rail_start_within``, 26.09, off by default) keeps a low track that was not
+        reported in the previous frame from being reported while its cluster of this frame is
+        rail geometry (``Cluster.rail_line``, ``lowobj.mark_rail_line``) and it was never matched
+        at or beyond ``rail_within``: the rail heads just ahead of a standing train. A track already
+        reported, or once matched that far (an object approached from afar), is not affected; the
+        association is unchanged, so this can only withhold a report."""
         c = self.cfg
         # widen the gate by the distance a static object travels in the *measured* interval, so a
         # dropped frame (0.2-0.3 s gap in the node) does not throw a 17 m/s approach out of the gate
@@ -121,6 +177,7 @@ class Tracker:
         matched_t = np.zeros(n_t, dtype=bool)
         matched_c = np.zeros(n_c, dtype=bool)
         zw, hw = max(1, int(c.zone_window)), max(1, int(c.hit_window))
+        nk = max(1, int(c.near_escalate_hits)) if c.near_escalate_voxels > 0 else 0
         if n_t and n_c:
             # greedy nearest-neighbour association on predicted positions
             static = np.array([-float(ego_shift), 0.0, 0.0])
@@ -148,6 +205,8 @@ class Tracker:
                 t.zone_hist = (t.zone_hist + [cl.zone == "gauge"])[-zw:]
                 t.column_hist = (t.column_hist + [cl.reason == "column"])[-zw:]
                 t.hit_hist = (t.hit_hist + [True])[-hw:]
+                if nk:
+                    t.near_hist = (t.near_hist + [self._near(cl)])[-nk:]
                 t.history.append(cl.distance)
                 matched_t[i] = matched_c[j] = True
                 d[i, :] = np.inf
@@ -173,13 +232,20 @@ class Tracker:
                     gauge_hits=int(cl.zone == "gauge"), zone_hist=[cl.zone == "gauge"], hit_hist=[True],
                     span_s=dt, zone_min_fraction=c.zone_min_fraction,
                     column_hist=[cl.reason == "column"], column_hold=int(c.column_hold),
+                    near_hist=[self._near(cl)] if nk else [], near_hits=nk,
                 ))
                 self._next_id += 1
         # reported: confirmed now, or reported in the previous frame and missed for at most
         # hold_misses frames (a single missed frame does not drop a STOP; review 23.09), or inside
         # a re-seed hold window (reseed; matched or not)
         for t in self.tracks:
-            t.reported = (self._qualifies(t) or (t.reported and 0 < t.misses <= c.hold_misses)
+            q = self._qualifies(t)
+            if q and not low_ok and not t.reported and t.last is not None and t.last.kind == "low":
+                q = False
+            if (q and rail_within > 0 and not t.reported and t.last is not None and t.last.kind == "low"
+                    and t.last.rail_line and max(t.history) < rail_within):
+                q = False
+            t.reported = (q or (t.reported and 0 < t.misses <= c.hold_misses)
                           or (t.reported and t.hold > 0))
             if t.misses == 0:
                 t.seen_reported = t.reported
@@ -189,6 +255,11 @@ class Tracker:
 
     def _qualifies(self, t: Track) -> bool:
         c = self.cfg
+        if (c.low_min_seen_distance > 0 and t.last is not None and t.last.kind == "low" and t.history
+                and max(t.history) < c.low_min_seen_distance):
+            # 26.09 (P3 start-up): a low track never matched as far as the learned bed cross-section
+            # starts (the rail heads just ahead of a standing train under a young model)
+            return False
         need_span = c.confirm_time_s if (self._timed and c.confirm_time_s > 0) else 0.0
         return (t.hits >= (c.low_confirm_hits if (t.last is not None and t.last.kind == "low") else c.confirm_hits)
                 and t.confidence >= c.conf_threshold and t.misses == 0

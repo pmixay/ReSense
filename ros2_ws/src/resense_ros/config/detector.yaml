@@ -107,6 +107,10 @@ resense:
     edge_margin: 0.0
     edge_margin_per_100m: 0.15       # v0.6: strict decision needs points 0.15 m per 100 m inside the envelope edge (axis uncertainty)
     no_rail_range: 40.0              # v0.6.2: without the rail pair in the near range (stations, switch caverns) the corridor beyond 40 m is advisory only; 0 = off
+    axis_union: 0                    # tried 26.09, NOT shipped (P3, judge A action 7; the safety review: blocking; 0 = off): inside also when inside the envelope measured from the SENSOR axis (the organizers' placement frame), only on straight track, within axis_union_range and where the rail axis is within axis_union_max_offset of the sensor axis; 1 = strict membership only (A), 2 = corridor coordinate re-measured (B), 3 = A with the shape rules reading the nearer reference's lateral (B2); A passed the gate (set O #6 0 -> 1 STOP frame) but takes in a long line at the corridor edge beside an object, and the oversize split then dropped both (ray-cast 19 -> 6 STOP frames; the split falls back to the rails' part since); B fails on the set O plank, B2 adds 3 ride events (docs/evidence/results/p3_edge_axis_2026-09-26.json, EXPERIMENTS 1m)
+    axis_union_range: 50.0           # 26.09: m, near field only
+    axis_union_max_offset: 0.3       # 26.09: m, below warning_margin (the union stays inside the advisory corridor)
+    axis_union_max_curvature: 0.0002 # 26.09: 1/m, straight track only (R >= 5 km)
   cluster:
     eps: 0.35
     range_scale: 40.0
@@ -133,6 +137,8 @@ resense:
     wall_min_lateral: 1.2
     wall_segment_min_length: 4.0
     wall_segment_max_width: 1.5
+    wall_keep_gauge_voxels: 10     # 26.09 (P3 near escalation, candidate D for set O #6; 0 = off): a cluster the wall-at-the-side rule would drop is kept when it has >= this many strict-envelope voxels and starts within wall_keep_distance; gate PASS on top of tracking.near_escalate_*: the 2 x 2 m box at the envelope edge 0 -> 6 STOP frames from 10.3 m, set O inside STOP frames 349 -> 355, #5 / #7 / background, the ride, the five bags, doubleT_obstacle and set F identical (docs/evidence/results/p3_near_escalation_2026-09-26.json)
+    wall_keep_distance: 20.0       # m
     gauge_min_points: 3
     overhead_min_height: 3.0       # v0.6: the envelope top (2.4 in v0.5)
     column_min_height: 2.2
@@ -190,6 +196,10 @@ resense:
     zone_min_fraction: 0.6
     column_hold: 2                 # 25.09 (0 = off): a track demoted as a column in >= this many of its last zone_window hits stays advisory; roundT_doubleT's column at 101-149 m is a column in some frames and 1.6-2.2 m of it in others: 3 alarm frames at 111-115 m through ROS (original bag), 2 at 128-130 m from the cache -> 0 (4 column hits in its window); pre-registered 3 / 2 / 1, the highest passing: 3 fails the gate (ride STOP episodes 39 -> 40), 2 PASS: five bags 60 / 14 / 17 -> 58 / 13 / 16, ride 197 / 46 / 39 -> 187 / 46 / 39 alarm frames / events / STOP episodes, doubleT_obstacle, set O and set F detections identical (docs/evidence/results/column_hold_2026-09-25.json)
     reseed_hold: 5                 # 26.09 (safety review, re-review): after a mount-calibration change the tracks follow the rotation and a STOP (reported in zone gauge) stays reported for a fixed window of 5 frames from the change (the change frame the first), matched or not (a match does not end it), 6 at 10 Hz when the change re-seeds the track model (until its warm-up gives it a floor-shadow reference again); above 1 deg only STOPs are kept (the geometry re-seed must not drop a confirmed STOP); 0 = reset the tracker above 1 deg, hold nothing
+    low_min_seen_distance: 0.0     # tried 26.09 (P3 start-up, candidate c), NOT shipped (0 = off): a low (bed-level) track reported only once matched at or beyond this distance (m); 4 m removed a fresh start's 2.9-3.1 m STOP on the rail heads ahead of a standing train (ride 187 / 46 / 39 -> 183 / 45 / 38, gate PASS) but never STOPs for a 30 x 30 x 10 cm object or an object lying across a rail 3.0-3.9 m ahead of a standing or slow train, or one that falls there: a blind zone; a safety fix wins over a false-alarm gain (docs/evidence/results/p3_startup_2026-09-26.json, addendum_blind_zone)
+    near_escalate_voxels: 10       # 26.09 (P3 near escalation, judge B action 6; 0 = off): a track whose last near_escalate_hits hits were each a corridor cluster with >= this many voxels inside the strict envelope within near_escalate_distance is a STOP whatever demoted it (elevated, floating, the zone vote), a column or a beyond_axis / beyond_height_ref demotion never (safety review 26.09) and the column hold first; candidate A of the pre-registration, gate PASS: set O inside STOP frames 337 -> 349 (box at the envelope top 12 -> 22, from 23.9 m; cube at the edge 0 -> 2), #5 / #7 / background, the ride, the five bags, doubleT_obstacle and set F identical (docs/evidence/results/p3_near_escalation_2026-09-26.json)
+    near_escalate_distance: 35.0   # m
+    near_escalate_hits: 5          # hits in a row
     max_misses: 3
     conf_gain: 0.35
     conf_decay: 0.25
@@ -254,6 +264,14 @@ resense:
     near_min_bed_lateral_bins: 20  # support must span the central bed, not only the object footprint
     near_min_points: 5             # occupied voxels; the same box returns 5-10 at 12-28 m (10 rejected it)
     near_max_length: 0.75          # m along track, reject linear infrastructure
+    pending_advisory: false        # tried 26.09 (P3 start-up, candidate a), not shipped: low tracks advisory while the mount calibration is 'pending' (the first ~20 s of an untilted rig): the organizers' 0.3 x 0.3 x 0.1 m object 20 m ahead of a fresh detector lost every STOP frame
+    pending_advisory_within: 0.0   # m, (a): a low track at most this far stays a STOP
+    min_model_age: 0               # tried 26.09 (candidate b, 16), not shipped: no new low STOP while the track model is younger than this (frames); the same object's first STOP moved from frame 4 to 16
+    rail_start_within: 4.0         # on since 26.09 (P3 rail start, lowobj.mark_rail_line; 0 = off): m, a low cluster nearer than this that reaches a rail line, is at most rail_start_max_width wide and rises at most rail_start_margin above the rail head's own returns along the track is rail geometry: no new low STOP on it while its track was never matched this far
+    rail_start_margin: 0.05        # m above the band's height where it continues along the track (the organizers' 0.10 m object on a rail head rises 0.10)
+    rail_start_lateral: 0.10       # m, the cluster reaches the axis +- rails_spacing / 2 within this
+    rail_start_max_width: 0.45     # m across the track (an object lying across a rail is wider)
+    rail_start_min_ref: 0.06       # m (safety review of 26.09): only where the band's line is at least this far above the model's rail-head plane (the young-model fault: 0.135-0.148 m in the finding; a correct model ~0)
   calibration:                     # v0.6: automatic mount calibration (resense/calibration.py)
     enabled: true
     frames: 20                       # v0.6.1: final tilt = median of 20 observations ...

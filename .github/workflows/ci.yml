@@ -284,3 +284,35 @@ jobs:
           sleep 4
           python3 scripts/check_dry_run.py /tmp/offline_rt_out/status.jsonl --expect-obstacle --min-frames 20 --max-p95-latency 1000 --max-dropped 100000 --expect-inputs 2
           echo "the release archive's runtime image played both bags with no internet"
+      # ---- the archive as a download (26.09): the stand has no internet, and the captain takes the
+      # archive of the frozen commit from this job's run instead of building it on a machine with
+      # Docker. Only on a push to the working branch or `main` (the workflow has no pull_request
+      # trigger; the condition keeps it that way) and only when every step above passed, so the
+      # download is the archive that was loaded, rebuilt offline and played through. Every push is
+      # version 1.0.0, so the file is named after the commit too; its .sha256 is written for that
+      # name the way export_image.sh writes it (the form scripts/load_image.sh and `sha256sum -c`
+      # read) and must hold the sum load_image.sh verified above. A hard link: no second copy on the
+      # runner's small disk.
+      - name: the archive as a download, named after the commit (push to the working branch or main)
+        id: artifact
+        if: ${{ success() && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/claude/nifty-pascal-lzgl78') }}
+        run: |
+          NAME="resense-image-$VER-${GITHUB_SHA::7}"
+          mkdir -p /tmp/artifact
+          ln "/tmp/dist/resense-image-$VER.tar.gz" "/tmp/artifact/$NAME.tar.gz"
+          (cd /tmp/artifact && sha256sum "$NAME.tar.gz" > "$NAME.tar.gz.sha256")
+          test "$(cut -d' ' -f1 "/tmp/artifact/$NAME.tar.gz.sha256")" = "$(cut -d' ' -f1 "/tmp/dist/resense-image-$VER.tar.gz.sha256")"
+          ls -l /tmp/artifact && cat "/tmp/artifact/$NAME.tar.gz.sha256"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+      - name: upload the archive and its .sha256 (Actions run → Artifacts; kept 30 days)
+        if: ${{ steps.artifact.outcome == 'success' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.artifact.outputs.name }}
+          path: |
+            /tmp/artifact/${{ steps.artifact.outputs.name }}.tar.gz
+            /tmp/artifact/${{ steps.artifact.outputs.name }}.tar.gz.sha256
+          retention-days: 30
+          if-no-files-found: error
+          compression-level: 0   # already gzip
+          overwrite: true        # a re-run of the job replaces its own upload

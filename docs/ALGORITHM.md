@@ -233,6 +233,18 @@ than 40 m the strict decision is kept, so an object close ahead still stops the 
 40 m a lateral error of 0.1° is 7 cm). Measured on all real data (EXPERIMENTS §0): the
 platform-end structure of `squareT_platform_squareT_switch` and the station ends of the ride.
 
+**The envelope also from the sensor axis (26.09, `gauge.axis_union`; tried, off).** The
+organizers place their test objects from the sensor's X axis. On these rigs it runs ~0.25° off the
+rails on straight track, 0.2 m apart at 50 m. Option 1 makes the strict envelope near the train the
+union of the envelope measured from the rails and the one measured from the sensor axis (the same
+polygon and edge margin, lateral `dy + c(X)`, `c` the rail axis in the processed frame): within
+`axis_union_range` 50 m, on straight track (|curvature| ≤ 2e-4 /m), with the rail pair locked and
+where the two axes are ≤ `axis_union_max_offset` 0.30 m apart. It passed its gate (set O #6: 1 STOP
+frame) but the safety review of 26.09 blocked it: the union can take in a long line at the corridor
+edge beside an object, and the oversize split then dropped both (EXPERIMENTS §1m). Since then the
+split falls back to the part inside the rails' own envelope and the wall keep counts only that
+envelope; the option stays off (0).
+
 ### 3.3 Candidate clustering and infrastructure filters (`resense/clustering.py`, section `cluster`)
 
 Everything is **range-adaptive**, because a 0.5 m object gives ~500 returns at 20 m and ~7 at
@@ -811,7 +823,9 @@ data: [`SCORECARD.md`](SCORECARD.md).
 The organizers' `cloud_with_fake_obj` recording carries ten objects added by their own tool,
 the one used for the hidden check; the shipped detector stops for 5 of the 8 objects inside the
 envelope [organizers' synthetic: set O, 24.09], 6 of 8 since the hanging stage of 25.09 (§3.3
-item 8). Per-object grade and the config sweeps:
+item 8), 5 of them held (the 2 × 2 m box at the envelope top, #8, STOPped in 12 of its 124
+frames), 8 of 8 since the near escalation of 26.09 (below; EXPERIMENTS §1l). Per-object grade
+and the config sweeps:
 [`P4_AUDIT.md`](P4_AUDIT.md) "Organizer synthetic-obstacle recording", EXPERIMENTS §2e. The
 causes, each a limitation of the current rules:
 
@@ -839,7 +853,9 @@ causes, each a limitation of the current rules:
   tops of platform columns 13–40 m ahead passed the same test in single frames (28 on the ride),
   none confirmed; since the rail-lock guard of 25.09, round 2 (`cluster.hanging_needs_rails`),
   the stage does not run on such frames, so a thin object hanging where the rails are not found
-  (a station, a switch cavern) is not looked for either.
+  (a station, a switch cavern) is not looked for either. The stage takes only groups ≤ 0.5 m along
+  and across the track within 0.8 m of the axis: a larger or more lateral hanging object is left to
+  the ordinary clusters (≥ 5 voxels inside the envelope, the infrastructure signatures apply).
 * **0.3 m cubes are confirmed only from 43–53 m** (#3 on the rail from 42.7 m; #2 from 52.5 m
   since 25.09, round 2, 34.0 m before). At 60–115 m such a cube returns 2–4 points a frame,
   below the 5-voxel minimum within 100 m, so a single frame cannot confirm a 0.3 m object much
@@ -861,7 +877,19 @@ causes, each a limitation of the current rules:
   STOP) inside in 101 of 112; the 2 × 2 m box outside (#7) gets 6 false STOP frames. Removing
   the growing edge margin only added false STOPs (#7 6 → 40 frames, background 3 → 8). Which
   reference the envelope follows is an open question to the organizers
-  ([`QUESTIONS.md`](QUESTIONS.md) Q1).
+  ([`QUESTIONS.md`](QUESTIONS.md) Q1). Since 26.09 (EXPERIMENTS §1m): measured from the sensor
+  axis the four tests are exactly the intent (#4 inside in 74 of 83 frames, #6 in 93 of 125, #5
+  and #7 in none). The union of both envelopes within 50 m (§3.2) won #6 one frame only and is
+  off after the safety review of 26.09: the box's in-envelope strip, 1.2–1.3 m from the rails and
+  ~2 m tall, is still dropped as a wall. The shape rules measured from the sensor axis STOP on it from 30.65 m but add 3 ride false
+  events (`gauge.axis_union` 3, off). #4 stays `floating` either way.
+* **Near-field escalation (26.09, EXPERIMENTS §1l).** Within 35 m, a track whose last 5 hits each
+  had ≥ 10 strict-envelope voxels is a STOP whatever demoted it (`tracking.near_escalate_*`; a
+  column never). #8 now STOPs from 23.9 m (12 → 22 frames) and #4 at 5.2 m (2 frames). A tall
+  side cluster with ≥ 10 strict voxels within 20 m is no longer dropped by the wall rule
+  (`cluster.wall_keep_*`): #6 STOPs from 10.3 m (6 frames). #5 and #7 are unchanged. Beyond 35 m,
+  #8 is still `elevated` (50–77 m), and #6 is still outside the envelope measured from the rails
+  beyond 16 m.
 * ~~**`clear_distance` counts only confirmed obstacles**~~ (§4b) — capped since 25.09, round 2:
   on set O the criteria judgement of 24.09 (judge B, [`SCORECARD.md`](SCORECARD.md)) found 184
   object-frames with the decision `GO` and a `clear_distance` beyond an in-envelope object, 89 of
