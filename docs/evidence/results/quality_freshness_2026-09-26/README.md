@@ -75,6 +75,13 @@ are retained: initial expected assertion changes and a synthetic test-fixture co
 were corrected before the final pass. Functional trials ran while other workers were active;
 their timings are not performance evidence. The original-bag trials above used the idle window.
 
+## Captured source files
+
+Python source snapshots and executed experiment commands use a `.py.txt` suffix in this packet.
+Their bytes are unchanged; protocol filenames refer to the original `.py` files in validation.
+Remove `.txt` when copying one for execution. They are historical evidence, while maintained
+production scripts and tests remain in their normal source directories.
+
 ## Interpretation
 
 - Replay age measures publisher UTC, not original acquisition age. Live mode requires comparable
