@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Branch-only cold-disk startup check using the organizer's bag. A one-message rosbag2
+# Branch-only cold-disk startup check using the organizer's bag. A small rosbag2
 # read-ahead queue avoids turning the 20 s recording into a burst while the cold 4.8 GB SQLite
 # file is preloaded; storage stalls remain real and the node still gets the original point clouds.
 # Requires Docker and runs only on the P1/P2 completion branch; the downloaded raw bag is removed.
@@ -22,7 +22,7 @@ mkdir -p "$OUT"
 trap 'rm -rf "$WORK"' EXIT
 
 echo "source: $URL" | tee "$OUT/provenance.txt"
-echo "playback: rate=1.0; read_ahead_queue_size=1" | tee -a "$OUT/provenance.txt"
+echo "playback: rate=1.0; read_ahead_queue_size=10" | tee -a "$OUT/provenance.txt"
 git -C "$ROOT" rev-parse HEAD | sed 's/^/commit: /' | tee -a "$OUT/provenance.txt"
 df -h "$WORK" | tee -a "$OUT/provenance.txt"
 
@@ -46,6 +46,6 @@ docker tag "$IMAGE" resense:latest
 
 # The archive extraction and hashes warmed the page cache. Evict it before the exact dry-run path.
 sudo sh -c 'sync; echo 3 > /proc/sys/vm/drop_caches'
-BAG_READ_AHEAD_QUEUE_SIZE=1 SKIP_BUILD=1 OUT="$OUT/dry_run" scripts/dry_run.sh "$BAG" \
+BAG_READ_AHEAD_QUEUE_SIZE=10 SKIP_BUILD=1 OUT="$OUT/dry_run" scripts/dry_run.sh "$BAG" \
   --expect-obstacle --distance 50:62 --min-frames 20 --max-p95-latency 1000 --max-dropped 0
 echo "PASS: original doubleT_obstacle cold-disk dry run" | tee -a "$OUT/result.txt"

@@ -3,7 +3,7 @@
   "date": "2026-09-26",
   "branch": "claude/p1-p2-completion-20260926",
   "tested_commit": "a7789f7429727f527ee49a408fbaffe6b361af91",
-  "current_branch_commit": "a7789f7429727f527ee49a408fbaffe6b361af91",
+  "current_branch_commit": "adcd3b874ada88cf5a227f50e33afd6435beea0f",
   "post_test_rebase_change": "Final pytest, Chromium and dashboard-smoke runs passed after merging origin/claude/nifty-pascal-lzgl78 at 06845469065d5b7d093210c61c989c1ef34271e4. Upstream core edits are comments/docstrings only; its refreshed full-gate evidence confirms 146 enforced metrics across 199 comparison rows unchanged.",
   "local": {
     "python": "3.12 via /tmp/resense-p4-venv",
@@ -87,27 +87,33 @@
       "result": "PASS",
       "frames": 60
     },
-    "original_bag_cold_ci": "pending; first attempt failed before this correction",
-    "pushed": false
+    "original_bag_cold_ci": "run 362776 failed at default read-ahead (91/201 processed, five post-+5 s messages, no fresh result); run 362789 was cancelled after read-ahead 1 delivered no input. Both are preserved; read-ahead 10 retry pending.",
+    "pushed": true
   },
   "branch_ci": {
-    "run_id": 36274548282,
-    "url": "https://github.com/pmixay/ReSense/actions/runs/36274548282",
-    "status_at_receipt_creation": "completed",
-    "conclusion": "failure",
-    "non_cold_jobs": "pytest, web, lint, params-in-sync and offline-build passed; Docker passed before the cold-bag criterion.",
+    "run_id": 36278988540,
+    "url": "https://github.com/pmixay/ReSense/actions/runs/36278988540",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "non_cold_jobs": "pytest, web, lint, params-in-sync and offline-build passed; Docker smoke, transport, and viewer simulation passed before the cold-bag step.",
     "viewer_simulation": "PASS",
     "cold_bag": {
-      "result": "FAIL",
-      "artifact_id": 10917590342,
-      "artifact_url": "https://github.com/pmixay/ReSense/actions/runs/36274548282/artifacts/10917590342",
-      "durable_record": "cold_bag_failed_run_36274548282/README.md"
+      "result": "CANCELLED / INCONCLUSIVE: archive and DB3 verified, but read-ahead 1 produced no LiDAR input; 1,380 no_input watchdog snapshots before cancellation.",
+      "artifact_id": 10918752773,
+      "artifact_url": "https://github.com/pmixay/ReSense/actions/runs/36278988540/artifacts/10918752773",
+      "durable_record": "cold_bag_cancelled_run_36278988540/README.md"
     },
-    "corrected_cold_replay_status": "pending; no CI rerun of the cadence correction yet",
+    "next_cold_bag_attempt": "read-ahead 10, ten-minute step timeout; pending",
+    "previous_cold_run_36277608569": {
+      "conclusion": "failure",
+      "url": "https://github.com/pmixay/ReSense/actions/runs/36277608569",
+      "cold_bag": "FAIL; 91/201 frames processed, five messages unprocessed after +5 s, no valid freshness result.",
+      "artifact_id": 10918270065
+    },
     "prior_cold_run_36274548282": {
       "conclusion": "failure",
       "viewer_simulation": "PASS",
-      "cold_bag": "FAIL; 85/201 processed, 84 original messages unprocessed after +5 s",
+      "cold_bag": "FAIL; 85/201 processed, 84 original messages unprocessed after +5 s.",
       "artifact_id": 10917590342
     },
     "merged_work_branch": "06845469065d5b7d093210c61c989c1ef34271e4"

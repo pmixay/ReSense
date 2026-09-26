@@ -115,6 +115,7 @@ jobs:
         run: IMAGE=resense:ci scripts/p2_viewer_test.sh
       - name: original bag cold-start regression — scoped to the P1/P2 completion branch
         if: ${{ github.ref == 'refs/heads/claude/p1-p2-completion-20260926' }}
+        timeout-minutes: 10
         run: IMAGE=resense:ci scripts/p1_cold_bag_test.sh
       - name: retain original-bag cold-start evidence
         if: ${{ always() && github.ref == 'refs/heads/claude/p1-p2-completion-20260926' }}

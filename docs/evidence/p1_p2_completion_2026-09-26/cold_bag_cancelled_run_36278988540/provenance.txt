@@ -1,0 +1,8 @@
+source: https://drive.usercontent.google.com/download?id=1WTlR2wDSuEHTOARGK_gZeXDTZ9RZpswu&export=download&confirm=t
+playback: rate=1.0; read_ahead_queue_size=1
+commit: adcd3b874ada88cf5a227f50e33afd6435beea0f
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root       146G   63G   83G  44% /
+e23166801794cdeb2dcd77a3cc8b40a906b1d9cefab6f26739e368234e9168be  /tmp/resense-p1-cold.5Dtd2I/dataset.zip
+90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09  /tmp/resense-p1-cold.5Dtd2I/for_hackathon/doubleT_obstacle/metadata.yaml
+05f1d7f7d1bbbc5e9453877416cc9f7367c19e31d35a5291271d863fc89c5ad9  /tmp/resense-p1-cold.5Dtd2I/for_hackathon/doubleT_obstacle/doubleT_obstacle_0.db3

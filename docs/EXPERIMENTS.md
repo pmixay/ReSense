@@ -3226,6 +3226,15 @@ result. The distinct P2 second-container viewer test passed in the same failed w
 detected a paused server and restored the stream after resume. That is a deterministic two-device
 simulation; visual Foxglove layout import on a physical second device remains unverified.
 
+On the follow-up run (362776, commit `90158e8`), default rosbag2 read-ahead still produced no
+fresh result: 91/201 frames were processed, the first STOP was at +0.8 s, and five messages
+remained after +5 s. The next attempt changed only the cold-test player read-ahead to one message;
+the archive and bag verified, but no LiDAR frame reached the node during 12 minutes, so that
+attempt was cancelled and is retained in
+[`cold_bag_cancelled_run_36278988540/`](evidence/p1_p2_completion_2026-09-26/cold_bag_cancelled_run_36278988540/).
+The next attempt uses a ten-message queue with a ten-minute step timeout. C5/C7 remain open until
+the original-bag replay passes; neither cancelled nor failed runs are counted as successful.
+
 ## 4. What we learned / hard cases
 
 1. **Sensor mounts differ between bags** (bed 1.5 m vs 2.0 m below the sensor, axis 0.05–0.25 m

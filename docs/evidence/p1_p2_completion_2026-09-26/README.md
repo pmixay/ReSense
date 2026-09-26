@@ -34,6 +34,15 @@ compressed status stream, hashes and command provenance are in
 [`cold_bag_failed_run_36274548282/`](cold_bag_failed_run_36274548282/); the raw archive and database
 were removed by CI and are not committed.
 
+Run [36277608569](https://github.com/pmixay/ReSense/actions/runs/36277608569) tested the
+cadence-preserving code on the original bag but still failed freshness and post-+5 s accounting:
+91/201 frames were processed, first STOP was +0.8 s, and five messages remained after +5 s. The
+default rosbag2 read-ahead had preloaded a backlog before the node's first result. A follow-up with
+read-ahead set to one downloaded and verified the same bag but delivered no LiDAR input during a
+12-minute wait; it was cancelled as an invalid playback setup. Its 1,380 no-input watchdog rows are
+preserved in [`cold_bag_cancelled_run_36278988540/`](cold_bag_cancelled_run_36278988540/). The
+current retry uses read-ahead ten and has a ten-minute CI step timeout; it has not yet passed.
+
 ## Follow-up and remaining work
 
 The failure showed that a 20 s startup lag allowance with 0.3 s frame sampling could still let
@@ -41,8 +50,9 @@ scene-reset gaps consume the recording. The branch follow-up keeps every observe
 frame during the first backlog, even when the preceding recording left a slower period estimate.
 After that catch-up drains, live backlog behavior returns to the 0.3 s sampling step and 5 s lag
 bound. The 47 node tests and local full suite pass, but the corrected behavior has **not yet passed
-the original-bag cold-cache CI replay**. Keep action 21 and C7 open until that test passes; do not
-claim the startup issue resolved from unit tests alone.
+the original-bag cold-cache CI replay**. The read-ahead-one attempt produced no input and does not
+count as a detector result. Keep action 21 and C7 open until the bounded-buffer replay passes; do
+not claim the startup issue resolved from unit tests alone.
 
 The remaining human tasks are the physical second-device Foxglove layout import/rehearsal and the
 presentation details the team has not supplied: city, team-formation details and a group photo.

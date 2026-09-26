@@ -73,7 +73,8 @@ frames, 13 km, no obstacles).
   20-second allowance only to the first backlog of a new recording, then returns to its normal
   5-second live-stall limit. Unit tests cover a cold whole-recording burst, an isolated first
   cloud, repeated recordings, and expiration of the startup allowance; the original-bag cold-disk
-  replay still needs confirmation. The dashboard now treats `FAULT` as unavailable, clears the
+  replay remains open after a 91/201 default-read-ahead failure and a no-input/cancelled read-ahead-1
+  attempt. A ten-message read-ahead retry is pending. The dashboard now treats `FAULT` as unavailable, clears the
   estimated monitoring range on fault or stale input, ignores malformed or decision-less live
   messages, and overlays the live panels until the first current result and on disconnect or
   freshness expiry. Its user-facing
