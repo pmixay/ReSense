@@ -128,6 +128,77 @@ def gauge_reach_mask(dy: np.ndarray, h: np.ndarray, X: np.ndarray, cfg: GaugeCon
             | point_in_polygon(np.sign(dy) * np.maximum(np.abs(dy) - m, 0.0), h, cfg.profile))
 
 
+def axis_union_offset(X: np.ndarray, track: TrackModel, cfg: GaugeConfig) -> Optional[Tuple[np.ndarray, np.ndarray]]:
+    """Where the envelope is also measured from the sensor axis (26.09, ``gauge.axis_union``; judge A
+    action 7): ``(ok, c)`` per point, ``c`` = the rail axis minus the sensor axis at the point's X
+    (``track.center_y``; the processed frame's X axis is the sensor axis whenever the mount calibration
+    applies no yaw, below ``calibration.min_yaw_deg``), ``ok`` = inside the region where the two
+    references agree: range_min <= X <= ``axis_union_range`` and |c| <= ``axis_union_max_offset``.
+    ``None`` when the option is off or the frame is not eligible: no rail pair in the near range
+    (``track.rail_slabs == 0``) or |curvature| > ``axis_union_max_curvature`` (a curve, where the
+    sensor axis leaves the track as X^2 / 2R)."""
+    if cfg.axis_union <= 0 or track.rail_slabs <= 0 or abs(float(track.curvature)) > cfg.axis_union_max_curvature:
+        return None
+    X = np.asarray(X, dtype=np.float64)
+    ok = (X >= cfg.range_min) & (X <= cfg.axis_union_range)
+    if not ok.any():
+        return None
+    c = np.zeros(X.shape[0], dtype=np.float64)
+    c[ok] = track.center_y(X[ok])
+    ok &= np.abs(c) <= cfg.axis_union_max_offset
+    if not ok.any():
+        return None
+    c[~ok] = 0.0
+    return ok, c
+
+
+def axis_union_strict(X: np.ndarray, dy: np.ndarray, h: np.ndarray, track: TrackModel,
+                      cfg: GaugeConfig) -> Optional[np.ndarray]:
+    """``gauge.axis_union`` 1 (candidate A): the points that are inside the strict envelope measured
+    from the sensor axis (``dy + c``), edge margin included, within the region of
+    :func:`axis_union_offset`; ``None`` when it does not apply. OR-ed into the strict membership
+    measured from the rails; nothing else changes (with ``axis_union_max_offset`` below
+    ``warning_margin`` the rail advisory corridor already holds these points)."""
+    reg = axis_union_offset(X, track, cfg)
+    if reg is None:
+        return None
+    ok, c = reg
+    out = np.zeros(ok.shape[0], dtype=bool)
+    i = np.flatnonzero(ok)
+    ya = np.asarray(dy, dtype=np.float64)[i] + c[i]
+    hh = np.asarray(h, dtype=np.float64)[i]
+    inside = point_in_polygon(ya, hh, cfg.profile)
+    if cfg.edge_margin > 0 or cfg.edge_margin_per_100m > 0:
+        inside &= gauge_core_mask(ya, hh, np.asarray(X, dtype=np.float64)[i], cfg)
+    out[i] = inside
+    return out
+
+
+def axis_union_coordinates(X: np.ndarray, dy: np.ndarray, track: TrackModel, cfg: GaugeConfig) -> np.ndarray:
+    """``gauge.axis_union`` 2 (candidate B): the corridor coordinate re-measured so that the strict
+    envelope is the union of the rail and the sensor-axis envelopes. Within the region of
+    :func:`axis_union_offset`, on the side towards which the sensor axis lies off the rail axis
+    (``s = -sign(c)``, ``e = |c|``, ``u = s * dy >= 0``): ``u' = max(u - e, u * W / (W + e))`` with
+    ``W`` the envelope half-width - continuous and monotone, ``W + e`` maps to ``W`` and beyond it
+    the lateral is the one from the sensor axis (``u - e``); the other side and every point outside
+    the region keep ``dy``. Returns ``dy`` itself when nothing changes."""
+    reg = axis_union_offset(X, track, cfg)
+    if reg is None:
+        return dy
+    ok, c = reg
+    i = np.flatnonzero(ok)
+    d = np.asarray(dy, dtype=np.float64)[i]
+    s = -np.sign(c[i])
+    e = np.abs(c[i])
+    u = s * d
+    W = float(np.abs(np.asarray(cfg.profile, dtype=np.float64)[:, 0]).max())
+    wide = (u > 0) & (e > 0)
+    u2 = np.maximum(u - e, u * W / (W + e))
+    out = np.array(dy, dtype=np.float64, copy=True)
+    out[i] = np.where(wide, s * u2, d)
+    return out
+
+
 def profile_bounds(cfg: GaugeConfig):
     p = np.asarray(cfg.profile)
     return float(p[:, 0].min()), float(p[:, 0].max()), float(p[:, 1].min()), float(p[:, 1].max())

@@ -233,6 +233,16 @@ than 40 m the strict decision is kept, so an object close ahead still stops the 
 40 m a lateral error of 0.1° is 7 cm). Measured on all real data (EXPERIMENTS §0): the
 platform-end structure of `squareT_platform_squareT_switch` and the station ends of the ride.
 
+**The envelope also from the sensor axis (26.09, `gauge.axis_union` 1).** The organizers place
+their test objects from the sensor's X axis. On these rigs it runs ~0.25° off the rails on
+straight track, 0.2 m apart at 50 m. Near the train the strict envelope is therefore the union of
+the envelope measured from the rails and the one measured from the sensor axis (the same polygon
+and edge margin, lateral `dy + c(X)`, `c` the rail axis in the processed frame). The union applies
+only within `axis_union_range` 50 m, on straight track (|curvature| ≤ 2e-4 /m), with the rail pair
+locked and where the two axes are ≤ `axis_union_max_offset` 0.30 m apart. Only the strict
+membership changes: the candidates, laterals, shape rules and distances stay measured from the
+rails. Measured in EXPERIMENTS §1m (set O #6: 1 STOP frame; nothing else changed).
+
 ### 3.3 Candidate clustering and infrastructure filters (`resense/clustering.py`, section `cluster`)
 
 Everything is **range-adaptive**, because a 0.5 m object gives ~500 returns at 20 m and ~7 at
@@ -865,7 +875,12 @@ causes, each a limitation of the current rules:
   STOP) inside in 101 of 112; the 2 × 2 m box outside (#7) gets 6 false STOP frames. Removing
   the growing edge margin only added false STOPs (#7 6 → 40 frames, background 3 → 8). Which
   reference the envelope follows is an open question to the organizers
-  ([`QUESTIONS.md`](QUESTIONS.md) Q1).
+  ([`QUESTIONS.md`](QUESTIONS.md) Q1). Since 26.09 (EXPERIMENTS §1m): measured from the sensor
+  axis the four tests are exactly the intent (#4 inside in 74 of 83 frames, #6 in 93 of 125, #5
+  and #7 in none). The union of both envelopes within 50 m is on (§3.2), but it wins #6 one frame
+  only: the box's in-envelope strip, 1.2–1.3 m from the rails and ~2 m tall, is still dropped as a
+  wall. The shape rules measured from the sensor axis STOP on it from 30.65 m but add 3 ride false
+  events (`gauge.axis_union` 3, off). #4 stays `floating` either way.
 * **Near-field escalation (26.09, EXPERIMENTS §1l).** Within 35 m, a track whose last 5 hits each
   had ≥ 10 strict-envelope voxels is a STOP whatever demoted it (`tracking.near_escalate_*`; a
   column never). #8 now STOPs from 23.9 m (12 → 22 frames) and #4 at 5.2 m (2 frames). A tall

@@ -143,6 +143,16 @@ class GaugeConfig:
     edge_margin: float = 0.0
     edge_margin_per_100m: float = 0.15   # v0.6: 0.15 m per 100 m (0.3 m at 200 m) of axis uncertainty at the envelope edge
     no_rail_range: float = 40.0    # v0.6.2: m; in a frame without the rail pair in the near range (stations, switch caverns: the axis rests on walls alone) the corridor beyond this is advisory only; 0 = off
+    # 26.09 (P3, judge A action 7; docs/evidence/results/p3_edge_axis_2026-09-26.json): the envelope also
+    # measured from the SENSOR axis (the processed frame's X axis, the organizers' placement frame), as a
+    # union with the rail envelope, only where the two agree: rail pair locked, |curvature| <=
+    # axis_union_max_curvature, X <= axis_union_range and the rail axis within axis_union_max_offset of
+    # the sensor axis. 0 = off; 1 = strict membership only (A); 2 = the corridor coordinate re-measured (B);
+    # 3 = A, and the shape rules of a corridor cluster read the lateral from the nearer reference (B2)
+    axis_union: int = 1                     # on since 26.09 (A: gate PASS, set O #6 0 -> 1 STOP frame, nothing else changed); 2 / 3 tried, not shipped
+    axis_union_range: float = 50.0          # m, near field only
+    axis_union_max_offset: float = 0.30     # m, |c(X)| = rail axis minus sensor axis (below warning_margin)
+    axis_union_max_curvature: float = 2e-4  # 1/m, straight track only (R >= 5 km)
 
 
 @dataclass

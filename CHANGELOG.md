@@ -26,7 +26,8 @@ transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
 free-hanging exemption of `floating`, +4 thin hanging objects, +5 `health.clear_cap`, +6 the rate
 and re-mount flags, +1 the rail-lock guard of the hanging stage, +13 the review fixes of the
 round-2 items, +17 their re-review, +6 latency out of the decision, +8 the start-up census, +27
-the rail-start rule, +12 the near escalation) in `tests/`, 13 in `web/demo`.
+the rail-start rule, +12 the near escalation, +8 the sensor-axis envelope, +1 the P3 items of 26.09
+combined) in `tests/`, 13 in `web/demo`.
 
 - **Rail heads ahead of a standing train at a fresh start (26.09, P3): `lowobj.rail_start_within`
   4 m, on.** Fixes the open finding of the start-up census: from the gate's piece-2 cut a fresh
@@ -51,6 +52,25 @@ the rail-start rule, +12 the near escalation) in `tests/`, 13 in `web/demo`.
   candidate A plus D; B and C not run. Baseline not re-cut (the integrator will). +12 tests.
   [`p3_near_escalation_2026-09-26.json`](docs/evidence/results/p3_near_escalation_2026-09-26.json),
   [EXPERIMENTS §1l](docs/EXPERIMENTS.md).
+
+- **The envelope also measured from the sensor axis (26.09, P3; judge A, action 7): A shipped
+  (`gauge.axis_union` 1).** The organizers place their edge tests from the sensor axis, which runs
+  at −0.24° to the rails in set O. Measured from it, the four edge tests are exactly their intent:
+  #4 and #6 inside in 74 / 93 frames, #5 and #7 in none; from the rails 16 / 8 and 98 / 58. Now a
+  point is also inside when it is inside the envelope measured from the sensor axis. This applies
+  only within 50 m, on straight track (|curvature| ≤ 2e-4 /m), with the rail pair locked and the
+  two axes ≤ 0.30 m apart. Pre-registered A / B / B2:
+  - A (the union) passes the gate: 2 gated rows better, none worse; set F on gentle curves is
+    identical. #6 gains 1 STOP frame (0 → 1, 14.3 m). It is a track confirmed on three gauge hits
+    of the box and reported on an edge-line fragment 2.4 m in front of it. Nothing else changes.
+  - B (the corridor coordinate re-measured) loses a plank STOP frame.
+  - B2 (A, and the shape rules read the nearer axis) STOPs on #6 from 30.65 m (7 frames
+    credited), but the ride gets 187 / 46 / 39 → 189 / 49 / 39.
+
+  #4 stays advisory (`floating`) under every variant. B and B2 stay off. The baseline is not
+  re-cut: set O now counts 338 of 801 inside STOP frames, 7 of 8 objects. Tests +8
+  (`tests/test_edge_axis.py`). EXPERIMENTS §1m,
+  [`p3_edge_axis_2026-09-26.json`](docs/evidence/results/p3_edge_axis_2026-09-26.json).
 
 - **The image archive as a CI download (26.09, P1):** on a push to `claude/nifty-pascal-lzgl78` or
   `main`, when every step passed, the `offline-build` job uploads the runtime archive it made,

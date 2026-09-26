@@ -1679,6 +1679,100 @@ CAUTION to STOP on its 5th frame; a cube in the advisory zone just outside stays
 both flags off, the output is identical to `bd67fb0` (`scripts/output_fingerprint.py`, 2 930
 frames). Numbers moved: the gate baseline is not re-cut here, the integrator will.
 
+### 1m. P3 items of 26.09: the envelope also from the sensor axis (judge A, action 7)
+
+[organizers' synthetic, real and ray-cast, measured 26.09; P3.] The organizers place their
+edge-test objects from the sensor's X axis. The detector measures the envelope from the rails
+(ALGORITHM §3.1, §6). In set O the rails run at −0.24° to the sensor axis (median of the frames
+with a rail pair). The rail axis is 0.05 m right of the sensor axis at 5 m, 0.14 m at 25 m and
+0.23 m at 45 m. Four of the six recordings show the same rig yaw, −0.23 … −0.36°.
+
+*Measured* on `bd67fb0`, per edge object and frame. "Inside" means that at least one of the
+object's own points lies in the 2.1 × 3.0 m envelope.
+
+| object (organizers' intent) | frames | inside, from the rails | inside, from the sensor axis | decision |
+|---|---|---|---|---|
+| #4 0.3 m cube at the edge (inside) | 83 | 16 | 74 | CAUTION 25 (`floating`), GO 58 |
+| #5 0.3 m cube just outside | 112 | 98 | **0** | CAUTION 24, GO 88 |
+| #6 2 × 2 m box at the edge (inside) | 125 | 8 | 93 | GO in all 125 |
+| #7 2 × 2 m box outside | 104 | 58 | **0** | STOP 6 (142 m), CAUTION 43 |
+
+**From the sensor axis, the four tests match the organizers' intent at every range. From the rails
+they do not.** Within 50 m:
+* #4's centre is 1.01 m from the sensor axis (1.15 m from the rails), so it straddles the edge.
+* #5's inner face is 1.13–1.27 m from the sensor axis.
+* #6's face starts 0.96 m from the sensor axis at 30 m (1.11 m from the rails).
+
+Two other rules decide #4 and #6:
+* #4 is demoted as `floating` whatever the reference. Its outermost point is 1.04–1.23 m from the
+  sensor axis, beyond `floating_free_max_dy` 0.95 m.
+* #6's part inside the advisory corridor is a strip ~2 m tall, 1.2–1.3 m from the rails. The wall
+  rule drops it (`wall_min_height` 1.9, `wall_min_lateral` 1.2).
+
+*Pre-registered* at 07:10 UTC, before any candidate code; addendum at 07:25 UTC
+([`p3_edge_axis_2026-09-26.json`](evidence/results/p3_edge_axis_2026-09-26.json)). Every candidate
+acts only under four conditions (`gauge.axis_union_*`):
+* the rail pair is locked;
+* the track is straight (|curvature| ≤ 2e-4 /m);
+* the point is within 50 m;
+* the two axes are at most 0.30 m apart there.
+
+The candidates:
+* A (`gauge.axis_union` 1): inside if inside either envelope; nothing else changes.
+* B (2): the corridor coordinate re-measured on the side where the sensor axis widens the envelope.
+* B2 (3, addendum): A, and the shape rules of a corridor cluster read its lateral from the axis
+  that places it nearer the centre.
+
+The axis-only envelope was not a candidate: on the other side it gives up to 0.3 m of the space
+the train sweeps.
+
+| stage | A | B | B2 |
+|---|---|---|---|
+| six recordings and set O (gate rows) | PASS | **FAIL**: plank #9 49 → 48 STOP frames | PASS |
+| #6 STOP frames (scorer) | 0 → 1 | 0 → 3 | **0 → 7**, first STOP 18.3 m |
+| #4, #5, #7, background | unchanged | unchanged | unchanged |
+| set F, gentle curves (6 approaches × 3 kinds) | identical | not run | identical |
+| full gate | **PASS**: 2 gated rows better, none worse | not run | **FAIL**: ride 187 / 46 / 39 → 189 / 49 / 39 |
+
+* **A's single frame is weak evidence.** Three gauge hits of the box (frames 572–574, measured
+  from the sensor axis) confirm a track in frame 576. The track is reported there on an edge-line
+  fragment 2.4 m in front of the box: 11.87 m against 14.3 m, on the safe side. The box itself is
+  still dropped as a wall in frames 575–579.
+* **B's map compresses the whole widened side**, so it changes centre objects: the plank loses a
+  STOP frame and the box above the track loses `elevated`.
+* **B2 turns #6 into a real detection**: a STOP track on the box from frame 568 (30.65 m) to the
+  end, 16 frames. The scorer credits 7 of them: it needs the detection within 1 m of the label's
+  centre, which is 2.2–2.4 m off the rails, while the detection is the box's strip at 1.2–1.3 m.
+  B2 costs 3 ride events, 30–40 m ahead on straight track: a 3.6 m long, 0.4 m tall object 0.93 m
+  from the rails, a rail-level track, and a thin fixture 1.34 m from the rails (0.47 × 0.10 ×
+  0.17 m). Edge-line fragments 1.39 m from the rails also alarm in more frames. From the rails the
+  shape rules keep these advisory or drop them; from the sensor axis they pass.
+
+The union applies in 4 745 of the ride's 11 271 frames, to the full 50 m in 3 782.
+
+**Shipped: A (`gauge.axis_union` 1), by the pre-registered rule.** It is the only candidate that
+passes every stage. It gains set O #6 one STOP frame (the weak one above) and changes nothing else
+on the six recordings, set O, the ride and set F. It only ever adds strict membership, so it
+cannot remove a STOP. Set O now counts 338 of 801 inside STOP
+frames and 7 of 8 objects with a STOP; the 7th is that single frame. The `_p3b` baseline is not
+re-cut. B and B2 stay in the code, off.
+
+Tests 500 → 508 (`tests/test_edge_axis.py`). They include a ray-cast straight track with the sensor
+yawed 0.5° against the rails: a box at 30 m, 0.2 m inside the envelope measured from the sensor
+axis, STOPs with A and is advisory from the rails alone. A 2 × 2 × 2.3 m box at the same edge (#6's
+shape) is still dropped as a wall with A and STOPs only with B2.
+
+**For the organizers' Q1** ([`QUESTIONS.md`](QUESTIONS.md)):
+* Measured from the sensor axis, the edge tests are what the organizers intended. #4 and #6 are
+  inside in 74 of 83 and 93 of 125 frames; #5 and #7 in none.
+* Measured from the rails, #4 is inside in 16 frames, #6 in 8, #5 in 98 and #7 in 58.
+* The train sweeps the rail envelope. The rails run at ~0.25° to the sensor axis on most
+  recordings: 0.1 m apart at 25 m, 0.2 m at 50 m, 0.4 m at 100 m.
+* The detector now takes the union of both envelopes within 50 m on straight track. Beyond 50 m,
+  on curves and without the rail pair it keeps the rails.
+* Whatever the answer, a sustained STOP on #6 needs B2's shape rule (3 ride events) and one on #4
+  a different `floating` exemption (not tried).
+
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 
 ### 2a. Day-1 numbers (v0.3, 26 frames of `roundT_doubleT`, every 10th, synthetic objects)
