@@ -74,6 +74,27 @@ def test_changed_background_and_code_fail_before_detector_execution(tmp_path, mo
         novel.validate_plan(plan)
 
 
+def test_relocated_inputs_keep_original_hash_checks(tmp_path, monkeypatch):
+    # A different machine can reproduce the original plan without editing it.
+    fixture = tmp_path / "fixture"
+    fixture.mkdir()
+    (fixture / "manifest.json").write_text("{}")
+    (fixture / "points.npz").write_bytes(b"source")
+    cache = tmp_path / "cache" / "bag"
+    cache.mkdir(parents=True)
+    (cache / "frame.npy").write_bytes(b"frame")
+    monkeypatch.setattr(novel, "code_hashes", lambda: {})
+    plan = {"code_sha256": {}, "source": "/old/fixture",
+            "source_manifest_sha256": novel.sha(fixture / "manifest.json"),
+            "source_points_sha256": novel.sha(fixture / "points.npz"),
+            "inputs": {"/old/cache/bag/frame.npy": {"sha256": novel.sha(cache / "frame.npy")}}}
+    novel.validate_plan(plan, tmp_path / "cache", fixture)
+    (cache / "frame.npy").write_bytes(b"different")
+    with pytest.raises(ValueError, match="background changed"):
+        novel.validate_plan(plan, tmp_path / "cache", fixture)
+    assert plan["source"] == "/old/fixture"
+
+
 def test_plan_refuses_missing_data_and_nondefault_sensor_coordinates(tmp_path):
     novel.write_json(tmp_path / "manifest.json", {"objects": {
         label: {"frames": [0, 1, 2]} for label in novel.OBJECTS}})
@@ -86,7 +107,7 @@ def test_plan_refuses_missing_data_and_nondefault_sensor_coordinates(tmp_path):
     assert not (tmp_path / "plan.json").exists()
 
 
-def test_plan_refuses_missing_or_discontinuous_timestamps(tmp_path, monkeypatch):
+def test_plan_refuses_missing_or_nonmonotonic_timestamps(tmp_path, monkeypatch):
     bag = "empty"
     monkeypatch.setattr(novel, "BACKGROUNDS", (bag,))
     monkeypatch.setattr(novel, "OBJECTS", ("shape",))
@@ -98,7 +119,7 @@ def test_plan_refuses_missing_or_discontinuous_timestamps(tmp_path, monkeypatch)
         np.save(directory / f"{bag}_{k:04d}.npy", np.zeros((1, 3)))
     with pytest.raises(ValueError, match="timestamps"):
         novel.make_plan(tmp_path, tmp_path, tmp_path / "plan.json")
-    stamps = {f"{k:04d}": 10.0 + k * 0.1 + (2.0 if k >= 45 else 0) for k in range(73)}
+    stamps = {f"{k:04d}": 10.0 + k * 0.1 - (2.0 if k >= 45 else 0) for k in range(73)}
     novel.write_json(directory / f"{bag}_stamps.json", {"bag": bag, "stamps": stamps})
     with pytest.raises(ValueError, match="timestamps"):
         novel.make_plan(tmp_path, tmp_path, tmp_path / "plan.json")

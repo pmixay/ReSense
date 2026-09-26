@@ -1,50 +1,5 @@
 {
-  "protocol": "P4 novel organizer-point placement sensitivity",
-  "registered_utc": "2026-09-26T19:38:58.940182+00:00",
-  "status": "Protocol fixed before evaluation; dataset/code/config manifest created separately by plan command.",
-  "source_objects": [
-    "small_center",
-    "small_on_rail",
-    "big_above",
-    "thin_hanging"
-  ],
-  "source_x_m": [
-    15,
-    80
-  ],
-  "lateral_centres_sensor_m": [
-    -0.65,
-    0.0,
-    0.65
-  ],
-  "backgrounds": [
-    "doubleT_platform",
-    "roundT_doubleT",
-    "roundT_pressureGate_roundT",
-    "roundT_squareT_pressureGate_squareT",
-    "squareT_platform_squareT_switch",
-    "new_data"
-  ],
-  "background_start_indices": {
-    "original_bags": "40 + 11 * object_index",
-    "new_data": "2040 + 11 * object_index"
-  },
-  "warmup_frames": 30,
-  "cases": 72,
-  "comparison": "Matched target frames with injected and unmodified background; every case reported. Matching in physical XYZ after mount rotation only.",
-  "acceptance_policy": "No threshold for accepting a detector, no tuning or case exclusion after evaluation; describe findings even if unfavorable.",
-  "limitations": [
-    "Novel synthetic combinations on backgrounds and organizer object shapes already inspected.",
-    "Fixed sensor-axis placement: no independent surveyed rail-envelope ground truth.",
-    "Source approach and target background motion differ; this is a sensitivity experiment.",
-    "Original X/Z and point counts are retained before angular occlusion; no scaling or densification.",
-    "Lateral-only shifts do not recast the object on the destination sensor ray grid.",
-    "A 0.1-degree angular-cell z-buffer approximates occlusion; it is not a calibrated ray caster.",
-    "Source heights may not rest on the destination bed; no real material or long-range recall claim."
-  ],
-  "source_manifest_sha256": "b8d2248b585f59acc0f70062f47d714465e245dd4d0fa09c01f66127f5ef4d7a",
-  "source_points_sha256": "9f1160f6d7c90779758f41d0ca98ca2882037588640581f27b8ccdd228bcd8fa",
-  "source_objects_manifest": {
+  "objects": {
     "small_center": {
       "frames": [
         323,
@@ -390,11 +345,10 @@
       ]
     }
   },
-  "pre_evaluation_amendments": [
-    {
-      "recorded_utc": "2026-09-26T19:49:18.065351+00:00",
-      "reason": "Initial plan generation rejected the preselected squareT_platform_squareT_switch window because original frame136 to137 has a0.7044026851654053s recording gap, also present in the earlier P4 intake. No detector was run.",
-      "change": "Retain every original case, frame and measured timestamp. Record positive gaps above0.5s in plan/results; reject missing, non-finite or nonmonotonic stamps. No window moved or excluded."
-    }
-  ]
+  "source_bag": "/home/resense/data/cloud_with_fake_obj",
+  "raw_hashes": {
+    "cloud_with_fake_obj_0.db3": "73ee5bfc2087bb160267110563b298a9629ac9e3df1459d857ec72ce1ef89d60"
+  },
+  "points_sha256": "9f1160f6d7c90779758f41d0ca98ca2882037588640581f27b8ccdd228bcd8fa",
+  "coordinates": "fixed sensor axis -y,+x,+z"
 }

@@ -45,6 +45,7 @@ LIMITATIONS = [
     "Lateral-only shifts do not recast the object on the destination sensor ray grid.",
     "A 0.1-degree angular-cell z-buffer approximates occlusion; it is not a calibrated ray caster.",
     "Source heights may not rest on the destination bed; no real material or long-range recall claim.",
+    "Original recording gaps are retained; the detector's fallback time-step logic remains active.",
 ]
 
 
@@ -140,15 +141,18 @@ def make_plan(source, cache, out, config=None):
             if len(chosen) != WARMUP + len(ids):
                 raise ValueError(f"{bag}: incomplete background window for {label}")
             times = [stamps.get(p.stem) for p in chosen]
-            if any(t is None for t in times) or any(not 0 < b - a < 0.5 for a, b in zip(times, times[1:])):
-                raise ValueError(f"{bag}: missing or discontinuous background timestamps")
+            if any(t is None or not np.isfinite(t) for t in times) or any(b <= a for a, b in zip(times, times[1:])):
+                raise ValueError(f"{bag}: missing or nonmonotonic background timestamps")
+            gaps = [{"before": chosen[i].name, "after": chosen[i + 1].name, "seconds": b - a}
+                    for i, (a, b) in enumerate(zip(times, times[1:])) if b - a > 0.5]
             # All frame identities and bytes are committed before detector evaluation.
             for p, stamp in zip(chosen, times):
                 if str(p) not in inputs:
                     inputs[str(p)] = {"sha256": sha(p), "stamp": stamp}
             for lateral in OFFSETS:
                 cases.append({"bag": bag, "object": label, "lateral_m": lateral,
-                              "background": [str(p) for p in chosen], "source_frames": ids})
+                              "background": [str(p) for p in chosen], "source_frames": ids,
+                              "recording_gaps_over_0_5s": gaps})
     plan = {"protocol": 1, "created_utc": datetime.now(timezone.utc).isoformat(),
             "limitations": LIMITATIONS, "config": asdict(cfg),
             "code_sha256": code_hashes(), "source": str(source),
@@ -209,30 +213,36 @@ def target_match(detections, xyz):
     return False
 
 
-def validate_plan(plan):
+def cache_path(path, cache_root=None):
+    original = Path(path)
+    return Path(cache_root) / original.parent.name / original.name if cache_root else original
+
+
+def validate_plan(plan, cache_root=None, source_root=None):
     if plan["code_sha256"] != code_hashes():
         raise ValueError("detector or evaluator changed after preregistration; keep the original plan and explain a new one")
-    source = Path(plan["source"])
+    source = Path(source_root or plan["source"])
     for name, key in (("manifest.json", "source_manifest_sha256"), ("points.npz", "source_points_sha256")):
         if sha(source / name) != plan[key]:
             raise ValueError(f"source changed: {name}")
     for path, spec in plan["inputs"].items():
-        if sha(path) != spec["sha256"]:
+        if sha(cache_path(path, cache_root)) != spec["sha256"]:
             raise ValueError(f"background changed: {path}")
 
 
-def run(plan_path, out):
+def run(plan_path, out, cache_root=None, source_root=None):
     from resense.detector import Detector
     plan = json.loads(Path(plan_path).read_text())
-    validate_plan(plan)
-    points = np.load(Path(plan["source"]) / "points.npz")
+    validate_plan(plan, cache_root, source_root)
+    points = np.load(Path(source_root or plan["source"]) / "points.npz")
     cfg = DetectorConfig.from_dict(plan["config"])
     cases = []
     for ci, case in enumerate(plan["cases"]):
         control, injected = Detector(cfg), Detector(cfg)
         rows = []
         for k, path in enumerate(case["background"]):
-            frame = frame_from_compact(np.load(path), cfg.sensor, stamp=plan["inputs"][path]["stamp"])
+            frame = frame_from_compact(np.load(cache_path(path, cache_root)), cfg.sensor,
+                                       stamp=plan["inputs"][path]["stamp"])
             base = control.process(frame).to_dict()
             j = k - plan["warmup_frames"]
             source = (points[f"{case['object']}_{case['source_frames'][j]}"] if j >= 0
@@ -249,6 +259,7 @@ def run(plan_path, out):
                          "target_matched": hit, "control_target_matched": base_hit,
                          "injected_stop": result["obstacle"], "control_stop": base["obstacle"]})
         record = {k: case[k] for k in ("bag", "object", "lateral_m")}
+        record["recording_gaps_over_0_5s"] = case["recording_gaps_over_0_5s"]
         record.update(visible_frames=sum(r["visible_points"] > 0 for r in rows),
                       target_matched_frames=sum(r["target_matched"] for r in rows),
                       injected_only_matched_frames=sum(r["target_matched"] and not r["control_target_matched"] for r in rows),
@@ -262,6 +273,7 @@ def run(plan_path, out):
     summary["cases_with_target_match"] = sum(c["target_matched_frames"] > 0 for c in cases)
     summary["cases"] = len(cases)
     write_json(out, {"plan_sha256": sha(plan_path), "limitations": plan["limitations"],
+                     "input_relocation": {"cache_root": cache_root, "source_root": source_root},
                      "summary": summary, "cases": cases})
 
 
@@ -279,13 +291,15 @@ def main():
     p = sub.add_parser("run")
     p.add_argument("--plan", required=True)
     p.add_argument("--out", required=True)
+    p.add_argument("--cache-root", help="relocate cache reads; original hashes and plan stay unchanged")
+    p.add_argument("--source-root", help="relocate source fixture reads; original hashes stay unchanged")
     args = parser.parse_args()
     if args.command == "extract":
         extract(args.bag, args.out)
     elif args.command == "plan":
         make_plan(args.source, args.cache, args.out, args.config)
     else:
-        run(args.plan, args.out)
+        run(args.plan, args.out, args.cache_root, args.source_root)
 
 
 if __name__ == "__main__":
