@@ -571,6 +571,46 @@
       "identity": "config sha256 7d93c419... equal to the B10 run; every frame of the six recordings, set O and the ride equal to the B10 run (decision, detections, zones, reasons, distances: 15 269 frames, 0 differ)",
       "baseline": "docs/evidence/results/regression_baseline_2026-09-26_ride_p3d.json = this run without its gate block; --from-json against it: PASS, every row the same",
       "tests": "577 passed on the native kernels and with RESENSE_NATIVE=0 (555 on 208152d; +22 tests/test_stop_keep.py)"
+    },
+    "final_gate_with_cap": {
+      "code": "fa18832 = the cap (dd3d18f) + the working branch dcf7f90 merged (P4's gate of held-from, missed intervals and per-bin counts; _ride_p3c augmented in place); the defaults, no --set; native path, receive stamps, --jobs 1, 791 s",
+      "command": "python scripts/regression_gate.py --cache /data/cache --jobs 1 --baseline docs/evidence/results/regression_baseline_2026-09-26_ride_p3c.json",
+      "json": "docs/evidence/results/regression_gate_2026-09-26_range_final.json",
+      "gate": "PASS: 4 gated rows better, none worse",
+      "rows_changed": {
+        "set_O.objects.big_above.stop_frames": [
+          22,
+          51
+        ],
+        "set_O.objects.big_above.held_from_m (scorer; gated since P4)": [
+          23.9,
+          111.4
+        ],
+        "set_O.objects.big_above.bins.0-50.stop_frames": [
+          10,
+          25
+        ],
+        "set_O.objects.big_above.bins.50-100.stop_frames": [
+          11,
+          25
+        ],
+        "set_O.objects.big_above.advisory_frames": [
+          27,
+          6
+        ],
+        "set_O.inside_stop_frames": [
+          355,
+          384
+        ],
+        "set_O.objects.big_above.missed_intervals": [
+          "559-631 (248.2 -> 103.4 m) and 644-672 (77.2 -> 23.9 m)",
+          "559-631 only"
+        ]
+      },
+      "identity": "every frame of the six recordings, set O and the ride equal to the B10 run of ffb3fe7 (15 269 frames): the cap changes nothing on the recorded data",
+      "baseline": "regression_baseline_2026-09-26_ride_p3d.json re-cut from this run (it carries P4's new metrics); --from-json against it: PASS, every row the same",
+      "flags_off": "stop_keep_signature false, stop_keep_thin 0, stop_keep_min_voxels 0 on fa18832: output_fingerprint IDENTICAL to 208152d (2 930 frames)",
+      "tests": "586 passed on the native kernels and with RESENSE_NATIVE=0 (555 on 208152d: +28 tests/test_stop_keep.py, +3 P4); web/demo 13 passed; ruff clean; parameter files in sync"
     }
   },
   "decision_round_1": {
@@ -612,7 +652,8 @@
       "the bar (10) is the near escalation's, not tuned here; the thin keep is mode 1 only (C, mode 2, failed on doubleT_platform)",
       "a kept STOP is reported with reason 'stop_hold'"
     ],
-    "commit": "6c76605 (the defaults flipped)"
+    "commit": "6c76605 (the defaults flipped)",
+    "final": "shipped with the cap: tracking.stop_keep_signature true, stop_keep_thin 1, stop_keep_min_voxels 10, stop_keep_max_s 10.0; baseline _ride_p3d re-cut on fa18832"
   },
   "held_from_note": "'held_from_m' is the raw field of scripts/score_fake_objects.py: the largest distance D such that >= 90 % of the object's visible frames nearer than D are STOPs; it can lie beyond the farthest STOP. For big_above with B / B10 it reads 111.4 m while the first STOP is at 101.3 m (bins 100-150 m 1 / 25 STOP frames, 50-100 m 25 / 25, 0-50 m 25 / 25): in plain terms the STOP is continuous from 101.3 m (frame 632) to the end, against continuous from 23.9 m with the defaults of 208152d. No first STOP moves; set O still has one STOP frame beyond 100 m; the gain is a hold (22 -> 51 STOP frames, advisory 27 -> 6). The minimum-gain condition of the ship rule holds on either reading.",
   "safety_review": {

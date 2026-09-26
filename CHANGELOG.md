@@ -27,7 +27,7 @@ frames, 13 km, no obstacles).
   in the 706-frame suffix (EXPERIMENTS §1g, `seto_suffix_2026-09-26.json`).
 
 Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
-overhead rule on, node v0.6.4). Tests: 235 → 577 (+28 native kernels, +3 speed evaluation
+overhead rule on, node v0.6.4). Tests: 235 → 586 (+28 native kernels, +3 speed evaluation
 helpers, +23 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5
 overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting and socket
 buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`, +20 DDS
@@ -37,7 +37,7 @@ free-hanging exemption of `floating`, +4 thin hanging objects, +5 `health.clear_
 and re-mount flags, +1 the rail-lock guard of the hanging stage, +13 the review fixes of the
 round-2 items, +17 their re-review, +6 latency out of the decision, +8 the start-up census, +27
 the rail-start rule, +12 the near escalation, +8 the sensor-axis envelope, +8 the P3 items of 26.09
-combined and their safety review, +22 the STOP keep) in `tests/`, 13 in `web/demo`.
+combined and their safety review, +28 the STOP keep and its cap, +3 P4's sustained set O gates) in `tests/`, 13 in `web/demo`.
 
 - **STOP keep against shape signatures and scan lines (26.09, P3 range; shipped, round 2).**
   `tracking.stop_keep_signature` true, `tracking.stop_keep_thin` 1, `tracking.stop_keep_min_voxels`
@@ -53,8 +53,9 @@ combined and their safety review, +22 the STOP keep) in `tests/`, 13 in `web/dem
   38, frame by frame), five bags, `doubleT_obstacle` and set F straight identical. Round 1 (no bar)
   failed its pre-registered ride rule (alarm frames 183 → 192); round 2 was written after it, so
   its ride result is in-sample. Off: output identical to `208152d`. New gate baseline
-  `docs/evidence/results/regression_baseline_2026-09-26_ride_p3d.json` (the new defaults, `6c76605`).
-  +22 tests.
+  `docs/evidence/results/regression_baseline_2026-09-26_ride_p3d.json` (the final defaults with the cap and
+  P4's set O metrics, `fa18832`; per frame identical to the B10 run).
+  +28 tests.
   [`p3_range_2026-09-26.json`](docs/evidence/results/p3_range_2026-09-26.json),
   [EXPERIMENTS §1o](docs/EXPERIMENTS.md).
 
