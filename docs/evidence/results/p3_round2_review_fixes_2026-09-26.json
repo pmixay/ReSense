@@ -69,5 +69,22 @@
       "C3": "C1b with refine_min_deg 0 (the fallback)"
     },
     "ship_rule": "unchanged (gate, sweep A1 on the same 18 runs against the same code with refine_min_deg 0, stress no worse than the current numbers, tests); C1 is recorded as failed"
+  },
+  "run_C1b": {
+    "commit": "6b403a6 (clean; native path; --jobs 3)",
+    "gate": "exit 0 against regression_baseline_2026-09-25_ride_p3.json: 6 gated rows better, none worse; per frame against 17a850d's gate run (same command): decisions, detections and track models identical in all 15 269 frames (five bags, doubleT_obstacle, set O, the ride), warnings differ in 2 ride frames, clear_distance in 398 frames (F1d)",
+    "sweep_A1": "1 STOP frame lost against the same code with refine_min_deg 0: 5 Hz (0, -1.5) frame 182 (the refinement at frame 50 zeroes the provisional pitch -0.97 deg, as the final does at frame 190; with the refinement off the provisional pitch is kept until then and frame 182 is a STOP): FAILS",
+    "stress": "5 Hz 10 / 10, doubleT_obstacle 92/123 @ 12 (same as current); +3 deg roll 13 / 16 (current 11 / 13: WORSE; squareT_platform_squareT_switch 8 / 12 against 5 / 8 with the same tilt to 0.04 deg after frame 190, events at 426-697: the platform recording's marginal clusters after a different track-model history; roundT_pressureGate_roundT 0 / 0 against 1 / 1), doubleT_obstacle 183/246 @ 12 (better); +3 deg pitch 17 / 18 (current 16 / 17: WORSE; roundT_doubleT one event at frame 196, a 124.7 m cluster 6 frames after the final's rotated 0.93 deg change), 186/246 @ 11 (same)",
+    "verdict": "FAILS the sweep and the stress rule; not shipped"
+  },
+  "check_C1c": {
+    "what": "C1c = C1b with refine_confirm_obs 1, run only on the case C1b lost (doubleT_obstacle 5 Hz and 10 Hz, rig (0, -1.5)) to see whether an earlier refinement could pass A1",
+    "result": "5 Hz: the refinement at frame 40 (0.97 deg) loses frame 182 again (as 17a850d did); 10 Hz: none lost",
+    "verdict": "FAILS A1; the loss comes from the refined tilt itself (the correct, final-like pitch applied before frame 182), not from the re-seed, so no refinement timing can pass A1 on this case; C1c is not run further"
+  },
+  "addendum_2": {
+    "written_at_utc": "2026-09-26T01:49:47Z",
+    "decision": "C3 by the pre-registered order: C1b with calibration.refine_min_deg 0 (the refinement off). F1a' (refine_confirm_obs 2, refine_max 1) stays as the protection if the refinement is turned back on. C3 is evaluated with the same commands; its stress counts are compared with the current numbers and with 17a850d with refine_min_deg 0 (to be run: scripts/robustness_check.py --config <default.yaml with refine_min_deg 0> on the 17a850d copy), as pre-registered for C3.",
+    "tests": "the ray-cast re-seed test sets refine_min_deg 0.5 (the path stays available) and gains a final-calibration variant (the final changes the tilt by 0.7 / 1.5 deg while the STOP is confirmed), which runs with the shipped defaults"
   }
 }
