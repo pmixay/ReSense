@@ -80,6 +80,9 @@ def _last(frame: Frame, cfg: DetectorConfig, n: int = 6):
 def _cfgs():
     off = DetectorConfig()
     off.cluster = replace(off.cluster, floating_free_max_size=0.0)
+    # 26.09: the near escalation (tracking.near_escalate_voxels, EXPERIMENTS 1k) also STOPs this cube
+    # within 35 m (>= 10 strict voxels in 5 hits); off here, so "off" isolates this rule
+    off.tracking = replace(off.tracking, near_escalate_voxels=0)
     return off, DetectorConfig()                                             # the rule off, the shipped defaults
 
 
