@@ -177,7 +177,12 @@ def clusters_of(pts, in_gauge=True, axis_valid=1e9):
     ("linear side structure (4 m x 0.3 x 0.5 at lateral 1.0)", surface_box(18, 1.0, 0.0, 4.0, 0.3, 0.5)),
 ])
 def test_infrastructure_shapes_are_filtered(name, pts):
-    assert clusters_of(pts) == [], name
+    # strict-envelope membership as the corridor computes it (|dy| <= 1.05 m, 0.12-3.0 m up): since
+    # 26.09 a wall-like cluster with >= 10 strict voxels within 20 m is kept (cluster.wall_keep_*),
+    # and a wall 1.35-1.65 m off the axis has none
+    ins = (np.abs(pts[:, 1]) <= 1.05) & (pts[:, 2] >= 0.12) & (pts[:, 2] <= 3.0)
+    inten = np.full(len(pts), 30.0, np.float32)
+    assert find_clusters(pts, inten, pts[:, 1], pts[:, 2], ins, CFG.cluster) == [], name
 
 
 def test_box_at_20m_is_kept_and_zoned():

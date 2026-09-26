@@ -40,7 +40,7 @@ class Detection:
     zone: str                  # 'gauge' or 'warning'
     height_min: float          # lowest point above the rail head
     intensity: float
-    reason: str = ""           # v0.5 (additive): why the last cluster of an advisory track was demoted ('' = none)
+    reason: str = ""           # v0.5 (additive): why the last cluster of an advisory track was demoted ('' = none); 26.09: 'near_envelope' on an obstacle only by tracking.near_escalate_*
     kind: str = ""             # v0.6 (additive): 'low' = a bump above the track bed, '' = corridor object
 
     def to_dict(self) -> dict:
@@ -538,7 +538,7 @@ class Detector:
                 center=t.centroid if t.misses else t.last.centroid,
                 size=t.last.size, n_points=t.last.n, confidence=t.confidence, age=t.age,
                 zone=t.zone, height_min=t.last.height_min, intensity=t.last.intensity,
-                reason=t.last.reason, kind=t.last.kind,
+                reason="near_envelope" if t.escalated else t.last.reason, kind=t.last.kind,
             ))
             d = dets[-1]
             if pending and d.kind == "low" and d.zone == "gauge" and d.distance > low.pending_advisory_within:

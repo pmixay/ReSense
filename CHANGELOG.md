@@ -26,7 +26,7 @@ transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
 free-hanging exemption of `floating`, +4 thin hanging objects, +5 `health.clear_cap`, +6 the rate
 and re-mount flags, +1 the rail-lock guard of the hanging stage, +13 the review fixes of the
 round-2 items, +17 their re-review, +6 latency out of the decision, +8 the start-up census, +27
-the rail-start rule) in `tests/`, 13 in `web/demo`.
+the rail-start rule, +12 the near escalation) in `tests/`, 13 in `web/demo`.
 
 - **Rail heads ahead of a standing train at a fresh start (26.09, P3): `lowobj.rail_start_within`
   4 m, on.** Fixes the open finding of the start-up census: from the gate's piece-2 cut a fresh
@@ -39,6 +39,18 @@ the rail-start rule) in `tests/`, 13 in `web/demo`.
   `bd67fb0`; baseline not re-cut. +27 tests.
   [`p3_rail_start_2026-09-26.json`](docs/evidence/results/p3_rail_start_2026-09-26.json),
   [EXPERIMENTS §1k](docs/EXPERIMENTS.md).
+
+- **Near-field escalation (26.09, P3; judge B action 6): shipped.** Within 35 m, a track whose
+  last 5 hits each had ≥ 10 voxels inside the strict envelope is a STOP, whatever demoted it
+  (`tracking.near_escalate_*`; reason `near_envelope`). A column never counts. Also, a tall
+  cluster at the corridor side with ≥ 10 strict voxels within 20 m is no longer dropped as a wall
+  (`cluster.wall_keep_*`). Set O: the box at the envelope top 12 → 22 STOP frames (from 23.9 m),
+  the edge box 0 → 6 (from 10.3 m), the edge cube 0 → 2; inside STOP frames 337 → 355, 8 of 8
+  inside objects STOP. #5, #7 and the background are unchanged. Gate PASS, 5 rows better. The
+  ride (187 / 46 / 39), the five bags, `doubleT_obstacle` and set F are identical. Pre-registered
+  candidate A plus D; B and C not run. Baseline not re-cut (the integrator will). +12 tests.
+  [`p3_near_escalation_2026-09-26.json`](docs/evidence/results/p3_near_escalation_2026-09-26.json),
+  [EXPERIMENTS §1l](docs/EXPERIMENTS.md).
 
 - **The image archive as a CI download (26.09, P1):** on a push to `claude/nifty-pascal-lzgl78` or
   `main`, when every step passed, the `offline-build` job uploads the runtime archive it made,

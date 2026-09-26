@@ -184,6 +184,15 @@ class ClusterConfig:
     wall_min_lateral: float = 1.2
     wall_segment_min_length: float = 4.0   # tall + long + narrow = wall segment (a train ahead is wide)
     wall_segment_max_width: float = 1.5
+    # 26.09 (P3 near escalation, candidate D; docs/evidence/results/p3_near_escalation_2026-09-26.json):
+    # a cluster the wall-at-the-side rule would drop (wall_min_height / wall_min_lateral) is kept when it
+    # has at least this many voxels inside the strict envelope and starts within wall_keep_distance
+    # (set O #6, the 2 x 2 m box at the envelope edge, is dropped as a wall at 14-8 m with 10-31 of
+    # them); the signatures and the other infrastructure rules still apply; on since 26.09 (on top of
+    # tracking.near_escalate_*: gate PASS, #6 0 -> 6 STOP frames from 10.3 m, the ride, the five bags,
+    # doubleT_obstacle, set F, #5 / #7 / background identical); 0 = off
+    wall_keep_gauge_voxels: int = 10
+    wall_keep_distance: float = 20.0   # m
     gauge_min_points: int = 3      # voxels inside the strict gauge to classify as 'gauge'
     overhead_min_height: float = 3.0   # clusters entirely above this (m over rail head) are advisory only (v0.6: the envelope top; 2.4 in v0.5)
     # v0.5 infrastructure signatures measured on the organizer bags (EXPERIMENTS.md section 1b); each demotes
@@ -276,6 +285,16 @@ class TrackingConfig:
     hold_misses: int = 1           # frames a reported track stays reported without a match (at its predicted distance): one missed frame does not drop a STOP (review 23.09); 0 = the v0.6.2 behaviour
     reseed_hold: int = 5           # 26.09 (safety review; a fixed window since the re-review of 26.09): after a mount-calibration change the tracks are rotated into the corrected frame, and a track reported in zone gauge (a STOP) at that moment stays reported for a window of this many frames from the change (the change frame the first; from its last match if it was already missing at the change), matched or not: a match refreshes the track but does not end the window (it did, so a loss from the frame after the change was not covered); when the change re-seeds the track model the window lasts at least until the model has its floor-shadow reference again (1 + ceil(track.axis_warmup_frames / periods) frames: 6 at 10 Hz, 4 at 5 Hz); a missed frame in the window is reported at the predicted distance and not counted against the track: the geometry re-seed must not drop a confirmed STOP; on a change above 1 deg only such tracks are kept (the others dropped, as the reset did); a new orientation still resets the tracker; 0 = the tracker is reset on a change above 1 deg and nothing is held
     low_min_seen_distance: float = 0.0  # tried 26.09 (P3 start-up, candidate c), NOT shipped: m; a low (bed-level) track is reported only once it has been matched at or beyond this distance; 4 m removed a fresh start's STOP on the rail heads 3.0-3.6 m ahead of a standing train but never reports a real low object that stays within 4 m (standing train, or one that falls there): a blind zone; 0 = off
+    # 26.09 (P3 near escalation, judge B action 6; docs/evidence/results/p3_near_escalation_2026-09-26.json):
+    # a track whose last near_escalate_hits hits were each a corridor cluster with at least
+    # near_escalate_voxels voxels inside the strict envelope (Cluster.n_gauge) within
+    # near_escalate_distance is an obstacle (zone gauge), whatever demoted it (a signature such as
+    # elevated / floating, the zone vote), except a column (never counts) and the column hold (wins);
+    # on since 26.09 (candidate A, 10 / 35 m / 5: gate PASS, set O inside STOP frames 337 -> 349,
+    # #8 12 -> 22, #4 0 -> 2; the ride, the five bags, doubleT_obstacle, set F identical); 0 = off
+    near_escalate_voxels: int = 10
+    near_escalate_distance: float = 35.0  # m
+    near_escalate_hits: int = 5           # hits in a row (5 = frames_to_confirm at 10 Hz)
     conf_gain: float = 0.35        # confidence added per hit
     conf_decay: float = 0.25       # confidence removed per miss
     conf_threshold: float = 0.6    # report obstacles with confidence >= threshold

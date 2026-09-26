@@ -811,8 +811,9 @@ data: [`SCORECARD.md`](SCORECARD.md).
 The organizers' `cloud_with_fake_obj` recording carries ten objects added by their own tool,
 the one used for the hidden check; the shipped detector stops for 5 of the 8 objects inside the
 envelope [organizers' synthetic: set O, 24.09], 6 of 8 since the hanging stage of 25.09 (§3.3
-item 8), 5 of them held: the 2 × 2 m box at the envelope top (#8) STOPs in 12 of its 124
-frames. Per-object grade and the config sweeps:
+item 8), 5 of them held (the 2 × 2 m box at the envelope top, #8, STOPped in 12 of its 124
+frames), 8 of 8 since the near escalation of 26.09 (below; EXPERIMENTS §1l). Per-object grade
+and the config sweeps:
 [`P4_AUDIT.md`](P4_AUDIT.md) "Organizer synthetic-obstacle recording", EXPERIMENTS §2e. The
 causes, each a limitation of the current rules:
 
@@ -865,6 +866,13 @@ causes, each a limitation of the current rules:
   the growing edge margin only added false STOPs (#7 6 → 40 frames, background 3 → 8). Which
   reference the envelope follows is an open question to the organizers
   ([`QUESTIONS.md`](QUESTIONS.md) Q1).
+* **Near-field escalation (26.09, EXPERIMENTS §1l).** Within 35 m, a track whose last 5 hits each
+  had ≥ 10 strict-envelope voxels is a STOP whatever demoted it (`tracking.near_escalate_*`; a
+  column never). #8 now STOPs from 23.9 m (12 → 22 frames) and #4 at 5.2 m (2 frames). A tall
+  side cluster with ≥ 10 strict voxels within 20 m is no longer dropped by the wall rule
+  (`cluster.wall_keep_*`): #6 STOPs from 10.3 m (6 frames). #5 and #7 are unchanged. Beyond 35 m,
+  #8 is still `elevated` (50–77 m), and #6 is still outside the envelope measured from the rails
+  beyond 16 m.
 * ~~**`clear_distance` counts only confirmed obstacles**~~ (§4b) — capped since 25.09, round 2:
   on set O the criteria judgement of 24.09 (judge B, [`SCORECARD.md`](SCORECARD.md)) found 184
   object-frames with the decision `GO` and a `clear_distance` beyond an in-envelope object, 89 of

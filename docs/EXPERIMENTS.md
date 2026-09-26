@@ -1618,6 +1618,67 @@ nothing changes. Under 4 m, a low track is withheld only if it was never matched
 rises less than 5 cm above the rail head's own returns. Tests 500 → 527
 (`tests/test_rail_start.py`).
 
+### 1l. P3 items of 26.09: near-field escalation
+
+**Near-field escalation (judge B, action 6): shipped.** [organizers' synthetic, real and
+ray-cast, measured 26.09; P3.] On set O, objects with points inside the envelope get no alert or
+only CAUTION. The box at the envelope top (#8) STOPs in 12 of 124 frames, none within 50 m. The
+edge box (#6) reads GO in its 8 in-envelope frames. Replay on `bd67fb0`, inside objects, frames
+with object points inside the envelope:
+
+| object | frames | STOP / CAUTION / GO | why not STOP |
+|---|---|---|---|
+| #8 box at the top | 75 | 12 / 37 / 26 | within 50 m `elevated`: a 1.4–2.4 m wide sliver 2.76–3.0 m up, 18–235 strict voxels; thin slivers dropped (`min_height`) |
+| #4 cube at the edge | 16 | 0 / 16 / 0 | `floating` (3–30 strict voxels) or < 3 strict voxels |
+| #6 box at the edge | 8 | 0 / 0 / 8 | inside only at 16–2 m; the wall rule drops it (1.95 m tall, 1.21–1.24 m off the axis) in 5 frames, a young track in 3 |
+| #1, #2, #3, #9, #10 | 406 | 324 / 0 / 82 | sparse returns at 50–250 m, first frames of a track |
+
+That makes 116 GO and 67 CAUTION-only frames; 78 of the GO frames have ≥ 3 points inside (the
+judge's ~80). Measured from the rails, #6's inner face is 1.06–1.33 m off the axis beyond 16 m, so
+it is outside there. From the sensor axis it is 1.1 m at every range.
+
+What else would meet the rule (every track matched within 60 m on the six recordings, set O and
+the ride in the gate's pieces):
+
+* on the ride, confirmed advisory tracks within 40 m carry ≤ 8 strict voxels, except a station
+  column row (`new_data_54`–`55`, 20–32 m, 0.7–1.2 m off the axis) with 50–150;
+* on `doubleT_platform`, a platform structure with 5–15 at 37–40 m;
+* #5 has ≤ 4 in any frame, #7 none within 40 m.
+
+*Pre-registered* at 07:19 UTC, before any candidate run
+([`p3_near_escalation_2026-09-26.json`](evidence/results/p3_near_escalation_2026-09-26.json)).
+`tracking.near_escalate_voxels` N, `_distance` D, `_hits` K: a track whose last K hits each had
+≥ N strict voxels within D m is a STOP (reason `near_envelope`). A column never counts, and the
+column hold wins. The candidates were A (10, 35 m, 5), B (20, 35 m, 5) and C (10, 30 m, 5). D, for
+#6: `cluster.wall_keep_gauge_voxels` 10 within 20 m spares the wall rule.
+
+**A passes and ships** (full gate, `--jobs 1`, against `_p3b`: PASS, 3 gated rows better).
+
+* Set O inside STOP frames 337 → 349: #8 12 → 22, held from 23.9 m; #4 0 → 2 (5.2 m).
+* #5 0, #7 6, background 3 / 2: unchanged.
+* The ride 187 / 46 / 39, the five bags 58 / 13 / 16 and `doubleT_obstacle` (hits, frame 11):
+  identical.
+* Set F straight: identical.
+* Every first STOP is unchanged.
+
+B and C were not run.
+
+**D on top of A passes and ships too** (full gate: PASS, 5 gated rows better).
+
+* #6 0 → 6 STOP frames, from 10.3 m (5 of its 8 in-envelope frames).
+* Set O inside STOP frames 349 → 355; 8 of 8 inside objects now STOP.
+* Everything else the same as A.
+
+On the ride, the only wall-dropped blobs with ≥ 10 strict voxels within 20 m are the column row
+(the column signature takes it) and a 7 m wall segment (the wall-segment rule drops it).
+
+The escalation alone cannot reach #6: it is never an advisory track. Without the column exclusion
+it would add 40 STOP frames and 6 events on the ride's column row (offline replay).
+`tests/test_near_escalation.py`, +12 tests: a box inside the envelope top 20–30 m ahead goes from
+CAUTION to STOP on its 5th frame; a cube in the advisory zone just outside stays CAUTION. With
+both flags off, the output is identical to `bd67fb0` (`scripts/output_fingerprint.py`, 2 930
+frames). Numbers moved: the gate baseline is not re-cut here, the integrator will.
+
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 
 ### 2a. Day-1 numbers (v0.3, 26 frames of `roundT_doubleT`, every 10th, synthetic objects)
