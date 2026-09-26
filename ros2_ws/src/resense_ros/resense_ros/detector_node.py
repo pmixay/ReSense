@@ -80,7 +80,10 @@ while its clock runs, then sends the overdue first seconds of the recording back
 input queue holds ``input_queue_depth`` frames and every frame waiting is taken; one frame waiting
 is processed at once, several are worked through ``catchup_step`` s of recording apart (the ones
 in between skipped, none older than ``catchup_max_lag`` s behind the newest) until the node is
-back on the newest frame. ``catchup_step: 0`` processes the newest only.
+back on the newest frame. At the start of each recording ``catchup_startup_max_lag`` allows up
+to 20 s of backlog: a cold disk can make the player send the entire recording overdue. This
+allowance closes when that first catch-up drains, or after 1 s without a catch-up starting;
+later stalls retain the normal 5 s limit. ``catchup_step: 0`` processes the newest only.
 
 The static TF exists so that one RViz / Foxglove layout works for every bag: the organizers'
 bags carry different ``frame_id`` values (``hesai_lidar``, ``lidar_livox``); the layouts use
@@ -177,6 +180,7 @@ class DetectorNode(Node):
         self.declare_parameter("catchup_step", 0.3)           # s of recording between processed frames while frames wait;
                                                               # 0 = always the newest (the v0.6.3 behaviour)
         self.declare_parameter("catchup_max_lag", 5.0)        # s: waiting frames older than the newest by more are dropped
+        self.declare_parameter("catchup_startup_max_lag", 20.0)  # s: extra allowance for a recording's initial burst
         # --- v0.6.2: reliability of the input subscription. A 360-degree cloud is ~10 MB, i.e. ~160 UDP
         # fragments; best-effort loses the whole message with any fragment (measured in Docker with
         # `ros2 bag play` of doubleT_obstacle: 5 of 201 frames delivered best-effort, 174+ reliable).
@@ -224,6 +228,9 @@ class DetectorNode(Node):
         self.qos_depth = max(1, self.get_parameter("input_queue_depth").get_parameter_value().integer_value)
         self.catchup_step = self.get_parameter("catchup_step").get_parameter_value().double_value
         self.catchup_max_lag = self.get_parameter("catchup_max_lag").get_parameter_value().double_value
+        self.catchup_startup_max_lag = self.get_parameter("catchup_startup_max_lag").get_parameter_value().double_value
+        self.startup_catchup_active = False
+        self.startup_catchup_until = 0.0  # first cloud may arrive alone just before the preload burst
         self.pending = []              # (topic, msg) taken from the input queues, not processed yet, oldest first
         self.pending_last = None       # (topic, frame_id, stamp) of the last frame handed to processing
         self.catchup = None            # [frames processed, max s behind, start time] of the current catch-up
@@ -481,6 +488,8 @@ class DetectorNode(Node):
             self.consecutive_errors = 0
             self.mount_logged = ""
         self.last_stamp = None
+        self.startup_catchup_active = True
+        self.startup_catchup_until = time.perf_counter() + 1.0
         self.get_logger().info(
             f"input {self.n_inputs}: {self.active_topic} (frame_id={msg.header.frame_id}, "
             f"{msg.width * msg.height} points){'' if first else ' - ' + why + ': detector restarted'}")
@@ -592,7 +601,17 @@ class DetectorNode(Node):
         last = (last[2] if last is not None and last[:2] == (topic0, m0.header.frame_id)
                 and -0.5 <= stamps[0] - last[2] <= new_gap else None)
         n = len(stamps)
-        plan = self.catchup_plan(stamps, last, self.catchup_step, self.catchup_max_lag)
+        # A whole-recording cold-start burst otherwise keeps moving the 5 s cutoff ahead of
+        # processing. Its artificial 1+ s gaps reset the scene before a track can confirm.
+        # The extra allowance belongs only to a new recording and its first catch-up. A
+        # one-second window also catches a first cloud delivered just ahead of that burst.
+        if (self.startup_catchup_active and self.catchup is None
+                and time.perf_counter() >= self.startup_catchup_until):
+            self.startup_catchup_active = False
+        max_lag = self.catchup_max_lag
+        if (last is None or self.startup_catchup_active) and 0 < max_lag < self.catchup_startup_max_lag:
+            max_lag = self.catchup_startup_max_lag
+        plan = self.catchup_plan(stamps, last, self.catchup_step, max_lag)
         if len(plan) < n:
             run, self.pending = self.pending[:n], self.pending[n:]
             self.pending[:0] = [run[i] for i in plan]
@@ -638,6 +657,7 @@ class DetectorNode(Node):
             self.get_logger().info(f"caught up in {time.perf_counter() - c[2]:.1f} s: {c[0]} frames processed, "
                                    f"{self.catchup_skipped} skipped, at most {c[1]:.1f} s of recording behind")
             self.catchup, self.catchup_skipped = None, 0
+            self.startup_catchup_active = False
         else:
             self.frame_in_catchup = True
 

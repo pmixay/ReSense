@@ -622,6 +622,128 @@ def test_catchup_skips_are_reported_apart_from_frames_never_received(node_cls, m
     assert any("caught up" in s and "26 skipped" in s for _, s in node.get_logger().lines)
 
 
+def _catchup_stream(node, monkeypatch, now, topic="/lidar_points", frame_id="hesai_lidar"):
+    """Queue real-shaped headers; keep continuity and accounting, omit point-cloud work."""
+    module = sys.modules[type(node).__module__]
+    monkeypatch.setattr(module.time, "perf_counter", lambda: now[0])
+    queue, seen = [], []
+    sub = node.subs[topic]
+    sub.msg_type, sub.raw = None, False
+
+    class _Handle:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+        def take_message(self, msg_type, raw):
+            return (queue.pop(0), {}) if queue else None
+
+    sub.handle = _Handle()
+
+    def cloud(stamp):
+        sec = int(np.floor(stamp))
+        return _Msg(width=1, height=1, header=_Msg(frame_id=frame_id,
+                    stamp=_Msg(sec=sec, nanosec=int(round((stamp - sec) * 1e9)))))
+
+    def process(msg, source):
+        if node.check_continuity(source, msg):
+            node.last_frame_wall = now[0]
+            node._account_frame(node._stamp(msg), (source, msg.header.frame_id))
+            seen.append(node._stamp(msg))
+
+    node.process_cloud = process
+    return queue, seen, cloud
+
+
+@pytest.mark.parametrize("startup_lag, expect_resets", [(5.0, True), (20.0, False)])
+def test_cold_recording_burst_keeps_a_continuous_startup_chain(node_cls, monkeypatch, startup_lag, expect_resets):
+    """Replay the failure's arrival pattern: each callback gets another 1.5 s of recording.
+
+    The old 5 s cutoff repeatedly jumps over a second of scene history. The startup allowance
+    preserves a 0.3 s chain even after its one-second entry window has elapsed, and closes when
+    caught up. A later live backlog still uses the 5 s bound and resets over its real gap.
+    """
+    _Node.overrides = {"catchup_startup_max_lag": startup_lag}
+    node = node_cls()
+    now = [100.0]
+    queue, seen, cloud = _catchup_stream(node, monkeypatch, now)
+    resets = []
+    monkeypatch.setattr(node.detector, "reset", lambda: resets.append(1))
+    queue.extend(cloud(k / 10) for k in range(1, 41))
+    node.on_cloud(cloud(0.0), "/lidar_points")
+    next_frame = 41
+    while node.pending:
+        queue.extend(cloud(k / 10) for k in range(next_frame, min(next_frame + 15, 201)))
+        next_frame = min(next_frame + 15, 201)
+        now[0] += 0.15
+        node.on_pending()
+    assert next_frame == 201 and seen[-1] == 20.0
+    assert bool(resets) is expect_resets
+    if not expect_resets:
+        assert max(np.diff(seen)) <= 0.300001
+        assert seen[0] == 0.0 and len(seen) >= 67
+    assert not node.startup_catchup_active and node.catchup is None
+    # An independent stall in this recording must not inherit the startup allowance.
+    queue.extend(cloud(k / 10) for k in range(202, 351))
+    node.on_cloud(cloud(20.1), "/lidar_points")
+    assert 30.0 <= seen[-1] <= 30.3
+
+
+def test_startup_burst_can_follow_an_isolated_first_cloud(node_cls, monkeypatch):
+    node = node_cls()
+    now = [100.0]
+    queue, seen, cloud = _catchup_stream(node, monkeypatch, now)
+    node.on_cloud(cloud(0.0), "/lidar_points")
+    now[0] += 0.1
+    queue.extend(cloud(k / 10) for k in range(2, 151))
+    node.on_cloud(cloud(0.1), "/lidar_points")
+    assert seen[:2] == pytest.approx([0.0, 0.3])  # preserve the beginning, not just the final five seconds
+    while node.pending:
+        node.on_pending()
+    assert seen[-1] == 15.0 and not node.startup_catchup_active
+
+
+def test_live_input_without_startup_backlog_expires_the_extra_allowance(node_cls, monkeypatch):
+    node = node_cls()
+    now = [100.0]
+    queue, seen, cloud = _catchup_stream(node, monkeypatch, now)
+    node.on_cloud(cloud(0.0), "/lidar_points")
+    now[0] += 2.0
+    queue.extend(cloud(k / 10) for k in range(2, 151))
+    node.on_cloud(cloud(0.1), "/lidar_points")
+    assert seen[0] == 0.0 and 10.0 <= seen[1] <= 10.3
+    assert not node.startup_catchup_active
+
+
+@pytest.mark.parametrize("next_topic, next_frame, next_start", [
+    ("/lidar_points", "hesai_lidar", 50.0),        # another playback of the same bag
+    ("/lidar_points", "hesai_lidar", 200.0),       # forward jump: another recording
+    ("/lidar_points", "lidar_livox", 102.1),       # mount / frame changed
+    ("/sensing/lidar/hesai128/pointcloud", "lidar_livox", 102.1),
+])
+def test_each_new_recording_gets_its_own_startup_allowance(node_cls, monkeypatch,
+                                                       next_topic, next_frame, next_start):
+    node = node_cls()
+    now = [100.0]
+    queue, seen, cloud = _catchup_stream(node, monkeypatch, now)
+    queue.extend(cloud(100.0 + k / 10) for k in range(1, 21))
+    node.on_cloud(cloud(100.0), "/lidar_points")
+    while node.pending:
+        node.on_pending()
+    assert not node.startup_catchup_active
+    now[0] += 2.0  # permit a topic switch as well as a new recording on the same topic
+    queue, seen, cloud = _catchup_stream(node, monkeypatch, now, next_topic, next_frame)
+    queue.extend(cloud(next_start + k / 10) for k in range(1, 151))
+    node.on_cloud(cloud(next_start), next_topic)
+    assert seen[0] == pytest.approx(next_start)
+    while node.pending:
+        node.on_pending()
+    assert max(np.diff(seen)) <= 0.300001 and node.n_inputs == 2
+    assert not node.startup_catchup_active
+
+
 def test_socket_buffer_warning(node_cls, tmp_path, monkeypatch):
     """25.09: with a host `ros2 bag play` on CycloneDDS (stock Fast DDS was not affected) the
     node received none or almost none of the 360-degree clouds at Ubuntu's

@@ -56,6 +56,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: ./scripts/sync_params.sh --check
+      - name: frozen detector source and validation evidence
+        run: python3 scripts/detector_freeze.py verify
   docker:
     runs-on: ubuntu-22.04
     steps:

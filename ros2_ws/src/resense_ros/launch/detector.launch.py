@@ -59,6 +59,8 @@ PARAMS = {
     "catchup_step": ("0.3", float, "s of recording between processed frames while frames wait (a burst from the "
                                    "player); 0 = always process the newest frame only"),
     "catchup_max_lag": ("5.0", float, "s: waiting frames older than the newest by more than this are dropped"),
+    "catchup_startup_max_lag": ("20.0", float, "s: backlog allowed for a new recording's first catch-up; "
+                                            "later stalls use catchup_max_lag"),
     "input_reliability": ("auto", str, "input QoS: auto = match the publishers (reliable for ros2 bag play of the "
                                        "organizers' recordings), reliable, best_effort"),
 }

@@ -40,7 +40,6 @@ import os
 import pathlib
 import re
 import sqlite3
-import statistics
 import struct
 import sys
 
@@ -116,14 +115,15 @@ def cdr_stamp(blob):
 
 
 def read_bag(bag_dir, topic=None):
-    """``(topic, receive times in s sorted, header stamp of the first message)`` of the PointCloud2
+    """``(topic, sorted header stamps in s)`` of the PointCloud2
     topic of a rosbag2 sqlite3 bag (``topic`` if the bag has it, else its busiest PointCloud2
-    topic); None when there is no ``*.db3`` or it cannot be read. Only the receive times and one
-    message are read, not the clouds."""
+    topic); None when there is no ``*.db3`` or it cannot be read. SQLite returns only each
+    message's 12-byte CDR prefix, not the clouds. Header stamps must be matched directly:
+    receive times can drift relative to them (the organizers' set O does)."""
     files = sorted(glob.glob(os.path.join(bag_dir, "*.db3")), key=_natural)
     if not files:
         return None
-    times, first, name = [], None, None
+    stamps, name = [], None
     try:
         for path in files:
             con = sqlite3.connect(pathlib.Path(path).absolute().as_uri() + "?mode=ro", uri=True)
@@ -139,36 +139,36 @@ def read_bag(bag_dir, topic=None):
                         name = max(counts, key=counts.get)
                 if name not in ids:
                     continue
-                rows = con.execute("SELECT id, timestamp FROM messages WHERE topic_id = ? ORDER BY timestamp",
-                                   (ids[name],)).fetchall()
-                if rows and first is None:
-                    first = cdr_stamp(con.execute("SELECT data FROM messages WHERE id = ?", (rows[0][0],)).fetchone()[0])
-                times.extend(t * 1e-9 for _, t in rows)
+                rows = con.execute("SELECT substr(data, 1, 12) FROM messages WHERE topic_id = ?",
+                                   (ids[name],))
+                for (prefix,) in rows:
+                    stamp = cdr_stamp(prefix)
+                    if stamp is None:
+                        return None  # a partial message list would undercount dropped frames
+                    stamps.append(stamp)
             finally:
                 con.close()
     except sqlite3.Error:
         return None
-    if not times or first is None:
+    if not stamps:
         return None
-    times.sort()
-    return name, times, first
+    stamps.sort()
+    return name, stamps
 
 
-def match_recording(stamps, rec_times, first_header, period):
-    """Index into ``rec_times`` of the recording message behind every processed header stamp
-    (None when none is within half a frame period). Header stamps and receive times differ by an
-    offset: the first message's, refined by the median residual of the nearest matches."""
-    def nearest(t):
-        i = bisect.bisect_left(rec_times, t)
-        return min((k for k in (i - 1, i) if 0 <= k < len(rec_times)), key=lambda k: abs(rec_times[k] - t))
+def match_recording(stamps, rec_stamps, period):
+    """Recording-message index for each processed header stamp (None if unmatched).
 
-    off = first_header - rec_times[0]
-    if stamps:
-        off += statistics.median(s - off - rec_times[nearest(s - off)] for s in stamps)
+    Both values represent the same header, so allow only float serialization roundoff, never
+    a fitted receive-time offset that can map a missing frame onto a different message.
+    """
     out = []
+    tolerance = min(0.0001, 0.5 * period)
     for s in stamps:
-        k = nearest(s - off)
-        out.append(k if abs(s - off - rec_times[k]) < 0.5 * period else None)
+        i = bisect.bisect_left(rec_stamps, s)
+        candidates = [k for k in (i - 1, i) if 0 <= k < len(rec_stamps)]
+        k = min(candidates, key=lambda k: abs(rec_stamps[k] - s)) if candidates else None
+        out.append(k if k is not None and abs(s - rec_stamps[k]) < tolerance else None)
     return out
 
 
@@ -270,9 +270,9 @@ def main(argv=None) -> int:
         elif k is None and settle > 0:
             bag_line = "--bag not applied: no frame after the settle point"
         else:
-            name, rec_times, first_header = bag
+            name, rec_stamps = bag
             period = (last_node.get("input_period_ms") or 100.0) / 1e3
-            idx = match_recording(window, rec_times, first_header, period)
+            idx = match_recording(window, rec_stamps, period)
             matched = [i for i in idx if i is not None]
             if len(matched) < 0.9 * len(idx) or not matched:
                 bag_line = (f"--bag not applied: {len(idx) - len(matched)} of {len(idx)} processed frames match no "
@@ -280,7 +280,7 @@ def main(argv=None) -> int:
             else:
                 lo, hi = min(matched), max(matched)
                 lost = (hi - lo + 1) - len(set(matched))
-                span = (rec_times[hi] - rec_times[lo]) / period + 1
+                span = (rec_stamps[hi] - rec_stamps[lo]) / period + 1
                 holes = max(0, round(span) - (hi - lo + 1))
                 bag_line = (f"{hi - lo + 1} messages of {name} after {after}, {holes} frame(s) missing from the "
                             f"recording itself; {lost} of its messages not processed")

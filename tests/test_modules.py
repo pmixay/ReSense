@@ -631,9 +631,10 @@ def test_check_dry_run_counts_drops_after_the_start_up_catchup(check_dry_run, tm
     assert check_dry_run.main([p] + args + ["--max-settle-s", "10"]) == 1
 
 
-def _bag(path, holes=(), n=196, recv0=1788354623.11, header0=946687297.2, topic="/sensing/lidar/hesai128/pointcloud"):
+def _bag(path, holes=(), n=196, recv0=1788354623.11, header0=946687297.2,
+         topic="/sensing/lidar/hesai128/pointcloud", receive_period=0.1):
     """A rosbag2 sqlite3 bag of ``n`` 10 Hz frame slots of which ``holes`` were never recorded,
-    with receive-time jitter; only the first message carries a (CDR) header, all the checker reads."""
+    with receive-time jitter and optional clock drift; every message has a CDR header."""
     import sqlite3
     import struct
     path.mkdir()
@@ -645,17 +646,14 @@ def _bag(path, holes=(), n=196, recv0=1788354623.11, header0=946687297.2, topic=
     con.execute("INSERT INTO topics VALUES (1, '/imu', 'sensor_msgs/msg/Imu', 'cdr', '')")
     con.execute("INSERT INTO topics VALUES (2, ?, 'sensor_msgs/msg/PointCloud2', 'cdr', '')", (topic,))
     jitter = np.random.default_rng(0).uniform(-0.03, 0.03, n)
-    first = True
     for k in range(n):
         if k in holes:
             continue
-        data = b""
-        if first:            # CDR little-endian: encapsulation 00 01 00 00, then header.stamp sec / nanosec
-            h = header0 + 0.1 * k
-            data = b"\x00\x01\x00\x00" + struct.pack("<iI", int(h), int(round((h % 1) * 1e9)))
-            first = False
+        # CDR little-endian: encapsulation 00 01 00 00, then header.stamp sec / nanosec
+        h = header0 + 0.1 * k
+        data = b"\x00\x01\x00\x00" + struct.pack("<iI", int(h), int(round((h % 1) * 1e9)))
         con.execute("INSERT INTO messages (topic_id, timestamp, data) VALUES (2, ?, ?)",
-                    (int(round((recv0 + 0.1 * k + jitter[k]) * 1e9)), data))
+                    (int(round((recv0 + receive_period * k + jitter[k]) * 1e9)), data))
         con.execute("INSERT INTO messages (topic_id, timestamp, data) VALUES (1, ?, ?)",
                     (int(round((recv0 + 0.1 * k + 0.05) * 1e9)), b""))
     con.commit()
@@ -685,6 +683,24 @@ def test_check_dry_run_bag_holes_are_not_drops(check_dry_run, tmp_path, capsys):
     assert "--bag not applied: no readable rosbag2 sqlite3 bag" in capsys.readouterr().out
     assert check_dry_run.cdr_stamp(b"\x00\x00\x00\x00" + (946687297).to_bytes(4, "big")
                                    + (200101000).to_bytes(4, "big")) == pytest.approx(946687297.200101)
+
+
+@pytest.mark.parametrize("receive_period", [0.09, 0.11])
+def test_check_dry_run_matches_headers_when_receive_times_drift(check_dry_run, tmp_path, capsys, receive_period):
+    """Set O's two clocks drift: a constant offset falsely reported 132 node losses. Read the
+    recorded headers themselves, while still failing if an actual post-settle message is lost.
+    """
+    bag = _bag(tmp_path / "drifting_bag", receive_period=receive_period)
+    for losses in (set(), {100, 120}):
+        stamps, dropped, flags, skipped = _played(until=19.5, lost=losses)
+        p = _capture_stream(tmp_path / "capture.jsonl", stamps, dropped, flags, skipped, t0=946687297.2)
+        assert check_dry_run.main([p, "--bag", bag]) == bool(losses)
+        assert f"{len(losses)} of its messages not processed" in capsys.readouterr().out
+
+
+def test_check_dry_run_does_not_shift_unmatched_headers_to_nearby_frames(check_dry_run):
+    assert check_dry_run.match_recording([1.0, 1.0000001, 1.04, 1.1], [1.0, 1.1], 0.1) == [0, 0, None, 1]
+    assert check_dry_run.match_recording([1.0], [], 0.1) == [None]
 
 
 def test_check_dry_run_empty_capture(check_dry_run, tmp_path):
