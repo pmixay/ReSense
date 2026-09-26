@@ -16,7 +16,7 @@ an RC or treat it as final quality acceptance. Review priorities are detection c
 uncertainty, false alarms, output freshness and independent evaluation.
 
 The main branch retains `_ride_p3d` detector behavior and its default configuration; the source
-manifest is in [DETECTOR_FREEZE.md](DETECTOR_FREEZE.md). M1, A1 and D1 were rejected. M2 passes its
+manifest is in [DETECTOR_FREEZE.md](DETECTOR_FREEZE.md). M1, A1, D1 and T1 were rejected. M2 passes its
 offline comparison but remains unmerged because the combined runtime trial fails. The original
 near-escalation threshold remains 10 and the axis union stays off. Q1 remains unanswered.
 

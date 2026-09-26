@@ -14,7 +14,7 @@ This record separates measured improvements from goals that remain open.
 | M2: existing supported thin clusters limit range | Target overclaims 54→44; GO overclaims 46→36. Ride adds 0.612 percentage points uncertainty and retains 99.02% of median range. Offline detection output stays identical. | Offline gates pass; combined runtime acceptance fails. Source remains outside the main branch. |
 | A1: restrict extra tracking allowance to forward motion | Ride 45→44 events, 183→180 alarm frames; aggregate placement matches improve. One fixed case loses 2→1 matches and fails the registered per-case gate. | Rejected; source remains unmerged. |
 | D1: full-cloud context for clipped thin/floating candidates | Small edge object gains five STOP frames; synthetic matches 544→591. Outside-object false STOPs rise 6→9 and ride STOP episodes 38→40. | Rejected; source remains unmerged. |
-| T1: retain observed boundary disagreement | Removes both exact-sequence clear failures and preserves all 72 placement results. One ride segment's median published range estimate falls 120→60 m, below the required 95% retention. | Rejected; source remains unmerged. |
+| T1: retain observed boundary disagreement | Removes both exact-sequence clear failures; ride events 45→43 and episodes 38→32. All 72 placement results remain unchanged. Median published range retention fails on a ride segment (50%) and a platform/switch recording (93.4%), below the required 95%. | Rejected; source remains unmerged. |
 
 All candidates were specified before their evaluations. Failures remain in the repository;
 no acceptance threshold was relaxed to turn a failed candidate into a pass.
@@ -68,7 +68,8 @@ column's apparent width. [Point-level diagnosis and figure](evidence/results/qua
 T1 tests the trust mechanism with unchanged numerical limits; it does not tune the column rule.
 Its target screen passes, but its coverage gate fails: in ride segment 4 the `clear_distance`
 median falls from 120 to 60 m. The separate `health.monitored_range` median falls from 120 to
-107 m. The contradiction cap persists for about 40 s through one-boundary fits. All 72 original
+107 m. A separate empty platform/switch recording falls from 88.9 to 83.0 m (93.4% retention).
+The contradiction cap persists for about 40 s through one-boundary fits. All 72 original
 placement cases and rows remain identical. The failed coverage criterion rejects T1; no further
 stress, raw or runtime trials are used to seek a favorable outcome.
 

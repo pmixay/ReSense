@@ -29,7 +29,8 @@ The organizers provide no numerical weights; these remain internal estimates.
 | **Total** |**100**|**65.5**|**63.5**|**64**|
 
 Independent reports: [judge A](evidence/results/rejudge_quality_cycle_2026-09-26.json),
-[judge B](evidence/results/rejudge_quality_cycle_b_2026-09-26.json). Their methods and reading
+[judge B](evidence/results/rejudge_quality_cycle_b_2026-09-26.json) and its
+[final acceptance addendum](evidence/results/rejudge_quality_cycle_b_addendum_2026-09-26.json). Their methods and reading
 limits are explicit. The main detector is unchanged; the new clear-run failure and its exact
 processing-history reproduction strengthen the evidence about an existing weakness.
 
