@@ -47,11 +47,15 @@
   "flags": "gauge.axis_union (0 = off, the default and byte-identical output; 1 = candidate A; 2 = candidate B), gauge.axis_union_range 50.0, gauge.axis_union_max_offset 0.30, gauge.axis_union_max_curvature 2e-4",
   "candidates_in_order": {
    "A": {
-    "flags": {"gauge.axis_union": 1},
+    "flags": {
+     "gauge.axis_union": 1
+    },
     "rule": "strict-envelope membership of a corridor candidate = membership measured from the rails (edge margin included, as now) OR, inside the region, membership of (y_axis = dy + c(X), h) in the same polygon with the same edge margin. Nothing else changes: the candidates (the rail advisory corridor already contains the region's axis envelope), every lateral, signature and distance stay measured from the rails."
    },
    "B": {
-    "flags": {"gauge.axis_union": 2},
+    "flags": {
+     "gauge.axis_union": 2
+    },
     "rule": "inside the region the corridor coordinate itself is re-measured on the side towards which the sensor axis lies off the rail axis (s = -sign c(X), e = |c(X)|, u = s * dy >= 0): u' = max(u - e, u * W / (W + e)), W = the envelope half-width 1.05 m; the other side and everything outside the region unchanged. Continuous and monotone; strict membership is then exactly the union (edge margin applied to u'); beyond W + e the lateral is the one from the sensor axis (u - e), so the advisory corridor also extends by e on that side, and the cluster lateral, the infrastructure and signature rules (wall 1.2 m, floating 0.95 m, ...), the hanging stage and the clear-distance cap read the re-measured coordinate. The bed template, the low-object stage and the ego-speed texture keep the rail coordinate."
    }
   },
@@ -64,5 +68,33 @@
    "set F on gentle curves of the ride (files 5,16,45,97,100,137, kinds person,trolley,box1.0, start 220, 110 frames, lateral -0.6:0.6, seed 0, legacy placement, place bed, speeds docs/extended_dataset_intake.json; the recipe of p3_far_switch_2026-09-25.json): per kind, detected sequences not fewer and the median first confirmation not shorter than the defaults on the same run, false detections not higher"
   ],
   "order_of_runs": "(0) flag off: set O frame by frame identical to the HEAD run above (timing excluded); (1) cheap stage: the six recordings and set O through the gate machinery (a cache with only those seven, --allow 'ride.*' --allow 'set_F_straight.*'), A then B; a candidate that fails the set O part of the ship rule or a gated row there stops; (2) the chosen candidate: set F gentle curves (defaults and candidate), then the full gate. Time box: whatever the state, the result is committed by 15:30 UTC."
+ },
+ "cheap_stage": {
+  "code": "95e1a3b + the flag code (uncommitted at run time, committed with the results), --set gauge.axis_union=<mode>, native path",
+  "command": "python scripts/regression_gate.py --cache <scratch cache: the six recordings and cloud_with_fake_obj> --jobs 1 --set gauge.axis_union=<1|2> --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_p3b.json --allow 'ride.*' --allow 'set_F_straight.*'",
+  "flag_off": "set O frame by frame identical to bd67fb0 (1 510 frames, timing excluded)",
+  "A": {
+   "verdict": "PASS (cheap stage): 2 gated rows better, none worse; the six recordings identical to the baseline rows",
+   "set_O": "#6 big_edge_inside STOP 0 -> 1 frame (first STOP 14.3 m); #4 0 -> 0 (advisory 25, floating); #5 0, #7 6 false STOP frames, background 3 frames / 2 ids: unchanged; every other object unchanged",
+   "what_the_frame_is": "per frame (agent scratch script): the box's in-envelope strip becomes a gauge cluster in frames 572-574 (22.7-18.7 m; 24-40 gauge voxels, measured from the sensor axis) and is dropped as a wall in 575-579 (height 1.9-2.0 m, lateral 1.2-1.3 m from the rails); the track built on the three gauge hits is confirmed in frame 576 on a fragment of the edge line in front of the box (11.87 m, lateral 1.39, h 0.18-0.40, zone warning) and reported there, 2.4 m short of the box's face (14.3 m), and once more in frame 577 at 8.51 m (matching no object in that frame; not background by the gate's rule, since its track matched #6)"
+  },
+  "B": {
+   "verdict": "FAIL (cheap stage), stops here: set_O.objects.long_low_on_rails.stop_frames 49 -> 48 (frame 741, 7.7 m: STOP -> GO)",
+   "set_O": "#6 0 -> 3 counted STOP frames (first 10.3 m); a STOP track on the box from frame 569 (28.6 m) to 582, 9 of its frames not matched to #6 by the scorer (lateral 0.98-1.19 against the label centre 1.95-2.4 m); thin_hanging 15 -> 16 (first STOP 30.1 -> 31.8 m); big_above loses 4 advisory frames ('elevated' no longer applies: its width is compressed); #4, #5, #7, background unchanged",
+   "recordings": "five bags 58 / 13 / 16 -> 56 / 10 / 16 (doubleT_platform 4 / 4 / 1 -> 2 / 1 / 1), advisory frames +27 / +86 / +99 on doubleT_platform / roundT_squareT_pressureGate_squareT / squareT_platform_squareT_switch; doubleT_obstacle identical",
+   "cause": "the re-measured coordinate compresses the WHOLE widened side (u * W / (W + e) from the centre to the edge), so centre objects change too: widths, laterals and the signatures of the plank on the rails and the box above the track"
+  }
+ },
+ "addendum_1": {
+  "written_at_utc": "2026-09-26T07:25:38Z",
+  "before_any_result": "Written after the cheap stage of A and B above and before any code or run of B2. A continues as registered (set F gentle curves, then the full gate).",
+  "B2": {
+   "flags": {
+    "gauge.axis_union": 3
+   },
+   "rule": "strict membership exactly as A (the union); in addition, inside the corridor clustering, the infrastructure and signature rules of a corridor cluster (wall / linear / hardware lateral, column / floating / edge / wall_face and the free exemption) read the lateral measured from whichever reference places the cluster nearer the centre: the mean of y_axis = dy + c(X) over its points (c = 0 outside the region) when its magnitude is smaller than the mean of dy, with the per-point y_axis for the per-point tests; the reported lateral, the distance, the tracker, the hanging stage, the clear cap and every other stage keep the rail coordinate. Motivation from the cheap stage: #6 is lost to the wall rule measured from the rails (1.2-1.3 m) while from the sensor axis its strip is at ~1.1-1.2 m, and B's coordinate map changed centre objects.",
+   "region": "unchanged (rail pair, |curvature| <= 2e-4 /m, X <= 50 m, |c(X)| <= 0.30 m)"
+  },
+  "ship_rule": "unchanged; B2 runs the same stages (cheap stage, set F gentle curves, full gate). If A and B2 both pass, the one with more #4 + #6 STOP frames ships (a tie ships A)."
  }
 }
