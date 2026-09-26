@@ -333,6 +333,161 @@
         "verdict": "fails: doubleT_platform 4 / 4 / 1 -> 7 / 4 / 2 (a corridor STOP at 20-23 m, frames 40-41, and a low STOP at 39 m, frame 33); five recordings 58 / 13 / 16 -> 61 / 13 / 17; big_above first STOP 101.3 -> 109.5 m, long_low 82.2 -> 83.8 m"
       },
       "to_the_full_gate": "B (the largest set O gain among the candidates passing the cheap stage), after the merge of wf14/integrate-p3 and a cheap stage on the merged head"
+    },
+    "merge": {
+      "commit": "5dfc679 = wf15/range (76b08c1) + wf14/integrate-p3 (208152d, baseline _ride_p3c), git merge --no-ff; conflicts resolved by keeping both sides; a scan line continuing a track also enters its near-escalation history",
+      "section": "EXPERIMENTS 1o (the integrator took 1n)"
+    },
+    "flags_off_identity_208152d": {
+      "fingerprint": "scripts/output_fingerprint.py --cache /data/cache --jobs 1, 5dfc679 (flags off) against a git archive export of 208152d with the same native library: obstacle 201, given_speed 252, estimator 877, ride 1600 frames, 0 differ: IDENTICAL",
+      "cheap_stage_flags_off": "every gated and count row equal to _ride_p3c (only latency moved)"
+    },
+    "cheap_stage_merged": {
+      "code": "5dfc679, native path, receive stamps, --jobs 1",
+      "command": "python scripts/regression_gate.py --cache <symlinks: six recordings + cloud_with_fake_obj> --jobs 1 --baseline docs/evidence/results/regression_baseline_2026-09-26_ride_p3c.json --allow 'ride.*' --allow 'set_F_straight.*' --set <candidate>",
+      "flags_off": {
+        "set_O_inside_stop_frames": 355,
+        "set_O_outside_false_stop_frames": 6,
+        "set_O_background": {
+          "alarm_frames": 3,
+          "track_ids": 2
+        },
+        "big_above": {
+          "stop_frames": 22,
+          "first_stop_m": 101.3,
+          "held_from_m": 23.9,
+          "advisory_frames": 27
+        },
+        "long_low_on_rails": {
+          "stop_frames": 49,
+          "first_stop_m": 82.2,
+          "held_from_m": 90.8,
+          "advisory_frames": 0
+        },
+        "five_recordings": [
+          58,
+          13,
+          16
+        ],
+        "doubleT_platform": [
+          4,
+          4,
+          1
+        ],
+        "doubleT_obstacle": {
+          "first_alarm_frame": 11,
+          "hits": 186
+        }
+      },
+      "A": {
+        "set_O_inside_stop_frames": 372,
+        "set_O_outside_false_stop_frames": 6,
+        "set_O_background": {
+          "alarm_frames": 3,
+          "track_ids": 2
+        },
+        "big_above": {
+          "stop_frames": 39,
+          "first_stop_m": 101.3,
+          "held_from_m": 23.9,
+          "advisory_frames": 10
+        },
+        "long_low_on_rails": {
+          "stop_frames": 49,
+          "first_stop_m": 82.2,
+          "held_from_m": 90.8,
+          "advisory_frames": 0
+        },
+        "five_recordings": [
+          58,
+          13,
+          16
+        ],
+        "doubleT_platform": [
+          4,
+          4,
+          1
+        ],
+        "doubleT_obstacle": {
+          "first_alarm_frame": 11,
+          "hits": 186
+        },
+        "gate": "PASS (1 gated row better)",
+        "verdict": "rows pass; set O minimum gain not met: big_above 22 -> 39 STOP frames, held from 23.9 m unchanged"
+      },
+      "B": {
+        "set_O_inside_stop_frames": 384,
+        "set_O_outside_false_stop_frames": 6,
+        "set_O_background": {
+          "alarm_frames": 3,
+          "track_ids": 2
+        },
+        "big_above": {
+          "stop_frames": 51,
+          "first_stop_m": 101.3,
+          "held_from_m": 111.4,
+          "advisory_frames": 6
+        },
+        "long_low_on_rails": {
+          "stop_frames": 49,
+          "first_stop_m": 82.2,
+          "held_from_m": 90.8,
+          "advisory_frames": 0
+        },
+        "five_recordings": [
+          58,
+          13,
+          16
+        ],
+        "doubleT_platform": [
+          4,
+          4,
+          1
+        ],
+        "doubleT_obstacle": {
+          "first_alarm_frame": 11,
+          "hits": 186
+        },
+        "gate": "PASS (1 gated row better)",
+        "verdict": "passes, minimum gain met: big_above 22 -> 51 STOP frames, held from 23.9 -> 111.4 m (+87.5 m); decisions identical frame by frame on the six recordings; set O differs only in frames 644-672 (big_above, 'stop_hold'); reported distance within 0.34 m of the labelled one on every kept frame but frame 663 (+1.55 m: a missed frame held at its predicted distance)"
+      },
+      "C": {
+        "set_O_inside_stop_frames": 389,
+        "set_O_outside_false_stop_frames": 6,
+        "set_O_background": {
+          "alarm_frames": 3,
+          "track_ids": 2
+        },
+        "big_above": {
+          "stop_frames": 55,
+          "first_stop_m": 109.5,
+          "held_from_m": 121.5,
+          "advisory_frames": 6
+        },
+        "long_low_on_rails": {
+          "stop_frames": 50,
+          "first_stop_m": 83.8,
+          "held_from_m": 92.5,
+          "advisory_frames": 0
+        },
+        "five_recordings": [
+          61,
+          13,
+          17
+        ],
+        "doubleT_platform": [
+          7,
+          4,
+          2
+        ],
+        "doubleT_obstacle": {
+          "first_alarm_frame": 11,
+          "hits": 186
+        },
+        "gate": "FAIL: doubleT_platform STOP episodes 1 -> 2",
+        "verdict": "fails as on 00143b0: doubleT_platform 4 / 4 / 1 -> 7 / 4 / 2, five recordings 58 / 13 / 16 -> 61 / 13 / 17; big_above first STOP 101.3 -> 109.5 m, long_low 82.2 -> 83.8 m"
+      },
+      "to_the_full_gate": "B"
     }
   }
 }
