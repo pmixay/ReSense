@@ -4,7 +4,7 @@
 > decisions; history of 16–24.09 in
 > [`archive/CAPTAIN_log_2026-09.md`](archive/CAPTAIN_log_2026-09.md).
 > **Audience:** P1, team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-25 against the PR #12 head after `cb9e4ab` (the VM run `ead8502` and its fixes) · **Status:** current
+> **Last verified:** 2026-09-26 against `8de3a92` (P3 rounds 1–2 merged; detector ready to freeze) · **Status:** current
 
 ## 1. Role and dates
 
@@ -108,6 +108,9 @@ action 3b done (the merge click is the captain's), action 1 without branch prote
 | 15 | later (deployment) | **offline** dry run with the original bags on the 8-core stand-in (the stand is not available), network disconnected: **belongs to the later deployment** (the captain, 25.09). An archive of `scripts/export_image.sh`, `IMAGE_TAR=… OFFLINE=1 ./scripts/dry_run.sh` on both bags, then the README jury commands by hand from a normal user's host console (stock ROS 2 if installed), logs to `docs/evidence/dry_run_<date>/`; remote demo from a second laptop; procedure: README "Acceptance test and CI"; on the VM: [`VM_GUIDE.md`](VM_GUIDE.md) §4.1 (dry run), §4.2 (host console), §5 (offline rehearsal). Rehearsed 25.09 on a 4-core team VM (EXPERIMENTS §3b: the jury console PASS offline; `dry_run.sh` FAIL on drops and on 3 alarm frames of `roundT_doubleT`, both fixed the same day: C7); the confirmation re-run of [`VM_GUIDE.md`](VM_GUIDE.md) §4.0 ran 25.09 afternoon (EXPERIMENTS §3b): the dry runs PASS online and offline; the host Fast DDS console FAIL at the default `rmem_max` (C4) | H (VM agent) | must, when deploying |
 | 16 | 29.09 | ~~final tag `v1.0.0` on `main`, release~~ **deferred by the captain (25.09)**; the upload with all its links is **handled by the captain personally** (C12) | H | handled by the captain |
 | 17 | 30.09–23.10 | answer the organizers daily during the expertise; pitch on 23.10 after two rehearsals (fallback demo `video/docker_chain_rviz.mp4`); the presentation is made later by the team (C21) | H (+P2) | must |
+| 18 | 26.09 20:00 | **detector / config freeze** (§6): the P3 work of 25–26.09 is merged (`f46a669` round 1, `8de3a92` round 2, both after safety reviews; gate PASS, baseline `regression_baseline_2026-09-25_ride_p3b.json`); the captain declares the freeze, after it only blocker fixes touch `resense/` or `configs/` | H | must |
+| 19 | 27.09 20:00 | after the freeze: the consistency pass (EXPERIMENTS "Current results", README, CHANGELOG, this board: every headline number equals the `_ride_p3b` gate; set O is 6 of 8 objects with a STOP; SCORECARD §8 and P4_AUDIT note the change); then the docs freeze | P4 or A | must |
+| 20 | 28.09 | the deck and the video's numbers rebuilt from the frozen figures (action 13); the final image archive from the final commit with its sha256 (`scripts/export_image.sh`, VM_GUIDE §4.5); PR #12 merged | P2 / A, H | must |
 
 ## 4. Human-only checklist
 
@@ -235,6 +238,8 @@ the voice-over and the rehearsals (the presentation, later, the team: C21).
 | 25.09 | no lane-owner review of PR #12 (the captain: P2, P3 and P4 will not review it): the code review of 25.09 and green CI stand; the requested reviews are not waited for | C16, §6 |
 | 25.09 | P4's standing duties dropped (the captain: "we are operating with it ourselves"): the captain and the agents hold the frame caches and run the regression gate on every detector change; the review of P4's lane in PR #12 is not needed | action 3, §10 row 4 |
 | 25.09 | the dashboard regressions of P2's lane (the keyboard guard found by the code review, and any others) are fixed by an agent on the captain's order; P2 is not waited for | §6, PR #12 comment |
+| 25.09 | P3 round 1 (the captain: "complete all P3 tasks that don't depend on other roles"), each item against pre-registered criteria: the rail-shadow rules ship (`track.floor_shadow_*`, `cluster.oversize_split_*`, `cluster.gauge_distance`; set O #1's wrong 3.0 m distance gone, the plank held from 90.8 m, set F false detections 35 → 24), after a safety review that made the distance never later than the envelope entry and capped the bed hold; platform end, far switch parts and far bed bins tried, not shipped (flags off) | EXPERIMENTS §1h, `p3_*_2026-09-25.json`, `f46a669` |
+| 26.09 | P3 round 2 (the captain: "make items 5–7, complete all P3 work that is possible"): the organizers' hanging cube #2 a STOP from 52.5 m (was 34.0 m, `cluster.floating_free_max_size`), their 5 cm hanging object a STOP from 30.1 m (was never, `cluster.hanging_enabled` with a rail-lock guard): set O 6 of 8 objects with a STOP, inside STOP frames 311 → 337; `health.clear_cap` on although it missed its pre-registered clutter limit by 0.5 pp (the delegate's decision: a conservative verified-clear distance, set O overclaim 147 → 60 frames, no decision changes); rate-independent calibration (5 Hz stress: five bags 13 → 10 events). A safety review blocked `calibration.refine_min_deg` (a re-seed could drop a confirmed STOP under tilt): refinement off, a ≤ 1° change rotates the model and tracks, a STOP is held for a fixed window through any change; the re-review passed with the hold fixed. Gate PASS (6 better, 0 worse), baseline `_ride_p3b`, 486 tests | EXPERIMENTS §1i, `p3_round2_*`, `p3_round2_review_fixes_2026-09-26.json`, `8de3a92` |
 
 ## 10. Why we slowed down (analysis of 24.09) and corrective rules
 
