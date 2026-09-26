@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# Branch-only reproduction of the 26.09 cold-disk startup failure using the organizer's bag.
+# Requires Docker and runs only on the P1/P2 completion branch; the downloaded raw bag is removed.
+set -euo pipefail
+
+EXPECTED_REF="refs/heads/claude/p1-p2-completion-20260926"
+if [[ "${GITHUB_REF:-}" != "$EXPECTED_REF" ]]; then
+  echo "skip: original-bag cold-disk test is scoped to $EXPECTED_REF"
+  exit 0
+fi
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+IMAGE="${IMAGE:-resense:ci}"
+WORK="$(mktemp -d "${TMPDIR:-/tmp}/resense-p1-cold.XXXXXX")"
+OUT="${OUT:-$ROOT/out/p1-cold-run}"
+ARCHIVE="$WORK/dataset.zip"
+BAG="$WORK/for_hackathon/doubleT_obstacle"
+URL="https://drive.usercontent.google.com/download?id=1WTlR2wDSuEHTOARGK_gZeXDTZ9RZpswu&export=download&confirm=t"
+mkdir -p "$OUT"
+trap 'rm -rf "$WORK"' EXIT
+
+echo "source: $URL" | tee "$OUT/provenance.txt"
+git -C "$ROOT" rev-parse HEAD | sed 's/^/commit: /' | tee -a "$OUT/provenance.txt"
+df -h "$WORK" | tee -a "$OUT/provenance.txt"
+
+curl --fail --location --retry 3 --retry-delay 2 --output "$ARCHIVE" "$URL"
+[[ "$(dd if="$ARCHIVE" bs=2 count=1 2>/dev/null)" == "PK" ]] || {
+  echo "download is not a ZIP archive" >&2
+  exit 1
+}
+sha256sum "$ARCHIVE" | tee -a "$OUT/provenance.txt"
+chmod 777 "$WORK"
+docker run --rm -v "$WORK:/data" "$IMAGE" python3 scripts/unpack_dataset.py \
+  /data/dataset.zip --out /data --only doubleT_obstacle
+test -f "$BAG/metadata.yaml"
+cmp "$BAG/metadata.yaml" "$ROOT/docs/evidence/bag_metadata/doubleT_obstacle_metadata.yaml"
+sha256sum "$BAG/metadata.yaml" | tee -a "$OUT/provenance.txt"
+find "$BAG" -maxdepth 1 -type f -name '*.db3' -print0 | sort -z | xargs -0 sha256sum \
+  | tee -a "$OUT/provenance.txt"
+rm -f "$ARCHIVE"
+docker tag "$IMAGE" resense:latest
+
+# The archive extraction and hashes warmed the page cache. Evict it before the exact dry-run path.
+sudo sh -c 'sync; echo 3 > /proc/sys/vm/drop_caches'
+SKIP_BUILD=1 OUT="$OUT/dry_run" scripts/dry_run.sh "$BAG" \
+  --expect-obstacle --distance 50:62 --min-frames 20 --max-p95-latency 1000 --max-dropped 0
+echo "PASS: original doubleT_obstacle cold-disk dry run" | tee -a "$OUT/result.txt"

@@ -26,7 +26,9 @@ frames, 13 km, no obstacles).
   All 45 ride false events have scene reviews. Fresh full gate: 183 unchanged values, no waivers.
   Final idle cold/warm original-bag replays and stock DDS pass; the earlier loaded failure is
   retained. 621 tests and 6 subtests pass. Dashboard FAULT/CAUTION banners and estimated-range
-  wording are corrected; deck, PDF and video rebuilt. Independent scores and remaining quality
+  wording are corrected; live status validation, 2 s stale indication, and reconnect guards have
+  3 new Chromium tests (17 pass). CI now has branch-scoped cold-bag and remote-viewer outage /
+  recovery checks; their first branch run is pending. Deck, PDF and video rebuilt. Independent scores and remaining quality
   gaps are in SCORECARD; these changes do not claim improved detector recall.
 
 
@@ -61,6 +63,21 @@ frames, 13 km, no obstacles).
   of the through-ROS grade committed; the catch-up variants for CAPTAIN action 21 measured
   (`catchup_max_lag:=20`: no scene resets cold, PASS warm). Final: 62.5 / 100.
 
+- **P1/P2 follow-through on the working branch (26.09):** the detector now grants a bounded
+  20-second allowance only to the first backlog of a new recording, then returns to its normal
+  5-second live-stall limit. Unit tests cover a cold whole-recording burst, an isolated first
+  cloud, repeated recordings, and expiration of the startup allowance; the original-bag cold-disk
+  replay still needs confirmation. The dashboard now treats `FAULT` as unavailable, clears the
+  estimated monitoring range on fault or stale input, ignores malformed or decision-less live
+  messages, and overlays old visuals after 2 seconds without a valid message. Its user-facing
+  range label says that the distance is estimated. The updated team history uses supplied project
+  facts and leaves personal claims out. Browser-backed checks: 16 passed in Chromium. CI now has a
+  two-container Foxglove viewer check on an isolated Docker network, including a paused-server
+  outage and recovery; its result is pending the branch run. A branch-only CI step also downloads
+  the original `doubleT_obstacle` bag, runs the cold-start dry-run and retains its provenance and
+  logs. Four member headshots are in the ignored private presentation folder; city, team formation,
+  and a group photo remain pending.
+
 - **P2 public presentation and P4 consistency pass (26.09):** rebuilt the 16-slide public PPTX
   and PDF and the 2:50 overview MP4/SRT against the committed `_ride_p3b` regression baseline:
   13 false events on five empty bags, 46 / 3.5 per km on the ride, 125/126 rail-object frames,
@@ -82,7 +99,7 @@ free-hanging exemption of `floating`, +4 thin hanging objects, +5 `health.clear_
 and re-mount flags, +1 the rail-lock guard of the hanging stage, +13 the review fixes of the
 round-2 items, +17 their re-review, +6 latency out of the decision, +8 the start-up census, +27
 the rail-start rule, +12 the near escalation, +8 the sensor-axis envelope, +8 the P3 items of 26.09
-combined and their safety review, +28 the STOP keep and its cap, +3 P4's sustained set O gates, +1 the video's ride card against the gate baseline) in `tests/`, 13 in `web/demo`.
+combined and their safety review, +28 the STOP keep and its cap, +3 P4's sustained set O gates, +1 the video's ride card against the gate baseline) in `tests/`, 16 in `web/demo`.
 
 - **STOP keep against shape signatures and scan lines (26.09, P3 range; shipped, round 2).**
   `tracking.stop_keep_signature` true, `tracking.stop_keep_thin` 1, `tracking.stop_keep_min_voxels`

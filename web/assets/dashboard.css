@@ -104,6 +104,7 @@ input[type="checkbox"] { width: 17px; height: 17px; accent-color: var(--red); }
 #banner.warn { --banner-warning-icon-width: clamp(130px, 11.9vw, 190px); padding-left: calc(var(--banner-warning-icon-width) + 12px); background: var(--yellow); color: var(--ink); }
 #banner.warn .banner-icon { top: -6px; left: -12px; width: var(--banner-warning-icon-width); height: calc(100% + 12px); }
 #banner.bad { background: var(--red); }
+#banner.fault { background: #202127; }
 #banner small { display: block; width: 100%; margin-top: 5px; font-size: 12px; font-weight: 400; letter-spacing: 0; }
 #banner small[hidden] { display: none; }
 
@@ -113,7 +114,7 @@ main { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, 390px)
 .visual-tab { min-height: 42px; padding: 0 17px; border: 0; border-bottom: 3px solid transparent; background: transparent; font-size: 13px; }
 .visual-tab:hover { border-bottom-color: var(--line); background: #fff; }
 .visual-tab.active { border-bottom-color: var(--red); color: var(--red); }
-.visual-card { flex: 1 1 auto; min-height: 0; padding: 10px; border: 1px solid var(--line); background: var(--paper); }
+.visual-card { position: relative; flex: 1 1 auto; min-height: 0; padding: 10px; border: 1px solid var(--line); background: var(--paper); }
 .visual-card[hidden] { display: none; }
 .cab-card { display: flex; flex-direction: column; }
 .cab-stage { position: relative; flex: 1 1 auto; min-height: 0; overflow: hidden; background: #12151b; }
@@ -137,7 +138,9 @@ canvas { display: block; width: 100%; border: 1px solid #e3e3e0; background: #fa
 .side-section[open] summary::after { content: "−"; }
 .side-section summary:hover { background: #fafaf9; }
 .side-section summary:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
-.side-section-body { padding: 10px 13px 12px; }
+.side-section-body { position: relative; padding: 10px 13px 12px; }
+.stale-veil { display: none; position: absolute; z-index: 5; inset: 0; place-items: center; padding: 16px; background: rgba(255,255,255,.9); color: #8c0010; font-size: 14px; font-weight: 800; text-align: center; }
+body.live-stale .stale-veil { display: grid; }
 .kv { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 12px; font-size: 13px; }
 .kv span:nth-child(odd) { color: var(--ink); }
 .kv b { font-weight: 800; text-align: right; }
