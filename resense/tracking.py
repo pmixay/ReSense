@@ -77,20 +77,22 @@ class Tracker:
 
     def reseed(self, dR: np.ndarray, hold: int, keep_unreported: bool = True) -> None:
         """A mount-calibration change rotated the cloud by ``dR`` (``p_new = dR @ p_old``; 26.09,
-        ``tracking.reseed_hold``): every track's position and velocity are rotated with it, the
-        tracks not reported now are dropped unless ``keep_unreported`` (a large tilt change: their
-        history was taken in a wrong frame, as the reset did before), and a reported track stays
-        reported without a match until ``hold`` frames after its last match: its misses there
+        ``tracking.reseed_hold``): every track's position and velocity are rotated with it; unless
+        ``keep_unreported`` (a large tilt change) only the tracks reported in zone gauge (STOPs)
+        are kept, the others are dropped as the reset did before (their history, zone votes
+        included, was taken in a wrong frame: an object reported as advisory under a 3 deg tilt
+        kept its advisory vote 3 frames after the correction at 5 Hz); and a track reported in zone
+        gauge stays reported without a match until ``hold`` frames after its last match: its misses there
         neither decay its confidence nor enter its hit history, and it is reported at its
         predicted position. Repeated re-seeds do not extend that. The re-seeded geometry (a fresh
         track model has no floor-shadow reference for its warm-up) must not drop a confirmed STOP."""
         dR = np.asarray(dR, dtype=np.float64)
         if not keep_unreported:
-            self.tracks = [t for t in self.tracks if t.reported]
+            self.tracks = [t for t in self.tracks if t.reported and t.zone == "gauge"]
         for t in self.tracks:
             t.centroid = dR @ t.centroid
             t.velocity = dR @ t.velocity
-            if t.reported:
+            if t.reported and t.zone == "gauge":
                 t.hold = max(t.hold, int(hold) - t.misses)
 
     def _gate(self, distance: float) -> float:

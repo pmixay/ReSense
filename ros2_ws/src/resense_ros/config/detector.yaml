@@ -189,7 +189,7 @@ resense:
     zone_window: 10
     zone_min_fraction: 0.6
     column_hold: 2                 # 25.09 (0 = off): a track demoted as a column in >= this many of its last zone_window hits stays advisory; roundT_doubleT's column at 101-149 m is a column in some frames and 1.6-2.2 m of it in others: 3 alarm frames at 111-115 m through ROS (original bag), 2 at 128-130 m from the cache -> 0 (4 column hits in its window); pre-registered 3 / 2 / 1, the highest passing: 3 fails the gate (ride STOP episodes 39 -> 40), 2 PASS: five bags 60 / 14 / 17 -> 58 / 13 / 16, ride 197 / 46 / 39 -> 187 / 46 / 39 alarm frames / events / STOP episodes, doubleT_obstacle, set O and set F detections identical (docs/evidence/results/column_hold_2026-09-25.json)
-    reseed_hold: 5                 # 26.09 (safety review): after a mount-calibration change the tracks follow the rotation and a reported one stays reported up to 5 frames after its last match (the geometry re-seed must not drop a confirmed STOP); 0 = reset the tracker above 1 deg, hold nothing
+    reseed_hold: 5                 # 26.09 (safety review): after a mount-calibration change the tracks follow the rotation and a STOP (reported in zone gauge) stays reported up to 5 frames after its last match; above 1 deg only STOPs are kept (the geometry re-seed must not drop a confirmed STOP); 0 = reset the tracker above 1 deg, hold nothing
     max_misses: 3
     conf_gain: 0.35
     conf_decay: 0.25
@@ -276,8 +276,9 @@ resense:
     provisional_per_axis: false      # 25.09 (P3), tried, not shipped: the provisional tilt corrects only the axis that reaches provisional_min_deg (roll / pitch five bags -> 19 / 19 events)
     keep_within_deg: 0.25            # on since 25.09 (P3): a final tilt within this (deg) of the applied provisional keeps it, no track re-seed (doubleT_obstacle 185 -> 186 labelled hits); 0 = off
     # 26.09 (safety review of the round-2 items; docs/evidence/results/p3_round2_review_fixes_2026-09-26.json)
-    refine_raw_trigger: true         # the refinement compares each axis's RAW median with the applied tilt (a median hovering at apply_min_deg flipped the correction); false = the zeroed target
-    refine_confirm_obs: 2            # spaced observations in a row with the refinement condition before it is applied (1 = at once)
+    refine_raw_trigger: false        # tried 26.09 (C1), not shipped: per-axis trigger on the raw medians (kept noise-level provisional axes: +3 deg roll five bags 11 -> 14 events)
+    refine_confirm_obs: 2            # the refinement condition must hold on 2 spaced observations in a row (1 = at once)
+    refine_max: 1                    # at most one refinement per calibration: it cannot flap (4 re-seeds on roundT_doubleT +3 deg pitch); 0 = unlimited
     reseed_keep_max_deg: 1.0         # a change up to this (deg) rotates the track model into the corrected frame instead of re-seeding it (a sub-degree refinement lost a confirmed STOP for 2 frames); 0 = always re-seed
   health:                          # v0.6: production guards (resense/health.py)
     min_points: 20000

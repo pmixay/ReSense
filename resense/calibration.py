@@ -205,6 +205,7 @@ class MountCalibrator:
         self.last_change_deg = 0.0       # how far the last correction change rotated the cloud
         self.last_change_orientation = False   # the last change adopted a new axis orientation
         self._refine_run = 0             # spaced observations in a row with the refinement condition
+        self._refines = 0                # refinements made
         self._ref_raw: Optional[List[float]] = None   # rad: raw medians (roll, pitch, yaw) behind the applied provisional / refined tilt
         self._frames = 0
         self._frozen = not cfg.enabled
@@ -350,18 +351,22 @@ class MountCalibrator:
         something at least ``refine_min_deg`` different in roll or pitch (the first consecutive
         frames can see one canted stretch of rail). True when the correction changed.
 
-        With ``refine_raw_trigger`` (26.09, safety review) the trigger is on the RAW medians with
-        hysteresis: an axis whose raw median has moved at least ``refine_min_deg`` from the raw
-        median behind its applied value (the provisional's, or the last refinement's) takes the
-        value the final would set (zeroed below ``apply_min_deg``); the other axes keep theirs.
-        Comparing the zeroed target with the applied tilt made every crossing of
-        ``apply_min_deg`` a jump of at least 0.75 deg, so a median hovering there flipped the
-        correction (and re-seeded the track model) again and again (4 times on roundT_doubleT,
-        +3 deg pitch). The condition must hold on ``refine_confirm_obs`` spaced observations in a
-        row (a bimodal median, an obstacle fooling the rail observation, alternated otherwise)."""
+        Safety review of 26.09: comparing the zeroed target with the applied tilt made every
+        crossing of ``apply_min_deg`` a jump of at least 0.75 deg, so a median hovering there
+        flipped the correction (and re-seeded the track model) again and again (4 times on
+        roundT_doubleT, +3 deg pitch). Now the condition must hold on ``refine_confirm_obs``
+        spaced observations in a row (a one-off move of the median, or a bimodal one when an
+        obstacle fools the rail observation, is not applied) and at most ``refine_max``
+        refinements are made. The opt-in ``refine_raw_trigger`` (tried, not shipped) triggers
+        each axis by its RAW median moving ``refine_min_deg`` from the raw median behind its
+        applied value and keeps the other axes: it kept noise-level provisional values the final
+        would zero."""
         cfg = self.cfg
         if (cfg.refine_min_deg <= 0 or self.state.status != "provisional"
                 or len(self._obs) < max(cfg.provisional_frames, 1) or len(self._obs) >= cfg.frames):
+            return False
+        limit = int(getattr(cfg, "refine_max", 0))
+        if limit > 0 and self._refines >= limit:
             return False
         roll, pitch, yaw, _, _ = self._final_tilt(self._obs)
         max_t = np.radians(cfg.max_tilt_deg)
@@ -382,6 +387,7 @@ class MountCalibrator:
         if not due or self._refine_run < max(1, int(getattr(cfg, "refine_confirm_obs", 1))):
             return False
         self._refine_run = 0
+        self._refines += 1
         if raw_trigger:
             new = (roll, pitch, yaw)
             self._ref_raw = [r if abs(n - a) > 1e-9 else f for r, f, n, a in zip(raw, ref, new, applied)]

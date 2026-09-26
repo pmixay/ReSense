@@ -157,6 +157,23 @@ def test_reseed_rotates_the_tracks_and_a_large_change_drops_only_unreported_ones
     assert tr.tracks[0].misses == 0 and tr.tracks[0].reported
 
 
+def test_an_advisory_track_is_neither_held_nor_kept_through_a_large_change():
+    """doubleT_obstacle at 5 Hz (candidate C1 of the review): the object was reported as ADVISORY
+    under the 3 deg tilt before the provisional correction; kept with that zone history, its
+    vote stayed advisory 3 frames after the correction (first STOP frame 12 -> 18). Only a STOP
+    (reported in zone gauge) is held, and on a change above 1 deg only STOPs are kept; on a
+    sub-degree change every track stays (unrotated history, as before), an advisory one unheld."""
+    cfg = DetectorConfig()
+    tr = Tracker(cfg.tracking)
+    for _ in range(6):
+        tr.update([_cluster(40.0, zone="warning")], frame_dt=0.1)
+    assert [(t.reported, t.zone) for t in tr.tracks] == [(True, "warning")]
+    tr.reseed(rot_x(np.radians(0.6)), cfg.tracking.reseed_hold, keep_unreported=True)
+    assert len(tr.tracks) == 1 and tr.tracks[0].hold == 0
+    tr.reseed(rot_x(np.radians(3.0)), cfg.tracking.reseed_hold, keep_unreported=False)
+    assert tr.tracks == []
+
+
 def test_clear_cap_at_a_lost_reported_track():
     """``health.clear_cap_lost``: a track reported when it was last matched that misses this frame
     caps the verified-clear distance at its predicted distance until the tracker drops it (the
@@ -200,31 +217,35 @@ def _feed(cal: MountCalibrator, rolls) -> list:
     return out
 
 
-def test_refinement_on_raw_medians_does_not_flap():
+def test_refinement_does_not_flap():
     """The reviewer's flapping: the median roll of the spaced observations hovers around
     apply_min_deg (0.75 deg). Compared after the zeroing below 0.75 every crossing was a jump of
-    at least 0.75 deg and re-seeded the track model (4 re-seeds on roundT_doubleT +3 deg pitch).
-    With the raw trigger and its hysteresis (the raw median must move refine_min_deg from the one
-    behind the applied value) the roll changes once. A median swinging by the full deadband
-    (0.5 deg) still flips it on every swing with one observation; the two in a row that
-    ``refine_confirm_obs`` asks for (shipped) change it once."""
+    at least 0.75 deg and re-seeded the track model (4 re-seeds on roundT_doubleT +3 deg pitch;
+    here 5 changes). Shipped since the review: the condition must hold on two spaced
+    observations in a row and at most one refinement is made - one change. The opt-in raw
+    trigger (tried, not shipped) makes one change on a median hovering by 0.2 deg but still
+    flaps on one swinging by its whole 0.5 deg deadband."""
     cfg = DetectorConfig()
 
-    def changes(rolls, raw: bool, confirm: int) -> int:
-        c = replace(cfg.calibration, refine_raw_trigger=raw, refine_confirm_obs=confirm)
+    def changes(rolls, **kw) -> int:
+        c = replace(cfg.calibration, **kw)
         return sum(ch for ch, _ in _feed(_calibrator_with_provisional(replace(cfg, calibration=c), 0.0), rolls))
 
+    old = dict(refine_confirm_obs=1, refine_max=0)
     hover = [0.55, 0.95] * 2 + [0.95] + [0.55, 0.55, 0.95, 0.95] * 2      # median 0.75 +- 0.2
-    assert changes(hover, False, 1) == 5
-    assert changes(hover, True, 1) == 1 and changes(hover, True, 2) == 1
     swing = [0.5, 1.0, 0.5, 1.0, 1.0, 0.5, 0.5, 1.0, 1.0, 0.5, 0.5, 1.0, 1.0]    # median 0.75 +- 0.25
-    assert changes(swing, False, 1) == 5 and changes(swing, True, 1) == 5
-    assert changes(swing, True, 2) == 1
-    assert (cfg.calibration.refine_raw_trigger, cfg.calibration.refine_confirm_obs) == (True, 2)
-    # a real correction (the canted-stretch case: provisional roll 2 deg off) is still made
+    assert changes(hover, **old) == 5 and changes(swing, **old) == 5
+    assert changes(hover) == 1 and changes(swing) == 1
+    assert changes(hover, refine_max=0) == 1 and changes(swing, refine_confirm_obs=1) == 1     # each rule alone
+    assert changes(hover, refine_raw_trigger=True, **old) == 1
+    assert changes(swing, refine_raw_trigger=True, **old) == 5
+    c = cfg.calibration
+    assert (c.refine_raw_trigger, c.refine_confirm_obs, c.refine_max, c.refine_min_deg) == (False, 2, 1, 0.5)
+    # a real correction (the canted-stretch case: provisional roll 2 deg off) is still made, on
+    # the second observation that says so
     cal = _calibrator_with_provisional(cfg, -1.0)
     out = _feed(cal, [-3.0, -3.1, -2.9, -3.0, -3.05, -2.95, -3.0])
-    assert sum(ch for ch, _ in out) == 1 and abs(cal.state.roll_deg + 3.0) < 0.1, out
+    assert [ch for ch, _ in out] == [False] * 5 + [True, False] and abs(cal.state.roll_deg + 3.0) < 0.1, out
 
 
 def _periods(stamps) -> list:
