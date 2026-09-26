@@ -169,7 +169,7 @@ validity over each sequence before interpreting range or edge results.
 
    ```bash
    python scripts/regression_gate.py --cache /data/cache \
-       --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_p3b.json \
+       --baseline docs/evidence/results/regression_baseline_2026-09-26_ride_startup.json \
        [--config FILE] [--set section.key=value ...] [--allow PATTERN ...] \
        --out out/gate/<change>.json
    ```
@@ -211,7 +211,11 @@ validity over each sequence before interpreting range or edge results.
    reports runs whose stamps (`--nominal-stamps`) or ride pieces differ. A missing required
    recording, or a failed set F run on a cached ride, exits 2.
 
-   **Baselines of 25.09.** The current one is
+   **Baselines of 25.09 and 26.09.** The current one is
+   [`regression_baseline_2026-09-26_ride_startup.json`](evidence/results/regression_baseline_2026-09-26_ride_startup.json)
+   (26.09, `904fd7c`: `tracking.low_min_seen_distance` 4 m on, EXPERIMENTS §1j; against the one
+   below 2 gated rows better, the ride 46 → 45 events and 39 → 38 STOP episodes, every other row
+   the same). Before it,
    [`regression_baseline_2026-09-25_ride_p3b.json`](evidence/results/regression_baseline_2026-09-25_ride_p3b.json):
    the shipped defaults of `30d0cac` (the four P3 items of round 2 merged on top of the one
    below: the free-hanging exemption of `floating`, the thin-hanging stage with its rail-lock
