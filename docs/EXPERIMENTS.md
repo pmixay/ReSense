@@ -183,7 +183,7 @@ The P3d reference gate is incomplete only because ride and set F straight data a
 and 15 set F metrics are missing, with zero worse available gated rows. Set O has 384/801 inside
 STOP frames, 6 outside-object false STOP frames, 3 background alarm frames, and clear-distance
 overclaims of 54/505 target-envelope object-frames and 223/801 intent object-frames. Object #8 has
-51/124 STOP frames (first 101.3 m, held-from 111.4 m); #4 has 2/83 and #6 has 6/125. The P3d rule
+51/124 STOP frames (a STOP on every frame from 101.3 m; the scorer's 90 % held-from field reads 111.4 m); #4 has 2/83 and #6 has 6/125. The P3d rule
 is inherited upstream detector work, not a P4 change.
 
 The six-recording as-recorded, 5 Hz, +3° roll and +3° pitch checks produced 13/16, 10/10, 14/16

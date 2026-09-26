@@ -14,7 +14,7 @@ Initial audit base: `a81108f` (v0.6.3, 23.09); integrated on `4cd32d6` (`main`, 
 records 125/126 rail-object hits after frame 75, the archived ride result of 45 false events in
 13 km, 13 false events in five empty bags, and STOP for all 8 in-envelope organizers' objects
 (384/801 visible object-frames). The inherited P3d STOP-keep rule raises the top box from
-22/124 to 51/124 STOP frames; it first stops at 101.3 m and is held from 111.4 m. The P3c figures
+22/124 to 51/124 STOP frames; it first stops at 101.3 m and holds the STOP on every frame from there (the scorer's 90 % held-from field reads 111.4 m, §1o). The P3c figures
 and P4 reruns against P3c below remain historical. The P3d available-data results, candidate
 decisions and completion checklist are linked in the next section. The 25.09 report of zero alarms
 in the empty suffix of `cloud_with_fake_obj` is superseded: both original bag and quantized cache
