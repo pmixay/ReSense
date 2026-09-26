@@ -54,6 +54,30 @@ def _held_from(dist_hit):
     return held
 
 
+def _missed_intervals(frames):
+    """Visible, plausible object-frame runs without a STOP, split at hits or data gaps."""
+    intervals, run = [], []
+
+    def finish():
+        if not run:
+            return
+        distances = [row[1] for row in run]
+        intervals.append({"start_frame": run[0][0], "end_frame": run[-1][0], "frames": len(run),
+                          "from_m": round(max(distances), 1), "to_m": round(min(distances), 1)})
+        run.clear()
+
+    previous_frame = None
+    for row in sorted(frames, key=lambda item: item[0]):
+        frame, _distance, hit = row[:3]
+        if hit or (previous_frame is not None and frame != previous_frame + 1):
+            finish()
+        if not hit:
+            run.append(row)
+        previous_frame = frame
+    finish()
+    return intervals
+
+
 def score(results, gt):
     objs = {}
     unmatched_by_frame = []           # per frame: IDs of alarms that matched no object there
@@ -98,6 +122,8 @@ def score(results, gt):
             "bins": {k: {"alarm": v[0], "advisory_only": v[1], "visible": v[2]}
                      for k, v in sorted(o["bins"].items(), key=lambda kv: _bin_order(kv[0]))},
         }
+        if o["in_gauge"]:
+            entry["missed_intervals"] = _missed_intervals(fr)
         if o["in_gauge"]:
             entry["first_alarm_m"] = round(max(f[1] for f in hits), 1) if hits else None
             entry["first_alarm_frame"] = min(f[0] for f in hits) if hits else None
