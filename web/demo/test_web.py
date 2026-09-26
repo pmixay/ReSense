@@ -209,10 +209,22 @@ def test_dashboard_freshness_and_live_stream_stall():
                 "health": {"level": "ok"}, "freshness": {"valid": True, "reason": "current",
                 "mode": "replay", "source_age_s": .02, "residence_age_s": .01,
                 "max_result_age_s": .5, "future_tolerance_s": .05}}
-        deliver = "f => { f.freshness.evaluated_at_utc_s = Date.now()/1000; onStatus({data: JSON.stringify(f)}); }"
-        page.evaluate(deliver, base)
-        assert page.inner_text("#age-label") == "После публикации записи"
-        assert page.inner_text("#source-age") == "20 мс"
+        # Fix UTC only for this delivery and simulate 50 ms of transport. Real live-stream
+        # expiry timers keep running; the receipt assertions share the delivery's browser task.
+        deliver = """f => {
+            const readNow = Date.now, receiptMs = readNow();
+            Date.now = () => receiptMs;
+            try {
+                f.freshness.evaluated_at_utc_s = receiptMs/1000 - .05;
+                onStatus({data: JSON.stringify(f)});
+                return {label: document.querySelector('#age-label').textContent,
+                        age: document.querySelector('#source-age').textContent,
+                        decision: document.querySelector('#decision').textContent};
+            } finally { Date.now = readNow; }
+        }"""
+        received = page.evaluate(deliver, base)
+        assert received["label"] == "После публикации записи"
+        assert received["age"] == "70 мс"  # 20 ms at the node plus 50 ms in transport
         page.evaluate("checkLiveStream(state.lastStatusArrival + 501)")
         assert page.inner_text("#decision") == "ОШИБКА"
         assert page.inner_text("#clear") == "не определена"
@@ -230,8 +242,8 @@ def test_dashboard_freshness_and_live_stream_stall():
         page.evaluate(deliver, invalid_epoch)
         assert page.inner_text("#decision") == "СТОП"
         assert "СТОП СОХРАНЁН" in check_dashboard.banner_text(page)
-        page.evaluate(deliver, base)
-        assert page.inner_text("#decision") == "НЕ ОБНАРУЖЕНО"
+        received = page.evaluate(deliver, base)
+        assert received["decision"] == "НЕ ОБНАРУЖЕНО"
         aging = dict(base, freshness=dict(base["freshness"], source_age_s=.4))
         page.evaluate(deliver, aging)
         page.evaluate("checkLiveStream(state.lastStatusArrival + 101)")

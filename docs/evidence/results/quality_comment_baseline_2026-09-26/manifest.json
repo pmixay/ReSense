@@ -75,6 +75,10 @@
     "setF_straight.json.gz": {
       "sha256": "2113169a6d5ae8a850e0d95325e12bf3c45bf8400f9b581dc897a14d5ca7e7a0",
       "bytes": 148942
+    },
+    "README.md": {
+      "sha256": "0d9ff344033f411c9a50b6817586d68e3b960d307e852d0aba800dd6accf2081",
+      "bytes": 1119
     }
   }
 }
