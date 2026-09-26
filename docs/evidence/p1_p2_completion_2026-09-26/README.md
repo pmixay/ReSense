@@ -6,8 +6,9 @@ freeze/release hold, or revise the independent score.
 
 ## Local verification
 
-On this host, `RESENSE_REQUIRE_SYNTHETIC=1 /tmp/resense-p4-venv/bin/python -m pytest -q -rs`
-completed with **667 passed, 1 deselected, 6 subtests passed**. The deselected test is
+After merging the latest shared quality-evidence branch, commit `a7789f7`,
+`RESENSE_REQUIRE_SYNTHETIC=1 /tmp/resense-p4-venv/bin/python -m pytest -q -rs` completed on this
+host with **667 passed, 1 deselected, 6 subtests passed**. The deselected test is
 `tests/test_rail_start.py::test_finding_rail_heads_ahead_of_a_standing_fresh_start_do_not_stop`,
 which requires `/data/cache/new_data`, absent here. All 47 `tests/test_node.py` cases pass. The
 browser suite passed all 16 Chromium tests, and the 60-frame dashboard smoke check passed.

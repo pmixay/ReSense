@@ -93,7 +93,7 @@ dashboard UTC clocks must be synchronized. These mechanisms are not a braking sa
 | At most 30 ride false events | Accepted detector behavior still has 45 events and 38 STOP episodes. |
 | Independent generalization evidence | The user confirmed no additional untouched real-positive recording. Seen synthetic combinations do not replace one. |
 | Envelope-reference decision | Organizer Q1, rails versus sensor axis, remains unanswered. Axis union stays off. |
-| Final presentation identity | Approved team names, photos and Telegram contacts remain pending. |
+| Final presentation identity | The supplied names/nicks/school and four individual portraits are in a local private preview. City, team-formation details, group photo and contact details remain pending. |
 | At least 75/100 | Current independent reviews score 65.5 and 63.5; the unchanged per-criterion aggregation gives 64/100. Rejected candidates receive no improvement credit. |
 | Final freeze and release | Quality goals remain open; release is explicitly prohibited by the user. |
 

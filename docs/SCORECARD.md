@@ -46,8 +46,10 @@ processing-history reproduction strengthen the evidence about an existing weakne
   column rule. [Causal evidence](evidence/results/quality_cycle_2026-09-26_clear_failure/README.md).
 - No detection-changing candidate is accepted. Edge first STOPs remain at 5.2/10.3 m, ride
   false events at 45 and STOP episodes at 38. Real-positive evidence remains near 56 m.
-- No untouched real-obstacle recording is available. Q1, approved team photos/contacts and
-  human rehearsals remain unresolved. Packaging alone cannot close the detection/range gaps.
+- No untouched real-obstacle recording is available. Q1, city and team-formation details, the
+  group photo, contact details and human rehearsals remain unresolved. The supplied individual
+  portraits and names/nicks/school are used only in the ignored local preview. Packaging alone
+  cannot close the detection/range gaps.
 
 The incorrect clearance guarantees in core comments were corrected in `cc834fc`. Executable
 syntax trees and parameters are unchanged; a fresh full gate reproduces every enforced metric.
@@ -85,10 +87,15 @@ must cite their actual evidence; packaging cannot improve functionality, range o
 
 - The fresh complete gate reproduces **146 gated values** across 199 comparison rows, with no missing rows, regressions or waivers. The earlier count of 183 included unchanged informational rows.
   The [detector seal](DETECTOR_FREEZE.md) verifies 27 source/config/build-input files.
-- Final local suite: **621 tests and 6 subtests pass**, no skips/deselections. Current original-bag
-  idle cold/warm checks pass with first STOP +0.4 s and decode+detect p95 36 ms; clear replay has
-  zero alarms/p95 24 ms. Stock DDS console passes; its clear run has one false alarm within the
-  existing allowance. [Evidence](evidence/freeze_2026-09-26/README.md).
+- The earlier sealed-source suite passed **621 tests and 6 subtests**. On the P1/P2 follow-up
+  branch, the final local suite passed **667 tests and 6 subtests**; one ride-cache case was
+  deselected because `/data/cache/new_data` is absent. The idle/warm original-bag checks in the
+  seal packet passed with first STOP +0.4 s and decode+detect p95 36 ms; clear replay had zero
+  alarms/p95 24 ms. A separate cold-cache CI replay on the P1/P2 branch failed the message-count
+  check (85/201 frames processed); a cadence-preserving follow-up is awaiting its original-bag
+  rerun. Stock DDS console passes; its clear run has one false alarm within the existing
+  allowance. [Sealed-source evidence](evidence/freeze_2026-09-26/README.md),
+  [P1/P2 replay evidence](evidence/p1_p2_completion_2026-09-26/README.md).
 - All **72 preregistered placement cases** were evaluated without later tuning: **45 with any
   match, 544/2,458 visible frames (22.1%)**, zero paired-control matches. This is synthetic
   sensitivity on seen backgrounds, not real holdout recall. Missed whole cases: small center
@@ -96,8 +103,9 @@ must cite their actual evidence; packaging cannot improve functionality, range o
 - All 45 ride false events have visual near-scene annotations: 20 platform/station, 16 tunnel,
   nine uncertain. This does not identify distant alarm causes or establish rates by scene.
 - The UI reports FAULT/CAUTION correctly and calls `clear_distance` estimated monitored range.
-  Rebuilt public deck/PDF and video carry that wording. Approved team information and photos
-  remain pending, as do human rehearsals.
+  Rebuilt public deck/PDF and video carry that wording. The individual portraits and names/nicks/
+  school supplied for the private preview are present locally; city, team-formation details, group
+  photo/contact details and human rehearsals remain pending.
 
 ### What still prevents 75
 
@@ -109,8 +117,8 @@ must cite their actual evidence; packaging cannot improve functionality, range o
 2. **Independent data:** obtain untouched real obstacle sequences and surveyed envelope labels;
    preregister scoring and evaluate once. Q1 on the rail/sensor reference remains unanswered.
    Additional permutations of the tuning recordings cannot satisfy this dependency.
-3. **Deployment and pitch:** verify the exact final CI and public archive, obtain approved team
-   photos/contacts, conduct two human rehearsals and submit the actual organizer form. These
+3. **Deployment and pitch:** verify the exact final CI and public archive, supply the remaining
+   city/team-formation/group-photo/contact details, conduct two human rehearsals and submit the actual organizer form. These
    are finite remaining actions, but their scores alone cannot bring the current detector to 75.
 4. **Runtime limits:** startup deliberately samples a large backlog. Recorded first-STOP offsets
    exclude player disk preloading. A subsequent bounded read-load test passes (see below);

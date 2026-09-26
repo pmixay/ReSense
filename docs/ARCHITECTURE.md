@@ -115,7 +115,7 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   at most `catchup_step` = 0.3 s are processed in full, so a brief executor delay does not discard
   otherwise manageable input. Longer live backlogs are sampled at `catchup_step` = 0.3 s of
   recording (v0.6.4; `input_queue_depth` 40). For the first backlog of a new recording, the
-  P1/P2 follow-up branch preserves each observed input-period frame so the node can recover from
+  P1/P2 follow-up branch preserves each observed input-period frame to let the node recover from
   a cold `ros2 bag play` preload without scene-reset gaps; the 20 s startup cap still applies.
   `catchup_max_lag` keeps the normal backlog within 5 s of the newest frame. Since 26.09,
   `catchup_startup_max_lag` permits 20 s at the start of each recording, because a cold disk can

@@ -2,9 +2,9 @@
   "schema": "resense-p1-p2-completion-v1",
   "date": "2026-09-26",
   "branch": "claude/p1-p2-completion-20260926",
-  "tested_commit": "78b48ef8e4f8f588d17fa0c5f67e85a44087e9d0",
-  "current_branch_commit": "78b48ef8e4f8f588d17fa0c5f67e85a44087e9d0",
-  "post_test_rebase_change": "The full suite passed after the P1 cadence-preserving source and node tests were committed; deck-count presentation files were also updated and the browser suite ran afterward.",
+  "tested_commit": "a7789f7429727f527ee49a408fbaffe6b361af91",
+  "current_branch_commit": "a7789f7429727f527ee49a408fbaffe6b361af91",
+  "post_test_rebase_change": "Final pytest, Chromium and dashboard-smoke runs passed after merging origin/claude/nifty-pascal-lzgl78 at 06845469065d5b7d093210c61c989c1ef34271e4. Upstream core edits are comments/docstrings only; its refreshed full-gate evidence confirms 146 enforced metrics across 199 comparison rows unchanged.",
   "local": {
     "python": "3.12 via /tmp/resense-p4-venv",
     "suite": {
@@ -68,6 +68,7 @@
   },
   "p1_followup_worktree": {
     "source_commit": "78b48ef8e4f8f588d17fa0c5f67e85a44087e9d0",
+    "integrated_tested_commit": "a7789f7429727f527ee49a408fbaffe6b361af91",
     "change": "First-recording backlog preserves every observed input-period frame within the 20 s startup cap, including after a slower prior recording; later live backlogs keep catchup_step and the 5 s bound.",
     "node_tests_passed": 47,
     "full_suite": {
@@ -76,6 +77,15 @@
       "deselected": 1,
       "subtests_passed": 6,
       "warnings": 5
+    },
+    "browser_tests": {
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0
+    },
+    "dashboard_smoke": {
+      "result": "PASS",
+      "frames": 60
     },
     "original_bag_cold_ci": "pending; first attempt failed before this correction",
     "pushed": false
@@ -92,7 +102,15 @@
       "artifact_id": 10917590342,
       "artifact_url": "https://github.com/pmixay/ReSense/actions/runs/36274548282/artifacts/10917590342",
       "durable_record": "cold_bag_failed_run_36274548282/README.md"
-    }
+    },
+    "corrected_cold_replay_status": "pending; no CI rerun of the cadence correction yet",
+    "prior_cold_run_36274548282": {
+      "conclusion": "failure",
+      "viewer_simulation": "PASS",
+      "cold_bag": "FAIL; 85/201 processed, 84 original messages unprocessed after +5 s",
+      "artifact_id": 10917590342
+    },
+    "merged_work_branch": "06845469065d5b7d093210c61c989c1ef34271e4"
   },
   "release_and_detector_freeze": "remain on hold; this P1/P2 work makes no detector-quality claim"
 }

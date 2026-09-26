@@ -24,7 +24,8 @@ frames, 13 km, no obstacles).
   existing 5 s backlog limit. The bag acceptance checker matches each message's header timestamp,
   fixing false loss reports from receive-clock drift. P4 completed 72 preregistered object/background combinations:
   45 with any match, 544/2,458 visible frames, zero paired-control matches; no tuning followed.
-  All 45 ride false events have scene reviews. Fresh full gate: 183 unchanged values, no waivers.
+  All 45 ride false events have scene reviews. Refreshed full gate: 146 enforced metrics across 199
+  comparison rows unchanged, no waivers ([quality cycle](docs/QUALITY_CYCLE_2026-09-26.md)).
   The 25.09 original-bag replay and stock DDS check passed, but a fresh cold-cache replay on 26.09
   failed its message-count criterion; its logs are retained below. The full-data run on the second
   machine passed 621 tests and 6 subtests; this checkout's cadence-preserving follow-up passes
