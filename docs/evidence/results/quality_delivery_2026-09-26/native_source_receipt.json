@@ -1,0 +1,49 @@
+{
+  "package_version": "1.0.0",
+  "native": "native (_resense_native.cpython-310-x86_64-linux-gnu.so)",
+  "native_available": true,
+  "native_enabled": true,
+  "sources": {
+    "resense/detector.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/detector.py",
+      "sha256": "0e034c192803126f762caddb22ecc47087606716c2698248f0c813877dfd5565"
+    },
+    "resense/health.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/health.py",
+      "sha256": "dd8f34dac8c886ebd88ba49d0a950b6bc9c12a810bb1b583f6a6c076f7e61546"
+    },
+    "resense/_native.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/_native.py",
+      "sha256": "7417a55c2b0ddc9b95a5d46d78b6af9b724203475890a59a0be4a022c6d4fd58"
+    },
+    "configs/default.yaml": {
+      "path": "/opt/resense/configs/default.yaml",
+      "sha256": "c7ca5ad4f332b7025f66ab0addeb21025daf23a36aca4dbcc2d49fe5b8831f40"
+    },
+    "native/resense_native.cpp": {
+      "path": "/opt/resense/native/resense_native.cpp",
+      "sha256": "85688be18c41c68111f30e2bc45b83186650c1eead8b24a254d15c97cb2592f1"
+    },
+    "ros2_ws/src/resense_ros/resense_ros/detector_node.py": {
+      "path": "/opt/resense/ros2_ws/build/resense_ros/resense_ros/detector_node.py",
+      "sha256": "95d1721d3b3238a0fa0358f98740a83b6069404411767e94bd5dd227d2de9274"
+    },
+    "ros2_ws/src/resense_ros/launch/detector.launch.py": {
+      "path": "/opt/resense/ros2_ws/src/resense_ros/launch/detector.launch.py",
+      "sha256": "c6148e4edd7d7b95e607a4950fd9e1be108f649aa07bd6cd6d3e7a914f3748dd"
+    },
+    "scripts/check_dry_run.py": {
+      "path": "/opt/resense/scripts/check_dry_run.py",
+      "sha256": "77afeb5a7520d61b858e8de195a5176abd0afedcb278a071989f217b0fd408be"
+    },
+    "scripts/smoke_test.sh": {
+      "path": "/opt/resense/scripts/smoke_test.sh",
+      "sha256": "0f24081f98cba493dfd01b7e457047e3bd0af7b7fd9e5d0fae97f74160b6fd90"
+    },
+    "docker/entrypoint.sh": {
+      "path": "/entrypoint.sh",
+      "sha256": "100c1a5584e26ffd3bc6358734efd4846fc4ece23e2c7552e74e39d7b2394ff9"
+    }
+  },
+  "passed": true
+}

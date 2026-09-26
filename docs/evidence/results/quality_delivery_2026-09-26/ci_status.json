@@ -1,0 +1,559 @@
+{
+  "checked_utc": "2026-09-26T22:27:46.461583+00:00",
+  "source_sha": "d480b1330491da838d6fb4996e34e37b3c060915",
+  "run_id": 36275557220,
+  "run_attempt": 1,
+  "run_url": "https://github.com/pmixay/ReSense/actions/runs/36275557220",
+  "status": "completed",
+  "conclusion": "success",
+  "all_six_passed": true,
+  "jobs": [
+    {
+      "id": 108497477873,
+      "name": "offline-build",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-09-26T22:13:20Z",
+      "completed_at": "2026-09-26T22:17:22Z",
+      "html_url": "https://github.com/pmixay/ReSense/actions/runs/36275557220/job/108497477873",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-09-26T22:13:20Z",
+          "completed_at": "2026-09-26T22:13:21Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-09-26T22:13:21Z",
+          "completed_at": "2026-09-26T22:13:27Z"
+        },
+        {
+          "name": "the release archive (scripts/export_image.sh; GZIP_LEVEL=1 for speed)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-09-26T22:13:27Z",
+          "completed_at": "2026-09-26T22:14:58Z"
+        },
+        {
+          "name": "remove every image and the build cache, load the archive (scripts/load_image.sh)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-09-26T22:14:58Z",
+          "completed_at": "2026-09-26T22:15:12Z"
+        },
+        {
+          "name": "docker build with no internet from the loaded archive (the documented command)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-09-26T22:15:12Z",
+          "completed_at": "2026-09-26T22:15:19Z"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-09-26T22:15:19Z",
+          "completed_at": "2026-09-26T22:15:26Z"
+        },
+        {
+          "name": "the two synthetic smoke bags, made on the runner (the runtime image cannot make them)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-09-26T22:15:26Z",
+          "completed_at": "2026-09-26T22:16:37Z"
+        },
+        {
+          "name": "no internet, the release archive's runtime image \u2014 node, recorder and a uid-1000 player on an internal network",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-09-26T22:16:37Z",
+          "completed_at": "2026-09-26T22:17:13Z"
+        },
+        {
+          "name": "the archive as a download, named after the commit (push to the working branch or main)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-09-26T22:17:13Z",
+          "completed_at": "2026-09-26T22:17:15Z"
+        },
+        {
+          "name": "upload the archive and its .sha256 (Actions run \u2192 Artifacts; kept 30 days)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-09-26T22:17:15Z",
+          "completed_at": "2026-09-26T22:17:20Z"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-09-26T22:17:20Z",
+          "completed_at": "2026-09-26T22:17:20Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-09-26T22:17:20Z",
+          "completed_at": "2026-09-26T22:17:20Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-09-26T22:17:20Z",
+          "completed_at": "2026-09-26T22:17:20Z"
+        }
+      ]
+    },
+    {
+      "id": 108497478040,
+      "name": "web",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-09-26T22:13:20Z",
+      "completed_at": "2026-09-26T22:15:33Z",
+      "html_url": "https://github.com/pmixay/ReSense/actions/runs/36275557220/job/108497478040",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-09-26T22:13:21Z",
+          "completed_at": "2026-09-26T22:13:22Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-09-26T22:13:22Z",
+          "completed_at": "2026-09-26T22:13:29Z"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-09-26T22:13:29Z",
+          "completed_at": "2026-09-26T22:13:29Z"
+        },
+        {
+          "name": "Run sudo apt-get update -qq && sudo apt-get install -y -qq libegl1 libgl1 libgomp1 libusb-1.0-0",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-09-26T22:13:29Z",
+          "completed_at": "2026-09-26T22:13:43Z"
+        },
+        {
+          "name": "Run pip install -e \".[dev]\" playwright && python -m playwright install --with-deps chromium",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-09-26T22:13:43Z",
+          "completed_at": "2026-09-26T22:14:53Z"
+        },
+        {
+          "name": "Run python -m pytest -q -rs web/demo",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-09-26T22:14:53Z",
+          "completed_at": "2026-09-26T22:15:17Z"
+        },
+        {
+          "name": "Run python web/demo/make_demo_run.py --out out/demo_run.jsonl && python web/demo/check_dashboard.py --jsonl out/demo_run.jsonl --screenshot out/dashboard_synthetic.png",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-09-26T22:15:17Z",
+          "completed_at": "2026-09-26T22:15:30Z"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-09-26T22:15:30Z",
+          "completed_at": "2026-09-26T22:15:30Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-09-26T22:15:30Z",
+          "completed_at": "2026-09-26T22:15:30Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-09-26T22:15:30Z",
+          "completed_at": "2026-09-26T22:15:30Z"
+        }
+      ]
+    },
+    {
+      "id": 108497478043,
+      "name": "docker",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-09-26T22:13:20Z",
+      "completed_at": "2026-09-26T22:23:07Z",
+      "html_url": "https://github.com/pmixay/ReSense/actions/runs/36275557220/job/108497478043",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-09-26T22:13:21Z",
+          "completed_at": "2026-09-26T22:13:22Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-09-26T22:13:22Z",
+          "completed_at": "2026-09-26T22:13:28Z"
+        },
+        {
+          "name": "Run docker build -t resense:ci --build-arg WITH_TOOLS=1 -f docker/Dockerfile .",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-09-26T22:13:28Z",
+          "completed_at": "2026-09-26T22:15:07Z"
+        },
+        {
+          "name": "unit tests inside the image (with open3d, so the synthetic-tunnel suite really runs)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-09-26T22:15:07Z",
+          "completed_at": "2026-09-26T22:17:13Z"
+        },
+        {
+          "name": "ROS 2 package is importable and the launch file resolves",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-09-26T22:17:13Z",
+          "completed_at": "2026-09-26T22:17:14Z"
+        },
+        {
+          "name": "ROS 2 smoke test \u2014 two synthetic bags, both topic / frame pairs, through one running node (no dataset needed)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-09-26T22:17:14Z",
+          "completed_at": "2026-09-26T22:18:04Z"
+        },
+        {
+          "name": "the organizers' way \u2014 the node in its own container, the bags played by a normal user from another one",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-09-26T22:18:04Z",
+          "completed_at": "2026-09-26T22:18:51Z"
+        },
+        {
+          "name": "the jury's console with stock Fast DDS \u2014 a uid-1000 player and listener without our profile, shared memory on",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-09-26T22:18:51Z",
+          "completed_at": "2026-09-26T22:19:22Z"
+        },
+        {
+          "name": "opt-in shared-memory mode (RESENSE_DDS=shm) \u2014 the stock uid-1000 player and listener reach the root node through /dev/shm",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-09-26T22:19:22Z",
+          "completed_at": "2026-09-26T22:19:53Z"
+        },
+        {
+          "name": "opt-in shared-memory mode \u2014 a player without shared memory (the image's UDP-only profile) still reaches the node",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-09-26T22:19:53Z",
+          "completed_at": "2026-09-26T22:20:24Z"
+        },
+        {
+          "name": "offline delivery \u2014 docker save, docker rmi, docker load of the image built above",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-09-26T22:20:24Z",
+          "completed_at": "2026-09-26T22:21:20Z"
+        },
+        {
+          "name": "no network at all \u2014 the smoke test inside the loaded image with --network none",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-09-26T22:21:20Z",
+          "completed_at": "2026-09-26T22:22:11Z"
+        },
+        {
+          "name": "no internet, the organizers' way \u2014 node and a uid-1000 player in separate containers on an internal network",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-09-26T22:22:11Z",
+          "completed_at": "2026-09-26T22:22:59Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-09-26T22:22:59Z",
+          "completed_at": "2026-09-26T22:23:00Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-09-26T22:23:00Z",
+          "completed_at": "2026-09-26T22:23:00Z"
+        }
+      ]
+    },
+    {
+      "id": 108497478067,
+      "name": "pytest",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-09-26T22:13:20Z",
+      "completed_at": "2026-09-26T22:16:45Z",
+      "html_url": "https://github.com/pmixay/ReSense/actions/runs/36275557220/job/108497478067",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-09-26T22:13:21Z",
+          "completed_at": "2026-09-26T22:13:22Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-09-26T22:13:22Z",
+          "completed_at": "2026-09-26T22:13:28Z"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-09-26T22:13:28Z",
+          "completed_at": "2026-09-26T22:13:36Z"
+        },
+        {
+          "name": "Run sudo apt-get update -qq && sudo apt-get install -y -qq libegl1 libgl1 libgomp1 libusb-1.0-0",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-09-26T22:13:36Z",
+          "completed_at": "2026-09-26T22:13:50Z"
+        },
+        {
+          "name": "Run pip install -e \".[dev]\"",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-09-26T22:13:50Z",
+          "completed_at": "2026-09-26T22:14:28Z"
+        },
+        {
+          "name": "Run python -c \"import open3d, sys; print('open3d', open3d.__version__, 'python', sys.version)\"",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-09-26T22:14:28Z",
+          "completed_at": "2026-09-26T22:14:30Z"
+        },
+        {
+          "name": "Run python -m pytest -rs -q --junitxml=junit.xml",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-09-26T22:14:30Z",
+          "completed_at": "2026-09-26T22:16:41Z"
+        },
+        {
+          "name": "no test may have been skipped",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-09-26T22:16:41Z",
+          "completed_at": "2026-09-26T22:16:41Z"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-09-26T22:16:41Z",
+          "completed_at": "2026-09-26T22:16:42Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-09-26T22:16:42Z",
+          "completed_at": "2026-09-26T22:16:42Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-09-26T22:16:42Z",
+          "completed_at": "2026-09-26T22:16:42Z"
+        }
+      ]
+    },
+    {
+      "id": 108497478075,
+      "name": "params-in-sync",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-09-26T22:13:20Z",
+      "completed_at": "2026-09-26T22:13:31Z",
+      "html_url": "https://github.com/pmixay/ReSense/actions/runs/36275557220/job/108497478075",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-09-26T22:13:20Z",
+          "completed_at": "2026-09-26T22:13:21Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-09-26T22:13:21Z",
+          "completed_at": "2026-09-26T22:13:28Z"
+        },
+        {
+          "name": "Run ./scripts/sync_params.sh --check",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-09-26T22:13:28Z",
+          "completed_at": "2026-09-26T22:13:28Z"
+        },
+        {
+          "name": "frozen detector source and validation evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-09-26T22:13:28Z",
+          "completed_at": "2026-09-26T22:13:28Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-09-26T22:13:28Z",
+          "completed_at": "2026-09-26T22:13:28Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-09-26T22:13:28Z",
+          "completed_at": "2026-09-26T22:13:28Z"
+        }
+      ]
+    },
+    {
+      "id": 108497478081,
+      "name": "lint",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-09-26T22:13:20Z",
+      "completed_at": "2026-09-26T22:13:33Z",
+      "html_url": "https://github.com/pmixay/ReSense/actions/runs/36275557220/job/108497478081",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-09-26T22:13:21Z",
+          "completed_at": "2026-09-26T22:13:21Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-09-26T22:13:21Z",
+          "completed_at": "2026-09-26T22:13:27Z"
+        },
+        {
+          "name": "Run pipx run ruff==0.15.8 check --output-format github .",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-09-26T22:13:27Z",
+          "completed_at": "2026-09-26T22:13:31Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-09-26T22:13:31Z",
+          "completed_at": "2026-09-26T22:13:31Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-09-26T22:13:31Z",
+          "completed_at": "2026-09-26T22:13:31Z"
+        }
+      ]
+    }
+  ],
+  "acceptance_or_release_claim": false
+}

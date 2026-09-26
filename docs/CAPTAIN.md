@@ -34,8 +34,9 @@ The current P3d core plus freshness code, `d480b1330491da838d6fb4996e34e37b3c060
 all six jobs in [CI run 36275557220](https://github.com/pmixay/ReSense/actions/runs/36275557220).
 The loaded runtime archive passes explicit replay/freshness checks and asserts that native
 kernels are available and enabled. These synthetic CI checks do not close the original-bag
-clear failure. Download and local source/native verification of this exact CI archive are
-pending separately from public publication (§4); the combined M2 archive has different source.
+clear failure. Download, checksum, offline loading and local source/native verification of
+this exact CI archive pass ([receipts](evidence/results/quality_delivery_2026-09-26/README.md)).
+Public publication remains on hold (§4); the combined M2 archive has different source.
 
 P4 traced the exact target points and histories of all 45 ride false events; 14 causes remain
 unresolved. P3 traced all organizer-object frames and all 72 placement cases. M2 preserves all
@@ -176,9 +177,10 @@ not replace this later failure or establish acceptance of the current root image
 - [x] Exact code revision `d480b1330491da838d6fb4996e34e37b3c060915`: all six jobs pass in
   [CI run 36275557220](https://github.com/pmixay/ReSense/actions/runs/36275557220), including
   loaded runtime native-kernel assertions and synthetic replay with required freshness.
-- [ ] Download that CI runtime archive and checksum; record local offline loading, imported
-  source hashes and enabled native kernels. Keep it as a current-source review artifact;
-  preserve the older local `latest` image. Local verification receipt is pending.
+- [x] Download that CI runtime archive and verify checksum, offline loading, imported source
+  hashes and enabled native kernels. The older local `latest` image is restored. This is a
+  current-source review artifact; [verification receipts](evidence/results/quality_delivery_2026-09-26/README.md)
+  do not establish final detector acceptance.
 - [ ] Close the remaining detector quality gates, including the clear-bag failure, sustained
   detection, false alarms and monitored-range overclaims; independently rejudge any accepted
   improvement. The current 64/100 does not meet the 75/100 target.

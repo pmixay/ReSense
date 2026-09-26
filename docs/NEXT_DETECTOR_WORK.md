@@ -22,8 +22,10 @@ and green regression gate do not close the quality gaps.
 - Current P3d plus freshness code `d480b1330491da838d6fb4996e34e37b3c060915` passes all six jobs
   in [CI run 36275557220](https://github.com/pmixay/ReSense/actions/runs/36275557220), including
   loaded runtime native-kernel assertions and synthetic replay with required freshness.
-  Local download/checksum/source/native verification of that exact archive is pending; public
-  publication is a separate prohibited action. [Captain checklist](CAPTAIN.md#4-current-completion-and-remaining-actions).
+  Local download, checksum, offline loading and source/native verification pass
+  ([receipts](evidence/results/quality_delivery_2026-09-26/README.md)); the previous local image
+  is restored. Public publication remains prohibited.
+  [Captain checklist](CAPTAIN.md#4-current-completion-and-remaining-actions).
 
 ## Further detector development remains
 
@@ -41,7 +43,7 @@ preregistered acceptance checks and independent review. Remaining goals are:
 - Rejudge an accepted improvement against the quality criteria. The current provisional
   independent aggregation is 64/100; the 75/100 target remains unmet.
 
-Archive delivery, approved team information/photos, human rehearsals and the captain's personal
+Public archive delivery, approved team information/photos, human rehearsals and the captain's personal
 submission remain on the [captain board](CAPTAIN.md#4-current-completion-and-remaining-actions).
 
 ## Original priority and evidence, before this cycle

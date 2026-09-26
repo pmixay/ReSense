@@ -79,6 +79,11 @@ The prior baseline image remains separately preserved. No tag or release is publ
 [Captures, exact image identity and archive receipt](evidence/results/quality_freshness_2026-09-26/README.md).
 The combined image contains M2; it is not an acceptance record for the main branch's P3d core.
 
+The separate P3d-plus-freshness CI archive at `d480b13` passes local checksum, offline load,
+revision, installed/imported source and enabled-native checks. All six CI jobs pass for that
+source. The previous local image is restored. [Delivery receipts](evidence/results/quality_delivery_2026-09-26/README.md)
+record its exact identity; successful delivery does not close the detector acceptance failures.
+
 Freshness is validated at publication. The watchdog shares the detector executor and cannot
 run while that executor is blocked. An actionable consumer must expire timestamped status on
 its own timer; the plain decision topic cannot prove current validity. Source, node and live
@@ -115,3 +120,4 @@ dashboard UTC clocks must be synchronized. These mechanisms are not a braking sa
 - [T1 rejection and full results](evidence/results/quality_cycle_2026-09-26_T1/README.md)
 - [Main branch test evidence](evidence/results/quality_root_checks_2026-09-26/README.md)
 - [Comment-only baseline refresh](evidence/results/quality_comment_baseline_2026-09-26/README.md)
+- [Current-source offline delivery verification](evidence/results/quality_delivery_2026-09-26/README.md)
