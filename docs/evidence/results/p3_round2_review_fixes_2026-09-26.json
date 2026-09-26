@@ -44,5 +44,30 @@
       "the safety rule decides": "a row worse is not traded against a row better"
     },
     "baseline_rule": "if any gated or recorded value of the final clean commit's gate differs from regression_baseline_2026-09-25_ride_p3b.json, that file is re-cut from the final run (without its gate block); its name does not change, so docs/CAPTAIN.md is not edited"
+  },
+  "run_C1": {
+    "commit": "f4a3e30 (clean; native path; --jobs 3)",
+    "gate": "exit 0 against regression_baseline_2026-09-25_ride_p3.json: 6 gated rows better, none worse (the round-2 rows); against _ride_p3b.json every row but latency the same",
+    "sweep_A1": "0 STOP frames lost in the 18 gating runs against the same code with refine_min_deg 0 (1 gained: (+2, +2) 10 Hz frame 117); the refinement fired only at 10 Hz (0, +2) and (+2, +2), at frame 50; against 17a850d with refine_min_deg 0 (recorded): 19 frames lost, 24 gained, see cause (1)",
+    "stress": "5 Hz five bags 10 / 10 (same), doubleT_obstacle 89/123 @ 18 (current 92/123 @ 12: WORSE); +3 deg roll 14 / 16 (current 11 / 13: WORSE; roundT_doubleT 2 / 2, squareT_platform_squareT_switch 8 / 11, roundT_pressureGate_roundT 0 / 0), doubleT_obstacle 183/246 @ 12 (better); +3 deg pitch 16 / 17 (same), 186/246 @ 11 (same)",
+    "verdict": "FAILS the stress rule; not shipped",
+    "causes_traced": [
+      "(1) F1c: at 5 Hz the provisional correction (3.1 deg, frame 8) came after the object's track was REPORTED AS ADVISORY (the tilted rig put it outside the strict envelope for its first 4 hits); F1c kept it (only unreported tracks dropped) with that zone history, so its zone vote stayed advisory until frame 18 (17a850d reset the tracker and a fresh track was a STOP at frame 12). The same in the sweep's 5 Hz runs (frames 12-18 lost against 17a850d). A zone history taken in the wrong frame is what the reset was for.",
+      "(2) F1a: the per-axis raw trigger keeps the provisional value of an axis whose raw median moved less than 0.5 deg, including a noise-level one the final would zero: squareT_platform_squareT_switch (+3 deg roll) kept pitch -0.69 for 19 s (the shipped rule zeroed it at frame 40: 10 -> 5 events), roundT_doubleT kept pitch +0.35 (a new event at frames 91-93); roundT_pressureGate_roundT was not refined at all."
+    ]
+  },
+  "addendum_1": {
+    "written_at_utc": "2026-09-26T01:07:04Z",
+    "before_any_result": "written after the C1 runs above and before any code or run of C1b",
+    "amended_fixes": {
+      "F1a' (replaces F1a)": "the refinement trigger is the shipped one again (the tilt the final would set from the spaced observations so far, zeroed below apply_min_deg, differs from the applied tilt by at least refine_min_deg in roll or pitch; then all axes take it), but it must hold on refine_confirm_obs 2 spaced observations in a row and at most calibration.refine_max 1 refinement is made per calibration: it cannot flap (one extra correction at most before the final). calibration.refine_raw_trigger stays in the code as a tried option, default false (C1 above).",
+      "F1c' (replaces F1c)": "only a track reported in zone gauge (a STOP) is held and, on a change above 1 deg, kept; on such a change every other track is dropped as the reset did; on a change up to 1 deg every track is kept as before (rotated); a new orientation resets the tracker"
+    },
+    "candidates_in_order": {
+      "C1b": "F1a' (confirm 2, refine_max 1) + F1b + F1c' + F1d + F2 + F3; refine_min_deg 0.5",
+      "C1c": "C1b with refine_confirm_obs 1 (only if C1b fails for a reason a refinement one observation earlier could change)",
+      "C3": "C1b with refine_min_deg 0 (the fallback)"
+    },
+    "ship_rule": "unchanged (gate, sweep A1 on the same 18 runs against the same code with refine_min_deg 0, stress no worse than the current numbers, tests); C1 is recorded as failed"
   }
 }
