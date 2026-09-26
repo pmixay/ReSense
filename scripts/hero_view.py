@@ -70,7 +70,7 @@ class Camera:
         return u, v, d[:, 0]
 
 
-def render(frame, res, path, name, index, lang="ru", x_max=110.0, W=1920, H=1080, hud=True):
+def render(frame, res, path, name, index, lang="ru", x_max=110.0, W=1920, H=1080, hud=True, foot=None):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -184,7 +184,8 @@ def render(frame, res, path, name, index, lang="ru", x_max=110.0, W=1920, H=1080
     x_right = ax.transData.inverted().transform(chip.get_bbox_patch().get_window_extent())[1, 0]
     ax.text(x_right + 24, 70, sub, color="white", fontsize=26, va="center")
     import textwrap
-    foot = "\n".join(textwrap.wrap(t["foot"].format(name=name, i=index), width=max(40, int((W - 120) / 12.5))))
+    foot = "\n".join(textwrap.wrap((foot or t["foot"]).format(name=name, i=index),
+                                  width=max(40, int((W - 120) / 12.5))))
     ax.text(60, H - 30, foot, color=LIGHT, fontsize=15, va="bottom", linespacing=1.4,
             bbox=dict(boxstyle="round,pad=0.4", fc=BG, ec="none", alpha=0.85))
     fig.savefig(path, dpi=120, facecolor=BG)
@@ -203,6 +204,8 @@ def main():
     ap.add_argument("--x-max", type=float, default=110.0)
     ap.add_argument("--name", default=None, help="recording name for the footer (default: the directory name)")
     ap.add_argument("--size", default="1920x1080", help="picture size WxH in pixels")
+    ap.add_argument("--foot", default=None, help="footer text with {name} and {i} (default: the real-data footer; "
+                    "say what the data is, e.g. the organizers' synthetic objects in cloud_with_fake_obj)")
     ap.add_argument("--no-hud", action="store_true", help="only the cloud, the envelope and the boxes (no decision "
                     "chip, close-up or footer)")
     a = ap.parse_args()
@@ -218,13 +221,13 @@ def main():
         res, idx = det.process(frame), i
         if a.sequence is not None and i >= a.sequence:
             render(frame, res, os.path.join(a.out, f"frame_{i:05d}.png"), name, i, lang=a.lang, x_max=a.x_max,
-                   W=W, H=H, hud=not a.no_hud)
+                   W=W, H=H, hud=not a.no_hud, foot=a.foot)
         if i >= a.frame:
             break
     if res is None:
         sys.exit("no frames")
     if a.sequence is None:
-        render(frame, res, a.out, name, idx, lang=a.lang, x_max=a.x_max, W=W, H=H, hud=not a.no_hud)
+        render(frame, res, a.out, name, idx, lang=a.lang, x_max=a.x_max, W=W, H=H, hud=not a.no_hud, foot=a.foot)
     print(f"{a.out}: frame {idx} obstacle={res.obstacle} clear_distance={res.clear_distance:.1f} m "
           f"detections={[round(d.distance, 1) for d in res.detections]}")
 

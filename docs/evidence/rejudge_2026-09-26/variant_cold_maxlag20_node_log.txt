@@ -1,0 +1,13 @@
+[INFO] [launch]: All log files can be found below /root/.ros/log/2026-09-26-16-20-01-978368-41fa49fb567d-22
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [detector_node-1]: process started with pid [26]
+[detector_node-1] [INFO] [1790439603.174234910] [resense_detector]: sensor mount: forward=-y left=+x up=+z roll/pitch/yaw=0.0/0.0/0.0 deg; auto-calibration on
+[detector_node-1] [INFO] [1790439603.206158208] [resense_detector]: ReSense detector listening on /lidar_points, /sensing/lidar/hesai128/pointcloud (+ auto-discovery); input reliability auto; per-frame kernels: native (_resense_native.cpython-310-x86_64-linux-gnu.so); resense 1.0.0
+[detector_node-1] [INFO] [1790439633.329770808] [resense_detector]: 6.8 s of recording waiting: catching up, one frame every 0.3 s of recording
+[detector_node-1] [INFO] [1790439633.330581332] [resense_detector]: input 1: /sensing/lidar/hesai128/pointcloud (frame_id=lidar_livox, 921600 points)
+[detector_node-1] [INFO] [1790439633.331691874] [resense_detector]: static TF resense_lidar -> lidar_livox (identity)
+[detector_node-1] [INFO] [1790439633.437241441] [resense_detector]: mount calibration: pending - 
+[detector_node-1] [INFO] [1790439633.448320069] [resense_detector]: frame 1: clear; axis y=+0.07 R=51304; 0.4 fps; latency mean 114 / p95 114 / max 114 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up)
+[detector_node-1] [INFO] [1790439635.839086930] [resense_detector]: mount calibration: provisional - provisional tilt: roll +3.09, pitch -0.85 deg (final after 20 observations)
+[detector_node-1] [INFO] [1790439635.845755551] [resense_detector]: frame 5: clear; axis y=+0.16 R=16964; 1.7 fps; latency mean 96 / p95 113 / max 116 ms; input period 100 ms; dropped 4 (4 skipped by the catch-up)
+[detector_node-1] [INFO] [1790439637.269762858] [resense_detector]: frame 24: OBSTACLE at 56.1 m; axis y=+0.03 R=-8293; 13.3 fps; latency mean 74 / p95 85 / max 85 ms; input period 100 ms; dropped 31 (31 skipped by the catch-up)

@@ -1,0 +1,219 @@
+{
+  "config_sha256": "5551873a59e35fa422ab966a078afd434a72a29361e9e6c462c4e5ab2ca076cd",
+  "every": 2,
+  "mount": "as_recorded",
+  "recordings": {
+    "doubleT_obstacle": {
+      "frames": 101,
+      "alarm_frames": 95,
+      "alarm_events": 2,
+      "advisory_frames": 5,
+      "alarm_dist": [
+        55.6,
+        56.6
+      ],
+      "health": {
+        "ok": 9,
+        "warn": 92,
+        "error": 0
+      },
+      "monitored_range_median": 151.0,
+      "labelled": {
+        "recall": 0.748,
+        "first_alarm_frame": 12,
+        "fp_frames": 0,
+        "fp_events": 0,
+        "per_bin": {
+          "50-100": [
+            92,
+            123
+          ]
+        },
+        "distance_error_max_abs": 0.10999999999999943
+      },
+      "stop_episodes": 1,
+      "events": {
+        "3": {
+          "first": 12,
+          "last": 74,
+          "frames": 32,
+          "distance": 55.56
+        },
+        "7": {
+          "first": 76,
+          "last": 200,
+          "frames": 63,
+          "distance": 56.14
+        }
+      },
+      "mount_status": {
+        "pending": 4,
+        "provisional": 91,
+        "ok": 6
+      }
+    },
+    "doubleT_platform": {
+      "frames": 173,
+      "alarm_frames": 5,
+      "alarm_events": 3,
+      "advisory_frames": 108,
+      "alarm_dist": [
+        26.4,
+        36.8
+      ],
+      "health": {
+        "ok": 11,
+        "warn": 162,
+        "error": 0
+      },
+      "monitored_range_median": 120.0,
+      "stop_episodes": 1,
+      "events": {
+        "19": {
+          "first": 34,
+          "last": 38,
+          "frames": 3,
+          "distance": 36.77
+        },
+        "22": {
+          "first": 38,
+          "last": 40,
+          "frames": 2,
+          "distance": 35.74
+        },
+        "26": {
+          "first": 40,
+          "last": 42,
+          "frames": 2,
+          "distance": 30.5
+        }
+      },
+      "mount_status": {
+        "pending": 110,
+        "identity": 63
+      }
+    },
+    "roundT_doubleT": {
+      "frames": 126,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "advisory_frames": 80,
+      "alarm_dist": null,
+      "health": {
+        "ok": 15,
+        "warn": 111,
+        "error": 0
+      },
+      "monitored_range_median": 142.5,
+      "stop_episodes": 0,
+      "events": {},
+      "mount_status": {
+        "pending": 95,
+        "identity": 31
+      }
+    },
+    "roundT_pressureGate_roundT": {
+      "frames": 134,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "advisory_frames": 59,
+      "alarm_dist": null,
+      "health": {
+        "ok": 118,
+        "warn": 16,
+        "error": 0
+      },
+      "monitored_range_median": 130.8,
+      "stop_episodes": 0,
+      "events": {},
+      "mount_status": {
+        "pending": 95,
+        "identity": 39
+      }
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "frames": 273,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "advisory_frames": 113,
+      "alarm_dist": null,
+      "health": {
+        "ok": 273,
+        "warn": 0,
+        "error": 0
+      },
+      "monitored_range_median": 157.0,
+      "stop_episodes": 0,
+      "events": {},
+      "mount_status": {
+        "pending": 95,
+        "identity": 178
+      }
+    },
+    "squareT_platform_squareT_switch": {
+      "frames": 439,
+      "alarm_frames": 33,
+      "alarm_events": 7,
+      "advisory_frames": 215,
+      "alarm_dist": [
+        82.7,
+        147.7
+      ],
+      "health": {
+        "ok": 431,
+        "warn": 8,
+        "error": 0
+      },
+      "monitored_range_median": 140.1,
+      "stop_episodes": 9,
+      "events": {
+        "94": {
+          "first": 310,
+          "last": 314,
+          "frames": 3,
+          "distance": 147.72
+        },
+        "105": {
+          "first": 352,
+          "last": 354,
+          "frames": 2,
+          "distance": 88.88
+        },
+        "144": {
+          "first": 522,
+          "last": 524,
+          "frames": 2,
+          "distance": 94.28
+        },
+        "150": {
+          "first": 546,
+          "last": 620,
+          "frames": 18,
+          "distance": 82.72
+        },
+        "164": {
+          "first": 612,
+          "last": 614,
+          "frames": 2,
+          "distance": 94.16
+        },
+        "168": {
+          "first": 632,
+          "last": 638,
+          "frames": 4,
+          "distance": 147.46
+        },
+        "174": {
+          "first": 702,
+          "last": 706,
+          "frames": 3,
+          "distance": 139.59
+        }
+      },
+      "mount_status": {
+        "pending": 95,
+        "identity": 344
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+## gate_native
+doubleT_obstacle                          201    188      2      3     84   11
+doubleT_platform                          345      9      5      2    177   34
+roundT_doubleT                            252      2      1      1    173  233
+roundT_pressureGate_roundT                268      0      0      0    104    -
+roundT_squareT_pressureGate_squareT       545      0      0      0    146    -
+squareT_platform_squareT_switch           877     55     10     16    394  148
+GATE FAIL: 5 gated metric(s) worse: recordings.doubleT_platform.alarm_events, recordings.doubleT_platform.stop_episodes, ride.alarm_events, ride.stop_episodes, set_O.objects.small_outside_near.false_stop_frames (7 gated better, 0 worse but allowed, 32 information rows changed)

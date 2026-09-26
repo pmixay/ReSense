@@ -1,0 +1,1 @@
+variant nearbed: GATE_ARGS="--set lowobj.near_enabled=true", baseline = the HEAD gate of 25.09 with the ride (/home/mdm/gate_ref/head_7290873_ride.json)

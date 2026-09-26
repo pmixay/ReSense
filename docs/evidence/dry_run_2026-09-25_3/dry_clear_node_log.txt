@@ -1,0 +1,24 @@
+[INFO] [launch]: All log files can be found below /root/.ros/log/2026-09-25-18-31-29-443396-compute-vm-2-2-90-ssd-1790359373525df-22
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [detector_node-1]: process started with pid [43]
+[detector_node-1] [INFO] [1790361090.311759717] [resense_detector]: sensor mount: forward=-y left=+x up=+z roll/pitch/yaw=0.0/0.0/0.0 deg; auto-calibration on
+[detector_node-1] [INFO] [1790361090.391500842] [resense_detector]: ReSense detector listening on /lidar_points, /sensing/lidar/hesai128/pointcloud (+ auto-discovery); input reliability auto; per-frame kernels: native (_resense_native.cpython-310-x86_64-linux-gnu.so); resense 1.0.0
+[detector_node-1] [WARN] [1790361090.392532886] [resense_detector]: net.core.rmem_max = 212992, net.core.rmem_default = 212992: below 32 MiB. A bag player may then deliver few or none of the ~24 MB 360-degree clouds to this node (CycloneDDS always, stock Fast DDS on some hosts; the 120-degree clouds arrive). Fix on the host, before playing: sudo sysctl -w net.core.rmem_max=33554432 net.core.rmem_default=33554432
+[detector_node-1] [INFO] [1790361098.688382834] [resense_detector]: input 1: /lidar_points (frame_id=hesai_lidar, 307200 points)
+[detector_node-1] [INFO] [1790361098.689109557] [resense_detector]: static TF resense_lidar -> hesai_lidar (identity)
+[detector_node-1] [INFO] [1790361098.739952620] [resense_detector]: mount calibration: pending - 
+[detector_node-1] [INFO] [1790361098.828856018] [resense_detector]: 1.4 s of recording waiting: catching up, one frame every 0.3 s of recording
+[detector_node-1] [INFO] [1790361099.240841412] [resense_detector]: caught up in 0.4 s: 9 frames processed, 10 skipped, at most 1.4 s of recording behind
+[detector_node-1] [INFO] [1790361100.416036209] [resense_detector]: frame 22: clear; axis y=-0.01 R=524238; 10.9 fps; latency mean 46 / p95 55 / max 56 ms; input period 100 ms; dropped 11 (10 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361102.411506945] [resense_detector]: frame 42: clear; axis y=-0.01 R=81372; 10.0 fps; latency mean 41 / p95 48 / max 49 ms; input period 100 ms; dropped 11 (10 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361104.418488096] [resense_detector]: frame 62: clear; axis y=-0.04 R=-2745; 10.0 fps; latency mean 39 / p95 48 / max 50 ms; input period 100 ms; dropped 11 (10 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361106.420312325] [resense_detector]: frame 82: warning; axis y=-0.00 R=-1214; 10.0 fps; latency mean 43 / p95 50 / max 55 ms; input period 100 ms; dropped 11 (10 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361108.425206428] [resense_detector]: frame 102: warning; axis y=+0.06 R=-1539; 10.0 fps; latency mean 48 / p95 56 / max 58 ms; input period 100 ms; dropped 11 (10 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361110.419499391] [resense_detector]: frame 122: warning; axis y=+0.02 R=-1413; 10.0 fps; latency mean 45 / p95 52 / max 53 ms; input period 100 ms; dropped 11 (10 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361112.410377117] [resense_detector]: frame 142: warning; axis y=+0.02 R=-1548; 10.0 fps; latency mean 45 / p95 53 / max 54 ms; input period 100 ms; dropped 11 (10 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361114.410487813] [resense_detector]: frame 162: warning; axis y=+0.01 R=-1125; 10.0 fps; latency mean 45 / p95 53 / max 53 ms; input period 100 ms; dropped 11 (10 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361116.414839871] [resense_detector]: frame 182: warning; axis y=-0.07 R=-3099; 10.0 fps; latency mean 42 / p95 48 / max 53 ms; input period 100 ms; dropped 11 (10 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361117.322087658] [resense_detector]: mount calibration: identity - configured mapping confirmed
+[detector_node-1] [INFO] [1790361118.411974937] [resense_detector]: frame 202: warning; axis y=-0.06 R=-38883; 10.0 fps; latency mean 42 / p95 45 / max 53 ms; input period 100 ms; dropped 11 (10 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361120.412807663] [resense_detector]: frame 222: warning; axis y=-0.01 R=16852; 10.0 fps; latency mean 39 / p95 42 / max 42 ms; input period 100 ms; dropped 11 (10 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361122.392228626] [resense_detector]: frame 238: warning; axis y=-0.01 R=-14118; 8.1 fps; latency mean 39 / p95 40 / max 41 ms; input period 100 ms; dropped 11 (10 skipped by the catch-up)

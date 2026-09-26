@@ -1,0 +1,34 @@
+{
+ "schema": "resense-p3-p4-preregistration-v1",
+ "written_at_utc": "2026-09-26T15:32:50Z",
+ "head": "be5f5fce104b8f246c80effd33debcdf8f66424d",
+ "config_file_sha256": "c7ca5ad4f332b7025f66ab0addeb21025daf23a36aca4dbcc2d49fe5b8831f40",
+ "machine": "cloud container, 4 vCPU, 15 GB RAM, no Docker daemon; caches rebuilt here from the organizers' links (set O reproduced the _ride_p3d baseline object for object before this file was written; the six recordings and the ride were still caching)",
+ "before_any_result": "No candidate of this file has been run. Known before this file: the committed _ride_p3d baseline, EXPERIMENTS 1m/1n/1o, P4's P3d candidate decisions (A rejected, B 2 -> 3 STOP frames on #4 with 18 missing rows, C rejected).",
+ "reference_baseline": "docs/evidence/results/regression_baseline_2026-09-26_ride_p3d.json",
+ "items": {
+  "P4-1 strict gate at head": {
+   "what": "scripts/regression_gate.py --cache /data/cache --jobs 3 --baseline <_ride_p3d> with no --allow, the ride cached here from new_data.zst split by split and set F straight run by the gate itself",
+   "expected": "every gated row the same as the baseline (the code is fa18832's detector; only tests changed since); the 3 ride and 15 set F rows that P4 could not run are compared for the first time on a second machine",
+   "rule": "a row that differs is a finding, not a pass: the cache (int16, 5 mm) and the stamps must match the dev VM's; a difference is reported with the row and the frames"
+  },
+  "P4-2 candidate B, tracking.near_escalate_voxels 10 -> 8": {
+   "what": "P4's pre-registered candidate B (p4_candidates_p3d_prereg_2026-09-26.json): the full gate with the ride and set F, then, only if it passes, the candidate-specific checks P4 named: startup census (221 ride splits + 8 pieces + 7 recordings), robustness (5 Hz, +3 deg roll, +3 deg pitch on the six recordings), start offsets 0/10/20/30/40",
+   "ship_rule": "P4's frozen rules: no inside-object metric weaker, no outside / background false STOP metric up, the target (#4) better; the full gate PASS with no missing row; the ride's alarm frames, events and STOP episodes not up; the census false STOP events not up; each robustness run's events / STOP episodes not up; the start-offset rows not up. Otherwise: not accepted, recorded with the numbers"
+  },
+  "P3-1 the envelope union (gauge.axis_union 1) with the review fixes, full gate": {
+   "what": "EXPERIMENTS 1m left this open: candidate A passed its gate on 26.09 morning, the safety review blocked it (the oversize split dropped an object touching an edge line taken in by the union), the fix (Candidates.in_rail: the split falls back to the rails-only part; the wall keep counts rails-only voxels) was made, and 'the union was never measured with these fixes in a full gate'. Measure it now: --set gauge.axis_union=1 on the current head, the full gate against _ride_p3d",
+   "expected_from_1n": "on P3c the union on top gave set O #4 2 -> 9 STOP frames (first STOP 5.2 -> 18.2 m) and inside STOP frames 355 -> 362, #6 / #8 unchanged; the ride and the five bags were not measured with the fixes",
+   "ship_rule": "not shipped by this session whatever the result: the organizers' Q1 (which axis the hidden check uses) is unanswered and the safety re-review listed an open item (a union part that passes the split but took in an edge-line stretch is judged by the shape rules on that part). Recorded for the captain's decision: PASS / FAIL of the full gate, the ride rows, the set O rows, and the two ray-cast safety scenes of the review (tests/test_edge_axis.py) on the current code"
+  },
+  "P3-2 +3 deg pitch on the six recordings": {
+   "what": "EXPERIMENTS 5 open item: +3 deg pitch gives 17 events / 18 STOP episodes on the five obstacle-free recordings against 13 / 16 as recorded (P4's P3d run). Re-measure on the head here (scripts/robustness_check.py --mount pitch_3), list the extra events (recording, frames, distance, reason, mount status), and only then decide whether a bounded candidate exists",
+   "rule": "a candidate, if any, is pre-registered in an addendum to this file before its first run, with the full gate as its ship rule; no candidate is shipped that changes doubleT_obstacle's hits or any set O inside row"
+  }
+ },
+ "frozen": [
+  "One configuration change per candidate; the other keys as in configs/default.yaml at this head.",
+  "Every full gate: scripts/regression_gate.py --cache /data/cache --baseline <_ride_p3d> with no --allow; the JSON committed to docs/evidence/results/.",
+  "No baseline is re-cut by a measurement; a new baseline only with a shipped default change, and none is shipped by this session without the captain: the detector freeze of 26.09 20:00 (CAPTAIN action 18) is the captain's to declare or lift."
+ ]
+}

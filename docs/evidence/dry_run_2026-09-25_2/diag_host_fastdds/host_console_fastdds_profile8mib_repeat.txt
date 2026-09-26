@@ -1,0 +1,18 @@
+CORRECTION (25.09 evening): the player of this run was CycloneDDS, not rmw_fastrtps_cpp: the host had no Fast DDS RMW installed (ros-base + rmw-cyclonedds-cpp in one apt call; see ../dry_run_2026-09-25_3/README.txt). The label below is wrong.
+DIAGNOSTIC: node started with extra docker arguments: -v /home/admn/fastdds_udp_8mib.xml:/opt/resense/fastdds_udp.xml:ro
+host console: admn uid 1000, RMW rmw_fastrtps_cpp (default), no Fast DDS profile; net.core.rmem_max 212992, rmem_default 212992
+decisions seen:     149 CAUTION      80 FAULT      36 GO       1 STOP 
+[detector_node-1] [WARN] [1790347693.479170474] [resense_detector]: net.core.rmem_max = 212992, net.core.rmem_default = 212992: below 32 MiB. A bag player on CycloneDDS (RMW_IMPLEMENTATION=rmw_cyclonedds_cpp) then delivers none of the ~24 M
+status messages      : 186 (80 lines skipped)
+alarm frames         : 1
+obstacle distance    : 126.3 .. 126.3 m
+latency decode+detect: mean 40 / p95 50 / max 81 ms
+detector stage total : mean 25 / p95 35 ms
+dropped input frames : 26 (25 of them skipped by the node's catch-up); 15 after the first 5 s
+fps (last report)    : 0.0
+start of the input   : 39 frames in the first 5 s after the first one, largest gap 0.3 s, first STOP at +15.4 s
+recordings seen      : 2 ['/lidar_points', '/sensing/lidar/hesai128/pointcloud']
+
+FAIL: 1 alarm frames, expected >= 3
+FAIL: recording 2: 0 alarm frames, expected >= 3
+exit 1

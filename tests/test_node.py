@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import importlib
 import json
+import os
 import sys
 import time
 import types
@@ -158,6 +159,8 @@ def node_cls(monkeypatch):
     """The real ``DetectorNode`` class, imported against the stand-ins; ``overrides`` set node parameters."""
     for name, md in _stub_modules().items():
         monkeypatch.setitem(sys.modules, name, md)
+    for var in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS"):
+        monkeypatch.setenv(var, os.environ.get(var, "1"))     # the package sets them; undone after the test
     monkeypatch.syspath_prepend(str(NODE_PKG))
     for name in [n for n in sys.modules if n.startswith("resense_ros")]:
         monkeypatch.delitem(sys.modules, name)
@@ -350,6 +353,70 @@ def test_decision_levels(node_cls):
     assert d(ns(obstacle=False, warning=True, health={"level": "ok"})) == "CAUTION"
     assert d(ns(obstacle=False, warning=False, health={"level": "warn"})) == "CAUTION"
     assert d(ns(obstacle=False, warning=False, health={"level": "ok"})) == "GO"
+    # 26.09: the warning the decision reads is decision_level (the latency warning left out)
+    lat = {"level": "warn", "decision_level": "ok"}
+    assert d(ns(obstacle=False, warning=False, health=lat)) == "GO"
+    assert d(ns(obstacle=False, warning=True, health=lat)) == "CAUTION"
+    assert d(ns(obstacle=True, warning=False, health=lat)) == "STOP"
+    assert d(ns(obstacle=False, warning=False, health={"level": "warn", "decision_level": "warn"})) == "CAUTION"
+    assert d(ns(obstacle=False, warning=False, health={"level": "error", "decision_level": "error"})) == "FAULT"
+
+
+def _latency_config(tmp_path, affects: bool) -> str:
+    """A parameter file whose latency budget every frame exceeds (0 ms)."""
+    import yaml
+    p = tmp_path / f"latency_{affects}.yaml"
+    p.write_text(yaml.safe_dump({"resense": {"health": {"latency_budget_ms": 0.0,
+                                                        "latency_affects_decision": affects}}}))
+    return str(p)
+
+
+@pytest.mark.parametrize("affects, expected", [(False, "GO"), (True, "CAUTION")])
+def test_latency_over_budget_is_a_health_warning_not_caution(node_cls, tunnel, tmp_path, affects, expected):
+    """26.09 (judgements of 24.09 and 26.09): a slow machine is not an unsafe path. Latency over
+    the budget stays in /resense/health and the status JSON; the decision is GO on a clear track
+    (CAUTION with ``health.latency_affects_decision: true``, the v0.6 behaviour)."""
+    _Node.overrides = {"config_file": _latency_config(tmp_path, affects)}
+    node = node_cls()
+    assert node.cfg.health.latency_affects_decision is affects
+    _feed(node, tunnel[0].xyz, 12)
+    pub = node.published
+    assert pub["/resense/decision"][-1].data == expected, [m.data for m in pub["/resense/decision"]]
+    health = pub["/resense/health"][-1].status[0]
+    assert health.level == 1 and "latency p95" in health.message
+    values = {kv.key: kv.value for kv in health.values}
+    assert values["decision_level"] == ("warn" if affects else "ok")
+    status = json.loads(pub["/resense/status"][-1].data)
+    assert status["decision"] == expected and status["health"]["level"] == "warn"
+    assert any("latency p95" in m for m in status["health"]["messages"])
+    marker = pub["/resense/markers"][-1].markers[-1].text
+    assert marker.startswith(expected), marker
+    # the node's own guards are unchanged: an empty frame, a stalled input, no input are FAULT
+    msg, _ = _cloud(np.zeros((0, 3), np.float32), 1.2)
+    node.on_cloud(msg, "/lidar_points")
+    assert pub["/resense/decision"][-1].data == "FAULT"
+    node.last_frame_wall = time.perf_counter() - 2.0
+    node.last_stale_pub = 0.0
+    node.on_watchdog()
+    assert pub["/resense/decision"][-1].data == "FAULT"
+    assert pub["/resense/health"][-1].status[0].values[0].value == "STALE"
+    idle = node_cls()
+    idle.t_node_start -= 5.0
+    idle.on_watchdog()
+    assert idle.published["/resense/decision"][-1].data == "FAULT"
+    assert idle.published["/resense/health"][-1].status[0].values[0].value == "NO_INPUT"
+
+
+@pytest.mark.parametrize("affects", [False, True])
+def test_obstacle_is_stop_with_latency_over_budget(node_cls, box_scene, tmp_path, affects):
+    frame, _ = box_scene
+    _Node.overrides = {"config_file": _latency_config(tmp_path, affects)}
+    node = node_cls()
+    _feed(node, frame.xyz, 12)
+    pub = node.published
+    assert pub["/resense/decision"][-1].data == "STOP"
+    assert pub["/resense/obstacle_detected"][-1].data is True
+    assert "latency p95" in pub["/resense/health"][-1].status[0].message
 
 
 # ---------------------------------------------------------------------------
@@ -506,6 +573,89 @@ def test_backlog_is_worked_through_catchup_step_apart(node_cls):
         assert seen == expect
         assert max(held) <= len(expect) + 1                     # the frames to be skipped are not held
         assert not node.pending and node.pending_gc.triggered == len(expect) - 1
+
+
+def test_catchup_skips_are_reported_apart_from_frames_never_received(node_cls, monkeypatch):
+    """25.09, the dry run on the team VM: the start-up catch-up's own skips were counted as dropped
+    frames and failed the acceptance check. ``node.catchup_skipped`` is the part of
+    ``dropped_frames`` the node received and skipped on purpose; ``node.catchup`` marks the frames
+    processed while behind and is false from the frame that is back on the newest one (where
+    scripts/check_dry_run.py starts counting). Which frames are processed does not change."""
+    node = node_cls()
+    topic = "/sensing/lidar/hesai128/pointcloud"
+    xyz = np.random.default_rng(0).uniform(5.0, 30.0, (64, 3)).astype(np.float32)
+
+    def cloud(s):
+        return _cloud(xyz, s, frame_id="lidar_livox")[0]
+
+    queue = [cloud(0.1 * k) for k in range(1, 41)]              # waiting behind the first frame
+    sub = node.subs[topic]
+    sub.msg_type, sub.raw = None, False
+
+    class _Handle:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+        def take_message(self, msg_type, raw):
+            return (queue.pop(0), {}) if queue else None
+    sub.handle = _Handle()
+    seen = []
+    monkeypatch.setattr(node.detector, "process", lambda frame, ego_speed=None: types.SimpleNamespace(
+        obstacle=False, warning=False, nearest_distance=None, mount={},
+        track=types.SimpleNamespace(center=0.0, curvature=0.0)))
+    node.publish = lambda header, frame, res: seen.append((round(frame.stamp, 1), node.node_stats()))
+    node.on_cloud(cloud(0.0), topic)
+    while node.pending:
+        node.on_pending()
+    for s in (4.1, 4.2, 4.5, 4.6):                               # 4.3 and 4.4 never arrive
+        node.on_cloud(cloud(s), topic)
+    chain = [round(0.3 * k, 1) for k in range(14)] + [4.0]
+    assert [s for s, _ in seen] == chain + [4.1, 4.2, 4.5, 4.6]
+    assert [st["catchup"] for _, st in seen] == [True] * 14 + [False] * 5
+    last = seen[-1][1]
+    assert last["dropped_frames"] == 26 + 2 and last["catchup_skipped"] == 26
+    assert seen[14][1]["dropped_frames"] == seen[14][1]["catchup_skipped"] == 26
+    assert not node.skipped                                     # every skipped frame accounted
+    assert any("caught up" in s and "26 skipped" in s for _, s in node.get_logger().lines)
+
+
+def test_socket_buffer_warning(node_cls, tmp_path, monkeypatch):
+    """25.09: with a host `ros2 bag play` on CycloneDDS (stock Fast DDS was not affected) the
+    node received none or almost none of the 360-degree clouds at Ubuntu's
+    net.core.rmem_max / rmem_default 212992 and all of them at 32 MiB. The node says so once at
+    start, with the host fix; unreadable values are no failure."""
+    warn = node_cls.socket_buffer_warning
+    msg = warn({"rmem_max": 212992, "rmem_default": 212992})
+    assert "sudo sysctl -w net.core.rmem_max=33554432 net.core.rmem_default=33554432" in msg
+    assert "CycloneDDS" in msg and "net.core.rmem_max = 212992" in msg
+    assert warn({"rmem_max": 33554432, "rmem_default": 212992}) is None      # the profile asks for 32 MiB itself
+    assert warn({"rmem_max": 33554432, "rmem_default": 212992}, profile=False) is not None
+    assert warn({}) is None
+    mod = sys.modules[node_cls.__module__]
+    (tmp_path / "rmem_max").write_text("212992\n")
+    (tmp_path / "rmem_default").write_text("212992\n")
+    monkeypatch.setattr(mod, "PROC_NET_CORE", str(tmp_path))
+    warns = [s for level, s in node_cls().get_logger().lines if level == "warn"]
+    assert len(warns) == 1 and "rmem_max = 212992" in warns[0]
+    (tmp_path / "rmem_max").write_text("33554432\n")
+    (tmp_path / "rmem_default").write_text("33554432\n")
+    assert not [s for level, s in node_cls().get_logger().lines if level == "warn"]
+    monkeypatch.setattr(mod, "PROC_NET_CORE", str(tmp_path / "missing"))
+    node = node_cls()
+    assert node.check_socket_buffers() == {} and not [s for lv, s in node.get_logger().lines if lv == "warn"]
+
+
+def test_blas_threads_default_to_one_unless_set(node_cls, monkeypatch):
+    """The package pins OMP / OpenBLAS / MKL to one thread before the node imports numpy, as the
+    image does (EXPERIMENTS.md section 3a: 256 against 67 ms per 360-degree frame with numpy's
+    default pool on a busy 4-vCPU box); an explicit value wins."""
+    monkeypatch.delenv("OPENBLAS_NUM_THREADS", raising=False)
+    monkeypatch.setenv("OMP_NUM_THREADS", "3")
+    importlib.reload(sys.modules["resense_ros"])
+    assert os.environ["OPENBLAS_NUM_THREADS"] == "1" and os.environ["OMP_NUM_THREADS"] == "3"
 
 
 

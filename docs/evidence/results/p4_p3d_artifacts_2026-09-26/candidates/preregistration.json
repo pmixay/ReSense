@@ -1,0 +1,38 @@
+{
+  "schema": "resense-p4-candidate-preregistration-amendment-v1",
+  "date": "2026-09-26",
+  "created_before_candidate_p3d_runs": true,
+  "integration_reason": "origin/claude/nifty-pascal-lzgl78 advanced to P3d after the initial P4 P3c screens. The P3d STOP-keep rule changes set O sustained STOP behavior; preserve all P3c results, but re-screen the same bounded hypotheses against the current default before making decisions about the P4 branch.",
+  "integration_commit": "465c44e",
+  "detector_commit": "fa18832f1636c48d0137842e2bd3b857bc70aef7",
+  "reference_baseline": "regression_baseline_2026-09-26_ride_p3d.json",
+  "config": "configs/default.yaml",
+  "config_file_sha256": "c7ca5ad4f332b7025f66ab0addeb21025daf23a36aca4dbcc2d49fe5b8831f40",
+  "effective_config_sha256": "d2c8ab8d70954956d71c50cdc074962a3037e7ea2bc0e09568663ab34af53d6e",
+  "candidates": [
+    {
+      "id": "A",
+      "change": "tracking.near_escalate_distance: 35.0 -> 40.0",
+      "target": "Further improve sustained STOP for set O #8 (big_above) from P3d: 51 STOP frames; first STOP 101.3 m; scorer held-from 111.4 m."
+    },
+    {
+      "id": "B",
+      "change": "tracking.near_escalate_voxels: 10 -> 8",
+      "target": "Improve strict-envelope STOP evidence for set O #4 (small_edge_inside) from P3d: 2 STOP frames; first/held-from 5.2 m."
+    },
+    {
+      "id": "C",
+      "change": "cluster.wall_keep_gauge_voxels: 10 -> 8",
+      "target": "Improve the wall-rule-suppressed set O #6 (big_edge_inside) from P3d: 6 STOP frames; first/held-from 10.3 m."
+    }
+  ],
+  "frozen_rules": [
+    "One configuration change per candidate; run A, B, C independently against this P3d reference.",
+    "Keep labels, matching, visibility denominators, five-hit confirmation, column exclusions, reference-validity exclusions, disabled axis union, and every other key unchanged.",
+    "Reject a candidate if any inside-object metric weakens, any outside/background false STOP metric rises, or the target does not improve.",
+    "Run full set O and the six available original recordings; then run the strict complete gate with no --allow. Missing ride/set F rows mean the candidate is not eligible for acceptance.",
+    "Do not continue to candidate-specific stress/offset/paired-placement acceptance checks or combine candidates unless the complete gate can be evaluated and passes.",
+    "Candidate sample geometry and trajectories remain identical to the P3c runs; only the frozen default detector baseline changed."
+  ],
+  "coverage_limitation": "/data/cache/new_data is absent. The full p3d gate has three ride and fifteen set_F_straight metrics missing in this workspace; no partial ride split is cached. No score gain is presumed."
+}

@@ -21,6 +21,7 @@ from typing import Optional
 
 import numpy as np
 
+from resense import _native
 from resense.config import TrackConfig
 
 
@@ -41,14 +42,24 @@ class TrackModel:
     rail_slabs: int = 0              # v0.5: near-range slabs in which the rail pair was found (yaw support)
     axis_sides: int = 0              # v0.5: tunnel boundaries fitted this frame (0, 1 or 2)
     age: int = 0                     # v0.6: frames since the model was seeded (rate limits apply after the warm-up)
+    floor_shadow: float = 0.0        # 25.09: X where a near occluder's shadow starts in the bed band (0 = none; floor_shadow_height)
+    floor_held: bool = False         # 25.09: the bed profile was held from the previous frame (too little bed in front of the shadow)
+    floor_hold_run: int = 0          # 25.09 review: consecutive held frames; past floor_shadow_max_hold it keeps counting while the rule is released (a shadow still found, not applied)
+    far_support_run: int = 0         # 25.09: consecutive frames with the walls_min_far_support condition (not reported)
+    axis_valid_both: float = 1e9     # 25.09: X up to which BOTH fitted boundaries support the axis (= axis_valid with one or none); read only with cluster.far_axis_both_sides 1, not serialised
+    axis_valid_bent: float = 1e9     # 25.09: the same without the straight bonus, on a bent axis with two boundaries only (1e9 otherwise); cluster.far_axis_both_sides 2, not serialised
 
     def floor_z(self, X) -> np.ndarray:
         """Bed reference height at along-track coordinate X, linearly extrapolated beyond
         the supported range (a quadratic extrapolated to 250 m is not trustworthy)."""
+        c = np.asarray(self.floor_coef, dtype=np.float64)
+        if c.size == 3 and _native.enabled():     # the same arithmetic in one pass (resense/_native.py)
+            z = _native.floor_z(X, self.floor_range, c)
+            if z is not None:
+                return z
         X = np.asarray(X, dtype=np.float64)
         x0, x1 = self.floor_range
         Xc = np.clip(X, x0, x1)
-        c = np.asarray(self.floor_coef, dtype=np.float64)
         if c.size == 3:                           # the common case, written out (2x faster than polyval)
             a2, a1, a0 = c
             return (a2 * Xc + a1) * Xc + a0 + (2.0 * a2 * Xc + a1) * (X - Xc)
@@ -61,8 +72,16 @@ class TrackModel:
         return self.floor_z(X) + self.rail_offset
 
     def center_y(self, X) -> np.ndarray:
+        if _native.enabled():
+            y = _native.center_y(X, *self.center_coefs())
+            if y is not None:
+                return y
         X = np.asarray(X, dtype=np.float64)
         return self.center + np.tan(self.yaw) * X + 0.5 * self.curvature * X * X
+
+    def center_coefs(self) -> tuple:
+        """(c, t, k2) with ``center_y(X) = c + t X + k2 X X``, exactly as ``center_y`` rounds them."""
+        return float(self.center), float(np.tan(self.yaw)), float(0.5 * self.curvature)
 
     def to_dict(self) -> dict:
         return {
@@ -78,6 +97,10 @@ class TrackModel:
             "rail_slabs": int(self.rail_slabs),
             "axis_sides": int(self.axis_sides),
             "age": int(self.age),
+            # 25.09 (additive, only in a frame with a shadow: the output is unchanged otherwise)
+            **({"floor_shadow": round(float(self.floor_shadow), 1), "floor_held": bool(self.floor_held),
+                "floor_hold_run": int(self.floor_hold_run)}
+               if self.floor_shadow > 0 else {}),
         }
 
 
@@ -96,6 +119,10 @@ def bin_percentile(values: np.ndarray, bins: np.ndarray, nb: int, percentile: fl
     one sort instead of a Python loop with a percentile call per bin. Returns (prof, counts)
     with ``prof`` NaN where a bin holds fewer than ``min_points`` values; with ``payload`` the
     payload of the value at the percentile rank is returned as a third array (nearest rank)."""
+    if _native.enabled():                          # counting sort + selection, the same values (resense/_native.py)
+        res = _native.bin_percentile(values, bins, nb, percentile, min_points, payload)
+        if res is not None:
+            return res
     prof = np.full(nb, np.nan)
     counts = np.bincount(bins, minlength=nb)[:nb]
     if values.size == 0:
@@ -117,34 +144,155 @@ def bin_percentile(values: np.ndarray, bins: np.ndarray, nb: int, percentile: fl
     return prof, counts
 
 
-def _fit_floor(xyz: np.ndarray, cfg: TrackConfig, prior: TrackModel):
+def _floor_shadow(xs: np.ndarray, zs: np.ndarray, ref: TrackModel, cfg: TrackConfig,
+                  bins: Optional[np.ndarray] = None):
+    """The shadow of a large near object in the bed band (25.09, ``floor_shadow_height``).
+
+    An object that fills the band (the organizers' 2 x 2 m box) hides the bed behind it: the
+    bins there hold only the tunnel roof, 3-4 m above the bed, and once they outnumber the bed
+    bins in front the line through the near bins tilts (set O, box at 9-26 m: the rail head at
+    20 m 0.8-3.5 m off). The shadow starts at the first populated bin within ``floor_shadow_range``
+    that lies more than ``floor_shadow_height`` above the previous frame's bed and is followed
+    by another such bin adjacent to it in X (``bins``: the profile bin index of each entry; since
+    the review of 25.09 two high bins with an empty bin between them, e.g. at 29 and 60 m, are no
+    shadow). Then only bins within ``floor_max_residual`` of the previous bed are fitted, never
+    the populated bin just before the shadow (the object's face, whose low percentile can still
+    look like bed); with fewer than ``floor_shadow_min_bins`` of them in front of the shadow the
+    previous bed is held. The object's face is the bin nearest the shadow that starts the last run
+    of bins before it that are not bed (more than ``floor_max_residual`` off; an object raised above
+    the bed lets the bed show under it for a few metres; a nearer off-bed bin, a switch part or a
+    low object, is not the face since the review of 25.09), else that populated bin just before the
+    shadow. Returns (keep mask or None, shadow start X or 0, lower edge X of the face bin or 0,
+    hold)."""
+    d = zs - ref.floor_z(xs)
+    high = d > cfg.floor_shadow_height
+    pair = high[:-1] & high[1:] & (xs[:-1] < cfg.floor_shadow_range)
+    adjacent = np.ones(max(xs.size - 1, 0), dtype=bool) if bins is None else np.diff(bins) == 1
+    start = np.flatnonzero(pair & adjacent)
+    if start.size == 0:
+        return None, 0.0, 0.0, False
+    s = int(start[0])
+    x_s = float(xs[s] - 0.5 * cfg.floor_bin)                 # lower edge of the first shadowed bin
+    keep = np.abs(d) < cfg.floor_max_residual
+    off = np.flatnonzero(~keep[:s])
+    if off.size:
+        f = int(off[-1])                                     # the off-bed run nearest the shadow ...
+        while f > 0 and not keep[f - 1] and adjacent[f - 1]:
+            f -= 1                                           # ... from its first bin (the object's front)
+    else:
+        f = s - 1
+    x_face = float(xs[f] - 0.5 * cfg.floor_bin) if f >= 0 else x_s - cfg.floor_bin
+    keep[max(s - 1, 0):s + 1] = False
+    return keep, x_s, x_face, int((keep & (xs < x_s)).sum()) < cfg.floor_shadow_min_bins
+
+
+FAR_LOW_BAND = 0.2            # m above a far bin's level: its low points
+FAR_STANDING = (0.3, 1.5)     # m above the level: points standing on the low points (an object's face)
+FAR_STANDING_MARGIN = 0.2     # m, lateral tolerance of "on the low points"
+
+
+def _narrow_far_bins(xyz: np.ndarray, cfg: TrackConfig, prior: TrackModel, edges: np.ndarray,
+                     prof: np.ndarray) -> np.ndarray:
+    """Far bed bins that are the foot of an object, not the bed (25.09, ``floor_far_min_width``).
+
+    Beyond ~90 m the real bed stops returning and the base of an object standing there can fill a
+    bin: the fit then lengthens to it and the far curvature follows (EXPERIMENTS §2d). A bin whose
+    centre lies at or beyond ``floor_far_from`` is dropped when its low points (at most
+    ``FAR_LOW_BAND`` above the bin's level) span less than ``floor_far_min_width`` laterally and
+    at least ``floor_far_min_standing`` points stand on them (``FAR_STANDING`` above the level,
+    within ``FAR_STANDING_MARGIN`` of their lateral extent; 0 = every narrow far bin is dropped).
+    A narrow far bin with nothing on it (a rail head or a patch of bed near the axis, the common
+    real case) is kept. The band is recomputed here in numpy on the far points only, so the
+    native and numpy paths agree. Returns the indices of the bins to drop."""
+    centres = 0.5 * (edges[:-1] + edges[1:])
+    far = np.flatnonzero(np.isfinite(prof) & (centres >= cfg.floor_far_from))
+    if far.size == 0:
+        return far
+    X = xyz[:, 0]
+    sel = (X >= edges[far[0]]) & (X < min(float(edges[far[-1] + 1]), cfg.floor_fit_range[1]))
+    P = xyz[sel]
+    Xs = P[:, 0].astype(np.float64)
+    dy = P[:, 1] - prior.center_y(Xs)
+    band = np.abs(dy) < cfg.floor_halfwidth
+    Xs, dy, Z = Xs[band], dy[band], P[band, 2].astype(np.float64)
+    idx = np.digitize(Xs, edges) - 1
+    drop = []
+    for b in far:
+        inb = idx == b
+        z, d = Z[inb], dy[inb]
+        level = float(prof[b])
+        low = z <= level + FAR_LOW_BAND
+        if not low.any():
+            continue
+        lo, hi = float(d[low].min()), float(d[low].max())
+        if hi - lo >= cfg.floor_far_min_width:
+            continue                                  # spans the bed: the bed (or the bed with something on it)
+        if cfg.floor_far_min_standing > 0:
+            up = ((z > level + FAR_STANDING[0]) & (z < level + FAR_STANDING[1])
+                  & (d >= lo - FAR_STANDING_MARGIN) & (d <= hi + FAR_STANDING_MARGIN))
+            if int(up.sum()) < cfg.floor_far_min_standing:
+                continue                              # narrow, nothing standing on it: a rail head or a bed patch
+        drop.append(b)
+    return np.asarray(drop, dtype=np.intp)
+
+
+def _fit_floor(xyz: np.ndarray, cfg: TrackConfig, prior: TrackModel,
+               shadow_ref: Optional[TrackModel] = None, info: Optional[dict] = None, release: bool = False):
     """Robust per-bin percentile fit of the track bed. Returns (coef, range, n_bins, rms).
 
     Two stages: a line through the dense near bins (< 40 m), then far bins are accepted
     only if they agree with that line within ``floor_max_residual``; a quadratic is fitted
     only when enough consistent far bins exist. This avoids the quadratic blowing up when
     the bed is hidden at range (platforms, switches) and structure points take its place.
+    With ``shadow_ref`` (the previous frame's model; ``floor_shadow_height`` > 0) the bins in
+    the shadow of a large near object are left out first, or ``shadow_ref``'s bed is returned
+    unchanged (:func:`_floor_shadow`); ``info`` then receives ``shadow``, ``face`` and ``hold``.
+    With ``release`` (the bed was held ``floor_shadow_max_hold`` frames in a row) the shadow is
+    only looked for, to know whether it persists; the bed is fitted as without the rule.
     """
     X, Y, Z = xyz[:, 0], xyz[:, 1], xyz[:, 2]
     x0, x1 = cfg.floor_fit_range
-    dy = Y - prior.center_y(X)
-    band = (X >= x0) & (X < x1) & (np.abs(dy) < cfg.floor_halfwidth)
-    Xb, Zb = X[band], Z[band]
-    if Xb.size < cfg.floor_min_points * 3:
-        return None
     # bins grow with range (2 m near, 2.5x beyond 40 m) so that the sparse far bed still fills them
     edges = np.concatenate([np.arange(x0, min(40.0, x1), cfg.floor_bin),
                             np.arange(max(40.0, x0), x1 + 2.5 * cfg.floor_bin, 2.5 * cfg.floor_bin)])
     nb = edges.size - 1
-    idx = np.digitize(Xb, edges) - 1
-    inb = (idx >= 0) & (idx < nb)
-    prof, counts = bin_percentile(Zb[inb].astype(np.float64), idx[inb], nb, cfg.floor_percentile, cfg.floor_min_points)
+    fast = (_native.floor_band(xyz, x0, x1, prior.center_coefs(), cfg.floor_halfwidth, edges)
+            if _native.enabled() else None)                 # the band below in one pass (resense/_native.py)
+    if fast is not None:
+        n_band, Zin, idx_in = fast
+    else:
+        dy = Y - prior.center_y(X)
+        band = (X >= x0) & (X < x1) & (np.abs(dy) < cfg.floor_halfwidth)
+        Xb, Zb = X[band], Z[band]
+        n_band = Xb.size
+        idx = np.digitize(Xb, edges) - 1
+        inb = (idx >= 0) & (idx < nb)
+        Zin, idx_in = Zb[inb].astype(np.float64), idx[inb]
+    if n_band < cfg.floor_min_points * 3:
+        return None
+    prof, counts = bin_percentile(Zin, idx_in, nb, cfg.floor_percentile, cfg.floor_min_points)
+    if cfg.floor_far_min_width > 0:
+        drop = _narrow_far_bins(xyz, cfg, prior, edges, prof)
+        if drop.size:
+            prof = np.array(prof, dtype=np.float64)
+            prof[drop] = np.nan
     ok = np.isfinite(prof)
     if ok.sum() < 3:
         return None
     xs = 0.5 * (edges[:-1] + edges[1:])[ok]
     zs = prof[ok]
     ws = np.sqrt(np.minimum(counts[ok], 200).astype(np.float64))
+    if shadow_ref is not None:
+        keep, x_s, x_face, hold = _floor_shadow(xs, zs, shadow_ref, cfg, bins=np.flatnonzero(ok))
+        if release:
+            keep, x_face, hold = None, 0.0, False
+        if info is not None:
+            info["shadow"], info["face"], info["hold"] = x_s, x_face, hold
+        if hold:
+            return (np.array(shadow_ref.floor_coef, dtype=np.float64), tuple(shadow_ref.floor_range),
+                    int(shadow_ref.n_bins), float(shadow_ref.residual))
+        if keep is not None:
+            xs, zs, ws = xs[keep], zs[keep], ws[keep]
     near = xs < 40.0
     if near.sum() < 3:
         near = np.ones_like(near)
@@ -189,14 +337,17 @@ def _quad(xb: np.ndarray, yb: np.ndarray, t_fixed: Optional[float]):
 
 def _fit_side(xb: np.ndarray, yb: np.ndarray, cfg: TrackConfig, mean_abs_dy: float = 0.0,
               t_fixed: Optional[float] = None):
-    """Robust quadratic through one boundary; returns (t, k, rms, mean_abs_dy, x_max) or None.
-    ``k`` is the curvature 1/R of the boundary (the track's, when it is parallel). Bins further
-    than ``walls_max_residual`` from the fit are dropped in two passes. With the tangent fixed
-    by the rails, a boundary that is not parallel to the track (a diverging tunnel, a platform
-    hall wall) cannot be fitted within ``walls_max_rms`` and is rejected instead of bending
-    the axis."""
+    """Robust quadratic through one boundary; returns (t, k, rms, mean_abs_dy, x_max, n_far,
+    n_far_in) or None. ``k`` is the curvature 1/R of the boundary (the track's, when it is
+    parallel). Bins further than ``walls_max_residual`` from the fit are dropped in two passes.
+    With the tangent fixed by the rails, a boundary that is not parallel to the track (a
+    diverging tunnel, a platform hall wall) cannot be fitted within ``walls_max_rms`` and is
+    rejected instead of bending the axis. ``n_far`` / ``n_far_in``: the boundary bins beyond the
+    rail range (``rails_range[1]``) and how many of them lie within ``walls_max_residual`` of the
+    final fit (the far support of the fitted curvature, used by ``walls_min_far_support``)."""
     if xb.size < cfg.walls_min_bins:
         return None
+    x_all, y_all = xb, yb
     a, t, k = _quad(xb, yb, t_fixed)
     for _ in range(2):
         res = yb - (a + t * xb + 0.5 * k * xb * xb)
@@ -209,11 +360,37 @@ def _fit_side(xb: np.ndarray, yb: np.ndarray, cfg: TrackConfig, mean_abs_dy: flo
     rms = float(np.sqrt(np.mean(res ** 2)))
     if rms > cfg.walls_max_rms:
         return None
-    return t, k, rms, float(mean_abs_dy), float(xb.max())
+    far = x_all > cfg.rails_range[1]
+    far_in = far & (np.abs(y_all - (a + t * x_all + 0.5 * k * x_all * x_all)) < cfg.walls_max_residual)
+    return t, k, rms, float(mean_abs_dy), float(xb.max()), int(far.sum()), int(far_in.sum())
+
+
+def _far_supported_side(sides: dict, cfg: TrackConfig) -> Optional[str]:
+    """The side that alone should set the axis shape (``walls_min_far_support``, 25.09), or None.
+
+    A boundary's curvature is extrapolated to the end of the corridor, so it should be carried
+    by its bins beyond the rail range (the near 4-30 m, where the rails fix the axis). At a
+    station the platform-side boundary can be a near structure (a platform screen, a column
+    row) joined by the robust fit to one or two bins of the diverging hall end: the fit is
+    within ``walls_max_rms`` but most of its far bins lie off it, and averaged with the other
+    side it bent the axis ~0.8 m at 83 m in ``squareT_platform_squareT_switch`` (EXPERIMENTS
+    §1h). When both sides are fitted with ``walls_min_bins`` or more far bins each, one keeps at
+    least ``walls_min_far_support`` of them within ``walls_max_residual`` and the other does not,
+    and the supported side is nearly straight (|k| <= ``walls_far_support_max_curvature``: a
+    real R 350-1 000 m curve is never overruled), the supported side is returned."""
+    judged = {}
+    for name, f in sides.items():
+        if f[5] >= cfg.walls_min_bins:
+            judged[name] = f[6] >= cfg.walls_min_far_support * f[5]
+    if len(judged) != 2 or sum(judged.values()) != 1:
+        return None
+    good = next(name for name, ok in judged.items() if ok)
+    return good if abs(sides[good][1]) <= cfg.walls_far_support_max_curvature else None
 
 
 def estimate_axis_from_walls(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig,
-                             t_fixed: Optional[float] = None, floor_z_all: Optional[np.ndarray] = None):
+                             t_fixed: Optional[float] = None, floor_z_all: Optional[np.ndarray] = None,
+                             far_support_run: int = 0):
     """Yaw (tan) and curvature of the track from the left/right tunnel boundaries.
 
     Walls, column rows and cable ducts run parallel to the track, so their curvature is the
@@ -221,18 +398,29 @@ def estimate_axis_from_walls(xyz: np.ndarray, model: TrackModel, cfg: TrackConfi
     boundary of each side is a high percentile of |dy| in a height band above the platform
     level; each side is fitted with a robust quadratic (tangent fixed to ``t_fixed`` when the
     rails gave one) and the two are averaged by fit quality; when they disagree the nearer
-    boundary wins. Returns (tan_yaw, curvature, quality, x_valid, n_sides, disagreement) or
-    None; ``disagreement`` is the curvature difference of the two sides when both were fitted.
+    boundary wins. Returns (tan_yaw, curvature, quality, x_valid, n_sides, disagreement,
+    x_valid_min, run) or None; ``disagreement`` is the curvature difference of the two sides
+    when both were fitted; ``x_valid`` / ``x_valid_min`` are the last observed bin of the longer
+    / shorter side kept; ``run`` counts the consecutive frames (``far_support_run`` of the
+    previous frame + 1, or 0) in which the ``walls_min_far_support`` condition held: the rule
+    applies from the ``walls_far_support_frames``-th.
     """
     X, Y, Z = xyz[:, 0], xyz[:, 1], xyz[:, 2]
     x0, x1 = cfg.walls_range
     zf = model.floor_z(X) if floor_z_all is None else floor_z_all
-    h = Z - (zf + model.rail_offset)
-    band = (X > x0) & (X < x1) & (h > cfg.walls_band[0]) & (h < cfg.walls_band[1])
-    if band.sum() < 50:
-        return None
-    Xb, Yb = X[band], Y[band]
-    dy = Yb - model.center_y(Xb)
+    fast = (_native.walls_band(xyz, zf, model.rail_offset, x0, x1, cfg.walls_band[0], cfg.walls_band[1],
+                               model.center_coefs()) if _native.enabled() else None)
+    if fast is not None:                                   # the band below in one pass (resense/_native.py)
+        Xb, Yb, dy = fast
+        if Xb.size < 50:
+            return None
+    else:
+        h = Z - (zf + model.rail_offset)
+        band = (X > x0) & (X < x1) & (h > cfg.walls_band[0]) & (h < cfg.walls_band[1])
+        if band.sum() < 50:
+            return None
+        Xb, Yb = X[band], Y[band]
+        dy = Yb - model.center_y(Xb)
     edges = np.arange(x0, x1 + cfg.walls_bin, cfg.walls_bin)
     nb = edges.size - 1
     idx = np.digitize(Xb, edges) - 1
@@ -256,12 +444,22 @@ def estimate_axis_from_walls(xyz: np.ndarray, model: TrackModel, cfg: TrackConfi
         return None
     n_sides = len(sides)
     disagreement = 0.0
+    run = 0
     # Prefer the boundary that runs closest to the track: near structures (column rows,
     # cable ducts, the near wall) are constrained by the gauge to be parallel to the track,
     # far walls are not (caverns, stations, diverging tunnels).
     if n_sides == 2:
         disagreement = abs(sides["left"][1] - sides["right"][1])
-        if disagreement > 1.0 / 1500.0:
+        # 25.09 (off by default): a side whose far bins do not follow its own fit does not set
+        # the shape when the other side's do and say straight, once that has held for
+        # walls_far_support_frames frames; side count and disagreement (the trusted range) stay
+        # as fitted, as for the nearer-side rule below
+        supported = (_far_supported_side(sides, cfg)
+                     if cfg.walls_min_far_support > 0 and t_fixed is not None else None)
+        run = far_support_run + 1 if supported is not None else 0
+        if supported is not None and run >= cfg.walls_far_support_frames:
+            sides = {supported: sides[supported]}
+        elif disagreement > 1.0 / 1500.0:
             nearer = min(sides, key=lambda k: sides[k][3])
             sides = {nearer: sides[nearer]}
     w = np.array([1.0 / (f[2] ** 2 + 1e-4) for f in sides.values()])
@@ -271,7 +469,8 @@ def estimate_axis_from_walls(xyz: np.ndarray, model: TrackModel, cfg: TrackConfi
     c2 = float(np.clip(c2, -1.0 / cfg.walls_min_radius, 1.0 / cfg.walls_min_radius))
     quality = float(min(f[2] for f in sides.values()))
     x_valid = float(max(f[4] for f in sides.values()))
-    return c1, c2, quality, x_valid, n_sides, disagreement
+    x_valid_min = float(min(f[4] for f in sides.values()))
+    return c1, c2, quality, x_valid, n_sides, disagreement, x_valid_min, run
 
 
 def verify_floor_extrapolation(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig,
@@ -295,27 +494,34 @@ def verify_floor_extrapolation(xyz: np.ndarray, model: TrackModel, cfg: TrackCon
         return x_fit
     x0 = 10.0
     X = xyz[:, 0]
-    sel = (X > x0) & (X < cfg.floor_verify_max_range)
-    if sel.sum() < 100:
-        return x_fit
-    P = xyz[sel]
-    Xs = P[:, 0].astype(np.float64)
-    ady = np.abs(P[:, 1] - model.center_y(Xs))
     b0, b1 = cfg.floor_verify_band
-    side = (ady > b0) & (ady < b1)
-    if side.sum() < 50:
-        return x_fit
-    Xs = Xs[side]
-    zf = model.floor_z(Xs) if floor_z_all is None else floor_z_all[sel][side]
-    hs = P[side, 2] - zf                          # height above the extrapolated bed
-    keep = hs > -1.0                              # drop returns from below the bed (noise, drains)
-    Xs, hs = Xs[keep], hs[keep]
     edges = np.arange(x0, cfg.floor_verify_max_range + cfg.floor_verify_bin, cfg.floor_verify_bin)
     nb = edges.size - 1
-    b = np.clip(np.digitize(Xs, edges) - 1, 0, nb - 1)
-    counts = np.bincount(b, minlength=nb)
-    base = np.full(nb, np.inf)
-    np.minimum.at(base, b, hs)
+    fast = (_native.verify_profile(xyz, floor_z_all, x0, cfg.floor_verify_max_range, model.center_coefs(), b0, b1,
+                                   edges) if _native.enabled() and floor_z_all is not None else None)
+    if fast is not None:                                   # the selection and binning below in one pass
+        n_sel, n_side, counts, base = fast
+        if n_sel < 100 or n_side < 50:
+            return x_fit
+    else:
+        sel = (X > x0) & (X < cfg.floor_verify_max_range)
+        if sel.sum() < 100:
+            return x_fit
+        P = xyz[sel]
+        Xs = P[:, 0].astype(np.float64)
+        ady = np.abs(P[:, 1] - model.center_y(Xs))
+        side = (ady > b0) & (ady < b1)
+        if side.sum() < 50:
+            return x_fit
+        Xs = Xs[side]
+        zf = model.floor_z(Xs) if floor_z_all is None else floor_z_all[sel][side]
+        hs = P[side, 2] - zf                      # height above the extrapolated bed
+        keep = hs > -1.0                          # drop returns from below the bed (noise, drains)
+        Xs, hs = Xs[keep], hs[keep]
+        b = np.clip(np.digitize(Xs, edges) - 1, 0, nb - 1)
+        counts = np.bincount(b, minlength=nb)
+        base = np.full(nb, np.inf)
+        np.minimum.at(base, b, hs)
     centres = 0.5 * (edges[:-1] + edges[1:])
     valid = (counts >= cfg.floor_verify_min_points) & np.isfinite(base)
     # half a vertical ring spacing (0.125 deg in the fine band) at that range
@@ -413,21 +619,25 @@ def estimate_rails(xyz: np.ndarray, floor: TrackModel, cfg: TrackConfig,
     X, Y, Z = xyz[:, 0], xyz[:, 1], xyz[:, 2]
     x0, x1 = cfg.rails_range
     half, step = cfg.rails_search_halfwidth, cfg.rails_bin
-    near = (X > x0) & (X < x1)                    # the near range only: the profile needs ~1/3 of the frame
-    Xd = X[near].astype(np.float64)
-    Yn, Zn = Y[near].astype(np.float64), Z[near]
-    h = Zn - (floor.floor_z(Xd) if floor_z_all is None else floor_z_all[near])
-    if prior is not None:
-        shape = np.tan(prior.yaw) * Xd + 0.5 * prior.curvature * Xd * Xd
-        Yp = Yn - shape
-        kap = float(prior.curvature)
+    kap = float(prior.curvature) if prior is not None else 0.0
+    fast = (_native.rails_band(xyz, floor_z_all, x0, x1, None if prior is None else prior.center_coefs(),
+                               prior_center, half) if _native.enabled() and floor_z_all is not None else None)
+    if fast is not None:                                   # the selection below in one pass (resense/_native.py)
+        xs, y, hh = fast
     else:
-        Yp = Yn
-        kap = 0.0
-    sel = (np.abs(Yp - prior_center) < half) & (h > -0.4) & (h < 0.8)
-    if sel.sum() < 200:
+        near = (X > x0) & (X < x1)                # the near range only: the profile needs ~1/3 of the frame
+        Xd = X[near].astype(np.float64)
+        Yn, Zn = Y[near].astype(np.float64), Z[near]
+        h = Zn - (floor.floor_z(Xd) if floor_z_all is None else floor_z_all[near])
+        if prior is not None:
+            shape = np.tan(prior.yaw) * Xd + 0.5 * prior.curvature * Xd * Xd
+            Yp = Yn - shape
+        else:
+            Yp = Yn
+        sel = (np.abs(Yp - prior_center) < half) & (h > -0.4) & (h < 0.8)
+        y, hh, xs = Yp[sel], h[sel], Xd[sel]
+    if xs.size < 200:
         return RailsFit(-1.0, prior_center, floor.rail_offset)
-    y, hh, xs = Yp[sel], h[sel], Xd[sel]
     edges = np.arange(prior_center - half, prior_center + half + step, step)
     nb = edges.size - 1
     prof = _height_profile(y, hh, edges, cfg.rails_percentile)
@@ -541,11 +751,54 @@ def _check_far_rails(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig, near:
             model.axis_valid = min(model.axis_valid, end + cfg.axis_valid_margin)
 
 
-def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel] = None) -> TrackModel:
+def rotate_track_model(model: TrackModel, dR: np.ndarray, n: int = 64) -> TrackModel:
+    """The same bed, rail head and axis seen through a change of the mount correction ``dR``
+    (``p_new = dR @ p_old``; 26.09, ``calibration.reseed_keep_max_deg``). Points on the bed
+    profile and on the axis are rotated and the model's polynomials refitted to them (same
+    degrees); everything else - the rail offset, the rail and wall state, the age and the
+    floor-shadow state - is kept, so the next frame has its previous model, its floor-shadow
+    reference and its rate limits as without the change. Meant for sub-degree changes."""
+    dR = np.asarray(dR, dtype=np.float64)
+    coef = np.asarray(model.floor_coef, dtype=np.float64)
+    x0, x1 = float(model.floor_range[0]), float(model.floor_range[1])
+    X = np.linspace(x0, x1, n) if x1 > x0 else np.array([x0, x0 + 1.0])
+    bed = np.stack([X, model.center_y(X), model.floor_z(X)], axis=1) @ dR.T
+    deg = 2 if (coef.size == 3 and coef[0] != 0.0) else 1
+    fc = np.polyfit(bed[:, 0], bed[:, 2], deg)
+    floor_coef = np.concatenate([np.zeros(3 - fc.size), fc]) if coef.size == 3 else fc
+    frange = (float(bed[0, 0]), float(bed[-1, 0])) if x1 > x0 else tuple(model.floor_range)
+    xa = np.linspace(0.0, max(x1, 60.0), n)
+    axis = np.stack([xa, model.center_y(xa), model.rail_z(xa)], axis=1) @ dR.T
+    if model.curvature != 0.0:
+        k2, t, c = np.polyfit(axis[:, 0], axis[:, 1], 2)
+    else:
+        (t, c), k2 = np.polyfit(axis[:, 0], axis[:, 1], 1), 0.0
+    return replace(model, floor_coef=floor_coef, floor_range=frange, center=float(c),
+                   yaw=float(np.arctan(t)), curvature=float(2.0 * k2))
+
+
+def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel] = None,
+                   periods: int = 1) -> TrackModel:
     """Fit floor + rails + boundary-based yaw/curvature for one frame, smoothing against the
-    previous model."""
+    previous model. ``periods`` is the number of nominal frame periods since ``prev`` (1 at
+    the nominal rate); with ``cfg.rates_per_period`` the yaw / curvature rate limits and the
+    warm-up age scale with it (physical rates per second), and with
+    ``cfg.walls_smoothing_per_period`` the yaw / curvature EMA weight is ``walls_smoothing ** k``
+    (the axis changes with the distance travelled); else it is ignored. The bed and rail-head
+    weights stay per processed frame: they average the per-frame noise (squaring them at 5 Hz
+    made the bed fit noisy enough to lose the object on the rail, EXPERIMENTS.md section 1i)."""
+    k = max(1, int(periods)) if cfg.rates_per_period else 1
+    kw = max(1, int(periods)) if cfg.walls_smoothing_per_period else 1
     prior = prev if prev is not None else default_track_model(cfg)
-    fit = _fit_floor(xyz, cfg, prior)
+    shadow_ref = (prev if cfg.floor_shadow_height > 0 and prev is not None and prev.age >= cfg.axis_warmup_frames
+                  else None)
+    # review 25.09: a held bed becomes the next frame's reference, so nothing in the rule itself ends
+    # a hold (a pitch step of 3.4 deg held the bed for good: a lasting false STOP at 4.3 m); after
+    # floor_shadow_max_hold held frames in a row the rule is released until no shadow is found
+    release = (shadow_ref is not None and cfg.floor_shadow_max_hold > 0
+               and shadow_ref.floor_hold_run >= cfg.floor_shadow_max_hold)
+    info: dict = {}
+    fit = _fit_floor(xyz, cfg, prior, shadow_ref=shadow_ref, info=info, release=release)
     if fit is None:
         return prior
     coef, frange, n_bins, rms = fit
@@ -556,15 +809,28 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
         floor_coef=coef, floor_range=frange, center=prior.center, yaw=prior.yaw,
         curvature=prior.curvature, rail_offset=prior.rail_offset, n_bins=n_bins, residual=rms,
         wall_quality=prior.wall_quality, axis_valid=prior.axis_valid,
-        age=(prev.age + 1) if prev is not None else 0,
+        age=(prev.age + k) if prev is not None else 0,
+        floor_shadow=float(info.get("shadow", 0.0)), floor_held=bool(info.get("hold", False)),
+        floor_hold_run=(prev.floor_hold_run + 1 if prev is not None and (
+            info.get("hold", False) or (release and info.get("shadow", 0.0) > 0)) else 0),
     )
     a_r = cfg.rails_smoothing if prev is not None else 0.0
-    a_w = cfg.walls_smoothing if prev is not None else 0.0
+    a_w = cfg.walls_smoothing ** kw if prev is not None else 0.0
     t_fixed: Optional[float] = None
     zf = model.floor_z(xyz[:, 0])                  # the bed height of every point, shared by the three steps below
     rails = None
-    if cfg.rails_enabled:
-        rails = estimate_rails(xyz, model, cfg, prior.center, prior, floor_z_all=zf)
+    rcfg, hold_rails = cfg, False
+    if info.get("face", 0.0) > 0:
+        # a shadow this frame: the rail pair is searched only in front of the object's face; with
+        # less than floor_shadow_min_bins bins of track left the previous rail model is held
+        rcfg = replace(cfg, rails_range=(cfg.rails_range[0], min(cfg.rails_range[1], float(info["face"]))))
+        hold_rails = rcfg.rails_range[1] - rcfg.rails_range[0] < cfg.floor_shadow_min_bins * cfg.floor_bin
+    if cfg.rails_enabled and hold_rails:
+        model.rail_score, model.rail_slabs = prior.rail_score, prior.rail_slabs
+        if cfg.rails_yaw_enabled:
+            t_fixed = float(np.clip(np.tan(prior.yaw), -cfg.walls_max_yaw, cfg.walls_max_yaw))
+    elif cfg.rails_enabled:
+        rails = estimate_rails(xyz, model, rcfg, prior.center, prior, floor_z_all=zf)
         model.rail_score = rails.score
         model.rail_slabs = rails.n_slabs
         if rails.score >= cfg.rails_min_score:
@@ -573,17 +839,23 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
             if cfg.rails_yaw_enabled and rails.tan_yaw is not None:
                 t_fixed = float(np.clip(rails.tan_yaw, -cfg.walls_max_yaw, cfg.walls_max_yaw))
     if cfg.walls_enabled:
-        est = estimate_axis_from_walls(xyz, model, cfg, t_fixed, floor_z_all=zf)
+        est = estimate_axis_from_walls(xyz, model, cfg, t_fixed, floor_z_all=zf, far_support_run=prior.far_support_run)
         if est is not None:
-            tan_yaw, curv, q, x_valid, n_sides, disagreement = est
+            tan_yaw, curv, q, x_valid, n_sides, disagreement, x_valid_min, model.far_support_run = est
             model.yaw = a_w * prior.yaw + (1 - a_w) * np.arctan(tan_yaw)
             model.curvature = a_w * prior.curvature + (1 - a_w) * curv
             model.wall_quality = q
             model.axis_sides = n_sides
             model.axis_valid = x_valid + cfg.axis_valid_margin
             agree = n_sides == 2 and (cfg.axis_sides_max_disagreement <= 0 or disagreement <= cfg.axis_sides_max_disagreement)
-            if abs(model.curvature) < 1e-4 and q < 0.2 and (agree or cfg.axis_one_side_range <= 0):
-                model.axis_valid += cfg.axis_valid_straight_bonus
+            straight = abs(model.curvature) < 1e-4 and q < 0.2 and (agree or cfg.axis_one_side_range <= 0)
+            bonus = cfg.axis_valid_straight_bonus if straight else 0.0
+            model.axis_valid += bonus
+            # 25.09: the range both boundaries support (cluster.far_axis_both_sides); the caps
+            # below apply to it through min(axis_valid, ...) where it is read
+            model.axis_valid_both = (x_valid_min + cfg.axis_valid_margin + bonus) if n_sides == 2 else model.axis_valid
+            if n_sides == 2 and not straight:
+                model.axis_valid_bent = x_valid_min + cfg.axis_valid_margin
             if n_sides == 1 and cfg.axis_one_side_range > 0:
                 # one boundary alone cannot tell a parallel wall from a diverging one
                 model.axis_valid = min(model.axis_valid, cfg.axis_one_side_range)
@@ -601,7 +873,7 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
                 model.curvature = a_w * prior.curvature
                 floor_valid = cfg.rails_range[1] + cfg.axis_valid_margin
             model.axis_valid = max(floor_valid, prior.axis_valid - 20.0)
-            model.axis_sides = 0
+            model.axis_sides = 0            # axis_valid_both keeps its default: no second limit
     else:
         model.yaw = np.radians(cfg.yaw_deg)
         model.curvature = cfg.curvature
@@ -614,10 +886,11 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
         # wall fit clipped at 5 deg on a cold start mid-ride) would otherwise take 30+ frames
         # to unwind at 0.17 deg per frame.
         if cfg.axis_max_yaw_rate > 0:
-            model.yaw = float(np.clip(model.yaw, prev.yaw - cfg.axis_max_yaw_rate, prev.yaw + cfg.axis_max_yaw_rate))
+            r = k * cfg.axis_max_yaw_rate
+            model.yaw = float(np.clip(model.yaw, prev.yaw - r, prev.yaw + r))
         if cfg.axis_max_curvature_rate > 0:
-            model.curvature = float(np.clip(model.curvature, prev.curvature - cfg.axis_max_curvature_rate,
-                                            prev.curvature + cfg.axis_max_curvature_rate))
+            r = k * cfg.axis_max_curvature_rate
+            model.curvature = float(np.clip(model.curvature, prev.curvature - r, prev.curvature + r))
     if cfg.rails_far_check_enabled and rails is not None and cfg.walls_enabled:
         _check_far_rails(xyz, model, cfg, rails)
     model.floor_verified = verify_floor_extrapolation(xyz, model, cfg, floor_z_all=zf)

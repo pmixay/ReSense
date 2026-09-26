@@ -1,0 +1,41 @@
+{
+ "schema": "resense-p4-startup-check-v1",
+ "date": "2026-09-26",
+ "code": {
+  "detector_commit": "ed03bc273cc52613f8237d63142134fd931079b5",
+  "config_sha256": "7d32ed81bbeea4147904c378c7867de74df56eff02cb83132f9618655ebedccf"
+ },
+ "source_dataset_sha256": "d41c2fb28475194a98efeca5d2ee3fd175c0aef350ffb92fff4c26d497e696e9",
+ "method": "Fresh detector replay of the first 40 cached frames of cloud_with_fake_obj with shipped defaults, native path; startup_census.py.",
+ "command": "python scripts/startup_census.py --cache <cache> --frames 40 --jobs 1 --out <result>",
+ "result": {
+  "frames": 40,
+  "stop_frames": 35,
+  "stop_events": 1,
+  "stop_episodes": 1,
+  "first_stop_frame": 5,
+  "advisory_frames": 3,
+  "provisional_due_frames": 4,
+  "mount_status_last": "pending",
+  "events": [
+   {
+    "track_id": 1,
+    "first_frame": 5,
+    "frames": 35,
+    "distance_m": [92.61, 98.03],
+    "stage": "corridor",
+    "mount_status": "pending"
+   }
+  ],
+  "set_O": {
+   "big_center": {
+    "visible_frames": 40,
+    "stop_frames": 35,
+    "first_stop_frame": 5,
+    "first_stop_m": 98.0
+   },
+   "background_alarm_frames": 0,
+   "background_track_ids": 0
+  }
+ }
+}

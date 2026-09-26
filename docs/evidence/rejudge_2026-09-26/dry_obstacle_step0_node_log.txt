@@ -1,0 +1,21 @@
+[INFO] [launch]: All log files can be found below /root/.ros/log/2026-09-26-15-34-19-328930-99e39247f945-22
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [detector_node-1]: process started with pid [35]
+[detector_node-1] [INFO] [1790436860.012371790] [resense_detector]: sensor mount: forward=-y left=+x up=+z roll/pitch/yaw=0.0/0.0/0.0 deg; auto-calibration on
+[detector_node-1] [INFO] [1790436860.032494828] [resense_detector]: ReSense detector listening on /lidar_points, /sensing/lidar/hesai128/pointcloud (+ auto-discovery); input reliability auto; per-frame kernels: native (_resense_native.cpython-310-x86_64-linux-gnu.so); resense 1.0.0
+[detector_node-1] [INFO] [1790436884.353593515] [resense_detector]: 0.8 s of recording waiting: catching up, one frame every 0.3 s of recording
+[detector_node-1] [INFO] [1790436884.354078446] [resense_detector]: input 1: /sensing/lidar/hesai128/pointcloud (frame_id=lidar_livox, 921600 points)
+[detector_node-1] [INFO] [1790436884.354878691] [resense_detector]: static TF resense_lidar -> lidar_livox (identity)
+[detector_node-1] [INFO] [1790436884.433840925] [resense_detector]: mount calibration: pending - 
+[detector_node-1] [INFO] [1790436884.442982382] [resense_detector]: frame 1: clear; axis y=+0.07 R=51304; 0.4 fps; latency mean 86 / p95 86 / max 86 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up)
+[detector_node-1] [WARN] [1790436885.580512423] [resense_detector]: 5.7 s hole in the input: scene state reset, calibration kept
+[detector_node-1] [WARN] [1790436885.796511119] [resense_detector]: 1.7 s hole in the input: scene state reset, calibration kept
+[detector_node-1] [WARN] [1790436886.015422296] [resense_detector]: 1.1 s hole in the input: scene state reset, calibration kept
+[detector_node-1] [INFO] [1790436886.252485775] [resense_detector]: mount calibration: provisional - provisional tilt: roll +3.80, pitch -0.86 deg (final after 20 observations)
+[detector_node-1] [INFO] [1790436886.262191908] [resense_detector]: frame 5: clear; axis y=+0.08 R=-8262; 2.2 fps; latency mean 87 / p95 91 / max 92 ms; input period 100 ms; dropped 90 (67 skipped by the catch-up)
+[detector_node-1] [WARN] [1790436886.473906700] [resense_detector]: 2.2 s hole in the input: scene state reset, calibration kept
+[detector_node-1] [WARN] [1790436886.613317700] [resense_detector]: 1.1 s hole in the input: scene state reset, calibration kept
+[detector_node-1] [WARN] [1790436886.799197951] [resense_detector]: 1.3 s hole in the input: scene state reset, calibration kept
+[detector_node-1] [INFO] [1790436888.045736453] [resense_detector]: frame 22: OBSTACLE at 56.1 m; axis y=+0.05 R=-6050; 9.5 fps; latency mean 73 / p95 84 / max 92 ms; input period 100 ms; dropped 160 (133 skipped by the catch-up)
+[detector_node-1] [INFO] [1790436888.717251993] [resense_detector]: caught up in 4.4 s: 32 frames processed, 146 skipped, at most 5.0 s of recording behind
+[detector_node-1] [INFO] [1790436890.033576886] [resense_detector]: frame 32: FAULT: no LiDAR frame for 1.0 s (> 0.5 s): path not monitored; 5.0 fps; latency mean 71 / p95 79 / max 79 ms; input period 100 ms; dropped 173 (146 skipped by the catch-up)

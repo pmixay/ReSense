@@ -84,6 +84,8 @@ def test_score_counts_alarms_advisories_and_outside_false_alarms():
     assert inside["alarm_frames"] == 3 and inside["advisory_only_frames"] == 1
     assert inside["first_alarm_m"] == 60.0 and inside["alarm_held_from_m"] == 60.0
     assert inside["first_advisory_or_alarm_m"] == 70.0 and inside["verdict"] == "detected"
+    assert inside["missed_intervals"] == [{"start_frame": 0, "end_frame": 1, "frames": 2,
+                                            "from_m": 80.0, "to_m": 70.0}]
     assert objs["outside"]["false_alarm_frames"] == 1 and objs["outside"]["verdict"] == "false alarm"
     assert bg == {"frames": 5, "alarm_frames": 3, "background_alarm_frames": 1, "background_alarm_ids": 1}
 
@@ -92,6 +94,16 @@ def test_held_from_needs_ninety_percent_of_the_closer_frames():
     assert score._held_from([(10.0, True), (20.0, True), (30.0, False), (40.0, True)]) == 20.0
     assert score._held_from([(10.0, False)]) is None
     assert score._held_from([]) is None
+
+
+def test_missed_intervals_split_at_stops_and_missing_frames():
+    frames = [(0, 90.0, False), (1, 80.0, False), (2, 70.0, True),
+              (3, 60.0, False), (5, 40.0, False)]
+    assert score._missed_intervals(frames) == [
+        {"start_frame": 0, "end_frame": 1, "frames": 2, "from_m": 90.0, "to_m": 80.0},
+        {"start_frame": 3, "end_frame": 3, "frames": 1, "from_m": 60.0, "to_m": 60.0},
+        {"start_frame": 5, "end_frame": 5, "frames": 1, "from_m": 40.0, "to_m": 40.0},
+    ]
 
 
 def test_a_track_matched_to_an_object_elsewhere_is_not_background():

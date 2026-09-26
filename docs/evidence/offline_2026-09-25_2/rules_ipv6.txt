@@ -1,0 +1,7 @@
+Chain RESENSE_OFFLINE (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+    0     0 ACCEPT     all      *      lo      ::/0                 ::/0                
+    0     0 ACCEPT     all      *      *       ::/0                 ::/0                 ctstate RELATED,ESTABLISHED
+    0     0 ACCEPT     all      *      *       ::/0                 fe80::/10           
+    0     0 ACCEPT     all      *      *       ::/0                 ff00::/8            
+    0     0 REJECT     all      *      *       ::/0                 ::/0                 reject-with icmp6-port-unreachable

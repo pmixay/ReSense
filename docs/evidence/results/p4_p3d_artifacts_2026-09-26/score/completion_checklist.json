@@ -1,0 +1,33 @@
+{
+ "schema": "resense-p4-completion-checklist-v1",
+ "date": "2026-09-26",
+ "status": "available-data work complete; full P4 acceptance incomplete due storage-limited ride and set F coverage",
+ "completed": [
+  "Six original caches verified at 2,488/2,488 frames; set O cache has 1,510/1,510 frames and timestamps.",
+  "P3d strict reference gate rerun without --allow; all available rows match, with zero worse rows.",
+  "Set O per-object/range, clear-distance, suffix, raw/cache sensitivity and false-alarm inventory refreshed.",
+  "Available startup census (7 starts), 5 Hz/+3 degree rate and mount stress, five start offsets with timestamp denominators, and paired set S placement replay completed.",
+  "P3d candidates A/B/C were preregistered and screened independently; A and C rejected for no target gain, B improves #4 but was not accepted after strict gate reports 18 missing rows.",
+  "P3d current provisional internal assessment and review packet published; historical independent 65/100 preserved.",
+  "No default change or new regression baseline was produced.",
+  "Final software checks: 585 pytest passed, Ruff/parameter sync/browser tests/dashboard/JSON/link/artifact checks passed; one ride-dependent test is deselected because the ride cache is absent."
+ ],
+ "rejected_or_incomplete": [
+  "Candidate A: #8 unchanged at 51/124 STOP frames; rejected at set O screen.",
+  "Candidate B: #4 improves 2/83 to 3/83; six available-original checks match; strict gate has 0 worse but 3 ride and 15 set F rows missing, so candidate remains unaccepted.",
+  "Candidate C: #6 unchanged at 6/125; rejected at set O screen.",
+  "Candidate-specific startup/rate/mount/offset/paired checks and combined candidate run were not run because the strict gate could not pass.",
+  "Final pytest ran with RESENSE_REQUIRE_SYNTHETIC=1, but the ride-dependent rail-start test could not execute and was deselected because /data/cache/new_data is absent."
+ ],
+ "external_or_environment_dependencies": [
+  "Latest /data free space at 2026-09-26 13:35:00 UTC is 14,498,832,384 bytes; estimated cache and 3 GiB reserve require an additional 5,222,393,088 bytes (recommend at least 5.3 GB).",
+  "After capacity is available, stream new_data.zst one split at a time and retain only validated complete splits; then rerun the full ride/set F evidence."
+ ],
+ "open_scientific_limits": [
+  "Ride contains no real obstacles.",
+  "Set O is previously inspected; not unseen validation.",
+  "Anchored placement is not surveyed ground truth.",
+  "Raw set O bag and quantized cache score differently."
+ ],
+ "verification_record": "p4_validation_p3d_2026-09-26.json"
+}

@@ -1,0 +1,7 @@
+$ RESENSE_NATIVE=0  /home/mdm/resense-venv/bin/python scripts/bench_node_path.py --npy /data/cache/roundT_doubleT
+kernels: numpy (RESENSE_NATIVE=0)
+roundT_doubleT: 252 frames, 207727 slots per message
+  kernels: numpy (RESENSE_NATIVE=0)
+  decode + crop + rotate: mean 6.5 ms, p95 6.8 ms
+  decode + detect:        mean 59.3 ms, p95 70.9 ms, max 77.0 ms
+peak RSS 149 MB

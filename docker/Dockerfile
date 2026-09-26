@@ -4,6 +4,9 @@
 #   docker build -t resense --build-arg WITH_TOOLS=1 -f docker/Dockerfile . # + offline tools and the test suite (CI)
 #   docker run --rm -it --net=host --ipc=host resense            # the node; play the bag from the host console
 #   (RViz from the image needs the X11 socket: README "Remote real-time demo", scripts/run_demo.sh)
+# The build needs the internet (base image, apt, pip); the test stand has none, so the jury gets
+# this image as an archive instead: scripts/export_image.sh here, `docker load -i` there
+# (docs/ARCHITECTURE.md "Deployment without internet").
 #
 # The runtime image contains only what the node needs: pinned numpy / scipy / scikit-learn /
 # pyyaml, the ROS 2 packages, RViz, rosbag2, foxglove_bridge. WITH_TOOLS=1 adds the pure python
@@ -24,7 +27,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 # speed-up (65 vs 64 ms per frame, 1.0 core instead; EXPERIMENTS.md section 3)
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        python3-pip python3-numpy python3-yaml \
+        python3-pip python3-numpy python3-yaml g++ \
         ros-humble-vision-msgs ros-humble-nav-msgs ros-humble-tf2-ros-py \
         ros-humble-rviz2 ros-humble-rosbag2 \
         ros-humble-rosbag2-storage-default-plugins ros-humble-rosbag2-storage-mcap \
@@ -32,7 +35,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt/resense
-COPY pyproject.toml README.md ./
+COPY pyproject.toml setup.py README.md ./
+COPY native ./native
 COPY resense ./resense
 COPY configs ./configs
 # Exact versions so that the jury builds the stack we measured on (numpy stays 1.x: ROS 2 Humble
@@ -41,11 +45,14 @@ COPY configs ./configs
 # PEP 621 (pyproject-only) project into an empty "UNKNOWN-0.0.0" wheel, so the node could not
 # import resense at all (found by the CI smoke test, 21.09). The last line proves the install
 # from a directory that is NOT the source tree, so a broken install fails the build here and
-# not in front of the jury.
+# not in front of the jury. The install compiles the optional native kernels
+# (native/resense_native.cpp, g++ above; bit-identical results, docs/ARCHITECTURE.md): the line
+# prints "native (...)", or "numpy (...)" if they could not be built (the node then runs on
+# numpy alone, slower, same output; CI's in-image test_native.py fails in that case).
 RUN pip3 install --upgrade "pip>=24" \
     && pip3 install "numpy==1.26.4" "scipy==1.13.1" "scikit-learn==1.5.2" "pyyaml==6.0.2" \
     && pip3 install --no-deps . \
-    && cd / && python3 -c "import resense, resense.detector; print('resense', resense.__version__, resense.__file__)"
+    && cd / && python3 -c "import resense, resense.detector, resense._native as n; print('resense', resense.__version__, resense.__file__, n.status())"
 
 # optional offline / research tooling (bag reading without ROS, plots, synthetic injection, tests)
 # scripts/ carries the dataset-free ROS smoke test (make_smoke_bag.py + smoke_test.sh) and the
@@ -68,9 +75,12 @@ COPY labels/doubleT_obstacle.json ./labels/doubleT_obstacle.json
 
 COPY docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
-# DDS over UDP only: a bag played by a normal user on the host cannot write into the shared-memory
-# segments of a root process (docker/fastdds_udp.xml); unset the variable to use shared memory
-COPY docker/fastdds_udp.xml /opt/resense/fastdds_udp.xml
+# DDS over UDP only by default: a bag played by a normal user on the host cannot write into the
+# shared-memory segments of a root process (docker/fastdds_udp.xml). Opt-in `docker run -e
+# RESENSE_DDS=shm`: shared memory + UDP (docker/fastdds_shm_udp.xml), the node's Fast DDS files in
+# /dev/shm opened to other users (docker/fastdds_shm_share.py); the entrypoint picks the mode
+# (docker/dds_transport.sh).
+COPY docker/fastdds_udp.xml docker/fastdds_shm_udp.xml docker/dds_transport.sh docker/fastdds_shm_share.py /opt/resense/
 ENV FASTRTPS_DEFAULT_PROFILES_FILE=/opt/resense/fastdds_udp.xml
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["ros2", "launch", "resense_ros", "detector.launch.py"]

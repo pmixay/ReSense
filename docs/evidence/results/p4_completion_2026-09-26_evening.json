@@ -1,0 +1,90 @@
+{
+ "schema": "resense-p4-completion-v2",
+ "date": "2026-09-26",
+ "written_at_utc": "2026-09-26T16:31:24Z",
+ "branch": "claude/nifty-pascal-lzgl78",
+ "head_at_start": "be5f5fce104b8f246c80effd33debcdf8f66424d",
+ "preregistration": {
+  "file": "p3_p4_prereg_2026-09-26_evening.json",
+  "commit": "53b75d4",
+  "written_at_utc": "2026-09-26T15:32:50Z"
+ },
+ "detector_commit": "fa18832f1636c48d0137842e2bd3b857bc70aef7 (the branch head carries only tests and docs since)",
+ "config_file_sha256": "c7ca5ad4f332b7025f66ab0addeb21025daf23a36aca4dbcc2d49fe5b8831f40",
+ "machine": {
+  "kind": "fresh cloud container",
+  "cpus": 4,
+  "ram_gb": 15,
+  "docker": false,
+  "python": "3.11.15",
+  "numpy": "2.4.6",
+  "native_kernels": true
+ },
+ "data_intake": {
+  "cloud_with_fake_obj": {
+   "source": "https://disk.yandex.ru/d/KpkG_yKoGk-vHQ (cloud_with_fake_obj.zst, 1 746 145 824 bytes)",
+   "frames": 1510,
+   "cache": "--every 1 --int16 --stamps"
+  },
+  "six_recordings": {
+   "source": "Google Drive dataset.zip (3 940 746 006 bytes), scripts/unpack_dataset.py one bag at a time",
+   "frames": {
+    "doubleT_obstacle": 201,
+    "roundT_doubleT": 252,
+    "doubleT_platform": 345,
+    "roundT_pressureGate_roundT": 268,
+    "roundT_squareT_pressureGate_squareT": 545,
+    "squareT_platform_squareT_switch": 877
+   },
+   "metadata_equal_to_committed_originals": [
+    "doubleT_obstacle",
+    "roundT_doubleT",
+    "doubleT_platform",
+    "roundT_pressureGate_roundT",
+    "roundT_squareT_pressureGate_squareT",
+    "squareT_platform_squareT_switch"
+   ]
+  },
+  "new_data": {
+   "source": "https://disk.yandex.ru/d/N8IUpAyd7jyvow (new_data.zst, 17 078 961 996 bytes), streamed split by split as VM_GUIDE 2.3",
+   "split_files": 221,
+   "frames": 11271,
+   "cache_gb": 16,
+   "stream_and_cache_min": 14.3
+  }
+ },
+ "status": "P4 acceptance complete: the strict reference gate with the ride and set F straight passes with every gated row the same; candidate B eligible, not shipped; no default change, no new baseline",
+ "completed": [
+  "set O alone reproduces the _ride_p3d baseline object for object (384/801 inside STOP frames, 6 outside, 3 background frames / 2 ids).",
+  "The strict gate with no --allow against regression_baseline_2026-09-26_ride_p3d.json: PASS, every gated row the same (six recordings, set O, the 3 ride rows, the 15 set F straight rows); 319 s at --jobs 3 (regression_gate_2026-09-26_head_fresh_machine.json).",
+  "Candidate B (tracking.near_escalate_voxels 10 -> 8): full gate PASS, 6 gated rows better (set O #4 2 -> 3 STOP frames, first STOP 5.2 -> 7.1 m), none worse, the ride identical; candidate-specific checks all identical to the head: census 18/120/35/28 (221 ride splits), robustness 13/16, 10/10, 14/16, 17/18, start offsets 13/16, 13/14, 13/12, 10/11, 7/11 (regression_gate_2026-09-26_p4_candidate_B_full.json, p4_candidate_B_checks_2026-09-26/).",
+  "Rate / re-mount checks on the head: as recorded 13/16, 5 Hz 10/10, +3 deg roll 14/16, +3 deg pitch 17/18 events / STOP episodes (p4_robustness_2026-09-26_evening/), the added pitch and roll events listed per event (events_pitch_roll.txt).",
+  "The 221-start ride census on the head: 18 starts with a STOP, 120 STOP frames / 35 events / 28 episodes, 8 events in the first 1.5 s, 0 within 10 m; the eight ride pieces 1/18/1/1; the seven recordings 3/68/6/3 (p4_census_p3d_2026-09-26.json).",
+  "tests/test_rail_start.py with the ride cache: 28 passed (the ride-dependent test included); the whole suite 586 at the time (585 + 1 deselected without the ride cache; 587 since the video test the parallel P1 / P2 pass added the same evening); ruff 0.15.8 clean; sync_params --check in sync; the deck test passes.",
+  "For P3: the envelope union (gauge.axis_union 1) with the review fixes of EXPERIMENTS 1m passes the full gate with the ride for the first time: set O #4 2 -> 9 STOP frames, first STOP 18.2 m, held from 20.1 m, nothing else moves (regression_gate_2026-09-26_axis_union_fixed_full.json); stays off.",
+  "Docs updated: EXPERIMENTS (Current results, 1p, 5), P4_AUDIT (completion section), README (P4 paragraph), CAPTAIN (C16, C17, action 19, decision log), SCORECARD 0 (measured 67/100), docs/README, evidence/README."
+ ],
+ "decisions": [
+  "Candidate B: eligible by P4's frozen rules (p4_candidates_p3d_prereg_2026-09-26.json) - NOT SHIPPED by this session: +1 STOP frame at 7 m on an object that straddles the envelope edge, a lower voxel bar for every demoted track, and the detector freeze of 26.09 20:00 is the captain's (CAPTAIN action 18). If shipped: configs/default.yaml + the ROS copy + resense/config.py default, the baseline re-cut from the B gate run (--from-json), no headline number moves (the deck test keeps passing).",
+  "Candidates A and C: rejected at the set O screen (unchanged).",
+  "The union: off (the organizers' Q1 unanswered; the re-review's open item on the shape rules of a union cluster's rails-only part).",
+  "+3 deg pitch: measured, no candidate pre-registered (EXPERIMENTS 1p)."
+ ],
+ "gate_outputs_sha256": {
+  "regression_gate_2026-09-26_head_fresh_machine.json": "0f525d10cd0bf410ba9cbd74b85eb393c7ae665af49a145934a574c0e18b106e",
+  "regression_gate_2026-09-26_p4_candidate_B_full.json": "520acb81ebf2ed9ee2ae3541c1c16b85ef4ade2bc7510327896f27bff4d4e1b1",
+  "regression_gate_2026-09-26_axis_union_fixed_full.json": "8b4f6f30eed0770556e91eefee200f8d4a53ffaa3e6325d4571c3a8764c417f9",
+  "p4_census_p3d_2026-09-26.json": "1f652e346f9554751c0eef335981588bd4d504ef9dc5e1911a6fb12c097a30ba"
+ },
+ "open_scientific_limits": [
+  "Ride contains no real obstacles.",
+  "Set O is previously inspected; not unseen validation.",
+  "Anchored placement is not surveyed ground truth.",
+  "Raw set O bag and quantized cache score differently (P4, 26.09)."
+ ],
+ "not_run_here": [
+  "Docker image and the ROS 2 node (no daemon in the container): CI run 36248096431 on be5f5fc and the VM captures of 25.09 stand in.",
+  "The i7-9700E stand (never available)."
+ ],
+ "note_on_the_parallel_pass": "A parallel P1 / P2 session re-judged the same head the same evening (SCORECARD 0, 62.5 / 100, two judges, Docker and ROS included) and its judge A also re-ran the full gate with the ride: PASS, every row the same, on a third machine. This record's judge scored 67 (SCORECARD 0.7); the reconciled 62.5 is the judgement of record."
+}

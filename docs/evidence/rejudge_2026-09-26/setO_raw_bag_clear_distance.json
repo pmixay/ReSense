@@ -1,0 +1,124 @@
+{
+ "results": [
+  "/tmp/claude-0/work/setO/raw.jsonl"
+ ],
+ "stats": {
+  "frames": 1510,
+  "decisions": {
+   "GO": 749,
+   "STOP": 419,
+   "FAULT": 2,
+   "CAUTION": 340
+  },
+  "clear_distance_m": {
+   "median": 97.4,
+   "p10": 29.1,
+   "mean": 99.8
+  }
+ },
+ "gt": "labels/cloud_with_fake_obj.json",
+ "overclaim": {
+  "tolerance_m": 0.5,
+  "totals": {
+   "target": 51,
+   "target_frames": 505,
+   "intent": 217,
+   "intent_frames": 801,
+   "go_judge": 154,
+   "go_judge_in_envelope": 59,
+   "target_by_decision": {
+    "CAUTION": 5,
+    "GO": 44,
+    "STOP": 2
+   }
+  },
+  "inside_objects": {
+   "big_center": {
+    "frames": 213,
+    "frames_in_envelope": 213,
+    "overclaim": 0,
+    "overclaim_in_envelope": 0,
+    "overclaim_in_envelope_go": 0,
+    "max_excess_m": 0.0
+   },
+   "small_on_rail": {
+    "frames": 49,
+    "frames_in_envelope": 33,
+    "overclaim": 16,
+    "overclaim_in_envelope": 3,
+    "overclaim_in_envelope_go": 3,
+    "max_excess_m": 126.0
+   },
+   "small_center": {
+    "frames": 79,
+    "frames_in_envelope": 63,
+    "overclaim": 45,
+    "overclaim_in_envelope": 30,
+    "overclaim_in_envelope_go": 28,
+    "max_excess_m": 63.6
+   },
+   "small_edge_inside": {
+    "frames": 83,
+    "frames_in_envelope": 16,
+    "overclaim": 38,
+    "overclaim_in_envelope": 2,
+    "overclaim_in_envelope_go": 0,
+    "max_excess_m": 145.4
+   },
+   "big_edge_inside": {
+    "frames": 125,
+    "frames_in_envelope": 8,
+    "overclaim": 71,
+    "overclaim_in_envelope": 2,
+    "overclaim_in_envelope_go": 0,
+    "max_excess_m": 173.1
+   },
+   "big_above": {
+    "frames": 124,
+    "frames_in_envelope": 75,
+    "overclaim": 27,
+    "overclaim_in_envelope": 7,
+    "overclaim_in_envelope_go": 6,
+    "max_excess_m": 53.9
+   },
+   "long_low_on_rails": {
+    "frames": 86,
+    "frames_in_envelope": 77,
+    "overclaim": 7,
+    "overclaim_in_envelope": 7,
+    "overclaim_in_envelope_go": 7,
+    "max_excess_m": 114.8
+   },
+   "thin_hanging": {
+    "frames": 42,
+    "frames_in_envelope": 20,
+    "overclaim": 13,
+    "overclaim_in_envelope": 0,
+    "overclaim_in_envelope_go": 0,
+    "max_excess_m": 136.5
+   }
+  },
+  "outside_objects": {
+   "small_outside_near": {
+    "frames": 112,
+    "clear_stops_at_object": 13
+   },
+   "big_outside": {
+    "frames": 104,
+    "clear_stops_at_object": 10
+   }
+  },
+  "order": [
+   "big_center",
+   "small_center",
+   "small_on_rail",
+   "small_edge_inside",
+   "small_outside_near",
+   "big_edge_inside",
+   "big_outside",
+   "big_above",
+   "long_low_on_rails",
+   "thin_hanging"
+  ]
+ }
+}

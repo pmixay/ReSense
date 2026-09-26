@@ -1,59 +1,70 @@
-# ReSense web dashboard, RViz / Foxglove layouts, demo tooling (frontend track, P2)
+# Web Dashboard, RViz and Foxglove Layouts
+
+> **Purpose:** the dashboard, the RViz and Foxglove layouts, the label tool, their headless checks
+> and the video recipes.
+> **Audience:** team, jury (demo) · **Owner:** P2 · **Language:** EN
+> **Last verified:** 2026-09-26 (re-judgement: the 13 `web/demo` tests and `check_dashboard.py` pass in headless Chromium) · **Status:** current
 
 Everything the jury sees: the RViz layout the launch file loads, a Foxglove layout for remote
 demos, a browser dashboard that works live (rosbridge) and offline (replay of `results.jsonl`),
-the scripts that verify the dashboard headlessly, and the video recipe.
+the scripts that verify the dashboard headlessly (13 tests in `web/demo/`, CI job `web`), and the
+video recipes.
 
 | file | what |
 |---|---|
-| [`index.html`](index.html) | Russian-language dashboard in the modular Moscow Transport visual style: banner, cab view, top-down view, decision/health, timeline, node stats, run summary and alarm log; live + offline replay + built-in demo; no build step |
-| [`assets/fonts/`](assets/fonts/) | local Montserrat variable font subsets (Cyrillic + Latin) and the OFL license; the dashboard typography works offline |
+| [`index.html`](index.html) | Russian-language dashboard with a compact Metro-inspired layout: status, cab view, top-down view, decision/health, timeline, node stats, run summary and alarm log; live + offline replay + built-in demo; no build step |
+| [`assets/fonts/`](assets/fonts/) | Moscow Sans Regular and ExtraBold from the supplied style archive, loaded locally; legacy Montserrat files remain for older documents |
 | [`foxglove_layout.json`](foxglove_layout.json) | Foxglove Studio layout (3D + plots + indicator + status), see "Remote demo with Foxglove" |
 | [`demo/make_demo_run.py`](demo/make_demo_run.py) | synthetic approach sequence → `out/demo_run.jsonl` in the `resense run --out` format |
 | [`demo/check_dashboard.py`](demo/check_dashboard.py) | Playwright + headless Chromium: loads the JSONL into the dashboard, plays it, asserts the banner, screenshot / video |
-| [`demo/test_web.py`](demo/test_web.py) | pytest for the layouts, the JSONL format and the browser replay: `python -m pytest -q web/demo` |
+| [`demo/check_foxglove_live.py`](demo/check_foxglove_live.py) | Checks layout topics and receives detector messages through a running Foxglove bridge (`pip install websockets`) |
+| [`demo/capture_gallery.py`](demo/capture_gallery.py) | Playwright + Chromium: refreshes the dashboard screenshots in `docs/images` from the built-in demo and the recorded real status stream |
+| [`demo/test_web.py`](demo/test_web.py) | pytest for the layouts, the JSONL format and the browser replay (13 tests): `python -m pytest -q web/demo` |
 | `../ros2_ws/src/resense_ros/rviz/resense.rviz` | RViz2 layout (P2-owned, loaded by `detector.launch.py rviz:=true` and the compose `rviz` service) |
 
 ![current ReSense dashboard showing a STOP decision in the built-in synthetic UI demo](../docs/images/dashboard-stop.png)
 
-Current UI captures: [GO / path clear](../docs/images/dashboard-clear.png),
-[CAUTION / object near the gauge](../docs/images/dashboard-caution.png),
-[STOP / confirmed obstacle](../docs/images/dashboard-stop.png) and
-[the cab view on the real `doubleT_obstacle` node stream](../docs/images/dashboard-cab-real.png). The complete gallery and its
-data provenance are in [`docs/images/README.md`](../docs/images/README.md).
-*Built-in 60-frame UI demonstration (synthetic interface data, not the organizers' data and not
-evaluation evidence). The dashboard uses an original ReSense mark and graphics; no assets from
-the reference portal are bundled.*
+Current UI captures: [GO / path clear](../docs/images/dashboard-clear.png), [CAUTION / object near
+the gauge](../docs/images/dashboard-caution.png), [STOP / confirmed
+obstacle](../docs/images/dashboard-stop.png) and [the cab view on the real `doubleT_obstacle` node
+stream](../docs/images/dashboard-cab-real.png). [The scheme and side sections](../docs/images/dashboard-plan.png)
+show the alternative monitoring view. The complete gallery and its data provenance are in
+[`docs/images/README.md`](../docs/images/README.md). *Built-in 60-frame UI demonstration (synthetic
+interface data, not the organizers' data and not evaluation evidence). The dashboard uses an
+original ReSense mark and graphics; the supplied Moscow Sans fonts are bundled locally.*
 
 ## Dashboard (`index.html`)
 
 Open the file in a browser; nothing to install or build. The visible interface is entirely in
-Russian and follows the reference portal's light background, modular card floors, red primary
-actions, large status typography and responsive grid. Montserrat is bundled locally. Cards,
-controls and active states use flat background colours without borders, outlines, glow or drop
-shadows. The layout targets desktop screens: the two columns always end at the same height (the
-cab view grows to match the side cards, the event log fills the rest of the right column). Two
-modes use the same widgets:
+Russian. Moscow Sans and the primary red (`#E4000D`) come from the supplied Metro style archive;
+the functional green and yellow keep safety decisions distinct. The design uses simple borders,
+white panels and dark text. On 16:9 desktop screens, the status and cab view fit in one viewport.
+The top view and timeline share a second tab; source controls and detailed metrics open in the
+scrollable side list. The red header hides during page scrolling and returns when scrolling up.
+On phones, the panels stack and the plots redraw at their displayed width. Two modes use the same widgets:
 
 * **Live**: enter the rosbridge URL (`ws://<host>:9090`, from
   `ros2 launch rosbridge_server rosbridge_websocket_launch.xml` on the machine running the
   detector) and press *Подключить*. The page subscribes to `/resense/status` (`std_msgs/String`,
   one JSON `FrameResult` per frame plus the node's `node` object) and needs nothing else — no
-  point cloud is streamed to the browser. roslibjs comes from a CDN; without internet the
-  live mode is unavailable and the page says so, the replay mode still works. rosbridge is
-  **not** in the ReSense image (`apt install ros-humble-rosbridge-suite` where ROS runs); for a
-  live view on an offline stand use Foxglove, whose bridge the image has (`foxglove_layout.json`).
+  point cloud is streamed to the browser. roslibjs 1.4.1 is bundled (`assets/vendor/`), so the
+  live mode needs no internet; if it fails to load, the page says so and replay still works.
+  rosbridge is **not** in the ReSense image (`apt install ros-humble-rosbridge-suite` where ROS
+  runs); for a live view on an offline stand use Foxglove, whose bridge the image has
+  (`foxglove_layout.json`).
 * **Replay**: *Выбрать файл* (or drop the file anywhere) → a `results.jsonl` written by
   `python -m resense.cli run --bag <bag> --out results.jsonl` (one `FrameResult` JSON per line
-  with the extra `frame` and `frame_id` keys). Play / pause (space), step (◀ ▶, arrow keys),
-  seek slider, speed 0.25×–10×, loop. Playback is 10 Hz × speed; the timeline's x-axis is the
-  message `stamp` (seconds relative to the first frame), in live mode it is the wall clock.
-  Broken or blank lines are skipped.
+  with the extra `frame` and `frame_id` keys). Play / pause (space), step (◀ ▶, arrow keys;
+  not while typing in a field, and on a focused view tab ←/→ switch the view), seek slider,
+  speed 0.25×–10×, loop. Playback is 10 Hz × speed; the timeline's x-axis is the message `stamp`
+  (seconds relative to the first frame), in live mode it is the wall clock. Broken or blank lines
+  are skipped.
 * **Built-in demo**: press *Демо* for a 60-frame synthetic approach (120 → 40 m). It exercises
   GO / CAUTION / STOP, mount/health fields, playback and the summary card without ROS, Python or
   a dataset. It is a UI fallback for a jury laptop, not an evaluation result.
-* **Отчёт** downloads `resense_run_report.json`: source, frame count, alarm events/frames,
-  warning frames, nearest confirmed distance, peak detector time and time span.
+* **Скачать отчёт** (section *Сводка запуска*) downloads `resense_run_report.json`: source,
+  frame count, alarm events/frames, warning frames, nearest confirmed distance, peak detector
+  time and time span.
 
 What is shown:
 
@@ -82,12 +93,16 @@ python web/demo/check_dashboard.py          # loads out/demo_run.jsonl, plays it
 python -m pytest -q web/demo                # the same as tests (+ layout checks); browser tests skip without Chromium
 ```
 
-`check_dashboard.py` asserts `ПУТЬ СВОБОДЕН` at the start and `ПРЕПЯТСТВИЕ` with a distance in 40–125 m
-during playback, then seeks to the frame with the nearest obstacle for the screenshot. If
-Playwright's own browser is missing it falls back to any Chromium under
-`$PLAYWRIGHT_BROWSERS_PATH` (or `--chromium <binary>`). `make_demo_run.py` needs open3d (ray
-casting); its output is exactly the `resense run --out` format, so the dashboard treats it like
-a real run. Both scripts run from the repository root.
+The Playwright package version must match the Chromium build it drives:
+`pip install playwright && python -m playwright install --with-deps chromium` fetches a matching
+browser, or pass `--chromium <binary>`.
+
+`check_dashboard.py` asserts `ПУТЬ СВОБОДЕН` at the start and `ПРЕПЯТСТВИЕ` with a distance in
+40–125 m during playback, then seeks to the frame with the nearest obstacle for the screenshot. If
+Playwright's own browser is missing it falls back to any Chromium under `$PLAYWRIGHT_BROWSERS_PATH`
+(or `--chromium <binary>`). `make_demo_run.py` needs open3d (ray casting); its output is exactly the
+`resense run --out` format, so the dashboard treats it like a real run. Both scripts run from the
+repository root.
 
 ## RViz layout (`ros2_ws/src/resense_ros/rviz/resense.rviz`)
 
@@ -95,10 +110,11 @@ a real run. Both scripts run from the repository root.
   `resense_lidar → <frame_id of the input cloud>` when the first frame arrives and publishes
   markers, detections and the corridor cloud in the input frame, so the layout no longer
   depends on the bag's frame id (`hesai_lidar` in `roundT_doubleT`, `lidar_livox` in
-  `doubleT_obstacle`, unknown in the control bag).
+  `doubleT_obstacle`, either pair in the control data: organizers, 23.09).
 * **Two raw-cloud displays**, `/lidar_points` and `/sensing/lidar/hesai128/pointcloud`, both
   Reliable / Keep Last / depth 5 (`ros2 bag play` offers the recorded RELIABLE profile; a
-  best-effort display lost most of the 5–10 MB clouds, EXPERIMENTS.md §3b): the one the bag carries
+  best-effort display lost most of the 5–10 MB clouds, [`EXPERIMENTS.md`](../docs/EXPERIMENTS.md)
+  §3b): the one the bag carries
   renders, the other stays grey with "No messages received". **A generic third display is not
   possible**: RViz2 subscribes to one literal topic name per display (no wildcard, regex or
   "first PointCloud2 topic" option), so a control bag with a third topic name needs either the
@@ -111,8 +127,9 @@ a real run. Both scripts run from the repository root.
 * Camera: orbit view 18 m behind and 15 m above the sensor looking down the track (the sensor
   frame's forward axis is −Y), ~0–90 m in the frame; saved views *Top-down 150 m* and
   *Driver's seat* in the *Views* panel.
-* Validated by parsing (`python -m pytest -q web/demo`) and by using only keys RViz2 Humble
-  writes into its own saved configs; it has not been opened in RViz in this sandbox (no ROS).
+* Validated by parsing (`python -m pytest -q web/demo`), and used in the Docker chain recording
+  of 23.09 ([`docs/video/docker_chain_rviz.mp4`](../docs/video/docker_chain_rviz.mp4), EXPERIMENTS
+  §3b).
 
 ## Remote demo with Foxglove
 
@@ -127,7 +144,19 @@ docker compose --profile tools up player                 # play $RESENSE_BAG onc
 ```
 
 Then in Foxglove Studio (desktop app or https://app.foxglove.dev): **Open connection → Foxglove
-WebSocket → `ws://<demo host>:8765`**, then **Layout → Import from file → `web/foxglove_layout.json`**.
+WebSocket → `ws://<demo host>:8765`**, then **Layout → Import from file →
+`web/foxglove_layout.json`**.
+
+With the player running, check the connection and topic wiring from the demo machine:
+
+```bash
+python web/demo/check_foxglove_live.py --url ws://127.0.0.1:8765
+```
+
+On 25.09 this check passed against a live `foxglove_bridge` and `roundT_doubleT` bag: all 11
+layout topics were advertised and messages arrived on decision, status, corridor points and
+markers. The bridge uses the `foxglove.sdk.v1` WebSocket subprotocol. The second-laptop connection
+and visual import of the layout in Foxglove still need a person at the demo setup.
 
 What the audience sees: a 3D panel (dark, camera behind the sensor looking down the track, both
 raw-cloud topics, `/resense/corridor_points` in orange, `/resense/markers` with the boxes, labels,
@@ -139,13 +168,11 @@ corridor edges and the status text), an indicator of `/resense/decision` (green 
 
 Known limits:
 
-* **The layout is untested on a live bridge** — no ROS 2 or Foxglove in the sandbox it was
-  written in; it parses and uses only documented panel keys (3D: `topics` keyed by name with
-  `visible`; Plot: `paths[].value` / `timestampMethod`; Indicator: `path` + `rules`). If a panel
-  comes up empty after import, re-pick its topic in the panel settings.
-* The 3D panel follows `resense_lidar`; until the node's static TF exists in the running
-  version, the raw cloud and the markers still render (same frame), only "follow" is off.
-* **Bandwidth**: the raw cloud is 8 MB (120° window) to 24 MB (360°, `doubleT_obstacle`) per frame at 10 Hz. Over a remote link uncheck
+* **Visual import remains unchecked**; the live protocol and topic paths passed the check above.
+  If a panel comes up empty after import, re-pick its topic in the panel settings. The 3D panel
+  follows `resense_lidar` (the node's static TF).
+* **Bandwidth**: the raw cloud is 8 MB (120° window) to 24 MB (360°, `doubleT_obstacle`) per
+  frame at 10 Hz. Over a remote link uncheck
   `/lidar_points` / `/sensing/lidar/hesai128/pointcloud` in the 3D panel and keep
   `/resense/corridor_points` (a few thousand points), the markers and the plots — that is the
   full picture of what the algorithm does, at a few hundred kB/s.
@@ -154,16 +181,20 @@ Known limits:
 
 ## Video
 
-The committed v0.6.2 real-data clips cover every presentation surface:
+The committed real-data clips (v0.6.2; the Docker chain v0.6.3) cover every presentation surface;
+all four are silent:
 
 * [`docker_chain_rviz.mp4`](../docs/video/docker_chain_rviz.mp4) — the full jury chain on screen:
-  node and RViz in Docker, `ros2 bag play` as a normal user, and `/resense/decision`;
+  node and RViz in Docker, `ros2 bag play` as a normal user, and `/resense/decision` (v0.6.3);
 * [`doubleT_obstacle_cab.mp4`](../docs/video/doubleT_obstacle_cab.mp4) — the real bag from the
   driver's seat with the envelope, STOP decision, distance and close-up;
 * [`doubleT_obstacle_offline.mp4`](../docs/video/doubleT_obstacle_offline.mp4) — top and side
   views of every frame;
-* [`dashboard_doubleT_obstacle.mp4`](../docs/video/dashboard_doubleT_obstacle.mp4) — dashboard
-  replay of that run.
+* [`dashboard_current.mp4`](../docs/video/dashboard_current.mp4) — 11.7 s clip of the current
+  dashboard replaying the real `doubleT_obstacle` run at 2× speed; the browser check observed a
+  STOP near 55.5 m;
+* [`dashboard_doubleT_obstacle.mp4`](../docs/video/dashboard_doubleT_obstacle.mp4) — earlier UI
+  design, kept for comparison.
 
 The recipes below reproduce the offline and dashboard clips.
 
@@ -179,10 +210,7 @@ ffmpeg -framerate 10 -pattern_type glob -i 'out/frames/frame_*.png' \
 detections in red with distance and confidence, status in the title); all 201 frames of
 `doubleT_obstacle` give a 20 s clip at 10 fps. `--every 2` halves the work at 5 fps
 (`-framerate 5`). Verified on the organizers' `doubleT_obstacle` bag and on a synthetic bag
-(`scripts/make_smoke_bag.py` → `resense run --render` → ffmpeg → mp4). The Playwright package version must match the
-Chromium build it drives (`playwright==1.56.0` for the pre-installed chromium-1194 in the team
-sandbox; elsewhere `pip install playwright && python -m playwright install --with-deps chromium`
-fetches a matching browser), or pass `--chromium <binary>`.
+(`scripts/make_smoke_bag.py` → `resense run --render` → ffmpeg → mp4).
 
 ### 2. Dashboard replay recorded with Playwright
 
@@ -197,17 +225,10 @@ On the synthetic 60-frame demo run in the 4-core sandbox: 905 kB, 7.3 s at 1× (
 10 Hz plus the load / seek moments at the ends). Temporary files under `out/` remain gitignored;
 the final real-data clips are committed under `docs/video/`.
 
-### 3. Live-chain storyboard (completed in `docker_chain_rviz.mp4`)
+### 3. The live chain
 
-Storyboard for 1–2 minutes, following the organizers' chain *tunnel → point cloud → algorithm →
-obstacle → distance*: (1) `./scripts/run_demo.sh /data/for_hackathon/doubleT_obstacle` with
-RViz — the raw cloud of the double-track tunnel; (2) toggle *Corridor points* — the orange
-gauge corridor; (3) the person crossing the track: red box, STOP label and distance
-55.7–56.3 m (`docs/EXPERIMENTS.md` §3b); (4) the dashboard's timeline and
-node card (latency / fps / dropped frames) during the same playback; (5) one empty bag
-(`roundT_squareT_pressureGate_squareT`) staying `PATH CLEAR` through the gate. Screen-record
-with OBS or `ffmpeg -f x11grab -framerate 25 -i :0.0 out/demo.mp4`; the captain links the file
-from the README.
+`docker_chain_rviz.mp4` follows the organizers' chain *tunnel → point cloud → algorithm → obstacle
+→ distance*; `scripts/record_rviz_chain.sh` re-records it.
 
 ## Label tool (`label_tool.html`) and the `gt.json` key convention
 
@@ -231,7 +252,7 @@ Format, identical to what `resense inject` writes (`cmd_inject` in `resense/cli.
  "00043": []}
 ```
 
-Key convention (P4 documents the same in `docs/DATASET.md`; the captain reconciles):
+Key convention (the canonical definition is [`DATASET.md`](../docs/DATASET.md) "Label format"):
 
 * **key = absolute bag frame index, zero-padded to 5 digits** (`"00042"`): the `frame` value in
   `results.jsonl`, the index `resense run` prints, and the `frame_00042.png` name of `--render`.
@@ -241,8 +262,9 @@ Key convention (P4 documents the same in `docs/DATASET.md`; the captain reconcil
 * `distance` = m along the track to the obstacle's nearest face, `lateral` = m from the track
   axis (+ left), both in the detector's track frame (what the status JSON reports), not in the
   raw sensor frame; `size` = `[L along track, W across, H]` in m.
-* `in_gauge` defaults to `|lateral| < 1.3 m` (the rule `cmd_inject` uses) and can be overridden;
-  `n_points = 1` means "visible, count unknown" — `resense eval` drops entries with `n_points = 0`
-  as occluded, so never export 0 for a real object you can see.
+* `in_gauge` follows the footprint overlap with the strict 1.05 m half-width until set by hand
+  (the same rule as `resense inject`); a value set by hand is kept when the object is edited.
+  `n_points = 1` means "visible, count unknown" — `resense eval` drops entries with
+  `n_points = 0` as occluded, so never export 0 for a real object you can see.
 * A frame exported as an empty list is a verified negative (checked, nothing in the gauge);
   frames absent from the file are unlabelled and count as empty in `resense eval` today.

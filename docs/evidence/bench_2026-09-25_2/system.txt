@@ -1,0 +1,189 @@
+## date
+2026-09-25T14:51:52+00:00
+## uname -a
+Linux compute-vm-8-16-100-ssd-1790344754523 5.15.0-191-generic #201-Ubuntu SMP Fri Aug 7 18:39:04 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+## os-release
+PRETTY_NAME="Ubuntu 22.04.5 LTS"
+NAME="Ubuntu"
+VERSION_ID="22.04"
+VERSION="22.04.5 LTS (Jammy Jellyfish)"
+VERSION_CODENAME=jammy
+ID=ubuntu
+ID_LIKE=debian
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+UBUNTU_CODENAME=jammy
+## lscpu
+Architecture:                            x86_64
+CPU op-mode(s):                          32-bit, 64-bit
+Address sizes:                           40 bits physical, 57 bits virtual
+Byte Order:                              Little Endian
+CPU(s):                                  8
+On-line CPU(s) list:                     0-7
+Vendor ID:                               GenuineIntel
+Model name:                              Intel Xeon Processor (Icelake)
+CPU family:                              6
+Model:                                   106
+Thread(s) per core:                      2
+Core(s) per socket:                      4
+Socket(s):                               1
+Stepping:                                0
+BogoMIPS:                                3999.99
+Flags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch cpuid_fault invpcid_single ssbd ibrs ibpb stibp ibrs_enhanced fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 wbnoinvd arat avx512vbmi umip pku ospke avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq la57 rdpid fsrm md_clear arch_capabilities
+Hypervisor vendor:                       KVM
+Virtualization type:                     full
+L1d cache:                               256 KiB (8 instances)
+L1i cache:                               256 KiB (8 instances)
+L2 cache:                                16 MiB (4 instances)
+L3 cache:                                16 MiB (1 instance)
+NUMA node(s):                            1
+NUMA node0 CPU(s):                       0-7
+Vulnerability Gather data sampling:      Not affected
+Vulnerability Indirect target selection: Mitigation; Aligned branch/return thunks
+Vulnerability Itlb multihit:             Not affected
+Vulnerability L1tf:                      Not affected
+Vulnerability Mds:                       Not affected
+Vulnerability Meltdown:                  Not affected
+Vulnerability Mmio stale data:           Mitigation; Clear CPU buffers; SMT Host state unknown
+Vulnerability Reg file data sampling:    Not affected
+Vulnerability Retbleed:                  Not affected
+Vulnerability Spec rstack overflow:      Not affected
+Vulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl and seccomp
+Vulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization
+Vulnerability Spectre v2:                Mitigation; Enhanced / Automatic IBRS; IBPB conditional; PBRSB-eIBRS SW sequence; BHI SW loop, KVM SW loop
+Vulnerability Srbds:                     Not affected
+Vulnerability Tsa:                       Not affected
+Vulnerability Tsx async abort:           Not affected
+Vulnerability Vmscape:                   Not affected
+## nproc
+8
+## free -m
+               total        used        free      shared  buff/cache   available
+Mem:           15987         335        5667        6520        9984        8788
+Swap:              0           0           0
+## /proc/meminfo (head)
+MemTotal:       16371032 kB
+MemFree:         5803652 kB
+MemAvailable:    8999504 kB
+Buffers:          146556 kB
+Cached:          9702804 kB
+## uptime (load before the runs)
+ 14:51:52 up 48 min,  0 users,  load average: 0.16, 0.48, 0.95
+## cpufreq governor / boost
+## UDP buffer limits (DDS; the image asks for 8 MB)
+net.core.rmem_max = 212992
+net.core.wmem_max = 212992
+net.core.rmem_default = 212992
+net.core.wmem_default = 212992
+## /dev/shm (and Fast DDS files left in it: root-owned ones are what a uid-1000 client cannot open)
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs           7.9G  596K  7.9G   1% /dev/shm
+admn 644 fastrtps_port7411_el
+admn 644 fastrtps_port7411
+admn 644 sem.fastrtps_port7411_mutex
+admn 644 fastrtps_c67f94390ff89365
+admn 644 fastrtps_c67f94390ff89365_el
+## docker version
+Client: Docker Engine - Community
+ Version:           29.8.1
+ API version:       1.56
+ Go version:        go1.26.8
+ Git commit:        4a63305
+ Built:             Tue Sep 15 16:25:26 2026
+ OS/Arch:           linux/amd64
+ Context:           default
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          29.8.1
+  API version:      1.56 (minimum version 1.40)
+  Go version:       go1.26.8
+  Git commit:       464cd50
+  Built:            Tue Sep 15 16:25:26 2026
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          v2.3.5
+  GitCommit:        1294c24a7da8e5a793ed378161673abe94118892
+ runc:
+  Version:          1.5.1
+  GitCommit:        v1.5.1-0-g8f2685a4
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
+## docker info
+Client: Docker Engine - Community
+ Version:    29.8.1
+ Context:    default
+ Debug Mode: false
+ Plugins:
+  buildx: Docker Buildx (Docker Inc.)
+    Version:  v0.37.1
+    Path:     /usr/libexec/docker/cli-plugins/docker-buildx
+  compose: Docker Compose (Docker Inc.)
+    Version:  v5.5.1
+    Path:     /usr/libexec/docker/cli-plugins/docker-compose
+  model: Docker Model Runner (Docker Inc.)
+    Version:  v1.2.6
+    Path:     /usr/libexec/docker/cli-plugins/docker-model
+
+Server:
+ Containers: 0
+  Running: 0
+  Paused: 0
+  Stopped: 0
+ Images: 2
+ Server Version: 29.8.1
+ Storage Driver: overlayfs
+  driver-type: io.containerd.snapshotter.v1
+ Logging Driver: json-file
+ Cgroup Driver: systemd
+ Cgroup Version: 2
+ Plugins:
+  Volume: local
+  Network: bridge host ipvlan macvlan null overlay
+  Log: awslogs fluentd gcplogs gelf journald json-file local splunk syslog
+ CDI spec directories:
+  /etc/cdi
+  /var/run/cdi
+ Swarm: inactive
+ Runtimes: io.containerd.runc.v2 runc
+ Default Runtime: runc
+ Init Binary: docker-init
+ containerd version: 1294c24a7da8e5a793ed378161673abe94118892
+ runc version: v1.5.1-0-g8f2685a4
+ init version: de40ad0
+ Security Options:
+  apparmor
+   Profile: default
+  seccomp
+   Profile: builtin
+  cgroupns
+ Kernel Version: 5.15.0-191-generic
+ Operating System: Ubuntu 22.04.5 LTS
+ OSType: linux
+ Architecture: x86_64
+ CPUs: 8
+ Total Memory: 15.61GiB
+ Name: compute-vm-8-16-100-ssd-1790344754523
+ ID: 9dd0bbed-d344-4a3a-86b7-024996ade0e5
+ Docker Root Dir: /var/lib/docker
+ Debug Mode: false
+ Experimental: false
+ Insecure Registries:
+  ::1/128
+  127.0.0.0/8
+ Live Restore Enabled: false
+ Firewall Backend: iptables
+  EnableUserlandProxy: true
+  UserlandProxyPath: /usr/bin/docker-proxy
+
+## git
+76bf24ebac2d586f092b7c7493a5cb363fa1bdf1 2026-09-25T13:32:01+00:00 Captain's decisions: PR #12 counts as reviewed, no branch protection, C8 closed on 4 cores
+## host python
+3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]
+numpy 2.2.6 scipy 1.15.3 scikit-learn 1.7.2
+## uptime (load after the runs)
+ 14:58:56 up 55 min,  0 users,  load average: 0.98, 0.83, 0.95

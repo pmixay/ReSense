@@ -1,0 +1,158 @@
+{
+  "schema": "resense-p4-p3d-seto-raw-cache-comparison-v1",
+  "date": "2026-09-26",
+  "detector_commit": "fa18832f1636c48d0137842e2bd3b857bc70aef7",
+  "p4_branch_integration": "465c44e",
+  "effective_config_sha256": "d2c8ab8d70954956d71c50cdc074962a3037e7ea2bc0e09568663ab34af53d6e",
+  "config_file_sha256": "c7ca5ad4f332b7025f66ab0addeb21025daf23a36aca4dbcc2d49fe5b8831f40",
+  "commands": {
+    "cache": "python scripts/regression_gate.py --cache /data/cache --jobs 1 --chunks 8 --baseline docs/evidence/results/regression_baseline_2026-09-26_ride_p3d.json --work out/p4/p3d/reference/gate --out out/p4/p3d/reference/gate.json (set O JSONL in gate work directory)",
+    "raw": "resense run --bag /data/cloud_with_fake_obj --out out/p4/p3d/reference/seto/raw.jsonl --quiet"
+  },
+  "frame_count": 1510,
+  "same_frame_order": true,
+  "bag_receive_stamps_equal": true,
+  "quantization": "--int16 cache rounds coordinates at 5 mm; timestamps preserved.",
+  "scores_equal": false,
+  "cache_score": {
+    "inside_stop_frames": 384,
+    "outside_false_stop_frames": 6,
+    "background_alarm_frames": 3,
+    "background_alarm_ids": 2,
+    "objects": {
+      "big_center": {
+        "alarm_frames": 208,
+        "advisory_only_frames": 0,
+        "first_alarm_m": 98.0,
+        "alarm_held_from_m": 98.7
+      },
+      "small_on_rail": {
+        "alarm_frames": 23,
+        "advisory_only_frames": 0,
+        "first_alarm_m": 42.7,
+        "alarm_held_from_m": 46.2
+      },
+      "small_center": {
+        "alarm_frames": 30,
+        "advisory_only_frames": 0,
+        "first_alarm_m": 52.5,
+        "alarm_held_from_m": 57.5
+      },
+      "small_edge_inside": {
+        "alarm_frames": 2,
+        "advisory_only_frames": 23,
+        "first_alarm_m": 5.2,
+        "alarm_held_from_m": 5.2
+      },
+      "small_outside_near": {
+        "alarm_frames": 0,
+        "advisory_only_frames": 24,
+        "first_alarm_m": null,
+        "alarm_held_from_m": null
+      },
+      "big_edge_inside": {
+        "alarm_frames": 6,
+        "advisory_only_frames": 0,
+        "first_alarm_m": 10.3,
+        "alarm_held_from_m": 10.3
+      },
+      "big_outside": {
+        "alarm_frames": 6,
+        "advisory_only_frames": 43,
+        "first_alarm_m": null,
+        "alarm_held_from_m": null
+      },
+      "big_above": {
+        "alarm_frames": 51,
+        "advisory_only_frames": 6,
+        "first_alarm_m": 101.3,
+        "alarm_held_from_m": 111.4
+      },
+      "long_low_on_rails": {
+        "alarm_frames": 49,
+        "advisory_only_frames": 0,
+        "first_alarm_m": 82.2,
+        "alarm_held_from_m": 90.8
+      },
+      "thin_hanging": {
+        "alarm_frames": 15,
+        "advisory_only_frames": 0,
+        "first_alarm_m": 30.1,
+        "alarm_held_from_m": 31.8
+      }
+    }
+  },
+  "raw_bag_score": {
+    "inside_stop_frames": 387,
+    "outside_false_stop_frames": 7,
+    "background_alarm_frames": 1,
+    "background_alarm_ids": 1,
+    "objects": {
+      "big_center": {
+        "alarm_frames": 208,
+        "advisory_only_frames": 0,
+        "first_alarm_m": 98.0,
+        "alarm_held_from_m": 98.7
+      },
+      "small_on_rail": {
+        "alarm_frames": 26,
+        "advisory_only_frames": 0,
+        "first_alarm_m": 48.0,
+        "alarm_held_from_m": 51.5
+      },
+      "small_center": {
+        "alarm_frames": 30,
+        "advisory_only_frames": 0,
+        "first_alarm_m": 52.5,
+        "alarm_held_from_m": 57.5
+      },
+      "small_edge_inside": {
+        "alarm_frames": 2,
+        "advisory_only_frames": 25,
+        "first_alarm_m": 5.2,
+        "alarm_held_from_m": 5.2
+      },
+      "small_outside_near": {
+        "alarm_frames": 0,
+        "advisory_only_frames": 24,
+        "first_alarm_m": null,
+        "alarm_held_from_m": null
+      },
+      "big_edge_inside": {
+        "alarm_frames": 6,
+        "advisory_only_frames": 0,
+        "first_alarm_m": 10.3,
+        "alarm_held_from_m": 10.3
+      },
+      "big_outside": {
+        "alarm_frames": 7,
+        "advisory_only_frames": 41,
+        "first_alarm_m": null,
+        "alarm_held_from_m": null
+      },
+      "big_above": {
+        "alarm_frames": 51,
+        "advisory_only_frames": 6,
+        "first_alarm_m": 101.3,
+        "alarm_held_from_m": 111.4
+      },
+      "long_low_on_rails": {
+        "alarm_frames": 49,
+        "advisory_only_frames": 0,
+        "first_alarm_m": 82.2,
+        "alarm_held_from_m": 90.8
+      },
+      "thin_hanging": {
+        "alarm_frames": 15,
+        "advisory_only_frames": 0,
+        "first_alarm_m": 30.1,
+        "alarm_held_from_m": 31.8
+      }
+    }
+  },
+  "frames_with_changed_detection_rows": 404,
+  "frames_with_changed_warning_rows": 524,
+  "interpretation": "The float raw bag and 5 mm int16 cache remain score-nonidentical under P3d. The repository baseline is cache-based; all P4 candidate screens use the cache.",
+  "same_frame_ids": false,
+  "frame_id_note": "The cache JSONL uses cache filename frame IDs; rosbag replay reports the sensor frame_id (hesai_lidar). Both are in frame index order 0..1509 with equal receive stamps."
+}

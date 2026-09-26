@@ -1,0 +1,323 @@
+{
+ "schema": "resense-p4-p3d-candidate-decisions-v1",
+ "date": "2026-09-26",
+ "branch": "claude/p4-data-completion-20260926",
+ "detector_commit": "fa18832f1636c48d0137842e2bd3b857bc70aef7",
+ "branch_commit_at_runs": "1cce77e24b64027537a8aa0da40c71b2cf03c308",
+ "preregistration": "p4_candidates_p3d_prereg_2026-09-26.json",
+ "reference": "p4_p3d_available_reference_2026-09-26.json",
+ "baseline": "regression_baseline_2026-09-26_ride_p3d.json",
+ "reference_set_o": {
+  "inside_stop_frames": 384,
+  "outside_false_stop_frames": 6,
+  "background_alarm_frames": 3,
+  "background_alarm_ids": 2,
+  "clear_distance_target_overclaims": {
+   "target": 54,
+   "target_frames": 505,
+   "intent": 223,
+   "intent_frames": 801,
+   "go_judge": 150,
+   "go_judge_in_envelope": 62,
+   "target_by_decision": {
+    "GO": 46,
+    "CAUTION": 6,
+    "STOP": 2
+   }
+  },
+  "object_target": {
+   "small_edge_inside": {
+    "alarm_frames": 2,
+    "visible_frames": 83,
+    "first_alarm_m": 5.2,
+    "held_from_m": 5.2
+   },
+   "big_edge_inside": {
+    "alarm_frames": 6,
+    "visible_frames": 125,
+    "first_alarm_m": 10.3,
+    "held_from_m": 10.3
+   },
+   "big_above": {
+    "alarm_frames": 51,
+    "visible_frames": 124,
+    "first_alarm_m": 101.3,
+    "held_from_m": 111.4
+   }
+  }
+ },
+ "candidate_comparisons_use_identical_cached_set_o_frames_labels_and_visibility_denominators": true,
+ "candidates": [
+  {
+   "id": "A",
+   "single_change": "tracking.near_escalate_distance: 35.0 -> 40.0",
+   "target_object": "big_above",
+   "effective_config_sha256": "096c38b311face74921da8ba9d6d60e65ad1f5b6ee96eb8180816cecb28e2da9",
+   "config_file_sha256": "eb6acdecbe87e74b975735bd24ffac4fb50523ce05b519245459f91e60605bcf",
+   "set_o_command": "/tmp/resense-p4-venv/bin/resense run --npy /data/cache/cloud_with_fake_obj --config out/p4/p3d/candidates/A.yaml --out out/p4/p3d/candidates/A_seto.jsonl --quiet",
+   "set_o_output_sha256": "3c73668c04cc93d858c70e271f1701fa1fe7595eea9e8aa20cb97c78739a6f34",
+   "set_o_score": {
+    "score_json_sha256": "2c6a88a920f570073d30f484f75d5fc9c981c5c20b5497d28d468cbb66300128",
+    "inside_stop_frames": 384,
+    "target": {
+     "alarm_frames": 51,
+     "visible_frames": 124,
+     "first_alarm_m": 101.3,
+     "held_from_m": 111.4
+    },
+    "outside_false_stop_frames": 6,
+    "background_alarm_frames": 3,
+    "background_alarm_ids": 2
+   },
+   "clear_distance": {
+    "sha256": "fc4452c4b5f539aecb01cc3ee361af9d4ba90a098d3b53afeb79bb32bc3c126d",
+    "totals": {
+     "target": 54,
+     "target_frames": 505,
+     "intent": 223,
+     "intent_frames": 801,
+     "go_judge": 150,
+     "go_judge_in_envelope": 62,
+     "target_by_decision": {
+      "GO": 46,
+      "CAUTION": 6,
+      "STOP": 2
+     }
+    },
+    "decisions": {
+     "GO": 747,
+     "STOP": 415,
+     "FAULT": 2,
+     "CAUTION": 346
+    },
+    "clear_distance_m": {
+     "median": 97.7,
+     "p10": 29.9,
+     "mean": 100.8
+    }
+   },
+   "reference_target": {
+    "alarm_frames": 51,
+    "visible_frames": 124,
+    "first_alarm_m": 101.3,
+    "held_from_m": 111.4
+   },
+   "decision": "rejected at set O screen: target unchanged; no downstream candidate checks run."
+  },
+  {
+   "id": "B",
+   "single_change": "tracking.near_escalate_voxels: 10 -> 8",
+   "target_object": "small_edge_inside",
+   "effective_config_sha256": "12190b4e1ed35aa76390e4c1af087c4f30546c4619d54ab597c8a4d94f1cc33d",
+   "config_file_sha256": "eec7052a57c69a0d02738316437af26cd1550e75ec96dcce3d83cde406564a18",
+   "set_o_command": "/tmp/resense-p4-venv/bin/resense run --npy /data/cache/cloud_with_fake_obj --config out/p4/p3d/candidates/B.yaml --out out/p4/p3d/candidates/B_seto.jsonl --quiet",
+   "set_o_output_sha256": "4f6169559ec791a02726b4341825a55267d64a611cbd4a0aba19495494dbf3e8",
+   "set_o_score": {
+    "score_json_sha256": "f16272214e3919c6d779c607cf561c550160514502ac5e20d616d806fc1a172e",
+    "inside_stop_frames": 385,
+    "target": {
+     "alarm_frames": 3,
+     "visible_frames": 83,
+     "first_alarm_m": 7.1,
+     "held_from_m": 7.1
+    },
+    "outside_false_stop_frames": 6,
+    "background_alarm_frames": 3,
+    "background_alarm_ids": 2
+   },
+   "clear_distance": {
+    "sha256": "28ca393f314915a530efc625600f4b18f77f4d4ad46618dcf18c8a00a12c6662",
+    "totals": {
+     "target": 54,
+     "target_frames": 505,
+     "intent": 223,
+     "intent_frames": 801,
+     "go_judge": 150,
+     "go_judge_in_envelope": 62,
+     "target_by_decision": {
+      "GO": 46,
+      "CAUTION": 6,
+      "STOP": 2
+     }
+    },
+    "decisions": {
+     "GO": 747,
+     "STOP": 416,
+     "FAULT": 2,
+     "CAUTION": 345
+    },
+    "clear_distance_m": {
+     "median": 97.7,
+     "p10": 29.9,
+     "mean": 100.8
+    }
+   },
+   "reference_target": {
+    "alarm_frames": 2,
+    "visible_frames": 83,
+    "first_alarm_m": 5.2,
+    "held_from_m": 5.2
+   },
+   "six_original_recordings": {
+    "command": "/tmp/resense-p4-venv/bin/python scripts/robustness_check.py --cache /data/cache --out out/p4/p3d/candidates/B/stress/as_recorded --every 1 --mount as_recorded --jobs 1 --config out/p4/p3d/candidates/B.yaml",
+    "summary_sha256": "5bbd3f9a1802fcc9d495b4f461ae2eb447c3a9592850706740f9a595f4ed4016",
+    "identical_to_reference_metrics": true,
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 189,
+      "alarm_events": 2,
+      "stop_episodes": 2,
+      "labelled": {
+       "recall": 0.756,
+       "first_alarm_frame": 11,
+       "fp_frames": 0,
+       "fp_events": 0,
+       "per_bin": {
+        "50-100": [
+         186,
+         246
+        ]
+       },
+       "distance_error_max_abs": 0.23000000000000398
+      }
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 4,
+      "alarm_events": 4,
+      "stop_episodes": 1,
+      "labelled": null
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "labelled": null
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "labelled": null
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "labelled": null
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 54,
+      "alarm_events": 9,
+      "stop_episodes": 15,
+      "labelled": null
+     }
+    }
+   },
+   "strict_gate": {
+    "command": "/tmp/resense-p4-venv/bin/python scripts/regression_gate.py --cache /data/cache --config out/p4/p3d/candidates/B.yaml --jobs 1 --chunks 8 --baseline docs/evidence/results/regression_baseline_2026-09-26_ride_p3d.json --work out/p4/p3d/candidates/B/gate --out out/p4/p3d/candidates/B/gate.json",
+    "exit_code": 1,
+    "output_sha256": "dc5a446c1a397b4da21403312fc035e63bf6e7fc37bdaaffa2ad1ffc9f0537a6",
+    "allow_used": false,
+    "passed": false,
+    "worse_gated": [],
+    "better_gated": [
+     "set_O.objects.small_edge_inside.stop_frames",
+     "set_O.objects.small_edge_inside.first_stop_m",
+     "set_O.objects.small_edge_inside.held_from_m",
+     "set_O.objects.small_edge_inside.max_missed_streak_frames",
+     "set_O.objects.small_edge_inside.max_missed_span_m",
+     "set_O.objects.small_edge_inside.bins.0-50.stop_frames"
+    ],
+    "missing_gated": [
+     "ride.frames",
+     "ride.alarm_events",
+     "ride.stop_episodes",
+     "set_F_straight.person.detected",
+     "set_F_straight.person.first_detection_median_m",
+     "set_F_straight.person.false_detections",
+     "set_F_straight.box1.0.detected",
+     "set_F_straight.box1.0.first_detection_median_m",
+     "set_F_straight.box1.0.false_detections",
+     "set_F_straight.box0.5.detected",
+     "set_F_straight.box0.5.first_detection_median_m",
+     "set_F_straight.box0.5.false_detections",
+     "set_F_straight.trolley.detected",
+     "set_F_straight.trolley.first_detection_median_m",
+     "set_F_straight.trolley.false_detections",
+     "set_F_straight.cable.detected",
+     "set_F_straight.cable.first_detection_median_m",
+     "set_F_straight.cable.false_detections"
+    ],
+    "missing_count": 18,
+    "same_count": 151
+   },
+   "decision": "not accepted: available rows show no regression and six set O metrics improve, but strict gate is incomplete (3 ride + 15 set F rows missing); preregistration forbids candidate-specific stress/offset/paired checks or combining without a complete passing gate."
+  },
+  {
+   "id": "C",
+   "single_change": "cluster.wall_keep_gauge_voxels: 10 -> 8",
+   "target_object": "big_edge_inside",
+   "effective_config_sha256": "bf5f0f2792991eb508eb0c61e07b17d1eca56af7a82bc04fe12dbe9fdd87531d",
+   "config_file_sha256": "bcc6da32655160ef75eabc270f634555dd03fc4fb165fe0228c70c2c6c0e9c9e",
+   "set_o_command": "/tmp/resense-p4-venv/bin/resense run --npy /data/cache/cloud_with_fake_obj --config out/p4/p3d/candidates/C.yaml --out out/p4/p3d/candidates/C_seto.jsonl --quiet",
+   "set_o_output_sha256": "30991f65f6f74884f3ebf88742d8a043e796326e8689643f38717c2102960eef",
+   "set_o_score": {
+    "score_json_sha256": "c29f734a9580a7623c905cea3ee6fe6eab1b10335286218fb7248166d5fbf178",
+    "inside_stop_frames": 384,
+    "target": {
+     "alarm_frames": 6,
+     "visible_frames": 125,
+     "first_alarm_m": 10.3,
+     "held_from_m": 10.3
+    },
+    "outside_false_stop_frames": 6,
+    "background_alarm_frames": 3,
+    "background_alarm_ids": 2
+   },
+   "clear_distance": {
+    "sha256": "ed70597f583597c4065fbfec799fbbc4c9effc4c16394fa6b2229872cd0cc130",
+    "totals": {
+     "target": 54,
+     "target_frames": 505,
+     "intent": 223,
+     "intent_frames": 801,
+     "go_judge": 150,
+     "go_judge_in_envelope": 62,
+     "target_by_decision": {
+      "GO": 46,
+      "CAUTION": 6,
+      "STOP": 2
+     }
+    },
+    "decisions": {
+     "GO": 747,
+     "STOP": 415,
+     "FAULT": 2,
+     "CAUTION": 346
+    },
+    "clear_distance_m": {
+     "median": 97.7,
+     "p10": 29.9,
+     "mean": 100.8
+    }
+   },
+   "reference_target": {
+    "alarm_frames": 6,
+    "visible_frames": 125,
+    "first_alarm_m": 10.3,
+    "held_from_m": 10.3
+   },
+   "decision": "rejected at set O screen: target unchanged; no downstream candidate checks run."
+  }
+ ],
+ "combined_candidate_run": "not run; no candidate cleared the preregistered complete gate.",
+ "shipped_detector_or_default_change": false,
+ "new_baseline_created": false,
+ "short_signature_relaxation": "rejected historical P3c experiment: it raised inside STOP frames 355->381 but outside #5 false STOP frames 0->3 (total outside 6->9); it remains disabled."
+}

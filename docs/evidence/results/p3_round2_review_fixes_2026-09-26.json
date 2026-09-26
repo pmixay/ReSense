@@ -1,0 +1,176 @@
+{
+  "schema": "resense-p3-item-v1",
+  "key": "round2_review_fixes",
+  "date": "2026-09-26",
+  "owner": "P3 (detection quality; detector-rule decisions delegated by the captain)",
+  "question": "The adversarial safety review of the P3 round-2 items (wf10/p3-round2, 17a850d) returned BLOCKING: every calibration refinement re-seeds the track model with prev=None and the re-seed lost a confirmed STOP on doubleT_obstacle (5 Hz, rig +2 deg roll / +2 deg pitch: frames 102 and 104 with clear_distance 151 / 163 m while the object's track, 15 hits, was alive at 56.4 m; also frame 76 after the refinement at frame 40, frame 182 at 5 Hz (0, -1.5), frame 197 at 10 Hz (0, +2)), and the refinement flaps (a median hovering at apply_min_deg 0.75 deg: 4 re-seeds on roundT_doubleT +3 deg pitch). Also MAJOR: the hanging stage drops its own cluster for an overlapping ADVISORY cluster (a cable hanging to 1.85-2.2 m, 0.65-0.75 m off the axis, is demoted as floating: no STOP); and test gaps with a MINOR: the input-rate estimate drops intervals under 0.02 s, so bursty 10 Hz receive stamps read as 2-3 periods. Can the refinement be made safe, and do the fixes pass the gate?",
+  "preregistered": {
+    "written_at_utc": "2026-09-26T00:25:26Z",
+    "before_any_result": "No gate, stress or reviewer-sweep run of the fixed code yet. Before this file: (1) on 17a850d (a clean copy, native path) the reviewer's sweep is running (doubleT_obstacle, 10 / 5 Hz, the 9 mounts below and the reviewer's 17 others, refine on and off, per frame) to reproduce the finding; (2) the old and the new input-rate estimate compared on the stamps of every cache (no detector run): identical periods on every 10 Hz frame of the six recordings, set O and the ride (whole and in the gate's 8 pieces), and on every 5 Hz frame (--every 2) of the six recordings and set O; the ride at 5 Hz differs in 24 of 5 636 frames (not part of any check); with 10 stamps (the reviewer's example) one 10 Hz ride frame became 2 periods (a run of late receive stamps, mean interval 0.151 s), so the window is 15 stamps; (3) the ray-cast scenarios of the new unit tests were prototyped on the working tree (static 0.6 m box at 30 m; a 0.5 x 2 x 2 m box at 22 m), which found two defects of the first draft that are fixed in the candidate: a re-seed hold re-armed by every re-seed (a garbage track held for good) and a refinement flapping on a bimodal median (the big box fools the rail observation: -3.56 / -4.67 deg alternately with refine_confirm_obs 1, none with 2).",
+    "base": "17a850d (wf10/p3-round2 head): the four round-2 items on, gate baseline regression_baseline_2026-09-25_ride_p3b.json",
+    "fixes": {
+      "F1a refine trigger (calibration.refine_raw_trigger true, calibration.refine_confirm_obs)": "the refinement compares, per axis, the RAW median of the spaced observations with the applied tilt; an axis at least refine_min_deg (0.5) away takes the value the final would set (zeroed below apply_min_deg), the other axes keep the applied value (a deadband around the applied tilt: a median hovering at 0.75 deg no longer flips it); the condition must hold on refine_confirm_obs spaced observations in a row",
+      "F1b sub-degree change keeps the track model (calibration.reseed_keep_max_deg 1.0)": "a correction change of at most 1 deg (refinement or final) rotates the current track model into the corrected frame (resense/track.py rotate_track_model: bed profile, rail head and axis refitted to rotated points; age, floor-shadow state, rail / wall state kept) instead of estimate_track(prev=None); the accumulation buffer (track coordinates) is kept; a larger change or a new orientation re-seeds as before",
+      "F1c tracks kept through any re-seed (tracking.reseed_hold 5)": "on every tilt change the tracks are rotated with the cloud (a change above 1 deg no longer resets the tracker: the tracks not reported then are dropped as the reset did, the reported ones kept); a track reported at the change stays reported for up to 5 frames after its last match without one, at its predicted distance, those misses neither decaying its confidence nor entering its hit history; repeated re-seeds do not extend it; a new orientation still resets the tracker. This also covers the final calibration's re-seed.",
+      "F1d clear_cap at lost tracks (health.clear_cap_lost true)": "clear_distance is also capped at the predicted distance of a track that was reported when it was last matched and missed this frame, until the tracker drops it (tracking.max_misses), its last cluster touching the envelope, columns skipped as in R1 (the reviewer's (d) asked for the previous frame only; this keeps the cap for the lost track's whole remaining life)",
+      "F2 hanging overlap (cluster.hanging_yield_gauge_only true)": "a hanging cluster is dropped only for an overlapping cluster of the other stages that is an obstacle (zone gauge, no demotion reason); an advisory cluster there no longer removes it",
+      "F3 input-rate estimate (no flag)": "periods = the mean of the last 14 stamp intervals within [0, stamp_dt_range[1] = 0.5 s] (= (t_last - t_first) / (n - 1) over 15 stamps without a pause or a step back) / tracking.frame_dt, rounded, clamped to 1-5; in-burst intervals under 0.02 s are counted (they were dropped)"
+    },
+    "candidates_in_order": {
+      "C1": "F1a with refine_confirm_obs 2 + F1b + F1c + F1d + F2 + F3; calibration.refine_min_deg 0.5 (the refinement shipped, made safe)",
+      "C2": "C1 with refine_confirm_obs 1 (run only if C1 fails the stress rule or the acceptance sweep for a reason that a one-observation-earlier refinement could change; skipped otherwise)",
+      "C3": "the fallback: C1 with calibration.refine_min_deg 0 (the refinement off; F1b-F1d still protect the final calibration's re-seed)",
+      "rule": "the first candidate in this order that meets the ship rule ships; C3 ships when C1 and C2 do not"
+    },
+    "acceptance_tests": {
+      "A1 reviewer sweep (gating)": "doubleT_obstacle, every frame (10 Hz) and every 2nd (5 Hz), fresh detector per run, the rig rotated rot_y(pitch) @ rot_x(roll) before the detector as in the reviewer's refine_check.py, mounts (roll, pitch) deg: (+2, 0), (-2, 0), (0, +2), (0, -2), (+2, +2), (-2, -2), (0, -1.5), (+3, 0), (0, +3): 18 runs. Gating: in every run the STOP frames (FrameResult.obstacle) of the candidate include every STOP frame of the same code with calibration.refine_min_deg 0. Recorded, not gating: the same against 17a850d with refine_min_deg 0, the reviewer's other 17 mounts, the number of correction changes per run, and every frame where clear_distance exceeds the distance of a track alive at the object (the reviewer's 151 / 163 m case).",
+      "A2 unit / ray-cast (tests/test_reseed_safety.py)": "a refinement while a static 0.6 m box at 30 m is a confirmed STOP (rig rolled 3 deg, the first 5 frames 0.7 / 1.5 deg more): the STOP is kept on every frame from its first confirmation, clear_distance never beyond the box; with the 0.7 deg refinement the track model is not re-seeded (age continues). Must fail on 17a850d (the 1.5 deg refinement reset the tracker there: 4 frames without the STOP, measured in the prototype). Also: rotate_track_model is exact for a pure rotation, the hold ends 5 frames after the last match and is not extended by repeated re-seeds, the flapping median of the reviewer (a median at 0.74 / 0.76 deg) changes the tilt at most once, clear_cap_lost caps at a lost reported track.",
+      "A3 hanging (tests/test_thin_hanging.py)": "ray-cast: the reviewer's cable (bottom 1.85-2.2 m above the rail head, 0.65-0.75 m off the axis) STOPs with the rule and does not without it; unit: a hanging cluster overlapping an advisory cluster is kept, one overlapping a gauge obstacle is dropped",
+      "A4 input rate (tests/test_reseed_safety.py)": "bursty 10 Hz stamps (alternating 0.19 / 0.01 s; 0.29 / 0.005 / 0.005 s) give 1 period on every frame, 5 Hz gives 2, a 5 s pause and a step back do not enter the estimate"
+    },
+    "commands": {
+      "gate": "python scripts/regression_gate.py --cache /data/cache --jobs 3 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_p3.json --work <scratch> --out <scratch>/result.json on the clean candidate commit (the six recordings, set O, the ride in 8 pieces, set F straight); also compared with regression_baseline_2026-09-25_ride_p3b.json (--from-json), recorded",
+      "stress": "python scripts/robustness_check.py --cache /data/cache --jobs 3 --out <scratch>/<mode> with --every 2, --mount roll_3, --mount pitch_3 (and as recorded, recorded only: the gate covers 10 Hz)",
+      "sweep": "the reviewer's refine_check.py per frame (scratch wf11/sweep.py), candidate and candidate with --set calibration.refine_min_deg=0"
+    },
+    "ship_rule": {
+      "gate": "exit 0 against regression_baseline_2026-09-25_ride_p3.json with no gated row worse or missing, no --allow",
+      "sweep": "A1 gating condition in all 18 runs",
+      "stress": "no worse than the current wf10 numbers: five obstacle-free bags false events / STOP episodes 5 Hz 10 / 10, +3 deg roll 11 / 13, +3 deg pitch 16 / 17 (each count not higher); doubleT_obstacle labelled hits not lower and first alarm frame not later: 92/123 @ 12, 181/246 @ 12, 186/246 @ 11",
+      "tests": "A2-A4 pass; A2 fails on 17a850d; ruff, pytest on both paths, sync_params --check, web/demo tests and the link check pass",
+      "C3 (refinement off)": "the gate and the tests as above; its stress counts are compared with the current numbers and with 17a850d with refine_min_deg 0, and a count worse than the current one is accepted only where 17a850d with the refinement off is equally worse (the refinement's own tilt gain given up), reported",
+      "F2": "ships with the chosen candidate only if that gate has no worse row; if a gated row is worse, the gate runs again with --set cluster.hanging_yield_gauge_only=false; if that passes, F2 ships off (default false) and the rest ships",
+      "F3": "ships only if the 10 Hz gate cannot see it: its periods are identical to the old estimate on every 10 Hz frame the gate processes and on every frame of the stress and sweep inputs (checked above, before any run); otherwise it is dropped",
+      "the safety rule decides": "a row worse is not traded against a row better"
+    },
+    "baseline_rule": "if any gated or recorded value of the final clean commit's gate differs from regression_baseline_2026-09-25_ride_p3b.json, that file is re-cut from the final run (without its gate block); its name does not change, so docs/CAPTAIN.md is not edited"
+  },
+  "run_C1": {
+    "commit": "f4a3e30 (clean; native path; --jobs 3)",
+    "gate": "exit 0 against regression_baseline_2026-09-25_ride_p3.json: 6 gated rows better, none worse (the round-2 rows); against _ride_p3b.json every row but latency the same",
+    "sweep_A1": "0 STOP frames lost in the 18 gating runs against the same code with refine_min_deg 0 (1 gained: (+2, +2) 10 Hz frame 117); the refinement fired only at 10 Hz (0, +2) and (+2, +2), at frame 50; against 17a850d with refine_min_deg 0 (recorded): 19 frames lost, 24 gained, see cause (1)",
+    "stress": "5 Hz five bags 10 / 10 (same), doubleT_obstacle 89/123 @ 18 (current 92/123 @ 12: WORSE); +3 deg roll 14 / 16 (current 11 / 13: WORSE; roundT_doubleT 2 / 2, squareT_platform_squareT_switch 8 / 11, roundT_pressureGate_roundT 0 / 0), doubleT_obstacle 183/246 @ 12 (better); +3 deg pitch 16 / 17 (same), 186/246 @ 11 (same)",
+    "verdict": "FAILS the stress rule; not shipped",
+    "causes_traced": [
+      "(1) F1c: at 5 Hz the provisional correction (3.1 deg, frame 8) came after the object's track was REPORTED AS ADVISORY (the tilted rig put it outside the strict envelope for its first 4 hits); F1c kept it (only unreported tracks dropped) with that zone history, so its zone vote stayed advisory until frame 18 (17a850d reset the tracker and a fresh track was a STOP at frame 12). The same in the sweep's 5 Hz runs (frames 12-18 lost against 17a850d). A zone history taken in the wrong frame is what the reset was for.",
+      "(2) F1a: the per-axis raw trigger keeps the provisional value of an axis whose raw median moved less than 0.5 deg, including a noise-level one the final would zero: squareT_platform_squareT_switch (+3 deg roll) kept pitch -0.69 for 19 s (the shipped rule zeroed it at frame 40: 10 -> 5 events), roundT_doubleT kept pitch +0.35 (a new event at frames 91-93); roundT_pressureGate_roundT was not refined at all."
+    ]
+  },
+  "addendum_1": {
+    "written_at_utc": "2026-09-26T01:07:04Z",
+    "before_any_result": "written after the C1 runs above and before any code or run of C1b",
+    "amended_fixes": {
+      "F1a' (replaces F1a)": "the refinement trigger is the shipped one again (the tilt the final would set from the spaced observations so far, zeroed below apply_min_deg, differs from the applied tilt by at least refine_min_deg in roll or pitch; then all axes take it), but it must hold on refine_confirm_obs 2 spaced observations in a row and at most calibration.refine_max 1 refinement is made per calibration: it cannot flap (one extra correction at most before the final). calibration.refine_raw_trigger stays in the code as a tried option, default false (C1 above).",
+      "F1c' (replaces F1c)": "only a track reported in zone gauge (a STOP) is held and, on a change above 1 deg, kept; on such a change every other track is dropped as the reset did; on a change up to 1 deg every track is kept as before (rotated); a new orientation resets the tracker"
+    },
+    "candidates_in_order": {
+      "C1b": "F1a' (confirm 2, refine_max 1) + F1b + F1c' + F1d + F2 + F3; refine_min_deg 0.5",
+      "C1c": "C1b with refine_confirm_obs 1 (only if C1b fails for a reason a refinement one observation earlier could change)",
+      "C3": "C1b with refine_min_deg 0 (the fallback)"
+    },
+    "ship_rule": "unchanged (gate, sweep A1 on the same 18 runs against the same code with refine_min_deg 0, stress no worse than the current numbers, tests); C1 is recorded as failed"
+  },
+  "run_C1b": {
+    "commit": "6b403a6 (clean; native path; --jobs 3)",
+    "gate": "exit 0 against regression_baseline_2026-09-25_ride_p3.json: 6 gated rows better, none worse; per frame against 17a850d's gate run (same command): decisions, detections and track models identical in all 15 269 frames (five bags, doubleT_obstacle, set O, the ride), warnings differ in 2 ride frames, clear_distance in 398 frames (F1d)",
+    "sweep_A1": "1 STOP frame lost against the same code with refine_min_deg 0: 5 Hz (0, -1.5) frame 182 (the refinement at frame 50 zeroes the provisional pitch -0.97 deg, as the final does at frame 190; with the refinement off the provisional pitch is kept until then and frame 182 is a STOP): FAILS",
+    "stress": "5 Hz 10 / 10, doubleT_obstacle 92/123 @ 12 (same as current); +3 deg roll 13 / 16 (current 11 / 13: WORSE; squareT_platform_squareT_switch 8 / 12 against 5 / 8 with the same tilt to 0.04 deg after frame 190, events at 426-697: the platform recording's marginal clusters after a different track-model history; roundT_pressureGate_roundT 0 / 0 against 1 / 1), doubleT_obstacle 183/246 @ 12 (better); +3 deg pitch 17 / 18 (current 16 / 17: WORSE; roundT_doubleT one event at frame 196, a 124.7 m cluster 6 frames after the final's rotated 0.93 deg change), 186/246 @ 11 (same)",
+    "verdict": "FAILS the sweep and the stress rule; not shipped"
+  },
+  "check_C1c": {
+    "what": "C1c = C1b with refine_confirm_obs 1, run only on the case C1b lost (doubleT_obstacle 5 Hz and 10 Hz, rig (0, -1.5)) to see whether an earlier refinement could pass A1",
+    "result": "5 Hz: the refinement at frame 40 (0.97 deg) loses frame 182 again (as 17a850d did); 10 Hz: none lost",
+    "verdict": "FAILS A1; the loss comes from the refined tilt itself (the correct, final-like pitch applied before frame 182), not from the re-seed, so no refinement timing can pass A1 on this case; C1c is not run further"
+  },
+  "addendum_2": {
+    "written_at_utc": "2026-09-26T01:49:47Z",
+    "decision": "C3 by the pre-registered order: C1b with calibration.refine_min_deg 0 (the refinement off). F1a' (refine_confirm_obs 2, refine_max 1) stays as the protection if the refinement is turned back on. C3 is evaluated with the same commands; its stress counts are compared with the current numbers and with 17a850d with refine_min_deg 0 (to be run: scripts/robustness_check.py --config <default.yaml with refine_min_deg 0> on the 17a850d copy), as pre-registered for C3.",
+    "tests": "the ray-cast re-seed test sets refine_min_deg 0.5 (the path stays available) and gains a final-calibration variant (the final changes the tilt by 0.7 / 1.5 deg while the STOP is confirmed), which runs with the shipped defaults"
+  },
+  "base_17a850d_measured": {
+    "note": "the same commands on a clean copy of 17a850d (PYTHONPATH set to the copy: scripts/robustness_check.py run from a checkout otherwise imports an installed resense)",
+    "reviewer_sweep": "26 mounts x 10 / 5 Hz, refine on against off: 5 STOP frames lost in 3 runs (10 Hz (0, +2) frame 197; 5 Hz (0, -1.5) frame 182; 5 Hz (+2, +2) frames 76, 102, 104), 15 gained - the reviewer's finding reproduced",
+    "gate": "exit 0 against _ride_p3b.json, every row but latency the same (the baseline is this code)",
+    "stress": {
+      "5 Hz": "10 / 10, doubleT_obstacle 92/123 @ 12",
+      "+3 deg roll": "11 / 13, 181/246 @ 12",
+      "+3 deg pitch": "16 / 17, 186/246 @ 11",
+      "note": "= the current wf10 numbers"
+    },
+    "stress_refine_off": {
+      "5 Hz": "10 / 10, 92/123 @ 12",
+      "+3 deg roll": "16 / 17 (roundT_doubleT 2 / 2, squareT_platform_squareT_switch 10 / 12), 181/246 @ 12",
+      "+3 deg pitch": "17 / 18 (roundT_doubleT 1 / 1), 186/246 @ 11",
+      "command": "scripts/robustness_check.py --config <17a850d configs/default.yaml with refine_min_deg 0.0>"
+    }
+  },
+  "run_C3": {
+    "commit": "6c19890 (clean; native path; --jobs 3)",
+    "gate": "exit 0 against regression_baseline_2026-09-25_ride_p3.json: 6 gated rows better (set O small_center 19 -> 30 STOP frames and first STOP 34.0 -> 52.5 m, thin_hanging 0 -> 15 and none -> 30.1 m, doubleT_obstacle object_on_rail 127 -> 128 and 124 -> 125 hits), none worse; against _ride_p3b.json every row but latency the same",
+    "per_frame_against_17a850d_gate": "decisions, detections (distance, kind, zone) and the track model identical in all 15 269 frames (five bags 2 287, doubleT_obstacle 201, set O 1 510, the ride 11 271); warnings differ in 2 ride frames (an advisory column track at 59.7 / 58.8 m not reported: its association changed after F2 kept a hanging cluster in an earlier frame; F2 keeps one in 2 frames of roundT_doubleT and 25 ride frames, none confirmed); clear_distance shorter in 398 frames, never longer (F1d, F2): five bags 119 frames, median 120.0 m unchanged, 245 -> 249 frames under 60 m; the ride 247 frames, median 123.0 -> 122.6 m, 53 more under 60 m; doubleT_obstacle 1; set O 31 frames, overclaim (scripts/score_clear_distance.py --gt) 67 -> 60 of 505 object-frames",
+    "sweep_A1": "the refinement is off: no STOP frame lost against refine_min_deg 0 by construction. Against 17a850d with refine_min_deg 0 (recorded): 2 lost, 23 gained in the 18 runs. Lost: frame 197 at 10 Hz with (-2, 0) and (0, +2) - the frame the as-recorded run misses as well (125 of 126 from frame 75, before and after); 17a850d's fresh re-seed at the final correction (frame 190, 0.36 / 0.70 deg) happened to catch it, the rotated model (F1b) does not. Gained: frames 190-200 after the final correction of the +2 / +3 deg roll rigs at both rates (the STOP held through the re-seed, F1c), 10 Hz (0, -1.5) frame 191, 5 Hz (0, -1.5) frame 192. The reviewer's cases: 5 Hz (+2, +2) 95 of 95 STOP frames (76, 102, 104 kept), 5 Hz (0, -1.5) 95 (182 kept), 10 Hz (0, +2) 189 (197 lost as in the as-recorded run). Against 17a850d as shipped (refinement on): 2 lost (10 Hz (-2, 0) frame 197; 10 Hz (+2, +2) frame 117, a refinement gain given up), 26 gained",
+    "stress": {
+      "5 Hz": "five bags 10 / 10, doubleT_obstacle 92/123 @ 12 (= current)",
+      "+3 deg roll": "14 / 16 (current 11 / 13; 17a850d refine off 16 / 17): roundT_doubleT 2 / 2, squareT_platform_squareT_switch 8 / 11, roundT_pressureGate_roundT 0 / 0; doubleT_obstacle 183/246 @ 12 (current 181/246 @ 12)",
+      "+3 deg pitch": "17 / 18 (current 16 / 17; 17a850d refine off 17 / 18): roundT_doubleT 1 / 1; doubleT_obstacle 186/246 @ 11 (= current)"
+    },
+    "tests": "469 passed on the native and the numpy path (456 + 11 tests/test_reseed_safety.py + 2 tests/test_thin_hanging.py); the ray-cast calibration-change test (final and refinement, 0.7 / 1.5 deg) fails on 17a850d (1.5 deg: the tracker reset, no STOP on 4 frames; 0.7 deg: the model re-seeded); the thin-hanging tests fail there too (no STOP for the cable); ruff, sync_params --check, web/demo (13) and the link check pass",
+    "verdict": "meets the C3 ship rule: gate exit 0 with no gated row worse; A1 by construction; the stress counts worse than the current ones (+3 deg roll 11 / 13 -> 14 / 16, +3 deg pitch 16 / 17 -> 17 / 18) are the refinement's tilt gain given up and no worse than 17a850d with the refinement off (16 / 17, 17 / 18); 5 Hz and doubleT_obstacle equal or better. F2 ships (no gated row worse), F3 ships (periods identical on every gate and stress input).",
+    "sweep_extra_mounts": "the reviewer's other 17 mounts x 10 / 5 Hz (recorded): against 17a850d with refine_min_deg 0, 2 STOP frames lost (frame 197 at 10 Hz with (-0.5, 0) and (+1, +2.5), after a final change of 0.29 / 0.27 deg that the model now follows by rotation), 52 gained (frames 190-200 after the final correction, the STOP held through it; 7 runs); against 17a850d as shipped (the refinement on) 7 lost, 44 gained: the refinement's own gains given up (10 Hz (0, -3) frame 117, (+3, +2) frame 197, 5 Hz (0, -3) frames 76, 122, 182) and frame 197 in the two runs above"
+  },
+  "decision": {
+    "shipped": "C3: the refinement OFF (calibration.refine_min_deg 0), with F1b (reseed_keep_max_deg 1.0), F1c' (tracking.reseed_hold 5, STOPs only), F1d (health.clear_cap_lost), F2 (cluster.hanging_yield_gauge_only), F3 (the burst-robust input rate); F1a' (refine_confirm_obs 2, refine_max 1) stays as the refinement's protection if it is turned back on; calibration.refine_raw_trigger tried, off",
+    "why_not_the_refinement": "no refinement variant passes the reviewer's sweep: at 5 Hz with the rig at (0, -1.5 deg) a refined tilt (the final's pitch 0 applied early) loses STOP frame 182 that the provisional tilt keeps (17a850d, C1b, C1c); the re-seed transients themselves are fixed (C1: 0 frames lost), but the tilt a refinement sets is itself a change the acceptance rule does not allow",
+    "given_up": "the refinement's tilt gain of round 2 on the stress check (+3 deg roll 11 / 13 -> 14 / 16, +3 deg pitch 16 / 17 -> 17 / 18 events / STOP episodes)"
+  },
+  "final": {
+    "commit": "0c8f8e1 (C3 + the documentation and a comment in Detector._fit_track; clean; native path; --jobs 3, 723 s on the dev VM)",
+    "gate": "exit 0 against regression_baseline_2026-09-25_ride_p3.json: 6 gated rows better, none worse; against _ride_p3b.json (before the re-cut) every row but latency the same; per frame identical to the C3 run (decisions, detections, warnings, track models, clear_distance) in all 15 269 frames",
+    "stress": "identical to C3 in every mode (per recording and per frame): 5 Hz 10 / 10, 92/123 @ 12; +3 deg roll 14 / 16, 183/246 @ 12; +3 deg pitch 17 / 18, 186/246 @ 11",
+    "baseline": "regression_baseline_2026-09-25_ride_p3b.json re-cut from this run without its gate block (the name kept, so docs/CAPTAIN.md is unchanged): every gated and recorded value the same as the first cut on 30d0cac; the commit, the config sha256 (591a26e1... -> fa68573c...), the wall time and the latency changed"
+  },
+  "addendum_3": {
+    "written_at_utc": "2026-09-26T03:47:27Z",
+    "trigger": "a safety re-review of 10e2707 (the shipped C3 with the gate baseline re-cut) returned CONCERNS: MAJOR, the tracking.reseed_hold of a STOP is cancelled by any match (resense/tracking.py: a match set hold = 0), so it only protects a STOP whose object is missed on the change frame itself; after a change above 1 deg the re-seeded model has no floor-shadow reference for its warm-up (resense/track.py: prev.age < axis_warmup_frames), the condition that swallowed the object in the original finding, and a loss starting on the frame after the change got only the 1-frame hold_misses (the reviewer's unit check: missed on the change frame -> reported on the next 5 frames [T, T, T, T, F], matched on it -> [T, F, F, F, F]; with accumulation on the kept buffer matched the track on the change frame). MINOR: no test guards the sign of the model / track rotation (Detector._fit_track dR): flipping it or not rotating passes every test because the hold covers it. MINOR: scripts/robustness_check.py run from a checkout imports an installed resense unless PYTHONPATH is set.",
+    "before_any_result": "written before any code of the fixes below and before any gate, sweep or stress run of them; the only runs so far are the reviewer's hold_unit.py and rot_check.py on a clean copy of 10e2707 (the reviewer's numbers reproduced: [T, T, T, T, F] / [T, F, F, F, F]; rot_check: every pitch case fails with the sign flipped, 50 m pitch without the rotation, no roll case either way)",
+    "base": "10e2707 (wf10/p3-round2 head, C3 shipped; gate baseline regression_baseline_2026-09-25_ride_p3b.json as re-cut on 0c8f8e1)",
+    "fixes": {
+      "R1 the re-seed hold is a fixed window (tracking.reseed_hold 5, no new flag)": "at a mount-calibration change (not a new orientation) a track reported in zone gauge (a STOP) stays reported on the change frame and the following frames up to the end of a fixed window, matched or not: a match refreshes the track (position, velocity, confidence, zone and hit history) but no longer ends the window; a missed frame inside it neither decays the confidence nor enters the hit history and reports the track at its predicted position. The window is H frames from the change, the change frame the first (counted from the track's last match before the change when it was already missing at the change, as before: repeated changes do not extend the hold of a track that stays unmatched); H = tracking.reseed_hold (5 processed frames) and, when the change re-seeds the track model (a change above calibration.reseed_keep_max_deg; a new orientation still resets the tracker), at least the frames the re-seeded model has no floor-shadow reference: 1 + ceil(track.axis_warmup_frames / k), k the input rate in periods with track.rates_per_period (6 at 10 Hz, 4 at 5 Hz; so H = 6 at 10 Hz, 5 at 5 Hz). Only tracks reported in zone gauge at the change are held, as now. The config comments (resense/config.py, configs/default.yaml and the ROS copy) and the docs that say 'up to 5 frames after its last match' are corrected to this rule.",
+      "R2 no code change (test only)": "the rotation sign of Detector._fit_track (dR = R_new @ R_old^T, applied to the track model and the tracks) is guarded by a ray-cast test that does not rely on the hold",
+      "R3 scripts/robustness_check.py": "puts its own repo root first on sys.path, as scripts/regression_gate.py does, so a run from a checkout imports that checkout's resense"
+    },
+    "tests": {
+      "T1 (tests/test_reseed_safety.py, R1)": "unit: a STOP matched on the change frame and then missed for 4 frames stays reported on all 4 and is dropped from the report after the window; missed from the change frame on: the same window; repeated changes do not extend an unmatched track's hold (the existing test); the detector passes a 6-frame hold at a change that re-seeds the model at 10 Hz (the ray-cast 1.5 deg case) and 5 at a sub-degree change. Must FAIL on 10e2707 (the reviewer's [T, F, F, F, F]).",
+      "T2 (tests/test_reseed_safety.py, R2)": "ray-cast, the reviewer's rot_check.py scenario: a 0.6 m box at 30 / 50 m, rig at 3 deg roll or pitch, the first 5 frames +0.7 / -0.7 / +0.95 deg more, the final calibration corrects it at frame 18 (a sub-degree change: the model rotated, not re-seeded): from its first STOP the box is a STOP on every frame and the STOP track is MATCHED on every frame (misses == 0), so the hold cannot cover a wrong rotation. Mutation check (recorded): with dR transposed in Detector._fit_track the test fails (every pitch case, per rot_check.py on 10e2707), and with no rotation it fails too (50 m pitch).",
+      "T3 (R3)": "none automated; checked by running scripts/robustness_check.py from the worktree without PYTHONPATH and confirming resense.__file__ is the worktree's (recorded)"
+    },
+    "commands": {
+      "gate": "python scripts/regression_gate.py --cache /data/cache --jobs 3 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_p3.json --work <scratch> --out <scratch>/result.json on the clean fix commit (the six recordings, set O, the ride in 8 pieces, set F straight); also compared with regression_baseline_2026-09-25_ride_p3b.json (--from-json), recorded",
+      "sweep": "the reviewer's sweep_fix.py (scratch review2/, HEADDIR = a clean copy of the fix commit, variant shipped: doubleT_obstacle, 26 mounts x every 1 / 2) compared per frame, analyze_fix.py-style, with the shipped rows of the reviewer's run on 10e2707 (review2/sweep_fix.jsonl; the reviewer's copy of 10e2707 is byte-identical to it in resense/ and configs/default.yaml)",
+      "stress": "python scripts/robustness_check.py --cache /data/cache --jobs 3 --out <scratch>/<mode> with --every 2, --mount roll_3, --mount pitch_3 (PYTHONPATH set to the worktree as well)"
+    },
+    "ship_rule": {
+      "gate": "exit 0 against regression_baseline_2026-09-25_ride_p3.json with no gated row worse or missing, no --allow",
+      "sweep": "against 10e2707 in all 52 runs: no STOP frame lost, no frame with a longer nearest distance (> +0.3 m, analyze_fix.py) or a longer clear_distance (> +0.5 m, analyze_fix.py); smaller differences and the frames gained are recorded",
+      "stress": "no worse than 10e2707: five obstacle-free bags false events / STOP episodes 5 Hz 10 / 10, +3 deg roll 14 / 16, +3 deg pitch 17 / 18 (no count higher); doubleT_obstacle labelled hits @ first alarm frame 92/123 @ 12, 183/246 @ 12, 186/246 @ 11 (no hit count lower, no first alarm later)",
+      "tests": "T1 and T2 pass; T1 fails on 10e2707; T2 fails with the sign flipped (mutation); ruff check ., pytest on the native and the numpy path (RESENSE_NATIVE=0; 469 before), scripts/sync_params.sh --check and python -m pytest -q web/demo pass",
+      "the safety rule decides": "a row worse is not traded against a row better; if R1 fails a rule, it is not shipped and the failure is recorded with its cause (R2 and R3 ship on their own)"
+    },
+    "baseline_rule": "if any gated or recorded value of the final clean commit's gate differs from regression_baseline_2026-09-25_ride_p3b.json, that file is re-cut from the final clean commit's run (the name kept) and EXPERIMENTS.md section 1i gets one dated line"
+  },
+  "run_addendum_3": {
+    "commit": "5f64ad4 (R1-R3 with the tests and the corrected comments / docs; clean; native path; gate --jobs 3, 529 s)",
+    "tests": {
+      "T1": "passes on 5f64ad4; FAILS on 10e2707 (a clean copy with the new tests): matched on the change frame, reported [T, F, F, F, F] (expected [T, T, T, T, F]); the ray-cast 0.7 / 1.5 deg change cases fail there too (the STOP's hold after the change frame 0, expected 4 / 5), and the existing hold test (a match during the hold kept its window: hold 1, was 0)",
+      "T2": "16 cases (roll / pitch x rig 3 deg +0.7 / -0.7 / +0.95 and rig 3.5 deg -0.7 x 30 / 50 m) pass on 5f64ad4 and on 10e2707 (R2 changes no code); mutation dR transposed in Detector._fit_track: the 8 pitch cases FAIL; dR = identity: 5 FAIL (pitch 50 m and the 3.5 deg rig at 30 m); no roll case fails either way (a roll of the rig barely moves a box on the axis). Deviation from the pre-registered scenario: with the rig at 3 deg and -0.7 the canted 2.3 deg is below provisional_min_deg (2.5) in 3 of 4 cases, so the final there is a ~3 deg change that re-seeds the model (those cases are kept: the track is matched on every frame there too, and the flipped sign fails them); the 3.5 deg rig with -0.7 adds the sub-degree case for the negative sign",
+      "T3": "scripts/robustness_check.py run from the worktree root without PYTHONPATH imports the worktree's resense (the main checkout's is installed) and reproduces the stress run's doubleT_obstacle 5 Hz output frame by frame (101 frames)",
+      "suite": "486 passed on the native and on the numpy path (469 + 1 T1 + 16 T2); ruff, scripts/sync_params.sh --check and web/demo (13) pass"
+    },
+    "gate": "exit 0 against regression_baseline_2026-09-25_ride_p3.json: the same 6 gated rows better, none worse; against _ride_p3b.json every row but latency the same; per frame identical to the 0c8f8e1 gate run (decisions, detections, warnings, track models, clear_distance) in all 15 269 frames",
+    "sweep": "52 runs (doubleT_obstacle, 26 mounts x 10 / 5 Hz, shipped) against the reviewer's run on 10e2707: identical frame by frame (7 852 frames): 0 STOP frames lost, 0 gained, no nearest or clear distance longer, the calibration changes the same, 272 held-detection frames in both",
+    "stress": "identical per frame to 0c8f8e1's (= 10e2707's code) in every mode: 5 Hz five bags 10 / 10, doubleT_obstacle 92/123 @ 12; +3 deg roll 14 / 16, 183/246 @ 12; +3 deg pitch 17 / 18, 186/246 @ 11",
+    "reading": "the fixed window changes no output on the recorded data: in none of the gate, stress or sweep runs is a STOP track matched at a calibration change and then missed within the window; it guards the case the reviewer built (the re-seeded model losing the object from the frame after the change)",
+    "verdict": "meets the ship rule: gate exit 0 with no gated row worse, no STOP frame lost and no longer distance in the sweep, stress no worse (identical), T1 fails on 10e2707, T2 fails by mutation; R1-R3 shipped",
+    "baseline": "not re-cut: no gated or recorded value of the 5f64ad4 gate differs from regression_baseline_2026-09-25_ride_p3b.json (only the commit, the wall time and the latency; the config hash is the same)"
+  }
+}
