@@ -277,3 +277,69 @@ def test_raycast_box_at_the_top_held_with_the_bar():
     cfg = _cfg(True, 1, bar=10)
     res = _sequence([1.6] * 7 + [2.4] * 13, cfg)
     assert [k for k, r in enumerate(res) if not r.obstacle] == [0, 1, 2, 3]
+
+
+def _run_dt(seq, dt, **kw):
+    """_run with a frame interval ``dt`` (s) and a static scene (no ego motion)."""
+    kw = {"stop_keep_signature": False, "stop_keep_thin": 0, "stop_keep_min_voxels": 0, **kw}
+    tr = Tracker(TrackingConfig(**kw))
+    out = []
+    for cls, thin in seq:
+        tr.update(cls, ego_shift=0.0, frame_dt=dt, thin=thin)
+        t = [t for t in tr.tracks if t.id == 1]
+        out.append((t[0].reported, t[0].zone) if t else (False, "gone"))
+    return out
+
+
+@pytest.mark.parametrize("dt", [0.1, 0.2])
+def test_cap_ends_a_kept_stop_at_a_standing_train(dt):
+    """Safety review of B10 (``stop_keep_max_s`` 10 s): a STOP at a standing train kept only by
+    signature-demoted clusters after its last clean hit is kept for 10 s of sensor time, at 10 Hz and
+    at 5 Hz alike, then falls back to the zone vote and ends; with no cap (0) it lasts."""
+    n_keep = int(round(10.0 / dt))
+    seq = [([_cl(60.0)], [])] * 6 + [([_cl(60.0, "warning", "elevated", n_gauge=20)], [])] * (n_keep + 30)
+    kw = {"stop_keep_signature": True, "stop_keep_min_voxels": 10}
+    capped = _run_dt(seq, dt, stop_keep_max_s=10.0, **kw)
+    assert capped[5 + n_keep] == (True, "gauge")          # 10 s after the last clean hit: still kept
+    assert capped[-1] == (True, "warning")                  # then the vote takes it down as without the rule
+    first_off = [k for k, (_, z) in enumerate(capped) if k > 5 and z == "warning"][0]
+    assert 5 + n_keep < first_off <= 5 + n_keep + 6
+    assert _run_dt(seq, dt, stop_keep_max_s=0.0, **kw)[-1] == (True, "gauge")
+
+
+def test_cap_ends_a_scan_line_continuation():
+    """The cap also bounds the scan-line keep: a STOP continued only by scan lines is dropped once
+    its last clean hit is more than 10 s ago (the track then misses and is removed)."""
+    seq = [([_cl(60.0)], [])] * 6 + [([], [_cl(60.0, n_gauge=20, thin=True)])] * 110
+    out = _run_dt(seq, 0.1, stop_keep_thin=1, stop_keep_min_voxels=10, stop_keep_max_s=10.0)
+    assert out[5 + 100] == (True, "gauge")
+    assert out[-1] == (False, "gone")
+
+
+def test_cap_leaves_a_moving_approach_of_5_s_unchanged():
+    """The set O box at the envelope top is kept for ~5 s (101 -> 7 m at ~1.9 m a frame, then
+    `elevated` and scan-line frames): an approach kept for 5.1 s is the same with the cap."""
+    xs = _approach(57, x0=110.0, step=1.9)
+    seq = ([([_cl(x)], []) for x in xs[:6]]
+           + [([_cl(x, "warning", "elevated", n_gauge=30)], []) if k % 4 else ([], [_cl(x, n_gauge=20, thin=True)])
+              for k, x in enumerate(xs[6:])])
+    kw = {"stop_keep_signature": True, "stop_keep_thin": 1, "stop_keep_min_voxels": 10}
+    a = _run_dt(seq, 0.1, stop_keep_max_s=10.0, **kw)
+    b = _run_dt(seq, 0.1, stop_keep_max_s=0.0, **kw)
+    assert a == b and all(r == (True, "gauge") for r in a[5:])
+
+
+def test_a_clean_hit_resets_the_cap():
+    """A clean hit inside the envelope resets the 10 s: 9 s kept, one clean hit, 9 s kept again is
+    still a STOP; the same 18 s without the clean hit is not."""
+    el = ([_cl(60.0, "warning", "elevated", n_gauge=20)], [])
+    kw = {"stop_keep_signature": True, "stop_keep_min_voxels": 10, "stop_keep_max_s": 10.0}
+    reset = [([_cl(60.0)], [])] * 6 + [el] * 90 + [([_cl(60.0)], [])] + [el] * 90
+    plain = [([_cl(60.0)], [])] * 6 + [el] * 181
+    assert _run_dt(reset, 0.1, **kw)[-1] == (True, "gauge")
+    assert _run_dt(plain, 0.1, **kw)[-1] == (True, "warning")
+
+
+def test_cap_default():
+    for cfg in (DetectorConfig(), DetectorConfig.from_yaml("configs/default.yaml")):
+        assert cfg.tracking.stop_keep_max_s == 10.0

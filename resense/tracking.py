@@ -69,6 +69,7 @@ class Track:
     hold: int = 0                   # 26.09: frames left of a calibration re-seed hold window (Tracker.reseed)
     seen_reported: bool = False     # 26.09: reported in the frame of its last match (health.clear_cap_lost)
     kept: bool = False              # 26.09 (stop_keep_*): the last hit kept a reported obstacle only by the keep rules
+    since_clean: float = 0.0        # 26.09 (stop_keep_max_s): s of sensor time since the last clean hit (an obstacle cluster inside the gauge, not a scan line; inf = none yet)
     near_hist: List[bool] = field(default_factory=list)  # 26.09: last near_hits hits: near the envelope (Tracker._near)?
     near_hits: int = 0              # 26.09: this many near hits in a row make the track an obstacle (0 = off)
 
@@ -159,12 +160,20 @@ class Tracker:
         c = self.cfg
         return c.gate_base + c.gate_per_m * max(distance, 0.0)
 
+    def _keep_time_ok(self, t: Track) -> bool:
+        """26.09 (``stop_keep_max_s``, safety review of B10): the keep rules act on ``t`` only while
+        its last clean hit is at most that many seconds of sensor time ago (``Track.since_clean``,
+        already advanced to this frame); 0 = no cap."""
+        cap = self.cfg.stop_keep_max_s
+        return cap <= 0 or t.since_clean <= cap + 1e-9
+
     def _keeps(self, t: Track, cl: Cluster) -> bool:
         """26.09 (``stop_keep_signature``): ``cl`` counts as inside the gauge for ``t`` although a
         shape signature demoted it, because ``t`` was reported as an obstacle in the previous frame
-        (and ``cl`` has ``stop_keep_min_voxels`` strict voxels)."""
+        (and ``cl`` has ``stop_keep_min_voxels`` strict voxels, and the track's last clean hit is
+        within ``stop_keep_max_s``)."""
         return (self.cfg.stop_keep_signature and cl.demoted and t.reported and t.zone == "gauge"
-                and cl.n_gauge >= self.cfg.stop_keep_min_voxels)
+                and cl.n_gauge >= self.cfg.stop_keep_min_voxels and self._keep_time_ok(t))
 
     def update(self, clusters: List[Cluster], ego_shift: float = 0.0,
                frame_dt: Optional[float] = None, low_ok: bool = True, rail_within: float = 0.0,
@@ -192,6 +201,9 @@ class Tracker:
         if frame_dt is not None:
             self._timed = True
         dt = float(frame_dt) if frame_dt is not None else 0.0
+        # 26.09 (stop_keep_max_s): the sensor time of this frame for the keep cap (the nominal period
+        # when the caller gives no interval), so that the cap is in seconds at any input rate
+        kdt = dt if dt > 0 else float(c.frame_dt)
         n_t, n_c = len(self.tracks), len(clusters)
         matched_t = np.zeros(n_t, dtype=bool)
         matched_c = np.zeros(n_c, dtype=bool)
@@ -212,6 +224,7 @@ class Tracker:
                     break
                 i, j = np.unravel_index(np.argmin(d), d.shape)
                 t, cl = self.tracks[i], clusters[j]
+                t.since_clean = 0.0 if cl.zone == "gauge" else t.since_clean + kdt
                 keep = self._keeps(t, cl)
                 t.velocity = 0.5 * t.velocity + 0.5 * (cl.centroid - t.centroid) if t.hits > 1 else (cl.centroid - t.centroid)
                 t.centroid = cl.centroid
@@ -234,10 +247,11 @@ class Tracker:
                 d[i, :] = np.inf
                 d[:, j] = np.inf
         if c.stop_keep_thin and thin:
-            self._continue_thin(thin, matched_t, ego_shift, step, dt, zw, hw, nk)
+            self._continue_thin(thin, matched_t, ego_shift, step, dt, zw, hw, nk, kdt)
         # unmatched tracks
         for i, t in enumerate(self.tracks):
             if not matched_t[i]:
+                t.since_clean += kdt
                 t.misses += 1
                 t.age += 1
                 t.span_s += dt
@@ -257,6 +271,7 @@ class Tracker:
                     span_s=dt, zone_min_fraction=c.zone_min_fraction,
                     column_hist=[cl.reason == "column"], column_hold=int(c.column_hold),
                     near_hist=[self._near(cl)] if nk else [], near_hits=nk,
+                    since_clean=0.0 if cl.zone == "gauge" else float("inf"),
                 ))
                 self._next_id += 1
         # reported: confirmed now, or reported in the previous frame and missed for at most
@@ -278,7 +293,7 @@ class Tracker:
         return self.tracks
 
     def _continue_thin(self, thin: List[Cluster], matched_t: np.ndarray, ego_shift: float, step: float,
-                       dt: float, zw: int, hw: int, nk: int = 0) -> None:
+                       dt: float, zw: int, hw: int, nk: int = 0, kdt: float = 0.0) -> None:
         """26.09 (``stop_keep_thin``): tracks that no cluster matched in this frame are associated,
         greedily and with the same gate and prediction, with the clusters flatter than
         ``cluster.min_height`` (one scan line: the part of an object inside the envelope thinner than
@@ -288,7 +303,8 @@ class Tracker:
         obstacles in the previous frame; mode 2: also a track not yet reported whose previous hit
         was inside the gauge (zone ``gauge``), so that one scan line counts towards its confirmation.
         A match is a hit like any other.
-        Nothing else sees these clusters: they never start a track."""
+        Nothing else sees these clusters: they never start a track. A scan line is never a clean hit:
+        with ``stop_keep_max_s`` a track is continued only while its last clean hit is within it."""
         c = self.cfg
         mode = int(c.stop_keep_thin)
         cand = []
@@ -296,6 +312,8 @@ class Tracker:
             if matched_t[i] or t.last is None:
                 continue
             stop = t.reported and t.zone == "gauge"
+            if c.stop_keep_max_s > 0 and t.since_clean + kdt > c.stop_keep_max_s + 1e-9:
+                continue
             if stop or (mode >= 2 and not t.reported and t.last.zone == "gauge"):
                 cand.append(i)
         ok = [j for j, cl in enumerate(thin) if (cl.zone == "gauge" or (c.stop_keep_signature and cl.demoted))
@@ -322,6 +340,7 @@ class Tracker:
             i = cand[a]
             t, cl = self.tracks[i], thin[ok[b]]
             stop = t.reported and t.zone == "gauge"
+            t.since_clean += kdt
             t.velocity = 0.5 * t.velocity + 0.5 * (cl.centroid - t.centroid) if t.hits > 1 else (cl.centroid - t.centroid)
             t.centroid = cl.centroid
             t.hits += 1
