@@ -16,7 +16,7 @@ from resense.egomotion import EgoSpeedEstimate, EgoSpeedEstimator
 from resense.frame import Frame
 from resense.gauge import corridor_coordinates, corridor_mask, gauge_core_mask, point_in_polygon, widened_profile
 from resense.health import HealthMonitor
-from resense.lowobj import BedTemplate, low_candidates
+from resense.lowobj import BedTemplate, low_candidates, mark_rail_line
 from resense.track import TrackModel, estimate_track, rotate_track_model
 from resense.tracking import Tracker
 
@@ -220,6 +220,9 @@ class Detector:
             valid = self._far_both_sides(clusters, valid, floor_valid)
         if cfg.cluster.hanging_enabled and (not cfg.cluster.hanging_needs_rails or self.track.rail_slabs > 0):
             clusters = self._hanging(xyz, frame.intensity, dy_all, h_all, cand, clusters, min(valid, floor_valid))
+        if cfg.lowobj.rail_start_within > 0:
+            # 26.09 (P3 rail start, off by default): low clusters near the train that are rail geometry
+            mark_rail_line(clusters, xyz[:, 0], dy_all, h_all, cfg.lowobj, cfg.track.rails_spacing, cfg.gauge.range_min)
         t5 = time.perf_counter()
         gauge, warn = self._confirm(clusters, speed, dt)
         cap = self._clear_cap(clusters, cand, dy_all, h_all) if cfg.health.clear_cap else None
@@ -521,7 +524,8 @@ class Detector:
         Returns the confirmed detections in the strict gauge and in the advisory zone."""
         low = self.cfg.lowobj
         low_ok = low.min_model_age <= 0 or self.track.age >= low.min_model_age
-        self.tracker.update(clusters, ego_shift=(speed or 0.0) * dt, frame_dt=dt, low_ok=low_ok)
+        self.tracker.update(clusters, ego_shift=(speed or 0.0) * dt, frame_dt=dt, low_ok=low_ok,
+                            rail_within=low.rail_start_within)
         pending = low.pending_advisory and self.calib.state.status == "pending"
         dets: List[Detection] = []
         for t in self.tracker.confirmed():

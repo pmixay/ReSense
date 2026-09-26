@@ -107,14 +107,20 @@ class Tracker:
         return c.gate_base + c.gate_per_m * max(distance, 0.0)
 
     def update(self, clusters: List[Cluster], ego_shift: float = 0.0,
-               frame_dt: Optional[float] = None, low_ok: bool = True) -> List[Track]:
+               frame_dt: Optional[float] = None, low_ok: bool = True, rail_within: float = 0.0) -> List[Track]:
         """Associate ``clusters`` with the tracks. ``ego_shift`` (m) is the distance the
         vehicle travelled since the previous frame when it is known: a track seen once has no
         velocity yet and is then predicted as a static object approaching by that much.
         ``frame_dt`` (s) is the interval since the previous frame; it accumulates each track's
         observed time for the ``confirm_time_s`` rule (without it persistence counts hits only).
         ``low_ok`` False (``lowobj.min_model_age``, 26.09, off) keeps a low track that was not
-        reported in the previous frame from being reported in this one."""
+        reported in the previous frame from being reported in this one. ``rail_within`` > 0
+        (``lowobj.rail_start_within``, 26.09, off by default) keeps a low track that was not
+        reported in the previous frame from being reported while its cluster of this frame is
+        rail geometry (``Cluster.rail_line``, ``lowobj.mark_rail_line``) and it was never matched
+        at or beyond ``rail_within``: the rail heads just ahead of a standing train. A track already
+        reported, or once matched that far (an object approached from afar), is not affected; the
+        association is unchanged, so this can only withhold a report."""
         c = self.cfg
         # widen the gate by the distance a static object travels in the *measured* interval, so a
         # dropped frame (0.2-0.3 s gap in the node) does not throw a 17 m/s approach out of the gate
@@ -186,6 +192,9 @@ class Tracker:
         for t in self.tracks:
             q = self._qualifies(t)
             if q and not low_ok and not t.reported and t.last is not None and t.last.kind == "low":
+                q = False
+            if (q and rail_within > 0 and not t.reported and t.last is not None and t.last.kind == "low"
+                    and t.last.rail_line and max(t.history) < rail_within):
                 q = False
             t.reported = (q or (t.reported and 0 < t.misses <= c.hold_misses)
                           or (t.reported and t.hold > 0))

@@ -35,6 +35,7 @@ class Cluster:
     retro: bool = False          # demoted to advisory as a retro-reflective sign / marker
     reason: str = ""             # why the cluster is advisory although it has gauge voxels ('' = it has not / it is an obstacle)
     kind: str = ""               # v0.6: 'low' = a bump above the track bed (resense/lowobj.py), '' = corridor cluster
+    rail_line: bool = False      # 26.09: a low cluster near the train that is rail geometry (lowobj.mark_rail_line; lowobj.rail_start_within)
 
     @property
     def size(self) -> np.ndarray:

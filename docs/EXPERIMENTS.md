@@ -55,7 +55,7 @@ every gated metric the same ([its JSON](evidence/results/regression_gate_2026-09
 |---|---|---|---|
 | false alarms, five obstacle-free bags (2 287 frames) | **13 events**, 58 alarm frames, 16 STOP episodes with `tracking.column_hold` 2 (on since 25.09, §3a: the `roundT_doubleT` column); without it 14 events, 60 alarm frames, 17 STOP episodes (long overhead rule on since 25.09; 20 / 107 / 27 without it); the start-offset spread 14–20 events was measured without the rule (24.09), not re-run | real, 25.09 [measured 25.09] | §1f |
 | P4 rate / mount stress and empty suffix | five bags false events / STOP episodes: 5 Hz **10 / 10**, +3° roll **14 / 16**, +3° pitch **17 / 18** since the safety review of 26.09 turned the refinement off (with it, round 2 of 25.09: 10 / 10, 11 / 13, 16 / 17; P4's run of 25.09 before the rate / re-mount flags: 13 / 17 with 3 new events in `roundT_doubleT`, 16 / 17, 17 / 18); `roundT_doubleT` 0 / 2 / 1 events (0 / 1 / 0 with the refinement); `doubleT_obstacle` labelled hits 92 of 123 @ frame 12, 183 of 246 @ 12, 186 of 246 @ 11 (26.09; 181 of 246 at +3° roll before). Frames 804–1 509 of `cloud_with_fake_obj`: **0 false frames / 0 events in 706 frames**, both from a fresh start and after continuous playback (P4, before round 2) | real backgrounds, 25.09, 26.09 [measured] | §1g, §1i; [`scorecard13_2026-09-25.json`](evidence/results/scorecard13_2026-09-25.json), [`p3_round2_combined_2026-09-25.json`](evidence/results/p3_round2_combined_2026-09-25.json), [`p3_round2_review_fixes_2026-09-26.json`](evidence/results/p3_round2_review_fixes_2026-09-26.json) |
-| false alarms, 20-minute ride (11 271 frames, 13.0 km) | **46 events, 3.5 per km**, 187 alarm frames (1.7 %), 39 STOP episodes with `tracking.column_hold` 2 (on since 25.09, §3a); without it 46 / 197 / 39 (without the long overhead rule 47 / 204 / 39, equal to the 24.09 record); 15 of the 46 first confirmed beyond 100 m (the removed event, an overhead structure 4–5 m along the track at 105–110 m, was one of the 16 of 24.09); causes: the 24.09 classification of the 47 (corridor-edge structures 18, bed-level fixtures 11, far small clusters 7, other 6, tall 2, hanging 2, person-like 1), not redone | real, 25.09 [measured 25.09] | §1f |
+| false alarms, 20-minute ride (11 271 frames, 13.0 km) | **46 events, 3.5 per km**, 187 alarm frames (1.7 %), 39 STOP episodes with `tracking.column_hold` 2 (on since 25.09, §3a); 45 / 183 / 38 with `lowobj.rail_start_within` (on since 26.09, §1k; the baseline not re-cut); without it 46 / 197 / 39 (without the long overhead rule 47 / 204 / 39, equal to the 24.09 record); 15 of the 46 first confirmed beyond 100 m (the removed event, an overhead structure 4–5 m along the track at 105–110 m, was one of the 16 of 24.09); causes: the 24.09 classification of the 47 (corridor-edge structures 18, bed-level fixtures 11, far small clusters 7, other 6, tall 2, hanging 2, person-like 1), not redone | real, 25.09 [measured 25.09] | §1f |
 | crossing person, `doubleT_obstacle` | STOP in **58 of 61** frames inside the envelope, first alarm frame 11 (0.3 s after entering), 55.5–56.6 m, distance error ≤ 0.23 m | real, 24.09 | §0 |
 | object lying across the rail (0.45 × 0.6 × 0.3 m, 56 m) | **125 of the 126** frames after the person leaves it (from frame 75)¹, 2 STOP episodes in the recording, since `calibration.keep_within_deg` (25.09, round 2: the final mount calibration no longer re-seeds the track model at frame 190, frame 191 kept); 124 of 126 and 3 STOP episodes before | real, 24.09; gate 25.09 | §0, §1i |
 | verified-clear distance (`clear_distance`, `health.clear_cap` on since 25.09, round 2) | capped at the nearest unconfirmed or advisory cluster in the envelope: set O object-frames with a `clear_distance` past an in-envelope object **147 → 67** of 505 on the round-2 code (172 → 82 on the item's branch), **60** since the review fixes of 26.09 (also capped at a lost reported track); median clear distance five bags 127.0 → 120.0 m (**−5.5 %**, the pre-registered limit was −5 %: failed, shipped by the captain's delegate; unchanged by the review fixes), ride 127.0 → 123.0 m (−3.1 %, 1.50 % of the frames pushed under 60 m), 122.6 m since 26.09 (53 more frames under 60 m); no decision changes | real and organizers' synthetic, 25.09, 26.09 | §1i |
@@ -1570,6 +1570,53 @@ The finding stays open: a fresh start at a standing train can STOP on the rail h
 The corridor STOPs of the windows are not addressed: delaying them would delay
 `doubleT_obstacle`'s frame 11. Tests 492 → 500 (`tests/test_startup.py`). Among them: the
 organizers' object 3 m ahead of a standing fresh start STOPs from frame 4.
+
+### 1k. P3 items of 26.09
+
+**Rail heads ahead of a standing train at a fresh start: `lowobj.rail_start_within` 4 m, shipped.**
+[real and ray-cast, measured 26.09; P3.] This closes the open finding of §1j. From the gate's
+piece-2 cut (`new_data_55_0013`), a fresh detector STOPs on frames 12–15 at 2.9–3.1 m. The STOP
+is a `low` track on the rail heads 3.0–3.6 m ahead. Reproduced on `bd67fb0` (`resense run --npy`
+and the census of the 8 piece starts): the same frames, track and distances.
+
+*Why a narrow rule exists.* The young model's rail-head plane lies 13.5–15 cm under the real rail
+heads at 2.5–6 m. The low clusters are the rails' flank returns, just under the rail head's own
+line. For each low cluster under 4 m, two heights were measured with no rule applied:
+
+* its top: the highest return in its lateral band within its extent;
+* the band's height where it continues along the track: the median, over 0.25 m bins at 2.5–6 m,
+  of each bin's highest return.
+
+In the finding, all 13 low clusters under 4 m have their top 1.0–3.7 cm above that line. The
+ray-cast objects rise more: the organizers' 0.10 m object on a rail head 10.0–10.8 cm, the object
+across a rail 13–14 cm (and it is 0.54–0.60 m wide), the 0.5 m box 32 cm.
+
+*The rule* (pre-registered at 07:12:49 UTC, before any candidate run:
+[`p3_rail_start_2026-09-26.json`](evidence/results/p3_rail_start_2026-09-26.json)). A low cluster
+under 4 m is rail geometry when all of these hold:
+
+* it reaches an expected rail line (the axis ± 0.795 m) within 0.10 m;
+* it is at most 0.45 m wide;
+* its band continues along the track (≥ 4 bins outside its extent ± 0.3 m);
+* it rises at most 0.05 m above that band's line.
+
+The tracker does not newly report a low track on such a cluster if the track was never matched
+at ≥ 4 m. A track already reported, or seen farther away (set O's low objects from ≥ 10 m), is
+not affected. The association is unchanged, so the rule can only withhold a report.
+
+| check (pre-registered order) | result with the rule (C1) |
+|---|---|
+| S1 the finding | STOP frames 4 → 0; all 13 low clusters under 4 m marked; census of the 8 piece starts: piece 2 no STOP, piece 0 unchanged |
+| S2 blind zone: `tests/test_startup.py` and the 40 ray-cast cases of §1j, rebuilt | all pass; the 40 cases identical to the defaults (32 STOP, same first frame and STOP count), the 17 that rule c lost included; 0 of 465 low clusters under 4 m marked |
+| S3 full gate against `_p3b` (on `16c4cac`, the rule on by default) | **PASS**: ride 187 / 46 / 39 → 183 / 45 / 38 (the finding's 4 frames), every other gated and recorded row the same. `doubleT_obstacle` 58 / 61, 128 / 185, 125 / 126 from frame 75, first alarm frame 11; set O first STOPs and STOP frames the same (its low objects still STOP down to 1.4 m); set F straight the same ([JSON](evidence/results/regression_gate_2026-09-26_rail_start.json)) |
+| census of §1j, information (all 236 starts) | false STOP events 41 → 40: only the finding's; no start loses or gains any other STOP event; `doubleT_obstacle` first STOP frame 11 and set O's 2 × 2 m box from frame 5, as before |
+
+C2 (tighter margin and width) was not needed. With the flag at 0 the output is identical to
+`bd67fb0` (`scripts/output_fingerprint.py`: 2 930 frames, 0 differ). The baseline is not re-cut.
+An object lying *along* a rail stays the documented limitation (ALGORITHM §6). Beyond 4 m
+nothing changes. Under 4 m, a low track is withheld only if it was never matched farther and
+rises less than 5 cm above the rail head's own returns. Tests 500 → 527
+(`tests/test_rail_start.py`).
 
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 

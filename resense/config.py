@@ -338,6 +338,15 @@ class LowObjectConfig:
     pending_advisory: bool = False       # (a) while the mount calibration is 'pending' a confirmed low track beyond pending_advisory_within is advisory (reason 'calibration_pending'), not STOP
     pending_advisory_within: float = 0.0  # m; (a) a low track at most this far stays a STOP
     min_model_age: int = 0               # (b) a low track does not become a STOP while the track model is younger than this (frames since its (re)seed); one already reported stays; 0 = off
+    # 26.09 (P3 rail start, docs/evidence/results/p3_rail_start_2026-09-26.json; lowobj.mark_rail_line):
+    # a low cluster nearer than rail_start_within that reaches an expected rail line, is narrow across
+    # the track and does not rise more than rail_start_margin above the same lateral band where the
+    # band continues along the track (the rail head's own returns) is rail geometry; the tracker does
+    # not newly report a low track on such a cluster while it was never matched at >= rail_start_within
+    rail_start_within: float = 4.0       # m, on since 26.09 (= template_range[0]: the rail heads 3-4 m ahead of a standing train under a young model); 0 = off
+    rail_start_margin: float = 0.05      # m above the band's height along the track (the organizers' 0.10 m object on a rail head rises 0.10)
+    rail_start_lateral: float = 0.10     # m; the cluster's lateral extent reaches the model axis +- track.rails_spacing / 2 within this
+    rail_start_max_width: float = 0.45   # m across the track; wider is not a rail (an object lying across a rail: 0.5-0.6 m)
 
 
 @dataclass
