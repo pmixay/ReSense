@@ -1,0 +1,843 @@
+{
+ "schema": "resense-p3-item-v1",
+ "key": "startup",
+ "date": "2026-09-26",
+ "owner": "P3 / P4 (detection quality, evaluation; detector-rule decisions delegated by the captain)",
+ "question": "Independent judge, 26.09: ride chunk 2 of 8 of new_data replayed from a fresh start gave a STOP at 2.9-3.1 m in the first 1.5 s while the mount calibration was pending; the other STOPs there were rail-level `low` STOPs at 25-38 m. The jury plays every hidden bag from a fresh start. How often does a fresh detector STOP in the first ~4 s of a bag, why, and does a start-up rule remove it without delaying a real object?",
+ "census_head": {
+  "code": "867bb8a (configs/default.yaml, config sha256 fa68573c...), native path; scripts/startup_census.py of 74014f6",
+  "command": "python scripts/startup_census.py --cache /data/cache --jobs 2 --out <scratch>/census_head.json",
+  "definition": "each start a fresh Detector over the first 40 frames (4 s at 10 Hz) with the cached receive stamps: the 221 ride split files new_data_<N>_0000.. (the bags as recorded, 51 frames each), the 8 starts of the ride pieces of regression_gate / eval_real (np.array_split of the 11 271 files into 8: new_data_0_0000, 27_0032, 55_0013, 82_0045, 110_0026, 138_0007, 165_0039, 193_0020), the six organizer recordings and set O. A STOP event = a distinct confirmed track id reported in zone gauge; stage `low` = Detection.kind 'low' (the low-object stage: rail-level / straddle / near-bed candidates), `corridor` otherwise; mount = the calibration status at the event's first frame, provisional_due = the provisional decision (5 frames with a rail pair) not yet made.",
+  "summary": {
+   "ride_split": {
+    "starts": 221,
+    "frames": 8840,
+    "starts_with_stop": 18,
+    "stop_frames": 120,
+    "stop_events": 35,
+    "stop_episodes": 28,
+    "advisory_frames": 3146,
+    "events_by_stage_and_mount": {
+     "corridor|pending": 26,
+     "low|pending": 9
+    },
+    "events_first_1_5s": 8,
+    "events_within_10m": 0
+   },
+   "ride_chunk": {
+    "starts": 8,
+    "frames": 320,
+    "starts_with_stop": 2,
+    "stop_frames": 22,
+    "stop_events": 2,
+    "stop_episodes": 2,
+    "advisory_frames": 119,
+    "events_by_stage_and_mount": {
+     "corridor|pending": 1,
+     "low|pending": 1
+    },
+    "events_first_1_5s": 2,
+    "events_within_10m": 1
+   },
+   "recording": {
+    "starts": 7,
+    "frames": 280,
+    "starts_with_stop": 3,
+    "stop_frames": 68,
+    "stop_events": 6,
+    "stop_episodes": 3,
+    "advisory_frames": 36,
+    "events_by_stage_and_mount": {
+     "corridor|pending": 2,
+     "corridor|provisional": 1,
+     "low|pending": 3
+    },
+    "events_first_1_5s": 2,
+    "events_within_10m": 0
+   }
+  },
+  "mount_state": "every ride and five-bag event is under status 'pending': on an untilted rig the status stays 'pending' until the final tilt (20 spaced observations, ~20 s), so it is constant over every start window and separates nothing; the provisional decision is made on frame 4 in 215 of 221 ride starts (frame 5 in 2, 14 / 16 / 21 in 3, never within 4 s in 1) and before every event's first frame; doubleT_obstacle (a ~3 deg rig) is 'provisional' from frame 4",
+  "ride_split_events": [
+   {
+    "start": "new_data_0",
+    "track_id": 3,
+    "first_frame": 13,
+    "stop_frames": 18,
+    "dist_m": [
+     137.94,
+     145.11
+    ],
+    "stage": "corridor",
+    "lateral": 0.11,
+    "height_min": 0.27,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 13
+   },
+   {
+    "start": "new_data_17",
+    "track_id": 6,
+    "first_frame": 13,
+    "stop_frames": 1,
+    "dist_m": [
+     72.25,
+     72.25
+    ],
+    "stage": "corridor",
+    "lateral": -1.23,
+    "height_min": 0.15,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 13
+   },
+   {
+    "start": "new_data_27",
+    "track_id": 2,
+    "first_frame": 16,
+    "stop_frames": 3,
+    "dist_m": [
+     121.96,
+     123.93
+    ],
+    "stage": "corridor",
+    "lateral": 0.12,
+    "height_min": 1.19,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 16
+   },
+   {
+    "start": "new_data_52",
+    "track_id": 12,
+    "first_frame": 15,
+    "stop_frames": 11,
+    "dist_m": [
+     28.56,
+     43.39
+    ],
+    "stage": "corridor",
+    "lateral": 1.05,
+    "height_min": 0.13,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 15
+   },
+   {
+    "start": "new_data_52",
+    "track_id": 20,
+    "first_frame": 18,
+    "stop_frames": 4,
+    "dist_m": [
+     17.0,
+     28.38
+    ],
+    "stage": "corridor",
+    "lateral": 0.96,
+    "height_min": 0.15,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 18
+   },
+   {
+    "start": "new_data_52",
+    "track_id": 18,
+    "first_frame": 18,
+    "stop_frames": 8,
+    "dist_m": [
+     31.79,
+     35.93
+    ],
+    "stage": "low",
+    "lateral": 0.81,
+    "height_min": 0.04,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 18
+   },
+   {
+    "start": "new_data_52",
+    "track_id": 26,
+    "first_frame": 19,
+    "stop_frames": 4,
+    "dist_m": [
+     82.54,
+     87.82
+    ],
+    "stage": "corridor",
+    "lateral": -0.13,
+    "height_min": 0.24,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 19
+   },
+   {
+    "start": "new_data_52",
+    "track_id": 28,
+    "first_frame": 22,
+    "stop_frames": 4,
+    "dist_m": [
+     33.37,
+     36.95
+    ],
+    "stage": "low",
+    "lateral": -0.03,
+    "height_min": 0.07,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 22
+   },
+   {
+    "start": "new_data_52",
+    "track_id": 41,
+    "first_frame": 24,
+    "stop_frames": 2,
+    "dist_m": [
+     36.58,
+     37.66
+    ],
+    "stage": "low",
+    "lateral": -0.72,
+    "height_min": 0.06,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 24
+   },
+   {
+    "start": "new_data_54",
+    "track_id": 21,
+    "first_frame": 27,
+    "stop_frames": 2,
+    "dist_m": [
+     13.27,
+     14.17
+    ],
+    "stage": "low",
+    "lateral": 0.44,
+    "height_min": 0.03,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 27
+   },
+   {
+    "start": "new_data_54",
+    "track_id": 10,
+    "first_frame": 33,
+    "stop_frames": 7,
+    "dist_m": [
+     24.89,
+     28.96
+    ],
+    "stage": "corridor",
+    "lateral": 0.02,
+    "height_min": 0.12,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 33
+   },
+   {
+    "start": "new_data_54",
+    "track_id": 16,
+    "first_frame": 39,
+    "stop_frames": 1,
+    "dist_m": [
+     28.89,
+     28.89
+    ],
+    "stage": "corridor",
+    "lateral": 0.21,
+    "height_min": 0.13,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 39
+   },
+   {
+    "start": "new_data_55",
+    "track_id": 34,
+    "first_frame": 33,
+    "stop_frames": 3,
+    "dist_m": [
+     17.24,
+     21.83
+    ],
+    "stage": "low",
+    "lateral": 0.61,
+    "height_min": 0.03,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 33
+   },
+   {
+    "start": "new_data_55",
+    "track_id": 44,
+    "first_frame": 38,
+    "stop_frames": 2,
+    "dist_m": [
+     21.83,
+     22.8
+    ],
+    "stage": "low",
+    "lateral": 0.56,
+    "height_min": 0.05,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 38
+   },
+   {
+    "start": "new_data_55",
+    "track_id": 42,
+    "first_frame": 39,
+    "stop_frames": 1,
+    "dist_m": [
+     24.84,
+     24.84
+    ],
+    "stage": "low",
+    "lateral": 0.47,
+    "height_min": 0.05,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 39
+   },
+   {
+    "start": "new_data_81",
+    "track_id": 3,
+    "first_frame": 4,
+    "stop_frames": 5,
+    "dist_m": [
+     93.18,
+     103.01
+    ],
+    "stage": "corridor",
+    "lateral": -0.39,
+    "height_min": 0.21,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 4
+   },
+   {
+    "start": "new_data_81",
+    "track_id": 10,
+    "first_frame": 8,
+    "stop_frames": 7,
+    "dist_m": [
+     71.07,
+     78.89
+    ],
+    "stage": "corridor",
+    "lateral": -0.5,
+    "height_min": 0.13,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 8
+   },
+   {
+    "start": "new_data_81",
+    "track_id": 39,
+    "first_frame": 24,
+    "stop_frames": 2,
+    "dist_m": [
+     32.67,
+     33.13
+    ],
+    "stage": "corridor",
+    "lateral": 1.34,
+    "height_min": 0.37,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 24
+   },
+   {
+    "start": "new_data_81",
+    "track_id": 43,
+    "first_frame": 24,
+    "stop_frames": 2,
+    "dist_m": [
+     43.08,
+     43.31
+    ],
+    "stage": "corridor",
+    "lateral": 1.2,
+    "height_min": 0.14,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 24
+   },
+   {
+    "start": "new_data_111",
+    "track_id": 25,
+    "first_frame": 38,
+    "stop_frames": 2,
+    "dist_m": [
+     110.27,
+     111.73
+    ],
+    "stage": "corridor",
+    "lateral": -0.66,
+    "height_min": 0.5,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 38
+   },
+   {
+    "start": "new_data_134",
+    "track_id": 15,
+    "first_frame": 21,
+    "stop_frames": 11,
+    "dist_m": [
+     39.75,
+     50.86
+    ],
+    "stage": "corridor",
+    "lateral": -1.17,
+    "height_min": 0.13,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 21
+   },
+   {
+    "start": "new_data_134",
+    "track_id": 22,
+    "first_frame": 26,
+    "stop_frames": 3,
+    "dist_m": [
+     53.09,
+     57.5
+    ],
+    "stage": "low",
+    "lateral": -0.72,
+    "height_min": -0.25,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 26
+   },
+   {
+    "start": "new_data_134",
+    "track_id": 34,
+    "first_frame": 33,
+    "stop_frames": 1,
+    "dist_m": [
+     47.49,
+     47.49
+    ],
+    "stage": "corridor",
+    "lateral": -1.3,
+    "height_min": 0.22,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 33
+   },
+   {
+    "start": "new_data_144",
+    "track_id": 17,
+    "first_frame": 14,
+    "stop_frames": 10,
+    "dist_m": [
+     31.71,
+     44.76
+    ],
+    "stage": "corridor",
+    "lateral": 0.56,
+    "height_min": 0.13,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 14
+   },
+   {
+    "start": "new_data_144",
+    "track_id": 4,
+    "first_frame": 14,
+    "stop_frames": 2,
+    "dist_m": [
+     87.19,
+     88.68
+    ],
+    "stage": "corridor",
+    "lateral": 0.15,
+    "height_min": 0.36,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 14
+   },
+   {
+    "start": "new_data_147",
+    "track_id": 9,
+    "first_frame": 7,
+    "stop_frames": 4,
+    "dist_m": [
+     81.58,
+     84.52
+    ],
+    "stage": "corridor",
+    "lateral": -0.81,
+    "height_min": 0.66,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 7
+   },
+   {
+    "start": "new_data_154",
+    "track_id": 11,
+    "first_frame": 26,
+    "stop_frames": 5,
+    "dist_m": [
+     40.61,
+     44.75
+    ],
+    "stage": "corridor",
+    "lateral": 0.3,
+    "height_min": 0.13,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 26
+   },
+   {
+    "start": "new_data_154",
+    "track_id": 12,
+    "first_frame": 28,
+    "stop_frames": 2,
+    "dist_m": [
+     32.63,
+     33.29
+    ],
+    "stage": "corridor",
+    "lateral": 1.25,
+    "height_min": 0.13,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 28
+   },
+   {
+    "start": "new_data_154",
+    "track_id": 14,
+    "first_frame": 32,
+    "stop_frames": 2,
+    "dist_m": [
+     30.4,
+     31.43
+    ],
+    "stage": "corridor",
+    "lateral": 1.26,
+    "height_min": 0.12,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 32
+   },
+   {
+    "start": "new_data_155",
+    "track_id": 13,
+    "first_frame": 38,
+    "stop_frames": 2,
+    "dist_m": [
+     103.2,
+     104.27
+    ],
+    "stage": "corridor",
+    "lateral": -0.68,
+    "height_min": 0.13,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 38
+   },
+   {
+    "start": "new_data_167",
+    "track_id": 8,
+    "first_frame": 28,
+    "stop_frames": 2,
+    "dist_m": [
+     110.8,
+     114.18
+    ],
+    "stage": "corridor",
+    "lateral": -0.85,
+    "height_min": 0.37,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 28
+   },
+   {
+    "start": "new_data_181",
+    "track_id": 9,
+    "first_frame": 32,
+    "stop_frames": 6,
+    "dist_m": [
+     104.57,
+     109.59
+    ],
+    "stage": "corridor",
+    "lateral": -0.09,
+    "height_min": 0.28,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 32
+   },
+   {
+    "start": "new_data_192",
+    "track_id": 1,
+    "first_frame": 13,
+    "stop_frames": 8,
+    "dist_m": [
+     113.08,
+     117.33
+    ],
+    "stage": "corridor",
+    "lateral": 0.13,
+    "height_min": 1.23,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 13
+   },
+   {
+    "start": "new_data_200",
+    "track_id": 7,
+    "first_frame": 15,
+    "stop_frames": 2,
+    "dist_m": [
+     26.52,
+     28.5
+    ],
+    "stage": "low",
+    "lateral": 0.88,
+    "height_min": 0.03,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 15
+   },
+   {
+    "start": "new_data_208",
+    "track_id": 1,
+    "first_frame": 36,
+    "stop_frames": 3,
+    "dist_m": [
+     95.66,
+     98.27
+    ],
+    "stage": "corridor",
+    "lateral": 0.0,
+    "height_min": 0.2,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 36
+   }
+  ],
+  "ride_chunk_events": [
+   {
+    "start": "new_data_chunk0",
+    "track_id": 3,
+    "first_frame": 13,
+    "stop_frames": 18,
+    "dist_m": [
+     137.94,
+     145.11
+    ],
+    "stage": "corridor",
+    "lateral": 0.11,
+    "height_min": 0.27,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 13
+   },
+   {
+    "start": "new_data_chunk2",
+    "track_id": 12,
+    "first_frame": 12,
+    "stop_frames": 4,
+    "dist_m": [
+     2.88,
+     3.15
+    ],
+    "stage": "low",
+    "lateral": -0.88,
+    "height_min": 0.04,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 12
+   }
+  ],
+  "recording_events": [
+   {
+    "start": "doubleT_obstacle",
+    "track_id": 2,
+    "first_frame": 11,
+    "stop_frames": 29,
+    "dist_m": [
+     55.54,
+     55.83
+    ],
+    "stage": "corridor",
+    "lateral": 0.85,
+    "height_min": 0.14,
+    "mount": "provisional",
+    "provisional_due": false,
+    "model_age": 7
+   },
+   {
+    "start": "doubleT_platform",
+    "track_id": 41,
+    "first_frame": 34,
+    "stop_frames": 4,
+    "dist_m": [
+     36.5,
+     41.73
+    ],
+    "stage": "low",
+    "lateral": 0.82,
+    "height_min": 0.04,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 34
+   },
+   {
+    "start": "doubleT_platform",
+    "track_id": 47,
+    "first_frame": 36,
+    "stop_frames": 2,
+    "dist_m": [
+     34.79,
+     35.5
+    ],
+    "stage": "low",
+    "lateral": -0.05,
+    "height_min": 0.07,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 36
+   },
+   {
+    "start": "doubleT_platform",
+    "track_id": 48,
+    "first_frame": 36,
+    "stop_frames": 2,
+    "dist_m": [
+     34.47,
+     34.94
+    ],
+    "stage": "low",
+    "lateral": 0.81,
+    "height_min": 0.04,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 36
+   },
+   {
+    "start": "doubleT_platform",
+    "track_id": 46,
+    "first_frame": 36,
+    "stop_frames": 2,
+    "dist_m": [
+     36.26,
+     37.19
+    ],
+    "stage": "corridor",
+    "lateral": 1.07,
+    "height_min": 0.15,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 36
+   },
+   {
+    "start": "cloud_with_fake_obj",
+    "track_id": 1,
+    "first_frame": 5,
+    "stop_frames": 35,
+    "dist_m": [
+     92.61,
+     98.03
+    ],
+    "stage": "corridor",
+    "lateral": 0.7,
+    "height_min": 1.41,
+    "mount": "pending",
+    "provisional_due": false,
+    "model_age": 5
+   }
+  ],
+  "real_objects_in_window": {
+   "doubleT_obstacle": {
+    "first_stop_frame": 11,
+    "labelled": {
+     "object_on_rail": {
+      "hits": 0,
+      "frames": 24
+     },
+     "person_crossing": {
+      "hits": 29,
+      "frames": 32
+     }
+    },
+    "note": "the person crossing is a corridor STOP from frame 11 (55.5-55.8 m, model age 7 after the provisional re-seed at frame 4); the object on the rail is labelled in 24 window frames and not yet hit there (it STOPs later: 125/126 from frame 75)"
+   },
+   "set_O": {
+    "objects": {
+     "big_center": {
+      "in_gauge": true,
+      "visible_frames": 40,
+      "stop_frames": 35,
+      "advisory_frames": 0,
+      "first_stop_frame": 5,
+      "first_stop_m": 98.0
+     }
+    },
+    "background": {
+     "alarm_frames": 0,
+     "track_ids": 0
+    }
+   },
+   "real_objects_first_4s": "2 real objects STOP in the start windows: doubleT_obstacle's crossing person (frame 11) and set O big_center (frame 5, 98.0 m, corridor); no real low object is in any start window"
+  },
+  "warm_comparison": {
+   "definition": "the 8 840 frames of the 221 ride start windows against the same frames inside the continuous run of the full gate on 867bb8a (the ride in 8 pieces); the 252 frames that are also the first 40 of a gate piece (fresh there too) left out: 8 588 frames",
+   "stop_frames_fresh": 97,
+   "stop_frames_warm": 128,
+   "stop_events_fresh": 31,
+   "stop_events_warm": 41,
+   "stop_frames_fresh_only": 45,
+   "stop_frames_warm_only": 76,
+   "stop_frames_both": 52,
+   "fresh_events_without_a_warm_stop": 13,
+   "warm_events_without_a_fresh_stop": 23,
+   "reading": "a fresh start does not add false STOPs: on the same frames the warm detector STOPs more (128 / 41 vs 97 / 31); the start-window STOPs are the ride's ordinary false alarms (the gate's 46 events), at the same places (new_data_52, 81, 134, 144, 154, ...), with the track-level differences of a different history"
+  },
+  "first_1_5_s": "events starting in frames 0-14: 8 in the 221 ride splits (new_data_0 138 m, 17 72 m, 81 93 and 71 m, 144 87 and 32 m, 147 82 m, 192 113 m), all corridor, 0 low; plus the finding in the chunk starts. Low STOP events in the 221 ride start windows: 9 in 5 starts (52 x3, 55 x3, 54, 134, 200), all at 13-57 m, from frame 15 on",
+  "the_finding": {
+   "reproduced": "new_data_chunk2 (fresh at new_data_55_0013): track 12, kind low, STOP on frames 12-15 (new_data_55_0025-0028) at 2.9-3.1 m, lateral -0.88 -> +0.74 (the association jumps from one rail to the other), height 0.03-0.12 m above the modelled rail head, size 0.06-0.64 x 0.19-0.25 x 0.08 m, mount 'pending' (provisional decision made on frame 4), track-model age 12-15, rail score 0.06-0.09 (threshold 0.05)",
+   "diagnosis": "the train stands (the low clusters stay at 3.0-4.4 m for 15 frames); the young model puts both rail heads 3.0-3.6 m ahead 3-12 cm above its rail-head plane, in front of the range the bed cross-section is learned from (lowobj.template_range 4-30 m); the track's matched distances are 3.0, 3.0, 3.6, 3.1, 3.1, 3.0, 3.0 m: never 4 m or farther. From new_data_55_0000 (13 frames earlier) or warm from new_data_54_0000 (the model there finds no rail pair, score ~0) there is no such track. In the full gate run (six recordings, set O, the ride in 8 pieces) and in every census start this is the only confirmed low track whose reported distances all stay under 6 m; set O's two low tracks reported down to 1.4 m (small_on_rail, long_low_on_rails) were first matched at >= 10 m"
+  },
+  "gate_head": "the full gate on 867bb8a (--jobs 2) reproduces regression_baseline_2026-09-25_ride_p3b.json: GATE PASS, every gated and recorded row the same (latency information only)"
+ },
+ "preregistered": {
+  "written_at_utc": "2026-09-26T05:47:10Z",
+  "before_any_result": "No candidate code exists yet and no candidate was run. Known before this file: the census and warm comparison above on 867bb8a, the HEAD gate, one instrumented replay of the finding (the low track's history above) and the S1 scenes with the flags off (a scratch script, below).",
+  "classification": "STOPs in the first 4 s are not rare (18 of 221 ride starts, 35 events) but not caused by the start: the same frames warm STOP more. Start-up-specific: the finding (1 of 8 chunk starts, 0 of 221 bag starts) and track-level chance. Per the task, the candidates are tried anyway, low-stage only: a start-up delay of corridor STOPs is excluded by doubleT_obstacle's first STOP at frame 11 (model age 7) and set O big_center's at frame 5 (98.0 m).",
+  "candidates_in_order": {
+   "a": {
+    "flags": {
+     "lowobj.pending_advisory": true,
+     "lowobj.pending_advisory_within": 0.0
+    },
+    "rule": "while the mount calibration status is 'pending' (no correction applied yet: before the provisional tilt of a tilted rig, the whole ~20 s window of an untilted one), a confirmed low-stage track (kind 'low') farther than pending_advisory_within is reported as advisory (zone warning, reason 'calibration_pending'), not STOP",
+    "X": "0 m: the finding is at 2.9-3.1 m and nothing is reported under 2.9 m (gauge.range_min 3.0), so any X >= 2.9 m keeps it; the literal alternative 'provisional decision not yet made' cannot act (a low track confirms on its 5th hit at the earliest, frame 4, the frame the provisional decision is made when the rails are seen) and is not run"
+   },
+   "b": {
+    "flags": {
+     "lowobj.min_model_age": 16
+    },
+    "rule": "a low-stage track does not become a STOP while the track model is younger than 16 frames (TrackModel.age, frames since the model was seeded or re-seeded; the finding's STOP frames are at ages 12-15); a low track already reported stays reported"
+   },
+   "c": {
+    "flags": {
+     "tracking.low_min_seen_distance": 4.0
+    },
+    "rule": "a low-stage track is not reported until it has been matched at or beyond 4.0 m (= lowobj.template_range[0], where the bed cross-section starts being learned); nearer, the rail-head plane is extrapolated. Not limited to the start: a real object approaching is matched far first (set O's low tracks from >= 10 m); what it gives up is an object first seen within 4 m of a standing train, inside the range the template does not cover"
+   }
+  },
+  "flags_default": "off in the code for every candidate (0 / false); on only for a candidate that ships",
+  "ship_rule": {
+   "S1_raycast": "fresh Detector, stationary ray-cast tunnel (resense.synthetic.synthetic_tunnel_frame), 40 frames, candidate on vs off: the empty tunnel has no STOP; a 0.5 m box standing on the bed at 20 m, the organizers' 0.3 x 0.3 x 0.1 m object on a rail head at 20 m (lateral 0.8) and a 0.4 x 0.6 x 0.31 m box standing on the bed across a rail at 40 m (lateral -0.8, the v0.6.2 straddle shape of doubleT_obstacle's object) have the same STOP frames as with the candidate off (measured with the flags off before this file: every object STOPs from frame 4, 36 of 40 frames, the two low ones as kind 'low', status 'pending' throughout; the empty tunnel never)",
+   "S2_census": "scripts/startup_census.py --jobs 2 with the candidate's --set: STOP events over the ride starts (221 splits + 8 chunks) and the five obstacle-free recordings drop by at least 1, no start gains a STOP frame, doubleT_obstacle's first STOP stays frame 11 with its window hits (person 29/32) and set O big_center's 35 window STOP frames unchanged",
+   "S3_gate": "python scripts/regression_gate.py --cache /data/cache --jobs 2 --set <flags> --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_p3b.json exits 0 with no gated row worse; doubleT_obstacle first alarm frame 11 and labelled hits per label not lower (person_crossing 58/61, object_on_rail 128/185, object_on_rail_from_frame_75 125/126)",
+   "order": "S1, S2, S3 per candidate, candidates in the order a, b, c; ship the first that passes all three; a candidate failing S1 still gets its census (S2) for information, not its gate; if none passes, nothing ships and the census is the result",
+   "if_shipped": "the flag's default on in configs/default.yaml (synced to the ROS copy) and in the dataclass; the full gate re-run on the commit with the new defaults; if its numbers move, the baseline re-cut as regression_baseline_2026-09-26_ride_startup.json and the references repointed (not docs/CAPTAIN.md)"
+  },
+  "out_of_scope": "the corridor STOPs of the start windows (26 of 35 ride-split events, all 8 of the first 1.5 s at 32-145 m): they are the ride's ordinary far-field false alarms, warm too; no start-up delay of corridor STOPs is admissible (doubleT_obstacle frame 11, set O frame 5)"
+ }
+}
