@@ -563,6 +563,14 @@
         "unchanged": "ride 183 / 45 / 38 and identical frame by frame to the flags-off replay (no 'stop_hold' detection on the ride); five recordings 58 / 13 / 16 (each recording the same); doubleT_obstacle first alarm frame 11, hits 186, false events 0; set F straight every kind; set O first STOP of every object, the other inside objects, #5 0 and #7 6 false STOP frames, background 3 / 2",
         "set_O_detail": "big_above is a STOP on every visible frame from its first STOP at 101.3 m to 6.8 m (51 of 124; the 73 before 101.3 m are unchanged: above the envelope top by the height reference, single rings, or the first 4 frames of the track); 44 set O frames carry a 'stop_hold' detection, 42 of them STOP only through it; reported distance within 0.34 m of the label but one frame (+1.55 m, frame 663, a missed frame held at its predicted distance)"
       }
+    },
+    "defaults_after_ship": {
+      "code": "6c76605 (the new defaults, no --set), native path, receive stamps, --jobs 1, 792 s",
+      "command": "python scripts/regression_gate.py --cache /data/cache --jobs 1 --baseline docs/evidence/results/regression_baseline_2026-09-26_ride_p3c.json",
+      "gate": "PASS, 1 gated row better (big_above STOP frames 22 -> 51), none worse; ride 183 / 45 / 38",
+      "identity": "config sha256 7d93c419... equal to the B10 run; every frame of the six recordings, set O and the ride equal to the B10 run (decision, detections, zones, reasons, distances: 15 269 frames, 0 differ)",
+      "baseline": "docs/evidence/results/regression_baseline_2026-09-26_ride_p3d.json = this run without its gate block; --from-json against it: PASS, every row the same",
+      "tests": "577 passed on the native kernels and with RESENSE_NATIVE=0 (555 on 208152d; +22 tests/test_stop_keep.py)"
     }
   },
   "decision_round_1": {
@@ -590,7 +598,7 @@
     "caveat_for_the_record": "if B10 passes, the ride shows only that it does not extend the two false STOPs round 1 found; it is not out-of-sample evidence"
   },
   "decision": {
-    "written_at_utc": "2026-09-26T10:35:00Z",
+    "written_at_utc": "2026-09-26T10:33:43Z",
     "verdict": "SHIPPED (round 2, candidate B10)",
     "defaults": {
       "tracking.stop_keep_signature": true,
@@ -603,6 +611,7 @@
       "round 2 was written after round 1's ride frames; its ride result is in-sample on the two tracks it was designed not to extend",
       "the bar (10) is the near escalation's, not tuned here; the thin keep is mode 1 only (C, mode 2, failed on doubleT_platform)",
       "a kept STOP is reported with reason 'stop_hold'"
-    ]
+    ],
+    "commit": "6c76605 (the defaults flipped)"
   }
 }

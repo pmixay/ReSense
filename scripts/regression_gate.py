@@ -2,7 +2,7 @@
 """Regression gate: one command, one JSON (CAPTAIN §6). Every detector / config change has to pass it.
 
     python scripts/regression_gate.py --out out/gate/current.json                         # measure only
-    python scripts/regression_gate.py --baseline docs/evidence/results/regression_baseline_2026-09-26_ride_p3c.json
+    python scripts/regression_gate.py --baseline docs/evidence/results/regression_baseline_2026-09-26_ride_p3d.json
     python scripts/regression_gate.py --set cluster.min_points=8 --baseline <FILE>     # a variant
     python scripts/regression_gate.py --from-json out/gate/current.json --baseline <FILE>   # compare only
     python scripts/regression_gate.py ... --allow 'recordings.doubleT_platform.*'      # an intended trade-off
