@@ -20,7 +20,8 @@ trap cleanup EXIT
 
 docker network create --internal "$NETWORK" >/dev/null
 chmod 777 "$WORK"
-docker run --rm --network "$NETWORK" -v "$WORK:/data" "$IMAGE" \
+docker run --rm --network "$NETWORK" --user "$(id -u):$(id -g)" -e HOME=/tmp \
+  -e PYTHONDONTWRITEBYTECODE=1 -v "$WORK:/data" "$IMAGE" \
   python3 scripts/make_smoke_bag.py /data/p2_smoke_bag >/dev/null
 
 # The server endpoint runs the normal image entrypoint and node. Start only the included
