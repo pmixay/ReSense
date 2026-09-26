@@ -14,9 +14,10 @@ from resense.clustering import Cluster, find_clusters, find_hanging
 from resense.config import DetectorConfig
 from resense.egomotion import EgoSpeedEstimate, EgoSpeedEstimator
 from resense.frame import Frame
-from resense.gauge import corridor_coordinates, corridor_mask, gauge_core_mask, point_in_polygon, widened_profile
+from resense.gauge import (axis_union_coordinates, axis_union_offset, axis_union_strict, corridor_coordinates,
+                           corridor_mask, gauge_core_mask, point_in_polygon, widened_profile)
 from resense.health import HealthMonitor
-from resense.lowobj import BedTemplate, low_candidates
+from resense.lowobj import BedTemplate, low_candidates, mark_rail_line
 from resense.track import TrackModel, estimate_track, rotate_track_model
 from resense.tracking import Tracker
 
@@ -40,7 +41,7 @@ class Detection:
     zone: str                  # 'gauge' or 'warning'
     height_min: float          # lowest point above the rail head
     intensity: float
-    reason: str = ""           # v0.5 (additive): why the last cluster of an advisory track was demoted ('' = none); 26.09: 'stop_hold' on an obstacle kept by tracking.stop_keep_* (its last cluster was demoted by a signature or a scan line)
+    reason: str = ""           # v0.5 (additive): why the last cluster of an advisory track was demoted ('' = none); 26.09: 'near_envelope' on an obstacle only by tracking.near_escalate_*, 'stop_hold' on an obstacle kept by tracking.stop_keep_* (its last cluster was demoted by a signature or a scan line)
     kind: str = ""             # v0.6 (additive): 'low' = a bump above the track bed, '' = corridor object
 
     def to_dict(self) -> dict:
@@ -106,7 +107,9 @@ class Candidates:
     """The points handed to the clustering: vehicle coordinates, track coordinates (``dy``
     lateral to the axis, ``h`` above the rail head), strict-gauge membership, intensity, the
     index in the frame (``-1``: merged from an earlier frame by the accumulation) and the
-    low-object flag (a bump above the track bed, below the envelope floor)."""
+    low-object flag (a bump above the track bed, below the envelope floor). ``in_rail`` (26.09):
+    the strict membership measured from the rails only, when ``gauge.axis_union`` made
+    ``in_gauge`` the union with the envelope measured from the sensor axis; ``None`` = ``in_gauge``."""
     xyz: np.ndarray
     dy: np.ndarray
     h: np.ndarray
@@ -114,20 +117,28 @@ class Candidates:
     intensity: np.ndarray
     idx: np.ndarray
     low: np.ndarray
+    in_rail: Optional[np.ndarray] = None
 
     def __len__(self) -> int:
         return int(self.idx.size)
 
+    def rail(self) -> np.ndarray:
+        return self.in_gauge if self.in_rail is None else self.in_rail
+
     def concat(self, other: "Candidates") -> "Candidates":
-        return Candidates(**{f.name: np.concatenate([getattr(self, f.name), getattr(other, f.name)])
-                             for f in fields(self)})
+        out = {f.name: np.concatenate([getattr(self, f.name), getattr(other, f.name)])
+               for f in fields(self) if f.name != "in_rail"}
+        if self.in_rail is not None or other.in_rail is not None:
+            out["in_rail"] = np.concatenate([self.rail(), other.rail()])
+        return Candidates(**out)
 
     def subset(self, m: np.ndarray) -> "Candidates":
-        return Candidates(**{f.name: getattr(self, f.name)[m] for f in fields(self)})
+        return Candidates(**{f.name: (None if getattr(self, f.name) is None else getattr(self, f.name)[m])
+                             for f in fields(self)})
 
 
 def _clusters_of(c: Candidates, cfg, **kw) -> List[Cluster]:
-    return find_clusters(c.xyz, c.intensity, c.dy, c.h, c.in_gauge, cfg, frame_idx=c.idx, **kw)
+    return find_clusters(c.xyz, c.intensity, c.dy, c.h, c.in_gauge, cfg, frame_idx=c.idx, in_rail=c.in_rail, **kw)
 
 
 def _finite_only(frame: Frame) -> Frame:
@@ -210,10 +221,11 @@ class Detector:
         xyz = self._fit_track(frame.xyz, self._periods())
         t1 = time.perf_counter()
         cand, dy_all, h_all, mask, (valid, axis_valid, floor_valid) = self._corridor(xyz, frame.intensity)
-        cand, straddle, near = self._low_stage(xyz, frame.intensity, dy_all, h_all, mask, cand,
+        dy_rail = self._dy_rail          # = dy_all unless gauge.axis_union 2 re-measured the corridor coordinate
+        cand, straddle, near = self._low_stage(xyz, frame.intensity, dy_rail, h_all, mask, cand,
                                                min(axis_valid, floor_valid))
         t2 = time.perf_counter()
-        speed, source, est = self._speed(xyz, dy_all, h_all, dt, ego_speed)
+        speed, source, est = self._speed(xyz, dy_rail, h_all, dt, ego_speed)
         t3 = time.perf_counter()
         merged, n_acc = self._accumulate(cand, speed, dt)
         t4 = time.perf_counter()
@@ -222,6 +234,10 @@ class Detector:
             valid = self._far_both_sides(clusters, valid, floor_valid)
         if cfg.cluster.hanging_enabled and (not cfg.cluster.hanging_needs_rails or self.track.rail_slabs > 0):
             clusters = self._hanging(xyz, frame.intensity, dy_all, h_all, cand, clusters, min(valid, floor_valid))
+        if cfg.lowobj.rail_start_within > 0:
+            # 26.09 (P3 rail start): low clusters near the train that are rail geometry; the rail lines
+            # are at the axis +- rails_spacing / 2 of the rail coordinate (dy_rail, as the low stage)
+            mark_rail_line(clusters, xyz[:, 0], dy_rail, h_all, cfg.lowobj, cfg.track.rails_spacing, cfg.gauge.range_min)
         t5 = time.perf_counter()
         gauge, warn = self._confirm(clusters, speed, dt)
         cap = self._clear_cap(clusters, cand, dy_all, h_all) if cfg.health.clear_cap else None
@@ -310,12 +326,25 @@ class Detector:
         (``clustering.find_clusters``, ``far_min_height``)."""
         cfg = self.cfg
         dy_all, h_all = corridor_coordinates(xyz, self.track)
+        self._dy_rail = dy_all
+        if cfg.gauge.axis_union == 2:
+            # 26.09 (candidate B, off by default): the corridor coordinate re-measured so that the strict
+            # envelope is the union of the rail and the sensor-axis envelopes (near field, straight
+            # track); the bed, low-object and ego-speed stages keep the rail coordinate (self._dy_rail)
+            dy_all = axis_union_coordinates(xyz[:, 0], dy_all, self.track, cfg.gauge)
         mask, strict = corridor_mask(xyz, self.track, cfg.gauge, dy_all, h_all)
         idx = np.flatnonzero(mask)
         cand = Candidates(xyz=xyz[idx], dy=dy_all[idx], h=h_all[idx], in_gauge=strict[idx],
                           intensity=intensity[idx], idx=idx, low=np.zeros(idx.size, dtype=bool))
         if cfg.gauge.edge_margin > 0 or cfg.gauge.edge_margin_per_100m > 0:
             cand.in_gauge = cand.in_gauge & gauge_core_mask(cand.dy, cand.h, cand.xyz[:, 0], cfg.gauge)
+        if cfg.gauge.axis_union in (1, 3):
+            # 26.09 (candidates A and B2, off by default): also inside when inside the envelope measured
+            # from the sensor axis (near field, straight track, the two axes within axis_union_max_offset)
+            ax = axis_union_strict(cand.xyz[:, 0], cand.dy, cand.h, self.track, cfg.gauge)
+            if ax is not None:
+                cand.in_rail = cand.in_gauge            # the rails' own envelope (safety review of 26.09)
+                cand.in_gauge = cand.in_gauge | ax
         floor_valid = max(self.track.floor_range[1] + cfg.track.floor_valid_margin, self.track.floor_verified)
         axis_valid = min(self.track.axis_valid, cfg.gauge.range_max)
         valid = min(axis_valid, floor_valid) if cfg.cluster.far_min_height <= 0 else axis_valid
@@ -404,10 +433,12 @@ class Detector:
                              axis=1).astype(np.float32)
             merged = cand.concat(Candidates(xyz=xyz_o, dy=dyo, h=ho, in_gauge=go, intensity=io,
                                             idx=np.full(Xo.size, -1, dtype=cand.idx.dtype),
-                                            low=np.zeros(Xo.size, dtype=bool)))
+                                            low=np.zeros(Xo.size, dtype=bool),
+                                            in_rail=self.buffer.merged_rail(acc.min_range)))
             n_acc = 1 + len(self.buffer)
         far = (cand.xyz[:, 0] >= acc.min_range) & ~cand.low
-        self.buffer.push(cand.xyz[far, 0], cand.dy[far], cand.h[far], cand.intensity[far], cand.in_gauge[far])
+        self.buffer.push(cand.xyz[far, 0], cand.dy[far], cand.h[far], cand.intensity[far], cand.in_gauge[far],
+                         in_rail=None if cand.in_rail is None else cand.in_rail[far])
         return merged, n_acc
 
     # -- 5 -------------------------------------------------------------------------------------
@@ -421,13 +452,19 @@ class Detector:
         acc = cfg.accumulation
         factor = max(1.0, n_acc * acc.min_points_scale) if n_acc > 1 else 1.0
         corr = cand.subset(~cand.low)
+        dy_alt = None
+        if cfg.gauge.axis_union == 3:
+            # 26.09 (candidate B2, off by default): the lateral from the sensor axis for the shape rules
+            reg = axis_union_offset(corr.xyz[:, 0], self.track, cfg.gauge)
+            if reg is not None:
+                dy_alt = corr.dy + reg[1]
         keep_thin = cfg.tracking.stop_keep_thin > 0
         clusters = _clusters_of(corr, cfg.cluster, axis_valid=valid,
                                 height_valid=floor_valid if cfg.cluster.far_min_height > 0 else None,
                                 min_points_factor=factor, factor_range=acc.min_range,
                                 smear_max_length=acc.smear_max_length if n_acc > 1 else 0.0,
                                 smear_max_width=acc.smear_max_width if n_acc > 1 else 0.0, gauge=cfg.gauge,
-                                keep_thin=keep_thin)
+                                dy_alt=dy_alt, keep_thin=keep_thin)
         if keep_thin:
             # 26.09 (tracking.stop_keep_thin, off by default): the clusters flatter than min_height go
             # to the tracker only, to continue a track (Tracker._continue_thin); no other stage sees them
@@ -498,7 +535,9 @@ class Detector:
             # advisory cluster there (a cable demoted as floating) must not remove the hanging one
             others = [k for k in clusters if k.zone == "gauge" and not k.reason]
         else:
-            others = clusters
+            # 26.09 (safety review): a blob kept only by the wall keep that another rule demoted is not
+            # an object the other stages decided on
+            others = [k for k in clusters if not (k.wall_kept and k.reason)]
         keep = [c for c in hang if not any(_overlap(c, k) for k in others)]
         return sorted(clusters + keep, key=lambda c: c.distance) if keep else clusters
 
@@ -518,8 +557,11 @@ class Detector:
             if int(m.sum()) >= 3:
                 continue
             strad = any(c is k for k in straddling)
+            # 26.09 (safety review): a blob kept only by the wall keep (cluster.wall_keep_gauge_voxels)
+            # counts only as an obstacle, as for a straddling cluster: demoted (a column), it must not
+            # remove a low object beside it
             dup = any(_overlap(c, k) for k in clusters
-                      if not strad or (k.zone == "gauge" and not k.reason))
+                      if not (strad or k.wall_kept) or (k.zone == "gauge" and not k.reason))
             if not dup:
                 keep.append(c)
         return keep
@@ -531,6 +573,7 @@ class Detector:
         low = self.cfg.lowobj
         low_ok = low.min_model_age <= 0 or self.track.age >= low.min_model_age
         self.tracker.update(clusters, ego_shift=(speed or 0.0) * dt, frame_dt=dt, low_ok=low_ok,
+                            rail_within=low.rail_start_within,
                             thin=self._thin if self.cfg.tracking.stop_keep_thin > 0 else None)
         pending = low.pending_advisory and self.calib.state.status == "pending"
         dets: List[Detection] = []
@@ -544,7 +587,8 @@ class Detector:
                 center=t.centroid if t.misses else t.last.centroid,
                 size=t.last.size, n_points=t.last.n, confidence=t.confidence, age=t.age,
                 zone=t.zone, height_min=t.last.height_min, intensity=t.last.intensity,
-                reason="stop_hold" if (t.kept and t.zone == "gauge") else t.last.reason, kind=t.last.kind,
+                reason=("near_envelope" if t.escalated else "stop_hold" if (t.kept and t.zone == "gauge")
+                        else t.last.reason), kind=t.last.kind,
             ))
             d = dets[-1]
             if pending and d.kind == "low" and d.zone == "gauge" and d.distance > low.pending_advisory_within:

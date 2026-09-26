@@ -1,4 +1,4 @@
-"""STOP hysteresis against shape signatures and scan-line frames (26.09, P3 range; EXPERIMENTS §1n,
+"""STOP hysteresis against shape signatures and scan-line frames (26.09, P3 range; EXPERIMENTS §1o,
 docs/evidence/results/p3_range_2026-09-26.json). Both flags are off by default.
 
 ``tracking.stop_keep_signature``: a track reported as an obstacle (STOP) in the previous frame
