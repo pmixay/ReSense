@@ -287,8 +287,10 @@ class TrackingConfig:
     # a track whose last near_escalate_hits hits were each a corridor cluster with at least
     # near_escalate_voxels voxels inside the strict envelope (Cluster.n_gauge) within
     # near_escalate_distance is an obstacle (zone gauge), whatever demoted it (a signature such as
-    # elevated / floating, the zone vote, the column hold); 0 = off
-    near_escalate_voxels: int = 0
+    # elevated / floating, the zone vote), except a column (never counts) and the column hold (wins);
+    # on since 26.09 (candidate A, 10 / 35 m / 5: gate PASS, set O inside STOP frames 337 -> 349,
+    # #8 12 -> 22, #4 0 -> 2; the ride, the five bags, doubleT_obstacle, set F identical); 0 = off
+    near_escalate_voxels: int = 10
     near_escalate_distance: float = 35.0  # m
     near_escalate_hits: int = 5           # hits in a row (5 = frames_to_confirm at 10 Hz)
     conf_gain: float = 0.35        # confidence added per hit

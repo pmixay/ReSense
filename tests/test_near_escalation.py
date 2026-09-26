@@ -13,10 +13,11 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from resense.clustering import Cluster
-from resense.config import DetectorConfig, TrackingConfig
+from resense.clustering import Cluster, find_clusters
+from resense.config import ClusterConfig, DetectorConfig, GaugeConfig, TrackingConfig
 from resense.detector import Detector
 from resense.frame import Frame
+from resense.gauge import gauge_core_mask, point_in_polygon
 from resense.synthetic import ObstacleSpec, synthetic_tunnel_frame
 from resense.tracking import Tracker
 
@@ -124,6 +125,45 @@ def test_column_is_never_escalated_and_the_column_hold_keeps_precedence():
     assert set(zones) == {"warning"}                                  # 2 column hits in the last 10
     zones = [z for _, z in _track_zones(seq, column_hold=0)]
     assert zones[6] == "gauge"
+
+
+def _edge_face(x0: float, dy0: float):
+    """A 1.95 m tall face at the corridor side (candidate D, set O #6): 0.4 m along X from x0,
+    its points from dy0 to 1.38 m off the axis, 0.15-2.10 m above the rail head."""
+    xs, ys, zs = np.meshgrid(np.arange(x0, x0 + 0.41, 0.05), np.arange(dy0, 1.39, 0.05),
+                             np.arange(0.15, 2.11, 0.05), indexing="ij")
+    xyz = np.stack([xs.ravel(), ys.ravel(), zs.ravel()], axis=1).astype(np.float32)
+    dy, h = xyz[:, 1].astype(np.float64), xyz[:, 2].astype(np.float64)
+    g = GaugeConfig()
+    ing = point_in_polygon(dy, h, g.profile) & gauge_core_mask(dy, h, xyz[:, 0], g)
+    return xyz, dy, h, ing, g
+
+
+@pytest.mark.parametrize("x0,dy0,kept", [(10.0, 1.03, True), (25.0, 1.03, False), (10.0, 1.08, False)])
+def test_wall_keep_spares_a_side_face_with_strict_voxels_near_the_train(x0, dy0, kept):
+    """``cluster.wall_keep_gauge_voxels`` (candidate D): a face at the corridor side, taller than
+    1.9 m with its centroid > 1.2 m off the axis, is dropped as a wall with the flag off; with it
+    on it is kept (an obstacle) when it has >= 10 strict-envelope voxels within 20 m, and still
+    dropped beyond 20 m or without strict voxels."""
+    xyz, dy, h, ing, g = _edge_face(x0, dy0)
+    assert dy.mean() > 1.2
+    inten = np.full(len(xyz), 10.0, np.float32)
+    assert find_clusters(xyz, inten, dy, h, ing, ClusterConfig(), gauge=g) == []
+    out = find_clusters(xyz, inten, dy, h, ing, ClusterConfig(wall_keep_gauge_voxels=10, wall_keep_distance=20.0), gauge=g)
+    if kept:
+        assert len(out) == 1 and out[0].zone == "gauge" and out[0].n_gauge >= 10
+    else:
+        assert out == []
+
+
+def test_shipped_default_is_candidate_a():
+    """Shipped 26.09: candidate A of the pre-registration (N 10, D 35 m, 5 hits), the same in the
+    dataclass and in configs/default.yaml."""
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[1]
+    for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(root / "configs/default.yaml"))):
+        t = cfg.tracking
+        assert (t.near_escalate_voxels, t.near_escalate_distance, t.near_escalate_hits) == (10, 35.0, 5)
 
 
 def test_off_changes_nothing():

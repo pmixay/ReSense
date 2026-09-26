@@ -18,6 +18,10 @@ away shows more than ``column_min_height`` of itself in some frames only (EXPERI
 With ``low_min_seen_distance`` > 0 (tried 26.09, off: EXPERIMENTS.md 1j) a low (bed-level) track
 is reported only once it has been matched at or beyond it; 4 m never reports a low object that
 stays nearer (a standing train), so it is not shipped.
+With ``near_escalate_voxels`` N > 0 (on since 26.09, N 10, EXPERIMENTS.md 1k) a track whose last
+``near_escalate_hits`` hits were each a corridor cluster with at least N voxels inside the strict
+envelope within ``near_escalate_distance`` is zone 'gauge' whatever demoted it (a signature such
+as ``elevated`` or ``floating``, the zone vote); a column never counts and the column hold wins.
 """
 from __future__ import annotations
 

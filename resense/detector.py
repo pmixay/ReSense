@@ -40,7 +40,7 @@ class Detection:
     zone: str                  # 'gauge' or 'warning'
     height_min: float          # lowest point above the rail head
     intensity: float
-    reason: str = ""           # v0.5 (additive): why the last cluster of an advisory track was demoted ('' = none)
+    reason: str = ""           # v0.5 (additive): why the last cluster of an advisory track was demoted ('' = none); 26.09: 'near_envelope' on an obstacle only by tracking.near_escalate_*
     kind: str = ""             # v0.6 (additive): 'low' = a bump above the track bed, '' = corridor object
 
     def to_dict(self) -> dict:
