@@ -1485,6 +1485,14 @@ is re-cut on the final commit `0c8f8e1` (its gate: PASS, per frame identical to 
 gated and recorded value the same as the first cut, the configuration hash, the commit and the
 latency changed).
 
+*26.09, re-review of `10e2707` (addendum 3 of the same file, pre-registered 03:47 UTC):* a match
+on the change frame ended a STOP's `tracking.reseed_hold`, so the hold is now a fixed window of 5
+frames from the change, matched or not (6 at 10 Hz when the model is re-seeded: its warm-up without
+a floor-shadow reference), a ray-cast test guards the rotation sign (fails with `dR` transposed or
+not applied) and `scripts/robustness_check.py` imports its own checkout; on `5f64ad4` the gate
+(PASS), the stress check and the reviewer's sweep are identical to `10e2707` frame by frame, so the
+`_p3b` baseline stands; tests 469 → 486.
+
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 
 ### 2a. Day-1 numbers (v0.3, 26 frames of `roundT_doubleT`, every 10th, synthetic objects)

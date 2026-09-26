@@ -157,5 +157,20 @@
       "the safety rule decides": "a row worse is not traded against a row better; if R1 fails a rule, it is not shipped and the failure is recorded with its cause (R2 and R3 ship on their own)"
     },
     "baseline_rule": "if any gated or recorded value of the final clean commit's gate differs from regression_baseline_2026-09-25_ride_p3b.json, that file is re-cut from the final clean commit's run (the name kept) and EXPERIMENTS.md section 1i gets one dated line"
+  },
+  "run_addendum_3": {
+    "commit": "5f64ad4 (R1-R3 with the tests and the corrected comments / docs; clean; native path; gate --jobs 3, 529 s)",
+    "tests": {
+      "T1": "passes on 5f64ad4; FAILS on 10e2707 (a clean copy with the new tests): matched on the change frame, reported [T, F, F, F, F] (expected [T, T, T, T, F]); the ray-cast 0.7 / 1.5 deg change cases fail there too (the STOP's hold after the change frame 0, expected 4 / 5), and the existing hold test (a match during the hold kept its window: hold 1, was 0)",
+      "T2": "16 cases (roll / pitch x rig 3 deg +0.7 / -0.7 / +0.95 and rig 3.5 deg -0.7 x 30 / 50 m) pass on 5f64ad4 and on 10e2707 (R2 changes no code); mutation dR transposed in Detector._fit_track: the 8 pitch cases FAIL; dR = identity: 5 FAIL (pitch 50 m and the 3.5 deg rig at 30 m); no roll case fails either way (a roll of the rig barely moves a box on the axis). Deviation from the pre-registered scenario: with the rig at 3 deg and -0.7 the canted 2.3 deg is below provisional_min_deg (2.5) in 3 of 4 cases, so the final there is a ~3 deg change that re-seeds the model (those cases are kept: the track is matched on every frame there too, and the flipped sign fails them); the 3.5 deg rig with -0.7 adds the sub-degree case for the negative sign",
+      "T3": "scripts/robustness_check.py run from the worktree root without PYTHONPATH imports the worktree's resense (the main checkout's is installed) and reproduces the stress run's doubleT_obstacle 5 Hz output frame by frame (101 frames)",
+      "suite": "486 passed on the native and on the numpy path (469 + 1 T1 + 16 T2); ruff, scripts/sync_params.sh --check and web/demo (13) pass"
+    },
+    "gate": "exit 0 against regression_baseline_2026-09-25_ride_p3.json: the same 6 gated rows better, none worse; against _ride_p3b.json every row but latency the same; per frame identical to the 0c8f8e1 gate run (decisions, detections, warnings, track models, clear_distance) in all 15 269 frames",
+    "sweep": "52 runs (doubleT_obstacle, 26 mounts x 10 / 5 Hz, shipped) against the reviewer's run on 10e2707: identical frame by frame (7 852 frames): 0 STOP frames lost, 0 gained, no nearest or clear distance longer, the calibration changes the same, 272 held-detection frames in both",
+    "stress": "identical per frame to 0c8f8e1's (= 10e2707's code) in every mode: 5 Hz five bags 10 / 10, doubleT_obstacle 92/123 @ 12; +3 deg roll 14 / 16, 183/246 @ 12; +3 deg pitch 17 / 18, 186/246 @ 11",
+    "reading": "the fixed window changes no output on the recorded data: in none of the gate, stress or sweep runs is a STOP track matched at a calibration change and then missed within the window; it guards the case the reviewer built (the re-seeded model losing the object from the frame after the change)",
+    "verdict": "meets the ship rule: gate exit 0 with no gated row worse, no STOP frame lost and no longer distance in the sweep, stress no worse (identical), T1 fails on 10e2707, T2 fails by mutation; R1-R3 shipped",
+    "baseline": "not re-cut: no gated or recorded value of the 5f64ad4 gate differs from regression_baseline_2026-09-25_ride_p3b.json (only the commit, the wall time and the latency; the config hash is the same)"
   }
 }

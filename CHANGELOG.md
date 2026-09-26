@@ -17,7 +17,7 @@ frames, 13 km, no obstacles).
 ## Unreleased (in development; package version 1.0.0)
 
 Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
-overhead rule on, node v0.6.4). Tests: 235 → 469 (+28 native kernels, +3 speed evaluation
+overhead rule on, node v0.6.4). Tests: 235 → 486 (+28 native kernels, +3 speed evaluation
 helpers, +23 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5
 overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting and socket
 buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`, +20 DDS
@@ -25,7 +25,17 @@ transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
 `cluster.far_axis_both_sides`, +3 far bed bins, +5 the rail-shadow review fixes, +4 the
 free-hanging exemption of `floating`, +4 thin hanging objects, +5 `health.clear_cap`, +6 the rate
 and re-mount flags, +1 the rail-lock guard of the hanging stage, +13 the review fixes of the
-round-2 items) in `tests/`, 13 in `web/demo`.
+round-2 items, +17 their re-review) in `tests/`, 13 in `web/demo`.
+
+- **Re-review of the safety fixes (26.09, P3):** a match on the change frame ended the
+  `tracking.reseed_hold` of a STOP, so a loss starting one frame after a calibration change got
+  only the 1-frame `hold_misses`. The hold is now a fixed window of 5 frames from the change,
+  matched or not (6 at 10 Hz when the track model is re-seeded: its warm-up); a ray-cast test
+  guards the rotation sign of the model and the tracks; `scripts/robustness_check.py` imports its
+  own checkout. Pre-registered (addendum 3); gate PASS, the gate, the stress check and the
+  reviewer's sweep identical to `10e2707` frame by frame (baseline `_p3b` unchanged). +17 tests.
+  [`p3_round2_review_fixes_2026-09-26.json`](docs/evidence/results/p3_round2_review_fixes_2026-09-26.json),
+  [EXPERIMENTS §1i](docs/EXPERIMENTS.md).
 
 - **Safety review of the round-2 items: calibration changes keep a confirmed STOP; the refinement
   off (26.09, P3, delegated by the captain):** the review of `17a850d` found that every refinement
