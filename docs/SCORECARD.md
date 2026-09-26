@@ -7,8 +7,8 @@
 > detector of `fa18832`, gate baseline `_ride_p3d`), §0; earlier ones are dated records (§0a, §1–§8)
 > · **Status:** current (§0), dated records (§0a–§8)
 
-**Кратко.** Переоценка 26.09 (вечер) на интегрированной версии — **62 / 100** (судьи: A
-65, B 61; утром 26.09 на версии до интеграции — 65, 24.09 — 60). Судья A заново скачал данные
+**Кратко.** Переоценка 26.09 (вечер) на интегрированной версии — **62,5 / 100** (судьи: A
+65,5, B 61,5; утром 26.09 на версии до интеграции — 65, 24.09 — 60). Судья A заново скачал данные
 организаторов и всё перемерил сам, судья B проверил каждое утверждение по коду и сырым JSON. Числа
 команды воспроизводятся точно: полный регрессионный шлюз с поездкой и набором F на другой машине — PASS, каждая строка эталона `_ride_p3d` та же. Интеграция P3c/P3d дала реальный прирост (ящик у верха
 габарита — STOP в каждом кадре с 101 м), но заголовок «8 из 8» его преувеличивает: краевые объекты
@@ -16,7 +16,7 @@
 данных. Новая находка — с холодного диска 360° запись проваливает сухой прогон (обработано 34 кадра
 из 201). Что поднимет оценку — §0.6.
 
-## 0. Re-judgement of 26.09 evening (integrated head `be5f5fc`): 62 / 100
+## 0. Re-judgement of 26.09 evening (integrated head `be5f5fc`): 62.5 / 100
 
 ### 0.1 How it was judged
 
@@ -35,23 +35,27 @@ CHANGELOG, EXPERIMENTS prose or the deck:
   claim against the code, the config and the raw JSON of `docs/evidence/`, and hunted for
   overstated, stale or contradictory claims (§0.4); wrote its scores before reading this file.
 
-Both judged `be5f5fc` (CI green, run 36248096431). Judge A's 8.5 and 8.8 also saw the documents
-and the deck after this pass fixed the claims of §0.4; where that moved a score it is said.
-Final = the mean, rounded down to 0.5.
+Both judged `be5f5fc` (CI green, run 36248096431); judge B then re-checked this pass's first
+commit `4974242` claim by claim and re-scored; judge A's 8.5 and 8.8 saw the documents and the deck
+after every fix of §0.4. Final = the mean per criterion, rounded down to 0.5.
 
 ### 0.2 Scores
 
-| § | criterion | 26.09 morning | judge A | judge B | **26.09 evening** | one-line reason |
+Judge B scored `be5f5fc` first (61), then re-checked the pass's commit `4974242` claim by claim
+(10 of its 17 claims fixed, 4 partly, 3 not; five new inconsistencies) and re-scored (61.5); the
+remaining items were then fixed as well (§0.4). Judge A scored after the fixes.
+
+| § | criterion | 26.09 morning | judge A | judge B (`be5f5fc` → re-check) | **26.09 evening** | one-line reason |
 |---|---|---:|---:|---:|---:|---|
-| 8.1 | Works | 14.5 | 14.5 | 13 | **13.5 / 25** | the real person 58 / 61 and the rail object 125 / 126 reproduce (in-sample, a standing train); set O "8 of 8" counts one STOP frame: the two edge objects get 2 and 6 frames at 5–10 m, too late for a train; 384 of 801 in-envelope object-frames; ride 45 events / 38 STOP episodes in 13 km, in-sample; `clear_distance` past an in-envelope object in 51 of 505 frames |
-| 8.2 | Range | 7.5 | 8 | 7 | **7.5 / 15** | first STOPs unchanged (101.3 / 98 / 82 m; cubes 43–53 m), 1 of 236 set O STOP frames beyond 100 m; new: the box at the envelope top is held from 101.3 m (was 23.9 m); the 148–154 m person is the team's own synthetic |
-| 8.3 | Speed | 7 | 7.5 | 7.5 | **7.5 / 10** | measured through ROS in Docker on 4 cores: 360° p95 81 ms at 9.97 fps, 120° p95 58 ms at 10 fps, one core; latency no longer flips the decision; never on the i7; from a cold disk the catch-up collapses (§0.3) |
-| 8.4 | Generalisation | 9 | 8.5 | 8 | **8 / 15** | geometry, no map, auto mount; but 287 config keys, 72 added on 25–26.09, several sized to single set O objects and gated only on the data they are reported on; no hold-out; the envelope-edge reference unresolved |
-| 8.5 | Technical quality | 7.5 | 7.5 | 7 | **7 / 10** | 587 tests, 6-job CI, ruff, one parameter file, the gate reproduces value for value on another machine (the full gate with the ride: PASS, every gated row the same); ~11 500 lines of Markdown with many stale numbers (17 found by B, fixed in this pass; A: +0.5 after the fix, B scored before it) |
-| 8.6 | Ease of launch | 8 | 7.5 | 7.5 | **7.5 / 10** | the offline jury chain and the stock console PASS on the original bags, but only with the bag in the page cache (FAIL from a cold disk; README step 3 added); the only archive of the head is a login-gated CI artifact; root `sysctl` step for CycloneDDS |
-| 8.7 | Team approach | 8.5 | 8.5 | 8 | **8 / 10** | pre-registration, a regression gate, safety reviews, tried-and-rejected with raw JSON; but an in-sample loop that fixes whichever set O object failed last |
-| 8.8 | Pitch | 3 | 3 | 3 | **3 / 5** | the organizers' template, a strong real frame; the deck contradicted itself and was a baseline behind (rebuilt in this pass: consistent now); team slides `<…>`, a silent video, no rehearsal |
-| | **Total** | **65** | **65** | **61** | **62 / 100** | |
+| 8.1 | Works | 14.5 | 14.5 | 13 → 13 | **13.5 / 25** | the real person 58 / 61 and the rail object 125 / 126 reproduce (in-sample, a standing train); set O "8 of 8" counts one STOP frame: the edge objects get 2 and 6 frames at 5–10 m, too late for a train; 384 of 801 in-envelope object-frames; ride 45 events / 38 STOP episodes in 13 km, in-sample; `clear_distance` past an in-envelope object: 51 of 505 frames with the object in the rail envelope, `GO` past it in 149–154 frames by the organizers' placement (cache, float bag and through ROS alike) |
+| 8.2 | Range | 7.5 | 8 | 7 → 7 | **7.5 / 15** | first STOPs unchanged (101.3 / 98 / 82 m; cubes 43–53 m), 1 of 236 set O STOP frames beyond 100 m; new: the box at the envelope top is held from 101.3 m (was 23.9 m); the 148–154 m person is the team's own synthetic |
+| 8.3 | Speed | 7 | 7.5 | 7.5 → 7.5 | **7.5 / 10** | measured through ROS in Docker on 4 cores: 360° p95 81 ms at 9.97 fps, 120° p95 58 ms at 10 fps, set O p95 52 ms; detector 23–31 ms on one core; latency no longer flips the decision; never on the i7; a 9.5 s start-up catch-up at 360° and the cold-disk collapse (§0.3) |
+| 8.4 | Generalisation | 9 | 8.5 | 8 → 8 | **8 / 15** | geometry, no map, auto mount; but 287 config keys, 72 added on 25–26.09, several sized to single set O objects and gated only on the data they are reported on; no hold-out; the envelope-edge reference unresolved |
+| 8.5 | Technical quality | 7.5 | 7.5 | 7 → 7.5 | **7.5 / 10** | 587 tests, 6-job CI, ruff, one parameter file; the full gate reproduced value for value on a fresh machine; the stale claims fixed (§0.4); minus: ~11 500 lines of Markdown, rule accretion, a node defect found and not yet fixed (the catch-up's own skips reset the scene, CAPTAIN action 21) |
+| 8.6 | Ease of launch | 8 | 7.5 | 7.5 → 7 | **7 / 10** | the offline jury chain and the stock console PASS on the original bags, but only with the bag in the page cache: the first cold play of a 360° bag fails and the fix so far is one more manual step (README step 3); the only archive of the head is a login-gated CI artifact; root `sysctl` step for CycloneDDS |
+| 8.7 | Team approach | 8.5 | 8.5 | 8 → 8 | **8 / 10** | pre-registration, a regression gate, safety reviews, tried-and-rejected with raw JSON; but an in-sample loop that fixes whichever set O object failed last |
+| 8.8 | Pitch | 3 | 3.5 | 3 → 3.5 | **3.5 / 5** | the organizers' template, a strong real frame; the deck, PDF and video now consistent with the gate baseline and with each other, in-sample and synthetic figures labelled; team slides `<…>`, a silent video, no rehearsal |
+| | **Total** | **65** | **65.5** | **61 → 61.5** | **62.5 / 100** | |
 
 **Why lower than the morning's 65 on a better detector.** The product did not regress: every gated
 number is the same or better (§0.3). The evening judges measured three things the morning ones did
@@ -72,7 +76,7 @@ the one sandbox-only deviation of the image build: the base image from a mirror 
 | full regression gate against `_ride_p3d` (`--jobs 4`, every cache) | **PASS**, every gated row the same as the baseline, 302 s: five bags 58 alarm frames / 13 events / 16 STOP episodes (`squareT_platform_squareT_switch` 54 / 9 / 15, `doubleT_platform` 4 / 4 / 1, the other three 0); the ride 183 / 45 / 38 (alarms at 20.7–158.3 m), `CAUTION` by the node's decision rule on 41.3 % of its frames (27–69 % on the five bags; `warning` frames 42.1 %); `doubleT_obstacle` person 58 of 61, the object on the rail 125 of 126 from frame 75, 0 false-alarm frames, distance error ≤ 0.23 m, first alarm frame 11; set O 384 of 801 in-envelope object-frames, 8 of 8 objects with a STOP, 6 false STOP frames outside, 3 background; set F straight: person 151.0 m (6 of 6), trolley 151.4 m, 1 m crate 123.9 m, cable 98.9 m, 0.5 m box on the bed 1 of 6. Only the latency rows differ (information: 4 jobs on 4 cores) | 8.1, 8.2, 8.5 |
 | set O from the float bag (`resense run --bag`, not the cache) | 387 of 801 in-envelope object-frames `STOP` (cache 384: 5 mm quantisation); per object as the baseline but #3 26 frames from 48.0 m (cache 23 from 42.7 m); 7 false `STOP` frames on the outside box #7 from 142.3 m; 1 background frame | 8.1, 8.2 |
 | `clear_distance` on set O (float bag, `score_clear_distance.py`) | past an object inside the rail-referenced envelope in **51 of 505** frames (44 of them `GO`); by the organizers' placement 217 of 801; 154 `GO` frames past an in-envelope object | 8.1 |
-| set O through `ros2 bag play` into the node (Docker, offline, warm cache) | **PASS** as a node run (10 fps, p95 52 ms, back on the newest frame at +5.9 s); 1 452 of 1 510 frames processed: all 58 skipped ones fall in the start-up catch-up (frames 0–22, then every second one to frame 80), every frame after that processed. Graded per object after mapping the node's header stamps onto the bag's frames: every object as offline except #1, the 2 × 2 m box in view when the recording starts: 153 of its 155 processed frames, first STOP 94.6 m instead of 98.0 m (its first frames fell into the catch-up); 10 false STOP frames on the outside box #7 (offline 6–7), 0 background frames; `clear_distance` past an object in the rail envelope in 52 of 447 frames | 8.1, 8.6 |
+| set O through `ros2 bag play` into the node (Docker, offline, warm cache) | **PASS** as a node run (10 fps, p95 52 ms, back on the newest frame at +5.9 s); 1 452 of 1 510 frames processed: all 58 skipped ones fall in the start-up catch-up (frames 0–22, then every second one to frame 80), every frame after that processed. Graded per object after mapping the node's header stamps onto the bag's frames: every object as offline except #1, the 2 × 2 m box in view when the recording starts: 153 of its 155 processed frames, first STOP 94.6 m instead of 98.0 m (its first frames fell into the catch-up); 10 false STOP frames on the outside box #7 (offline 6–7), 0 background frames; `clear_distance` past an object in the rail envelope in 52 of 447 frames, `GO` past an in-envelope object in 149 frames by the organizers' placement (judge B re-mapped the capture: the same). The checker's line "132 of its messages not processed" is wrong on this bag: it matches the node's header stamps (year 2000, the organizers' tool) against the bag's receive times, which drift apart; the frame mapping shows none unprocessed after frame 80 | 8.1, 8.6 |
 | `OFFLINE=1 dry_run.sh doubleT_obstacle` (360°, the jury image path, `--network none`), bag in the page cache | **PASS**: 139 status messages, 126 alarm frames at 55.7–56.5 m, decode + detect p95 81 ms (detector 42 ms), 9.97 fps, back on the newest frame at +9.5 s, 0 of the recording's frames unprocessed after it | 8.3, 8.6 |
 | the same with the page cache dropped (337 MB/s cold reads) | **FAIL**: 34 status messages, first `STOP` +15.5 s: the player sent the whole overdue recording at once; the catch-up dropped frames > 5 s behind, the processed frames were 1.0–1.4 s apart, each gap reset the scene. Twice more before the cache was warm: FAIL (53 and 32 messages) | 8.3, 8.6 |
 | `OFFLINE=1 dry_run.sh roundT_doubleT --expect-clear` (120°) | **PASS**: 0 alarm frames, p95 58 ms, 10.0 fps | 8.1, 8.3 |
@@ -82,28 +86,38 @@ the one sandbox-only deviation of the image build: the base image from a mirror 
 
 ### 0.4 Claims found wrong, stale or contradictory, and what this pass did
 
-Judge B listed 17; judge A confirmed them against its own runs. Fixed in this pass (P1 and P2
-lanes; no detector or config change):
+Judge B listed 17 on `be5f5fc` and 5 more on the pass's first commit `4974242`; judge A confirmed
+them against its own runs. The deck and video are P2's lane, the documents P1's; no detector or
+config change.
 
-| where | claim | evidence | done |
-|---|---|---|---|
-| deck slide 13, notes | the box at the envelope top "STOP лишь в 22 из 124 кадров" | 51 of 124, every frame from 101.3 m (`_ride_p3d`) | deck rebuilt; a test ties it to the baseline |
-| deck slides 11, 15, notes 11 / 13 / 15 | "ящик у края пропущен", "два объекта без STOP" while slide 13 says "8 из 8" | the edge objects: 2 of 83 frames at 5.2 m, 6 of 125 from 10.3 m | one wording everywhere: STOP у 8 из 8, у края — лишь 2 и 6 кадров |
-| deck slides 14, 16 | 555 tests | 587 | rebuilt; tested |
-| video card, `.srt` | "46 за 13 км"; 3.5 per km and 148 m without "in-sample" / "our synthetic" | 45; the ride decided the rules; set F is ours | card and subtitles fixed, video rebuilt; a test ties the card to the baseline |
-| README step 3 | "a stock Fast DDS player 0–1 of 201" at 212992 | that player was CycloneDDS (corrected 25.09 evening); stock Fast DDS delivered all | fixed; plus the cold-disk step |
-| ALGORITHM §3.5 / §4 | the decision rule without the shipped STOP keep, near escalation, wall keep, rail start | `configs/default.yaml`, EXPERIMENTS §1k–§1o | "Rules of 26.09" added to §3.5 |
-| ALGORITHM §6 | set O #8 "12 of its 124 frames"; "8 of 8" without its meaning | 51 of 124; one STOP frame counts | fixed and qualified |
-| DECISIONS row 15 | the start-up rules "none shipped" | `lowobj.rail_start_within` 4 m is on (§1k) | fixed; row 17 added for the near-field and STOP-keep rules |
-| ARCHITECTURE "Native kernels" | 289 tests | 587 | fixed |
-| PRESENTATION | "6 из 8, пять устойчиво", 46, 492 tests | 8 of 8 (edge 2 and 6 frames), 45, 587 | fixed |
-| CHANGELOG | the top entry describes an older deck; no entry for `e5f0f02` | | entry for this pass, `e5f0f02` noted |
+| # | where | claim | evidence | status |
+|---|---|---|---|---|
+| 1 | deck slide 13, notes | the box at the envelope top "STOP лишь в 22 из 124 кадров" | 51 of 124, every frame from 101.3 m | fixed; the deck test reads it from the baseline |
+| 2 | deck slides 11, 15, notes | "ящик у края пропущен", "два объекта без STOP" next to "8 из 8" | edge objects 2 of 83 at 5.2 m, 6 of 125 from 10.3 m | fixed: one wording everywhere; the test forbids «пропущен» |
+| 3 | deck slides 14, 16 | 555 tests | 587 | fixed; tested |
+| 4 | deck slides 2–3 | template placeholders | | **open: people's data** (CAPTAIN §4) |
+| 5 | CHANGELOG | top entry about an older deck; no entry for `e5f0f02` | | fixed |
+| 6 | ALGORITHM §6 | set O #8 "12 of its 124 frames" | 51 of 124 | fixed, "8 of 8" qualified |
+| 7 | ALGORITHM §3.5 / §4 | the decision rule without the shipped rules of 26.09; §4 "matched none of the signatures" | `configs/default.yaml` | fixed: §3.5 "Rules of 26.09", §4 names its exceptions (near escalation, STOP keep, `reseed_hold`); stamp updated |
+| 8 | PRESENTATION | "6 из 8, пять устойчиво", 46, 492 tests | | fixed |
+| 9 | ARCHITECTURE | 289 tests (then an off-by-one 586) | 587 | fixed |
+| 10 | README, EXPERIMENTS, deck slide 12 | the person "held in ≥ 90 % from 149 m" beyond "first confirmed 148 m" | the 90 % rule counts the misses before the first confirmation | fixed: the band figure (≥ 90 % of every 10 m band from 115 m) instead; the artefact explained where the old figure stays; the deck test forbids «~149» |
+| 11 | deck slide 13 title | "STOP — 8 из 8" without the edge objects' lateness | | fixed: «STOP у 8 из 8, у края — лишь вблизи» |
+| 12 | video subtitles | 148 m without "our synthetic" | | fixed |
+| 13 | README, EXPERIMENTS, deck slides 5 / 11 and notes, video card and subtitle | "42–64 ms per frame on one core" (the numpy path of 23.09) | the shipped path: 22.7–30.7 ms, p95 ≤ 42.1 ms (`bench_native.txt`) | fixed everywhere; the old figure kept only as dated history; the deck test forbids «42–64» |
+| 14 | deck slides 5, 11, 16; video card | "3,5 на км" without "in-sample" | the ride decided the rules | fixed: «правила решались на ней же» on each |
+| 15 | README | CAUTION "27–68 %, 41 %" of 24.09 | node decision rule: 27–69 %, ride 41.3 % | fixed |
+| 16 | DECISIONS | no row for the rules that gave 8 of 8 and 51 of 124; row 15 "none shipped" | `lowobj.rail_start_within` is on | fixed: rows 15 and 17 |
+| 17 | EXPERIMENTS §3a | the second VM's bench PASS without saying the drop criterion changed after the first FAIL | `5be4143` | fixed: disclosed next to the PASS |
+| 18 | README status | "back in real time within ~2–7 s" then 9.5 s | | fixed: ~2–10 s |
+| 19 | README | first STOP "1.3–1.6 s into the recording" | the team's VMs; the re-judgement's warm run: 2.9 s after the node's first frame | fixed: both, per machine |
+| 20 | README | "587 tests green" credited to the re-measurement | 585 passed + 1 deselected (then passed with the ride cached); the 587th added by this pass | fixed |
+| 21 | evidence | `setO_header_stamps.jsonl` listed but not committed (`.gitignore` `*.jsonl`) | | fixed: committed with `git add -f` |
+| 22 | SCORECARD §0 | "17 found by B, fixed in this pass" | 10 / 4 / 3 at `4974242` | fixed: this table |
 
-Left as they are, stated here: the scorer's "held from" (≥ 90 % of the later frames) can exceed the
-first STOP, because it counts the misses before the first STOP (set O #8: held from 111.4 m, first
-STOP 101.3 m; README and EXPERIMENTS say "a STOP on every frame from 101.3 m"); "8 of 8" is the
-scorer's one-hit verdict and is now always said with the edge objects' 2 and 6 frames; the CAUTION
-share was the 24.09 figure (27–68 %, ride 41 %); re-measured on `_ride_p3d` with the node's decision rule: 27–69 %, ride 41.3 % (README updated).
+Left as they are, stated here: "8 of 8" is the scorer's one-hit verdict and is always said with the
+edge objects' 2 and 6 frames; set O #8's "held from 111.4 m" field of the scorer is quoted nowhere
+as a range (README and EXPERIMENTS say "a STOP on every frame from 101.3 m").
 
 ### 0.5 Top risks on the hidden control data
 

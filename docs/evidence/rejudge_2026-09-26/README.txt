@@ -74,7 +74,11 @@ ros_setO.txt, ros_setO_node_log.txt, ros_setO_status.jsonl.gz
                                 the page cache: PASS, 10 fps, p95 52 ms; 1 452 of 1 510 frames processed,
                                 all 58 skipped ones in the start-up catch-up (frames 0-22, then every
                                 second one up to 80).
-setO_header_stamps.jsonl, node_to_frames.py
+                                The checker's line "132 of its messages not processed" is wrong on this
+                                bag: it matches the node's header stamps (year 2000, set by the
+                                organizers' tool) to the bag's receive times, which drift apart over
+                                the 151 s; the frame mapping below shows none unprocessed after frame 80.
+setO_header_stamps.jsonl, node_to_frames.py   (the .jsonl is committed with git add -f: *.jsonl is ignored)
                                 the bag's header stamps per frame index (read with rosbags) and the
                                 script that maps the node's status (header stamps) onto frame indices:
                                 python node_to_frames.py setO_header_stamps.jsonl <status.jsonl> <out>
@@ -83,3 +87,19 @@ ros_setO_score.txt, ros_setO_score.json
                                 the offline float-bag run except #1 (in view when the recording starts:
                                 153 of its 155 processed frames, first STOP 94.6 m instead of 98.0 m) and
                                 the outside box #7 (10 false STOP frames, offline 6-7); 0 background.
+variant_run.sh, variant_*       the catch-up under a cold-disk burst, on the jury's runtime image
+                                (WITH_TOOLS=0): the inner part of dry_run.sh (OFFLINE, --network none)
+                                with extra launch arguments; the page cache dropped first (cold_*) or
+                                the bag read first (warm_*); checked with the default criteria:
+  cold_default                  defaults: FAIL, 36 status messages, many "hole in the input" scene
+                                resets, 20 alarm frames
+  cold_maxlag20                 catchup_max_lag:=20.0: FAIL on the counts (43 status messages: the cold
+                                player delivered only ~100 of the 201 clouds in time), but 0 scene
+                                resets, largest gap 0.3 s, first STOP +1.2 s after the first frame, 34
+                                alarm frames at 55.6-56.5 m
+  warm_maxlag20                 catchup_max_lag:=20.0, warm: PASS, 139 messages, 129 alarm frames (the
+                                default warm run: 126), first STOP +1.2 s (default +2.9 s), back on
+                                the newest frame at +10.5 s (default +9.5 s)
+                                Trade-off for the captain (CAPTAIN action 21): after a real multi-second
+                                stall of a live input the node would then work through frames up to
+                                20 s old instead of 5 s before it is back on the newest one.

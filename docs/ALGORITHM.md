@@ -4,7 +4,7 @@
 > after spec §5 "Описание алгоритма": problem → input data → point-cloud processing → decision
 > rule → parameters → limitations.
 > **Audience:** jury, P3 · **Owner:** P1 (structure), P3 (content) · **Language:** EN, summary RU
-> **Last verified:** 2026-09-25 against `8932f3a` (detector v0.6.3, node v0.6.4) · **Status:** current
+> **Last verified:** 2026-09-26: §3.5 "Rules of 26.09", §4 and the set O paragraph of §6 against the shipped `configs/default.yaml` (the re-judgement); the rest 2026-09-25 against `8932f3a` · **Status:** current
 
 **Кратко.** ReSense описывает не объекты, а окружение: в каждом кадре лидара заново строится
 модель пути (полотно, рельсы, ось с кривизной по стенам), вдоль оси откладывается габарит поезда
@@ -648,7 +648,12 @@ A frame reports `obstacle = true` when at least one track is **confirmed**:
 * zone = `gauge`: ≥ 60 % of its last 10 hits had ≥ `gauge_min_points` voxels inside the strict
   polygon and matched none of the infrastructure signatures of §3.3 (column, elevated,
   floating, edge, wall face), were within `axis_valid` and the trusted height-reference range,
-  and were not entirely overhead or retro-reflective.
+  and were not entirely overhead or retro-reflective — **except** where a rule of 26.09 (§3.5)
+  overrides a signature: the near escalation makes a track `gauge` whatever signature demoted its
+  last 5 hits (≥ 10 strict voxels within 35 m; never a column, beyond-axis or beyond-height-reference
+  demotion), and the STOP keep counts a signature-demoted cluster as a hit inside the envelope for a
+  track that was a `STOP` in the previous frame (for at most 10 s since its last clean hit);
+  `tracking.reseed_hold` holds a `STOP` for a fixed window through a mount-calibration change (§2b).
 
 `nearest_distance` is the along-track distance of the nearest confirmed gauge track (m from
 the sensor, measured to the object's nearest point). Confirmed tracks in the advisory zone set

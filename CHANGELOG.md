@@ -38,7 +38,14 @@ frames, 13 km, no obstacles).
   for the near-field and STOP-keep rules, ARCHITECTURE's test count, PRESENTATION's "6 из 8"); the
   captain board, PLAN and the documentation index brought to this state. No detector or config
   change. The deck and video of `e5f0f02` (26.09 morning, on `_ride_p3c`: 45 ride events, 8 of 8,
-  555 tests) had no entry of their own.
+  555 tests) had no entry of their own. **Second round** after judge B re-checked the first commit
+  (10 of 17 claims fixed, 4 partly, 3 not, 5 new): the timing on the deck, the video and in README /
+  EXPERIMENTS is now the shipped C++ path (23–31 ms per frame, p95 ≤ 42 ms; the numpy 42–64 ms of
+  23.09 kept only as history), the set F person's "held from 149 m" artefact replaced by the band
+  figure, «3,5 на км» labelled in-sample on every slide, the slide 13 title qualified, ALGORITHM §4
+  names its exceptions, the drop-criterion change disclosed next to the bench PASS, the stamps file
+  of the through-ROS grade committed; the catch-up variants for CAPTAIN action 21 measured
+  (`catchup_max_lag:=20`: no scene resets cold, PASS warm). Final: 62.5 / 100.
 
 - **P2 public presentation and P4 consistency pass (26.09):** rebuilt the 16-slide public PPTX
   and PDF and the 2:50 overview MP4/SRT against the committed `_ride_p3b` regression baseline:

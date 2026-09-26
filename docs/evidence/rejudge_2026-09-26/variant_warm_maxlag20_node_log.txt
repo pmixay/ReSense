@@ -1,0 +1,20 @@
+[INFO] [launch]: All log files can be found below /root/.ros/log/2026-09-26-16-20-57-526948-5432a6b368ca-22
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [detector_node-1]: process started with pid [26]
+[detector_node-1] [INFO] [1790439658.178781677] [resense_detector]: sensor mount: forward=-y left=+x up=+z roll/pitch/yaw=0.0/0.0/0.0 deg; auto-calibration on
+[detector_node-1] [INFO] [1790439658.198391300] [resense_detector]: ReSense detector listening on /lidar_points, /sensing/lidar/hesai128/pointcloud (+ auto-discovery); input reliability auto; per-frame kernels: native (_resense_native.cpython-310-x86_64-linux-gnu.so); resense 1.0.0
+[detector_node-1] [INFO] [1790439671.623206475] [resense_detector]: 6.7 s of recording waiting: catching up, one frame every 0.3 s of recording
+[detector_node-1] [INFO] [1790439671.623731959] [resense_detector]: input 1: /sensing/lidar/hesai128/pointcloud (frame_id=lidar_livox, 921600 points)
+[detector_node-1] [INFO] [1790439671.624452861] [resense_detector]: static TF resense_lidar -> lidar_livox (identity)
+[detector_node-1] [INFO] [1790439671.703628620] [resense_detector]: mount calibration: pending - 
+[detector_node-1] [INFO] [1790439672.080892688] [resense_detector]: mount calibration: provisional - provisional tilt: roll +3.09, pitch -0.85 deg (final after 20 observations)
+[detector_node-1] [INFO] [1790439672.268148363] [resense_detector]: frame 7: OBSTACLE at 55.6 m; axis y=+0.08 R=-9235; 3.4 fps; latency mean 83 / p95 93 / max 96 ms; input period 100 ms; dropped 6 (6 skipped by the catch-up)
+[detector_node-1] [INFO] [1790439674.300391706] [resense_detector]: frame 29: OBSTACLE at 56.3 m; axis y=+0.03 R=-6859; 10.8 fps; latency mean 83 / p95 96 / max 108 ms; input period 100 ms; dropped 39 (39 skipped by the catch-up)
+[detector_node-1] [INFO] [1790439675.451041059] [resense_detector]: caught up in 3.8 s: 44 frames processed, 62 skipped, at most 6.7 s of recording behind
+[detector_node-1] [INFO] [1790439676.199498021] [resense_detector]: frame 51: OBSTACLE at 56.2 m; axis y=+0.03 R=-7461; 11.6 fps; latency mean 77 / p95 95 / max 95 ms; input period 100 ms; dropped 62 (62 skipped by the catch-up)
+[detector_node-1] [INFO] [1790439678.278034422] [resense_detector]: frame 72: OBSTACLE at 56.2 m; axis y=+0.03 R=-5619; 10.1 fps; latency mean 74 / p95 85 / max 97 ms; input period 100 ms; dropped 62 (62 skipped by the catch-up)
+[detector_node-1] [INFO] [1790439680.274664479] [resense_detector]: frame 91: OBSTACLE at 56.2 m; axis y=+0.03 R=-5838; 9.5 fps; latency mean 78 / p95 92 / max 106 ms; input period 100 ms; dropped 63 (62 skipped by the catch-up)
+[detector_node-1] [INFO] [1790439682.199675250] [resense_detector]: frame 107: OBSTACLE at 56.1 m; axis y=+0.03 R=-5614; 8.3 fps; latency mean 76 / p95 87 / max 90 ms; input period 100 ms; dropped 66 (62 skipped by the catch-up)
+[detector_node-1] [INFO] [1790439684.199818261] [resense_detector]: frame 127: OBSTACLE at 56.2 m; axis y=+0.03 R=-6050; 10.0 fps; latency mean 83 / p95 101 / max 103 ms; input period 100 ms; dropped 66 (62 skipped by the catch-up)
+[detector_node-1] [INFO] [1790439684.878648281] [resense_detector]: mount calibration: ok - tilt corrected: roll +3.09, pitch -0.85, yaw +0.00 deg
+[detector_node-1] [INFO] [1790439686.199765585] [resense_detector]: frame 139: FAULT: no LiDAR frame for 0.6 s (> 0.5 s): path not monitored; 6.0 fps; latency mean 76 / p95 85 / max 91 ms; input period 100 ms; dropped 66 (62 skipped by the catch-up)

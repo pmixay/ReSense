@@ -404,6 +404,8 @@ def test_presentation_artifact_uses_the_organizers_slide_sequence():
         assert required in text
     assert "релиз v1.0.0" not in text
     assert "пропущен" not in text                               # every in-envelope object gets a STOP
+    assert "42–64" not in text                                  # the numpy timing of 23.09, not the shipped path
+    assert "~149" not in text                                   # the 90 % hold counts misses before the first STOP
     assert "Привет, участник хакатона" not in text
 
 

@@ -1,0 +1,13 @@
+status messages      : 36 (53 lines skipped)
+alarm frames         : 20
+obstacle distance    : 55.7 .. 56.2 m
+latency decode+detect: mean 75 / p95 95 / max 109 ms
+detector stage total : mean 35 / p95 50 ms
+dropped input frames : 157 (153 of them skipped by the node's catch-up); 107 after the first 5 s (the start-up catch-up never ended)
+dropped input settle : start-up catch-up never back on the newest frame while the input ran; drops counted after +5.0 s
+dropped input vs bag : 134 messages of /sensing/lidar/hesai128/pointcloud after the first 5 s (the start-up catch-up never ended), 4 frame(s) missing from the recording itself; 103 of its messages not processed
+fps (last report)    : 5.31
+start of the input   : 5 frames in the first 5 s after the first one, largest gap 1.9 s, first STOP at +2.6 s
+
+FAIL: only 36 status messages, expected >= 50 (the node started late or dropped most of the bag)
+FAIL: 103 frames of the recording not processed after the first 5 s (the start-up catch-up never ended) > 0

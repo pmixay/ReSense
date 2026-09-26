@@ -71,7 +71,7 @@ docker/Dockerfile .`. Проверка архива: `sha256sum -c resense-image
 ```text
 FAULT     # с 2 с после старта ноды, пока плеер загружает бэг (2,6–4 с): кадров ещё нет
 GO        # первая секунда записи; CAUTION, когда человек подходит к габариту
-STOP      # с 1,3–1,6 с записи: человек на пути, затем предмет на рельсе, 55,5–56,6 м
+STOP      # с 1,3–2,9 с записи (зависит от машины): человек на пути, затем предмет на рельсе, 55,5–56,6 м
 CAUTION   # дважды по одному кадру в конце (предмет пропущен в кадре), затем снова STOP
 FAULT     # через 0,5 с после конца бэга: входа нет, путь не контролируется
 ```
@@ -137,7 +137,7 @@ ros2 bag play <bag>  ──PointCloud2 (either topic / frame pair), 10 Hz──�
    all of a short recording, while its clock runs, then sends the overdue first seconds back to
    back: `FAULT` until then (2.6–4 s for 1.9 GB in the page cache, longer from a slow disk). The
    node works through the burst from the first frame, one frame every 0.3 s of recording
-   (`catchup_step`), and is back in real time within ~2–7 s (the 26.09 re-judgement, 4 cores,
+   (`catchup_step`), and is back in real time within ~2–10 s (the 26.09 re-judgement, 4 cores,
    warm cache: 3.4 s on `roundT_doubleT`, 9.5 s on the 360° `doubleT_obstacle`).
 
 **The bags disagree on the topic and frame id** (`/lidar_points` in `hesai_lidar` for
@@ -153,13 +153,14 @@ control bags can be played one after another into one running node. The offline 
 ## Status (26.09): package 1.0.0, detector v0.6.3 with integrated P3d rules, node v0.6.4
 
 The v0.6.4 node works through the burst of the first seconds of a played bag instead of losing
-them: the first `STOP` on `doubleT_obstacle` comes 1.3–1.6 s into the recording, was 3.2–4.5 s
-(with the bag in the page cache; from a cold disk see "Acceptance test and CI").
+them: the first `STOP` on `doubleT_obstacle` comes 1.3–1.6 s into the recording on the team's VMs
+(2.9 s after the node's first frame in the re-judgement's run on another 4-core machine), was
+3.2–4.5 s (with the bag in the page cache; from a cold disk see "Acceptance test and CI").
 History: [`CHANGELOG.md`](CHANGELOG.md). Key decisions on one page:
 [`docs/DECISIONS.md`](docs/DECISIONS.md). **Criteria judgement:** re-judged on 26.09 evening on
 this integrated head by two independent judges who re-measured instead of reading these
-documents: **62 / 100** (26.09 morning on the pre-integration head: 65; 24.09: 60);
-strongest 8.7 team approach (8 / 10), 8.3 speed and 8.6 ease of launch (7.5 / 10 each), lowest
+documents: **62.5 / 100** (26.09 morning on the pre-integration head: 65; 24.09: 60);
+strongest 8.7 team approach (8 / 10), 8.3 speed and 8.5 technical quality (7.5 / 10 each), lowest
 8.2 range (7.5 / 15), 8.4 generalisation (8 / 15) and 8.1 "does it work" (13.5 / 25), mainly on
 the organizers' synthetic-obstacle recording: [`docs/SCORECARD.md`](docs/SCORECARD.md) §0.
 P4's data audit, false-alarm inventory and screened candidates: [`docs/P4_AUDIT.md`](docs/P4_AUDIT.md).
@@ -175,19 +176,20 @@ and set F straight in one command. All current numbers:
 [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) "Current results" and §0.
 
 **Re-measured on 26.09 evening** (the re-judgement, a fresh 4-core machine, the organizers' data
-downloaded again: [`docs/evidence/rejudge_2026-09-26/`](docs/evidence/rejudge_2026-09-26/)): 587
-tests green; the full regression gate with every cache (the six recordings, set O, the 20-minute
-ride, set F straight) PASSES against `_ride_p3d` with every gated row the same: five bags 13 events
-/ 16 STOP episodes, the ride 45 / 38, the person 58 of 61, the rail object 125 of 126, set O 384 of
-801 and 8 of 8; set O from the float bag: 387 of 801 in-envelope object-frames `STOP` (the 5 mm
-cache: 384), 7 false `STOP` frames on the outside box, 1 background frame; the jury chain offline on
-the original bags and the organizers' console with a stock Fast DDS uid-1000 player PASS with the
-bag in the page cache, and `doubleT_obstacle` FAILS from a cold disk (hence jury step 3); set O
-played with `ros2 bag play` into the node (Docker, offline, the jury's runtime image): 1 452 of
-1 510 frames processed at 10 fps (the 58 others in the start-up catch-up), every object graded as
-offline except the box in view at the start (first `STOP` 94.6 m instead of 98.0 m: its first frames
-fell into the start-up catch-up) and 10 instead of 6–7 false `STOP` frames on the outside box.
-Scores: [`docs/SCORECARD.md`](docs/SCORECARD.md) §0.
+downloaded again: [`docs/evidence/rejudge_2026-09-26/`](docs/evidence/rejudge_2026-09-26/)): 585
+tests passed and 1 deselected on the host (it needs the ride cache and passed once the ride was
+cached; this pass added a 587th, green in CI); the full regression gate with every cache (the six
+recordings, set O, the 20-minute ride, set F straight) PASSES against `_ride_p3d` with every gated
+row the same: five bags 13 events / 16 STOP episodes, the ride 45 / 38, the person 58 of 61, the
+rail object 125 of 126, set O 384 of 801 and 8 of 8; set O from the float bag: 387 of 801
+in-envelope object-frames `STOP` (the 5 mm cache: 384), 7 false `STOP` frames on the outside box, 1
+background frame; the jury chain offline on the original bags and the organizers' console with a
+stock Fast DDS uid-1000 player PASS with the bag in the page cache, and `doubleT_obstacle` FAILS
+from a cold disk (hence jury step 3); set O played with `ros2 bag play` into the node (Docker,
+offline, the jury's runtime image): 1 452 of 1 510 frames processed at 10 fps (the 58 others in the
+start-up catch-up), every object graded as offline except the box in view at the start (first `STOP`
+94.6 m instead of 98.0 m: its first frames fell into the start-up catch-up) and 10 instead of 6–7
+false `STOP` frames on the outside box. Scores: [`docs/SCORECARD.md`](docs/SCORECARD.md) §0.
 
 What the organizers' answers changed ([`docs/organizers/answers.md`](docs/organizers/answers.md)):
 
@@ -216,13 +218,13 @@ Headline results (kinds and placement modes: [`docs/README.md`](docs/README.md) 
 | object lying across the rail (0.45 × 0.6 × 0.3 m) | **125 of the 126** frames after the person leaves it (124 before `calibration.keep_within_deg`, 25.09 round 2) | real | 24.09, 25.09 | EXPERIMENTS §0, §1i |
 | health warnings, `CAUTION` | warnings on 196 of 13 759 frames (1.4 %: stations, switches); `CAUTION` on 27–69 % of the frames of the empty bags, 41 % of the ride (re-measured 26.09 with the node's decision rule) | real | 24.09, 26.09 | EXPERIMENTS §0 |
 | organizers' synthetic objects (set O, 1 510 frames) | STOP for **8 of 8** in-envelope objects since the near escalation of 26.09 (6 of 8 before, 5 of them held; 5 of 8 before the hanging stage of 25.09): 2 × 2 m box from 98 m, plank across the rails 82 m, 0.3 m cubes from 43–53 m (the hanging one from 52.5 m since round 2 of 25.09, 34.0 m before), the 5 cm hanging object from 30.1 m (missed before 25.09), the 2 × 2 m box at the envelope top in **51 of 124 frames**, STOP on every frame from 101.3 m under the P3d STOP keep (the scorer's 90 % held-from field reads 111.4 m) (22 frames, held-from 23.9 m on P3c), the edge 2 × 2 m box from 10.3 m (6 frames), and the edge 0.3 m cube at 5.2 m (2 frames); STOP in **384 of 801** visible in-envelope object-frames, 6 false STOP frames on the outside 2 × 2 m box, 3 background alarm frames; set O has been inspected before and is not unseen validation | organizers' synthetic | 24.09, 25.09, 26.09 | [P4_AUDIT](docs/P4_AUDIT.md), EXPERIMENTS §1h, §1i, §1l, §1o |
-| long range, straight track | person first confirmed at **148 m** median (6 of 6), held in ≥ 90 % of frames from 149 m and of every 10 m band from 115 m; trolley 144 m; 1 m crate 111 m; 3 cm hanging cable 95 m, held only from ~50 m (4 of 6); the regression gate's run of the same set on the current evaluation script (25.09): person 151 m, held from 143 m | synthetic, legacy | 24.09, 25.09 | EXPERIMENTS §2d |
+| long range, straight track | person first confirmed at **148 m** median (6 of 6), in ≥ 90 % of the frames of every 10 m band from 115 m (a "held from 149 m" of 24.09 counted the misses before the first confirmation, so it is not quoted); trolley 144 m; 1 m crate 111 m; 3 cm hanging cable 95 m, held only from ~50 m (4 of 6); the regression gate's run of the same set on the current evaluation script (25.09): person 151 m, held from 143 m | synthetic, legacy | 24.09, 25.09 | EXPERIMENTS §2d |
 | long range with a given train speed | person 167 m, crate 182 m (held only from 79 m) | synthetic, legacy | 24.09 | EXPERIMENTS §2d |
 | train speed | none is given (no odometry in the recordings); our LiDAR-only estimate is accurate (median error 0.06–0.08 m/s on 55–96 % of the moving frames), but even a perfect speed does not improve the organizers' check (no earlier first STOP, 6 → 17 false STOP frames on the box outside), so it stays off | real, organizers' synthetic | 24.09 | EXPERIMENTS §9 |
 | curves, stations, low objects | R ≈ 350 m curves 6 of 7 from 58–86 m (sightline past the inner wall); station stops 6 of 6 from 113 m; 30 cm on a rail head 6 of 6 from 42–49 m; person lying across the rails 6 of 6 from ~64 m | synthetic, legacy | 24.09 | EXPERIMENTS §2d |
 | sensor limit | no return beyond 210 m in any of the 13 759 frames: 300 m is beyond this sensor | real | 24.09 | EXPERIMENTS §2d |
 | other mounts | upside down, `+x` forward, backwards found; tilt recovered to 0.0–0.5° on re-mounted frames of 3 recordings | real, re-mounted | 22–23.09 | EXPERIMENTS §6 |
-| offline timing per frame | 42–64 ms mean, p95 53–78 ms on every recording (one core, numpy path, health monitor not included: 7–14 ms more); 24.09 on another idle VM 36.5–52.2 / 50.3–67.1 ms; the optional C++ kernels: −38…−57 %, identical output; DBSCAN on cKDTree (25.09): −1.3…−2.6 ms more on the native path | timing: sandbox | 23–25.09 | EXPERIMENTS §3, ARCHITECTURE "Native kernels" |
+| offline timing per frame | **with the C++ kernels (the shipped path): 22.7–30.7 ms mean, p95 32.8–42.1 ms** on set O and the 120° / 360° recordings (one core, idle 4-core machine, the re-judgement of 26.09; the numpy path there 78.3 / 95.5 ms at 360°); 23.09 on the numpy path: 42–64 ms mean, p95 53–78 ms on every recording (health monitor not included: 7–14 ms more); 24.09 on another idle VM 36.5–52.2 / 50.3–67.1 ms; the optional C++ kernels: −38…−57 %, identical output; DBSCAN on cKDTree (25.09): −1.3…−2.6 ms more on the native path | timing: sandbox | 23–25.09 | EXPERIMENTS §3, ARCHITECTURE "Native kernels" |
 | ROS node in Docker | 120°: 10 fps, p95 76 ms; 360°: 7–10 fps (the sandbox is at the frame period); ~100 % of one core, 186 MB (v0.6.3); v0.6.4 peak RSS 403–434 MB at 360° | timing: sandbox | 23–24.09 | EXPERIMENTS §3b |
 
 Set F uses legacy placement, which can flatter curves and envelope edges: P4's paired rerun found
