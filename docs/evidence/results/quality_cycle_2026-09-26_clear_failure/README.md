@@ -43,7 +43,7 @@ rule. Fitted envelope coordinates are not independent surveyed truth.
 
 ## Receipts
 
-- [Executed observer](replay_subsets.py); full raw-message header/receive stamps and CDR
+- [Executed observer](replay_subsets.py.txt); full raw-message header/receive stamps and CDR
   hashes are inside each report.
 - [M2 exact report](M2_exact/report.json.gz), [frozen exact report](frozen_exact/report.json.gz).
   Their folders retain all replay outputs and nine source-point neighborhood snapshots each.
@@ -51,7 +51,7 @@ rule. Fitted envelope coordinates are not independent surveyed truth.
 - [M2 run log](M2_exact.txt), [frozen run log](frozen_exact.txt), [artifact hashes](manifest.json).
 
 The first diagnostic attempt incorrectly excluded `node.frames == 0`. Its script, output,
-trace and log remain under `initial_incomplete/`, `replay_subsets_without_frame_zero.py`
+trace and log remain under `initial_incomplete/`, `replay_subsets_without_frame_zero.py.txt`
 and `M2.txt`. It was not used for attribution. The corrected reader includes the initial
 zero-based frame and exactly reproduces all three captures.
 
@@ -60,3 +60,6 @@ test whether losing a previously contradictory boundary should retain the conser
 range cap until two valid boundaries agree or the scene resets. Any change must preserve
 the positive detections, including tall/edge objects and objects touching infrastructure.
 The failed trial cannot be replaced by a favorable replay schedule.
+
+Executed scripts are archived byte-for-byte as `.py.txt`; copy to a `.py` path when reproducing.
+The suffix distinguishes captured experiment sources from maintained package code.
