@@ -160,6 +160,25 @@ class Tracker:
         c = self.cfg
         return c.gate_base + c.gate_per_m * max(distance, 0.0)
 
+    def _association_distances(self, predicted: np.ndarray, centroids: np.ndarray,
+                               track_x: List[float], step: float) -> np.ndarray:
+        """Original 3D ranking, with approach allowance confined to the X direction.
+
+        The extra allowance is a segment from (-step, 0, 0) to the prediction. A pair
+        must lie within the base radius of that segment and pass the original total
+        distance bound. This prevents ego-motion allowance from joining transverse
+        fragments while preserving pure approach motion and measured frame gaps.
+        """
+        delta = centroids[None, :, :] - predicted[:, None, :]
+        distance = np.linalg.norm(delta, axis=2)
+        dx = delta[:, :, 0]
+        base = np.array([self._gate(x) for x in track_x])[:, None]
+        allowed = base + np.where(dx < 0, step, 0.0)
+        qx = np.where(dx < 0, np.minimum(dx + step, 0.0), dx)
+        segment_distance_sq = qx * qx + delta[:, :, 1] ** 2 + delta[:, :, 2] ** 2
+        valid = (distance <= allowed) & (segment_distance_sq <= base * base)
+        return np.where(valid, distance, np.inf)
+
     def _keep_time_ok(self, t: Track) -> bool:
         """26.09 (``stop_keep_max_s``, safety review of B10): the keep rules act on ``t`` only while
         its last clean hit is at most that many seconds of sensor time ago (``Track.since_clean``,
@@ -214,11 +233,7 @@ class Tracker:
             static = np.array([-float(ego_shift), 0.0, 0.0])
             pred = np.stack([t.centroid + (t.velocity if t.hits > 1 else static) for t in self.tracks])
             cen = np.stack([cl.centroid for cl in clusters])
-            d = np.linalg.norm(pred[:, None, :] - cen[None, :, :], axis=2)
-            # along-track motion towards the vehicle is allowed up to ``step`` extra
-            dx = cen[None, :, 0] - pred[:, 0][:, None]   # <0: cluster is closer than predicted
-            allowed = np.array([self._gate(t.centroid[0]) for t in self.tracks])[:, None] + np.where(dx < 0, step, 0.0)
-            d = np.where(d <= allowed, d, np.inf)
+            d = self._association_distances(pred, cen, [t.centroid[0] for t in self.tracks], step)
             while True:
                 if not np.isfinite(d).any():
                     break
@@ -324,10 +339,7 @@ class Tracker:
         pred = np.stack([self.tracks[i].centroid + (self.tracks[i].velocity if self.tracks[i].hits > 1 else static)
                          for i in cand])
         cen = np.stack([thin[j].centroid for j in ok])
-        d = np.linalg.norm(pred[:, None, :] - cen[None, :, :], axis=2)
-        dx = cen[None, :, 0] - pred[:, 0][:, None]
-        allowed = np.array([self._gate(self.tracks[i].centroid[0]) for i in cand])[:, None] + np.where(dx < 0, step, 0.0)
-        d = np.where(d <= allowed, d, np.inf)
+        d = self._association_distances(pred, cen, [self.tracks[i].centroid[0] for i in cand], step)
         for a, i in enumerate(cand):
             t = self.tracks[i]
             if not (t.reported and t.zone == "gauge"):
