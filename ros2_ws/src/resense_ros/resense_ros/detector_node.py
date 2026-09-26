@@ -18,8 +18,8 @@ Topics (defaults, all configurable via parameters):
   pub  /resense/latency_ms              std_msgs/Float32   (per frame: decode + detect + publish, ms)
   pub  /resense/fps                     std_msgs/Float32   (frames processed per second, every stats_period s)
   pub  /resense/decision                std_msgs/String    (v0.6: GO | CAUTION | STOP | FAULT, see below)
-  pub  /resense/clear_distance          std_msgs/Float32   (v0.6: m of track verified clear: the nearest obstacle,
-                                                            else how far the corridor was checked; 0 on a fault)
+  pub  /resense/clear_distance          std_msgs/Float32   (v0.6: estimated monitored range in m, capped at the
+                                                            nearest detected obstacle; 0 on a fault)
   pub  /resense/health                  diagnostic_msgs/DiagnosticArray (v0.6: input, visibility, track lock,
                                                             latency, mount calibration; OK / WARN / ERROR / STALE)
   pub  /tf_static                       resense_lidar -> <input frame_id>, identity, once per input frame id
@@ -78,7 +78,8 @@ silent, topic discovery keeps running, so a bag with a topic name nobody listed 
 Backlog (v0.6.4): ``ros2 bag play`` (Humble) reads up to 1000 messages before its first publish
 while its clock runs, then sends the overdue first seconds of the recording back to back. The
 input queue holds ``input_queue_depth`` frames and every frame waiting is taken; one frame waiting
-is processed at once, several are worked through ``catchup_step`` s of recording apart (the ones
+is processed at once. Short backlogs spanning at most ``catchup_step`` are processed in full;
+longer backlogs are worked through ``catchup_step`` s of recording apart (the ones
 in between skipped, none older than ``catchup_max_lag`` s behind the newest) until the node is
 back on the newest frame. At the start of each recording ``catchup_startup_max_lag`` allows up
 to 20 s of backlog: a cold disk can make the player send the entire recording overdue. This
@@ -531,7 +532,9 @@ class DetectorNode(Node):
 
         ``stamps``: the header stamps of the waiting frames of one input, in arrival order and
         increasing; ``last``: the stamp of the input's last processed frame (None at its start).
-        One frame waiting: that frame. Several (the node is behind): a chain through them that
+        One frame waiting: that frame. A backlog spanning at most ``step``: every waiting frame,
+        because a brief scheduler delay does not require skipping sensor frames. Longer backlogs:
+        a chain through them that
         steps at most ``step`` s of recording - each link the latest frame within ``step`` of the
         previous one, the next frame when none is - from ``last`` (from the first frame at the
         start of an input) to the newest frame; frames older than the newest by more than
@@ -545,6 +548,8 @@ class DetectorNode(Node):
         if max_lag > 0:
             while i < n - 1 and stamps[i] < stamps[-1] - max_lag:
                 i += 1
+        if stamps[-1] - stamps[i] <= step + 1e-6:
+            return list(range(i, n))
         plan, cur = [], last
         while i < n:
             j = i
@@ -918,10 +923,11 @@ class DetectorNode(Node):
             status.text = "FAULT: input not trusted"
             status.color.r, status.color.g, status.color.b, status.color.a = 0.8, 0.2, 0.8, 1.0
         elif decision == "CAUTION":
-            status.text = ("CAUTION: object near gauge" if res.warning else "CAUTION: degraded") + f"  clear {clear:.0f} m"
+            status.text = (("CAUTION: object near gauge" if res.warning else "CAUTION: degraded")
+                           + f"  monitored {clear:.0f} m (estimate)")
             status.color.r, status.color.g, status.color.b, status.color.a = 1.0, 0.6, 0.0, 1.0
         else:
-            status.text = f"GO: path clear {clear:.0f} m"
+            status.text = f"GO: NO OBSTACLE DETECTED  monitored {clear:.0f} m (estimate)"
             status.color.r, status.color.g, status.color.b, status.color.a = 0.2, 1.0, 0.3, 1.0
         arr.markers.append(status)
         return arr

@@ -31,7 +31,7 @@ from resense.tracking import Tracker
 ROOT = Path(__file__).resolve().parents[1]
 FLOOR_Z = -1.5                 # synthetic_tunnel_frame default: the bed
 RAIL_HEAD_Z = FLOOR_Z + 0.18   # the synthetic rails are 0.18 m tall
-RIDE = "/data/cache/new_data"
+RIDE = os.environ.get("RESENSE_RIDE_CACHE", "/data/cache/new_data")
 
 
 def _on(within: float = 4.0) -> DetectorConfig:

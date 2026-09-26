@@ -11,6 +11,11 @@
 > 25.09), both download endpoints of §2 answering; the other commands follow the scripts' headers
 > and the README, not yet run on a VM · **Status:** current
 
+**26.09 tooling update:** the host ride-cache workflow below uses `rosbags==0.11.5`; the node
+has a separate startup catch-up allowance and the dry-run checker matches recorded header
+stamps directly (§4.1). The startup fix's fresh cold/warm Docker validation is still pending.
+Earlier dated measurements remain evidence for the versions actually run.
+
 ## 0. What the VM is for, and when
 
 The organizers' stand (i7-9700E, 8 cores, Ubuntu 22.04, ROS 2 Humble, Docker) has **no
@@ -32,6 +37,8 @@ internet**, and the team gets **no access** to it before the upload
 bench, the archive and the offline rehearsal run when the team deploys; the data and the gate
 whenever a detector or config change needs the ride. **Releases are deferred** (no tags): the
 archive comes from `scripts/export_image.sh`, not from a release, and no step here pushes a tag.
+The 26.09 completion pass prepares a public offline artifact after the final checks; §4.5
+separates that publication path from this local export procedure.
 
 **What is tested** is the branch or commit the captain names (`main` once PR #12 is merged). A
 failing criterion is a **finding to report**, with the numbers, not something to fix on the VM:
@@ -84,6 +91,7 @@ second team VM's "Fast DDS" host runs were CycloneDDS). Check which one a player
 git clone "$REPO_URL" "$REPO" && cd "$REPO" && git checkout "$BRANCH"
 python3 -m venv .venv && . .venv/bin/activate    # activate it in every new shell
 pip install -U pip && pip install -e ".[dev]"    # the package, rosbags / zstandard for the data, the C++ kernels
+pip install "rosbags==0.11.5"                   # host cache tooling: individual ride .db3 splits need >=0.11.0
 scripts/build_native.sh                          # rebuild the kernels in place and print their status (after every checkout)
 python -m pytest -q                              # optional: needs no data
 git rev-parse HEAD                               # the commit every result is recorded against
@@ -91,6 +99,14 @@ git rev-parse HEAD                               # the commit every result is re
 
 A private repository needs your GitHub credentials first (`gh auth login`, or a token); they stay
 on the VM and never go into a commit.
+
+**Bag-reader version.** The ride loop in §2.3 passes one SQLite `.db3` file to
+`rosbags.rosbag2.Reader`. Standalone storage-file support was added in 0.11.0; 0.10.11 expects a
+bag directory containing `metadata.yaml`, so it fails on the single-file path. The 26.09 host
+rerun uses 0.11.5, whose reader selects the SQLite backend for `.db3` paths. This is a host
+data-preparation requirement; the runtime ROS node uses ROS messages and does not use Rosbags.
+The tools image's 0.10.11 remains suitable for complete bag directories, but use the host
+environment above for the split-file loop. [Upstream version history](https://ternaris.gitlab.io/rosbags/changes.html).
 
 **An agent** (for example a Claude Code session) is started by a person in `$REPO`, with this
 guide as its task and the variables above set. It runs the steps as written and reports; §5 cuts
@@ -154,6 +170,8 @@ file to a short shell command instead of writing it. The command spools that one
 with `scripts/cache_frames.py --every 1 --int16 --stamps` and deletes it; meanwhile the next split
 file waits in the pipe. A split file whose `_stamps.json` (written last by `cache_frames.py`) is
 already in the cache is read past, so running the same lines again resumes after a break.
+Activate the §1 host environment first; `python -m pip show rosbags` must report the verified
+0.11.5 installation for these single-file commands.
 
 ```bash
 cd "$REPO"                              # the command below calls scripts/ relative to the clone
@@ -267,6 +285,24 @@ equal lists mean the offline path matches the node (EXPERIMENTS §3a). A latency
 a result to record with the core count. **Evidence:** `docs/evidence/dry_run_<date>/` (the two outputs,
 plus the node logs and captures of `out/dry_*`, §6).
 
+**Startup behavior since 26.09.** `catchup_startup_max_lag` defaults to 20 s for a new
+recording's initial burst. The allowance closes when the first catch-up reaches the newest
+frame, or after 1 s if no catch-up starts. An initial catch-up already underway retains it until
+it drains. Later stalls use `catchup_max_lag` = 5 s; true input holes still reset the scene.
+The 20 s cap can still discard older frames in a larger burst. Record cold and warm runs
+separately, including the first STOP, scene resets, frames processed, latency and the checker's
+result. Warming the bag before playback is useful operationally, but a warm pass alone does
+not validate the cold-start fix. Fresh cold/warm Docker results for this change are pending.
+
+**Matching the bag.** `check_dry_run.py --bag` now reads each message's CDR header stamp and
+matches the node's stamp directly, with at most 100 microseconds of float roundoff tolerance
+(and at most half a frame period). It uses the standard library and does not need Rosbags.
+Receive times can drift relative to header stamps, so fitting one offset between them was
+incorrect on set O. Rechecking the committed 26.09 set O ROS capture against the original bag
+finds 1,428 recorded messages after +5.9 s and none unprocessed; the former claim of 132 losses
+was a checker error. Bag holes and actual node losses remain separate, and the acceptance
+thresholds above are unchanged. This recheck is historical-capture validation, not a new run.
+
 ### 4.2 The organizers' console: stock-DDS player, host console
 
 In Docker, a uid-1000 player with Humble's stock Fast DDS settings (shared memory + UDP, no XML
@@ -365,10 +401,22 @@ mkdir -p "$EV/export_$DAY"
 15–20 min, needs the internet. `export_image.sh` refuses uncommitted changes to tracked files (the
 image is built from `git archive HEAD`). **Done:** both scripts exit 0. **Evidence:**
 `docs/evidence/export_<date>/archive.txt` (size, sha256, commit); **never** the archive itself
-(`dist/` is ignored by git). No tag and no release: they are deferred by the captain (C13).
+(`dist/` is ignored by git). This export creates no tag or release; the captain deferred public
+releases on 25.09 (C13), with the current preparation path below.
 Without a VM: since 26.09 the CI job `offline-build` of a push to the working branch or `main`
 offers the same runtime archive (`GZIP_LEVEL=1`) with its `.sha256` as the run artifact
 `resense-image-<version>-<short commit>` (ARCHITECTURE "Deployment without internet").
+
+**Public artifact preparation, 26.09.** The next release follows the final commit's successful
+CI, verified detector seal, and original-bag cold/warm runs. Keep the commit ID, CI run URL and
+runtime evidence together. Select an unused `v1.0.0-rcN` tag and review
+`DRY_RUN=1 SMOKE=1 scripts/release.sh <tag>` from that commit; without an existing tag this dry
+run prints a warning, while a real manual release stops. Pushing the tag is the publication
+trigger: `.github/workflows/release.yml` rebuilds that commit, tests the loaded archive with no
+internet and a stock player, publishes the archive plus checksums, then downloads and verifies
+the public bytes. Wait for all of those steps before handing the link to the jury. This guide's
+preparation commands do not create or push a tag. The Actions artifact needs a GitHub login
+and expires with artifact retention; the verified release asset is the public deliverable.
 
 ### 4.6 Shared-memory mode (opt-in `RESENSE_DDS=shm`)
 

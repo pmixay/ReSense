@@ -209,7 +209,7 @@ def box_scene():
 
 # ---------------------------------------------------------------------------
 
-def test_clear_tunnel_is_go_with_a_verified_range(node_cls, tunnel):
+def test_clear_tunnel_is_go_with_an_estimated_monitored_range(node_cls, tunnel):
     node = node_cls()
     _feed(node, tunnel[0].xyz, 6)
     pub = node.published
@@ -501,7 +501,8 @@ def test_status_marker_says_the_decision_and_publishing_errors_are_contained(nod
     node = node_cls()
     _feed(node, tunnel[0].xyz, 4)
     status = node.published["/resense/markers"][-1].markers[-1]
-    assert status.text.startswith("GO: path clear")
+    assert status.text.startswith("GO: NO OBSTACLE DETECTED")
+    assert "monitored" in status.text and "(estimate)" in status.text
     node = node_cls()
     _feed(node, box_scene[0].xyz, 6)
     assert node.published["/resense/markers"][-1].markers[-1].text.startswith("STOP: OBSTACLE")
@@ -620,6 +621,28 @@ def test_catchup_skips_are_reported_apart_from_frames_never_received(node_cls, m
     assert seen[14][1]["dropped_frames"] == seen[14][1]["catchup_skipped"] == 26
     assert not node.skipped                                     # every skipped frame accounted
     assert any("caught up" in s and "26 skipped" in s for _, s in node.get_logger().lines)
+
+
+def test_short_live_backlog_keeps_every_frame_and_still_obeys_lag_limit(node_cls, monkeypatch):
+    """A brief executor delay may queue two or three clouds despite processing below 100 ms.
+    The real cold run skipped isolated frames at +11.7/+12.7 s with catchup=False. Such a short
+    backlog now drains in full; larger bursts still use the existing bounded catch-up policy.
+    """
+    node = node_cls()
+    now = [100.0]
+    queue, seen, cloud = _catchup_stream(node, monkeypatch, now)
+    node.on_cloud(cloud(0.0), "/lidar_points")
+    now[0] += 2.0  # normal live operation after the startup entry window
+    queue.extend([cloud(0.2), cloud(0.3)])
+    node.on_cloud(cloud(0.1), "/lidar_points")
+    while node.pending:
+        node.on_pending()
+    assert seen == pytest.approx([0.0, 0.1, 0.2, 0.3])
+    assert node.dropped == node.dropped_skipped == 0
+    assert node.catchup is None and not node.startup_catchup_active
+    # An explicitly smaller maximum lag must still win over preserving a short backlog.
+    assert node.catchup_plan([0.1, 0.2, 0.3], 0.0, 0.3, 0.1) == [1, 2]
+    assert node.catchup_plan([0.1, 0.2, 0.3], 0.0, 0.0, 5.0) == [2]
 
 
 def _catchup_stream(node, monkeypatch, now, topic="/lidar_points", frame_id="hesai_lidar"):

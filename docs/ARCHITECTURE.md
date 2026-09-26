@@ -116,7 +116,16 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   freshest data and the drop count makes overload visible. Several waiting frames (the burst at the
   start of a played bag: `ros2 bag play` preloads the recording and then sends its first seconds
   back to back) are worked through one every `catchup_step` = 0.3 s of recording from the first
-  frame on, until the node is back on the newest (v0.6.4; `input_queue_depth` 40). Its reliability
+  frame on, until the node is back on the newest (v0.6.4; `input_queue_depth` 40).
+  `catchup_max_lag` keeps the normal backlog within 5 s of the newest frame. Since 26.09,
+  `catchup_startup_max_lag` permits 20 s at the start of each recording, because a cold disk can
+  make the player send almost the entire recording overdue. This startup allowance closes when
+  the first catch-up drains, or after 1 s if no catch-up starts. A catch-up already underway keeps
+  the allowance until it drains; subsequent live stalls use 5 s. It also applies to a new topic,
+  frame ID or recording detected by the existing stamp-jump rules. Backlogs beyond 20 s remain
+  truncated. The 34 node tests pass, including a 201-frame burst that resets the scene at the old
+  limit, and checks that later stalls retain 5 s. Fresh cold and warm Docker runs of this change
+  are pending; the dated measurements below describe their recorded versions. Its reliability
   follows the publishers (`input_reliability: auto`, v0.6.2): reliable for `ros2 bag play` of the
   organizers' recordings — a best-effort reader lost 196 of the 201 10 MB clouds of
   `doubleT_obstacle` in Docker ([`EXPERIMENTS.md`](EXPERIMENTS.md) §3b) — and best-effort when a
@@ -160,6 +169,15 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   dry run (`scripts/dry_run.sh`) on `doubleT_obstacle`; on 23.09 it ran in Docker on the real
   frames (bags rebuilt from the cache by `scripts/cache_to_bag.py`), with the node and the player
   in separate containers and two recordings into one node (EXPERIMENTS §3b).
+  With `--bag`, the checker reads each SQLite message's 12-byte CDR header prefix and matches
+  the processed header stamp directly, allowing at most 100 microseconds of float roundoff
+  (also bounded by half a frame period). It counts recorded messages missing from the processed
+  stream after the settle point; holes already present in the bag are excluded. Since 26.09 it
+  no longer fits an offset to bag receive times: those drift against header stamps in set O and
+  falsely suggested 132 lost messages. Rechecking the committed set O ROS capture against the
+  original bag gives 1,428 messages after the +5.9 s settle point, none unprocessed. This checks
+  the historical capture; it is not a fresh node run. The 17 checker tests include clock drift
+  in both directions and genuinely missing messages.
 * `resense inject` writes `*.npz` (xyz, intensity, per-point labels) + `gt.json`;
   `resense eval` consumes them and prints recall by range, FP rates, latency.
 
@@ -423,10 +441,18 @@ network (`scripts/internal_net_test.sh`) and with `--net=host` and a stock Fast 
 (`scripts/console_test.sh`). It then publishes `resense-image-<tag>.tar.gz`, its `.sha256` and
 `SHA256SUMS` (`scripts/publish_release.sh`; a re-run replaces them) and re-downloads the archive
 to check the sum (`scripts/verify_release.sh`). `scripts/release.sh` is the same chain by hand.
-No tag or release is planned now (deferred by the captain on 25.09: the system is still in
-development), so the workflow is inert and has never run; the same runtime image is built,
-archived, loaded back and played through on every push by the `offline-build` job, and on the
-working branch and `main` offered for download (above).
+The captain deferred releases on 25.09. The 26.09 completion pass prepares the first public
+offline artifact; publication remains pending the final commit's CI and fresh runtime checks.
+Pushing a `v*` tag starts publication automatically. Before doing so, record the exact green CI
+commit, verify its detector seal and original-bag cold/warm results, and select an unused
+`v1.0.0-rcN` tag. The release workflow rebuilds that tagged commit and repeats its own checks
+before publishing. A release is ready only after the published archive has been downloaded and
+its checksum verified; the final workflow step records this. The preparation itself creates no
+tag or release. The branch's `offline-build` artifact (above) remains available while the public
+release is pending; unlike a release asset, that Actions download requires a GitHub login and
+has the run's artifact retention period. The manual fallback is `SMOKE=1 scripts/release.sh`
+on a clean checkout of the chosen tag, followed by publishing and `scripts/verify_release.sh`;
+`DRY_RUN=1 SMOKE=1 scripts/release.sh <tag>` prints the complete plan without publishing.
 
 ## Known limitations
 
