@@ -1,0 +1,38 @@
+{
+  "candidate_source_commit": "6d5bc56",
+  "original_plan": "docs/evidence/results/p4_novel_plan_2026-09-26.json",
+  "repeat_plan": "docs/evidence/results/p4_A1_novel_plan_2026-09-26.json",
+  "protocol": "docs/P4_ASSOCIATION_A1_PROTOCOL.md",
+  "gate_frame_payloads_verified_against_monitoring_hashes": 15,
+  "commands": [
+    "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 /home/resense/.venv/bin/python scripts/regression_gate.py --cache /home/resense/data/cache --jobs 2 --work /home/resense/validation/quality_cycle/a1/gate --out /home/resense/validation/quality_cycle/a1/gate.json --baseline docs/evidence/results/regression_gate_2026-09-26_freeze.json",
+    "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 /home/resense/.venv/bin/python scripts/novel_placement_eval.py run --plan docs/evidence/results/p4_A1_novel_plan_2026-09-26.json --out /home/resense/validation/quality_cycle/a1/novel.json --cache-root /home/resense/data/cache --source-root docs/evidence/results/p4_novel_source_2026-09-26",
+    "/home/resense/.venv/bin/python /home/resense/ReSense/scripts/quality_acceptance.py --reference /home/resense/ReSense/docs/evidence/freeze_2026-09-26/gate_frames --candidate /home/resense/validation/quality_cycle/a1/gate --out /home/resense/validation/quality_cycle/a1/monitoring.json"
+  ],
+  "sha256": {
+    "README.md": "eb854d97dcf9245abfb239d74c96490a0890901dc1cf46b0ea936f72cdbea279",
+    "acceptance.json": "b66e09f2cc639f33f756896a1f193f017f6789db773452882932a44f5db8fc45",
+    "changed_alarm_frames.json": "8e12c1cb9faff659092e6f22cfed81f7d74aa9313bb1ab4ff557a3dcdb1654f2",
+    "gate.json": "d43741027e57702731c8d706761d96e4263bdc8de53feeffd7ea6f43dee496c9",
+    "gate.log": "37a258ebbf7af70095285774d9910e31ad42aecc210a4011189b48df2c82d2cd",
+    "gate_frames/cloud_with_fake_obj.jsonl.gz": "c22c5a8b61d9e81cdef5c685d10dac918908d1817ce959fd66a07e757042ed39",
+    "gate_frames/doubleT_obstacle.jsonl.gz": "5ae9a02c5718efd483289af61680911e54696eeb0191080808ce45aa6898d8f5",
+    "gate_frames/doubleT_platform.jsonl.gz": "5fc32bd3751f75b18b5cf2c4eae92a4dca90753b168c05e014872f378089f8cd",
+    "gate_frames/new_data_0.jsonl.gz": "cd264775c92d2dcf51697d919b4c1643cf69fe8fae1510dbd0fac2e1ca585738",
+    "gate_frames/new_data_1.jsonl.gz": "9787b7d6759aec7620fff484a2001f04bcc86dece1c25db61a366a1d349b040a",
+    "gate_frames/new_data_2.jsonl.gz": "6e13b570253592480bab18063639550373fb2d804ab26876eb56f6629cfd4293",
+    "gate_frames/new_data_3.jsonl.gz": "58f2c4aed6854a3a6e7937be8e2e470b5448de2f6a5c560991e4d2e3a75f2e55",
+    "gate_frames/new_data_4.jsonl.gz": "92660790f37ba8adf602a97e825fd01dd03e992cd82326c0798d1cf755d00488",
+    "gate_frames/new_data_5.jsonl.gz": "6cad161aad0b5effa85ae61b2f8496d2ad9f9c6bd6d12cd19a5276c389c4fdaf",
+    "gate_frames/new_data_6.jsonl.gz": "bf946c9b4a42bf424d819cff0775e8933b822a2fbecc511a03bf1e7c41cab0eb",
+    "gate_frames/new_data_7.jsonl.gz": "c6e0e8d724f4b0894559d67d63f9b9dce56a20b4367e8594a22655775baf5526",
+    "gate_frames/roundT_doubleT.jsonl.gz": "4a81334c6114ebe86b338cb8514a044efab05e1854fdff8fe915635d93da2fba",
+    "gate_frames/roundT_pressureGate_roundT.jsonl.gz": "8291296ebda4454a21bb631a8dfc232a1e79e2b61b46f4297ad299b0ac575c6e",
+    "gate_frames/roundT_squareT_pressureGate_squareT.jsonl.gz": "6410fadc2bbc72badf7ae38c68e2e8b45c81ab3695f7e943b06a2862c3355631",
+    "gate_frames/squareT_platform_squareT_switch.jsonl.gz": "dbf61e8b4641b4864d612eeb74a7ee6701cb1e131bd6ef98d4a5c9f532735f98",
+    "monitoring.json": "d42ddb44abfdb9056c6388f8944953329e967ab85277742df86627f47816e564",
+    "novel.json": "fe632a96733fc2040f05a4fcc9f5a1c11ef8fa0a17fcdcb8a4d33f96541e46f7",
+    "novel_comparison.json": "e5977d40e2a1b73fb4cd48e1a66ab4bcfa59020ce553d5b8dbca87ce73c9ddab",
+    "setF_straight.json": "177455e0490c43efdf12a2df4bf2bd143d4c40ab0802c2d3ae5d375473f25ab0"
+  }
+}

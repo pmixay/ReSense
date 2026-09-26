@@ -1,0 +1,1752 @@
+{
+  "schema": "resense-A1-novel-comparison-v1",
+  "all_cases_passed": false,
+  "cases": 72,
+  "identical_input_geometry_rows": true,
+  "reference_summary": {
+    "visible_frames": 2458,
+    "target_matched_frames": 544,
+    "injected_only_matched_frames": 544,
+    "control_matched_frames": 0,
+    "cases_with_target_match": 45,
+    "cases": 72
+  },
+  "candidate_summary": {
+    "visible_frames": 2458,
+    "target_matched_frames": 556,
+    "injected_only_matched_frames": 556,
+    "control_matched_frames": 0,
+    "cases_with_target_match": 45,
+    "cases": 72
+  },
+  "case_comparison": [
+    {
+      "bag": "doubleT_platform",
+      "object": "small_center",
+      "lateral_m": -0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 10,
+        "injected_only_matched_frames": 10,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 30.638172149658203
+      },
+      "candidate": {
+        "target_matched_frames": 10,
+        "injected_only_matched_frames": 10,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 30.638172149658203
+      }
+    },
+    {
+      "bag": "doubleT_platform",
+      "object": "small_center",
+      "lateral_m": 0.0,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 10,
+        "injected_only_matched_frames": 10,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 30.638172149658203
+      },
+      "candidate": {
+        "target_matched_frames": 10,
+        "injected_only_matched_frames": 10,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 30.638172149658203
+      }
+    },
+    {
+      "bag": "doubleT_platform",
+      "object": "small_center",
+      "lateral_m": 0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 7,
+        "injected_only_matched_frames": 7,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 25.5307559967041
+      },
+      "candidate": {
+        "target_matched_frames": 7,
+        "injected_only_matched_frames": 7,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 25.5307559967041
+      }
+    },
+    {
+      "bag": "doubleT_platform",
+      "object": "small_on_rail",
+      "lateral_m": -0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 10,
+        "injected_only_matched_frames": 10,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 31.981185913085938
+      },
+      "candidate": {
+        "target_matched_frames": 10,
+        "injected_only_matched_frames": 10,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 31.981185913085938
+      }
+    },
+    {
+      "bag": "doubleT_platform",
+      "object": "small_on_rail",
+      "lateral_m": 0.0,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 10,
+        "injected_only_matched_frames": 10,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 31.981185913085938
+      },
+      "candidate": {
+        "target_matched_frames": 10,
+        "injected_only_matched_frames": 10,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 31.981185913085938
+      }
+    },
+    {
+      "bag": "doubleT_platform",
+      "object": "small_on_rail",
+      "lateral_m": 0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 5,
+        "injected_only_matched_frames": 5,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 23.056894302368164
+      },
+      "candidate": {
+        "target_matched_frames": 5,
+        "injected_only_matched_frames": 5,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 23.056894302368164
+      }
+    },
+    {
+      "bag": "doubleT_platform",
+      "object": "big_above",
+      "lateral_m": -0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "doubleT_platform",
+      "object": "big_above",
+      "lateral_m": 0.0,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "doubleT_platform",
+      "object": "big_above",
+      "lateral_m": 0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "doubleT_platform",
+      "object": "thin_hanging",
+      "lateral_m": -0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "doubleT_platform",
+      "object": "thin_hanging",
+      "lateral_m": 0.0,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "doubleT_platform",
+      "object": "thin_hanging",
+      "lateral_m": 0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "roundT_doubleT",
+      "object": "small_center",
+      "lateral_m": -0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 22,
+        "injected_only_matched_frames": 22,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 50.81745910644531
+      },
+      "candidate": {
+        "target_matched_frames": 22,
+        "injected_only_matched_frames": 22,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 50.81745910644531
+      }
+    },
+    {
+      "bag": "roundT_doubleT",
+      "object": "small_center",
+      "lateral_m": 0.0,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 7,
+        "injected_only_matched_frames": 7,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 25.5307559967041
+      },
+      "candidate": {
+        "target_matched_frames": 7,
+        "injected_only_matched_frames": 7,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 25.5307559967041
+      }
+    },
+    {
+      "bag": "roundT_doubleT",
+      "object": "small_center",
+      "lateral_m": 0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "roundT_doubleT",
+      "object": "small_on_rail",
+      "lateral_m": -0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 14,
+        "injected_only_matched_frames": 14,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 40.89213943481445
+      },
+      "candidate": {
+        "target_matched_frames": 14,
+        "injected_only_matched_frames": 14,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 40.89213943481445
+      }
+    },
+    {
+      "bag": "roundT_doubleT",
+      "object": "small_on_rail",
+      "lateral_m": 0.0,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "roundT_doubleT",
+      "object": "small_on_rail",
+      "lateral_m": 0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "roundT_doubleT",
+      "object": "big_above",
+      "lateral_m": -0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 2,
+        "injected_only_matched_frames": 2,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 44.28761672973633
+      },
+      "candidate": {
+        "target_matched_frames": 2,
+        "injected_only_matched_frames": 2,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 44.28761672973633
+      }
+    },
+    {
+      "bag": "roundT_doubleT",
+      "object": "big_above",
+      "lateral_m": 0.0,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 7,
+        "injected_only_matched_frames": 7,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 27.541736602783203
+      },
+      "candidate": {
+        "target_matched_frames": 7,
+        "injected_only_matched_frames": 7,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 27.541736602783203
+      }
+    },
+    {
+      "bag": "roundT_doubleT",
+      "object": "big_above",
+      "lateral_m": 0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "roundT_doubleT",
+      "object": "thin_hanging",
+      "lateral_m": -0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "roundT_doubleT",
+      "object": "thin_hanging",
+      "lateral_m": 0.0,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "roundT_doubleT",
+      "object": "thin_hanging",
+      "lateral_m": 0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "object": "small_center",
+      "lateral_m": -0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 22,
+        "injected_only_matched_frames": 22,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 50.81745910644531
+      },
+      "candidate": {
+        "target_matched_frames": 22,
+        "injected_only_matched_frames": 22,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 50.81745910644531
+      }
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "object": "small_center",
+      "lateral_m": 0.0,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 22,
+        "injected_only_matched_frames": 22,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 50.81745910644531
+      },
+      "candidate": {
+        "target_matched_frames": 22,
+        "injected_only_matched_frames": 22,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 50.81745910644531
+      }
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "object": "small_center",
+      "lateral_m": 0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 3,
+        "injected_only_matched_frames": 3,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 18.721284866333008
+      },
+      "candidate": {
+        "target_matched_frames": 3,
+        "injected_only_matched_frames": 3,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 18.721284866333008
+      }
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "object": "small_on_rail",
+      "lateral_m": -0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 20,
+        "injected_only_matched_frames": 20,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 49.724971771240234
+      },
+      "candidate": {
+        "target_matched_frames": 20,
+        "injected_only_matched_frames": 20,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 49.724971771240234
+      }
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "object": "small_on_rail",
+      "lateral_m": 0.0,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 14,
+        "injected_only_matched_frames": 14,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 39.12055969238281
+      },
+      "candidate": {
+        "target_matched_frames": 14,
+        "injected_only_matched_frames": 14,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 39.12055969238281
+      }
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "object": "small_on_rail",
+      "lateral_m": 0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "object": "big_above",
+      "lateral_m": -0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "object": "big_above",
+      "lateral_m": 0.0,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "object": "big_above",
+      "lateral_m": 0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "object": "thin_hanging",
+      "lateral_m": -0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 3,
+        "injected_only_matched_frames": 3,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 18.461963653564453
+      },
+      "candidate": {
+        "target_matched_frames": 3,
+        "injected_only_matched_frames": 3,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 18.461963653564453
+      }
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "object": "thin_hanging",
+      "lateral_m": 0.0,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "object": "thin_hanging",
+      "lateral_m": 0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "small_center",
+      "lateral_m": -0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 22,
+        "injected_only_matched_frames": 22,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 50.81745910644531
+      },
+      "candidate": {
+        "target_matched_frames": 22,
+        "injected_only_matched_frames": 22,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 50.81745910644531
+      }
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "small_center",
+      "lateral_m": 0.0,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 22,
+        "injected_only_matched_frames": 22,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 50.81745910644531
+      },
+      "candidate": {
+        "target_matched_frames": 22,
+        "injected_only_matched_frames": 22,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 50.81745910644531
+      }
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "small_center",
+      "lateral_m": 0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 7,
+        "injected_only_matched_frames": 7,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 25.5307559967041
+      },
+      "candidate": {
+        "target_matched_frames": 7,
+        "injected_only_matched_frames": 7,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 25.5307559967041
+      }
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "small_on_rail",
+      "lateral_m": -0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 19,
+        "injected_only_matched_frames": 19,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 47.962833404541016
+      },
+      "candidate": {
+        "target_matched_frames": 19,
+        "injected_only_matched_frames": 19,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 47.962833404541016
+      }
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "small_on_rail",
+      "lateral_m": 0.0,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 19,
+        "injected_only_matched_frames": 19,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 47.962833404541016
+      },
+      "candidate": {
+        "target_matched_frames": 19,
+        "injected_only_matched_frames": 19,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 47.962833404541016
+      }
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "small_on_rail",
+      "lateral_m": 0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 17,
+        "injected_only_matched_frames": 17,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 44.42070388793945
+      },
+      "candidate": {
+        "target_matched_frames": 17,
+        "injected_only_matched_frames": 17,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 44.42070388793945
+      }
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "big_above",
+      "lateral_m": -0.65,
+      "passed": false,
+      "checks": {
+        "target_matched_frames": false,
+        "injected_only_matched_frames": false,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": false
+      },
+      "reference": {
+        "target_matched_frames": 2,
+        "injected_only_matched_frames": 2,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 18.407310485839844
+      },
+      "candidate": {
+        "target_matched_frames": 1,
+        "injected_only_matched_frames": 1,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 16.597898483276367
+      }
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "big_above",
+      "lateral_m": 0.0,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 25,
+        "injected_only_matched_frames": 25,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 71.34294128417969
+      },
+      "candidate": {
+        "target_matched_frames": 30,
+        "injected_only_matched_frames": 30,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 71.34294128417969
+      }
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "big_above",
+      "lateral_m": 0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 22,
+        "injected_only_matched_frames": 22,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 71.34294128417969
+      },
+      "candidate": {
+        "target_matched_frames": 30,
+        "injected_only_matched_frames": 30,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 71.34294128417969
+      }
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "thin_hanging",
+      "lateral_m": -0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 9,
+        "injected_only_matched_frames": 9,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 30.13883399963379
+      },
+      "candidate": {
+        "target_matched_frames": 9,
+        "injected_only_matched_frames": 9,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 30.13883399963379
+      }
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "thin_hanging",
+      "lateral_m": 0.0,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 9,
+        "injected_only_matched_frames": 9,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 30.13883399963379
+      },
+      "candidate": {
+        "target_matched_frames": 9,
+        "injected_only_matched_frames": 9,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 30.13883399963379
+      }
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "thin_hanging",
+      "lateral_m": 0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 4,
+        "injected_only_matched_frames": 4,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 20.13179588317871
+      },
+      "candidate": {
+        "target_matched_frames": 4,
+        "injected_only_matched_frames": 4,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 20.13179588317871
+      }
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "object": "small_center",
+      "lateral_m": -0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 22,
+        "injected_only_matched_frames": 22,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 50.81745910644531
+      },
+      "candidate": {
+        "target_matched_frames": 22,
+        "injected_only_matched_frames": 22,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 50.81745910644531
+      }
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "object": "small_center",
+      "lateral_m": 0.0,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 22,
+        "injected_only_matched_frames": 22,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 50.81745910644531
+      },
+      "candidate": {
+        "target_matched_frames": 22,
+        "injected_only_matched_frames": 22,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 50.81745910644531
+      }
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "object": "small_center",
+      "lateral_m": 0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 7,
+        "injected_only_matched_frames": 7,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 25.5307559967041
+      },
+      "candidate": {
+        "target_matched_frames": 7,
+        "injected_only_matched_frames": 7,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 25.5307559967041
+      }
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "object": "small_on_rail",
+      "lateral_m": -0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 19,
+        "injected_only_matched_frames": 19,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 47.962833404541016
+      },
+      "candidate": {
+        "target_matched_frames": 19,
+        "injected_only_matched_frames": 19,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 47.962833404541016
+      }
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "object": "small_on_rail",
+      "lateral_m": 0.0,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 19,
+        "injected_only_matched_frames": 19,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 47.962833404541016
+      },
+      "candidate": {
+        "target_matched_frames": 19,
+        "injected_only_matched_frames": 19,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 47.962833404541016
+      }
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "object": "small_on_rail",
+      "lateral_m": 0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 14,
+        "injected_only_matched_frames": 14,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 39.12055969238281
+      },
+      "candidate": {
+        "target_matched_frames": 14,
+        "injected_only_matched_frames": 14,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 39.12055969238281
+      }
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "object": "big_above",
+      "lateral_m": -0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "object": "big_above",
+      "lateral_m": 0.0,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "object": "big_above",
+      "lateral_m": 0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "object": "thin_hanging",
+      "lateral_m": -0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 2,
+        "injected_only_matched_frames": 2,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 16.785476684570312
+      },
+      "candidate": {
+        "target_matched_frames": 2,
+        "injected_only_matched_frames": 2,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 16.785476684570312
+      }
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "object": "thin_hanging",
+      "lateral_m": 0.0,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 2,
+        "injected_only_matched_frames": 2,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 16.785476684570312
+      },
+      "candidate": {
+        "target_matched_frames": 2,
+        "injected_only_matched_frames": 2,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 16.785476684570312
+      }
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "object": "thin_hanging",
+      "lateral_m": 0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 2,
+        "injected_only_matched_frames": 2,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 16.785476684570312
+      },
+      "candidate": {
+        "target_matched_frames": 2,
+        "injected_only_matched_frames": 2,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 16.785476684570312
+      }
+    },
+    {
+      "bag": "new_data",
+      "object": "small_center",
+      "lateral_m": -0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 16,
+        "injected_only_matched_frames": 16,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 40.77804183959961
+      },
+      "candidate": {
+        "target_matched_frames": 16,
+        "injected_only_matched_frames": 16,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 40.77804183959961
+      }
+    },
+    {
+      "bag": "new_data",
+      "object": "small_center",
+      "lateral_m": 0.0,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 8,
+        "injected_only_matched_frames": 8,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 28.93120765686035
+      },
+      "candidate": {
+        "target_matched_frames": 8,
+        "injected_only_matched_frames": 8,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 28.93120765686035
+      }
+    },
+    {
+      "bag": "new_data",
+      "object": "small_center",
+      "lateral_m": 0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 1,
+        "injected_only_matched_frames": 1,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 15.307963371276855
+      },
+      "candidate": {
+        "target_matched_frames": 1,
+        "injected_only_matched_frames": 1,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 15.307963371276855
+      }
+    },
+    {
+      "bag": "new_data",
+      "object": "small_on_rail",
+      "lateral_m": -0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 19,
+        "injected_only_matched_frames": 19,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 47.962833404541016
+      },
+      "candidate": {
+        "target_matched_frames": 19,
+        "injected_only_matched_frames": 19,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 47.962833404541016
+      }
+    },
+    {
+      "bag": "new_data",
+      "object": "small_on_rail",
+      "lateral_m": 0.0,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 12,
+        "injected_only_matched_frames": 12,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 35.55835723876953
+      },
+      "candidate": {
+        "target_matched_frames": 12,
+        "injected_only_matched_frames": 12,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 35.55835723876953
+      }
+    },
+    {
+      "bag": "new_data",
+      "object": "small_on_rail",
+      "lateral_m": 0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "new_data",
+      "object": "big_above",
+      "lateral_m": -0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "new_data",
+      "object": "big_above",
+      "lateral_m": 0.0,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "new_data",
+      "object": "big_above",
+      "lateral_m": 0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    },
+    {
+      "bag": "new_data",
+      "object": "thin_hanging",
+      "lateral_m": -0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 7,
+        "injected_only_matched_frames": 7,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 25.140308380126953
+      },
+      "candidate": {
+        "target_matched_frames": 7,
+        "injected_only_matched_frames": 7,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 25.140308380126953
+      }
+    },
+    {
+      "bag": "new_data",
+      "object": "thin_hanging",
+      "lateral_m": 0.0,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 7,
+        "injected_only_matched_frames": 7,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 25.140308380126953
+      },
+      "candidate": {
+        "target_matched_frames": 7,
+        "injected_only_matched_frames": 7,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 25.140308380126953
+      }
+    },
+    {
+      "bag": "new_data",
+      "object": "thin_hanging",
+      "lateral_m": 0.65,
+      "passed": true,
+      "checks": {
+        "target_matched_frames": true,
+        "injected_only_matched_frames": true,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": true
+      },
+      "reference": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      },
+      "candidate": {
+        "target_matched_frames": 0,
+        "injected_only_matched_frames": 0,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": null
+      }
+    }
+  ]
+}
