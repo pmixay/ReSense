@@ -1,0 +1,34 @@
+"""Fixed T1 target screen against retained exact M2 replays; no scorer changes."""
+import gzip,json,hashlib
+from pathlib import Path
+import numpy as np
+ROOT=Path('/home/resense/validation/quality_cycle')
+OUT=ROOT/'T1'
+BASE=ROOT/'clear_diagnosis/M2_exact'
+def read(p):
+ with gzip.open(p,'rt') as f:return [json.loads(s) for s in f]
+def caution(r):return not r['obstacle'] and (r['warning'] or r['health']['decision_level']!='ok')
+summary={'source_commit':'0ea660fb4025e6f1fd5afdfb4e68e8db003a26f9','decision':'pending','subsets':{}}
+for name,n in [('failed_clear',233),('old_stock',243),('old_pass',234)]:
+ a=read(BASE/f'{name}_outputs.jsonl.gz');b=read(OUT/'target'/f'{name}_outputs.jsonl.gz')
+ assert len(a)==len(b)==n
+ assert [r['stamp'] for r in a]==[r['stamp'] for r in b]
+ fields=['floor_coef','floor_range','center','yaw','curvature','rail_offset','rail_score','wall_quality','n_bins','residual','floor_verified','rail_slabs','axis_sides','age','floor_shadow','floor_held','floor_hold_run']
+ changes={k:sum(x['track'].get(k)!=y['track'].get(k) for x,y in zip(a,b)) for k in fields}
+ points={k:sum(x[k]!=y[k] for x,y in zip(a,b)) for k in ['n_points','n_corridor']}
+ bound=[(r['raw_index'],r['track'].get('axis_contradiction_cap'),r['track']['axis_valid']) for r in b if 'axis_contradiction_cap' in r['track']]
+ val={'frames':n,'baseline_stop_frames':sum(r['obstacle'] for r in a),'candidate_stop_frames':sum(r['obstacle'] for r in b),
+  'geometry_different_frames':changes,'point_count_different_frames':points,'baseline_advisory_frames':sum(r['warning'] for r in a),'candidate_advisory_frames':sum(r['warning'] for r in b),
+  'new_caution_percentage_points':100*sum(caution(y) and not caution(x) for x,y in zip(a,b))/n,
+  'median_clear_range_baseline':float(np.median([r['clear_distance'] for r in a])),
+  'median_clear_range_candidate':float(np.median([r['clear_distance'] for r in b])),
+  'new_cap_frames':len(bound),'caps':bound,
+  'changed_detection_frames':[y['raw_index'] for x,y in zip(a,b) if x['detections']!=y['detections']],
+  'candidate_sha256':hashlib.sha256((OUT/'target'/f'{name}_outputs.jsonl.gz').read_bytes()).hexdigest(),
+  'baseline_sha256':hashlib.sha256((BASE/f'{name}_outputs.jsonl.gz').read_bytes()).hexdigest()}
+ val['pass']=val['candidate_stop_frames']==0 and not any(changes.values()) and not any(points.values())
+ summary['subsets'][name]=val
+summary['decision']='PASS: advance to full gates; not accepted' if all(v['pass'] for v in summary['subsets'].values()) else 'REJECT: target screen failed; no retune'
+(OUT/'target_comparison.json').write_text(json.dumps(summary,indent=2)+'\n')
+print(summary['decision'])
+for n,v in summary['subsets'].items():print(n,{k:v[k] for k in ['frames','baseline_stop_frames','candidate_stop_frames','new_cap_frames','new_caution_percentage_points','median_clear_range_baseline','median_clear_range_candidate']})

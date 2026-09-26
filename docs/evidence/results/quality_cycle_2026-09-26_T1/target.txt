@@ -1,0 +1,8 @@
+raw frame 50
+raw frame 100
+raw frame 150
+raw frame 200
+raw frame 250
+failed_clear 233 alarms 0 mismatches 16
+old_stock 243 alarms 0 mismatches 16
+old_pass 234 alarms 0 mismatches 80

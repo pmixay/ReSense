@@ -1,0 +1,160 @@
+{
+  "candidate": "T1",
+  "decision": "REJECTED",
+  "reason": "Two preregistered median-range coverage limits failed; no retune or merge.",
+  "source_commit": "0ea660fb4025e6f1fd5afdfb4e68e8db003a26f9",
+  "preregistration_commit": "9d124c2",
+  "plan_receipt_commit": "0f0dac8",
+  "full_gate": {
+    "frozen": {
+      "passed": true,
+      "rows": 199,
+      "gated_rows": 146,
+      "better": [
+        "ride.alarm_events",
+        "ride.stop_episodes"
+      ]
+    },
+    "M2": {
+      "passed": true,
+      "rows": 199,
+      "gated_rows": 146,
+      "better": [
+        "ride.alarm_events",
+        "ride.stop_episodes"
+      ]
+    }
+  },
+  "coverage_failures": {
+    "frozen": {
+      "squareT_platform_squareT_switch": {
+        "frames": 877,
+        "reference_decisions": {
+          "GO": 458,
+          "CAUTION": 365,
+          "STOP": 54
+        },
+        "candidate_decisions": {
+          "GO": 457,
+          "CAUTION": 366,
+          "STOP": 54
+        },
+        "newly_uncertain_frames": 1,
+        "newly_uncertain_percentage_points": 0.11402508551881414,
+        "reference_clear_median_m": 88.9,
+        "candidate_clear_median_m": 83.0,
+        "clear_median_fraction": 0.9336332958380202,
+        "passed": false,
+        "reference_monitored_median_m": 143.0,
+        "candidate_monitored_median_m": 143.0
+      },
+      "new_data_4": {
+        "frames": 1409,
+        "reference_decisions": {
+          "GO": 628,
+          "CAUTION": 756,
+          "STOP": 25
+        },
+        "candidate_decisions": {
+          "GO": 628,
+          "CAUTION": 756,
+          "STOP": 25
+        },
+        "newly_uncertain_frames": 0,
+        "newly_uncertain_percentage_points": 0.0,
+        "reference_clear_median_m": 120.0,
+        "candidate_clear_median_m": 60.0,
+        "clear_median_fraction": 0.5,
+        "passed": false,
+        "reference_monitored_median_m": 120.0,
+        "candidate_monitored_median_m": 107.0
+      }
+    },
+    "M2": {
+      "squareT_platform_squareT_switch": {
+        "frames": 877,
+        "reference_decisions": {
+          "GO": 457,
+          "CAUTION": 366,
+          "STOP": 54
+        },
+        "candidate_decisions": {
+          "GO": 457,
+          "CAUTION": 366,
+          "STOP": 54
+        },
+        "newly_uncertain_frames": 0,
+        "newly_uncertain_percentage_points": 0.0,
+        "reference_clear_median_m": 88.9,
+        "candidate_clear_median_m": 83.0,
+        "clear_median_fraction": 0.9336332958380202,
+        "passed": false,
+        "reference_monitored_median_m": 143.0,
+        "candidate_monitored_median_m": 143.0
+      },
+      "new_data_4": {
+        "frames": 1409,
+        "reference_decisions": {
+          "GO": 628,
+          "CAUTION": 756,
+          "STOP": 25
+        },
+        "candidate_decisions": {
+          "GO": 628,
+          "CAUTION": 756,
+          "STOP": 25
+        },
+        "newly_uncertain_frames": 0,
+        "newly_uncertain_percentage_points": 0.0,
+        "reference_clear_median_m": 120.0,
+        "candidate_clear_median_m": 60.0,
+        "clear_median_fraction": 0.5,
+        "passed": false,
+        "reference_monitored_median_m": 120.0,
+        "candidate_monitored_median_m": 107.0
+      }
+    }
+  },
+  "novel": {
+    "passed": true,
+    "baseline": {
+      "visible_frames": 2458,
+      "target_matched_frames": 544,
+      "injected_only_matched_frames": 544,
+      "control_matched_frames": 0,
+      "cases_with_target_match": 45,
+      "cases": 72
+    },
+    "candidate": {
+      "visible_frames": 2458,
+      "target_matched_frames": 544,
+      "injected_only_matched_frames": 544,
+      "control_matched_frames": 0,
+      "cases_with_target_match": 45,
+      "cases": 72
+    },
+    "per_frame_rows_unchanged": true
+  },
+  "target_subsets": {
+    "failed_clear": {
+      "frames": 233,
+      "baseline_stop_frames": 1,
+      "candidate_stop_frames": 0,
+      "pass": true
+    },
+    "old_stock": {
+      "frames": 243,
+      "baseline_stop_frames": 1,
+      "candidate_stop_frames": 0,
+      "pass": true
+    },
+    "old_pass": {
+      "frames": 234,
+      "baseline_stop_frames": 0,
+      "candidate_stop_frames": 0,
+      "pass": true
+    }
+  },
+  "remaining_validation": "Not run after rejection: rate/mount/start offsets/raw SetO/ROS. Completed full gate and72-case run retained.",
+  "release": "Held; candidate source is unmerged and does not replace the failed combined-image clear trial."
+}

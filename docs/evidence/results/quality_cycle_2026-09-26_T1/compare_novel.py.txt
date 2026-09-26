@@ -1,0 +1,7 @@
+"""The registered per-case T1 placement nonregression check."""
+from pathlib import Path
+import json
+from collections import defaultdict,Counter
+OUT=Path('/home/resense/validation/quality_cycle/T1');M2=OUT.parent/'M2_production'
+text=(OUT/'compare_full.py').read_text()
+exec(text[text.index("if (OUT/'novel_result.json').exists():"):])
