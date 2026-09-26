@@ -109,12 +109,12 @@ def test_object_at_the_axis_referenced_edge():
     frame = _yawed_scene(0.5, [box])
     off = _run(frame, 0)
     assert not any(r.obstacle for r in off) and off[-1].warning
-    for mode in (1, 2):
+    for mode in (1, 2, 3):
         res = _run(frame, mode)
         assert res[-1].obstacle, (mode, [(c.distance, c.lateral, c.zone, c.reason) for c in res[-1].candidates])
         assert abs(res[-1].detections[0].distance - 30.0) < 0.6
     empty = _yawed_scene(0.5, [])
-    for mode in (1, 2):
+    for mode in (1, 2, 3):
         assert not any(r.obstacle or r.warning for r in _run(empty, mode))
 
 
@@ -124,6 +124,6 @@ def test_not_where_the_axes_diverge():
     sensor axis stays advisory with the union on."""
     box = ObstacleSpec(kind="box", size=(0.5, 0.6, 1.0), distance=30.0, lateral=-1.67)
     frame = _yawed_scene(1.0, [box])
-    for mode in (1, 2):
+    for mode in (1, 2, 3):
         res = _run(frame, mode)
         assert not any(r.obstacle for r in res) and res[-1].warning

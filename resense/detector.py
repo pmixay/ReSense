@@ -14,8 +14,8 @@ from resense.clustering import Cluster, find_clusters, find_hanging
 from resense.config import DetectorConfig
 from resense.egomotion import EgoSpeedEstimate, EgoSpeedEstimator
 from resense.frame import Frame
-from resense.gauge import (axis_union_coordinates, axis_union_strict, corridor_coordinates, corridor_mask,
-                           gauge_core_mask, point_in_polygon, widened_profile)
+from resense.gauge import (axis_union_coordinates, axis_union_offset, axis_union_strict, corridor_coordinates,
+                           corridor_mask, gauge_core_mask, point_in_polygon, widened_profile)
 from resense.health import HealthMonitor
 from resense.lowobj import BedTemplate, low_candidates
 from resense.track import TrackModel, estimate_track, rotate_track_model
@@ -322,9 +322,9 @@ class Detector:
                           intensity=intensity[idx], idx=idx, low=np.zeros(idx.size, dtype=bool))
         if cfg.gauge.edge_margin > 0 or cfg.gauge.edge_margin_per_100m > 0:
             cand.in_gauge = cand.in_gauge & gauge_core_mask(cand.dy, cand.h, cand.xyz[:, 0], cfg.gauge)
-        if cfg.gauge.axis_union == 1:
-            # 26.09 (candidate A, off by default): also inside when inside the envelope measured from
-            # the sensor axis (near field, straight track, the two axes within axis_union_max_offset)
+        if cfg.gauge.axis_union in (1, 3):
+            # 26.09 (candidates A and B2, off by default): also inside when inside the envelope measured
+            # from the sensor axis (near field, straight track, the two axes within axis_union_max_offset)
             ax = axis_union_strict(cand.xyz[:, 0], cand.dy, cand.h, self.track, cfg.gauge)
             if ax is not None:
                 cand.in_gauge = cand.in_gauge | ax
@@ -433,11 +433,18 @@ class Detector:
         acc = cfg.accumulation
         factor = max(1.0, n_acc * acc.min_points_scale) if n_acc > 1 else 1.0
         corr = cand.subset(~cand.low)
+        dy_alt = None
+        if cfg.gauge.axis_union == 3:
+            # 26.09 (candidate B2, off by default): the lateral from the sensor axis for the shape rules
+            reg = axis_union_offset(corr.xyz[:, 0], self.track, cfg.gauge)
+            if reg is not None:
+                dy_alt = corr.dy + reg[1]
         clusters = _clusters_of(corr, cfg.cluster, axis_valid=valid,
                                 height_valid=floor_valid if cfg.cluster.far_min_height > 0 else None,
                                 min_points_factor=factor, factor_range=acc.min_range,
                                 smear_max_length=acc.smear_max_length if n_acc > 1 else 0.0,
-                                smear_max_width=acc.smear_max_width if n_acc > 1 else 0.0, gauge=cfg.gauge)
+                                smear_max_width=acc.smear_max_width if n_acc > 1 else 0.0, gauge=cfg.gauge,
+                                dy_alt=dy_alt)
         lows: List[Cluster] = []
         straddling: List[Cluster] = []
         lcfg = replace(cfg.cluster, eps=cfg.lowobj.eps)

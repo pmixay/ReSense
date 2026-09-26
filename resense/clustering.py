@@ -137,7 +137,8 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
                   min_points_factor: float = 1.0, factor_range: float = 0.0,
                   smear_max_length: float = 0.0, smear_max_width: float = 0.0,
                   low: Optional[np.ndarray] = None, low_cfg=None,
-                  height_valid: Optional[float] = None, gauge: Optional[GaugeConfig] = None) -> List[Cluster]:
+                  height_valid: Optional[float] = None, gauge: Optional[GaugeConfig] = None,
+                  dy_alt: Optional[np.ndarray] = None) -> List[Cluster]:
     """Voxelise candidates, cluster the voxels, describe and filter the clusters.
 
     ``xyz``/``intensity``/``dy``/``h``/``in_gauge`` are the corridor candidates;
@@ -182,6 +183,11 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
     ``gauge`` (the envelope profile and its axis-uncertainty margin) is what ``cfg.gauge_distance``
     measures a gauge cluster's distance against (:func:`resense.gauge.gauge_reach_mask`); without it
     the distance stays the cluster's nearest point.
+
+    ``dy_alt`` (26.09, ``gauge.axis_union`` 3, off by default) is a second lateral coordinate of the
+    candidates, measured from the sensor axis: the infrastructure and signature rules of a corridor
+    cluster read it instead of ``dy`` when its mean places the cluster nearer the centre; the
+    reported lateral and every other quantity keep ``dy``.
     """
     out: List[Cluster] = []
     if xyz.shape[0] == 0:
@@ -208,7 +214,7 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
             c = _low_cluster(b, dy, h, intensity, frame_idx, cfg, low_cfg)
         else:
             c = _corridor_cluster(b, dy, h, in_gauge, intensity, inv, frame_idx, cfg, factor, factor_range,
-                                  axis_valid, height_valid, gauge)
+                                  axis_valid, height_valid, gauge, dy_alt)
         if c is not None:
             out.append(c)
     out.sort(key=lambda c: c.distance)
@@ -442,7 +448,8 @@ def _gauge_part(b: _Blob, in_gauge, inv, cfg: ClusterConfig) -> Optional[_Blob]:
 
 def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg: ClusterConfig,
                       factor: float, factor_range: float, axis_valid: float,
-                      height_valid: Optional[float], gauge: Optional[GaugeConfig] = None) -> Optional[Cluster]:
+                      height_valid: Optional[float], gauge: Optional[GaugeConfig] = None,
+                      dy_alt: Optional[np.ndarray] = None) -> Optional[Cluster]:
     """A corridor cluster: size and point-count bars, the infrastructure shapes, then the zone
     (enough voxels in the strict gauge) and the reason that demotes it to advisory."""
     size = b.size
@@ -463,11 +470,18 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
         return None
     lateral = float(dy[b.idx].mean())
     h_max = float(h[b.idx].max())
-    if _is_infrastructure(size, lateral, h_max, cfg):
+    # 26.09 (gauge.axis_union 3, off by default): the shape rules read the lateral from the sensor
+    # axis when that places the cluster nearer the centre (the envelope is the union of the two)
+    lat_rules, dy_rules = lateral, dy
+    if dy_alt is not None:
+        lat_alt = float(dy_alt[b.idx].mean())
+        if abs(lat_alt) < abs(lateral):
+            lat_rules, dy_rules = lat_alt, dy_alt
+    if _is_infrastructure(size, lat_rules, h_max, cfg):
         return None
     n_gauge = int(np.unique(inv[b.idx][in_gauge[b.idx]]).size)
     zone = "gauge" if n_gauge >= gauge_min else "warning"
-    reason = _advisory_reason(b, dist, lateral, zone, dy, h, cfg, axis_valid, height_valid)
+    reason = _advisory_reason(b, dist, lat_rules, zone, dy_rules, h, cfg, axis_valid, height_valid)
     if reason:
         zone = "warning"
     retro = _is_retro(b, intensity, cfg)

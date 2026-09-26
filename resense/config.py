@@ -147,7 +147,8 @@ class GaugeConfig:
     # measured from the SENSOR axis (the processed frame's X axis, the organizers' placement frame), as a
     # union with the rail envelope, only where the two agree: rail pair locked, |curvature| <=
     # axis_union_max_curvature, X <= axis_union_range and the rail axis within axis_union_max_offset of
-    # the sensor axis. 0 = off; 1 = strict membership only (A); 2 = the corridor coordinate re-measured (B)
+    # the sensor axis. 0 = off; 1 = strict membership only (A); 2 = the corridor coordinate re-measured (B);
+    # 3 = A, and the shape rules of a corridor cluster read the lateral from the nearer reference (B2)
     axis_union: int = 0
     axis_union_range: float = 50.0          # m, near field only
     axis_union_max_offset: float = 0.30     # m, |c(X)| = rail axis minus sensor axis (below warning_margin)
