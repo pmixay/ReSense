@@ -1,0 +1,162 @@
+[
+  {
+    "bag": "doubleT_platform",
+    "frame_id": "doubleT_platform_0034",
+    "before_STOP": true,
+    "after_STOP": false,
+    "before": [
+      {
+        "id": 41,
+        "zone": "gauge",
+        "distance": 41.73,
+        "lateral": 0.82,
+        "center": [
+          42.01,
+          0.61,
+          -1.45
+        ],
+        "size": [
+          0.68,
+          0.37,
+          0.03
+        ],
+        "n_points": 3,
+        "confidence": 1.0,
+        "age": 6,
+        "height_min": 0.04,
+        "intensity": 3.7,
+        "reason": "",
+        "kind": "low"
+      }
+    ],
+    "after": []
+  },
+  {
+    "bag": "doubleT_platform",
+    "frame_id": "doubleT_platform_0035",
+    "before_STOP": true,
+    "after_STOP": false,
+    "before": [
+      {
+        "id": 41,
+        "zone": "gauge",
+        "distance": 40.09,
+        "lateral": 0.82,
+        "center": [
+          40.37,
+          0.64,
+          -1.49
+        ],
+        "size": [
+          0.68,
+          0.37,
+          0.03
+        ],
+        "n_points": 3,
+        "confidence": 0.75,
+        "age": 7,
+        "height_min": 0.04,
+        "intensity": 3.7,
+        "reason": "",
+        "kind": "low"
+      }
+    ],
+    "after": []
+  },
+  {
+    "bag": "new_data_2",
+    "frame_id": "new_data_81_0031",
+    "before_STOP": true,
+    "after_STOP": false,
+    "before": [
+      {
+        "id": 567,
+        "zone": "gauge",
+        "distance": 34.02,
+        "lateral": 1.0,
+        "center": [
+          35.34,
+          1.61,
+          -1.08
+        ],
+        "size": [
+          2.29,
+          0.58,
+          0.37
+        ],
+        "n_points": 6,
+        "confidence": 0.75,
+        "age": 18,
+        "height_min": 0.12,
+        "intensity": 2.3,
+        "reason": "",
+        "kind": ""
+      }
+    ],
+    "after": []
+  },
+  {
+    "bag": "new_data_5",
+    "frame_id": "new_data_144_0022",
+    "before_STOP": true,
+    "after_STOP": false,
+    "before": [
+      {
+        "id": 144,
+        "zone": "gauge",
+        "distance": 31.01,
+        "lateral": 1.31,
+        "center": [
+          31.2,
+          1.12,
+          -0.98
+        ],
+        "size": [
+          0.56,
+          0.56,
+          0.35
+        ],
+        "n_points": 5,
+        "confidence": 0.821,
+        "age": 12,
+        "height_min": 0.13,
+        "intensity": 9.4,
+        "reason": "",
+        "kind": ""
+      }
+    ],
+    "after": []
+  },
+  {
+    "bag": "new_data_5",
+    "frame_id": "new_data_144_0023",
+    "before_STOP": true,
+    "after_STOP": false,
+    "before": [
+      {
+        "id": 144,
+        "zone": "gauge",
+        "distance": 28.19,
+        "lateral": 1.31,
+        "center": [
+          28.37,
+          1.77,
+          -0.8
+        ],
+        "size": [
+          0.56,
+          0.56,
+          0.35
+        ],
+        "n_points": 5,
+        "confidence": 0.571,
+        "age": 13,
+        "height_min": 0.13,
+        "intensity": 9.4,
+        "reason": "",
+        "kind": ""
+      }
+    ],
+    "after": []
+  }
+]
