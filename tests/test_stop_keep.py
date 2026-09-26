@@ -22,6 +22,7 @@ track dies.
 from __future__ import annotations
 
 from dataclasses import replace
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -31,6 +32,8 @@ from resense.config import ClusterConfig, DetectorConfig, TrackingConfig
 from resense.detector import Detector
 from resense.frame import Frame
 from resense.tracking import Tracker
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def _cl(x: float, zone: str = "gauge", reason: str = "", n_gauge: int = 20, thin: bool = False,
@@ -62,7 +65,7 @@ def _approach(n, x0=100.0, step=2.0):
 def test_shipped_defaults():
     """On since 26.09 (round 2, candidate B10): the signature keep, the scan-line keep of STOP
     tracks (mode 1), the 10-voxel bar."""
-    for cfg in (DetectorConfig(), DetectorConfig.from_yaml("configs/default.yaml")):
+    for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml"))):
         assert cfg.tracking.stop_keep_signature is True
         assert cfg.tracking.stop_keep_thin == 1
         assert cfg.tracking.stop_keep_min_voxels == 10
@@ -341,5 +344,5 @@ def test_a_clean_hit_resets_the_cap():
 
 
 def test_cap_default():
-    for cfg in (DetectorConfig(), DetectorConfig.from_yaml("configs/default.yaml")):
+    for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml"))):
         assert cfg.tracking.stop_keep_max_s == 10.0
