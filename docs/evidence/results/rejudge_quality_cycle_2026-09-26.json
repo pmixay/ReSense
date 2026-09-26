@@ -79,32 +79,32 @@
   "acceptance": {
     "new_code_blockers_after_review_fixes": [],
     "freshness_contract": "Passes the reviewed functional and original-bag checks within its declared publication-time and synchronized-clock assumptions. Consumers must enforce their own expiry; the un-timestamped decision String alone is insufficient.",
-    "M2_offline": "Partial improvement with unchanged detections, not final acceptance. Cached target range overclaims fall 54 to44, GO overclaims46 to36; raw equivalents51 to41 and44 to34. No zero-overclaim objective is met.",
-    "combined_runtime": "FAIL: original_clear has one detector STOP at53.0m against its registered zero-alarm limit. Its freshness, latency and message-loss checks pass. Separate stock clear success does not replace this failed trial.",
+    "M2_offline": "Partial improvement with unchanged detections, not final acceptance. Cached target range overclaims fall 54 to 44, GO overclaims 46 to 36; raw equivalents 51 to 41 and 44 to 34. No zero-overclaim objective is met.",
+    "combined_runtime": "FAIL: original_clear has one detector STOP at 53.0 m against its registered zero-alarm limit. Its freshness, latency and message-loss checks pass. Separate stock clear success does not replace this failed trial.",
     "final_detector_freeze": "Not justified by the current quality evidence.",
     "release": "On hold by user instruction; no release or tag authorized."
   },
   "independent_checks": [
-    "Compared all15 M2 observer captures against the sealed reference:15269 aligned frames, zero differences outside health/range/timing, zero range increases.",
-    "Compared M2 novel_result.cases to the original: all72 case dictionaries, including every per-frame row, exactly equal.",
-    "Recomputed scripts.regression_gate.compare:146 enforced rows unchanged,37 other rows unchanged,16 informational timing rows changed; no failed or waived row.",
-    "Ran tests/test_node.py, tests/test_quality_acceptance.py and tests/test_thin_monitoring.py:63 passed at the first review checkpoint.",
-    "Ran candidate tests/test_clear_cap.py and tests/test_thin_monitoring.py after the production-path test was added:16 passed.",
-    "Read the actual Humble/stock-DDS fixture trial:14/14 functional checks,45 processed frames and7 snapshots. Synthetic scene provenance is declared; this is not real-obstacle accuracy evidence.",
+    "Compared all 15 M2 observer captures against the sealed reference: 15,269 aligned frames, zero differences outside health/range/timing, zero range increases.",
+    "Compared M2 novel_result.cases to the original: all 72 case dictionaries, including every per-frame row, exactly equal.",
+    "Recomputed scripts.regression_gate.compare: 146 enforced rows unchanged, 37 other rows unchanged, 16 informational timing rows changed; no failed or waived row.",
+    "Ran tests/test_node.py, tests/test_quality_acceptance.py and tests/test_thin_monitoring.py: 63 passed at the first review checkpoint.",
+    "Ran candidate tests/test_clear_cap.py and tests/test_thin_monitoring.py after the production-path test was added: 16 passed.",
+    "Read the actual Humble/stock-DDS fixture trial: 14/14 functional checks, 45 processed frames and 7 snapshots. Synthetic scene provenance is declared; this is not real-obstacle accuracy evidence.",
     "Read all six original-bag/split runtime results and independently checked cold/warm validity counts and source ages. The standalone clear failure is a detector STOP, not a held snapshot.",
-    "Read the18 rate/tilt comparisons,30 exact startup-summary comparisons, raw Set O comparison and browser test logs. Stress coverage costs use declared conservative bounds because archived stress streams lack exact paired ranges."
+    "Read the 18 rate/tilt comparisons, 30 exact startup-summary comparisons, raw Set O comparison and browser test logs. Stress coverage costs use declared conservative bounds because archived stress streams lack exact paired ranges."
   ],
   "review_fixes": [
     "Added evaluation UTC and configured age/skew limits so consumers can account for transport delay and expire results locally.",
     "Browser preserves STOP across invalid subsequent input and marks STOP received after expiry as held.",
     "Positive runtime evidence excludes held STOPs; exposed held STOPs still count against clear-bag alarm exposure.",
     "Added a production-path thin-evidence test covering no new STOP track, next-frame recovery and disabled clear_cap behavior.",
-    "Clarified146 enforced metrics versus183 unchanged rows and the single-thread watchdog limitation."
+    "Clarified 146 enforced metrics versus 183 unchanged rows and the single-thread watchdog limitation."
   ],
   "work_that_could_raise_the_score": [
-    "Resolve the53m false target causally and test a general rule with paired positive/non-obstacle evidence. A target-specific suppression or a successful retry would not close the failure.",
-    "Improve sustained detection across several object families and checked background geometries while preserving positives and reducing false events. The registered ride target remains30 or fewer versus45 now.",
-    "Represent sparse or filtered obstacle evidence without an unacceptable loss of useful monitored coverage. M1 failed this tradeoff; M2 leaves36 cached GO overclaims.",
+    "Resolve the 53 m false target causally and test a general rule with paired positive/non-obstacle evidence. A target-specific suppression or a successful retry would not close the failure.",
+    "Improve sustained detection across several object families and checked background geometries while preserving positives and reducing false events. The registered ride target remains 30 or fewer versus 45 now.",
+    "Represent sparse or filtered obstacle evidence without an unacceptable loss of useful monitored coverage. M1 failed this tradeoff; M2 leaves 36 cached GO overclaims.",
     "Obtain organizer Q1 guidance and, when available, untouched real moving-obstacle recordings with independently checked geometry. Current permutations cannot supply that evidence.",
     "Complete exact-final integration tests and delivery verification, approved team information and timed human rehearsals. These can improve technical/launch/pitch scores but cannot compensate for the current detection and generalization gaps."
   ],
