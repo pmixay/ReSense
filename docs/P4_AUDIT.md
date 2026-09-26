@@ -8,6 +8,18 @@
 
 Initial audit base: `a81108f` (v0.6.3, 23.09); integrated on `4cd32d6` (`main`, 24.09); merged as
 `4b5786b` (PR #9, 24.09).
+
+**Current-result addendum (26.09).** This audit preserves its 24.09 measurements. The later
+[`_ride_p3b` regression baseline](evidence/results/regression_baseline_2026-09-25_ride_p3b.json)
+records 125/126 rail-object hits after frame 75, 46 false events in the 13 km ride, 13 false
+events in five empty bags, and STOP for 6/8 in-envelope organizers' objects (337/801 visible
+object-frames). The 5 cm hanging object now gets a STOP from 30.1 m, while the edge 2 × 2 m box
+remains missed and the top box gets STOP in only 12/124 frames. The current headline table is
+[`EXPERIMENTS.md` “Current results”](EXPERIMENTS.md); the original numbers below remain the
+dated evidence for what this audit changed. The 25.09 report of zero alarms in the empty suffix
+of `cloud_with_fake_obj` is superseded by the 26.09 replay: both original bag and quantized cache
+give 1 false STOP frame / 1 event in 706 frames, frame 1131 at 140.72 m; see EXPERIMENTS §1g
+and [the measured evidence](evidence/results/seto_suffix_2026-09-26.json).
 The detector, ROS node and default detection parameters were not changed in this P4 pass.
 The original six organizer bags were downloaded from the
 public link, unpacked and cached at every frame; the new measurements on them are below.

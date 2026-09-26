@@ -367,7 +367,7 @@ def test_dashboard_uses_supplied_moscow_sans_visual_system():
 
 
 def test_presentation_artifact_uses_the_organizers_slide_sequence():
-    """The committed deck is a valid 16-slide subset of the organizers' template (rebuilt 25.09)."""
+    """The committed deck keeps the organizers' sequence and the current measured headlines."""
     assert os.path.getsize(PRESENTATION) > 1_000_000
     with zipfile.ZipFile(PRESENTATION) as zf:
         assert zf.testzip() is None
@@ -384,6 +384,20 @@ def test_presentation_artifact_uses_the_organizers_slide_sequence():
         ).replace("\u00a0", " ")
     for required in ("ReSense", "КОМАНДА", "КОРОТКО О РЕШЕНИИ", "ГЛАВНЫЙ КАДР", "13 759", "58 из 61"):
         assert required in text
+    with open(os.path.join(ROOT, "docs", "evidence", "results",
+                           "regression_baseline_2026-09-25_ride_p3b.json")) as source:
+        baseline = json.load(source)
+    rail = baseline["recordings"]["doubleT_obstacle"]["labelled"]["per_label"]["object_on_rail_from_frame_75"]
+    for required in (
+        str(baseline["five_empty"]["alarm_events"]),
+        str(baseline["ride"]["alarm_events"]),
+        f"{baseline['ride']['alarm_events'] / 13:.1f}".replace(".", ","),
+        f"{rail['hits']} из {rail['frames']}",
+        f"{baseline['set_O']['inside_objects_with_stop']} из {baseline['set_O']['inside_objects']}",
+        "492", "docker load",
+    ):
+        assert required in text
+    assert "релиз v1.0.0" not in text
     assert "Привет, участник хакатона" not in text
 
 

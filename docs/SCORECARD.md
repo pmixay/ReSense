@@ -17,6 +17,12 @@ STOP нет, кубы 0,3 м — только с 34–43 м, висящий об
 
 ## 0. Re-judgement of 26.09 (current): 65 / 100
 
+**After this judgement:** the public deck, PDF and overview video were refreshed on 26.09 from
+the committed `_ride_p3b` results: 125/126 rail-object frames, five empty bags 13 events, ride
+46 events / 3.5 per km, set O 6/8 objects with a STOP (five held), and 492 tests. The release
+claim on the video's final card was removed. The score below is the judges' dated result and has
+not been recalculated. The empty-suffix replay now confirms one false STOP on both raw and cached inputs (EXPERIMENTS §1g).
+
 **Кратко.** Повторная независимая оценка 26.09 — **65 / 100** (судьи: 66 и 65; было 60). Выросли
 8.1 (6 из 8 объектов организаторов со STOP вместо 5, висящий объект 5 см — STOP с 30,1 м), 8.3
 (C++-ядра, 10 кадр/с через ROS на 4 ядрах), 8.4 (5 Гц), 8.5–8.7 (зелёный CI, 486 тестов, шлюз
@@ -320,7 +326,7 @@ a rough size (≤ 1 h, hours, half a day, 1 day); ranked by gain per effort.
 | 10 | length-limited `elevated` / `floating` rule (`scripts/short_signature_experiment.py`), shipped after a ride re-run | 8.1, 8.4 | +0.5 to +2.5 | 1 day | P3, P4 |
 | 11 | thin-hanging rule: \|dy\| < 0.8 m, h > 1.8 m, linked to points above 3.0 m, ≥ 2 voxels, 5 frames; measured on the organizers' bag, the empty bags and the ride | 8.1 | +1.5 | 1 day | P3, P4 |
 | 12 | platform and switch STOPs beyond 80 m advisory unless confirmed nearer; re-checked on all 13 759 frames | 8.1 | +1 | 1 day | P3, P4 |
-| 13 | **Measured, fix open (25.09):** 5 Hz and +3° roll/pitch checks on all six original bags; extra events localized but not fixed without harming real detections. Parameters frozen; frames 804–1 509 of `cloud_with_fake_obj` report 0/706 false-alarm frames (EXPERIMENTS §1g and [raw summary](evidence/results/scorecard13_2026-09-25.json)). This suffix was previously inspected, so it is held out from this parameter decision, not an unseen route. | 8.4 | +0.5 to +1 still open | 1 day | P4 measures; P3 fixes detector behavior |
+| 13 | **Measured, fix open (25.09):** 5 Hz and +3° roll/pitch checks on all six original bags; extra events localized but not fixed without harming real detections. The 25.09 playback report claimed 0/706 false-alarm frames in the empty suffix of `cloud_with_fake_obj` ([raw summary](evidence/results/scorecard13_2026-09-25.json)); the current cached-frame gate has a background STOP at frame 1131 in that suffix (EXPERIMENTS §1g). It was previously inspected, so neither result is an unseen-route check. | 8.4 | +0.5 to +1 still open | 1 day | P4 measures; P3 fixes detector behavior |
 | 14 | far-field rule for tall objects with a high bottom (#8) | 8.2 | +0.5 | 1 day | P3 |
 
 ## 7. State of `main` when judged

@@ -2,8 +2,8 @@
 
 > **Purpose:** what ReSense does, how the jury runs it, what to look at, headline results.
 > **Audience:** jury, team · **Owner:** P1 · **Language:** EN, RU block «Кратко для жюри»
-> **Last verified:** 2026-09-25, `79109f5` (detector v0.6.3 with the long overhead rule on, node
-> v0.6.4, package 1.0.0) · **Status:** current
+> **Last verified:** 2026-09-26 against the `_ride_p3b` regression baseline (detector v0.6.3 with
+> the P3 round-2 rules, node v0.6.4, package 1.0.0) · **Status:** current
 
 ЛЦТ 2026 · Кейс 05 · «Обнаружение посторонних объектов в тоннеле метро по данным 3D-лидара»
 (Московский транспорт / ГУП «Московский метрополитен»). Organizers' material:
@@ -140,9 +140,10 @@ command, `scripts/regression_gate.py`. All current numbers:
 What the organizers' answers changed ([`docs/organizers/answers.md`](docs/organizers/answers.md)):
 
 * the strict decision uses **their train envelope, 2.1 × 3.0 m**; the wider v0.5 polygon is the
-  advisory zone; objects **hanging** into it (broken cables) are obstacles whatever their shape;
+  advisory zone; thin objects **hanging** into it (broken cables) can be obstacles within the hanging-stage limits (≤ 0.5 m wide, within 0.8 m of the axis, ≤ 60 m, with a rail lock);
 * **low objects on a rail**, or straddling the envelope floor like their object, are found by a
-  bed-anomaly stage; tall objects are reported out to the trusted axis range (~200 m straight);
+  bed-anomaly stage; the straight-track model reaches roughly 200 m, while the organizers'
+  synthetic objects get no STOP beyond about 101 m;
 * the **mount is found from the data** (orientation, roll, pitch). 24.09
   ([`mount_and_switch_qa.md`](docs/organizers/mount_and_switch_qa.md)): the test bags use the
   mounts of the provided ones, the LiDAR 1 075 mm above the rail head on the train's centreline,
@@ -414,7 +415,7 @@ but no `node` object (so acceptance tools do not count it as a frame), and `/res
 | `cluster.short_signature_max_length` | 0 (off) | tried, not shipped (25.09): set O 303 → 352 STOP frames, but ride STOP episodes 39 → 45 (EXPERIMENTS §1f) |
 | `cluster.far_axis_both_sides` | 0 (off) | tried, not shipped (25.09): a far obstacle needs both tunnel boundaries to reach it; mode 2 removes the 147.5 m switch STOPs and ride 46 → 42 events, but costs a person 1.9 m on gentle curves (EXPERIMENTS §1h) |
 | `health.clear_cap` | true (candidate R1) | on since 25.09, round 2, by the captain's delegate although it **missed** its pre-registered clutter limit: caps `clear_distance` at the nearest unconfirmed or advisory cluster touching the envelope, columns excluded; no detection or decision changes. Set O overclaim 172 → 82 object-frames (67 on the round-2 code, 60 since the review fixes of 26.09); the five obstacle-free recordings' median clear distance −5.5 % (limit −5 %), the ride −3.1 % (EXPERIMENTS §1i) |
-| `cluster.eps / range_scale / voxel`; `cluster.*_max_*`, signatures | 0.35 / 40 / 0.05 | range-adaptive DBSCAN: ε(r) = eps·(1 + r/40 m); infrastructure filters (thin hardware, low hardware, wall-like, column, floating, edge, wall face); thin objects hanging near the axis are never demoted |
+| `cluster.eps / range_scale / voxel`; `cluster.*_max_*`, signatures | 0.35 / 40 / 0.05 | range-adaptive DBSCAN: ε(r) = eps·(1 + r/40 m); infrastructure filters (thin hardware, low hardware, wall-like, column, floating, edge, wall face); the hanging stage applies within its size, range and rail-lock limits |
 | `tracking.confirm_time_s / confirm_hits / conf_threshold` | 0.5 s / 3 / 0.6 | persistence before an alarm (low objects: 5 hits); `tracking.hold_misses` 1 (code default in `resense/config.py`) keeps a reported obstacle over one missed frame |
 
 ## Documentation required by the organizers (spec §5, §7)

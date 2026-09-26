@@ -4,18 +4,18 @@
 > range, latency, FPS, hard cases and how the quality changed (spec §5 "Эксперименты").
 > **Audience:** jury, team · **Owner:** P3, P4 (content), P1 (structure, timing) · **Language:** EN,
 > summary RU
-> **Last verified:** 2026-09-25 against `154db25` (detector v0.6.3 with the long overhead rule,
-> `tracking.column_hold` and the rail-shadow rules on since 25.09, node v0.6.4, package 1.0.0;
-> re-measured by the regression gate with the ride) ·
+> **Last verified:** 2026-09-26 against the `_ride_p3b` regression baseline (detector v0.6.3
+> with the long overhead, column-hold, rail-shadow and P3 round-2 rules; node v0.6.4, package
+> 1.0.0; the current measured gate includes the ride) ·
 > **Status:** current
 
 **Кратко.** Здесь все измерения ReSense с датой и видом данных. На всех 13 759 реальных кадрах
 организаторов пять бэгов без препятствий дают 13 ложных событий (20 до правила длинных навесных
 конструкций и удержания колонн, 25.09), 20-минутная поездка — 46 (3,5 на км); человек на пути найден в 58 из 61 кадра
-с 11-го, предмет на рельсе — в 124 из 126 кадров после ухода человека, ошибка расстояния ≤ 0,23 м.
-На синтетических объектах самих организаторов (набор O) STOP получают 5 из 8 объектов в габарите:
-ящик 2 × 2 м с 98 м (с 25.09 и вблизи — на своём расстоянии, а не 3,0 м), кубы 0,3 м только с
-34–43 м. Человек на 148–154 м — только на нашей синтетике
+с 11-го, предмет на рельсе — в 125 из 126 кадров после ухода человека, ошибка расстояния ≤ 0,23 м.
+На синтетических объектах самих организаторов (набор O) STOP получают 6 из 8 объектов в габарите
+(пять устойчиво): ящик 2 × 2 м с 98 м (с 25.09 и вблизи — на своём расстоянии, а не 3,0 м),
+кубы 0,3 м только с 43–53 м, висящий предмет 5 см — с 30 м. Человек на 148–154 м — только на нашей синтетике
 (151 м по текущему скрипту оценки, 25.09). Время кадра 42–64 мс (p95 53–78 мс) на одном ядре
 машины разработки без монитора состояния; ядра на C++ (24.09) сокращают его на 38–57 %, DBSCAN на
 cKDTree (25.09) — ещё на 1–3 мс, выход тот же; стенд i7-9700E до сдачи команде недоступен
@@ -54,7 +54,7 @@ every gated metric the same ([its JSON](evidence/results/regression_gate_2026-09
 | metric | value | kind, date | where |
 |---|---|---|---|
 | false alarms, five obstacle-free bags (2 287 frames) | **13 events**, 58 alarm frames, 16 STOP episodes with `tracking.column_hold` 2 (on since 25.09, §3a: the `roundT_doubleT` column); without it 14 events, 60 alarm frames, 17 STOP episodes (long overhead rule on since 25.09; 20 / 107 / 27 without it); the start-offset spread 14–20 events was measured without the rule (24.09), not re-run | real, 25.09 [measured 25.09] | §1f |
-| P4 rate / mount stress and empty suffix | five bags false events / STOP episodes: 5 Hz **10 / 10**, +3° roll **14 / 16**, +3° pitch **17 / 18** since the safety review of 26.09 turned the refinement off (with it, round 2 of 25.09: 10 / 10, 11 / 13, 16 / 17; P4's run of 25.09 before the rate / re-mount flags: 13 / 17 with 3 new events in `roundT_doubleT`, 16 / 17, 17 / 18); `roundT_doubleT` 0 / 2 / 1 events (0 / 1 / 0 with the refinement); `doubleT_obstacle` labelled hits 92 of 123 @ frame 12, 183 of 246 @ 12, 186 of 246 @ 11 (26.09; 181 of 246 at +3° roll before). Frames 804–1 509 of `cloud_with_fake_obj`: **0 false frames / 0 events in 706 frames**, both from a fresh start and after continuous playback (P4, before round 2) | real backgrounds, 25.09, 26.09 [measured] | §1g, §1i; [`scorecard13_2026-09-25.json`](evidence/results/scorecard13_2026-09-25.json), [`p3_round2_combined_2026-09-25.json`](evidence/results/p3_round2_combined_2026-09-25.json), [`p3_round2_review_fixes_2026-09-26.json`](evidence/results/p3_round2_review_fixes_2026-09-26.json) |
+| P4 rate / mount stress and empty suffix | five bags false events / STOP episodes: 5 Hz **10 / 10**, +3° roll **14 / 16**, +3° pitch **17 / 18** since the safety review of 26.09 turned the refinement off (with it, round 2 of 25.09: 10 / 10, 11 / 13, 16 / 17; P4's run of 25.09 before the rate / re-mount flags: 13 / 17 with 3 new events in `roundT_doubleT`, 16 / 17, 17 / 18); `roundT_doubleT` 0 / 2 / 1 events (0 / 1 / 0 with the refinement); `doubleT_obstacle` labelled hits 92 of 123 @ frame 12, 183 of 246 @ 12, 186 of 246 @ 11 (26.09; 181 of 246 at +3° roll before). The 25.09 playback report of **0 false frames in the 706-frame empty suffix** conflicts with the current cached-frame gate: frame 1131 is a background STOP. Replayed 26.09: **1 false STOP frame / 1 event in 706 frames**, frame 1131 at 140.72 m, on both the original bag and its quantized cache (§1g). | real backgrounds, 25.09, 26.09 [measured] | §1g, §1i; [`scorecard13_2026-09-25.json`](evidence/results/scorecard13_2026-09-25.json), [`p3_round2_combined_2026-09-25.json`](evidence/results/p3_round2_combined_2026-09-25.json), [`p3_round2_review_fixes_2026-09-26.json`](evidence/results/p3_round2_review_fixes_2026-09-26.json) |
 | false alarms, 20-minute ride (11 271 frames, 13.0 km) | **46 events, 3.5 per km**, 187 alarm frames (1.7 %), 39 STOP episodes with `tracking.column_hold` 2 (on since 25.09, §3a); without it 46 / 197 / 39 (without the long overhead rule 47 / 204 / 39, equal to the 24.09 record); 15 of the 46 first confirmed beyond 100 m (the removed event, an overhead structure 4–5 m along the track at 105–110 m, was one of the 16 of 24.09); causes: the 24.09 classification of the 47 (corridor-edge structures 18, bed-level fixtures 11, far small clusters 7, other 6, tall 2, hanging 2, person-like 1), not redone | real, 25.09 [measured 25.09] | §1f |
 | crossing person, `doubleT_obstacle` | STOP in **58 of 61** frames inside the envelope, first alarm frame 11 (0.3 s after entering), 55.5–56.6 m, distance error ≤ 0.23 m | real, 24.09 | §0 |
 | object lying across the rail (0.45 × 0.6 × 0.3 m, 56 m) | **125 of the 126** frames after the person leaves it (from frame 75)¹, 2 STOP episodes in the recording, since `calibration.keep_within_deg` (25.09, round 2: the final mount calibration no longer re-seeds the track model at frame 190, frame 191 kept); 124 of 126 and 3 STOP episodes before | real, 24.09; gate 25.09 | §0, §1i |
@@ -971,14 +971,19 @@ was rejected. The shipped parameters remain frozen at the hash above. The extra 
 events are **open**, with their exact frames recorded for P3; this check does not claim #13 is
 fully fixed or increase the 8.4 score.
 
-**Empty suffix after the freeze.** The organizers' labels contain no object points in frames
-804–1 509 of `cloud_with_fake_obj`. At 10 Hz with the frozen configuration, those 706 frames
-(70.48 s) have **0 alarm frames, 0 false events**. A detector started at frame 804 and a detector
-run continuously from frame 0 both give zero; the latter has 220 advisory frames, the former
-218. This is a held-out *segment for this parameter decision*, not an independent unseen route:
-the team's earlier audit inspected this recording and mentioned frame 1131. No parameters were
-selected from this suffix. An observation of zero in 70 s is not a reliable per-hour false-alarm
-rate or evidence that the 5 Hz / tilt cases are fixed.
+**Empty suffix rechecked (26.09).** The labels contain no object points in frames 804–1 509.
+The old 25.09 playback report recorded zero alarms, but a fresh download and continuous replay
+from frame 0 on `11c50a7` gives **1 false STOP frame / 1 event in 706 frames**, at frame 1131,
+140.72 m. Both the original rosbag2 input and its `--int16 --stamps` cache give that same suffix
+result. This supersedes the zero headline; a fresh detector started at frame 804 was not rerun.
+
+[The measured summary and commands](evidence/results/seto_suffix_2026-09-26.json) preserve both
+full-recording scores. The cache reproduces the baseline's 368 alarm frames, 337 inside-object
+STOP frames and 3 background alarm frames. The raw input gives 369 alarm frames and 1 background
+alarm frame: centimetre quantization changes marginal detections (the rail cube first STOP is
+48.0 m raw versus 42.7 m cached; outside-box false frames 7 versus 6; top-box STOP frames 11 versus
+12). These input paths must not be mixed when comparing results. The public headline figures
+continue to use the committed cache baseline. Neither run is an unseen-route check.
 
 Reproduce the six-bag checks with `python scripts/robustness_check.py --cache <cache> --out
 <out>`; add `--every 2`, `--mount roll_3`, or `--mount pitch_3` for the other columns. Reproduce
