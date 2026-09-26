@@ -1,0 +1,129 @@
+{
+  "schema": "resense-quality-T1-source-review-v1",
+  "judge": "quality_second_judge / B",
+  "created_utc": "2026-09-26T21:57:11.980415+00:00",
+  "source_commit": "0ea660fb4025e6f1fd5afdfb4e68e8db003a26f9",
+  "plan_receipt_commit": "0f0dac8",
+  "first_protocol_commit": "9d124c2",
+  "base_commit": "eb4e082728c77734f27b60e0af90eeb3529c585c",
+  "scope": "Independent contract, source, test and plan review before candidate replay. No root or candidate source edits by this reviewer.",
+  "disposition": "No blocking source/contract issue found. Proceed with the registered three-subset target screen; this is not acceptance, integration or release approval.",
+  "reviewed_invariants": [
+    {
+      "name": "Fresh fitted evidence",
+      "finding": "estimate_track records disagreement only from a current two-boundary estimate. A failed floor fit returns replace(prior, axis_disagreement=None), preserving geometry without treating stale axis_sides or old agreement as current evidence."
+    },
+    {
+      "name": "One update after final calibration result",
+      "finding": "Detector._fit_track calls _update_axis_trust once after calibration handling. A large correction uses the final reseeded fit; a small rotation preserves the same-frame observation by the existing rotated-model copy. An intermediate fit cannot clear the cap."
+    },
+    {
+      "name": "Cap monotonicity and release",
+      "finding": "Finite disagreement above the existing threshold creates/tightens the cap using the current raw range and existing disagreement limit. While active, missing or invalid observation can only retain/tighten it. Fresh finite two-boundary agreement, including equality at the threshold, releases it."
+    },
+    {
+      "name": "Reset semantics",
+      "finding": "New Detector and Detector.reset clear the cap. Tracker reset, calibration rotation and calibration reseed alone do not. The protocol now states that an input gap preserves state only until an explicit scene reset; the ROS node may reset on some gaps."
+    },
+    {
+      "name": "No fitter feedback",
+      "finding": "Raw TrackModel.axis_valid remains unchanged. estimate_track, floor/rail fitting, _check_far_rails, calibration and next-frame geometry continue to read the raw model. The active cap is applied through effective_axis_valid in Detector._corridor."
+    },
+    {
+      "name": "Range consumers",
+      "finding": "The capped axis range flows to low-stage support, cluster advisory thresholds, hanging-stage support, M2 monitoring trust and health. Existing both-side and no-rail branches can only narrow it. _far_both_sides returns the prior valid range when its own limit is larger, so it cannot widen the cap."
+    },
+    {
+      "name": "Telemetry",
+      "finding": "When active, serialized axis_valid is the contradiction-limited estimator bound; axis_observed_range and axis_contradiction_cap expose the raw fitter estimate and cap. The clarified contract says raw observed-range naming does not assert fresh physical observation. Gauge, floor, no-rail or both-side policies may narrow final detector range further."
+    },
+    {
+      "name": "Thresholds and scope",
+      "finding": "Default config SHA-256 remains c7ca5ad4f332b7025f66ab0addeb21025daf23a36aca4dbcc2d49fe5b8831f40. No object/shape/association/axis-union threshold or new CAUTION flag is introduced."
+    }
+  ],
+  "executable_AST_check": {
+    "method": "Compared base and candidate Python ASTs with docstrings removed; comments are absent from ASTs.",
+    "health_executable_AST_equal": true,
+    "track_changed_functions": [
+      "TrackModel.to_dict",
+      "estimate_track"
+    ],
+    "track_added_functions": [
+      "TrackModel.effective_axis_valid"
+    ],
+    "detector_changed_functions": [
+      "Detector.__init__",
+      "Detector.reset",
+      "Detector._fit_track",
+      "Detector._corridor"
+    ],
+    "detector_added_functions": [
+      "Detector._update_axis_trust"
+    ],
+    "other_track_change": "Two optional metadata/state fields are added to TrackModel."
+  },
+  "test_review": {
+    "new_cases_reviewed": 12,
+    "archived_selection_passed": 112,
+    "runtime_s": 9.47,
+    "log": "/home/resense/validation/quality_cycle/T1/units.txt",
+    "log_sha256": "ef3bfc9463abe66072139adf19f0058ea454222d4b579851779fed41f488483a",
+    "coverage": [
+      "disagreement, missing/one boundary, monotone tightening and NaN observation",
+      "threshold equality release",
+      "initial one-side baseline behavior",
+      "disabled rule and explicit scene reset",
+      "failed fit with stale prior agreement",
+      "fresh one-side versus two-side metadata",
+      "raw geometry and effective telemetry",
+      "small calibration rotation and large reseed retention",
+      "failed final reseed after intermediate agreement",
+      "fresh final agreement after each calibration path"
+    ],
+    "limit": "Source and archived log were independently read. The reviewer did not rerun the test selection or a detector replay."
+  },
+  "novel_plan_check": {
+    "cases": 72,
+    "cases_inputs_config_source_evaluator_unchanged": true,
+    "changed_top_level_fields": [
+      "code_sha256",
+      "parent_plan_sha256"
+    ],
+    "changed_code_hashes": [
+      "resense/detector.py",
+      "resense/health.py",
+      "resense/track.py"
+    ],
+    "candidate_plan_sha256": "377225106d741ca8fcae0b1343c4bd963d355d9be730a328f355a433482a7aa0"
+  },
+  "mandatory_measurements": [
+    "Exact failed233, historicalstock243 and historicalpass234 raw header subsets: zero STOP in every subset; geometry equal to each M2 reference apart from declared trust telemetry; retain all range/advisory changes.",
+    "Unchanged full gate against frozen and M2 references: every required positive, outside-object, empty, ride and Set F metric present and no regression or waiver.",
+    "All original 72 novel cases, unchanged inputs/evaluator/config: no per-case or per-shape matched-frame loss, no lost whole case, no increased paired-control alarms.",
+    "Frame-aligned uncertainty and range costs against both references, by empty recording and ride segment; no acceptance through blanket range collapse or CAUTION.",
+    "Registered rate, tilt, startup, raw Set O and final exact-image ROS/freshness acceptance after earlier stages pass."
+  ],
+  "claim_limits": [
+    "A cap on an estimator does not establish obstacle-free track, physical clearance truth, safety certification or useful braking distance.",
+    "This mechanism can remain active until fresh agreement or a scene reset. Its effect on detection coverage must be measured rather than assumed benign.",
+    "Source correctness does not predict target-screen success or the positive/nonregression gates. Any fixed acceptance failure rejects this T1 variant without retuning."
+  ],
+  "score": {
+    "provisional_total": 63.5,
+    "maximum": 100,
+    "changed": false,
+    "reason": "No T1 replay results were available at premeasurement review."
+  },
+  "related_root_update": "Captain reports root commit cc834fc corrects unsupported core comments with executable AST unchanged; its baseline integrity gate is pending. This review assigns no automatic score credit for that update.",
+  "sha256": {
+    "docs/evidence/results/quality_cycle_2026-09-26_T1_protocol.json": "f51f623b76fbf50746c5b67d085dfca2e9feac6d0d221840a2928f9c79a1e4f5",
+    "docs/evidence/results/quality_cycle_2026-09-26_T1_source_receipt.json": "b59d6d780d8adf1a72a9fcdff26f3d13c7cc0efc70cc7be2b784d952db7e9ad2",
+    "docs/evidence/results/quality_cycle_2026-09-26_T1_novel_plan.json": "377225106d741ca8fcae0b1343c4bd963d355d9be730a328f355a433482a7aa0",
+    "resense/track.py": "1073a929b661153c106b89d810b6bfb4c82d288c9ccbdf3393e649ed61cbbc4e",
+    "resense/detector.py": "df37abab29cff38095fe91efb241f9aea9841a836133d7bbf0e82490d70eef89",
+    "resense/health.py": "dfdf900425ea40a65e7edfe3fd178a7eb0cdae3941500458ac1a234f96e8d40f",
+    "tests/test_axis_trust.py": "be669882526d42b21cd1713abd78839392061216da8a498be4dc0021854ada5f",
+    "configs/default.yaml": "c7ca5ad4f332b7025f66ab0addeb21025daf23a36aca4dbcc2d49fe5b8831f40"
+  }
+}

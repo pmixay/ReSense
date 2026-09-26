@@ -1,0 +1,1198 @@
+{
+  "failed_clear": {
+    "frames": 233,
+    "alarm_frames": 0,
+    "raw_152": {
+      "raw_index": 152,
+      "stamp": 946692946.833358,
+      "output": {
+        "stamp": 946692946.833358,
+        "obstacle": false,
+        "warning": true,
+        "nearest_distance": null,
+        "detections": [],
+        "warnings": [
+          {
+            "id": 38,
+            "zone": "warning",
+            "distance": 36.84,
+            "lateral": 1.36,
+            "center": [
+              37.07,
+              -1.28,
+              -0.36
+            ],
+            "size": [
+              0.53,
+              0.13,
+              1.4
+            ],
+            "n_points": 16,
+            "confidence": 0.85,
+            "age": 24,
+            "height_min": 0.13,
+            "intensity": 6.6,
+            "reason": "",
+            "kind": ""
+          },
+          {
+            "id": 40,
+            "zone": "warning",
+            "distance": 65.19,
+            "lateral": -0.38,
+            "center": [
+              67.02,
+              -5.92,
+              0.94
+            ],
+            "size": [
+              2.3,
+              1.16,
+              2.85
+            ],
+            "n_points": 64,
+            "confidence": 1.0,
+            "age": 6,
+            "height_min": 0.14,
+            "intensity": 12.8,
+            "reason": "beyond_axis",
+            "kind": ""
+          }
+        ],
+        "n_candidates": 3,
+        "n_points": 190053,
+        "n_corridor": 1237,
+        "track": {
+          "floor_coef": [
+            4.597957653419552e-05,
+            0.0011659547074619465,
+            -1.4754437663813238
+          ],
+          "floor_range": [
+            4.0,
+            112.5
+          ],
+          "center": 0.015,
+          "yaw": -0.057358035685625246,
+          "curvature": -0.0007584795364956387,
+          "rail_offset": 0.377,
+          "rail_score": 0.186,
+          "wall_quality": 0.143,
+          "axis_valid": 47.0,
+          "axis_observed_range": 120.0,
+          "axis_contradiction_cap": 47.0,
+          "n_bins": 27,
+          "residual": 0.115,
+          "floor_verified": 112.5,
+          "rail_slabs": 3,
+          "axis_sides": 1,
+          "age": 161
+        },
+        "timing_ms": {
+          "track": 4.35,
+          "corridor": 3.65,
+          "egomotion": 0.0,
+          "accumulate": 0.27,
+          "cluster": 7.39,
+          "tracking": 0.12,
+          "total": 15.78
+        },
+        "ego_speed": null,
+        "ego_speed_source": "none",
+        "n_accumulated": 1,
+        "ego_speed_estimate": null,
+        "ego_speed_confidence": 0.0,
+        "clear_distance": 47.0,
+        "health": {
+          "level": "ok",
+          "decision_level": "ok",
+          "messages": [],
+          "points": 190053,
+          "near_fraction": 0.001,
+          "blocked_sectors": 0,
+          "visibility": 132.3,
+          "rail_lock": 1.0,
+          "latency_p95_ms": 17.8,
+          "monitored_range": 47.0,
+          "clear_distance": 47.0,
+          "floor_shadow_frames": 0,
+          "floor_held_frames": 0,
+          "floor_released_frames": 0,
+          "candidate_distance": 65.2,
+          "thin_cluster_distance": null
+        },
+        "mount": {
+          "status": "pending",
+          "orientation": "configured",
+          "roll_deg": 0.0,
+          "pitch_deg": 0.0,
+          "yaw_deg": 0.0,
+          "height": null,
+          "lateral": null,
+          "frames_used": 0,
+          "drift_deg": 0.0,
+          "message": ""
+        },
+        "raw_index": 152
+      },
+      "tracks": [
+        {
+          "id": 40,
+          "reported": true,
+          "zone": "warning",
+          "vote_zone": "warning",
+          "hits": 6,
+          "misses": 0,
+          "age": 6,
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_held": false,
+          "near_escalated": false,
+          "kept": false,
+          "cluster": {
+            "n_raw": 104,
+            "n_vox": 64,
+            "n_gauge": 64,
+            "zone": "warning",
+            "reason": "beyond_axis",
+            "thin": false,
+            "centroid": [
+              67.0242919921875,
+              -5.919884204864502,
+              0.9370151162147522
+            ],
+            "bbox_min": [
+              65.19487762451172,
+              -6.274657249450684,
+              -0.6727316975593567
+            ],
+            "bbox_max": [
+              67.4990234375,
+              -5.115951061248779,
+              2.178499460220337
+            ],
+            "distance": 65.19487762451172,
+            "lateral": -0.38220448130654544,
+            "height_min": 0.13847875733907777,
+            "height_max": 2.988536139937996
+          }
+        }
+      ]
+    },
+    "raw_159": {
+      "raw_index": 159,
+      "stamp": 946692947.533395,
+      "output": {
+        "stamp": 946692947.533395,
+        "obstacle": false,
+        "warning": true,
+        "nearest_distance": null,
+        "detections": [],
+        "warnings": [
+          {
+            "id": 40,
+            "zone": "warning",
+            "distance": 53.0,
+            "lateral": 0.46,
+            "center": [
+              54.94,
+              -3.64,
+              0.75
+            ],
+            "size": [
+              2.4,
+              1.1,
+              2.69
+            ],
+            "n_points": 78,
+            "confidence": 1.0,
+            "age": 13,
+            "height_min": 0.25,
+            "intensity": 14.7,
+            "reason": "beyond_axis",
+            "kind": ""
+          }
+        ],
+        "n_candidates": 2,
+        "n_points": 189888,
+        "n_corridor": 1134,
+        "track": {
+          "floor_coef": [
+            1.2623506995636868e-05,
+            0.0007561657124253812,
+            -1.4726251289070669
+          ],
+          "floor_range": [
+            4.0,
+            112.5
+          ],
+          "center": 0.028,
+          "yaw": -0.05677376871855049,
+          "curvature": -0.0006604565107659864,
+          "rail_offset": 0.367,
+          "rail_score": 0.188,
+          "wall_quality": 0.176,
+          "axis_valid": 47.0,
+          "axis_observed_range": 60.0,
+          "axis_contradiction_cap": 47.0,
+          "n_bins": 31,
+          "residual": 0.139,
+          "floor_verified": 120.0,
+          "rail_slabs": 3,
+          "axis_sides": 2,
+          "age": 168
+        },
+        "timing_ms": {
+          "track": 4.4,
+          "corridor": 3.46,
+          "egomotion": 0.0,
+          "accumulate": 0.24,
+          "cluster": 6.99,
+          "tracking": 0.1,
+          "total": 15.2
+        },
+        "ego_speed": null,
+        "ego_speed_source": "none",
+        "n_accumulated": 1,
+        "ego_speed_estimate": null,
+        "ego_speed_confidence": 0.0,
+        "clear_distance": 47.0,
+        "health": {
+          "level": "ok",
+          "decision_level": "ok",
+          "messages": [],
+          "points": 189888,
+          "near_fraction": 0.001,
+          "blocked_sectors": 0,
+          "visibility": 147.2,
+          "rail_lock": 1.0,
+          "latency_p95_ms": 17.8,
+          "monitored_range": 47.0,
+          "clear_distance": 47.0,
+          "floor_shadow_frames": 0,
+          "floor_held_frames": 0,
+          "floor_released_frames": 0,
+          "candidate_distance": 53.0,
+          "thin_cluster_distance": null
+        },
+        "mount": {
+          "status": "pending",
+          "orientation": "configured",
+          "roll_deg": 0.0,
+          "pitch_deg": 0.0,
+          "yaw_deg": 0.0,
+          "height": null,
+          "lateral": null,
+          "frames_used": 0,
+          "drift_deg": 0.0,
+          "message": ""
+        },
+        "raw_index": 159
+      },
+      "tracks": [
+        {
+          "id": 40,
+          "reported": true,
+          "zone": "warning",
+          "vote_zone": "warning",
+          "hits": 13,
+          "misses": 0,
+          "age": 13,
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_held": false,
+          "near_escalated": false,
+          "kept": false,
+          "cluster": {
+            "n_raw": 143,
+            "n_vox": 78,
+            "n_gauge": 77,
+            "zone": "warning",
+            "reason": "beyond_axis",
+            "thin": false,
+            "centroid": [
+              54.93635940551758,
+              -3.635660171508789,
+              0.7513464689254761
+            ],
+            "bbox_min": [
+              53.00181198120117,
+              -3.987403392791748,
+              -0.7780763506889343
+            ],
+            "bbox_max": [
+              55.40506362915039,
+              -2.89182186126709,
+              1.9092329740524292
+            ],
+            "distance": 53.00181198120117,
+            "lateral": 0.4553147430822282,
+            "height_min": 0.24695879055562475,
+            "height_max": 2.933907519817631
+          }
+        }
+      ],
+      "point_snapshot": "failed_clear_159.npz"
+    }
+  },
+  "old_stock": {
+    "frames": 243,
+    "alarm_frames": 0,
+    "raw_152": {
+      "raw_index": 152,
+      "stamp": 946692946.833358,
+      "output": {
+        "stamp": 946692946.833358,
+        "obstacle": false,
+        "warning": true,
+        "nearest_distance": null,
+        "detections": [],
+        "warnings": [
+          {
+            "id": 43,
+            "zone": "warning",
+            "distance": 36.84,
+            "lateral": 1.36,
+            "center": [
+              37.07,
+              -1.28,
+              -0.36
+            ],
+            "size": [
+              0.53,
+              0.13,
+              1.4
+            ],
+            "n_points": 16,
+            "confidence": 0.85,
+            "age": 24,
+            "height_min": 0.13,
+            "intensity": 6.6,
+            "reason": "",
+            "kind": ""
+          },
+          {
+            "id": 45,
+            "zone": "warning",
+            "distance": 65.19,
+            "lateral": -0.38,
+            "center": [
+              67.02,
+              -5.92,
+              0.94
+            ],
+            "size": [
+              2.3,
+              1.16,
+              2.85
+            ],
+            "n_points": 64,
+            "confidence": 1.0,
+            "age": 6,
+            "height_min": 0.14,
+            "intensity": 12.8,
+            "reason": "beyond_axis",
+            "kind": ""
+          }
+        ],
+        "n_candidates": 3,
+        "n_points": 190053,
+        "n_corridor": 1237,
+        "track": {
+          "floor_coef": [
+            4.598136176795711e-05,
+            0.001165728345707084,
+            -1.4754412140379278
+          ],
+          "floor_range": [
+            4.0,
+            112.5
+          ],
+          "center": 0.015,
+          "yaw": -0.05736809266730905,
+          "curvature": -0.0007583389776129089,
+          "rail_offset": 0.377,
+          "rail_score": 0.186,
+          "wall_quality": 0.144,
+          "axis_valid": 47.0,
+          "axis_observed_range": 120.0,
+          "axis_contradiction_cap": 47.0,
+          "n_bins": 27,
+          "residual": 0.115,
+          "floor_verified": 112.5,
+          "rail_slabs": 3,
+          "axis_sides": 1,
+          "age": 157
+        },
+        "timing_ms": {
+          "track": 4.17,
+          "corridor": 3.51,
+          "egomotion": 0.0,
+          "accumulate": 0.28,
+          "cluster": 7.3,
+          "tracking": 0.15,
+          "total": 15.4
+        },
+        "ego_speed": null,
+        "ego_speed_source": "none",
+        "n_accumulated": 1,
+        "ego_speed_estimate": null,
+        "ego_speed_confidence": 0.0,
+        "clear_distance": 47.0,
+        "health": {
+          "level": "ok",
+          "decision_level": "ok",
+          "messages": [],
+          "points": 190053,
+          "near_fraction": 0.001,
+          "blocked_sectors": 0,
+          "visibility": 132.3,
+          "rail_lock": 1.0,
+          "latency_p95_ms": 17.6,
+          "monitored_range": 47.0,
+          "clear_distance": 47.0,
+          "floor_shadow_frames": 0,
+          "floor_held_frames": 0,
+          "floor_released_frames": 0,
+          "candidate_distance": 65.2,
+          "thin_cluster_distance": null
+        },
+        "mount": {
+          "status": "pending",
+          "orientation": "configured",
+          "roll_deg": 0.0,
+          "pitch_deg": 0.0,
+          "yaw_deg": 0.0,
+          "height": null,
+          "lateral": null,
+          "frames_used": 0,
+          "drift_deg": 0.0,
+          "message": ""
+        },
+        "raw_index": 152
+      },
+      "tracks": [
+        {
+          "id": 45,
+          "reported": true,
+          "zone": "warning",
+          "vote_zone": "warning",
+          "hits": 6,
+          "misses": 0,
+          "age": 6,
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_held": false,
+          "near_escalated": false,
+          "kept": false,
+          "cluster": {
+            "n_raw": 104,
+            "n_vox": 64,
+            "n_gauge": 64,
+            "zone": "warning",
+            "reason": "beyond_axis",
+            "thin": false,
+            "centroid": [
+              67.0242919921875,
+              -5.919884204864502,
+              0.9370151162147522
+            ],
+            "bbox_min": [
+              65.19487762451172,
+              -6.274657249450684,
+              -0.6727316975593567
+            ],
+            "bbox_max": [
+              67.4990234375,
+              -5.115951061248779,
+              2.178499460220337
+            ],
+            "distance": 65.19487762451172,
+            "lateral": -0.38181332991055456,
+            "height_min": 0.13850376590856017,
+            "height_max": 2.9885611462196433
+          }
+        }
+      ]
+    },
+    "raw_159": {
+      "raw_index": 159,
+      "stamp": 946692947.533395,
+      "output": {
+        "stamp": 946692947.533395,
+        "obstacle": false,
+        "warning": true,
+        "nearest_distance": null,
+        "detections": [],
+        "warnings": [
+          {
+            "id": 45,
+            "zone": "warning",
+            "distance": 53.0,
+            "lateral": 0.46,
+            "center": [
+              54.94,
+              -3.64,
+              0.75
+            ],
+            "size": [
+              2.4,
+              1.1,
+              2.69
+            ],
+            "n_points": 78,
+            "confidence": 1.0,
+            "age": 13,
+            "height_min": 0.25,
+            "intensity": 14.7,
+            "reason": "beyond_axis",
+            "kind": ""
+          }
+        ],
+        "n_candidates": 2,
+        "n_points": 189888,
+        "n_corridor": 1132,
+        "track": {
+          "floor_coef": [
+            1.2747493107467262e-05,
+            0.0007381041510034687,
+            -1.4723867296301334
+          ],
+          "floor_range": [
+            4.0,
+            112.5
+          ],
+          "center": 0.028,
+          "yaw": -0.05681089845250436,
+          "curvature": -0.0006599723932236981,
+          "rail_offset": 0.367,
+          "rail_score": 0.188,
+          "wall_quality": 0.176,
+          "axis_valid": 47.0,
+          "axis_observed_range": 60.0,
+          "axis_contradiction_cap": 47.0,
+          "n_bins": 31,
+          "residual": 0.139,
+          "floor_verified": 120.0,
+          "rail_slabs": 3,
+          "axis_sides": 2,
+          "age": 164
+        },
+        "timing_ms": {
+          "track": 4.29,
+          "corridor": 3.44,
+          "egomotion": 0.0,
+          "accumulate": 0.25,
+          "cluster": 7.0,
+          "tracking": 0.1,
+          "total": 15.09
+        },
+        "ego_speed": null,
+        "ego_speed_source": "none",
+        "n_accumulated": 1,
+        "ego_speed_estimate": null,
+        "ego_speed_confidence": 0.0,
+        "clear_distance": 47.0,
+        "health": {
+          "level": "ok",
+          "decision_level": "ok",
+          "messages": [],
+          "points": 189888,
+          "near_fraction": 0.001,
+          "blocked_sectors": 0,
+          "visibility": 147.2,
+          "rail_lock": 1.0,
+          "latency_p95_ms": 17.8,
+          "monitored_range": 47.0,
+          "clear_distance": 47.0,
+          "floor_shadow_frames": 0,
+          "floor_held_frames": 0,
+          "floor_released_frames": 0,
+          "candidate_distance": 53.0,
+          "thin_cluster_distance": null
+        },
+        "mount": {
+          "status": "pending",
+          "orientation": "configured",
+          "roll_deg": 0.0,
+          "pitch_deg": 0.0,
+          "yaw_deg": 0.0,
+          "height": null,
+          "lateral": null,
+          "frames_used": 0,
+          "drift_deg": 0.0,
+          "message": ""
+        },
+        "raw_index": 159
+      },
+      "tracks": [
+        {
+          "id": 45,
+          "reported": true,
+          "zone": "warning",
+          "vote_zone": "warning",
+          "hits": 13,
+          "misses": 0,
+          "age": 13,
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_held": false,
+          "near_escalated": false,
+          "kept": false,
+          "cluster": {
+            "n_raw": 143,
+            "n_vox": 78,
+            "n_gauge": 77,
+            "zone": "warning",
+            "reason": "beyond_axis",
+            "thin": false,
+            "centroid": [
+              54.93635940551758,
+              -3.635660171508789,
+              0.7513464689254761
+            ],
+            "bbox_min": [
+              53.00181198120117,
+              -3.987403392791748,
+              -0.7780763506889343
+            ],
+            "bbox_max": [
+              55.40506362915039,
+              -2.89182186126709,
+              1.9092329740524292
+            ],
+            "distance": 53.00181198120117,
+            "lateral": 0.45624464481894406,
+            "height_min": 0.24738810874313089,
+            "height_max": 2.9343375655080464
+          }
+        }
+      ],
+      "point_snapshot": "old_stock_159.npz"
+    }
+  },
+  "old_pass": {
+    "frames": 234,
+    "alarm_frames": 0,
+    "raw_152": {
+      "raw_index": 152,
+      "stamp": 946692946.833358,
+      "output": {
+        "stamp": 946692946.833358,
+        "obstacle": false,
+        "warning": true,
+        "nearest_distance": null,
+        "detections": [],
+        "warnings": [
+          {
+            "id": 40,
+            "zone": "warning",
+            "distance": 65.19,
+            "lateral": -0.59,
+            "center": [
+              67.02,
+              -5.92,
+              0.94
+            ],
+            "size": [
+              2.3,
+              1.16,
+              2.85
+            ],
+            "n_points": 64,
+            "confidence": 1.0,
+            "age": 7,
+            "height_min": 0.15,
+            "intensity": 12.8,
+            "reason": "beyond_axis",
+            "kind": ""
+          }
+        ],
+        "n_candidates": 3,
+        "n_points": 190053,
+        "n_corridor": 1242,
+        "track": {
+          "floor_coef": [
+            3.461100410292883e-05,
+            0.001890281308223015,
+            -1.483515402029361
+          ],
+          "floor_range": [
+            4.0,
+            102.5
+          ],
+          "center": 0.013,
+          "yaw": -0.057112445133754734,
+          "curvature": -0.0006744626858778543,
+          "rail_offset": 0.378,
+          "rail_score": 0.189,
+          "wall_quality": 0.156,
+          "axis_valid": 47.0,
+          "axis_observed_range": 60.0,
+          "axis_contradiction_cap": 47.0,
+          "n_bins": 26,
+          "residual": 0.111,
+          "floor_verified": 102.5,
+          "rail_slabs": 3,
+          "axis_sides": 2,
+          "age": 161
+        },
+        "timing_ms": {
+          "track": 4.31,
+          "corridor": 3.38,
+          "egomotion": 0.0,
+          "accumulate": 0.3,
+          "cluster": 7.74,
+          "tracking": 0.11,
+          "total": 15.84
+        },
+        "ego_speed": null,
+        "ego_speed_source": "none",
+        "n_accumulated": 1,
+        "ego_speed_estimate": null,
+        "ego_speed_confidence": 0.0,
+        "clear_distance": 47.0,
+        "health": {
+          "level": "ok",
+          "decision_level": "ok",
+          "messages": [],
+          "points": 190053,
+          "near_fraction": 0.001,
+          "blocked_sectors": 0,
+          "visibility": 131.1,
+          "rail_lock": 1.0,
+          "latency_p95_ms": 17.3,
+          "monitored_range": 47.0,
+          "clear_distance": 47.0,
+          "floor_shadow_frames": 0,
+          "floor_held_frames": 0,
+          "floor_released_frames": 0,
+          "candidate_distance": 65.2,
+          "thin_cluster_distance": null
+        },
+        "mount": {
+          "status": "pending",
+          "orientation": "configured",
+          "roll_deg": 0.0,
+          "pitch_deg": 0.0,
+          "yaw_deg": 0.0,
+          "height": null,
+          "lateral": null,
+          "frames_used": 0,
+          "drift_deg": 0.0,
+          "message": ""
+        },
+        "raw_index": 152
+      },
+      "tracks": [
+        {
+          "id": 40,
+          "reported": true,
+          "zone": "warning",
+          "vote_zone": "warning",
+          "hits": 6,
+          "misses": 0,
+          "age": 7,
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_held": false,
+          "near_escalated": false,
+          "kept": false,
+          "cluster": {
+            "n_raw": 104,
+            "n_vox": 64,
+            "n_gauge": 64,
+            "zone": "warning",
+            "reason": "beyond_axis",
+            "thin": false,
+            "centroid": [
+              67.0242919921875,
+              -5.919884204864502,
+              0.9370151162147522
+            ],
+            "bbox_min": [
+              65.19487762451172,
+              -6.274657249450684,
+              -0.6727316975593567
+            ],
+            "bbox_max": [
+              67.4990234375,
+              -5.115951061248779,
+              2.178499460220337
+            ],
+            "distance": 65.19487762451172,
+            "lateral": -0.5858979372559225,
+            "height_min": 0.1489917402522556,
+            "height_max": 2.999177976931682
+          }
+        }
+      ]
+    },
+    "raw_159": {
+      "raw_index": 159,
+      "stamp": 946692947.533395,
+      "output": {
+        "stamp": 946692947.533395,
+        "obstacle": false,
+        "warning": true,
+        "nearest_distance": null,
+        "detections": [],
+        "warnings": [
+          {
+            "id": 40,
+            "zone": "warning",
+            "distance": 53.0,
+            "lateral": 0.48,
+            "center": [
+              54.94,
+              -3.64,
+              0.75
+            ],
+            "size": [
+              2.4,
+              1.1,
+              2.69
+            ],
+            "n_points": 78,
+            "confidence": 1.0,
+            "age": 14,
+            "height_min": 0.25,
+            "intensity": 14.7,
+            "reason": "beyond_axis",
+            "kind": ""
+          }
+        ],
+        "n_candidates": 2,
+        "n_points": 189888,
+        "n_corridor": 1154,
+        "track": {
+          "floor_coef": [
+            1.4980610164429045e-05,
+            0.0005462375448160026,
+            -1.4698617790421664
+          ],
+          "floor_range": [
+            4.0,
+            112.5
+          ],
+          "center": 0.037,
+          "yaw": -0.058031968314791835,
+          "curvature": -0.000640295354076881,
+          "rail_offset": 0.368,
+          "rail_score": 0.184,
+          "wall_quality": 0.171,
+          "axis_valid": 47.0,
+          "axis_observed_range": 60.0,
+          "axis_contradiction_cap": 47.0,
+          "n_bins": 30,
+          "residual": 0.126,
+          "floor_verified": 120.0,
+          "rail_slabs": 3,
+          "axis_sides": 2,
+          "age": 168
+        },
+        "timing_ms": {
+          "track": 4.28,
+          "corridor": 3.48,
+          "egomotion": 0.0,
+          "accumulate": 0.25,
+          "cluster": 7.14,
+          "tracking": 0.09,
+          "total": 15.25
+        },
+        "ego_speed": null,
+        "ego_speed_source": "none",
+        "n_accumulated": 1,
+        "ego_speed_estimate": null,
+        "ego_speed_confidence": 0.0,
+        "clear_distance": 47.0,
+        "health": {
+          "level": "ok",
+          "decision_level": "ok",
+          "messages": [],
+          "points": 189888,
+          "near_fraction": 0.001,
+          "blocked_sectors": 0,
+          "visibility": 146.4,
+          "rail_lock": 1.0,
+          "latency_p95_ms": 17.3,
+          "monitored_range": 47.0,
+          "clear_distance": 47.0,
+          "floor_shadow_frames": 0,
+          "floor_held_frames": 0,
+          "floor_released_frames": 0,
+          "candidate_distance": 53.0,
+          "thin_cluster_distance": null
+        },
+        "mount": {
+          "status": "pending",
+          "orientation": "configured",
+          "roll_deg": 0.0,
+          "pitch_deg": 0.0,
+          "yaw_deg": 0.0,
+          "height": null,
+          "lateral": null,
+          "frames_used": 0,
+          "drift_deg": 0.0,
+          "message": ""
+        },
+        "raw_index": 159
+      },
+      "tracks": [
+        {
+          "id": 40,
+          "reported": true,
+          "zone": "warning",
+          "vote_zone": "warning",
+          "hits": 13,
+          "misses": 0,
+          "age": 14,
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_held": false,
+          "near_escalated": false,
+          "kept": false,
+          "cluster": {
+            "n_raw": 143,
+            "n_vox": 78,
+            "n_gauge": 76,
+            "zone": "warning",
+            "reason": "beyond_axis",
+            "thin": false,
+            "centroid": [
+              54.93635940551758,
+              -3.635660171508789,
+              0.7513464689254761
+            ],
+            "bbox_min": [
+              53.00181198120117,
+              -3.987403392791748,
+              -0.7780763506889343
+            ],
+            "bbox_max": [
+              55.40506362915039,
+              -2.89182186126709,
+              1.9092329740524292
+            ],
+            "distance": 53.00181198120117,
+            "lateral": 0.48481149360092557,
+            "height_min": 0.24833201685048079,
+            "height_max": 2.9352722259515813
+          }
+        }
+      ],
+      "point_snapshot": "old_pass_159.npz"
+    }
+  }
+}

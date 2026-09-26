@@ -1,0 +1,690 @@
+{
+  "source_commit": "0ea660fb4025e6f1fd5afdfb4e68e8db003a26f9",
+  "decision": "REJECT: target screen failed; no retune",
+  "subsets": {
+    "failed_clear": {
+      "frames": 233,
+      "baseline_stop_frames": 1,
+      "candidate_stop_frames": 0,
+      "geometry_different_frames": {
+        "floor_coef": 0,
+        "floor_range": 0,
+        "center": 0,
+        "yaw": 0,
+        "curvature": 0,
+        "rail_offset": 0,
+        "rail_score": 0,
+        "wall_quality": 0,
+        "n_bins": 0,
+        "residual": 0,
+        "floor_verified": 0,
+        "rail_slabs": 0,
+        "axis_sides": 0,
+        "age": 0,
+        "floor_shadow": 0,
+        "floor_held": 0,
+        "floor_hold_run": 0
+      },
+      "point_count_different_frames": {
+        "n_points": 0,
+        "n_corridor": 8
+      },
+      "baseline_advisory_frames": 173,
+      "candidate_advisory_frames": 174,
+      "new_caution_percentage_points": 0.4291845493562232,
+      "median_clear_range_baseline": 134.8,
+      "median_clear_range_candidate": 134.8,
+      "new_cap_frames": 38,
+      "caps": [
+        [
+          131,
+          60.0,
+          60.0
+        ],
+        [
+          132,
+          60.0,
+          60.0
+        ],
+        [
+          133,
+          60.0,
+          60.0
+        ],
+        [
+          134,
+          51.0,
+          51.0
+        ],
+        [
+          135,
+          51.0,
+          51.0
+        ],
+        [
+          136,
+          51.0,
+          51.0
+        ],
+        [
+          137,
+          51.0,
+          51.0
+        ],
+        [
+          138,
+          51.0,
+          51.0
+        ],
+        [
+          139,
+          47.0,
+          47.0
+        ],
+        [
+          140,
+          47.0,
+          47.0
+        ],
+        [
+          141,
+          47.0,
+          47.0
+        ],
+        [
+          142,
+          47.0,
+          47.0
+        ],
+        [
+          143,
+          47.0,
+          47.0
+        ],
+        [
+          144,
+          47.0,
+          47.0
+        ],
+        [
+          145,
+          47.0,
+          47.0
+        ],
+        [
+          146,
+          47.0,
+          47.0
+        ],
+        [
+          147,
+          47.0,
+          47.0
+        ],
+        [
+          148,
+          47.0,
+          47.0
+        ],
+        [
+          149,
+          47.0,
+          47.0
+        ],
+        [
+          150,
+          47.0,
+          47.0
+        ],
+        [
+          151,
+          47.0,
+          47.0
+        ],
+        [
+          152,
+          47.0,
+          47.0
+        ],
+        [
+          153,
+          47.0,
+          47.0
+        ],
+        [
+          154,
+          47.0,
+          47.0
+        ],
+        [
+          155,
+          47.0,
+          47.0
+        ],
+        [
+          156,
+          47.0,
+          47.0
+        ],
+        [
+          157,
+          47.0,
+          47.0
+        ],
+        [
+          158,
+          47.0,
+          47.0
+        ],
+        [
+          159,
+          47.0,
+          47.0
+        ],
+        [
+          160,
+          47.0,
+          47.0
+        ],
+        [
+          161,
+          47.0,
+          47.0
+        ],
+        [
+          162,
+          47.0,
+          47.0
+        ],
+        [
+          163,
+          47.0,
+          47.0
+        ],
+        [
+          164,
+          47.0,
+          47.0
+        ],
+        [
+          165,
+          47.0,
+          47.0
+        ],
+        [
+          170,
+          60.0,
+          60.0
+        ],
+        [
+          171,
+          60.0,
+          60.0
+        ],
+        [
+          172,
+          60.0,
+          60.0
+        ]
+      ],
+      "changed_detection_frames": [
+        159
+      ],
+      "candidate_sha256": "2974cdba7c6ed38054c5ad02d35209acec2b0d43fb7c05ce3e9ac24c14a4e590",
+      "baseline_sha256": "08aad56cadebd760339a876dda3ee9094f5880345745d54dd80bc511669d8021",
+      "pass": false
+    },
+    "old_stock": {
+      "frames": 243,
+      "baseline_stop_frames": 1,
+      "candidate_stop_frames": 0,
+      "geometry_different_frames": {
+        "floor_coef": 0,
+        "floor_range": 0,
+        "center": 0,
+        "yaw": 0,
+        "curvature": 0,
+        "rail_offset": 0,
+        "rail_score": 0,
+        "wall_quality": 0,
+        "n_bins": 0,
+        "residual": 0,
+        "floor_verified": 0,
+        "rail_slabs": 0,
+        "axis_sides": 0,
+        "age": 0,
+        "floor_shadow": 0,
+        "floor_held": 0,
+        "floor_hold_run": 0
+      },
+      "point_count_different_frames": {
+        "n_points": 0,
+        "n_corridor": 8
+      },
+      "baseline_advisory_frames": 175,
+      "candidate_advisory_frames": 176,
+      "new_caution_percentage_points": 0.411522633744856,
+      "median_clear_range_baseline": 130.9,
+      "median_clear_range_candidate": 130.9,
+      "new_cap_frames": 38,
+      "caps": [
+        [
+          131,
+          60.0,
+          60.0
+        ],
+        [
+          132,
+          60.0,
+          60.0
+        ],
+        [
+          133,
+          60.0,
+          60.0
+        ],
+        [
+          134,
+          51.0,
+          51.0
+        ],
+        [
+          135,
+          51.0,
+          51.0
+        ],
+        [
+          136,
+          51.0,
+          51.0
+        ],
+        [
+          137,
+          51.0,
+          51.0
+        ],
+        [
+          138,
+          51.0,
+          51.0
+        ],
+        [
+          139,
+          47.0,
+          47.0
+        ],
+        [
+          140,
+          47.0,
+          47.0
+        ],
+        [
+          141,
+          47.0,
+          47.0
+        ],
+        [
+          142,
+          47.0,
+          47.0
+        ],
+        [
+          143,
+          47.0,
+          47.0
+        ],
+        [
+          144,
+          47.0,
+          47.0
+        ],
+        [
+          145,
+          47.0,
+          47.0
+        ],
+        [
+          146,
+          47.0,
+          47.0
+        ],
+        [
+          147,
+          47.0,
+          47.0
+        ],
+        [
+          148,
+          47.0,
+          47.0
+        ],
+        [
+          149,
+          47.0,
+          47.0
+        ],
+        [
+          150,
+          47.0,
+          47.0
+        ],
+        [
+          151,
+          47.0,
+          47.0
+        ],
+        [
+          152,
+          47.0,
+          47.0
+        ],
+        [
+          153,
+          47.0,
+          47.0
+        ],
+        [
+          154,
+          47.0,
+          47.0
+        ],
+        [
+          155,
+          47.0,
+          47.0
+        ],
+        [
+          156,
+          47.0,
+          47.0
+        ],
+        [
+          157,
+          47.0,
+          47.0
+        ],
+        [
+          158,
+          47.0,
+          47.0
+        ],
+        [
+          159,
+          47.0,
+          47.0
+        ],
+        [
+          160,
+          47.0,
+          47.0
+        ],
+        [
+          161,
+          47.0,
+          47.0
+        ],
+        [
+          162,
+          47.0,
+          47.0
+        ],
+        [
+          163,
+          47.0,
+          47.0
+        ],
+        [
+          164,
+          47.0,
+          47.0
+        ],
+        [
+          165,
+          47.0,
+          47.0
+        ],
+        [
+          170,
+          60.0,
+          60.0
+        ],
+        [
+          171,
+          60.0,
+          60.0
+        ],
+        [
+          172,
+          60.0,
+          60.0
+        ]
+      ],
+      "changed_detection_frames": [
+        159
+      ],
+      "candidate_sha256": "c1df90e413788c606aba29396d333fc1750a8bd732a9c003d3443b4517a37513",
+      "baseline_sha256": "0580daf102bf044c12b02e3be5b150b0de8ab280adefbe0a64beeda16ea275cc",
+      "pass": false
+    },
+    "old_pass": {
+      "frames": 234,
+      "baseline_stop_frames": 0,
+      "candidate_stop_frames": 0,
+      "geometry_different_frames": {
+        "floor_coef": 0,
+        "floor_range": 0,
+        "center": 0,
+        "yaw": 0,
+        "curvature": 0,
+        "rail_offset": 0,
+        "rail_score": 0,
+        "wall_quality": 0,
+        "n_bins": 0,
+        "residual": 0,
+        "floor_verified": 0,
+        "rail_slabs": 0,
+        "axis_sides": 0,
+        "age": 0,
+        "floor_shadow": 0,
+        "floor_held": 0,
+        "floor_hold_run": 0
+      },
+      "point_count_different_frames": {
+        "n_points": 0,
+        "n_corridor": 8
+      },
+      "baseline_advisory_frames": 171,
+      "candidate_advisory_frames": 171,
+      "new_caution_percentage_points": 0.0,
+      "median_clear_range_baseline": 128.5,
+      "median_clear_range_candidate": 128.5,
+      "new_cap_frames": 36,
+      "caps": [
+        [
+          131,
+          60.0,
+          60.0
+        ],
+        [
+          132,
+          60.0,
+          60.0
+        ],
+        [
+          133,
+          60.0,
+          60.0
+        ],
+        [
+          134,
+          51.0,
+          51.0
+        ],
+        [
+          135,
+          51.0,
+          51.0
+        ],
+        [
+          136,
+          51.0,
+          51.0
+        ],
+        [
+          137,
+          51.0,
+          51.0
+        ],
+        [
+          138,
+          51.0,
+          51.0
+        ],
+        [
+          139,
+          47.0,
+          47.0
+        ],
+        [
+          140,
+          47.0,
+          47.0
+        ],
+        [
+          141,
+          47.0,
+          47.0
+        ],
+        [
+          142,
+          47.0,
+          47.0
+        ],
+        [
+          143,
+          47.0,
+          47.0
+        ],
+        [
+          144,
+          47.0,
+          47.0
+        ],
+        [
+          145,
+          47.0,
+          47.0
+        ],
+        [
+          146,
+          47.0,
+          47.0
+        ],
+        [
+          147,
+          47.0,
+          47.0
+        ],
+        [
+          148,
+          47.0,
+          47.0
+        ],
+        [
+          149,
+          47.0,
+          47.0
+        ],
+        [
+          150,
+          47.0,
+          47.0
+        ],
+        [
+          151,
+          47.0,
+          47.0
+        ],
+        [
+          152,
+          47.0,
+          47.0
+        ],
+        [
+          153,
+          47.0,
+          47.0
+        ],
+        [
+          154,
+          47.0,
+          47.0
+        ],
+        [
+          155,
+          47.0,
+          47.0
+        ],
+        [
+          156,
+          47.0,
+          47.0
+        ],
+        [
+          157,
+          47.0,
+          47.0
+        ],
+        [
+          158,
+          47.0,
+          47.0
+        ],
+        [
+          159,
+          47.0,
+          47.0
+        ],
+        [
+          160,
+          47.0,
+          47.0
+        ],
+        [
+          161,
+          47.0,
+          47.0
+        ],
+        [
+          162,
+          47.0,
+          47.0
+        ],
+        [
+          163,
+          47.0,
+          47.0
+        ],
+        [
+          164,
+          47.0,
+          47.0
+        ],
+        [
+          165,
+          47.0,
+          47.0
+        ],
+        [
+          170,
+          60.0,
+          60.0
+        ]
+      ],
+      "changed_detection_frames": [],
+      "candidate_sha256": "92fb865f34a79a62da9d370b6067fcacddc428c989d485db75517770c27aabdc",
+      "baseline_sha256": "345ada5dc2757848769174cf3250fde9179780274236b4dbb8144c33dcba140d",
+      "pass": false
+    }
+  }
+}
