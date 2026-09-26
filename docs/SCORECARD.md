@@ -63,8 +63,14 @@ must cite their actual evidence; packaging cannot improve functionality, range o
    photos/contacts, conduct two human rehearsals and submit the actual organizer form. These
    are finite remaining actions, but their scores alone cannot bring the current detector to 75.
 4. **Runtime limits:** startup deliberately samples a large backlog. Recorded first-STOP offsets
-   exclude player disk preloading; final concurrent heavy-load behavior and organizer hardware
-   are unmeasured. The retained loaded cold failure used the node before its short-queue fix.
+   exclude player disk preloading. A subsequent bounded read-load test passes (see below);
+   arbitrary contention and the organizer hardware remain unmeasured. The retained loaded cold failure used the node before its short-queue fix.
+
+**Post-review runtime evidence:** one protocol-fixed cold trial on the final node under two
+O_DIRECT readers (127.4 MiB/s combined) passes unchanged criteria: p95 36.37 ms, first STOP
++0.7 s, zero post-settle recorded-message losses. [Raw result](evidence/freeze_2026-09-26/cold_load_final/summary.json).
+No score change is assigned automatically. The user confirmed there is no additional untouched
+real-obstacle recording available for this pass.
 
 **Кратко:** заморозка и воспроизводимость подтверждены, но оценка после новых проверок —
 **64,5/100**. Исправлены запуск с холодного диска и индикация; новый эксперимент выявил пропуски,

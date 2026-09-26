@@ -415,8 +415,9 @@ zero bag pages resident before playback, `doubleT_obstacle` PASSES: 148 processe
 143 alarm frames, first STOP +0.4 s, p95 36 ms and no post-settle recorded messages unprocessed.
 Catch-up settles at +7.4 s of recording. Warm playback and the clear recording also pass.
 The pre-read in jury step 3 remains an optional way to reduce player startup delay.
-[Evidence](docs/evidence/freeze_2026-09-26/README.md) retains the earlier failures; concurrent
-heavy disk-load testing on the final node remains unmeasured.
+[Evidence](docs/evidence/freeze_2026-09-26/README.md) retains the earlier failures. One additional
+cold trial under two direct readers (127.4 MiB/s combined) also passes: p95 36.37 ms, first STOP
++0.7 s, no post-settle losses. This is a bounded workload, not a measured overload limit.
 
 **Clean-machine dry run** (part of the later deployment, [`docs/CAPTAIN.md`](docs/CAPTAIN.md) C7):
 a team machine that has never built the project, 8 cores for the latency and drop criteria (the

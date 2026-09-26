@@ -33,6 +33,18 @@ checker uses broad drop tolerance for the input-switch test, as before. The two 
 captures above were additionally checked with `--bag` and `--max-dropped 0`, using actual header
 stamps and accounting for the four gaps already present in the obstacle recording.
 
+## Final node under bounded read load
+
+One protocol-fixed cold trial on `498f280` also **PASSes**:
+[summary](cold_load_final/summary.json), [protocol](cold_load_final/protocol.json),
+[checker](cold_load_final/check.txt), [source/capture hashes](cold_load_final/manifest.json).
+Two direct sequential readers of separate ride DB files each sustained 63.69 MiB/s throughout
+playback. The obstacle bag had zero resident pages before the run. With the same acceptance
+limits: 152 processed frames, 145 alarms at 55.5–56.5 m, p95 36.37 ms, first STOP +0.7 s,
+catch-up ends +7.3 s, no scene resets and 0 of 124 post-settle recorded messages unprocessed.
+There was one trial, no retry or tuning. This measures a bounded read workload; it does not
+establish a maximum load or reproduce the earlier mix of downloads, cache writes and installation.
+
 ## Failures retained and what changed
 
 [cold_under_load/check.txt](cold_under_load/check.txt) is the first startup 20 s candidate before
@@ -40,8 +52,8 @@ its short-backlog correction, while dataset downloads/cache writes and package i
 shared the machine: 138 frames, 134 alarms, first STOP 1.1 s, p95 44 ms, 20 recorded messages unprocessed
 after settling. This remains FAIL. Several losses never reached the node; it also coalesced
 short queues unnecessarily. The final node preserves queues spanning at most `catchup_step`.
-The idle cold/warm/console measurements above validate that final change; comparable disk-load
-stress on the final node has not been measured. Do not attribute the earlier failure to a test
+The final idle and bounded-read-load measurements above validate that change under their
+recorded conditions; the earlier mixed load was not reproduced. Do not attribute the earlier failure to a test
 of the final code, or infer overload tolerance from low compute latency.
 
 [warm_before_short_fix/check.txt](warm_before_short_fix/check.txt) preserves the earlier warm

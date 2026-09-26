@@ -22,7 +22,9 @@
 - **ROS startup and transport:** final node `0f808fe`, cold/warm obstacle first STOP +0.4 s,
   decode+detect p95 36 ms, no recorded-message loss after catch-up settles; clear 0 alarms/p95
   24 ms. Stock Fast DDS console passes both bags; one clear false alarm is retained. The first
-  loaded cold failure preceded the short-queue correction; final heavy-load behavior is unmeasured.
+  loaded cold failure preceded the short-queue correction. A final protocol-fixed cold trial
+  with 127.4 MiB/s aggregate direct reads also passes: p95 36.37 ms, first STOP +0.7 s,
+  no post-settle loss. This is one bounded workload, not an overload limit.
   [Capture, machine and checker details](evidence/freeze_2026-09-26/README.md).
 - **Novel placements:** [fixed plan](evidence/results/p4_novel_plan_2026-09-26.json) pushed at
   `1dccdec` before execution; six seen empty backgrounds × four organizer shapes × three lateral

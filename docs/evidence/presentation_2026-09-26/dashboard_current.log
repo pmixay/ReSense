@@ -1,0 +1,5 @@
+frames: 103  banner states seen: 4  first: 'ПРЕПЯТСТВИЕ НЕ ОБНАРУЖЕНО'
+nearest ПРЕПЯТСТВИЕ shown: 56.1 m  (accepted window 40.0-125.0 m)
+screenshot: /home/resense/validation/dashboard_current.png (145835 bytes)
+video: /home/resense/validation/dashboard_current.webm (868435 bytes, 6.88 s)
+PASS

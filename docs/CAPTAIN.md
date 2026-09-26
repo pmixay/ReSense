@@ -17,8 +17,8 @@ The new CI check rejects changed, missing or added frozen sources and changed ga
 Action 21 is complete: the startup-only 20 s allowance closes after catch-up, later stalls keep
 the existing 5 s limit, and short queues preserve every frame. Header-to-header bag grading fixes
 false drop reports caused by receive-clock drift. Final idle cold/warm/clear and stock Fast DDS
-checks pass; [captures and limits](evidence/freeze_2026-09-26/README.md). Heavy-load behavior on
-the final node remains unmeasured. Detector results are unchanged.
+checks pass; [captures and limits](evidence/freeze_2026-09-26/README.md). A final cold trial under two direct readers (127.4 MiB/s combined) also passes unchanged
+criteria; arbitrary contention and the organizer hardware remain unmeasured. Detector results are unchanged.
 
 P4 completed its fixed 72-case synthetic study: 45 cases with any match, 544/2,458 visible frames,
 zero control matches; all results retained, no tuning. All 45 ride false events have scene

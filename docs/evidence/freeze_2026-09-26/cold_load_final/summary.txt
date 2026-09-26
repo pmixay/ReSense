@@ -1,0 +1,19 @@
+Final-node cold replay under bounded disk read load: PASS
+
+Protocol SHA256: 38995b71bfde272e8a30e5601d5a84e1ebe9f8b14e745d0d35737a5be50b7fc7
+Source commit: 498f28042d79ca43233f7db797af625a8f88eec9
+Image: sha256:a0af9d790356ab737bc1759caa6a7e4ee802b554d6d6d40677aa64888c1cef61
+Node SHA256 matches image and checkout: 953a5d68228fe928c5aa941c2270ca1af290147cdcdbaf96d58d0fc74abae484
+
+Exactly one trial; no retry and no changed acceptance limits.
+Cold proof: 0 resident pages of the 4,821,250,048-byte obstacle bag before playback.
+Workload: two O_DIRECT sequential readers, capped at 64 MiB/s each, on separate ride DB files.
+Actual rates: 63.69 and 63.69 MiB/s; both covered replay and checker without errors.
+Processed 152 frames; 145 alarm frames; distance 55.5–56.5 m; p95 36.37ms; last reported 10 fps.
+First STOP +0.7s; startup catch-up ended +7.3s; 0 scene resets.
+124 recorded messages after settle, 0 unprocessed; 4 missing frame slots belong to the bag itself.
+Criterion: obstacle ≥3 frames at 50–62 m, ≥50 status frames, p95 ≤100 ms, zero post-settle recorded messages lost.
+
+One bounded read-load trial; not an overload limit or arbitrary-disk-contention guarantee.
+First STOP and settle offsets use recording time after first processed frame; exclude player startup and cold preload.
+Zero loss applies after the existing settle point; startup skips and earlier transport loss remain visible in raw counters.
