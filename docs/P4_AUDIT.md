@@ -10,6 +10,68 @@
 Initial audit base: `a81108f` (v0.6.3, 23.09); integrated on `4cd32d6` (`main`, 24.09); merged as
 `4b5786b` (PR #9, 24.09).
 
+## Detector freeze and P4 completion (26.09 night)
+
+The captain's delegated decision is recorded in [DETECTOR_FREEZE.md](DETECTOR_FREEZE.md):
+freeze the existing P3d detector and defaults, retain near-escalation threshold 10, keep the
+envelope union off, and reject candidates A/C. Candidate B's one additional STOP frame at
+7.1 m does not justify lowering the threshold across all demoted tracks. This resolves the
+pending candidate decisions in the historical sections below. No detector parameter was tuned
+against the new study.
+
+**Novel-placement sensitivity, one pre-registered run.**
+The [protocol](evidence/results/p4_novel_protocol_2026-09-26.json),
+[exact input plan](evidence/results/p4_novel_plan_2026-09-26.json) and
+[small source fixture](evidence/results/p4_novel_source_2026-09-26/README.md) were committed and
+pushed as `1dccdec` before evaluation. Every one of 72 cases was retained: four organizers'
+object point sequences, three sensor-axis lateral placements, and six seen backgrounds (five
+empty bags and a fixed ride window). Each case has a paired replay of its unmodified background.
+The evaluator verifies source, background, code and config hashes. Eight focused tests cover
+physical-coordinate matching, point preservation, occlusion, input integrity and timestamps;
+P3 independently reviewed the harness before the plan was committed.
+
+The [results](evidence/results/p4_novel_results_2026-09-26.json) contain **544 matched frames
+out of 2,458 visible object-frames (22.1%)**. All 544 are injection-only matches; the paired
+controls have **zero** matches at the target positions. At least one frame matches in **45 of
+72 cases**. These repeated frames are correlated observations, not independent encounters.
+
+| Original organizer point sequence | Visible object-frames | Injection-only matched frames | Paired-control matches | Cases with at least one match |
+|---|---:|---:|---:|---:|
+| Small center cube | 702 | 230 | 0 | 17 / 18 |
+| Small cube on a rail | 646 | 211 | 0 | 14 / 18 |
+| Large box at the envelope top | 612 | 58 | 0 | 5 / 18 |
+| Thin hanging object | 498 | 45 | 0 | 9 / 18 |
+
+This is **sensitivity to novel combinations on seen backgrounds**, not real hold-out recall or
+surveyed rail-envelope ground truth. Source X/Z, intensity, sampling and dropouts are preserved
+before approximate angular occlusion; objects are neither scaled nor densified. Placement and
+matching use physical sensor coordinates, without the detector's rail fit. Source and destination
+motion differ; the original heights may not rest on the destination bed; the lateral shifts do
+not recast returns on the destination ray grid. The result exposes sensitivity and supports no
+claim of improved long-range recall or a 75/100 score.
+
+The first plan attempt found the original switch recording's 0.704403 s gap at frames 136–137.
+Before any detector evaluation, the protocol was amended to retain the exact cases, frames and
+measured stamps and record positive gaps; missing or nonmonotonic stamps still fail. The three
+affected lateral variants are identified in the plan and results. No cases were moved or excluded.
+
+**Fresh data integrity.** All six original caches contain their exact 2,488 frames; their six
+metadata files and six timestamp manifests match the prior intake hashes byte for byte. Set O
+has 1,510 frames; the ride has 11,271 frames and 221 timestamp manifests. The source fixture is
+120 KB including its provenance; raw bags and background caches stay outside the repository.
+The [fresh strict regression gate](evidence/results/regression_gate_2026-09-26_freeze.json)
+passes with no overrides or missing rows: all **183 gated values equal** the P3d baseline.
+
+**All 45 ride false events reviewed.** The
+[inventory and eight cloud contact sheets](evidence/results/p4_ride_scenes_2026-09-26/README.md)
+reproduce 45 event IDs, 183 alarm frames and 38 STOP episodes over all 11,271 ride frames. Two
+reviewers inspected every event's midpoint STOP cloud. Near-sensor scene labels are 20
+platform/station, 16 tunnel and 9 uncertain; no switch/junction is confidently identified.
+The labels chiefly describe the 3–20 m cross-section. They do not establish the scene or cause
+at a reported false target 20.7–158.3 m ahead; those fields remain unassigned. Scene exposure
+distances and durations are unavailable, so this inventory supplies no per-scene false-event rate.
+Repeated event memberships cover 217 frames because different IDs can share one alarm frame.
+
 **Current-result addendum (26.09).** This audit preserves its 24.09 measurements. The current
 [`_ride_p3d` regression baseline](evidence/results/regression_baseline_2026-09-26_ride_p3d.json)
 records 125/126 rail-object hits after frame 75, the archived ride result of 45 false events in

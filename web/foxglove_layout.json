@@ -88,8 +88,8 @@
     "Indicator!obstacle": {
       "path": "/resense/obstacle_detected.data",
       "style": "background",
-      "fallbackColor": "#2ecc71",
-      "fallbackLabel": "PATH CLEAR",
+      "fallbackColor": "#808080",
+      "fallbackLabel": "NO DATA",
       "rules": [
         {
           "operator": "=",
@@ -101,12 +101,12 @@
           "operator": "=",
           "rawValue": "false",
           "color": "#2ecc71",
-          "label": "PATH CLEAR"
+          "label": "NO OBSTACLE DETECTED"
         }
       ]
     },
     "Plot!distance": {
-      "title": "nearest obstacle and verified-clear distance, m",
+      "title": "nearest obstacle and estimated monitored range, m",
       "paths": [
         {
           "value": "/resense/nearest_distance.data",
@@ -217,7 +217,7 @@
           "operator": "=",
           "rawValue": "GO",
           "color": "#2ecc71",
-          "label": "GO: path clear"
+          "label": "GO: no obstacle detected"
         }
       ]
     }

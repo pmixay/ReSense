@@ -12,6 +12,15 @@ Every file here is the record of one run and is not rewritten: a new run gets a 
 in [`../archive/results/`](../archive/results/). `extended_dataset_intake.json` (the ride's
 per-file speeds and intake events) stays in `docs/` because scripts read it.
 
+## Freeze pass — 26 September night
+
+- [Detector seal](detector_freeze_2026-09-26.json) and [fresh complete gate](results/regression_gate_2026-09-26_freeze.json): 183 unchanged gated rows, no waivers.
+- [ROS, test and raw gate evidence](freeze_2026-09-26/README.md), with [hash manifest](freeze_2026-09-26/manifest.json): final cold/warm/clear/stock-console checks, earlier failures retained, 621 tests + 6 subtests.
+- [Fixed 72-case plan](results/p4_novel_plan_2026-09-26.json), [results](results/p4_novel_results_2026-09-26.json) and [source fixture](results/p4_novel_source_2026-09-26/README.md).
+- [All 45 ride events and scene review](results/p4_ride_scenes_2026-09-26/README.md).
+- [Presentation output/source hashes](presentation_2026-09-26/manifest.json).
+- Independent reviews: [A](results/rejudge_freeze_2026-09-26.json), [B](results/rejudge_freeze_b_2026-09-26.json); synthesis in [SCORECARD](../SCORECARD.md#freeze-review-26-september-night).
+
 ## 1. `results/`: raw summaries of the experiments
 
 One JSON per experiment, each with a `note`, `_meta` or `source` block that names what was run.

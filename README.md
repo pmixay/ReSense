@@ -2,9 +2,9 @@
 
 > **Purpose:** what ReSense does, how the jury runs it, what to look at, headline results.
 > **Audience:** jury, team · **Owner:** P1 · **Language:** EN, RU block «Кратко для жюри»
-> **Last verified:** 2026-09-26 evening by the re-judgement (the jury commands run offline on the
-> organizers' original bags, the regression gate re-run with every cache) on `be5f5fc`: package
-> 1.0.0, detector v0.6.3 with the rules of 25–26.09 (detector code `fa18832`), node v0.6.4 · **Status:** current
+> **Last verified:** 2026-09-26 night: full regression gate, 621 tests, original-bag cold/warm
+> and stock Fast DDS checks. Package 1.0.0, frozen detector behavior `fa18832`,
+> node startup correction `0f808fe` · **Status:** current
 
 ЛЦТ 2026 · Кейс 05 · «Обнаружение посторонних объектов в тоннеле метро по данным 3D-лидара»
 (Московский транспорт / ГУП «Московский метрополитен»). Organizers' material:
@@ -79,8 +79,8 @@ FAULT     # через 0,5 с после конца бэга: входа нет,
 | `/resense/decision` | значение |
 |---|---|
 | `STOP` | **тревога**: подтверждённое препятствие в габарите 2,1 × 3,0 м |
-| `CAUTION` | подсказка, **не тревога**: объект у габарита снаружи или за проверенной дальностью, известная инфраструктура, сниженная исправность; в обычном тоннеле частая |
-| `GO` | в габарите ничего нет, исправность в норме (насколько далеко проверено — `/resense/clear_distance`) |
+| `CAUTION` | подсказка, **не тревога**: объект у габарита снаружи или за дальностью контроля, известная инфраструктура, сниженная исправность; в обычном тоннеле частая |
+| `GO` | препятствие не обнаружено, нет предупреждения по исправности, влияющего на решение; оценка дальности контроля — `/resense/clear_distance` |
 | `FAULT` | входа нет (до первого кадра, > 0,5 с без кадров) или ему нельзя доверять |
 
 **Что оценивать:** тревога — `STOP` в `/resense/decision` (то же — `true` в
@@ -152,18 +152,23 @@ control bags can be played one after another into one running node. The offline 
 
 ## Status (26.09): package 1.0.0, detector v0.6.3 with integrated P3d rules, node v0.6.4
 
-The v0.6.4 node works through the burst of the first seconds of a played bag instead of losing
-them: the first `STOP` on `doubleT_obstacle` comes 1.3–1.6 s into the recording on the team's VMs
-(2.9 s after the node's first frame in the re-judgement's run on another 4-core machine), was
-3.2–4.5 s (with the bag in the page cache; from a cold disk see "Acceptance test and CI").
-History: [`CHANGELOG.md`](CHANGELOG.md). Key decisions on one page:
-[`docs/DECISIONS.md`](docs/DECISIONS.md). **Criteria judgement:** re-judged on 26.09 evening on
-this integrated head by two independent judges who re-measured instead of reading these
-documents: **62.5 / 100** (26.09 morning on the pre-integration head: 65; 24.09: 60);
-strongest 8.7 team approach (8 / 10), 8.3 speed and 8.5 technical quality (7.5 / 10 each), lowest
-8.2 range (7.5 / 15), 8.4 generalisation (8 / 15) and 8.1 "does it work" (13.5 / 25), mainly on
-the organizers' synthetic-obstacle recording: [`docs/SCORECARD.md`](docs/SCORECARD.md) §0.
-P4's data audit, false-alarm inventory and screened candidates: [`docs/P4_AUDIT.md`](docs/P4_AUDIT.md).
+The detector and default configuration are **frozen**. The [source seal](docs/DETECTOR_FREEZE.md)
+and fresh full gate reproduce all **183 gated values**, with no missing rows or waivers.
+The startup fix passes original-bag idle cold/warm replays: first STOP +0.4 s after the first
+processed cloud, decode+detect p95 36 ms, no recorded messages lost after catch-up settles.
+The clear replay has zero alarms and p95 24 ms. Stock Fast DDS playback also passes; its clear
+recording has one false alarm within the existing allowance of two. Startup still skips frames;
+these timings exclude the player's disk preloading. [Raw evidence](docs/evidence/freeze_2026-09-26/README.md).
+
+**Criteria judgement:** the new independent reviews and remaining gaps are in
+[the current scorecard](docs/SCORECARD.md#freeze-review-26-september-night).
+The current combined estimate is **64.5/100**; the requested 75/100 is not met. P4's preregistered experiment finds the target
+in **45/72 cases and 544/2,458 visible frames**, with zero paired-control matches. This tests
+synthetic combinations on seen backgrounds; it provides no real unseen-route recall result.
+All 45 ride false events now have a visual scene review, with nine uncertain labels retained.
+See [P4 audit](docs/P4_AUDIT.md), [experiments](docs/EXPERIMENTS.md) and
+[decision history](docs/DECISIONS.md).
+
 Since 24.09 (the 1.0.0 entry of [`CHANGELOG.md`](CHANGELOG.md)): optional C++ kernels (38–57 %
 less detector time, identical output, built and tested in the CI image), DBSCAN on scipy's
 cKDTree with scikit-learn's exact labels (1.3–2.6 ms less per frame, identical output), a
@@ -175,21 +180,12 @@ false STOPs, the P3 rules of 25–26.09 for the organizers' objects (ALGORITHM �
 and set F straight in one command. All current numbers:
 [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) "Current results" and §0.
 
-**Re-measured on 26.09 evening** (the re-judgement, a fresh 4-core machine, the organizers' data
-downloaded again: [`docs/evidence/rejudge_2026-09-26/`](docs/evidence/rejudge_2026-09-26/)): 585
-tests passed and 1 deselected on the host (it needs the ride cache and passed once the ride was
-cached; this pass added a 587th, green in CI); the full regression gate with every cache (the six
-recordings, set O, the 20-minute ride, set F straight) PASSES against `_ride_p3d` with every gated
-row the same: five bags 13 events / 16 STOP episodes, the ride 45 / 38, the person 58 of 61, the
-rail object 125 of 126, set O 384 of 801 and 8 of 8; set O from the float bag: 387 of 801
-in-envelope object-frames `STOP` (the 5 mm cache: 384), 7 false `STOP` frames on the outside box, 1
-background frame; the jury chain offline on the original bags and the organizers' console with a
-stock Fast DDS uid-1000 player PASS with the bag in the page cache, and `doubleT_obstacle` FAILS
-from a cold disk (hence jury step 3); set O played with `ros2 bag play` into the node (Docker,
-offline, the jury's runtime image): 1 452 of 1 510 frames processed at 10 fps (the 58 others in the
-start-up catch-up), every object graded as offline except the box in view at the start (first `STOP`
-94.6 m instead of 98.0 m: its first frames fell into the start-up catch-up) and 10 instead of 6–7
-false `STOP` frames on the outside box. Scores: [`docs/SCORECARD.md`](docs/SCORECARD.md) §0.
+**Final local checks:** 621 tests and 6 subtests pass, with no skips or deselections; the full
+regression gate includes all six recordings, set O, the 11,271-frame ride and set F straight.
+The five empty bags still have 13 false events / 16 STOP episodes, the ride 45 / 38; the person
+58/61, rail object 125/126, and set O 384/801 visible in-envelope STOP frames. Edge objects still
+STOP only at 5–10 m. Prior measurements remain dated in
+[EXPERIMENTS](docs/EXPERIMENTS.md) and [the evidence index](docs/evidence/README.md).
 
 **Reproduced a second time the same evening** (the P3 / P4 completion pass, another fresh 4-vCPU
 container, every cache rebuilt again from the organizers' links): the strict gate with the ride and
@@ -220,7 +216,8 @@ What the organizers' answers changed ([`docs/organizers/answers.md`](docs/organi
   mounts of the provided ones, the LiDAR 1 075 mm above the rail head on the train's centreline,
   so the auto-calibration stays as a safeguard; glitches at switches (states unknown) will not
   count against a solution;
-* every frame says **how far the path was verified clear** and whether the input can be trusted.
+* every frame reports an **estimated monitored range** and input health. An object can be missed
+  within that range; `GO` means no obstacle was detected.
 
 Headline results (kinds and placement modes: [`docs/README.md`](docs/README.md) "Glossary"):
 
@@ -268,11 +265,17 @@ teams (23.09). Decision logic and thresholds: [`docs/ALGORITHM.md`](docs/ALGORIT
 
 | question | topic | values |
 |---|---|---|
-| can the train go? | **`/resense/decision`** (`std_msgs/String`) | `GO` (clear), `CAUTION` (advisory: a confirmed object in the band just outside the envelope, a far cluster beyond the verified range, known infrastructure or degraded health (since 26.09 not latency: that shows in `/resense/health` and the status JSON only); on 27–69 % of the frames of the obstacle-free recordings and 41 % of the ride, so it is not an alarm), `STOP` (obstacle inside the 2.1 × 3.0 m envelope), `FAULT` (input cannot be trusted or stopped arriving, and before the first frame) |
+| what did the detector report? | **`/resense/decision`** (`std_msgs/String`) | `GO` (no obstacle detected and no health warning affecting the decision), `CAUTION` (advisory: a confirmed object in the band just outside the envelope, a far cluster beyond the trusted model range, known infrastructure or degraded health (since 26.09 not latency: that shows in `/resense/health` and the status JSON only); on 27–69 % of the frames of the obstacle-free recordings and 41 % of the ride, so it is not an alarm), `STOP` (obstacle detected inside the 2.1 × 3.0 m envelope), `FAULT` (input cannot be trusted or stopped arriving, and before the first frame) |
 | is there an obstacle? | **`/resense/obstacle_detected`** (`std_msgs/Bool`) | per processed frame, confirmed over 0.5 s, held over one missed frame; `false` while no frame arrives (then `decision` says `FAULT`) |
 | how far is it? | **`/resense/nearest_distance`** (`std_msgs/Float32`) | m along the track, −1 if none |
-| how far is the path verified clear? | **`/resense/clear_distance`** (`std_msgs/Float32`) | the obstacle distance, else how far the corridor was actually checked (sightline, trusted track model), since 25.09 no farther than an unconfirmed or advisory object in the envelope (`health.clear_cap`); 0 on a fault |
+| what is the estimated monitored range? | **`/resense/clear_distance`** (`std_msgs/Float32`) | sightline and trusted track-model range, capped at a detected obstacle or an eligible unconfirmed/advisory cluster in the envelope (`health.clear_cap`, columns excluded); 0 on a fault. Objects that form no eligible cluster can remain inside this range |
 | everything else | `/resense/detections` (`vision_msgs/Detection3DArray`), `/resense/status` (JSON: every object with distance, lateral offset, size, confidence, kind; track model; health; mount calibration; timing) | |
+
+`clear_distance` does not establish that the track is empty. On the organizers' unquantized
+object recording it extends past an object with points in the rail envelope in 51 of 505
+object-frames (44 with `GO`; [SCORECARD §0.3](docs/SCORECARD.md#03-what-judge-a-measured)).
+Read `STOP` and `nearest_distance` alongside health and warnings; `GO` is a detection result,
+not authorization to move a train.
 
 ## Repository layout
 
@@ -284,7 +287,7 @@ teams (23.09). Decision logic and thresholds: [`docs/ALGORITHM.md`](docs/ALGORIT
 | [`docs/VM_GUIDE.md`](docs/VM_GUIDE.md) | instructions for the team's temporary cloud VM (a person or an agent), plain commands of the tools above: data (the ride streamed split by split), 8-core bench, dry run with the original bags, stock-player and host console, regression gate with the ride, image archive, offline rehearsal, results into a PR |
 | [`configs/default.yaml`](configs/default.yaml) | the tunable parameters, copied into the ROS package at build time (`scripts/sync_params.sh`, checked in CI) |
 | [`native/`](native/) | optional C++ kernels for the per-frame hot spots (track stage, corridor selection, health visibility): about half the detector time, bit-identical output; built by `pip install`, numpy fallback without a compiler or with `RESENSE_NATIVE=0` ([ARCHITECTURE](docs/ARCHITECTURE.md) "Native kernels") |
-| [`tests/`](tests/) | 587 pytest tests on a synthetic ray-cast tunnel, no dataset needed (algorithm, envelope, calibration, guards, the native kernels and the cKDTree DBSCAN against their reference code, the regression gate's rules, the release tooling, the overview video's table, the ROS node against stand-ins, the dry-run checker) |
+| [`tests/`](tests/) | 621 tests in the final full local suite (including available real-data and browser checks); most use a synthetic ray-cast tunnel (algorithm, envelope, calibration, guards, the native kernels and the cKDTree DBSCAN against their reference code, the regression gate's rules, the release tooling, the overview video's table, the ROS node against stand-ins, the dry-run checker) |
 | [`web/`](web/) | browser dashboard (offline replay; live via rosbridge, installed separately), Foxglove layout, label tool, 13 headless tests |
 | [`docs/`](docs/) | [`docs/README.md`](docs/README.md): every document, its purpose and owner; organizers' material in [`docs/organizers/`](docs/organizers/) |
 | [`labels/`](labels/) | `doubleT_obstacle.json` (real labels), `new_data_objects.json` (every object confirmed on the ride, by cause), `cloud_with_fake_obj.json` (the organizers' synthetic objects) |
@@ -341,7 +344,9 @@ docker run --rm resense bash -lc "python3 scripts/make_smoke_bag.py /tmp/b && sc
   `discover_period` (2 s), `input_switch_timeout` (1 s), `new_input_gap` (30 s), `hole_reset_gap`
   (1 s), `input_reliability` (`auto`: reliable for `ros2 bag play` of the organizers' recordings,
   best-effort for a best-effort driver), `input_queue_depth` (40), `catchup_step` (0.3 s of
-  recording between frames while frames wait; 0 = newest only), `catchup_max_lag` (5 s);
+  recording between frames while frames wait; 0 = newest only), `catchup_max_lag` (5 s),
+  `catchup_startup_max_lag` (20 s for the first catch-up of each recording; the entry window
+  expires after 1 s if no catch-up starts, and later stalls keep the 5 s bound);
 * **mount**: `sensor_forward` / `sensor_left` / `sensor_up` (axis mapping, e.g. `+x`),
   `mount_roll_deg` / `mount_pitch_deg` / `mount_yaw_deg` (fixed tilt), `auto_calibrate` (true:
   orientation, roll and pitch from the rails and the bed, reported in `/resense/status` → `mount`);
@@ -404,14 +409,14 @@ that never ends does not move the settle point at all.
 not process, so the 4 frames `doubleT_obstacle` itself lacks (at +14.0 and +16.9 s) are not drops.
 The node's stamp-gap count `node.dropped_frames` is printed as before (EXPERIMENTS §3a).
 
-**From a cold disk** (the re-judgement of 26.09, a 4-core sandbox, 337 MB/s cold reads): with the
-page cache dropped, the player of `doubleT_obstacle` sent its first frame only after it had read
-most of the 4.8 GB and then the whole overdue recording at once; the catch-up drops frames more
-than `catchup_max_lag` (5 s) behind the newest, so the processed frames were 1.0–1.4 s apart and
-each such gap reset the scene: 34 of 201 frames processed, first `STOP` +15.5 s, FAIL. The same
-run with the bag in the page cache PASSES (and so does every re-play of a bag). Hence jury step 3
-reads the bag first; a node fix is open ([`docs/CAPTAIN.md`](docs/CAPTAIN.md) action 21). Logs:
-[`docs/evidence/rejudge_2026-09-26/`](docs/evidence/rejudge_2026-09-26/).
+**Cold-disk startup (26.09 night):** the final node grants a new recording up to 20 s of initial
+backlog, preserves short queues, then restores the existing 5 s bound for later stalls. With
+zero bag pages resident before playback, `doubleT_obstacle` PASSES: 148 processed frames,
+143 alarm frames, first STOP +0.4 s, p95 36 ms and no post-settle recorded messages unprocessed.
+Catch-up settles at +7.4 s of recording. Warm playback and the clear recording also pass.
+The pre-read in jury step 3 remains an optional way to reduce player startup delay.
+[Evidence](docs/evidence/freeze_2026-09-26/README.md) retains the earlier failures; concurrent
+heavy disk-load testing on the final node remains unmeasured.
 
 **Clean-machine dry run** (part of the later deployment, [`docs/CAPTAIN.md`](docs/CAPTAIN.md) C7):
 a team machine that has never built the project, 8 cores for the latency and drop criteria (the
@@ -458,7 +463,7 @@ in development). `scripts/bench_8core.sh` bundles the acceptance runs and the ti
 | `/resense/obstacle_detected` | `std_msgs/Bool` | confirmed object inside the clearance gauge |
 | `/resense/warning` | `std_msgs/Bool` | confirmed object in the advisory zone only |
 | `/resense/nearest_distance` | `std_msgs/Float32` | m along the track to the nearest gauge obstacle, −1 if none |
-| `/resense/clear_distance` | `std_msgs/Float32` | m of track verified clear (the obstacle, else the monitored range, capped at an unconfirmed or advisory object in the envelope since 25.09; 0 on a fault) |
+| `/resense/clear_distance` | `std_msgs/Float32` | estimated monitored range in m, capped at detected obstacles and eligible unconfirmed/advisory clusters; objects without such a cluster can be missed inside this range; 0 on a fault |
 | `/resense/health` | `diagnostic_msgs/DiagnosticArray` | OK / WARN / ERROR / STALE with messages and values: points, window dirt, blocked sectors, visibility, rail lock, latency p95, monitored range, mount calibration |
 | `/resense/detections` | `vision_msgs/Detection3DArray` | boxes in the sensor frame, `class_id` = `gauge_obstacle` / `warning_obstacle`, score = confidence |
 | `/resense/status` | `std_msgs/String` | JSON: full per-frame result (detections, track model, health, mount, per-stage timing) plus `node` = `{latency_ms, fps, frames, dropped_frames, catchup_skipped, catchup, input_period_ms, ego_speed_mps, ego_speed_source, input_topic, recording}` (`catchup_skipped`: the part of `dropped_frames` the node received and skipped while catching up; `catchup`: this frame was processed while behind) |

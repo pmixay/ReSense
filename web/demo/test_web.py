@@ -68,6 +68,8 @@ def test_foxglove_layout_parses_and_has_the_panels():
     assert any(c.get("path", "").startswith("/resense/obstacle_detected") for k, c in cfg.items() if k.startswith("Indicator!"))
     decision = [c for k, c in cfg.items() if k.startswith("Indicator!") and c.get("path") == "/resense/decision.data"]
     assert decision and {r["rawValue"] for r in decision[0]["rules"]} == {"GO", "CAUTION", "STOP", "FAULT"}
+    assert cfg["Indicator!obstacle"]["fallbackLabel"] == "NO DATA"
+    assert next(r["label"] for r in decision[0]["rules"] if r["rawValue"] == "GO") == "GO: no obstacle detected"
     assert "/resense/clear_distance.data" in plotted
     assert any(c.get("topicPath") == "/resense/status" for k, c in cfg.items() if k.startswith("RawMessages!"))
 
@@ -155,7 +157,7 @@ def test_dashboard_replays_jsonl_in_chromium(tiny_run, tmp_path):
     r = check_dashboard.check(out, shot, None, speed=10.0, min_dist=40.0, max_dist=72.0, timeout_s=60.0)
     assert r["ok"], r["errors"]
     assert r["frames"] == 14
-    assert r["observed"][0][1].startswith("ПУТЬ СВОБОДЕН")
+    assert r["observed"][0][1].startswith("ПРЕПЯТСТВИЕ НЕ ОБНАРУЖЕНО")
     # A confirmed track is intentionally held for one missed frame and projected one step
     # closer (4 m in this synthetic run), so the last displayed distance can be just below
     # the acceptance window used by check().
@@ -213,9 +215,39 @@ def test_dashboard_builtin_demo_and_summary():
         page.locator("#summary-card summary").click()
         assert page.inner_text("#s-alarms") == "1 / 36"
         assert page.inner_text("#s-nearest") == "40.0 м"
-        assert page.inner_text("#decision") == "ДВИЖЕНИЕ"
+        assert page.inner_text("#decision") == "НЕ ОБНАРУЖЕНО"
         assert page.inner_text("#health") == "норма"
         assert page.is_enabled("#export-report")
+        b.close()
+
+
+def test_dashboard_banner_honors_health_and_explicit_fault():
+    """No obstacle flag must not turn a health warning or watchdog FAULT into a green banner."""
+    if not _browser_available():
+        pytest.skip("playwright + chromium not available")
+    from playwright.sync_api import sync_playwright
+    import check_dashboard
+    with sync_playwright() as p:
+        b = _launch(p)
+        page = b.new_page()
+        page.goto("file://" + check_dashboard.INDEX, wait_until="domcontentloaded")
+        page.wait_for_function("window.resense !== undefined")
+        cases = [
+            ({"health": {"level": "error"}}, "bad", "ОШИБКА", "ОШИБКА"),
+            ({"decision": "FAULT", "health": {"level": "ok"}}, "bad", "ОШИБКА", "ОШИБКА"),
+            ({"health": {"level": "warn", "decision_level": "warn"}}, "warn", "ВНИМАНИЕ", "ВНИМАНИЕ"),
+            ({"health": {"level": "warn", "decision_level": "ok"}}, "clear", "ПРЕПЯТСТВИЕ НЕ ОБНАРУЖЕНО", "НЕ ОБНАРУЖЕНО"),
+            ({"obstacle": True, "nearest_distance": 55.6, "health": {"level": "error"}}, "bad", "ПРЕПЯТСТВИЕ  55.6 м", "СТОП"),
+        ]
+        for extra, color, title, decision in cases:
+            frame = {"stamp": 1.0, "obstacle": False, "warning": False, "nearest_distance": None,
+                     "detections": [], "warnings": [], "clear_distance": 0.0, **extra}
+            page.evaluate("frame => window.resense.applyResult(frame)", frame)
+            assert page.get_attribute("#banner", "class") == color
+            assert check_dashboard.banner_text(page).startswith(title)
+            assert page.inner_text("#decision") == decision
+        assert "Дальность контроля" in page.inner_text("#safety-card")
+        assert "могут быть пропущены" in page.inner_text("#safety-card")
         b.close()
 
 

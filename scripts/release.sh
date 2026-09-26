@@ -13,6 +13,7 @@
 #      -> $OUT_DIR/resense-image-<tag>.tar.gz + .sha256 (gzip -$GZIP_LEVEL, default 6);
 #   3. docker rmi resense:<tag> resense:latest, then scripts/load_image.sh on the archive (sha256,
 #      docker load, a --network none run): the archive alone gives the image back, same layers;
+#      the loaded runtime must have its native kernels available and enabled (the measured path);
 #   4. SMOKE=1: two synthetic bags (scripts/make_smoke_bag.py, which needs open3d and rosbags on the
 #      host: pip install -e ".[dev]") through the loaded image, in the jury's --net=host form with a
 #      stock Fast DDS player (scripts/console_test.sh) and on an --internal network
@@ -83,6 +84,7 @@ if [ "$DRY_RUN" = "1" ]; then
   else echo "+ VERSION=$TAG OUT_DIR=$OUT_DIR GZIP_LEVEL=$GZIP_LEVEL scripts/export_image.sh"; fi
   echo "+ docker rmi resense:$TAG resense:latest"
   echo "+ scripts/load_image.sh $ARCHIVE      # sha256, docker load, --network none check; same layers as built"
+  echo "+ docker run --rm --network none -w / resense:$TAG python3 -c 'from resense import _native as n; assert n.AVAILABLE and n.enabled(), n.status(); print(n.status())'"
   if [ "$SMOKE" = "1" ]; then
     echo "+ $PY scripts/make_smoke_bag.py <tmp>/smoke_bag; ... <tmp>/smoke_bag2 --topic /sensing/lidar/hesai128/pointcloud --frame-id lidar_livox --distance 45"
     echo "+ IMAGE=resense:$TAG PLAYER_DDS=stock scripts/console_test.sh <tmp>/smoke_bag <tmp>/smoke_bag2"
@@ -139,6 +141,10 @@ if [ "$LABEL_REV" != "$COMMIT" ]; then
   echo "ERROR: the archive's image was built from '$LABEL_REV', not from $TAG ($COMMIT)" >&2
   exit 2
 fi
+# The release must use the measured native path. Optional compilation in setup.py can otherwise
+# leave an importable numpy fallback that passes a small transport smoke but misses the budget.
+run docker run --rm --network none -w / "resense:$TAG" \
+  python3 -c 'from resense import _native as n; assert n.AVAILABLE and n.enabled(), n.status(); print(n.status())'
 
 # ---- 4. optional: the smoke bags through the loaded image
 if [ "$SMOKE" = "1" ]; then

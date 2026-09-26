@@ -289,6 +289,8 @@ plus the node logs and captures of `out/dry_*`, §6).
 recording's initial burst. The allowance closes when the first catch-up reaches the newest
 frame, or after 1 s if no catch-up starts. An initial catch-up already underway retains it until
 it drains. Later stalls use `catchup_max_lag` = 5 s; true input holes still reset the scene.
+Short queues spanning at most `catchup_step` = 0.3 s process every frame; longer backlogs are
+subsampled at that interval. A smaller explicit maximum lag is still enforced first.
 The 20 s cap can still discard older frames in a larger burst. Record cold and warm runs
 separately, including the first STOP, scene resets, frames processed, latency and the checker's
 result. Warming the bag before playback is useful operationally, but a warm pass alone does

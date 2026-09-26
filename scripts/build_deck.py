@@ -76,7 +76,7 @@ N = {
     "native_cut": "38–57 %",                 # optional C++ kernels: detector time, identical output
     "gpu_gain": "30–45 мс",                  # the GPU study's upper bound per 360° frame against numpy
     "speed_err": "0,07 м/с",                 # the opt-in LiDAR-only train speed, median error (0.06–0.08)
-    "tests": "587",
+    "tests": "587+",                         # 587 before the freeze pass; new regressions add coverage
     # the organizers' own synthetic obstacles, set O (cloud_with_fake_obj: 10 objects, 1 510 frames,
     # the train drives up to them at 1.4–20 m/s, no speed given) [organizers' synthetic, P4_AUDIT]
     "fake_frames": "1 510", "fake_stop": "8 из 8", "fake_box": "98", "fake_plank": "82", "fake_cubes": "43–53",
@@ -460,7 +460,7 @@ def s08_team(sl):
     u.height = Emu(1350000)
     fill(u, ["Описываем среду, а не объекты: крепление лидара и ось пути калибруются по рельсам в каждом "
              "кадре, кривизна — по стенам и рядам колонн, поэтому коридор осмыслен и там, где рельсов уже "
-             "не видно. Вместо молчания — «проверенно свободная» дистанция. Настройка и оценка — на "
+             "не видно. Публикуем оценку дальности контроля; возможны пропуски объектов. Настройка и оценка — на "
              "препятствиях, вставленных трассировкой лучей в реальные кадры."], size=12)
     if team_photo(TEAM.get("team_photo")):
         photo_into_frame(sl, 2, team_photo(TEAM["team_photo"]))
@@ -506,7 +506,7 @@ def s11_short(sl):
     fill(shape(sl, 3), [
         "ROS 2 Humble-узел на Python (numpy / scipy / scikit-learn) и необязательные ядра на C++",
         "Вход — PointCloud2 любого из двух наборов топик / frame_id; выход — решение GO / CAUTION / STOP / "
-        "FAULT, дистанция до препятствия и «проверенно свободная» дистанция, Detection3DArray, маркеры RViz, "
+        "FAULT, дистанция до препятствия и оценка дальности контроля, Detection3DArray, маркеры RViz, "
         "JSON-статус",
         "В каждом кадре: автокалибровка крепления → модель пути (полотно, рельсы, ось, кривизна по стенам) → "
         "габарит 2,1 × 3,0 м + низкие объекты на рельсах → кластеры → фильтры инфраструктуры → "
@@ -590,11 +590,11 @@ def s_data(sl):             # template slide 12: text left, picture right
 def s_algorithm(sl):        # template slide 25: timeline 1-5
     title_chip(sl, 12, shape(sl, 15), "АЛГОРИТМ")
     steps = {  # (title idx, text idx): step number 1..5 by the timeline boxes
-        (26, 27): ("Автокалибровка", "ориентация, крен и тангаж лидара — по рельсам и полотну: любое крепление"),
+        (26, 27): ("Автокалибровка", "вертикальная ось вращения; ориентация и наклон — по рельсам и полотну"),
         (32, 33): ("Модель пути", "полотно, головки рельсов, ось; кривизна по стенам и колоннам до 150–200 м"),
         (28, 29): ("Габарит", "коридор 2,1 × 3,0 м вдоль оси и ступень низких объектов на рельсах"),
         (34, 35): ("Кластеры", "радиус растёт с дальностью; фильтры инфраструктуры; дальнее правило"),
-        (30, 31): ("Решение", "подтверждение 0,5 с → GO / CAUTION / STOP / FAULT и свободная дистанция"),
+        (30, 31): ("Решение", "подтверждение 0,5 с → GO / CAUTION / STOP / FAULT и дальность контроля"),
     }
     for (ti, di), (t, d) in steps.items():
         fill(placeholder(sl, ti), [t], size=15, bullet=False)
@@ -632,7 +632,7 @@ def s_demo(sl):             # template slide 27: two browser frames
     fill(shape(sl, 10), ["localhost:8080"])
     fill(shape(sl, 33), ["docker run resense"])
     fill(placeholder(sl, 15), ["Веб-дашборд «Контроль свободного габарита»: вид из кабины по статусу узла из "
-                               "Docker-прогона на doubleT_obstacle — STOP 56,1 м, путь свободен до 56 м; "
+                               "Docker-прогона на doubleT_obstacle — STOP 56,1 м, оценка дальности контроля 56 м; "
                                "живой узел — через rosbridge"], size=12)
     fill(placeholder(sl, 16), ["Цепочка жюри в Docker: узел с RViz, bag play от обычного пользователя из "
                                "другого контейнера, /resense/decision — STOP 56 м (видео 69 с)"], size=12)

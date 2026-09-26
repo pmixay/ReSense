@@ -3,21 +3,73 @@
 > **Purpose:** the independent judgements of ReSense against the eight criteria of spec §8: score
 > per criterion, the evidence behind it, the risks on the hidden data and the fastest points to gain.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, summary RU
-> **Last independent judgement:** 2026-09-26 evening against `be5f5fc` (the integrated head: the
-> detector of `fa18832`, gate baseline `_ride_p3d`), §0; earlier ones are dated records (§0a, §1–§8)
-> · **Status:** current (§0), dated records (§0a–§8)
+> **Last independent judgement:** 2026-09-26 night, frozen detector and final integration worktree.
+> **Status:** current review below; earlier numbered sections are dated records.
 
-**Кратко.** Переоценка 26.09 (вечер) на интегрированной версии — **62,5 / 100** (судьи: A
-65,5, B 61,5; утром 26.09 на версии до интеграции — 65, 24.09 — 60). Судья A заново скачал данные
-организаторов и всё перемерил сам, судья B проверил каждое утверждение по коду и сырым JSON. Числа
-команды воспроизводятся точно: полный регрессионный шлюз с поездкой и набором F на другой машине — PASS, каждая строка эталона `_ride_p3d` та же. Интеграция P3c/P3d дала реальный прирост (ящик у верха
-габарита — STOP в каждом кадре с 101 м), но заголовок «8 из 8» его преувеличивает: краевые объекты
-получают STOP лишь на 5–10 м, `clear_distance` проходит за объект в габарите, всё решалось на тех же
-данных. Новая находка — с холодного диска 360° запись проваливает сухой прогон (обработано 34 кадра
-из 201). Что поднимет оценку — §0.6. Третий круг (§0.8): работу P3/P4 того же вечера (кода она не
-меняла) оба судьи проверили — судья A перемерил устойчивость, сдвиги старта и кандидатов B и
-объединения габаритов, судья B сверил JSON; все числа совпали, оценки не изменились. Третий судья
-(агент самой работы P3/P4) ставит 67, но он не независим; со всеми тремя среднее было бы 64.
+## Freeze review: 26 September night
+
+**Current combined score: 64.5/100. The target of 75 is not met.** Two independent reviewers
+read the specification, code and raw results before scoring, without using the previous score
+as a baseline. The organizers publish no numerical weights; the maxima below are the team's
+unchanged rubric. As in the previous review, combine the two scores per criterion and round
+down to the nearest 0.5. These are internal estimates, not organizer awards.
+
+| Criterion | Maximum | Judge A | Judge B | Combined |
+|---|---:|---:|---:|---:|
+| Functionality |25|14|16|15|
+| Range |15|6|6|6|
+| Speed |10|8.5|8|8|
+| Generalization |15|5.5|7|6|
+| Technical quality |10|9|8.5|8.5|
+| Ease of launch |10|8.5|8|8|
+| Team approach |10|9|9|9|
+| Pitch |5|4|4|4|
+| **Total** |**100**|**64.5**|**66.5**|**64.5**|
+
+Detailed independent reasons: [judge A](evidence/results/rejudge_freeze_2026-09-26.json),
+[judge B](evidence/results/rejudge_freeze_b_2026-09-26.json).
+Final branch CI and public image distribution are pending at this score. Any later adjustment
+must cite their actual evidence; packaging cannot improve functionality, range or generalization.
+
+### Evidence gained
+
+- The fresh complete gate reproduces **183 gated values**, no missing rows, regressions or waivers.
+  The [detector seal](DETECTOR_FREEZE.md) verifies 27 source/config/build-input files.
+- Final local suite: **621 tests and 6 subtests pass**, no skips/deselections. Current original-bag
+  idle cold/warm checks pass with first STOP +0.4 s and decode+detect p95 36 ms; clear replay has
+  zero alarms/p95 24 ms. Stock DDS console passes; its clear run has one false alarm within the
+  existing allowance. [Evidence](evidence/freeze_2026-09-26/README.md).
+- All **72 preregistered placement cases** were evaluated without later tuning: **45 with any
+  match, 544/2,458 visible frames (22.1%)**, zero paired-control matches. This is synthetic
+  sensitivity on seen backgrounds, not real holdout recall. Missed whole cases: small center
+  1/18, small on rail 4/18, big above 13/18, thin hanging 9/18.
+- All 45 ride false events have visual near-scene annotations: 20 platform/station, 16 tunnel,
+  nine uncertain. This does not identify distant alarm causes or establish rates by scene.
+- The UI reports FAULT/CAUTION correctly and calls `clear_distance` estimated monitored range.
+  Rebuilt public deck/PDF and video carry that wording. Approved team information and photos
+  remain pending, as do human rehearsals.
+
+### What still prevents 75
+
+1. **Functionality and range:** edge objects STOP only at 5–10 m; organizer cubes at 43–53 m;
+   the largest organizer objects around 98–101 m. The ride retains 45 false events/38 STOP
+   episodes. The real obstacle evidence is around 56 m. Higher synthetic ranges do not establish
+   real 100–300 m reliability. Improving these requires a new reviewed detector candidate and
+   full acceptance checks, then an explicit replacement freeze.
+2. **Independent data:** obtain untouched real obstacle sequences and surveyed envelope labels;
+   preregister scoring and evaluate once. Q1 on the rail/sensor reference remains unanswered.
+   Additional permutations of the tuning recordings cannot satisfy this dependency.
+3. **Deployment and pitch:** verify the exact final CI and public archive, obtain approved team
+   photos/contacts, conduct two human rehearsals and submit the actual organizer form. These
+   are finite remaining actions, but their scores alone cannot bring the current detector to 75.
+4. **Runtime limits:** startup deliberately samples a large backlog. Recorded first-STOP offsets
+   exclude player disk preloading; final concurrent heavy-load behavior and organizer hardware
+   are unmeasured. The retained loaded cold failure used the node before its short-queue fix.
+
+**Кратко:** заморозка и воспроизводимость подтверждены, но оценка после новых проверок —
+**64,5/100**. Исправлены запуск с холодного диска и индикация; новый эксперимент выявил пропуски,
+поэтому критерий переноса на новые данные нельзя закрыть. Исторические оценки ниже сохранены
+со своими датами и условиями.
 
 ## 0. Re-judgement of 26.09 evening (integrated head `be5f5fc`): 62.5 / 100
 

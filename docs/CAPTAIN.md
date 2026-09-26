@@ -4,7 +4,7 @@
 > decisions; history of 16–24.09 in
 > [`archive/CAPTAIN_log_2026-09.md`](archive/CAPTAIN_log_2026-09.md).
 > **Audience:** P1, team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-26 evening, the re-judgement on `be5f5fc` (baseline `_ride_p3d`; SCORECARD §0) · **Status:** current
+> **Last verified:** 2026-09-26 night, delegated detector freeze and fresh validation (baseline `_ride_p3d`) · **Status:** current; earlier tables retain dated evidence
 
 ## Current delegated work — 26.09 night
 
@@ -14,16 +14,18 @@ are in [DETECTOR_FREEZE.md](DETECTOR_FREEZE.md). Candidate B is rejected (one ex
 7.1 m); the axis union stays off. The user confirmed on this pass that Q1 still has no answer.
 The new CI check rejects changed, missing or added frozen sources and changed gate evidence.
 
-Action 21 now has an implemented, reviewed node fix: a 20 s initial catch-up allowance closes when
-the first backlog drains, with the existing 5 s limit for later stalls. Header-stamp grading also
-fixes false dropped-frame reports when recording receive timestamps drift. Fresh ROS acceptance
-runs are being recorded before this action is marked complete. Detector results are unchanged.
+Action 21 is complete: the startup-only 20 s allowance closes after catch-up, later stalls keep
+the existing 5 s limit, and short queues preserve every frame. Header-to-header bag grading fixes
+false drop reports caused by receive-clock drift. Final idle cold/warm/clear and stock Fast DDS
+checks pass; [captures and limits](evidence/freeze_2026-09-26/README.md). Heavy-load behavior on
+the final node remains unmeasured. Detector results are unchanged.
 
-P4 has fixed a 72-case protocol for new combinations of organizer object points and seen empty
-backgrounds. It is a synthetic sensitivity experiment, not unseen-route validation. The complete
-cache and code manifest is committed before evaluating; every result is retained without tuning.
-The requested 75/100 is a target, not an achieved score; the independent re-judgement must follow
-the measured results. Earlier rows below retain their dated decisions and evidence.
+P4 completed its fixed 72-case synthetic study: 45 cases with any match, 544/2,458 visible frames,
+zero control matches; all results retained, no tuning. All 45 ride false events have scene
+annotations, including nine uncertain. The fresh full gate reproduces all 183 gated rows without
+waivers; 621 tests and 6 subtests pass. Deck, PDF, video and dashboard wording are refreshed.
+The requested 75/100 is not established; use the [current independent scorecard](SCORECARD.md#freeze-review-26-september-night).
+Earlier tables below retain their dated evidence; this section and §4 govern current status.
 
 ## 1. Role and dates
 
@@ -136,46 +138,38 @@ action 3b done (the merge click is the captain's), action 1 without branch prote
 | 22 | 27.09 | **settle the envelope-edge reference** with the organizers (Q1 of [`QUESTIONS.md`](QUESTIONS.md), sent 25.09, no answer yet): their objects are placed from the sensor axis (−0.24° to the rails), ReSense measures from the rails, so the two edge objects STOP only at 5–10 m and the outside box gets 6 false STOP frames from 142 m; without an answer, the limitation stays stated (README, ALGORITHM §6) | H | should |
 | 23 | 26.09 evening | **P3 / P4 completion pass** (the captain: complete all P3 and P4 work; EXPERIMENTS §1p): every cache rebuilt on another fresh machine, the strict gate with the ride and set F PASS with every row the same; P4's candidate B (`tracking.near_escalate_voxels` 8) passes the full gate and every acceptance check, changing only set O #4 (2 → 3 STOP frames, first STOP 7.1 m): **eligible, not shipped; the captain decides at the freeze** (ship = the config in three places + the baseline re-cut from the B gate run, no headline number moves); the union with the review fixes passes the full gate (#4 2 → 9) and stays off pending Q1 (action 22); +3° pitch measured per event, no candidate; the census on the head: no STOP within 10 m | H decides; A did the runs | should |
 
-## 4. Human-only checklist
+## 4. Remaining actions after detector freeze
 
-What only the captain (or a person the captain names) can close, as of the re-judgement of 26.09 evening
-(SCORECARD §0). Everything an agent can do in P1's and P2's lanes is done.
+The detector/config freeze and candidate-B decision are complete under the user's delegation
+([DETECTOR_FREEZE.md](DETECTOR_FREEZE.md)). The startup fix and strict message-timestamp grading
+are implemented and reviewed. On this machine, the final node passes idle cold/warm original-bag
+checks and the stock Fast DDS console; the raw evidence is in
+[evidence/freeze_2026-09-26](evidence/freeze_2026-09-26/README.md). The earlier loaded failure is
+retained there and belongs to the node before its short-backlog correction.
 
-- [ ] **declare the detector / config freeze** (action 18) and **the docs freeze** (action 19)
-- [ ] **decide the node's catch-up fix** (action 21): ship it before the upload (an agent
-  implements and proves it with the cold dry run) or leave the README's step 3 as the mitigation
-- [ ] **the image archive for the upload** (action 20): take `resense-image-1.0.0-<sha>` (`.tar.gz`
-  + `.sha256`) from the green `ci` run of the frozen commit, put it where a logged-out visitor can
-  download it, and `docker load` it once on a second machine; or push a `v1.0.0` tag and let
-  `release.yml` publish it (releases are deferred by your decision of 25.09: yours to lift)
-- [ ] **merge PR [pmixay/ReSense#12](https://github.com/pmixay/ReSense/pull/12)** (clean, green) or
-  name the branch commit in the upload
-- [ ] **the upload by 29.09 23:59** (target 18:00): the repository at the frozen commit, the archive
-  and its sha256, the video `docs/video/resense_overview.mp4`, the deck (C12)
-- [ ] **the private deck** (action 8): every member's photo and slide-2 data into
-  `docs/presentation/private/team.json`, then `scripts/build_deck.py --team` (it refuses gaps)
-- [ ] **Q1 / Q2 answers** (action 22): chase the organizers on the envelope-edge reference; file
-  the answers in `organizers/answers.md`
-- [ ] **the pitch** (C21, action 17): two rehearsals, the optional voice-over against the `.srt`,
-  the live remote demo from a second laptop (C19: Foxglove layout import checked by eye)
-- [ ] during the expertise 30.09–14.10: answer the organizers daily
+- [x] Fresh full gate, P4's fixed 72-case experiment, all 45 scene reviews and independent re-judgement.
+- [x] Refreshed public deck/PDF/video, corrected health banners and monitored-range wording.
+- [ ] Final CI on the exact commit, offline image archive/checksum, public download verification.
+  A detector freeze does not establish all detection criteria.
+- [ ] Merge PR #12 after that commit is green, or name the exact branch commit in the upload.
+- [ ] Obtain Q1/Q2 answers. The user confirmed Q1 is still unanswered on this pass; the axis union
+  remains off. No organizer answer is inferred from results on the tuning set.
+- [ ] Receive approved team details and original photos, then build the private deck. The public
+  clone contains placeholders; private files from another machine were not transferred by Git.
+- [ ] The captain submits the repository, image/checksum, video and deck by 29.09 23:59 (target 18:00).
+- [ ] People conduct two pitch rehearsals, the live remote demo and any voice-over; answer the
+  organizers during the expertise 30.09–14.10. Documentation does not substitute for these actions.
 
-- [ ] decide on P4's candidate B (`tracking.near_escalate_voxels` 10 → 8; eligible by P4's
-  rules, +1 STOP frame on set O #4 at 7 m, nothing else moves; action 23) and, when Q1 is answered,
-  on the envelope union (full gate PASS with the review fixes; EXPERIMENTS §1p)
+## 5. Release and submission
 
-Done and no longer on this list: PR #12 counts as reviewed; the §6 merge rules told; Q1–Q2 sent;
-C8 closed on the 4-core run (all 25.09).
+The 25.09 release deferral is superseded by the user's 26.09 instruction to complete the freeze
+and remaining captain work. Prepare `v1.0.0-rc1` from the final reviewed commit after its CI is
+green. The tag workflow builds from Git, saves/removes/loads the image, tests the loaded image
+offline and with stock DDS, publishes the archive/checksum, then downloads and verifies them.
+Record the resulting public link and exact commit. Do not label unmet detection criteria passed.
 
-## 5. Release and submission (deferred)
-
-- **Releases deferred** by the captain (25.09): the system is still in development; no tag or
-  release is planned now; deployment (image archive, clean-machine and offline dry run) is later.
-- `.github/workflows/release.yml` (with `scripts/release.sh`, `publish_release.sh`,
-  `verify_release.sh`, `release_meta.py`) stays, proven only up to CI, inert until a tag is pushed
-  (C13); the offline delivery itself: ARCHITECTURE "Deployment without internet".
-- **The submission is handled by the captain personally**, with all its links (C12);
-  `docs/SUBMISSION.md` was removed on 25.09.
+The captain's personal submission remains separate: it requires the organizer upload portal,
+all final links, approved team details and human confirmation that the form was submitted.
 
 ## 6. Freeze and merge rules
 

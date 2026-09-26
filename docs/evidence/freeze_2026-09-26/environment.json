@@ -1,0 +1,15 @@
+{
+  "platform": "Linux-6.8.0-142-generic-x86_64-with-glibc2.39",
+  "cpu_count": 4,
+  "python": "3.12.3",
+  "dependencies": {
+    "numpy": "1.26.4",
+    "scipy": "1.13.1",
+    "scikit_learn": "1.5.2",
+    "pyyaml": "6.0.2"
+  },
+  "native": "native (_resense_native.cpython-312-x86_64-linux-gnu.so)",
+  "git_commit": "e4c9fc50f0d83dfe51e1703d84e5e4ddb73a6f3a",
+  "freeze_source_sha256": "4c592ac91d2f5fba79a4693c0c8a57a5e246c88dd8a8cb00fc81c0c532a0ca2b",
+  "machine_note": "Fresh4-vCPU AMD Ryzen9 7950X3D VM,15GiB RAM; not organizers i7-9700E stand. Shared disk downloads during first warm/cold runs."
+}

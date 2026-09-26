@@ -13,13 +13,13 @@ This is a detector freeze; it does not declare the submission or deployment comp
 
 ## Acceptance and provenance
 
-The committed [full gate on the second machine](evidence/results/regression_gate_2026-09-26_head_fresh_machine.json)
-passed without `--allow`: all six recordings, the organizers' object recording, all 11,271 ride
-frames and set F straight are present. Every gated row equals the baseline. Its measured commit
-is `53b75d4c377d89a8051eb2ff9a7de4d135f8bb8b`; the seal generator verifies that every current frozen
-file has exactly the bytes of that measured commit. Reusing this record is an integrity and
-provenance check, **not a new replay of the data**. A subsequent fresh full run can replace the
-manifest's validation reference once it passes.
+The [fresh full gate](evidence/results/regression_gate_2026-09-26_freeze.json) passed on this
+machine without `--allow`: all six recordings, 1,510 organizer-object frames, all 11,271 ride
+frames and set F straight are present. Every gated row equals `_ride_p3d`; only informational
+latency rows differ. The measured commit is `1dccdec`; the seal generator verifies every frozen
+file against that commit. The earlier [second-machine gate](evidence/results/regression_gate_2026-09-26_head_fresh_machine.json)
+remains as an independent reproduction. Creating or verifying the manifest itself does not
+replay data; the linked fresh gate did.
 
 The default configuration file SHA256 is
 `c7ca5ad4f332b7025f66ab0addeb21025daf23a36aca4dbcc2d49fe5b8831f40`;
@@ -62,12 +62,14 @@ python scripts/detector_freeze.py verify
 
 ## Limits retained at the freeze
 
-The score of record remains 62.5/100 until re-judgement. Set O edge objects STOP only at 5–10 m;
+The current independent combined score is 64.5/100; the 75-point target is not met. Set O edge objects STOP only at 5–10 m;
 the ride has 45 false events and has no real obstacles. There is no unseen-route recall result.
 `clear_distance` estimates the monitored region capped by detected candidates; it can extend
 past objects that do not form a cluster. It must not be described as a guarantee of empty track.
 For the current evidence and output contract, use `STOP` and `nearest_distance`, with the health
-and warning outputs; see [SCORECARD §0](SCORECARD.md#0-re-judgement-of-2609-evening-integrated-head-be5f5fc-625--100).
+and warning outputs; see [the current SCORECARD](SCORECARD.md#freeze-review-26-september-night).
 
-The cold-burst node issue, public image archive, final CI and submission remain separate work.
+The node startup fix passes fresh idle cold/warm and stock-console checks; see
+[evidence](evidence/freeze_2026-09-26/README.md). The public image archive, final CI and submission
+remain separate work.
 Q1/Q2 answers, private team information and the human pitch are external dependencies.

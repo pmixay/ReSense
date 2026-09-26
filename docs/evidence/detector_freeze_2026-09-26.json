@@ -1,10 +1,10 @@
 {
   "schema": "resense-detector-freeze-v1",
   "status": "frozen",
-  "created_utc": "2026-09-26T19:36:34.557960+00:00",
+  "created_utc": "2026-09-26T20:02:51.495515+00:00",
   "authorization": "User delegated captain work and requested detector freeze on 2026-09-26.",
-  "source_commit": "b3f253546b722dcd42f792bb93d39ea905f67889",
-  "measured_commit": "53b75d4c377d89a8051eb2ff9a7de4d135f8bb8b",
+  "source_commit": "1dccdecb3f919ef411adfcec077e803364c9902d",
+  "measured_commit": "1dccdecb3f919ef411adfcec077e803364c9902d",
   "source_sha256": "4c592ac91d2f5fba79a4693c0c8a57a5e246c88dd8a8cb00fc81c0c532a0ca2b",
   "files": {
     "configs/default.yaml": "c7ca5ad4f332b7025f66ab0addeb21025daf23a36aca4dbcc2d49fe5b8831f40",
@@ -42,9 +42,9 @@
     "sha256": "bbe8d8d1f5f072a3c8c318e002ed736ec526121a2ada6bffdb033fbab2631eb1"
   },
   "validation": {
-    "path": "docs/evidence/results/regression_gate_2026-09-26_head_fresh_machine.json",
-    "sha256": "0f525d10cd0bf410ba9cbd74b85eb393c7ae665af49a145934a574c0e18b106e",
-    "measured_at": "2026-09-26T15:54:58+00:00",
+    "path": "docs/evidence/results/regression_gate_2026-09-26_freeze.json",
+    "sha256": "356f1b285efa95d2c609b9864f19a4363c9cf6e4b29af8009faf316ce2a097d2",
+    "measured_at": "2026-09-26T20:01:30+00:00",
     "kind": "committed full regression gate"
   },
   "decisions": {

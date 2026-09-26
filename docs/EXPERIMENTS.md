@@ -4,23 +4,43 @@
 > range, latency, FPS, hard cases and how the quality changed (spec §5 "Эксперименты").
 > **Audience:** jury, team · **Owner:** P3, P4 (content), P1 (structure, timing) · **Language:** EN,
 > summary RU
-> **Last verified:** 2026-09-26 against inherited P3d detector commit `fa18832` and its frozen
-> baseline; P4 reproduced available six-recording and set O rows but could not load the ride or
-> set F straight because `new_data` is not cached ·
-> **Status:** current
+> **Last verified:** 2026-09-26 night: complete fresh gate on all caches, frozen `_ride_p3d`
+> detector, original-bag node checks and the preregistered P4 study · **Status:** current
 
-**Кратко.** Здесь все измерения ReSense с датой и видом данных. По интегрированной версии P3d
-пять пустых записей дают 13 ложных событий; последний сохранённый результат поездки 20 минут —
-45 (3,5 на км), но в P4-перезапуске кеш поездки отсутствовал; человек на пути
-найден в 58 из 61 кадра с 11-го, предмет на рельсе — в 125 из 126 кадров после ухода человека,
-ошибка расстояния ≤ 0,23 м. На синтетических объектах организаторов (набор O) STOP получают все
-8 объектов в габарите, но два краевых объекта получают лишь 2 и 6 STOP-кадров, а верхний ящик —
-22 из 124 на P3c, а на P3d STOP удерживается на верхнем объекте 51 из 124 кадров; за 100 м есть
-только один STOP-кадр. Человек на 148–154 м подтверждён только на нашей синтетике. Независимая
-переоценка 26.09 (вечер) на интегрированной версии — 62,5/100 ([`SCORECARD.md`](SCORECARD.md) §0);
-все числа эталона `_ride_p3d` судья перемерил сам, с поездкой — шлюз PASS, каждая строка та же. Собственная
-оценка скорости поезда по лидару точна (ошибка 0,06–0,08 м/с), но даже точная скорость не
-улучшает проверку организаторов (§9), поэтому по умолчанию она выключена.
+**Кратко.** Заморозка детектора подтверждена полным прогоном: все 183 значения эталона совпали,
+включая поездку и набор F. Исправленная ROS-нода проходит холодный и тёплый запуск исходного бэга;
+детектор не менялся. Цель 75/100 пока не подтверждена: краевые объекты обнаруживаются лишь с
+5–10 м, а новый синтетический эксперимент выявляет много пропусков. Текущая переоценка:
+[SCORECARD](SCORECARD.md#freeze-review-26-september-night).
+
+## Freeze validation — 26 September night
+
+- **Full gate:** [raw result](evidence/results/regression_gate_2026-09-26_freeze.json), measured
+  commit `1dccdec`, default config, all six recordings, set O, all 11,271 ride frames and set F
+  straight. All 183 gated rows equal `_ride_p3d`; no worse/missing/waived rows. Sixteen latency
+  rows differ and are informational. [Compressed per-frame outputs](evidence/freeze_2026-09-26/gate_frames/).
+- **ROS startup and transport:** final node `0f808fe`, cold/warm obstacle first STOP +0.4 s,
+  decode+detect p95 36 ms, no recorded-message loss after catch-up settles; clear 0 alarms/p95
+  24 ms. Stock Fast DDS console passes both bags; one clear false alarm is retained. The first
+  loaded cold failure preceded the short-queue correction; final heavy-load behavior is unmeasured.
+  [Capture, machine and checker details](evidence/freeze_2026-09-26/README.md).
+- **Novel placements:** [fixed plan](evidence/results/p4_novel_plan_2026-09-26.json) pushed at
+  `1dccdec` before execution; six seen empty backgrounds × four organizer shapes × three lateral
+  offsets. [All 72 results](evidence/results/p4_novel_results_2026-09-26.json): 45 cases with any
+  match, 544/2,458 visible frames (22.1%), all injection-only, zero control matches. No case was
+  excluded and no tuning followed. This measures synthetic sensitivity; background and shape
+  sources were already seen, and the placements have no independently surveyed envelope truth.
+- **Ride review:** [45 events, eight contact sheets](evidence/results/p4_ride_scenes_2026-09-26/README.md),
+  20 near-sensor platform/station scenes, 16 tunnel, nine uncertain. These are visible near-scene
+  labels, not causes of the alarms 20–158 m ahead. Exposure by scene is unlabelled, so no per-scene
+  false-alarm rate is claimed.
+- **Integration:** 621 tests and 6 subtests pass, zero skips/deselections; seal verifies 27 files.
+  Current dashboard and media label monitored range as an estimate and GO as no obstacle detected.
+  [Presentation build evidence](evidence/presentation_2026-09-26/manifest.json).
+
+The [freeze decision](DETECTOR_FREEZE.md) keeps candidate B and the axis union off. Q1 remains
+unanswered. The gate confirms reproducibility of known performance; it does not close the unmet
+range, false-alarm or unseen-data criteria. Earlier sections retain the conditions of their runs.
 
 ## Current results (detector v0.6.3 with inherited P3d STOP keep and its 10 s cap, plus the P3 items of 25–26.09; node v0.6.4)
 

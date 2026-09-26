@@ -32,11 +32,11 @@ CORRIDOR = "#FFB000"
 GO = "#2ecc71"
 
 TEXT = {
-    "ru": {"stop": "STOP", "obstacle": "препятствие {d} м", "go": "GO", "clear": "путь свободен {d:.0f} м",
+    "ru": {"stop": "STOP", "obstacle": "препятствие {d} м", "go": "GO", "clear": "дальность контроля ≈ {d:.0f} м",
            "caution": "CAUTION", "label": "ПРЕПЯТСТВИЕ · {d} м", "envelope": "габарит поезда 2,1 × 3,0 м",
            "foot": "{name} · кадр {i} · реальные данные организаторов · без обучения на объектах",
            "inset": "крупно: {n} точек, высота {h} м"},
-    "en": {"stop": "STOP", "obstacle": "obstacle at {d} m", "go": "GO", "clear": "path clear {d:.0f} m",
+    "en": {"stop": "STOP", "obstacle": "obstacle at {d} m", "go": "GO", "clear": "estimated monitored range {d:.0f} m",
            "caution": "CAUTION", "label": "OBSTACLE · {d} m", "envelope": "train envelope 2.1 × 3.0 m",
            "foot": "{name} · frame {i} · the organizers' real data · no object training",
            "inset": "close-up: {n} points, {h} m tall"},

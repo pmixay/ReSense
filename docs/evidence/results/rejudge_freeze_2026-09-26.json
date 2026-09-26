@@ -1,0 +1,214 @@
+{
+  "schema": "resense-independent-section8-review-v1",
+  "date": "2026-09-26",
+  "reviewer": "independent_review agent",
+  "status": "reviewed evidence and passing full test run; final branch CI and distribution checks pending",
+  "scope": {
+    "specification": "docs/organizers/technical_specification_case05.txt, section 8",
+    "code_review": "b3f2535..1dccdec and current node, checker, freeze, study and presentation worktree changes",
+    "measured_detector_commit": "1dccdecb3f919ef411adfcec077e803364c9902d",
+    "frozen_source_sha256": "4c592ac91d2f5fba79a4693c0c8a57a5e246c88dd8a8cb00fc81c0c532a0ca2b",
+    "rubric_note": "Organizers name eight criteria but publish no numerical weights. These maxima are the team's fixed review rubric, not official organizer scoring.",
+    "method": "Scores were judged from the specification, implementation and measurement records. Previous score prose was not used as a scoring baseline. Passing a regression gate establishes reproducibility, not adequate obstacle detection."
+  },
+  "scores": [
+    {
+      "criterion": "8.1",
+      "name": "Functionality",
+      "maximum": 25,
+      "score": 14,
+      "reason": "A working end-to-end detector finds the real person and rail object at approximately 56 m and eventually reports all eight intended in-envelope organizer objects. Reliability is uneven: real labelled hits are 186/246, set O STOP hits are 384/801 visible object-frames, five empty recordings have 58 alarm frames and 13 track events, and the obstacle-free ride has 183 alarm frames and 45 track events. The novel-placement study also contains 27 cases with no target match. These results support a useful prototype but limited operational reliability.",
+      "evidence": [
+        "docs/evidence/results/regression_gate_2026-09-26_freeze.json",
+        "docs/evidence/results/p4_novel_results_2026-09-26.json",
+        "docs/evidence/freeze_2026-09-26/console_stock/clear_zero_alarm_check.txt"
+      ]
+    },
+    {
+      "criterion": "8.2",
+      "name": "Detection range",
+      "maximum": 15,
+      "score": 6,
+      "reason": "Real obstacle evidence is confined to 55.5-56.6 m. Organizer synthetic objects provide first STOPs at 98.0 m and 101.3 m for larger objects, 52.5/42.7 m for small central objects, 30.1 m for the hanging object, and only 5.2/10.3 m for edge objects. Set F reaches approximately 124-151 m for selected synthetic classes, but does not establish real-world 100-300 m detection. No reliable real obstacle result at 200 or 300 m is demonstrated.",
+      "evidence": [
+        "docs/evidence/results/regression_gate_2026-09-26_freeze.json"
+      ]
+    },
+    {
+      "criterion": "8.3",
+      "name": "Speed",
+      "maximum": 10,
+      "score": 8.5,
+      "reason": "The final node passes idle cold and warm Docker/ROS replays with decode-plus-detect p95 of 36 ms and zero recorded messages missed after the settle point. The clear run has p95 24 ms; stock-console obstacle playback has p95 37 ms and no post-settle losses. Cold-start first STOP is at +0.4 s of recording after the first processed frame. Startup still skips frames and takes several seconds to catch up; these figures exclude player preloading and do not measure end-to-end source age. The final node has not been tested under the earlier concurrent I/O load or on the organizers' i7-9700E stand.",
+      "evidence": [
+        "docs/evidence/freeze_2026-09-26/cold_idle/check.txt",
+        "docs/evidence/freeze_2026-09-26/cold_idle/cache_before.json",
+        "docs/evidence/freeze_2026-09-26/warm_final/check.txt",
+        "docs/evidence/freeze_2026-09-26/clear_final/check.txt",
+        "docs/evidence/freeze_2026-09-26/console_stock/obstacle_check.txt",
+        "docs/evidence/freeze_2026-09-26/environment.json"
+      ]
+    },
+    {
+      "criterion": "8.4",
+      "name": "Generalization",
+      "maximum": 15,
+      "score": 5.5,
+      "reason": "The geometric approach can transfer without object-class training, and perturbation, start-offset and paired placement experiments probe several failure modes. The new preregistered study has 45/72 cases with any target match and 544/2458 visible frames matched, with zero paired-control target matches. However, both background routes and source shapes were previously inspected. It also exposes strong shape and background dependence: only 5/18 big-above and 9/18 thin-hanging cases match. Placement has no surveyed rail-envelope truth and does not synchronize source motion, target bed height or destination ray sampling. There is still no untouched real-route obstacle recall result.",
+      "evidence": [
+        "docs/evidence/results/p4_novel_plan_2026-09-26.json",
+        "docs/evidence/results/p4_novel_results_2026-09-26.json",
+        "docs/evidence/results/p4_p3d_artifacts_2026-09-26/reference/offsets.json",
+        "docs/evidence/results/p4_p3d_artifacts_2026-09-26/reference/stress/5hz.json",
+        "docs/evidence/results/p4_p3d_artifacts_2026-09-26/setS/paired_summary.json"
+      ]
+    },
+    {
+      "criterion": "8.5",
+      "name": "Technical quality",
+      "maximum": 10,
+      "score": 9,
+      "reason": "The modular detector, ROS guards, native fallback, synchronized configuration, regression evidence and source seal make the system inspectable and reproducible. The new header-to-header bag matching correctly avoids receive-clock drift. The full fresh gate reproduces all 183 gated rows with no waivers, omissions or regressions. The completed full test run reports 621 passed plus 6 subtests, with zero failures, errors or skips; independent freeze/study tests also pass. This confirms the existing 9/10 technical assessment. The implementation still contains many interacting heuristics, and freshness during catch-up is reported as telemetry rather than incorporated into the decision contract. Exact-final branch CI remains pending.",
+      "evidence": [
+        "scripts/check_dry_run.py",
+        "scripts/detector_freeze.py",
+        "scripts/novel_placement_eval.py",
+        "ros2_ws/src/resense_ros/resense_ros/detector_node.py",
+        "docs/evidence/results/regression_gate_2026-09-26_freeze.json",
+        "docs/evidence/detector_freeze_2026-09-26.json",
+        "docs/evidence/freeze_2026-09-26/pytest_final.txt",
+        "docs/evidence/freeze_2026-09-26/pytest_final.xml"
+      ]
+    },
+    {
+      "criterion": "8.6",
+      "name": "Ease of launch",
+      "maximum": 10,
+      "score": 8.5,
+      "reason": "Docker build/run, automatic topic discovery, sequential bag switching, no-network runtime and an unmodified stock Fast DDS player/listener are supported by current replay evidence. Idle cold-disk behavior is now demonstrated rather than depending only on a prewarmed bag. Host networking and middleware/socket-buffer details still need attention; startup preloading is visible. A publicly downloadable final image archive and a verified final distribution were not available to this review.",
+      "evidence": [
+        "docker/Dockerfile",
+        "README.md",
+        "docs/evidence/freeze_2026-09-26/cold_idle/check.txt",
+        "docs/evidence/freeze_2026-09-26/console_stock/check.txt",
+        "docs/evidence/freeze_2026-09-26/console_stock/clear_check.txt",
+        "docs/evidence/freeze_2026-09-26/console_stock/obstacle_check.txt"
+      ]
+    },
+    {
+      "criterion": "8.7",
+      "name": "Team approach",
+      "maximum": 10,
+      "score": 9,
+      "reason": "The record explains hypotheses, rejected alternatives, unchanged defaults, accepted tradeoffs and failed experiments. The freeze preserves validated detector behavior. The new experiment fixes all 72 cases, source bytes, configuration and evaluator before execution and retains every miss and paired control. This is strong experimental discipline. Most detector development still reused the available recordings, so independent prospective evaluation remains incomplete.",
+      "evidence": [
+        "docs/DETECTOR_FREEZE.md",
+        "docs/evidence/results/p4_novel_protocol_2026-09-26.json",
+        "docs/evidence/results/p4_novel_plan_2026-09-26.json",
+        "docs/evidence/results/p4_p3d_candidate_decisions_2026-09-26.json"
+      ]
+    },
+    {
+      "criterion": "8.8",
+      "name": "Pitch",
+      "maximum": 5,
+      "score": 4,
+      "reason": "The dashboard, real Docker/ROS demonstration, overview video and rebuilt deck provide a clear problem-to-result presentation. Current UI wording correctly says no obstacle detected and labels monitored distance as an estimate; health faults no longer appear as a green clear banner. The final overview video was independently probed as a valid 170-second, 1920x1080 H.264 artifact at 25 fps. A live human pitch and demonstration on the organizers' control bag remain unobserved.",
+      "evidence": [
+        "web/index.html",
+        "web/foxglove_layout.json",
+        "docs/PRESENTATION.md",
+        "docs/presentation/ReSense_LCT2026.pdf",
+        "docs/video/resense_overview.mp4"
+      ]
+    }
+  ],
+  "total": 64.5,
+  "maximum": 100,
+  "code_review": {
+    "confirmed_new_blockers": [],
+    "checks_run_by_reviewer": [
+      "python3 scripts/detector_freeze.py verify: PASS before and after the fresh gate reference was installed; 27 files",
+      "/home/resense/.venv/bin/python -m pytest -q tests/test_detector_freeze.py tests/test_novel_placement.py: 20 passed, 6 subtests passed",
+      "Novel plan configuration equals the canonical default configuration after normalizing JSON tuple/list representation; code hashes match",
+      "Final overview video ffprobe: 170.000 seconds, H.264, 1920x1080, 25/1 fps"
+    ],
+    "limits": [
+      "Review found no confirmed blocker in the new freeze, startup queue, timestamp checker, paired-study or UI changes. This is not a safety certification.",
+      "Catch-up results can describe older recording time. node.catchup reports the state, while the watchdog measures time since processing activity; GO/STOP does not encode a source-age bound.",
+      "The seal covers detector source and build inputs. Node, launch, Docker, generated binaries and media require their separate checks."
+    ]
+  },
+  "fresh_gate": {
+    "path": "docs/evidence/results/regression_gate_2026-09-26_freeze.json",
+    "same_gated_rows": 183,
+    "regressions": 0,
+    "missing_rows": 0,
+    "waivers": 0,
+    "informational_latency_changes": 16
+  },
+  "full_test_run": {
+    "text_path": "docs/evidence/freeze_2026-09-26/pytest_final.txt",
+    "junit_path": "docs/evidence/freeze_2026-09-26/pytest_final.xml",
+    "reviewer_action": "Read the final text and JUnit evidence; did not repeat the full suite.",
+    "passed": 621,
+    "subtests_passed": 6,
+    "junit_tests": 627,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "reported_deselections": 0,
+    "wall_seconds": 79.16,
+    "warnings": 5,
+    "warning_note": "Python tarfile deprecation warnings in the archive-unpack tests.",
+    "score_effect": "No numerical change: confirms the existing technical quality score of 9/10."
+  },
+  "novel_placement": {
+    "path": "docs/evidence/results/p4_novel_results_2026-09-26.json",
+    "cases": 72,
+    "cases_with_any_match": 45,
+    "cases_without_match": 27,
+    "visible_frames": 2458,
+    "target_matched_frames": 544,
+    "injected_only_matched_frames": 544,
+    "control_matched_frames": 0,
+    "per_shape": {
+      "small_center": {"cases": 18, "cases_matched": 17, "cases_missed": 1, "matched_frames": 230, "visible_frames": 702},
+      "small_on_rail": {"cases": 18, "cases_matched": 14, "cases_missed": 4, "matched_frames": 211, "visible_frames": 646},
+      "big_above": {"cases": 18, "cases_matched": 5, "cases_missed": 13, "matched_frames": 58, "visible_frames": 612},
+      "thin_hanging": {"cases": 18, "cases_matched": 9, "cases_missed": 9, "matched_frames": 45, "visible_frames": 498}
+    },
+    "interpretation": "Sensitivity to novel synthetic combinations on seen backgrounds. These fractions are not real holdout recall or independently surveyed in-gauge recall. Any-match case counts do not establish sustained detection."
+  },
+  "evidence_caveats": [
+    "The retained cold_under_load failure preceded the short-backlog preservation fix. It is not a demonstrated failure of the final node. Comparable load has not been tested on the final node.",
+    "The stock-console clear recording produces one false STOP at 53 m. It passes the preexisting allowance of at most two alarm frames and fails the retained stricter zero-alarm probe.",
+    "ROS first-STOP offsets and settle times are recording time after the first processed frame. They exclude player startup and disk preloading.",
+    "Strict bag-loss checks cover the measured post-settle interval, not an assertion that every recording frame was processed.",
+    "clear_distance can exceed a missed object's range; the corrected UI semantics improve honesty, not detector recall. The raw earlier audit records 54 target overclaims including 46 with GO.",
+    "The full gate reproduces known strengths and known misses. It does not validate unseen control data."
+  ],
+  "pending_at_review": [
+    "Final branch CI after all evidence and presentation commits",
+    "Public final image archive and verification of its distribution",
+    "Final PR merge and final branch acceptance record",
+    "Organizer Q1/Q2 answers, unseen control-bag evaluation and human pitch"
+  ],
+  "conditional_distribution_update": {
+    "status": "not earned; excluded from current total",
+    "conditions": [
+      "All required CI checks succeed on the exact final revision being assessed.",
+      "The final image is traceable to the reviewed runtime source and configuration.",
+      "The archive workflow records successful build, save, image removal, load and offline replay.",
+      "The public archive is downloaded independently and its checksum is verified against the published checksum."
+    ],
+    "criterion": "8.6",
+    "current_score": 8.5,
+    "conditional_score": 9,
+    "conditional_total": 65,
+    "reason": "A verified distributable image removes the remaining demonstrated distribution gap in the offline launch path. Middleware setup and startup behavior still prevent full marks. Exact-final CI confirms technical reproducibility but would not, by itself, raise the existing 9/10 technical score.",
+    "other_criteria_change": 0,
+    "runtime_change_policy": "If runtime source or configuration changes before these checks, review the change and repeat affected acceptance evidence before applying this conditional update."
+  },
+  "later_update_policy": "Record later CI, archive and merge evidence explicitly. Administrative completion alone does not change functionality, range or generalization scores. The conditional distribution update requires every stated condition and is not part of the current 64.5/100 total."
+}

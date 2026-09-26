@@ -1,0 +1,24 @@
+[INFO] [launch]: All log files can be found below /root/.ros/log/2026-09-26-19-52-18-249673-13065453ab65-22
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [detector_node-1]: process started with pid [26]
+[detector_node-1] [INFO] [1790452338.605030933] [resense_detector]: sensor mount: forward=-y left=+x up=+z roll/pitch/yaw=0.0/0.0/0.0 deg; auto-calibration on
+[detector_node-1] [INFO] [1790452338.614951211] [resense_detector]: ReSense detector listening on /lidar_points, /sensing/lidar/hesai128/pointcloud (+ auto-discovery); input reliability auto; per-frame kernels: native (_resense_native.cpython-310-x86_64-linux-gnu.so); resense 1.0.0
+[detector_node-1] [INFO] [1790452346.628776043] [resense_detector]: input 1: /lidar_points (frame_id=hesai_lidar, 307200 points)
+[detector_node-1] [INFO] [1790452346.629555625] [resense_detector]: static TF resense_lidar -> hesai_lidar (identity)
+[detector_node-1] [INFO] [1790452346.660032604] [resense_detector]: mount calibration: pending - 
+[detector_node-1] [INFO] [1790452346.664513605] [resense_detector]: frame 1: clear; axis y=-0.06 R=9934; 0.5 fps; latency mean 33 / p95 33 / max 33 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up)
+[detector_node-1] [INFO] [1790452346.748554245] [resense_detector]: 1.0 s of recording waiting: catching up, one frame every 0.3 s of recording
+[detector_node-1] [INFO] [1790452347.003002337] [resense_detector]: caught up in 0.3 s: 9 frames processed, 13 skipped, at most 1.5 s of recording behind
+[detector_node-1] [INFO] [1790452348.622138766] [resense_detector]: frame 27: clear; axis y=-0.01 R=-125156; 13.3 fps; latency mean 24 / p95 27 / max 31 ms; input period 100 ms; dropped 15 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790452350.623462486] [resense_detector]: frame 47: warning; axis y=-0.01 R=-21263; 10.0 fps; latency mean 22 / p95 26 / max 26 ms; input period 100 ms; dropped 15 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790452352.631236733] [resense_detector]: frame 67: warning; axis y=-0.04 R=-1536; 10.0 fps; latency mean 21 / p95 26 / max 26 ms; input period 100 ms; dropped 15 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790452354.615640039] [resense_detector]: frame 86: warning; axis y=-0.00 R=-1150; 9.6 fps; latency mean 25 / p95 27 / max 29 ms; input period 100 ms; dropped 15 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790452356.641354528] [resense_detector]: frame 107: warning; axis y=+0.05 R=-1291; 10.4 fps; latency mean 26 / p95 30 / max 30 ms; input period 100 ms; dropped 15 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790452358.628468122] [resense_detector]: frame 127: warning; axis y=+0.03 R=-1582; 10.1 fps; latency mean 25 / p95 29 / max 30 ms; input period 100 ms; dropped 15 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790452360.624714944] [resense_detector]: frame 147: warning; axis y=+0.01 R=-1305; 10.0 fps; latency mean 24 / p95 28 / max 30 ms; input period 100 ms; dropped 15 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790452362.622429802] [resense_detector]: frame 167: clear; axis y=-0.04 R=-1145; 10.0 fps; latency mean 24 / p95 28 / max 31 ms; input period 100 ms; dropped 15 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790452362.823418713] [resense_detector]: mount calibration: identity - configured mapping confirmed
+[detector_node-1] [INFO] [1790452364.629711409] [resense_detector]: frame 187: warning; axis y=-0.05 R=-11184; 10.0 fps; latency mean 24 / p95 25 / max 28 ms; input period 100 ms; dropped 15 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790452366.622868509] [resense_detector]: frame 207: warning; axis y=-0.02 R=104382; 10.0 fps; latency mean 23 / p95 25 / max 25 ms; input period 100 ms; dropped 15 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790452368.623161101] [resense_detector]: frame 227: warning; axis y=-0.02 R=-44671; 10.0 fps; latency mean 23 / p95 26 / max 29 ms; input period 100 ms; dropped 15 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790452370.615494256] [resense_detector]: frame 234: FAULT: no LiDAR frame for 1.0 s (> 0.5 s): path not monitored; 3.5 fps; latency mean 24 / p95 24 / max 24 ms; input period 100 ms; dropped 15 (13 skipped by the catch-up)

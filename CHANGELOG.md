@@ -21,9 +21,13 @@ frames, 13 km, no obstacles).
   and a CI integrity check. Candidate B is not shipped; the envelope union stays off pending Q1.
   The node now allows 20 s only for a new recording's initial catch-up, then returns to the
   existing 5 s backlog limit. The bag acceptance checker matches each message's header timestamp,
-  fixing false loss reports from receive-clock drift. P4 registered 72 new object/background
-  combinations before evaluation. Fresh validation and the score are recorded separately;
-  none of these changes claims better detector recall.
+  fixing false loss reports from receive-clock drift. P4 completed 72 preregistered object/background combinations:
+  45 with any match, 544/2,458 visible frames, zero paired-control matches; no tuning followed.
+  All 45 ride false events have scene reviews. Fresh full gate: 183 unchanged values, no waivers.
+  Final idle cold/warm original-bag replays and stock DDS pass; the earlier loaded failure is
+  retained. 621 tests and 6 subtests pass. Dashboard FAULT/CAUTION banners and estimated-range
+  wording are corrected; deck, PDF and video rebuilt. Independent scores and remaining quality
+  gaps are in SCORECARD; these changes do not claim improved detector recall.
 
 
 - **Re-judgement and the P1 / P2 completion pass (26.09 evening):** two independent judges

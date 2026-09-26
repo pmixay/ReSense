@@ -3,11 +3,11 @@
 > **Purpose:** the dashboard, the RViz and Foxglove layouts, the label tool, their headless checks
 > and the video recipes.
 > **Audience:** team, jury (demo) · **Owner:** P2 · **Language:** EN
-> **Last verified:** 2026-09-26 (re-judgement: the 13 `web/demo` tests and `check_dashboard.py` pass in headless Chromium) · **Status:** current
+> **Last verified:** 2026-09-26 (14 `web/demo` tests pass in headless Chromium, including health-only CAUTION and FAULT banners) · **Status:** current
 
 Everything the jury sees: the RViz layout the launch file loads, a Foxglove layout for remote
 demos, a browser dashboard that works live (rosbridge) and offline (replay of `results.jsonl`),
-the scripts that verify the dashboard headlessly (13 tests in `web/demo/`, CI job `web`), and the
+the scripts that verify the dashboard headlessly (14 tests in `web/demo/`, CI job `web`), and the
 video recipes.
 
 | file | what |
@@ -19,12 +19,12 @@ video recipes.
 | [`demo/check_dashboard.py`](demo/check_dashboard.py) | Playwright + headless Chromium: loads the JSONL into the dashboard, plays it, asserts the banner, screenshot / video |
 | [`demo/check_foxglove_live.py`](demo/check_foxglove_live.py) | Checks layout topics and receives detector messages through a running Foxglove bridge (`pip install websockets`) |
 | [`demo/capture_gallery.py`](demo/capture_gallery.py) | Playwright + Chromium: refreshes the dashboard screenshots in `docs/images` from the built-in demo and the recorded real status stream |
-| [`demo/test_web.py`](demo/test_web.py) | pytest for the layouts, the JSONL format and the browser replay (13 tests): `python -m pytest -q web/demo` |
+| [`demo/test_web.py`](demo/test_web.py) | pytest for the layouts, the JSONL format and the browser replay (14 tests): `python -m pytest -q web/demo` |
 | `../ros2_ws/src/resense_ros/rviz/resense.rviz` | RViz2 layout (P2-owned, loaded by `detector.launch.py rviz:=true` and the compose `rviz` service) |
 
 ![current ReSense dashboard showing a STOP decision in the built-in synthetic UI demo](../docs/images/dashboard-stop.png)
 
-Current UI captures: [GO / path clear](../docs/images/dashboard-clear.png), [CAUTION / object near
+Current UI captures: [GO / no obstacle detected](../docs/images/dashboard-clear.png), [CAUTION / object near
 the gauge](../docs/images/dashboard-caution.png), [STOP / confirmed
 obstacle](../docs/images/dashboard-stop.png) and [the cab view on the real `doubleT_obstacle` node
 stream](../docs/images/dashboard-cab-real.png). [The scheme and side sections](../docs/images/dashboard-plan.png)
@@ -70,12 +70,12 @@ What is shown:
 
 | widget | source in the status JSON |
 |---|---|
-| banner **ПУТЬ СВОБОДЕН / ВНИМАНИЕ / ПРЕПЯТСТВИЕ 55.6 м** | `obstacle`, `warning`, `nearest_distance` |
-| **cab view** (driver's-eye schematic, the camera of `scripts/hero_view.py` without the point cloud): rails and the 2.1 × 3.0 m train envelope along the fitted axis and bed profile, the stretch verified clear in green (to the obstacle, else `clear_distance`), a red stop zone at the obstacle, confirmed objects as 3D boxes with a distance chip, a zoomed close-up of the nearest one, decision chip and legend; the tunnel outline is only a depth cue | `track.center/yaw/curvature/floor_coef/floor_range/rail_offset/axis_valid`, `detections[]`, `warnings[]`, `clear_distance`, `decision`, `health` |
+| banner **ПРЕПЯТСТВИЕ НЕ ОБНАРУЖЕНО / ВНИМАНИЕ / ПРЕПЯТСТВИЕ 55.6 м / ОШИБКА**; includes health-only CAUTION and FAULT | `decision`, `obstacle`, `warning`, `nearest_distance`, `health` |
+| **cab view** (driver's-eye schematic, the camera of `scripts/hero_view.py` without the point cloud): rails and the 2.1 × 3.0 m train envelope along the fitted axis and bed profile, the estimated monitored range in green (to the obstacle, else `clear_distance`), a red stop zone at the obstacle, confirmed objects as 3D boxes with a distance chip, a zoomed close-up of the nearest one, decision chip and legend; the tunnel outline is only a depth cue | `track.center/yaw/curvature/floor_coef/floor_range/rail_offset/axis_valid`, `detections[]`, `warnings[]`, `clear_distance`, `decision`, `health` |
 | top-down canvas (100 / 150 / 250 m): track axis, ±1.4 m band (the ±1.05 m train envelope plus the 0.35 m advisory margin), untrusted range shaded, red gauge boxes, orange advisory boxes with distance and confidence | `track.center/yaw/curvature/axis_valid`, `detections[]`, `warnings[]` |
 | timeline (last 30 s): nearest gauge obstacle (red), nearest advisory object (orange) | `nearest_distance`, `warnings[].distance` |
 | detector card: counts, axis, radius, trusted range, points, per-stage timing | `track`, `n_points`, `n_corridor`, `timing_ms` |
-| decision and health: GO / CAUTION / STOP / FAULT, verified-clear distance, visibility, rail lock, calibration | `decision`, `clear_distance`, `health`, `mount` |
+| decision and health: GO / CAUTION / STOP / FAULT, estimated monitored range, visibility, rail lock, calibration | `decision`, `clear_distance`, `health`, `mount` |
 | **ROS node card**: `latency_ms`, `fps`, `frames`, `dropped_frames`, `input_period_ms` | `node` (only in the node's messages; a replay file says "no node stats") |
 | run summary: alarm events/frames, warning frames, nearest object, peak detector time | all loaded replay frames |
 | alarm log: one line per alarm frame (id, lateral offset, size, points, confidence), one line when the alarm ends | `detections[]` |
@@ -83,6 +83,11 @@ What is shown:
 Health warnings: latency above 100 ms (the 10 Hz period) and fps below 9 turn orange; when
 `dropped_frames` **grows** the node card flashes red for 3 s and the log gets a line, and it
 keeps a pale-yellow background while the count is above zero.
+
+`GO` means no obstacle was detected. The green range is an estimate from visibility and the track
+model, capped by eligible detected candidates; objects that form no such candidate may be missed
+inside it. The interface labels it «Дальность контроля» and shows this limitation beside the
+value. It does not grant permission to move a train.
 
 ### Verify headlessly (Playwright)
 
@@ -97,7 +102,7 @@ The Playwright package version must match the Chromium build it drives:
 `pip install playwright && python -m playwright install --with-deps chromium` fetches a matching
 browser, or pass `--chromium <binary>`.
 
-`check_dashboard.py` asserts `ПУТЬ СВОБОДЕН` at the start and `ПРЕПЯТСТВИЕ` with a distance in
+`check_dashboard.py` asserts `ПРЕПЯТСТВИЕ НЕ ОБНАРУЖЕНО` at the start and `ПРЕПЯТСТВИЕ` with a distance in
 40–125 m during playback, then seeks to the frame with the nearest obstacle for the screenshot. If
 Playwright's own browser is missing it falls back to any Chromium under `$PLAYWRIGHT_BROWSERS_PATH`
 (or `--chromium <binary>`). `make_demo_run.py` needs open3d (ray casting); its output is exactly the
@@ -123,7 +128,8 @@ repository root.
   auto-discovers the topic, so the detections and the corridor cloud show up regardless.
 * Colours: raw cloud by height (−2.5…3.5 m, grey scale), corridor candidates orange, gauge
   boxes red, advisory boxes orange, corridor edges green, status text
-  (`PATH CLEAR` / `OBSTACLE 55.6 m`) 1.2 m tall at 8 m ahead of the sensor.
+  (`GO: NO OBSTACLE DETECTED` / `STOP: OBSTACLE 55.6 m`) 1.2 m tall at 8 m ahead of the sensor.
+  The archived Docker/RViz video predates this wording correction.
 * Camera: orbit view 18 m behind and 15 m above the sensor looking down the track (the sensor
   frame's forward axis is −Y), ~0–90 m in the frame; saved views *Top-down 150 m* and
   *Driver's seat* in the *Views* panel.
@@ -161,7 +167,7 @@ and visual import of the layout in Foxglove still need a person at the demo setu
 What the audience sees: a 3D panel (dark, camera behind the sensor looking down the track, both
 raw-cloud topics, `/resense/corridor_points` in orange, `/resense/markers` with the boxes, labels,
 corridor edges and the status text), an indicator of `/resense/decision` (green *GO*, orange
-*CAUTION*, red *STOP*, violet *FAULT*) next to the *PATH CLEAR* / *OBSTACLE* indicator of
+*CAUTION*, red *STOP*, violet *FAULT*) next to the *NO OBSTACLE DETECTED* / *OBSTACLE* indicator of
 `/resense/obstacle_detected`, plots of `/resense/nearest_distance` (−1 = none) and
 `/resense/clear_distance`,
 `/resense/latency_ms` and `/resense/fps` over the last 30 s, and the raw `/resense/status` JSON.

@@ -2,7 +2,7 @@
 
 > **Purpose:** gallery of the browser dashboard's captures and where their data comes from.
 > **Audience:** jury, team · **Owner:** P2 · **Language:** EN
-> **Last verified:** 2026-09-24, `ecc0f9a` · **Status:** current
+> **Last verified:** 2026-09-26, regenerated after the output-label correction · **Status:** current
 
 These screenshots show the current Russian-language browser dashboard in its three decision states.
 Its Moscow Sans typography and primary red come from the supplied Metro style archive. The 16:9
@@ -10,7 +10,7 @@ layout keeps the status and cab view on one screen; additional metrics open in t
 The red header hides on downward page scroll. The **cab
 view** (Вид из кабины) under the banner is the driver's-eye picture of
 [`scripts/hero_view.py`](../../scripts/hero_view.py) drawn from the status JSON alone: rails and the
-2.1 × 3.0 m train envelope along the fitted track axis and bed profile, the verified-clear stretch
+2.1 × 3.0 m train envelope along the fitted track axis and bed profile, the estimated monitored range
 in green, confirmed objects as boxes with their distance and a close-up of the nearest one. The
 tunnel outline is a schematic depth cue; no point cloud reaches the browser.
 
@@ -22,9 +22,9 @@ The demo values are synthetic UI demonstration data, not evaluation evidence.
 Real-data renders remain in [`docs/img/`](../img/), and real-data videos remain in
 [`docs/video/`](../video/).
 
-## ДВИЖЕНИЕ — путь свободен
+## GO — препятствие не обнаружено
 
-![ReSense 16:9 dashboard showing a clear path, GO decision and cab view with 145 m verified clear](dashboard-clear.png)
+![ReSense 16:9 dashboard showing no obstacle detected and an estimated monitored range of 145 m](dashboard-clear.png)
 
 ## ВНИМАНИЕ — объект рядом с габаритом
 
@@ -40,7 +40,7 @@ Real-data renders remain in [`docs/img/`](../img/), and real-data videos remain 
 
 ## Cab view on real data
 
-![Cab view of the doubleT_obstacle run: STOP, the object on the right rail at 56.1 m, the path verified clear from 3 to 56 m and a close-up](dashboard-cab-real.png)
+![Cab view of the doubleT_obstacle run: STOP, the object on the right rail at 56.1 m, estimated monitored range capped at the object and a close-up](dashboard-cab-real.png)
 
 The cab view replaying the detector node's own `/resense/status` stream from the Docker dry run on
 the organizers' `doubleT_obstacle` bag

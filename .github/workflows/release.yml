@@ -131,6 +131,10 @@ jobs:
           test "$(label org.opencontainers.image.revision)" = "$COMMIT"
           docker run --rm --network none -w / -e VERSION="$VERSION" "resense:$TAG" \
             python3 -c "import os, resense; assert resense.__version__ == os.environ['VERSION'], resense.__version__; print('resense', resense.__version__)"
+          # Native compilation is optional in setup.py. Require the measured performance path
+          # in this loaded runtime artifact, independently of the tools-image CI tests.
+          docker run --rm --network none -w / "resense:$TAG" \
+            python3 -c 'from resense import _native as n; assert n.AVAILABLE and n.enabled(), n.status(); print(n.status())'
           echo "resense:$TAG loaded from the archive: the built layers, tag $TAG, commit $COMMIT"
       - name: no internet - the loaded image, node and a uid-1000 player in separate containers on an --internal network
         run: IMAGE="resense:$TAG" OUT=out/release_internal scripts/internal_net_test.sh "$BAGS/smoke_bag" "$BAGS/smoke_bag2"
