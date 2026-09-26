@@ -488,6 +488,48 @@
         "verdict": "fails as on 00143b0: doubleT_platform 4 / 4 / 1 -> 7 / 4 / 2, five recordings 58 / 13 / 16 -> 61 / 13 / 17; big_above first STOP 101.3 -> 109.5 m, long_low 82.2 -> 83.8 m"
       },
       "to_the_full_gate": "B"
+    },
+    "full_gate_B": {
+      "code": "5dfc679 (the merged head; recorded as 49ea9e8, a docs-only commit on top) with --set tracking.stop_keep_signature=true --set tracking.stop_keep_thin=1; native path, receive stamps, --jobs 1, wall 782 s",
+      "command": "python scripts/regression_gate.py --cache /data/cache --jobs 1 --baseline docs/evidence/results/regression_baseline_2026-09-26_ride_p3c.json --set tracking.stop_keep_signature=true --set tracking.stop_keep_thin=1",
+      "json": "docs/evidence/results/regression_gate_2026-09-26_range.json",
+      "gate": "PASS: no gated row worse; 1 gated row better (set O big_above STOP frames 22 -> 51)",
+      "rows_changed": {
+        "set_O.objects.big_above.stop_frames": [
+          22,
+          51
+        ],
+        "set_O.objects.big_above.held_from_m": [
+          23.9,
+          111.4
+        ],
+        "set_O.inside_stop_frames": [
+          355,
+          384
+        ],
+        "set_O.alarm_frames": [
+          388,
+          415
+        ],
+        "ride.alarm_frames (information row)": [
+          183,
+          192
+        ]
+      },
+      "unchanged": "ride alarm events 45 and STOP episodes 38; five recordings 58 / 13 / 16 (every recording); doubleT_obstacle first alarm frame 11, hits 186 (58 / 128 / 125), false events 0; set O first STOP of every object, outside objects (#5 0, #7 6 false STOP frames), background 3 / 2; set F straight every kind (person 6/6 151.0 m 6 false, 1 m box 6/6 123.9 m 12, 0.5 m box 1/6 51.9 m 0, trolley 6/6 151.4 m 5, cable 6/6 98.9 m 3)",
+      "ride_frames_added": {
+        "how": "the ride replayed in the gate's 8 pieces with the flags off on the same code (scratch ride_run.py, eval_real.run_piece), per frame against the gate's own per-frame output",
+        "count": "183 -> 192: 9 frames, all extensions of two STOP tracks that are STOPs with the flags off too (no new track, event or episode)",
+        "new_data_192_0018-0023": "6 frames: track 514 at 113-115 m, a false STOP of the default detector (frames 0015-0017); a `floating`-demoted cluster of it (6 voxels, 1.2 x 0.6 x 0.2 m, 0.7 m up) counted inside by stop_keep_signature kept its zone vote above 60 % for six more frames of `beyond_axis` / outside-envelope hits",
+        "new_data_208_0042-0044": "3 frames: track 253 at 98-100 m, a false STOP of the default detector; a scan line (4.7 x 2.5 m, 0.02 m tall, 0.13 m above the rail head: a flat bed patch, 7 voxels) continued it through stop_keep_thin in 0042, then ordinary clusters of it kept it reported in 0043-0044",
+        "stop_hold_elsewhere": "the other ride frames with a 'stop_hold' detection (new_data_52_0017-0018, 81_0027-0028, 112_0003) were STOPs with the flags off too (the same track, or another obstacle in the frame)"
+      },
+      "set_O_distance": "big_above's kept STOP frames report its labelled distance within 0.34 m but frame 663 (+1.55 m: a missed frame held at its predicted distance)"
     }
+  },
+  "decision_round_1": {
+    "written_at_utc": "2026-09-26T10:20:00Z",
+    "verdict": "NOT SHIPPED",
+    "why": "B passes every gated row and the set O minimum gain (big_above held from 23.9 -> 111.4 m, +87.5 m) but fails the pre-registered ride condition: ride alarm frames 183 -> 192 (+9, two existing false STOPs extended; events and episodes unchanged). A range rule must not add false STOP frames on the ride. A does not meet the minimum gain (big_above 22 -> 39 STOP frames, held-from unchanged); C fails the cheap stage (doubleT_platform STOP episodes 1 -> 2). Every flag stays off; the default output is identical to 208152d."
   }
 }
