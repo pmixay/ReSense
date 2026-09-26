@@ -1,5 +1,7 @@
 """STOP hysteresis against shape signatures and scan-line frames (26.09, P3 range; EXPERIMENTS §1o,
-docs/evidence/results/p3_range_2026-09-26.json). Both flags are off by default.
+docs/evidence/results/p3_range_2026-09-26.json). On since 26.09 (round 2, candidate B10):
+``stop_keep_signature`` true, ``stop_keep_thin`` 1, ``stop_keep_min_voxels`` 10; the tests below set
+the flags they test explicitly.
 
 ``tracking.stop_keep_signature``: a track reported as an obstacle (STOP) in the previous frame
 counts a hit whose cluster has enough voxels inside the strict gauge but was demoted only by a
@@ -43,6 +45,7 @@ def _cl(x: float, zone: str = "gauge", reason: str = "", n_gauge: int = 20, thin
 
 def _run(seq, **kw):
     """seq: per frame a (clusters, thin clusters) pair; returns (reported, zone) of track 1."""
+    kw = {"stop_keep_signature": False, "stop_keep_thin": 0, "stop_keep_min_voxels": 0, **kw}
     tr = Tracker(TrackingConfig(**kw))
     out = []
     for cls, thin in seq:
@@ -56,10 +59,13 @@ def _approach(n, x0=100.0, step=2.0):
     return [x0 - step * k for k in range(n)]
 
 
-def test_defaults_off():
+def test_shipped_defaults():
+    """On since 26.09 (round 2, candidate B10): the signature keep, the scan-line keep of STOP
+    tracks (mode 1), the 10-voxel bar."""
     for cfg in (DetectorConfig(), DetectorConfig.from_yaml("configs/default.yaml")):
-        assert cfg.tracking.stop_keep_signature is False
-        assert cfg.tracking.stop_keep_thin == 0
+        assert cfg.tracking.stop_keep_signature is True
+        assert cfg.tracking.stop_keep_thin == 1
+        assert cfg.tracking.stop_keep_min_voxels == 10
 
 
 def test_signature_does_not_take_a_confirmed_stop_down():
@@ -116,7 +122,7 @@ def test_thin_continues_a_stop_track_only_in_mode_1():
     assert all(r == (True, "gauge") for r in on[5:])
     # never starts a track
     only_thin = [([], [_cl(x, thin=True)]) for x in _approach(10)]
-    tr = Tracker(TrackingConfig(stop_keep_thin=2))
+    tr = Tracker(TrackingConfig(stop_keep_thin=2, stop_keep_min_voxels=0))
     for cls, thin in only_thin:
         tr.update(cls, ego_shift=0.0, frame_dt=0.1, thin=thin)
     assert not tr.tracks
@@ -191,12 +197,13 @@ def _sequence(widths, cfg, x0=45.0, step=1.0):
     return out
 
 
-def _cfg(sig: bool, thin: int = 0, escalation: bool = False) -> DetectorConfig:
+def _cfg(sig: bool, thin: int = 0, escalation: bool = False, bar: int = 0) -> DetectorConfig:
     """The keep flags as given; the near escalation (``tracking.near_escalate_voxels``, where the
     code has it) off unless ``escalation``, so that it does not decide the box within 35 m."""
     cfg = DetectorConfig()
     extra = {} if escalation or not hasattr(cfg.tracking, "near_escalate_voxels") else {"near_escalate_voxels": 0}
-    cfg.tracking = replace(cfg.tracking, stop_keep_signature=sig, stop_keep_thin=thin, **extra)
+    cfg.tracking = replace(cfg.tracking, stop_keep_signature=sig, stop_keep_thin=thin, stop_keep_min_voxels=bar,
+                           **extra)
     return cfg
 
 
@@ -237,10 +244,10 @@ def test_raycast_elevated_structure_never_a_stop_stays_advisory():
 
 
 @pytest.mark.synthetic
-def test_raycast_flags_off_equal_defaults():
+def test_raycast_defaults_equal_the_shipped_candidate():
     widths = [1.6] * 6 + [2.4] * 6
     a = _sequence(widths, DetectorConfig())
-    b = _sequence(widths, _cfg(False, 0, escalation=True))
+    b = _sequence(widths, _cfg(True, 1, escalation=True, bar=10))
     assert [(r.obstacle, r.warning, r.nearest_distance) for r in a] == [(r.obstacle, r.warning, r.nearest_distance) for r in b]
 
 
@@ -249,7 +256,7 @@ def test_min_voxels_bar_round_2():
     keeps a STOP only with at least that many strict voxels. Round 1's ride cases: a `floating`
     cluster of 6 voxels and a bed scan line of 7 do not keep a STOP with the bar at 10; the box at
     the envelope top (16-66 strict voxels) does."""
-    assert TrackingConfig().stop_keep_min_voxels == 0
+    assert TrackingConfig().stop_keep_min_voxels == 10
     xs = _approach(18)
     few = [([_cl(x)], []) for x in xs[:6]] + [([_cl(x, "warning", "floating", n_gauge=6)], []) for x in xs[6:]]
     many = [([_cl(x)], []) for x in xs[:6]] + [([_cl(x, "warning", "elevated", n_gauge=20)], []) for x in xs[6:]]
@@ -267,7 +274,6 @@ def test_min_voxels_bar_round_2():
 def test_raycast_box_at_the_top_held_with_the_bar():
     """Ray-cast, round 2's candidate (signature keep, scan-line keep 1, bar 10): the box at the
     envelope top is held on every frame after its confirmation, as without the bar."""
-    cfg = _cfg(True, 1)
-    cfg.tracking = replace(cfg.tracking, stop_keep_min_voxels=10)
+    cfg = _cfg(True, 1, bar=10)
     res = _sequence([1.6] * 7 + [2.4] * 13, cfg)
     assert [k for k, r in enumerate(res) if not r.obstacle] == [0, 1, 2, 3]
