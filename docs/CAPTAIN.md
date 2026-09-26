@@ -4,14 +4,14 @@
 > decisions; history of 16–24.09 in
 > [`archive/CAPTAIN_log_2026-09.md`](archive/CAPTAIN_log_2026-09.md).
 > **Audience:** P1, team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-26 night, further detector quality cycle (baseline `_ride_p3d`) · **Status:** final acceptance on hold; earlier tables retain dated evidence
+> **Last verified:** 2026-09-26 night, completed quality cycle; code `d480b13` · **Status:** baseline sealed; final acceptance and publication on hold; earlier tables retain dated evidence
 
 ## Current delegated work — 26.09 night
 
 **Latest user decision: release publication is on hold.** No release tag has been created or
 pushed. The user asked for a deeper review of system weaknesses and whether detector development
-should continue before a final freeze, then authorized the work. The [active quality cycle](QUALITY_CYCLE_2026-09-26.md) records
-the measured weaknesses and acceptance conditions. Keep the sealed baseline and its evidence; do not publish
+should continue before a final freeze, then authorized the work. The [completed quality cycle](QUALITY_CYCLE_2026-09-26.md) records
+the measured weaknesses, candidate decisions and unmet acceptance conditions. Keep the sealed baseline and its evidence; do not publish
 an RC or treat it as final quality acceptance. Review priorities are detection coverage, envelope
 uncertainty, false alarms, output freshness and independent evaluation.
 
@@ -24,17 +24,26 @@ Node and dashboard freshness controls are implemented: explicit live/replay cloc
 invalid-range suppression, consumer expiry and held STOP. All 15 functional checks pass. The
 combined candidate passes cold, warm, bounded-load and stock Fast DDS switch checks, with zero
 post-settle message loss in every capture. **Standalone clear fails with one raw detector STOP
-at 53 m against the registered zero-alarm limit.** The same geometry appears in older baseline
-captures; causal diagnosis continues. Neither its older occurrence nor successful image loading
-waives this failure. The local archive is marked as a failed candidate for review.
+at 53 m against the registered zero-alarm limit.** Exact raw-sequence replay reproduces the
+failure in both P3d and M2. The completed diagnosis identifies a trust increase after boundary
+loss and a merged fragment that changes the column's apparent width. T1 removes the two traced
+false STOPs but fails its range-retention gates (50% and 93.4%, versus the required 95%); it is
+rejected. The failed combined-image archive remains a review artifact, not accepted detector evidence.
+
+The current P3d core plus freshness code, `d480b1330491da838d6fb4996e34e37b3c060915`, passes
+all six jobs in [CI run 36275557220](https://github.com/pmixay/ReSense/actions/runs/36275557220).
+The loaded runtime archive passes explicit replay/freshness checks and asserts that native
+kernels are available and enabled. These synthetic CI checks do not close the original-bag
+clear failure. Download and local source/native verification of this exact CI archive are
+pending separately from public publication (§4); the combined M2 archive has different source.
 
 P4 traced the exact target points and histories of all 45 ride false events; 14 causes remain
 unresolved. P3 traced all organizer-object frames and all 72 placement cases. M2 preserves all
 146 enforced gate metrics and all original placement results; its combined code passes 668 tests
 and six subtests. Its monitoring change still leaves 36 GO diagnostic overclaims and adds no
 detection recall. The public presentation retains the earlier dated detector evidence; approved
-team identities/photos and human rehearsals are pending. The requested 75/100 is not established;
-use the [independent scorecard](SCORECARD.md).
+team identities/photos and human rehearsals are pending. The current provisional independent
+aggregation is 64/100; the requested 75/100 is not established. Use the [independent scorecard](SCORECARD.md).
 Earlier tables below retain their dated evidence; this section and §4 govern current status.
 
 ## 1. Role and dates
@@ -148,19 +157,34 @@ action 3b done (the merge click is the captain's), action 1 without branch prote
 | 22 | 27.09 | **settle the envelope-edge reference** with the organizers (Q1 of [`QUESTIONS.md`](QUESTIONS.md), sent 25.09, no answer yet): their objects are placed from the sensor axis (−0.24° to the rails), ReSense measures from the rails, so the two edge objects STOP only at 5–10 m and the outside box gets 6 false STOP frames from 142 m; without an answer, the limitation stays stated (README, ALGORITHM §6) | H | should |
 | 23 | 26.09 evening | **P3 / P4 completion pass** (the captain: complete all P3 and P4 work; EXPERIMENTS §1p): every cache rebuilt on another fresh machine, the strict gate with the ride and set F PASS with every row the same; P4's candidate B (`tracking.near_escalate_voxels` 8) passes the full gate and every acceptance check, changing only set O #4 (2 → 3 STOP frames, first STOP 7.1 m): **eligible, not shipped; the captain decides at the freeze** (ship = the config in three places + the baseline re-cut from the B gate run, no headline number moves); the union with the review fixes passes the full gate (#4 2 → 9) and stays off pending Q1 (action 22); +3° pitch measured per event, no candidate; the census on the head: no STOP within 10 m | H decides; A did the runs | should |
 
-## 4. Remaining actions after detector freeze
+## 4. Current completion and remaining actions
 
-The detector/config freeze and candidate-B decision are complete under the user's delegation
-([DETECTOR_FREEZE.md](DETECTOR_FREEZE.md)). The startup fix and strict message-timestamp grading
-are implemented and reviewed. On this machine, the final node passes idle cold/warm original-bag
-checks and the stock Fast DDS console; the raw evidence is in
-[evidence/freeze_2026-09-26](evidence/freeze_2026-09-26/README.md). The earlier loaded failure is
-retained there and belongs to the node before its short-backlog correction.
+The [P3d baseline seal](DETECTOR_FREEZE.md) and candidate-B decision are complete. The seal
+records unchanged detector behavior and a fresh full gate; **final quality acceptance remains
+on hold**. The completed quality cycle accepted the freshness controls but no replacement
+detector. Its combined M2/node image fails the standalone clear-bag zero-alarm criterion.
+Earlier startup and cold/warm measurements remain in their dated evidence packets; they do
+not replace this later failure or establish acceptance of the current root image.
 
-- [x] Fresh full gate, P4's fixed 72-case experiment, all 45 scene reviews and independent re-judgement.
-- [x] Refreshed public deck/PDF/video, corrected health banners and monitored-range wording.
-- [ ] Final CI on the exact commit, offline image archive/checksum, public download verification.
-  A detector freeze does not establish all detection criteria.
+- [x] Preserve the baseline seal and fresh strict gate: all 146 enforced metrics in 199 comparison rows pass.
+- [x] Complete P4's 72-case experiment, all 45 false-target traces, missed-object diagnosis,
+  exact clear-failure attribution and independent re-judgement. M1, A1, D1 and T1 are rejected;
+  M2 passes offline checks but remains unaccepted and unmerged after the combined runtime failure.
+- [x] Implement and test node/dashboard freshness, startup handling and original-header message grading.
+- [x] Refresh the public deck/PDF/video against their dated P3d evidence; correct health banners
+  and monitored-range wording. Private team content and human rehearsals remain below.
+- [x] Exact code revision `d480b1330491da838d6fb4996e34e37b3c060915`: all six jobs pass in
+  [CI run 36275557220](https://github.com/pmixay/ReSense/actions/runs/36275557220), including
+  loaded runtime native-kernel assertions and synthetic replay with required freshness.
+- [ ] Download that CI runtime archive and checksum; record local offline loading, imported
+  source hashes and enabled native kernels. Keep it as a current-source review artifact;
+  preserve the older local `latest` image. Local verification receipt is pending.
+- [ ] Close the remaining detector quality gates, including the clear-bag failure, sustained
+  detection, false alarms and monitored-range overclaims; independently rejudge any accepted
+  improvement. The current 64/100 does not meet the 75/100 target.
+- [ ] Publish an image/archive link and verify the public download logged out **only after new
+  user authorization**. Publication and release tags remain prohibited; a CI artifact requires
+  GitHub login and does not complete this item.
 - [ ] Merge PR #12 after that commit is green, or name the exact branch commit in the upload.
 - [ ] Obtain Q1/Q2 answers. The user confirmed Q1 is still unanswered on this pass; the axis union
   remains off. No organizer answer is inferred from results on the tuning set.
