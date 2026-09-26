@@ -17,6 +17,7 @@ video recipes.
 | [`foxglove_layout.json`](foxglove_layout.json) | Foxglove Studio layout (3D + plots + indicator + status), see "Remote demo with Foxglove" |
 | [`demo/make_demo_run.py`](demo/make_demo_run.py) | synthetic approach sequence → `out/demo_run.jsonl` in the `resense run --out` format |
 | [`demo/check_dashboard.py`](demo/check_dashboard.py) | Playwright + headless Chromium: loads the JSONL into the dashboard, plays it, asserts the banner, screenshot / video |
+| [`demo/check_foxglove_live.py`](demo/check_foxglove_live.py) | Checks layout topics and receives detector messages through a running Foxglove bridge (`pip install websockets`) |
 | [`demo/capture_gallery.py`](demo/capture_gallery.py) | Playwright + Chromium: refreshes the dashboard screenshots in `docs/images` from the built-in demo and the recorded real status stream |
 | [`demo/test_web.py`](demo/test_web.py) | pytest for the layouts, the JSONL format and the browser replay (13 tests): `python -m pytest -q web/demo` |
 | `../ros2_ws/src/resense_ros/rviz/resense.rviz` | RViz2 layout (P2-owned, loaded by `detector.launch.py rviz:=true` and the compose `rviz` service) |
@@ -146,6 +147,17 @@ Then in Foxglove Studio (desktop app or https://app.foxglove.dev): **Open connec
 WebSocket → `ws://<demo host>:8765`**, then **Layout → Import from file →
 `web/foxglove_layout.json`**.
 
+With the player running, check the connection and topic wiring from the demo machine:
+
+```bash
+python web/demo/check_foxglove_live.py --url ws://127.0.0.1:8765
+```
+
+On 25.09 this check passed against a live `foxglove_bridge` and `roundT_doubleT` bag: all 11
+layout topics were advertised and messages arrived on decision, status, corridor points and
+markers. The bridge uses the `foxglove.sdk.v1` WebSocket subprotocol. The second-laptop connection
+and visual import of the layout in Foxglove still need a person at the demo setup.
+
 What the audience sees: a 3D panel (dark, camera behind the sensor looking down the track, both
 raw-cloud topics, `/resense/corridor_points` in orange, `/resense/markers` with the boxes, labels,
 corridor edges and the status text), an indicator of `/resense/decision` (green *GO*, orange
@@ -156,10 +168,9 @@ corridor edges and the status text), an indicator of `/resense/decision` (green 
 
 Known limits:
 
-* **Not yet tested against a live `foxglove_bridge`**; it parses and uses only documented panel
-  keys (3D: `topics` keyed by name with `visible`; Plot: `paths[].value` / `timestampMethod`;
-  Indicator: `path` + `rules`). If a panel comes up empty after import, re-pick its topic in the
-  panel settings. The 3D panel follows `resense_lidar` (the node's static TF).
+* **Visual import remains unchecked**; the live protocol and topic paths passed the check above.
+  If a panel comes up empty after import, re-pick its topic in the panel settings. The 3D panel
+  follows `resense_lidar` (the node's static TF).
 * **Bandwidth**: the raw cloud is 8 MB (120° window) to 24 MB (360°, `doubleT_obstacle`) per
   frame at 10 Hz. Over a remote link uncheck
   `/lidar_points` / `/sensing/lidar/hesai128/pointcloud` in the 3D panel and keep
@@ -179,8 +190,11 @@ all four are silent:
   driver's seat with the envelope, STOP decision, distance and close-up;
 * [`doubleT_obstacle_offline.mp4`](../docs/video/doubleT_obstacle_offline.mp4) — top and side
   views of every frame;
-* [`dashboard_doubleT_obstacle.mp4`](../docs/video/dashboard_doubleT_obstacle.mp4) — dashboard
-  replay of that run, recorded before the current UI (earlier design; re-record with recipe 2).
+* [`dashboard_current.mp4`](../docs/video/dashboard_current.mp4) — 11.7 s clip of the current
+  dashboard replaying the real `doubleT_obstacle` run at 2× speed; the browser check observed a
+  STOP near 55.5 m;
+* [`dashboard_doubleT_obstacle.mp4`](../docs/video/dashboard_doubleT_obstacle.mp4) — earlier UI
+  design, kept for comparison.
 
 The recipes below reproduce the offline and dashboard clips.
 
