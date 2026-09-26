@@ -1884,6 +1884,23 @@ this run without its gate block. `ls docs/evidence/results/regression_baseline_*
 LC_ALL=C sort | tail -n 1` picks it (VM_GUIDE §4.4). The same run against it
 (`--from-json`): PASS, every row the same.
 
+*Re-review of the fixes* [synthetic and real frames, 26.09; the same safety reviewer, on
+`ed03bc2`]: rail start CLEAN, near escalation (A + D) NON-BLOCKING, edge axis CLEAN as shipped
+(off). Each fix only narrows a rule or keeps more clusters, so none adds a way to remove or delay
+a STOP against `bd67fb0`.
+* Rail start with `rail_start_min_ref` 0.06: the finding (file 2818, frames 12–15) is still fixed;
+  19 real-frame cases (the organizers' 0.3 × 0.3 × 0.1 box on each rail at 3.0 / 3.5 / 3.9 m,
+  fresh and appearing at frame 20, yawed 45°, shifted 12 cm; a brick; a bar along the rail head; a
+  cube flush against the gauge face 4 cm above the rail head) give the same first STOP frame and
+  STOP count with the rule on and off, and no object cluster is marked.
+* The union with the rails-only fallback (union on): the two edge-line scenes 19 → 19 and 16 → 16
+  STOP frames, a 2.5 m line stretch 20 → 20.
+* Left open, not blocking: (1) if the union is ever turned on, a union part that passes the
+  oversize split but took in a stretch of edge line is still judged by the shape rules on that
+  part; a complete fix applies the shape rules to the rails-only part. (2) A blob kept by D that is
+  itself a clean obstacle still takes over an overlapping low or hanging object: the STOP stays,
+  on that blob, so the reported distance or track can change for a few frames.
+
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 
 ### 2a. Day-1 numbers (v0.3, 26 frames of `roundT_doubleT`, every 10th, synthetic objects)
