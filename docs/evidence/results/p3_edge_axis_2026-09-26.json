@@ -1,0 +1,68 @@
+{
+ "schema": "resense-p3-item-v1",
+ "key": "edge_axis",
+ "date": "2026-09-26",
+ "owner": "P3 (detection quality; detector-rule decisions delegated by the captain)",
+ "question": "Independent judge A, 26.09, action 7: the organizers place their edge-test objects from the SENSOR AXIS, which runs at -0.24 deg to the rails in cloud_with_fake_obj; ReSense measures the envelope from the RAILS (ALGORITHM §3.1, §6 'The edge tests are ambiguous'). Does measuring the envelope from the sensor axis, or a UNION (inside if inside either the rail envelope or the axis envelope), win #4 (0.3 m cube at the edge, advisory) and #6 (2 x 2 m box at the edge, missed) without adding STOPs on #5 / #7, the background or the ride? Limited to straight track and the near field, where the two references agree. The organizers' Q1 on the edge reference is unanswered.",
+ "measurement_head": {
+  "code": "bd67fb0 (configs/default.yaml sha256 eee8acabdbe92e7d...), native path, the gate's receive stamps, every frame of set O",
+  "how": "a fresh Detector over the 1 510 cached frames; the object points of every frame are the organizers' appended points (intensity 1, ring 0) within 0.3 m of the object's label box; per object and frame: lateral from the rails (the detector's corridor coordinate dy) and from the sensor axis (Y of the processed frame: the mount calibration of set O is 'identity', so this is the sensor's X axis, the frame the organizers placed the objects in), height above the detector's rail head, membership in the 2.1 x 3.0 m envelope polygon (any point; >= 3 points with the growing edge margin = 'core3'), the cluster holding the points and the decision matched by scripts/score_fake_objects.py. Frames = the object's visible and plausible frames (as the gate).",
+  "rail_axis_offset": "c(X) = the rail axis minus the sensor axis at range X (m): 0-10 m -0.05, 10-20 m -0.09, 20-30 m -0.14, 30-40 m -0.18, 40-50 m -0.23, 50-60 m -0.28, 60-70 m -0.32 (medians over the edge-object frames); rail yaw -0.15 ... -0.41 deg (median -0.28), |curvature| <= 6.2e-5 /m (straight). The axis envelope reaches 0.05-0.27 m further LEFT than the rail envelope within 50 m; #4 and #6 are on the left, #5 and #7 on the right",
+  "objects": {
+   "#4 small_edge_inside (0.3 m cube, hanging 1.0-1.4 m up, intent inside)": {
+    "centre_within_50m": "1.15 m from the rails, 1.01 m from the sensor axis (median): the organizers put its centre on the envelope edge; from the axis it spans 0.83-0.97 ... 1.04-1.23 m",
+    "0-50 m (26 frames)": "inside from the rails 16, from the axis 26 (core3 12 / 26); decision STOP 0, CAUTION 25 (reason floating: its outermost point is 1.04-1.23 m from the axis and 1.17-1.42 m from the rails, beyond floating_free_max_dy 0.95 m either way), GO 1",
+    "50-100 m (27)": "inside from the rails 0, from the axis 27 (core3 0 / 3); GO 27 (2-9 points a frame)",
+    "100-260 m (30)": "inside from the rails 0, from the axis 21; GO 30",
+    "all (83)": "inside from the rails 16, from the axis 74; STOP 0, CAUTION 25, GO 58"
+   },
+   "#5 small_outside_near (0.3 m cube hanging 1.0-1.4 m up, intent outside)": {
+    "centre_within_50m": "-1.15 m from the rails, -1.31 m from the sensor axis: from the axis its inner face is 1.13-1.27 m off, outside by 0.08-0.22 m",
+    "0-50 m (25)": "inside from the rails 16, from the axis 0; STOP 0, CAUTION 24, GO 1",
+    "50-100 m (27)": "inside from the rails 27, from the axis 0; GO 27",
+    "100-260 m (60)": "inside from the rails 55, from the axis 0; GO 60",
+    "all (112)": "inside from the rails 98, from the axis 0; STOP 0, CAUTION 24, GO 88"
+   },
+   "#6 big_edge_inside (2 x 2 x 2 m box on the bed, intent inside)": {
+    "position": "its face towards the train spans Y 0.96-2.96 m from the sensor axis at 30 m (inside the edge by ~0.09 m), 1.11-3.1 m from the rails (outside by ~0.06 m)",
+    "0-50 m (26)": "inside from the rails 8, from the axis 24 (core3 7 / 20); STOP 0, CAUTION 0, GO 26. The part of the box inside the advisory corridor (a strip 0.3-0.45 m wide, ~2 m tall, mean 1.25-1.34 m from the rails) is dropped as a wall (cluster.wall_min_height 1.9, wall_min_lateral 1.2) in most frames and is advisory ('warning', 0 gauge voxels) in the others; in its last 3 frames (6.2-2.2 m) it is a gauge cluster, too late to be confirmed",
+    "50-100 m (25)": "inside from the rails 0, from the axis 22; GO 25",
+    "100-260 m (74)": "inside from the rails 0, from the axis 47; GO 74",
+    "all (125)": "inside from the rails 8, from the axis 93; STOP 0, CAUTION 0, GO 125"
+   },
+   "#7 big_outside (2 x 2 x 2 m box, intent outside)": {
+    "centre_within_50m": "-2.32 m from the rails, -2.48 m from the sensor axis",
+    "0-50 m (24)": "inside from the rails 1, from the axis 0; GO 24",
+    "50-100 m (25)": "inside from the rails 20, from the axis 0; CAUTION 18, GO 7",
+    "100-260 m (55)": "inside from the rails 37, from the axis 0; STOP 6 (the gate's false STOP frames, 142 m), CAUTION 25, GO 24",
+    "all (104)": "inside from the rails 58, from the axis 0; STOP 6, CAUTION 43, GO 55"
+   }
+  },
+  "reading": "Measured from the sensor axis the four edge tests are exactly what the organizers intended at every range (#4 on the edge, #6 inside, #5 and #7 outside: 74 / 93 frames inside, 0 / 0). Measured from the rails they are not (#4 16, #6 8 frames inside; #5 98, #7 58). What each variant can change: #5 and #7 lie on the side where the axis envelope is NARROWER than the rail envelope, so a union adds nothing there by construction; #4 and #6 lie on the widened side. Two rules besides the envelope decide #4 and #6: #4 is demoted as floating whatever the reference (outermost point 1.04-1.23 m from the axis > 0.95 m), and #6's in-corridor strip is dropped as a wall whenever its mean lateral exceeds 1.2 m (from the axis it is ~1.18-1.19 m, borderline). A union of the membership alone therefore cannot win #4, and wins #6 only where its cluster survives and confirms (5 hits)."
+ },
+ "preregistered": {
+  "written_at_utc": "2026-09-26T07:10:03Z",
+  "before_any_result": "No candidate code exists and no candidate has been run. Known before this file: the HEAD measurement above (scratch script, set O only).",
+  "region": "Both candidates act only where the two references agree: the frame has the rail pair in the near range (track.rail_slabs > 0) and |track.curvature| <= gauge.axis_union_max_curvature = 2e-4 /m (R >= 5 km, straight track: the rails' estimate on set O is <= 6.2e-5); per point, range_min <= X <= gauge.axis_union_range = 50 m (near field) and |c(X)| <= gauge.axis_union_max_offset = 0.30 m, where c(X) = track.center_y(X) is the rail axis in the processed frame, whose X axis is the sensor axis when the mount calibration applies no yaw (always below calibration.min_yaw_deg = 3 deg). 0.30 m is below the 0.35 m advisory margin, so the union never reaches beyond the rail advisory corridor. On a curve the sensor axis leaves the track as X^2 / 2R (0.6 m at 50 m on R 2 km): the curvature bound excludes curves, the offset bound whatever is left.",
+  "flags": "gauge.axis_union (0 = off, the default and byte-identical output; 1 = candidate A; 2 = candidate B), gauge.axis_union_range 50.0, gauge.axis_union_max_offset 0.30, gauge.axis_union_max_curvature 2e-4",
+  "candidates_in_order": {
+   "A": {
+    "flags": {"gauge.axis_union": 1},
+    "rule": "strict-envelope membership of a corridor candidate = membership measured from the rails (edge margin included, as now) OR, inside the region, membership of (y_axis = dy + c(X), h) in the same polygon with the same edge margin. Nothing else changes: the candidates (the rail advisory corridor already contains the region's axis envelope), every lateral, signature and distance stay measured from the rails."
+   },
+   "B": {
+    "flags": {"gauge.axis_union": 2},
+    "rule": "inside the region the corridor coordinate itself is re-measured on the side towards which the sensor axis lies off the rail axis (s = -sign c(X), e = |c(X)|, u = s * dy >= 0): u' = max(u - e, u * W / (W + e)), W = the envelope half-width 1.05 m; the other side and everything outside the region unchanged. Continuous and monotone; strict membership is then exactly the union (edge margin applied to u'); beyond W + e the lateral is the one from the sensor axis (u - e), so the advisory corridor also extends by e on that side, and the cluster lateral, the infrastructure and signature rules (wall 1.2 m, floating 0.95 m, ...), the hanging stage and the clear-distance cap read the re-measured coordinate. The bed template, the low-object stage and the ego-speed texture keep the rail coordinate."
+   }
+  },
+  "excluded": "The axis-only envelope (replace the rails by the sensor axis in the near field) is not a candidate: on the side where the axis envelope is narrower it gives up up to 0.3 m of the rail envelope, i.e. the space the train actually sweeps (it follows the rails), so it can lose a real object by construction; its per-frame decisions are the 'from the axis' counts above. A change of floating_free_max_dy (the only way to win #4) is a different rule and is not tried here.",
+  "ship_rule": "A candidate ships only if (1) on set O #4 and #6 together gain STOP frames and neither loses any; (2) NO new STOP frame on #5, #7 or the background (background alarm frames and track ids not higher); (3) the full gate (python scripts/regression_gate.py --cache /data/cache --jobs 1 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_p3b.json) exits 0 with no gated row worse; (4) every safety condition holds. If both pass, the one with more #4 + #6 STOP frames ships; a tie ships A (the smaller change).",
+  "safety_conditions": [
+   "doubleT_obstacle: labelled hits per label (person_crossing, object_on_rail, object_on_rail_from_frame_75) not fewer and the first alarm frame not later (gate rows)",
+   "set O: every inside object's STOP frames not fewer and its first STOP not nearer / later (gate rows)",
+   "set F straight (the gate's rows): per kind, detected sequences not fewer, median first confirmation not shorter, false detections not higher",
+   "set F on gentle curves of the ride (files 5,16,45,97,100,137, kinds person,trolley,box1.0, start 220, 110 frames, lateral -0.6:0.6, seed 0, legacy placement, place bed, speeds docs/extended_dataset_intake.json; the recipe of p3_far_switch_2026-09-25.json): per kind, detected sequences not fewer and the median first confirmation not shorter than the defaults on the same run, false detections not higher"
+  ],
+  "order_of_runs": "(0) flag off: set O frame by frame identical to the HEAD run above (timing excluded); (1) cheap stage: the six recordings and set O through the gate machinery (a cache with only those seven, --allow 'ride.*' --allow 'set_F_straight.*'), A then B; a candidate that fails the set O part of the ship rule or a gated row there stops; (2) the chosen candidate: set F gentle curves (defaults and candidate), then the full gate. Time box: whatever the state, the result is committed by 15:30 UTC."
+ }
+}
