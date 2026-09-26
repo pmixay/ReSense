@@ -1,0 +1,59 @@
+{
+  "schema": "resense-quality-candidate-v1",
+  "candidate": "D1_full_context",
+  "registered_utc": "2026-09-26T20:53:31.943809+00:00",
+  "stage": "proposal; must be committed before implementation or measurement",
+  "baseline_source_sha256": "4c592ac91d2f5fba79a4693c0c8a57a5e246c88dd8a8cb00fc81c0c532a0ca2b",
+  "hypothesis": "A corridor crop can turn a compact object into a flat scan line or an elevated/floating signature. Recovering full-cloud connected context may restore evidence while rejecting fragments connected to extended infrastructure.",
+  "diagnostic_examples": [
+    "Set O frame616:42 exact object returns span1.77m vertically; corridor cluster is5 points with zero observed height,4 strict voxels; retained only for STOP continuation.",
+    "Set O frame470: edge cube has49 source points,24 voxels,4 strict voxels; compact0.26x0.32x0.26m, floating-demoted.",
+    "Novel placements include thin and floating/elevated misses in multiple backgrounds; model-relative membership is diagnostic, not surveyed truth."
+  ],
+  "touched_files": [
+    "resense/context.py (new)",
+    "resense/detector.py (context hook)",
+    "tests/test_full_context.py (new)"
+  ],
+  "eligibility": [
+    "Only current-frame corridor clusters: kind empty, original thin true OR original reason floating/elevated.",
+    "Original strict support n_gauge >= cluster.gauge_min_points; original reason must be empty/floating/elevated. Never column, overhead, edge, wall_face, retro, beyond_axis, beyond_height_ref.",
+    "Original candidate distance <= both current axis-valid and height-valid ranges; accumulation count must equal1.",
+    "Original non-thin zone-gauge candidates and already reported output objects are never downgraded or otherwise edited."
+  ],
+  "construction": [
+    "Seed with original cluster.points_idx in the mount-corrected full input cloud before corridor crop.",
+    "Compact extent L is existing cluster.oversize_split_max_length (3m); require L>0. This single bound applies to each XYZ span; no search or new object-specific dimensions.",
+    "Use production range transform f(p)=p/(1+norm(p)/range_scale), production voxelize and cluster_labels with unchanged cluster config.",
+    "Compute R=max(seed point norm)+sqrt(3)*L, s=range_scale, e=eps+2*sqrt(3)*voxel. Let U=R/(1+R/s). If U+e>=s, reject unresolved. Otherwise B=e/(1-(U+e)/s)^2 bounds physical reach of a normalized neighbour, including voxel-cell padding.",
+    "Query full-cloud points inside the seed XYZ bounding box expanded by L+B on every face. Cluster that query with production voxelize/cluster_labels.",
+    "Require every seed point to have the same non-noise component label. Use all raw points of that component as context. Reject if any XYZ component span>L or >cluster.max_extent.",
+    "Boundary guard: reject if any component point is within B of a query-box face. Do not accept a component whose unknown continuation could lie outside the bounded query.",
+    "Recompute context lateral/height against the unchanged track model. Reject existing hard infrastructure, retro, column, overhead, edge or wall_face signatures on full context. No trust/geometry exclusion may be overridden."
+  ],
+  "promotion": [
+    "Require full-context observed Z span>=existing cluster.min_height.",
+    "Only then expose original thin candidate to normal tracking with thin=false, or change original floating/elevated candidate zone to gauge and clear its demotion reason.",
+    "Keep original points_idx, centroid, bbox, distance, strict voxel counts and confidence score: full context supplies evidence validity only. Keep all confirmation, tracking and keep rules unchanged.",
+    "No query may create an obstacle without original strict support. No source labels, object identity, source frame numbers, ground truth or synthetic-match data enter detector behavior."
+  ],
+  "acceptance": {
+    "central_protocol": "quality_cycle_2026-09-26_protocol.json, all global gates apply",
+    "benefit": "At least2 intended-inside object families improve sustained STOP distance>=10m OR longest missed approach>=20%, across at least2 background groups with independently checked geometry; otherwise partial/ineligible.",
+    "nonregression": "All183 baseline gate values present with no worse rows; outside/background false STOPs no higher; all72 novel cases retained with no lost whole case or per-shape matched-frame count.",
+    "uncertainty_cost": "At most5percentage points extra CAUTION per empty recording/ride; median estimated range>=0.95 baseline.",
+    "runtime": "p95 decode+detect<=100ms through ROS; report added context timing and query sizes. Runtime failure rejects the candidate.",
+    "raw_cache": "Score raw bags alongside caches; report every changed object and false-alarm metric."
+  },
+  "required_tests": [
+    "realistic compact target clipped by envelope top recovers context",
+    "floating compact in-envelope target vs connected extended infrastructure",
+    "true compact target touching long structure stays baseline behavior if context unresolved",
+    "query boundary rejects unresolved continuation",
+    "all current gauge detections unchanged",
+    "columns, retro and unsupported geometry never promoted",
+    "no strict support never promotes",
+    "empty/noise seeds fail closed"
+  ],
+  "selection": "One fixed variant. No threshold retuning after results; retain and reject failed trial. D1 remains separate from P4 association candidate A1."
+}
