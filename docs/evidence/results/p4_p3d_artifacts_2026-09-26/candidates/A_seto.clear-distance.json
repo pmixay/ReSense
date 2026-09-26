@@ -1,0 +1,124 @@
+{
+ "results": [
+  "out/p4/p3d/candidates/A_seto.jsonl"
+ ],
+ "stats": {
+  "frames": 1510,
+  "decisions": {
+   "GO": 747,
+   "STOP": 415,
+   "FAULT": 2,
+   "CAUTION": 346
+  },
+  "clear_distance_m": {
+   "median": 97.7,
+   "p10": 29.9,
+   "mean": 100.8
+  }
+ },
+ "gt": "labels/cloud_with_fake_obj.json",
+ "overclaim": {
+  "tolerance_m": 0.5,
+  "totals": {
+   "target": 54,
+   "target_frames": 505,
+   "intent": 223,
+   "intent_frames": 801,
+   "go_judge": 150,
+   "go_judge_in_envelope": 62,
+   "target_by_decision": {
+    "GO": 46,
+    "CAUTION": 6,
+    "STOP": 2
+   }
+  },
+  "inside_objects": {
+   "big_center": {
+    "frames": 213,
+    "frames_in_envelope": 213,
+    "overclaim": 0,
+    "overclaim_in_envelope": 0,
+    "overclaim_in_envelope_go": 0,
+    "max_excess_m": 0.0
+   },
+   "small_on_rail": {
+    "frames": 49,
+    "frames_in_envelope": 33,
+    "overclaim": 17,
+    "overclaim_in_envelope": 4,
+    "overclaim_in_envelope_go": 4,
+    "max_excess_m": 126.0
+   },
+   "small_center": {
+    "frames": 79,
+    "frames_in_envelope": 63,
+    "overclaim": 45,
+    "overclaim_in_envelope": 30,
+    "overclaim_in_envelope_go": 29,
+    "max_excess_m": 66.7
+   },
+   "small_edge_inside": {
+    "frames": 83,
+    "frames_in_envelope": 16,
+    "overclaim": 41,
+    "overclaim_in_envelope": 4,
+    "overclaim_in_envelope_go": 0,
+    "max_excess_m": 174.8
+   },
+   "big_edge_inside": {
+    "frames": 125,
+    "frames_in_envelope": 8,
+    "overclaim": 73,
+    "overclaim_in_envelope": 2,
+    "overclaim_in_envelope_go": 0,
+    "max_excess_m": 180.8
+   },
+   "big_above": {
+    "frames": 124,
+    "frames_in_envelope": 75,
+    "overclaim": 27,
+    "overclaim_in_envelope": 7,
+    "overclaim_in_envelope_go": 6,
+    "max_excess_m": 53.9
+   },
+   "long_low_on_rails": {
+    "frames": 86,
+    "frames_in_envelope": 77,
+    "overclaim": 7,
+    "overclaim_in_envelope": 7,
+    "overclaim_in_envelope_go": 7,
+    "max_excess_m": 114.8
+   },
+   "thin_hanging": {
+    "frames": 42,
+    "frames_in_envelope": 20,
+    "overclaim": 13,
+    "overclaim_in_envelope": 0,
+    "overclaim_in_envelope_go": 0,
+    "max_excess_m": 136.6
+   }
+  },
+  "outside_objects": {
+   "small_outside_near": {
+    "frames": 112,
+    "clear_stops_at_object": 11
+   },
+   "big_outside": {
+    "frames": 104,
+    "clear_stops_at_object": 8
+   }
+  },
+  "order": [
+   "big_center",
+   "small_center",
+   "small_on_rail",
+   "small_edge_inside",
+   "small_outside_near",
+   "big_edge_inside",
+   "big_outside",
+   "big_above",
+   "long_low_on_rails",
+   "thin_hanging"
+  ]
+ }
+}
