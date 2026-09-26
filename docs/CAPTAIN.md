@@ -10,7 +10,7 @@
 
 **Latest user decision: release publication is on hold.** No release tag has been created or
 pushed. The user asked for a deeper review of system weaknesses and whether detector development
-should continue before a final freeze. The [proposed next cycle](NEXT_DETECTOR_WORK.md) records
+should continue before a final freeze, then authorized the work. The [active quality cycle](QUALITY_CYCLE_2026-09-26.md) records
 the measured weaknesses and acceptance conditions. Keep the sealed baseline and its evidence; do not publish
 an RC or treat it as final quality acceptance. Review priorities are detection coverage, envelope
 uncertainty, false alarms, output freshness and independent evaluation.

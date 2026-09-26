@@ -1,6 +1,7 @@
 # Work before a final detector freeze
 
-Status: proposed development cycle after the user's 26 September release hold. No release tag
+Status: authorized and underway; see the [quality-cycle results](QUALITY_CYCLE_2026-09-26.md).
+The original work proposal below is retained for comparison. No release tag
 has been created or pushed. Keep the sealed P3d version as the comparison baseline. The source
 seal and green regression gate establish reproducibility; they do not close the quality gaps.
 

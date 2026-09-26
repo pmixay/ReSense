@@ -10,6 +10,10 @@
 Initial audit base: `a81108f` (v0.6.3, 23.09); integrated on `4cd32d6` (`main`, 24.09); merged as
 `4b5786b` (PR #9, 24.09).
 
+**Later quality cycle:** [current results and open criteria](QUALITY_CYCLE_2026-09-26.md).
+Actual alarm-target tracing supersedes the near-sensor scene labels as the diagnosis of false
+targets. A1 and D1 were rejected by their registered checks; M2 is a partial monitoring candidate.
+
 ## Detector freeze and P4 completion (26.09 night)
 
 The captain's delegated decision is recorded in [DETECTOR_FREEZE.md](DETECTOR_FREEZE.md):
