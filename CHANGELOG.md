@@ -17,7 +17,7 @@ frames, 13 km, no obstacles).
 ## Unreleased (in development; package version 1.0.0)
 
 Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
-overhead rule on, node v0.6.4). Tests: 235 → 527 (+28 native kernels, +3 speed evaluation
+overhead rule on, node v0.6.4). Tests: 235 → 555 (+28 native kernels, +3 speed evaluation
 helpers, +23 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5
 overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting and socket
 buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`, +20 DDS
@@ -26,8 +26,22 @@ transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
 free-hanging exemption of `floating`, +4 thin hanging objects, +5 `health.clear_cap`, +6 the rate
 and re-mount flags, +1 the rail-lock guard of the hanging stage, +13 the review fixes of the
 round-2 items, +17 their re-review, +6 latency out of the decision, +8 the start-up census, +27
-the rail-start rule, +12 the near escalation, +8 the sensor-axis envelope, +1 the P3 items of 26.09
-combined) in `tests/`, 13 in `web/demo`.
+the rail-start rule, +12 the near escalation, +8 the sensor-axis envelope, +8 the P3 items of 26.09
+combined and their safety review) in `tests/`, 13 in `web/demo`.
+
+- **The P3 items of 26.09 combined; new gate baseline `_ride_p3c` (26.09, P3 integrator).**
+  `wf14/rail-start`, `wf14/near-escalation` and `wf14/edge-axis` merged on `00143b0`
+  (`wf14/integrate-p3`), then their safety review: the rail-start rule needs the band's line
+  ≥ 0.06 m above the model's rail plane (`lowobj.rail_start_min_ref`); the near escalation skips
+  `beyond_axis` / `beyond_height_ref`; the wall keep counts the rails' envelope, and a blob it kept
+  that another rule demotes no longer hides a low or hanging object; `gauge.axis_union` 0 (blocking:
+  an object touching a long edge line was dropped; the oversize split falls back to the rails' part).
+  Gate PASS against `_p3b`, 7 rows better, none worse: ride 187 / 46 / 39 → 183 / 45 / 38; set O
+  inside STOP frames 337 → 355, 8 of 8 objects; five bags, `doubleT_obstacle` and set F straight
+  identical. With every new flag off the output is identical to `bd67fb0`. New baseline
+  `docs/evidence/results/regression_baseline_2026-09-26_ride_p3c.json`. +8 tests.
+  [`p3_integration_2026-09-26.json`](docs/evidence/results/p3_integration_2026-09-26.json),
+  [EXPERIMENTS §1n](docs/EXPERIMENTS.md).
 
 - **Rail heads ahead of a standing train at a fresh start (26.09, P3): `lowobj.rail_start_within`
   4 m, on.** Fixes the open finding of the start-up census: from the gate's piece-2 cut a fresh
@@ -53,8 +67,8 @@ combined) in `tests/`, 13 in `web/demo`.
   [`p3_near_escalation_2026-09-26.json`](docs/evidence/results/p3_near_escalation_2026-09-26.json),
   [EXPERIMENTS §1l](docs/EXPERIMENTS.md).
 
-- **The envelope also measured from the sensor axis (26.09, P3; judge A, action 7): A shipped
-  (`gauge.axis_union` 1).** The organizers place their edge tests from the sensor axis, which runs
+- **The envelope also measured from the sensor axis (26.09, P3; judge A, action 7): A passed its
+  gate, not shipped after the safety review (`gauge.axis_union` 0).** The organizers place their edge tests from the sensor axis, which runs
   at −0.24° to the rails in set O. Measured from it, the four edge tests are exactly their intent:
   #4 and #6 inside in 74 / 93 frames, #5 and #7 in none; from the rails 16 / 8 and 98 / 58. Now a
   point is also inside when it is inside the envelope measured from the sensor axis. This applies
@@ -67,9 +81,10 @@ combined) in `tests/`, 13 in `web/demo`.
   - B2 (A, and the shape rules read the nearer axis) STOPs on #6 from 30.65 m (7 frames
     credited), but the ride gets 187 / 46 / 39 → 189 / 49 / 39.
 
-  #4 stays advisory (`floating`) under every variant. B and B2 stay off. The baseline is not
-  re-cut: set O now counts 338 of 801 inside STOP frames, 7 of 8 objects. Tests +8
-  (`tests/test_edge_axis.py`). EXPERIMENTS §1m,
+  #4 stays advisory (`floating`) under every variant. The safety review blocked A: the union can
+  take in a long line at the corridor edge beside an object, and the oversize split then dropped
+  both (ray-cast 19 → 6 STOP frames). The split now falls back to the rails' own part (19 → 19);
+  A, B and B2 stay off. Tests +8 (`tests/test_edge_axis.py`). EXPERIMENTS §1m,
   [`p3_edge_axis_2026-09-26.json`](docs/evidence/results/p3_edge_axis_2026-09-26.json).
 
 - **The image archive as a CI download (26.09, P1):** on a push to `claude/nifty-pascal-lzgl78` or
