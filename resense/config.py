@@ -383,6 +383,11 @@ class HealthConfig:
     min_lock_rate: float = 0.3     # warn below this share of frames with a rail pair
     latency_budget_ms: float = 100.0   # warn when the p95 of the recent frames exceeds it
     latency_window: int = 50
+    # 26.09 (judgements of 24.09 and 26.09): a latency p95 over the budget is a health warning
+    # (level, messages, /resense/health, the status JSON) but no longer turns GO into CAUTION on
+    # /resense/decision - on a loaded machine it did on most frames (set O 690 of 1 510). STOP,
+    # FAULT and every other warning are unchanged. true = the v0.6 behaviour
+    latency_affects_decision: bool = False
     # 25.09 (SCORECARD §6 row 6, docs/evidence/results/p3_clear_distance_2026-09-25.json): cap the
     # verified-clear distance at the nearest candidate of this frame that touches the envelope
     # although it is not a confirmed obstacle (unconfirmed, advisory); never changes a detection

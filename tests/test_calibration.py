@@ -365,3 +365,25 @@ def test_window_dirt_is_flagged(tunnel):
     f = Frame(xyz=frame.xyz, intensity=frame.intensity, meta={"n_raw": frame.n * 2, "n_near": frame.n})
     res = det.process(f)
     assert any("window" in m for m in res.health["messages"])
+
+
+@pytest.mark.parametrize("affects", [False, True])
+def test_latency_over_budget_warns_and_reaches_the_decision_only_when_asked(tunnel, affects):
+    """26.09: latency over the budget sets ``level`` warn with its message either way; the level
+    the node's decision reads (``decision_level``) carries it only with
+    ``health.latency_affects_decision``. Other warnings and errors reach it either way."""
+    frame, _, _ = tunnel
+    cfg = DetectorConfig()
+    assert cfg.health.latency_affects_decision is False
+    cfg.health.latency_budget_ms, cfg.health.latency_affects_decision = 0.0, affects
+    det = Detector(cfg)
+    res = _run(det, frame, 12)
+    h = res.health
+    assert h["level"] == "warn" and h["messages"] and all("latency p95" in m for m in h["messages"]), h
+    assert h["decision_level"] == ("warn" if affects else "ok")
+    assert res.to_dict()["health"]["decision_level"] == h["decision_level"]
+    dirty = det.process(Frame(xyz=frame.xyz, intensity=frame.intensity, stamp=1.2,
+                              meta={"n_raw": frame.n * 2, "n_near": frame.n}))
+    assert (dirty.health["level"], dirty.health["decision_level"]) == ("warn", "warn")
+    few = det.process(Frame(xyz=frame.xyz[:500], intensity=frame.intensity[:500], stamp=1.3))
+    assert (few.health["level"], few.health["decision_level"]) == ("error", "error")

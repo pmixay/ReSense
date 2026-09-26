@@ -11,7 +11,8 @@ The input is the per-frame JSONL of ``scripts/eval_real.py`` / ``scripts/regress
 --work`` (``FrameResult.to_dict()`` plus ``frame``). The decision is the node's
 (``DetectorNode.decision``, ros2_ws/src/resense_ros/resense_ros/detector_node.py): ``STOP`` when
 a confirmed obstacle is in the envelope, ``FAULT`` on a health error, ``CAUTION`` on an advisory
-object or a health warning, else ``GO``. It does not depend on ``clear_distance``.
+object or a health warning other than latency (26.09, ``health.decision_level``), else ``GO``.
+It does not depend on ``clear_distance``.
 
 **Overclaim** (``--gt``): an object-frame of an object the organizers put inside the envelope
 (``in_gauge``), visible (``n_points`` > 0) and ``plausible`` (labels of
@@ -40,13 +41,15 @@ from resense.metrics import gt_meta, load_gt  # noqa: E402
 
 
 def decision(r: dict) -> str:
-    """The node's decision word for a result row (DetectorNode.decision)."""
-    level = (r.get("health") or {}).get("level", "ok")
+    """The node's decision word for a result row (DetectorNode.decision; the health warning it
+    reads is ``decision_level``, 26.09: without the latency warning, and ``level`` in older rows)."""
+    h = r.get("health") or {}
+    level = h.get("level", "ok")
     if r.get("obstacle"):
         return "STOP"
     if level == "error":
         return "FAULT"
-    if r.get("warning") or level == "warn":
+    if r.get("warning") or h.get("decision_level", level) == "warn":
         return "CAUTION"
     return "GO"
 

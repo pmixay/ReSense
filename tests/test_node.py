@@ -353,6 +353,70 @@ def test_decision_levels(node_cls):
     assert d(ns(obstacle=False, warning=True, health={"level": "ok"})) == "CAUTION"
     assert d(ns(obstacle=False, warning=False, health={"level": "warn"})) == "CAUTION"
     assert d(ns(obstacle=False, warning=False, health={"level": "ok"})) == "GO"
+    # 26.09: the warning the decision reads is decision_level (the latency warning left out)
+    lat = {"level": "warn", "decision_level": "ok"}
+    assert d(ns(obstacle=False, warning=False, health=lat)) == "GO"
+    assert d(ns(obstacle=False, warning=True, health=lat)) == "CAUTION"
+    assert d(ns(obstacle=True, warning=False, health=lat)) == "STOP"
+    assert d(ns(obstacle=False, warning=False, health={"level": "warn", "decision_level": "warn"})) == "CAUTION"
+    assert d(ns(obstacle=False, warning=False, health={"level": "error", "decision_level": "error"})) == "FAULT"
+
+
+def _latency_config(tmp_path, affects: bool) -> str:
+    """A parameter file whose latency budget every frame exceeds (0 ms)."""
+    import yaml
+    p = tmp_path / f"latency_{affects}.yaml"
+    p.write_text(yaml.safe_dump({"resense": {"health": {"latency_budget_ms": 0.0,
+                                                        "latency_affects_decision": affects}}}))
+    return str(p)
+
+
+@pytest.mark.parametrize("affects, expected", [(False, "GO"), (True, "CAUTION")])
+def test_latency_over_budget_is_a_health_warning_not_caution(node_cls, tunnel, tmp_path, affects, expected):
+    """26.09 (judgements of 24.09 and 26.09): a slow machine is not an unsafe path. Latency over
+    the budget stays in /resense/health and the status JSON; the decision is GO on a clear track
+    (CAUTION with ``health.latency_affects_decision: true``, the v0.6 behaviour)."""
+    _Node.overrides = {"config_file": _latency_config(tmp_path, affects)}
+    node = node_cls()
+    assert node.cfg.health.latency_affects_decision is affects
+    _feed(node, tunnel[0].xyz, 12)
+    pub = node.published
+    assert pub["/resense/decision"][-1].data == expected, [m.data for m in pub["/resense/decision"]]
+    health = pub["/resense/health"][-1].status[0]
+    assert health.level == 1 and "latency p95" in health.message
+    values = {kv.key: kv.value for kv in health.values}
+    assert values["decision_level"] == ("warn" if affects else "ok")
+    status = json.loads(pub["/resense/status"][-1].data)
+    assert status["decision"] == expected and status["health"]["level"] == "warn"
+    assert any("latency p95" in m for m in status["health"]["messages"])
+    marker = pub["/resense/markers"][-1].markers[-1].text
+    assert marker.startswith(expected), marker
+    # the node's own guards are unchanged: an empty frame, a stalled input, no input are FAULT
+    msg, _ = _cloud(np.zeros((0, 3), np.float32), 1.2)
+    node.on_cloud(msg, "/lidar_points")
+    assert pub["/resense/decision"][-1].data == "FAULT"
+    node.last_frame_wall = time.perf_counter() - 2.0
+    node.last_stale_pub = 0.0
+    node.on_watchdog()
+    assert pub["/resense/decision"][-1].data == "FAULT"
+    assert pub["/resense/health"][-1].status[0].values[0].value == "STALE"
+    idle = node_cls()
+    idle.t_node_start -= 5.0
+    idle.on_watchdog()
+    assert idle.published["/resense/decision"][-1].data == "FAULT"
+    assert idle.published["/resense/health"][-1].status[0].values[0].value == "NO_INPUT"
+
+
+@pytest.mark.parametrize("affects", [False, True])
+def test_obstacle_is_stop_with_latency_over_budget(node_cls, box_scene, tmp_path, affects):
+    frame, _ = box_scene
+    _Node.overrides = {"config_file": _latency_config(tmp_path, affects)}
+    node = node_cls()
+    _feed(node, frame.xyz, 12)
+    pub = node.published
+    assert pub["/resense/decision"][-1].data == "STOP"
+    assert pub["/resense/obstacle_detected"][-1].data is True
+    assert "latency p95" in pub["/resense/health"][-1].status[0].message
 
 
 # ---------------------------------------------------------------------------

@@ -54,7 +54,8 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
           ≥ 60 % of the last 10 hits inside the strict gauge; confidence ↑ per hit ↓ per miss;
           a reported obstacle is held over one missed frame (hold_misses 1, v0.6.3)
    5b. health (v0.6): input sanity, blocked view, visibility,       │  health.py
-        rail lock, latency, calibration → level + monitored range + clear distance
+        rail lock, latency, calibration → level + monitored range + clear distance;
+        decision_level (26.09) = level without the latency warning: what CAUTION reads
    6. FrameResult → topics                                          │  detector_node.py
         /resense/obstacle_detected (Bool)   /resense/nearest_distance (Float32)
         /resense/warning (Bool)             /resense/detections (vision_msgs/Detection3DArray)
@@ -97,7 +98,9 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   lateral offset, centre, size, n_points, confidence, age, height_min, intensity), `track`
   (floor polynomial, axis centre/yaw/curvature, rail offset, quality flags), `timing_ms`;
   since v0.6 also `clear_distance`, `health` (level, messages, points, near fraction, blocked
-  sectors, visibility, rail lock, latency p95, monitored range) and `mount` (calibration status,
+  sectors, visibility, rail lock, latency p95, monitored range; since 26.09 `decision_level`, the
+  level `/resense/decision` reads: without the latency warning unless
+  `health.latency_affects_decision`) and `mount` (calibration status,
   orientation, roll / pitch / yaw, height, drift), and `detections[].kind` (`low` for a bed-level
   object). All older keys are unchanged.
   The ROS node adds a `node` object: `latency_ms` (decode + detect of this frame), `fps`,
