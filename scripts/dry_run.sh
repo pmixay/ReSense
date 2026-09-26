@@ -15,6 +15,7 @@
 #                    node, player and recorder in a container with --network none (loopback only);
 #                    needs IMAGE_TAR or SKIP_BUILD=1, since a build needs the internet
 #   RATE=1.0         bag playback rate passed to `ros2 bag play`
+#   BAG_READ_AHEAD_QUEUE_SIZE=1000 messages buffered by rosbag2 before publication (Humble default)
 #   OUT=out/dry_run  where status.jsonl and node.log are written on the host
 #   DOCKER_ARGS=""   extra `docker run` arguments, split on whitespace, e.g. "-e RESENSE_NATIVE=0"
 #                    (the node on the numpy path) or "--name resense_bench_dry" (scripts/bench_8core.sh)
@@ -59,6 +60,11 @@ require_docker_daemon
 BAG_DIR="$(cd "$(dirname "$BAG_PATH")" && pwd)"
 BAG_NAME="$(basename "$BAG_PATH")"
 RATE="${RATE:-1.0}"
+BAG_READ_AHEAD_QUEUE_SIZE="${BAG_READ_AHEAD_QUEUE_SIZE:-1000}"
+if ! [[ "$BAG_READ_AHEAD_QUEUE_SIZE" =~ ^[1-9][0-9]*$ ]]; then
+  echo "ERROR: BAG_READ_AHEAD_QUEUE_SIZE must be a positive integer" >&2
+  exit 2
+fi
 read -r -a EXTRA_ARGS <<< "${DOCKER_ARGS:-}"
 OUT="${OUT:-out/dry_run}"
 mkdir -p "$OUT"
@@ -88,6 +94,7 @@ if [ "$OFFLINE" = "1" ]; then
 fi
 
 echo "== playing $BAG_NAME at rate $RATE through the node (headless) =="
+echo "== rosbag2 read-ahead queue: $BAG_READ_AHEAD_QUEUE_SIZE messages =="
 # One container so that discovery cannot be the thing that fails. The node is started first and
 # we wait for it to advertise before playing: the launch file's own bag:= argument races the
 # node's startup and silently loses the first frames.
@@ -95,6 +102,7 @@ docker run --rm -i "${NET_ARGS[@]}" ${EXTRA_ARGS[@]+"${EXTRA_ARGS[@]}"} \
   -v "$BAG_DIR":/data:ro \
   -v "$OUT_ABS":/out \
   -e BAG_NAME="$BAG_NAME" -e RATE="$RATE" \
+  -e BAG_READ_AHEAD_QUEUE_SIZE="$BAG_READ_AHEAD_QUEUE_SIZE" \
   "$IMAGE" bash -s <<'INNER'
 set -euo pipefail
 ros2 launch resense_ros detector.launch.py rviz:=false freshness_mode:=replay >/out/node.log 2>&1 &
@@ -118,7 +126,8 @@ ros2 topic echo /resense/status --field data >/out/status.jsonl 2>/dev/null &
 ECHO_PID=$!
 sleep 2
 
-ros2 bag play "/data/$BAG_NAME" --rate "$RATE" --clock --delay 3 --disable-keyboard-controls   # --delay: let DDS discovery finish before the first frame
+ros2 bag play "/data/$BAG_NAME" --rate "$RATE" --clock --delay 3 \
+  --read-ahead-queue-size "$BAG_READ_AHEAD_QUEUE_SIZE" --disable-keyboard-controls   # --delay: let DDS discovery finish before the first frame
 sleep 3        # let the last frames finish and one more stats tick land
 
 kill "$ECHO_PID" "$LAUNCH_PID" 2>/dev/null || true
