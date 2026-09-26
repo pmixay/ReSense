@@ -1,0 +1,868 @@
+{
+  "decision": "Combined-image standalone clear trial remains FAIL: one core false STOP. M2 offline validation remains separate.",
+  "baseline_commit": "fa18832f1636c48d0137842e2bd3b857bc70aef7",
+  "M2_code_commit": "482caab7b7548b5eb3a272b8f30957711dad958f",
+  "comparison": {
+    "failed_clear": {
+      "frames": 233,
+      "baseline_alarm_frames": 1,
+      "M2_alarm_frames": 1,
+      "capture_mismatch_frames_baseline": 0,
+      "capture_mismatch_frames_M2": 0,
+      "baseline_vs_M2_differing_fields": {
+        "obstacle": 0,
+        "warning": 0,
+        "nearest_distance": 0,
+        "detections": 0,
+        "warnings": 0,
+        "track": 0,
+        "mount": 0,
+        "n_points": 0,
+        "n_corridor": 0,
+        "n_candidates": 0
+      },
+      "diagnostic_frames": {
+        "152": {
+          "stamp": 946692946.833358,
+          "tracks": [
+            {
+              "id": 40,
+              "reported": true,
+              "zone": "warning",
+              "vote_zone": "warning",
+              "hits": 6,
+              "misses": 0,
+              "age": 6,
+              "zone_hist": [
+                false,
+                false,
+                false,
+                true,
+                false,
+                true
+              ],
+              "column_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "near_hist": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "hit_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "column_held": false,
+              "near_escalated": false,
+              "kept": false,
+              "cluster": {
+                "n_raw": 104,
+                "n_vox": 64,
+                "n_gauge": 64,
+                "zone": "gauge",
+                "reason": "",
+                "thin": false,
+                "centroid": [
+                  67.0242919921875,
+                  -5.919884204864502,
+                  0.9370151162147522
+                ],
+                "bbox_min": [
+                  65.19487762451172,
+                  -6.274657249450684,
+                  -0.6727316975593567
+                ],
+                "bbox_max": [
+                  67.4990234375,
+                  -5.115951061248779,
+                  2.178499460220337
+                ],
+                "distance": 65.19487762451172,
+                "lateral": -0.38220448130654544,
+                "height_min": 0.13847875733907777,
+                "height_max": 2.988536139937996
+              }
+            }
+          ]
+        },
+        "159": {
+          "stamp": 946692947.533395,
+          "tracks": [
+            {
+              "id": 40,
+              "reported": true,
+              "zone": "gauge",
+              "vote_zone": "gauge",
+              "hits": 13,
+              "misses": 0,
+              "age": 13,
+              "zone_hist": [
+                true,
+                false,
+                true,
+                false,
+                false,
+                false,
+                true,
+                true,
+                true,
+                true
+              ],
+              "column_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "near_hist": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "hit_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "column_held": false,
+              "near_escalated": false,
+              "kept": false,
+              "cluster": {
+                "n_raw": 143,
+                "n_vox": 78,
+                "n_gauge": 77,
+                "zone": "gauge",
+                "reason": "",
+                "thin": false,
+                "centroid": [
+                  54.93635940551758,
+                  -3.635660171508789,
+                  0.7513464689254761
+                ],
+                "bbox_min": [
+                  53.00181198120117,
+                  -3.987403392791748,
+                  -0.7780763506889343
+                ],
+                "bbox_max": [
+                  55.40506362915039,
+                  -2.89182186126709,
+                  1.9092329740524292
+                ],
+                "distance": 53.00181198120117,
+                "lateral": 0.4553147430822282,
+                "height_min": 0.24695879055562475,
+                "height_max": 2.933907519817631
+              }
+            }
+          ]
+        },
+        "160": {
+          "stamp": 946692947.633399,
+          "tracks": [
+            {
+              "id": 40,
+              "reported": true,
+              "zone": "warning",
+              "vote_zone": "warning",
+              "hits": 14,
+              "misses": 0,
+              "age": 14,
+              "zone_hist": [
+                false,
+                true,
+                false,
+                false,
+                false,
+                true,
+                true,
+                true,
+                true,
+                false
+              ],
+              "column_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true
+              ],
+              "near_hist": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "hit_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "column_held": false,
+              "near_escalated": false,
+              "kept": false,
+              "cluster": {
+                "n_raw": 137,
+                "n_vox": 78,
+                "n_gauge": 78,
+                "zone": "warning",
+                "reason": "column",
+                "thin": false,
+                "centroid": [
+                  53.29233169555664,
+                  -3.3925654888153076,
+                  0.6630699634552002
+                ],
+                "bbox_min": [
+                  53.07847213745117,
+                  -3.672208309173584,
+                  -0.9092506766319275
+                ],
+                "bbox_max": [
+                  53.69047546386719,
+                  -2.987173080444336,
+                  1.8478001356124878
+                ],
+                "distance": 53.07847213745117,
+                "lateral": 0.5384579671155011,
+                "height_min": 0.12920337657849168,
+                "height_max": 2.8860544728419963
+              }
+            }
+          ]
+        }
+      }
+    },
+    "old_stock": {
+      "frames": 243,
+      "baseline_alarm_frames": 1,
+      "M2_alarm_frames": 1,
+      "capture_mismatch_frames_baseline": 0,
+      "capture_mismatch_frames_M2": 0,
+      "baseline_vs_M2_differing_fields": {
+        "obstacle": 0,
+        "warning": 0,
+        "nearest_distance": 0,
+        "detections": 0,
+        "warnings": 0,
+        "track": 0,
+        "mount": 0,
+        "n_points": 0,
+        "n_corridor": 0,
+        "n_candidates": 0
+      },
+      "diagnostic_frames": {
+        "152": {
+          "stamp": 946692946.833358,
+          "tracks": [
+            {
+              "id": 45,
+              "reported": true,
+              "zone": "warning",
+              "vote_zone": "warning",
+              "hits": 6,
+              "misses": 0,
+              "age": 6,
+              "zone_hist": [
+                false,
+                false,
+                false,
+                true,
+                false,
+                true
+              ],
+              "column_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "near_hist": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "hit_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "column_held": false,
+              "near_escalated": false,
+              "kept": false,
+              "cluster": {
+                "n_raw": 104,
+                "n_vox": 64,
+                "n_gauge": 64,
+                "zone": "gauge",
+                "reason": "",
+                "thin": false,
+                "centroid": [
+                  67.0242919921875,
+                  -5.919884204864502,
+                  0.9370151162147522
+                ],
+                "bbox_min": [
+                  65.19487762451172,
+                  -6.274657249450684,
+                  -0.6727316975593567
+                ],
+                "bbox_max": [
+                  67.4990234375,
+                  -5.115951061248779,
+                  2.178499460220337
+                ],
+                "distance": 65.19487762451172,
+                "lateral": -0.38181332991055456,
+                "height_min": 0.13850376590856017,
+                "height_max": 2.9885611462196433
+              }
+            }
+          ]
+        },
+        "159": {
+          "stamp": 946692947.533395,
+          "tracks": [
+            {
+              "id": 45,
+              "reported": true,
+              "zone": "gauge",
+              "vote_zone": "gauge",
+              "hits": 13,
+              "misses": 0,
+              "age": 13,
+              "zone_hist": [
+                true,
+                false,
+                true,
+                false,
+                false,
+                false,
+                true,
+                true,
+                true,
+                true
+              ],
+              "column_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "near_hist": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "hit_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "column_held": false,
+              "near_escalated": false,
+              "kept": false,
+              "cluster": {
+                "n_raw": 143,
+                "n_vox": 78,
+                "n_gauge": 77,
+                "zone": "gauge",
+                "reason": "",
+                "thin": false,
+                "centroid": [
+                  54.93635940551758,
+                  -3.635660171508789,
+                  0.7513464689254761
+                ],
+                "bbox_min": [
+                  53.00181198120117,
+                  -3.987403392791748,
+                  -0.7780763506889343
+                ],
+                "bbox_max": [
+                  55.40506362915039,
+                  -2.89182186126709,
+                  1.9092329740524292
+                ],
+                "distance": 53.00181198120117,
+                "lateral": 0.45624464481894406,
+                "height_min": 0.24738810874313089,
+                "height_max": 2.9343375655080464
+              }
+            }
+          ]
+        },
+        "160": {
+          "stamp": 946692947.633399,
+          "tracks": [
+            {
+              "id": 45,
+              "reported": true,
+              "zone": "warning",
+              "vote_zone": "warning",
+              "hits": 14,
+              "misses": 0,
+              "age": 14,
+              "zone_hist": [
+                false,
+                true,
+                false,
+                false,
+                false,
+                true,
+                true,
+                true,
+                true,
+                false
+              ],
+              "column_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true
+              ],
+              "near_hist": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "hit_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "column_held": false,
+              "near_escalated": false,
+              "kept": false,
+              "cluster": {
+                "n_raw": 137,
+                "n_vox": 78,
+                "n_gauge": 78,
+                "zone": "warning",
+                "reason": "column",
+                "thin": false,
+                "centroid": [
+                  53.29233169555664,
+                  -3.3925654888153076,
+                  0.6630699634552002
+                ],
+                "bbox_min": [
+                  53.07847213745117,
+                  -3.672208309173584,
+                  -0.9092506766319275
+                ],
+                "bbox_max": [
+                  53.69047546386719,
+                  -2.987173080444336,
+                  1.8478001356124878
+                ],
+                "distance": 53.07847213745117,
+                "lateral": 0.539386057765091,
+                "height_min": 0.1294438901541617,
+                "height_max": 2.8862952476789014
+              }
+            }
+          ]
+        }
+      }
+    },
+    "old_pass": {
+      "frames": 234,
+      "baseline_alarm_frames": 0,
+      "M2_alarm_frames": 0,
+      "capture_mismatch_frames_baseline": 0,
+      "capture_mismatch_frames_M2": 0,
+      "baseline_vs_M2_differing_fields": {
+        "obstacle": 0,
+        "warning": 0,
+        "nearest_distance": 0,
+        "detections": 0,
+        "warnings": 0,
+        "track": 0,
+        "mount": 0,
+        "n_points": 0,
+        "n_corridor": 0,
+        "n_candidates": 0
+      },
+      "diagnostic_frames": {
+        "152": {
+          "stamp": 946692946.833358,
+          "tracks": [
+            {
+              "id": 40,
+              "reported": true,
+              "zone": "warning",
+              "vote_zone": "warning",
+              "hits": 6,
+              "misses": 0,
+              "age": 7,
+              "zone_hist": [
+                false,
+                false,
+                false,
+                true,
+                false,
+                false
+              ],
+              "column_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "near_hist": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "hit_hist": [
+                true,
+                false,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "column_held": false,
+              "near_escalated": false,
+              "kept": false,
+              "cluster": {
+                "n_raw": 104,
+                "n_vox": 64,
+                "n_gauge": 64,
+                "zone": "warning",
+                "reason": "beyond_axis",
+                "thin": false,
+                "centroid": [
+                  67.0242919921875,
+                  -5.919884204864502,
+                  0.9370151162147522
+                ],
+                "bbox_min": [
+                  65.19487762451172,
+                  -6.274657249450684,
+                  -0.6727316975593567
+                ],
+                "bbox_max": [
+                  67.4990234375,
+                  -5.115951061248779,
+                  2.178499460220337
+                ],
+                "distance": 65.19487762451172,
+                "lateral": -0.5858979372559225,
+                "height_min": 0.1489917402522556,
+                "height_max": 2.999177976931682
+              }
+            }
+          ]
+        },
+        "159": {
+          "stamp": 946692947.533395,
+          "tracks": [
+            {
+              "id": 40,
+              "reported": true,
+              "zone": "warning",
+              "vote_zone": "warning",
+              "hits": 13,
+              "misses": 0,
+              "age": 14,
+              "zone_hist": [
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                true,
+                true,
+                true
+              ],
+              "column_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "near_hist": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "hit_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "column_held": false,
+              "near_escalated": false,
+              "kept": false,
+              "cluster": {
+                "n_raw": 143,
+                "n_vox": 78,
+                "n_gauge": 76,
+                "zone": "gauge",
+                "reason": "",
+                "thin": false,
+                "centroid": [
+                  54.93635940551758,
+                  -3.635660171508789,
+                  0.7513464689254761
+                ],
+                "bbox_min": [
+                  53.00181198120117,
+                  -3.987403392791748,
+                  -0.7780763506889343
+                ],
+                "bbox_max": [
+                  55.40506362915039,
+                  -2.89182186126709,
+                  1.9092329740524292
+                ],
+                "distance": 53.00181198120117,
+                "lateral": 0.48481149360092557,
+                "height_min": 0.24833201685048079,
+                "height_max": 2.9352722259515813
+              }
+            }
+          ]
+        },
+        "160": {
+          "stamp": 946692947.633399,
+          "tracks": [
+            {
+              "id": 40,
+              "reported": true,
+              "zone": "warning",
+              "vote_zone": "warning",
+              "hits": 14,
+              "misses": 0,
+              "age": 15,
+              "zone_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                true,
+                true,
+                true,
+                false
+              ],
+              "column_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true
+              ],
+              "near_hist": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "hit_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "column_held": false,
+              "near_escalated": false,
+              "kept": false,
+              "cluster": {
+                "n_raw": 137,
+                "n_vox": 78,
+                "n_gauge": 78,
+                "zone": "warning",
+                "reason": "column",
+                "thin": false,
+                "centroid": [
+                  53.29233169555664,
+                  -3.3925654888153076,
+                  0.6630699634552002
+                ],
+                "bbox_min": [
+                  53.07847213745117,
+                  -3.672208309173584,
+                  -0.9092506766319275
+                ],
+                "bbox_max": [
+                  53.69047546386719,
+                  -2.987173080444336,
+                  1.8478001356124878
+                ],
+                "distance": 53.07847213745117,
+                "lateral": 0.5647921630988753,
+                "height_min": 0.12879358209464664,
+                "height_max": 2.885641758103577
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "alarm_source": {
+    "raw_index": 159,
+    "header_stamp": 946692947.533395,
+    "distance_m": 53.0,
+    "raw_returns": 143,
+    "voxels": 78,
+    "strict_voxels": 77
+  },
+  "mechanism": {
+    "earlier_raw_index": 152,
+    "earlier_distance_m": 65.19487762451172,
+    "failed_and_old_stock_axis_sides": 1,
+    "failed_and_old_stock_axis_valid_m": 120.0,
+    "old_pass_axis_sides": 2,
+    "old_pass_axis_valid_m": 60.0,
+    "alarm_gauge_votes_failed": 6,
+    "alarm_gauge_votes_old_pass": 5,
+    "vote_window": 10,
+    "raw_component_gap_x_m": 1.5945816040039062,
+    "closest_scaled_voxel_distance": 0.3485212028026581,
+    "DBSCAN_eps": 0.35,
+    "main_raw_returns": 136,
+    "main_voxels": 74,
+    "fragment_raw_returns": 7,
+    "fragment_voxels": 4,
+    "main_size_xyz_m": [
+      0.57164764,
+      0.73907185,
+      2.6873093
+    ],
+    "merged_size_xyz_m": [
+      2.40325165,
+      1.09558153,
+      2.6873093
+    ]
+  },
+  "initial_attempt": "The first diagnostic capture filter wrongly excluded node.frames==0. It did not reproduce the captures and is retained as initial_incomplete. Corrected exact runs include frame zero and have zero mismatches.",
+  "recommendation": "No detector suppression is validated. Close this registered combined-image trial as failed. A new protocol may test trusted-range consistency when a previously disagreeing boundary disappears, and separately assess full-context structural parts; neither mechanism is an accepted fix.",
+  "next_cycle_prerequisites": [
+    "Retain all three exact raw header subsets and both outcomes as fixed regressions; never retry until a zero-alarm schedule happens.",
+    "Audit one-boundary trust increases across all45 ride false identities and every tall/edge positive before selecting a single fixed candidate.",
+    "Any structural-part method must retain compact obstacles touching columns/long structures, tall true obstacles and sparse/hanging positives; one whole-component rejection is not sufficient.",
+    "Commit exact temporal rule, existing-threshold reuse or justified bounds, test fixtures and rejection gates before measurement.",
+    "Require all original gate rows, all72 placement cases, raw and cached object scores, rate/tilt/start checks and the registered zero-alarm ROS trial; preserve positive detection and runtime budgets."
+  ],
+  "limitations": [
+    "The observed gap split describes source-point structure; it is not a tested classifier or proposed threshold.",
+    "Raw XYZ and fitted lateral/height do not supply independent surveyed envelope truth.",
+    "These observer timings are not performance measurements."
+  ]
+}
