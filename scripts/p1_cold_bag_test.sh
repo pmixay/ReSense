@@ -30,7 +30,8 @@ curl --fail --location --retry 3 --retry-delay 2 --output "$ARCHIVE" "$URL"
 }
 sha256sum "$ARCHIVE" | tee -a "$OUT/provenance.txt"
 chmod 777 "$WORK"
-docker run --rm -v "$WORK:/data" "$IMAGE" python3 scripts/unpack_dataset.py \
+docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp -e PYTHONDONTWRITEBYTECODE=1 \
+  -v "$WORK:/data" "$IMAGE" python3 scripts/unpack_dataset.py \
   /data/dataset.zip --out /data --only doubleT_obstacle
 test -f "$BAG/metadata.yaml"
 cmp "$BAG/metadata.yaml" "$ROOT/docs/evidence/bag_metadata/doubleT_obstacle_metadata.yaml"

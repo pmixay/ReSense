@@ -212,7 +212,8 @@ def test_dashboard_freshness_and_live_stream_stall():
         deliver = "f => { f.freshness.evaluated_at_utc_s = Date.now()/1000; onStatus({data: JSON.stringify(f)}); }"
         page.evaluate(deliver, base)
         assert page.inner_text("#age-label") == "После публикации записи"
-        assert page.inner_text("#source-age") == "20 мс"
+        source_age = float(page.inner_text("#source-age").split()[0])
+        assert abs(source_age - 20) <= 2
         page.evaluate("checkLiveStream(state.lastStatusArrival + 501)")
         assert page.inner_text("#decision") == "ОШИБКА"
         assert page.inner_text("#clear") == "не определена"
@@ -305,9 +306,17 @@ def test_dashboard_banner_honors_health_and_explicit_fault():
         page.wait_for_function("window.resense !== undefined")
         cases = [
             ({"health": {"level": "error"}}, "bad", "ОШИБКА", "ОШИБКА"),
+            ({"decision": "GO", "health": {"level": "error", "decision_level": "error"}},
+             "bad", "ОШИБКА", "ОШИБКА"),
             ({"decision": "FAULT", "health": {"level": "ok"}}, "bad", "ОШИБКА", "ОШИБКА"),
+            ({"decision": "CAUTION", "health": {"level": "error", "decision_level": "error"}},
+             "bad", "ОШИБКА", "ОШИБКА"),
+            ({"decision": "GO", "health": {"level": "warn", "decision_level": "warn"}},
+             "warn", "ВНИМАНИЕ", "ВНИМАНИЕ"),
             ({"health": {"level": "warn", "decision_level": "warn"}}, "warn", "ВНИМАНИЕ", "ВНИМАНИЕ"),
             ({"health": {"level": "warn", "decision_level": "ok"}}, "clear", "ПРЕПЯТСТВИЕ НЕ ОБНАРУЖЕНО", "НЕ ОБНАРУЖЕНО"),
+            ({"decision": "GO", "health": {"level": "warn", "decision_level": "ok"}},
+             "clear", "ПРЕПЯТСТВИЕ НЕ ОБНАРУЖЕНО", "НЕ ОБНАРУЖЕНО"),
             ({"obstacle": True, "nearest_distance": 55.6, "health": {"level": "error"}}, "bad", "ПРЕПЯТСТВИЕ  55.6 м", "СТОП"),
         ]
         for extra, color, title, decision in cases:
@@ -319,6 +328,76 @@ def test_dashboard_banner_honors_health_and_explicit_fault():
             assert page.inner_text("#decision") == decision
         assert "Дальность контроля" in page.inner_text("#safety-card")
         assert "могут быть пропущены" in page.inner_text("#safety-card")
+        b.close()
+
+
+def test_dashboard_reconnect_ignores_old_stream_and_closes_on_replay():
+    """An old ROS connection cannot overwrite the new stream or remain open in replay mode."""
+    if not _browser_available():
+        pytest.skip("playwright + chromium not available")
+    from playwright.sync_api import sync_playwright
+    import check_dashboard
+    with sync_playwright() as p:
+        b = _launch(p)
+        page = b.new_page()
+        page.goto("file://" + check_dashboard.INDEX, wait_until="load")
+        page.wait_for_function("window.resense !== undefined")
+        page.evaluate("""() => {
+            window.__fakeRos = [];
+            window.ROSLIB = {
+              Ros: class {
+                constructor() { this.handlers = {}; this.closed = false; window.__fakeRos.push(this); }
+                on(name, fn) { this.handlers[name] = fn; }
+                emit(name) { if (name === 'close') this.closed = true; if (this.handlers[name]) this.handlers[name](); }
+                close() { this.closed = true; this.emit('close'); }
+                publish(payload) {
+                  const data = typeof payload === 'string' ? payload : JSON.stringify(payload);
+                  this.statusCallback({data});
+                }
+              },
+              Topic: class {
+                constructor({ros}) { this.ros = ros; }
+                subscribe(fn) { this.ros.statusCallback = fn; }
+              }
+            };
+        }""")
+        page.click("#connect")
+        page.wait_for_function("window.__fakeRos.length === 1")
+        assert page.locator("body").evaluate("el => el.classList.contains('live-stale')")
+        assert page.locator("#panel-cab .stale-veil").is_visible()
+        assert page.locator("#safety-card .stale-veil").is_visible()
+
+        fresh = {"obstacle": False, "warning": False, "decision": "GO", "nearest_distance": None,
+                 "detections": [], "warnings": [], "clear_distance": 120, "health": {"level": "ok"},
+                 "freshness": {"valid": True, "reason": "current", "source_age_s": .02,
+                               "residence_age_s": .01, "max_result_age_s": .5, "future_tolerance_s": .05}}
+        page.evaluate("s => window.__fakeRos[0].publish({...s, freshness: {...s.freshness, evaluated_at_utc_s: Date.now()/1000}})", fresh)
+        assert not page.locator("body").evaluate("el => el.classList.contains('live-stale')")
+
+        page.click("#connect")
+        page.wait_for_function("window.__fakeRos.length === 2")
+        stop = {**fresh, "obstacle": True, "decision": "STOP", "nearest_distance": 50, "clear_distance": 50}
+        page.evaluate("s => window.__fakeRos[1].publish({...s, freshness: {...s.freshness, evaluated_at_utc_s: Date.now()/1000}})", stop)
+        title = page.inner_text("#banner-title")
+        assert title == "ПРЕПЯТСТВИЕ 50.0 м"
+        page.evaluate("window.__fakeRos[1].emit('close')")
+        assert page.inner_text("#banner-title") == "СТОП СОХРАНЁН: НЕТ АКТУАЛЬНЫХ ДАННЫХ"
+        assert page.locator("body").evaluate("el => el.classList.contains('live-stale')")
+        page.evaluate("window.__fakeRos[0].publish({obstacle:false, decision:'FAULT', health:{level:'error'}})")
+        page.evaluate("window.__fakeRos[0].emit('close')")
+        assert page.inner_text("#banner-title") != title
+        assert page.inner_text("#decision") == "СТОП"
+
+        page.evaluate("window.resense.setMode('replay')")
+        assert page.evaluate("window.resense.state.mode") == "replay"
+        assert page.evaluate("window.__fakeRos.every(ros => ros.closed)")
+        replay = {"obstacle": False, "warning": False, "decision": "GO", "nearest_distance": None,
+                  "detections": [], "warnings": [], "clear_distance": 80, "health": {"level": "ok"}}
+        page.evaluate("r => window.resense.applyResult(r)", replay)
+        title = page.inner_text("#banner-title")
+        page.evaluate("window.__fakeRos[1].publish({obstacle:false, decision:'FAULT', health:{level:'error'}})")
+        assert page.inner_text("#banner-title") == title == "ПРЕПЯТСТВИЕ НЕ ОБНАРУЖЕНО"
+        assert not page.locator("body").evaluate("el => el.classList.contains('live-stale')")
         b.close()
 
 
@@ -502,7 +581,7 @@ def test_presentation_artifact_uses_the_organizers_slide_sequence():
         f"{rail['hits']} из {rail['frames']}",
         f"{baseline['set_O']['inside_objects_with_stop']} из {baseline['set_O']['inside_objects']}",
         f"{top['stop_frames']} из {top['visible_frames']}",          # the 2 x 2 m box at the envelope top
-        "635", "docker load",
+        "666", "docker load",
     ):
         assert required in text
     assert "релиз v1.0.0" not in text

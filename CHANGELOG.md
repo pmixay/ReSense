@@ -26,11 +26,11 @@ frames, 13 km, no obstacles).
   All 45 ride false events have scene reviews. Fresh full gate: 183 unchanged values, no waivers.
   Final idle cold/warm original-bag replays and stock DDS pass; the earlier loaded failure is
   retained. The full-data run on the second machine passed 621 tests and 6 subtests; this checkout
-  passed 635 tests and 6 subtests, with one ride-cache test deselected because `/data/cache/new_data`
+  passed 666 tests and 6 subtests, with one ride-cache test deselected because `/data/cache/new_data`
   is unavailable. Dashboard FAULT/CAUTION banners and estimated-range
-  wording are corrected; live status validation, 2 s stale indication, and reconnect guards have
-  3 new Chromium tests (17 pass). CI now has branch-scoped cold-bag and remote-viewer outage /
-  recovery checks; their first branch run is pending. Deck, PDF and video rebuilt. Independent scores and remaining quality
+  wording are corrected; live freshness validation, no-data overlays, and reconnect guards have
+  16 passing Chromium tests. CI now has branch-scoped cold-bag and remote-viewer outage /
+  recovery checks; final verification on the rebased branch is pending. Deck, PDF and video rebuilt. Independent scores and remaining quality
   gaps are in SCORECARD; these changes do not claim improved detector recall.
 
 
@@ -71,7 +71,8 @@ frames, 13 km, no obstacles).
   cloud, repeated recordings, and expiration of the startup allowance; the original-bag cold-disk
   replay still needs confirmation. The dashboard now treats `FAULT` as unavailable, clears the
   estimated monitoring range on fault or stale input, ignores malformed or decision-less live
-  messages, and overlays old visuals after 2 seconds without a valid message. Its user-facing
+  messages, and overlays the live panels until the first current result and on disconnect or
+  freshness expiry. Its user-facing
   range label says that the distance is estimated. The updated team history uses supplied project
   facts and leaves personal claims out. Browser-backed checks: 16 passed in Chromium. CI now has a
   two-container Foxglove viewer check on an isolated Docker network, including a paused-server

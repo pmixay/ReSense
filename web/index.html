@@ -28,6 +28,7 @@
         <button id="tab-plan" class="visual-tab" type="button" role="tab" aria-selected="false" aria-controls="panel-plan" tabindex="-1">Схема и график</button>
       </div>
       <section class="visual-card cab-card" id="panel-cab" role="tabpanel" aria-labelledby="tab-cab">
+        <div class="stale-veil" role="status">НЕТ АКТУАЛЬНЫХ ДАННЫХ ОТ ДЕТЕКТОРА</div>
         <div class="cab-stage"><canvas id="cab" role="img" aria-label="Вид по ходу движения из кабины: рельсы, габарит поезда, оценка дальности контроля и обнаруженные объекты с дистанцией"></canvas></div>
       </section>
       <section class="visual-card plan-card" id="panel-plan" role="tabpanel" aria-labelledby="tab-plan" hidden>
@@ -65,7 +66,7 @@
       </details>
       <details class="side-section" id="safety-card" open>
         <summary>Решение и надёжность</summary>
-        <div class="side-section-body"><div class="kv">
+        <div class="side-section-body"><div class="stale-veil" role="status">НЕТ АКТУАЛЬНЫХ ДАННЫХ</div><div class="kv">
           <span>Решение</span><b id="decision">—</b>
           <span title="Оценка по видимости и модели пути, ограниченная найденными объектами. Возможны пропуски препятствий внутри этой дальности.">Дальность контроля</span><b id="clear">—</b>
           <span>Состояние данных</span><b id="health">—</b>
@@ -208,12 +209,16 @@ const CAB = { back: 8, up: 2.3, hfov: 36, pitch: -1.5, rangeMin: 3, far: 250 }; 
 const CAB_VHALF = Math.atan(Math.tan(CAB.hfov * Math.PI / 360) * 9 / 16);          // vertical half-FOV at 16:9
 const TUNNEL = [[-2.3, -0.5], [-2.3, 3.3], [-1.5, 4.3], [1.5, 4.3], [2.3, 3.3], [2.3, -0.5]];   // schematic (dy, h)
 const DECISION_RU = { GO: 'НЕ ОБНАРУЖЕНО', CAUTION: 'ВНИМАНИЕ', STOP: 'СТОП', FAULT: 'ОШИБКА' };
+const VALID_DECISIONS = new Set(Object.keys(DECISION_RU));
 function decisionOf(res) {
   // DetectorNode.decision; 26.09: a latency warning is in h.level but not in h.decision_level (no CAUTION)
-  const h = res.health || {}, dl = h.decision_level || h.level;
-  if (res.obstacle || res.decision === 'STOP') return 'STOP';
+  const h = res.health || {}, dl = h.decision_level || h.level, decision = res.decision;
+  if (res.obstacle || decision === 'STOP') return 'STOP';
   if (res.freshness?.valid === false) return res.freshness.reason === 'catchup' ? 'CAUTION' : 'FAULT';
-  return res.decision || (res.obstacle ? 'STOP' : (h.level === 'error' ? 'FAULT' : ((res.warning || dl === 'warn') ? 'CAUTION' : (h.level ? 'GO' : '—'))));
+  if (decision === 'FAULT' || h.level === 'error' || dl === 'error') return 'FAULT';
+  if (decision === 'CAUTION' || res.warning || dl === 'warn') return 'CAUTION';
+  if (VALID_DECISIONS.has(decision)) return decision;
+  return h.level ? 'GO' : '—';
 }
 function trackModel(t) {
   // resense.track.TrackModel.center_y / rail_z: quadratic bed, extrapolated linearly beyond floor_range
@@ -565,10 +570,21 @@ function applyNode(node) {
 }
 
 // ----------------------------------------------------------------------------- live mode
-function onStatus(msg) {
+function setLiveStale(stale) {
   if (state.mode !== 'live') return;
+  document.body.classList.toggle('live-stale', stale);
+  if (!stale) return;
+  const currentDecision = state.last && decisionOf(state.last);
+  if (currentDecision === 'STOP' || currentDecision === 'FAULT') return;
+  setBanner('fault', 'ДАННЫЕ УСТАРЕЛИ', 'Нет актуального решения от детектора.');
+  $('decision').textContent = 'НЕТ ДАННЫХ'; $('decision').className = 'bad';
+  $('clear').textContent = '—'; $('dist').textContent = '—';
+}
+function onStatus(msg, source = ros, generation = rosGeneration) {
+  if (state.mode !== 'live' || source !== ros || generation !== rosGeneration) return;
   let res; try { res = JSON.parse(msg.data); } catch (e) { return; }
   if (!res || typeof res !== 'object' || typeof res.obstacle !== 'boolean') return;
+  if (res.decision != null && !VALID_DECISIONS.has(res.decision)) return;
   const f = res.freshness, finite = v => typeof v === 'number' && Number.isFinite(v);
   let invalid = '';
   if (!f || typeof f.valid !== 'boolean') invalid = 'status_clock_unknown';
@@ -612,6 +628,7 @@ function onStatus(msg) {
   state.lastStatusArrival = performance.now(); state.streamStale = false;
   $('health-source').className = 'pill ok'; $('health-source').textContent = 'Прямой эфир';
   applyResult(res);
+  setLiveStale(false);
 }
 function checkLiveStream(now = performance.now(), disconnected = false) {
   if (state.mode !== 'live' || !state.last || state.lastStatusArrival == null || state.streamStale) return;
@@ -628,21 +645,47 @@ function checkLiveStream(now = performance.now(), disconnected = false) {
   res.health = { ...(res.health || {}), level: 'error', decision_level: 'error', clear_distance: 0,
     messages: ['Срок актуальности результата истёк или соединение закрыто'] };
   applyResult(res);
+  setLiveStale(true);
   $('health-source').className = 'pill bad'; $('health-source').textContent = 'Нет актуального состояния';
 }
 setInterval(checkLiveStream, 100);
 let ros = null;
+let rosGeneration = 0;
+function closeLive() {
+  rosGeneration++;
+  const oldRos = ros; ros = null;
+  state.lastStatusArrival = null;
+  if (oldRos) { try { oldRos.close(); } catch (e) {} }
+}
 $('connect').onclick = () => {
   if (typeof ROSLIB === 'undefined') { $('conn').textContent = 'roslib.js не загружен'; return; }
   setMode('live');
-  if (ros) { try { ros.close(); } catch (e) {} }
-  ros = new ROSLIB.Ros({ url: $('url').value });
+  closeLive();
+  const generation = ++rosGeneration;
+  const currentRos = new ROSLIB.Ros({ url: $('url').value });
+  ros = currentRos;
+  state.lastStatusArrival = null; state.streamStale = false;
+  setLiveStale(true);
   $('conn').textContent = 'Подключение…';
   $('health-source').className = 'pill warn'; $('health-source').textContent = 'Подключение к потоку';
-  ros.on('connection', () => { $('conn').textContent = 'Подключено'; $('health-source').className = 'pill ok'; $('health-source').textContent = 'Прямой эфир'; });
-  ros.on('error', () => { $('conn').textContent = 'Ошибка'; $('health-source').className = 'pill bad'; $('health-source').textContent = 'Ошибка потока'; });
-  ros.on('close', () => { $('conn').textContent = 'Нет подключения'; $('health-source').className = 'pill warn'; $('health-source').textContent = 'Поток отключён'; checkLiveStream(performance.now(), true); });
-  new ROSLIB.Topic({ ros, name: '/resense/status', messageType: 'std_msgs/String' }).subscribe(onStatus);
+  currentRos.on('connection', () => {
+    if (ros !== currentRos || generation !== rosGeneration) return;
+    $('conn').textContent = 'Подключено'; $('health-source').className = 'pill ok'; $('health-source').textContent = 'Ожидание актуального состояния';
+  });
+  currentRos.on('error', () => {
+    if (ros !== currentRos || generation !== rosGeneration) return;
+    $('conn').textContent = 'Ошибка'; $('health-source').className = 'pill bad'; $('health-source').textContent = 'Ошибка потока';
+    setLiveStale(true);
+  });
+  currentRos.on('close', () => {
+    if (ros !== currentRos || generation !== rosGeneration) return;
+    ros = null; rosGeneration++;
+    $('conn').textContent = 'Нет подключения'; $('health-source').className = 'pill warn'; $('health-source').textContent = 'Поток отключён';
+    checkLiveStream(performance.now(), true);
+    setLiveStale(true);
+  });
+  new ROSLIB.Topic({ ros: currentRos, name: '/resense/status', messageType: 'std_msgs/String' })
+    .subscribe(msg => onStatus(msg, currentRos, generation));
 };
 
 // ----------------------------------------------------------------------------- replay mode
@@ -656,7 +699,10 @@ function resetView() {
 }
 function setMode(m) {
   if (state.mode === m) return;
-  pause(); state.mode = m; resetView();
+  pause();
+  if (m !== 'live') closeLive();
+  state.mode = m; resetView();
+  document.body.classList.remove('live-stale');
   $('mode-live').classList.toggle('active', m === 'live'); $('mode-replay').classList.toggle('active', m === 'replay');
   $('canvas-note').textContent = m === 'replay' ? 'Воспроизведение results.jsonl' : 'Данные ROS в реальном времени';
   $('health-source').className = 'pill ' + (m === 'live' ? 'warn' : 'ok');

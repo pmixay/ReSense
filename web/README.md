@@ -3,11 +3,11 @@
 > **Purpose:** the dashboard, the RViz and Foxglove layouts, the label tool, their headless checks
 > and the video recipes.
 > **Audience:** team, jury (demo) · **Owner:** P2 · **Language:** EN
-> **Last verified:** 2026-09-26 (17 `web/demo` tests pass in headless Chromium, including live FAULT, stale-stream and reconnect behavior) · **Status:** current
+> **Last verified:** 2026-09-26 (16 `web/demo` tests pass in headless Chromium, including live FAULT, stale-stream and reconnect behavior) · **Status:** current
 
 Everything the jury sees: the RViz layout the launch file loads, a Foxglove layout for remote
 demos, a browser dashboard that works live (rosbridge) and offline (replay of `results.jsonl`),
-the scripts that verify the dashboard headlessly (17 tests in `web/demo/`, CI job `web`), and the
+the scripts that verify the dashboard headlessly (16 tests in `web/demo/`, CI job `web`), and the
 video recipes.
 
 | file | what |
@@ -19,7 +19,7 @@ video recipes.
 | [`demo/check_dashboard.py`](demo/check_dashboard.py) | Playwright + headless Chromium: loads the JSONL into the dashboard, plays it, asserts the banner, screenshot / video |
 | [`demo/check_foxglove_live.py`](demo/check_foxglove_live.py) | Checks layout topics and receives detector messages through a running Foxglove bridge (`pip install websockets`) |
 | [`demo/capture_gallery.py`](demo/capture_gallery.py) | Playwright + Chromium: refreshes the dashboard screenshots in `docs/images` from the built-in demo and the recorded real status stream |
-| [`demo/test_web.py`](demo/test_web.py) | pytest for the layouts, the JSONL format, browser replay, and live safety behavior (17 tests): `python -m pytest -q web/demo` |
+| [`demo/test_web.py`](demo/test_web.py) | pytest for the layouts, the JSONL format, browser replay, and live safety behavior (16 tests): `python -m pytest -q web/demo` |
 | `../ros2_ws/src/resense_ros/rviz/resense.rviz` | RViz2 layout (P2-owned, loaded by `detector.launch.py rviz:=true` and the compose `rviz` service) |
 
 ![current ReSense dashboard showing a STOP decision in the built-in synthetic UI demo](../docs/images/dashboard-stop.png)
@@ -52,9 +52,10 @@ On phones, the panels stack and the plots redraw at their displayed width. Two m
   rosbridge is **not** in the ReSense image (`apt install ros-humble-rosbridge-suite` where ROS
   runs); for a live view on an offline stand use Foxglove, whose bridge the image has
   (`foxglove_layout.json`). A well-formed status with a current decision is required: `FAULT` is
-  shown as an error, and the view marks data stale after 2 seconds without a valid status. It
-  hides the old monitoring range and overlays the last canvas; malformed or decision-less data
-  cannot turn the banner green. Replay ignores malformed result records too.
+  shown as an error, and the live panels are covered until the first current result and again on
+  disconnect or freshness expiry. The view hides the old monitoring range; malformed or
+  decision-less data cannot turn the banner green. Replaced ROS connections are ignored, replay
+  closes its live socket, and replay ignores malformed result records too.
 * **Replay**: *Выбрать файл* (or drop the file anywhere) → a `results.jsonl` written by
   `python -m resense.cli run --bag <bag> --out results.jsonl` (one `FrameResult` JSON per line
   with the extra `frame` and `frame_id` keys). Play / pause (space), step (◀ ▶, arrow keys;
