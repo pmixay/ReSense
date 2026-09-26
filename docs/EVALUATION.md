@@ -169,7 +169,7 @@ validity over each sequence before interpreting range or edge results.
 
    ```bash
    python scripts/regression_gate.py --cache /data/cache \
-       --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_p3.json \
+       --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_p3b.json \
        [--config FILE] [--set section.key=value ...] [--allow PATTERN ...] \
        --out out/gate/<change>.json
    ```
@@ -189,7 +189,7 @@ validity over each sequence before interpreting range or edge results.
 
    - any frame count changes;
    - alarm events or STOP episodes rise on any of the five obstacle-free recordings or the ride;
-   - on `doubleT_obstacle`: the labelled hits drop (person 58 of 61; object 127 of 185, and 124
+   - on `doubleT_obstacle`: the labelled hits drop (person 58 of 61; object 128 of 185, and 125
      of 126 from frame 75), the first alarm frame (11) gets later, or a false-alarm event appears;
    - on O: an inside object loses STOP frames or its first STOP comes closer (no STOP counts as
      the worst), or an outside object or the background gains false STOP frames or track IDs;
@@ -212,6 +212,19 @@ validity over each sequence before interpreting range or edge results.
    recording, or a failed set F run on a cached ride, exits 2.
 
    **Baselines of 25.09.** The current one is
+   [`regression_baseline_2026-09-25_ride_p3b.json`](evidence/results/regression_baseline_2026-09-25_ride_p3b.json):
+   the shipped defaults of `30d0cac` (the four P3 items of round 2 merged on top of the one
+   below: the free-hanging exemption of `floating`, the thin-hanging stage with its rail-lock
+   guard, `health.clear_cap` and the five rate / re-mount flags) on the six recordings, O, the
+   ride and F straight, native path, 4-vCPU dev VM, `--jobs 3`, 333 s. It passes against the one
+   before with 6 gated rows better and none worse (O: the hanging 0.3 m cube 19 → 30 STOP frames,
+   first STOP 34.0 → 52.5 m; the 5 cm hanging object 0 → 15 STOP frames, first STOP 30.1 m;
+   `doubleT_obstacle` object on the rail 127 → 128 and 124 → 125 of 126 from frame 75); five bags,
+   the ride and F straight identical (EXPERIMENTS §1i,
+   [`p3_round2_combined_2026-09-25.json`](evidence/results/p3_round2_combined_2026-09-25.json)).
+   Re-cut on 26.09 on the safety-review fixes (the refinement off): every gated value the same
+   ([`p3_round2_review_fixes_2026-09-26.json`](evidence/results/p3_round2_review_fixes_2026-09-26.json)).
+   The one before,
    [`regression_baseline_2026-09-25_ride_p3.json`](evidence/results/regression_baseline_2026-09-25_ride_p3.json):
    the shipped defaults of `c598cf6` (the four P3 items of 25.09 merged: the rail-shadow rules on,
    the other three flags off) on the six recordings, O, the ride and F straight, native path,
@@ -222,8 +235,8 @@ validity over each sequence before interpreting range or edge results.
    the same name after the review fixes of the rail-shadow rules, on `154db25` (380 s): the same
    5 rows better and none worse against the one before, the 1 m box 13 → 12 false detections
    (distances only get shorter; EXPERIMENTS §1h,
-   [`p3_review_fixes_2026-09-25.json`](evidence/results/p3_review_fixes_2026-09-25.json)). The one
-   before,
+   [`p3_review_fixes_2026-09-25.json`](evidence/results/p3_review_fixes_2026-09-25.json)). Before
+   it,
    [`regression_baseline_2026-09-25_ride_column.json`](evidence/results/regression_baseline_2026-09-25_ride_column.json):
    the shipped defaults of `d117c8c` (long overhead rule on, `tracking.column_hold` 2), 348 s; it
    passes against its predecessor with 7 gated rows better and none worse (EXPERIMENTS §3a,
@@ -261,5 +274,5 @@ actual values come from [`EXPERIMENTS.md`](EXPERIMENTS.md) "Current results", §
 | false-alarm frames on E ≤ 1 per 100 outside platforms | 1 | 67 of 231 frames (49 in the platform-and-switch bag) | 2 of 1 065 frames = 0.19 per 100 (`roundT_doubleT` and the two pressure-gate bags) [real] | met |
 | p95 latency ≤ 100 ms | 1, 2 | 47–125 ms | offline 53–78 ms on one core, numpy path, health monitor not included [timing: sandbox, 23.09]; ROS node in Docker 76 ms at 120°, 112–130 ms at 360° [timing: sandbox, 23.09]; the i7-9700E stand is not open to the team before submission, the 8-core bench stands in ([`CAPTAIN.md`](CAPTAIN.md) action 7) | met offline and at 120°; not at 360° on the sandbox |
 | person confirmed at ≥ 150 m | 2 | 0 beyond 100 m | median 148 m over the 6 straight approaches with legacy placement (set F round 3); in the 5 paired approaches 154 m anchored on the near rails against 150 m legacy (round 4); 167 m with a given train speed [synthetic: set F]; no real obstacle beyond 57 m exists | met on synthetic only |
-| box 0.5 m confirmed at ≥ 100 m | 2 | — | not beyond 52 m [synthetic: set F]; the organizers' 0.3 m cubes from 34–43 m, their 2 × 2 m box from 98 m [organizers' synthetic: set O] | not met |
+| box 0.5 m confirmed at ≥ 100 m | 2 | — | not beyond 52 m [synthetic: set F]; the organizers' 0.3 m cubes from 34–43 m (43–53 m since 25.09, round 2), their 2 × 2 m box from 98 m [organizers' synthetic: set O] | not met |
 | false-alarm frames on E ≤ 1 per 100 including platforms | 2 | — | 107 of 2 287 frames = 4.7 per 100 (101 of them in `squareT_platform_squareT_switch`, train standing at the platform); the ride 204 of 11 271 = 1.8 per 100 [real] | not met |

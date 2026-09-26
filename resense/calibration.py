@@ -203,6 +203,10 @@ class MountCalibrator:
         self._applied = (0.0, 0.0, 0.0)  # rad: the tilt part of the current correction (roll, pitch, yaw)
         self._checks: List[tuple] = []   # drift monitor: residual (roll, pitch) of the last checks
         self.last_change_deg = 0.0       # how far the last correction change rotated the cloud
+        self.last_change_orientation = False   # the last change adopted a new axis orientation
+        self._refine_run = 0             # spaced observations in a row with the refinement condition
+        self._refines = 0                # refinements made
+        self._ref_raw: Optional[List[float]] = None   # rad: raw medians (roll, pitch, yaw) behind the applied provisional / refined tilt
         self._frames = 0
         self._frozen = not cfg.enabled
         self._since_check = 0
@@ -229,6 +233,7 @@ class MountCalibrator:
         R = rot_z(yaw) @ rot_y(pitch) @ rot_x(roll) @ self._R_orient
         d = R @ self.state.R.T
         self.last_change_deg = float(np.degrees(np.arccos(np.clip((np.trace(d) - 1.0) / 2.0, -1.0, 1.0))))
+        self.last_change_orientation = False
         self.state.R = R
         self._applied = (roll, pitch, yaw)
         self.state.roll_deg, self.state.pitch_deg, self.state.yaw_deg = (float(np.degrees(v)) for v in (roll, pitch, yaw))
@@ -253,17 +258,22 @@ class MountCalibrator:
                 best, best_score = k, ob.rail_score
         return best
 
-    def update(self, xyz_cfg: np.ndarray, xyz_cur: np.ndarray, track: Optional[TrackModel]) -> bool:
+    def update(self, xyz_cfg: np.ndarray, xyz_cur: np.ndarray, track: Optional[TrackModel],
+               periods: int = 1) -> bool:
         """Feed one frame (``xyz_cfg``: the configured vehicle frame; ``xyz_cur``: the same cloud
         under the current correction; ``track``: the detector's current model). Returns True
-        when the correction changed (the caller re-seeds its track model)."""
+        when the correction changed (the caller re-seeds its track model). ``periods``: nominal
+        frame periods per processed frame at the input rate (the Detector passes 1 at 10 Hz, 2
+        at 5 Hz); with ``time_cadence`` the spacing, the drift check period and the give-up
+        limit count them instead of frames (else it is ignored)."""
         cfg = self.cfg
         if not cfg.enabled:
             return False
-        self._frames += 1
+        step = max(1, int(periods)) if cfg.time_cadence else 1
+        self._frames += step
         if self._frozen:
             if cfg.monitor_period > 0:
-                self._since_check += 1
+                self._since_check += step
                 if self._since_check >= cfg.monitor_period:
                     self._since_check = 0
                     ob = observe_mount(xyz_cur, self.tcfg, track, cfg.min_rail_score)
@@ -281,11 +291,12 @@ class MountCalibrator:
             return False
 
         spacing = max(cfg.obs_spacing, 1)
-        if self._provisional_done and self._config_passed and self._obs and self._since_obs + 1 < spacing:
+        if self._provisional_done and self._config_passed and self._obs and self._since_obs + step < spacing:
             # between two spaced observations the frame is not needed: observing every frame cost
             # 10-15 ms for the first ~20 s of every recording (review 23.09). The spacing counts
-            # frames; the observation is taken on the first frame with a rail pair after it.
-            self._since_obs += 1
+            # frames (with time_cadence: frame periods); the observation is taken on the first
+            # frame with a rail pair after it.
+            self._since_obs += step
             return self._finish(False)
         ob = observe_mount(xyz_cur, self.tcfg, track, cfg.min_rail_score)
         changed = False
@@ -300,6 +311,7 @@ class MountCalibrator:
                     self.state.orientation = axis_label(self._R_orient)
                     self.state.message = f"sensor orientation found from the data: {self.state.orientation}"
                     self.last_change_deg = 90.0
+                    self.last_change_orientation = True
                     self._obs.clear()
                     self._recent.clear()
                     self._since_obs = 0
@@ -313,11 +325,77 @@ class MountCalibrator:
                    ob.height, ob.lateral)
             if not self._provisional_done:
                 self._recent.append(est)
-            self._since_obs += 1
+            self._since_obs += step
             if not self._obs or self._since_obs >= max(cfg.obs_spacing, 1):
                 self._obs.append(est)
                 self._since_obs = 0
+                changed = self._refine() or changed
         return self._finish(changed)
+
+    def _final_tilt(self, obs: List[tuple]):
+        """The tilt the final calibration sets from ``obs``: medians, roll / pitch below
+        ``apply_min_deg`` and yaw below ``min_yaw_deg`` set to 0. Also height and lateral."""
+        cfg = self.cfg
+        roll, pitch, yaw, height, lateral = self._medians(obs)
+        if abs(roll) < np.radians(cfg.apply_min_deg):
+            roll = 0.0
+        if abs(pitch) < np.radians(cfg.apply_min_deg):
+            pitch = 0.0
+        if abs(yaw) < np.radians(cfg.min_yaw_deg):
+            yaw = 0.0
+        return roll, pitch, yaw, height, lateral
+
+    def _refine(self) -> bool:
+        """``refine_min_deg`` (25.09): while a provisional tilt is applied, the spaced
+        observations so far replace it once they are as many as the provisional ones and say
+        something at least ``refine_min_deg`` different in roll or pitch (the first consecutive
+        frames can see one canted stretch of rail). True when the correction changed.
+
+        Safety review of 26.09: comparing the zeroed target with the applied tilt made every
+        crossing of ``apply_min_deg`` a jump of at least 0.75 deg, so a median hovering there
+        flipped the correction (and re-seeded the track model) again and again (4 times on
+        roundT_doubleT, +3 deg pitch). Now the condition must hold on ``refine_confirm_obs``
+        spaced observations in a row (a one-off move of the median, or a bimodal one when an
+        obstacle fools the rail observation, is not applied) and at most ``refine_max``
+        refinements are made. The opt-in ``refine_raw_trigger`` (tried, not shipped) triggers
+        each axis by its RAW median moving ``refine_min_deg`` from the raw median behind its
+        applied value and keeps the other axes: it kept noise-level provisional values the final
+        would zero."""
+        cfg = self.cfg
+        if (cfg.refine_min_deg <= 0 or self.state.status != "provisional"
+                or len(self._obs) < max(cfg.provisional_frames, 1) or len(self._obs) >= cfg.frames):
+            return False
+        limit = int(getattr(cfg, "refine_max", 0))
+        if limit > 0 and self._refines >= limit:
+            return False
+        roll, pitch, yaw, _, _ = self._final_tilt(self._obs)
+        max_t = np.radians(cfg.max_tilt_deg)
+        if abs(roll) > max_t or abs(pitch) > max_t:
+            return False
+        applied = self._applied
+        raw_trigger = bool(getattr(cfg, "refine_raw_trigger", False))
+        if raw_trigger:
+            raw = self._medians(self._obs)[:3]
+            ref = self._ref_raw if self._ref_raw is not None else list(applied)
+            step = np.radians(cfg.refine_min_deg)
+            moved = [abs(r - f) >= step for r, f in zip(raw, ref)]
+            roll, pitch, yaw = (t if m else a for t, m, a in zip((roll, pitch, yaw), moved, applied))
+            due = max(abs(roll - applied[0]), abs(pitch - applied[1]), abs(yaw - applied[2])) > 1e-9
+        else:
+            due = not np.degrees(max(abs(roll - applied[0]), abs(pitch - applied[1]))) < cfg.refine_min_deg
+        self._refine_run = self._refine_run + 1 if due else 0
+        if not due or self._refine_run < max(1, int(getattr(cfg, "refine_confirm_obs", 1))):
+            return False
+        self._refine_run = 0
+        self._refines += 1
+        if raw_trigger:
+            new = (roll, pitch, yaw)
+            self._ref_raw = [r if abs(n - a) > 1e-9 else f for r, f, n, a in zip(raw, ref, new, applied)]
+        changed = self._set_tilt(roll, pitch, yaw)
+        self.state.message = (f"provisional tilt refined from {len(self._obs)} spaced observations: roll "
+                              f"{self.state.roll_deg:+.2f}, pitch {self.state.pitch_deg:+.2f} deg "
+                              f"(final after {cfg.frames} observations)")
+        return changed
 
     def _finish(self, changed: bool) -> bool:
         """The provisional tilt, the final tilt and the no-rail fallback, once the frame's
@@ -328,9 +406,14 @@ class MountCalibrator:
         if not self._provisional_done and len(self._recent) >= cfg.provisional_frames:
             self._provisional_done = True
             roll, pitch, yaw, _, _ = self._medians(self._recent)
+            self._ref_raw = [roll, pitch, yaw]
             if (np.degrees(max(abs(roll), abs(pitch))) >= cfg.provisional_min_deg
                     and abs(roll) <= max_t and abs(pitch) <= max_t):
                 yaw = yaw if abs(yaw) >= np.radians(cfg.min_yaw_deg) else 0.0
+                if cfg.provisional_per_axis:
+                    # 25.09: only the clearly tilted axis; the other one is at the noise of 5 frames
+                    roll = roll if np.degrees(abs(roll)) >= cfg.provisional_min_deg else 0.0
+                    pitch = pitch if np.degrees(abs(pitch)) >= cfg.provisional_min_deg else 0.0
                 changed = self._set_tilt(roll, pitch, yaw)
                 self.state.status = "provisional"
                 self.state.message = (f"provisional tilt: roll {self.state.roll_deg:+.2f}, pitch {self.state.pitch_deg:+.2f} deg "
@@ -350,7 +433,14 @@ class MountCalibrator:
                 pitch = 0.0
             if abs(yaw) < np.radians(cfg.min_yaw_deg):
                 yaw = 0.0
-            changed = self._set_tilt(roll, pitch, yaw) or changed
+            a_r, a_p, a_y = self._applied
+            if (cfg.keep_within_deg > 0 and self.state.status == "provisional" and abs(yaw - a_y) < 1e-12
+                    and np.degrees(max(abs(roll - a_r), abs(pitch - a_p))) < cfg.keep_within_deg):
+                # 25.09: the final confirms the applied provisional tilt within its own error:
+                # keep it, so the track model is not re-seeded for a change of a few hundredths
+                pass
+            else:
+                changed = self._set_tilt(roll, pitch, yaw) or changed
             self.state.height, self.state.lateral = height, lateral
             self.state.frames_used = len(self._obs)
             identity = np.allclose(self.state.R, np.eye(3), atol=1e-9)

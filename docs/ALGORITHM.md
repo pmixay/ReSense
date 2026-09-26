@@ -109,9 +109,19 @@ piece applied a noise-level +0.51° roll and gained 6 false events), then frozen
 spaced observations the frame is not measured (v0.6.2, second review: measuring every frame
 cost 10–15 ms per frame for the first 20 s). Tilts above `max_tilt_deg` = 15° are
 rejected (configured mapping kept, status `fallback`); without a rail pair in `max_frames` =
-400 frames the calibrator gives up (`fallback`). A change re-seeds the track model and clears
-the accumulation buffer; the tracker is reset only for a change above 1° (a new orientation),
-so the final refinement does not drop confirmed tracks. After freezing, the same measurement
+400 frames the calibrator gives up (`fallback`). A change above `reseed_keep_max_deg` = 1° (or a
+new orientation) re-seeds the track model and clears the accumulation buffer; since the safety
+review of 26.09 a change up to 1° (a final correction) rotates the current model into the
+corrected frame instead (bed, rail head and axis refitted to rotated points; its age and the
+floor-shadow reference kept), because a model re-seeded from nothing has no shadow reference and
+no smoothing for its warm-up (on `doubleT_obstacle` it lost a confirmed STOP for 2 frames). The
+tracks follow every change (rotated); a track reported in zone gauge (a STOP) stays reported for a
+fixed window of `tracking.reseed_hold` = 5 frames from the change, matched or not (since the
+re-review of 26.09 a match no longer ends it), and when the change re-seeds the model at least
+until the model's warm-up gives it a floor-shadow reference again (6 frames at 10 Hz, 4 at 5 Hz);
+its misses in the window are not counted against it; on a change above 1° only such
+tracks are kept (the others' zone votes were taken in a wrong frame), and a new orientation resets
+the tracker. After freezing, the same measurement
 runs every `monitor_period` = 50 frames on the corrected cloud and the **median of the last
 `drift_window` = 10 checks** (50 s) above `drift_warn_deg` = 1.5° — a lasting change, a mount
 knocked loose, not a curve — is reported in the health status, never silently re-applied. The
@@ -126,6 +136,20 @@ during the first ~20 s and every 50th frame afterwards.
 The track model is seeded again after the correction; since v0.6 its rate limits
 (§3.1) apply only after `track.axis_warmup_frames` = 5 frames, so a wrong first-frame
 estimate (a cold start mid-ride) is not locked in for 30+ frames.
+
+**Input rate and re-mount (25.09, SCORECARD #13).** The spacing, the drift-check period and the
+give-up limit count nominal periods of the input rate (`time_cadence`: the mean of the last 14
+stamp intervals within 0–0.5 s over `tracking.frame_dt`, 1 at 10 Hz, 2 at 5 Hz; since 26.09 the
+short in-burst intervals count too, recorded receive stamps come in bursts: the median of 9
+without the ones under 0.02 s read alternating 0.19 / 0.01 s stamps as 2 periods), and so do the
+axis rate limits, the warm-up and the yaw / curvature EMA (`track.rates_per_period`,
+`walls_smoothing_per_period`; the bed and rail EMA average noise and stay per frame). A final
+within `keep_within_deg` = 0.25° of the provisional tilt keeps it (no re-seed). The refinement
+(`refine_min_deg`: the spaced observations replace the provisional tilt once there are 5 of them
+and the tilt they give differs by ≥ 0.5°) was on in round 2 and is off since the safety review of
+26.09: a refined tilt lost a `doubleT_obstacle` STOP frame that the provisional one keeps; turned
+back on it needs its condition on two observations in a row and refines at most once
+(`refine_confirm_obs` 2, `refine_max` 1: it cannot flap) (EXPERIMENTS §1i).
 
 ## 3. Processing pipeline
 
@@ -258,7 +282,7 @@ Everything is **range-adaptive**, because a 0.5 m object gives ~500 returns at 2
    persistent object that stops matching a signature (a person stepping away from a column)
    flips back to `gauge` through the tracker's zone history (§3.5).
 
-   Two refinements of 25.09, decided on the ride ([`EXPERIMENTS.md`](EXPERIMENTS.md) §1f):
+   Refinements of 25.09, decided on the ride ([`EXPERIMENTS.md`](EXPERIMENTS.md) §1f, §1i):
 
    - `short_signature_max_length` / `short_signature_max_distance`: the `elevated` and `floating`
      shapes do not demote a cluster at most that long along the track and that far away (later
@@ -284,6 +308,13 @@ Everything is **range-adaptive**, because a 0.5 m object gives ~500 returns at 2
      1.6 m, 2.0 and 1.8 m bring back the ride event at 105–110 m (bottom 1.68–1.92 m), and 1.6 m
      leaves every recording, the ride, set O and set F straight identical frame by frame. A long
      object near the axis whose bottom is above 1.6 m is still advisory (§6).
+   - `floating_free_max_size` with `floating_free_max_dy` / `floating_free_max_top` (25.09,
+     round 2): the `floating` shape does not demote a compact cluster hanging free inside the
+     envelope: every extent ≤ 0.5 m, its outermost point ≤ 0.95 m off the axis and its top
+     ≤ 2.5 m. The signs, lamps and brackets `floating` is for are fixed to the wall or the vault,
+     so their clusters reach the wall side of the corridor or its top (or are longer). On since
+     25.09: the organizers' 0.3 m cube hanging 1.0–1.4 m up gets a STOP from 52.5 m instead of
+     34.0 m; the six recordings and the ride are identical frame by frame (EXPERIMENTS §1i).
 
    [`EXPERIMENTS.md`](EXPERIMENTS.md) §1f has the numbers;
 6. **retro-reflector rule** (v0.4, [`SENSOR.md`](SENSOR.md) §3.3: intensity is reflectivity in
@@ -302,7 +333,21 @@ Everything is **range-adaptive**, because a 0.5 m object gives ~500 returns at 2
    (from the front every object is thin). `retro_intensity: 0` switches the rule off;
 7. a **visibility score** compares the voxel count with the number of returns a target of that
    width and height should give at that range (`expected_points`); the score saturates at
-   `visibility_ratio` = 15 % of the expectation and feeds the tracker's confidence.
+   `visibility_ratio` = 15 % of the expectation and feeds the tracker's confidence;
+8. **thin objects hanging from above** (`hanging_*`, on since 25.09, `clustering.find_hanging`,
+   [`EXPERIMENTS.md`](EXPERIMENTS.md) §1i): a cable or rod that dips only 0.2–0.4 m below the
+   envelope top gives 1–3 returns there, below the 5-voxel minimum. The frame's points near the
+   axis (\|dy\| < 0.8 m) from 1.8 m up to 0.6 m above the top are linked at the corridor radius;
+   a group with at least one voxel inside the strict envelope and one above its top, at most
+   0.5 m along and across the track and at most 60 m away (and within the trusted corridor), is
+   a gauge cluster of kind `hanging`. It is dropped when it overlaps an obstacle of the other
+   stages (zone gauge, no demotion reason; since 26.09, `hanging_yield_gauge_only`: an advisory
+   cluster there, a cable demoted as `floating`, took its STOP away), and it is confirmed like any
+   track (5 frames). Since 25.09, round 2
+   (`hanging_needs_rails`, on) the stage runs only on frames whose track model found the rail
+   pair in the near range (`track.rail_slabs` > 0): 28 of the 29 groups it took on the ride were
+   tops of station columns in frames without one. The organizers' 5 cm object STOPs from
+   30.1 m with and without the guard; the ride and the empty recordings are unchanged.
 
 When several frames are merged (§3.4) the voxel-count thresholds `min_points`, `min_points_far` and
 `gauge_min_points` are raised by `1 + n_merged · min_points_scale` (×1.5 for 5 frames,
@@ -607,8 +652,12 @@ flag and the distance, every frame carries:
   platform hall) — the organizers accept a detection at the visible limit ("no worse than a
   driver", fact 14), so the output says how far the path was actually checked. A consumer that
   brakes on `clear_distance` < stopping distance gets fail-safe behaviour for free: a blinded
-  sensor, a lost track model or a stale input shrink it to 0. Only a *confirmed* obstacle
-  shortens it: an unconfirmed or advisory object inside the envelope does not (§6);
+  sensor, a lost track model or a stale input shrink it to 0. Since 25.09 (round 2,
+  `health.clear_cap` on) it also stops at the nearest unconfirmed or advisory cluster touching the
+  strict envelope (columns and a confirmed obstacle's own cluster excluded; its distance is in
+  `health.candidate_distance`), and since 26.09 (`clear_cap_lost`) at the predicted distance of a
+  track that was a reported obstacle when last matched and missed this frame; it never changes a
+  detection or the decision (§6, EXPERIMENTS §1i);
 * **`health`** (`resense/health.py`, `/resense/health` as `diagnostic_msgs/DiagnosticArray`):
   `ok` / `warn` / `error` with messages — valid returns per frame (error below 20 000 = a
   blinded sensor or a truncated message, warning below half the running median), returns closer
@@ -654,6 +703,7 @@ the CLI and the ROS node; the one exception is `tracking.hold_misses`, a code de
 | `cluster.overhead_min_height` | 3.0 m (v0.6: the envelope top; 2.4 m in v0.5) | overhead fixtures are advisory only |
 | `tracking.confirm_hits`, `tracking.conf_threshold` | 3, 0.6 | latency vs false alarms |
 | `tracking.hold_misses` (v0.6.3) | 1 | frames a reported obstacle stays reported without a match; 0 = the v0.6.2 behaviour. Code default in `resense/config.py`, not in `configs/default.yaml` |
+| `tracking.reseed_hold`, `calibration.reseed_keep_max_deg` (26.09) | 5, 1° | after a mount-calibration change a STOP stays reported for a fixed window of 5 frames from the change, matched or not (6 at 10 Hz when the model is re-seeded: its warm-up); a change up to 1° rotates the track model instead of re-seeding it (safety review of 26.09, EXPERIMENTS §1i) |
 | `calibration.apply_min_deg` | 0.75° | smallest tilt applied (1.5× the p90 noise of the 20-observation median on a moving train; 0.5° until v0.6.3) |
 | `tracking.ego_speed_max` | 25 m/s | association slack without odometry |
 | `track.floor_verify_tolerance`, `track.floor_verify_band` | 0.5 m, \|dy\| 1.6–3.5 m | how far the bed extrapolation is trusted beyond the fit: looser = longer corridor, more phantom objects where the bed bends |
@@ -667,6 +717,7 @@ the CLI and the ROS node; the one exception is `tracking.hold_misses`, a code de
 | `cluster.short_signature_max_length`, `short_signature_max_distance` (25.09) | 0 (off), 100 m | tried, not shipped: `elevated` / `floating` spare a cluster at most this long along the track and this far (§3.3); at 3.0 m set O 303 → 352 inside STOP frames, but ride STOP episodes 39 → 45 with the long rule (EXPERIMENTS §1f) |
 | `cluster.floating_long_min_length` (25.09) | 3.0 m (on since 25.09) | `floating` also demotes a cluster near the axis longer than this along the track (§3.3): five bags 20 → 14 events, ride 47 → 46, set O and set F straight unchanged, gate PASS (EXPERIMENTS §1f) |
 | `cluster.floating_long_min_bottom` (25.09, review) | 1.6 m | ... only when the cluster's lowest point is above this (overhead infrastructure; a tray or duct fallen onto the axis lower down is a STOP): 2.0 / 1.8 m bring back a ride event (ride 46 → 47), 1.6 m changes nothing on the recordings, the ride, set O and set F straight (§3.3, EXPERIMENTS §1f); 0 = no bottom condition |
+| `cluster.floating_free_max_size`, `floating_free_max_dy`, `floating_free_max_top` (25.09, round 2) | 0.5 m (on), 0.95 m, 2.5 m | `floating` spares a compact cluster hanging free inside the envelope (§3.3): the organizers' floating cube a STOP from 52.5 m instead of 34.0 m, every recording and the ride identical, gate PASS (EXPERIMENTS §1i) |
 | `calibration.enabled`, `frames` × `obs_spacing`, `provisional_min_deg`, `min_yaw_deg`, `drift_warn_deg` / `drift_window` (v0.6.1) | true, 20 × 10 frames, 2.5°, 3°, 1.5° / 10 checks | mount auto-calibration (final tilt over 20 s, provisional only for a clearly tilted rig); `sensor.roll_deg/pitch_deg/yaw_deg` freeze a known mount |
 | `lowobj.straddle_enabled`, `straddle_min_top`, `straddle_min_width`, `straddle_max_length`, `straddle_band` (v0.6.2) | true, 0.10 m, 0.35 m, 0.8 m, 0.30 m | an object across a rail, straddling the envelope floor, clustered whole (§3.3b) |
 | `lowobj.near_enabled`, `near_range`, `near_half_width`, `near_min_excess`, `near_min_width`, `near_max_width`, `near_min_length`, `near_min_height`, `near_min_bed_lateral_bins`, `near_min_points`, `near_max_length` | false, 30 m, 0.55 m, 0.05 m, 0.24 / 0.55 m, 0.0 m, 0.0 m, 20, 5, 0.75 m | opt-in central near-bed path (§3.3b), off: its first gates added 620 events on the ride; the width and bed-support gates halve its alarm frames, 107 events on the five recordings against 20 (§3.3b, §6) |
@@ -739,20 +790,33 @@ data: [`SCORECARD.md`](SCORECARD.md).
 * **Mount calibration** needs a rail pair within `calibration.max_frames` = 400 frames (40 s; a
   start inside a pressure gate or a switch cavern delays it) and corrects roll / pitch / yaw only
   as a whole-run constant; the cant of a curve is part of the rail plane and is not separated
-  from the mount roll.
+  from the mount roll. Since 25.09 (`calibration.time_cadence`) its spacing and limits count
+  periods of the input rate, so 5 Hz calibrates in the same 20 / 40 s as 10 Hz.
+* **A lower input rate or a re-mounted rig** (SCORECARD #13, 25.09, EXPERIMENTS §1i): at 5 Hz
+  the five obstacle-free recordings give 10 false events (13 at 10 Hz); with the rig rolled 3°
+  14, pitched 3° 17 since 26.09 (11 and 16 with the refinement of round 2). The pitch excess is
+  marginal clusters in the platform and switch recordings that change when the rig's own
+  sub-degree tilt is corrected; a provisional tilt taken on a canted stretch can be ~2° off in
+  roll until the final correction (20 s): the refinement that replaced it after 4–6 s
+  (`refine_min_deg`) is off since the safety review of 26.09, because a refined tilt cost a
+  `doubleT_obstacle` STOP frame that the provisional one keeps.
 
 ### Found by the organizers' test objects (set O, 24.09)
 
 The organizers' `cloud_with_fake_obj` recording carries ten objects added by their own tool,
 the one used for the hidden check; the shipped detector stops for 5 of the 8 objects inside the
-envelope [organizers' synthetic: set O, 24.09]. Per-object grade and the config sweeps:
+envelope [organizers' synthetic: set O, 24.09], 6 of 8 since the hanging stage of 25.09 (§3.3
+item 8). Per-object grade and the config sweeps:
 [`P4_AUDIT.md`](P4_AUDIT.md) "Organizer synthetic-obstacle recording", EXPERIMENTS §2e. The
 causes, each a limitation of the current rules:
 
 * **Two infrastructure signatures demote in-envelope test objects** (§3.3 item 5b). `floating`
-  makes the 0.3 m cube hanging 1.0–1.4 m above the rail head (#2) advisory at 47–52 m, because
-  its lateral offset of 0.70–0.78 m exceeds `signature_min_lateral` = 0.6 m, and the 0.3 m cube
-  at the envelope edge (#4) advisory in every frame. `elevated` demotes the 2 × 2 m box at the
+  made the 0.3 m cube hanging 1.0–1.4 m above the rail head (#2) advisory at 44–59 m (its
+  lateral offset of 0.61–0.82 m exceeds `signature_min_lateral` = 0.6 m); since 25.09 (round 2,
+  `floating_free_max_size`) it spares a compact cluster hanging free inside the envelope and #2
+  is a STOP from 52.5 m (EXPERIMENTS §1i). It still makes the 0.3 m cube at the envelope edge
+  (#4) advisory in every frame: its outermost point is 1.18–1.32 m off the axis measured from
+  the rails, like the outside cube #5's (Q1 below). `elevated` demotes the 2 × 2 m box at the
   envelope top (#8) in 36 frames: a 2 m wide cluster with its bottom above 1.2 m, although that
   bottom is 2.2–2.9 m above the rail head, inside the envelope. Relaxing either rule wins those
   frames back but alarms on a 3.9–5.7 m long overhead structure ~104 m ahead of the train
@@ -761,15 +825,21 @@ causes, each a limitation of the current rules:
   for clusters longer than 3 m or farther than 100 m gives 352 instead of 303 STOP frames on the
   inside objects for 113 / 22; since 25.09 it is the flag `cluster.short_signature_max_length`
   (off, §3.3), measured on the ride 25.09 and not shipped (EXPERIMENTS §1f).
-* **A 5 cm object hanging from the roof is never a candidate** (#10, missed in all 42 visible
-  frames). Only its lowest 0.2–0.36 m dips into the 3.0 m envelope, with 1–4 points a frame,
-  below the cluster minimum of 5 voxels; with `cluster.min_points` 3 it alarms in 3 frames at
-  10 m. The exemption of thin hanging cables from the `column` signature (§3.3) cannot help a
-  cluster that never forms.
-* **0.3 m cubes are confirmed only from 34–43 m** (#2 from 34.0 m, #3 on the rail from
-  42.7 m). At 60–115 m such a cube returns 2–4 points a frame, below the 5-voxel minimum within
-  100 m, so a single frame cannot confirm a 0.3 m object much beyond 50 m with this sensor;
-  lowering `min_points`, `min_points_far` or `gauge_min_points` changed nothing for them.
+* **A 5 cm object hanging from the roof is found only within ~30 m** (#10; since 25.09, §3.3
+  item 8; before that it was missed in all 42 visible frames). Only its lowest 0.2–0.36 m dips
+  into the 3.0 m envelope, with 1–3 returns a frame, below the cluster minimum of 5 voxels. The
+  hanging stage links them to the object's part above the envelope top: STOP in 15 frames from
+  30.1 m (EXPERIMENTS §1i). Beyond ~50 m none of its returns is inside the envelope measured
+  from the rails, and beyond 60 m the stage does not look. At stations without a rail lock the
+  tops of platform columns 13–40 m ahead passed the same test in single frames (28 on the ride),
+  none confirmed; since the rail-lock guard of 25.09, round 2 (`cluster.hanging_needs_rails`),
+  the stage does not run on such frames, so a thin object hanging where the rails are not found
+  (a station, a switch cavern) is not looked for either.
+* **0.3 m cubes are confirmed only from 43–53 m** (#3 on the rail from 42.7 m; #2 from 52.5 m
+  since 25.09, round 2, 34.0 m before). At 60–115 m such a cube returns 2–4 points a frame,
+  below the 5-voxel minimum within 100 m, so a single frame cannot confirm a 0.3 m object much
+  beyond 50 m with this sensor; lowering `min_points`, `min_points_far` or `gauge_min_points`
+  changed nothing for them.
 * ~~**A large near object shadows the rails.**~~ Fixed 25.09 (§3.1, §3.3; EXPERIMENTS §1h):
   while the 2 × 2 m box (#1) was 26 → 9 m ahead, the roof behind it tilted the bed fit (rail head
   at 20 m 0.8–3.5 m off), the bed 3–10 m ahead read as the obstacle (3.0 m reported in frames
@@ -787,14 +857,18 @@ causes, each a limitation of the current rules:
   the growing edge margin only added false STOPs (#7 6 → 40 frames, background 3 → 8). Which
   reference the envelope follows is an open question to the organizers
   ([`QUESTIONS.md`](QUESTIONS.md) Q1).
-* **`clear_distance` counts only confirmed obstacles** (§4b): an unconfirmed or advisory
-  object inside the envelope does not shorten it. On set O the criteria judgement of 24.09
-  (judge B, [`SCORECARD.md`](SCORECARD.md)) found 184 object-frames with the decision `GO` and a
-  `clear_distance` beyond an in-envelope object, 89 of them with object points inside the
-  measured envelope: the 5 cm hanging object at 6.7–30 m (3–27 points, up to 13 inside the
-  envelope) read `GO` with a clear distance of 150–170 m, the 0.3 m cube on the rail at 46–67 m
-  `GO` with 165–185 m. The proposed fix caps it at the nearest unconfirmed or advisory candidate
-  that touches the envelope; STOP does not change (SCORECARD §6).
+* ~~**`clear_distance` counts only confirmed obstacles**~~ (§4b) — capped since 25.09, round 2:
+  on set O the criteria judgement of 24.09 (judge B, [`SCORECARD.md`](SCORECARD.md)) found 184
+  object-frames with the decision `GO` and a `clear_distance` beyond an in-envelope object, 89 of
+  them with object points inside the measured envelope: the 5 cm hanging object at 6.7–30 m (3–27
+  points, up to 13 inside the envelope) read `GO` with a clear distance of 150–170 m (a STOP from
+  30.1 m since 25.09, §3.3 item 8), the 0.3 m cube on the rail at 46–67 m `GO` with 165–185 m.
+  `health.clear_cap` (candidate R1) caps the distance at the nearest unconfirmed or advisory
+  cluster touching the envelope, columns excluded, and changes no decision: the set O overclaim
+  172 → 82 object-frames. It **failed** its pre-registered clutter limit (the five obstacle-free
+  recordings' median −5.5 % against −5 %; the ride −3.1 %) and was shipped on by the captain's
+  delegate anyway (EXPERIMENTS §1i). Left: objects that form no cluster touching the envelope (far
+  0.3 m cubes) stay uncapped.
 
 ### What the organizers' answers settle
 

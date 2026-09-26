@@ -13,16 +13,26 @@ import glob
 import hashlib
 import json
 import os
+import sys
 from concurrent.futures import ProcessPoolExecutor
 
 import numpy as np
-from eval_real import SIX, summarize
 
-from resense.calibration import rot_x, rot_y
-from resense.config import DetectorConfig
-from resense.detector import Detector
-from resense.frame import Frame, frame_from_compact
-from resense.io import _natural_key, load_cache_stamps
+# this checkout's resense and scripts/, not an installed copy (26.09: run from a checkout without
+# PYTHONPATH it imported the main checkout's package), as scripts/regression_gate.py does
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
+for _p in (ROOT, HERE):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
+
+from eval_real import SIX, summarize  # noqa: E402  (scripts/)
+
+from resense.calibration import rot_x, rot_y  # noqa: E402
+from resense.config import DetectorConfig  # noqa: E402
+from resense.detector import Detector  # noqa: E402
+from resense.frame import Frame, frame_from_compact  # noqa: E402
+from resense.io import _natural_key, load_cache_stamps  # noqa: E402
 
 
 def run_bag(job):

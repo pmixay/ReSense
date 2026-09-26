@@ -102,6 +102,8 @@ class TrackConfig:
     axis_max_yaw_rate: float = 0.003                 # rad per frame (0.17 deg; a train at 15 m/s on R = 700 m yaws 0.12 deg per frame); larger changes are clipped; 0 = off
     axis_max_curvature_rate: float = 1.0e-4          # 1/m per frame, larger changes of the smoothed curvature are clipped; 0 = off
     axis_warmup_frames: int = 5                      # frames after a (re)seed of the track model during which the rate limits do not apply (v0.6)
+    rates_per_period: bool = True                    # on since 25.09 (P3, SCORECARD #13): the two rate limits above and axis_warmup_frames count nominal frame periods (tracking.frame_dt), not processed frames: x k with k = the input rate in periods (median of the last 9 stamp intervals, rounded: 1 at 10 Hz, 2 at 5 Hz); the bed / rail smoothing stays per frame (it averages noise); 5 Hz five bags 13 / 17 -> 10 / 10 events / STOP episodes with walls_smoothing_per_period, 10 Hz gate identical (EXPERIMENTS.md section 1i, docs/evidence/results/p3_robustness_2026-09-25.json); false = per processed frame
+    walls_smoothing_per_period: bool = True          # on since 25.09 (P3): walls_smoothing (the EMA of the axis yaw / curvature, which change with the distance travelled) per nominal frame period, a^k; floor_ / rails_smoothing stay per frame (squared at 5 Hz they lost 5 labelled frames of the object on the rail); false = per processed frame
     axis_sides_max_disagreement: float = 6.7e-4      # 1/m, both boundaries fitted and their curvatures differ by more (R 1500 m): axis trusted only to axis_disagree_range; 0 = off
     axis_disagree_range: float = 60.0                # m, trusted range of the axis when the two boundaries disagree
     axis_one_side_range: float = 120.0               # m, trusted range when only one boundary was fitted (it cannot tell a parallel wall from a diverging one); 0 = no cap
@@ -196,6 +198,9 @@ class ClusterConfig:
     floating_max_width: float = 1.0    # m
     floating_long_min_length: float = 3.0  # m, on since 25.09 (decided on the ride; station false STOPs; 0 = off): > 0 = the floating shape also demotes a cluster longer than this along the track near the axis (an overhead duct / tray / beam running along the track; the lateral condition keeps shorter ones, e.g. a hanging cable)
     floating_long_min_bottom: float = 1.6  # m, since 25.09 (review): ... and only when its lowest point is above this (overhead infrastructure; a tray / duct / pipe fallen onto the axis lower in the envelope is an obstacle); 0 = no bottom condition (the first 25.09 rule)
+    floating_free_max_size: float = 0.5   # m, on since 25.09 round 2 (pre-registered A of A / B / C, gate PASS; 0 = off): the floating signature does not demote a compact cluster hanging free inside the envelope (set O cube #2: STOP from 52.5 m instead of 34.0 m, six recordings and the ride identical per frame): every extent at most this,
+    floating_free_max_dy: float = 0.95    # m, ... its outermost point at most this far off the axis (inside the 1.05 m envelope edge: not reaching the wall side of the corridor, 1.40 m),
+    floating_free_max_top: float = 2.5    # m, ... and its top at most this high above the rail head (under the 3.0 m envelope top: not hanging from the vault); docs/evidence/results/p3_signatures_2026-09-25.json
     edge_min_lateral: float = 1.0      # m (v0.6: 1.2 with the 1.40 m polygon), |lateral| beyond this, longer than edge_min_aspect x width and lower than edge_max_height = duct / bench / platform-edge fragment
     edge_min_aspect: float = 2.5
     edge_max_height: float = 1.0       # m
@@ -206,6 +211,21 @@ class ClusterConfig:
     signature_min_lateral: float = 0.6  # m, v0.6: the column and floating signatures apply only off the track centre (a cable / object hanging into the envelope near the axis is an obstacle)
     short_signature_max_length: float = 0.0   # m, candidate of 24.09 (P3 / P4), off (no-go 25.09 on the ride): > 0 = the elevated and floating signatures do not demote a cluster at most this long along the track
     short_signature_max_distance: float = 100.0  # m, ... and at most this far (the organizers' test objects are 0.3-2.2 m long; the platform structure these signatures must keep demoting is 3.9-5.7 m long at ~104 m); docs/P4_AUDIT.md, scripts/short_signature_experiment.py
+    # on since 25.09 (SCORECARD #11; pre-registered candidate A, the first of A / B / C to pass the
+    # regression gate; false = off): thin objects hanging from above into the envelope near the axis
+    # (clustering.find_hanging). The organizers' 5 cm object dips 0.2-0.4 m below the envelope top with
+    # 1-3 returns a frame and never reached min_points; linked to its part above the top it is a STOP
+    # from 30.1 m (set O 0 -> 15 STOP frames), every other gate row identical, the ride included
+    # (docs/evidence/results/p3_thin_hanging_2026-09-25.json)
+    hanging_enabled: bool = True
+    hanging_max_lateral: float = 0.8   # m, |dy| of the points searched
+    hanging_min_height: float = 1.8    # m above the rail head, lowest point searched
+    hanging_link_band: float = 0.6     # m above the envelope top in which the linking points are searched (the roof stays out)
+    hanging_min_voxels: int = 1        # voxels inside the strict envelope, with at least one more above its top (2: candidate B)
+    hanging_max_size: float = 0.5      # m, along and across the track (a cable or rod, not a duct, tray or ceiling)
+    hanging_max_distance: float = 60.0  # m; beyond it the rings above the sensor (0.5 deg) are too sparse for a 0.3 m dip
+    hanging_needs_rails: bool = True   # on since 25.09, round 2 (the captain's delegate; pre-registered in p3_thin_hanging_2026-09-25.json addendum_rail_lock, both conditions held): the hanging stage runs only on frames whose track model found the rail pair in the near range (track.rail_slabs > 0): 28 of the ride's 29 hanging groups were station column tops in frames without one; set O thin_hanging keeps 15 STOP frames from 30.1 m, the combined gate identical with and without it; false = every frame
+    hanging_yield_gauge_only: bool = True   # 26.09 (safety review): a hanging cluster is dropped only for an overlapping cluster of the other stages that is an obstacle (zone 'gauge', no demotion reason); an advisory one there no longer removes it (a cable hanging to 1.85-2.2 m, 0.65-0.75 m off the axis, was demoted as floating and its hanging cluster dropped: no STOP); false = any overlapping cluster
     wall_face_min_height: float = 2.0  # m, taller than a person (1.5 demoted a person standing on a 1.1 m platform edge, review 22.09); taller than this, reaching above overhead_min_height, and its part below that level hugs the corridor edge (|dy| from wall_face_min_inner to beyond wall_face_edge) = wall / portal face pulled in by the axis
     wall_face_min_top: float = 2.8     # m, v0.6: the face reaches above this (just under the 3.0 m envelope top; v0.5 used overhead_min_height = 2.4 under a 3.5 m top)
     wall_face_edge: float = 1.3        # m (v0.6: the advisory zone now ends at 1.40 m; 1.6 with the 1.75 m zone of v0.5)
@@ -254,6 +274,7 @@ class TrackingConfig:
     column_hold: int = 2           # 25.09: a track whose cluster was demoted as a column (cluster.column_*) in at least this many of its last zone_window hits is advisory: a column far away shows more than column_min_height of itself in some frames only (roundT_doubleT, EXPERIMENTS.md 3a; 2 = the highest pre-registered candidate that passed, docs/evidence/results/column_hold_2026-09-25.json); 0 = off
     max_misses: int = 3            # frames a track survives without a match
     hold_misses: int = 1           # frames a reported track stays reported without a match (at its predicted distance): one missed frame does not drop a STOP (review 23.09); 0 = the v0.6.2 behaviour
+    reseed_hold: int = 5           # 26.09 (safety review; a fixed window since the re-review of 26.09): after a mount-calibration change the tracks are rotated into the corrected frame, and a track reported in zone gauge (a STOP) at that moment stays reported for a window of this many frames from the change (the change frame the first; from its last match if it was already missing at the change), matched or not: a match refreshes the track but does not end the window (it did, so a loss from the frame after the change was not covered); when the change re-seeds the track model the window lasts at least until the model has its floor-shadow reference again (1 + ceil(track.axis_warmup_frames / periods) frames: 6 at 10 Hz, 4 at 5 Hz); a missed frame in the window is reported at the predicted distance and not counted against the track: the geometry re-seed must not drop a confirmed STOP; on a change above 1 deg only such tracks are kept (the others dropped, as the reset did); a new orientation still resets the tracker; 0 = the tracker is reset on a change above 1 deg and nothing is held
     conf_gain: float = 0.35        # confidence added per hit
     conf_decay: float = 0.25       # confidence removed per miss
     conf_threshold: float = 0.6    # report obstacles with confidence >= threshold
@@ -336,6 +357,15 @@ class CalibrationConfig:
     monitor_period: int = 50       # frames between drift checks after freezing; 0 = off
     drift_warn_deg: float = 1.5    # residual tilt (median of the last checks) that raises a health warning
     drift_window: int = 10         # checks in that median (10 x 50 frames = 50 s: a curve is not a drift)
+    time_cadence: bool = True      # on since 25.09 (P3, SCORECARD #13): obs_spacing, monitor_period and max_frames count nominal frame periods (tracking.frame_dt) at the input rate from the stamps, not processed frames, so 5 Hz calibrates in the same 20 s as 10 Hz (the 20 x 10-frame window took 40 s at 5 Hz and never completed on a 25 s bag); false = processed frames
+    refine_min_deg: float = 0.0    # OFF since 26.09 (safety review of round 2; docs/evidence/results/p3_round2_review_fixes_2026-09-26.json): while a provisional tilt is applied (at least provisional_frames spaced observations), the tilt the final would set from the spaced observations so far replaces it when it differs by at least this (deg) in roll or pitch. On 0.5 in round 2 (25.09: +3 deg roll five bags 16 / 17 -> 11 / 13, the first 5 consecutive frames of roundT_doubleT are 1.6-2 deg off in roll), but a refined tilt costs a STOP frame of doubleT_obstacle that the provisional one keeps (5 Hz, rig (0, -1.5 deg): frame 182, in every refinement variant tried) and each refinement re-seeded the track model; 0 = off
+    provisional_per_axis: bool = False  # 25.09 (P3), tried, not shipped: the provisional tilt corrects roll and pitch each only when that axis reaches provisional_min_deg (+3 deg roll / pitch five bags 11 -> 19 / 16 -> 19 events on top of the other flags); false = both when either does
+    keep_within_deg: float = 0.25  # on since 25.09 (P3): a final tilt within this (deg, roll and pitch) of the applied provisional one keeps the applied correction: no re-seed of the track model for a change below the final's own error (doubleT_obstacle: +3.02 / -0.88 over +3.18 / -0.81 re-seeded and lost frame 191; 185 -> 186 labelled hits); 0 = off
+    # 26.09 (safety review of the round-2 items; docs/evidence/results/p3_round2_review_fixes_2026-09-26.json)
+    refine_raw_trigger: bool = False  # tried 26.09 (candidate C1), not shipped: each axis triggered by its RAW median moving refine_min_deg from the one behind its applied value, the other axes kept; it kept noise-level provisional values the final would zero (+3 deg roll five bags 11 / 13 -> 14 / 16 events / STOP episodes); false = the shipped trigger (the zeroed target against the applied tilt, all axes replaced)
+    refine_confirm_obs: int = 2       # 26.09 (safety review): spaced observations in a row on which the refinement condition must hold before it is applied (1 = at once): a one-off move of the 5-observation median (doubleT_obstacle 5 Hz, rig +2 / +2 deg: roll 1.19 -> 1.69, the final 1.15) is not applied
+    refine_max: int = 1               # 26.09 (safety review): refinements per calibration (0 = unlimited): the correction cannot flap (a median hovering at apply_min_deg re-seeded the track model 4 times on roundT_doubleT +3 deg pitch); the final follows
+    reseed_keep_max_deg: float = 1.0  # a correction change up to this (deg) keeps the track model: it is rotated into the corrected frame (bed, rail head, axis, age and the floor-shadow reference kept) instead of re-seeded from nothing, and the accumulation buffer is kept; larger changes and a new orientation re-seed; 0 = always re-seed (a sub-degree refinement re-seeded the model and lost a confirmed STOP on doubleT_obstacle for 2 frames)
 
 
 @dataclass
@@ -353,6 +383,21 @@ class HealthConfig:
     min_lock_rate: float = 0.3     # warn below this share of frames with a rail pair
     latency_budget_ms: float = 100.0   # warn when the p95 of the recent frames exceeds it
     latency_window: int = 50
+    # 25.09 (SCORECARD §6 row 6, docs/evidence/results/p3_clear_distance_2026-09-25.json): cap the
+    # verified-clear distance at the nearest candidate of this frame that touches the envelope
+    # although it is not a confirmed obstacle (unconfirmed, advisory); never changes a detection
+    # or the decision. false = clear_distance counts confirmed obstacles only (v0.6). On since
+    # 25.09, round 2, candidate R1 (the sub-parameters below), shipped by the captain's delegate
+    # although it MISSED its pre-registered clutter limit: set O overclaim 172 -> 82
+    # object-frames, but the median clear distance of the five obstacle-free recordings -5.5 %
+    # (limit -5 %), the ride -3.1 % (1.49 % of the frames under 60 m); EXPERIMENTS §1i
+    clear_cap: bool = True
+    clear_cap_min_gauge: int = 1       # voxels of the cluster inside the strict envelope (Cluster.n_gauge, edge margin applied)
+    clear_cap_min_hits: int = 1        # frames the cluster's track has been matched, this one included
+    clear_cap_margin: float = -1.0     # m; >= 0: a cluster also touches with a point of this frame inside the envelope widened laterally by this (no edge margin); < 0 = n_gauge only
+    clear_cap_points: int = 0          # > 0: also cap at the X of the k-th nearest strict-envelope corridor return of the frame (low candidates excluded); 0 = off
+    clear_cap_skip_columns: bool = True    # a cluster demoted as a column (or its track held advisory by tracking.column_hold) does not cap (round 2; false = round 1)
+    clear_cap_lost: bool = True            # 26.09 (safety review): also cap at the predicted distance of a track that was reported when it was last matched and missed this frame (until the tracker drops it after tracking.max_misses), so a lost STOP does not turn into a long verified-clear distance; false = this frame's clusters only
 
 
 @dataclass

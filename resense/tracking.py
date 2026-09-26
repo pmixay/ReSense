@@ -47,6 +47,8 @@ class Track:
     reported: bool = False          # reported as an obstacle / advisory after the last update
     column_hist: List[bool] = field(default_factory=list)  # last zone_window hits: demoted as a column?
     column_hold: int = 0            # this many column hits in column_hist keep the track advisory (0 = off)
+    hold: int = 0                   # 26.09: frames left of a calibration re-seed hold window (Tracker.reseed)
+    seen_reported: bool = False     # 26.09: reported in the frame of its last match (health.clear_cap_lost)
 
     @property
     def zone(self) -> str:
@@ -72,6 +74,30 @@ class Tracker:
         self.tracks.clear()
         self._next_id = 1
         self._timed = False
+
+    def reseed(self, dR: np.ndarray, hold: int, keep_unreported: bool = True) -> None:
+        """A mount-calibration change rotated the cloud by ``dR`` (``p_new = dR @ p_old``; 26.09,
+        ``tracking.reseed_hold``): every track's position and velocity are rotated with it; unless
+        ``keep_unreported`` (a large tilt change) only the tracks reported in zone gauge (STOPs)
+        are kept, the others are dropped as the reset did before (their history, zone votes
+        included, was taken in a wrong frame: an object reported as advisory under a 3 deg tilt
+        kept its advisory vote 3 frames after the correction at 5 Hz); and a track reported in zone
+        gauge is held for a fixed window of ``hold`` frames from the change, the change frame the
+        first (from its last match when it was already missing at the change): it stays reported
+        in the window matched or not - a match refreshes it but does not end the window (re-review
+        26.09: it did, so a loss starting on the frame after the change was not covered) - its
+        misses there neither decay its confidence nor enter its hit history, and a missed frame
+        reports it at its predicted position. Repeated re-seeds do not extend the hold of a track
+        that stays unmatched. The re-seeded geometry (a fresh track model has no floor-shadow
+        reference for its warm-up) must not drop a confirmed STOP."""
+        dR = np.asarray(dR, dtype=np.float64)
+        if not keep_unreported:
+            self.tracks = [t for t in self.tracks if t.reported and t.zone == "gauge"]
+        for t in self.tracks:
+            t.centroid = dR @ t.centroid
+            t.velocity = dR @ t.velocity
+            if t.reported and t.zone == "gauge":
+                t.hold = max(t.hold, int(hold) - t.misses)
 
     def _gate(self, distance: float) -> float:
         c = self.cfg
@@ -133,9 +159,11 @@ class Tracker:
                 t.age += 1
                 t.span_s += dt
                 t.centroid = t.centroid + t.velocity
+                if t.hold > 0:              # a calibration re-seed hold: this miss does not count
+                    continue
                 t.confidence = max(0.0, t.confidence - c.conf_decay)
                 t.hit_hist = (t.hit_hist + [False])[-hw:]
-        self.tracks = [t for t in self.tracks if t.misses <= c.max_misses]
+        self.tracks = [t for t in self.tracks if t.misses <= c.max_misses or (t.hold > 0 and t.reported)]
         # new tracks
         for j, cl in enumerate(clusters):
             if not matched_c[j]:
@@ -148,9 +176,15 @@ class Tracker:
                 ))
                 self._next_id += 1
         # reported: confirmed now, or reported in the previous frame and missed for at most
-        # hold_misses frames (a single missed frame does not drop a STOP; review 23.09)
+        # hold_misses frames (a single missed frame does not drop a STOP; review 23.09), or inside
+        # a re-seed hold window (reseed; matched or not)
         for t in self.tracks:
-            t.reported = self._qualifies(t) or (t.reported and 0 < t.misses <= c.hold_misses)
+            t.reported = (self._qualifies(t) or (t.reported and 0 < t.misses <= c.hold_misses)
+                          or (t.reported and t.hold > 0))
+            if t.misses == 0:
+                t.seen_reported = t.reported
+            if t.hold > 0:
+                t.hold -= 1
         return self.tracks
 
     def _qualifies(self, t: Track) -> bool:

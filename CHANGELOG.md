@@ -17,14 +17,128 @@ frames, 13 km, no obstacles).
 ## Unreleased (in development; package version 1.0.0)
 
 Package version 1.0.0 (no tag or release yet: deferred, 25.09; detector v0.6.3 with the long
-overhead rule on, node v0.6.4). Tests: 235 → 436 (+28 native kernels, +3 speed evaluation
+overhead rule on, node v0.6.4). Tests: 235 → 486 (+28 native kernels, +3 speed evaluation
 helpers, +23 regression gate, +3 DBSCAN exactness, +5 late candidates, +53 release tooling, +5
 overview video, 2 of them in the image, which has no `docs/`, +5 drop accounting and socket
 buffers, +21 `load_image.sh`, +11 `check_no_network.py`, +4 `tracking.column_hold`, +20 DDS
 transport, 19 of them in the image, +4 rail shadow, +3 the far-support rule, +5
-`cluster.far_axis_both_sides`, +3 far bed bins, +5 the rail-shadow review fixes) in `tests/`, 13
-in `web/demo`.
+`cluster.far_axis_both_sides`, +3 far bed bins, +5 the rail-shadow review fixes, +4 the
+free-hanging exemption of `floating`, +4 thin hanging objects, +5 `health.clear_cap`, +6 the rate
+and re-mount flags, +1 the rail-lock guard of the hanging stage, +13 the review fixes of the
+round-2 items, +17 their re-review) in `tests/`, 13 in `web/demo`.
 
+- **Re-review of the safety fixes (26.09, P3):** a match on the change frame ended the
+  `tracking.reseed_hold` of a STOP, so a loss starting one frame after a calibration change got
+  only the 1-frame `hold_misses`. The hold is now a fixed window of 5 frames from the change,
+  matched or not (6 at 10 Hz when the track model is re-seeded: its warm-up); a ray-cast test
+  guards the rotation sign of the model and the tracks; `scripts/robustness_check.py` imports its
+  own checkout. Pre-registered (addendum 3); gate PASS, the gate, the stress check and the
+  reviewer's sweep identical to `10e2707` frame by frame (baseline `_p3b` unchanged). +17 tests.
+  [`p3_round2_review_fixes_2026-09-26.json`](docs/evidence/results/p3_round2_review_fixes_2026-09-26.json),
+  [EXPERIMENTS §1i](docs/EXPERIMENTS.md).
+
+- **Safety review of the round-2 items: calibration changes keep a confirmed STOP; the refinement
+  off (26.09, P3, delegated by the captain):** the review of `17a850d` found that every refinement
+  of the provisional tilt re-seeded the track model from nothing and lost a confirmed STOP on
+  `doubleT_obstacle` (5 Hz, rig +2° / +2°: frames 102 and 104 with `clear_distance` 151 / 163 m),
+  that the refinement flapped, and that a hanging cluster yielded to an advisory one (a cable
+  demoted as `floating`: no STOP). Pre-registered (00:25 UTC, two addenda before their runs). On
+  now: a change up to 1° rotates the track model instead of re-seeding it
+  (`calibration.reseed_keep_max_deg`), a STOP is held through any change and only STOPs are kept
+  through a change above 1° (`tracking.reseed_hold` 5), `clear_distance` is capped at a lost
+  reported track (`health.clear_cap_lost`), a hanging cluster yields only to an obstacle
+  (`cluster.hanging_yield_gauge_only`), and the input rate counts in-burst stamp intervals. No
+  refinement variant passed the reviewer's sweep (a refined tilt loses frame 182 at 5 Hz with the
+  rig at (0, −1.5°)), so `calibration.refine_min_deg` is 0 (off); it gives up the refinement's
+  stress gain: +3° roll 11 / 13 → 14 / 16, +3° pitch 16 / 17 → 17 / 18 events / STOP episodes (no
+  worse than `17a850d` with the refinement off; 5 Hz 10 / 10 unchanged). Full gate: PASS against
+  `_ride_p3` (6 better, none worse), every decision, detection and track model identical to
+  `17a850d` in all 15 269 frames; `clear_distance` shorter in 398 frames (ride median 123.0 → 122.6
+  m, set O overclaim 67 → 60 of 505). `regression_baseline_2026-09-25_ride_p3b.json` re-cut on the
+  final commit. +13 tests.
+  [`p3_round2_review_fixes_2026-09-26.json`](docs/evidence/results/p3_round2_review_fixes_2026-09-26.json),
+  [EXPERIMENTS §1i](docs/EXPERIMENTS.md).
+
+- **The P3 items of round 2 combined; new gate baseline (P3 integrator, 25.09, delegated by the
+  captain):** the four items below merged (`wf10/p3-round2`) on top of the rail-shadow rules,
+  with the two decisions of the captain's delegate (`health.clear_cap` on; the thin-hanging
+  rail-lock guard on). Pre-registered (22:13 UTC, before any run on the merged code); the full
+  gate of the final defaults (`30d0cac`, `--jobs 3`, 333 s) passes against
+  `regression_baseline_2026-09-25_ride_p3.json` with 6 gated rows better and none worse: set O
+  hanging 0.3 m cube 19 → 30 STOP frames, first STOP 34.0 → 52.5 m; 5 cm hanging object 0 → 15,
+  first STOP 30.1 m (set O inside STOP frames 311 → 337 of 801, objects with a STOP 5 → 6 of 8);
+  `doubleT_obstacle` 185 → 186 of 246 labelled hits (object on the rail 124 → 125 of 126 from
+  frame 75), first alarm frame 11. Five bags 58 / 13 / 16, ride 187 / 46 / 39 and set F straight
+  identical, decisions on the five bags and the ride identical frame by frame; no item interacts,
+  nothing turned back off. `clear_distance` with the cap on the combined code: five bags median
+  −5.5 %, ride −3.1 %, set O overclaim 147 → 67 object-frames, no decision changed. Stress check
+  on the combined defaults equals the robustness branch: five bags 5 Hz 10 / 10, +3° roll 11 / 13,
+  +3° pitch 16 / 17 events / STOP episodes. New gate baseline
+  `docs/evidence/results/regression_baseline_2026-09-25_ride_p3b.json`.
+  [`p3_round2_combined_2026-09-25.json`](docs/evidence/results/p3_round2_combined_2026-09-25.json),
+  [EXPERIMENTS §1i](docs/EXPERIMENTS.md).
+- **Thin-hanging rail-lock guard: `cluster.hanging_needs_rails` on (25.09, round 2, the captain's
+  delegate):** the hanging stage runs only on frames whose track model found the rail pair in the
+  near range; 28 of the 29 groups it took on the ride were station column tops without one.
+  Pre-registered (22:13 UTC, before its code) with the rule "set O's hanging object keeps 15 STOP
+  frames from ≥ 30.1 m and the combined gate has no row worse than without it": both held (15
+  from 30.1 m; the gate with and without it the same on all 107 rows, decisions identical in all
+  15 068 frames). +1 test.
+  [`p3_thin_hanging_2026-09-25.json`](docs/evidence/results/p3_thin_hanging_2026-09-25.json)
+  (`addendum_rail_lock`), [EXPERIMENTS §1i](docs/EXPERIMENTS.md).
+- **`health.clear_cap` on by default, candidate R1 (25.09, round 2, the captain's delegate):**
+  shipped although it **missed** its pre-registered clutter limit: the five obstacle-free
+  recordings' median `clear_distance` fell −5.5 % against a −5 % limit (by 0.5 pp), the ride −3.1 %
+  with 1.49 % of its frames under 60 m; R1–R4 were designed after round 1. Shipped because it makes
+  the verified-clear distance conservative (set O object-frames with a `clear_distance` past an
+  in-envelope object 172 → 82) and changes no detection or decision. The status JSON's `health`
+  gains `candidate_distance` (additive). Recorded as `decision` in
+  [`p3_clear_distance_2026-09-25.json`](docs/evidence/results/p3_clear_distance_2026-09-25.json),
+  EXPERIMENTS §1i.
+- **5 Hz and ±3° re-mount robustness (25.09, P3, SCORECARD #13):** five new detector flags, on
+  after the 10 Hz gate (PASS: ride, five bags, set O and set F straight identical;
+  `doubleT_obstacle` 185 → 186 labelled hits): `calibration.time_cadence` (the calibration
+  counts periods of the input rate: at 5 Hz its final never completed on the 25 s bags),
+  `track.rates_per_period` and `track.walls_smoothing_per_period` (axis rate limits and yaw /
+  curvature EMA per period: the 5 Hz axis lagged curves), `calibration.refine_min_deg` 0.5 (the
+  spaced observations replace a provisional tilt taken on a canted stretch),
+  `calibration.keep_within_deg` 0.25 (a confirming final does not re-seed the track model).
+  `robustness_check.py`, five bags false events / STOP episodes: 5 Hz 13 / 17 → 10 / 10, +3° roll
+  16 / 17 → 11 / 13, pitch 17 / 18 → 16 / 17; `roundT_doubleT` 3 / 2 / 1 → 0 / 1 / 0;
+  `doubleT_obstacle` under stress unchanged. Tried, not shipped: `calibration.provisional_per_axis`
+  (off). Tests 416 → 422 (EXPERIMENTS §1i).
+
+- **Conservative `clear_distance`, tried and not shipped (25.09, SCORECARD §6 row 6):** the opt-in
+  `health.clear_cap` (default false, output byte-identical) caps the verified-clear distance at
+  the nearest unconfirmed or advisory cluster touching the envelope, columns excluded
+  (`clear_cap_*` sub-parameters, `health.candidate_distance` in the status JSON when on); it
+  changes no detection and no decision. Pre-registered (C0–C5, then R1–R4): set O overclaim
+  172 → 82 object-frames, ride median clear distance 127.0 → 123.0 m, but the five
+  obstacle-free recordings' median −5.5 % against the 5 % limit, so off on its branch (turned on
+  afterwards by the captain's delegate, the entry above: it still did not pass). New
+  `scripts/score_clear_distance.py`; evidence `docs/evidence/results/p3_clear_distance_2026-09-25.json`;
+  EXPERIMENTS §1i.
+
+- **Thin hanging objects (25.09 evening, P3, SCORECARD #11):** new stage
+  `clustering.find_hanging`, on (`cluster.hanging_enabled`, `hanging_*`). It covers a thin object
+  hanging from above that dips into the envelope near the axis with only 1–3 returns: those
+  returns are linked to the object's part above the envelope top and reported as an obstacle.
+  Pre-registered candidates A / B / C (20:53 UTC); A, the first, passed the regression gate
+  (`--jobs 1`, the ride included). The organizers' 5 cm object in set O goes from `GO` in all
+  42 visible frames to a STOP in 15 frames from 30.1 m (set O inside STOP frames 303 → 318, 6 of 8
+  objects). Five bags 58 / 13 / 16, ride 187 / 46 / 39, `doubleT_obstacle`, the other set O
+  objects and set F straight are the same. On the ride it takes 29 single-frame groups, 28 of
+  them station column tops without a rail pair; none confirmed. Cost 0.5 ms a frame. Tests
+  416 → 420 (`tests/test_thin_hanging.py`). EXPERIMENTS §1i,
+  [`p3_thin_hanging_2026-09-25.json`](docs/evidence/results/p3_thin_hanging_2026-09-25.json).
+
+- **Free-hanging exemption of `floating` (25.09, round 2, P3):** `cluster.floating_free_max_size`
+  0.5 m (with `floating_free_max_dy` 0.95 m, `floating_free_max_top` 2.5 m): the `floating`
+  signature no longer demotes a compact cluster hanging free inside the envelope. The organizers'
+  0.3 m cube hanging 1.0–1.4 m up (set O #2) is a STOP from 52.5 m instead of 34.0 m (19 → 30 STOP
+  frames); the six recordings and the ride are identical frame by frame, gate PASS. Pre-registered
+  (A / B / C, A shipped): `docs/evidence/results/p3_signatures_2026-09-25.json`, EXPERIMENTS §1i.
+  Tests +4 (`tests/test_floating_free.py`).
 - **Review fixes of the rail-shadow rules (P3, 25.09):** a safety review found three faults.
   `cluster.gauge_distance` measured on the strict-gauge mask, the envelope shrunk by the axis
   margin (0.15 m per 100 m), so an object entering obliquely was reported beyond its entry (+0.4 /
