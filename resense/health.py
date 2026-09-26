@@ -1,7 +1,6 @@
-"""Production guards (v0.6): is the detector's answer trustworthy right now?
+"""Input diagnostics and a monitored-range estimate; obstacle misses remain possible.
 
-A safety function must say not only "obstacle at X m" / "clear", but also *how far the path
-was actually checked* and whether the input can be trusted. :class:`HealthMonitor` computes,
+A detector should report input limitations alongside its detections. :class:`HealthMonitor` computes,
 per frame and without touching any detection:
 
 * ``points`` - valid returns; a frame far below ``min_points`` (a dead or blinded sensor, a
@@ -20,13 +19,15 @@ per frame and without touching any detection:
   since the start (or a reset), the frames in which the floor-shadow rule of the track model
   (``track.floor_shadow_height``) found the shadow of a large near object, held the previous bed,
   or was released after ``track.floor_shadow_max_hold`` held frames in a row: counters only;
-* ``monitored_range`` - the distance up to which the corridor was checked this frame:
+* ``monitored_range`` - the estimated range supported by visibility and fitted geometry:
   ``min(visibility, trusted axis range, trusted height-reference range, gauge range)``; and
   ``clear_distance`` - the nearest confirmed obstacle, or ``monitored_range`` when there is
   none; with ``clear_cap`` (on since 25.09, round 2) also no farther than the nearest unconfirmed
-  or advisory candidate touching the envelope (``candidate_distance``, from the detector). A
-  consumer that brakes on ``clear_distance < stopping distance`` gets the fail-safe
-  behaviour for free: a blinded sensor, a lost track model or a stale input shrink it.
+  or advisory candidate touching the envelope (``candidate_distance``, from the detector).
+  These bounds do not prove obstacle-free track: sparse returns and model/filter errors can
+  leave an obstacle unrepresented. They are not a validated braking or safety guarantee.
+  The detector additionally caps supported thin evidence and marks it uncertain. The ROS
+  node checks result freshness separately and exposes zero range for invalid monitoring.
 
 ``level`` is ``ok`` / ``warn`` / ``error`` with human-readable ``messages``; the ROS node
 publishes it as ``diagnostic_msgs/DiagnosticArray`` and adds the input-staleness watchdog.

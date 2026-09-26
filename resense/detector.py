@@ -79,7 +79,7 @@ class FrameResult:
     # --- additive since v0.6: production guards and mount calibration ---
     health: dict = field(default_factory=dict)   # resense.health.HealthMonitor.update(): level, messages, monitored range
     mount: dict = field(default_factory=dict)    # resense.calibration.MountCalibration.to_dict()
-    clear_distance: float = 0.0            # m: nearest confirmed obstacle, else how far the corridor was verified clear
+    clear_distance: float = 0.0            # m: monitored-range estimate limited by detected/unresolved evidence; misses remain possible
     xyz: Optional[np.ndarray] = None       # the processed cloud (vehicle frame after the mount correction), not serialised
 
     def to_dict(self) -> dict:
@@ -229,6 +229,7 @@ class Detector:
         t3 = time.perf_counter()
         merged, n_acc = self._accumulate(cand, speed, dt)
         t4 = time.perf_counter()
+        monitoring_trust = min(valid, floor_valid)
         clusters = self._cluster(merged, n_acc, valid, floor_valid, straddle, near)
         if cfg.cluster.far_axis_both_sides == 2:
             valid = self._far_both_sides(clusters, valid, floor_valid)
@@ -245,6 +246,23 @@ class Detector:
         mount = self.calib.state.to_dict()
         health = self.health.update(xyz, frame.meta, self.track, cfg.gauge, valid, cfg.track.rails_min_score,
                                     (t6 - t0) * 1e3, mount, gauge[0].distance if gauge else None, cap)
+        if cfg.health.clear_cap:
+            # Thin clusters cannot start STOP tracks, but supported single-frame evidence
+            # still limits the monitoring estimate. Tracking remains unchanged.
+            distances = [float(c.distance) for c in self._thin
+                         if n_acc == 1 and c.thin and not c.kind and c.zone == "gauge" and not c.reason
+                         and c.n_gauge >= cfg.cluster.gauge_min_points and np.isfinite(c.distance)
+                         and 0 <= c.distance <= monitoring_trust]
+            thin_distance = min(distances, default=None)
+            previous = float(health["clear_distance"])
+            limited = min(previous, thin_distance) if thin_distance is not None else previous
+            health["clear_distance"] = round(limited, 1)
+            health["thin_cluster_distance"] = thin_distance
+            if previous - limited > 0.5:
+                health["monitoring_status"] = "unresolved_thin_cluster"
+                if health["level"] != "error":
+                    health["level"] = health["decision_level"] = "warn"
+                health["messages"].append("supported thin cluster limits the monitored estimate")
 
         return FrameResult(
             stamp=frame.stamp, obstacle=len(gauge) > 0, warning=len(warn) > 0,
@@ -600,7 +618,7 @@ class Detector:
     # -- 6b ------------------------------------------------------------------------------------
     def _clear_cap(self, clusters: List[Cluster], cand: Candidates, dy_all: np.ndarray,
                    h_all: np.ndarray) -> Optional[float]:
-        """``health.clear_cap`` (25.09): the distance the verified-clear distance is capped at
+        """``health.clear_cap`` (25.09): the distance the monitored-range estimate is capped at
         (None = no cap), see :func:`clear_cap_distance`. Runs after the tracker and changes
         nothing it or the decision reads."""
         return clear_cap_distance(clusters, self.tracker.tracks, cand, dy_all, h_all, self.cfg.gauge, self.cfg.health)
@@ -621,7 +639,7 @@ def clear_cap_distance(clusters: List[Cluster], tracks, cand: Candidates, dy_all
     With ``clear_cap_lost`` (26.09) also the predicted distance of a track that was reported when
     it was last matched and missed this frame (its last cluster touching the envelope, columns
     skipped as above), until the tracker drops it: a STOP lost for a few frames does not turn
-    into a verified-clear distance beyond the object."""
+    into a monitoring estimate beyond the predicted object."""
     owner = {id(t.last): t for t in tracks if t.last is not None and t.misses == 0}
     poly = widened_profile(gauge_cfg, hcfg.clear_cap_margin) if hcfg.clear_cap_margin >= 0 else None
     best: Optional[float] = None
