@@ -1481,7 +1481,9 @@ reset the tracker, 4 frames without the STOP; the rotated model, the hold, the l
 flapping, the bursty input rate; `tests/test_thin_hanging.py`: the overlap rule, and the reviewer's
 cable STOPs from 31–34 m, never without the rule). The gate baseline
 [`regression_baseline_2026-09-25_ride_p3b.json`](evidence/results/regression_baseline_2026-09-25_ride_p3b.json)
-is re-cut on the final commit (the same gated values; the configuration and the commit changed).
+is re-cut on the final commit `0c8f8e1` (its gate: PASS, per frame identical to C3's run; every
+gated and recorded value the same as the first cut, the configuration hash, the commit and the
+latency changed).
 
 ## 2. Synthetic obstacles injected into real empty frames (`resense inject` / `resense eval`)
 

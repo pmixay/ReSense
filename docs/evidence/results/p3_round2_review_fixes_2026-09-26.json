@@ -122,5 +122,11 @@
     "shipped": "C3: the refinement OFF (calibration.refine_min_deg 0), with F1b (reseed_keep_max_deg 1.0), F1c' (tracking.reseed_hold 5, STOPs only), F1d (health.clear_cap_lost), F2 (cluster.hanging_yield_gauge_only), F3 (the burst-robust input rate); F1a' (refine_confirm_obs 2, refine_max 1) stays as the refinement's protection if it is turned back on; calibration.refine_raw_trigger tried, off",
     "why_not_the_refinement": "no refinement variant passes the reviewer's sweep: at 5 Hz with the rig at (0, -1.5 deg) a refined tilt (the final's pitch 0 applied early) loses STOP frame 182 that the provisional tilt keeps (17a850d, C1b, C1c); the re-seed transients themselves are fixed (C1: 0 frames lost), but the tilt a refinement sets is itself a change the acceptance rule does not allow",
     "given_up": "the refinement's tilt gain of round 2 on the stress check (+3 deg roll 11 / 13 -> 14 / 16, +3 deg pitch 16 / 17 -> 17 / 18 events / STOP episodes)"
+  },
+  "final": {
+    "commit": "0c8f8e1 (C3 + the documentation and a comment in Detector._fit_track; clean; native path; --jobs 3, 723 s on the dev VM)",
+    "gate": "exit 0 against regression_baseline_2026-09-25_ride_p3.json: 6 gated rows better, none worse; against _ride_p3b.json (before the re-cut) every row but latency the same; per frame identical to the C3 run (decisions, detections, warnings, track models, clear_distance) in all 15 269 frames",
+    "stress": "identical to C3 in every mode (per recording and per frame): 5 Hz 10 / 10, 92/123 @ 12; +3 deg roll 14 / 16, 183/246 @ 12; +3 deg pitch 17 / 18, 186/246 @ 11",
+    "baseline": "regression_baseline_2026-09-25_ride_p3b.json re-cut from this run without its gate block (the name kept, so docs/CAPTAIN.md is unchanged): every gated and recorded value the same as the first cut on 30d0cac; the commit, the config sha256 (591a26e1... -> fa68573c...), the wall time and the latency changed"
   }
 }

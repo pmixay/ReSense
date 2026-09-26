@@ -1,8 +1,8 @@
 {
  "schema": "resense-regression-gate-v1",
- "created": "2026-09-25T22:44:49+00:00",
+ "created": "2026-09-26T02:43:19+00:00",
  "code": {
-  "commit": "30d0cacbc7a1752818f18c4c8f5752201621ea09",
+  "commit": "0c8f8e1391a551f2646b0f05e56458c63eb290af",
   "branch": "wf10/p3-round2",
   "version": "1.0.0",
   "uncommitted_detector_changes": []
@@ -10,8 +10,8 @@
  "config": {
   "path": "configs/default.yaml",
   "set": [],
-  "sha256": "591a26e11b40ee6f0e3b139963abde879d868f8d5cc8400ccd25682be44aad99",
-  "file_sha256": "bba54d3bb76ad38514c04855a51f02b2bbda3450963d3d9b6996fea4ee8d9dea"
+  "sha256": "fa68573cd23080bbd1123c84e1f128ba09e80e10e2b9291a5426f659640aada0",
+  "file_sha256": "1418361112288276a7f640a7f6d6e51bbeba898eb16644ec8fe6ead22ad4d98c"
  },
  "native": {
   "path": "native",
@@ -21,7 +21,7 @@
   "cache": "/data/cache",
   "jobs": 3,
   "nominal_stamps": false,
-  "wall_s": 333.1,
+  "wall_s": 723.3,
   "machine": {
    "cpus": 4,
    "platform": "Linux-6.18.44-fc-v37-x86_64-with-glibc2.39",
@@ -176,8 +176,8 @@
    158.3
   ],
   "health": {
-   "ok": 11098,
-   "warn": 173,
+   "ok": 11086,
+   "warn": 185,
    "error": 0
   },
   "monitored_range_median": 127.6
@@ -703,46 +703,46 @@
   }
  },
  "latency_ms": {
-  "note": "timing_ms.total per frame; informational, never gated: the workers run in parallel on a shared machine (clean timing: EXPERIMENTS §3)",
+  "note": "timing_ms.total per frame; informational, never gated: the workers run in parallel on a shared machine (clean timing: EXPERIMENTS \u00a73)",
   "doubleT_obstacle": {
-   "mean_ms": 25.5,
-   "p95_ms": 36.3,
-   "max_ms": 45.7
+   "mean_ms": 31.4,
+   "p95_ms": 43.8,
+   "max_ms": 57.3
   },
   "doubleT_platform": {
-   "mean_ms": 28.0,
-   "p95_ms": 41.0,
-   "max_ms": 93.1
+   "mean_ms": 36.0,
+   "p95_ms": 51.8,
+   "max_ms": 143.7
   },
   "roundT_doubleT": {
-   "mean_ms": 23.0,
-   "p95_ms": 32.4,
-   "max_ms": 40.3
+   "mean_ms": 29.3,
+   "p95_ms": 41.9,
+   "max_ms": 52.6
   },
   "roundT_pressureGate_roundT": {
-   "mean_ms": 19.7,
-   "p95_ms": 28.5,
-   "max_ms": 36.3
+   "mean_ms": 25.5,
+   "p95_ms": 35.9,
+   "max_ms": 40.7
   },
   "roundT_squareT_pressureGate_squareT": {
-   "mean_ms": 18.5,
-   "p95_ms": 27.2,
-   "max_ms": 43.2
+   "mean_ms": 24.7,
+   "p95_ms": 35.0,
+   "max_ms": 56.2
   },
   "squareT_platform_squareT_switch": {
-   "mean_ms": 19.9,
-   "p95_ms": 26.5,
-   "max_ms": 69.6
+   "mean_ms": 26.4,
+   "p95_ms": 35.8,
+   "max_ms": 58.7
   },
   "cloud_with_fake_obj": {
-   "mean_ms": 19.2,
-   "p95_ms": 26.7,
-   "max_ms": 70.3
+   "mean_ms": 25.5,
+   "p95_ms": 35.8,
+   "max_ms": 80.3
   },
   "new_data": {
-   "mean_ms": 21.4,
-   "p95_ms": 31.9,
-   "max_ms": 125.1
+   "mean_ms": 28.2,
+   "p95_ms": 41.6,
+   "max_ms": 154.9
   }
  }
 }
