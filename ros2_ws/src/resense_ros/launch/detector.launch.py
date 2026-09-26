@@ -1,4 +1,4 @@
-"""ros2 launch resense_ros detector.launch.py [bag:=/data/for_hackathon/roundT_doubleT] [rviz:=true] [loop:=true]
+"""ros2 launch resense_ros detector.launch.py [bag:=/data/for_hackathon/roundT_doubleT freshness_mode:=replay] [rviz:=true] [loop:=true]
 
 Every node parameter is a launch argument, so the demo can be retuned without rebuilding.
 ``input_topic`` is a comma-separated candidate list; the node also auto-discovers PointCloud2
@@ -47,6 +47,9 @@ PARAMS = {
     "mount_pitch_deg": ("-999.0", float, "fixed pitch correction in deg (-999 = config file)"),
     "mount_yaw_deg": ("-999.0", float, "fixed yaw correction in deg (-999 = config file)"),
     "auto_calibrate": ("true", bool, "find the sensor orientation / roll / pitch from rails and bed in the first frames"),
+    "freshness_mode": ("live", str, "live = acquisition UTC; explicitly choose replay for historical bags (DDS publisher UTC)"),
+    "max_result_age": ("0.5", float, "s: maximum source age, Python residence and recording queue lag"),
+    "future_tolerance": ("0.05", float, "s: tolerated future source-clock skew"),
     "stale_timeout": ("0.5", float, "s without an input frame before the decision becomes FAULT"),
     "startup_grace": ("2.0", float, "s after start before 'no LiDAR frame received yet' is published as FAULT"),
     "max_consecutive_errors": ("5", int, "processing exceptions in a row before the detector is reset"),

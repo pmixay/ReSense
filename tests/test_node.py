@@ -85,7 +85,10 @@ class _Node:
         self._logger = _Logger()
 
     def declare_parameter(self, name, value):
-        self._params[name] = self.overrides.get(name, value)
+        # Synthetic unit streams explicitly emulate historical replay. Production defaults
+        # are tested separately below; old header stamps never select a mode implicitly.
+        default = "replay" if name == "freshness_mode" else value
+        self._params[name] = self.overrides.get(name, default)
 
     def get_parameter(self, name):
         return _Param(self._params[name])
@@ -132,6 +135,15 @@ def _stub_modules():
 
     rclpy = mod("rclpy", init=lambda args=None: None, spin=lambda n: None, shutdown=lambda: None)
     rclpy.node = mod("rclpy.node", Node=_Node)
+    async def await_or_execute(cb, *args):
+        return cb(*args)
+    class Executor:
+        def _take_subscription(self, sub):
+            return "upstream"
+        async def _execute_subscription(self, sub, msg):
+            return sub.callback(msg)
+    rclpy.executors = mod("rclpy.executors", SingleThreadedExecutor=Executor,
+                         await_or_execute=await_or_execute)
     rclpy.qos = mod("rclpy.qos", QoSProfile=lambda **kw: kw,
                     QoSReliabilityPolicy=types.SimpleNamespace(RELIABLE=1, BEST_EFFORT=2),
                     QoSHistoryPolicy=types.SimpleNamespace(KEEP_LAST=1))
@@ -194,7 +206,7 @@ def _cloud(xyz_vehicle: np.ndarray, stamp: float, M: np.ndarray = None, frame_id
 def _feed(node, xyz, n, M=None, t0=0.0, topic="/lidar_points", frame_id="hesai_lidar"):
     for k in range(n):
         msg, R = _cloud(xyz, t0 + 0.1 * k, M, frame_id=frame_id)
-        node.on_cloud(msg, topic)
+        node.on_cloud(msg, topic, {"source_timestamp": time.time_ns()})
     return R
 
 
@@ -296,7 +308,7 @@ def test_processing_exception_is_fault_then_detector_reset(node_cls, tunnel, mon
 
 
 def test_fault_snapshot_clears_previous_alarm_outputs(node_cls):
-    """A watchdog/error snapshot must not leave a previous GO/STOP payload latched."""
+    """A fault without a preceding STOP clears outputs and never leaves GO visible."""
     node = node_cls()
     node.publish_fault(_Msg(frame_id="hesai_lidar", stamp=_Msg(sec=12, nanosec=0)), "input is stale", "STALE")
     pub = node.published
@@ -335,14 +347,14 @@ def test_watchdog_reports_a_silent_input(node_cls, tunnel):
     st = node.published["/resense/health"][-1].status[0]
     assert "no LiDAR frame received yet" in st.message and st.values[0].value == "NO_INPUT"
     node.last_stale_pub = 0.0
-    _feed(node, tunnel[0].xyz, 1)
+    _feed(node, tunnel[0].xyz, 2)
     node.on_watchdog()                                   # fresh frame: silent
     assert node.published["/resense/decision"][-1].data != "FAULT"
     node.last_frame_wall = time.perf_counter() - 2.0     # the bag / driver stopped 2 s ago
     node.on_watchdog()
     st = node.published["/resense/health"][-1].status[0]
     assert node.published["/resense/decision"][-1].data == "FAULT"
-    assert "no LiDAR frame" in st.message and st.values[0].value == "STALE"
+    assert ("no LiDAR frame" in st.message or "last result expired" in st.message) and st.values[0].value == "STALE"
 
 
 def test_decision_levels(node_cls):
@@ -512,7 +524,9 @@ def test_status_marker_says_the_decision_and_publishing_errors_are_contained(nod
     node.make_markers = boom                                  # a publishing failure (e.g. a bad value in the status)
     frames = node.n_frames
     _feed(node, box_scene[0].xyz, 1, t0=0.6)                  # must not raise out of the callback
-    assert node.n_frames == frames and node.published["/resense/decision"][-1].data == "FAULT"
+    assert node.n_frames == frames and node.published["/resense/decision"][-1].data == "STOP"
+    fault = json.loads(node.published["/resense/status"][-1].data)
+    assert fault["stop_held"] and fault["snapshot_kind"] == "processing_error"
 
 
 def test_input_queue_depth(node_cls):
@@ -814,3 +828,232 @@ def test_rviz_shows_the_played_clouds():
     for topic in ("/lidar_points", "/sensing/lidar/hesai128/pointcloud"):
         assert displays[topic]["Enabled"] and displays[topic]["Topic"]["Reliability Policy"] == "Reliable"
     assert displays["/resense/markers"]["Enabled"]
+
+
+@pytest.fixture
+def freshness_driver(node_cls, monkeypatch):
+    """Exercise the real node queue/output policy with a deterministic detector and clocks."""
+    from resense.detector import FrameResult
+    from resense.track import TrackModel
+    module = sys.modules[node_cls.__module__]
+    clock = {"wall": 1000.0, "mono": 50.0, "obstacle": False}
+    monkeypatch.setattr(module.time, "time", lambda: clock["wall"])
+    monkeypatch.setattr(module.time, "perf_counter", lambda: clock["mono"])
+    def detect(self, frame, **kwargs):
+        return FrameResult(stamp=frame.stamp, obstacle=clock["obstacle"], warning=False,
+                           nearest_distance=40.0 if clock["obstacle"] else None,
+                           detections=[], warnings=[], candidates=[], track=TrackModel(np.array([0.0]), (0.0, 100.0), 0.0, 0.0, 0.0),
+                           corridor_idx=np.array([], dtype=int), n_points=len(frame.xyz),
+                           health={"level": "ok", "decision_level": "ok", "messages": [],
+                                   "clear_distance": 100.0, "monitored_range": 100.0}, clear_distance=100.0)
+    monkeypatch.setattr(module.Detector, "process", detect)
+    node = node_cls()
+    def send(stamp=None, *, age=0.1, dt=0.1, info=True, topic="/lidar_points", frame_id="lidar"):
+        clock["wall"] += dt
+        clock["mono"] += dt
+        msg, _ = _cloud(np.array([[5.0, 0.0, 0.0]], dtype=np.float32),
+                        clock["wall"] - age if stamp is None else stamp, frame_id=frame_id)
+        metadata = {"source_timestamp": int((clock["wall"] - age) * 1e9)} if info else None
+        node.on_cloud(msg, topic, metadata)
+        return json.loads(node.published["/resense/status"][-1].data)
+    return node, clock, send
+
+
+def test_live_default_and_explicit_replay_are_not_inferred_from_header(node_cls, monkeypatch):
+    defaults = {}
+    def declare(self, name, value):
+        defaults[name] = value
+        self._params[name] = value
+    monkeypatch.setattr(_Node, "declare_parameter", declare)
+    node = node_cls()
+    assert node.freshness_mode == defaults["freshness_mode"] == "live"
+    assert defaults["max_result_age"] == 0.5 and defaults["future_tolerance"] == 0.05
+    with pytest.raises(ValueError, match="freshness_mode"):
+        monkeypatch.setattr(_Node, "declare_parameter", lambda self, n, v: self._params.update(
+            {n: "auto" if n == "freshness_mode" else v}))
+        node_cls()
+
+
+def test_freshness_live_acquisition_and_replay_publication_clocks(freshness_driver):
+    node, clock, send = freshness_driver
+    first = send(20.0)
+    assert first["decision"] == "FAULT" and first["freshness"]["reason"] == "epoch_unconfirmed"
+    replay = send(20.1)
+    assert replay["decision"] == "GO" and replay["freshness"]["go_allowed"]
+    assert replay["freshness"]["acquisition_age_s"] is None
+    assert replay["freshness"]["publication_age_s"] == pytest.approx(0.1)
+    node.freshness_mode, node.freshness_previous = "live", None
+    old = send(20.2, info=False)
+    assert old["decision"] == "FAULT" and old["freshness"]["reason"] == "source_stale"
+    # Live mode needs no DDS metadata when acquisition UTC is comparable and progressing.
+    send(info=False)
+    live = send(info=False)
+    assert live["decision"] == "GO" and live["freshness"]["publication_age_s"] is None
+    assert live["freshness"]["acquisition_age_s"] == pytest.approx(0.1)
+
+
+@pytest.mark.parametrize("age,reason", [(0.501, "source_stale"), (-0.051, "source_clock_future")])
+def test_stale_future_and_unknown_sources_never_allow_go(freshness_driver, age, reason):
+    node, clock, send = freshness_driver
+    send(20.0)
+    send(20.1)
+    bad = send(20.2, age=age)
+    assert bad["decision"] == "FAULT" and bad["freshness"]["reason"] == reason
+    assert bad["clear_distance"] == 0 and bad["detector_clear_distance"] == 100
+    assert bad["health"]["level"] == "error" and not bad["freshness"]["go_allowed"]
+    assert node.published["/resense/health"][-1].status[0].level == 2
+    assert node.published["/resense/markers"][-1].markers[-1].text.startswith("FAULT")
+    missing = send(20.3, info=False)
+    assert missing["decision"] == "FAULT" and missing["freshness"]["reason"] == "source_clock_unknown"
+    assert send(20.4)["decision"] == "FAULT"  # need a comparable prior source too
+    assert send(20.5)["decision"] == "GO"
+
+
+def test_pause_resume_timestamp_jumps_input_switch_and_recovery(freshness_driver):
+    node, clock, send = freshness_driver
+    send(20.0)
+    assert send(20.1)["decision"] == "GO"
+    resumed = send(20.2, dt=0.6)
+    assert resumed["freshness"]["reason"] == "resumed_after_silence"
+    assert send(20.3)["decision"] == "GO"
+    assert send(20.3)["freshness"]["reason"] == "header_not_progressing"
+    assert send(20.4)["decision"] == "GO"
+    assert send(10.0)["freshness"]["reason"] == "epoch_unconfirmed"
+    assert send(10.1)["decision"] == "GO"
+    assert send(50.0)["freshness"]["reason"] == "epoch_unconfirmed"
+    assert send(50.1)["decision"] == "GO"
+    changed = send(5.0, dt=1.1, topic="/another_lidar", frame_id="new_lidar")
+    assert changed["freshness"]["reason"] == "epoch_unconfirmed"
+    assert changed["node"]["recording"] == 4
+    assert send(5.1, topic="/another_lidar", frame_id="new_lidar")["decision"] == "GO"
+    clock["wall"] += 0.2
+    jump = send(5.2, topic="/another_lidar", frame_id="new_lidar")
+    assert jump["freshness"]["reason"] == "system_clock_jump"
+    assert send(5.3, topic="/another_lidar", frame_id="new_lidar")["decision"] == "GO"
+
+
+def test_startup_and_later_backlogs_and_residence_are_not_actionable(freshness_driver):
+    node, clock, send = freshness_driver
+    def queue(stamps, residence=0.0, age=0.1):
+        clock["wall"] += 0.1
+        clock["mono"] += 0.1
+        for i, stamp in enumerate(stamps):
+            msg, _ = _cloud(np.array([[5.0, 0, 0]], np.float32), stamp, frame_id="lidar")
+            node.remember_arrival(msg, {"source_timestamp": int((clock["wall"]-age+i*0.001) * 1e9)})
+            first, src = node.arrivals[id(msg)]
+            node.arrivals[id(msg)] = first-residence, src
+            node.pending.append(("/lidar_points", msg))
+        node.process_next()
+        return json.loads(node.published["/resense/status"][-1].data)
+    startup = queue([20.0, 20.3, 20.6, 20.9])
+    assert startup["freshness"]["reason"] == "queue_stale"
+    assert startup["decision"] == "FAULT" and startup["node"]["catchup"]
+    while node.pending:
+        node.process_next()
+    send(21.0)
+    assert send(21.1)["decision"] == "GO"
+    # Source ages remain current while the recording queue is behind: still no GO.
+    later = queue([21.2, 21.4, 21.6])
+    assert later["decision"] == "CAUTION" and later["freshness"]["reason"] == "catchup"
+    assert later["clear_distance"] == 0
+    while node.pending:
+        node.process_next()
+    send(21.7)
+    slow = queue([21.8], residence=0.501)
+    assert slow["decision"] == "FAULT" and slow["freshness"]["reason"] == "residence_stale"
+
+
+def test_stop_survives_stale_input_errors_and_invalid_clear_then_fresh_recovery(freshness_driver):
+    node, clock, send = freshness_driver
+    clock["obstacle"] = True
+    stop = send(20.0, age=1.0)
+    assert stop["decision"] == "STOP" and not stop["freshness"]["valid"]
+    clock["mono"] += 1.0
+    clock["wall"] += 1.0
+    node.on_watchdog()
+    watchdog = json.loads(node.published["/resense/status"][-1].data)
+    assert watchdog["decision"] == "STOP" and watchdog["snapshot_kind"] == "watchdog"
+    assert watchdog["stop_held"] and not watchdog["freshness"]["valid"]
+    assert node.published["/resense/obstacle_detected"][-1].data is True
+    assert "STOP HELD" in node.published["/resense/markers"][-1].markers[-1].text
+    node.publish_fault(_Msg(frame_id="lidar", stamp=_Msg(sec=21, nanosec=0)), "broken")
+    fault = json.loads(node.published["/resense/status"][-1].data)
+    assert fault["decision"] == "STOP" and fault["snapshot_kind"] == "processing_error"
+    clock["obstacle"] = False
+    stale_clear = send(20.1, info=False)
+    assert stale_clear["decision"] == "STOP" and stale_clear["stop_held"]
+    assert stale_clear["detector_obstacle"] is False and stale_clear["clear_distance"] == 0
+    assert send(20.2)["decision"] == "STOP"
+    recovered = send(20.3)
+    assert recovered["decision"] == "GO" and not recovered["stop_held"]
+    assert node.published["/resense/obstacle_detected"][-1].data is False
+
+
+def test_humble_executor_preserves_first_and_drained_source_info(node_cls):
+    import asyncio
+    module = sys.modules[node_cls.__module__]
+    node = node_cls()
+    first, _ = _cloud(np.array([[5.0, 0, 0]], np.float32), 20.0)
+    second, _ = _cloud(np.array([[5.0, 0, 0]], np.float32), 20.1)
+    pairs = [(first, {"source_timestamp": 100_000_000_000}),
+             (second, {"source_timestamp": 100_100_000_000})]
+    class Handle:
+        def __enter__(self): return self
+        def __exit__(self, *a): pass
+        def take_message(self, *a): return pairs.pop(0) if pairs else None
+    sub = node.subs["/lidar_points"]
+    sub.handle, sub.msg_type, sub.raw, sub.callback = Handle(), object, False, sub.cb
+    node.process_next = lambda: None  # inspect queue before it drains
+    executor = module.SourceInfoExecutor()
+    taken = executor._take_subscription(sub)
+    asyncio.run(executor._execute_subscription(sub, taken))
+    assert [m for _, m in node.pending] == [first, second]
+    assert node.arrivals[id(first)][1] == 100.0
+    assert node.arrivals[id(second)][1] == pytest.approx(100.1)
+    # Non-LiDAR subscriptions use upstream behavior, including one-argument callbacks.
+    seen = []
+    ordinary = types.SimpleNamespace(callback=seen.append)
+    assert executor._take_subscription(ordinary) == "upstream"
+    asyncio.run(executor._execute_subscription(ordinary, "ordinary"))
+    assert seen == ["ordinary"]
+
+
+def test_watchdog_expires_source_age_before_processing_silence_timeout(freshness_driver):
+    node, clock, send = freshness_driver
+    send(20.0, age=0.4)
+    assert send(20.1, age=0.4)["decision"] == "GO"
+    assert node.last_status.startswith("GO")
+    # Only 0.11 s since processing, but the source result is now 0.51 s old.
+    clock["mono"] += 0.11
+    clock["wall"] += 0.11
+    node.on_watchdog()
+    invalid = json.loads(node.published["/resense/status"][-1].data)
+    assert invalid["decision"] == "FAULT" and invalid["snapshot_kind"] == "watchdog"
+    assert not invalid["freshness"]["valid"] and node.last_status.startswith("FAULT")
+    assert send(20.2)["decision"] == "FAULT"  # expiry closes the previous epoch
+    assert send(20.3)["decision"] == "GO"
+
+
+def test_invalid_rviz_range_is_gray_and_logs_use_published_decision(freshness_driver):
+    node, clock, send = freshness_driver
+    invalid = send(20.0, age=1.0)
+    assert invalid["decision"] == "FAULT" and node.last_status.startswith("FAULT")
+    outlines = [m for m in node.published["/resense/markers"][-1].markers if getattr(m, "type", None) == 4]
+    assert len(outlines) == 2
+    assert all(m.color.r == m.color.g == m.color.b for m in outlines)
+    send(20.1)
+    assert send(20.2)["decision"] == "GO"
+    outlines = [m for m in node.published["/resense/markers"][-1].markers if getattr(m, "type", None) == 4]
+    assert all(m.color.g > m.color.r for m in outlines)
+
+
+def test_result_carries_evaluation_clock_and_configured_expiry_for_consumers(freshness_driver):
+    node, clock, send = freshness_driver
+    send(20.0)
+    result = send(20.1)
+    f = result["freshness"]
+    assert f["evaluated_at_utc_s"] == clock["wall"]
+    assert f["max_result_age_s"] == 0.5 and f["future_tolerance_s"] == 0.05
+    remaining = f["max_result_age_s"] - max(0, f["source_age_s"], f["residence_age_s"])
+    assert remaining == pytest.approx(0.4)
+    assert f["evaluated_at_utc_s"] + remaining < clock["wall"] + 0.5

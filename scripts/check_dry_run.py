@@ -73,6 +73,7 @@ def load(path):
                 skipped += 1
                 continue
             if (isinstance(obj, dict) and "obstacle" in obj
+                    and obj.get("snapshot_kind", "frame") == "frame"
                     and (obj.get("decision") != "FAULT" or "node" in obj)):
                 frames.append(obj)
             else:
@@ -172,9 +173,73 @@ def match_recording(stamps, rec_stamps, period):
     return out
 
 
+def detected_obstacle(frame):
+    """Positive evidence must come from this frame, never an earlier held STOP."""
+    if "freshness" in frame:
+        return frame.get("detector_obstacle") is True and not frame.get("stop_held", False)
+    return bool(frame.get("obstacle"))
+
+
+def freshness_failures(frames):
+    """Current runtime contract; old evidence can be checked without --require-freshness."""
+    failures, valid_recordings = [], set()
+    recordings = {f.get("node", {}).get("recording") for f in frames}
+    def finite(value):
+        return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+    for i, frame in enumerate(frames):
+        f = frame.get("freshness")
+        prefix = f"frame {i}: freshness "
+        if not isinstance(f, dict) or frame.get("snapshot_kind") != "frame":
+            failures.append(prefix + "schema missing")
+            continue
+        valid = f.get("valid")
+        mode = f.get("mode")
+        decision = frame.get("decision")
+        if (mode not in ("live", "replay") or not isinstance(valid, bool)
+                or not isinstance(f.get("go_allowed"), bool) or not isinstance(f.get("reason"), str)):
+            failures.append(prefix + "mode/validity missing or invalid")
+        if (not finite(f.get("evaluated_at_utc_s")) or f["evaluated_at_utc_s"] <= 0
+                or f.get("max_result_age_s") != 0.5 or f.get("future_tolerance_s") != 0.05):
+            failures.append(prefix + "evaluation time or registered limits missing/different")
+        if not isinstance(frame.get("detector_obstacle"), bool) or not isinstance(frame.get("stop_held"), bool):
+            failures.append(prefix + "detector/held STOP provenance missing")
+        expected_clock = "acquisition_utc" if mode == "live" else "publisher_utc"
+        if f.get("clock_reference") != expected_clock:
+            failures.append(prefix + "clock reference differs from mode")
+        if f.get("go_allowed") != (valid is True and decision == "GO"):
+            failures.append(prefix + "GO permission differs from decision/validity")
+        if decision == "GO" and (not valid or frame.get("node", {}).get("catchup")):
+            failures.append(prefix + "GO during invalid input or catch-up")
+        if not valid and frame.get("clear_distance") != 0:
+            failures.append(prefix + "invalid monitoring range is not zero")
+        if not finite(frame.get("detector_clear_distance")):
+            failures.append(prefix + "raw detector range missing")
+        if bool(frame.get("obstacle")) != (decision == "STOP"):
+            failures.append(prefix + "STOP differs from obstacle flag")
+        if valid:
+            valid_recordings.add(frame.get("node", {}).get("recording"))
+            age, residence, lag = (f.get(k) for k in ("source_age_s", "residence_age_s", "queue_lag_s"))
+            if (not finite(age) or not -0.05 <= age <= 0.5
+                    or not finite(residence) or not 0 <= residence <= 0.5
+                    or not finite(lag) or not 0 <= lag <= 1e-6):
+                failures.append(prefix + "valid result exceeds registered age/queue bounds")
+            comparable = "acquisition_age_s" if mode == "live" else "publication_age_s"
+            unknown = "publication_age_s" if mode == "live" else "acquisition_age_s"
+            if f.get(comparable) != age or f.get(unknown) is not None:
+                failures.append(prefix + "mode-specific ages disagree")
+            if frame.get("health", {}).get("level") == "error":
+                failures.append(prefix + "valid result has error health")
+    if recordings - valid_recordings:
+        failures.append("freshness: no valid result in recording(s) " +
+                        ", ".join(str(x) for x in sorted(recordings - valid_recordings, key=str)))
+    return failures
+
+
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("status_jsonl")
+    p.add_argument("--require-freshness", action="store_true",
+                   help="require current clock/validity schema and at least one valid result per recording")
     p.add_argument("--expect-obstacle", action="store_true",
                    help="require at least --min-alarm-frames frames with obstacle = true")
     p.add_argument("--expect-clear", action="store_true",
@@ -286,11 +351,14 @@ def main(argv=None) -> int:
                             f"recording itself; {lost} of its messages not processed")
     fps = last_node.get("fps")
     alarms = [f for f in frames if f["obstacle"]]
-    distances = [f["nearest_distance"] for f in alarms if f.get("nearest_distance") is not None]
+    detected = [f for f in frames if detected_obstacle(f)]
+    distances = [f["nearest_distance"] for f in detected if f.get("nearest_distance") is not None]
 
     p95 = percentile(valid_latencies, 95)
     print(f"status messages      : {len(frames)}" + (f" ({skipped} lines skipped)" if skipped else ""))
     print(f"alarm frames         : {len(alarms)}")
+    if any("freshness" in f for f in frames):
+        print(f"detector alarm frames: {len(detected)} (held STOP excluded from positive evidence)")
     if distances:
         print(f"obstacle distance    : {min(distances):.1f} .. {max(distances):.1f} m")
     if valid_latencies:
@@ -312,12 +380,14 @@ def main(argv=None) -> int:
     print(f"fps (last report)    : {fps}")
     if len(first) > 1:               # the start of the (first) recording: holes, the first STOP
         gaps = [b - a for a, b in zip(rel, rel[1:]) if a < args.settle_s]
-        stop = next((r for f, r in zip(first, rel) if f.get("decision") == "STOP"), None)
+        stop = next((r for f, r in zip(first, rel) if f.get("decision") == "STOP" and detected_obstacle(f)), None)
         print(f"start of the input   : {sum(1 for r in rel if r < args.settle_s)} frames in the first "
               f"{args.settle_s:g} s after the first one, largest gap {max(gaps or [0.0]):.1f} s"
               + (f", first STOP at +{stop:.1f} s" if stop is not None else ""))
 
-    failures = []
+    failures = freshness_failures(frames) if args.require_freshness else []
+    if args.require_freshness:
+        print("freshness contract  : " + ("PASS" if not failures else f"FAIL ({len(failures)} violations)"))
     if len(valid_latencies) != len(frames):
         failures.append(f"node.latency_ms missing or invalid in {len(frames) - len(valid_latencies)} "
                         "status messages: cannot check p95 latency")
@@ -326,8 +396,8 @@ def main(argv=None) -> int:
     if len(frames) < args.min_frames:
         failures.append(f"only {len(frames)} status messages, expected >= {args.min_frames} "
                         "(the node started late or dropped most of the bag)")
-    if args.expect_obstacle and len(alarms) < args.min_alarm_frames:
-        failures.append(f"{len(alarms)} alarm frames, expected >= {args.min_alarm_frames}")
+    if args.expect_obstacle and len(detected) < args.min_alarm_frames:
+        failures.append(f"{len(detected)} alarm frames, expected >= {args.min_alarm_frames}")
     allowed = args.max_alarm_frames or 0
     if args.expect_clear and len(alarms) > allowed:
         failures.append(f"{len(alarms)} false alarms on a bag expected to be clear"
@@ -367,7 +437,7 @@ def main(argv=None) -> int:
             for r in recs:
                 if want is not None and r not in want:
                     continue
-                n = sum(1 for f, x in zip(frames, rec) if x == r and f["obstacle"])
+                n = sum(1 for f, x in zip(frames, rec) if x == r and detected_obstacle(f))
                 if n < args.min_alarm_frames:
                     failures.append(f"recording {r}: {n} alarm frames, expected >= {args.min_alarm_frames}")
 

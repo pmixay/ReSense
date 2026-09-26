@@ -26,8 +26,8 @@ rm -f "$OUT/done"
 
 cat > "$OUT/console.sh" <<CONSOLE
 say() { printf '\n\033[1;32m\$\033[0m \033[1;37m%s\033[0m\n' "\$1"; sleep 1.2; }
-say "docker run -d --name resense --net=host --ipc=host -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix $IMAGE ros2 launch resense_ros detector.launch.py rviz:=true"
-docker run -d --name resense --net=host --ipc=host -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix $IMAGE ros2 launch resense_ros detector.launch.py rviz:=true | cut -c1-12
+say "docker run -d --name resense --net=host --ipc=host -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix $IMAGE ros2 launch resense_ros detector.launch.py freshness_mode:=replay rviz:=true"
+docker run -d --name resense --net=host --ipc=host -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix $IMAGE ros2 launch resense_ros detector.launch.py freshness_mode:=replay rviz:=true | cut -c1-12
 for _ in \$(seq 1 60); do docker logs resense 2>&1 | grep -q "detector listening" && break; sleep 0.5; done
 for _ in \$(seq 1 40); do xdotool search --name " - RViz" >/dev/null 2>&1 && break; sleep 0.5; done
 sleep 1

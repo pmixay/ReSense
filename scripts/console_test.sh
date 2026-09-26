@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # The organizers' procedure with separate processes: the node in its own container on the image's
-# default command (root), `ros2 bag play` in a second container as a normal user (a host console:
+# explicit replay command (root), `ros2 bag play` in a second container as a normal user (a host console:
 # uid 1000 by default), /resense/status recorded by a third; then scripts/check_dry_run.py.
 #
 #   scripts/console_test.sh <bag dir> [<second bag dir, same parent>] [-- <check_dry_run.py args>]
@@ -146,7 +146,7 @@ if [ -n "$CT_BAG2" ]; then sleep 5; play "$CT_BAG2"; fi
 '
 
 [ "$NODE_DDS" = shm ] && touch "$OUT_ABS/.node_started"     # older /dev/shm files are not this node's
-docker run -d --name resense_ct_node --net=host --ipc=host ${NODE_ARGS[@]+"${NODE_ARGS[@]}"} "$IMAGE" >/dev/null
+docker run -d --name resense_ct_node --net=host --ipc=host ${NODE_ARGS[@]+"${NODE_ARGS[@]}"} "$IMAGE" ros2 launch resense_ros detector.launch.py freshness_mode:=replay >/dev/null
 READY=0
 for _ in $(seq 1 60); do
   if docker logs resense_ct_node 2>&1 | grep -q "ReSense detector listening"; then
@@ -210,7 +210,7 @@ else
   [ -n "$BAG2" ] && CHECK_ARGS+=(--expect-inputs 2)
 fi
 CHECK_RC=0
-python3 scripts/check_dry_run.py "$OUT_ABS/status.jsonl" "${CHECK_ARGS[@]}" || CHECK_RC=$?
+python3 scripts/check_dry_run.py "$OUT_ABS/status.jsonl" --require-freshness "${CHECK_ARGS[@]}" || CHECK_RC=$?
 
 # ---- NODE_DDS=shm: did the entrypoint switch the node to shared memory, open up its files?
 SHM_FAIL=()

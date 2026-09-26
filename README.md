@@ -25,7 +25,7 @@ ReSense 10 раз в секунду отвечает беспилотному п
 ```bash
 sudo sysctl -w net.core.rmem_max=33554432                # 0. на хосте, до перезагрузки: буфер UDP для 360° облаков
 docker load -i resense-image-<версия>.tar.gz             # 1. один раз, без интернета
-docker run --rm -it --net=host --ipc=host resense        # 2. консоль 1: нода, без аргументов
+docker run --rm -it --net=host --ipc=host resense ros2 launch resense_ros detector.launch.py freshness_mode:=replay  # 2. консоль 1: исторический бэг
 cat <бэг>/*.db3 > /dev/null                              # 3. консоль 2: прочитать бэг заранее (360° — 240 МБ/с)
 ros2 bag play <бэг> --delay 3                            #    и проиграть: любой пользователь, ROS 2 Humble
 ros2 topic echo /resense/decision --field data           # 4. консоль 3: GO | CAUTION | STOP | FAULT
@@ -35,7 +35,7 @@ ros2 topic echo /resense/nearest_distance --field data   # 5. расстояни
 Увидеть облако, коридор габарита и препятствия в RViz (нужен X11): вместо шага 2 — одна строка:
 
 ```bash
-xhost +local:docker && docker run --rm -it --net=host --ipc=host -e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix resense ros2 launch resense_ros detector.launch.py rviz:=true
+xhost +local:docker && docker run --rm -it --net=host --ipc=host -e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix resense ros2 launch resense_ros detector.launch.py rviz:=true freshness_mode:=replay
 ```
 
 **Где взять архив.** Архив коммита ветки `claude/nifty-pascal-lzgl78` или `main` — артефакт CI:
@@ -66,7 +66,8 @@ docker/Dockerfile .`. Проверка архива: `sha256sum -c resense-image
 ([`docs/evidence/rejudge_2026-09-26/`](docs/evidence/rejudge_2026-09-26/)). Повторный проигрыш
 того же бэга уже идёт из памяти.
 
-Ожидаемый вывод шага 4 на `doubleT_obstacle` (сокращён; сообщения идут 10 раз в секунду):
+Исторический вывод на `doubleT_obstacle` до контроля свежести (сокращён; текущая нода
+дополнительно проверяет возраст и удерживает STOP при потере входа):
 
 ```text
 FAULT     # с 2 с после старта ноды, пока плеер загружает бэг (2,6–4 с): кадров ещё нет
@@ -109,7 +110,8 @@ ros2 bag play <bag>  ──PointCloud2 (either topic / frame pair), 10 Hz──�
    `--network none`. With internet, build it instead (`docker build -t resense -f
    docker/Dockerfile .` or `./scripts/build.sh`: ROS 2 Humble and exactly pinned Python packages).
    Nothing in the node, the launch file or the entrypoint uses the network at run time.
-2. **Start the node** (command 2), no arguments for any organizers' recording. **`--net=host` is
+2. **Start the node** (command 2) with `freshness_mode:=replay` for historical recordings.
+   The default `live` mode requires acquisition timestamps comparable to system UTC. **`--net=host` is
    required**: the image runs Fast DDS over UDP only (`docker/fastdds_udp.xml`, so that a player run
    by any user reaches the root node), and in Docker's default bridge network the host's player and
    the node do not discover each other. `--ipc=host` is harmless, kept for older images. Opt-in,
@@ -153,7 +155,7 @@ control bags can be played one after another into one running node. The offline 
 ## Status (26.09): package 1.0.0, detector v0.6.3 with integrated P3d rules, node v0.6.4
 
 The detector and default configuration are **frozen**. The [source seal](docs/DETECTOR_FREEZE.md)
-and fresh full gate reproduce all **183 gated values**, with no missing rows or waivers.
+and fresh full gate reproduce all **146 gated values (199 total comparison rows)**, with no missing rows or waivers.
 The startup fix passes original-bag idle cold/warm replays: first STOP +0.4 s after the first
 processed cloud, decode+detect p95 36 ms, no recorded messages lost after catch-up settles.
 The clear replay has zero alarms and p95 24 ms. Stock Fast DDS playback also passes; its clear
@@ -266,7 +268,7 @@ teams (23.09). Decision logic and thresholds: [`docs/ALGORITHM.md`](docs/ALGORIT
 | question | topic | values |
 |---|---|---|
 | what did the detector report? | **`/resense/decision`** (`std_msgs/String`) | `GO` (no obstacle detected and no health warning affecting the decision), `CAUTION` (advisory: a confirmed object in the band just outside the envelope, a far cluster beyond the trusted model range, known infrastructure or degraded health (since 26.09 not latency: that shows in `/resense/health` and the status JSON only); on 27–69 % of the frames of the obstacle-free recordings and 41 % of the ride, so it is not an alarm), `STOP` (obstacle detected inside the 2.1 × 3.0 m envelope), `FAULT` (input cannot be trusted or stopped arriving, and before the first frame) |
-| is there an obstacle? | **`/resense/obstacle_detected`** (`std_msgs/Bool`) | per processed frame, confirmed over 0.5 s, held over one missed frame; `false` while no frame arrives (then `decision` says `FAULT`) |
+| is there an obstacle? | **`/resense/obstacle_detected`** (`std_msgs/Bool`) | per processed frame, confirmed over 0.5 s, held over one missed frame; `true` while a previous STOP is held through invalid input; a fresh valid non-STOP frame clears it |
 | how far is it? | **`/resense/nearest_distance`** (`std_msgs/Float32`) | m along the track, −1 if none |
 | what is the estimated monitored range? | **`/resense/clear_distance`** (`std_msgs/Float32`) | sightline and trusted track-model range, capped at a detected obstacle or an eligible unconfirmed/advisory cluster in the envelope (`health.clear_cap`, columns excluded); 0 on a fault. Objects that form no eligible cluster can remain inside this range |
 | everything else | `/resense/detections` (`vision_msgs/Detection3DArray`), `/resense/status` (JSON: every object with distance, lateral offset, size, confidence, kind; track model; health; mount calibration; timing) | |
@@ -350,6 +352,8 @@ docker run --rm resense bash -lc "python3 scripts/make_smoke_bag.py /tmp/b && sc
 * **mount**: `sensor_forward` / `sensor_left` / `sensor_up` (axis mapping, e.g. `+x`),
   `mount_roll_deg` / `mount_pitch_deg` / `mount_yaw_deg` (fixed tilt), `auto_calibrate` (true:
   orientation, roll and pitch from the rails and the bed, reported in `/resense/status` → `mount`);
+* **freshness**: `freshness_mode` (`live`, explicitly `replay` for bags), `max_result_age` (0.5 s),
+  `future_tolerance` (0.05 s);
 * **guards**: `stale_timeout` (0.5 s without a frame before `FAULT`), `startup_grace` (2.0 s after
   start before "no LiDAR frame received yet" is published as `FAULT`), `max_consecutive_errors` (5);
 * **speed**: for multi-frame accumulation the node needs the train speed: `ego_speed_mps:=22.0`, or
@@ -472,13 +476,27 @@ in development). `scripts/bench_8core.sh` bundles the acceptance runs and the ti
 | `/resense/markers`, `/resense/corridor_points` | `MarkerArray`, `PointCloud2` | RViz: boxes, labels, corridor outline, status text; points inside the corridor |
 | `/tf_static` | `tf2_msgs/TFMessage` | identity `resense_lidar` → the input cloud's `frame_id`, once per frame id |
 
-**A fault is a complete snapshot.** When no frame has arrived `startup_grace` (2 s) after start,
-when the input is silent for `stale_timeout` (0.5 s; repeated at 2 Hz while it stays silent), or
-when processing a frame raises, the node publishes on every output at once: `decision` `FAULT`,
-`clear_distance` 0, `obstacle_detected` and `warning` false, `nearest_distance` −1, empty
-`detections`, markers `DELETEALL`, a status JSON with `decision: FAULT` and `health.level: error`
-but no `node` object (so acceptance tools do not count it as a frame), and `/resense/health`
-`STALE` for a silent input, `ERROR` otherwise. No earlier `STOP` stays latched on any topic.
+**Freshness and held STOP.** The default `freshness_mode:=live` compares the acquisition header
+with system UTC. Historical bags must explicitly select `freshness_mode:=replay`; this uses the
+DDS publisher timestamp, and reports acquisition age as unknown. A result must be no more than
+0.5 s old, with no more than 0.05 s future clock skew. Python residence and recording queue lag
+are also bounded at 0.5 s. First frames, clock/input jumps and the first frame after a pause
+are invalid until progression resumes. Missing timestamps fail closed. A queued older frame
+cannot produce GO. The JSON `freshness` object reports the clocks, ages, validity and reason;
+`go_allowed` is true only for a GO result valid at evaluation. `evaluated_at_utc_s`,
+`max_result_age_s` and `future_tolerance_s` let consumers expire it, assuming synchronized UTC
+clocks. Consumers must enforce their own expiry: the single-threaded node watchdog runs every
+0.1 s when the executor is available and cannot publish while processing is blocked. A latched
+`/decision` string alone carries no age and is insufficient for motion control. `clear_distance` is zero during invalid
+monitoring; `detector_clear_distance` preserves the detector's raw estimate.
+
+When input goes silent or processing fails, all outputs report invalid monitoring. A previous
+STOP remains visible with `stop_held: true`, its original source stamp/frame, and zero monitored
+range until a fresh valid non-STOP frame clears it. Without a prior STOP the decision is FAULT.
+Watchdog/error snapshots have `snapshot_kind: watchdog|processing_error`; acceptance tooling
+excludes them from frame counts. Processed results use `snapshot_kind: frame`. STOP takes
+priority over invalid input; otherwise invalid or stale clocks mean FAULT, and catch-up means
+CAUTION. Health diagnostics, status JSON, scalar topics and RViz use this same policy.
 
 ## Parameters worth knowing (`configs/default.yaml`)
 
