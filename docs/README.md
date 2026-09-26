@@ -26,7 +26,7 @@ rewritten later; **frozen** = kept for reference, not maintained; **archive** = 
 | [`EVALUATION.md`](EVALUATION.md) | evaluation protocol: data sets, metrics, procedure, targets | team, jury | EN + RU summary | P1 / P4 | current |
 | [`DATASET.md`](DATASET.md) | the organizers' data: recordings, formats, labels, frame cache, unpacking | team, jury | EN + RU summary | P4 | current |
 | [`SENSOR.md`](SENSOR.md) | Hesai Pandar128 facts and what they imply for the detector | team, jury | EN + RU summary | P1 | current |
-| [`SCORECARD.md`](SCORECARD.md) | criteria judgements: the re-judgement of 26.09 (§0, 65 / 100) and the first of 24.09 (§1–§8, 60 / 100): score per spec §8 criterion, evidence, what is left | team, jury | EN | P1 | current (§0), dated record (§1–§8) |
+| [`SCORECARD.md`](SCORECARD.md) | criteria judgements: the measured re-judgement of 26.09 evening (§0, 67 / 100, every cache rebuilt on a second machine), the independent re-judgement of 26.09 morning (§0a, 65 / 100) and the first of 24.09 (§1–§8, 60 / 100): score per spec §8 criterion, evidence, what is left | team, jury | EN | P1 | current (§0), dated records (§0a, §1–§8) |
 | [`PRESENTATION.md`](PRESENTATION.md) | slide requirements, drafts, speaker text | P2, P1 | RU | P2 | current |
 | [`PLAN.md`](PLAN.md) | roles, sprint calendar, team rules | team | RU | P1 | current |
 | [`CAPTAIN.md`](CAPTAIN.md) | captain's board: criteria, work left, ownership map, frozen interfaces | P1, team | EN | P1 | current |

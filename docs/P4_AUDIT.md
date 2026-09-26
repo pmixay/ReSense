@@ -3,8 +3,9 @@
 > **Purpose:** P4's audit of synthetic placement, evaluation accounting and the organizers'
 > synthetic-obstacle recording, with the corrections made and what they change.
 > **Audience:** team, jury (spec §8.7) · **Owner:** P4 · **Language:** EN
-> **Last verified:** 2026-09-26 against inherited P3d detector commit `fa18832` ·
-> **Status:** historical audit plus the current P3d addendum below
+> **Last verified:** 2026-09-26 evening against the P3d detector (`fa18832`'s code; the branch head carries only
+> docs and tests since), the ride and set F reproduced on a second machine ·
+> **Status:** historical audit, the P3d addendum, and the completion of 26.09 evening on top
 
 Initial audit base: `a81108f` (v0.6.3, 23.09); integrated on `4cd32d6` (`main`, 24.09); merged as
 `4b5786b` (PR #9, 24.09).
@@ -23,9 +24,51 @@ data, not unseen validation.
 
 P4 did not change detector code or shipped defaults. The latest work-branch P3d detector was
 merged only so that P4's evidence could be checked against the current baseline. All six original
-bags and set O are verified at every frame. The `new_data` ride and set F remain unavailable here:
-at the latest capacity check, the ride cache estimate plus the required 3 GiB reserve need at least
-5.3 GB more free space. Do not infer ride or set F results from the six-bag rerun.
+bags and set O are verified at every frame. **The `new_data` ride and set F, unavailable on P4's
+workstation, were cached and checked on a second machine on 26.09 evening (the section right
+below): the strict gate passes with every gated row the same as `_ride_p3d`.**
+
+## Completion on a second machine (26.09 evening)
+
+On the captain's order to complete the P3 and P4 work, an agent rebuilt every cache in a fresh
+cloud container (4 vCPU, 15 GB, no Docker daemon) from the organizers' links: set O from
+`cloud_with_fake_obj.zst` (1 510 frames), the six recordings from `Датасет.zip` (2 488 frames, each
+`metadata.yaml` equal to the committed originals), the ride from `new_data.zst` split by split
+(11 271 frames, 221 stamp files, 16 GB of cache; VM_GUIDE §2.3). Pre-registered before any run:
+[`p3_p4_prereg_2026-09-26_evening.json`](evidence/results/p3_p4_prereg_2026-09-26_evening.json)
+(commit `53b75d4`). Results (EXPERIMENTS §1p):
+
+* **The strict gate with the ride and set F straight, no `--allow`: PASS, every gated row the
+  same as `_ride_p3d`** ([`regression_gate_2026-09-26_head_fresh_machine.json`](evidence/results/regression_gate_2026-09-26_head_fresh_machine.json),
+  319 s at `--jobs 3`): the 3 ride rows (11 271 frames, 45 events, 38 STOP episodes; 183 alarm
+  frames) and the 15 set F straight rows (person 151.0 m, trolley 151.4 m, crate 123.9 m, cable
+  98.9 m, 0.5 m box 1 of 6 at 51.9 m, false detections 6 / 5 / 12 / 3 / 0) that this audit could
+  not check are now checked on a second machine. The cache-based baseline is reproduced exactly.
+* **Candidate B** (`tracking.near_escalate_voxels` 10 → 8), the full gate: PASS, 6 gated rows
+  better (set O #4 2 → 3 STOP frames, first STOP 5.2 → 7.1 m), none worse, the ride identical
+  ([`regression_gate_2026-09-26_p4_candidate_B_full.json`](evidence/results/regression_gate_2026-09-26_p4_candidate_B_full.json)).
+  Its candidate-specific checks: all pass with numbers identical to the head (census 18 / 120 / 35 / 28 on the 221 ride splits, none within 10 m; as recorded 13 / 16, 5 Hz 10 / 10, roll 14 / 16, pitch 17 / 18; start offsets 13 / 16, 13 / 14, 13 / 12, 10 / 11, 7 / 11; [`p4_candidate_B_checks_2026-09-26/`](evidence/results/p4_candidate_B_checks_2026-09-26/)). By the frozen rules B is eligible; **it is not
+  shipped by this session** (one frame at 7 m on an object that straddles the envelope edge, a
+  lower voxel bar for every demoted track, and the detector freeze is the captain's; EXPERIMENTS
+  §1p). Candidates A and C stay rejected at the set O screen.
+* The rate / re-mount checks (5 Hz 10 / 10, +3° roll 14 / 16, +3° pitch 17 / 18 events / STOP
+  episodes), the start-offset denominators and the set O suffix stand as recorded above; the
+  per-event list of the pitch and roll extras is in
+  [`p4_robustness_2026-09-26_evening/events_pitch_roll.txt`](evidence/results/p4_robustness_2026-09-26_evening/events_pitch_roll.txt).
+* **The 221-start ride census on the P3d head**
+  ([`p4_census_p3d_2026-09-26.json`](evidence/results/p4_census_p3d_2026-09-26.json)): 18 of 221
+  split starts with a STOP, 120 STOP frames / 35 events / 28 episodes, 8 events in the first 1.5 s,
+  none within 10 m; the eight ride pieces 1 start / 18 frames / 1 event (the 138 m one). The 2.9 m
+  fresh-start finding of EXPERIMENTS §1j is gone with the rail-start rule; the rest equals the
+  census of `867bb8a`.
+* `tests/test_rail_start.py` with the ride cache: 28 passed (the ride-dependent test included); the
+  whole suite 586 with it.
+* Also measured, for P3: the envelope union with the review fixes passes the full gate for the
+  first time (set O #4 2 → 9 STOP frames; off, EXPERIMENTS §1p).
+
+Completion record: [`p4_completion_2026-09-26_evening.json`](evidence/results/p4_completion_2026-09-26_evening.json).
+The open scientific limits are unchanged: the ride has no real obstacles, set O is inspected data,
+anchored placement is not surveyed ground truth, the raw set O bag and its cache score differently.
 
 ## P4 follow-up for score improvement
 
@@ -94,8 +137,9 @@ These intervals explain why a binary “8 of 8” detection count overstates rel
 A fresh-start replay of the first 40 set O frames reports one STOP from frame 5, matched to the
 large centre box, and zero background alarms. It does not replace the 221-start ride census.
 
-The remaining data-dependent work is to cache the `new_data` ride, reproduce the ride and set F
-rows, and finish all acceptance checks for candidates A and B. Candidate C did not change its
+The remaining data-dependent work was to cache the `new_data` ride, reproduce the ride and set F
+rows, and finish the acceptance checks for candidate B: done on 26.09 evening (the completion
+section at the top). Candidate C did not change its
 target result. The known detector opportunities remain sustained detection of edge objects #4 and
 #6 and the box at the top (#8), fewer false STOPs on the ride, and stronger unseen-condition
 evidence. The axis-union candidate remains off: its earlier safety review found regressions when

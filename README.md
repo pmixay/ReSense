@@ -154,26 +154,29 @@ stand, a CI step with a stock Fast DDS player, the long overhead rule for the st
 rule for the organizers' small objects tried and not shipped, EXPERIMENTS §1f), version 1.0.0
 with a release workflow that publishes the image archive on a tag push, and a captioned 2:50
 overview video. When all caches are present, `scripts/regression_gate.py` re-checks the real-data
-rows, set O, the ride and set F straight. The current P4 rerun reproduces the six original
-recordings and set O against P3d, but could not load the `new_data` ride, so ride and set F figures
-below remain the archived P3d baseline rather than a new P4 measurement. All current numbers:
-[`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) "Current results" and §0.
+rows, set O, the ride and set F straight. On 26.09 evening every cache was rebuilt on a second
+machine from the organizers' links and the strict gate passed with every gated row the same as the
+`_ride_p3d` baseline, the ride and set F straight included. All current numbers:
+[`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) "Current results" and §1p.
 
 **P4 data and evaluation update (26.09).** The six original caches contain all 2,488 expected
-frames, and the set O cache contains all 1,510. Their available regression metrics match the
-inherited P3d baseline: set O has 384/801 inside STOP frames and object #8 has 51/124 STOP frames,
-a STOP on every frame from 101.3 m (the scorer's 90 % held-from field reads 111.4 m). The strict full-gate command exited 1 because the 221-split ride cache is
-absent (3 ride and 15 set F metrics missing); no rows were allowed or waived. At the latest capacity
-check, the cache estimate and 3 GiB reserve require at least 5.3 GB more free disk. No P4 detector
-change was accepted: candidate A did not improve its target, candidate C did not improve its
-target, and candidate B improved set O #4 from 2 to 3 STOP frames but remains unaccepted because
-the full gate is incomplete. The independent score remains 65/100 on its original pre-P3c/P3d
-commit; the current **67/100 provisional internal assessment** is detailed in
-[`docs/SCORECARD.md`](docs/SCORECARD.md). See the
+frames, and the set O cache contains all 1,510. Their regression metrics match the inherited P3d
+baseline: set O has 384/801 inside STOP frames and object #8 has 51/124 STOP frames, a STOP on
+every frame from 101.3 m (the scorer's 90 % held-from field reads 111.4 m). P4's own strict
+full-gate command exited 1 because the 221-split ride cache was absent on that workstation; **on
+26.09 evening the ride was cached on a second machine (11 271 frames, 221 splits) and the strict
+gate passed with no `--allow`: the 3 ride rows (45 events in 13 km, 38 STOP episodes) and the 15
+set F straight rows are the archived baseline's values, measured again** (EXPERIMENTS §1p). No P4
+detector change was shipped: candidates A and C did not improve their targets; candidate B improves
+set O #4 from 2 to 3 STOP frames and passes the full gate with the ride, so it is eligible by P4's
+rules, but it is left for the captain's decision at the freeze (one frame at 7 m against a lower
+voxel bar for every demoted track). The measured re-judgement of 26.09 evening is **67/100**
+([`docs/SCORECARD.md`](docs/SCORECARD.md) §0); the independent judgement of 26.09 morning was
+65/100 on the pre-P3c/P3d commit. See the
 [`P4 data and evaluation audit`](docs/P4_AUDIT.md) for cache integrity, false alarms, stress
-results, candidate decisions and open dependencies. The final software checks passed 585 tests;
-the ride-dependent rail-start test is deselected because the ride cache is absent, as recorded in
-the [`P3d validation record`](docs/evidence/results/p4_validation_p3d_2026-09-26.json).
+results, candidate decisions and the completion on the second machine. The software checks pass
+586 tests with the ride cache present (585 and one deselected without it), recorded in the
+[`completion record`](docs/evidence/results/p4_completion_2026-09-26_evening.json).
 
 What the organizers' answers changed ([`docs/organizers/answers.md`](docs/organizers/answers.md)):
 
