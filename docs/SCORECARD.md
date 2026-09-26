@@ -14,7 +14,10 @@
 габарита — STOP в каждом кадре с 101 м), но заголовок «8 из 8» его преувеличивает: краевые объекты
 получают STOP лишь на 5–10 м, `clear_distance` проходит за объект в габарите, всё решалось на тех же
 данных. Новая находка — с холодного диска 360° запись проваливает сухой прогон (обработано 34 кадра
-из 201). Что поднимет оценку — §0.6.
+из 201). Что поднимет оценку — §0.6. Третий круг (§0.8): работу P3/P4 того же вечера (кода она не
+меняла) оба судьи проверили — судья A перемерил устойчивость, сдвиги старта и кандидатов B и
+объединения габаритов, судья B сверил JSON; все числа совпали, оценки не изменились. Третий судья
+(агент самой работы P3/P4) ставит 67, но он не независим; со всеми тремя среднее было бы 64.
 
 ## 0. Re-judgement of 26.09 evening (integrated head `be5f5fc`): 62.5 / 100
 
@@ -131,7 +134,7 @@ as a range (README and EXPERIMENTS say "a STOP on every frame from 101.3 m").
 5. **`clear_distance` past a present obstacle** in 51 of 505 frames (object in the rail-referenced
    envelope; 44 of them `GO`); 217 of 801 by the organizers' placement. `STOP` and
    `nearest_distance` are the outputs to read (README "What to look at").
-6. **The start of a fresh bag:** a STOP in the first 4 s of 18 of 221 ride bags (EXPERIMENTS §1j).
+6. **The start of a fresh bag:** a STOP in the first 4 s of 18 of 221 ride bags, none within 10 m since the rail-start rule (EXPERIMENTS §1j, §1p; reproduced on the evening's second machine).
 
 ### 0.6 What raises the score before the upload (29.09 23:59)
 
@@ -160,7 +163,7 @@ Not run: Docker, the ROS 2 node, any bag through ROS. Every result agrees with j
 |---|---|---|
 | set O cache rebuilt from `cloud_with_fake_obj.zst`; `resense run --npy` + `score_fake_objects.py` | every object equal to `_ride_p3d`: 384 / 801, 8 of 8, 6 false STOP frames outside, 3 background frames / 2 ids | measured |
 | the six recordings rebuilt from `Датасет.zip` (`metadata.yaml` = the committed originals); the ride from `new_data.zst` (11 271 frames, 221 splits); **the strict gate with no `--allow`** | **PASS, every gated row the same** (five bags 58 / 13 / 16, ride 183 / 45 / 38, set F straight all 15 rows); 319 s at `--jobs 3` ([`regression_gate_2026-09-26_head_fresh_machine.json`](evidence/results/regression_gate_2026-09-26_head_fresh_machine.json)) | measured |
-| `robustness_check.py` as recorded / 5 Hz / +3° roll / +3° pitch; `start_offsets.py` | 13 / 16, 10 / 10, 14 / 16, 17 / 18; offsets 13 / 16, 13 / 14, 13 / 12, 10 / 11, 7 / 11: P4's figures value for value; the pitch's extras are 1–4 frame flickers (EXPERIMENTS §1p) | measured |
+| `robustness_check.py` as recorded / 5 Hz / +3° roll / +3° pitch; `start_offsets.py` | 13 / 16, 10 / 10, 14 / 16, 17 / 18; offsets 13 / 16, 13 / 14, 13 / 12, 10 / 11, 7 / 11: P4's figures value for value; the pitch's extras are 1–4 frame events, one of them a `low` STOP at 1.0–3.0 m on `doubleT_platform`; under the roll the 360° recording's calibration never leaves `pending` (EXPERIMENTS §1p) | measured |
 | `startup_census.py` on the head (221 ride splits + 8 pieces + 7 recordings) | 18 of 221 ride starts with a STOP, 120 frames / 35 events / 28 episodes, none within 10 m; `doubleT_obstacle` first STOP frame 11 | measured |
 | `pytest` with and without the ride cache; `ruff`; `sync_params.sh --check` | 586 passed with the ride (585 + 1 deselected without it; 587 since this pass's video test); clean; in sync | measured |
 | `OMP_NUM_THREADS=1 resense bench --npy`, one thread ([`bench_offline.txt`](evidence/results/p4_robustness_2026-09-26_evening/bench_offline.txt)) | 360°: 24.2 ms mean / p95 33.5 ms native, 57.5 / 71.3 ms numpy (−58 %); 120°: 21.8 / 30.7 ms (detector stages only) | measured |
@@ -178,9 +181,57 @@ two judges against one, and this one did not run Docker or ROS):
 | 8.4 | 9 | 8 | 5 Hz gives fewer events than as recorded, roll and pitch add only 1–4 frame flickers, 18 of 221 fresh starts STOP and none within 10 m, all reproduced; agrees that no held-out figure exists |
 | 8.5 | 8 | 7.5 | the gate reproduced row for row on a third machine from the raw links |
 | 8.6 | 7 | 7 | takes §0's cold-disk finding, which it could not test |
-| 8.7 | 9 | 8 | the process reproduced end to end, from a pre-registration commit to the raw JSON, by a stranger to it; agrees the loop is in-sample |
+| 8.7 | 9 | 8 | the process reproduced end to end, from a pre-registration commit to the raw JSON (note: this judge is the agent that wrote that pre-registration and ran those candidates, so the credit is partly self-assessment); agrees the loop is in-sample |
 | 8.8 | 3.5 | 3.5 | agrees (the deck rebuilt by this pass) |
 | **total** | **67** | **62.5** | the difference is 8.1, 8.4, 8.5 and 8.7: a reading of the same evidence, not new evidence |
+
+### 0.8 Third round: the P3 / P4 pass checked, the scores re-checked (26.09 evening, `1f8b8ff`)
+
+The P3 / P4 completion pass (§0.7, EXPERIMENTS §1p) changed no detector, config, node or Docker
+code (`git diff be5f5fc 1f8b8ff -- resense configs ros2_ws native docker` is empty): it measured.
+Both judges checked it instead of taking it:
+
+* **Judge A re-ran on its own machine** (the caches of §0.3;
+  [`evidence/rejudge_2026-09-26/p34/`](evidence/rejudge_2026-09-26/p34/)): `robustness_check.py`
+  as recorded / 5 Hz / +3° roll / +3° pitch → five bags 13 / 16, 10 / 10, 14 / 16, 17 / 18 events /
+  STOP episodes; `start_offsets.py` → 13 / 16, 13 / 14, 13 / 12, 10 / 11, 7 / 11; the gate of
+  candidate B (`tracking.near_escalate_voxels` 8) and of the union (`gauge.axis_union` 1) on the
+  six recordings and set O → PASS, only set O #4 moves (2 → 3 and 2 → 9 STOP frames; first STOP
+  7.1 and 18.2 m); `tests/test_edge_axis.py` (the union's safety scenes) 10 passed. Every number
+  as the pass reported it.
+* **Judge B diffed the committed JSONs** (the head on the fresh machine: 0 differences from
+  `_ride_p3d`; B and the union: only #4; the census 18 of 221, none within 10 m; the robustness
+  runs and their hashes) and found seven text issues, now fixed or stated: `doubleT_platform` +3
+  under pitch was net +2 (4 → 6); 3, not 4, of the 7 new pitch events under `provisional`; the
+  1.0–3.0 m `low` STOP under pitch and the roll's calibration that never finishes on the 360°
+  recording were left out of the summaries (§0.7, EXPERIMENTS §1p); EXPERIMENTS and P4_AUDIT
+  still called 67 the current score; §0.7 called the third judge "a stranger" to the process it
+  ran; the union's safety scenes were promised by the pre-registration but not reported. It also
+  notes that the pre-registration (`53b75d4`, 15:32:50 UTC, before every run's timestamp) was
+  pushed only with the results, so its order rests on that machine's clock, and carried little
+  risk: both effects were known and both candidates were "not shipped whatever the result".
+
+**Re-scores.** The pass adds reproducibility and robustness evidence for things already scored,
+and ships nothing, so neither judge moves:
+
+| § | judge A | judge B | third judge (§0.7) | why A and B stay |
+|---|---:|---:|---:|---|
+| 8.1 | 14.5 | 13 | 15.5 | the held STOP from 101.3 m was already credited; "8 of 8" still counts one STOP frame; B and the union are not shipped (and the union does nothing for #6) |
+| 8.2 | 8 | 7 | 7.5 | no first STOP moves |
+| 8.3 | 7.5 | 7.5 | 7.5 | |
+| 8.4 | 8.5 | 8 | 9 | the rate / mount / start-offset runs perturb the same five tuning recordings (pitch still 13 → 17 events and a 1–3 m STOP; roll leaves the 360° calibration pending); the census (none within 10 m) is a real gain but in-sample; no held-out figure |
+| 8.5 | 7.5 | 7.5 | 8 | reproducibility was already credited; the node's catch-up defect is still open (CAPTAIN action 21) |
+| 8.6 | 7.5 | 7 | 7 | |
+| 8.7 | 8.5 | 8 | 9 | good discipline (pre-registered, measured, not shipped over the freeze and Q1), but self-dated, low-risk and still no out-of-sample number |
+| 8.8 | 3.5 | 3.5 | 3.5 | |
+| **total** | **65.5** | **61.5** | **67** | |
+
+**The judgement of record stays 62.5 / 100** (§0.2: the mean of A and B, rounded down per
+criterion). The third judge is not independent of the pass it scores, so it is a cross-check,
+not a vote; with it as a third vote the mean would be 64 (14 / 7.5 / 7.5 / 8.5 / 7.5 / 7 / 8.5 /
+3.5). The spread 61.5–67 is the honest uncertainty of this score. What would move it is in §0.6;
+of the pass's candidates, B is +1 STOP frame at 7 m (no score change) and the union +7 frames on
+#4 from 18.2 m (worth ~+0.5 on 8.1 if the organizers' Q1 confirms the sensor axis).
 
 ## 0a. Re-judgement of 26.09 morning (pre-integration head `867bb8a`): 65 / 100 (dated record)
 

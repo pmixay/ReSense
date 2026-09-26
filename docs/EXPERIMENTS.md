@@ -210,7 +210,8 @@ same 18 missing ride/set F rows. B is not accepted, and preregistered candidate-
 checks were not run. The pair of 108 set S samples remains 22/67 bed versus 30/68 legacy, with
 eight legacy-only and zero bed-only hits among 65 shared-visible objects.
 
-The current internal score is **67/100 provisional**, with the 0.5-point Works increase attributed
+P4's internal score at the time was **67/100 provisional** (superseded: the judgement of record is
+[`SCORECARD.md`](SCORECARD.md) §0, 62.5 / 100), with the 0.5-point Works increase attributed
 to inherited P3d and no P4 detector credit. The independent 65/100 remains on its original commit.
 At the latest capacity check, at least 5.3 GB more free disk is needed while preserving the 3 GiB
 reserve before streaming `new_data`. The full gate result, cache/raw comparison, candidate decisions,
@@ -2168,7 +2169,7 @@ daemon; the caches rebuilt from the organizers' links (set O 1 510 frames, the s
 P4's run; the per-event list in
 [`events_pitch_roll.txt`](evidence/results/p4_robustness_2026-09-26_evening/events_pitch_roll.txt),
 matched to the as-recorded run by frame span and distance):
-* `doubleT_platform` +3 events: a 1.5 m tall cluster at 111.7 m in one frame (frame 19, calibration
+* `doubleT_platform` 3 new events (4 → 6, net +2: one as-recorded event is gone): a 1.5 m tall cluster at 111.7 m in one frame (frame 19, calibration
   `provisional`), a `low` cluster 1.09 × 0.21 × 0.09 m at 1.0–3.0 m in frames 185–186 (rail
   geometry under the tilt, `provisional`), and a 2.1 m tall cluster 1.01 m off the axis at 87.5 m in
   frames 201–202 (an edge structure);
@@ -2176,13 +2177,24 @@ matched to the as-recorded run by frame span and distance):
   *below* the rail head by the tilted reference (`provisional`, pitch read −2.7°);
 * `squareT_platform_squareT_switch` +3 / −2: the same 147.5 m switch parts and 82.9 m platform end
   as as-recorded, split into other track ids (STOP episodes 15 → 13).
-All added events last 1–4 frames; 4 of the 7 are under `provisional` calibration (the final tilt
+All added events last 1–4 frames; 3 of the 7 new ones (ids 11, 163, 30) are under `provisional` calibration (the final tilt
 comes at ~20 s), where the bed and rail-head references are still those of the provisional fit.
 None survives long enough to be an episode of more than 0.4 s. **No candidate was pre-registered:**
 a rule on `provisional` alone would delay real objects (§1j (a) failed S1 for that reason), and the
 edge and switch cases are the open axis items of §5. The roll adds 1–2 frame events of the same
 kind (an edge structure at 80 m and a `beyond_axis` cluster on `doubleT_platform`, a 0.13 m wide
 post at 44 m and a 1.4 m tall cluster at 128 m on `roundT_doubleT`).
+
+**Added by the re-judgement's check of this pass** (judge A re-ran `robustness_check.py` in the four
+modes, `start_offsets.py` and the gate of candidate B and of the union on the six recordings and
+set O on its own machine: every number above value for value; judge B diffed the committed JSONs;
+SCORECARD §0.8): two safety details the lists above leave implicit. Under +3° pitch the new
+`doubleT_platform` event id 163 is a `low` STOP at 1.0–3.0 m, right in front of the train (2
+frames, `provisional`). Under +3° roll the mount calibration of the 360° `doubleT_obstacle` never
+leaves `pending` (190 of 201 frames), yet the person and the object on the rail are found as
+recorded (frames 12–73 and 73–200, 55.5–56.6 m): detection holds, the calibration does not
+finish. The union's two safety scenes of the review (`tests/test_edge_axis.py`, among them "does
+not drop an object touching an edge line") pass on the current code (10 passed).
 
 **Decisions.**
 * **Candidate B is eligible by P4's frozen rules** (the full gate passes with no missing row and

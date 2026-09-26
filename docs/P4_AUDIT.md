@@ -114,7 +114,8 @@ shipped. The short-signature relaxation remains rejected for increasing outside-
 Exact decisions and output hashes are in the
 [`P3d candidate report`](evidence/results/p4_p3d_candidate_decisions_2026-09-26.json).
 
-The current **67/100 provisional internal assessment** uses the repository's eight criterion
+P4's **67/100 provisional internal assessment** of 26.09 (superseded: the judgement of record is
+[`SCORECARD.md`](SCORECARD.md) §0, 62.5 / 100, by two independent judges) used the repository's eight criterion
 maxima, not published organizer weights. The inherited P3d gain is attributed to upstream detector
 work, not P4; the independent 65/100 judgement remains on its original commit. See the
 [`P3d scorecard`](SCORECARD.md), [`completion checklist`](evidence/results/p4_completion_checklist_p3d_2026-09-26.json),

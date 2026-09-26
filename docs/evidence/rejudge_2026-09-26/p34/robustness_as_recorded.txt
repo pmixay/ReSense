@@ -1,0 +1,6 @@
+doubleT_obstacle                            201 frames  189 alarms   2 events   2 STOP episodes  mount {'pending': 4, 'provisional': 186, 'ok': 11}
+doubleT_platform                            345 frames    4 alarms   4 events   1 STOP episodes  mount {'pending': 204, 'identity': 141}
+roundT_doubleT                              252 frames    0 alarms   0 events   0 STOP episodes  mount {'pending': 190, 'identity': 62}
+roundT_pressureGate_roundT                  268 frames    0 alarms   0 events   0 STOP episodes  mount {'pending': 190, 'identity': 78}
+roundT_squareT_pressureGate_squareT         545 frames    0 alarms   0 events   0 STOP episodes  mount {'pending': 190, 'identity': 355}
+squareT_platform_squareT_switch             877 frames   54 alarms   9 events  15 STOP episodes  mount {'pending': 190, 'identity': 687}
