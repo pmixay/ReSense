@@ -89,7 +89,7 @@ dashboard UTC clocks must be synchronized. These mechanisms are not a braking sa
 | Goal | Remaining gap |
 |---|---|
 | No actionable GO/range overclaims | The main detector retains 46 GO overclaims in the existing fitted-envelope diagnostic; unmerged M2 reduces that to 36. Freshness validity establishes the age of evidence, not completeness of obstacle detection. |
-| Material sustained detection improvement | Neither detection-changing candidate passed acceptance. Edge and small-object ranges remain late. |
+| Material sustained detection improvement | No detection-changing candidate passed acceptance. Edge and small-object ranges remain late. |
 | At most 30 ride false events | Accepted detector behavior still has 45 events and 38 STOP episodes. |
 | Independent generalization evidence | The user confirmed no additional untouched real-positive recording. Seen synthetic combinations do not replace one. |
 | Envelope-reference decision | Organizer Q1, rails versus sensor axis, remains unanswered. Axis union stays off. |

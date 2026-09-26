@@ -207,8 +207,8 @@ set F straight PASS with every gated row the same
 the rate / re-mount checks (5 Hz 10 / 10, +3° roll 14 / 16, +3° pitch 17 / 18 events / STOP
 episodes) and the 221-start ride census (18 starts with a STOP, none within 10 m) value for value;
 P4's candidate B (`tracking.near_escalate_voxels` 8) passes the full gate and every acceptance
-check with only set O #4 changing (2 → 3 STOP frames), so it is eligible by P4's rules but left
-for the captain's decision at the freeze; the envelope union with its review fixes passes the full
+check with only set O #4 changing (2 → 3 STOP frames). The baseline decision retains the threshold
+at 10; candidate B is not shipped. The envelope union with its review fixes passes the full
 gate too (#4 2 → 9) and stays off until the organizers answer Q1. Details: EXPERIMENTS §1p,
 [`docs/P4_AUDIT.md`](docs/P4_AUDIT.md) "Completion on a second machine",
 [`completion record`](docs/evidence/results/p4_completion_2026-09-26_evening.json); a third
@@ -300,8 +300,8 @@ not authorization to move a train.
 | [`docs/VM_GUIDE.md`](docs/VM_GUIDE.md) | instructions for the team's temporary cloud VM (a person or an agent), plain commands of the tools above: data (the ride streamed split by split), 8-core bench, dry run with the original bags, stock-player and host console, regression gate with the ride, image archive, offline rehearsal, results into a PR |
 | [`configs/default.yaml`](configs/default.yaml) | the tunable parameters, copied into the ROS package at build time (`scripts/sync_params.sh`, checked in CI) |
 | [`native/`](native/) | optional C++ kernels for the per-frame hot spots (track stage, corridor selection, health visibility): about half the detector time, bit-identical output; built by `pip install`, numpy fallback without a compiler or with `RESENSE_NATIVE=0` ([ARCHITECTURE](docs/ARCHITECTURE.md) "Native kernels") |
-| [`tests/`](tests/) | 621 tests in the final full local suite (including available real-data and browser checks); most use a synthetic ray-cast tunnel (algorithm, envelope, calibration, guards, the native kernels and the cKDTree DBSCAN against their reference code, the regression gate's rules, the release tooling, the overview video's table, the ROS node against stand-ins, the dry-run checker) |
-| [`web/`](web/) | browser dashboard (offline replay; live via rosbridge, installed separately), Foxglove layout, label tool, 13 headless tests |
+| [`tests/`](tests/) | algorithm, geometry, calibration, native kernels, regression gates, delivery tools and node checks; the latest local validation covers 667 core/tool tests plus six subtests, with browser checks run separately ([test evidence](docs/evidence/results/quality_root_checks_2026-09-26/README.md)) |
+| [`web/`](web/) | browser dashboard (offline replay; live via rosbridge, installed separately), Foxglove layout, label tool, 15 headless tests |
 | [`docs/`](docs/) | [`docs/README.md`](docs/README.md): every document, its purpose and owner; organizers' material in [`docs/organizers/`](docs/organizers/) |
 | [`labels/`](labels/) | `doubleT_obstacle.json` (real labels), `new_data_objects.json` (every object confirmed on the ride, by cause), `cloud_with_fake_obj.json` (the organizers' synthetic objects) |
 
