@@ -1,0 +1,184 @@
+{
+  "schema": "resense-p3-item-v1",
+  "key": "range",
+  "date": "2026-09-26",
+  "owner": "P3 (detector lane; detector-rule decisions delegated by the captain)",
+  "question": "Re-judgement of 26.09 (SCORECARD §0): criterion 8.2 Range 7.5 / 15, the largest gap: '1 STOP frame beyond 100 m on the organizers' objects; 0.3 m cubes at 43-53 m'. On set O (cloud_with_fake_obj, scored with scripts/score_fake_objects.py): big_center first STOP 98.0 m (held from 98.7), big_above first STOP 101.3 m but held only from 23.9 m (on wf14/integrate-p3; no hold on 00143b0), long_low_on_rails first STOP 82.2 m (held 90.8), small_center 52.5 m, small_on_rail 42.7 m, thin_hanging 30.1 m. What limits the first STOP / hold distance: physics (too few returns) or a config limit / rule (returns present but rejected)? Ship a range gain only through this pre-registration.",
+  "investigation": {
+    "code": "00143b0 (claude/nifty-pascal-lzgl78), default config, native path, receive stamps, every frame; no rule changed (instrumented replays whose wrappers only record: the output is the default's)",
+    "method": "Set O: the organizers' object points are the tail of every cached frame (the ray-cast block appended after the real scan, scripts/label_fake_objects.py), so per object and frame the returns are known exactly; a replay with recording wrappers around Detector._corridor, clustering._corridor_cluster, clustering._low_cluster, detector.find_clusters and detector.find_hanging logs, per object-frame: the returns, how many lie in the corridor (advisory zone) and in the strict envelope (edge margin applied), the valid / axis / height-reference ranges, every blob holding object points with the stage's decision (dropped by oversize / min_height / min_points / infrastructure, or kept with zone and demotion reason), the track it fed (hits, confidence, zone vote, reported) and the decision. Real data: the same wrappers over the six recordings and the ride (new_data, 8 pieces as the gate) log every corridor blob with a strict-envelope voxel beyond 40 m and every `elevated` blob, plus per frame the returns within 0.9 m of the axis at 100-200 m just above the envelope top (3.0-3.6 m) and just below its floor (-0.5-0.12 m). Scripts: scratch (trace_setO.py, trace_pop.py), not committed.",
+    "set_O_by_object": {
+      "big_center (2 x 2 m, centre)": {
+        "limit": "data: the recording starts with it at 98.7 m (frame 0); 63-108 returns a frame, a gauge cluster from frame 0",
+        "first_STOP": "frame 5, 98.0 m: the 0.5 s confirmation (tracking.confirm_time_s; 6 frames with the receive stamps)",
+        "gain_possible": "none beyond 98.7 m; 0.7 m by a shorter confirmation (not a candidate)"
+      },
+      "big_above (2 x 2 m, envelope top; bottom 2.7-2.9 m above the rail head near)": {
+        "248-222 m": "15-23 returns, 3-6 in the corridor; beyond the axis range (valid ~200 m): `beyond_axis` advisory, or flat (min_height)",
+        "220-136 m": "20-56 returns, 0 in the corridor in 45 of 49 frames: by the extrapolated height reference its bottom is 3.1-4.3 m above the rail head, above the 3.0 m envelope top (the reference moves by +-1 m at 150-220 m frame to frame: bottom 3.2 -> 4.1 -> 3.5 -> 2.9 m)",
+        "134-117 m": "36-63 returns, 5-7 in the corridor, 4-5 in the strict envelope: one ring below the top, 0.00-0.01 m tall: dropped by cluster.min_height (0.08 m) in 6 of 8 frames; 2 frames a gauge cluster (new track each)",
+        "110-101 m": "gauge clusters (9-16 voxels, 7-12 strict), a new track at 109.5 m, confirmed on its 5th frame: first STOP 101.3 m (frame 632)",
+        "99-79 m": "STOP held (frames 632-643); from 87 m the cluster reads 2.04-2.40 m wide with its bottom at 2.1-2.6 m: `elevated` (bottom above 1.2 m, wider than 2.0 m) in 5 of 7 frames",
+        "77-48 m": "`elevated` in every frame (27-66 strict voxels): after 6 elevated hits of the last 10 the track's zone vote (60 % inside needed) falls: CAUTION from frame 644 (77.2 m)",
+        "46-33 m": "only one ring of the box is below the envelope top (0.03-0.05 m tall, 14-30 strict voxels): dropped by min_height in 4 frames in a row (660-663): the track dies (max_misses 3)",
+        "39-7 m": "a new track, `elevated` from its first hit or dropped flat: never a STOP on 00143b0; on wf14/integrate-p3 the near escalation (5 hits with >= 10 strict voxels within 35 m) makes it a STOP from 23.9 m",
+        "why_not_held_101_to_24m": "rules, not physics: 86-129 returns a frame, 18-66 inside the strict envelope; the `elevated` signature takes the confirmed STOP down by the zone vote (77 m), and single-ring frames (min_height) kill the track (46 m)"
+      },
+      "long_low_on_rails (2 x 0.5 x 0.2 m plank across the rails)": {
+        "248-213 m": "1-4 returns: flat or DBSCAN noise",
+        "210-133 m": "graded out by the label (implausible: the organizers' path leaves the tunnel)",
+        "131-97 m": "2-8 returns, 0 in the corridor: by the extrapolated height reference 0.0-1.0 m below the rail head, under the envelope floor (0.12 m); the low-object stage ends at 60 m (lowobj.range_max) and at the observed bed",
+        "96-84 m": "6-11 returns, all in the corridor, 4-9 strict: one ring (0.00-0.01 m tall) dropped by min_height in 5 of 9 frames; gauge clusters at 90.8 and 89.0 m start the track",
+        "first_STOP": "82.2 m (frame 696), after the track's 4th hit and 0.6 s: min_height drops at 87.2 and 85.5 m are misses in between",
+        "hold": "held from 90.8 m; one more min_height drop at 75.4 m (frame 700)"
+      },
+      "small_center (0.3 m cube floating 1.0-1.4 m up)": {
+        "limit": "physics: 1-2 returns a frame beyond 100 m, 2-4 at 60-100 m (median 2 / 4); at 80-120 m the returns join a line at the corridor edge (eps grows with range) and the blob is dropped as oversize (19 of 26 frames); at 60-80 m 4 voxels < cluster.min_points 5; first gauge cluster 55.8 m (6 voxels), first STOP 52.5 m"
+      },
+      "small_on_rail (0.3 m cube on the left rail)": {
+        "limit": "placement and physics: at 70-82 m its returns read 3.0-4.3 m above the rail head (above the envelope top), at 55-69 m 1.1-1.4 m off the axis (outside the strict envelope with the 0.15 m / 100 m edge margin: 0 strict voxels) with 2-6 returns; first gauge cluster 51.5 m, first STOP 42.7 m"
+      },
+      "thin_hanging (0.05 m, from the roof)": {
+        "limit": "physics: 1-8 returns a frame, all above the envelope top beyond 50 m; within 50 m 1-3 inside it; the hanging stage (<= 60 m) links them from 49.8 m but 40-43 m has 1 return a frame (above the top): the track restarts, first STOP 30.1 m"
+      }
+    },
+    "set_O_summary": "Physics / data limits the first STOP of big_center (at first sight), small_center, small_on_rail and thin_hanging (<= 4 returns a frame where they are missed; beyond 100 m 1-2). Rules / the height reference limit big_above and long_low_on_rails: returns are present (big_above 20-56 at 136-220 m, long_low 2-8 at 97-131 m) but outside the envelope by the extrapolated height reference, then single-ring frames (min_height) and, for big_above, the `elevated` signature after the STOP.",
+    "false_alarm_cost_of_relaxing": {
+      "code": "00143b0 with the flags (off) in the working tree; the ride and the six recordings replayed with recording wrappers; the ride's STOP frames (187) and the five recordings' (58) equal the _ride_p3b baseline",
+      "far_envelope_bands_100_200m": {
+        "what": "frames with >= 3 returns within 0.9 m of the axis at 100-200 m just above the envelope top (3.0-3.6 m above the rail head) / just below its floor (-0.5 to 0.12 m): what a taller envelope or a lower floor beyond the bed range would admit",
+        "ride_11271_frames": {
+          "above_top": 5060,
+          "below_floor": 6729,
+          "returns_above_top": 110671,
+          "returns_below_floor": 112988
+        },
+        "five_recordings_2287_frames": {
+          "above_top": 1439,
+          "below_floor": 1425
+        },
+        "set_O_objects_there": "big_above 20-56 returns at 136-220 m (bottom 3.1-4.3 m by the reference), long_low_on_rails 2-8 at 97-131 m (0.0-1.0 m below the rail head)"
+      },
+      "flat_gauge_slivers": {
+        "what": "corridor blobs dropped by cluster.min_height (flatter than 0.08 m) with >= 3 strict-envelope voxels (gauge_min_points): what admitting a scan line as a new cluster would add, frames by range",
+        "ride": {
+          "100-150": 240,
+          "80-100": 165,
+          "60-80": 94,
+          "150-200": 107,
+          "40-60": 67,
+          "200-260": 23
+        },
+        "five_recordings": {
+          "80-100": 16,
+          "100-150": 225,
+          "60-80": 2,
+          "40-60": 5,
+          "150-200": 134,
+          "200-260": 17
+        }
+      },
+      "min_points_3_4_voxels_60_100m": {
+        "what": "blobs with 3-4 voxels and a strict voxel at 60-100 m dropped by cluster.min_points (5): what min_points 3-4 would admit (cluster-frames by voxels)",
+        "ride": {
+          "3": 136,
+          "4": 142
+        },
+        "five_recordings": {
+          "3": 40,
+          "4": 40
+        }
+      },
+      "oversize_with_strict_voxels": {
+        "what": "blobs larger than max_extent with a strict voxel, cluster-frames by range: the far corridor joins lines at its edge; a 0.3 m cube at 80-120 m lands in one",
+        "ride": {
+          "100-150": 2487,
+          "80-100": 1603,
+          "60-80": 1467,
+          "150-200": 1580,
+          "40-60": 306,
+          "200-260": 4
+        }
+      },
+      "signatures_on_real_data": {
+        "what": "demoted clusters with >= 3 strict voxels logged (beyond 40 m, and every `elevated`), by the state of their track after the frame",
+        "ride": {
+          "floating/advisory_track": 19,
+          "elevated/unreported": 6,
+          "edge/unreported": 22,
+          "floating/unreported": 23,
+          "edge/advisory_track": 5,
+          "wall_face/advisory_track": 3,
+          "wall_face/unreported": 6,
+          "elevated/advisory_track": 1,
+          "floating/stop_track": 1
+        },
+        "five_recordings": {
+          "wall_face/advisory_track": 1,
+          "wall_face/unreported": 1,
+          "floating/advisory_track": 67,
+          "floating/unreported": 91,
+          "edge/unreported": 3,
+          "elevated/unreported": 12,
+          "elevated/advisory_track": 21
+        },
+        "elevated": "ride: 7 cluster-frames on 4 tracks (79-147 m), none on a STOP track; five recordings: 33 cluster-frames, all the ~104 m overhead structure of squareT_platform_squareT_switch, on advisory or unreported tracks"
+      },
+      "reading": "Relaxing the envelope beyond the bed range, or admitting flat or 3-4 voxel clusters as new tracks, would add candidates on about half of the ride's frames at 100-200 m: the far limits on set O objects are the height reference's, and they hold back real clutter. What is cheap is hysteresis on a track already confirmed: on the real data the shape signatures almost never hit a STOP track (1 logged cluster-frame on the ride beyond 40 m), while on set O they take the box at the envelope top down."
+    }
+  },
+  "preregistered": {
+    "written_at_utc": "2026-09-26T09:15:16Z",
+    "before_any_result": "No candidate has been run on any recording, set O or set F, and no unit test of the candidates has been run. Known: the investigation above (default config). The flag code exists in the working tree (off by default), uncommitted; it is committed after this file.",
+    "not_candidates": {
+      "far_envelope": "a taller envelope / lower floor or a looser height reference beyond the bed range: at 100-200 m within 0.9 m of the axis >= 3 returns lie just above the top (3.0-3.6 m) in 5 060 of the ride's 11 271 frames (45 %) and 1 439 of the five recordings' 2 287 (63 %), just below the floor in 6 729 (60 %) and 1 425 (62 %): the vault and the bed; the extrapolated rail level moves +-1 m there; big_above at 136-220 m and long_low at 97-131 m are exactly that population",
+      "min_height_or_min_points": "admitting flat clusters or 3-4 voxel clusters as new tracks: flat gauge slivers (>= 3 strict voxels) are in 347 ride frames and 359 five-recording frames at 100-200 m (696 / 399 at 40-260 m); 3-4 voxel clusters with a strict voxel at 60-100 m in 278 / 80 cluster-frames; P4 measured min_points 3 / min_points_far 2 and gauge_min_points 2 on 24.09 without a gain for the cubes",
+      "shorter_confirmation": "0.7 m for big_center; doubles the chance a flicker confirms",
+      "elevated_or_short_signatures_off": "tried 24-25.09 (P4_AUDIT, EXPERIMENTS 1f): ride +6 STOP episodes"
+    },
+    "rules": {
+      "tracking.stop_keep_signature": "bool, false = off (today). true: a track reported as an obstacle (STOP, zone gauge) in the previous frame counts a hit whose cluster has >= gauge_min_points voxels inside the strict gauge but was demoted only by a shape signature (elevated, floating, edge, wall_face; clustering.SHAPE_SIGNATURES) as a hit inside the gauge in its zone vote. Never a column (the column hold), beyond_axis, beyond_height_ref, overhead or retro. It never makes a new obstacle: an unreported or advisory track votes as today. Reported reason 'stop_hold'. Geometry-general: a shape heuristic for infrastructure may keep a track from being confirmed; it does not take a confirmed obstacle down.",
+      "tracking.stop_keep_thin": "int, 0 = off (today). The corridor clusters flatter than cluster.min_height (one scan line), which are dropped today, are kept aside (Cluster.thin; no other stage sees them) and, after the association of the ordinary clusters, may continue a track that nothing matched, greedily with the same gate and prediction, when they are inside the gauge (zone gauge; or demoted by a shape signature for a STOP track with stop_keep_signature). 1: only a track reported as an obstacle in the previous frame (it cannot confirm anything new). 2: also a track not yet reported whose last hit was inside the gauge (the scan line counts towards its confirmation). A thin cluster never starts a track."
+    },
+    "candidates_in_order": [
+      {
+        "id": "A",
+        "set": {
+          "tracking.stop_keep_signature": true
+        }
+      },
+      {
+        "id": "B",
+        "set": {
+          "tracking.stop_keep_signature": true,
+          "tracking.stop_keep_thin": 1
+        }
+      },
+      {
+        "id": "C",
+        "set": {
+          "tracking.stop_keep_signature": true,
+          "tracking.stop_keep_thin": 2
+        }
+      }
+    ],
+    "expected_from_the_investigation": "A: big_above STOP held to ~48 m, then the track dies in the single-ring frames (no held-from gain alone). B: big_above held from ~101 m to the end (held-from 23.9 -> ~101 m on the integrated base), long_low one more STOP frame (75.4 m). C: in addition big_above's first STOP may move from 101.3 to ~109.5 m and long_low's from 82.2 to ~83.8 m. Other objects: no change expected. The false-alarm side is unknown: A and B can only extend STOPs that exist (alarm frames), C can also confirm new tracks.",
+    "stages": {
+      "cheap": "scripts/regression_gate.py --cache <a directory of symlinks to the six recordings and cloud_with_fake_obj, no new_data> --jobs 1 --baseline <the current baseline> --allow 'ride.*' --allow 'set_F_straight.*' --set <candidate>; first on 00143b0 + flags (baseline _ride_p3b), then, after the merge of wf14/integrate-p3, on the merged head (baseline _ride_p3c). Pass = exit 0 and the five recordings' alarm frames not up and the set O minimum gain below.",
+      "full": "the same with --cache /data/cache (the ride in 8 pieces, set F straight round 3), no --allow, against docs/evidence/results/regression_baseline_2026-09-26_ride_p3c.json on the merged head, only for a candidate that passed the cheap stage on the merged head.",
+      "order": "All three through the cheap stage in the order A, B, C. To the full gate goes the candidate with the largest set O gain among those passing the cheap stage (sum over inside objects of the gains in first-STOP and held-from distance; a tie goes to the earlier candidate); if it fails, the next one, time permitting (the verdict is committed by 13:30 UTC; a full gate that cannot finish by then is not started, and nothing ships)."
+    },
+    "ship_rule": {
+      "gate": "the full gate exits 0 with no --allow: no gated row worse or missing",
+      "ride": "ride alarm frames, alarm events and STOP episodes each not up (alarm frames is an information row of the gate; it is a ship condition here: a range rule must not add false STOP frames on the ride)",
+      "five_recordings": "alarm frames, alarm events and STOP episodes each not up (summed and per recording)",
+      "doubleT_obstacle": "first alarm frame not later, labelled hits per label not down, false-alarm events not up",
+      "set_F_straight": "per kind sequences detected not down, median first confirmation not shorter, false detections not up",
+      "set_O_safety": "every inside object's STOP frames not down and first STOP not nearer; outside objects' false STOP frames and background alarm frames / track ids not up (gated rows)",
+      "set_O_minimum_gain": "at least one inside object's held-from or first-STOP distance (score_fake_objects.py) grows by >= 10 m, or at least two inside objects' grow by >= 1 m each",
+      "then": "ship = the candidate's values become the defaults in configs/default.yaml (and the ROS parameter file via scripts/sync_params.sh); otherwise the flags stay off and the candidates are recorded as tried, not shipped",
+      "priority": "safety wins over false-alarm gains; a range gain must not add false STOPs on the ride"
+    },
+    "flags_off_identity": "before any candidate run is reported: scripts/output_fingerprint.py --cache /data/cache --jobs 1 on the flags-off code against 00143b0 (IDENTICAL), and the cheap stage with the flags off equal to the baseline in every row; the same again after the merge against wf14/integrate-p3"
+  }
+}
