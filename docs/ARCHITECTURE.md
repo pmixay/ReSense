@@ -373,6 +373,19 @@ command, a `/resense/status` recorder, a uid-1000 player of the same image, `che
 --expect-obstacle --expect-inputs 2`. First green on `5a15c7c` (run 36122640174, 25.09): 78 status
 messages, 42 alarm frames at 44.9–59.9 m, p95 26 ms, both recordings, `PASS`.
 
+**Download from CI (26.09).** On a push to `claude/nifty-pascal-lzgl78` or `main` (not on other
+branches or tags), and only when every step of `offline-build` passed, the job uploads that very
+archive (`actions/upload-artifact@v4`, kept 30 days, stored as is: it is gzip already) as the run
+artifact `resense-image-<version>-<short commit>`: `resense-image-<version>-<short
+commit>.tar.gz`, a hard link to the archive that was loaded, rebuilt offline and played through,
+and its `.sha256`, written for that name as `export_image.sh` writes it and checked against the
+sum `load_image.sh` verified, so `scripts/load_image.sh` and `sha256sum -c` take the pair as
+they take an exported one. The stand has no internet and the archive of the frozen commit no
+longer needs a machine with Docker: Actions → the `ci` run of that commit → Artifacts (a GitHub
+login is needed), or `gh run download <run id> -n resense-image-<version>-<short commit>`. It is
+the `GZIP_LEVEL=1` archive (0.49 GiB; `export_image.sh`'s default level 6 gave 0.44 GiB on the
+team VM, 25.09) with the base image's tag, and `load_image.sh` prints its commit label.
+
 **Offline `docker build` (best effort).** If the jury insists on building, after `docker load`:
 
 ```bash
@@ -412,7 +425,8 @@ network (`scripts/internal_net_test.sh`) and with `--net=host` and a stock Fast 
 to check the sum (`scripts/verify_release.sh`). `scripts/release.sh` is the same chain by hand.
 No tag or release is planned now (deferred by the captain on 25.09: the system is still in
 development), so the workflow is inert and has never run; the same runtime image is built,
-archived, loaded back and played through on every push by the `offline-build` job.
+archived, loaded back and played through on every push by the `offline-build` job, and on the
+working branch and `main` offered for download (above).
 
 ## Known limitations
 

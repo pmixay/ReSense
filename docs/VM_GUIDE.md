@@ -366,6 +366,9 @@ mkdir -p "$EV/export_$DAY"
 image is built from `git archive HEAD`). **Done:** both scripts exit 0. **Evidence:**
 `docs/evidence/export_<date>/archive.txt` (size, sha256, commit); **never** the archive itself
 (`dist/` is ignored by git). No tag and no release: they are deferred by the captain (C13).
+Without a VM: since 26.09 the CI job `offline-build` of a push to the working branch or `main`
+offers the same runtime archive (`GZIP_LEVEL=1`) with its `.sha256` as the run artifact
+`resense-image-<version>-<short commit>` (ARCHITECTURE "Deployment without internet").
 
 ### 4.6 Shared-memory mode (opt-in `RESENSE_DDS=shm`)
 

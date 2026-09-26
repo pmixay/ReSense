@@ -811,7 +811,8 @@ data: [`SCORECARD.md`](SCORECARD.md).
 The organizers' `cloud_with_fake_obj` recording carries ten objects added by their own tool,
 the one used for the hidden check; the shipped detector stops for 5 of the 8 objects inside the
 envelope [organizers' synthetic: set O, 24.09], 6 of 8 since the hanging stage of 25.09 (§3.3
-item 8). Per-object grade and the config sweeps:
+item 8), 5 of them held: the 2 × 2 m box at the envelope top (#8) STOPs in 12 of its 124
+frames. Per-object grade and the config sweeps:
 [`P4_AUDIT.md`](P4_AUDIT.md) "Organizer synthetic-obstacle recording", EXPERIMENTS §2e. The
 causes, each a limitation of the current rules:
 
@@ -839,7 +840,9 @@ causes, each a limitation of the current rules:
   tops of platform columns 13–40 m ahead passed the same test in single frames (28 on the ride),
   none confirmed; since the rail-lock guard of 25.09, round 2 (`cluster.hanging_needs_rails`),
   the stage does not run on such frames, so a thin object hanging where the rails are not found
-  (a station, a switch cavern) is not looked for either.
+  (a station, a switch cavern) is not looked for either. The stage takes only groups ≤ 0.5 m along
+  and across the track within 0.8 m of the axis: a larger or more lateral hanging object is left to
+  the ordinary clusters (≥ 5 voxels inside the envelope, the infrastructure signatures apply).
 * **0.3 m cubes are confirmed only from 43–53 m** (#3 on the rail from 42.7 m; #2 from 52.5 m
   since 25.09, round 2, 34.0 m before). At 60–115 m such a cube returns 2–4 points a frame,
   below the 5-voxel minimum within 100 m, so a single frame cannot confirm a 0.3 m object much

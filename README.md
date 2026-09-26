@@ -2,8 +2,8 @@
 
 > **Purpose:** what ReSense does, how the jury runs it, what to look at, headline results.
 > **Audience:** jury, team · **Owner:** P1 · **Language:** EN, RU block «Кратко для жюри»
-> **Last verified:** 2026-09-25, `79109f5` (detector v0.6.3 with the long overhead rule on, node
-> v0.6.4, package 1.0.0) · **Status:** current
+> **Last verified:** 2026-09-26, `bd67fb0` (package 1.0.0 in `pyproject.toml`: detector v0.6.3
+> with the rules of 25–26.09, node v0.6.4) · **Status:** current
 
 ЛЦТ 2026 · Кейс 05 · «Обнаружение посторонних объектов в тоннеле метро по данным 3D-лидара»
 (Московский транспорт / ГУП «Московский метрополитен»). Organizers' material:
@@ -30,9 +30,19 @@ ros2 topic echo /resense/decision --field data           # 4. консоль 3: 
 ros2 topic echo /resense/nearest_distance --field data   # 5. расстояние до препятствия, м; −1 — нет
 ```
 
-С интернетом шаг 1 можно заменить сборкой: `docker build -t resense -f docker/Dockerfile .`.
-Архив делает `scripts/export_image.sh` на машине с интернетом (`dist/resense-image-<версия>.tar.gz`
-и его `.sha256`). Проверка архива: `sha256sum -c resense-image-<версия>.tar.gz.sha256`, или
+Увидеть облако, коридор габарита и препятствия в RViz (нужен X11): вместо шага 2 — одна строка:
+
+```bash
+xhost +local:docker && docker run --rm -it --net=host --ipc=host -e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix resense ros2 launch resense_ros detector.launch.py rviz:=true
+```
+
+**Где взять архив.** Архив коммита ветки `claude/nifty-pascal-lzgl78` или `main` — артефакт CI:
+Actions → прогон `ci` этого коммита (задание `offline-build` зелёное) → Artifacts →
+`resense-image-<версия>-<коммит>` (zip с `.tar.gz` и `.sha256`, хранится 30 дней, нужен вход в
+GitHub; или `gh run download <id прогона> -n resense-image-<версия>-<коммит>`). Без CI его делает
+`scripts/export_image.sh` на машине с интернетом (`dist/resense-image-<версия>.tar.gz` и его
+`.sha256`). С интернетом шаг 1 можно заменить сборкой: `docker build -t resense -f
+docker/Dockerfile .`. Проверка архива: `sha256sum -c resense-image-<версия>.tar.gz.sha256`, или
 `scripts/load_image.sh <архив>` (сумма, загрузка и запуск образа без сети). Сборка без интернета —
 запасной путь с оговорками ([ARCHITECTURE](docs/ARCHITECTURE.md) «Deployment without internet»):
 после шага 1, в исходниках того же коммита, `chmod -R u+rwX,go+rX,go-w . && docker build
@@ -58,13 +68,20 @@ CAUTION   # дважды по одному кадру в конце (предм�
 FAULT     # через 0,5 с после конца бэга: входа нет, путь не контролируется
 ```
 
-`STOP` — тревога; `CAUTION` — подсказка (объект у габарита или за проверенной дальностью), в
-обычном тоннеле частая; `FAULT` — входа нет или ему нельзя доверять. Тревогу считать по `STOP` в
-`/resense/decision` (или `true` в `/resense/obstacle_detected`), `CAUTION` — не тревога. Задержка
-сверх бюджета (p95 > 100 мс, нагруженная машина) с 26.09 видна только в `/resense/health` и
-`/resense/status` и решение не меняет. Дальше:
+| `/resense/decision` | значение |
+|---|---|
+| `STOP` | **тревога**: подтверждённое препятствие в габарите 2,1 × 3,0 м |
+| `CAUTION` | подсказка, **не тревога**: объект у габарита снаружи или за проверенной дальностью, известная инфраструктура, сниженная исправность; в обычном тоннеле частая |
+| `GO` | в габарите ничего нет, исправность в норме (насколько далеко проверено — `/resense/clear_distance`) |
+| `FAULT` | входа нет (до первого кадра, > 0,5 с без кадров) или ему нельзя доверять |
+
+**Что оценивать:** тревога — `STOP` в `/resense/decision` (то же — `true` в
+`/resense/obstacle_detected`); расстояние до препятствия вдоль пути — `/resense/nearest_distance`,
+м (−1 — препятствия нет). Задержка сверх бюджета (p95 > 100 мс, нагруженная машина) с 26.09 видна
+только в `/resense/health` и `/resense/status` и решение не меняет. Дальше:
 [архитектура](docs/ARCHITECTURE.md), [алгоритм](docs/ALGORITHM.md),
-[эксперименты](docs/EXPERIMENTS.md), [оценка по критериям](docs/SCORECARD.md).
+[эксперименты](docs/EXPERIMENTS.md), [ключевые решения](docs/DECISIONS.md),
+[оценка по критериям](docs/SCORECARD.md).
 
 ## How a bag is processed (the jury path)
 
@@ -121,11 +138,13 @@ control bags can be played one after another into one running node. The offline 
 
 The v0.6.4 node works through the burst of the first seconds of a played bag instead of losing
 them: the first `STOP` on `doubleT_obstacle` comes 1.3–1.6 s into the recording, was 3.2–4.5 s.
-History: [`CHANGELOG.md`](CHANGELOG.md). Criteria judgement of 24.09 (two independent judges,
-reconciled): **60 / 100**; strongest 8.7 team approach (8 / 10) and 8.6 ease of launch
-(7.5 / 10), weakest 8.1 "does it work" (13 / 25) and 8.2 range (7 / 15), mainly on the organizers'
-synthetic-obstacle recording: [`docs/SCORECARD.md`](docs/SCORECARD.md). Since then (the 1.0.0
-entry of [`CHANGELOG.md`](CHANGELOG.md)): optional C++ kernels (38–57 % less detector time,
+History: [`CHANGELOG.md`](CHANGELOG.md). Key decisions on one page:
+[`docs/DECISIONS.md`](docs/DECISIONS.md). Criteria judgement of 24.09 (two independent judges,
+reconciled): **60 / 100** (re-judged 26.09: **65 / 100**, SCORECARD §0); strongest 8.7 team
+approach (8 / 10) and 8.6 ease of launch (7.5 / 10), weakest 8.1 "does it work" (13 / 25) and 8.2
+range (7 / 15), mainly on the organizers' synthetic-obstacle recording:
+[`docs/SCORECARD.md`](docs/SCORECARD.md). Since then (the 1.0.0 entry of
+[`CHANGELOG.md`](CHANGELOG.md)): optional C++ kernels (38–57 % less detector time,
 identical output, built and tested in the CI image), DBSCAN on scipy's cKDTree with scikit-learn's
 exact labels (1.3–2.6 ms less per frame, identical output), the near-bed opt-in box fix, a
 measured answer on the train speed (EXPERIMENTS §9), delivery as an image archive for the offline
@@ -140,9 +159,13 @@ command, `scripts/regression_gate.py`. All current numbers:
 What the organizers' answers changed ([`docs/organizers/answers.md`](docs/organizers/answers.md)):
 
 * the strict decision uses **their train envelope, 2.1 × 3.0 m**; the wider v0.5 polygon is the
-  advisory zone; objects **hanging** into it (broken cables) are obstacles whatever their shape;
+  advisory zone; objects **hanging** into it (broken cables) are obstacles; one that dips in with
+  only a few returns is found by the hanging stage only for groups ≤ 0.5 m, within 0.8 m of the
+  axis, out to 60 m and where the rails are locked (ALGORITHM §6);
 * **low objects on a rail**, or straddling the envelope floor like their object, are found by a
-  bed-anomaly stage; tall objects are reported out to the trusted axis range (~200 m straight);
+  bed-anomaly stage; tall objects are reported out to the trusted axis range (~200 m on straight
+  track; the tunnel returns nothing beyond ~210 m), but on the organizers' own objects no STOP
+  comes beyond ~101 m (set O), and the 148–154 m person is our own synthetic;
 * the **mount is found from the data** (orientation, roll, pitch). 24.09
   ([`mount_and_switch_qa.md`](docs/organizers/mount_and_switch_qa.md)): the test bags use the
   mounts of the provided ones, the LiDAR 1 075 mm above the rail head on the train's centreline,
@@ -155,11 +178,11 @@ Headline results (kinds and placement modes: [`docs/README.md`](docs/README.md) 
 | metric | value | kind | date | source |
 |---|---|---|---|---|
 | false alarms, five obstacle-free bags (2 287 frames) | **13 events**, 58 alarm frames, 16 STOP episodes (14 / 60 / 17 before `tracking.column_hold` 2, 20 / 107 / 27 before the long overhead rule of 25.09) | real | 25.09 | EXPERIMENTS §1f, §3a |
-| false alarms, 20-minute 13 km ride (11 271 frames) | **46 events, 3.5 per km**, 187 alarm frames, 39 STOP episodes (46 / 197 / 39 before `tracking.column_hold` 2, 47 / 204 / 39 before the rule) | real | 25.09 | EXPERIMENTS §1f, §3a |
+| false alarms, 20-minute 13 km ride (11 271 frames) | **46 events, 3.5 per km** (in-sample: the ride decided the rules of 25.09), 187 alarm frames, 39 STOP episodes (46 / 197 / 39 before `tracking.column_hold` 2, 47 / 204 / 39 before the rule) | real | 25.09 | EXPERIMENTS §1f, §3a |
 | crossing person, `doubleT_obstacle` | STOP in **58 of 61** frames inside the envelope, first alarm frame 11 (0.3 s after entering), distance error ≤ 0.23 m | real | 24.09 | EXPERIMENTS §0 |
 | object lying across the rail (0.45 × 0.6 × 0.3 m) | **125 of the 126** frames after the person leaves it (124 before `calibration.keep_within_deg`, 25.09 round 2) | real | 24.09, 25.09 | EXPERIMENTS §0, §1i |
 | health warnings, `CAUTION` | warnings on 196 of 13 759 frames (1.4 %: stations, switches); `CAUTION` on 27–68 % of the frames of the empty bags, 41 % of the ride | real | 24.09 | EXPERIMENTS §0 |
-| organizers' synthetic objects (set O, 1 510 frames) | STOP for **6 of 8** in-envelope objects (5 of 8 before the hanging stage of 25.09): 2 × 2 m box from 98 m, plank across the rails 82 m, 0.3 m cubes from 43–53 m (the hanging one from 52.5 m since round 2 of 25.09, 34.0 m before), the 5 cm hanging object from 30.1 m (missed before 25.09); edge 2 × 2 m box missed, edge 0.3 m cube advisory only; STOP in 337 of 801 visible in-envelope object-frames (311 before round 2, 303 on 24.09); 6 false STOP frames on the outside 2 × 2 m box, 3 background alarm frames; since the rail-shadow rules (25.09) the 2 × 2 m box is reported at its own distance also 9–26 m ahead (was the bed at 3.0 m in 12 STOP frames) and the plank is held from 91 m (was 59 m) | organizers' synthetic | 24.09, 25.09 | [P4_AUDIT](docs/P4_AUDIT.md), EXPERIMENTS §1h, §1i |
+| organizers' synthetic objects (set O, 1 510 frames) | STOP for **6 of 8** in-envelope objects, 5 of them held (the 2 × 2 m box at the envelope top only in 12 of its 124 frames; 5 of 8 before the hanging stage of 25.09): 2 × 2 m box from 98 m, plank across the rails 82 m, 0.3 m cubes from 43–53 m (the hanging one from 52.5 m since round 2 of 25.09, 34.0 m before), the 5 cm hanging object from 30.1 m (missed before 25.09); edge 2 × 2 m box missed, edge 0.3 m cube advisory only; STOP in 337 of 801 visible in-envelope object-frames (311 before round 2, 303 on 24.09); 6 false STOP frames on the outside 2 × 2 m box, 3 background alarm frames; since the rail-shadow rules (25.09) the 2 × 2 m box is reported at its own distance also 9–26 m ahead (was the bed at 3.0 m in 12 STOP frames) and the plank is held from 91 m (was 59 m) | organizers' synthetic | 24.09, 25.09 | [P4_AUDIT](docs/P4_AUDIT.md), EXPERIMENTS §1h, §1i |
 | long range, straight track | person first confirmed at **148 m** median (6 of 6), held in ≥ 90 % of frames from 149 m and of every 10 m band from 115 m; trolley 144 m; 1 m crate 111 m; 3 cm hanging cable 95 m, held only from ~50 m (4 of 6); the regression gate's run of the same set on the current evaluation script (25.09): person 151 m, held from 143 m | synthetic, legacy | 24.09, 25.09 | EXPERIMENTS §2d |
 | long range with a given train speed | person 167 m, crate 182 m (held only from 79 m) | synthetic, legacy | 24.09 | EXPERIMENTS §2d |
 | train speed | none is given (no odometry in the recordings); our LiDAR-only estimate is accurate (median error 0.06–0.08 m/s on 55–96 % of the moving frames), but even a perfect speed does not improve the organizers' check (no earlier first STOP, 6 → 17 false STOP frames on the box outside), so it stays off | real, organizers' synthetic | 24.09 | EXPERIMENTS §9 |
@@ -211,7 +234,7 @@ teams (23.09). Decision logic and thresholds: [`docs/ALGORITHM.md`](docs/ALGORIT
 | [`docs/VM_GUIDE.md`](docs/VM_GUIDE.md) | instructions for the team's temporary cloud VM (a person or an agent), plain commands of the tools above: data (the ride streamed split by split), 8-core bench, dry run with the original bags, stock-player and host console, regression gate with the ride, image archive, offline rehearsal, results into a PR |
 | [`configs/default.yaml`](configs/default.yaml) | the tunable parameters, copied into the ROS package at build time (`scripts/sync_params.sh`, checked in CI) |
 | [`native/`](native/) | optional C++ kernels for the per-frame hot spots (track stage, corridor selection, health visibility): about half the detector time, bit-identical output; built by `pip install`, numpy fallback without a compiler or with `RESENSE_NATIVE=0` ([ARCHITECTURE](docs/ARCHITECTURE.md) "Native kernels") |
-| [`tests/`](tests/) | 431 pytest tests on a synthetic ray-cast tunnel, no dataset needed (algorithm, envelope, calibration, guards, the native kernels and the cKDTree DBSCAN against their reference code, the regression gate's rules, the release tooling, the overview video's table, the ROS node against stand-ins, the dry-run checker) |
+| [`tests/`](tests/) | 500 pytest tests on a synthetic ray-cast tunnel, no dataset needed (algorithm, envelope, calibration, guards, the native kernels and the cKDTree DBSCAN against their reference code, the regression gate's rules, the release tooling, the overview video's table, the ROS node against stand-ins, the dry-run checker) |
 | [`web/`](web/) | browser dashboard (offline replay; live via rosbridge, installed separately), Foxglove layout, label tool, 13 headless tests |
 | [`docs/`](docs/) | [`docs/README.md`](docs/README.md): every document, its purpose and owner; organizers' material in [`docs/organizers/`](docs/organizers/) |
 | [`labels/`](labels/) | `doubleT_obstacle.json` (real labels), `new_data_objects.json` (every object confirmed on the ride, by cause), `cloud_with_fake_obj.json` (the organizers' synthetic objects) |
@@ -322,9 +345,11 @@ The 23.09 rehearsal in the sandbox: EXPERIMENTS §3b.
 **"After the start-up"** (25.09): `ros2 bag play` (Humble) preloads the bag with its clock running
 and then sends the overdue first seconds back to back; the node works through that burst one frame
 per 0.3 s of recording and skips the rest on purpose (`node.catchup_skipped`), at 360° on a 4-core
-VM until +7.7–7.9 s. So `--max-dropped` counts from the later of `--settle-s` (5 s) and the frame on
-which the node is back on the newest one (`node.catchup` false), at most `--max-settle-s` (15 s): a
-catch-up still running then fails, one that never ends does not move the settle point at all.
+VM until +7.7–7.9 s: 39–53 frames of `doubleT_obstacle` skipped by design in the passing runs of
+25.09, none lost in transport after the start-up (EXPERIMENTS §3a). So `--max-dropped` counts from
+the later of `--settle-s` (5 s) and the frame on which the node is back on the newest one
+(`node.catchup` false), at most `--max-settle-s` (15 s): a catch-up still running then fails, one
+that never ends does not move the settle point at all.
 `dry_run.sh` also passes `--bag`: the checker then counts the recording's own messages the node did
 not process, so the 4 frames `doubleT_obstacle` itself lacks (at +14.0 and +16.9 s) are not drops.
 The node's stamp-gap count `node.dropped_frames` is printed as before (EXPERIMENTS §3a).
