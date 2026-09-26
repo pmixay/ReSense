@@ -18,13 +18,21 @@ This is a detector freeze; it does not declare the submission or deployment comp
 
 ## Acceptance and provenance
 
-The [fresh full gate](evidence/results/regression_gate_2026-09-26_freeze.json) passed on this
+The [current full gate](evidence/results/regression_gate_2026-09-26_comment_correction.json) passed on this
 machine without `--allow`: all six recordings, 1,510 organizer-object frames, all 11,271 ride
 frames and set F straight are present. Every gated row equals `_ride_p3d`; only informational
-latency rows differ. The measured commit is `1dccdec`; the seal generator verifies every frozen
+latency rows differ. The measured commit is `cc834fc`; the seal generator verifies every sealed
 file against that commit. The earlier [second-machine gate](evidence/results/regression_gate_2026-09-26_head_fresh_machine.json)
 remains as an independent reproduction. Creating or verifying the manifest itself does not
 replay data; the linked fresh gate did.
+
+This refresh corrects unsupported clearance claims in comments and docstrings only. Executable
+syntax trees and all configuration values are unchanged. Source digest is now
+`5d9a20861f66bb2c085d91c8a03a26710e6a1455d02c156102f6d9fdedff5fa6`.
+The [earlier seal](evidence/detector_freeze_2026-09-26_before_comment_correction.json) and its
+[original gate](evidence/results/regression_gate_2026-09-26_freeze.json) remain preserved.
+[Refresh evidence](evidence/results/quality_comment_baseline_2026-09-26/README.md).
+This is an integrity record for the unchanged P3d behavior; final quality acceptance remains on hold.
 
 The default configuration file SHA256 is
 `c7ca5ad4f332b7025f66ab0addeb21025daf23a36aca4dbcc2d49fe5b8831f40`;

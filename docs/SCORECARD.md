@@ -10,7 +10,9 @@
 
 **Current provisional combined score: 64/100. The target of 75 is not met.** This review covers
 the P3d detector with implemented freshness controls and the evidence from rejected/unaccepted
-candidates. T1's new boundary-trust experiment and final CI are pending; neither receives credit.
+candidates. T1 was subsequently rejected: its targeted alarms disappear, but one ride segment's
+median published range estimate falls 120→60 m, below its coverage gate. It receives no credit.
+Final CI and delivery verification are recorded separately.
 The fixed aggregation rule averages each criterion and rounds it down to the nearest 0.5.
 The organizers provide no numerical weights; these remain internal estimates.
 
@@ -27,7 +29,8 @@ The organizers provide no numerical weights; these remain internal estimates.
 | **Total** |**100**|**65.5**|**63.5**|**64**|
 
 Independent reports: [judge A](evidence/results/rejudge_quality_cycle_2026-09-26.json),
-[judge B](evidence/results/rejudge_quality_cycle_b_2026-09-26.json). Their methods and reading
+[judge B](evidence/results/rejudge_quality_cycle_b_2026-09-26.json) and its
+[final acceptance addendum](evidence/results/rejudge_quality_cycle_b_addendum_2026-09-26.json). Their methods and reading
 limits are explicit. The main detector is unchanged; the new clear-run failure and its exact
 processing-history reproduction strengthen the evidence about an existing weakness.
 
@@ -45,6 +48,10 @@ processing-history reproduction strengthen the evidence about an existing weakne
   false events at 45 and STOP episodes at 38. Real-positive evidence remains near 56 m.
 - No untouched real-obstacle recording is available. Q1, approved team photos/contacts and
   human rehearsals remain unresolved. Packaging alone cannot close the detection/range gaps.
+
+The incorrect clearance guarantees in core comments were corrected in `cc834fc`. Executable
+syntax trees and parameters are unchanged; a fresh full gate reproduces every enforced metric.
+This resolves the comment inconsistency noted by judge B without changing the detector scores.
 
 Final freeze remains on hold. The local archive is explicitly a failed candidate for offline
 review. No release is published. [Current work and acceptance results](QUALITY_CYCLE_2026-09-26.md).

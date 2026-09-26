@@ -1,11 +1,53 @@
 # Work before a final detector freeze
 
-Status: authorized and underway; see the [quality-cycle results](QUALITY_CYCLE_2026-09-26.md).
-The original work proposal below is retained for comparison. No release tag
-has been created or pushed. Keep the sealed P3d version as the comparison baseline. The source
-seal and green regression gate establish reproducibility; they do not close the quality gaps.
+Status: the registered quality cycle and its follow-up diagnosis/T1 experiment are complete;
+**final detector acceptance and release publication remain on hold**. See the
+[quality-cycle results](QUALITY_CYCLE_2026-09-26.md). No release tag has been created or pushed.
+The [sealed P3d version](DETECTOR_FREEZE.md) remains the comparison baseline; its integrity record
+and green regression gate do not close the quality gaps.
 
-## Priority and evidence
+## Completed work and current disposition
+
+- Node and dashboard freshness are implemented: explicit live/replay clocks, bounded source and
+  residence age, invalid-range suppression, consumer expiry, STOP retention and valid recovery.
+  All 15 stock Humble/Fast DDS functional checks pass. Freshness establishes the age of evidence;
+  it does not establish that the monitored region contains no undetected obstacle.
+- Missed-object tracing, all 45 ride false-target histories, all 72 placement cases and the
+  exact clear-failure diagnosis are complete. Fourteen ride targets remain physically unresolved.
+- M1, A1 and D1 were evaluated and rejected. M2 passes its offline gates but remains unmerged:
+  the combined image fails the registered standalone clear-bag zero-alarm criterion.
+- T1 completes the causal follow-up. It removes the two traced clear-sequence false STOPs, but
+  range retention falls to 50% on one ride segment and 93.4% on a platform/switch recording,
+  below the required 95%. T1 is rejected; no replacement detector is accepted.
+- Current P3d plus freshness code `d480b1330491da838d6fb4996e34e37b3c060915` passes all six jobs
+  in [CI run 36275557220](https://github.com/pmixay/ReSense/actions/runs/36275557220), including
+  loaded runtime native-kernel assertions and synthetic replay with required freshness.
+  Local download/checksum/source/native verification of that exact archive is pending; public
+  publication is a separate prohibited action. [Captain checklist](CAPTAIN.md#4-current-completion-and-remaining-actions).
+
+## Further detector development remains
+
+The current registered experiments are closed. Any next candidate needs a new bounded proposal,
+preregistered acceptance checks and independent review. Remaining goals are:
+
+- Resolve known GO/range overclaims without excessive uncertainty or loss of useful range.
+  The baseline detector retains 46 GO overclaims in the existing diagnostic.
+- Improve sustained edge/small-object detection while preserving positives and background gates.
+- Reduce ride false events from the baseline's 45 toward the registered target of 30
+  or fewer, and resolve the reproduced standalone clear failure without sacrificing coverage.
+- Obtain the organizer's Q1 envelope-reference decision. Axis union remains off. The user has
+  confirmed that no additional untouched real-obstacle recording is available; known-bag tests
+  remain development validation.
+- Rejudge an accepted improvement against the quality criteria. The current provisional
+  independent aggregation is 64/100; the 75/100 target remains unmet.
+
+Archive delivery, approved team information/photos, human rehearsals and the captain's personal
+submission remain on the [captain board](CAPTAIN.md#4-current-completion-and-remaining-actions).
+
+## Original priority and evidence, before this cycle
+
+The proposal below is retained as the starting record. Its freshness observations describe the
+earlier node, before the implemented controls; its proposed work is not an ongoing task list.
 
 1. **Decision freshness and uncertainty.** The final loaded cold capture contains 27 catch-up
    rows, including three GO decisions. The first reports healthy input and 196.8 m monitored
@@ -33,7 +75,7 @@ seal and green regression gate establish reproducibility; they do not close the 
    source/destination motion. This exposes sensitivity, not real holdout recall. The user has
    confirmed no additional untouched real-obstacle recording is available.
 
-## Proposed work order
+## Original proposed work order
 
 - P1: specify and test result freshness, including startup backlog, later stalls, pauses,
   clock jumps and input switching. Preserve STOP priority. Non-current results must not silently
@@ -49,7 +91,7 @@ seal and green regression gate establish reproducibility; they do not close the 
   Further tests on known bags remain development validation; reserve any future new real sequence
   untouched for a once-only final evaluation.
 
-## Proposed exit checks to register before implementation
+## Original proposed exit checks
 
 These are suggested engineering gates, not organizer promises or measured achievements:
 

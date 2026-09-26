@@ -4,19 +4,19 @@
 > decisions; history of 16–24.09 in
 > [`archive/CAPTAIN_log_2026-09.md`](archive/CAPTAIN_log_2026-09.md).
 > **Audience:** P1, team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-26 night, further detector quality cycle (baseline `_ride_p3d`) · **Status:** final acceptance on hold; earlier tables retain dated evidence
+> **Last verified:** 2026-09-26 night, completed quality cycle; code `d480b13` · **Status:** baseline sealed; final acceptance and publication on hold; earlier tables retain dated evidence
 
 ## Current delegated work — 26.09 night
 
 **Latest user decision: release publication is on hold.** No release tag has been created or
 pushed. The user asked for a deeper review of system weaknesses and whether detector development
-should continue before a final freeze, then authorized the work. The [active quality cycle](QUALITY_CYCLE_2026-09-26.md) records
-the measured weaknesses and acceptance conditions. Keep the sealed baseline and its evidence; do not publish
+should continue before a final freeze, then authorized the work. The [completed quality cycle](QUALITY_CYCLE_2026-09-26.md) records
+the measured weaknesses, candidate decisions and unmet acceptance conditions. Keep the sealed baseline and its evidence; do not publish
 an RC or treat it as final quality acceptance. Review priorities are detection coverage, envelope
 uncertainty, false alarms, output freshness and independent evaluation.
 
 The main branch retains `_ride_p3d` detector behavior and its default configuration; the source
-manifest is in [DETECTOR_FREEZE.md](DETECTOR_FREEZE.md). M1, A1 and D1 were rejected. M2 passes its
+manifest is in [DETECTOR_FREEZE.md](DETECTOR_FREEZE.md). M1, A1, D1 and T1 were rejected. M2 passes its
 offline comparison but remains unmerged because the combined runtime trial fails. The original
 near-escalation threshold remains 10 and the axis union stays off. Q1 remains unanswered.
 
@@ -24,17 +24,26 @@ Node and dashboard freshness controls are implemented: explicit live/replay cloc
 invalid-range suppression, consumer expiry and held STOP. All 15 functional checks pass. The
 combined candidate passes cold, warm, bounded-load and stock Fast DDS switch checks, with zero
 post-settle message loss in every capture. **Standalone clear fails with one raw detector STOP
-at 53 m against the registered zero-alarm limit.** The same geometry appears in older baseline
-captures; causal diagnosis continues. Neither its older occurrence nor successful image loading
-waives this failure. The local archive is marked as a failed candidate for review.
+at 53 m against the registered zero-alarm limit.** Exact raw-sequence replay reproduces the
+failure in both P3d and M2. The completed diagnosis identifies a trust increase after boundary
+loss and a merged fragment that changes the column's apparent width. T1 removes the two traced
+false STOPs but fails its range-retention gates (50% and 93.4%, versus the required 95%); it is
+rejected. The failed combined-image archive remains a review artifact, not accepted detector evidence.
+
+The current P3d core plus freshness code, `d480b1330491da838d6fb4996e34e37b3c060915`, passes
+all six jobs in [CI run 36275557220](https://github.com/pmixay/ReSense/actions/runs/36275557220).
+The loaded runtime archive passes explicit replay/freshness checks and asserts that native
+kernels are available and enabled. These synthetic CI checks do not close the original-bag
+clear failure. Download and local source/native verification of this exact CI archive are
+pending separately from public publication (§4); the combined M2 archive has different source.
 
 P4 traced the exact target points and histories of all 45 ride false events; 14 causes remain
 unresolved. P3 traced all organizer-object frames and all 72 placement cases. M2 preserves all
 146 enforced gate metrics and all original placement results; its combined code passes 668 tests
 and six subtests. Its monitoring change still leaves 36 GO diagnostic overclaims and adds no
 detection recall. The public presentation retains the earlier dated detector evidence; approved
-team identities/photos and human rehearsals are pending. The requested 75/100 is not established;
-use the [independent scorecard](SCORECARD.md).
+team identities/photos and human rehearsals are pending. The current provisional independent
+aggregation is 64/100; the requested 75/100 is not established. Use the [independent scorecard](SCORECARD.md).
 Earlier tables below retain their dated evidence; this section and §4 govern current status.
 
 ## 1. Role and dates
@@ -148,30 +157,54 @@ action 3b done (the merge click is the captain's), action 1 without branch prote
 | 22 | 27.09 | **settle the envelope-edge reference** with the organizers (Q1 of [`QUESTIONS.md`](QUESTIONS.md), sent 25.09, no answer yet): their objects are placed from the sensor axis (−0.24° to the rails), ReSense measures from the rails, so the two edge objects STOP only at 5–10 m and the outside box gets 6 false STOP frames from 142 m; without an answer, the limitation stays stated (README, ALGORITHM §6) | H | should |
 | 23 | 26.09 evening | **P3 / P4 completion pass** (the captain: complete all P3 and P4 work; EXPERIMENTS §1p): every cache rebuilt on another fresh machine, the strict gate with the ride and set F PASS with every row the same; P4's candidate B (`tracking.near_escalate_voxels` 8) passes the full gate and every acceptance check, changing only set O #4 (2 → 3 STOP frames, first STOP 7.1 m): **eligible, not shipped; the captain decides at the freeze** (ship = the config in three places + the baseline re-cut from the B gate run, no headline number moves); the union with the review fixes passes the full gate (#4 2 → 9) and stays off pending Q1 (action 22); +3° pitch measured per event, no candidate; the census on the head: no STOP within 10 m | H decides; A did the runs | should |
 
-## 4. Remaining actions before final freeze and release
+## 4. Current completion and remaining actions
 
-Final freeze and release remain on hold under the current user decision and quality cycle
-([QUALITY_CYCLE_2026-09-26.md](QUALITY_CYCLE_2026-09-26.md)). Keep `_ride_p3d` as the sealed,
-reproducible reference; the later P1/P2 branch run found that the 20 s startup-lag allowance alone
-still left cold-bag frames unprocessed. The first result and retained logs are linked under action
-21. The input-cadence-preserving follow-up is in this branch and remains subject to the same
-original-bag gate.
+The [P3d baseline seal](DETECTOR_FREEZE.md) and candidate-B decision are complete. The seal
+records unchanged detector behavior and a fresh full gate; **final quality acceptance remains
+on hold**. The completed quality cycle accepted the freshness controls but no replacement
+detector. Its combined M2/node image fails the standalone clear-bag zero-alarm criterion.
+Earlier startup and cold/warm measurements remain in their dated evidence packets; they do
+not replace this later failure or establish acceptance of the current root image.
 
-- [x] Fresh full gate, P4's fixed 72-case experiment, all 45 scene reviews and independent re-judgement.
-- [x] Refreshed public deck/PDF/video, corrected health banners and monitored-range wording.
-- [ ] Branch-only P1/P2 CI: the second-container Foxglove outage/recovery simulation passed in run 362745; the original-bag cold-cache frame-count check failed there and is being rerun with the cadence-preserving startup change. Visual layout import on a physical second laptop still needs a person.
-- [ ] Final CI on the exact commit, offline image archive/checksum, public download verification.
-  A detector freeze does not establish all detection criteria.
+- [x] Preserve the baseline seal and fresh strict gate: all 146 enforced metrics in 199 comparison rows pass.
+- [x] Complete P4's 72-case experiment, all 45 false-target traces, missed-object diagnosis,
+  exact clear-failure attribution and independent re-judgement. M1, A1, D1 and T1 are rejected;
+  M2 passes offline checks but remains unaccepted and unmerged after the combined runtime failure.
+- [x] Implement and test node/dashboard freshness, startup handling and original-header message grading.
+  The P1/P2 cadence correction also passes all 47 node tests; its original-bag cold replay is an
+  open acceptance item below.
+- [x] Refresh the public deck/PDF/video against their dated P3d evidence; correct health banners
+  and monitored-range wording. Private team content and human rehearsals remain below.
+- [x] Exact code revision `d480b1330491da838d6fb4996e34e37b3c060915`: all six jobs pass in
+  [CI run 36275557220](https://github.com/pmixay/ReSense/actions/runs/36275557220), including
+  loaded runtime native-kernel assertions and synthetic replay with required freshness.
+- [x] P1/P2 local checks: 667 passed, one `new_data` cache test deselected, 6 subtests; all 16
+  Chromium tests and the 60-frame dashboard smoke check pass. Run 362745's two-container viewer
+  outage/recovery test passed. Its cold-bag check failed before the cadence correction: 85/201
+  frames processed and 84 messages remained after +5 s ([retained evidence](evidence/p1_p2_completion_2026-09-26/cold_bag_failed_run_36274548282/)).
+- [ ] Rerun the original `doubleT_obstacle` cold-cache test on the cadence-preserving branch and
+  keep C5/C7 open until the exact message-count check passes. Do not accept unit tests alone.
+- [ ] Import the Foxglove layout and rehearse from a physical second viewing device; CI only
+  simulates the separate viewer in a second container.
+- [ ] Download the current CI runtime archive and checksum; record local offline loading, imported
+  source hashes and enabled native kernels. Keep it as a current-source review artifact;
+  preserve the older local `latest` image. Local verification receipt is pending.
+- [ ] Close the remaining detector quality gates, including the clear-bag failure, sustained
+  detection, false alarms and monitored-range overclaims; independently rejudge any accepted
+  improvement. The current 64/100 does not meet the 75/100 target.
+- [ ] Publish an image/archive link and verify the public download logged out **only after new
+  user authorization**. Publication and release tags remain prohibited; a CI artifact requires
+  GitHub login and does not complete this item.
 - [ ] Merge PR #12 after that commit is green, or name the exact branch commit in the upload.
 - [ ] Obtain Q1/Q2 answers. The user confirmed Q1 is still unanswered on this pass; the axis union
   remains off. No organizer answer is inferred from results on the tuning set.
-- [ ] Finish the private deck after replacing pending city and team-formation fields; add a group
-  photo if the team wants it. A 16-slide private preview with the four supplied portraits exists
-  in this checkout's ignored `docs/presentation/private/` folder; those files remain local and are
-  not committed.
+- [ ] Finish the private deck after replacing the pending city and team-formation details; add a
+  group photo if available. A 16-slide private preview with the four supplied portraits already
+  exists in this checkout's ignored `docs/presentation/private/` folder and is not committed.
 - [ ] The captain submits the repository, image/checksum, video and deck by 29.09 23:59 (target 18:00).
 - [ ] People conduct two pitch rehearsals, the live remote demo and any voice-over; answer the
   organizers during the expertise 30.09–14.10. Documentation does not substitute for these actions.
+
 
 ## 5. Release and submission — on hold
 

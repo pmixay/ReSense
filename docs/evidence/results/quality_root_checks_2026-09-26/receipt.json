@@ -29,8 +29,20 @@
   "source_sha256": {
     "web/index.html": "767fbd25699bde6afcb323aad0260d80de2172a67cdfb9a72c4d2c504a699a76",
     "resense/detector.py": "f809fd1e0382ee623e3e382afe1f35616ba8d74321f03eaaf1a5afd7a969afdc",
-    "resense/health.py": "d73b7ed3fae37d27b5b7f8106f4896bcedc18c2dba980ac1da8ee1ada8e22421"
+    "resense/health.py": "d73b7ed3fae37d27b5b7f8106f4896bcedc18c2dba980ac1da8ee1ada8e22421",
+    "ros2_ws/src/resense_ros/resense_ros/detector_node.py": "95d1721d3b3238a0fa0358f98740a83b6069404411767e94bd5dd227d2de9274"
   },
   "integrity": "27-file original detector seal passes; 16 M2 observer, 24 M2 production, 34 M2 stress/raw and 42 clear-diagnosis artifact hashes verified.",
-  "runtime_acceptance": "The separate combined M2 runtime candidate remains failed; these tests do not waive the original clear-bag alarm."
+  "runtime_acceptance": "The separate combined M2 runtime candidate remains failed; these tests do not waive the original clear-bag alarm.",
+  "ci_browser_failure": {
+    "run_id": 36274129376,
+    "commit": "a5fbe7f",
+    "reason": "Expected 20 ms ignored a real 1 ms transport delay; UI correctly rendered 21 ms."
+  },
+  "controlled_transport_check": {
+    "test_change": "Freeze UTC only during delivery, inject 50 ms transport, assert displayed 70 ms from 20 ms source age; inspect receipt atomically. Product browser and real expiry timers unchanged.",
+    "passed": 15,
+    "failed": 0,
+    "duration_s": 10.49
+  }
 }

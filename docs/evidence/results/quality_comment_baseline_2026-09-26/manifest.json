@@ -1,0 +1,84 @@
+{
+  "files": {
+    "config.yaml.gz": {
+      "sha256": "226f705dedc301aaf0c20931721a30b285705681d451d9f485dc0a26357e2b77",
+      "bytes": 2173
+    },
+    "frames/cloud_with_fake_obj.jsonl.gz": {
+      "sha256": "f359bd5e383c573c45016106cb9ed763c3c79cd74364ab4e7534a3c3be3ad0a5",
+      "bytes": 232735
+    },
+    "frames/doubleT_obstacle.jsonl.gz": {
+      "sha256": "c0f388c22c9b243573b71ee63fe68e5157b7e3ef6fb6754de016f164165555db",
+      "bytes": 31345
+    },
+    "frames/doubleT_platform.jsonl.gz": {
+      "sha256": "ba237ddcc18bde545f192a9b9591dbfd1b6a6392d1376e2dc8dc54a92f23e1c7",
+      "bytes": 52929
+    },
+    "frames/new_data_0.jsonl.gz": {
+      "sha256": "570554ee2bfe9cdf2444c72dd6d742258d6e562335ede6e23d3172d064942052",
+      "bytes": 220057
+    },
+    "frames/new_data_1.jsonl.gz": {
+      "sha256": "e4433bdf1365ede9acb328cbc0a26948cfd053d91a4db2fa12010634b6c7dc73",
+      "bytes": 241984
+    },
+    "frames/new_data_2.jsonl.gz": {
+      "sha256": "d435b82ba3e41f68283cf13ffa1f905480ca3c648df48a96d6f2aa343a8ca851",
+      "bytes": 218685
+    },
+    "frames/new_data_3.jsonl.gz": {
+      "sha256": "5a72552aba52bd31e0b17b0bf50680086361a50cece8d4133ae034b1efe472df",
+      "bytes": 227139
+    },
+    "frames/new_data_4.jsonl.gz": {
+      "sha256": "93ebe0f008b9a98891c4ef92741e0f61c292ad1ae53db2784477f4a8836ab429",
+      "bytes": 212763
+    },
+    "frames/new_data_5.jsonl.gz": {
+      "sha256": "efb6bcc0fd1a796108380ada32c80d4f6d1c39c5a76c60a21f6208bd5f5388aa",
+      "bytes": 205191
+    },
+    "frames/new_data_6.jsonl.gz": {
+      "sha256": "17c9340e7ea543f5bd56917ddc9518bab07cbdc2df793b62adcda16a9eeb9092",
+      "bytes": 206299
+    },
+    "frames/new_data_7.jsonl.gz": {
+      "sha256": "b6c7ae0d8e33499328db3baed07a7075646c5cf6d75df69ef3490e7b3bfc638c",
+      "bytes": 193520
+    },
+    "frames/roundT_doubleT.jsonl.gz": {
+      "sha256": "6df8ffd2c80622ea9782d2a3b90ae4e88b5a4976622a230da7ea0cdb84ef7155",
+      "bytes": 44784
+    },
+    "frames/roundT_pressureGate_roundT.jsonl.gz": {
+      "sha256": "506ab86f2b406a8debaa6ce97dc190dceff70bfceade5d12ec87bbb082fc9e46",
+      "bytes": 42259
+    },
+    "frames/roundT_squareT_pressureGate_squareT.jsonl.gz": {
+      "sha256": "38b7bb9d353cc1aa963e5412740aca80c3b70b9d75fdba3b0892e125d2c1b4c6",
+      "bytes": 79511
+    },
+    "frames/squareT_platform_squareT_switch.jsonl.gz": {
+      "sha256": "b45197b60a0b3d54eaa2e90bf471d33a0c72ac3fb1e8b33d72a93c849b7abacb",
+      "bytes": 137349
+    },
+    "gate.txt": {
+      "sha256": "6d9029498a3e78db49f717cfff7a7b9a57a8bd51976606e2bfea186560aed312",
+      "bytes": 23499
+    },
+    "receipt.json": {
+      "sha256": "7a6af684ee678f65d2284b597e93e0dab278e2031c7974482be4d62e35932d75",
+      "bytes": 1032
+    },
+    "setF_straight.json.gz": {
+      "sha256": "2113169a6d5ae8a850e0d95325e12bf3c45bf8400f9b581dc897a14d5ca7e7a0",
+      "bytes": 148942
+    },
+    "README.md": {
+      "sha256": "0d9ff344033f411c9a50b6817586d68e3b960d307e852d0aba800dd6accf2081",
+      "bytes": 1119
+    }
+  }
+}

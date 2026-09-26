@@ -1,0 +1,1093 @@
+{
+  "schema": "resense-quality-review-B-addendum-v1",
+  "judge": "quality_second_judge / B",
+  "created_utc": "2026-09-26T22:09:14.102863+00:00",
+  "status": "Final addendum for this quality cycle: T1 rejected; P3d baseline retained; final quality freeze and release remain on hold",
+  "original_review": "rejudge_quality_cycle_b_2026-09-26.json",
+  "maximum": 100,
+  "score_changed": false,
+  "criteria_scores": [
+    {
+      "criterion": "8.1 Functionality",
+      "score": 14,
+      "maximum": 25
+    },
+    {
+      "criterion": "8.2 Detection range",
+      "score": 6,
+      "maximum": 15
+    },
+    {
+      "criterion": "8.3 Processing speed",
+      "score": 8,
+      "maximum": 10
+    },
+    {
+      "criterion": "8.4 Generalization",
+      "score": 6,
+      "maximum": 15
+    },
+    {
+      "criterion": "8.5 Technical quality",
+      "score": 8.5,
+      "maximum": 10
+    },
+    {
+      "criterion": "8.6 Ease of launch",
+      "score": 8,
+      "maximum": 10
+    },
+    {
+      "criterion": "8.7 Team approach",
+      "score": 9,
+      "maximum": 10
+    },
+    {
+      "criterion": "8.8 Pitch",
+      "score": 4,
+      "maximum": 5
+    }
+  ],
+  "score_reason": "The shipped detector behavior remains P3d. Corrected comments improve accuracy of documentation, but no accepted detector improvement or new real-positive evidence supports a higher detection/range/generalization score. Technical quality remains 8.5 while final CI and integrated acceptance remain open. No credit is assigned to unaccepted M2 or rejected T1.",
+  "root_comment_correction": {
+    "commit": "cc834fc93dcc9cfa28a28183dcc4e9e5da492990",
+    "files": [
+      "resense/detector.py",
+      "resense/health.py",
+      "resense/config.py"
+    ],
+    "executable_AST_equal_after_docstring_removal": true,
+    "python_config_parameters_unchanged": true,
+    "both_yaml_files_byte_equal": true,
+    "config_sha256": "c7ca5ad4f332b7025f66ab0addeb21025daf23a36aca4dbcc2d49fe5b8831f40",
+    "fresh_gate": {
+      "measured_commit": "cc834fc93dcc9cfa28a28183dcc4e9e5da492990",
+      "uncommitted_detector_changes": [],
+      "comparison_rows": 199,
+      "enforced_rows": 146,
+      "unchanged_enforced_rows": 146,
+      "failures": 0,
+      "waivers": 0
+    },
+    "seal_independently_verified": {
+      "files": 27,
+      "source_sha256": "5d9a20861f66bb2c085d91c8a03a26710e6a1455d02c156102f6d9fdedff5fa6",
+      "meaning": "Integrity of the P3d comparison baseline; no final quality freeze or release acceptance."
+    },
+    "resolved_finding": "The root core no longer claims verified-clear range or free fail-safe braking from the monitoring estimate."
+  },
+  "T1": {
+    "source_commit": "0ea660fb4025e6f1fd5afdfb4e68e8db003a26f9",
+    "decision": "REJECT under fixed per-segment coverage gate; no retuning or integration",
+    "target_subsets": {
+      "failed_clear": {
+        "frames": 233,
+        "baseline_STOP": 1,
+        "T1_STOP": 0,
+        "raw_indices_and_stamps_equal": true,
+        "fitted_geometry_fields_equal": true,
+        "raw_axis_range_equal": true,
+        "mount_equal": true,
+        "raw_point_count_equal": true,
+        "n_corridor_changes": [
+          {
+            "raw_index": 141,
+            "baseline": 1364,
+            "T1": 1361
+          },
+          {
+            "raw_index": 145,
+            "baseline": 1337,
+            "T1": 1333
+          },
+          {
+            "raw_index": 146,
+            "baseline": 1324,
+            "T1": 1321
+          },
+          {
+            "raw_index": 159,
+            "baseline": 1136,
+            "T1": 1134
+          },
+          {
+            "raw_index": 160,
+            "baseline": 1146,
+            "T1": 1143
+          },
+          {
+            "raw_index": 161,
+            "baseline": 1117,
+            "T1": 1113
+          },
+          {
+            "raw_index": 162,
+            "baseline": 1129,
+            "T1": 1125
+          },
+          {
+            "raw_index": 163,
+            "baseline": 1163,
+            "T1": 1160
+          }
+        ],
+        "clear_distance_medians_m": [
+          134.8,
+          134.8
+        ],
+        "monitored_range_medians_m": [
+          143.0,
+          143.0
+        ],
+        "target_cluster_geometry_equal_raw147_to160": true,
+        "causal_rows": [
+          {
+            "raw_index": 147,
+            "track_id": 40,
+            "hits_both": 1,
+            "target_distance_m": 73.73926544189453,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 0,
+            "T1_gauge_votes": 0,
+            "vote_window": 1,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 148,
+            "track_id": 40,
+            "hits_both": 2,
+            "target_distance_m": 72.14041900634766,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 0,
+            "T1_gauge_votes": 0,
+            "vote_window": 2,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 149,
+            "track_id": 40,
+            "hits_both": 3,
+            "target_distance_m": 70.29730224609375,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 0,
+            "T1_gauge_votes": 0,
+            "vote_window": 3,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 150,
+            "track_id": 40,
+            "hits_both": 4,
+            "target_distance_m": 68.63629150390625,
+            "raw_axis_m": 115.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "gauge",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 1,
+            "T1_gauge_votes": 0,
+            "vote_window": 4,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 151,
+            "track_id": 40,
+            "hits_both": 5,
+            "target_distance_m": 66.93896484375,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 1,
+            "T1_gauge_votes": 0,
+            "vote_window": 5,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 152,
+            "track_id": 40,
+            "hits_both": 6,
+            "target_distance_m": 65.19487762451172,
+            "raw_axis_m": 120.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "gauge",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 2,
+            "T1_gauge_votes": 0,
+            "vote_window": 6,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 153,
+            "track_id": 40,
+            "hits_both": 7,
+            "target_distance_m": 63.454742431640625,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 2,
+            "T1_gauge_votes": 0,
+            "vote_window": 7,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 154,
+            "track_id": 40,
+            "hits_both": 8,
+            "target_distance_m": 61.74745559692383,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 2,
+            "T1_gauge_votes": 0,
+            "vote_window": 8,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 155,
+            "track_id": 40,
+            "hits_both": 9,
+            "target_distance_m": 60.03996276855469,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 2,
+            "T1_gauge_votes": 0,
+            "vote_window": 9,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 156,
+            "track_id": 40,
+            "hits_both": 10,
+            "target_distance_m": 58.294002532958984,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "gauge",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 3,
+            "T1_gauge_votes": 0,
+            "vote_window": 10,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 157,
+            "track_id": 40,
+            "hits_both": 11,
+            "target_distance_m": 56.552101135253906,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "gauge",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 4,
+            "T1_gauge_votes": 0,
+            "vote_window": 10,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 158,
+            "track_id": 40,
+            "hits_both": 12,
+            "target_distance_m": 54.85541534423828,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "gauge",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 5,
+            "T1_gauge_votes": 0,
+            "vote_window": 10,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 159,
+            "track_id": 40,
+            "hits_both": 13,
+            "target_distance_m": 53.00181198120117,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "gauge",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 6,
+            "T1_gauge_votes": 0,
+            "vote_window": 10,
+            "baseline_STOP": true,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 160,
+            "track_id": 40,
+            "hits_both": 14,
+            "target_distance_m": 53.07847213745117,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 5,
+            "T1_gauge_votes": 0,
+            "vote_window": 10,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          }
+        ]
+      },
+      "old_stock": {
+        "frames": 243,
+        "baseline_STOP": 1,
+        "T1_STOP": 0,
+        "raw_indices_and_stamps_equal": true,
+        "fitted_geometry_fields_equal": true,
+        "raw_axis_range_equal": true,
+        "mount_equal": true,
+        "raw_point_count_equal": true,
+        "n_corridor_changes": [
+          {
+            "raw_index": 141,
+            "baseline": 1364,
+            "T1": 1361
+          },
+          {
+            "raw_index": 145,
+            "baseline": 1338,
+            "T1": 1334
+          },
+          {
+            "raw_index": 146,
+            "baseline": 1324,
+            "T1": 1321
+          },
+          {
+            "raw_index": 159,
+            "baseline": 1134,
+            "T1": 1132
+          },
+          {
+            "raw_index": 160,
+            "baseline": 1144,
+            "T1": 1141
+          },
+          {
+            "raw_index": 161,
+            "baseline": 1121,
+            "T1": 1117
+          },
+          {
+            "raw_index": 162,
+            "baseline": 1129,
+            "T1": 1125
+          },
+          {
+            "raw_index": 163,
+            "baseline": 1163,
+            "T1": 1160
+          }
+        ],
+        "clear_distance_medians_m": [
+          130.9,
+          130.9
+        ],
+        "monitored_range_medians_m": [
+          147.0,
+          147.0
+        ],
+        "target_cluster_geometry_equal_raw147_to160": true,
+        "causal_rows": [
+          {
+            "raw_index": 147,
+            "track_id": 45,
+            "hits_both": 1,
+            "target_distance_m": 73.73926544189453,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 0,
+            "T1_gauge_votes": 0,
+            "vote_window": 1,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 148,
+            "track_id": 45,
+            "hits_both": 2,
+            "target_distance_m": 72.14041900634766,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 0,
+            "T1_gauge_votes": 0,
+            "vote_window": 2,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 149,
+            "track_id": 45,
+            "hits_both": 3,
+            "target_distance_m": 70.29730224609375,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 0,
+            "T1_gauge_votes": 0,
+            "vote_window": 3,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 150,
+            "track_id": 45,
+            "hits_both": 4,
+            "target_distance_m": 68.63629150390625,
+            "raw_axis_m": 115.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "gauge",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 1,
+            "T1_gauge_votes": 0,
+            "vote_window": 4,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 151,
+            "track_id": 45,
+            "hits_both": 5,
+            "target_distance_m": 66.93896484375,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 1,
+            "T1_gauge_votes": 0,
+            "vote_window": 5,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 152,
+            "track_id": 45,
+            "hits_both": 6,
+            "target_distance_m": 65.19487762451172,
+            "raw_axis_m": 120.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "gauge",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 2,
+            "T1_gauge_votes": 0,
+            "vote_window": 6,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 153,
+            "track_id": 45,
+            "hits_both": 7,
+            "target_distance_m": 63.454742431640625,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 2,
+            "T1_gauge_votes": 0,
+            "vote_window": 7,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 154,
+            "track_id": 45,
+            "hits_both": 8,
+            "target_distance_m": 61.74745559692383,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 2,
+            "T1_gauge_votes": 0,
+            "vote_window": 8,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 155,
+            "track_id": 45,
+            "hits_both": 9,
+            "target_distance_m": 60.03996276855469,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 2,
+            "T1_gauge_votes": 0,
+            "vote_window": 9,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 156,
+            "track_id": 45,
+            "hits_both": 10,
+            "target_distance_m": 58.294002532958984,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "gauge",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 3,
+            "T1_gauge_votes": 0,
+            "vote_window": 10,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 157,
+            "track_id": 45,
+            "hits_both": 11,
+            "target_distance_m": 56.552101135253906,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "gauge",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 4,
+            "T1_gauge_votes": 0,
+            "vote_window": 10,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 158,
+            "track_id": 45,
+            "hits_both": 12,
+            "target_distance_m": 54.85541534423828,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "gauge",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 5,
+            "T1_gauge_votes": 0,
+            "vote_window": 10,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 159,
+            "track_id": 45,
+            "hits_both": 13,
+            "target_distance_m": 53.00181198120117,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "gauge",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 6,
+            "T1_gauge_votes": 0,
+            "vote_window": 10,
+            "baseline_STOP": true,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 160,
+            "track_id": 45,
+            "hits_both": 14,
+            "target_distance_m": 53.07847213745117,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 5,
+            "T1_gauge_votes": 0,
+            "vote_window": 10,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          }
+        ]
+      },
+      "old_pass": {
+        "frames": 234,
+        "baseline_STOP": 0,
+        "T1_STOP": 0,
+        "raw_indices_and_stamps_equal": true,
+        "fitted_geometry_fields_equal": true,
+        "raw_axis_range_equal": true,
+        "mount_equal": true,
+        "raw_point_count_equal": true,
+        "n_corridor_changes": [
+          {
+            "raw_index": 141,
+            "baseline": 1353,
+            "T1": 1350
+          },
+          {
+            "raw_index": 145,
+            "baseline": 1329,
+            "T1": 1325
+          },
+          {
+            "raw_index": 146,
+            "baseline": 1323,
+            "T1": 1320
+          },
+          {
+            "raw_index": 159,
+            "baseline": 1156,
+            "T1": 1154
+          },
+          {
+            "raw_index": 160,
+            "baseline": 1162,
+            "T1": 1159
+          },
+          {
+            "raw_index": 161,
+            "baseline": 1140,
+            "T1": 1136
+          },
+          {
+            "raw_index": 162,
+            "baseline": 1135,
+            "T1": 1131
+          },
+          {
+            "raw_index": 163,
+            "baseline": 1174,
+            "T1": 1171
+          }
+        ],
+        "clear_distance_medians_m": [
+          128.5,
+          128.5
+        ],
+        "monitored_range_medians_m": [
+          143.4,
+          143.4
+        ],
+        "target_cluster_geometry_equal_raw147_to160": true,
+        "causal_rows": [
+          {
+            "raw_index": 147,
+            "track_id": 40,
+            "hits_both": 1,
+            "target_distance_m": 75.46256256103516,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 0,
+            "T1_gauge_votes": 0,
+            "vote_window": 1,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 148,
+            "track_id": 40,
+            "hits_both": 2,
+            "target_distance_m": 72.14041900634766,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 0,
+            "T1_gauge_votes": 0,
+            "vote_window": 2,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 149,
+            "track_id": 40,
+            "hits_both": 3,
+            "target_distance_m": 70.29730224609375,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 0,
+            "T1_gauge_votes": 0,
+            "vote_window": 3,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 150,
+            "track_id": 40,
+            "hits_both": 4,
+            "target_distance_m": 68.63629150390625,
+            "raw_axis_m": 119.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "gauge",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 1,
+            "T1_gauge_votes": 0,
+            "vote_window": 4,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 151,
+            "track_id": 40,
+            "hits_both": 5,
+            "target_distance_m": 66.93896484375,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 1,
+            "T1_gauge_votes": 0,
+            "vote_window": 5,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 152,
+            "track_id": 40,
+            "hits_both": 6,
+            "target_distance_m": 65.19487762451172,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 1,
+            "T1_gauge_votes": 0,
+            "vote_window": 6,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 153,
+            "track_id": 40,
+            "hits_both": 7,
+            "target_distance_m": 63.454742431640625,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 1,
+            "T1_gauge_votes": 0,
+            "vote_window": 7,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 154,
+            "track_id": 40,
+            "hits_both": 8,
+            "target_distance_m": 61.74745559692383,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 1,
+            "T1_gauge_votes": 0,
+            "vote_window": 8,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 155,
+            "track_id": 40,
+            "hits_both": 9,
+            "target_distance_m": 60.03996276855469,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 1,
+            "T1_gauge_votes": 0,
+            "vote_window": 9,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 156,
+            "track_id": 40,
+            "hits_both": 10,
+            "target_distance_m": 58.294002532958984,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "gauge",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 2,
+            "T1_gauge_votes": 0,
+            "vote_window": 10,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 157,
+            "track_id": 40,
+            "hits_both": 11,
+            "target_distance_m": 56.552101135253906,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "gauge",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 3,
+            "T1_gauge_votes": 0,
+            "vote_window": 10,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 158,
+            "track_id": 40,
+            "hits_both": 12,
+            "target_distance_m": 54.85541534423828,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "gauge",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 4,
+            "T1_gauge_votes": 0,
+            "vote_window": 10,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 159,
+            "track_id": 40,
+            "hits_both": 13,
+            "target_distance_m": 53.00181198120117,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "gauge",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 5,
+            "T1_gauge_votes": 0,
+            "vote_window": 10,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          },
+          {
+            "raw_index": 160,
+            "track_id": 40,
+            "hits_both": 14,
+            "target_distance_m": 53.07847213745117,
+            "raw_axis_m": 60.0,
+            "T1_cap_m": 47.0,
+            "baseline_cluster_zone": "warning",
+            "T1_cluster_zone": "warning",
+            "T1_cluster_reason": "beyond_axis",
+            "baseline_gauge_votes": 4,
+            "T1_gauge_votes": 0,
+            "vote_window": 10,
+            "baseline_STOP": false,
+            "T1_STOP": false
+          }
+        ]
+      }
+    },
+    "raw_receipts_equal": true,
+    "observer_script_hash_equal": true,
+    "causal_interpretation": "The cap enters at raw131=60 m, tightens at134=51 m and139=47 m, stays47 m through raw165, then releases at166. The same raw152 target at65.19 m retains its point/cluster geometry but becomes beyond_axis before tracking. At159 the same53.00 m cluster has78 voxels and the same track ID/hit count, but T1 has0/10 gauge votes versus6/10 in the failed baseline. T1 also removes votes at150 and156–159; its result is broader than deleting only raw152. The known boundary-loss trust increase no longer creates those votes, and the change occurs upstream of output publication.",
+    "causal_limits": "Raw disagreement scalars are not serialized in these trace files; finite-fresh agreement release is supported by reviewed source and tests. This does not establish physical clearance truth or benign effects on other detections. Full coverage tests are essential because the cap can persist.",
+    "comparator_correction": {
+      "initial_report_retained": true,
+      "initial_script_retained": true,
+      "registered_condition_waived": false,
+      "removed_extra_condition": "Equality of n_corridor, a post-low-stage candidate count rather than fitted geometry or raw input size.",
+      "justification": "FrameResult.to_dict serializes corridor_idx.size; Detector.process supplies cand.idx after _low_stage adds range-limited low candidates. T1 preregistration explicitly applies the range to that stage.",
+      "conditions_retained": [
+        "same frame count and stamps",
+        "zero STOP in each subset",
+        "all fitted geometry fields equal",
+        "raw n_points equal"
+      ],
+      "condition_added": "mount equality",
+      "independent_extra_verification": "Raw indices and reconstructed raw axis_valid also equal on every frame. All eight n_corridor changes per subset are preserved above."
+    },
+    "coverage_rejection": {
+      "segment": "new_data_4",
+      "all_frames_aligned": true,
+      "data": {
+        "M2": {
+          "frames": 1409,
+          "clear_median_m": 120.0,
+          "monitored_median_m": 120.0,
+          "STOP_frames": 25,
+          "active_cap_frames": 0
+        },
+        "T1": {
+          "frames": 1409,
+          "clear_median_m": 60.0,
+          "monitored_median_m": 107.0,
+          "STOP_frames": 25,
+          "active_cap_frames": 648
+        },
+        "frozen": {
+          "frames": 1409,
+          "clear_median_m": 120.0,
+          "monitored_median_m": 120.0,
+          "STOP_frames": 25,
+          "active_cap_frames": 0
+        }
+      },
+      "clear_median_ratio_vs_M2": 0.5,
+      "clear_median_ratio_vs_frozen": 0.5,
+      "registered_minimum": 0.95,
+      "passed": false,
+      "interpretation": "The target false alarm was removed at an unacceptable loss of estimated coverage on a different recorded segment; unchanged STOP counts do not satisfy the separate coverage requirement.",
+      "second_independent_failure": {
+        "recording": "squareT_platform_squareT_switch",
+        "frames": 877,
+        "all_frames_aligned_to_both_references": true,
+        "reference_clear_median_m": 88.9,
+        "candidate_clear_median_m": 83.0,
+        "clear_median_ratio_vs_both": 0.9336332958380202,
+        "registered_minimum": 0.95,
+        "reference_monitored_median_m": 143.0,
+        "candidate_monitored_median_m": 143.0,
+        "STOP_frames_both": 54,
+        "passed": false
+      },
+      "complete_report": {
+        "cost_rows_per_reference": 14,
+        "references": [
+          "frozen P3d",
+          "M2"
+        ],
+        "failed_rows_each": [
+          "squareT_platform_squareT_switch",
+          "new_data_4"
+        ],
+        "other_rows_passed": true,
+        "uncertainty_rate_failures": 0,
+        "max_new_uncertainty_pp_vs_frozen": 2.2711142654364798,
+        "max_new_uncertainty_pp_vs_M2": 1.7033356990773598,
+        "method": "Independently recomputed both failed rows from all aligned frame streams. Read full report and unchanged monitoring_cost implementation for remaining rows and limits."
+      }
+    },
+    "novel": {
+      "all_72_cases_and_all_rows_exactly_equal": true,
+      "summary": {
+        "visible_frames": 2458,
+        "target_matched_frames": 544,
+        "injected_only_matched_frames": 544,
+        "control_matched_frames": 0,
+        "cases_with_target_match": 45,
+        "cases": 72
+      },
+      "target_match_gains": 0,
+      "target_match_losses": 0,
+      "paired_control_STOP_changes": 0
+    },
+    "full_gate": {
+      "measured_commit": "0f0dac842d067f85c050ea1e253685304a055cd7",
+      "behavior_source_commit": "0ea660fb4025e6f1fd5afdfb4e68e8db003a26f9",
+      "uncommitted_detector_changes": [],
+      "references": [
+        "frozen P3d",
+        "M2"
+      ],
+      "comparison_rows_each": 199,
+      "enforced_rows_each": 146,
+      "unchanged_enforced_rows_each": 144,
+      "improved_enforced_rows_each": 2,
+      "failures_each": 0,
+      "missing_rows_each": 0,
+      "waivers_each": 0,
+      "improvements": {
+        "ride.alarm_events": [
+          45,
+          43
+        ],
+        "ride.stop_episodes": [
+          38,
+          32
+        ]
+      },
+      "unchanged": "All enforced positive, outside-object, five-empty and Set F metrics.",
+      "disposition": "This gate passes, but the independent registered coverage gate fails. T1 remains rejected; no stress/raw/runtime continuation or retuning."
+    }
+  },
+  "remaining_gaps": [
+    "Actual missed-object and false-alarm limitations of P3d remain unchanged.",
+    "No independent untouched real-positive validation; Q1 remains unresolved.",
+    "Final exact-source CI remains pending. Captain reports six jobs passed on 115b471 but is investigating a browser flake from another run of the same product. This reviewer has not independently inspected CI job logs.",
+    "M2 remains unaccepted; T1 is rejected; the failed combined archive is a local review artifact.",
+    "Team photos/contacts and final rehearsed control-bag demonstration remain incomplete."
+  ],
+  "sha256": {
+    "/home/resense/validation/quality_cycle/T1/compare_target.py": "e61e52ba361b83a9052c8456cfdfeb19caa2885109097567bbcd6b3a5b69402e",
+    "/home/resense/validation/quality_cycle/T1/compare_target_initial_observer_error.py": "ebb4cf12b9816a8c2ceae6831ffc5d0fbb85ee467284545bbd151d7e2e4328b5",
+    "/home/resense/validation/quality_cycle/T1/target_comparison.json": "e11266de0c9e3ed908382199a1442f42cdb7d036c8de2492ee199bde93b27807",
+    "/home/resense/validation/quality_cycle/T1/target_comparison_initial_observer_error.json": "cf67392917a4333587984c2b499dbe445161bc8dd11034e8a841209d44d4212b",
+    "/home/resense/validation/quality_cycle/T1/target/report.json.gz": "f1c5768be794bc2e63e2e970185811d475b7c7c6a13deeda4bb4e5113c04c935",
+    "/home/resense/validation/quality_cycle/clear_diagnosis/M2_exact/report.json.gz": "c11ef8a071bd1b2a4494babc201a578259bfd15aaacc8114cacccb32fa525c28",
+    "/home/resense/validation/quality_cycle/T1/novel_result.json": "82270ff6f5b24947cfd8ae1b2657dfd04a223f68eb9aaaa941dc299b66aec37d",
+    "/home/resense/validation/quality_cycle/T1/coverage_partial.json": "650665c72fbf495848e3a4fb8397467a8e76a18eab072b2f05d81f0646f7788d",
+    "/home/resense/ReSense/docs/evidence/results/regression_gate_2026-09-26_comment_correction.json": "9afa5847c56f34ac894c778212e1a28d361aac3e243df5a12a8ef4e9cef19851",
+    "/home/resense/ReSense/docs/evidence/detector_freeze_2026-09-26.json": "17901afe251385853486e3b0d37d91ce3e4d2a2ee1d382c51d668837446d129d",
+    "/home/resense/validation/quality_cycle/T1/coverage_comparison.json": "d8cfc98f0d2cbd001035431760c2c608d8f9df9caaf6b34fb6904368d3e74405",
+    "/home/resense/validation/quality_cycle/T1/full_comparison.json": "9743962d515411e5ffe984549ad78d8150d8ce62aa3be03c32e8b05ef8deed16",
+    "/home/resense/validation/quality_cycle/T1/gate_result.json": "1cadeb5db43204272a1efce6f046dfc50c4342a7012dca88484fda3379a2e0e0",
+    "/home/resense/validation/quality_cycle/T1/novel_comparison.json": "fb295d53cd214154960d06151924bff13e61023afc45a4d6c1dbfca35b046a58"
+  },
+  "completed_utc": "2026-09-26T22:10:46.754305+00:00",
+  "final_score": 63.5
+}

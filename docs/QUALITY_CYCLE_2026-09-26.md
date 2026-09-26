@@ -14,6 +14,7 @@ This record separates measured improvements from goals that remain open.
 | M2: existing supported thin clusters limit range | Target overclaims 54→44; GO overclaims 46→36. Ride adds 0.612 percentage points uncertainty and retains 99.02% of median range. Offline detection output stays identical. | Offline gates pass; combined runtime acceptance fails. Source remains outside the main branch. |
 | A1: restrict extra tracking allowance to forward motion | Ride 45→44 events, 183→180 alarm frames; aggregate placement matches improve. One fixed case loses 2→1 matches and fails the registered per-case gate. | Rejected; source remains unmerged. |
 | D1: full-cloud context for clipped thin/floating candidates | Small edge object gains five STOP frames; synthetic matches 544→591. Outside-object false STOPs rise 6→9 and ride STOP episodes 38→40. | Rejected; source remains unmerged. |
+| T1: retain observed boundary disagreement | Removes both exact-sequence clear failures; ride events 45→43 and episodes 38→32. All 72 placement results remain unchanged. Median published range retention fails on a ride segment (50%) and a platform/switch recording (93.4%), below the required 95%. | Rejected; source remains unmerged. |
 
 All candidates were specified before their evaluations. Failures remain in the repository;
 no acceptance threshold was relaxed to turn a failed candidate into a pass.
@@ -58,8 +59,19 @@ measurements on this machine, not organizer-hardware results.
 limit is zero. It occurs at header stamp `946692947.533395`; freshness is valid and the STOP is
 not held from an earlier result. The same source frame caused an identical geometric alarm in
 the older baseline's stock-console capture. An older successful clear trial processed that frame
-as advisory. Exact processing-history attribution is underway. The failure remains a failure;
+as advisory. Exact replay now reproduces all three processed sequences in both the baseline and
+M2 with zero detector mismatches: 233/243/234 frames and 1/1/0 STOPs. The failure remains a failure;
 it is not waived because an older detector also exhibits it.
+
+The trace identifies a trust increase after boundary loss and a merged fragment that changes the
+column's apparent width. [Point-level diagnosis and figure](evidence/results/quality_cycle_2026-09-26_clear_failure/README.md).
+T1 tests the trust mechanism with unchanged numerical limits; it does not tune the column rule.
+Its target screen passes, but its coverage gate fails: in ride segment 4 the `clear_distance`
+median falls from 120 to 60 m. The separate `health.monitored_range` median falls from 120 to
+107 m. A separate empty platform/switch recording falls from 88.9 to 83.0 m (93.4% retention).
+The contradiction cap persists for about 40 s through one-boundary fits. All 72 original
+placement cases and rows remain identical. The failed coverage criterion rejects T1; no further
+stress, raw or runtime trials are used to seek a favorable outcome.
 
 The local image archive is an offline review artifact with `runtime_acceptance_passed: false`.
 Its source/native checks and load test pass; packaging does not confer detector acceptance.
@@ -77,12 +89,12 @@ dashboard UTC clocks must be synchronized. These mechanisms are not a braking sa
 | Goal | Remaining gap |
 |---|---|
 | No actionable GO/range overclaims | The main detector retains 46 GO overclaims in the existing fitted-envelope diagnostic; unmerged M2 reduces that to 36. Freshness validity establishes the age of evidence, not completeness of obstacle detection. |
-| Material sustained detection improvement | Neither detection-changing candidate passed acceptance. Edge and small-object ranges remain late. |
+| Material sustained detection improvement | No detection-changing candidate passed acceptance. Edge and small-object ranges remain late. |
 | At most 30 ride false events | Accepted detector behavior still has 45 events and 38 STOP episodes. |
 | Independent generalization evidence | The user confirmed no additional untouched real-positive recording. Seen synthetic combinations do not replace one. |
 | Envelope-reference decision | Organizer Q1, rails versus sensor axis, remains unanswered. Axis union stays off. |
 | Final presentation identity | Approved team names, photos and Telegram contacts remain pending. |
-| At least 75/100 | Current independent reviews score 65.5 and 63.5; the unchanged per-criterion aggregation gives 64/100. T1 and final CI remain uncredited pending results. |
+| At least 75/100 | Current independent reviews score 65.5 and 63.5; the unchanged per-criterion aggregation gives 64/100. Rejected candidates receive no improvement credit. |
 | Final freeze and release | Quality goals remain open; release is explicitly prohibited by the user. |
 
 ## Evidence index
@@ -98,3 +110,8 @@ dashboard UTC clocks must be synchronized. These mechanisms are not a braking sa
 - [Freshness and runtime results](evidence/results/quality_freshness_2026-09-26/README.md)
 - [A1 rejection](evidence/results/p4_A1_2026-09-26/README.md)
 - [D1 rejection](evidence/results/quality_cycle_2026-09-26_D1/README.md)
+- [Clear-failure attribution](evidence/results/quality_cycle_2026-09-26_clear_failure/README.md)
+- [T1 protocol](evidence/results/quality_cycle_2026-09-26_T1_protocol.json)
+- [T1 rejection and full results](evidence/results/quality_cycle_2026-09-26_T1/README.md)
+- [Main branch test evidence](evidence/results/quality_root_checks_2026-09-26/README.md)
+- [Comment-only baseline refresh](evidence/results/quality_comment_baseline_2026-09-26/README.md)

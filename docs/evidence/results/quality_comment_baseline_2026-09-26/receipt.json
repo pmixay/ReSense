@@ -1,0 +1,9 @@
+{
+  "measured_commit": "cc834fc93dcc9cfa28a28183dcc4e9e5da492990",
+  "scope": "Comment/docstring correction only in resense/detector.py, health.py, config.py; executable AST matches parent after removing docstrings.",
+  "command": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 /home/resense/.venv/bin/python scripts/regression_gate.py --cache /home/resense/data/cache --jobs 2 --baseline docs/evidence/results/regression_baseline_2026-09-26_ride_p3d.json --work /home/resense/validation/quality_cycle/comment_baseline_gate --out /home/resense/validation/quality_cycle/comment_baseline_gate/result.json",
+  "result": "PASS: no omitted, worse or waived enforced metrics; 183 unchanged rows, 16 informational timing rows changed.",
+  "full_gate": "../regression_gate_2026-09-26_comment_correction.json",
+  "timing_limit": "Shared-machine offline timings are informational; this is not new ROS performance evidence.",
+  "freeze_status": "Baseline source integrity only; final quality freeze and release remain on hold."
+}
