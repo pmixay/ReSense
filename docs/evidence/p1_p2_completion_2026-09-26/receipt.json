@@ -3,7 +3,7 @@
   "date": "2026-09-26",
   "branch": "claude/p1-p2-completion-20260926",
   "tested_commit": "a7789f7429727f527ee49a408fbaffe6b361af91",
-  "current_branch_commit": "adcd3b874ada88cf5a227f50e33afd6435beea0f",
+  "current_branch_commit": "67e456b21a7706ad5ea641e3209044bbed625150",
   "post_test_rebase_change": "Final pytest, Chromium and dashboard-smoke runs passed after merging origin/claude/nifty-pascal-lzgl78 at 06845469065d5b7d093210c61c989c1ef34271e4. Upstream core edits are comments/docstrings only; its refreshed full-gate evidence confirms 146 enforced metrics across 199 comparison rows unchanged.",
   "local": {
     "python": "3.12 via /tmp/resense-p4-venv",
@@ -87,27 +87,33 @@
       "result": "PASS",
       "frames": 60
     },
-    "original_bag_cold_ci": "run 362776 failed at default read-ahead (91/201 processed, five post-+5 s messages, no fresh result); run 362789 was cancelled after read-ahead 1 delivered no input. Both are preserved; read-ahead 10 retry pending.",
+    "original_bag_cold_ci": "run 362804 passed the original doubleT_obstacle cold replay with read-ahead 10: 201 status messages, first STOP +1.1 s, 78 ms p95, freshness PASS, 0 original messages unprocessed after catch-up. Default read-ahead 1000 still produces stale output; current-code roundT_doubleT cold clear replay is pending.",
     "pushed": true
   },
   "branch_ci": {
-    "run_id": 36278988540,
-    "url": "https://github.com/pmixay/ReSense/actions/runs/36278988540",
+    "run_id": 36280434044,
+    "url": "https://github.com/pmixay/ReSense/actions/runs/36280434044",
     "status": "completed",
-    "conclusion": "cancelled",
-    "non_cold_jobs": "pytest, web, lint, params-in-sync and offline-build passed; Docker smoke, transport, and viewer simulation passed before the cold-bag step.",
+    "conclusion": "success",
+    "non_cold_jobs": "pytest, web, lint, params-in-sync, offline-build, ROS smoke, transport, viewer, and offline runtime checks passed.",
     "viewer_simulation": "PASS",
     "cold_bag": {
-      "result": "CANCELLED / INCONCLUSIVE: archive and DB3 verified, but read-ahead 1 produced no LiDAR input; 1,380 no_input watchdog snapshots before cancellation.",
+      "result": "PASS for original doubleT_obstacle using read-ahead 10: 201 status messages, first STOP +1.1 s at 55.5–56.6 m, p95 78 ms, freshness PASS, zero original messages unprocessed after catch-up at +16.5 s. Three frames are missing from the recording itself.",
+      "artifact_id": 10918554315,
+      "artifact_url": "https://github.com/pmixay/ReSense/actions/runs/36280434044/artifacts/10918554315",
+      "durable_record": "cold_bag_passed_run_36280434044/README.md"
+    },
+    "default_read_ahead_limitation": "run 362776 at the default 1000-message read-ahead still failed freshness and post-settle accounting; run 362789 read-ahead 1 delivered no input and was cancelled.",
+    "next_cold_bag_attempt": "current-source cold roundT_doubleT clear replay, read-ahead 10, ten-minute step timeout; pending",
+    "previous_cold_run_36278988540": {
+      "conclusion": "cancelled / inconclusive",
       "artifact_id": 10918752773,
-      "artifact_url": "https://github.com/pmixay/ReSense/actions/runs/36278988540/artifacts/10918752773",
       "durable_record": "cold_bag_cancelled_run_36278988540/README.md"
     },
-    "next_cold_bag_attempt": "read-ahead 10, ten-minute step timeout; pending",
     "previous_cold_run_36277608569": {
       "conclusion": "failure",
       "url": "https://github.com/pmixay/ReSense/actions/runs/36277608569",
-      "cold_bag": "FAIL; 91/201 frames processed, five messages unprocessed after +5 s, no valid freshness result.",
+      "cold_bag": "FAIL; 91/201 processed, five messages unprocessed after +5 s, no valid freshness result.",
       "artifact_id": 10918270065
     },
     "prior_cold_run_36274548282": {

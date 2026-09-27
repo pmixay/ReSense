@@ -3232,8 +3232,15 @@ remained after +5 s. The next attempt changed only the cold-test player read-ahe
 the archive and bag verified, but no LiDAR frame reached the node during 12 minutes, so that
 attempt was cancelled and is retained in
 [`cold_bag_cancelled_run_36278988540/`](evidence/p1_p2_completion_2026-09-26/cold_bag_cancelled_run_36278988540/).
-The next attempt uses a ten-message queue with a ten-minute step timeout. C5/C7 remain open until
-the original-bag replay passes; neither cancelled nor failed runs are counted as successful.
+With read-ahead set to ten and a ten-minute step timeout, run 362804 passed the cold
+`doubleT_obstacle` replay: 201 status messages, first STOP +1.1 s at 55.5–56.6 m, 78 ms
+decode-plus-detect p95 (99 ms maximum), freshness PASS, catch-up in 14 s with zero deliberate
+skips, and 0 original bag messages unprocessed after catch-up at +16.5 s. The checker identified
+three frames absent from the recording itself. Full provenance and outputs are in
+[`cold_bag_passed_run_36280434044/`](evidence/p1_p2_completion_2026-09-26/cold_bag_passed_run_36280434044/).
+This is a bounded-prefetch cold-disk replay; the default 1,000-message read-ahead case remains
+stale and is not claimed as supported. The exact-current-code cold clear replay of the original
+`roundT_doubleT` recording is being added; keep C5/C7 partial until it passes.
 
 ## 4. What we learned / hard cases
 

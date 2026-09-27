@@ -41,7 +41,14 @@ default rosbag2 read-ahead had preloaded a backlog before the node's first resul
 read-ahead set to one downloaded and verified the same bag but delivered no LiDAR input during a
 12-minute wait; it was cancelled as an invalid playback setup. Its 1,380 no-input watchdog rows are
 preserved in [`cold_bag_cancelled_run_36278988540/`](cold_bag_cancelled_run_36278988540/). The
-current retry uses read-ahead ten and has a ten-minute CI step timeout; it has not yet passed.
+Run [36280434044](https://github.com/pmixay/ReSense/actions/runs/36280434044) passed the original
+360-degree `doubleT_obstacle` cold replay with read-ahead ten: 201 status messages, STOP +1.1 s,
+55.5–56.6 m, 78 ms decode-plus-detect p95, freshness PASS, and zero original bag messages
+unprocessed after catch-up ([preserved evidence](cold_bag_passed_run_36280434044/)). Its player
+read-ahead is explicit because the default 1,000-message setting preloads all 201 original-bag
+messages before publishing. The 120-degree `roundT_doubleT` cold clear replay is being added;
+keep C5/C7 partial until that check also passes. The default-read-ahead cold run still has no fresh
+result, so this does not claim support for an unbounded overdue burst.
 
 ## Follow-up and remaining work
 
@@ -49,10 +56,10 @@ The failure showed that a 20 s startup lag allowance with 0.3 s frame sampling c
 scene-reset gaps consume the recording. The branch follow-up keeps every observed input-period
 frame during the first backlog, even when the preceding recording left a slower period estimate.
 After that catch-up drains, live backlog behavior returns to the 0.3 s sampling step and 5 s lag
-bound. The 47 node tests and local full suite pass, but the corrected behavior has **not yet passed
-the original-bag cold-cache CI replay**. The read-ahead-one attempt produced no input and does not
-count as a detector result. Keep action 21 and C7 open until the bounded-buffer replay passes; do
-not claim the startup issue resolved from unit tests alone.
+bound. Run 362804 passed the bounded-prefetch cold `doubleT_obstacle` replay, but the
+default-read-ahead whole-bag burst remains stale and the matching cold clear-bag run is pending.
+Keep action 21 and C7 partial until both original recordings pass and the captain accepts the
+bounded-prefetch procedure; do not claim support for an unbounded overdue burst.
 
 The remaining human tasks are the physical second-device Foxglove layout import/rehearsal and the
 presentation details the team has not supplied: city, team-formation details and a group photo.
