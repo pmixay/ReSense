@@ -44,7 +44,8 @@ archive comes from `scripts/export_image.sh`, not from a release, and no step he
 The 26.09 completion pass prepares a public offline artifact after the final checks; §4.5
 separates that publication path from this local export procedure.
 
-**What is tested** is the branch or commit the captain names (`main` once PR #12 is merged). A
+**What is tested** is the branch or commit the captain names (PR #12 is merged into `main`; use
+the later tested branch if it contains the supported playback procedure). A
 failing criterion is a **finding to report**, with the numbers, not something to fix on the VM:
 no code, config or test changes are made there.
 
@@ -62,7 +63,7 @@ work inside `tmux`, so that long runs survive a dropped connection.
 
 ```bash
 REPO_URL='<clone URL of the repository>'          # set these two
-BRANCH='<branch or commit named by the captain>'   # main once PR #12 is merged
+BRANCH='<branch or commit named by the captain>'   # name the exact tested source
 REPO=$HOME/ReSense                  # the clone (any directory)
 DATA=/data                          # bags and caches; mount a data disk here if there is one
 BAGS=$DATA/for_hackathon            # the six recordings (the scripts' default)
@@ -307,23 +308,23 @@ current result after an 8.8 s startup catch-up and had zero original messages un
 frames are missing from that source recording. The clear bag produced zero alarm frames and zero
 unprocessed messages. Logs and status captures are in
 [`evidence/p1_p2_completion_2026-09-26/cold_bags_passed_run_36281462241/`](evidence/p1_p2_completion_2026-09-26/cold_bags_passed_run_36281462241/).
-The usual `dry_run.sh` default remains 1,000 read-ahead messages, and that default still produces
-stale output on the cold whole-recording burst. To reproduce the passing bounded-prefetch test on
-a machine with Docker and the original bags, drop caches before each command and set the variable
-for both runs:
+The supported `dry_run.sh` default is now ten read-ahead messages, matching the passing
+bounded-prefetch runs. Humble's unbounded-for-these-bags default of 1,000 still produces stale
+output on the cold whole-recording burst. To reproduce the supported test on a machine with
+Docker and the original bags, drop caches before each command:
 
 ```bash
 sudo sh -c 'sync; echo 3 > /proc/sys/vm/drop_caches'
-BAG_READ_AHEAD_QUEUE_SIZE=10 SKIP_BUILD=1 OUT=out/cold_obstacle ./scripts/dry_run.sh "$BAGS/doubleT_obstacle" \
+SKIP_BUILD=1 OUT=out/cold_obstacle ./scripts/dry_run.sh "$BAGS/doubleT_obstacle" \
   --expect-obstacle --distance 50:62 --min-frames 20 --max-p95-latency 100 --max-dropped 0
 sudo sh -c 'sync; echo 3 > /proc/sys/vm/drop_caches'
-BAG_READ_AHEAD_QUEUE_SIZE=10 SKIP_BUILD=1 OUT=out/cold_clear ./scripts/dry_run.sh "$BAGS/roundT_doubleT" \
+SKIP_BUILD=1 OUT=out/cold_clear ./scripts/dry_run.sh "$BAGS/roundT_doubleT" \
   --expect-clear --max-alarm-frames 2 --max-p95-latency 100 --max-dropped 0
 ```
 
-This records the tested procedure; it does not change the default. C5/C7 remain partial until the
-captain accepts bounded prefetch/prewarm for operation or a separately tested default change
-passes.
+The command and jury procedure now use the tested ten-message limit by default. This closes the
+operating-procedure choice; it does not show that a 1,000-message overdue burst is handled, nor
+does it replace a physical clean-machine rehearsal.
 
 **Matching the bag.** `check_dry_run.py --bag` now reads each message's CDR header stamp and
 matches the node's stamp directly, with at most 100 microseconds of float roundoff tolerance
@@ -364,8 +365,8 @@ unset FASTRTPS_DEFAULT_PROFILES_FILE FASTDDS_DEFAULT_PROFILES_FILE RMW_FASTRTPS_
 mkdir -p out/host_console
 ros2 topic echo /resense/status --field data > out/host_console/status.jsonl & ECHO=$!
 sleep 4
-ros2 bag play "$BAGS/roundT_doubleT" --delay 3 --disable-keyboard-controls && sleep 5 &&
-  ros2 bag play "$BAGS/doubleT_obstacle" --delay 3 --disable-keyboard-controls
+ros2 bag play "$BAGS/roundT_doubleT" --delay 3 --read-ahead-queue-size 10 --disable-keyboard-controls && sleep 5 &&
+  ros2 bag play "$BAGS/doubleT_obstacle" --delay 3 --read-ahead-queue-size 10 --disable-keyboard-controls
 sleep 3; kill "$ECHO"
 python3 scripts/check_dry_run.py out/host_console/status.jsonl --require-freshness --expect-obstacle --obstacle-in 2 --expect-inputs 2 \
   --min-frames 20 --max-p95-latency 1000 --max-dropped 100000 | tee "$EV/dry_run_$DAY/host_console.txt"
@@ -482,8 +483,8 @@ mkdir -p out/host_shm
 ls -l /dev/shm > "$EV/dry_run_$DAY/host_shm_ls.txt"
 ros2 topic echo /resense/status --field data > out/host_shm/status.jsonl & ECHO=$!
 sleep 4
-ros2 bag play "$BAGS/roundT_doubleT" --delay 3 --disable-keyboard-controls && sleep 5 &&
-  ros2 bag play "$BAGS/doubleT_obstacle" --delay 3 --disable-keyboard-controls
+ros2 bag play "$BAGS/roundT_doubleT" --delay 3 --read-ahead-queue-size 10 --disable-keyboard-controls && sleep 5 &&
+  ros2 bag play "$BAGS/doubleT_obstacle" --delay 3 --read-ahead-queue-size 10 --disable-keyboard-controls
 sleep 3; kill "$ECHO"
 python3 scripts/check_dry_run.py out/host_shm/status.jsonl --require-freshness --expect-obstacle --obstacle-in 2 --expect-inputs 2 \
   --min-frames 20 --max-p95-latency 1000 --max-dropped 100000 | tee "$EV/dry_run_$DAY/host_console_shm.txt"

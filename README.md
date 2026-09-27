@@ -26,8 +26,7 @@ ReSense 10 раз в секунду отвечает беспилотному п
 sudo sysctl -w net.core.rmem_max=33554432                # 0. на хосте, до перезагрузки: буфер UDP для 360° облаков
 docker load -i resense-image-<версия>.tar.gz             # 1. один раз, без интернета
 docker run --rm -it --net=host --ipc=host resense ros2 launch resense_ros detector.launch.py freshness_mode:=replay  # 2. консоль 1: исторический бэг
-cat <бэг>/*.db3 > /dev/null                              # 3. консоль 2: прочитать бэг заранее (360° — 240 МБ/с)
-ros2 bag play <бэг> --delay 3                            #    и проиграть: любой пользователь, ROS 2 Humble
+ros2 bag play <бэг> --delay 3 --read-ahead-queue-size 10 # 3. консоль 2: любой пользователь, ROS 2 Humble
 ros2 topic echo /resense/decision --field data           # 4. консоль 3: GO | CAUTION | STOP | FAULT
 ros2 topic echo /resense/nearest_distance --field data   # 5. расстояние до препятствия, м; −1 — нет
 ```
@@ -59,13 +58,14 @@ docker/Dockerfile .`. Проверка архива: `sha256sum -c resense-image
 **`--net=host` обязателен.** Образ передаёт DDS только по UDP; без общей с хостом сети плеер не
 находит ноду, и `/resense/decision` остаётся `FAULT`. `ROS_DOMAIN_ID` плеера и ноды должен
 совпадать (по умолчанию 0). Нет ROS 2 на хосте — плеер из того же образа: `docker run --rm
---net=host -v <папка с бэгами>:/data:ro resense ros2 bag play /data/<бэг> --delay 3`.
+--net=host -v <папка с бэгами>:/data:ro resense ros2 bag play /data/<бэг> --delay 3 --read-ahead-queue-size 10`.
 **Шаг 0 нужен для 360-градусных облаков (24 МБ) с плеером на CycloneDDS:** при `rmem_max` 212992
 (по умолчанию в Ubuntu) нода получала 0–1 из 201 такого облака, при 32 МиБ — все; штатный Fast DDS
 (`rmw_fastrtps_cpp`, по умолчанию в Humble) доставлял все и при 212992, шаг 0 ему не мешает (25.09,
 три машины команды, [EXPERIMENTS](docs/EXPERIMENTS.md) §3b). 120-градусные облака (3 МБ) доходят и без него. Нода пишет WARN при старте, если буфер меньше.
-**Чтение бэга перед проигрыванием (шаг 3)** — для 360-градусной записи: это 240 МБ/с, и с
-холодного диска плеер в начале отстаёт. Проверка 26.09 (4 ядра, без сети): `doubleT_obstacle` со
+Для 360-градусной записи можно заранее прочитать `cat <бэг>/*.db3 > /dev/null`, если позволяет
+память: это уменьшает задержку диска, но не заменяет ограничение очереди в шаге 3.
+Проверка 26.09 со старым проигрыванием (4 ядра, без сети): `doubleT_obstacle` со
 сброшенным кэшем страниц — нода обработала 34 кадра из 201, первый STOP через 15,5 с; тот же
 прогон после `cat` — 139 кадров, STOP на 55,7–56,5 м
 ([`docs/evidence/rejudge_2026-09-26/`](docs/evidence/rejudge_2026-09-26/)). Повторный проигрыш
@@ -134,13 +134,14 @@ ros2 bag play <bag>  ──PointCloud2 (either topic / frame pair), 10 Hz──�
    delivered 0–1 of 201 of them, all at 32 MiB; a genuine stock Fast DDS player delivered every
    cloud at 212992 too (25.09, three team VMs; a run first recorded as "stock Fast DDS" was a
    CycloneDDS player, EXPERIMENTS §3b); the 120° clouds arrive either way; the node logs a WARN at
-   start below 32 MiB. **Read a 360° bag once before playing it** (`cat <bag>/*.db3 > /dev/null`):
-   its clouds are 240 MB/s of recording, and from a cold disk the player falls behind at the start
+   start below 32 MiB. Optionally pre-read a 360° bag (`cat <bag>/*.db3 > /dev/null`) when memory
+   allows; its clouds are 240 MB/s of recording, and from a cold disk the player can fall behind at the start
    (26.09 re-judgement: `doubleT_obstacle` with the page cache dropped, 337 MB/s cold reads: the
    node processed 34 of 201 frames, first `STOP` +15.5 s, FAIL; the same run with the bag in the
    page cache: 139 status messages, `STOP` at 55.7–56.5 m, PASS;
    [`docs/evidence/rejudge_2026-09-26/`](docs/evidence/rejudge_2026-09-26/)).
-4. **Read the answer** ("What to look at"). `ros2 bag play` (Humble) preloads up to 1 000 messages,
+4. **Read the answer** ("What to look at"). Without step 3's queue limit, `ros2 bag play` (Humble)
+   preloads up to 1 000 messages,
    all of a short recording, while its clock runs, then sends the overdue first seconds back to
    back: `FAULT` until then (2.6–4 s for 1.9 GB in the page cache, longer from a slow disk). On the
    P1/P2 follow-up, the first backlog preserves each observed input-period frame within the
@@ -434,7 +435,8 @@ backlog, preserves short queues, then restores the existing 5 s bound for later 
 zero bag pages resident before playback, `doubleT_obstacle` PASSES: 148 processed frames,
 143 alarm frames, first STOP +0.4 s, p95 36 ms and no post-settle recorded messages unprocessed.
 Catch-up settles at +7.4 s of recording. Warm playback and the clear recording also pass.
-The pre-read in jury step 3 remains an optional way to reduce player startup delay.
+The optional pre-read before jury step 3 can reduce disk delay; the supported cold playback uses
+`--read-ahead-queue-size 10` for both original bags. The earlier cold run used the default queue.
 [Evidence](docs/evidence/freeze_2026-09-26/README.md) retains the earlier failures. One additional
 cold trial under two direct readers (127.4 MiB/s combined) also passes: p95 36.37 ms, first STOP
 +0.7 s, no post-settle losses. This is a bounded workload, not a measured overload limit.

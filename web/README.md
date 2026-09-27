@@ -180,6 +180,14 @@ the server to require a stream failure, resumes it, and requires reconnection. T
 devices and link loss without hardware. Importing the layout and inspecting it in Foxglove on a
 physical second laptop still need a person at the demo setup.
 
+For the physical rehearsal, connect both devices to the same local network, open
+`ws://<demo host>:8765` from the second laptop, import the layout, and check that the live
+decision, distance, corridor and status all change while the bag plays. Pause the player and
+confirm that stale data is not presented as current; resume or replay and confirm recovery.
+Record the demo commit, image ID, two device types, connection address, time, and observed
+pass/fail in the captain's rehearsal notes. The CI container test covers transport and recovery;
+it does not verify the Foxglove application's visual import on that laptop.
+
 What the audience sees: a 3D panel (dark, camera behind the sensor looking down the track, both
 raw-cloud topics, `/resense/corridor_points` in orange, `/resense/markers` with the boxes, labels,
 corridor edges and the status text), an indicator of `/resense/decision` (green *GO*, orange
