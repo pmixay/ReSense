@@ -92,8 +92,10 @@ must cite their actual evidence; packaging cannot improve functionality, range o
   deselected because `/data/cache/new_data` is absent. The idle/warm original-bag checks in the
   seal packet passed with first STOP +0.4 s and decode+detect p95 36 ms; clear replay had zero
   alarms/p95 24 ms. A separate cold-cache CI replay on the P1/P2 branch failed the message-count
-  check (85/201 frames processed); a cadence-preserving follow-up is awaiting its original-bag
-  rerun. Stock DDS console passes; its clear run has one false alarm within the existing
+  check (85/201 frames processed). The later cadence-preserving follow-up passes both original
+  bags cold with explicit ten-message read-ahead; the default 1,000-message read-ahead still
+  fails freshness. These results do not change this earlier score. The dated stock DDS console
+  run passes; its clear run has one false alarm within the existing
   allowance. [Sealed-source evidence](evidence/freeze_2026-09-26/README.md),
   [P1/P2 replay evidence](evidence/p1_p2_completion_2026-09-26/README.md).
 - All **72 preregistered placement cases** were evaluated without later tuning: **45 with any

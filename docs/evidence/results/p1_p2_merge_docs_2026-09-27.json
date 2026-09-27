@@ -1,0 +1,47 @@
+{
+  "schema": "resense-p1-p2-merge-document-review-v1",
+  "checked_utc": "2026-09-27T06:48:19.824426+00:00",
+  "reviewed_member_commit": "9540d66ed3dc1208e11dda847424e4ccce32df37",
+  "changes": [
+    "Replace the unsupported confirmed-free-envelope claim with obstacle detection and explicit missed-object limits on the history slide.",
+    "Refresh README, architecture, scorecard and plan status: both original bags pass cold at read-ahead 10; default read-ahead 1000 still fails freshness."
+  ],
+  "artifacts": {
+    "scripts/build_deck.py": {
+      "sha256": "8bfe43af2f8bbe104a445c059519427e84e6ec768c51944bbb98424ca221049d",
+      "bytes": 60472
+    },
+    "docs/presentation/ReSense_LCT2026.pptx": {
+      "sha256": "157fb1655b725f62898870e2c89702bee271fcda884b8e00d73233234bf6bfdb",
+      "bytes": 14374330
+    },
+    "docs/presentation/ReSense_LCT2026.pdf": {
+      "sha256": "de297a347103d334703cdca42d417bcd635183169b1be9158a296933d599b795",
+      "bytes": 3082207
+    }
+  },
+  "template_sha256": "1604aa9146b82cacd96f893be2c5e08c6981183ba155cd4a11c245f25cd894d5",
+  "validation": {
+    "public_pptx_slides": 16,
+    "public_pdf_pages": 16,
+    "pptx_text_changes_vs_member": [
+      "ppt/slides/slide10.xml (deck page 4)"
+    ],
+    "old_clearance_phrase_absent_from_pdf": true,
+    "new_missed_object_limit_present_in_pdf": true,
+    "pdf_history_page_visually_reviewed": true,
+    "font_match": "Montserrat-Regular.ttf",
+    "pytest": {
+      "command": "python -m pytest -q web/demo/test_web.py::test_presentation_artifact_uses_the_organizers_slide_sequence",
+      "passed": 1,
+      "failed": 0
+    },
+    "ruff_build_deck": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "unchanged_evidence": "Original P1/P2 receipts and failed/default-setting evidence are preserved. No detector or runtime code is changed by this documentation correction.",
+  "detector_acceptance": false,
+  "quality_freeze": false,
+  "public_release": false,
+  "score_changed": false
+}

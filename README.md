@@ -143,11 +143,14 @@ ros2 bag play <bag>  ──PointCloud2 (either topic / frame pair), 10 Hz──�
 4. **Read the answer** ("What to look at"). `ros2 bag play` (Humble) preloads up to 1 000 messages,
    all of a short recording, while its clock runs, then sends the overdue first seconds back to
    back: `FAULT` until then (2.6–4 s for 1.9 GB in the page cache, longer from a slow disk). On the
-   P1/P2 follow-up branch, the first backlog preserves each observed input-period frame within the
+   P1/P2 follow-up, the first backlog preserves each observed input-period frame within the
    20 s startup cap; later live stalls use the normal 0.3 s sampling step and 5 s limit. The first
-   cold-cache CI run failed before that correction (85/201 frames processed); original-bag
-   validation of the correction is pending. The warm-cache 26.09 re-judgement reached real time
-   in 3.4 s on `roundT_doubleT` and 9.5 s on the 360° `doubleT_obstacle`.
+   cold-cache CI run failed before that correction (85/201 frames processed). The 27.09 follow-up
+   passed both original bags cold with explicit ten-message read-ahead; the obstacle stream became
+   current at +8.8 s. The default 1,000-message read-ahead still failed freshness. See the
+   [tested procedure and remaining limitation](docs/VM_GUIDE.md#41-dry-run-with-the-original-bags).
+   The warm-cache 26.09 re-judgement reached real time in 3.4 s on `roundT_doubleT` and 9.5 s on
+   the 360° `doubleT_obstacle`.
 
 **The bags disagree on the topic and frame id** (`/lidar_points` in `hesai_lidar` for
 `roundT_doubleT` and four more, `/sensing/lidar/hesai128/pointcloud` in `lidar_livox` for

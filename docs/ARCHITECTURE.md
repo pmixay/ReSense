@@ -115,7 +115,7 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   at most `catchup_step` = 0.3 s are processed in full, so a brief executor delay does not discard
   otherwise manageable input. Longer live backlogs are sampled at `catchup_step` = 0.3 s of
   recording (v0.6.4; `input_queue_depth` 40). For the first backlog of a new recording, the
-  P1/P2 follow-up branch preserves each observed input-period frame to let the node recover from
+  P1/P2 follow-up preserves each observed input-period frame to let the node recover from
   a cold `ros2 bag play` preload without scene-reset gaps; the 20 s startup cap still applies.
   `catchup_max_lag` keeps the normal backlog within 5 s of the newest frame. Since 26.09,
   `catchup_startup_max_lag` permits 20 s at the start of each recording, because a cold disk can
@@ -126,7 +126,10 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   truncated. All 47 node tests pass, including a 201-frame
   startup burst, a previous slower input-period estimate, and checks that later stalls retain the
   0.3 s sampling step. The first cold-cache CI replay failed before this cadence correction
-  (85/201 frames processed); original-bag validation of the correction is pending. Its reliability
+  (85/201 frames processed). The 27.09 follow-up passes both original bags cold with explicit
+  ten-message read-ahead; the default 1,000-message read-ahead still fails freshness. The
+  [cold-run evidence](evidence/p1_p2_completion_2026-09-26/cold_bags_passed_run_36281462241/README.md)
+  retains the distinction. Its reliability
   follows the publishers (`input_reliability: auto`, v0.6.2): reliable for `ros2 bag play` of the
   organizers' recordings — a best-effort reader lost 196 of the 201 10 MB clouds of
   `doubleT_obstacle` in Docker ([`EXPERIMENTS.md`](EXPERIMENTS.md) §3b) — and best-effort when a
