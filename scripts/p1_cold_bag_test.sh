@@ -1,15 +1,14 @@
 #!/usr/bin/env bash
-# Branch-only cold-disk startup check using the organizer's bag. A small rosbag2
+# Cold-disk startup check using the organizer's bag. A small rosbag2
 # read-ahead queue avoids turning the 20 s recording into a burst while the cold 4.8 GB SQLite
 # file is preloaded; storage stalls remain real and the node still gets the original point clouds.
-# Requires Docker and runs only on the P1/P2 completion branch; the downloaded raw bag is removed.
+# Requires Docker and runs on the working branch and main; the downloaded raw bag is removed.
 set -euo pipefail
 
-EXPECTED_REF="refs/heads/claude/p1-p2-completion-20260926"
-if [[ "${GITHUB_REF:-}" != "$EXPECTED_REF" ]]; then
-  echo "skip: original-bag cold-disk test is scoped to $EXPECTED_REF"
-  exit 0
-fi
+case "${GITHUB_REF:-}" in
+  refs/heads/claude/nifty-pascal-lzgl78|refs/heads/main) ;;
+  *) echo "skip: original-bag cold-disk test runs on the working branch and main"; exit 0 ;;
+esac
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 IMAGE="${IMAGE:-resense:ci}"

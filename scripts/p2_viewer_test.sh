@@ -26,7 +26,8 @@ docker run --rm --network "$NETWORK" --user "$(id -u):$(id -g)" -e HOME=/tmp \
 
 # The server endpoint runs the normal image entrypoint and node. Start only the included
 # Foxglove bridge as an extra process; its WebSocket stays inside the Docker network.
-docker run -d --name "$SERVER" --network "$NETWORK" "$IMAGE" >/dev/null
+docker run -d --name "$SERVER" --network "$NETWORK" "$IMAGE" \
+  ros2 launch resense_ros detector.launch.py freshness_mode:=replay >/dev/null
 ready=0
 for _ in $(seq 1 60); do
   if docker logs "$SERVER" 2>&1 | grep -q "ReSense detector listening"; then
@@ -53,7 +54,8 @@ probe() {
   local timeout="$1"
   docker run --rm --network "$NETWORK" -v "$ROOT/web:/web:ro" "$IMAGE" \
     python3 /web/demo/check_foxglove_live.py \
-      --layout /web/foxglove_layout.json --url "ws://$SERVER:8765" --timeout "$timeout"
+      --layout /web/foxglove_layout.json --url "ws://$SERVER:8765" --timeout "$timeout" \
+      --require-freshness
 }
 
 if ! probe 60; then
