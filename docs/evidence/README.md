@@ -4,13 +4,17 @@
 > [`EXPERIMENTS.md`](../EXPERIMENTS.md): the result summaries in `results/`, the logs, captures and
 > bench output of each run, and the recordings' original metadata.
 > **Audience:** team, jury · **Owner:** P1 (runs, timing), P4 (result summaries) · **Language:** EN
-> **Last verified:** 2026-09-26; P4 P3d reference, candidate rescreen and review packet added (each result remains the record of its own date) ·
+> **Last verified:** 2026-09-27; supported P1/P2 cold-bag rerun added (each result remains the record of its own date) ·
 > **Status:** current
 
 Every file here is the record of one run and is not rewritten: a new run gets a new file or folder
 (`results/experiments_<what>.json`, `<run>_<date>/`). Day-1 results that later runs superseded are
 in [`../archive/results/`](../archive/results/). `extended_dataset_intake.json` (the ride's
 per-file speeds and intake events) stays in `docs/` because scripts read it.
+
+The [27 September supported playback rerun](p1_p2_supported_playback_2026-09-27/README.md)
+preserves both cold original-bag status streams and node logs, source hashes, and the six-job CI
+receipt. It supersedes the earlier quota-blocked attempt without changing the detector baseline.
 
 ## Freeze pass — 26 September night
 

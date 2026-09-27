@@ -252,7 +252,7 @@ after `cb9e4ab`), the build `--no-cache` again:
 
 | step | command | expected |
 |---|---|---|
-| drops (C7) | §4.1, first command | `dropped input settle`: environment-dependent (current cold CI +8.8 s at read-ahead 10); `dropped input vs bag : … 4 frame(s) missing from the recording itself; 0 of its messages not processed`; `PASS`; the node log says `dropped N (M skipped by the catch-up)` |
+| drops (C7) | §4.1, first command | `dropped input settle`: environment-dependent (earlier cold CI +8.8 s; current supported-default rerun +13.6 s at read-ahead 10); `dropped input vs bag : … 4 frame(s) missing from the recording itself; 0 of its messages not processed`; `PASS`; the node log says `dropped N (M skipped by the catch-up)` |
 | false alarm (C7) | §4.1, second command, then the `replay_node_frames.py` line | `PASS` with at most 1 alarm frame (was 3 at 111–115 m: the column at 101–149 m, advisory since `tracking.column_hold` 2); the node's and the replay's alarm lists equal |
 | CycloneDDS player (C4) | `sudo sysctl -w net.core.rmem_max=33554432` (leave `rmem_default`), the host console of §4.2 with `RMW_IMPLEMENTATION=rmw_cyclonedds_cpp`, then `sudo sysctl -w net.core.rmem_max=212992` | both recordings arrive, `STOP` on the obstacle; no rmem WARN in the node log (the image now asks for a 32 MiB receive buffer, so `rmem_max` alone decides) |
 | bench (C8, closed; a confirmation) | §4.3 | `dry_obstacle_native` PASS; write down the physical core count |
@@ -308,6 +308,10 @@ current result after an 8.8 s startup catch-up and had zero original messages un
 frames are missing from that source recording. The clear bag produced zero alarm frames and zero
 unprocessed messages. Logs and status captures are in
 [`evidence/p1_p2_completion_2026-09-26/cold_bags_passed_run_36281462241/`](evidence/p1_p2_completion_2026-09-26/cold_bags_passed_run_36281462241/).
+The supported-default rerun on `5a27c66` also passed both cold original bags and all six CI
+jobs after the Drive quota reset; it verified the archive and bag hashes and saved the archive
+in the Actions cache. Its 360° stream became current after +13.6 s, close to the 15 s gate.
+[Current receipt](evidence/p1_p2_supported_playback_2026-09-27/README.md).
 The supported `dry_run.sh` default is now ten read-ahead messages, matching the passing
 bounded-prefetch runs. Humble's unbounded-for-these-bags default of 1,000 still produces stale
 output on the cold whole-recording burst. To reproduce the supported test on a machine with

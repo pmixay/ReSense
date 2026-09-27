@@ -146,7 +146,7 @@ ros2 bag play <bag>  ──PointCloud2 (either topic / frame pair), 10 Hz──�
    back: `FAULT` until then (2.6–4 s for 1.9 GB in the page cache, longer from a slow disk). On the
    P1/P2 follow-up, the first backlog preserves each observed input-period frame within the
    20 s startup cap; later live stalls use the normal 0.3 s sampling step and 5 s limit. The first
-   cold-cache CI run failed before that correction (85/201 frames processed). The 27.09 follow-up
+   cold-cache CI run failed before that correction (85/201 frames processed). An earlier 27.09 follow-up
    passed both original bags cold with explicit ten-message read-ahead; the obstacle stream became
    current at +8.8 s. The default 1,000-message read-ahead still failed freshness. See the
    [tested procedure and remaining limitation](docs/VM_GUIDE.md#41-dry-run-with-the-original-bags).
@@ -440,6 +440,14 @@ The optional pre-read before jury step 3 can reduce disk delay; the supported co
 [Evidence](docs/evidence/freeze_2026-09-26/README.md) retains the earlier failures. One additional
 cold trial under two direct readers (127.4 MiB/s combined) also passes: p95 36.37 ms, first STOP
 +0.7 s, no post-settle losses. This is a bounded workload, not a measured overload limit.
+
+**Supported playback recheck, 27.09:** [current-branch CI](docs/evidence/p1_p2_supported_playback_2026-09-27/README.md)
+passed both original bags cold with the ten-message queue. The obstacle bag had 199 status
+messages, STOP at 55.5–56.5 m and p95 76 ms; its first STOP was fail-safe while stale, and its
+first current STOP followed catch-up at +13.6 s. All 63 source messages after catch-up were
+processed. The clear bag had 252 statuses, zero alarms and p95 48 ms. The archive and database
+hashes match the earlier verified recordings. This does not validate Humble's 1,000-message
+default or an unbounded overdue burst.
 
 **Clean-machine dry run** (part of the later deployment, [`docs/CAPTAIN.md`](docs/CAPTAIN.md) C7):
 a team machine that has never built the project, 8 cores for the latency and drop criteria (the

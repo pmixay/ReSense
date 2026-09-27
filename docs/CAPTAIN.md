@@ -4,7 +4,7 @@
 > decisions; history of 16–24.09 in
 > [`archive/CAPTAIN_log_2026-09.md`](archive/CAPTAIN_log_2026-09.md).
 > **Audience:** P1, team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-27, P1/P2 branch integration · **Status:** baseline sealed; final acceptance and publication on hold; earlier tables retain dated evidence
+> **Last verified:** 2026-09-27, supported P1/P2 cold playback · **Status:** baseline sealed; final detector acceptance and publication on hold; earlier tables retain dated evidence
 
 ## Current delegated work — 26.09 night
 
@@ -14,17 +14,16 @@ retained without enabling rejected detector variants. The [integration record](B
 maps the source branches and validation; the earlier `d480b13` archive below is dated delivery evidence.
 
 **27.09 operating procedure:** the captain's follow-up request adopts the proven ten-message
-rosbag2 read-ahead limit for the jury command, dry run, and demo players. The earlier cold CI run
-on both original bags is the acceptance evidence for that exact playback setting. C5/C7 and
-action 21 are closed **for this supported procedure** on the earlier two-bag run. A fresh replay
-of the current branch remains pending. Humble's
-1,000-message default remains unsupported for cold whole-bag bursts; it must not be described
-as a passing path. PR #12 is already merged into `main`; the earlier open-PR checklist row below
-is superseded. Detector quality, release publication, and physical rehearsal remain open.
-The first CI run of the follow-up branch, 36313174302, passed five jobs and the Docker viewer
-simulation, then stopped before the cold replay: Google Drive returned a 2,009-byte quota page
-instead of the organizer ZIP. This is an acquisition failure, not a new playback result. The
-previous two-bag pass remains the available evidence until the source can be downloaded again.
+rosbag2 read-ahead limit for the jury command, dry run, and demo players. The first follow-up
+CI attempts were blocked before playback by Google Drive's quota page. After the quota reset,
+[run 36313880352](https://github.com/pmixay/ReSense/actions/runs/36313880352) passed all six jobs
+on playback commit `5a27c66`: the archive and both original bags matched their recorded hashes,
+both cold replays passed, and the verified archive entered the Actions cache. The 360° bag's
+first STOP was fail-safe while stale; its first current STOP and end of catch-up were at +13.6 s,
+near the 15 s acceptance cap. [Current receipt](evidence/p1_p2_supported_playback_2026-09-27/README.md).
+C5/C7 and action 21 are closed **for this supported procedure**. Humble's 1,000-message default
+remains unsupported for cold whole-bag bursts. PR #12 is merged into `main`; detector quality,
+release publication, and physical rehearsal remain open.
 
 **Latest user decision: release publication is on hold.** No release tag has been created or
 pushed. The user asked for a deeper review of system weaknesses and whether detector development
@@ -207,9 +206,9 @@ not replace this later failure or establish acceptance of the current root image
   obstacle and clear criteria; preserved outputs are in
   [`evidence/p1_p2_completion_2026-09-26/cold_bags_passed_run_36281462241/`](evidence/p1_p2_completion_2026-09-26/cold_bags_passed_run_36281462241/).
 - [x] Adopt ten-message read-ahead as the supported operating procedure in the jury command,
-  dry run, and demos. The original-bag cold CI evidence passes with this setting; the ROS 2
-  default 1,000-message burst remains unsupported. Recheck the new branch's original-bag CI
-  when the organizer's Google Drive quota resets or an alternate archive is available.
+  dry run, and demos. The current-branch [cold rerun](evidence/p1_p2_supported_playback_2026-09-27/README.md)
+  passes both original bags and all six CI jobs; the ROS 2 default 1,000-message burst remains
+  unsupported.
 - [ ] Import the Foxglove layout and rehearse from a physical second viewing device; CI only
   simulates the separate viewer in a second container.
 - [x] Download that CI runtime archive and verify checksum, offline loading, imported source

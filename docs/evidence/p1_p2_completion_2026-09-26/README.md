@@ -10,6 +10,8 @@ that exact setting, so they are acceptance evidence for the procedure; no new de
 implied. Humble's 1,000-message default still fails the cold whole-bag burst and remains outside
 the supported procedure. PR #12 has since been merged into `main`; the dated branch references
 below identify the source of these measurements.
+The later [supported-default rerun](../p1_p2_supported_playback_2026-09-27/README.md) passed on
+the current branch after the Drive quota reset; this file retains the earlier run's raw results.
 
 ## Local verification
 
