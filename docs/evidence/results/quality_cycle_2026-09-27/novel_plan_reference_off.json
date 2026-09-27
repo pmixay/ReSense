@@ -1,6 +1,6 @@
 {
   "protocol": 1,
-  "created_utc": "2026-09-27T20:48:12.497611+00:00",
+  "created_utc": "2026-09-27T20:48:14.203487+00:00",
   "limitations": [
     "Novel synthetic combinations on backgrounds and organizer object shapes already inspected.",
     "Fixed sensor-axis placement: no independent surveyed rail-envelope ground truth.",
@@ -140,7 +140,7 @@
       "axis_union_range": 50.0,
       "axis_union_max_offset": 0.3,
       "axis_union_max_curvature": 0.0002,
-      "reference": 3,
+      "reference": 0,
       "reference_range": 60.0,
       "reference_max_offset": 0.2,
       "reference_max_curvature": 0.0002,
