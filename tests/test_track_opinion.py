@@ -22,6 +22,7 @@ from resense.opinion import FEATURES, OBS_FIELDS, TrackOpinion, observation, tra
 from resense.tracking import Tracker
 
 ROOT = Path(__file__).resolve().parents[1]
+OFF = {"doubt_model": "", "doubt_extra_hits": 0}      # the opinion is on by default since 27.09
 
 
 def _cl(x: float, lateral: float = 0.0, z: float = 1.0) -> Cluster:
@@ -53,17 +54,23 @@ def _run(x0: float, n: int, **kw):
     return out, tr
 
 
-def test_off_by_default_and_shipped_yaml():
-    cfg = DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml"))
-    assert cfg.tracking.doubt_extra_hits == 0 and cfg.tracking.doubt_model == ""
-    tr = Tracker(cfg.tracking)
+def test_shipped_default_and_both_yaml():
+    for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
+                DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
+        t = cfg.tracking
+        assert (t.doubt_model, t.doubt_extra_hits, t.doubt_near, t.doubt_sticky) == ("track_opinion.json", 10, 25.0, True)
+        assert 0.0 < t.doubt_threshold < 0.5 and t.doubt_threshold == TrackingConfig().doubt_threshold
+        assert t.gate_along_only is True
+    tr = Tracker(TrackingConfig())                   # the model ships in resense/models/
+    assert tr.opinion is not None and tr.record is True
+    tr = Tracker(TrackingConfig(**OFF))
     assert tr.opinion is None and tr.record is False
     tr.update([_cl(80.0)], ego_shift=1.0, frame_dt=0.1)
     assert tr.tracks[0].obs == []
 
 
 def test_doubtful_far_track_waits_extra_hits(tmp_path):
-    base, _ = _run(80.0, 9)
+    base, _ = _run(80.0, 9, **OFF)
     first = next(i for i, (r, z) in enumerate(base) if r and z == "gauge")
     out, tr = _run(80.0, 9, doubt_model=_model(tmp_path), doubt_extra_hits=2, doubt_near=30.0)
     assert out[:first] == base[:first]
@@ -73,13 +80,14 @@ def test_doubtful_far_track_waits_extra_hits(tmp_path):
 
 
 def test_near_or_confident_track_is_not_delayed(tmp_path):
-    base, _ = _run(80.0, 9)
+    base, _ = _run(80.0, 9, **OFF)
     near, _ = _run(80.0, 9, doubt_model=_model(tmp_path), doubt_extra_hits=2, doubt_near=100.0)
     assert near == base
     conf, _ = _run(80.0, 9, doubt_model=_model(tmp_path, far_p_low=False), doubt_extra_hits=2)
     assert conf == base
     within, _ = _run(45.0, 9, doubt_model=_model(tmp_path), doubt_extra_hits=2)   # p high within 50 m
-    assert within == _run(45.0, 9)[0]
+    assert within == _run(45.0, 9, **OFF)[0]
+    assert _run(80.0, 9)[0] == base                  # the shipped model: this clean approach is not delayed
 
 
 def test_opinion_never_takes_a_stop_down(tmp_path):
@@ -157,9 +165,9 @@ def test_sticky_doubt_ignores_a_rising_opinion(tmp_path):
     """p low beyond 76 m, high within: the non-sticky rule releases the track as soon as the opinion
     rises; the sticky one keeps it withheld for all its extra frames (released by doubt_near only)."""
     m = _stump(tmp_path, "rise.json", 75.5, 5.0, -5.0)
-    base, _ = _run(80.0, 14)
+    base, _ = _run(80.0, 14, **OFF)
     first = next(i for i, (r, z) in enumerate(base) if r and z == "gauge")       # at 76 m
-    loose, _ = _run(80.0, 14, doubt_model=m, doubt_extra_hits=6, doubt_near=30.0)
+    loose, _ = _run(80.0, 14, doubt_model=m, doubt_extra_hits=6, doubt_near=30.0, doubt_sticky=False)
     sticky, _ = _run(80.0, 14, doubt_model=m, doubt_extra_hits=6, doubt_near=30.0, doubt_sticky=True)
     assert loose[first] == (True, "warning") and loose[first + 1] == (True, "gauge")
     assert all(z == "warning" for _, z in sticky[first:first + 6]) and sticky[first + 6] == (True, "gauge")

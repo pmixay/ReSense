@@ -1,4 +1,5 @@
-"""The frame the envelope is measured from (``gauge.reference``, 27.09, P1 edge objects; off by default).
+"""The frame the envelope is measured from (``gauge.reference``, 27.09, P1 edge objects; on by default
+since 27.09: mode 2, 60 m, 0.2 m, ``reference_along_rails``).
 
 The organizers place their test objects from the sensor's X axis; the detector measures the envelope
 from the rails, which run at about -0.25 deg to the sensor axis on the recordings. ``gauge.reference``
@@ -39,10 +40,12 @@ def _gauge(mode, **kw):
     return g
 
 
-def test_off_by_default():
+def test_shipped_default():
     for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
                 DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
-        assert cfg.gauge.reference == 0 and cfg.gauge.reference_edge_margin == 1.0
+        g = cfg.gauge
+        assert g.reference == 2 and g.reference_edge_margin == 1.0
+        assert (g.reference_range, g.reference_max_offset, g.reference_along_rails) == (60.0, 0.2, True)
     assert reference_offset(np.linspace(0.0, 100.0, 11), _track(), _gauge(0)) is None
 
 
@@ -142,6 +145,7 @@ def test_edge_margin_scale():
     for mode, scale in ((0, 1.0), (1, 1.0), (1, 0.0), (2, 0.0)):
         cfg = DetectorConfig()
         cfg.gauge.reference, cfg.gauge.reference_edge_margin = mode, scale
+        cfg.gauge.reference_max_offset = 0.3                     # the 0.21 m offset is beyond the shipped 0.2
         det = Detector(cfg)
         det.track = tr
         cand = det._corridor(xyz, np.zeros(3, np.float32))[0]
@@ -161,6 +165,7 @@ def test_accumulated_points_keep_their_position():
     for mode in (0, 1):
         cfg = DetectorConfig()
         cfg.gauge.reference = mode
+        cfg.gauge.reference_max_offset = 0.3                     # 0.22 m at 50 m: beyond the shipped 0.2
         det = Detector(cfg)
         res = None
         for k in range(6):
@@ -189,9 +194,11 @@ def test_does_not_drop_an_object_touching_an_edge_line():
     back to the part inside the rails' envelope (``Candidates.in_rail``), so the box keeps its STOPs
     (19 -> 7 without it; with it every STOP of the rails and one frame earlier)."""
     stops = {}
-    for mode in (0, 1, 2):
+    for mode in (0, 1, 2, None):                                  # None: the shipped defaults (2, 0.2 m)
         cfg = DetectorConfig()
-        cfg.gauge.reference = mode
+        if mode is not None:
+            cfg.gauge.reference = mode
+            cfg.gauge.reference_max_offset = 0.3                 # the 0.25 m offset: mode 1 is the rails at 0.2
         det = Detector(cfg)
         out = []
         for k in range(25):
@@ -202,7 +209,7 @@ def test_does_not_drop_an_object_touching_an_edge_line():
             out.append(det.process(Frame(xyz=fr.xyz, intensity=fr.intensity, stamp=0.1 * k)).obstacle)
         stops[mode] = [k for k, o in enumerate(out) if o]
     assert len(stops[0]) >= 15
-    for mode in (1, 2):                                          # 19 -> 7 STOP frames without the fallback
+    for mode in (1, 2, None):                                    # 19 -> 7 STOP frames without the fallback
         assert set(stops[0]) <= set(stops[mode]), str(stops)
 
 

@@ -102,9 +102,11 @@ def _yawed_scene(yaw_deg, specs, seed=5):
     return Frame(xyz=(frame.xyz.astype(np.float64) @ R.T).astype(np.float32), intensity=frame.intensity)
 
 
-def _run(frame, mode, n=6, wall_keep=None):
+def _run(frame, mode, n=6, wall_keep=None, reference=0):
     cfg = DetectorConfig()
     cfg.gauge.axis_union = mode
+    if reference is not None:                  # gauge.reference (on since 27.09) off: these tests isolate the union
+        cfg.gauge.reference = reference        # (None: the shipped defaults)
     if wall_keep is not None:
         cfg.cluster.wall_keep_gauge_voxels = wall_keep
     det = Detector(cfg)
@@ -116,7 +118,7 @@ def test_object_at_the_axis_referenced_edge():
     """Sensor yawed 0.5 deg against straight rails (0.26 m at 30 m): a 0.5 x 0.6 x 1.0 m box at 30 m
     whose inner face is 0.2 m inside the envelope measured from the sensor axis and ~0.06 m outside
     the one measured from the rails. Rails only: advisory; the union (A, the default since 26.09, B
-    and B2): STOP. The empty tunnel stays clear."""
+    and B2) and the shipped ``gauge.reference`` (27.09): STOP. The empty tunnel stays clear."""
     box = ObstacleSpec(kind="box", size=(0.5, 0.6, 1.0), distance=30.0, lateral=-1.41)
     frame = _yawed_scene(0.5, [box])
     off = _run(frame, 0)
@@ -128,6 +130,9 @@ def test_object_at_the_axis_referenced_edge():
     empty = _yawed_scene(0.5, [])
     for mode in (1, 2, 3):
         assert not any(r.obstacle or r.warning for r in _run(empty, mode))
+    shipped = _run(frame, 0, reference=None)                   # the shipped sensor-axis reference: a STOP too
+    assert shipped[-1].obstacle and abs(shipped[-1].detections[0].distance - 30.0) < 0.6
+    assert not any(r.obstacle or r.warning for r in _run(empty, 0, reference=None))
 
 
 @pytest.mark.synthetic
@@ -138,7 +143,8 @@ def test_tall_box_at_the_axis_referenced_edge():
     rule drops it with the rails only and with A; with B2 (not shipped: +3 ride events) the shape
     rules read the lateral from the sensor axis (~1.05 m) and it STOPs. The wall keep of the near
     escalation (``cluster.wall_keep_gauge_voxels``, on) counts the voxels inside the envelope
-    measured from the rails (safety review of 26.09), where the face has none: A still drops it."""
+    measured from the rails (safety review of 26.09), where the face has none: A still drops it. The
+    shipped ``gauge.reference`` (27.09) STOPs it."""
     x, inner = 20.0, -0.95
     box = ObstacleSpec(kind="box", size=(2.0, 2.0, 2.3), distance=x,
                        lateral=inner - 1.0 - x * np.tan(np.radians(0.5)))
@@ -148,6 +154,8 @@ def test_tall_box_at_the_axis_referenced_edge():
     res = _run(frame, 3, n=8, wall_keep=0)                                 # B2
     assert res[-1].obstacle, [(c.distance, c.lateral, c.zone, c.reason) for c in res[-1].candidates]
     assert abs(res[-1].detections[0].distance - x) < 0.6
+    res = _run(frame, 0, n=8, reference=None)                              # the shipped sensor-axis reference
+    assert res[-1].obstacle and abs(res[-1].detections[0].distance - x) < 0.6
 
 
 def _edge_line(x0: float, length: float, lateral: float) -> ObstacleSpec:
@@ -165,9 +173,11 @@ def test_union_does_not_drop_an_object_touching_an_edge_line():
     the box was dropped with it (19 -> 6 STOP frames). The split falls back to the part inside the
     rails' envelope: with the union on, the STOP frames are those of the union off."""
     stops = {}
-    for mode in (0, 1):
+    for mode in (0, 1, None):                                   # None: the shipped defaults (union off, reference 2)
         cfg = DetectorConfig()
-        cfg.gauge.axis_union = mode
+        if mode is not None:
+            cfg.gauge.axis_union = mode
+            cfg.gauge.reference = 0                             # on since 27.09; off here to isolate the union
         det = Detector(cfg)
         out = []
         for k in range(25):
@@ -179,6 +189,7 @@ def test_union_does_not_drop_an_object_touching_an_edge_line():
         stops[mode] = [k for k, o in enumerate(out) if o]
     assert len(stops[0]) >= 15
     assert stops[1] == stops[0]
+    assert set(stops[0]) <= set(stops[None]), str(stops)
 
 
 @pytest.mark.synthetic

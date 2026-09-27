@@ -1,7 +1,8 @@
 """health.clear_cap_thin / health.clear_cap_persist (27.09, P3 range overclaim; resense/evidence.py):
 evidence below the cluster bars caps clear_distance - a scan-line cluster inside the strict envelope,
 and a sparse blob of envelope returns that comes nearer at a constant apparent speed over several
-frames. Both are off by default and never change a detection or the decision."""
+frames. Both are on by default since 27.09 (clear_cap_thin, clear_cap_persist 4) and never change a
+detection or the decision."""
 
 from pathlib import Path
 from types import SimpleNamespace
@@ -18,11 +19,11 @@ from resense.synthetic import ObstacleSpec, synthetic_tunnel_frame
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_off_by_default_in_the_code_and_both_parameter_files():
+def test_shipped_in_the_code_and_both_parameter_files():
     for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
                 DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
-        assert cfg.health.clear_cap_thin is False
-        assert cfg.health.clear_cap_persist == 0
+        assert cfg.health.clear_cap_thin is True
+        assert cfg.health.clear_cap_persist == 4
         assert cfg.health == DetectorConfig().health
 
 
@@ -84,10 +85,11 @@ def test_only_sparse_isolated_envelope_blobs_count():
 
 
 def _thin(**kw):
-    return SimpleNamespace(**dict(dict(thin=True, kind="", zone="gauge", reason="", n_gauge=3, distance=30.0), **kw))
+    return SimpleNamespace(**dict(dict(thin=True, weak=False, kind="", zone="gauge", reason="", n_gauge=3,
+                                       distance=30.0), **kw))
 
 
-@pytest.mark.parametrize("change", [{"kind": "low"}, {"zone": "warning"}, {"reason": "elevated"}, {"thin": False},
+@pytest.mark.parametrize("change", [{"kind": "low"}, {"weak": True}, {"zone": "warning"}, {"reason": "elevated"}, {"thin": False},
                                    {"n_gauge": 2}, {"distance": 61.0}, {"distance": float("nan")},
                                    {"distance": -1.0}])
 def test_thin_cap_needs_a_supported_undemoted_scan_line_in_the_trusted_range(change):
@@ -108,18 +110,22 @@ def _run(cfg, frames):
 
 def test_detector_outputs_are_unchanged_but_clear_distance(tunnel):
     """A small box coming nearer at 1.5 m per frame in the synthetic tunnel: with both caps on every
-    detection, warning, health level and the monitored range are those of the defaults, and
+    detection, warning, health level and the monitored range are those with both off, and
     clear_distance is never longer."""
     frames = [synthetic_tunnel_frame(rng=np.random.default_rng(20 + k),
                                      specs=[ObstacleSpec(kind="box", size=(0.3, 0.3, 0.3), distance=70.0 - 1.5 * k)])[0]
               for k in range(6)]
+    off = DetectorConfig()
+    off.health.clear_cap_thin = False                # both on by default since 27.09: the baseline pins them off
+    off.health.clear_cap_persist = 0
     on = DetectorConfig()
     on.health.clear_cap_thin = True
     on.health.clear_cap_persist = 3
-    a, b = _run(DetectorConfig(), frames), _run(on, frames)
-    for x, y in zip(a, b):
-        assert (x.obstacle, x.warning, x.health["level"], x.health["decision_level"]) == \
-               (y.obstacle, y.warning, y.health["level"], y.health["decision_level"])
-        assert [d.to_dict() for d in x.detections] == [d.to_dict() for d in y.detections]
-        assert x.health["monitored_range"] == y.health["monitored_range"]
-        assert y.clear_distance <= x.clear_distance + 1e-9
+    a = _run(off, frames)
+    for b in (_run(on, frames), _run(DetectorConfig(), frames)):   # k = 3 and the shipped k = 4
+        for x, y in zip(a, b):
+            assert (x.obstacle, x.warning, x.health["level"], x.health["decision_level"]) == \
+                   (y.obstacle, y.warning, y.health["level"], y.health["decision_level"])
+            assert [d.to_dict() for d in x.detections] == [d.to_dict() for d in y.detections]
+            assert x.health["monitored_range"] == y.health["monitored_range"]
+            assert y.clear_distance <= x.clear_distance + 1e-9

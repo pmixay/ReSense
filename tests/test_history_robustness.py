@@ -3,8 +3,8 @@ which frames the node happened to process - the zone vote over a minimum number 
 (``tracking.zone_min_votes``), the approach allowance of the association gate along the track only
 (``tracking.gate_along_only``), a STOP started only on a hit inside the gauge
 (``tracking.start_clean``), the column width of the body (``cluster.column_width_trim``) and the
-bounded disagreement hold of the axis trust (``track.axis_disagree_hold``). Every default keeps the
-earlier behaviour."""
+bounded disagreement hold of the axis trust (``track.axis_disagree_hold``). ``gate_along_only`` and
+``column_width_trim`` are on since 27.09; the other defaults keep the earlier behaviour."""
 from __future__ import annotations
 
 import numpy as np
@@ -23,10 +23,12 @@ def _cluster(x: float, y: float = 0.0, zone: str = "gauge", n_gauge: int = 20) -
                    score=1.0, zone=zone, n_gauge=n_gauge if zone == "gauge" else 0)
 
 
-def test_defaults_keep_the_earlier_behaviour():
+def test_shipped_defaults_of_27_09():
+    # shipped: the along-track gate and the column body width; the vote minimum, start_clean and the
+    # axis hold stay off (they cost set F / set O positives or monitored range, docs/QUALITY_CYCLE_2026-09-27.md)
     t, k, c = TrackingConfig(), TrackConfig(), ClusterConfig()
-    assert t.zone_min_votes == 0 and t.gate_along_only is False and t.start_clean is False
-    assert k.axis_disagree_hold == 0 and c.column_width_trim == 0.0
+    assert t.zone_min_votes == 0 and t.gate_along_only is True and t.start_clean is False
+    assert k.axis_disagree_hold == 0 and c.column_width_trim == 0.05 and c.column_width_trim_min_cut == 0.25
 
 
 def test_zone_vote_counts_a_minimum_number_of_hits():
@@ -49,7 +51,7 @@ def _one_match(cfg: TrackingConfig, first: Cluster, second: Cluster, dt: float =
 
 
 def test_gate_along_only_keeps_the_approach_but_not_a_jump_across_the_track():
-    base = TrackingConfig()
+    base = TrackingConfig(gate_along_only=False)
     along = TrackingConfig(gate_along_only=True)
     # gate at 50 m: 1.5 + 0.02 * 50 = 2.5 m, approach allowance 25 m/s x 0.1 s = 2.5 m
     near_4m = (_cluster(50.0), _cluster(46.0))           # 4 m nearer, straight ahead: an approach
@@ -99,7 +101,7 @@ def _column_blob(fragment: bool) -> tuple:
 
 
 def test_column_width_of_the_body_not_of_a_joined_fragment():
-    cfg = ClusterConfig()
+    cfg = ClusterConfig(column_width_trim=0.0)
     trim = ClusterConfig(column_width_trim=0.05)
     b, dy, h = _column_blob(fragment=False)
     lat = float(dy.mean())
@@ -109,6 +111,17 @@ def test_column_width_of_the_body_not_of_a_joined_fragment():
     assert b.size[1] > cfg.column_max_width             # the box is 1.1 m wide
     assert _advisory_reason(b, 60.0, lat, "gauge", dy, h, cfg, 1e9, None) != "column"
     assert _advisory_reason(b, 60.0, lat, "gauge", dy, h, trim, 1e9, None) == "column"
+
+
+def test_column_width_trim_leaves_a_dense_body_its_width():
+    rng = np.random.default_rng(2)
+    n = 400                                             # a dense 1.05 m wide, 2.8 m tall body: tails 0.1 m
+    pts = np.column_stack([40.0 + rng.uniform(0, 0.4, n), rng.uniform(0.35, 1.4, n), rng.uniform(0.0, 2.8, n)])
+    b = _Blob.of(pts, np.arange(n), n)
+    on, off = ClusterConfig(column_width_trim=0.05), ClusterConfig(column_width_trim=0.0)
+    lat = float(pts[:, 1].mean())
+    assert (_advisory_reason(b, 40.0, lat, "gauge", pts[:, 1], pts[:, 2], on, 1e9, None)
+            == _advisory_reason(b, 40.0, lat, "gauge", pts[:, 1], pts[:, 2], off, 1e9, None))
 
 
 def test_column_width_trim_leaves_a_wide_object_wide():

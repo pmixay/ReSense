@@ -1,5 +1,5 @@
-"""Far scan lines as track evidence, gated by a consistent approach (27.09, P5 range; off by default:
-``tracking.thin_far_min_distance`` 0).
+"""Far scan lines as track evidence, gated by a consistent approach (27.09, P5 range; on by default
+since 27.09: ``tracking.thin_far_min_distance`` 60, ``cluster.weak_min_points`` 4; 0 = off).
 
 Far away an object inside the envelope is often a single scan line there (the organizers' plank
 across the rails at 85-100 m, the lower edge of the box at the envelope top at 100-120 m): flatter
@@ -13,11 +13,15 @@ standing train: no approach) or jumps with the pitch (no line).
 """
 from __future__ import annotations
 
+from pathlib import Path
+
 import numpy as np
 
 from resense.clustering import Cluster
 from resense.config import DetectorConfig, TrackingConfig
 from resense.tracking import Tracker
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def _cl(x: float, thin: bool = True, n_gauge: int = 6, zone: str = "gauge", lateral: float = 0.0) -> Cluster:
@@ -44,9 +48,10 @@ def _run(xs, cfg=None, thin=True, n_gauge=6):
     return out
 
 
-def test_default_off_and_yaml_off():
-    assert TrackingConfig().thin_far_min_distance == 0.0
-    assert DetectorConfig.from_yaml("configs/default.yaml").tracking.thin_far_min_distance == 0.0
+def test_shipped_default_and_both_yaml():
+    for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
+                DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
+        assert cfg.tracking.thin_far_min_distance == 60.0 and cfg.cluster.weak_min_points == 4
 
 
 def test_off_scan_lines_never_start_a_track():
@@ -116,9 +121,9 @@ def test_scan_line_continues_an_approaching_normal_track():
     assert rep[4] and all(rep[4:])
 
 
-def test_detector_default_run_unchanged_by_the_new_keys():
+def test_off_run_unchanged_by_the_new_keys():
     # the keys only act when thin_far_min_distance > 0 (the approach history is not even recorded)
-    tr = Tracker(TrackingConfig())
+    tr = Tracker(TrackingConfig(thin_far_min_distance=0.0))
     tr.update([_cl(80.0, thin=False)], ego_shift=0.0, frame_dt=0.1)
     assert tr.tracks[0].approach == [] and tr.tracks[0].thin_hist == []
 
@@ -137,7 +142,8 @@ def test_weak_cluster_kept_only_when_enabled_and_far_enough():
     inten = np.full(4, 30.0, np.float32)
     dy, h, ig = pts[:, 1].copy(), pts[:, 2].copy(), np.ones(4, bool)
     assert find_clusters(pts, inten, dy, h, ig, ccfg) == []                     # under min_points 5: dropped
-    assert find_clusters(pts, inten, dy, h, ig, ccfg, weak_from=60.0) == []     # weak_min_points 0: off
+    off = replace(ccfg, weak_min_points=0)                                       # on (4) since 27.09
+    assert find_clusters(pts, inten, dy, h, ig, off, weak_from=60.0) == []      # weak_min_points 0: off
     on = replace(ccfg, weak_min_points=4)
     out = find_clusters(pts, inten, dy, h, ig, on, weak_from=60.0)
     assert len(out) == 1 and out[0].weak and out[0].zone == "gauge"
