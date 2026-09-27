@@ -341,7 +341,7 @@ class TrackingConfig:
     # doubt_extra_hits more frames; never a veto, never within doubt_near
     doubt_model: str = "track_opinion.json"          # JSON tree ensemble, a file name in resense/models/ (track_opinion.json) or a path; "" = off
     doubt_extra_hits: int = 10      # extra matched frames asked of a doubtful track; 0 = off
-    doubt_threshold: float = 0.0222   # opinion (probability of a real object) below which a track is doubtful
+    doubt_threshold: float = 0.015    # opinion (probability of a real object) below which a track is doubtful: a 2x margin below the highest threshold that delays no held-out synthetic sequence (0.03)
     doubt_near: float = 25.0       # m, a track whose cluster is this near is never delayed
     doubt_sticky: bool = True     # the opinion at the onset decides (a withheld track is released by the extra frames or doubt_near only)
     doubt_body_height: float = 1.0  # m (0 = off): a track whose cluster stands at least this tall ...
@@ -352,7 +352,7 @@ class TrackingConfig:
     # never makes a track. A scan line of the bed or the vault is fixed in the sensor frame, or jumps
     # with the pitch (0.05 deg moves it ~4 m at 100 m); a static object approaches at the train's
     # speed, frame after frame on a line.
-    thin_far_min_distance: float = 60.0  # m; > 0: a scan line at least this far, inside the strict gauge (zone gauge) with thin_far_min_voxels strict voxels and overlapping no other cluster of the frame, may start and continue a track; a track ever matched by such a hit becomes a STOP only while it approaches (approach_*): not reported before it is not reported, reported as advisory it stays advisory; a STOP in the previous frame keeps the usual rules
+    thin_far_min_distance: float = 60.0  # m; > 0: a scan line at least this far, inside the strict gauge (zone gauge) with thin_far_min_voxels strict voxels and overlapping no other cluster of the frame, may start and continue a track; while the gauge vote of a track needs such hits, the track becomes a STOP only while it approaches (approach_*) and is reported as advisory otherwise, never hidden; a track whose clean hits alone vote gauge, and a STOP in the previous frame, keep the usual rules
     thin_far_min_voxels: int = 4        # strict-envelope voxels such a scan line needs
     approach_hits: int = 5              # the last hits whose distances are fitted by a line in sensor time
     approach_min_speed: float = 2.0     # m/s the fitted line must approach at (and at most ego_speed_max)

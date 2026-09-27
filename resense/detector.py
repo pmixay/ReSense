@@ -524,7 +524,7 @@ class Detector:
                                 dy_alt=dy_alt, keep_thin=keep_thin,
                                 weak_from=cfg.tracking.thin_far_min_distance if cfg.cluster.weak_min_points > 0 else 0.0)
         if keep_thin:
-            # 26.09 (tracking.stop_keep_thin, off by default): the clusters flatter than min_height go
+            # 26.09 (tracking.stop_keep_thin, on since 26.09): the clusters flatter than min_height go
             # to the tracker only, to continue a track (Tracker._continue_thin); no other stage sees them
             # (27.09: also tracking.thin_far_min_distance, Detector._far_thin)
             self._thin = [c for c in clusters if c.thin or c.weak]

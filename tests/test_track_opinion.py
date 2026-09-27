@@ -203,3 +203,21 @@ def test_the_extra_frames_are_a_budget_for_the_track_life(tmp_path):
         withheld += int(t.withheld)
     assert t.reported and t.zone == "gauge"
     assert 0 < withheld <= 4 and t.doubt >= 4
+
+
+def test_a_withheld_track_is_released_when_its_predicted_distance_reaches_doubt_near(tmp_path):
+    """Over a missed frame the track is reported at its predicted distance; within doubt_near it is
+    no longer withheld there either (the judges' round 2: 'doubt' at a predicted 24.7 m)."""
+    m = _stump(tmp_path, "low.json", 1000.0, -5.0, -5.0)
+    base, _ = _run(40.0, 20, **OFF)
+    first = next(i for i, (r, z) in enumerate(base) if r and z == "gauge")
+    x_on = 40.0 - first
+    tr = Tracker(TrackingConfig(doubt_model=m, doubt_extra_hits=10, doubt_near=x_on - 0.5))
+    out = []
+    for k in range(first + 3):
+        cl = [] if k == first + 1 else [_cl(40.0 - k)]         # missed one frame after the onset
+        tr.update(cl, ego_shift=1.0, frame_dt=0.1)
+        t = tr.tracks[0]
+        out.append((t.reported, t.zone, t.misses))
+    assert out[first][:2] == (True, "warning")                  # withheld at the onset (x_on)
+    assert out[first + 1] == (True, "gauge", 1)                 # missed, predicted x_on - 1 <= doubt_near

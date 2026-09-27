@@ -31,11 +31,11 @@ yet reported whose previous hit was an obstacle cluster inside the gauge. None o
 track.
 With ``thin_far_min_distance`` > 0 (27.09, P5 range, on at 60 m) far scan lines inside the
 gauge (and with ``cluster.weak_min_points`` far clusters under the point-count bar) may start and
-continue tracks; a track that was ever matched by such a hit becomes an obstacle (STOP) only
-while its distances lie on a line in sensor time that approaches (``approach_*``): a scan line of
-the bed or the vault is fixed in the sensor frame or jumps with the pitch, a static object ahead
-approaches at the train's speed. Not reported before, it is not reported; reported as advisory, it
-stays advisory; a STOP in the previous frame keeps the usual rules.
+continue tracks; while the gauge vote of a track needs such hits, the track becomes an obstacle
+(STOP) only while its distances lie on a line in sensor time that approaches (``approach_*``) and
+is reported as advisory otherwise, never hidden: a scan line of the bed or the vault is fixed in
+the sensor frame or jumps with the pitch, a static object ahead approaches at the train's speed.
+A track whose clean hits alone vote gauge, and a STOP in the previous frame, keep the usual rules.
 """
 from __future__ import annotations
 
@@ -231,7 +231,7 @@ class Tracker:
         observed time for the ``confirm_time_s`` rule (without it persistence counts hits only).
         ``low_ok`` False (``lowobj.min_model_age``, 26.09, off) keeps a low track that was not
         reported in the previous frame from being reported in this one. ``rail_within`` > 0
-        (``lowobj.rail_start_within``, 26.09, off by default) keeps a low track that was not
+        (``lowobj.rail_start_within``, 26.09, on at 4 m) keeps a low track that was not
         reported in the previous frame from being reported while its cluster of this frame is
         rail geometry (``Cluster.rail_line``, ``lowobj.mark_rail_line``) and it was never matched
         at or beyond ``rail_within``: the rail heads just ahead of a standing train. A track already
@@ -352,11 +352,10 @@ class Tracker:
         for t in self.tracks:
             q = self._qualifies(t)
             if c.thin_far_min_distance > 0:
-                # 27.09: a track that ever used far scan-line / weak evidence becomes a STOP only while it
-                # approaches: not reported before, it is not reported; reported as advisory, it stays
-                # advisory (the ride: weak hits turned the zone vote of an advisory fixture ahead of a
-                # standing train into a STOP); a STOP in the previous frame keeps the usual rules (taking
-                # it down split a STOP episode of the ride)
+                # 27.09: a track whose gauge vote needs far scan-line / weak evidence becomes a STOP only
+                # while it approaches, advisory otherwise (the ride: weak hits turned the zone vote of an
+                # advisory fixture ahead of a standing train into a STOP); a STOP in the previous frame
+                # keeps the usual rules (taking it down split a STOP episode of the ride)
                 block = (t.far_evidence and not t.was_stop and not self._approaching(t)
                          and not self._clean_gauge(t))
                 # 27.09 (judges' review): the block holds the track advisory, it never hides it, and it
@@ -408,12 +407,12 @@ class Tracker:
             elif t.stop_prev and not t.withheld:
                 pass                        # already a STOP: unchanged
             elif t.misses > 0:
-                if t.withheld:              # held over a miss: the budget still runs
+                if t.withheld and self._doubt_exempt(t):
+                    t.withheld = False      # reached doubt_near (or the body range) while missed
+                elif t.withheld:            # held over a miss: the budget still runs
                     t.doubt += 1
                     t.withheld = t.doubt <= c.doubt_extra_hits
-            elif t.last is None or t.last.distance <= c.doubt_near or not t.obs or (
-                    c.doubt_body_height > 0 and t.last.distance <= c.doubt_body_range
-                    and t.last.height_max - t.last.height_min >= c.doubt_body_height):
+            elif not t.obs or self._doubt_exempt(t):
                 t.withheld = False
             elif not (c.doubt_sticky and t.withheld) and (
                     self.opinion.prob(track_features(t.obs, t.hits, t.hit_fraction)) >= c.doubt_threshold):
@@ -422,6 +421,17 @@ class Tracker:
                 t.doubt += 1
                 t.withheld = t.doubt <= c.doubt_extra_hits
             t.stop_prev = t.reported and t.zone == "gauge"
+
+    def _doubt_exempt(self, t: Track) -> bool:
+        """27.09: ``t`` may not be withheld by the opinion: its distance (the predicted one over a
+        missed frame) is within ``doubt_near``, or its last cluster stands at least
+        ``doubt_body_height`` tall within ``doubt_body_range``."""
+        c = self.cfg
+        if t.last is None:
+            return True
+        d = float(t.last.distance) + (float(t.centroid[0] - t.last.centroid[0]) if t.misses > 0 else 0.0)
+        return d <= c.doubt_near or (c.doubt_body_height > 0 and d <= c.doubt_body_range
+                                     and t.last.height_max - t.last.height_min >= c.doubt_body_height)
 
     def _continue_thin(self, thin: List[Cluster], matched_t: np.ndarray, ego_shift: float, step: float,
                        dt: float, zw: int, hw: int, nk: int = 0, kdt: float = 0.0) -> None:

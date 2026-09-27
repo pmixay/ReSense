@@ -109,11 +109,19 @@ def test_mixed_track_needs_the_approach_only_to_start_a_report():
     for _ in range(8):
         tr.update([_cl(90.0, thin=False)], ego_shift=0.0, frame_dt=0.1, far_thin=[])
     assert any(t.reported and t.zone == "gauge" for t in tr.tracks)
-    # while the vote needs the scan-line hits it is held advisory, reported, never hidden
+    # while the vote needs the scan-line hits it is held advisory, reported, never hidden: scan lines
+    # only, and scan lines followed by a few clean hits (a person walking up to a standing train)
     tr = Tracker(cfg)
     for _ in range(8):
         tr.update([], ego_shift=0.0, frame_dt=0.1, far_thin=[_cl(90.0)])
     assert all(not (t.reported and t.zone == "gauge") for t in tr.tracks)
+    assert any(t.reported and t.zone == "warning" and t.approach_block for t in tr.tracks)
+    tr = Tracker(cfg)
+    for _ in range(5):
+        tr.update([], ego_shift=0.0, frame_dt=0.1, far_thin=[_cl(90.0)])
+    for _ in range(3):
+        tr.update([_cl(90.0, thin=False)], ego_shift=0.0, frame_dt=0.1, far_thin=[])
+        assert any(t.reported and t.zone == "warning" for t in tr.tracks)
 
 
 def test_scan_line_continues_an_approaching_normal_track():

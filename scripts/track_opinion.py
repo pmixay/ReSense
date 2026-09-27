@@ -264,13 +264,20 @@ def cmd_train(a):
     feats = [FEATURES[i] for i in cols]
     Xn, Pn, Mn = load(a.neg)
     Xp, Pp, Mp = load(a.pos)
+    # --exclude: groups left out of everything (a fold of the cross-fitted ride measurement: the ride
+    # pieces it is measured on, and the synthetic sequences injected into them, are never seen)
+    excl = {g for g in a.exclude.split(",") if g}
+    if excl:
+        kn = np.array([ride_group(p) not in excl for p in Pn], dtype=bool)
+        kp = np.array([ride_group(p) not in excl for p in Pp], dtype=bool)
+        Xn, Pn, Mn, Xp, Pp, Mp = Xn[kn], Pn[kn], Mn[kn], Xp[kp], Pp[kp], Mp[kp]
     # training rows: the rows the opinion is asked about - STOP candidates by the rules beyond the near range
     tn = (Mn[:, 2] > 0) & ((Mn[:, 4] > a.near) | a.neg_all_range)
     tp = (Mp[:, 2] > 0) & (Mp[:, 4] > a.near) & (Mp[:, 6] == 1)
     X = np.concatenate([Xn[tn], Xp[tp]])[:, cols]
     y = np.r_[np.zeros(int(tn.sum())), np.ones(int(tp.sum()))].astype(int)
     G = np.array([ride_group(p) for p in np.r_[Pn[tn], Pp[tp]]])
-    rep = {"features": feats, "near": a.near, "train_rows": {"negative": int((y == 0).sum()), "positive": int(y.sum()),
+    rep = {"features": feats, "near": a.near, "excluded": sorted(excl), "train_rows": {"negative": int((y == 0).sum()), "positive": int(y.sum()),
                                                              "positive_sequences": len(set(Pp[tp]))},
            "groups": sorted(set(G))}
     # grouped CV: each ride piece (with the objects injected into it) / empty recording held out
@@ -361,6 +368,7 @@ def main():
     t.add_argument("--neg-all-range", action="store_true", help="negatives: STOP rows at every range (not only beyond --near)")
     t.add_argument("--near", type=float, default=30.0)
     t.add_argument("--drop", default="")
+    t.add_argument("--exclude", default="", help="groups (new_data:K, a recording) left out of training and simulation")
     t.add_argument("--trees", type=int, default=60)
     t.add_argument("--depth", type=int, default=3)
     t.add_argument("--lr", type=float, default=0.1)

@@ -210,7 +210,7 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
     counts it, and an oversize cluster whose part in ``in_gauge`` is too long falls back to its part in
     it (safety review of 26.09: the union took in a long edge line beside an object and dropped both).
 
-    ``keep_thin`` (26.09, ``tracking.stop_keep_thin``, off by default): a corridor cluster flatter
+    ``keep_thin`` (26.09, ``tracking.stop_keep_thin``, on since 26.09): a corridor cluster flatter
     than ``min_height`` is not dropped but returned with ``thin`` set (every other test applied as
     usual); the caller hands such clusters to the tracker only to continue an obstacle track (one
     scan line of an object whose part inside the envelope is thinner than the ring spacing).
