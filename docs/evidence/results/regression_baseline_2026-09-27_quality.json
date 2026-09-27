@@ -1,9 +1,9 @@
 {
  "schema": "resense-regression-gate-v1",
- "created": "2026-09-27T17:31:57+00:00",
+ "created": "2026-09-27T17:49:39+00:00",
  "code": {
-  "commit": "0a14248f14988a2204c8836e7c97aa55fdcc68e4",
-  "branch": "integ/quality-20260927",
+  "commit": "25498c1cf5b0042605308054616389aba20b36f2",
+  "branch": "claude/p1-p2-supported-playback-20260927",
   "version": "1.0.0",
   "uncommitted_detector_changes": []
  },
@@ -15,13 +15,13 @@
  },
  "native": {
   "path": "native",
-  "status": "native (_resense_native.so)"
+  "status": "native (_resense_native.cpython-311-x86_64-linux-gnu.so)"
  },
  "run": {
   "cache": "/data/cache",
   "jobs": 4,
   "nominal_stamps": false,
-  "wall_s": 1152.2,
+  "wall_s": 256.1,
   "machine": {
    "cpus": 4,
    "platform": "Linux-6.18.44-fc-v42-x86_64-with-glibc2.39",
@@ -961,48 +961,48 @@
  "latency_ms": {
   "note": "timing_ms.total per frame; informational, never gated: the workers run in parallel on a shared machine (clean timing: EXPERIMENTS §3)",
   "doubleT_obstacle": {
-   "mean_ms": 24.5,
+   "mean_ms": 24.2,
    "p95_ms": 34.2,
-   "max_ms": 50.5
+   "max_ms": 48.3
   },
   "doubleT_platform": {
-   "mean_ms": 28.2,
-   "p95_ms": 42.2,
-   "max_ms": 89.1
+   "mean_ms": 26.2,
+   "p95_ms": 38.3,
+   "max_ms": 96.4
   },
   "roundT_doubleT": {
-   "mean_ms": 23.3,
-   "p95_ms": 32.7,
-   "max_ms": 45.6
+   "mean_ms": 21.4,
+   "p95_ms": 30.5,
+   "max_ms": 39.6
   },
   "roundT_pressureGate_roundT": {
-   "mean_ms": 20.4,
-   "p95_ms": 28.5,
-   "max_ms": 40.0
+   "mean_ms": 19.2,
+   "p95_ms": 27.1,
+   "max_ms": 30.0
   },
   "roundT_squareT_pressureGate_squareT": {
-   "mean_ms": 19.2,
-   "p95_ms": 26.9,
-   "max_ms": 51.1
+   "mean_ms": 18.3,
+   "p95_ms": 26.6,
+   "max_ms": 33.7
   },
   "squareT_platform_squareT_switch": {
-   "mean_ms": 20.4,
-   "p95_ms": 26.6,
-   "max_ms": 37.7
+   "mean_ms": 18.8,
+   "p95_ms": 23.1,
+   "max_ms": 34.3
   },
   "cloud_with_fake_obj": {
-   "mean_ms": 23.7,
-   "p95_ms": 30.9,
-   "max_ms": 4339.6
+   "mean_ms": 18.7,
+   "p95_ms": 26.0,
+   "max_ms": 59.4
   },
   "new_data": {
-   "mean_ms": 22.4,
-   "p95_ms": 33.2,
-   "max_ms": 130.7
+   "mean_ms": 20.9,
+   "p95_ms": 30.3,
+   "max_ms": 102.2
   }
  },
  "gate": {
-  "baseline": "/data/wt/integ/docs/evidence/results/regression_baseline_2026-09-26_ride_p3d.json",
+  "baseline": "docs/evidence/results/regression_baseline_2026-09-26_ride_p3d.json",
   "baseline_commit": "fa18832f1636c48d0137842e2bd3b857bc70aef7",
   "baseline_config_sha256": "d2c8ab8d70954956d71c50cdc074962a3037e7ea2bc0e09568663ab34af53d6e",
   "allow": [],

@@ -1,7 +1,7 @@
 {
  "schema": "resense-history-stress-v1",
  "sets": [],
- "wall_s": 184.8,
+ "wall_s": 123.0,
  "totals": {
   "histories": 33,
   "stop_frames": 154,

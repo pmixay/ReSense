@@ -18,7 +18,7 @@ merged, screened together, and switched on. Raw material:
 ## Result
 
 The full gate of the shipped defaults ([`regression_gate_2026-09-27_quality.json`](evidence/results/regression_gate_2026-09-27_quality.json),
-measured at `0a14248`, no overrides) passes against the P3d baseline with no waiver, no missing
+measured at `25498c1`, no overrides) passes against the P3d baseline with no waiver, no missing
 row and no gated metric worse; the monitoring-cost limits hold (at most 3.3 pp newly uncertain
 frames, median monitored range at least 96.0 % of P3d on every empty recording and the ride).
 

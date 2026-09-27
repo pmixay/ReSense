@@ -8,8 +8,8 @@
         "frames": 201
       },
       "candidate": {
-        "path": "/data/work/final1/gate/doubleT_obstacle.jsonl",
-        "sha256": "62da455361a75c388d1006c9b4445e6809fac0e7fac0270215825f59c128a775",
+        "path": "/data/work/final2/gate/doubleT_obstacle.jsonl",
+        "sha256": "685351438cfc8e2e81dd3ea1be2a2a78ad2af73204ca6eb5547294016e0d397b",
         "frames": 201
       }
     },
@@ -20,8 +20,8 @@
         "frames": 345
       },
       "candidate": {
-        "path": "/data/work/final1/gate/doubleT_platform.jsonl",
-        "sha256": "866319301592c66c9e625a722324335c3d084b9ebe999ff3e3f925c633d8d18b",
+        "path": "/data/work/final2/gate/doubleT_platform.jsonl",
+        "sha256": "39c92e8139f31571c22b31a8cd31a8172106780d75399887bf8776547996281c",
         "frames": 345
       }
     },
@@ -32,8 +32,8 @@
         "frames": 252
       },
       "candidate": {
-        "path": "/data/work/final1/gate/roundT_doubleT.jsonl",
-        "sha256": "d00fd77fb4979053f0f664b247479c5df2e0116e0854888064bb056c7d0d9817",
+        "path": "/data/work/final2/gate/roundT_doubleT.jsonl",
+        "sha256": "92f515fa18f2fb639ef1f0ece61d0c832c25597ea522393d9e992908f01abd23",
         "frames": 252
       }
     },
@@ -44,8 +44,8 @@
         "frames": 268
       },
       "candidate": {
-        "path": "/data/work/final1/gate/roundT_pressureGate_roundT.jsonl",
-        "sha256": "55a0d03f84d56c25b0332a5b7a52f233e6aa2f2f15844d49ed7f49639c69a9fd",
+        "path": "/data/work/final2/gate/roundT_pressureGate_roundT.jsonl",
+        "sha256": "9d3f9c3406ae108d1c2ab31930c824f587d15d82b439e49bfe8f244b737c9027",
         "frames": 268
       }
     },
@@ -56,8 +56,8 @@
         "frames": 545
       },
       "candidate": {
-        "path": "/data/work/final1/gate/roundT_squareT_pressureGate_squareT.jsonl",
-        "sha256": "4e74abb12dd5d9ed181263ac087f9099f5559367c7b26adf4e7b57cf12671640",
+        "path": "/data/work/final2/gate/roundT_squareT_pressureGate_squareT.jsonl",
+        "sha256": "ba615927073d61a93061b0f80b5abd8a76a97544aa38408f958c394665d92ff8",
         "frames": 545
       }
     },
@@ -68,8 +68,8 @@
         "frames": 877
       },
       "candidate": {
-        "path": "/data/work/final1/gate/squareT_platform_squareT_switch.jsonl",
-        "sha256": "df4956ecb2646f7d79e1e77ed2c706db6e26973b47106e154125702afee2feac",
+        "path": "/data/work/final2/gate/squareT_platform_squareT_switch.jsonl",
+        "sha256": "767b42cbe12f6f6c0be1c17a0acc7d79726744b45b4d89bf6766505e23f1adf9",
         "frames": 877
       }
     },
@@ -80,8 +80,8 @@
         "frames": 1510
       },
       "candidate": {
-        "path": "/data/work/final1/gate/cloud_with_fake_obj.jsonl",
-        "sha256": "fcc63319352b5cb0a0fb1338d7ad1d25a7f6baec07a6fdd99df8967d9e677b76",
+        "path": "/data/work/final2/gate/cloud_with_fake_obj.jsonl",
+        "sha256": "7e01d346fbf51f26b6d75267474a622820b546a18d7b40eb48496d7c960c8f3b",
         "frames": 1510
       }
     },
@@ -92,8 +92,8 @@
         "frames": 1409
       },
       "candidate": {
-        "path": "/data/work/final1/gate/new_data_0.jsonl",
-        "sha256": "2d36e02c015dea4d5de039365dc6dcb0cf654d335dfc8e091cba4f555e2fa6af",
+        "path": "/data/work/final2/gate/new_data_0.jsonl",
+        "sha256": "e7b3daf097827cd3389afb3794c56ca47b2cb41352d7ea26133c836c780c59b2",
         "frames": 1409
       }
     },
@@ -104,8 +104,8 @@
         "frames": 1409
       },
       "candidate": {
-        "path": "/data/work/final1/gate/new_data_1.jsonl",
-        "sha256": "3cbe46c80a1ad71d8f30463c3a43802d203468b01771cf55e01df0b079469cad",
+        "path": "/data/work/final2/gate/new_data_1.jsonl",
+        "sha256": "d21dc75c036f4dbc55c92b2dec4981757870c56e9d7b158c1a29fe749dd7c476",
         "frames": 1409
       }
     },
@@ -116,8 +116,8 @@
         "frames": 1409
       },
       "candidate": {
-        "path": "/data/work/final1/gate/new_data_2.jsonl",
-        "sha256": "1866f3f31e74bc9bb22d3dfe01219a495f4fabfd19912398ac619dcf78cb9ebf",
+        "path": "/data/work/final2/gate/new_data_2.jsonl",
+        "sha256": "0403e0016d1c708c961f0d36ba1495cd8a99c37e176c639be3ef0a38c20fe9f7",
         "frames": 1409
       }
     },
@@ -128,8 +128,8 @@
         "frames": 1409
       },
       "candidate": {
-        "path": "/data/work/final1/gate/new_data_3.jsonl",
-        "sha256": "fe6af282df0db6d37428aa836ee6d5e5c837647661aaf3c366df791f1cc65431",
+        "path": "/data/work/final2/gate/new_data_3.jsonl",
+        "sha256": "8ba88cc90846f663914cec029bbb3b1c5462aa859e9e9f6e54a80c240ec4842b",
         "frames": 1409
       }
     },
@@ -140,8 +140,8 @@
         "frames": 1409
       },
       "candidate": {
-        "path": "/data/work/final1/gate/new_data_4.jsonl",
-        "sha256": "14f04a9c136a208c13373540f1e00c39f26a7f34c42e5991b09b18ce1c7d8530",
+        "path": "/data/work/final2/gate/new_data_4.jsonl",
+        "sha256": "b53968086ad1d755782ad5aad3d11ef63994c53381c718f62d1d704ebfb3f2d9",
         "frames": 1409
       }
     },
@@ -152,8 +152,8 @@
         "frames": 1409
       },
       "candidate": {
-        "path": "/data/work/final1/gate/new_data_5.jsonl",
-        "sha256": "aea94b40e55a438d21a93a32e311e946bee58e8604796627ae0e3eef65519883",
+        "path": "/data/work/final2/gate/new_data_5.jsonl",
+        "sha256": "2a5d6da8810b7fb4c08a69247516d28abe93e5ad257833b998868303d6279b3b",
         "frames": 1409
       }
     },
@@ -164,8 +164,8 @@
         "frames": 1409
       },
       "candidate": {
-        "path": "/data/work/final1/gate/new_data_6.jsonl",
-        "sha256": "ab9626428c0616910b74e24b53d589142b7dd04506d28f749b5bcab0c056e144",
+        "path": "/data/work/final2/gate/new_data_6.jsonl",
+        "sha256": "64b3af6571e0e02c98d1d5d5a43ac516b78e287716f13a2ed896c68a7722b48a",
         "frames": 1409
       }
     },
@@ -176,8 +176,8 @@
         "frames": 1408
       },
       "candidate": {
-        "path": "/data/work/final1/gate/new_data_7.jsonl",
-        "sha256": "976aac86ee5b8880d0eacd98e283f59a142f124cfae5019f730d0f15a65e24c2",
+        "path": "/data/work/final2/gate/new_data_7.jsonl",
+        "sha256": "874a5ca8e4ac55d34db39fde1f90aa7bb332cdedc40046467da501fd108c4a5f",
         "frames": 1408
       }
     }

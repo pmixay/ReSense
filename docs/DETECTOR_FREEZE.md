@@ -4,7 +4,7 @@
 reference. Its seal [`detector_freeze_2026-09-27.json`](evidence/detector_freeze_2026-09-27.json)
 covers 31 files (the learned track opinion `resense/models/track_opinion.json` included) against
 the full gate [`regression_gate_2026-09-27_quality.json`](evidence/results/regression_gate_2026-09-27_quality.json)
-of `0a14248`: PASS against the P3d baseline with no waiver, missing row or worse gated metric,
+of `25498c1`: PASS against the P3d baseline with no waiver, missing row or worse gated metric,
 on the default parameters without overrides. That gate is the new regression baseline
 ([`regression_baseline_2026-09-27_quality.json`](evidence/results/regression_baseline_2026-09-27_quality.json)).
 `python scripts/detector_freeze.py verify` (CI job `params-in-sync`) checks the new seal. No release

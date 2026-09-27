@@ -2,9 +2,9 @@
 
 > **Purpose:** what ReSense does, how the jury runs it, what to look at, headline results.
 > **Audience:** jury, team · **Owner:** P1 · **Language:** EN, RU block «Кратко для жюри»
-> **Last verified:** 2026-09-26 night. Package 1.0.0; P3d detector baseline with node freshness
-> controls. **Status:** further detector work authorized; final freeze and release on hold.
-> [Current quality results and failed acceptance trial](docs/QUALITY_CYCLE_2026-09-26.md).
+> **Last verified:** 2026-09-27 evening. Package 1.0.0; the detector of the 27.09 quality cycle,
+> sealed ([`docs/DETECTOR_FREEZE.md`](docs/DETECTOR_FREEZE.md)), with node freshness controls.
+> **Status:** release on hold. [27.09 quality cycle: what changed, acceptance, limits](docs/QUALITY_CYCLE_2026-09-27.md).
 
 ЛЦТ 2026 · Кейс 05 · «Обнаружение посторонних объектов в тоннеле метро по данным 3D-лидара»
 (Московский транспорт / ГУП «Московский метрополитен»). Organizers' material:
@@ -179,6 +179,22 @@ The clear replay has zero alarms and p95 24 ms. Stock Fast DDS playback also pas
 recording has one false alarm within the existing allowance of two. Startup still skips frames;
 these timings exclude the player's disk preloading. [Raw evidence](docs/evidence/freeze_2026-09-26/README.md).
 
+**Detector quality cycle of 27.09** ([record](docs/QUALITY_CYCLE_2026-09-27.md)): the four open
+problems of 26.09 were attacked by five parallel experiments on one screen and the accepted
+candidates switched on: the envelope measured from the sensor axis near the train (the frame the
+organizers place objects in), a learned track opinion that asks doubtful far tracks for ~1 s more
+persistence (gradient-boosted trees, grouped held-out AUC 0.974, never a veto), monitored-range
+caps from persistent sparse evidence, the along-track association gate and the column body width,
+and far evidence for approaching tracks. Full gate PASS against P3d: ride false events / STOP
+episodes 45 / 38 → **21 / 22**, five empty recordings 13 / 16 → 9 / 8, the organizers' edge cube
+first STOP 5.2 → **35 m**, the edge box 10.3 → 18.3 m, the box at the envelope top 101 → 111 m,
+set O inside STOP frames 384 → 411, the real person 58 → 61 of 61 from frame 8, GO overclaims
+46 → 16, the captured history-dependent clear-run STOP gone. The pre-registered placement of the
+organizers' objects at new offsets on the empty recordings and the ride (not used for tuning):
+matched frames 544 → **723** of 2 458, paired controls 0. In-sample figures are marked as such
+in the record; the limits (the opinion's threshold at the edge of the held-out positives, the
+sensor-axis reference while organizer Q1 is open) are stated there.
+
 **Criteria judgement:** the new independent reviews and remaining gaps are in
 [the current scorecard](docs/SCORECARD.md#freeze-review-26-september-night).
 The current provisional combined estimate is **64/100**; the requested 75/100 is not met. P4's preregistered experiment finds the target
@@ -243,11 +259,11 @@ Headline results (kinds and placement modes: [`docs/README.md`](docs/README.md) 
 | metric | value | kind | date | source |
 |---|---|---|---|---|
 | false alarms, five obstacle-free bags (2 287 frames) | **13 events**, 58 alarm frames, 16 STOP episodes (14 / 60 / 17 before `tracking.column_hold` 2, 20 / 107 / 27 before the long overhead rule of 25.09) | real | 25.09 | EXPERIMENTS §1f, §3a |
-| false alarms, 20-minute 13 km ride (11 271 frames) | **45 events, 3.5 per km** (in-sample: the ride decided the rules of 25.09), 183 alarm frames, 38 STOP episodes (46 / 187 / 39 before `lowobj.rail_start_within` of 26.09, 46 / 197 / 39 before `tracking.column_hold` 2, 47 / 204 / 39 before the rule) | real | 25.09, 26.09 | EXPERIMENTS §1f, §3a, §1n |
+| false alarms, 20-minute 13 km ride (11 271 frames) | **21 events, 1.6 per km** since the 27.09 cycle (in-sample: the ride's pieces trained the track opinion's negatives; grouped held-out simulation 33), 85 alarm frames, 22 STOP episodes; before 27.09: **45 events, 3.5 per km** (in-sample: the ride decided the rules of 25.09), 183 alarm frames, 38 STOP episodes (46 / 187 / 39 before `lowobj.rail_start_within` of 26.09, 46 / 197 / 39 before `tracking.column_hold` 2, 47 / 204 / 39 before the rule) | real | 25.09, 26.09 | EXPERIMENTS §1f, §3a, §1n |
 | crossing person, `doubleT_obstacle` | STOP in **58 of 61** frames inside the envelope, first alarm frame 11 (0.3 s after entering), distance error ≤ 0.23 m | real | 24.09 | EXPERIMENTS §0 |
 | object lying across the rail (0.45 × 0.6 × 0.3 m) | **125 of the 126** frames after the person leaves it (124 before `calibration.keep_within_deg`, 25.09 round 2) | real | 24.09, 25.09 | EXPERIMENTS §0, §1i |
 | health warnings, `CAUTION` | warnings on 196 of 13 759 frames (1.4 %: stations, switches); `CAUTION` on 27–69 % of the frames of the empty bags, 41 % of the ride (re-measured 26.09 with the node's decision rule) | real | 24.09, 26.09 | EXPERIMENTS §0 |
-| organizers' synthetic objects (set O, 1 510 frames) | STOP for **8 of 8** in-envelope objects since the near escalation of 26.09 (6 of 8 before, 5 of them held; 5 of 8 before the hanging stage of 25.09): 2 × 2 m box from 98 m, plank across the rails 82 m, 0.3 m cubes from 43–53 m (the hanging one from 52.5 m since round 2 of 25.09, 34.0 m before), the 5 cm hanging object from 30.1 m (missed before 25.09), the 2 × 2 m box at the envelope top in **51 of 124 frames**, STOP on every frame from 101.3 m under the P3d STOP keep (the scorer's 90 % held-from field reads 111.4 m) (22 frames, held-from 23.9 m on P3c), the edge 2 × 2 m box from 10.3 m (6 frames), and the edge 0.3 m cube at 5.2 m (2 frames); STOP in **384 of 801** visible in-envelope object-frames, 6 false STOP frames on the outside 2 × 2 m box, 3 background alarm frames; set O has been inspected before and is not unseen validation | organizers' synthetic | 24.09, 25.09, 26.09 | [P4_AUDIT](docs/P4_AUDIT.md), EXPERIMENTS §1h, §1i, §1l, §1o |
+| organizers' synthetic objects (set O, 1 510 frames) | since 27.09: STOP in **411 of 801** visible in-envelope object-frames, the edge cube from **35.0 m** (18 frames), the edge box from 18.3 m (its track from ~28 m), the box at the envelope top from 111.4 m, the plank from 87.2 m, the floating cube from 55.8 m, 0 background frames, outside objects unchanged ([QUALITY_CYCLE_2026-09-27](docs/QUALITY_CYCLE_2026-09-27.md)); before 27.09: STOP for **8 of 8** in-envelope objects since the near escalation of 26.09 (6 of 8 before, 5 of them held; 5 of 8 before the hanging stage of 25.09): 2 × 2 m box from 98 m, plank across the rails 82 m, 0.3 m cubes from 43–53 m (the hanging one from 52.5 m since round 2 of 25.09, 34.0 m before), the 5 cm hanging object from 30.1 m (missed before 25.09), the 2 × 2 m box at the envelope top in **51 of 124 frames**, STOP on every frame from 101.3 m under the P3d STOP keep (the scorer's 90 % held-from field reads 111.4 m) (22 frames, held-from 23.9 m on P3c), the edge 2 × 2 m box from 10.3 m (6 frames), and the edge 0.3 m cube at 5.2 m (2 frames); STOP in **384 of 801** visible in-envelope object-frames, 6 false STOP frames on the outside 2 × 2 m box, 3 background alarm frames; set O has been inspected before and is not unseen validation | organizers' synthetic | 24.09, 25.09, 26.09 | [P4_AUDIT](docs/P4_AUDIT.md), EXPERIMENTS §1h, §1i, §1l, §1o |
 | long range, straight track | person first confirmed at **148 m** median (6 of 6), in ≥ 90 % of the frames of every 10 m band from 115 m (a "held from 149 m" of 24.09 counted the misses before the first confirmation, so it is not quoted); trolley 144 m; 1 m crate 111 m; 3 cm hanging cable 95 m, held only from ~50 m (4 of 6); the regression gate's run of the same set on the current evaluation script (25.09): person 151 m, held from 143 m | synthetic, legacy | 24.09, 25.09 | EXPERIMENTS §2d |
 | long range with a given train speed | person 167 m, crate 182 m (held only from 79 m) | synthetic, legacy | 24.09 | EXPERIMENTS §2d |
 | train speed | none is given (no odometry in the recordings); our LiDAR-only estimate is accurate (median error 0.06–0.08 m/s on 55–96 % of the moving frames), but even a perfect speed does not improve the organizers' check (no earlier first STOP, 6 → 17 false STOP frames on the box outside), so it stays off | real, organizers' synthetic | 24.09 | EXPERIMENTS §9 |
