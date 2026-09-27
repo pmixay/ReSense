@@ -31,10 +31,10 @@ yet reported whose previous hit was an obstacle cluster inside the gauge. None o
 track.
 With ``thin_far_min_distance`` > 0 (27.09, P5 range, off by default) far scan lines inside the
 gauge (and with ``cluster.weak_min_points`` far clusters under the point-count bar) may start and
-continue tracks; a track with such a hit among its last ``zone_window`` hits is reported only while
-its distances lie on a line in sensor time that approaches (``approach_*``): a scan line of the bed
-or the vault is fixed in the sensor frame or jumps with the pitch, a static object ahead approaches
-at the train's speed.
+continue tracks; a track with such a hit among its last ``zone_window`` hits starts to be reported
+only while its distances lie on a line in sensor time that approaches (``approach_*``): a scan line
+of the bed or the vault is fixed in the sensor frame or jumps with the pitch, a static object ahead
+approaches at the train's speed. A track already reported keeps the usual rules.
 """
 from __future__ import annotations
 
@@ -202,7 +202,12 @@ class Tracker:
         association is unchanged, so this can only withhold a report. ``thin``
         (``stop_keep_thin``, 26.09, off) are clusters flatter than ``cluster.min_height``: after the
         association of ``clusters`` they may continue a track that nothing matched
-        (:meth:`_continue_thin`), never start one."""
+        (:meth:`_continue_thin`), never start one. ``far_thin`` (``thin_far_min_distance``, 27.09,
+        off by default): far scan lines (and weak far clusters) inside the gauge that overlap no
+        cluster of ``clusters`` (the detector selects them); they continue unmatched tracks and start
+        new ones (:meth:`_far_thin`), and a track with such a hit among its last ``zone_window`` hits
+        starts to be reported only while it approaches (:meth:`_approaching`); a track reported in
+        the previous frame keeps the usual rules."""
         c = self.cfg
         # widen the gate by the distance a static object travels in the *measured* interval, so a
         # dropped frame (0.2-0.3 s gap in the node) does not throw a 17 m/s approach out of the gate
@@ -306,8 +311,11 @@ class Tracker:
         # a re-seed hold window (reseed; matched or not)
         for t in self.tracks:
             q = self._qualifies(t)
-            if q and c.thin_far_min_distance > 0 and any(t.thin_hist) and not self._approaching(t):
-                q = False               # 27.09: far scan-line evidence counts only for an approaching track
+            if (q and c.thin_far_min_distance > 0 and not t.reported and any(t.thin_hist)
+                    and not self._approaching(t)):
+                # 27.09: far scan-line / weak evidence starts a report only for an approaching track; a
+                # track already reported is not taken down by it (that split a STOP episode of the ride)
+                q = False
             if q and not low_ok and not t.reported and t.last is not None and t.last.kind == "low":
                 q = False
             if (q and rail_within > 0 and not t.reported and t.last is not None and t.last.kind == "low"
@@ -429,7 +437,7 @@ class Tracker:
         voxels, overlapping no other cluster of the frame) are associated, greedily with the same
         gate and prediction, with the tracks nothing matched in this frame; a match is a hit inside
         the gauge (never a clean hit for the keep cap) and marks the track (``Track.thin_hist``) so
-        that it is reported only while it approaches (:meth:`_approaching`). Returns the scan lines
+        that it starts to be reported only while it approaches (:meth:`_approaching`). Returns the scan lines
         left unmatched: they start new tracks."""
         c = self.cfg
         cand = [i for i, t in enumerate(self.tracks) if not matched_t[i] and t.last is not None]

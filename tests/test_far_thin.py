@@ -84,15 +84,22 @@ def test_near_or_sparse_or_advisory_scan_lines_are_not_used():
     assert not tr.tracks
 
 
-def test_mixed_track_needs_the_approach_only_with_scan_line_hits():
+def test_mixed_track_needs_the_approach_only_to_start_a_report():
     cfg = _cfg()
     tr = Tracker(cfg)
     # a standing normal cluster is reported as before (no scan-line hit in its window)
     for _ in range(6):
         tr.update([_cl(90.0, thin=False)], ego_shift=0.0, frame_dt=0.1, far_thin=[])
     assert any(t.reported for t in tr.tracks)
-    # one scan-line hit on the same standing object: no approach, so the report is withheld
+    # a scan-line hit on the same standing object does not take the report down (the ride: a STOP
+    # episode split in two when it did)
     tr.update([], ego_shift=0.0, frame_dt=0.1, far_thin=[_cl(90.0)])
+    assert any(t.reported for t in tr.tracks)
+    # a standing track that is not reported yet and has a scan-line hit is not reported
+    tr = Tracker(cfg)
+    tr.update([], ego_shift=0.0, frame_dt=0.1, far_thin=[_cl(90.0)])
+    for _ in range(8):
+        tr.update([_cl(90.0, thin=False)], ego_shift=0.0, frame_dt=0.1, far_thin=[])
     assert not any(t.reported for t in tr.tracks)
 
 
