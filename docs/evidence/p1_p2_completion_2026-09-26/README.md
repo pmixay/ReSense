@@ -1,4 +1,4 @@
-# P1/P2 completion checks — 26 September 2026
+# P1/P2 completion checks — updated 27 September 2026
 
 This record covers the original-bag startup check and the live viewer/dashboard work on
 `claude/p1-p2-completion-20260926`. It does not change detector quality, close the detector
@@ -26,11 +26,10 @@ offline-build and the two-container viewer checks. The viewer test detected a pa
 confirmed that the stream resumed after the server recovered. This simulates a separate viewing
 device; a human still needs to import the layout and rehearse on a physical second device.
 
-The same workflow's cold-cache replay **failed** its message-count criterion. It downloaded the
-original `doubleT_obstacle` bag, evicted the runner page cache, and processed 85 of 201 messages.
-The detector's first STOP was at +1.4 s in the target range, but startup catch-up skipped 110
-frames, reported 118 total drops, and left 84 messages unprocessed after +5 s. The full logs,
-compressed status stream, hashes and command provenance are in
+Run [36274548282](https://github.com/pmixay/ReSense/actions/runs/36274548282) cold-cache replay
+**failed** its message-count criterion: 85 of 201 messages processed and 84 left after +5 s. The
+detector's first STOP was at +1.4 s in the target range, but startup catch-up skipped 110 frames.
+The logs and compressed status stream are in
 [`cold_bag_failed_run_36274548282/`](cold_bag_failed_run_36274548282/); the raw archive and database
 were removed by CI and are not committed.
 
@@ -40,15 +39,26 @@ cadence-preserving code on the original bag but still failed freshness and post-
 default rosbag2 read-ahead had preloaded a backlog before the node's first result. A follow-up with
 read-ahead set to one downloaded and verified the same bag but delivered no LiDAR input during a
 12-minute wait; it was cancelled as an invalid playback setup. Its 1,380 no-input watchdog rows are
-preserved in [`cold_bag_cancelled_run_36278988540/`](cold_bag_cancelled_run_36278988540/). The
-Run [36280434044](https://github.com/pmixay/ReSense/actions/runs/36280434044) passed the original
-360-degree `doubleT_obstacle` cold replay with read-ahead ten: 201 status messages, STOP +1.1 s,
-55.5–56.6 m, 78 ms decode-plus-detect p95, freshness PASS, and zero original bag messages
-unprocessed after catch-up ([preserved evidence](cold_bag_passed_run_36280434044/)). Its player
-read-ahead is explicit because the default 1,000-message setting preloads all 201 original-bag
-messages before publishing. The 120-degree `roundT_doubleT` cold clear replay is being added;
-keep C5/C7 partial until that check also passes. The default-read-ahead cold run still has no fresh
-result, so this does not claim support for an unbounded overdue burst.
+preserved in [`cold_bag_cancelled_run_36278988540/`](cold_bag_cancelled_run_36278988540/). Run
+[36280434044](https://github.com/pmixay/ReSense/actions/runs/36280434044) then passed the 360-degree
+`doubleT_obstacle` cold replay with read-ahead ten. The current-source run
+[36281462241](https://github.com/pmixay/ReSense/actions/runs/36281462241) passes **both** original
+recordings cold at playback rate 1.0 and read-ahead ten. The obstacle check saw 201 status messages,
+first STOP +1.1 s at 55.5–56.6 m, 78 ms decode-plus-detect p95, freshness PASS, and zero of 113
+source messages unprocessed after the +8.8 s catch-up; four missing frames are absent from the
+recording itself. The clear `roundT_doubleT` check saw 252 status messages, zero alarm frames, 48 ms
+p95, freshness PASS, and zero of 201 source messages unprocessed after settle. Preserved output,
+compressed status streams and hashes are in
+[`cold_bags_passed_run_36281462241/`](cold_bags_passed_run_36281462241/). All jobs in run 362814
+passed, including 673 pytest cases with zero skips, the Chromium suite, transport and remote-viewer
+recovery checks, and offline image delivery.
+
+The cold checks use explicit ten-message read-ahead because the default 1,000-message prefetch
+still releases the original recording as an overdue burst and run 362776 had no valid fresh result.
+The first obstacle STOP in run 362814 is fail-safe while the source is stale; a current result is
+established after startup catch-up. This does not claim that the default-read-ahead path supports an
+unbounded overdue burst. Keep C5/C7 and captain action 21 partial pending a decision to adopt a
+bounded-prefetch/prewarm operating procedure or separately change and retest the default.
 
 ## Follow-up and remaining work
 
@@ -56,10 +66,10 @@ The failure showed that a 20 s startup lag allowance with 0.3 s frame sampling c
 scene-reset gaps consume the recording. The branch follow-up keeps every observed input-period
 frame during the first backlog, even when the preceding recording left a slower period estimate.
 After that catch-up drains, live backlog behavior returns to the 0.3 s sampling step and 5 s lag
-bound. Run 362804 passed the bounded-prefetch cold `doubleT_obstacle` replay, but the
-default-read-ahead whole-bag burst remains stale and the matching cold clear-bag run is pending.
-Keep action 21 and C7 partial until both original recordings pass and the captain accepts the
-bounded-prefetch procedure; do not claim support for an unbounded overdue burst.
+bound. Both source recordings now pass the cold check with read-ahead ten; the default-read-ahead
+whole-bag burst remains stale. Keep action 21 and C5/C7 partial until the captain accepts the
+bounded-prefetch procedure or a separately tested default change; do not claim support for an
+unbounded overdue burst.
 
 The remaining human tasks are the physical second-device Foxglove layout import/rehearsal and the
 presentation details the team has not supplied: city, team-formation details and a group photo.

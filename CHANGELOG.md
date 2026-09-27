@@ -33,7 +33,9 @@ frames, 13 km, no obstacles).
   unavailable. Dashboard FAULT/CAUTION banners and estimated-range
   wording are corrected; live freshness validation, no-data overlays, and reconnect guards have
   16 passing Chromium tests. CI now has branch-scoped cold-bag and remote-viewer outage /
-  recovery checks; final cold-bag verification of the follow-up is pending. Deck and PDF rebuilt;
+  recovery checks; current-source cold checks of both original bags now pass with ten-message
+  read-ahead, while the default 1,000-message prefetch remains stale pending the captain's
+  operating-procedure decision. Deck and PDF rebuilt;
   the video remains the previously verified `_ride_p3d` build. Independent scores and remaining quality
   gaps are in SCORECARD; these changes do not claim improved detector recall.
 
@@ -72,21 +74,22 @@ frames, 13 km, no obstacles).
 - **P1/P2 follow-through on the working branch (26.09):** the detector now grants a bounded
   20-second allowance only to the first backlog of a new recording, then returns to its normal
   5-second live-stall limit. Unit tests cover a cold whole-recording burst, an isolated first
-  cloud, repeated recordings, and expiration of the startup allowance; the original-bag cold-disk
-  obstacle replay now passes with ten-message rosbag2 read-ahead (201 status messages, first STOP
-  +1.1 s, 78 ms p95); default 1,000-message prefetch remains stale, and the current-source cold
-  clear-bag check is pending. Earlier 91/201 and no-input/cancelled attempts remain recorded. The
+  cloud, repeated recordings, and expiration of the startup allowance; run 362814 passes both
+  original-bag cold checks with ten-message rosbag2 read-ahead: 201 obstacle statuses, first STOP
+  +1.1 s, 78 ms p95, zero source messages unprocessed after catch-up; 252 clear-bag statuses, zero
+  alarms, 48 ms p95, and zero source messages unprocessed. Default 1,000-message prefetch remains
+  stale pending the captain's operating-procedure decision. Earlier 91/201 and no-input/cancelled attempts remain recorded. The
   dashboard now treats `FAULT` as unavailable, clears the
   estimated monitoring range on fault or stale input, ignores malformed or decision-less live
   messages, and overlays the live panels until the first current result and on disconnect or
   freshness expiry. Its user-facing
   range label says that the distance is estimated. The updated team history uses supplied project
-  facts and leaves personal claims out. Browser-backed checks: 16 passed in Chromium. CI now has a
-  two-container Foxglove viewer check on an isolated Docker network, including a paused-server
-  outage and recovery; its result is pending the branch run. A branch-only CI step also downloads
-  the original `doubleT_obstacle` bag, runs the cold-start dry-run and retains its provenance and
-  logs. Four member headshots are in the ignored private presentation folder; city, team formation,
-  and a group photo remain pending.
+  facts and leaves personal claims out. Browser-backed checks: 16 passed in Chromium. Branch CI
+  run 362814 passed the isolated two-container Foxglove pause/recovery test and both cold original-
+  bag replays with read-ahead 10. The default 1,000-message read-ahead still gives stale output;
+  C5/C7 await the captain's operating-procedure decision. The run retains the bag hashes and replay
+  logs; raw downloads are removed. Four member headshots are in the ignored private presentation
+  folder; city, team formation, group photo and the physical second-device rehearsal remain pending.
 
 - **P2 public presentation and P4 consistency pass (26.09):** rebuilt the 16-slide public PPTX
   and PDF and the 2:50 overview MP4/SRT against the committed `_ride_p3b` regression baseline:

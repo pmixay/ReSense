@@ -3221,10 +3221,11 @@ each observed input-period frame within the configured 20 s startup cap, includi
 previous recording left a slower period estimate. Once startup catch-up drains, live backlog
 sampling remains 0.3 s with the existing 5 s lag bound. All 47 node tests and the local suite
 (667 passed, 1 ride-cache case deselected because `new_data` is absent, 6 subtests) pass. The
-original-bag CI replay of this correction is pending, so this is not yet an accepted cold-start
-result. The distinct P2 second-container viewer test passed in the same failed workflow: it
-detected a paused server and restored the stream after resume. That is a deterministic two-device
-simulation; visual Foxglove layout import on a physical second device remains unverified.
+current-source original-bag CI replay passes both cold recordings with explicit read-ahead ten
+(run 362814; details below); the default 1,000-message read-ahead still fails freshness. The
+distinct P2 second-container viewer test detects a paused server and restores the stream after
+resume in CI. That is a deterministic two-device simulation; visual Foxglove layout import on a
+physical second device remains unverified.
 
 On the follow-up run (362776, commit `90158e8`), default rosbag2 read-ahead still produced no
 fresh result: 91/201 frames were processed, the first STOP was at +0.8 s, and five messages
@@ -3232,15 +3233,18 @@ remained after +5 s. The next attempt changed only the cold-test player read-ahe
 the archive and bag verified, but no LiDAR frame reached the node during 12 minutes, so that
 attempt was cancelled and is retained in
 [`cold_bag_cancelled_run_36278988540/`](evidence/p1_p2_completion_2026-09-26/cold_bag_cancelled_run_36278988540/).
-With read-ahead set to ten and a ten-minute step timeout, run 362804 passed the cold
-`doubleT_obstacle` replay: 201 status messages, first STOP +1.1 s at 55.5–56.6 m, 78 ms
-decode-plus-detect p95 (99 ms maximum), freshness PASS, catch-up in 14 s with zero deliberate
-skips, and 0 original bag messages unprocessed after catch-up at +16.5 s. The checker identified
-three frames absent from the recording itself. Full provenance and outputs are in
-[`cold_bag_passed_run_36280434044/`](evidence/p1_p2_completion_2026-09-26/cold_bag_passed_run_36280434044/).
-This is a bounded-prefetch cold-disk replay; the default 1,000-message read-ahead case remains
-stale and is not claimed as supported. The exact-current-code cold clear replay of the original
-`roundT_doubleT` recording is being added; keep C5/C7 partial until it passes.
+With read-ahead set to ten, run 362804 first passed the cold `doubleT_obstacle` replay. The full
+current-source two-bag check is run 362814: `doubleT_obstacle` produced 201 status messages, first
+STOP +1.1 s at 55.5–56.6 m, 78 ms decode-plus-detect p95, freshness PASS, and 0 of 113 source
+messages unprocessed after the +8.8 s startup catch-up. Four frames are absent from the source
+recording. The clear `roundT_doubleT` bag produced 252 status messages, zero alarm frames, 48 ms
+p95, freshness PASS, and 0 of 201 source messages unprocessed after settle. Both replays used a
+cold page cache and the same ten-message read-ahead. Logs, compressed status streams, hashes, and
+provenance are in
+[`cold_bags_passed_run_36281462241/`](evidence/p1_p2_completion_2026-09-26/cold_bags_passed_run_36281462241/).
+The default 1,000-message read-ahead remains stale and is not claimed as supported. Keep C5/C7
+partial pending the captain's decision on the bounded-prefetch/prewarm procedure or a separately
+tested default change.
 
 ## 4. What we learned / hard cases
 

@@ -1,9 +1,9 @@
 {
   "schema": "resense-p1-p2-completion-v1",
-  "date": "2026-09-26",
+  "date": "2026-09-27",
   "branch": "claude/p1-p2-completion-20260926",
-  "tested_commit": "a7789f7429727f527ee49a408fbaffe6b361af91",
-  "current_branch_commit": "67e456b21a7706ad5ea641e3209044bbed625150",
+  "tested_commit": "43b679352a151a53473fc2221a246bec725ccf66",
+  "current_branch_commit": "43b679352a151a53473fc2221a246bec725ccf66",
   "post_test_rebase_change": "Final pytest, Chromium and dashboard-smoke runs passed after merging origin/claude/nifty-pascal-lzgl78 at 06845469065d5b7d093210c61c989c1ef34271e4. Upstream core edits are comments/docstrings only; its refreshed full-gate evidence confirms 146 enforced metrics across 199 comparison rows unchanged.",
   "local": {
     "python": "3.12 via /tmp/resense-p4-venv",
@@ -87,24 +87,24 @@
       "result": "PASS",
       "frames": 60
     },
-    "original_bag_cold_ci": "run 362804 passed the original doubleT_obstacle cold replay with read-ahead 10: 201 status messages, first STOP +1.1 s, 78 ms p95, freshness PASS, 0 original messages unprocessed after catch-up. Default read-ahead 1000 still produces stale output; current-code roundT_doubleT cold clear replay is pending.",
+    "original_bag_cold_ci": "run 362814 passes both original recordings from a cold page cache at rate 1.0 and read-ahead 10. doubleT_obstacle: 201 statuses, first STOP +1.1 s at 55.5–56.6 m, decode+detect p95 78 ms, freshness PASS, 0 of 113 source messages unprocessed after +8.8 s catch-up; 4 gaps are in the source. roundT_doubleT: 252 statuses, zero alarm frames, p95 48 ms, freshness PASS, 0 of 201 messages unprocessed after settle. The first obstacle STOP occurs while freshness is stale and is fail-safe. Default read-ahead 1000 remains stale; captain operating-procedure decision pending.",
     "pushed": true
   },
   "branch_ci": {
-    "run_id": 36280434044,
-    "url": "https://github.com/pmixay/ReSense/actions/runs/36280434044",
+    "run_id": 36281462241,
+    "url": "https://github.com/pmixay/ReSense/actions/runs/36281462241",
     "status": "completed",
     "conclusion": "success",
     "non_cold_jobs": "pytest, web, lint, params-in-sync, offline-build, ROS smoke, transport, viewer, and offline runtime checks passed.",
-    "viewer_simulation": "PASS",
+    "viewer_simulation": "PASS in the current run; human physical second-device rehearsal remains.",
     "cold_bag": {
-      "result": "PASS for original doubleT_obstacle using read-ahead 10: 201 status messages, first STOP +1.1 s at 55.5–56.6 m, p95 78 ms, freshness PASS, zero original messages unprocessed after catch-up at +16.5 s. Three frames are missing from the recording itself.",
-      "artifact_id": 10918554315,
-      "artifact_url": "https://github.com/pmixay/ReSense/actions/runs/36280434044/artifacts/10918554315",
-      "durable_record": "cold_bag_passed_run_36280434044/README.md"
+      "result": "PASS for doubleT_obstacle and roundT_doubleT from cold page cache at read-ahead 10. Obstacle: 201 statuses, first STOP +1.1 s at 55.5–56.6 m, p95 78 ms, zero of 113 source messages unprocessed after +8.8 s catch-up, four source-recording gaps. Clear: 252 statuses, zero alarm frames, p95 48 ms, zero of 201 source messages unprocessed after settle. Both freshness contracts PASS.",
+      "artifact_id": 10918089542,
+      "artifact_url": "https://github.com/pmixay/ReSense/actions/runs/36281462241/artifacts/10918089542",
+      "artifact_zip_sha256": "736e699d10f8f2f7b3616c39f2b9c179053a80d3734fecb137b2341fb0e7cbda",
+      "durable_record": "cold_bags_passed_run_36281462241/README.md"
     },
-    "default_read_ahead_limitation": "run 362776 at the default 1000-message read-ahead still failed freshness and post-settle accounting; run 362789 read-ahead 1 delivered no input and was cancelled.",
-    "next_cold_bag_attempt": "current-source cold roundT_doubleT clear replay, read-ahead 10, ten-minute step timeout; pending",
+    "default_read_ahead_limitation": "Read-ahead 1000 still produces stale output in run 362776; read-ahead 1 delivered no input and was cancelled in run 362789. The passing current-source checks use read-ahead 10; captain decision on supported procedure or separate default change pending.",
     "previous_cold_run_36278988540": {
       "conclusion": "cancelled / inconclusive",
       "artifact_id": 10918752773,
@@ -122,7 +122,15 @@
       "cold_bag": "FAIL; 85/201 processed, 84 original messages unprocessed after +5 s.",
       "artifact_id": 10917590342
     },
-    "merged_work_branch": "06845469065d5b7d093210c61c989c1ef34271e4"
+    "merged_work_branch": "06845469065d5b7d093210c61c989c1ef34271e4",
+    "head_sha": "43b679352a151a53473fc2221a246bec725ccf66",
+    "pytest": "673 tests, 0 skipped; synthetic requirement passed.",
+    "web": "Chromium tests and 60-frame dashboard smoke passed.",
+    "lint": "Ruff passed.",
+    "parameter_sync": "passed.",
+    "docker": "ROS smoke, separate-container transport, stock Fast DDS, shared memory, remote viewer outage/recovery, cold original bags, offline export/load, and no-network playback all passed.",
+    "captain_decision_pending": "Adopt bounded-prefetch/prewarm as the supported operating procedure, or make and retest a default-setting change. C5/C7 and action 21 remain partial until decided."
   },
-  "release_and_detector_freeze": "remain on hold; this P1/P2 work makes no detector-quality claim"
+  "release_and_detector_freeze": "remain on hold; this P1/P2 work makes no detector-quality claim",
+  "evidence_updated": "2026-09-27; code tested at 43b6793, followed by documentation/evidence-only updates."
 }

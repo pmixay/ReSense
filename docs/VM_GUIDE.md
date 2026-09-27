@@ -251,7 +251,7 @@ after `cb9e4ab`), the build `--no-cache` again:
 
 | step | command | expected |
 |---|---|---|
-| drops (C7) | §4.1, first command | `dropped input settle : start-up catch-up back on the newest frame at +7–8 s`; `dropped input vs bag : … 4 frame(s) missing from the recording itself; 0 of its messages not processed`; `PASS`; the node log says `dropped N (M skipped by the catch-up)` |
+| drops (C7) | §4.1, first command | `dropped input settle`: environment-dependent (current cold CI +8.8 s at read-ahead 10); `dropped input vs bag : … 4 frame(s) missing from the recording itself; 0 of its messages not processed`; `PASS`; the node log says `dropped N (M skipped by the catch-up)` |
 | false alarm (C7) | §4.1, second command, then the `replay_node_frames.py` line | `PASS` with at most 1 alarm frame (was 3 at 111–115 m: the column at 101–149 m, advisory since `tracking.column_hold` 2); the node's and the replay's alarm lists equal |
 | CycloneDDS player (C4) | `sudo sysctl -w net.core.rmem_max=33554432` (leave `rmem_default`), the host console of §4.2 with `RMW_IMPLEMENTATION=rmw_cyclonedds_cpp`, then `sudo sysctl -w net.core.rmem_max=212992` | both recordings arrive, `STOP` on the obstacle; no rmem WARN in the node log (the image now asks for a 32 MiB receive buffer, so `rmem_max` alone decides) |
 | bench (C8, closed; a confirmation) | §4.3 | `dry_obstacle_native` PASS; write down the physical core count |
@@ -297,10 +297,33 @@ Short queues spanning at most `catchup_step` = 0.3 s process every frame; longer
 subsampled at that interval. On the P1/P2 follow-up branch, the first backlog instead keeps every
 observed input-period frame (including when the prior recording left a slower period estimate).
 A smaller explicit maximum lag is still enforced first. The 20 s cap can still discard older
-frames in a larger burst. Record cold and warm runs
-separately, including the first STOP, scene resets, frames processed, latency and the checker's
-result. Warming the bag before playback is useful operationally, but a warm pass alone does
-not validate the cold-start fix. Fresh cold/warm Docker results for this change are pending.
+frames in a larger burst. Record cold and warm runs separately, including the first STOP, scene
+resets, frames processed, latency and the checker's result. Warming the bag before playback is
+useful operationally, but a warm pass alone does not validate the cold-start fix.
+
+**Cold-cache verification, 27.09.** Branch CI run 362814 passed both original bags after dropping
+the page cache before each replay, using `BAG_READ_AHEAD_QUEUE_SIZE=10`. The obstacle bag reached a
+current result after an 8.8 s startup catch-up and had zero original messages unprocessed; four
+frames are missing from that source recording. The clear bag produced zero alarm frames and zero
+unprocessed messages. Logs and status captures are in
+[`evidence/p1_p2_completion_2026-09-26/cold_bags_passed_run_36281462241/`](evidence/p1_p2_completion_2026-09-26/cold_bags_passed_run_36281462241/).
+The usual `dry_run.sh` default remains 1,000 read-ahead messages, and that default still produces
+stale output on the cold whole-recording burst. To reproduce the passing bounded-prefetch test on
+a machine with Docker and the original bags, drop caches before each command and set the variable
+for both runs:
+
+```bash
+sudo sh -c 'sync; echo 3 > /proc/sys/vm/drop_caches'
+BAG_READ_AHEAD_QUEUE_SIZE=10 SKIP_BUILD=1 OUT=out/cold_obstacle ./scripts/dry_run.sh "$BAGS/doubleT_obstacle" \
+  --expect-obstacle --distance 50:62 --min-frames 20 --max-p95-latency 100 --max-dropped 0
+sudo sh -c 'sync; echo 3 > /proc/sys/vm/drop_caches'
+BAG_READ_AHEAD_QUEUE_SIZE=10 SKIP_BUILD=1 OUT=out/cold_clear ./scripts/dry_run.sh "$BAGS/roundT_doubleT" \
+  --expect-clear --max-alarm-frames 2 --max-p95-latency 100 --max-dropped 0
+```
+
+This records the tested procedure; it does not change the default. C5/C7 remain partial until the
+captain accepts bounded prefetch/prewarm for operation or a separately tested default change
+passes.
 
 **Matching the bag.** `check_dry_run.py --bag` now reads each message's CDR header stamp and
 matches the node's stamp directly, with at most 100 microseconds of float roundoff tolerance
