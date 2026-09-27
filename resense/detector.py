@@ -458,7 +458,7 @@ class Detector:
             reg = axis_union_offset(corr.xyz[:, 0], self.track, cfg.gauge)
             if reg is not None:
                 dy_alt = corr.dy + reg[1]
-        keep_thin = cfg.tracking.stop_keep_thin > 0
+        keep_thin = cfg.tracking.stop_keep_thin > 0 or cfg.tracking.thin_far_min_distance > 0
         clusters = _clusters_of(corr, cfg.cluster, axis_valid=valid,
                                 height_valid=floor_valid if cfg.cluster.far_min_height > 0 else None,
                                 min_points_factor=factor, factor_range=acc.min_range,
@@ -468,6 +468,7 @@ class Detector:
         if keep_thin:
             # 26.09 (tracking.stop_keep_thin, off by default): the clusters flatter than min_height go
             # to the tracker only, to continue a track (Tracker._continue_thin); no other stage sees them
+            # (27.09: also tracking.thin_far_min_distance, Detector._far_thin)
             self._thin = [c for c in clusters if c.thin]
             clusters = [c for c in clusters if not c.thin]
         lows: List[Cluster] = []
@@ -574,7 +575,8 @@ class Detector:
         low_ok = low.min_model_age <= 0 or self.track.age >= low.min_model_age
         self.tracker.update(clusters, ego_shift=(speed or 0.0) * dt, frame_dt=dt, low_ok=low_ok,
                             rail_within=low.rail_start_within,
-                            thin=self._thin if self.cfg.tracking.stop_keep_thin > 0 else None)
+                            thin=self._thin if self.cfg.tracking.stop_keep_thin > 0 else None,
+                            far_thin=self._far_thin(clusters) if self.cfg.tracking.thin_far_min_distance > 0 else None)
         pending = low.pending_advisory and self.calib.state.status == "pending"
         dets: List[Detection] = []
         for t in self.tracker.confirmed():
@@ -596,6 +598,17 @@ class Detector:
                 d.zone, d.reason = "warning", "calibration_pending"
         dets.sort(key=lambda d: d.distance)
         return [d for d in dets if d.zone == "gauge"], [d for d in dets if d.zone != "gauge"]
+
+    def _far_thin(self, clusters: List[Cluster]) -> List[Cluster]:
+        """27.09 (``tracking.thin_far_min_distance`` > 0, off by default): this frame's scan lines
+        (corridor clusters flatter than ``cluster.min_height``) that the tracker may use as far
+        evidence: at least that far, inside the strict gauge (zone ``gauge``: no far-field, overhead
+        or signature demotion) with ``thin_far_min_voxels`` strict voxels, and overlapping no other
+        cluster of the frame (the lower edge of an object another cluster already describes)."""
+        tc = self.cfg.tracking
+        return [c for c in self._thin
+                if c.distance >= tc.thin_far_min_distance and c.zone == "gauge"
+                and c.n_gauge >= tc.thin_far_min_voxels and not any(_overlap(c, k) for k in clusters)]
 
     # -- 6b ------------------------------------------------------------------------------------
     def _clear_cap(self, clusters: List[Cluster], cand: Candidates, dy_all: np.ndarray,

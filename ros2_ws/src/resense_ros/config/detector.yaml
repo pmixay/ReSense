@@ -204,6 +204,11 @@ resense:
     stop_keep_thin: 1              # on since 26.09 (P3 range round 2, B10; 0 = off): a corridor cluster flatter than cluster.min_height (one scan line) inside the strict envelope, with >= stop_keep_min_voxels strict voxels, may continue a track no other cluster matched (same gate): 1 = a track that was a STOP in the previous frame; 2 = also a track not yet reported whose last hit was inside the envelope (tried, not shipped: a new STOP on doubleT_platform); it never starts a track
     stop_keep_max_s: 10.0          # 26.09 (safety review of B10; 0 = no cap): the keep rules act on a track only while its last clean hit (an obstacle cluster inside the envelope, not a scan line) is at most this many seconds of sensor time ago (measured intervals, rate-independent); past it the track falls back to the behaviour without them: a false STOP at a standing train cannot be kept indefinitely; set O's box at the envelope top is kept ~5 s
     stop_keep_min_voxels: 10       # on since 26.09 (P3 range round 2, B10; 0 = no bar): a kept cluster (stop_keep_signature, stop_keep_thin) needs at least this many strict-envelope voxels, the near escalation's bar; without it (round 1) the ride's alarm frames rose 183 -> 192 (two false STOPs extended)
+    thin_far_min_distance: 0.0     # 27.09 (P5 range, opt-in; 0 = off): m; a scan line (corridor cluster flatter than cluster.min_height) at least this far, inside the strict envelope (zone gauge) with >= thin_far_min_voxels strict voxels and overlapping no other cluster of the frame, may start and continue a track; a track with such a hit among its last zone_window hits is reported only while its distance approaches on a line (approach_*): a bed / vault scan line is fixed in the sensor frame or jumps with the pitch, an object approaches at the train's speed
+    thin_far_min_voxels: 4         # 27.09: strict-envelope voxels such a scan line needs
+    approach_hits: 5               # 27.09: the last hits whose distances are fitted by a line in sensor time
+    approach_min_speed: 2.0        # 27.09: m/s the fitted line must approach at (at most ego_speed_max)
+    approach_max_residual: 0.5     # 27.09: m, RMS of the distances about that line
     max_misses: 3
     conf_gain: 0.35
     conf_decay: 0.25

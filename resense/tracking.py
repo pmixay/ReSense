@@ -72,6 +72,8 @@ class Track:
     since_clean: float = 0.0        # 26.09 (stop_keep_max_s): s of sensor time since the last clean hit (an obstacle cluster inside the gauge, not a scan line; inf = none yet)
     near_hist: List[bool] = field(default_factory=list)  # 26.09: last near_hits hits: near the envelope (Tracker._near)?
     near_hits: int = 0              # 26.09: this many near hits in a row make the track an obstacle (0 = off)
+    thin_hist: List[bool] = field(default_factory=list)  # 27.09 (thin_far_min_distance): last zone_window hits: a far scan line?
+    approach: List[tuple] = field(default_factory=list)  # 27.09: (sensor time s, distance m) of the last hits (approach_*)
 
     @property
     def near_escalated(self) -> bool:
@@ -114,6 +116,7 @@ class Tracker:
         self.tracks: List[Track] = []
         self._next_id = 1
         self._timed = False          # a frame interval was supplied at least once
+        self._clock = 0.0            # 27.09: s of sensor time since the start (approach_*)
 
     def reset(self) -> None:
         self.tracks.clear()
@@ -177,7 +180,7 @@ class Tracker:
 
     def update(self, clusters: List[Cluster], ego_shift: float = 0.0,
                frame_dt: Optional[float] = None, low_ok: bool = True, rail_within: float = 0.0,
-               thin: Optional[List[Cluster]] = None) -> List[Track]:
+               thin: Optional[List[Cluster]] = None, far_thin: Optional[List[Cluster]] = None) -> List[Track]:
         """Associate ``clusters`` with the tracks. ``ego_shift`` (m) is the distance the
         vehicle travelled since the previous frame when it is known: a track seen once has no
         velocity yet and is then predicted as a static object approaching by that much.
@@ -204,6 +207,7 @@ class Tracker:
         # 26.09 (stop_keep_max_s): the sensor time of this frame for the keep cap (the nominal period
         # when the caller gives no interval), so that the cap is in seconds at any input rate
         kdt = dt if dt > 0 else float(c.frame_dt)
+        self._clock += kdt
         n_t, n_c = len(self.tracks), len(clusters)
         matched_t = np.zeros(n_t, dtype=bool)
         matched_c = np.zeros(n_c, dtype=bool)
@@ -242,12 +246,18 @@ class Tracker:
                 t.hit_hist = (t.hit_hist + [True])[-hw:]
                 if nk:
                     t.near_hist = (t.near_hist + [self._near(cl)])[-nk:]
+                self._note(t, cl, False, zw)
                 t.history.append(cl.distance)
                 matched_t[i] = matched_c[j] = True
                 d[i, :] = np.inf
                 d[:, j] = np.inf
+        used: List[Cluster] = []
         if c.stop_keep_thin and thin:
-            self._continue_thin(thin, matched_t, ego_shift, step, dt, zw, hw, nk, kdt)
+            used = self._continue_thin(thin, matched_t, ego_shift, step, dt, zw, hw, nk, kdt)
+        new_thin: List[Cluster] = []
+        if c.thin_far_min_distance > 0 and far_thin:
+            new_thin = self._far_thin([cl for cl in far_thin if not any(cl is u for u in used)],
+                                      matched_t, ego_shift, step, dt, zw, hw, nk, kdt)
         # unmatched tracks
         for i, t in enumerate(self.tracks):
             if not matched_t[i]:
@@ -273,12 +283,25 @@ class Tracker:
                     near_hist=[self._near(cl)] if nk else [], near_hits=nk,
                     since_clean=0.0 if cl.zone == "gauge" else float("inf"),
                 ))
+                self._note(self.tracks[-1], cl, False, zw)
                 self._next_id += 1
+        for cl in new_thin:
+            t = Track(id=self._next_id, centroid=cl.centroid, velocity=np.zeros(3),
+                      confidence=c.conf_gain * cl.score, last=cl, history=[cl.distance],
+                      gauge_hits=1, zone_hist=[True], hit_hist=[True], span_s=dt,
+                      zone_min_fraction=c.zone_min_fraction, column_hist=[False],
+                      column_hold=int(c.column_hold), near_hist=[False] if nk else [], near_hits=nk,
+                      since_clean=float("inf"))
+            self._note(t, cl, True, zw)
+            self.tracks.append(t)
+            self._next_id += 1
         # reported: confirmed now, or reported in the previous frame and missed for at most
         # hold_misses frames (a single missed frame does not drop a STOP; review 23.09), or inside
         # a re-seed hold window (reseed; matched or not)
         for t in self.tracks:
             q = self._qualifies(t)
+            if q and c.thin_far_min_distance > 0 and any(t.thin_hist) and not self._approaching(t):
+                q = False               # 27.09: far scan-line evidence counts only for an approaching track
             if q and not low_ok and not t.reported and t.last is not None and t.last.kind == "low":
                 q = False
             if (q and rail_within > 0 and not t.reported and t.last is not None and t.last.kind == "low"
@@ -318,8 +341,9 @@ class Tracker:
                 cand.append(i)
         ok = [j for j, cl in enumerate(thin) if (cl.zone == "gauge" or (c.stop_keep_signature and cl.demoted))
               and cl.n_gauge >= c.stop_keep_min_voxels]
+        used: List[Cluster] = []
         if not cand or not ok:
-            return
+            return used
         static = np.array([-float(ego_shift), 0.0, 0.0])
         pred = np.stack([self.tracks[i].centroid + (self.tracks[i].velocity if self.tracks[i].hits > 1 else static)
                          for i in cand])
@@ -356,10 +380,91 @@ class Tracker:
             t.hit_hist = (t.hit_hist + [True])[-hw:]
             if nk:
                 t.near_hist = (t.near_hist + [self._near(cl)])[-nk:]
+            self._note(t, cl, False, zw)
             t.history.append(cl.distance)
             matched_t[i] = True
+            used.append(cl)
             d[a, :] = np.inf
             d[:, b] = np.inf
+        return used
+
+    def _note(self, t: Track, cl: Cluster, far_thin: bool, zw: int) -> None:
+        """27.09 (``thin_far_min_distance`` > 0 only): remember whether this hit was a far scan line
+        (last ``zone_window`` hits) and its sensor time and distance (``approach_hits``)."""
+        c = self.cfg
+        if c.thin_far_min_distance <= 0:
+            return
+        t.thin_hist = (t.thin_hist + [bool(far_thin)])[-zw:]
+        t.approach = (t.approach + [(self._clock, float(cl.distance))])[-max(2, int(c.approach_hits)):]
+
+    def _approaching(self, t: Track) -> bool:
+        """27.09 (``approach_*``): the distances of the track's last ``approach_hits`` hits lie on a
+        line in sensor time (RMS residual at most ``approach_max_residual``) that approaches at
+        ``approach_min_speed`` to ``ego_speed_max``: a static object ahead of a moving train, not a
+        scan line of the bed or the vault (fixed in the sensor frame, or jumping with the pitch)."""
+        c = self.cfg
+        k = max(2, int(c.approach_hits))
+        if len(t.approach) < k:
+            return False
+        p = np.asarray(t.approach[-k:], dtype=np.float64)
+        tt = p[:, 0] - p[:, 0].mean()
+        dd = p[:, 1] - p[:, 1].mean()
+        var = float((tt * tt).sum())
+        if var <= 0:
+            return False
+        s = float((tt * dd).sum()) / var
+        rms = float(np.sqrt(np.mean((dd - s * tt) ** 2)))
+        return -c.ego_speed_max - 1e-9 <= s <= -c.approach_min_speed and rms <= c.approach_max_residual
+
+    def _far_thin(self, thin: List[Cluster], matched_t: np.ndarray, ego_shift: float, step: float,
+                  dt: float, zw: int, hw: int, nk: int = 0, kdt: float = 0.0) -> List[Cluster]:
+        """27.09 (``thin_far_min_distance``, off by default): far scan lines inside the gauge
+        (selected by the detector: at least that far, zone ``gauge``, ``thin_far_min_voxels`` strict
+        voxels, overlapping no other cluster of the frame) are associated, greedily with the same
+        gate and prediction, with the tracks nothing matched in this frame; a match is a hit inside
+        the gauge (never a clean hit for the keep cap) and marks the track (``Track.thin_hist``) so
+        that it is reported only while it approaches (:meth:`_approaching`). Returns the scan lines
+        left unmatched: they start new tracks."""
+        c = self.cfg
+        cand = [i for i, t in enumerate(self.tracks) if not matched_t[i] and t.last is not None]
+        if not cand or not thin:
+            return list(thin)
+        static = np.array([-float(ego_shift), 0.0, 0.0])
+        pred = np.stack([self.tracks[i].centroid + (self.tracks[i].velocity if self.tracks[i].hits > 1 else static)
+                         for i in cand])
+        cen = np.stack([cl.centroid for cl in thin])
+        d = np.linalg.norm(pred[:, None, :] - cen[None, :, :], axis=2)
+        dx = cen[None, :, 0] - pred[:, 0][:, None]
+        allowed = np.array([self._gate(self.tracks[i].centroid[0]) for i in cand])[:, None] + np.where(dx < 0, step, 0.0)
+        d = np.where(d <= allowed, d, np.inf)
+        left = np.ones(len(thin), dtype=bool)
+        while np.isfinite(d).any():
+            a, b = np.unravel_index(np.argmin(d), d.shape)
+            i = cand[a]
+            t, cl = self.tracks[i], thin[b]
+            t.since_clean += kdt
+            t.velocity = 0.5 * t.velocity + 0.5 * (cl.centroid - t.centroid) if t.hits > 1 else (cl.centroid - t.centroid)
+            t.centroid = cl.centroid
+            t.hits += 1
+            t.misses = 0
+            t.age += 1
+            t.span_s += dt
+            t.confidence = min(1.0, t.confidence + c.conf_gain * cl.score)
+            t.last = cl
+            t.kept = False
+            t.gauge_hits += 1
+            t.zone_hist = (t.zone_hist + [True])[-zw:]
+            t.column_hist = (t.column_hist + [False])[-zw:]
+            t.hit_hist = (t.hit_hist + [True])[-hw:]
+            if nk:
+                t.near_hist = (t.near_hist + [False])[-nk:]
+            self._note(t, cl, True, zw)
+            t.history.append(cl.distance)
+            matched_t[i] = True
+            left[b] = False
+            d[a, :] = np.inf
+            d[:, b] = np.inf
+        return [cl for j, cl in enumerate(thin) if left[j]]
 
     def _qualifies(self, t: Track) -> bool:
         c = self.cfg

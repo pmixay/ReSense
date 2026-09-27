@@ -1,0 +1,116 @@
+"""Far scan lines as track evidence, gated by a consistent approach (27.09, P5 range; off by default:
+``tracking.thin_far_min_distance`` 0).
+
+Far away an object inside the envelope is often a single scan line there (the organizers' plank
+across the rails at 85-100 m, the lower edge of the box at the envelope top at 100-120 m): flatter
+than ``cluster.min_height``, it never made a track. With ``thin_far_min_distance`` > 0 such a scan
+line (zone gauge, ``thin_far_min_voxels`` strict voxels, beyond the distance, overlapping no other
+cluster of the frame) may start and continue a track, and a track with such a hit among its last
+``zone_window`` hits is reported only while its distances lie on a line in sensor time that
+approaches at ``approach_min_speed`` .. ``ego_speed_max`` with an RMS residual of at most
+``approach_max_residual``. A scan line of the bed or the vault is fixed in the sensor frame (a
+standing train: no approach) or jumps with the pitch (no line).
+"""
+from __future__ import annotations
+
+import numpy as np
+
+from resense.clustering import Cluster
+from resense.config import DetectorConfig, TrackingConfig
+from resense.tracking import Tracker
+
+
+def _cl(x: float, thin: bool = True, n_gauge: int = 6, zone: str = "gauge", lateral: float = 0.0) -> Cluster:
+    c = np.array([x, lateral, 0.3])
+    return Cluster(points_idx=np.arange(3), n=n_gauge + 2, n_raw=n_gauge + 2, centroid=c,
+                   bbox_min=c - np.array([0.2, 0.9, 0.0]), bbox_max=c + np.array([0.2, 0.9, 0.0]),
+                   distance=x, lateral=lateral, height_min=0.3, height_max=0.3, intensity=10.0,
+                   n_expected=10.0, score=1.0, zone=zone, n_gauge=n_gauge, thin=thin)
+
+
+def _cfg(**kw) -> TrackingConfig:
+    base = {"stop_keep_signature": False, "stop_keep_thin": 0, "thin_far_min_distance": 60.0}
+    return TrackingConfig(**{**base, **kw})
+
+
+def _run(xs, cfg=None, thin=True, n_gauge=6):
+    """One far scan line per frame at the distances ``xs``; returns whether any track is reported."""
+    tr = Tracker(cfg or _cfg())
+    out = []
+    for x in xs:
+        cl = [] if x is None else [_cl(x, thin=thin, n_gauge=n_gauge)]
+        tr.update([], ego_shift=0.0, frame_dt=0.1, thin=cl, far_thin=cl)
+        out.append(any(t.reported for t in tr.tracks))
+    return out
+
+
+def test_default_off_and_yaml_off():
+    assert TrackingConfig().thin_far_min_distance == 0.0
+    assert DetectorConfig.from_yaml("configs/default.yaml").tracking.thin_far_min_distance == 0.0
+
+
+def test_off_scan_lines_never_start_a_track():
+    tr = Tracker(_cfg(thin_far_min_distance=0.0))
+    for k in range(10):
+        cl = [_cl(100.0 - 1.7 * k)]
+        tr.update([], ego_shift=0.0, frame_dt=0.1, thin=cl, far_thin=cl)
+    assert not tr.tracks
+
+
+def test_approaching_scan_line_is_reported_after_confirmation():
+    out = _run([100.0 - 1.7 * k for k in range(8)])
+    assert out[:4] == [False] * 4          # confirm_time_s 0.5 s and approach_hits 5
+    assert out[4] and all(out[4:])
+
+
+def test_static_scan_line_is_never_reported():
+    # a ring on the bed ahead of a standing (or slowly moving) train: fixed in the sensor frame
+    assert not any(_run([95.0] * 12))
+    assert not any(_run([95.0 - 0.1 * k for k in range(12)]))   # 1 m/s < approach_min_speed
+
+
+def test_jumping_scan_line_is_never_reported():
+    # a ring whose range jumps with the pitch (+-1.2 m about the line, alternating): no consistent approach
+    xs = [100.0 - 1.0 * k + (1.2 if k % 2 else -1.2) for k in range(12)]
+    assert not any(_run(xs))
+
+
+def test_near_or_sparse_or_advisory_scan_lines_are_not_used():
+    cfg = _cfg(thin_far_min_distance=60.0, thin_far_min_voxels=4)
+    tr = Tracker(cfg)
+    for k in range(8):
+        near = _cl(55.0 - 1.7 * k)                 # the detector selects far_thin; the tracker trusts it
+        tr.update([], ego_shift=0.0, frame_dt=0.1, thin=[near], far_thin=[])
+    assert not tr.tracks
+
+
+def test_mixed_track_needs_the_approach_only_with_scan_line_hits():
+    cfg = _cfg()
+    tr = Tracker(cfg)
+    # a standing normal cluster is reported as before (no scan-line hit in its window)
+    for _ in range(6):
+        tr.update([_cl(90.0, thin=False)], ego_shift=0.0, frame_dt=0.1, far_thin=[])
+    assert any(t.reported for t in tr.tracks)
+    # one scan-line hit on the same standing object: no approach, so the report is withheld
+    tr.update([], ego_shift=0.0, frame_dt=0.1, far_thin=[_cl(90.0)])
+    assert not any(t.reported for t in tr.tracks)
+
+
+def test_scan_line_continues_an_approaching_normal_track():
+    xs = [100.0 - 1.7 * k for k in range(8)]
+    tr = Tracker(_cfg())
+    rep = []
+    for k, x in enumerate(xs):
+        normal = k % 2 == 0
+        cl = _cl(x, thin=not normal)
+        tr.update([cl] if normal else [], ego_shift=0.0, frame_dt=0.1, far_thin=[] if normal else [cl])
+        rep.append(any(t.reported for t in tr.tracks))
+    assert len(tr.tracks) == 1               # one track, continued by the scan lines
+    assert rep[4] and all(rep[4:])
+
+
+def test_detector_default_run_unchanged_by_the_new_keys():
+    # the keys only act when thin_far_min_distance > 0 (the approach history is not even recorded)
+    tr = Tracker(TrackingConfig())
+    tr.update([_cl(80.0, thin=False)], ego_shift=0.0, frame_dt=0.1)
+    assert tr.tracks[0].approach == [] and tr.tracks[0].thin_hist == []

@@ -310,7 +310,18 @@ class TrackingConfig:
     stop_keep_thin: int = 1        # on since 26.09 (P3 range round 2, B10; 0 = off): a corridor cluster flatter than cluster.min_height (one scan line) inside the strict gauge (with stop_keep_min_voxels) may continue, within the same association gate, a track that no other cluster matched: 1 = a track reported as an obstacle in the previous frame (it cannot confirm a new one); 2 = also a track not yet reported whose last hit was inside the gauge (tried, not shipped: a new STOP on doubleT_platform); it never starts a track
     stop_keep_max_s: float = 10.0  # 26.09 (safety review of B10; 0 = no cap): the keep rules (stop_keep_signature, stop_keep_thin) act on a track only while its last clean hit (an obstacle cluster inside the gauge, not a scan line) is at most this many seconds of sensor time ago (the measured frame intervals: the same at any input rate); past it the track falls back to the behaviour without the keep rules, so a false STOP at a standing train cannot be kept indefinitely; set O's box at the envelope top is kept for ~5 s
     stop_keep_min_voxels: int = 10 # on since 26.09 (P3 range round 2, B10; 0 = no bar): a cluster counts for a STOP track through stop_keep_signature or stop_keep_thin only with at least this many voxels inside the strict envelope (Cluster.n_gauge); 10 = the near escalation's bar (near_escalate_voxels); without it (round 1, B) two false STOPs of the ride were extended by 9 frames
-    conf_gain: float = 0.35        # confidence added per hit
+    # 27.09 (P5 range, opt-in; 0 = off): far scan lines as track evidence, gated by a consistent
+    # approach. Far away an object inside the envelope is often one scan line there (the plank across
+    # the rails, the lower edge of the box at the envelope top): flatter than cluster.min_height, it
+    # never makes a track. A scan line of the bed or the vault is fixed in the sensor frame, or jumps
+    # with the pitch (0.05 deg moves it ~4 m at 100 m); a static object approaches at the train's
+    # speed, frame after frame on a line.
+    thin_far_min_distance: float = 0.0  # m; > 0: a scan line at least this far, inside the strict gauge (zone gauge) with thin_far_min_voxels strict voxels and overlapping no other cluster of the frame, may start and continue a track; a track with such a hit among its last zone_window hits is reported only while it approaches (approach_*)
+    thin_far_min_voxels: int = 4        # strict-envelope voxels such a scan line needs
+    approach_hits: int = 5              # the last hits whose distances are fitted by a line in sensor time
+    approach_min_speed: float = 2.0     # m/s the fitted line must approach at (and at most ego_speed_max)
+    approach_max_residual: float = 0.5  # m, RMS of the distances about that line
+    conf_gain: float = 0.35       # confidence added per hit
     conf_decay: float = 0.25       # confidence removed per miss
     conf_threshold: float = 0.6    # report obstacles with confidence >= threshold
 
