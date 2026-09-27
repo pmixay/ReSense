@@ -152,6 +152,35 @@ def axis_union_offset(X: np.ndarray, track: TrackModel, cfg: GaugeConfig) -> Opt
     return ok, c
 
 
+def reference_offset(X: np.ndarray, track: TrackModel, cfg: GaugeConfig) -> Optional[Tuple[np.ndarray, np.ndarray]]:
+    """``gauge.reference`` 1 (27.09, P1 edge objects): ``(ok, c)`` per point, ``ok`` = the envelope is
+    measured from the sensor axis there (rail pair locked, |curvature| <= ``reference_max_curvature``,
+    X <= ``reference_range``, |c| <= ``reference_max_offset``), ``c`` = the rail axis minus the sensor
+    axis at the point's X (``track.center_y``), 0 elsewhere: the lateral from the sensor axis is
+    ``dy + c``. ``None`` when the option is off or no point qualifies.
+
+    ``gauge.reference`` 2 (clamped, continuous): within ``reference_range`` the offset is clipped to
+    +- ``reference_max_offset`` instead of switching back to the rails where it grows past it, i.e.
+    the envelope follows the sensor axis while it is within that of the rail axis and the rail axis
+    shifted by it towards the sensor axis beyond; ``ok`` is still where the sensor axis itself is the
+    reference (the edge-margin scale applies only there)."""
+    if cfg.reference not in (1, 2) or track.rail_slabs <= 0 or abs(float(track.curvature)) > cfg.reference_max_curvature:
+        return None
+    X = np.asarray(X, dtype=np.float64)
+    near = X <= cfg.reference_range
+    if not near.any():
+        return None
+    c = np.zeros(X.shape[0], dtype=np.float64)
+    c[near] = track.center_y(X[near])
+    ok = near & (np.abs(c) <= cfg.reference_max_offset)
+    if cfg.reference == 2:
+        return ok, np.clip(c, -cfg.reference_max_offset, cfg.reference_max_offset)
+    if not ok.any():
+        return None
+    c[~ok] = 0.0
+    return ok, c
+
+
 def axis_union_strict(X: np.ndarray, dy: np.ndarray, h: np.ndarray, track: TrackModel,
                       cfg: GaugeConfig) -> Optional[np.ndarray]:
     """``gauge.axis_union`` 1 (candidate A): the points that are inside the strict envelope measured
