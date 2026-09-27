@@ -157,9 +157,13 @@ class GaugeConfig:
     # everywhere (v0.6); 1 = the SENSOR axis (Y = 0 of the processed frame: the organizers' placement
     # frame, fixed to the train) where it agrees with the rails: rail pair locked, |curvature| <=
     # reference_max_curvature, X <= reference_range and the rail axis within reference_max_offset of
-    # the sensor axis; the rails elsewhere. It replaces the corridor coordinate of the corridor,
-    # clustering, hanging, accumulation and clear-cap stages (not a union: an object the organizers put
-    # outside stays outside); the bed, low-object, rail-start and ego-speed stages keep the rails
+    # the sensor axis; the rails elsewhere; 2 = as 1 with the offset clamped to reference_max_offset
+    # (continuous: beyond it the rail axis shifted towards the sensor axis). It replaces the strict
+    # membership and the shape rules' lateral of the corridor candidates (not a union: an object the
+    # organizers put outside stays outside, and up to reference_max_offset of the rail envelope is given
+    # up on one side); the candidate set, the reported lateral, the gauge-distance reach, the rails'
+    # strict mask (oversize-split fallback, wall keep) and the bed, low-object, rail-start, ego-speed,
+    # hanging-search and clear-cap stages keep the rails
     reference: int = 0
     reference_range: float = 60.0          # m, how far the sensor-axis frame is used
     reference_max_offset: float = 0.30     # m, |c(X)| = rail axis minus sensor axis (below warning_margin: the rail envelope stays in the advisory corridor)
