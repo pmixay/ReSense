@@ -111,6 +111,11 @@ resense:
     axis_union_range: 50.0           # 26.09: m, near field only
     axis_union_max_offset: 0.3       # 26.09: m, below warning_margin (the union stays inside the advisory corridor)
     axis_union_max_curvature: 0.0002 # 26.09: 1/m, straight track only (R >= 5 km)
+    reference: 0                     # 27.09 (P1 edge objects, experiment; 0 = off): the frame the envelope is measured from; 0 = the rails everywhere, 1 = the SENSOR axis (the organizers' placement frame) where it agrees with the rails (rail pair locked, straight track, X <= reference_range, the two axes within reference_max_offset), the rails elsewhere; replaces the corridor coordinate (not a union), the bed / low-object / ego-speed stages keep the rails
+    reference_range: 60.0            # 27.09: m
+    reference_max_offset: 0.3        # 27.09: m, below warning_margin (the rail envelope stays in the advisory corridor)
+    reference_max_curvature: 0.0002  # 27.09: 1/m, straight track only (R >= 5 km)
+    reference_edge_margin: 1.0       # 27.09: scale of edge_margin / edge_margin_per_100m where the sensor axis is the reference (the margin models the fitted rail axis' uncertainty; 0 = none)
   cluster:
     eps: 0.35
     range_scale: 40.0

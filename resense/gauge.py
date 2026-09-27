@@ -109,7 +109,8 @@ def gauge_core_mask(dy: np.ndarray, h: np.ndarray, X: np.ndarray, cfg: GaugeConf
     return point_in_polygon(dy + np.sign(dy) * m, h, cfg.profile)
 
 
-def gauge_reach_mask(dy: np.ndarray, h: np.ndarray, X: np.ndarray, cfg: GaugeConfig) -> np.ndarray:
+def gauge_reach_mask(dy: np.ndarray, h: np.ndarray, X: np.ndarray, cfg: GaugeConfig,
+                     scale: Optional[np.ndarray] = None) -> np.ndarray:
     """Points that may lie inside the strict gauge within the axis uncertainty (review 25.09): the
     polygon tested at ``|dy| - margin``, the margin by which :func:`gauge_core_mask` shrinks the
     strict decision (``edge_margin + edge_margin_per_100m * X / 100``), after the lateral growth of
@@ -117,13 +118,16 @@ def gauge_reach_mask(dy: np.ndarray, h: np.ndarray, X: np.ndarray, cfg: GaugeCon
     strict-gauge mask, is a subset whatever the profile's shape): the nearest point of an object in
     it is never farther than its nearest point inside the envelope, nor than where it truly enters
     the envelope while the axis is off by less than the margin. Used for the distance of a gauge
-    cluster (``cluster.gauge_distance``), never for the decision."""
+    cluster (``cluster.gauge_distance``), never for the decision. ``scale`` (27.09, per point): the
+    margin scaled as the strict decision scales it (``gauge.reference_edge_margin``); None = 1."""
     X = np.asarray(X, dtype=np.float64)
     dy = np.asarray(dy, dtype=np.float64)
     h = np.asarray(h, dtype=np.float64)
     if cfg.lateral_growth_per_100m > 0:
         dy = dy / (1.0 + cfg.lateral_growth_per_100m * X / 100.0)
     m = np.maximum(cfg.edge_margin + cfg.edge_margin_per_100m * X / 100.0, 0.0)
+    if scale is not None:
+        m = m * np.asarray(scale, dtype=np.float64)
     return (point_in_polygon(dy, h, cfg.profile)
             | point_in_polygon(np.sign(dy) * np.maximum(np.abs(dy) - m, 0.0), h, cfg.profile))
 
@@ -146,6 +150,35 @@ def axis_union_offset(X: np.ndarray, track: TrackModel, cfg: GaugeConfig) -> Opt
     c = np.zeros(X.shape[0], dtype=np.float64)
     c[ok] = track.center_y(X[ok])
     ok &= np.abs(c) <= cfg.axis_union_max_offset
+    if not ok.any():
+        return None
+    c[~ok] = 0.0
+    return ok, c
+
+
+def reference_offset(X: np.ndarray, track: TrackModel, cfg: GaugeConfig) -> Optional[Tuple[np.ndarray, np.ndarray]]:
+    """``gauge.reference`` 1 (27.09, P1 edge objects): ``(ok, c)`` per point, ``ok`` = the envelope is
+    measured from the sensor axis there (rail pair locked, |curvature| <= ``reference_max_curvature``,
+    X <= ``reference_range``, |c| <= ``reference_max_offset``), ``c`` = the rail axis minus the sensor
+    axis at the point's X (``track.center_y``), 0 elsewhere: the lateral from the sensor axis is
+    ``dy + c``. ``None`` when the option is off or no point qualifies.
+
+    ``gauge.reference`` 2 (clamped, continuous): within ``reference_range`` the offset is clipped to
+    +- ``reference_max_offset`` instead of switching back to the rails where it grows past it, i.e.
+    the envelope follows the sensor axis while it is within that of the rail axis and the rail axis
+    shifted by it towards the sensor axis beyond; ``ok`` is still where the sensor axis itself is the
+    reference (the edge-margin scale applies only there)."""
+    if cfg.reference not in (1, 2) or track.rail_slabs <= 0 or abs(float(track.curvature)) > cfg.reference_max_curvature:
+        return None
+    X = np.asarray(X, dtype=np.float64)
+    near = X <= cfg.reference_range
+    if not near.any():
+        return None
+    c = np.zeros(X.shape[0], dtype=np.float64)
+    c[near] = track.center_y(X[near])
+    ok = near & (np.abs(c) <= cfg.reference_max_offset)
+    if cfg.reference == 2:
+        return ok, np.clip(c, -cfg.reference_max_offset, cfg.reference_max_offset)
     if not ok.any():
         return None
     c[~ok] = 0.0

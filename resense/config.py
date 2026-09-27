@@ -153,6 +153,18 @@ class GaugeConfig:
     axis_union_range: float = 50.0          # m, near field only
     axis_union_max_offset: float = 0.30     # m, |c(X)| = rail axis minus sensor axis (below warning_margin)
     axis_union_max_curvature: float = 2e-4  # 1/m, straight track only (R >= 5 km)
+    # 27.09 (P1 edge objects, experiment): the frame the envelope is measured from. 0 = the rails
+    # everywhere (v0.6); 1 = the SENSOR axis (Y = 0 of the processed frame: the organizers' placement
+    # frame, fixed to the train) where it agrees with the rails: rail pair locked, |curvature| <=
+    # reference_max_curvature, X <= reference_range and the rail axis within reference_max_offset of
+    # the sensor axis; the rails elsewhere. It replaces the corridor coordinate of the corridor,
+    # clustering, hanging, accumulation and clear-cap stages (not a union: an object the organizers put
+    # outside stays outside); the bed, low-object, rail-start and ego-speed stages keep the rails
+    reference: int = 0
+    reference_range: float = 60.0          # m, how far the sensor-axis frame is used
+    reference_max_offset: float = 0.30     # m, |c(X)| = rail axis minus sensor axis (below warning_margin: the rail envelope stays in the advisory corridor)
+    reference_max_curvature: float = 2e-4  # 1/m, straight track only (R >= 5 km)
+    reference_edge_margin: float = 1.0     # scale of the edge margin (edge_margin, edge_margin_per_100m) where the sensor axis is the reference: the margin models the uncertainty of the fitted rail axis, the sensor axis has none (0 = no margin there)
 
 
 @dataclass
