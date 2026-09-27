@@ -64,7 +64,8 @@ IMG = {
 # baseline BASELINE (keys named as there), the cycle record docs/QUALITY_CYCLE_2026-09-27.md (the
 # held-out checks and the costs), docs/EXPERIMENTS.md "Current results" (§0, §2d, §2e, §3, §9),
 # docs/P4_AUDIT.md, docs/ARCHITECTURE.md "Native kernels", "GPU: evaluated, not used" ----------------
-# The 27.09 detector after the independent review, measured at 65c5a5b (the gate baseline below)
+# The final 27.09 detector (352ca13: the opinion retrained on the shipped detector, 2x threshold
+# margin), measured at d572807 (the gate baseline below)
 BASELINE = "docs/evidence/results/regression_baseline_2026-09-27_quality.json"
 N = {
     # the organizers' real recordings [real]: six recordings and the 20-minute ride (13.0 km)
@@ -81,21 +82,24 @@ N = {
     "person_rails_only": 58,
     # false alarm events (ride / five empty recordings), in-sample: the rules and the track opinion's
     # negatives come from these recordings; the per-km figures are derived (/ ride_km)
-    "ride_events": 24, "empty_events": 9,
-    # the track opinion's grouped cross-validation (each ride piece held out with the sequences injected
-    # into it; held-out AUC 0.974): ride events of the rules alone -> kept at the shipped threshold (an
-    # upper bound); the ride with a 2x safety margin on the threshold (screened, not shipped)
-    "ride_cv": (42, 33), "ride_margin_events": 36,
-    # ablations of the shipped code, one key off at a time: the rules alone (the opinion off) on the
-    # ride; the far evidence off: first STOP of the box at the envelope top and of the plank, m; the
-    # envelope reference off: the edge cube's first STOP, m (the person: person_rails_only)
-    "ride_rules_only": 43, "nofar_first": (101, 82), "noref_edge_cube_m": 5.2,
+    "ride_events": 32, "empty_events": 11,
+    # the ride held out, measured: each pair of ride pieces run with an opinion model trained without
+    # them (cross-fitting): ride events with the opinion off (the rules alone) -> with the held-out model
+    "ride_cv": (43, 37),
+    # the threshold is half the highest that delays no held-out synthetic object (a 2x margin); with no
+    # margin the ride would give (in-sample, held-out) events: kept for safety
+    "ride_zero_margin": (25, 33),
+    # ablations of the shipped code, one key off at a time: the far evidence off: first STOP of the box
+    # at the envelope top and of the plank, m; the envelope reference off: the edge cube's first STOP, m
+    # (the person: person_rails_only; the opinion off: ride_cv[0])
+    "nofar_first": (101, 82), "noref_edge_cube_m": 5.2,
     # its bounds: at most this many frames (~1 s) of delay over a track's whole life, never within
-    # opinion_near_m, never for a standing body (a cluster at least body_m tall) within body_near_m
+    # opinion_near_m (also while the track is missed, at its predicted distance), never for a standing
+    # body (a cluster at least body_m tall) within body_near_m
     "opinion_budget": 10, "opinion_near_m": 25, "opinion_body": (1.0, 40),
     # clear-scene false STOP and processing history: STOPs in the captured node histories, STOP events
     # of the history stress (the captures plus seeded dropped-frame / catch-up / offset / dither runs)
-    "history_captured": (2, 0), "history_stress": (78, 51),
+    "history_captured": (2, 0), "history_stress": (78, 55),
     # the organizers' own synthetic obstacles, set O (cloud_with_fake_obj: 10 objects, 1 510 frames, the
     # train drives up to them at 1.4–20 m/s, no speed given) [organizers' synthetic]. The eight objects
     # inside the envelope in the chart's order: gate key -> (chart name, first STOP m, STOP frames,
@@ -131,17 +135,21 @@ N = {
     # the pre-registered placement study (72 cases: four set O objects' own points at new places on the
     # five empty recordings and the ride, paired controls) [organizers' synthetic, held out]: matched
     # target frames before -> now, of the visible ones; cases with a match; paired-control matches.
-    # NOTE: 723 is the run of the first 27.09 version (8b74cd0); the reviewed detector's run (plan
-    # re-registered in 36c9d72) replaces it
+    # (the final detector's run, plan registered in d572807, identical per case to the earlier runs; with
+    # gauge.reference 0, the rails alone: 722)
     "novel_frames": (544, 723, 2458), "novel_cases": (45, 72), "novel_controls": 0,
     # set F: our objects ray-cast into the moving ride, straight track, first confirmed detection, median
-    # of 6 approaches (round 3; the anchored person: round 4, 5 pairs, 150 m in the same pairs with the
-    # legacy placement) [synthetic in real frames, EXPERIMENTS §2d, P4_AUDIT "Paired straight-track"]
+    # of 6 approaches: person, trolley, crate and cable from the gate run of 27.09 (BASELINE
+    # set_F_straight, legacy placement); the 30 cm box on the rail head and the object across the rail
+    # from round 3 (24.09, not in the gate); the anchored person: round 4, 5 pairs, 150 m in the same
+    # pairs with the legacy placement [synthetic in real frames, EXPERIMENTS §2d, P4_AUDIT]
     "set_f": {
-        "person_anchored": ("человек 1,7 м · от рельсов", 154), "person": ("человек 1,7 м", 148),
-        "trolley": ("тележка", 144), "crate": ("ящик 1 м", 111), "cable": ("висящий кабель 3 см", 95),
+        "person_anchored": ("человек 1,7 м · от рельсов", 154), "person": ("человек 1,7 м", 151),
+        "trolley": ("тележка", 151), "crate": ("ящик 1 м", 124), "cable": ("висящий кабель 3 см", 99),
         "rail_box": ("ящик 30 см на рельсе", 49), "across_rail": ("предмет поперёк рельса", 46),
     },
+    # the 0.5 m box on the bed between the rails: approaches with a detection (gate, set F straight)
+    "bed_box_found": (1, 6),
     "anchored_legacy": 150,
     "band_person": 115,               # the person in >= 90 % of the frames of every 10 m band from here
     "speed_person": 167,              # the person with the train speed given (5-frame accumulation)
@@ -154,7 +162,7 @@ N = {
     "native_cut": (38, 57),           # optional C++ kernels: detector time cut in %, identical output
     "gpu_gain": "30–45 мс",           # the GPU study's upper bound per 360° frame against numpy
     "speed_err": "0,07 м/с",          # the opt-in LiDAR-only train speed, median error (0.06–0.08)
-    "tests": "730",                   # the full local pytest pass of 27.09 (65c5a5b + docs), 6 subtests; ride-cache cases need new_data
+    "tests": "731",                   # the full local pytest pass of 27.09 (352ca13 + docs), 6 subtests; ride-cache cases need new_data
 }
 
 
@@ -264,6 +272,11 @@ def opinion_bounds():
     body_m, body_near = N["opinion_body"]
     return (f"не больше {N['opinion_budget']} кадров (~{num(N['opinion_budget'] / 10)} с) за жизнь трека, "
             f"не ближе {N['opinion_near_m']} м и не для стоящего тела ≥ {num(body_m)} м ближе {body_near} м")
+
+
+def unseen_km():
+    """'2,8': ride events per km measured with an opinion model that never saw the piece"""
+    return per_km(N["ride_cv"][1])
 
 
 def person_rails():
@@ -698,8 +711,8 @@ def s11_short(sl):
         f"ядре с ядрами на C++ (они сокращают время детектора на {native_cut()}, выход тот же)",
         f"Все {num(frames_total())} реальных кадров: человек на пути найден в {of_frames(N['person'])} "
         f"({person_rails()}), "
-        f"{per_km()} ложных события на км поездки — на ней же подбирались правила (отложенная проверка "
-        f"«мнения» — до {per_km(N['ride_cv'][1])})",
+        f"{per_km()} ложных события на км поездки — на ней же подбирались правила (на кусках, которых модель "
+        f"не видела, — {unseen_km()})",
         f"Только CPU: GPU оценили и не берём — выигрыш ≤ {N['gpu_gain']} на кадр, а контейнер с GPU не "
         "стартует без nvidia-container-toolkit",
     ], size=12, space_before=4)
@@ -709,7 +722,8 @@ def s11_short(sl):
         "**Развитие:** скорость поезда от одометрии — узел её уже принимает (своя оценка по лидару: ошибка "
         f"{N['speed_err']}, пока опция); опора высоты по своду тоннеля — мелкие объекты дальше 100 м; "
         "«мнение» о треке — переобучить на реальных препятствиях",
-        "**Внедрение:** docker load → docker run → ros2 bag play; один файл параметров; стандартные "
+        "**Внедрение:** docker load → docker run → ros2 bag play или одной командой scripts/play_bag.sh; "
+        "один файл параметров; стандартные "
         "сообщения ROS 2 — стыкуется с системой торможения без переделки",
     ], size=12, space_before=6)
 
@@ -824,8 +838,10 @@ def s_demo(sl):             # template slide 27: two browser frames
                                "живой узел — через rosbridge"], size=12)
     fill(placeholder(sl, 16), ["Цепочка жюри в Docker: узел с RViz, bag play от обычного пользователя из "
                                "другого контейнера, /resense/decision — STOP 56 м (видео 69 с)"], size=12)
-    textbox(sl, Emu(1210643), Emu(5700000), Emu(9770000), Emu(480000),
-            [("docker load → docker run → ros2 bag play → /resense/decision", {"align": "ctr"})], size=16,
+    textbox(sl, Emu(1210643), Emu(5640000), Emu(9770000), Emu(640000),
+            [("docker load → docker run → ros2 bag play → /resense/decision", {"align": "ctr"}),
+             ("или одной командой: scripts/play_bag.sh путь_к_бэгу [--archive resense-image-версия.tar.gz]",
+              {"align": "ctr", "size": 12, "bold": False, "space_before": 4})], size=16,
             color=DEEP, bold=True, anchor="ctr")
 
 
@@ -839,13 +855,13 @@ def s_results(sl):          # template slide 20: left card + five rows
          "организаторы)", {"size": 13}),
         (f"{per_km()} на км", {"size": 36, "bold": True, "color": PINK, "space_before": 14}),
         (f"ложных событий в поездке ({N['ride_events']} за {N['ride_km']} км) — на ней же подбирались правила; "
-         f"отложенная проверка «мнения» о треке — до {per_km(N['ride_cv'][1])} на км", {"size": 13}),
+         f"на кусках поездки, которых модель не видела, — {unseen_km()} на км (измерено)", {"size": 13}),
     ], bullet=False, color="1C1D22")
     rows = [
         f"**Реальная запись:** человек на пути — {of_frames(N['person'])} ({person_rails()}), тревога {person_alarm()}, "
         f"ошибка ≤ {num(N['person_err_m'])} м; предмет на рельсе — {of_frames(N['rail_object'])}",
         f"**Ложные остановки** (реальные, на данных настройки правил): поездка {N['ride_km']} км — "
-        f"{events(N['ride_events'])} (без «мнения» — {N['ride_rules_only']}; отложенная проверка «мнения» — до "
+        f"{events(N['ride_events'])} (без «мнения» — {N['ride_cv'][0]}; на кусках, которых модель не видела, — "
         f"{N['ride_cv'][1]}); пять пустых записей — {N['empty_events']}",
         f"**Объекты организаторов** [их синтетика]: ящик 2 × 2 м — с {set_o_first('big_center')} м, доска — с "
         f"{set_o_first('long_low_on_rails')} м, у края — с {edge_from()} м; на новых местах [проверка заявлена "
@@ -896,7 +912,8 @@ def s_range(sl):            # template slide 22: horizontal bar chart + four not
         fill(placeholder(sl, ti), [t], size=16)
         fill(placeholder(sl, di), [d], size=12, bullet=False)
     textbox(sl, Emu(346075), Emu(5820000), Emu(5800000), Emu(520000),
-            [f"первое подтверждение на прямой, медиана 6 подходов; «от рельсов» — объект поставлен по ближним "
+            [f"первое подтверждение на прямой, медиана 6 подходов (прогон гейта 27.09; ящик 30 см и предмет "
+             f"поперёк рельса — 24.09); «от рельсов» — объект поставлен по ближним "
              f"рельсам, а не по дальней оси детектора (5 пар, прежняя постановка — {N['anchored_legacy']} м); "
              "поезд 17–21 м/с без датчика скорости · синтетика в реальных кадрах поездки"],
             size=10, color="6B6B6B")
@@ -982,7 +999,8 @@ def s_hard(sl):             # template slide 15: five lined rows
     fill(placeholder(sl, 0), ["СЛОЖНЫЕ СЛУЧАИ"])
     rows = [
         "**Полотно полно предметов.** «Всё выше полотна» — 1 482 ложных события за 20 мин; порог «≥ 3 см над "
-        "головкой рельса + 0,5 с» — единицы",
+        "головкой рельса + 0,5 с» — единицы; мелкие предметы на полотне между рельсами (кубы 0,3 м; ящик 0,5 м "
+        f"найден в {of(N['bed_box_found'])} подходов) — слепое пятно",
         f"**Предмет на рельсе делился на две ступени.** Верх на 0,10–0,15 м — между ступенью низких объектов "
         f"и габаритом; кластеризуем его целиком: {N['rail_object_v061']} → {of(N['rail_object'])} кадров",
         "**Станции и стрелки.** Край платформы и конструкции у торца — главный источник ложных остановок; "
@@ -1006,13 +1024,15 @@ def s_next(sl):             # template slide 17: three cards
     cards = [
         (49, 37, 38, "Что получилось", f"ROS 2-модуль в Docker; все {num(frames_total())} реальных кадров: человек и "
                                        f"предмет на рельсе найдены, {per_km()} ложных события на км (на данных, где подбирались правила; "
-                                       f"отложенная проверка «мнения» — до {per_km(N['ride_cv'][1])}); "
+                                       f"на невиданных кусках поездки — {unseen_km()}); "
                                        f"ящик организаторов — с {set_o_first('big_center')} м; {N['tests']} тестов и CI"),
         (50, 39, 40, "Что дальше", "мелкие объекты раньше: короткие сигнатуры инфраструктуры, опора высоты "
                                    "по своду тоннеля; скорость от одометрии (своя по лидару — опция); "
                                    "«мнение» о треке — переобучить на реальных препятствиях; ответ организаторов: габарит от рельсов "
                                    "или от оси лидара"),
-        (51, 41, 42, "Внедрение", "docker load → run → ros2 bag play; один файл параметров; стандартные "
+        (51, 41, 42, "Внедрение", "docker load → run → ros2 bag play или одной командой: scripts/play_bag.sh "
+                                  "путь_к_бэгу [--archive resense-image-версия.tar.gz] — образ, узел, запись и "
+                                  "каждая смена решения с дистанцией; один файл параметров; стандартные "
                                   "сообщения ROS 2 — стыкуется с системой торможения"),
     ]
     for k, (ni, ti, di, t, d) in enumerate(cards):
@@ -1050,9 +1070,9 @@ NOTES = {  # speaker notes per template slide (the main shot's are set in s_hero
         f"отсчёта по оси лидара, как у организаторов, по габариту от рельсов было бы {N['person_rails_only']}. "
         f"Предмет на рельсе — {of(N['rail_object'])}. Ложных событий в 20-минутной поездке — {per_km()} на км, но это на тех же "
         "данных, где мы подбирали правила и откуда взяты отрицательные примеры «мнения» о треке; без "
-        f"«мнения» одни правила дают {events(N['ride_rules_only'])}. Если "
-        f"«мнение» обучать без проверяемого куска поездки, остаётся до {N['ride_cv'][1]} из {N['ride_cv'][0]} "
-        f"событий, это {per_km(N['ride_cv'][1])} на км. На объектах "
+        f"«мнения» одни правила дают {events(N['ride_cv'][0])}. Честную цифру мы измерили: каждую пару кусков "
+        f"поездки прогнали с моделью, которая их не видела, — {events(N['ride_cv'][1])}, {unseen_km()} на км. "
+        "На объектах "
         f"организаторов большой ящик — с {set_o_first('big_center')} м, кубы 30 см — с {cubes()} м, у края — с "
         f"{edge_from()} м. Проверка, на которой мы ничего не настраивали и которую заявили заранее, — те же "
         f"объекты организаторов на новых местах: {novel()}. Это новые сочетания знакомых форм и фонов, а не "
@@ -1081,8 +1101,11 @@ NOTES = {  # speaker notes per template slide (the main shot's are set in s_hero
     15: "Что не сработало и почему: полотно полно железа, станции — главный источник ложных остановок, "
         "мелкие объекты организаторов видим поздно, тонкие — только вблизи. «Мнение» о треке обучено на "
         "синтетике: непохожий реальный объект — мусор, лежащий человек — оно может задержать, но "
-        f"{opinion_bounds()}, и никогда не отменяет STOP; с двойным запасом порога в поездке было бы "
-        f"{events(N['ride_margin_events'])} вместо {N['ride_events']}. После независимой проверки первой версии "
+        f"{opinion_bounds()}; предел {N['opinion_near_m']} м действует и по предсказанной дистанции, пока трек "
+        "пропущен; STOP оно никогда не отменяет. "
+        "Порог — половина наибольшего, который не задерживает ни одного отложенного синтетического объекта; "
+        f"без этого запаса было бы {N['ride_zero_margin'][0]} событий в поездке и {N['ride_zero_margin'][1]} "
+        "на невиданных кусках — запас оставили ради безопасности. После независимой проверки первой версии "
         "(два независимых судьи) исправили три вещи: габарит стал объединением — от рельсов нигде не "
         "уже; задержку «мнения» ограничили; дальний слабый трек, пока не приближается, — CAUTION, а не скрыт.",
     17: "Итог: работающий модуль, честные цифры, понятные следующие шаги — мелкие объекты раньше, скорость "

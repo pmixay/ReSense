@@ -1,0 +1,82 @@
+{
+ "what": "ride false alarms with each piece run by the model of the fold that never saw it",
+ "pieces": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7
+ ],
+ "folds": [
+  {
+   "pieces": [
+    0,
+    1
+   ],
+   "model": "/data/work/opinion3/model_fold_01.json",
+   "threshold": 0.0061
+  },
+  {
+   "pieces": [
+    2,
+    3
+   ],
+   "model": "/data/work/opinion3/model_fold_23.json",
+   "threshold": 0.0182
+  },
+  {
+   "pieces": [
+    4,
+    5
+   ],
+   "model": "/data/work/opinion3/model_fold_45.json",
+   "threshold": 0.0327
+  },
+  {
+   "pieces": [
+    6,
+    7
+   ],
+   "model": "/data/work/opinion3/model_fold_67.json",
+   "threshold": 0.0085
+  }
+ ],
+ "cross_fitted": {
+  "frames": 11271,
+  "alarm_frames": 170,
+  "alarm_events": 37,
+  "stop_episodes": 34,
+  "advisory_frames": 4743
+ },
+ "same_pieces_off": {
+  "frames": 11271,
+  "alarm_frames": 176,
+  "alarm_events": 43,
+  "stop_episodes": 35,
+  "advisory_frames": 4743
+ },
+ "same_pieces_track_opinion:0.0222": {
+  "frames": 11271,
+  "alarm_frames": 98,
+  "alarm_events": 26,
+  "stop_episodes": 26,
+  "advisory_frames": 4776
+ },
+ "same_pieces_model_full:0.015": {
+  "frames": 11271,
+  "alarm_frames": 130,
+  "alarm_events": 32,
+  "stop_episodes": 31,
+  "advisory_frames": 4759
+ },
+ "same_pieces_model_full:0.03": {
+  "frames": 11271,
+  "alarm_frames": 90,
+  "alarm_events": 25,
+  "stop_episodes": 24,
+  "advisory_frames": 4776
+ }
+}

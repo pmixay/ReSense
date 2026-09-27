@@ -1,8 +1,8 @@
 {
  "schema": "resense-regression-gate-v1",
- "created": "2026-09-27T19:19:49+00:00",
+ "created": "2026-09-27T20:52:29+00:00",
  "code": {
-  "commit": "65c5a5b645c84d7c270e01bff81d3887bedc294a",
+  "commit": "d57280701f63d4baddb5e23233e7bdebda9c0594",
   "branch": "HEAD",
   "version": "1.0.0",
   "uncommitted_detector_changes": []
@@ -10,8 +10,8 @@
  "config": {
   "path": "configs/default.yaml",
   "set": [],
-  "sha256": "be31ad2c301f69c944e2ff64c9b8b22671d1f6812bdfa9850e55d92eba5299cb",
-  "file_sha256": "739d1b04833b28fe8c9cc5bf5f38bc4b5b07741610d8fc0f06c6234536c9941a"
+  "sha256": "de5c7fd6dfa74c1e656af6e233efd625e3e552736534e32efa625e5e8ff57f47",
+  "file_sha256": "a5acd9214d2aeb58bf86e0a3b91685a1f3ab17ebbf60dbfe6b39edbe616a72f6"
  },
  "native": {
   "path": "native",
@@ -21,7 +21,7 @@
   "cache": "/data/cache",
   "jobs": 4,
   "nominal_stamps": false,
-  "wall_s": 259.6,
+  "wall_s": 246.0,
   "machine": {
    "cpus": 4,
    "platform": "Linux-6.18.44-fc-v42-x86_64-with-glibc2.39",
@@ -72,13 +72,13 @@
   "doubleT_platform": {
    "frames": 345,
    "alarm_frames": 2,
-   "alarm_events": 2,
+   "alarm_events": 3,
    "stop_episodes": 1,
    "first_alarm_frame": 36,
    "advisory_frames": 182,
    "alarm_dist": [
     34.8,
-    37.2
+    38.1
    ],
    "health": {
     "ok": 322,
@@ -138,13 +138,13 @@
   },
   "squareT_platform_squareT_switch": {
    "frames": 877,
-   "alarm_frames": 35,
-   "alarm_events": 7,
-   "stop_episodes": 10,
-   "first_alarm_frame": 316,
-   "advisory_frames": 400,
+   "alarm_frames": 38,
+   "alarm_events": 8,
+   "stop_episodes": 12,
+   "first_alarm_frame": 312,
+   "advisory_frames": 398,
    "alarm_dist": [
-    82.9,
+    82.0,
     147.5
    ],
    "health": {
@@ -158,22 +158,22 @@
  },
  "five_empty": {
   "frames": 2287,
-  "alarm_frames": 37,
-  "alarm_events": 9,
-  "stop_episodes": 11,
-  "advisory_frames": 1008
+  "alarm_frames": 40,
+  "alarm_events": 11,
+  "stop_episodes": 13,
+  "advisory_frames": 1006
  },
  "ride": {
   "available": true,
   "chunks": 8,
   "frames": 11271,
-  "alarm_frames": 95,
-  "alarm_events": 24,
-  "stop_episodes": 25,
-  "advisory_frames": 4776,
+  "alarm_frames": 130,
+  "alarm_events": 32,
+  "stop_episodes": 31,
+  "advisory_frames": 4759,
   "alarm_dist": [
    20.7,
-   143.6
+   155.4
   ],
   "health": {
    "ok": 11098,
@@ -961,44 +961,44 @@
  "latency_ms": {
   "note": "timing_ms.total per frame; informational, never gated: the workers run in parallel on a shared machine (clean timing: EXPERIMENTS §3)",
   "doubleT_obstacle": {
-   "mean_ms": 25.9,
-   "p95_ms": 42.0,
-   "max_ms": 69.1
+   "mean_ms": 23.7,
+   "p95_ms": 33.1,
+   "max_ms": 46.7
   },
   "doubleT_platform": {
-   "mean_ms": 25.7,
-   "p95_ms": 38.5,
-   "max_ms": 90.4
+   "mean_ms": 26.2,
+   "p95_ms": 39.2,
+   "max_ms": 90.6
   },
   "roundT_doubleT": {
-   "mean_ms": 34.1,
-   "p95_ms": 59.0,
-   "max_ms": 77.4
+   "mean_ms": 21.8,
+   "p95_ms": 31.0,
+   "max_ms": 33.5
   },
   "roundT_pressureGate_roundT": {
-   "mean_ms": 29.5,
-   "p95_ms": 54.6,
-   "max_ms": 77.5
+   "mean_ms": 19.2,
+   "p95_ms": 26.8,
+   "max_ms": 30.4
   },
   "roundT_squareT_pressureGate_squareT": {
-   "mean_ms": 18.0,
-   "p95_ms": 25.8,
-   "max_ms": 70.8
+   "mean_ms": 18.1,
+   "p95_ms": 26.0,
+   "max_ms": 30.0
   },
   "squareT_platform_squareT_switch": {
-   "mean_ms": 22.4,
-   "p95_ms": 45.1,
-   "max_ms": 102.8
+   "mean_ms": 19.1,
+   "p95_ms": 24.6,
+   "max_ms": 35.8
   },
   "cloud_with_fake_obj": {
-   "mean_ms": 18.5,
-   "p95_ms": 26.6,
+   "mean_ms": 18.7,
+   "p95_ms": 25.9,
    "max_ms": 59.1
   },
   "new_data": {
-   "mean_ms": 20.9,
-   "p95_ms": 31.9,
-   "max_ms": 101.7
+   "mean_ms": 20.5,
+   "p95_ms": 29.9,
+   "max_ms": 103.9
   }
  },
  "gate": {

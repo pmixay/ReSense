@@ -1,14 +1,14 @@
 {
  "schema": "resense-history-stress-v1",
  "sets": [],
- "wall_s": 122.2,
+ "wall_s": 122.1,
  "totals": {
   "histories": 33,
-  "stop_frames": 182,
-  "stop_events": 51,
+  "stop_frames": 204,
+  "stop_events": 55,
   "histories_with_stop": 15,
   "captures_stop_events": 0,
-  "cache_stop_events": 51
+  "cache_stop_events": 55
  },
  "rows": [
   {
@@ -104,12 +104,14 @@
    "history": "every",
    "seed": 0,
    "stop_frames": 2,
-   "stop_events": 2,
+   "stop_events": 3,
    "stop_distances": [
     34.8,
     35.5,
     36.3,
-    37.2
+    37.2,
+    37.9,
+    38.1
    ]
   },
   {
@@ -319,9 +321,11 @@
    "bag": "squareT_platform_squareT_switch",
    "history": "every",
    "seed": 0,
-   "stop_frames": 35,
-   "stop_events": 7,
+   "stop_frames": 38,
+   "stop_events": 8,
    "stop_distances": [
+    82.0,
+    82.1,
     82.9,
     83.1,
     84.4,
@@ -339,9 +343,7 @@
     145.1,
     145.2,
     145.3,
-    145.4,
-    145.6,
-    145.7
+    145.4
    ]
   },
   {
@@ -349,8 +351,8 @@
    "bag": "squareT_platform_squareT_switch",
    "history": "drop20",
    "seed": 0,
-   "stop_frames": 23,
-   "stop_events": 6,
+   "stop_frames": 25,
+   "stop_events": 7,
    "stop_distances": [
     82.7,
     82.9,
@@ -371,9 +373,10 @@
    "bag": "squareT_platform_squareT_switch",
    "history": "drop40",
    "seed": 0,
-   "stop_frames": 3,
-   "stop_events": 2,
+   "stop_frames": 6,
+   "stop_events": 3,
    "stop_distances": [
+    82.9,
     97.5,
     98.6,
     145.3
@@ -385,10 +388,11 @@
    "history": "catchup",
    "seed": 0,
    "stop_frames": 24,
-   "stop_events": 5,
+   "stop_events": 4,
    "stop_distances": [
+    82.0,
+    82.1,
     82.9,
-    83.3,
     94.2,
     94.4,
     139.9,
@@ -409,9 +413,11 @@
    "bag": "squareT_platform_squareT_switch",
    "history": "offset",
    "seed": 0,
-   "stop_frames": 13,
-   "stop_events": 5,
+   "stop_frames": 26,
+   "stop_events": 6,
    "stop_distances": [
+    82.0,
+    82.1,
     82.9,
     83.1,
     94.2,
@@ -425,11 +431,13 @@
    "bag": "squareT_platform_squareT_switch",
    "history": "dither5",
    "seed": 0,
-   "stop_frames": 37,
+   "stop_frames": 38,
    "stop_events": 7,
    "stop_distances": [
     81.7,
     82.1,
+    82.4,
+    82.6,
     82.7,
     82.8,
     82.9,

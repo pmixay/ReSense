@@ -23,19 +23,24 @@ frames, 13 km, no obstacles).
   of the rails' and the sensor-axis envelope within 60 m on straight track (`gauge.reference` 3),
   a learned track opinion that may delay a doubtful STOP by at most 10 frames in a track's life,
   never within 25 m or for a standing body within 40 m (`tracking.doubt_*`, gradient-boosted trees
-  in `resense/models/`, grouped held-out AUC 0.974), monitored-range caps from persistent sparse
+  in `resense/models/`, retrained on the shipped detector, grouped held-out AUC 0.975, a 2× margin
+  on its threshold), monitored-range caps from persistent sparse
   evidence and supported scan lines (`health.clear_cap_thin`, `clear_cap_persist`), the along-track
   association gate and the column body width (`tracking.gate_along_only`,
   `cluster.column_width_trim`), and far evidence for approaching tracks, advisory otherwise
   (`tracking.thin_far_min_distance`, `cluster.weak_min_points`). Two independent judges reviewed the
   first version (`8b74cd0`) and found a one-sided envelope shift, a far-evidence rule
   that could hide a track and an unbounded opinion delay (set O #6 held at 28.7 m); `65c5a5b` fixes
-  all three. Full gate PASS against P3d, no waiver: ride 183 / 45 / 38 → 95 / 24 / 25, five bags
-  58 / 13 / 16 → 37 / 9 / 11, set O edge cube first STOP 5.2 → 35.0 m (2 → 18 frames), edge box
+  all three. A second round found the opinion withholding over a missed frame inside its 25 m bound
+  and asked for a measured held-out figure; `352ca13` fixes the bound, retrains the opinion with a
+  margin and measures it on ride pieces each model never saw (`scripts/opinion_crossfit.py`: 43
+  events without the opinion → 37 held out), and adds `scripts/play_bag.sh` (one command: load,
+  node, play, print the decision changes). Full gate PASS against P3d, no waiver: ride 183 / 45 / 38
+  → 130 / 32 / 31 in-sample (37 events held out), five bags 58 / 13 / 16 → 40 / 11 / 13, set O edge cube first STOP 5.2 → 35.0 m (2 → 18 frames), edge box
   track from 28.7 m, box at the envelope top 101.3 → 111.4 m, plank 82.2 → 87.2 m, set O inside STOP
   frames 384 → 411, background 3 → 0, the person crossing 58 → 61 of 61 from frame 8 (from the
   envelope reference), GO overclaims 46 → 16, the captured clear-run STOP gone from every captured
-  node history, history stress 78 → 51 STOP events. The ride / history gains are mostly the
+  node history, history stress 78 → 55 STOP events. The ride / history gains are mostly the
   in-sample opinion (ablations in the record); set F's 1 m box trades −2 / +5 frames at 50–100 /
   100–150 m (now printed per bin by the gate). New seal `detector_freeze_2026-09-27.json`, new
   baseline `regression_baseline_2026-09-27_quality.json`

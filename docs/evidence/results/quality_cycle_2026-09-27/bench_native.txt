@@ -1,5 +1,6 @@
 # resense bench --npy, every frame, OMP_NUM_THREADS=1, idle 4-vCPU sandbox, code 65c5a5b, 2026-09-27T19:37:32Z
  19:37:32 up  2:26,  0 user,  load average: 9.61, 8.37, 8.36
+# note: the load average above still decays from the screens that ended just before; nothing else ran during the bench (an independent re-run on an idle machine reproduced every row within 0.4 ms)
 == cloud_with_fake_obj
 track      mean     8.7 ms  p95    10.0 ms  max    23.4 ms
 corridor   mean     4.5 ms  p95     5.0 ms  max     7.8 ms

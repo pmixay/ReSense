@@ -652,10 +652,14 @@ limit them once a cluster has real mass inside the strict envelope (≥ 10 voxel
   a STOP beyond `doubt_near` (25 m), a small gradient-boosted tree ensemble scores it from its last
   10 matched clusters; below `doubt_threshold` the track stays advisory (reason `doubt`) for at most
   `doubt_extra_hits` (10) frames over its whole life (misses and zone flicker spend the budget, it
-  is never refilled), released at once within 25 m, and a track whose cluster stands at least
-  `doubt_body_height` (1.0 m) tall within `doubt_body_range` (40 m) is never delayed. It never
-  vetoes and never takes a STOP down; with `doubt_sticky` the score at the onset decides. Trained
-  and validated by `scripts/track_opinion.py` (grouped by ride piece / recording).
+  is never refilled), released at once within 25 m (over a missed frame at its predicted
+  distance), and a track whose cluster stands at least `doubt_body_height` (1.0 m) tall within
+  `doubt_body_range` (40 m) is never delayed (`Tracker._doubt_exempt`). It never vetoes and never
+  takes a STOP down; with `doubt_sticky` the score at the onset decides. Trained and validated by
+  `scripts/track_opinion.py` (grouped by ride piece / recording) on the shipped detector;
+  `doubt_threshold` 0.015 is a 2× margin below the highest threshold that delays no held-out
+  synthetic sequence; `scripts/opinion_crossfit.py` measures the ride with models that never saw
+  the pieces they run on.
 * **Association along the track** (`tracking.gate_along_only`, `Tracker._gated`): a cluster
   nearer than predicted may be up to `ego_speed_max · dt` nearer along X, not in every direction.
 * **Column body width** (`cluster.column_width_trim`, `column_width_trim_min_cut`): the column

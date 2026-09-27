@@ -3,8 +3,31 @@
 > **Purpose:** the independent judgements of ReSense against the eight criteria of spec §8: score
 > per criterion, the evidence behind it, the risks on the hidden data and the fastest points to gain.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, summary RU
-> **Last independent judgement:** 2026-09-27, the quality cycle (round 1 below; round 2 after the review fixes).
+> **Last independent judgement:** 2026-09-27, the quality cycle (rounds 1 and 2 below).
 > **Status:** current review below; earlier numbered sections are dated records.
+
+## Quality-cycle review, round 2: 27 September (reviewed detector `65c5a5b`, docs `84c76b1`)
+
+**Combined 72/100** (judge A 72.5, judge B 73; round 1: 67). The target of 75 is not yet met.
+
+| Criterion | Maximum | Judge A | Judge B | Combined |
+|---|---:|---:|---:|---:|
+| Functionality |25|17|17.5|17|
+| Range |15|9|10|9.5|
+| Speed |10|8|7.5|7.5|
+| Generalization |15|9.5|9.5|9.5|
+| Technical quality |10|8|8|8|
+| Ease of launch |10|8.5|8|8|
+| Team approach |10|9|9|9|
+| Pitch |5|3.5|3.5|3.5|
+| **Total** |**100**|**72.5**|**73**|**72**|
+
+Reports: [both judges](evidence/results/rejudge_quality_cycle_2026-09-27_round2.json). Both
+reproduced the screen bit for bit, the union's never-narrower property frame by frame, the
+placement run and the benchmarks. Both found the opinion still withholding over a missed frame at
+a predicted 24.7 m (inside its stated 25 m bound), stale far-evidence comments, and stale README
+status blocks; both ask for a held-out false-alarm figure measured on the shipped detector rather
+than simulated, filled team slides, and a measurement on the 8-core stand.
 
 ## Quality-cycle review, round 1: 27 September (first 27.09 version `8b74cd0`)
 

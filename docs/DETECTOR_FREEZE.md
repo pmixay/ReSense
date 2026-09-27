@@ -4,11 +4,12 @@
 is the reference. Its seal [`detector_freeze_2026-09-27.json`](evidence/detector_freeze_2026-09-27.json)
 covers 31 files (the learned track opinion `resense/models/track_opinion.json` included) against
 the full gate [`regression_gate_2026-09-27_quality.json`](evidence/results/regression_gate_2026-09-27_quality.json)
-of `65c5a5b`: PASS against the P3d baseline with no waiver, missing row or worse gated metric,
-on the default parameters without overrides. It replaces the first 27.09 seal (`25498c1`), after
-an independent two-judge review of that version found three safety regressions (a one-sided
-envelope shift, a far-evidence rule that could hide a track, an unbounded opinion delay); the
-record lists the fixes and their cost. That gate is the new regression baseline
+of `d572807` (detector `352ca13`): PASS against the P3d baseline with no waiver, missing row or
+worse gated metric, on the default parameters without overrides. It replaces the first 27.09 seal
+(`25498c1`) and the one after the first review (`65c5a5b`): two independent two-judge review
+rounds found three safety regressions (a one-sided envelope shift, a far-evidence rule that could
+hide a track, an unbounded opinion delay) and a violated near bound of the opinion, and asked for
+a margin on its threshold; the record lists every fix and its cost. That gate is the new regression baseline
 ([`regression_baseline_2026-09-27_quality.json`](evidence/results/regression_baseline_2026-09-27_quality.json)).
 `python scripts/detector_freeze.py verify` (CI job `params-in-sync`) checks the seal. No release
 tag has been created or pushed.

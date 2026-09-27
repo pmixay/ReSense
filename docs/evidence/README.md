@@ -18,11 +18,12 @@ receipt. A [later seven-job run](p1_p2_supported_playback_2026-09-27/cached_bags
 also passed after saving and restoring verified original bags in Actions cache. Both supersede
 the earlier quota-blocked attempt without changing the detector baseline.
 
-## Quality cycle — 27 September (reviewed detector `65c5a5b`)
+## Quality cycle — 27 September (final detector `352ca13`, measured at `d572807`)
 
 - [Detector seal](detector_freeze_2026-09-27.json) and [full gate against P3d](results/regression_gate_2026-09-27_quality.json): PASS, no waivers; also the [new baseline](results/regression_baseline_2026-09-27_quality.json).
+- The learned opinion's [cross-fitted ride measurement](results/quality_cycle_2026-09-27/opinion_crossfit_2x_margin.json) ([zero margin](results/quality_cycle_2026-09-27/opinion_crossfit_zero_margin.json)) and its fold training reports (`opinion_report_*.json`).
 - [Cycle record](../QUALITY_CYCLE_2026-09-27.md) with its raw material in [`results/quality_cycle_2026-09-27/`](results/quality_cycle_2026-09-27/): every screen (`screens/`, the review fixes `review_*.json`, the ablations `ablation_*.json`), final acceptance and history stress, the re-registered 72-case [plan](results/quality_cycle_2026-09-27/novel_plan.json) and [results](results/quality_cycle_2026-09-27/novel_results.json.gz), the review's [side-symmetry check](results/quality_cycle_2026-09-27/side_person_check.json), benchmarks.
-- Independent review of the first version (`8b74cd0`): [both judges](results/rejudge_quality_cycle_2026-09-27_round1.json); synthesis in [SCORECARD](../SCORECARD.md).
+- Independent reviews: round 1 of the first version (`8b74cd0`) [both judges](results/rejudge_quality_cycle_2026-09-27_round1.json), round 2 of `65c5a5b` [both judges](results/rejudge_quality_cycle_2026-09-27_round2.json); synthesis in [SCORECARD](../SCORECARD.md).
 
 ## Freeze pass — 26 September night
 
