@@ -204,3 +204,36 @@ def test_does_not_drop_an_object_touching_an_edge_line():
     assert len(stops[0]) >= 15
     for mode in (1, 2):                                          # 19 -> 7 STOP frames without the fallback
         assert set(stops[0]) <= set(stops[mode]), str(stops)
+
+
+def test_along_track_rules_read_the_rails():
+    """``gauge.reference_along_rails``: a 2.5 m long, 0.6 m wide, 0.4 m tall structure along the track
+    1.1 m from the rails (0.9 m from the reference axis, 0.2 m to its left) is the 'edge' signature
+    (duct / bench fragment along the corridor edge) when the along-track rules read the rails; read
+    from the reference it is an obstacle inside the envelope. A compact object at the same place is
+    an obstacle either way (the edge rule needs the elongation)."""
+    from resense.clustering import find_clusters
+    from resense.config import ClusterConfig
+
+    def cluster_of(length, along):
+        X, Y, Z = np.meshgrid(np.arange(30.0, 30.0 + length, 0.08), np.arange(0.8, 1.41, 0.08),
+                              np.arange(0.1, 0.51, 0.08), indexing="ij")
+        xyz = np.stack([X.ravel(), Y.ravel(), Z.ravel()], axis=1).astype(np.float32)
+        dy_rail = xyz[:, 1].astype(np.float64)
+        dy = dy_rail - 0.2
+        h = xyz[:, 2].astype(np.float64)
+        g = GaugeConfig()
+        g.reference, g.reference_along_rails = 2, along
+        in_gauge = np.abs(dy) <= 1.05
+        out = find_clusters(xyz, np.zeros(len(xyz), np.float32), dy, h, in_gauge, ClusterConfig(),
+                            gauge=g, dy_report=dy_rail)
+        assert len(out) == 1
+        return out[0]
+
+    long_ref, long_rail = cluster_of(2.5, False), cluster_of(2.5, True)
+    assert long_ref.zone == "gauge" and long_ref.reason == ""
+    assert long_rail.zone == "warning" and long_rail.reason == "edge"
+    assert abs(long_rail.lateral - 1.1) < 0.05                   # reported from the rails either way
+    for along in (False, True):
+        c = cluster_of(0.4, along)
+        assert c.zone == "gauge" and c.reason == ""
