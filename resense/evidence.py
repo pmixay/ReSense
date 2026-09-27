@@ -36,6 +36,9 @@ from resense.gauge import point_in_polygon
 
 LINK = 0.45          # m, blob link distance at range 0 (x (1 + X / 100))
 AROUND = 2.0         # m along the track either side of a blob in which other corridor returns count
+DENSE = 64           # evidence returns within +- persist_max_extent along the track above which a
+                     # stretch is an object's surface, not sparse evidence (the clusters and tracks
+                     # cover it); bounds the cost: a 2 x 2 m box 3 m ahead leaves ~29 000 returns
 
 
 def sparse_blobs(X: np.ndarray, dy: np.ndarray, h: np.ndarray, ev: np.ndarray, hcfg) -> np.ndarray:
@@ -52,12 +55,13 @@ def sparse_blobs(X: np.ndarray, dy: np.ndarray, h: np.ndarray, ev: np.ndarray, h
     # isolation first, per return: a compact blob (x0 <= X_p <= x1 <= x0 + extent) around a return
     # has at least C(X_p +- (2 - extent)) - E(X_p +- extent) other corridor returns within 2 m (C: all
     # corridor returns, E: evidence returns), so a return where that exceeds A is dropped before the
-    # linking; crowded stretches (a wall in the corridor, a platform) cost nothing. Blobs are formed
-    # from the remaining returns and tested on all corridor returns
+    # linking; crowded stretches (a wall in the corridor, a platform) cost nothing, and neither does
+    # the dense surface of a near object (more than DENSE evidence returns within the extent). Blobs
+    # are formed from the remaining returns and tested on all corridor returns
     ext = float(hcfg.persist_max_extent)
     c = np.searchsorted(Xs, Xe + AROUND - ext, "right") - np.searchsorted(Xs, Xe - AROUND + ext, "left")
     e = np.searchsorted(Xes, Xe + ext, "right") - np.searchsorted(Xes, Xe - ext, "left")
-    keep = c - e <= A
+    keep = (c - e <= A) & (e <= DENSE)
     idx = idx[keep]
     n = idx.size
     if n < max(1, int(hcfg.persist_min_points)):

@@ -1,10 +1,17 @@
 # Work before a final detector freeze
 
-Status: the registered quality cycle and its follow-up diagnosis/T1 experiment are complete;
-**final detector acceptance and release publication remain on hold**. See the
-[quality-cycle results](QUALITY_CYCLE_2026-09-26.md). No release tag has been created or pushed.
-The [sealed P3d version](DETECTOR_FREEZE.md) remains the comparison baseline; its integrity record
-and green regression gate do not close the quality gaps.
+**Update 27.09:** the [27.09 quality cycle](QUALITY_CYCLE_2026-09-27.md) shipped and sealed a new
+reference detector ([`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md)): ride 45 / 38 → 21 / 22 false
+events / STOP episodes, edge cube first STOP 5.2 → 35 m, GO overclaims 46 → 16, the captured
+history-dependent clear-run STOP gone. Open next steps (from its limits section): a real or
+wider synthetic positive set to put a margin under the track opinion's threshold; organizer Q1
+(rails or sensor axis) before extending the sensor-axis reference beyond 60 m or to the large edge
+box beyond ~28 m; the 16 remaining GO overclaims; the standing-train platform STOPs that dominate
+the history stress. Release publication remains on hold. The text below is the record of 26.09.
+
+Status (26.09): the registered quality cycle and its follow-up diagnosis/T1 experiment are complete;
+final detector acceptance and release publication remained on hold. See the
+[quality-cycle results](QUALITY_CYCLE_2026-09-26.md).
 
 ## Completed work and current disposition
 

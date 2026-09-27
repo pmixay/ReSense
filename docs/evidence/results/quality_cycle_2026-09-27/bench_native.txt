@@ -1,0 +1,21 @@
+== doubleT_obstacle
+corridor   mean     5.6 ms  p95     6.1 ms  max     7.3 ms
+egomotion  mean     0.0 ms  p95     0.0 ms  max     0.0 ms
+accumulate mean     0.0 ms  p95     0.0 ms  max     0.0 ms
+cluster    mean     4.4 ms  p95     5.6 ms  max     6.3 ms
+tracking   mean     0.8 ms  p95     1.8 ms  max     1.9 ms
+total      mean    23.7 ms  p95    33.0 ms  max    43.1 ms
+== roundT_doubleT
+corridor   mean     4.8 ms  p95     5.3 ms  max     6.5 ms
+egomotion  mean     0.0 ms  p95     0.0 ms  max     0.0 ms
+accumulate mean     0.0 ms  p95     0.0 ms  max     0.0 ms
+cluster    mean     6.1 ms  p95     9.1 ms  max    12.0 ms
+tracking   mean     1.0 ms  p95     1.5 ms  max     1.9 ms
+total      mean    21.2 ms  p95    30.5 ms  max    33.3 ms
+== cloud_with_fake_obj
+corridor   mean     4.6 ms  p95     5.6 ms  max     7.1 ms
+egomotion  mean     0.0 ms  p95     0.0 ms  max     0.0 ms
+accumulate mean     0.0 ms  p95     0.0 ms  max     0.0 ms
+cluster    mean     5.6 ms  p95    11.1 ms  max    52.6 ms
+tracking   mean     9.9 ms  p95     3.2 ms  max  3519.8 ms
+total      mean    29.5 ms  p95    29.7 ms  max  3549.5 ms

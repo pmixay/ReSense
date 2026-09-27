@@ -1,9 +1,16 @@
-# Detector baseline seal — 26 September 2026
+# Detector seal — 27 September 2026 (replaces the P3d seal of 26.09)
 
-**Current decision: final freeze and release remain on hold.** The user authorized further
-detector work. The [quality cycle](QUALITY_CYCLE_2026-09-26.md) retains this seal as its comparison
-baseline. Its combined candidate failed the standalone clear-bag zero-alarm criterion; no
-replacement detector is accepted. No release tag has been created or pushed.
+**Current decision:** the detector of the [27.09 quality cycle](QUALITY_CYCLE_2026-09-27.md) is the
+reference. Its seal [`detector_freeze_2026-09-27.json`](evidence/detector_freeze_2026-09-27.json)
+covers 31 files (the learned track opinion `resense/models/track_opinion.json` included) against
+the full gate [`regression_gate_2026-09-27_quality.json`](evidence/results/regression_gate_2026-09-27_quality.json)
+of `0a14248`: PASS against the P3d baseline with no waiver, missing row or worse gated metric,
+on the default parameters without overrides. That gate is the new regression baseline
+([`regression_baseline_2026-09-27_quality.json`](evidence/results/regression_baseline_2026-09-27_quality.json)).
+`python scripts/detector_freeze.py verify` (CI job `params-in-sync`) checks the new seal. No release
+tag has been created or pushed.
+
+## The P3d seal of 26 September (dated record)
 
 **Earlier baseline decision:** preserve the validated detector and default configuration.
 Detector behavior remains that of `fa18832`; the acceptance

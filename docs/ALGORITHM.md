@@ -634,6 +634,38 @@ limit them once a cluster has real mass inside the strict envelope (≥ 10 voxel
   start of a bag at a standing train reported the rail heads at 2.9–3.1 m); an object lying across
   a rail is wider than the 0.45 m limit and stays an obstacle.
 
+### 3.6 Rules of 27.09 (the quality cycle; on by default, [`QUALITY_CYCLE_2026-09-27.md`](QUALITY_CYCLE_2026-09-27.md))
+
+* **Envelope reference near the train** (`gauge.reference` 2, `resense/gauge.py`
+  `reference_offset`, `Detector._corridor`): within `reference_range` (60 m), on straight track
+  with the rail pair locked, the strict membership and the shape rules read the lateral measured
+  from the sensor axis — the frame the organizers place objects in — with the rail-to-sensor
+  offset clamped to `reference_max_offset` (0.2 m). The candidates, the reported lateral, the
+  gauge distance, the bed / low / rail-start / clear-cap stages and the along-track structure
+  rules (`reference_along_rails`) keep the rails; the rails' own strict mask stays for the
+  oversize split and the wall keep.
+* **Learned track opinion** (`tracking.doubt_*`, `resense/opinion.py`,
+  `resense/models/track_opinion.json`, `Tracker._doubt`): when the rules are about to make a track
+  a STOP beyond `doubt_near` (25 m), a small gradient-boosted tree ensemble scores it from its last
+  10 matched clusters; below `doubt_threshold` the track stays advisory (reason `doubt`) for
+  `doubt_extra_hits` (10) more matched frames, released at once within 25 m. It never vetoes and
+  never takes a STOP down; with `doubt_sticky` the score at the onset decides. Trained and
+  validated by `scripts/track_opinion.py` (grouped by ride piece / recording).
+* **Association along the track** (`tracking.gate_along_only`, `Tracker._gated`): a cluster
+  nearer than predicted may be up to `ego_speed_max · dt` nearer along X, not in every direction.
+* **Column body width** (`cluster.column_width_trim`, `column_width_trim_min_cut`): the column
+  rule reads the width between the 5 % and 95 % lateral quantiles of the cluster when the trimmed
+  tails span at least 0.25 m (a sparse fragment joined at the DBSCAN radius).
+* **Far evidence for approaching tracks** (`tracking.thin_far_min_distance`,
+  `cluster.weak_min_points`, `Detector._far_thin`, `Tracker._approaching`): beyond 60 m a scan line
+  inside the envelope, or a cluster one voxel under the point-count bar, may start or continue a
+  track only unambiguously; such a track becomes a STOP only while its distances approach on a
+  line in sensor time (5 hits, 2–25 m/s, RMS ≤ 0.5 m).
+* **Monitored-range caps** (`health.clear_cap_thin`, `health.clear_cap_persist`,
+  `resense/evidence.py`): `clear_distance` is also capped by the nearest supported undemoted
+  scan-line cluster inside the envelope and by sparse envelope evidence chained over 4 frames at a
+  constant lateral, height and approach. Decisions are unchanged.
+
 ## 4. Decision rule
 
 A frame reports `obstacle = true` when at least one track is **confirmed**:
