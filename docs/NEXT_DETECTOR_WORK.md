@@ -19,7 +19,7 @@ and green regression gate do not close the quality gaps.
 - T1 completes the causal follow-up. It removes the two traced clear-sequence false STOPs, but
   range retention falls to 50% on one ride segment and 93.4% on a platform/switch recording,
   below the required 95%. T1 is rejected; no replacement detector is accepted.
-- Current P3d plus freshness code `d480b1330491da838d6fb4996e34e37b3c060915` passes all six jobs
+- Earlier P3d plus freshness code `d480b1330491da838d6fb4996e34e37b3c060915` passes all six jobs
   in [CI run 36275557220](https://github.com/pmixay/ReSense/actions/runs/36275557220), including
   loaded runtime native-kernel assertions and synthetic replay with required freshness.
   Local download, checksum, offline loading and source/native verification pass

@@ -4,9 +4,14 @@
 > decisions; history of 16–24.09 in
 > [`archive/CAPTAIN_log_2026-09.md`](archive/CAPTAIN_log_2026-09.md).
 > **Audience:** P1, team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-26 night, completed quality cycle; code `d480b13` · **Status:** baseline sealed; final acceptance and publication on hold; earlier tables retain dated evidence
+> **Last verified:** 2026-09-27, P1/P2 branch integration · **Status:** baseline sealed; final acceptance and publication on hold; earlier tables retain dated evidence
 
 ## Current delegated work — 26.09 night
+
+**27.09 integration:** the P1/P2 completion branch is integrated, with startup cadence,
+dashboard reconnect handling and remote-viewer checks. Completed experiment histories are
+retained without enabling rejected detector variants. The [integration record](BRANCH_INTEGRATION_2026-09-27.md)
+maps the source branches and validation; the earlier `d480b13` archive below is dated delivery evidence.
 
 **Latest user decision: release publication is on hold.** No release tag has been created or
 pushed. The user asked for a deeper review of system weaknesses and whether detector development
@@ -30,7 +35,7 @@ loss and a merged fragment that changes the column's apparent width. T1 removes 
 false STOPs but fails its range-retention gates (50% and 93.4%, versus the required 95%); it is
 rejected. The failed combined-image archive remains a review artifact, not accepted detector evidence.
 
-The current P3d core plus freshness code, `d480b1330491da838d6fb4996e34e37b3c060915`, passes
+The earlier P3d core plus freshness delivery code, `d480b1330491da838d6fb4996e34e37b3c060915`, passes
 all six jobs in [CI run 36275557220](https://github.com/pmixay/ReSense/actions/runs/36275557220).
 The loaded runtime archive passes explicit replay/freshness checks and asserts that native
 kernels are available and enabled. These synthetic CI checks do not close the original-bag

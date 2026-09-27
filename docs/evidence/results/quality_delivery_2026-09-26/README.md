@@ -5,7 +5,9 @@
 The archive was built from `d480b1330491da838d6fb4996e34e37b3c060915`, containing the
 P3d detector and implemented freshness controls. It does not contain M2 or T1.
 All six jobs passed in [CI run 36275557220](https://github.com/pmixay/ReSense/actions/runs/36275557220).
-Later commits update documentation and these receipts; the runtime source remains unchanged.
+Through `c45626f`, later commits update documentation and these receipts; the runtime source
+remains unchanged. The subsequent P1/P2 integration changes the node and viewer. This dated
+archive does not verify those later changes; use their integration CI results.
 
 ## Archive identity and checks
 

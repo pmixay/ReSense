@@ -1,0 +1,12 @@
+[
+  {
+    "path": "docs/evidence/results/quality_monitoring_M2_implementation_2026-09-26.json",
+    "original_bytes": 1364,
+    "original_sha256": "d3d611b0a5a072c0152fe30a6dc926163d436080ed4a915ab5d4f9b6dbced91c"
+  },
+  {
+    "path": "docs/evidence/results/quality_monitoring_M2_novel_plan_2026-09-26.json.gz",
+    "original_bytes": 637238,
+    "original_sha256": "00f3eb584ef965cc99203a4316eef9e4f21ee78574d123bcef56ee2b95ff053a"
+  }
+]

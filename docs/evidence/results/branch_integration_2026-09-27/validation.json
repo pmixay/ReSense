@@ -1,0 +1,33 @@
+{
+  "tested_commit": "68338b95c20576788c8dadef65fe12185c4613aa",
+  "tested_tree": "a4c3f2746b717818a566425eefc1fb16a5416dc1",
+  "full_run": {
+    "command": "RESENSE_REQUIRE_SYNTHETIC=1 python -m pytest -q -rs tests web/demo",
+    "passed": 714,
+    "subtests_passed": 6,
+    "skipped": 0,
+    "deselected": 1,
+    "deselected_reason": "RESENSE_RIDE_CACHE was unset; /data/cache/new_data absent"
+  },
+  "required_data_test": {
+    "command": "RESENSE_RIDE_CACHE=/home/resense/data/cache/new_data RESENSE_REQUIRE_SYNTHETIC=1 python -m pytest -q -rs tests/test_rail_start.py::test_finding_rail_heads_ahead_of_a_standing_fresh_start_do_not_stop",
+    "passed": 1,
+    "skipped": 0,
+    "deselected": 0
+  },
+  "aggregate": {
+    "passed": 715,
+    "subtests_passed": 6,
+    "unrun_cases": 0
+  },
+  "static_checks": [
+    "ruff check .",
+    "git diff --check c45626f..HEAD",
+    "bash -n scripts/p1_cold_bag_test.sh scripts/p2_viewer_test.sh scripts/dry_run.sh",
+    "scripts/sync_params.sh --check",
+    "python scripts/detector_freeze.py verify"
+  ],
+  "detector_source_sha256": "5d9a20861f66bb2c085d91c8a03a26710e6a1455d02c156102f6d9fdedff5fa6",
+  "detector_quality_acceptance": false,
+  "release_published": false
+}
