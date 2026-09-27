@@ -237,7 +237,7 @@ def simulate(P, M, p, thr, extra, near, sticky=False):
         w, doubt, sp = state.get(key, (False, 0, False))
         if not stop:
             w, doubt = False, 0
-        elif sp and not w:
+        elif sp and not w and not M[i, 3] > 0:           # a STOP already (an onset of the run is one here too)
             pass
         elif d <= near or (p[i] >= thr and not (sticky and w)):
             w = False
@@ -298,10 +298,10 @@ def cmd_train(a):
         # the threshold: the highest at which at most --max-delayed synthetic sequences (held out) would
         # be delayed by the rule; then the quantiles of the positive rows for comparison
         best = None
-        for thr in np.unique(np.round(oof[y == 1], 4)):
+        for thr in np.unique(oof[y == 1]):
             if len({d[0] for d in simulate(Pp, Mp, pp, thr, extra, a.near, a.sticky)[4]}) > a.max_delayed:
                 break
-            best = float(thr)
+            best = float(np.floor(thr * 1e4) / 1e4)        # rounded down: the config value
         thrs = [("max_delayed", best)] + [(q, float(np.quantile(oof[y == 1], q))) for q in
                                           [float(v) for v in a.quantiles.split(",") if v]]
         for q, thr in thrs:
