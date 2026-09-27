@@ -49,8 +49,11 @@ def sparse_blobs(X: np.ndarray, dy: np.ndarray, h: np.ndarray, ev: np.ndarray, h
     Xs = np.sort(X)
     Xe = X[idx]
     Xes = np.sort(Xe)
-    # exact prefilter: a blob with x0 <= X_p <= x1 <= x0 + extent has around >= C(X_p +- 1.5) - n and
-    # n <= E(X_p +- extent), so a return failing C - E <= A cannot belong to an isolated blob
+    # isolation first, per return: a compact blob (x0 <= X_p <= x1 <= x0 + extent) around a return
+    # has at least C(X_p +- (2 - extent)) - E(X_p +- extent) other corridor returns within 2 m (C: all
+    # corridor returns, E: evidence returns), so a return where that exceeds A is dropped before the
+    # linking; crowded stretches (a wall in the corridor, a platform) cost nothing. Blobs are formed
+    # from the remaining returns and tested on all corridor returns
     ext = float(hcfg.persist_max_extent)
     c = np.searchsorted(Xs, Xe + AROUND - ext, "right") - np.searchsorted(Xs, Xe - AROUND + ext, "left")
     e = np.searchsorted(Xes, Xe + ext, "right") - np.searchsorted(Xes, Xe - ext, "left")
