@@ -113,10 +113,29 @@ jobs:
         # the WITH_TOOLS=1 build's `websockets` client. This models a second device on an isolated
         # network and checks outage/recovery without requiring demo hardware.
         run: IMAGE=resense:ci scripts/p2_viewer_test.sh
+      # The organizers' Датасет.zip (3.7 GB) comes from Google Drive, which stops serving a file
+      # that is downloaded too often (27.09 on main: its "Quota exceeded … up to 24 hours" page
+      # instead of the archive). The archive is cached under its sha256, which
+      # p1_cold_bag_test.sh verifies, and is saved after the first download even if a later
+      # check fails, so Drive is asked once, not on every push.
+      - name: the organizers' dataset archive from the Actions cache
+        id: dataset
+        if: ${{ github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/main' }}
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/.cache/resense-dataset/dataset.zip
+          key: resense-dataset-zip-e23166801794cdeb2dcd77a3cc8b40a906b1d9cefab6f26739e368234e9168be
       - name: original bag cold-start regression — working branch and main
         if: ${{ github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/main' }}
-        timeout-minutes: 10
-        run: IMAGE=resense:ci scripts/p1_cold_bag_test.sh
+        timeout-minutes: 15   # 4 min when it passes, plus up to 3 min waiting out a Google Drive page
+        run: IMAGE=resense:ci DATASET_ZIP="$HOME/.cache/resense-dataset/dataset.zip" scripts/p1_cold_bag_test.sh
+      - name: cache the verified dataset archive
+        # the script leaves the file there only once its sha256 matched; no file, no cache (a warning)
+        if: ${{ !cancelled() && steps.dataset.outcome == 'success' && steps.dataset.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@v4
+        with:
+          path: ~/.cache/resense-dataset/dataset.zip
+          key: ${{ steps.dataset.outputs.cache-primary-key }}
       - name: retain original-bag cold-start evidence
         if: ${{ always() && (github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/main') }}
         uses: actions/upload-artifact@v4
