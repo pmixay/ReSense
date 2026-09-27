@@ -204,17 +204,17 @@ STOP 5.2 → **35 m**, the edge box's track from 28.7 m (10.3 m), the box at the
 history-dependent clear-run STOP gone, history stress 78 → 55. **Where the gains come from** (one
 mechanism off at a time): the ride / five-empty / history gains are mostly the learned opinion
 (without it the ride keeps 43 / 35 and the history stress 75); the edge cube, edge box and the real
-person's 3 extra frames are entirely the envelope reference, i.e. the organizers' sensor-axis
-placement frame (without it 5.2 m and 58 of 61); the set O range gains are far evidence. The
+person's 3 extra frames need the envelope reference, i.e. the organizers' sensor-axis placement frame (without it 5.2 m and 58 of 61; the edge cube's 35 m also needs `floating_free_max_dy` 1.2, in a window bracketed by two set O objects); the set O range gains are far evidence. The
 pre-registered placement of the
 organizers' objects at new offsets on the empty recordings and the ride (not used for tuning):
-matched frames 544 → **723** of 2 458, 45 of 72 cases, paired controls 0 (identical per case across the review fixes); with the reference switched off (the rails alone) 722 — the held-out gain does not rest on the organizers' placement frame. In-sample figures are marked as such in the record; the limits (the opinion's
+matched frames 544 → **723** of 2 458, 45 of 72 cases, paired controls 0 (identical per case across the review fixes); with the reference switched off (the rails alone) 722 — the gain on new placements does not rest on the organizers' placement frame (a sensitivity study on seen shapes and backgrounds, not held-out recall). In-sample figures are marked as such in the record; the limits (the opinion's
 threshold at the edge of the held-out positives, the reference's gains resting on the organizers'
 placement frame while Q1 is open) are stated there.
 
 **Criteria judgement:** the independent reviews and remaining gaps are in
-[the scorecard](docs/SCORECARD.md). The 27.09 quality cycle's second review round gives a combined
-**72/100** (round 1: 67; 26.09: 64); the requested 75/100 is not yet met. P4's preregistered
+[the scorecard](docs/SCORECARD.md). The 27.09 quality cycle's third review round gives judge A 75
+and judge B 70, combined **72/100** (round 2: 72, round 1: 67; 26.09: 64); the requested 75/100
+combined is not met. P4's preregistered
 experiment (26.09) found the target in **45/72 cases and 544/2,458 visible frames** (27.09: 723),
 with zero paired-control matches. This tests
 synthetic combinations on seen backgrounds; it provides no real unseen-route recall result.
@@ -288,7 +288,7 @@ Headline results (kinds and placement modes: [`docs/README.md`](docs/README.md) 
 | curves, stations, low objects | R ≈ 350 m curves 6 of 7 from 58–86 m (sightline past the inner wall); station stops 6 of 6 from 113 m; 30 cm on a rail head 6 of 6 from 42–49 m; person lying across the rails 6 of 6 from ~64 m | synthetic, legacy | 24.09 | EXPERIMENTS §2d |
 | sensor limit | no return beyond 210 m in any of the 13 759 frames: 300 m is beyond this sensor | real | 24.09 | EXPERIMENTS §2d |
 | other mounts | upside down, `+x` forward, backwards found; tilt recovered to 0.0–0.5° on re-mounted frames of 3 recordings | real, re-mounted | 22–23.09 | EXPERIMENTS §6 |
-| offline timing per frame | **the 27.09 detector, re-measured: 18.0–22.9 ms mean, p95 22.7–32.6 ms**, max 57 ms, on set O and three 120° / 360° recordings (one core, C++ kernels, idle 4-vCPU sandbox); the node's path without ROS transport (decode of the organizers' PointCloud2 layout, crop, rotation, detector) p95 32–48 ms, peak RSS 161–248 MB ([QUALITY_CYCLE_2026-09-27](docs/QUALITY_CYCLE_2026-09-27.md) "Speed"); 26.09 with the C++ kernels: 22.7–30.7 ms mean, p95 32.8–42.1 ms on set O and the 120° / 360° recordings (one core, idle 4-core machine, the re-judgement of 26.09; the numpy path there 78.3 / 95.5 ms at 360°); 23.09 on the numpy path: 42–64 ms mean, p95 53–78 ms on every recording (health monitor not included: 7–14 ms more); 24.09 on another idle VM 36.5–52.2 / 50.3–67.1 ms; the optional C++ kernels: −38…−57 %, identical output; DBSCAN on cKDTree (25.09): −1.3…−2.6 ms more on the native path | timing: sandbox | 23–25.09, 27.09 | EXPERIMENTS §3, ARCHITECTURE "Native kernels" |
+| offline timing per frame | **the 27.09 detector, re-measured: 18.0–22.9 ms mean, p95 22.7–32.6 ms**, max 57 ms, on set O and three 120° / 360° recordings (one core, C++ kernels, idle 4-vCPU sandbox); **worst stretch: ride frames 5700–5900 (a dense station scene) 57 ms mean, p95 111 ms, max 143 ms** (clustering; P3d similar); the node's path without ROS transport (decode of the organizers' PointCloud2 layout, crop, rotation, detector) p95 32–48 ms, peak RSS 161–248 MB ([QUALITY_CYCLE_2026-09-27](docs/QUALITY_CYCLE_2026-09-27.md) "Speed"); 26.09 with the C++ kernels: 22.7–30.7 ms mean, p95 32.8–42.1 ms on set O and the 120° / 360° recordings (one core, idle 4-core machine, the re-judgement of 26.09; the numpy path there 78.3 / 95.5 ms at 360°); 23.09 on the numpy path: 42–64 ms mean, p95 53–78 ms on every recording (health monitor not included: 7–14 ms more); 24.09 on another idle VM 36.5–52.2 / 50.3–67.1 ms; the optional C++ kernels: −38…−57 %, identical output; DBSCAN on cKDTree (25.09): −1.3…−2.6 ms more on the native path | timing: sandbox | 23–25.09, 27.09 | EXPERIMENTS §3, ARCHITECTURE "Native kernels" |
 | ROS node in Docker | 120°: 10 fps, p95 76 ms; 360°: 7–10 fps (the sandbox is at the frame period); ~100 % of one core, 186 MB (v0.6.3); v0.6.4 peak RSS 403–434 MB at 360° | timing: sandbox | 23–24.09 | EXPERIMENTS §3b |
 
 Set F uses legacy placement, which can flatter curves and envelope edges: P4's paired rerun found

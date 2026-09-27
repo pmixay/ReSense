@@ -68,8 +68,12 @@ negatives are those same recordings (in-sample 43 → 32; on ride pieces its mod
 measured 43 → 37: about half of its in-sample gain holds out); the rules alone keep 43 / 35 ride
 events and 75 history events, but remove the captured clear-run STOP (0 with or without the
 opinion). The edge cube (5.2 → 35.0 m), the edge box and the real
-person's three extra frames are entirely the envelope reference, i.e. the organizers'
-sensor-axis placement frame; it changes no ride or empty-recording row. Far evidence gives the
+person's three extra frames need the envelope reference; it changes no ride or empty-recording
+row. The edge cube's 35 m also needs `cluster.floating_free_max_dy` 1.2 (with the union but 0.95 or
+1.1 it STOPs in 9 frames from 18.3 m, and at 1.35 the outside cube #5 gets a false STOP): the value
+sits in a window bracketed by two set O objects — in-sample tuning, measured by an independent
+judge. On `doubleT_obstacle` the rails run at −1.16° to the sensor axis, so at 55 m the reference
+is the rails' envelope widened by the 0.2 m clamp on the side the person enters from. Far evidence gives the
 set O range gains (the box at the envelope top 101.3 → 111.4 m, the plank 82.2 → 87.2 m, the
 floating cube 52.5 → 55.8 m; 401 → 411 inside STOP frames) and set F's 1 m box +5 / −2 frames,
 for one ride event (23 → 24 on `65c5a5b`).
@@ -285,7 +289,11 @@ showed a 3.5 s tracking frame from before the persistent-evidence cost bound; it
 26.09 re-judgement measured 22.7–30.7 ms mean, p95 32.8–42.1 ms for the detector on the same
 recordings; the 27.09 mechanisms stay within that. The node path (the PointCloud2 decode of the
 organizers' layout, crop, rotation and the detector, without ROS transport) stays below half the
-100 ms frame period at p95. No measurement on the 8-core stand exists.
+100 ms frame period at p95. **Worst stretch** (found by an independent judge, re-measured): on
+ride frames 5700–5900 (`new_data`, a dense station scene) the detector takes 57.3 ms mean, p95
+111.3 ms, max 143.4 ms on one core, clustering up to 122 ms — above the frame period at p95 (P3d on
+the same frames: p95 ~105 ms, max ~138 ms, so it predates the cycle; the 27.09 mechanisms add a
+few ms). No measurement on the 8-core stand exists.
 
 ## Limits
 
@@ -303,7 +311,15 @@ organizers' layout, crop, rotation and the detector, without ROS transport) stay
   sensor axis) is unanswered. At 60 m the addition stops (a step of up to 0.2 m).
 - **Far evidence** gains range and costs 2 frames of one set F box sequence at 83–85 m (the
   one worse set F bin): a track started by a far scan line carries its sparse early hits in its hit
-  fraction and confirms later.
+  fraction and confirms later, and `_clean_gauge` counts the far hits in the vote's denominator, so
+  they can hold a vote that the clean hits alone would pass (a delayed STOP, not a hidden one).
+- **Range beyond the gate's straight-track set F**: the person's 151 m holds for its six files at
+  lateral ±0.6 m; on six other ride segments at ±0.9 m an independent probe found a 115.5 m median
+  (5 of 6 detected), 103 m for the trolley and 1 m box, nothing on a curve with ~40 m monitored
+  range; ahead of a standing train at 110 m, 0 of 9 placed objects were STOPped (70 m: 6 of 9).
+- **The learned opinion's held-out effect is modest**: 43 → 37 events, 35 → 34 STOP episodes,
+  176 → 170 alarm frames on unseen ride pieces — against a bounded (≤ 1 s) delay risk for real
+  objects unlike its synthetic positives.
 - **16 GO overclaims remain**: first sightings, the 4-frame chain building up, one lateral jump of
   the far axis, evidence below the envelope floor or beyond the trusted range.
 - **History stress 55 events remain**, mostly the standing-train platform structures of
