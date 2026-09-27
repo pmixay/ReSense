@@ -230,44 +230,61 @@ def validate_plan(plan, cache_root=None, source_root=None):
             raise ValueError(f"background changed: {path}")
 
 
-def run(plan_path, out, cache_root=None, source_root=None):
+def _run_case(job):
+    """One case of the plan: a control and an injected detector over its background frames."""
     from resense.detector import Detector
-    plan = json.loads(Path(plan_path).read_text())
-    validate_plan(plan, cache_root, source_root)
+    ci, case, plan, cache_root, source_root = job
     points = np.load(Path(source_root or plan["source"]) / "points.npz")
     cfg = DetectorConfig.from_dict(plan["config"])
-    cases = []
-    for ci, case in enumerate(plan["cases"]):
-        control, injected = Detector(cfg), Detector(cfg)
-        rows = []
-        for k, path in enumerate(case["background"]):
-            frame = frame_from_compact(np.load(cache_path(path, cache_root)), cfg.sensor,
-                                       stamp=plan["inputs"][path]["stamp"])
-            base = control.process(frame).to_dict()
-            j = k - plan["warmup_frames"]
-            source = (points[f"{case['object']}_{case['source_frames'][j]}"] if j >= 0
-                      else np.zeros((0, 4), dtype=np.float32))
-            augmented, visible = transplant(frame, source, case["lateral_m"], plan["angular_cell_deg"])
-            result = injected.process(augmented).to_dict()
-            if j < 0:
-                continue
-            hit = target_match(result["detections"], injected.calib.apply(visible))
-            base_hit = target_match(base["detections"], control.calib.apply(visible))
-            rows.append({"frame": Path(path).name, "source_frame": case["source_frames"][j],
-                         "source_points": len(source), "visible_points": len(visible),
-                         "nearest_sensor_x_m": float(visible[:, 0].min()) if len(visible) else None,
-                         "target_matched": hit, "control_target_matched": base_hit,
-                         "injected_stop": result["obstacle"], "control_stop": base["obstacle"]})
-        record = {k: case[k] for k in ("bag", "object", "lateral_m")}
-        record["recording_gaps_over_0_5s"] = case["recording_gaps_over_0_5s"]
-        record.update(visible_frames=sum(r["visible_points"] > 0 for r in rows),
-                      target_matched_frames=sum(r["target_matched"] for r in rows),
-                      injected_only_matched_frames=sum(r["target_matched"] and not r["control_target_matched"] for r in rows),
-                      control_matched_frames=sum(r["control_target_matched"] for r in rows), rows=rows)
-        record["farthest_matched_sensor_x_m"] = max(
-            (r["nearest_sensor_x_m"] for r in rows if r["target_matched"]), default=None)
-        cases.append(record)
-        print(f"case {ci + 1}/{len(plan['cases'])}: {case['bag']} {case['object']} {case['lateral_m']}", flush=True)
+    control, injected = Detector(cfg), Detector(cfg)
+    rows = []
+    for k, path in enumerate(case["background"]):
+        frame = frame_from_compact(np.load(cache_path(path, cache_root)), cfg.sensor,
+                                   stamp=plan["inputs"][path]["stamp"])
+        base = control.process(frame).to_dict()
+        j = k - plan["warmup_frames"]
+        source = (points[f"{case['object']}_{case['source_frames'][j]}"] if j >= 0
+                  else np.zeros((0, 4), dtype=np.float32))
+        augmented, visible = transplant(frame, source, case["lateral_m"], plan["angular_cell_deg"])
+        result = injected.process(augmented).to_dict()
+        if j < 0:
+            continue
+        hit = target_match(result["detections"], injected.calib.apply(visible))
+        base_hit = target_match(base["detections"], control.calib.apply(visible))
+        rows.append({"frame": Path(path).name, "source_frame": case["source_frames"][j],
+                     "source_points": len(source), "visible_points": len(visible),
+                     "nearest_sensor_x_m": float(visible[:, 0].min()) if len(visible) else None,
+                     "target_matched": hit, "control_target_matched": base_hit,
+                     "injected_stop": result["obstacle"], "control_stop": base["obstacle"]})
+    record = {k: case[k] for k in ("bag", "object", "lateral_m")}
+    record["recording_gaps_over_0_5s"] = case["recording_gaps_over_0_5s"]
+    record.update(visible_frames=sum(r["visible_points"] > 0 for r in rows),
+                  target_matched_frames=sum(r["target_matched"] for r in rows),
+                  injected_only_matched_frames=sum(r["target_matched"] and not r["control_target_matched"] for r in rows),
+                  control_matched_frames=sum(r["control_target_matched"] for r in rows), rows=rows)
+    record["farthest_matched_sensor_x_m"] = max(
+        (r["nearest_sensor_x_m"] for r in rows if r["target_matched"]), default=None)
+    return ci, record
+
+
+def run(plan_path, out, cache_root=None, source_root=None, jobs=1):
+    plan = json.loads(Path(plan_path).read_text())
+    validate_plan(plan, cache_root, source_root)
+    work = [(ci, case, plan, cache_root, source_root) for ci, case in enumerate(plan["cases"])]
+    records = {}
+    if jobs > 1:
+        # independent cases (fresh detectors each): the result is the serial one, in plan order
+        from concurrent.futures import ProcessPoolExecutor
+        with ProcessPoolExecutor(max_workers=jobs) as ex:
+            for ci, record in ex.map(_run_case, work):
+                records[ci] = record
+                print(f"case {ci + 1}/{len(work)}: {record['bag']} {record['object']} {record['lateral_m']}", flush=True)
+    else:
+        for job in work:
+            ci, record = _run_case(job)
+            records[ci] = record
+            print(f"case {ci + 1}/{len(work)}: {record['bag']} {record['object']} {record['lateral_m']}", flush=True)
+    cases = [records[ci] for ci in range(len(work))]
     summary = {key: sum(c[key] for c in cases) for key in
                ("visible_frames", "target_matched_frames", "injected_only_matched_frames", "control_matched_frames")}
     summary["cases_with_target_match"] = sum(c["target_matched_frames"] > 0 for c in cases)
@@ -293,13 +310,14 @@ def main():
     p.add_argument("--out", required=True)
     p.add_argument("--cache-root", help="relocate cache reads; original hashes and plan stay unchanged")
     p.add_argument("--source-root", help="relocate source fixture reads; original hashes stay unchanged")
+    p.add_argument("--jobs", type=int, default=1, help="cases in parallel (the result is the serial one)")
     args = parser.parse_args()
     if args.command == "extract":
         extract(args.bag, args.out)
     elif args.command == "plan":
         make_plan(args.source, args.cache, args.out, args.config)
     else:
-        run(args.plan, args.out, args.cache_root, args.source_root)
+        run(args.plan, args.out, args.cache_root, args.source_root, args.jobs)
 
 
 if __name__ == "__main__":

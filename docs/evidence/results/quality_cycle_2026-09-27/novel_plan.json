@@ -1,6 +1,6 @@
 {
   "protocol": 1,
-  "created_utc": "2026-09-27T17:15:42.817966+00:00",
+  "created_utc": "2026-09-27T17:36:55.006392+00:00",
   "limitations": [
     "Novel synthetic combinations on backgrounds and organizer object shapes already inspected.",
     "Fixed sensor-axis placement: no independent surveyed rail-envelope ground truth.",
@@ -422,7 +422,7 @@
     "resense/tracking.py": "9f6c29c3077dfdda91b3ce91098668ee55dad4c2a2c7e728a613a54de8d59397",
     "resense/viz.py": "3a5df9d0acb1a0d0f0dc9568131c17906bda49ac2dba65f5eb49343abe3d36db",
     "native/resense_native.cpp": "85688be18c41c68111f30e2bc45b83186650c1eead8b24a254d15c97cb2592f1",
-    "scripts/novel_placement_eval.py": "8bbfae984f3d604c0b49caebd142948f8f3472559a9a7cbe63b7038708f3050d"
+    "scripts/novel_placement_eval.py": "41deb01a8fcf815dadc451d8cad8802b8230efd597fb3cc36de739fcece503c5"
   },
   "source": "/data/wt/integ/docs/evidence/results/p4_novel_source_2026-09-26",
   "source_manifest_sha256": "b8d2248b585f59acc0f70062f47d714465e245dd4d0fa09c01f66127f5ef4d7a",
