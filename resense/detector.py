@@ -345,16 +345,16 @@ class Detector:
         idx = np.flatnonzero(mask)
         cand = Candidates(xyz=xyz[idx], dy=dy_all[idx], h=h_all[idx], in_gauge=strict[idx],
                           intensity=intensity[idx], idx=idx, low=np.zeros(idx.size, dtype=bool))
-        ref = reference_offset(xyz[:, 0], self.track, cfg.gauge) if cfg.gauge.reference > 0 else None
+        ref = reference_offset(cand.xyz[:, 0], self.track, cfg.gauge) if cfg.gauge.reference > 0 else None
         if ref is not None:
-            # 27.09 (gauge.reference 1, off by default): the envelope measured from the sensor axis where it
-            # agrees with the rails (near field, straight track): the corridor coordinate of the candidates
-            # (strict membership, shape rules, hanging stage, clear cap) is the lateral from the sensor
-            # axis; the candidate set (the advisory corridor), the reported lateral (dy_rail) and the bed,
-            # low-object, rail-start and ego-speed stages (self._dy_rail) keep the rails
-            dy_all = dy_all + ref[1]
+            # 27.09 (gauge.reference 1 / 2, off by default): the envelope measured from the sensor axis where
+            # it agrees with the rails (near field, straight track): the corridor coordinate of the
+            # candidates (strict membership, shape rules, accumulation) is the lateral from the sensor axis;
+            # the candidate set (the advisory corridor), the reported lateral (dy_rail), the gauge-distance
+            # reach and the frame-wide stages (bed, low objects, rail start, ego speed, hanging search,
+            # clear cap: dy_all) keep the rails; the hanging stage reads the strict membership from here
             cand.dy_rail = cand.dy
-            cand.dy = dy_all[idx]
+            cand.dy = cand.dy + ref[1]
             cand.in_gauge = point_in_polygon(cand.dy, cand.h, cfg.gauge.profile)
         if cfg.gauge.edge_margin > 0 or cfg.gauge.edge_margin_per_100m > 0:
             core = gauge_core_mask(cand.dy, cand.h, cand.xyz[:, 0], cfg.gauge)
@@ -362,7 +362,7 @@ class Detector:
                 # 27.09 (gauge.reference_edge_margin): the margin models the fitted rail axis' uncertainty;
                 # where the envelope is measured from the sensor axis it is scaled (0 = none)
                 s = max(float(cfg.gauge.reference_edge_margin), 0.0)
-                ok = ref[0][idx]
+                ok = ref[0]
                 if ok.any():
                     g = replace(cfg.gauge, edge_margin=cfg.gauge.edge_margin * s,
                                 edge_margin_per_100m=cfg.gauge.edge_margin_per_100m * s)
