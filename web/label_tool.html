@@ -40,6 +40,7 @@
     <div class="card"><h3>Top view · detections in red, warnings in yellow, labels in green</h3><canvas id="top" width="1200" height="360"></canvas></div>
   </div>
 </main>
+<script src="assets/result-format.js"></script>
 <script>
 'use strict';
 const $ = id => document.getElementById(id);
@@ -50,7 +51,7 @@ const state = { results: {}, labels: {}, checked: {}, current: null, source: '' 
 
 function frameKeys() {
   const s = new Set([...Object.keys(state.results), ...Object.keys(state.labels), ...Object.keys(state.checked)]);
-  return [...s].sort();
+  return [...s].sort((a, b) => Number(a) - Number(b));
 }
 function renderFrames() {
   const ul = $('frames'); ul.innerHTML = '';
@@ -58,7 +59,7 @@ function renderFrames() {
   for (const k of keys) {
     const li = document.createElement('li'); li.dataset.key = k;
     const r = state.results[k]; const n = (state.labels[k] || []).length;
-    const st = r ? (r.obstacle ? `det ${r.nearest_distance.toFixed(1)} m` : (r.warning ? 'warn' : 'clear')) : '';
+    const st = r ? (r.obstacle ? `det ${r.nearest_distance == null ? '?' : r.nearest_distance.toFixed(1)} m` : (r.warning ? 'warn' : 'clear')) : '';
     li.innerHTML = `<span>${k}${n ? ' ★' + n : (state.checked[k] ? ' ✓' : '')}</span><span class="n ${r && r.obstacle ? 'status obstacle' : 'status clear'}">${st}</span>`;
     if (k === state.current) li.classList.add('active');
     li.onclick = () => select(k);
@@ -81,15 +82,14 @@ function overlapsGauge(o) {
     : width / 2;
   return Math.abs(o.lateral) - extent <= 1.05;
 }
-// in_gauge follows the footprint until the labeller sets the checkbox; a value set by hand (or
-// loaded from a file where it disagrees with the footprint, e.g. an object above the envelope)
-// is kept when size, kind, yaw or lateral change afterwards (review 24.09)
+// An explicit imported in_gauge is a reviewed label, even when it matches the initial
+// footprint. Keep it when geometry changes, just like a checkbox set by hand.
 function autoGauge(o) { if (!o.gaugeManual) o.in_gauge = overlapsGauge(o); }
 function renderObstacles() {
   const k = state.current, body = $('obs-body'); body.innerHTML = '';
   $('cur-key').textContent = k || '—';
   const r = k && state.results[k];
-  $('cur-det').textContent = r ? `detector: ${r.obstacle ? 'OBSTACLE ' + r.nearest_distance.toFixed(1) + ' m' : (r.warning ? 'warning' : 'clear')}, ${(r.detections || []).length} gauge / ${(r.warnings || []).length} advisory objects, frame_id ${r.frame_id || '?'}` : '';
+  $('cur-det').textContent = r ? `detector: ${r.obstacle ? 'OBSTACLE ' + (r.nearest_distance == null ? '?' : r.nearest_distance.toFixed(1)) + ' m' : (r.warning ? 'warning' : 'clear')}, ${(r.detections || []).length} gauge / ${(r.warnings || []).length} advisory objects, frame_id ${r.frame_id || '?'}` : '';
   $('checked').checked = !!(k && state.checked[k]);
   $('add-from-det').disabled = !(r && ((r.detections || []).length || (r.warnings || []).length));
   if (!k) return;
@@ -98,7 +98,7 @@ function renderObstacles() {
     const num = (field, step, w) => `<td><input type="number" step="${step}" data-i="${i}" data-f="${field}" value="${o[field]}"></td>`;
     tr.innerHTML = `<td>${i + 1}</td>
       <td><select data-i="${i}" data-f="kind">${KINDS.map(x => `<option ${x === o.kind ? 'selected' : ''}>${x}</option>`).join('')}</select></td>
-      <td><input type="text" data-i="${i}" data-f="label" value="${o.label}"></td>
+      <td><input type="text" data-i="${i}" data-f="label"></td>
       ${num('distance', 0.1)}${num('lateral', 0.1)}
       <td><input type="number" step="0.05" data-i="${i}" data-f="size0" value="${o.size[0]}"></td>
       <td><input type="number" step="0.05" data-i="${i}" data-f="size1" value="${o.size[1]}"></td>
@@ -107,6 +107,7 @@ function renderObstacles() {
       <td><input type="checkbox" data-i="${i}" data-f="in_gauge" ${o.in_gauge ? 'checked' : ''}></td>
       ${num('n_points', 1)}
       <td><button class="danger" data-i="${i}" data-f="delete">✕</button></td>`;
+    tr.querySelector('input[data-f="label"]').value = o.label;
     body.appendChild(tr);
   });
   body.querySelectorAll('input,select').forEach(el => el.addEventListener('change', onEdit));
@@ -153,26 +154,42 @@ function loadResults(text, name) {
   state.results = {}; let n = 0;
   for (const line of text.split(/\r?\n/)) {
     const s = line.trim(); if (!s) continue;
-    try { const o = JSON.parse(s); if (o && typeof o === 'object' && 'obstacle' in o) { state.results[keyOf(o.frame ?? n)] = o; n++; } } catch (e) { }
+    try { const o = JSON.parse(s); if (resenseFormat.result(o)) { state.results[keyOf(o.frame ?? n)] = o; n++; } } catch (e) { }
   }
   state.source = name || 'results.jsonl';
-  const keys = frameKeys(); if (!state.current && keys.length) state.current = keys[0];
+  const keys = frameKeys(); if (!keys.includes(state.current)) state.current = keys[0] || null;
   renderFrames(); renderObstacles(); draw();
   return n;
 }
 function loadGT(obj) {
-  let n = 0;
-  for (const [k, list] of Object.entries(obj || {})) {
+  if (!resenseFormat.record(obj)) throw new Error('gt.json must be a frame-keyed object');
+  const incoming = new Map(); let n = 0;
+  for (const [k, list] of Object.entries(obj)) {
     if (k.startsWith('_')) continue;              // "_meta" and other metadata keys of an inject gt.json
-    const key = /^\d+$/.test(k) ? keyOf(+k) : k;
-    if (Array.isArray(list) && list.length) {
-      state.labels[key] = list.map(o => {
-        const ob = newObstacle(o.kind, Object.assign({}, o, { size: [...(o.size || SIZES[o.kind] || SIZES.other)] }));
-        ob.gaugeManual = 'in_gauge' in o && !!o.in_gauge !== overlapsGauge(ob);
-        return ob;
-      });
-      n += list.length;
-    } else { state.checked[key] = true; }
+    if (!/^\d+$/.test(k) || !Number.isSafeInteger(+k) || !Array.isArray(list))
+      throw new Error(`invalid frame ${k}: expected an index and obstacle list`);
+    const key = keyOf(+k);
+    if (incoming.has(key)) throw new Error(`duplicate frame ${key}`);
+    const obstacles = list.map(o => {
+      if (!resenseFormat.record(o)) throw new Error(`invalid obstacle in frame ${key}`);
+      const ob = newObstacle(o.kind, o);
+      if (typeof ob.kind !== 'string' || typeof ob.label !== 'string'
+          || !resenseFormat.vector(ob.size, 3) || !ob.size.every(v => v > 0)
+          || !['distance', 'lateral', 'yaw_deg', 'reflectivity', 'n_points'].every(f => resenseFormat.finite(ob[f]))
+          || ob.distance < 0 || !Number.isSafeInteger(ob.n_points) || ob.n_points < 0
+          || typeof ob.in_gauge !== 'boolean') throw new Error(`invalid obstacle in frame ${key}`);
+      ob.size = [...ob.size];
+      ob.gaugeManual = Object.hasOwn(o, 'in_gauge');
+      autoGauge(ob);
+      return ob;
+    });
+    incoming.set(key, obstacles); n += obstacles.length;
+  }
+  // Validate the whole import before changing any annotations. Listed frames replace the
+  // previous labels, including an explicit empty list; unlisted frames remain untouched.
+  for (const [key, list] of incoming) {
+    state.labels[key] = list;
+    state.checked[key] = list.length === 0;
   }
   const keys = frameKeys(); if (!state.current && keys.length) state.current = keys[0];
   renderFrames(); renderObstacles(); draw();
@@ -195,7 +212,7 @@ function download(obj, name) {
 $('file-jsonl').addEventListener('change', ev => { const f = ev.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => loadResults(String(r.result), f.name); r.readAsText(f); });
 $('file-gt').addEventListener('change', ev => { const f = ev.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => { try { loadGT(JSON.parse(String(r.result))); } catch (e) { alert('not a gt.json: ' + e); } }; r.readAsText(f); });
 $('export').onclick = () => download(exportGT(), 'gt.json');
-$('add-frame').onclick = () => { const v = $('new-frame').value; if (v === '') return; const k = keyOf(Math.max(0, Math.round(+v))); if (!state.labels[k]) state.labels[k] = []; select(k); };
+$('add-frame').onclick = () => { const v = $('new-frame').value; if (v === '' || !Number.isSafeInteger(+v) || +v < 0) return; const k = keyOf(+v); if (!state.labels[k]) state.labels[k] = []; select(k); };
 $('add-obs').onclick = () => { if (!state.current) return; (state.labels[state.current] = state.labels[state.current] || []).push(newObstacle('person')); state.checked[state.current] = false; renderObstacles(); renderFrames(); draw(); };
 $('add-from-det').onclick = () => {
   const r = state.results[state.current]; if (!r) return;
