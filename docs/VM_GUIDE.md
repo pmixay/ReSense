@@ -409,8 +409,8 @@ VM (the captain: a machine with half the stand's cores is enough); a run here co
 ### 4.4 Regression gate with the ride
 
 ```bash
-BASELINE=$(ls docs/evidence/results/regression_baseline_*_ride*.json | LC_ALL=C sort | tail -n 1)   # the newest baseline with the ride
-echo "$BASELINE"      # since 26.09 (the P3 items of 26.09 and the STOP keep on): regression_baseline_2026-09-26_ride_p3d.json
+BASELINE=$(python3 -c "import glob, json; print(max((json.load(open(p))['created'], p) for p in glob.glob('docs/evidence/results/regression_baseline_*.json') if json.load(open(p)).get('ride', {}).get('available'))[1])")   # the newest baseline with the ride
+echo "$BASELINE"      # since 27.09 (the reviewed quality cycle): regression_baseline_2026-09-27_quality.json
 mkdir -p "$EV/gate_$DAY"
 python scripts/regression_gate.py --cache "$CACHE" --jobs 6 --baseline "$BASELINE" \
   --out "$EV/gate_$DAY/gate_$(git rev-parse --short HEAD).json" 2>&1 | tee "$EV/gate_$DAY/gate_table.txt"

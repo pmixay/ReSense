@@ -61,10 +61,12 @@ if RESULTS.is_dir():
 
     def test_ride_card_follows_the_current_gate_baseline():
         """The ride card is a measured number: it names the ride events of the newest gate baseline
-        (picked as docs/VM_GUIDE.md §4.4 does), so a new baseline without a rebuilt video fails here."""
+        that measured the ride (by its "created" stamp, as web/demo/test_web.py picks it; since 27.09
+        not every baseline is named *_ride*), so a new baseline without a rebuilt video fails here."""
         import json
-        latest = sorted(RESULTS.glob("regression_baseline_*_ride*.json"))[-1]
-        events = json.loads(latest.read_text())["ride"]["alarm_events"]
+        baselines = [json.loads(p.read_text()) for p in RESULTS.glob("regression_baseline_*.json")]
+        latest = max((b for b in baselines if b.get("ride", {}).get("available")), key=lambda b: b["created"])
+        events = latest["ride"]["alarm_events"]
         cards = [c for b in module.BLOCKS for c in b["cards"] if c["kind"] == "num" and "поездке" in c["label"]]
         assert cards, "no ride card in the cut table"
         for c in cards:

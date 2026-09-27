@@ -30,7 +30,7 @@ rewritten later; **frozen** = kept for reference, not maintained; **archive** = 
 | [`PRESENTATION.md`](PRESENTATION.md) | slide requirements, drafts, speaker text | P2, P1 | RU | P2 | current |
 | [`PLAN.md`](PLAN.md) | roles, sprint calendar, team rules | team | RU | P1 | current |
 | [`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md) | frozen source/config manifest, acceptance provenance, candidate decisions and blocker policy | team, jury | EN | P1 / P3 | current (27.09 seal) |
-| [`QUALITY_CYCLE_2026-09-27.md`](QUALITY_CYCLE_2026-09-27.md) | the 27.09 detector cycle: four problems, what shipped (incl. the learned track opinion), acceptance, the held-out placement check, limits | jury, team | EN | P1 | current |
+| [`QUALITY_CYCLE_2026-09-27.md`](QUALITY_CYCLE_2026-09-27.md) | the 27.09 detector cycle: four problems, what shipped (incl. the learned track opinion), the independent review of the first version and its fixes, per-mechanism ablations, acceptance, the held-out placement check, limits | jury, team | EN | P1 | current |
 | [`QUALITY_CYCLE_2026-09-26.md`](QUALITY_CYCLE_2026-09-26.md) | the 26.09 cycle: freshness, rejected candidates M1 / M2 / A1 / D1 / T1 | team | EN | P1 | dated |
 | [`CAPTAIN.md`](CAPTAIN.md) | captain's board: criteria, work left, ownership map, frozen interfaces | P1, team | EN | P1 | current |
 | [`VM_GUIDE.md`](VM_GUIDE.md) | instructions for the team's temporary cloud VM, plain commands of the repository's tools: prerequisites, data (the ride streamed split by split), dry run, stock-player and host console, 8-core bench, regression gate with the ride, image archive, offline rehearsal, results into a PR | team (a person or an agent on the VM) | EN | P1 | current |

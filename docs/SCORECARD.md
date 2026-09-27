@@ -3,8 +3,31 @@
 > **Purpose:** the independent judgements of ReSense against the eight criteria of spec §8: score
 > per criterion, the evidence behind it, the risks on the hidden data and the fastest points to gain.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, summary RU
-> **Last independent judgement:** 2026-09-26 night, freshness work and failed combined candidate acceptance.
+> **Last independent judgement:** 2026-09-27, the quality cycle (round 1 below; round 2 after the review fixes).
 > **Status:** current review below; earlier numbered sections are dated records.
+
+## Quality-cycle review, round 1: 27 September (first 27.09 version `8b74cd0`)
+
+**Combined 67/100** (judge A 70.5, judge B 65.5): the first version of the
+[27.09 quality cycle](QUALITY_CYCLE_2026-09-27.md), before the review fixes. Same aggregation rule
+(per criterion the mean of the two judges, rounded down to 0.5).
+
+| Criterion | Maximum | Judge A | Judge B | Combined |
+|---|---:|---:|---:|---:|
+| Functionality |25|18|15|16.5|
+| Range |15|8.5|9|8.5|
+| Speed |10|8|7.5|7.5|
+| Generalization |15|8.5|8|8|
+| Technical quality |10|8|7|7.5|
+| Ease of launch |10|8.5|8.5|8.5|
+| Team approach |10|8.5|7.5|8|
+| Pitch |5|2.5|3|2.5|
+| **Total** |**100**|**70.5**|**65.5**|**67**|
+
+Reports: [both judges](evidence/results/rejudge_quality_cycle_2026-09-27_round1.json). Their
+safety findings — the one-sided envelope shift, the far-evidence rule that could hide a track, the
+opinion delaying set O #6 at 28.7 m — and the wrong claims were fixed or corrected in `65c5a5b` and
+the record (its review section lists each finding and its disposition).
 
 ## Freeze review: 26 September night
 

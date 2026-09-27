@@ -8,6 +8,7 @@ without the organizers' dataset; the browser tests skip when Playwright or Chrom
 import glob
 import json
 import os
+import re
 import sys
 import zipfile
 import xml.etree.ElementTree as ET
@@ -577,6 +578,18 @@ def test_dashboard_uses_supplied_moscow_sans_visual_system():
         assert os.path.getsize(path) > 20_000
 
 
+def newest_ride_baseline():
+    """The current gate baseline: the newest one (by its "created" stamp) that measured the ride; since
+    27.09 the baselines are not all named *_ride* (regression_baseline_2026-09-27_quality.json)."""
+    baselines = []
+    for path in glob.glob(os.path.join(ROOT, "docs", "evidence", "results", "regression_baseline_*.json")):
+        with open(path) as source:
+            data = json.load(source)
+        if data.get("ride", {}).get("available"):
+            baselines.append((data["created"], data))
+    return max(baselines, key=lambda item: item[0])[1]
+
+
 def test_presentation_artifact_uses_the_organizers_slide_sequence():
     """The committed deck keeps the organizers' sequence and the current measured headlines."""
     assert os.path.getsize(PRESENTATION) > 1_000_000
@@ -593,30 +606,58 @@ def test_presentation_artifact_uses_the_organizers_slide_sequence():
         text = " ".join(
             " ".join(ET.fromstring(zf.read(path)).itertext()) for path in slide_paths
         ).replace("\u00a0", " ")
-    for required in ("ReSense", "КОМАНДА", "КОРОТКО О РЕШЕНИИ", "ГЛАВНЫЙ КАДР", "13 759", "58 из 61"):
+    for required in ("ReSense", "КОМАНДА", "КОРОТКО О РЕШЕНИИ", "ГЛАВНЫЙ КАДР", "13 759", "docker load"):
         assert required in text
-    # the current gate baseline, picked like docs/VM_GUIDE.md §4.4 (LC_ALL=C sort | tail -n 1)
-    latest = sorted(glob.glob(os.path.join(ROOT, "docs", "evidence", "results",
-                                           "regression_baseline_*_ride*.json")))[-1]
-    with open(latest) as source:
-        baseline = json.load(source)
-    rail = baseline["recordings"]["doubleT_obstacle"]["labelled"]["per_label"]["object_on_rail_from_frame_75"]
-    top = baseline["set_O"]["objects"]["big_above"]
+    baseline = newest_ride_baseline()
+    labelled = baseline["recordings"]["doubleT_obstacle"]["labelled"]["per_label"]
+    person, rail = labelled["person_crossing"], labelled["object_on_rail_from_frame_75"]
+    objects = baseline["set_O"]["objects"]
+    top = objects["big_above"]
     for required in (
         str(baseline["five_empty"]["alarm_events"]),
         str(baseline["ride"]["alarm_events"]),
         f"{baseline['ride']['alarm_events'] / 13:.1f}".replace(".", ","),
+        f"{person['hits']} из {person['frames']}",
         f"{rail['hits']} из {rail['frames']}",
         f"{baseline['set_O']['inside_objects_with_stop']} из {baseline['set_O']['inside_objects']}",
         f"{top['stop_frames']} из {top['visible_frames']}",          # the 2 x 2 m box at the envelope top
-        "667", "docker load",
+        f"непрерывно с {int(top['first_stop_m'] + 0.5)} м",
+        f"доска — с {int(objects['long_low_on_rails']['first_stop_m'] + 0.5)} м",
     ):
         assert required in text
+    # the test count on the slides is a full local pass, at least the 667 of 26.09
+    counts = [int(n.replace(" ", "")) for n in re.findall(r"(\d[\d ]*)\+? тестов", text)]
+    assert counts and min(counts) >= 667
     assert "релиз v1.0.0" not in text
     assert "пропущен" not in text                               # every in-envelope object gets a STOP
     assert "42–64" not in text                                  # the numpy timing of 23.09, not the shipped path
     assert "~149" not in text                                   # the 90 % hold counts misses before the first STOP
     assert "Привет, участник хакатона" not in text
+
+
+def test_overview_video_cards_follow_the_current_gate_baseline():
+    """The overview video's cut table (scripts/make_overview_video.py) names the measured headlines of
+    the newest ride baseline, picked as the deck test picks it: the ride card, the person and the
+    object on the rail. A new baseline without a rebuilt video fails here."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("resense_make_overview_video_web",
+                                                  os.path.join(ROOT, "scripts", "make_overview_video.py"))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    baseline = newest_ride_baseline()
+    events = baseline["ride"]["alarm_events"]
+    cards = [c for b in module.BLOCKS for c in b["cards"]]
+    ride = [c for c in cards if c["kind"] == "num" and "поездке" in c["label"]]
+    assert ride, "no ride card in the cut table"
+    for c in ride:
+        assert f"({events} за 13 км)" in c["label"]
+        assert c["big"] == f"{events / 13:.1f} на км".replace(".", ",")
+    labelled = baseline["recordings"]["doubleT_obstacle"]["labelled"]["per_label"]
+    person, rail = labelled["person_crossing"], labelled["object_on_rail_from_frame_75"]
+    bigs = {c["big"] for c in cards if c["kind"] == "num"}
+    assert f"{person['hits']} из {person['frames']}" in bigs
+    assert f"{rail['hits']} из {rail['frames']}" in bigs
+    assert module.check_table(files=False) == []
 
 
 # --------------------------------------------------------------------------- F. label tool -> gt.json

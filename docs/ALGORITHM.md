@@ -636,21 +636,26 @@ limit them once a cluster has real mass inside the strict envelope (≥ 10 voxel
 
 ### 3.6 Rules of 27.09 (the quality cycle; on by default, [`QUALITY_CYCLE_2026-09-27.md`](QUALITY_CYCLE_2026-09-27.md))
 
-* **Envelope reference near the train** (`gauge.reference` 2, `resense/gauge.py`
-  `reference_offset`, `Detector._corridor`): within `reference_range` (60 m), on straight track
-  with the rail pair locked, the strict membership and the shape rules read the lateral measured
-  from the sensor axis — the frame the organizers place objects in — with the rail-to-sensor
-  offset clamped to `reference_max_offset` (0.2 m). The candidates, the reported lateral, the
+* **Envelope reference near the train** (`gauge.reference` 3, `resense/gauge.py`
+  `reference_offset` / `union_shift`, `Detector._corridor`): within `reference_range` (60 m), on
+  straight track with the rail pair locked, the strict membership and the shape rules read the
+  union of the rails' envelope and the one measured from the sensor axis — the frame the organizers
+  place objects in — with the rail-to-sensor offset clamped to `reference_max_offset` (0.2 m): a
+  return takes the sensor-axis lateral only where that is nearer the centre, so neither side of the
+  rails' envelope is narrowed (mode 2, the one-sided shift of the first 27.09 version, gave up to
+  0.2 m on one side; the independent review). The candidates, the reported lateral, the
   gauge distance, the bed / low / rail-start / clear-cap stages and the along-track structure
   rules (`reference_along_rails`) keep the rails; the rails' own strict mask stays for the
   oversize split and the wall keep.
 * **Learned track opinion** (`tracking.doubt_*`, `resense/opinion.py`,
   `resense/models/track_opinion.json`, `Tracker._doubt`): when the rules are about to make a track
   a STOP beyond `doubt_near` (25 m), a small gradient-boosted tree ensemble scores it from its last
-  10 matched clusters; below `doubt_threshold` the track stays advisory (reason `doubt`) for
-  `doubt_extra_hits` (10) more matched frames, released at once within 25 m. It never vetoes and
-  never takes a STOP down; with `doubt_sticky` the score at the onset decides. Trained and
-  validated by `scripts/track_opinion.py` (grouped by ride piece / recording).
+  10 matched clusters; below `doubt_threshold` the track stays advisory (reason `doubt`) for at most
+  `doubt_extra_hits` (10) frames over its whole life (misses and zone flicker spend the budget, it
+  is never refilled), released at once within 25 m, and a track whose cluster stands at least
+  `doubt_body_height` (1.0 m) tall within `doubt_body_range` (40 m) is never delayed. It never
+  vetoes and never takes a STOP down; with `doubt_sticky` the score at the onset decides. Trained
+  and validated by `scripts/track_opinion.py` (grouped by ride piece / recording).
 * **Association along the track** (`tracking.gate_along_only`, `Tracker._gated`): a cluster
   nearer than predicted may be up to `ego_speed_max · dt` nearer along X, not in every direction.
 * **Column body width** (`cluster.column_width_trim`, `column_width_trim_min_cut`): the column
@@ -659,8 +664,9 @@ limit them once a cluster has real mass inside the strict envelope (≥ 10 voxel
 * **Far evidence for approaching tracks** (`tracking.thin_far_min_distance`,
   `cluster.weak_min_points`, `Detector._far_thin`, `Tracker._approaching`): beyond 60 m a scan line
   inside the envelope, or a cluster one voxel under the point-count bar, may start or continue a
-  track only unambiguously; such a track becomes a STOP only while its distances approach on a
-  line in sensor time (5 hits, 2–25 m/s, RMS ≤ 0.5 m).
+  track only unambiguously; while such a track's gauge vote needs those hits
+  (`Tracker._clean_gauge`), it becomes a STOP only while its distances approach on a line in
+  sensor time (5 hits, 2–25 m/s, RMS ≤ 0.5 m) and is reported as advisory otherwise, never hidden.
 * **Monitored-range caps** (`health.clear_cap_thin`, `health.clear_cap_persist`,
   `resense/evidence.py`): `clear_distance` is also capped by the nearest supported undemoted
   scan-line cluster inside the envelope and by sparse envelope evidence chained over 4 frames at a

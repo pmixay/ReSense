@@ -3,7 +3,7 @@
 > **Purpose:** what changed in ReSense, one entry per version or merge, newest first; the numbers
 > are those measured when the change landed.
 > **Audience:** jury (spec §5 "как менялось качество"), team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-26, the re-judgement pass (the Unreleased entries; older entries record their own date) · **Status:** current
+> **Last verified:** 2026-09-27, the quality cycle (the Unreleased entries; older entries record their own date) · **Status:** current
 
 Versions are the team's labels. The package metadata (`pyproject.toml`) says 0.1.0 up to PR #4,
 0.6.3 from PR #5 (`1210580`) and 1.0.0 from `65a5305` (25.09). A pushed tag `v1.0.0-rcN` /
@@ -15,6 +15,35 @@ five obstacle-free recordings (2 287 frames); "ride" = the 20-minute recording `
 frames, 13 km, no obstacles).
 
 ## Unreleased (further detector work authorized; package version 1.0.0)
+
+- **Detector quality cycle of 27.09 (the user's four problems, ML allowed; sealed, reviewed):**
+  five parallel experiments on one shared screen (`scripts/quality_screen.py`: the gate against P3d,
+  the monitoring / overclaim diagnostics and the new processing-history stress
+  `scripts/history_stress.py`), merged and switched on: the envelope near the train as the union
+  of the rails' and the sensor-axis envelope within 60 m on straight track (`gauge.reference` 3),
+  a learned track opinion that may delay a doubtful STOP by at most 10 frames in a track's life,
+  never within 25 m or for a standing body within 40 m (`tracking.doubt_*`, gradient-boosted trees
+  in `resense/models/`, grouped held-out AUC 0.974), monitored-range caps from persistent sparse
+  evidence and supported scan lines (`health.clear_cap_thin`, `clear_cap_persist`), the along-track
+  association gate and the column body width (`tracking.gate_along_only`,
+  `cluster.column_width_trim`), and far evidence for approaching tracks, advisory otherwise
+  (`tracking.thin_far_min_distance`, `cluster.weak_min_points`). Two independent judges reviewed the
+  first version (`8b74cd0`) and found a one-sided envelope shift, a far-evidence rule
+  that could hide a track and an unbounded opinion delay (set O #6 held at 28.7 m); `65c5a5b` fixes
+  all three. Full gate PASS against P3d, no waiver: ride 183 / 45 / 38 → 95 / 24 / 25, five bags
+  58 / 13 / 16 → 37 / 9 / 11, set O edge cube first STOP 5.2 → 35.0 m (2 → 18 frames), edge box
+  track from 28.7 m, box at the envelope top 101.3 → 111.4 m, plank 82.2 → 87.2 m, set O inside STOP
+  frames 384 → 411, background 3 → 0, the person crossing 58 → 61 of 61 from frame 8 (from the
+  envelope reference), GO overclaims 46 → 16, the captured clear-run STOP gone from every captured
+  node history, history stress 78 → 51 STOP events. The ride / history gains are mostly the
+  in-sample opinion (ablations in the record); set F's 1 m box trades −2 / +5 frames at 50–100 /
+  100–150 m (now printed per bin by the gate). New seal `detector_freeze_2026-09-27.json`, new
+  baseline `regression_baseline_2026-09-27_quality.json`
+  ([`docs/QUALITY_CYCLE_2026-09-27.md`](docs/QUALITY_CYCLE_2026-09-27.md)).
+- **CI dataset cache (27.09):** the cold-disk check restores the two verified original bags
+  from the Actions cache (job `dataset`: lookup only on a hit, one download from Google Drive on a
+  miss, checksums pinned in `scripts/cold_bags.sha256`); `dataset-cache.yml` keeps the default
+  branch's entry warm. The Drive quota no longer turns CI red.
 
 - **P3d reference seal and remaining integration (26.09 night, delegated by the user):**
   sealed the existing `_ride_p3d` detector and defaults as the reproducible reference with a
