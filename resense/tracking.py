@@ -63,6 +63,7 @@ class Track:
     hit_hist: List[bool] = field(default_factory=list)    # last hit_window frames: matched?
     span_s: float = 0.0             # seconds of sensor time the track has been observed (frames x interval, first frame included)
     zone_min_fraction: float = 0.5  # share of zone_hist that must be inside the gauge
+    zone_min_votes: int = 0         # 27.09 (tracking.zone_min_votes): the vote counts at least this many hits (0 = off)
     reported: bool = False          # reported as an obstacle / advisory after the last update
     column_hist: List[bool] = field(default_factory=list)  # last zone_window hits: demoted as a column?
     column_hold: int = 0            # this many column hits in column_hist keep the track advisory (0 = off)
@@ -87,7 +88,8 @@ class Track:
     @property
     def vote_zone(self) -> str:
         """'gauge' when at least ``zone_min_fraction`` of the last hits were inside the strict gauge."""
-        return "gauge" if sum(self.zone_hist) >= self.zone_min_fraction * len(self.zone_hist) - 1e-9 else "warning"
+        n = max(len(self.zone_hist), self.zone_min_votes)
+        return "gauge" if sum(self.zone_hist) >= self.zone_min_fraction * n - 1e-9 else "warning"
 
     @property
     def zone(self) -> str:
@@ -160,6 +162,22 @@ class Tracker:
         c = self.cfg
         return c.gate_base + c.gate_per_m * max(distance, 0.0)
 
+    def _gated(self, pred: np.ndarray, cen: np.ndarray, x0: np.ndarray, step: float) -> np.ndarray:
+        """Distances between predicted track positions ``pred`` (tracks at along-track ``x0``) and
+        cluster centroids ``cen``, ``inf`` outside the association gate. A cluster nearer than
+        predicted may be up to ``step`` (an object approaching at ``ego_speed_max`` over the frame
+        interval) farther: on the whole distance, or with ``gate_along_only`` (27.09) on the
+        along-track component only."""
+        d = np.linalg.norm(pred[:, None, :] - cen[None, :, :], axis=2)
+        dx = cen[None, :, 0] - pred[:, 0][:, None]   # <0: cluster is closer than predicted
+        gate = np.array([self._gate(x) for x in x0])[:, None]
+        if self.cfg.gate_along_only:
+            dxe = np.where(dx < 0, np.minimum(0.0, dx + step), dx)
+            de = np.sqrt(dxe ** 2 + np.sum((pred[:, None, 1:] - cen[None, :, 1:]) ** 2, axis=2))
+            return np.where(de <= gate, d, np.inf)
+        allowed = gate + np.where(dx < 0, step, 0.0)
+        return np.where(d <= allowed, d, np.inf)
+
     def _keep_time_ok(self, t: Track) -> bool:
         """26.09 (``stop_keep_max_s``, safety review of B10): the keep rules act on ``t`` only while
         its last clean hit is at most that many seconds of sensor time ago (``Track.since_clean``,
@@ -214,11 +232,8 @@ class Tracker:
             static = np.array([-float(ego_shift), 0.0, 0.0])
             pred = np.stack([t.centroid + (t.velocity if t.hits > 1 else static) for t in self.tracks])
             cen = np.stack([cl.centroid for cl in clusters])
-            d = np.linalg.norm(pred[:, None, :] - cen[None, :, :], axis=2)
             # along-track motion towards the vehicle is allowed up to ``step`` extra
-            dx = cen[None, :, 0] - pred[:, 0][:, None]   # <0: cluster is closer than predicted
-            allowed = np.array([self._gate(t.centroid[0]) for t in self.tracks])[:, None] + np.where(dx < 0, step, 0.0)
-            d = np.where(d <= allowed, d, np.inf)
+            d = self._gated(pred, cen, np.array([t.centroid[0] for t in self.tracks]), step)
             while True:
                 if not np.isfinite(d).any():
                     break
@@ -268,7 +283,7 @@ class Tracker:
                     id=self._next_id, centroid=cl.centroid, velocity=np.zeros(3),
                     confidence=c.conf_gain * cl.score, last=cl, history=[cl.distance],
                     gauge_hits=int(cl.zone == "gauge"), zone_hist=[cl.zone == "gauge"], hit_hist=[True],
-                    span_s=dt, zone_min_fraction=c.zone_min_fraction,
+                    span_s=dt, zone_min_fraction=c.zone_min_fraction, zone_min_votes=int(c.zone_min_votes),
                     column_hist=[cl.reason == "column"], column_hold=int(c.column_hold),
                     near_hist=[self._near(cl)] if nk else [], near_hits=nk,
                     since_clean=0.0 if cl.zone == "gauge" else float("inf"),
@@ -283,6 +298,11 @@ class Tracker:
                 q = False
             if (q and rail_within > 0 and not t.reported and t.last is not None and t.last.kind == "low"
                     and t.last.rail_line and max(t.history) < rail_within):
+                q = False
+            if (q and c.start_clean and not t.reported and t.last is not None and t.zone == "gauge"
+                    and t.last.zone != "gauge" and not t.near_escalated):
+                # 27.09 (P4 history, start_clean): the earlier hits' vote alone does not start a STOP
+                # on a frame whose own cluster is advisory or outside the envelope
                 q = False
             t.reported = (q or (t.reported and 0 < t.misses <= c.hold_misses)
                           or (t.reported and t.hold > 0))
@@ -324,10 +344,7 @@ class Tracker:
         pred = np.stack([self.tracks[i].centroid + (self.tracks[i].velocity if self.tracks[i].hits > 1 else static)
                          for i in cand])
         cen = np.stack([thin[j].centroid for j in ok])
-        d = np.linalg.norm(pred[:, None, :] - cen[None, :, :], axis=2)
-        dx = cen[None, :, 0] - pred[:, 0][:, None]
-        allowed = np.array([self._gate(self.tracks[i].centroid[0]) for i in cand])[:, None] + np.where(dx < 0, step, 0.0)
-        d = np.where(d <= allowed, d, np.inf)
+        d = self._gated(pred, cen, np.array([self.tracks[i].centroid[0] for i in cand]), step)
         for a, i in enumerate(cand):
             t = self.tracks[i]
             if not (t.reported and t.zone == "gauge"):

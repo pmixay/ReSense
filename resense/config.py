@@ -107,6 +107,7 @@ class TrackConfig:
     axis_sides_max_disagreement: float = 6.7e-4      # 1/m, both boundaries fitted and their curvatures differ by more (R 1500 m): axis trusted only to axis_disagree_range; 0 = off
     axis_disagree_range: float = 60.0                # m, trusted range of the axis when the two boundaries disagree
     axis_one_side_range: float = 120.0               # m, trusted range when only one boundary was fitted (it cannot tell a parallel wall from a diverging one); 0 = no cap
+    axis_disagree_hold: int = 0                      # 27.09 (P4 history, off; 0 = off): nominal frame periods for which the axis_disagree_range cap outlives the last frame whose two boundaries disagreed, on the frames that fit only one boundary (two agreeing boundaries end it): losing the contradicting boundary does not raise the trusted range 60 -> 120 m at once (the clear-run STOP of 26.09 at 53 m, mechanism 1); T1 (held until two agree, unbounded) cut the ride's range, this is bounded
     # --- verification of the extrapolated bed beyond its fitted range (second height anchor) ---
     floor_verify_enabled: bool = True                # confirm the extrapolated bed with the base of the side structures
     floor_verify_band: Tuple[float, float] = (1.6, 3.5)  # m, |dy| band of walls / benches / ducts (outside the advisory corridor)
@@ -209,6 +210,7 @@ class ClusterConfig:
     # the cluster to advisory ('warning'), never drops it; 0 = rule off
     column_min_height: float = 2.2     # m, taller and narrower than column_max_width = column / post / gate leg (a person is 1.7 m)
     column_max_width: float = 1.0      # m
+    column_width_trim: float = 0.0     # 27.09 (P4 history, off; 0 = the box width): the column rule reads the cluster's width across the track between the trim and 1 - trim quantiles of its points: a fragment of a few returns joined at the DBSCAN radius does not widen a column past column_max_width (the clear-run STOP of 26.09: 7 of 143 returns widened a 0.74 m column to 1.10 m in one frame, mechanism 2)
     column_min_width: float = 0.25     # m, v0.6: near the axis only clusters at least this wide are columns (a hanging cable is thinner)
     elevated_min_height: float = 1.2   # m, lowest point above this and wider than elevated_min_width = beam / roof strip / sign gantry
     elevated_min_width: float = 2.0    # m (a train ahead reaches down to the polygon bottom)
@@ -290,6 +292,9 @@ class TrackingConfig:
     min_hit_fraction: float = 0.6  # a track must have been matched in this share of its last hit_window frames (flickering structures are not reported); 0 = off
     zone_window: int = 10          # hits over which the zone (gauge / advisory) is decided (5 in v0.3)
     zone_min_fraction: float = 0.6 # share of those hits inside the strict gauge for the track to be an obstacle (0.5 = majority, v0.3)
+    zone_min_votes: int = 0        # 27.09 (P4 history, off; 0 = off): the zone vote counts at least this many hits: a track with fewer hits is voted as if its missing hits were outside the gauge (2 of 3 hits inside the gauge is not 60 % of 5); a history with dropped frames confirms on 3 hits where every frame needs 5 (confirm_time_s), so its vote was taken over 3 hits
+    gate_along_only: bool = False  # 27.09 (P4 history, off; false = the whole distance): the association allowance for an object approaching at up to ego_speed_max over the measured frame interval applies to the along-track component only (it widened the gate in every direction: 2.5 m at 10 Hz, 7.5 m after two dropped frames, joining unrelated clusters metres apart across the track into one track)
+    start_clean: bool = False      # 27.09 (P4 history, off): a track not reported in the previous frame is confirmed only on a hit whose own cluster is an obstacle inside the strict gauge (zone gauge): the vote of earlier hits alone does not start a STOP on a frame whose cluster is advisory or outside the envelope
     column_hold: int = 2           # 25.09: a track whose cluster was demoted as a column (cluster.column_*) in at least this many of its last zone_window hits is advisory: a column far away shows more than column_min_height of itself in some frames only (roundT_doubleT, EXPERIMENTS.md 3a; 2 = the highest pre-registered candidate that passed, docs/evidence/results/column_hold_2026-09-25.json); 0 = off
     max_misses: int = 3            # frames a track survives without a match
     hold_misses: int = 1           # frames a reported track stays reported without a match (at its predicted distance): one missed frame does not drop a STOP (review 23.09); 0 = the v0.6.2 behaviour

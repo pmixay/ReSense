@@ -46,6 +46,7 @@ class TrackModel:
     floor_held: bool = False         # 25.09: the bed profile was held from the previous frame (too little bed in front of the shadow)
     floor_hold_run: int = 0          # 25.09 review: consecutive held frames; past floor_shadow_max_hold it keeps counting while the rule is released (a shadow still found, not applied)
     far_support_run: int = 0         # 25.09: consecutive frames with the walls_min_far_support condition (not reported)
+    disagree_left: int = 0           # 27.09 (axis_disagree_hold): nominal frame periods the disagreement cap still applies to one-boundary frames (not reported)
     axis_valid_both: float = 1e9     # 25.09: X up to which BOTH fitted boundaries support the axis (= axis_valid with one or none); read only with cluster.far_axis_both_sides 1, not serialised
     axis_valid_bent: float = 1e9     # 25.09: the same without the straight bonus, on a bent axis with two boundaries only (1e9 otherwise); cluster.far_axis_both_sides 2, not serialised
 
@@ -863,6 +864,13 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
                 # the two boundaries bend differently (transition, cavern, platform hall):
                 # whichever side won, the corridor beyond the disagreement is a guess
                 model.axis_valid = min(model.axis_valid, cfg.axis_disagree_range)
+                model.disagree_left = max(0, int(cfg.axis_disagree_hold))
+            elif n_sides == 1 and cfg.axis_disagree_hold > 0 and prior.disagree_left > 0:
+                # 27.09 (P4 history, axis_disagree_hold): the contradicting boundary was lost, not
+                # resolved - one boundary cannot tell which of the two was right, so the cap of the
+                # disagreement outlives it for a bounded time (two agreeing boundaries end it)
+                model.axis_valid = min(model.axis_valid, cfg.axis_disagree_range)
+                model.disagree_left = max(0, prior.disagree_left - k)
         else:
             # no boundary parallel to the track this frame: the rails alone give the tangent,
             # the curvature (unsupported now) decays towards straight and the trusted range
@@ -874,6 +882,7 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
                 floor_valid = cfg.rails_range[1] + cfg.axis_valid_margin
             model.axis_valid = max(floor_valid, prior.axis_valid - 20.0)
             model.axis_sides = 0            # axis_valid_both keeps its default: no second limit
+            model.disagree_left = max(0, prior.disagree_left - k)
     else:
         model.yaw = np.radians(cfg.yaw_deg)
         model.curvature = cfg.curvature
