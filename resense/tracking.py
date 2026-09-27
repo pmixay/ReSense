@@ -29,6 +29,13 @@ demoted only by a shape signature (``Cluster.demoted``) as inside the gauge. Wit
 ``cluster.min_height`` (``Cluster.thin``: one scan line) inside the gauge; with 2 also a track not
 yet reported whose previous hit was an obstacle cluster inside the gauge. None of them starts a
 track.
+With ``thin_far_min_distance`` > 0 (27.09, P5 range, off by default) far scan lines inside the
+gauge (and with ``cluster.weak_min_points`` far clusters under the point-count bar) may start and
+continue tracks; a track that was ever matched by such a hit becomes an obstacle (STOP) only
+while its distances lie on a line in sensor time that approaches (``approach_*``): a scan line of
+the bed or the vault is fixed in the sensor frame or jumps with the pitch, a static object ahead
+approaches at the train's speed. Not reported before, it is not reported; reported as advisory, it
+stays advisory; a STOP in the previous frame keeps the usual rules.
 """
 from __future__ import annotations
 
@@ -78,6 +85,11 @@ class Track:
     doubt: int = 0                  # 27.09: frames in a row a doubtful STOP was withheld (tracking.doubt_extra_hits)
     withheld: bool = False          # 27.09: a STOP withheld as advisory by the track opinion (zone 'warning')
     stop_prev: bool = False         # 27.09: reported in zone gauge after the previous update
+    thin_hist: List[bool] = field(default_factory=list)  # 27.09 (thin_far_min_distance): last zone_window hits: a far scan line?
+    approach: List[tuple] = field(default_factory=list)  # 27.09: (sensor time s, distance m) of the last hits (approach_*)
+    far_evidence: bool = False      # 27.09: the track was ever matched by a far scan line / weak far cluster (thin_far_min_distance)
+    was_stop: bool = False          # 27.09: reported in zone gauge (a STOP) after the previous update (thin_far_min_distance only)
+    approach_block: bool = False    # 27.09: far evidence without an approach holds a reported advisory track advisory (zone)
 
     @property
     def near_escalated(self) -> bool:
@@ -105,7 +117,7 @@ class Track:
     @property
     def rule_zone(self) -> str:
         """The zone by the persistence rules (``zone`` without the track opinion's withholding)."""
-        if not self.zone_hist or self.column_held:
+        if not self.zone_hist or self.column_held or self.approach_block:
             return "warning"
         if self.near_escalated:
             return "gauge"
@@ -131,6 +143,7 @@ class Tracker:
         # 27.09 (tracking.doubt_*): the track opinion and the observation record it reads
         self.opinion = load_opinion(cfg.doubt_model) if cfg.doubt_extra_hits > 0 else None
         self.record = self.opinion is not None
+        self._clock = 0.0            # 27.09: s of sensor time since the start (approach_*)
 
     def reset(self) -> None:
         self.tracks.clear()
@@ -210,7 +223,7 @@ class Tracker:
 
     def update(self, clusters: List[Cluster], ego_shift: float = 0.0,
                frame_dt: Optional[float] = None, low_ok: bool = True, rail_within: float = 0.0,
-               thin: Optional[List[Cluster]] = None) -> List[Track]:
+               thin: Optional[List[Cluster]] = None, far_thin: Optional[List[Cluster]] = None) -> List[Track]:
         """Associate ``clusters`` with the tracks. ``ego_shift`` (m) is the distance the
         vehicle travelled since the previous frame when it is known: a track seen once has no
         velocity yet and is then predicted as a static object approaching by that much.
@@ -226,7 +239,13 @@ class Tracker:
         association is unchanged, so this can only withhold a report. ``thin``
         (``stop_keep_thin``, 26.09, off) are clusters flatter than ``cluster.min_height``: after the
         association of ``clusters`` they may continue a track that nothing matched
-        (:meth:`_continue_thin`), never start one."""
+        (:meth:`_continue_thin`), never start one. ``far_thin`` (``thin_far_min_distance``, 27.09,
+        off by default): far scan lines (and weak far clusters) inside the gauge that overlap no
+        cluster of ``clusters`` (the detector selects them); they continue unmatched tracks and start
+        new ones (:meth:`_far_thin`), and a track ever matched by such a hit (``Track.far_evidence``)
+        becomes a STOP only while it approaches (:meth:`_approaching`): not reported before, it is
+        not reported; reported as advisory, it stays advisory (``Track.approach_block``); a STOP in
+        the previous frame keeps the usual rules."""
         c = self.cfg
         # widen the gate by the distance a static object travels in the *measured* interval, so a
         # dropped frame (0.2-0.3 s gap in the node) does not throw a 17 m/s approach out of the gate
@@ -237,6 +256,7 @@ class Tracker:
         # 26.09 (stop_keep_max_s): the sensor time of this frame for the keep cap (the nominal period
         # when the caller gives no interval), so that the cap is in seconds at any input rate
         kdt = dt if dt > 0 else float(c.frame_dt)
+        self._clock += kdt
         n_t, n_c = len(self.tracks), len(clusters)
         matched_t = np.zeros(n_t, dtype=bool)
         matched_c = np.zeros(n_c, dtype=bool)
@@ -274,12 +294,18 @@ class Tracker:
                 t.hit_hist = (t.hit_hist + [True])[-hw:]
                 if nk:
                     t.near_hist = (t.near_hist + [self._near(cl)])[-nk:]
+                self._note(t, cl, False, zw)
                 t.history.append(cl.distance)
                 matched_t[i] = matched_c[j] = True
                 d[i, :] = np.inf
                 d[:, j] = np.inf
+        used: List[Cluster] = []
         if c.stop_keep_thin and thin:
-            self._continue_thin(thin, matched_t, ego_shift, step, dt, zw, hw, nk, kdt)
+            used = self._continue_thin(thin, matched_t, ego_shift, step, dt, zw, hw, nk, kdt)
+        new_thin: List[Cluster] = []
+        if c.thin_far_min_distance > 0 and far_thin:
+            new_thin = self._far_thin([cl for cl in far_thin if not any(cl is u for u in used)],
+                                      matched_t, ego_shift, step, dt, zw, hw, nk, kdt)
         # unmatched tracks
         for i, t in enumerate(self.tracks):
             if not matched_t[i]:
@@ -306,12 +332,33 @@ class Tracker:
                     since_clean=0.0 if cl.zone == "gauge" else float("inf"),
                     obs=[observation(cl)] if self.record else [],
                 ))
+                self._note(self.tracks[-1], cl, False, zw)
                 self._next_id += 1
+        for cl in new_thin:
+            t = Track(id=self._next_id, centroid=cl.centroid, velocity=np.zeros(3),
+                      confidence=c.conf_gain * cl.score, last=cl, history=[cl.distance],
+                      gauge_hits=1, zone_hist=[True], hit_hist=[True], span_s=dt,
+                      zone_min_fraction=c.zone_min_fraction, column_hist=[False],
+                      column_hold=int(c.column_hold), near_hist=[False] if nk else [], near_hits=nk,
+                      since_clean=float("inf"))
+            self._note(t, cl, True, zw)
+            self.tracks.append(t)
+            self._next_id += 1
         # reported: confirmed now, or reported in the previous frame and missed for at most
         # hold_misses frames (a single missed frame does not drop a STOP; review 23.09), or inside
         # a re-seed hold window (reseed; matched or not)
         for t in self.tracks:
             q = self._qualifies(t)
+            if c.thin_far_min_distance > 0:
+                # 27.09: a track that ever used far scan-line / weak evidence becomes a STOP only while it
+                # approaches: not reported before, it is not reported; reported as advisory, it stays
+                # advisory (the ride: weak hits turned the zone vote of an advisory fixture ahead of a
+                # standing train into a STOP); a STOP in the previous frame keeps the usual rules (taking
+                # it down split a STOP episode of the ride)
+                block = t.far_evidence and not t.was_stop and not self._approaching(t)
+                t.approach_block = bool(block and t.reported)
+                if q and block and not t.reported:
+                    q = False
             if q and not low_ok and not t.reported and t.last is not None and t.last.kind == "low":
                 q = False
             if (q and rail_within > 0 and not t.reported and t.last is not None and t.last.kind == "low"
@@ -330,6 +377,10 @@ class Tracker:
                 t.hold -= 1
         if self.opinion is not None:
             self._doubt()
+        if c.thin_far_min_distance > 0:
+            # after the track opinion: a STOP withheld by it is not a STOP of this frame
+            for t in self.tracks:
+                t.was_stop = t.reported and t.zone == "gauge"
         return self.tracks
 
     def _doubt(self) -> None:
@@ -384,8 +435,9 @@ class Tracker:
                 cand.append(i)
         ok = [j for j, cl in enumerate(thin) if (cl.zone == "gauge" or (c.stop_keep_signature and cl.demoted))
               and cl.n_gauge >= c.stop_keep_min_voxels]
+        used: List[Cluster] = []
         if not cand or not ok:
-            return
+            return used
         static = np.array([-float(ego_shift), 0.0, 0.0])
         pred = np.stack([self.tracks[i].centroid + (self.tracks[i].velocity if self.tracks[i].hits > 1 else static)
                          for i in cand])
@@ -421,10 +473,102 @@ class Tracker:
             t.hit_hist = (t.hit_hist + [True])[-hw:]
             if nk:
                 t.near_hist = (t.near_hist + [self._near(cl)])[-nk:]
+            self._note(t, cl, False, zw)
+            t.history.append(cl.distance)
+            matched_t[i] = True
+            used.append(cl)
+            d[a, :] = np.inf
+            d[:, b] = np.inf
+        return used
+
+    def _note(self, t: Track, cl: Cluster, far_thin: bool, zw: int) -> None:
+        """27.09 (``thin_far_min_distance`` > 0 only): remember whether this hit was a far scan line
+        (last ``zone_window`` hits) and its sensor time and distance (``approach_hits``)."""
+        c = self.cfg
+        if c.thin_far_min_distance <= 0:
+            return
+        t.far_evidence = t.far_evidence or bool(far_thin)
+        t.thin_hist = (t.thin_hist + [bool(far_thin)])[-zw:]
+        t.approach = (t.approach + [(self._clock, float(cl.distance))])[-max(2, int(c.approach_hits)):]
+
+    def _approaching(self, t: Track) -> bool:
+        """27.09 (``approach_*``): the distances of the track's last ``approach_hits`` hits lie on a
+        line in sensor time (RMS residual at most ``approach_max_residual``) that approaches at
+        ``approach_min_speed`` to ``ego_speed_max``: a static object ahead of a moving train, not a
+        scan line of the bed or the vault (fixed in the sensor frame, or jumping with the pitch)."""
+        c = self.cfg
+        k = max(2, int(c.approach_hits))
+        if len(t.approach) < k:
+            return False
+        p = np.asarray(t.approach[-k:], dtype=np.float64)
+        tt = p[:, 0] - p[:, 0].mean()
+        dd = p[:, 1] - p[:, 1].mean()
+        var = float((tt * tt).sum())
+        if var <= 0:
+            return False
+        s = float((tt * dd).sum()) / var
+        rms = float(np.sqrt(np.mean((dd - s * tt) ** 2)))
+        return -c.ego_speed_max - 1e-9 <= s <= -c.approach_min_speed and rms <= c.approach_max_residual
+
+    def _far_thin(self, thin: List[Cluster], matched_t: np.ndarray, ego_shift: float, step: float,
+                  dt: float, zw: int, hw: int, nk: int = 0, kdt: float = 0.0) -> List[Cluster]:
+        """27.09 (``thin_far_min_distance``, off by default): far scan lines inside the gauge
+        (selected by the detector: at least that far, zone ``gauge``, ``thin_far_min_voxels`` strict
+        voxels, overlapping no other cluster of the frame) are associated, greedily with the same
+        gate and prediction, with the tracks nothing matched in this frame; a match is a hit inside
+        the gauge (never a clean hit for the keep cap) and marks the track (``Track.far_evidence``) so
+        that it becomes a STOP only while it approaches (:meth:`_approaching`). Only an
+        unambiguous scan line is used: one inside the gate of exactly one track, and that track
+        unmatched in this frame, continues it; one inside the gate of no track starts a new track
+        (returned); one inside the gates of several tracks, or of a track already matched this frame,
+        is not used at all (the ride: a scan line between two tracks of one structure moved one of
+        them and changed the next frame's association, which re-reported a false STOP)."""
+        c = self.cfg
+        if not thin:
+            return []
+        if not self.tracks:
+            return list(thin)
+        static = np.array([-float(ego_shift), 0.0, 0.0])
+        # matched tracks are where their cluster of this frame is, the others where they are predicted
+        pos = np.stack([t.centroid if matched_t[i] else t.centroid + (t.velocity if t.hits > 1 else static)
+                        for i, t in enumerate(self.tracks)])
+        cen = np.stack([cl.centroid for cl in thin])
+        d = np.linalg.norm(pos[:, None, :] - cen[None, :, :], axis=2)
+        dx = cen[None, :, 0] - pos[:, 0][:, None]
+        allowed = np.array([self._gate(t.centroid[0]) for t in self.tracks])[:, None] + np.where(dx < 0, step, 0.0)
+        inside = d <= allowed
+        owners = inside.sum(axis=0)
+        free = [j for j in range(len(thin)) if owners[j] == 0]
+        usable = (owners == 1)[None, :] & inside & ~matched_t[:, None] & np.array(
+            [t.last is not None for t in self.tracks])[:, None]
+        d = np.where(usable, d, np.inf)
+        cand = list(range(len(self.tracks)))
+        while np.isfinite(d).any():
+            a, b = np.unravel_index(np.argmin(d), d.shape)
+            i = cand[a]
+            t, cl = self.tracks[i], thin[b]
+            t.since_clean += kdt
+            t.velocity = 0.5 * t.velocity + 0.5 * (cl.centroid - t.centroid) if t.hits > 1 else (cl.centroid - t.centroid)
+            t.centroid = cl.centroid
+            t.hits += 1
+            t.misses = 0
+            t.age += 1
+            t.span_s += dt
+            t.confidence = min(1.0, t.confidence + c.conf_gain * cl.score)
+            t.last = cl
+            t.kept = False
+            t.gauge_hits += 1
+            t.zone_hist = (t.zone_hist + [True])[-zw:]
+            t.column_hist = (t.column_hist + [False])[-zw:]
+            t.hit_hist = (t.hit_hist + [True])[-hw:]
+            if nk:
+                t.near_hist = (t.near_hist + [False])[-nk:]
+            self._note(t, cl, True, zw)
             t.history.append(cl.distance)
             matched_t[i] = True
             d[a, :] = np.inf
             d[:, b] = np.inf
+        return [thin[j] for j in free]
 
     def _qualifies(self, t: Track) -> bool:
         c = self.cfg

@@ -126,6 +126,7 @@ resense:
     min_points: 5
     min_points_far: 3
     far_range: 100.0
+    weak_min_points: 0             # 27.09 (P5 range, opt-in; 0 = off): a corridor cluster at least tracking.thin_far_min_distance away with fewer voxels than min_points / min_points_far but at least this many is kept as weak far evidence: like a far scan line it goes to the tracker only and counts only for a track that approaches (tracking.approach_*)
     max_extent: 8.0
     oversize_split_max_length: 3.0 # on since 25.09 (P3; 0 = off): a cluster larger than max_extent keeps its part inside the strict gauge when that part is at most this long (an object touching a line at the corridor edge)
     oversize_split_max_distance: 30.0 # 25.09 (P3): ... and starts within this distance (m; beyond, long sparse far clusters gave a false alarm)
@@ -220,6 +221,11 @@ resense:
     doubt_threshold: 0.5           # 27.09: probability of a real object below which a track is doubtful
     doubt_near: 30.0               # 27.09: m, a track this near is never delayed (a withheld track is released on reaching it)
     doubt_sticky: false            # 27.09: true = the opinion at the onset decides; a withheld track is released only by doubt_extra_hits or doubt_near
+    thin_far_min_distance: 0.0     # 27.09 (P5 range, opt-in; 0 = off): m; a scan line (corridor cluster flatter than cluster.min_height) at least this far, inside the strict envelope (zone gauge) with >= thin_far_min_voxels strict voxels and overlapping no other cluster of the frame, may start and continue a track; a track ever matched by such a hit becomes a STOP only while its distance approaches on a line (approach_*; not reported before: not reported; reported as advisory: stays advisory; a STOP in the previous frame keeps the usual rules): a bed / vault scan line is fixed in the sensor frame or jumps with the pitch, an object approaches at the train's speed
+    thin_far_min_voxels: 4         # 27.09: strict-envelope voxels such a scan line needs
+    approach_hits: 5               # 27.09: the last hits whose distances are fitted by a line in sensor time
+    approach_min_speed: 2.0        # 27.09: m/s the fitted line must approach at (at most ego_speed_max)
+    approach_max_residual: 0.5     # 27.09: m, RMS of the distances about that line
     max_misses: 3
     conf_gain: 0.35
     conf_decay: 0.25
