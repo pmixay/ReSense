@@ -317,7 +317,7 @@ class TrackingConfig:
     # never makes a track. A scan line of the bed or the vault is fixed in the sensor frame, or jumps
     # with the pitch (0.05 deg moves it ~4 m at 100 m); a static object approaches at the train's
     # speed, frame after frame on a line.
-    thin_far_min_distance: float = 0.0  # m; > 0: a scan line at least this far, inside the strict gauge (zone gauge) with thin_far_min_voxels strict voxels and overlapping no other cluster of the frame, may start and continue a track; a track with such a hit among its last zone_window hits starts to be reported only while it approaches (approach_*); one reported in the previous frame keeps the usual rules
+    thin_far_min_distance: float = 0.0  # m; > 0: a scan line at least this far, inside the strict gauge (zone gauge) with thin_far_min_voxels strict voxels and overlapping no other cluster of the frame, may start and continue a track; a track ever matched by such a hit starts to be reported only while it approaches (approach_*); one reported in the previous frame keeps the usual rules
     thin_far_min_voxels: int = 4        # strict-envelope voxels such a scan line needs
     approach_hits: int = 5              # the last hits whose distances are fitted by a line in sensor time
     approach_min_speed: float = 2.0     # m/s the fitted line must approach at (and at most ego_speed_max)

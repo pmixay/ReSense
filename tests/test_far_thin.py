@@ -181,3 +181,18 @@ def test_scan_line_at_a_matched_track_is_not_a_new_track():
     tr.update([_cl(100.0, thin=False)], ego_shift=0.0, frame_dt=0.1)
     tr.update([_cl(98.5, thin=False)], ego_shift=0.0, frame_dt=0.1, far_thin=[_cl(99.0, lateral=0.3)])
     assert len(tr.tracks) == 1 and tr.tracks[0].hits == 2
+
+
+def test_weak_hits_long_ago_still_need_the_approach():
+    """The ride (piece 2, frames 237-243): weak 4-voxel hits kept a fixture ahead of a standing train
+    alive; later normal hits alone would have confirmed it. A track ever matched by far evidence
+    starts a report only while it approaches."""
+    tr = Tracker(_cfg())
+    for k in range(6):
+        cl = _cl(96.8, thin=False, n_gauge=4)
+        cl.weak = True
+        tr.update([], ego_shift=0.0, frame_dt=0.1, far_thin=[cl])
+    for k in range(15):                       # > zone_window normal hits at the same place
+        tr.update([_cl(96.8, thin=False)], ego_shift=0.0, frame_dt=0.1, far_thin=[])
+    assert len(tr.tracks) == 1 and tr.tracks[0].far_evidence
+    assert not tr.tracks[0].reported
