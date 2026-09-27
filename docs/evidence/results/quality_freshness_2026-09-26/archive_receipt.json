@@ -1,0 +1,33 @@
+{
+  "finished_utc": "2026-09-26T21:33:31.896146+00:00",
+  "archive": "/home/resense/validation/quality_cycle/freshness/archive/resense-image-quality-0145cbb.tar.gz",
+  "sha256": "5cd6078357217f013a96ab66a8a166dcfaa3940e1124f4682ec2761d73840a25",
+  "bytes": 475753310,
+  "image_id": "sha256:9919631de63f97b1e4d79699c3f556b40537c2853808c5e3e65902f9dc17b916",
+  "image_revision": "0145cbb8dd26b3777084aedb3945f49dda741caf",
+  "package": {
+    "version": "1.0.0",
+    "module": "/usr/local/lib/python3.10/dist-packages/resense/__init__.py"
+  },
+  "inherited_oci_version": "22.04 (Ubuntu base; not application version)",
+  "baseline_preserved": {
+    "tag": "resense:p3d-reference",
+    "image_id": "sha256:a0af9d790356ab737bc1759caa6a7e4ee802b554d6d6d40677aa64888c1cef61"
+  },
+  "candidate_absent_before_load": true,
+  "loaded_source_and_native_check": true,
+  "public_release": false,
+  "offline_build_cache_claim": false,
+  "runtime_acceptance_passed": false,
+  "runtime_outcomes": {
+    "original_cold": 0,
+    "original_warm": 0,
+    "original_clear": 1,
+    "original_cold_load": 0,
+    "stock_switch": 0,
+    "stock_switch_recording1": 0,
+    "stock_switch_recording2": 0
+  },
+  "artifact_status": "local review candidate; release hold; standalone clear criterion failed",
+  "baseline_restored_as_latest": true
+}

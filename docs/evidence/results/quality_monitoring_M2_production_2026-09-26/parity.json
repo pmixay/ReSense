@@ -1,0 +1,265 @@
+{
+  "candidate": "M2",
+  "production_commit": "482caab",
+  "source_sha256": {
+    "configs/default.yaml": "c7ca5ad4f332b7025f66ab0addeb21025daf23a36aca4dbcc2d49fe5b8831f40",
+    "native/resense_native.cpp": "85688be18c41c68111f30e2bc45b83186650c1eead8b24a254d15c97cb2592f1",
+    "pyproject.toml": "0c884cf84def40dad63248cb2ed8cc2b6e6efe4bab5aa871f6ca39306acd30b7",
+    "resense/__init__.py": "fdf04a88071df1d8300d46f75d34cc00bf9fa205369be99b3cfef6db514ae306",
+    "resense/_native.py": "7417a55c2b0ddc9b95a5d46d78b6af9b724203475890a59a0be4a022c6d4fd58",
+    "resense/accumulate.py": "5cc507d81e330b9e23b909e06cfbdb14cebdb553af179d512e34fb7c22e5b0bd",
+    "resense/calibration.py": "9e84d7754f59fbc767db9fbc0a1bdfac5ef0dd0db70e27ce6b29238bc1731c8a",
+    "resense/cli.py": "1fd89acade866a2babe0566d15666bcdd50b167a26664d91880ec2504138b33f",
+    "resense/clustering.py": "44e81d17c2bd0016be114b226d1557421ab4b9c3fe8755202bac75b01d70a2c1",
+    "resense/config.py": "806cf92164d95a0ce74bdffafb5886c2ad2d6d5354122000762220543ca832cb",
+    "resense/detector.py": "1b38ceda1e368601dbccf792c177adfe19775fea897364aabc567b8bf486ea25",
+    "resense/egomotion.py": "fba03d8f0657358aeeaa24956dc2ea5f224673dbeb3452d0d6eb6f5ec515a25a",
+    "resense/frame.py": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9",
+    "resense/gauge.py": "08a67b885cf744b2439ddfa2e534f04c3b3a1f883925392a8a7adbe2a8600abe",
+    "resense/health.py": "39341422d0026ab3c9371533dff43d4f52a3b191b5623737d0250ca6456e71f3",
+    "resense/io.py": "032def133b9148dc43a0714f6ff8c84e049e4be11640093bdd8fe70bf9756b34",
+    "resense/lowobj.py": "f943a33bf660c0d63e9f37aaa16297a508ec75ce2dfb3475b65b30a65ad660d8",
+    "resense/metrics.py": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a",
+    "resense/pointcloud.py": "2f20a0e6aa3ceab96b625fc85eff3ea24cb0a7ae6675467415f53f8cd464a053",
+    "resense/sensor.py": "0c5acd4d937d2c6946422018a2a394c71f4de351d338899e436bc1b2a34115b0",
+    "resense/synthetic.py": "6f6c86fefd70b26b6c6b2f51f01a6de43def587a8ae49f2eb2523e830a30c747",
+    "resense/track.py": "0f23ee8ad73a22e271b69aac31c1230ae8b0c2ebe5d047f2f4d2a6c78ec1cb67",
+    "resense/tracking.py": "a0bffd4e2ddab90fc4ae1e49f81f9673abdc2b1b0579da1979379531a7f130f7",
+    "resense/viz.py": "3a5df9d0acb1a0d0f0dc9568131c17906bda49ac2dba65f5eb49343abe3d36db",
+    "ros2_ws/src/resense_ros/config/detector.yaml": "c7ca5ad4f332b7025f66ab0addeb21025daf23a36aca4dbcc2d49fe5b8831f40",
+    "scripts/build_native.sh": "af7e559867082b2df45edea7a730b2641957a4acc9df929cbab01776f7f99aea",
+    "setup.py": "73a030dd50b47b1b43b02d72a9892ee4ed26106b686afa6cd39584222a721ee7"
+  },
+  "observer_parity": {
+    "doubleT_obstacle": {
+      "frames": 201,
+      "different_rows": 0,
+      "observer": {
+        "path": "/home/resense/validation/quality_cycle/monitoring_M2/doubleT_obstacle.jsonl",
+        "sha256": "184bf795068afa45546eb74cc7ffab0b571e87d6adb98e8974a81056e2514f08",
+        "frames": 201
+      },
+      "production": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/doubleT_obstacle.jsonl",
+        "sha256": "31ada6d598cca8f33d871890041f0a3b2369315decd08c6594e1b62dd1b797fa",
+        "frames": 201
+      }
+    },
+    "doubleT_platform": {
+      "frames": 345,
+      "different_rows": 0,
+      "observer": {
+        "path": "/home/resense/validation/quality_cycle/monitoring_M2/doubleT_platform.jsonl",
+        "sha256": "f0715004e357598382f6cfaf09c16729b86e16c747fe8e6ebb9e9f32f200a3ef",
+        "frames": 345
+      },
+      "production": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/doubleT_platform.jsonl",
+        "sha256": "9653f34b26fcb18e8781853bb3845d9bed1e0f0a67061747858c352b9c33e12b",
+        "frames": 345
+      }
+    },
+    "roundT_doubleT": {
+      "frames": 252,
+      "different_rows": 0,
+      "observer": {
+        "path": "/home/resense/validation/quality_cycle/monitoring_M2/roundT_doubleT.jsonl",
+        "sha256": "c6f1c59209bd5a765d5a5553db72fd062f7ab1baa0ecedf01bf158caaf3fada6",
+        "frames": 252
+      },
+      "production": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/roundT_doubleT.jsonl",
+        "sha256": "d057fb31f381cd79c6fc071bd6db2a2fd114ffd626f9fe8d761bb694cf5a78f5",
+        "frames": 252
+      }
+    },
+    "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "different_rows": 0,
+      "observer": {
+        "path": "/home/resense/validation/quality_cycle/monitoring_M2/roundT_pressureGate_roundT.jsonl",
+        "sha256": "33c4a2dfe66ab936b4ddc6acda1c59c9123788d8941e7083f7526e17882fe241",
+        "frames": 268
+      },
+      "production": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/roundT_pressureGate_roundT.jsonl",
+        "sha256": "7f9ce13190a7b95cc9c298b39e47a981c8df250034a5aa63a6806ccb60ff91b5",
+        "frames": 268
+      }
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "different_rows": 0,
+      "observer": {
+        "path": "/home/resense/validation/quality_cycle/monitoring_M2/roundT_squareT_pressureGate_squareT.jsonl",
+        "sha256": "03b3edee4652902a95c082125d3a60de8ad0fabad8892e26a180f90f84b493d8",
+        "frames": 545
+      },
+      "production": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/roundT_squareT_pressureGate_squareT.jsonl",
+        "sha256": "962f4f3b1f4fea71e2479a579a0f7bcfe26e65f17f01d4e68274a8fe4c1d137c",
+        "frames": 545
+      }
+    },
+    "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "different_rows": 0,
+      "observer": {
+        "path": "/home/resense/validation/quality_cycle/monitoring_M2/squareT_platform_squareT_switch.jsonl",
+        "sha256": "7d2f8b3238531970ba498a022eee9ec2a0166b61cda45a6e178bb8701142418f",
+        "frames": 877
+      },
+      "production": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/squareT_platform_squareT_switch.jsonl",
+        "sha256": "2fb053a7aae38e5a70db491c5baa982646e6f3eae10db4af77eb0780bad930ac",
+        "frames": 877
+      }
+    },
+    "cloud_with_fake_obj": {
+      "frames": 1510,
+      "different_rows": 0,
+      "observer": {
+        "path": "/home/resense/validation/quality_cycle/monitoring_M2/cloud_with_fake_obj.jsonl",
+        "sha256": "48b08ef9ff7ccb0fd0ee6af7d95f8623d3f19ff871fa7231551f92f3a231bc0e",
+        "frames": 1510
+      },
+      "production": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/cloud_with_fake_obj.jsonl",
+        "sha256": "ee2816cbc1336b5d54b1da9f7ee118e8ff77dfc3d5b24def8d69537e5cb8bcac",
+        "frames": 1510
+      }
+    },
+    "new_data_0": {
+      "frames": 1409,
+      "different_rows": 0,
+      "observer": {
+        "path": "/home/resense/validation/quality_cycle/monitoring_M2/new_data_0.jsonl",
+        "sha256": "384066fdc9796d76e6895e050b2822b33ad45e642397cb38bc540959439a5095",
+        "frames": 1409
+      },
+      "production": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/new_data_0.jsonl",
+        "sha256": "653514d9535d7e9211af68a96db5b57e5a96d778675aecb18e72f8769a6bd541",
+        "frames": 1409
+      }
+    },
+    "new_data_1": {
+      "frames": 1409,
+      "different_rows": 0,
+      "observer": {
+        "path": "/home/resense/validation/quality_cycle/monitoring_M2/new_data_1.jsonl",
+        "sha256": "48b7fcf978c1d3cb38859b7c59da43d535cbacc6438284a27e5a13476c4d3ee5",
+        "frames": 1409
+      },
+      "production": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/new_data_1.jsonl",
+        "sha256": "0e561f6950b8dc70c62b0df93034a25d10005514bbed7189db9a866610b41ccc",
+        "frames": 1409
+      }
+    },
+    "new_data_2": {
+      "frames": 1409,
+      "different_rows": 0,
+      "observer": {
+        "path": "/home/resense/validation/quality_cycle/monitoring_M2/new_data_2.jsonl",
+        "sha256": "020ca66c873431875d33d9651ad88fc1084c82d479733f75a62c54acbb9a2820",
+        "frames": 1409
+      },
+      "production": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/new_data_2.jsonl",
+        "sha256": "e65cf93de0806cb3c86dbe622e4ad13830e45ad7e623a7ab23e2765c7db90388",
+        "frames": 1409
+      }
+    },
+    "new_data_3": {
+      "frames": 1409,
+      "different_rows": 0,
+      "observer": {
+        "path": "/home/resense/validation/quality_cycle/monitoring_M2/new_data_3.jsonl",
+        "sha256": "3a53af92447243343d99204a63a0343d455d1be459246daeb43855b64e6fa543",
+        "frames": 1409
+      },
+      "production": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/new_data_3.jsonl",
+        "sha256": "703213dcf9619494d8ccd4483391b03eb1b086c0629b895e2e3d49979cf15e60",
+        "frames": 1409
+      }
+    },
+    "new_data_4": {
+      "frames": 1409,
+      "different_rows": 0,
+      "observer": {
+        "path": "/home/resense/validation/quality_cycle/monitoring_M2/new_data_4.jsonl",
+        "sha256": "aaa486229bd1780bfb066183da991c33c7548d618e269241e759f99d5ada17c3",
+        "frames": 1409
+      },
+      "production": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/new_data_4.jsonl",
+        "sha256": "89810eb8e87096dd17a9c5aa690816f0b7a5be5b20108383a0ebbc2a347f01c1",
+        "frames": 1409
+      }
+    },
+    "new_data_5": {
+      "frames": 1409,
+      "different_rows": 0,
+      "observer": {
+        "path": "/home/resense/validation/quality_cycle/monitoring_M2/new_data_5.jsonl",
+        "sha256": "54e3d41a34bc917136ae0ef5789bfba7dfefc5e2c1e41510df9b3e6537ebe704",
+        "frames": 1409
+      },
+      "production": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/new_data_5.jsonl",
+        "sha256": "50dbdfee8642bb97cd43a3c7f4c8a2f445e751537f846f4add2b963be26c769f",
+        "frames": 1409
+      }
+    },
+    "new_data_6": {
+      "frames": 1409,
+      "different_rows": 0,
+      "observer": {
+        "path": "/home/resense/validation/quality_cycle/monitoring_M2/new_data_6.jsonl",
+        "sha256": "3dd3d423b146eb138f9a1a8e6472f6a95e47f31e0b57c9c104b50df416700f1e",
+        "frames": 1409
+      },
+      "production": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/new_data_6.jsonl",
+        "sha256": "d7402ac7b70036398e4f45587ba0fec81fe49f7aa6500b7290e069d940a1d155",
+        "frames": 1409
+      }
+    },
+    "new_data_7": {
+      "frames": 1408,
+      "different_rows": 0,
+      "observer": {
+        "path": "/home/resense/validation/quality_cycle/monitoring_M2/new_data_7.jsonl",
+        "sha256": "53b9d11a3d67adb7be8462699fa964bf44e88c7e3f1baa84ec6c84f73c5a0184",
+        "frames": 1408
+      },
+      "production": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/new_data_7.jsonl",
+        "sha256": "975c609b1217b6cc22c3c56b091a553985675d0d0897accbfd7e513a2a13c6b4",
+        "frames": 1408
+      }
+    }
+  },
+  "compared_frames": 15269,
+  "novel": {
+    "all_cases_and_rows_exactly_equal": true,
+    "summary": {
+      "visible_frames": 2458,
+      "target_matched_frames": 544,
+      "injected_only_matched_frames": 544,
+      "control_matched_frames": 0,
+      "cases_with_target_match": 45,
+      "cases": 72
+    }
+  },
+  "disposition": "partial improvement pending stress, raw and runtime acceptance",
+  "full_gate": {
+    "passed": true,
+    "total_rows": 199,
+    "gated_rows": 146,
+    "all_gated_unchanged": true,
+    "waivers": []
+  }
+}

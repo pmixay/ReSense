@@ -1,0 +1,19 @@
+node docker args: (none); player: kladmin uid 1000, RMW rmw_fastrtps_cpp (default), no Fast DDS profile; net.core.rmem_max 212992, rmem_default 212992
+decisions seen:     175 CAUTION      43 FAULT      70 GO     150 STOP 
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+[detector_node-1] [WARN] [1790361698.467302310] [resense_detector]: net.core.rmem_max = 212992, net.core.rmem_default = 212992: below 32 MiB. A bag player may then deliver few or none of the ~24 MB 360-degree clouds to t
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+console 4: player pid 19423 (kladmin), RMW loaded: libfastrtps.so.2.6.12 librmw_fastrtps_cpp.so  kladmin 644 /dev/shm/fastrtps_port7413 kladmin 644 /dev/shm/fastrtps_port7415 kladmin 644 /dev/shm/fastrtps_port7417 kladmin 644 /dev/shm/fastrtps_port7419 kladmin 644 /dev/shm/fastrtps_port7421 
+status messages      : 395 (43 lines skipped)
+alarm frames         : 150
+obstacle distance    : 55.6 .. 56.6 m
+latency decode+detect: mean 43 / p95 63 / max 79 ms
+detector stage total : mean 24 / p95 34 ms
+dropped input frames : 58 (49 of them skipped by the node's catch-up); 45 after the first 5 s
+dropped input settle : start-up catch-up back on the newest frame at +2.2 s; drops counted after +5.0 s (the later of 5 s and that, at most 15 s)
+fps (last report)    : 8.58
+start of the input   : 38 frames in the first 5 s after the first one, largest gap 0.3 s
+recordings seen      : 2 ['/lidar_points', '/sensing/lidar/hesai128/pointcloud']
+
+PASS: all dry-run criteria met
+exit 0

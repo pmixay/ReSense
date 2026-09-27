@@ -1,0 +1,10 @@
+$ RESENSE_NATIVE=1  /home/mdm/resense-venv/bin/python -m resense.cli bench --npy /data/cache/doubleT_obstacle
+kernels: native (_resense_native.cpython-310-x86_64-linux-gnu.so)
+track      mean    15.3 ms  p95    26.1 ms  max    40.1 ms
+corridor   mean     6.1 ms  p95     6.3 ms  max     7.5 ms
+egomotion  mean     0.0 ms  p95     0.0 ms  max     0.0 ms
+accumulate mean     0.0 ms  p95     0.0 ms  max     0.0 ms
+cluster    mean     3.9 ms  p95     4.7 ms  max     5.8 ms
+tracking   mean     0.2 ms  p95     0.2 ms  max     0.3 ms
+total      mean    25.4 ms  p95    36.5 ms  max    49.5 ms
+peak RSS 140 MB

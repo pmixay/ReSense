@@ -1,0 +1,40 @@
+Final release review — ReSense v1.0.0-rc1
+Reviewed UTC: 2026-09-26T20:08:38.038369+00:00
+Verdict: no confirmed blocker in the export/load/publish/checksum chain. Final-source CI and actual publication checks remain required.
+
+Verified now
+- All four version declarations agree on 1.0.0; v1.0.0-rc1 is accepted as a prerelease.
+- Detector seal verifies all 27 frozen files against the refreshed evidence.
+- Final host suite: 621 passed, 6 subtests passed; 53 release-tool tests passed during this review session; shell syntax checks pass.
+- Added a native-runtime requirement to release.yml and scripts/release.sh after the initial review; 53 release-tool tests and shell/YAML syntax checks pass. No frozen detector files changed.
+- No Git refs changed and nothing was published by this reviewer.
+
+Remote snapshot at 2026-09-26T20:08:38.038369+00:00 (release_remote_review.json)
+- PR #12 is open, mergeable and clean; base main; head 1dccdecb3f919ef411adfcec077e803364c9902d.
+- CI run 36267438927 succeeded for that exact head. Final evidence/media/docs remain uncommitted, so this is not final-source CI yet.
+- Remote v1.0.0-rc1 tag and release are both absent (404).
+
+Required sequence
+1. Finish and commit every intended tracked and new artifact. Export builds git archive HEAD: uncommitted and untracked work is omitted. Do not use ALLOW_DIRTY, SKIP_BUILD or REUSE_ARCHIVE for this first RC.
+2. Push and wait for every job of ci.yml on the exact chosen release SHA (pytest, web, lint, params-in-sync/freeze, docker and offline-build). A prior green SHA is insufficient. If PR #12 is merged first, inspect the resulting main SHA and wait for its own CI before tagging it.
+3. Reconfirm the RC tag is unused; create/push v1.0.0-rc1 at that exact SHA. A tag push starts release.yml and publication automatically. The workflow itself does not wait for branch CI.
+4. Wait for release.yml: package-version check; no-skip host tests; git-archive runtime build; save with base-image tag; remove images/cache; checksum/load; same-layer and revision/version-label checks; offline internal-network and stock-player console tests; asset publication; public re-download checksum verification.
+5. Both release.yml and the manual release.sh now require AVAILABLE and enabled native kernels in the loaded runtime image, with --network none and working directory /. This must pass before the transport smokes or publication. Final CI/release execution will exercise the new artifact guard.
+6. Preserve the release run URL, exact Git SHA, runtime image ID, base digest, archive byte count and SHA256. Use the release export's SHA256, not an earlier branch artifact checksum.
+7. Independently run EXPECT_SHA256=<release-build-sum> REPO=pmixay/ReSense scripts/verify_release.sh v1.0.0-rc1 <fresh-download-directory>. Then IMAGE=resense:v1.0.0-rc1 scripts/load_image.sh <directory>/resense-image-v1.0.0-rc1.tar.gz, and confirm the image revision label equals the release SHA.
+
+Public assets expected
+https://github.com/pmixay/ReSense/releases/tag/v1.0.0-rc1
+resense-image-v1.0.0-rc1.tar.gz
+resense-image-v1.0.0-rc1.tar.gz.sha256
+SHA256SUMS
+The verifier checks the archive filename, computed archive digest, agreement of both checksum files and EXPECT_SHA256. Its unauthenticated download also proves the artifact is publicly reachable. The workflow expects all three assets; do not hand off until its final download step succeeds.
+
+Provenance and reproducibility limits
+- The detector seal does not cover ROS transport, Docker or generated binaries; their separate CI/runtime evidence is required.
+- FROM uses a mutable ROS tag; apt, pip tooling and some transitive dependencies are unpinned. Fresh builds are not promised to reproduce byte-identical images. Preserve the tested archive and its checksum/base digest; rerunning a release replaces its assets and can change bytes.
+- Runtime native compilation remains optional in setup.py, but the new release guard fails if the loaded runtime falls back to numpy. This protects the measured performance path without changing the transport smoke thresholds.
+- Release transport smoke permits p95 up to 1000 ms and many drops. It proves delivery/topology, not the original-bag 100 ms/zero-post-settle-loss acceptance. Retain the current cold/warm/clear/stock-console evidence separately.
+- load_image.sh checks existence of IMAGE after docker load; by itself it cannot prove an already-present tag came from this archive. release.yml avoids this by removing the images first and comparing layers/labels. Preserve that sequence or explicitly check image identity on a fresh daemon.
+- Manual SMOKE=1 PUBLISH=1 scripts/release.sh prints the public verification command after publishing; it does not execute verification. release.yml does execute it. Prefer the workflow; no gh CLI is installed in this local environment.
+- GitHub Actions branch artifacts require login and expire after 30 days. The public release archive is the final distribution link.

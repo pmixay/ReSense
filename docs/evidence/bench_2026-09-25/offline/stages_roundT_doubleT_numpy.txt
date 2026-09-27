@@ -1,0 +1,10 @@
+$ RESENSE_NATIVE=0  /home/mdm/resense-venv/bin/python -m resense.cli bench --npy /data/cache/roundT_doubleT
+kernels: numpy (RESENSE_NATIVE=0)
+track      mean    27.8 ms  p95    39.1 ms  max    43.2 ms
+corridor   mean    12.2 ms  p95    13.7 ms  max    15.0 ms
+egomotion  mean     0.0 ms  p95     0.0 ms  max     0.0 ms
+accumulate mean     0.0 ms  p95     0.0 ms  max     0.0 ms
+cluster    mean     6.8 ms  p95     9.8 ms  max    10.7 ms
+tracking   mean     0.2 ms  p95     0.2 ms  max     0.3 ms
+total      mean    47.0 ms  p95    59.4 ms  max    66.6 ms
+peak RSS 99 MB

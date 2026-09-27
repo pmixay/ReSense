@@ -1,0 +1,109 @@
+{
+ "schema": "resense-p3-item-v1",
+ "key": "p3_integration",
+ "date": "2026-09-26",
+ "owner": "P3 integrator (detector-rule decisions delegated by the captain)",
+ "question": "Combine the shipped P3 branches of 26.09 (wf14/rail-start, wf14/near-escalation, wf14/edge-axis) on the working-branch head 00143b0, prove the combination with the full regression gate and cut a new gate baseline; apply the safety review of 26.09 first.",
+ "branch": "wf14/integrate-p3",
+ "merges": {
+  "base": "00143b0 (claude/nifty-pascal-lzgl78, the P1 docs merge)",
+  "wf14/rail-start": "8bbd2ef, merged as dd9d827 (no conflict); EXPERIMENTS 1k",
+  "wf14/near-escalation": "dcf8ca7, merged as a88e6e9; its EXPERIMENTS '1k' renumbered 1l; conflicts in CHANGELOG, README, ALGORITHM 6, EXPERIMENTS, evidence README, both sides kept",
+  "wf14/edge-axis": "7c26d0c, merged as e2a5327; its EXPERIMENTS '1k' renumbered 1m; conflicts in resense/clustering.py (the shape rules' lateral of axis_union 3 and the wall keep D both feed _is_infrastructure), CHANGELOG, ALGORITHM 6, EXPERIMENTS, evidence README, both sides kept",
+  "safety_review": "ed03bc2: the fixes below; the gate, the baseline and the fingerprint are on this commit"
+ },
+ "interaction": {
+  "rail_start_x_near_escalation": "disjoint: mark_rail_line marks only kind 'low' clusters and the tracker withholds only a track whose last hit is one; Tracker._near counts only kind '' clusters. In a frame where the rail-start rule applies the escalation's last hits are broken anyway; the rule keeps no state. A mixed track (an escalated STOP, then one rail-line hit under 4 m) is identical with rail_start_within 4 and 0 (tests/test_near_escalation.py::test_near_escalation_and_rail_start_act_on_disjoint_clusters)",
+  "rail_start_x_wall_keep": "no shared input: the wall keep spares only corridor clusters (taller than 1.9 m, > 1.2 m off the axis); mark_rail_line reads low clusters and the frame's points",
+  "axis_union_x_wall_keep": "real: the wall keep counted in_gauge, which the union widens; the ray-cast #6 shape (2 x 2 x 2.3 m box at the sensor-axis edge, 20 m) STOPped with both on (frames 4-7 of 8) and with either alone not. Fixed by the review: the wall keep counts the rails-only strict voxels (Candidates.in_rail); the union is off",
+  "mark_rail_line_coordinate": "reads the rail coordinate (dy_rail, as the low stage); identical to dy_all unless axis_union 2 (off)"
+ },
+ "safety_review": {
+  "gauge.axis_union": "0 (off; blocking): the union adds the strict points of a long line at the corridor edge beside an object, the oversize split's part grows past 3 m and both are dropped (ray-cast: c 0.25 m, 0.5 m box touching a 30 m line, 19 -> 6 STOP frames; c 0.15 m, person, 16 -> 11). Fixed anyway: an oversize cluster whose union part fails falls back to its rails-only part (19 -> 19, tests/test_edge_axis.py); the rails-only mask also travels through the accumulation buffer",
+  "tracking.near_escalate_*": "beyond_axis and beyond_height_ref demotions never count as near hits (like a column)",
+  "cluster.wall_keep_*": "counts the rails-only strict voxels; a blob kept only by it (Cluster.wall_kept) that another rule demotes is not a duplicate source for a low cluster and does not take a hanging cluster over",
+  "lowobj.rail_start_min_ref": "0.06 m: a low cluster is rail geometry only where the band's line is >= 0.06 m above the model's rail-head plane (the finding 0.135-0.148 m, a correct model ~0). The finding stays fixed: python -m resense.cli run --npy /data/cache/new_data --start 2818 --limit 40 has no STOP frame on ed03bc2 (rail_start_within 0: frames 12-15, 3.15 / 3.00 / 3.04 / 2.88 m, kind low)",
+  "tests": "+7: the edge-line scene (union on = union off), the rails mask through the accumulation buffer, beyond_axis / beyond_height_ref never escalated (2), the wall keep counts the rails' envelope, a demoted wall-kept blob keeps a low object beside it, nothing marked under a correct model"
+ },
+ "gate": {
+  "command": "python scripts/regression_gate.py --cache /data/cache --jobs 1 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_p3b.json (on ed03bc2, native path, 857 s)",
+  "result": "docs/evidence/results/regression_gate_2026-09-26_p3_integrated.json",
+  "verdict": "PASS: 7 gated rows better, 0 worse; ride 187 / 46 / 39 -> 183 / 45 / 38; set O #8 12 -> 22 STOP frames (held from 23.9 m), #6 0 -> 6 (from 10.3 m), #4 0 -> 2 (5.2 m), inside STOP frames 337 -> 355, 8 of 8 objects; five bags 58 / 13 / 16, doubleT_obstacle (58 / 61, 128 / 185, 125 / 126 from frame 75, first alarm frame 11) and set F straight identical",
+  "sum_of_items": "exactly the sum of the rail-start gate (ride rows) and the near-escalation gate (set O rows); the union's +1 frame on #6 is gone with the union off",
+  "before_the_review": "the same gate on a88e6e9 (rail start and near escalation merged, before the review): every gated and recorded value the same; only the latency-driven health warning counts differ (ride 11074 / 197 vs 11098 / 173 ok / warn, doubleT_platform 265 / 80 vs 322 / 23; never gated)",
+  "full_gate_with_the_union": "started on e2a5327 (all four on) and stopped when the review arrived; not measured",
+  "new_baseline": "docs/evidence/results/regression_baseline_2026-09-26_ride_p3c.json: this run without its gate block; LC_ALL=C sort picks it; the same run against it (--from-json): PASS, every row the same"
+ },
+ "union_in_the_combination": {
+  "how": "set O only: scripts/eval_real.py --bags cloud_with_fake_obj --jobs 1, scored with the gate's set_o_entry; e2a5327 with its defaults (all four on) and ed03bc2 with --set gauge.axis_union=1",
+  "union_off_gate": {
+   "small_edge_inside": {
+    "stop_frames": 2,
+    "first_stop_m": 5.2,
+    "held_from_m": 5.2,
+    "advisory_frames": 23
+   },
+   "big_edge_inside": {
+    "stop_frames": 6,
+    "first_stop_m": 10.3,
+    "held_from_m": 10.3,
+    "advisory_frames": 0
+   },
+   "big_above": {
+    "stop_frames": 22,
+    "first_stop_m": 101.3,
+    "held_from_m": 23.9,
+    "advisory_frames": 27
+   },
+   "inside_stop_frames": 355,
+   "inside_objects_with_stop": 8
+  },
+  "e2a5327_all_four_on": {
+   "small_edge_inside": {
+    "stop_frames": 9,
+    "first_stop_m": 18.2,
+    "held_from_m": 20.1,
+    "advisory_frames": 16
+   },
+   "big_edge_inside": {
+    "stop_frames": 6,
+    "first_stop_m": 10.3,
+    "held_from_m": 10.3,
+    "advisory_frames": 0
+   },
+   "big_above": {
+    "stop_frames": 22,
+    "first_stop_m": 101.3,
+    "held_from_m": 23.9,
+    "advisory_frames": 27
+   },
+   "inside_stop_frames": 362,
+   "inside_objects_with_stop": 8
+  },
+  "ed03bc2_axis_union_1": {
+   "small_edge_inside": {
+    "stop_frames": 9,
+    "first_stop_m": 18.2,
+    "held_from_m": 20.1,
+    "advisory_frames": 16
+   },
+   "big_edge_inside": {
+    "stop_frames": 6,
+    "first_stop_m": 10.3,
+    "held_from_m": 10.3,
+    "advisory_frames": 0
+   },
+   "big_above": {
+    "stop_frames": 22,
+    "first_stop_m": 101.3,
+    "held_from_m": 23.9,
+    "advisory_frames": 27
+   },
+   "inside_stop_frames": 362,
+   "inside_objects_with_stop": 8
+  },
+  "reading": "the union adds #4 2 -> 9 STOP frames, first STOP 5.2 -> 18.2 m (its strict voxels from the sensor axis reach the escalation's 10), inside STOP frames 355 -> 362; #6, #8 and every other object unchanged; not shipped (safety review)"
+ },
+ "fingerprint": "scripts/output_fingerprint.py --cache /data/cache --jobs 1 on ed03bc2 with rail_start_within 0, near_escalate_voxels 0, wall_keep_gauge_voxels 0, axis_union 0 against bd67fb0: 2 930 frames, 0 differ (IDENTICAL)",
+ "tests": "555 passed on the native kernels and 555 with RESENSE_NATIVE=0 (500 + 27 rail start + 12 near escalation + 8 edge axis + 1 combination + 7 review); web/demo 13 passed"
+}

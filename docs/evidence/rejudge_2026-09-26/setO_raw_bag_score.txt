@@ -1,0 +1,14 @@
+| # | object | envelope | visible frames (from) | in measured envelope | alarm frames | advisory-only | first STOP | STOP held from | verdict |
+|---|---|---|---|---:|---:|---:|---:|---:|---|
+| 1 | `big_center` | inside | 213 (from 98.7 m) | 213 | 208 | 0 | 98.0 m | 98.7 m | detected |
+| 2 | `small_center` | inside | 79 (from 128.9 m) | 63 | 30 | 0 | 52.5 m | 57.5 m | detected |
+| 3 | `small_on_rail` | inside | 49 (from 237.3 m) | 33 | 26 | 0 | 48.0 m | 51.5 m | detected |
+| 4 | `small_edge_inside` | inside | 83 (from 154.7 m) | 16 | 2 | 25 | 5.2 m | 5.2 m | detected |
+| 5 | `small_outside_near` | outside | 112 (from 238.4 m) | 101 | 0 | 24 |  |  | advisory |
+| 6 | `big_edge_inside` | inside | 125 (from 248.6 m) | 8 | 6 | 0 | 10.3 m | 10.3 m | detected |
+| 7 | `big_outside` | outside | 104 (from 249.4 m) | 52 | 7 | 41 | 142.3 m |  | false alarm |
+| 8 | `big_above` | inside | 124 (from 248.2 m) | 75 | 51 | 6 | 101.3 m | 111.4 m | detected |
+| 9 | `long_low_on_rails` | inside | 86 (from 248.5 m) | 77 | 49 | 0 | 82.2 m | 90.8 m | detected |
+| 10 | `thin_hanging` | inside | 42 (from 199.7 m) | 20 | 15 | 0 | 30.1 m | 31.8 m | detected |
+
+Background (alarms matching no object): 1 frames, 1 track IDs; all alarm frames 419 of 1510.

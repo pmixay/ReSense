@@ -1,0 +1,14 @@
+== Docker 29.1.3, storage driver overlayfs
+== SKIP_BUILD=1: exporting the existing resense:quality-candidate as resense:quality-0145cbb
+== docker save resense:quality-0145cbb resense:latest ros:humble-ros-base-jammy | pigz -6 > /home/resense/validation/quality_cycle/freshness/archive/resense-image-quality-0145cbb.tar.gz
+
+== /home/resense/validation/quality_cycle/freshness/archive/resense-image-quality-0145cbb.tar.gz
+   archive: 475753310 bytes (0.44 GiB)
+   image:   475139336 bytes uncompressed (0.44 GiB)
+   sha256:  5cd6078357217f013a96ab66a8a166dcfaa3940e1124f4682ec2761d73840a25
+   tags:    resense:quality-0145cbb resense:latest ros:humble-ros-base-jammy
+   commit:  25ad3ddab0457dd1ef5b9c33b639ec3ca192b84f
+
+On the machine without internet:
+   scripts/load_image.sh resense-image-quality-0145cbb.tar.gz      # or: docker load -i resense-image-quality-0145cbb.tar.gz
+   docker run --rm -it --net=host --ipc=host resense

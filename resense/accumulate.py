@@ -36,7 +36,9 @@ class CandidateBuffer:
             f["X"] -= np.float32(ds)
 
     def push(self, X: np.ndarray, dy: np.ndarray, h: np.ndarray, intensity: np.ndarray,
-             in_gauge: np.ndarray) -> None:
+             in_gauge: np.ndarray, in_rail: Optional[np.ndarray] = None) -> None:
+        """``in_rail`` (26.09): the strict membership from the rails only when ``gauge.axis_union``
+        widened ``in_gauge`` (``Candidates.in_rail``); ``None`` = ``in_gauge``."""
         if self.n_keep == 0:
             return
         n = int(X.size)
@@ -44,10 +46,12 @@ class CandidateBuffer:
             step = int(np.ceil(n / self.max_points))
             sl = slice(0, None, step)
             X, dy, h, intensity, in_gauge = X[sl], dy[sl], h[sl], intensity[sl], in_gauge[sl]
+            in_rail = None if in_rail is None else in_rail[sl]
         self._frames.append({
             "X": np.asarray(X, np.float32).copy(), "dy": np.asarray(dy, np.float32).copy(),
             "h": np.asarray(h, np.float32).copy(), "i": np.asarray(intensity, np.float32).copy(),
             "g": np.asarray(in_gauge, bool).copy(),
+            "r": None if in_rail is None else np.asarray(in_rail, bool).copy(),
         })
         while len(self._frames) > self.n_keep:
             self._frames.popleft()
@@ -63,3 +67,11 @@ class CandidateBuffer:
                 p.append(f[k][keep])
         out = tuple(np.concatenate(p) for p in parts)
         return out if out[0].size else None
+
+    def merged_rail(self, min_range: float = 0.0) -> Optional[np.ndarray]:
+        """The rails-only strict membership in the order of :meth:`merged` (26.09); ``None`` when no
+        stored frame has one (then it is the ``in_gauge`` of :meth:`merged`)."""
+        if not any(f["r"] is not None for f in self._frames):
+            return None
+        parts = [(f["g"] if f["r"] is None else f["r"])[f["X"] >= min_range] for f in self._frames]
+        return np.concatenate(parts) if parts else None

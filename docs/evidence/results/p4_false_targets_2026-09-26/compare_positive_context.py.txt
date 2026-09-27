@@ -1,0 +1,24 @@
+import json, sys
+from pathlib import Path
+import numpy as np
+sys.path.insert(0, '/home/resense/ReSense')
+from resense.config import DetectorConfig
+from resense.detector import Detector
+from resense.frame import frame_from_compact
+from resense.gauge import corridor_coordinates
+from resense.io import load_cache_stamps
+from scripts.trace_false_targets import support_stats
+cache=Path('/home/resense/data/cache/cloud_with_fake_obj')
+source=Path('/home/resense/validation/quality_cycle/positive_points')
+selected={int(p.stem.rsplit('_',1)[1]):p for p in source.glob('*.npz')}
+cfg=DetectorConfig();detector=Detector(cfg);stamps=load_cache_stamps(str(cache));out=[]
+for k in range(max(selected)+1):
+ name=f'cloud_with_fake_obj_{k:04d}'
+ frame=frame_from_compact(np.load(cache/(name+'.npy')),cfg.sensor,stamp=stamps[name],frame_id=name)
+ result=detector.process(frame)
+ if k not in selected:continue
+ data=np.load(selected[k]);np.testing.assert_array_equal(frame.xyz,data['xyz'])
+ idx=data['target'];dy,h=corridor_coordinates(result.xyz,result.track)
+ out.append({'frame':k,'source':selected[k].name,'target_points':len(idx),'support':support_stats(result.xyz,dy,h,idx),'target_xyz_min':result.xyz[idx].min(axis=0).tolist(),'target_xyz_max':result.xyz[idx].max(axis=0).tolist(),'track':result.track.to_dict(),'mount':result.mount})
+ print(k, out[-1]['support'], flush=True)
+Path('/home/resense/validation/quality_cycle/fp/positive_context.json').write_text(json.dumps(out,indent=2)+'\n')

@@ -1,0 +1,23 @@
+CORRECTION: the player was CycloneDDS, not rmw_fastrtps_cpp: the host had no Fast DDS RMW installed (README.txt); the RMW label below is wrong.
+node docker args: -e RESENSE_DDS=shm; player: kladmin uid 1000, RMW rmw_fastrtps_cpp (default), no Fast DDS profile; net.core.rmem_max 212992, rmem_default 212992
+decisions seen:     150 CAUTION      80 FAULT      30 GO       4 STOP 
+[INFO] [resense.dds]: DDS transport: shm, shared memory + UDPv4 (/opt/resense/fastdds_shm_udp.xml); this container's Fast DDS files in /dev/shm are opened to other users (fastdds_shm_share.py, pid 25)
+[resense.shm] fastrtps_8790da6b599fadfc: mode 666 (other users' Fast DDS participants may open it)
+[resense.shm] fastrtps_port7411: mode 666 (other users' Fast DDS participants may open it)
+[resense.shm] sem.fastrtps_port7411_mutex: mode 666 (other users' Fast DDS participants may open it)
+[detector_node-1] [WARN] [1790361195.999129625] [resense_detector]: net.core.rmem_max = 212992, net.core.rmem_default = 212992: below 32 MiB. A bag player may then deliver few or none of the ~24 MB 360-degree clouds to t
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+console 4: player pid 15016 (kladmin): 
+status messages      : 184 (80 lines skipped)
+alarm frames         : 4
+obstacle distance    : 51.5 .. 52.8 m
+latency decode+detect: mean 37 / p95 47 / max 53 ms
+detector stage total : mean 24 / p95 33 ms
+dropped input frames : 27 (26 of them skipped by the node's catch-up); 14 after the first 5 s
+dropped input settle : start-up catch-up back on the newest frame at +2.1 s; drops counted after +5.0 s (the later of 5 s and that, at most 15 s)
+fps (last report)    : 9.78
+start of the input   : 37 frames in the first 5 s after the first one, largest gap 0.3 s, first STOP at +5.4 s
+recordings seen      : 1 ['/lidar_points']
+
+FAIL: 1 recordings seen, expected 2 (the node did not take the next bag / topic)
+exit 1

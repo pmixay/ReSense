@@ -1,0 +1,66 @@
+{
+  "checks": [
+    {
+      "name": "first frame epoch invalid",
+      "passed": true
+    },
+    {
+      "name": "steady historical replay becomes current with publication UTC",
+      "passed": true
+    },
+    {
+      "name": "later DDS backlog fails closed on source age",
+      "passed": true
+    },
+    {
+      "name": "fresh progression recovers",
+      "passed": true
+    },
+    {
+      "name": "pause expires GO",
+      "passed": true
+    },
+    {
+      "name": "resume first frame invalid then recovers",
+      "passed": true
+    },
+    {
+      "name": "current burst cannot GO while behind",
+      "passed": true
+    },
+    {
+      "name": "real obstacle STOP",
+      "passed": true
+    },
+    {
+      "name": "watchdog preserves STOP with invalid monitoring",
+      "passed": true
+    },
+    {
+      "name": "input switch first frame retains STOP",
+      "passed": true
+    },
+    {
+      "name": "fresh clear switched recording releases STOP",
+      "passed": true
+    },
+    {
+      "name": "backward jump invalidates epoch",
+      "passed": true
+    },
+    {
+      "name": "no invalid GO anywhere",
+      "passed": true
+    },
+    {
+      "name": "invalid monitored range always zero",
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "frames": 45,
+  "snapshots": 7,
+  "stock_profile": true,
+  "rmw": "rmw_fastrtps_cpp",
+  "node_sha256": "728d401dbcb527b3b3640244898aa5afd093052347a506514182fe17213f2b2b"
+}

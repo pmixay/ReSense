@@ -1,0 +1,7 @@
+$ RESENSE_NATIVE=0  /home/mdm/resense-venv/bin/python scripts/bench_node_path.py --npy /data/cache/doubleT_obstacle
+kernels: numpy (RESENSE_NATIVE=0)
+doubleT_obstacle: 201 frames, 374317 slots per message
+  kernels: numpy (RESENSE_NATIVE=0)
+  decode + crop + rotate: mean 12.4 ms, p95 13.0 ms
+  decode + detect:        mean 84.3 ms, p95 97.4 ms, max 132.8 ms
+peak RSS 235 MB

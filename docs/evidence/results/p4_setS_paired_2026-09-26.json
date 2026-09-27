@@ -1,0 +1,110 @@
+{
+  "schema": "resense-p4-sets-paired-replay-v1",
+  "date": "2026-09-26",
+  "commit": "dcf7f90f730c675db238691d79357469b489d13f",
+  "configuration": "configs/default.yaml",
+  "backgrounds": [
+    "roundT_doubleT",
+    "roundT_pressureGate_roundT",
+    "roundT_squareT_pressureGate_squareT"
+  ],
+  "sampling": {
+    "every": 10,
+    "kinds": [
+      "person",
+      "box0.5",
+      "box1.0",
+      "plank",
+      "trolley"
+    ],
+    "distances_m": [
+      10,
+      250
+    ],
+    "negative_fraction": 0.2,
+    "seed": 1,
+    "per_frame": 1,
+    "rng_protocol": "separate_planning_and_per_frame_rendering_v1",
+    "repeats": 5
+  },
+  "paired_geometry_check": {
+    "sampled_object_count": 108,
+    "common_frame_keys_identical": true,
+    "labels_and_kind_distance_lateral_yaw_size_reflectivity_in_gauge_identical": true,
+    "only_gt_fields_differ": {
+      "base_z": 108,
+      "n_points": 62
+    },
+    "placement_height_is_intended_experimental_change": true
+  },
+  "results": {
+    "bed": {
+      "total_objects": 77,
+      "in_gauge_objects": 67,
+      "visible_in_gauge_objects": 67,
+      "visible_in_gauge_hits": 22,
+      "by_class": {
+        "box0.5": {
+          "hits": 0,
+          "visible": 13
+        },
+        "box1.0": {
+          "hits": 5,
+          "visible": 14
+        },
+        "person": {
+          "hits": 8,
+          "visible": 9
+        },
+        "plank": {
+          "hits": 0,
+          "visible": 13
+        },
+        "trolley": {
+          "hits": 9,
+          "visible": 18
+        }
+      },
+      "static_fp_events": 3,
+      "alarm_events_across_three_runs": 25
+    },
+    "legacy": {
+      "total_objects": 76,
+      "in_gauge_objects": 68,
+      "visible_in_gauge_objects": 68,
+      "visible_in_gauge_hits": 30,
+      "by_class": {
+        "box0.5": {
+          "hits": 0,
+          "visible": 13
+        },
+        "box1.0": {
+          "hits": 5,
+          "visible": 14
+        },
+        "person": {
+          "hits": 8,
+          "visible": 9
+        },
+        "plank": {
+          "hits": 4,
+          "visible": 14
+        },
+        "trolley": {
+          "hits": 13,
+          "visible": 18
+        }
+      },
+      "static_fp_events": 3,
+      "alarm_events_across_three_runs": 33
+    }
+  },
+  "paired_visible_objects": {
+    "count": 65,
+    "bed_hits": 22,
+    "legacy_hits": 30,
+    "bed_only_hits": 0,
+    "legacy_only_hits": 8
+  },
+  "historical_note": "The dated P4 audit reported bed 22/67 and legacy 29/68, with 65 objects visible in both and seven legacy-only hits. This replay on integrated commit dcf7f90 keeps the same 108 samples and gives bed 22/67 and legacy 30/68; all 65 shared-visible objects match the intended paired protocol, with eight legacy-only hits and no bed-only hits. The extra legacy match is a trolley at 77.7 m in roundT_pressureGate_roundT (24 points in both placements); its cause was not isolated and is not credited to P4. Static repeated-frame false-event rates and latency are not operational metrics."
+}

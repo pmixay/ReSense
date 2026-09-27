@@ -1,0 +1,399 @@
+{
+ "schema": "resense-p3-item-v1",
+ "key": "near_escalation",
+ "date": "2026-09-26",
+ "owner": "P3 (detection quality; detector-rule decisions delegated by the captain)",
+ "question": "Independent judge B, 26.09, action 6 (+1 on 8.1): on set O about 80 object-frames with points inside the envelope get no alert of any kind; the 2 x 2 m box at the envelope top (#8, big_above) STOPs in 12 of 124 frames and is CAUTION-only at 0-50 m (17 advisory frames, 0 STOP); the edge box (#6, big_edge_inside) reads GO in its 8 in-envelope frames. Candidate: an advisory (warning-zone / demoted) object with enough voxels N inside the strict envelope within D m, confirmed over the usual frames, becomes a STOP. Why does #6 get no alert, and can a near-field rule catch it without #5 / #7 and without ride false STOPs?",
+ "investigation": {
+  "code": "bd67fb0 (configs/default.yaml, the defaults of the _p3b baseline), native path",
+  "tools": "agent scratch scripts (not committed): a per object-frame replay of set O (the organizers' object points picked by intensity 1 inside the label bbox + 0.15 m; strict envelope = the profile polygon in the detector's track frame; the clusters holding those points, their zone / reason / strict voxels (Cluster.n_gauge, edge margin applied), their track; corridor blobs dropped by the size / point / infrastructure rules), and a dump of every track matched within 60 m (cluster zone, reason, n_gauge, distance) plus every dropped corridor blob with strict voxels within 60 m, on the six recordings, set O and the ride in the gate's 8 pieces, with an offline replay of the rule on it",
+  "set_O_inside_objects_in_envelope_frames": {
+   "definition": "frames with n_in_envelope > 0 in labels/cloud_with_fake_obj.json (plausible rows); decision per object as scripts/score_fake_objects.py matches it (STOP / advisory-only / GO)",
+   "big_center (#1)": {"frames": 213, "STOP": 208, "advisory": 0, "GO": 5, "why": "5 GO at 97-99 m: the first frames, gauge cluster, track not yet confirmed"},
+   "small_center (#2)": {"frames": 63, "STOP": 30, "advisory": 0, "GO": 33, "why": "50-130 m: 2-4 returns a frame, clusters dropped (max_extent 16, min_points 9) or none (5), unconfirmed (3)"},
+   "small_on_rail (#3)": {"frames": 33, "STOP": 23, "advisory": 0, "GO": 10, "why": "gauge cluster unconfirmed (5, 4 of them < 50 m), min_points (3), advisory with < 3 strict voxels (2)"},
+   "small_edge_inside (#4)": {"frames": 16, "STOP": 0, "advisory": 16, "GO": 0, "why": "all < 36 m: demoted as floating (12; 3-30 strict voxels) or < 3 strict voxels (4)"},
+   "big_edge_inside (#6)": {"frames": 8, "STOP": 0, "advisory": 0, "GO": 8, "why": "16.3-2.3 m only (measured from the rails the box is outside beyond 16 m: its inner face 1.06-1.33 m off the axis at 20-60 m; from the sensor axis 1.1 m at every range): 5 frames dropped by the wall rule (1.93-1.98 m tall, centroid 1.21-1.24 m off the axis > wall_min_lateral 1.2; 10-31 strict voxels at 14.3-8.3 m), 3 frames a gauge cluster of a track with 1-3 hits, not confirmed before the box passes"},
+   "big_above (#8)": {"frames": 75, "STOP": 12, "advisory": 37, "GO": 26, "why": "0-50 m: 25 frames, 17 advisory (15 elevated: the part inside the envelope is a 1.4-2.4 m wide sliver 2.76-3.0 m above the rail head, 18-235 strict voxels; 2 min_height-dropped frames held) and 8 GO (5 min_height drops, 3 elevated on a new track not yet confirmed); 50-100 m: 14 advisory (elevated); 100-250 m: 18 GO, 6 advisory (beyond_axis, min_height, unconfirmed)"},
+   "long_low_on_rails (#9)": {"frames": 77, "STOP": 49, "advisory": 0, "GO": 28, "why": "50-250 m: no cluster (18), min_height (7), unconfirmed (3)"},
+   "thin_hanging (#10)": {"frames": 20, "STOP": 14, "advisory": 0, "GO": 6, "why": "gauge (hanging) cluster, track not yet confirmed"},
+   "totals": "116 GO and 67 advisory-only in-envelope object-frames on the inside objects; 78 of the GO frames have >= 3 object points inside the envelope (the judge's ~80). Within 50 m: 26 GO, 33 advisory. The near advisory ones are #8 (elevated) and #4 (floating); the near GO ones are #6 (wall rule), #8 (min_height drops, a young track) and confirmation latency (#3, #10)"
+  },
+  "outside_objects": {
+   "small_outside_near (#5)": "0-50 m: 16 advisory (plain warning or floating), at most 4 strict voxels in any frame (25-27 m); measured from the rails 0.98-1.09 m from the axis",
+   "big_outside (#7)": "0 strict voxels within 40 m (wall-dropped or warning); its 6 false STOP frames are at 132-142 m"
+  },
+  "structures_meeting_the_rule": {
+   "ride": "every confirmed advisory track matched within 40 m: the non-column ones have at most 8 strict voxels (5 consecutive hits with >= 5 never); a column row at a station (ride piece 1 frames 1369-1408, new_data_54_0024-new_data_55_0012, 20-32 m, 0.7-1.2 m off the detector's axis, 2.8-2.9 m tall) has 50-150 strict voxels a frame: without excluding the column signature and keeping the column hold, N 10 / D 35 / 5 hits adds 40 STOP frames, 6 events and 1 episode there",
+   "six_recordings": "one advisory track within 40 m carries strict voxels: doubleT_platform id 129, a platform structure 1.2 m off the axis with 5 / 9 / 15 / 12 / 7 strict voxels at 39.7-36.9 m and 0-4 within 36 m (N 5 with D 40 would STOP on it)",
+   "wall_rule_drops": "blobs dropped by the wall rule with >= 10 strict voxels within 20 m: set O #6 (4 frames), the ride's station column row (piece 1, 3 frames, 2.8 m tall: the column signature would take them) and a 7 m long wall segment at 16 m (piece 4, 3 frames, dropped by the wall-segment rule anyway)"
+  },
+  "offline_replay_of_the_candidates": "on the dump (not a gate, for the choice of candidates): A, B and C change nothing on the ride and the six recordings; set O STOP frames 368 -> 382 (A: #8 +11 from 22 m, #4 +3 from 5 m), 379 (B: #8 +11), 381 (C). The escalation cannot reach #6 (never an advisory track)"
+ },
+ "preregistration": {
+  "time_utc": "2026-09-26T07:19:00Z",
+  "before": "any candidate run on real data (the flags are written but only the ray-cast unit tests have run them)",
+  "rule": "tracking.near_escalate_voxels N > 0: a track whose last near_escalate_hits K hits were each a corridor cluster (kind '') with >= N voxels inside the strict envelope (Cluster.n_gauge, edge margin applied) at <= near_escalate_distance D m is zone gauge (STOP), whatever demoted it (a signature, the zone vote); a cluster demoted as a column never counts, and a track held advisory by tracking.column_hold stays advisory. Detection.reason 'near_envelope' marks it. Default off (N = 0): output byte-identical",
+  "candidates_in_order": [
+   {"name": "A", "set": ["tracking.near_escalate_voxels=10", "tracking.near_escalate_distance=35", "tracking.near_escalate_hits=5"]},
+   {"name": "B", "run_if": "A fails", "set": ["tracking.near_escalate_voxels=20", "tracking.near_escalate_distance=35", "tracking.near_escalate_hits=5"]},
+   {"name": "C", "run_if": "A and B fail", "set": ["tracking.near_escalate_voxels=10", "tracking.near_escalate_distance=30", "tracking.near_escalate_hits=5"]},
+   {"name": "D (#6)", "run_if": "always, on top of the shipped one of A / B / C (alone if none ships)", "set": ["cluster.wall_keep_gauge_voxels=10", "cluster.wall_keep_distance=20"], "rule": "a cluster the wall-at-the-side rule would drop (taller than 1.9 m, centroid > 1.2 m off the axis) is kept when it has >= 10 strict voxels and starts within 20 m; the signatures (column, ...) and the other infrastructure rules still apply"}
+  ],
+  "procedure": "per candidate: the six recordings + set O first (the gate on a cache without the ride, --allow 'ride.*' --allow 'set_F_straight.*'); if that passes, the full gate (--jobs 1) against regression_baseline_2026-09-25_ride_p3b.json",
+  "ship_rule": "the first of A / B / C (in order) that satisfies all of: (1) full gate exit 0, no gated row worse; (2) set O STOP frames on the inside objects up; (3) no new false STOP frame on #5, #7 or the background (set O background alarm frames and ids); (4) ride STOP episodes and alarm events not up. D ships on top of it only if it satisfies (1)-(4) with #6's STOP frames up. If none passes: nothing ships, the flags stay off",
+  "safety_conditions": "identical or better, else no ship whatever the gate says: doubleT_obstacle labelled hits per label and first alarm frame; set O first STOP distance and frame of every inside object; set F straight detections per kind (sequences detected, median first-confirmation distance)",
+  "baseline_note": "if it ships and numbers move, the gate baseline is not re-cut here (the integrator will)"
+ },
+ "results": {
+  "measured_utc": "2026-09-26T07:23Z-08:08Z",
+  "baseline_before": {
+   "set_O_inside_stop_frames": 337,
+   "set_O_inside_objects_with_stop": 6,
+   "ride": {
+    "alarm_frames": 187,
+    "alarm_events": 46,
+    "stop_episodes": 39
+   },
+   "five_empty": {
+    "frames": 2287,
+    "alarm_frames": 58,
+    "alarm_events": 13,
+    "stop_episodes": 16,
+    "advisory_frames": 997
+   }
+  },
+  "flags_off_identity": "scripts/output_fingerprint.py --cache /data/cache --jobs 1 on bd67fb0 and on 2797929 (flags off): obstacle 201, given_speed 252, estimator 877, ride 1600 frames, 0 differ: IDENTICAL",
+  "A_subset": "six recordings + set O (--allow 'ride.*' --allow 'set_F_straight.*'): PASS, 3 gated rows better (small_edge_inside STOP frames and first STOP, big_above STOP frames)",
+  "A_full": {
+   "code": "2797929",
+   "config_sha256": "c4c54825",
+   "set": [
+    "tracking.near_escalate_voxels=10",
+    "tracking.near_escalate_distance=35",
+    "tracking.near_escalate_hits=5"
+   ],
+   "wall_s": 1272.3,
+   "jobs": 1,
+   "gate": {
+    "passed": true,
+    "better": [
+     "set_O.objects.small_edge_inside.stop_frames",
+     "set_O.objects.small_edge_inside.first_stop_m",
+     "set_O.objects.big_above.stop_frames"
+    ],
+    "worse_gated": []
+   },
+   "set_O": {
+    "inside_stop_frames": 349,
+    "alarm_frames": 382,
+    "inside_objects_with_stop": 7,
+    "outside_false_stop_frames": 6,
+    "background": {
+     "alarm_frames": 3,
+     "track_ids": 2
+    },
+    "objects": {
+     "big_center": {
+      "stop_frames": 208,
+      "advisory_frames": 0,
+      "first_stop_m": 98.0,
+      "first_stop_frame": 5,
+      "held_from_m": 98.7
+     },
+     "small_center": {
+      "stop_frames": 30,
+      "advisory_frames": 0,
+      "first_stop_m": 52.5,
+      "first_stop_frame": 339,
+      "held_from_m": 57.5
+     },
+     "small_on_rail": {
+      "stop_frames": 23,
+      "advisory_frames": 0,
+      "first_stop_m": 42.7,
+      "first_stop_frame": 403,
+      "held_from_m": 46.2
+     },
+     "small_edge_inside": {
+      "stop_frames": 2,
+      "advisory_frames": 23,
+      "first_stop_m": 5.2,
+      "first_stop_frame": 478,
+      "held_from_m": 5.2
+     },
+     "small_outside_near": {
+      "stop_frames": 0,
+      "advisory_frames": 24,
+      "false_stop_frames": 0
+     },
+     "big_edge_inside": {
+      "stop_frames": 0,
+      "advisory_frames": 0,
+      "first_stop_m": null,
+      "first_stop_frame": null,
+      "held_from_m": null
+     },
+     "big_outside": {
+      "stop_frames": 6,
+      "advisory_frames": 43,
+      "false_stop_frames": 6
+     },
+     "big_above": {
+      "stop_frames": 22,
+      "advisory_frames": 27,
+      "first_stop_m": 101.3,
+      "first_stop_frame": 632,
+      "held_from_m": 23.9
+     },
+     "long_low_on_rails": {
+      "stop_frames": 49,
+      "advisory_frames": 0,
+      "first_stop_m": 82.2,
+      "first_stop_frame": 696,
+      "held_from_m": 90.8
+     },
+     "thin_hanging": {
+      "stop_frames": 15,
+      "advisory_frames": 0,
+      "first_stop_m": 30.1,
+      "first_stop_frame": 789,
+      "held_from_m": 31.8
+     }
+    }
+   },
+   "five_empty": {
+    "frames": 2287,
+    "alarm_frames": 58,
+    "alarm_events": 13,
+    "stop_episodes": 16,
+    "advisory_frames": 997
+   },
+   "doubleT_obstacle": {
+    "first_alarm_frame": 11,
+    "per_label": {
+     "object_on_rail": {
+      "hits": 128,
+      "frames": 185
+     },
+     "person_crossing": {
+      "hits": 58,
+      "frames": 61
+     },
+     "object_on_rail_from_frame_75": {
+      "hits": 125,
+      "frames": 126
+     }
+    },
+    "alarm_events": 2
+   },
+   "ride": {
+    "frames": 11271,
+    "alarm_frames": 187,
+    "alarm_events": 46,
+    "stop_episodes": 39,
+    "advisory_frames": 4743
+   },
+   "set_F_straight": {
+    "person": {
+     "detected": 6,
+     "first_detection_median_m": 151.0,
+     "false_detections": 6
+    },
+    "box1.0": {
+     "detected": 6,
+     "first_detection_median_m": 123.9,
+     "false_detections": 12
+    },
+    "box0.5": {
+     "detected": 1,
+     "first_detection_median_m": 51.9,
+     "false_detections": 0
+    },
+    "trolley": {
+     "detected": 6,
+     "first_detection_median_m": 151.4,
+     "false_detections": 5
+    },
+    "cable": {
+     "detected": 6,
+     "first_detection_median_m": 98.9,
+     "false_detections": 3
+    }
+   }
+  },
+  "A_verdict": "ships: (1) full gate exit 0, no gated row worse; (2) set O inside STOP frames 337 -> 349; (3) #5 0, #7 6, background 3 / 2 unchanged; (4) ride 187 / 46 / 39 unchanged; safety: doubleT_obstacle hits and first alarm frame 11, every set O first STOP, set F straight identical. B and C not run (the rule takes the first that passes)",
+  "D_subset": "on top of A, six recordings + set O: PASS, 5 gated rows better",
+  "D_full": {
+   "code": "33860bc",
+   "config_sha256": "0df01b47",
+   "set": [
+    "tracking.near_escalate_voxels=10",
+    "tracking.near_escalate_distance=35",
+    "tracking.near_escalate_hits=5",
+    "cluster.wall_keep_gauge_voxels=10",
+    "cluster.wall_keep_distance=20"
+   ],
+   "wall_s": 1190.8,
+   "jobs": 1,
+   "gate": {
+    "passed": true,
+    "better": [
+     "set_O.objects.small_edge_inside.stop_frames",
+     "set_O.objects.small_edge_inside.first_stop_m",
+     "set_O.objects.big_edge_inside.stop_frames",
+     "set_O.objects.big_edge_inside.first_stop_m",
+     "set_O.objects.big_above.stop_frames"
+    ],
+    "worse_gated": []
+   },
+   "set_O": {
+    "inside_stop_frames": 355,
+    "alarm_frames": 388,
+    "inside_objects_with_stop": 8,
+    "outside_false_stop_frames": 6,
+    "background": {
+     "alarm_frames": 3,
+     "track_ids": 2
+    },
+    "objects": {
+     "big_center": {
+      "stop_frames": 208,
+      "advisory_frames": 0,
+      "first_stop_m": 98.0,
+      "first_stop_frame": 5,
+      "held_from_m": 98.7
+     },
+     "small_center": {
+      "stop_frames": 30,
+      "advisory_frames": 0,
+      "first_stop_m": 52.5,
+      "first_stop_frame": 339,
+      "held_from_m": 57.5
+     },
+     "small_on_rail": {
+      "stop_frames": 23,
+      "advisory_frames": 0,
+      "first_stop_m": 42.7,
+      "first_stop_frame": 403,
+      "held_from_m": 46.2
+     },
+     "small_edge_inside": {
+      "stop_frames": 2,
+      "advisory_frames": 23,
+      "first_stop_m": 5.2,
+      "first_stop_frame": 478,
+      "held_from_m": 5.2
+     },
+     "small_outside_near": {
+      "stop_frames": 0,
+      "advisory_frames": 24,
+      "false_stop_frames": 0
+     },
+     "big_edge_inside": {
+      "stop_frames": 6,
+      "advisory_frames": 0,
+      "first_stop_m": 10.3,
+      "first_stop_frame": 578,
+      "held_from_m": 10.3
+     },
+     "big_outside": {
+      "stop_frames": 6,
+      "advisory_frames": 43,
+      "false_stop_frames": 6
+     },
+     "big_above": {
+      "stop_frames": 22,
+      "advisory_frames": 27,
+      "first_stop_m": 101.3,
+      "first_stop_frame": 632,
+      "held_from_m": 23.9
+     },
+     "long_low_on_rails": {
+      "stop_frames": 49,
+      "advisory_frames": 0,
+      "first_stop_m": 82.2,
+      "first_stop_frame": 696,
+      "held_from_m": 90.8
+     },
+     "thin_hanging": {
+      "stop_frames": 15,
+      "advisory_frames": 0,
+      "first_stop_m": 30.1,
+      "first_stop_frame": 789,
+      "held_from_m": 31.8
+     }
+    }
+   },
+   "five_empty": {
+    "frames": 2287,
+    "alarm_frames": 58,
+    "alarm_events": 13,
+    "stop_episodes": 16,
+    "advisory_frames": 997
+   },
+   "doubleT_obstacle": {
+    "first_alarm_frame": 11,
+    "per_label": {
+     "object_on_rail": {
+      "hits": 128,
+      "frames": 185
+     },
+     "person_crossing": {
+      "hits": 58,
+      "frames": 61
+     },
+     "object_on_rail_from_frame_75": {
+      "hits": 125,
+      "frames": 126
+     }
+    },
+    "alarm_events": 2
+   },
+   "ride": {
+    "frames": 11271,
+    "alarm_frames": 187,
+    "alarm_events": 46,
+    "stop_episodes": 39,
+    "advisory_frames": 4743
+   },
+   "set_F_straight": {
+    "person": {
+     "detected": 6,
+     "first_detection_median_m": 151.0,
+     "false_detections": 6
+    },
+    "box1.0": {
+     "detected": 6,
+     "first_detection_median_m": 123.9,
+     "false_detections": 12
+    },
+    "box0.5": {
+     "detected": 1,
+     "first_detection_median_m": 51.9,
+     "false_detections": 0
+    },
+    "trolley": {
+     "detected": 6,
+     "first_detection_median_m": 151.4,
+     "false_detections": 5
+    },
+    "cable": {
+     "detected": 6,
+     "first_detection_median_m": 98.9,
+     "false_detections": 3
+    }
+   }
+  },
+  "D_verdict": "ships on top of A: (1) full gate exit 0, no gated row worse; #6 STOP frames 0 -> 6 (first STOP 10.3 m, frame 578); set O inside STOP frames 349 -> 355; (3) #5 / #7 / background unchanged; (4) ride unchanged; safety conditions identical",
+  "shipped": {
+   "tracking.near_escalate_voxels": 10,
+   "tracking.near_escalate_distance": 35.0,
+   "tracking.near_escalate_hits": 5,
+   "cluster.wall_keep_gauge_voxels": 10,
+   "cluster.wall_keep_distance": 20.0
+  },
+  "tests": "tests/test_near_escalation.py +12; tests/test_floating_free.py 'rule off' config also turns the escalation off; tests/test_modules.py infrastructure shapes with the corridor's real strict-envelope membership (the wall 1.35-1.65 m off the axis was marked all inside)",
+  "baseline": "numbers moved (set O rows better): not re-cut here, the integrator will"
+ }
+}

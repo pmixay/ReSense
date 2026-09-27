@@ -1,0 +1,19 @@
+== SKIP_BUILD=1: reusing resense:latest ==
+== playing doubleT_obstacle at rate 1.0 through the node (headless) ==
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1790332365.567970888] [rosbag2_storage]: Opened database '/data/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.
+[INFO] [1790332365.568066295] [rosbag2_player]: Set rate to 1
+[INFO] [1790332365.575557437] [rosbag2_player]: Sleep 3000000000 ns
+[INFO] [1790332368.576129900] [rosbag2_storage]: Opened database '/data/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.
+
+== checking /home/mdm/resense_results/2026-09-25/bench/bench_2026-09-25/dry_obstacle_numpy/status.jsonl ==
+status messages      : 116 (21 lines skipped)
+alarm frames         : 108
+obstacle distance    : 55.6 .. 56.6 m
+latency decode+detect: mean 104 / p95 118 / max 154 ms
+detector stage total : mean 65 / p95 78 ms
+dropped input frames : 76 (45 after the first 5 s)
+fps (last report)    : 8.44
+start of the input   : 21 frames in the first 5 s after the first one, largest gap 0.3 s, first STOP at +0.5 s
+
+FAIL: p95 latency 118 ms > 100 ms
+FAIL: 45 dropped input frames after the first 5 s > 0

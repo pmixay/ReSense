@@ -1,0 +1,45 @@
+{
+  "candidate": "A1_directional_association",
+  "accepted": false,
+  "status": "rejected",
+  "source_commit": "6d5bc56",
+  "preregistration_commits": [
+    "a62b5b8",
+    "d95eacf"
+  ],
+  "study_receipt_commit": "c5e0db4",
+  "full_regression_gate_passed": true,
+  "actual_false_alarm_exposure_benefit": true,
+  "monitoring_cost_passed": true,
+  "novel_all_cases_nonregression_passed": false,
+  "novel_failed_cases": [
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "big_above",
+      "lateral_m": -0.65,
+      "passed": false,
+      "checks": {
+        "target_matched_frames": false,
+        "injected_only_matched_frames": false,
+        "control_matched_frames": true,
+        "farthest_matched_sensor_x_m": false
+      },
+      "reference": {
+        "target_matched_frames": 2,
+        "injected_only_matched_frames": 2,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 18.407310485839844
+      },
+      "candidate": {
+        "target_matched_frames": 1,
+        "injected_only_matched_frames": 1,
+        "control_matched_frames": 0,
+        "farthest_matched_sensor_x_m": 16.597898483276367
+      }
+    }
+  ],
+  "unchanged_set_O_overclaims": true,
+  "decision": "Reject: one preregistered novel case loses target matches and farthest match distance. No waiver, no retuning, no source integration.",
+  "broader_ride_event_target_met": false,
+  "unit_tests_passed": 158
+}

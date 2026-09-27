@@ -1,0 +1,21 @@
+== SKIP_BUILD=1: reusing resense:latest ==
+== playing doubleT_obstacle at rate 1.0 through the node (headless) ==
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1790347986.944886128] [rosbag2_storage]: Opened database '/data/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.
+[INFO] [1790347986.944950235] [rosbag2_player]: Set rate to 1
+[INFO] [1790347986.952162617] [rosbag2_player]: Sleep 3000000000 ns
+[INFO] [1790347989.952719887] [rosbag2_storage]: Opened database '/data/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.
+
+== checking /home/admn/ReSense/docs/evidence/bench_2026-09-25_2/dry_obstacle_numpy/status.jsonl ==
+status messages      : 120 (20 lines skipped)
+alarm frames         : 110
+obstacle distance    : 55.5 .. 56.5 m
+latency decode+detect: mean 105 / p95 119 / max 161 ms
+detector stage total : mean 65 / p95 79 ms
+dropped input frames : 79 (69 of them skipped by the node's catch-up); 16 after +10.6 s (the end of the start-up catch-up)
+dropped input settle : start-up catch-up back on the newest frame at +10.6 s; drops counted after +10.6 s (the later of 5 s and that, at most 15 s)
+dropped input vs bag : 89 messages of /sensing/lidar/hesai128/pointcloud after +10.6 s (the end of the start-up catch-up), 4 frame(s) missing from the recording itself; 12 of its messages not processed
+fps (last report)    : 8.55
+start of the input   : 21 frames in the first 5 s after the first one, largest gap 0.4 s, first STOP at +0.6 s
+
+FAIL: p95 latency 119 ms > 100 ms
+FAIL: 12 frames of the recording not processed after +10.6 s (the end of the start-up catch-up) > 0

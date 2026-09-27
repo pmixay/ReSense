@@ -33,4 +33,4 @@ docker run --rm -it --net=host --ipc=host \
   -e DISPLAY="${DISPLAY:-:0}" -e QT_X11_NO_MITSHM=1 \
   -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
   -v "$BAG_DIR":/data:ro \
-  resense:latest ros2 launch resense_ros detector.launch.py bag:=/data/"$BAG_NAME" rviz:=true rate:="$RATE"
+  resense:latest ros2 launch resense_ros detector.launch.py freshness_mode:=replay bag:=/data/"$BAG_NAME" rviz:=true rate:="$RATE"

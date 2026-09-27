@@ -1,0 +1,19 @@
+{
+  "schema": "resense-monitoring-candidate-v1",
+  "registered_utc": "2026-09-26T20:43:44.472298+00:00",
+  "candidate": "M1: conservative raw-envelope evidence cap",
+  "baseline_commit": "2d25c13",
+  "hypothesis": "Some range overclaims occur because strict-envelope returns are discarded by edge confidence margins, point-count thresholds or infrastructure classification before clear_cap. Representing every physical-profile return as unresolved evidence may remove these overclaims; its cost on empty data must be measured, not waived.",
+  "prior_work": "25Sep clear_cap C0 used third nearest corridor return after confidence margins and removed some overclaims but reduced median empty/ride range by more than its limit. M1 is the first-return limit before confidence margins, including returns never clustered; it is expected to be more conservative and may be rejected. No threshold sweep follows.",
+  "implementation": "Read-only Detector subclass snapshots corridor_mask strict geometric membership before gauge_core margins and low stage. After unchanged detector process, cap estimated range at the nearest raw strict-envelope point within existing gauge range. If this shortens clear_distance by >0.5m, mark monitoring unknown/CAUTION on non-STOP and non-FAULT frames. STOP detections, tracking, geometry and all upstream processing remain byte-identical. No column exemptions, label use, fitted-label feedback or selective object cases.",
+  "gates": {
+    "zero_GO_overclaims_on_setO_rail_reference_diagnostic": true,
+    "max_newly_uncertain_percentage_points_each_empty_recording_and_ride": 5.0,
+    "min_clear_median_fraction_each_empty_recording_and_ride": 0.95,
+    "upstream_detection_output": "identical to frozen baseline except informational timing",
+    "diagnostic_limit": "Stored envelope labels come from an earlier fitted model, not surveyed truth; zero diagnostic overclaims alone cannot certify free track."
+  },
+  "sequence": "Evaluate frozen detector plus observer on setO and five emptyrecordings first. If either overclaim or emptycost condition fails, reject M1 without full ride/gate expenditure; preserve complete observed results. If these pass, run ride, full diagnosticcomparison and independent review before considering production code.",
+  "on_failure": "No ship and no retuning; use exact observed failure to guide future model/evidence research.",
+  "release": "on hold"
+}

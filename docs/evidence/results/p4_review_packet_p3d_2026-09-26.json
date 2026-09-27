@@ -1,0 +1,39 @@
+{
+ "schema": "resense-p4-independent-review-packet-v1",
+ "date": "2026-09-26",
+ "branch": "claude/p4-data-completion-20260926",
+ "detector_commit": "fa18832f1636c48d0137842e2bd3b857bc70aef7",
+ "branch_commit_at_packet": "1cce77e24b64027537a8aa0da40c71b2cf03c308",
+ "independent_score_to_preserve": {
+  "score": 65,
+  "date": "2026-09-26",
+  "commit": "867bb8a"
+ },
+ "current_provisional_score": "p4_provisional_score_p3d_2026-09-26.json",
+ "review_order": [
+  "p4_data_intake_2026-09-26.json",
+  "p4_p3d_available_reference_2026-09-26.json",
+  "p4_candidates_p3d_prereg_2026-09-26.json",
+  "p4_p3d_candidate_decisions_2026-09-26.json",
+  "p4_p3d_false_alarm_inventory_2026-09-26.json",
+  "p4_p3d_seto_raw_cache_comparison_2026-09-26.json",
+  "p4_p3d_setS_paired_2026-09-26.json",
+  "p4_p3d_artifacts_2026-09-26/manifest.json",
+  "p4_provisional_score_p3d_2026-09-26.json",
+  "p4_validation_p3d_2026-09-26.json"
+ ],
+ "required_to_reassess": [
+  "Provide at least 5.3 GB additional free space at the current capacity check while preserving 3 GiB headroom; then cache all 221 new_data splits.",
+  "Rerun the complete regression gate and 221-start ride census, eight ride chunks, set F straight, and paired curve/edge experiments.",
+  "Revisit candidate B only after all complete-gate rows are available; then run preregistered stress/offset/clear-distance/paired checks if the complete gate passes.",
+  "Independently inspect cache quantization sensitivity, false-alarm causes, and internal scoring weights."
+ ],
+ "not_claimed": [
+  "No P4 detector/default change accepted.",
+  "No new baseline produced.",
+  "Set O is not unseen validation.",
+  "Anchored placement is not surveyed ground truth.",
+  "The empty ride is not positive-obstacle recall evidence.",
+  "The provisional score is not an organizer score."
+ ]
+}

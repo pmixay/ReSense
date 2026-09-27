@@ -1,0 +1,14 @@
+{
+  "node_sha256": "95d1721d3b3238a0fa0358f98740a83b6069404411767e94bd5dd227d2de9274",
+  "launch_params": 35,
+  "freshness_params": [
+    "freshness_mode",
+    "max_result_age",
+    "future_tolerance"
+  ],
+  "tests": "156 passed, tests_provenance.log",
+  "stock_runtime": "14/14 functional checks; earlier same policy source plus later additive consumer UTC fields",
+  "performance_runtime": "pending idle window",
+  "no_detector_changes": true,
+  "stage": "Before original-bag runtime; final results in combined_runtime_summary.json"
+}

@@ -1,0 +1,53 @@
+[INFO] [resense.dds]: DDS transport: shm, shared memory + UDPv4 (/opt/resense/fastdds_shm_udp.xml); this container's Fast DDS files in /dev/shm are opened to other users (fastdds_shm_share.py, pid 25)
+[INFO] [launch]: All log files can be found below /root/.ros/log/2026-09-25-18-33-15-213404-compute-vm-2-2-90-ssd-1790359373525df-1
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [detector_node-1]: process started with pid [26]
+[resense.shm] fastrtps_8790da6b599fadfc: mode 666 (other users' Fast DDS participants may open it)
+[resense.shm] fastrtps_port7411: mode 666 (other users' Fast DDS participants may open it)
+[resense.shm] sem.fastrtps_port7411_mutex: mode 666 (other users' Fast DDS participants may open it)
+[detector_node-1] [INFO] [1790361195.937628650] [resense_detector]: sensor mount: forward=-y left=+x up=+z roll/pitch/yaw=0.0/0.0/0.0 deg; auto-calibration on
+[detector_node-1] [INFO] [1790361195.998005781] [resense_detector]: ReSense detector listening on /lidar_points, /sensing/lidar/hesai128/pointcloud (+ auto-discovery); input reliability auto; per-frame kernels: native (_resense_native.cpython-310-x86_64-linux-gnu.so); resense 1.0.0
+[detector_node-1] [WARN] [1790361195.999129625] [resense_detector]: net.core.rmem_max = 212992, net.core.rmem_default = 212992: below 32 MiB. A bag player may then deliver few or none of the ~24 MB 360-degree clouds to this node (CycloneDDS always, stock Fast DDS on some hosts; the 120-degree clouds arrive). Fix on the host, before playing: sudo sysctl -w net.core.rmem_max=33554432 net.core.rmem_default=33554432
+[detector_node-1] [INFO] [1790361208.798652176] [resense_detector]: input 1: /lidar_points (frame_id=hesai_lidar, 307200 points)
+[detector_node-1] [INFO] [1790361208.799463237] [resense_detector]: static TF resense_lidar -> hesai_lidar (identity)
+[detector_node-1] [INFO] [1790361208.850628715] [resense_detector]: mount calibration: pending - 
+[detector_node-1] [INFO] [1790361210.013570155] [resense_detector]: frame 11: clear; axis y=-0.01 R=-60707; 5.5 fps; latency mean 50 / p95 59 / max 59 ms; input period 100 ms; dropped 2 (1 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361210.065752975] [resense_detector]: 0.7 s of recording waiting: catching up, one frame every 0.3 s of recording
+[detector_node-1] [INFO] [1790361210.186074419] [resense_detector]: caught up in 0.1 s: 4 frames processed, 5 skipped, at most 0.7 s of recording behind
+[detector_node-1] [INFO] [1790361211.999625567] [resense_detector]: frame 30: warning; axis y=-0.03 R=-2333; 9.6 fps; latency mean 39 / p95 43 / max 48 ms; input period 100 ms; dropped 11 (10 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361213.999376772] [resense_detector]: frame 47: warning; axis y=-0.00 R=-1113; 8.5 fps; latency mean 46 / p95 51 / max 55 ms; input period 100 ms; dropped 14 (13 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361215.998691985] [resense_detector]: frame 65: warning; axis y=+0.06 R=-1572; 9.0 fps; latency mean 47 / p95 55 / max 56 ms; input period 100 ms; dropped 15 (14 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361218.048531408] [resense_detector]: frame 86: warning; axis y=+0.01 R=-1345; 10.2 fps; latency mean 45 / p95 53 / max 53 ms; input period 100 ms; dropped 16 (15 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361220.000801730] [resense_detector]: frame 104: warning; axis y=+0.02 R=-1442; 9.2 fps; latency mean 45 / p95 52 / max 54 ms; input period 100 ms; dropped 17 (16 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361222.037390573] [resense_detector]: frame 123: clear; axis y=-0.02 R=-1075; 9.3 fps; latency mean 44 / p95 51 / max 54 ms; input period 100 ms; dropped 19 (18 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361224.039764562] [resense_detector]: frame 139: warning; axis y=-0.05 R=-6722; 8.0 fps; latency mean 42 / p95 47 / max 51 ms; input period 100 ms; dropped 22 (21 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361225.998768385] [resense_detector]: frame 157: warning; axis y=-0.03 R=-349033; 9.2 fps; latency mean 43 / p95 52 / max 54 ms; input period 100 ms; dropped 24 (23 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361228.043353340] [resense_detector]: frame 177: warning; axis y=-0.01 R=101968; 9.8 fps; latency mean 39 / p95 47 / max 47 ms; input period 100 ms; dropped 25 (24 skipped by the catch-up)
+[detector_node-1] [INFO] [1790361229.998747260] [resense_detector]: frame 184: FAULT: no LiDAR frame for 0.5 s (> 0.5 s): path not monitored; 3.6 fps; latency mean 40 / p95 46 / max 49 ms; input period 100 ms; dropped 27 (26 skipped by the catch-up)
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [detector_node-1]: sending signal 'SIGINT' to process[detector_node-1]
+[detector_node-1] 
+[detector_node-1] >>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+[detector_node-1] This error state is being overwritten:
+[detector_node-1] 
+[detector_node-1]   'Fast CDR exception deserializing message of type sensor_msgs::msg::dds_::PointCloud2_., at ./src/type_support_common.cpp:118'
+[detector_node-1] 
+[detector_node-1] with this new error message:
+[detector_node-1] 
+[detector_node-1]   'rcl_shutdown already called on the given context, at ./src/rcl/init.c:241'
+[detector_node-1] 
+[detector_node-1] rcutils_reset_error() should be called after error handling to avoid this.
+[detector_node-1] <<<
+[detector_node-1] Traceback (most recent call last):
+[detector_node-1]   File "/opt/resense/ros2_ws/install/resense_ros/lib/resense_ros/detector_node", line 33, in <module>
+[detector_node-1]     sys.exit(load_entry_point('resense-ros', 'console_scripts', 'detector_node')())
+[detector_node-1]   File "/opt/resense/ros2_ws/build/resense_ros/resense_ros/detector_node.py", line 922, in main
+[detector_node-1]     rclpy.shutdown()
+[detector_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+[detector_node-1]     _shutdown(context=context)
+[detector_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+[detector_node-1]     return context.shutdown()
+[detector_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+[detector_node-1]     self.__context.shutdown()
+[detector_node-1] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241
+[ERROR] [detector_node-1]: process has died [pid 26, exit code 1, cmd '/opt/resense/ros2_ws/install/resense_ros/lib/resense_ros/detector_node --ros-args -r __node:=resense_detector --params-file /tmp/launch_params_tom84w7e'].

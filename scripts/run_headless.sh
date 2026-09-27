@@ -30,7 +30,7 @@ docker run --rm -i --net=host --ipc=host \
   -e BAG_NAME="$BAG_NAME" -e RATE="$RATE" \
   resense:latest bash -s <<'INNER'
 set -uo pipefail
-ros2 launch resense_ros detector.launch.py rviz:=false &
+ros2 launch resense_ros detector.launch.py rviz:=false freshness_mode:=replay &
 LAUNCH_PID=$!
 trap 'kill $(jobs -p) 2>/dev/null || true' EXIT
 

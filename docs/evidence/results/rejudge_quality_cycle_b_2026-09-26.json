@@ -1,0 +1,314 @@
+{
+  "schema": "resense-independent-quality-review-v1",
+  "judge": "quality_second_judge / B",
+  "created_utc": "2026-09-26T21:44:38.716519+00:00",
+  "status": "provisional; quality freeze and release remain on hold",
+  "reviewed_checkout": "/home/resense/ReSense",
+  "reviewed_head": "fd2e9578fd0bf240982190c9af589f05e869999b",
+  "specification": "docs/organizers/technical_specification_case05.txt, sections 8.1–8.8",
+  "weighting": "Internal fixed maxima 25/15/10/15/10/10/10/5. Organizers specify no numerical weights. This is an engineering estimate, not an official jury score.",
+  "scope": "Sealed P3d detector plus integrated node/browser freshness; isolated M2 remains unmerged and its combined runtime candidate fails acceptance. A1 and D1 are rejected. Ongoing T1/causal work receives no credit before evidence is reviewed.",
+  "independence": {
+    "scorecard_or_previous_rejudge_files_opened": false,
+    "note": "README was read for launch instructions and incidentally displayed an aggregate estimate. That figure was not used to select the criterion scores. This review is independent in evidence assessment, but not completely blinded to all aggregate-score prose."
+  },
+  "total_score": 63.5,
+  "maximum": 100,
+  "target_75_met": false,
+  "criteria": [
+    {
+      "id": "8.1",
+      "criterion": "Functionality",
+      "score": 14,
+      "maximum": 25,
+      "reasons": [
+        "The frozen full gate reproduces all 146 enforced metrics. The real crossing person is matched in 58/61 labelled frames and the rail object in 125/126 frames after frame 75.",
+        "Performance is uneven: Set O has 384 target STOP frames among 801 visible frames for the eight objects labelled inside the envelope. All eight get some STOP, but the edge objects get only 2 and 6 STOP frames.",
+        "All 72 placement cases remain in the denominator: 45 have any target match, with 544/2458 visible frames matched. Five empty bags retain 13 false target events and 16 STOP episodes; the ride retains 45 false target events and 38 STOP episodes. The combined candidate has a fresh, non-held false STOP at 53 m in the standalone clear trial."
+      ],
+      "missing": [
+        "Meaningful sustained detection gains on missed small, overhead and hanging objects without increased false alarms.",
+        "A candidate that passes the registered zero-false-STOP clear runtime criterion, with all positive and false-alarm denominators retained.",
+        "Independent positive ground truth and a validated relationship between the monitoring estimate and actual missed obstacles."
+      ],
+      "evidence": [
+        "docs/evidence/results/regression_gate_2026-09-26_freeze.json",
+        "docs/evidence/results/p4_novel_results_2026-09-26.json",
+        "docs/evidence/results/quality_cycle_2026-09-26_missed_diagnosis/summary.json",
+        "docs/evidence/results/quality_freshness_2026-09-26/original_clear/status.jsonl.gz"
+      ]
+    },
+    {
+      "id": "8.2",
+      "criterion": "Detection range",
+      "score": 6,
+      "maximum": 15,
+      "reasons": [
+        "The real obstacle demonstration reports roughly 55.5–56.6 m. Organizer synthetic Set O supports first STOP at 98.0 m for the central large object and 101.3 m for the overhead object.",
+        "Small rail and central objects start at 42.7 and 52.5 m in the cache; thin hanging starts at 30.1 m and edge objects at only 5.2 and 10.3 m. First detection is not equivalent to sustained reliable detection.",
+        "There is no demonstrated reliable real-object result at the specification’s 100, 200 or 300 m comparison levels; longer simulated-person results use seen backgrounds and synthetic returns."
+      ],
+      "missing": [
+        "Sustained real-positive detection at useful braking distances, particularly for edge and sparse objects.",
+        "Independent range validation by object class and distance, including misses and false alarms."
+      ],
+      "evidence": [
+        "docs/evidence/results/regression_gate_2026-09-26_freeze.json",
+        "docs/evidence/freeze_2026-09-26/README.md",
+        "docs/evidence/results/quality_cycle_2026-09-26_M2_validation/README.md"
+      ]
+    },
+    {
+      "id": "8.3",
+      "criterion": "Processing speed",
+      "score": 8,
+      "maximum": 10,
+      "reasons": [
+        "The six original-bag captures of the combined candidate report decode-and-detect p95 between 25.25 and 37.90 ms, with final reported rates of 8.5–10.0 Hz and no post-settle recorded messages missed.",
+        "Cold, warm and bounded-read-load runs preserve the actual timing limitations. Initial backlog sampling deliberately skips frames; first STOP is measured after the first processed cloud and excludes player preloading.",
+        "The local VM differs from the organizer i7-9700E stand; bounded read load does not demonstrate maximum overload tolerance."
+      ],
+      "missing": [
+        "The exact final accepted image on the organizer stand or a justified equivalent resource budget.",
+        "End-to-end startup and overload bounds, including disk preloading, DDS delivery, callback stalls and consumer expiry."
+      ],
+      "evidence": [
+        "docs/evidence/results/quality_freshness_2026-09-26/combined_runtime_summary.json",
+        "docs/evidence/freeze_2026-09-26/README.md",
+        "docs/evidence/bench_2026-09-25_2/summary.json"
+      ]
+    },
+    {
+      "id": "8.4",
+      "criterion": "Generalization",
+      "score": 6,
+      "maximum": 15,
+      "reasons": [
+        "The model uses tunnel, rail, bed and clearance geometry rather than a fixed learned object-class list. Rate, tilt and startup checks exercise different input conditions.",
+        "The 72-case placement study is a useful stress experiment with paired controls, but all source shapes and backgrounds were already inspected. Its geometry is not independently surveyed.",
+        "All 18 stress runs and 30 startup runs preserve M2 detection summaries, which shows nonregression on existing data rather than unseen-positive accuracy. Q1 on physical envelope interpretation remains unanswered."
+      ],
+      "missing": [
+        "Held-out real positive recordings and untouched routes evaluated after algorithm selection.",
+        "Surveyed physical envelope truth and resolution of Q1 without relabelling difficult cases out of the denominator.",
+        "Demonstrated tolerance to the actual new geometries and obstacle placements in control data."
+      ],
+      "evidence": [
+        "resense/detector.py",
+        "docs/evidence/results/p4_novel_results_2026-09-26.json",
+        "docs/evidence/results/quality_cycle_2026-09-26_M2_validation/README.md",
+        "docs/evidence/results/quality_cycle_2026-09-26_missed_diagnosis/summary.json"
+      ]
+    },
+    {
+      "id": "8.5",
+      "criterion": "Technical quality",
+      "score": 8.5,
+      "maximum": 10,
+      "reasons": [
+        "The pipeline, ROS interface, parameter configuration, native/Python paths and validation scripts are inspectable. Archived full tests report 621 passed plus six subtests; the freshness-focused run reports 156 passed.",
+        "Node publication checks source, residence and queue age, invalidates uncertain clock epochs, zeros invalid monitoring range and holds prior STOP. The browser independently checks transport age and expires live status. The stock functional capture passes 15 checks.",
+        "The watchdog shares the single-thread executor, so bare scalar topics cannot be treated as permanently fresh. Root core comments still incorrectly describe verified-clear or free fail-safe braking behavior, although public documentation now states the estimate’s limits. Exact final CI is pending a replay-mode, freshness-check and native-availability correction in the independently loaded image step."
+      ],
+      "missing": [
+        "Exact final-source CI results after the stated CI fixes, including the independently loaded archive.",
+        "Consistent core comments describing an estimated monitoring range and remaining misses.",
+        "A fully accepted integrated runtime candidate; isolated offline parity alone does not meet that requirement."
+      ],
+      "evidence": [
+        "ros2_ws/src/resense_ros/resense_ros/detector_node.py",
+        "web/index.html",
+        "resense/health.py",
+        "resense/detector.py",
+        "docs/evidence/freeze_2026-09-26/pytest_final.txt",
+        "docs/evidence/results/quality_freshness_2026-09-26/tests_provenance.log",
+        "docs/evidence/results/quality_freshness_2026-09-26/runtime_stock_final_result.json",
+        "docs/evidence/results/quality_cycle_2026-09-26_clarifications.json"
+      ]
+    },
+    {
+      "id": "8.6",
+      "criterion": "Ease of launch",
+      "score": 8,
+      "maximum": 10,
+      "reasons": [
+        "Dockerfile, image export/load scripts, ROS launch, automatic input discovery, headless output and RViz/browser paths cover the required workflow. Dependencies are installed in the image and a local archive can be loaded without network.",
+        "A successful run still depends on selecting replay freshness for historical bags, host networking and compatible clocks; high-volume playback has documented socket-buffer and disk/preloading considerations.",
+        "The current combined archive is a local failed-candidate review artifact. It has not passed final quality acceptance, and no release has been published."
+      ],
+      "missing": [
+        "One accepted final archive with its exact build/load/ROS checks passing on the final source.",
+        "A demonstrated control-bag launch in the target environment under the documented steps."
+      ],
+      "evidence": [
+        "README.md",
+        "docker/Dockerfile",
+        "docs/evidence/results/quality_freshness_2026-09-26/combined_runtime_summary.json",
+        "docs/evidence/freeze_2026-09-26/README.md"
+      ]
+    },
+    {
+      "id": "8.7",
+      "criterion": "Team approach",
+      "score": 9,
+      "maximum": 10,
+      "reasons": [
+        "Hypotheses and acceptance checks are registered, failed artifacts are preserved and candidates are rejected when a per-case or false-alarm constraint fails. A1 gained aggregate matches but lost one matched frame and detection range in a top-object case; D1 gained 47 novel matched frames but increased ride STOP episodes and outside-object false STOPs.",
+        "All 45 ride target identities have exact traces and 14 causes remain explicitly unresolved. M2’s limited monitoring gain is distinguished from detection recall, and no unseen-data claim is made.",
+        "The correction from 183 unchanged rows to 146 enforced rows and 199 total comparisons is transparent and drops no requirement."
+      ],
+      "missing": [
+        "Successful evidence-driven improvements on the unresolved failure families and independent data collection.",
+        "Closure of open organizer interpretation questions while preserving failed experiments and fixed acceptance limits."
+      ],
+      "evidence": [
+        "docs/evidence/results/p4_A1_2026-09-26/novel_comparison.json",
+        "docs/evidence/results/quality_cycle_2026-09-26_D1/summary.json",
+        "docs/evidence/results/p4_false_targets_2026-09-26/README.md",
+        "docs/evidence/results/quality_monitoring_M2_production_2026-09-26/monitoring.json",
+        "docs/evidence/results/quality_cycle_2026-09-26_clarifications.json"
+      ]
+    },
+    {
+      "id": "8.8",
+      "criterion": "Pitch",
+      "score": 4,
+      "maximum": 5,
+      "reasons": [
+        "The 16-slide deck, PDF, recorded cloud-to-result demonstrations and captioned 170-second overview explain the approach, results and limitations. The presentation evidence records browser/content checks and real status-driven footage.",
+        "Public team slides still contain placeholders because photos and contacts are missing. Final team rehearsal and the actual control-bag demonstration are not evidenced."
+      ],
+      "missing": [
+        "Complete team materials and final rehearsed pitch.",
+        "A successful live control-bag demonstration with the accepted image."
+      ],
+      "evidence": [
+        "docs/PRESENTATION.md",
+        "docs/evidence/presentation_2026-09-26/README.md",
+        "docs/evidence/presentation_2026-09-26/manifest.json"
+      ]
+    }
+  ],
+  "independent_artifact_checks": {
+    "method": "Read-only source and artifact review; no detector replay or heavy test run. Novel totals and the clear STOP were recomputed from rows. Gate comparison used the unmodified metrics/verdict/compare function bodies extracted with ast because system Python has no numpy; their constants and five-empty membership were supplied explicitly.",
+    "frozen_gate": {
+      "comparison_rows": 199,
+      "enforced_rows": 146,
+      "unchanged_enforced_rows": 146,
+      "failed_rows": 0,
+      "waivers": 0
+    },
+    "M2_gate": {
+      "comparison_rows": 199,
+      "enforced_rows": 146,
+      "unchanged_enforced_rows": 146,
+      "failed_rows": 0,
+      "waivers": 0
+    },
+    "novel": {
+      "cases": 72,
+      "cases_with_any_target_match": 45,
+      "visible_frames": 2458,
+      "matched_frames": 544,
+      "matched_control_frames": 0,
+      "M2_all_cases_and_rows_exactly_equal": true,
+      "per_shape": {
+        "small_center": {
+          "matched_cases": 17,
+          "cases": 18,
+          "matched_frames": 230,
+          "visible_frames": 702
+        },
+        "small_on_rail": {
+          "matched_cases": 14,
+          "cases": 18,
+          "matched_frames": 211,
+          "visible_frames": 646
+        },
+        "big_above": {
+          "matched_cases": 5,
+          "cases": 18,
+          "matched_frames": 58,
+          "visible_frames": 612
+        },
+        "thin_hanging": {
+          "matched_cases": 9,
+          "cases": 18,
+          "matched_frames": 45,
+          "visible_frames": 498
+        }
+      }
+    },
+    "clear_runtime": {
+      "processed_frame_rows": 233,
+      "detector_positive_rows": 1,
+      "STOP_rows": 1,
+      "false_stop_m": 53.0,
+      "stop_held": false,
+      "freshness_valid": true,
+      "source_age_s": 0.025539398193359375,
+      "residence_age_s": 0.021036348000052385,
+      "queue_lag_s": 0.0
+    },
+    "M2_partial_monitoring_only": {
+      "cache_target_overclaims_baseline": 54,
+      "cache_target_overclaims_candidate": 44,
+      "cache_GO_target_overclaims_baseline": 46,
+      "cache_GO_target_overclaims_candidate": 36,
+      "zero_GO_overclaim_diagnostic_passed": false,
+      "credited_as_merged_recall_gain": false
+    }
+  },
+  "source_review_limits": [
+    "This was a focused inspection of pipeline, monitoring, ROS freshness, consumer freshness and deployment code, not a full formal safety audit.",
+    "Freshness is valid at publication under synchronized-clock assumptions; consumer timers and ROS executor scheduling have no hard real-time guarantee.",
+    "The 53 m STOP is real detector output in a clear-labeled trial, not a stale held STOP. No causal attribution to M2 is made here. A similar prior stock-console STOP is already archived.",
+    "Set O and novel placement labels do not establish surveyed physical envelope truth. No difficult case, control, false target or recording is excluded."
+  ],
+  "pending_at_cutoff": [
+    "Exact final CI after explicit replay, require-freshness and native-availability assertions are added to the independently loaded runtime-image step; reported by captain, not yet verified in this review.",
+    "Ongoing P3 causal diagnosis and isolated T1 screening. Rejudge any passing final candidate; this score does not predict its outcome.",
+    "Q1 remains unanswered; no new real-positive recordings; team photos/contacts and final rehearsal remain pending."
+  ],
+  "release_assessment": "Do not present the local failed-candidate archive as a released or accepted final image. The registered combined runtime acceptance is false and the requested 75/100 quality target is not supported.",
+  "source_sha256": {
+    "resense/detector.py": "f809fd1e0382ee623e3e382afe1f35616ba8d74321f03eaaf1a5afd7a969afdc",
+    "resense/tracking.py": "a0bffd4e2ddab90fc4ae1e49f81f9673abdc2b1b0579da1979379531a7f130f7",
+    "resense/health.py": "d73b7ed3fae37d27b5b7f8106f4896bcedc18c2dba980ac1da8ee1ada8e22421",
+    "ros2_ws/src/resense_ros/resense_ros/detector_node.py": "95d1721d3b3238a0fa0358f98740a83b6069404411767e94bd5dd227d2de9274",
+    "web/index.html": "767fbd25699bde6afcb323aad0260d80de2172a67cdfb9a72c4d2c504a699a76",
+    "configs/default.yaml": "c7ca5ad4f332b7025f66ab0addeb21025daf23a36aca4dbcc2d49fe5b8831f40"
+  },
+  "evidence_sha256": {
+    "README.md": "e7ca956721321461c125e6c99674211687706003d3e4d588d9f2efa25ef04abb",
+    "docker/Dockerfile": "581aae81fd4807f36828fa21f60306e8c2d0fdcec7aafd2f0783bddde11b1029",
+    "docs/PRESENTATION.md": "fcd98db0c83d44fb3fa0b5b960599acce8f5ddbcc95b5133ddf833137a275e91",
+    "docs/evidence/bench_2026-09-25_2/summary.json": "6e3d4580c310ccda424cb2daf4cd9e7f944c62b1c5bbaaba1003bca5a16425f5",
+    "docs/evidence/freeze_2026-09-26/README.md": "08dd299e702e12d84445d0aca4de2021fb8fbf7264238d2039c220713d6951a7",
+    "docs/evidence/freeze_2026-09-26/pytest_final.txt": "94565e1e0d65070ee6138c1289cf96526d2ed95133158336ff47760738c3444f",
+    "docs/evidence/presentation_2026-09-26/README.md": "1b2dbea062d835eb85f41710ebdd15e8636939f61f5d059930e305922d5ce6c3",
+    "docs/evidence/presentation_2026-09-26/manifest.json": "6990926769e58417ed54a366f8d34e1433dc13b28abde59d8c29cfa389777cea",
+    "docs/evidence/results/p4_A1_2026-09-26/novel_comparison.json": "e5977d40e2a1b73fb4cd48e1a66ab4bcfa59020ce553d5b8dbca87ce73c9ddab",
+    "docs/evidence/results/p4_false_targets_2026-09-26/README.md": "91bc10f334a09be772503758f222a75fe098e9691182688a555a51a47a0bf238",
+    "docs/evidence/results/p4_novel_results_2026-09-26.json": "574b33ae192ccc7c29731e98b2ab98e0597018f92d70757e36dd1541738186da",
+    "docs/evidence/results/quality_cycle_2026-09-26_D1/summary.json": "1c15d960255c868fe2b3bd1db12a6681f9643f28717485b2ff07f49d5c0af694",
+    "docs/evidence/results/quality_cycle_2026-09-26_M2_validation/README.md": "03e8f5c67d5e325e73a9e383dc66b35f4798f5ecdc71f02c4cab3759e1f28002",
+    "docs/evidence/results/quality_cycle_2026-09-26_clarifications.json": "b043671ffa55bd3d83e46e70e1a3ef4bcfc8b07c46a42353279f544dd4f44f06",
+    "docs/evidence/results/quality_cycle_2026-09-26_missed_diagnosis/summary.json": "33fa1bf48b081ff1da4accdaac35843027477660f474d61adf717f185aa1a36d",
+    "docs/evidence/results/quality_freshness_2026-09-26/combined_runtime_summary.json": "cdc2fbe5fb92ba48286253564f323fa46b29a22e671c712ad70586b4feaf985a",
+    "docs/evidence/results/quality_freshness_2026-09-26/original_clear/status.jsonl.gz": "219079dad4e66ccc86487b98d959b6540eabc79e7226d2c8ba0a6cca18ebc96f",
+    "docs/evidence/results/quality_freshness_2026-09-26/runtime_stock_final_result.json": "b80c98d848a6312eadf060c2707f17e6b4b75146a2e16c77a1554dcf6f24cf04",
+    "docs/evidence/results/quality_freshness_2026-09-26/tests_provenance.log": "99660b270481443ffc0b5e232b7610a2dc773b230b60a237c909cdb6685eac86",
+    "docs/evidence/results/quality_monitoring_M2_production_2026-09-26/gate.json": "a046c55b454dae81ccd04fa5f47520e282d6a3aa064e44e468ef5e361795a898",
+    "docs/evidence/results/quality_monitoring_M2_production_2026-09-26/monitoring.json": "0641d2efd943cfd67abe7908b086d2beb2b77be67c4d875bc1b6a2ecbacad248",
+    "docs/evidence/results/quality_monitoring_M2_production_2026-09-26/novel_result.json.gz": "9085b3c545d33c5783a0f9535b74963c741b35b17a1919f01743e7fb94a804a1",
+    "docs/evidence/results/regression_baseline_2026-09-26_ride_p3d.json": "bbe8d8d1f5f072a3c8c318e002ed736ec526121a2ada6bffdb033fbab2631eb1",
+    "docs/evidence/results/regression_gate_2026-09-26_freeze.json": "356f1b285efa95d2c609b9864f19a4363c9cf6e4b29af8009faf316ce2a097d2",
+    "docs/organizers/technical_specification_case05.txt": "a2f20be86a394c6257324da4625788ee829c59bd9aa31c2574219e03dee00c42",
+    "resense/detector.py": "f809fd1e0382ee623e3e382afe1f35616ba8d74321f03eaaf1a5afd7a969afdc",
+    "resense/health.py": "d73b7ed3fae37d27b5b7f8106f4896bcedc18c2dba980ac1da8ee1ada8e22421",
+    "ros2_ws/src/resense_ros/resense_ros/detector_node.py": "95d1721d3b3238a0fa0358f98740a83b6069404411767e94bd5dd227d2de9274",
+    "scripts/regression_gate.py": "ecc68399355be0bdf12a1843b573a4817247f0e10f3efe6cf89659307fd3fc83",
+    "web/index.html": "767fbd25699bde6afcb323aad0260d80de2172a67cdfb9a72c4d2c504a699a76"
+  }
+}

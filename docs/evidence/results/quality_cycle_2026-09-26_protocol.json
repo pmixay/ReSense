@@ -1,0 +1,97 @@
+{
+  "schema": "resense-quality-cycle-protocol-v1",
+  "registered_utc": "2026-09-26T20:36:18.160555+00:00",
+  "authorization": "User: Start all these tasks. Release publication remains prohibited until new authorization.",
+  "base_commit": "2d25c13501a973c9c21494032ba946a40e1be455",
+  "detector_reference": {
+    "path": "docs/evidence/results/regression_gate_2026-09-26_freeze.json",
+    "sha256": "356f1b285efa95d2c609b9864f19a4363c9cf6e4b29af8009faf316ce2a097d2",
+    "source_sha256": "4c592ac91d2f5fba79a4693c0c8a57a5e246c88dd8a8cb00fc81c0c532a0ca2b"
+  },
+  "purpose": "Improve actual obstacle detection and decision validity before final acceptance. Preserve the sealed reference; no release or automatic score target claim.",
+  "stages": [
+    {
+      "name": "A: diagnosis",
+      "work": "Trace every set O miss and all45 ride false events using fixed frozen outputs/original caches. New placement cases remain development diagnostics. Classify causes only where target-level evidence supports them; retain uncertain cases.",
+      "may_change_detector": false
+    },
+    {
+      "name": "B: bounded candidates",
+      "work": "Before implementation or candidate measurement, register exact change, hypothesis, touched files and target metrics in an append-only candidate record. Evaluate each once under its registered settings; retain failures. No search over thresholds without a new recorded experiment.",
+      "max_candidates_per_mechanism": 1
+    },
+    {
+      "name": "C: acceptance",
+      "work": "Review patches independently; full strict gate, raw/cache comparison, paired-placement/rate/mount/start-offset checks, ROS and browser validation, independent rejudgement. Only then integrate an accepted detector and replace its seal."
+    }
+  ],
+  "lanes": {
+    "freshness": {
+      "owner": "captain_node",
+      "scope": "ROS node, launch, tests; detector package unchanged",
+      "contract": "Preserve STOP priority; non-current/invalid input must not emit actionable GO. Publish queue delay and local residence age; acquisition age requires an explicitly valid clock relation. Distinguish live and historical replay. Register exact defaults separately before implementation.",
+      "tests": [
+        "startup backlog",
+        "later processing stall",
+        "pause/resume",
+        "stamp regression/forward jump",
+        "input switch",
+        "live/replay clock semantics",
+        "STOP precedence",
+        "healthy recovery"
+      ]
+    },
+    "missed_obstacles": {
+      "owner": "p3_review",
+      "scope": "isolated worktree; trace corridor membership, filter rejection, clusters and temporal confirmation",
+      "target": "At least two intended-inside object families improve sustained STOP distance by >=10 m or longest missed approach by >=20%, across at least two background groups where surveyed/checked geometry permits the comparison. Every existing positive gate metric must be no worse. Recompute geometry validity before interpreting approximate placements."
+    },
+    "false_alarms": {
+      "owner": "p4_review",
+      "target": {
+        "ride_events_max": 30,
+        "ride_stop_episodes_max": 38,
+        "five_empty_events_max": 13,
+        "five_empty_stop_episodes_max": 16
+      },
+      "restriction": "No positive regressions, no event-ID coalescing or scorer changes to manufacture fewer events. Preserve target coverage."
+    },
+    "monitoring_validity": {
+      "owner": "root",
+      "target": "Zero actionable GO/range overclaims on independently reviewed diagnostic positives under the declared contract. Keep detection recall and diagnostic-range metrics separate. A renamed field alone is not a detection improvement."
+    }
+  },
+  "global_gates": {
+    "full_regression": "All183 current gated metrics present; no worse rows or waivers against frozen baseline. Output-contract changes are separately recorded and may not conceal detection regressions.",
+    "false_positive_nonregression": "Outside-object/background STOP counts and each existing empty/ride gate row no worse.",
+    "uncertainty_cost": {
+      "max_extra_caution_percentage_points_per_empty_recording_or_ride": 5.0,
+      "min_median_estimated_clear_range_fraction_of_baseline": 0.95,
+      "note": "Measure on frame-aligned outputs. Prevent always-CAUTION or blanket range collapse from counting as a quality fix. Report monitored range separately."
+    },
+    "runtime": {
+      "p95_decode_detect_ms_max": 100,
+      "post_settle_recorded_messages_unprocessed_max": 0,
+      "checks": [
+        "idle cold obstacle",
+        "warm obstacle",
+        "clear bag",
+        "bounded direct-read load",
+        "stock Fast DDS input switch"
+      ],
+      "freshness": "No GO outside declared validity/freshness contract; report recording-time offsets separately from processing and source age."
+    },
+    "synthetic": "All72 original novel-placement cases retained. No unmatched whole case or per-shape matched-frame count may worsen when comparing a detector candidate, unless independently shown out of the defined envelope and excluded in a separately preregistered geometry-correct evaluation for BOTH baseline and candidate. The original72 results must still be reported."
+  },
+  "data_limits": [
+    "No additional untouched real-obstacle recording is available (user confirmation).",
+    "Existing recordings and72 synthetic cases have been inspected; future runs are development validation, not real holdout recall.",
+    "Original real positives are from a stationary train around56m.",
+    "Q1 envelope reference remains unanswered; do not silently enable the axis union."
+  ],
+  "reporting": [
+    "Retain every measured candidate, including failed or abandoned trials.",
+    "Do not change acceptance thresholds after observing a candidate result. Any new protocol must explain why and preserve the previous failure.",
+    "Claim75/100 only if independent rejudgement supports it; release remains on hold regardless."
+  ]
+}

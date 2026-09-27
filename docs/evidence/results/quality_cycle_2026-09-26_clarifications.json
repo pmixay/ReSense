@@ -1,0 +1,19 @@
+{
+  "purpose": "Append-only factual and output-contract clarification; acceptance limits unchanged",
+  "comparison_row_count": {
+    "cause": "Earlier summaries called the freeze gate's183 unchanged rows '183 gated metrics'. Independent recount of regression_gate.compare shows that count included informational rows.",
+    "total_rows": 199,
+    "gated_rows": 146,
+    "unchanged_gated_rows_in_frozen_reference": 146,
+    "unchanged_rows_including_information": 183,
+    "changed_informational_timing_rows": 16,
+    "requirement": "Every baseline metric remains required under the unchanged comparison tool. No missing/worse gated metric, no waiver; no row is dropped because of this correction."
+  },
+  "freshness_scope": {
+    "finding": "The ROS watchdog shares the detector's single-thread executor. A stalled callback can prevent watchdog publication. A queued status can also arrive late at the browser.",
+    "contract": "Validity is checked at output publication, not a promise that an un-timestamped topic remains current. Add evaluated_at_utc_s, max_result_age_s and future_tolerance_s. Actionable consumers must independently expire status from that timestamp plus the reported source/residence age, and detect stream silence.",
+    "clock_requirement": "Node, source publisher and live dashboard UTC clocks must be synchronized within the declared tolerance. Unknown/non-finite/future timestamps fail closed; historical file playback remains a historical snapshot.",
+    "browser": "Validate transport age on arrival, then use a monotonic local expiry timer. Preserve its own last STOP through invalid non-STOP messages until a freshly validated non-STOP clears it. Missing timing metadata cannot permit live GO.",
+    "limits_unchanged": "Default maximum age0.5s, future tolerance0.05s; browser and node timer scheduling are not hard real-time guarantees. No braking safety certification is claimed."
+  }
+}

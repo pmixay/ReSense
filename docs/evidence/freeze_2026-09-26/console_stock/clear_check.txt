@@ -1,0 +1,12 @@
+status messages      : 243
+alarm frames         : 1
+obstacle distance    : 53.0 .. 53.0 m
+latency decode+detect: mean 21 / p95 26 / max 34 ms
+detector stage total : mean 12 / p95 16 ms
+dropped input frames : 8 (7 of them skipped by the node's catch-up); 0 after the first 5 s
+dropped input settle : start-up catch-up back on the newest frame at +1.6 s; drops counted after +5.0 s (the later of 5 s and that, at most 15 s)
+dropped input vs bag : 200 messages of /lidar_points after the first 5 s, 0 frame(s) missing from the recording itself; 0 of its messages not processed
+fps (last report)    : 10.38
+start of the input   : 43 frames in the first 5 s after the first one, largest gap 0.3 s, first STOP at +15.8 s
+
+PASS: all dry-run criteria met

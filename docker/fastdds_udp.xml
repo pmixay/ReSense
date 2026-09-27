@@ -9,6 +9,15 @@
   player reaches the node; measured on the 10 MB clouds of doubleT_obstacle: the same frame rate
   and latency as shared memory (8.3-9.5 fps, ~100 ms on the 4-vCPU sandbox). The larger socket
   buffers are requested, the kernel caps them at net.core.rmem_max / wmem_max.
+
+  Receive buffer 32 MiB (8 MiB until 25.09): at Ubuntu's rmem_max 212992 a host player on
+  CycloneDDS delivered none of the 24 MB 360-degree clouds and all of them at 32 MiB; a stock Fast
+  DDS player delivered all of them at 212992 too (EXPERIMENTS.md section 3b; README jury step 0). The buffer is set explicitly (SO_RCVBUF), so only net.core.rmem_max caps it and
+  rmem_default does not matter to the node; 32 MiB lets a whole cloud wait in it where the host
+  allows. Harmless when rmem_max is small: Linux caps SO_RCVBUF at rmem_max without an error, and
+  Fast DDS 2.6 (Humble) retries a smaller value only on an error (asio_helpers::
+  try_setting_buffer_size; a plain set_option in 2.6.0), so the socket gets the same capped buffer
+  as with 8 MiB. The node logs a WARN when rmem_max is below 32 MiB.
 -->
 <profiles xmlns="http://www.eprosima.com/XMLSchemas/fastRTPS_Profiles">
   <transport_descriptors>
@@ -16,7 +25,7 @@
       <transport_id>resense_udp</transport_id>
       <type>UDPv4</type>
       <sendBufferSize>8388608</sendBufferSize>
-      <receiveBufferSize>8388608</receiveBufferSize>
+      <receiveBufferSize>33554432</receiveBufferSize>
     </transport_descriptor>
   </transport_descriptors>
   <participant profile_name="resense_udp_only" is_default_profile="true">

@@ -1,0 +1,168 @@
+{
+  "schema": "resense-p4-seto-raw-cache-comparison-v1",
+  "date": "2026-09-26",
+  "detector_commit": "dcf7f90f730c675db238691d79357469b489d13f",
+  "effective_configuration": "configs/default.yaml; Python dataclass defaults compare equal to YAML",
+  "cached_replay_command": "resense run --npy /data/cache/cloud_with_fake_obj --out out/p4/reference/seto/seto.jsonl --quiet",
+  "raw_replay_command": "resense run --bag /data/cloud_with_fake_obj --out out/p4/reference/seto/seto-from-bag.jsonl --quiet",
+  "frame_count": 1510,
+  "same_frame_order": true,
+  "bag_receive_stamps_equal": true,
+  "npy_cache": "--int16, 5 mm coordinate quantization per point; cache command --every 1 --int16 --stamps",
+  "source_archive": {
+    "url": "https://disk.yandex.ru/d/KpkG_yKoGk-vHQ",
+    "published_bytes": 1746145824,
+    "published_sha256": "d41c2fb28475194a98efeca5d2ee3fd175c0aef350ffb92fff4c26d497e696e9"
+  },
+  "raw_bag": {
+    "path": "/data/cloud_with_fake_obj/cloud_with_fake_obj_0.db3",
+    "bytes": 7421644800,
+    "sha256": "73ee5bfc2087bb160267110563b298a9629ac9e3df1459d857ec72ce1ef89d60"
+  },
+  "cache": {
+    "path": "/data/cache/cloud_with_fake_obj",
+    "frames": 1510,
+    "tree_sha256_filename_plus_file_sha256": "0135a30054d7919391fb515639d136a3c670a1f7b7f0cd9881f23eedc7023633",
+    "stamps_sha256": "a669bf88916aab970e3b5988eade44881345f99df3424400d244d881c4bba2ed"
+  },
+  "cache_score": {
+    "inside_stop_frames": 355,
+    "outside_false_stop_frames": 6,
+    "background_false_alarm_frames": 3,
+    "background_false_alarm_ids": 2,
+    "objects": {
+      "big_center": {
+        "stop_frames": 208,
+        "advisory_frames": 0,
+        "first_stop_m": 98.0,
+        "held_from_m": 98.7
+      },
+      "small_on_rail": {
+        "stop_frames": 23,
+        "advisory_frames": 0,
+        "first_stop_m": 42.7,
+        "held_from_m": 46.2
+      },
+      "small_center": {
+        "stop_frames": 30,
+        "advisory_frames": 0,
+        "first_stop_m": 52.5,
+        "held_from_m": 57.5
+      },
+      "small_edge_inside": {
+        "stop_frames": 2,
+        "advisory_frames": 23,
+        "first_stop_m": 5.2,
+        "held_from_m": 5.2
+      },
+      "small_outside_near": {
+        "stop_frames": 0,
+        "advisory_frames": 24,
+        "first_stop_m": null,
+        "held_from_m": null
+      },
+      "big_edge_inside": {
+        "stop_frames": 6,
+        "advisory_frames": 0,
+        "first_stop_m": 10.3,
+        "held_from_m": 10.3
+      },
+      "big_outside": {
+        "stop_frames": 6,
+        "advisory_frames": 43,
+        "first_stop_m": null,
+        "held_from_m": null
+      },
+      "big_above": {
+        "stop_frames": 22,
+        "advisory_frames": 27,
+        "first_stop_m": 101.3,
+        "held_from_m": 23.9
+      },
+      "long_low_on_rails": {
+        "stop_frames": 49,
+        "advisory_frames": 0,
+        "first_stop_m": 82.2,
+        "held_from_m": 90.8
+      },
+      "thin_hanging": {
+        "stop_frames": 15,
+        "advisory_frames": 0,
+        "first_stop_m": 30.1,
+        "held_from_m": 31.8
+      }
+    }
+  },
+  "raw_bag_score": {
+    "inside_stop_frames": 357,
+    "outside_false_stop_frames": 7,
+    "background_false_alarm_frames": 1,
+    "background_false_alarm_ids": 1,
+    "objects": {
+      "big_center": {
+        "stop_frames": 208,
+        "advisory_frames": 0,
+        "first_stop_m": 98.0,
+        "held_from_m": 98.7
+      },
+      "small_on_rail": {
+        "stop_frames": 26,
+        "advisory_frames": 0,
+        "first_stop_m": 48.0,
+        "held_from_m": 51.5
+      },
+      "small_center": {
+        "stop_frames": 30,
+        "advisory_frames": 0,
+        "first_stop_m": 52.5,
+        "held_from_m": 57.5
+      },
+      "small_edge_inside": {
+        "stop_frames": 2,
+        "advisory_frames": 25,
+        "first_stop_m": 5.2,
+        "held_from_m": 5.2
+      },
+      "small_outside_near": {
+        "stop_frames": 0,
+        "advisory_frames": 24,
+        "first_stop_m": null,
+        "held_from_m": null
+      },
+      "big_edge_inside": {
+        "stop_frames": 6,
+        "advisory_frames": 0,
+        "first_stop_m": 10.3,
+        "held_from_m": 10.3
+      },
+      "big_outside": {
+        "stop_frames": 7,
+        "advisory_frames": 41,
+        "first_stop_m": null,
+        "held_from_m": null
+      },
+      "big_above": {
+        "stop_frames": 21,
+        "advisory_frames": 24,
+        "first_stop_m": 101.3,
+        "held_from_m": 23.9
+      },
+      "long_low_on_rails": {
+        "stop_frames": 49,
+        "advisory_frames": 0,
+        "first_stop_m": 82.2,
+        "held_from_m": 90.8
+      },
+      "thin_hanging": {
+        "stop_frames": 15,
+        "advisory_frames": 0,
+        "first_stop_m": 30.1,
+        "held_from_m": 31.8
+      }
+    }
+  },
+  "scored_metrics_equal": false,
+  "frames_with_changed_detections": 377,
+  "frames_with_changed_warnings": 534,
+  "interpretation": "The quantized cache and original float point cloud are not score-identical under the same config and timestamps. Cache remains the regression reference because the committed baseline uses this cache path; any raw-bag comparison must retain this quantization sensitivity."
+}

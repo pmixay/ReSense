@@ -1,0 +1,1157 @@
+{
+ "schema": "resense-clear-distance-v1",
+ "date": "2026-09-25",
+ "item": "SCORECARD §6 row 6: conservative clear_distance (criteria 8.1 / 8.4, judges' estimate +1)",
+ "question": "clear_distance (/resense/clear_distance, status JSON) is the nearest confirmed obstacle, else the monitored range (resense/health.py); an unconfirmed or advisory object inside the envelope does not shorten it (ALGORITHM §6). On set O the criteria judgement of 24.09 found 184 object-frames with decision GO and clear_distance beyond an in-envelope object, 89 with object points inside the measured envelope (the 5 cm hanging object at 6.7-30 m read 150-170 m).",
+ "facts_read_before_registration": [
+  "The node's decision (DetectorNode.decision) is STOP if obstacle, FAULT on health error, CAUTION on warning or health warn, else GO: it does not read clear_distance, so a rule acting on clear_distance alone cannot change a GO / CAUTION / STOP frame (web/index.html decisionOf is the same rule).",
+  "clear_distance does not feed back into tracking or clustering: a cap computed after _confirm changes no detection."
+ ],
+ "rule": "health.clear_cap (bool, default false = byte-identical output): clear_distance = min(nearest confirmed obstacle, monitored range, cap), where cap is the distance (Cluster.distance, the nearest point along X) of the nearest candidate cluster of this frame that touches the envelope, excluding the cluster of a confirmed in-envelope obstacle (its distance is the obstacle's, whatever rule sets it: compatible with cluster.gauge_distance of wf7/p3); optionally the X of the k-th nearest strict-envelope return. Parameters: health.clear_cap_min_gauge (voxels of the cluster inside the strict envelope, Cluster.n_gauge, with the edge margin), health.clear_cap_min_hits (frames its track was matched, this frame included), health.clear_cap_margin (m; >= 0: a cluster also touches when one of its points of this frame lies inside the envelope polygon widened laterally by this much, without the edge margin; < 0 = n_gauge only), health.clear_cap_points (k; > 0: also cap at the X of the k-th nearest corridor return of this frame inside the strict envelope, low candidates excluded; 0 = off). STOP / obstacle decisions are not changed.",
+ "preregistered": {
+  "written_at_utc": "2026-09-25T20:42:20Z",
+  "note": "written before any run of any candidate or of the flag-off target on this code (1c96233); only the code and the docs had been read",
+  "candidates_in_order": [
+   {
+    "id": "C0",
+    "set": [
+     "health.clear_cap=true",
+     "health.clear_cap_points=3",
+     "health.clear_cap_min_gauge=1",
+     "health.clear_cap_min_hits=1",
+     "health.clear_cap_margin=-1"
+    ],
+    "what": "point level: the 3rd nearest strict-envelope return, and any cluster with >= 1 strict voxel"
+   },
+   {
+    "id": "C1",
+    "set": [
+     "health.clear_cap=true",
+     "health.clear_cap_points=0",
+     "health.clear_cap_min_gauge=1",
+     "health.clear_cap_min_hits=1",
+     "health.clear_cap_margin=0.1"
+    ],
+    "what": "any cluster with >= 1 strict voxel or a point inside the envelope + 0.1 m"
+   },
+   {
+    "id": "C2",
+    "set": [
+     "health.clear_cap=true",
+     "health.clear_cap_points=0",
+     "health.clear_cap_min_gauge=1",
+     "health.clear_cap_min_hits=1",
+     "health.clear_cap_margin=-1"
+    ],
+    "what": "any cluster with >= 1 strict voxel"
+   },
+   {
+    "id": "C3",
+    "set": [
+     "health.clear_cap=true",
+     "health.clear_cap_points=0",
+     "health.clear_cap_min_gauge=1",
+     "health.clear_cap_min_hits=2",
+     "health.clear_cap_margin=-1"
+    ],
+    "what": "... seen in >= 2 frames"
+   },
+   {
+    "id": "C4",
+    "set": [
+     "health.clear_cap=true",
+     "health.clear_cap_points=0",
+     "health.clear_cap_min_gauge=3",
+     "health.clear_cap_min_hits=2",
+     "health.clear_cap_margin=-1"
+    ],
+    "what": ">= 3 strict voxels (cluster.gauge_min_points), >= 2 frames"
+   },
+   {
+    "id": "C5",
+    "set": [
+     "health.clear_cap=true",
+     "health.clear_cap_points=0",
+     "health.clear_cap_min_gauge=3",
+     "health.clear_cap_min_hits=3",
+     "health.clear_cap_margin=-1"
+    ],
+    "what": ">= 3 strict voxels, >= 3 frames"
+   }
+  ],
+  "choice": "The FIRST candidate in the order C0 .. C5 (most conservative first) that satisfies every ship condition ships with health.clear_cap default true and its parameters as defaults; if none does, the flag stays off and the result is reported as tried, not shipped.",
+  "target": "T = set O (cloud_with_fake_obj, every frame) object-frames of the objects the organizers put inside the envelope (in_gauge), visible (n_points > 0), plausible, with points inside the envelope measured from the rails (n_in_envelope > 0), whose clear_distance exceeds the object's distance (label 'distance', nearest point along X) by more than 0.5 m, any decision: scripts/score_clear_distance.py <set O JSONL> --gt labels/cloud_with_fake_obj.json, 'overclaim.totals.target'. Also recorded: 'intent' (without the n_in_envelope condition) and 'go_judge' (decision GO, no tolerance: the judgement's 184 / 89 count).",
+  "ship_conditions": {
+   "S1_gate": "python scripts/regression_gate.py --cache /data/cache --jobs 1 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json --set <candidate> exits 0 (ride and set F straight included).",
+   "S2_target": "T of the candidate < T with the flag off (strictly lower).",
+   "S3_safety": "identical or better, read from the gate JSON: doubleT_obstacle labelled hits per label and first alarm frame; set O inside-object STOP frames and first STOP distance / frame; set F straight sequences detected, first-confirmation median and false detections; no new alarm event or STOP episode on the five empty recordings or the ride. A safety regression is never traded for the target (the rule cannot change a detection; any such change is a bug).",
+   "S4_clutter": "the verified-clear range must not collapse on empty track: on the ride (new_data, 8 pieces as the gate) and on the five obstacle-free recordings (each group as a whole), against the flag-off run of the same frames: the median clear_distance shrinks by <= 5 %, and the frames the cap moves from >= 60 m to < 60 m (health.min_visibility) are <= 2 % of the group's frames (scripts/score_clear_distance.py --base).",
+   "S5_decision": "recorded, expected identical: GO / CAUTION / STOP / FAULT frames on the five empty recordings, the ride and set O; a changed decision frame is a bug and blocks shipping."
+  },
+  "procedure": "The cap changes nothing upstream of clear_distance, so every candidate is evaluated in one flag-off pass per recording (set O, the five empty recordings, the ride in the gate's 8 pieces) that applies the detector's own cap function with each candidate's parameters to the frame's clusters and tracks (scratch script; exact). The chosen candidate is then run through the gate with --set, and its per-frame JSONL re-scored with scripts/score_clear_distance.py against the flag-off pass; the numbers must agree with the sweep. Flag off must stay byte-identical (scripts/output_fingerprint.py against 1c96233).",
+  "if_shipped": "default on, with tests: a ray-cast test in which clear_distance now stops at an unconfirmed in-envelope object, and one in which a nearby real obstacle still STOPs with clear_distance at its distance.",
+  "known_before_registration": "Nothing measured on this code. From the docs only: the 184 / 89 counts of 24.09 (judge B), set O objects #1-#10 (SCORECARD §4), the ride's median monitored range 127.6 m and 4742 advisory frames of 11 271 (gate baseline JSON)."
+ },
+ "round1": {
+  "measured_utc": "2026-09-25T21:06:46Z",
+  "code": "3887bf5 + the uncommitted flag (resense/detector.py clear_cap_distance, resense/health.py, resense/config.py; flag off byte-identical to 1c96233 by scripts/output_fingerprint.py: 2 930 frames, 0 differ)",
+  "how": "one flag-off pass per recording (set O; the five obstacle-free recordings; the ride in the gate's 8 pieces), every candidate's clear_distance from resense.detector.clear_cap_distance on the frame's clusters and tracks (scratch script), scored with scripts/score_clear_distance.py (--gt for set O, --base = the flag-off pass)",
+  "candidates": {
+   "off": {
+    "set_O": {
+     "target": 172,
+     "target_frames": 505,
+     "intent": 366,
+     "intent_frames": 801,
+     "go_judge": 192,
+     "go_judge_in_envelope": 89,
+     "target_by_decision": {
+      "GO": 89,
+      "CAUTION": 81,
+      "STOP": 2
+     },
+     "clear_median_m": 116.5,
+     "decisions": {
+      "GO": 793,
+      "STOP": 342,
+      "FAULT": 2,
+      "CAUTION": 373
+     },
+     "decision_changed_frames": 0,
+     "outside_objects_clear_stops_at_object": {
+      "small_outside_near": 0,
+      "big_outside": 6
+     },
+     "per_object_target": {
+      "big_center": 5,
+      "small_on_rail": 10,
+      "small_center": 44,
+      "small_edge_inside": 16,
+      "big_edge_inside": 8,
+      "big_above": 50,
+      "long_low_on_rails": 19,
+      "thin_hanging": 20
+     }
+    },
+    "five_empty": {
+     "frames": 2287,
+     "decisions": {
+      "GO": 1242,
+      "CAUTION": 987,
+      "STOP": 58
+     },
+     "decision_changed_frames": 0,
+     "clear_median_m": 127.0,
+     "clear_p10_m": 60.0,
+     "median_change_pct": 0.0,
+     "frames_shortened": 0,
+     "frames_shortened_gt_10m": 0,
+     "frames_pushed_under_60m": 0,
+     "frames_pushed_under_60m_pct": 0.0
+    },
+    "ride": {
+     "frames": 11271,
+     "decisions": {
+      "GO": 6435,
+      "CAUTION": 4649,
+      "STOP": 187
+     },
+     "decision_changed_frames": 0,
+     "clear_median_m": 127.0,
+     "clear_p10_m": 60.0,
+     "median_change_pct": 0.0,
+     "frames_shortened": 0,
+     "frames_shortened_gt_10m": 0,
+     "frames_pushed_under_60m": 0,
+     "frames_pushed_under_60m_pct": 0.0
+    }
+   },
+   "C0": {
+    "set_O": {
+     "target": 46,
+     "target_frames": 505,
+     "intent": 213,
+     "intent_frames": 801,
+     "go_judge": 158,
+     "go_judge_in_envelope": 66,
+     "target_by_decision": {
+      "CAUTION": 11,
+      "GO": 35
+     },
+     "clear_median_m": 96.0,
+     "decisions": {
+      "GO": 793,
+      "STOP": 342,
+      "FAULT": 2,
+      "CAUTION": 373
+     },
+     "decision_changed_frames": 0,
+     "outside_objects_clear_stops_at_object": {
+      "small_outside_near": 11,
+      "big_outside": 12
+     },
+     "per_object_target": {
+      "big_center": 0,
+      "small_on_rail": 4,
+      "small_center": 17,
+      "small_edge_inside": 4,
+      "big_edge_inside": 5,
+      "big_above": 0,
+      "long_low_on_rails": 5,
+      "thin_hanging": 11
+     }
+    },
+    "five_empty": {
+     "frames": 2287,
+     "decisions": {
+      "GO": 1242,
+      "CAUTION": 987,
+      "STOP": 58
+     },
+     "decision_changed_frames": 0,
+     "clear_median_m": 96.7,
+     "clear_p10_m": 45.0,
+     "median_change_pct": -23.9,
+     "frames_shortened": 1243,
+     "frames_shortened_gt_10m": 1118,
+     "frames_pushed_under_60m": 105,
+     "frames_pushed_under_60m_pct": 4.59
+    },
+    "ride": {
+     "frames": 11271,
+     "decisions": {
+      "GO": 6435,
+      "CAUTION": 4649,
+      "STOP": 187
+     },
+     "decision_changed_frames": 0,
+     "clear_median_m": 110.9,
+     "clear_p10_m": 60.0,
+     "median_change_pct": -12.7,
+     "frames_shortened": 5494,
+     "frames_shortened_gt_10m": 4730,
+     "frames_pushed_under_60m": 549,
+     "frames_pushed_under_60m_pct": 4.87
+    },
+    "verdict": {
+     "S2_target": true,
+     "S4_clutter": false,
+     "S5_decision": true,
+     "result": "fails S4"
+    }
+   },
+   "C1": {
+    "set_O": {
+     "target": 76,
+     "target_frames": 505,
+     "intent": 208,
+     "intent_frames": 801,
+     "go_judge": 167,
+     "go_judge_in_envelope": 74,
+     "target_by_decision": {
+      "CAUTION": 13,
+      "GO": 61,
+      "STOP": 2
+     },
+     "clear_median_m": 96.8,
+     "decisions": {
+      "GO": 793,
+      "STOP": 342,
+      "FAULT": 2,
+      "CAUTION": 373
+     },
+     "decision_changed_frames": 0,
+     "outside_objects_clear_stops_at_object": {
+      "small_outside_near": 29,
+      "big_outside": 32
+     },
+     "per_object_target": {
+      "big_center": 0,
+      "small_on_rail": 3,
+      "small_center": 29,
+      "small_edge_inside": 0,
+      "big_edge_inside": 6,
+      "big_above": 13,
+      "long_low_on_rails": 10,
+      "thin_hanging": 15
+     }
+    },
+    "five_empty": {
+     "frames": 2287,
+     "decisions": {
+      "GO": 1242,
+      "CAUTION": 987,
+      "STOP": 58
+     },
+     "decision_changed_frames": 0,
+     "clear_median_m": 105.9,
+     "clear_p10_m": 45.0,
+     "median_change_pct": -16.6,
+     "frames_shortened": 863,
+     "frames_shortened_gt_10m": 776,
+     "frames_pushed_under_60m": 97,
+     "frames_pushed_under_60m_pct": 4.24
+    },
+    "ride": {
+     "frames": 11271,
+     "decisions": {
+      "GO": 6435,
+      "CAUTION": 4649,
+      "STOP": 187
+     },
+     "decision_changed_frames": 0,
+     "clear_median_m": 120.0,
+     "clear_p10_m": 60.0,
+     "median_change_pct": -5.5,
+     "frames_shortened": 3567,
+     "frames_shortened_gt_10m": 2845,
+     "frames_pushed_under_60m": 511,
+     "frames_pushed_under_60m_pct": 4.53
+    },
+    "verdict": {
+     "S2_target": true,
+     "S4_clutter": false,
+     "S5_decision": true,
+     "result": "fails S4"
+    }
+   },
+   "C2": {
+    "set_O": {
+     "target": 82,
+     "target_frames": 505,
+     "intent": 254,
+     "intent_frames": 801,
+     "go_judge": 172,
+     "go_judge_in_envelope": 76,
+     "target_by_decision": {
+      "GO": 63,
+      "CAUTION": 17,
+      "STOP": 2
+     },
+     "clear_median_m": 98.3,
+     "decisions": {
+      "GO": 793,
+      "STOP": 342,
+      "FAULT": 2,
+      "CAUTION": 373
+     },
+     "decision_changed_frames": 0,
+     "outside_objects_clear_stops_at_object": {
+      "small_outside_near": 11,
+      "big_outside": 12
+     },
+     "per_object_target": {
+      "big_center": 0,
+      "small_on_rail": 4,
+      "small_center": 30,
+      "small_edge_inside": 4,
+      "big_edge_inside": 6,
+      "big_above": 13,
+      "long_low_on_rails": 10,
+      "thin_hanging": 15
+     }
+    },
+    "five_empty": {
+     "frames": 2287,
+     "decisions": {
+      "GO": 1242,
+      "CAUTION": 987,
+      "STOP": 58
+     },
+     "decision_changed_frames": 0,
+     "clear_median_m": 120.0,
+     "clear_p10_m": 45.0,
+     "median_change_pct": -5.5,
+     "frames_shortened": 628,
+     "frames_shortened_gt_10m": 573,
+     "frames_pushed_under_60m": 69,
+     "frames_pushed_under_60m_pct": 3.02
+    },
+    "ride": {
+     "frames": 11271,
+     "decisions": {
+      "GO": 6435,
+      "CAUTION": 4649,
+      "STOP": 187
+     },
+     "decision_changed_frames": 0,
+     "clear_median_m": 120.0,
+     "clear_p10_m": 60.0,
+     "median_change_pct": -5.5,
+     "frames_shortened": 2300,
+     "frames_shortened_gt_10m": 1718,
+     "frames_pushed_under_60m": 386,
+     "frames_pushed_under_60m_pct": 3.42
+    },
+    "verdict": {
+     "S2_target": true,
+     "S4_clutter": false,
+     "S5_decision": true,
+     "result": "fails S4"
+    }
+   },
+   "C3": {
+    "set_O": {
+     "target": 92,
+     "target_frames": 505,
+     "intent": 267,
+     "intent_frames": 801,
+     "go_judge": 179,
+     "go_judge_in_envelope": 81,
+     "target_by_decision": {
+      "GO": 71,
+      "CAUTION": 19,
+      "STOP": 2
+     },
+     "clear_median_m": 98.4,
+     "decisions": {
+      "GO": 793,
+      "STOP": 342,
+      "FAULT": 2,
+      "CAUTION": 373
+     },
+     "decision_changed_frames": 0,
+     "outside_objects_clear_stops_at_object": {
+      "small_outside_near": 9,
+      "big_outside": 12
+     },
+     "per_object_target": {
+      "big_center": 1,
+      "small_on_rail": 6,
+      "small_center": 31,
+      "small_edge_inside": 4,
+      "big_edge_inside": 7,
+      "big_above": 16,
+      "long_low_on_rails": 11,
+      "thin_hanging": 16
+     }
+    },
+    "five_empty": {
+     "frames": 2287,
+     "decisions": {
+      "GO": 1242,
+      "CAUTION": 987,
+      "STOP": 58
+     },
+     "decision_changed_frames": 0,
+     "clear_median_m": 120.0,
+     "clear_p10_m": 45.5,
+     "median_change_pct": -5.5,
+     "frames_shortened": 572,
+     "frames_shortened_gt_10m": 524,
+     "frames_pushed_under_60m": 60,
+     "frames_pushed_under_60m_pct": 2.62
+    },
+    "ride": {
+     "frames": 11271,
+     "decisions": {
+      "GO": 6435,
+      "CAUTION": 4649,
+      "STOP": 187
+     },
+     "decision_changed_frames": 0,
+     "clear_median_m": 120.1,
+     "clear_p10_m": 60.0,
+     "median_change_pct": -5.4,
+     "frames_shortened": 1961,
+     "frames_shortened_gt_10m": 1422,
+     "frames_pushed_under_60m": 340,
+     "frames_pushed_under_60m_pct": 3.02
+    },
+    "verdict": {
+     "S2_target": true,
+     "S4_clutter": false,
+     "S5_decision": true,
+     "result": "fails S4"
+    }
+   },
+   "C4": {
+    "set_O": {
+     "target": 92,
+     "target_frames": 505,
+     "intent": 270,
+     "intent_frames": 801,
+     "go_judge": 182,
+     "go_judge_in_envelope": 81,
+     "target_by_decision": {
+      "GO": 71,
+      "CAUTION": 19,
+      "STOP": 2
+     },
+     "clear_median_m": 98.4,
+     "decisions": {
+      "GO": 793,
+      "STOP": 342,
+      "FAULT": 2,
+      "CAUTION": 373
+     },
+     "decision_changed_frames": 0,
+     "outside_objects_clear_stops_at_object": {
+      "small_outside_near": 7,
+      "big_outside": 12
+     },
+     "per_object_target": {
+      "big_center": 1,
+      "small_on_rail": 6,
+      "small_center": 31,
+      "small_edge_inside": 4,
+      "big_edge_inside": 7,
+      "big_above": 16,
+      "long_low_on_rails": 11,
+      "thin_hanging": 16
+     }
+    },
+    "five_empty": {
+     "frames": 2287,
+     "decisions": {
+      "GO": 1242,
+      "CAUTION": 987,
+      "STOP": 58
+     },
+     "decision_changed_frames": 0,
+     "clear_median_m": 120.0,
+     "clear_p10_m": 46.5,
+     "median_change_pct": -5.5,
+     "frames_shortened": 515,
+     "frames_shortened_gt_10m": 471,
+     "frames_pushed_under_60m": 56,
+     "frames_pushed_under_60m_pct": 2.45
+    },
+    "ride": {
+     "frames": 11271,
+     "decisions": {
+      "GO": 6435,
+      "CAUTION": 4649,
+      "STOP": 187
+     },
+     "decision_changed_frames": 0,
+     "clear_median_m": 122.5,
+     "clear_p10_m": 60.0,
+     "median_change_pct": -3.5,
+     "frames_shortened": 1634,
+     "frames_shortened_gt_10m": 1148,
+     "frames_pushed_under_60m": 316,
+     "frames_pushed_under_60m_pct": 2.8
+    },
+    "verdict": {
+     "S2_target": true,
+     "S4_clutter": false,
+     "S5_decision": true,
+     "result": "fails S4"
+    }
+   },
+   "C5": {
+    "set_O": {
+     "target": 101,
+     "target_frames": 505,
+     "intent": 280,
+     "intent_frames": 801,
+     "go_judge": 186,
+     "go_judge_in_envelope": 84,
+     "target_by_decision": {
+      "GO": 78,
+      "CAUTION": 21,
+      "STOP": 2
+     },
+     "clear_median_m": 98.5,
+     "decisions": {
+      "GO": 793,
+      "STOP": 342,
+      "FAULT": 2,
+      "CAUTION": 373
+     },
+     "decision_changed_frames": 0,
+     "outside_objects_clear_stops_at_object": {
+      "small_outside_near": 7,
+      "big_outside": 12
+     },
+     "per_object_target": {
+      "big_center": 2,
+      "small_on_rail": 8,
+      "small_center": 32,
+      "small_edge_inside": 4,
+      "big_edge_inside": 8,
+      "big_above": 18,
+      "long_low_on_rails": 12,
+      "thin_hanging": 17
+     }
+    },
+    "five_empty": {
+     "frames": 2287,
+     "decisions": {
+      "GO": 1242,
+      "CAUTION": 987,
+      "STOP": 58
+     },
+     "decision_changed_frames": 0,
+     "clear_median_m": 120.0,
+     "clear_p10_m": 47.0,
+     "median_change_pct": -5.5,
+     "frames_shortened": 482,
+     "frames_shortened_gt_10m": 441,
+     "frames_pushed_under_60m": 49,
+     "frames_pushed_under_60m_pct": 2.14
+    },
+    "ride": {
+     "frames": 11271,
+     "decisions": {
+      "GO": 6435,
+      "CAUTION": 4649,
+      "STOP": 187
+     },
+     "decision_changed_frames": 0,
+     "clear_median_m": 123.0,
+     "clear_p10_m": 60.0,
+     "median_change_pct": -3.1,
+     "frames_shortened": 1506,
+     "frames_shortened_gt_10m": 1048,
+     "frames_pushed_under_60m": 285,
+     "frames_pushed_under_60m_pct": 2.53
+    },
+    "verdict": {
+     "S2_target": true,
+     "S4_clutter": false,
+     "S5_decision": true,
+     "result": "fails S4"
+    }
+   }
+  },
+  "outcome": "NO candidate ships: every one fails S4 on the five obstacle-free recordings (median clear_distance -5.5 % for C2-C5 against <= 5 %, the group median drops from 127.0 m onto the 120.0 m plateau of the monitored range; frames pushed under 60 m 2.14-4.59 % against <= 2 %) and on the ride (C4 / C5 median -3.5 / -3.1 % but 2.80 / 2.53 % of the frames pushed under 60 m). S2 and S5 pass for all: the decision is identical on every frame. The gate (S1, S3) is not run for a candidate that fails S4 (procedure).",
+  "causes": {
+   "set_O_fixed_by": "C2, the 90 in-envelope object-frames it fixes, by the cluster that caps: 'elevated' 38 (big_above 32, long_low_on_rails 6), 'floating' 21 (small_edge_inside 12, small_center 9), unconfirmed gauge-zone clusters 25, an unconfirmed advisory-zone cluster 1, a confirmed advisory track with a gauge-zone cluster 5; no 'column'",
+   "set_O_left": "C2 leaves 82: small_center (0.3 m floating cube) 30, thin_hanging 15 (the 5 cm object forms no cluster in those frames: 1-4 points, EXPERIMENTS §5), big_above 13, long_low_on_rails 10, big_edge_inside 6, small_on_rail 4, small_edge_inside 4",
+   "clutter": "the verified-clear distance on empty track is shortened mostly by clusters demoted by the 'column' signature (and tracks held advisory by tracking.column_hold): the column row of the double-track tunnels, which the detector's far axis puts 0.0-1.1 m off the axis at 40-60 m with up to 79 strict-envelope voxels. C5 on the ride (one continuous run): 228 of the 293 frames pushed under 60 m, 873 of the 1 448 shortened frames; roundT_doubleT: 41 of the 45 frames under 60 m. The rest: unconfirmed 'low' bed candidates (29 ride frames under 60 m), unconfirmed gauge-zone clusters (14), 'edge' (7)"
+  }
+ },
+ "round2_preregistered": {
+  "written_at_utc": "2026-09-25T21:07:19Z",
+  "note": "written AFTER round 1 and its per-reason breakdown (round1.causes), before any run of a round-2 candidate. Round 2 is designed on the same recordings: its S4 numbers there are not independent evidence that the clutter stays low on other track; S1 / S3 (the gate) and S5 are unaffected by design (the cap changes nothing a detection or the decision reads).",
+  "change": "health.clear_cap_skip_columns (bool; false = round-1 behaviour): a cluster demoted by the 'column' signature (Cluster.reason == 'column'), or whose track is held advisory by tracking.column_hold (>= column_hold column hits among its last zone_window hits, Track.zone's own test), does not cap clear_distance. Why: the column row of the double-track tunnels is known infrastructure that the detector already demotes and holds advisory; it made 873 of the 1 448 shortened ride frames and 228 of the 293 pushed under 60 m (C5), and no set O fix of C2.",
+  "candidates_in_order": [
+   {
+    "id": "R1",
+    "set": [
+     "health.clear_cap=true",
+     "health.clear_cap_points=0",
+     "health.clear_cap_margin=-1",
+     "health.clear_cap_skip_columns=true",
+     "health.clear_cap_min_gauge=1",
+     "health.clear_cap_min_hits=1"
+    ],
+    "what": "C2 without columns"
+   },
+   {
+    "id": "R2",
+    "set": [
+     "health.clear_cap=true",
+     "health.clear_cap_points=0",
+     "health.clear_cap_margin=-1",
+     "health.clear_cap_skip_columns=true",
+     "health.clear_cap_min_gauge=1",
+     "health.clear_cap_min_hits=2"
+    ],
+    "what": "C3 without columns"
+   },
+   {
+    "id": "R3",
+    "set": [
+     "health.clear_cap=true",
+     "health.clear_cap_points=0",
+     "health.clear_cap_margin=-1",
+     "health.clear_cap_skip_columns=true",
+     "health.clear_cap_min_gauge=3",
+     "health.clear_cap_min_hits=2"
+    ],
+    "what": "C4 without columns"
+   },
+   {
+    "id": "R4",
+    "set": [
+     "health.clear_cap=true",
+     "health.clear_cap_points=0",
+     "health.clear_cap_margin=-1",
+     "health.clear_cap_skip_columns=true",
+     "health.clear_cap_min_gauge=3",
+     "health.clear_cap_min_hits=3"
+    ],
+    "what": "C5 without columns"
+   }
+  ],
+  "choice": "unchanged: the FIRST candidate in the order R1 .. R4 that satisfies S1-S5 of the round-1 registration (same target, thresholds and procedure: one flag-off sweep for S2 / S4 / S5, then the gate with --jobs 1 for S1 / S3) ships with health.clear_cap default true and its parameters as defaults; if none does, the flag stays off (tried, not shipped).",
+  "known_before_registration": "all of round 1 (this file, 'round1'): the per-candidate numbers and the per-reason breakdown of the capping clusters (C5 on the ride as one continuous run, on roundT_doubleT and doubleT_platform; C2 on the other three obstacle-free recordings and on the set O fixes). Not measured: any candidate with the column exclusion."
+ },
+ "round2": {
+  "measured_utc": "2026-09-25T21:20:20Z",
+  "code": "1f1153e + health.clear_cap_skip_columns (uncommitted at the run; committed with the docs), flag off byte-identical",
+  "how": "as round 1 (a new flag-off pass: its GO / CAUTION split differs from round 1's by 7 frames on the five recordings because the health latency warning depends on the machine load; within a pass every candidate shares the same frames)",
+  "candidates": {
+   "off": {
+    "set_O": {
+     "target": 172,
+     "target_frames": 505,
+     "intent": 366,
+     "intent_frames": 801,
+     "go_judge": 192,
+     "go_judge_in_envelope": 89,
+     "target_by_decision": {
+      "GO": 89,
+      "CAUTION": 81,
+      "STOP": 2
+     },
+     "clear_median_m": 116.5,
+     "decisions": {
+      "GO": 793,
+      "STOP": 342,
+      "FAULT": 2,
+      "CAUTION": 373
+     },
+     "decision_changed_frames": 0,
+     "outside_objects_clear_stops_at_object": {
+      "small_outside_near": 0,
+      "big_outside": 6
+     },
+     "per_object_target": {
+      "big_center": 5,
+      "small_on_rail": 10,
+      "small_center": 44,
+      "small_edge_inside": 16,
+      "big_edge_inside": 8,
+      "big_above": 50,
+      "long_low_on_rails": 19,
+      "thin_hanging": 20
+     }
+    },
+    "five_empty": {
+     "frames": 2287,
+     "decisions": {
+      "GO": 1249,
+      "CAUTION": 980,
+      "STOP": 58
+     },
+     "decision_changed_frames": 0,
+     "clear_median_m": 127.0,
+     "clear_p10_m": 60.0,
+     "median_change_pct": 0.0,
+     "frames_shortened": 0,
+     "frames_shortened_gt_10m": 0,
+     "frames_pushed_under_60m": 0,
+     "frames_pushed_under_60m_pct": 0.0
+    },
+    "ride": {
+     "frames": 11271,
+     "decisions": {
+      "GO": 6435,
+      "CAUTION": 4649,
+      "STOP": 187
+     },
+     "decision_changed_frames": 0,
+     "clear_median_m": 127.0,
+     "clear_p10_m": 60.0,
+     "median_change_pct": 0.0,
+     "frames_shortened": 0,
+     "frames_shortened_gt_10m": 0,
+     "frames_pushed_under_60m": 0,
+     "frames_pushed_under_60m_pct": 0.0
+    }
+   },
+   "R1": {
+    "set_O": {
+     "target": 82,
+     "target_frames": 505,
+     "intent": 254,
+     "intent_frames": 801,
+     "go_judge": 172,
+     "go_judge_in_envelope": 76,
+     "target_by_decision": {
+      "GO": 63,
+      "CAUTION": 17,
+      "STOP": 2
+     },
+     "clear_median_m": 98.3,
+     "decisions": {
+      "GO": 793,
+      "STOP": 342,
+      "FAULT": 2,
+      "CAUTION": 373
+     },
+     "decision_changed_frames": 0,
+     "outside_objects_clear_stops_at_object": {
+      "small_outside_near": 11,
+      "big_outside": 12
+     },
+     "per_object_target": {
+      "big_center": 0,
+      "small_on_rail": 4,
+      "small_center": 30,
+      "small_edge_inside": 4,
+      "big_edge_inside": 6,
+      "big_above": 13,
+      "long_low_on_rails": 10,
+      "thin_hanging": 15
+     }
+    },
+    "five_empty": {
+     "frames": 2287,
+     "decisions": {
+      "GO": 1249,
+      "CAUTION": 980,
+      "STOP": 58
+     },
+     "decision_changed_frames": 0,
+     "clear_median_m": 120.0,
+     "clear_p10_m": 50.2,
+     "median_change_pct": -5.5,
+     "frames_shortened": 511,
+     "frames_shortened_gt_10m": 459,
+     "frames_pushed_under_60m": 28,
+     "frames_pushed_under_60m_pct": 1.22
+    },
+    "ride": {
+     "frames": 11271,
+     "decisions": {
+      "GO": 6435,
+      "CAUTION": 4649,
+      "STOP": 187
+     },
+     "decision_changed_frames": 0,
+     "clear_median_m": 123.0,
+     "clear_p10_m": 60.0,
+     "median_change_pct": -3.1,
+     "frames_shortened": 1366,
+     "frames_shortened_gt_10m": 1048,
+     "frames_pushed_under_60m": 168,
+     "frames_pushed_under_60m_pct": 1.49
+    },
+    "verdict": {
+     "S2_target": true,
+     "S4_clutter": false,
+     "S5_decision": true,
+     "result": "fails S4"
+    }
+   },
+   "R2": {
+    "set_O": {
+     "target": 92,
+     "target_frames": 505,
+     "intent": 267,
+     "intent_frames": 801,
+     "go_judge": 179,
+     "go_judge_in_envelope": 81,
+     "target_by_decision": {
+      "GO": 71,
+      "CAUTION": 19,
+      "STOP": 2
+     },
+     "clear_median_m": 98.4,
+     "decisions": {
+      "GO": 793,
+      "STOP": 342,
+      "FAULT": 2,
+      "CAUTION": 373
+     },
+     "decision_changed_frames": 0,
+     "outside_objects_clear_stops_at_object": {
+      "small_outside_near": 9,
+      "big_outside": 12
+     },
+     "per_object_target": {
+      "big_center": 1,
+      "small_on_rail": 6,
+      "small_center": 31,
+      "small_edge_inside": 4,
+      "big_edge_inside": 7,
+      "big_above": 16,
+      "long_low_on_rails": 11,
+      "thin_hanging": 16
+     }
+    },
+    "five_empty": {
+     "frames": 2287,
+     "decisions": {
+      "GO": 1249,
+      "CAUTION": 980,
+      "STOP": 58
+     },
+     "decision_changed_frames": 0,
+     "clear_median_m": 120.0,
+     "clear_p10_m": 55.9,
+     "median_change_pct": -5.5,
+     "frames_shortened": 447,
+     "frames_shortened_gt_10m": 402,
+     "frames_pushed_under_60m": 18,
+     "frames_pushed_under_60m_pct": 0.79
+    },
+    "ride": {
+     "frames": 11271,
+     "decisions": {
+      "GO": 6435,
+      "CAUTION": 4649,
+      "STOP": 187
+     },
+     "decision_changed_frames": 0,
+     "clear_median_m": 124.7,
+     "clear_p10_m": 60.0,
+     "median_change_pct": -1.8,
+     "frames_shortened": 1007,
+     "frames_shortened_gt_10m": 737,
+     "frames_pushed_under_60m": 117,
+     "frames_pushed_under_60m_pct": 1.04
+    },
+    "verdict": {
+     "S2_target": true,
+     "S4_clutter": false,
+     "S5_decision": true,
+     "result": "fails S4"
+    }
+   },
+   "R3": {
+    "set_O": {
+     "target": 92,
+     "target_frames": 505,
+     "intent": 270,
+     "intent_frames": 801,
+     "go_judge": 182,
+     "go_judge_in_envelope": 81,
+     "target_by_decision": {
+      "GO": 71,
+      "CAUTION": 19,
+      "STOP": 2
+     },
+     "clear_median_m": 98.4,
+     "decisions": {
+      "GO": 793,
+      "STOP": 342,
+      "FAULT": 2,
+      "CAUTION": 373
+     },
+     "decision_changed_frames": 0,
+     "outside_objects_clear_stops_at_object": {
+      "small_outside_near": 7,
+      "big_outside": 12
+     },
+     "per_object_target": {
+      "big_center": 1,
+      "small_on_rail": 6,
+      "small_center": 31,
+      "small_edge_inside": 4,
+      "big_edge_inside": 7,
+      "big_above": 16,
+      "long_low_on_rails": 11,
+      "thin_hanging": 16
+     }
+    },
+    "five_empty": {
+     "frames": 2287,
+     "decisions": {
+      "GO": 1249,
+      "CAUTION": 980,
+      "STOP": 58
+     },
+     "decision_changed_frames": 0,
+     "clear_median_m": 120.0,
+     "clear_p10_m": 58.5,
+     "median_change_pct": -5.5,
+     "frames_shortened": 391,
+     "frames_shortened_gt_10m": 351,
+     "frames_pushed_under_60m": 15,
+     "frames_pushed_under_60m_pct": 0.66
+    },
+    "ride": {
+     "frames": 11271,
+     "decisions": {
+      "GO": 6435,
+      "CAUTION": 4649,
+      "STOP": 187
+     },
+     "decision_changed_frames": 0,
+     "clear_median_m": 125.9,
+     "clear_p10_m": 60.0,
+     "median_change_pct": -0.9,
+     "frames_shortened": 688,
+     "frames_shortened_gt_10m": 472,
+     "frames_pushed_under_60m": 97,
+     "frames_pushed_under_60m_pct": 0.86
+    },
+    "verdict": {
+     "S2_target": true,
+     "S4_clutter": false,
+     "S5_decision": true,
+     "result": "fails S4"
+    }
+   },
+   "R4": {
+    "set_O": {
+     "target": 101,
+     "target_frames": 505,
+     "intent": 280,
+     "intent_frames": 801,
+     "go_judge": 186,
+     "go_judge_in_envelope": 84,
+     "target_by_decision": {
+      "GO": 78,
+      "CAUTION": 21,
+      "STOP": 2
+     },
+     "clear_median_m": 98.5,
+     "decisions": {
+      "GO": 793,
+      "STOP": 342,
+      "FAULT": 2,
+      "CAUTION": 373
+     },
+     "decision_changed_frames": 0,
+     "outside_objects_clear_stops_at_object": {
+      "small_outside_near": 7,
+      "big_outside": 12
+     },
+     "per_object_target": {
+      "big_center": 2,
+      "small_on_rail": 8,
+      "small_center": 32,
+      "small_edge_inside": 4,
+      "big_edge_inside": 8,
+      "big_above": 18,
+      "long_low_on_rails": 12,
+      "thin_hanging": 17
+     }
+    },
+    "five_empty": {
+     "frames": 2287,
+     "decisions": {
+      "GO": 1249,
+      "CAUTION": 980,
+      "STOP": 58
+     },
+     "decision_changed_frames": 0,
+     "clear_median_m": 120.0,
+     "clear_p10_m": 60.0,
+     "median_change_pct": -5.5,
+     "frames_shortened": 356,
+     "frames_shortened_gt_10m": 319,
+     "frames_pushed_under_60m": 8,
+     "frames_pushed_under_60m_pct": 0.35
+    },
+    "ride": {
+     "frames": 11271,
+     "decisions": {
+      "GO": 6435,
+      "CAUTION": 4649,
+      "STOP": 187
+     },
+     "decision_changed_frames": 0,
+     "clear_median_m": 126.7,
+     "clear_p10_m": 60.0,
+     "median_change_pct": -0.2,
+     "frames_shortened": 555,
+     "frames_shortened_gt_10m": 370,
+     "frames_pushed_under_60m": 66,
+     "frames_pushed_under_60m_pct": 0.59
+    },
+    "verdict": {
+     "S2_target": true,
+     "S4_clutter": false,
+     "S5_decision": true,
+     "result": "fails S4"
+    }
+   }
+  },
+  "outcome": "NO candidate ships: all four fail S4 on the five obstacle-free recordings by the median condition alone: 127.0 -> 120.0 m (-5.5 %, limit 5 %). 379 of their 2 287 frames sit on the 120.0 m plateau of the monitored range and the group median falls onto it; the frames that move it are squareT_platform_squareT_switch standing at the platform (its median 137.9 -> 120.0 m for R2-R4, 104.5 m for R1), capped at the platform-end structure at ~80-85 m, the overhead structure at ~104 m and structures at 130-150 m, the ones behind its false STOP episodes (ALGORITHM §6). The frames pushed under 60 m pass (five recordings 1.22 / 0.79 / 0.66 / 0.35 %, ride 1.49 / 1.04 / 0.86 / 0.59 %), and so does the ride median (-3.1 / -1.8 / -0.9 / -0.2 %). S2 and S5 pass for all (set O as round 1's C2-C5: the column exclusion changes no set O frame). The flag stays off; the sub-parameter defaults are set to R1, so health.clear_cap=true alone runs the first candidate in the order, which fails the five-recording median condition only."
+ },
+ "gate_R1": {
+  "note": "information for the captain, not a ship step (R1 failed S4, so the procedure did not require it): the regression gate with R1 switched on through the detector itself",
+  "command": "python scripts/regression_gate.py --cache /data/cache --jobs 1 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json --set health.clear_cap=true --set health.clear_cap_points=0 --set health.clear_cap_margin=-1 --set health.clear_cap_skip_columns=true --set health.clear_cap_min_gauge=1 --set health.clear_cap_min_hits=1",
+  "code": "1f1153e + the (then uncommitted) flag and clear_cap_skip_columns",
+  "config_sha256": "bddd91a8dac4",
+  "native": {
+   "path": "native",
+   "status": "native (_resense_native.so)"
+  },
+  "wall_s": 1092.8,
+  "verdict": "GATE PASS, exit 0: 0 gated rows better, 0 worse; the 15 information rows that changed are all latency (machine load)",
+  "doubleT_obstacle": {
+   "alarm_events": 2,
+   "stop_episodes": 3,
+   "first_alarm_frame": 11,
+   "labelled": {
+    "per_label": {
+     "object_on_rail": {
+      "hits": 127,
+      "frames": 185
+     },
+     "person_crossing": {
+      "hits": 58,
+      "frames": 61
+     },
+     "object_on_rail_from_frame_75": {
+      "hits": 124,
+      "frames": 126
+     }
+    },
+    "hits": 185,
+    "frames": 246,
+    "fp_frames": 0,
+    "fp_events": 0,
+    "distance_error_max_m": 0.23
+   }
+  },
+  "five_empty": {
+   "frames": 2287,
+   "alarm_frames": 58,
+   "alarm_events": 13,
+   "stop_episodes": 16,
+   "advisory_frames": 997
+  },
+  "ride": {
+   "frames": 11271,
+   "alarm_frames": 187,
+   "alarm_events": 46,
+   "stop_episodes": 39,
+   "advisory_frames": 4742
+  },
+  "set_O": {
+   "inside_stop_frames": 303,
+   "inside_visible_frames": 801,
+   "inside_objects_with_stop": 5,
+   "outside_false_stop_frames": 6
+  },
+  "set_F_straight": {
+   "person": {
+    "detected": 6,
+    "first_detection_median_m": 151.0,
+    "false_detections": 7
+   },
+   "box1.0": {
+    "detected": 6,
+    "first_detection_median_m": 123.9,
+    "false_detections": 13
+   },
+   "box0.5": {
+    "detected": 1,
+    "first_detection_median_m": 51.9,
+    "false_detections": 0
+   },
+   "trolley": {
+    "detected": 6,
+    "first_detection_median_m": 151.4,
+    "false_detections": 12
+   },
+   "cable": {
+    "detected": 6,
+    "first_detection_median_m": 98.9,
+    "false_detections": 3
+   }
+  },
+  "same_as_sweep": "the gate's per-frame clear_distance equals the sweep's R1 value on all 15 068 frames of set O, the five recordings and the ride (0 differ), and obstacle / warning are identical"
+ },
+ "decision_on_branch": "Tried, not shipped (25.09): health.clear_cap stays false (output byte-identical to 1c96233). No candidate of either round met the pre-registered clutter condition S4. The sub-parameter defaults are R1's (clear_cap_min_gauge 1, clear_cap_min_hits 1, clear_cap_margin -1, clear_cap_points 0, clear_cap_skip_columns true), so that a captain's override is one switch: R1 cuts the set O overclaim 172 -> 82, changes no detection and no decision (gate PASS, 0 gated rows changed), shortens the ride's median clear distance 127.0 -> 123.0 m (1.49 % of the frames pushed under 60 m) and the five obstacle-free recordings' median 127.0 -> 120.0 m (-5.5 %, the failed limit; 1.22 % under 60 m).",
+ "decision": {
+  "date_utc": "2026-09-25T22:14:52Z",
+  "by": "the captain's delegate (applied by the P3 integrator on wf10/p3-round2)",
+  "text": "shipped by the captain's delegate despite missing the pre-registered clutter limit by 0.5 pp; R1–R4 were designed after round 1",
+  "default": "health.clear_cap true with candidate R1's sub-parameters (clear_cap_min_gauge 1, clear_cap_min_hits 1, clear_cap_margin -1, clear_cap_points 0, clear_cap_skip_columns true)",
+  "not_passed": "R1 FAILED the pre-registered clutter condition S4: the five obstacle-free recordings' median clear_distance fell -5.5 % against a -5 % limit (127.0 -> 120.0 m, 1.22 % of their frames pushed under 60 m); the ride fell -3.1 % (127.0 -> 123.0 m) with 1.49 % of its frames under 60 m. It is not described as having passed.",
+  "why_shipped": "it makes the verified-clear distance conservative (set O object-frames whose clear_distance lies past an in-envelope object: 172 -> 82) and changes no detection and no decision (gate with R1: 0 gated rows changed; 0 frames change between GO, CAUTION and STOP)",
+  "caveat": "R1-R4 (round 2) were designed after the round-1 results, so R1 is not a first-shot pre-registered candidate either",
+  "measured_on_the_combined_code": "p3_round2_combined_2026-09-25.json (clear_distance block)"
+ }
+}

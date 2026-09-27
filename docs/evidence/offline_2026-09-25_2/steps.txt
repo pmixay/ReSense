@@ -1,0 +1,9 @@
+15:14:30 outbound interface: eth0
+15:14:30 restore timer armed (30 min)
+15:14:30 block on (no host allowed)
+15:15:31 check_no_network exit 0
+15:17:21 dry_obstacle exit 0
+15:18:01 dry_clear exit 0
+15:18:36 jury_console exit 1
+15:18:37 restored; github 200
+restored 2026-09-25T15:18:36+00:00

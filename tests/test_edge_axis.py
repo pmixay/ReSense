@@ -1,0 +1,207 @@
+"""The envelope measured from the sensor axis as well as from the rails (``gauge.axis_union``, 26.09;
+docs/evidence/results/p3_edge_axis_2026-09-26.json).
+
+The organizers place their edge-test objects from the sensor's X axis, which in
+``cloud_with_fake_obj`` runs at -0.24 deg to the rails; the detector measures the envelope from the
+rails. With the option on, a point is inside when it is inside either envelope, only in the near field
+on straight track where the two axes are within ``axis_union_max_offset`` of each other.
+"""
+from __future__ import annotations
+
+import numpy as np
+import pytest
+
+from pathlib import Path
+
+from resense.config import DetectorConfig, GaugeConfig
+from resense.detector import Detector
+from resense.frame import Frame
+from resense.gauge import axis_union_coordinates, axis_union_offset, axis_union_strict, point_in_polygon
+from resense.synthetic import ObstacleSpec, synthetic_tunnel_frame
+from resense.track import TrackModel
+
+
+def _track(center=0.0, yaw_deg=0.3, curvature=0.0, rail_slabs=3):
+    return TrackModel(floor_coef=np.array([0.0, 0.0, -1.5]), floor_range=(0.0, 100.0), center=center,
+                      yaw=np.radians(yaw_deg), curvature=curvature, rail_slabs=rail_slabs)
+
+
+def _gauge(mode):
+    g = GaugeConfig()
+    g.axis_union = mode
+    return g
+
+
+def test_shipped_mode_and_off_switch():
+    """Off (0) by default: A (1) passed its gate but the safety review of 26.09 blocked it (see
+    ``test_union_does_not_drop_an_object_touching_an_edge_line``); the coordinate map is B's (2) only."""
+    for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
+                DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
+        assert cfg.gauge.axis_union == 0
+    X = np.linspace(3.0, 60.0, 50)
+    assert axis_union_offset(X, _track(), _gauge(0)) is None
+    ok, c = axis_union_offset(X, _track(), _gauge(1))
+    assert ok[X <= 50.0].all() and not ok[X > 50.0].any()
+    dy = np.linspace(-2.0, 2.0, 50)
+    assert axis_union_coordinates(X, dy, _track(), _gauge(0)) is dy
+    assert axis_union_strict(X, dy, np.full(50, 1.0), _track(), _gauge(0)) is None
+
+
+@pytest.mark.parametrize("track", [_track(curvature=5e-4), _track(rail_slabs=0)])
+def test_not_on_a_curve_or_without_the_rail_pair(track):
+    X = np.linspace(3.0, 60.0, 50)
+    assert axis_union_offset(X, track, _gauge(2)) is None
+
+
+def test_union_coordinate_is_the_union_and_continuous():
+    """Candidate B: |dy'| <= W exactly when inside the rail or the sensor-axis envelope; monotone and
+    continuous in dy; the rail coordinate on the other side and beyond the region."""
+    g = _gauge(2)
+    tr = _track(center=0.02, yaw_deg=0.3)           # rail axis left of the sensor axis: c(X) > 0
+    W = 1.05
+    for x in (10.0, 30.0, 49.0):
+        dy = np.linspace(-2.5, 2.5, 5001)
+        X = np.full(dy.size, x)
+        c = float(tr.center_y(np.array([x]))[0])
+        out = axis_union_coordinates(X, dy, tr, g)
+        assert np.all(np.diff(out) > 0)                          # monotone
+        assert np.max(np.abs(np.diff(out))) < 2 * (dy[1] - dy[0])  # continuous
+        union = (np.abs(dy) <= W + 1e-9) | (np.abs(dy + c) <= W + 1e-9)
+        assert np.array_equal(np.abs(out) <= W + 1e-9, union)
+        assert np.array_equal(out[dy >= 0], dy[dy >= 0])        # the side where the axis envelope is narrower
+        far = dy < -(W + c)
+        assert np.allclose(out[far], dy[far] + c)               # beyond the union edge: from the sensor axis
+    X = np.array([60.0, 60.0])                                  # beyond axis_union_range
+    dy = np.array([-1.2, 1.2])
+    assert np.array_equal(axis_union_coordinates(X, dy, tr, g), dy)
+
+
+def test_union_strict_membership():
+    """Candidate A: the strict membership measured from the sensor axis within the region only."""
+    g = _gauge(1)
+    tr = _track(center=0.0, yaw_deg=0.3)
+    X = np.array([30.0, 30.0, 30.0, 70.0])
+    c = float(tr.center_y(np.array([30.0]))[0])                 # 0.157 m
+    dy = np.array([-0.95 - c, 0.95 - c, -1.3 - c, -0.95 - 0.37])
+    h = np.full(4, 1.0)
+    ax = axis_union_strict(X, dy, h, tr, g)
+    assert ax.tolist() == [True, True, False, False]
+    assert not point_in_polygon(dy[:1], h[:1], g.profile)[0]    # outside the rail envelope
+
+
+ROOT = Path(__file__).resolve().parents[1]
+FLOOR_Z = -1.5
+
+
+def _yawed_scene(yaw_deg, specs, seed=5):
+    """The ray-cast straight tunnel (track axis on the sensor axis) seen by a sensor yawed by
+    ``yaw_deg`` against the rails: the rails run at +yaw_deg in the sensor frame."""
+    frame, _, _ = synthetic_tunnel_frame(axis_y=0.0, rng=np.random.default_rng(seed), specs=specs)
+    t = np.radians(yaw_deg)
+    R = np.array([[np.cos(t), -np.sin(t), 0.0], [np.sin(t), np.cos(t), 0.0], [0.0, 0.0, 1.0]])
+    return Frame(xyz=(frame.xyz.astype(np.float64) @ R.T).astype(np.float32), intensity=frame.intensity)
+
+
+def _run(frame, mode, n=6, wall_keep=None):
+    cfg = DetectorConfig()
+    cfg.gauge.axis_union = mode
+    if wall_keep is not None:
+        cfg.cluster.wall_keep_gauge_voxels = wall_keep
+    det = Detector(cfg)
+    return [det.process(Frame(xyz=frame.xyz, intensity=frame.intensity, stamp=0.1 * k)) for k in range(n)]
+
+
+@pytest.mark.synthetic
+def test_object_at_the_axis_referenced_edge():
+    """Sensor yawed 0.5 deg against straight rails (0.26 m at 30 m): a 0.5 x 0.6 x 1.0 m box at 30 m
+    whose inner face is 0.2 m inside the envelope measured from the sensor axis and ~0.06 m outside
+    the one measured from the rails. Rails only: advisory; the union (A, the default since 26.09, B
+    and B2): STOP. The empty tunnel stays clear."""
+    box = ObstacleSpec(kind="box", size=(0.5, 0.6, 1.0), distance=30.0, lateral=-1.41)
+    frame = _yawed_scene(0.5, [box])
+    off = _run(frame, 0)
+    assert not any(r.obstacle for r in off) and off[-1].warning
+    for mode in (1, 2, 3):
+        res = _run(frame, mode)
+        assert res[-1].obstacle, (mode, [(c.distance, c.lateral, c.zone, c.reason) for c in res[-1].candidates])
+        assert abs(res[-1].detections[0].distance - 30.0) < 0.6
+    empty = _yawed_scene(0.5, [])
+    for mode in (1, 2, 3):
+        assert not any(r.obstacle or r.warning for r in _run(empty, mode))
+
+
+@pytest.mark.synthetic
+def test_tall_box_at_the_axis_referenced_edge():
+    """Set O #6 in the ray-cast tunnel: a 2 x 2 x 2.3 m box at 20 m whose inner face is 0.1 m inside
+    the envelope measured from the sensor axis (0.07 m outside the one from the rails; sensor yawed
+    0.5 deg). Its part inside the advisory corridor is ~2 m tall at ~1.2 m from the rails, so the wall
+    rule drops it with the rails only and with A; with B2 (not shipped: +3 ride events) the shape
+    rules read the lateral from the sensor axis (~1.05 m) and it STOPs. The wall keep of the near
+    escalation (``cluster.wall_keep_gauge_voxels``, on) counts the voxels inside the envelope
+    measured from the rails (safety review of 26.09), where the face has none: A still drops it."""
+    x, inner = 20.0, -0.95
+    box = ObstacleSpec(kind="box", size=(2.0, 2.0, 2.3), distance=x,
+                       lateral=inner - 1.0 - x * np.tan(np.radians(0.5)))
+    frame = _yawed_scene(0.5, [box])
+    assert not any(r.obstacle for r in _run(frame, 0, n=8))
+    assert not any(r.obstacle for r in _run(frame, 1, n=8))                # A: still a wall, the wall keep on
+    res = _run(frame, 3, n=8, wall_keep=0)                                 # B2
+    assert res[-1].obstacle, [(c.distance, c.lateral, c.zone, c.reason) for c in res[-1].candidates]
+    assert abs(res[-1].detections[0].distance - x) < 0.6
+
+
+def _edge_line(x0: float, length: float, lateral: float) -> ObstacleSpec:
+    """A 30-40 m line along the corridor edge (a hose, cable or pipe), 8 x 10 cm, 0.15 m above the
+    rail head."""
+    return ObstacleSpec(kind="box", size=(length, 0.08, 0.10), distance=x0, lateral=lateral,
+                        base_z=FLOOR_Z + 0.18 + 0.15)
+
+
+@pytest.mark.synthetic
+def test_union_does_not_drop_an_object_touching_an_edge_line():
+    """The safety review of 26.09 (why A is off): the rail axis 0.25 m left of the sensor axis, a
+    0.5 m box 0.85 m right of the rails approached from 32 to 8 m, touching a 30 m line 1.20 m right
+    of them. The sensor-axis envelope takes the line in, the oversize split's part grew past 3 m and
+    the box was dropped with it (19 -> 6 STOP frames). The split falls back to the part inside the
+    rails' envelope: with the union on, the STOP frames are those of the union off."""
+    stops = {}
+    for mode in (0, 1):
+        cfg = DetectorConfig()
+        cfg.gauge.axis_union = mode
+        det = Detector(cfg)
+        out = []
+        for k in range(25):
+            d = 32.0 - k
+            specs = [ObstacleSpec(kind="box", size=(0.5, 0.5, 0.6), distance=d, lateral=-0.85, base_z=FLOOR_Z),
+                     _edge_line(max(d - 20.0, 3.0), 30.0, -1.20)]
+            fr, _, _ = synthetic_tunnel_frame(rng=np.random.default_rng(k % 5), specs=specs, axis_y=0.25)
+            out.append(det.process(Frame(xyz=fr.xyz, intensity=fr.intensity, stamp=0.1 * k)).obstacle)
+        stops[mode] = [k for k, o in enumerate(out) if o]
+    assert len(stops[0]) >= 15
+    assert stops[1] == stops[0]
+
+
+@pytest.mark.synthetic
+def test_not_where_the_axes_diverge():
+    """Yawed 1.0 deg (0.5 m apart at 30 m, beyond axis_union_max_offset): the same placement from the
+    sensor axis stays advisory with the union on."""
+    box = ObstacleSpec(kind="box", size=(0.5, 0.6, 1.0), distance=30.0, lateral=-1.67)
+    frame = _yawed_scene(1.0, [box])
+    for mode in (1, 2, 3):
+        res = _run(frame, mode)
+        assert not any(r.obstacle for r in res) and res[-1].warning
+
+
+def test_accumulation_keeps_the_rails_own_mask():
+    """The rails-only strict membership (``Candidates.in_rail``) travels through the accumulation
+    buffer in the order of the merged points; without one it is the stored ``in_gauge``."""
+    from resense.accumulate import CandidateBuffer
+    buf = CandidateBuffer(n_frames=3)
+    X = np.array([45.0, 48.0, 60.0], np.float32)
+    z = np.zeros(3, np.float32)
+    buf.push(X, z, z, z, np.array([True, True, False]))
+    assert buf.merged_rail(40.0) is None
+    buf.push(X, z, z, z, np.array([True, True, False]), in_rail=np.array([True, False, False]))
+    assert buf.merged(40.0)[4].tolist() == [True, True, False, True, True, False]
+    assert buf.merged_rail(40.0).tolist() == [True, True, False, True, False, False]
+    assert buf.merged_rail(46.0).tolist() == [True, False, False, False]

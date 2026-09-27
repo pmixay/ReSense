@@ -5,6 +5,7 @@ Run from the repository root:  python -m pytest -q web/demo
 collect this file — add ``web/demo`` there if the team wants it in CI.)  Everything runs
 without the organizers' dataset; the browser tests skip when Playwright or Chromium is missing.
 """
+import glob
 import json
 import os
 import sys
@@ -20,9 +21,9 @@ RVIZ = os.path.join(ROOT, "ros2_ws", "src", "resense_ros", "rviz", "resense.rviz
 FOX = os.path.join(ROOT, "web", "foxglove_layout.json")
 LABEL_TOOL = os.path.join(ROOT, "web", "label_tool.html")
 PRESENTATION = os.path.join(ROOT, "docs", "presentation", "ReSense_LCT2026.pptx")
-MONTSERRAT = (
-    os.path.join(ROOT, "web", "assets", "fonts", "montserrat-cyrillic.woff2"),
-    os.path.join(ROOT, "web", "assets", "fonts", "montserrat-latin.woff2"),
+MOSCOW_SANS = (
+    os.path.join(ROOT, "web", "assets", "fonts", "MoscowSansRegular.otf"),
+    os.path.join(ROOT, "web", "assets", "fonts", "MoscowSansExtraBold.otf"),
 )
 RAW_TOPICS = ("/lidar_points", "/sensing/lidar/hesai128/pointcloud")
 
@@ -67,6 +68,8 @@ def test_foxglove_layout_parses_and_has_the_panels():
     assert any(c.get("path", "").startswith("/resense/obstacle_detected") for k, c in cfg.items() if k.startswith("Indicator!"))
     decision = [c for k, c in cfg.items() if k.startswith("Indicator!") and c.get("path") == "/resense/decision.data"]
     assert decision and {r["rawValue"] for r in decision[0]["rules"]} == {"GO", "CAUTION", "STOP", "FAULT"}
+    assert cfg["Indicator!obstacle"]["fallbackLabel"] == "NO DATA"
+    assert next(r["label"] for r in decision[0]["rules"] if r["rawValue"] == "GO") == "GO: no obstacle detected"
     assert "/resense/clear_distance.data" in plotted
     assert any(c.get("topicPath") == "/resense/status" for k, c in cfg.items() if k.startswith("RawMessages!"))
 
@@ -154,7 +157,7 @@ def test_dashboard_replays_jsonl_in_chromium(tiny_run, tmp_path):
     r = check_dashboard.check(out, shot, None, speed=10.0, min_dist=40.0, max_dist=72.0, timeout_s=60.0)
     assert r["ok"], r["errors"]
     assert r["frames"] == 14
-    assert r["observed"][0][1].startswith("ПУТЬ СВОБОДЕН")
+    assert r["observed"][0][1].startswith("ПРЕПЯТСТВИЕ НЕ ОБНАРУЖЕНО")
     # A confirmed track is intentionally held for one missed frame and projected one step
     # closer (4 m in this synthetic run), so the last displayed distance can be just below
     # the acceptance window used by check().
@@ -184,8 +187,92 @@ def test_dashboard_rejects_garbage_lines(tmp_path):
         n = page.evaluate("window.resense.loadText(%s, 'x.jsonl')" % json.dumps(text))
         assert n == 1
         assert check_dashboard.banner_text(page) == "ПРЕПЯТСТВИЕ  55.6 м"
+        page.locator("#node-card summary").click()
         assert page.inner_text("#n-dropped").startswith("2")       # node stats are shown when present
         assert "notice" in page.get_attribute("#node-card", "class")
+        b.close()
+
+
+def test_dashboard_freshness_and_live_stream_stall():
+    """Invalid data and a stalled status stream must not retain a green monitored corridor."""
+    if not _browser_available():
+        pytest.skip("playwright + chromium not available")
+    from playwright.sync_api import sync_playwright
+    import check_dashboard
+    with sync_playwright() as p:
+        b = _launch(p)
+        page = b.new_page()
+        page.goto("file://" + check_dashboard.INDEX, wait_until="domcontentloaded")
+        page.wait_for_function("window.resense !== undefined")
+        base = {"stamp": 1.0, "obstacle": False, "warning": False, "nearest_distance": None,
+                "detections": [], "warnings": [], "clear_distance": 120, "decision": "GO",
+                "health": {"level": "ok"}, "freshness": {"valid": True, "reason": "current",
+                "mode": "replay", "source_age_s": .02, "residence_age_s": .01,
+                "max_result_age_s": .5, "future_tolerance_s": .05}}
+        # Fix UTC only for this delivery and simulate 50 ms of transport. Real live-stream
+        # expiry timers keep running; the receipt assertions share the delivery's browser task.
+        deliver = """f => {
+            const readNow = Date.now, receiptMs = readNow();
+            Date.now = () => receiptMs;
+            try {
+                f.freshness.evaluated_at_utc_s = receiptMs/1000 - .05;
+                onStatus({data: JSON.stringify(f)});
+                return {label: document.querySelector('#age-label').textContent,
+                        age: document.querySelector('#source-age').textContent,
+                        decision: document.querySelector('#decision').textContent};
+            } finally { Date.now = readNow; }
+        }"""
+        received = page.evaluate(deliver, base)
+        assert received["label"] == "После публикации записи"
+        assert received["age"] == "70 мс"  # 20 ms at the node plus 50 ms in transport
+        page.evaluate("checkLiveStream(state.lastStatusArrival + 501)")
+        assert page.inner_text("#decision") == "ОШИБКА"
+        assert page.inner_text("#clear") == "не определена"
+        assert page.evaluate("state.cab.clearEnd") == 0
+        # A new fresh message permits recovery; a later pause holds an outstanding STOP.
+        stop = dict(base, obstacle=True, decision="STOP", nearest_distance=50, clear_distance=50)
+        page.evaluate(deliver, stop)
+        page.evaluate("checkLiveStream(state.lastStatusArrival + 501)")
+        assert page.inner_text("#decision") == "СТОП"
+        assert "СТОП СОХРАНЁН" in check_dashboard.banner_text(page)
+        assert page.evaluate("state.cab.clearEnd") == 0
+        assert "последнее" in page.text_content("#dist")
+        # Restart/first-epoch invalid clear cannot release the browser's held STOP.
+        invalid_epoch = dict(base, freshness=dict(base["freshness"], valid=False, reason="epoch_unconfirmed"))
+        page.evaluate(deliver, invalid_epoch)
+        assert page.inner_text("#decision") == "СТОП"
+        assert "СТОП СОХРАНЁН" in check_dashboard.banner_text(page)
+        received = page.evaluate(deliver, base)
+        assert received["decision"] == "НЕ ОБНАРУЖЕНО"
+        aging = dict(base, freshness=dict(base["freshness"], source_age_s=.4))
+        page.evaluate(deliver, aging)
+        page.evaluate("checkLiveStream(state.lastStatusArrival + 101)")
+        assert page.inner_text("#decision") == "ОШИБКА"
+        # A buffered message must not receive a new freshness window on arrival.
+        # Read the rejection reason in the same browser task as delivery: the live expiry
+        # timer may subsequently replace it with status_stream_stale, still correctly FAULT.
+        reason = page.evaluate("f => { f.freshness.evaluated_at_utc_s = Date.now()/1000 - 2; onStatus({data: JSON.stringify(f)}); return state.last.freshness.reason; }", base)
+        assert page.inner_text("#decision") == "ОШИБКА"
+        assert reason == "status_transport_stale"
+        reason = page.evaluate("f => { f.freshness.evaluated_at_utc_s = Date.now()/1000 + 2; onStatus({data: JSON.stringify(f)}); return state.last.freshness.reason; }", base)
+        assert page.inner_text("#decision") == "ОШИБКА"
+        assert reason == "status_clock_skew"
+        reason = page.evaluate("f => { onStatus({data: JSON.stringify(f)}); return state.last.freshness.reason; }", base)
+        assert reason == "status_clock_unknown"
+        page.evaluate("f => { f.freshness.evaluated_at_utc_s = Date.now()/1000 - 2; onStatus({data: JSON.stringify(f)}); }", stop)
+        assert "СТОП СОХРАНЁН" in check_dashboard.banner_text(page)
+        assert page.evaluate("state.last.stop_source_stamp") == 1.0
+        page.evaluate(deliver, base)
+        # The explicit contract takes precedence over a contradictory GO field.
+        invalid = dict(base, freshness={"valid": False, "reason": "source_stale"})
+        page.evaluate("f => onStatus({data: JSON.stringify(f)})", invalid)
+        assert page.inner_text("#decision") == "ОШИБКА"
+        assert page.evaluate("state.cab.clearEnd") == 0
+        # Historical playback remains a snapshot; the live transport timer cannot alter it.
+        page.evaluate("window.resense.setMode('replay')")
+        page.evaluate("f => window.resense.applyResult(f)", base)
+        page.evaluate("checkLiveStream(performance.now() + 10000)")
+        assert page.inner_text("#decision") == "НЕ ОБНАРУЖЕНО"
         b.close()
 
 
@@ -208,37 +295,160 @@ def test_dashboard_builtin_demo_and_summary():
             "frames": 60, "alarm_events": 1, "alarm_frames": 36, "warning_frames": 4,
             "nearest_m": pytest.approx(40.0), "max_detect_ms": 49,
         }
+        page.locator("#summary-card summary").click()
         assert page.inner_text("#s-alarms") == "1 / 36"
         assert page.inner_text("#s-nearest") == "40.0 м"
-        assert page.inner_text("#decision") == "ДВИЖЕНИЕ"
+        assert page.inner_text("#decision") == "НЕ ОБНАРУЖЕНО"
         assert page.inner_text("#health") == "норма"
         assert page.is_enabled("#export-report")
         b.close()
 
 
-COLUMN_BOTTOMS = """() => { const r = s => document.querySelector(s).getBoundingClientRect();
-    return [r('.visual-column > :last-child').bottom, r('.side-column > :last-child').bottom]; }"""
-
-
-def test_dashboard_desktop_columns_end_together_and_cab_view_marks_the_obstacle():
-    """Desktop layout: no empty block under the shorter column (the cab view and the event log take up
-    the difference), and the cab view draws the confirmed obstacle with its distance and a close-up."""
+def test_dashboard_banner_honors_health_and_explicit_fault():
+    """No obstacle flag must not turn a health warning or watchdog FAULT into a green banner."""
     if not _browser_available():
         pytest.skip("playwright + chromium not available")
     from playwright.sync_api import sync_playwright
     import check_dashboard
     with sync_playwright() as p:
         b = _launch(p)
-        for width, height in ((1366, 768), (1600, 1000), (1920, 1080)):
+        page = b.new_page()
+        page.goto("file://" + check_dashboard.INDEX, wait_until="domcontentloaded")
+        page.wait_for_function("window.resense !== undefined")
+        cases = [
+            ({"health": {"level": "error"}}, "bad", "ОШИБКА", "ОШИБКА"),
+            ({"decision": "GO", "health": {"level": "error", "decision_level": "error"}},
+             "bad", "ОШИБКА", "ОШИБКА"),
+            ({"decision": "FAULT", "health": {"level": "ok"}}, "bad", "ОШИБКА", "ОШИБКА"),
+            ({"decision": "CAUTION", "health": {"level": "error", "decision_level": "error"}},
+             "bad", "ОШИБКА", "ОШИБКА"),
+            ({"decision": "GO", "health": {"level": "warn", "decision_level": "warn"}},
+             "warn", "ВНИМАНИЕ", "ВНИМАНИЕ"),
+            ({"health": {"level": "warn", "decision_level": "warn"}}, "warn", "ВНИМАНИЕ", "ВНИМАНИЕ"),
+            ({"health": {"level": "warn", "decision_level": "ok"}}, "clear", "ПРЕПЯТСТВИЕ НЕ ОБНАРУЖЕНО", "НЕ ОБНАРУЖЕНО"),
+            ({"decision": "GO", "health": {"level": "warn", "decision_level": "ok"}},
+             "clear", "ПРЕПЯТСТВИЕ НЕ ОБНАРУЖЕНО", "НЕ ОБНАРУЖЕНО"),
+            ({"obstacle": True, "nearest_distance": 55.6, "health": {"level": "error"}}, "bad", "ПРЕПЯТСТВИЕ  55.6 м", "СТОП"),
+        ]
+        for extra, color, title, decision in cases:
+            frame = {"stamp": 1.0, "obstacle": False, "warning": False, "nearest_distance": None,
+                     "detections": [], "warnings": [], "clear_distance": 0.0, **extra}
+            page.evaluate("frame => window.resense.applyResult(frame)", frame)
+            assert page.get_attribute("#banner", "class") == color
+            assert check_dashboard.banner_text(page).startswith(title)
+            assert page.inner_text("#decision") == decision
+        assert "Дальность контроля" in page.inner_text("#safety-card")
+        assert "могут быть пропущены" in page.inner_text("#safety-card")
+        b.close()
+
+
+def test_dashboard_reconnect_ignores_old_stream_and_closes_on_replay():
+    """An old ROS connection cannot overwrite the new stream or remain open in replay mode."""
+    if not _browser_available():
+        pytest.skip("playwright + chromium not available")
+    from playwright.sync_api import sync_playwright
+    import check_dashboard
+    with sync_playwright() as p:
+        b = _launch(p)
+        page = b.new_page()
+        page.goto("file://" + check_dashboard.INDEX, wait_until="load")
+        page.wait_for_function("window.resense !== undefined")
+        page.evaluate("""() => {
+            window.__fakeRos = [];
+            window.ROSLIB = {
+              Ros: class {
+                constructor() { this.handlers = {}; this.closed = false; window.__fakeRos.push(this); }
+                on(name, fn) { this.handlers[name] = fn; }
+                emit(name) { if (name === 'close') this.closed = true; if (this.handlers[name]) this.handlers[name](); }
+                close() { this.closed = true; this.emit('close'); }
+                publish(payload) {
+                  const data = typeof payload === 'string' ? payload : JSON.stringify(payload);
+                  this.statusCallback({data});
+                }
+              },
+              Topic: class {
+                constructor({ros}) { this.ros = ros; }
+                subscribe(fn) { this.ros.statusCallback = fn; }
+              }
+            };
+        }""")
+        page.click("#connect")
+        page.wait_for_function("window.__fakeRos.length === 1")
+        assert page.locator("body").evaluate("el => el.classList.contains('live-stale')")
+        assert page.locator("#panel-cab .stale-veil").is_visible()
+        assert page.locator("#safety-card .stale-veil").is_visible()
+
+        fresh = {"obstacle": False, "warning": False, "decision": "GO", "nearest_distance": None,
+                 "detections": [], "warnings": [], "clear_distance": 120, "health": {"level": "ok"},
+                 "freshness": {"valid": True, "reason": "current", "source_age_s": .02,
+                               "residence_age_s": .01, "max_result_age_s": .5, "future_tolerance_s": .05}}
+        page.evaluate("s => window.__fakeRos[0].publish({...s, freshness: {...s.freshness, evaluated_at_utc_s: Date.now()/1000}})", fresh)
+        assert not page.locator("body").evaluate("el => el.classList.contains('live-stale')")
+
+        page.click("#connect")
+        page.wait_for_function("window.__fakeRos.length === 2")
+        stop = {**fresh, "obstacle": True, "decision": "STOP", "nearest_distance": 50, "clear_distance": 50}
+        page.evaluate("s => window.__fakeRos[1].publish({...s, freshness: {...s.freshness, evaluated_at_utc_s: Date.now()/1000}})", stop)
+        title = page.inner_text("#banner-title")
+        assert title == "ПРЕПЯТСТВИЕ 50.0 м"
+        # Reconnect invalidates the old result synchronously, before a timer or new status can run.
+        snapshot = page.evaluate("""s => {
+            window.__fakeRos[1].publish({...s, freshness: {...s.freshness, evaluated_at_utc_s: Date.now()/1000}});
+            document.getElementById('connect').click();
+            return {valid: state.last.freshness.valid, held: state.last.stop_held,
+                    distance: document.getElementById('dist').textContent};
+        }""", stop)
+        assert snapshot == {"valid": False, "held": True, "distance": "50.0 м (последнее)"}
+        assert page.evaluate("window.__fakeRos.length === 3 && window.__fakeRos[1].closed")
+        # An error also expires the current result immediately while retaining STOP.
+        snapshot = page.evaluate("""s => {
+            window.__fakeRos[2].publish({...s, freshness: {...s.freshness, evaluated_at_utc_s: Date.now()/1000}});
+            window.__fakeRos[2].emit('error');
+            return {valid: state.last.freshness.valid, held: state.last.stop_held};
+        }""", stop)
+        assert snapshot == {"valid": False, "held": True}
+        page.evaluate("s => window.__fakeRos[2].publish({...s, freshness: {...s.freshness, evaluated_at_utc_s: Date.now()/1000}})", stop)
+        page.evaluate("window.__fakeRos[2].emit('close')")
+        assert page.inner_text("#banner-title") == "СТОП СОХРАНЁН: НЕТ АКТУАЛЬНЫХ ДАННЫХ"
+        assert page.locator("body").evaluate("el => el.classList.contains('live-stale')")
+        page.evaluate("window.__fakeRos[0].publish({obstacle:false, decision:'FAULT', health:{level:'error'}})")
+        page.evaluate("window.__fakeRos[0].emit('close')")
+        assert page.inner_text("#banner-title") != title
+        assert page.inner_text("#decision") == "СТОП"
+
+        page.evaluate("window.resense.setMode('replay')")
+        assert page.evaluate("window.resense.state.mode") == "replay"
+        assert page.evaluate("window.__fakeRos.every(ros => ros.closed)")
+        replay = {"obstacle": False, "warning": False, "decision": "GO", "nearest_distance": None,
+                  "detections": [], "warnings": [], "clear_distance": 80, "health": {"level": "ok"}}
+        page.evaluate("r => window.resense.applyResult(r)", replay)
+        title = page.inner_text("#banner-title")
+        page.evaluate("window.__fakeRos[1].publish({obstacle:false, decision:'FAULT', health:{level:'error'}})")
+        assert page.inner_text("#banner-title") == title == "ПРЕПЯТСТВИЕ НЕ ОБНАРУЖЕНО"
+        assert not page.locator("body").evaluate("el => el.classList.contains('live-stale')")
+        b.close()
+
+
+def test_dashboard_fits_169_screen_and_cab_view_marks_the_obstacle():
+    """A presentation screen shows the full dashboard; extra detail remains available in the side list."""
+    if not _browser_available():
+        pytest.skip("playwright + chromium not available")
+    from playwright.sync_api import sync_playwright
+    import check_dashboard
+    with sync_playwright() as p:
+        b = _launch(p)
+        for width, height in ((1280, 720), (1366, 768), (1600, 900), (1920, 1080)):
             page = b.new_page(viewport={"width": width, "height": height})
             page.goto("file://" + check_dashboard.INDEX, wait_until="domcontentloaded")
             page.wait_for_function("window.resense !== undefined")
             page.click("#demo")
             page.evaluate("window.resense.pause(); window.resense.seek(30)")   # STOP, person at 79 m
-            left, right = page.evaluate(COLUMN_BOTTOMS)
-            assert abs(left - right) <= 1, (width, left, right)
+            layout = page.evaluate("""() => ({ pageHeight: document.documentElement.scrollHeight,
+                pageWidth: document.documentElement.scrollWidth, viewportHeight: innerHeight,
+                viewportWidth: innerWidth })""")
+            assert layout["pageHeight"] <= height + 1 and layout["pageWidth"] <= width + 1, layout
             cab = page.evaluate("window.resense.state.cab")
-            assert cab["width"] > 800 and cab["height"] >= 360
+            assert cab["width"] > 600 and cab["height"] >= 360
             (box,) = cab["boxes"]
             assert box["zone"] == "gauge" and box["label"] == "ПРЕПЯТСТВИЕ · 79.0 м"
             assert 0 <= box["x0"] < box["x1"] <= cab["width"] and 0 <= box["y0"] < box["y1"] <= cab["height"]
@@ -246,10 +456,87 @@ def test_dashboard_desktop_columns_end_together_and_cab_view_marks_the_obstacle(
             assert abs((box["x0"] + box["x1"]) / 2 - cab["width"] / 2) < cab["width"] / 10
             assert cab["clearEnd"] == pytest.approx(79.0, abs=0.1)
             assert cab["inset"] and cab["inset"]["zone"] == "gauge"
+            page.click("#tab-plan")
+            assert page.is_visible("#panel-plan") and not page.is_visible("#panel-cab")
+            page.wait_for_function("Math.abs(document.querySelector('#top').width - document.querySelector('#top').clientWidth) <= 1")
+            page.locator("#detector-card summary").click()
+            assert page.locator("#detector-card").evaluate("section => section.open")
+            page.locator('.top-nav a[href="#node-card"]').click()
+            assert page.locator("#node-card").evaluate("section => section.open")
+            page.click("#tab-cab")
             page.evaluate("window.resense.seek(59)")                           # GO again
             cab = page.evaluate("window.resense.state.cab")
             assert cab["boxes"] == [] and cab["inset"] is None and cab["clearEnd"] == pytest.approx(145.0)
             page.close()
+        b.close()
+
+
+def test_dashboard_shortcuts_work_after_clicking_a_control():
+    """A clicked button keeps the focus (review of PR #12): ←/→ still step the replay, and Space
+    toggles play/pause exactly once, on the play button (its own click) and on a view tab."""
+    if not _browser_available():
+        pytest.skip("playwright + chromium not available")
+    from playwright.sync_api import sync_playwright
+    import check_dashboard
+    idx, playing = "window.resense.state.idx", "window.resense.state.playing"
+    with sync_playwright() as p:
+        b = _launch(p)
+        page = b.new_page()
+        page.goto("file://" + check_dashboard.INDEX, wait_until="domcontentloaded")
+        page.wait_for_function("window.resense !== undefined")
+        page.click("#demo")
+        page.evaluate("window.resense.pause(); window.resense.seek(5)")
+        assert page.evaluate("document.activeElement.id") == "demo"
+        page.keyboard.press("ArrowRight")
+        assert page.evaluate(idx) == 6
+        page.keyboard.press("ArrowLeft")
+        assert page.evaluate(idx) == 5
+        page.click("#stepfwd")
+        page.keyboard.press("ArrowRight")
+        assert page.evaluate(idx) == 7
+        page.click("#play")
+        assert page.evaluate(playing) is True
+        page.keyboard.press("Space")                    # the button's own click, not a second toggle
+        assert page.evaluate(playing) is False
+        page.click("#tab-plan")
+        page.keyboard.press("Space")
+        assert page.evaluate(playing) is True
+        page.keyboard.press("Space")
+        assert page.evaluate(playing) is False
+        at = page.evaluate(idx)
+        page.keyboard.press("ArrowLeft")                # the tabs' own key: switches the view, no step
+        assert page.is_visible("#panel-cab") and page.evaluate(idx) == at
+        page.click("#url")                              # text entry keeps its keys
+        page.keyboard.press("ArrowRight")
+        page.keyboard.press("Space")
+        assert page.evaluate(idx) == at and page.evaluate(playing) is False
+        page.click("#demo")                             # the demo starts playing, the focus stays on «Демо»
+        assert page.evaluate(playing) is True
+        page.evaluate("window.resense.seek(20)")
+        page.keyboard.press("Space")                    # pauses; does not restart the demo from frame 0
+        assert page.evaluate(playing) is False and page.evaluate(idx) >= 20
+        b.close()
+
+
+def test_dashboard_phone_width_has_16px_gutter_and_no_horizontal_scroll():
+    if not _browser_available():
+        pytest.skip("playwright + chromium not available")
+    from playwright.sync_api import sync_playwright
+    import check_dashboard
+    with sync_playwright() as p:
+        b = _launch(p)
+        page = b.new_page(viewport={"width": 390, "height": 844})
+        page.goto("file://" + check_dashboard.INDEX, wait_until="domcontentloaded")
+        page.wait_for_function("window.resense !== undefined")
+        page.click("#demo")
+        page.evaluate("window.resense.pause(); window.resense.seek(30)")
+        for tab in ("#tab-plan", "#tab-cab"):
+            page.click(tab)
+            layout = page.evaluate("""() => { const r = s => document.querySelector(s).getBoundingClientRect();
+                return { scrollWidth: document.documentElement.scrollWidth, brand: r('.brand').left,
+                         main: [r('main').left, r('main').right] }; }""")
+            assert layout["scrollWidth"] <= 390, layout
+            assert layout["brand"] == layout["main"][0] == 16 and layout["main"][1] == 390 - 16, layout
         b.close()
 
 
@@ -278,22 +565,20 @@ def test_dashboard_cab_view_on_the_real_node_stream():
         b.close()
 
 
-def test_dashboard_uses_flat_local_montserrat_visual_system():
-    """The jury UI stays usable offline and does not regress to outlined/glowing cards."""
+def test_dashboard_uses_supplied_moscow_sans_visual_system():
+    """The dashboard uses the supplied local fonts and Metro red with flat panels."""
     html = open(os.path.join(ROOT, "web", "index.html"), encoding="utf-8").read()
-    compact = html.replace(" ", "")
-    assert "font-family:'Montserrat'" in compact
-    assert "box-shadow" not in html
-    assert "text-shadow" not in html
-    assert "outline:0" in compact
-    for width in range(1, 10):
-        assert f"border:{width}px" not in compact
-    for path in MONTSERRAT:
+    css = open(os.path.join(ROOT, "web", "assets", "dashboard.css"), encoding="utf-8").read()
+    assert 'href="assets/dashboard.css"' in html
+    assert 'font-family: "Moscow Sans"' in css
+    assert "--red: #e4000d" in css
+    assert "box-shadow" not in css and "text-shadow" not in css
+    for path in MOSCOW_SANS:
         assert os.path.getsize(path) > 20_000
 
 
 def test_presentation_artifact_uses_the_organizers_slide_sequence():
-    """The committed v0.6 deck is a valid 15-slide subset of the organizers' template."""
+    """The committed deck keeps the organizers' sequence and the current measured headlines."""
     assert os.path.getsize(PRESENTATION) > 1_000_000
     with zipfile.ZipFile(PRESENTATION) as zf:
         assert zf.testzip() is None
@@ -301,7 +586,7 @@ def test_presentation_artifact_uses_the_organizers_slide_sequence():
         ns = {"p": "http://schemas.openxmlformats.org/presentationml/2006/main",
               "r": "http://schemas.openxmlformats.org/officeDocument/2006/relationships"}
         slide_ids = list(root.find("p:sldIdLst", ns))
-        assert len(slide_ids) == 15
+        assert len(slide_ids) == 16
         rel_root = ET.fromstring(zf.read("ppt/_rels/presentation.xml.rels"))
         rels = {rel.attrib["Id"]: rel.attrib["Target"] for rel in rel_root}
         slide_paths = ["ppt/" + rels[s.attrib[f"{{{ns['r']}}}id"]] for s in slide_ids]
@@ -310,6 +595,27 @@ def test_presentation_artifact_uses_the_organizers_slide_sequence():
         ).replace("\u00a0", " ")
     for required in ("ReSense", "КОМАНДА", "КОРОТКО О РЕШЕНИИ", "ГЛАВНЫЙ КАДР", "13 759", "58 из 61"):
         assert required in text
+    # the current gate baseline, picked like docs/VM_GUIDE.md §4.4 (LC_ALL=C sort | tail -n 1)
+    latest = sorted(glob.glob(os.path.join(ROOT, "docs", "evidence", "results",
+                                           "regression_baseline_*_ride*.json")))[-1]
+    with open(latest) as source:
+        baseline = json.load(source)
+    rail = baseline["recordings"]["doubleT_obstacle"]["labelled"]["per_label"]["object_on_rail_from_frame_75"]
+    top = baseline["set_O"]["objects"]["big_above"]
+    for required in (
+        str(baseline["five_empty"]["alarm_events"]),
+        str(baseline["ride"]["alarm_events"]),
+        f"{baseline['ride']['alarm_events'] / 13:.1f}".replace(".", ","),
+        f"{rail['hits']} из {rail['frames']}",
+        f"{baseline['set_O']['inside_objects_with_stop']} из {baseline['set_O']['inside_objects']}",
+        f"{top['stop_frames']} из {top['visible_frames']}",          # the 2 x 2 m box at the envelope top
+        "667", "docker load",
+    ):
+        assert required in text
+    assert "релиз v1.0.0" not in text
+    assert "пропущен" not in text                               # every in-envelope object gets a STOP
+    assert "42–64" not in text                                  # the numpy timing of 23.09, not the shipped path
+    assert "~149" not in text                                   # the 90 % hold counts misses before the first STOP
     assert "Привет, участник хакатона" not in text
 
 

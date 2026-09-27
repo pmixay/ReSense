@@ -1,0 +1,187 @@
+{
+  "schema": "resense-independent-criteria-review-v1",
+  "reviewed_utc": "2026-09-26",
+  "reviewer": "second_judge: fresh independent skeptical review",
+  "source_head": "1dccdecb3f919ef411adfcec077e803364c9902d",
+  "working_tree_changes_present": true,
+  "scope": "Current local detector, final node runtime captures, novel synthetic placement experiment and rebuilt presentation. Final exact-commit CI and public offline archive are pending.",
+  "independence": "Reviewer did not implement this work and did not read SCORECARD scores or other judge scores. Scores were assigned from section 8, code, raw evidence and independently checked artifacts; no target score was used.",
+  "rubric": {
+    "source": "docs/organizers/technical_specification_case05.txt:206-269",
+    "weights_status": "Team comparison rubric only. Organizers publish criteria and qualitative priorities, but no numerical weights.",
+    "maxima": [25, 15, 10, 15, 10, 10, 10, 5]
+  },
+  "scores": [
+    {
+      "criterion": "8.1",
+      "name": "Работоспособность решения",
+      "score": 16,
+      "maximum": 25,
+      "rationale": "The executable system detects both real obstacle types and operates on several tunnel shapes. Real person matches are 58/61 and rail-object matches after frame 75 are 125/126, with maximum matched distance error 0.23 m. However, overall labelled matches are 186/246, including only 128/185 for the rail object. Five empty recordings still produce 58 alarm frames, 13 track events and 16 STOP episodes in 2287 frames. The ride has 183 alarm frames, 45 track events and 38 STOP episodes. Organizer synthetic obstacles are eventually detected in all 8 inside cases, but only 384/801 visible object-frames produce STOP. The near-edge cube and box produce only 2 and 6 STOP frames. Novel combinations also expose substantial misses. A strict regression PASS demonstrates preservation of this behavior, not high absolute reliability.",
+      "evidence": [
+        "docs/evidence/results/regression_gate_2026-09-26_freeze.json#/recordings/doubleT_obstacle/labelled",
+        "docs/evidence/results/regression_gate_2026-09-26_freeze.json#/five_empty",
+        "docs/evidence/results/regression_gate_2026-09-26_freeze.json#/ride",
+        "docs/evidence/results/regression_gate_2026-09-26_freeze.json#/set_O",
+        "docs/evidence/freeze_2026-09-26/console_stock/roundT_doubleT.jsonl",
+        "docs/evidence/freeze_2026-09-26/console_stock/clear_zero_alarm_check.txt"
+      ]
+    },
+    {
+      "criterion": "8.2",
+      "name": "Дальность обнаружения",
+      "score": 6,
+      "maximum": 15,
+      "rationale": "Real obstacle evidence is at 55.5-56.6 m, without a real distant approach establishing a detection limit. Organizer synthetic central box, overhead box and plank first STOP at 98.0, 101.3 and 82.2 m. Small central and rail objects first STOP at 52.5 and 42.7 m, thin hanging object at 30.1 m, and edge objects at only 5.2 and 10.3 m. Team ray-cast person and trolley cases reach about 151 m median first detection, but the 0.5 m box is detected in only 1/6 approaches, and sustained detection is weaker than first-hit distance for some kinds. No robust real 200-300 m detection is demonstrated. Estimated monitored range is not detection range and receives no range credit.",
+      "evidence": [
+        "docs/evidence/results/regression_gate_2026-09-26_freeze.json#/recordings/doubleT_obstacle/alarm_dist",
+        "docs/evidence/results/regression_gate_2026-09-26_freeze.json#/set_O/objects",
+        "docs/evidence/results/regression_gate_2026-09-26_freeze.json#/set_F_straight/kinds",
+        "docs/organizers/technical_specification_case05.txt:218-227"
+      ]
+    },
+    {
+      "criterion": "8.3",
+      "name": "Скорость работы",
+      "score": 8,
+      "maximum": 10,
+      "rationale": "Final idle original-bag ROS runs show decode-plus-detect p95 of 36 ms cold, 36 ms warm and 24 ms clear; separate-container stock-console obstacle p95 is 37 ms. These fit a 100 ms sensor period on the available four-vCPU VM without GPU. Cold and warm first STOP occur 0.4 s after the first processed cloud, and stock-console obstacle first STOP after 0.9 s. Bag-header matching finds zero unprocessed recorded messages after startup settling. Startup deliberately skips frames: the cold capture processes 148/201 frames and catches up at +7.4 s of recording. These are processing timings and sensor-time startup measures, not a complete acquisition-to-actuation latency guarantee. The organizers' i7-9700E and comparable overload on the final node remain unmeasured. cold_under_load is an earlier node, before the short-backlog fix; its failure is not scored as a final-code failure.",
+      "evidence": [
+        "docs/evidence/freeze_2026-09-26/cold_idle/status.jsonl",
+        "docs/evidence/freeze_2026-09-26/cold_idle/cache_before.json",
+        "docs/evidence/freeze_2026-09-26/warm_final/check.txt",
+        "docs/evidence/freeze_2026-09-26/clear_final/check.txt",
+        "docs/evidence/freeze_2026-09-26/console_stock/obstacle_check.txt",
+        "ros2_ws/src/resense_ros/resense_ros/detector_node.py:530",
+        "docs/evidence/freeze_2026-09-26/README.md"
+      ]
+    },
+    {
+      "criterion": "8.4",
+      "name": "Обобщаемость",
+      "score": 7,
+      "maximum": 15,
+      "rationale": "Geometry, mount calibration, rail-envelope reasoning and temporal confirmation are reasonable transferable mechanisms. The existing pitch, roll and reduced-rate experiments provide useful sensitivity evidence. The new preregistered combinations include paired controls and independently match the frozen evaluator/code assumptions: 45/72 cases have a target match and 544/2458 visible frames match, with zero control matches. By object, matched cases are 17/18 small_center, 14/18 small_on_rail, 5/18 big_above and 9/18 thin_hanging. That experiment is valuable negative evidence as well as positive evidence. Backgrounds and source object shapes were already inspected; shifts are in sensor coordinates with an approximate angular occlusion rule and no surveyed destination envelope. It is not an independent real holdout. Many infrastructure thresholds were chosen on the same recordings used to report their performance, and no concealed organizer control bag has been evaluated.",
+      "evidence": [
+        "resense/detector.py",
+        "resense/calibration.py",
+        "configs/default.yaml:140",
+        "configs/default.yaml:197",
+        "scripts/novel_placement_eval.py:167",
+        "scripts/novel_placement_eval.py:200",
+        "docs/evidence/results/p4_novel_plan_2026-09-26.json",
+        "docs/evidence/results/p4_novel_results_2026-09-26.json#/cases",
+        "docs/evidence/results/p4_robustness_2026-09-26_evening/pitch_3.json",
+        "docs/evidence/results/p4_robustness_2026-09-26_evening/roll_3.json",
+        "docs/evidence/results/p4_robustness_2026-09-26_evening/every2.json"
+      ]
+    },
+    {
+      "criterion": "8.5",
+      "name": "Техническая проработка",
+      "score": 8.5,
+      "maximum": 10,
+      "rationale": "The ROS wrapper and non-ROS detector are separated, with explicit modules for geometry, calibration, clustering, tracking and health. The node has queue handling, source discovery, recording reset and watchdog behavior. Runtime dependencies are pinned; native kernels have a fallback path. Regression comparison, source seals and per-bag header-stamp accounting make results inspectable. The current detector seal verifies 27 files; the full strict comparison independently recomputes to 183 unchanged rows and no missing or worse gated metrics. Final local pytest evidence is 621 tests plus 6 subtests, zero errors/failures/skips in JUnit; this reviewer additionally ran 55 node/freeze/novel tests and 6 subtests. Deductions remain for exact-final CI being pending, incomplete final overload/resource characterization, and dense historical documentation with stale wording: the architecture summary and FrameResult comment still describe verified-clear range although the current output contract correctly treats it as an estimate.",
+      "evidence": [
+        "docs/ARCHITECTURE.md",
+        "resense/detector.py:71",
+        "ros2_ws/src/resense_ros/resense_ros/detector_node.py",
+        "docker/Dockerfile",
+        "scripts/check_dry_run.py:117",
+        "scripts/detector_freeze.py",
+        "scripts/regression_gate.py:360",
+        "docs/evidence/detector_freeze_2026-09-26.json",
+        "/home/resense/validation/pytest_final.log",
+        "/home/resense/validation/pytest_final.xml",
+        ".github/workflows/ci.yml"
+      ]
+    },
+    {
+      "criterion": "8.6",
+      "name": "Простота запуска",
+      "score": 8,
+      "maximum": 10,
+      "rationale": "The Dockerfile builds ROS 2 Humble on Jammy and its default command launches the node. Documented load/run/play commands, executable scripts and offline original-bag captures substantially satisfy the requested workflow. The stock Fast DDS uid-1000 player/listener reaches the node across separate containers, including an input switch. The node can play without internet once the image is available. The remaining delivery gap is material: the final public offline archive and exact-final CI have not yet been verified. Existing instructions require network and buffer setup, and retain a prewarm recommendation. No credit is given for a hypothetical completed publication or for CI configuration alone proving the final archive.",
+      "evidence": [
+        "README.md:24",
+        "docker/Dockerfile",
+        "scripts/load_image.sh",
+        "scripts/export_image.sh",
+        "scripts/console_test.sh",
+        "docs/evidence/freeze_2026-09-26/console_stock/check.txt",
+        "docs/evidence/freeze_2026-09-26/console_stock/player.log",
+        "docs/evidence/freeze_2026-09-26/cold_idle/check.txt"
+      ]
+    },
+    {
+      "criterion": "8.7",
+      "name": "Подход команды",
+      "score": 9,
+      "maximum": 10,
+      "rationale": "The experiment record is unusually concrete: alternatives, failed near-bed and short-signature approaches, threshold tradeoffs, CPU variants and rejected learned second opinion are recorded with measurements. The final detector is frozen and unsuccessful runtime and zero-alarm checks remain visible. Novel paired controls and the new ride scene inventory improve auditability without hiding misses. All 45 ride events are visually reviewed, with 20 near-sensor platform/station scenes, 16 tunnel scenes and 9 uncertain; event causes and the scene at the distant alarm location remain unassigned. The remaining deduction is experimental independence: repeated selection and evaluation on the same small real corpus and no independently labelled real validation set. Scene counts lack exposure denominators and must not become per-scene false-alarm rates.",
+      "evidence": [
+        "docs/EXPERIMENTS.md:562",
+        "docs/EXPERIMENTS.md:3404",
+        "docs/DECISIONS.md",
+        "docs/evidence/results/p4_novel_plan_2026-09-26.json",
+        "docs/evidence/results/p4_novel_results_2026-09-26.json",
+        "docs/evidence/results/p4_ride_scenes_2026-09-26/inventory.json",
+        "docs/evidence/freeze_2026-09-26/cold_under_load/check.txt",
+        "docs/evidence/freeze_2026-09-26/console_stock/clear_zero_alarm_check.txt"
+      ]
+    },
+    {
+      "criterion": "8.8",
+      "name": "Питч-сессия",
+      "score": 4,
+      "maximum": 5,
+      "rationale": "The rebuilt 16-slide presentation, PDF, dashboard images, 170 s H.264 overview and 6.88 s recorded-status dashboard clip form a clear demonstration package. Output and source hashes match the manifest, and independent ffprobe confirms both videos' metadata. Slide text distinguishes real results from synthetic results, acknowledges shared tuning data and edge failures, and the displayed GO/range wording now states no obstacle detected and estimated monitored range. The dashboard image and exported algorithm slide were visually inspected. Public team placeholders remain, some detailed slides are dense, and a live timed pitch on the concealed control recording has not occurred. A refreshed presentation does not add detector-accuracy evidence.",
+      "evidence": [
+        "docs/evidence/presentation_2026-09-26/manifest.json",
+        "docs/presentation/ReSense_LCT2026.pptx",
+        "docs/presentation/ReSense_LCT2026.pdf",
+        "docs/video/resense_overview.mp4",
+        "docs/video/dashboard_current.mp4",
+        "docs/images/dashboard-clear.png",
+        "docs/evidence/presentation_2026-09-26/web_tests.log",
+        "docs/evidence/presentation_2026-09-26/dashboard_current.log"
+      ]
+    }
+  ],
+  "total": 66.5,
+  "maximum": 100,
+  "interpretation": "A well-engineered, reproducible prototype with real working integration and candid experiments. Main score limits are late or missed obstacles and unproven generalization, which packaging and presentation cannot resolve. This is an internal conservative evidence score, not a predicted organizer result.",
+  "independent_checks": [
+    {"check": "python3 scripts/detector_freeze.py verify", "result": "PASS: 27 files, source SHA-256 4c592ac91d2f5fba79a4693c0c8a57a5e246c88dd8a8cb00fc81c0c532a0ca2b; integrity only, no dataset replay by reviewer"},
+    {"check": "Recomputed scripts.regression_gate.compare and gate_summary from freeze JSON and its baseline", "result": "PASS: allow=[], worse_gated=[], missing_gated=[], worse_allowed=[], missing_allowed=[], same=183; only informational timing changes"},
+    {"check": "Recomputed novel-case matches and visibility directly from every per-frame row", "result": "72 cases, 45 with a match; 2458 visible frames, 544 target matches, 0 control matches; plan SHA matches"},
+    {"check": "check_dry_run.py on cold_idle/status.jsonl, --expect-obstacle --distance 50:62 --bag /home/resense/data/for_hackathon/doubleT_obstacle --max-dropped 0", "result": "PASS: 148 processed, 143 alarms, p95 36 ms, +7.4 s settle, 0 post-settle bag messages unprocessed"},
+    {"check": "check_dry_run.py on console_stock/roundT_doubleT.jsonl, --expect-clear --max-alarm-frames 2 --bag /home/resense/data/for_hackathon/roundT_doubleT --max-dropped 0", "result": "PASS with allowance: 243 processed, 1 false alarm at 53.0 m, p95 26 ms, 0 post-settle messages unprocessed; the one alarm is not treated as zero"},
+    {"check": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 /home/resense/.venv/bin/python -m pytest -q tests/test_node.py tests/test_detector_freeze.py tests/test_novel_placement.py", "result": "55 passed, 6 subtests passed in 2.78 s"},
+    {"check": "Read final local pytest log and parsed JUnit XML", "result": "621 tests and 6 subtests; XML tests=627, failures=0, errors=0, skipped=0; run time 79.158 s"},
+    {"check": "SHA-256 and byte lengths for presentation manifest outputs and sources", "result": "10 outputs and 9 sources verified; no mismatches"},
+    {"check": "ffprobe overview and dashboard videos", "result": "Overview H.264 1920x1080 25 fps 170 s 20222715 bytes; dashboard H.264 1440x900 25 fps 6.88 s 858398 bytes"},
+    {"check": "Read actual PPTX XML and visually inspect dashboard-clear.png plus exported algorithm slide", "result": "Corrected estimated-range wording present; real/synthetic distinctions and public placeholders confirmed"}
+  ],
+  "material_open_gaps": [
+    "No concealed control bag or independent real obstacle approach set; novel synthetic combinations are a sensitivity experiment on already inspected sources.",
+    "Late edge detections at 5.2 and 10.3 m, weak small/thin-object range, and substantial visible-frame misses remain despite eventual detection of 8/8 organizer inside objects.",
+    "False alarms remain on known empty recordings and the ride; one false alarm occurs in the final stock-console clear run. Near-sensor scene inventory does not resolve distant alarm causes or provide scene exposure rates.",
+    "No reliable real 200-300 m detection, and no independently demonstrated braking sufficiency. Monitored range must not be interpreted as a free-path guarantee.",
+    "Final idle cold/warm/console passes do not establish final overload tolerance. The retained cold_under_load failure predates the final short-backlog correction.",
+    "Startup frame sampling remains; post-settle zero losses do not imply every original frame was processed. Timings do not cover the full acquisition-to-actuation path or the organizers' exact hardware.",
+    "Exact-final CI and a publicly downloadable, verified offline image archive are pending. Current local captures alone do not certify the eventual distributed image.",
+    "Public team placeholders and some stale documentation wording remain; live timed delivery on the control recording is untested."
+  ],
+  "conditional_delta_after_pending_verification": {
+    "applied": false,
+    "conditions": [
+      "All required CI jobs pass for the exact final source commit, with no waived or skipped required checks and detector seal still matching.",
+      "The public archive for that commit is actually downloadable without private account access, its checksum is verified, and the identical distributed image is loaded and its runtime chain verified without internet."
+    ],
+    "criterion_deltas": {"8.5": 0.5, "8.6": 1.0},
+    "maximum_justified_delta": 1.5,
+    "conditional_total": 68.0,
+    "reason": "Those checks close release reproducibility and access gaps. They do not improve measured recall, distance, false alarms, generalization or final overload evidence, so criteria 8.1-8.4 receive no automatic increase."
+  }
+}

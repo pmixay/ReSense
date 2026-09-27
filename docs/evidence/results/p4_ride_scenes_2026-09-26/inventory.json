@@ -1,0 +1,3160 @@
+{
+  "frames": 11271,
+  "alarm_frames": 183,
+  "stop_episodes": 38,
+  "alarm_events": 45,
+  "events": [
+    {
+      "key": "new_data_0.jsonl:3",
+      "piece": "new_data_0.jsonl",
+      "track_id": 3,
+      "hits": [
+        {
+          "frame_id": "new_data_0_0013",
+          "distance_m": 145.11,
+          "center": [
+            145.2,
+            1.44,
+            -1.58
+          ],
+          "stamp": 1789642927.455452
+        },
+        {
+          "frame_id": "new_data_0_0014",
+          "distance_m": 145.0,
+          "center": [
+            145.06,
+            1.44,
+            -1.58
+          ],
+          "stamp": 1789642927.557384
+        },
+        {
+          "frame_id": "new_data_0_0015",
+          "distance_m": 144.87,
+          "center": [
+            144.92,
+            1.44,
+            -1.58
+          ],
+          "stamp": 1789642927.6518424
+        },
+        {
+          "frame_id": "new_data_0_0016",
+          "distance_m": 144.74,
+          "center": [
+            144.79,
+            1.44,
+            -1.57
+          ],
+          "stamp": 1789642927.7583592
+        },
+        {
+          "frame_id": "new_data_0_0017",
+          "distance_m": 144.56,
+          "center": [
+            144.64,
+            1.42,
+            -1.55
+          ],
+          "stamp": 1789642927.856154
+        },
+        {
+          "frame_id": "new_data_0_0018",
+          "distance_m": 144.37,
+          "center": [
+            144.46,
+            1.44,
+            -1.57
+          ],
+          "stamp": 1789642927.9516187
+        },
+        {
+          "frame_id": "new_data_0_0019",
+          "distance_m": 144.26,
+          "center": [
+            144.32,
+            1.43,
+            -1.57
+          ],
+          "stamp": 1789642928.056721
+        },
+        {
+          "frame_id": "new_data_0_0020",
+          "distance_m": 138.97,
+          "center": [
+            143.57,
+            1.36,
+            -1.66
+          ],
+          "stamp": 1789642928.1567
+        },
+        {
+          "frame_id": "new_data_0_0021",
+          "distance_m": 138.86,
+          "center": [
+            143.42,
+            1.36,
+            -1.65
+          ],
+          "stamp": 1789642928.2557101
+        },
+        {
+          "frame_id": "new_data_0_0022",
+          "distance_m": 138.66,
+          "center": [
+            143.25,
+            1.36,
+            -1.65
+          ],
+          "stamp": 1789642928.359951
+        },
+        {
+          "frame_id": "new_data_0_0023",
+          "distance_m": 143.58,
+          "center": [
+            143.63,
+            1.43,
+            -1.56
+          ],
+          "stamp": 1789642928.4523444
+        },
+        {
+          "frame_id": "new_data_0_0024",
+          "distance_m": 143.43,
+          "center": [
+            143.47,
+            1.43,
+            -1.56
+          ],
+          "stamp": 1789642928.5596437
+        },
+        {
+          "frame_id": "new_data_0_0025",
+          "distance_m": 143.23,
+          "center": [
+            143.28,
+            1.42,
+            -1.56
+          ],
+          "stamp": 1789642928.6550593
+        },
+        {
+          "frame_id": "new_data_0_0026",
+          "distance_m": 137.94,
+          "center": [
+            142.51,
+            1.35,
+            -1.64
+          ],
+          "stamp": 1789642928.7537427
+        },
+        {
+          "frame_id": "new_data_0_0027",
+          "distance_m": 142.85,
+          "center": [
+            142.9,
+            1.42,
+            -1.55
+          ],
+          "stamp": 1789642928.8556442
+        },
+        {
+          "frame_id": "new_data_0_0028",
+          "distance_m": 142.66,
+          "center": [
+            142.7,
+            1.42,
+            -1.55
+          ],
+          "stamp": 1789642928.9521847
+        },
+        {
+          "frame_id": "new_data_0_0029",
+          "distance_m": 142.47,
+          "center": [
+            142.51,
+            1.42,
+            -1.55
+          ],
+          "stamp": 1789642929.0494719
+        },
+        {
+          "frame_id": "new_data_0_0030",
+          "distance_m": 142.23,
+          "center": [
+            142.3,
+            1.41,
+            -1.55
+          ],
+          "stamp": 1789642929.1554022
+        }
+      ],
+      "number": 1,
+      "alarm_frames": 18,
+      "representative_frame": "new_data_0_0022",
+      "distance_m": [
+        137.94,
+        145.11
+      ],
+      "scene": "uncertain",
+      "confidence": "low",
+      "review_note": "Rectangular passage with distant diverging returns; no definite platform or turnout geometry.",
+      "reviewer": "root (sheets 1\u20134)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_01.png"
+    },
+    {
+      "key": "new_data_0.jsonl:333",
+      "piece": "new_data_0.jsonl",
+      "track_id": 333,
+      "hits": [
+        {
+          "frame_id": "new_data_23_0040",
+          "distance_m": 55.23,
+          "center": [
+            57.07,
+            -3.96,
+            0.75
+          ],
+          "stamp": 1789643047.4553306
+        },
+        {
+          "frame_id": "new_data_23_0041",
+          "distance_m": 54.28,
+          "center": [
+            56.16,
+            -3.8,
+            0.71
+          ],
+          "stamp": 1789643047.5568032
+        },
+        {
+          "frame_id": "new_data_23_0042",
+          "distance_m": 53.38,
+          "center": [
+            55.2,
+            -3.63,
+            0.67
+          ],
+          "stamp": 1789643047.6583364
+        },
+        {
+          "frame_id": "new_data_23_0043",
+          "distance_m": 52.41,
+          "center": [
+            54.31,
+            -3.48,
+            0.66
+          ],
+          "stamp": 1789643047.7695541
+        },
+        {
+          "frame_id": "new_data_23_0044",
+          "distance_m": 53.27,
+          "center": [
+            53.46,
+            -3.34,
+            0.59
+          ],
+          "stamp": 1789643047.8575706
+        }
+      ],
+      "number": 2,
+      "alarm_frames": 5,
+      "representative_frame": "new_data_23_0042",
+      "distance_m": [
+        52.41,
+        55.23
+      ],
+      "scene": "tunnel",
+      "confidence": "high",
+      "review_note": "Enclosed rounded wide bore.",
+      "reviewer": "root (sheets 1\u20134)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_01.png"
+    },
+    {
+      "key": "new_data_0.jsonl:381",
+      "piece": "new_data_0.jsonl",
+      "track_id": 381,
+      "hits": [
+        {
+          "frame_id": "new_data_27_0001",
+          "distance_m": 138.92,
+          "center": [
+            138.99,
+            -1.15,
+            -1.01
+          ],
+          "stamp": 1789643063.9621851
+        },
+        {
+          "frame_id": "new_data_27_0016",
+          "distance_m": 123.93,
+          "center": [
+            124.06,
+            -1.01,
+            0.31
+          ],
+          "stamp": 1789643065.4621916
+        },
+        {
+          "frame_id": "new_data_27_0017",
+          "distance_m": 122.95,
+          "center": [
+            123.06,
+            -1.04,
+            0.07
+          ],
+          "stamp": 1789643065.5658283
+        },
+        {
+          "frame_id": "new_data_27_0018",
+          "distance_m": 121.96,
+          "center": [
+            122.09,
+            -1.06,
+            0.21
+          ],
+          "stamp": 1789643065.6602852
+        }
+      ],
+      "number": 3,
+      "alarm_frames": 4,
+      "representative_frame": "new_data_27_0017",
+      "distance_m": [
+        121.96,
+        138.92
+      ],
+      "scene": "tunnel",
+      "confidence": "medium",
+      "review_note": "Enclosed oval bore with isolated equipment or a column.",
+      "reviewer": "root (sheets 1\u20134)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_01.png"
+    },
+    {
+      "key": "new_data_1.jsonl:40",
+      "piece": "new_data_1.jsonl",
+      "track_id": 40,
+      "hits": [
+        {
+          "frame_id": "new_data_36_0002",
+          "distance_m": 130.09,
+          "center": [
+            130.15,
+            -5.35,
+            0.47
+          ],
+          "stamp": 1789643109.9612012
+        },
+        {
+          "frame_id": "new_data_36_0003",
+          "distance_m": 130.02,
+          "center": [
+            130.12,
+            -5.3,
+            0.31
+          ],
+          "stamp": 1789643110.0601313
+        },
+        {
+          "frame_id": "new_data_36_0004",
+          "distance_m": 130.0,
+          "center": [
+            130.06,
+            -5.32,
+            0.19
+          ],
+          "stamp": 1789643110.1633563
+        },
+        {
+          "frame_id": "new_data_36_0005",
+          "distance_m": 129.92,
+          "center": [
+            130.02,
+            -5.33,
+            0.33
+          ],
+          "stamp": 1789643110.2617245
+        },
+        {
+          "frame_id": "new_data_36_0006",
+          "distance_m": 129.9,
+          "center": [
+            129.99,
+            -5.32,
+            0.42
+          ],
+          "stamp": 1789643110.3635013
+        },
+        {
+          "frame_id": "new_data_36_0007",
+          "distance_m": 129.88,
+          "center": [
+            129.94,
+            -5.32,
+            0.25
+          ],
+          "stamp": 1789643110.4628875
+        }
+      ],
+      "number": 4,
+      "alarm_frames": 6,
+      "representative_frame": "new_data_36_0005",
+      "distance_m": [
+        129.88,
+        130.09
+      ],
+      "scene": "tunnel",
+      "confidence": "medium",
+      "review_note": "Rounded bore with nearby equipment on the right.",
+      "reviewer": "root (sheets 1\u20134)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_01.png"
+    },
+    {
+      "key": "new_data_1.jsonl:74",
+      "piece": "new_data_1.jsonl",
+      "track_id": 74,
+      "hits": [
+        {
+          "frame_id": "new_data_36_0011",
+          "distance_m": 155.44,
+          "center": [
+            160.13,
+            -8.54,
+            0.44
+          ],
+          "stamp": 1789643110.8629305
+        }
+      ],
+      "number": 5,
+      "alarm_frames": 1,
+      "representative_frame": "new_data_36_0011",
+      "distance_m": [
+        155.44,
+        155.44
+      ],
+      "scene": "uncertain",
+      "confidence": "medium",
+      "review_note": "Rounded bore opens to the right; transition is ambiguous.",
+      "reviewer": "root (sheets 1\u20134)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_01.png"
+    },
+    {
+      "key": "new_data_1.jsonl:282",
+      "piece": "new_data_1.jsonl",
+      "track_id": 282,
+      "hits": [
+        {
+          "frame_id": "new_data_52_0016",
+          "distance_m": 42.06,
+          "center": [
+            42.79,
+            0.5,
+            -1.52
+          ],
+          "stamp": 1789643192.9709792
+        },
+        {
+          "frame_id": "new_data_52_0017",
+          "distance_m": 38.88,
+          "center": [
+            40.79,
+            0.82,
+            -1.29
+          ],
+          "stamp": 1789643193.0765815
+        },
+        {
+          "frame_id": "new_data_52_0018",
+          "distance_m": 36.93,
+          "center": [
+            38.85,
+            0.96,
+            -1.22
+          ],
+          "stamp": 1789643193.1685374
+        },
+        {
+          "frame_id": "new_data_52_0019",
+          "distance_m": 38.25,
+          "center": [
+            38.85,
+            0.85,
+            -1.24
+          ],
+          "stamp": 1789643193.2735994
+        },
+        {
+          "frame_id": "new_data_52_0020",
+          "distance_m": 37.28,
+          "center": [
+            37.88,
+            0.86,
+            -1.21
+          ],
+          "stamp": 1789643193.3734314
+        },
+        {
+          "frame_id": "new_data_52_0021",
+          "distance_m": 33.99,
+          "center": [
+            34.96,
+            0.68,
+            -1.21
+          ],
+          "stamp": 1789643193.4679885
+        },
+        {
+          "frame_id": "new_data_52_0022",
+          "distance_m": 34.32,
+          "center": [
+            34.76,
+            0.58,
+            -1.42
+          ],
+          "stamp": 1789643193.5711823
+        },
+        {
+          "frame_id": "new_data_52_0023",
+          "distance_m": 33.25,
+          "center": [
+            33.68,
+            0.48,
+            -1.52
+          ],
+          "stamp": 1789643193.6689327
+        },
+        {
+          "frame_id": "new_data_52_0024",
+          "distance_m": 32.28,
+          "center": [
+            32.87,
+            0.61,
+            -1.35
+          ],
+          "stamp": 1789643193.7731874
+        },
+        {
+          "frame_id": "new_data_52_0025",
+          "distance_m": 32.49,
+          "center": [
+            32.57,
+            1.02,
+            -1.05
+          ],
+          "stamp": 1789643193.8697534
+        },
+        {
+          "frame_id": "new_data_52_0026",
+          "distance_m": 31.87,
+          "center": [
+            31.94,
+            1.23,
+            -0.89
+          ],
+          "stamp": 1789643193.9650462
+        }
+      ],
+      "number": 6,
+      "alarm_frames": 11,
+      "representative_frame": "new_data_52_0021",
+      "distance_m": [
+        31.87,
+        42.06
+      ],
+      "scene": "platform_or_station",
+      "confidence": "high",
+      "review_note": "Raised left ledge or platform edge, broad side opening and vertical structures under a box roof.",
+      "reviewer": "root (sheets 1\u20134)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_01.png"
+    },
+    {
+      "key": "new_data_1.jsonl:291",
+      "piece": "new_data_1.jsonl",
+      "track_id": 291,
+      "hits": [
+        {
+          "frame_id": "new_data_52_0018",
+          "distance_m": 28.38,
+          "center": [
+            29.59,
+            0.87,
+            -1.11
+          ],
+          "stamp": 1789643193.1685374
+        },
+        {
+          "frame_id": "new_data_52_0019",
+          "distance_m": 24.73,
+          "center": [
+            25.94,
+            1.77,
+            -1.0
+          ],
+          "stamp": 1789643193.2735994
+        }
+      ],
+      "number": 7,
+      "alarm_frames": 2,
+      "representative_frame": "new_data_52_0019",
+      "distance_m": [
+        24.73,
+        28.38
+      ],
+      "scene": "platform_or_station",
+      "confidence": "high",
+      "review_note": "Raised left ledge or platform edge, broad side opening and vertical structures under a box roof.",
+      "reviewer": "root (sheets 1\u20134)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_02.png"
+    },
+    {
+      "key": "new_data_1.jsonl:288",
+      "piece": "new_data_1.jsonl",
+      "track_id": 288,
+      "hits": [
+        {
+          "frame_id": "new_data_52_0019",
+          "distance_m": 32.66,
+          "center": [
+            33.43,
+            0.65,
+            -1.43
+          ],
+          "stamp": 1789643193.2735994
+        },
+        {
+          "frame_id": "new_data_52_0020",
+          "distance_m": 32.08,
+          "center": [
+            32.65,
+            0.55,
+            -1.35
+          ],
+          "stamp": 1789643193.3734314
+        },
+        {
+          "frame_id": "new_data_52_0021",
+          "distance_m": 31.95,
+          "center": [
+            32.52,
+            0.51,
+            -1.33
+          ],
+          "stamp": 1789643193.4679885
+        },
+        {
+          "frame_id": "new_data_52_0023",
+          "distance_m": 29.93,
+          "center": [
+            30.59,
+            0.59,
+            -1.34
+          ],
+          "stamp": 1789643193.6689327
+        },
+        {
+          "frame_id": "new_data_52_0024",
+          "distance_m": 28.96,
+          "center": [
+            29.62,
+            0.63,
+            -1.34
+          ],
+          "stamp": 1789643193.7731874
+        }
+      ],
+      "number": 8,
+      "alarm_frames": 5,
+      "representative_frame": "new_data_52_0021",
+      "distance_m": [
+        28.96,
+        32.66
+      ],
+      "scene": "platform_or_station",
+      "confidence": "high",
+      "review_note": "Raised left ledge or platform edge, broad side opening and vertical structures under a box roof.",
+      "reviewer": "root (sheets 1\u20134)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_02.png"
+    },
+    {
+      "key": "new_data_1.jsonl:290",
+      "piece": "new_data_1.jsonl",
+      "track_id": 290,
+      "hits": [
+        {
+          "frame_id": "new_data_52_0019",
+          "distance_m": 35.94,
+          "center": [
+            36.28,
+            0.64,
+            -1.44
+          ],
+          "stamp": 1789643193.2735994
+        },
+        {
+          "frame_id": "new_data_52_0020",
+          "distance_m": 36.64,
+          "center": [
+            36.98,
+            0.86,
+            -1.47
+          ],
+          "stamp": 1789643193.3734314
+        },
+        {
+          "frame_id": "new_data_52_0021",
+          "distance_m": 38.34,
+          "center": [
+            38.68,
+            -0.48,
+            -1.32
+          ],
+          "stamp": 1789643193.4679885
+        },
+        {
+          "frame_id": "new_data_52_0022",
+          "distance_m": 39.54,
+          "center": [
+            39.87,
+            -1.05,
+            -1.27
+          ],
+          "stamp": 1789643193.5711823
+        }
+      ],
+      "number": 9,
+      "alarm_frames": 4,
+      "representative_frame": "new_data_52_0021",
+      "distance_m": [
+        35.94,
+        39.54
+      ],
+      "scene": "platform_or_station",
+      "confidence": "high",
+      "review_note": "Raised left ledge or platform edge, broad side opening and vertical structures under a box roof.",
+      "reviewer": "root (sheets 1\u20134)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_02.png"
+    },
+    {
+      "key": "new_data_1.jsonl:294",
+      "piece": "new_data_1.jsonl",
+      "track_id": 294,
+      "hits": [
+        {
+          "frame_id": "new_data_52_0019",
+          "distance_m": 82.54,
+          "center": [
+            88.53,
+            -0.7,
+            -1.92
+          ],
+          "stamp": 1789643193.2735994
+        },
+        {
+          "frame_id": "new_data_52_0020",
+          "distance_m": 87.66,
+          "center": [
+            87.82,
+            -0.96,
+            -1.52
+          ],
+          "stamp": 1789643193.3734314
+        },
+        {
+          "frame_id": "new_data_52_0021",
+          "distance_m": 86.36,
+          "center": [
+            86.52,
+            -1.14,
+            -1.37
+          ],
+          "stamp": 1789643193.4679885
+        }
+      ],
+      "number": 10,
+      "alarm_frames": 3,
+      "representative_frame": "new_data_52_0020",
+      "distance_m": [
+        82.54,
+        87.66
+      ],
+      "scene": "platform_or_station",
+      "confidence": "high",
+      "review_note": "Raised left ledge or platform edge, broad side opening and vertical structures under a box roof.",
+      "reviewer": "root (sheets 1\u20134)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_02.png"
+    },
+    {
+      "key": "new_data_1.jsonl:289",
+      "piece": "new_data_1.jsonl",
+      "track_id": 289,
+      "hits": [
+        {
+          "frame_id": "new_data_52_0021",
+          "distance_m": 43.23,
+          "center": [
+            43.74,
+            0.82,
+            -1.33
+          ],
+          "stamp": 1789643193.4679885
+        },
+        {
+          "frame_id": "new_data_52_0022",
+          "distance_m": 41.83,
+          "center": [
+            42.57,
+            0.89,
+            -1.31
+          ],
+          "stamp": 1789643193.5711823
+        }
+      ],
+      "number": 11,
+      "alarm_frames": 2,
+      "representative_frame": "new_data_52_0022",
+      "distance_m": [
+        41.83,
+        43.23
+      ],
+      "scene": "platform_or_station",
+      "confidence": "high",
+      "review_note": "Raised left ledge or platform edge, broad side opening and vertical structures under a box roof.",
+      "reviewer": "root (sheets 1\u20134)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_02.png"
+    },
+    {
+      "key": "new_data_1.jsonl:306",
+      "piece": "new_data_1.jsonl",
+      "track_id": 306,
+      "hits": [
+        {
+          "frame_id": "new_data_52_0023",
+          "distance_m": 31.87,
+          "center": [
+            35.06,
+            0.18,
+            -1.23
+          ],
+          "stamp": 1789643193.6689327
+        },
+        {
+          "frame_id": "new_data_52_0024",
+          "distance_m": 33.65,
+          "center": [
+            34.34,
+            0.34,
+            -1.19
+          ],
+          "stamp": 1789643193.7731874
+        },
+        {
+          "frame_id": "new_data_52_0025",
+          "distance_m": 33.47,
+          "center": [
+            34.16,
+            0.7,
+            -1.12
+          ],
+          "stamp": 1789643193.8697534
+        }
+      ],
+      "number": 12,
+      "alarm_frames": 3,
+      "representative_frame": "new_data_52_0024",
+      "distance_m": [
+        31.87,
+        33.65
+      ],
+      "scene": "platform_or_station",
+      "confidence": "high",
+      "review_note": "Raised left ledge or platform edge, broad side opening and vertical structures under a box roof.",
+      "reviewer": "root (sheets 1\u20134)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_02.png"
+    },
+    {
+      "key": "new_data_1.jsonl:302",
+      "piece": "new_data_1.jsonl",
+      "track_id": 302,
+      "hits": [
+        {
+          "frame_id": "new_data_52_0024",
+          "distance_m": 28.61,
+          "center": [
+            28.94,
+            -0.93,
+            -1.31
+          ],
+          "stamp": 1789643193.7731874
+        },
+        {
+          "frame_id": "new_data_52_0025",
+          "distance_m": 28.48,
+          "center": [
+            28.81,
+            -0.93,
+            -1.31
+          ],
+          "stamp": 1789643193.8697534
+        }
+      ],
+      "number": 13,
+      "alarm_frames": 2,
+      "representative_frame": "new_data_52_0025",
+      "distance_m": [
+        28.48,
+        28.61
+      ],
+      "scene": "platform_or_station",
+      "confidence": "high",
+      "review_note": "Raised left ledge or platform edge, broad side opening and vertical structures under a box roof.",
+      "reviewer": "root (sheets 1\u20134)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_03.png"
+    },
+    {
+      "key": "new_data_1.jsonl:372",
+      "piece": "new_data_1.jsonl",
+      "track_id": 372,
+      "hits": [
+        {
+          "frame_id": "new_data_53_0026",
+          "distance_m": 105.1,
+          "center": [
+            106.84,
+            1.2,
+            -0.93
+          ],
+          "stamp": 1789643199.0689187
+        },
+        {
+          "frame_id": "new_data_53_0027",
+          "distance_m": 103.98,
+          "center": [
+            105.72,
+            1.17,
+            -0.97
+          ],
+          "stamp": 1789643199.1690917
+        }
+      ],
+      "number": 14,
+      "alarm_frames": 2,
+      "representative_frame": "new_data_53_0027",
+      "distance_m": [
+        103.98,
+        105.1
+      ],
+      "scene": "platform_or_station",
+      "confidence": "high",
+      "review_note": "Raised left ledge or platform edge, broad side opening and vertical structures under a box roof.",
+      "reviewer": "root (sheets 1\u20134)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_03.png"
+    },
+    {
+      "key": "new_data_2.jsonl:443",
+      "piece": "new_data_2.jsonl",
+      "track_id": 443,
+      "hits": [
+        {
+          "frame_id": "new_data_75_0049",
+          "distance_m": 132.91,
+          "center": [
+            134.74,
+            -2.47,
+            0.33
+          ],
+          "stamp": 1789643313.5788596
+        },
+        {
+          "frame_id": "new_data_75_0050",
+          "distance_m": 132.34,
+          "center": [
+            133.06,
+            -2.3,
+            -0.21
+          ],
+          "stamp": 1789643313.6835728
+        },
+        {
+          "frame_id": "new_data_76_0000",
+          "distance_m": 126.54,
+          "center": [
+            130.57,
+            -2.27,
+            0.41
+          ],
+          "stamp": 1789643313.7802188
+        },
+        {
+          "frame_id": "new_data_76_0001",
+          "distance_m": 124.42,
+          "center": [
+            128.44,
+            -2.24,
+            0.61
+          ],
+          "stamp": 1789643313.885609
+        },
+        {
+          "frame_id": "new_data_76_0002",
+          "distance_m": 127.21,
+          "center": [
+            127.33,
+            -2.72,
+            0.9
+          ],
+          "stamp": 1789643313.978783
+        },
+        {
+          "frame_id": "new_data_76_0003",
+          "distance_m": 125.38,
+          "center": [
+            126.14,
+            -2.41,
+            0.39
+          ],
+          "stamp": 1789643314.0768847
+        },
+        {
+          "frame_id": "new_data_76_0004",
+          "distance_m": 123.55,
+          "center": [
+            123.63,
+            -2.68,
+            0.59
+          ],
+          "stamp": 1789643314.1772907
+        },
+        {
+          "frame_id": "new_data_76_0005",
+          "distance_m": 121.59,
+          "center": [
+            121.68,
+            -2.79,
+            0.63
+          ],
+          "stamp": 1789643314.2777452
+        }
+      ],
+      "number": 15,
+      "alarm_frames": 8,
+      "representative_frame": "new_data_76_0002",
+      "distance_m": [
+        121.59,
+        132.91
+      ],
+      "scene": "tunnel",
+      "confidence": "high",
+      "review_note": "Enclosed rounded wide bore.",
+      "reviewer": "root (sheets 1\u20134)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_03.png"
+    },
+    {
+      "key": "new_data_2.jsonl:564",
+      "piece": "new_data_2.jsonl",
+      "track_id": 564,
+      "hits": [
+        {
+          "frame_id": "new_data_81_0020",
+          "distance_m": 38.32,
+          "center": [
+            38.58,
+            -0.99,
+            -1.4
+          ],
+          "stamp": 1789643341.2816277
+        },
+        {
+          "frame_id": "new_data_81_0021",
+          "distance_m": 35.52,
+          "center": [
+            35.87,
+            -0.98,
+            -1.39
+          ],
+          "stamp": 1789643341.3799284
+        },
+        {
+          "frame_id": "new_data_81_0022",
+          "distance_m": 32.53,
+          "center": [
+            32.81,
+            -0.95,
+            -1.41
+          ],
+          "stamp": 1789643341.4799275
+        },
+        {
+          "frame_id": "new_data_81_0023",
+          "distance_m": 30.27,
+          "center": [
+            30.65,
+            -0.91,
+            -1.39
+          ],
+          "stamp": 1789643341.581961
+        },
+        {
+          "frame_id": "new_data_81_0024",
+          "distance_m": 27.56,
+          "center": [
+            27.94,
+            -0.92,
+            -1.37
+          ],
+          "stamp": 1789643341.6874645
+        }
+      ],
+      "number": 16,
+      "alarm_frames": 5,
+      "representative_frame": "new_data_81_0022",
+      "distance_m": [
+        27.56,
+        38.32
+      ],
+      "scene": "platform_or_station",
+      "confidence": "high",
+      "review_note": "Raised left ledge or platform edge, broad side opening and vertical structures under a box roof.",
+      "reviewer": "root (sheets 1\u20134)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_03.png"
+    },
+    {
+      "key": "new_data_2.jsonl:566",
+      "piece": "new_data_2.jsonl",
+      "track_id": 566,
+      "hits": [
+        {
+          "frame_id": "new_data_81_0021",
+          "distance_m": 31.53,
+          "center": [
+            31.66,
+            0.57,
+            -1.36
+          ],
+          "stamp": 1789643341.3799284
+        },
+        {
+          "frame_id": "new_data_81_0022",
+          "distance_m": 29.39,
+          "center": [
+            29.51,
+            0.49,
+            -1.42
+          ],
+          "stamp": 1789643341.4799275
+        },
+        {
+          "frame_id": "new_data_81_0023",
+          "distance_m": 27.14,
+          "center": [
+            27.3,
+            0.89,
+            -1.14
+          ],
+          "stamp": 1789643341.581961
+        },
+        {
+          "frame_id": "new_data_81_0024",
+          "distance_m": 24.96,
+          "center": [
+            25.12,
+            1.05,
+            -1.04
+          ],
+          "stamp": 1789643341.6874645
+        }
+      ],
+      "number": 17,
+      "alarm_frames": 4,
+      "representative_frame": "new_data_81_0023",
+      "distance_m": [
+        24.96,
+        31.53
+      ],
+      "scene": "platform_or_station",
+      "confidence": "high",
+      "review_note": "Raised left ledge or platform edge, broad side opening and vertical structures under a box roof.",
+      "reviewer": "root (sheets 1\u20134)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_03.png"
+    },
+    {
+      "key": "new_data_2.jsonl:575",
+      "piece": "new_data_2.jsonl",
+      "track_id": 575,
+      "hits": [
+        {
+          "frame_id": "new_data_81_0026",
+          "distance_m": 27.16,
+          "center": [
+            26.91,
+            1.04,
+            -1.07
+          ],
+          "stamp": 1789643341.8822467
+        }
+      ],
+      "number": 18,
+      "alarm_frames": 1,
+      "representative_frame": "new_data_81_0026",
+      "distance_m": [
+        27.16,
+        27.16
+      ],
+      "scene": "platform_or_station",
+      "confidence": "high",
+      "review_note": "Raised left ledge or platform edge, broad side opening and vertical structures under a box roof.",
+      "reviewer": "root (sheets 1\u20134)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_03.png"
+    },
+    {
+      "key": "new_data_2.jsonl:581",
+      "piece": "new_data_2.jsonl",
+      "track_id": 581,
+      "hits": [
+        {
+          "frame_id": "new_data_81_0026",
+          "distance_m": 31.65,
+          "center": [
+            32.54,
+            1.04,
+            -1.06
+          ],
+          "stamp": 1789643341.8822467
+        },
+        {
+          "frame_id": "new_data_81_0027",
+          "distance_m": 30.54,
+          "center": [
+            31.05,
+            -0.93,
+            -1.41
+          ],
+          "stamp": 1789643341.9798167
+        },
+        {
+          "frame_id": "new_data_81_0028",
+          "distance_m": 29.8,
+          "center": [
+            30.31,
+            -1.8,
+            -1.5
+          ],
+          "stamp": 1789643342.0793598
+        }
+      ],
+      "number": 19,
+      "alarm_frames": 3,
+      "representative_frame": "new_data_81_0027",
+      "distance_m": [
+        29.8,
+        31.65
+      ],
+      "scene": "platform_or_station",
+      "confidence": "high",
+      "review_note": "Raised left ledge or platform edge, broad side opening and vertical structures under a box roof.",
+      "reviewer": "root (sheets 1\u20134)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_04.png"
+    },
+    {
+      "key": "new_data_2.jsonl:576",
+      "piece": "new_data_2.jsonl",
+      "track_id": 576,
+      "hits": [
+        {
+          "frame_id": "new_data_81_0027",
+          "distance_m": 36.29,
+          "center": [
+            37.06,
+            -1.0,
+            -1.47
+          ],
+          "stamp": 1789643341.9798167
+        },
+        {
+          "frame_id": "new_data_81_0028",
+          "distance_m": 34.48,
+          "center": [
+            35.24,
+            0.64,
+            -1.44
+          ],
+          "stamp": 1789643342.0793598
+        },
+        {
+          "frame_id": "new_data_81_0029",
+          "distance_m": 33.91,
+          "center": [
+            34.45,
+            0.6,
+            -1.4
+          ],
+          "stamp": 1789643342.1778145
+        },
+        {
+          "frame_id": "new_data_81_0030",
+          "distance_m": 32.83,
+          "center": [
+            33.37,
+            1.07,
+            -1.38
+          ],
+          "stamp": 1789643342.2780638
+        }
+      ],
+      "number": 20,
+      "alarm_frames": 4,
+      "representative_frame": "new_data_81_0029",
+      "distance_m": [
+        32.83,
+        36.29
+      ],
+      "scene": "platform_or_station",
+      "confidence": "high",
+      "review_note": "Raised left ledge or platform edge, broad side opening and vertical structures under a box roof.",
+      "reviewer": "root (sheets 1\u20134)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_04.png"
+    },
+    {
+      "key": "new_data_2.jsonl:567",
+      "piece": "new_data_2.jsonl",
+      "track_id": 567,
+      "hits": [
+        {
+          "frame_id": "new_data_81_0030",
+          "distance_m": 35.58,
+          "center": [
+            36.9,
+            0.75,
+            -1.21
+          ],
+          "stamp": 1789643342.2780638
+        },
+        {
+          "frame_id": "new_data_81_0031",
+          "distance_m": 34.02,
+          "center": [
+            35.34,
+            1.61,
+            -1.08
+          ],
+          "stamp": 1789643342.376847
+        }
+      ],
+      "number": 21,
+      "alarm_frames": 2,
+      "representative_frame": "new_data_81_0031",
+      "distance_m": [
+        34.02,
+        35.58
+      ],
+      "scene": "platform_or_station",
+      "confidence": "high",
+      "review_note": "Raised left ledge or platform edge, broad side opening and vertical structures under a box roof.",
+      "reviewer": "root (sheets 1\u20134)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_04.png"
+    },
+    {
+      "key": "new_data_3.jsonl:264",
+      "piece": "new_data_3.jsonl",
+      "track_id": 264,
+      "hits": [
+        {
+          "frame_id": "new_data_99_0016",
+          "distance_m": 136.07,
+          "center": [
+            136.25,
+            -1.24,
+            -0.97
+          ],
+          "stamp": 1789643432.6876335
+        },
+        {
+          "frame_id": "new_data_99_0017",
+          "distance_m": 134.05,
+          "center": [
+            134.41,
+            -1.23,
+            -0.81
+          ],
+          "stamp": 1789643432.7866848
+        }
+      ],
+      "number": 22,
+      "alarm_frames": 2,
+      "representative_frame": "new_data_99_0017",
+      "distance_m": [
+        134.05,
+        136.07
+      ],
+      "scene": "tunnel",
+      "confidence": "high",
+      "review_note": "Enclosed rounded double bore.",
+      "reviewer": "root (sheets 1\u20134)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_04.png"
+    },
+    {
+      "key": "new_data_3.jsonl:281",
+      "piece": "new_data_3.jsonl",
+      "track_id": 281,
+      "hits": [
+        {
+          "frame_id": "new_data_99_0037",
+          "distance_m": 158.3,
+          "center": [
+            159.46,
+            -5.87,
+            -0.85
+          ],
+          "stamp": 1789643434.7881684
+        },
+        {
+          "frame_id": "new_data_99_0038",
+          "distance_m": 156.29,
+          "center": [
+            157.46,
+            -5.86,
+            -0.9
+          ],
+          "stamp": 1789643434.888546
+        },
+        {
+          "frame_id": "new_data_99_0040",
+          "distance_m": 152.22,
+          "center": [
+            153.43,
+            -5.74,
+            -0.58
+          ],
+          "stamp": 1789643435.0841925
+        }
+      ],
+      "number": 23,
+      "alarm_frames": 3,
+      "representative_frame": "new_data_99_0038",
+      "distance_m": [
+        152.22,
+        158.3
+      ],
+      "scene": "tunnel",
+      "confidence": "high",
+      "review_note": "Enclosed rounded double bore.",
+      "reviewer": "root (sheets 1\u20134)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_04.png"
+    },
+    {
+      "key": "new_data_4.jsonl:36",
+      "piece": "new_data_4.jsonl",
+      "track_id": 36,
+      "hits": [
+        {
+          "frame_id": "new_data_111_0038",
+          "distance_m": 111.73,
+          "center": [
+            111.84,
+            -3.63,
+            0.24
+          ],
+          "stamp": 1789643496.0957592
+        },
+        {
+          "frame_id": "new_data_111_0039",
+          "distance_m": 110.27,
+          "center": [
+            110.36,
+            -3.64,
+            0.29
+          ],
+          "stamp": 1789643496.1901019
+        },
+        {
+          "frame_id": "new_data_111_0040",
+          "distance_m": 108.9,
+          "center": [
+            108.94,
+            -3.57,
+            0.36
+          ],
+          "stamp": 1789643496.290466
+        },
+        {
+          "frame_id": "new_data_111_0041",
+          "distance_m": 107.45,
+          "center": [
+            107.5,
+            -3.53,
+            0.4
+          ],
+          "stamp": 1789643496.3978088
+        },
+        {
+          "frame_id": "new_data_111_0042",
+          "distance_m": 105.9,
+          "center": [
+            105.98,
+            -3.61,
+            0.43
+          ],
+          "stamp": 1789643496.4976363
+        },
+        {
+          "frame_id": "new_data_111_0043",
+          "distance_m": 104.42,
+          "center": [
+            104.5,
+            -3.62,
+            0.46
+          ],
+          "stamp": 1789643496.5925264
+        }
+      ],
+      "number": 24,
+      "alarm_frames": 6,
+      "representative_frame": "new_data_111_0041",
+      "distance_m": [
+        104.42,
+        111.73
+      ],
+      "scene": "uncertain",
+      "confidence": "medium",
+      "review_note": "Rectangular multiple bays or central divider; no clear raised platform ledge.",
+      "reviewer": "root (sheets 1\u20134)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_04.png"
+    },
+    {
+      "key": "new_data_4.jsonl:56",
+      "piece": "new_data_4.jsonl",
+      "track_id": 56,
+      "hits": [
+        {
+          "frame_id": "new_data_112_0002",
+          "distance_m": 35.36,
+          "center": [
+            35.8,
+            0.65,
+            -1.39
+          ],
+          "stamp": 1789643497.592424
+        }
+      ],
+      "number": 25,
+      "alarm_frames": 1,
+      "representative_frame": "new_data_112_0002",
+      "distance_m": [
+        35.36,
+        35.36
+      ],
+      "scene": "platform_or_station",
+      "confidence": "high",
+      "review_note": "Raised left ledge or platform edge, broad side opening and vertical structures under a box roof.",
+      "reviewer": "P4 (sheets 5\u20138)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_05.png"
+    },
+    {
+      "key": "new_data_4.jsonl:58",
+      "piece": "new_data_4.jsonl",
+      "track_id": 58,
+      "hits": [
+        {
+          "frame_id": "new_data_112_0002",
+          "distance_m": 36.26,
+          "center": [
+            36.28,
+            -0.2,
+            -1.41
+          ],
+          "stamp": 1789643497.592424
+        },
+        {
+          "frame_id": "new_data_112_0003",
+          "distance_m": 34.81,
+          "center": [
+            34.83,
+            -0.26,
+            -1.35
+          ],
+          "stamp": 1789643497.6931162
+        },
+        {
+          "frame_id": "new_data_112_0004",
+          "distance_m": 33.39,
+          "center": [
+            33.4,
+            -0.23,
+            -1.36
+          ],
+          "stamp": 1789643497.792668
+        },
+        {
+          "frame_id": "new_data_112_0005",
+          "distance_m": 31.95,
+          "center": [
+            31.96,
+            -0.21,
+            -1.35
+          ],
+          "stamp": 1789643497.892328
+        }
+      ],
+      "number": 26,
+      "alarm_frames": 4,
+      "representative_frame": "new_data_112_0004",
+      "distance_m": [
+        31.95,
+        36.26
+      ],
+      "scene": "platform_or_station",
+      "confidence": "high",
+      "review_note": "Raised left ledge or platform edge, broad side opening and vertical structures under a box roof.",
+      "reviewer": "P4 (sheets 5\u20138)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_05.png"
+    },
+    {
+      "key": "new_data_4.jsonl:205",
+      "piece": "new_data_4.jsonl",
+      "track_id": 205,
+      "hits": [
+        {
+          "frame_id": "new_data_115_0036",
+          "distance_m": 28.82,
+          "center": [
+            28.85,
+            1.36,
+            -0.91
+          ],
+          "stamp": 1789643516.2899165
+        },
+        {
+          "frame_id": "new_data_115_0037",
+          "distance_m": 28.63,
+          "center": [
+            28.65,
+            1.37,
+            -0.91
+          ],
+          "stamp": 1789643516.3923712
+        },
+        {
+          "frame_id": "new_data_115_0038",
+          "distance_m": 27.9,
+          "center": [
+            28.35,
+            1.33,
+            -0.94
+          ],
+          "stamp": 1789643516.4947233
+        },
+        {
+          "frame_id": "new_data_115_0039",
+          "distance_m": 27.65,
+          "center": [
+            28.09,
+            1.32,
+            -0.95
+          ],
+          "stamp": 1789643516.5929422
+        }
+      ],
+      "number": 27,
+      "alarm_frames": 4,
+      "representative_frame": "new_data_115_0038",
+      "distance_m": [
+        27.65,
+        28.82
+      ],
+      "scene": "platform_or_station",
+      "confidence": "high",
+      "review_note": "Raised left ledge or platform edge, broad side opening and vertical structures under a box roof.",
+      "reviewer": "P4 (sheets 5\u20138)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_05.png"
+    },
+    {
+      "key": "new_data_4.jsonl:206",
+      "piece": "new_data_4.jsonl",
+      "track_id": 206,
+      "hits": [
+        {
+          "frame_id": "new_data_115_0037",
+          "distance_m": 21.61,
+          "center": [
+            21.77,
+            1.49,
+            -0.7
+          ],
+          "stamp": 1789643516.3923712
+        },
+        {
+          "frame_id": "new_data_115_0038",
+          "distance_m": 20.66,
+          "center": [
+            20.82,
+            1.59,
+            -0.6
+          ],
+          "stamp": 1789643516.4947233
+        }
+      ],
+      "number": 28,
+      "alarm_frames": 2,
+      "representative_frame": "new_data_115_0038",
+      "distance_m": [
+        20.66,
+        21.61
+      ],
+      "scene": "platform_or_station",
+      "confidence": "high",
+      "review_note": "Raised left ledge or platform edge, broad side opening and vertical structures under a box roof.",
+      "reviewer": "P4 (sheets 5\u20138)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_05.png"
+    },
+    {
+      "key": "new_data_4.jsonl:507",
+      "piece": "new_data_4.jsonl",
+      "track_id": 507,
+      "hits": [
+        {
+          "frame_id": "new_data_134_0025",
+          "distance_m": 43.31,
+          "center": [
+            47.06,
+            2.38,
+            -0.22
+          ],
+          "stamp": 1789643612.0982747
+        },
+        {
+          "frame_id": "new_data_134_0026",
+          "distance_m": 41.72,
+          "center": [
+            45.27,
+            2.14,
+            -0.22
+          ],
+          "stamp": 1789643612.1974645
+        },
+        {
+          "frame_id": "new_data_134_0027",
+          "distance_m": 39.87,
+          "center": [
+            43.42,
+            1.88,
+            -0.25
+          ],
+          "stamp": 1789643612.2996593
+        },
+        {
+          "frame_id": "new_data_134_0028",
+          "distance_m": 40.42,
+          "center": [
+            42.0,
+            1.75,
+            -0.41
+          ],
+          "stamp": 1789643612.3982425
+        },
+        {
+          "frame_id": "new_data_134_0029",
+          "distance_m": 38.61,
+          "center": [
+            40.2,
+            1.52,
+            -0.46
+          ],
+          "stamp": 1789643612.5005794
+        },
+        {
+          "frame_id": "new_data_134_0030",
+          "distance_m": 36.89,
+          "center": [
+            38.28,
+            1.35,
+            -0.6
+          ],
+          "stamp": 1789643612.5996907
+        }
+      ],
+      "number": 29,
+      "alarm_frames": 6,
+      "representative_frame": "new_data_134_0028",
+      "distance_m": [
+        36.89,
+        43.31
+      ],
+      "scene": "uncertain",
+      "confidence": "medium",
+      "review_note": "Wide curved rectangular enclosure; platform and turnout geometry are not clear.",
+      "reviewer": "P4 (sheets 5\u20138)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_05.png"
+    },
+    {
+      "key": "new_data_4.jsonl:516",
+      "piece": "new_data_4.jsonl",
+      "track_id": 516,
+      "hits": [
+        {
+          "frame_id": "new_data_134_0031",
+          "distance_m": 49.62,
+          "center": [
+            51.38,
+            2.53,
+            -0.1
+          ],
+          "stamp": 1789643612.7019634
+        },
+        {
+          "frame_id": "new_data_134_0032",
+          "distance_m": 49.2,
+          "center": [
+            49.65,
+            2.24,
+            -0.09
+          ],
+          "stamp": 1789643612.7978039
+        },
+        {
+          "frame_id": "new_data_134_0033",
+          "distance_m": 47.49,
+          "center": [
+            47.91,
+            1.99,
+            -0.11
+          ],
+          "stamp": 1789643612.8985727
+        },
+        {
+          "frame_id": "new_data_134_0034",
+          "distance_m": 46.05,
+          "center": [
+            46.3,
+            1.81,
+            -0.22
+          ],
+          "stamp": 1789643613.0016208
+        },
+        {
+          "frame_id": "new_data_134_0035",
+          "distance_m": 44.39,
+          "center": [
+            44.65,
+            1.59,
+            -0.27
+          ],
+          "stamp": 1789643613.097862
+        }
+      ],
+      "number": 30,
+      "alarm_frames": 5,
+      "representative_frame": "new_data_134_0033",
+      "distance_m": [
+        44.39,
+        49.62
+      ],
+      "scene": "uncertain",
+      "confidence": "medium",
+      "review_note": "Wide curved rectangular enclosure; platform and turnout geometry are not clear.",
+      "reviewer": "P4 (sheets 5\u20138)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_05.png"
+    },
+    {
+      "key": "new_data_5.jsonl:111",
+      "piece": "new_data_5.jsonl",
+      "track_id": 111,
+      "hits": [
+        {
+          "frame_id": "new_data_143_0045",
+          "distance_m": 98.38,
+          "center": [
+            99.7,
+            -2.21,
+            -1.01
+          ],
+          "stamp": 1789643660.0088012
+        },
+        {
+          "frame_id": "new_data_143_0046",
+          "distance_m": 96.86,
+          "center": [
+            98.62,
+            -2.08,
+            -0.99
+          ],
+          "stamp": 1789643660.1007717
+        },
+        {
+          "frame_id": "new_data_143_0047",
+          "distance_m": 95.54,
+          "center": [
+            97.3,
+            -2.0,
+            -0.96
+          ],
+          "stamp": 1789643660.203407
+        },
+        {
+          "frame_id": "new_data_143_0049",
+          "distance_m": 92.58,
+          "center": [
+            94.34,
+            -1.99,
+            -0.95
+          ],
+          "stamp": 1789643660.401697
+        },
+        {
+          "frame_id": "new_data_143_0050",
+          "distance_m": 91.15,
+          "center": [
+            92.91,
+            -1.95,
+            -0.9
+          ],
+          "stamp": 1789643660.505347
+        },
+        {
+          "frame_id": "new_data_144_0003",
+          "distance_m": 85.51,
+          "center": [
+            87.31,
+            -2.2,
+            -1.11
+          ],
+          "stamp": 1789643660.9159884
+        },
+        {
+          "frame_id": "new_data_144_0004",
+          "distance_m": 84.25,
+          "center": [
+            86.38,
+            -2.18,
+            -1.0
+          ],
+          "stamp": 1789643661.0090947
+        },
+        {
+          "frame_id": "new_data_144_0005",
+          "distance_m": 84.48,
+          "center": [
+            84.53,
+            -2.16,
+            -0.95
+          ],
+          "stamp": 1789643661.1036403
+        },
+        {
+          "frame_id": "new_data_144_0006",
+          "distance_m": 81.39,
+          "center": [
+            83.4,
+            -2.08,
+            -0.98
+          ],
+          "stamp": 1789643661.2068179
+        },
+        {
+          "frame_id": "new_data_144_0007",
+          "distance_m": 80.08,
+          "center": [
+            82.09,
+            -2.04,
+            -0.98
+          ],
+          "stamp": 1789643661.3045413
+        }
+      ],
+      "number": 31,
+      "alarm_frames": 10,
+      "representative_frame": "new_data_144_0003",
+      "distance_m": [
+        80.08,
+        98.38
+      ],
+      "scene": "uncertain",
+      "confidence": "medium",
+      "review_note": "Two rectangular bays share the near section; broadening is visible but platform or turnout is not established.",
+      "reviewer": "P4 (sheets 5\u20138)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_06.png"
+    },
+    {
+      "key": "new_data_5.jsonl:114",
+      "piece": "new_data_5.jsonl",
+      "track_id": 114,
+      "hits": [
+        {
+          "frame_id": "new_data_144_0008",
+          "distance_m": 96.74,
+          "center": [
+            97.16,
+            -2.11,
+            -1.0
+          ],
+          "stamp": 1789643661.403096
+        },
+        {
+          "frame_id": "new_data_144_0009",
+          "distance_m": 95.01,
+          "center": [
+            95.78,
+            -2.15,
+            -1.18
+          ],
+          "stamp": 1789643661.5045726
+        },
+        {
+          "frame_id": "new_data_144_0010",
+          "distance_m": 93.65,
+          "center": [
+            94.42,
+            -2.15,
+            -1.22
+          ],
+          "stamp": 1789643661.6039953
+        },
+        {
+          "frame_id": "new_data_144_0011",
+          "distance_m": 92.18,
+          "center": [
+            92.91,
+            -0.8,
+            -1.62
+          ],
+          "stamp": 1789643661.7198718
+        },
+        {
+          "frame_id": "new_data_144_0012",
+          "distance_m": 91.3,
+          "center": [
+            91.46,
+            -0.35,
+            -1.88
+          ],
+          "stamp": 1789643661.808146
+        },
+        {
+          "frame_id": "new_data_144_0013",
+          "distance_m": 89.57,
+          "center": [
+            91.85,
+            -0.06,
+            -1.79
+          ],
+          "stamp": 1789643661.905612
+        },
+        {
+          "frame_id": "new_data_144_0014",
+          "distance_m": 88.68,
+          "center": [
+            89.58,
+            -0.37,
+            -1.59
+          ],
+          "stamp": 1789643662.0043821
+        },
+        {
+          "frame_id": "new_data_144_0015",
+          "distance_m": 87.28,
+          "center": [
+            88.18,
+            -0.31,
+            -1.53
+          ],
+          "stamp": 1789643662.1036096
+        }
+      ],
+      "number": 32,
+      "alarm_frames": 8,
+      "representative_frame": "new_data_144_0012",
+      "distance_m": [
+        87.28,
+        96.74
+      ],
+      "scene": "uncertain",
+      "confidence": "medium",
+      "review_note": "Rectangular passage with a side opening and distant widening; no definite platform ledge.",
+      "reviewer": "P4 (sheets 5\u20138)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_06.png"
+    },
+    {
+      "key": "new_data_5.jsonl:144",
+      "piece": "new_data_5.jsonl",
+      "track_id": 144,
+      "hits": [
+        {
+          "frame_id": "new_data_144_0017",
+          "distance_m": 42.34,
+          "center": [
+            42.47,
+            1.05,
+            -1.03
+          ],
+          "stamp": 1789643662.305081
+        },
+        {
+          "frame_id": "new_data_144_0018",
+          "distance_m": 41.09,
+          "center": [
+            41.22,
+            1.08,
+            -0.99
+          ],
+          "stamp": 1789643662.4061632
+        },
+        {
+          "frame_id": "new_data_144_0020",
+          "distance_m": 36.84,
+          "center": [
+            36.84,
+            -0.18,
+            -1.34
+          ],
+          "stamp": 1789643662.6036181
+        },
+        {
+          "frame_id": "new_data_144_0021",
+          "distance_m": 34.65,
+          "center": [
+            34.65,
+            -0.81,
+            -1.51
+          ],
+          "stamp": 1789643662.7051964
+        },
+        {
+          "frame_id": "new_data_144_0022",
+          "distance_m": 31.01,
+          "center": [
+            31.2,
+            1.12,
+            -0.98
+          ],
+          "stamp": 1789643662.808403
+        },
+        {
+          "frame_id": "new_data_144_0023",
+          "distance_m": 28.19,
+          "center": [
+            28.37,
+            1.77,
+            -0.8
+          ],
+          "stamp": 1789643662.9101944
+        }
+      ],
+      "number": 33,
+      "alarm_frames": 6,
+      "representative_frame": "new_data_144_0021",
+      "distance_m": [
+        28.19,
+        42.34
+      ],
+      "scene": "platform_or_station",
+      "confidence": "high",
+      "review_note": "Raised left ledge or platform edge, broad side opening and vertical structures under a box roof.",
+      "reviewer": "P4 (sheets 5\u20138)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_06.png"
+    },
+    {
+      "key": "new_data_5.jsonl:325",
+      "piece": "new_data_5.jsonl",
+      "track_id": 325,
+      "hits": [
+        {
+          "frame_id": "new_data_154_0005",
+          "distance_m": 47.65,
+          "center": [
+            51.02,
+            0.15,
+            -0.49
+          ],
+          "stamp": 1789643712.1188312
+        },
+        {
+          "frame_id": "new_data_154_0006",
+          "distance_m": 46.98,
+          "center": [
+            50.39,
+            0.16,
+            -0.49
+          ],
+          "stamp": 1789643712.2149458
+        },
+        {
+          "frame_id": "new_data_154_0007",
+          "distance_m": 46.29,
+          "center": [
+            49.7,
+            0.16,
+            -0.51
+          ],
+          "stamp": 1789643712.3168547
+        },
+        {
+          "frame_id": "new_data_154_0008",
+          "distance_m": 47.47,
+          "center": [
+            49.22,
+            0.17,
+            -0.45
+          ],
+          "stamp": 1789643712.4172313
+        },
+        {
+          "frame_id": "new_data_154_0009",
+          "distance_m": 46.92,
+          "center": [
+            48.53,
+            0.18,
+            -0.42
+          ],
+          "stamp": 1789643712.5322466
+        },
+        {
+          "frame_id": "new_data_154_0010",
+          "distance_m": 46.28,
+          "center": [
+            47.89,
+            0.18,
+            -0.4
+          ],
+          "stamp": 1789643712.6254513
+        },
+        {
+          "frame_id": "new_data_154_0011",
+          "distance_m": 43.21,
+          "center": [
+            46.87,
+            0.17,
+            -0.48
+          ],
+          "stamp": 1789643712.7207549
+        },
+        {
+          "frame_id": "new_data_154_0012",
+          "distance_m": 42.38,
+          "center": [
+            46.04,
+            0.16,
+            -0.5
+          ],
+          "stamp": 1789643712.8128748
+        },
+        {
+          "frame_id": "new_data_154_0014",
+          "distance_m": 40.82,
+          "center": [
+            44.6,
+            0.17,
+            -0.45
+          ],
+          "stamp": 1789643713.0305111
+        },
+        {
+          "frame_id": "new_data_154_0015",
+          "distance_m": 40.1,
+          "center": [
+            43.88,
+            0.18,
+            -0.42
+          ],
+          "stamp": 1789643713.1203935
+        }
+      ],
+      "number": 34,
+      "alarm_frames": 10,
+      "representative_frame": "new_data_154_0010",
+      "distance_m": [
+        40.1,
+        47.65
+      ],
+      "scene": "uncertain",
+      "confidence": "medium",
+      "review_note": "Multiple rectangular bays in a curved passage; no definite platform or turnout geometry.",
+      "reviewer": "P4 (sheets 5\u20138)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_06.png"
+    },
+    {
+      "key": "new_data_5.jsonl:353",
+      "piece": "new_data_5.jsonl",
+      "track_id": 353,
+      "hits": [
+        {
+          "frame_id": "new_data_155_0038",
+          "distance_m": 104.27,
+          "center": [
+            105.69,
+            -13.45,
+            2.0
+          ],
+          "stamp": 1789643720.5138383
+        },
+        {
+          "frame_id": "new_data_155_0039",
+          "distance_m": 103.2,
+          "center": [
+            104.5,
+            -13.15,
+            2.09
+          ],
+          "stamp": 1789643720.6138506
+        },
+        {
+          "frame_id": "new_data_155_0040",
+          "distance_m": 102.11,
+          "center": [
+            103.66,
+            -12.83,
+            1.97
+          ],
+          "stamp": 1789643720.7100706
+        },
+        {
+          "frame_id": "new_data_155_0041",
+          "distance_m": 101.12,
+          "center": [
+            102.67,
+            -12.5,
+            1.93
+          ],
+          "stamp": 1789643720.809921
+        },
+        {
+          "frame_id": "new_data_155_0042",
+          "distance_m": 99.9,
+          "center": [
+            100.79,
+            -12.16,
+            1.69
+          ],
+          "stamp": 1789643720.9298997
+        },
+        {
+          "frame_id": "new_data_155_0043",
+          "distance_m": 98.84,
+          "center": [
+            99.68,
+            -11.8,
+            1.71
+          ],
+          "stamp": 1789643721.0142865
+        },
+        {
+          "frame_id": "new_data_155_0044",
+          "distance_m": 98.97,
+          "center": [
+            98.87,
+            -11.41,
+            1.48
+          ],
+          "stamp": 1789643721.1126842
+        },
+        {
+          "frame_id": "new_data_155_0045",
+          "distance_m": 97.87,
+          "center": [
+            97.94,
+            -11.1,
+            1.35
+          ],
+          "stamp": 1789643721.2193995
+        },
+        {
+          "frame_id": "new_data_155_0046",
+          "distance_m": 96.68,
+          "center": [
+            96.87,
+            -10.59,
+            1.07
+          ],
+          "stamp": 1789643721.3142061
+        },
+        {
+          "frame_id": "new_data_155_0047",
+          "distance_m": 95.68,
+          "center": [
+            95.81,
+            -10.44,
+            1.24
+          ],
+          "stamp": 1789643721.4103873
+        },
+        {
+          "frame_id": "new_data_155_0048",
+          "distance_m": 94.56,
+          "center": [
+            94.72,
+            -10.11,
+            1.23
+          ],
+          "stamp": 1789643721.5231712
+        }
+      ],
+      "number": 35,
+      "alarm_frames": 11,
+      "representative_frame": "new_data_155_0043",
+      "distance_m": [
+        94.56,
+        104.27
+      ],
+      "scene": "tunnel",
+      "confidence": "high",
+      "review_note": "Enclosed rounded tunnel bore, without a visible broad platform opening.",
+      "reviewer": "P4 (sheets 5\u20138)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_06.png"
+    },
+    {
+      "key": "new_data_5.jsonl:356",
+      "piece": "new_data_5.jsonl",
+      "track_id": 356,
+      "hits": [
+        {
+          "frame_id": "new_data_155_0047",
+          "distance_m": 105.78,
+          "center": [
+            106.07,
+            -11.56,
+            2.54
+          ],
+          "stamp": 1789643721.4103873
+        },
+        {
+          "frame_id": "new_data_155_0048",
+          "distance_m": 104.6,
+          "center": [
+            104.94,
+            -11.22,
+            2.33
+          ],
+          "stamp": 1789643721.5231712
+        },
+        {
+          "frame_id": "new_data_155_0049",
+          "distance_m": 102.51,
+          "center": [
+            103.72,
+            -10.86,
+            2.28
+          ],
+          "stamp": 1789643721.6147482
+        }
+      ],
+      "number": 36,
+      "alarm_frames": 3,
+      "representative_frame": "new_data_155_0048",
+      "distance_m": [
+        102.51,
+        105.78
+      ],
+      "scene": "tunnel",
+      "confidence": "high",
+      "review_note": "Enclosed rounded tunnel bore, without a visible broad platform opening.",
+      "reviewer": "P4 (sheets 5\u20138)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_06.png"
+    },
+    {
+      "key": "new_data_6.jsonl:38",
+      "piece": "new_data_6.jsonl",
+      "track_id": 38,
+      "hits": [
+        {
+          "frame_id": "new_data_167_0028",
+          "distance_m": 114.18,
+          "center": [
+            114.22,
+            -11.24,
+            -0.61
+          ],
+          "stamp": 1789643788.1164613
+        },
+        {
+          "frame_id": "new_data_167_0029",
+          "distance_m": 110.8,
+          "center": [
+            112.25,
+            -10.68,
+            -0.69
+          ],
+          "stamp": 1789643788.2140305
+        }
+      ],
+      "number": 37,
+      "alarm_frames": 2,
+      "representative_frame": "new_data_167_0029",
+      "distance_m": [
+        110.8,
+        114.18
+      ],
+      "scene": "tunnel",
+      "confidence": "high",
+      "review_note": "Enclosed rounded tunnel bore, without a visible broad platform opening.",
+      "reviewer": "P4 (sheets 5\u20138)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_07.png"
+    },
+    {
+      "key": "new_data_6.jsonl:247",
+      "piece": "new_data_6.jsonl",
+      "track_id": 247,
+      "hits": [
+        {
+          "frame_id": "new_data_178_0047",
+          "distance_m": 83.94,
+          "center": [
+            84.45,
+            8.86,
+            0.94
+          ],
+          "stamp": 1789643855.819702
+        },
+        {
+          "frame_id": "new_data_178_0048",
+          "distance_m": 82.13,
+          "center": [
+            82.64,
+            8.31,
+            1.03
+          ],
+          "stamp": 1789643855.915989
+        }
+      ],
+      "number": 38,
+      "alarm_frames": 2,
+      "representative_frame": "new_data_178_0048",
+      "distance_m": [
+        82.13,
+        83.94
+      ],
+      "scene": "tunnel",
+      "confidence": "high",
+      "review_note": "Enclosed rounded tunnel bore, without a visible broad platform opening.",
+      "reviewer": "P4 (sheets 5\u20138)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_07.png"
+    },
+    {
+      "key": "new_data_6.jsonl:328",
+      "piece": "new_data_6.jsonl",
+      "track_id": 328,
+      "hits": [
+        {
+          "frame_id": "new_data_181_0032",
+          "distance_m": 109.59,
+          "center": [
+            110.69,
+            13.03,
+            0.5
+          ],
+          "stamp": 1789643873.1183872
+        },
+        {
+          "frame_id": "new_data_181_0033",
+          "distance_m": 108.3,
+          "center": [
+            109.44,
+            12.64,
+            0.54
+          ],
+          "stamp": 1789643873.2305474
+        },
+        {
+          "frame_id": "new_data_181_0034",
+          "distance_m": 106.96,
+          "center": [
+            108.2,
+            12.23,
+            0.55
+          ],
+          "stamp": 1789643873.3191926
+        },
+        {
+          "frame_id": "new_data_181_0035",
+          "distance_m": 105.73,
+          "center": [
+            106.88,
+            11.87,
+            0.4
+          ],
+          "stamp": 1789643873.4281454
+        },
+        {
+          "frame_id": "new_data_181_0036",
+          "distance_m": 105.69,
+          "center": [
+            105.77,
+            11.38,
+            0.46
+          ],
+          "stamp": 1789643873.522867
+        },
+        {
+          "frame_id": "new_data_181_0037",
+          "distance_m": 104.49,
+          "center": [
+            104.57,
+            10.95,
+            0.45
+          ],
+          "stamp": 1789643873.6193814
+        },
+        {
+          "frame_id": "new_data_181_0040",
+          "distance_m": 100.72,
+          "center": [
+            100.76,
+            9.92,
+            0.57
+          ],
+          "stamp": 1789643873.9235659
+        },
+        {
+          "frame_id": "new_data_181_0041",
+          "distance_m": 98.37,
+          "center": [
+            99.4,
+            9.74,
+            0.22
+          ],
+          "stamp": 1789643874.0222378
+        },
+        {
+          "frame_id": "new_data_181_0042",
+          "distance_m": 97.04,
+          "center": [
+            98.07,
+            9.49,
+            0.07
+          ],
+          "stamp": 1789643874.1205323
+        },
+        {
+          "frame_id": "new_data_181_0043",
+          "distance_m": 96.83,
+          "center": [
+            96.95,
+            8.96,
+            0.46
+          ],
+          "stamp": 1789643874.2215903
+        }
+      ],
+      "number": 39,
+      "alarm_frames": 10,
+      "representative_frame": "new_data_181_0037",
+      "distance_m": [
+        96.83,
+        109.59
+      ],
+      "scene": "tunnel",
+      "confidence": "high",
+      "review_note": "Enclosed rounded tunnel bore, without a visible broad platform opening.",
+      "reviewer": "P4 (sheets 5\u20138)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_07.png"
+    },
+    {
+      "key": "new_data_6.jsonl:333",
+      "piece": "new_data_6.jsonl",
+      "track_id": 333,
+      "hits": [
+        {
+          "frame_id": "new_data_182_0002",
+          "distance_m": 123.38,
+          "center": [
+            123.42,
+            8.72,
+            -1.21
+          ],
+          "stamp": 1789643875.2379334
+        },
+        {
+          "frame_id": "new_data_182_0003",
+          "distance_m": 122.1,
+          "center": [
+            122.14,
+            8.41,
+            -1.2
+          ],
+          "stamp": 1789643875.3265865
+        },
+        {
+          "frame_id": "new_data_182_0004",
+          "distance_m": 120.83,
+          "center": [
+            120.87,
+            8.09,
+            -1.21
+          ],
+          "stamp": 1789643875.4240997
+        }
+      ],
+      "number": 40,
+      "alarm_frames": 3,
+      "representative_frame": "new_data_182_0003",
+      "distance_m": [
+        120.83,
+        123.38
+      ],
+      "scene": "tunnel",
+      "confidence": "high",
+      "review_note": "Enclosed rounded tunnel bore, without a visible broad platform opening.",
+      "reviewer": "P4 (sheets 5\u20138)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_07.png"
+    },
+    {
+      "key": "new_data_6.jsonl:514",
+      "piece": "new_data_6.jsonl",
+      "track_id": 514,
+      "hits": [
+        {
+          "frame_id": "new_data_191_0045",
+          "distance_m": 124.52,
+          "center": [
+            124.58,
+            -2.55,
+            -0.48
+          ],
+          "stamp": 1789643937.431763
+        },
+        {
+          "frame_id": "new_data_191_0046",
+          "distance_m": 124.22,
+          "center": [
+            124.27,
+            -2.54,
+            -0.47
+          ],
+          "stamp": 1789643937.5360339
+        },
+        {
+          "frame_id": "new_data_192_0009",
+          "distance_m": 118.01,
+          "center": [
+            119.03,
+            -2.53,
+            -0.53
+          ],
+          "stamp": 1789643938.940979
+        },
+        {
+          "frame_id": "new_data_192_0010",
+          "distance_m": 117.55,
+          "center": [
+            118.61,
+            -2.52,
+            -0.53
+          ],
+          "stamp": 1789643939.028805
+        },
+        {
+          "frame_id": "new_data_192_0011",
+          "distance_m": 117.18,
+          "center": [
+            118.07,
+            -2.56,
+            -0.49
+          ],
+          "stamp": 1789643939.1295753
+        },
+        {
+          "frame_id": "new_data_192_0012",
+          "distance_m": 116.74,
+          "center": [
+            117.73,
+            -2.55,
+            -0.44
+          ],
+          "stamp": 1789643939.2359629
+        },
+        {
+          "frame_id": "new_data_192_0013",
+          "distance_m": 117.33,
+          "center": [
+            117.41,
+            -2.5,
+            -0.44
+          ],
+          "stamp": 1789643939.3294182
+        },
+        {
+          "frame_id": "new_data_192_0014",
+          "distance_m": 116.93,
+          "center": [
+            117.0,
+            -2.56,
+            -0.46
+          ],
+          "stamp": 1789643939.4410374
+        },
+        {
+          "frame_id": "new_data_192_0015",
+          "distance_m": 116.44,
+          "center": [
+            117.26,
+            -2.57,
+            -0.56
+          ],
+          "stamp": 1789643939.5307505
+        },
+        {
+          "frame_id": "new_data_192_0016",
+          "distance_m": 114.93,
+          "center": [
+            115.94,
+            -2.5,
+            -0.43
+          ],
+          "stamp": 1789643939.6347501
+        },
+        {
+          "frame_id": "new_data_192_0017",
+          "distance_m": 115.55,
+          "center": [
+            115.63,
+            -2.53,
+            -0.45
+          ],
+          "stamp": 1789643939.7370691
+        }
+      ],
+      "number": 41,
+      "alarm_frames": 11,
+      "representative_frame": "new_data_192_0012",
+      "distance_m": [
+        114.93,
+        124.52
+      ],
+      "scene": "uncertain",
+      "confidence": "medium",
+      "review_note": "Rectangular near passage with widening or diverging returns ahead; exact scene transition is uncertain.",
+      "reviewer": "P4 (sheets 5\u20138)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_07.png"
+    },
+    {
+      "key": "new_data_7.jsonl:83",
+      "piece": "new_data_7.jsonl",
+      "track_id": 83,
+      "hits": [
+        {
+          "frame_id": "new_data_200_0015",
+          "distance_m": 28.5,
+          "center": [
+            28.55,
+            -0.11,
+            -0.83
+          ],
+          "stamp": 1789643992.430784
+        },
+        {
+          "frame_id": "new_data_200_0016",
+          "distance_m": 26.51,
+          "center": [
+            26.56,
+            0.08,
+            -0.83
+          ],
+          "stamp": 1789643992.529297
+        }
+      ],
+      "number": 42,
+      "alarm_frames": 2,
+      "representative_frame": "new_data_200_0016",
+      "distance_m": [
+        26.51,
+        28.5
+      ],
+      "scene": "tunnel",
+      "confidence": "high",
+      "review_note": "Enclosed rounded tunnel bore, without a visible broad platform opening.",
+      "reviewer": "P4 (sheets 5\u20138)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_07.png"
+    },
+    {
+      "key": "new_data_7.jsonl:197",
+      "piece": "new_data_7.jsonl",
+      "track_id": 197,
+      "hits": [
+        {
+          "frame_id": "new_data_205_0029",
+          "distance_m": 50.93,
+          "center": [
+            51.32,
+            -2.57,
+            -1.21
+          ],
+          "stamp": 1789644030.4370756
+        },
+        {
+          "frame_id": "new_data_205_0030",
+          "distance_m": 49.74,
+          "center": [
+            50.13,
+            -2.4,
+            -1.21
+          ],
+          "stamp": 1789644030.5311282
+        },
+        {
+          "frame_id": "new_data_205_0031",
+          "distance_m": 47.59,
+          "center": [
+            47.95,
+            -2.2,
+            -1.2
+          ],
+          "stamp": 1789644030.6351526
+        },
+        {
+          "frame_id": "new_data_205_0032",
+          "distance_m": 45.91,
+          "center": [
+            46.27,
+            -2.01,
+            -1.19
+          ],
+          "stamp": 1789644030.7324595
+        }
+      ],
+      "number": 43,
+      "alarm_frames": 4,
+      "representative_frame": "new_data_205_0031",
+      "distance_m": [
+        45.91,
+        50.93
+      ],
+      "scene": "tunnel",
+      "confidence": "high",
+      "review_note": "Enclosed rounded tunnel bore, without a visible broad platform opening.",
+      "reviewer": "P4 (sheets 5\u20138)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_08.png"
+    },
+    {
+      "key": "new_data_7.jsonl:208",
+      "piece": "new_data_7.jsonl",
+      "track_id": 208,
+      "hits": [
+        {
+          "frame_id": "new_data_206_0000",
+          "distance_m": 46.39,
+          "center": [
+            47.03,
+            -2.11,
+            -1.11
+          ],
+          "stamp": 1789644032.6352453
+        },
+        {
+          "frame_id": "new_data_206_0001",
+          "distance_m": 44.42,
+          "center": [
+            45.06,
+            -1.87,
+            -1.11
+          ],
+          "stamp": 1789644032.7329738
+        }
+      ],
+      "number": 44,
+      "alarm_frames": 2,
+      "representative_frame": "new_data_206_0001",
+      "distance_m": [
+        44.42,
+        46.39
+      ],
+      "scene": "tunnel",
+      "confidence": "medium",
+      "review_note": "Enclosed rectangular connecting passage with a roughly level floor; no broad raised platform visible.",
+      "reviewer": "P4 (sheets 5\u20138)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_08.png"
+    },
+    {
+      "key": "new_data_7.jsonl:253",
+      "piece": "new_data_7.jsonl",
+      "track_id": 253,
+      "hits": [
+        {
+          "frame_id": "new_data_208_0036",
+          "distance_m": 98.27,
+          "center": [
+            102.16,
+            -0.52,
+            -0.51
+          ],
+          "stamp": 1789644047.7337902
+        },
+        {
+          "frame_id": "new_data_208_0037",
+          "distance_m": 96.71,
+          "center": [
+            101.14,
+            -0.09,
+            -0.52
+          ],
+          "stamp": 1789644047.8328834
+        },
+        {
+          "frame_id": "new_data_208_0038",
+          "distance_m": 95.66,
+          "center": [
+            100.09,
+            0.05,
+            -0.52
+          ],
+          "stamp": 1789644047.9338858
+        },
+        {
+          "frame_id": "new_data_208_0040",
+          "distance_m": 95.99,
+          "center": [
+            100.01,
+            0.16,
+            -0.44
+          ],
+          "stamp": 1789644048.1339238
+        },
+        {
+          "frame_id": "new_data_208_0041",
+          "distance_m": 95.72,
+          "center": [
+            99.75,
+            0.32,
+            -0.41
+          ],
+          "stamp": 1789644048.23632
+        }
+      ],
+      "number": 45,
+      "alarm_frames": 5,
+      "representative_frame": "new_data_208_0038",
+      "distance_m": [
+        95.66,
+        98.27
+      ],
+      "scene": "tunnel",
+      "confidence": "high",
+      "review_note": "Enclosed rounded tunnel bore, without a visible broad platform opening.",
+      "reviewer": "P4 (sheets 5\u20138)",
+      "alarm_cause": "unassigned",
+      "alarm_location_scene": "unassigned",
+      "contact_sheet": "contact_08.png"
+    }
+  ],
+  "source_sha256": {
+    "new_data_0.jsonl": "fc6635120f4435371b03496e1aab48c42efc329c6fd8d4a1e63fec27f3e536df",
+    "new_data_1.jsonl": "c0999509f8283046280f55cf39cb0643c000f7f9d353bd76d19be3eaf6a268a5",
+    "new_data_2.jsonl": "f753d59df24fd88b44d0202ed31c2c8e9f2a495ce15ce9892e54b7fa20ba1bf7",
+    "new_data_3.jsonl": "47375c14c0821bf628007b4fb52fc3d4eb488ebcf9ee166129910dbcc24b18e7",
+    "new_data_4.jsonl": "7ae54801337f4a49d209e69b960d507a4dce3f49a56a3e740e31bcfb24e5ee54",
+    "new_data_5.jsonl": "263622d01172ab57498a583d43c9d95b3eae230a313232376fa2c53bdf303e5e",
+    "new_data_6.jsonl": "c42853bed28c67cf2c6f81dd0d9a9445f1959e1117fb51b661b3031d05fe2520",
+    "new_data_7.jsonl": "7d526392758d325223244432313a7b958fb0b72fbf8d654f2b1958576c6a9d22"
+  },
+  "method": "Each event is one replay piece/track ID. Midpoint STOP cloud rendered for manual scene review.",
+  "limitations": [
+    "Scene appearance is separate from the cause of an alarm.",
+    "Ambiguous scenes remain uncertain; no scene labels come from detector reason codes.",
+    "Per-scene event-frame totals can overlap when several events share a frame.",
+    "Near-sensor scene appearance does not establish the scene or cause at an alarm 20.7\u2013158.3 m ahead.",
+    "No exposure distance or duration is annotated by scene, so no per-scene false-event rate is estimated.",
+    "No switch or junction was confidently identified in these views; uncertain scenes are retained."
+  ],
+  "scene_reference": "Manual near-sensor scene appearance, chiefly the 3\u201320 m cross-section plus top-down and angular views.",
+  "scene_event_counts": {
+    "uncertain": 9,
+    "tunnel": 16,
+    "platform_or_station": 20,
+    "switch_or_junction": 0
+  },
+  "review_status": "All 45 events visually reviewed; 9 near-sensor scene labels remain uncertain. Alarm causes and distant alarm-location scene labels remain unassigned.",
+  "contact_sheet_sha256": {
+    "contact_01.png": "84a6e247d7691659a8dd8c0a84aa9cd13cda6747dc0014459f629d36453d4578",
+    "contact_02.png": "6328f43ff089fd5dfb1415dcf467e0094efc08f1449703b8deb68af7a412bab3",
+    "contact_03.png": "9e12c5375191de055783ed7f26958f3d619d238f9566511b71059f10497fafb2",
+    "contact_04.png": "f6f519ecbe41a84b4b96637b0f5695c3880c389544c2f1bcd98ff2cfb39b2a33",
+    "contact_05.png": "1bb9e42798ec3a7098dd0b77f3867ff1a7d22529f7ef215c0849be8f1850d019",
+    "contact_06.png": "fbbab2584644b88e113edd5a987799883db75c904716922cc96135be182ff579",
+    "contact_07.png": "6c69c926b4411fe34efbd9e9bad5ff2dc3aa8dbfe7779a1910ddff697beaa374",
+    "contact_08.png": "3903628af0f0e5175585869e0ba66fe0d26e7ebf2e0635b630f3e074367548ba"
+  }
+}

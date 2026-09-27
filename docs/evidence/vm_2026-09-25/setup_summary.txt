@@ -1,0 +1,18 @@
+ReSense VM readiness, 2026-09-25T09:13:48+00:00
+  branch     claude/nifty-pascal-lzgl78
+  resources  OK: 8 vCPU / 4 cores, 15.6 GiB RAM, 38.8 GiB free for /data, Ubuntu 22.04.5 LTS
+  base       OK
+  repo       OK: /home/mdm/ReSense at 7290873 (claude/nifty-pascal-lzgl78)
+  docker     OK: Docker 29.8.1, github.com/docker/buildx v0.37.1 0b265a9f62db554fa9aba6dd19e1bd5704bc7d8a; user mdm in group docker
+  ros        OK: ROS 2 Humble on the host (ros2 bag + sqlite3 / mcap plugins, vision_msgs, Fast DDS + CycloneDDS)
+  python     OK: /home/mdm/resense-venv (Python 3.10.12), pyproject deps + [dev], open3d installed
+  native     OK: native (_resense_native.cpython-310-x86_64-linux-gnu.so)
+  files      OK: /data writable, /home/mdm/.resense_vm.env (ROS_MODE=host), /home/mdm/resense_env.sh
+  ros mode   host (host = the jury's console path can be rehearsed; docker-only = player from the image)
+
+READY. Next (new login first if you just joined the docker group):
+  source ~/resense_env.sh
+  /home/mdm/ReSense/scripts/vm/fetch_data.sh --plan      # what fits on the disk
+  /home/mdm/ReSense/scripts/vm/fetch_data.sh             # data + frame caches (~1-2 h)
+  /home/mdm/ReSense/scripts/vm/run_plan.sh status
+  /home/mdm/ReSense/scripts/vm/run_plan.sh all           # or step by step: scripts/vm/AGENT_BRIEF.md

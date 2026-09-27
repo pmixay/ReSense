@@ -1,0 +1,7 @@
+Untagged: resense:1.0.0
+Untagged: resense:latest
+Deleted: sha256:911a9992510f9a3b5f1aed9871bccbf50552ecb813e3785379252132252f5b25
+Error response from daemon: No such image: 911a9992510f:latest
+IMAGE                       ID             DISK USAGE   CONTENT SIZE   EXTRA
+hello-world:latest          5e2309035332       25.9kB         9.49kB        
+ros:humble-ros-base-jammy   1813d3c85d7f       1.19GB          296MB        

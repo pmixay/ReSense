@@ -1,0 +1,23 @@
+[INFO] [launch]: All log files can be found below /root/.ros/log/2026-09-25-15-17-25-462390-686025a0d8ee-22
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [detector_node-1]: process started with pid [43]
+[detector_node-1] [INFO] [1790349446.577164029] [resense_detector]: sensor mount: forward=-y left=+x up=+z roll/pitch/yaw=0.0/0.0/0.0 deg; auto-calibration on
+[detector_node-1] [INFO] [1790349446.604796964] [resense_detector]: ReSense detector listening on /lidar_points, /sensing/lidar/hesai128/pointcloud (+ auto-discovery); input reliability auto; per-frame kernels: native (_resense_native.cpython-310-x86_64-linux-gnu.so); resense 1.0.0
+[detector_node-1] [INFO] [1790349454.871567290] [resense_detector]: input 1: /lidar_points (frame_id=hesai_lidar, 307200 points)
+[detector_node-1] [INFO] [1790349454.872366858] [resense_detector]: static TF resense_lidar -> hesai_lidar (identity)
+[detector_node-1] [INFO] [1790349454.924345676] [resense_detector]: mount calibration: pending - 
+[detector_node-1] [INFO] [1790349455.044662628] [resense_detector]: 1.7 s of recording waiting: catching up, one frame every 0.3 s of recording
+[detector_node-1] [INFO] [1790349455.545049446] [resense_detector]: caught up in 0.5 s: 10 frames processed, 14 skipped, at most 1.7 s of recording behind
+[detector_node-1] [INFO] [1790349456.605596867] [resense_detector]: frame 21: clear; axis y=-0.00 R=110759; 10.5 fps; latency mean 49 / p95 57 / max 60 ms; input period 100 ms; dropped 14 (14 skipped by the catch-up)
+[detector_node-1] [INFO] [1790349458.605578441] [resense_detector]: frame 41: clear; axis y=-0.01 R=41650; 10.0 fps; latency mean 44 / p95 51 / max 54 ms; input period 100 ms; dropped 14 (14 skipped by the catch-up)
+[detector_node-1] [INFO] [1790349460.605360177] [resense_detector]: frame 61: warning; axis y=-0.04 R=-2760; 10.0 fps; latency mean 42 / p95 51 / max 52 ms; input period 100 ms; dropped 14 (14 skipped by the catch-up)
+[detector_node-1] [INFO] [1790349462.608192133] [resense_detector]: frame 81: warning; axis y=-0.00 R=-1146; 10.0 fps; latency mean 46 / p95 56 / max 62 ms; input period 100 ms; dropped 14 (14 skipped by the catch-up)
+[detector_node-1] [INFO] [1790349464.611811464] [resense_detector]: frame 101: warning; axis y=+0.07 R=-1519; 10.0 fps; latency mean 50 / p95 60 / max 61 ms; input period 100 ms; dropped 14 (14 skipped by the catch-up)
+[detector_node-1] [INFO] [1790349466.606017011] [resense_detector]: frame 121: warning; axis y=+0.02 R=-1530; 10.0 fps; latency mean 48 / p95 56 / max 59 ms; input period 100 ms; dropped 14 (14 skipped by the catch-up)
+[detector_node-1] [INFO] [1790349468.605841690] [resense_detector]: frame 141: warning; axis y=+0.02 R=-1476; 10.0 fps; latency mean 48 / p95 58 / max 58 ms; input period 100 ms; dropped 14 (14 skipped by the catch-up)
+[detector_node-1] [INFO] [1790349470.605568431] [resense_detector]: frame 161: warning; axis y=-0.01 R=-1058; 10.0 fps; latency mean 48 / p95 55 / max 56 ms; input period 100 ms; dropped 14 (14 skipped by the catch-up)
+[detector_node-1] [INFO] [1790349472.605465531] [resense_detector]: frame 181: warning; axis y=-0.06 R=-4497; 10.0 fps; latency mean 45 / p95 55 / max 55 ms; input period 100 ms; dropped 14 (14 skipped by the catch-up)
+[detector_node-1] [INFO] [1790349473.593001794] [resense_detector]: mount calibration: identity - configured mapping confirmed
+[detector_node-1] [INFO] [1790349474.605626878] [resense_detector]: frame 201: warning; axis y=-0.03 R=890645; 10.0 fps; latency mean 45 / p95 47 / max 58 ms; input period 100 ms; dropped 14 (14 skipped by the catch-up)
+[detector_node-1] [INFO] [1790349476.605739291] [resense_detector]: frame 221: warning; axis y=-0.01 R=22825; 10.0 fps; latency mean 41 / p95 44 / max 45 ms; input period 100 ms; dropped 14 (14 skipped by the catch-up)
+[detector_node-1] [INFO] [1790349478.605699540] [resense_detector]: frame 235: FAULT: no LiDAR frame for 0.6 s (> 0.5 s): path not monitored; 7.0 fps; latency mean 41 / p95 43 / max 43 ms; input period 100 ms; dropped 14 (14 skipped by the catch-up)

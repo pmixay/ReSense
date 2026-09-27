@@ -1,0 +1,648 @@
+{
+  "candidate": "M2",
+  "production_changed": false,
+  "native": "native (_resense_native.cpython-312-x86_64-linux-gnu.so)",
+  "script_sha256": "3e4e2bc79fff221fc0190a1948b864def6b11a8d490db897564dc633a78cd557",
+  "helper_sha256": "2810da9bab3533b756229f5b4993541c89841bc7f5418a5c14ba9b028b363086",
+  "recordings": {
+    "cloud_with_fake_obj": {
+      "frames": 1510,
+      "upstream_identical": true,
+      "reference": {
+        "path": "docs/evidence/freeze_2026-09-26/gate_frames/cloud_with_fake_obj.jsonl.gz",
+        "sha256": "90547cbab41744b5db6fada7d32d4e617c608df5f7ad3bd457af1bb76f2b0d17",
+        "frames": 1510
+      },
+      "no_estimate_increased": true,
+      "monitoring_cost": {
+        "frames": 1510,
+        "reference_decisions": {
+          "GO": 747,
+          "STOP": 415,
+          "FAULT": 2,
+          "CAUTION": 346
+        },
+        "candidate_decisions": {
+          "GO": 733,
+          "STOP": 415,
+          "FAULT": 2,
+          "CAUTION": 360
+        },
+        "newly_uncertain_frames": 14,
+        "newly_uncertain_percentage_points": 0.9271523178807947,
+        "reference_clear_median_m": 97.7,
+        "candidate_clear_median_m": 97.6,
+        "clear_median_fraction": 0.998976458546571,
+        "passed": true
+      },
+      "reference_overclaim": {
+        "tolerance_m": 0.5,
+        "totals": {
+          "target": 54,
+          "target_frames": 505,
+          "intent": 223,
+          "intent_frames": 801,
+          "go_judge": 150,
+          "go_judge_in_envelope": 62,
+          "target_by_decision": {
+            "GO": 46,
+            "CAUTION": 6,
+            "STOP": 2
+          }
+        },
+        "inside_objects": {
+          "big_center": {
+            "frames": 213,
+            "frames_in_envelope": 213,
+            "overclaim": 0,
+            "overclaim_in_envelope": 0,
+            "overclaim_in_envelope_go": 0,
+            "max_excess_m": 0.0
+          },
+          "small_on_rail": {
+            "frames": 49,
+            "frames_in_envelope": 33,
+            "overclaim": 17,
+            "overclaim_in_envelope": 4,
+            "overclaim_in_envelope_go": 4,
+            "max_excess_m": 126.0
+          },
+          "small_center": {
+            "frames": 79,
+            "frames_in_envelope": 63,
+            "overclaim": 45,
+            "overclaim_in_envelope": 30,
+            "overclaim_in_envelope_go": 29,
+            "max_excess_m": 66.7
+          },
+          "small_edge_inside": {
+            "frames": 83,
+            "frames_in_envelope": 16,
+            "overclaim": 41,
+            "overclaim_in_envelope": 4,
+            "overclaim_in_envelope_go": 0,
+            "max_excess_m": 174.8
+          },
+          "big_edge_inside": {
+            "frames": 125,
+            "frames_in_envelope": 8,
+            "overclaim": 73,
+            "overclaim_in_envelope": 2,
+            "overclaim_in_envelope_go": 0,
+            "max_excess_m": 180.8
+          },
+          "big_above": {
+            "frames": 124,
+            "frames_in_envelope": 75,
+            "overclaim": 27,
+            "overclaim_in_envelope": 7,
+            "overclaim_in_envelope_go": 6,
+            "max_excess_m": 53.9
+          },
+          "long_low_on_rails": {
+            "frames": 86,
+            "frames_in_envelope": 77,
+            "overclaim": 7,
+            "overclaim_in_envelope": 7,
+            "overclaim_in_envelope_go": 7,
+            "max_excess_m": 114.8
+          },
+          "thin_hanging": {
+            "frames": 42,
+            "frames_in_envelope": 20,
+            "overclaim": 13,
+            "overclaim_in_envelope": 0,
+            "overclaim_in_envelope_go": 0,
+            "max_excess_m": 136.6
+          }
+        },
+        "outside_objects": {
+          "small_outside_near": {
+            "frames": 112,
+            "clear_stops_at_object": 11
+          },
+          "big_outside": {
+            "frames": 104,
+            "clear_stops_at_object": 8
+          }
+        }
+      },
+      "candidate_overclaim": {
+        "tolerance_m": 0.5,
+        "totals": {
+          "target": 44,
+          "target_frames": 505,
+          "intent": 212,
+          "intent_frames": 801,
+          "go_judge": 139,
+          "go_judge_in_envelope": 52,
+          "target_by_decision": {
+            "GO": 36,
+            "CAUTION": 6,
+            "STOP": 2
+          }
+        },
+        "inside_objects": {
+          "big_center": {
+            "frames": 213,
+            "frames_in_envelope": 213,
+            "overclaim": 0,
+            "overclaim_in_envelope": 0,
+            "overclaim_in_envelope_go": 0,
+            "max_excess_m": 0.0
+          },
+          "small_on_rail": {
+            "frames": 49,
+            "frames_in_envelope": 33,
+            "overclaim": 17,
+            "overclaim_in_envelope": 4,
+            "overclaim_in_envelope_go": 4,
+            "max_excess_m": 126.0
+          },
+          "small_center": {
+            "frames": 79,
+            "frames_in_envelope": 63,
+            "overclaim": 45,
+            "overclaim_in_envelope": 30,
+            "overclaim_in_envelope_go": 29,
+            "max_excess_m": 66.7
+          },
+          "small_edge_inside": {
+            "frames": 83,
+            "frames_in_envelope": 16,
+            "overclaim": 41,
+            "overclaim_in_envelope": 4,
+            "overclaim_in_envelope_go": 0,
+            "max_excess_m": 174.8
+          },
+          "big_edge_inside": {
+            "frames": 125,
+            "frames_in_envelope": 8,
+            "overclaim": 73,
+            "overclaim_in_envelope": 2,
+            "overclaim_in_envelope_go": 0,
+            "max_excess_m": 180.8
+          },
+          "big_above": {
+            "frames": 124,
+            "frames_in_envelope": 75,
+            "overclaim": 21,
+            "overclaim_in_envelope": 2,
+            "overclaim_in_envelope_go": 1,
+            "max_excess_m": 51.1
+          },
+          "long_low_on_rails": {
+            "frames": 86,
+            "frames_in_envelope": 77,
+            "overclaim": 2,
+            "overclaim_in_envelope": 2,
+            "overclaim_in_envelope_go": 2,
+            "max_excess_m": 92.5
+          },
+          "thin_hanging": {
+            "frames": 42,
+            "frames_in_envelope": 20,
+            "overclaim": 13,
+            "overclaim_in_envelope": 0,
+            "overclaim_in_envelope_go": 0,
+            "max_excess_m": 136.6
+          }
+        },
+        "outside_objects": {
+          "small_outside_near": {
+            "frames": 112,
+            "clear_stops_at_object": 11
+          },
+          "big_outside": {
+            "frames": 104,
+            "clear_stops_at_object": 8
+          }
+        }
+      }
+    },
+    "doubleT_platform": {
+      "frames": 345,
+      "upstream_identical": true,
+      "reference": {
+        "path": "docs/evidence/freeze_2026-09-26/gate_frames/doubleT_platform.jsonl.gz",
+        "sha256": "36af93526f051135e7db1666f93d69d59f3d103fb0d282933e77a9e1041b05b8",
+        "frames": 345
+      },
+      "no_estimate_increased": true,
+      "monitoring_cost": {
+        "frames": 345,
+        "reference_decisions": {
+          "GO": 149,
+          "CAUTION": 192,
+          "STOP": 4
+        },
+        "candidate_decisions": {
+          "GO": 149,
+          "CAUTION": 192,
+          "STOP": 4
+        },
+        "newly_uncertain_frames": 0,
+        "newly_uncertain_percentage_points": 0.0,
+        "reference_clear_median_m": 119.0,
+        "candidate_clear_median_m": 119.0,
+        "clear_median_fraction": 1.0,
+        "passed": true
+      }
+    },
+    "roundT_doubleT": {
+      "frames": 252,
+      "upstream_identical": true,
+      "reference": {
+        "path": "docs/evidence/freeze_2026-09-26/gate_frames/roundT_doubleT.jsonl.gz",
+        "sha256": "a22550049d35111d6ed78ec00b56d3caa59686a73d28a18f52d8c587623f0b8a",
+        "frames": 252
+      },
+      "no_estimate_increased": true,
+      "monitoring_cost": {
+        "frames": 252,
+        "reference_decisions": {
+          "GO": 79,
+          "CAUTION": 173
+        },
+        "candidate_decisions": {
+          "GO": 76,
+          "CAUTION": 176
+        },
+        "newly_uncertain_frames": 3,
+        "newly_uncertain_percentage_points": 1.1904761904761905,
+        "reference_clear_median_m": 135.5,
+        "candidate_clear_median_m": 134.2,
+        "clear_median_fraction": 0.9904059040590405,
+        "passed": true
+      }
+    },
+    "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "upstream_identical": true,
+      "reference": {
+        "path": "docs/evidence/freeze_2026-09-26/gate_frames/roundT_pressureGate_roundT.jsonl.gz",
+        "sha256": "7526c4b64efd7f06c188eceb351ce1192320e239da0357a331225b6986501e81",
+        "frames": 268
+      },
+      "no_estimate_increased": true,
+      "monitoring_cost": {
+        "frames": 268,
+        "reference_decisions": {
+          "GO": 164,
+          "CAUTION": 104
+        },
+        "candidate_decisions": {
+          "GO": 164,
+          "CAUTION": 104
+        },
+        "newly_uncertain_frames": 0,
+        "newly_uncertain_percentage_points": 0.0,
+        "reference_clear_median_m": 128.05,
+        "candidate_clear_median_m": 128.05,
+        "clear_median_fraction": 1.0,
+        "passed": true
+      }
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "upstream_identical": true,
+      "reference": {
+        "path": "docs/evidence/freeze_2026-09-26/gate_frames/roundT_squareT_pressureGate_squareT.jsonl.gz",
+        "sha256": "4962f8a12e16b37215b703587e5b623922162a7dd6af85d76c0501a6e929c34f",
+        "frames": 545
+      },
+      "no_estimate_increased": true,
+      "monitoring_cost": {
+        "frames": 545,
+        "reference_decisions": {
+          "GO": 399,
+          "CAUTION": 146
+        },
+        "candidate_decisions": {
+          "GO": 395,
+          "CAUTION": 150
+        },
+        "newly_uncertain_frames": 4,
+        "newly_uncertain_percentage_points": 0.7339449541284404,
+        "reference_clear_median_m": 148.9,
+        "candidate_clear_median_m": 146.3,
+        "clear_median_fraction": 0.9825386165211552,
+        "passed": true
+      }
+    },
+    "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "upstream_identical": true,
+      "reference": {
+        "path": "docs/evidence/freeze_2026-09-26/gate_frames/squareT_platform_squareT_switch.jsonl.gz",
+        "sha256": "5aa946fed34eb8941c4c35c51e25c2f37b273c4cedf71bf75ae635e0e3610831",
+        "frames": 877
+      },
+      "no_estimate_increased": true,
+      "monitoring_cost": {
+        "frames": 877,
+        "reference_decisions": {
+          "GO": 458,
+          "CAUTION": 365,
+          "STOP": 54
+        },
+        "candidate_decisions": {
+          "GO": 457,
+          "CAUTION": 366,
+          "STOP": 54
+        },
+        "newly_uncertain_frames": 1,
+        "newly_uncertain_percentage_points": 0.11402508551881414,
+        "reference_clear_median_m": 88.9,
+        "candidate_clear_median_m": 88.9,
+        "clear_median_fraction": 1.0,
+        "passed": true
+      }
+    },
+    "doubleT_obstacle": {
+      "frames": 201,
+      "upstream_identical": true,
+      "reference": {
+        "path": "docs/evidence/freeze_2026-09-26/gate_frames/doubleT_obstacle.jsonl.gz",
+        "sha256": "1d5d6806808a37aa2a4da98b788858c7831b55cf59b0b5db00e9173ff79c4185",
+        "frames": 201
+      },
+      "no_estimate_increased": true,
+      "monitoring_cost": {
+        "frames": 201,
+        "reference_decisions": {
+          "GO": 8,
+          "CAUTION": 4,
+          "STOP": 189
+        },
+        "candidate_decisions": {
+          "GO": 8,
+          "CAUTION": 4,
+          "STOP": 189
+        },
+        "newly_uncertain_frames": 0,
+        "newly_uncertain_percentage_points": 0.0,
+        "reference_clear_median_m": 56.1,
+        "candidate_clear_median_m": 56.1,
+        "clear_median_fraction": 1.0,
+        "passed": true
+      }
+    },
+    "new_data_0": {
+      "frames": 1409,
+      "upstream_identical": true,
+      "reference": {
+        "path": "docs/evidence/freeze_2026-09-26/gate_frames/new_data_0.jsonl.gz",
+        "sha256": "f6867e0dbe9282e4a9c002f55d8b0e1495f3c2baa44dd5850cd5623b6527427d",
+        "frames": 1409
+      },
+      "no_estimate_increased": true,
+      "monitoring_cost": {
+        "frames": 1409,
+        "reference_decisions": {
+          "GO": 762,
+          "CAUTION": 620,
+          "STOP": 27
+        },
+        "candidate_decisions": {
+          "GO": 753,
+          "CAUTION": 629,
+          "STOP": 27
+        },
+        "newly_uncertain_frames": 9,
+        "newly_uncertain_percentage_points": 0.63875088715401,
+        "reference_clear_median_m": 132.7,
+        "candidate_clear_median_m": 132.2,
+        "clear_median_fraction": 0.9962321024868124,
+        "passed": true
+      }
+    },
+    "new_data_1": {
+      "frames": 1409,
+      "upstream_identical": true,
+      "reference": {
+        "path": "docs/evidence/freeze_2026-09-26/gate_frames/new_data_1.jsonl.gz",
+        "sha256": "e9157657c0e55dfd99771e392eced8bcb94832441777057cb04f28fa635c1bd6",
+        "frames": 1409
+      },
+      "no_estimate_increased": true,
+      "monitoring_cost": {
+        "frames": 1409,
+        "reference_decisions": {
+          "GO": 506,
+          "CAUTION": 883,
+          "STOP": 20
+        },
+        "candidate_decisions": {
+          "GO": 495,
+          "CAUTION": 894,
+          "STOP": 20
+        },
+        "newly_uncertain_frames": 11,
+        "newly_uncertain_percentage_points": 0.7806955287437899,
+        "reference_clear_median_m": 130.2,
+        "candidate_clear_median_m": 130.1,
+        "clear_median_fraction": 0.9992319508448542,
+        "passed": true
+      }
+    },
+    "new_data_2": {
+      "frames": 1409,
+      "upstream_identical": true,
+      "reference": {
+        "path": "docs/evidence/freeze_2026-09-26/gate_frames/new_data_2.jsonl.gz",
+        "sha256": "b3f020ca4c249021d0066483c21fc6ef7661ec1c981a89940c8943e10b6645ed",
+        "frames": 1409
+      },
+      "no_estimate_increased": true,
+      "monitoring_cost": {
+        "frames": 1409,
+        "reference_decisions": {
+          "GO": 746,
+          "CAUTION": 644,
+          "STOP": 19
+        },
+        "candidate_decisions": {
+          "GO": 743,
+          "CAUTION": 647,
+          "STOP": 19
+        },
+        "newly_uncertain_frames": 3,
+        "newly_uncertain_percentage_points": 0.21291696238466998,
+        "reference_clear_median_m": 123.0,
+        "candidate_clear_median_m": 123.0,
+        "clear_median_fraction": 1.0,
+        "passed": true
+      }
+    },
+    "new_data_3": {
+      "frames": 1409,
+      "upstream_identical": true,
+      "reference": {
+        "path": "docs/evidence/freeze_2026-09-26/gate_frames/new_data_3.jsonl.gz",
+        "sha256": "91f84cc6f7ad4c74099d5988c90baba44858783544042fd65feac1d5494fb84b",
+        "frames": 1409
+      },
+      "no_estimate_increased": true,
+      "monitoring_cost": {
+        "frames": 1409,
+        "reference_decisions": {
+          "GO": 558,
+          "CAUTION": 846,
+          "STOP": 5
+        },
+        "candidate_decisions": {
+          "GO": 554,
+          "CAUTION": 850,
+          "STOP": 5
+        },
+        "newly_uncertain_frames": 4,
+        "newly_uncertain_percentage_points": 0.28388928317955997,
+        "reference_clear_median_m": 123.2,
+        "candidate_clear_median_m": 123.0,
+        "clear_median_fraction": 0.9983766233766234,
+        "passed": true
+      }
+    },
+    "new_data_4": {
+      "frames": 1409,
+      "upstream_identical": true,
+      "reference": {
+        "path": "docs/evidence/freeze_2026-09-26/gate_frames/new_data_4.jsonl.gz",
+        "sha256": "9bf56d45b5f6ab6e5f68d8274fa80938513790eb53c8724952ffc48c0a6379fc",
+        "frames": 1409
+      },
+      "no_estimate_increased": true,
+      "monitoring_cost": {
+        "frames": 1409,
+        "reference_decisions": {
+          "GO": 628,
+          "CAUTION": 756,
+          "STOP": 25
+        },
+        "candidate_decisions": {
+          "GO": 628,
+          "CAUTION": 756,
+          "STOP": 25
+        },
+        "newly_uncertain_frames": 0,
+        "newly_uncertain_percentage_points": 0.0,
+        "reference_clear_median_m": 120.0,
+        "candidate_clear_median_m": 120.0,
+        "clear_median_fraction": 1.0,
+        "passed": true
+      }
+    },
+    "new_data_5": {
+      "frames": 1409,
+      "upstream_identical": true,
+      "reference": {
+        "path": "docs/evidence/freeze_2026-09-26/gate_frames/new_data_5.jsonl.gz",
+        "sha256": "4aebd4d03b92e8f18fd1b641de85d5c3284c5bd381b82dea820fa9339d45e882",
+        "frames": 1409
+      },
+      "no_estimate_increased": true,
+      "monitoring_cost": {
+        "frames": 1409,
+        "reference_decisions": {
+          "GO": 1052,
+          "CAUTION": 311,
+          "STOP": 46
+        },
+        "candidate_decisions": {
+          "GO": 1044,
+          "CAUTION": 319,
+          "STOP": 46
+        },
+        "newly_uncertain_frames": 8,
+        "newly_uncertain_percentage_points": 0.5677785663591199,
+        "reference_clear_median_m": 120.0,
+        "candidate_clear_median_m": 120.0,
+        "clear_median_fraction": 1.0,
+        "passed": true
+      }
+    },
+    "new_data_6": {
+      "frames": 1409,
+      "upstream_identical": true,
+      "reference": {
+        "path": "docs/evidence/freeze_2026-09-26/gate_frames/new_data_6.jsonl.gz",
+        "sha256": "1835dc35f3fa96bad14b70df36aa077e195f9f9c12e68e93f33bbbeb23909296",
+        "frames": 1409
+      },
+      "no_estimate_increased": true,
+      "monitoring_cost": {
+        "frames": 1409,
+        "reference_decisions": {
+          "GO": 969,
+          "CAUTION": 412,
+          "STOP": 28
+        },
+        "candidate_decisions": {
+          "GO": 966,
+          "CAUTION": 415,
+          "STOP": 28
+        },
+        "newly_uncertain_frames": 3,
+        "newly_uncertain_percentage_points": 0.21291696238466998,
+        "reference_clear_median_m": 120.0,
+        "candidate_clear_median_m": 120.0,
+        "clear_median_fraction": 1.0,
+        "passed": true
+      }
+    },
+    "new_data_7": {
+      "frames": 1408,
+      "upstream_identical": true,
+      "reference": {
+        "path": "docs/evidence/freeze_2026-09-26/gate_frames/new_data_7.jsonl.gz",
+        "sha256": "8614bd73ec72e9660ffa2a31898d136eb060c799a4a3a672226ddfa6535d5847",
+        "frames": 1408
+      },
+      "no_estimate_increased": true,
+      "monitoring_cost": {
+        "frames": 1408,
+        "reference_decisions": {
+          "GO": 1217,
+          "CAUTION": 178,
+          "STOP": 13
+        },
+        "candidate_decisions": {
+          "GO": 1186,
+          "CAUTION": 209,
+          "STOP": 13
+        },
+        "newly_uncertain_frames": 31,
+        "newly_uncertain_percentage_points": 2.2017045454545454,
+        "reference_clear_median_m": 129.6,
+        "candidate_clear_median_m": 129.3,
+        "clear_median_fraction": 0.9976851851851853,
+        "passed": true
+      }
+    }
+  },
+  "empty_cost_passed": true,
+  "partial_benefit_passed": true,
+  "zero_GO_overclaim_diagnostic_passed": false,
+  "proceed_to_ride": true,
+  "ride_monitoring_cost": {
+    "frames": 11271,
+    "reference_decisions": {
+      "GO": 6438,
+      "CAUTION": 4650,
+      "STOP": 183
+    },
+    "candidate_decisions": {
+      "GO": 6369,
+      "CAUTION": 4719,
+      "STOP": 183
+    },
+    "newly_uncertain_frames": 69,
+    "newly_uncertain_percentage_points": 0.6121905775885015,
+    "reference_clear_median_m": 122.6,
+    "candidate_clear_median_m": 121.4,
+    "clear_median_fraction": 0.9902120717781404,
+    "passed": true
+  },
+  "disposition": "eligible for independent review as partial improvement"
+}

@@ -1,0 +1,337 @@
+{
+  "schema": "resense-p4-candidate-decisions-v1",
+  "date": "2026-09-26",
+  "frozen_commit": "dcf7f90f730c675db238691d79357469b489d13f",
+  "preregistration": "p4_candidates_2026-09-26-prereg.json",
+  "reference_gate": "p4_artifacts_2026-09-26/reference_gate.json",
+  "reference_gate_status": "incomplete (exit 1, no allow): all locally available data match; 3 ride and 15 set_F_straight gated metrics missing",
+  "scope_limits": [
+    "Set O is previously inspected data, not unseen validation.",
+    "Ride and set F straight could not be evaluated because new_data cache is absent.",
+    "Startup, 5 Hz/mount, offsets, clear-distance and paired set S are reference-only; candidate-specific repetition was not run because the strict gate lacked the ride and set F rows required for the preregistered acceptance sequence.",
+    "No detector/default configuration change is accepted or shipped."
+  ],
+  "candidates": [
+    {
+      "id": "A",
+      "change": "tracking.near_escalate_distance",
+      "set_o_target": "big_above",
+      "reference_metrics": {
+        "alarm_frames": 22,
+        "advisory_only_frames": 27,
+        "first_alarm_m": 101.3,
+        "first_alarm_frame": 632,
+        "alarm_held_from_m": 23.9,
+        "missed_intervals": [
+          {
+            "start_frame": 559,
+            "end_frame": 631,
+            "frames": 73,
+            "from_m": 248.2,
+            "to_m": 103.4
+          },
+          {
+            "start_frame": 644,
+            "end_frame": 672,
+            "frames": 29,
+            "from_m": 77.2,
+            "to_m": 23.9
+          }
+        ]
+      },
+      "candidate_metrics": {
+        "alarm_frames": 24,
+        "advisory_only_frames": 25,
+        "first_alarm_m": 101.3,
+        "first_alarm_frame": 632,
+        "alarm_held_from_m": 27.5,
+        "missed_intervals": [
+          {
+            "start_frame": 559,
+            "end_frame": 631,
+            "frames": 73,
+            "from_m": 248.2,
+            "to_m": 103.4
+          },
+          {
+            "start_frame": 644,
+            "end_frame": 670,
+            "frames": 27,
+            "from_m": 77.2,
+            "to_m": 27.5
+          }
+        ]
+      },
+      "outside_false_stop_frames": {
+        "reference": 6,
+        "candidate": 6
+      },
+      "background_false_alarm_frames": {
+        "reference": 3,
+        "candidate": 3,
+        "reference_ids": 2,
+        "candidate_ids": 2
+      },
+      "clear_distance_overclaim_totals_identical": true,
+      "six_original_and_set_o_gate": {
+        "worse_gated": [],
+        "available_metrics_better": [
+          "set_O.objects.big_above.stop_frames",
+          "set_O.objects.big_above.held_from_m",
+          "set_O.objects.big_above.bins.0-50.stop_frames"
+        ],
+        "missing_gated_count": 18,
+        "missing_gated": [
+          "ride.frames",
+          "ride.alarm_events",
+          "ride.stop_episodes",
+          "set_F_straight.person.detected",
+          "set_F_straight.person.first_detection_median_m",
+          "set_F_straight.person.false_detections",
+          "set_F_straight.box1.0.detected",
+          "set_F_straight.box1.0.first_detection_median_m",
+          "set_F_straight.box1.0.false_detections",
+          "set_F_straight.box0.5.detected",
+          "set_F_straight.box0.5.first_detection_median_m",
+          "set_F_straight.box0.5.false_detections",
+          "set_F_straight.trolley.detected",
+          "set_F_straight.trolley.first_detection_median_m",
+          "set_F_straight.trolley.false_detections",
+          "set_F_straight.cable.detected",
+          "set_F_straight.cable.first_detection_median_m",
+          "set_F_straight.cable.false_detections"
+        ],
+        "no_allow_used": true,
+        "passed": false
+      },
+      "decision": {
+        "status": "not accepted: target improved in set O and available six recordings had no gated regression, but full acceptance is unproven because ride/set F and candidate-specific stress/offset/paired checks are unavailable",
+        "reason": "Candidate A changes big_above STOP 22\u219224 and sustained held-from range 23.9\u219227.5 m; its complete gate cannot pass with ride/set F missing. Per preregistration, subsequent candidate-specific rate/mount, offset, and paired-placement checks were not run after the complete gate could not evaluate the required ride and set F rows."
+      },
+      "inside_stop_frames": {
+        "reference": 355,
+        "candidate": 357
+      }
+    },
+    {
+      "id": "B",
+      "change": "tracking.near_escalate_voxels",
+      "set_o_target": "small_edge_inside",
+      "reference_metrics": {
+        "alarm_frames": 2,
+        "advisory_only_frames": 23,
+        "first_alarm_m": 5.2,
+        "first_alarm_frame": 478,
+        "alarm_held_from_m": 5.2,
+        "missed_intervals": [
+          {
+            "start_frame": 396,
+            "end_frame": 399,
+            "frames": 4,
+            "from_m": 154.7,
+            "to_m": 149.2
+          },
+          {
+            "start_frame": 401,
+            "end_frame": 477,
+            "frames": 77,
+            "from_m": 145.8,
+            "to_m": 7.1
+          }
+        ]
+      },
+      "candidate_metrics": {
+        "alarm_frames": 3,
+        "advisory_only_frames": 22,
+        "first_alarm_m": 7.1,
+        "first_alarm_frame": 477,
+        "alarm_held_from_m": 7.1,
+        "missed_intervals": [
+          {
+            "start_frame": 396,
+            "end_frame": 399,
+            "frames": 4,
+            "from_m": 154.7,
+            "to_m": 149.2
+          },
+          {
+            "start_frame": 401,
+            "end_frame": 476,
+            "frames": 76,
+            "from_m": 145.8,
+            "to_m": 8.9
+          }
+        ]
+      },
+      "outside_false_stop_frames": {
+        "reference": 6,
+        "candidate": 6
+      },
+      "background_false_alarm_frames": {
+        "reference": 3,
+        "candidate": 3,
+        "reference_ids": 2,
+        "candidate_ids": 2
+      },
+      "clear_distance_overclaim_totals_identical": true,
+      "six_original_and_set_o_gate": {
+        "worse_gated": [],
+        "available_metrics_better": [
+          "set_O.objects.small_edge_inside.stop_frames",
+          "set_O.objects.small_edge_inside.first_stop_m",
+          "set_O.objects.small_edge_inside.held_from_m",
+          "set_O.objects.small_edge_inside.max_missed_streak_frames",
+          "set_O.objects.small_edge_inside.max_missed_span_m",
+          "set_O.objects.small_edge_inside.bins.0-50.stop_frames"
+        ],
+        "missing_gated_count": 18,
+        "missing_gated": [
+          "ride.frames",
+          "ride.alarm_events",
+          "ride.stop_episodes",
+          "set_F_straight.person.detected",
+          "set_F_straight.person.first_detection_median_m",
+          "set_F_straight.person.false_detections",
+          "set_F_straight.box1.0.detected",
+          "set_F_straight.box1.0.first_detection_median_m",
+          "set_F_straight.box1.0.false_detections",
+          "set_F_straight.box0.5.detected",
+          "set_F_straight.box0.5.first_detection_median_m",
+          "set_F_straight.box0.5.false_detections",
+          "set_F_straight.trolley.detected",
+          "set_F_straight.trolley.first_detection_median_m",
+          "set_F_straight.trolley.false_detections",
+          "set_F_straight.cable.detected",
+          "set_F_straight.cable.first_detection_median_m",
+          "set_F_straight.cable.false_detections"
+        ],
+        "no_allow_used": true,
+        "passed": false
+      },
+      "decision": {
+        "status": "not accepted: target improved in set O and available six recordings had no gated regression, but full acceptance is unproven because ride/set F and candidate-specific stress/offset/paired checks are unavailable",
+        "reason": "Candidate B changes small_edge_inside STOP 2\u21923 and held-from range 5.2\u21927.1 m; its complete gate cannot pass with ride/set F missing. Per preregistration, subsequent candidate-specific rate/mount, offset, and paired-placement checks were not run after the complete gate could not evaluate the required ride and set F rows."
+      },
+      "inside_stop_frames": {
+        "reference": 355,
+        "candidate": 356
+      }
+    },
+    {
+      "id": "C",
+      "change": "cluster.wall_keep_gauge_voxels",
+      "set_o_target": "big_edge_inside",
+      "reference_metrics": {
+        "alarm_frames": 6,
+        "advisory_only_frames": 0,
+        "first_alarm_m": 10.3,
+        "first_alarm_frame": 578,
+        "alarm_held_from_m": 10.3,
+        "missed_intervals": [
+          {
+            "start_frame": 454,
+            "end_frame": 456,
+            "frames": 3,
+            "from_m": 248.6,
+            "to_m": 244.8
+          },
+          {
+            "start_frame": 458,
+            "end_frame": 463,
+            "frames": 6,
+            "from_m": 241.2,
+            "to_m": 231.9
+          },
+          {
+            "start_frame": 468,
+            "end_frame": 577,
+            "frames": 110,
+            "from_m": 222.6,
+            "to_m": 12.3
+          }
+        ]
+      },
+      "candidate_metrics": {
+        "alarm_frames": 6,
+        "advisory_only_frames": 0,
+        "first_alarm_m": 10.3,
+        "first_alarm_frame": 578,
+        "alarm_held_from_m": 10.3,
+        "missed_intervals": [
+          {
+            "start_frame": 454,
+            "end_frame": 456,
+            "frames": 3,
+            "from_m": 248.6,
+            "to_m": 244.8
+          },
+          {
+            "start_frame": 458,
+            "end_frame": 463,
+            "frames": 6,
+            "from_m": 241.2,
+            "to_m": 231.9
+          },
+          {
+            "start_frame": 468,
+            "end_frame": 577,
+            "frames": 110,
+            "from_m": 222.6,
+            "to_m": 12.3
+          }
+        ]
+      },
+      "outside_false_stop_frames": {
+        "reference": 6,
+        "candidate": 6
+      },
+      "background_false_alarm_frames": {
+        "reference": 3,
+        "candidate": 3,
+        "reference_ids": 2,
+        "candidate_ids": 2
+      },
+      "clear_distance_overclaim_totals_identical": true,
+      "six_original_and_set_o_gate": {
+        "status": "not run after set O target did not improve"
+      },
+      "decision": {
+        "status": "rejected at set O screen",
+        "reason": "Candidate C did not improve its target object #6; complete-gate evaluation was unnecessary."
+      },
+      "inside_stop_frames": {
+        "reference": 355,
+        "candidate": 355
+      }
+    }
+  ],
+  "rejected_short_signature_trial": {
+    "status": "rejected",
+    "change": "temporary relaxation of short-signature suppression; not enabled in shipped defaults",
+    "reference_inside_stop_frames": 355,
+    "trial_inside_stop_frames": 381,
+    "reference_outside_false_stop_frames": 6,
+    "trial_outside_false_stop_frames": 9,
+    "reference_background_alarm_frames": 3,
+    "trial_background_alarm_frames": 3,
+    "object_stop_frames": {
+      "small_edge_inside": {
+        "reference": 2,
+        "trial": 7
+      },
+      "big_above": {
+        "reference": 22,
+        "trial": 43
+      },
+      "big_outside": {
+        "reference": 6,
+        "trial": 6
+      }
+    },
+    "reason": "Although inside STOP count rose, outside-object false STOP frames also rose (6\u21929 overall; object #5: 0\u21923), so this violates the frozen safety screen.",
+    "outside_object_5_false_stop_frames": {
+      "reference": 0,
+      "trial": 3
+    }
+  }
+}

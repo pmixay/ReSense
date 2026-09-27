@@ -7,7 +7,7 @@
 #
 # The bag (scripts/make_smoke_bag.py) holds a clear synthetic tunnel followed by the same tunnel
 # with a person standing on the track at 60 m, so the check is: the node starts on the default
-# command, the first frames are clear, the person is reported at 55-66 m, nothing was dropped.
+# command with explicit replay mode, the first frames are clear, the person is reported at 55-66 m, nothing was dropped.
 # An optional second bag is played into the same running node after the first (the organizers,
 # 23.09: the control data may use either topic / frame pair); CI makes it on
 # /sensing/lidar/hesai128/pointcloud + lidar_livox with the person at 45 m and checks that the
@@ -30,7 +30,7 @@ OUT="${OUT:-/tmp/smoke_out}"
 mkdir -p "$OUT"
 rm -f "$OUT/status.jsonl" "$OUT/node.log"
 
-ros2 launch resense_ros detector.launch.py rviz:=false > "$OUT/node.log" 2>&1 &
+ros2 launch resense_ros detector.launch.py freshness_mode:=replay rviz:=false > "$OUT/node.log" 2>&1 &
 LAUNCH_PID=$!
 trap 'kill $(jobs -p) 2>/dev/null || true' EXIT
 
@@ -69,11 +69,11 @@ tail -n 12 "$OUT/node.log"
 echo "== checking $OUT/status.jsonl =="
 if [ -n "${CHECK_ARGS:-}" ]; then
   # shellcheck disable=SC2086
-  python3 scripts/check_dry_run.py "$OUT/status.jsonl" $CHECK_ARGS
+  python3 scripts/check_dry_run.py "$OUT/status.jsonl" --require-freshness $CHECK_ARGS
 elif [ -n "$BAG2" ]; then
-  python3 scripts/check_dry_run.py "$OUT/status.jsonl" --expect-obstacle --distance 40:66 \
+  python3 scripts/check_dry_run.py "$OUT/status.jsonl" --require-freshness --expect-obstacle --distance 40:66 \
       --first-clear 10 --min-frames 50 --max-dropped 6 --max-p95-latency 500 --expect-inputs 2
 else
-  python3 scripts/check_dry_run.py "$OUT/status.jsonl" --expect-obstacle --distance 55:66 \
+  python3 scripts/check_dry_run.py "$OUT/status.jsonl" --require-freshness --expect-obstacle --distance 55:66 \
       --first-clear 10 --min-frames 25 --max-dropped 3 --max-p95-latency 500
 fi

@@ -1,0 +1,37 @@
+{
+  "schema": "resense-p4-candidate-preregistration-v1",
+  "date": "2026-09-26",
+  "starting_commit": "dcf7f90f730c675db238691d79357469b489d13f",
+  "reference_baseline": "regression_baseline_2026-09-26_ride_p3c.json",
+  "reference_configuration": "configs/default.yaml",
+  "reference_configuration_sha256": "62930ec64b3238b71f7954126c5517ed3adc4f802867f6a9c3ace8e70df6f801",
+  "candidates": [
+    {
+      "id": "A",
+      "change": "tracking.near_escalate_distance: 35.0 -> 40.0",
+      "target": "Sustained STOP detection for set O object #8 (big_above)",
+      "status": "preregistered"
+    },
+    {
+      "id": "B",
+      "change": "tracking.near_escalate_voxels: 10 -> 8",
+      "target": "Strict-envelope evidence and STOP detection for set O object #4 (small_edge_inside)",
+      "status": "preregistered"
+    },
+    {
+      "id": "C",
+      "change": "cluster.wall_keep_gauge_voxels: 10 -> 8",
+      "target": "Wall-rule suppression of set O object #6 (big_edge_inside)",
+      "status": "preregistered"
+    }
+  ],
+  "frozen_rules": [
+    "Evaluate A, B, and C independently against the reference, in that order.",
+    "Do not change labels, matching, visibility denominators, or geometric safety exclusions.",
+    "Keep five-hit confirmation, column exclusions, reference-validity exclusions, and disabled axis union unchanged.",
+    "Reject a candidate for any weaker inside-object metric, outside/background false STOP regression, or no target improvement.",
+    "A set O-only pass is screening evidence and cannot authorize shipping without the six recordings, ride, set F, startup, stress, offset, clear-distance, and paired-placement checks.",
+    "If candidate geometry or ground-truth trajectories differ, invalidate the paired comparison."
+  ],
+  "scope_note": "Set O was already inspected and is not unseen validation. The empty ride has no real obstacles; synthetic positives do not establish real long-range recall or material robustness."
+}

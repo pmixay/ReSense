@@ -1,0 +1,8 @@
+## gate_native
+doubleT_obstacle                          201    188      2      3     84   11
+doubleT_platform                          345      4      4      1    180   34
+roundT_doubleT                            252      2      1      1    173  233
+roundT_pressureGate_roundT                268      0      0      0    104    -
+roundT_squareT_pressureGate_squareT       545      0      0      0    146    -
+squareT_platform_squareT_switch           877     54      9     15    394  312
+GATE PASS: no gated metric worse (3 gated better, 0 worse but allowed, 20 information rows changed)

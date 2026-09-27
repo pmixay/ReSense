@@ -1,0 +1,7 @@
+$ RESENSE_NATIVE=0  python3 scripts/bench_node_path.py --npy /data/cache/doubleT_obstacle
+kernels: numpy (RESENSE_NATIVE=0)
+doubleT_obstacle: 201 frames, 374317 slots per message
+  kernels: numpy (RESENSE_NATIVE=0)
+  decode + crop + rotate: mean 13.6 ms, p95 14.9 ms
+  decode + detect:        mean 90.9 ms, p95 105.5 ms, max 150.6 ms
+peak RSS 226 MB

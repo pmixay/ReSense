@@ -1,0 +1,1 @@
+variant short_long: GATE_ARGS="--set cluster.short_signature_max_length=3.0 --set cluster.floating_long_min_length=3.0", baseline = the HEAD gate of 25.09 with the ride (/home/mdm/gate_ref/head_7290873_ride.json)

@@ -1,0 +1,239 @@
+{
+  "schema": "resense-p3-item-v1",
+  "key": "combined",
+  "date": "2026-09-25",
+  "owner": "P3 (integrator)",
+  "question": "The four P3 items of 25.09 merged on wf7/p3 (rail_shadow shipped; platform_end, far_switch, bed_bin tried and not shipped, flags off): does the combined default config pass the full regression gate, with the rail-shadow target kept, and what is the new gate baseline?",
+  "preregistered": {
+    "written_at_utc": "2026-09-25T19:03:24Z",
+    "before_any_result": "No gate or detector run on the merged code yet. The merges were checked only with the unit tests of tests/test_late_candidates.py and tests/test_native.py.",
+    "code": "489fef3 (wf7/p3 = claude/nifty-pascal-lzgl78 d4b396e + --no-ff merges of wf7/rail-shadow f9e17a8, wf7/platform-end 95e4fe1, wf7/far-switch b77166e, wf7/bed-bin 8211560), native path",
+    "merged_code_interactions": [
+      "resense/track.py: estimate_axis_from_walls returns 8 values (tan_yaw, curvature, quality, x_valid, n_sides, disagreement, x_valid_min, run): far_switch's x_valid_min and platform_end's persistence run; estimate_track unpacks both",
+      "resense/track.py: _fit_floor keeps rail_shadow's signature (shadow_ref, info) and bed_bin's _narrow_far_bins drop before the shadow check; each acts only with its own flag",
+      "TrackModel gains floor_shadow, floor_held (rail_shadow), far_support_run (platform_end), axis_valid_both, axis_valid_bent (far_switch)"
+    ],
+    "candidate": {
+      "id": "combined defaults",
+      "set": [],
+      "effective": {
+        "track.floor_shadow_height": 1.0,
+        "track.floor_shadow_range": 30.0,
+        "track.floor_shadow_min_bins": 5,
+        "cluster.oversize_split_max_length": 3.0,
+        "cluster.oversize_split_max_distance": 30.0,
+        "cluster.gauge_distance": true,
+        "track.walls_min_far_support": 0.0,
+        "cluster.far_axis_both_sides": 0,
+        "track.floor_far_min_width": 0.0
+      }
+    },
+    "command": "python scripts/regression_gate.py --cache /data/cache --jobs 3 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json --work <scratch> --out <scratch>/result.json (on the clean commit of this file)",
+    "ship_rule": {
+      "gate": "exits 0 against regression_baseline_2026-09-25_ride_column.json: no gated row worse or missing (the six recordings, set O, the ride in 8 pieces, set F straight)",
+      "target": "set O #1 (big_center) over all 229 labelled frames, measured on the gate's set O JSONL with the rail_shadow target script: STOP frames with a wrong distance < 12 (expected 0), largest error < 14.11 m (expected 0.46 m), no #1 STOP frame lost (224)",
+      "expected": "every gated row equal to regression_gate_2026-09-25_rail_shadow.json (the rail_shadow candidate B2 = these defaults; the other three flags are off and their branches showed byte-identical output when off)"
+    },
+    "safety_conditions": [
+      "doubleT_obstacle labelled hits per label (person_crossing 58, object_on_rail 127, object_on_rail_from_frame_75 124) and first alarm frame (11) identical or better",
+      "set O: every inside object's STOP frames and first STOP distance identical or better; outside false STOP frames (6) and background (3 frames / 2 ids) not higher",
+      "set F straight per kind: detected, median first confirmation identical or better; false detections not higher",
+      "no new false alarm: alarm events and STOP episodes of the five obstacle-free recordings (13 / 16) and the ride (46 / 39) not higher"
+    ],
+    "if_worse": "A gated row worse because two changes interact: find the pair (the only item on is rail_shadow; the others are off, so first re-check each off flag's byte-identity against the rail_shadow-only branch on the failing data set) and turn the lesser item's default back off; if the rail_shadow item itself is the cause on this merged base, its defaults go back off (a safety row wins over a false-alarm gain) and the combination equals the baseline.",
+    "baseline_rule": "If the gate passes and the numbers move (expected: set O #1 207 -> 208 and #9 42 -> 49 STOP frames, set F straight false detections 35 -> 24), the gate's result JSON of this clean commit becomes docs/evidence/results/regression_baseline_2026-09-25_ride_p3.json and every 'current baseline' reference is repointed to it."
+  },
+  "result": {
+    "verdict": "SHIP the combination as merged: the gate passes, the target holds, every safety condition holds; no pair interacts, nothing turned back off",
+    "code": {
+      "measured_on": {
+        "commit": "c598cf650a0c92587366304c636bd2652d5c735e",
+        "branch": "wf7/p3",
+        "version": "1.0.0",
+        "uncommitted_detector_changes": []
+      },
+      "config": {
+        "path": "configs/default.yaml",
+        "set": [],
+        "sha256": "cdada3903d463ab8b7df0e67c2d16e3d9135a8b6e1cce2e23272e664b7af25c7",
+        "file_sha256": "cfb028b495df453ffeb1f60ecb475c68bd0810afdb71b47bf56249f0d34832a7"
+      },
+      "native": "native (_resense_native.so)",
+      "run": {
+        "jobs": 3,
+        "wall_s": 331.8,
+        "machine": "4-vCPU dev VM, no other gate running"
+      }
+    },
+    "gate": {
+      "baseline": "docs/evidence/results/regression_baseline_2026-09-25_ride_column.json",
+      "baseline_commit": "d117c8c462ff9c2483478206991f037fc929bf46",
+      "baseline_config_sha256": "0fd4e64e494f4c39cdab1da9a4fef7328057327b3dc5ac4dc8e21ebd47337b03",
+      "allow": [],
+      "passed": true,
+      "worse_gated": [],
+      "missing_gated": [],
+      "worse_allowed": [],
+      "missing_allowed": [],
+      "better": [
+        "set_O.objects.big_center.stop_frames",
+        "set_O.objects.long_low_on_rails.stop_frames",
+        "set_F_straight.person.false_detections",
+        "set_F_straight.box1.0.false_detections",
+        "set_F_straight.trolley.false_detections"
+      ],
+      "same": 95,
+      "info_changed": [
+        "set_O.objects.big_outside.advisory_frames",
+        "set_O.objects.long_low_on_rails.held_from_m",
+        "set_O.inside_stop_frames",
+        "set_F_straight.person.sustained_median_m",
+        "set_F_straight.trolley.sustained_median_m",
+        "latency_ms.doubleT_obstacle.mean",
+        "latency_ms.doubleT_obstacle.p95",
+        "latency_ms.doubleT_platform.mean",
+        "latency_ms.doubleT_platform.p95",
+        "latency_ms.roundT_doubleT.mean",
+        "latency_ms.roundT_doubleT.p95",
+        "latency_ms.roundT_pressureGate_roundT.mean",
+        "latency_ms.roundT_pressureGate_roundT.p95",
+        "latency_ms.roundT_squareT_pressureGate_squareT.mean",
+        "latency_ms.roundT_squareT_pressureGate_squareT.p95",
+        "latency_ms.squareT_platform_squareT_switch.mean",
+        "latency_ms.squareT_platform_squareT_switch.p95",
+        "latency_ms.cloud_with_fake_obj.mean",
+        "latency_ms.cloud_with_fake_obj.p95",
+        "latency_ms.new_data.mean",
+        "latency_ms.new_data.p95"
+      ]
+    },
+    "headline": {
+      "five_empty": {
+        "frames": 2287,
+        "alarm_frames": 58,
+        "alarm_events": 13,
+        "stop_episodes": 16,
+        "advisory_frames": 997
+      },
+      "ride": {
+        "frames": 11271,
+        "alarm_frames": 187,
+        "alarm_events": 46,
+        "stop_episodes": 39,
+        "monitored_range_median": 127.6
+      },
+      "doubleT_obstacle": {
+        "labelled": {
+          "object_on_rail": {
+            "hits": 127,
+            "frames": 185
+          },
+          "person_crossing": {
+            "hits": 58,
+            "frames": 61
+          },
+          "object_on_rail_from_frame_75": {
+            "hits": 124,
+            "frames": 126
+          }
+        },
+        "first_alarm_frame": 11
+      },
+      "set_O": {
+        "inside_stop_frames": 311,
+        "outside_false_stop_frames": 6,
+        "background": {
+          "alarm_frames": 3,
+          "track_ids": 2
+        },
+        "stop_frames": {
+          "big_center": 208,
+          "small_center": 19,
+          "small_on_rail": 23,
+          "small_edge_inside": 0,
+          "big_edge_inside": 0,
+          "big_above": 12,
+          "long_low_on_rails": 49,
+          "thin_hanging": 0
+        },
+        "first_stop_m": {
+          "big_center": 98.0,
+          "small_center": 34.0,
+          "small_on_rail": 42.7,
+          "small_edge_inside": null,
+          "big_edge_inside": null,
+          "big_above": 101.3,
+          "long_low_on_rails": 82.2,
+          "thin_hanging": null
+        }
+      },
+      "set_F_straight": {
+        "person": {
+          "detected": 6,
+          "first_detection_median_m": 151.0,
+          "false_detections": 6
+        },
+        "box1.0": {
+          "detected": 6,
+          "first_detection_median_m": 123.9,
+          "false_detections": 10
+        },
+        "box0.5": {
+          "detected": 1,
+          "first_detection_median_m": 51.9,
+          "false_detections": 0
+        },
+        "trolley": {
+          "detected": 6,
+          "first_detection_median_m": 151.4,
+          "false_detections": 5
+        },
+        "cable": {
+          "detected": 6,
+          "first_detection_median_m": 98.9,
+          "false_detections": 3
+        }
+      }
+    },
+    "equal_to_rail_shadow_gate": "every leaf of regression_gate_2026-09-25_rail_shadow.json and of this run compared except latency, code, config, run, created, health: 383 leaves, the only 2 that differ are the gate's own lists of latency rows (information)",
+    "target_set_O_1": {
+      "combined": {
+        "label": "big_center",
+        "label_frames": 229,
+        "stop_frames": 224,
+        "stop_frames_plausible": 208,
+        "matched_frames": 224,
+        "matched_frames_plausible": 208,
+        "wrong_distance_frames": 0,
+        "wrong_distance_frame_list": [],
+        "max_abs_err_m": 0.46,
+        "mean_abs_err_m_within_30m": 0.0,
+        "stop_frames_within_30m": 31,
+        "no_stop_frames": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rail_shadow_B2_full_run": "identical rows (the item's target_B2full.json, byte for byte)",
+      "combined_with_the_three_rail_shadow_keys_off": {
+        "stop_frames": 224,
+        "matched_frames": 216,
+        "wrong_distance_frames": 12,
+        "max_abs_err_m": 14.11
+      },
+      "note": "with the rail-shadow keys off the merged code gives the rows of the item's pre-change baseline (its target_base.json, byte for byte): the other three flags do not act on set O"
+    },
+    "safety": {
+      "doubleT_obstacle": "identical: person_crossing 58 of 61, object_on_rail 127 of 185, from frame 75 124 of 126, first alarm frame 11, fp events 0",
+      "set_O_per_frame": "the gate's set O JSONL against scripts/eval_real.py --bags cloud_with_fake_obj --set track.floor_shadow_height=0.0 --set cluster.oversize_split_max_length=0.0 --set cluster.gauge_distance=false on the same code: no inside object loses a matched-alarm frame or a STOP frame; big_center matched 216 -> 224 (gains 217-224), long_low_on_rails 42 -> 49 (gains 704, 707-712); frames with an alarm matching no object 29 -> 9, none new; alarm frames 342 -> 342",
+      "set_O_rows": "every inside object's STOP frames and first STOP identical or better (big_center 207 -> 208, long_low_on_rails 42 -> 49); outside false STOP 6 -> 6; background 3 frames / 2 ids",
+      "set_F_straight": "detected and median first confirmation identical per kind; false detections person 7 -> 6, box1.0 13 -> 10, trolley 12 -> 5, box0.5 0 -> 0, cable 3 -> 3",
+      "no_new_false_alarm": "five bags 58 / 13 / 16 and ride 187 / 46 / 39 (alarm frames / events / STOP episodes) identical to the baseline"
+    },
+    "new_baseline": "docs/evidence/results/regression_baseline_2026-09-25_ride_p3.json: this run's result without its 'gate' block (kept here), as the earlier baselines hold the measurement only",
+    "tests": "pytest 431 passed on the native path and with RESENSE_NATIVE=0 (416 before the four items + 4 rail shadow + 3 far-support + 5 far_axis_both_sides + 3 far bed bins); ruff check clean; scripts/sync_params.sh --check in sync; the docs link check clean"
+  }
+}

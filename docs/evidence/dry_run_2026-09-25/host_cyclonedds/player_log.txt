@@ -1,0 +1,8 @@
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1790328856.947268897] [rosbag2_storage]: Opened database '/mnt/ramdata/for_hackathon/roundT_doubleT/roundT_doubleT_0.db3' for READ_ONLY.
+[INFO] [1790328856.947347087] [rosbag2_player]: Set rate to 1
+[INFO] [1790328856.951385390] [rosbag2_player]: Sleep 3000000000 ns
+[INFO] [1790328859.951989341] [rosbag2_storage]: Opened database '/mnt/ramdata/for_hackathon/roundT_doubleT/roundT_doubleT_0.db3' for READ_ONLY.
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1790328890.608635257] [rosbag2_storage]: Opened database '/mnt/ramdata/for_hackathon/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.
+[INFO] [1790328890.608716364] [rosbag2_player]: Set rate to 1
+[INFO] [1790328890.613358855] [rosbag2_player]: Sleep 3000000000 ns
+[INFO] [1790328893.613936586] [rosbag2_storage]: Opened database '/mnt/ramdata/for_hackathon/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.

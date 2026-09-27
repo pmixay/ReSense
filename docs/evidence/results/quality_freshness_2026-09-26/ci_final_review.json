@@ -1,0 +1,27 @@
+{
+  "scope": "Current root P3d detector plus freshness node; M2 is not merged. No new detector trial or clear replay was run for this review.",
+  "finding_fixed": "offline-build's loaded runtime previously used default live mode and omitted --require-freshness, so green did not prove historical replay clock validity. Both now match all other bag harnesses.",
+  "native_guard_added": "The independently built, archive-loaded runtime now explicitly asserts _native.AVAILABLE and _native.enabled() under --network none and -w / before runtime smoke and upload.",
+  "validation": {"yaml_and_extracted_bash_syntax": "PASS", "native_guard_truth_table": "missing/unavailable/disabled rejected; available+enabled accepted", "checker_tests": "9 passed,48 deselected; selection intentional", "new_detector_trials": 0},
+  "all_green_exact_final_head_proves": [
+    "Host and WITH_TOOLS image unit suites pass with synthetic/native skips forbidden. Tests needing unavailable real recorded caches are deselected explicitly.",
+    "Default config copies and the current detector source/evidence seal verify; this verifies stored evidence, not a fresh full real-data gate.",
+    "Browser tests and synthetic dashboard capture pass; lint and ROS launch resolution pass.",
+    "WITH_TOOLS image transports two synthetic recordings across topic/frame input switches, using image UDP, stock uid1000 Fast DDS and optional shared memory; all bag harnesses require freshness.",
+    "Tools-image archive is checksummed, removed, loaded, compared by layers and smoked with no network and on an internal network.",
+    "A separate runtime-only image is built from git archive of that exact checkout, exported with base image, removed with build cache, checksum-loaded, and its version/revision labels and layers checked.",
+    "Runtime-only archive has native kernels enabled, required rosbag storage plugins, and processes both synthetic recordings with explicit replay and strict freshness on an internal network.",
+    "Offline rebuild reuses exactly the archived layers with Docker Hub blocked on the same runner/Docker version; this is the tested cache mechanism, not a universal offline build guarantee.",
+    "Only after offline-build steps pass, the runtime archive and checksum are uploaded as an Actions artifact named for package version and commit, retained30days. This is not a GitHub release."
+  ],
+  "freshness_assertions": ["each frame carries declared clocks, validity and raw detector provenance", "GO cannot be invalid or in catch-up", "valid source/residence age<=0.5s, future skew<=0.05s, no pending queue lag", "invalid monitoring range=0", "at least one valid frame per recording", "held STOP cannot supply positive detector evidence"],
+  "limits_not_proved_by_ci": [
+    "No original clear/obstacle bag, cold-disk or bounded-load acceptance runs occur in CI.",
+    "Synthetic smoke limits remain500ms and up to6 drops for the same-container two-bag smoke; separate-container transport smoke remains1000ms/100000 counter drops. Green is not evidence of100ms/zero-real-message-loss performance.",
+    "CI synthetic replay exercises current timestamps but does not replace the dedicated pause/stall/jump runtime evidence; those edge contracts have unit coverage.",
+    "The retained M2+freshness standalone-clear failure is unchanged and cannot be erased by root CI success.",
+    "A complete CI green is required across independent jobs; an uploaded offline-build artifact alone does not prove pytest/lint/web jobs succeeded.",
+    "No tag/release/public upload was performed; release remains on hold."
+  ],
+  "final_head_ci": "Pending root push; require exact final head green after this wiring correction. Earlier offline-build green is insufficient for the newly asserted runtime freshness/native claims."
+}

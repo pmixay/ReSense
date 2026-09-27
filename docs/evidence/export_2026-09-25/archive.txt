@@ -1,0 +1,7 @@
+archive:  resense-image-0.6.3-7290873.tar.gz
+bytes:    475489127 (0.44 GiB)
+sha256:   98be33db23417a88fcb001d0bc7515f151d9e9e41957e163953f63794510ed84
+commit:   72908737f2f8d1caf2b513f730abd930c8dac20d (checkout)
+image:    2075079161 bytes unpacked
+docker:   29.8.1
+path:     /home/mdm/resense_dist/resense-image-0.6.3-7290873.tar.gz (+ .sha256; the archive itself is never committed)

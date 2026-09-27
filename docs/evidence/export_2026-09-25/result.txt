@@ -1,0 +1,5 @@
+export: PASS  (2026-09-25T09:53:09+00:00, 550 s, commit 7290873, 8 vCPU)
+  export_image                         PASS    exit 0       532 s  
+  load_check                           PASS    exit 0        18 s  
+  note: no --ref: exported from the checkout at 7290873 as 0.6.3-7290873 (the upload uses --ref v1.0-rc1 / v1.0-final)
+  results: /home/mdm/resense_results/2026-09-25/export

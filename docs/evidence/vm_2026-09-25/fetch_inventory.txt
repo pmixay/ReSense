@@ -1,0 +1,10 @@
+inventory of /data, 2026-09-25T09:23:19+00:00
+  doubleT_obstacle                           bag yes      cache 201 frames
+  doubleT_platform                           bag yes      cache 345 frames
+  roundT_doubleT                             bag yes      cache 252 frames
+  roundT_pressureGate_roundT                 bag yes      cache 268 frames
+  roundT_squareT_pressureGate_squareT        bag yes      cache 545 frames
+  squareT_platform_squareT_switch            bag yes      cache 877 frames
+  cloud_with_fake_obj                        bag yes      cache 1510 frames
+  new_data                                   bag no       cache 221 of 221 split files
+  free on /data: 37.3 GiB

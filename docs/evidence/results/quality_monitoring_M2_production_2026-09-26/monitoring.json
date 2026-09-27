@@ -1,0 +1,490 @@
+{
+  "schema": "resense-monitoring-acceptance-v1",
+  "inputs": {
+    "doubleT_obstacle": {
+      "reference": {
+        "path": "/home/resense/ReSense/docs/evidence/freeze_2026-09-26/gate_frames/doubleT_obstacle.jsonl.gz",
+        "sha256": "1d5d6806808a37aa2a4da98b788858c7831b55cf59b0b5db00e9173ff79c4185",
+        "frames": 201
+      },
+      "candidate": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/doubleT_obstacle.jsonl",
+        "sha256": "31ada6d598cca8f33d871890041f0a3b2369315decd08c6594e1b62dd1b797fa",
+        "frames": 201
+      }
+    },
+    "doubleT_platform": {
+      "reference": {
+        "path": "/home/resense/ReSense/docs/evidence/freeze_2026-09-26/gate_frames/doubleT_platform.jsonl.gz",
+        "sha256": "36af93526f051135e7db1666f93d69d59f3d103fb0d282933e77a9e1041b05b8",
+        "frames": 345
+      },
+      "candidate": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/doubleT_platform.jsonl",
+        "sha256": "9653f34b26fcb18e8781853bb3845d9bed1e0f0a67061747858c352b9c33e12b",
+        "frames": 345
+      }
+    },
+    "roundT_doubleT": {
+      "reference": {
+        "path": "/home/resense/ReSense/docs/evidence/freeze_2026-09-26/gate_frames/roundT_doubleT.jsonl.gz",
+        "sha256": "a22550049d35111d6ed78ec00b56d3caa59686a73d28a18f52d8c587623f0b8a",
+        "frames": 252
+      },
+      "candidate": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/roundT_doubleT.jsonl",
+        "sha256": "d057fb31f381cd79c6fc071bd6db2a2fd114ffd626f9fe8d761bb694cf5a78f5",
+        "frames": 252
+      }
+    },
+    "roundT_pressureGate_roundT": {
+      "reference": {
+        "path": "/home/resense/ReSense/docs/evidence/freeze_2026-09-26/gate_frames/roundT_pressureGate_roundT.jsonl.gz",
+        "sha256": "7526c4b64efd7f06c188eceb351ce1192320e239da0357a331225b6986501e81",
+        "frames": 268
+      },
+      "candidate": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/roundT_pressureGate_roundT.jsonl",
+        "sha256": "7f9ce13190a7b95cc9c298b39e47a981c8df250034a5aa63a6806ccb60ff91b5",
+        "frames": 268
+      }
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "reference": {
+        "path": "/home/resense/ReSense/docs/evidence/freeze_2026-09-26/gate_frames/roundT_squareT_pressureGate_squareT.jsonl.gz",
+        "sha256": "4962f8a12e16b37215b703587e5b623922162a7dd6af85d76c0501a6e929c34f",
+        "frames": 545
+      },
+      "candidate": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/roundT_squareT_pressureGate_squareT.jsonl",
+        "sha256": "962f4f3b1f4fea71e2479a579a0f7bcfe26e65f17f01d4e68274a8fe4c1d137c",
+        "frames": 545
+      }
+    },
+    "squareT_platform_squareT_switch": {
+      "reference": {
+        "path": "/home/resense/ReSense/docs/evidence/freeze_2026-09-26/gate_frames/squareT_platform_squareT_switch.jsonl.gz",
+        "sha256": "5aa946fed34eb8941c4c35c51e25c2f37b273c4cedf71bf75ae635e0e3610831",
+        "frames": 877
+      },
+      "candidate": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/squareT_platform_squareT_switch.jsonl",
+        "sha256": "2fb053a7aae38e5a70db491c5baa982646e6f3eae10db4af77eb0780bad930ac",
+        "frames": 877
+      }
+    },
+    "cloud_with_fake_obj": {
+      "reference": {
+        "path": "/home/resense/ReSense/docs/evidence/freeze_2026-09-26/gate_frames/cloud_with_fake_obj.jsonl.gz",
+        "sha256": "90547cbab41744b5db6fada7d32d4e617c608df5f7ad3bd457af1bb76f2b0d17",
+        "frames": 1510
+      },
+      "candidate": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/cloud_with_fake_obj.jsonl",
+        "sha256": "ee2816cbc1336b5d54b1da9f7ee118e8ff77dfc3d5b24def8d69537e5cb8bcac",
+        "frames": 1510
+      }
+    },
+    "new_data_0": {
+      "reference": {
+        "path": "/home/resense/ReSense/docs/evidence/freeze_2026-09-26/gate_frames/new_data_0.jsonl.gz",
+        "sha256": "f6867e0dbe9282e4a9c002f55d8b0e1495f3c2baa44dd5850cd5623b6527427d",
+        "frames": 1409
+      },
+      "candidate": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/new_data_0.jsonl",
+        "sha256": "653514d9535d7e9211af68a96db5b57e5a96d778675aecb18e72f8769a6bd541",
+        "frames": 1409
+      }
+    },
+    "new_data_1": {
+      "reference": {
+        "path": "/home/resense/ReSense/docs/evidence/freeze_2026-09-26/gate_frames/new_data_1.jsonl.gz",
+        "sha256": "e9157657c0e55dfd99771e392eced8bcb94832441777057cb04f28fa635c1bd6",
+        "frames": 1409
+      },
+      "candidate": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/new_data_1.jsonl",
+        "sha256": "0e561f6950b8dc70c62b0df93034a25d10005514bbed7189db9a866610b41ccc",
+        "frames": 1409
+      }
+    },
+    "new_data_2": {
+      "reference": {
+        "path": "/home/resense/ReSense/docs/evidence/freeze_2026-09-26/gate_frames/new_data_2.jsonl.gz",
+        "sha256": "b3f020ca4c249021d0066483c21fc6ef7661ec1c981a89940c8943e10b6645ed",
+        "frames": 1409
+      },
+      "candidate": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/new_data_2.jsonl",
+        "sha256": "e65cf93de0806cb3c86dbe622e4ad13830e45ad7e623a7ab23e2765c7db90388",
+        "frames": 1409
+      }
+    },
+    "new_data_3": {
+      "reference": {
+        "path": "/home/resense/ReSense/docs/evidence/freeze_2026-09-26/gate_frames/new_data_3.jsonl.gz",
+        "sha256": "91f84cc6f7ad4c74099d5988c90baba44858783544042fd65feac1d5494fb84b",
+        "frames": 1409
+      },
+      "candidate": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/new_data_3.jsonl",
+        "sha256": "703213dcf9619494d8ccd4483391b03eb1b086c0629b895e2e3d49979cf15e60",
+        "frames": 1409
+      }
+    },
+    "new_data_4": {
+      "reference": {
+        "path": "/home/resense/ReSense/docs/evidence/freeze_2026-09-26/gate_frames/new_data_4.jsonl.gz",
+        "sha256": "9bf56d45b5f6ab6e5f68d8274fa80938513790eb53c8724952ffc48c0a6379fc",
+        "frames": 1409
+      },
+      "candidate": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/new_data_4.jsonl",
+        "sha256": "89810eb8e87096dd17a9c5aa690816f0b7a5be5b20108383a0ebbc2a347f01c1",
+        "frames": 1409
+      }
+    },
+    "new_data_5": {
+      "reference": {
+        "path": "/home/resense/ReSense/docs/evidence/freeze_2026-09-26/gate_frames/new_data_5.jsonl.gz",
+        "sha256": "4aebd4d03b92e8f18fd1b641de85d5c3284c5bd381b82dea820fa9339d45e882",
+        "frames": 1409
+      },
+      "candidate": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/new_data_5.jsonl",
+        "sha256": "50dbdfee8642bb97cd43a3c7f4c8a2f445e751537f846f4add2b963be26c769f",
+        "frames": 1409
+      }
+    },
+    "new_data_6": {
+      "reference": {
+        "path": "/home/resense/ReSense/docs/evidence/freeze_2026-09-26/gate_frames/new_data_6.jsonl.gz",
+        "sha256": "1835dc35f3fa96bad14b70df36aa077e195f9f9c12e68e93f33bbbeb23909296",
+        "frames": 1409
+      },
+      "candidate": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/new_data_6.jsonl",
+        "sha256": "d7402ac7b70036398e4f45587ba0fec81fe49f7aa6500b7290e069d940a1d155",
+        "frames": 1409
+      }
+    },
+    "new_data_7": {
+      "reference": {
+        "path": "/home/resense/ReSense/docs/evidence/freeze_2026-09-26/gate_frames/new_data_7.jsonl.gz",
+        "sha256": "8614bd73ec72e9660ffa2a31898d136eb060c799a4a3a672226ddfa6535d5847",
+        "frames": 1408
+      },
+      "candidate": {
+        "path": "/home/resense/validation/quality_cycle/M2_production/gate/new_data_7.jsonl",
+        "sha256": "975c609b1217b6cc22c3c56b091a553985675d0d0897accbfd7e513a2a13c6b4",
+        "frames": 1408
+      }
+    }
+  },
+  "labels": {
+    "path": "/home/resense/ReSense/labels/cloud_with_fake_obj.json",
+    "sha256": "4cdb5afe4a57ce7476ff88a1ee0b74bb6faed18862447c1361d8e824b238c545"
+  },
+  "limits": {
+    "max_newly_uncertain_percentage_points": 5.0,
+    "min_clear_median_fraction": 0.95
+  },
+  "monitoring_cost": {
+    "doubleT_platform": {
+      "frames": 345,
+      "reference_decisions": {
+        "GO": 149,
+        "CAUTION": 192,
+        "STOP": 4
+      },
+      "candidate_decisions": {
+        "GO": 149,
+        "CAUTION": 192,
+        "STOP": 4
+      },
+      "newly_uncertain_frames": 0,
+      "newly_uncertain_percentage_points": 0.0,
+      "reference_clear_median_m": 119.0,
+      "candidate_clear_median_m": 119.0,
+      "clear_median_fraction": 1.0,
+      "passed": true
+    },
+    "roundT_doubleT": {
+      "frames": 252,
+      "reference_decisions": {
+        "GO": 79,
+        "CAUTION": 173
+      },
+      "candidate_decisions": {
+        "GO": 76,
+        "CAUTION": 176
+      },
+      "newly_uncertain_frames": 3,
+      "newly_uncertain_percentage_points": 1.1904761904761905,
+      "reference_clear_median_m": 135.5,
+      "candidate_clear_median_m": 134.2,
+      "clear_median_fraction": 0.9904059040590405,
+      "passed": true
+    },
+    "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "reference_decisions": {
+        "GO": 164,
+        "CAUTION": 104
+      },
+      "candidate_decisions": {
+        "GO": 164,
+        "CAUTION": 104
+      },
+      "newly_uncertain_frames": 0,
+      "newly_uncertain_percentage_points": 0.0,
+      "reference_clear_median_m": 128.05,
+      "candidate_clear_median_m": 128.05,
+      "clear_median_fraction": 1.0,
+      "passed": true
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "reference_decisions": {
+        "GO": 399,
+        "CAUTION": 146
+      },
+      "candidate_decisions": {
+        "GO": 395,
+        "CAUTION": 150
+      },
+      "newly_uncertain_frames": 4,
+      "newly_uncertain_percentage_points": 0.7339449541284404,
+      "reference_clear_median_m": 148.9,
+      "candidate_clear_median_m": 146.3,
+      "clear_median_fraction": 0.9825386165211552,
+      "passed": true
+    },
+    "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "reference_decisions": {
+        "GO": 458,
+        "CAUTION": 365,
+        "STOP": 54
+      },
+      "candidate_decisions": {
+        "GO": 457,
+        "CAUTION": 366,
+        "STOP": 54
+      },
+      "newly_uncertain_frames": 1,
+      "newly_uncertain_percentage_points": 0.11402508551881414,
+      "reference_clear_median_m": 88.9,
+      "candidate_clear_median_m": 88.9,
+      "clear_median_fraction": 1.0,
+      "passed": true
+    },
+    "ride": {
+      "frames": 11271,
+      "reference_decisions": {
+        "GO": 6438,
+        "CAUTION": 4650,
+        "STOP": 183
+      },
+      "candidate_decisions": {
+        "GO": 6369,
+        "CAUTION": 4719,
+        "STOP": 183
+      },
+      "newly_uncertain_frames": 69,
+      "newly_uncertain_percentage_points": 0.6121905775885015,
+      "reference_clear_median_m": 122.6,
+      "candidate_clear_median_m": 121.4,
+      "clear_median_fraction": 0.9902120717781404,
+      "passed": true
+    }
+  },
+  "monitoring_cost_passed": true,
+  "set_O_reference": {
+    "tolerance_m": 0.5,
+    "totals": {
+      "target": 54,
+      "target_frames": 505,
+      "intent": 223,
+      "intent_frames": 801,
+      "go_judge": 150,
+      "go_judge_in_envelope": 62,
+      "target_by_decision": {
+        "GO": 46,
+        "CAUTION": 6,
+        "STOP": 2
+      }
+    },
+    "inside_objects": {
+      "big_center": {
+        "frames": 213,
+        "frames_in_envelope": 213,
+        "overclaim": 0,
+        "overclaim_in_envelope": 0,
+        "overclaim_in_envelope_go": 0,
+        "max_excess_m": 0.0
+      },
+      "small_on_rail": {
+        "frames": 49,
+        "frames_in_envelope": 33,
+        "overclaim": 17,
+        "overclaim_in_envelope": 4,
+        "overclaim_in_envelope_go": 4,
+        "max_excess_m": 126.0
+      },
+      "small_center": {
+        "frames": 79,
+        "frames_in_envelope": 63,
+        "overclaim": 45,
+        "overclaim_in_envelope": 30,
+        "overclaim_in_envelope_go": 29,
+        "max_excess_m": 66.7
+      },
+      "small_edge_inside": {
+        "frames": 83,
+        "frames_in_envelope": 16,
+        "overclaim": 41,
+        "overclaim_in_envelope": 4,
+        "overclaim_in_envelope_go": 0,
+        "max_excess_m": 174.8
+      },
+      "big_edge_inside": {
+        "frames": 125,
+        "frames_in_envelope": 8,
+        "overclaim": 73,
+        "overclaim_in_envelope": 2,
+        "overclaim_in_envelope_go": 0,
+        "max_excess_m": 180.8
+      },
+      "big_above": {
+        "frames": 124,
+        "frames_in_envelope": 75,
+        "overclaim": 27,
+        "overclaim_in_envelope": 7,
+        "overclaim_in_envelope_go": 6,
+        "max_excess_m": 53.9
+      },
+      "long_low_on_rails": {
+        "frames": 86,
+        "frames_in_envelope": 77,
+        "overclaim": 7,
+        "overclaim_in_envelope": 7,
+        "overclaim_in_envelope_go": 7,
+        "max_excess_m": 114.8
+      },
+      "thin_hanging": {
+        "frames": 42,
+        "frames_in_envelope": 20,
+        "overclaim": 13,
+        "overclaim_in_envelope": 0,
+        "overclaim_in_envelope_go": 0,
+        "max_excess_m": 136.6
+      }
+    },
+    "outside_objects": {
+      "small_outside_near": {
+        "frames": 112,
+        "clear_stops_at_object": 11
+      },
+      "big_outside": {
+        "frames": 104,
+        "clear_stops_at_object": 8
+      }
+    }
+  },
+  "set_O_candidate": {
+    "tolerance_m": 0.5,
+    "totals": {
+      "target": 44,
+      "target_frames": 505,
+      "intent": 212,
+      "intent_frames": 801,
+      "go_judge": 139,
+      "go_judge_in_envelope": 52,
+      "target_by_decision": {
+        "GO": 36,
+        "CAUTION": 6,
+        "STOP": 2
+      }
+    },
+    "inside_objects": {
+      "big_center": {
+        "frames": 213,
+        "frames_in_envelope": 213,
+        "overclaim": 0,
+        "overclaim_in_envelope": 0,
+        "overclaim_in_envelope_go": 0,
+        "max_excess_m": 0.0
+      },
+      "small_on_rail": {
+        "frames": 49,
+        "frames_in_envelope": 33,
+        "overclaim": 17,
+        "overclaim_in_envelope": 4,
+        "overclaim_in_envelope_go": 4,
+        "max_excess_m": 126.0
+      },
+      "small_center": {
+        "frames": 79,
+        "frames_in_envelope": 63,
+        "overclaim": 45,
+        "overclaim_in_envelope": 30,
+        "overclaim_in_envelope_go": 29,
+        "max_excess_m": 66.7
+      },
+      "small_edge_inside": {
+        "frames": 83,
+        "frames_in_envelope": 16,
+        "overclaim": 41,
+        "overclaim_in_envelope": 4,
+        "overclaim_in_envelope_go": 0,
+        "max_excess_m": 174.8
+      },
+      "big_edge_inside": {
+        "frames": 125,
+        "frames_in_envelope": 8,
+        "overclaim": 73,
+        "overclaim_in_envelope": 2,
+        "overclaim_in_envelope_go": 0,
+        "max_excess_m": 180.8
+      },
+      "big_above": {
+        "frames": 124,
+        "frames_in_envelope": 75,
+        "overclaim": 21,
+        "overclaim_in_envelope": 2,
+        "overclaim_in_envelope_go": 1,
+        "max_excess_m": 51.1
+      },
+      "long_low_on_rails": {
+        "frames": 86,
+        "frames_in_envelope": 77,
+        "overclaim": 2,
+        "overclaim_in_envelope": 2,
+        "overclaim_in_envelope_go": 2,
+        "max_excess_m": 92.5
+      },
+      "thin_hanging": {
+        "frames": 42,
+        "frames_in_envelope": 20,
+        "overclaim": 13,
+        "overclaim_in_envelope": 0,
+        "overclaim_in_envelope_go": 0,
+        "max_excess_m": 136.6
+      }
+    },
+    "outside_objects": {
+      "small_outside_near": {
+        "frames": 112,
+        "clear_stops_at_object": 11
+      },
+      "big_outside": {
+        "frames": 104,
+        "clear_stops_at_object": 8
+      }
+    }
+  },
+  "zero_GO_overclaim_diagnostic_passed": false,
+  "note": "Set O envelope labels inherit a prior detector rail fit; this diagnostic is not independently surveyed truth. No overall detector acceptance is asserted here."
+}

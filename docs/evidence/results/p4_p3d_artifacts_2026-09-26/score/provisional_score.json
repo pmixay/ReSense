@@ -1,0 +1,116 @@
+{
+ "schema": "resense-provisional-internal-score-v1",
+ "date": "2026-09-26",
+ "label": "provisional internal assessment",
+ "total": 67.0,
+ "out_of": 100,
+ "weights_note": "These are the repository assessment maxima for the eight spec criteria (25, 15, 10, 15, 10, 10, 10, 5); the organizers have not published criterion weights. This is not an independent organizer/judge result.",
+ "last_independent_assessment": {
+  "score": 65,
+  "out_of": 100,
+  "date": "2026-09-26",
+  "judged_commit": "867bb8a",
+  "status": "preserved historical independent score; before P3c and P3d integrations"
+ },
+ "basis": {
+  "branch": "claude/p4-data-completion-20260926",
+  "detector_commit": "fa18832f1636c48d0137842e2bd3b857bc70aef7",
+  "configuration": "configs/default.yaml",
+  "configuration_sha256": "d2c8ab8d70954956d71c50cdc074962a3037e7ea2bc0e09568663ab34af53d6e",
+  "reference_gate": "p4_p3d_available_reference_2026-09-26.json",
+  "gate_status": "incomplete; no allow; six originals and set O match P3d baseline; 3 ride and 15 set F straight metrics unavailable"
+ },
+ "criteria": [
+  {
+   "section": "8.1",
+   "name": "Works",
+   "score": 15.5,
+   "max": 25,
+   "change_from_last_independent": 1.0,
+   "attribution": "Inherited P3c (+0.5) and P3d (+0.5) detector work; no P4 detector credit",
+   "reason": "All eight in-envelope set O objects have a STOP. The inherited P3d STOP-keep rule raised the top object #8 from 22/124 to 51/124 STOP frames and the held-from distance from 23.9 m to 111.4 m; it still first stops at 101.3 m. Total set O inside STOP is 384/801; edge #4 is 2/83 and #6 is 6/125, with six false STOP frames on outside #7. The raw bag/cache difference and missing ride/set F remain material."
+  },
+  {
+   "section": "8.2",
+   "name": "Range",
+   "score": 7.5,
+   "max": 15,
+   "change_from_last_independent": 0,
+   "attribution": "No P4 score change",
+   "reason": "The set O top object first stops at 101.3 m; only one STOP frame is beyond 100 m. No real positive obstacle supports long-range recall, and set F straight could not be rerun."
+  },
+  {
+   "section": "8.3",
+   "name": "Speed",
+   "score": 7,
+   "max": 10,
+   "change_from_last_independent": 0,
+   "attribution": "No new controlled speed measurement",
+   "reason": "Native kernels remain enabled, but P4 did not conduct a new controlled stand or timing evaluation."
+  },
+  {
+   "section": "8.4",
+   "name": "Generalisation",
+   "score": 9,
+   "max": 15,
+   "change_from_last_independent": 0,
+   "attribution": "No P4 score change",
+   "reason": "The available six recordings were checked at 5 Hz, +3 degree roll/pitch and five start offsets, but these are already available routes. The ride is absent, and synthetic positives do not establish material robustness."
+  },
+  {
+   "section": "8.5",
+   "name": "Technical quality",
+   "score": 8,
+   "max": 10,
+   "change_from_last_independent": 0.5,
+   "attribution": "P4 data integrity, reproducibility, and evidence only",
+   "reason": "All six original caches and set O cache are verified; P3d run provenance, gate output, false-alarm inventory, candidate outcomes, raw/cache sensitivity, and paired placement sample hashes are recorded. Full data-dependent gate and ride-dependent tests remain incomplete."
+  },
+  {
+   "section": "8.6",
+   "name": "Ease of launch",
+   "score": 8,
+   "max": 10,
+   "change_from_last_independent": 0,
+   "attribution": "No P4 score change",
+   "reason": "Existing offline image and CI evidence are unchanged; P4 did not conduct a new independent stand or operator rehearsal."
+  },
+  {
+   "section": "8.7",
+   "name": "Team approach",
+   "score": 9,
+   "max": 10,
+   "change_from_last_independent": 0.5,
+   "attribution": "P4 preregistration, transparent outcomes, and limitations",
+   "reason": "P4 screened bounded A/B/C hypotheses against P3d and recorded no-target rejections plus B’s limited #4 gain. B was not accepted because the strict ride/set F gate is incomplete; no combined change was attempted."
+  },
+  {
+   "section": "8.8",
+   "name": "Pitch",
+   "score": 3,
+   "max": 5,
+   "change_from_last_independent": 0,
+   "attribution": "No P4 score change",
+   "reason": "No refreshed independent pitch, deck review, or rehearsal was part of this data pass."
+  }
+ ],
+ "limitations": [
+  "Scores are provisional internal assessments using repository maxima, not organizer-published weights.",
+  "P3c and P3d detector changes are inherited and receive no P4 detector-improvement credit.",
+  "The ride contains no real obstacles.",
+  "Set O has been previously inspected and is not unseen validation; raw and int16 cache scores differ.",
+  "Anchored placement is based on estimated speed and near-track registration, not surveyed ground truth.",
+  "Repeated frames are not independent objects or approaches.",
+  "The incomplete full gate and missing ride-dependent pytest leave evidence gaps."
+ ],
+ "evidence": {
+  "data_inventory": "p4_data_intake_2026-09-26.json",
+  "available_reference": "p4_p3d_available_reference_2026-09-26.json",
+  "candidate_preregistration": "p4_candidates_p3d_prereg_2026-09-26.json",
+  "candidate_decisions": "p4_p3d_candidate_decisions_2026-09-26.json",
+  "false_alarm_inventory": "p4_p3d_false_alarm_inventory_2026-09-26.json",
+  "raw_cache_comparison": "p4_p3d_seto_raw_cache_comparison_2026-09-26.json",
+  "setS_pair": "p4_p3d_setS_paired_2026-09-26.json",
+  "completion_checklist": "p4_completion_checklist_p3d_2026-09-26.json"
+ }
+}

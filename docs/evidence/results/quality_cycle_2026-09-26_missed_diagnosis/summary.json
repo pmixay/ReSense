@@ -1,0 +1,1473 @@
+{
+  "purpose": "Actual frozen return survival/rejection; no detector candidate evaluated.",
+  "categorization": "Ordered first observed blocker: current nominal polygon, confidence margin, final cluster state, actual return condition or no target DBSCAN blob. Multiple later failures may coexist.",
+  "limitations": [
+    "Current fitted polygon is model-relative, not surveyed ground truth. No frames or cases excluded from original denominators.",
+    "Raw/cache point attribution uses all five quantized fields and multiplicity; identical copies cannot be distinguished. Quantization before range filtering is explicitly recorded.",
+    "Diagnostic observer timings are not performance evidence.",
+    "Novel combinations are already inspected development data; their geometry and motion are not surveyed."
+  ],
+  "parity": {
+    "seto_frames": 1510,
+    "seto_fields": "obstacle,warning,nearest_distance,detections,warnings,clear_distance,track,mount,n_candidates,n_corridor match frozen replay on every frame",
+    "novel_cases": 72,
+    "novel_frames_matched": 544,
+    "novel_fields": "target_matched and injected_stop match prior frozen result on every frame",
+    "tests": "5 focused observer/point-attribution tests pass"
+  },
+  "seto_miss_categories": {
+    "big_center": {
+      "clusters:gauge": 5,
+      "STOP": 208
+    },
+    "small_on_rail": {
+      "outside_current_fitted_nominal_polygon": 16,
+      "zero_strict_after_margin": 3,
+      "clusters:warning": 1,
+      "filtered:b.n_vox < min_pts": 1,
+      "clusters:gauge": 5,
+      "STOP": 23
+    },
+    "small_center": {
+      "outside_current_fitted_nominal_polygon": 16,
+      "zero_strict_after_margin": 8,
+      "filtered:part is None": 11,
+      "filtered:b.n_vox < min_pts": 9,
+      "no_target_DBSCAN_blob": 2,
+      "clusters:floating": 1,
+      "clusters:gauge": 2,
+      "STOP": 30
+    },
+    "small_edge_inside": {
+      "outside_current_fitted_nominal_polygon": 67,
+      "zero_strict_after_margin": 4,
+      "clusters:floating": 10,
+      "STOP": 2
+    },
+    "big_edge_inside": {
+      "outside_current_fitted_nominal_polygon": 116,
+      "zero_strict_after_margin": 1,
+      "clusters:gauge": 2,
+      "STOP": 6
+    },
+    "big_above": {
+      "zero_strict_after_margin": 2,
+      "outside_current_fitted_nominal_polygon": 49,
+      "clusters:beyond_axis": 6,
+      "no_target_DBSCAN_blob": 1,
+      "filtered:continuation_only_thin": 10,
+      "clusters:gauge": 5,
+      "STOP": 51
+    },
+    "long_low_on_rails": {
+      "no_target_DBSCAN_blob": 1,
+      "zero_strict_after_margin": 2,
+      "filtered:continuation_only_thin": 7,
+      "outside_current_fitted_nominal_polygon": 24,
+      "clusters:gauge": 3,
+      "STOP": 49
+    },
+    "thin_hanging": {
+      "outside_current_fitted_nominal_polygon": 21,
+      "clusters:gauge": 6,
+      "STOP": 15
+    }
+  },
+  "seto_overclaim_totals": {
+    "target": 54,
+    "target_frames": 505,
+    "intent": 223,
+    "intent_frames": 801,
+    "go_judge": 150,
+    "go_judge_in_envelope": 62,
+    "target_by_decision": {
+      "GO": 46,
+      "CAUTION": 6,
+      "STOP": 2
+    }
+  },
+  "seto_overclaim_categories": {
+    "small_center": {
+      "outside_current_fitted_nominal_polygon": 2,
+      "zero_strict_after_margin": 6,
+      "filtered:part is None": 11,
+      "filtered:b.n_vox < min_pts": 9,
+      "no_target_DBSCAN_blob": 2
+    },
+    "small_on_rail": {
+      "zero_strict_after_margin": 3,
+      "filtered:b.n_vox < min_pts": 1
+    },
+    "small_edge_inside": {
+      "zero_strict_after_margin": 4
+    },
+    "big_edge_inside": {
+      "zero_strict_after_margin": 1,
+      "clusters:gauge": 1
+    },
+    "big_above": {
+      "filtered:continuation_only_thin": 6,
+      "filtered:b.n_vox < min_pts,continuation_only_thin": 1
+    },
+    "long_low_on_rails": {
+      "outside_current_fitted_nominal_polygon": 2,
+      "filtered:continuation_only_thin": 5
+    }
+  },
+  "seto_overclaim_frames": [
+    {
+      "frame": 291,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 127.46,
+      "clear": 133.4,
+      "cause": "outside_current_fitted_nominal_polygon",
+      "nominal_current_model": 0,
+      "strict_after_margin": 0,
+      "candidate_distance": null
+    },
+    {
+      "frame": 292,
+      "object": "small_center",
+      "decision": "CAUTION",
+      "distance": 126.07,
+      "clear": 136.2,
+      "cause": "outside_current_fitted_nominal_polygon",
+      "nominal_current_model": 0,
+      "strict_after_margin": 0,
+      "candidate_distance": null
+    },
+    {
+      "frame": 303,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 110.12,
+      "clear": 133.6,
+      "cause": "zero_strict_after_margin",
+      "nominal_current_model": 2,
+      "strict_after_margin": 0,
+      "candidate_distance": null
+    },
+    {
+      "frame": 308,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 102.55,
+      "clear": 133.7,
+      "cause": "zero_strict_after_margin",
+      "nominal_current_model": 2,
+      "strict_after_margin": 0,
+      "candidate_distance": null
+    },
+    {
+      "frame": 310,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 99.44,
+      "clear": 109.2,
+      "cause": "filtered:part is None",
+      "nominal_current_model": 2,
+      "strict_after_margin": 2,
+      "candidate_distance": 109.2
+    },
+    {
+      "frame": 311,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 97.9,
+      "clear": 137.8,
+      "cause": "filtered:part is None",
+      "nominal_current_model": 4,
+      "strict_after_margin": 2,
+      "candidate_distance": null
+    },
+    {
+      "frame": 312,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 96.33,
+      "clear": 138.1,
+      "cause": "zero_strict_after_margin",
+      "nominal_current_model": 2,
+      "strict_after_margin": 0,
+      "candidate_distance": null
+    },
+    {
+      "frame": 313,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 94.78,
+      "clear": 133.7,
+      "cause": "zero_strict_after_margin",
+      "nominal_current_model": 2,
+      "strict_after_margin": 0,
+      "candidate_distance": null
+    },
+    {
+      "frame": 314,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 93.21,
+      "clear": 134.8,
+      "cause": "filtered:part is None",
+      "nominal_current_model": 2,
+      "strict_after_margin": 2,
+      "candidate_distance": null
+    },
+    {
+      "frame": 315,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 91.62,
+      "clear": 135.2,
+      "cause": "zero_strict_after_margin",
+      "nominal_current_model": 2,
+      "strict_after_margin": 0,
+      "candidate_distance": null
+    },
+    {
+      "frame": 316,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 90.02,
+      "clear": 139.6,
+      "cause": "filtered:part is None",
+      "nominal_current_model": 2,
+      "strict_after_margin": 2,
+      "candidate_distance": null
+    },
+    {
+      "frame": 317,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 88.43,
+      "clear": 140.1,
+      "cause": "filtered:part is None",
+      "nominal_current_model": 2,
+      "strict_after_margin": 2,
+      "candidate_distance": null
+    },
+    {
+      "frame": 318,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 86.83,
+      "clear": 132.5,
+      "cause": "filtered:part is None",
+      "nominal_current_model": 2,
+      "strict_after_margin": 2,
+      "candidate_distance": null
+    },
+    {
+      "frame": 319,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 85.25,
+      "clear": 135.0,
+      "cause": "zero_strict_after_margin",
+      "nominal_current_model": 2,
+      "strict_after_margin": 0,
+      "candidate_distance": null
+    },
+    {
+      "frame": 320,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 83.65,
+      "clear": 131.4,
+      "cause": "filtered:b.n_vox < min_pts",
+      "nominal_current_model": 2,
+      "strict_after_margin": 2,
+      "candidate_distance": null
+    },
+    {
+      "frame": 321,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 82.03,
+      "clear": 131.7,
+      "cause": "filtered:part is None",
+      "nominal_current_model": 4,
+      "strict_after_margin": 2,
+      "candidate_distance": null
+    },
+    {
+      "frame": 322,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 80.42,
+      "clear": 136.1,
+      "cause": "no_target_DBSCAN_blob",
+      "nominal_current_model": 2,
+      "strict_after_margin": 2,
+      "candidate_distance": null
+    },
+    {
+      "frame": 323,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 78.79,
+      "clear": 131.5,
+      "cause": "filtered:part is None",
+      "nominal_current_model": 4,
+      "strict_after_margin": 2,
+      "candidate_distance": null
+    },
+    {
+      "frame": 324,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 77.19,
+      "clear": 134.8,
+      "cause": "filtered:part is None",
+      "nominal_current_model": 2,
+      "strict_after_margin": 2,
+      "candidate_distance": null
+    },
+    {
+      "frame": 325,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 75.56,
+      "clear": 137.1,
+      "cause": "filtered:part is None",
+      "nominal_current_model": 4,
+      "strict_after_margin": 2,
+      "candidate_distance": null
+    },
+    {
+      "frame": 326,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 73.92,
+      "clear": 132.7,
+      "cause": "filtered:b.n_vox < min_pts",
+      "nominal_current_model": 4,
+      "strict_after_margin": 2,
+      "candidate_distance": null
+    },
+    {
+      "frame": 327,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 72.3,
+      "clear": 139.0,
+      "cause": "filtered:part is None",
+      "nominal_current_model": 2,
+      "strict_after_margin": 2,
+      "candidate_distance": null
+    },
+    {
+      "frame": 328,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 70.66,
+      "clear": 127.0,
+      "cause": "filtered:b.n_vox < min_pts",
+      "nominal_current_model": 4,
+      "strict_after_margin": 4,
+      "candidate_distance": null
+    },
+    {
+      "frame": 329,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 69.04,
+      "clear": 130.5,
+      "cause": "no_target_DBSCAN_blob",
+      "nominal_current_model": 2,
+      "strict_after_margin": 2,
+      "candidate_distance": null
+    },
+    {
+      "frame": 330,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 67.4,
+      "clear": 123.1,
+      "cause": "filtered:b.n_vox < min_pts",
+      "nominal_current_model": 4,
+      "strict_after_margin": 2,
+      "candidate_distance": null
+    },
+    {
+      "frame": 331,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 65.75,
+      "clear": 126.3,
+      "cause": "filtered:b.n_vox < min_pts",
+      "nominal_current_model": 4,
+      "strict_after_margin": 4,
+      "candidate_distance": null
+    },
+    {
+      "frame": 332,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 64.11,
+      "clear": 122.4,
+      "cause": "filtered:b.n_vox < min_pts",
+      "nominal_current_model": 4,
+      "strict_after_margin": 4,
+      "candidate_distance": null
+    },
+    {
+      "frame": 333,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 62.45,
+      "clear": 125.7,
+      "cause": "filtered:b.n_vox < min_pts",
+      "nominal_current_model": 4,
+      "strict_after_margin": 4,
+      "candidate_distance": null
+    },
+    {
+      "frame": 334,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 60.81,
+      "clear": 122.1,
+      "cause": "filtered:b.n_vox < min_pts",
+      "nominal_current_model": 4,
+      "strict_after_margin": 4,
+      "candidate_distance": null
+    },
+    {
+      "frame": 336,
+      "object": "small_center",
+      "decision": "GO",
+      "distance": 57.49,
+      "clear": 120.7,
+      "cause": "filtered:b.n_vox < min_pts",
+      "nominal_current_model": 4,
+      "strict_after_margin": 4,
+      "candidate_distance": null
+    },
+    {
+      "frame": 392,
+      "object": "small_on_rail",
+      "decision": "GO",
+      "distance": 62.1,
+      "clear": 185.0,
+      "cause": "zero_strict_after_margin",
+      "nominal_current_model": 2,
+      "strict_after_margin": 0,
+      "candidate_distance": null
+    },
+    {
+      "frame": 394,
+      "object": "small_on_rail",
+      "decision": "GO",
+      "distance": 58.57,
+      "clear": 182.0,
+      "cause": "zero_strict_after_margin",
+      "nominal_current_model": 2,
+      "strict_after_margin": 0,
+      "candidate_distance": null
+    },
+    {
+      "frame": 396,
+      "object": "small_on_rail",
+      "decision": "GO",
+      "distance": 55.03,
+      "clear": 181.0,
+      "cause": "zero_strict_after_margin",
+      "nominal_current_model": 2,
+      "strict_after_margin": 0,
+      "candidate_distance": null
+    },
+    {
+      "frame": 397,
+      "object": "small_on_rail",
+      "decision": "GO",
+      "distance": 53.27,
+      "clear": 177.0,
+      "cause": "filtered:b.n_vox < min_pts",
+      "nominal_current_model": 2,
+      "strict_after_margin": 2,
+      "candidate_distance": null
+    },
+    {
+      "frame": 462,
+      "object": "small_edge_inside",
+      "decision": "CAUTION",
+      "distance": 34.97,
+      "clear": 180.4,
+      "cause": "zero_strict_after_margin",
+      "nominal_current_model": 4,
+      "strict_after_margin": 0,
+      "candidate_distance": null
+    },
+    {
+      "frame": 466,
+      "object": "small_edge_inside",
+      "decision": "CAUTION",
+      "distance": 27.56,
+      "clear": 161.9,
+      "cause": "zero_strict_after_margin",
+      "nominal_current_model": 5,
+      "strict_after_margin": 0,
+      "candidate_distance": null
+    },
+    {
+      "frame": 467,
+      "object": "small_edge_inside",
+      "decision": "CAUTION",
+      "distance": 25.7,
+      "clear": 169.6,
+      "cause": "zero_strict_after_margin",
+      "nominal_current_model": 5,
+      "strict_after_margin": 0,
+      "candidate_distance": null
+    },
+    {
+      "frame": 468,
+      "object": "small_edge_inside",
+      "decision": "CAUTION",
+      "distance": 23.84,
+      "clear": 198.6,
+      "cause": "zero_strict_after_margin",
+      "nominal_current_model": 6,
+      "strict_after_margin": 0,
+      "candidate_distance": null
+    },
+    {
+      "frame": 575,
+      "object": "big_edge_inside",
+      "decision": "CAUTION",
+      "distance": 16.26,
+      "clear": 189.3,
+      "cause": "zero_strict_after_margin",
+      "nominal_current_model": 3,
+      "strict_after_margin": 0,
+      "candidate_distance": null
+    },
+    {
+      "frame": 582,
+      "object": "big_edge_inside",
+      "decision": "STOP",
+      "distance": 2.27,
+      "clear": 3.0,
+      "cause": "clusters:gauge",
+      "nominal_current_model": 1738,
+      "strict_after_margin": 79,
+      "candidate_distance": 104.9
+    },
+    {
+      "frame": 616,
+      "object": "big_above",
+      "decision": "GO",
+      "distance": 133.72,
+      "clear": 177.4,
+      "cause": "filtered:continuation_only_thin",
+      "nominal_current_model": 4,
+      "strict_after_margin": 4,
+      "candidate_distance": null
+    },
+    {
+      "frame": 617,
+      "object": "big_above",
+      "decision": "GO",
+      "distance": 131.7,
+      "clear": 182.5,
+      "cause": "filtered:continuation_only_thin",
+      "nominal_current_model": 4,
+      "strict_after_margin": 4,
+      "candidate_distance": null
+    },
+    {
+      "frame": 621,
+      "object": "big_above",
+      "decision": "GO",
+      "distance": 123.56,
+      "clear": 159.8,
+      "cause": "filtered:continuation_only_thin",
+      "nominal_current_model": 5,
+      "strict_after_margin": 4,
+      "candidate_distance": null
+    },
+    {
+      "frame": 622,
+      "object": "big_above",
+      "decision": "GO",
+      "distance": 121.53,
+      "clear": 173.8,
+      "cause": "filtered:continuation_only_thin",
+      "nominal_current_model": 5,
+      "strict_after_margin": 4,
+      "candidate_distance": null
+    },
+    {
+      "frame": 624,
+      "object": "big_above",
+      "decision": "GO",
+      "distance": 117.49,
+      "clear": 171.4,
+      "cause": "filtered:continuation_only_thin",
+      "nominal_current_model": 5,
+      "strict_after_margin": 4,
+      "candidate_distance": null
+    },
+    {
+      "frame": 627,
+      "object": "big_above",
+      "decision": "GO",
+      "distance": 111.42,
+      "clear": 162.5,
+      "cause": "filtered:continuation_only_thin",
+      "nominal_current_model": 6,
+      "strict_after_margin": 5,
+      "candidate_distance": null
+    },
+    {
+      "frame": 663,
+      "object": "big_above",
+      "decision": "STOP",
+      "distance": 40.51,
+      "clear": 42.1,
+      "cause": "filtered:b.n_vox < min_pts,continuation_only_thin",
+      "nominal_current_model": 14,
+      "strict_after_margin": 14,
+      "candidate_distance": 116.2
+    },
+    {
+      "frame": 686,
+      "object": "long_low_on_rails",
+      "decision": "GO",
+      "distance": 99.42,
+      "clear": 191.9,
+      "cause": "outside_current_fitted_nominal_polygon",
+      "nominal_current_model": 0,
+      "strict_after_margin": 0,
+      "candidate_distance": null
+    },
+    {
+      "frame": 687,
+      "object": "long_low_on_rails",
+      "decision": "GO",
+      "distance": 97.67,
+      "clear": 186.8,
+      "cause": "outside_current_fitted_nominal_polygon",
+      "nominal_current_model": 0,
+      "strict_after_margin": 0,
+      "candidate_distance": null
+    },
+    {
+      "frame": 688,
+      "object": "long_low_on_rails",
+      "decision": "GO",
+      "distance": 95.93,
+      "clear": 187.0,
+      "cause": "filtered:continuation_only_thin",
+      "nominal_current_model": 6,
+      "strict_after_margin": 6,
+      "candidate_distance": null
+    },
+    {
+      "frame": 689,
+      "object": "long_low_on_rails",
+      "decision": "GO",
+      "distance": 94.2,
+      "clear": 186.3,
+      "cause": "filtered:continuation_only_thin",
+      "nominal_current_model": 6,
+      "strict_after_margin": 5,
+      "candidate_distance": null
+    },
+    {
+      "frame": 690,
+      "object": "long_low_on_rails",
+      "decision": "GO",
+      "distance": 92.47,
+      "clear": 205.0,
+      "cause": "filtered:continuation_only_thin",
+      "nominal_current_model": 5,
+      "strict_after_margin": 4,
+      "candidate_distance": null
+    },
+    {
+      "frame": 693,
+      "object": "long_low_on_rails",
+      "decision": "GO",
+      "distance": 87.25,
+      "clear": 202.0,
+      "cause": "filtered:continuation_only_thin",
+      "nominal_current_model": 7,
+      "strict_after_margin": 7,
+      "candidate_distance": null
+    },
+    {
+      "frame": 694,
+      "object": "long_low_on_rails",
+      "decision": "GO",
+      "distance": 85.54,
+      "clear": 200.3,
+      "cause": "filtered:continuation_only_thin",
+      "nominal_current_model": 7,
+      "strict_after_margin": 7,
+      "candidate_distance": null
+    }
+  ],
+  "novel_miss_categories": {
+    "small_center": {
+      "filtered:b.n_vox < min_pts": 110,
+      "no_target_DBSCAN_blob": 19,
+      "clusters:beyond_axis": 22,
+      "clusters:gauge": 61,
+      "MATCH": 230,
+      "outside_current_fitted_nominal_polygon": 140,
+      "zero_strict_after_margin": 19,
+      "clusters:warning": 14,
+      "clusters:floating": 67,
+      "filtered:part is None": 14,
+      "filtered:_is_infrastructure(size, lat_rules, h_max, cfg, spare_wall=spare)": 5,
+      "clusters:edge": 1
+    },
+    "small_on_rail": {
+      "outside_current_fitted_nominal_polygon": 191,
+      "no_target_DBSCAN_blob": 15,
+      "filtered:b.n_vox < min_pts": 61,
+      "clusters:beyond_axis": 30,
+      "clusters:gauge": 82,
+      "MATCH": 211,
+      "zero_strict_after_margin": 16,
+      "clusters:edge": 4,
+      "filtered:part is None": 14,
+      "filtered:_is_infrastructure(size, lat_rules, h_max, cfg, spare_wall=spare),size[1] < low_cfg.min_width": 1,
+      "filtered:b.n_vox < min_pts,size[1] < low_cfg.min_width": 3,
+      "clusters:warning": 8,
+      "clusters:floating": 10
+    },
+    "big_above": {
+      "outside_current_fitted_nominal_polygon": 396,
+      "filtered:continuation_only_thin": 85,
+      "no_target_DBSCAN_blob": 3,
+      "zero_strict_after_margin": 5,
+      "filtered:part is None": 4,
+      "clusters:gauge": 26,
+      "MATCH": 58,
+      "clusters:elevated": 28,
+      "filtered:_is_infrastructure(size, lat_rules, h_max, cfg, spare_wall=spare)": 1,
+      "clusters:warning": 1,
+      "clusters:floating,gauge": 1,
+      "filtered:b.n_vox < min_pts,continuation_only_thin": 2,
+      "filtered:b.n_vox < min_pts": 2
+    },
+    "thin_hanging": {
+      "outside_current_fitted_nominal_polygon": 304,
+      "no_target_DBSCAN_blob": 53,
+      "clusters:gauge": 66,
+      "filtered:b.n_vox < min_pts": 19,
+      "zero_strict_after_margin": 5,
+      "clusters:warning": 1,
+      "clusters:floating": 4,
+      "MATCH": 45,
+      "clusters:floating,gauge": 1
+    }
+  },
+  "novel_model_membership": {
+    "small_center": {
+      "visible": 702,
+      "nominal_current_model_any": 562,
+      "strict_current_model_any": 543,
+      "matched": 230
+    },
+    "small_on_rail": {
+      "visible": 646,
+      "nominal_current_model_any": 455,
+      "strict_current_model_any": 439,
+      "matched": 211
+    },
+    "big_above": {
+      "visible": 612,
+      "nominal_current_model_any": 216,
+      "strict_current_model_any": 211,
+      "matched": 58
+    },
+    "thin_hanging": {
+      "visible": 498,
+      "nominal_current_model_any": 194,
+      "strict_current_model_any": 189,
+      "matched": 45
+    }
+  },
+  "novel_cases": [
+    {
+      "bag": "doubleT_platform",
+      "object": "small_center",
+      "lateral_m": -0.65,
+      "visible": 39,
+      "nominal_current_model_any": 39,
+      "strict_current_model_any": 39,
+      "matched": 10
+    },
+    {
+      "bag": "doubleT_platform",
+      "object": "small_center",
+      "lateral_m": 0.0,
+      "visible": 39,
+      "nominal_current_model_any": 39,
+      "strict_current_model_any": 39,
+      "matched": 10
+    },
+    {
+      "bag": "doubleT_platform",
+      "object": "small_center",
+      "lateral_m": 0.65,
+      "visible": 39,
+      "nominal_current_model_any": 21,
+      "strict_current_model_any": 15,
+      "matched": 7
+    },
+    {
+      "bag": "doubleT_platform",
+      "object": "small_on_rail",
+      "lateral_m": -0.65,
+      "visible": 37,
+      "nominal_current_model_any": 33,
+      "strict_current_model_any": 33,
+      "matched": 10
+    },
+    {
+      "bag": "doubleT_platform",
+      "object": "small_on_rail",
+      "lateral_m": 0.0,
+      "visible": 37,
+      "nominal_current_model_any": 33,
+      "strict_current_model_any": 33,
+      "matched": 10
+    },
+    {
+      "bag": "doubleT_platform",
+      "object": "small_on_rail",
+      "lateral_m": 0.65,
+      "visible": 37,
+      "nominal_current_model_any": 30,
+      "strict_current_model_any": 26,
+      "matched": 5
+    },
+    {
+      "bag": "doubleT_platform",
+      "object": "big_above",
+      "lateral_m": -0.65,
+      "visible": 34,
+      "nominal_current_model_any": 6,
+      "strict_current_model_any": 5,
+      "matched": 0
+    },
+    {
+      "bag": "doubleT_platform",
+      "object": "big_above",
+      "lateral_m": 0.0,
+      "visible": 34,
+      "nominal_current_model_any": 6,
+      "strict_current_model_any": 6,
+      "matched": 0
+    },
+    {
+      "bag": "doubleT_platform",
+      "object": "big_above",
+      "lateral_m": 0.65,
+      "visible": 34,
+      "nominal_current_model_any": 5,
+      "strict_current_model_any": 5,
+      "matched": 0
+    },
+    {
+      "bag": "doubleT_platform",
+      "object": "thin_hanging",
+      "lateral_m": -0.65,
+      "visible": 28,
+      "nominal_current_model_any": 15,
+      "strict_current_model_any": 15,
+      "matched": 0
+    },
+    {
+      "bag": "doubleT_platform",
+      "object": "thin_hanging",
+      "lateral_m": 0.0,
+      "visible": 28,
+      "nominal_current_model_any": 13,
+      "strict_current_model_any": 13,
+      "matched": 0
+    },
+    {
+      "bag": "doubleT_platform",
+      "object": "thin_hanging",
+      "lateral_m": 0.65,
+      "visible": 28,
+      "nominal_current_model_any": 2,
+      "strict_current_model_any": 1,
+      "matched": 0
+    },
+    {
+      "bag": "roundT_doubleT",
+      "object": "small_center",
+      "lateral_m": -0.65,
+      "visible": 39,
+      "nominal_current_model_any": 39,
+      "strict_current_model_any": 39,
+      "matched": 22
+    },
+    {
+      "bag": "roundT_doubleT",
+      "object": "small_center",
+      "lateral_m": 0.0,
+      "visible": 39,
+      "nominal_current_model_any": 39,
+      "strict_current_model_any": 38,
+      "matched": 7
+    },
+    {
+      "bag": "roundT_doubleT",
+      "object": "small_center",
+      "lateral_m": 0.65,
+      "visible": 39,
+      "nominal_current_model_any": 2,
+      "strict_current_model_any": 1,
+      "matched": 0
+    },
+    {
+      "bag": "roundT_doubleT",
+      "object": "small_on_rail",
+      "lateral_m": -0.65,
+      "visible": 37,
+      "nominal_current_model_any": 35,
+      "strict_current_model_any": 33,
+      "matched": 14
+    },
+    {
+      "bag": "roundT_doubleT",
+      "object": "small_on_rail",
+      "lateral_m": 0.0,
+      "visible": 31,
+      "nominal_current_model_any": 8,
+      "strict_current_model_any": 7,
+      "matched": 0
+    },
+    {
+      "bag": "roundT_doubleT",
+      "object": "small_on_rail",
+      "lateral_m": 0.65,
+      "visible": 30,
+      "nominal_current_model_any": 0,
+      "strict_current_model_any": 0,
+      "matched": 0
+    },
+    {
+      "bag": "roundT_doubleT",
+      "object": "big_above",
+      "lateral_m": -0.65,
+      "visible": 34,
+      "nominal_current_model_any": 25,
+      "strict_current_model_any": 22,
+      "matched": 2
+    },
+    {
+      "bag": "roundT_doubleT",
+      "object": "big_above",
+      "lateral_m": 0.0,
+      "visible": 34,
+      "nominal_current_model_any": 13,
+      "strict_current_model_any": 13,
+      "matched": 7
+    },
+    {
+      "bag": "roundT_doubleT",
+      "object": "big_above",
+      "lateral_m": 0.65,
+      "visible": 34,
+      "nominal_current_model_any": 6,
+      "strict_current_model_any": 5,
+      "matched": 0
+    },
+    {
+      "bag": "roundT_doubleT",
+      "object": "thin_hanging",
+      "lateral_m": -0.65,
+      "visible": 28,
+      "nominal_current_model_any": 7,
+      "strict_current_model_any": 7,
+      "matched": 0
+    },
+    {
+      "bag": "roundT_doubleT",
+      "object": "thin_hanging",
+      "lateral_m": 0.0,
+      "visible": 27,
+      "nominal_current_model_any": 2,
+      "strict_current_model_any": 2,
+      "matched": 0
+    },
+    {
+      "bag": "roundT_doubleT",
+      "object": "thin_hanging",
+      "lateral_m": 0.65,
+      "visible": 28,
+      "nominal_current_model_any": 0,
+      "strict_current_model_any": 0,
+      "matched": 0
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "object": "small_center",
+      "lateral_m": -0.65,
+      "visible": 39,
+      "nominal_current_model_any": 39,
+      "strict_current_model_any": 39,
+      "matched": 22
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "object": "small_center",
+      "lateral_m": 0.0,
+      "visible": 39,
+      "nominal_current_model_any": 39,
+      "strict_current_model_any": 39,
+      "matched": 22
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "object": "small_center",
+      "lateral_m": 0.65,
+      "visible": 39,
+      "nominal_current_model_any": 19,
+      "strict_current_model_any": 15,
+      "matched": 3
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "object": "small_on_rail",
+      "lateral_m": -0.65,
+      "visible": 36,
+      "nominal_current_model_any": 31,
+      "strict_current_model_any": 31,
+      "matched": 20
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "object": "small_on_rail",
+      "lateral_m": 0.0,
+      "visible": 35,
+      "nominal_current_model_any": 31,
+      "strict_current_model_any": 31,
+      "matched": 14
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "object": "small_on_rail",
+      "lateral_m": 0.65,
+      "visible": 34,
+      "nominal_current_model_any": 4,
+      "strict_current_model_any": 4,
+      "matched": 0
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "object": "big_above",
+      "lateral_m": -0.65,
+      "visible": 34,
+      "nominal_current_model_any": 1,
+      "strict_current_model_any": 1,
+      "matched": 0
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "object": "big_above",
+      "lateral_m": 0.0,
+      "visible": 34,
+      "nominal_current_model_any": 1,
+      "strict_current_model_any": 1,
+      "matched": 0
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "object": "big_above",
+      "lateral_m": 0.65,
+      "visible": 34,
+      "nominal_current_model_any": 1,
+      "strict_current_model_any": 1,
+      "matched": 0
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "object": "thin_hanging",
+      "lateral_m": -0.65,
+      "visible": 28,
+      "nominal_current_model_any": 9,
+      "strict_current_model_any": 9,
+      "matched": 3
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "object": "thin_hanging",
+      "lateral_m": 0.0,
+      "visible": 27,
+      "nominal_current_model_any": 5,
+      "strict_current_model_any": 5,
+      "matched": 0
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "object": "thin_hanging",
+      "lateral_m": 0.65,
+      "visible": 27,
+      "nominal_current_model_any": 0,
+      "strict_current_model_any": 0,
+      "matched": 0
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "small_center",
+      "lateral_m": -0.65,
+      "visible": 39,
+      "nominal_current_model_any": 39,
+      "strict_current_model_any": 39,
+      "matched": 22
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "small_center",
+      "lateral_m": 0.0,
+      "visible": 39,
+      "nominal_current_model_any": 39,
+      "strict_current_model_any": 39,
+      "matched": 22
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "small_center",
+      "lateral_m": 0.65,
+      "visible": 39,
+      "nominal_current_model_any": 39,
+      "strict_current_model_any": 37,
+      "matched": 7
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "small_on_rail",
+      "lateral_m": -0.65,
+      "visible": 37,
+      "nominal_current_model_any": 37,
+      "strict_current_model_any": 37,
+      "matched": 19
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "small_on_rail",
+      "lateral_m": 0.0,
+      "visible": 37,
+      "nominal_current_model_any": 37,
+      "strict_current_model_any": 37,
+      "matched": 19
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "small_on_rail",
+      "lateral_m": 0.65,
+      "visible": 37,
+      "nominal_current_model_any": 36,
+      "strict_current_model_any": 29,
+      "matched": 17
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "big_above",
+      "lateral_m": -0.65,
+      "visible": 34,
+      "nominal_current_model_any": 34,
+      "strict_current_model_any": 34,
+      "matched": 2
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "big_above",
+      "lateral_m": 0.0,
+      "visible": 34,
+      "nominal_current_model_any": 34,
+      "strict_current_model_any": 34,
+      "matched": 25
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "big_above",
+      "lateral_m": 0.65,
+      "visible": 34,
+      "nominal_current_model_any": 34,
+      "strict_current_model_any": 34,
+      "matched": 22
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "thin_hanging",
+      "lateral_m": -0.65,
+      "visible": 28,
+      "nominal_current_model_any": 21,
+      "strict_current_model_any": 21,
+      "matched": 9
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "thin_hanging",
+      "lateral_m": 0.0,
+      "visible": 27,
+      "nominal_current_model_any": 21,
+      "strict_current_model_any": 21,
+      "matched": 9
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "object": "thin_hanging",
+      "lateral_m": 0.65,
+      "visible": 28,
+      "nominal_current_model_any": 17,
+      "strict_current_model_any": 17,
+      "matched": 4
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "object": "small_center",
+      "lateral_m": -0.65,
+      "visible": 39,
+      "nominal_current_model_any": 39,
+      "strict_current_model_any": 39,
+      "matched": 22
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "object": "small_center",
+      "lateral_m": 0.0,
+      "visible": 39,
+      "nominal_current_model_any": 39,
+      "strict_current_model_any": 39,
+      "matched": 22
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "object": "small_center",
+      "lateral_m": 0.65,
+      "visible": 39,
+      "nominal_current_model_any": 39,
+      "strict_current_model_any": 37,
+      "matched": 7
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "object": "small_on_rail",
+      "lateral_m": -0.65,
+      "visible": 37,
+      "nominal_current_model_any": 31,
+      "strict_current_model_any": 31,
+      "matched": 19
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "object": "small_on_rail",
+      "lateral_m": 0.0,
+      "visible": 37,
+      "nominal_current_model_any": 31,
+      "strict_current_model_any": 31,
+      "matched": 19
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "object": "small_on_rail",
+      "lateral_m": 0.65,
+      "visible": 37,
+      "nominal_current_model_any": 31,
+      "strict_current_model_any": 31,
+      "matched": 14
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "object": "big_above",
+      "lateral_m": -0.65,
+      "visible": 34,
+      "nominal_current_model_any": 6,
+      "strict_current_model_any": 6,
+      "matched": 0
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "object": "big_above",
+      "lateral_m": 0.0,
+      "visible": 34,
+      "nominal_current_model_any": 9,
+      "strict_current_model_any": 9,
+      "matched": 0
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "object": "big_above",
+      "lateral_m": 0.65,
+      "visible": 34,
+      "nominal_current_model_any": 10,
+      "strict_current_model_any": 10,
+      "matched": 0
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "object": "thin_hanging",
+      "lateral_m": -0.65,
+      "visible": 28,
+      "nominal_current_model_any": 17,
+      "strict_current_model_any": 17,
+      "matched": 2
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "object": "thin_hanging",
+      "lateral_m": 0.0,
+      "visible": 28,
+      "nominal_current_model_any": 17,
+      "strict_current_model_any": 17,
+      "matched": 2
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "object": "thin_hanging",
+      "lateral_m": 0.65,
+      "visible": 27,
+      "nominal_current_model_any": 17,
+      "strict_current_model_any": 14,
+      "matched": 2
+    },
+    {
+      "bag": "new_data",
+      "object": "small_center",
+      "lateral_m": -0.65,
+      "visible": 39,
+      "nominal_current_model_any": 27,
+      "strict_current_model_any": 25,
+      "matched": 16
+    },
+    {
+      "bag": "new_data",
+      "object": "small_center",
+      "lateral_m": 0.0,
+      "visible": 39,
+      "nominal_current_model_any": 18,
+      "strict_current_model_any": 17,
+      "matched": 8
+    },
+    {
+      "bag": "new_data",
+      "object": "small_center",
+      "lateral_m": 0.65,
+      "visible": 39,
+      "nominal_current_model_any": 7,
+      "strict_current_model_any": 7,
+      "matched": 1
+    },
+    {
+      "bag": "new_data",
+      "object": "small_on_rail",
+      "lateral_m": -0.65,
+      "visible": 36,
+      "nominal_current_model_any": 24,
+      "strict_current_model_any": 24,
+      "matched": 19
+    },
+    {
+      "bag": "new_data",
+      "object": "small_on_rail",
+      "lateral_m": 0.0,
+      "visible": 37,
+      "nominal_current_model_any": 17,
+      "strict_current_model_any": 16,
+      "matched": 12
+    },
+    {
+      "bag": "new_data",
+      "object": "small_on_rail",
+      "lateral_m": 0.65,
+      "visible": 37,
+      "nominal_current_model_any": 6,
+      "strict_current_model_any": 5,
+      "matched": 0
+    },
+    {
+      "bag": "new_data",
+      "object": "big_above",
+      "lateral_m": -0.65,
+      "visible": 34,
+      "nominal_current_model_any": 9,
+      "strict_current_model_any": 9,
+      "matched": 0
+    },
+    {
+      "bag": "new_data",
+      "object": "big_above",
+      "lateral_m": 0.0,
+      "visible": 34,
+      "nominal_current_model_any": 8,
+      "strict_current_model_any": 8,
+      "matched": 0
+    },
+    {
+      "bag": "new_data",
+      "object": "big_above",
+      "lateral_m": 0.65,
+      "visible": 34,
+      "nominal_current_model_any": 8,
+      "strict_current_model_any": 8,
+      "matched": 0
+    },
+    {
+      "bag": "new_data",
+      "object": "thin_hanging",
+      "lateral_m": -0.65,
+      "visible": 27,
+      "nominal_current_model_any": 16,
+      "strict_current_model_any": 16,
+      "matched": 7
+    },
+    {
+      "bag": "new_data",
+      "object": "thin_hanging",
+      "lateral_m": 0.0,
+      "visible": 28,
+      "nominal_current_model_any": 12,
+      "strict_current_model_any": 12,
+      "matched": 7
+    },
+    {
+      "bag": "new_data",
+      "object": "thin_hanging",
+      "lateral_m": 0.65,
+      "visible": 28,
+      "nominal_current_model_any": 3,
+      "strict_current_model_any": 2,
+      "matched": 0
+    }
+  ],
+  "source_attribution": {
+    "indistinguishable_extra_copies": 0,
+    "range_filter_deltas": [
+      {
+        "frame": 583,
+        "label": "big_edge_inside",
+        "source_points": 5166,
+        "cache_points": 5162,
+        "quantized_range_filter_delta": -4,
+        "indistinguishable_background_copies": 0
+      },
+      {
+        "frame": 633,
+        "label": "big_outside",
+        "source_points": 23699,
+        "cache_points": 23673,
+        "quantized_range_filter_delta": -26,
+        "indistinguishable_background_copies": 0
+      }
+    ]
+  },
+  "artifact_sha256": {
+    "seto_trace.txt": "762828cb35c13482ef11c8b37931a81f83fa4cee6f367b55b15e529fa095e09c",
+    "novel_trace.json.gz": "a824824b812780ddddef87be7412c663d17c98b89945fc581eb2cd20696ded53",
+    "seto_trace.json.gz": "bff9ff0ba6e65fc520869c76c839e47d767b606ed708f29567e5907a83953859",
+    "novel_trace.txt": "58a772d33af53c6df7ebc10ffc23afd8c8003b7382dd48f51aea14a00e8b7e7c"
+  }
+}

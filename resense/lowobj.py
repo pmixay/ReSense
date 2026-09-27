@@ -53,6 +53,7 @@ from typing import Optional
 
 import numpy as np
 
+from resense import _native
 from resense.config import LowObjectConfig
 from resense.track import bin_percentile
 
@@ -73,8 +74,12 @@ class BedTemplate:
     def update(self, X: np.ndarray, dy: np.ndarray, h: np.ndarray) -> Optional[np.ndarray]:
         cfg = self.cfg
         x0, x1 = cfg.template_range
-        sel = (X > x0) & (X < x1) & (dy > self.edges[0]) & (dy < self.edges[-1]) & (h > -1.2) & (h < 0.4)
-        if sel.sum() < 200:
+        sel = _native.select(X.size, (dy, ">", self.edges[0], "<", self.edges[-1]), (h, ">", -1.2, "<", 0.4),
+                             (X, ">", x0, "<", x1))       # np.flatnonzero of the mask below; None: numpy
+        if sel is None:
+            sel = (X > x0) & (X < x1) & (dy > self.edges[0]) & (dy < self.edges[-1]) & (h > -1.2) & (h < 0.4)
+        n_sel = int(sel.sum()) if sel.dtype == bool else sel.size
+        if n_sel < 200:
             return self.prof
         nb = self.edges.size - 1
         b = np.clip(np.digitize(dy[sel], self.edges) - 1, 0, nb - 1)
@@ -113,8 +118,11 @@ def low_candidates(X: np.ndarray, dy: np.ndarray, h: np.ndarray, template: BedTe
     if template.prof is None:
         return result(empty, 0.0)
     x1 = min(cfg.range_max, x_limit)
-    band = (X >= range_min) & (X < x1) & (np.abs(dy) <= cfg.half_width) & (h < h_bottom) & (h > -1.2)
-    idx = np.flatnonzero(band)
+    idx = _native.select(X.size, (dy, None, None, "<=", cfg.half_width, True), (h, ">", -1.2, "<", h_bottom),
+                         (X, ">=", range_min, "<", x1))
+    if idx is None:
+        band = (X >= range_min) & (X < x1) & (np.abs(dy) <= cfg.half_width) & (h < h_bottom) & (h > -1.2)
+        idx = np.flatnonzero(band)
     if idx.size == 0:
         return result(idx, 0.0)
     res = h[idx] - template(dy[idx])
@@ -158,3 +166,65 @@ def low_candidates(X: np.ndarray, dy: np.ndarray, h: np.ndarray, template: BedTe
                    & seen[b] & near_seen[b])
         near = idx[central]
     return result(idx[keep], x_seen, idx[anomaly], near)
+
+
+def mark_rail_line(clusters, X: np.ndarray, dy: np.ndarray, h: np.ndarray, cfg: LowObjectConfig,
+                   rails_spacing: float, range_min: float) -> int:
+    """26.09 (P3 rail start, ``rail_start_within`` > 0; docs/evidence/results/p3_rail_start_2026-09-26.json):
+    set ``Cluster.rail_line`` on the low clusters near the train that are rail geometry, not an
+    object; returns how many. A fresh start at a standing train saw the rail heads 3.0-3.6 m ahead
+    3-12 cm above a young model's rail-head plane, in front of the range the bed cross-section is
+    learned from (``template_range``), and STOPped on them (EXPERIMENTS §1j).
+
+    ``X``, ``dy``, ``h``: the whole frame (vehicle X, track coordinates). A low cluster is marked
+    when (1) it starts nearer than ``rail_start_within``; (2) its lateral extent reaches an expected
+    rail line (the axis +- ``rails_spacing`` / 2) within ``rail_start_lateral``; (3) it is at most
+    ``rail_start_max_width`` wide across the track (an object lying across a rail is wider); (4)
+    the same lateral band continues along the track: at least 4 of the 0.25 m bins between
+    ``range_min`` - 0.5 m and ``rail_start_within`` + 2 m, outside the cluster's extent +- 0.3 m,
+    hold >= 2 returns (a piece of a structure elongated along the track); and (5) its top - the
+    band's highest return within its extent, the corridor points above the envelope floor
+    included - is at most ``rail_start_margin`` above the band's height where the cluster is not
+    (the median of those bins' highest returns: the rail head's own line). An object standing on a
+    rail rises above that line (the organizers' 0.10 m object by 0.10 m). Only where the heights
+    are 0.3 m below to 0.6 m above the modelled rail head. (6) (safety review of 26.09) That line
+    is at least ``rail_start_min_ref`` above the modelled rail head: the young model's fault the
+    rule compensates (the finding: 0.135-0.148 m); under a correct model (~0) nothing is marked.
+    The tracker withholds a new report of a marked track that was never matched at >=
+    ``rail_start_within`` (``Tracker.update``); that clause is no safeguard (a track deleted after
+    its misses, a detector reset or a re-mount starts again): the margins (5) and (6) are."""
+    near = float(cfg.rail_start_within)
+    todo = [c for c in clusters if c.kind == "low" and c.distance < near and c.points_idx.size]
+    if not todo:
+        return 0
+    x_lo, x_hi, step = float(range_min) - 0.5, near + 2.0, 0.25
+    sel = np.flatnonzero((X >= x_lo) & (X < x_hi) & (np.abs(dy) < cfg.half_width + 0.5) & (h > -0.3) & (h < 0.6))
+    Xs, dys, hs = X[sel].astype(np.float64), dy[sel], h[sel]
+    half, tol = 0.5 * float(rails_spacing), float(cfg.rail_start_lateral)
+    nb = int(np.ceil((x_hi - x_lo) / step))
+    n = 0
+    for c in todo:
+        d = dy[c.points_idx]
+        d0, d1 = float(d.min()), float(d.max())
+        if not any(d0 <= s * half + tol and d1 >= s * half - tol for s in (-1.0, 1.0)):
+            continue
+        if float(c.size[1]) > cfg.rail_start_max_width:
+            continue
+        x0, x1 = float(c.bbox_min[0]), float(c.bbox_max[0])
+        band = (dys >= d0) & (dys <= d1)
+        foot = band & (Xs >= x0) & (Xs <= x1)
+        if not foot.any():
+            continue
+        out = band & ((Xs < x0 - 0.3) | (Xs > x1 + 0.3))
+        b = np.clip(np.floor((Xs[out] - x_lo) / step).astype(np.int64), 0, nb - 1)
+        cnt = np.bincount(b, minlength=nb)
+        top_bin = np.full(nb, -np.inf)
+        np.maximum.at(top_bin, b, hs[out].astype(np.float64))
+        ok = cnt >= 2
+        if int(ok.sum()) < 4:
+            continue
+        line = float(np.median(top_bin[ok]))
+        if line >= cfg.rail_start_min_ref and float(hs[foot].max()) <= line + cfg.rail_start_margin:
+            c.rail_line = True
+            n += 1
+    return n

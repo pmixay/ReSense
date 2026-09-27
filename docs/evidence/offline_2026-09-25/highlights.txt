@@ -1,0 +1,33 @@
+## dry_clear
+status messages      : 234 (18 lines skipped)
+alarm frames         : 3
+obstacle distance    : 111.0 .. 114.9 m
+latency decode+detect: mean 38 / p95 48 / max 50 ms
+detector stage total : mean 24 / p95 34 ms
+dropped input frames : 14 (0 after the first 5 s)
+fps (last report)    : 10.0
+start of the input   : 37 frames in the first 5 s after the first one, largest gap 0.3 s, first STOP at +23.8 s
+FAIL: 3 false alarms on a bag expected to be clear (allowed 2)
+## dry_obstacle
+status messages      : 147 (24 lines skipped)
+alarm frames         : 137
+obstacle distance    : 55.6 .. 56.5 m
+latency decode+detect: mean 58 / p95 78 / max 114 ms
+detector stage total : mean 27 / p95 42 ms
+dropped input frames : 53 (22 after the first 5 s)
+fps (last report)    : 10.0
+start of the input   : 20 frames in the first 5 s after the first one, largest gap 0.7 s, first STOP at +1.2 s
+FAIL: 22 dropped input frames after the first 5 s > 0
+## jury_console
+decisions seen:  2 CAUTION 35 FAULT 10 GO 134 STOP 
+status messages      : 146 (35 lines skipped)
+alarm frames         : 134
+obstacle distance    : 55.7 .. 56.5 m
+latency decode+detect: mean 60 / p95 71 / max 103 ms
+detector stage total : mean 27 / p95 38 ms
+dropped input frames : 57 (24 after the first 5 s)
+fps (last report)    : 10.0
+start of the input   : 17 frames in the first 5 s after the first one, largest gap 0.7 s, first STOP at +2.3 s
+PASS: all dry-run criteria met
+## load_image
+PASS: resense:latest loaded from resense-image-0.6.3-7290873.tar.gz and runs without network. Next:

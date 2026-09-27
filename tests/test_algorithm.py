@@ -505,6 +505,35 @@ def test_rate_limits_do_not_apply_during_the_warm_up():
     assert abs(np.degrees(m.yaw) - 2.0) < 0.3, np.degrees(m.yaw)
 
 
+def test_axis_rates_per_period_follow_sensor_time_not_frames():
+    """25.09 (SCORECARD #13): at 5 Hz one frame spans two nominal periods. With
+    ``rates_per_period`` the yaw / curvature limits and the warm-up count periods, and with
+    ``walls_smoothing_per_period`` the yaw / curvature EMA does too: one 5 Hz step then moves
+    the axis as far as two 10 Hz steps (per frame it lagged the 10 Hz axis by 0.009 rad in the
+    curve of roundT_doubleT, and far structures beside the track entered the gauge). Off, the
+    interval is ignored (the 10 Hz behaviour)."""
+    xyz0, _ = _curved_scene(1e9, 0.0)
+    xyz1, _ = _curved_scene(1e9, 2.0, seed=1)
+    for on in (False, True):
+        cfg = DetectorConfig()
+        cfg.track.rates_per_period = cfg.track.walls_smoothing_per_period = on
+        m = _run_track(xyz0, cfg, cfg.track.axis_warmup_frames + 1)
+        y0 = m.yaw
+        five = estimate_track(xyz1, cfg.track, prev=m, periods=2)
+        ten = estimate_track(xyz1, cfg.track, prev=estimate_track(xyz1, cfg.track, prev=m))
+        assert abs(ten.yaw - y0) == pytest.approx(2 * cfg.track.axis_max_yaw_rate, abs=1e-9)   # clipped twice
+        step = cfg.track.axis_max_yaw_rate * (2 if on else 1)
+        assert abs(five.yaw - y0) == pytest.approx(step, abs=1e-9)
+        assert five.age == m.age + (2 if on else 1)
+    cfg = DetectorConfig()
+    cfg.track.walls_smoothing_per_period = True
+    cfg.track.axis_max_yaw_rate = 0.0                    # the EMA alone: a^2 over one 5 Hz step
+    m = _run_track(xyz0, cfg, 3)
+    five = estimate_track(xyz1, cfg.track, prev=m, periods=2)
+    ten = estimate_track(xyz1, cfg.track, prev=estimate_track(xyz1, cfg.track, prev=m))
+    assert abs(five.yaw - ten.yaw) < 0.1 * abs(ten.yaw - m.yaw), (m.yaw, five.yaw, ten.yaw)
+
+
 def _cluster_at(x, zone="gauge"):
     c = np.array([x, 0.0, 0.5])
     return Cluster(points_idx=np.arange(3), n=10, n_raw=20, centroid=c, bbox_min=c - 0.25, bbox_max=c + 0.25,

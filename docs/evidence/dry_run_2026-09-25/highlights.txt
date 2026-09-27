@@ -1,0 +1,67 @@
+## console_image
+status messages      : 379 (49 lines skipped)
+alarm frames         : 136
+obstacle distance    : 55.5 .. 114.9 m
+latency decode+detect: mean 46 / p95 67 / max 83 ms
+detector stage total : mean 25 / p95 36 ms
+dropped input frames : 67 (53 after the first 5 s)
+fps (last report)    : 10.05
+start of the input   : 37 frames in the first 5 s after the first one, largest gap 0.3 s, first STOP at +23.8 s
+recordings seen      : 2 ['/lidar_points', '/sensing/lidar/hesai128/pointcloud']
+PASS: all dry-run criteria met
+## console_stock_dds
+status messages      : 361 (49 lines skipped)
+alarm frames         : 119
+obstacle distance    : 55.6 .. 114.9 m
+latency decode+detect: mean 46 / p95 64 / max 90 ms
+detector stage total : mean 25 / p95 36 ms
+dropped input frames : 91 (75 after the first 5 s)
+fps (last report)    : 8.14
+start of the input   : 35 frames in the first 5 s after the first one, largest gap 0.3 s, first STOP at +23.9 s
+recordings seen      : 2 ['/lidar_points', '/sensing/lidar/hesai128/pointcloud']
+PASS: all dry-run criteria met
+PASS: a stock Fast DDS player and listener (shared memory on) reached the UDP-only node
+## dry_clear
+status messages      : 231 (18 lines skipped)
+alarm frames         : 3
+obstacle distance    : 111.0 .. 114.9 m
+latency decode+detect: mean 38 / p95 49 / max 72 ms
+detector stage total : mean 24 / p95 34 ms
+dropped input frames : 15 (0 after the first 5 s)
+fps (last report)    : 10.0
+start of the input   : 36 frames in the first 5 s after the first one, largest gap 0.3 s, first STOP at +23.6 s
+FAIL: 3 false alarms on a bag expected to be clear (allowed 2)
+## dry_obstacle
+status messages      : 142 (25 lines skipped)
+alarm frames         : 132
+obstacle distance    : 55.7 .. 56.5 m
+latency decode+detect: mean 58 / p95 69 / max 98 ms
+detector stage total : mean 26 / p95 37 ms
+dropped input frames : 54 (20 after the first 5 s)
+fps (last report)    : 10.08
+start of the input   : 18 frames in the first 5 s after the first one, largest gap 1.0 s, first STOP at +1.6 s
+FAIL: 20 dropped input frames after the first 5 s > 0
+## host_cyclonedds
+decisions seen:  159 CAUTION 89 FAULT 31 GO 3 STOP 
+status messages      : 193 (89 lines skipped)
+alarm frames         : 3
+obstacle distance    : 111.0 .. 114.9 m
+latency decode+detect: mean 39 / p95 49 / max 82 ms
+detector stage total : mean 24 / p95 35 ms
+dropped input frames : 19 (5 after the first 5 s)
+fps (last report)    : 0.0
+start of the input   : 36 frames in the first 5 s after the first one, largest gap 0.3 s, first STOP at +20.0 s
+recordings seen      : 2 ['/lidar_points', '/sensing/lidar/hesai128/pointcloud']
+FAIL: recording 2: 0 alarm frames, expected >= 3
+## host_fastdds
+decisions seen:  172 CAUTION 52 FAULT 68 GO 137 STOP 
+status messages      : 377 (52 lines skipped)
+alarm frames         : 137
+obstacle distance    : 55.7 .. 114.9 m
+latency decode+detect: mean 46 / p95 67 / max 84 ms
+detector stage total : mean 25 / p95 36 ms
+dropped input frames : 75 (59 after the first 5 s)
+fps (last report)    : 9.18
+start of the input   : 35 frames in the first 5 s after the first one, largest gap 0.3 s, first STOP at +23.9 s
+recordings seen      : 2 ['/lidar_points', '/sensing/lidar/hesai128/pointcloud']
+PASS: all dry-run criteria met

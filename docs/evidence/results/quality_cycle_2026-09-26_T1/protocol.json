@@ -1,0 +1,63 @@
+{
+  "schema": "resense-quality-T1-protocol-v1",
+  "registered_utc": "2026-09-26T21:50:53.529854+00:00",
+  "base_commit": "eb4e082728c77734f27b60e0af90eeb3529c585c",
+  "detector_base_commit": "482caab7b7548b5eb3a272b8f30957711dad958f",
+  "mechanism": "Persistent observed boundary contradiction; no increased trust from losing a boundary.",
+  "evidence": "quality_cycle_2026-09-26_clear_failure/README.md",
+  "hypothesis": "The exact clear subsets differ because one-side fitting releases a prior two-side disagreement cap, adding a gauge vote at raw frame152. Preserving contradictory evidence until a valid two-side agreement should prevent that false STOP without suppressing supported positives.",
+  "fixed_variant": {
+    "state": "Detector-owned optional axis contradiction cap, initially absent; not part of fitter geometry feedback.",
+    "observation": "Record current fresh two-boundary curvature disagreement on TrackModel; None for fewer than two fitted boundaries or failed floor fit. A returned previous geometry is not fresh agreement. Update trust once per processed frame after mount calibration and its final fit/rotation. A large correction uses only the final corrected-frame fit; a small rotation preserves the observation from that frame.",
+    "enter": "With walls_enabled and axis_sides_max_disagreement>0, fresh finite two-boundary disagreement>axis_sides_max_disagreement sets cap=min(current raw axis_valid, axis_disagree_range, previous cap if active).",
+    "hold": "Without a fresh two-boundary agreement, an active cap becomes min(previous cap, current raw axis_valid); it cannot increase, including after one/no boundary, floor-fit failure, mount reseed, tracker reseed or input gap. Input gaps preserve this state only until an explicit Detector.reset; the node can treat some gaps as scene resets, which release it by the reset contract.",
+    "release": "A fresh finite two-boundary disagreement<=axis_sides_max_disagreement clears the cap. Equality is agreement, as in baseline. Detector.reset/new Detector also clears it; mount correction or tracker reset alone never clears it.",
+    "disabled": "If walls are disabled or axis_sides_max_disagreement<=0, this mechanism is inactive and its state is absent, matching the disabled disagreement rule.",
+    "application": "Keep TrackModel.axis_valid raw so floor, rail, calibration and next-frame geometry fitting are unchanged. Apply min(raw axis_valid, cap if active, gauge.range_max) to the corridor trusted axis range; existing downstream cluster, low-stage, hanging and health paths receive it without additional changes.",
+    "telemetry": "When cap active, serialize axis_valid as the effective min, and add axis_observed_range and axis_contradiction_cap. Raw model attribute remains unchanged for fitter. No change to geometry fields or monitoring health policy beyond inherited range effects. axis_observed_range names the raw fitter estimate and does not imply fresh physical observation. Final corridor limits can additionally narrow the serialized axis bound via gauge/floor/no-rail/both-side rules.",
+    "constants": "All configuration values unchanged, including existing disagreement6.7e-4, disagreement range60m, one-side range120m. No object-distance, shape, column, voxel, association or axis-union changes.",
+    "scope": [
+      "resense/track.py: fresh observation metadata and active-cap serialization only",
+      "resense/detector.py: state/reset, final-fit update, corridor cap, inaccurate comment corrections",
+      "resense/health.py: inaccurate comment correction only",
+      "tests/test_axis_trust.py: state and integration regressions"
+    ],
+    "comments": "Correct remaining verified-clear/fail-safe claims to estimated monitored range with misses possible. M2 already corrected FrameResult, _clear_cap and HealthMonitor module text; do not duplicate or alter behavior."
+  },
+  "validation": {
+    "premeasurement": "Commit this exact protocol, then source and fixed original72 plan receipt; independent review by quality_second_judge before any candidate replay.",
+    "unit": [
+      "fresh disagreement/one-side/missing-boundary/failed-floor-fit hold",
+      "fresh agreement at threshold releases",
+      "tightening is monotone until fresh agreement",
+      "new/reset clears but calibration small rotation and large reseed alone do not",
+      "fitter geometry and raw range not mutated by trust cap",
+      "effective telemetry agrees with corridor range",
+      "initial one-side remains baseline",
+      "disabled walls/disagreement remain baseline"
+    ],
+    "target_screen": {
+      "inputs": "The exact zero-based header subsets from the retained clear-failure receipt: failed233, historicalstock243, historicalpass234. Raw CDR sequence and source arrays unchanged.",
+      "required": "All three subsets have zero STOP frames; former passing subset remains zero. Candidate geometry fields must equal corresponding M2 replay (excluding additive/effective axis trust metadata). Report all advisory/range changes; no retry replacement.",
+      "reference_sha256": "6ed8ac73d5f16ccfa4ef3c2c2e4d19e659b875c3b6ed8c463b0471156e6a7210"
+    },
+    "fullgate": "If target screen passes, unchanged regression_gate.py against frozen and M2 references, every available row (currently199 comparisons,146 gated), no worsening gated rows, missing rows or waivers. Full positive/outside/empty/ride and SetF coverage required.",
+    "novel": "All original72 cases retained, same inputs/cases/config/evaluator. New plan copies exact parent plan, changes ONLY candidate source receipt plus parent-plan hash. No per-case matched-frame loss, no per-shape total loss, no lost whole case, no increase in paired control alarms.",
+    "coverage": "Every empty recording and each ride segment: frame-aligned new CAUTION<=5 percentage points and median estimated range>=0.95 of M2 AND original frozen baseline. Report monitored range and clear-distance estimate separately. No suppressing reports or always-CAUTION acceptance.",
+    "stress": "If all earlier gates pass, --every2, +3deg roll, +3deg pitch on six recordings and start offsets0/10/20/30/40 on six, unchanged positive/false-positive score rows against archived references; report range cost with available evidence limits.",
+    "raw": "If earlier gates pass, raw SetO vs archived raw, retaining raw/cache differences, no positive or outside regression.",
+    "runtime": "Only after offline acceptance and root coordination: idle p95 decode+detect<=100ms and zero post-settle unprocessed frames; the strict zero-alarm clear trial remains separately required and failed prior trial retained.",
+    "reject": "One fixed variant only. Any target, positive, false-positive, coverage, stress or novel acceptance failure rejects T1 without tuning or threshold variants. Retain exact source and all complete/partial results; no integration or new freeze merely because an aggregate improves.",
+    "claim_limit": "A trust-consistency/false-alarm correction does not demonstrate broad object recall improvement, untouched real holdout validity, or meeting the separate two-family/two-background detection target."
+  },
+  "source_receipts": {
+    "config_file_sha256": "c7ca5ad4f332b7025f66ab0addeb21025daf23a36aca4dbcc2d49fe5b8831f40",
+    "track_base_sha256": "0f23ee8ad73a22e271b69aac31c1230ae8b0c2ebe5d047f2f4d2a6c78ec1cb67",
+    "detector_base_sha256": "1b38ceda1e368601dbccf792c177adfe19775fea897364aabc567b8bf486ea25",
+    "native_library_sha256": "511f7766639f0ddab471a77263f7a343de19d0a8217dd7cd3a11635c8a7db2c8"
+  },
+  "release": "Remains held; root owns integration and final acceptance.",
+  "review_clarifications": [
+    "Before measurement, independent reviewer requested explicit gap/reset semantics and fresh-fit tests for final calibration reseed. No variant or thresholds changed."
+  ]
+}

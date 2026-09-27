@@ -1,0 +1,1048 @@
+{
+  "schema": "resense-p3-signatures-v1",
+  "date": "2026-09-25",
+  "owner": "P3 (detector rules delegated by the captain; no stand hardware needed)",
+  "question": "The floating signature (cluster.floating_*: lowest point > 0.7 m, < 1.2 m tall, < 1.0 m wide, |lateral| > signature_min_lateral 0.6 m) demotes the organizers' 0.3 m cube hanging 1.0-1.4 m above the rail head (set O #2, small_center) to advisory at 44-59 m because its lateral offset measured from the rails is 0.61-0.82 m; it gets a STOP only from 34.0 m (19 STOP frames). #4 (small_edge_inside) is advisory in every frame; it also depends on the organizers' open edge-reference question Q1 and is a bonus, not a target. #8 (elevated) waits on Q2 and is not a target. Criteria 8.1 / 8.4.",
+  "preregistered": {
+    "written_at_utc": "2026-09-25T20:52:00Z",
+    "note": "written before any candidate run on a recording, set O, the ride or set F; applied as written. Before it: the shipped rule instrumented (no parameter changed) on the six recordings, set O and the ride (every cluster with its lowest point above 0.5 m: extents, points, height, lateral edges, track, and the whole-frame context: returns just above / beside it and the nearest return not in it); the candidates were designed from those features (offline: which shipped floating demotions each would exempt), and ray-cast unit tests on the synthetic tunnel were written. Base code 1c96233 (claude/nifty-pascal-lzgl78), branch wf9/signatures.",
+    "rule": "cluster.floating_free_max_size > 0 (0 = off, byte-identical output): the floating shape does not demote a cluster when every extent (along, across, height) is <= floating_free_max_size AND its outermost point is <= floating_free_max_dy off the axis (not reaching the wall side of the corridor; the envelope edge is 1.05 m, the corridor 1.40 m) AND its top is <= floating_free_max_top above the rail head (not reaching up to the vault; the envelope top is 3.0 m). Everything else about floating (and every other signature) is unchanged; the later rules (edge, wall_face, retro) are still tried.",
+    "candidates_in_order": [
+      {"id": "A", "set": {"cluster.floating_free_max_size": 0.5, "cluster.floating_free_max_dy": 0.95, "cluster.floating_free_max_top": 2.5},
+       "why": "a 0.3 m cube seen from any side (its measured extents 0.04-0.33 m on set O; face diagonal 0.42 m), 0.10 m inside the envelope edge, 0.5 m under the envelope top"},
+      {"id": "B", "set": {"cluster.floating_free_max_size": 0.4, "cluster.floating_free_max_dy": 0.95, "cluster.floating_free_max_top": 2.5},
+       "why": "fallback, narrower in size"},
+      {"id": "C", "set": {"cluster.floating_free_max_size": 0.5, "cluster.floating_free_max_dy": 0.9, "cluster.floating_free_max_top": 2.2},
+       "why": "fallback, narrower in position (0.15 m inside the edge, 0.8 m under the top); predicted to win less of #2"}
+    ],
+    "procedure": "Candidates in order; the first that meets the ship rule is shipped and the later ones are not run on the full gate. Cheap subset first for each (set O and doubleT_platform with the candidate), then the full gate: python scripts/regression_gate.py --cache /data/cache --jobs 1 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json --set cluster.floating_free_max_size=<s> --set cluster.floating_free_max_dy=<dy> --set cluster.floating_free_max_top=<top> (native path, receive stamps, the ride in 8 pieces, set F straight round 3), on the commit that adds the parameters with 0 = off.",
+    "ship_rule": "gate exit 0 AND the target improves: set O small_center (#2) STOP frames rise above 19 and its first STOP is not at a shorter distance than 34.0 m; AND every safety condition holds.",
+    "safety_conditions": [
+      "doubleT_obstacle: labelled hits per label (person_crossing 58, object_on_rail 127, object_on_rail_from_frame_75 124) identical or better, first alarm frame 11 identical or earlier",
+      "set O: every inside object's STOP frames and first STOP distance identical or better",
+      "set F straight: per kind, sequences detected, median first-confirmation distance and false detections identical or better",
+      "no new false event in the five obstacle-free recordings or the ride: every alarm event of the candidate run overlaps (same recording / ride piece, overlapping frames) an alarm event of the defaults run; alarm events and STOP episodes not above the baseline (13 / 16 on the five, 46 / 39 on the ride)",
+      "no false STOP frames on set O outside objects #5 (small_outside_near) and #7 (big_outside) beyond the baseline (0 and 6), background alarm frames / track ids not above 3 / 2"
+    ],
+    "priority": "a safety fix wins over a false-alarm gain; 'tried, not shipped' with the numbers is a valid outcome. #4 is reported, not required.",
+    "if_shipped": "default on in resense/config.py, configs/default.yaml (+ sync_params.sh), a ray-cast test that the cube now STOPs and one that a nearby real obstacle still STOPs"
+  },
+  "instrumented": {
+    "how": "the shipped rule (1c96233, no parameter changed), every frame, a fresh detector per recording / ride piece as the gate (8 ride pieces, receive stamps, native path); every corridor cluster with its lowest point above 0.5 m logged with its extents, voxels, lowest / highest point, lateral edges, zone, reason and track, and the whole-frame context (returns within 0.2-0.6 m above / toward the wall, the nearest return not in the cluster, the nearest return beyond |dy| 1.40 m); the per-frame decisions equal the baseline on every recording, set O (342 alarm frames) and the ride (187 / 46 / 39)",
+    "floating_demotions_cluster_frames": {
+      "doubleT_obstacle": 0,
+      "doubleT_platform": 3,
+      "roundT_doubleT": 2,
+      "roundT_pressureGate_roundT": 2,
+      "roundT_squareT_pressureGate_squareT": 0,
+      "squareT_platform_squareT_switch": 154,
+      "cloud_with_fake_obj": 30,
+      "ride": 43
+    },
+    "ride": "43 cluster-frames (20 in confirmed tracks, 21 tracks) at 56.7-152.4 m: max extent 0.35-5.73 m (median 1.70 m; 2 of 43 <= 0.5 m), 24 with the top above 2.5 m (up to the vault), 12 with the outermost point beyond 0.95 m (the wall side); the two compact ones: 56.7 m (piece 3 frame 1366), 0.35 x 0.21 x 0.28 m, top 3.00 m, the nearest other return 0.13 m away (a fixture at the vault, a confirmed track), and 57.9 m (piece 6 frame 1364), 0.06 x 0.44 x 0.39 m, outermost point 1.26 m off the axis (on the wall side); the 1.8 m fixture at 96.8 m that failed short signatures (piece 2, track 80) is 1.8 m long",
+    "six_recordings": "161 cluster-frames: 154 in squareT_platform_squareT_switch (the ~104 m structure, 5.1-5.7 m long; 151 with the top above 2.5 m), 7 elsewhere; one compact (<= 0.5 m) inside 0.95 m with the top under 2.5 m: doubleT_platform frame 156, 38.6 m, 0.10 x 0.03 x 0.34 m, 1.82-2.16 m up, a single unconfirmed hit",
+    "set_O": {
+      "small_center (#2)": "floating in 9 frames (335, 337-344) at 44.1-59.2 m: extents 0.04-0.31 m, 5-7 voxels, 1.16-1.40 m above the rail head (top 1.37-1.40 m), lateral 0.61-0.82 m, outermost point 0.73-0.98 m, the wall (first return beyond 1.40 m) 2.02-2.16 m off the axis, the nearest return not in the cluster 1.07-1.36 m away; a cluster in 9 of the 10 frames from 59 m, the track confirmed at 52.5 m (frame 339) but advisory by the zone vote until frame 350 (34.0 m)",
+      "small_edge_inside (#4)": "floating in 12 frames, advisory ('' with no gauge voxels) in the others; outermost point 1.18-1.32 m off the axis measured from the rails",
+      "small_outside_near (#5, outside)": "floating in 7 frames at 25-45 m; outermost point 1.18-1.32 m: #4 and #5 are the same shape at the same |lateral| on either side, so no lateral rule separates them (Q1)",
+      "other": "2 cluster-frames at 125 m (top 2.96 m) and 149 m (0.94 m tall)"
+    },
+    "what_distinguishes_the_cube": "compact in all three axes (<= 0.33 m against 0.35-5.7 m, median 1.7 m, for the ride's floating fixtures), its top 1.6 m under the envelope top and its outermost point inside the envelope edge (the fixtures that floating must keep demoting reach the vault or the wall side of the corridor, where they are fixed), with the wall ~1.1-1.3 m and every other return >= 1.07 m away; persistent from 59 m"
+  },
+  "runs": {
+    "A": {
+      "set": {
+        "cluster.floating_free_max_size": 0.5,
+        "cluster.floating_free_max_dy": 0.95,
+        "cluster.floating_free_max_top": 2.5
+      },
+      "code": "edec4da (the parameters added with 0 = off)",
+      "cheap_subset": "set O and doubleT_platform with the candidate before the gate: set O differs from the defaults in 11 frames, all small_center (frames 339-349, advisory -> STOP); doubleT_platform identical per frame (the one compact cluster of frame 156 turns 'gauge' in a single unconfirmed hit). With the parameter 0 the doubleT_platform run is byte-identical to the instrumented shipped run (clusters and decisions)",
+      "gate_command": "python scripts/regression_gate.py --cache /data/cache --jobs 1 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json --set cluster.floating_free_max_size=0.5 --set cluster.floating_free_max_dy=0.95 --set cluster.floating_free_max_top=2.5",
+      "gate_verdict": "PASS, exit 0: 2 gated rows better (set_O small_center stop_frames 19 -> 30, first_stop_m 34.0 -> 52.5), none worse; information: held_from_m 37.4 -> 57.5, inside_stop_frames 303 -> 314, latency only otherwise",
+      "per_frame_vs_defaults": "decisions, detections (track ids, distances) and warnings identical on all six recordings and on all 11 271 ride frames; set O: 11 frames differ, all small_center; no alarm track id that the defaults run does not have",
+      "summary": {
+        "recordings": {
+          "doubleT_obstacle": {
+            "frames": 201,
+            "alarm_frames": 188,
+            "alarm_events": 2,
+            "stop_episodes": 3,
+            "first_alarm_frame": 11,
+            "labelled_per_label": {
+              "object_on_rail": {
+                "hits": 127,
+                "frames": 185
+              },
+              "person_crossing": {
+                "hits": 58,
+                "frames": 61
+              },
+              "object_on_rail_from_frame_75": {
+                "hits": 124,
+                "frames": 126
+              }
+            },
+            "fp_events": 0
+          },
+          "doubleT_platform": {
+            "frames": 345,
+            "alarm_frames": 4,
+            "alarm_events": 4,
+            "stop_episodes": 1,
+            "first_alarm_frame": 34
+          },
+          "roundT_doubleT": {
+            "frames": 252,
+            "alarm_frames": 0,
+            "alarm_events": 0,
+            "stop_episodes": 0,
+            "first_alarm_frame": null
+          },
+          "roundT_pressureGate_roundT": {
+            "frames": 268,
+            "alarm_frames": 0,
+            "alarm_events": 0,
+            "stop_episodes": 0,
+            "first_alarm_frame": null
+          },
+          "roundT_squareT_pressureGate_squareT": {
+            "frames": 545,
+            "alarm_frames": 0,
+            "alarm_events": 0,
+            "stop_episodes": 0,
+            "first_alarm_frame": null
+          },
+          "squareT_platform_squareT_switch": {
+            "frames": 877,
+            "alarm_frames": 54,
+            "alarm_events": 9,
+            "stop_episodes": 15,
+            "first_alarm_frame": 312
+          }
+        },
+        "five_empty": {
+          "frames": 2287,
+          "alarm_frames": 58,
+          "alarm_events": 13,
+          "stop_episodes": 16,
+          "advisory_frames": 997
+        },
+        "ride": {
+          "frames": 11271,
+          "alarm_frames": 187,
+          "alarm_events": 46,
+          "stop_episodes": 39
+        },
+        "set_O": {
+          "inside_stop_frames": 314,
+          "inside_objects_with_stop": 5,
+          "outside_false_stop_frames": 6,
+          "background": {
+            "alarm_frames": 3,
+            "track_ids": 2
+          },
+          "objects": {
+            "big_center": {
+              "stop_frames": 207,
+              "advisory_frames": 0,
+              "first_stop_m": 98.0,
+              "first_stop_frame": 5,
+              "held_from_m": 98.7
+            },
+            "small_center": {
+              "stop_frames": 30,
+              "advisory_frames": 0,
+              "first_stop_m": 52.5,
+              "first_stop_frame": 339,
+              "held_from_m": 57.5
+            },
+            "small_on_rail": {
+              "stop_frames": 23,
+              "advisory_frames": 0,
+              "first_stop_m": 42.7,
+              "first_stop_frame": 403,
+              "held_from_m": 46.2
+            },
+            "small_edge_inside": {
+              "stop_frames": 0,
+              "advisory_frames": 25,
+              "first_stop_m": null,
+              "first_stop_frame": null,
+              "held_from_m": null
+            },
+            "small_outside_near": {
+              "stop_frames": 0,
+              "advisory_frames": 24,
+              "false_stop_frames": 0
+            },
+            "big_edge_inside": {
+              "stop_frames": 0,
+              "advisory_frames": 0,
+              "first_stop_m": null,
+              "first_stop_frame": null,
+              "held_from_m": null
+            },
+            "big_outside": {
+              "stop_frames": 6,
+              "advisory_frames": 44,
+              "false_stop_frames": 6
+            },
+            "big_above": {
+              "stop_frames": 12,
+              "advisory_frames": 37,
+              "first_stop_m": 101.3,
+              "first_stop_frame": 632,
+              "held_from_m": null
+            },
+            "long_low_on_rails": {
+              "stop_frames": 42,
+              "advisory_frames": 0,
+              "first_stop_m": 82.2,
+              "first_stop_frame": 696,
+              "held_from_m": 58.6
+            },
+            "thin_hanging": {
+              "stop_frames": 0,
+              "advisory_frames": 0,
+              "first_stop_m": null,
+              "first_stop_frame": null,
+              "held_from_m": null
+            }
+          }
+        },
+        "set_F_straight": {
+          "person": {
+            "detected": 6,
+            "first_detection_median_m": 151.0,
+            "false_detections": 7
+          },
+          "box1.0": {
+            "detected": 6,
+            "first_detection_median_m": 123.9,
+            "false_detections": 13
+          },
+          "box0.5": {
+            "detected": 1,
+            "first_detection_median_m": 51.9,
+            "false_detections": 0
+          },
+          "trolley": {
+            "detected": 6,
+            "first_detection_median_m": 151.4,
+            "false_detections": 12
+          },
+          "cable": {
+            "detected": 6,
+            "first_detection_median_m": 98.9,
+            "false_detections": 3
+          }
+        }
+      },
+      "gate_result": {
+        "schema": "resense-regression-gate-v1",
+        "created": "2026-09-25T21:13:50+00:00",
+        "code": {
+          "commit": "edec4dab6616a7ea3b73ec65e800042e0d1fdfc7",
+          "branch": "wf9/signatures",
+          "version": "1.0.0",
+          "uncommitted_detector_changes": []
+        },
+        "config": {
+          "path": "configs/default.yaml",
+          "set": [
+            "cluster.floating_free_max_size=0.5",
+            "cluster.floating_free_max_dy=0.95",
+            "cluster.floating_free_max_top=2.5"
+          ],
+          "sha256": "3269abf089be52876bdc6d8e30e3f62ee9f3361adbd295dffbf0ab7231e90183",
+          "file_sha256": "44daf42483b85f78b0c6dc4cc470643c79614d9221cc9a5acb703f2d77dacff7"
+        },
+        "native": {
+          "path": "native",
+          "status": "native (_resense_native.so)"
+        },
+        "run": {
+          "cache": "/data/cache",
+          "jobs": 1,
+          "nominal_stamps": false,
+          "wall_s": 1122.0,
+          "machine": {
+            "cpus": 4,
+            "platform": "Linux-6.18.44-fc-v37-x86_64-with-glibc2.39",
+            "python": "3.11.15",
+            "numpy": "2.4.6"
+          }
+        },
+        "recordings": {
+          "doubleT_obstacle": {
+            "frames": 201,
+            "alarm_frames": 188,
+            "alarm_events": 2,
+            "stop_episodes": 3,
+            "first_alarm_frame": 11,
+            "advisory_frames": 84,
+            "alarm_dist": [
+              55.5,
+              56.6
+            ],
+            "health": {
+              "ok": 201,
+              "warn": 0,
+              "error": 0
+            },
+            "monitored_range_median": 151.0,
+            "labelled": {
+              "per_label": {
+                "object_on_rail": {
+                  "hits": 127,
+                  "frames": 185
+                },
+                "person_crossing": {
+                  "hits": 58,
+                  "frames": 61
+                },
+                "object_on_rail_from_frame_75": {
+                  "hits": 124,
+                  "frames": 126
+                }
+              },
+              "hits": 185,
+              "frames": 246,
+              "fp_frames": 0,
+              "fp_events": 0,
+              "distance_error_max_m": 0.23
+            }
+          },
+          "doubleT_platform": {
+            "frames": 345,
+            "alarm_frames": 4,
+            "alarm_events": 4,
+            "stop_episodes": 1,
+            "first_alarm_frame": 34,
+            "advisory_frames": 180,
+            "alarm_dist": [
+              34.5,
+              41.7
+            ],
+            "health": {
+              "ok": 322,
+              "warn": 23,
+              "error": 0
+            },
+            "monitored_range_median": 120.0,
+            "labelled": null
+          },
+          "roundT_doubleT": {
+            "frames": 252,
+            "alarm_frames": 0,
+            "alarm_events": 0,
+            "stop_episodes": 0,
+            "first_alarm_frame": null,
+            "advisory_frames": 173,
+            "alarm_dist": null,
+            "health": {
+              "ok": 252,
+              "warn": 0,
+              "error": 0
+            },
+            "monitored_range_median": 145.8,
+            "labelled": null
+          },
+          "roundT_pressureGate_roundT": {
+            "frames": 268,
+            "alarm_frames": 0,
+            "alarm_events": 0,
+            "stop_episodes": 0,
+            "first_alarm_frame": null,
+            "advisory_frames": 104,
+            "alarm_dist": null,
+            "health": {
+              "ok": 268,
+              "warn": 0,
+              "error": 0
+            },
+            "monitored_range_median": 130.3,
+            "labelled": null
+          },
+          "roundT_squareT_pressureGate_squareT": {
+            "frames": 545,
+            "alarm_frames": 0,
+            "alarm_events": 0,
+            "stop_episodes": 0,
+            "first_alarm_frame": null,
+            "advisory_frames": 146,
+            "alarm_dist": null,
+            "health": {
+              "ok": 545,
+              "warn": 0,
+              "error": 0
+            },
+            "monitored_range_median": 157.5,
+            "labelled": null
+          },
+          "squareT_platform_squareT_switch": {
+            "frames": 877,
+            "alarm_frames": 54,
+            "alarm_events": 9,
+            "stop_episodes": 15,
+            "first_alarm_frame": 312,
+            "advisory_frames": 394,
+            "alarm_dist": [
+              82.0,
+              147.5
+            ],
+            "health": {
+              "ok": 877,
+              "warn": 0,
+              "error": 0
+            },
+            "monitored_range_median": 143.0,
+            "labelled": null
+          }
+        },
+        "five_empty": {
+          "frames": 2287,
+          "alarm_frames": 58,
+          "alarm_events": 13,
+          "stop_episodes": 16,
+          "advisory_frames": 997
+        },
+        "ride": {
+          "available": true,
+          "chunks": 8,
+          "frames": 11271,
+          "alarm_frames": 187,
+          "alarm_events": 46,
+          "stop_episodes": 39,
+          "advisory_frames": 4742,
+          "alarm_dist": [
+            2.9,
+            158.3
+          ],
+          "health": {
+            "ok": 11083,
+            "warn": 188,
+            "error": 0
+          },
+          "monitored_range_median": 127.6
+        },
+        "set_O": {
+          "available": true,
+          "frames": 1510,
+          "alarm_frames": 353,
+          "inside_stop_frames": 314,
+          "inside_visible_frames": 801,
+          "inside_objects_with_stop": 5,
+          "inside_objects": 8,
+          "outside_false_stop_frames": 6,
+          "background": {
+            "alarm_frames": 3,
+            "track_ids": 2
+          },
+          "objects": {
+            "big_center": {
+              "in_gauge": true,
+              "visible_frames": 213,
+              "first_visible_m": 98.7,
+              "frames_in_envelope": 213,
+              "stop_frames": 207,
+              "advisory_frames": 0,
+              "first_stop_m": 98.0,
+              "first_stop_frame": 5,
+              "held_from_m": 98.7,
+              "verdict": "detected",
+              "bins": {
+                "0-50": {
+                  "alarm": 42,
+                  "advisory_only": 0,
+                  "visible": 43
+                },
+                "50-100": {
+                  "alarm": 165,
+                  "advisory_only": 0,
+                  "visible": 170
+                }
+              }
+            },
+            "small_center": {
+              "in_gauge": true,
+              "visible_frames": 79,
+              "first_visible_m": 128.9,
+              "frames_in_envelope": 63,
+              "stop_frames": 30,
+              "advisory_frames": 0,
+              "first_stop_m": 52.5,
+              "first_stop_frame": 339,
+              "held_from_m": 57.5,
+              "verdict": "detected",
+              "bins": {
+                "0-50": {
+                  "alarm": 28,
+                  "advisory_only": 0,
+                  "visible": 28
+                },
+                "50-100": {
+                  "alarm": 2,
+                  "advisory_only": 0,
+                  "visible": 31
+                },
+                "100-150": {
+                  "alarm": 0,
+                  "advisory_only": 0,
+                  "visible": 20
+                }
+              }
+            },
+            "small_on_rail": {
+              "in_gauge": true,
+              "visible_frames": 49,
+              "first_visible_m": 237.3,
+              "frames_in_envelope": 33,
+              "stop_frames": 23,
+              "advisory_frames": 0,
+              "first_stop_m": 42.7,
+              "first_stop_frame": 403,
+              "held_from_m": 46.2,
+              "verdict": "detected",
+              "bins": {
+                "0-50": {
+                  "alarm": 23,
+                  "advisory_only": 0,
+                  "visible": 27
+                },
+                "50-100": {
+                  "alarm": 0,
+                  "advisory_only": 0,
+                  "visible": 19
+                },
+                "100-150": {
+                  "alarm": 0,
+                  "advisory_only": 0,
+                  "visible": 1
+                },
+                "200-300": {
+                  "alarm": 0,
+                  "advisory_only": 0,
+                  "visible": 2
+                }
+              }
+            },
+            "small_edge_inside": {
+              "in_gauge": true,
+              "visible_frames": 83,
+              "first_visible_m": 154.7,
+              "frames_in_envelope": 16,
+              "stop_frames": 0,
+              "advisory_frames": 25,
+              "first_stop_m": null,
+              "first_stop_frame": null,
+              "held_from_m": null,
+              "verdict": "advisory only",
+              "bins": {
+                "0-50": {
+                  "alarm": 0,
+                  "advisory_only": 25,
+                  "visible": 26
+                },
+                "50-100": {
+                  "alarm": 0,
+                  "advisory_only": 0,
+                  "visible": 27
+                },
+                "100-150": {
+                  "alarm": 0,
+                  "advisory_only": 0,
+                  "visible": 27
+                },
+                "150-200": {
+                  "alarm": 0,
+                  "advisory_only": 0,
+                  "visible": 3
+                }
+              }
+            },
+            "small_outside_near": {
+              "in_gauge": false,
+              "visible_frames": 112,
+              "first_visible_m": 238.4,
+              "frames_in_envelope": 101,
+              "stop_frames": 0,
+              "advisory_frames": 24,
+              "false_stop_frames": 0,
+              "false_stop_from_m": null,
+              "verdict": "advisory",
+              "bins": {
+                "0-50": {
+                  "alarm": 0,
+                  "advisory_only": 24,
+                  "visible": 25
+                },
+                "50-100": {
+                  "alarm": 0,
+                  "advisory_only": 0,
+                  "visible": 27
+                },
+                "100-150": {
+                  "alarm": 0,
+                  "advisory_only": 0,
+                  "visible": 25
+                },
+                "150-200": {
+                  "alarm": 0,
+                  "advisory_only": 0,
+                  "visible": 23
+                },
+                "200-300": {
+                  "alarm": 0,
+                  "advisory_only": 0,
+                  "visible": 12
+                }
+              }
+            },
+            "big_edge_inside": {
+              "in_gauge": true,
+              "visible_frames": 125,
+              "first_visible_m": 248.6,
+              "frames_in_envelope": 8,
+              "stop_frames": 0,
+              "advisory_frames": 0,
+              "first_stop_m": null,
+              "first_stop_frame": null,
+              "held_from_m": null,
+              "verdict": "missed",
+              "bins": {
+                "0-50": {
+                  "alarm": 0,
+                  "advisory_only": 0,
+                  "visible": 25
+                },
+                "50-100": {
+                  "alarm": 0,
+                  "advisory_only": 0,
+                  "visible": 26
+                },
+                "100-150": {
+                  "alarm": 0,
+                  "advisory_only": 0,
+                  "visible": 26
+                },
+                "150-200": {
+                  "alarm": 0,
+                  "advisory_only": 0,
+                  "visible": 26
+                },
+                "200-300": {
+                  "alarm": 0,
+                  "advisory_only": 0,
+                  "visible": 22
+                }
+              }
+            },
+            "big_outside": {
+              "in_gauge": false,
+              "visible_frames": 104,
+              "first_visible_m": 249.4,
+              "frames_in_envelope": 52,
+              "stop_frames": 6,
+              "advisory_frames": 44,
+              "false_stop_frames": 6,
+              "false_stop_from_m": 142.3,
+              "verdict": "false alarm",
+              "bins": {
+                "0-50": {
+                  "alarm": 0,
+                  "advisory_only": 0,
+                  "visible": 24
+                },
+                "50-100": {
+                  "alarm": 0,
+                  "advisory_only": 19,
+                  "visible": 25
+                },
+                "100-150": {
+                  "alarm": 6,
+                  "advisory_only": 16,
+                  "visible": 25
+                },
+                "150-200": {
+                  "alarm": 0,
+                  "advisory_only": 3,
+                  "visible": 4
+                },
+                "200-300": {
+                  "alarm": 0,
+                  "advisory_only": 6,
+                  "visible": 26
+                }
+              }
+            },
+            "big_above": {
+              "in_gauge": true,
+              "visible_frames": 124,
+              "first_visible_m": 248.2,
+              "frames_in_envelope": 75,
+              "stop_frames": 12,
+              "advisory_frames": 37,
+              "first_stop_m": 101.3,
+              "first_stop_frame": 632,
+              "held_from_m": null,
+              "verdict": "detected",
+              "bins": {
+                "0-50": {
+                  "alarm": 0,
+                  "advisory_only": 17,
+                  "visible": 25
+                },
+                "50-100": {
+                  "alarm": 11,
+                  "advisory_only": 14,
+                  "visible": 25
+                },
+                "100-150": {
+                  "alarm": 1,
+                  "advisory_only": 0,
+                  "visible": 25
+                },
+                "150-200": {
+                  "alarm": 0,
+                  "advisory_only": 0,
+                  "visible": 24
+                },
+                "200-300": {
+                  "alarm": 0,
+                  "advisory_only": 6,
+                  "visible": 25
+                }
+              }
+            },
+            "long_low_on_rails": {
+              "in_gauge": true,
+              "visible_frames": 86,
+              "first_visible_m": 248.5,
+              "frames_in_envelope": 77,
+              "stop_frames": 42,
+              "advisory_frames": 0,
+              "first_stop_m": 82.2,
+              "first_stop_frame": 696,
+              "held_from_m": 58.6,
+              "verdict": "detected",
+              "bins": {
+                "0-50": {
+                  "alarm": 29,
+                  "advisory_only": 0,
+                  "visible": 29
+                },
+                "50-100": {
+                  "alarm": 13,
+                  "advisory_only": 0,
+                  "visible": 30
+                },
+                "100-150": {
+                  "alarm": 0,
+                  "advisory_only": 0,
+                  "visible": 15
+                },
+                "200-300": {
+                  "alarm": 0,
+                  "advisory_only": 0,
+                  "visible": 12
+                }
+              }
+            },
+            "thin_hanging": {
+              "in_gauge": true,
+              "visible_frames": 42,
+              "first_visible_m": 199.7,
+              "frames_in_envelope": 20,
+              "stop_frames": 0,
+              "advisory_frames": 0,
+              "first_stop_m": null,
+              "first_stop_frame": null,
+              "held_from_m": null,
+              "verdict": "missed",
+              "bins": {
+                "0-50": {
+                  "alarm": 0,
+                  "advisory_only": 0,
+                  "visible": 24
+                },
+                "50-100": {
+                  "alarm": 0,
+                  "advisory_only": 0,
+                  "visible": 10
+                },
+                "100-150": {
+                  "alarm": 0,
+                  "advisory_only": 0,
+                  "visible": 3
+                },
+                "150-200": {
+                  "alarm": 0,
+                  "advisory_only": 0,
+                  "visible": 5
+                }
+              }
+            }
+          }
+        },
+        "set_F_straight": {
+          "available": true,
+          "parameters": {
+            "files": "46,68,98,140,168,172",
+            "kinds": "person,box1.0,box0.5,trolley,cable",
+            "start": "220",
+            "frames": "110",
+            "lateral": "-0.6:0.6",
+            "seed": "0",
+            "placement-mode": "legacy",
+            "place": "bed",
+            "speeds": "docs/extended_dataset_intake.json"
+          },
+          "kinds": {
+            "person": {
+              "sequences": 6,
+              "detected": 6,
+              "first_detection_median_m": 151.0,
+              "sustained_median_m": 142.6,
+              "false_detections": 7,
+              "recall_by_bin": {
+                "0-50": [
+                  106,
+                  110
+                ],
+                "50-100": [
+                  125,
+                  133
+                ],
+                "100-150": [
+                  119,
+                  151
+                ],
+                "150-200": [
+                  13,
+                  125
+                ],
+                "200-250": [
+                  0,
+                  40
+                ]
+              }
+            },
+            "box1.0": {
+              "sequences": 6,
+              "detected": 6,
+              "first_detection_median_m": 123.9,
+              "sustained_median_m": 114.1,
+              "false_detections": 13,
+              "recall_by_bin": {
+                "0-50": [
+                  106,
+                  110
+                ],
+                "50-100": [
+                  125,
+                  133
+                ],
+                "100-150": [
+                  40,
+                  151
+                ],
+                "150-200": [
+                  0,
+                  135
+                ],
+                "200-250": [
+                  0,
+                  36
+                ]
+              }
+            },
+            "box0.5": {
+              "sequences": 6,
+              "detected": 1,
+              "first_detection_median_m": 51.9,
+              "sustained_median_m": 55.6,
+              "false_detections": 0,
+              "recall_by_bin": {
+                "0-50": [
+                  18,
+                  110
+                ],
+                "50-100": [
+                  2,
+                  133
+                ],
+                "100-150": [
+                  0,
+                  145
+                ],
+                "150-200": [
+                  0,
+                  70
+                ],
+                "200-250": [
+                  0,
+                  15
+                ]
+              }
+            },
+            "trolley": {
+              "sequences": 6,
+              "detected": 6,
+              "first_detection_median_m": 151.4,
+              "sustained_median_m": 115.0,
+              "false_detections": 12,
+              "recall_by_bin": {
+                "0-50": [
+                  106,
+                  110
+                ],
+                "50-100": [
+                  117,
+                  133
+                ],
+                "100-150": [
+                  59,
+                  151
+                ],
+                "150-200": [
+                  9,
+                  132
+                ],
+                "200-250": [
+                  0,
+                  48
+                ]
+              }
+            },
+            "cable": {
+              "sequences": 6,
+              "detected": 6,
+              "first_detection_median_m": 98.9,
+              "sustained_median_m": 34.2,
+              "false_detections": 3,
+              "recall_by_bin": {
+                "0-50": [
+                  43,
+                  73
+                ],
+                "50-100": [
+                  47,
+                  72
+                ],
+                "100-150": [
+                  12,
+                  97
+                ],
+                "150-200": [
+                  0,
+                  65
+                ],
+                "200-250": [
+                  0,
+                  24
+                ]
+              }
+            }
+          }
+        },
+        "latency_ms": {
+          "note": "timing_ms.total per frame; informational, never gated: the workers run in parallel on a shared machine (clean timing: EXPERIMENTS §3)",
+          "doubleT_obstacle": {
+            "mean_ms": 25.3,
+            "p95_ms": 35.7,
+            "max_ms": 46.9
+          },
+          "doubleT_platform": {
+            "mean_ms": 29.7,
+            "p95_ms": 47.7,
+            "max_ms": 127.6
+          },
+          "roundT_doubleT": {
+            "mean_ms": 22.4,
+            "p95_ms": 32.0,
+            "max_ms": 45.4
+          },
+          "roundT_pressureGate_roundT": {
+            "mean_ms": 19.2,
+            "p95_ms": 27.4,
+            "max_ms": 33.1
+          },
+          "roundT_squareT_pressureGate_squareT": {
+            "mean_ms": 18.6,
+            "p95_ms": 27.2,
+            "max_ms": 48.9
+          },
+          "squareT_platform_squareT_switch": {
+            "mean_ms": 19.7,
+            "p95_ms": 27.6,
+            "max_ms": 49.5
+          },
+          "cloud_with_fake_obj": {
+            "mean_ms": 18.8,
+            "p95_ms": 28.1,
+            "max_ms": 59.5
+          },
+          "new_data": {
+            "mean_ms": 26.4,
+            "p95_ms": 47.6,
+            "max_ms": 212.0
+          }
+        },
+        "gate": {
+          "baseline": "docs/evidence/results/regression_baseline_2026-09-25_ride_column.json",
+          "baseline_commit": "d117c8c462ff9c2483478206991f037fc929bf46",
+          "baseline_config_sha256": "0fd4e64e494f4c39cdab1da9a4fef7328057327b3dc5ac4dc8e21ebd47337b03",
+          "allow": [],
+          "passed": true,
+          "worse_gated": [],
+          "missing_gated": [],
+          "worse_allowed": [],
+          "missing_allowed": [],
+          "better": [
+            "set_O.objects.small_center.stop_frames",
+            "set_O.objects.small_center.first_stop_m"
+          ],
+          "same": 100,
+          "info_changed": [
+            "set_O.objects.small_center.held_from_m",
+            "set_O.objects.small_center.advisory_frames",
+            "set_O.inside_stop_frames",
+            "latency_ms.doubleT_obstacle.mean",
+            "latency_ms.doubleT_obstacle.p95",
+            "latency_ms.doubleT_platform.mean",
+            "latency_ms.doubleT_platform.p95",
+            "latency_ms.roundT_doubleT.mean",
+            "latency_ms.roundT_doubleT.p95",
+            "latency_ms.roundT_pressureGate_roundT.mean",
+            "latency_ms.roundT_pressureGate_roundT.p95",
+            "latency_ms.roundT_squareT_pressureGate_squareT.mean",
+            "latency_ms.roundT_squareT_pressureGate_squareT.p95",
+            "latency_ms.squareT_platform_squareT_switch.mean",
+            "latency_ms.squareT_platform_squareT_switch.p95",
+            "latency_ms.cloud_with_fake_obj.mean",
+            "latency_ms.cloud_with_fake_obj.p95",
+            "latency_ms.new_data.mean",
+            "latency_ms.new_data.p95"
+          ]
+        }
+      }
+    },
+    "B": "not run: A met the ship rule (procedure)",
+    "C": "not run: A met the ship rule (procedure)"
+  },
+  "choice": {
+    "shipped": "A",
+    "parameters": {
+      "cluster.floating_free_max_size": 0.5,
+      "cluster.floating_free_max_dy": 0.95,
+      "cluster.floating_free_max_top": 2.5
+    },
+    "why": "the first candidate in the pre-registered order that meets the ship rule: gate exit 0, #2 19 -> 30 STOP frames and first STOP 34.0 -> 52.5 m; every safety condition holds (doubleT_obstacle 58 / 127 / 124 hits, first alarm frame 11; set O inside objects identical or better; set F straight identical; the five obstacle-free recordings and the ride identical frame by frame; #5 0 and #7 6 false STOP frames, background 3 / 2)",
+    "new_defaults": "configs/default.yaml, the ROS copy (scripts/sync_params.sh) and resense/config.py; their resolved configuration hashes to 3269abf0..., the config of the gate run of A, so the gate result above is the new defaults' result",
+    "not_won": "#4 (small_edge_inside) stays advisory: its outermost point is 1.18-1.32 m off the axis measured from the rails, like the outside cube #5's; which is inside depends on the organizers' reference (Q1). #8 (elevated) waits on Q2",
+    "residual": "a free-hanging cluster within 0.5 m in every axis, inside 0.95 m and under 2.5 m is now a STOP wherever it comes from, e.g. a small sign or lamp on a bracket that returns no points; on the six recordings and the ride only one such floating cluster exists (doubleT_platform, one unconfirmed frame)"
+  },
+  "tests": "tests/test_floating_free.py: the classification (the cube's front face at 0.61-0.77 m off the axis is an obstacle, floating with the parameter 0; a cluster reaching past 0.95 m, one with the top at 2.6 m, a 1 m long one, a 0.7 m wide one and the ~104 m structure stay floating), the defaults in the three parameter sources, and on the ray-cast tunnel: the 0.3 m cube hanging 1.0-1.1 m up, 0.7-0.75 m off the axis at 30 / 40 / 55 m is a STOP with the shipped defaults and advisory 'floating' with the parameter 0; a person-size box next to it is a STOP either way; a plate fixed to the wall reaching to 0.75 m off the axis stays advisory 'floating'. tests/test_late_candidates.py: the cube examples of the short-signature and long-rule tests set floating_free_max_size 0 (their subject is the old floating path). 416 -> 420 tests"
+}

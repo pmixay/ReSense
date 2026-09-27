@@ -8,6 +8,10 @@ The synthetic ray-cast tunnel (``resense.synthetic``) needs Open3D. Tests that u
 In CI the environment variable ``RESENSE_REQUIRE_SYNTHETIC=1`` turns every skip into a
 failure and makes the session exit non-zero if anything was skipped, so a green run can never
 hide an empty suite (docs/CAPTAIN.md section 4 item 2).
+
+A test that needs a recorded data cache on the team machine (the ride in ``/data/cache``) carries
+``@pytest.mark.realdata(path)``. Where that path is absent (CI, the image) it is *deselected*, not
+skipped, and the summary names it; it runs wherever the cache is.
 """
 from __future__ import annotations
 
@@ -36,12 +40,29 @@ def pytest_configure(config):
         "synthetic: needs Open3D for the synthetic ray-cast tunnel; skipped without it, "
         "failed when RESENSE_REQUIRE_SYNTHETIC=1",
     )
+    config.addinivalue_line(
+        "markers",
+        "realdata(path): needs the recorded data cache at path; deselected where it is absent",
+    )
+
+
+_no_data = []
 
 
 def pytest_collection_modifyitems(config, items):
     for item in items:
         if any(f in item.fixturenames for f in _SYNTHETIC_FIXTURES):
             item.add_marker(pytest.mark.synthetic)
+    keep = []
+    for item in items:
+        m = item.get_closest_marker("realdata")
+        if m is not None and not os.path.isdir(m.args[0]):
+            _no_data.append(f"{item.nodeid} (no {m.args[0]})")
+        else:
+            keep.append(item)
+    if len(keep) != len(items):
+        config.hook.pytest_deselected(items=[i for i in items if i not in keep])
+        items[:] = keep
 
 
 def pytest_runtest_setup(item):
@@ -67,6 +88,10 @@ def pytest_sessionfinish(session, exitstatus):
 
 
 def pytest_terminal_summary(terminalreporter):
+    if _no_data:
+        terminalreporter.write_sep("-", f"{len(_no_data)} test(s) deselected: their recorded data cache is not here")
+        for n in _no_data:
+            terminalreporter.write_line(f"  {n}")
     if REQUIRE_SYNTHETIC and _skipped:
         terminalreporter.write_sep("=", f"RESENSE_REQUIRE_SYNTHETIC=1: {len(_skipped)} skipped test(s) fail the run", red=True)
         for n in _skipped:

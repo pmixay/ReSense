@@ -1,0 +1,334 @@
+{
+ "schema": "resense-startup-census-v1",
+ "created": "2026-09-26T12:51:28+00:00",
+ "config": {
+  "path": "configs/default.yaml",
+  "set": []
+ },
+ "frames_per_start": 40,
+ "wall_s": 6.9,
+ "summary": {
+  "ride_split": {
+   "starts": 0,
+   "frames": 0,
+   "starts_with_stop": 0,
+   "stop_frames": 0,
+   "stop_events": 0,
+   "stop_episodes": 0,
+   "advisory_frames": 0,
+   "events_by_stage_and_mount": {},
+   "events_first_1_5s": 0,
+   "events_within_10m": 0
+  },
+  "ride_chunk": {
+   "starts": 0,
+   "frames": 0,
+   "starts_with_stop": 0,
+   "stop_frames": 0,
+   "stop_events": 0,
+   "stop_episodes": 0,
+   "advisory_frames": 0,
+   "events_by_stage_and_mount": {},
+   "events_first_1_5s": 0,
+   "events_within_10m": 0
+  },
+  "recording": {
+   "starts": 7,
+   "frames": 280,
+   "starts_with_stop": 3,
+   "stop_frames": 68,
+   "stop_events": 6,
+   "stop_episodes": 3,
+   "advisory_frames": 36,
+   "events_by_stage_and_mount": {
+    "corridor|pending": 2,
+    "corridor|provisional": 1,
+    "low|pending": 3
+   },
+   "events_first_1_5s": 2,
+   "events_within_10m": 0
+  }
+ },
+ "starts": {
+  "ride_split": [],
+  "ride_chunk": [],
+  "recording": [
+   {
+    "kind": "recording",
+    "name": "doubleT_obstacle",
+    "frames": 40,
+    "stop_frames": 29,
+    "stop_events": 1,
+    "stop_episodes": 1,
+    "first_stop_frame": 11,
+    "advisory_frames": 3,
+    "provisional_due_frames": 4,
+    "mount_status_last": "provisional",
+    "events": [
+     {
+      "track_id": 2,
+      "first_frame": 11,
+      "t_s": null,
+      "frames": 29,
+      "dist": [
+       55.54,
+       55.83
+      ],
+      "stage": "corridor",
+      "reason": "",
+      "lateral": 0.85,
+      "height_min": 0.14,
+      "size": [
+       0.4,
+       0.87,
+       1.26
+      ],
+      "n_points": 53,
+      "mount_status": "provisional",
+      "provisional_due": false,
+      "rail_obs": 5,
+      "model_age": 7,
+      "rail_slabs": 3,
+      "ego_speed": null
+     }
+    ],
+    "labelled": {
+     "object_on_rail": {
+      "hits": 0,
+      "frames": 24
+     },
+     "person_crossing": {
+      "hits": 29,
+      "frames": 32
+     }
+    }
+   },
+   {
+    "kind": "recording",
+    "name": "doubleT_platform",
+    "frames": 40,
+    "stop_frames": 4,
+    "stop_events": 4,
+    "stop_episodes": 1,
+    "first_stop_frame": 34,
+    "advisory_frames": 20,
+    "provisional_due_frames": 4,
+    "mount_status_last": "pending",
+    "events": [
+     {
+      "track_id": 41,
+      "first_frame": 34,
+      "t_s": null,
+      "frames": 4,
+      "dist": [
+       36.5,
+       41.73
+      ],
+      "stage": "low",
+      "reason": "",
+      "lateral": 0.82,
+      "height_min": 0.04,
+      "size": [
+       0.68,
+       0.37,
+       0.03
+      ],
+      "n_points": 3,
+      "mount_status": "pending",
+      "provisional_due": false,
+      "rail_obs": 5,
+      "model_age": 34,
+      "rail_slabs": 3,
+      "ego_speed": null
+     },
+     {
+      "track_id": 47,
+      "first_frame": 36,
+      "t_s": null,
+      "frames": 2,
+      "dist": [
+       34.79,
+       35.5
+      ],
+      "stage": "low",
+      "reason": "",
+      "lateral": -0.05,
+      "height_min": 0.07,
+      "size": [
+       0.02,
+       0.36,
+       0.0
+      ],
+      "n_points": 5,
+      "mount_status": "pending",
+      "provisional_due": false,
+      "rail_obs": 5,
+      "model_age": 36,
+      "rail_slabs": 3,
+      "ego_speed": null
+     },
+     {
+      "track_id": 48,
+      "first_frame": 36,
+      "t_s": null,
+      "frames": 2,
+      "dist": [
+       34.47,
+       34.94
+      ],
+      "stage": "low",
+      "reason": "",
+      "lateral": 0.81,
+      "height_min": 0.04,
+      "size": [
+       0.91,
+       0.24,
+       0.03
+      ],
+      "n_points": 3,
+      "mount_status": "pending",
+      "provisional_due": false,
+      "rail_obs": 5,
+      "model_age": 36,
+      "rail_slabs": 3,
+      "ego_speed": null
+     },
+     {
+      "track_id": 46,
+      "first_frame": 36,
+      "t_s": null,
+      "frames": 2,
+      "dist": [
+       36.26,
+       37.19
+      ],
+      "stage": "corridor",
+      "reason": "",
+      "lateral": 1.07,
+      "height_min": 0.15,
+      "size": [
+       1.1,
+       0.63,
+       0.38
+      ],
+      "n_points": 5,
+      "mount_status": "pending",
+      "provisional_due": false,
+      "rail_obs": 5,
+      "model_age": 36,
+      "rail_slabs": 3,
+      "ego_speed": null
+     }
+    ]
+   },
+   {
+    "kind": "recording",
+    "name": "roundT_doubleT",
+    "frames": 40,
+    "stop_frames": 0,
+    "stop_events": 0,
+    "stop_episodes": 0,
+    "first_stop_frame": null,
+    "advisory_frames": 0,
+    "provisional_due_frames": 4,
+    "mount_status_last": "pending",
+    "events": []
+   },
+   {
+    "kind": "recording",
+    "name": "roundT_pressureGate_roundT",
+    "frames": 40,
+    "stop_frames": 0,
+    "stop_events": 0,
+    "stop_episodes": 0,
+    "first_stop_frame": null,
+    "advisory_frames": 10,
+    "provisional_due_frames": 4,
+    "mount_status_last": "pending",
+    "events": []
+   },
+   {
+    "kind": "recording",
+    "name": "roundT_squareT_pressureGate_squareT",
+    "frames": 40,
+    "stop_frames": 0,
+    "stop_events": 0,
+    "stop_episodes": 0,
+    "first_stop_frame": null,
+    "advisory_frames": 0,
+    "provisional_due_frames": 4,
+    "mount_status_last": "pending",
+    "events": []
+   },
+   {
+    "kind": "recording",
+    "name": "squareT_platform_squareT_switch",
+    "frames": 40,
+    "stop_frames": 0,
+    "stop_events": 0,
+    "stop_episodes": 0,
+    "first_stop_frame": null,
+    "advisory_frames": 0,
+    "provisional_due_frames": 4,
+    "mount_status_last": "pending",
+    "events": []
+   },
+   {
+    "kind": "recording",
+    "name": "cloud_with_fake_obj",
+    "frames": 40,
+    "stop_frames": 35,
+    "stop_events": 1,
+    "stop_episodes": 1,
+    "first_stop_frame": 5,
+    "advisory_frames": 3,
+    "provisional_due_frames": 4,
+    "mount_status_last": "pending",
+    "events": [
+     {
+      "track_id": 1,
+      "first_frame": 5,
+      "t_s": null,
+      "frames": 35,
+      "dist": [
+       92.61,
+       98.03
+      ],
+      "stage": "corridor",
+      "reason": "",
+      "lateral": 0.7,
+      "height_min": 1.41,
+      "size": [
+       0.0,
+       1.28,
+       1.49
+      ],
+      "n_points": 48,
+      "mount_status": "pending",
+      "provisional_due": false,
+      "rail_obs": 5,
+      "model_age": 5,
+      "rail_slabs": 3,
+      "ego_speed": null
+     }
+    ],
+    "set_O": {
+     "objects": {
+      "big_center": {
+       "in_gauge": true,
+       "visible_frames": 40,
+       "stop_frames": 35,
+       "advisory_frames": 0,
+       "first_stop_frame": 5,
+       "first_stop_m": 98.0
+      }
+     },
+     "background": {
+      "alarm_frames": 0,
+      "track_ids": 0
+     }
+    }
+   }
+  ]
+ }
+}

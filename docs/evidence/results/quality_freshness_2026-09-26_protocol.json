@@ -1,0 +1,29 @@
+{
+  "protocol": "quality_freshness_2026-09-26",
+  "registered_before_implementation": true,
+  "scope": "ROS node freshness and output validity only; detector package/config and acceptance limits unchanged",
+  "defaults": {"freshness_mode": "live", "max_result_age_s": 0.5, "future_tolerance_s": 0.05},
+  "clocks": {
+    "live": "System UTC minus PointCloud2 acquisition header stamp; a valid positive acquisition timestamp is required. DDS metadata is not required in live mode.",
+    "replay": "Explicit operator choice. System UTC minus DDS publisher source_timestamp; original header is a recording coordinate, acquisition age is null. Zero/missing/invalid publisher metadata never permits GO.",
+    "mode_selection": "Never inferred from old or synthetic stamps. Bag validation and jury commands must select replay explicitly.",
+    "capability_diagnosis": "Before registration: installed Humble executor discards MessageInfo; take_message returns source_timestamp/received_timestamp. Stock rmw_fastrtps_cpp offline probe delivered 3 samples with positive source timestamps between publisher before/after UTC timestamps (validation/quality_cycle/freshness/metadata_capability.json).",
+    "adapter": "Own Humble SingleThreadedExecutor subclass forwards original take_message metadata for marked LiDAR subscriptions only; all other callbacks delegate to upstream executor. Queue draining keeps the same metadata. No global monkeypatch."
+  },
+  "reported_fields": ["freshness.mode", "freshness.clock_reference", "freshness.source_age_s", "freshness.acquisition_age_s", "freshness.publication_age_s", "freshness.residence_age_s", "freshness.queue_lag_s", "freshness.valid", "freshness.reason", "freshness.go_allowed", "snapshot_kind", "detector_clear_distance", "stop_held"],
+  "validity": {
+    "age": "Source age must be at most 0.5 s and not more than 0.05 s in the future; Python queue residence must be at most 0.5 s. Missing/non-finite/invalid clock values fail closed.",
+    "queue": "Queue lag is newest same-input increasing recording header minus processed header. Catch-up frames cannot permit GO; queue lag above 0.5 s is stale and FAULT takes priority over catch-up CAUTION.",
+    "epoch": "First frame of startup, topic/frame switch, header discontinuity, clock discontinuity, or resume after silence is invalid until a subsequent progressing frame. Backward/repeated stamps are invalid; large forward gaps reset epoch. Recovery requires valid clock and progression.",
+    "priority": ["STOP", "FAULT for invalid/unknown/stale clock or core error", "CAUTION for catch-up", "normal core decision"],
+    "clear_distance": "Exposed clear_distance is zero whenever monitoring validity is false; raw detector estimate retained as detector_clear_distance. Health JSON/topics and RViz agree with validity/decision.",
+    "stop_preservation": "A detected STOP remains through watchdog, errors and invalid subsequent frames until a fresh valid non-STOP result clears it; held STOP is explicitly marked and never grants valid monitoring.",
+    "watchdog": "Silence invalidates monitoring and publishes a complete snapshot. Retained STOP wins over FAULT. snapshot_kind distinguishes watchdog/processing_error from frame results; checker excludes all non-frame snapshots."
+  },
+  "acceptance": {
+    "unit_cases": ["live/replay default and explicit selection", "metadata first sample and drained samples", "startup backlog", "later stall", "pause/resume", "backward/repeated/forward timestamps", "future and missing source timestamps", "input switches", "STOP precedence and retention", "fresh recovery", "snapshot exclusion", "health/topic/RViz consistency"],
+    "runtime": "Real Humble stock Fast DDS replay with source metadata, freshness fields, no GO during invalid/catch-up state; existing original obstacle and clear replay acceptance retains p95 <=100 ms and zero post-settle unprocessed messages.",
+    "no_retry_to_green": "Report failures and corrections with provenance; no silent threshold changes or discarded failed trials.",
+    "publication": "Release hold remains; no tag or public release."
+  }
+}

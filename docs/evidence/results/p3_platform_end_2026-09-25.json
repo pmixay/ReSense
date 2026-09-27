@@ -1,0 +1,933 @@
+{
+  "schema": "resense-p3-item-v1",
+  "key": "platform_end",
+  "date": "2026-09-25",
+  "question": "10 of the 15 STOP episodes left in squareT_platform_squareT_switch (26 frames, the train standing at the platform) come from a 2.2 x 0.41 x 1.25 m platform-end structure at 82.9 m, reported at lateral +0.96 m (envelope edge 1.05 m): the corridor axis is off at 83 m (EXPERIMENTS 1f, ALGORITHM 6). Fix it in the axis model without losing range on real curves.",
+  "diagnosis": {
+    "measured_on": "the shipped defaults at 7466979 (native path), per frame; no candidate had run when this was written",
+    "track_model_at_the_alarm_frames": "curvature 2.5e-4 to 4.0e-4 /m (not 1.6e-4 as in 1f), rails in 3 slabs, two wall sides fitted; the axis is +0.47 m (absolute Y) at 83 m in frame 445 while the running tunnel beyond the hall (walls at +1.6 and -2.5 m, 90-120 m, frames 400-600 accumulated) is centred at about -0.45 m: the axis is ~0.8 m off, and the reported structure lies at ~1.8 m from the tunnel centre (its left wall / hall end face)",
+    "cause": "the left boundary: a near structure at +1.6 m (6-33 m) joined by the robust quadratic to one bin at 44 m and one bin of the diverging hall end at 76 m; its far bins at 80-108 m lie off its own fit. Far support (boundary bins beyond rails_range[1] = 30 m within walls_max_residual of the side's final fit): left 2-4 of 7-10, right 15-23 of 17-24, on every standing frame 310-700. The two sides disagree by 2.4e-4 to 3.6e-4 (< axis_sides_max_disagreement 6.7e-4), so they are averaged by rms and the better-rms left side dominates (left k ~4e-4, right k 2e-5 to 1.5e-4). The rails' tangent is computed with the prior curvature held fixed, which feeds the bend back (yaw -0.0038 before the stop, -0.0065 to -0.0085 during it).",
+    "far_rail_check": "track.rails_far_check_enabled never fires here (1f): no far rail pair in two slabs",
+    "open_loop_count_of_frames_the_rule_would_touch": {
+      "note": "both sides fitted with a rail tangent, each with >= walls_min_bins far bins, exactly one below the threshold, the other at or above it with |k| <= 2e-4; counted on the default per-frame fits (open loop: the closed loop can differ)",
+      "squareT_platform_squareT_switch_877_frames": {
+        "0.4": 135,
+        "0.5": 271,
+        "0.6": 404
+      },
+      "ride_11271_frames": {
+        "0.4": 187,
+        "0.5": 333,
+        "0.6": 511
+      },
+      "ride_max_abs_model_curvature_on_touched_frames": 0.000516
+    }
+  },
+  "fix": "track.walls_min_far_support (float, 0 = off = today's code path; resense/track.py _far_supported_side): with both wall sides fitted and a rail tangent, a side whose boundary bins beyond rails_range[1] lie within walls_max_residual of its own fit in fewer than this fraction (sides with >= walls_min_bins far bins are judged) does not set the axis shape when the other side meets the fraction and is nearly straight (|k| <= track.walls_far_support_max_curvature = 2e-4 /m, R >= 5 km: a real R 350-1 000 m curve is never overruled). As for the existing nearer-side rule, only the shape (tangent, curvature, fit quality, supported range) comes from the one side; the side count and the disagreement that set the trusted range stay as fitted.",
+  "preregistered": {
+    "written_at_utc": "2026-09-25T16:18:01Z",
+    "note": "written before any candidate run; the design numbers above come from the default per-frame output and point clouds only",
+    "candidates_in_order_of_preference": [
+      {
+        "track.walls_min_far_support": 0.5,
+        "track.walls_far_support_max_curvature": 0.0002
+      },
+      {
+        "track.walls_min_far_support": 0.4,
+        "track.walls_far_support_max_curvature": 0.0002
+      },
+      {
+        "track.walls_min_far_support": 0.6,
+        "track.walls_far_support_max_curvature": 0.0002
+      }
+    ],
+    "procedure": "each candidate first on the six recordings and set O (the gate on a cache without new_data, --allow 'ride.*' --allow 'set_F_straight.*'); the full gate with the ride and set F straight only for the candidate(s) that pass there; then set F curves and station stops (below) for that candidate and the defaults. python scripts/regression_gate.py --cache /data/cache --jobs 1 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json --set track.walls_min_far_support=<v>; native path, receive stamps, the ride in 8 pieces.",
+    "ship_rule": "ship the first candidate in the order above that meets all of: (1) the full gate exits 0 against regression_baseline_2026-09-25_ride_column.json, no gated row worse; (2) the target: squareT_platform_squareT_switch STOP episodes fewer than 15 and alarm events not more than 9; (3) every safety condition below. If none does, the flag stays 0 and the numbers are recorded.",
+    "safety_conditions": [
+      "doubleT_obstacle: labelled hits per label (person, rail object, rail object from frame 75) identical or more, first alarm frame identical or earlier, false-alarm events not more",
+      "set O: every inside object's STOP frames identical or more and first STOP at an identical or longer distance; outside false STOP frames, background alarm frames and IDs not more",
+      "set F straight (gate): per kind detected not fewer, median first confirmation not shorter, false detections not more",
+      "no new false alarm: in the five obstacle-free recordings and the ride, every candidate alarm event (track id per recording / ride piece) shares at least one alarm frame with an alarm event of the default run (per-frame outputs compared), and alarm events and STOP episodes do not rise; this covers the ride's curved sections",
+      "set F curves, anchored placement (P4_AUDIT): python scripts/far_range_eval.py --cache /data/cache/new_data --files 127,129,131,160,164,175,177 --kinds person,box1.0 --start 160 --frames 220 --lateral=-1.0:1.0 --seed 0 --placement-mode anchored --jobs 1, defaults vs candidate (--config): no sequence detected by the defaults is missed, no first confirmation comes at a shorter distance (per sequence), no more false detections",
+      "set F station stops, anchored placement: the same with --files 29,52,81,111,144,183 --kinds person,box1.0 --start 150 --frames 110 --lateral=-0.6:0.6: the same three conditions"
+    ],
+    "also_run_once": "the far-rail check on the ride: the full gate with --set track.rails_far_check_enabled=true against the same baseline; recorded, no decision"
+  },
+  "round_1_results": {
+    "how": "scripts/regression_gate.py on the six recordings and set O (a cache of symlinks without new_data, --allow 'ride.*' --allow 'set_F_straight.*'), --jobs 1, native path, receive stamps, code 692feaf (the flag, off by default), against regression_baseline_2026-09-25_ride_column.json; the flag-off control run is identical to the baseline in every gated row",
+    "format": "alarm frames / events / STOP episodes",
+    "rows": {
+      "control (flag off)": {
+        "squareT_platform_squareT_switch": "54 / 9 / 15",
+        "doubleT_platform": "4 / 4 / 1",
+        "five_obstacle_free": "58 / 13 / 16",
+        "set_O_big_above_stop_frames": 12,
+        "gate": "PASS, every gated row the same"
+      },
+      "0.5": {
+        "squareT_platform_squareT_switch": "37 / 4 / 9",
+        "doubleT_platform": "6 / 5 / 2",
+        "five_obstacle_free": "43 / 9 / 11",
+        "set_O_big_above_stop_frames": 11,
+        "gate": "FAIL: doubleT_platform events and STOP episodes, set O big_above STOP frames"
+      },
+      "0.4": {
+        "squareT_platform_squareT_switch": "39 / 7 / 8",
+        "doubleT_platform": "5 / 2 / 1",
+        "five_obstacle_free": "44 / 9 / 9",
+        "set_O_big_above_stop_frames": 11,
+        "gate": "FAIL: set O big_above STOP frames"
+      },
+      "0.6": {
+        "squareT_platform_squareT_switch": "3 / 1 / 1",
+        "doubleT_platform": "8 / 6 / 2",
+        "five_obstacle_free": "11 / 7 / 3",
+        "set_O_big_above_stop_frames": 11,
+        "gate": "FAIL: doubleT_platform events and STOP episodes, set O big_above STOP frames"
+      }
+    },
+    "unchanged_in_all_three": "doubleT_obstacle (person 58 of 61, rail object from frame 75 124 of 126, first alarm frame 11, 0 fp events), every other set O object, roundT_doubleT, roundT_pressureGate_roundT, roundT_squareT_pressureGate_squareT",
+    "verdict": "none of the three meets the ship rule: not shipped in round 1 (the full gate was not run)",
+    "why": "the rule fires on short, spurious stretches outside the platform stop and the axis filter carries the change on: set O frame 146 (a left side fitted for one frame, far support 5 of 15, k -5.8e-4) changes the track model of the next 1 364 frames by millimetres, and at frame 643 the organizers' 2 x 2 m box at the envelope top (79.2 m) is classed 'elevated' instead of a STOP; doubleT_platform frames 0-6 (7 consecutive frames at the start) send its axis on another path, and at frames 182-183 a new event at 5.9-6.8 m appears (0.5, 0.6). Closed loop at the platform the rule holds in long runs (0.6: 28 runs, 11 of 10 frames or more, the longest 52); on doubleT_platform the longest run is 7 frames, on set O 1 frame (open loop, default fits)",
+    "gate_summaries": {
+      "control (flag off)": {
+        "code": "692feaf",
+        "set": [],
+        "config_sha256": "ec16fae18130",
+        "native": "native",
+        "recordings_alarm_frames_events_stop_episodes": {
+          "doubleT_obstacle": "188 / 2 / 3",
+          "doubleT_platform": "4 / 4 / 1",
+          "roundT_doubleT": "0 / 0 / 0",
+          "roundT_pressureGate_roundT": "0 / 0 / 0",
+          "roundT_squareT_pressureGate_squareT": "0 / 0 / 0",
+          "squareT_platform_squareT_switch": "54 / 9 / 15"
+        },
+        "five_obstacle_free": "58 / 13 / 16",
+        "doubleT_obstacle": {
+          "first_alarm_frame": 11,
+          "hits_per_label": {
+            "object_on_rail": 127,
+            "person_crossing": 58,
+            "object_on_rail_from_frame_75": 124
+          },
+          "fp_events": 0
+        },
+        "set_O": {
+          "inside_stop_frames": 303,
+          "outside_false_stop_frames": 6,
+          "background": {
+            "alarm_frames": 3,
+            "track_ids": 2
+          },
+          "objects_stop_frames_first_stop_m": {
+            "big_center": [
+              207,
+              98.0
+            ],
+            "small_center": [
+              19,
+              34.0
+            ],
+            "small_on_rail": [
+              23,
+              42.7
+            ],
+            "small_edge_inside": [
+              0,
+              null
+            ],
+            "small_outside_near": [
+              0,
+              null
+            ],
+            "big_edge_inside": [
+              0,
+              null
+            ],
+            "big_outside": [
+              6,
+              null
+            ],
+            "big_above": [
+              12,
+              101.3
+            ],
+            "long_low_on_rails": [
+              42,
+              82.2
+            ],
+            "thin_hanging": [
+              0,
+              null
+            ]
+          }
+        },
+        "wall_s": 183.0
+      },
+      "0.5": {
+        "code": "692feaf",
+        "set": [
+          "track.walls_min_far_support=0.5"
+        ],
+        "config_sha256": "9faf5de58fbf",
+        "native": "native",
+        "recordings_alarm_frames_events_stop_episodes": {
+          "doubleT_obstacle": "188 / 2 / 3",
+          "doubleT_platform": "6 / 5 / 2",
+          "roundT_doubleT": "0 / 0 / 0",
+          "roundT_pressureGate_roundT": "0 / 0 / 0",
+          "roundT_squareT_pressureGate_squareT": "0 / 0 / 0",
+          "squareT_platform_squareT_switch": "37 / 4 / 9"
+        },
+        "five_obstacle_free": "43 / 9 / 11",
+        "doubleT_obstacle": {
+          "first_alarm_frame": 11,
+          "hits_per_label": {
+            "object_on_rail": 127,
+            "person_crossing": 58,
+            "object_on_rail_from_frame_75": 124
+          },
+          "fp_events": 0
+        },
+        "set_O": {
+          "inside_stop_frames": 302,
+          "outside_false_stop_frames": 6,
+          "background": {
+            "alarm_frames": 3,
+            "track_ids": 2
+          },
+          "objects_stop_frames_first_stop_m": {
+            "big_center": [
+              207,
+              98.0
+            ],
+            "small_center": [
+              19,
+              34.0
+            ],
+            "small_on_rail": [
+              23,
+              42.7
+            ],
+            "small_edge_inside": [
+              0,
+              null
+            ],
+            "small_outside_near": [
+              0,
+              null
+            ],
+            "big_edge_inside": [
+              0,
+              null
+            ],
+            "big_outside": [
+              6,
+              null
+            ],
+            "big_above": [
+              11,
+              101.3
+            ],
+            "long_low_on_rails": [
+              42,
+              82.2
+            ],
+            "thin_hanging": [
+              0,
+              null
+            ]
+          }
+        },
+        "wall_s": 140.0
+      },
+      "0.4": {
+        "code": "692feaf",
+        "set": [
+          "track.walls_min_far_support=0.4"
+        ],
+        "config_sha256": "d22c10f246f2",
+        "native": "native",
+        "recordings_alarm_frames_events_stop_episodes": {
+          "doubleT_obstacle": "188 / 2 / 3",
+          "doubleT_platform": "5 / 2 / 1",
+          "roundT_doubleT": "0 / 0 / 0",
+          "roundT_pressureGate_roundT": "0 / 0 / 0",
+          "roundT_squareT_pressureGate_squareT": "0 / 0 / 0",
+          "squareT_platform_squareT_switch": "39 / 7 / 8"
+        },
+        "five_obstacle_free": "44 / 9 / 9",
+        "doubleT_obstacle": {
+          "first_alarm_frame": 11,
+          "hits_per_label": {
+            "object_on_rail": 127,
+            "person_crossing": 58,
+            "object_on_rail_from_frame_75": 124
+          },
+          "fp_events": 0
+        },
+        "set_O": {
+          "inside_stop_frames": 302,
+          "outside_false_stop_frames": 6,
+          "background": {
+            "alarm_frames": 3,
+            "track_ids": 2
+          },
+          "objects_stop_frames_first_stop_m": {
+            "big_center": [
+              207,
+              98.0
+            ],
+            "small_center": [
+              19,
+              34.0
+            ],
+            "small_on_rail": [
+              23,
+              42.7
+            ],
+            "small_edge_inside": [
+              0,
+              null
+            ],
+            "small_outside_near": [
+              0,
+              null
+            ],
+            "big_edge_inside": [
+              0,
+              null
+            ],
+            "big_outside": [
+              6,
+              null
+            ],
+            "big_above": [
+              11,
+              101.3
+            ],
+            "long_low_on_rails": [
+              42,
+              82.2
+            ],
+            "thin_hanging": [
+              0,
+              null
+            ]
+          }
+        },
+        "wall_s": 144.0
+      },
+      "0.6": {
+        "code": "692feaf",
+        "set": [
+          "track.walls_min_far_support=0.6"
+        ],
+        "config_sha256": "7264f3a5ec7c",
+        "native": "native",
+        "recordings_alarm_frames_events_stop_episodes": {
+          "doubleT_obstacle": "188 / 2 / 3",
+          "doubleT_platform": "8 / 6 / 2",
+          "roundT_doubleT": "0 / 0 / 0",
+          "roundT_pressureGate_roundT": "0 / 0 / 0",
+          "roundT_squareT_pressureGate_squareT": "0 / 0 / 0",
+          "squareT_platform_squareT_switch": "3 / 1 / 1"
+        },
+        "five_obstacle_free": "11 / 7 / 3",
+        "doubleT_obstacle": {
+          "first_alarm_frame": 11,
+          "hits_per_label": {
+            "object_on_rail": 127,
+            "person_crossing": 58,
+            "object_on_rail_from_frame_75": 124
+          },
+          "fp_events": 0
+        },
+        "set_O": {
+          "inside_stop_frames": 302,
+          "outside_false_stop_frames": 6,
+          "background": {
+            "alarm_frames": 3,
+            "track_ids": 2
+          },
+          "objects_stop_frames_first_stop_m": {
+            "big_center": [
+              207,
+              98.0
+            ],
+            "small_center": [
+              19,
+              34.0
+            ],
+            "small_on_rail": [
+              23,
+              42.7
+            ],
+            "small_edge_inside": [
+              0,
+              null
+            ],
+            "small_outside_near": [
+              0,
+              null
+            ],
+            "big_edge_inside": [
+              0,
+              null
+            ],
+            "big_outside": [
+              6,
+              null
+            ],
+            "big_above": [
+              11,
+              101.3
+            ],
+            "long_low_on_rails": [
+              42,
+              82.2
+            ],
+            "thin_hanging": [
+              0,
+              null
+            ]
+          }
+        },
+        "wall_s": 144.2
+      }
+    }
+  },
+  "round_2": {
+    "preregistered": {
+      "written_at_utc": "2026-09-25T16:32:49Z",
+      "note": "written after round 1 and before any round-2 run; motivated by the round-1 failures above (short spurious firings): the rule applies only after its condition has held in walls_far_support_frames consecutive frames",
+      "fix_addition": "track.walls_far_support_frames (int, >= 1; 1 = round 1): the far-support rule sets the axis shape only from the N-th consecutive frame in which its condition holds (both sides fitted with a rail tangent, one unsupported, the other supported and |k| <= 2e-4); any frame without it resets the count. 10 frames = 1 s at 10 Hz, the tracker's zone window; round 1's spurious runs were 1 (set O) and 7 (doubleT_platform) frames long.",
+      "candidates_in_order_of_preference": [
+        {
+          "track.walls_min_far_support": 0.6,
+          "track.walls_far_support_frames": 10
+        },
+        {
+          "track.walls_min_far_support": 0.6,
+          "track.walls_far_support_frames": 20
+        },
+        {
+          "track.walls_min_far_support": 0.5,
+          "track.walls_far_support_frames": 10
+        }
+      ],
+      "procedure": "as round 1: six recordings and set O first; the full gate (ride, set F straight) for the first candidate that passes there; then set F curves and station stops (round-1 commands) for that candidate and the defaults.",
+      "ship_rule": "unchanged from round 1: the first candidate in this order meeting (1) the full gate exits 0 against regression_baseline_2026-09-25_ride_column.json, (2) squareT_platform_squareT_switch STOP episodes fewer than 15 and events not more than 9, (3) every round-1 safety condition (including no new false-alarm event on the five obstacle-free recordings and the ride per frame, set F curves and station stops per sequence). Else the flags stay off and the numbers are recorded."
+    }
+  },
+  "round_2_results": {
+    "how": "as round 1; code 1ae1952 (walls_far_support_frames added, both flags off by default); the full gate with the ride (8 pieces) and set F straight for 0.6 x 10, the first to pass the six recordings and set O; per-frame comparisons against the defaults (the flag-off control above; for the ride a default run of the same code path in 8 pieces that reproduces the baseline 187 / 46 / 39 exactly)",
+    "six_recordings_and_set_O": {
+      "0.6 x 10": {
+        "gate": "PASS (2 gated rows better)",
+        "squareT_platform_squareT_switch": "24 / 7 / 10",
+        "by_structure_default_to_candidate": {
+          "82.9 m platform end": "10 episodes / 29 frames -> 4 / 7",
+          "94 m": "1 / 2 -> 0",
+          "147.5 m switch parts": "4 / 23 -> 6 / 17"
+        },
+        "other_recordings_and_set_O": "identical frame by frame (all output but timing and health)",
+        "events_without_a_default_alarm_frame": "5 in squareT_platform_squareT_switch: 3 at 147.5 m (frames 370-371, 462, 552-558), 2 at 82.9 m (476-480, 604-605)"
+      },
+      "0.6 x 20": {
+        "gate": "FAIL: squareT_platform_squareT_switch events 9 -> 12",
+        "squareT_platform_squareT_switch": "34 / 12 / 14"
+      },
+      "0.5 x 10": {
+        "gate": "PASS (2 gated rows better)",
+        "squareT_platform_squareT_switch": "42 / 8 / 10",
+        "five_obstacle_free": "46 / 12 / 11",
+        "events_without_a_default_alarm_frame": "2 in squareT_platform_squareT_switch, both 147.5 m switch parts 1-8 frames off the defaults' (frame 499 against 500-501, frames 632-633)"
+      },
+      "summaries": {
+        "0.6 x 10": {
+          "code": "1ae1952",
+          "set": [
+            "track.walls_min_far_support=0.6",
+            "track.walls_far_support_frames=10"
+          ],
+          "config_sha256": "2d8cf3a25fc9",
+          "native": "native",
+          "recordings_alarm_frames_events_stop_episodes": {
+            "doubleT_obstacle": "188 / 2 / 3",
+            "doubleT_platform": "4 / 4 / 1",
+            "roundT_doubleT": "0 / 0 / 0",
+            "roundT_pressureGate_roundT": "0 / 0 / 0",
+            "roundT_squareT_pressureGate_squareT": "0 / 0 / 0",
+            "squareT_platform_squareT_switch": "24 / 7 / 10"
+          },
+          "five_obstacle_free": "28 / 11 / 11",
+          "doubleT_obstacle": {
+            "first_alarm_frame": 11,
+            "hits_per_label": {
+              "object_on_rail": 127,
+              "person_crossing": 58,
+              "object_on_rail_from_frame_75": 124
+            },
+            "fp_events": 0
+          },
+          "set_O": {
+            "inside_stop_frames": 303,
+            "outside_false_stop_frames": 6,
+            "background": {
+              "alarm_frames": 3,
+              "track_ids": 2
+            },
+            "objects_stop_frames_first_stop_m": {
+              "big_center": [
+                207,
+                98.0
+              ],
+              "small_center": [
+                19,
+                34.0
+              ],
+              "small_on_rail": [
+                23,
+                42.7
+              ],
+              "small_edge_inside": [
+                0,
+                null
+              ],
+              "small_outside_near": [
+                0,
+                null
+              ],
+              "big_edge_inside": [
+                0,
+                null
+              ],
+              "big_outside": [
+                6,
+                null
+              ],
+              "big_above": [
+                12,
+                101.3
+              ],
+              "long_low_on_rails": [
+                42,
+                82.2
+              ],
+              "thin_hanging": [
+                0,
+                null
+              ]
+            }
+          },
+          "wall_s": 144.5
+        },
+        "0.6 x 20": {
+          "code": "1ae1952",
+          "set": [
+            "track.walls_min_far_support=0.6",
+            "track.walls_far_support_frames=20"
+          ],
+          "config_sha256": "beada6c6f6ea",
+          "native": "native",
+          "recordings_alarm_frames_events_stop_episodes": {
+            "doubleT_obstacle": "188 / 2 / 3",
+            "doubleT_platform": "4 / 4 / 1",
+            "roundT_doubleT": "0 / 0 / 0",
+            "roundT_pressureGate_roundT": "0 / 0 / 0",
+            "roundT_squareT_pressureGate_squareT": "0 / 0 / 0",
+            "squareT_platform_squareT_switch": "34 / 12 / 14"
+          },
+          "five_obstacle_free": "38 / 16 / 15",
+          "doubleT_obstacle": {
+            "first_alarm_frame": 11,
+            "hits_per_label": {
+              "object_on_rail": 127,
+              "person_crossing": 58,
+              "object_on_rail_from_frame_75": 124
+            },
+            "fp_events": 0
+          },
+          "set_O": {
+            "inside_stop_frames": 303,
+            "outside_false_stop_frames": 6,
+            "background": {
+              "alarm_frames": 3,
+              "track_ids": 2
+            },
+            "objects_stop_frames_first_stop_m": {
+              "big_center": [
+                207,
+                98.0
+              ],
+              "small_center": [
+                19,
+                34.0
+              ],
+              "small_on_rail": [
+                23,
+                42.7
+              ],
+              "small_edge_inside": [
+                0,
+                null
+              ],
+              "small_outside_near": [
+                0,
+                null
+              ],
+              "big_edge_inside": [
+                0,
+                null
+              ],
+              "big_outside": [
+                6,
+                null
+              ],
+              "big_above": [
+                12,
+                101.3
+              ],
+              "long_low_on_rails": [
+                42,
+                82.2
+              ],
+              "thin_hanging": [
+                0,
+                null
+              ]
+            }
+          },
+          "wall_s": 148.3
+        },
+        "0.5 x 10": {
+          "code": "1ae1952",
+          "set": [
+            "track.walls_min_far_support=0.5",
+            "track.walls_far_support_frames=10"
+          ],
+          "config_sha256": "b9731f7f783d",
+          "native": "native",
+          "recordings_alarm_frames_events_stop_episodes": {
+            "doubleT_obstacle": "188 / 2 / 3",
+            "doubleT_platform": "4 / 4 / 1",
+            "roundT_doubleT": "0 / 0 / 0",
+            "roundT_pressureGate_roundT": "0 / 0 / 0",
+            "roundT_squareT_pressureGate_squareT": "0 / 0 / 0",
+            "squareT_platform_squareT_switch": "42 / 8 / 10"
+          },
+          "five_obstacle_free": "46 / 12 / 11",
+          "doubleT_obstacle": {
+            "first_alarm_frame": 11,
+            "hits_per_label": {
+              "object_on_rail": 127,
+              "person_crossing": 58,
+              "object_on_rail_from_frame_75": 124
+            },
+            "fp_events": 0
+          },
+          "set_O": {
+            "inside_stop_frames": 303,
+            "outside_false_stop_frames": 6,
+            "background": {
+              "alarm_frames": 3,
+              "track_ids": 2
+            },
+            "objects_stop_frames_first_stop_m": {
+              "big_center": [
+                207,
+                98.0
+              ],
+              "small_center": [
+                19,
+                34.0
+              ],
+              "small_on_rail": [
+                23,
+                42.7
+              ],
+              "small_edge_inside": [
+                0,
+                null
+              ],
+              "small_outside_near": [
+                0,
+                null
+              ],
+              "big_edge_inside": [
+                0,
+                null
+              ],
+              "big_outside": [
+                6,
+                null
+              ],
+              "big_above": [
+                12,
+                101.3
+              ],
+              "long_low_on_rails": [
+                42,
+                82.2
+              ],
+              "thin_hanging": [
+                0,
+                null
+              ]
+            }
+          },
+          "wall_s": 146.8
+        }
+      }
+    },
+    "full_gate_0.6_x_10": {
+      "verdict": "GATE FAIL: ride alarm events 46 -> 50, ride STOP episodes 39 -> 40 (squareT_platform_squareT_switch events and STOP episodes better)",
+      "summary": {
+        "code": "1ae1952",
+        "set": [
+          "track.walls_min_far_support=0.6",
+          "track.walls_far_support_frames=10"
+        ],
+        "config_sha256": "2d8cf3a25fc9",
+        "native": "native",
+        "recordings_alarm_frames_events_stop_episodes": {
+          "doubleT_obstacle": "188 / 2 / 3",
+          "doubleT_platform": "4 / 4 / 1",
+          "roundT_doubleT": "0 / 0 / 0",
+          "roundT_pressureGate_roundT": "0 / 0 / 0",
+          "roundT_squareT_pressureGate_squareT": "0 / 0 / 0",
+          "squareT_platform_squareT_switch": "24 / 7 / 10"
+        },
+        "five_obstacle_free": "28 / 11 / 11",
+        "doubleT_obstacle": {
+          "first_alarm_frame": 11,
+          "hits_per_label": {
+            "object_on_rail": 127,
+            "person_crossing": 58,
+            "object_on_rail_from_frame_75": 124
+          },
+          "fp_events": 0
+        },
+        "set_O": {
+          "inside_stop_frames": 303,
+          "outside_false_stop_frames": 6,
+          "background": {
+            "alarm_frames": 3,
+            "track_ids": 2
+          },
+          "objects_stop_frames_first_stop_m": {
+            "big_center": [
+              207,
+              98.0
+            ],
+            "small_center": [
+              19,
+              34.0
+            ],
+            "small_on_rail": [
+              23,
+              42.7
+            ],
+            "small_edge_inside": [
+              0,
+              null
+            ],
+            "small_outside_near": [
+              0,
+              null
+            ],
+            "big_edge_inside": [
+              0,
+              null
+            ],
+            "big_outside": [
+              6,
+              null
+            ],
+            "big_above": [
+              12,
+              101.3
+            ],
+            "long_low_on_rails": [
+              42,
+              82.2
+            ],
+            "thin_hanging": [
+              0,
+              null
+            ]
+          }
+        },
+        "wall_s": 1108.4,
+        "ride": "187 / 50 / 40",
+        "set_F_straight_detected_median_first_false": {
+          "person": [
+            6,
+            151.0,
+            7
+          ],
+          "box1.0": [
+            6,
+            123.9,
+            13
+          ],
+          "box0.5": [
+            1,
+            51.9,
+            0
+          ],
+          "trolley": [
+            6,
+            151.4,
+            12
+          ],
+          "cable": [
+            6,
+            98.9,
+            3
+          ]
+        }
+      },
+      "ride_per_frame": "track model changed in pieces 0, 2, 3, 4, 6 from the first firing to the end of the piece (piece 2: from new_data_59_0018, a station stop, to new_data_82_0044: 1 200 frames); decisions changed on 42 frames; 4 new events: new_data_73 frames 26-34 at 72.0 m, lateral -1.22 m, default curvature 1.3e-3 /m (an R ~ 770 m curve); new_data_81 at 74.9 m and 84.5 m; new_data_192 at 105.2 m; 1 default event gone (new_data_191_0045)",
+      "set_F_curves_anchored": "identical per sequence (person 6 of 6, first 67.5 m median, 22 false detections; box1.0 6 of 6, 79.6 m, 0); 1 of 7 approaches skipped (recording gap)",
+      "set_F_station_stops_anchored": "identical per sequence (person 4 of 4, 112.2 m, 95 false detections; box1.0 4 of 4, 102.8 m, 88); 2 of 6 approaches skipped (recording gaps)"
+    },
+    "verdict": "no candidate meets the ship rule: 0.6 x 10 fails (1) the full gate on the ride and (3) the per-frame no-new-event condition (on the platform recording and the ride); 0.6 x 20 fails the gate on the platform recording; 0.5 x 10 fails (3) on the platform recording. Not shipped: walls_min_far_support stays 0 (off), walls_far_support_frames 1; the default output is unchanged (control run)."
+  },
+  "far_rail_check_on_the_ride": {
+    "how": "scripts/regression_gate.py --cache /data/cache --jobs 1 --set track.rails_far_check_enabled=true --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json; code 1ae1952, native path, the ride in 8 pieces, set F straight round 3",
+    "verdict": "GATE PASS, every gated row the same (only latency and health-warning counts differ)",
+    "summary": {
+      "code": "1ae1952",
+      "set": [
+        "track.rails_far_check_enabled=true"
+      ],
+      "config_sha256": "db8fb3510808",
+      "native": "native",
+      "recordings_alarm_frames_events_stop_episodes": {
+        "doubleT_obstacle": "188 / 2 / 3",
+        "doubleT_platform": "4 / 4 / 1",
+        "roundT_doubleT": "0 / 0 / 0",
+        "roundT_pressureGate_roundT": "0 / 0 / 0",
+        "roundT_squareT_pressureGate_squareT": "0 / 0 / 0",
+        "squareT_platform_squareT_switch": "54 / 9 / 15"
+      },
+      "five_obstacle_free": "58 / 13 / 16",
+      "doubleT_obstacle": {
+        "first_alarm_frame": 11,
+        "hits_per_label": {
+          "object_on_rail": 127,
+          "person_crossing": 58,
+          "object_on_rail_from_frame_75": 124
+        },
+        "fp_events": 0
+      },
+      "set_O": {
+        "inside_stop_frames": 303,
+        "outside_false_stop_frames": 6,
+        "background": {
+          "alarm_frames": 3,
+          "track_ids": 2
+        },
+        "objects_stop_frames_first_stop_m": {
+          "big_center": [
+            207,
+            98.0
+          ],
+          "small_center": [
+            19,
+            34.0
+          ],
+          "small_on_rail": [
+            23,
+            42.7
+          ],
+          "small_edge_inside": [
+            0,
+            null
+          ],
+          "small_outside_near": [
+            0,
+            null
+          ],
+          "big_edge_inside": [
+            0,
+            null
+          ],
+          "big_outside": [
+            6,
+            null
+          ],
+          "big_above": [
+            12,
+            101.3
+          ],
+          "long_low_on_rails": [
+            42,
+            82.2
+          ],
+          "thin_hanging": [
+            0,
+            null
+          ]
+        }
+      },
+      "wall_s": 1072.1,
+      "ride": "187 / 46 / 39",
+      "set_F_straight_detected_median_first_false": {
+        "person": [
+          6,
+          151.0,
+          7
+        ],
+        "box1.0": [
+          6,
+          123.9,
+          13
+        ],
+        "box0.5": [
+          1,
+          51.9,
+          0
+        ],
+        "trolley": [
+          6,
+          151.4,
+          12
+        ],
+        "cable": [
+          6,
+          98.9,
+          3
+        ]
+      }
+    },
+    "per_frame": "identical to the defaults on all 11 271 ride frames, the six recordings and set O (all output but timing and health): the check never changes the model on the ride either",
+    "exit_reasons": {
+      "how": "the detector with track.rails_far_check_enabled=true over the ride in the gate's 8 pieces, _check_far_rails wrapped to count at which of its tests each frame stops (the wrapper then calls the original: output unchanged); code 1ae1952",
+      "frames": 11271,
+      "no far rail pair in two slabs (30-56, 56-82 m)": 7132,
+      "curvature below its threshold (|k| * 82^2 / 2 <= rails_yaw_max_dev 0.3 m)": 3480,
+      "no near rail pair in two slabs": 394,
+      "no wall side": 247,
+      "too few rail-head returns at 77-82 m": 11,
+      "axis range already short": 7,
+      "reaches the disagreement test": 0
+    }
+  },
+  "decision": {
+    "shipped": false,
+    "defaults": {
+      "track.walls_min_far_support": 0.0,
+      "track.walls_far_support_max_curvature": 0.0002,
+      "track.walls_far_support_frames": 1,
+      "track.rails_far_check_enabled": false
+    },
+    "reason": "every pre-registered candidate (round 1: 0.5, 0.4, 0.6; round 2: 0.6 x 10, 0.6 x 20, 0.5 x 10) fails the gate or a safety condition; the axis filter is chaotic under any change of its state, so a rule that fires moves marginal frames elsewhere (set O big_above, doubleT_platform, the ride)",
+    "next": "break the rails-walls feedback: fit the tangent and the curvature jointly from the rail slab midpoints and both boundaries instead of fixing the tangent with the prior curvature; after the freeze",
+    "flags_off_identity": "with the far-support flags off the output is the old one: the round-1 control (692feaf) equals the baseline in every gated row; the far-rail run at 1ae1952 (far-support flags off) equals that control and a default ride run of 7466979 frame by frame (all output but timing and health) on the six recordings, set O and all 11 271 ride frames",
+    "tests": "tests/test_late_candidates.py: +3 (the flags off in code, configs/default.yaml and the ROS copy; the station scene: the default axis > 0.5 m off at 83 m, the rule keeps it within 0.15 m, real R 1 000 / 350 m curves and a curved station identical with and without the rule, the persistence count; end to end: a person 0.6 m off the axis at 60 m advisory without the rule, a person on or 0.6 m off the axis at 25, 60 and 83 m a STOP with it, the platform-end structure not an alarm); 399 passed native and numpy"
+  }
+}

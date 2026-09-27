@@ -1,0 +1,125 @@
+{
+  "schema": "resense-independent-section8-review-v1",
+  "date": "2026-09-26",
+  "reviewer": "quality_review agent",
+  "status": "Provisional evidence review before the ongoing 53 m false-STOP causal diagnosis; no final detector acceptance",
+  "scope": {
+    "specification": "docs/organizers/technical_specification_case05.txt, section 8",
+    "rubric": "The team's unchanged maxima 25/15/10/15/10/10/10/5. The organizers publish criteria, not numerical weights; this is not an organizer award prediction.",
+    "node_commit": "4cc2408",
+    "browser_commit": "56c947c",
+    "M2_detector_candidate_commit": "482caab",
+    "combined_runtime_source_commit": "0145cbb8dd26b3777084aedb3945f49dda741caf",
+    "combined_runtime_image_id": "sha256:9919631de63f97b1e4d79699c3f556b40537c2853808c5e3e65902f9dc17b916",
+    "M2_status": "Offline nonregression and monitoring benefit demonstrated; combined runtime acceptance failed. M2 remains an unaccepted candidate and receives no functionality or range score increment.",
+    "separate_artifacts": "The dashboard is served separately and is not copied into the Docker image. Browser checks cover the current browser source; runtime checks cover the exact candidate image.",
+    "method": "Read the specification, candidate and node/browser code, protocols, per-frame outputs and runtime logs. Recomputed the gate and compared all 72 case dictionaries. Earlier reviews were read for their evidence and rubric; their totals do not determine this score."
+  },
+  "scores": [
+    {
+      "criterion": "8.1",
+      "name": "Functionality",
+      "maximum": 25,
+      "score": 15,
+      "reason": "The working prototype detects the real person and rail object around 56 m and eventually detects all eight intended-inside organizer objects. Freshness checks now prevent stale or unknown results from presenting actionable GO, and preserve a prior STOP. Obstacle detection remains uneven: the organizer edge objects have only 2/83 and 6/125 STOP frames, the ride retains 45 false events/38 STOP episodes, and the new standalone clear replay produced a real detector false STOP at 53.0 m. No accepted change in this cycle improves recall or false-event counts."
+    },
+    {
+      "criterion": "8.2",
+      "name": "Detection range",
+      "maximum": 15,
+      "score": 6,
+      "reason": "The real positive recording provides evidence near 56 m. Larger organizer objects first STOP around 98-101 m, cubes at 43-53 m, the hanging object at 30.1 m and edge objects at 5.2/10.3 m. Selected synthetic results farther away do not establish reliable real 100-300 m detection. M2 changes monitoring uncertainty, not detection distance."
+    },
+    {
+      "criterion": "8.3",
+      "name": "Speed",
+      "maximum": 10,
+      "score": 8.5,
+      "reason": "The exact new image has decode-plus-detect p95 of 25-38 ms on the original clear, cold/warm obstacle, bounded-load and stock-DDS split captures, with zero post-settle recorded-message losses. Valid source ages are measured and bounded. The current cold/warm first detector-STOP offsets are +1.0/+1.3 s; loaded cold is +0.5 s. These offsets exclude player disk preloading. Startup still samples queued frames, the node watchdog cannot run while its executor is blocked, and the organizer hardware and full acquisition-to-actuation latency remain unmeasured."
+    },
+    {
+      "criterion": "8.4",
+      "name": "Generalization",
+      "maximum": 15,
+      "score": 6,
+      "reason": "The geometric model, rate/tilt/start-offset tests and paired placement cases probe transfer without class training. All 72 M2 case dictionaries remain exactly equal to the original study: 45 cases with a target match and 544/2458 visible frames matched. Those numbers are sensitivity measurements on seen inputs, not real holdout recall. Some apparent misses are outside the current fitted envelope, but this does not prove they are physically outside the required envelope. No untouched real-obstacle recording or surveyed envelope truth is available, and Q1 remains unanswered."
+    },
+    {
+      "criterion": "8.5",
+      "name": "Technical quality",
+      "maximum": 10,
+      "score": 9,
+      "reason": "The staged detector, source receipts, reproducible outputs and focused tests support inspection. The node now has explicit live/replay clocks, epoch recovery, STOP retention and consumer expiry metadata. Browser transport delay and carried-STOP scoring defects found during review were corrected and tested. Full gate recomputation preserves all 146 enforced metrics; the 183 unchanged rows also include 37 informational rows. Remaining limits include many interacting rules, private Humble executor APIs, the single-thread watchdog limitation and pending exact-final integration/CI."
+    },
+    {
+      "criterion": "8.6",
+      "name": "Ease of launch",
+      "maximum": 10,
+      "score": 8,
+      "reason": "The Docker image builds, native kernels load, original bags replay and a stock Fast DDS normal-user player switches recordings successfully. Historical replay mode is explicit and documented. Host networking/socket setup and a valid clock relationship still matter. The reviewed image is a local unaccepted candidate; final public distribution remains on hold, and exact-final delivery verification is incomplete."
+    },
+    {
+      "criterion": "8.7",
+      "name": "Team approach",
+      "maximum": 10,
+      "score": 9,
+      "reason": "The cycle registers mechanisms and acceptance limits before measurement, traces missed object points and all 45 false targets, retains rejected A1/D1/M1 outcomes, and reports M2 as only a partial improvement. The failed zero-alarm runtime result remains a failure despite a separate successful stock clear run. This is useful experimental discipline. Repeated work on the same small corpus and unresolved causal explanations still limit confidence."
+    },
+    {
+      "criterion": "8.8",
+      "name": "Pitch",
+      "maximum": 5,
+      "score": 4,
+      "reason": "The deck, demonstration video and dashboard explain the pipeline and distinguish estimated monitored range from guaranteed free track. The browser now communicates invalid data and held STOPs. Approved team photos/contact details and a human timed rehearsal remain unavailable; new packaging cannot establish improved obstacle detection."
+    }
+  ],
+  "total": 65.5,
+  "maximum": 100,
+  "target_75_met": false,
+  "acceptance": {
+    "new_code_blockers_after_review_fixes": [],
+    "freshness_contract": "Passes the reviewed functional and original-bag checks within its declared publication-time and synchronized-clock assumptions. Consumers must enforce their own expiry; the un-timestamped decision String alone is insufficient.",
+    "M2_offline": "Partial improvement with unchanged detections, not final acceptance. Cached target range overclaims fall 54 to 44, GO overclaims 46 to 36; raw equivalents 51 to 41 and 44 to 34. No zero-overclaim objective is met.",
+    "combined_runtime": "FAIL: original_clear has one detector STOP at 53.0 m against its registered zero-alarm limit. Its freshness, latency and message-loss checks pass. Separate stock clear success does not replace this failed trial.",
+    "final_detector_freeze": "Not justified by the current quality evidence.",
+    "release": "On hold by user instruction; no release or tag authorized."
+  },
+  "independent_checks": [
+    "Compared all 15 M2 observer captures against the sealed reference: 15,269 aligned frames, zero differences outside health/range/timing, zero range increases.",
+    "Compared M2 novel_result.cases to the original: all 72 case dictionaries, including every per-frame row, exactly equal.",
+    "Recomputed scripts.regression_gate.compare: 146 enforced rows unchanged, 37 other rows unchanged, 16 informational timing rows changed; no failed or waived row.",
+    "Ran tests/test_node.py, tests/test_quality_acceptance.py and tests/test_thin_monitoring.py: 63 passed at the first review checkpoint.",
+    "Ran candidate tests/test_clear_cap.py and tests/test_thin_monitoring.py after the production-path test was added: 16 passed.",
+    "Read the actual Humble/stock-DDS fixture trial: 14/14 functional checks, 45 processed frames and 7 snapshots. Synthetic scene provenance is declared; this is not real-obstacle accuracy evidence.",
+    "Read all six original-bag/split runtime results and independently checked cold/warm validity counts and source ages. The standalone clear failure is a detector STOP, not a held snapshot.",
+    "Read the 18 rate/tilt comparisons, 30 exact startup-summary comparisons, raw Set O comparison and browser test logs. Stress coverage costs use declared conservative bounds because archived stress streams lack exact paired ranges."
+  ],
+  "review_fixes": [
+    "Added evaluation UTC and configured age/skew limits so consumers can account for transport delay and expire results locally.",
+    "Browser preserves STOP across invalid subsequent input and marks STOP received after expiry as held.",
+    "Positive runtime evidence excludes held STOPs; exposed held STOPs still count against clear-bag alarm exposure.",
+    "Added a production-path thin-evidence test covering no new STOP track, next-frame recovery and disabled clear_cap behavior.",
+    "Clarified 146 enforced metrics versus 183 unchanged rows and the single-thread watchdog limitation."
+  ],
+  "work_that_could_raise_the_score": [
+    "Resolve the 53 m false target causally and test a general rule with paired positive/non-obstacle evidence. A target-specific suppression or a successful retry would not close the failure.",
+    "Improve sustained detection across several object families and checked background geometries while preserving positives and reducing false events. The registered ride target remains 30 or fewer versus 45 now.",
+    "Represent sparse or filtered obstacle evidence without an unacceptable loss of useful monitored coverage. M1 failed this tradeoff; M2 leaves 36 cached GO overclaims.",
+    "Obtain organizer Q1 guidance and, when available, untouched real moving-obstacle recordings with independently checked geometry. Current permutations cannot supply that evidence.",
+    "Complete exact-final integration tests and delivery verification, approved team information and timed human rehearsals. These can improve technical/launch/pitch scores but cannot compensate for the current detection and generalization gaps."
+  ],
+  "evidence": [
+    "docs/evidence/results/quality_monitoring_M2_2026-09-26/summary.json",
+    "docs/evidence/results/quality_monitoring_M2_production_2026-09-26/gate.json",
+    "docs/evidence/results/quality_monitoring_M2_production_2026-09-26/parity.json",
+    "docs/evidence/results/quality_monitoring_M2_production_2026-09-26/novel_result.json.gz",
+    "docs/evidence/results/quality_cycle_2026-09-26_M2_validation/raw_comparison.json",
+    "docs/evidence/results/quality_cycle_2026-09-26_M2_validation/stress_comparison.json",
+    "docs/evidence/results/quality_cycle_2026-09-26_M2_validation/offsets_comparison.json",
+    "docs/evidence/results/quality_freshness_2026-09-26/combined_runtime_summary.json",
+    "docs/evidence/results/quality_freshness_2026-09-26/original_clear.log",
+    "docs/evidence/results/quality_combined_runtime_2026-09-26_protocol.json",
+    "docs/evidence/results/quality_cycle_2026-09-26_clarifications.json"
+  ],
+  "evidence_packaging_note": "Raw/stress and runtime packets were inspected in their source worktree or validation directory before their evidence-only integration. This provisional review does not assert that final source integration, archive verification or branch CI has finished."
+}

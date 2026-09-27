@@ -1,0 +1,7 @@
+$ RESENSE_NATIVE=0  python3 scripts/bench_node_path.py --npy /data/cache/roundT_doubleT
+kernels: numpy (RESENSE_NATIVE=0)
+roundT_doubleT: 252 frames, 207727 slots per message
+  kernels: numpy (RESENSE_NATIVE=0)
+  decode + crop + rotate: mean 6.7 ms, p95 7.0 ms
+  decode + detect:        mean 60.9 ms, p95 73.3 ms, max 80.9 ms
+peak RSS 157 MB

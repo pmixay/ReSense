@@ -1,0 +1,11 @@
+DDS uid=1000 RMW_IMPLEMENTATION=rmw_fastrtps_cpp FASTRTPS_DEFAULT_PROFILES_FILE=unset FASTDDS_DEFAULT_PROFILES_FILE=unset cwd=/tmp/tmp.ag0q02aUOR profile_in_cwd=none fastrtps=2.6.12-1jammy.20260723.233918
+PLAY bag=roundT_doubleT rc=0 new_shm_files=5
+  play: stdin is not a terminal device. Keyboard handling disabled.[INFO] [1790328713.793869624] [rosbag2_storage]: Opened database '/data/roundT_doubleT/roundT_doubleT_0.db3' for READ_ONLY.
+  play: [INFO] [1790328713.793959344] [rosbag2_player]: Set rate to 1
+  play: [INFO] [1790328713.821243916] [rosbag2_player]: Sleep 3000000000 ns
+  play: [INFO] [1790328716.821967475] [rosbag2_storage]: Opened database '/data/roundT_doubleT/roundT_doubleT_0.db3' for READ_ONLY.
+PLAY bag=doubleT_obstacle rc=0 new_shm_files=5
+  play: stdin is not a terminal device. Keyboard handling disabled.[INFO] [1790328747.386869684] [rosbag2_storage]: Opened database '/data/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.
+  play: [INFO] [1790328747.386943855] [rosbag2_player]: Set rate to 1
+  play: [INFO] [1790328747.393789572] [rosbag2_player]: Sleep 3000000000 ns
+  play: [INFO] [1790328750.394476552] [rosbag2_storage]: Opened database '/data/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.

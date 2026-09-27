@@ -1,0 +1,16 @@
+set O frame 0; exact baseline output matches
+set O frame 100; exact baseline output matches
+set O frame 200; exact baseline output matches
+set O frame 300; exact baseline output matches
+set O frame 400; exact baseline output matches
+set O frame 500; exact baseline output matches
+set O frame 600; exact baseline output matches
+set O frame 700; exact baseline output matches
+set O frame 800; exact baseline output matches
+set O frame 900; exact baseline output matches
+set O frame 1000; exact baseline output matches
+set O frame 1100; exact baseline output matches
+set O frame 1200; exact baseline output matches
+set O frame 1300; exact baseline output matches
+set O frame 1400; exact baseline output matches
+set O frame 1500; exact baseline output matches

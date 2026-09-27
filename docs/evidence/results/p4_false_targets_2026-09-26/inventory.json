@@ -1,0 +1,2814 @@
+{
+  "frames": 11271,
+  "events": 45,
+  "detection_mismatches": 0,
+  "families": {
+    "low_cross_section": 21,
+    "clipped_vertical_structure": 6,
+    "continuous_side_profile": 4,
+    "sparse_unresolved": 14
+  },
+  "events_review": [
+    {
+      "event_number": 1,
+      "key": "new_data_0.jsonl:3",
+      "geometry_review_family": "sparse_unresolved",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_0_0022",
+      "point_snapshot": "new_data_0_id3_0022.npz",
+      "sheet": "targets_01.png",
+      "alarm_frame_memberships": 18,
+      "lifetime_frames": 43,
+      "current_matched_alarm_memberships": 18,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "beyond_height_ref": 3,
+        "gauge_or_edge_by_points": 28,
+        "beyond_axis": 7
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_0_0035",
+        "alarm": false,
+        "previous_centroid": [
+          141.4379119873047,
+          1.4665231704711914,
+          -1.672516107559204
+        ],
+        "predicted": [
+          141.2275848388672,
+          1.479784607887268,
+          -1.7037742137908936
+        ],
+        "previous_velocity": [
+          -0.21032974123954773,
+          0.013261392712593079,
+          -0.03125813230872154
+        ],
+        "residual": [
+          -0.03759765625,
+          -0.07478451728820801,
+          0.31877434253692627
+        ],
+        "residual_3d": 0.3295806348323822,
+        "residual_yz": 0.3274290859699249,
+        "base_gate": 4.328758239746094,
+        "original_allowed_3d": 7.040960311889648,
+        "previous_hits": 33,
+        "previous_misses": 2,
+        "previous_reported": false,
+        "previous_zone": "warning",
+        "previous_bbox_min": [
+          141.80999755859375,
+          1.2899999618530273,
+          -1.9900000095367432
+        ],
+        "previous_bbox_max": [
+          141.89999389648438,
+          1.5999999046325684,
+          -1.0499999523162842
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 2,
+      "key": "new_data_0.jsonl:333",
+      "geometry_review_family": "clipped_vertical_structure",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_23_0042",
+      "point_snapshot": "new_data_0_id333_1215.npz",
+      "sheet": "targets_01.png",
+      "alarm_frame_memberships": 5,
+      "lifetime_frames": 42,
+      "current_matched_alarm_memberships": 5,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "beyond_axis": 14,
+        "gauge_or_edge_by_points": 10,
+        "column": 12
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_24_0008",
+        "alarm": false,
+        "previous_centroid": [
+          40.34640121459961,
+          -1.4374215602874756,
+          0.4810686409473419
+        ],
+        "predicted": [
+          39.40572738647461,
+          -1.301475167274475,
+          0.4866269826889038
+        ],
+        "previous_velocity": [
+          -0.9406756162643433,
+          0.1359463930130005,
+          0.00555834174156189
+        ],
+        "residual": [
+          0.2869987487792969,
+          -0.28943395614624023,
+          -1.1693542003631592
+        ],
+        "residual_3d": 1.2383575439453125,
+        "residual_yz": 1.204641580581665,
+        "base_gate": 2.306928024291992,
+        "original_allowed_3d": 2.306928024291992,
+        "previous_hits": 35,
+        "previous_misses": 3,
+        "previous_reported": false,
+        "previous_zone": "warning",
+        "previous_bbox_min": [
+          42.96999740600586,
+          -2.129999876022339,
+          -1.0
+        ],
+        "previous_bbox_max": [
+          43.56999969482422,
+          -1.559999942779541,
+          1.5
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 3,
+      "key": "new_data_0.jsonl:381",
+      "geometry_review_family": "clipped_vertical_structure",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_27_0017",
+      "point_snapshot": "new_data_0_id381_1394.npz",
+      "sheet": "targets_01.png",
+      "alarm_frame_memberships": 4,
+      "lifetime_frames": 86,
+      "current_matched_alarm_memberships": 4,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "beyond_axis": 15,
+        "beyond_height_ref": 19,
+        "gauge_or_edge_by_points": 21,
+        "column": 24
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_26_0007",
+        "alarm": false,
+        "previous_centroid": [
+          184.13052368164062,
+          -1.505666732788086,
+          -4.467832565307617
+        ],
+        "predicted": [
+          183.1673583984375,
+          -1.4786667823791504,
+          -4.799332618713379
+        ],
+        "previous_velocity": [
+          -0.9631576538085938,
+          0.027000010013580322,
+          -0.3314998149871826
+        ],
+        "residual": [
+          0.0470733642578125,
+          0.18088912963867188,
+          3.401555061340332
+        ],
+        "residual_3d": 3.406686544418335,
+        "residual_yz": 3.4063613414764404,
+        "base_gate": 5.1826104736328125,
+        "original_allowed_3d": 5.1826104736328125,
+        "previous_hits": 4,
+        "previous_misses": 3,
+        "previous_reported": false,
+        "previous_zone": "warning",
+        "previous_bbox_min": [
+          186.9499969482422,
+          -1.6399999856948853,
+          -4.319999694824219
+        ],
+        "previous_bbox_max": [
+          187.0800018310547,
+          -1.559999942779541,
+          -2.629999876022339
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 4,
+      "key": "new_data_1.jsonl:40",
+      "geometry_review_family": "clipped_vertical_structure",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_36_0005",
+      "point_snapshot": "new_data_1_id40_0432.npz",
+      "sheet": "targets_01.png",
+      "alarm_frame_memberships": 6,
+      "lifetime_frames": 300,
+      "current_matched_alarm_memberships": 6,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "beyond_axis": 78,
+        "beyond_height_ref": 129,
+        "gauge_or_edge_by_points": 40,
+        "column": 31
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_32_0006",
+        "alarm": false,
+        "previous_centroid": [
+          139.83665466308594,
+          -6.6650004386901855,
+          -0.7049999833106995
+        ],
+        "predicted": [
+          139.44618225097656,
+          -6.702175140380859,
+          -0.9361591339111328
+        ],
+        "previous_velocity": [
+          -0.39047715067863464,
+          -0.03717464953660965,
+          -0.23115912079811096
+        ],
+        "residual": [
+          -0.1949462890625,
+          0.31217527389526367,
+          0.8711591362953186
+        ],
+        "residual_3d": 0.9457143545150757,
+        "residual_yz": 0.9254034757614136,
+        "base_gate": 4.296733093261719,
+        "original_allowed_3d": 6.616891574859619,
+        "previous_hits": 49,
+        "previous_misses": 0,
+        "previous_reported": true,
+        "previous_zone": "warning",
+        "previous_bbox_min": [
+          139.61000061035156,
+          -7.549999713897705,
+          -1.6899999380111694
+        ],
+        "previous_bbox_max": [
+          140.38999938964844,
+          -6.299999713897705,
+          0.5
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 5,
+      "key": "new_data_1.jsonl:74",
+      "geometry_review_family": "sparse_unresolved",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_36_0011",
+      "point_snapshot": "new_data_1_id74_0438.npz",
+      "sheet": "targets_01.png",
+      "alarm_frame_memberships": 1,
+      "lifetime_frames": 69,
+      "current_matched_alarm_memberships": 1,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "beyond_height_ref": 9,
+        "gauge_or_edge_by_points": 4,
+        "beyond_axis": 52
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_37_0013",
+        "alarm": false,
+        "previous_centroid": [
+          159.88400268554688,
+          -8.508000373840332,
+          0.24599996209144592
+        ],
+        "predicted": [
+          159.87569202245226,
+          -8.474358233028081,
+          0.2862334164594202
+        ],
+        "previous_velocity": [
+          -0.008310663094631377,
+          0.03364214081225037,
+          0.04023345436797428
+        ],
+        "residual": [
+          0.0009711855555565307,
+          -0.07064088959154802,
+          -0.2862334152176567
+        ],
+        "residual_3d": 0.29482307655750434,
+        "residual_yz": 0.2948214769474041,
+        "base_gate": 4.697680053710938,
+        "original_allowed_3d": 4.697680053710938,
+        "previous_hits": 57,
+        "previous_misses": 0,
+        "previous_reported": true,
+        "previous_zone": "warning",
+        "previous_bbox_min": [
+          159.8300018310547,
+          -8.6899995803833,
+          -0.12999999523162842
+        ],
+        "previous_bbox_max": [
+          159.94000244140625,
+          -8.319999694824219,
+          0.5699999928474426
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 6,
+      "key": "new_data_1.jsonl:282",
+      "geometry_review_family": "low_cross_section",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_52_0021",
+      "point_snapshot": "new_data_1_id282_1264.npz",
+      "sheet": "targets_02.png",
+      "alarm_frame_memberships": 11,
+      "lifetime_frames": 22,
+      "current_matched_alarm_memberships": 7,
+      "low_alarm_memberships": 4,
+      "low_alarm_top_range_m": [
+        0.06441063801906344,
+        0.10807429595627038
+      ],
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 11,
+        "edge": 1
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_52_0014",
+        "alarm": false,
+        "previous_centroid": [
+          49.95586395263672,
+          -0.21763160824775696,
+          -1.571316123008728
+        ],
+        "predicted": [
+          48.41429901123047,
+          -0.186842143535614,
+          -1.5984214544296265
+        ],
+        "previous_velocity": [
+          -1.54156494140625,
+          0.030789464712142944,
+          -0.027105331420898438
+        ],
+        "residual": [
+          -2.3843040466308594,
+          1.1189849376678467,
+          0.32485008239746094
+        ],
+        "residual_3d": 2.653782367706299,
+        "residual_yz": 1.165184497833252,
+        "base_gate": 2.4991172790527343,
+        "original_allowed_3d": 5.073960447311402,
+        "previous_hits": 3,
+        "previous_misses": 3,
+        "previous_reported": false,
+        "previous_zone": "gauge",
+        "previous_bbox_min": [
+          54.52000045776367,
+          -0.5199999809265137,
+          -1.6299999952316284
+        ],
+        "previous_bbox_max": [
+          54.64999771118164,
+          -0.14000000059604645,
+          -1.3600000143051147
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 7,
+      "key": "new_data_1.jsonl:291",
+      "geometry_review_family": "low_cross_section",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_52_0018",
+      "point_snapshot": "new_data_1_id291_1261.npz",
+      "sheet": "targets_02.png",
+      "alarm_frame_memberships": 2,
+      "lifetime_frames": 8,
+      "current_matched_alarm_memberships": 1,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 2,
+        "edge": 1
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_52_0018",
+        "alarm": true,
+        "previous_centroid": [
+          33.718570709228516,
+          -1.014285683631897,
+          -1.3771429061889648
+        ],
+        "predicted": [
+          30.543140411376953,
+          -1.0825713872909546,
+          -1.4162858724594116
+        ],
+        "previous_velocity": [
+          -3.1754302978515625,
+          -0.06828570365905762,
+          -0.03914296627044678
+        ],
+        "residual": [
+          -0.9531402587890625,
+          1.9487252235412598,
+          0.3062858581542969
+        ],
+        "residual_3d": 2.1908485517478673,
+        "residual_yz": 1.9726482260583733,
+        "base_gate": 2.1743714141845705,
+        "original_allowed_3d": 4.473268918991089,
+        "previous_hits": 2,
+        "previous_misses": 0,
+        "previous_reported": false,
+        "previous_zone": "gauge",
+        "previous_bbox_min": [
+          33.46999740600586,
+          -1.2400000095367432,
+          -1.3799999952316284
+        ],
+        "previous_bbox_max": [
+          33.89999771118164,
+          -0.8199999928474426,
+          -1.3700000047683716
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 8,
+      "key": "new_data_1.jsonl:288",
+      "geometry_review_family": "low_cross_section",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_52_0019",
+      "point_snapshot": "new_data_1_id288_1262.npz",
+      "sheet": "targets_02.png",
+      "alarm_frame_memberships": 5,
+      "lifetime_frames": 13,
+      "current_matched_alarm_memberships": 3,
+      "low_alarm_memberships": 5,
+      "low_alarm_top_range_m": [
+        0.06643985980551159,
+        0.11637136352307498
+      ],
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 7
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_52_0016",
+        "alarm": false,
+        "previous_centroid": [
+          32.11777877807617,
+          0.9322222471237183,
+          -1.0722222328186035
+        ],
+        "predicted": [
+          32.09555435180664,
+          1.266444444656372,
+          -0.8344446420669556
+        ],
+        "previous_velocity": [
+          -0.02222442626953125,
+          0.3342222571372986,
+          0.23777759075164795
+        ],
+        "residual": [
+          0.8624458312988281,
+          -0.6204444169998169,
+          -0.5755553245544434
+        ],
+        "residual_3d": 1.2083162069320679,
+        "residual_yz": 0.8462949991226196,
+        "base_gate": 2.1423555755615236,
+        "original_allowed_3d": 2.1423555755615236,
+        "previous_hits": 2,
+        "previous_misses": 0,
+        "previous_reported": false,
+        "previous_zone": "gauge",
+        "previous_bbox_min": [
+          31.989999771118164,
+          0.550000011920929,
+          -1.2599999904632568
+        ],
+        "previous_bbox_max": [
+          32.36000061035156,
+          1.209999918937683,
+          -0.8899999856948853
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 9,
+      "key": "new_data_1.jsonl:290",
+      "geometry_review_family": "low_cross_section",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_52_0021",
+      "point_snapshot": "new_data_1_id290_1264.npz",
+      "sheet": "targets_02.png",
+      "alarm_frame_memberships": 4,
+      "lifetime_frames": 11,
+      "current_matched_alarm_memberships": 2,
+      "low_alarm_memberships": 2,
+      "low_alarm_top_range_m": [
+        0.11501344594201734,
+        0.11501344594201734
+      ],
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 6
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_52_0021",
+        "alarm": true,
+        "previous_centroid": [
+          36.977139472961426,
+          0.8636979758739471,
+          -1.4723342508077621
+        ],
+        "predicted": [
+          37.6765079498291,
+          1.0862848162651062,
+          -1.503557413816452
+        ],
+        "previous_velocity": [
+          0.6993684768676758,
+          0.22258684039115906,
+          -0.03122316300868988
+        ],
+        "residual": [
+          0.9987277984619141,
+          -1.5710466802120209,
+          0.17879542708396912
+        ],
+        "residual_3d": 1.8701905495355098,
+        "residual_yz": 1.5811879951958119,
+        "base_gate": 2.239542789459229,
+        "original_allowed_3d": 2.239542789459229,
+        "previous_hits": 5,
+        "previous_misses": 1,
+        "previous_reported": true,
+        "previous_zone": "gauge",
+        "previous_bbox_min": [
+          35.939998626708984,
+          0.44999998807907104,
+          -1.4800000190734863
+        ],
+        "previous_bbox_max": [
+          36.7599983215332,
+          0.8700000047683716,
+          -1.399999976158142
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 10,
+      "key": "new_data_1.jsonl:294",
+      "geometry_review_family": "sparse_unresolved",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_52_0020",
+      "point_snapshot": "new_data_1_id294_1263.npz",
+      "sheet": "targets_02.png",
+      "alarm_frame_memberships": 3,
+      "lifetime_frames": 10,
+      "current_matched_alarm_memberships": 2,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "beyond_axis": 1,
+        "gauge_or_edge_by_points": 4,
+        "beyond_height_ref": 1
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_52_0020",
+        "alarm": true,
+        "previous_centroid": [
+          88.53499603271484,
+          -0.6964287161827087,
+          -1.9160716533660889
+        ],
+        "predicted": [
+          86.65542602539062,
+          -0.7932627201080322,
+          -1.9982423782348633
+        ],
+        "previous_velocity": [
+          -1.8795719146728516,
+          -0.09683401137590408,
+          -0.08217070996761322
+        ],
+        "residual": [
+          1.1612319946289062,
+          -0.169594407081604,
+          0.47633790969848633
+        ],
+        "residual_3d": 1.2665385007858276,
+        "residual_yz": 0.5056284070014954,
+        "base_gate": 3.270699920654297,
+        "original_allowed_3d": 3.270699920654297,
+        "previous_hits": 5,
+        "previous_misses": 0,
+        "previous_reported": true,
+        "previous_zone": "gauge",
+        "previous_bbox_min": [
+          82.54000091552734,
+          -1.8799999952316284,
+          -2.059999942779541
+        ],
+        "previous_bbox_max": [
+          89.33999633789062,
+          -0.009999999776482582,
+          -1.7400000095367432
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 11,
+      "key": "new_data_1.jsonl:289",
+      "geometry_review_family": "low_cross_section",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_52_0022",
+      "point_snapshot": "new_data_1_id289_1265.npz",
+      "sheet": "targets_03.png",
+      "alarm_frame_memberships": 2,
+      "lifetime_frames": 22,
+      "current_matched_alarm_memberships": 2,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 10
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_52_0021",
+        "alarm": true,
+        "previous_centroid": [
+          42.8314323425293,
+          -0.5456428527832031,
+          -1.436071515083313
+        ],
+        "predicted": [
+          44.41086196899414,
+          -0.8692857027053833,
+          -1.372143030166626
+        ],
+        "previous_velocity": [
+          1.5794305801391602,
+          -0.3236428499221802,
+          0.06392848491668701
+        ],
+        "residual": [
+          -0.668365478515625,
+          1.69428551197052,
+          0.039643049240112305
+        ],
+        "residual_3d": 1.8217812776565552,
+        "residual_yz": 1.6947492361068726,
+        "base_gate": 2.356628646850586,
+        "original_allowed_3d": 4.720554819107056,
+        "previous_hits": 4,
+        "previous_misses": 1,
+        "previous_reported": false,
+        "previous_zone": "gauge",
+        "previous_bbox_min": [
+          41.23999786376953,
+          -0.3700000047683716,
+          -1.5
+        ],
+        "previous_bbox_max": [
+          41.2599983215332,
+          -0.07999999821186066,
+          -1.5
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 12,
+      "key": "new_data_1.jsonl:306",
+      "geometry_review_family": "low_cross_section",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_52_0024",
+      "point_snapshot": "new_data_1_id306_1267.npz",
+      "sheet": "targets_03.png",
+      "alarm_frame_memberships": 3,
+      "lifetime_frames": 9,
+      "current_matched_alarm_memberships": 2,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 6
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_52_0023",
+        "alarm": true,
+        "previous_centroid": [
+          34.89285659790039,
+          -0.9257143139839172,
+          -1.4257142543792725
+        ],
+        "predicted": [
+          35.450355529785156,
+          -0.8809822201728821,
+          -1.4423214197158813
+        ],
+        "previous_velocity": [
+          0.557499885559082,
+          0.044732093811035156,
+          -0.0166071355342865
+        ],
+        "residual": [
+          -0.3883934020996094,
+          1.0600018501281738,
+          0.2111448049545288
+        ],
+        "residual_3d": 1.148492693901062,
+        "residual_yz": 1.0808265209197998,
+        "base_gate": 2.197857131958008,
+        "original_allowed_3d": 4.641617765426636,
+        "previous_hits": 4,
+        "previous_misses": 0,
+        "previous_reported": false,
+        "previous_zone": "gauge",
+        "previous_bbox_min": [
+          34.349998474121094,
+          -1.0199999809265137,
+          -1.4499999284744263
+        ],
+        "previous_bbox_max": [
+          35.46999740600586,
+          -0.85999995470047,
+          -1.399999976158142
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 13,
+      "key": "new_data_1.jsonl:302",
+      "geometry_review_family": "low_cross_section",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_52_0024",
+      "point_snapshot": "new_data_1_id302_1267.npz",
+      "sheet": "targets_03.png",
+      "alarm_frame_memberships": 2,
+      "lifetime_frames": 10,
+      "current_matched_alarm_memberships": 1,
+      "low_alarm_memberships": 2,
+      "low_alarm_top_range_m": [
+        0.052499319640061826,
+        0.052499319640061826
+      ],
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 5
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_52_0023",
+        "alarm": false,
+        "previous_centroid": [
+          30.980998992919922,
+          -0.9400001168251038,
+          -1.3469999432563782
+        ],
+        "predicted": [
+          32.46999931335449,
+          -0.9560001492500305,
+          -1.3559999465942383
+        ],
+        "previous_velocity": [
+          1.4890003204345703,
+          -0.016000032424926758,
+          -0.009000003337860107
+        ],
+        "residual": [
+          -3.556001663208008,
+          0.028000175952911377,
+          0.04799997806549072
+        ],
+        "residual_3d": 3.556435833314837,
+        "residual_yz": 0.05556984566904597,
+        "base_gate": 2.1196199798583986,
+        "original_allowed_3d": 4.563380613327027,
+        "previous_hits": 3,
+        "previous_misses": 1,
+        "previous_reported": false,
+        "previous_zone": "gauge",
+        "previous_bbox_min": [
+          29.03999900817871,
+          -1.100000023841858,
+          -1.3600000143051147
+        ],
+        "previous_bbox_max": [
+          29.94999885559082,
+          -0.8100000023841858,
+          -1.3199999332427979
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 14,
+      "key": "new_data_1.jsonl:372",
+      "geometry_review_family": "sparse_unresolved",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_53_0026",
+      "point_snapshot": "new_data_1_id372_1320.npz",
+      "sheet": "targets_03.png",
+      "alarm_frame_memberships": 2,
+      "lifetime_frames": 9,
+      "current_matched_alarm_memberships": 1,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 4,
+        "beyond_axis": 1
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_53_0023",
+        "alarm": false,
+        "previous_centroid": [
+          111.43222045898438,
+          1.3011113405227661,
+          -0.8411111831665039
+        ],
+        "predicted": [
+          110.36914825439453,
+          1.3257521390914917,
+          -0.7481048107147217
+        ],
+        "previous_velocity": [
+          -1.0630722045898438,
+          0.024640798568725586,
+          0.09300637245178223
+        ],
+        "residual": [
+          -0.09465789794921875,
+          -0.05525219440460205,
+          -0.12039512395858765
+        ],
+        "residual_3d": 0.1628125011920929,
+        "residual_yz": 0.1324680745601654,
+        "base_gate": 3.7286444091796875,
+        "original_allowed_3d": 6.305430688858032,
+        "previous_hits": 2,
+        "previous_misses": 0,
+        "previous_reported": false,
+        "previous_zone": "warning",
+        "previous_bbox_min": [
+          109.44999694824219,
+          0.8100000023841858,
+          -1.3399999141693115
+        ],
+        "previous_bbox_max": [
+          113.39999389648438,
+          1.4499999284744263,
+          -0.08999999612569809
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 15,
+      "key": "new_data_2.jsonl:443",
+      "geometry_review_family": "clipped_vertical_structure",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_76_0002",
+      "point_snapshot": "new_data_2_id443_1060.npz",
+      "sheet": "targets_03.png",
+      "alarm_frame_memberships": 8,
+      "lifetime_frames": 49,
+      "current_matched_alarm_memberships": 6,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 11,
+        "beyond_height_ref": 2,
+        "column": 11,
+        "beyond_axis": 15
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_76_0015",
+        "alarm": false,
+        "previous_centroid": [
+          105.45670318603516,
+          -2.308310031890869,
+          0.06398841738700867
+        ],
+        "predicted": [
+          103.67561340332031,
+          -2.2508022785186768,
+          -0.380932092666626
+        ],
+        "previous_velocity": [
+          -1.7810862064361572,
+          0.05750785768032074,
+          -0.44492051005363464
+        ],
+        "residual": [
+          -0.2146148681640625,
+          -0.2071976661682129,
+          1.6659321784973145
+        ],
+        "residual_3d": 1.6924303770065308,
+        "residual_yz": 1.6787676811218262,
+        "base_gate": 3.609134063720703,
+        "original_allowed_3d": 6.091035709381103,
+        "previous_hits": 14,
+        "previous_misses": 1,
+        "previous_reported": false,
+        "previous_zone": "warning",
+        "previous_bbox_min": [
+          104.06999969482422,
+          -2.8399999141693115,
+          -0.8199999928474426
+        ],
+        "previous_bbox_max": [
+          111.08999633789062,
+          -0.4099999964237213,
+          1.9799998998641968
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 16,
+      "key": "new_data_2.jsonl:564",
+      "geometry_review_family": "low_cross_section",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_81_0022",
+      "point_snapshot": "new_data_2_id564_1335.npz",
+      "sheet": "targets_04.png",
+      "alarm_frame_memberships": 5,
+      "lifetime_frames": 14,
+      "current_matched_alarm_memberships": 4,
+      "low_alarm_memberships": 5,
+      "low_alarm_top_range_m": [
+        0.047762662505164144,
+        0.06690273065439656
+      ],
+      "lifetime_cluster_reasons": {
+        "beyond_axis": 2,
+        "gauge_or_edge_by_points": 6
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_81_0017",
+        "alarm": false,
+        "previous_centroid": [
+          59.14750671386719,
+          1.0234999656677246,
+          -1.3229995965957642
+        ],
+        "predicted": [
+          57.888343811035156,
+          1.0706665515899658,
+          -1.2669994831085205
+        ],
+        "previous_velocity": [
+          -1.2591629028320312,
+          0.047166645526885986,
+          0.05600011348724365
+        ],
+        "residual": [
+          -3.7527847290039062,
+          -1.2706665992736816,
+          -0.22855591773986816
+        ],
+        "residual_3d": 3.9686551094055176,
+        "residual_yz": 1.2910583019256592,
+        "base_gate": 2.682950134277344,
+        "original_allowed_3d": 5.111243362426758,
+        "previous_hits": 2,
+        "previous_misses": 2,
+        "previous_reported": false,
+        "previous_zone": "warning",
+        "previous_bbox_min": [
+          59.56999969482422,
+          0.5099999904632568,
+          -1.559999942779541
+        ],
+        "previous_bbox_max": [
+          62.3599967956543,
+          1.1299999952316284,
+          -1.0499999523162842
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 17,
+      "key": "new_data_2.jsonl:566",
+      "geometry_review_family": "low_cross_section",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_81_0023",
+      "point_snapshot": "new_data_2_id566_1336.npz",
+      "sheet": "targets_04.png",
+      "alarm_frame_memberships": 4,
+      "lifetime_frames": 16,
+      "current_matched_alarm_memberships": 2,
+      "low_alarm_memberships": 2,
+      "low_alarm_top_range_m": [
+        0.053232681149524286,
+        0.053232681149524286
+      ],
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 6,
+        "edge": 1
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_81_0018",
+        "alarm": false,
+        "previous_centroid": [
+          39.8120002746582,
+          0.5559999942779541,
+          -1.378000020980835
+        ],
+        "predicted": [
+          39.316314697265625,
+          0.09430766105651855,
+          -1.659846305847168
+        ],
+        "previous_velocity": [
+          -0.4956855773925781,
+          -0.46169233322143555,
+          -0.281846284866333
+        ],
+        "residual": [
+          -2.20465087890625,
+          0.8165257573127747,
+          0.5523463487625122
+        ],
+        "residual_3d": 2.4150126913141845,
+        "residual_yz": 0.9857995746329367,
+        "base_gate": 2.296240005493164,
+        "original_allowed_3d": 4.756350193023682,
+        "previous_hits": 2,
+        "previous_misses": 0,
+        "previous_reported": false,
+        "previous_zone": "warning",
+        "previous_bbox_min": [
+          39.5,
+          0.44999998807907104,
+          -1.3899999856948853
+        ],
+        "previous_bbox_max": [
+          40.25,
+          0.7199999690055847,
+          -1.3700000047683716
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 18,
+      "key": "new_data_2.jsonl:575",
+      "geometry_review_family": "low_cross_section",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_81_0026",
+      "point_snapshot": "new_data_2_id575_1339.npz",
+      "sheet": "targets_04.png",
+      "alarm_frame_memberships": 1,
+      "lifetime_frames": 20,
+      "current_matched_alarm_memberships": 1,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 7,
+        "edge": 2
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_81_0026",
+        "alarm": true,
+        "previous_centroid": [
+          29.601394653320312,
+          0.48453572392463684,
+          -1.4535000324249268
+        ],
+        "predicted": [
+          29.405288696289062,
+          0.3465714454650879,
+          -1.5570000410079956
+        ],
+        "previous_velocity": [
+          -0.19610595703125,
+          -0.13796427845954895,
+          -0.10350002348423004
+        ],
+        "residual": [
+          -2.4919586181640625,
+          0.6909284591674805,
+          0.4878333806991577
+        ],
+        "residual_3d": 2.6315815448760986,
+        "residual_yz": 0.8457916378974915,
+        "base_gate": 2.0920278930664065,
+        "original_allowed_3d": 4.648143281936646,
+        "previous_hits": 4,
+        "previous_misses": 1,
+        "previous_reported": false,
+        "previous_zone": "warning",
+        "previous_bbox_min": [
+          29.420000076293945,
+          0.550000011920929,
+          -1.3600000143051147
+        ],
+        "previous_bbox_max": [
+          29.979999542236328,
+          0.75,
+          -1.3299999237060547
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 19,
+      "key": "new_data_2.jsonl:581",
+      "geometry_review_family": "low_cross_section",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_81_0027",
+      "point_snapshot": "new_data_2_id581_1340.npz",
+      "sheet": "targets_04.png",
+      "alarm_frame_memberships": 3,
+      "lifetime_frames": 9,
+      "current_matched_alarm_memberships": 2,
+      "low_alarm_memberships": 2,
+      "low_alarm_top_range_m": [
+        0.06647825621051373,
+        0.06647825621051373
+      ],
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 6
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_81_0027",
+        "alarm": true,
+        "previous_centroid": [
+          32.53999710083008,
+          1.0420000553131104,
+          -1.0609999895095825
+        ],
+        "predicted": [
+          32.5528564453125,
+          1.264222264289856,
+          -0.8962500095367432
+        ],
+        "previous_velocity": [
+          0.012860298156738281,
+          0.2222222536802292,
+          0.16474997997283936
+        ],
+        "residual": [
+          -1.5071430206298828,
+          -2.192793607711792,
+          -0.5137499570846558
+        ],
+        "residual_3d": 2.709937810897827,
+        "residual_yz": 2.2521729469299316,
+        "base_gate": 2.1507999420166017,
+        "original_allowed_3d": 4.590048503875733,
+        "previous_hits": 5,
+        "previous_misses": 0,
+        "previous_reported": true,
+        "previous_zone": "gauge",
+        "previous_bbox_min": [
+          31.649999618530273,
+          0.6100000143051147,
+          -1.2599999904632568
+        ],
+        "previous_bbox_max": [
+          32.75,
+          1.2400000095367432,
+          -0.9099999666213989
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": [
+        "new_data_81_0027"
+      ]
+    },
+    {
+      "event_number": 20,
+      "key": "new_data_2.jsonl:576",
+      "geometry_review_family": "low_cross_section",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_81_0029",
+      "point_snapshot": "new_data_2_id576_1342.npz",
+      "sheet": "targets_04.png",
+      "alarm_frame_memberships": 4,
+      "lifetime_frames": 12,
+      "current_matched_alarm_memberships": 3,
+      "low_alarm_memberships": 4,
+      "low_alarm_top_range_m": [
+        0.05976296005743298,
+        0.08616931251109294
+      ],
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 7
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_81_0027",
+        "alarm": true,
+        "previous_centroid": [
+          38.07813262939453,
+          -2.221255302429199,
+          -1.4166233539581299
+        ],
+        "predicted": [
+          37.22791290283203,
+          -2.863311529159546,
+          -1.4035065174102783
+        ],
+        "previous_velocity": [
+          -0.8502216339111328,
+          -0.6420562267303467,
+          0.013116836547851562
+        ],
+        "residual": [
+          -0.17124557495117188,
+          1.860811471939087,
+          -0.06649327278137207
+        ],
+        "residual_3d": 1.8698571920394897,
+        "residual_yz": 1.8619991540908813,
+        "base_gate": 2.261562652587891,
+        "original_allowed_3d": 4.700811214447022,
+        "previous_hits": 4,
+        "previous_misses": 2,
+        "previous_reported": false,
+        "previous_zone": "gauge",
+        "previous_bbox_min": [
+          39.22999954223633,
+          -1.100000023841858,
+          -1.459999918937683
+        ],
+        "previous_bbox_max": [
+          40.2599983215332,
+          -0.8499999642372131,
+          -1.4199999570846558
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 21,
+      "key": "new_data_2.jsonl:567",
+      "geometry_review_family": "low_cross_section",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_81_0030",
+      "point_snapshot": "new_data_2_id567_1343.npz",
+      "sheet": "targets_05.png",
+      "alarm_frame_memberships": 2,
+      "lifetime_frames": 20,
+      "current_matched_alarm_memberships": 1,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 9,
+        "edge": 1
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_81_0029",
+        "alarm": false,
+        "previous_centroid": [
+          39.7503719329834,
+          -1.8613749742507935,
+          -1.6143750548362732
+        ],
+        "predicted": [
+          40.04674530029297,
+          -2.774749994277954,
+          -1.758750081062317
+        ],
+        "previous_velocity": [
+          0.2963733673095703,
+          -0.9133750200271606,
+          -0.1443750262260437
+        ],
+        "residual": [
+          0.5372505187988281,
+          1.7767500281333923,
+          0.28675007820129395
+        ],
+        "residual_3d": 1.8782184084312634,
+        "residual_yz": 1.7997406118161747,
+        "base_gate": 2.2950074386596677,
+        "original_allowed_3d": 2.2950074386596677,
+        "previous_hits": 8,
+        "previous_misses": 1,
+        "previous_reported": true,
+        "previous_zone": "warning",
+        "previous_bbox_min": [
+          38.97999954223633,
+          -1.1200000047683716,
+          -1.5099999904632568
+        ],
+        "previous_bbox_max": [
+          40.0099983215332,
+          -0.8299999833106995,
+          -1.4399999380111694
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 22,
+      "key": "new_data_3.jsonl:264",
+      "geometry_review_family": "clipped_vertical_structure",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_99_0017",
+      "point_snapshot": "new_data_3_id264_0839.npz",
+      "sheet": "targets_05.png",
+      "alarm_frame_memberships": 2,
+      "lifetime_frames": 51,
+      "current_matched_alarm_memberships": 2,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "beyond_height_ref": 9,
+        "gauge_or_edge_by_points": 15,
+        "column": 19
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_98_0047",
+        "alarm": false,
+        "previous_centroid": [
+          178.74334716796875,
+          -1.4000000953674316,
+          -1.3566665649414062
+        ],
+        "predicted": [
+          176.74835205078125,
+          -1.3700001239776611,
+          -1.681666612625122
+        ],
+        "previous_velocity": [
+          -1.9949874877929688,
+          0.029999911785125732,
+          -0.32499998807907104
+        ],
+        "residual": [
+          0.0749664306640625,
+          -0.02666652202606201,
+          1.5649999380111694
+        ],
+        "residual_3d": 1.5670212507247925,
+        "residual_yz": 1.5652271509170532,
+        "base_gate": 5.074866943359375,
+        "original_allowed_3d": 5.074866943359375,
+        "previous_hits": 3,
+        "previous_misses": 2,
+        "previous_reported": false,
+        "previous_zone": "warning",
+        "previous_bbox_min": [
+          182.6699981689453,
+          -1.6299999952316284,
+          -1.8199999332427979
+        ],
+        "previous_bbox_max": [
+          182.8000030517578,
+          -1.309999942779541,
+          -0.14999999105930328
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 23,
+      "key": "new_data_3.jsonl:281",
+      "geometry_review_family": "clipped_vertical_structure",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_99_0040",
+      "point_snapshot": "new_data_3_id281_0862.npz",
+      "sheet": "targets_05.png",
+      "alarm_frame_memberships": 3,
+      "lifetime_frames": 33,
+      "current_matched_alarm_memberships": 2,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 9,
+        "beyond_height_ref": 4,
+        "column": 5
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_100_0002",
+        "alarm": false,
+        "previous_centroid": [
+          128.92816162109375,
+          -4.7526936531066895,
+          -1.4603888988494873
+        ],
+        "predicted": [
+          126.83525848388672,
+          -4.57304048538208,
+          -1.7455832958221436
+        ],
+        "previous_velocity": [
+          -2.0929040908813477,
+          0.1796533316373825,
+          -0.285194456577301
+        ],
+        "residual": [
+          0.12781524658203125,
+          -0.33195924758911133,
+          0.8470116853713989
+        ],
+        "residual_3d": 0.9186742901802063,
+        "residual_yz": 0.9097393751144409,
+        "base_gate": 4.078563232421875,
+        "original_allowed_3d": 4.078563232421875,
+        "previous_hits": 12,
+        "previous_misses": 2,
+        "previous_reported": false,
+        "previous_zone": "warning",
+        "previous_bbox_min": [
+          132.02999877929688,
+          -5.150000095367432,
+          -1.5899999141693115
+        ],
+        "previous_bbox_max": [
+          133.38999938964844,
+          -5.019999980926514,
+          -0.4399999976158142
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 24,
+      "key": "new_data_4.jsonl:36",
+      "geometry_review_family": "sparse_unresolved",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_111_0038",
+      "point_snapshot": "new_data_4_id36_0063.npz",
+      "sheet": "targets_05.png",
+      "alarm_frame_memberships": 6,
+      "lifetime_frames": 12,
+      "current_matched_alarm_memberships": 4,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 7,
+        "beyond_axis": 1
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_111_0036",
+        "alarm": false,
+        "previous_centroid": [
+          116.22846221923828,
+          -3.692307472229004,
+          0.03769230097532272
+        ],
+        "predicted": [
+          114.74923706054688,
+          -3.6976914405822754,
+          -0.20999997854232788
+        ],
+        "previous_velocity": [
+          -1.4792251586914062,
+          -0.005383968353271484,
+          -0.2476922869682312
+        ],
+        "residual": [
+          0.03076171875,
+          0.03635811805725098,
+          0.492666631937027
+        ],
+        "residual_3d": 0.49496322870254517,
+        "residual_yz": 0.4940063953399658,
+        "base_gate": 3.8245692443847656,
+        "original_allowed_3d": 3.8245692443847656,
+        "previous_hits": 2,
+        "previous_misses": 0,
+        "previous_reported": false,
+        "previous_zone": "warning",
+        "previous_bbox_min": [
+          116.1199951171875,
+          -4.049999713897705,
+          -0.6200000047683716
+        ],
+        "previous_bbox_max": [
+          116.36000061035156,
+          -3.4700000286102295,
+          0.6599999666213989
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 25,
+      "key": "new_data_4.jsonl:56",
+      "geometry_review_family": "low_cross_section",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_112_0002",
+      "point_snapshot": "new_data_4_id56_0078.npz",
+      "sheet": "targets_05.png",
+      "alarm_frame_memberships": 1,
+      "lifetime_frames": 11,
+      "current_matched_alarm_memberships": 1,
+      "low_alarm_memberships": 1,
+      "low_alarm_top_range_m": [
+        0.06266326078576334,
+        0.06266326078576334
+      ],
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 7,
+        "edge": 1
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_112_0001",
+        "alarm": false,
+        "previous_centroid": [
+          35.709285736083984,
+          1.0614286661148071,
+          -1.0707141160964966
+        ],
+        "predicted": [
+          36.611148834228516,
+          1.2443652153015137,
+          -0.9138489365577698
+        ],
+        "previous_velocity": [
+          0.9018630981445312,
+          0.18293654918670654,
+          0.1568651795387268
+        ],
+        "residual": [
+          -0.4954338073730469,
+          -0.6643652319908142,
+          -0.49043673276901245
+        ],
+        "residual_3d": 0.9629973769187927,
+        "residual_yz": 0.8257780075073242,
+        "base_gate": 2.2141857147216797,
+        "original_allowed_3d": 4.753933668136597,
+        "previous_hits": 3,
+        "previous_misses": 0,
+        "previous_reported": false,
+        "previous_zone": "warning",
+        "previous_bbox_min": [
+          35.27000045776367,
+          0.6200000047683716,
+          -1.2899999618530273
+        ],
+        "previous_bbox_max": [
+          36.04999923706055,
+          1.2799999713897705,
+          -0.8999999761581421
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 26,
+      "key": "new_data_4.jsonl:58",
+      "geometry_review_family": "low_cross_section",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_112_0004",
+      "point_snapshot": "new_data_4_id58_0080.npz",
+      "sheet": "targets_06.png",
+      "alarm_frame_memberships": 4,
+      "lifetime_frames": 10,
+      "current_matched_alarm_memberships": 3,
+      "low_alarm_memberships": 4,
+      "low_alarm_top_range_m": [
+        0.030313937690222392,
+        0.07576588630228454
+      ],
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 7
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_112_0000",
+        "alarm": false,
+        "previous_centroid": [
+          40.5412483215332,
+          -0.14562498033046722,
+          -1.4393749237060547
+        ],
+        "predicted": [
+          38.84916305541992,
+          0.6887500286102295,
+          -1.4154165983200073
+        ],
+        "previous_velocity": [
+          -1.6920852661132812,
+          0.8343750238418579,
+          0.023958325386047363
+        ],
+        "residual": [
+          0.2777557373046875,
+          -0.8472115993499756,
+          -0.0045833587646484375
+        ],
+        "residual_3d": 0.891592264175415,
+        "residual_yz": 0.8472239971160889,
+        "base_gate": 2.310824966430664,
+        "original_allowed_3d": 2.310824966430664,
+        "previous_hits": 2,
+        "previous_misses": 0,
+        "previous_reported": false,
+        "previous_zone": "gauge",
+        "previous_bbox_min": [
+          40.52000045776367,
+          -0.3199999928474426,
+          -1.46999990940094
+        ],
+        "previous_bbox_max": [
+          40.56999969482422,
+          0.029999999329447746,
+          -1.399999976158142
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 27,
+      "key": "new_data_4.jsonl:205",
+      "geometry_review_family": "low_cross_section",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_115_0038",
+      "point_snapshot": "new_data_4_id205_0267.npz",
+      "sheet": "targets_06.png",
+      "alarm_frame_memberships": 4,
+      "lifetime_frames": 11,
+      "current_matched_alarm_memberships": 3,
+      "low_alarm_memberships": 4,
+      "low_alarm_top_range_m": [
+        0.07142565689491787,
+        0.10888497808401199
+      ],
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 7
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_115_0038",
+        "alarm": true,
+        "previous_centroid": [
+          28.646251678466797,
+          1.369999885559082,
+          -0.9099999070167542
+        ],
+        "predicted": [
+          28.440523147583008,
+          1.3789730072021484,
+          -0.9136248826980591
+        ],
+        "previous_velocity": [
+          -0.20572829246520996,
+          0.008973151445388794,
+          -0.003624945878982544
+        ],
+        "residual": [
+          -0.09409332275390625,
+          -0.04468727111816406,
+          -0.024946391582489014
+        ],
+        "residual_3d": 0.10711129009723663,
+        "residual_yz": 0.05117884650826454,
+        "base_gate": 2.072925033569336,
+        "original_allowed_3d": 4.631728591918945,
+        "previous_hits": 6,
+        "previous_misses": 0,
+        "previous_reported": true,
+        "previous_zone": "gauge",
+        "previous_bbox_min": [
+          28.6299991607666,
+          1.2699999809265137,
+          -0.9099999666213989
+        ],
+        "previous_bbox_max": [
+          28.68000030517578,
+          1.46999990940094,
+          -0.9099999666213989
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 28,
+      "key": "new_data_4.jsonl:206",
+      "geometry_review_family": "low_cross_section",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_115_0037",
+      "point_snapshot": "new_data_4_id206_0266.npz",
+      "sheet": "targets_06.png",
+      "alarm_frame_memberships": 2,
+      "lifetime_frames": 9,
+      "current_matched_alarm_memberships": 1,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 4
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_115_0037",
+        "alarm": true,
+        "previous_centroid": [
+          23.342597007751465,
+          1.29586523771286,
+          -0.8978844583034515
+        ],
+        "predicted": [
+          23.019359588623047,
+          1.2875639200210571,
+          -0.910768985748291
+        ],
+        "previous_velocity": [
+          -0.32323741912841797,
+          -0.008301317691802979,
+          -0.012884527444839478
+        ],
+        "residual": [
+          -1.2524871826171875,
+          0.20556104183197021,
+          0.2145189642906189
+        ],
+        "residual_3d": 1.287244293279137,
+        "residual_yz": 0.2971089496453529,
+        "base_gate": 1.9668519401550293,
+        "original_allowed_3d": 4.528218498229981,
+        "previous_hits": 3,
+        "previous_misses": 1,
+        "previous_reported": false,
+        "previous_zone": "gauge",
+        "previous_bbox_min": [
+          23.639999389648438,
+          1.2400000095367432,
+          -0.9199999570846558
+        ],
+        "previous_bbox_max": [
+          23.729999542236328,
+          1.399999976158142,
+          -0.85999995470047
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 29,
+      "key": "new_data_4.jsonl:507",
+      "geometry_review_family": "continuous_side_profile",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_134_0028",
+      "point_snapshot": "new_data_4_id507_1226.npz",
+      "sheet": "targets_06.png",
+      "alarm_frame_memberships": 6,
+      "lifetime_frames": 15,
+      "current_matched_alarm_memberships": 5,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 9
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_134_0021",
+        "alarm": false,
+        "previous_centroid": [
+          56.152870178222656,
+          3.924067497253418,
+          -0.08644068986177444
+        ],
+        "predicted": [
+          56.152870178222656,
+          3.924067497253418,
+          -0.08644068986177444
+        ],
+        "previous_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "residual": [
+          -2.4101104736328125,
+          -0.41061830520629883,
+          -0.06677772849798203
+        ],
+        "residual_3d": 2.4457512450591583,
+        "residual_yz": 0.41601280941077207,
+        "base_gate": 2.623057403564453,
+        "original_allowed_3d": 5.301874914169312,
+        "previous_hits": 1,
+        "previous_misses": 0,
+        "previous_reported": false,
+        "previous_zone": "gauge",
+        "previous_bbox_min": [
+          54.439998626708984,
+          3.7200000286102295,
+          -0.6800000071525574
+        ],
+        "previous_bbox_max": [
+          56.57999801635742,
+          4.360000133514404,
+          0.6899999976158142
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 30,
+      "key": "new_data_4.jsonl:516",
+      "geometry_review_family": "continuous_side_profile",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_134_0033",
+      "point_snapshot": "new_data_4_id516_1231.npz",
+      "sheet": "targets_06.png",
+      "alarm_frame_memberships": 5,
+      "lifetime_frames": 13,
+      "current_matched_alarm_memberships": 4,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 9
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_134_0028",
+        "alarm": false,
+        "previous_centroid": [
+          58.0302619934082,
+          3.7683331966400146,
+          -0.092564158141613
+        ],
+        "predicted": [
+          58.0302619934082,
+          3.7683331966400146,
+          -0.092564158141613
+        ],
+        "previous_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "residual": [
+          -1.8793258666992188,
+          -0.3684368133544922,
+          -0.04306083172559738
+        ],
+        "residual_3d": 1.91558493257503,
+        "residual_yz": 0.37094463288166485,
+        "base_gate": 2.660605239868164,
+        "original_allowed_3d": 5.125185775756836,
+        "previous_hits": 1,
+        "previous_misses": 0,
+        "previous_reported": false,
+        "previous_zone": "gauge",
+        "previous_bbox_min": [
+          54.03999710083008,
+          3.309999942779541,
+          -0.7099999785423279
+        ],
+        "previous_bbox_max": [
+          59.32999801635742,
+          4.299999713897705,
+          0.7199999690055847
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 31,
+      "key": "new_data_5.jsonl:111",
+      "geometry_review_family": "sparse_unresolved",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_144_0003",
+      "point_snapshot": "new_data_5_id111_0302.npz",
+      "sheet": "targets_07.png",
+      "alarm_frame_memberships": 10,
+      "lifetime_frames": 20,
+      "current_matched_alarm_memberships": 7,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 10,
+        "beyond_axis": 3
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_144_0002",
+        "alarm": false,
+        "previous_centroid": [
+          90.0630111694336,
+          -1.8652137517929077,
+          -0.810356855392456
+        ],
+        "predicted": [
+          88.63801574707031,
+          -1.8222850561141968,
+          -0.7641425132751465
+        ],
+        "previous_velocity": [
+          -1.4249986410140991,
+          0.04292865842580795,
+          0.04621432349085808
+        ],
+        "residual": [
+          -0.17401123046875,
+          -0.3163818120956421,
+          -0.46785736083984375
+        ],
+        "residual_3d": 0.5909888744354248,
+        "residual_yz": 0.5647901892662048,
+        "base_gate": 3.301260223388672,
+        "original_allowed_3d": 5.821797599792481,
+        "previous_hits": 8,
+        "previous_misses": 3,
+        "previous_reported": false,
+        "previous_zone": "gauge",
+        "previous_bbox_min": [
+          92.57999420166016,
+          -2.109999895095825,
+          -1.1399999856948853
+        ],
+        "previous_bbox_max": [
+          97.9000015258789,
+          -1.899999976158142,
+          -0.6899999976158142
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 32,
+      "key": "new_data_5.jsonl:114",
+      "geometry_review_family": "sparse_unresolved",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_144_0012",
+      "point_snapshot": "new_data_5_id114_0311.npz",
+      "sheet": "targets_07.png",
+      "alarm_frame_memberships": 8,
+      "lifetime_frames": 27,
+      "current_matched_alarm_memberships": 6,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "beyond_axis": 7,
+        "beyond_height_ref": 4,
+        "gauge_or_edge_by_points": 11
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_144_0001",
+        "alarm": false,
+        "previous_centroid": [
+          108.00428009033203,
+          -1.3142858743667603,
+          -1.7621428966522217
+        ],
+        "predicted": [
+          106.48580932617188,
+          -0.9419496059417725,
+          -1.989047646522522
+        ],
+        "previous_velocity": [
+          -1.5184670686721802,
+          0.3723362684249878,
+          -0.22690477967262268
+        ],
+        "residual": [
+          0.22252655029296875,
+          -1.2813835144042969,
+          0.7857143878936768
+        ],
+        "residual_3d": 1.5194765329360962,
+        "residual_yz": 1.5030937194824219,
+        "base_gate": 3.6600856018066406,
+        "original_allowed_3d": 3.6600856018066406,
+        "previous_hits": 9,
+        "previous_misses": 0,
+        "previous_reported": true,
+        "previous_zone": "warning",
+        "previous_bbox_min": [
+          107.72999572753906,
+          -2.2300000190734863,
+          -2.0
+        ],
+        "previous_bbox_max": [
+          108.48999786376953,
+          -0.3799999952316284,
+          -1.0799999237060547
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 33,
+      "key": "new_data_5.jsonl:144",
+      "geometry_review_family": "low_cross_section",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_144_0022",
+      "point_snapshot": "new_data_5_id144_0321.npz",
+      "sheet": "targets_07.png",
+      "alarm_frame_memberships": 6,
+      "lifetime_frames": 23,
+      "current_matched_alarm_memberships": 3,
+      "low_alarm_memberships": 2,
+      "low_alarm_top_range_m": [
+        0.032900303249922436,
+        0.032900303249922436
+      ],
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 12
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_144_0022",
+        "alarm": true,
+        "previous_centroid": [
+          34.653831481933594,
+          -0.813428521156311,
+          -1.5125000476837158
+        ],
+        "predicted": [
+          32.465660095214844,
+          -1.445523738861084,
+          -1.6850000619888306
+        ],
+        "previous_velocity": [
+          -2.188169479370117,
+          -0.632095217704773,
+          -0.17250005900859833
+        ],
+        "residual": [
+          -1.2685203552246094,
+          2.5669522285461426,
+          0.7035715579986572
+        ],
+        "residual_3d": 2.9484572410583496,
+        "residual_yz": 2.6616265773773193,
+        "base_gate": 2.193076629638672,
+        "original_allowed_3d": 4.773242492675781,
+        "previous_hits": 7,
+        "previous_misses": 1,
+        "previous_reported": true,
+        "previous_zone": "gauge",
+        "previous_bbox_min": [
+          36.84000015258789,
+          -0.38999998569488525,
+          -1.3399999141693115
+        ],
+        "previous_bbox_max": [
+          36.849998474121094,
+          0.05999999865889549,
+          -1.3399999141693115
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": [
+        "new_data_144_0022"
+      ]
+    },
+    {
+      "event_number": 34,
+      "key": "new_data_5.jsonl:325",
+      "geometry_review_family": "continuous_side_profile",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_154_0005",
+      "point_snapshot": "new_data_5_id325_0814.npz",
+      "sheet": "targets_07.png",
+      "alarm_frame_memberships": 10,
+      "lifetime_frames": 28,
+      "current_matched_alarm_memberships": 6,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 14
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_154_0023",
+        "alarm": false,
+        "previous_centroid": [
+          38.03797912597656,
+          0.13506892323493958,
+          -0.7416861653327942
+        ],
+        "predicted": [
+          36.99553298950195,
+          0.12875282764434814,
+          -0.809885561466217
+        ],
+        "previous_velocity": [
+          -1.042446255683899,
+          -0.00631609745323658,
+          -0.06819938123226166
+        ],
+        "residual": [
+          1.4199180603027344,
+          0.05791383981704712,
+          0.24352198839187622
+        ],
+        "residual_3d": 1.4418128728866577,
+        "residual_yz": 0.25031372904777527,
+        "base_gate": 2.2607595825195315,
+        "original_allowed_3d": 2.2607595825195315,
+        "previous_hits": 12,
+        "previous_misses": 2,
+        "previous_reported": false,
+        "previous_zone": "gauge",
+        "previous_bbox_min": [
+          36.11000061035156,
+          -0.22999998927116394,
+          -1.059999942779541
+        ],
+        "previous_bbox_max": [
+          42.62999725341797,
+          0.3400000035762787,
+          0.3100000023841858
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 35,
+      "key": "new_data_5.jsonl:353",
+      "geometry_review_family": "sparse_unresolved",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_155_0043",
+      "point_snapshot": "new_data_5_id353_0903.npz",
+      "sheet": "targets_07.png",
+      "alarm_frame_memberships": 11,
+      "lifetime_frames": 21,
+      "current_matched_alarm_memberships": 10,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 15,
+        "beyond_axis": 2
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_155_0036",
+        "alarm": false,
+        "previous_centroid": [
+          109.1500015258789,
+          -14.344998359680176,
+          1.6383333206176758
+        ],
+        "predicted": [
+          108.43445587158203,
+          -13.955552101135254,
+          1.4533333778381348
+        ],
+        "previous_velocity": [
+          -0.715545654296875,
+          0.3894462585449219,
+          -0.18499994277954102
+        ],
+        "residual": [
+          -0.2944488525390625,
+          -0.2508115768432617,
+          0.5412120819091797
+        ],
+        "residual_3d": 0.6652196049690247,
+        "residual_yz": 0.5965039730072021,
+        "base_gate": 3.683000030517578,
+        "original_allowed_3d": 6.121354522705078,
+        "previous_hits": 2,
+        "previous_misses": 0,
+        "previous_reported": false,
+        "previous_zone": "gauge",
+        "previous_bbox_min": [
+          108.75,
+          -14.699999809265137,
+          1.1299999952316284
+        ],
+        "previous_bbox_max": [
+          110.83999633789062,
+          -14.00999927520752,
+          2.0199999809265137
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 36,
+      "key": "new_data_5.jsonl:356",
+      "geometry_review_family": "sparse_unresolved",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_155_0048",
+      "point_snapshot": "new_data_5_id356_0908.npz",
+      "sheet": "targets_08.png",
+      "alarm_frame_memberships": 3,
+      "lifetime_frames": 29,
+      "current_matched_alarm_memberships": 3,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "beyond_axis": 3,
+        "gauge_or_edge_by_points": 18,
+        "beyond_height_ref": 2,
+        "floating": 2
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_155_0037",
+        "alarm": false,
+        "previous_centroid": [
+          118.06856536865234,
+          -15.476428031921387,
+          3.1935713291168213
+        ],
+        "predicted": [
+          118.06856536865234,
+          -15.476428031921387,
+          3.1935713291168213
+        ],
+        "previous_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "residual": [
+          -1.0641860961914062,
+          0.3220548629760742,
+          -0.07044577598571777
+        ],
+        "residual_3d": 1.1140798846796727,
+        "residual_yz": 0.32966944371713897,
+        "base_gate": 3.861371307373047,
+        "original_allowed_3d": 6.3344276237487795,
+        "previous_hits": 1,
+        "previous_misses": 0,
+        "previous_reported": false,
+        "previous_zone": "warning",
+        "previous_bbox_min": [
+          117.86000061035156,
+          -15.739999771118164,
+          2.5199999809265137
+        ],
+        "previous_bbox_max": [
+          118.13999938964844,
+          -15.279999732971191,
+          3.569999933242798
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 37,
+      "key": "new_data_6.jsonl:38",
+      "geometry_review_family": "sparse_unresolved",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_167_0029",
+      "point_snapshot": "new_data_6_id38_0092.npz",
+      "sheet": "targets_08.png",
+      "alarm_frame_memberships": 2,
+      "lifetime_frames": 17,
+      "current_matched_alarm_memberships": 2,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 12,
+        "beyond_axis": 1,
+        "beyond_height_ref": 1
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_167_0028",
+        "alarm": true,
+        "previous_centroid": [
+          115.1310043334961,
+          -11.874999046325684,
+          -0.1510000228881836
+        ],
+        "predicted": [
+          112.80557250976562,
+          -11.395498275756836,
+          0.043437451124191284
+        ],
+        "previous_velocity": [
+          -2.325429916381836,
+          0.47950029373168945,
+          0.19443747401237488
+        ],
+        "residual": [
+          1.4104156494140625,
+          0.15449905395507812,
+          -0.6564375162124634
+        ],
+        "residual_3d": 1.5633465051651,
+        "residual_yz": 0.6743739247322083,
+        "base_gate": 3.802620086669922,
+        "original_allowed_3d": 3.802620086669922,
+        "previous_hits": 4,
+        "previous_misses": 0,
+        "previous_reported": false,
+        "previous_zone": "warning",
+        "previous_bbox_min": [
+          112.75999450683594,
+          -12.420000076293945,
+          -0.6200000047683716
+        ],
+        "previous_bbox_max": [
+          116.18999481201172,
+          -11.579999923706055,
+          0.6399999856948853
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 38,
+      "key": "new_data_6.jsonl:247",
+      "geometry_review_family": "continuous_side_profile",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_178_0047",
+      "point_snapshot": "new_data_6_id247_0671.npz",
+      "sheet": "targets_08.png",
+      "alarm_frame_memberships": 2,
+      "lifetime_frames": 11,
+      "current_matched_alarm_memberships": 1,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 5
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_178_0044",
+        "alarm": false,
+        "previous_centroid": [
+          92.66973114013672,
+          12.049776077270508,
+          0.5617778301239014
+        ],
+        "predicted": [
+          92.47260284423828,
+          11.982664108276367,
+          0.5586667656898499
+        ],
+        "previous_velocity": [
+          -0.1971282958984375,
+          -0.06711196899414062,
+          -0.0031110644340515137
+        ],
+        "residual": [
+          -2.5790023803710938,
+          -1.4610652923583984,
+          0.3129332661628723
+        ],
+        "residual_3d": 2.980585813522339,
+        "residual_yz": 1.4942017793655396,
+        "base_gate": 3.3533946228027345,
+        "original_allowed_3d": 5.7787016582489015,
+        "previous_hits": 2,
+        "previous_misses": 2,
+        "previous_reported": false,
+        "previous_zone": "gauge",
+        "previous_bbox_min": [
+          90.3499984741211,
+          11.460000038146973,
+          0.5099999904632568
+        ],
+        "previous_bbox_max": [
+          96.79999542236328,
+          13.179999351501465,
+          0.75
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 39,
+      "key": "new_data_6.jsonl:328",
+      "geometry_review_family": "sparse_unresolved",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_181_0033",
+      "point_snapshot": "new_data_6_id328_0810.npz",
+      "sheet": "targets_08.png",
+      "alarm_frame_memberships": 10,
+      "lifetime_frames": 24,
+      "current_matched_alarm_memberships": 8,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "beyond_height_ref": 1,
+        "gauge_or_edge_by_points": 13
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_181_0043",
+        "alarm": true,
+        "previous_centroid": [
+          98.07060241699219,
+          9.494180679321289,
+          0.07269720733165741
+        ],
+        "predicted": [
+          96.7372817993164,
+          9.251934051513672,
+          -0.07139132916927338
+        ],
+        "previous_velocity": [
+          -1.3333200216293335,
+          -0.24224619567394257,
+          -0.1440885365009308
+        ],
+        "residual": [
+          0.20800018310546875,
+          -0.2907581329345703,
+          0.5319796204566956
+        ],
+        "residual_3d": 0.6409420371055603,
+        "residual_yz": 0.606252908706665,
+        "base_gate": 3.461412048339844,
+        "original_allowed_3d": 3.461412048339844,
+        "previous_hits": 10,
+        "previous_misses": 1,
+        "previous_reported": true,
+        "previous_zone": "gauge",
+        "previous_bbox_min": [
+          98.3699951171875,
+          9.579999923706055,
+          -0.7400000095367432
+        ],
+        "previous_bbox_max": [
+          99.52999877929688,
+          9.9399995803833,
+          1.0299999713897705
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 40,
+      "key": "new_data_6.jsonl:333",
+      "geometry_review_family": "sparse_unresolved",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_182_0003",
+      "point_snapshot": "new_data_6_id333_0831.npz",
+      "sheet": "targets_08.png",
+      "alarm_frame_memberships": 3,
+      "lifetime_frames": 16,
+      "current_matched_alarm_memberships": 2,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "beyond_height_ref": 2,
+        "beyond_axis": 4,
+        "gauge_or_edge_by_points": 7
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_181_0043",
+        "alarm": false,
+        "previous_centroid": [
+          137.31454467773438,
+          12.885453224182129,
+          -0.8127272129058838
+        ],
+        "predicted": [
+          137.31454467773438,
+          12.885453224182129,
+          -0.8127272129058838
+        ],
+        "previous_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "residual": [
+          -1.2345428466796875,
+          -0.39545345306396484,
+          0.08272713422775269
+        ],
+        "residual_3d": 1.2989700737760421,
+        "residual_yz": 0.4040138763430658,
+        "base_gate": 4.246290893554688,
+        "original_allowed_3d": 6.7727410507202155,
+        "previous_hits": 1,
+        "previous_misses": 0,
+        "previous_reported": false,
+        "previous_zone": "warning",
+        "previous_bbox_min": [
+          137.27000427246094,
+          12.719999313354492,
+          -1.0199999809265137
+        ],
+        "previous_bbox_max": [
+          137.34999084472656,
+          13.229999542236328,
+          -0.4599999785423279
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 41,
+      "key": "new_data_6.jsonl:514",
+      "geometry_review_family": "sparse_unresolved",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_192_0012",
+      "point_snapshot": "new_data_6_id514_1350.npz",
+      "sheet": "targets_09.png",
+      "alarm_frame_memberships": 11,
+      "lifetime_frames": 55,
+      "current_matched_alarm_memberships": 11,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 21,
+        "floating": 5,
+        "beyond_height_ref": 14,
+        "beyond_axis": 5
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_192_0022",
+        "alarm": false,
+        "previous_centroid": [
+          113.6890869140625,
+          -2.4218180179595947,
+          -0.3145454227924347
+        ],
+        "predicted": [
+          113.20140838623047,
+          -2.411616086959839,
+          -0.25626257061958313
+        ],
+        "previous_velocity": [
+          -0.48767852783203125,
+          0.01020193099975586,
+          0.05828285217285156
+        ],
+        "residual": [
+          1.247161865234375,
+          -0.13695526123046875,
+          -0.41659459471702576
+        ],
+        "residual_3d": 1.322013811584824,
+        "residual_yz": 0.4385291323574169,
+        "base_gate": 3.77378173828125,
+        "original_allowed_3d": 3.77378173828125,
+        "previous_hits": 44,
+        "previous_misses": 0,
+        "previous_reported": true,
+        "previous_zone": "warning",
+        "previous_bbox_min": [
+          113.57999420166016,
+          -2.7799999713897705,
+          -0.5999999642372131
+        ],
+        "previous_bbox_max": [
+          113.7699966430664,
+          -2.200000047683716,
+          -0.08999999612569809
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 42,
+      "key": "new_data_7.jsonl:83",
+      "geometry_review_family": "low_cross_section",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_200_0015",
+      "point_snapshot": "new_data_7_id83_0352.npz",
+      "sheet": "targets_09.png",
+      "alarm_frame_memberships": 2,
+      "lifetime_frames": 8,
+      "current_matched_alarm_memberships": 1,
+      "low_alarm_memberships": 2,
+      "low_alarm_top_range_m": [
+        0.10064595414255861,
+        0.10064595414255861
+      ],
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 5
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_200_0012",
+        "alarm": false,
+        "previous_centroid": [
+          37.54999923706055,
+          -0.9819999933242798,
+          -0.8659999966621399
+        ],
+        "predicted": [
+          37.54999923706055,
+          -0.9819999933242798,
+          -0.8659999966621399
+        ],
+        "previous_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "residual": [
+          -3.8014297485351562,
+          0.41342854499816895,
+          0.08599996566772461
+        ],
+        "residual_3d": 3.8248120592994126,
+        "residual_yz": 0.4222785288339354,
+        "base_gate": 2.250999984741211,
+        "original_allowed_3d": 4.8292823410034185,
+        "previous_hits": 1,
+        "previous_misses": 0,
+        "previous_reported": false,
+        "previous_zone": "gauge",
+        "previous_bbox_min": [
+          36.869998931884766,
+          -1.0499999523162842,
+          -0.8799999952316284
+        ],
+        "previous_bbox_max": [
+          38.09000015258789,
+          -0.8899999856948853,
+          -0.8499999642372131
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 43,
+      "key": "new_data_7.jsonl:197",
+      "geometry_review_family": "low_cross_section",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_205_0031",
+      "point_snapshot": "new_data_7_id197_0623.npz",
+      "sheet": "targets_09.png",
+      "alarm_frame_memberships": 4,
+      "lifetime_frames": 11,
+      "current_matched_alarm_memberships": 2,
+      "low_alarm_memberships": 4,
+      "low_alarm_top_range_m": [
+        0.1077890830560968,
+        0.11596690731744985
+      ],
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 7
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_205_0027",
+        "alarm": false,
+        "previous_centroid": [
+          56.423336029052734,
+          -3.31000018119812,
+          -1.1899999380111694
+        ],
+        "predicted": [
+          59.097503662109375,
+          -3.6920835971832275,
+          -1.129166603088379
+        ],
+        "previous_velocity": [
+          2.6741676330566406,
+          -0.3820834159851074,
+          0.06083333492279053
+        ],
+        "residual": [
+          -4.295509338378906,
+          0.6380836963653564,
+          -0.03083336353302002
+        ],
+        "residual_3d": 4.342752933502197,
+        "residual_yz": 0.6388282179832458,
+        "base_gate": 2.628466720581055,
+        "original_allowed_3d": 5.100396509170532,
+        "previous_hits": 3,
+        "previous_misses": 0,
+        "previous_reported": false,
+        "previous_zone": "gauge",
+        "previous_bbox_min": [
+          56.39999771118164,
+          -3.4600000381469727,
+          -1.1899999380111694
+        ],
+        "previous_bbox_max": [
+          56.459999084472656,
+          -3.1599998474121094,
+          -1.1899999380111694
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 44,
+      "key": "new_data_7.jsonl:208",
+      "geometry_review_family": "low_cross_section",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_206_0000",
+      "point_snapshot": "new_data_7_id208_0643.npz",
+      "sheet": "targets_09.png",
+      "alarm_frame_memberships": 2,
+      "lifetime_frames": 13,
+      "current_matched_alarm_memberships": 1,
+      "low_alarm_memberships": 2,
+      "low_alarm_top_range_m": [
+        0.11950230929363226,
+        0.11950230929363226
+      ],
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 6
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_205_0045",
+        "alarm": false,
+        "previous_centroid": [
+          56.674285888671875,
+          -3.3457140922546387,
+          -1.1999999284744263
+        ],
+        "predicted": [
+          58.28190612792969,
+          -3.6080949306488037,
+          -1.2399998903274536
+        ],
+        "previous_velocity": [
+          1.6076202392578125,
+          -0.26238083839416504,
+          -0.039999961853027344
+        ],
+        "residual": [
+          -3.235240936279297,
+          0.4764280319213867,
+          0.07999992370605469
+        ],
+        "residual_3d": 3.2711110609654943,
+        "residual_yz": 0.48309797908236013,
+        "base_gate": 2.6334857177734374,
+        "original_allowed_3d": 5.18746129989624,
+        "previous_hits": 2,
+        "previous_misses": 0,
+        "previous_reported": false,
+        "previous_zone": "gauge",
+        "previous_bbox_min": [
+          56.63999938964844,
+          -3.4700000286102295,
+          -1.1999999284744263
+        ],
+        "previous_bbox_max": [
+          56.689998626708984,
+          -3.179999828338623,
+          -1.1999999284744263
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    },
+    {
+      "event_number": 45,
+      "key": "new_data_7.jsonl:253",
+      "geometry_review_family": "sparse_unresolved",
+      "review_basis": "Exact matched target support, full-context target crop, complete temporal trace and physical Y/Z trajectory. See review limitations in README.",
+      "representative_frame": "new_data_208_0036",
+      "point_snapshot": "new_data_7_id253_0781.npz",
+      "sheet": "targets_09.png",
+      "alarm_frame_memberships": 5,
+      "lifetime_frames": 37,
+      "current_matched_alarm_memberships": 3,
+      "low_alarm_memberships": 0,
+      "low_alarm_top_range_m": null,
+      "lifetime_cluster_reasons": {
+        "gauge_or_edge_by_points": 11,
+        "beyond_height_ref": 12
+      },
+      "max_transverse_residual": {
+        "frame": "new_data_208_0022",
+        "alarm": false,
+        "previous_centroid": [
+          125.78770446777344,
+          -1.2604472637176514,
+          -0.3389436602592468
+        ],
+        "predicted": [
+          124.20040893554688,
+          -1.6514500379562378,
+          -0.227887362241745
+        ],
+        "previous_velocity": [
+          -1.587297797203064,
+          -0.3910028040409088,
+          0.11105630546808243
+        ],
+        "residual": [
+          0.1845703125,
+          1.6497833728790283,
+          -0.39544597268104553
+        ],
+        "residual_3d": 1.7065253257751465,
+        "residual_yz": 1.6965148448944092,
+        "base_gate": 4.015754089355468,
+        "original_allowed_3d": 4.015754089355468,
+        "previous_hits": 11,
+        "previous_misses": 1,
+        "previous_reported": true,
+        "previous_zone": "warning",
+        "previous_bbox_min": [
+          122.90999603271484,
+          -2.0299999713897705,
+          -0.6800000071525574
+        ],
+        "previous_bbox_max": [
+          130.4199981689453,
+          0.6499999761581421,
+          -0.4099999964237213
+        ]
+      },
+      "transverse_residual_exceeds_base_frames": []
+    }
+  ],
+  "limitations": [
+    "Review labels describe target geometry, not independently surveyed semantic classes or envelope membership.",
+    "Unresolved events are included without exclusion.",
+    "Association residuals are recorded after mount reseed and use physical coordinates, not fitted lateral offsets.",
+    "The broad geometry families do not establish that a safe automatic rejection rule exists."
+  ]
+}

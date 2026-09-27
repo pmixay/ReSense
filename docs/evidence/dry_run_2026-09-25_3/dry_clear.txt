@@ -1,0 +1,21 @@
+== SKIP_BUILD=1: reusing resense:latest ==
+== playing roundT_doubleT at rate 1.0 through the node (headless) ==
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1790361093.857481480] [rosbag2_storage]: Opened database '/data/roundT_doubleT/roundT_doubleT_0.db3' for READ_ONLY.
+[INFO] [1790361093.857539182] [rosbag2_player]: Set rate to 1
+[INFO] [1790361093.875465821] [rosbag2_player]: Sleep 3000000000 ns
+[INFO] [1790361096.876010993] [rosbag2_storage]: Opened database '/data/roundT_doubleT/roundT_doubleT_0.db3' for READ_ONLY.
+
+== checking out/dry_clear/status.jsonl ==
+status messages      : 238 (17 lines skipped)
+alarm frames         : 0
+latency decode+detect: mean 36 / p95 46 / max 50 ms
+detector stage total : mean 23 / p95 33 ms
+dropped input frames : 11 (10 of them skipped by the node's catch-up); 0 after the first 5 s
+dropped input settle : start-up catch-up back on the newest frame at +2.0 s; drops counted after +5.0 s (the later of 5 s and that, at most 15 s)
+dropped input vs bag : 198 messages of /lidar_points after the first 5 s, 0 frame(s) missing from the recording itself; 0 of its messages not processed
+fps (last report)    : 10.0
+start of the input   : 40 frames in the first 5 s after the first one, largest gap 0.3 s
+
+PASS: all dry-run criteria met
+exit 0

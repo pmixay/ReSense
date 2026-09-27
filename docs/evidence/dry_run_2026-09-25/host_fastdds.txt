@@ -1,0 +1,15 @@
+player: mdm (uid 1000), RMW_IMPLEMENTATION=rmw_fastrtps_cpp, no Fast DDS XML profile
+09:33:03 ros2 bag play /mnt/ramdata/for_hackathon/roundT_doubleT --delay 3
+09:33:37 ros2 bag play /mnt/ramdata/for_hackathon/doubleT_obstacle --delay 3
+decisions seen:  172 CAUTION 52 FAULT 68 GO 137 STOP 
+status messages      : 377 (52 lines skipped)
+alarm frames         : 137
+obstacle distance    : 55.7 .. 114.9 m
+latency decode+detect: mean 46 / p95 67 / max 84 ms
+detector stage total : mean 25 / p95 36 ms
+dropped input frames : 75 (59 after the first 5 s)
+fps (last report)    : 9.18
+start of the input   : 35 frames in the first 5 s after the first one, largest gap 0.3 s, first STOP at +23.9 s
+recordings seen      : 2 ['/lidar_points', '/sensing/lidar/hesai128/pointcloud']
+
+PASS: all dry-run criteria met

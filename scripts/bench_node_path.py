@@ -23,6 +23,7 @@ import numpy as np
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
+from resense import _native  # noqa: E402
 from resense.config import DetectorConfig  # noqa: E402
 from resense.detector import Detector  # noqa: E402
 from resense.frame import Frame, axis_matrix  # noqa: E402
@@ -83,6 +84,7 @@ def main():
         raise SystemExit(f"bench_node_path: no input frames found in {a.npy!r}; provide a non-empty cache")
     dec, tot = np.array(dec), np.array(tot)
     print(f"{os.path.basename(os.path.normpath(a.npy))}: {len(tot)} frames, {int(np.mean(n_pts))} slots per message")
+    print(f"  kernels: {_native.status()}")
     print(f"  decode + crop + rotate: mean {dec.mean():.1f} ms, p95 {np.percentile(dec, 95):.1f} ms")
     print(f"  decode + detect:        mean {tot.mean():.1f} ms, p95 {np.percentile(tot, 95):.1f} ms, "
           f"max {tot.max():.1f} ms")

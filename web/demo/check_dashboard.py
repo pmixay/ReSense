@@ -3,7 +3,7 @@
 
 Opens ``web/index.html`` from disk, loads a ``results.jsonl`` (from ``resense run --out`` or
 ``web/demo/make_demo_run.py``) through the file input, plays it back and asserts that the
-Russian banner shows ПУТЬ СВОБОДЕН at the start and ПРЕПЯТСТВИЕ with a distance inside ``[--min-dist,
+Russian banner shows ПРЕПЯТСТВИЕ НЕ ОБНАРУЖЕНО at the start and ПРЕПЯТСТВИЕ with a distance inside ``[--min-dist,
 --max-dist]`` at some point.  Saves a screenshot of the frame with the nearest obstacle and,
 with ``--video``, a WebM recording of the replay.
 
@@ -156,8 +156,8 @@ def check(jsonl: str, screenshot: str | None, video: str | None, speed: float, m
 
     # --- assertions ------------------------------------------------------------------------
     texts = [t for _, t in report["observed"]]
-    if not texts or not texts[0].startswith("ПУТЬ СВОБОДЕН"):
-        report["errors"].append(f"banner at the start is {texts[:1]!r}, expected ПУТЬ СВОБОДЕН")
+    if not texts or not texts[0].startswith("ПРЕПЯТСТВИЕ НЕ ОБНАРУЖЕНО"):
+        report["errors"].append(f"banner at the start is {texts[:1]!r}, expected ПРЕПЯТСТВИЕ НЕ ОБНАРУЖЕНО")
     dists = [float(m.group(1)) for t in texts for m in [OBSTACLE_RE.search(t)] if m]
     report["nearest_min_m"] = min(dists) if dists else None
     if not dists:

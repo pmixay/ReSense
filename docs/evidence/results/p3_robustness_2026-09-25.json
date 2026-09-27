@@ -1,0 +1,432 @@
+{
+  "schema": "resense-p3-robustness-v1",
+  "date": "2026-09-25",
+  "item": "SCORECARD #13 (criterion 8.4): 5 Hz input and a +3 deg roll / pitch re-mount (P4: EXPERIMENTS.md section 1g, scorecard13_2026-09-25.json)",
+  "preregistered": {
+    "written_at_utc": "2026-09-25T20:50:23Z",
+    "base": "1c96233 (claude/nifty-pascal-lzgl78), branch wf9/robustness",
+    "note": "written before any candidate run; only the base was measured (below)",
+    "flags": {
+      "calibration.time_cadence": "bool, default false (frame counting, byte-identical). true: calibration.obs_spacing, monitor_period and max_frames count nominal frame periods of sensor time instead of processed frames; each frame adds round(dt / tracking.frame_dt) periods (at least 1), dt from the stamps exactly as the tracker gets it (Detector._frame_dt). 10 Hz adds 1 per frame (the receive-stamp jitter 0.08-0.12 s rounds to 1), 5 Hz adds 2, so the 20 x 10-period final observation window is 20 s at both rates.",
+      "track.rates_per_period": "bool, default false. true: axis_max_yaw_rate and axis_max_curvature_rate are per nominal frame period and the EMA weights floor_smoothing, rails_smoothing and walls_smoothing are per period: over k periods (the same rounding) the limits are x k and the weights a^k, and the model age (axis_warmup_frames) advances by k.",
+      "calibration.refine_min_deg": "float deg, default 0 (off). > 0: while a provisional tilt is applied and at least calibration.provisional_frames spaced observations exist, the tilt the final would set from the spaced observations so far (their median; roll / pitch below apply_min_deg and yaw below min_yaw_deg set to 0, as the final does) replaces the applied tilt when it differs from it by at least this much in roll or pitch. Pre-registered value: 0.5.",
+      "calibration.provisional_per_axis": "bool, default false. true: the provisional tilt corrects roll and pitch each only when that axis itself reaches provisional_min_deg (2.5)."
+    },
+    "candidates_in_order": [
+      {
+        "id": "K1",
+        "set": {
+          "calibration.time_cadence": true
+        }
+      },
+      {
+        "id": "K2",
+        "set": {
+          "calibration.time_cadence": true,
+          "track.rates_per_period": true
+        }
+      },
+      {
+        "id": "K3",
+        "set": {
+          "calibration.time_cadence": true,
+          "track.rates_per_period": true,
+          "calibration.refine_min_deg": 0.5
+        }
+      },
+      {
+        "id": "K4",
+        "set": {
+          "calibration.time_cadence": true,
+          "track.rates_per_period": true,
+          "calibration.refine_min_deg": 0.5,
+          "calibration.provisional_per_axis": true
+        },
+        "run_only_if": "K3 leaves a stress mode above 13 false events on the five empty bags, or roundT_doubleT above 0 at pitch_3"
+      }
+    ],
+    "measurement": {
+      "stress": "python scripts/robustness_check.py --cache /data/cache --jobs 1 --config <configs/default.yaml with the candidate's flags> --out <dir> with --every 2, --mount roll_3, --mount pitch_3 (and as recorded, as a cheap 10 Hz pre-check before the gate)",
+      "gate": "python scripts/regression_gate.py --cache /data/cache --jobs 1 --baseline docs/evidence/results/regression_baseline_2026-09-25_ride_column.json --set <flags>, 10 Hz, with the ride and set F straight; run only for the candidate(s) that meet the target on the stress runs"
+    },
+    "target": "re-measured with robustness_check.py: the five empty bags at 5 Hz / roll_3 / pitch_3 at <= 13 false events each (base 13 / 16 / 17); roundT_doubleT 0 / 0 / 0 or as close as possible (base 3 / 2 / 1); doubleT_obstacle under stress not worse than P4: labelled hits 92/123 and first alarm frame 12 at 5 Hz, 181/246 and 12 at roll_3, 186/246 and 11 at pitch_3; and the normal 10 Hz gate passes",
+    "ship_rule": "A candidate is eligible when (1) the 10 Hz gate exits 0 and (2) the target improves: the five-bag false events summed over 5 Hz + roll_3 + pitch_3 fall below the base 46 (13 + 16 + 17), none of the three modes rises, and roundT_doubleT rises in no mode; and (3) every safety condition holds. Ship the eligible candidate with the fewest summed stress false events (tie: the one with fewer flags). No eligible candidate: nothing ships, flags stay off, reported as tried, not shipped, with the numbers.",
+    "safety_conditions": [
+      "10 Hz gate rows: doubleT_obstacle labelled hits per label identical or better, first alarm frame identical or earlier, false-alarm events not up",
+      "10 Hz gate rows: set O (cloud_with_fake_obj) every inside object STOP frames identical or more and first STOP identical or earlier (no shorter first-STOP distance)",
+      "10 Hz gate rows: set F straight detections identical or better",
+      "10 Hz gate rows: no new false event (alarm events, STOP episodes) in any of the five empty recordings or the ride",
+      "stress: doubleT_obstacle labelled hits and first alarm frame at 5 Hz / roll_3 / pitch_3 not worse than P4's numbers above",
+      "a safety loss outweighs any false-alarm gain"
+    ]
+  },
+  "known_before_registration": {
+    "base_measured": "robustness_check.py on 1c96233, --jobs 1: identical to P4 (scorecard13_2026-09-25.json). Five empty bags false events / STOP episodes: as recorded 13 / 16, 5 Hz 13 / 17, roll_3 16 / 17, pitch_3 17 / 18. roundT_doubleT events 0 / 3 / 2 / 1. doubleT_obstacle 185/246 first 11; 92/123 first 12; 181/246 first 12; 186/246 first 11.",
+    "diagnosis": {
+      "5hz_calibration": "at 5 Hz the final 20-observation calibration never completes on roundT_doubleT, roundT_pressureGate_roundT, doubleT_platform, doubleT_obstacle (status stays pending / provisional); on the two long bags it completes at original frame 380 instead of 190",
+      "5hz_roundT_doubleT": "all three events coincide with the track axis lagging the 10 Hz one: the yaw moves by the per-frame limit axis_max_yaw_rate 0.003 on every 5 Hz frame at frames 104-120 (5 Hz yaw -0.0272 vs 10 Hz -0.0365 at frame 112) and the curvature by axis_max_curvature_rate 1e-4 per frame at 126-130; at 186-196 the 5 Hz curvature is 1.0-1.1e-4 larger (0.5 m at 100 m). Track 25 (106-108) is a low cluster at 47 m sweeping laterally 0.7 -> 0.1 m; tracks 41 (186) and 44 (190-196) are far clusters sweeping 1-2 m across the corridor at 83-137 m, confirmed on a 2-of-3 zone vote.",
+      "tilt_roundT_doubleT": "the provisional tilt (median of the first 5 consecutive observations) carries a roll error: the as-recorded first frames measure roll -1.0 ... -2.15 deg (the spaced median settles at -0.5 after 6 observations and -0.19 at 20). pitch_3: provisional roll -1.57 / pitch -2.70 applied (final 0.0 / -2.81) -> track 24, a low cluster at the right rail at 50-54 m, frames 99-100. roll_3: provisional roll -5.03 (final -3.36) -> track 26, a low cluster at the right rail at 39-44 m, frames 111-112; track 18 at 234 is the known far column (column hits 1 of the last 10 at that frame) after the final calibration.",
+      "tilt_other": "doubleT_platform pitch_3: track 4 (frame 19, 112 m) in the first frames after the provisional re-seed, track 156 (185-186, a low cluster at 3-9 m), track 169 (201, a column at 88 m confirmed on a 3-of-5 zone vote before its column hits); roll_3: track 8 (10-11, 81 m) after the re-seed, track 119 (164-165, 49 m). squareT_platform_squareT_switch 9 -> 10 events: the same flickering station structures at 82.9 / 94 / 147 m as recorded. These are not traced to a frame- or tilt-dependent rule."
+    }
+  },
+  "addendum_1": {
+    "written_at_utc": "2026-09-25T20:56:45Z",
+    "why": "K1 and K2 measured at 5 Hz only (robustness_check.py --every 2). K1: five empty bags 13 / 17 -> 13 / 17 (events / STOP episodes), roundT_doubleT 3 -> 3, the final calibration now completes at original frame 190-214 on all six bags, but doubleT_obstacle 92/123 -> 91/123 (first alarm 12): the final correction (roll +3.03 / pitch -0.88 over the provisional +3.06 / -0.83, a 0.06 deg change) re-seeds the track model at frame 192 and the object is missed at 194, exactly as at 10 Hz as recorded (re-seed at 190, miss at 191). K2: five empty bags 13 / 17 -> 11 / 13, roundT_doubleT 3 -> 0, but doubleT_obstacle 92/123 -> 87/123: with the EMA weights squared per 5 Hz frame (floor 0.25, rails 0.49) the bed fit is noisier and the object on the rail (a low cluster at 56 m) is missed at 182 and 194-200. Both breach the registered stress safety condition (doubleT_obstacle at 5 Hz not below 92/123).",
+    "changes": {
+      "track.rates_per_period": "redefined before any further run: only axis_max_yaw_rate, axis_max_curvature_rate and the warm-up age count nominal periods (physical rates per second); the EMA weights stay per processed frame (noise averaging over frames). The K2 variant with the EMA scaled is recorded above and dropped.",
+      "calibration.keep_within_deg": "new, float deg, default 0 (off). > 0: a final tilt within this of the applied provisional one in roll and in pitch keeps the applied correction (status ok), so the track model is not re-seeded for a change below the final's own p90 error (0.5 deg). Registered value: 0.25."
+    },
+    "candidates_in_order": [
+      {
+        "id": "K1b",
+        "set": {
+          "calibration.time_cadence": true,
+          "calibration.keep_within_deg": 0.25
+        }
+      },
+      {
+        "id": "K2b",
+        "set": {
+          "calibration.time_cadence": true,
+          "calibration.keep_within_deg": 0.25,
+          "track.rates_per_period": true
+        }
+      },
+      {
+        "id": "K3b",
+        "set": {
+          "calibration.time_cadence": true,
+          "calibration.keep_within_deg": 0.25,
+          "track.rates_per_period": true,
+          "calibration.refine_min_deg": 0.5
+        }
+      },
+      {
+        "id": "K4b",
+        "set": {
+          "calibration.time_cadence": true,
+          "calibration.keep_within_deg": 0.25,
+          "track.rates_per_period": true,
+          "calibration.refine_min_deg": 0.5,
+          "calibration.provisional_per_axis": true
+        },
+        "run_only_if": "K3b leaves a stress mode above 13 false events on the five empty bags, or roundT_doubleT above 0 at pitch_3"
+      }
+    ],
+    "unchanged": "target, ship rule and safety conditions as registered; K1-K4 are superseded by K1b-K4b (K3 and K4 not run). These candidates are post hoc to the K1 / K2 5 Hz numbers and are reported as such."
+  },
+  "addendum_2": {
+    "written_at_utc": "2026-09-25T21:01:16Z",
+    "why": "Measured so far. K1b at 5 Hz: every recording identical to the base 5 Hz run (five empty bags 13 / 17, roundT_doubleT 3, doubleT_obstacle 92/123 first 12) and the final calibration completes at original frame 190-214. K2b at 5 Hz: five empty bags 13 / 17 -> 11 / 17 (alarm frames 63 -> 65); roundT_doubleT 3 / 4 -> 2 / 2: the low cluster at 106-108 is gone, the far clusters at 186-198 (97-116 m) remain, where the curvature still lags through walls_smoothing applied per 5 Hz frame; roundT_pressureGate_roundT 0 -> 1 (frame 232, 65 m); doubleT_obstacle 92/123 first 12. K3b at pitch_3: 17 / 18 -> 16 / 17, roundT_doubleT 1 -> 0, doubleT_obstacle 186/246 first 11. K3b roll_3 not finished.",
+    "changes": {
+      "track.walls_smoothing_per_period": "new, bool, default false: walls_smoothing (the EMA of the axis yaw and curvature, which change with the distance travelled) per nominal frame period, a^k over k periods; floor_smoothing and rails_smoothing (the bed and the rail head, averaged for noise) stay per frame. Independent of rates_per_period."
+    },
+    "candidates_in_order": [
+      {
+        "id": "K2c",
+        "set": {
+          "calibration.time_cadence": true,
+          "calibration.keep_within_deg": 0.25,
+          "track.rates_per_period": true,
+          "track.walls_smoothing_per_period": true
+        }
+      },
+      {
+        "id": "K3c",
+        "set": {
+          "calibration.time_cadence": true,
+          "calibration.keep_within_deg": 0.25,
+          "track.rates_per_period": true,
+          "track.walls_smoothing_per_period": true,
+          "calibration.refine_min_deg": 0.5
+        }
+      },
+      {
+        "id": "K4c",
+        "set": {
+          "calibration.time_cadence": true,
+          "calibration.keep_within_deg": 0.25,
+          "track.rates_per_period": true,
+          "track.walls_smoothing_per_period": true,
+          "calibration.refine_min_deg": 0.5,
+          "calibration.provisional_per_axis": true
+        },
+        "run_only_if": "K3c leaves a stress mode above 13 false events on the five empty bags, or roundT_doubleT above 0 at pitch_3"
+      }
+    ],
+    "unchanged": "target, ship rule, safety conditions; K3b (roll_3 and 5 Hz) and K4b are still run as registered, since K3b leaves pitch_3 at 16 > 13. K2c-K4c are post hoc to the K2b 5 Hz numbers and reported as such."
+  },
+  "addendum_3": {
+    "written_at_utc": "2026-09-25T21:34:36Z",
+    "why": "Stress runs (five empty bags events / STOP episodes, roundT_doubleT events, doubleT_obstacle hits and first alarm): K3c 5 Hz 11 / 13, 0, 92/123 @12; roll_3 11 / 13, 1, 183/246 @12; pitch_3 16 / 17, 0, 186/246 @11 (sum 38 < 46, no mode up). K4c: roll_3 19 / 14, pitch_3 19 / 17, 5 Hz doubleT_obstacle 89/123: worse, not eligible; K4b not run (its 10 Hz tilt runs equal K4c's but for two stamp gaps). K3c 10 Hz gate (--jobs 1, the ride in 8 pieces, set F straight): FAIL, ride alarm events 46 -> 48 and STOP episodes 39 -> 42; five bags, set O and set F straight identical; doubleT_obstacle labelled 185 -> 186, first alarm 11. The ride has no provisional tilt in any piece (refine and keep_within never engage; every piece is final 'identity'), so the change comes from the per-frame interval: the cached ride stamps are bag receive times delivered in bursts (0.2-0.45 s followed by 0.02 s; 55 intervals >= 0.15 s in pieces 0, 5, 6, 7), so round(dt / 0.1) counts 2-4 periods on the frame before a near-zero interval, and the axis rate limits and the yaw EMA open up there.",
+    "change": "the periods k of track.rates_per_period, track.walls_smoothing_per_period and calibration.time_cadence become the input rate, not the individual interval: k = max(1, round(median of the last 9 stamp intervals inside accumulation.stamp_dt_range / tracking.frame_dt)); 1 on the first frame. 10 Hz gives 1 whatever the bursts and single drops, 5 Hz gives 2. Flags and values unchanged.",
+    "candidates_in_order": [
+      {
+        "id": "K3d",
+        "set": {
+          "calibration.time_cadence": true,
+          "calibration.keep_within_deg": 0.25,
+          "track.rates_per_period": true,
+          "track.walls_smoothing_per_period": true,
+          "calibration.refine_min_deg": 0.5
+        },
+        "periods": "median interval"
+      }
+    ],
+    "unchanged": "target, ship rule and safety conditions; K3d is re-measured at 5 Hz / roll_3 / pitch_3 and through the 10 Hz gate. Post hoc to the K3c gate and reported as such."
+  },
+  "results": {
+    "stress_legend": "per mode: [five empty bags false events, STOP episodes, roundT_doubleT events, doubleT_obstacle labelled hits @ first alarm frame]; robustness_check.py --jobs 1; details per recording and event: scorecard13_p3_2026-09-25.json",
+    "stress": {
+      "base": {
+        "asrec": [
+          13,
+          16,
+          0,
+          "185/246 @11"
+        ],
+        "5hz": [
+          13,
+          17,
+          3,
+          "92/123 @12"
+        ],
+        "roll": [
+          16,
+          17,
+          2,
+          "181/246 @12"
+        ],
+        "pitch": [
+          17,
+          18,
+          1,
+          "186/246 @11"
+        ]
+      },
+      "K1": {
+        "5hz": [
+          13,
+          17,
+          3,
+          "91/123 @12"
+        ]
+      },
+      "K2": {
+        "5hz": [
+          11,
+          13,
+          0,
+          "87/123 @12"
+        ]
+      },
+      "K1b": {
+        "5hz": [
+          13,
+          17,
+          3,
+          "92/123 @12"
+        ],
+        "roll": [
+          16,
+          17,
+          2,
+          "183/246 @12"
+        ],
+        "pitch": [
+          17,
+          18,
+          1,
+          "186/246 @11"
+        ]
+      },
+      "K2b": {
+        "5hz": [
+          11,
+          17,
+          2,
+          "92/123 @12"
+        ]
+      },
+      "K3b": {
+        "5hz": [
+          11,
+          17,
+          2,
+          "92/123 @12"
+        ],
+        "roll": [
+          11,
+          13,
+          1,
+          "183/246 @12"
+        ],
+        "pitch": [
+          16,
+          17,
+          0,
+          "186/246 @11"
+        ]
+      },
+      "K2c": {
+        "5hz": [
+          11,
+          13,
+          0,
+          "92/123 @12"
+        ]
+      },
+      "K3c": {
+        "asrec": [
+          13,
+          16,
+          0,
+          "186/246 @11"
+        ],
+        "5hz": [
+          11,
+          13,
+          0,
+          "92/123 @12"
+        ],
+        "roll": [
+          11,
+          13,
+          1,
+          "183/246 @12"
+        ],
+        "pitch": [
+          16,
+          17,
+          0,
+          "186/246 @11"
+        ]
+      },
+      "K4c": {
+        "5hz": [
+          11,
+          13,
+          0,
+          "89/123 @12"
+        ],
+        "roll": [
+          19,
+          14,
+          2,
+          "183/246 @12"
+        ],
+        "pitch": [
+          19,
+          17,
+          1,
+          "186/246 @11"
+        ]
+      },
+      "K3d": {
+        "5hz": [
+          10,
+          10,
+          0,
+          "92/123 @12"
+        ],
+        "roll": [
+          11,
+          13,
+          1,
+          "181/246 @12"
+        ],
+        "pitch": [
+          16,
+          17,
+          0,
+          "186/246 @11"
+        ]
+      },
+      "ship": {
+        "asrec": [
+          13,
+          16,
+          0,
+          "186/246 @11"
+        ],
+        "5hz": [
+          10,
+          10,
+          0,
+          "92/123 @12"
+        ],
+        "roll": [
+          11,
+          13,
+          1,
+          "181/246 @12"
+        ],
+        "pitch": [
+          16,
+          17,
+          0,
+          "186/246 @11"
+        ]
+      }
+    },
+    "gate_10hz": {
+      "K3c": {
+        "verdict": "GATE FAIL: 2 gated metric(s) worse: ride.alarm_events, ride.stop_episodes (2 gated better, 0 worse but allowed, 21 information rows changed)",
+        "gated_rows_changed": [
+          "recordings.doubleT_obstacle.stop_episodes 3 2 better",
+          "recordings.doubleT_obstacle.labelled.object_on_rail.hits yes 127 128 better",
+          "recordings.doubleT_obstacle.labelled.object_on_rail_from_frame_75.hits yes 124 125 better",
+          "recordings.doubleT_obstacle.labelled.hits 185 186 better",
+          "ride.alarm_events yes 46 48 worse << FAIL",
+          "ride.stop_episodes yes 39 42 worse << FAIL"
+        ],
+        "ride": [
+          190,
+          48,
+          42
+        ],
+        "five_empty": [
+          58,
+          13,
+          16
+        ],
+        "set_O_inside_stop_frames": 303,
+        "wall_s": 1125.2,
+        "config_sha256": "8b1047afe4e62c80a34743491b729ec2f18a3e1fafa0c18a59fce048a3ad7eb3"
+      },
+      "K3c_diagnosis": "the ride with the flags off (eval_real.py, 8 pieces) against K3c per piece: pieces 1-5 identical frame by frame; piece 0 differs from row 84 without an alarm change; piece 6 +2 STOP episodes (rows 1347-1361), piece 7 +2 events / +1 STOP episode (rows 333, 638-644): the pieces with bursts of receive stamps",
+      "K3d": {
+        "verdict": "GATE PASS: no gated metric worse (2 gated better, 0 worse but allowed, 20 information rows changed)",
+        "gated_rows_changed": [
+          "recordings.doubleT_obstacle.stop_episodes 3 2 better",
+          "recordings.doubleT_obstacle.labelled.object_on_rail.hits yes 127 128 better",
+          "recordings.doubleT_obstacle.labelled.object_on_rail_from_frame_75.hits yes 124 125 better",
+          "recordings.doubleT_obstacle.labelled.hits 185 186 better"
+        ],
+        "ride": [
+          187,
+          46,
+          39
+        ],
+        "five_empty": [
+          58,
+          13,
+          16
+        ],
+        "set_O_inside_stop_frames": 303,
+        "wall_s": 988.1,
+        "config_sha256": "8b1047afe4e62c80a34743491b729ec2f18a3e1fafa0c18a59fce048a3ad7eb3"
+      },
+      "K3d_ride": "all 8 pieces identical frame by frame (detections, warnings, track model) to the flags-off run"
+    },
+    "shipped_defaults_check": "robustness_check.py with the committed configs/default.yaml (flags on) reproduces K3d frame by frame at 5 Hz, roll_3 and pitch_3; as recorded its detections equal the K3d gate's on the six recordings",
+    "decision": {
+      "shipped": "K3d: calibration.time_cadence true, calibration.keep_within_deg 0.25, track.rates_per_period true, track.walls_smoothing_per_period true, calibration.refine_min_deg 0.5 (defaults on in resense/config.py and configs/default.yaml); calibration.provisional_per_axis stays false",
+      "ship_rule_check": "gate exit 0; stress false events 13 + 16 + 17 = 46 -> 10 + 11 + 16 = 37, no mode up; roundT_doubleT 3 / 2 / 1 -> 0 / 1 / 0; safety: doubleT_obstacle 10 Hz 185 -> 186/246, first 11, fp events 0; set O inside STOP frames and first STOPs, set F straight, five bags and ride identical; doubleT_obstacle under stress 92/123 @12, 181/246 @12, 186/246 @11 = P4's",
+      "not_eligible": "K1 / K2 (5 Hz doubleT_obstacle 91 and 87/123 < 92), K1b / K2b / K3b / K2c (not measured through the gate; subsets of K3d), K3c (gate FAIL on the ride), K4c (roll_3 / pitch_3 19 / 19 events, 5 Hz doubleT_obstacle 89/123)",
+      "target_not_met": "pitch_3 16 > 13 (doubleT_platform 6 vs 4 as recorded, squareT_platform_squareT_switch 10 vs 9); roundT_doubleT roll_3 1 (the far column at frame 234)"
+    },
+    "tests": "tests 416 -> 422: test_algorithm.py test_axis_rates_per_period_follow_sensor_time_not_frames; test_calibration.py test_time_cadence_calibrates_5hz_in_the_same_sensor_time, test_refine_replaces_a_provisional_tilt_taken_on_a_canted_stretch, test_a_final_within_keep_within_deg_keeps_the_provisional_tilt, test_robustness_flags_are_on_by_default, test_nearby_obstacle_still_stops_at_5hz_on_a_tilted_rig (ray-cast)",
+    "gate_result_file": "regression_gate_2026-09-25_robustness.json (K3d)"
+  }
+}

@@ -7,7 +7,7 @@ PointCloud2 decoding and the captain's dry-run checker; the synthetic tunnel (Op
 import importlib.util
 import json
 import os
-from dataclasses import asdict
+from dataclasses import asdict, replace as dataclass_replace
 from pathlib import Path
 
 import numpy as np
@@ -109,6 +109,45 @@ def test_tracker_zone_is_majority_of_recent_hits():
     assert t.confirmed()[0].zone == "warning"
 
 
+def person_or_column(x, column):
+    """A person-size cluster in the gauge (0.5 x 0.6 x 1.8 m on the bed), or the same track's
+    cluster demoted as a column (taller than cluster.column_min_height, zone 'warning')."""
+    c = cluster_at(x, zone="warning" if column else "gauge")
+    c.reason = "column" if column else ""
+    c.bbox_min = np.array([x, -0.3, 0.0])
+    c.bbox_max = np.array([x + 0.5, 0.3, 2.6 if column else 1.8])
+    c.height_min, c.height_max = 0.0, float(c.bbox_max[2])
+    return c
+
+
+@pytest.mark.parametrize("hold", sorted({1, 2, 3, DetectorConfig().tracking.column_hold}))   # 2 shipped
+def test_column_hold_gauge_below_the_hold_advisory_at_it(hold):
+    """tracking.column_hold (roundT_doubleT, 25.09, EXPERIMENTS 3a): a track with fewer than
+    ``hold`` column hits among its last zone_window (10) hits, then gauge hits of a person-size
+    cluster, is an obstacle ('gauge'); at ``hold`` column hits or more it is advisory until they
+    leave the window, and an obstacle again after that."""
+    zw = CFG.tracking.zone_window
+    tc = dataclass_replace(CFG.tracking, column_hold=hold)
+    for n_col in range(0, hold + 2):
+        t = Tracker(tc)
+        hits = [True] * n_col + [False] * 6         # column hits, then 6 gauge hits of a person
+        for k, col in enumerate(hits):
+            t.update([person_or_column(60.0 - 1.5 * k, col)], frame_dt=0.1)
+        rep = t.confirmed()
+        assert len(rep) == 1 and rep[0].hits == len(hits)
+        assert rep[0].zone == ("gauge" if n_col < hold else "warning"), (hold, n_col)
+        if n_col >= hold:                           # column hits leaving the window: an obstacle again
+            k0 = len(hits)
+            for k in range(k0, k0 + zw):
+                t.update([person_or_column(60.0 - 1.5 * k, False)], frame_dt=0.1)
+                n_left = sum(1 for j in range(k + 1 - zw, k + 1) if 0 <= j < n_col)
+                assert t.confirmed()[0].zone == ("gauge" if n_left < hold else "warning"), (hold, n_col, k)
+    t = Tracker(dataclass_replace(CFG.tracking, column_hold=0))      # 0 = off: the zone vote alone
+    for k, col in enumerate([True] * 4 + [False] * 6):
+        t.update([person_or_column(60.0 - 1.5 * k, col)], frame_dt=0.1)
+    assert t.confirmed()[0].zone == "gauge"                          # 6 of 10 hits in the gauge
+
+
 # ---------------------------------------------------------------------------
 # clustering filters on hand-built point sets (rail head at z = 0, track axis at y = 0)
 # ---------------------------------------------------------------------------
@@ -138,7 +177,12 @@ def clusters_of(pts, in_gauge=True, axis_valid=1e9):
     ("linear side structure (4 m x 0.3 x 0.5 at lateral 1.0)", surface_box(18, 1.0, 0.0, 4.0, 0.3, 0.5)),
 ])
 def test_infrastructure_shapes_are_filtered(name, pts):
-    assert clusters_of(pts) == [], name
+    # strict-envelope membership as the corridor computes it (|dy| <= 1.05 m, 0.12-3.0 m up): since
+    # 26.09 a wall-like cluster with >= 10 strict voxels within 20 m is kept (cluster.wall_keep_*),
+    # and a wall 1.35-1.65 m off the axis has none
+    ins = (np.abs(pts[:, 1]) <= 1.05) & (pts[:, 2] >= 0.12) & (pts[:, 2] <= 3.0)
+    inten = np.full(len(pts), 30.0, np.float32)
+    assert find_clusters(pts, inten, pts[:, 1], pts[:, 2], ins, CFG.cluster) == [], name
 
 
 def test_box_at_20m_is_kept_and_zoned():
@@ -513,6 +557,152 @@ def test_check_dry_run_ignores_the_start_up_hole_and_takes_the_obstacle_recordin
     assert "recording 1: 0 alarm frames" in capsys.readouterr().out
 
 
+def _capture_stream(path, stamps, dropped, catchup=None, skipped=None, t0=946687298.1):
+    """A capture of the given processed stamps (s after the first) with the node's counters."""
+    with open(path, "w") as fh:
+        for i, s in enumerate(stamps):
+            node = {"latency_ms": 55.0, "fps": 10.0, "dropped_frames": dropped[i], "recording": 1,
+                    "input_topic": "/sensing/lidar/hesai128/pointcloud", "input_period_ms": 100.0}
+            if catchup is not None:
+                node["catchup"] = catchup[i]
+            if skipped is not None:
+                node["catchup_skipped"] = skipped[i]
+            fh.write(json.dumps({"stamp": t0 + s, "obstacle": 20 <= i < 30, "warning": False,
+                                 "nearest_distance": 55.9 if 20 <= i < 30 else None,
+                                 "timing_ms": {"total": 25.0}, "node": node}) + "\n---\n")
+    return str(path)
+
+
+def _played(until=19.5, catchup_end=7.9, holes=(), lost=()):
+    """What the node processed of a bag played from its first frame: every 3rd frame while it
+    catches up (to ``catchup_end``, None: to the end), then every frame; ``holes``: frames the
+    recording lacks, ``lost``: frames that never reached the node (tenths of a second)."""
+    stamps, dropped, flags, skipped, d, sk = [], [], [], [], 0, 0
+    n = int(round(until * 10))
+    for k in range(n + 1):
+        if k in holes or k in lost:
+            continue
+        behind = catchup_end is None or k < round(catchup_end * 10)
+        if behind and k % 3 and k != n:
+            continue
+        if stamps:
+            miss = k - int(round(stamps[-1] * 10)) - 1
+            d += miss
+            sk += sum(1 for j in range(int(round(stamps[-1] * 10)) + 1, k) if j not in holes and j not in lost)
+        stamps.append(k / 10)
+        dropped.append(d)
+        skipped.append(sk)
+        flags.append(bool(behind))
+    return stamps, dropped, flags, skipped
+
+
+def test_check_dry_run_counts_drops_after_the_start_up_catchup(check_dry_run, tmp_path, capsys):
+    """25.09, team VM: the player's preload left the node 4.8 s behind, its catch-up (one frame per
+    0.3 s of recording) ran to +7.9 s, and its own skips failed --max-dropped 0 (20 after the first
+    5 s). The settle point is now the later of 5 s and the end of the start-up catch-up (node.catchup),
+    at most --max-settle-s; frames lost after it still fail, and so does a catch-up that never ends."""
+    stamps, dropped, flags, skipped = _played()
+    args = ["--expect-obstacle", "--distance", "50:62"]
+    p = _capture_stream(tmp_path / "a.jsonl", stamps, dropped, flags, skipped)
+    assert check_dry_run.main([p] + args) == 0
+    out = capsys.readouterr().out
+    assert "back on the newest frame at +7.9 s" in out and "0 after +7.9 s (the end of the start-up catch-up)" in out
+    assert f"dropped input frames : {dropped[-1]} ({skipped[-1]} of them skipped" in out
+    old = _capture_stream(tmp_path / "old.jsonl", stamps, dropped)            # a node without node.catchup
+    assert check_dry_run.main([old] + args) == 1
+    assert "dropped input frames after the first 5 s > 0" in capsys.readouterr().out
+    stamps, dropped, flags, skipped = _played(lost=(120, 121))                  # 2 frames lost at +12 s
+    p = _capture_stream(tmp_path / "b.jsonl", stamps, dropped, flags, skipped)
+    assert check_dry_run.main([p] + args) == 1
+    assert "FAIL: 2 dropped input frames after +7.9 s (the end of the start-up catch-up) > 0" in capsys.readouterr().out
+    stamps, dropped, flags, skipped = _played(catchup_end=None)                # never back on the newest frame
+    p = _capture_stream(tmp_path / "c.jsonl", stamps, dropped, flags, skipped)
+    assert check_dry_run.main([p] + args) == 1
+    out = capsys.readouterr().out
+    assert "never back on the newest frame" in out and "after the first 5 s (the start-up catch-up never ended)" in out
+    assert check_dry_run.main([p] + args + ["--max-settle-s", "30"]) == 1       # a recording shorter than the cap too
+    flags[-1] = False                     # behind all along: on the newest frame only when the input stopped
+    p = _capture_stream(tmp_path / "c2.jsonl", stamps, dropped, flags, skipped)
+    assert check_dry_run.main([p] + args + ["--max-settle-s", "30"]) == 1
+    assert "never back on the newest frame" in capsys.readouterr().out
+    stamps, dropped, flags, skipped = _played(catchup_end=12.0)
+    p = _capture_stream(tmp_path / "d.jsonl", stamps, dropped, flags, skipped)
+    assert check_dry_run.main([p] + args) == 0
+    assert check_dry_run.main([p] + args + ["--max-settle-s", "10"]) == 1
+
+
+def _bag(path, holes=(), n=196, recv0=1788354623.11, header0=946687297.2,
+         topic="/sensing/lidar/hesai128/pointcloud", receive_period=0.1):
+    """A rosbag2 sqlite3 bag of ``n`` 10 Hz frame slots of which ``holes`` were never recorded,
+    with receive-time jitter and optional clock drift; every message has a CDR header."""
+    import sqlite3
+    import struct
+    path.mkdir()
+    con = sqlite3.connect(path / f"{path.name}_0.db3")
+    con.executescript("CREATE TABLE topics(id INTEGER PRIMARY KEY, name TEXT NOT NULL, type TEXT NOT NULL,"
+                      " serialization_format TEXT NOT NULL, offered_qos_profiles TEXT NOT NULL);"
+                      "CREATE TABLE messages(id INTEGER PRIMARY KEY, topic_id INTEGER NOT NULL,"
+                      " timestamp INTEGER NOT NULL, data BLOB NOT NULL);")
+    con.execute("INSERT INTO topics VALUES (1, '/imu', 'sensor_msgs/msg/Imu', 'cdr', '')")
+    con.execute("INSERT INTO topics VALUES (2, ?, 'sensor_msgs/msg/PointCloud2', 'cdr', '')", (topic,))
+    jitter = np.random.default_rng(0).uniform(-0.03, 0.03, n)
+    for k in range(n):
+        if k in holes:
+            continue
+        # CDR little-endian: encapsulation 00 01 00 00, then header.stamp sec / nanosec
+        h = header0 + 0.1 * k
+        data = b"\x00\x01\x00\x00" + struct.pack("<iI", int(h), int(round((h % 1) * 1e9)))
+        con.execute("INSERT INTO messages (topic_id, timestamp, data) VALUES (2, ?, ?)",
+                    (int(round((recv0 + receive_period * k + jitter[k]) * 1e9)), data))
+        con.execute("INSERT INTO messages (topic_id, timestamp, data) VALUES (1, ?, ?)",
+                    (int(round((recv0 + 0.1 * k + 0.05) * 1e9)), b""))
+    con.commit()
+    con.close()
+    return str(path)
+
+
+def test_check_dry_run_bag_holes_are_not_drops(check_dry_run, tmp_path, capsys):
+    """doubleT_obstacle lacks 4 frames itself (bag receive-time gaps of 0.201 s and 0.413 s at +14.0
+    and +16.9 s): the node's stamp-gap counter sees them in every run. With --bag the checker
+    counts the recording's messages the node did not process instead."""
+    holes = {139 + 9, 166 + 9, 167 + 9, 168 + 9}     # slots of the bag; the node's first frame is slot 9
+    stamps, dropped, flags, skipped = _played(until=18.6, holes={h - 9 for h in holes})
+    p = _capture_stream(tmp_path / "a.jsonl", stamps, dropped, flags, skipped, t0=946687297.2 + 0.9)
+    bag = _bag(tmp_path / "doubleT_obstacle", holes=holes)
+    args = [p, "--expect-obstacle", "--distance", "50:62"]
+    assert check_dry_run.main(args) == 1
+    assert "FAIL: 4 dropped input frames after +7.9 s" in capsys.readouterr().out
+    assert check_dry_run.main(args + ["--bag", bag]) == 0
+    out = capsys.readouterr().out
+    assert "4 frame(s) missing from the recording itself; 0 of its messages not processed" in out
+    stamps, dropped, flags, skipped = _played(until=18.6, holes={h - 9 for h in holes}, lost={100})
+    p = _capture_stream(tmp_path / "b.jsonl", stamps, dropped, flags, skipped, t0=946687297.2 + 0.9)
+    assert check_dry_run.main([p, "--bag", bag]) == 1
+    assert "FAIL: 1 frames of the recording not processed after +7.9 s" in capsys.readouterr().out
+    assert check_dry_run.main([p, "--bag", str(tmp_path)]) == 1                 # no bag there: the counter decides
+    assert "--bag not applied: no readable rosbag2 sqlite3 bag" in capsys.readouterr().out
+    assert check_dry_run.cdr_stamp(b"\x00\x00\x00\x00" + (946687297).to_bytes(4, "big")
+                                   + (200101000).to_bytes(4, "big")) == pytest.approx(946687297.200101)
+
+
+@pytest.mark.parametrize("receive_period", [0.09, 0.11])
+def test_check_dry_run_matches_headers_when_receive_times_drift(check_dry_run, tmp_path, capsys, receive_period):
+    """Set O's two clocks drift: a constant offset falsely reported 132 node losses. Read the
+    recorded headers themselves, while still failing if an actual post-settle message is lost.
+    """
+    bag = _bag(tmp_path / "drifting_bag", receive_period=receive_period)
+    for losses in (set(), {100, 120}):
+        stamps, dropped, flags, skipped = _played(until=19.5, lost=losses)
+        p = _capture_stream(tmp_path / "capture.jsonl", stamps, dropped, flags, skipped, t0=946687297.2)
+        assert check_dry_run.main([p, "--bag", bag]) == bool(losses)
+        assert f"{len(losses)} of its messages not processed" in capsys.readouterr().out
+
+
+def test_check_dry_run_does_not_shift_unmatched_headers_to_nearby_frames(check_dry_run):
+    assert check_dry_run.match_recording([1.0, 1.0000001, 1.04, 1.1], [1.0, 1.1], 0.1) == [0, 0, None, 1]
+    assert check_dry_run.match_recording([1.0], [], 0.1) == [None]
+
+
 def test_check_dry_run_empty_capture(check_dry_run, tmp_path):
     p = tmp_path / "empty.jsonl"
     p.write_text("---\n")
@@ -572,3 +762,61 @@ def test_cli_inject_and_eval(synth_npy_dir, tmp_path, capsys):
     res = run_cli(["eval", str(out), "--text"])
     assert res["frames"] == 1 and res["recall"] == 1.0
     assert "recall            : 100.0%" in capsys.readouterr().out
+
+
+
+def test_watchdog_stop_snapshots_are_not_processed_frame_evidence(tmp_path):
+    from scripts import check_dry_run
+    p = tmp_path / "snapshots.jsonl"
+    frame = {"obstacle": True, "decision": "STOP", "node": {}, "snapshot_kind": "frame"}
+    snapshots = [dict(frame, snapshot_kind=kind) for kind in ("watchdog", "processing_error")]
+    p.write_text("\n".join(json.dumps(row) for row in snapshots + [frame]))
+    frames, skipped = check_dry_run.load(p)
+    assert frames == [frame] and skipped == 2
+
+
+@pytest.mark.parametrize("change,fragment", [
+    ({"valid": False}, "GO"),
+    ({"source_age_s": 0.501}, "age/queue"),
+    ({"source_age_s": -0.051}, "age/queue"),
+    ({"residence_age_s": 0.501}, "age/queue"),
+    ({"queue_lag_s": 0.1}, "age/queue"),
+    ({"clock_reference": "guessed"}, "clock reference"),
+    ({"publication_age_s": None}, "mode-specific"),
+])
+def test_runtime_freshness_checker_rejects_unsafe_go(change, fragment):
+    from scripts import check_dry_run
+    f = {"mode": "replay", "clock_reference": "publisher_utc", "valid": True,
+         "go_allowed": True, "reason": "current", "source_age_s": 0.1,
+         "evaluated_at_utc_s": 1000.0, "max_result_age_s": 0.5, "future_tolerance_s": 0.05,
+         "publication_age_s": 0.1, "acquisition_age_s": None,
+         "residence_age_s": 0.02, "queue_lag_s": 0.0}
+    frame = {"snapshot_kind": "frame", "obstacle": False, "decision": "GO", "freshness": f,
+             "detector_obstacle": False, "stop_held": False,
+             "node": {"recording": 1, "catchup": False}, "detector_clear_distance": 100.0,
+             "clear_distance": 100.0, "health": {"level": "ok"}}
+    assert not check_dry_run.freshness_failures([frame])
+    f.update(change)
+    assert any(fragment in s for s in check_dry_run.freshness_failures([frame]))
+
+
+def test_runtime_freshness_checker_rejects_all_fault_or_missing_schema():
+    from scripts import check_dry_run
+    failures = check_dry_run.freshness_failures([{"obstacle": False, "decision": "FAULT", "node": {"recording": 1}}])
+    assert any("schema missing" in s for s in failures)
+    assert any("no valid result" in s for s in failures)
+
+
+def test_held_stop_cannot_supply_positive_evidence_for_next_recording(check_dry_run, tmp_path, capsys):
+    path = _capture(tmp_path / "held.jsonl", n=80, alarms=range(20, 80), recording=lambda i: 1 + (i >= 40))
+    frames, _ = check_dry_run.load(path)
+    for f in frames:
+        f["freshness"] = {"valid": False}
+        f["detector_obstacle"] = bool(f["obstacle"] and f["node"]["recording"] == 1)
+        f["stop_held"] = f["obstacle"] and not f["detector_obstacle"]
+    Path(path).write_text("".join(json.dumps(f)+"\n" for f in frames))
+    assert check_dry_run.main([path, "--expect-obstacle", "--expect-inputs", "2"]) == 1
+    assert "recording 2: 0 alarm frames" in capsys.readouterr().out
+    # Exposed held STOP is still counted against a clear-bag criterion.
+    assert check_dry_run.main([path, "--expect-clear"]) == 1
+    assert "60 false alarms" in capsys.readouterr().out

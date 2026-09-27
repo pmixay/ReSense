@@ -1,0 +1,3508 @@
+{
+ "schema": "resense-rules-decision-v1",
+ "date": "2026-09-25",
+ "question": "CAPTAIN action 11 (delegated): switch on cluster.floating_long_min_length (C1, 3.0 m) and / or cluster.short_signature_max_length (B, 3.0 m with short_signature_max_distance 100 m)?",
+ "criteria_preregistered": {
+  "written_at_utc": "2026-09-25T09:16:23Z",
+  "note": "written before the ride finished caching and before any variant run; applied literally",
+  "text": "# Pre-registered decision criteria (rules-decision, written before any variant or ride number was seen)\n\nConfigurations: BASE = shipped defaults (both flags 0). C1 = cluster.floating_long_min_length=3.0.\nB = cluster.short_signature_max_length=3.0 + cluster.short_signature_max_distance=100.0. B+C1 = both.\nAll runs: scripts/regression_gate.py --cache /data/cache --jobs 3, native path, receive stamps,\nride in the gate's default 8 pieces, set F straight = the gate's round-3 parameters.\n\n1. Baseline: measure BASE with the ride. Record ride frames / alarm frames / events / STOP episodes /\n   events per km (13.0 km) and set F straight per kind (person, box1.0, box0.5, trolley, cable):\n   detected of 6, median first-confirmation distance, median held-from (sustained) distance.\n2. Variants C1, B, B+C1 each with --baseline BASE.\n3. C1 is GO iff ALL of:\n   a. ride: events(C1) <= events(BASE) AND STOP episodes(C1) <= BASE AND alarm frames(C1) <= BASE;\n   b. set F straight, per kind: detected(C1) >= detected(BASE) (no object lost), AND\n      median first confirmation(C1) >= BASE - 2 m, AND median held-from(C1) >= BASE - 2 m\n      (a missing value where BASE has one counts as lost);\n   c. set O identical: every set_O.* metric of the gate (per-object STOP frames, first STOP,\n      held-from, advisory frames, false STOP frames, background frames / ids, totals) equal;\n   d. doubleT_obstacle identical: every recordings.doubleT_obstacle.* metric of the gate equal.\n   Otherwise C1 is NO-GO.\n4. Let X = C1 if C1 is GO, else BASE. X+B is (B+C1) or B accordingly. B is GO iff ALL of:\n   a. ride: events(X+B) - events(X) <= max(5, 10 % of events(X)) AND\n      STOP episodes(X+B) - STOP episodes(X) <= 5;\n   b. set F straight not worse than X, same tolerance as 3b (per kind: detected not lower, median\n      first confirmation and median held-from not lower by more than 2 m);\n   c. organizers' objects gain holds: set O inside STOP frames(X+B) - inside STOP frames(X) >= +40.\n   (A large ride cost is excluded by 4a: > +5 events on 13 km would be one new false event per\n   ~2.6 km or worse.) Otherwise B is NO-GO.\n5. Latency: information only. Six-bag / five-bag rows: information for the decision (they were\n   already known), reported in the tables.\nTie-breaks: none; criteria are applied literally. \"C1 = 3.0\" (not 4.0) is the candidate value\nbecause 3.0 and 4.0 were identical on the six recordings; 4.0 is not measured here.\n"
+ },
+ "how": "scripts/regression_gate.py --cache /data/cache --jobs 3 [--set ...] --baseline base, native path, receive stamps, the ride (new_data, 11 271 frames, 221 split files, streamed 25.09 by scripts/vm/stream_cache.py, failed: none) in 8 pieces, set F straight with the round-3 parameters, on the 4-vCPU dev VM; code 7290873 (claude/nifty-pascal-lzgl78) for all four runs",
+ "runs": {
+  "base": {
+   "set": [],
+   "result": {
+    "schema": "resense-regression-gate-v1",
+    "created": "2026-09-25T09:38:25+00:00",
+    "code": {
+     "commit": "72908737f2f8d1caf2b513f730abd930c8dac20d",
+     "branch": "wf3/rules",
+     "version": "0.6.3",
+     "uncommitted_detector_changes": []
+    },
+    "config": {
+     "path": "configs/default.yaml",
+     "set": [],
+     "sha256": "fa64b1be3f87f8f0e376589f4d40d316446b15b0a8d8b610bb0c39f62b0f3c53",
+     "file_sha256": "4a6304bf135e0a31b0df20d3cc136d878048f568dbae169554c683707cf8cf5e"
+    },
+    "native": {
+     "path": "native",
+     "status": "native (_resense_native.so)"
+    },
+    "run": {
+     "cache": "/data/cache",
+     "jobs": 3,
+     "nominal_stamps": false,
+     "wall_s": 600.4,
+     "machine": {
+      "cpus": 4,
+      "platform": "Linux-6.18.44-fc-v37-x86_64-with-glibc2.39",
+      "python": "3.11.15",
+      "numpy": "2.4.6"
+     }
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 188,
+      "alarm_events": 2,
+      "stop_episodes": 3,
+      "first_alarm_frame": 11,
+      "advisory_frames": 84,
+      "alarm_dist": [
+       55.5,
+       56.6
+      ],
+      "health": {
+       "ok": 192,
+       "warn": 9,
+       "error": 0
+      },
+      "monitored_range_median": 151.0,
+      "labelled": {
+       "per_label": {
+        "object_on_rail": {
+         "hits": 127,
+         "frames": 185
+        },
+        "person_crossing": {
+         "hits": 58,
+         "frames": 61
+        },
+        "object_on_rail_from_frame_75": {
+         "hits": 124,
+         "frames": 126
+        }
+       },
+       "hits": 185,
+       "frames": 246,
+       "fp_frames": 0,
+       "fp_events": 0,
+       "distance_error_max_m": 0.23
+      }
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 4,
+      "alarm_events": 4,
+      "stop_episodes": 1,
+      "first_alarm_frame": 34,
+      "advisory_frames": 180,
+      "alarm_dist": [
+       34.5,
+       41.7
+      ],
+      "health": {
+       "ok": 248,
+       "warn": 97,
+       "error": 0
+      },
+      "monitored_range_median": 120.0,
+      "labelled": null
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 2,
+      "alarm_events": 1,
+      "stop_episodes": 1,
+      "first_alarm_frame": 233,
+      "advisory_frames": 173,
+      "alarm_dist": [
+       128.3,
+       130.2
+      ],
+      "health": {
+       "ok": 252,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 145.8,
+      "labelled": null
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "first_alarm_frame": null,
+      "advisory_frames": 104,
+      "alarm_dist": null,
+      "health": {
+       "ok": 239,
+       "warn": 29,
+       "error": 0
+      },
+      "monitored_range_median": 130.3,
+      "labelled": null
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "first_alarm_frame": null,
+      "advisory_frames": 146,
+      "alarm_dist": null,
+      "health": {
+       "ok": 545,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 157.5,
+      "labelled": null
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 101,
+      "alarm_events": 15,
+      "stop_episodes": 25,
+      "first_alarm_frame": 312,
+      "advisory_frames": 394,
+      "alarm_dist": [
+       82.0,
+       147.5
+      ],
+      "health": {
+       "ok": 877,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 143.0,
+      "labelled": null
+     }
+    },
+    "five_empty": {
+     "frames": 2287,
+     "alarm_frames": 107,
+     "alarm_events": 20,
+     "stop_episodes": 27,
+     "advisory_frames": 997
+    },
+    "ride": {
+     "available": true,
+     "chunks": 8,
+     "frames": 11271,
+     "alarm_frames": 204,
+     "alarm_events": 47,
+     "stop_episodes": 39,
+     "advisory_frames": 4737,
+     "alarm_dist": [
+      2.9,
+      158.3
+     ],
+     "health": {
+      "ok": 11046,
+      "warn": 225,
+      "error": 0
+     },
+     "monitored_range_median": 127.6
+    },
+    "set_O": {
+     "available": true,
+     "frames": 1510,
+     "alarm_frames": 342,
+     "inside_stop_frames": 303,
+     "inside_visible_frames": 801,
+     "inside_objects_with_stop": 5,
+     "inside_objects": 8,
+     "outside_false_stop_frames": 6,
+     "background": {
+      "alarm_frames": 3,
+      "track_ids": 2
+     },
+     "objects": {
+      "big_center": {
+       "in_gauge": true,
+       "visible_frames": 213,
+       "first_visible_m": 98.7,
+       "frames_in_envelope": 213,
+       "stop_frames": 207,
+       "advisory_frames": 0,
+       "first_stop_m": 98.0,
+       "first_stop_frame": 5,
+       "held_from_m": 98.7,
+       "verdict": "detected",
+       "bins": {
+        "0-50": {
+         "alarm": 42,
+         "advisory_only": 0,
+         "visible": 43
+        },
+        "50-100": {
+         "alarm": 165,
+         "advisory_only": 0,
+         "visible": 170
+        }
+       }
+      },
+      "small_center": {
+       "in_gauge": true,
+       "visible_frames": 79,
+       "first_visible_m": 128.9,
+       "frames_in_envelope": 63,
+       "stop_frames": 19,
+       "advisory_frames": 11,
+       "first_stop_m": 34.0,
+       "first_stop_frame": 350,
+       "held_from_m": 37.4,
+       "verdict": "detected",
+       "bins": {
+        "0-50": {
+         "alarm": 19,
+         "advisory_only": 9,
+         "visible": 28
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 2,
+         "visible": 31
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 20
+        }
+       }
+      },
+      "small_on_rail": {
+       "in_gauge": true,
+       "visible_frames": 49,
+       "first_visible_m": 237.3,
+       "frames_in_envelope": 33,
+       "stop_frames": 23,
+       "advisory_frames": 0,
+       "first_stop_m": 42.7,
+       "first_stop_frame": 403,
+       "held_from_m": 46.2,
+       "verdict": "detected",
+       "bins": {
+        "0-50": {
+         "alarm": 23,
+         "advisory_only": 0,
+         "visible": 27
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 19
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 1
+        },
+        "200-300": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 2
+        }
+       }
+      },
+      "small_edge_inside": {
+       "in_gauge": true,
+       "visible_frames": 83,
+       "first_visible_m": 154.7,
+       "frames_in_envelope": 16,
+       "stop_frames": 0,
+       "advisory_frames": 25,
+       "first_stop_m": null,
+       "first_stop_frame": null,
+       "held_from_m": null,
+       "verdict": "advisory only",
+       "bins": {
+        "0-50": {
+         "alarm": 0,
+         "advisory_only": 25,
+         "visible": 26
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 27
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 27
+        },
+        "150-200": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 3
+        }
+       }
+      },
+      "small_outside_near": {
+       "in_gauge": false,
+       "visible_frames": 112,
+       "first_visible_m": 238.4,
+       "frames_in_envelope": 101,
+       "stop_frames": 0,
+       "advisory_frames": 24,
+       "false_stop_frames": 0,
+       "false_stop_from_m": null,
+       "verdict": "advisory",
+       "bins": {
+        "0-50": {
+         "alarm": 0,
+         "advisory_only": 24,
+         "visible": 25
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 27
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 25
+        },
+        "150-200": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 23
+        },
+        "200-300": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 12
+        }
+       }
+      },
+      "big_edge_inside": {
+       "in_gauge": true,
+       "visible_frames": 125,
+       "first_visible_m": 248.6,
+       "frames_in_envelope": 8,
+       "stop_frames": 0,
+       "advisory_frames": 0,
+       "first_stop_m": null,
+       "first_stop_frame": null,
+       "held_from_m": null,
+       "verdict": "missed",
+       "bins": {
+        "0-50": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 25
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 26
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 26
+        },
+        "150-200": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 26
+        },
+        "200-300": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 22
+        }
+       }
+      },
+      "big_outside": {
+       "in_gauge": false,
+       "visible_frames": 104,
+       "first_visible_m": 249.4,
+       "frames_in_envelope": 52,
+       "stop_frames": 6,
+       "advisory_frames": 44,
+       "false_stop_frames": 6,
+       "false_stop_from_m": 142.3,
+       "verdict": "false alarm",
+       "bins": {
+        "0-50": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 24
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 19,
+         "visible": 25
+        },
+        "100-150": {
+         "alarm": 6,
+         "advisory_only": 16,
+         "visible": 25
+        },
+        "150-200": {
+         "alarm": 0,
+         "advisory_only": 3,
+         "visible": 4
+        },
+        "200-300": {
+         "alarm": 0,
+         "advisory_only": 6,
+         "visible": 26
+        }
+       }
+      },
+      "big_above": {
+       "in_gauge": true,
+       "visible_frames": 124,
+       "first_visible_m": 248.2,
+       "frames_in_envelope": 75,
+       "stop_frames": 12,
+       "advisory_frames": 37,
+       "first_stop_m": 101.3,
+       "first_stop_frame": 632,
+       "held_from_m": null,
+       "verdict": "detected",
+       "bins": {
+        "0-50": {
+         "alarm": 0,
+         "advisory_only": 17,
+         "visible": 25
+        },
+        "50-100": {
+         "alarm": 11,
+         "advisory_only": 14,
+         "visible": 25
+        },
+        "100-150": {
+         "alarm": 1,
+         "advisory_only": 0,
+         "visible": 25
+        },
+        "150-200": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 24
+        },
+        "200-300": {
+         "alarm": 0,
+         "advisory_only": 6,
+         "visible": 25
+        }
+       }
+      },
+      "long_low_on_rails": {
+       "in_gauge": true,
+       "visible_frames": 86,
+       "first_visible_m": 248.5,
+       "frames_in_envelope": 77,
+       "stop_frames": 42,
+       "advisory_frames": 0,
+       "first_stop_m": 82.2,
+       "first_stop_frame": 696,
+       "held_from_m": 58.6,
+       "verdict": "detected",
+       "bins": {
+        "0-50": {
+         "alarm": 29,
+         "advisory_only": 0,
+         "visible": 29
+        },
+        "50-100": {
+         "alarm": 13,
+         "advisory_only": 0,
+         "visible": 30
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 15
+        },
+        "200-300": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 12
+        }
+       }
+      },
+      "thin_hanging": {
+       "in_gauge": true,
+       "visible_frames": 42,
+       "first_visible_m": 199.7,
+       "frames_in_envelope": 20,
+       "stop_frames": 0,
+       "advisory_frames": 0,
+       "first_stop_m": null,
+       "first_stop_frame": null,
+       "held_from_m": null,
+       "verdict": "missed",
+       "bins": {
+        "0-50": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 24
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 10
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 3
+        },
+        "150-200": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 5
+        }
+       }
+      }
+     }
+    },
+    "set_F_straight": {
+     "available": true,
+     "parameters": {
+      "files": "46,68,98,140,168,172",
+      "kinds": "person,box1.0,box0.5,trolley,cable",
+      "start": "220",
+      "frames": "110",
+      "lateral": "-0.6:0.6",
+      "seed": "0",
+      "placement-mode": "legacy",
+      "place": "bed",
+      "speeds": "docs/extended_dataset_intake.json"
+     },
+     "kinds": {
+      "person": {
+       "sequences": 6,
+       "detected": 6,
+       "first_detection_median_m": 151.0,
+       "sustained_median_m": 142.6,
+       "false_detections": 9,
+       "recall_by_bin": {
+        "0-50": [
+         106,
+         110
+        ],
+        "50-100": [
+         125,
+         133
+        ],
+        "100-150": [
+         119,
+         151
+        ],
+        "150-200": [
+         13,
+         125
+        ],
+        "200-250": [
+         0,
+         40
+        ]
+       }
+      },
+      "box1.0": {
+       "sequences": 6,
+       "detected": 6,
+       "first_detection_median_m": 123.9,
+       "sustained_median_m": 114.1,
+       "false_detections": 16,
+       "recall_by_bin": {
+        "0-50": [
+         106,
+         110
+        ],
+        "50-100": [
+         125,
+         133
+        ],
+        "100-150": [
+         40,
+         151
+        ],
+        "150-200": [
+         0,
+         135
+        ],
+        "200-250": [
+         0,
+         36
+        ]
+       }
+      },
+      "box0.5": {
+       "sequences": 6,
+       "detected": 1,
+       "first_detection_median_m": 51.9,
+       "sustained_median_m": 55.6,
+       "false_detections": 4,
+       "recall_by_bin": {
+        "0-50": [
+         18,
+         110
+        ],
+        "50-100": [
+         2,
+         133
+        ],
+        "100-150": [
+         0,
+         145
+        ],
+        "150-200": [
+         0,
+         70
+        ],
+        "200-250": [
+         0,
+         15
+        ]
+       }
+      },
+      "trolley": {
+       "sequences": 6,
+       "detected": 6,
+       "first_detection_median_m": 151.4,
+       "sustained_median_m": 115.0,
+       "false_detections": 15,
+       "recall_by_bin": {
+        "0-50": [
+         106,
+         110
+        ],
+        "50-100": [
+         117,
+         133
+        ],
+        "100-150": [
+         59,
+         151
+        ],
+        "150-200": [
+         9,
+         132
+        ],
+        "200-250": [
+         0,
+         48
+        ]
+       }
+      },
+      "cable": {
+       "sequences": 6,
+       "detected": 6,
+       "first_detection_median_m": 98.9,
+       "sustained_median_m": 34.2,
+       "false_detections": 12,
+       "recall_by_bin": {
+        "0-50": [
+         43,
+         73
+        ],
+        "50-100": [
+         47,
+         72
+        ],
+        "100-150": [
+         12,
+         97
+        ],
+        "150-200": [
+         0,
+         65
+        ],
+        "200-250": [
+         0,
+         24
+        ]
+       }
+      }
+     }
+    },
+    "latency_ms": {
+     "note": "timing_ms.total per frame; informational, never gated: the workers run in parallel on a shared machine (clean timing: EXPERIMENTS §3)",
+     "doubleT_obstacle": {
+      "mean_ms": 39.2,
+      "p95_ms": 75.3,
+      "max_ms": 256.4
+     },
+     "doubleT_platform": {
+      "mean_ms": 48.9,
+      "p95_ms": 91.0,
+      "max_ms": 187.1
+     },
+     "roundT_doubleT": {
+      "mean_ms": 43.0,
+      "p95_ms": 81.2,
+      "max_ms": 170.0
+     },
+     "roundT_pressureGate_roundT": {
+      "mean_ms": 43.4,
+      "p95_ms": 83.3,
+      "max_ms": 135.3
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "mean_ms": 18.7,
+      "p95_ms": 26.9,
+      "max_ms": 41.2
+     },
+     "squareT_platform_squareT_switch": {
+      "mean_ms": 21.8,
+      "p95_ms": 37.8,
+      "max_ms": 128.7
+     },
+     "cloud_with_fake_obj": {
+      "mean_ms": 21.1,
+      "p95_ms": 40.6,
+      "max_ms": 142.2
+     },
+     "new_data": {
+      "mean_ms": 22.5,
+      "p95_ms": 42.0,
+      "max_ms": 534.4
+     }
+    }
+   }
+  },
+  "C1": {
+   "set": [
+    "cluster.floating_long_min_length=3.0"
+   ],
+   "result": {
+    "schema": "resense-regression-gate-v1",
+    "created": "2026-09-25T09:47:00+00:00",
+    "code": {
+     "commit": "72908737f2f8d1caf2b513f730abd930c8dac20d",
+     "branch": "wf3/rules",
+     "version": "0.6.3",
+     "uncommitted_detector_changes": []
+    },
+    "config": {
+     "path": "configs/default.yaml",
+     "set": [
+      "cluster.floating_long_min_length=3.0"
+     ],
+     "sha256": "14828b7049c4dd61ea3e707f9e1273ed2a28d5286aa94c405a110e6e54bec399",
+     "file_sha256": "4a6304bf135e0a31b0df20d3cc136d878048f568dbae169554c683707cf8cf5e"
+    },
+    "native": {
+     "path": "native",
+     "status": "native (_resense_native.so)"
+    },
+    "run": {
+     "cache": "/data/cache",
+     "jobs": 3,
+     "nominal_stamps": false,
+     "wall_s": 457.3,
+     "machine": {
+      "cpus": 4,
+      "platform": "Linux-6.18.44-fc-v37-x86_64-with-glibc2.39",
+      "python": "3.11.15",
+      "numpy": "2.4.6"
+     }
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 188,
+      "alarm_events": 2,
+      "stop_episodes": 3,
+      "first_alarm_frame": 11,
+      "advisory_frames": 84,
+      "alarm_dist": [
+       55.5,
+       56.6
+      ],
+      "health": {
+       "ok": 201,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 151.0,
+      "labelled": {
+       "per_label": {
+        "object_on_rail": {
+         "hits": 127,
+         "frames": 185
+        },
+        "person_crossing": {
+         "hits": 58,
+         "frames": 61
+        },
+        "object_on_rail_from_frame_75": {
+         "hits": 124,
+         "frames": 126
+        }
+       },
+       "hits": 185,
+       "frames": 246,
+       "fp_frames": 0,
+       "fp_events": 0,
+       "distance_error_max_m": 0.23
+      }
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 4,
+      "alarm_events": 4,
+      "stop_episodes": 1,
+      "first_alarm_frame": 34,
+      "advisory_frames": 180,
+      "alarm_dist": [
+       34.5,
+       41.7
+      ],
+      "health": {
+       "ok": 79,
+       "warn": 266,
+       "error": 0
+      },
+      "monitored_range_median": 120.0,
+      "labelled": null
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 2,
+      "alarm_events": 1,
+      "stop_episodes": 1,
+      "first_alarm_frame": 233,
+      "advisory_frames": 173,
+      "alarm_dist": [
+       128.3,
+       130.2
+      ],
+      "health": {
+       "ok": 252,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 145.8,
+      "labelled": null
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "first_alarm_frame": null,
+      "advisory_frames": 104,
+      "alarm_dist": null,
+      "health": {
+       "ok": 258,
+       "warn": 10,
+       "error": 0
+      },
+      "monitored_range_median": 130.3,
+      "labelled": null
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "first_alarm_frame": null,
+      "advisory_frames": 146,
+      "alarm_dist": null,
+      "health": {
+       "ok": 498,
+       "warn": 47,
+       "error": 0
+      },
+      "monitored_range_median": 157.5,
+      "labelled": null
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 54,
+      "alarm_events": 9,
+      "stop_episodes": 15,
+      "first_alarm_frame": 312,
+      "advisory_frames": 394,
+      "alarm_dist": [
+       82.0,
+       147.5
+      ],
+      "health": {
+       "ok": 807,
+       "warn": 70,
+       "error": 0
+      },
+      "monitored_range_median": 143.0,
+      "labelled": null
+     }
+    },
+    "five_empty": {
+     "frames": 2287,
+     "alarm_frames": 60,
+     "alarm_events": 14,
+     "stop_episodes": 17,
+     "advisory_frames": 997
+    },
+    "ride": {
+     "available": true,
+     "chunks": 8,
+     "frames": 11271,
+     "alarm_frames": 197,
+     "alarm_events": 46,
+     "stop_episodes": 39,
+     "advisory_frames": 4739,
+     "alarm_dist": [
+      2.9,
+      158.3
+     ],
+     "health": {
+      "ok": 11017,
+      "warn": 254,
+      "error": 0
+     },
+     "monitored_range_median": 127.6
+    },
+    "set_O": {
+     "available": true,
+     "frames": 1510,
+     "alarm_frames": 342,
+     "inside_stop_frames": 303,
+     "inside_visible_frames": 801,
+     "inside_objects_with_stop": 5,
+     "inside_objects": 8,
+     "outside_false_stop_frames": 6,
+     "background": {
+      "alarm_frames": 3,
+      "track_ids": 2
+     },
+     "objects": {
+      "big_center": {
+       "in_gauge": true,
+       "visible_frames": 213,
+       "first_visible_m": 98.7,
+       "frames_in_envelope": 213,
+       "stop_frames": 207,
+       "advisory_frames": 0,
+       "first_stop_m": 98.0,
+       "first_stop_frame": 5,
+       "held_from_m": 98.7,
+       "verdict": "detected",
+       "bins": {
+        "0-50": {
+         "alarm": 42,
+         "advisory_only": 0,
+         "visible": 43
+        },
+        "50-100": {
+         "alarm": 165,
+         "advisory_only": 0,
+         "visible": 170
+        }
+       }
+      },
+      "small_center": {
+       "in_gauge": true,
+       "visible_frames": 79,
+       "first_visible_m": 128.9,
+       "frames_in_envelope": 63,
+       "stop_frames": 19,
+       "advisory_frames": 11,
+       "first_stop_m": 34.0,
+       "first_stop_frame": 350,
+       "held_from_m": 37.4,
+       "verdict": "detected",
+       "bins": {
+        "0-50": {
+         "alarm": 19,
+         "advisory_only": 9,
+         "visible": 28
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 2,
+         "visible": 31
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 20
+        }
+       }
+      },
+      "small_on_rail": {
+       "in_gauge": true,
+       "visible_frames": 49,
+       "first_visible_m": 237.3,
+       "frames_in_envelope": 33,
+       "stop_frames": 23,
+       "advisory_frames": 0,
+       "first_stop_m": 42.7,
+       "first_stop_frame": 403,
+       "held_from_m": 46.2,
+       "verdict": "detected",
+       "bins": {
+        "0-50": {
+         "alarm": 23,
+         "advisory_only": 0,
+         "visible": 27
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 19
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 1
+        },
+        "200-300": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 2
+        }
+       }
+      },
+      "small_edge_inside": {
+       "in_gauge": true,
+       "visible_frames": 83,
+       "first_visible_m": 154.7,
+       "frames_in_envelope": 16,
+       "stop_frames": 0,
+       "advisory_frames": 25,
+       "first_stop_m": null,
+       "first_stop_frame": null,
+       "held_from_m": null,
+       "verdict": "advisory only",
+       "bins": {
+        "0-50": {
+         "alarm": 0,
+         "advisory_only": 25,
+         "visible": 26
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 27
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 27
+        },
+        "150-200": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 3
+        }
+       }
+      },
+      "small_outside_near": {
+       "in_gauge": false,
+       "visible_frames": 112,
+       "first_visible_m": 238.4,
+       "frames_in_envelope": 101,
+       "stop_frames": 0,
+       "advisory_frames": 24,
+       "false_stop_frames": 0,
+       "false_stop_from_m": null,
+       "verdict": "advisory",
+       "bins": {
+        "0-50": {
+         "alarm": 0,
+         "advisory_only": 24,
+         "visible": 25
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 27
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 25
+        },
+        "150-200": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 23
+        },
+        "200-300": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 12
+        }
+       }
+      },
+      "big_edge_inside": {
+       "in_gauge": true,
+       "visible_frames": 125,
+       "first_visible_m": 248.6,
+       "frames_in_envelope": 8,
+       "stop_frames": 0,
+       "advisory_frames": 0,
+       "first_stop_m": null,
+       "first_stop_frame": null,
+       "held_from_m": null,
+       "verdict": "missed",
+       "bins": {
+        "0-50": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 25
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 26
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 26
+        },
+        "150-200": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 26
+        },
+        "200-300": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 22
+        }
+       }
+      },
+      "big_outside": {
+       "in_gauge": false,
+       "visible_frames": 104,
+       "first_visible_m": 249.4,
+       "frames_in_envelope": 52,
+       "stop_frames": 6,
+       "advisory_frames": 44,
+       "false_stop_frames": 6,
+       "false_stop_from_m": 142.3,
+       "verdict": "false alarm",
+       "bins": {
+        "0-50": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 24
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 19,
+         "visible": 25
+        },
+        "100-150": {
+         "alarm": 6,
+         "advisory_only": 16,
+         "visible": 25
+        },
+        "150-200": {
+         "alarm": 0,
+         "advisory_only": 3,
+         "visible": 4
+        },
+        "200-300": {
+         "alarm": 0,
+         "advisory_only": 6,
+         "visible": 26
+        }
+       }
+      },
+      "big_above": {
+       "in_gauge": true,
+       "visible_frames": 124,
+       "first_visible_m": 248.2,
+       "frames_in_envelope": 75,
+       "stop_frames": 12,
+       "advisory_frames": 37,
+       "first_stop_m": 101.3,
+       "first_stop_frame": 632,
+       "held_from_m": null,
+       "verdict": "detected",
+       "bins": {
+        "0-50": {
+         "alarm": 0,
+         "advisory_only": 17,
+         "visible": 25
+        },
+        "50-100": {
+         "alarm": 11,
+         "advisory_only": 14,
+         "visible": 25
+        },
+        "100-150": {
+         "alarm": 1,
+         "advisory_only": 0,
+         "visible": 25
+        },
+        "150-200": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 24
+        },
+        "200-300": {
+         "alarm": 0,
+         "advisory_only": 6,
+         "visible": 25
+        }
+       }
+      },
+      "long_low_on_rails": {
+       "in_gauge": true,
+       "visible_frames": 86,
+       "first_visible_m": 248.5,
+       "frames_in_envelope": 77,
+       "stop_frames": 42,
+       "advisory_frames": 0,
+       "first_stop_m": 82.2,
+       "first_stop_frame": 696,
+       "held_from_m": 58.6,
+       "verdict": "detected",
+       "bins": {
+        "0-50": {
+         "alarm": 29,
+         "advisory_only": 0,
+         "visible": 29
+        },
+        "50-100": {
+         "alarm": 13,
+         "advisory_only": 0,
+         "visible": 30
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 15
+        },
+        "200-300": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 12
+        }
+       }
+      },
+      "thin_hanging": {
+       "in_gauge": true,
+       "visible_frames": 42,
+       "first_visible_m": 199.7,
+       "frames_in_envelope": 20,
+       "stop_frames": 0,
+       "advisory_frames": 0,
+       "first_stop_m": null,
+       "first_stop_frame": null,
+       "held_from_m": null,
+       "verdict": "missed",
+       "bins": {
+        "0-50": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 24
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 10
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 3
+        },
+        "150-200": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 5
+        }
+       }
+      }
+     }
+    },
+    "set_F_straight": {
+     "available": true,
+     "parameters": {
+      "files": "46,68,98,140,168,172",
+      "kinds": "person,box1.0,box0.5,trolley,cable",
+      "start": "220",
+      "frames": "110",
+      "lateral": "-0.6:0.6",
+      "seed": "0",
+      "placement-mode": "legacy",
+      "place": "bed",
+      "speeds": "docs/extended_dataset_intake.json"
+     },
+     "kinds": {
+      "person": {
+       "sequences": 6,
+       "detected": 6,
+       "first_detection_median_m": 151.0,
+       "sustained_median_m": 142.6,
+       "false_detections": 9,
+       "recall_by_bin": {
+        "0-50": [
+         106,
+         110
+        ],
+        "50-100": [
+         125,
+         133
+        ],
+        "100-150": [
+         119,
+         151
+        ],
+        "150-200": [
+         13,
+         125
+        ],
+        "200-250": [
+         0,
+         40
+        ]
+       }
+      },
+      "box1.0": {
+       "sequences": 6,
+       "detected": 6,
+       "first_detection_median_m": 123.9,
+       "sustained_median_m": 114.1,
+       "false_detections": 16,
+       "recall_by_bin": {
+        "0-50": [
+         106,
+         110
+        ],
+        "50-100": [
+         125,
+         133
+        ],
+        "100-150": [
+         40,
+         151
+        ],
+        "150-200": [
+         0,
+         135
+        ],
+        "200-250": [
+         0,
+         36
+        ]
+       }
+      },
+      "box0.5": {
+       "sequences": 6,
+       "detected": 1,
+       "first_detection_median_m": 51.9,
+       "sustained_median_m": 55.6,
+       "false_detections": 4,
+       "recall_by_bin": {
+        "0-50": [
+         18,
+         110
+        ],
+        "50-100": [
+         2,
+         133
+        ],
+        "100-150": [
+         0,
+         145
+        ],
+        "150-200": [
+         0,
+         70
+        ],
+        "200-250": [
+         0,
+         15
+        ]
+       }
+      },
+      "trolley": {
+       "sequences": 6,
+       "detected": 6,
+       "first_detection_median_m": 151.4,
+       "sustained_median_m": 115.0,
+       "false_detections": 15,
+       "recall_by_bin": {
+        "0-50": [
+         106,
+         110
+        ],
+        "50-100": [
+         117,
+         133
+        ],
+        "100-150": [
+         59,
+         151
+        ],
+        "150-200": [
+         9,
+         132
+        ],
+        "200-250": [
+         0,
+         48
+        ]
+       }
+      },
+      "cable": {
+       "sequences": 6,
+       "detected": 6,
+       "first_detection_median_m": 98.9,
+       "sustained_median_m": 34.2,
+       "false_detections": 12,
+       "recall_by_bin": {
+        "0-50": [
+         43,
+         73
+        ],
+        "50-100": [
+         47,
+         72
+        ],
+        "100-150": [
+         12,
+         97
+        ],
+        "150-200": [
+         0,
+         65
+        ],
+        "200-250": [
+         0,
+         24
+        ]
+       }
+      }
+     }
+    },
+    "latency_ms": {
+     "note": "timing_ms.total per frame; informational, never gated: the workers run in parallel on a shared machine (clean timing: EXPERIMENTS §3)",
+     "doubleT_obstacle": {
+      "mean_ms": 24.6,
+      "p95_ms": 38.1,
+      "max_ms": 88.7
+     },
+     "doubleT_platform": {
+      "mean_ms": 67.3,
+      "p95_ms": 132.2,
+      "max_ms": 490.8
+     },
+     "roundT_doubleT": {
+      "mean_ms": 34.6,
+      "p95_ms": 67.7,
+      "max_ms": 134.8
+     },
+     "roundT_pressureGate_roundT": {
+      "mean_ms": 33.4,
+      "p95_ms": 65.1,
+      "max_ms": 161.7
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "mean_ms": 39.6,
+      "p95_ms": 73.2,
+      "max_ms": 301.6
+     },
+     "squareT_platform_squareT_switch": {
+      "mean_ms": 39.2,
+      "p95_ms": 70.7,
+      "max_ms": 280.5
+     },
+     "cloud_with_fake_obj": {
+      "mean_ms": 25.4,
+      "p95_ms": 57.6,
+      "max_ms": 297.1
+     },
+     "new_data": {
+      "mean_ms": 26.0,
+      "p95_ms": 50.5,
+      "max_ms": 401.0
+     }
+    }
+   }
+  },
+  "B": {
+   "set": [
+    "cluster.short_signature_max_length=3.0",
+    "cluster.short_signature_max_distance=100.0"
+   ],
+   "result": {
+    "schema": "resense-regression-gate-v1",
+    "created": "2026-09-25T09:54:50+00:00",
+    "code": {
+     "commit": "72908737f2f8d1caf2b513f730abd930c8dac20d",
+     "branch": "wf3/rules",
+     "version": "0.6.3",
+     "uncommitted_detector_changes": []
+    },
+    "config": {
+     "path": "configs/default.yaml",
+     "set": [
+      "cluster.short_signature_max_length=3.0",
+      "cluster.short_signature_max_distance=100.0"
+     ],
+     "sha256": "95244f728f686b36eaba2d9376ceb3511dbf173d251b052648acf21e7dc27f30",
+     "file_sha256": "4a6304bf135e0a31b0df20d3cc136d878048f568dbae169554c683707cf8cf5e"
+    },
+    "native": {
+     "path": "native",
+     "status": "native (_resense_native.so)"
+    },
+    "run": {
+     "cache": "/data/cache",
+     "jobs": 3,
+     "nominal_stamps": false,
+     "wall_s": 469.3,
+     "machine": {
+      "cpus": 4,
+      "platform": "Linux-6.18.44-fc-v37-x86_64-with-glibc2.39",
+      "python": "3.11.15",
+      "numpy": "2.4.6"
+     }
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 188,
+      "alarm_events": 2,
+      "stop_episodes": 3,
+      "first_alarm_frame": 11,
+      "advisory_frames": 84,
+      "alarm_dist": [
+       55.5,
+       56.6
+      ],
+      "health": {
+       "ok": 201,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 151.0,
+      "labelled": {
+       "per_label": {
+        "object_on_rail": {
+         "hits": 127,
+         "frames": 185
+        },
+        "person_crossing": {
+         "hits": 58,
+         "frames": 61
+        },
+        "object_on_rail_from_frame_75": {
+         "hits": 124,
+         "frames": 126
+        }
+       },
+       "hits": 185,
+       "frames": 246,
+       "fp_frames": 0,
+       "fp_events": 0,
+       "distance_error_max_m": 0.23
+      }
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 9,
+      "alarm_events": 5,
+      "stop_episodes": 2,
+      "first_alarm_frame": 34,
+      "advisory_frames": 177,
+      "alarm_dist": [
+       33.4,
+       41.7
+      ],
+      "health": {
+       "ok": 276,
+       "warn": 69,
+       "error": 0
+      },
+      "monitored_range_median": 120.0,
+      "labelled": null
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 2,
+      "alarm_events": 1,
+      "stop_episodes": 1,
+      "first_alarm_frame": 233,
+      "advisory_frames": 173,
+      "alarm_dist": [
+       128.3,
+       130.2
+      ],
+      "health": {
+       "ok": 252,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 145.8,
+      "labelled": null
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "first_alarm_frame": null,
+      "advisory_frames": 104,
+      "alarm_dist": null,
+      "health": {
+       "ok": 268,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 130.3,
+      "labelled": null
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "first_alarm_frame": null,
+      "advisory_frames": 146,
+      "alarm_dist": null,
+      "health": {
+       "ok": 545,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 157.5,
+      "labelled": null
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 102,
+      "alarm_events": 16,
+      "stop_episodes": 26,
+      "first_alarm_frame": 148,
+      "advisory_frames": 394,
+      "alarm_dist": [
+       82.0,
+       147.5
+      ],
+      "health": {
+       "ok": 877,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 143.0,
+      "labelled": null
+     }
+    },
+    "five_empty": {
+     "frames": 2287,
+     "alarm_frames": 113,
+     "alarm_events": 22,
+     "stop_episodes": 29,
+     "advisory_frames": 994
+    },
+    "ride": {
+     "available": true,
+     "chunks": 8,
+     "frames": 11271,
+     "alarm_frames": 220,
+     "alarm_events": 49,
+     "stop_episodes": 45,
+     "advisory_frames": 4736,
+     "alarm_dist": [
+      2.9,
+      158.3
+     ],
+     "health": {
+      "ok": 10858,
+      "warn": 413,
+      "error": 0
+     },
+     "monitored_range_median": 127.6
+    },
+    "set_O": {
+     "available": true,
+     "frames": 1510,
+     "alarm_frames": 396,
+     "inside_stop_frames": 352,
+     "inside_visible_frames": 801,
+     "inside_objects_with_stop": 6,
+     "inside_objects": 8,
+     "outside_false_stop_frames": 9,
+     "background": {
+      "alarm_frames": 3,
+      "track_ids": 2
+     },
+     "objects": {
+      "big_center": {
+       "in_gauge": true,
+       "visible_frames": 213,
+       "first_visible_m": 98.7,
+       "frames_in_envelope": 213,
+       "stop_frames": 207,
+       "advisory_frames": 0,
+       "first_stop_m": 98.0,
+       "first_stop_frame": 5,
+       "held_from_m": 98.7,
+       "verdict": "detected",
+       "bins": {
+        "0-50": {
+         "alarm": 42,
+         "advisory_only": 0,
+         "visible": 43
+        },
+        "50-100": {
+         "alarm": 165,
+         "advisory_only": 0,
+         "visible": 170
+        }
+       }
+      },
+      "small_center": {
+       "in_gauge": true,
+       "visible_frames": 79,
+       "first_visible_m": 128.9,
+       "frames_in_envelope": 63,
+       "stop_frames": 30,
+       "advisory_frames": 0,
+       "first_stop_m": 52.5,
+       "first_stop_frame": 339,
+       "held_from_m": 57.5,
+       "verdict": "detected",
+       "bins": {
+        "0-50": {
+         "alarm": 28,
+         "advisory_only": 0,
+         "visible": 28
+        },
+        "50-100": {
+         "alarm": 2,
+         "advisory_only": 0,
+         "visible": 31
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 20
+        }
+       }
+      },
+      "small_on_rail": {
+       "in_gauge": true,
+       "visible_frames": 49,
+       "first_visible_m": 237.3,
+       "frames_in_envelope": 33,
+       "stop_frames": 23,
+       "advisory_frames": 0,
+       "first_stop_m": 42.7,
+       "first_stop_frame": 403,
+       "held_from_m": 46.2,
+       "verdict": "detected",
+       "bins": {
+        "0-50": {
+         "alarm": 23,
+         "advisory_only": 0,
+         "visible": 27
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 19
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 1
+        },
+        "200-300": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 2
+        }
+       }
+      },
+      "small_edge_inside": {
+       "in_gauge": true,
+       "visible_frames": 83,
+       "first_visible_m": 154.7,
+       "frames_in_envelope": 16,
+       "stop_frames": 7,
+       "advisory_frames": 18,
+       "first_stop_m": 14.5,
+       "first_stop_frame": 473,
+       "held_from_m": 14.5,
+       "verdict": "detected",
+       "bins": {
+        "0-50": {
+         "alarm": 7,
+         "advisory_only": 18,
+         "visible": 26
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 27
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 27
+        },
+        "150-200": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 3
+        }
+       }
+      },
+      "small_outside_near": {
+       "in_gauge": false,
+       "visible_frames": 112,
+       "first_visible_m": 238.4,
+       "frames_in_envelope": 101,
+       "stop_frames": 3,
+       "advisory_frames": 21,
+       "false_stop_frames": 3,
+       "false_stop_from_m": 27.2,
+       "verdict": "false alarm",
+       "bins": {
+        "0-50": {
+         "alarm": 3,
+         "advisory_only": 21,
+         "visible": 25
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 27
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 25
+        },
+        "150-200": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 23
+        },
+        "200-300": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 12
+        }
+       }
+      },
+      "big_edge_inside": {
+       "in_gauge": true,
+       "visible_frames": 125,
+       "first_visible_m": 248.6,
+       "frames_in_envelope": 8,
+       "stop_frames": 0,
+       "advisory_frames": 0,
+       "first_stop_m": null,
+       "first_stop_frame": null,
+       "held_from_m": null,
+       "verdict": "missed",
+       "bins": {
+        "0-50": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 25
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 26
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 26
+        },
+        "150-200": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 26
+        },
+        "200-300": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 22
+        }
+       }
+      },
+      "big_outside": {
+       "in_gauge": false,
+       "visible_frames": 104,
+       "first_visible_m": 249.4,
+       "frames_in_envelope": 52,
+       "stop_frames": 6,
+       "advisory_frames": 44,
+       "false_stop_frames": 6,
+       "false_stop_from_m": 142.3,
+       "verdict": "false alarm",
+       "bins": {
+        "0-50": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 24
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 19,
+         "visible": 25
+        },
+        "100-150": {
+         "alarm": 6,
+         "advisory_only": 16,
+         "visible": 25
+        },
+        "150-200": {
+         "alarm": 0,
+         "advisory_only": 3,
+         "visible": 4
+        },
+        "200-300": {
+         "alarm": 0,
+         "advisory_only": 6,
+         "visible": 26
+        }
+       }
+      },
+      "big_above": {
+       "in_gauge": true,
+       "visible_frames": 124,
+       "first_visible_m": 248.2,
+       "frames_in_envelope": 75,
+       "stop_frames": 43,
+       "advisory_frames": 6,
+       "first_stop_m": 101.3,
+       "first_stop_frame": 632,
+       "held_from_m": 31.2,
+       "verdict": "detected",
+       "bins": {
+        "0-50": {
+         "alarm": 17,
+         "advisory_only": 0,
+         "visible": 25
+        },
+        "50-100": {
+         "alarm": 25,
+         "advisory_only": 0,
+         "visible": 25
+        },
+        "100-150": {
+         "alarm": 1,
+         "advisory_only": 0,
+         "visible": 25
+        },
+        "150-200": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 24
+        },
+        "200-300": {
+         "alarm": 0,
+         "advisory_only": 6,
+         "visible": 25
+        }
+       }
+      },
+      "long_low_on_rails": {
+       "in_gauge": true,
+       "visible_frames": 86,
+       "first_visible_m": 248.5,
+       "frames_in_envelope": 77,
+       "stop_frames": 42,
+       "advisory_frames": 0,
+       "first_stop_m": 82.2,
+       "first_stop_frame": 696,
+       "held_from_m": 58.6,
+       "verdict": "detected",
+       "bins": {
+        "0-50": {
+         "alarm": 29,
+         "advisory_only": 0,
+         "visible": 29
+        },
+        "50-100": {
+         "alarm": 13,
+         "advisory_only": 0,
+         "visible": 30
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 15
+        },
+        "200-300": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 12
+        }
+       }
+      },
+      "thin_hanging": {
+       "in_gauge": true,
+       "visible_frames": 42,
+       "first_visible_m": 199.7,
+       "frames_in_envelope": 20,
+       "stop_frames": 0,
+       "advisory_frames": 0,
+       "first_stop_m": null,
+       "first_stop_frame": null,
+       "held_from_m": null,
+       "verdict": "missed",
+       "bins": {
+        "0-50": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 24
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 10
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 3
+        },
+        "150-200": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 5
+        }
+       }
+      }
+     }
+    },
+    "set_F_straight": {
+     "available": true,
+     "parameters": {
+      "files": "46,68,98,140,168,172",
+      "kinds": "person,box1.0,box0.5,trolley,cable",
+      "start": "220",
+      "frames": "110",
+      "lateral": "-0.6:0.6",
+      "seed": "0",
+      "placement-mode": "legacy",
+      "place": "bed",
+      "speeds": "docs/extended_dataset_intake.json"
+     },
+     "kinds": {
+      "person": {
+       "sequences": 6,
+       "detected": 6,
+       "first_detection_median_m": 151.0,
+       "sustained_median_m": 142.6,
+       "false_detections": 9,
+       "recall_by_bin": {
+        "0-50": [
+         106,
+         110
+        ],
+        "50-100": [
+         125,
+         133
+        ],
+        "100-150": [
+         119,
+         151
+        ],
+        "150-200": [
+         13,
+         125
+        ],
+        "200-250": [
+         0,
+         40
+        ]
+       }
+      },
+      "box1.0": {
+       "sequences": 6,
+       "detected": 6,
+       "first_detection_median_m": 123.9,
+       "sustained_median_m": 114.1,
+       "false_detections": 16,
+       "recall_by_bin": {
+        "0-50": [
+         106,
+         110
+        ],
+        "50-100": [
+         125,
+         133
+        ],
+        "100-150": [
+         40,
+         151
+        ],
+        "150-200": [
+         0,
+         135
+        ],
+        "200-250": [
+         0,
+         36
+        ]
+       }
+      },
+      "box0.5": {
+       "sequences": 6,
+       "detected": 1,
+       "first_detection_median_m": 51.9,
+       "sustained_median_m": 55.6,
+       "false_detections": 4,
+       "recall_by_bin": {
+        "0-50": [
+         18,
+         110
+        ],
+        "50-100": [
+         2,
+         133
+        ],
+        "100-150": [
+         0,
+         145
+        ],
+        "150-200": [
+         0,
+         70
+        ],
+        "200-250": [
+         0,
+         15
+        ]
+       }
+      },
+      "trolley": {
+       "sequences": 6,
+       "detected": 6,
+       "first_detection_median_m": 151.4,
+       "sustained_median_m": 115.0,
+       "false_detections": 15,
+       "recall_by_bin": {
+        "0-50": [
+         106,
+         110
+        ],
+        "50-100": [
+         117,
+         133
+        ],
+        "100-150": [
+         59,
+         151
+        ],
+        "150-200": [
+         9,
+         132
+        ],
+        "200-250": [
+         0,
+         48
+        ]
+       }
+      },
+      "cable": {
+       "sequences": 6,
+       "detected": 6,
+       "first_detection_median_m": 98.9,
+       "sustained_median_m": 34.2,
+       "false_detections": 12,
+       "recall_by_bin": {
+        "0-50": [
+         43,
+         73
+        ],
+        "50-100": [
+         47,
+         72
+        ],
+        "100-150": [
+         12,
+         97
+        ],
+        "150-200": [
+         0,
+         65
+        ],
+        "200-250": [
+         0,
+         24
+        ]
+       }
+      }
+     }
+    },
+    "latency_ms": {
+     "note": "timing_ms.total per frame; informational, never gated: the workers run in parallel on a shared machine (clean timing: EXPERIMENTS §3)",
+     "doubleT_obstacle": {
+      "mean_ms": 26.1,
+      "p95_ms": 41.0,
+      "max_ms": 70.2
+     },
+     "doubleT_platform": {
+      "mean_ms": 42.9,
+      "p95_ms": 85.5,
+      "max_ms": 144.2
+     },
+     "roundT_doubleT": {
+      "mean_ms": 34.0,
+      "p95_ms": 70.4,
+      "max_ms": 103.9
+     },
+     "roundT_pressureGate_roundT": {
+      "mean_ms": 31.4,
+      "p95_ms": 55.6,
+      "max_ms": 123.7
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "mean_ms": 29.6,
+      "p95_ms": 54.6,
+      "max_ms": 104.9
+     },
+     "squareT_platform_squareT_switch": {
+      "mean_ms": 31.9,
+      "p95_ms": 60.8,
+      "max_ms": 175.2
+     },
+     "cloud_with_fake_obj": {
+      "mean_ms": 30.7,
+      "p95_ms": 59.1,
+      "max_ms": 171.4
+     },
+     "new_data": {
+      "mean_ms": 29.9,
+      "p95_ms": 60.3,
+      "max_ms": 485.3
+     }
+    }
+   }
+  },
+  "B+C1": {
+   "set": [
+    "cluster.floating_long_min_length=3.0",
+    "cluster.short_signature_max_length=3.0",
+    "cluster.short_signature_max_distance=100.0"
+   ],
+   "result": {
+    "schema": "resense-regression-gate-v1",
+    "created": "2026-09-25T10:02:00+00:00",
+    "code": {
+     "commit": "72908737f2f8d1caf2b513f730abd930c8dac20d",
+     "branch": "wf3/rules",
+     "version": "0.6.3",
+     "uncommitted_detector_changes": []
+    },
+    "config": {
+     "path": "configs/default.yaml",
+     "set": [
+      "cluster.floating_long_min_length=3.0",
+      "cluster.short_signature_max_length=3.0",
+      "cluster.short_signature_max_distance=100.0"
+     ],
+     "sha256": "4501a5a72a2f64665f3cc054b8b97bdd2d123864fdeb51abe4b1d66367ac8dc9",
+     "file_sha256": "4a6304bf135e0a31b0df20d3cc136d878048f568dbae169554c683707cf8cf5e"
+    },
+    "native": {
+     "path": "native",
+     "status": "native (_resense_native.so)"
+    },
+    "run": {
+     "cache": "/data/cache",
+     "jobs": 3,
+     "nominal_stamps": false,
+     "wall_s": 428.6,
+     "machine": {
+      "cpus": 4,
+      "platform": "Linux-6.18.44-fc-v37-x86_64-with-glibc2.39",
+      "python": "3.11.15",
+      "numpy": "2.4.6"
+     }
+    },
+    "recordings": {
+     "doubleT_obstacle": {
+      "frames": 201,
+      "alarm_frames": 188,
+      "alarm_events": 2,
+      "stop_episodes": 3,
+      "first_alarm_frame": 11,
+      "advisory_frames": 84,
+      "alarm_dist": [
+       55.5,
+       56.6
+      ],
+      "health": {
+       "ok": 201,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 151.0,
+      "labelled": {
+       "per_label": {
+        "object_on_rail": {
+         "hits": 127,
+         "frames": 185
+        },
+        "person_crossing": {
+         "hits": 58,
+         "frames": 61
+        },
+        "object_on_rail_from_frame_75": {
+         "hits": 124,
+         "frames": 126
+        }
+       },
+       "hits": 185,
+       "frames": 246,
+       "fp_frames": 0,
+       "fp_events": 0,
+       "distance_error_max_m": 0.23
+      }
+     },
+     "doubleT_platform": {
+      "frames": 345,
+      "alarm_frames": 9,
+      "alarm_events": 5,
+      "stop_episodes": 2,
+      "first_alarm_frame": 34,
+      "advisory_frames": 177,
+      "alarm_dist": [
+       33.4,
+       41.7
+      ],
+      "health": {
+       "ok": 322,
+       "warn": 23,
+       "error": 0
+      },
+      "monitored_range_median": 120.0,
+      "labelled": null
+     },
+     "roundT_doubleT": {
+      "frames": 252,
+      "alarm_frames": 2,
+      "alarm_events": 1,
+      "stop_episodes": 1,
+      "first_alarm_frame": 233,
+      "advisory_frames": 173,
+      "alarm_dist": [
+       128.3,
+       130.2
+      ],
+      "health": {
+       "ok": 252,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 145.8,
+      "labelled": null
+     },
+     "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "first_alarm_frame": null,
+      "advisory_frames": 104,
+      "alarm_dist": null,
+      "health": {
+       "ok": 268,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 130.3,
+      "labelled": null
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "alarm_frames": 0,
+      "alarm_events": 0,
+      "stop_episodes": 0,
+      "first_alarm_frame": null,
+      "advisory_frames": 146,
+      "alarm_dist": null,
+      "health": {
+       "ok": 545,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 157.5,
+      "labelled": null
+     },
+     "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "alarm_frames": 55,
+      "alarm_events": 10,
+      "stop_episodes": 16,
+      "first_alarm_frame": 148,
+      "advisory_frames": 394,
+      "alarm_dist": [
+       82.0,
+       147.5
+      ],
+      "health": {
+       "ok": 877,
+       "warn": 0,
+       "error": 0
+      },
+      "monitored_range_median": 143.0,
+      "labelled": null
+     }
+    },
+    "five_empty": {
+     "frames": 2287,
+     "alarm_frames": 66,
+     "alarm_events": 16,
+     "stop_episodes": 19,
+     "advisory_frames": 994
+    },
+    "ride": {
+     "available": true,
+     "chunks": 8,
+     "frames": 11271,
+     "alarm_frames": 213,
+     "alarm_events": 48,
+     "stop_episodes": 45,
+     "advisory_frames": 4738,
+     "alarm_dist": [
+      2.9,
+      158.3
+     ],
+     "health": {
+      "ok": 10819,
+      "warn": 452,
+      "error": 0
+     },
+     "monitored_range_median": 127.6
+    },
+    "set_O": {
+     "available": true,
+     "frames": 1510,
+     "alarm_frames": 396,
+     "inside_stop_frames": 352,
+     "inside_visible_frames": 801,
+     "inside_objects_with_stop": 6,
+     "inside_objects": 8,
+     "outside_false_stop_frames": 9,
+     "background": {
+      "alarm_frames": 3,
+      "track_ids": 2
+     },
+     "objects": {
+      "big_center": {
+       "in_gauge": true,
+       "visible_frames": 213,
+       "first_visible_m": 98.7,
+       "frames_in_envelope": 213,
+       "stop_frames": 207,
+       "advisory_frames": 0,
+       "first_stop_m": 98.0,
+       "first_stop_frame": 5,
+       "held_from_m": 98.7,
+       "verdict": "detected",
+       "bins": {
+        "0-50": {
+         "alarm": 42,
+         "advisory_only": 0,
+         "visible": 43
+        },
+        "50-100": {
+         "alarm": 165,
+         "advisory_only": 0,
+         "visible": 170
+        }
+       }
+      },
+      "small_center": {
+       "in_gauge": true,
+       "visible_frames": 79,
+       "first_visible_m": 128.9,
+       "frames_in_envelope": 63,
+       "stop_frames": 30,
+       "advisory_frames": 0,
+       "first_stop_m": 52.5,
+       "first_stop_frame": 339,
+       "held_from_m": 57.5,
+       "verdict": "detected",
+       "bins": {
+        "0-50": {
+         "alarm": 28,
+         "advisory_only": 0,
+         "visible": 28
+        },
+        "50-100": {
+         "alarm": 2,
+         "advisory_only": 0,
+         "visible": 31
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 20
+        }
+       }
+      },
+      "small_on_rail": {
+       "in_gauge": true,
+       "visible_frames": 49,
+       "first_visible_m": 237.3,
+       "frames_in_envelope": 33,
+       "stop_frames": 23,
+       "advisory_frames": 0,
+       "first_stop_m": 42.7,
+       "first_stop_frame": 403,
+       "held_from_m": 46.2,
+       "verdict": "detected",
+       "bins": {
+        "0-50": {
+         "alarm": 23,
+         "advisory_only": 0,
+         "visible": 27
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 19
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 1
+        },
+        "200-300": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 2
+        }
+       }
+      },
+      "small_edge_inside": {
+       "in_gauge": true,
+       "visible_frames": 83,
+       "first_visible_m": 154.7,
+       "frames_in_envelope": 16,
+       "stop_frames": 7,
+       "advisory_frames": 18,
+       "first_stop_m": 14.5,
+       "first_stop_frame": 473,
+       "held_from_m": 14.5,
+       "verdict": "detected",
+       "bins": {
+        "0-50": {
+         "alarm": 7,
+         "advisory_only": 18,
+         "visible": 26
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 27
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 27
+        },
+        "150-200": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 3
+        }
+       }
+      },
+      "small_outside_near": {
+       "in_gauge": false,
+       "visible_frames": 112,
+       "first_visible_m": 238.4,
+       "frames_in_envelope": 101,
+       "stop_frames": 3,
+       "advisory_frames": 21,
+       "false_stop_frames": 3,
+       "false_stop_from_m": 27.2,
+       "verdict": "false alarm",
+       "bins": {
+        "0-50": {
+         "alarm": 3,
+         "advisory_only": 21,
+         "visible": 25
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 27
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 25
+        },
+        "150-200": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 23
+        },
+        "200-300": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 12
+        }
+       }
+      },
+      "big_edge_inside": {
+       "in_gauge": true,
+       "visible_frames": 125,
+       "first_visible_m": 248.6,
+       "frames_in_envelope": 8,
+       "stop_frames": 0,
+       "advisory_frames": 0,
+       "first_stop_m": null,
+       "first_stop_frame": null,
+       "held_from_m": null,
+       "verdict": "missed",
+       "bins": {
+        "0-50": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 25
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 26
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 26
+        },
+        "150-200": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 26
+        },
+        "200-300": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 22
+        }
+       }
+      },
+      "big_outside": {
+       "in_gauge": false,
+       "visible_frames": 104,
+       "first_visible_m": 249.4,
+       "frames_in_envelope": 52,
+       "stop_frames": 6,
+       "advisory_frames": 44,
+       "false_stop_frames": 6,
+       "false_stop_from_m": 142.3,
+       "verdict": "false alarm",
+       "bins": {
+        "0-50": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 24
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 19,
+         "visible": 25
+        },
+        "100-150": {
+         "alarm": 6,
+         "advisory_only": 16,
+         "visible": 25
+        },
+        "150-200": {
+         "alarm": 0,
+         "advisory_only": 3,
+         "visible": 4
+        },
+        "200-300": {
+         "alarm": 0,
+         "advisory_only": 6,
+         "visible": 26
+        }
+       }
+      },
+      "big_above": {
+       "in_gauge": true,
+       "visible_frames": 124,
+       "first_visible_m": 248.2,
+       "frames_in_envelope": 75,
+       "stop_frames": 43,
+       "advisory_frames": 6,
+       "first_stop_m": 101.3,
+       "first_stop_frame": 632,
+       "held_from_m": 31.2,
+       "verdict": "detected",
+       "bins": {
+        "0-50": {
+         "alarm": 17,
+         "advisory_only": 0,
+         "visible": 25
+        },
+        "50-100": {
+         "alarm": 25,
+         "advisory_only": 0,
+         "visible": 25
+        },
+        "100-150": {
+         "alarm": 1,
+         "advisory_only": 0,
+         "visible": 25
+        },
+        "150-200": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 24
+        },
+        "200-300": {
+         "alarm": 0,
+         "advisory_only": 6,
+         "visible": 25
+        }
+       }
+      },
+      "long_low_on_rails": {
+       "in_gauge": true,
+       "visible_frames": 86,
+       "first_visible_m": 248.5,
+       "frames_in_envelope": 77,
+       "stop_frames": 42,
+       "advisory_frames": 0,
+       "first_stop_m": 82.2,
+       "first_stop_frame": 696,
+       "held_from_m": 58.6,
+       "verdict": "detected",
+       "bins": {
+        "0-50": {
+         "alarm": 29,
+         "advisory_only": 0,
+         "visible": 29
+        },
+        "50-100": {
+         "alarm": 13,
+         "advisory_only": 0,
+         "visible": 30
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 15
+        },
+        "200-300": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 12
+        }
+       }
+      },
+      "thin_hanging": {
+       "in_gauge": true,
+       "visible_frames": 42,
+       "first_visible_m": 199.7,
+       "frames_in_envelope": 20,
+       "stop_frames": 0,
+       "advisory_frames": 0,
+       "first_stop_m": null,
+       "first_stop_frame": null,
+       "held_from_m": null,
+       "verdict": "missed",
+       "bins": {
+        "0-50": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 24
+        },
+        "50-100": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 10
+        },
+        "100-150": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 3
+        },
+        "150-200": {
+         "alarm": 0,
+         "advisory_only": 0,
+         "visible": 5
+        }
+       }
+      }
+     }
+    },
+    "set_F_straight": {
+     "available": true,
+     "parameters": {
+      "files": "46,68,98,140,168,172",
+      "kinds": "person,box1.0,box0.5,trolley,cable",
+      "start": "220",
+      "frames": "110",
+      "lateral": "-0.6:0.6",
+      "seed": "0",
+      "placement-mode": "legacy",
+      "place": "bed",
+      "speeds": "docs/extended_dataset_intake.json"
+     },
+     "kinds": {
+      "person": {
+       "sequences": 6,
+       "detected": 6,
+       "first_detection_median_m": 151.0,
+       "sustained_median_m": 142.6,
+       "false_detections": 9,
+       "recall_by_bin": {
+        "0-50": [
+         106,
+         110
+        ],
+        "50-100": [
+         125,
+         133
+        ],
+        "100-150": [
+         119,
+         151
+        ],
+        "150-200": [
+         13,
+         125
+        ],
+        "200-250": [
+         0,
+         40
+        ]
+       }
+      },
+      "box1.0": {
+       "sequences": 6,
+       "detected": 6,
+       "first_detection_median_m": 123.9,
+       "sustained_median_m": 114.1,
+       "false_detections": 16,
+       "recall_by_bin": {
+        "0-50": [
+         106,
+         110
+        ],
+        "50-100": [
+         125,
+         133
+        ],
+        "100-150": [
+         40,
+         151
+        ],
+        "150-200": [
+         0,
+         135
+        ],
+        "200-250": [
+         0,
+         36
+        ]
+       }
+      },
+      "box0.5": {
+       "sequences": 6,
+       "detected": 1,
+       "first_detection_median_m": 51.9,
+       "sustained_median_m": 55.6,
+       "false_detections": 4,
+       "recall_by_bin": {
+        "0-50": [
+         18,
+         110
+        ],
+        "50-100": [
+         2,
+         133
+        ],
+        "100-150": [
+         0,
+         145
+        ],
+        "150-200": [
+         0,
+         70
+        ],
+        "200-250": [
+         0,
+         15
+        ]
+       }
+      },
+      "trolley": {
+       "sequences": 6,
+       "detected": 6,
+       "first_detection_median_m": 151.4,
+       "sustained_median_m": 115.0,
+       "false_detections": 15,
+       "recall_by_bin": {
+        "0-50": [
+         106,
+         110
+        ],
+        "50-100": [
+         117,
+         133
+        ],
+        "100-150": [
+         59,
+         151
+        ],
+        "150-200": [
+         9,
+         132
+        ],
+        "200-250": [
+         0,
+         48
+        ]
+       }
+      },
+      "cable": {
+       "sequences": 6,
+       "detected": 6,
+       "first_detection_median_m": 98.9,
+       "sustained_median_m": 34.2,
+       "false_detections": 12,
+       "recall_by_bin": {
+        "0-50": [
+         43,
+         73
+        ],
+        "50-100": [
+         47,
+         72
+        ],
+        "100-150": [
+         12,
+         97
+        ],
+        "150-200": [
+         0,
+         65
+        ],
+        "200-250": [
+         0,
+         24
+        ]
+       }
+      }
+     }
+    },
+    "latency_ms": {
+     "note": "timing_ms.total per frame; informational, never gated: the workers run in parallel on a shared machine (clean timing: EXPERIMENTS §3)",
+     "doubleT_obstacle": {
+      "mean_ms": 24.2,
+      "p95_ms": 34.8,
+      "max_ms": 46.6
+     },
+     "doubleT_platform": {
+      "mean_ms": 28.2,
+      "p95_ms": 44.5,
+      "max_ms": 91.0
+     },
+     "roundT_doubleT": {
+      "mean_ms": 21.5,
+      "p95_ms": 31.0,
+      "max_ms": 54.3
+     },
+     "roundT_pressureGate_roundT": {
+      "mean_ms": 19.0,
+      "p95_ms": 27.3,
+      "max_ms": 44.1
+     },
+     "roundT_squareT_pressureGate_squareT": {
+      "mean_ms": 19.0,
+      "p95_ms": 27.8,
+      "max_ms": 53.2
+     },
+     "squareT_platform_squareT_switch": {
+      "mean_ms": 19.6,
+      "p95_ms": 27.3,
+      "max_ms": 56.4
+     },
+     "cloud_with_fake_obj": {
+      "mean_ms": 19.3,
+      "p95_ms": 29.6,
+      "max_ms": 70.3
+     },
+     "new_data": {
+      "mean_ms": 30.6,
+      "p95_ms": 61.7,
+      "max_ms": 312.3
+     }
+    }
+   }
+  }
+ },
+ "summary": {
+  "ride": {
+   "base": {
+    "frames": 11271,
+    "alarm_frames": 204,
+    "alarm_events": 47,
+    "stop_episodes": 39,
+    "events_per_km": 3.62,
+    "advisory_frames": 4737
+   },
+   "c1": {
+    "frames": 11271,
+    "alarm_frames": 197,
+    "alarm_events": 46,
+    "stop_episodes": 39,
+    "events_per_km": 3.54,
+    "advisory_frames": 4739
+   },
+   "b": {
+    "frames": 11271,
+    "alarm_frames": 220,
+    "alarm_events": 49,
+    "stop_episodes": 45,
+    "events_per_km": 3.77,
+    "advisory_frames": 4736
+   },
+   "bc1": {
+    "frames": 11271,
+    "alarm_frames": 213,
+    "alarm_events": 48,
+    "stop_episodes": 45,
+    "events_per_km": 3.69,
+    "advisory_frames": 4738
+   }
+  },
+  "set_F_straight": {
+   "base": {
+    "person": {
+     "detected": 6,
+     "sequences": 6,
+     "first_median_m": 151.0,
+     "held_from_median_m": 142.6,
+     "false_detections": 9
+    },
+    "box1.0": {
+     "detected": 6,
+     "sequences": 6,
+     "first_median_m": 123.9,
+     "held_from_median_m": 114.1,
+     "false_detections": 16
+    },
+    "box0.5": {
+     "detected": 1,
+     "sequences": 6,
+     "first_median_m": 51.9,
+     "held_from_median_m": 55.6,
+     "false_detections": 4
+    },
+    "trolley": {
+     "detected": 6,
+     "sequences": 6,
+     "first_median_m": 151.4,
+     "held_from_median_m": 115.0,
+     "false_detections": 15
+    },
+    "cable": {
+     "detected": 6,
+     "sequences": 6,
+     "first_median_m": 98.9,
+     "held_from_median_m": 34.2,
+     "false_detections": 12
+    }
+   },
+   "c1": {
+    "person": {
+     "detected": 6,
+     "sequences": 6,
+     "first_median_m": 151.0,
+     "held_from_median_m": 142.6,
+     "false_detections": 9
+    },
+    "box1.0": {
+     "detected": 6,
+     "sequences": 6,
+     "first_median_m": 123.9,
+     "held_from_median_m": 114.1,
+     "false_detections": 16
+    },
+    "box0.5": {
+     "detected": 1,
+     "sequences": 6,
+     "first_median_m": 51.9,
+     "held_from_median_m": 55.6,
+     "false_detections": 4
+    },
+    "trolley": {
+     "detected": 6,
+     "sequences": 6,
+     "first_median_m": 151.4,
+     "held_from_median_m": 115.0,
+     "false_detections": 15
+    },
+    "cable": {
+     "detected": 6,
+     "sequences": 6,
+     "first_median_m": 98.9,
+     "held_from_median_m": 34.2,
+     "false_detections": 12
+    }
+   },
+   "b": {
+    "person": {
+     "detected": 6,
+     "sequences": 6,
+     "first_median_m": 151.0,
+     "held_from_median_m": 142.6,
+     "false_detections": 9
+    },
+    "box1.0": {
+     "detected": 6,
+     "sequences": 6,
+     "first_median_m": 123.9,
+     "held_from_median_m": 114.1,
+     "false_detections": 16
+    },
+    "box0.5": {
+     "detected": 1,
+     "sequences": 6,
+     "first_median_m": 51.9,
+     "held_from_median_m": 55.6,
+     "false_detections": 4
+    },
+    "trolley": {
+     "detected": 6,
+     "sequences": 6,
+     "first_median_m": 151.4,
+     "held_from_median_m": 115.0,
+     "false_detections": 15
+    },
+    "cable": {
+     "detected": 6,
+     "sequences": 6,
+     "first_median_m": 98.9,
+     "held_from_median_m": 34.2,
+     "false_detections": 12
+    }
+   },
+   "bc1": {
+    "person": {
+     "detected": 6,
+     "sequences": 6,
+     "first_median_m": 151.0,
+     "held_from_median_m": 142.6,
+     "false_detections": 9
+    },
+    "box1.0": {
+     "detected": 6,
+     "sequences": 6,
+     "first_median_m": 123.9,
+     "held_from_median_m": 114.1,
+     "false_detections": 16
+    },
+    "box0.5": {
+     "detected": 1,
+     "sequences": 6,
+     "first_median_m": 51.9,
+     "held_from_median_m": 55.6,
+     "false_detections": 4
+    },
+    "trolley": {
+     "detected": 6,
+     "sequences": 6,
+     "first_median_m": 151.4,
+     "held_from_median_m": 115.0,
+     "false_detections": 15
+    },
+    "cable": {
+     "detected": 6,
+     "sequences": 6,
+     "first_median_m": 98.9,
+     "held_from_median_m": 34.2,
+     "false_detections": 12
+    }
+   }
+  }
+ },
+ "criterion_3_C1": {
+  "a_ride_not_worse": true,
+  "b_setF_violations": [],
+  "c_setO_differences": [],
+  "d_doubleT_obstacle_differences": [],
+  "C1": "GO"
+ },
+ "criterion_4_B": {
+  "X": "c1",
+  "X_plus_B": "bc1",
+  "ride_events_delta": 2,
+  "ride_events_limit": 5,
+  "ride_stop_episodes_delta": 6,
+  "a_ride_cost_ok": false,
+  "b_setF_violations": [],
+  "setO_inside_stop_gain": 49,
+  "c_gain_ok": true,
+  "B": "NO-GO"
+ },
+ "per_frame_vs_base": {
+  "note": "frames whose decision fields (obstacle, warning, nearest / clear distance, every detection's id, zone, distance, lateral, kind, reason) differ from base",
+  "c1": {
+   "doubleT_obstacle": {
+    "frames": 201,
+    "frames_differing": 0,
+    "stop_decisions_differing": 0
+   },
+   "cloud_with_fake_obj": {
+    "frames": 1510,
+    "frames_differing": 0,
+    "stop_decisions_differing": 0
+   },
+   "doubleT_platform": {
+    "frames": 345,
+    "frames_differing": 0,
+    "stop_decisions_differing": 0
+   },
+   "squareT_platform_squareT_switch": {
+    "frames": 877,
+    "frames_differing": 53,
+    "stop_decisions_differing": 47
+   },
+   "new_data": {
+    "frames": 11271,
+    "frames_differing": 11,
+    "stop_decisions_differing": 7
+   }
+  },
+  "b": {
+   "doubleT_obstacle": {
+    "frames": 201,
+    "frames_differing": 0,
+    "stop_decisions_differing": 0
+   },
+   "cloud_with_fake_obj": {
+    "frames": 1510,
+    "frames_differing": 58,
+    "stop_decisions_differing": 54
+   },
+   "doubleT_platform": {
+    "frames": 345,
+    "frames_differing": 5,
+    "stop_decisions_differing": 5
+   },
+   "squareT_platform_squareT_switch": {
+    "frames": 877,
+    "frames_differing": 1,
+    "stop_decisions_differing": 1
+   },
+   "new_data": {
+    "frames": 11271,
+    "frames_differing": 16,
+    "stop_decisions_differing": 16
+   }
+  },
+  "bc1": {
+   "doubleT_obstacle": {
+    "frames": 201,
+    "frames_differing": 0,
+    "stop_decisions_differing": 0
+   },
+   "cloud_with_fake_obj": {
+    "frames": 1510,
+    "frames_differing": 58,
+    "stop_decisions_differing": 54
+   },
+   "doubleT_platform": {
+    "frames": 345,
+    "frames_differing": 5,
+    "stop_decisions_differing": 5
+   },
+   "squareT_platform_squareT_switch": {
+    "frames": 877,
+    "frames_differing": 54,
+    "stop_decisions_differing": 48
+   },
+   "new_data": {
+    "frames": 11271,
+    "frames_differing": 27,
+    "stop_decisions_differing": 23
+   }
+  }
+ },
+ "ride_stop_episode_changes_vs_base": {
+  "c1": {
+   "new": [],
+   "gone": []
+  },
+  "b": {
+   "new": [
+    {
+     "start": "new_data_59_0031",
+     "frames": 3,
+     "dist_m": [
+      96.79,
+      97.0
+     ]
+    },
+    {
+     "start": "new_data_59_0035",
+     "frames": 4,
+     "dist_m": [
+      96.72,
+      96.8
+     ]
+    },
+    {
+     "start": "new_data_59_0040",
+     "frames": 4,
+     "dist_m": [
+      96.76,
+      96.83
+     ]
+    },
+    {
+     "start": "new_data_59_0046",
+     "frames": 2,
+     "dist_m": [
+      96.81,
+      96.88
+     ]
+    },
+    {
+     "start": "new_data_59_0049",
+     "frames": 2,
+     "dist_m": [
+      96.72,
+      96.82
+     ]
+    },
+    {
+     "start": "new_data_192_0029",
+     "frames": 1,
+     "dist_m": [
+      55.78,
+      55.78
+     ]
+    }
+   ],
+   "gone": []
+  },
+  "bc1": {
+   "new": [
+    {
+     "start": "new_data_59_0031",
+     "frames": 3,
+     "dist_m": [
+      96.79,
+      97.0
+     ]
+    },
+    {
+     "start": "new_data_59_0035",
+     "frames": 4,
+     "dist_m": [
+      96.72,
+      96.8
+     ]
+    },
+    {
+     "start": "new_data_59_0040",
+     "frames": 4,
+     "dist_m": [
+      96.76,
+      96.83
+     ]
+    },
+    {
+     "start": "new_data_59_0046",
+     "frames": 2,
+     "dist_m": [
+      96.81,
+      96.88
+     ]
+    },
+    {
+     "start": "new_data_59_0049",
+     "frames": 2,
+     "dist_m": [
+      96.72,
+      96.82
+     ]
+    },
+    {
+     "start": "new_data_192_0029",
+     "frames": 1,
+     "dist_m": [
+      55.78,
+      55.78
+     ]
+    }
+   ],
+   "gone": []
+  }
+ },
+ "ride_new_events_with_B": [
+  {
+   "track": 80,
+   "split_file": "new_data_59",
+   "frames": "31-50",
+   "distance_m": [
+    96.7,
+    97.0
+   ],
+   "lateral_m": [
+    0.41,
+    0.9
+   ],
+   "size_m": "1.78-1.86 along x 0.06-0.07 wide x 0.86-1.09 tall",
+   "bottom_m": [
+    1.87,
+    1.99
+   ],
+   "stop_episodes": 5,
+   "note": "static (distance constant: the train stands); overhead fixture near the axis that the floating shape demotes without B"
+  },
+  {
+   "track": 531,
+   "split_file": "new_data_192",
+   "frames": "29",
+   "distance_m": 55.78,
+   "lateral_m": -1.24,
+   "size_m": "0.04 along x 0.31 wide x 0.37 tall",
+   "bottom_m": 1.86,
+   "stop_episodes": 1,
+   "note": "wall-mounted object at the envelope edge, one frame"
+  }
+ ],
+ "ride_event_removed_by_C1": {
+  "track": 524,
+  "split_file": "new_data_192",
+  "frames": "14-24 (STOP frames 18-24 removed; the STOP episode ends at frame 17 on another track)",
+  "distance_m": [
+   105.2,
+   109.5
+  ],
+  "size_m": "mostly 4.1-5.0 along (2.6-5.0) x 0.2-0.4 wide x 0.8-1.7 tall, bottom 0.4-1.9",
+  "lateral_m": [
+   -0.5,
+   0.3
+  ],
+  "note": "an overhead structure along the track near the axis, the same kind as the ~104 m station structure of squareT_platform_squareT_switch"
+ },
+ "new_defaults_run": {
+  "commit": "935eecf",
+  "file": "docs/evidence/results/regression_baseline_2026-09-25_ride.json",
+  "equal_to": "C1 per frame on all eight sets (decision fields); only the load-dependent health-warning counts differ",
+  "gate_vs_base": "PASS, 3 gated better"
+ },
+ "decision": {
+  "C1": "GO: cluster.floating_long_min_length 3.0 shipped in configs/default.yaml (and the ROS copy, resense/config.py)",
+  "B": "NO-GO: ride STOP episodes +6 on top of C1 (limit +5); stays 0 (tried, not shipped)",
+  "new_baseline": "docs/evidence/results/regression_baseline_2026-09-25_ride.json"
+ },
+ "note_set_F": "set F straight is measured on the current far_range_eval.py (changed by the P4 audit 4b5786b after the 24.09 round-3 record); same files, seed, stamps and speeds, so its numbers differ from the 24.09 record (person 147.5 m median then, 151.0 m now) and are compared only run to run here"
+}

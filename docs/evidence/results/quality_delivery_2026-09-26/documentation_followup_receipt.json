@@ -1,0 +1,14 @@
+{
+  "checked_utc": "2026-09-26T22:32:56.628255+00:00",
+  "archive_source_sha": "d480b1330491da838d6fb4996e34e37b3c060915",
+  "branch_head": "06845469065d5b7d093210c61c989c1ef34271e4",
+  "changed_paths": [
+    "README.md",
+    "docs/CAPTAIN.md",
+    "docs/NEXT_DETECTOR_WORK.md",
+    "docs/QUALITY_CYCLE_2026-09-26.md"
+  ],
+  "changes_limited_to_listed_markdown": true,
+  "all_other_tracked_blobs_unchanged": true,
+  "claim": "The downloaded artifact is built from archive_source_sha; branch_head adds the listed documentation changes."
+}

@@ -1,0 +1,49 @@
+"""Fixed T1 full regression, coverage and 72-case comparison, using unchanged scorers."""
+import json,sys,statistics
+from pathlib import Path
+from collections import Counter,defaultdict
+ROOT=Path('/home/resense/worktrees/trust-quality');sys.path.insert(0,str(ROOT));sys.path.insert(0,str(ROOT/'scripts'))
+import quality_acceptance as q
+import regression_gate as g
+OUT=Path('/home/resense/validation/quality_cycle/T1');M2=OUT.parent/'M2_production'
+FROZEN=ROOT/'docs/evidence/freeze_2026-09-26/gate_frames'
+refs={'frozen':ROOT/'docs/evidence/results/regression_gate_2026-09-26_freeze.json','M2':M2/'gate_result.json'}
+result={'source_commit':'0ea660fb4025e6f1fd5afdfb4e68e8db003a26f9'}
+new=json.loads((OUT/'gate_result.json').read_text())
+result['gate']={}
+for key,path in refs.items():
+ base=json.loads(path.read_text());rows=g.compare(base,new)
+ result['gate'][key]={'total_rows':len(rows),'gated_rows':sum(r['gated'] for r in rows),'summary':g.gate_summary(rows,base,str(path),[]),'rows':rows}
+result['coverage']={}
+for key,path in [('frozen',FROZEN),('M2',M2/'gate')]:
+ report=q.compare(path,OUT/'gate',ROOT/'labels/cloud_with_fake_obj.json')
+ # The T1 registration also requires each of the eight ride segments to pass separately.
+ for name in (f'new_data_{i}' for i in range(8)):
+  a,_=q.read_rows(path,name);b,_=q.read_rows(OUT/'gate',name);q.aligned(a,b)
+  report['monitoring_cost'][name]=q.monitoring_cost(a,b)
+ for name,cost in report['monitoring_cost'].items():
+  names=[f'new_data_{i}' for i in range(8)] if name=='ride' else [name]
+  a=[r for n in names for r in q.read_rows(path,n)[0]];b=[r for n in names for r in q.read_rows(OUT/'gate',n)[0]]
+  cost['reference_monitored_median_m']=statistics.median(r['health']['monitored_range'] for r in a)
+  cost['candidate_monitored_median_m']=statistics.median(r['health']['monitored_range'] for r in b)
+ report['monitoring_cost_passed']=all(v['passed'] for v in report['monitoring_cost'].values())
+ result['coverage'][key]=report
+(OUT/'full_comparison.json').write_text(json.dumps(result,indent=2)+'\n')
+for key,r in result['gate'].items():print('gate',key,r['summary']['passed'],'failed',r['summary']['worse_gated'])
+for key,r in result['coverage'].items():print('coverage',key,r['monitoring_cost_passed'],{k:v for k,v in r['monitoring_cost'].items() if not v['passed']})
+if (OUT/'novel_result.json').exists():
+ base=json.loads((M2/'novel_result.json').read_text());cand=json.loads((OUT/'novel_result.json').read_text())
+ assert len(base['cases'])==len(cand['cases'])==72
+ rows=[];families=defaultdict(lambda:Counter())
+ for a,b in zip(base['cases'],cand['cases']):
+  key=(a['bag'],a['object'],a['lateral_m']);assert key==(b['bag'],b['object'],b['lateral_m'])
+  assert len(a['rows'])==len(b['rows'])
+  assert [(r['frame'],r['source_frame'],r['source_points'],r['visible_points']) for r in a['rows']]==[(r['frame'],r['source_frame'],r['source_points'],r['visible_points']) for r in b['rows']]
+  before=a['target_matched_frames'];after=b['target_matched_frames']
+  r={'bag':key[0],'object':key[1],'lateral_m':key[2],'before':before,'after':after,'difference':after-before,
+   'before_control_stop':sum(r['control_stop'] for r in a['rows']),'after_control_stop':sum(r['control_stop'] for r in b['rows']),
+   'lost_matched_frames':sum(x['target_matched'] and not y['target_matched'] for x,y in zip(a['rows'],b['rows']))}
+  r['pass']=after>=before and r['after_control_stop']<=r['before_control_stop']
+  rows.append(r);families[key[1]].update(before=before,after=after)
+ novel={'baseline_summary':base['summary'],'candidate_summary':cand['summary'],'cases':rows,'families':dict(families),'passed':all(r['pass'] for r in rows)}
+ (OUT/'novel_comparison.json').write_text(json.dumps(novel,indent=2)+'\n');print('novel',novel['passed'],'failures',[r for r in rows if not r['pass']])

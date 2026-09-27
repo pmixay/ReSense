@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# Cold-disk startup check using the organizer's bag. A small rosbag2
+# read-ahead queue avoids turning the 20 s recording into a burst while the cold 4.8 GB SQLite
+# file is preloaded; storage stalls remain real and the node still gets the original point clouds.
+# Requires Docker and runs on the working branch and main; the downloaded raw bag is removed.
+set -euo pipefail
+
+case "${GITHUB_REF:-}" in
+  refs/heads/claude/nifty-pascal-lzgl78|refs/heads/main) ;;
+  *) echo "skip: original-bag cold-disk test runs on the working branch and main"; exit 0 ;;
+esac
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+IMAGE="${IMAGE:-resense:ci}"
+WORK="$(mktemp -d "${TMPDIR:-/tmp}/resense-p1-cold.XXXXXX")"
+OUT="${OUT:-$ROOT/out/p1-cold-run}"
+ARCHIVE="$WORK/dataset.zip"
+BAG="$WORK/for_hackathon/doubleT_obstacle"
+CLEAR_BAG="$WORK/for_hackathon/roundT_doubleT"
+URL="https://drive.usercontent.google.com/download?id=1WTlR2wDSuEHTOARGK_gZeXDTZ9RZpswu&export=download&confirm=t"
+mkdir -p "$OUT"
+trap 'rm -rf "$WORK"' EXIT
+
+echo "source: $URL" | tee "$OUT/provenance.txt"
+echo "playback: rate=1.0; read_ahead_queue_size=10" | tee -a "$OUT/provenance.txt"
+git -C "$ROOT" rev-parse HEAD | sed 's/^/commit: /' | tee -a "$OUT/provenance.txt"
+df -h "$WORK" | tee -a "$OUT/provenance.txt"
+
+curl --fail --location --retry 3 --retry-delay 2 --output "$ARCHIVE" "$URL"
+[[ "$(dd if="$ARCHIVE" bs=2 count=1 2>/dev/null)" == "PK" ]] || {
+  echo "download is not a ZIP archive" >&2
+  exit 1
+}
+sha256sum "$ARCHIVE" | tee -a "$OUT/provenance.txt"
+chmod 777 "$WORK"
+docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp -e PYTHONDONTWRITEBYTECODE=1 \
+  -v "$WORK:/data" "$IMAGE" python3 scripts/unpack_dataset.py \
+  /data/dataset.zip --out /data --only doubleT_obstacle,roundT_doubleT
+test -f "$BAG/metadata.yaml"
+cmp "$BAG/metadata.yaml" "$ROOT/docs/evidence/bag_metadata/doubleT_obstacle_metadata.yaml"
+test -f "$CLEAR_BAG/metadata.yaml"
+cmp "$CLEAR_BAG/metadata.yaml" "$ROOT/docs/evidence/bag_metadata/roundT_doubleT_metadata.yaml"
+sha256sum "$BAG/metadata.yaml" | tee -a "$OUT/provenance.txt"
+find "$BAG" -maxdepth 1 -type f -name '*.db3' -print0 | sort -z | xargs -0 sha256sum \
+  | tee -a "$OUT/provenance.txt"
+sha256sum "$CLEAR_BAG/metadata.yaml" | tee -a "$OUT/provenance.txt"
+find "$CLEAR_BAG" -maxdepth 1 -type f -name '*.db3' -print0 | sort -z | xargs -0 sha256sum \
+  | tee -a "$OUT/provenance.txt"
+rm -f "$ARCHIVE"
+docker tag "$IMAGE" resense:latest
+
+# The archive extraction and hashes warmed the page cache. Evict it before the exact dry-run path.
+sudo sh -c 'sync; echo 3 > /proc/sys/vm/drop_caches'
+BAG_READ_AHEAD_QUEUE_SIZE=10 SKIP_BUILD=1 OUT="$OUT/dry_run" scripts/dry_run.sh "$BAG" \
+  --expect-obstacle --distance 50:62 --min-frames 20 --max-p95-latency 100 --max-dropped 0
+echo "PASS: original doubleT_obstacle cold-disk dry run" | tee -a "$OUT/result.txt"
+
+# Repeat the cold-cache check for the original clear 120-degree recording. The previous replay
+# warmed only doubleT_obstacle, so this independently verifies a clear path from cold storage.
+sudo sh -c 'sync; echo 3 > /proc/sys/vm/drop_caches'
+BAG_READ_AHEAD_QUEUE_SIZE=10 SKIP_BUILD=1 OUT="$OUT/roundT_doubleT" scripts/dry_run.sh "$CLEAR_BAG" \
+  --expect-clear --max-alarm-frames 2 --max-p95-latency 100 --max-dropped 0
+echo "PASS: original roundT_doubleT cold-disk dry run" | tee -a "$OUT/result.txt"

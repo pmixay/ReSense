@@ -1,0 +1,23 @@
+{
+  "created_utc": "2026-09-27T06:50:23.868015+00:00",
+  "target": "claude/nifty-pascal-lzgl78",
+  "pre_history_merge_head": "5b6c96f695be6acc513f10dfbe5c78c05207ad92",
+  "pre_history_merge_tree": "a4c3f2746b717818a566425eefc1fb16a5416dc1",
+  "local_work_tips": {
+    "work/association-quality-20260926": "f76ed30080f428f7dafa713f916efe8134258b69",
+    "work/detector-quality-20260926": "9f00c1f4d22738258868268f4f414443828cdce1",
+    "work/monitoring-quality-20260926": "eb4e082728c77734f27b60e0af90eeb3529c585c",
+    "work/trust-quality-20260926": "810966e0c08611a226b6dd18d3fe6f8210287e80"
+  },
+  "remote_tips": {
+    "work/association-quality-20260926": "f76ed30080f428f7dafa713f916efe8134258b69",
+    "work/detector-quality-20260926": "9f00c1f4d22738258868268f4f414443828cdce1",
+    "work/monitoring-quality-20260926": "25ad3ddab0457dd1ef5b9c33b639ec3ca192b84f",
+    "work/trust-quality-20260926": "810966e0c08611a226b6dd18d3fe6f8210287e80",
+    "claude/p1-p2-completion-20260926": "9540d66ed3dc1208e11dda847424e4ccce32df37"
+  },
+  "history_merge_head": "68338b95c20576788c8dadef65fe12185c4613aa",
+  "history_merge_tree": "a4c3f2746b717818a566425eefc1fb16a5416dc1",
+  "tree_unchanged": true,
+  "all_branch_tips_preserved": true
+}

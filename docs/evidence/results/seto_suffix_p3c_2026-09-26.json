@@ -1,0 +1,31 @@
+{
+  "schema": "resense-seto-suffix-audit-v1",
+  "date": "2026-09-26",
+  "code": {
+    "commit": "ed03bc273cc52613f8237d63142134fd931079b5",
+    "branch": "wf14/integrate-p3",
+    "config_sha256": "62930ec64b3238b71f7954126c5517ed3adc4f802867f6a9c3ace8e70df6f801"
+  },
+  "method": "Full continuous replay from frame 0 with shipped defaults and numpy path. Compared organizer's original rosbag2 with the --int16 --stamps cache generated from that bag. Suffix is frames 804-1509 inclusive; scored the per-frame obstacle field.",
+  "source": "https://disk.yandex.ru/d/KpkG_yKoGk-vHQ",
+  "runs": {
+    "raw": {
+      "frames": 1510,
+      "suffix_frames": 706,
+      "suffix_alarm_frames": 1,
+      "suffix_alarm_events": 1,
+      "suffix_alarms": [{"frame": 1131, "stamp": 1790252350.2927825, "nearest_distance_m": 140.72}]
+    },
+    "int16_stamps_cache": {
+      "frames": 1510,
+      "suffix_frames": 706,
+      "suffix_alarm_frames": 1,
+      "suffix_alarm_events": 1,
+      "suffix_alarms": [{"frame": 1131, "stamp": 1790252350.2927825, "nearest_distance_m": 140.72}]
+    }
+  },
+  "commands": [
+    "python -m resense.cli run --bag <cloud_with_fake_obj> --out <raw.jsonl> --quiet",
+    "python -m resense.cli run --npy <cache>/cloud_with_fake_obj --out <cache.jsonl> --quiet"
+  ]
+}

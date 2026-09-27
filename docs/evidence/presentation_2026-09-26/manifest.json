@@ -1,0 +1,143 @@
+{
+  "created_utc": "2026-09-26T20:02:54.202518+00:00",
+  "purpose": "Presentation and display claim corrections; detector unchanged.",
+  "source_revision": "1dccdecb3f919ef411adfcec077e803364c9902d",
+  "working_tree_changes": true,
+  "outputs": {
+    "docs/presentation/ReSense_LCT2026.pptx": {
+      "sha256": "77bbaaef40afe9bfc8b2cf7c2edc0b96773680c950962314754586cdefe8c93e",
+      "bytes": 14374385
+    },
+    "docs/presentation/ReSense_LCT2026.pdf": {
+      "sha256": "f3a2931e6d92e3b3e174a8090579f648103558e16ecc2738b638ac7f2406201a",
+      "bytes": 3082301
+    },
+    "docs/video/resense_overview.mp4": {
+      "sha256": "3bcf43881bc7578e56b19ee5543d94c53426333bc6c36c4e5484d96858e7c05b",
+      "bytes": 20222715
+    },
+    "docs/video/resense_overview.ru.srt": {
+      "sha256": "419691f11b8e7a6b8397e6f489148028957c92aa5a50a0fbc552d5cccce5489f",
+      "bytes": 5028
+    },
+    "docs/video/dashboard_current.mp4": {
+      "sha256": "b535c8018d1bf327281b79f9ce91eabeb269f08a3ae8b9b9d7a5526ba478e953",
+      "bytes": 858398
+    },
+    "docs/images/dashboard-cab-real.png": {
+      "sha256": "8a1fd71e7cf50bef85ef1b255c1e5f1b34f3d474a2004cbdf49e4d1bd62721e0",
+      "bytes": 147212
+    },
+    "docs/images/dashboard-caution.png": {
+      "sha256": "ed10a13c53da05988644d4ebcf2d7b553f3fabd12cf2c7b5a4daba57093f3baa",
+      "bytes": 147322
+    },
+    "docs/images/dashboard-clear.png": {
+      "sha256": "6f31582ba1f8bf2ec1588f75cdbf5c2534c29283648b87dfa78cce62d4c2b32b",
+      "bytes": 137527
+    },
+    "docs/images/dashboard-plan.png": {
+      "sha256": "69abfaf681a0be6a467093ff9a9de3ef71f0eb069f6c9a93f5f9c953095639ff",
+      "bytes": 103001
+    },
+    "docs/images/dashboard-stop.png": {
+      "sha256": "15b00ce3bba78017a483a10f355fcdebfd33fb8e0a607c0c4b194c2203ffc5b2",
+      "bytes": 145169
+    }
+  },
+  "sources": {
+    "scripts/build_deck.py": {
+      "sha256": "a1bde9b64d89eff939e4e092110aa6675bc55eb2584137708001a3d6c3d5b6b0",
+      "bytes": 60502
+    },
+    "scripts/make_overview_video.py": {
+      "sha256": "33e03b3a1a6687a91227658eb6e2c46836df8d250ddbecdca74b7550bbf980a5",
+      "bytes": 55880
+    },
+    "scripts/hero_view.py": {
+      "sha256": "623886984e23431c556ce6ce9e3b459d32823479919e0d6350401d952e04ff53",
+      "bytes": 11561
+    },
+    "web/index.html": {
+      "sha256": "db6ca426c7ea7b0977a0fb877bffc9f1baf2984338114f29740591fb5a8f5c38",
+      "bytes": 53933
+    },
+    "web/demo/capture_gallery.py": {
+      "sha256": "da1d7c47a531ceb260345ace117350fcd5dc22cfdd765d3fec6d00c2821ec170",
+      "bytes": 3714
+    },
+    "web/demo/check_dashboard.py": {
+      "sha256": "c9ee14c34290b30f2c0df436eb9812d3af293f9fd8f5fdb371135584ed5053cd",
+      "bytes": 10272
+    },
+    "web/demo/test_web.py": {
+      "sha256": "80a5c0e686b874af6a43f821912792f1e3136bcd1e82b3c317a733d49e9737bb",
+      "bytes": 28090
+    },
+    "web/foxglove_layout.json": {
+      "sha256": "12386a1ba03881e612b9d9195a111aa44d0094662610c7496ff137c72e08480e",
+      "bytes": 6528
+    },
+    "docs/evidence/docker_2026-09-23/obstacle_status.jsonl.gz": {
+      "sha256": "224c384dac1eccd98a1ef640ce369e235a4cedcafeeca7bb4c3dc5aba06eaec5",
+      "bytes": 19571
+    }
+  },
+  "organizer_template": {
+    "url": "https://docs.google.com/presentation/d/17ciElVAWgeuPLiFHw7y5HMaAXmTo7g16/export/pptx",
+    "sha256": "1604aa9146b82cacd96f893be2c5e08c6981183ba155cd4a11c245f25cd894d5",
+    "bytes": 34162523
+  },
+  "video": {
+    "programs": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1920,
+        "height": 1080,
+        "r_frame_rate": "25/1"
+      },
+      {
+        "codec_name": "bin_data",
+        "r_frame_rate": "0/0"
+      }
+    ],
+    "format": {
+      "duration": "170.000000",
+      "size": "20222715"
+    }
+  },
+  "dashboard_clip": {
+    "programs": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1440,
+        "height": 900,
+        "r_frame_rate": "25/1"
+      }
+    ],
+    "format": {
+      "duration": "6.880000",
+      "size": "858398"
+    }
+  },
+  "checks": {
+    "web_demo": "14 passed in 9.41s; Chromium",
+    "overview": "6 passed; table, sources, matching SRT, 25 MB budget, faststart, current ride baseline",
+    "presentation": "16 slides; deck smoke test included in web_demo",
+    "lint": "ruff passed for five changed Python files",
+    "detector_integrity": "PASS; 27 files; 4c592ac91d2f5fba79a4693c0c8a57a5e246c88dd8a8cb00fc81c0c532a0ca2b; no replay by this check",
+    "manual_visual_review": [
+      "dashboard-clear.png",
+      "slide 2 exported from refreshed PDF",
+      "slide 8 exported from refreshed PDF",
+      "overview at 46 s"
+    ]
+  },
+  "limitations": [
+    "Private team data/photos are absent from the public clone; public slides retain placeholders.",
+    "Archival raw clips from 23–25 September retain their original labels; current presentation text explains estimated range and possible misses.",
+    "No new detector accuracy claim comes from rebuilding these presentation artifacts."
+  ]
+}

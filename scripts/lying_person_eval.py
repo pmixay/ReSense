@@ -12,7 +12,7 @@ a 0.57-0.60 m central drainage trough, so D decides whether the body rises above
     python scripts/lying_person_eval.py ... --place rail        # lying across the rail heads
 
 Every other argument is far_range_eval.py's. The results of 23.09 are in
-docs/experiments_v0.6.2_margins_lying.json.
+docs/evidence/results/experiments_v0.6.2_margins_lying.json.
 """
 from __future__ import annotations
 

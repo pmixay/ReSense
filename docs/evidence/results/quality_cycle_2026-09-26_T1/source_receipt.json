@@ -1,0 +1,11 @@
+{
+  "source_commit": "0ea660fb4025e6f1fd5afdfb4e68e8db003a26f9",
+  "detector_module": "/home/resense/worktrees/trust-quality/resense/detector.py",
+  "track_module": "/home/resense/worktrees/trust-quality/resense/track.py",
+  "native_library": "/home/resense/worktrees/trust-quality/resense/_resense_native.cpython-312-x86_64-linux-gnu.so",
+  "native_library_sha256": "511f7766639f0ddab471a77263f7a343de19d0a8217dd7cd3a11635c8a7db2c8",
+  "parent_plan_sha256": "00f3eb584ef965cc99203a4316eef9e4f21ee78574d123bcef56ee2b95ff053a",
+  "candidate_plan_sha256": "377225106d741ca8fcae0b1343c4bd963d355d9be730a328f355a433482a7aa0",
+  "same_cases_inputs_config_evaluator": true,
+  "case_count": 72
+}
