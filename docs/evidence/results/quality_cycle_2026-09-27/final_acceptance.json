@@ -8,8 +8,8 @@
         "frames": 201
       },
       "candidate": {
-        "path": "/data/work/final2/gate/doubleT_obstacle.jsonl",
-        "sha256": "685351438cfc8e2e81dd3ea1be2a2a78ad2af73204ca6eb5547294016e0d397b",
+        "path": "/data/work/final3/gate/doubleT_obstacle.jsonl",
+        "sha256": "2886059d2d7b88734b5545d96ab3344d5bbaeb0e3d794c87ac9207799ebe6c6c",
         "frames": 201
       }
     },
@@ -20,8 +20,8 @@
         "frames": 345
       },
       "candidate": {
-        "path": "/data/work/final2/gate/doubleT_platform.jsonl",
-        "sha256": "39c92e8139f31571c22b31a8cd31a8172106780d75399887bf8776547996281c",
+        "path": "/data/work/final3/gate/doubleT_platform.jsonl",
+        "sha256": "1ac01d2641d9c83bef5acee5b6aaf6e0f8acd8cb5bcf1f1476dd85ad2cad599c",
         "frames": 345
       }
     },
@@ -32,8 +32,8 @@
         "frames": 252
       },
       "candidate": {
-        "path": "/data/work/final2/gate/roundT_doubleT.jsonl",
-        "sha256": "92f515fa18f2fb639ef1f0ece61d0c832c25597ea522393d9e992908f01abd23",
+        "path": "/data/work/final3/gate/roundT_doubleT.jsonl",
+        "sha256": "e354f2711efd8e0e33c06d617264d31d453b5c825d4d32b8890ee85c82f7386e",
         "frames": 252
       }
     },
@@ -44,8 +44,8 @@
         "frames": 268
       },
       "candidate": {
-        "path": "/data/work/final2/gate/roundT_pressureGate_roundT.jsonl",
-        "sha256": "9d3f9c3406ae108d1c2ab31930c824f587d15d82b439e49bfe8f244b737c9027",
+        "path": "/data/work/final3/gate/roundT_pressureGate_roundT.jsonl",
+        "sha256": "6e26f028c7ea26b39af72d120ee895cc3093f350d8c2a1d096c0432e80e5f28b",
         "frames": 268
       }
     },
@@ -56,8 +56,8 @@
         "frames": 545
       },
       "candidate": {
-        "path": "/data/work/final2/gate/roundT_squareT_pressureGate_squareT.jsonl",
-        "sha256": "ba615927073d61a93061b0f80b5abd8a76a97544aa38408f958c394665d92ff8",
+        "path": "/data/work/final3/gate/roundT_squareT_pressureGate_squareT.jsonl",
+        "sha256": "cfd487ca22d558b13fe4461cc562cbfc88efa10eeeaf4a557f74afb55ad4b593",
         "frames": 545
       }
     },
@@ -68,8 +68,8 @@
         "frames": 877
       },
       "candidate": {
-        "path": "/data/work/final2/gate/squareT_platform_squareT_switch.jsonl",
-        "sha256": "767b42cbe12f6f6c0be1c17a0acc7d79726744b45b4d89bf6766505e23f1adf9",
+        "path": "/data/work/final3/gate/squareT_platform_squareT_switch.jsonl",
+        "sha256": "def4906504e0203bd4e82d29c1723fac26ae3f8a2ec892802fe0f25d0d167f4d",
         "frames": 877
       }
     },
@@ -80,8 +80,8 @@
         "frames": 1510
       },
       "candidate": {
-        "path": "/data/work/final2/gate/cloud_with_fake_obj.jsonl",
-        "sha256": "7e01d346fbf51f26b6d75267474a622820b546a18d7b40eb48496d7c960c8f3b",
+        "path": "/data/work/final3/gate/cloud_with_fake_obj.jsonl",
+        "sha256": "3e222aab969a1a552a94337d1b0762f8230e56a55b42d342a2d0e7375fcf30ef",
         "frames": 1510
       }
     },
@@ -92,8 +92,8 @@
         "frames": 1409
       },
       "candidate": {
-        "path": "/data/work/final2/gate/new_data_0.jsonl",
-        "sha256": "e7b3daf097827cd3389afb3794c56ca47b2cb41352d7ea26133c836c780c59b2",
+        "path": "/data/work/final3/gate/new_data_0.jsonl",
+        "sha256": "fd73baa80a75b8a1cf950ce8fd1e94ac95fa04e85d75ff543b614cbf57c3c54b",
         "frames": 1409
       }
     },
@@ -104,8 +104,8 @@
         "frames": 1409
       },
       "candidate": {
-        "path": "/data/work/final2/gate/new_data_1.jsonl",
-        "sha256": "d21dc75c036f4dbc55c92b2dec4981757870c56e9d7b158c1a29fe749dd7c476",
+        "path": "/data/work/final3/gate/new_data_1.jsonl",
+        "sha256": "87966c672f4f2e1a6a66e9440f080f6a0c5b9fbf4ff6f0aed28546937cded056",
         "frames": 1409
       }
     },
@@ -116,8 +116,8 @@
         "frames": 1409
       },
       "candidate": {
-        "path": "/data/work/final2/gate/new_data_2.jsonl",
-        "sha256": "0403e0016d1c708c961f0d36ba1495cd8a99c37e176c639be3ef0a38c20fe9f7",
+        "path": "/data/work/final3/gate/new_data_2.jsonl",
+        "sha256": "815c4c1bbcced73e647152750c8f29c35a4d422f0705cf16f0afd180497c47c8",
         "frames": 1409
       }
     },
@@ -128,8 +128,8 @@
         "frames": 1409
       },
       "candidate": {
-        "path": "/data/work/final2/gate/new_data_3.jsonl",
-        "sha256": "8ba88cc90846f663914cec029bbb3b1c5462aa859e9e9f6e54a80c240ec4842b",
+        "path": "/data/work/final3/gate/new_data_3.jsonl",
+        "sha256": "24fbe0053251b4c6ada133473c0b12ad25dbfa916f0f3e21ff3f06510e676acb",
         "frames": 1409
       }
     },
@@ -140,8 +140,8 @@
         "frames": 1409
       },
       "candidate": {
-        "path": "/data/work/final2/gate/new_data_4.jsonl",
-        "sha256": "b53968086ad1d755782ad5aad3d11ef63994c53381c718f62d1d704ebfb3f2d9",
+        "path": "/data/work/final3/gate/new_data_4.jsonl",
+        "sha256": "eb9213bb38142830e57a336e61947ba994bbb30b57444597c0e992d8cf96dfe7",
         "frames": 1409
       }
     },
@@ -152,8 +152,8 @@
         "frames": 1409
       },
       "candidate": {
-        "path": "/data/work/final2/gate/new_data_5.jsonl",
-        "sha256": "2a5d6da8810b7fb4c08a69247516d28abe93e5ad257833b998868303d6279b3b",
+        "path": "/data/work/final3/gate/new_data_5.jsonl",
+        "sha256": "396386079b83308739dc65a872b0d742036b778724a3f9cfe726904d762b0d3c",
         "frames": 1409
       }
     },
@@ -164,8 +164,8 @@
         "frames": 1409
       },
       "candidate": {
-        "path": "/data/work/final2/gate/new_data_6.jsonl",
-        "sha256": "64b3af6571e0e02c98d1d5d5a43ac516b78e287716f13a2ed896c68a7722b48a",
+        "path": "/data/work/final3/gate/new_data_6.jsonl",
+        "sha256": "376d549f78684751fcb786f999549147d2996634f11fca735b15be206adba1a5",
         "frames": 1409
       }
     },
@@ -176,8 +176,8 @@
         "frames": 1408
       },
       "candidate": {
-        "path": "/data/work/final2/gate/new_data_7.jsonl",
-        "sha256": "874a5ca8e4ac55d34db39fde1f90aa7bb332cdedc40046467da501fd108c4a5f",
+        "path": "/data/work/final3/gate/new_data_7.jsonl",
+        "sha256": "8215237ac2f69be29c978895de0e6b586c3da053de2c18839dc86abdb6161351",
         "frames": 1408
       }
     }
@@ -234,11 +234,11 @@
         "CAUTION": 104
       },
       "candidate_decisions": {
-        "GO": 164,
-        "CAUTION": 104
+        "GO": 161,
+        "CAUTION": 107
       },
-      "newly_uncertain_frames": 0,
-      "newly_uncertain_percentage_points": 0.0,
+      "newly_uncertain_frames": 3,
+      "newly_uncertain_percentage_points": 1.1194029850746268,
       "reference_clear_median_m": 128.05,
       "candidate_clear_median_m": 128.05,
       "clear_median_fraction": 1.0,
@@ -270,11 +270,11 @@
       },
       "candidate_decisions": {
         "GO": 454,
-        "CAUTION": 394,
-        "STOP": 29
+        "CAUTION": 388,
+        "STOP": 35
       },
-      "newly_uncertain_frames": 29,
-      "newly_uncertain_percentage_points": 3.30672748004561,
+      "newly_uncertain_frames": 23,
+      "newly_uncertain_percentage_points": 2.622576966932725,
       "reference_clear_median_m": 88.9,
       "candidate_clear_median_m": 88.9,
       "clear_median_fraction": 1.0,
@@ -288,12 +288,12 @@
         "STOP": 183
       },
       "candidate_decisions": {
-        "GO": 6447,
-        "CAUTION": 4739,
-        "STOP": 85
+        "GO": 6445,
+        "CAUTION": 4731,
+        "STOP": 95
       },
-      "newly_uncertain_frames": 99,
-      "newly_uncertain_percentage_points": 0.8783603939313281,
+      "newly_uncertain_frames": 93,
+      "newly_uncertain_percentage_points": 0.8251264306627628,
       "reference_clear_median_m": 122.6,
       "candidate_clear_median_m": 120.2,
       "clear_median_fraction": 0.9804241435562806,
@@ -398,9 +398,9 @@
     "totals": {
       "target": 19,
       "target_frames": 505,
-      "intent": 166,
+      "intent": 154,
       "intent_frames": 801,
-      "go_judge": 129,
+      "go_judge": 123,
       "go_judge_in_envelope": 44,
       "target_by_decision": {
         "GO": 16,
@@ -444,7 +444,7 @@
       "big_edge_inside": {
         "frames": 125,
         "frames_in_envelope": 8,
-        "overclaim": 65,
+        "overclaim": 53,
         "overclaim_in_envelope": 1,
         "overclaim_in_envelope_go": 0,
         "max_excess_m": 122.9
@@ -477,7 +477,7 @@
     "outside_objects": {
       "small_outside_near": {
         "frames": 112,
-        "clear_stops_at_object": 7
+        "clear_stops_at_object": 19
       },
       "big_outside": {
         "frames": 104,

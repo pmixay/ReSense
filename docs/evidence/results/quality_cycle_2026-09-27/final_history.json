@@ -1,14 +1,14 @@
 {
  "schema": "resense-history-stress-v1",
  "sets": [],
- "wall_s": 123.0,
+ "wall_s": 122.2,
  "totals": {
   "histories": 33,
-  "stop_frames": 154,
-  "stop_events": 49,
+  "stop_frames": 182,
+  "stop_events": 51,
   "histories_with_stop": 15,
   "captures_stop_events": 0,
-  "cache_stop_events": 49
+  "cache_stop_events": 51
  },
  "rows": [
   {
@@ -319,10 +319,11 @@
    "bag": "squareT_platform_squareT_switch",
    "history": "every",
    "seed": 0,
-   "stop_frames": 29,
+   "stop_frames": 35,
    "stop_events": 7,
    "stop_distances": [
     82.9,
+    83.1,
     84.4,
     94.2,
     94.4,
@@ -340,8 +341,7 @@
     145.3,
     145.4,
     145.6,
-    145.7,
-    145.8
+    145.7
    ]
   },
   {
@@ -425,11 +425,17 @@
    "bag": "squareT_platform_squareT_switch",
    "history": "dither5",
    "seed": 0,
-   "stop_frames": 15,
-   "stop_events": 5,
+   "stop_frames": 37,
+   "stop_events": 7,
    "stop_distances": [
     81.7,
     82.1,
+    82.7,
+    82.8,
+    82.9,
+    83.0,
+    83.1,
+    83.9,
     94.2,
     94.4,
     147.4,

@@ -1,0 +1,20 @@
+# scripts/bench_node_path.py (decode + crop + rotate + detect, no ROS), OMP_NUM_THREADS=1, code 65c5a5b, 2026-09-27T19:39:04Z
+ 19:39:04 up  2:28,  0 user,  load average: 3.01, 6.49, 7.69
+== doubleT_obstacle
+doubleT_obstacle: 201 frames, 374317 slots per message
+  kernels: native (_resense_native.so)
+  decode + crop + rotate: mean 10.3 ms, p95 11.9 ms
+  decode + detect:        mean 38.1 ms, p95 48.1 ms, max 65.6 ms
+  peak RSS 248 MB
+== roundT_doubleT
+roundT_doubleT: 252 frames, 207727 slots per message
+  kernels: native (_resense_native.so)
+  decode + crop + rotate: mean 5.7 ms, p95 7.2 ms
+  decode + detect:        mean 30.2 ms, p95 38.5 ms, max 57.4 ms
+  peak RSS 161 MB
+== cloud_with_fake_obj
+cloud_with_fake_obj: 1510 frames, 200200 slots per message
+  kernels: native (_resense_native.so)
+  decode + crop + rotate: mean 5.4 ms, p95 6.3 ms
+  decode + detect:        mean 26.5 ms, p95 32.2 ms, max 64.9 ms
+  peak RSS 179 MB

@@ -1,27 +1,27 @@
 {
  "schema": "resense-regression-gate-v1",
- "created": "2026-09-27T17:49:39+00:00",
+ "created": "2026-09-27T19:19:49+00:00",
  "code": {
-  "commit": "25498c1cf5b0042605308054616389aba20b36f2",
-  "branch": "claude/p1-p2-supported-playback-20260927",
+  "commit": "65c5a5b645c84d7c270e01bff81d3887bedc294a",
+  "branch": "HEAD",
   "version": "1.0.0",
   "uncommitted_detector_changes": []
  },
  "config": {
   "path": "configs/default.yaml",
   "set": [],
-  "sha256": "44bd2e7339ec03bc004fa325e8e064888a76c295e1c04ced78170b496ce77c35",
-  "file_sha256": "ecf29410b94cbb3963620777fb656481ee7bf10591d49719301e97a3e82af05c"
+  "sha256": "be31ad2c301f69c944e2ff64c9b8b22671d1f6812bdfa9850e55d92eba5299cb",
+  "file_sha256": "739d1b04833b28fe8c9cc5bf5f38bc4b5b07741610d8fc0f06c6234536c9941a"
  },
  "native": {
   "path": "native",
-  "status": "native (_resense_native.cpython-311-x86_64-linux-gnu.so)"
+  "status": "native (_resense_native.so)"
  },
  "run": {
   "cache": "/data/cache",
   "jobs": 4,
   "nominal_stamps": false,
-  "wall_s": 256.1,
+  "wall_s": 259.6,
   "machine": {
    "cpus": 4,
    "platform": "Linux-6.18.44-fc-v42-x86_64-with-glibc2.39",
@@ -110,7 +110,7 @@
    "alarm_events": 0,
    "stop_episodes": 0,
    "first_alarm_frame": null,
-   "advisory_frames": 104,
+   "advisory_frames": 107,
    "alarm_dist": null,
    "health": {
     "ok": 268,
@@ -138,11 +138,11 @@
   },
   "squareT_platform_squareT_switch": {
    "frames": 877,
-   "alarm_frames": 29,
+   "alarm_frames": 35,
    "alarm_events": 7,
-   "stop_episodes": 7,
+   "stop_episodes": 10,
    "first_alarm_frame": 316,
-   "advisory_frames": 402,
+   "advisory_frames": 400,
    "alarm_dist": [
     82.9,
     147.5
@@ -158,19 +158,19 @@
  },
  "five_empty": {
   "frames": 2287,
-  "alarm_frames": 31,
+  "alarm_frames": 37,
   "alarm_events": 9,
-  "stop_episodes": 8,
-  "advisory_frames": 1007
+  "stop_episodes": 11,
+  "advisory_frames": 1008
  },
  "ride": {
   "available": true,
   "chunks": 8,
   "frames": 11271,
-  "alarm_frames": 85,
-  "alarm_events": 21,
-  "stop_episodes": 22,
-  "advisory_frames": 4774,
+  "alarm_frames": 95,
+  "alarm_events": 24,
+  "stop_episodes": 25,
+  "advisory_frames": 4776,
   "alarm_dist": [
    20.7,
    143.6
@@ -497,7 +497,7 @@
     "first_visible_m": 249.4,
     "frames_in_envelope": 52,
     "stop_frames": 6,
-    "advisory_frames": 42,
+    "advisory_frames": 43,
     "false_stop_frames": 6,
     "false_stop_from_m": 142.3,
     "verdict": "false alarm",
@@ -509,7 +509,7 @@
      },
      "50-100": {
       "alarm": 0,
-      "advisory_only": 17,
+      "advisory_only": 18,
       "visible": 25
      },
      "100-150": {
@@ -845,14 +845,14 @@
     "detected": 6,
     "first_detection_median_m": 123.9,
     "sustained_median_m": 118.0,
-    "false_detections": 11,
+    "false_detections": 12,
     "recall_by_bin": {
      "0-50": [
       106,
       110
      ],
      "50-100": [
-      119,
+      123,
       133
      ],
      "100-150": [
@@ -961,44 +961,44 @@
  "latency_ms": {
   "note": "timing_ms.total per frame; informational, never gated: the workers run in parallel on a shared machine (clean timing: EXPERIMENTS §3)",
   "doubleT_obstacle": {
-   "mean_ms": 24.2,
-   "p95_ms": 34.2,
-   "max_ms": 48.3
+   "mean_ms": 25.9,
+   "p95_ms": 42.0,
+   "max_ms": 69.1
   },
   "doubleT_platform": {
-   "mean_ms": 26.2,
-   "p95_ms": 38.3,
-   "max_ms": 96.4
+   "mean_ms": 25.7,
+   "p95_ms": 38.5,
+   "max_ms": 90.4
   },
   "roundT_doubleT": {
-   "mean_ms": 21.4,
-   "p95_ms": 30.5,
-   "max_ms": 39.6
+   "mean_ms": 34.1,
+   "p95_ms": 59.0,
+   "max_ms": 77.4
   },
   "roundT_pressureGate_roundT": {
-   "mean_ms": 19.2,
-   "p95_ms": 27.1,
-   "max_ms": 30.0
+   "mean_ms": 29.5,
+   "p95_ms": 54.6,
+   "max_ms": 77.5
   },
   "roundT_squareT_pressureGate_squareT": {
-   "mean_ms": 18.3,
-   "p95_ms": 26.6,
-   "max_ms": 33.7
+   "mean_ms": 18.0,
+   "p95_ms": 25.8,
+   "max_ms": 70.8
   },
   "squareT_platform_squareT_switch": {
-   "mean_ms": 18.8,
-   "p95_ms": 23.1,
-   "max_ms": 34.3
+   "mean_ms": 22.4,
+   "p95_ms": 45.1,
+   "max_ms": 102.8
   },
   "cloud_with_fake_obj": {
-   "mean_ms": 18.7,
-   "p95_ms": 26.0,
-   "max_ms": 59.4
+   "mean_ms": 18.5,
+   "p95_ms": 26.6,
+   "max_ms": 59.1
   },
   "new_data": {
    "mean_ms": 20.9,
-   "p95_ms": 30.3,
-   "max_ms": 102.2
+   "p95_ms": 31.9,
+   "max_ms": 101.7
   }
  },
  "gate": {
@@ -1049,16 +1049,16 @@
    "set_O.objects.long_low_on_rails.max_missed_span_m",
    "set_O.objects.long_low_on_rails.bins.50-100.stop_frames",
    "set_O.background.alarm_frames",
-   "set_O.background.track_ids",
-   "set_F_straight.box1.0.false_detections"
+   "set_O.background.track_ids"
   ],
-  "same": 128,
+  "same": 152,
   "info_changed": [
    "recordings.doubleT_obstacle.alarm_frames",
    "recordings.doubleT_obstacle.advisory_frames",
    "recordings.doubleT_obstacle.labelled.hits",
    "recordings.doubleT_platform.alarm_frames",
    "recordings.doubleT_platform.advisory_frames",
+   "recordings.roundT_pressureGate_roundT.advisory_frames",
    "recordings.squareT_platform_squareT_switch.alarm_frames",
    "recordings.squareT_platform_squareT_switch.advisory_frames",
    "five_empty.alarm_events",
@@ -1067,9 +1067,10 @@
    "ride.alarm_frames",
    "set_O.objects.small_edge_inside.advisory_frames",
    "set_O.objects.big_edge_inside.advisory_frames",
-   "set_O.objects.big_outside.advisory_frames",
    "set_O.inside_stop_frames",
    "set_F_straight.box1.0.sustained_median_m",
+   "set_F_straight.box1.0.recall_50-100",
+   "set_F_straight.box1.0.recall_100-150",
    "latency_ms.doubleT_obstacle.mean",
    "latency_ms.doubleT_obstacle.p95",
    "latency_ms.doubleT_platform.mean",
