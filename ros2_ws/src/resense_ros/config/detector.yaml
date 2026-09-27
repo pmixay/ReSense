@@ -335,4 +335,20 @@ resense:
     clear_cap_points: 0              # k > 0: also cap at the k-th nearest strict-envelope return; 0 = off
     clear_cap_skip_columns: true     # a column-demoted cluster (or a column_hold track) does not cap (round 2)
     clear_cap_lost: true             # 26.09 (safety review): also cap at a track reported when last matched that missed this frame, at its predicted distance
+    # 27.09 (P3 range overclaim; resense/evidence.py): evidence below the cluster bars that caps
+    # clear_distance too; never changes a detection or the decision. clear_cap_thin: a scan-line
+    # cluster (tracking.stop_keep_thin) inside the strict envelope, not demoted, within the trusted range
+    clear_cap_thin: false
+    # clear_cap_persist = k > 0: a sparse blob of returns inside the nominal envelope (no edge margin)
+    # seen in k frames in a row, coming nearer at a constant apparent speed, caps at its nearest return
+    clear_cap_persist: 0
+    persist_min_points: 2            # returns of a blob
+    persist_max_extent: 0.5          # m, length along the track and (unless a scan line) width and height
+    persist_row_height: 0.05         # m, a scan line this flat may be up to persist_row_width wide
+    persist_row_width: 2.1           # m
+    persist_max_around: 10           # other corridor returns within 2 m along the track (isolation)
+    persist_shift: [0.5, 3.0]        # m per frame the blob comes nearer (5-30 m/s at 10 Hz)
+    persist_tol_dy: 0.12             # m, lateral match between frames
+    persist_tol_h: 0.2               # m, height match between frames
+    persist_tol_shift: 0.08          # m, change of the shift between links (constant apparent speed)
   voxel: 0.0
