@@ -464,13 +464,14 @@ class Detector:
                                 min_points_factor=factor, factor_range=acc.min_range,
                                 smear_max_length=acc.smear_max_length if n_acc > 1 else 0.0,
                                 smear_max_width=acc.smear_max_width if n_acc > 1 else 0.0, gauge=cfg.gauge,
-                                dy_alt=dy_alt, keep_thin=keep_thin)
+                                dy_alt=dy_alt, keep_thin=keep_thin,
+                                weak_from=cfg.tracking.thin_far_min_distance if cfg.cluster.weak_min_points > 0 else 0.0)
         if keep_thin:
             # 26.09 (tracking.stop_keep_thin, off by default): the clusters flatter than min_height go
             # to the tracker only, to continue a track (Tracker._continue_thin); no other stage sees them
             # (27.09: also tracking.thin_far_min_distance, Detector._far_thin)
-            self._thin = [c for c in clusters if c.thin]
-            clusters = [c for c in clusters if not c.thin]
+            self._thin = [c for c in clusters if c.thin or c.weak]
+            clusters = [c for c in clusters if not (c.thin or c.weak)]
         lows: List[Cluster] = []
         straddling: List[Cluster] = []
         lcfg = replace(cfg.cluster, eps=cfg.lowobj.eps)
@@ -604,11 +605,13 @@ class Detector:
         (corridor clusters flatter than ``cluster.min_height``) that the tracker may use as far
         evidence: at least that far, inside the strict gauge (zone ``gauge``: no far-field, overhead
         or signature demotion) with ``thin_far_min_voxels`` strict voxels, and overlapping no other
-        cluster of the frame (the lower edge of an object another cluster already describes)."""
+        cluster of the frame (the lower edge of an object another cluster already describes). With
+        ``cluster.weak_min_points`` also the clusters under the point-count bar (``Cluster.weak``)
+        that far and in zone ``gauge`` (``cluster.gauge_min_points`` strict voxels)."""
         tc = self.cfg.tracking
         return [c for c in self._thin
                 if c.distance >= tc.thin_far_min_distance and c.zone == "gauge"
-                and c.n_gauge >= tc.thin_far_min_voxels and not any(_overlap(c, k) for k in clusters)]
+                and (c.n_gauge >= tc.thin_far_min_voxels or not c.thin) and not any(_overlap(c, k) for k in clusters)]
 
     # -- 6b ------------------------------------------------------------------------------------
     def _clear_cap(self, clusters: List[Cluster], cand: Candidates, dy_all: np.ndarray,

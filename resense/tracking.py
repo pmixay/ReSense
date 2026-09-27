@@ -29,6 +29,12 @@ demoted only by a shape signature (``Cluster.demoted``) as inside the gauge. Wit
 ``cluster.min_height`` (``Cluster.thin``: one scan line) inside the gauge; with 2 also a track not
 yet reported whose previous hit was an obstacle cluster inside the gauge. None of them starts a
 track.
+With ``thin_far_min_distance`` > 0 (27.09, P5 range, off by default) far scan lines inside the
+gauge (and with ``cluster.weak_min_points`` far clusters under the point-count bar) may start and
+continue tracks; a track with such a hit among its last ``zone_window`` hits is reported only while
+its distances lie on a line in sensor time that approaches (``approach_*``): a scan line of the bed
+or the vault is fixed in the sensor frame or jumps with the pitch, a static object ahead approaches
+at the train's speed.
 """
 from __future__ import annotations
 

@@ -114,3 +114,42 @@ def test_detector_default_run_unchanged_by_the_new_keys():
     tr = Tracker(TrackingConfig())
     tr.update([_cl(80.0, thin=False)], ego_shift=0.0, frame_dt=0.1)
     assert tr.tracks[0].approach == [] and tr.tracks[0].thin_hist == []
+
+
+def _four_points(x: float):
+    """A 0.3 m cube seen with 4 returns at ``x`` (as set O's #2 at 60-75 m), in track coordinates."""
+    from resense.config import ClusterConfig
+    pts = np.array([[x, 0.3, 1.3], [x, 0.45, 1.3], [x + 0.05, 0.3, 1.42], [x + 0.05, 0.45, 1.42]], dtype=np.float32)
+    return pts, ClusterConfig()
+
+
+def test_weak_cluster_kept_only_when_enabled_and_far_enough():
+    from dataclasses import replace
+    from resense.clustering import find_clusters
+    pts, ccfg = _four_points(70.0)
+    inten = np.full(4, 30.0, np.float32)
+    dy, h, ig = pts[:, 1].copy(), pts[:, 2].copy(), np.ones(4, bool)
+    assert find_clusters(pts, inten, dy, h, ig, ccfg) == []                     # under min_points 5: dropped
+    assert find_clusters(pts, inten, dy, h, ig, ccfg, weak_from=60.0) == []     # weak_min_points 0: off
+    on = replace(ccfg, weak_min_points=4)
+    out = find_clusters(pts, inten, dy, h, ig, on, weak_from=60.0)
+    assert len(out) == 1 and out[0].weak and out[0].zone == "gauge"
+    assert find_clusters(pts, inten, dy, h, ig, on, weak_from=80.0) == []       # nearer than the far distance
+    assert find_clusters(pts[:3], inten[:3], dy[:3], h[:3], ig[:3], on, weak_from=60.0) == []   # 3 < 4 voxels
+
+
+def test_weak_cluster_needs_the_approach_like_a_scan_line():
+    tr = Tracker(_cfg())
+    rep = []
+    for k in range(8):
+        cl = _cl(75.0 - 1.6 * k, thin=False, n_gauge=4)
+        cl.weak = True
+        tr.update([], ego_shift=0.0, frame_dt=0.1, far_thin=[cl])
+        rep.append(any(t.reported for t in tr.tracks))
+    assert not any(rep[:4]) and all(rep[4:])
+    tr = Tracker(_cfg())
+    for k in range(10):                      # the same weak evidence at a standing train: never reported
+        cl = _cl(75.0, thin=False, n_gauge=4)
+        cl.weak = True
+        tr.update([], ego_shift=0.0, frame_dt=0.1, far_thin=[cl])
+    assert not any(t.reported for t in tr.tracks)

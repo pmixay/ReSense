@@ -164,6 +164,7 @@ class ClusterConfig:
     min_points: int = 5            # minimum cluster size in voxels (near range)
     min_points_far: int = 3        # minimum cluster size beyond ``far_range``
     far_range: float = 100.0
+    weak_min_points: int = 0       # 27.09 (P5 range, opt-in; 0 = off): a corridor cluster at least tracking.thin_far_min_distance away with fewer voxels than min_points (min_points_far) but at least this many is kept as weak far evidence (Cluster.weak): like a far scan line it goes to the tracker only and counts for a track only while the track approaches (tracking.approach_*)
     max_extent: float = 8.0        # m, larger clusters are tunnel structure, not obstacles
     # on since 25.09 (P3): > 0 = a cluster larger than max_extent is not dropped when its part inside the
     # strict gauge is at most this long along the track: an object touching a long line at the corridor
