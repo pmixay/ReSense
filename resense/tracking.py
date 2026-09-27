@@ -437,21 +437,32 @@ class Tracker:
         voxels, overlapping no other cluster of the frame) are associated, greedily with the same
         gate and prediction, with the tracks nothing matched in this frame; a match is a hit inside
         the gauge (never a clean hit for the keep cap) and marks the track (``Track.thin_hist``) so
-        that it starts to be reported only while it approaches (:meth:`_approaching`). Returns the scan lines
-        left unmatched: they start new tracks."""
+        that it starts to be reported only while it approaches (:meth:`_approaching`). Only an
+        unambiguous scan line is used: one inside the gate of exactly one track, and that track
+        unmatched in this frame, continues it; one inside the gate of no track starts a new track
+        (returned); one inside the gates of several tracks, or of a track already matched this frame,
+        is not used at all (the ride: a scan line between two tracks of one structure moved one of
+        them and changed the next frame's association, which re-reported a false STOP)."""
         c = self.cfg
-        cand = [i for i, t in enumerate(self.tracks) if not matched_t[i] and t.last is not None]
-        if not cand or not thin:
+        if not thin:
+            return []
+        if not self.tracks:
             return list(thin)
         static = np.array([-float(ego_shift), 0.0, 0.0])
-        pred = np.stack([self.tracks[i].centroid + (self.tracks[i].velocity if self.tracks[i].hits > 1 else static)
-                         for i in cand])
+        # matched tracks are where their cluster of this frame is, the others where they are predicted
+        pos = np.stack([t.centroid if matched_t[i] else t.centroid + (t.velocity if t.hits > 1 else static)
+                        for i, t in enumerate(self.tracks)])
         cen = np.stack([cl.centroid for cl in thin])
-        d = np.linalg.norm(pred[:, None, :] - cen[None, :, :], axis=2)
-        dx = cen[None, :, 0] - pred[:, 0][:, None]
-        allowed = np.array([self._gate(self.tracks[i].centroid[0]) for i in cand])[:, None] + np.where(dx < 0, step, 0.0)
-        d = np.where(d <= allowed, d, np.inf)
-        left = np.ones(len(thin), dtype=bool)
+        d = np.linalg.norm(pos[:, None, :] - cen[None, :, :], axis=2)
+        dx = cen[None, :, 0] - pos[:, 0][:, None]
+        allowed = np.array([self._gate(t.centroid[0]) for t in self.tracks])[:, None] + np.where(dx < 0, step, 0.0)
+        inside = d <= allowed
+        owners = inside.sum(axis=0)
+        free = [j for j in range(len(thin)) if owners[j] == 0]
+        usable = (owners == 1)[None, :] & inside & ~matched_t[:, None] & np.array(
+            [t.last is not None for t in self.tracks])[:, None]
+        d = np.where(usable, d, np.inf)
+        cand = list(range(len(self.tracks)))
         while np.isfinite(d).any():
             a, b = np.unravel_index(np.argmin(d), d.shape)
             i = cand[a]
@@ -475,10 +486,9 @@ class Tracker:
             self._note(t, cl, True, zw)
             t.history.append(cl.distance)
             matched_t[i] = True
-            left[b] = False
             d[a, :] = np.inf
             d[:, b] = np.inf
-        return [cl for j, cl in enumerate(thin) if left[j]]
+        return [thin[j] for j in free]
 
     def _qualifies(self, t: Track) -> bool:
         c = self.cfg

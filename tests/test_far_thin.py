@@ -160,3 +160,24 @@ def test_weak_cluster_needs_the_approach_like_a_scan_line():
         cl.weak = True
         tr.update([], ego_shift=0.0, frame_dt=0.1, far_thin=[cl])
     assert not any(t.reported for t in tr.tracks)
+
+
+def test_ambiguous_scan_line_is_not_used():
+    """A scan line inside the gates of two tracks (one structure seen as two tracks on the ride) is
+    neither a hit of one of them nor a new track: using it moved one track and changed the next
+    frame's association."""
+    tr = Tracker(_cfg())
+    tr.update([_cl(100.0, thin=False), _cl(102.0, thin=False, lateral=0.5)], ego_shift=0.0, frame_dt=0.1)
+    assert len(tr.tracks) == 2
+    before = [t.centroid.copy() for t in tr.tracks]
+    tr.update([], ego_shift=0.0, frame_dt=0.1, far_thin=[_cl(101.0, lateral=0.2)])
+    assert len(tr.tracks) == 2
+    assert all(np.allclose(t.centroid, b) for t, b in zip(tr.tracks, before))
+    assert all(t.misses == 1 and not t.thin_hist[-1] for t in tr.tracks)
+
+
+def test_scan_line_at_a_matched_track_is_not_a_new_track():
+    tr = Tracker(_cfg())
+    tr.update([_cl(100.0, thin=False)], ego_shift=0.0, frame_dt=0.1)
+    tr.update([_cl(98.5, thin=False)], ego_shift=0.0, frame_dt=0.1, far_thin=[_cl(99.0, lateral=0.3)])
+    assert len(tr.tracks) == 1 and tr.tracks[0].hits == 2
