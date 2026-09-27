@@ -336,8 +336,14 @@ def _advisory_reason(b: _Blob, dist: float, lateral: float, zone: str, dy, h, cf
         return ""
     ady = np.abs(dy[b.idx])
     off_centre = abs(lateral) > cfg.signature_min_lateral
-    if cfg.column_min_height > 0 and size[2] > cfg.column_min_height and size[1] < cfg.column_max_width \
-            and (off_centre or size[1] >= cfg.column_min_width):
+    col_w = float(size[1])
+    if cfg.column_width_trim > 0 and col_w >= cfg.column_max_width and b.idx.size >= 3:
+        # 27.09 (P4 history): the width of the column's body, not of a few joined returns
+        q = float(cfg.column_width_trim)
+        lo, hi = np.quantile(b.pts[:, 1], (q, 1.0 - q))
+        col_w = float(hi - lo)
+    if cfg.column_min_height > 0 and size[2] > cfg.column_min_height and col_w < cfg.column_max_width \
+            and (off_centre or col_w >= cfg.column_min_width):
         return "column"                    # column, post, gate leg: taller than any listed object, narrow
     # opt-in, off by default: a cluster as short as the organizers' test objects (and near enough)
     # that the elevated or floating shape would demote stays an obstacle (the rules after them
