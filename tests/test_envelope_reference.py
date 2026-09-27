@@ -44,7 +44,7 @@ def test_shipped_default():
     for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
                 DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
         g = cfg.gauge
-        assert g.reference == 2 and g.reference_edge_margin == 1.0
+        assert g.reference == 3 and g.reference_edge_margin == 1.0     # the union (judges' review of 27.09)
         assert (g.reference_range, g.reference_max_offset, g.reference_along_rails) == (60.0, 0.2, True)
     assert reference_offset(np.linspace(0.0, 100.0, 11), _track(), _gauge(0)) is None
 
@@ -244,3 +244,41 @@ def test_along_track_rules_read_the_rails():
     for along in (False, True):
         c = cluster_of(0.4, along)
         assert c.zone == "gauge" and c.reason == ""
+
+
+def test_union_never_narrows_the_rails_envelope():
+    """``gauge.reference`` 3 (27.09, after the judges' review): a point takes the sensor-axis lateral
+    only where that is nearer the centre, so a point inside the rails' envelope on either side stays
+    inside whatever the sign of the rail-to-sensor offset, and a point inside the sensor-axis envelope
+    only (the organizers' placement frame) is inside too."""
+    from resense.gauge import union_shift
+    half = 1.05
+    for c in (0.2, -0.2):
+        dy = np.array([-0.9, -0.5, 0.0, 0.5, 0.9])            # inside the rails' envelope, both sides
+        u = dy + union_shift(dy, np.full(dy.size, c))
+        assert np.all(np.abs(u) <= np.abs(dy) + 1e-12)
+        assert np.all(np.abs(u) <= half)
+        # just outside the rails' envelope on the side the sensor axis lies: inside by the union
+        side = -np.sign(c)
+        out = np.array([side * (half + 0.15)])
+        assert abs(float((out + union_shift(out, np.array([c])))[0])) <= half
+        # outside on the other side: the union does not pull it in
+        other = np.array([-side * (half + 0.15)])
+        assert float((other + union_shift(other, np.array([c])))[0]) == float(other[0])
+
+
+@pytest.mark.synthetic
+@pytest.mark.parametrize("yaw", [0.5, -0.5])
+def test_union_stops_edge_boxes_on_both_sides(yaw):
+    """The side-symmetric end-to-end check of the union (27.09, the judges' review): with the sensor
+    yawed either way, a box whose inner face is 0.2 m inside the rails' envelope on the side the
+    sensor axis leaves (the side modes 1 / 2 give up) STOPs as it does from the rails, and a box 0.2 m
+    inside the sensor-axis envelope only (the placement frame's side) STOPs too."""
+    s = np.sign(yaw)
+    lose = ObstacleSpec(kind="box", size=(0.5, 0.6, 1.0), distance=30.0, lateral=1.15 * s)
+    gain = ObstacleSpec(kind="box", size=(0.5, 0.6, 1.0), distance=30.0, lateral=-1.41 * s)
+    lose_f, gain_f = _yawed_scene(yaw, [lose]), _yawed_scene(yaw, [gain])
+    assert _run(lose_f, 0)[-1].obstacle and not _run(lose_f, 2)[-1].obstacle
+    assert _run(lose_f, 3)[-1].obstacle
+    assert _run(gain_f, 3)[-1].obstacle
+    assert not any(r.obstacle or r.warning for r in _run(_yawed_scene(yaw, []), 3))

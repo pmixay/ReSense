@@ -154,18 +154,19 @@ class GaugeConfig:
     axis_union_range: float = 50.0          # m, near field only
     axis_union_max_offset: float = 0.30     # m, |c(X)| = rail axis minus sensor axis (below warning_margin)
     axis_union_max_curvature: float = 2e-4  # 1/m, straight track only (R >= 5 km)
-    # 27.09 (P1 edge objects, experiment): the frame the envelope is measured from. 0 = the rails
-    # everywhere (v0.6); 1 = the SENSOR axis (Y = 0 of the processed frame: the organizers' placement
-    # frame, fixed to the train) where it agrees with the rails: rail pair locked, |curvature| <=
-    # reference_max_curvature, X <= reference_range and the rail axis within reference_max_offset of
-    # the sensor axis; the rails elsewhere; 2 = as 1 with the offset clamped to reference_max_offset
-    # (continuous: beyond it the rail axis shifted towards the sensor axis). It replaces the strict
-    # membership and the shape rules' lateral of the corridor candidates (not a union: an object the
-    # organizers put outside stays outside, and up to reference_max_offset of the rail envelope is given
-    # up on one side); the candidate set, the reported lateral, the gauge-distance reach, the rails'
-    # strict mask (oversize-split fallback, wall keep) and the bed, low-object, rail-start, ego-speed,
-    # hanging-search and clear-cap stages keep the rails
-    reference: int = 2
+    # 27.09 (P1 edge objects, on): the frame the envelope is measured from. 0 = the rails everywhere
+    # (v0.6); 1 = the SENSOR axis (Y = 0 of the processed frame: the organizers' placement frame, fixed
+    # to the train) where it agrees with the rails: rail pair locked, |curvature| <= reference_max_curvature,
+    # X <= reference_range and the rail axis within reference_max_offset of the sensor axis; the rails
+    # elsewhere; 2 = as 1 with the offset clamped to reference_max_offset (a one-sided shift: up to
+    # reference_max_offset of the rails' envelope given up on one side - not shipped, the safety review);
+    # 3 (shipped) = the UNION of the two envelopes: a return takes the sensor-axis lateral only where it is
+    # nearer the centre than its rail lateral (gauge.union_shift), so neither side of the rails' envelope
+    # is narrowed and the sensor-axis frame only adds. It sets the strict membership and the shape rules'
+    # lateral of the corridor candidates; the candidate set, the reported lateral, the gauge-distance
+    # reach, the rails' strict mask (oversize-split fallback, wall keep) and the bed, low-object,
+    # rail-start, ego-speed, hanging-search and clear-cap stages keep the rails
+    reference: int = 3
     reference_range: float = 60.0          # m, how far the sensor-axis frame is used
     reference_max_offset: float = 0.2     # m, |c(X)| = rail axis minus sensor axis (below warning_margin: the rail envelope stays in the advisory corridor)
     reference_max_curvature: float = 2e-4  # 1/m, straight track only (R >= 5 km)
@@ -182,7 +183,7 @@ class ClusterConfig:
     min_points: int = 5            # minimum cluster size in voxels (near range)
     min_points_far: int = 3        # minimum cluster size beyond ``far_range``
     far_range: float = 100.0
-    weak_min_points: int = 4       # 27.09 (P5 range, opt-in; 0 = off): a corridor cluster at least tracking.thin_far_min_distance away with fewer voxels than min_points (min_points_far) but at least this many is kept as weak far evidence (Cluster.weak): like a far scan line it goes to the tracker only and counts for a track only while the track approaches (tracking.approach_*)
+    weak_min_points: int = 4       # 27.09 (P5 range, on; 0 = off): a corridor cluster at least tracking.thin_far_min_distance away with fewer voxels than min_points (min_points_far) but at least this many is kept as weak far evidence (Cluster.weak): like a far scan line it goes to the tracker only and counts for a track only while the track approaches (tracking.approach_*)
     max_extent: float = 8.0        # m, larger clusters are tunnel structure, not obstacles
     # on since 25.09 (P3): > 0 = a cluster larger than max_extent is not dropped when its part inside the
     # strict gauge is at most this long along the track: an object touching a long line at the corridor
@@ -228,7 +229,7 @@ class ClusterConfig:
     # the cluster to advisory ('warning'), never drops it; 0 = rule off
     column_min_height: float = 2.2     # m, taller and narrower than column_max_width = column / post / gate leg (a person is 1.7 m)
     column_max_width: float = 1.0      # m
-    column_width_trim: float = 0.05     # 27.09 (P4 history, off; 0 = the box width): the column rule reads the cluster's width across the track between the trim and 1 - trim quantiles of its points: a fragment of a few returns joined at the DBSCAN radius does not widen a column past column_max_width (the clear-run STOP of 26.09: 7 of 143 returns widened a 0.74 m column to 1.10 m in one frame, mechanism 2)
+    column_width_trim: float = 0.05     # 27.09 (P4 history, on; 0 = the box width): the column rule reads the cluster's width across the track between the trim and 1 - trim quantiles of its points: a fragment of a few returns joined at the DBSCAN radius does not widen a column past column_max_width (the clear-run STOP of 26.09: 7 of 143 returns widened a 0.74 m column to 1.10 m in one frame, mechanism 2)
     column_width_trim_min_cut: float = 0.25  # 27.09: m, the trimmed width is used only when it is at least this much narrower than the box (sparse tails: a joined fragment); a dense body keeps its width
     column_min_width: float = 0.25     # m, v0.6: near the axis only clusters at least this wide are columns (a hanging cable is thinner)
     elevated_min_height: float = 1.2   # m, lowest point above this and wider than elevated_min_width = beam / roof strip / sign gantry
@@ -239,7 +240,7 @@ class ClusterConfig:
     floating_long_min_length: float = 3.0  # m, on since 25.09 (decided on the ride; station false STOPs; 0 = off): > 0 = the floating shape also demotes a cluster longer than this along the track near the axis (an overhead duct / tray / beam running along the track; the lateral condition keeps shorter ones, e.g. a hanging cable)
     floating_long_min_bottom: float = 1.6  # m, since 25.09 (review): ... and only when its lowest point is above this (overhead infrastructure; a tray / duct / pipe fallen onto the axis lower in the envelope is an obstacle); 0 = no bottom condition (the first 25.09 rule)
     floating_free_max_size: float = 0.5   # m, on since 25.09 round 2 (pre-registered A of A / B / C, gate PASS; 0 = off): the floating signature does not demote a compact cluster hanging free inside the envelope (set O cube #2: STOP from 52.5 m instead of 34.0 m, six recordings and the ride identical per frame): every extent at most this,
-    floating_free_max_dy: float = 1.2    # m, ... its outermost point at most this far off the axis (inside the 1.05 m envelope edge: not reaching the wall side of the corridor, 1.40 m),
+    floating_free_max_dy: float = 1.2    # m, ... its outermost point at most this far off the axis (27.09: 1.2, was 0.95 - with gauge.reference an object reaching into the 1.05 m envelope from the side keeps the free-hanging exemption; still short of the wall side of the corridor, 1.40 m),
     floating_free_max_top: float = 2.5    # m, ... and its top at most this high above the rail head (under the 3.0 m envelope top: not hanging from the vault); docs/evidence/results/p3_signatures_2026-09-25.json
     edge_min_lateral: float = 1.0      # m (v0.6: 1.2 with the 1.40 m polygon), |lateral| beyond this, longer than edge_min_aspect x width and lower than edge_max_height = duct / bench / platform-edge fragment
     edge_min_aspect: float = 2.5
@@ -312,7 +313,7 @@ class TrackingConfig:
     zone_window: int = 10          # hits over which the zone (gauge / advisory) is decided (5 in v0.3)
     zone_min_fraction: float = 0.6 # share of those hits inside the strict gauge for the track to be an obstacle (0.5 = majority, v0.3)
     zone_min_votes: int = 0        # 27.09 (P4 history, off; 0 = off): the zone vote counts at least this many hits: a track with fewer hits is voted as if its missing hits were outside the gauge (2 of 3 hits inside the gauge is not 60 % of 5); a history with dropped frames confirms on 3 hits where every frame needs 5 (confirm_time_s), so its vote was taken over 3 hits
-    gate_along_only: bool = True  # 27.09 (P4 history, off; false = the whole distance): the association allowance for an object approaching at up to ego_speed_max over the measured frame interval applies to the along-track component only (it widened the gate in every direction: 2.5 m at 10 Hz, 7.5 m after two dropped frames, joining unrelated clusters metres apart across the track into one track)
+    gate_along_only: bool = True  # 27.09 (P4 history, on; false = the whole distance): the association allowance for an object approaching at up to ego_speed_max over the measured frame interval applies to the along-track component only (it widened the gate in every direction: 2.5 m at 10 Hz, 7.5 m after two dropped frames, joining unrelated clusters metres apart across the track into one track)
     start_clean: bool = False      # 27.09 (P4 history, off): a track not reported in the previous frame is confirmed only on a hit whose own cluster is an obstacle inside the strict gauge (zone gauge): the vote of earlier hits alone does not start a STOP on a frame whose cluster is advisory or outside the envelope
     column_hold: int = 2           # 25.09: a track whose cluster was demoted as a column (cluster.column_*) in at least this many of its last zone_window hits is advisory: a column far away shows more than column_min_height of itself in some frames only (roundT_doubleT, EXPERIMENTS.md 3a; 2 = the highest pre-registered candidate that passed, docs/evidence/results/column_hold_2026-09-25.json); 0 = off
     max_misses: int = 3            # frames a track survives without a match
@@ -334,7 +335,7 @@ class TrackingConfig:
     stop_keep_thin: int = 1        # on since 26.09 (P3 range round 2, B10; 0 = off): a corridor cluster flatter than cluster.min_height (one scan line) inside the strict gauge (with stop_keep_min_voxels) may continue, within the same association gate, a track that no other cluster matched: 1 = a track reported as an obstacle in the previous frame (it cannot confirm a new one); 2 = also a track not yet reported whose last hit was inside the gauge (tried, not shipped: a new STOP on doubleT_platform); it never starts a track
     stop_keep_max_s: float = 10.0  # 26.09 (safety review of B10; 0 = no cap): the keep rules (stop_keep_signature, stop_keep_thin) act on a track only while its last clean hit (an obstacle cluster inside the gauge, not a scan line) is at most this many seconds of sensor time ago (the measured frame intervals: the same at any input rate); past it the track falls back to the behaviour without the keep rules, so a false STOP at a standing train cannot be kept indefinitely; set O's box at the envelope top is kept for ~5 s
     stop_keep_min_voxels: int = 10 # on since 26.09 (P3 range round 2, B10; 0 = no bar): a cluster counts for a STOP track through stop_keep_signature or stop_keep_thin only with at least this many voxels inside the strict envelope (Cluster.n_gauge); 10 = the near escalation's bar (near_escalate_voxels); without it (round 1, B) two false STOPs of the ride were extended by 9 frames
-    # 27.09 (P2 ride, off by default): a learned second opinion on a track about to become a STOP
+    # 27.09 (P2 ride, on): a learned second opinion on a track about to become a STOP
     # (resense/opinion.py, trained by scripts/track_opinion.py): below doubt_threshold and beyond
     # doubt_near, the track is advisory ('doubt') until it has qualified as a STOP, matched, for
     # doubt_extra_hits more frames; never a veto, never within doubt_near
@@ -343,7 +344,9 @@ class TrackingConfig:
     doubt_threshold: float = 0.0222   # opinion (probability of a real object) below which a track is doubtful
     doubt_near: float = 25.0       # m, a track whose cluster is this near is never delayed
     doubt_sticky: bool = True     # the opinion at the onset decides (a withheld track is released by the extra frames or doubt_near only)
-    # 27.09 (P5 range, opt-in; 0 = off): far scan lines as track evidence, gated by a consistent
+    doubt_body_height: float = 1.0  # m (0 = off): a track whose cluster stands at least this tall ...
+    doubt_body_range: float = 40.0  # m, ... and is this near is never delayed either: a standing body reaching into the envelope, not a flat floor / bed return (every ride track the opinion withheld within 40 m was at most 0.5 m tall; set O #6, 1.9 m tall, was withheld at 28.7 m)
+    # 27.09 (P5 range, on; 0 = off): far scan lines as track evidence, gated by a consistent
     # approach. Far away an object inside the envelope is often one scan line there (the plank across
     # the rails, the lower edge of the box at the envelope top): flatter than cluster.min_height, it
     # never makes a track. A scan line of the bed or the vault is fixed in the sensor frame, or jumps

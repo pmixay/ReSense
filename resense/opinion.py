@@ -1,4 +1,4 @@
-"""A learned second opinion on a track before it becomes a STOP (27.09, P2 ride; off by default).
+"""A learned second opinion on a track before it becomes a STOP (27.09, P2 ride; on since 27.09).
 
 The tracker keeps, per track, a short record of its matched clusters (:func:`observation`). When a
 track is about to become an obstacle (reported in zone gauge after not being one), the opinion

@@ -25,11 +25,11 @@ ROOT = Path(__file__).resolve().parents[1]
 OFF = {"doubt_model": "", "doubt_extra_hits": 0}      # the opinion is on by default since 27.09
 
 
-def _cl(x: float, lateral: float = 0.0, z: float = 1.0) -> Cluster:
+def _cl(x: float, lateral: float = 0.0, z: float = 1.0, zone: str = "gauge", top: float = 1.1) -> Cluster:
     c = np.array([x, lateral, z])
     return Cluster(points_idx=np.arange(3), n=20, n_raw=20, centroid=c, bbox_min=c - 0.3, bbox_max=c + 0.3,
-                   distance=x, lateral=lateral, height_min=0.5, height_max=1.1, intensity=10.0,
-                   n_expected=10.0, score=1.0, zone="gauge", n_gauge=20)
+                   distance=x, lateral=lateral, height_min=0.5, height_max=top, intensity=10.0,
+                   n_expected=10.0, score=1.0, zone=zone, n_gauge=20)
 
 
 def _model(tmp_path, far_p_low: bool = True) -> str:
@@ -43,12 +43,12 @@ def _model(tmp_path, far_p_low: bool = True) -> str:
     return str(p)
 
 
-def _run(x0: float, n: int, **kw):
+def _run(x0: float, n: int, top: float = 1.1, **kw):
     """A static object approaching at 1 m / frame; per frame (reported, zone) of track 1."""
     tr = Tracker(TrackingConfig(**kw))
     out = []
     for k in range(n):
-        tr.update([_cl(x0 - k)], ego_shift=1.0, frame_dt=0.1)
+        tr.update([_cl(x0 - k, top=top)], ego_shift=1.0, frame_dt=0.1)
         t = [t for t in tr.tracks if t.id == 1][0]
         out.append((t.reported, t.zone))
     return out, tr
@@ -59,6 +59,7 @@ def test_shipped_default_and_both_yaml():
                 DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
         t = cfg.tracking
         assert (t.doubt_model, t.doubt_extra_hits, t.doubt_near, t.doubt_sticky) == ("track_opinion.json", 10, 25.0, True)
+        assert (t.doubt_body_height, t.doubt_body_range) == (1.0, 40.0)
         assert 0.0 < t.doubt_threshold < 0.5 and t.doubt_threshold == TrackingConfig().doubt_threshold
         assert t.gate_along_only is True
     tr = Tracker(TrackingConfig())                   # the model ships in resense/models/
@@ -173,3 +174,32 @@ def test_sticky_doubt_ignores_a_rising_opinion(tmp_path):
     assert all(z == "warning" for _, z in sticky[first:first + 6]) and sticky[first + 6] == (True, "gauge")
     near, _ = _run(80.0, 14, doubt_model=m, doubt_extra_hits=6, doubt_near=74.5, doubt_sticky=True)
     assert near[first + 1] == (True, "warning") and near[first + 2] == (True, "gauge")     # 74 m <= 74.5
+
+
+def test_a_standing_body_within_the_body_range_is_not_delayed(tmp_path):
+    """p low everywhere: a flat track (0.6 m tall) at 38 m is withheld, a standing one (1.5 m tall)
+    is not; beyond doubt_body_range both are."""
+    m = _stump(tmp_path, "low.json", 1000.0, -5.0, -5.0)
+    kw = dict(doubt_model=m, doubt_extra_hits=3, doubt_near=10.0)
+    for x0, top, delayed in ((40.0, 1.1, True), (40.0, 2.0, False), (60.0, 2.0, True)):
+        base, _ = _run(x0, 9, top=top, **OFF)
+        out, _ = _run(x0, 9, top=top, **kw)
+        first = next(i for i, (r, z) in enumerate(base) if r and z == "gauge")
+        assert (out[first] == (True, "warning")) is delayed, (x0, top)
+        if not delayed:
+            assert out == base
+
+
+def test_the_extra_frames_are_a_budget_for_the_track_life(tmp_path):
+    """A track whose rule zone flickers (gauge / warning) after its doubtful onset does not get its
+    extra frames back: it is withheld for doubt_extra_hits frames in all, misses included."""
+    m = _stump(tmp_path, "low.json", 1000.0, -5.0, -5.0)
+    tr = Tracker(TrackingConfig(doubt_model=m, doubt_extra_hits=4, doubt_near=10.0))
+    zones = ["gauge"] * 6 + ["warning"] * 3 + ["gauge"] * 3 + ["warning"] * 3 + ["gauge"] * 8   # rule zone: out at 13-16
+    withheld = 0
+    for k, z in enumerate(zones):
+        tr.update([_cl(80.0 - k, zone=z)], ego_shift=1.0, frame_dt=0.1)
+        t = tr.tracks[0]
+        withheld += int(t.withheld)
+    assert t.reported and t.zone == "gauge"
+    assert 0 < withheld <= 4 and t.doubt >= 4

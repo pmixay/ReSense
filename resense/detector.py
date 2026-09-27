@@ -16,7 +16,8 @@ from resense.egomotion import EgoSpeedEstimate, EgoSpeedEstimator
 from resense.evidence import PersistentEvidence
 from resense.frame import Frame
 from resense.gauge import (axis_union_coordinates, axis_union_offset, axis_union_strict, corridor_coordinates,
-                           corridor_mask, gauge_core_mask, point_in_polygon, reference_offset, widened_profile)
+                           corridor_mask, gauge_core_mask, point_in_polygon, reference_offset, union_shift,
+                           widened_profile)
 from resense.health import HealthMonitor
 from resense.lowobj import BedTemplate, low_candidates, mark_rail_line
 from resense.track import TrackModel, estimate_track, rotate_track_model
@@ -351,12 +352,13 @@ class Detector:
                           intensity=intensity[idx], idx=idx, low=np.zeros(idx.size, dtype=bool))
         ref = reference_offset(cand.xyz[:, 0], self.track, cfg.gauge) if cfg.gauge.reference > 0 else None
         if ref is not None:
-            # 27.09 (gauge.reference 1 / 2, off by default): the envelope measured from the sensor axis where
+            # 27.09 (gauge.reference 1 / 2 / 3, 3 on): the envelope measured from the sensor axis where
             # it agrees with the rails (near field, straight track). The candidate set (the advisory
             # corridor), the reported lateral (dy_rail), the gauge-distance reach and the frame-wide stages
             # (bed, low objects, rail start, ego speed, hanging search, clear cap: dy_all) keep the rails;
             # the hanging stage reads the strict membership from here. The corridor coordinate of the
-            # candidates (strict membership, shape rules, accumulation) is the lateral from the sensor axis. The
+            # candidates (strict membership, shape rules, accumulation) is the lateral from the sensor axis (mode 3: only
+            # where that is nearer the centre, the union below; modes 1 / 2 everywhere in the near field). The
             # rails' own strict membership is kept (in_rail, as for gauge.axis_union): an oversize cluster
             # whose part inside the reference envelope took in an edge line falls back to it (the safety
             # review's scene of 26.09), and the wall keep counts it
@@ -365,7 +367,9 @@ class Detector:
                 in_rail = in_rail & gauge_core_mask(cand.dy, cand.h, cand.xyz[:, 0], cfg.gauge)
             cand.in_rail = in_rail
             cand.dy_rail = cand.dy
-            cand.dy = cand.dy + ref[1]
+            # 27.09 (gauge.reference 3): the union - a point takes the sensor-axis lateral only where it is
+            # nearer the centre there, so neither side of the rails' envelope is narrowed
+            cand.dy = cand.dy + (union_shift(cand.dy, ref[1]) if cfg.gauge.reference == 3 else ref[1])
             cand.in_gauge = point_in_polygon(cand.dy, cand.h, cfg.gauge.profile)
         if cfg.gauge.edge_margin > 0 or cfg.gauge.edge_margin_per_100m > 0:
             core = gauge_core_mask(cand.dy, cand.h, cand.xyz[:, 0], cfg.gauge)
@@ -475,7 +479,13 @@ class Detector:
                 # 27.09 (gauge.reference 1): the buffer holds the corridor coordinate, measured from the
                 # sensor axis where the reference applies (its offset at the shifted X, this frame's model)
                 ref = reference_offset(Xo64, self.track, self.cfg.gauge)
-                dro = dyo - ref[1] if ref is not None else dyo
+                if ref is None:
+                    dro = dyo
+                elif self.cfg.gauge.reference == 3:
+                    # the union shifted a point only towards the centre: undo it where that is consistent
+                    dro = np.where(np.abs(dyo + ref[1]) >= np.abs(dyo), dyo, dyo - ref[1])
+                else:
+                    dro = dyo - ref[1]
             yo = self.track.center_y(Xo64) + (dyo if dro is None else dro)
             xyz_o = np.stack([Xo64, yo, self.track.rail_z(Xo64) + ho], axis=1).astype(np.float32)
             merged = cand.concat(Candidates(xyz=xyz_o, dy=dyo, h=ho, in_gauge=go, intensity=io,
@@ -648,7 +658,7 @@ class Detector:
         return [d for d in dets if d.zone == "gauge"], [d for d in dets if d.zone != "gauge"]
 
     def _far_thin(self, clusters: List[Cluster]) -> List[Cluster]:
-        """27.09 (``tracking.thin_far_min_distance`` > 0, off by default): this frame's scan lines
+        """27.09 (``tracking.thin_far_min_distance`` > 0, on): this frame's scan lines
         (corridor clusters flatter than ``cluster.min_height``) that the tracker may use as far
         evidence: at least that far, inside the strict gauge (zone ``gauge``: no far-field, overhead
         or signature demotion) with ``thin_far_min_voxels`` strict voxels, and overlapping no other

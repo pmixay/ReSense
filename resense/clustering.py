@@ -215,11 +215,11 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
     usual); the caller hands such clusters to the tracker only to continue an obstacle track (one
     scan line of an object whose part inside the envelope is thinner than the ring spacing).
 
-    ``dy_report`` (27.09, ``gauge.reference`` 1, off by default): the lateral from the rail axis when
+    ``dy_report`` (27.09, ``gauge.reference`` > 0, on): the lateral from the rail axis when
     ``dy`` is measured from the sensor axis; ``Cluster.lateral`` (the reported lateral) reads it, every
     rule reads ``dy`` but the gauge-distance reach, which reads it (with the strict membership of
     ``in_gauge``). ``None`` = ``dy``.
-    ``weak_from`` (27.09, ``cluster.weak_min_points`` with ``tracking.thin_far_min_distance``, off by
+    ``weak_from`` (27.09, ``cluster.weak_min_points`` with ``tracking.thin_far_min_distance``, on by
     default): a corridor cluster at least this far with fewer voxels than the point-count bar but at
     least ``cfg.weak_min_points`` is not dropped but returned with ``weak`` set (every other test
     applied as usual); the caller hands it to the tracker only, as far evidence for an approaching
@@ -528,7 +528,7 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
         gauge_min = int(np.ceil(gauge_min * factor))
     weak = False
     if b.n_vox < min_pts:
-        # 27.09 (cluster.weak_min_points, off by default): kept as weak far evidence (find_clusters)
+        # 27.09 (cluster.weak_min_points, on): kept as weak far evidence (find_clusters)
         if not (weak_from > 0 and cfg.weak_min_points > 0 and b.n_vox >= cfg.weak_min_points and dist >= weak_from):
             return None
         weak = True
@@ -549,7 +549,7 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
         # The voxels are counted in the envelope measured from the rails (in_rail; safety review of
         # 26.09: the wall keep does not change with gauge.axis_union)
         spare = int(np.unique(inv[b.idx][in_rail[b.idx]]).size) >= cfg.wall_keep_gauge_voxels
-    # 27.09 (gauge.reference_along_rails, off by default): with the envelope measured from the sensor
+    # 27.09 (gauge.reference_along_rails, on): with the envelope measured from the sensor
     # axis, the rules for structure along the track (the linear infrastructure and the edge signature:
     # both need a cluster elongated along the track) read the lateral from the rails, which such
     # structure follows

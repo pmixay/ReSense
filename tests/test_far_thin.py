@@ -38,13 +38,15 @@ def _cfg(**kw) -> TrackingConfig:
 
 
 def _run(xs, cfg=None, thin=True, n_gauge=6):
-    """One far scan line per frame at the distances ``xs``; returns whether any track is reported."""
+    """One far scan line per frame at the distances ``xs``; returns whether any track is a STOP
+    (reported in zone gauge; since the judges' review of 27.09 far evidence without an approach holds
+    a track advisory, it never hides it)."""
     tr = Tracker(cfg or _cfg())
     out = []
     for x in xs:
         cl = [] if x is None else [_cl(x, thin=thin, n_gauge=n_gauge)]
         tr.update([], ego_shift=0.0, frame_dt=0.1, thin=cl, far_thin=cl)
-        out.append(any(t.reported for t in tr.tracks))
+        out.append(any(t.reported and t.zone == "gauge" for t in tr.tracks))
     return out
 
 
@@ -68,13 +70,13 @@ def test_approaching_scan_line_is_reported_after_confirmation():
     assert out[4] and all(out[4:])
 
 
-def test_static_scan_line_is_never_reported():
+def test_static_scan_line_is_never_a_stop():
     # a ring on the bed ahead of a standing (or slowly moving) train: fixed in the sensor frame
     assert not any(_run([95.0] * 12))
     assert not any(_run([95.0 - 0.1 * k for k in range(12)]))   # 1 m/s < approach_min_speed
 
 
-def test_jumping_scan_line_is_never_reported():
+def test_jumping_scan_line_is_never_a_stop():
     # a ring whose range jumps with the pitch (+-1.2 m about the line, alternating): no consistent approach
     xs = [100.0 - 1.0 * k + (1.2 if k % 2 else -1.2) for k in range(12)]
     assert not any(_run(xs))
@@ -100,12 +102,18 @@ def test_mixed_track_needs_the_approach_only_to_start_a_report():
     # episode split in two when it did)
     tr.update([], ego_shift=0.0, frame_dt=0.1, far_thin=[_cl(90.0)])
     assert any(t.reported for t in tr.tracks)
-    # a standing track that is not reported yet and has a scan-line hit is not reported
+    # 27.09 (judges' review): a standing track started by a scan-line hit whose clean hits alone vote
+    # gauge (a person walking up to a standing train) keeps the usual rules: a STOP
     tr = Tracker(cfg)
     tr.update([], ego_shift=0.0, frame_dt=0.1, far_thin=[_cl(90.0)])
     for _ in range(8):
         tr.update([_cl(90.0, thin=False)], ego_shift=0.0, frame_dt=0.1, far_thin=[])
-    assert not any(t.reported for t in tr.tracks)
+    assert any(t.reported and t.zone == "gauge" for t in tr.tracks)
+    # while the vote needs the scan-line hits it is held advisory, reported, never hidden
+    tr = Tracker(cfg)
+    for _ in range(8):
+        tr.update([], ego_shift=0.0, frame_dt=0.1, far_thin=[_cl(90.0)])
+    assert all(not (t.reported and t.zone == "gauge") for t in tr.tracks)
 
 
 def test_scan_line_continues_an_approaching_normal_track():
@@ -158,14 +166,15 @@ def test_weak_cluster_needs_the_approach_like_a_scan_line():
         cl = _cl(75.0 - 1.6 * k, thin=False, n_gauge=4)
         cl.weak = True
         tr.update([], ego_shift=0.0, frame_dt=0.1, far_thin=[cl])
-        rep.append(any(t.reported for t in tr.tracks))
+        rep.append(any(t.reported and t.zone == "gauge" for t in tr.tracks))
     assert not any(rep[:4]) and all(rep[4:])
     tr = Tracker(_cfg())
-    for k in range(10):                      # the same weak evidence at a standing train: never reported
+    for k in range(10):                      # the same weak evidence at a standing train: never a STOP
         cl = _cl(75.0, thin=False, n_gauge=4)
         cl.weak = True
         tr.update([], ego_shift=0.0, frame_dt=0.1, far_thin=[cl])
-    assert not any(t.reported for t in tr.tracks)
+    assert not any(t.reported and t.zone == "gauge" for t in tr.tracks)
+    assert any(t.reported and t.zone == "warning" for t in tr.tracks)   # held advisory, not hidden
 
 
 def test_ambiguous_scan_line_is_not_used():
@@ -189,10 +198,11 @@ def test_scan_line_at_a_matched_track_is_not_a_new_track():
     assert len(tr.tracks) == 1 and tr.tracks[0].hits == 2
 
 
-def test_weak_hits_long_ago_still_need_the_approach():
-    """The ride (piece 2, frames 237-243): weak 4-voxel hits kept a fixture ahead of a standing train
-    alive; later normal hits alone would have confirmed it. A track ever matched by far evidence
-    starts a report only while it approaches."""
+def test_weak_hits_long_ago_do_not_hold_a_clean_gauge_track():
+    """27.09 (judges' review): weak 4-voxel hits kept a track alive ahead of a standing train; later
+    normal hits inside the envelope alone vote gauge, so the track is a STOP by the usual rules - an
+    object standing in the envelope must STOP whatever far evidence started its track (the 26.09
+    version held it unreported, which also hid a person walking up to a standing train)."""
     tr = Tracker(_cfg())
     for k in range(6):
         cl = _cl(96.8, thin=False, n_gauge=4)
@@ -201,7 +211,7 @@ def test_weak_hits_long_ago_still_need_the_approach():
     for k in range(15):                       # > zone_window normal hits at the same place
         tr.update([_cl(96.8, thin=False)], ego_shift=0.0, frame_dt=0.1, far_thin=[])
     assert len(tr.tracks) == 1 and tr.tracks[0].far_evidence
-    assert not tr.tracks[0].reported
+    assert tr.tracks[0].reported and tr.tracks[0].zone == "gauge"
 
 
 def test_advisory_track_with_far_evidence_is_not_promoted_without_approach():

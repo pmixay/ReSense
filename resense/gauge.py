@@ -163,8 +163,13 @@ def reference_offset(X: np.ndarray, track: TrackModel, cfg: GaugeConfig) -> Opti
     +- ``reference_max_offset`` instead of switching back to the rails where it grows past it, i.e.
     the envelope follows the sensor axis while it is within that of the rail axis and the rail axis
     shifted by it towards the sensor axis beyond; ``ok`` is still where the sensor axis itself is the
-    reference (the edge-margin scale applies only there)."""
-    if cfg.reference not in (1, 2) or track.rail_slabs <= 0 or abs(float(track.curvature)) > cfg.reference_max_curvature:
+    reference (the edge-margin scale applies only there).
+
+    ``gauge.reference`` 3 (27.09, the union): the offset of mode 2, applied by the detector to a point
+    only where it moves the point nearer the centre (:func:`union_shift`): the strict envelope is the
+    union of the rails' envelope and the sensor-axis one, so neither side of the rails' envelope is
+    ever narrowed (the side a one-way shift narrows depends on the rig's yaw sign)."""
+    if cfg.reference not in (1, 2, 3) or track.rail_slabs <= 0 or abs(float(track.curvature)) > cfg.reference_max_curvature:
         return None
     X = np.asarray(X, dtype=np.float64)
     near = X <= cfg.reference_range
@@ -173,12 +178,18 @@ def reference_offset(X: np.ndarray, track: TrackModel, cfg: GaugeConfig) -> Opti
     c = np.zeros(X.shape[0], dtype=np.float64)
     c[near] = track.center_y(X[near])
     ok = near & (np.abs(c) <= cfg.reference_max_offset)
-    if cfg.reference == 2:
+    if cfg.reference in (2, 3):
         return ok, np.clip(c, -cfg.reference_max_offset, cfg.reference_max_offset)
     if not ok.any():
         return None
     c[~ok] = 0.0
     return ok, c
+
+
+def union_shift(dy: np.ndarray, c: np.ndarray) -> np.ndarray:
+    """``gauge.reference`` 3: the per-point lateral shift of the union, ``c`` where the lateral from
+    the sensor axis (``dy + c``) is nearer the centre than the lateral from the rails (``dy``), else 0."""
+    return np.where(np.abs(dy + c) < np.abs(dy), c, 0.0)
 
 
 def axis_union_strict(X: np.ndarray, dy: np.ndarray, h: np.ndarray, track: TrackModel,

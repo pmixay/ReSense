@@ -29,7 +29,7 @@ demoted only by a shape signature (``Cluster.demoted``) as inside the gauge. Wit
 ``cluster.min_height`` (``Cluster.thin``: one scan line) inside the gauge; with 2 also a track not
 yet reported whose previous hit was an obstacle cluster inside the gauge. None of them starts a
 track.
-With ``thin_far_min_distance`` > 0 (27.09, P5 range, off by default) far scan lines inside the
+With ``thin_far_min_distance`` > 0 (27.09, P5 range, on at 60 m) far scan lines inside the
 gauge (and with ``cluster.weak_min_points`` far clusters under the point-count bar) may start and
 continue tracks; a track that was ever matched by such a hit becomes an obstacle (STOP) only
 while its distances lie on a line in sensor time that approaches (``approach_*``): a scan line of
@@ -82,7 +82,7 @@ class Track:
     near_hist: List[bool] = field(default_factory=list)  # 26.09: last near_hits hits: near the envelope (Tracker._near)?
     near_hits: int = 0              # 26.09: this many near hits in a row make the track an obstacle (0 = off)
     obs: List[tuple] = field(default_factory=list)  # 27.09 (tracking.doubt_*): the last matched clusters (opinion.observation)
-    doubt: int = 0                  # 27.09: frames in a row a doubtful STOP was withheld (tracking.doubt_extra_hits)
+    doubt: int = 0                  # 27.09: frames a doubtful STOP was withheld over the track's life (tracking.doubt_extra_hits)
     withheld: bool = False          # 27.09: a STOP withheld as advisory by the track opinion (zone 'warning')
     stop_prev: bool = False         # 27.09: reported in zone gauge after the previous update
     thin_hist: List[bool] = field(default_factory=list)  # 27.09 (thin_far_min_distance): last zone_window hits: a far scan line?
@@ -240,12 +240,14 @@ class Tracker:
         (``stop_keep_thin``, 26.09, off) are clusters flatter than ``cluster.min_height``: after the
         association of ``clusters`` they may continue a track that nothing matched
         (:meth:`_continue_thin`), never start one. ``far_thin`` (``thin_far_min_distance``, 27.09,
-        off by default): far scan lines (and weak far clusters) inside the gauge that overlap no
+        on): far scan lines (and weak far clusters) inside the gauge that overlap no
         cluster of ``clusters`` (the detector selects them); they continue unmatched tracks and start
         new ones (:meth:`_far_thin`), and a track ever matched by such a hit (``Track.far_evidence``)
-        becomes a STOP only while it approaches (:meth:`_approaching`): not reported before, it is
-        not reported; reported as advisory, it stays advisory (``Track.approach_block``); a STOP in
-        the previous frame keeps the usual rules."""
+        whose gauge vote needs those hits becomes a STOP only while it approaches
+        (:meth:`_approaching`); otherwise it is reported as advisory (``Track.approach_block``), never
+        hidden. A track whose clean hits alone vote gauge (:meth:`_clean_gauge`: within
+        ``thin_far_min_distance`` every hit is clean, so the vote clears within ``zone_window`` hits)
+        and a STOP in the previous frame keep the usual rules."""
         c = self.cfg
         # widen the gate by the distance a static object travels in the *measured* interval, so a
         # dropped frame (0.2-0.3 s gap in the node) does not throw a 17 m/s approach out of the gate
@@ -355,10 +357,13 @@ class Tracker:
                 # advisory (the ride: weak hits turned the zone vote of an advisory fixture ahead of a
                 # standing train into a STOP); a STOP in the previous frame keeps the usual rules (taking
                 # it down split a STOP episode of the ride)
-                block = t.far_evidence and not t.was_stop and not self._approaching(t)
-                t.approach_block = bool(block and t.reported)
-                if q and block and not t.reported:
-                    q = False
+                block = (t.far_evidence and not t.was_stop and not self._approaching(t)
+                         and not self._clean_gauge(t))
+                # 27.09 (judges' review): the block holds the track advisory, it never hides it, and it
+                # applies only while the gauge vote needs the far hits: a track whose clean hits alone
+                # vote gauge (a person walking up to a standing train after one weak far hit, an object
+                # whose track a bed scan line started) keeps the usual rules
+                t.approach_block = bool(block and (t.reported or q))
             if q and not low_ok and not t.reported and t.last is not None and t.last.kind == "low":
                 q = False
             if (q and rail_within > 0 and not t.reported and t.last is not None and t.last.kind == "low"
@@ -390,16 +395,25 @@ class Tracker:
         ``doubt_near`` is withheld as advisory (zone 'warning', reason 'doubt') until it has stayed a
         STOP candidate, matched, for ``doubt_extra_hits`` more frames; the opinion is asked again on
         every such frame and releases it at once when it rises (with ``doubt_sticky`` the opinion at
-        the onset decides: only the extra frames or ``doubt_near`` release it). A missed frame keeps
-        the state; a track that stops qualifying starts again. Never a veto: it only asks more
-        persistence of a track the rules would report, and never within ``doubt_near``."""
+        the onset decides: only the extra frames or ``doubt_near`` release it). The extra frames are a
+        budget for the life of the track: a frame withheld over a miss spends it too, and a track that
+        stops qualifying and qualifies again does not get it back, so no track is withheld for more
+        than ``doubt_extra_hits`` frames in all. Never a veto: it only asks more persistence of a track
+        the rules would report, never within ``doubt_near``, and never for a standing body (a cluster at
+        least ``doubt_body_height`` tall) within ``doubt_body_range``."""
         c = self.cfg
         for t in self.tracks:
             if not (t.reported and t.rule_zone == "gauge"):
-                t.withheld, t.doubt = False, 0
-            elif t.misses > 0 or (t.stop_prev and not t.withheld):
-                pass                        # held over a miss, or already a STOP: unchanged
-            elif t.last is None or t.last.distance <= c.doubt_near or not t.obs:
+                t.withheld = False
+            elif t.stop_prev and not t.withheld:
+                pass                        # already a STOP: unchanged
+            elif t.misses > 0:
+                if t.withheld:              # held over a miss: the budget still runs
+                    t.doubt += 1
+                    t.withheld = t.doubt <= c.doubt_extra_hits
+            elif t.last is None or t.last.distance <= c.doubt_near or not t.obs or (
+                    c.doubt_body_height > 0 and t.last.distance <= c.doubt_body_range
+                    and t.last.height_max - t.last.height_min >= c.doubt_body_height):
                 t.withheld = False
             elif not (c.doubt_sticky and t.withheld) and (
                     self.opinion.prob(track_features(t.obs, t.hits, t.hit_fraction)) >= c.doubt_threshold):
@@ -491,6 +505,17 @@ class Tracker:
         t.thin_hist = (t.thin_hist + [bool(far_thin)])[-zw:]
         t.approach = (t.approach + [(self._clock, float(cl.distance))])[-max(2, int(c.approach_hits)):]
 
+    def _clean_gauge(self, t: Track) -> bool:
+        """27.09: the zone vote of ``t`` is 'gauge' with its far scan-line / weak hits counted as not
+        inside (``Track.thin_hist``, aligned with ``zone_hist``): the far evidence is not needed."""
+        if not t.zone_hist:
+            return False
+        far = t.thin_hist[-len(t.zone_hist):]
+        far = [False] * (len(t.zone_hist) - len(far)) + list(far)
+        clean = sum(z and not f for z, f in zip(t.zone_hist, far))
+        n = max(len(t.zone_hist), int(getattr(self.cfg, "zone_min_votes", 0) or 0))
+        return clean >= t.zone_min_fraction * n - 1e-9
+
     def _approaching(self, t: Track) -> bool:
         """27.09 (``approach_*``): the distances of the track's last ``approach_hits`` hits lie on a
         line in sensor time (RMS residual at most ``approach_max_residual``) that approaches at
@@ -512,7 +537,7 @@ class Tracker:
 
     def _far_thin(self, thin: List[Cluster], matched_t: np.ndarray, ego_shift: float, step: float,
                   dt: float, zw: int, hw: int, nk: int = 0, kdt: float = 0.0) -> List[Cluster]:
-        """27.09 (``thin_far_min_distance``, off by default): far scan lines inside the gauge
+        """27.09 (``thin_far_min_distance``, on): far scan lines inside the gauge
         (selected by the detector: at least that far, zone ``gauge``, ``thin_far_min_voxels`` strict
         voxels, overlapping no other cluster of the frame) are associated, greedily with the same
         gate and prediction, with the tracks nothing matched in this frame; a match is a hit inside
