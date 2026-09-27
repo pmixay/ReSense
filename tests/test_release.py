@@ -90,7 +90,7 @@ def test_release_notes_carry_the_jury_commands_and_the_identity(capsys):
     assert meta.main(args) == 0
     notes = capsys.readouterr().out
     for s in (f"docker load -i {ARCHIVE}", "docker run --rm -it --net=host --ipc=host resense",
-              "ros2 bag play <bag> --delay 3", "ros2 topic echo /resense/decision", sha, commit,
+              "ros2 bag play <bag> --delay 3 --read-ahead-queue-size 10", "ros2 topic echo /resense/decision", sha, commit,
               f"https://github.com/pmixay/ReSense/blob/{TAG}/README.md",
               f"https://github.com/pmixay/ReSense/blob/{TAG}/CHANGELOG.md",
               f"https://github.com/pmixay/ReSense/releases/download/{TAG}/{ARCHIVE}",

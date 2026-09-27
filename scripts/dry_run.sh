@@ -15,7 +15,8 @@
 #                    node, player and recorder in a container with --network none (loopback only);
 #                    needs IMAGE_TAR or SKIP_BUILD=1, since a build needs the internet
 #   RATE=1.0         bag playback rate passed to `ros2 bag play`
-#   BAG_READ_AHEAD_QUEUE_SIZE=1000 messages buffered by rosbag2 before publication (Humble default)
+#   BAG_READ_AHEAD_QUEUE_SIZE=10 messages buffered by rosbag2 before publication;
+#                            override only for a separately tested playback setup
 #   OUT=out/dry_run  where status.jsonl and node.log are written on the host
 #   DOCKER_ARGS=""   extra `docker run` arguments, split on whitespace, e.g. "-e RESENSE_NATIVE=0"
 #                    (the node on the numpy path) or "--name resense_bench_dry" (scripts/bench_8core.sh)
@@ -60,7 +61,7 @@ require_docker_daemon
 BAG_DIR="$(cd "$(dirname "$BAG_PATH")" && pwd)"
 BAG_NAME="$(basename "$BAG_PATH")"
 RATE="${RATE:-1.0}"
-BAG_READ_AHEAD_QUEUE_SIZE="${BAG_READ_AHEAD_QUEUE_SIZE:-1000}"
+BAG_READ_AHEAD_QUEUE_SIZE="${BAG_READ_AHEAD_QUEUE_SIZE:-10}"
 if ! [[ "$BAG_READ_AHEAD_QUEUE_SIZE" =~ ^[1-9][0-9]*$ ]]; then
   echo "ERROR: BAG_READ_AHEAD_QUEUE_SIZE must be a positive integer" >&2
   exit 2

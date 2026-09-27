@@ -100,7 +100,8 @@ def generate_launch_description():
     params["config_file"] = ParameterValue(LaunchConfiguration("config_file"), value_type=str)
 
     play = ["ros2", "bag", "play", LaunchConfiguration("bag"),
-            "--rate", LaunchConfiguration("rate"), "--clock", "--delay", LaunchConfiguration("delay")]
+            "--rate", LaunchConfiguration("rate"), "--clock", "--delay", LaunchConfiguration("delay"),
+            "--read-ahead-queue-size", "10"]
 
     return LaunchDescription(args + [
         Node(package="resense_ros", executable="detector_node", name="resense_detector",

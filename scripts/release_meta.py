@@ -101,7 +101,7 @@ def release_notes(tag: str, commit: str, sha256: str, size_bytes: int, repo: str
         (f"sha256sum -c {archive}.sha256", "0. optional: the archive is intact (both files in one folder)"),
         (f"docker load -i {archive}", "1. once, no internet needed"),
         ("docker run --rm -it --net=host --ipc=host resense ros2 launch resense_ros detector.launch.py freshness_mode:=replay", "2. console 1: explicit historical replay mode"),
-        ("ros2 bag play <bag> --delay 3", "3. console 2: any user, ROS 2 Humble"),
+        ("ros2 bag play <bag> --delay 3 --read-ahead-queue-size 10", "3. console 2: any user, ROS 2 Humble"),
         ("ros2 topic echo /resense/decision --field data", "4. console 3: GO | CAUTION | STOP | FAULT"),
         ("ros2 topic echo /resense/nearest_distance --field data", "5. distance to the obstacle, m; -1 = none"),
     ]
@@ -121,7 +121,7 @@ def release_notes(tag: str, commit: str, sha256: str, size_bytes: int, repo: str
         "```",
         "",
         "`--net=host` is required (the image runs Fast DDS over UDP). No ROS 2 on the host: play from the image, "
-        "`docker run --rm --net=host -v <bag folder>:/data:ro resense ros2 bag play /data/<bag> --delay 3`. "
+        "`docker run --rm --net=host -v <bag folder>:/data:ro resense ros2 bag play /data/<bag> --delay 3 --read-ahead-queue-size 10`. "
         f"Details, expected output and parameters: [README]({web}/blob/{tag}/README.md) "
         "(section «Кратко для жюри»); what changed: "
         f"[CHANGELOG]({web}/blob/{tag}/CHANGELOG.md).",

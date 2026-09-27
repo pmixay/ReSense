@@ -108,17 +108,17 @@ jobs:
           IMAGE=resense:ci PLAYER_USER=1000:1000 NODE_DDS=shm OUT=out/console_test_shm_udp \
             scripts/console_test.sh /tmp/bags/smoke_bag /tmp/bags/smoke_bag2
       - name: remote Foxglove viewer — second container, isolated link and pause/recovery
-        if: ${{ github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/main' }}
+        if: ${{ github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/p1-p2-supported-playback-20260927' || github.ref == 'refs/heads/main' }}
         # Run before the image is round-tripped to the runtime-only archive: the viewer probe needs
         # the WITH_TOOLS=1 build's `websockets` client. This models a second device on an isolated
         # network and checks outage/recovery without requiring demo hardware.
         run: IMAGE=resense:ci scripts/p2_viewer_test.sh
       - name: original bag cold-start regression — working branch and main
-        if: ${{ github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/main' }}
+        if: ${{ github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/p1-p2-supported-playback-20260927' || github.ref == 'refs/heads/main' }}
         timeout-minutes: 10
         run: IMAGE=resense:ci scripts/p1_cold_bag_test.sh
       - name: retain original-bag cold-start evidence
-        if: ${{ always() && (github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/main') }}
+        if: ${{ always() && (github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/p1-p2-supported-playback-20260927' || github.ref == 'refs/heads/main') }}
         uses: actions/upload-artifact@v4
         with:
           name: p1-cold-dry-run-${{ github.sha }}

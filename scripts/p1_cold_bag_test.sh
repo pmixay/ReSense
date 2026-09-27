@@ -6,7 +6,7 @@
 set -euo pipefail
 
 case "${GITHUB_REF:-}" in
-  refs/heads/claude/nifty-pascal-lzgl78|refs/heads/main) ;;
+  refs/heads/claude/nifty-pascal-lzgl78|refs/heads/claude/p1-p2-supported-playback-20260927|refs/heads/main) ;;
   *) echo "skip: original-bag cold-disk test runs on the working branch and main"; exit 0 ;;
 esac
 
@@ -51,13 +51,13 @@ docker tag "$IMAGE" resense:latest
 
 # The archive extraction and hashes warmed the page cache. Evict it before the exact dry-run path.
 sudo sh -c 'sync; echo 3 > /proc/sys/vm/drop_caches'
-BAG_READ_AHEAD_QUEUE_SIZE=10 SKIP_BUILD=1 OUT="$OUT/dry_run" scripts/dry_run.sh "$BAG" \
+SKIP_BUILD=1 OUT="$OUT/dry_run" scripts/dry_run.sh "$BAG" \
   --expect-obstacle --distance 50:62 --min-frames 20 --max-p95-latency 100 --max-dropped 0
 echo "PASS: original doubleT_obstacle cold-disk dry run" | tee -a "$OUT/result.txt"
 
 # Repeat the cold-cache check for the original clear 120-degree recording. The previous replay
 # warmed only doubleT_obstacle, so this independently verifies a clear path from cold storage.
 sudo sh -c 'sync; echo 3 > /proc/sys/vm/drop_caches'
-BAG_READ_AHEAD_QUEUE_SIZE=10 SKIP_BUILD=1 OUT="$OUT/roundT_doubleT" scripts/dry_run.sh "$CLEAR_BAG" \
+SKIP_BUILD=1 OUT="$OUT/roundT_doubleT" scripts/dry_run.sh "$CLEAR_BAG" \
   --expect-clear --max-alarm-frames 2 --max-p95-latency 100 --max-dropped 0
 echo "PASS: original roundT_doubleT cold-disk dry run" | tee -a "$OUT/result.txt"

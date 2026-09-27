@@ -118,4 +118,4 @@ if ! docker run --rm --network none -w / "$IMAGE" bash -lc \
 fi
 echo
 echo "PASS: $IMAGE loaded from $ARCHIVE_NAME and runs without network. Next:"
-echo "   docker run --rm -it --net=host --ipc=host resense ros2 launch resense_ros detector.launch.py freshness_mode:=replay  # then ros2 bag play <bag> --delay 3"
+echo "   docker run --rm -it --net=host --ipc=host resense ros2 launch resense_ros detector.launch.py freshness_mode:=replay  # then ros2 bag play <bag> --delay 3 --read-ahead-queue-size 10"
