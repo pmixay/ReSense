@@ -14,7 +14,9 @@ per-file speeds and intake events) stays in `docs/` because scripts read it.
 
 The [27 September supported playback rerun](p1_p2_supported_playback_2026-09-27/README.md)
 preserves both cold original-bag status streams and node logs, source hashes, and the six-job CI
-receipt. It supersedes the earlier quota-blocked attempt without changing the detector baseline.
+receipt. A [later seven-job run](p1_p2_supported_playback_2026-09-27/cached_bags_run_36319767736/README.md)
+also passed after saving and restoring verified original bags in Actions cache. Both supersede
+the earlier quota-blocked attempt without changing the detector baseline.
 
 ## Freeze pass — 26 September night
 

@@ -1,5 +1,9 @@
 # Supported cold playback — current branch, 27 September 2026
 
+A later [verified-bag cache rerun](cached_bags_run_36319767736/README.md) passed all seven jobs
+at `2f23719`. Its Docker job restored and verified the two bags from Actions cache and passed
+both original cold replays. This file retains the preceding archive-cache run's measurements.
+
 [CI run 36313880352, rerun attempt 2](https://github.com/pmixay/ReSense/actions/runs/36313880352)
 passed all six jobs at `5a27c66c35457d36405600492106064dccb8fcdb`. The first attempt
 reached no original-bag playback because Google Drive returned a quota page; it remains a dated

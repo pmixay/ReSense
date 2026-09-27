@@ -441,13 +441,17 @@ The optional pre-read before jury step 3 can reduce disk delay; the supported co
 cold trial under two direct readers (127.4 MiB/s combined) also passes: p95 36.37 ms, first STOP
 +0.7 s, no post-settle losses. This is a bounded workload, not a measured overload limit.
 
-**Supported playback recheck, 27.09:** [current-branch CI](docs/evidence/p1_p2_supported_playback_2026-09-27/README.md)
+**Supported playback recheck, 27.09:** [archive-cache CI](docs/evidence/p1_p2_supported_playback_2026-09-27/README.md)
 passed both original bags cold with the ten-message queue. The obstacle bag had 199 status
 messages, STOP at 55.5–56.5 m and p95 76 ms; its first STOP was fail-safe while stale, and its
 first current STOP followed catch-up at +13.6 s. All 63 source messages after catch-up were
 processed. The clear bag had 252 statuses, zero alarms and p95 48 ms. The archive and database
 hashes match the earlier verified recordings. This does not validate Humble's 1,000-message
 default or an unbounded overdue burst.
+[A later seven-job rerun](docs/evidence/p1_p2_supported_playback_2026-09-27/cached_bags_run_36319767736/README.md)
+also passed after downloading, verifying and caching the two original bags: 201 obstacle statuses,
+first current STOP and catch-up at +2.6 s, p95 47 ms; 252 clear statuses, zero alarms, p95 32 ms.
+Both cold runs retain their separate timing and raw evidence.
 
 **Clean-machine dry run** (part of the later deployment, [`docs/CAPTAIN.md`](docs/CAPTAIN.md) C7):
 a team machine that has never built the project, 8 cores for the latency and drop criteria (the
