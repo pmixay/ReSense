@@ -1,0 +1,89 @@
+{
+ "features": [
+  "distance",
+  "abs_lateral",
+  "is_low",
+  "frac_low",
+  "hits",
+  "lat_std",
+  "lat_jump",
+  "cz_std",
+  "hmax_mean",
+  "hmin_mean",
+  "len_mean",
+  "width_mean",
+  "height_mean",
+  "gauge_frac",
+  "frac_demoted",
+  "frac_column",
+  "frac_beyond",
+  "dist_rough",
+  "hit_fraction"
+ ],
+ "near": 25.0,
+ "train_rows": {
+  "negative": 212,
+  "positive": 2597,
+  "positive_sequences": 101
+ },
+ "groups": [
+  "doubleT_platform",
+  "new_data:0",
+  "new_data:1",
+  "new_data:2",
+  "new_data:3",
+  "new_data:4",
+  "new_data:5",
+  "new_data:6",
+  "new_data:7",
+  "squareT_platform_squareT_switch"
+ ],
+ "heldout_auc": 0.9641,
+ "export_max_abs_diff": 0.0,
+ "simulation": [
+  {
+   "extra": 10,
+   "sticky": true,
+   "positive_quantile": "max_delayed",
+   "threshold": 0.0225,
+   "ride_events": [
+    45,
+    30
+   ],
+   "ride_stop_rows": [
+    165,
+    116
+   ],
+   "empty_events": [
+    13,
+    10
+   ],
+   "synthetic_delayed_rows": 0,
+   "synthetic_delayed_sequences": 0,
+   "test_delayed": []
+  }
+ ],
+ "importance": {
+  "lat_std": 0.517,
+  "gauge_frac": 0.137,
+  "hmax_mean": 0.098,
+  "distance": 0.064,
+  "len_mean": 0.06,
+  "width_mean": 0.036,
+  "abs_lateral": 0.029,
+  "hmin_mean": 0.017,
+  "hits": 0.017,
+  "lat_jump": 0.008,
+  "dist_rough": 0.004,
+  "frac_beyond": 0.004,
+  "cz_std": 0.003,
+  "height_mean": 0.003,
+  "frac_demoted": 0.002,
+  "hit_fraction": 0.001,
+  "frac_low": 0.0,
+  "is_low": 0.0,
+  "frac_column": 0.0
+ },
+ "recipe": "python scripts/track_opinion.py collect --bag new_data (8 pieces) / the five empty bags / cloud_with_fake_obj / doubleT_obstacle; collect --inject person,box0.5,box1.0,trolley,cable,lowbox,railobj,dog --files 8,24,44,64,94,104,131,159,176,194,209,216 --start 200 --lateral=-0.8:0.8 --seed 1; collect --inject lowbox,railobj,box0.5,person,dog,trolley --files 34,58,87,118,124,150,189 --frames 60 --start 25:150 --lateral=-0.8:0.8 --seed 2 (standing train); collect --inject person --files 34,58,87,118,124,150,189,44,131,209 --frames 60 --start 30:170 --cross 1.2 --seed 3 (crossing person, test only); train --neg ride empty --pos syn syn_stand --test setO dto syn_cross --near 25 --extra 10 --sticky --neg-all-range --drop dist_step,log_gauge,log_n_mean,vis_mean",
+ "note": "Held-out numbers: grouped CV by ride piece (8) and empty recording (5), each synthetic sequence held out with the ride piece it was injected into; set O, doubleT_obstacle and the crossing persons never trained on (final model). The simulation replays the rule on the rules' STOP flags of the run without it (an upper bound of the events kept). Measured with the detector (27.09): ride 45 -> 24 events, 38 -> 28 STOP episodes, 183 -> 109 alarm frames; five empty recordings 13 -> 7 events, 16 -> 6 episodes; set O, doubleT_obstacle and set F positives identical."
+}

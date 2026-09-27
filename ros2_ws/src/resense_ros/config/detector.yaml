@@ -215,6 +215,11 @@ resense:
     stop_keep_thin: 1              # on since 26.09 (P3 range round 2, B10; 0 = off): a corridor cluster flatter than cluster.min_height (one scan line) inside the strict envelope, with >= stop_keep_min_voxels strict voxels, may continue a track no other cluster matched (same gate): 1 = a track that was a STOP in the previous frame; 2 = also a track not yet reported whose last hit was inside the envelope (tried, not shipped: a new STOP on doubleT_platform); it never starts a track
     stop_keep_max_s: 10.0          # 26.09 (safety review of B10; 0 = no cap): the keep rules act on a track only while its last clean hit (an obstacle cluster inside the envelope, not a scan line) is at most this many seconds of sensor time ago (measured intervals, rate-independent); past it the track falls back to the behaviour without them: a false STOP at a standing train cannot be kept indefinitely; set O's box at the envelope top is kept ~5 s
     stop_keep_min_voxels: 10       # on since 26.09 (P3 range round 2, B10; 0 = no bar): a kept cluster (stop_keep_signature, stop_keep_thin) needs at least this many strict-envelope voxels, the near escalation's bar; without it (round 1) the ride's alarm frames rose 183 -> 192 (two false STOPs extended)
+    doubt_model: ""                # 27.09 (P2 ride; "" = off): learned track opinion (resense/opinion.py, scripts/track_opinion.py); a track about to become a STOP beyond doubt_near with an opinion below doubt_threshold stays advisory ('doubt') for doubt_extra_hits more matched frames; never a veto
+    doubt_extra_hits: 0            # 27.09: extra matched frames asked of a doubtful track (0 = off)
+    doubt_threshold: 0.5           # 27.09: probability of a real object below which a track is doubtful
+    doubt_near: 30.0               # 27.09: m, a track this near is never delayed (a withheld track is released on reaching it)
+    doubt_sticky: false            # 27.09: true = the opinion at the onset decides; a withheld track is released only by doubt_extra_hits or doubt_near
     max_misses: 3
     conf_gain: 0.35
     conf_decay: 0.25

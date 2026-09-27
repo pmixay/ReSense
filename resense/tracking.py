@@ -39,6 +39,7 @@ import numpy as np
 
 from resense.clustering import Cluster
 from resense.config import TrackingConfig
+from resense.opinion import OBS_KEEP, load_opinion, observation, track_features
 
 
 # 26.09: demotions a near escalation never overrides (Tracker._near): a column, and a cluster outside
@@ -73,6 +74,10 @@ class Track:
     since_clean: float = 0.0        # 26.09 (stop_keep_max_s): s of sensor time since the last clean hit (an obstacle cluster inside the gauge, not a scan line; inf = none yet)
     near_hist: List[bool] = field(default_factory=list)  # 26.09: last near_hits hits: near the envelope (Tracker._near)?
     near_hits: int = 0              # 26.09: this many near hits in a row make the track an obstacle (0 = off)
+    obs: List[tuple] = field(default_factory=list)  # 27.09 (tracking.doubt_*): the last matched clusters (opinion.observation)
+    doubt: int = 0                  # 27.09: frames in a row a doubtful STOP was withheld (tracking.doubt_extra_hits)
+    withheld: bool = False          # 27.09: a STOP withheld as advisory by the track opinion (zone 'warning')
+    stop_prev: bool = False         # 27.09: reported in zone gauge after the previous update
 
     @property
     def near_escalated(self) -> bool:
@@ -93,6 +98,13 @@ class Track:
 
     @property
     def zone(self) -> str:
+        if self.withheld:
+            return "warning"
+        return self.rule_zone
+
+    @property
+    def rule_zone(self) -> str:
+        """The zone by the persistence rules (``zone`` without the track opinion's withholding)."""
         if not self.zone_hist or self.column_held:
             return "warning"
         if self.near_escalated:
@@ -116,6 +128,9 @@ class Tracker:
         self.tracks: List[Track] = []
         self._next_id = 1
         self._timed = False          # a frame interval was supplied at least once
+        # 27.09 (tracking.doubt_*): the track opinion and the observation record it reads
+        self.opinion = load_opinion(cfg.doubt_model) if cfg.doubt_extra_hits > 0 else None
+        self.record = self.opinion is not None
 
     def reset(self) -> None:
         self.tracks.clear()
@@ -249,6 +264,8 @@ class Tracker:
                 t.span_s += dt
                 t.confidence = min(1.0, t.confidence + c.conf_gain * cl.score)
                 t.last = cl
+                if self.record:
+                    t.obs = (t.obs + [observation(cl)])[-OBS_KEEP:]
                 g = cl.zone == "gauge" or keep
                 t.kept = keep
                 t.gauge_hits += int(g)
@@ -287,6 +304,7 @@ class Tracker:
                     column_hist=[cl.reason == "column"], column_hold=int(c.column_hold),
                     near_hist=[self._near(cl)] if nk else [], near_hits=nk,
                     since_clean=0.0 if cl.zone == "gauge" else float("inf"),
+                    obs=[observation(cl)] if self.record else [],
                 ))
                 self._next_id += 1
         # reported: confirmed now, or reported in the previous frame and missed for at most
@@ -310,7 +328,35 @@ class Tracker:
                 t.seen_reported = t.reported
             if t.hold > 0:
                 t.hold -= 1
+        if self.opinion is not None:
+            self._doubt()
         return self.tracks
+
+    def _doubt(self) -> None:
+        """27.09 (``tracking.doubt_extra_hits`` > 0 with ``doubt_model``): a track about to become a
+        STOP (reported in zone gauge by the rules, not a STOP after the previous update) whose track
+        opinion (``resense/opinion.py``) is below ``doubt_threshold`` and whose cluster is beyond
+        ``doubt_near`` is withheld as advisory (zone 'warning', reason 'doubt') until it has stayed a
+        STOP candidate, matched, for ``doubt_extra_hits`` more frames; the opinion is asked again on
+        every such frame and releases it at once when it rises (with ``doubt_sticky`` the opinion at
+        the onset decides: only the extra frames or ``doubt_near`` release it). A missed frame keeps
+        the state; a track that stops qualifying starts again. Never a veto: it only asks more
+        persistence of a track the rules would report, and never within ``doubt_near``."""
+        c = self.cfg
+        for t in self.tracks:
+            if not (t.reported and t.rule_zone == "gauge"):
+                t.withheld, t.doubt = False, 0
+            elif t.misses > 0 or (t.stop_prev and not t.withheld):
+                pass                        # held over a miss, or already a STOP: unchanged
+            elif t.last is None or t.last.distance <= c.doubt_near or not t.obs:
+                t.withheld = False
+            elif not (c.doubt_sticky and t.withheld) and (
+                    self.opinion.prob(track_features(t.obs, t.hits, t.hit_fraction)) >= c.doubt_threshold):
+                t.withheld = False
+            else:
+                t.doubt += 1
+                t.withheld = t.doubt <= c.doubt_extra_hits
+            t.stop_prev = t.reported and t.zone == "gauge"
 
     def _continue_thin(self, thin: List[Cluster], matched_t: np.ndarray, ego_shift: float, step: float,
                        dt: float, zw: int, hw: int, nk: int = 0, kdt: float = 0.0) -> None:
@@ -366,6 +412,8 @@ class Tracker:
             t.span_s += dt
             t.confidence = min(1.0, t.confidence + c.conf_gain * cl.score)
             t.last = cl
+            if self.record:
+                t.obs = (t.obs + [observation(cl)])[-OBS_KEEP:]
             t.kept = stop
             t.gauge_hits += 1
             t.zone_hist = (t.zone_hist + [True])[-zw:]
