@@ -31,10 +31,11 @@ yet reported whose previous hit was an obstacle cluster inside the gauge. None o
 track.
 With ``thin_far_min_distance`` > 0 (27.09, P5 range, off by default) far scan lines inside the
 gauge (and with ``cluster.weak_min_points`` far clusters under the point-count bar) may start and
-continue tracks; a track that was ever matched by such a hit starts to be reported
-only while its distances lie on a line in sensor time that approaches (``approach_*``): a scan line
-of the bed or the vault is fixed in the sensor frame or jumps with the pitch, a static object ahead
-approaches at the train's speed. A track already reported keeps the usual rules.
+continue tracks; a track that was ever matched by such a hit becomes an obstacle (STOP) only
+while its distances lie on a line in sensor time that approaches (``approach_*``): a scan line of
+the bed or the vault is fixed in the sensor frame or jumps with the pitch, a static object ahead
+approaches at the train's speed. Not reported before, it is not reported; reported as advisory, it
+stays advisory; a STOP in the previous frame keeps the usual rules.
 """
 from __future__ import annotations
 
@@ -81,6 +82,8 @@ class Track:
     thin_hist: List[bool] = field(default_factory=list)  # 27.09 (thin_far_min_distance): last zone_window hits: a far scan line?
     approach: List[tuple] = field(default_factory=list)  # 27.09: (sensor time s, distance m) of the last hits (approach_*)
     far_evidence: bool = False      # 27.09: the track was ever matched by a far scan line / weak far cluster (thin_far_min_distance)
+    was_stop: bool = False          # 27.09: reported in zone gauge (a STOP) after the previous update (thin_far_min_distance only)
+    approach_block: bool = False    # 27.09: far evidence without an approach holds a reported advisory track advisory (zone)
 
     @property
     def near_escalated(self) -> bool:
@@ -100,7 +103,7 @@ class Track:
 
     @property
     def zone(self) -> str:
-        if not self.zone_hist or self.column_held:
+        if not self.zone_hist or self.column_held or self.approach_block:
             return "warning"
         if self.near_escalated:
             return "gauge"
@@ -207,7 +210,8 @@ class Tracker:
         off by default): far scan lines (and weak far clusters) inside the gauge that overlap no
         cluster of ``clusters`` (the detector selects them); they continue unmatched tracks and start
         new ones (:meth:`_far_thin`), and a track ever matched by such a hit (``Track.far_evidence``)
-        starts to be reported only while it approaches (:meth:`_approaching`); a track reported in
+        becomes a STOP only while it approaches (:meth:`_approaching`): not reported before, it is
+        not reported; reported as advisory, it stays advisory (``Track.approach_block``); a STOP in
         the previous frame keeps the usual rules."""
         c = self.cfg
         # widen the gate by the distance a static object travels in the *measured* interval, so a
@@ -312,13 +316,16 @@ class Tracker:
         # a re-seed hold window (reseed; matched or not)
         for t in self.tracks:
             q = self._qualifies(t)
-            if (q and c.thin_far_min_distance > 0 and not t.reported and t.far_evidence
-                    and not self._approaching(t)):
-                # 27.09: a track that ever used far scan-line / weak evidence starts a report only while
-                # it approaches (on the ride weak hits kept a 4-5 voxel fixture ahead of a standing train
-                # alive until its normal hits confirmed it); a track already reported is not taken down
-                # by it (that split a STOP episode of the ride)
-                q = False
+            if c.thin_far_min_distance > 0:
+                # 27.09: a track that ever used far scan-line / weak evidence becomes a STOP only while it
+                # approaches: not reported before, it is not reported; reported as advisory, it stays
+                # advisory (the ride: weak hits turned the zone vote of an advisory fixture ahead of a
+                # standing train into a STOP); a STOP in the previous frame keeps the usual rules (taking
+                # it down split a STOP episode of the ride)
+                block = t.far_evidence and not t.was_stop and not self._approaching(t)
+                t.approach_block = bool(block and t.reported)
+                if q and block and not t.reported:
+                    q = False
             if q and not low_ok and not t.reported and t.last is not None and t.last.kind == "low":
                 q = False
             if (q and rail_within > 0 and not t.reported and t.last is not None and t.last.kind == "low"
@@ -330,6 +337,8 @@ class Tracker:
                 t.seen_reported = t.reported
             if t.hold > 0:
                 t.hold -= 1
+            if c.thin_far_min_distance > 0:
+                t.was_stop = t.reported and t.zone == "gauge"
         return self.tracks
 
     def _continue_thin(self, thin: List[Cluster], matched_t: np.ndarray, ego_shift: float, step: float,
@@ -441,7 +450,7 @@ class Tracker:
         voxels, overlapping no other cluster of the frame) are associated, greedily with the same
         gate and prediction, with the tracks nothing matched in this frame; a match is a hit inside
         the gauge (never a clean hit for the keep cap) and marks the track (``Track.far_evidence``) so
-        that it starts to be reported only while it approaches (:meth:`_approaching`). Only an
+        that it becomes a STOP only while it approaches (:meth:`_approaching`). Only an
         unambiguous scan line is used: one inside the gate of exactly one track, and that track
         unmatched in this frame, continues it; one inside the gate of no track starts a new track
         (returned); one inside the gates of several tracks, or of a track already matched this frame,

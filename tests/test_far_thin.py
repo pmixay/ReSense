@@ -196,3 +196,20 @@ def test_weak_hits_long_ago_still_need_the_approach():
         tr.update([_cl(96.8, thin=False)], ego_shift=0.0, frame_dt=0.1, far_thin=[])
     assert len(tr.tracks) == 1 and tr.tracks[0].far_evidence
     assert not tr.tracks[0].reported
+
+
+def test_advisory_track_with_far_evidence_is_not_promoted_without_approach():
+    """The ride (piece 2, frames 222-243): a fixture ahead of a standing train was reported as
+    advisory; weak 4-voxel hits inside the envelope then turned its zone vote into a STOP. With far
+    evidence and no approach it stays advisory."""
+    tr = Tracker(_cfg())
+    for _ in range(8):                        # advisory: normal hits outside the strict envelope
+        tr.update([_cl(96.8, thin=False, zone="warning")], ego_shift=0.0, frame_dt=0.1, far_thin=[])
+    t = tr.tracks[0]
+    assert t.reported and t.zone == "warning"
+    for _ in range(12):                       # weak hits inside, alternating with normal ones inside
+        cl = _cl(96.8, thin=False, n_gauge=4)
+        cl.weak = True
+        tr.update([], ego_shift=0.0, frame_dt=0.1, far_thin=[cl])
+        tr.update([_cl(96.8, thin=False)], ego_shift=0.0, frame_dt=0.1, far_thin=[])
+        assert t.reported and t.zone == "warning"
