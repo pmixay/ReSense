@@ -171,3 +171,36 @@ def test_accumulated_points_keep_their_position():
         c = min((c for c in res.candidates if abs(c.distance - 50.0) < 2.0), key=lambda c: abs(c.lateral))
         out[mode] = (float(c.size[1]), c.lateral)
     assert abs(out[1][0] - out[0][0]) < 0.05 and abs(out[1][1] - out[0][1]) < 0.05
+
+
+def _edge_line(x0: float, length: float, lateral: float) -> ObstacleSpec:
+    """A 30-40 m line along the corridor edge (a hose, cable or pipe), 8 x 10 cm, 0.15 m above the
+    rail head (as ``tests/test_edge_axis.py``)."""
+    return ObstacleSpec(kind="box", size=(length, 0.08, 0.10), distance=x0, lateral=lateral,
+                        base_z=-1.5 + 0.18 + 0.15)
+
+
+@pytest.mark.synthetic
+def test_does_not_drop_an_object_touching_an_edge_line():
+    """The safety review's scene of the union (26.09) with the reference: the rail axis 0.25 m left of
+    the sensor axis, a 0.5 m box 0.85 m right of the rails approached from 32 to 8 m, touching a 30 m
+    line 1.20 m right of them (0.95 m from the sensor axis: inside the envelope measured from it). The
+    oversize split's part inside the reference envelope takes the line in and grows past 3 m; it falls
+    back to the part inside the rails' envelope (``Candidates.in_rail``), so the box keeps its STOPs
+    (19 -> 7 without it; with it every STOP of the rails and one frame earlier)."""
+    stops = {}
+    for mode in (0, 1, 2):
+        cfg = DetectorConfig()
+        cfg.gauge.reference = mode
+        det = Detector(cfg)
+        out = []
+        for k in range(25):
+            d = 32.0 - k
+            specs = [ObstacleSpec(kind="box", size=(0.5, 0.5, 0.6), distance=d, lateral=-0.85, base_z=-1.5),
+                     _edge_line(max(d - 20.0, 3.0), 30.0, -1.20)]
+            fr, _, _ = synthetic_tunnel_frame(rng=np.random.default_rng(k % 5), specs=specs, axis_y=0.25)
+            out.append(det.process(Frame(xyz=fr.xyz, intensity=fr.intensity, stamp=0.1 * k)).obstacle)
+        stops[mode] = [k for k, o in enumerate(out) if o]
+    assert len(stops[0]) >= 15
+    for mode in (1, 2):                                          # 19 -> 7 STOP frames without the fallback
+        assert set(stops[0]) <= set(stops[mode]), str(stops)

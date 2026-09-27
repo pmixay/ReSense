@@ -348,11 +348,18 @@ class Detector:
         ref = reference_offset(cand.xyz[:, 0], self.track, cfg.gauge) if cfg.gauge.reference > 0 else None
         if ref is not None:
             # 27.09 (gauge.reference 1 / 2, off by default): the envelope measured from the sensor axis where
-            # it agrees with the rails (near field, straight track): the corridor coordinate of the
-            # candidates (strict membership, shape rules, accumulation) is the lateral from the sensor axis;
-            # the candidate set (the advisory corridor), the reported lateral (dy_rail), the gauge-distance
-            # reach and the frame-wide stages (bed, low objects, rail start, ego speed, hanging search,
-            # clear cap: dy_all) keep the rails; the hanging stage reads the strict membership from here
+            # it agrees with the rails (near field, straight track). The candidate set (the advisory
+            # corridor), the reported lateral (dy_rail), the gauge-distance reach and the frame-wide stages
+            # (bed, low objects, rail start, ego speed, hanging search, clear cap: dy_all) keep the rails;
+            # the hanging stage reads the strict membership from here. The corridor coordinate of the
+            # candidates (strict membership, shape rules, accumulation) is the lateral from the sensor axis. The
+            # rails' own strict membership is kept (in_rail, as for gauge.axis_union): an oversize cluster
+            # whose part inside the reference envelope took in an edge line falls back to it (the safety
+            # review's scene of 26.09), and the wall keep counts it
+            in_rail = cand.in_gauge
+            if cfg.gauge.edge_margin > 0 or cfg.gauge.edge_margin_per_100m > 0:
+                in_rail = in_rail & gauge_core_mask(cand.dy, cand.h, cand.xyz[:, 0], cfg.gauge)
+            cand.in_rail = in_rail
             cand.dy_rail = cand.dy
             cand.dy = cand.dy + ref[1]
             cand.in_gauge = point_in_polygon(cand.dy, cand.h, cfg.gauge.profile)
