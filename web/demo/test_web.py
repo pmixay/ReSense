@@ -391,7 +391,24 @@ def test_dashboard_reconnect_ignores_old_stream_and_closes_on_replay():
         page.evaluate("s => window.__fakeRos[1].publish({...s, freshness: {...s.freshness, evaluated_at_utc_s: Date.now()/1000}})", stop)
         title = page.inner_text("#banner-title")
         assert title == "ПРЕПЯТСТВИЕ 50.0 м"
-        page.evaluate("window.__fakeRos[1].emit('close')")
+        # Reconnect invalidates the old result synchronously, before a timer or new status can run.
+        snapshot = page.evaluate("""s => {
+            window.__fakeRos[1].publish({...s, freshness: {...s.freshness, evaluated_at_utc_s: Date.now()/1000}});
+            document.getElementById('connect').click();
+            return {valid: state.last.freshness.valid, held: state.last.stop_held,
+                    distance: document.getElementById('dist').textContent};
+        }""", stop)
+        assert snapshot == {"valid": False, "held": True, "distance": "50.0 м (последнее)"}
+        assert page.evaluate("window.__fakeRos.length === 3 && window.__fakeRos[1].closed")
+        # An error also expires the current result immediately while retaining STOP.
+        snapshot = page.evaluate("""s => {
+            window.__fakeRos[2].publish({...s, freshness: {...s.freshness, evaluated_at_utc_s: Date.now()/1000}});
+            window.__fakeRos[2].emit('error');
+            return {valid: state.last.freshness.valid, held: state.last.stop_held};
+        }""", stop)
+        assert snapshot == {"valid": False, "held": True}
+        page.evaluate("s => window.__fakeRos[2].publish({...s, freshness: {...s.freshness, evaluated_at_utc_s: Date.now()/1000}})", stop)
+        page.evaluate("window.__fakeRos[2].emit('close')")
         assert page.inner_text("#banner-title") == "СТОП СОХРАНЁН: НЕТ АКТУАЛЬНЫХ ДАННЫХ"
         assert page.locator("body").evaluate("el => el.classList.contains('live-stale')")
         page.evaluate("window.__fakeRos[0].publish({obstacle:false, decision:'FAULT', health:{level:'error'}})")

@@ -652,6 +652,7 @@ setInterval(checkLiveStream, 100);
 let ros = null;
 let rosGeneration = 0;
 function closeLive() {
+  checkLiveStream(performance.now(), true);
   rosGeneration++;
   const oldRos = ros; ros = null;
   state.lastStatusArrival = null;
@@ -675,6 +676,7 @@ $('connect').onclick = () => {
   currentRos.on('error', () => {
     if (ros !== currentRos || generation !== rosGeneration) return;
     $('conn').textContent = 'Ошибка'; $('health-source').className = 'pill bad'; $('health-source').textContent = 'Ошибка потока';
+    checkLiveStream(performance.now(), true);
     setLiveStale(true);
   });
   currentRos.on('close', () => {

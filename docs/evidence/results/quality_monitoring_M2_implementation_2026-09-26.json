@@ -1,0 +1,8 @@
+{
+  "candidate": "M2 production translation",
+  "parent_protocol": "quality_monitoring_M2_2026-09-26_protocol.json",
+  "observation": "All15 sealed captures reproduce unchanged upstream output. Diagnostic target overclaims54→44 and GO46→36. Every empty-recording cost passes; ride adds0.6122percentage points uncertainty and retains0.9902 median range. Partial objective only.",
+  "implementation_before_measurement": "Translate the exact observer predicate and health-output transformation into resense/detector.py. Capture min(valid,floor_valid) before _cluster, as in the observer. Apply only when the existing health.clear_cap switch is enabled; the default is unchanged. No new parameters or thresholds. Correct unsupported verified-clear/fail-safe wording in touched source comments.",
+  "verification": "Require every frame of a full M2-alone replay to equal the observer captures except timing, then all183 nonregression rows and all72 cases. Candidate novel receipt copies the original plan with only code_sha256 replaced plus parent-plan hash; cases/config/input/evaluator must remain identical. Accepted combination with A1 needs its own full183-row gate,72-case comparison and raw/rate/mount/start-offset/runtime checks.",
+  "publication": "Release remains on hold; partial improvements do not satisfy zero-overclaim or final freeze objectives."
+}
