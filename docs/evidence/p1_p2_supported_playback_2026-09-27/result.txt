@@ -1,0 +1,2 @@
+PASS: original doubleT_obstacle cold-disk dry run
+PASS: original roundT_doubleT cold-disk dry run
