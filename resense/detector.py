@@ -691,12 +691,14 @@ def thin_cap_distance(thin: List[Cluster], min_gauge: int, trust: float, n_acc: 
     within the trusted range ``trust`` (axis and height reference), in a frame without merged
     frames (``n_acc`` 1). The row of returns an object leaves at the envelope top or on the bed at
     range (set O: the box above the envelope, the plank) caps the estimate although it cannot start
-    a track."""
+    a track. A cluster under the point-count bar kept only as far evidence for an approaching track
+    (``Cluster.weak``, ``cluster.weak_min_points``) does not cap: it is not a scan line of the kind
+    this predicate was validated on."""
     best: Optional[float] = None
     if n_acc != 1:
         return None
     for c in thin:
-        if not c.thin or c.kind or c.reason or c.zone != "gauge" or c.n_gauge < min_gauge:
+        if not c.thin or c.weak or c.kind or c.reason or c.zone != "gauge" or c.n_gauge < min_gauge:
             continue
         d = float(c.distance)
         if np.isfinite(d) and 0.0 <= d <= trust and (best is None or d < best):
