@@ -109,8 +109,7 @@ def gauge_core_mask(dy: np.ndarray, h: np.ndarray, X: np.ndarray, cfg: GaugeConf
     return point_in_polygon(dy + np.sign(dy) * m, h, cfg.profile)
 
 
-def gauge_reach_mask(dy: np.ndarray, h: np.ndarray, X: np.ndarray, cfg: GaugeConfig,
-                     scale: Optional[np.ndarray] = None) -> np.ndarray:
+def gauge_reach_mask(dy: np.ndarray, h: np.ndarray, X: np.ndarray, cfg: GaugeConfig) -> np.ndarray:
     """Points that may lie inside the strict gauge within the axis uncertainty (review 25.09): the
     polygon tested at ``|dy| - margin``, the margin by which :func:`gauge_core_mask` shrinks the
     strict decision (``edge_margin + edge_margin_per_100m * X / 100``), after the lateral growth of
@@ -118,16 +117,13 @@ def gauge_reach_mask(dy: np.ndarray, h: np.ndarray, X: np.ndarray, cfg: GaugeCon
     strict-gauge mask, is a subset whatever the profile's shape): the nearest point of an object in
     it is never farther than its nearest point inside the envelope, nor than where it truly enters
     the envelope while the axis is off by less than the margin. Used for the distance of a gauge
-    cluster (``cluster.gauge_distance``), never for the decision. ``scale`` (27.09, per point): the
-    margin scaled as the strict decision scales it (``gauge.reference_edge_margin``); None = 1."""
+    cluster (``cluster.gauge_distance``), never for the decision."""
     X = np.asarray(X, dtype=np.float64)
     dy = np.asarray(dy, dtype=np.float64)
     h = np.asarray(h, dtype=np.float64)
     if cfg.lateral_growth_per_100m > 0:
         dy = dy / (1.0 + cfg.lateral_growth_per_100m * X / 100.0)
     m = np.maximum(cfg.edge_margin + cfg.edge_margin_per_100m * X / 100.0, 0.0)
-    if scale is not None:
-        m = m * np.asarray(scale, dtype=np.float64)
     return (point_in_polygon(dy, h, cfg.profile)
             | point_in_polygon(np.sign(dy) * np.maximum(np.abs(dy) - m, 0.0), h, cfg.profile))
 

@@ -151,8 +151,7 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
                   low: Optional[np.ndarray] = None, low_cfg=None,
                   height_valid: Optional[float] = None, gauge: Optional[GaugeConfig] = None,
                   dy_alt: Optional[np.ndarray] = None, in_rail: Optional[np.ndarray] = None,
-                  keep_thin: bool = False, dy_report: Optional[np.ndarray] = None,
-                  margin_scale: Optional[np.ndarray] = None) -> List[Cluster]:
+                  keep_thin: bool = False, dy_report: Optional[np.ndarray] = None) -> List[Cluster]:
     """Voxelise candidates, cluster the voxels, describe and filter the clusters.
 
     ``xyz``/``intensity``/``dy``/``h``/``in_gauge`` are the corridor candidates;
@@ -216,8 +215,8 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
 
     ``dy_report`` (27.09, ``gauge.reference`` 1, off by default): the lateral from the rail axis when
     ``dy`` is measured from the sensor axis; ``Cluster.lateral`` (the reported lateral) reads it, every
-    rule reads ``dy``. ``None`` = ``dy``. ``margin_scale`` (27.09, per candidate): the scale of the
-    edge margin in the gauge-distance reach (``gauge.reference_edge_margin``); ``None`` = 1.
+    rule reads ``dy`` but the gauge-distance reach, which reads it (with the strict membership of
+    ``in_gauge``). ``None`` = ``dy``.
     """
     out: List[Cluster] = []
     if xyz.shape[0] == 0:
@@ -244,8 +243,7 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
             c = _low_cluster(b, dy, h, intensity, frame_idx, cfg, low_cfg)
         else:
             c = _corridor_cluster(b, dy, h, in_gauge, intensity, inv, frame_idx, cfg, factor, factor_range,
-                                  axis_valid, height_valid, gauge, dy_alt, in_rail, keep_thin, dy_report,
-                                  margin_scale)
+                                  axis_valid, height_valid, gauge, dy_alt, in_rail, keep_thin, dy_report)
         if c is not None:
             out.append(c)
     out.sort(key=lambda c: c.distance)
@@ -483,8 +481,7 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
                       factor: float, factor_range: float, axis_valid: float,
                       height_valid: Optional[float], gauge: Optional[GaugeConfig] = None,
                       dy_alt: Optional[np.ndarray] = None, in_rail: Optional[np.ndarray] = None,
-                      keep_thin: bool = False, dy_report: Optional[np.ndarray] = None,
-                      margin_scale: Optional[np.ndarray] = None) -> Optional[Cluster]:
+                      keep_thin: bool = False, dy_report: Optional[np.ndarray] = None) -> Optional[Cluster]:
     """A corridor cluster: size and point-count bars, the infrastructure shapes, then the zone
     (enough voxels in the strict gauge) and the reason that demotes it to advisory. ``in_rail``: the
     strict membership from the rails only (``find_clusters``). With ``keep_thin`` a cluster flatter
@@ -553,8 +550,10 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
         # strict-gauge mask (shrunk by it: an oblique object was reported 0.3 / 0.55 / 1.2 m beyond
         # its entry at 40 / 80 / 120 m); never farther than the nearest point inside the envelope.
         # Without the gauge profile the nearest point of the cluster stays the distance.
-        reach = in_gauge[b.idx] | gauge_reach_mask(dy[b.idx], h[b.idx], b.pts[:, 0], gauge,
-                                                   None if margin_scale is None else margin_scale[b.idx])
+        # 27.09 (gauge.reference): the reach is measured from the rail axis (dy_report), the strict
+        # membership from the reference: never farther than where the object enters either
+        dyr = dy if dy_report is None else dy_report
+        reach = in_gauge[b.idx] | gauge_reach_mask(dyr[b.idx], h[b.idx], b.pts[:, 0], gauge)
         if reach.any():
             dist = float(b.pts[reach, 0].min())
     if dy_report is not None:

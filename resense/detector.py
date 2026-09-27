@@ -495,19 +495,12 @@ class Detector:
             if reg is not None:
                 dy_alt = corr.dy + reg[1]
         keep_thin = cfg.tracking.stop_keep_thin > 0
-        scale = None
-        if cfg.gauge.reference > 0 and cfg.gauge.reference_edge_margin != 1.0:
-            # 27.09 (gauge.reference_edge_margin): the gauge-distance reach scales the margin as the strict
-            # decision does where the envelope is measured from the sensor axis
-            ref = reference_offset(corr.xyz[:, 0], self.track, cfg.gauge)
-            if ref is not None:
-                scale = np.where(ref[0], max(float(cfg.gauge.reference_edge_margin), 0.0), 1.0)
         clusters = _clusters_of(corr, cfg.cluster, axis_valid=valid,
                                 height_valid=floor_valid if cfg.cluster.far_min_height > 0 else None,
                                 min_points_factor=factor, factor_range=acc.min_range,
                                 smear_max_length=acc.smear_max_length if n_acc > 1 else 0.0,
                                 smear_max_width=acc.smear_max_width if n_acc > 1 else 0.0, gauge=cfg.gauge,
-                                dy_alt=dy_alt, keep_thin=keep_thin, margin_scale=scale)
+                                dy_alt=dy_alt, keep_thin=keep_thin)
         if keep_thin:
             # 26.09 (tracking.stop_keep_thin, off by default): the clusters flatter than min_height go
             # to the tracker only, to continue a track (Tracker._continue_thin); no other stage sees them
