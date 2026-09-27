@@ -16,6 +16,7 @@ from resense.egomotion import EgoSpeedEstimate, EgoSpeedEstimator
 from resense.frame import Frame
 from resense.gauge import (axis_union_coordinates, axis_union_offset, axis_union_strict, corridor_coordinates,
                            corridor_mask, gauge_core_mask, point_in_polygon, widened_profile)
+from resense.evidence import PersistentEvidence
 from resense.health import HealthMonitor
 from resense.lowobj import BedTemplate, low_candidates, mark_rail_line
 from resense.track import TrackModel, estimate_track, rotate_track_model
@@ -165,6 +166,7 @@ class Detector:
         self.ego = EgoSpeedEstimator(acc)
         self.calib = MountCalibrator(self.cfg.calibration, self.cfg.track)
         self.health = HealthMonitor(self.cfg.health)
+        self.evidence = PersistentEvidence(self.cfg.health, self.cfg.gauge)   # 27.09 (health.clear_cap_persist)
         self.bed = BedTemplate(self.cfg.lowobj)
         self.low_range = 0.0            # m, how far the bed was observed for the low-object stage (last frame)
         self._thin: List[Cluster] = []  # 26.09 (tracking.stop_keep_thin): this frame's corridor clusters flatter than min_height
@@ -184,6 +186,7 @@ class Detector:
         self.buffer.clear()
         self.ego.reset()
         self.health.reset()
+        self.evidence.reset()
         self.bed.reset()
         self._thin = []
         self._prev_stamp = None
@@ -221,6 +224,7 @@ class Detector:
         xyz = self._fit_track(frame.xyz, self._periods())
         t1 = time.perf_counter()
         cand, dy_all, h_all, mask, (valid, axis_valid, floor_valid) = self._corridor(xyz, frame.intensity)
+        trust = min(valid, floor_valid)  # the trusted range before the clustering (health.clear_cap_thin)
         dy_rail = self._dy_rail          # = dy_all unless gauge.axis_union 2 re-measured the corridor coordinate
         cand, straddle, near = self._low_stage(xyz, frame.intensity, dy_rail, h_all, mask, cand,
                                                min(axis_valid, floor_valid))
@@ -240,7 +244,7 @@ class Detector:
             mark_rail_line(clusters, xyz[:, 0], dy_rail, h_all, cfg.lowobj, cfg.track.rails_spacing, cfg.gauge.range_min)
         t5 = time.perf_counter()
         gauge, warn = self._confirm(clusters, speed, dt)
-        cap = self._clear_cap(clusters, cand, dy_all, h_all) if cfg.health.clear_cap else None
+        cap = self._clear_cap(clusters, cand, dy_all, h_all, trust, n_acc) if cfg.health.clear_cap else None
         t6 = time.perf_counter()
         mount = self.calib.state.to_dict()
         health = self.health.update(xyz, frame.meta, self.track, cfg.gauge, valid, cfg.track.rails_min_score,
@@ -599,11 +603,46 @@ class Detector:
 
     # -- 6b ------------------------------------------------------------------------------------
     def _clear_cap(self, clusters: List[Cluster], cand: Candidates, dy_all: np.ndarray,
-                   h_all: np.ndarray) -> Optional[float]:
+                   h_all: np.ndarray, trust: float = np.inf, n_acc: int = 1) -> Optional[float]:
         """``health.clear_cap`` (25.09): the cap on the monitored-range estimate
         (None = no cap), see :func:`clear_cap_distance`. Runs after the tracker and changes
-        nothing it or the decision reads."""
-        return clear_cap_distance(clusters, self.tracker.tracks, cand, dy_all, h_all, self.cfg.gauge, self.cfg.health)
+        nothing it or the decision reads. 27.09: with ``clear_cap_thin`` also the nearest
+        scan-line cluster of this frame inside the strict envelope (:func:`thin_cap_distance`),
+        with ``clear_cap_persist`` the nearest persistent sparse envelope blob
+        (:class:`resense.evidence.PersistentEvidence`, updated every frame while it is on)."""
+        hcfg = self.cfg.health
+        best = clear_cap_distance(clusters, self.tracker.tracks, cand, dy_all, h_all, self.cfg.gauge, hcfg)
+        extra = []
+        if hcfg.clear_cap_thin and self.cfg.tracking.stop_keep_thin > 0:
+            extra.append(thin_cap_distance(self._thin, self.cfg.cluster.gauge_min_points, trust, n_acc))
+        if hcfg.clear_cap_persist > 0:
+            extra.append(self.evidence.update(cand.xyz[:, 0], cand.dy, cand.h, cand.low))
+        for d in extra:
+            if d is not None:
+                best = d if best is None else min(best, d)
+        return best
+
+
+def thin_cap_distance(thin: List[Cluster], min_gauge: int, trust: float, n_acc: int = 1) -> Optional[float]:
+    """``health.clear_cap_thin`` (27.09; the predicate of the M2 observer of 26.09,
+    scripts/evaluate_thin_monitoring.py, without its CAUTION): the distance of the nearest scan-line
+    cluster of this frame (flatter than ``cluster.min_height``; kept only for
+    ``tracking.stop_keep_thin``) inside the strict envelope (``zone`` gauge, at least ``min_gauge``
+    strict voxels), not demoted by any rule (``reason`` empty), a corridor cluster (``kind`` empty),
+    within the trusted range ``trust`` (axis and height reference), in a frame without merged
+    frames (``n_acc`` 1). The row of returns an object leaves at the envelope top or on the bed at
+    range (set O: the box above the envelope, the plank) caps the estimate although it cannot start
+    a track."""
+    best: Optional[float] = None
+    if n_acc != 1:
+        return None
+    for c in thin:
+        if not c.thin or c.kind or c.reason or c.zone != "gauge" or c.n_gauge < min_gauge:
+            continue
+        d = float(c.distance)
+        if np.isfinite(d) and 0.0 <= d <= trust and (best is None or d < best):
+            best = d
+    return best
 
 
 def clear_cap_distance(clusters: List[Cluster], tracks, cand: Candidates, dy_all: np.ndarray,

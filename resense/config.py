@@ -452,6 +452,23 @@ class HealthConfig:
     clear_cap_points: int = 0          # > 0: also cap at the X of the k-th nearest strict-envelope corridor return of the frame (low candidates excluded); 0 = off
     clear_cap_skip_columns: bool = True    # a cluster demoted as a column (or its track held advisory by tracking.column_hold) does not cap (round 2; false = round 1)
     clear_cap_lost: bool = True            # 26.09: cap at the predicted distance of a previously reported track until tracking.max_misses; false uses only current clusters. Untracked objects can still be missed.
+    # 27.09 (P3 range overclaim; resense/evidence.py): evidence below the cluster bars that still caps
+    # the estimate. clear_cap_thin: a scan-line cluster (flatter than cluster.min_height, kept by
+    # tracking.stop_keep_thin) inside the strict envelope, not demoted, within the trusted range (M2)
+    clear_cap_thin: bool = False
+    # clear_cap_persist = k > 0: a sparse blob of returns inside the nominal envelope seen in k frames
+    # in a row, approaching at a constant apparent speed (a static object), caps at its nearest
+    # return; 0 = off. The persist_* keys describe the blob and the chain (resense/evidence.py)
+    clear_cap_persist: int = 0
+    persist_min_points: int = 2            # returns of a blob
+    persist_max_extent: float = 0.5        # m, blob length along the track and (unless a scan line) width and height
+    persist_row_height: float = 0.05       # m, a scan line: a blob this flat may be up to persist_row_width wide
+    persist_row_width: float = 2.1         # m
+    persist_max_around: int = 10           # other corridor returns within 2 m along the track (isolation)
+    persist_shift: List[float] = field(default_factory=lambda: [0.5, 3.0])  # m per frame the blob comes nearer (5-30 m/s at 10 Hz)
+    persist_tol_dy: float = 0.12           # m, lateral match between frames
+    persist_tol_h: float = 0.2             # m, height match between frames
+    persist_tol_shift: float = 0.08        # m, the shift may change by this between links (constant apparent speed)
 
 
 @dataclass
