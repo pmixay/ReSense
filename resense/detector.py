@@ -13,10 +13,10 @@ from resense.calibration import MountCalibrator
 from resense.clustering import Cluster, find_clusters, find_hanging
 from resense.config import DetectorConfig
 from resense.egomotion import EgoSpeedEstimate, EgoSpeedEstimator
+from resense.evidence import PersistentEvidence
 from resense.frame import Frame
 from resense.gauge import (axis_union_coordinates, axis_union_offset, axis_union_strict, corridor_coordinates,
                            corridor_mask, gauge_core_mask, point_in_polygon, widened_profile)
-from resense.evidence import PersistentEvidence
 from resense.health import HealthMonitor
 from resense.lowobj import BedTemplate, low_candidates, mark_rail_line
 from resense.track import TrackModel, estimate_track, rotate_track_model
