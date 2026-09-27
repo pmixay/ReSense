@@ -28,7 +28,11 @@ df -h "$WORK" | tee -a "$OUT/provenance.txt"
 
 curl --fail --location --retry 3 --retry-delay 2 --output "$ARCHIVE" "$URL"
 [[ "$(dd if="$ARCHIVE" bs=2 count=1 2>/dev/null)" == "PK" ]] || {
-  echo "download is not a ZIP archive" >&2
+  if grep -q 'Google Drive - Quota exceeded' "$ARCHIVE"; then
+    echo "organizer Google Drive download quota exceeded; cold-bag replay could not start" >&2
+  else
+    echo "download is not a ZIP archive" >&2
+  fi
   exit 1
 }
 sha256sum "$ARCHIVE" | tee -a "$OUT/provenance.txt"

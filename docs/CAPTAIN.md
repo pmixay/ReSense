@@ -16,10 +16,15 @@ maps the source branches and validation; the earlier `d480b13` archive below is 
 **27.09 operating procedure:** the captain's follow-up request adopts the proven ten-message
 rosbag2 read-ahead limit for the jury command, dry run, and demo players. The earlier cold CI run
 on both original bags is the acceptance evidence for that exact playback setting. C5/C7 and
-action 21 are closed **for this supported procedure**, subject to the new branch's CI. Humble's
+action 21 are closed **for this supported procedure** on the earlier two-bag run. A fresh replay
+of the current branch remains pending. Humble's
 1,000-message default remains unsupported for cold whole-bag bursts; it must not be described
 as a passing path. PR #12 is already merged into `main`; the earlier open-PR checklist row below
 is superseded. Detector quality, release publication, and physical rehearsal remain open.
+The first CI run of the follow-up branch, 36313174302, passed five jobs and the Docker viewer
+simulation, then stopped before the cold replay: Google Drive returned a 2,009-byte quota page
+instead of the organizer ZIP. This is an acquisition failure, not a new playback result. The
+previous two-bag pass remains the available evidence until the source can be downloaded again.
 
 **Latest user decision: release publication is on hold.** No release tag has been created or
 pushed. The user asked for a deeper review of system weaknesses and whether detector development
@@ -203,7 +208,8 @@ not replace this later failure or establish acceptance of the current root image
   [`evidence/p1_p2_completion_2026-09-26/cold_bags_passed_run_36281462241/`](evidence/p1_p2_completion_2026-09-26/cold_bags_passed_run_36281462241/).
 - [x] Adopt ten-message read-ahead as the supported operating procedure in the jury command,
   dry run, and demos. The original-bag cold CI evidence passes with this setting; the ROS 2
-  default 1,000-message burst remains unsupported. Recheck the new branch CI before delivery.
+  default 1,000-message burst remains unsupported. Recheck the new branch's original-bag CI
+  when the organizer's Google Drive quota resets or an alternate archive is available.
 - [ ] Import the Foxglove layout and rehearse from a physical second viewing device; CI only
   simulates the separate viewer in a second container.
 - [x] Download that CI runtime archive and verify checksum, offline loading, imported source

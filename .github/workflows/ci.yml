@@ -113,18 +113,6 @@ jobs:
         # the WITH_TOOLS=1 build's `websockets` client. This models a second device on an isolated
         # network and checks outage/recovery without requiring demo hardware.
         run: IMAGE=resense:ci scripts/p2_viewer_test.sh
-      - name: original bag cold-start regression — working branch and main
-        if: ${{ github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/p1-p2-supported-playback-20260927' || github.ref == 'refs/heads/main' }}
-        timeout-minutes: 10
-        run: IMAGE=resense:ci scripts/p1_cold_bag_test.sh
-      - name: retain original-bag cold-start evidence
-        if: ${{ always() && (github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/p1-p2-supported-playback-20260927' || github.ref == 'refs/heads/main') }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: p1-cold-dry-run-${{ github.sha }}
-          path: out/p1-cold-run/
-          if-no-files-found: ignore
-          retention-days: 30
       # ---- offline delivery: the test machine has no internet (organizers, 25.09,
       # docs/organizers/answers.md section 7), so the jury gets the image as an archive and runs
       # `docker load`, then the node with no internet. The three steps below prove that chain.
@@ -189,6 +177,18 @@ jobs:
           docker run --rm --network resense-offline --user 1000:1000 -e HOME=/tmp -v /tmp/offline_bags:/data:ro resense:latest bash -c "ros2 bag play /data/smoke_bag --delay 3 --disable-keyboard-controls && sleep 5 && ros2 bag play /data/smoke_bag2 --delay 3 --disable-keyboard-controls"
           sleep 4
           python3 scripts/check_dry_run.py /tmp/offline_out/status.jsonl --require-freshness --expect-obstacle --min-frames 20 --max-p95-latency 1000 --max-dropped 100000 --expect-inputs 2
+      - name: original bag cold-start regression — working branch and main
+        if: ${{ github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/p1-p2-supported-playback-20260927' || github.ref == 'refs/heads/main' }}
+        timeout-minutes: 10
+        run: IMAGE=resense:ci scripts/p1_cold_bag_test.sh
+      - name: retain original-bag cold-start evidence
+        if: ${{ always() && (github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/p1-p2-supported-playback-20260927' || github.ref == 'refs/heads/main') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: p1-cold-dry-run-${{ github.sha }}
+          path: out/p1-cold-run/
+          if-no-files-found: ignore
+          retention-days: 30
   offline-build:
     # The release archive on a machine with no internet (docs/ARCHITECTURE.md "Deployment without
     # internet"). The archive is made as for the release (scripts/export_image.sh: runtime image,
