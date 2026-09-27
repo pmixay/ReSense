@@ -1,0 +1,156 @@
+{
+ "gate": {
+  "exit_code": 1,
+  "passed": false
+ },
+ "p1_edge_objects": {
+  "small_edge_inside": {
+   "stop_frames": 2,
+   "first_stop_m": 5.2,
+   "held_from_m": 5.2,
+   "advisory_frames": 23,
+   "visible_frames": 83
+  },
+  "big_edge_inside": {
+   "stop_frames": 6,
+   "first_stop_m": 10.3,
+   "held_from_m": 10.3,
+   "advisory_frames": 0,
+   "visible_frames": 125
+  }
+ },
+ "p2_ride": {
+  "alarm_events": 46,
+  "stop_episodes": 38,
+  "alarm_frames": 187
+ },
+ "five_empty": {
+  "frames": 2287,
+  "alarm_frames": 58,
+  "alarm_events": 13,
+  "stop_episodes": 16,
+  "advisory_frames": 997
+ },
+ "set_O": {
+  "inside_stop_frames": 394,
+  "outside_false_stop_frames": 6,
+  "background": {
+   "alarm_frames": 3,
+   "track_ids": 2
+  },
+  "inside": {
+   "big_center": {
+    "stop_frames": 208,
+    "first_stop_m": 98.0,
+    "held_from_m": 98.7
+   },
+   "small_center": {
+    "stop_frames": 32,
+    "first_stop_m": 55.8,
+    "held_from_m": 60.8
+   },
+   "small_on_rail": {
+    "stop_frames": 23,
+    "first_stop_m": 42.7,
+    "held_from_m": 46.2
+   },
+   "small_edge_inside": {
+    "stop_frames": 2,
+    "first_stop_m": 5.2,
+    "held_from_m": 5.2
+   },
+   "big_edge_inside": {
+    "stop_frames": 6,
+    "first_stop_m": 10.3,
+    "held_from_m": 10.3
+   },
+   "big_above": {
+    "stop_frames": 56,
+    "first_stop_m": 111.4,
+    "held_from_m": 123.6
+   },
+   "long_low_on_rails": {
+    "stop_frames": 52,
+    "first_stop_m": 87.2,
+    "held_from_m": 95.9
+   },
+   "thin_hanging": {
+    "stop_frames": 15,
+    "first_stop_m": 30.1,
+    "held_from_m": 31.8
+   }
+  },
+  "outside": {
+   "small_outside_near": 0,
+   "big_outside": 6
+  }
+ },
+ "doubleT_obstacle": {
+  "first_alarm_frame": 11,
+  "per_label": {
+   "object_on_rail": {
+    "hits": 128,
+    "frames": 185
+   },
+   "person_crossing": {
+    "hits": 58,
+    "frames": 61
+   },
+   "object_on_rail_from_frame_75": {
+    "hits": 125,
+    "frames": 126
+   }
+  },
+  "fp_events": 0
+ },
+ "p3_overclaims": {
+  "GO": 43,
+  "target": 51,
+  "by_decision": {
+   "GO": 43,
+   "CAUTION": 6,
+   "STOP": 2
+  },
+  "monitoring_cost_passed": true,
+  "monitoring_cost": {
+   "doubleT_platform": {
+    "newly_uncertain_pp": 0.0,
+    "clear_median_fraction": 1.0
+   },
+   "roundT_doubleT": {
+    "newly_uncertain_pp": 0.0,
+    "clear_median_fraction": 1.0
+   },
+   "roundT_pressureGate_roundT": {
+    "newly_uncertain_pp": 0.0,
+    "clear_median_fraction": 1.0
+   },
+   "roundT_squareT_pressureGate_squareT": {
+    "newly_uncertain_pp": 0.0,
+    "clear_median_fraction": 1.0
+   },
+   "squareT_platform_squareT_switch": {
+    "newly_uncertain_pp": 0.0,
+    "clear_median_fraction": 1.0
+   },
+   "ride": {
+    "newly_uncertain_pp": 0.044,
+    "clear_median_fraction": 1.0
+   }
+  }
+ },
+ "p4_history": {
+  "histories": 33,
+  "stop_frames": 297,
+  "stop_events": 78,
+  "histories_with_stop": 17,
+  "captures_stop_events": 2,
+  "cache_stop_events": 76
+ },
+ "name": "p5range_B4s",
+ "sets": [
+  "tracking.thin_far_min_distance=60",
+  "cluster.weak_min_points=4"
+ ],
+ "config": "/data/wt/p5range/configs/default.yaml"
+}

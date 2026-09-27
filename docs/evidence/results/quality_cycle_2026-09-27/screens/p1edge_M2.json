@@ -1,0 +1,159 @@
+{
+ "gate": {
+  "exit_code": 1,
+  "passed": false
+ },
+ "p1_edge_objects": {
+  "small_edge_inside": {
+   "stop_frames": 21,
+   "first_stop_m": 42.4,
+   "held_from_m": 44.2,
+   "advisory_frames": 4,
+   "visible_frames": 83
+  },
+  "big_edge_inside": {
+   "stop_frames": 7,
+   "first_stop_m": 18.3,
+   "held_from_m": 10.3,
+   "advisory_frames": 1,
+   "visible_frames": 125
+  }
+ },
+ "p2_ride": {
+  "alarm_events": 51,
+  "stop_episodes": 34,
+  "alarm_frames": 173
+ },
+ "five_empty": {
+  "frames": 2287,
+  "alarm_frames": 56,
+  "alarm_events": 13,
+  "stop_episodes": 16,
+  "advisory_frames": 1002
+ },
+ "set_O": {
+  "inside_stop_frames": 404,
+  "outside_false_stop_frames": 0,
+  "background": {
+   "alarm_frames": 1,
+   "track_ids": 1
+  },
+  "inside": {
+   "big_center": {
+    "stop_frames": 208,
+    "first_stop_m": 98.0,
+    "held_from_m": 98.7
+   },
+   "small_center": {
+    "stop_frames": 30,
+    "first_stop_m": 52.5,
+    "held_from_m": 57.5
+   },
+   "small_on_rail": {
+    "stop_frames": 23,
+    "first_stop_m": 42.7,
+    "held_from_m": 46.2
+   },
+   "small_edge_inside": {
+    "stop_frames": 21,
+    "first_stop_m": 42.4,
+    "held_from_m": 44.2
+   },
+   "big_edge_inside": {
+    "stop_frames": 7,
+    "first_stop_m": 18.3,
+    "held_from_m": 10.3
+   },
+   "big_above": {
+    "stop_frames": 51,
+    "first_stop_m": 101.3,
+    "held_from_m": 111.4
+   },
+   "long_low_on_rails": {
+    "stop_frames": 49,
+    "first_stop_m": 82.2,
+    "held_from_m": 90.8
+   },
+   "thin_hanging": {
+    "stop_frames": 15,
+    "first_stop_m": 30.1,
+    "held_from_m": 31.8
+   }
+  },
+  "outside": {
+   "small_outside_near": 0,
+   "big_outside": 0
+  }
+ },
+ "doubleT_obstacle": {
+  "first_alarm_frame": 8,
+  "per_label": {
+   "object_on_rail": {
+    "hits": 128,
+    "frames": 185
+   },
+   "person_crossing": {
+    "hits": 61,
+    "frames": 61
+   },
+   "object_on_rail_from_frame_75": {
+    "hits": 125,
+    "frames": 126
+   }
+  },
+  "fp_events": 0
+ },
+ "p3_overclaims": {
+  "GO": 45,
+  "target": 48,
+  "by_decision": {
+   "GO": 45,
+   "CAUTION": 1,
+   "STOP": 2
+  },
+  "monitoring_cost_passed": true,
+  "monitoring_cost": {
+   "doubleT_platform": {
+    "newly_uncertain_pp": 0.0,
+    "clear_median_fraction": 1.0
+   },
+   "roundT_doubleT": {
+    "newly_uncertain_pp": 0.0,
+    "clear_median_fraction": 0.9967
+   },
+   "roundT_pressureGate_roundT": {
+    "newly_uncertain_pp": 0.0,
+    "clear_median_fraction": 1.0164
+   },
+   "roundT_squareT_pressureGate_squareT": {
+    "newly_uncertain_pp": 0.0,
+    "clear_median_fraction": 1.0269
+   },
+   "squareT_platform_squareT_switch": {
+    "newly_uncertain_pp": 0.684,
+    "clear_median_fraction": 0.9876
+   },
+   "ride": {
+    "newly_uncertain_pp": 0.869,
+    "clear_median_fraction": 0.9918
+   }
+  }
+ },
+ "p4_history": {
+  "histories": 33,
+  "stop_frames": 285,
+  "stop_events": 77,
+  "histories_with_stop": 16,
+  "captures_stop_events": 2,
+  "cache_stop_events": 75
+ },
+ "name": "p1edge_M2",
+ "sets": [
+  "gauge.reference=2",
+  "gauge.reference_range=250",
+  "gauge.reference_max_offset=0.2",
+  "gauge.reference_edge_margin=0",
+  "cluster.floating_free_max_dy=1.2"
+ ],
+ "config": "/data/wt/p1edge_snap/configs/default.yaml"
+}

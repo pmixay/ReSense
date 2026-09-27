@@ -1,0 +1,171 @@
+{
+ "gate": {
+  "exit_code": 0,
+  "passed": true
+ },
+ "p1_edge_objects": {
+  "small_edge_inside": {
+   "stop_frames": 18,
+   "first_stop_m": 35.0,
+   "held_from_m": 38.7,
+   "advisory_frames": 7,
+   "visible_frames": 83
+  },
+  "big_edge_inside": {
+   "stop_frames": 7,
+   "first_stop_m": 18.3,
+   "held_from_m": 10.3,
+   "advisory_frames": 1,
+   "visible_frames": 125
+  }
+ },
+ "p2_ride": {
+  "alarm_events": 21,
+  "stop_episodes": 23,
+  "alarm_frames": 92
+ },
+ "five_empty": {
+  "frames": 2287,
+  "alarm_frames": 26,
+  "alarm_events": 8,
+  "stop_episodes": 6,
+  "advisory_frames": 1012
+ },
+ "set_O": {
+  "inside_stop_frames": 411,
+  "outside_false_stop_frames": 6,
+  "background": {
+   "alarm_frames": 0,
+   "track_ids": 0
+  },
+  "inside": {
+   "big_center": {
+    "stop_frames": 208,
+    "first_stop_m": 98.0,
+    "held_from_m": 98.7
+   },
+   "small_center": {
+    "stop_frames": 32,
+    "first_stop_m": 55.8,
+    "held_from_m": 60.8
+   },
+   "small_on_rail": {
+    "stop_frames": 23,
+    "first_stop_m": 42.7,
+    "held_from_m": 46.2
+   },
+   "small_edge_inside": {
+    "stop_frames": 18,
+    "first_stop_m": 35.0,
+    "held_from_m": 38.7
+   },
+   "big_edge_inside": {
+    "stop_frames": 7,
+    "first_stop_m": 18.3,
+    "held_from_m": 10.3
+   },
+   "big_above": {
+    "stop_frames": 56,
+    "first_stop_m": 111.4,
+    "held_from_m": 123.6
+   },
+   "long_low_on_rails": {
+    "stop_frames": 52,
+    "first_stop_m": 87.2,
+    "held_from_m": 95.9
+   },
+   "thin_hanging": {
+    "stop_frames": 15,
+    "first_stop_m": 30.1,
+    "held_from_m": 31.8
+   }
+  },
+  "outside": {
+   "small_outside_near": 0,
+   "big_outside": 6
+  }
+ },
+ "doubleT_obstacle": {
+  "first_alarm_frame": 8,
+  "per_label": {
+   "object_on_rail": {
+    "hits": 128,
+    "frames": 185
+   },
+   "person_crossing": {
+    "hits": 61,
+    "frames": 61
+   },
+   "object_on_rail_from_frame_75": {
+    "hits": 125,
+    "frames": 126
+   }
+  },
+  "fp_events": 0
+ },
+ "p3_overclaims": {
+  "GO": 16,
+  "target": 19,
+  "by_decision": {
+   "GO": 16,
+   "CAUTION": 1,
+   "STOP": 2
+  },
+  "monitoring_cost_passed": false,
+  "monitoring_cost": {
+   "doubleT_platform": {
+    "newly_uncertain_pp": 0.29,
+    "clear_median_fraction": 0.9647
+   },
+   "roundT_doubleT": {
+    "newly_uncertain_pp": 0.0,
+    "clear_median_fraction": 0.9483
+   },
+   "roundT_pressureGate_roundT": {
+    "newly_uncertain_pp": 0.0,
+    "clear_median_fraction": 1.0
+   },
+   "roundT_squareT_pressureGate_squareT": {
+    "newly_uncertain_pp": 0.0,
+    "clear_median_fraction": 0.9805
+   },
+   "squareT_platform_squareT_switch": {
+    "newly_uncertain_pp": 3.877,
+    "clear_median_fraction": 0.955
+   },
+   "ride": {
+    "newly_uncertain_pp": 0.807,
+    "clear_median_fraction": 0.9796
+   }
+  }
+ },
+ "p4_history": {
+  "histories": 33,
+  "stop_frames": 150,
+  "stop_events": 46,
+  "histories_with_stop": 15,
+  "captures_stop_events": 0,
+  "cache_stop_events": 46
+ },
+ "name": "integ_all5",
+ "sets": [
+  "gauge.reference=2",
+  "gauge.reference_range=60",
+  "gauge.reference_max_offset=0.2",
+  "gauge.reference_along_rails=true",
+  "cluster.floating_free_max_dy=1.2",
+  "tracking.doubt_model=configs/track_opinion.json",
+  "tracking.doubt_extra_hits=10",
+  "tracking.doubt_threshold=0.0225",
+  "tracking.doubt_near=25",
+  "tracking.doubt_sticky=true",
+  "health.clear_cap_thin=true",
+  "health.clear_cap_persist=4",
+  "tracking.gate_along_only=true",
+  "track.axis_disagree_hold=5",
+  "cluster.column_width_trim=0.05",
+  "tracking.thin_far_min_distance=60",
+  "cluster.weak_min_points=4"
+ ],
+ "config": "/data/wt/integ/configs/default.yaml"
+}

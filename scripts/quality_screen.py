@@ -34,7 +34,7 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
-BASELINE = os.path.join(ROOT, "docs", "evidence", "results", "regression_baseline_2026-09-26_ride_p3d.json")
+BASELINE = os.path.join(ROOT, "docs", "evidence", "results", "regression_baseline_2026-09-27_quality.json")
 EDGE = ("small_edge_inside", "big_edge_inside")
 
 

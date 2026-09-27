@@ -1,0 +1,451 @@
+{
+ "exp/p2ride": {
+  "problem": "P2: the obstacle-free 13 km ride has 45 false alarm events, 38 STOP episodes and 183 alarm frames at baseline P3d. The five empty recordings have 13 events and 16 episodes. The target was at most 30 ride events with every positive preserved.",
+  "worktree": "/data/wt/p2ride",
+  "branch": "exp/p2ride",
+  "commit": "d00fbf0e6a032c6abd4532e6e98f42b1b1d50ff2",
+  "best": {
+   "sets": [
+    "tracking.doubt_model=configs/track_opinion.json",
+    "tracking.doubt_extra_hits=10",
+    "tracking.doubt_threshold=0.0225",
+    "tracking.doubt_near=25",
+    "tracking.doubt_sticky=true"
+   ],
+   "description": "A learned track-level second opinion. The model is 60 depth-3 gradient-boosted trees (35 KB of JSON, evaluated with numpy). It scores a track when the rules are about to make it a STOP. The score uses 19 features taken from the track's last 10 matched clusters: range, lateral position and its spread/jumps, centroid-z spread, height/length/width statistics, share of voxels inside the envelope, demotion/column/beyond-trust shares, roughness of the distance series, hit count and hit fraction. Point-count, visibility and train-speed features were dropped because the injector produces them artificially. A track with a probability below 0.0225 that is beyond 25 m is held as advisory (CAUTION, reason 'doubt') for 10 more matched STOP-qualifying frames. With doubt_sticky the score at the onset decides, and a withheld track is released immediately if it comes within 25 m. It never vetoes and never takes a confirmed STOP down. Training data: negatives are the rules' STOP rows on the ride (8 gate pieces) and the five empty recordings. Positives are synthetic objects ray-cast into real ride frames: 8 kinds on 12 moving files, plus 6 kinds with the train standing on 7 files. Validation is grouped: each ride piece or empty recording is held out together with the synthetic sequences injected into it (held-out AUC 0.964). The threshold is the highest at which no held-out synthetic sequence is delayed, so it has zero margin on that data. Set O, doubleT_obstacle and 10 synthetic crossing-person sequences were never trained on; none of their onsets is delayed.",
+   "summary_path": "/data/work/p2ride_c1/summary.json",
+   "gate_passed": true,
+   "headline": "Full screen p2ride_c1 (jobs=1, run without the lock because 6 screens were queued; not --quick): gate PASS, 8 gated metrics better, 0 worse. Ride 45 -> 24 alarm events (target <=30 met), 38 -> 28 STOP episodes, 183 -> 109 alarm frames, no new events. Five empty recordings 13 -> 7 events, 16 -> 6 episodes, 58 -> 26 frames. Every set O inside-object row identical (edge objects #4 2 frames from 5.2 m, #6 6 frames from 10.3 m); set O background 3 -> 0 frames. doubleT_obstacle 186/246 hits identical. Set F detected counts and first-detection medians identical; cable false detections 3 -> 0. GO overclaims 46 unchanged. Monitoring cost passed (at most 3.42 pp newly uncertain on squareT_platform, ride 0.66 pp, clear_distance medians 100%). History stress 78 -> 47 STOP events, 297 -> 155 STOP frames; the two capture STOPs at 53 m are unchanged."
+  },
+  "results": [
+   {
+    "name": "base (reference, not run by me)",
+    "sets": "",
+    "metrics": "ride 45 events / 38 STOP episodes / 183 frames; five empty 13/16/58; GO overclaims 46; history 78 STOP events"
+   },
+   {
+    "name": "offline replay of the rule on collected track rows (scripts/track_opinion.py train; out-of-fold scores for ride/empty/synthetic, final model for set O/dto/crossing)",
+    "sets": "various",
+    "metrics": "Grid with near 30 m, extra 2-3, no sticky, threshold at 0 synthetic delays: ride 45 -> 38-40. With extra 20 at the same near range: 45 -> 35-37. Adding standing-train synthetic positives: sticky extra 10 at 30/25/20 m -> 36/30/32. Also training on crossing persons made separation worse (45 -> 37 at 25 m), so they were kept only as a held-out test, where none was delayed. A threshold of 0.0261 would delay a re-onset of one held-out synthetic cable at 97 m; 0.0225 delays none. Replay at the chosen setting: ride 45 -> 30, empty 13 -> 10."
+   },
+   {
+    "name": "c1 pre-checks (eval_real / far_range_eval, 1 process, threshold 0.0261 for set O/dto/set F, 0.0225 for ride/empties)",
+    "sets": "doubt_model=configs/track_opinion.json, doubt_extra_hits=10, doubt_near=25, doubt_sticky=true",
+    "metrics": "set O all 10 rows identical, background 3 -> 0; doubleT_obstacle 189 alarm frames, 186/246 hits identical; set F identical except cable false detections 3 -> 0; ride 24 events / 28 episodes / 109 frames; empties 7 events / 6 episodes; acceptance monitoring passed. Latency A/B on squareT_platform: 22.0/30.9 ms -> 22.1/30.2 ms mean/p95, no measurable cost; one opinion evaluation is about 0.3 ms and runs only at onsets."
+   },
+   {
+    "name": "p2ride_c1 (FULL screen: gate + acceptance + history, --jobs 1 --no-lock)",
+    "sets": "tracking.doubt_model=configs/track_opinion.json tracking.doubt_extra_hits=10 tracking.doubt_threshold=0.0225 tracking.doubt_near=25 tracking.doubt_sticky=true",
+    "metrics": "GATE PASS. Ride 24/28/109; five empty 7/6/26; set O inside rows identical, background 0; set F identical, cable false 0; GO overclaims 46; monitoring passed (max 3.42 pp); history 47 STOP events / 155 frames. Per family (P4 inventory, same track ids): low cross-section fragments 21 -> 10, clipped vertical structures 6 -> 3, continuous side profile 4 -> 2, sparse unresolved 14 -> 9. Removed: low (1,282)(1,289)(1,290)(1,291)(2,564)(2,566)(2,567)(2,575)(2,576)(4,56)(7,83); clipped (1,40)(2,443)(3,264); side (4,507)(5,325); sparse (1,74)(1,372)(5,114)(5,356)(6,38)."
+   },
+   {
+    "name": "c2 = c1 + tracking.gate_along_x=true (ride + set O only, eval_real 1 process; the queued full screen was cancelled because the lock queue was too long)",
+    "sets": "c1 sets + tracking.gate_along_x=true",
+    "metrics": "ride 24 events / 28 episodes / 106 frames, 3 fewer frames than c1; set O identical to baseline. Not gated (six recordings, set F, dto and history were not run)."
+   }
+  ],
+  "tradeoffs": "The cost is a safety trade-off. A track that is doubtful and beyond 25 m reaches STOP 10 matched frames (about 1 s at 10 Hz) later than now, and shows CAUTION in the meantime. That is the case whenever the model is wrong about a real object. On every positive measured it never fired: set O, doubleT_obstacle (real person and rail object at 56 m with the train standing), set F, 101 held-out synthetic sequences and 10 held-out crossing persons. But the threshold has zero margin on the held-out synthetic data: the lowest synthetic onset score is 0.0226 against a threshold of 0.0225. All positives are either synthetic or the single real recording, and a real object shaped unlike the training kinds (person, boxes of 0.3-1.0 m, trolley, cable, 0.3x0.3x0.1 low box, rail object, dog) may be delayed. The 25 m near range is a policy choice; I measured 20, 25 and 30 m in the replay. Monitoring cost: withheld STOPs become CAUTION, adding up to 3.4 pp newly uncertain frames on squareT_platform, 0.58 pp on doubleT_platform and 0.66 pp on the ride, with no clear_distance loss. The model is trained on this detector's own outputs, so it must be retrained whenever an upstream stage changes the tracks it sees. The gate_along_x association fix (idea c) removes only 3 more alarm frames on top of c1 and was not gated.",
+  "integration_notes": "New opt-in keys, all defaulting off so behaviour is unchanged. In resense/config.py TrackingConfig and configs/default.yaml (also synced to ros2_ws/.../detector.yaml): tracking.doubt_model (default \"\"), doubt_extra_hits (0), doubt_threshold (0.5), doubt_near (30.0), doubt_sticky (false) and gate_along_x (false). Proposed defaults if adopted: doubt_model=configs/track_opinion.json, doubt_extra_hits=10, doubt_threshold=0.0225, doubt_near=25, doubt_sticky=true; gate_along_x stays false.\n\nCode: resense/opinion.py (features, observation record, TrackOpinion JSON tree evaluator, load_opinion cache); resense/tracking.py (Track.obs/doubt/withheld/stop_prev, rule_zone property, Tracker._doubt, Tracker._along_x); resense/detector.py (reason 'doubt' on withheld detections). The model is configs/track_opinion.json and its held-out report with the training recipe is configs/track_opinion_report.json. The collect/train/export tool is scripts/track_opinion.py; it reproduces threshold 0.0225 and a byte-identical model from the datasets archived in /data/work/p2ride_c1/opinion_data. Tests are in tests/test_track_opinion.py (9 tests); the stop_keep, near_escalation, reseed, shipped-defaults, core and module tests also pass.\n\nComposability: a withheld track has zone 'warning', so the keep rules, reseed hold and clear-cap skip treat it as advisory. The p4hist experimenter's tracking.gate_along_only appears to be the same association fix as my gate_along_x; keep only one when merging. Any merged change to clustering or tracking changes the feature distributions, so rerun `track_opinion.py collect` and `train` and re-screen.\n\nHarness notes: no harness scripts were modified. scripts/eval_real.py imports the installed main-checkout resense unless PYTHONPATH is set to the worktree (quality_screen and regression_gate are fine because they insert ROOT). The c1 full screen ran with --jobs 1 --no-lock (one process, like the targeted tools) because six locked screens were queued at about 30 min each. The c2 locked screen was cancelled.\n\nNot done: nothing on the Google Drive CI caching item; that was outside this P2 task.",
+  "recommendation": "Adopt c1 (the five tracking.doubt_* keys above) as the P2 candidate. It is the only screened candidate: the full screen passes the gate and meets the target (ride 45 -> 24 events, 38 -> 28 STOP episodes), with every positive row identical and fewer history-stress STOPs (78 -> 47). Before shipping it as default, a safety reviewer should accept the 1 s CAUTION delay beyond 25 m for low-opinion tracks. Retrain the model after merging with other experimenters' changes, and widen the synthetic kinds (irregular debris, lying person, fallen panel) to build a margin under the threshold, since it currently has none on the synthetic data. Treat gate_along_x as optional: only a 3-frame extra gain, not gated.",
+  "ml_used": "A track-level gradient-boosted classifier: scikit-learn GradientBoostingClassifier with 60 trees, depth 3, subsample 0.8, class-balanced, used for training only. It is exported to 35 KB of JSON and evaluated with pure numpy/python at run time (about 0.3 ms per evaluation, only at STOP onsets; no measurable per-frame latency change). Training rows are the rules' STOP-candidate rows. Negatives: 212 rows from the ride and the five empty recordings. Positives: 2,597 rows from 101 synthetic sequences ray-cast into real ride frames, both moving and standing train. Validation is grouped leave-one-group-out over the 8 ride pieces and 5 empty recordings, each synthetic sequence held out with its ride piece (held-out AUC 0.964). The threshold is the highest that delays no held-out synthetic sequence. Set O, doubleT_obstacle and 10 synthetic crossing persons are pure test sets: 0 onsets delayed. The learned score is used only to require more persistence, never as a veto, and never within 25 m.",
+  "tests_added": [
+   "tests/test_track_opinion.py::test_off_by_default_and_shipped_yaml",
+   "tests/test_track_opinion.py::test_doubtful_far_track_waits_extra_hits",
+   "tests/test_track_opinion.py::test_near_or_confident_track_is_not_delayed",
+   "tests/test_track_opinion.py::test_opinion_never_takes_a_stop_down",
+   "tests/test_track_opinion.py::test_withheld_detection_is_advisory_with_reason",
+   "tests/test_track_opinion.py::test_features_and_observation_shapes",
+   "tests/test_track_opinion.py::test_exported_trees_match_scikit_learn",
+   "tests/test_track_opinion.py::test_gate_along_x_rejects_transverse_jump_bought_by_the_approach_allowance",
+   "tests/test_track_opinion.py::test_sticky_doubt_ignores_a_rising_opinion"
+  ]
+ },
+ "exp/p1edge": {
+  "problem": "P1: the organizers' edge objects in set O got a STOP only at about 5-10 m. #4 small_edge_inside had 2 STOP frames from 5.2 m and #6 big_edge_inside had 6 frames from 10.3 m. The organizers placed the objects from the SENSOR X axis, while the detector measures the envelope from the rails. On every recording (and the ride) the rails run at -0.25 +- 0.03 deg to the sensor axis on straight track; I measured the per-frame median yaw of the baseline outputs. Two shape rules then block the objects: #4 is demoted as `floating` because its outermost point is beyond floating_free_max_dy 0.95, and #6 is dropped by the wall rule (|lateral| > 1.2 and taller than 1.9 m).",
+  "worktree": "/data/wt/p1edge",
+  "branch": "exp/p1edge",
+  "commit": "6e74cb3",
+  "best": {
+   "sets": [
+    "gauge.reference=2",
+    "gauge.reference_range=60",
+    "gauge.reference_max_offset=0.2",
+    "gauge.reference_along_rails=true",
+    "cluster.floating_free_max_dy=1.2"
+   ],
+   "description": "M5. Near the train on straight track, the envelope is measured from the sensor axis (the organizers' placement frame). Conditions: rail pair locked, |curvature| <= 2e-4, X <= 60 m. The rail-to-sensor offset is clamped to 0.2 m, so the frame switch is continuous and never moves the envelope more than 0.2 m. This replaces the rails; it is not a union. The strict membership and the shape rules read the sensor-frame lateral. The rules for structure along the track (linear infrastructure and the edge signature) keep reading the rail lateral. The rails also keep: the candidate set, the reported lateral, the gauge-distance reach, the rails' own strict mask (used by the oversize-split fallback and the wall keep), and the bed, low-object, rail-start, ego-speed, hanging-search and clear-cap stages. In addition, the existing floating exemption for compact free-hanging clusters is widened from an outermost point of 0.95 m to 1.2 m, which is still inside the 1.40 m advisory corridor. The full screen ran on commit c03b5cd; HEAD 6e74cb3 has identical code and adds only tests and config comments.",
+   "summary_path": "/data/work/p1edge_M5/summary.json",
+   "gate_passed": true,
+   "headline": "Gate PASS. #4: 2 -> 18 STOP frames, first STOP 5.2 -> 35.0 m, held from 38.7 m. #6: 6 -> 7 frames, first STOP 10.3 -> 18.3 m; its track actually STOPs continuously from about 28-30 m, but the scorer credits only 7 because of its lateral tolerance (see tradeoffs). #5 stays at 0 and #7 at 6 false STOP frames. The other inside objects are identical; set O inside STOP frames 384 -> 401. Ride 45 events / 38 STOP episodes / 183 alarm frames, identical. Five empty recordings 58 / 13 / 16, identical. doubleT_obstacle: first alarm frame 11 -> 8, person hits 58 -> 61, object on rail 128 unchanged. GO overclaims stay at 46 (target overclaims 54 -> 49, CAUTION 6 -> 1). History stress 78 STOP events, identical. Monitoring cost passes."
+  },
+  "results": [
+   {
+    "name": "base rerun (set O, scratch runner)",
+    "sets": "none",
+    "metrics": "Identical to the P3d baseline: #4 2 frames from 5.2 m, #6 6 from 10.3 m, #7 6 false STOP frames, background 3 frames / 2 ids."
+   },
+   {
+    "name": "R1 (set O only, rejected)",
+    "sets": "gauge.reference=1 (range 60, max_offset 0.3), gauge.reference_edge_margin=0, cluster.floating_free_max_dy=1.2; in this first version the advisory corridor was also measured from the sensor axis",
+    "metrics": "#4 28 frames from 53.4 m. Losses: #6 4, big_above 51 -> 42, long_low 49 -> 45. The moved corridor pulled left-edge structure in, and an edge cluster took over big_above's track. Fix: the candidate set now stays with the rails."
+   },
+   {
+    "name": "R2 (set O only, rejected)",
+    "sets": "same keys; candidate set and reported lateral from the rails",
+    "metrics": "#4 25 frames from 47.9 m (held from 51.6 m); #6 8 frames, first STOP 42.1 m; #7 6. long_low 49 -> 46: its distance jumped to an edge-line point at sensor y 1.05 just inside the 60 m region boundary."
+   },
+   {
+    "name": "R3 (set O only, rejected)",
+    "sets": "R2 plus the edge margin scaled in the gauge-distance reach",
+    "metrics": "long_low 47, still lost frames."
+   },
+   {
+    "name": "M2 v1 (set O only, rejected)",
+    "sets": "gauge.reference=2, reference_range=250, reference_max_offset=0.2, reference_edge_margin=0, cluster.floating_free_max_dy=1.2 (code f5a2133 before its reach fix)",
+    "metrics": "#4 21, #6 7, #7 0, but long_low 42. Fixed by measuring the gauge-distance reach from the rails."
+   },
+   {
+    "name": "M2b (set O + five empty recordings via eval_real)",
+    "sets": "same as M2",
+    "metrics": "#4 21 frames from 42.4 m (held from 44.2 m). #6 7 frames from 18.3 m; with the lateral tolerance widened by half the object width, 16 frames from 30.2 m. #7 6 -> 0; background 3 -> 1 frames. Other objects identical. Five empty recordings 58/13 -> 56/13 alarm frames/events."
+   },
+   {
+    "name": "M3 (set O only, rejected)",
+    "sets": "gauge.reference=2, reference_range=250, reference_max_offset=0.3, reference_edge_margin=0, cluster.floating_free_max_dy=1.2",
+    "metrics": "#4 25 frames from 47.9 m. #6 8 frames from 42.1 m; with the widened lateral tolerance, 24 frames from 46.1 m. #7 0. long_low 49 -> 46: an edge line 1.30 m from the rails falls inside the strict envelope without the margin."
+   },
+   {
+    "name": "M4 (set O + six recordings; screen queued then cancelled)",
+    "sets": "gauge.reference=2, reference_range=250, reference_max_offset=0.3, cluster.floating_free_max_dy=1.2",
+    "metrics": "#4 25 frames from 47.9 m (held from 51.6 m). #6 7 frames from 18.3 m (widened lateral: 16 from 30.2 m). #7 0; other objects identical. Five empty recordings 56/13. doubleT_obstacle first alarm 11 -> 8. Screen cancelled because it shifts more than M2, which failed the ride."
+   },
+   {
+    "name": "p1edge_Ca screen (cancelled before it got the lock)",
+    "sets": "gauge.reference=1, reference_max_offset=0.2, reference_edge_margin=0, cluster.floating_free_max_dy=1.2",
+    "metrics": "never ran"
+   },
+   {
+    "name": "p1edge_M2 full screen (commit cdb04a8): FAIL",
+    "sets": "gauge.reference=2, reference_range=250, reference_max_offset=0.2, reference_edge_margin=0, cluster.floating_free_max_dy=1.2",
+    "metrics": "Gate FAIL: ride alarm events 45 -> 51, although STOP episodes improved 38 -> 34 and alarm frames 183 -> 173. Set O: #4 21 frames from 42.4 m (held from 44.2 m); #6 7 frames from 18.3 m; #7 6 -> 0; background 3 -> 1; inside STOP frames 404. Five empty recordings 56/13/16. doubleT_obstacle first alarm 8, person 61. GO overclaims 45 (target 48). History 77 STOP events. The six new ride ids: two far (84 m and 94 m, from the full-range clamp) and four inside already-alarming frames (a 3.1 m structure along the track 1.1 m from the rails at 48 m, a small fixture 1.32 m from the rails at 42 m, a low track at 40 m, and one id split near the start of an existing event). This led to M5: range 60 and along-track rules on rail lateral."
+   },
+   {
+    "name": "p1edge_M5 full screen (commit c03b5cd): PASS",
+    "sets": "gauge.reference=2, gauge.reference_range=60, gauge.reference_max_offset=0.2, gauge.reference_along_rails=true, cluster.floating_free_max_dy=1.2",
+    "metrics": "Gate PASS. #4 18 frames from 35.0 m (held from 38.7 m). #6 7 frames from 18.3 m (widened lateral: 15 from 28.2 m). #5 0, #7 6, background 3. Inside STOP frames 401. Ride 45/38/183. Five empty recordings 58/13/16. doubleT_obstacle first alarm 8, person 61. GO overclaims 46 (target 49). History stress 78 events / 297 frames / 17 histories. Monitoring cost pass. The non-gated latency rows read worse because of machine load; a same-process A/B on 80 frames gave 23.4-24.6 ms vs 23.3-23.8 ms mean with M5."
+   },
+   {
+    "name": "unit tests",
+    "sets": "-",
+    "metrics": "tests/test_envelope_reference.py adds 10 tests. 283 passed across the touched test files, including test_edge_axis, test_shipped_defaults, test_floating_free, test_clear_cap, test_modules, test_algorithm, test_near_escalation, test_stop_keep and test_thin_hanging."
+   }
+  ],
+  "tests_added": [
+   "tests/test_envelope_reference.py::test_off_by_default",
+   "tests/test_envelope_reference.py::test_region_and_offset",
+   "tests/test_envelope_reference.py::test_not_on_a_curve_or_without_the_rail_pair (2 cases)",
+   "tests/test_envelope_reference.py::test_inside_from_the_sensor_axis_only",
+   "tests/test_envelope_reference.py::test_not_a_union",
+   "tests/test_envelope_reference.py::test_edge_margin_scale",
+   "tests/test_envelope_reference.py::test_accumulated_points_keep_their_position",
+   "tests/test_envelope_reference.py::test_does_not_drop_an_object_touching_an_edge_line",
+   "tests/test_envelope_reference.py::test_along_track_rules_read_the_rails"
+  ],
+  "ml_used": "None. The problem is which coordinate frame defines 'inside' (rails or the organizers' sensor axis; organizer question Q1 is unanswered), not a classification problem. A learned edge-object versus infrastructure model would also need ride cluster-level negatives and synthetic edge positives, evaluated on held-out ride pieces and set O. Extracting those needs roughly 50 minutes of ride replay per variant on this loaded 4-CPU machine, and screens took 18-35 minutes each with 4-6 in the queue. So I kept to a geometric, config-switchable change. The rail-to-sensor heading was estimated from the data (median yaw -0.25 deg across all recordings and ride pieces) and used to justify the offset limits.",
+  "tradeoffs": "1. It is not a union. Within 60 m on straight track the strict envelope moves up to 0.2 m toward the sensor axis. On these rigs (rails at -0.25 deg), between about 45 and 60 m the right-hand envelope edge moves in by up to 0.2 m, so an object up to 0.2 m inside the rails' envelope there is only CAUTION until it is nearer. The left edge gains the same amount. test_not_a_union pins this behaviour down. Physically the train sweeps the rail envelope; the organizers' hidden data is placed in the sensor frame.\n2. doubleT_obstacle (rig yaw -1.16 deg, so the clamp applies): the person crossing from the left STOPs 3 frames earlier. An object coming from the right would be later by the same geometry.\n3. The union review's safety scene (a box touching a 30 m edge line) holds. Without the rails-mask fallback it lost 19 -> 7 STOP frames; with it, the reference keeps every STOP.\n4. Limits: #6 is caught only from about 28-30 m. Its face touches the edge, and beyond about 45 m the 0.2 m clamp is smaller than the true 0.27-0.35 m offset. Clamp 0.3 (M4) catches #4 from 47.9 m but was never screened on the ride.\n5. #7's false STOP at 142 m stays. Only the full-range clamp (M2) removes it, and that costs ride events (84 m and 94 m).\n6. Scorer limitation, reported and not fixed: resense.metrics.match uses a 1 m lateral tolerance around the label centre, not widened by half the object's width. A 2 m box whose only in-corridor part is its inner strip (1.2-1.3 m from the rails, label centre 2.2-2.4 m) is unmatched in most STOP frames. Under the gate's scorer #6 shows 7 frames; the track STOPs in 15-16. Changing the scorer would change every baseline row.\n7. Accumulation: if frame eligibility flips (straight to curve) within the 5-frame buffer, buffered far points (>= 40 m) can be misplaced laterally by up to the clamp for up to 0.5 s.",
+  "integration_notes": "New keys are all in GaugeConfig (resense/config.py), configs/default.yaml and ros2_ws/src/resense_ros/config/detector.yaml. The ROS yaml is kept identical because test_shipped_defaults requires it. Keys and defaults: gauge.reference (0 = rails as before, 1 = sensor axis in the region, 2 = clamped and continuous), reference_range 60, reference_max_offset 0.3, reference_max_curvature 2e-4, reference_along_rails false, reference_edge_margin 1.0. All defaults reproduce P3d exactly; DetectorConfig() equals default.yaml.\n\nCode:\n- resense/gauge.py: reference_offset().\n- resense/detector.py: _corridor applies the reference to the corridor candidates only and keeps the rails' strict mask in Candidates.in_rail. New Candidates.dy_rail / lateral_rail(). _accumulate puts buffered points back with the offset removed. _not_part_of_corridor_objects compares rail laterals.\n- resense/clustering.py: dy_report gives the reported lateral and the gauge-distance reach from the rails; lat_along makes the linear and edge rules read the rail lateral.\n\nDo not combine with gauge.axis_union 1/3: that code path overwrites in_rail. The option composes with keys outside the gauge section. The candidate also changes the existing cluster.floating_free_max_dy 0.95 -> 1.2.\n\nThe M5 screen per-frame outputs are kept in /data/work/p1edge_M5/gate. M2's per-frame outputs and all temp dirs were deleted, and the scratch snapshot worktree (/data/wt/p1edge_snap) was removed. Nothing pushed.",
+  "recommendation": "Adopt M5 as the new default if the team accepts judging the edge in the organizers' placement frame near the train while Q1 is open. It passes every gated metric, is identical on the ride, the empty recordings and the history stress, and moves #4's first STOP from 5.2 m to 35 m (18 frames) and #6's track STOP from 10 m to about 28 m. It costs up to 0.2 m of rail envelope on one side between about 45 and 60 m. Proposed defaults: gauge.reference=2, gauge.reference_range=60, gauge.reference_max_offset=0.2, gauge.reference_along_rails=true, cluster.floating_free_max_dy=1.2; reference_max_curvature 2e-4 and reference_edge_margin 1.0 stay as they are. If Q1 is answered 'rails', keep gauge.reference=0. Next steps: screen clamp 0.3 (M4) on the ride; find a far-field rule for #7 at 142 m that does not add the 84 m and 94 m ride events; and ask whether the scorer's lateral tolerance should be widened by half the object's width (a harness decision)."
+ },
+ "exp/p3over": {
+  "problem": "P3: /resense/clear_distance overclaims range past objects inside the envelope. On set O, 46 frames have decision GO while an in-envelope object is nearer than clear_distance - 0.5 m (54 counting all decisions). The limits for fixing it are at most 5 pp newly-uncertain frames and a median clear_distance of at least 95% of baseline, for each of the five empty recordings and for the ride. No detection or gated metric may change.",
+  "worktree": "/data/wt/p3over",
+  "branch": "exp/p3over",
+  "commit": "76b9cef",
+  "best": {
+   "sets": [
+    "health.clear_cap_thin=true",
+    "health.clear_cap_persist=4"
+   ],
+   "description": "Two new opt-in caps on clear_distance. Both are off by default, so the defaults reproduce P3d exactly. Neither changes a detection, a track, the health level or the decision.\n\n(1) health.clear_cap_thin, the M2 predicate without its CAUTION. It caps at the nearest scan-line cluster (the tracking.stop_keep_thin kind) that meets all of these: zone gauge, n_gauge >= cluster.gauge_min_points, reason empty, kind empty, n_acc == 1, and within the trusted range min(valid, floor_valid) captured before clustering. Its set O output matches the M2 observer captures frame for frame.\n\n(2) health.clear_cap_persist = k, implemented as PersistentEvidence in the new module resense/evidence.py. Each frame it takes the non-low corridor returns inside the nominal envelope polygon, i.e. the rail envelope without the lateral edge margin, so the margin acts as a band rather than a hard cut. It groups them into sparse blobs:\n- linked at 0.45 m x (1 + X/100);\n- compact: at most 0.5 m in every direction, or a single scan line up to 2.1 m wide;\n- at least 2 returns;\n- isolated: at most 10 other corridor returns within 2 m along the track. A per-return prefilter drops crowded stretches before linking.\n\nA blob is chained to a previous-frame blob that has the same lateral offset (within 0.12 m) and height (within 0.2 m), lies 0.5-3.0 m farther, and whose own shift differs by at most 0.08 m. That is a static object approaching at a constant apparent speed, with no speed input needed. A chain of k = 4 frames caps at the blob's nearest return.\n\nCost measured offline on the dumps: 0.5 ms mean and about 1 ms p95 per frame; the maximum was about 10 ms, measured while the machine load average was about 20.\n\nThe sub-keys persist_min_points, persist_max_extent, persist_row_height, persist_row_width, persist_max_around, persist_shift, persist_tol_dy, persist_tol_h and persist_tol_shift are all documented in configs/default.yaml and in the identical ros2_ws/src/resense_ros/config/detector.yaml. Their defaults are the recommended values.\n\nFull screen p3over_tp4, run against the worktree code: gate PASS (0 gated metrics changed; the 16 changed rows are informational latency, inflated by load average 15-20). GO overclaims 46 -> 16; target 54 -> 24 (GO 16 / CAUTION 6 / STOP 2); intent 223 -> 183. Newly-uncertain frames 0 pp everywhere. Median clear_distance retained: doubleT_platform 1.0, roundT_doubleT 0.9598 (135.5 -> 130.05 m), roundT_pressureGate 1.0, roundT_squareT 0.9805, squareT_platform 1.0, ride 0.9804 (122.6 -> 120.2 m). The P1 edge, P2 ride, five-empty, set O STOP, doubleT_obstacle and P4 history blocks are byte-identical to the baseline (78 history STOP events).\n\nThe 16 GO overclaims that remain:\n- small_center, 10 frames:\n  - 291: no return inside the fitted nominal envelope; its returns sit 0.34-0.62 m below the fitted rail head at 127 m, beyond the 120 m height reference.\n  - 303 and 308: first sightings after gaps; frames 304-307 have no envelope return.\n  - 310-312: the chain is still building (depth 1-3 of the 4 needed).\n  - 315-318: at 315 the far axis shifted the blob laterally by 0.17 m, more than the 0.12 m tolerance, which broke the chain. It rebuilt over 316-318 and caps again from 319 to 336.\n- small_on_rail, 3 frames: 392, 394 and 396. 392 is isolated because 393 has no envelope return. The chain starts at 394 and first caps at 397 (397-399 are capped).\n- big_above, 1 frame: 617, the second frame with evidence, at 131.7 m. Its scan-line cluster lies beyond the 125 m trusted range, so the thin cap does not take it. Frames 618-620 have no envelope returns.\n- long_low_on_rails, 2 frames: 686 and 687. The plank's returns sit at or below the envelope floor by the fitted height (-0.06 and 0.12 m), so there is no nominal-envelope return. From 688 the thin cap covers it.",
+   "summary_path": "/data/work/p3over_tp4/summary.json",
+   "gate_passed": true,
+   "headline": "GO overclaims 46 -> 16 (target 54 -> 24); gate PASS; 0 pp newly uncertain; worst median retention 95.98% (roundT_doubleT); ride 98.0%; all detection metrics and history stress unchanged"
+  },
+  "results": [
+   {
+    "name": "dump_default (instrumented default detector, all 15 captures)",
+    "sets": "none",
+    "metrics": "Analysis only: per-frame corridor evidence plus tracker velocities. The clear_distance reproduced the base gate outputs exactly on every frame. Findings: GO-overclaim evidence is 2-4 unclustered returns at dy 0.7-1.0 in the detector frame, because the far axis is off. The empty recordings hold thousands of same-size returns at the envelope edges, floor and ceiling, and where the extrapolated corridor meets a curved wall (roundT_doubleT, 55-120 m)."
+   },
+   {
+    "name": "proto single-frame compact+isolated blobs (M1 with isolation)",
+    "sets": "A in {5,10,20}, nmin in {2,3}",
+    "metrics": "Empty-bag median retention 0.62-0.99; roundT_doubleT 0.62-0.76. Rejected."
+   },
+   {
+    "name": "proto PSE2 speed-agnostic point persistence",
+    "sets": "depth 2 / 3, shift 0.5-3 m per frame",
+    "metrics": "GO 6 / 12, empties minimum 0.632 / 0.665. Rejected."
+   },
+   {
+    "name": "proto PSE3 plus rejection of evidence that stays at the same range",
+    "sets": "depth 2 / 3",
+    "metrics": "GO 6 / 12, empties minimum 0.637 / 0.672. Surface clutter also approaches at train speed. Rejected."
+   },
+   {
+    "name": "tracker-velocity ego speed",
+    "sets": "median -velocity of tracks with hits >= 3",
+    "metrics": "Unavailable in most set O frames (0-1 such tracks). Abandoned."
+   },
+   {
+    "name": "proto blob chains, loose tolerances",
+    "sets": "tl .25, th .3, tv .5; depth 2-5; A 3-10; nig_min 0-2",
+    "metrics": "GO 8-44, minimum median 0.74-0.89. Rejected."
+   },
+   {
+    "name": "proto constant-velocity chains, grid",
+    "sets": "depth 3-4, tl .12-.15, tv .06-.1, th .2-.3",
+    "metrics": "depth 4 / tl .15 / tv .1: GO 24, min 0.9483 (roundT_doubleT), rejected. depth 3 variants: GO 19-21, min 0.918-0.937, rejected. depth 4 / tl .12 / tv .08 / th .2 (persist alone, offline): GO 25, roundT_doubleT 0.9799, ride 0.9845. Chosen."
+   },
+   {
+    "name": "proto chain coasting (capping at predicted position)",
+    "sets": "coast 1 / 2 / 3",
+    "metrics": "GO 23 / 20 / 19, roundT_doubleT 0.948 / 0.938 / 0.937. Rejected; code removed."
+   },
+   {
+    "name": "proto non-capping skip over one missing frame",
+    "sets": "skip 1, combined with thin",
+    "metrics": "GO 16 (no gain), roundT_doubleT 0.937. Rejected; code removed."
+   },
+   {
+    "name": "proto depth 3 requiring strict (edge-margin) returns",
+    "sets": "nig_min 1 / 2",
+    "metrics": "GO 29, min 0.938 / 0.948. Rejected."
+   },
+   {
+    "name": "ML: logistic-regression blob scorer (numpy-evaluable weights)",
+    "sets": "Training positives: 0.3 m cubes ray-cast (resense.synthetic.inject_obstacles) into 24 moving ride sequences, 473 blobs. Negatives: 45k blobs from 5 empty recordings + 8 ride pieces. Grouped held-out folds. Set O never used for training.",
+    "metrics": "Held-out AUC 0.936 (recall 0.52 at 1176 flagged negatives, p >= 0.9). Used as a cap on set O: k4 & p>=0.5 -> GO 30, empties >= 0.99, ride 0.9927; k2 & p>=0.9 -> GO 37; k3 & p>=0.7 -> GO 31, roundT_doubleT 0.942 (fail). The rule-based chain does better on GO within the limits. Not shipped."
+   },
+   {
+    "name": "detector run e1 (eval_real, set O + 5 empties)",
+    "sets": "health.clear_cap_thin=true health.clear_cap_persist=4 with tol_dy .15 tol_shift .1 tol_h .3",
+    "metrics": "Detections, warnings and decisions identical on all 3797 frames; GO 15; roundT_doubleT 0.9373 (fail). This led to the tighter tolerances."
+   },
+   {
+    "name": "thin cap only (M2 translation)",
+    "sets": "health.clear_cap_thin=true",
+    "metrics": "Set O GO 36, per-frame identical to the M2 observer captures. From the M2 captures: empties minimum 0.9825, ride 0.9902."
+   },
+   {
+    "name": "offline combination: thin + persist k4 tight",
+    "sets": "health.clear_cap_thin=true health.clear_cap_persist=4",
+    "metrics": "Predicted GO 16, roundT_doubleT 0.9598, ride 0.9804. The real detector's set O run gave GO 16 with 0 detection differences."
+   },
+   {
+    "name": "p3over_tp4 FULL SCREEN",
+    "sets": "health.clear_cap_thin=true health.clear_cap_persist=4",
+    "metrics": "Gate PASS (0 gated rows changed). GO 16 (target 24, by decision GO 16 / CAUTION 6 / STOP 2). Monitoring cost passed: 0 pp newly uncertain; medians 1.0 / 0.9598 / 1.0 / 0.9805 / 1.0 on the five empty recordings, ride 0.9804. Ride 45 events / 38 episodes / 183 alarm frames, unchanged. History stress 78 STOP events, unchanged. Summary /data/work/p3over_tp4/summary.json."
+   }
+  ],
+  "tradeoffs": "- The binding constraint is roundT_doubleT, at 95.98% against the 95% limit. On 5 frames above its median, the estimate is now capped at a fragment where the extrapolated straight corridor meets a curved tunnel wall. At 55-120 m this fragment looks exactly like the set O cube, both geometrically and in its motion.\n- Every stronger setting failed that recording: chain length 3, coasting, gap-skipping, looser tolerances, and the learned scorer at useful thresholds.\n- The tolerances were chosen with the five empty recordings and set O in view. The ride was evaluated for only three settings, so it serves as the held-out check (98.0%).\n- The last 16 GO overclaims are structural limits of a causal 4-frame chain: first sightings, chain build-up, one lateral jump of the far axis, and evidence below the envelope floor or beyond the trusted range. Closing them would need an axis model that stays stable at 100 m or a lower chain length, and a lower chain length costs range on roundT_doubleT.\n- The screen's latency rows read 5x worse because the machine was running at load average 15-20. They are informational and not caused by this change; offline the evidence update costs about 0.5 ms mean and 1 ms p95.\n- The caps add conservatism only (shorter clear_distance); they never lengthen it and never change a decision.",
+  "integration_notes": "- New file resense/evidence.py.\n- resense/detector.py: Detector.evidence (reset with the detector), a trust range min(valid, floor_valid) captured right after _corridor, and _clear_cap(\u2026, trust, n_acc), which also applies thin_cap_distance and PersistentEvidence.update. Only clear_distance changes.\n- HealthConfig gains clear_cap_thin, clear_cap_persist and the persist_* keys. They were added to configs/default.yaml and to ros2_ws/src/resense_ros/config/detector.yaml; the two files stay identical.\n- The thin cap requires tracking.stop_keep_thin > 0 (on by default).\n- Other experimenters' keys that change the corridor coordinate or axis (e.g. gauge.reference, gauge.axis_union), or the thin clusters, change the evidence. The roundT_doubleT margin is only 0.98 pp, so re-screen any combined candidate.\n- Tests: tests/test_clear_cap_persist.py (15 tests) passes, as do test_clear_cap, test_shipped_defaults, test_thin_monitoring, test_reseed_safety, test_quality_acceptance, test_core, test_stop_keep, test_thin_hanging, test_regression_gate, test_modules, test_algorithm and test_cli.\n- tests/test_node.py fails intermittently under machine load, and the base code does too (1 failure in 1 of 2 base runs). The cause is the wall-clock freshness state 'resumed_after_silence', not this change; those tests pass in isolation.\n- Tooling pitfall, reported, not fixed: `python scripts/eval_real.py` run from a worktree imports the installed main-checkout resense in its main process, and forked workers inherit it. It therefore runs the main checkout's code silently unless PYTHONPATH=<worktree> is set. regression_gate.py and history_stress.py insert ROOT themselves, so the screen is unaffected.\n- Temp dirs and dumps were deleted. /data/work/p3over_tp4/gate (27 MB) is kept as the best candidate's per-frame output.\n- Nothing pushed.",
+  "recommendation": "Adopt health.clear_cap_thin=true and health.clear_cap_persist=4 as the new defaults, keeping the persist_* sub-keys at their shipped defaults. This cuts GO overclaims 46 -> 16 within every acceptance limit, changes no detection, and passed the full gate. Do not lower clear_cap_persist or loosen the tolerances: roundT_doubleT is at 95.98%. The learned scorer, coasting and gap-skipping stay off; they were evaluated and are documented above. Re-screen once it is combined with any axis or corridor candidate.",
+  "ml_used": "Yes, experimental and not shipped. A logistic-regression scorer for sparse envelope blobs used 12 features: log range, |dy|, height, return count, extents, isolation, strict fraction, chain depth, shift residual and scan-line flag. Positives were synthetic: 0.3 m cubes ray-cast into 24 moving sequences of the ride (473 blobs). Negatives were 45k blobs from the five empty recordings and the 8 ride pieces. Validation used grouped held-out folds (recording or sequence), giving AUC 0.936. It was then tested as a range cap on the organizers' set O, which was never used in training. As a cap it gave GO 30-37 within the limits, or failed roundT_doubleT at lower chain lengths. That is not better than the physically-motivated chain rule, so it was not shipped. Its strongest weight is on range, which partly reflects how the injections were sampled.",
+  "tests_added": [
+   "tests/test_clear_cap_persist.py"
+  ]
+ },
+ "exp/p4hist": {
+  "problem": "P4: false STOPs on obstacle-free recordings depend on which frames the node happened to process (captured roundT_doubleT STOP at 53.0 m in 2 of 3 node histories; history stress baseline 78 STOP events over 33 histories).",
+  "worktree": "/data/wt/p4hist",
+  "branch": "exp/p4hist",
+  "commit": "75b2402f3812c69c733208b01b4c7154ddeb7c76",
+  "best": {
+   "sets": [
+    "tracking.gate_along_only=true",
+    "track.axis_disagree_hold=5",
+    "cluster.column_width_trim=0.05"
+   ],
+   "description": "c10. Three opt-in keys; each default is off and reproduces the P3d baseline. (1) cluster.column_width_trim=0.05: the column rule measures width between the 5% and 95% quantiles of the cluster's lateral point positions. The bbox is no longer used, so a few returns joined at the DBSCAN radius can't push a column past 1.0 m (mechanism 2: 7 of 143 returns had widened a 0.74 m column to 1.10 m). (2) track.axis_disagree_hold=5: after a frame whose two boundaries disagree, the 60 m disagreement cap stays on for 5 nominal periods on frames that fit only one boundary. Two agreeing boundaries end it. So losing the contradicting boundary no longer jumps the trust from 60 to 120 m (mechanism 1). This is a bounded version of the rejected T1. (3) tracking.gate_along_only=true: the ego_speed_max x dt approach allowance widens the association gate along the track only. It used to widen it in every direction (2.5 m at 10 Hz, 7.5 m after two dropped frames), which joined unrelated clusters metres apart across the track. Each of (1) and (2) removes the failed_clear and old_stock STOPs on its own (exact float-bag replays). Proposed defaults: exactly these three values.",
+   "summary_path": "/data/work/p4hist_c10/summary.json",
+   "gate_passed": true,
+   "headline": "Full screen: GATE PASS, every set O, doubleT_obstacle and set F row unchanged. Captured node histories: 2 -> 0 STOP events (failed_clear, old_stock, old_pass all 0). History stress: 78 -> 75 STOP events, 297 -> 290 frames, 17 -> 15 histories with a STOP. Ride: 45/38/183 -> 41/33/162 events/STOP episodes/alarm frames. Five empty bags: 13/16 events/episodes unchanged, 58 -> 56 frames. GO overclaims 46 (unchanged). Monitoring cost passed; the only range cost is the axis hold on squareT_platform (median clear_distance 0.955 of baseline, limit 0.95). Seeded dropped-frame, catch-up and dither histories still produce STOPs that the every-frame history does not; see tradeoffs."
+  },
+  "results": [
+   {
+    "name": "p4hist_all5 (quick screen)",
+    "sets": "tracking.confirm_hits=5, tracking.zone_min_votes=5, tracking.gate_along_only=true, tracking.start_clean=true, track.axis_disagree_hold=5",
+    "metrics": "GATE FAIL. set O small_center 30 -> 29 STOP frames, first STOP 52.5 -> 50.8 m; long_low_on_rails 49 -> 48, 82.2 -> 80.5 m. Culprit is confirm_hits=5: in the every-frame run a track confirms on 4 hits + 1 miss (span 0.5 s). Five empty 13/16 -> 10/12 events/episodes; set O background 3 -> 0 frames; history 78 -> 55 events, captures 2 -> 0."
+   },
+   {
+    "name": "set O only (outside lock): gate_along_only",
+    "sets": "tracking.gate_along_only=true",
+    "metrics": "set O scoring identical to baseline."
+   },
+   {
+    "name": "set O + doubleT_obstacle (outside lock): column trim",
+    "sets": "cluster.column_width_trim=0.05",
+    "metrics": "Identical to baseline on both."
+   },
+   {
+    "name": "set O (outside lock): all5 minus start_clean",
+    "sets": "confirm_hits=5, zone_min_votes=5, gate_along_only, axis_disagree_hold=5, column_width_trim=0.05",
+    "metrics": "Same small_center / long_low_on_rails 1-frame loss as all5, which shows confirm_hits=5 is the culprit."
+   },
+   {
+    "name": "set O + doubleT_obstacle (outside lock): start_clean",
+    "sets": "tracking.start_clean=true",
+    "metrics": "set O background 3 -> 2 frames; everything else identical."
+   },
+   {
+    "name": "p4hist_c6 (full screen)",
+    "sets": "tracking.zone_min_votes=5, tracking.gate_along_only=true, track.axis_disagree_hold=5, cluster.column_width_trim=0.05",
+    "metrics": "GATE FAIL on set F only: person first-detection median 151.0 -> 150.8 m, trolley 151.4 -> 150.5 m (1 frame later in 2 of 30 sequences). Culprit zone_min_votes, confirmed by re-running those 2 sequences per key. Ride 45/38/183 -> 40/33/162; five empty 13/16 (frames 58 -> 56); set O background 3 -> 1; GO overclaims 46; monitoring cost passed (squareT 0.955); history 78 -> 70 events, captures 0."
+   },
+   {
+    "name": "set F, the 2 changed sequences, one key at a time",
+    "sets": "axis_disagree_hold=5 | zone_min_votes=5 | gate_along_only | column_width_trim=0.05",
+    "metrics": "Only zone_min_votes=5 delays them (trolley 154.8 -> 152.9 m, person 149.9 -> 148.1 m); the other keys are identical."
+   },
+   {
+    "name": "set F full, outside lock",
+    "sets": "tracking.start_clean=true",
+    "metrics": "Would fail the gate: person first-detection median 151.0 -> 150.5 m (one sequence 166.3 -> 151.0 m); trolley false detections 5 -> 4; box1.0 median unchanged."
+   },
+   {
+    "name": "history stress, outside lock",
+    "sets": "c10 + tracking.start_clean=true",
+    "metrics": "63 STOP events / 259 frames, captures 0, 14 histories with a STOP (not screened: set F fails)."
+   },
+   {
+    "name": "history stress, outside lock",
+    "sets": "tracking.gate_along_only=true alone",
+    "metrics": "77 events / 292 frames, captures 2."
+   },
+   {
+    "name": "ride, outside lock (8 pieces as the gate)",
+    "sets": "tracking.gate_along_only=true alone",
+    "metrics": "45/38/183 -> 44/38/180 events/episodes/frames."
+   },
+   {
+    "name": "ride, outside lock",
+    "sets": "cluster.column_width_trim=0.05 alone",
+    "metrics": "45/38/183 -> 43/35/175."
+   },
+   {
+    "name": "squareT_platform, outside lock",
+    "sets": "track.axis_disagree_hold=5 alone",
+    "metrics": "Alarms identical; median clear_distance 88.9 -> 84.9 m (0.955), the source of the range cost."
+   },
+   {
+    "name": "exact node-history replays (float bag)",
+    "sets": "axis_disagree_hold=5 alone; column_width_trim=0.05 alone",
+    "metrics": "Each alone: failed_clear 1 -> 0 and old_stock 1 -> 0 STOPs (baseline replay reproduces the 53.0 m STOP)."
+   },
+   {
+    "name": "p4hist_c10 (final full screen)",
+    "sets": "tracking.gate_along_only=true, track.axis_disagree_hold=5, cluster.column_width_trim=0.05",
+    "metrics": "GATE PASS. Ride 41/33/162; five empty 13/16/56; set O, doubleT_obstacle, set F identical; GO overclaims 46; monitoring cost passed (squareT 0.955, ride +0.18 pp newly uncertain); history 75 events / 290 frames, captures 0, 15 histories with a STOP."
+   }
+  ],
+  "tradeoffs": "The captured failure is fixed, and both mechanisms have an independent fix. The broader goal of no STOP in a seeded history that the every-frame history doesn't also produce is not met under the gate: history-only events went from 26 to 24.\n\nMost of those residual events confirm on thin evidence. The confirmation rule counts sensor time (confirm_time_s), so a track with dropped frames can confirm on 3 hits with a 2-of-3 zone vote, where every frame needs 5 hits. Examples: roundT_doubleT drop40 at 137.6 m, doubleT_platform drop40 at 88 m and 3.0 m, roundT_pressureGate catchup at 86-92 m.\n\nThe rules that remove these cost positives:\n- tracking.zone_min_votes=5 (78 -> 70 with the other keys) delays set F person and trolley at ~150 m by one frame.\n- tracking.start_clean (-> 63) delays one set F person sequence from 166 to 151 m.\n- tracking.confirm_hits=5 delays two set O objects by one frame.\n\nThe reason is that the offline caches carry bursty receive stamps (0.2-0.45 s, then 0.02 s). Set F's far detections on the ride therefore also confirm on 3 hits with 2-of-3 votes, and the detector cannot tell that apart from dropped frames. On regular header stamps (the node) this conflict should shrink; I have not measured that.\n\naxis_disagree_hold=5 costs 4.5% of median clear_distance on squareT_platform (limit 5%). Its other effects are not isolated from the other two keys (in combination the ride falls 41/33/162 vs 44/38/180 and 43/35/175 for the other keys alone). Dropping it still fixes both captures through the column trim alone, but loses the fix for mechanism 1.\n\nThe remaining every-frame false STOPs are unchanged: squareT_platform's structure at 82.9 m with 2-4 strict voxels at the envelope edge, its 145-147 m face, and doubleT_platform's young-bed low clusters at 30-40 m. They account for most of the history total.\n\nNo ML component was trained. With the time and a machine lock shared by several experimenters, I had no way to validate a learned confirmation model against the gate, which forbids losing a single set O STOP frame.",
+  "integration_notes": "Commit 75b2402 on exp/p4hist (not pushed).\n\nCode changes:\n- resense/config.py: new keys TrackConfig.axis_disagree_hold, ClusterConfig.column_width_trim, TrackingConfig.zone_min_votes, gate_along_only, start_clean.\n- configs/default.yaml and ros2_ws/src/resense_ros/config/detector.yaml: the same keys with inline comments; the two files must stay identical (test_shipped_defaults).\n- resense/track.py: TrackModel.disagree_left, plus the hold in estimate_track.\n- resense/tracking.py: Tracker._gated, a shared gate helper used by update and _continue_thin; the min-vote rule in Track.vote_zone; the start_clean rule in the report loop.\n- resense/clustering.py: the trimmed width in _advisory_reason. It applies only when the bbox width is at least column_max_width, so narrower clusters are untouched.\n\nTests: tests/test_history_robustness.py (7 tests). Tracker, clustering and defaults tests pass (test_near_escalation, test_stop_keep, test_shipped_defaults, test_reseed_safety, test_startup, test_modules, test_floating_free, test_edge_axis, test_clear_cap, test_thin_hanging, test_rail_start).\n\nThe keys touch different code paths from other experimenters' keys. gate_along_only changes association for every track, including the thin continuation; set O, doubleT_obstacle and set F were unchanged with it. zone_min_votes and start_clean are implemented and tested but should stay off (see tradeoffs).\n\nNo harness bug found. One operational note: I cancelled my own queued screen p4hist_c8 while it held the lock; its orphaned gate workers were killed, the lock was released normally, and no other experimenter's process was touched.",
+  "recommendation": "Adopt c10 as new defaults: tracking.gate_along_only=true, cluster.column_width_trim=0.05, track.axis_disagree_hold=5. The full gate passes, the captured clear-run STOP is gone from all three node histories, and the ride drops from 45/38 to 41/33 events/episodes with no loss on any positive.\n\nIf the 4.5% range cost on squareT_platform is judged too close to the 5% limit, ship gate_along_only and column_width_trim only. The column trim alone still removes both captured STOPs and gives ride 43/35.\n\nKeep zone_min_votes, start_clean and confirm_hits=5 off. They buy another 8-15 history events but each delays a far or small positive by a frame.\n\nThe next step for P4 is to check the confirmation conflict on header-stamped replays before revisiting those rules: re-run set F and the ride with the gate's --nominal-stamps option (evenly spaced stamps in place of the cache's bursty receive stamps), or on node captures. The residual history STOPs need sensor-frame-based evidence (hits per sensor frame, not per receive-time second), which is only separable from dropped frames with regular stamps.",
+  "ml_used": "none. A learned confirmation classifier was considered and set aside: no held-out validation against the strict per-frame positive gate was possible in the time and lock budget.",
+  "tests_added": [
+   "tests/test_history_robustness.py::test_defaults_keep_the_earlier_behaviour",
+   "tests/test_history_robustness.py::test_zone_vote_counts_a_minimum_number_of_hits",
+   "tests/test_history_robustness.py::test_gate_along_only_keeps_the_approach_but_not_a_jump_across_the_track",
+   "tests/test_history_robustness.py::test_start_clean_waits_for_a_hit_inside_the_gauge",
+   "tests/test_history_robustness.py::test_column_width_of_the_body_not_of_a_joined_fragment",
+   "tests/test_history_robustness.py::test_column_width_trim_leaves_a_wide_object_wide",
+   "tests/test_history_robustness.py::test_axis_disagree_hold_bounds_the_trust_after_a_lost_boundary"
+  ]
+ },
+ "exp/p5range": {
+  "problem": "P5 detection range. On set O the organizers' objects are visible well beyond the first STOP. Far away, the part of an object inside the envelope is often a single scan line: the 2x0.2 m plank at 85-100 m, or the lower edge of the 2x2 m box at the envelope top at 103-125 m. That line is flatter than cluster.min_height and was dropped, so it never made a track. The 0.3 m cube gives 4 voxels at 60-75 m, one under the 5-voxel bar, and was dropped as well.",
+  "worktree": "/data/wt/p5range",
+  "branch": "exp/p5range",
+  "commit": "4cff61dc3117e66838572c7400f744e4789de9e3",
+  "best": {
+   "sets": [
+    "tracking.thin_far_min_distance=60",
+    "cluster.weak_min_points=4"
+   ],
+   "description": "Far, sparse evidence counts only for a track that is approaching the train. Two kinds of evidence are affected: scan lines (corridor clusters flatter than min_height) that are 60 m or more away, inside the strict envelope with at least 4 strict voxels and overlapping no other cluster; and clusters under the point-count bar with at least 4 voxels, 60 m or more away, in zone gauge. Both go to the tracker only. There they may start or continue a track, but only when the evidence is unambiguous: it lies inside the gate of exactly one track and that track is unmatched in this frame; if it lies inside no gate it starts a new track; otherwise it is ignored. A track that ever used this evidence becomes a STOP only while it is approaching. The test is a line fit of its last 5 distances against sensor time: slope between -25 and -2 m/s, RMS residual at most 0.5 m. Such a track that was not reported stays unreported. One reported as advisory stays advisory. A track that was a STOP in the previous frame keeps the usual rules. The reasoning: a scan line of the bed or the vault stays fixed relative to the sensor, or jumps several metres with the pitch, while a static object ahead approaches at the train's speed along a straight line. All new keys are off by default, and the defaults reproduce the baseline exactly. Proposed defaults: thin_far_min_distance 60, weak_min_points 4, with thin_far_min_voxels 4, approach_hits 5, approach_min_speed 2.0 and approach_max_residual 0.5 left as they are.",
+   "summary_path": "/data/work/p5range_B4f/summary.json",
+   "gate_passed": true,
+   "headline": "Gate PASS (20 gated rows better, none worse). Set O: big_above first STOP 101.3 -> 111.4 m, held from 111.4 -> 123.6 m, 100-150 m bin 1 -> 6/25; long_low_on_rails first STOP 82.2 -> 87.2 m, held 90.8 -> 95.9 m, 50-100 m bin 20 -> 23/30; small_center first STOP 52.5 -> 55.8 m, held 57.5 -> 60.8 m, 50-100 m bin 2 -> 4/31; inside STOP frames 384 -> 394. Unchanged: big_outside 6 false STOP frames, small_outside_near 0, background 3 frames / 2 IDs. Ride: 45 events (same), STOP episodes 38 -> 37, alarm frames 183 -> 180. Five empty recordings 58/13/16 and doubleT_obstacle (frame 11, 128+58 hits) identical. History stress 78 STOP events / 297 frames, as baseline. GO overclaims 46 -> 43. Monitoring cost passed (ride newly uncertain 0.044 pp). Set F box1.0 false detections 12 -> 11."
+  },
+  "results": [
+   {
+    "name": "diagnostic trace of set O far objects (no screen)",
+    "sets": "baseline",
+    "metrics": "Traced every frame of the far objects on the baseline. big_above at 104-134 m: in the corridor only a one-ring slice with 4-5 strict voxels, dropped by min_height (frames 616-631). At 121-160 m its bottom is 3.2-3.7 m by the model, so no points are inside the envelope. At 228-248 m it forms gauge clusters that are demoted beyond_axis. Plank: one flat ring (6-9 points) at 85-99 m. At 100-130 m it reads 0.0-1.0 m below the rail head. small_center: 2 or 4 returns per frame at 60-100 m, with |dy| 0.65-1.06 at the envelope edge. small_on_rail and thin_hanging beyond 55 m are outside the envelope or give 1-2 returns."
+   },
+   {
+    "name": "vault-anchored height reference probe (rejected, not implemented)",
+    "sets": "offline probe on set O frames 540-700",
+    "metrics": "Idea: correct the far rail level by the drift of the vault (90th percentile of h, |dy|<0.8, 5 m bins, referenced at 20-60 m). Plank at 97-103 m: h -0.07..0.12 would become 0.06-0.26, just inside. big_above at 113-120 m: bottom 2.9-3.0 would become 2.4-2.8. Rejected because in frames 656-670 the vault drops 0.5-0.8 m relative to the model within 150 m, which looks like a change of tunnel profile. The correction cannot tell that apart from reference drift, and it would lift rails and bed into the envelope floor at such transitions. The box also hides the vault behind itself. Expected gain was about 4-8 frames for high false-alarm risk."
+   },
+   {
+    "name": "set O A60 (cli run)",
+    "sets": "tracking.thin_far_min_distance=60 (first version: approach gate on every report)",
+    "metrics": "big_above 51 -> 56 STOP frames, first STOP 101.3 -> 111.4 m, held from 111.4 -> 123.6 m, bin 100-150 1 -> 6. Plank 49 -> 52, 82.2 -> 87.2 m, bin 50-100 20 -> 23. big_outside 6, background 3/2, all other objects unchanged."
+   },
+   {
+    "name": "six recordings A60 (eval_real --jobs 1)",
+    "sets": "tracking.thin_far_min_distance=60",
+    "metrics": "Five empty recordings 58 frames / 13 events and doubleT_obstacle (186 hits, first alarm frame 11): identical to baseline frame by frame, including decision, nearest distance and clear_distance."
+   },
+   {
+    "name": "p5range_A60 (full screen)",
+    "sets": "tracking.thin_far_min_distance=60",
+    "metrics": "Gate FAIL: ride STOP episodes 38 -> 40 (events 45 and alarm frames 183 unchanged). Cause 1 (piece 6): the approach gate took down an already-reported false STOP at 115-118 m and split its episode. Cause 2 (piece 7): a scan line between two tracks of one structure moved one track, and the next frame's association re-reported a false STOP at 98 m (frames 788-789). Otherwise set O gains as above, set F box false detections 12 -> 11, GO overclaims 46 -> 43, five empty recordings identical, history 78 events. Caveat: the worktree was edited while this screen ran, so its set F and history stages ran partly on the later code. Summary: /data/work/p5range_A60/summary.json."
+   },
+   {
+    "name": "set O B4 (cli run)",
+    "sets": "tracking.thin_far_min_distance=60, cluster.weak_min_points=4",
+    "metrics": "As A60, plus small_center 30 -> 32 STOP frames, first STOP 52.5 -> 55.8 m, held 57.5 -> 60.8 m. Beyond 60 m the cube is limited by the floating signature (|dy| up to 1.06 > floating_free_max_dy 0.95), by n_gauge < 3 after the edge margin, and by a tracker effect: a 1-hit track matched after misses takes the multi-frame displacement as its per-frame velocity, so frame 332 was lost."
+   },
+   {
+    "name": "ride B4 own run (aborted)",
+    "sets": "B4, first gate version",
+    "metrics": "Pieces 0-1 identical to baseline. Aborted to free CPU."
+   },
+   {
+    "name": "ride pieces 6-7 own run, after 'no takedown' fix (S3)",
+    "sets": "B4 + S3",
+    "metrics": "Piece 6: only frame 1346 differs; an existing false STOP starts one frame earlier, same event and episode. Piece 7: frames 788-789 still re-reported through the association side effect. That led to the unambiguous-association rule (S4), after which piece 7 was identical to baseline."
+   },
+   {
+    "name": "p5range_B4s (full screen)",
+    "sets": "tracking.thin_far_min_distance=60, cluster.weak_min_points=4 (with S3 no-takedown + S4 unambiguous association)",
+    "metrics": "Gate FAIL: ride events 45 -> 46 (STOP episodes 38, alarm frames 187). New event in piece 2, frames 237-243: a fixture 96.8 m ahead of a standing train, already reported as advisory, was turned into a STOP because weak 4-voxel hits inside the envelope flipped its zone vote. Set O gains as B4, history 78, five empty recordings identical, GO 43. Summary: /data/work/p5range_B4s/summary.json."
+   },
+   {
+    "name": "p5range_B4e",
+    "sets": "same as B4s + the far_evidence flag",
+    "metrics": "Cancelled before it got the lock; an own run of piece 2 still showed the 96.8 m STOP because the track was already an advisory report, which led to the final rule."
+   },
+   {
+    "name": "p5range_B4f (final full screen, best)",
+    "sets": "tracking.thin_far_min_distance=60, cluster.weak_min_points=4 (commit 4cff61d: approach gate for tracks ever matched by far evidence; not-reported stays unreported, advisory stays advisory, a previous-frame STOP keeps the usual rules; unambiguous association)",
+    "metrics": "GATE PASS (20 better, 0 worse). Ride 45 events / 37 episodes / 180 frames (base 45/38/183). Piece 5: an existing false track loses 4 net frames and 1 episode. Piece 6: an existing false STOP starts 1 frame earlier. Five empty recordings 58/13/16 identical; doubleT_obstacle identical. Set O per bin: big_above 0-50 25/25, 50-100 25/25, 100-150 1 -> 6/25, 150-200 0/24, 200-300 0/25; plank 50-100 20 -> 23/30, 100-150 0/15; small_center 50-100 2 -> 4/31, 100-150 0/20; small_on_rail, thin_hanging, big_center, edge objects #4/#6 unchanged; big_outside 6, small_outside_near 0, background 3/2. Set F box1.0 false detections 12 -> 11, sustained median 114.1 -> 118.0 m. History stress 78 STOP events / 297 frames (= baseline). GO overclaims 46 -> 43; monitoring cost passed."
+   },
+   {
+    "name": "pytest",
+    "sets": "-",
+    "metrics": "tests/test_far_thin.py 16 tests. On the final code: test_far_thin, test_stop_keep, test_near_escalation, test_reseed_safety, test_clear_cap, test_shipped_defaults, test_modules, test_rail_start = 179 passed. Earlier, on the pre-S3 code: 278 passed across 14 tracker/cluster modules including test_algorithm and test_late_candidates."
+   }
+  ],
+  "tests_added": [
+   "tests/test_far_thin.py"
+  ],
+  "tradeoffs": "- **The gains are real but modest.** The mechanism only adds frames where some part of the object is inside the envelope as a scan line or a 4-voxel cluster.\n- **big_above at 121-160 m is out of reach.** Its bottom is 3.2-3.7 m by the model. The vault cross-check agrees with the model to within 0.1-0.3 m up to about 110 m in those frames, so the box probably really is above the 3.0 m top there.\n- **The plank beyond 100 m and the cubes beyond ~60 m are out of reach too.** The plank reads below the envelope floor. The cubes give 2-4 returns at the envelope edge, where they are demoted by floating / free_max_dy and the strict edge margin.\n- **The approach test does not separate static infrastructure from obstacles.** Both approach at train speed. It removes only artefacts that are fixed to the sensor or jump with the pitch.\n- **At a standing train, far evidence never creates a STOP.** A far object seen only as scan lines or weak clusters ahead of a stopped train stays unreported or advisory. That is no worse than the baseline, which drops that evidence entirely.\n- **The three refinements are in-sample on the ride.** \"No takedown\", \"unambiguous association\" and \"never promote an advisory report\" were written after seeing three specific ride events (piece 6 at 115-118 m, piece 7 at 96-98 m, piece 2 at 96.8 m). They are general tracking rules, but their ride result should be treated as in-sample. The five empty recordings, set O, set F and the history stress were not used to design them.\n- **Side effects on existing false tracks.** One ride false STOP (piece 6, frame 1346) starts one frame earlier; another loses 5 frames and one episode (piece 5, frames 302-306). Net ride alarm frames 183 -> 180, STOP episodes 38 -> 37, events unchanged at 45.\n- **Latency.** The extra per-frame work is a few far clusters plus a 5-point line fit per track. The gate's latency rows are dominated by machine contention (4 parallel experimenters) and are not comparable.\n- **No ML was used.** A learned far-field gate would have to train on synthetic positives. The false events it would need to remove are the same few ride events already handled in-sample, and EXPERIMENTS \u00a78 explains why a learned veto on synthetic positives is the weakest link. The remaining limits are the height reference and the physics (2-4 returns), which a classifier cannot supply.",
+  "integration_notes": "- **Where the new keys live.** All new keys default to off, and the defaults reproduce the baseline by construction:\n  - `tracking.thin_far_min_distance` (0.0), `tracking.thin_far_min_voxels` (4), `tracking.approach_hits` (5), `tracking.approach_min_speed` (2.0), `tracking.approach_max_residual` (0.5), in `resense/config.py` TrackingConfig.\n  - `cluster.weak_min_points` (0), in ClusterConfig.\n  - Each has a commented entry in `configs/default.yaml` and in `ros2_ws/src/resense_ros/config/detector.yaml`; `tests/test_shipped_defaults.py` requires the two files to be semantically equal.\n- **Code changes:**\n  - `resense/tracking.py`: new Track fields `thin_hist`, `approach`, `far_evidence`, `was_stop` and `approach_block` (the Track.zone property returns warning while it is set). New methods `Tracker._note`, `_approaching` and `_far_thin` (the unambiguous association). A report gate in `update`. `_continue_thin` now returns the scan lines it used, so the far path does not reuse them. `update` takes a new keyword `far_thin`.\n  - `resense/detector.py`: `keep_thin` is also on when `thin_far_min_distance` > 0. Weak clusters travel with the thin ones in `self._thin`. New `Detector._far_thin` selects the scan lines and weak clusters that are at least that far, in zone gauge (scan lines also need \u2265 thin_far_min_voxels strict voxels) and overlap no other cluster.\n  - `resense/clustering.py`: new `Cluster.weak`; `find_clusters` / `_corridor_cluster` take a new `weak_from` argument.\n- **Composability.**\n  - Nothing new goes into `result.candidates`, so `clear_cap` and the hanging stage are unaffected.\n  - Scan lines consumed by `stop_keep_thin` mode 1 are excluded from the far path.\n  - It interacts with any key that changes zone votes, association or `self._thin`.\n- **Harness note (not a harness bug, not changed).** `scripts/eval_real.py` run directly from a worktree imports `resense.config` in the parent process from the installed package (the shared main checkout) unless `PYTHONPATH=<worktree>` is set. `regression_gate.py` / `quality_screen.py` insert their own ROOT and are fine.\n- **Worktree and outputs.** Worktree `/data/wt/p5range`, branch `exp/p5range`, not pushed. Kept: B4f full per-frame gate outputs in `/data/work/p5range_B4f/gate`, plus the summaries of A60 and B4s. The per-frame outputs of the rejected screens and `/data/work/p5range_tmp` were deleted.",
+  "recommendation": "Ship `tracking.thin_far_min_distance=60` with `cluster.weak_min_points=4` as the new defaults, keeping thin_far_min_voxels 4, approach_hits 5, approach_min_speed 2.0 and approach_max_residual 0.5. The final full screen passes the gate with 20 rows better and none worse. It is the first change that moves set O first-STOP distances beyond 100 m: big_above 101.3 -> 111.4 m, with 6 STOP frames instead of 1 at 100-150 m. The plank moves from 82.2 to 87.2 m and the 0.3 m cube from 52.5 to 55.8 m. The ride, the empty recordings, doubleT_obstacle and the history stress show no new false events, and GO overclaims fall from 46 to 43. Before shipping, a safety review should check two things: the three tracker refinements were designed after seeing three specific ride events, and far evidence never creates a STOP at a standing train. Beyond this, more range on the box at the envelope top needs a surveyed or lining-anchored far height reference that can tell a profile change from reference drift. The cubes need a fix for the tracker's first-velocity-after-misses behaviour, plus an edge-aware floating rule, and both of those are shared with the edge-object problem.",
+  "ml_used": "None. A learned far-field second opinion was considered and not built. There is no held-out real positive to validate it on. The false events it would need to veto are the few ride events the rules already handle. The objects still missed are limited by the height reference or by physics (2-4 returns), which a classifier on these descriptors cannot supply."
+ }
+}

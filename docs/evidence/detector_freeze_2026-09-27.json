@@ -1,0 +1,67 @@
+{
+  "schema": "resense-detector-freeze-v1",
+  "status": "frozen",
+  "created_utc": "2026-09-27T17:35:36.050099+00:00",
+  "authorization": "User requested the 27.09 quality cycle (edge objects, ride false events, GO overclaims, history-dependent false STOP; ML allowed) and a re-judgement; this seal replaces detector_freeze_2026-09-26.json as the reference detector.",
+  "source_commit": "0b346d548714afd7fae88a7fd50aeb2c38008747",
+  "measured_commit": "0a14248f14988a2204c8836e7c97aa55fdcc68e4",
+  "source_sha256": "65640220daea5ca78ecc6eb938afb8fb7bc8ef8a7c5d2e35aa54590c0336279d",
+  "files": {
+    "configs/default.yaml": "ecf29410b94cbb3963620777fb656481ee7bf10591d49719301e97a3e82af05c",
+    "native/resense_native.cpp": "85688be18c41c68111f30e2bc45b83186650c1eead8b24a254d15c97cb2592f1",
+    "pyproject.toml": "0835739afa61fc82208149cbcd5f6c0edcbe43fa4355ef7676224bdb691086d2",
+    "resense/__init__.py": "fdf04a88071df1d8300d46f75d34cc00bf9fa205369be99b3cfef6db514ae306",
+    "resense/_native.py": "7417a55c2b0ddc9b95a5d46d78b6af9b724203475890a59a0be4a022c6d4fd58",
+    "resense/accumulate.py": "5cc507d81e330b9e23b909e06cfbdb14cebdb553af179d512e34fb7c22e5b0bd",
+    "resense/calibration.py": "9e84d7754f59fbc767db9fbc0a1bdfac5ef0dd0db70e27ce6b29238bc1731c8a",
+    "resense/cli.py": "1fd89acade866a2babe0566d15666bcdd50b167a26664d91880ec2504138b33f",
+    "resense/clustering.py": "b81b9628838ed89f1539848165b206ba91dd2d400223c65247c11a0e83b1f2cb",
+    "resense/config.py": "e2880f99be7d1a29e94f7aa54656260cb2cc5c3bde29eafd8ecbdd1899c9d51a",
+    "resense/detector.py": "e3b234f00a5567788f93877fd23cbaf051bd3c65119e2da87fe5b17e6540fc72",
+    "resense/egomotion.py": "fba03d8f0657358aeeaa24956dc2ea5f224673dbeb3452d0d6eb6f5ec515a25a",
+    "resense/evidence.py": "891a8690cf03627216ca385df83522eb5a5c3593bbf458481e1ae72f606f293a",
+    "resense/frame.py": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9",
+    "resense/gauge.py": "f80bc01a8e29d44b1d26f885eb78be74fb04e22e1a820ce616df4aabc4a52df6",
+    "resense/health.py": "dd8f34dac8c886ebd88ba49d0a950b6bc9c12a810bb1b583f6a6c076f7e61546",
+    "resense/io.py": "032def133b9148dc43a0714f6ff8c84e049e4be11640093bdd8fe70bf9756b34",
+    "resense/lowobj.py": "f943a33bf660c0d63e9f37aaa16297a508ec75ce2dfb3475b65b30a65ad660d8",
+    "resense/metrics.py": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a",
+    "resense/models/track_opinion.json": "2d3bb06f3cf8af61747b1a1b95ff6620c2804e015d1a7009a4ed01cf2eddeafa",
+    "resense/models/track_opinion_report.json": "b2f57d5c934d51901d2704e9c0f69bb16960b8f01cd0dbfa8dcb4eb2a3cf5c6f",
+    "resense/opinion.py": "dafcf2a57d79caafee48235f3321bd403d68e707855bb939999484e6ddbc5a27",
+    "resense/pointcloud.py": "2f20a0e6aa3ceab96b625fc85eff3ea24cb0a7ae6675467415f53f8cd464a053",
+    "resense/sensor.py": "0c5acd4d937d2c6946422018a2a394c71f4de351d338899e436bc1b2a34115b0",
+    "resense/synthetic.py": "6f6c86fefd70b26b6c6b2f51f01a6de43def587a8ae49f2eb2523e830a30c747",
+    "resense/track.py": "f9e405ea1f74555e55d2bf6de9664d8078349e42077dcab4a6c3a5a3284c56ba",
+    "resense/tracking.py": "9f6c29c3077dfdda91b3ce91098668ee55dad4c2a2c7e728a613a54de8d59397",
+    "resense/viz.py": "3a5df9d0acb1a0d0f0dc9568131c17906bda49ac2dba65f5eb49343abe3d36db",
+    "ros2_ws/src/resense_ros/config/detector.yaml": "ecf29410b94cbb3963620777fb656481ee7bf10591d49719301e97a3e82af05c",
+    "scripts/build_native.sh": "af7e559867082b2df45edea7a730b2641957a4acc9df929cbab01776f7f99aea",
+    "setup.py": "73a030dd50b47b1b43b02d72a9892ee4ed26106b686afa6cd39584222a721ee7"
+  },
+  "config_file_sha256": "ecf29410b94cbb3963620777fb656481ee7bf10591d49719301e97a3e82af05c",
+  "effective_config_sha256": "44bd2e7339ec03bc004fa325e8e064888a76c295e1c04ced78170b496ce77c35",
+  "baseline": {
+    "path": "docs/evidence/results/regression_baseline_2026-09-26_ride_p3d.json",
+    "sha256": "bbe8d8d1f5f072a3c8c318e002ed736ec526121a2ada6bffdb033fbab2631eb1"
+  },
+  "validation": {
+    "path": "docs/evidence/results/regression_gate_2026-09-27_quality.json",
+    "sha256": "46830a2fdf9c94e42ef713e67c4215ba102b8a79f52b8edda0753c52c4cfa7bc",
+    "measured_at": "2026-09-27T17:31:57+00:00",
+    "kind": "committed full regression gate"
+  },
+  "decisions": {
+    "gauge.reference": "2 within 60 m on straight track, offset clamp 0.2 m (organizers' sensor-axis placement frame; organizer Q1 still unanswered)",
+    "tracking.doubt_*": "learned track opinion (resense/models/track_opinion.json), threshold 0.0222 at the edge of the held-out synthetic positives; 2x margin measured (ride 36 events) and not chosen",
+    "track.axis_disagree_hold": "off: no detection gain in combination, up to 4.5% monitored-range cost",
+    "tracking.zone_min_votes / start_clean": "off: each delays a set F or set O positive by a frame",
+    "axis_union": "off (superseded by gauge.reference)"
+  },
+  "change_policy": "Blocker fixes only; review the fix, repeat affected checks and the full gate, then replace this seal.",
+  "limits": [
+    "Verification checks source and evidence integrity; it does not replay recordings.",
+    "Node, launch, Docker and documentation have separate acceptance checks.",
+    "A detector freeze is not a release, deployment approval or proof of safety."
+  ]
+}
