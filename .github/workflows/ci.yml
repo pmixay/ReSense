@@ -58,7 +58,56 @@ jobs:
       - run: ./scripts/sync_params.sh --check
       - name: frozen detector source and validation evidence
         run: python3 scripts/detector_freeze.py verify
+  dataset:
+    # The two original organizer bags of the cold-disk check (docker job), kept in the Actions
+    # cache so that Google Drive is not asked for the 3.7 GB archive on every push: its download
+    # quota refused the runners on 27.09 ("Quota exceeded", runs 36313587896 and 36313174302).
+    # The key is the hash of the pinned checksums (scripts/cold_bags.sha256): a hit is checked
+    # without downloading (lookup-only); only a miss downloads the archive once, unpacks and
+    # verifies the two bags (scripts/fetch_cold_bags.sh) and saves them at once, before and
+    # independently of the docker job's result. Caches are scoped to the branch that saved them
+    # and readable from every branch when saved on main (the default branch), so main's first
+    # run seeds every branch; dataset-cache.yml refreshes it on a schedule, before GitHub's
+    # 7-day eviction of unused caches.
+    runs-on: ubuntu-22.04
+    outputs:
+      wanted: ${{ steps.scope.outputs.wanted }}
+      available: ${{ steps.lookup.outputs.cache-hit == 'true' || steps.save.outcome == 'success' }}
+      key: ${{ steps.scope.outputs.key }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: which branches run the cold-disk check
+        id: scope
+        run: |
+          case "$GITHUB_REF" in
+            refs/heads/claude/nifty-pascal-lzgl78|refs/heads/claude/p1-p2-supported-playback-20260927|refs/heads/main) echo "wanted=true" >> "$GITHUB_OUTPUT" ;;
+            *) echo "wanted=false" >> "$GITHUB_OUTPUT" ;;
+          esac
+          echo "key=resense-cold-bags-${{ hashFiles('scripts/cold_bags.sha256', 'docs/evidence/bag_metadata/doubleT_obstacle_metadata.yaml', 'docs/evidence/bag_metadata/roundT_doubleT_metadata.yaml') }}" >> "$GITHUB_OUTPUT"
+      - name: cached bags present? (lookup only, nothing is downloaded)
+        id: lookup
+        if: ${{ steps.scope.outputs.wanted == 'true' }}
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/resense-cold-bags
+          key: ${{ steps.scope.outputs.key }}
+          lookup-only: true
+      - name: cache miss only — download the archive once, unpack and verify the two bags
+        id: fetch
+        if: ${{ steps.scope.outputs.wanted == 'true' && steps.lookup.outputs.cache-hit != 'true' }}
+        continue-on-error: true      # a Google Drive refusal is reported by the docker job as "not run"
+        run: |
+          pip install --quiet "zstandard>=0.22"
+          scripts/fetch_cold_bags.sh ~/resense-cold-bags
+      - name: save the verified bags (their own cache entry, before the docker job runs)
+        id: save
+        if: ${{ steps.fetch.outcome == 'success' }}
+        uses: actions/cache/save@v4
+        with:
+          path: ~/resense-cold-bags
+          key: ${{ steps.scope.outputs.key }}
   docker:
+    needs: dataset
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -177,26 +226,29 @@ jobs:
           docker run --rm --network resense-offline --user 1000:1000 -e HOME=/tmp -v /tmp/offline_bags:/data:ro resense:latest bash -c "ros2 bag play /data/smoke_bag --delay 3 --disable-keyboard-controls && sleep 5 && ros2 bag play /data/smoke_bag2 --delay 3 --disable-keyboard-controls"
           sleep 4
           python3 scripts/check_dry_run.py /tmp/offline_out/status.jsonl --require-freshness --expect-obstacle --min-frames 20 --max-p95-latency 1000 --max-dropped 100000 --expect-inputs 2
-      # Restore the verified organizer archive when available. Google Drive currently enforces
-      # a quota on repeated 3.7 GB downloads, so the cold check must reuse exact archive bytes.
-      - name: the organizers' dataset archive from the Actions cache
-        id: dataset
-        if: ${{ github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/p1-p2-supported-playback-20260927' || github.ref == 'refs/heads/main' }}
+      # The two original bags of the cold-disk check come from the Actions cache that the job
+      # "dataset" above fills: the verified bags themselves, not the 3.7 GB archive, so a hit needs
+      # no download from Google Drive and no unpacking. Without them (Google Drive refused the
+      # one download it gets on a miss) the check cannot run: it is reported as not run, in the
+      # job summary and as a warning, never as passed.
+      - name: the two original bags from the Actions cache (job "dataset")
+        id: bags
+        if: ${{ needs.dataset.outputs.available == 'true' }}
         uses: actions/cache/restore@v4
         with:
-          path: ~/.cache/resense-dataset/dataset.zip
-          key: resense-dataset-zip-e23166801794cdeb2dcd77a3cc8b40a906b1d9cefab6f26739e368234e9168be
+          path: ~/resense-cold-bags
+          key: ${{ needs.dataset.outputs.key }}
+          fail-on-cache-miss: true
       - name: original bag cold-start regression — working branch and main
-        if: ${{ github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/p1-p2-supported-playback-20260927' || github.ref == 'refs/heads/main' }}
+        if: ${{ needs.dataset.outputs.available == 'true' }}
         timeout-minutes: 15
-        run: IMAGE=resense:ci DATASET_ZIP="$HOME/.cache/resense-dataset/dataset.zip" scripts/p1_cold_bag_test.sh
-      - name: cache the verified dataset archive
-        # the script leaves the file there only once its sha256 matched; no file, no cache
-        if: ${{ !cancelled() && steps.dataset.outcome == 'success' && steps.dataset.outputs.cache-hit != 'true' }}
-        uses: actions/cache/save@v4
-        with:
-          path: ~/.cache/resense-dataset/dataset.zip
-          key: ${{ steps.dataset.outputs.cache-primary-key }}
+        run: IMAGE=resense:ci DATASET_DIR="$HOME/resense-cold-bags" NO_DOWNLOAD=1 scripts/p1_cold_bag_test.sh
+      - name: original bag cold-start regression not run (no verified bags)
+        if: ${{ needs.dataset.outputs.wanted == 'true' && needs.dataset.outputs.available != 'true' }}
+        run: |
+          msg="original-bag cold-start regression NOT RUN: the verified bags are not cached and Google Drive refused the download (job dataset)"
+          echo "::warning::$msg"
+          echo "$msg" >> "$GITHUB_STEP_SUMMARY"
       - name: retain original-bag cold-start evidence
         if: ${{ always() && (github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/p1-p2-supported-playback-20260927' || github.ref == 'refs/heads/main') }}
         uses: actions/upload-artifact@v4
