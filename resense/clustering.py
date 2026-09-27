@@ -351,9 +351,12 @@ def _advisory_reason(b: _Blob, dist: float, lateral: float, zone: str, dy, h, cf
     col_w = float(size[1])
     if cfg.column_width_trim > 0 and col_w >= cfg.column_max_width and b.idx.size >= 3:
         # 27.09 (P4 history): the width of the column's body, not of a few joined returns
+        # only when the trimmed tails are sparse (they span at least column_width_trim_min_cut): a dense
+        # uniform body 1.0-1.1 m wide keeps its box width (the tails of such a body are 0.1 m)
         q = float(cfg.column_width_trim)
         lo, hi = np.quantile(b.pts[:, 1], (q, 1.0 - q))
-        col_w = float(hi - lo)
+        if col_w - float(hi - lo) >= cfg.column_width_trim_min_cut:
+            col_w = float(hi - lo)
     if cfg.column_min_height > 0 and size[2] > cfg.column_min_height and col_w < cfg.column_max_width \
             and (off_centre or col_w >= cfg.column_min_width):
         return "column"                    # column, post, gate leg: taller than any listed object, narrow

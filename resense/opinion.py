@@ -8,7 +8,7 @@ stability, approach consistency, height / size statistics, strict-envelope share
 history, low / corridor kind). It is never a veto: a doubtful track beyond a near range must stay a
 STOP candidate for a few more matched frames (``tracking.doubt_extra_hits``) and is advisory
 meanwhile. The model is a small gradient-boosted tree ensemble stored as JSON
-(``configs/track_opinion.json``, trained by ``scripts/track_opinion.py``) and evaluated with numpy.
+(``resense/models/track_opinion.json``, trained by ``scripts/track_opinion.py``) and evaluated with numpy.
 """
 from __future__ import annotations
 
@@ -103,12 +103,13 @@ _CACHE: dict = {}
 
 
 def load_opinion(path: str) -> Optional[TrackOpinion]:
-    """The model at ``path`` (relative paths from the repository root, then the working directory);
-    cached per path. None for an empty path."""
+    """The model at ``path``: absolute, or a file name in the package's ``resense/models/`` (shipped
+    with the package, so an installed node finds it wherever it runs), or relative to the working
+    directory; cached per path. None for an empty path."""
     if not path:
         return None
     if path not in _CACHE:
-        root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        p = path if os.path.isabs(path) or os.path.exists(path) else os.path.join(root, path)
+        packaged = os.path.join(os.path.dirname(os.path.abspath(__file__)), "models", path)
+        p = path if os.path.isabs(path) else packaged if os.path.exists(packaged) else path
         _CACHE[path] = TrackOpinion.load(p)
     return _CACHE[path]

@@ -21,7 +21,7 @@ negatives, synthetic sequences split by ride piece, and set O / doubleT_obstacle
     python scripts/track_opinion.py collect --bag new_data --out /data/work/p2ride_tmp/ride.npz
     python scripts/track_opinion.py collect --inject person,box0.5 --files 30,120 --out syn.npz
     python scripts/track_opinion.py train --neg ride.npz empty.npz --pos syn.npz --test setO.npz dto.npz \\
-        --export configs/track_opinion.json
+        --export resense/models/track_opinion.json
 """
 from __future__ import annotations
 
@@ -304,6 +304,11 @@ def cmd_train(a):
             best = float(np.floor(thr * 1e4) / 1e4)        # rounded down: the config value
         thrs = [("max_delayed", best)] + [(q, float(np.quantile(oof[y == 1], q))) for q in
                                           [float(v) for v in a.quantiles.split(",") if v]]
+        # a safety margin below the highest threshold that delays no held-out synthetic sequence: the
+        # lowest held-out positive onset score is then at least 1 / factor times the threshold
+        if best is not None:
+            thrs += [(f"max_delayed_x{f:g}", float(np.floor(best * f * 1e4) / 1e4))
+                     for f in [float(v) for v in a.margin.split(",") if v]]
         for q, thr in thrs:
             r = simulate(Pn[ride], Mn[ride], pn[ride], thr, extra, a.near, a.sticky)
             e = simulate(Pn[~ride], Mn[~ride], pn[~ride], thr, extra, a.near, a.sticky)
@@ -352,6 +357,7 @@ def main():
     t.add_argument("--quantiles", default="0.005,0.01,0.02")
     t.add_argument("--sticky", action="store_true", help="simulate tracking.doubt_sticky")
     t.add_argument("--max-delayed", type=int, default=0, help="synthetic sequences the chosen threshold may delay")
+    t.add_argument("--margin", default="0.5,0.33", help="also report the max-delayed threshold times these factors")
     t.add_argument("--neg-all-range", action="store_true", help="negatives: STOP rows at every range (not only beyond --near)")
     t.add_argument("--near", type=float, default=30.0)
     t.add_argument("--drop", default="")

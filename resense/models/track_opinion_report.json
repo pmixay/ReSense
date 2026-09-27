@@ -1,0 +1,395 @@
+{
+ "features": [
+  "distance",
+  "abs_lateral",
+  "is_low",
+  "frac_low",
+  "hits",
+  "lat_std",
+  "lat_jump",
+  "cz_std",
+  "hmax_mean",
+  "hmin_mean",
+  "len_mean",
+  "width_mean",
+  "height_mean",
+  "gauge_frac",
+  "frac_demoted",
+  "frac_column",
+  "frac_beyond",
+  "dist_rough",
+  "hit_fraction"
+ ],
+ "near": 25.0,
+ "train_rows": {
+  "negative": 200,
+  "positive": 2644,
+  "positive_sequences": 102
+ },
+ "groups": [
+  "doubleT_platform",
+  "new_data:0",
+  "new_data:1",
+  "new_data:2",
+  "new_data:3",
+  "new_data:4",
+  "new_data:5",
+  "new_data:6",
+  "new_data:7",
+  "squareT_platform_squareT_switch"
+ ],
+ "heldout_auc": 0.9738,
+ "export_max_abs_diff": 2.220446049250313e-16,
+ "simulation": [
+  {
+   "extra": 10,
+   "sticky": true,
+   "positive_quantile": "max_delayed",
+   "threshold": 0.0222,
+   "ride_events": [
+    42,
+    33
+   ],
+   "ride_stop_rows": [
+    154,
+    123
+   ],
+   "empty_events": [
+    13,
+    11
+   ],
+   "synthetic_delayed_rows": 0,
+   "synthetic_delayed_sequences": 0,
+   "test_delayed": []
+  },
+  {
+   "extra": 10,
+   "sticky": true,
+   "positive_quantile": 0.005,
+   "threshold": 0.0565,
+   "ride_events": [
+    42,
+    20
+   ],
+   "ride_stop_rows": [
+    154,
+    79
+   ],
+   "empty_events": [
+    13,
+    11
+   ],
+   "synthetic_delayed_rows": 26,
+   "synthetic_delayed_sequences": 4,
+   "test_delayed": []
+  },
+  {
+   "extra": 10,
+   "sticky": true,
+   "positive_quantile": 0.01,
+   "threshold": 0.1178,
+   "ride_events": [
+    42,
+    17
+   ],
+   "ride_stop_rows": [
+    154,
+    67
+   ],
+   "empty_events": [
+    13,
+    7
+   ],
+   "synthetic_delayed_rows": 40,
+   "synthetic_delayed_sequences": 6,
+   "test_delayed": [
+    [
+     "syn:150:person:p5",
+     11,
+     30.1,
+     0.101
+    ],
+    [
+     "syn:150:person:p5",
+     12,
+     30.1,
+     0.463
+    ],
+    [
+     "syn:150:person:p5",
+     13,
+     30.1,
+     0.391
+    ],
+    [
+     "syn:150:person:p5",
+     14,
+     30.1,
+     0.448
+    ],
+    [
+     "syn:150:person:p5",
+     15,
+     30.1,
+     0.448
+    ],
+    [
+     "syn:150:person:p5",
+     16,
+     30.1,
+     0.505
+    ],
+    [
+     "syn:150:person:p5",
+     17,
+     30.1,
+     0.505
+    ],
+    [
+     "syn:150:person:p5",
+     18,
+     30.1,
+     0.401
+    ],
+    [
+     "syn:150:person:p5",
+     19,
+     30.1,
+     0.57
+    ],
+    [
+     "syn:150:person:p5",
+     20,
+     30.1,
+     0.57
+    ]
+   ]
+  },
+  {
+   "extra": 10,
+   "sticky": true,
+   "positive_quantile": 0.02,
+   "threshold": 0.2046,
+   "ride_events": [
+    42,
+    17
+   ],
+   "ride_stop_rows": [
+    154,
+    66
+   ],
+   "empty_events": [
+    13,
+    6
+   ],
+   "synthetic_delayed_rows": 92,
+   "synthetic_delayed_sequences": 11,
+   "test_delayed": [
+    [
+     "syn:150:person:p5",
+     11,
+     30.1,
+     0.101
+    ],
+    [
+     "syn:150:person:p5",
+     12,
+     30.1,
+     0.463
+    ],
+    [
+     "syn:150:person:p5",
+     13,
+     30.1,
+     0.391
+    ],
+    [
+     "syn:150:person:p5",
+     14,
+     30.1,
+     0.448
+    ],
+    [
+     "syn:150:person:p5",
+     15,
+     30.1,
+     0.448
+    ],
+    [
+     "syn:150:person:p5",
+     16,
+     30.1,
+     0.505
+    ],
+    [
+     "syn:150:person:p5",
+     17,
+     30.1,
+     0.505
+    ],
+    [
+     "syn:150:person:p5",
+     18,
+     30.1,
+     0.401
+    ],
+    [
+     "syn:150:person:p5",
+     19,
+     30.1,
+     0.57
+    ],
+    [
+     "syn:150:person:p5",
+     20,
+     30.1,
+     0.57
+    ],
+    [
+     "syn:209:person:p7",
+     11,
+     54.9,
+     0.146
+    ],
+    [
+     "syn:209:person:p7",
+     12,
+     53.5,
+     0.594
+    ],
+    [
+     "syn:209:person:p7",
+     13,
+     51.7,
+     0.629
+    ],
+    [
+     "syn:209:person:p7",
+     14,
+     50.4,
+     0.743
+    ],
+    [
+     "syn:209:person:p7",
+     15,
+     48.8,
+     0.819
+    ],
+    [
+     "syn:209:person:p7",
+     16,
+     47.3,
+     0.85
+    ],
+    [
+     "syn:209:person:p7",
+     17,
+     45.9,
+     0.833
+    ],
+    [
+     "syn:209:person:p7",
+     18,
+     44.3,
+     0.615
+    ],
+    [
+     "syn:209:person:p7",
+     19,
+     42.8,
+     0.589
+    ],
+    [
+     "syn:209:person:p7",
+     20,
+     41.2,
+     0.532
+    ]
+   ]
+  },
+  {
+   "extra": 10,
+   "sticky": true,
+   "positive_quantile": "max_delayed_x0.5",
+   "threshold": 0.0111,
+   "ride_events": [
+    42,
+    38
+   ],
+   "ride_stop_rows": [
+    154,
+    144
+   ],
+   "empty_events": [
+    13,
+    12
+   ],
+   "synthetic_delayed_rows": 0,
+   "synthetic_delayed_sequences": 0,
+   "test_delayed": []
+  },
+  {
+   "extra": 10,
+   "sticky": true,
+   "positive_quantile": "max_delayed_x0.33",
+   "threshold": 0.0073,
+   "ride_events": [
+    42,
+    40
+   ],
+   "ride_stop_rows": [
+    154,
+    151
+   ],
+   "empty_events": [
+    13,
+    13
+   ],
+   "synthetic_delayed_rows": 0,
+   "synthetic_delayed_sequences": 0,
+   "test_delayed": []
+  },
+  {
+   "extra": 10,
+   "sticky": true,
+   "positive_quantile": "max_delayed_x0.25",
+   "threshold": 0.0055,
+   "ride_events": [
+    42,
+    41
+   ],
+   "ride_stop_rows": [
+    154,
+    153
+   ],
+   "empty_events": [
+    13,
+    13
+   ],
+   "synthetic_delayed_rows": 0,
+   "synthetic_delayed_sequences": 0,
+   "test_delayed": []
+  }
+ ],
+ "importance": {
+  "lat_std": 0.464,
+  "gauge_frac": 0.14,
+  "hmax_mean": 0.122,
+  "distance": 0.075,
+  "width_mean": 0.053,
+  "len_mean": 0.045,
+  "abs_lateral": 0.042,
+  "dist_rough": 0.015,
+  "hmin_mean": 0.012,
+  "lat_jump": 0.012,
+  "hits": 0.008,
+  "cz_std": 0.004,
+  "frac_beyond": 0.004,
+  "hit_fraction": 0.002,
+  "height_mean": 0.001,
+  "frac_demoted": 0.001,
+  "is_low": 0.0,
+  "frac_low": 0.0,
+  "frac_column": 0.0
+ }
+}
