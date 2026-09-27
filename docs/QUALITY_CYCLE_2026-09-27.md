@@ -115,9 +115,11 @@ the organizers' own point sets of four set O objects (0.3 m cube floating, 0.3 m
 2 × 2 m box at the envelope top, 5 cm hanging object) transplanted at sensor lateral −0.65 / 0 /
 +0.65 m onto the five empty recordings and the ride, paired with the unmodified background, every
 case kept. It was registered for the 27.09 detector before its run
-([plan](evidence/results/quality_cycle_2026-09-27/novel_plan.json); the plan was registered a
-second time, still before any result was read, when the evaluator gained `--jobs`) and no
-candidate was tuned on it. It measures sensitivity to new combinations of seen shapes and seen
+([plan](evidence/results/quality_cycle_2026-09-27/novel_plan.json)) and no candidate was tuned on
+it. The plan pins the code, so it was registered again twice: when the evaluator gained `--jobs`
+(before any result was read), and after the persistent-evidence cost bound of `25498c1`, which
+only shortens `clear_distance` (the matching reads detections): the run on the final code
+reproduces every per-case row of the earlier run. It measures sensitivity to new combinations of seen shapes and seen
 backgrounds, not real hold-out recall.
 
 | | P3d (26.09) | 27.09 |
