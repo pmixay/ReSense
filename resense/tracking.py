@@ -39,6 +39,7 @@ import numpy as np
 
 from resense.clustering import Cluster
 from resense.config import TrackingConfig
+from resense.opinion import OBS_KEEP, load_opinion, observation, track_features
 
 
 # 26.09: demotions a near escalation never overrides (Tracker._near): a column, and a cluster outside
@@ -72,6 +73,10 @@ class Track:
     since_clean: float = 0.0        # 26.09 (stop_keep_max_s): s of sensor time since the last clean hit (an obstacle cluster inside the gauge, not a scan line; inf = none yet)
     near_hist: List[bool] = field(default_factory=list)  # 26.09: last near_hits hits: near the envelope (Tracker._near)?
     near_hits: int = 0              # 26.09: this many near hits in a row make the track an obstacle (0 = off)
+    obs: List[tuple] = field(default_factory=list)  # 27.09 (tracking.doubt_*): the last matched clusters (opinion.observation)
+    doubt: int = 0                  # 27.09: frames in a row a doubtful STOP was withheld (tracking.doubt_extra_hits)
+    withheld: bool = False          # 27.09: a STOP withheld as advisory by the track opinion (zone 'warning')
+    stop_prev: bool = False         # 27.09: reported in zone gauge after the previous update
 
     @property
     def near_escalated(self) -> bool:
@@ -91,6 +96,13 @@ class Track:
 
     @property
     def zone(self) -> str:
+        if self.withheld:
+            return "warning"
+        return self.rule_zone
+
+    @property
+    def rule_zone(self) -> str:
+        """The zone by the persistence rules (``zone`` without the track opinion's withholding)."""
         if not self.zone_hist or self.column_held:
             return "warning"
         if self.near_escalated:
@@ -114,6 +126,9 @@ class Tracker:
         self.tracks: List[Track] = []
         self._next_id = 1
         self._timed = False          # a frame interval was supplied at least once
+        # 27.09 (tracking.doubt_*): the track opinion and the observation record it reads
+        self.opinion = load_opinion(cfg.doubt_model) if cfg.doubt_extra_hits > 0 else None
+        self.record = self.opinion is not None
 
     def reset(self) -> None:
         self.tracks.clear()
@@ -155,6 +170,16 @@ class Tracker:
         c = self.cfg
         return (c.near_escalate_voxels > 0 and cl.kind == "" and cl.n_gauge >= c.near_escalate_voxels
                 and cl.distance <= c.near_escalate_distance and cl.reason not in _NOT_ESCALATED)
+
+    @staticmethod
+    def _along_x(pred: np.ndarray, cen: np.ndarray, dx: np.ndarray, step: float, base: np.ndarray) -> np.ndarray:
+        """27.09 (``tracking.gate_along_x``, P4 association diagnosis): the approach allowance
+        ``step`` applies along X only: the candidate must lie within the base radius of the segment
+        from the prediction to ``step`` closer (the whole 3D sphere was widened by it, which joined
+        fragments on opposite sides of the track). Pairs x candidates, True = inside."""
+        qx = np.where(dx >= 0, dx, np.minimum(dx + step, 0.0))
+        dyz = pred[:, None, 1:] - cen[None, :, 1:]
+        return qx * qx + (dyz * dyz).sum(axis=2) <= base * base
 
     def _gate(self, distance: float) -> float:
         c = self.cfg
@@ -217,8 +242,12 @@ class Tracker:
             d = np.linalg.norm(pred[:, None, :] - cen[None, :, :], axis=2)
             # along-track motion towards the vehicle is allowed up to ``step`` extra
             dx = cen[None, :, 0] - pred[:, 0][:, None]   # <0: cluster is closer than predicted
-            allowed = np.array([self._gate(t.centroid[0]) for t in self.tracks])[:, None] + np.where(dx < 0, step, 0.0)
-            d = np.where(d <= allowed, d, np.inf)
+            base = np.array([self._gate(t.centroid[0]) for t in self.tracks])[:, None]
+            allowed = base + np.where(dx < 0, step, 0.0)
+            ok = d <= allowed
+            if c.gate_along_x:
+                ok &= self._along_x(pred, cen, dx, step, base)
+            d = np.where(ok, d, np.inf)
             while True:
                 if not np.isfinite(d).any():
                     break
@@ -234,6 +263,8 @@ class Tracker:
                 t.span_s += dt
                 t.confidence = min(1.0, t.confidence + c.conf_gain * cl.score)
                 t.last = cl
+                if self.record:
+                    t.obs = (t.obs + [observation(cl)])[-OBS_KEEP:]
                 g = cl.zone == "gauge" or keep
                 t.kept = keep
                 t.gauge_hits += int(g)
@@ -272,6 +303,7 @@ class Tracker:
                     column_hist=[cl.reason == "column"], column_hold=int(c.column_hold),
                     near_hist=[self._near(cl)] if nk else [], near_hits=nk,
                     since_clean=0.0 if cl.zone == "gauge" else float("inf"),
+                    obs=[observation(cl)] if self.record else [],
                 ))
                 self._next_id += 1
         # reported: confirmed now, or reported in the previous frame and missed for at most
@@ -290,7 +322,35 @@ class Tracker:
                 t.seen_reported = t.reported
             if t.hold > 0:
                 t.hold -= 1
+        if self.opinion is not None:
+            self._doubt()
         return self.tracks
+
+    def _doubt(self) -> None:
+        """27.09 (``tracking.doubt_extra_hits`` > 0 with ``doubt_model``): a track about to become a
+        STOP (reported in zone gauge by the rules, not a STOP after the previous update) whose track
+        opinion (``resense/opinion.py``) is below ``doubt_threshold`` and whose cluster is beyond
+        ``doubt_near`` is withheld as advisory (zone 'warning', reason 'doubt') until it has stayed a
+        STOP candidate, matched, for ``doubt_extra_hits`` more frames; the opinion is asked again on
+        every such frame and releases it at once when it rises (with ``doubt_sticky`` the opinion at
+        the onset decides: only the extra frames or ``doubt_near`` release it). A missed frame keeps
+        the state; a track that stops qualifying starts again. Never a veto: it only asks more
+        persistence of a track the rules would report, and never within ``doubt_near``."""
+        c = self.cfg
+        for t in self.tracks:
+            if not (t.reported and t.rule_zone == "gauge"):
+                t.withheld, t.doubt = False, 0
+            elif t.misses > 0 or (t.stop_prev and not t.withheld):
+                pass                        # held over a miss, or already a STOP: unchanged
+            elif t.last is None or t.last.distance <= c.doubt_near or not t.obs:
+                t.withheld = False
+            elif not (c.doubt_sticky and t.withheld) and (
+                    self.opinion.prob(track_features(t.obs, t.hits, t.hit_fraction)) >= c.doubt_threshold):
+                t.withheld = False
+            else:
+                t.doubt += 1
+                t.withheld = t.doubt <= c.doubt_extra_hits
+            t.stop_prev = t.reported and t.zone == "gauge"
 
     def _continue_thin(self, thin: List[Cluster], matched_t: np.ndarray, ego_shift: float, step: float,
                        dt: float, zw: int, hw: int, nk: int = 0, kdt: float = 0.0) -> None:
@@ -326,8 +386,11 @@ class Tracker:
         cen = np.stack([thin[j].centroid for j in ok])
         d = np.linalg.norm(pred[:, None, :] - cen[None, :, :], axis=2)
         dx = cen[None, :, 0] - pred[:, 0][:, None]
-        allowed = np.array([self._gate(self.tracks[i].centroid[0]) for i in cand])[:, None] + np.where(dx < 0, step, 0.0)
-        d = np.where(d <= allowed, d, np.inf)
+        base = np.array([self._gate(self.tracks[i].centroid[0]) for i in cand])[:, None]
+        inside = d <= base + np.where(dx < 0, step, 0.0)
+        if c.gate_along_x:
+            inside &= self._along_x(pred, cen, dx, step, base)
+        d = np.where(inside, d, np.inf)
         for a, i in enumerate(cand):
             t = self.tracks[i]
             if not (t.reported and t.zone == "gauge"):
@@ -349,6 +412,8 @@ class Tracker:
             t.span_s += dt
             t.confidence = min(1.0, t.confidence + c.conf_gain * cl.score)
             t.last = cl
+            if self.record:
+                t.obs = (t.obs + [observation(cl)])[-OBS_KEEP:]
             t.kept = stop
             t.gauge_hits += 1
             t.zone_hist = (t.zone_hist + [True])[-zw:]

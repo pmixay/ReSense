@@ -587,7 +587,7 @@ class Detector:
                 center=t.centroid if t.misses else t.last.centroid,
                 size=t.last.size, n_points=t.last.n, confidence=t.confidence, age=t.age,
                 zone=t.zone, height_min=t.last.height_min, intensity=t.last.intensity,
-                reason=("near_envelope" if t.escalated else "stop_hold" if (t.kept and t.zone == "gauge")
+                reason=("doubt" if t.withheld else "near_envelope" if t.escalated else "stop_hold" if (t.kept and t.zone == "gauge")
                         else t.last.reason), kind=t.last.kind,
             ))
             d = dets[-1]

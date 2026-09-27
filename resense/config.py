@@ -310,6 +310,16 @@ class TrackingConfig:
     stop_keep_thin: int = 1        # on since 26.09 (P3 range round 2, B10; 0 = off): a corridor cluster flatter than cluster.min_height (one scan line) inside the strict gauge (with stop_keep_min_voxels) may continue, within the same association gate, a track that no other cluster matched: 1 = a track reported as an obstacle in the previous frame (it cannot confirm a new one); 2 = also a track not yet reported whose last hit was inside the gauge (tried, not shipped: a new STOP on doubleT_platform); it never starts a track
     stop_keep_max_s: float = 10.0  # 26.09 (safety review of B10; 0 = no cap): the keep rules (stop_keep_signature, stop_keep_thin) act on a track only while its last clean hit (an obstacle cluster inside the gauge, not a scan line) is at most this many seconds of sensor time ago (the measured frame intervals: the same at any input rate); past it the track falls back to the behaviour without the keep rules, so a false STOP at a standing train cannot be kept indefinitely; set O's box at the envelope top is kept for ~5 s
     stop_keep_min_voxels: int = 10 # on since 26.09 (P3 range round 2, B10; 0 = no bar): a cluster counts for a STOP track through stop_keep_signature or stop_keep_thin only with at least this many voxels inside the strict envelope (Cluster.n_gauge); 10 = the near escalation's bar (near_escalate_voxels); without it (round 1, B) two false STOPs of the ride were extended by 9 frames
+    # 27.09 (P2 ride, off by default): a learned second opinion on a track about to become a STOP
+    # (resense/opinion.py, trained by scripts/track_opinion.py): below doubt_threshold and beyond
+    # doubt_near, the track is advisory ('doubt') until it has qualified as a STOP, matched, for
+    # doubt_extra_hits more frames; never a veto, never within doubt_near
+    gate_along_x: bool = False     # 27.09 (P2 ride, off): the approach allowance (ego_speed_max x dt) widens the association gate along X only, not the whole 3D sphere (which joined fragments on opposite sides: docs/P4_FALSE_TARGET_DIAGNOSIS.md)
+    doubt_model: str = ""          # JSON tree ensemble (configs/track_opinion.json); "" = off
+    doubt_extra_hits: int = 0      # extra matched frames asked of a doubtful track; 0 = off
+    doubt_threshold: float = 0.5   # opinion (probability of a real object) below which a track is doubtful
+    doubt_near: float = 30.0       # m, a track whose cluster is this near is never delayed
+    doubt_sticky: bool = False     # the opinion at the onset decides (a withheld track is released by the extra frames or doubt_near only)
     conf_gain: float = 0.35        # confidence added per hit
     conf_decay: float = 0.25       # confidence removed per miss
     conf_threshold: float = 0.6    # report obstacles with confidence >= threshold
