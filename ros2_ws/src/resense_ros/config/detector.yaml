@@ -195,6 +195,7 @@ resense:
     retro_max_height: 1.2      # m, taller retro clusters (person in a hi-vis vest, train) keep their zone
     retro_max_width: 0.8       # m, narrower retro clusters (plate, sign, marker, post) -> advisory
   tracking:
+    stop_keep_low_s: 0.3          # seconds of actual sensor time for continuation by current low-object evidence
     gate_base: 1.5
     gate_per_m: 0.02
     ego_speed_max: 25.0
@@ -281,6 +282,7 @@ resense:
     max_width: 2.2                 # m across: the whole envelope (1.6 rejected a person lying across the track; identical on all real frames)
     min_width: 0.15                # a low cluster narrower than this across the track is a rail sliver / fastening
     straddle_enabled: true         # v0.6.2: objects straddling the envelope floor (an object lying across a rail)
+    straddle_keep_height_margin: 0.03  # height tolerance for existing low STOPs only; never seeds a new track
     straddle_min_top: 0.10         # m above the rail head the top of such a cluster must reach (rail fittings reach 1-8 cm)
     straddle_band: 0.30            # m above the envelope floor from which corridor points join that clustering
     straddle_min_width: 0.35       # m across the track (trackside devices beside a rail are narrow across it)

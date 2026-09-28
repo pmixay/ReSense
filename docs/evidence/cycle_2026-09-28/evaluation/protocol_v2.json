@@ -1,0 +1,238 @@
+{
+  "schema": "resense.synthetic_sensitivity_protocol.v2",
+  "registered_on": "2026-09-28",
+  "baseline_commit": "f5db6d3",
+  "purpose": "Paired synthetic sensitivity and persistence checks before accepting detector changes; not real holdout validation.",
+  "split_policy": "Development may guide changes. Run reserved evaluation only after candidate source and config hashes are fixed. Once inspected, those evaluation cases are spent and cannot be called untouched in later cycles.",
+  "raycaster": "resense.synthetic.synthetic_tunnel_frame",
+  "raycaster_limitations": [
+    "Round straight tunnel only; no measured material response, motion blur, dual returns, weather or new real route.",
+    "The existing raycaster discards hits at or beyond 210 m. This protocol makes no 200-300 m capability claim.",
+    "Grade remains zero because the existing generator rotates the floor but not its rails or side benches.",
+    "Each stationary sequence has independent range/intensity noise, but repeated geometry and ray angles remain correlated.",
+    "The stored compact16 fixture has already lost float precision and is not a raw-versus-quantized comparison. Newly generated paired float frames provide that comparison."
+  ],
+  "frame_count": 16,
+  "frame_period_s": 0.1,
+  "shapes": [
+    {
+      "name": "rail_box",
+      "kind": "box",
+      "size_m": [
+        0.4,
+        0.6,
+        0.36
+      ],
+      "laterals_m": [
+        0.8,
+        -0.8
+      ],
+      "scale_axes": [
+        true,
+        true,
+        false
+      ]
+    },
+    {
+      "name": "compact_box30",
+      "kind": "box",
+      "size_m": [
+        0.3,
+        0.3,
+        0.36
+      ],
+      "laterals_m": [
+        0.0,
+        0.95
+      ],
+      "scale_axes": [
+        true,
+        true,
+        false
+      ]
+    },
+    {
+      "name": "box50",
+      "kind": "box",
+      "size_m": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "laterals_m": [
+        0.0,
+        -0.95
+      ]
+    },
+    {
+      "name": "person",
+      "kind": "person",
+      "size_m": [
+        0.4,
+        0.5,
+        1.7
+      ],
+      "laterals_m": [
+        0.0,
+        0.8
+      ]
+    }
+  ],
+  "splits": {
+    "development": {
+      "seed": 92811000,
+      "distances_m": [
+        24.0,
+        50.0,
+        100.0,
+        150.0
+      ],
+      "size_scale": 1.0,
+      "yaw_degrees": [
+        -4.0,
+        4.0
+      ],
+      "geometry": {
+        "length": 250.0,
+        "radius": 2.7,
+        "axis_y": 0.25,
+        "axis_z": 0.8,
+        "floor_z": -1.5,
+        "grade": 0.0,
+        "noise_sigma": 0.01,
+        "reflect_floor": 8.0,
+        "reflect_wall": 12.0
+      },
+      "reflectivity": 30.0
+    },
+    "evaluation": {
+      "seed": 92891000,
+      "distances_m": [
+        28.0,
+        60.0,
+        110.0,
+        170.0
+      ],
+      "size_scale": 0.9,
+      "yaw_degrees": [
+        -7.0,
+        7.0
+      ],
+      "geometry": {
+        "length": 250.0,
+        "radius": 2.85,
+        "axis_y": -0.2,
+        "axis_z": 0.9,
+        "floor_z": -1.6,
+        "grade": 0.0,
+        "noise_sigma": 0.015,
+        "reflect_floor": 6.0,
+        "reflect_wall": 15.0
+      },
+      "reflectivity": 20.0
+    }
+  },
+  "negative_controls": [
+    {
+      "name": "clear",
+      "kind": null,
+      "distance_m": null,
+      "lateral_m": null
+    },
+    {
+      "name": "outside_person_left",
+      "kind": "person",
+      "size_m": [
+        0.4,
+        0.5,
+        1.7
+      ],
+      "distance_m": 40.0,
+      "lateral_m": 1.6
+    },
+    {
+      "name": "outside_person_right",
+      "kind": "person",
+      "size_m": [
+        0.4,
+        0.5,
+        1.7
+      ],
+      "distance_m": 40.0,
+      "lateral_m": -1.6
+    },
+    {
+      "name": "below_rail_bed_box",
+      "kind": "box",
+      "size_m": [
+        0.3,
+        0.3,
+        0.1
+      ],
+      "distance_m": 24.0,
+      "lateral_m": 0.0,
+      "geometry_expectation": "entire_body_below_rail_head"
+    }
+  ],
+  "seed_rule": "split.seed + sequence_index * 100 + frame_index; positive order shape, distance, lateral, then negative_controls order",
+  "placement_rule": "Mesh bottom is the explicit synthetic floor_z; target labels and pose come only from generator geometry. No fitted detector track is used to place or score an object. Geometry audit validates physical body intrusion before v2 generation; return visibility is recorded separately.",
+  "encoding_pair": [
+    "float32 sensor compact arrays",
+    "same arrays converted by compact_to_compact16, decoded through frame_from_compact"
+  ],
+  "matching": {
+    "distance_tolerance_m": 2.0,
+    "distance_tolerance_fraction": 0.03,
+    "bbox_padding_m": 0.5,
+    "note": "A gauge detection must have its nearest distance within tolerance of physical target distance and its centroid inside the yaw-expanded target bounds plus padding. Empty scenes and outside controls have no expected STOP."
+  },
+  "metrics": {
+    "sustained_min_consecutive_frames": 5,
+    "steady_start_frame": 6,
+    "sustained_visible_recall_min": 0.9,
+    "report": [
+      "visible target-return frames",
+      "target-matched STOP frames",
+      "recall including initial confirmation",
+      "steady visible recall",
+      "first matched STOP frame and distance",
+      "longest matched STOP streak",
+      "longest visible miss streak after first STOP",
+      "STOP episodes",
+      "unmatched STOP frames",
+      "clear-distance overclaims on visible targets",
+      "paired float/quantized matched-STOP disagreements"
+    ]
+  },
+  "acceptance": [
+    "Compare candidate with the exact baseline source on identical generated float clouds and quantized pairs; preserve per-frame rows and hashes.",
+    "No new false STOP frame or episode on any negative control, in either encoding.",
+    "Per positive case and encoding: no fewer target-matched STOP frames, no later first STOP, no longer visible miss streak after confirmation, no loss of sustained status, and no new unmatched STOP frame.",
+    "Count invisible-target cases explicitly; do not remove them from the report or turn no-return cases into detector successes.",
+    "At least one predeclared target metric must improve to claim detector gain. Passing this synthetic screen cannot replace the raw organizer positive replay and full real negative regression gate.",
+    "Frame sequences and runtime measurements do not imply independent statistical trials; no significance estimate or real generalization claim."
+  ],
+  "reserved_execution": "Evaluation split is not generated or run until the root reviewer records candidate hashes and authorizes final evaluation.",
+  "amendment": {
+    "predecessor": "protocol.json",
+    "predecessor_sha256": "4a2aed405e6aabd3ff53df3b29a2dee2ca8cc588340fc1357a3036e7a31ccd9a",
+    "reason": "Independent geometry audit found that v1 cube30 touches the canonical envelope floor in development and isotropic evaluation shrinkage places cube30/rail_box below it. Preserve all v1 labels/results as history; fix new positive geometry before new clouds or outcomes.",
+    "registered_before_v2_generation": true,
+    "changes": [
+      "Rename cube30 to compact_box30; its height is no longer cubic.",
+      "Fix rail_box and compact_box30 height at 0.36 m in both splits; apply split scale to their length/width only.",
+      "Add a central 0.30 x 0.30 x 0.10 m bed object at 24 m as an explicit below-rail negative.",
+      "Record independent physical mesh/envelope overlap per case and physical-envelope return counts per frame."
+    ],
+    "unchanged": "Seeds, tunnel geometry, distances, yaw, other shape scaling, sequence length, matching and acceptance remain registered as in v1. Reused development seeds do not create independent trials.",
+    "reserved_status": "Neither v1 reserved clouds nor any v2 clouds/outcomes have been generated at registration."
+  },
+  "physical_geometry": {
+    "reference": "Known synthetic floor/axis and actual 0.18 m rail mesh; canonical GaugeConfig profile, never the fitted track.",
+    "minimum_positive_vertical_overlap_m": 0.05,
+    "positive_rule": "Every positive physical mesh must intersect the envelope interior with at least the registered vertical margin, independently of whether LiDAR returns sample that intersection.",
+    "boundary_policy": "Boundary-only contact is not a positive-volume intrusion. V1 boundary cubes retain historical labels and remain low/rail-straddle diagnostics, not official envelope false negatives.",
+    "below_rail_policy": "The new central negative lies entirely below the rail head, the explicit organizer exemption. No broad exemption is inferred for all objects between the rail head and envelope floor.",
+    "straddle_policy": "A lateral footprint may straddle the envelope edge. Positive labels require actual body interior overlap; per-return strict and uncertainty margins remain detector decisions."
+  }
+}

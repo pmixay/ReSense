@@ -1,0 +1,6166 @@
+{
+  "schema": "resense-p4-full-data-run-summary-v1",
+  "date": "2026-09-28",
+  "code": {
+    "commit": "43a0e7d9dc6a8683b1656de7b9d9c9cf601a58f1",
+    "branch": "testovaya-gpt",
+    "version": "1.0.0",
+    "uncommitted_detector_changes": []
+  },
+  "config": {
+    "path": "configs/default.yaml",
+    "set": [],
+    "sha256": "de5c7fd6dfa74c1e656af6e233efd625e3e552736534e32efa625e5e8ff57f47",
+    "file_sha256": "a5acd9214d2aeb58bf86e0a3b91685a1f3ab17ebbf60dbfe6b39edbe616a72f6"
+  },
+  "native": {
+    "path": "native",
+    "status": "native (_resense_native.cpython-312-x86_64-linux-gnu.so)"
+  },
+  "regression_gate": {
+    "baseline": "docs/evidence/results/regression_baseline_2026-09-27_quality.json",
+    "baseline_commit": "d57280701f63d4baddb5e23233e7bdebda9c0594",
+    "baseline_config_sha256": "de5c7fd6dfa74c1e656af6e233efd625e3e552736534e32efa625e5e8ff57f47",
+    "allow": [],
+    "passed": true,
+    "worse_gated": [],
+    "missing_gated": [],
+    "worse_allowed": [],
+    "missing_allowed": [],
+    "better": [],
+    "same": 208,
+    "info_changed": [
+      "latency_ms.doubleT_obstacle.mean",
+      "latency_ms.doubleT_obstacle.p95",
+      "latency_ms.doubleT_platform.mean",
+      "latency_ms.doubleT_platform.p95",
+      "latency_ms.roundT_doubleT.mean",
+      "latency_ms.roundT_doubleT.p95",
+      "latency_ms.roundT_pressureGate_roundT.mean",
+      "latency_ms.roundT_pressureGate_roundT.p95",
+      "latency_ms.roundT_squareT_pressureGate_squareT.mean",
+      "latency_ms.roundT_squareT_pressureGate_squareT.p95",
+      "latency_ms.squareT_platform_squareT_switch.mean",
+      "latency_ms.squareT_platform_squareT_switch.p95",
+      "latency_ms.cloud_with_fake_obj.mean",
+      "latency_ms.cloud_with_fake_obj.p95",
+      "latency_ms.new_data.mean",
+      "latency_ms.new_data.p95"
+    ],
+    "ride": {
+      "available": true,
+      "chunks": 8,
+      "frames": 11271,
+      "alarm_frames": 130,
+      "alarm_events": 32,
+      "stop_episodes": 31,
+      "advisory_frames": 4759,
+      "alarm_dist": [
+        20.7,
+        155.4
+      ],
+      "health": {
+        "ok": 11098,
+        "warn": 173,
+        "error": 0
+      },
+      "monitored_range_median": 127.6
+    },
+    "five_empty": {
+      "frames": 2287,
+      "alarm_frames": 40,
+      "alarm_events": 11,
+      "stop_episodes": 13,
+      "advisory_frames": 1006
+    },
+    "set_O": {
+      "available": true,
+      "frames": 1510,
+      "alarm_frames": 447,
+      "inside_stop_frames": 411,
+      "inside_visible_frames": 801,
+      "inside_objects_with_stop": 8,
+      "inside_objects": 8,
+      "outside_false_stop_frames": 6,
+      "background": {
+        "alarm_frames": 0,
+        "track_ids": 0
+      },
+      "objects": {
+        "big_center": {
+          "in_gauge": true,
+          "visible_frames": 213,
+          "first_visible_m": 98.7,
+          "frames_in_envelope": 213,
+          "stop_frames": 208,
+          "advisory_frames": 0,
+          "first_stop_m": 98.0,
+          "first_stop_frame": 5,
+          "held_from_m": 98.7,
+          "missed_intervals": [
+            {
+              "start_frame": 0,
+              "end_frame": 4,
+              "frames": 5,
+              "from_m": 98.7,
+              "to_m": 98.2
+            }
+          ],
+          "max_missed_streak_frames": 5,
+          "max_missed_span_m": 0.5,
+          "verdict": "detected",
+          "bins": {
+            "0-50": {
+              "alarm": 43,
+              "advisory_only": 0,
+              "visible": 43
+            },
+            "50-100": {
+              "alarm": 165,
+              "advisory_only": 0,
+              "visible": 170
+            }
+          }
+        },
+        "small_center": {
+          "in_gauge": true,
+          "visible_frames": 79,
+          "first_visible_m": 128.9,
+          "frames_in_envelope": 63,
+          "stop_frames": 32,
+          "advisory_frames": 0,
+          "first_stop_m": 55.8,
+          "first_stop_frame": 337,
+          "held_from_m": 60.8,
+          "missed_intervals": [
+            {
+              "start_frame": 290,
+              "end_frame": 336,
+              "frames": 47,
+              "from_m": 128.9,
+              "to_m": 57.5
+            }
+          ],
+          "max_missed_streak_frames": 47,
+          "max_missed_span_m": 71.4,
+          "verdict": "detected",
+          "bins": {
+            "0-50": {
+              "alarm": 28,
+              "advisory_only": 0,
+              "visible": 28
+            },
+            "50-100": {
+              "alarm": 4,
+              "advisory_only": 0,
+              "visible": 31
+            },
+            "100-150": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 20
+            }
+          }
+        },
+        "small_on_rail": {
+          "in_gauge": true,
+          "visible_frames": 49,
+          "first_visible_m": 237.3,
+          "frames_in_envelope": 33,
+          "stop_frames": 23,
+          "advisory_frames": 0,
+          "first_stop_m": 42.7,
+          "first_stop_frame": 403,
+          "held_from_m": 46.2,
+          "missed_intervals": [
+            {
+              "start_frame": 283,
+              "end_frame": 284,
+              "frames": 2,
+              "from_m": 237.3,
+              "to_m": 235.8
+            },
+            {
+              "start_frame": 370,
+              "end_frame": 370,
+              "frames": 1,
+              "from_m": 100.4,
+              "to_m": 100.4
+            },
+            {
+              "start_frame": 380,
+              "end_frame": 402,
+              "frames": 23,
+              "from_m": 83.1,
+              "to_m": 44.4
+            }
+          ],
+          "max_missed_streak_frames": 23,
+          "max_missed_span_m": 38.7,
+          "verdict": "detected",
+          "bins": {
+            "0-50": {
+              "alarm": 23,
+              "advisory_only": 0,
+              "visible": 27
+            },
+            "50-100": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 19
+            },
+            "100-150": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 1
+            },
+            "200-300": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 2
+            }
+          }
+        },
+        "small_edge_inside": {
+          "in_gauge": true,
+          "visible_frames": 83,
+          "first_visible_m": 154.7,
+          "frames_in_envelope": 16,
+          "stop_frames": 18,
+          "advisory_frames": 7,
+          "first_stop_m": 35.0,
+          "first_stop_frame": 462,
+          "held_from_m": 38.7,
+          "missed_intervals": [
+            {
+              "start_frame": 396,
+              "end_frame": 399,
+              "frames": 4,
+              "from_m": 154.7,
+              "to_m": 149.2
+            },
+            {
+              "start_frame": 401,
+              "end_frame": 461,
+              "frames": 61,
+              "from_m": 145.8,
+              "to_m": 36.8
+            }
+          ],
+          "max_missed_streak_frames": 61,
+          "max_missed_span_m": 109.0,
+          "verdict": "detected",
+          "bins": {
+            "0-50": {
+              "alarm": 18,
+              "advisory_only": 7,
+              "visible": 26
+            },
+            "50-100": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 27
+            },
+            "100-150": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 27
+            },
+            "150-200": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 3
+            }
+          }
+        },
+        "small_outside_near": {
+          "in_gauge": false,
+          "visible_frames": 112,
+          "first_visible_m": 238.4,
+          "frames_in_envelope": 101,
+          "stop_frames": 0,
+          "advisory_frames": 24,
+          "false_stop_frames": 0,
+          "false_stop_from_m": null,
+          "verdict": "advisory",
+          "bins": {
+            "0-50": {
+              "alarm": 0,
+              "advisory_only": 24,
+              "visible": 25
+            },
+            "50-100": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 27
+            },
+            "100-150": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 25
+            },
+            "150-200": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 23
+            },
+            "200-300": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 12
+            }
+          }
+        },
+        "big_edge_inside": {
+          "in_gauge": true,
+          "visible_frames": 125,
+          "first_visible_m": 248.6,
+          "frames_in_envelope": 8,
+          "stop_frames": 7,
+          "advisory_frames": 1,
+          "first_stop_m": 18.3,
+          "first_stop_frame": 574,
+          "held_from_m": 10.3,
+          "missed_intervals": [
+            {
+              "start_frame": 454,
+              "end_frame": 456,
+              "frames": 3,
+              "from_m": 248.6,
+              "to_m": 244.8
+            },
+            {
+              "start_frame": 458,
+              "end_frame": 463,
+              "frames": 6,
+              "from_m": 241.2,
+              "to_m": 231.9
+            },
+            {
+              "start_frame": 468,
+              "end_frame": 573,
+              "frames": 106,
+              "from_m": 222.6,
+              "to_m": 20.2
+            },
+            {
+              "start_frame": 575,
+              "end_frame": 577,
+              "frames": 3,
+              "from_m": 16.3,
+              "to_m": 12.3
+            }
+          ],
+          "max_missed_streak_frames": 106,
+          "max_missed_span_m": 202.4,
+          "verdict": "detected",
+          "bins": {
+            "0-50": {
+              "alarm": 7,
+              "advisory_only": 1,
+              "visible": 25
+            },
+            "50-100": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 26
+            },
+            "100-150": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 26
+            },
+            "150-200": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 26
+            },
+            "200-300": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 22
+            }
+          }
+        },
+        "big_outside": {
+          "in_gauge": false,
+          "visible_frames": 104,
+          "first_visible_m": 249.4,
+          "frames_in_envelope": 52,
+          "stop_frames": 6,
+          "advisory_frames": 43,
+          "false_stop_frames": 6,
+          "false_stop_from_m": 142.3,
+          "verdict": "false alarm",
+          "bins": {
+            "0-50": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 24
+            },
+            "50-100": {
+              "alarm": 0,
+              "advisory_only": 18,
+              "visible": 25
+            },
+            "100-150": {
+              "alarm": 6,
+              "advisory_only": 16,
+              "visible": 25
+            },
+            "150-200": {
+              "alarm": 0,
+              "advisory_only": 3,
+              "visible": 4
+            },
+            "200-300": {
+              "alarm": 0,
+              "advisory_only": 6,
+              "visible": 26
+            }
+          }
+        },
+        "big_above": {
+          "in_gauge": true,
+          "visible_frames": 124,
+          "first_visible_m": 248.2,
+          "frames_in_envelope": 75,
+          "stop_frames": 56,
+          "advisory_frames": 6,
+          "first_stop_m": 111.4,
+          "first_stop_frame": 627,
+          "held_from_m": 123.6,
+          "missed_intervals": [
+            {
+              "start_frame": 559,
+              "end_frame": 626,
+              "frames": 68,
+              "from_m": 248.2,
+              "to_m": 113.5
+            }
+          ],
+          "max_missed_streak_frames": 68,
+          "max_missed_span_m": 134.7,
+          "verdict": "detected",
+          "bins": {
+            "0-50": {
+              "alarm": 25,
+              "advisory_only": 0,
+              "visible": 25
+            },
+            "50-100": {
+              "alarm": 25,
+              "advisory_only": 0,
+              "visible": 25
+            },
+            "100-150": {
+              "alarm": 6,
+              "advisory_only": 0,
+              "visible": 25
+            },
+            "150-200": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 24
+            },
+            "200-300": {
+              "alarm": 0,
+              "advisory_only": 6,
+              "visible": 25
+            }
+          }
+        },
+        "long_low_on_rails": {
+          "in_gauge": true,
+          "visible_frames": 86,
+          "first_visible_m": 248.5,
+          "frames_in_envelope": 77,
+          "stop_frames": 52,
+          "advisory_frames": 0,
+          "first_stop_m": 87.2,
+          "first_stop_frame": 693,
+          "held_from_m": 95.9,
+          "missed_intervals": [
+            {
+              "start_frame": 609,
+              "end_frame": 610,
+              "frames": 2,
+              "from_m": 248.5,
+              "to_m": 246.4
+            },
+            {
+              "start_frame": 612,
+              "end_frame": 613,
+              "frames": 2,
+              "from_m": 242.4,
+              "to_m": 240.4
+            },
+            {
+              "start_frame": 615,
+              "end_frame": 617,
+              "frames": 3,
+              "from_m": 236.7,
+              "to_m": 232.2
+            },
+            {
+              "start_frame": 619,
+              "end_frame": 620,
+              "frames": 2,
+              "from_m": 228.2,
+              "to_m": 226.2
+            },
+            {
+              "start_frame": 622,
+              "end_frame": 622,
+              "frames": 1,
+              "from_m": 222.2,
+              "to_m": 222.2
+            },
+            {
+              "start_frame": 624,
+              "end_frame": 624,
+              "frames": 1,
+              "from_m": 218.1,
+              "to_m": 218.1
+            },
+            {
+              "start_frame": 626,
+              "end_frame": 626,
+              "frames": 1,
+              "from_m": 214.1,
+              "to_m": 214.1
+            },
+            {
+              "start_frame": 668,
+              "end_frame": 668,
+              "frames": 1,
+              "from_m": 131.9,
+              "to_m": 131.9
+            },
+            {
+              "start_frame": 671,
+              "end_frame": 673,
+              "frames": 3,
+              "from_m": 126.4,
+              "to_m": 122.9
+            },
+            {
+              "start_frame": 675,
+              "end_frame": 692,
+              "frames": 18,
+              "from_m": 119.4,
+              "to_m": 89.0
+            }
+          ],
+          "max_missed_streak_frames": 18,
+          "max_missed_span_m": 30.4,
+          "verdict": "detected",
+          "bins": {
+            "0-50": {
+              "alarm": 29,
+              "advisory_only": 0,
+              "visible": 29
+            },
+            "50-100": {
+              "alarm": 23,
+              "advisory_only": 0,
+              "visible": 30
+            },
+            "100-150": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 15
+            },
+            "200-300": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 12
+            }
+          }
+        },
+        "thin_hanging": {
+          "in_gauge": true,
+          "visible_frames": 42,
+          "first_visible_m": 199.7,
+          "frames_in_envelope": 20,
+          "stop_frames": 15,
+          "advisory_frames": 0,
+          "first_stop_m": 30.1,
+          "first_stop_frame": 789,
+          "held_from_m": 31.8,
+          "missed_intervals": [
+            {
+              "start_frame": 686,
+              "end_frame": 687,
+              "frames": 2,
+              "from_m": 199.7,
+              "to_m": 197.9
+            },
+            {
+              "start_frame": 711,
+              "end_frame": 713,
+              "frames": 3,
+              "from_m": 157.3,
+              "to_m": 153.9
+            },
+            {
+              "start_frame": 717,
+              "end_frame": 717,
+              "frames": 1,
+              "from_m": 147.3,
+              "to_m": 147.3
+            },
+            {
+              "start_frame": 722,
+              "end_frame": 723,
+              "frames": 2,
+              "from_m": 139.0,
+              "to_m": 137.4
+            },
+            {
+              "start_frame": 758,
+              "end_frame": 759,
+              "frames": 2,
+              "from_m": 80.6,
+              "to_m": 79.0
+            },
+            {
+              "start_frame": 763,
+              "end_frame": 766,
+              "frames": 4,
+              "from_m": 72.6,
+              "to_m": 67.7
+            },
+            {
+              "start_frame": 770,
+              "end_frame": 771,
+              "frames": 2,
+              "from_m": 61.2,
+              "to_m": 59.6
+            },
+            {
+              "start_frame": 775,
+              "end_frame": 778,
+              "frames": 4,
+              "from_m": 53.1,
+              "to_m": 48.2
+            },
+            {
+              "start_frame": 781,
+              "end_frame": 783,
+              "frames": 3,
+              "from_m": 43.3,
+              "to_m": 40.0
+            },
+            {
+              "start_frame": 785,
+              "end_frame": 788,
+              "frames": 4,
+              "from_m": 36.7,
+              "to_m": 31.8
+            }
+          ],
+          "max_missed_streak_frames": 4,
+          "max_missed_span_m": 4.9,
+          "verdict": "detected",
+          "bins": {
+            "0-50": {
+              "alarm": 15,
+              "advisory_only": 0,
+              "visible": 24
+            },
+            "50-100": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 10
+            },
+            "100-150": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 3
+            },
+            "150-200": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 5
+            }
+          }
+        }
+      }
+    },
+    "set_F_straight": {
+      "available": true,
+      "parameters": {
+        "files": "46,68,98,140,168,172",
+        "kinds": "person,box1.0,box0.5,trolley,cable",
+        "start": "220",
+        "frames": "110",
+        "lateral": "-0.6:0.6",
+        "seed": "0",
+        "placement-mode": "legacy",
+        "place": "bed",
+        "speeds": "docs/extended_dataset_intake.json"
+      },
+      "kinds": {
+        "person": {
+          "sequences": 6,
+          "detected": 6,
+          "first_detection_median_m": 151.0,
+          "sustained_median_m": 157.1,
+          "false_detections": 6,
+          "recall_by_bin": {
+            "0-50": [
+              106,
+              110
+            ],
+            "50-100": [
+              125,
+              133
+            ],
+            "100-150": [
+              120,
+              151
+            ],
+            "150-200": [
+              13,
+              125
+            ],
+            "200-250": [
+              0,
+              40
+            ]
+          }
+        },
+        "box1.0": {
+          "sequences": 6,
+          "detected": 6,
+          "first_detection_median_m": 123.9,
+          "sustained_median_m": 118.0,
+          "false_detections": 12,
+          "recall_by_bin": {
+            "0-50": [
+              106,
+              110
+            ],
+            "50-100": [
+              123,
+              133
+            ],
+            "100-150": [
+              46,
+              151
+            ],
+            "150-200": [
+              0,
+              135
+            ],
+            "200-250": [
+              0,
+              36
+            ]
+          }
+        },
+        "box0.5": {
+          "sequences": 6,
+          "detected": 1,
+          "first_detection_median_m": 51.9,
+          "sustained_median_m": 55.6,
+          "false_detections": 0,
+          "recall_by_bin": {
+            "0-50": [
+              18,
+              110
+            ],
+            "50-100": [
+              2,
+              133
+            ],
+            "100-150": [
+              0,
+              145
+            ],
+            "150-200": [
+              0,
+              70
+            ],
+            "200-250": [
+              0,
+              15
+            ]
+          }
+        },
+        "trolley": {
+          "sequences": 6,
+          "detected": 6,
+          "first_detection_median_m": 151.4,
+          "sustained_median_m": 120.9,
+          "false_detections": 5,
+          "recall_by_bin": {
+            "0-50": [
+              106,
+              110
+            ],
+            "50-100": [
+              123,
+              133
+            ],
+            "100-150": [
+              60,
+              151
+            ],
+            "150-200": [
+              9,
+              132
+            ],
+            "200-250": [
+              0,
+              48
+            ]
+          }
+        },
+        "cable": {
+          "sequences": 6,
+          "detected": 6,
+          "first_detection_median_m": 98.9,
+          "sustained_median_m": 34.2,
+          "false_detections": 3,
+          "recall_by_bin": {
+            "0-50": [
+              43,
+              73
+            ],
+            "50-100": [
+              47,
+              72
+            ],
+            "100-150": [
+              12,
+              97
+            ],
+            "150-200": [
+              0,
+              65
+            ],
+            "200-250": [
+              0,
+              24
+            ]
+          }
+        }
+      }
+    }
+  },
+  "startup_census": {
+    "frames_per_start": 40,
+    "summary": {
+      "ride_split": {
+        "starts": 221,
+        "frames": 8840,
+        "starts_with_stop": 17,
+        "stop_frames": 115,
+        "stop_events": 33,
+        "stop_episodes": 28,
+        "advisory_frames": 3149,
+        "events_by_stage_and_mount": {
+          "corridor|pending": 25,
+          "low|pending": 8
+        },
+        "events_first_1_5s": 7,
+        "events_within_10m": 0
+      },
+      "ride_chunk": {
+        "starts": 8,
+        "frames": 320,
+        "starts_with_stop": 1,
+        "stop_frames": 8,
+        "stop_events": 1,
+        "stop_episodes": 1,
+        "advisory_frames": 124,
+        "events_by_stage_and_mount": {
+          "corridor|pending": 1
+        },
+        "events_first_1_5s": 0,
+        "events_within_10m": 0
+      },
+      "recording": {
+        "starts": 7,
+        "frames": 280,
+        "starts_with_stop": 3,
+        "stop_frames": 69,
+        "stop_events": 5,
+        "stop_episodes": 3,
+        "advisory_frames": 35,
+        "events_by_stage_and_mount": {
+          "corridor|pending": 2,
+          "corridor|provisional": 1,
+          "low|pending": 2
+        },
+        "events_first_1_5s": 2,
+        "events_within_10m": 0
+      }
+    }
+  },
+  "robustness": {
+    "as_recorded": {
+      "every": 1,
+      "mount": "as_recorded",
+      "all_six_recordings": {
+        "alarm_frames": 232,
+        "alarm_events": 13,
+        "stop_episodes": 15
+      },
+      "five_empty_recordings": {
+        "alarm_frames": 40,
+        "alarm_events": 11,
+        "stop_episodes": 13
+      },
+      "recordings": {
+        "doubleT_obstacle": {
+          "frames": 201,
+          "alarm_frames": 192,
+          "alarm_events": 2,
+          "advisory_frames": 91,
+          "alarm_dist": [
+            55.5,
+            56.6
+          ],
+          "health": {
+            "ok": 201,
+            "warn": 0,
+            "error": 0
+          },
+          "monitored_range_median": 151.0,
+          "labelled": {
+            "recall": 0.768,
+            "first_alarm_frame": 8,
+            "fp_frames": 0,
+            "fp_events": 0,
+            "per_bin": {
+              "50-100": [
+                189,
+                246
+              ]
+            },
+            "distance_error_max_abs": 0.23000000000000398
+          },
+          "stop_episodes": 2,
+          "events": {
+            "2": {
+              "first": 8,
+              "last": 73,
+              "frames": 66,
+              "distance": 55.53
+            },
+            "9": {
+              "first": 72,
+              "last": 200,
+              "frames": 128,
+              "distance": 56.15
+            }
+          },
+          "mount_status": {
+            "pending": 4,
+            "provisional": 186,
+            "ok": 11
+          }
+        },
+        "doubleT_platform": {
+          "frames": 345,
+          "alarm_frames": 2,
+          "alarm_events": 3,
+          "advisory_frames": 182,
+          "alarm_dist": [
+            34.8,
+            38.1
+          ],
+          "health": {
+            "ok": 322,
+            "warn": 23,
+            "error": 0
+          },
+          "monitored_range_median": 120.0,
+          "stop_episodes": 1,
+          "events": {
+            "47": {
+              "first": 36,
+              "last": 37,
+              "frames": 2,
+              "distance": 34.79
+            },
+            "46": {
+              "first": 36,
+              "last": 37,
+              "frames": 2,
+              "distance": 36.26
+            },
+            "49": {
+              "first": 36,
+              "last": 37,
+              "frames": 2,
+              "distance": 38.11
+            }
+          },
+          "mount_status": {
+            "pending": 204,
+            "identity": 141
+          }
+        },
+        "roundT_doubleT": {
+          "frames": 252,
+          "alarm_frames": 0,
+          "alarm_events": 0,
+          "advisory_frames": 173,
+          "alarm_dist": null,
+          "health": {
+            "ok": 252,
+            "warn": 0,
+            "error": 0
+          },
+          "monitored_range_median": 145.8,
+          "stop_episodes": 0,
+          "events": {},
+          "mount_status": {
+            "pending": 190,
+            "identity": 62
+          }
+        },
+        "roundT_pressureGate_roundT": {
+          "frames": 268,
+          "alarm_frames": 0,
+          "alarm_events": 0,
+          "advisory_frames": 107,
+          "alarm_dist": null,
+          "health": {
+            "ok": 268,
+            "warn": 0,
+            "error": 0
+          },
+          "monitored_range_median": 130.3,
+          "stop_episodes": 0,
+          "events": {},
+          "mount_status": {
+            "pending": 190,
+            "identity": 78
+          }
+        },
+        "roundT_squareT_pressureGate_squareT": {
+          "frames": 545,
+          "alarm_frames": 0,
+          "alarm_events": 0,
+          "advisory_frames": 146,
+          "alarm_dist": null,
+          "health": {
+            "ok": 545,
+            "warn": 0,
+            "error": 0
+          },
+          "monitored_range_median": 157.5,
+          "stop_episodes": 0,
+          "events": {},
+          "mount_status": {
+            "pending": 190,
+            "identity": 355
+          }
+        },
+        "squareT_platform_squareT_switch": {
+          "frames": 877,
+          "alarm_frames": 38,
+          "alarm_events": 8,
+          "advisory_frames": 398,
+          "alarm_dist": [
+            82.0,
+            147.5
+          ],
+          "health": {
+            "ok": 877,
+            "warn": 0,
+            "error": 0
+          },
+          "monitored_range_median": 143.0,
+          "stop_episodes": 12,
+          "events": {
+            "158": {
+              "first": 312,
+              "last": 317,
+              "frames": 4,
+              "distance": 82.06
+            },
+            "218": {
+              "first": 437,
+              "last": 528,
+              "frames": 8,
+              "distance": 82.9
+            },
+            "242": {
+              "first": 500,
+              "last": 501,
+              "frames": 2,
+              "distance": 147.49
+            },
+            "271": {
+              "first": 580,
+              "last": 580,
+              "frames": 1,
+              "distance": 147.46
+            },
+            "287": {
+              "first": 612,
+              "last": 613,
+              "frames": 2,
+              "distance": 94.16
+            },
+            "298": {
+              "first": 640,
+              "last": 642,
+              "frames": 3,
+              "distance": 147.46
+            },
+            "304": {
+              "first": 644,
+              "last": 644,
+              "frames": 1,
+              "distance": 82.9
+            },
+            "314": {
+              "first": 692,
+              "last": 708,
+              "frames": 17,
+              "distance": 146.06
+            }
+          },
+          "mount_status": {
+            "pending": 190,
+            "identity": 687
+          }
+        }
+      }
+    },
+    "5hz": {
+      "every": 2,
+      "mount": "as_recorded",
+      "all_six_recordings": {
+        "alarm_frames": 129,
+        "alarm_events": 10,
+        "stop_episodes": 10
+      },
+      "five_empty_recordings": {
+        "alarm_frames": 34,
+        "alarm_events": 8,
+        "stop_episodes": 9
+      },
+      "recordings": {
+        "doubleT_obstacle": {
+          "frames": 101,
+          "alarm_frames": 95,
+          "alarm_events": 2,
+          "advisory_frames": 5,
+          "alarm_dist": [
+            55.6,
+            56.6
+          ],
+          "health": {
+            "ok": 101,
+            "warn": 0,
+            "error": 0
+          },
+          "monitored_range_median": 151.0,
+          "labelled": {
+            "recall": 0.748,
+            "first_alarm_frame": 12,
+            "fp_frames": 0,
+            "fp_events": 0,
+            "per_bin": {
+              "50-100": [
+                92,
+                123
+              ]
+            },
+            "distance_error_max_abs": 0.10999999999999943
+          },
+          "stop_episodes": 1,
+          "events": {
+            "3": {
+              "first": 12,
+              "last": 74,
+              "frames": 32,
+              "distance": 55.56
+            },
+            "7": {
+              "first": 76,
+              "last": 200,
+              "frames": 63,
+              "distance": 56.14
+            }
+          },
+          "mount_status": {
+            "pending": 4,
+            "provisional": 91,
+            "ok": 6
+          }
+        },
+        "doubleT_platform": {
+          "frames": 173,
+          "alarm_frames": 3,
+          "alarm_events": 1,
+          "advisory_frames": 109,
+          "alarm_dist": [
+            27.4,
+            36.8
+          ],
+          "health": {
+            "ok": 170,
+            "warn": 3,
+            "error": 0
+          },
+          "monitored_range_median": 120.0,
+          "stop_episodes": 1,
+          "events": {
+            "19": {
+              "first": 34,
+              "last": 38,
+              "frames": 3,
+              "distance": 36.77
+            }
+          },
+          "mount_status": {
+            "pending": 110,
+            "identity": 63
+          }
+        },
+        "roundT_doubleT": {
+          "frames": 126,
+          "alarm_frames": 0,
+          "alarm_events": 0,
+          "advisory_frames": 80,
+          "alarm_dist": null,
+          "health": {
+            "ok": 126,
+            "warn": 0,
+            "error": 0
+          },
+          "monitored_range_median": 142.5,
+          "stop_episodes": 0,
+          "events": {},
+          "mount_status": {
+            "pending": 95,
+            "identity": 31
+          }
+        },
+        "roundT_pressureGate_roundT": {
+          "frames": 134,
+          "alarm_frames": 0,
+          "alarm_events": 0,
+          "advisory_frames": 59,
+          "alarm_dist": null,
+          "health": {
+            "ok": 134,
+            "warn": 0,
+            "error": 0
+          },
+          "monitored_range_median": 130.8,
+          "stop_episodes": 0,
+          "events": {},
+          "mount_status": {
+            "pending": 95,
+            "identity": 39
+          }
+        },
+        "roundT_squareT_pressureGate_squareT": {
+          "frames": 273,
+          "alarm_frames": 0,
+          "alarm_events": 0,
+          "advisory_frames": 113,
+          "alarm_dist": null,
+          "health": {
+            "ok": 273,
+            "warn": 0,
+            "error": 0
+          },
+          "monitored_range_median": 157.0,
+          "stop_episodes": 0,
+          "events": {},
+          "mount_status": {
+            "pending": 95,
+            "identity": 178
+          }
+        },
+        "squareT_platform_squareT_switch": {
+          "frames": 439,
+          "alarm_frames": 31,
+          "alarm_events": 7,
+          "advisory_frames": 215,
+          "alarm_dist": [
+            82.7,
+            147.7
+          ],
+          "health": {
+            "ok": 439,
+            "warn": 0,
+            "error": 0
+          },
+          "monitored_range_median": 140.1,
+          "stop_episodes": 8,
+          "events": {
+            "95": {
+              "first": 310,
+              "last": 314,
+              "frames": 3,
+              "distance": 147.72
+            },
+            "106": {
+              "first": 352,
+              "last": 354,
+              "frames": 2,
+              "distance": 88.88
+            },
+            "148": {
+              "first": 522,
+              "last": 524,
+              "frames": 2,
+              "distance": 94.28
+            },
+            "154": {
+              "first": 546,
+              "last": 610,
+              "frames": 15,
+              "distance": 82.72
+            },
+            "169": {
+              "first": 612,
+              "last": 614,
+              "frames": 2,
+              "distance": 94.16
+            },
+            "174": {
+              "first": 632,
+              "last": 638,
+              "frames": 4,
+              "distance": 147.46
+            },
+            "182": {
+              "first": 702,
+              "last": 706,
+              "frames": 3,
+              "distance": 139.59
+            }
+          },
+          "mount_status": {
+            "pending": 95,
+            "identity": 344
+          }
+        }
+      }
+    },
+    "roll_3": {
+      "every": 1,
+      "mount": "roll_3",
+      "all_six_recordings": {
+        "alarm_frames": 231,
+        "alarm_events": 12,
+        "stop_episodes": 13
+      },
+      "five_empty_recordings": {
+        "alarm_frames": 39,
+        "alarm_events": 10,
+        "stop_episodes": 11
+      },
+      "recordings": {
+        "doubleT_obstacle": {
+          "frames": 201,
+          "alarm_frames": 192,
+          "alarm_events": 2,
+          "advisory_frames": 25,
+          "alarm_dist": [
+            55.5,
+            56.6
+          ],
+          "health": {
+            "ok": 201,
+            "warn": 0,
+            "error": 0
+          },
+          "monitored_range_median": 151.0,
+          "labelled": {
+            "recall": 0.76,
+            "first_alarm_frame": 7,
+            "fp_frames": 0,
+            "fp_events": 0,
+            "per_bin": {
+              "50-100": [
+                187,
+                246
+              ]
+            },
+            "distance_error_max_abs": 0.23000000000000398
+          },
+          "stop_episodes": 2,
+          "events": {
+            "1": {
+              "first": 7,
+              "last": 73,
+              "frames": 67,
+              "distance": 55.5
+            },
+            "7": {
+              "first": 73,
+              "last": 200,
+              "frames": 126,
+              "distance": 56.18
+            }
+          },
+          "mount_status": {
+            "pending": 190,
+            "ok": 11
+          }
+        },
+        "doubleT_platform": {
+          "frames": 345,
+          "alarm_frames": 5,
+          "alarm_events": 1,
+          "advisory_frames": 161,
+          "alarm_dist": [
+            34.2,
+            39.1
+          ],
+          "health": {
+            "ok": 324,
+            "warn": 21,
+            "error": 0
+          },
+          "monitored_range_median": 120.0,
+          "stop_episodes": 1,
+          "events": {
+            "39": {
+              "first": 33,
+              "last": 37,
+              "frames": 5,
+              "distance": 39.07
+            }
+          },
+          "mount_status": {
+            "pending": 4,
+            "provisional": 203,
+            "ok": 138
+          }
+        },
+        "roundT_doubleT": {
+          "frames": 252,
+          "alarm_frames": 3,
+          "alarm_events": 2,
+          "advisory_frames": 166,
+          "alarm_dist": [
+            43.6,
+            128.3
+          ],
+          "health": {
+            "ok": 252,
+            "warn": 0,
+            "error": 0
+          },
+          "monitored_range_median": 147.6,
+          "stop_episodes": 2,
+          "events": {
+            "36": {
+              "first": 111,
+              "last": 112,
+              "frames": 2,
+              "distance": 43.6
+            },
+            "86": {
+              "first": 234,
+              "last": 234,
+              "frames": 1,
+              "distance": 128.27
+            }
+          },
+          "mount_status": {
+            "pending": 4,
+            "provisional": 186,
+            "ok": 62
+          }
+        },
+        "roundT_pressureGate_roundT": {
+          "frames": 268,
+          "alarm_frames": 0,
+          "alarm_events": 0,
+          "advisory_frames": 109,
+          "alarm_dist": null,
+          "health": {
+            "ok": 268,
+            "warn": 0,
+            "error": 0
+          },
+          "monitored_range_median": 130.8,
+          "stop_episodes": 0,
+          "events": {},
+          "mount_status": {
+            "pending": 4,
+            "provisional": 186,
+            "ok": 78
+          }
+        },
+        "roundT_squareT_pressureGate_squareT": {
+          "frames": 545,
+          "alarm_frames": 0,
+          "alarm_events": 0,
+          "advisory_frames": 175,
+          "alarm_dist": null,
+          "health": {
+            "ok": 545,
+            "warn": 0,
+            "error": 0
+          },
+          "monitored_range_median": 157.1,
+          "stop_episodes": 0,
+          "events": {},
+          "mount_status": {
+            "pending": 4,
+            "provisional": 186,
+            "ok": 355
+          }
+        },
+        "squareT_platform_squareT_switch": {
+          "frames": 877,
+          "alarm_frames": 31,
+          "alarm_events": 7,
+          "advisory_frames": 419,
+          "alarm_dist": [
+            81.6,
+            147.8
+          ],
+          "health": {
+            "ok": 877,
+            "warn": 0,
+            "error": 0
+          },
+          "monitored_range_median": 140.1,
+          "stop_episodes": 8,
+          "events": {
+            "166": {
+              "first": 309,
+              "last": 310,
+              "frames": 2,
+              "distance": 147.81
+            },
+            "168": {
+              "first": 316,
+              "last": 320,
+              "frames": 5,
+              "distance": 82.95
+            },
+            "214": {
+              "first": 426,
+              "last": 427,
+              "frames": 2,
+              "distance": 82.9
+            },
+            "290": {
+              "first": 613,
+              "last": 614,
+              "frames": 2,
+              "distance": 98.87
+            },
+            "297": {
+              "first": 628,
+              "last": 642,
+              "frames": 6,
+              "distance": 147.47
+            },
+            "304": {
+              "first": 644,
+              "last": 644,
+              "frames": 1,
+              "distance": 82.9
+            },
+            "316": {
+              "first": 685,
+              "last": 697,
+              "frames": 13,
+              "distance": 146.72
+            }
+          },
+          "mount_status": {
+            "pending": 4,
+            "provisional": 186,
+            "ok": 687
+          }
+        }
+      }
+    },
+    "pitch_3": {
+      "every": 1,
+      "mount": "pitch_3",
+      "all_six_recordings": {
+        "alarm_frames": 225,
+        "alarm_events": 13,
+        "stop_episodes": 14
+      },
+      "five_empty_recordings": {
+        "alarm_frames": 33,
+        "alarm_events": 11,
+        "stop_episodes": 12
+      },
+      "recordings": {
+        "doubleT_obstacle": {
+          "frames": 201,
+          "alarm_frames": 192,
+          "alarm_events": 2,
+          "advisory_frames": 76,
+          "alarm_dist": [
+            55.5,
+            56.7
+          ],
+          "health": {
+            "ok": 201,
+            "warn": 0,
+            "error": 0
+          },
+          "monitored_range_median": 151.0,
+          "labelled": {
+            "recall": 0.768,
+            "first_alarm_frame": 8,
+            "fp_frames": 0,
+            "fp_events": 0,
+            "per_bin": {
+              "50-100": [
+                189,
+                246
+              ]
+            },
+            "distance_error_max_abs": 0.240000000000002
+          },
+          "stop_episodes": 2,
+          "events": {
+            "3": {
+              "first": 8,
+              "last": 74,
+              "frames": 67,
+              "distance": 55.53
+            },
+            "10": {
+              "first": 72,
+              "last": 200,
+              "frames": 128,
+              "distance": 56.16
+            }
+          },
+          "mount_status": {
+            "pending": 4,
+            "provisional": 186,
+            "ok": 11
+          }
+        },
+        "doubleT_platform": {
+          "frames": 345,
+          "alarm_frames": 10,
+          "alarm_events": 3,
+          "advisory_frames": 177,
+          "alarm_dist": [
+            33.5,
+            111.7
+          ],
+          "health": {
+            "ok": 331,
+            "warn": 14,
+            "error": 0
+          },
+          "monitored_range_median": 120.0,
+          "stop_episodes": 3,
+          "events": {
+            "11": {
+              "first": 19,
+              "last": 19,
+              "frames": 1,
+              "distance": 111.73
+            },
+            "42": {
+              "first": 33,
+              "last": 37,
+              "frames": 5,
+              "distance": 39.07
+            },
+            "178": {
+              "first": 199,
+              "last": 202,
+              "frames": 4,
+              "distance": 88.52
+            }
+          },
+          "mount_status": {
+            "pending": 4,
+            "provisional": 195,
+            "ok": 146
+          }
+        },
+        "roundT_doubleT": {
+          "frames": 252,
+          "alarm_frames": 2,
+          "alarm_events": 1,
+          "advisory_frames": 169,
+          "alarm_dist": [
+            48.0,
+            49.7
+          ],
+          "health": {
+            "ok": 252,
+            "warn": 0,
+            "error": 0
+          },
+          "monitored_range_median": 147.2,
+          "stop_episodes": 1,
+          "events": {
+            "31": {
+              "first": 99,
+              "last": 100,
+              "frames": 2,
+              "distance": 49.67
+            }
+          },
+          "mount_status": {
+            "pending": 4,
+            "provisional": 186,
+            "ok": 62
+          }
+        },
+        "roundT_pressureGate_roundT": {
+          "frames": 268,
+          "alarm_frames": 0,
+          "alarm_events": 0,
+          "advisory_frames": 96,
+          "alarm_dist": null,
+          "health": {
+            "ok": 268,
+            "warn": 0,
+            "error": 0
+          },
+          "monitored_range_median": 130.2,
+          "stop_episodes": 0,
+          "events": {},
+          "mount_status": {
+            "pending": 4,
+            "provisional": 186,
+            "ok": 78
+          }
+        },
+        "roundT_squareT_pressureGate_squareT": {
+          "frames": 545,
+          "alarm_frames": 0,
+          "alarm_events": 0,
+          "advisory_frames": 161,
+          "alarm_dist": null,
+          "health": {
+            "ok": 545,
+            "warn": 0,
+            "error": 0
+          },
+          "monitored_range_median": 157.6,
+          "stop_episodes": 0,
+          "events": {},
+          "mount_status": {
+            "pending": 4,
+            "provisional": 186,
+            "ok": 355
+          }
+        },
+        "squareT_platform_squareT_switch": {
+          "frames": 877,
+          "alarm_frames": 21,
+          "alarm_events": 7,
+          "advisory_frames": 415,
+          "alarm_dist": [
+            82.1,
+            147.5
+          ],
+          "health": {
+            "ok": 877,
+            "warn": 0,
+            "error": 0
+          },
+          "monitored_range_median": 140.1,
+          "stop_episodes": 8,
+          "events": {
+            "153": {
+              "first": 311,
+              "last": 318,
+              "frames": 4,
+              "distance": 82.11
+            },
+            "205": {
+              "first": 414,
+              "last": 417,
+              "frames": 4,
+              "distance": 147.48
+            },
+            "235": {
+              "first": 486,
+              "last": 487,
+              "frames": 2,
+              "distance": 147.5
+            },
+            "262": {
+              "first": 582,
+              "last": 582,
+              "frames": 1,
+              "distance": 83.09
+            },
+            "294": {
+              "first": 612,
+              "last": 613,
+              "frames": 2,
+              "distance": 94.15
+            },
+            "309": {
+              "first": 644,
+              "last": 644,
+              "frames": 1,
+              "distance": 82.9
+            },
+            "322": {
+              "first": 696,
+              "last": 702,
+              "frames": 7,
+              "distance": 145.6
+            }
+          },
+          "mount_status": {
+            "pending": 4,
+            "provisional": 186,
+            "ok": 687
+          }
+        }
+      }
+    }
+  },
+  "start_offsets": {
+    "starts": [
+      0,
+      10,
+      20,
+      30,
+      40
+    ],
+    "five_empty_totals": {
+      "0": {
+        "alarm_frames": 40,
+        "events": 11,
+        "episodes": 13
+      },
+      "10": {
+        "alarm_frames": 32,
+        "events": 10,
+        "episodes": 11
+      },
+      "20": {
+        "alarm_frames": 57,
+        "events": 11,
+        "episodes": 11
+      },
+      "30": {
+        "alarm_frames": 32,
+        "events": 6,
+        "episodes": 6
+      },
+      "40": {
+        "alarm_frames": 35,
+        "events": 5,
+        "episodes": 7
+      }
+    },
+    "all_runs": [
+      {
+        "bag": "doubleT_platform",
+        "start": 0,
+        "frames": 345,
+        "alarm_frames": 2,
+        "events": 3,
+        "episodes": 1,
+        "hits": null
+      },
+      {
+        "bag": "doubleT_platform",
+        "start": 10,
+        "frames": 335,
+        "alarm_frames": 6,
+        "events": 2,
+        "episodes": 2,
+        "hits": null
+      },
+      {
+        "bag": "doubleT_platform",
+        "start": 20,
+        "frames": 325,
+        "alarm_frames": 12,
+        "events": 3,
+        "episodes": 1,
+        "hits": null
+      },
+      {
+        "bag": "doubleT_platform",
+        "start": 30,
+        "frames": 315,
+        "alarm_frames": 4,
+        "events": 1,
+        "episodes": 1,
+        "hits": null
+      },
+      {
+        "bag": "doubleT_platform",
+        "start": 40,
+        "frames": 305,
+        "alarm_frames": 0,
+        "events": 0,
+        "episodes": 0,
+        "hits": null
+      },
+      {
+        "bag": "roundT_doubleT",
+        "start": 0,
+        "frames": 252,
+        "alarm_frames": 0,
+        "events": 0,
+        "episodes": 0,
+        "hits": null
+      },
+      {
+        "bag": "roundT_doubleT",
+        "start": 10,
+        "frames": 242,
+        "alarm_frames": 2,
+        "events": 1,
+        "episodes": 1,
+        "hits": null
+      },
+      {
+        "bag": "roundT_doubleT",
+        "start": 20,
+        "frames": 232,
+        "alarm_frames": 2,
+        "events": 1,
+        "episodes": 1,
+        "hits": null
+      },
+      {
+        "bag": "roundT_doubleT",
+        "start": 30,
+        "frames": 222,
+        "alarm_frames": 0,
+        "events": 0,
+        "episodes": 0,
+        "hits": null
+      },
+      {
+        "bag": "roundT_doubleT",
+        "start": 40,
+        "frames": 212,
+        "alarm_frames": 0,
+        "events": 0,
+        "episodes": 0,
+        "hits": null
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "start": 0,
+        "frames": 268,
+        "alarm_frames": 0,
+        "events": 0,
+        "episodes": 0,
+        "hits": null
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "start": 10,
+        "frames": 258,
+        "alarm_frames": 0,
+        "events": 0,
+        "episodes": 0,
+        "hits": null
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "start": 20,
+        "frames": 248,
+        "alarm_frames": 0,
+        "events": 0,
+        "episodes": 0,
+        "hits": null
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "start": 30,
+        "frames": 238,
+        "alarm_frames": 0,
+        "events": 0,
+        "episodes": 0,
+        "hits": null
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "start": 40,
+        "frames": 228,
+        "alarm_frames": 0,
+        "events": 0,
+        "episodes": 0,
+        "hits": null
+      },
+      {
+        "bag": "roundT_squareT_pressureGate_squareT",
+        "start": 0,
+        "frames": 545,
+        "alarm_frames": 0,
+        "events": 0,
+        "episodes": 0,
+        "hits": null
+      },
+      {
+        "bag": "roundT_squareT_pressureGate_squareT",
+        "start": 10,
+        "frames": 535,
+        "alarm_frames": 0,
+        "events": 0,
+        "episodes": 0,
+        "hits": null
+      },
+      {
+        "bag": "roundT_squareT_pressureGate_squareT",
+        "start": 20,
+        "frames": 525,
+        "alarm_frames": 0,
+        "events": 0,
+        "episodes": 0,
+        "hits": null
+      },
+      {
+        "bag": "roundT_squareT_pressureGate_squareT",
+        "start": 30,
+        "frames": 515,
+        "alarm_frames": 0,
+        "events": 0,
+        "episodes": 0,
+        "hits": null
+      },
+      {
+        "bag": "roundT_squareT_pressureGate_squareT",
+        "start": 40,
+        "frames": 505,
+        "alarm_frames": 0,
+        "events": 0,
+        "episodes": 0,
+        "hits": null
+      },
+      {
+        "bag": "squareT_platform_squareT_switch",
+        "start": 0,
+        "frames": 877,
+        "alarm_frames": 38,
+        "events": 8,
+        "episodes": 12,
+        "hits": null
+      },
+      {
+        "bag": "squareT_platform_squareT_switch",
+        "start": 10,
+        "frames": 867,
+        "alarm_frames": 24,
+        "events": 7,
+        "episodes": 8,
+        "hits": null
+      },
+      {
+        "bag": "squareT_platform_squareT_switch",
+        "start": 20,
+        "frames": 857,
+        "alarm_frames": 43,
+        "events": 7,
+        "episodes": 9,
+        "hits": null
+      },
+      {
+        "bag": "squareT_platform_squareT_switch",
+        "start": 30,
+        "frames": 847,
+        "alarm_frames": 28,
+        "events": 5,
+        "episodes": 5,
+        "hits": null
+      },
+      {
+        "bag": "squareT_platform_squareT_switch",
+        "start": 40,
+        "frames": 837,
+        "alarm_frames": 35,
+        "events": 5,
+        "episodes": 7,
+        "hits": null
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "start": 0,
+        "frames": 201,
+        "alarm_frames": 192,
+        "events": 2,
+        "episodes": 2,
+        "hits": {
+          "person_crossing": [
+            61,
+            61
+          ],
+          "object_on_rail": [
+            128,
+            185
+          ]
+        }
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "start": 10,
+        "frames": 191,
+        "alarm_frames": 182,
+        "events": 2,
+        "episodes": 1,
+        "hits": {
+          "person_crossing": [
+            50,
+            59
+          ],
+          "object_on_rail": [
+            129,
+            176
+          ]
+        }
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "start": 20,
+        "frames": 181,
+        "alarm_frames": 172,
+        "events": 2,
+        "episodes": 1,
+        "hits": {
+          "person_crossing": [
+            40,
+            49
+          ],
+          "object_on_rail": [
+            129,
+            174
+          ]
+        }
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "start": 30,
+        "frames": 171,
+        "alarm_frames": 163,
+        "events": 2,
+        "episodes": 1,
+        "hits": {
+          "person_crossing": [
+            31,
+            39
+          ],
+          "object_on_rail": [
+            129,
+            171
+          ]
+        }
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "start": 40,
+        "frames": 161,
+        "alarm_frames": 151,
+        "events": 2,
+        "episodes": 2,
+        "hits": {
+          "person_crossing": [
+            20,
+            29
+          ],
+          "object_on_rail": [
+            128,
+            161
+          ]
+        }
+      }
+    ]
+  },
+  "setO": {
+    "score": {
+      "objects": {
+        "big_center": {
+          "in_gauge": true,
+          "visible_frames": 213,
+          "first_visible_m": 98.7,
+          "alarm_frames": 208,
+          "advisory_only_frames": 0,
+          "frames_in_envelope": 213,
+          "alarm_frames_in_envelope": 208,
+          "bins": {
+            "0-50": {
+              "alarm": 43,
+              "advisory_only": 0,
+              "visible": 43
+            },
+            "50-100": {
+              "alarm": 165,
+              "advisory_only": 0,
+              "visible": 170
+            }
+          },
+          "missed_intervals": [
+            {
+              "start_frame": 0,
+              "end_frame": 4,
+              "frames": 5,
+              "from_m": 98.7,
+              "to_m": 98.2
+            }
+          ],
+          "first_alarm_m": 98.0,
+          "first_alarm_frame": 5,
+          "alarm_held_from_m": 98.7,
+          "first_advisory_or_alarm_m": 98.0,
+          "verdict": "detected"
+        },
+        "small_on_rail": {
+          "in_gauge": true,
+          "visible_frames": 49,
+          "first_visible_m": 237.3,
+          "alarm_frames": 23,
+          "advisory_only_frames": 0,
+          "frames_in_envelope": 33,
+          "alarm_frames_in_envelope": 23,
+          "bins": {
+            "0-50": {
+              "alarm": 23,
+              "advisory_only": 0,
+              "visible": 27
+            },
+            "50-100": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 19
+            },
+            "100-150": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 1
+            },
+            "200-300": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 2
+            }
+          },
+          "missed_intervals": [
+            {
+              "start_frame": 283,
+              "end_frame": 284,
+              "frames": 2,
+              "from_m": 237.3,
+              "to_m": 235.8
+            },
+            {
+              "start_frame": 370,
+              "end_frame": 370,
+              "frames": 1,
+              "from_m": 100.4,
+              "to_m": 100.4
+            },
+            {
+              "start_frame": 380,
+              "end_frame": 402,
+              "frames": 23,
+              "from_m": 83.1,
+              "to_m": 44.4
+            }
+          ],
+          "first_alarm_m": 42.7,
+          "first_alarm_frame": 403,
+          "alarm_held_from_m": 46.2,
+          "first_advisory_or_alarm_m": 42.7,
+          "verdict": "detected"
+        },
+        "small_center": {
+          "in_gauge": true,
+          "visible_frames": 79,
+          "first_visible_m": 128.9,
+          "alarm_frames": 32,
+          "advisory_only_frames": 0,
+          "frames_in_envelope": 63,
+          "alarm_frames_in_envelope": 32,
+          "bins": {
+            "0-50": {
+              "alarm": 28,
+              "advisory_only": 0,
+              "visible": 28
+            },
+            "50-100": {
+              "alarm": 4,
+              "advisory_only": 0,
+              "visible": 31
+            },
+            "100-150": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 20
+            }
+          },
+          "missed_intervals": [
+            {
+              "start_frame": 290,
+              "end_frame": 336,
+              "frames": 47,
+              "from_m": 128.9,
+              "to_m": 57.5
+            }
+          ],
+          "first_alarm_m": 55.8,
+          "first_alarm_frame": 337,
+          "alarm_held_from_m": 60.8,
+          "first_advisory_or_alarm_m": 55.8,
+          "verdict": "detected"
+        },
+        "small_edge_inside": {
+          "in_gauge": true,
+          "visible_frames": 83,
+          "first_visible_m": 154.7,
+          "alarm_frames": 18,
+          "advisory_only_frames": 7,
+          "frames_in_envelope": 16,
+          "alarm_frames_in_envelope": 16,
+          "bins": {
+            "0-50": {
+              "alarm": 18,
+              "advisory_only": 7,
+              "visible": 26
+            },
+            "50-100": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 27
+            },
+            "100-150": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 27
+            },
+            "150-200": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 3
+            }
+          },
+          "missed_intervals": [
+            {
+              "start_frame": 396,
+              "end_frame": 399,
+              "frames": 4,
+              "from_m": 154.7,
+              "to_m": 149.2
+            },
+            {
+              "start_frame": 401,
+              "end_frame": 461,
+              "frames": 61,
+              "from_m": 145.8,
+              "to_m": 36.8
+            }
+          ],
+          "first_alarm_m": 35.0,
+          "first_alarm_frame": 462,
+          "alarm_held_from_m": 38.7,
+          "first_advisory_or_alarm_m": 47.9,
+          "verdict": "detected"
+        },
+        "small_outside_near": {
+          "in_gauge": false,
+          "visible_frames": 112,
+          "first_visible_m": 238.4,
+          "alarm_frames": 0,
+          "advisory_only_frames": 24,
+          "frames_in_envelope": 101,
+          "alarm_frames_in_envelope": 0,
+          "bins": {
+            "0-50": {
+              "alarm": 0,
+              "advisory_only": 24,
+              "visible": 25
+            },
+            "50-100": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 27
+            },
+            "100-150": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 25
+            },
+            "150-200": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 23
+            },
+            "200-300": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 12
+            }
+          },
+          "false_alarm_frames": 0,
+          "false_alarm_from_m": null,
+          "verdict": "advisory"
+        },
+        "big_edge_inside": {
+          "in_gauge": true,
+          "visible_frames": 125,
+          "first_visible_m": 248.6,
+          "alarm_frames": 7,
+          "advisory_only_frames": 1,
+          "frames_in_envelope": 8,
+          "alarm_frames_in_envelope": 5,
+          "bins": {
+            "0-50": {
+              "alarm": 7,
+              "advisory_only": 1,
+              "visible": 25
+            },
+            "50-100": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 26
+            },
+            "100-150": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 26
+            },
+            "150-200": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 26
+            },
+            "200-300": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 22
+            }
+          },
+          "missed_intervals": [
+            {
+              "start_frame": 454,
+              "end_frame": 456,
+              "frames": 3,
+              "from_m": 248.6,
+              "to_m": 244.8
+            },
+            {
+              "start_frame": 458,
+              "end_frame": 463,
+              "frames": 6,
+              "from_m": 241.2,
+              "to_m": 231.9
+            },
+            {
+              "start_frame": 468,
+              "end_frame": 573,
+              "frames": 106,
+              "from_m": 222.6,
+              "to_m": 20.2
+            },
+            {
+              "start_frame": 575,
+              "end_frame": 577,
+              "frames": 3,
+              "from_m": 16.3,
+              "to_m": 12.3
+            }
+          ],
+          "first_alarm_m": 18.3,
+          "first_alarm_frame": 574,
+          "alarm_held_from_m": 10.3,
+          "first_advisory_or_alarm_m": 42.1,
+          "verdict": "detected"
+        },
+        "big_outside": {
+          "in_gauge": false,
+          "visible_frames": 104,
+          "first_visible_m": 249.4,
+          "alarm_frames": 6,
+          "advisory_only_frames": 43,
+          "frames_in_envelope": 52,
+          "alarm_frames_in_envelope": 6,
+          "bins": {
+            "0-50": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 24
+            },
+            "50-100": {
+              "alarm": 0,
+              "advisory_only": 18,
+              "visible": 25
+            },
+            "100-150": {
+              "alarm": 6,
+              "advisory_only": 16,
+              "visible": 25
+            },
+            "150-200": {
+              "alarm": 0,
+              "advisory_only": 3,
+              "visible": 4
+            },
+            "200-300": {
+              "alarm": 0,
+              "advisory_only": 6,
+              "visible": 26
+            }
+          },
+          "false_alarm_frames": 6,
+          "false_alarm_from_m": 142.3,
+          "verdict": "false alarm"
+        },
+        "big_above": {
+          "in_gauge": true,
+          "visible_frames": 124,
+          "first_visible_m": 248.2,
+          "alarm_frames": 56,
+          "advisory_only_frames": 6,
+          "frames_in_envelope": 75,
+          "alarm_frames_in_envelope": 56,
+          "bins": {
+            "0-50": {
+              "alarm": 25,
+              "advisory_only": 0,
+              "visible": 25
+            },
+            "50-100": {
+              "alarm": 25,
+              "advisory_only": 0,
+              "visible": 25
+            },
+            "100-150": {
+              "alarm": 6,
+              "advisory_only": 0,
+              "visible": 25
+            },
+            "150-200": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 24
+            },
+            "200-300": {
+              "alarm": 0,
+              "advisory_only": 6,
+              "visible": 25
+            }
+          },
+          "missed_intervals": [
+            {
+              "start_frame": 559,
+              "end_frame": 626,
+              "frames": 68,
+              "from_m": 248.2,
+              "to_m": 113.5
+            }
+          ],
+          "first_alarm_m": 111.4,
+          "first_alarm_frame": 627,
+          "alarm_held_from_m": 123.6,
+          "first_advisory_or_alarm_m": 238.2,
+          "verdict": "detected"
+        },
+        "long_low_on_rails": {
+          "in_gauge": true,
+          "visible_frames": 86,
+          "first_visible_m": 248.5,
+          "alarm_frames": 52,
+          "advisory_only_frames": 0,
+          "frames_in_envelope": 77,
+          "alarm_frames_in_envelope": 52,
+          "bins": {
+            "0-50": {
+              "alarm": 29,
+              "advisory_only": 0,
+              "visible": 29
+            },
+            "50-100": {
+              "alarm": 23,
+              "advisory_only": 0,
+              "visible": 30
+            },
+            "100-150": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 15
+            },
+            "200-300": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 12
+            }
+          },
+          "missed_intervals": [
+            {
+              "start_frame": 609,
+              "end_frame": 610,
+              "frames": 2,
+              "from_m": 248.5,
+              "to_m": 246.4
+            },
+            {
+              "start_frame": 612,
+              "end_frame": 613,
+              "frames": 2,
+              "from_m": 242.4,
+              "to_m": 240.4
+            },
+            {
+              "start_frame": 615,
+              "end_frame": 617,
+              "frames": 3,
+              "from_m": 236.7,
+              "to_m": 232.2
+            },
+            {
+              "start_frame": 619,
+              "end_frame": 620,
+              "frames": 2,
+              "from_m": 228.2,
+              "to_m": 226.2
+            },
+            {
+              "start_frame": 622,
+              "end_frame": 622,
+              "frames": 1,
+              "from_m": 222.2,
+              "to_m": 222.2
+            },
+            {
+              "start_frame": 624,
+              "end_frame": 624,
+              "frames": 1,
+              "from_m": 218.1,
+              "to_m": 218.1
+            },
+            {
+              "start_frame": 626,
+              "end_frame": 626,
+              "frames": 1,
+              "from_m": 214.1,
+              "to_m": 214.1
+            },
+            {
+              "start_frame": 668,
+              "end_frame": 668,
+              "frames": 1,
+              "from_m": 131.9,
+              "to_m": 131.9
+            },
+            {
+              "start_frame": 671,
+              "end_frame": 673,
+              "frames": 3,
+              "from_m": 126.4,
+              "to_m": 122.9
+            },
+            {
+              "start_frame": 675,
+              "end_frame": 692,
+              "frames": 18,
+              "from_m": 119.4,
+              "to_m": 89.0
+            }
+          ],
+          "first_alarm_m": 87.2,
+          "first_alarm_frame": 693,
+          "alarm_held_from_m": 95.9,
+          "first_advisory_or_alarm_m": 87.2,
+          "verdict": "detected"
+        },
+        "thin_hanging": {
+          "in_gauge": true,
+          "visible_frames": 42,
+          "first_visible_m": 199.7,
+          "alarm_frames": 15,
+          "advisory_only_frames": 0,
+          "frames_in_envelope": 20,
+          "alarm_frames_in_envelope": 14,
+          "bins": {
+            "0-50": {
+              "alarm": 15,
+              "advisory_only": 0,
+              "visible": 24
+            },
+            "50-100": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 10
+            },
+            "100-150": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 3
+            },
+            "150-200": {
+              "alarm": 0,
+              "advisory_only": 0,
+              "visible": 5
+            }
+          },
+          "missed_intervals": [
+            {
+              "start_frame": 686,
+              "end_frame": 687,
+              "frames": 2,
+              "from_m": 199.7,
+              "to_m": 197.9
+            },
+            {
+              "start_frame": 711,
+              "end_frame": 713,
+              "frames": 3,
+              "from_m": 157.3,
+              "to_m": 153.9
+            },
+            {
+              "start_frame": 717,
+              "end_frame": 717,
+              "frames": 1,
+              "from_m": 147.3,
+              "to_m": 147.3
+            },
+            {
+              "start_frame": 722,
+              "end_frame": 723,
+              "frames": 2,
+              "from_m": 139.0,
+              "to_m": 137.4
+            },
+            {
+              "start_frame": 758,
+              "end_frame": 759,
+              "frames": 2,
+              "from_m": 80.6,
+              "to_m": 79.0
+            },
+            {
+              "start_frame": 763,
+              "end_frame": 766,
+              "frames": 4,
+              "from_m": 72.6,
+              "to_m": 67.7
+            },
+            {
+              "start_frame": 770,
+              "end_frame": 771,
+              "frames": 2,
+              "from_m": 61.2,
+              "to_m": 59.6
+            },
+            {
+              "start_frame": 775,
+              "end_frame": 778,
+              "frames": 4,
+              "from_m": 53.1,
+              "to_m": 48.2
+            },
+            {
+              "start_frame": 781,
+              "end_frame": 783,
+              "frames": 3,
+              "from_m": 43.3,
+              "to_m": 40.0
+            },
+            {
+              "start_frame": 785,
+              "end_frame": 788,
+              "frames": 4,
+              "from_m": 36.7,
+              "to_m": 31.8
+            }
+          ],
+          "first_alarm_m": 30.1,
+          "first_alarm_frame": 789,
+          "alarm_held_from_m": 31.8,
+          "first_advisory_or_alarm_m": 30.1,
+          "verdict": "detected"
+        }
+      },
+      "background": {
+        "frames": 1510,
+        "alarm_frames": 447,
+        "background_alarm_frames": 0,
+        "background_alarm_ids": 0
+      },
+      "results": "out/p4/reference/gate/cloud_with_fake_obj.jsonl",
+      "gt": "labels/cloud_with_fake_obj.json"
+    },
+    "clear_distance": {
+      "results": [
+        "out/p4/reference/gate/cloud_with_fake_obj.jsonl"
+      ],
+      "stats": {
+        "frames": 1510,
+        "decisions": {
+          "GO": 737,
+          "STOP": 447,
+          "FAULT": 2,
+          "CAUTION": 324
+        },
+        "clear_distance_m": {
+          "median": 96.7,
+          "p10": 28.5,
+          "mean": 95.9
+        }
+      },
+      "gt": "labels/cloud_with_fake_obj.json",
+      "overclaim": {
+        "tolerance_m": 0.5,
+        "totals": {
+          "target": 19,
+          "target_frames": 505,
+          "intent": 154,
+          "intent_frames": 801,
+          "go_judge": 123,
+          "go_judge_in_envelope": 44,
+          "target_by_decision": {
+            "GO": 16,
+            "CAUTION": 1,
+            "STOP": 2
+          }
+        },
+        "inside_objects": {
+          "big_center": {
+            "frames": 213,
+            "frames_in_envelope": 213,
+            "overclaim": 0,
+            "overclaim_in_envelope": 0,
+            "overclaim_in_envelope_go": 0,
+            "max_excess_m": 0.0
+          },
+          "small_on_rail": {
+            "frames": 49,
+            "frames_in_envelope": 33,
+            "overclaim": 16,
+            "overclaim_in_envelope": 3,
+            "overclaim_in_envelope_go": 3,
+            "max_excess_m": 126.0
+          },
+          "small_center": {
+            "frames": 79,
+            "frames_in_envelope": 63,
+            "overclaim": 26,
+            "overclaim_in_envelope": 11,
+            "overclaim_in_envelope_go": 10,
+            "max_excess_m": 51.7
+          },
+          "small_edge_inside": {
+            "frames": 83,
+            "frames_in_envelope": 16,
+            "overclaim": 24,
+            "overclaim_in_envelope": 0,
+            "overclaim_in_envelope_go": 0,
+            "max_excess_m": 128.2
+          },
+          "big_edge_inside": {
+            "frames": 125,
+            "frames_in_envelope": 8,
+            "overclaim": 53,
+            "overclaim_in_envelope": 1,
+            "overclaim_in_envelope_go": 0,
+            "max_excess_m": 122.9
+          },
+          "big_above": {
+            "frames": 124,
+            "frames_in_envelope": 75,
+            "overclaim": 20,
+            "overclaim_in_envelope": 2,
+            "overclaim_in_envelope_go": 1,
+            "max_excess_m": 51.1
+          },
+          "long_low_on_rails": {
+            "frames": 86,
+            "frames_in_envelope": 77,
+            "overclaim": 2,
+            "overclaim_in_envelope": 2,
+            "overclaim_in_envelope_go": 2,
+            "max_excess_m": 92.5
+          },
+          "thin_hanging": {
+            "frames": 42,
+            "frames_in_envelope": 20,
+            "overclaim": 13,
+            "overclaim_in_envelope": 0,
+            "overclaim_in_envelope_go": 0,
+            "max_excess_m": 136.6
+          }
+        },
+        "outside_objects": {
+          "small_outside_near": {
+            "frames": 112,
+            "clear_stops_at_object": 19
+          },
+          "big_outside": {
+            "frames": 104,
+            "clear_stops_at_object": 3
+          }
+        },
+        "order": [
+          "big_center",
+          "small_center",
+          "small_on_rail",
+          "small_edge_inside",
+          "small_outside_near",
+          "big_edge_inside",
+          "big_outside",
+          "big_above",
+          "long_low_on_rails",
+          "thin_hanging"
+        ]
+      }
+    },
+    "empty_suffix": {
+      "source": "out/p4/reference/gate/cloud_with_fake_obj.jsonl",
+      "first_frame": 804,
+      "last_frame": 1509,
+      "frames": 706,
+      "stop_frames": 0,
+      "background": {
+        "frames": 706,
+        "alarm_frames": 0,
+        "background_alarm_frames": 0,
+        "background_alarm_ids": 0
+      },
+      "objects": {},
+      "interpretation": "Previously inspected empty suffix; not unseen validation."
+    }
+  },
+  "setF": {
+    "curve_edge_paired": {
+      "source": "paired synthetic positives on organizer empty-ride frames",
+      "parameters": {
+        "files": "127,129,131,160,164,175,177",
+        "frames": 220,
+        "kinds": "person,box1.0",
+        "seed": 0,
+        "start_m": 160.0,
+        "lateral_range": "-1.0:1.0",
+        "reflectivity": null,
+        "config_sha256": "a5acd9214d2aeb58bf86e0a3b91685a1f3ab17ebbf60dbfe6b39edbe616a72f6",
+        "speeds_sha256": "05c1006de92d5331871da80999c27fadb2397981863b34b63b0d227dbe6d01f3",
+        "selected_stamps_sha256": "fe450c46232e87282b1eaf0ddfb5759deae9d28fccbcf8f89d8a2230a2213e7f"
+      },
+      "per_kind": {
+        "box1.0": {
+          "paired_sequences": 6,
+          "skipped": 1,
+          "visible": {
+            "legacy": 492,
+            "anchored": 484
+          },
+          "visible_hits": {
+            "legacy": 271,
+            "anchored": 280
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                168,
+                168
+              ],
+              "50-100": [
+                103,
+                202
+              ],
+              "100-150": [
+                0,
+                116
+              ],
+              "150-200": [
+                0,
+                6
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                168,
+                168
+              ],
+              "50-100": [
+                112,
+                208
+              ],
+              "100-150": [
+                0,
+                103
+              ],
+              "150-200": [
+                0,
+                5
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            }
+          },
+          "detected_both": 6,
+          "detected_only": {
+            "legacy": 0,
+            "anchored": 0
+          },
+          "first_median": {
+            "legacy": 75.3,
+            "anchored": 81.3
+          }
+        },
+        "person": {
+          "paired_sequences": 6,
+          "skipped": 1,
+          "visible": {
+            "legacy": 495,
+            "anchored": 476
+          },
+          "visible_hits": {
+            "legacy": 259,
+            "anchored": 248
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                166,
+                168
+              ],
+              "50-100": [
+                93,
+                199
+              ],
+              "100-150": [
+                0,
+                116
+              ],
+              "150-200": [
+                0,
+                12
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                166,
+                168
+              ],
+              "50-100": [
+                82,
+                204
+              ],
+              "100-150": [
+                0,
+                102
+              ],
+              "150-200": [
+                0,
+                2
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            }
+          },
+          "detected_both": 6,
+          "detected_only": {
+            "legacy": 0,
+            "anchored": 0
+          },
+          "first_median": {
+            "legacy": 75.2,
+            "anchored": 69.6
+          }
+        }
+      },
+      "sequences": [
+        {
+          "file0": "new_data_127_0000.npy.zst",
+          "kind": "person",
+          "frames": 182,
+          "first_m": {
+            "legacy": 60.21078288651197,
+            "anchored": 54.06384642445324
+          },
+          "visible": {
+            "legacy": 137,
+            "anchored": 120
+          },
+          "visible_hits": {
+            "legacy": 43,
+            "anchored": 38
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                34,
+                34
+              ],
+              "50-100": [
+                9,
+                43
+              ],
+              "100-150": [
+                0,
+                52
+              ],
+              "150-200": [
+                0,
+                8
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                34,
+                34
+              ],
+              "50-100": [
+                4,
+                44
+              ],
+              "100-150": [
+                0,
+                42
+              ],
+              "150-200": [
+                0,
+                0
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            }
+          },
+          "legacy_only_hits": 5,
+          "anchored_only_hits": 0,
+          "max_axis_delta_m": 17.08,
+          "median_axis_delta_m": 0.34
+        },
+        {
+          "file0": "new_data_127_0000.npy.zst",
+          "kind": "box1.0",
+          "frames": 182,
+          "first_m": {
+            "legacy": 72.92964832789768,
+            "anchored": 82.23151706726438
+          },
+          "visible": {
+            "legacy": 126,
+            "anchored": 119
+          },
+          "visible_hits": {
+            "legacy": 54,
+            "anchored": 57
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                34,
+                34
+              ],
+              "50-100": [
+                20,
+                43
+              ],
+              "100-150": [
+                0,
+                47
+              ],
+              "150-200": [
+                0,
+                2
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                34,
+                34
+              ],
+              "50-100": [
+                23,
+                44
+              ],
+              "100-150": [
+                0,
+                40
+              ],
+              "150-200": [
+                0,
+                1
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 3,
+          "max_axis_delta_m": 17.1,
+          "median_axis_delta_m": 0.35
+        },
+        {
+          "file0": "new_data_129_0000.npy.zst",
+          "kind": "person",
+          "frames": 123,
+          "first_m": {
+            "legacy": 59.68279819763212,
+            "anchored": 59.323878930668755
+          },
+          "visible": {
+            "legacy": 101,
+            "anchored": 100
+          },
+          "visible_hits": {
+            "legacy": 39,
+            "anchored": 39
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                31,
+                31
+              ],
+              "50-100": [
+                8,
+                40
+              ],
+              "100-150": [
+                0,
+                29
+              ],
+              "150-200": [
+                0,
+                1
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                31,
+                31
+              ],
+              "50-100": [
+                8,
+                41
+              ],
+              "100-150": [
+                0,
+                28
+              ],
+              "150-200": [
+                0,
+                0
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 0,
+          "max_axis_delta_m": 7.6,
+          "median_axis_delta_m": 0.13
+        },
+        {
+          "file0": "new_data_129_0000.npy.zst",
+          "kind": "box1.0",
+          "frames": 123,
+          "first_m": {
+            "legacy": 59.68279819763212,
+            "anchored": 59.264027594307365
+          },
+          "visible": {
+            "legacy": 105,
+            "anchored": 101
+          },
+          "visible_hits": {
+            "legacy": 39,
+            "anchored": 39
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                31,
+                31
+              ],
+              "50-100": [
+                8,
+                40
+              ],
+              "100-150": [
+                0,
+                33
+              ],
+              "150-200": [
+                0,
+                1
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                31,
+                31
+              ],
+              "50-100": [
+                8,
+                41
+              ],
+              "100-150": [
+                0,
+                28
+              ],
+              "150-200": [
+                0,
+                1
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 0,
+          "max_axis_delta_m": 7.59,
+          "median_axis_delta_m": 0.15
+        },
+        {
+          "file0": "new_data_131_0000.npy.zst",
+          "kind": "person",
+          "frames": 105,
+          "first_m": {
+            "legacy": 69.47433506677442,
+            "anchored": 70.44285489746053
+          },
+          "visible": {
+            "legacy": 90,
+            "anchored": 88
+          },
+          "visible_hits": {
+            "legacy": 38,
+            "anchored": 39
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                26,
+                28
+              ],
+              "50-100": [
+                12,
+                33
+              ],
+              "100-150": [
+                0,
+                26
+              ],
+              "150-200": [
+                0,
+                3
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                26,
+                28
+              ],
+              "50-100": [
+                13,
+                34
+              ],
+              "100-150": [
+                0,
+                26
+              ],
+              "150-200": [
+                0,
+                0
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 1,
+          "max_axis_delta_m": 4.95,
+          "median_axis_delta_m": 0.12
+        },
+        {
+          "file0": "new_data_131_0000.npy.zst",
+          "kind": "box1.0",
+          "frames": 105,
+          "first_m": {
+            "legacy": 69.47433506677442,
+            "anchored": 70.2745735344182
+          },
+          "visible": {
+            "legacy": 83,
+            "anchored": 84
+          },
+          "visible_hits": {
+            "legacy": 41,
+            "anchored": 42
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                28,
+                28
+              ],
+              "50-100": [
+                13,
+                33
+              ],
+              "100-150": [
+                0,
+                22
+              ],
+              "150-200": [
+                0,
+                0
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                28,
+                28
+              ],
+              "50-100": [
+                14,
+                34
+              ],
+              "100-150": [
+                0,
+                22
+              ],
+              "150-200": [
+                0,
+                0
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 1,
+          "max_axis_delta_m": 4.87,
+          "median_axis_delta_m": 0.15
+        },
+        {
+          "file0": "new_data_160_0000.npy.zst",
+          "kind": "person",
+          "frames": 83,
+          "first_m": {
+            "legacy": 83.95759646823498,
+            "anchored": 83.45144085902366
+          },
+          "visible": {
+            "legacy": 55,
+            "anchored": 54
+          },
+          "visible_hits": {
+            "legacy": 42,
+            "anchored": 42
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                23,
+                23
+              ],
+              "50-100": [
+                19,
+                26
+              ],
+              "100-150": [
+                0,
+                6
+              ],
+              "150-200": [
+                0,
+                0
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                23,
+                23
+              ],
+              "50-100": [
+                19,
+                27
+              ],
+              "100-150": [
+                0,
+                4
+              ],
+              "150-200": [
+                0,
+                0
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 0,
+          "max_axis_delta_m": 5.87,
+          "median_axis_delta_m": 0.11
+        },
+        {
+          "file0": "new_data_160_0000.npy.zst",
+          "kind": "box1.0",
+          "frames": 83,
+          "first_m": {
+            "legacy": 83.95759646823498,
+            "anchored": 89.05985356364734
+          },
+          "visible": {
+            "legacy": 59,
+            "anchored": 61
+          },
+          "visible_hits": {
+            "legacy": 42,
+            "anchored": 45
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                23,
+                23
+              ],
+              "50-100": [
+                19,
+                26
+              ],
+              "100-150": [
+                0,
+                10
+              ],
+              "150-200": [
+                0,
+                0
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                23,
+                23
+              ],
+              "50-100": [
+                22,
+                28
+              ],
+              "100-150": [
+                0,
+                8
+              ],
+              "150-200": [
+                0,
+                2
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 3,
+          "max_axis_delta_m": 5.91,
+          "median_axis_delta_m": 0.12
+        },
+        {
+          "file0": "new_data_164_0000.npy.zst",
+          "kind": "person",
+          "skipped": {
+            "legacy": null,
+            "anchored": "motion step 24.5 m has no reliable near-track overlap"
+          }
+        },
+        {
+          "file0": "new_data_164_0000.npy.zst",
+          "kind": "box1.0",
+          "skipped": {
+            "legacy": null,
+            "anchored": "motion step 24.5 m has no reliable near-track overlap"
+          }
+        },
+        {
+          "file0": "new_data_175_0000.npy.zst",
+          "kind": "person",
+          "frames": 92,
+          "first_m": {
+            "legacy": 80.96191732340253,
+            "anchored": 68.85499313149167
+          },
+          "visible": {
+            "legacy": 53,
+            "anchored": 53
+          },
+          "visible_hits": {
+            "legacy": 45,
+            "anchored": 38
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                26,
+                26
+              ],
+              "50-100": [
+                19,
+                26
+              ],
+              "100-150": [
+                0,
+                1
+              ],
+              "150-200": [
+                0,
+                0
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                26,
+                26
+              ],
+              "50-100": [
+                12,
+                26
+              ],
+              "100-150": [
+                0,
+                0
+              ],
+              "150-200": [
+                0,
+                1
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            }
+          },
+          "legacy_only_hits": 7,
+          "anchored_only_hits": 0,
+          "max_axis_delta_m": 11.27,
+          "median_axis_delta_m": 0.1
+        },
+        {
+          "file0": "new_data_175_0000.npy.zst",
+          "kind": "box1.0",
+          "frames": 92,
+          "first_m": {
+            "legacy": 77.63679109716517,
+            "anchored": 80.30867709321785
+          },
+          "visible": {
+            "legacy": 61,
+            "anchored": 60
+          },
+          "visible_hits": {
+            "legacy": 43,
+            "anchored": 45
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                26,
+                26
+              ],
+              "50-100": [
+                17,
+                30
+              ],
+              "100-150": [
+                0,
+                2
+              ],
+              "150-200": [
+                0,
+                3
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                26,
+                26
+              ],
+              "50-100": [
+                19,
+                30
+              ],
+              "100-150": [
+                0,
+                4
+              ],
+              "150-200": [
+                0,
+                0
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 2,
+          "max_axis_delta_m": 11.34,
+          "median_axis_delta_m": 0.1
+        },
+        {
+          "file0": "new_data_177_0000.npy.zst",
+          "kind": "person",
+          "frames": 96,
+          "first_m": {
+            "legacy": 90.51513610660773,
+            "anchored": 89.65430684820113
+          },
+          "visible": {
+            "legacy": 59,
+            "anchored": 61
+          },
+          "visible_hits": {
+            "legacy": 52,
+            "anchored": 52
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                26,
+                26
+              ],
+              "50-100": [
+                26,
+                31
+              ],
+              "100-150": [
+                0,
+                2
+              ],
+              "150-200": [
+                0,
+                0
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                26,
+                26
+              ],
+              "50-100": [
+                26,
+                32
+              ],
+              "100-150": [
+                0,
+                2
+              ],
+              "150-200": [
+                0,
+                1
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 0,
+          "max_axis_delta_m": 1.58,
+          "median_axis_delta_m": 0.12
+        },
+        {
+          "file0": "new_data_177_0000.npy.zst",
+          "kind": "box1.0",
+          "frames": 96,
+          "first_m": {
+            "legacy": 90.51513610660773,
+            "anchored": 89.60663065467021
+          },
+          "visible": {
+            "legacy": 58,
+            "anchored": 59
+          },
+          "visible_hits": {
+            "legacy": 52,
+            "anchored": 52
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                26,
+                26
+              ],
+              "50-100": [
+                26,
+                30
+              ],
+              "100-150": [
+                0,
+                2
+              ],
+              "150-200": [
+                0,
+                0
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                26,
+                26
+              ],
+              "50-100": [
+                26,
+                31
+              ],
+              "100-150": [
+                0,
+                1
+              ],
+              "150-200": [
+                0,
+                1
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 0,
+          "max_axis_delta_m": 1.57,
+          "median_axis_delta_m": 0.12
+        }
+      ]
+    },
+    "straight_paired": {
+      "source": "paired synthetic positives on organizer empty-ride frames",
+      "parameters": {
+        "files": "46,68,98,140,168,172",
+        "frames": 110,
+        "kinds": "person,box1.0,box0.5,trolley,cable",
+        "seed": 0,
+        "start_m": 220.0,
+        "lateral_range": "-0.6:0.6",
+        "reflectivity": null,
+        "config_sha256": "309c822258b61fad1f149d8a542ba96d25dd69c25554762d0d22e49f1d25b711",
+        "speeds_sha256": "05c1006de92d5331871da80999c27fadb2397981863b34b63b0d227dbe6d01f3",
+        "selected_stamps_sha256": "bcb415ef3e7b5a8572deba13f421282578afa7af58f8f4737736f9410ea0e39c"
+      },
+      "per_kind": {
+        "box0.5": {
+          "paired_sequences": 5,
+          "skipped": 1,
+          "visible": {
+            "legacy": 421,
+            "anchored": 425
+          },
+          "visible_hits": {
+            "legacy": 20,
+            "anchored": 23
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                18,
+                98
+              ],
+              "50-100": [
+                2,
+                130
+              ],
+              "100-150": [
+                0,
+                119
+              ],
+              "150-200": [
+                0,
+                62
+              ],
+              "200-250": [
+                0,
+                12
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                18,
+                98
+              ],
+              "50-100": [
+                5,
+                130
+              ],
+              "100-150": [
+                0,
+                119
+              ],
+              "150-200": [
+                0,
+                66
+              ],
+              "200-250": [
+                0,
+                12
+              ]
+            }
+          },
+          "detected_both": 1,
+          "detected_only": {
+            "legacy": 0,
+            "anchored": 1
+          },
+          "first_median": {
+            "legacy": 51.9,
+            "anchored": 51.9
+          }
+        },
+        "box1.0": {
+          "paired_sequences": 5,
+          "skipped": 1,
+          "visible": {
+            "legacy": 497,
+            "anchored": 502
+          },
+          "visible_hits": {
+            "legacy": 249,
+            "anchored": 250
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                98,
+                98
+              ],
+              "50-100": [
+                120,
+                130
+              ],
+              "100-150": [
+                31,
+                125
+              ],
+              "150-200": [
+                0,
+                112
+              ],
+              "200-250": [
+                0,
+                32
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                98,
+                98
+              ],
+              "50-100": [
+                120,
+                130
+              ],
+              "100-150": [
+                31,
+                125
+              ],
+              "150-200": [
+                1,
+                113
+              ],
+              "200-250": [
+                0,
+                36
+              ]
+            }
+          },
+          "detected_both": 5,
+          "detected_only": {
+            "legacy": 0,
+            "anchored": 0
+          },
+          "first_median": {
+            "legacy": 116.1,
+            "anchored": 109.9
+          }
+        },
+        "cable": {
+          "paired_sequences": 5,
+          "skipped": 1,
+          "visible": {
+            "legacy": 290,
+            "anchored": 311
+          },
+          "visible_hits": {
+            "legacy": 99,
+            "anchored": 88
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                40,
+                63
+              ],
+              "50-100": [
+                47,
+                72
+              ],
+              "100-150": [
+                12,
+                80
+              ],
+              "150-200": [
+                0,
+                53
+              ],
+              "200-250": [
+                0,
+                22
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                41,
+                61
+              ],
+              "50-100": [
+                42,
+                72
+              ],
+              "100-150": [
+                5,
+                87
+              ],
+              "150-200": [
+                0,
+                67
+              ],
+              "200-250": [
+                0,
+                24
+              ]
+            }
+          },
+          "detected_both": 5,
+          "detected_only": {
+            "legacy": 0,
+            "anchored": 0
+          },
+          "first_median": {
+            "legacy": 103.9,
+            "anchored": 101.7
+          }
+        },
+        "person": {
+          "paired_sequences": 5,
+          "skipped": 1,
+          "visible": {
+            "legacy": 485,
+            "anchored": 485
+          },
+          "visible_hits": {
+            "legacy": 325,
+            "anchored": 328
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                98,
+                98
+              ],
+              "50-100": [
+                122,
+                130
+              ],
+              "100-150": [
+                94,
+                125
+              ],
+              "150-200": [
+                11,
+                101
+              ],
+              "200-250": [
+                0,
+                31
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                98,
+                98
+              ],
+              "50-100": [
+                122,
+                130
+              ],
+              "100-150": [
+                97,
+                125
+              ],
+              "150-200": [
+                11,
+                101
+              ],
+              "200-250": [
+                0,
+                31
+              ]
+            }
+          },
+          "detected_both": 5,
+          "detected_only": {
+            "legacy": 0,
+            "anchored": 0
+          },
+          "first_median": {
+            "legacy": 149.9,
+            "anchored": 154.1
+          }
+        },
+        "trolley": {
+          "paired_sequences": 5,
+          "skipped": 1,
+          "visible": {
+            "legacy": 508,
+            "anchored": 507
+          },
+          "visible_hits": {
+            "legacy": 258,
+            "anchored": 252
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                98,
+                98
+              ],
+              "50-100": [
+                120,
+                130
+              ],
+              "100-150": [
+                34,
+                125
+              ],
+              "150-200": [
+                6,
+                111
+              ],
+              "200-250": [
+                0,
+                44
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                98,
+                98
+              ],
+              "50-100": [
+                119,
+                130
+              ],
+              "100-150": [
+                32,
+                125
+              ],
+              "150-200": [
+                3,
+                110
+              ],
+              "200-250": [
+                0,
+                44
+              ]
+            }
+          },
+          "detected_both": 5,
+          "detected_only": {
+            "legacy": 0,
+            "anchored": 0
+          },
+          "first_median": {
+            "legacy": 148.1,
+            "anchored": 148.1
+          }
+        }
+      },
+      "sequences": [
+        {
+          "file0": "new_data_46_0000.npy.zst",
+          "kind": "person",
+          "frames": 102,
+          "first_m": {
+            "legacy": 169.21513825419802,
+            "anchored": 179.84118014747344
+          },
+          "visible": {
+            "legacy": 94,
+            "anchored": 97
+          },
+          "visible_hits": {
+            "legacy": 55,
+            "anchored": 49
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                20,
+                20
+              ],
+              "50-100": [
+                17,
+                25
+              ],
+              "100-150": [
+                9,
+                23
+              ],
+              "150-200": [
+                9,
+                20
+              ],
+              "200-250": [
+                0,
+                6
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                20,
+                20
+              ],
+              "50-100": [
+                17,
+                25
+              ],
+              "100-150": [
+                10,
+                23
+              ],
+              "150-200": [
+                2,
+                23
+              ],
+              "200-250": [
+                0,
+                6
+              ]
+            }
+          },
+          "legacy_only_hits": 8,
+          "anchored_only_hits": 2,
+          "max_axis_delta_m": 0.79,
+          "median_axis_delta_m": 0.05
+        },
+        {
+          "file0": "new_data_46_0000.npy.zst",
+          "kind": "box1.0",
+          "frames": 102,
+          "first_m": {
+            "legacy": 146.02216128597644,
+            "anchored": 79.05410957260386
+          },
+          "visible": {
+            "legacy": 94,
+            "anchored": 95
+          },
+          "visible_hits": {
+            "legacy": 37,
+            "anchored": 35
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                20,
+                20
+              ],
+              "50-100": [
+                15,
+                25
+              ],
+              "100-150": [
+                2,
+                23
+              ],
+              "150-200": [
+                0,
+                20
+              ],
+              "200-250": [
+                0,
+                6
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                20,
+                20
+              ],
+              "50-100": [
+                15,
+                25
+              ],
+              "100-150": [
+                0,
+                23
+              ],
+              "150-200": [
+                0,
+                21
+              ],
+              "200-250": [
+                0,
+                6
+              ]
+            }
+          },
+          "legacy_only_hits": 2,
+          "anchored_only_hits": 0,
+          "max_axis_delta_m": 0.79,
+          "median_axis_delta_m": 0.05
+        },
+        {
+          "file0": "new_data_46_0000.npy.zst",
+          "kind": "box0.5",
+          "frames": 102,
+          "first_m": {
+            "legacy": null,
+            "anchored": 76.93624707641875
+          },
+          "visible": {
+            "legacy": 81,
+            "anchored": 82
+          },
+          "visible_hits": {
+            "legacy": 0,
+            "anchored": 3
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                0,
+                20
+              ],
+              "50-100": [
+                0,
+                25
+              ],
+              "100-150": [
+                0,
+                21
+              ],
+              "150-200": [
+                0,
+                12
+              ],
+              "200-250": [
+                0,
+                3
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                0,
+                20
+              ],
+              "50-100": [
+                3,
+                25
+              ],
+              "100-150": [
+                0,
+                21
+              ],
+              "150-200": [
+                0,
+                13
+              ],
+              "200-250": [
+                0,
+                3
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 3,
+          "max_axis_delta_m": 0.79,
+          "median_axis_delta_m": 0.05
+        },
+        {
+          "file0": "new_data_46_0000.npy.zst",
+          "kind": "trolley",
+          "frames": 102,
+          "first_m": {
+            "legacy": 156.60342737679764,
+            "anchored": 160.81382771927935
+          },
+          "visible": {
+            "legacy": 99,
+            "anchored": 97
+          },
+          "visible_hits": {
+            "legacy": 46,
+            "anchored": 42
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                20,
+                20
+              ],
+              "50-100": [
+                15,
+                25
+              ],
+              "100-150": [
+                8,
+                23
+              ],
+              "150-200": [
+                3,
+                23
+              ],
+              "200-250": [
+                0,
+                8
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                20,
+                20
+              ],
+              "50-100": [
+                15,
+                25
+              ],
+              "100-150": [
+                5,
+                23
+              ],
+              "150-200": [
+                2,
+                20
+              ],
+              "200-250": [
+                0,
+                9
+              ]
+            }
+          },
+          "legacy_only_hits": 8,
+          "anchored_only_hits": 4,
+          "max_axis_delta_m": 0.79,
+          "median_axis_delta_m": 0.05
+        },
+        {
+          "file0": "new_data_46_0000.npy.zst",
+          "kind": "cable",
+          "frames": 102,
+          "first_m": {
+            "legacy": 56.42330566502429,
+            "anchored": 58.46728419568241
+          },
+          "visible": {
+            "legacy": 57,
+            "anchored": 68
+          },
+          "visible_hits": {
+            "legacy": 8,
+            "anchored": 14
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                6,
+                12
+              ],
+              "50-100": [
+                2,
+                11
+              ],
+              "100-150": [
+                0,
+                16
+              ],
+              "150-200": [
+                0,
+                14
+              ],
+              "200-250": [
+                0,
+                4
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                11,
+                14
+              ],
+              "50-100": [
+                3,
+                17
+              ],
+              "100-150": [
+                0,
+                18
+              ],
+              "150-200": [
+                0,
+                12
+              ],
+              "200-250": [
+                0,
+                7
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 6,
+          "max_axis_delta_m": 0.78,
+          "median_axis_delta_m": 0.05
+        },
+        {
+          "file0": "new_data_68_0000.npy.zst",
+          "kind": "person",
+          "frames": 106,
+          "first_m": {
+            "legacy": 144.10411691379912,
+            "anchored": 154.10120927640477
+          },
+          "visible": {
+            "legacy": 90,
+            "anchored": 88
+          },
+          "visible_hits": {
+            "legacy": 54,
+            "anchored": 59
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                21,
+                21
+              ],
+              "50-100": [
+                25,
+                25
+              ],
+              "100-150": [
+                8,
+                24
+              ],
+              "150-200": [
+                0,
+                18
+              ],
+              "200-250": [
+                0,
+                2
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                21,
+                21
+              ],
+              "50-100": [
+                25,
+                25
+              ],
+              "100-150": [
+                10,
+                24
+              ],
+              "150-200": [
+                3,
+                16
+              ],
+              "200-250": [
+                0,
+                2
+              ]
+            }
+          },
+          "legacy_only_hits": 2,
+          "anchored_only_hits": 7,
+          "max_axis_delta_m": 0.66,
+          "median_axis_delta_m": 0.04
+        },
+        {
+          "file0": "new_data_68_0000.npy.zst",
+          "kind": "box1.0",
+          "frames": 106,
+          "first_m": {
+            "legacy": 109.93179787404264,
+            "anchored": 109.93175090146825
+          },
+          "visible": {
+            "legacy": 98,
+            "anchored": 99
+          },
+          "visible_hits": {
+            "legacy": 51,
+            "anchored": 51
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                21,
+                21
+              ],
+              "50-100": [
+                25,
+                25
+              ],
+              "100-150": [
+                5,
+                24
+              ],
+              "150-200": [
+                0,
+                22
+              ],
+              "200-250": [
+                0,
+                6
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                21,
+                21
+              ],
+              "50-100": [
+                25,
+                25
+              ],
+              "100-150": [
+                5,
+                24
+              ],
+              "150-200": [
+                0,
+                22
+              ],
+              "200-250": [
+                0,
+                7
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 0,
+          "max_axis_delta_m": 0.66,
+          "median_axis_delta_m": 0.04
+        },
+        {
+          "file0": "new_data_68_0000.npy.zst",
+          "kind": "box0.5",
+          "frames": 106,
+          "first_m": {
+            "legacy": null,
+            "anchored": null
+          },
+          "visible": {
+            "legacy": 83,
+            "anchored": 82
+          },
+          "visible_hits": {
+            "legacy": 0,
+            "anchored": 0
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                0,
+                21
+              ],
+              "50-100": [
+                0,
+                25
+              ],
+              "100-150": [
+                0,
+                22
+              ],
+              "150-200": [
+                0,
+                14
+              ],
+              "200-250": [
+                0,
+                1
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                0,
+                21
+              ],
+              "50-100": [
+                0,
+                25
+              ],
+              "100-150": [
+                0,
+                22
+              ],
+              "150-200": [
+                0,
+                13
+              ],
+              "200-250": [
+                0,
+                1
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 0,
+          "max_axis_delta_m": 0.66,
+          "median_axis_delta_m": 0.04
+        },
+        {
+          "file0": "new_data_68_0000.npy.zst",
+          "kind": "trolley",
+          "frames": 106,
+          "first_m": {
+            "legacy": 112.0249610088801,
+            "anchored": 112.02426192118706
+          },
+          "visible": {
+            "legacy": 94,
+            "anchored": 94
+          },
+          "visible_hits": {
+            "legacy": 52,
+            "anchored": 52
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                21,
+                21
+              ],
+              "50-100": [
+                25,
+                25
+              ],
+              "100-150": [
+                6,
+                24
+              ],
+              "150-200": [
+                0,
+                17
+              ],
+              "200-250": [
+                0,
+                7
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                21,
+                21
+              ],
+              "50-100": [
+                25,
+                25
+              ],
+              "100-150": [
+                6,
+                24
+              ],
+              "150-200": [
+                0,
+                17
+              ],
+              "200-250": [
+                0,
+                7
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 0,
+          "max_axis_delta_m": 0.66,
+          "median_axis_delta_m": 0.05
+        },
+        {
+          "file0": "new_data_68_0000.npy.zst",
+          "kind": "cable",
+          "frames": 106,
+          "first_m": {
+            "legacy": 107.97488553778187,
+            "anchored": 101.72449915622806
+          },
+          "visible": {
+            "legacy": 60,
+            "anchored": 63
+          },
+          "visible_hits": {
+            "legacy": 23,
+            "anchored": 19
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                6,
+                13
+              ],
+              "50-100": [
+                13,
+                14
+              ],
+              "100-150": [
+                4,
+                16
+              ],
+              "150-200": [
+                0,
+                13
+              ],
+              "200-250": [
+                0,
+                4
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                6,
+                12
+              ],
+              "50-100": [
+                12,
+                14
+              ],
+              "100-150": [
+                1,
+                19
+              ],
+              "150-200": [
+                0,
+                13
+              ],
+              "200-250": [
+                0,
+                5
+              ]
+            }
+          },
+          "legacy_only_hits": 6,
+          "anchored_only_hits": 2,
+          "max_axis_delta_m": 0.66,
+          "median_axis_delta_m": 0.04
+        },
+        {
+          "file0": "new_data_98_0000.npy.zst",
+          "kind": "person",
+          "frames": 106,
+          "first_m": {
+            "legacy": 152.04458009308337,
+            "anchored": 158.05941360485332
+          },
+          "visible": {
+            "legacy": 98,
+            "anchored": 97
+          },
+          "visible_hits": {
+            "legacy": 72,
+            "anchored": 75
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                21,
+                21
+              ],
+              "50-100": [
+                25,
+                25
+              ],
+              "100-150": [
+                24,
+                24
+              ],
+              "150-200": [
+                2,
+                20
+              ],
+              "200-250": [
+                0,
+                8
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                21,
+                21
+              ],
+              "50-100": [
+                25,
+                25
+              ],
+              "100-150": [
+                24,
+                24
+              ],
+              "150-200": [
+                5,
+                19
+              ],
+              "200-250": [
+                0,
+                8
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 3,
+          "max_axis_delta_m": 1.06,
+          "median_axis_delta_m": 0.52
+        },
+        {
+          "file0": "new_data_98_0000.npy.zst",
+          "kind": "box1.0",
+          "frames": 106,
+          "first_m": {
+            "legacy": 105.97210338680824,
+            "anchored": 105.97018891174876
+          },
+          "visible": {
+            "legacy": 99,
+            "anchored": 100
+          },
+          "visible_hits": {
+            "legacy": 49,
+            "anchored": 49
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                21,
+                21
+              ],
+              "50-100": [
+                25,
+                25
+              ],
+              "100-150": [
+                3,
+                24
+              ],
+              "150-200": [
+                0,
+                23
+              ],
+              "200-250": [
+                0,
+                6
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                21,
+                21
+              ],
+              "50-100": [
+                25,
+                25
+              ],
+              "100-150": [
+                3,
+                24
+              ],
+              "150-200": [
+                0,
+                23
+              ],
+              "200-250": [
+                0,
+                7
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 0,
+          "max_axis_delta_m": 1.06,
+          "median_axis_delta_m": 0.51
+        },
+        {
+          "file0": "new_data_98_0000.npy.zst",
+          "kind": "box0.5",
+          "frames": 106,
+          "first_m": {
+            "legacy": null,
+            "anchored": null
+          },
+          "visible": {
+            "legacy": 87,
+            "anchored": 89
+          },
+          "visible_hits": {
+            "legacy": 0,
+            "anchored": 0
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                0,
+                21
+              ],
+              "50-100": [
+                0,
+                25
+              ],
+              "100-150": [
+                0,
+                24
+              ],
+              "150-200": [
+                0,
+                12
+              ],
+              "200-250": [
+                0,
+                5
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                0,
+                21
+              ],
+              "50-100": [
+                0,
+                25
+              ],
+              "100-150": [
+                0,
+                24
+              ],
+              "150-200": [
+                0,
+                14
+              ],
+              "200-250": [
+                0,
+                5
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 0,
+          "max_axis_delta_m": 1.06,
+          "median_axis_delta_m": 0.53
+        },
+        {
+          "file0": "new_data_98_0000.npy.zst",
+          "kind": "trolley",
+          "frames": 106,
+          "first_m": {
+            "legacy": 103.87502584064566,
+            "anchored": 103.87276869395193
+          },
+          "visible": {
+            "legacy": 103,
+            "anchored": 102
+          },
+          "visible_hits": {
+            "legacy": 48,
+            "anchored": 47
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                21,
+                21
+              ],
+              "50-100": [
+                25,
+                25
+              ],
+              "100-150": [
+                2,
+                24
+              ],
+              "150-200": [
+                0,
+                24
+              ],
+              "200-250": [
+                0,
+                9
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                21,
+                21
+              ],
+              "50-100": [
+                24,
+                25
+              ],
+              "100-150": [
+                2,
+                24
+              ],
+              "150-200": [
+                0,
+                24
+              ],
+              "200-250": [
+                0,
+                8
+              ]
+            }
+          },
+          "legacy_only_hits": 1,
+          "anchored_only_hits": 0,
+          "max_axis_delta_m": 1.06,
+          "median_axis_delta_m": 0.53
+        },
+        {
+          "file0": "new_data_98_0000.npy.zst",
+          "kind": "cable",
+          "frames": 106,
+          "first_m": {
+            "legacy": 103.87502584064566,
+            "anchored": 59.26541654504686
+          },
+          "visible": {
+            "legacy": 64,
+            "anchored": 50
+          },
+          "visible_hits": {
+            "legacy": 29,
+            "anchored": 12
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                8,
+                14
+              ],
+              "50-100": [
+                19,
+                19
+              ],
+              "100-150": [
+                2,
+                18
+              ],
+              "150-200": [
+                0,
+                8
+              ],
+              "200-250": [
+                0,
+                5
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                9,
+                14
+              ],
+              "50-100": [
+                3,
+                10
+              ],
+              "100-150": [
+                0,
+                9
+              ],
+              "150-200": [
+                0,
+                14
+              ],
+              "200-250": [
+                0,
+                3
+              ]
+            }
+          },
+          "legacy_only_hits": 21,
+          "anchored_only_hits": 4,
+          "max_axis_delta_m": 1.05,
+          "median_axis_delta_m": 0.52
+        },
+        {
+          "file0": "new_data_140_0000.npy.zst",
+          "kind": "person",
+          "frames": 110,
+          "first_m": {
+            "legacy": 149.5663297829377,
+            "anchored": 151.3155326226171
+          },
+          "visible": {
+            "legacy": 102,
+            "anchored": 103
+          },
+          "visible_hits": {
+            "legacy": 72,
+            "anchored": 73
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                18,
+                18
+              ],
+              "50-100": [
+                27,
+                27
+              ],
+              "100-150": [
+                27,
+                27
+              ],
+              "150-200": [
+                0,
+                22
+              ],
+              "200-250": [
+                0,
+                8
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                18,
+                18
+              ],
+              "50-100": [
+                27,
+                27
+              ],
+              "100-150": [
+                27,
+                27
+              ],
+              "150-200": [
+                1,
+                22
+              ],
+              "200-250": [
+                0,
+                9
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 1,
+          "max_axis_delta_m": 0.53,
+          "median_axis_delta_m": 0.03
+        },
+        {
+          "file0": "new_data_140_0000.npy.zst",
+          "kind": "box1.0",
+          "frames": 110,
+          "first_m": {
+            "legacy": 149.5663297829377,
+            "anchored": 151.31555809569434
+          },
+          "visible": {
+            "legacy": 106,
+            "anchored": 107
+          },
+          "visible_hits": {
+            "legacy": 57,
+            "anchored": 60
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                18,
+                18
+              ],
+              "50-100": [
+                27,
+                27
+              ],
+              "100-150": [
+                12,
+                27
+              ],
+              "150-200": [
+                0,
+                27
+              ],
+              "200-250": [
+                0,
+                7
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                18,
+                18
+              ],
+              "50-100": [
+                27,
+                27
+              ],
+              "100-150": [
+                14,
+                27
+              ],
+              "150-200": [
+                1,
+                27
+              ],
+              "200-250": [
+                0,
+                8
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 3,
+          "max_axis_delta_m": 0.53,
+          "median_axis_delta_m": 0.04
+        },
+        {
+          "file0": "new_data_140_0000.npy.zst",
+          "kind": "box0.5",
+          "frames": 110,
+          "first_m": {
+            "legacy": null,
+            "anchored": null
+          },
+          "visible": {
+            "legacy": 85,
+            "anchored": 86
+          },
+          "visible_hits": {
+            "legacy": 0,
+            "anchored": 0
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                0,
+                18
+              ],
+              "50-100": [
+                0,
+                27
+              ],
+              "100-150": [
+                0,
+                26
+              ],
+              "150-200": [
+                0,
+                14
+              ],
+              "200-250": [
+                0,
+                0
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                0,
+                18
+              ],
+              "50-100": [
+                0,
+                27
+              ],
+              "100-150": [
+                0,
+                26
+              ],
+              "150-200": [
+                0,
+                14
+              ],
+              "200-250": [
+                0,
+                1
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 0,
+          "max_axis_delta_m": 0.53,
+          "median_axis_delta_m": 0.03
+        },
+        {
+          "file0": "new_data_140_0000.npy.zst",
+          "kind": "trolley",
+          "frames": 110,
+          "first_m": {
+            "legacy": 193.99496672565937,
+            "anchored": 151.315622965479
+          },
+          "visible": {
+            "legacy": 106,
+            "anchored": 107
+          },
+          "visible_hits": {
+            "legacy": 54,
+            "anchored": 53
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                18,
+                18
+              ],
+              "50-100": [
+                27,
+                27
+              ],
+              "100-150": [
+                6,
+                27
+              ],
+              "150-200": [
+                3,
+                24
+              ],
+              "200-250": [
+                0,
+                10
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                18,
+                18
+              ],
+              "50-100": [
+                27,
+                27
+              ],
+              "100-150": [
+                7,
+                27
+              ],
+              "150-200": [
+                1,
+                25
+              ],
+              "200-250": [
+                0,
+                10
+              ]
+            }
+          },
+          "legacy_only_hits": 3,
+          "anchored_only_hits": 2,
+          "max_axis_delta_m": 0.53,
+          "median_axis_delta_m": 0.04
+        },
+        {
+          "file0": "new_data_140_0000.npy.zst",
+          "kind": "cable",
+          "frames": 110,
+          "first_m": {
+            "legacy": 93.83378925254479,
+            "anchored": 103.11074872870672
+          },
+          "visible": {
+            "legacy": 57,
+            "anchored": 64
+          },
+          "visible_hits": {
+            "legacy": 21,
+            "anchored": 25
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                12,
+                13
+              ],
+              "50-100": [
+                9,
+                16
+              ],
+              "100-150": [
+                0,
+                15
+              ],
+              "150-200": [
+                0,
+                10
+              ],
+              "200-250": [
+                0,
+                3
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                10,
+                11
+              ],
+              "50-100": [
+                13,
+                16
+              ],
+              "100-150": [
+                2,
+                21
+              ],
+              "150-200": [
+                0,
+                13
+              ],
+              "200-250": [
+                0,
+                3
+              ]
+            }
+          },
+          "legacy_only_hits": 4,
+          "anchored_only_hits": 8,
+          "max_axis_delta_m": 0.53,
+          "median_axis_delta_m": 0.04
+        },
+        {
+          "file0": "new_data_168_0000.npy.zst",
+          "kind": "person",
+          "skipped": {
+            "legacy": null,
+            "anchored": "motion step 65.4 m has no reliable near-track overlap"
+          }
+        },
+        {
+          "file0": "new_data_168_0000.npy.zst",
+          "kind": "box1.0",
+          "skipped": {
+            "legacy": null,
+            "anchored": "motion step 65.4 m has no reliable near-track overlap"
+          }
+        },
+        {
+          "file0": "new_data_168_0000.npy.zst",
+          "kind": "box0.5",
+          "skipped": {
+            "legacy": null,
+            "anchored": "motion step 65.4 m has no reliable near-track overlap"
+          }
+        },
+        {
+          "file0": "new_data_168_0000.npy.zst",
+          "kind": "trolley",
+          "skipped": {
+            "legacy": null,
+            "anchored": "motion step 65.4 m has no reliable near-track overlap"
+          }
+        },
+        {
+          "file0": "new_data_168_0000.npy.zst",
+          "kind": "cable",
+          "skipped": {
+            "legacy": null,
+            "anchored": "motion step 65.4 m has no reliable near-track overlap"
+          }
+        },
+        {
+          "file0": "new_data_172_0000.npy.zst",
+          "kind": "person",
+          "frames": 110,
+          "first_m": {
+            "legacy": 149.90791223132757,
+            "anchored": 149.9076962971753
+          },
+          "visible": {
+            "legacy": 101,
+            "anchored": 100
+          },
+          "visible_hits": {
+            "legacy": 72,
+            "anchored": 72
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                18,
+                18
+              ],
+              "50-100": [
+                28,
+                28
+              ],
+              "100-150": [
+                26,
+                27
+              ],
+              "150-200": [
+                0,
+                21
+              ],
+              "200-250": [
+                0,
+                7
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                18,
+                18
+              ],
+              "50-100": [
+                28,
+                28
+              ],
+              "100-150": [
+                26,
+                27
+              ],
+              "150-200": [
+                0,
+                21
+              ],
+              "200-250": [
+                0,
+                6
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 0,
+          "max_axis_delta_m": 0.41,
+          "median_axis_delta_m": 0.03
+        },
+        {
+          "file0": "new_data_172_0000.npy.zst",
+          "kind": "box1.0",
+          "frames": 110,
+          "first_m": {
+            "legacy": 116.09511258017089,
+            "anchored": 116.09497493537293
+          },
+          "visible": {
+            "legacy": 100,
+            "anchored": 101
+          },
+          "visible_hits": {
+            "legacy": 55,
+            "anchored": 55
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                18,
+                18
+              ],
+              "50-100": [
+                28,
+                28
+              ],
+              "100-150": [
+                9,
+                27
+              ],
+              "150-200": [
+                0,
+                20
+              ],
+              "200-250": [
+                0,
+                7
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                18,
+                18
+              ],
+              "50-100": [
+                28,
+                28
+              ],
+              "100-150": [
+                9,
+                27
+              ],
+              "150-200": [
+                0,
+                20
+              ],
+              "200-250": [
+                0,
+                8
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 0,
+          "max_axis_delta_m": 0.41,
+          "median_axis_delta_m": 0.03
+        },
+        {
+          "file0": "new_data_172_0000.npy.zst",
+          "kind": "box0.5",
+          "frames": 110,
+          "first_m": {
+            "legacy": 51.87277514515446,
+            "anchored": 51.87288317127489
+          },
+          "visible": {
+            "legacy": 85,
+            "anchored": 86
+          },
+          "visible_hits": {
+            "legacy": 20,
+            "anchored": 20
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                18,
+                18
+              ],
+              "50-100": [
+                2,
+                28
+              ],
+              "100-150": [
+                0,
+                26
+              ],
+              "150-200": [
+                0,
+                10
+              ],
+              "200-250": [
+                0,
+                3
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                18,
+                18
+              ],
+              "50-100": [
+                2,
+                28
+              ],
+              "100-150": [
+                0,
+                26
+              ],
+              "150-200": [
+                0,
+                12
+              ],
+              "200-250": [
+                0,
+                2
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 0,
+          "max_axis_delta_m": 0.41,
+          "median_axis_delta_m": 0.03
+        },
+        {
+          "file0": "new_data_172_0000.npy.zst",
+          "kind": "trolley",
+          "frames": 110,
+          "first_m": {
+            "legacy": 148.05972270339538,
+            "anchored": 148.0595455659533
+          },
+          "visible": {
+            "legacy": 106,
+            "anchored": 107
+          },
+          "visible_hits": {
+            "legacy": 58,
+            "anchored": 58
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                18,
+                18
+              ],
+              "50-100": [
+                28,
+                28
+              ],
+              "100-150": [
+                12,
+                27
+              ],
+              "150-200": [
+                0,
+                23
+              ],
+              "200-250": [
+                0,
+                10
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                18,
+                18
+              ],
+              "50-100": [
+                28,
+                28
+              ],
+              "100-150": [
+                12,
+                27
+              ],
+              "150-200": [
+                0,
+                24
+              ],
+              "200-250": [
+                0,
+                10
+              ]
+            }
+          },
+          "legacy_only_hits": 0,
+          "anchored_only_hits": 0,
+          "max_axis_delta_m": 0.41,
+          "median_axis_delta_m": 0.03
+        },
+        {
+          "file0": "new_data_172_0000.npy.zst",
+          "kind": "cable",
+          "frames": 110,
+          "first_m": {
+            "legacy": 112.52125894427063,
+            "anchored": 103.32176035726107
+          },
+          "visible": {
+            "legacy": 52,
+            "anchored": 66
+          },
+          "visible_hits": {
+            "legacy": 18,
+            "anchored": 18
+          },
+          "recall_by_bin": {
+            "legacy": {
+              "0-50": [
+                8,
+                11
+              ],
+              "50-100": [
+                4,
+                12
+              ],
+              "100-150": [
+                6,
+                15
+              ],
+              "150-200": [
+                0,
+                8
+              ],
+              "200-250": [
+                0,
+                6
+              ]
+            },
+            "anchored": {
+              "0-50": [
+                5,
+                10
+              ],
+              "50-100": [
+                11,
+                15
+              ],
+              "100-150": [
+                2,
+                20
+              ],
+              "150-200": [
+                0,
+                15
+              ],
+              "200-250": [
+                0,
+                6
+              ]
+            }
+          },
+          "legacy_only_hits": 8,
+          "anchored_only_hits": 8,
+          "max_axis_delta_m": 0.41,
+          "median_axis_delta_m": 0.03
+        }
+      ]
+    }
+  },
+  "setS": {
+    "schema": "resense-p4-setS-paired-v1",
+    "date": "2026-09-28",
+    "detector_commit": "43a0e7d9dc6a8683b1656de7b9d9c9cf601a58f1",
+    "config": "configs/default.yaml",
+    "backgrounds": [
+      "roundT_doubleT",
+      "roundT_pressureGate_roundT",
+      "roundT_squareT_pressureGate_squareT"
+    ],
+    "sampling": {
+      "every": 10,
+      "kinds": [
+        "person",
+        "box0.5",
+        "box1.0",
+        "plank",
+        "trolley"
+      ],
+      "distances_m": [
+        10,
+        250
+      ],
+      "negative_fraction": 0.2,
+      "seed": 1,
+      "per_frame": 1,
+      "rng_protocol": "separate_planning_and_per_frame_rendering_v1"
+    },
+    "geometry_verification": {
+      "sampled_objects": 108,
+      "frame_keys_identical": true,
+      "sample_identity_and_trajectory_identical": true,
+      "normalized_trajectory_sha256": "a250ab116130d80c316f2c5331ba8c651741eecf6fc3297deb0b18725fe02e95",
+      "bed_base_z_differs_from_legacy": 108,
+      "rendered_point_count_differs": 62,
+      "only_intended_fields_excluded_from_geometry_check": [
+        "base_z",
+        "n_points"
+      ]
+    },
+    "results": {
+      "bed": {
+        "objects": 108,
+        "in_gauge": 91,
+        "visible_in_gauge": 67,
+        "visible_hits": 22,
+        "by_class": {
+          "box1.0": {
+            "visible": 14,
+            "hits": 5
+          },
+          "trolley": {
+            "visible": 18,
+            "hits": 9
+          },
+          "box0.5": {
+            "visible": 13,
+            "hits": 0
+          },
+          "person": {
+            "visible": 9,
+            "hits": 8
+          },
+          "plank": {
+            "visible": 13,
+            "hits": 0
+          }
+        },
+        "background_alarm_frames": 3,
+        "background_alarm_ids": 2,
+        "by_background": {
+          "roundT_doubleT": {
+            "frames": 26,
+            "objects": 26,
+            "static_fp_events": 1,
+            "background_alarm_frames": 2
+          },
+          "roundT_pressureGate_roundT": {
+            "frames": 27,
+            "objects": 27,
+            "static_fp_events": 1,
+            "background_alarm_frames": 1
+          },
+          "roundT_squareT_pressureGate_squareT": {
+            "frames": 55,
+            "objects": 55,
+            "static_fp_events": 0,
+            "background_alarm_frames": 0
+          }
+        }
+      },
+      "legacy": {
+        "objects": 108,
+        "in_gauge": 91,
+        "visible_in_gauge": 68,
+        "visible_hits": 31,
+        "by_class": {
+          "box1.0": {
+            "visible": 14,
+            "hits": 5
+          },
+          "trolley": {
+            "visible": 18,
+            "hits": 13
+          },
+          "box0.5": {
+            "visible": 13,
+            "hits": 1
+          },
+          "person": {
+            "visible": 9,
+            "hits": 8
+          },
+          "plank": {
+            "visible": 14,
+            "hits": 4
+          }
+        },
+        "background_alarm_frames": 2,
+        "background_alarm_ids": 2,
+        "by_background": {
+          "roundT_doubleT": {
+            "frames": 26,
+            "objects": 26,
+            "static_fp_events": 1,
+            "background_alarm_frames": 1
+          },
+          "roundT_pressureGate_roundT": {
+            "frames": 27,
+            "objects": 27,
+            "static_fp_events": 0,
+            "background_alarm_frames": 0
+          },
+          "roundT_squareT_pressureGate_squareT": {
+            "frames": 55,
+            "objects": 55,
+            "static_fp_events": 1,
+            "background_alarm_frames": 1
+          }
+        }
+      }
+    },
+    "paired_visible_in_gauge": {
+      "visible_in_gauge_both": 65,
+      "hits_both": 22,
+      "bed_only": 0,
+      "legacy_only": 9,
+      "by_distance_bin": {
+        "0-50": {
+          "visible": 18,
+          "bed_hits": 13,
+          "legacy_hits": 16
+        },
+        "50-100": {
+          "visible": 23,
+          "bed_hits": 9,
+          "legacy_hits": 13
+        },
+        "100-150": {
+          "visible": 15,
+          "bed_hits": 0,
+          "legacy_hits": 2
+        },
+        "150-250": {
+          "visible": 9,
+          "bed_hits": 0,
+          "legacy_hits": 0
+        }
+      }
+    },
+    "interpretation": "Synthetic objects on real backgrounds; placement is not surveyed ground truth. Static repeat-for-confirmation counts are not operational rates."
+  },
+  "candidate_decisions": "docs/evidence/results/p4_candidate_screen_results_2026-09-28.json",
+  "false_alarm_inventory": "docs/evidence/results/p4_false_alarm_inventory_2026-09-28.json",
+  "limitations": [
+    "Set O is previously inspected, not unseen validation.",
+    "The ride has no real obstacles.",
+    "Set F and set S use synthetic objects; bed/rail anchoring is not surveyed ground truth.",
+    "No candidate improved its registered set O target; detector defaults remain frozen.",
+    "The 2026-09-28 independent score remains 66.5/100; this P4 run is not independently rescored."
+  ]
+}

@@ -1,0 +1,217 @@
+{
+  "schema": "resense-runtime-diagnosis-v1",
+  "scope": "Read-only analysis of preserved quiet positive captures; no frozen production changes.",
+  "percentile": "Linear interpolation at (n-1)*p, over recorded per-frame values.",
+  "runs": {
+    "baseline": {
+      "capture": "/home/likikikpa/ReSense-cycle-data/baseline_raw_node/quiet_positive/status.jsonl",
+      "capture_sha256": "25cfdae2fb74de05026251ec5e36b855e477c3c46475485db7caf8cc72e94697",
+      "node_log_sha256": "327cf447a3afbd059f628193b421e761d880fb990926ae333e08563737251b6e",
+      "frames": 166,
+      "valid_frames": 0,
+      "freshness_reasons": {
+        "source_stale": 166
+      },
+      "catchup_frames": 166,
+      "catchup_skipped": 0,
+      "node_ms": {
+        "decode_ms": {
+          "n": 166,
+          "mean": 32.00289156626506,
+          "min": 26.48,
+          "p50": 30.85,
+          "p95": 39.629999999999995,
+          "max": 47.1
+        },
+        "detect_ms": {
+          "n": 166,
+          "mean": 87.44132530120481,
+          "min": 72.02,
+          "p50": 84.53,
+          "p95": 103.6875,
+          "max": 121.22
+        },
+        "latency_ms": {
+          "n": 166,
+          "mean": 119.44379518072289,
+          "min": 105.89,
+          "p50": 116.66,
+          "p95": 137.165,
+          "max": 159.94
+        }
+      },
+      "detector_timing_total_ms": {
+        "n": 166,
+        "mean": 41.825602409638556,
+        "min": 33.11,
+        "p50": 38.985,
+        "p95": 58.2775,
+        "max": 72.81
+      },
+      "post_timing_tail_ms": {
+        "n": 166,
+        "mean": 45.615722891566264,
+        "min": 35.709999999999994,
+        "p50": 45.235,
+        "p95": 53.8,
+        "max": 60.78
+      },
+      "freshness_s": {
+        "source_age_s": {
+          "stats": {
+            "n": 166,
+            "mean": 4.261763071439352,
+            "min": 0.6045558452606201,
+            "p50": 4.353881120681763,
+            "p95": 6.771043121814728,
+            "max": 6.903989553451538
+          },
+          "first": 0.6045558452606201,
+          "last": 6.607203245162964
+        },
+        "residence_age_s": {
+          "stats": {
+            "n": 166,
+            "mean": 4.162972404590372,
+            "min": 0.3547158430001218,
+            "p50": 4.272306985999876,
+            "p95": 6.681045707500061,
+            "max": 6.855441122000229
+          },
+          "first": 0.3547158430001218,
+          "last": 6.493876665999778
+        },
+        "queue_lag_s": {
+          "stats": {
+            "n": 166,
+            "mean": 3.8415504701166268,
+            "min": 0.8001439571380615,
+            "p50": 4.099959492683411,
+            "p95": 6.174939215183258,
+            "max": 6.299947023391724
+          },
+          "first": 0.8001439571380615,
+          "last": 3.4999120235443115
+        }
+      },
+      "input_slots": 921600,
+      "kept_points": {
+        "n": 166,
+        "mean": 340185.8373493976,
+        "min": 334954,
+        "p50": 340692.5,
+        "p95": 340969.75,
+        "max": 341065
+      }
+    },
+    "candidate": {
+      "capture": "/home/likikikpa/ReSense-cycle-data/candidate_raw_node/quiet_positive/status.jsonl",
+      "capture_sha256": "7e028150e41cbc1de5090b7ab4119e480386ab4479e52281a3b97d8f96a7a07c",
+      "node_log_sha256": "838e527235406719a57fd0c310b4ba5989175f6bdb071debe88dc1f3b1decb1c",
+      "frames": 198,
+      "valid_frames": 0,
+      "freshness_reasons": {
+        "source_stale": 198
+      },
+      "catchup_frames": 198,
+      "catchup_skipped": 0,
+      "node_ms": {
+        "decode_ms": {
+          "n": 198,
+          "mean": 26.19358585858586,
+          "min": 21.05,
+          "p50": 25.965,
+          "p95": 32.503,
+          "max": 41.29
+        },
+        "detect_ms": {
+          "n": 198,
+          "mean": 77.21313131313131,
+          "min": 65.74,
+          "p50": 73.935,
+          "p95": 93.30799999999998,
+          "max": 109.38
+        },
+        "latency_ms": {
+          "n": 198,
+          "mean": 103.40651515151515,
+          "min": 88.42,
+          "p50": 100.03,
+          "p95": 125.01699999999997,
+          "max": 134.54
+        }
+      },
+      "detector_timing_total_ms": {
+        "n": 198,
+        "mean": 36.38505050505051,
+        "min": 28.7,
+        "p50": 33.225,
+        "p95": 52.68799999999999,
+        "max": 59.53
+      },
+      "post_timing_tail_ms": {
+        "n": 198,
+        "mean": 40.828080808080806,
+        "min": 34.85999999999999,
+        "p50": 40.209999999999994,
+        "p95": 48.4615,
+        "max": 56.05
+      },
+      "freshness_s": {
+        "source_age_s": {
+          "stats": {
+            "n": 198,
+            "mean": 2.506398895774225,
+            "min": 0.5867788791656494,
+            "p50": 2.8104543685913086,
+            "p95": 3.298631763458251,
+            "max": 3.476294994354248
+          },
+          "first": 0.5867788791656494,
+          "last": 3.476294994354248
+        },
+        "residence_age_s": {
+          "stats": {
+            "n": 198,
+            "mean": 2.4221616843232083,
+            "min": 0.2936334619998888,
+            "p50": 2.7517505964997326,
+            "p95": 3.234664891300508,
+            "max": 3.3675195239993627
+          },
+          "first": 0.2936334619998888,
+          "last": 3.3605321220002224
+        },
+        "queue_lag_s": {
+          "stats": {
+            "n": 198,
+            "mean": 2.1363520808894223,
+            "min": 0.2999739646911621,
+            "p50": 2.5000155568122864,
+            "p95": 3.000030040740967,
+            "max": 3.199985980987549
+          },
+          "first": 1.000188946723938,
+          "last": 0.2999739646911621
+        }
+      },
+      "input_slots": 921600,
+      "kept_points": {
+        "n": 198,
+        "mean": 340282.2272727273,
+        "min": 334954,
+        "p50": 340721.5,
+        "p95": 340960.9,
+        "max": 341065
+      }
+    }
+  },
+  "probe": {
+    "script": "probe.py.txt",
+    "script_sha256": "7abbf26ea32393d7deedf1e4cfe504e2fe2795c07f7589c3d19f14af9a14f652",
+    "report": "probe.json",
+    "report_sha256": "aee1d0422bf9e2fce9b1d85e839c2e497474677a4fed97d0d8635f673d8b2a95",
+    "image": "sha256:ca5ce7502cca717f581ea7de09306b0e00e3bbe78fc138dfc9ae79632fdeebb6",
+    "limitations": "One repeated original cloud, warm cache; no extrapolation to full-speed ROS acceptance."
+  }
+}

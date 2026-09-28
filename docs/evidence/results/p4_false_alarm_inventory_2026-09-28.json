@@ -1,0 +1,1984 @@
+{
+  "schema": "resense-p4-false-alarm-inventory-v1",
+  "date": "2026-09-28",
+  "detector_commit": "43a0e7d9dc6a8683b1656de7b9d9c9cf601a58f1",
+  "gate": "docs/evidence/results/p4_full_data_2026-09-28/regression_gate.json",
+  "source": "out/p4/reference/gate/*.jsonl; per-recording cached stamps from /data/cache; no event-rate denominator inferred from frame count alone",
+  "false_alarm_rates": {
+    "five_empty_recordings": {
+      "recorded_span_s": 229.775793,
+      "events": 11,
+      "stop_episodes": 13,
+      "alarm_frames": 40
+    },
+    "organizer_ride": {
+      "recorded_span_s": 1199.8834691047668,
+      "distance_km_estimate": 13.0,
+      "events": 32,
+      "stop_episodes": 31,
+      "alarm_frames": 130,
+      "events_per_min": 1.6002,
+      "events_per_km_approx": 2.462,
+      "distance_note": "13 km is the existing ride-distance estimate; route distance was not independently surveyed in this run."
+    }
+  },
+  "recordings": [
+    {
+      "recording": "doubleT_platform",
+      "type": "empty recording",
+      "frames": 345,
+      "recorded_span_s": 34.419566,
+      "false_alarm_frames": 2,
+      "false_alarm_events": 3,
+      "stop_episodes": 1,
+      "events_per_recorded_min": 5.2296,
+      "source_jsonl_sha256": "0c3296d3ff26248a43bef59aff8805836e764c331112a6893d1288cc363cc087"
+    },
+    {
+      "recording": "roundT_doubleT",
+      "type": "empty recording",
+      "frames": 252,
+      "recorded_span_s": 25.071971,
+      "false_alarm_frames": 0,
+      "false_alarm_events": 0,
+      "stop_episodes": 0,
+      "events_per_recorded_min": 0.0,
+      "source_jsonl_sha256": "ae44f6a7306d0bfd4fe0c1b1ffc2607432859561eab1dec4a846cab177b53817"
+    },
+    {
+      "recording": "roundT_pressureGate_roundT",
+      "type": "empty recording",
+      "frames": 268,
+      "recorded_span_s": 26.69878,
+      "false_alarm_frames": 0,
+      "false_alarm_events": 0,
+      "stop_episodes": 0,
+      "events_per_recorded_min": 0.0,
+      "source_jsonl_sha256": "53f31719952b1d88d2ee1b376bdfb033f34bc7f5662140acce4085a5137ff053"
+    },
+    {
+      "recording": "roundT_squareT_pressureGate_squareT",
+      "type": "empty recording",
+      "frames": 545,
+      "recorded_span_s": 55.3775,
+      "false_alarm_frames": 0,
+      "false_alarm_events": 0,
+      "stop_episodes": 0,
+      "events_per_recorded_min": 0.0,
+      "source_jsonl_sha256": "e7a091204c9960fce9e1fcf6ceee74cf6304b962b9718f6d3cbaf99e558a68d7"
+    },
+    {
+      "recording": "squareT_platform_squareT_switch",
+      "type": "empty recording",
+      "frames": 877,
+      "recorded_span_s": 88.207976,
+      "false_alarm_frames": 38,
+      "false_alarm_events": 8,
+      "stop_episodes": 12,
+      "events_per_recorded_min": 5.4417,
+      "source_jsonl_sha256": "e89da3c8ff57a6462389d3c6fe89de9c9bd9e801e1b23d59dba09a3e21226c80"
+    },
+    {
+      "recording": "new_data_0",
+      "type": "ride segment",
+      "frames": 1409,
+      "recorded_span_s": 140.806197,
+      "false_alarm_frames": 12,
+      "false_alarm_events": 2,
+      "stop_episodes": 3,
+      "events_per_recorded_min": 0.8522,
+      "source_jsonl_sha256": "30d28d9171a964c7c31c2874610c265b27e7a53040ed82a27948bbace944ebeb"
+    },
+    {
+      "recording": "new_data_1",
+      "type": "ride segment",
+      "frames": 1409,
+      "recorded_span_s": 140.817606,
+      "false_alarm_frames": 14,
+      "false_alarm_events": 9,
+      "stop_episodes": 3,
+      "events_per_recorded_min": 3.8347,
+      "source_jsonl_sha256": "b515a861138429649af7487e22d3c6516229e7a8473b7f6226f338d67e70723a"
+    },
+    {
+      "recording": "new_data_2",
+      "type": "ride segment",
+      "frames": 1409,
+      "recorded_span_s": 140.813428,
+      "false_alarm_frames": 8,
+      "false_alarm_events": 3,
+      "stop_episodes": 3,
+      "events_per_recorded_min": 1.2783,
+      "source_jsonl_sha256": "72bac7ad244d256f5d9a933ccab621b9cb33bc89a9578e33c74d4cf00edc4b50"
+    },
+    {
+      "recording": "new_data_3",
+      "type": "ride segment",
+      "frames": 1409,
+      "recorded_span_s": 140.813884,
+      "false_alarm_frames": 2,
+      "false_alarm_events": 1,
+      "stop_episodes": 1,
+      "events_per_recorded_min": 0.4261,
+      "source_jsonl_sha256": "84c7cec4c9720d708a8fa17ed92743e30bcea7832068cd86b1a9f033e4ba084e"
+    },
+    {
+      "recording": "new_data_4",
+      "type": "ride segment",
+      "frames": 1409,
+      "recorded_span_s": 140.812773,
+      "false_alarm_frames": 20,
+      "false_alarm_events": 6,
+      "stop_episodes": 4,
+      "events_per_recorded_min": 2.5566,
+      "source_jsonl_sha256": "971ed51accd9a0805feca7e74a1d77c7ab2f8099079ff60267e21a55b6ce5d24"
+    },
+    {
+      "recording": "new_data_5",
+      "type": "ride segment",
+      "frames": 1409,
+      "recorded_span_s": 148.207498,
+      "false_alarm_frames": 36,
+      "false_alarm_events": 4,
+      "stop_episodes": 7,
+      "events_per_recorded_min": 1.6194,
+      "source_jsonl_sha256": "1d18d65dd3852eb51201af214a0d7eb70a87a9b68ad34c344bd3d58c735cac45"
+    },
+    {
+      "recording": "new_data_6",
+      "type": "ride segment",
+      "frames": 1409,
+      "recorded_span_s": 168.817701,
+      "false_alarm_frames": 27,
+      "false_alarm_events": 4,
+      "stop_episodes": 6,
+      "events_per_recorded_min": 1.4217,
+      "source_jsonl_sha256": "838ec441baa46335c6d8c120b5a6583308bd7213a6149335b2cf3069fd0e809f"
+    },
+    {
+      "recording": "new_data_7",
+      "type": "ride segment",
+      "frames": 1408,
+      "recorded_span_s": 178.110329,
+      "false_alarm_frames": 11,
+      "false_alarm_events": 3,
+      "stop_episodes": 4,
+      "events_per_recorded_min": 1.0106,
+      "source_jsonl_sha256": "cdbe694315b26cf1256534b9084476fcce71c34add89cee10304ba1e4ae9f316"
+    }
+  ],
+  "outside_object_false_alarms": {
+    "set": "cloud_with_fake_obj (organizer synthetic obstacles)",
+    "object": "big_outside",
+    "frames": 6,
+    "track_ids": [
+      202
+    ],
+    "distance_range_m": [
+      132.68,
+      142.35
+    ],
+    "observed_cause": "outside-envelope organizer object; detector alarm is a false STOP for the labelled clearance gauge.",
+    "hits": [
+      {
+        "frame": 563,
+        "frame_id": "cloud_with_fake_obj_0563",
+        "stamp": 1790252293.534991,
+        "object": "big_outside",
+        "track_id": 202,
+        "distance_m": 142.35,
+        "zone": "gauge",
+        "reason": "",
+        "kind": ""
+      },
+      {
+        "frame": 564,
+        "frame_id": "cloud_with_fake_obj_0564",
+        "stamp": 1790252293.6350372,
+        "object": "big_outside",
+        "track_id": 202,
+        "distance_m": 140.23,
+        "zone": "gauge",
+        "reason": "",
+        "kind": ""
+      },
+      {
+        "frame": 565,
+        "frame_id": "cloud_with_fake_obj_0565",
+        "stamp": 1790252293.751919,
+        "object": "big_outside",
+        "track_id": 202,
+        "distance_m": 138.25,
+        "zone": "gauge",
+        "reason": "",
+        "kind": ""
+      },
+      {
+        "frame": 566,
+        "frame_id": "cloud_with_fake_obj_0566",
+        "stamp": 1790252293.837489,
+        "object": "big_outside",
+        "track_id": 202,
+        "distance_m": 136.26,
+        "zone": "gauge",
+        "reason": "",
+        "kind": ""
+      },
+      {
+        "frame": 567,
+        "frame_id": "cloud_with_fake_obj_0567",
+        "stamp": 1790252293.9492776,
+        "object": "big_outside",
+        "track_id": 202,
+        "distance_m": 134.28,
+        "zone": "gauge",
+        "reason": "",
+        "kind": ""
+      },
+      {
+        "frame": 568,
+        "frame_id": "cloud_with_fake_obj_0568",
+        "stamp": 1790252294.0394049,
+        "object": "big_outside",
+        "track_id": 202,
+        "distance_m": 132.68,
+        "zone": "gauge",
+        "reason": "",
+        "kind": ""
+      }
+    ],
+    "background_alarm_frames": 0
+  },
+  "events": [
+    {
+      "recording": "doubleT_platform",
+      "track_id": 46,
+      "type": "empty recording",
+      "alarm_hit_frames": 2,
+      "frame_intervals": [
+        {
+          "first_frame": 36,
+          "last_frame": 37,
+          "first_frame_id": "doubleT_platform_0036",
+          "last_frame_id": "doubleT_platform_0037",
+          "first_stamp": 1788359716.1939085,
+          "last_stamp": 1788359716.2910013,
+          "alarm_frames": 2
+        }
+      ],
+      "distance_range_m": [
+        36.26,
+        37.19
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        0.7,
+        0.95
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "No event-specific visual/point-support review in this pass; cause remains uncertain."
+    },
+    {
+      "recording": "doubleT_platform",
+      "track_id": 47,
+      "type": "empty recording",
+      "alarm_hit_frames": 2,
+      "frame_intervals": [
+        {
+          "first_frame": 36,
+          "last_frame": 37,
+          "first_frame_id": "doubleT_platform_0036",
+          "last_frame_id": "doubleT_platform_0037",
+          "first_stamp": 1788359716.1939085,
+          "last_stamp": 1788359716.2910013,
+          "alarm_frames": 2
+        }
+      ],
+      "distance_range_m": [
+        34.79,
+        35.5
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        "low"
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "No event-specific visual/point-support review in this pass; cause remains uncertain."
+    },
+    {
+      "recording": "doubleT_platform",
+      "track_id": 49,
+      "type": "empty recording",
+      "alarm_hit_frames": 2,
+      "frame_intervals": [
+        {
+          "first_frame": 36,
+          "last_frame": 37,
+          "first_frame_id": "doubleT_platform_0036",
+          "last_frame_id": "doubleT_platform_0037",
+          "first_stamp": 1788359716.1939085,
+          "last_stamp": 1788359716.2910013,
+          "alarm_frames": 2
+        }
+      ],
+      "distance_range_m": [
+        37.86,
+        38.11
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        "low"
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "No event-specific visual/point-support review in this pass; cause remains uncertain."
+    },
+    {
+      "recording": "squareT_platform_squareT_switch",
+      "track_id": 158,
+      "type": "empty recording",
+      "alarm_hit_frames": 4,
+      "frame_intervals": [
+        {
+          "first_frame": 312,
+          "last_frame": 313,
+          "first_frame_id": "squareT_platform_squareT_switch_0312",
+          "last_frame_id": "squareT_platform_squareT_switch_0313",
+          "first_stamp": 1788358475.139941,
+          "last_stamp": 1788358475.2396214,
+          "alarm_frames": 2
+        },
+        {
+          "first_frame": 316,
+          "last_frame": 317,
+          "first_frame_id": "squareT_platform_squareT_switch_0316",
+          "last_frame_id": "squareT_platform_squareT_switch_0317",
+          "first_stamp": 1788358475.5444882,
+          "last_stamp": 1788358475.6450703,
+          "alarm_frames": 2
+        }
+      ],
+      "distance_range_m": [
+        82.0,
+        82.95
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        0.35,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "No event-specific visual/point-support review in this pass; cause remains uncertain."
+    },
+    {
+      "recording": "squareT_platform_squareT_switch",
+      "track_id": 218,
+      "type": "empty recording",
+      "alarm_hit_frames": 8,
+      "frame_intervals": [
+        {
+          "first_frame": 437,
+          "last_frame": 438,
+          "first_frame_id": "squareT_platform_squareT_switch_0437",
+          "last_frame_id": "squareT_platform_squareT_switch_0438",
+          "first_stamp": 1788358487.653072,
+          "last_stamp": 1788358487.7581007,
+          "alarm_frames": 2
+        },
+        {
+          "first_frame": 490,
+          "last_frame": 490,
+          "first_frame_id": "squareT_platform_squareT_switch_0490",
+          "last_frame_id": "squareT_platform_squareT_switch_0490",
+          "first_stamp": 1788358492.940096,
+          "last_stamp": 1788358492.940096,
+          "alarm_frames": 1
+        },
+        {
+          "first_frame": 522,
+          "last_frame": 524,
+          "first_frame_id": "squareT_platform_squareT_switch_0522",
+          "last_frame_id": "squareT_platform_squareT_switch_0524",
+          "first_stamp": 1788358496.146656,
+          "last_stamp": 1788358496.34942,
+          "alarm_frames": 3
+        },
+        {
+          "first_frame": 527,
+          "last_frame": 528,
+          "first_frame_id": "squareT_platform_squareT_switch_0527",
+          "last_frame_id": "squareT_platform_squareT_switch_0528",
+          "first_stamp": 1788358496.64733,
+          "last_stamp": 1788358496.774796,
+          "alarm_frames": 2
+        }
+      ],
+      "distance_range_m": [
+        82.87,
+        84.41
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        0.35,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "No event-specific visual/point-support review in this pass; cause remains uncertain."
+    },
+    {
+      "recording": "squareT_platform_squareT_switch",
+      "track_id": 242,
+      "type": "empty recording",
+      "alarm_hit_frames": 2,
+      "frame_intervals": [
+        {
+          "first_frame": 500,
+          "last_frame": 501,
+          "first_frame_id": "squareT_platform_squareT_switch_0500",
+          "last_frame_id": "squareT_platform_squareT_switch_0501",
+          "first_stamp": 1788358493.9371715,
+          "last_stamp": 1788358494.0472097,
+          "alarm_frames": 2
+        }
+      ],
+      "distance_range_m": [
+        147.49,
+        147.49
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "No event-specific visual/point-support review in this pass; cause remains uncertain."
+    },
+    {
+      "recording": "squareT_platform_squareT_switch",
+      "track_id": 271,
+      "type": "empty recording",
+      "alarm_hit_frames": 1,
+      "frame_intervals": [
+        {
+          "first_frame": 580,
+          "last_frame": 580,
+          "first_frame_id": "squareT_platform_squareT_switch_0580",
+          "last_frame_id": "squareT_platform_squareT_switch_0580",
+          "first_stamp": 1788358501.956797,
+          "last_stamp": 1788358501.956797,
+          "alarm_frames": 1
+        }
+      ],
+      "distance_range_m": [
+        147.46,
+        147.46
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        "beyond_height_ref"
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        1.0,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "No event-specific visual/point-support review in this pass; cause remains uncertain."
+    },
+    {
+      "recording": "squareT_platform_squareT_switch",
+      "track_id": 287,
+      "type": "empty recording",
+      "alarm_hit_frames": 2,
+      "frame_intervals": [
+        {
+          "first_frame": 612,
+          "last_frame": 613,
+          "first_frame_id": "squareT_platform_squareT_switch_0612",
+          "last_frame_id": "squareT_platform_squareT_switch_0613",
+          "first_stamp": 1788358505.1415896,
+          "last_stamp": 1788358505.2356844,
+          "alarm_frames": 2
+        }
+      ],
+      "distance_range_m": [
+        94.16,
+        94.37
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "No event-specific visual/point-support review in this pass; cause remains uncertain."
+    },
+    {
+      "recording": "squareT_platform_squareT_switch",
+      "track_id": 298,
+      "type": "empty recording",
+      "alarm_hit_frames": 3,
+      "frame_intervals": [
+        {
+          "first_frame": 640,
+          "last_frame": 642,
+          "first_frame_id": "squareT_platform_squareT_switch_0640",
+          "last_frame_id": "squareT_platform_squareT_switch_0642",
+          "first_stamp": 1788358507.9425876,
+          "last_stamp": 1788358508.1444519,
+          "alarm_frames": 3
+        }
+      ],
+      "distance_range_m": [
+        147.44,
+        147.49
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        "",
+        "beyond_height_ref"
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        1.0,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "No event-specific visual/point-support review in this pass; cause remains uncertain."
+    },
+    {
+      "recording": "squareT_platform_squareT_switch",
+      "track_id": 304,
+      "type": "empty recording",
+      "alarm_hit_frames": 1,
+      "frame_intervals": [
+        {
+          "first_frame": 644,
+          "last_frame": 644,
+          "first_frame_id": "squareT_platform_squareT_switch_0644",
+          "last_frame_id": "squareT_platform_squareT_switch_0644",
+          "first_stamp": 1788358508.3494601,
+          "last_stamp": 1788358508.3494601,
+          "alarm_frames": 1
+        }
+      ],
+      "distance_range_m": [
+        82.9,
+        82.9
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        "column"
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        1.0,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "No event-specific visual/point-support review in this pass; cause remains uncertain."
+    },
+    {
+      "recording": "squareT_platform_squareT_switch",
+      "track_id": 314,
+      "type": "empty recording",
+      "alarm_hit_frames": 17,
+      "frame_intervals": [
+        {
+          "first_frame": 692,
+          "last_frame": 708,
+          "first_frame_id": "squareT_platform_squareT_switch_0692",
+          "last_frame_id": "squareT_platform_squareT_switch_0708",
+          "first_stamp": 1788358513.1555815,
+          "last_stamp": 1788358514.7470274,
+          "alarm_frames": 17
+        }
+      ],
+      "distance_range_m": [
+        138.21,
+        146.06
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        "",
+        "beyond_axis"
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "No event-specific visual/point-support review in this pass; cause remains uncertain."
+    },
+    {
+      "recording": "new_data_0",
+      "track_id": 3,
+      "type": "ride segment",
+      "alarm_hit_frames": 8,
+      "frame_intervals": [
+        {
+          "first_frame": 23,
+          "last_frame": 30,
+          "first_frame_id": "new_data_0_0023",
+          "last_frame_id": "new_data_0_0030",
+          "first_stamp": 1789642928.4523444,
+          "last_stamp": 1789642929.1554022,
+          "alarm_frames": 8
+        }
+      ],
+      "distance_range_m": [
+        137.94,
+        143.58
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        "",
+        "beyond_axis"
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        1.0,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_0",
+      "track_id": 383,
+      "type": "ride segment",
+      "alarm_hit_frames": 4,
+      "frame_intervals": [
+        {
+          "first_frame": 1378,
+          "last_frame": 1378,
+          "first_frame_id": "new_data_27_0001",
+          "last_frame_id": "new_data_27_0001",
+          "first_stamp": 1789643063.9621851,
+          "last_stamp": 1789643063.9621851,
+          "alarm_frames": 1
+        },
+        {
+          "first_frame": 1393,
+          "last_frame": 1395,
+          "first_frame_id": "new_data_27_0016",
+          "last_frame_id": "new_data_27_0018",
+          "first_stamp": 1789643065.4621916,
+          "last_stamp": 1789643065.6602852,
+          "alarm_frames": 3
+        }
+      ],
+      "distance_range_m": [
+        121.96,
+        138.92
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        "",
+        "column"
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        1.0,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_1",
+      "track_id": 74,
+      "type": "ride segment",
+      "alarm_hit_frames": 1,
+      "frame_intervals": [
+        {
+          "first_frame": 438,
+          "last_frame": 438,
+          "first_frame_id": "new_data_36_0011",
+          "last_frame_id": "new_data_36_0011",
+          "first_stamp": 1789643110.8629305,
+          "last_stamp": 1789643110.8629305,
+          "alarm_frames": 1
+        }
+      ],
+      "distance_range_m": [
+        155.44,
+        155.44
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        1.0,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_1",
+      "track_id": 286,
+      "type": "ride segment",
+      "alarm_hit_frames": 11,
+      "frame_intervals": [
+        {
+          "first_frame": 1259,
+          "last_frame": 1269,
+          "first_frame_id": "new_data_52_0016",
+          "last_frame_id": "new_data_52_0026",
+          "first_stamp": 1789643192.9709792,
+          "last_stamp": 1789643193.9650462,
+          "alarm_frames": 11
+        }
+      ],
+      "distance_range_m": [
+        31.87,
+        42.06
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        "",
+        "edge"
+      ],
+      "kind_codes": [
+        "",
+        "low"
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_1",
+      "track_id": 292,
+      "type": "ride segment",
+      "alarm_hit_frames": 5,
+      "frame_intervals": [
+        {
+          "first_frame": 1262,
+          "last_frame": 1264,
+          "first_frame_id": "new_data_52_0019",
+          "last_frame_id": "new_data_52_0021",
+          "first_stamp": 1789643193.2735994,
+          "last_stamp": 1789643193.4679885,
+          "alarm_frames": 3
+        },
+        {
+          "first_frame": 1266,
+          "last_frame": 1267,
+          "first_frame_id": "new_data_52_0023",
+          "last_frame_id": "new_data_52_0024",
+          "first_stamp": 1789643193.6689327,
+          "last_stamp": 1789643193.7731874,
+          "alarm_frames": 2
+        }
+      ],
+      "distance_range_m": [
+        28.96,
+        32.66
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        "low"
+      ],
+      "confidence_range": [
+        0.6,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_1",
+      "track_id": 293,
+      "type": "ride segment",
+      "alarm_hit_frames": 2,
+      "frame_intervals": [
+        {
+          "first_frame": 1264,
+          "last_frame": 1265,
+          "first_frame_id": "new_data_52_0021",
+          "last_frame_id": "new_data_52_0022",
+          "first_stamp": 1789643193.4679885,
+          "last_stamp": 1789643193.5711823,
+          "alarm_frames": 2
+        }
+      ],
+      "distance_range_m": [
+        41.83,
+        43.23
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        0.815,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_1",
+      "track_id": 295,
+      "type": "ride segment",
+      "alarm_hit_frames": 1,
+      "frame_intervals": [
+        {
+          "first_frame": 1262,
+          "last_frame": 1262,
+          "first_frame_id": "new_data_52_0019",
+          "last_frame_id": "new_data_52_0019",
+          "first_stamp": 1789643193.2735994,
+          "last_stamp": 1789643193.2735994,
+          "alarm_frames": 1
+        }
+      ],
+      "distance_range_m": [
+        24.73,
+        24.73
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        "edge"
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        0.381,
+        0.381
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_1",
+      "track_id": 298,
+      "type": "ride segment",
+      "alarm_hit_frames": 3,
+      "frame_intervals": [
+        {
+          "first_frame": 1262,
+          "last_frame": 1264,
+          "first_frame_id": "new_data_52_0019",
+          "last_frame_id": "new_data_52_0021",
+          "first_stamp": 1789643193.2735994,
+          "last_stamp": 1789643193.4679885,
+          "alarm_frames": 3
+        }
+      ],
+      "distance_range_m": [
+        82.54,
+        87.66
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_1",
+      "track_id": 306,
+      "type": "ride segment",
+      "alarm_hit_frames": 2,
+      "frame_intervals": [
+        {
+          "first_frame": 1267,
+          "last_frame": 1268,
+          "first_frame_id": "new_data_52_0024",
+          "last_frame_id": "new_data_52_0025",
+          "first_stamp": 1789643193.7731874,
+          "last_stamp": 1789643193.8697534,
+          "alarm_frames": 2
+        }
+      ],
+      "distance_range_m": [
+        28.48,
+        28.61
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        "low"
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_1",
+      "track_id": 310,
+      "type": "ride segment",
+      "alarm_hit_frames": 3,
+      "frame_intervals": [
+        {
+          "first_frame": 1266,
+          "last_frame": 1268,
+          "first_frame_id": "new_data_52_0023",
+          "last_frame_id": "new_data_52_0025",
+          "first_stamp": 1789643193.6689327,
+          "last_stamp": 1789643193.8697534,
+          "alarm_frames": 3
+        }
+      ],
+      "distance_range_m": [
+        31.87,
+        33.65
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_1",
+      "track_id": 377,
+      "type": "ride segment",
+      "alarm_hit_frames": 2,
+      "frame_intervals": [
+        {
+          "first_frame": 1320,
+          "last_frame": 1321,
+          "first_frame_id": "new_data_53_0026",
+          "last_frame_id": "new_data_53_0027",
+          "first_stamp": 1789643199.0689187,
+          "last_stamp": 1789643199.1690917,
+          "alarm_frames": 2
+        }
+      ],
+      "distance_range_m": [
+        103.98,
+        105.1
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_2",
+      "track_id": 81,
+      "type": "ride segment",
+      "alarm_hit_frames": 2,
+      "frame_intervals": [
+        {
+          "first_frame": 242,
+          "last_frame": 243,
+          "first_frame_id": "new_data_60_0000",
+          "last_frame_id": "new_data_60_0001",
+          "first_stamp": 1789643232.176558,
+          "last_stamp": 1789643232.2775621,
+          "alarm_frames": 2
+        }
+      ],
+      "distance_range_m": [
+        96.8,
+        96.8
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_2",
+      "track_id": 570,
+      "type": "ride segment",
+      "alarm_hit_frames": 4,
+      "frame_intervals": [
+        {
+          "first_frame": 1334,
+          "last_frame": 1337,
+          "first_frame_id": "new_data_81_0021",
+          "last_frame_id": "new_data_81_0024",
+          "first_stamp": 1789643341.3799284,
+          "last_stamp": 1789643341.6874645,
+          "alarm_frames": 4
+        }
+      ],
+      "distance_range_m": [
+        24.96,
+        31.53
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        "",
+        "low"
+      ],
+      "confidence_range": [
+        0.695,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_2",
+      "track_id": 586,
+      "type": "ride segment",
+      "alarm_hit_frames": 2,
+      "frame_intervals": [
+        {
+          "first_frame": 1339,
+          "last_frame": 1340,
+          "first_frame_id": "new_data_81_0026",
+          "last_frame_id": "new_data_81_0027",
+          "first_stamp": 1789643341.8822467,
+          "last_stamp": 1789643341.9798167,
+          "alarm_frames": 2
+        }
+      ],
+      "distance_range_m": [
+        31.65,
+        31.66
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_3",
+      "track_id": 266,
+      "type": "ride segment",
+      "alarm_hit_frames": 2,
+      "frame_intervals": [
+        {
+          "first_frame": 838,
+          "last_frame": 839,
+          "first_frame_id": "new_data_99_0016",
+          "last_frame_id": "new_data_99_0017",
+          "first_stamp": 1789643432.6876335,
+          "last_stamp": 1789643432.7866848,
+          "alarm_frames": 2
+        }
+      ],
+      "distance_range_m": [
+        134.05,
+        136.07
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        1.0,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_4",
+      "track_id": 36,
+      "type": "ride segment",
+      "alarm_hit_frames": 6,
+      "frame_intervals": [
+        {
+          "first_frame": 63,
+          "last_frame": 68,
+          "first_frame_id": "new_data_111_0038",
+          "last_frame_id": "new_data_111_0043",
+          "first_stamp": 1789643496.0957592,
+          "last_stamp": 1789643496.5925264,
+          "alarm_frames": 6
+        }
+      ],
+      "distance_range_m": [
+        104.42,
+        111.73
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        "",
+        "beyond_axis"
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_4",
+      "track_id": 56,
+      "type": "ride segment",
+      "alarm_hit_frames": 1,
+      "frame_intervals": [
+        {
+          "first_frame": 78,
+          "last_frame": 78,
+          "first_frame_id": "new_data_112_0002",
+          "last_frame_id": "new_data_112_0002",
+          "first_stamp": 1789643497.592424,
+          "last_stamp": 1789643497.592424,
+          "alarm_frames": 1
+        }
+      ],
+      "distance_range_m": [
+        35.36,
+        35.36
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        "low"
+      ],
+      "confidence_range": [
+        1.0,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_4",
+      "track_id": 58,
+      "type": "ride segment",
+      "alarm_hit_frames": 4,
+      "frame_intervals": [
+        {
+          "first_frame": 78,
+          "last_frame": 81,
+          "first_frame_id": "new_data_112_0002",
+          "last_frame_id": "new_data_112_0005",
+          "first_stamp": 1789643497.592424,
+          "last_stamp": 1789643497.892328,
+          "alarm_frames": 4
+        }
+      ],
+      "distance_range_m": [
+        31.95,
+        36.26
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        "low"
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_4",
+      "track_id": 209,
+      "type": "ride segment",
+      "alarm_hit_frames": 4,
+      "frame_intervals": [
+        {
+          "first_frame": 265,
+          "last_frame": 268,
+          "first_frame_id": "new_data_115_0036",
+          "last_frame_id": "new_data_115_0039",
+          "first_stamp": 1789643516.2899165,
+          "last_stamp": 1789643516.5929422,
+          "alarm_frames": 4
+        }
+      ],
+      "distance_range_m": [
+        27.65,
+        28.82
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        "low"
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_4",
+      "track_id": 210,
+      "type": "ride segment",
+      "alarm_hit_frames": 2,
+      "frame_intervals": [
+        {
+          "first_frame": 266,
+          "last_frame": 267,
+          "first_frame_id": "new_data_115_0037",
+          "last_frame_id": "new_data_115_0038",
+          "first_stamp": 1789643516.3923712,
+          "last_stamp": 1789643516.4947233,
+          "alarm_frames": 2
+        }
+      ],
+      "distance_range_m": [
+        20.66,
+        21.61
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        0.381,
+        0.631
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_4",
+      "track_id": 513,
+      "type": "ride segment",
+      "alarm_hit_frames": 6,
+      "frame_intervals": [
+        {
+          "first_frame": 1223,
+          "last_frame": 1228,
+          "first_frame_id": "new_data_134_0025",
+          "last_frame_id": "new_data_134_0030",
+          "first_stamp": 1789643612.0982747,
+          "last_stamp": 1789643612.5996907,
+          "alarm_frames": 6
+        }
+      ],
+      "distance_range_m": [
+        36.89,
+        43.31
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_5",
+      "track_id": 113,
+      "type": "ride segment",
+      "alarm_hit_frames": 11,
+      "frame_intervals": [
+        {
+          "first_frame": 293,
+          "last_frame": 298,
+          "first_frame_id": "new_data_143_0045",
+          "last_frame_id": "new_data_143_0050",
+          "first_stamp": 1789643660.0088012,
+          "last_stamp": 1789643660.505347,
+          "alarm_frames": 6
+        },
+        {
+          "first_frame": 302,
+          "last_frame": 306,
+          "first_frame_id": "new_data_144_0003",
+          "last_frame_id": "new_data_144_0007",
+          "first_stamp": 1789643660.9159884,
+          "last_stamp": 1789643661.3045413,
+          "alarm_frames": 5
+        }
+      ],
+      "distance_range_m": [
+        80.08,
+        98.38
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        "",
+        "beyond_axis"
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_5",
+      "track_id": 146,
+      "type": "ride segment",
+      "alarm_hit_frames": 4,
+      "frame_intervals": [
+        {
+          "first_frame": 316,
+          "last_frame": 317,
+          "first_frame_id": "new_data_144_0017",
+          "last_frame_id": "new_data_144_0018",
+          "first_stamp": 1789643662.305081,
+          "last_stamp": 1789643662.4061632,
+          "alarm_frames": 2
+        },
+        {
+          "first_frame": 319,
+          "last_frame": 320,
+          "first_frame_id": "new_data_144_0020",
+          "last_frame_id": "new_data_144_0021",
+          "first_stamp": 1789643662.6036181,
+          "last_stamp": 1789643662.7051964,
+          "alarm_frames": 2
+        }
+      ],
+      "distance_range_m": [
+        34.65,
+        42.34
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        "",
+        "low"
+      ],
+      "confidence_range": [
+        0.6,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_5",
+      "track_id": 330,
+      "type": "ride segment",
+      "alarm_hit_frames": 10,
+      "frame_intervals": [
+        {
+          "first_frame": 814,
+          "last_frame": 821,
+          "first_frame_id": "new_data_154_0005",
+          "last_frame_id": "new_data_154_0012",
+          "first_stamp": 1789643712.1188312,
+          "last_stamp": 1789643712.8128748,
+          "alarm_frames": 8
+        },
+        {
+          "first_frame": 823,
+          "last_frame": 824,
+          "first_frame_id": "new_data_154_0014",
+          "last_frame_id": "new_data_154_0015",
+          "first_stamp": 1789643713.0305111,
+          "last_stamp": 1789643713.1203935,
+          "alarm_frames": 2
+        }
+      ],
+      "distance_range_m": [
+        40.1,
+        47.65
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        0.6,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_5",
+      "track_id": 358,
+      "type": "ride segment",
+      "alarm_hit_frames": 11,
+      "frame_intervals": [
+        {
+          "first_frame": 898,
+          "last_frame": 908,
+          "first_frame_id": "new_data_155_0038",
+          "last_frame_id": "new_data_155_0048",
+          "first_stamp": 1789643720.5138383,
+          "last_stamp": 1789643721.5231712,
+          "alarm_frames": 11
+        }
+      ],
+      "distance_range_m": [
+        94.56,
+        104.27
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_6",
+      "track_id": 250,
+      "type": "ride segment",
+      "alarm_hit_frames": 2,
+      "frame_intervals": [
+        {
+          "first_frame": 671,
+          "last_frame": 672,
+          "first_frame_id": "new_data_178_0047",
+          "last_frame_id": "new_data_178_0048",
+          "first_stamp": 1789643855.819702,
+          "last_stamp": 1789643855.915989,
+          "alarm_frames": 2
+        }
+      ],
+      "distance_range_m": [
+        82.13,
+        83.94
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_6",
+      "track_id": 331,
+      "type": "ride segment",
+      "alarm_hit_frames": 10,
+      "frame_intervals": [
+        {
+          "first_frame": 809,
+          "last_frame": 814,
+          "first_frame_id": "new_data_181_0032",
+          "last_frame_id": "new_data_181_0037",
+          "first_stamp": 1789643873.1183872,
+          "last_stamp": 1789643873.6193814,
+          "alarm_frames": 6
+        },
+        {
+          "first_frame": 817,
+          "last_frame": 820,
+          "first_frame_id": "new_data_181_0040",
+          "last_frame_id": "new_data_181_0043",
+          "first_stamp": 1789643873.9235659,
+          "last_stamp": 1789643874.2215903,
+          "alarm_frames": 4
+        }
+      ],
+      "distance_range_m": [
+        96.83,
+        109.59
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        0.6,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_6",
+      "track_id": 336,
+      "type": "ride segment",
+      "alarm_hit_frames": 3,
+      "frame_intervals": [
+        {
+          "first_frame": 830,
+          "last_frame": 832,
+          "first_frame_id": "new_data_182_0002",
+          "last_frame_id": "new_data_182_0004",
+          "first_stamp": 1789643875.2379334,
+          "last_stamp": 1789643875.4240997,
+          "alarm_frames": 3
+        }
+      ],
+      "distance_range_m": [
+        120.83,
+        123.38
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_6",
+      "track_id": 518,
+      "type": "ride segment",
+      "alarm_hit_frames": 12,
+      "frame_intervals": [
+        {
+          "first_frame": 1332,
+          "last_frame": 1333,
+          "first_frame_id": "new_data_191_0045",
+          "last_frame_id": "new_data_191_0046",
+          "first_stamp": 1789643937.431763,
+          "last_stamp": 1789643937.5360339,
+          "alarm_frames": 2
+        },
+        {
+          "first_frame": 1346,
+          "last_frame": 1355,
+          "first_frame_id": "new_data_192_0008",
+          "last_frame_id": "new_data_192_0017",
+          "first_stamp": 1789643938.824045,
+          "last_stamp": 1789643939.7370691,
+          "alarm_frames": 10
+        }
+      ],
+      "distance_range_m": [
+        114.93,
+        124.52
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        "",
+        "beyond_height_ref",
+        "floating"
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        1.0,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_7",
+      "track_id": 204,
+      "type": "ride segment",
+      "alarm_hit_frames": 4,
+      "frame_intervals": [
+        {
+          "first_frame": 621,
+          "last_frame": 624,
+          "first_frame_id": "new_data_205_0029",
+          "last_frame_id": "new_data_205_0032",
+          "first_stamp": 1789644030.4370756,
+          "last_stamp": 1789644030.7324595,
+          "alarm_frames": 4
+        }
+      ],
+      "distance_range_m": [
+        45.91,
+        50.93
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        "low"
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_7",
+      "track_id": 215,
+      "type": "ride segment",
+      "alarm_hit_frames": 2,
+      "frame_intervals": [
+        {
+          "first_frame": 643,
+          "last_frame": 644,
+          "first_frame_id": "new_data_206_0000",
+          "last_frame_id": "new_data_206_0001",
+          "first_stamp": 1789644032.6352453,
+          "last_stamp": 1789644032.7329738,
+          "alarm_frames": 2
+        }
+      ],
+      "distance_range_m": [
+        44.42,
+        46.39
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        "low"
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    },
+    {
+      "recording": "new_data_7",
+      "track_id": 264,
+      "type": "ride segment",
+      "alarm_hit_frames": 5,
+      "frame_intervals": [
+        {
+          "first_frame": 781,
+          "last_frame": 783,
+          "first_frame_id": "new_data_208_0036",
+          "last_frame_id": "new_data_208_0038",
+          "first_stamp": 1789644047.7337902,
+          "last_stamp": 1789644047.9338858,
+          "alarm_frames": 3
+        },
+        {
+          "first_frame": 785,
+          "last_frame": 786,
+          "first_frame_id": "new_data_208_0040",
+          "last_frame_id": "new_data_208_0041",
+          "first_stamp": 1789644048.1339238,
+          "last_stamp": 1789644048.23632,
+          "alarm_frames": 2
+        }
+      ],
+      "distance_range_m": [
+        95.66,
+        98.27
+      ],
+      "zones": [
+        "gauge"
+      ],
+      "reason_codes": [
+        ""
+      ],
+      "kind_codes": [
+        ""
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "detector_stage": "reported STOP detection (confirmed track); see zone/reason/kind fields",
+      "observed_cause": "uncertain",
+      "review_note": "Midpoint sensor-coordinate cloud reviewed in the contact sheets; surrounding tunnel/trackside structure is visible, but no independent object label or point-support trace establishes the alarm cause."
+    }
+  ],
+  "ride_scene_review": {
+    "events": 32,
+    "contact_sheets": {
+      "contact_01.png": "c50aab7ca14f294516a9fb6679a56bce228f81f49429d8a9540692db9cb882f9",
+      "contact_02.png": "36aafae6a0d0d90a6c69963ff6f7a3ce13a760dbde17b54a75c49745b8fd25b6",
+      "contact_03.png": "6fc277ed1100d80e3835ff2cdb6fd233e793e3f102e006d43ba29496caeb68e2",
+      "contact_04.png": "733bdbb077e2be9bcdd72683a7ef5a039d6e8af12fbf047824264ded224fb645",
+      "contact_05.png": "a8e01aa13fd3c37d0ece90944dab7c3b350ca3ad1a9e62d15b223931b16a1f31",
+      "contact_06.png": "982d840e7e52c783a34f1c6206cc603c9e3a97fd517bebb47fec056123e1f573"
+    },
+    "reviewed_midpoint_clouds": 32,
+    "scene_labels": "All causes remain uncertain. Context views show trackside tunnel/station structure, but the event cluster has no independent ground-truth identity; detector reason/kind fields do not establish cause."
+  },
+  "limitations": [
+    "Empty recordings and the ride establish false alarms only for these recorded backgrounds.",
+    "The organizers confirmed new_data contains no real obstacles.",
+    "Repeated frames within an event are correlated and are not independent encounters.",
+    "No distance-normalized rate is asserted for the five short empty recordings."
+  ]
+}

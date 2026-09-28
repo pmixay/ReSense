@@ -1,0 +1,28 @@
+{
+  "status": "rejected prototype; no production change",
+  "failed_expression": "idx[values == edges[-1]] -= 1",
+  "cause": "Float32 array versus scalar float64 endpoint comparison may round the scalar; last-bin adjustment can change a value below the actual endpoint.",
+  "corrected_expression": "idx[values == edges[-1:]] -= 1",
+  "mismatches": [
+    {
+      "sector_deg": 0.3,
+      "dtype": "float32",
+      "differing_bins": [
+        {
+          "bin": 198,
+          "low": 29.40000000000014,
+          "high": 29.700000000000145,
+          "expected": 2,
+          "actual": 3
+        },
+        {
+          "bin": 199,
+          "low": 29.700000000000145,
+          "high": 30.000000000000142,
+          "expected": 4,
+          "actual": 3
+        }
+      ]
+    }
+  ]
+}

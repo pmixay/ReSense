@@ -146,7 +146,8 @@ not authorization to move a train.
 
 ## Current results
 
-The sealed 27.09 detector and the node of 28.09. **Kinds:** real = the organizers' recordings;
+The 28 September development detector includes bounded low-object continuity;
+the ROS input path remains the 28 September implementation. **Kinds:** real = the organizers' recordings;
 organizers' synthetic = set O, objects added by their own tool; team synthetic = our objects
 ray-cast into real frames. **In-sample:** the rules (and the learned opinion's negatives) were
 tuned on these same recordings and on set O; only the ride figure marked "held out" was measured
@@ -158,15 +159,33 @@ detector's record [`docs/QUALITY_CYCLE_2026-09-27.md`](docs/QUALITY_CYCLE_2026-0
 outputs of the sealed detector on the raw recordings with a recompute script,
 [`docs/evidence/judge_outputs_2026-09-28/`](docs/evidence/judge_outputs_2026-09-28/README.md); the
 node's timing, [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) §3d and
-[`docs/evidence/node_input_2026-09-28/`](docs/evidence/node_input_2026-09-28/README.md). (The
-"Current results" table of EXPERIMENTS still describes the P3d detector of 26.09.)
+[`docs/evidence/node_input_2026-09-28/`](docs/evidence/node_input_2026-09-28/README.md). The
+complete P4 frame-cache replay of the frozen detector passes all 146 enforced comparisons
+(208 unchanged rows including 62 informational rows); its
+per-object, stress, placement and intake records are in
+[`docs/evidence/results/p4_full_data_2026-09-28/`](docs/evidence/results/p4_full_data_2026-09-28/README.md).
+The table below keeps the raw-recording figures where they differ from cache replay, and marks
+both sources.
+
+**Established baseline assessment: 69/100**, from the earlier lead review.
+The current code improves raw rail-object continuity from 123 to 126/126 with no
+quality-gate regression. A separate score-blind reviewer rated the candidate
+**66/100**; different reviewers and evidence do not establish a three-point
+software regression. The same reviewer scores baseline and candidate 66/100 each: **0 whole-point
+change**, alongside the measured continuity improvement.
+[Review history and scope](docs/CURRENT_REVIEW_2026-09-28.md).
+Full quality/history checks and 841 image tests pass. **Deployment remains provisional:** local 360°
+positive playback fails freshness and 100 ms decode-plus-detect p95 (candidate
+125 ms, baseline 137 ms); the 120° clear run passes with 252 frames, zero alarms,
+and p95 93 ms. Final candidate CI is pending.
+[Retained runtime evidence](docs/evidence/cycle_2026-09-28/image_candidate/README.md).
 
 | metric | value | kind |
 |---|---|---|
 | false alarms, five obstacle-free recordings (2 287 frames) | raw recordings: **8 events**, 23 alarm frames, 7 STOP episodes; frame cache: 11 / 40 / 13 | real, in-sample |
-| false alarms, 20-minute ride (11 271 frames, 13 km) | **37 events (2.8 per km)**, 34 STOP episodes on ride pieces the learned opinion never saw (the rules in-sample); in-sample 32 / 31; aggregate files only (no per-frame output of this detector on the full ride is committed) | real; held out for the opinion only |
+| false alarms, 20-minute ride (11 271 frames, 13 km) | **37 events (2.8 per km)**, 34 STOP episodes on ride pieces the learned opinion never saw (the rules in-sample); in-sample 32 / 31; fresh full-ride per-frame captures are committed for the in-sample 32-event result | real; held out for the opinion only |
 | crossing person, `doubleT_obstacle` | STOP in **61 of 61** frames inside the envelope, from the first (frame 8); distance error ≤ 0.24 m | real, in-sample |
-| object lying across the rail, `doubleT_obstacle` (~0.45 × 0.6 × 0.3 m, 56 m) | through the node and offline on the raw recording: STOP in **123 of the 126** frames after the person leaves it — **GO at frame 111**, CAUTION at 117 and 197 (a detector limitation, above); from the frame cache: 125 of 126 | real, in-sample |
+| object lying across the rail, `doubleT_obstacle` (~0.45 × 0.6 × 0.3 m, 56 m) | current offline raw replay: **126/126** after frame 75, improved from 123/126; current frame cache: **126/126**, improved from 125/126. Full-rate ROS positive acceptance remains provisional; the historical node capture was 123/126 | real, in-sample |
 | organizers' objects (set O, 1 510 frames) | STOP for **8 of 8** in-envelope objects, in 414 of 801 visible object-frames (node 416, cache 411); first STOP: 2 × 2 m box 98 m, box at the envelope top 111 m, plank across the rails 87–89 m, 0.3 m cubes 48–56 m (43–56 m on the cache), edge cube 35 m, edge 2 × 2 m box 18 m (its track from 29 m), 5 cm hanging object 30 m; 7 false STOP frames on the 2 × 2 m box outside (6 on the cache), at 126–142 m | organizers' synthetic, in-sample |
 | organizers' shapes at new places (72 pre-registered cases) | 723 of 2 458 visible frames, 45 of 72 cases, 0 paired controls: a sensitivity study on seen shapes and seen backgrounds, **not held-out recall** | organizers' synthetic shapes |
 | long range, straight track (set F) | first confirmed: person **151 m** median (6 of 6), 1 m crate 124 m, 3 cm cable 99 m; **0.5 m box on the bed 1 of 6** (a blind spot) | team synthetic |
@@ -174,9 +193,10 @@ node's timing, [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) §3d and
 | detector time, offline, one core | 18.0–22.9 ms mean, p95 22.7–32.6 ms (4-vCPU sandbox, 27.09; an independent judge's 4-vCPU Xeon 2.1 GHz: p95 41.6 ms at 360°); a dense station stretch of the ride: p95 111 ms (team record) | timing |
 | ROS node in Docker, end to end (player publication → result) | p95 of the current results at 360°: **102 ms** cached, **118 ms** from a cold disk (an independent judge, 4-vCPU Xeon 2.1 GHz): not reliably under the 100 ms frame period there; with the start-up included (no current result for the first 1.5–4 s at 360°), p95 0.24–0.46 s (team captures); 120°: 54–64 ms; CI runner, cold: 60 ms (360°), 37 ms (120°); the organizers' 8-core stand not measured | timing: sandbox, CI |
 
-Known limits of this detector (all documented, none fixed after the seal):
+Known limitations and historical context:
 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md#limitations-of-the-sealed-2709-detector-verified-2809) "Limitations of the sealed 27.09 detector" — the
-single-frame GO above, the learned opinion's delay counted in processed frames, small objects low
+earlier single-frame GO is fixed in current offline replay; remaining issues include
+the learned opinion's delay counted in processed frames, small objects low
 on the bed and objects at the envelope edge found late, `CAUTION` on most frames of some empty
 tunnels, all figures in-sample, and ground truth made with the team's own tools
 ([`docs/EVALUATION.md`](docs/EVALUATION.md) §1). The questions behind each design choice:

@@ -3,8 +3,45 @@
 > **Purpose:** the independent judgements of ReSense against the eight criteria of spec §8: score
 > per criterion, the evidence behind it, the risks on the hidden data and the fastest points to gain.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, summary RU
-> **Last independent judgement:** 2026-09-28, fresh re-judgement of `806b6c4` (below); 27.09 rounds 1–3 follow.
-> **Status:** current review below; earlier numbered sections are dated records.
+> **Established baseline rating:** **69/100**, the earlier lead assessment. The measured code improvement is raw rail STOP coverage 123 to 126/126 with no quality-gate regression.
+> **Separate independent review:** **66/100**, fresh-context GPT-6 Astra on candidate `ef1d8f5`. This is not a replacement measurement of the earlier 69 or evidence of a three-point code regression.
+> **Status:** the same reviewer scores baseline and candidate **66/100 each (delta 0)**. Scores are internal judgments; organizers publish no numerical weights. Deployment acceptance remains provisional.
+
+## Checkpoint 1: 28 September evening
+
+| Functionality /25 | Range /15 | Speed /10 | Generalization /15 | Technical quality /10 | Launch /10 | Approach /10 | Pitch /5 | Total /100 |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 17 | 6 | 7 | 6 | 9 | 8 | 9 | 4 | **66** |
+
+The bounded continuity fix restores raw rail-object STOP coverage from 123 to
+126/126 after frame 75. Full quality and history gates pass; false alarms and
+reserved synthetic recall do not improve. Local full-rate positive ROS replay
+fails freshness and the 100 ms threshold for both baseline and candidate.
+
+The difference from the earlier 69-point lead review reflects an independent
+reviewer and newly measured limitations. It is not a paired measurement of a
+three-point software regression. Read the [complete independent review](CHECKPOINT1_REVIEW_2026-09-28.md)
+and [machine-readable result](evidence/cycle_2026-09-28/checkpoint1_astra.json).
+The [paired reassessment](evidence/cycle_2026-09-28/checkpoint1_astra_paired.md)
+holds evidence and reviewer constant: baseline 66, candidate 66, no whole-point
+change. It confirms no numerical regression within that review.
+
+## Earlier lead reassessment: 28 September (`20e8229`)
+
+**69/100, unchanged.** The two development commits after the previous review add a synthetic fixture and a
+rejected continuity experiment. Production detector, settings, launch code and pitch artifacts
+are unchanged. Fresh replay of the original obstacle recording reproduces 61/61 person frames,
+123/126 rail-object frames and the gaps at frames 111, 117 and 197. `hold_misses=2` fixes those
+gaps but worsens ride and synthetic false alarms, so it remains rejected.
+
+| Functionality /25 | Range /15 | Speed /10 | Generalization /15 | Technical quality /10 | Launch /10 | Approach /10 | Pitch /5 | Total /100 |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 16 | 7.5 | 8 | 8 | 8 | 8.5 | 9 | 4 | **69** |
+
+See the [current project review](CURRENT_REVIEW_2026-09-28.md) for exploration, criterion reasons,
+fresh verification, evidence limitations and next priorities. This is an internal assessment by
+the lead reviewer with specialist support after reading prior scores, not a new blinded paired
+judgement or an organizer score. Historical reviews below retain their original scope.
 
 ## Fresh re-judgement: 28 September (head `806b6c4`, the node input path of 28.09)
 
@@ -29,6 +66,54 @@ from a change in the detector.
 | Team approach |10|9|8|8.5|9|
 | Pitch |5|3.5|3.5|3.5|4|
 | **Total** |**100**|**72.5**|**62.5**|**66.5**|72|
+
+**P4 data refresh (28 September): no detector score change.** The frozen detector was replayed
+against all available organizer caches; the strict gate passed with all 146 enforced values
+unchanged (208 unchanged rows including 62 informational rows), and all three registered P4
+candidates failed their target screen. This adds
+reproducibility evidence but no measured detector improvement. The P4 packet's carry-forward
+assessment was 66.5/100; it did not include the later single-review update below.
+
+## Single-review update: 28 September (`a2f9122`)
+
+**69/100**, a user-supplied independent model review of the current working head
+`a2f9122acdd9de83d4bf30a2befdc0d3e1f9cdd5`. This is a single review, not an average, organizer
+score, or replacement for the last paired judgement of 66.5/100 on `806b6c4`.
+
+| Criterion | Maximum | Score | Change from the 66.5 paired review |
+|---|---:|---:|---:|
+| Functionality | 25 | 16 | 0 |
+| Range | 15 | 7.5 | 0 |
+| Speed | 10 | 8 | 0 |
+| Generalization | 15 | 8 | 0 |
+| Technical quality | 10 | 8 | +0.5 |
+| Ease of launch | 10 | 8.5 | +1 |
+| Team approach | 10 | 9 | +0.5 |
+| Pitch | 5 | 4 | +0.5 |
+| **Total** | **100** | **69** | **+2.5** |
+
+The reviewer attributes the increase to newer launch and evidence work. That explanation is
+consistent with the cold original-bag replay and separate-container viewer evidence in
+[`p1_p2_cold_bags_2026-09-28`](evidence/p1_p2_cold_bags_2026-09-28/README.md), plus the refreshed
+P4 packet. It does not claim a detector improvement: the raw rail-object recording still has
+123/126 STOP frames with GO at frame 111, the complete ride has 32 alarm events, and P4 candidates
+A/B/C changed no scored detector output. The reviewer cites those findings in
+[`judge_outputs_2026-09-28`](evidence/judge_outputs_2026-09-28/README.md) and
+[`p4_full_data_2026-09-28`](evidence/results/p4_full_data_2026-09-28/README.md).
+
+This review established the earlier 69/100 single-review internal estimate. Keep the paired 66.5/100 result as a
+separate historical comparison; do not average unlike review counts or describe either as an
+organizer-published score. No untouched real-obstacle recording is available, so performance on
+new obstacle scenes remains unverified.
+
+**P1/P2 delivery verification after the paired judgement (28 September).** The
+four-job [CI run 36432860933](https://github.com/pmixay/ReSense/actions/runs/36432860933) passed on
+`testovaya-gpt`: both original bags passed a cold-cache replay with no unprocessed source messages,
+the node input path matched the reference bytes on all 453 frames, and the separate-container
+Foxglove probe detected and recovered from a deliberate outage. The single-review 69/100 update
+above credits newer launch and evidence work, but has not been combined with a second reviewer.
+The physical second-device rehearsal remains outstanding; the latest paired score stays
+**66.5/100**.
 
 Reports: [both judges](evidence/results/rejudge_2026-09-28.json). What they found:
 
@@ -851,6 +936,25 @@ objects (#4–#7) were placed from the sensor's axis, 0.24° off the rails the d
 5. **Process:** shipping from a red or untested `main`; `4b5786b` is the last green commit (§7).
 
 ## 6. Fastest points to gain
+
+The priority list below reflects the latest evidence, not a promise of a target score. The
+single-review 69/100 assessment on `a2f9122` leaves functionality, range and generalization
+unchanged. The largest remaining gains require safe detector improvements and genuinely new
+real-obstacle evidence; the user has confirmed no untouched obstacle bag is currently available.
+
+| Priority | Work still needed | Criteria | Evidence needed to support more credit |
+|---:|---|---|---|
+| 1 | Trace the raw rail-object GO at frame 111 and CAUTION at 117/197; test one bounded continuity change only if source-point and tracker evidence support it | 8.1 | Original `doubleT_obstacle` DB3 or equivalent unquantized frames and tracker history. The local int16 cache produces STOP at those frames, so it cannot validate a fix |
+| 2 | Trace platform/switch false STOP events to exact ride points and detector stages; test one causal rule at a time | 8.1, 8.4 | Full-ride point support, positive-preservation checks and a strict gate. The current ride has 32 events/31 episodes; event midpoint imagery alone leaves causes uncertain |
+| 3 | Improve small/edge detection using a demonstrated non-threshold cause and cross-frame evidence | 8.1, 8.2 | Set O is 411/801 visible in-envelope STOP frames. A/B/C threshold trials had no scored change; retain the existing safety exclusions and run the full acceptance matrix |
+| 4 | Measure generalization and long-range real detection on an untouched, labelled obstacle route | 8.1, 8.2, 8.4 | New real data is unavailable now. Synthetic holdouts can measure sensitivity, not real-scene transfer or organizer hidden-data recall |
+| 5 | Complete physical demo and human presentation work | 8.3, 8.5–8.8 | Physical second-device Foxglove import, stand timing, city/team-formation details, group photo if available, two timed rehearsals and final submission checks |
+
+These are the largest evidence gaps, not a guaranteed route to a particular score. The older
+point estimates below are retained as historical context; several refer to work that has since
+changed or closed.
+
+### Historical point estimates from 24.09
 
 Gains are the judges' estimates in points out of 100; they overlap and do not add up. Effort is
 a rough size (≤ 1 h, hours, half a day, 1 day); ranked by gain per effort.

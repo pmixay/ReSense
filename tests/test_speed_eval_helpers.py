@@ -2,13 +2,25 @@
 and the per-frame reference speed of scripts/speed_reference.py."""
 import importlib.util
 import json
+import os
 from pathlib import Path
+import subprocess
+import sys
 
 PATH = Path(__file__).resolve().parents[1] / "scripts" / "eval_real.py"
 SPEC = importlib.util.spec_from_file_location("resense_eval_real", PATH)
 assert SPEC is not None and SPEC.loader is not None
 module = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(module)
+
+
+def test_eval_real_cli_imports_cache_helpers_outside_repository(tmp_path):
+    env = os.environ.copy()
+    env.pop("PYTHONPATH", None)
+    result = subprocess.run([sys.executable, str(PATH), "--help"], cwd=tmp_path,
+                            env=env, capture_output=True, text=True, timeout=20)
+    assert result.returncode == 0, result.stderr
+    assert "--bags" in result.stdout
 
 
 def test_nominal_stamps_snap_every_gap_to_whole_rotations():

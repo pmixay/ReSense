@@ -1,0 +1,78 @@
+"""Small fixed-cloud diagnostic only; never writes detector source or replay captures."""
+import hashlib, json, os, sqlite3, sys, time
+from pathlib import Path
+import numpy as np
+sys.path.insert(0, '/opt/resense/ros2_ws/src/resense_ros')
+from resense_ros.fastcloud import parse_pointcloud2, packed
+from resense.config import DetectorConfig
+from resense.detector import Detector
+from resense.frame import Frame, axis_matrix
+from resense.pointcloud import pointcloud2_to_arrays
+import resense.health as health
+
+cfg = DetectorConfig.from_yaml('/opt/resense/configs/default.yaml')
+det = Detector(cfg)
+db = next(Path('/bag').glob('*.db3'))
+with sqlite3.connect('file:' + str(db) + '?mode=ro', uri=True) as con:
+    raw = con.execute("SELECT m.data FROM messages m JOIN topics t ON t.id=m.topic_id WHERE t.type='sensor_msgs/msg/PointCloud2' ORDER BY m.timestamp LIMIT 1").fetchone()[0]
+msg = packed(parse_pointcloud2(raw))
+R = axis_matrix(cfg.sensor).astype(np.float32)
+original_hist, original_vis, original_health = np.histogram, health.visibility_along_track, det.health.update
+current = {}
+def timed(name, function):
+    def call(*args, **kwargs):
+        start = time.perf_counter()
+        out = function(*args, **kwargs)
+        current[name] = (time.perf_counter() - start) * 1000
+        return out
+    return call
+np.histogram = timed('histogram_ms', original_hist)
+health.visibility_along_track = timed('visibility_ms', original_vis)
+det.health.update = timed('health_ms', original_health)
+rows = []
+for i in range(14):
+    current.clear()
+    start = time.perf_counter()
+    xyz, intensity, ring, n_raw, n_near = pointcloud2_to_arrays(msg, cfg.sensor.min_range, cfg.sensor.max_range)
+    decoded = time.perf_counter()
+    xyz_v = xyz @ R.T
+    rotated = time.perf_counter()
+    frame = Frame(xyz_v, intensity, ring, 100 + i * .1, 'probe', {'n_raw': n_raw, 'n_near': n_near})
+    before = time.perf_counter()
+    result = det.process(frame)
+    done = time.perf_counter()
+    if i >= 2:
+        rows.append(dict(current, decode_ms=(decoded-start)*1000, axis_ms=(rotated-decoded)*1000,
+                         detector_ms=(done-before)*1000, reported_total_ms=result.timing_ms['total']))
+np.histogram, health.visibility_along_track, det.health.update = original_hist, original_vis, original_health
+az = np.degrees(np.arctan2(result.xyz[:, 1], result.xyz[:, 0]))
+def counted(values, edges):
+    idx = np.searchsorted(edges, values, side='right') - 1
+    idx[values == edges[-1:]] -= 1
+    valid = (idx >= 0) & (idx < edges.size - 1)
+    return np.bincount(idx[valid], minlength=edges.size - 1)
+edges = np.arange(-30.0, 30.0 + 1e-6, cfg.health.sector_deg)
+assert np.array_equal(counted(az, edges), np.histogram(az, bins=edges)[0])
+parity_cases = 0
+for step in (10.0, 7.0, 0.3):
+    e = np.arange(-30.0, 30.0 + 1e-6, step)
+    for dtype in (np.float32, np.float64):
+        v = e.astype(dtype)
+        v = np.concatenate((v, np.nextafter(v, -np.inf), np.nextafter(v, np.inf),
+                            np.array([-np.inf, np.inf, np.nan, -0.0, 0.0], dtype=dtype)))
+        assert np.array_equal(counted(v, e), np.histogram(v, bins=e)[0])
+        parity_cases += 1
+bench = {}
+for name, function in [('histogram', lambda: np.histogram(az, bins=edges)[0]), ('searchsorted_bincount', lambda: counted(az, edges))]:
+    times = []
+    for i in range(14):
+        start = time.perf_counter(); function(); elapsed = (time.perf_counter()-start)*1000
+        if i >= 2: times.append(elapsed)
+    bench[name] = {'mean_ms': float(np.mean(times)), 'p95_ms': float(np.percentile(times, 95))}
+out = {'purpose': 'Fixed first original positive cloud, two warmups and 12 measurements; diagnostic, not full replay acceptance.',
+       'numpy': np.__version__, 'threads': {k: os.environ.get(k) for k in ('OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS')},
+       'raw_message_sha256': hashlib.sha256(raw).hexdigest(), 'raw_slots': msg.width * msg.height,
+       'kept_points': frame.n, 'timings': {k: {'mean_ms': float(np.mean([r[k] for r in rows])),
+       'p95_ms': float(np.percentile([r[k] for r in rows], 95))} for k in rows[0]},
+       'histogram_probe': bench, 'exact_counts_equal': True, 'boundary_cases_equal': parity_cases, 'samples': rows}
+print(json.dumps(out, indent=2))

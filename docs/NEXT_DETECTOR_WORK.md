@@ -1,6 +1,44 @@
 # Work before a final detector freeze
 
-**Update 27.09:** the [27.09 quality cycle](QUALITY_CYCLE_2026-09-27.md) shipped and sealed a new
+## Current implementation handoff — 28 September (`a2f9122`)
+
+The current single-review internal estimate is **69/100** on `a2f9122`; the latest paired score
+remains 66.5/100 on `806b6c4`. The detector categories did not rise in the single-review update.
+The frozen detector still has 123/126 STOP frames on the raw rail-object recording, including a
+GO at frame 111 and CAUTION at 117/197; the full ride has 32 alarm events and 31 STOP episodes;
+set O has 411/801 visible in-envelope STOP frames. Registered threshold candidates A/B/C made no
+scored output change and must not be repeated as a sweep.
+
+The raw `doubleT_obstacle` DB3 is not present in the local data directories. The 1 cm int16 cache
+does **not** reproduce the raw dropout: a traced cache replay returns STOP at frames 111, 117 and
+197. Therefore its point/stage history cannot validate a fix for the raw recording. Obtain the
+original bag or equivalent unquantized frames plus tracker history before changing the continuity
+or straddle logic. If that data is unavailable, retain the shipped detector and document the miss.
+
+Next work, in order:
+
+1. Trace raw frames 108–119 and 194–199 through geometry, candidate rejection, association and
+   hold state. Test one continuity fix only if the raw trace identifies a bounded cause. Preserve
+   all 61/61 person frames and improve the 123/126 rail-object STOP count without harming other
+   positives or empty recordings.
+2. Trace platform/switch false STOP events in the full ride to exact supporting points and
+   detector stages. Change one causally implicated rule at a time; reject any reduction that
+   creates a missed positive or weakens monitored coverage.
+3. Trace small/edge object geometry and evidence across frames in set O. Do not repeat A/B/C's
+   threshold changes; pursue a candidate only when a different causal mechanism is demonstrated.
+4. Before accepting any behavior change, compare original-bag node playback, all six recordings,
+   set O under both matchers, the full ride, strict regression gate, processing-history stress,
+   altered frame rate and mount tilt, clear-distance claims, and latency. Keep before/after outputs
+   and reject or document every regression.
+5. Rescore only after a candidate passes acceptance. Keep 69/100 unchanged until a reviewer scores
+   the accepted exact commit. Without an untouched real-obstacle route, new-scene generalization
+   remains uncertain; synthetic holdouts measure sensitivity only.
+
+The two-device Foxglove simulation is complete in CI, but physical second-device import, city/team
+formation/group photo and timed human rehearsals remain delivery tasks. Synthetic evaluation cannot
+replace new real-obstacle data for the generalization criterion.
+
+**Historical update 27.09:** the [27.09 quality cycle](QUALITY_CYCLE_2026-09-27.md) shipped and sealed a new
 reference detector ([`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md)), revised after an independent
 review: ride 45 / 38 → 32 / 31 false events / STOP episodes in-sample (37 events on ride pieces
 the opinion never saw), edge cube first STOP 5.2 → 35 m,
@@ -16,7 +54,7 @@ Status (26.09): the registered quality cycle and its follow-up diagnosis/T1 expe
 final detector acceptance and release publication remained on hold. See the
 [quality-cycle results](QUALITY_CYCLE_2026-09-26.md).
 
-## Completed work and current disposition
+## 26 September status (historical)
 
 - Node and dashboard freshness are implemented: explicit live/replay clocks, bounded source and
   residence age, invalid-range suppression, consumer expiry, STOP retention and valid recovery.
@@ -37,7 +75,7 @@ final detector acceptance and release publication remained on hold. See the
   is restored. Public publication remains prohibited.
   [Captain checklist](CAPTAIN.md#4-current-completion-and-remaining-actions).
 
-## Further detector development remains
+## Further development proposals from 26 September (historical)
 
 The current registered experiments are closed. Any next candidate needs a new bounded proposal,
 preregistered acceptance checks and independent review. Remaining goals are:

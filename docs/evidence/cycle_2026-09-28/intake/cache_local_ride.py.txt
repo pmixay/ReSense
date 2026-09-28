@@ -1,0 +1,21 @@
+"""Replay the existing verified local archive through the production intake implementation."""
+import json
+from pathlib import Path
+
+import scripts.cache_extended_ride as intake
+
+record = json.loads(Path('/workspace/ReSense-score/docs/evidence/results/p4_full_data_2026-09-28/data_intake.json').read_text())['sources']['new_data']
+source = {'name': 'new_data.zst', 'size': record['archive_bytes'],
+          'sha256': record['published_sha256'], 'modified': None,
+          'download_url': 'file:///data/new_data.zst'}
+intake.resolve_yadisk_asset = lambda **kwargs: source
+
+def local_open(url, **kwargs):
+    if url != source['download_url']:
+        raise ValueError(url)
+    return open('/data/new_data.zst', 'rb')
+
+report = intake.stream_cache('/cycle/cache/new_data', '/cycle/spool',
+                             public_url=record['url'], opener=local_open)
+report['transport'] = 'Existing local archive; rehashed completely against committed published checksum'
+Path('/cycle/ride_intake.json').write_text(json.dumps(report, indent=2) + '\n')

@@ -29,7 +29,7 @@ rewritten later; **frozen** = kept for reference, not maintained; **archive** = 
 | [`EVALUATION.md`](EVALUATION.md) | evaluation protocol: data sets, metrics, procedure, targets | team, jury | EN + RU summary | P1 / P4 | current |
 | [`DATASET.md`](DATASET.md) | the organizers' data: recordings, formats, labels, frame cache, unpacking | team, jury | EN + RU summary | P4 | current |
 | [`SENSOR.md`](SENSOR.md) | Hesai Pandar128 facts and what they imply for the detector | team, jury | EN + RU summary | P1 | current |
-| [`SCORECARD.md`](SCORECARD.md) | criteria judgements, newest first: the fresh re-judgement of 28.09 (66.5 / 100), the three review rounds of the 27.09 cycle, the reviews of 26.09 (§0, §0a) and the first of 24.09 (§1–§8, 60 / 100): score per spec §8 criterion, evidence, what is left | team, jury | EN | P1 | current (top section), dated records below |
+| [`SCORECARD.md`](SCORECARD.md) | criteria judgements, newest first: single-review estimate 69 / 100 on `a2f9122`, paired re-judgement 66.5 / 100 on `806b6c4`, three 27.09 review rounds, and earlier reviews: score per spec §8 criterion, evidence, what is left | team, jury | EN | P1 | current (top section), dated records below |
 | [`PRESENTATION.md`](PRESENTATION.md) | slide requirements, drafts, speaker text | P2, P1 | RU | P2 | current |
 | [`PLAN.md`](PLAN.md) | roles, sprint calendar, team rules | team | RU | P1 | current |
 | [`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md) | frozen source/config manifest, acceptance provenance, candidate decisions and blocker policy | team, jury | EN | P1 / P3 | current (27.09 seal) |
