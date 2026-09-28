@@ -1,10 +1,12 @@
 # P4 full-data evidence packet — 28 September 2026
 
 This packet records the complete replay of the frozen 27.09 detector at commit
-`43a0e7d9dc6a8683b1656de7b9d9c9cf601a58f1`. The effective config is `configs/default.yaml`
+`43a0e7d9dc6a8683b1656de7b9d9c9cf601a58f1` and a final detector/config gate replay at evidence
+commit `1ee45726e9c21523cdeeff31426b60ab272c4cfd`. The effective config is `configs/default.yaml`
 with SHA-256 `de5c7fd6dfa74c1e656af6e233efd625e3e552736534e32efa625e5e8ff57f47`; native kernels
-were loaded. The replay took 614 s on a one-CPU-limited Linux VM. All data caches remain outside
-Git. `artifact_manifest.json` gives byte lengths and SHA-256 hashes for every file in this packet.
+were loaded. The reference and final replays took 614.0 s and 618.5 s on the one-CPU-limited Linux
+VM. All data caches remain outside Git. `artifact_manifest.json` gives byte lengths and SHA-256
+hashes for every file in this packet.
 
 ## Results
 
@@ -15,6 +17,11 @@ informational latency values changed with the VM workload. The ride portion has 
 32 track-ID events and 31 STOP episodes over 11,271 frames. Five obstacle-free recordings have 40
 alarm frames, 11 events and 13 episodes over 229.776 recorded seconds. Track events, STOP episodes
 and alarm frames are distinct measures.
+
+The final detector/config replay also passed the same strict gate: **208 enforced metrics were
+unchanged**, with no missing, worse, better or waived rows. Sixteen latency rows changed and remain
+informational. The final raw JSON is [`final_regression_gate.json`](final_regression_gate.json);
+the original [`regression_gate.json`](regression_gate.json) preserves the frozen-reference run.
 
 Set O has STOP on 8/8 in-envelope objects and 411/801 visible object-frames. The six false STOP
 frames match the labelled outside object `big_outside` (track 202, frames 563–568, 132.68–142.35 m);
@@ -72,6 +79,11 @@ python scripts/regression_gate.py \
   --cache /data/cache --jobs 1 --chunks 8 \
   --baseline docs/evidence/results/regression_baseline_2026-09-27_quality.json \
   --work out/p4/reference/gate --out out/p4/reference/gate.json
+
+python scripts/regression_gate.py \
+  --cache /data/cache --jobs 1 --chunks 8 \
+  --baseline docs/evidence/results/regression_baseline_2026-09-27_quality.json \
+  --work out/p4/final_gate --out out/p4/final_gate.json
 
 python scripts/score_fake_objects.py out/p4/reference/gate/cloud_with_fake_obj.jsonl \
   --gt labels/cloud_with_fake_obj.json --out out/p4/reference/seto_score.json

@@ -3,8 +3,8 @@
   "files": [
     {
       "path": "README.md",
-      "bytes": 7651,
-      "sha256": "4aea9549f2188425ceed9dd7f2d7f11dc2217d892e746c2ecd9bdd65c18049b7"
+      "bytes": 8397,
+      "sha256": "6fb34b3e2e7bd1c6223a5ad3957ed667cca5b3a82bfac58fef677f922ad167ea"
     },
     {
       "path": "candidate_configs/A.yaml",
@@ -45,6 +45,11 @@
       "path": "false_alarm_inventory.json",
       "bytes": 58401,
       "sha256": "25ba2ddfa398c62ce036d8e4b5e3a0046f88d9c22991103731ed3743f130351f"
+    },
+    {
+      "path": "final_regression_gate.json",
+      "bytes": 19950,
+      "sha256": "e80e3292bd2b617e596e5caa2185b9fc9b39de1ba68be0ffd00750099ba0b540"
     },
     {
       "path": "p4_run_summary.json",

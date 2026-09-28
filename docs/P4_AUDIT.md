@@ -3,7 +3,7 @@
 > **Purpose:** P4's audit of synthetic placement, evaluation accounting and the organizers'
 > synthetic-obstacle recording, with the corrections made and what they change.
 > **Audience:** team, jury (spec §8.7) · **Owner:** P4 · **Language:** EN
-> **Last verified:** 2026-09-28 against the sealed 27.09 detector (`43a0e7d`), with all organizer caches restored and the full gate rerun ·
+> **Last verified:** 2026-09-28 at evidence commit `1ee4572`; the sealed detector (`43a0e7d`) and final detector/config gate both pass against the 27.09 baseline ·
 > **Status:** dated audit history below; current full-data completion is recorded first
 
 Initial audit base: `a81108f` (v0.6.3, 23.09); integrated on `4cd32d6` (`main`, 24.09); merged as
@@ -24,9 +24,12 @@ in [`p4_data_intake_2026-09-28.json`](evidence/results/p4_data_intake_2026-09-28
 archive and frame caches stay outside Git.
 
 The frozen detector at `43a0e7d` was replayed with the default config against the independent
-27.09 baseline. The [strict full gate](evidence/results/p4_full_data_2026-09-28/regression_gate.json)
-passes with **208/208 enforced values unchanged**, no missing/worse/better rows, no waivers and no
-unapproved regressions. The eight ride chunks contain 130 alarm frames, 32 track events and 31
+27.09 baseline. The [reference gate](evidence/results/p4_full_data_2026-09-28/regression_gate.json)
+and [final detector/config gate](evidence/results/p4_full_data_2026-09-28/final_regression_gate.json)
+both pass with **208/208 enforced values unchanged**, no missing/worse/better rows, no waivers and
+no unapproved regressions. The final detector/config gate ran at commit `1ee4572`, after P4
+evaluator/evidence updates; detector and config hashes match the reference. The eight ride chunks
+contain 130 alarm frames, 32 track events and 31
 STOP episodes. Five empty recordings contain 40 alarm frames, 11 track events and 13 episodes.
 The full evidence packet includes compressed per-frame outputs and hashes, all run summaries,
 the effective config, and commands in
