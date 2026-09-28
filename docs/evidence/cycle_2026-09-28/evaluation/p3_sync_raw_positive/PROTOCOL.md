@@ -22,6 +22,8 @@ receive-time/compact-array reader. The divergence test writes a two-message bag
 whose header interval is 0.1 s and receive interval is 0.7 s and checks exact raw
 coordinates, intensities, channel IDs and header times. This repair was registered
 before any real replay; there is no receive-time four-config result to discard.
+Historical `evaluate_low_height_keep.py` outputs used receive stamps and retain
+that meaning; this comparison does not relabel them or assume exact clock parity.
 Each configuration uses a fresh detector and an independent copy of each frame. No
 cache quantization, subsampling, injected targets, observer masks or oracle
 coordinates enter the detector.

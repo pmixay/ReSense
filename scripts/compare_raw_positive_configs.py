@@ -260,6 +260,7 @@ def main():
                           "thread_env": {p: os.environ.get(p) for p in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS")}},
               "configs": configs, "variants": {}, "pairs": {},
               "limitations": ["Known development recording; not unseen/holdout data.",
+                              "Uses ROS header stamps/raw arrays. Legacy evaluate_low_height_keep.py used bag receive stamps; historical outputs are not relabeled or assumed identical.",
                               "Existing labels and matching tolerance; unmatched means unmatched to those labels.",
                               "Concurrent full gate: all timings diagnostic, not deployment or comparative latency.",
                               "Partial acceptance only: other bags, ride, O/F and history still required for opt-in candidates."]}
