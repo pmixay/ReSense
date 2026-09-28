@@ -19,3 +19,44 @@ tunnel raycaster and varies only parameters that it models consistently. Grade i
 zero because its rail and bench meshes do not follow a nonzero floor grade; geometry stops
 returning points at 210 m. New point clouds stay outside Git; reports retain compact per-frame
 metrics, seeds, code/config hashes and input digests.
+
+## Commands
+
+From a checkout with the development dependencies and native kernels:
+
+```sh
+python3 -m pytest -q tests/test_synthetic_sensitivity.py
+python3 scripts/synthetic_sensitivity.py generate --split development \
+  --output /cycle/synthetic/development
+python3 scripts/synthetic_sensitivity.py evaluate --cache /cycle/synthetic/development \
+  --config configs/default.yaml --output /cycle/synthetic/baseline-development.json
+```
+
+Run the evaluator from the candidate checkout against the same cache, adding
+`--baseline /cycle/synthetic/baseline-development.json`. Its exit status is nonzero when any
+registered case/encoding metric regresses. A report says `complete_split: false` if only a
+subset was generated. `--cases` permits a named development subset without renumbering seeds.
+Generation can resume an existing cache only if the protocol, generator script and raycaster
+match; it checks existing file hashes. Evaluating always verifies every input hash.
+
+When a container cannot resolve the host worktree's Git metadata, pass `--source-commit` with
+the host's `git rev-parse HEAD`. The report labels this as a supplied commit and independently
+hashes every detector source/model file, the evaluator, effective config and native binary.
+No timing comparison is reported while other workers share the machine.
+
+Reserved evaluation uses `--split evaluation` when generating and requires
+`--candidate-freeze <file.json>` for generation and both replays. The freeze record must
+contain `commit`, `detector_source_sha256` and `config_sha256` from the finalized candidate's
+development report. Keep that exact record with the comparison. Baseline and candidate run
+on identical saved float clouds; compact16 is derived from those clouds during each replay.
+Do not regenerate a different scene for the second detector.
+
+## Checks added
+
+The stored-fixture tests require a sustained, correctly located rail-object STOP after
+confirmation, continuity across one missing-return frame, recovery after two/three missing
+frames, rejection of a single-frame target transient, and release within 0.3 seconds of a
+real removal. Longer dropout tests allow improved continuity instead of preserving the
+baseline's known failure. Metric tests independently verify that one detection does not count
+as sustained, distinguish invisible frames from visible misses, and enforce each registered
+regression condition for each input encoding.
