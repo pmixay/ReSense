@@ -87,7 +87,8 @@ class _Node:
     def declare_parameter(self, name, value):
         # Synthetic unit streams explicitly emulate historical replay. Production defaults
         # are tested separately below; old header stamps never select a mode implicitly.
-        default = "replay" if name == "freshness_mode" else value
+        # The warm-up (three synthetic 360-degree frames) is off unless a test asks for it.
+        default = "replay" if name == "freshness_mode" else (False if name == "warmup" else value)
         self._params[name] = self.overrides.get(name, default)
 
     def get_parameter(self, name):
@@ -539,10 +540,12 @@ def test_input_queue_depth(node_cls):
     assert node_cls().subs["/lidar_points"].qos["depth"] == 3
 
 
-def test_first_backlog_preserves_input_period_and_zero_step_keeps_latest(node_cls):
-    """The first cold-disk burst may contain the whole overdue recording, so preserve every frame
-    at the observed input period. Later live bursts still use the configured catch-up step; the
-    pure planner checks below keep that behavior explicit. ``catchup_step: 0`` remains newest-only."""
+def test_first_backlog_is_worked_through_at_5_hz_and_zero_step_keeps_latest(node_cls):
+    """The first backlog of a recording (the player's start-up burst, or the whole overdue
+    recording from a cold disk) is worked through ``catchup_startup_step`` (0.2 s) apart: the 5 Hz
+    input the detector is validated on, with no gap that resets the scene; ``catchup_startup_step:
+    0`` keeps every input-period frame (the 26.09 behaviour). Later live bursts still use the
+    configured catch-up step; ``catchup_step: 0`` remains newest-only."""
     plan = node_cls.catchup_plan
     assert plan([5.0], 4.9, 0.3, 5.0) == [0]
     t = [0.1 * k for k in range(41)]
@@ -556,9 +559,12 @@ def test_first_backlog_preserves_input_period_and_zero_step_keeps_latest(node_cl
     def stamp_msg(s):
         return _Msg(header=_Msg(frame_id="lidar_livox", stamp=_Msg(sec=int(s), nanosec=int(round((s % 1) * 1e9)))))
 
-    startup_frames = [round(0.1 * k, 1) for k in range(201)]
-    for step, expect in ((0.3, startup_frames), (0.0, [20.0])):
-        _Node.overrides = {"catchup_step": step}
+    every_frame = [round(0.1 * k, 1) for k in range(201)]
+    five_hz = [round(0.2 * k, 1) for k in range(101)]
+    for overrides, expect in (({"catchup_step": 0.3}, five_hz),
+                              ({"catchup_step": 0.3, "catchup_startup_step": 0.0}, every_frame),
+                              ({"catchup_step": 0.0}, [20.0])):
+        _Node.overrides = overrides
         node = node_cls()
         node.input_period = 0.3  # a previous input ran slower than this recording's 10 Hz stream
         topic = "/sensing/lidar/hesai128/pointcloud"
@@ -596,9 +602,11 @@ def test_first_backlog_preserves_input_period_and_zero_step_keeps_latest(node_cl
         assert not node.pending and node.pending_gc.triggered == len(expect) - 1
 
 
-def test_catchup_skips_are_reported_apart_from_frames_never_received(node_cls, monkeypatch):
-    """The start-up burst preserves every available input frame; a later live gap still counts
-    missing recording messages separately from frames deliberately thinned by catch-up."""
+@pytest.mark.parametrize("startup_step", [0.0, 0.2])
+def test_catchup_skips_are_reported_apart_from_frames_never_received(node_cls, monkeypatch, startup_step):
+    """Frames the start-up catch-up skips on purpose (every other one at the default 0.2 s) are
+    ``catchup_skipped``; a later live gap still counts missing recording messages separately."""
+    _Node.overrides = {"catchup_startup_step": startup_step}
     node = node_cls()
     topic = "/sensing/lidar/hesai128/pointcloud"
     xyz = np.random.default_rng(0).uniform(5.0, 30.0, (64, 3)).astype(np.float32)
@@ -630,14 +638,17 @@ def test_catchup_skips_are_reported_apart_from_frames_never_received(node_cls, m
         node.on_pending()
     for s in (4.1, 4.2, 4.5, 4.6):                               # 4.3 and 4.4 never arrive
         node.on_cloud(cloud(s), topic)
-    startup = [round(0.1 * k, 1) for k in range(41)]
+    stride = 2 if startup_step else 1
+    startup = [round(0.1 * k, 1) for k in range(0, 41, stride)]
+    n = len(startup)
+    skipped = 40 - (n - 1)                                      # frames of the burst deliberately not processed
     assert [s for s, _ in seen] == startup + [4.1, 4.2, 4.5, 4.6]
-    assert [st["catchup"] for _, st in seen] == [True] * 40 + [False] * 5
-    assert seen[40][1]["dropped_frames"] == seen[40][1]["catchup_skipped"] == 0
+    assert [st["catchup"] for _, st in seen] == [True] * (n - 1) + [False] * 5
+    assert seen[n - 1][1]["dropped_frames"] == seen[n - 1][1]["catchup_skipped"] == skipped
     last = seen[-1][1]
-    assert last["dropped_frames"] == 2 and last["catchup_skipped"] == 0
+    assert last["dropped_frames"] == skipped + 2 and last["catchup_skipped"] == skipped
     assert not node.skipped                                     # every skipped frame accounted
-    assert any("caught up" in s and "0 skipped" in s for _, s in node.get_logger().lines)
+    assert any("caught up" in s and f"{skipped} skipped" in s for _, s in node.get_logger().lines)
 
 
 def test_short_live_backlog_keeps_every_frame_and_still_obeys_lag_limit(node_cls, monkeypatch):
@@ -702,8 +713,8 @@ def test_cold_recording_burst_keeps_a_continuous_startup_chain(node_cls, monkeyp
     """Replay the failure's arrival pattern: each callback gets another 1.5 s of recording.
 
     The old 5 s cutoff repeatedly jumps over a second of scene history. The startup allowance
-    preserves every 0.1 s input-period frame even after its one-second entry window has elapsed,
-    and closes when caught up. A later live backlog still uses the 0.3 s step and 5 s bound.
+    keeps a chain 0.2 s apart (5 Hz, no scene reset) even after its one-second entry window has
+    elapsed, and closes when caught up. A later live backlog still uses the 0.3 s step and 5 s bound.
     """
     _Node.overrides = {"catchup_startup_max_lag": startup_lag}
     node = node_cls()
@@ -722,9 +733,9 @@ def test_cold_recording_burst_keeps_a_continuous_startup_chain(node_cls, monkeyp
     assert next_frame == 201 and seen[-1] == 20.0
     assert bool(resets) is expect_resets
     if not expect_resets:
-        assert max(np.diff(seen)) <= 0.100001
-        assert seen[0] == 0.0 and len(seen) == 201
-        assert node.dropped == node.dropped_skipped == 0 and not node.skipped
+        assert max(np.diff(seen)) <= 0.200001
+        assert seen[0] == 0.0 and len(seen) >= 101
+        assert node.dropped == node.dropped_skipped and not node.skipped
     assert not node.startup_catchup_active and node.catchup is None
     # An independent stall in this recording must not inherit the startup allowance.
     queue.extend(cloud(k / 10) for k in range(202, 351))
@@ -742,7 +753,8 @@ def test_startup_burst_can_follow_an_isolated_first_cloud(node_cls, monkeypatch)
     node.on_cloud(cloud(0.1), "/lidar_points")
     while node.pending:
         node.on_pending()
-    assert seen[:3] == pytest.approx([0.0, 0.1, 0.2])  # preserve input-period frames at the start
+    assert seen[:3] == pytest.approx([0.0, 0.2, 0.4])  # the start-up burst at 5 Hz
+    assert max(np.diff(seen)) <= 0.200001
     assert seen[-1] == 15.0 and not node.startup_catchup_active
 
 
@@ -1165,7 +1177,7 @@ def test_every_node_parameter_is_a_launch_argument_with_the_same_default(node_cl
     assert set(declared) == set(launch)
     cast = {"bool": lambda s: s.lower() == "true", "float": float, "int": int, "str": str}
     for name, (default, typ) in launch.items():
-        if name != "freshness_mode":          # the stand-in node declares replay for the unit streams
+        if name not in ("freshness_mode", "warmup"):  # the stand-in's own defaults (replay, no warm-up)
             assert cast[typ](default) == declared[name], name
 
 
@@ -1186,3 +1198,45 @@ if _DOCKERFILE.is_file():       # a checkout (CI job "pytest"); the image does n
         cmd = re.search(r'^CMD \[(.*)\]$', _DOCKERFILE.read_text(), re.M).group(1)
         assert json.loads(f"[{cmd}]") == ["ros2", "launch", "resense_ros", "detector.launch.py",
                                           "freshness_mode:=replay"]
+
+
+# 29.09: the warm-up before listening
+
+def test_warm_up_runs_a_throwaway_detector_and_leaves_the_node_detector_untouched(node_cls):
+    _Node.overrides = {"warmup": True}
+    node = node_cls()
+    lines = [s for _, s in node.get_logger().lines]
+    warm = next(i for i, s in enumerate(lines) if s.startswith("warm-up: "))
+    assert warm < next(i for i, s in enumerate(lines) if s.startswith("ReSense detector listening on"))
+    assert node.detector.track is None and node.n_frames == 0     # its scene starts from the first real frame
+
+
+def test_warm_up_failure_is_logged_not_fatal(node_cls, monkeypatch):
+    _Node.overrides = {"warmup": True}
+
+    def broken(R_vs, n_slots=0, seed=0):
+        raise RuntimeError("no synthetic cloud")
+    monkeypatch.setattr(node_cls, "synthetic_cloud", staticmethod(broken))
+    node = node_cls()
+    assert any("warm-up skipped" in s for _, s in node.get_logger().lines)
+
+
+def test_synthetic_cloud_has_the_organizers_layout_and_decodes(node_cls):
+    from resense.config import SensorConfig
+    from resense.frame import axis_matrix
+    from resense.pointcloud import pointcloud2_to_arrays
+    cloud = node_cls.synthetic_cloud(axis_matrix(SensorConfig()), n_slots=30_000)
+    assert cloud.point_step == 26 and [f.name for f in cloud.fields][:3] == ["x", "y", "z"]
+    xyz, inten, ring, n_finite, n_near = pointcloud2_to_arrays(cloud, 0.5, 250.0)
+    assert n_finite == 10_000 and len(xyz) > 9_000 and ring.dtype == np.uint16
+
+
+def test_startup_chains_even_a_short_backlog_but_live_keeps_it_whole(node_cls):
+    """29.09: behind by two frames during a recording's start-up catch-up, the node takes the
+    newer one (0.2 s apart), so a node slower than a 10 Hz input stops falling further behind;
+    a frame waiting alone is processed at once, and a live short backlog is still kept whole."""
+    plan = node_cls.catchup_plan
+    assert plan([0.2, 0.3], 0.1, 0.2, 5.0, thin_short=True) == [1]
+    assert plan([0.2, 0.3, 0.4], 0.1, 0.2, 5.0, thin_short=True) == [1, 2]
+    assert plan([0.2], 0.1, 0.2, 5.0, thin_short=True) == [0]
+    assert plan([0.2, 0.3], 0.1, 0.2, 5.0) == [0, 1]

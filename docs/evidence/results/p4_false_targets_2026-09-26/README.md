@@ -1,7 +1,7 @@
 # Exact false-target evidence
 
 The frozen replay reproduced all 11,271 ride frames with zero detection differences and traced
-all 45 false-event identities. See [diagnosis](../../../P4_FALSE_TARGET_DIAGNOSIS.md).
+all 45 false-event identities. See [diagnosis](../../../archive/P4_FALSE_TARGET_DIAGNOSIS.md).
 
 - `trace.json.gz`: every live state of each identity, exact cluster geometry, detector model,
   history, current support statistics and passive association observations after mount reseed.

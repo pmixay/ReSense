@@ -11,8 +11,8 @@ Google Slides:
 Slides 7-11 (title, team, team cards, history, solution in short) keep their design and
 structure as the organizers require; the solution slides use the template's own layouts
 (12-29). Every measured number on the slides and in the speaker notes is written once, in ``N``
-below (copied from the regression gate baseline ``BASELINE``, docs/EXPERIMENTS.md "Current results",
-docs/P4_AUDIT.md and the 28.09 node captures and re-judgement outputs in docs/evidence/, each with its
+below (copied from the regression gate baseline ``BASELINE``, docs/archive/EXPERIMENTS_log_2026-09.md "Current results",
+docs/archive/P4_AUDIT.md and the 28.09 node captures and re-judgement outputs in docs/evidence/, each with its
 source and, for timings, its machine); the texts derive the rest (per km, ranges, counts). The
 build refuses a deck with a ``<...>`` field on any slide. The pictures are made by
 ``scripts/hero_view.py`` and ``resense run --render`` (``docs/img/``) and by the web UI's gallery
@@ -64,9 +64,9 @@ IMG = {
 
 # ---- every measured number on the slides and in the speaker notes; each is written here once and the
 # slide texts, charts and notes read it through the helpers below. Sources: the regression gate
-# baseline BASELINE (keys named as there), the cycle record docs/QUALITY_CYCLE_2026-09-27.md (the
-# held-out checks and the costs), docs/EXPERIMENTS.md "Current results" (§0, §2d, §2e, §3, §9),
-# docs/P4_AUDIT.md, docs/ARCHITECTURE.md "Native kernels", "GPU: evaluated, not used" ----------------
+# baseline BASELINE (keys named as there), the cycle record docs/archive/QUALITY_CYCLE_2026-09-27.md (the
+# held-out checks and the costs), docs/archive/EXPERIMENTS_log_2026-09.md "Current results" (§0, §2d, §2e, §3, §9),
+# docs/archive/P4_AUDIT.md, docs/ARCHITECTURE.md "Native kernels", "GPU: evaluated, not used" ----------------
 # The final 27.09 detector (352ca13: the opinion retrained on the shipped detector, 2x threshold
 # margin), measured at d572807 (the gate baseline below)
 BASELINE = "docs/evidence/results/regression_baseline_2026-09-27_quality.json"
@@ -367,8 +367,8 @@ ROLES = ["Капитан · ROS 2, Docker, интеграция", "Визуал�
          "Компьютерное зрение: модель пути, трекинг", "Данные, синтетика, метрики, тесты"]
 # the public cards (README "Team"): (name line, role, what the member owns)
 PUBLIC_CARDS = [
-    ("P1 · капитан", "Системный аналитик, ROS 2", "требования, архитектура, узел ROS 2 и Docker, оценка, питч"),
-    ("P2 · фронтенд", "Разработчик ПО (Python / JS)", "RViz, Foxglove, веб-дашборд, разметка, видео, презентация"),
+    ("P1 · капитан", "Системный аналитик, ROS 2", "требования, архитектура, узел ROS 2 и Docker, оценка, сдача"),
+    ("P2 · фронтенд", "Разработчик ПО (Python / JS)", "RViz, Foxglove, дашборд, разметка, питч, презентация, видео"),
     ("P3 · зрение", "Инженер компьютерного зрения", "модель пути, габарит, кластеры, трекинг, дальность, скорость"),
     ("P4 · данные", "Специалист по данным", "датасет, синтетические препятствия, разметка, метрики, тесты, CI"),
 ]
@@ -792,31 +792,21 @@ def s10_history(sl):
 def s11_short(sl):
     fill(shape(sl, 3), [
         "ROS 2 Humble-узел на Python (numpy / scipy / scikit-learn) и необязательные ядра на C++",
-        "Вход — PointCloud2 любого из двух наборов топик / frame_id; выход — решение GO / CAUTION / STOP / "
-        "FAULT, дистанция до препятствия и оценка дальности контроля, Detection3DArray, маркеры RViz, "
-        "JSON-статус",
-        "В каждом кадре: автокалибровка крепления → модель пути (полотно, рельсы, ось, кривизна по стенам) → "
-        "габарит 2,1 × 3,0 м + низкие объекты на рельсах → кластеры → фильтры инфраструктуры → "
-        "подтверждение 0,5 с и «мнение» о треке",
+        "PointCloud2 → модель пути → габарит 2,1 × 3,0 м → кластеры → решение; оба набора топик, "
+        "автокалибровка крепления",
+        "Результат: GO / CAUTION / STOP / FAULT, расстояние и /resense/status; подтверждение 0,5 с, "
+        "«мнение» о сомнительных треках",
         f"Кадр → решение через ROS, p95: {N['e2e_hw'][0]} (360°) и {N['e2e_hw'][1]} (120°) на {N['hw']}, "
         f"{N['e2e_ci'][0]} и {N['e2e_ci'][1]} мс на раннере CI; ядра на C++ сокращают время детектора на "
         f"{native_cut()}",
-        f"Все {num(frames_total())} реальных кадров: человек на пути найден в {of_frames(N['person'])} "
-        f"({person_rails()}), "
-        f"{per_km()} ложных события на км поездки — на ней же подбирались правила (на кусках, которых модель "
-        f"не видела, — {unseen_km()})",
-        f"Только CPU: GPU оценили и не берём — выигрыш ≤ {N['gpu_gain']} на кадр, а контейнер с GPU не "
-        "стартует без nvidia-container-toolkit",
+        f"{num(frames_total())} реальных кадров; человек — {of_frames(N['person'])} ({person_rails()}); "
+        f"{per_km()} ложных события на км при настройке правил, {unseen_km()} на невиданных моделью кусках",
+        "Без GPU: CPU-образ запускается без дополнительного ПО",
     ], size=12, space_before=4)
     fill(shape(sl, 7), [
-        "**Применение:** «взгляд вперёд» для беспилотного поезда (GoA3/4) и хозяйственных поездов; контроль "
-        "габарита при обкатке линий",
-        "**Развитие:** скорость поезда от одометрии — узел её уже принимает (своя оценка по лидару: ошибка "
-        f"{N['speed_err']}, пока опция); опора высоты по своду тоннеля — мелкие объекты дальше 100 м; "
-        "«мнение» о треке — переобучить на реальных препятствиях",
-        "**Внедрение:** docker load → docker run → ros2 bag play или одной командой scripts/play_bag.sh; "
-        "один файл параметров; стандартные "
-        "сообщения ROS 2; адаптер торможения и проверка свежести — отдельный этап интеграции",
+        "**Применение:** контроль габарита на беспилотном и хозяйственном поезде",
+        "**Дальше:** скорость от одометрии, работа с мелкими объектами вдали, обучение на реальных препятствиях",
+        "**Внедрение:** docker run → ros2 bag play; адаптер торможения и его проверки — отдельный этап",
     ], size=12, space_before=6)
 
 
@@ -1094,22 +1084,17 @@ def s_reliability(sl):      # template slide 16: four cards
 def s_hard(sl):             # template slide 15: five lined rows
     fill(placeholder(sl, 0), ["СЛОЖНЫЕ СЛУЧАИ"])
     rows = [
-        "**Полотно полно предметов.** «Всё выше полотна» — 1 482 ложных события за 20 мин; порог «≥ 3 см над "
-        "головкой рельса + 0,5 с» — единицы; мелкие предметы на полотне между рельсами (кубы 0,3 м; ящик 0,5 м "
-        f"найден в {of(N['bed_box_found'])} подходов) — слепое пятно",
-        f"**Предмет на рельсе делился на две ступени.** Верх на 0,10–0,15 м — между ступенью низких объектов "
-        f"и габаритом; кластеризуем его целиком: {N['rail_object_v061']} → {of(N['rail_object'])} кадров на кэше "
-        f"1 см; на исходной записи и через узел ROS — {N['rail_object_node'][0]}, один кадр GO (кадр "
-        f"{N['rail_object_node_go']})",
-        "**Станции и стрелки.** Край платформы и конструкции у торца — главный источник ложных STOP; "
-        "без рельсов в ближней зоне дальше 40 м — только предупреждение; «мнение» о треке может "
-        f"отложить сомнительный STOP — {opinion_bounds(short=True)}",
-        "**Дальше 100 м — 1–5 точек на объект.** Высокие объекты — по дальнему правилу до ~150 м; мелкие "
-        f"(< 0,6 м) — ближе: кубы 0,3 м организаторов — только с {cubes()} м (на 60–115 м — 2–4 точки)",
-        f"**Объекты организаторов у края и тонкие.** Их объекты стоят от оси лидара ({N['axis_angle']} к "
-        f"рельсам): ближе {N['axis_near_m']} м на прямой точку засчитываем и по ней — у края STOP с {edge_from()} м "
-        f"(габарит шире до {num(N['axis_shift_m'])} м, нигде не уже); висящий предмет 5 см — STOP только с "
-        f"{set_o_first('thin_hanging')} м",
+        "**Предметы на полотне.** Наивный порог — 1 482 ложных события за 20 мин; после настройки остаётся "
+        f"слепое пятно: ящик 0,5 м найден в {of(N['bed_box_found'])} подходов",
+        f"**Предмет на рельсе.** Кластеризуем целиком: {N['rail_object_v061']} → {of(N['rail_object'])} кадров "
+        f"на кэше 1 см; через узел ROS — STOP в {of(N['rail_object_node'])}, один GO в кадре "
+        f"{N['rail_object_node_go']}",
+        "**Станции и стрелки.** Ложные STOP у платформ; «мнение» может отложить сомнительный STOP "
+        f"не более чем на {N['opinion_budget']} обработанных кадров (~1 с при 10 Гц, ~2 с при 5 Гц)",
+        "**Мелкие объекты вдали.** На 60–115 м всего 2–4 точки от куба; STOP для кубов 0,3 м — "
+        f"только с {cubes()} м",
+        f"**У края габарита.** STOP лишь с {edge_from()} м; висящий предмет 5 см — с "
+        f"{set_o_first('thin_hanging')} м (синтетика организаторов)",
     ]
     for idx, text in zip(range(15, 20), rows):
         ph = placeholder(sl, idx)
@@ -1142,7 +1127,7 @@ def s_next(sl):             # template slide 17: three cards
 NOTES = {  # speaker notes per template slide (the main shot's are set in s_hero)
     8: "Мы — команда «Молоток», четыре инженерные роли. Наше решение называется ReSense. "
        "Описываем нормальный тоннель и ищем препятствия в габарите; возможны пропуски и ложные тревоги. "
-       "Историю команды капитан дополняет подтверждёнными данными.",
+       "Историю команды P2 дополняет данными, подтверждёнными командой.",
     9: "Роли: капитан — ROS 2, Docker и интеграция; визуализация и презентация; компьютерное зрение — модель "
        "пути и трекинг; данные, синтетика, метрики и тесты. Каждый отвечал за свою часть, код общий.",
     10: "Почему эта задача: реальных препятствий в данных почти нет. Мы описываем нормальный тоннель, "

@@ -1,20 +1,24 @@
 # Редактирование книги
 
 Исходники книги — папка `gitbook/` репозитория: обычный Markdown, по файлу на страницу, оглавление —
-в `gitbook/SUMMARY.md`. `.gitbook.yaml` в корне репозитория указывает GitBook на эту папку.
+в `gitbook/SUMMARY.md`. `.gitbook.yaml` в корне репозитория указывает GitBook на эту папку,
+`gitbook/gitbook-docs.yaml` описывает сайт.
 
 ## Где опубликована книга
 
-Книга публикуется на GitBook.com из этой папки. Пока Git Sync не подключён, опубликованная копия
-сама за репозиторием не следует: меняйте страницы здесь, затем переносите изменение в GitBook
-(change request или новый импорт папки). С Git Sync (в пространстве *Configure* →
-*GitHub Sync* → этот репозиторий и ветка, направление «GitHub → GitBook») каждый пуш обновляет
-сайт, а правки из редактора GitBook коммитятся обратно в `gitbook/`.
+Книга опубликована на [resense.gitbook.io/resense-docs](https://resense.gitbook.io/resense-docs/).
+GitBook Git Sync берёт её из `gitbook/` ветки `main`: каждое слияние в `main` обновляет сайт.
+Правьте страницы только в репозитории, через pull request, — не в редакторе GitBook. Новую страницу
+добавьте в `gitbook/SUMMARY.md`, иначе её не будет в оглавлении. README репозитория ссылается на
+страницы книги по адресам (`reference/node-parameters`, `reference/topics`): не переименовывайте
+эти файлы.
 
 ## Правила написания
 
-* Инструкции — здесь, доказательства (evidence) — в `docs/`. Не копируйте измеренные числа в книгу;
-  ссылайтесь на `docs/EXPERIMENTS.md` или сводку README, где у каждого числа есть дата и данные.
+* Инструкции — здесь, доказательства (evidence) — в `docs/`. Измеренные числа живут на странице
+  [Результаты и ограничения](../reference/results.md), каждое — с датой, машиной, данными и ссылкой
+  на [`docs/SCORECARD.md`](https://github.com/pmixay/ReSense/blob/main/docs/SCORECARD.md) или
+  папку evidence; другие страницы берут числа оттуда или ссылаются на неё.
 * На файлы репозитория ссылайтесь полными URL GitHub
   (`https://github.com/pmixay/ReSense/blob/main/…`): относительных ссылок за пределы `gitbook/` на
   GitBook не существует.

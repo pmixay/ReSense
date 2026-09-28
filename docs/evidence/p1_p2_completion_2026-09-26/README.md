@@ -39,7 +39,7 @@ Run [36274548282](https://github.com/pmixay/ReSense/actions/runs/36274548282) co
 **failed** its message-count criterion: 85 of 201 messages processed and 84 left after +5 s. The
 detector's first STOP was at +1.4 s in the target range, but startup catch-up skipped 110 frames.
 The logs and compressed status stream are in
-[`cold_bag_failed_run_36274548282/`](cold_bag_failed_run_36274548282/); the raw archive and database
+[`cold_bag_failed_run_36274548282/`](cold_bag_failed_run_36274548282); the raw archive and database
 were removed by CI and are not committed.
 
 Run [36277608569](https://github.com/pmixay/ReSense/actions/runs/36277608569) tested the
@@ -48,7 +48,7 @@ cadence-preserving code on the original bag but still failed freshness and post-
 default rosbag2 read-ahead had preloaded a backlog before the node's first result. A follow-up with
 read-ahead set to one downloaded and verified the same bag but delivered no LiDAR input during a
 12-minute wait; it was cancelled as an invalid playback setup. Its 1,380 no-input watchdog rows are
-preserved in [`cold_bag_cancelled_run_36278988540/`](cold_bag_cancelled_run_36278988540/). Run
+preserved in [`cold_bag_cancelled_run_36278988540/`](cold_bag_cancelled_run_36278988540). Run
 [36280434044](https://github.com/pmixay/ReSense/actions/runs/36280434044) then passed the 360-degree
 `doubleT_obstacle` cold replay with read-ahead ten. The current-source run
 [36281462241](https://github.com/pmixay/ReSense/actions/runs/36281462241) passes **both** original
@@ -58,7 +58,7 @@ source messages unprocessed after the +8.8 s catch-up; four missing frames are a
 recording itself. The clear `roundT_doubleT` check saw 252 status messages, zero alarm frames, 48 ms
 p95, freshness PASS, and zero of 201 source messages unprocessed after settle. Preserved output,
 compressed status streams and hashes are in
-[`cold_bags_passed_run_36281462241/`](cold_bags_passed_run_36281462241/). All jobs in run 362814
+[`cold_bags_passed_run_36281462241/`](cold_bags_passed_run_36281462241). All jobs in run 362814
 passed, including 673 pytest cases with zero skips, the Chromium suite, transport and remote-viewer
 recovery checks, and offline image delivery.
 

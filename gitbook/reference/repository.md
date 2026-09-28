@@ -13,22 +13,26 @@
 | `web/` | веб-дашборд, раскладка Foxglove, инструмент разметки и их проверки без браузерного окна |
 | `tests/` | набор тестов |
 | `labels/` | разметка реальных препятствий и синтетических объектов организаторов |
-| `docs/` | все документы; материалы организаторов — в `docs/organizers/` |
+| `docs/` | все документы; материалы организаторов — в `docs/organizers/`, доказательства (сырые данные замеров) — в `docs/evidence/`, датированные записи — в `docs/archive/` |
 | `gitbook/` | эта книга |
 
 ## Документы в репозитории
 
 | документ | зачем читать |
 |---|---|
-| [README](https://github.com/pmixay/ReSense/blob/main/README.md) | команды для жюри, текущий статус и главные результаты с датами |
+| [README](https://github.com/pmixay/ReSense/blob/main/README.md) | команды для жюри, главные результаты и ограничения |
+| [SCORECARD](https://github.com/pmixay/ReSense/blob/main/docs/SCORECARD.md) | независимая оценка 28.09: как измеряли, результаты по каждой записи, главные риски |
 | [ARCHITECTURE](https://github.com/pmixay/ReSense/blob/main/docs/ARCHITECTURE.md) | компоненты, поток данных, бюджет времени, ядра на C++, развёртывание без интернета |
 | [ALGORITHM](https://github.com/pmixay/ReSense/blob/main/docs/ALGORITHM.md) | метод по этапам, правило решения, параметры, ограничения |
-| [EXPERIMENTS](https://github.com/pmixay/ReSense/blob/main/docs/EXPERIMENTS.md) | все измерения: дальность, задержка, FPS, ложные тревоги, трудные случаи, что не сработало |
+| [EXPERIMENTS](https://github.com/pmixay/ReSense/blob/main/docs/EXPERIMENTS.md) | измерения: дальность, задержка, FPS, ложные тревоги, трудные случаи, что не сработало |
 | [EVALUATION](https://github.com/pmixay/ReSense/blob/main/docs/EVALUATION.md) | протокол оценки и наборы данных |
 | [DATASET](https://github.com/pmixay/ReSense/blob/main/docs/DATASET.md), [SENSOR](https://github.com/pmixay/ReSense/blob/main/docs/SENSOR.md) | записи, форматы, Hesai Pandar128 |
-| [DECISIONS](https://github.com/pmixay/ReSense/blob/main/docs/DECISIONS.md) | ключевые решения на одной странице |
+| [DECISIONS](https://github.com/pmixay/ReSense/blob/main/docs/DECISIONS.md), [RESEARCH](https://github.com/pmixay/ReSense/blob/main/docs/RESEARCH.md) | ключевые решения на одной странице; обзор литературы и рассмотренные подходы |
+| [DETECTOR_FREEZE](https://github.com/pmixay/ReSense/blob/main/docs/DETECTOR_FREEZE.md) | печать детектора 27.09 и её проверка |
 | [VM_GUIDE](https://github.com/pmixay/ReSense/blob/main/docs/VM_GUIDE.md) | пробный прогон на чистой машине, замеры производительности и репетиция без интернета на облачной ВМ |
-| [CHANGELOG](https://github.com/pmixay/ReSense/blob/main/CHANGELOG.md) | что изменилось — по версиям и слияниям |
+| [CHANGELOG](https://github.com/pmixay/ReSense/blob/main/CHANGELOG.md) | что изменилось — по версиям |
+| [docs/archive/](https://github.com/pmixay/ReSense/tree/main/docs/archive) | датированные записи: полный журнал экспериментов, подробный журнал изменений, циклы качества |
+| [docs/video/](https://github.com/pmixay/ReSense/tree/main/docs/video), [docs/presentation/](https://github.com/pmixay/ReSense/tree/main/docs/presentation) | обзорное видео и ролики, презентация (отвечает P2) |
 | [docs/README](https://github.com/pmixay/ReSense/blob/main/docs/README.md) | указатель всех документов: назначение и ответственный |
 
 Спецификация организаторов и их ответы:

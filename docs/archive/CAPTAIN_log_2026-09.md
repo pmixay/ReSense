@@ -10,8 +10,8 @@ Moved on 24.09 from `docs/CAPTAIN.md` at `537e220` (its §0 "Status", lines 12�
 relative links re-pointed from `docs/` to `docs/archive/`; raw JSON names point to
 `../evidence/results/`; the link to the deleted review report of 24.09 is replaced by a note
 (the report is in the git history); two remarks on interrupted working sessions are removed; one
-thousands separator follows the docs format. Current results: [`../EXPERIMENTS.md`](../EXPERIMENTS.md);
-version history: [`../../CHANGELOG.md`](../../CHANGELOG.md).
+thousands separator follows the docs format. Current results: [`../EXPERIMENTS.md`](EXPERIMENTS_log_2026-09.md);
+version history: [`CHANGELOG_2026-09.md`](CHANGELOG_2026-09.md).
 
 ## 0. Status — done and what is left (started 16.09, last updated 24.09)
 
@@ -380,7 +380,7 @@ to touch. None changes a frozen contract. Items marked **done** were implemented
 
 13. **Bench timing on an i7-class machine.** Run `resense bench` and the ROS node with `top`
     on the closest available 8-core machine, record CPU per core and memory, append a section to
-    `docs/EXPERIMENTS.md` §3 (append only; P3 owns the rest of the file).
+    `docs/archive/EXPERIMENTS_log_2026-09.md` §3 (append only; P3 owns the rest of the file).
 14. **Integrate multi-frame accumulation into the node when P3 lands it.** The `Detector` is
     already stateful, so the node should need nothing more than an ego-speed source; prepare the
     parameter (`ego_speed_mps`, or an odometry topic subscription) and a launch argument now so the

@@ -25,7 +25,7 @@ def _cluster(x: float, y: float = 0.0, zone: str = "gauge", n_gauge: int = 20) -
 
 def test_shipped_defaults_of_27_09():
     # shipped: the along-track gate and the column body width; the vote minimum, start_clean and the
-    # axis hold stay off (they cost set F / set O positives or monitored range, docs/QUALITY_CYCLE_2026-09-27.md)
+    # axis hold stay off (they cost set F / set O positives or monitored range, docs/archive/QUALITY_CYCLE_2026-09-27.md)
     t, k, c = TrackingConfig(), TrackConfig(), ClusterConfig()
     assert t.zone_min_votes == 0 and t.gate_along_only is True and t.start_clean is False
     assert k.axis_disagree_hold == 0 and c.column_width_trim == 0.05 and c.column_width_trim_min_cut == 0.25
