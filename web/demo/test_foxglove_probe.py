@@ -16,7 +16,7 @@ def status():
         "snapshot_kind": "frame", "decision": "GO", "obstacle": False,
         "stop_held": False, "node": {"catchup": False},
         "freshness": {
-            "valid": True, "reason": "current", "mode": "replay",
+            "valid": True, "reason": "current", "go_allowed": True, "mode": "replay",
             "clock_reference": "publisher_utc", "evaluated_at_utc_s": 1000.0,
             "max_result_age_s": 0.5, "future_tolerance_s": 0.05,
             "source_age_s": 0.1, "residence_age_s": 0.02, "queue_lag_s": 0.0,
@@ -36,6 +36,7 @@ def test_current_status_accepts_current_frames(endian, decision):
     frame = status()
     frame["decision"] = decision
     frame["obstacle"] = decision == "STOP"
+    frame["freshness"]["go_allowed"] = decision == "GO"
     assert probe.current_status(cdr(frame, endian), 1000.2)
 
 
@@ -44,6 +45,9 @@ def test_current_status_accepts_current_frames(endian, decision):
     {"decision": "FAULT"},
     {"decision": "STOP", "stop_held": True},
     {"node": {"catchup": True}},
+    {"obstacle": "false"},
+    {"health": {"level": "error"}},
+    {"freshness": {"go_allowed": False}},
     {"freshness": {"valid": False, "reason": "source_stale"}},
     {"freshness": {"reason": "epoch_unconfirmed"}},
     {"freshness": {"source_age_s": 0.6}},
@@ -128,3 +132,14 @@ def test_probe_requires_current_status_after_startup_when_enabled(
     else:
         with pytest.raises(RuntimeError, match="no current fresh frame"):
             asyncio.run(run)
+
+
+def test_probe_waits_for_split_channel_advertisements(monkeypatch):
+    socket = FakeSocket([status()])
+    channels = json.loads(socket.messages.pop())["channels"]
+    first = [c for c in channels if c['topic'] in probe.LIVE_TOPICS]
+    later = [c for c in channels if c['topic'] not in probe.LIVE_TOPICS]
+    socket.messages = [json.dumps({'op': 'advertise', 'channels': part}) for part in (first, later)]
+    monkeypatch.setitem(sys.modules, 'websockets', types.SimpleNamespace(connect=lambda *a, **k: socket))
+    monkeypatch.setattr(probe.time, 'time', lambda: 1000.0)
+    asyncio.run(probe.check('ws://fixture:8765', 1.0, probe.LAYOUT, True))

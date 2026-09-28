@@ -33,6 +33,24 @@ def test_srt_time_format():
     assert module.fmt_srt_time(3725.25) == "01:02:05,250"
 
 
+def test_span_subtitles_are_clipped_and_rebased(tmp_path):
+    from types import SimpleNamespace
+    renderer = SimpleNamespace(cues=[(90, 95, ["first"], None, 0), (100, 115, ["last"], None, 0),
+                                    (115, 120, ["outside"], None, 0)])
+    path = tmp_path / "nested" / "clip.srt"
+    module.write_srt(path, renderer, (93, 111))
+    assert module.parse_srt(path) == [(0, 2, "first"), (7, 18, "last")]
+
+
+def test_span_chapters_use_the_clip_timeline(tmp_path):
+    path = tmp_path / "chapters.txt"
+    module.write_chapters(path, (93, 111))
+    text = path.read_text()
+    assert text.count("[CHAPTER]") == 1
+    assert "START=0\nEND=18000\n" in text
+    assert "title=Объекты организаторов" in text
+
+
 if (ROOT / module.OUT_MP4).is_file():
 
     def test_sources_exist():

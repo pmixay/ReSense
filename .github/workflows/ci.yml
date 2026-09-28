@@ -35,6 +35,7 @@ jobs:
     runs-on: ubuntu-22.04
     env:
       RESENSE_REQUIRE_SYNTHETIC: "1"
+      RESENSE_REQUIRE_WEB: "1"
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7

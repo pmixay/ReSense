@@ -95,13 +95,13 @@
           "operator": "=",
           "rawValue": "true",
           "color": "#ff2d55",
-          "label": "OBSTACLE"
+          "label": "LAST: OBSTACLE"
         },
         {
           "operator": "=",
           "rawValue": "false",
           "color": "#2ecc71",
-          "label": "NO OBSTACLE DETECTED"
+          "label": "LAST: NO OBSTACLE DETECTED"
         }
       ]
     },
@@ -199,25 +199,25 @@
           "operator": "=",
           "rawValue": "STOP",
           "color": "#ff2d55",
-          "label": "STOP: obstacle in the envelope"
+          "label": "LAST STOP: check status freshness"
         },
         {
           "operator": "=",
           "rawValue": "FAULT",
           "color": "#9b59b6",
-          "label": "FAULT: input not trusted"
+          "label": "LAST FAULT: input not trusted"
         },
         {
           "operator": "=",
           "rawValue": "CAUTION",
           "color": "#f39c12",
-          "label": "CAUTION"
+          "label": "LAST CAUTION"
         },
         {
           "operator": "=",
           "rawValue": "GO",
           "color": "#2ecc71",
-          "label": "GO: no obstacle detected"
+          "label": "LAST GO: no obstacle detected"
         }
       ]
     }
