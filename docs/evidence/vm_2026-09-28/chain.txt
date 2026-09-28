@@ -1,0 +1,36 @@
+16:31:23 == facts
+16:31:55 facts: 
+16:31:55 == dry
+16:34:20 dry: PASS: all dry-run criteria met exit 0 PASS: all dry-run criteria met exit 0 replay: 252 frames, alarm frames 0:  exit 0 
+16:34:20 == fastinput
+16:34:55 fastinput: exit 0 
+16:34:55 == cold_1
+16:37:06 cold_1: PASS: all dry-run criteria met exit 0 PASS: all dry-run criteria met exit 0 
+16:37:06 == warm_1
+16:39:19 warm_1: PASS: all dry-run criteria met exit 0 PASS: all dry-run criteria met exit 0 
+16:39:19 == cold_2
+16:41:30 cold_2: PASS: all dry-run criteria met exit 0 PASS: all dry-run criteria met exit 0 
+16:41:30 == warm_2
+16:43:44 warm_2: PASS: all dry-run criteria met exit 0 PASS: all dry-run criteria met exit 0 
+16:43:44 == ct_stock
+16:44:54 ct_stock: PASS: all dry-run criteria met PASS: a stock Fast DDS player and listener (shared memory on) reached the UDP-only node exit 0 
+16:44:54 == jury
+16:46:04 jury: console 4: player pid 21266 (kladmin), RMW loaded: libfastrtps.so.2.6.12 librmw_fastrtps_cpp.so  kladmin 644 /dev/shm/fastrtps_port7411 kladmin 644 /dev/shm/fas PASS: all dry-run criteria met exit 0 
+16:46:04 == host_fastdds
+16:47:12 host_fastdds: console 4: player pid 21872 (kladmin), RMW loaded: libfastrtps.so.2.6.12 librmw_fastrtps_cpp.so  kladmin 644 /dev/shm/fastrtps_port7411 kladmin 644 /dev/shm/fas PASS: all dry-run criteria met exit 0 
+16:47:12 == host_cyclonedds
+16:48:20 host_cyclonedds: console 4: player pid 22512 (kladmin), RMW loaded: libddsc.so.0.10.5 librmw_cyclonedds_cpp.so   PASS: all dry-run criteria met exit 0 
+16:48:20 == shm_fast
+16:49:29 shm_fast: console 4: player pid 23127 (kladmin), RMW loaded: libfastrtps.so.2.6.12 librmw_fastrtps_cpp.so  root 666 /dev/shm/fastrtps_port7411 kladmin 644 /dev/shm/fastrt PASS: all dry-run criteria met exit 0 
+16:49:29 == shm_cyclone
+16:50:37 shm_cyclone: console 4: player pid 23682 (kladmin), RMW loaded: libddsc.so.0.10.5 librmw_cyclonedds_cpp.so   PASS: all dry-run criteria met exit 0 
+16:50:37 == ct_shm
+16:51:46 ct_shm: PASS: all dry-run criteria met PASS: a stock Fast DDS player and listener (shared memory on) reached the node (RESENSE_DDS=shm) over shared memory exit 0 
+16:51:46 == bench
+16:58:36 bench: PASS: all dry-run criteria met PASS: all dry-run criteria met FAIL: freshness: no valid result in recording(s) 1 FAIL: p95 latency 103 ms > 100 ms PASS: all dry-run criteria met PASS: all dry-run criteria met PASS: all dry-run criteria met PASS: a stock Fast DDS player and listener (shared memory on) reached the UDP-only node exit 1 
+16:58:36 == gate
+17:05:36 gate: exit 0 
+17:05:36 == export
+17:09:05 export:    docker run --rm -it --net=host --ipc=host resense ros2 launch resense_ros detector.launch.py freshness_mode:=replay exit 0 PASS: resense:latest loaded from resense-image-1.0.0.tar.gz and runs without network. Next:    docker run --rm -it --net=host --ipc=host resense ros2 launch resense_ros detector.launch.py freshness_mode:=replay  # then ros2 bag play <bag> --delay 3 --r exit 0 
+net.core.rmem_max = 212992
+CHAIN_DONE

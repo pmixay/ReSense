@@ -1,0 +1,23 @@
+node docker args: (none), image default command; player: uid 1000, RMW unset (Humble default), no Fast DDS profile; net.core.rmem_max 212992, rmem_default 212992
+decisions seen:     172 CAUTION      38 FAULT      82 GO     195 STOP 
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+[detector_node-1] [WARN] [1790613966.025389119] [resense_detector]: net.core.rmem_max = 212992, net.core.rmem_default = 212992: below 32 MiB. A bag player may then deliver few or none of the ~24 MB 360-degree clouds to t
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[ERROR] [detector_node-1]: process has died [pid 22, exit code 1, cmd '/opt/resense/ros2_ws/install/resense_ros/lib/resense_ros/detector_node --ros-args -r __node:=resense_detector --params-file /tmp/launch_params_io2o4h
+console 4: player pid 21872 (kladmin), RMW loaded: libfastrtps.so.2.6.12 librmw_fastrtps_cpp.so  kladmin 644 /dev/shm/fastrtps_port7411 kladmin 644 /dev/shm/fastrtps_port7413 kladmin 644 /dev/shm/fastrtps_port7415 kladmin 644 /dev/shm/fastrtps_port7417 kladmin 644 /dev/shm/fastrtps_port7419 
+status messages      : 453 (34 lines skipped)
+alarm frames         : 190
+detector alarm frames: 190 (held STOP excluded from positive evidence)
+obstacle distance    : 55.5 .. 56.6 m
+latency decode+detect: mean 44 / p95 61 / max 116 ms
+detector stage total : mean 25 / p95 35 ms
+end-to-end (current) : median 50 / p95 77 / max 149 ms over 431 current results (input publication -> result, through DDS)
+node CPU             : 0.45 cores median, 1.02 max (node process, every stats period); peak RSS 469 MB
+dropped input frames : 4 (0 of them skipped by the node's catch-up)
+fps (last report)    : 8.48
+start of the input   : 51 frames in the first 5 s after the first one, largest gap 0.1 s
+freshness contract  : PASS
+recordings seen      : 2 ['/lidar_points', '/sensing/lidar/hesai128/pointcloud']
+
+PASS: all dry-run criteria met
+exit 0

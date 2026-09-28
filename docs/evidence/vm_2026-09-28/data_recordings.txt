@@ -1,0 +1,85 @@
++ mkdir -p /data/cache
++ '[' '!' -d /data/for_hackathon/doubleT_platform ']'
++ '[' -s /data/dataset.zip ']'
++ curl -fL -sS --retry 5 --retry-delay 5 --connect-timeout 30 -o /data/dataset.zip 'https://drive.usercontent.google.com/download?id=1WTlR2wDSuEHTOARGK_gZeXDTZ9RZpswu&export=download&confirm=t'
++ head -c 2 /data/dataset.zip
+PK+ echo
+
++ ls -l /data/dataset.zip
+-rw-rw-r-- 1 kladmin kladmin 3940746006 Sep 28 16:09 /data/dataset.zip
++ python scripts/unpack_dataset.py /data/dataset.zip --out /data --only doubleT_platform,roundT_pressureGate_roundT,roundT_squareT_pressureGate_squareT,squareT_platform_squareT_switch
+    133 s    7.01 GB  for_hackathon/squareT_platform_squareT_switch/squareT_platform_squareT_switch_0.db3
+    133 s    0.00 GB  for_hackathon/squareT_platform_squareT_switch/metadata.yaml
+    215 s    2.76 GB  for_hackathon/doubleT_platform/doubleT_platform_0.db3
+    215 s    0.00 GB  for_hackathon/doubleT_platform/metadata.yaml
+    308 s    4.36 GB  for_hackathon/roundT_squareT_pressureGate_squareT/roundT_squareT_pressureGate_squareT_0.db3
+    308 s    0.00 GB  for_hackathon/roundT_squareT_pressureGate_squareT/metadata.yaml
+    379 s    2.14 GB  for_hackathon/roundT_pressureGate_roundT/roundT_pressureGate_roundT_0.db3
+    379 s    0.00 GB  for_hackathon/roundT_pressureGate_roundT/metadata.yaml
+extracted 8 files, 16.3 GB to /data in 379 s
+bags: doubleT_platform, roundT_pressureGate_roundT, roundT_squareT_pressureGate_squareT, squareT_platform_squareT_switch
++ chmod -R a+rX /data/for_hackathon
++ for b in doubleT_obstacle doubleT_platform roundT_doubleT roundT_pressureGate_roundT roundT_squareT_pressureGate_squareT squareT_platform_squareT_switch
++ '[' -f /data/cache/doubleT_obstacle/_stamps.json ']'
++ ls '/data/cache/doubleT_obstacle/*stamps.json'
++ python scripts/cache_frames.py /data/for_hackathon/doubleT_obstacle /data/cache/doubleT_obstacle --every 1 --int16 --stamps
+cached 201 frames of doubleT_obstacle to /data/cache/doubleT_obstacle
++ for b in doubleT_obstacle doubleT_platform roundT_doubleT roundT_pressureGate_roundT roundT_squareT_pressureGate_squareT squareT_platform_squareT_switch
++ '[' -f /data/cache/doubleT_platform/_stamps.json ']'
++ ls '/data/cache/doubleT_platform/*stamps.json'
++ python scripts/cache_frames.py /data/for_hackathon/doubleT_platform /data/cache/doubleT_platform --every 1 --int16 --stamps
+cached 345 frames of doubleT_platform to /data/cache/doubleT_platform
++ for b in doubleT_obstacle doubleT_platform roundT_doubleT roundT_pressureGate_roundT roundT_squareT_pressureGate_squareT squareT_platform_squareT_switch
++ '[' -f /data/cache/roundT_doubleT/_stamps.json ']'
++ ls '/data/cache/roundT_doubleT/*stamps.json'
++ python scripts/cache_frames.py /data/for_hackathon/roundT_doubleT /data/cache/roundT_doubleT --every 1 --int16 --stamps
+cached 252 frames of roundT_doubleT to /data/cache/roundT_doubleT
++ for b in doubleT_obstacle doubleT_platform roundT_doubleT roundT_pressureGate_roundT roundT_squareT_pressureGate_squareT squareT_platform_squareT_switch
++ '[' -f /data/cache/roundT_pressureGate_roundT/_stamps.json ']'
++ ls '/data/cache/roundT_pressureGate_roundT/*stamps.json'
++ python scripts/cache_frames.py /data/for_hackathon/roundT_pressureGate_roundT /data/cache/roundT_pressureGate_roundT --every 1 --int16 --stamps
+cached 268 frames of roundT_pressureGate_roundT to /data/cache/roundT_pressureGate_roundT
++ for b in doubleT_obstacle doubleT_platform roundT_doubleT roundT_pressureGate_roundT roundT_squareT_pressureGate_squareT squareT_platform_squareT_switch
++ '[' -f /data/cache/roundT_squareT_pressureGate_squareT/_stamps.json ']'
++ ls '/data/cache/roundT_squareT_pressureGate_squareT/*stamps.json'
++ python scripts/cache_frames.py /data/for_hackathon/roundT_squareT_pressureGate_squareT /data/cache/roundT_squareT_pressureGate_squareT --every 1 --int16 --stamps
+cached 545 frames of roundT_squareT_pressureGate_squareT to /data/cache/roundT_squareT_pressureGate_squareT
++ for b in doubleT_obstacle doubleT_platform roundT_doubleT roundT_pressureGate_roundT roundT_squareT_pressureGate_squareT squareT_platform_squareT_switch
++ '[' -f /data/cache/squareT_platform_squareT_switch/_stamps.json ']'
++ ls '/data/cache/squareT_platform_squareT_switch/*stamps.json'
++ python scripts/cache_frames.py /data/for_hackathon/squareT_platform_squareT_switch /data/cache/squareT_platform_squareT_switch --every 1 --int16 --stamps
+cached 877 frames of squareT_platform_squareT_switch to /data/cache/squareT_platform_squareT_switch
++ '[' '!' -d /data/cache/cloud_with_fake_obj ']'
++ '[' -d /data/cloud_with_fake_obj ']'
++ python scripts/unpack_dataset.py https://disk.yandex.ru/d/KpkG_yKoGk-vHQ --out /data
+      0 s    0.00 GB  cloud_with_fake_obj/metadata.yaml
+     67 s    7.42 GB  cloud_with_fake_obj/cloud_with_fake_obj_0.db3
+extracted 2 files, 7.4 GB to /data in 67 s
++ python scripts/cache_frames.py /data/cloud_with_fake_obj /data/cache/cloud_with_fake_obj --every 1 --int16 --stamps
+cached 1510 frames of cloud_with_fake_obj to /data/cache/cloud_with_fake_obj
++ for b in doubleT_obstacle doubleT_platform roundT_doubleT roundT_pressureGate_roundT roundT_squareT_pressureGate_squareT squareT_platform_squareT_switch
++ cmp /data/for_hackathon/doubleT_obstacle/metadata.yaml docs/evidence/bag_metadata/doubleT_obstacle_metadata.yaml
++ echo 'doubleT_obstacle original'
+doubleT_obstacle original
++ for b in doubleT_obstacle doubleT_platform roundT_doubleT roundT_pressureGate_roundT roundT_squareT_pressureGate_squareT squareT_platform_squareT_switch
++ cmp /data/for_hackathon/doubleT_platform/metadata.yaml docs/evidence/bag_metadata/doubleT_platform_metadata.yaml
++ echo 'doubleT_platform original'
+doubleT_platform original
++ for b in doubleT_obstacle doubleT_platform roundT_doubleT roundT_pressureGate_roundT roundT_squareT_pressureGate_squareT squareT_platform_squareT_switch
++ cmp /data/for_hackathon/roundT_doubleT/metadata.yaml docs/evidence/bag_metadata/roundT_doubleT_metadata.yaml
++ echo 'roundT_doubleT original'
+roundT_doubleT original
++ for b in doubleT_obstacle doubleT_platform roundT_doubleT roundT_pressureGate_roundT roundT_squareT_pressureGate_squareT squareT_platform_squareT_switch
++ cmp /data/for_hackathon/roundT_pressureGate_roundT/metadata.yaml docs/evidence/bag_metadata/roundT_pressureGate_roundT_metadata.yaml
++ echo 'roundT_pressureGate_roundT original'
+roundT_pressureGate_roundT original
++ for b in doubleT_obstacle doubleT_platform roundT_doubleT roundT_pressureGate_roundT roundT_squareT_pressureGate_squareT squareT_platform_squareT_switch
++ cmp /data/for_hackathon/roundT_squareT_pressureGate_squareT/metadata.yaml docs/evidence/bag_metadata/roundT_squareT_pressureGate_squareT_metadata.yaml
++ echo 'roundT_squareT_pressureGate_squareT original'
+roundT_squareT_pressureGate_squareT original
++ for b in doubleT_obstacle doubleT_platform roundT_doubleT roundT_pressureGate_roundT roundT_squareT_pressureGate_squareT squareT_platform_squareT_switch
++ cmp /data/for_hackathon/squareT_platform_squareT_switch/metadata.yaml docs/evidence/bag_metadata/squareT_platform_squareT_switch_metadata.yaml
++ echo 'squareT_platform_squareT_switch original'
+squareT_platform_squareT_switch original
++ echo DATA_A_DONE
+DATA_A_DONE
