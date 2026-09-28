@@ -1,60 +1,62 @@
-# Detector Freeze
+# Заморозка детектора
 
-*На русском: [DETECTOR_FREEZE.ru.md](DETECTOR_FREEZE.ru.md).*
+> **Назначение:** что опечатано, как проверяется печать, шлюз, который её подтверждает, и как будет
+> приниматься изменение детектора.
+> **Аудитория:** команда, жюри · **Ответственный:** P1 (печать), P3 (детектор) · **Язык:** RU
+> **Проверено:** 2026-09-29: `python3 scripts/detector_freeze.py verify` PASS; охват манифеста, шлюз и
+> базовая линия — по `scripts/detector_freeze.py`; повторный прогон шлюза от 28.09 ·
+> **Статус:** актуален; детектор опечатан и не меняется до сдачи
 
-> **Purpose:** what is sealed, how the seal is verified, the gate that validates it, and how a
-> detector change would be accepted.
-> **Audience:** team, jury · **Owner:** P1 (seal), P3 (detector) · **Language:** EN
-> **Last verified:** 2026-09-29: `python3 scripts/detector_freeze.py verify` PASS; the manifest's
-> scope, gate and baseline against `scripts/detector_freeze.py`; the gate re-run of 28.09 ·
-> **Status:** current; the detector is sealed and does not change before the submission
+## Что опечатано
 
-## What is sealed
+Детектор цикла качества 27.09 (детектор `352ca13`, измерен на `d572807`), опечатанный файлом
+[`detector_freeze_2026-09-27.json`](evidence/detector_freeze_2026-09-27.json): SHA-256 его 31 файла в
+`resense/` (включая обученную оценку трека `resense/models/track_opinion.json`), `native/`, `configs/`,
+`ros2_ws/src/resense_ros/config/` и входов сборки `setup.py`, `pyproject.toml`,
+`scripts/build_native.sh`; хеши конфигурации, измеренный коммит, а также подтверждающий шлюз и его
+базовая линия — по пути и хешу. Код ноды ROS, launch-файл, Docker, CI и документы лежат вне печати и
+имеют собственные проверки.
 
-The detector of the 27.09 quality cycle (detector `352ca13`, measured at `d572807`), sealed by
-[`detector_freeze_2026-09-27.json`](evidence/detector_freeze_2026-09-27.json): the SHA-256 of its
-31 files in `resense/` (the learned track opinion `resense/models/track_opinion.json` included),
-`native/`, `configs/`, `ros2_ws/src/resense_ros/config/` and the build inputs `setup.py`,
-`pyproject.toml`, `scripts/build_native.sh`; the configuration hashes, the measured commit, and the
-validating gate and its baseline by path and hash. The ROS node code, launch file, Docker, CI and
-docs are outside the seal, with their own checks.
+## Как проверить
 
-## How to verify
+`python3 scripts/detector_freeze.py verify` (только стандартная библиотека; без данных, пакетов и
+клона Git) завершается ошибкой, если опечатанный файл добавлен, изменён или удалён, если
+`configs/default.yaml` и его копия для ROS различаются, или если шлюз либо базовая линия (baseline),
+названные в манифесте, изменились или больше не фиксируют полный, пройденный шлюз без послаблений
+(waivers). CI запускает его в задании `checks` при каждом пуше. Он не прогоняет никаких данных, и
+файл, заменённый вместе с записанным хешем, проходит проверку: изменение манифеста ревьюится как код.
 
-`python3 scripts/detector_freeze.py verify` (standard library only; no data, packages or Git
-checkout) fails if a sealed file is added, changed or removed, if `configs/default.yaml` and its ROS
-copy differ, or if the gate or baseline named in the manifest changed or no longer records a full,
-passing, waiver-free gate. CI runs it in job `checks` on every push. It replays no data, and a file
-replaced together with its recorded hash passes: a change to the manifest is reviewed like code.
-
-## The gate that validates it
+## Шлюз, подтверждающий печать
 
 [`regression_gate_2026-09-27_quality.json`](evidence/results/regression_gate_2026-09-27_quality.json):
-every frame of the six recordings, set O, the whole ride and set F straight on the default
-configuration, against [`regression_baseline_2026-09-26_ride_p3d.json`](evidence/results/regression_baseline_2026-09-26_ride_p3d.json):
-PASS with no `--allow`, missing row or worse gated metric. The same run is the current baseline
+каждый кадр шести записей, набора O, всей поездки и набора F straight на конфигурации по умолчанию,
+против [`regression_baseline_2026-09-26_ride_p3d.json`](evidence/results/regression_baseline_2026-09-26_ride_p3d.json):
+PASS без `--allow`, без отсутствующих строк и без ухудшившихся проверяемых метрик. Этот же прогон
+служит текущей базовой линией
 [`regression_baseline_2026-09-27_quality.json`](evidence/results/regression_baseline_2026-09-27_quality.json);
-re-run against it on the team VM on 28.09, identical but the informational latency rows
-([`gate_2026-09-28/`](evidence/gate_2026-09-28/gate_table.txt)). Independent per-frame outputs:
-[`judge_outputs_2026-09-28/`](evidence/judge_outputs_2026-09-28/README.md),
-[`judgement_2026-09-28/`](evidence/judgement_2026-09-28/README.md). Measured quality and
-limitations: [`SCORECARD.md`](SCORECARD.md), `docs/EXPERIMENTS.md`. The seal is an integrity
-record, not a release, a deployment approval or a proof of safety.
+повторный прогон против неё на ВМ команды 28.09 дал тот же результат, кроме информационных строк
+задержки ([`gate_2026-09-28/`](evidence/gate_2026-09-28/gate_table.txt)). Независимые выходные данные
+по кадрам: [`judge_outputs_2026-09-28/`](evidence/judge_outputs_2026-09-28/README.md),
+[`judgement_2026-09-28/`](evidence/judgement_2026-09-28/README.md). Измеренное качество и
+ограничения: [`SCORECARD.md`](SCORECARD.md), `docs/EXPERIMENTS.md`. Печать — это запись о
+целостности, а не релиз, не одобрение развёртывания и не доказательство безопасности.
 
-## How a change would be accepted
+## Как будет принято изменение
 
-None is planned before the submission. After it, a detector change needs, in order:
+До сдачи изменений не планируется. После неё изменение детектора требует, по порядку:
 
-1. the defect and its acceptance test committed before any run; the patch reviewed, the affected
-   tests passing, the detector committed;
-2. the **full gate** on that commit (default configuration, the ride and set F cached as in
-   [`VM_GUIDE.md`](VM_GUIDE.md) §2.3): exit 0, every gated metric identical or better, no
-   `--allow`; a change meant to move the numbers commits its new baseline with it;
-3. an **independent safety review** of the patch and its per-frame differences: no STOP lost,
-   delayed or shortened on set O, the real obstacle, the range cases and the stress runs;
-4. a **reseal**, reviewed: `create` refuses a gate with waivers, missing rows or overrides, or a
-   sealed file that differs from the measured commit; then `DEFAULT_MANIFEST` in
-   `scripts/detector_freeze.py` points at the new manifest and `verify` passes.
+1. дефект и его приёмочный тест, закоммиченные до любого запуска; патч, прошедший ревью;
+   проходящие затронутые тесты; закоммиченный детектор;
+2. **полный шлюз** на этом коммите (конфигурация по умолчанию, поездка и набор F в кэше, как в
+   [`VM_GUIDE.md`](VM_GUIDE.md) §2.3): код выхода 0, каждая проверяемая метрика такая же или лучше,
+   без `--allow`; изменение, которое должно сдвинуть числа, коммитит вместе с собой новую базовую
+   линию;
+3. **независимое ревью безопасности** патча и его отличий по кадрам: ни один STOP не потерян, не
+   задержан и не укорочен на наборе O, реальном препятствии, случаях дальности и стресс-прогонах;
+4. **новую печать (reseal)**, прошедшую ревью: `create` отказывается работать с шлюзом с
+   послаблениями, отсутствующими строками или переопределениями, а также с опечатываемым файлом,
+   который отличается от измеренного коммита; затем `DEFAULT_MANIFEST` в
+   `scripts/detector_freeze.py` указывает на новый манифест, и `verify` проходит.
 
 ```bash
 python scripts/regression_gate.py --cache /data/cache --jobs 4 \
@@ -65,6 +67,6 @@ python scripts/detector_freeze.py create --manifest docs/evidence/detector_freez
   --evidence docs/evidence/results/regression_gate_<date>_<change>.json
 ```
 
-Superseded P3d seals of 26.09: [`detector_freeze_2026-09-26.json`](evidence/detector_freeze_2026-09-26.json),
+Замещённые печати P3d от 26.09: [`detector_freeze_2026-09-26.json`](evidence/detector_freeze_2026-09-26.json),
 [`…_before_comment_correction.json`](evidence/detector_freeze_2026-09-26_before_comment_correction.json).
-How the sealed detector came about: [`archive/QUALITY_CYCLE_2026-09-27.md`](archive/QUALITY_CYCLE_2026-09-27.md).
+Как появился опечатанный детектор: [`archive/QUALITY_CYCLE_2026-09-27.md`](archive/QUALITY_CYCLE_2026-09-27.md).

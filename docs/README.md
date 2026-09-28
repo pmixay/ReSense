@@ -1,99 +1,96 @@
-# Documentation Index
+# Указатель документации
 
-*На русском: [README.ru.md](README.ru.md).*
+> **Назначение:** каждый документ репозитория: для чего он, кто его читает и сопровождает, и
+> общие для них термины.
+> **Аудитория:** жюри, команда · **Ответственный:** P1 · **Язык:** RU
+> **Проверено:** 2026-09-29: строки таблицы сверены с документами после общей ревизии документации
+> (пакет 1.0.0: детектор опечатан 27.09, нода от 29.09) · **Статус:** актуален
 
-> **Purpose:** every document of the repository, what it is for, who reads and maintains it, and
-> the terms they share.
-> **Audience:** jury, team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-29: the rows against the documents after the documentation sweep
-> (package 1.0.0: the detector sealed on 27.09, the node of 29.09) · **Status:** current
+Начните с корневого [`README.md`](../README.md): что такое ReSense, команды для жюри, результаты.
+Руководство пользователя: **[resense.gitbook.io/resense-docs](https://resense.gitbook.io/resense-docs/)**
+(исходники — [`gitbook/`](../gitbook/SUMMARY.md), синхронизируются из `main`).
 
-Start with the root [`README.md`](../README.md): what ReSense is, the jury commands, the results.
-The same in Russian, as a user guide: **[resense.gitbook.io/resense-docs](https://resense.gitbook.io/resense-docs/)**
-(source [`gitbook/`](../gitbook/SUMMARY.md), synced from `main`).
+## 1. Документы
 
-## 1. Documents
+**актуален** = поддерживается; **датированная запись** = свидетельства или оценка на одну дату, не
+переписывается; **архив** = история в [`archive/`](archive/README.md), не поддерживается.
 
-**current** = maintained; **dated record** = one date's evidence or judgement, not rewritten;
-**archive** = history in [`archive/`](archive/README.md), not maintained.
-
-| document | purpose | language | owner | status |
+| документ | назначение | язык | ответственный | статус |
 |---|---|---|---|---|
-| [`README.md`](../README.md) | the project's face: what it is, the jury path, results, build / run / parameters (spec §5 README) | EN + RU jury block | P1 | current |
-| [`gitbook/`](../gitbook/SUMMARY.md) | the user guide: image, running on a bag, reading the output, RViz / Foxglove / dashboard, offline stand, acceptance test, parameters, topics, results, the team's approach, troubleshooting | RU | P1 | current |
-| [`ARCHITECTURE.md`](ARCHITECTURE.md) | components, data flow, the node, freshness, delivery, CI, known limitations (spec §5 «Архитектура») | EN + RU summary | P1 | current |
-| [`ALGORITHM.md`](ALGORITHM.md) | how the detector decides, stage by stage, with its maths, parameters and limitations (spec §5 «Описание алгоритма») | EN + RU summary | P1 (structure), P3 (content) | current |
-| [`EXPERIMENTS.md`](EXPERIMENTS.md) | measured results: detection, range, false alarms, latency, FPS, hard cases, how quality changed, what was tried and not shipped (spec §5 «Эксперименты») | EN + RU summary | P3 / P4; P1 the node timing | current |
-| [`EVALUATION.md`](EVALUATION.md) | evaluation protocol: data sets, metrics, procedure, in-sample vs held out | EN + RU summary | P1 / P4 | current |
-| [`DECISIONS.md`](DECISIONS.md) | the key decisions on one page: question, what was measured, decision, evidence | EN + RU summary | P1 | current |
-| [`DATASET.md`](DATASET.md) | the organizers' data: recordings, formats, labels, frame cache, unpacking | EN + RU summary | P4 | current |
-| [`SENSOR.md`](SENSOR.md) | Hesai Pandar128 facts and what they imply | EN + RU summary | P1 | current |
-| [`RESEARCH.md`](RESEARCH.md) | the literature survey behind the approach | EN | P3 | current |
-| [`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md) | what is sealed, how CI verifies it, how a change would be accepted | EN | P1 / P3 | current |
-| [`SCORECARD.md`](SCORECARD.md) | the independent judgement of 28.09 evening against the eight criteria of spec §8, and what changed since | EN + RU summary | P1 | dated record + current follow-up |
-| [`PRESENTATION.md`](PRESENTATION.md) | the pitch: slide requirements, slide plan, speaker text, demo, rehearsals, building the deck and the video | RU | **P2** | current |
-| [`VM_GUIDE.md`](VM_GUIDE.md) | runbook for the team's cloud VM: data, dry run, host consoles, bench, gate, export, offline rehearsal | EN | P1 | current |
-| [`CAPTAIN.md`](CAPTAIN.md) | captain's board: role, criteria, work left, branches, rules, contracts, ownership, decision log | EN | P1 | current |
-| [`PLAN.md`](PLAN.md) | roles, rules, milestones, status, risks | RU | P1 | current |
-| [`QUESTIONS.md`](QUESTIONS.md) | questions to the organizers and their status | RU message, EN rationale | P1 | current |
-| [`../CHANGELOG.md`](../CHANGELOG.md) | what changed, by version | EN | P1 | current |
-| [`evidence/README.md`](evidence/README.md) | index of the raw run evidence and result summaries | EN | P1 / P4 | current |
-| [`archive/README.md`](archive/README.md) | the full experiment log (§ numbers cited by code), the dated changelog, the captain's earlier boards, quality-cycle records, P4's audits | EN | P1 | archive |
-| [`../web/README.md`](../web/README.md) | dashboard, RViz / Foxglove layouts, label tool, video recipes | EN | P2 | current |
-| [`../web/DEMO_HANDOFF.md`](../web/DEMO_HANDOFF.md) | the live demo on the stand step by step, the second-device Foxglove check, the fallback, the rehearsal record, the private deck build | RU | P2 | current |
-| [`images/README.md`](images/README.md) | dashboard screenshots and their provenance | EN | P2 | current |
+| [`README.md`](../README.md) | лицо проекта: что это, путь для жюри, результаты, сборка / запуск / параметры (ТЗ §5 README) | RU | P1 | актуален |
+| [`gitbook/`](../gitbook/SUMMARY.md) | руководство пользователя: образ, запуск на бэге, чтение выходных данных, RViz / Foxglove / дашборд, офлайн-стенд, приёмочный тест, параметры, топики, результаты, подход команды, устранение неполадок | RU | P1 | актуален |
+| [`ARCHITECTURE.md`](ARCHITECTURE.md) | компоненты, поток данных, нода, свежесть, поставка, CI, известные ограничения (ТЗ §5 «Архитектура») | RU | P1 | актуален |
+| [`ALGORITHM.md`](ALGORITHM.md) | как детектор принимает решение, этап за этапом, с математикой, параметрами и ограничениями (ТЗ §5 «Описание алгоритма») | RU | P1 (структура), P3 (содержание) | актуален |
+| [`EXPERIMENTS.md`](EXPERIMENTS.md) | измеренные результаты: обнаружение, дальность, ложные тревоги, задержка, частота кадров, трудные случаи, как менялось качество, что пробовали, но не выпустили (ТЗ §5 «Эксперименты») | RU | P3 / P4; P1 — время обработки в ноде | актуален |
+| [`EVALUATION.md`](EVALUATION.md) | протокол оценки: наборы данных, метрики, процедура, в выборке и вне выборки | RU | P1 / P4 | актуален |
+| [`DECISIONS.md`](DECISIONS.md) | ключевые решения на одной странице: вопрос, что измерялось, решение, материалы-доказательства (evidence) | RU | P1 | актуален |
+| [`DATASET.md`](DATASET.md) | данные организаторов: записи, форматы, метки, кэш кадров, распаковка | RU | P4 | актуален |
+| [`SENSOR.md`](SENSOR.md) | факты о Hesai Pandar128 и что из них следует | RU | P1 | актуален |
+| [`RESEARCH.md`](RESEARCH.md) | обзор литературы, на котором основан подход | EN | P3 | актуален |
+| [`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md) | что опечатано, как это проверяет CI, как будет принято изменение | RU | P1 / P3 | актуален |
+| [`SCORECARD.md`](SCORECARD.md) | независимая оценка вечера 28.09 по восьми критериям ТЗ §8 и что изменилось с тех пор | RU | P1 | датированная запись + актуальное продолжение |
+| [`PRESENTATION.md`](PRESENTATION.md) | питч: требования к слайдам, план слайдов, текст выступления, демонстрация, репетиции, сборка презентации и видео | RU | **P2** | актуален |
+| [`VM_GUIDE.md`](VM_GUIDE.md) | рабочая инструкция для облачной ВМ команды: данные, прогон (dry run), консоли хоста, бенчмарк, шлюз, экспорт, офлайн-репетиция | EN | P1 | актуален |
+| [`CAPTAIN.md`](CAPTAIN.md) | доска капитана: роль, критерии, оставшаяся работа, ветки, правила, контракты, распределение ответственности, журнал решений | EN | P1 | актуален |
+| [`PLAN.md`](PLAN.md) | роли, правила, вехи, статус, риски | RU | P1 | актуален |
+| [`QUESTIONS.md`](QUESTIONS.md) | вопросы организаторам и их статус | сообщение на RU, обоснование на EN | P1 | актуален |
+| [`../CHANGELOG.md`](../CHANGELOG.md) | что менялось, по версиям | EN | P1 | актуален |
+| [`evidence/README.md`](evidence/README.md) | указатель сырых evidence прогонов и сводок результатов | EN | P1 / P4 | актуален |
+| [`archive/README.md`](archive/README.md) | полный журнал экспериментов (номера § цитируются в коде), датированный журнал изменений, прежние доски капитана, записи циклов качества, аудиты P4 | EN | P1 | архив |
+| [`../web/README.md`](../web/README.md) | дашборд, раскладки RViz / Foxglove, инструмент разметки, рецепты для видео | EN | P2 | актуален |
+| [`../web/DEMO_HANDOFF.md`](../web/DEMO_HANDOFF.md) | живая демонстрация на стенде по шагам, проверка Foxglove на втором устройстве, запасной вариант, запись репетиции, сборка закрытой презентации | RU | P2 | актуален |
+| [`images/README.md`](images/README.md) | скриншоты дашборда и их происхождение | EN | P2 | актуален |
 
-### Organizers' material ([`organizers/`](organizers))
+### Материалы организаторов ([`organizers/`](organizers))
 
-| file | what | origin |
+| файл | что | происхождение |
 |---|---|---|
-| [`README_organizers.md`](organizers/README_organizers.md) | the case page: task, timeline, criteria, links | organizers, unchanged |
-| [`technical_specification_case05.pdf`](organizers/technical_specification_case05.pdf) (+ `.txt`) | the specification (ТЗ) that "spec §" refers to | organizers, unchanged |
-| [`QA_session_transcript_ru.md`](organizers/QA_session_transcript_ru.md) | machine transcript of the organizers' Q&A of 22.09 | team transcript |
-| [`QA_session.md`](organizers/QA_session.md) | summary of the Q&A and the facts that changed the code | team (P1) |
-| [`answers.md`](organizers/answers.md) | every organizer answer, verbatim, and what the team did with it | team (P1) |
-| [`mount_and_switch_qa.md`](organizers/mount_and_switch_qa.md) | answers on the LiDAR mount and switches (24.09) | organizers, formatted by the team |
-| [`test_stand_software.md`](organizers/test_stand_software.md) | the test stand's hardware and software | organizers + team (P1) |
+| [`README_organizers.md`](organizers/README_organizers.md) | страница кейса: задача, сроки, критерии, ссылки | организаторы, без изменений |
+| [`technical_specification_case05.pdf`](organizers/technical_specification_case05.pdf) (+ `.txt`) | техническое задание (ТЗ), на которое ссылается «ТЗ §» | организаторы, без изменений |
+| [`QA_session_transcript_ru.md`](organizers/QA_session_transcript_ru.md) | машинная расшифровка сессии вопросов и ответов организаторов от 22.09 | расшифровка команды |
+| [`QA_session.md`](organizers/QA_session.md) | краткое изложение сессии вопросов и ответов и фактов, изменивших код | команда (P1) |
+| [`answers.md`](organizers/answers.md) | каждый ответ организаторов дословно и что команда с ним сделала | команда (P1) |
+| [`mount_and_switch_qa.md`](organizers/mount_and_switch_qa.md) | ответы о креплении LiDAR и стрелках (24.09) | организаторы, оформлено командой |
+| [`test_stand_software.md`](organizers/test_stand_software.md) | аппаратное и программное обеспечение тестового стенда | организаторы + команда (P1) |
 
-## 2. Folders
+## 2. Папки
 
-| folder | contents |
+| папка | содержимое |
 |---|---|
-| [`img/`](img), [`images/`](images) | real-data renders (read and written by `scripts/build_deck.py`, so they stay in place); dashboard screenshots |
-| [`video/`](video) | the 2:50 overview `resense_overview.mp4` (Russian subtitles, also as `.srt`) and its clips (Docker + RViz chain, the bag from the cab, the organizers' objects) |
-| [`presentation/`](presentation) | the deck in the organizers' template (pptx + pdf); personal data only in the git-ignored `private/` |
-| [`sensor/`](sensor) | the Hesai Pandar128 user manual |
-| [`evidence/`](evidence) | raw logs, captures and bench output per run (`<run>_<date>/`), the recordings' `bag_metadata/`, result summaries in `results/` |
-| [`archive/`](archive) | history, not maintained |
+| [`img/`](img), [`images/`](images) | рендеры реальных данных (читаются и записываются `scripts/build_deck.py`, поэтому остаются на месте); скриншоты дашборда |
+| [`video/`](video) | обзор на 2:50 `resense_overview.mp4` (русские субтитры, также в виде `.srt`) и его клипы (цепочка Docker + RViz, бэг из кабины, объекты организаторов) |
+| [`presentation/`](presentation) | презентация в шаблоне организаторов (pptx + pdf); персональные данные — только в `private/`, который git игнорирует |
+| [`sensor/`](sensor) | руководство пользователя Hesai Pandar128 |
+| [`evidence/`](evidence) | сырые логи, снимки и вывод бенчмарка по каждому прогону (`<run>_<date>/`), `bag_metadata/` записей, сводки результатов в `results/` |
+| [`archive/`](archive) | история, не поддерживается |
 
-`extended_dataset_intake.json` stays in `docs/`: scripts read it (`scripts/far_range_eval.py`,
+`extended_dataset_intake.json` остаётся в `docs/`: его читают скрипты (`scripts/far_range_eval.py`,
 `scripts/eval_real.py`, `scripts/ml_dataset.py`).
 
-## 3. Glossary
+## 3. Глоссарий
 
-| term | meaning |
+| термин | значение |
 |---|---|
-| envelope, gauge | the organizers' train envelope, 2.1 m wide × 3.0 m high around the track axis above the rail head: the strict zone of `STOP`; the advisory zone adds 0.35 m on each side |
-| ride | `new_data`, the organizers' 20-minute, 13 km recording (11 271 frames, no obstacles) |
-| set O / set F / set S | the organizers' ray-cast objects (`cloud_with_fake_obj`); the team's synthetic objects on the ride's straight track; the team's synthetic objects in the short recordings ([`EVALUATION.md`](EVALUATION.md) §1) |
-| real / organizers' synthetic / team synthetic | the recordings as recorded; objects added by the organizers' tool; objects ray-cast by the team |
-| in-sample / held out | measured on data the rules were tuned on / on data a component never saw |
-| alarm frame, STOP episode, event | a frame with `STOP`; a run of consecutive `STOP` frames; one confirmed gauge track |
-| `CAUTION`, advisory | an object just outside the envelope or beyond the trusted range, known infrastructure or degraded health: informational, not an alarm |
-| `clear_distance` | the estimated monitored range, capped at detected objects: an estimate, not a guarantee |
-| e2e | end to end: the player publishes a cloud → the node's result for it is received |
-| stand, sandbox, team VM | the organizers' test machine (i7-9700E, 8 cores, not available before the upload); the 4-vCPU development sandbox; the team's 4-core cloud VM |
+| габарит (envelope, gauge) | габарит поезда, заданный организаторами: 2,1 м шириной × 3,0 м высотой вокруг оси пути над головкой рельса: строгая зона `STOP`; зона предупреждения добавляет по 0,35 м с каждой стороны |
+| поездка | `new_data`, 20-минутная запись организаторов на 13 км (11 271 кадр, без препятствий) |
+| набор O / набор F / набор S | объекты организаторов, построенные лучевым методом (`cloud_with_fake_obj`); синтетические объекты команды на прямом участке поездки; синтетические объекты команды в коротких записях ([`EVALUATION.md`](EVALUATION.md) §1) |
+| реальные / синтетические (организаторов) / синтетические (команды) | записи в исходном виде; объекты, добавленные инструментом организаторов; объекты, построенные командой лучевым методом |
+| в выборке / вне выборки | измерено на данных, на которых настраивались правила / на данных, которых компонент никогда не видел |
+| кадр тревоги, эпизод STOP, событие | кадр со `STOP`; серия подряд идущих кадров `STOP`; один подтверждённый трек в габарите |
+| `CAUTION`, предупреждение (advisory) | объект сразу за границей габарита или за доверенной дальностью, известная инфраструктура или сниженная исправность: информационный сигнал, а не тревога |
+| `clear_distance` | оценка дальности контроля, ограниченная обнаруженными объектами: оценка, а не гарантия |
+| e2e | сквозной (end to end): плеер публикует облако → принимается результат ноды для него |
+| стенд, песочница, ВМ команды | тестовая машина организаторов (i7-9700E, 8 ядер, недоступна до загрузки); песочница разработки на 4 vCPU; 4-ядерная облачная ВМ команды |
 
-## 4. Conventions
+## 4. Соглашения
 
-* Every team document starts with the header block (purpose, audience, owner by role P1–P4,
-  language, last verified, status); jury-facing ones add a Russian «Кратко».
-* One fact, one home: results in [`EXPERIMENTS.md`](EXPERIMENTS.md) (headline in the README), the
-  judgement in [`SCORECARD.md`](SCORECARD.md), organizer answers in `organizers/answers.md`, history
-  in [`../CHANGELOG.md`](../CHANGELOG.md) and [`archive/`](archive/README.md).
-* Every number with its kind (real / synthetic), in-sample or held out, and its evidence path.
-* "EXPERIMENTS §x" in code comments and older records refers to the archived full log,
-  [`archive/EXPERIMENTS_log_2026-09.md`](archive/EXPERIMENTS_log_2026-09.md).
-* Russian translations sit next to the originals as `<NAME>.ru.md` (README, ARCHITECTURE, ALGORITHM,
-  EXPERIMENTS, EVALUATION, DECISIONS, DATASET, SENSOR, SCORECARD, DETECTOR_FREEZE and this index); the
-  English original is authoritative and is updated first.
+* Каждый документ команды начинается с блока-шапки (назначение, аудитория, ответственный по роли
+  P1–P4, язык, проверено, статус); документы для жюри добавляют русское «Кратко».
+* Один факт — одно место: результаты — в [`EXPERIMENTS.md`](EXPERIMENTS.md) (ключевые цифры — в
+  README), независимая оценка — в [`SCORECARD.md`](SCORECARD.md), ответы организаторов — в
+  `organizers/answers.md`, история — в [`../CHANGELOG.md`](../CHANGELOG.md) и
+  [`archive/`](archive/README.md).
+* Каждое число — с его видом (реальные / синтетические), в выборке или вне выборки и путём к
+  evidence.
+* «EXPERIMENTS §x» в комментариях кода и в более старых записях относится к архивному полному
+  журналу, [`archive/EXPERIMENTS_log_2026-09.md`](archive/EXPERIMENTS_log_2026-09.md).

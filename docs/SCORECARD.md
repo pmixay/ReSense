@@ -1,15 +1,13 @@
-# Criteria Scorecard
+# Оценочная карта по критериям
 
-*На русском: [SCORECARD.ru.md](SCORECARD.ru.md).*
-
-> **Purpose:** the independent judgement of ReSense against the eight criteria of spec §8: score per
-> criterion, what was measured, the deductions and what would raise each score.
-> **Audience:** team, jury · **Owner:** P1 · **Language:** EN, summary RU
-> **Judged:** 2026-09-28 evening, commit `464f5bc` (`main`, CI run 36424461052 green): the sealed
-> 27.09 detector and the node of 28.09. Raw material, scripts and per-frame outputs:
-> [`evidence/judgement_2026-09-28/`](evidence/judgement_2026-09-28/README.md).
-> **Status:** current. It replaces every earlier judgement; those scores and judge reports were
-> removed from the repository on 28.09 (they remain in git history).
+> **Назначение:** независимая оценка ReSense по восьми критериям ТЗ §8: балл по каждому
+> критерию, что было измерено, снятые баллы и что повысило бы каждый балл.
+> **Аудитория:** команда, жюри · **Ответственный:** P1 · **Язык:** RU
+> **Оценено:** 2026-09-28, вечер, коммит `464f5bc` (`main`, прогон CI 36424461052 зелёный):
+> опечатанный детектор от 27.09 и нода от 28.09. Исходные материалы, скрипты и покадровые
+> результаты: [`evidence/judgement_2026-09-28/`](evidence/judgement_2026-09-28/README.md).
+> **Статус:** актуален. Заменяет все прежние оценки; их баллы и отчёты судей удалены из
+> репозитория 28.09 (остаются в истории git).
 
 **Кратко.** Независимая оценка 28.09 (вечер), коммит `464f5bc`: **61 / 100**. Всё перемерено
 заново на данных организаторов; прежним оценкам и цифрам документов не доверяли. Сильное: цепочка
@@ -23,246 +21,257 @@ STOP во всех 8 прогонах на этом бэге, с 8-го кадр
 командой организаторов `ros2 bag play <бэг>` без флага очереди все результаты устаревшие; архив
 образа для шага 1 README не опубликован.
 
-## Result
+## Результат
 
-The organizers publish no weights; the maxima below are the team's reading of the spec (8.1 is
-"the main criterion", 8.8 "has less weight"). Lanes follow [`PLAN.md`](PLAN.md) and
+Организаторы не публикуют весов; максимумы ниже — прочтение ТЗ командой (8.1 — «главный
+критерий», 8.8 — «имеет меньший вес»). Направления работ соответствуют [`PLAN.md`](PLAN.md) и
 [`CAPTAIN.md`](CAPTAIN.md) §8.
 
-| # | criterion | max | score | in one line | lane |
+| # | критерий | макс. | балл | в одной строке | направление |
 |---|---|---:|---:|---|---|
-| 8.1 | Functionality | 25 | **14.5** | the real obstacle is found in every run, early, at the right distance; 1 % STOP frames on the short empty recordings; but 2.3 false STOP episodes per km on the ride, a GO frame with the obstacle present, CAUTION on ~half of empty frames, and no sustained STOP for a real person at 60 m in 4 of 15 transplanted windows | P3 (detector), P4 (evaluation) |
-| 8.2 | Range | 15 | **7** | 2 m boxes from ~100 m; a real person sustained to 60 m in 73 % of windows, 100 m in 40 %, 160 m in 7 %; 0.3 m cubes from 35–56 m | P3 |
-| 8.3 | Speed | 10 | **7.5** | 10 fps, e2e p95 85–94 ms at 360° and 49–78 ms at 120° on 4 vCPU, < 1.1 core; but slow start-up catch-up and stale output under the default player | P1 (node), P3 (detector cost) |
-| 8.4 | Generalization | 15 | **7** | map-free per-frame tunnel model and auto-calibration are the right idea; transfer to other tunnels is uneven (trusted-axis limits, special-case rules tuned on 7 recordings) | P3, P4 |
-| 8.5 | Technical quality | 10 | **7** | clean library/node split, 753 passing tests, strong CI, native kernels with fallback; 323 parameters, dead flags, 16 k lines of Markdown with stale claims | P1 (CI, Docker, docs), P3 (code) |
-| 8.6 | Ease of launch | 10 | **7** | builds from scratch in 79 s and runs with the default command; but no published image archive, `--read-ahead-queue-size 10` and `--net=host` are required | P1 |
-| 8.7 | Team approach | 10 | **8** | hypotheses, rejected variants, pre-registered criteria and limitations are recorded; over-tuning to the organizers' objects and a scattered record cost points | all; P1 edits |
-| 8.8 | Pitch | 5 | **3** | the deck follows problem → idea → algorithm → demo → results; silent video, placeholder team slides, dense text, no rehearsal yet | P2 (pitch, deck, video; since 28.09) |
-| | **Total** | **100** | **61** | | |
+| 8.1 | Функциональность | 25 | **14,5** | реальное препятствие находится в каждом прогоне, рано и на правильной дистанции; 1 % кадров STOP на коротких пустых записях; но 2,3 эпизода ложного STOP на км на поездке, кадр GO при наличии препятствия, CAUTION примерно на половине пустых кадров и нет устойчивого STOP для реального человека на 60 м в 4 из 15 перенесённых окон | P3 (детектор), P4 (оценка) |
+| 8.2 | Дальность | 15 | **7** | коробки 2 м с ~100 м; реальный человек с устойчивым STOP на 60 м в 73 % окон, на 100 м в 40 %, на 160 м в 7 %; кубы 0,3 м с 35–56 м | P3 |
+| 8.3 | Скорость | 10 | **7,5** | 10 кадр/с, e2e p95 85–94 мс на 360° и 49–78 мс на 120° на 4 vCPU, < 1,1 ядра; но медленный догон при старте и устаревший вывод при плеере по умолчанию | P1 (нода), P3 (стоимость детектора) |
+| 8.4 | Обобщающая способность | 15 | **7** | покадровая модель тоннеля без карты и автокалибровка — верная идея; перенос на другие тоннели неравномерен (пределы доверенной оси, правила для частных случаев, настроенные на 7 записях) | P3, P4 |
+| 8.5 | Техническое качество | 10 | **7** | чёткое разделение на библиотеку и ноду, 753 проходящих теста, сильный CI, нативные ядра с запасным вариантом; 323 параметра, мёртвые флаги, 16 тыс. строк Markdown с устаревшими утверждениями | P1 (CI, Docker, документация), P3 (код) |
+| 8.6 | Простота запуска | 10 | **7** | собирается с нуля за 79 с и работает с командой по умолчанию; но нет опубликованного архива образа, обязательны `--read-ahead-queue-size 10` и `--net=host` | P1 |
+| 8.7 | Командный подход | 10 | **8** | гипотезы, отвергнутые варианты, заранее зафиксированные критерии и ограничения записаны; чрезмерная настройка под объекты организаторов и разбросанная запись работы стоят баллов | все; правит P1 |
+| 8.8 | Питч | 5 | **3** | колода следует схеме проблема → идея → алгоритм → демо → результаты; видео без звука, слайды о команде-заглушки, плотный текст, репетиций ещё не было | P2 (питч, колода, видео; с 28.09) |
+| | **Итого** | **100** | **61** | | |
 
-The captain's own criteria (8.3 node side, 8.5 CI / Docker / docs, 8.6) come to **21.5 of 30**;
-the pitch and the video (8.8) moved to P2 on 28.09. The work that would raise them is in
+Собственные критерии капитана (8.3 со стороны ноды, 8.5 CI / Docker / документация, 8.6) дают
+**21,5 из 30**; питч и видео (8.8) перешли к P2 28.09. Работа, которая их повысит, описана в
 [`CAPTAIN.md`](CAPTAIN.md) §3.
 
-## How it was judged
+## Как проводилась оценка
 
-* **Independence.** Nothing was taken from the documents: the earlier scorecard, the judge
-  reports and the captain board's scores were not read before scoring. A second reviewer (a
-  separate agent, same rule) audited code and documents for 8.5–8.8; its findings were checked
-  and merged into the scores below.
-* **Machine.** A 4-vCPU cloud sandbox (15 GB RAM), Docker 29.3. The runtime image was built from
-  `docker/Dockerfile` at `464f5bc`; the sandbox's proxy needed a CA file, apt over https and the
-  base image from `mirror.gcr.io` (Docker Hub answered 429): a sandbox-only shim, the image content
-  is the Dockerfile's ([diff](evidence/judgement_2026-09-28/scripts/Dockerfile.sandbox.diff)).
-* **Data.** The organizers' `Датасет.zip` from their link (sha256 matches
-  `scripts/cold_bags.sha256`), all six recordings; `cloud_with_fake_obj` (their ten ray-cast
-  objects, "set O") and the 20-minute ride `new_data` from their Yandex Disk links.
-* **Runs.** `pytest`, `ruff`, `detector_freeze.py verify`; the Docker build; 11 runs of the jury
-  chain with the judge's own listener; the detector offline on every frame of the six recordings,
-  set O and the ride; a range test that pastes the real person of `doubleT_obstacle` into the
-  other tunnels (15 windows × 6 ranges); GitHub state (tags, releases, CI).
+* **Независимость.** Ничего не бралось из документов: прежняя оценочная карта, отчёты судей и
+  баллы из таблицы капитана не читались до выставления баллов. Второй рецензент (отдельный агент,
+  то же правило) проверил код и документы для 8.5–8.8; его замечания проверены и учтены в баллах
+  ниже.
+* **Машина.** Облачная песочница на 4 vCPU (15 ГБ ОЗУ), Docker 29.3. Образ для запуска собран из
+  `docker/Dockerfile` на `464f5bc`; прокси песочницы потребовал файл CA, apt по https и базовый
+  образ с `mirror.gcr.io` (Docker Hub отвечал 429): это прослойка только для песочницы, содержимое
+  образа — из Dockerfile ([diff](evidence/judgement_2026-09-28/scripts/Dockerfile.sandbox.diff)).
+* **Данные.** `Датасет.zip` организаторов по их ссылке (sha256 совпадает с
+  `scripts/cold_bags.sha256`), все шесть записей; `cloud_with_fake_obj` (их десять объектов,
+  вписанных лучевым методом (ray casting), «набор O») и 20-минутная поездка `new_data` по их
+  ссылкам на Яндекс Диск.
+* **Прогоны.** `pytest`, `ruff`, `detector_freeze.py verify`; сборка Docker; 11 прогонов цепочки
+  жюри с собственным слушателем судьи; детектор офлайн на каждом кадре шести записей, набора O и
+  поездки; тест дальности, который вставляет реального человека из `doubleT_obstacle` в другие
+  тоннели (15 окон × 6 дальностей); состояние GitHub (теги, релизы, CI).
 
-## What was measured
+## Что было измерено
 
-### Jury chain (`docker run` default command → `ros2 bag play` as uid 1000 → `/resense/*`)
+### Цепочка жюри (команда `docker run` по умолчанию → `ros2 bag play` от uid 1000 → `/resense/*`)
 
-| bag | player | runs | frames with a result | decisions after the first STOP | first STOP | e2e p95, current results | node p95 | CPU | RSS |
+| бэг | плеер | прогонов | кадров с результатом | решения после первого STOP | первый STOP | e2e p95, актуальные результаты | p95 ноды | CPU | RSS |
 |---|---|---:|---|---|---|---|---|---|---|
-| `doubleT_obstacle` (360°, 24 MB clouds) | README step 3 (`--read-ahead-queue-size 10`) | 5 | 200–201 of 201 (170 in the first run after the build) | STOP except **GO at frame 111** (4 of 5 runs; frame 197 in the fifth), CAUTION at 117 and 197 | frame 8, 1.0–1.4 s after the first cloud (frame 11, 2.5 s in the first run); 55.5–56.6 m | 85–94 ms warm, 87–172 ms cold | 79–98 ms | 0.8–1.0 core | 430–740 MB |
-| `roundT_doubleT` (120°, clear) | README step 3 | 3 | 252 of 252 | no STOP; CAUTION 170–176, GO 58–81, FAULT 1–18 at start-up | — | 49–78 ms | 56–75 ms | 0.5–0.8 core | 130–250 MB |
-| `doubleT_obstacle` | the organizers' literal `ros2 bag play <bag>` (Humble defaults) | 3 | **57–135 of 201** | STOP, **every result flagged stale** (queue lag median 11 s) | frame 21–24 | — (stale) | 79–88 ms | 1.0–1.3 core | 1.0–**4.0 GB** |
+| `doubleT_obstacle` (360°, облака по 24 МБ) | шаг 3 README (`--read-ahead-queue-size 10`) | 5 | 200–201 из 201 (170 в первом прогоне после сборки) | STOP, кроме **GO на кадре 111** (в 4 из 5 прогонов; в пятом — кадр 197), CAUTION на 117 и 197 | кадр 8, через 1,0–1,4 с после первого облака (кадр 11, 2,5 с в первом прогоне); 55,5–56,6 м | 85–94 мс при прогретом кэше, 87–172 мс при холодном | 79–98 мс | 0,8–1,0 ядра | 430–740 МБ |
+| `roundT_doubleT` (120°, без препятствий) | шаг 3 README | 3 | 252 из 252 | нет STOP; CAUTION 170–176, GO 58–81, FAULT 1–18 при старте | — | 49–78 мс | 56–75 мс | 0,5–0,8 ядра | 130–250 МБ |
+| `doubleT_obstacle` | буквальный `ros2 bag play <bag>` организаторов (умолчания Humble) | 3 | **57–135 из 201** | STOP, **каждый результат помечен как устаревший** (медиана отставания очереди 11 с) | кадр 21–24 | — (устаревшие) | 79–88 мс | 1,0–1,3 ядра | 1,0–**4,0 ГБ** |
 
-e2e = the judge's listener receives the input cloud → receives the status with the same stamp.
-Over all frames, start-up included, e2e p95 is 0.5–1.1 s on the obstacle bag: the node catches up
-on the player's initial burst for the first seconds. The 8-core i7 stand was not available.
+e2e = слушатель судьи получает входное облако → получает статус с той же меткой времени.
+По всем кадрам, включая старт, e2e p95 на бэге с препятствием составляет 0,5–1,1 с: первые секунды
+нода нагоняет начальный всплеск плеера. 8-ядерный стенд с i7 был недоступен.
 
-### Detection and false alarms, offline on every frame (`resense run --bag`, default config)
+### Обнаружение и ложные тревоги, офлайн на каждом кадре (`resense run --bag`, конфигурация по умолчанию)
 
-| recording | frames | STOP frames | STOP episodes (distance) | CAUTION frames |
+| запись | кадров | кадров STOP | эпизоды STOP (дистанция) | кадров CAUTION |
 |---|---:|---:|---|---:|
-| `doubleT_obstacle` (person crossing at 55–57 m, object on the rail) | 201 | 190 | one, frames 8–200 (55.5–56.6 m), **GO at frame 111** | 2 |
+| `doubleT_obstacle` (человек пересекает путь на 55–57 м, предмет на рельсе) | 201 | 190 | один, кадры 8–200 (55,5–56,6 м), **GO на кадре 111** | 2 |
 | `roundT_doubleT` | 252 | 0 | — | 173 (69 %) |
-| `doubleT_platform` | 345 | 3 | 1 (31–39 m) | 196 (57 %) |
-| `roundT_pressureGate_roundT` | 268 | 2 | 1 (53–54 m) | 119 (44 %) |
+| `doubleT_platform` | 345 | 3 | 1 (31–39 м) | 196 (57 %) |
+| `roundT_pressureGate_roundT` | 268 | 2 | 1 (53–54 м) | 119 (44 %) |
 | `roundT_squareT_pressureGate_squareT` | 545 | 0 | — | 190 (35 %) |
-| `squareT_platform_squareT_switch` | 877 | 18 | 5 (83–148 m) | 443 (51 %) |
-| **five empty recordings** | **2 287** | **23 (1.0 %)** | **7** | **1 121 (49 %)** |
-| the ride `new_data` (20 min, 13.0 km, no obstacles; detector reset every 5 s split) | 11 271 | 164 (1.5 %) | **30** (from 15–140 m): **2.3 per km**, ~96 per hour | 4 142 (37 %) |
+| `squareT_platform_squareT_switch` | 877 | 18 | 5 (83–148 м) | 443 (51 %) |
+| **пять пустых записей** | **2 287** | **23 (1,0 %)** | **7** | **1 121 (49 %)** |
+| поездка `new_data` (20 мин, 13,0 км, без препятствий; детектор сбрасывается на каждом 5-секундном файле) | 11 271 | 164 (1,5 %) | **30** (с 15–140 м): **2,3 на км**, ~96 в час | 4 142 (37 %) |
 
-### The organizers' objects (`cloud_with_fake_obj`, 1 510 frames, offline)
+### Объекты организаторов (`cloud_with_fake_obj`, 1 510 кадров, офлайн)
 
-Matched when a STOP detection lies within 3 m of the object's box along the track; "inside" =
-frames with object points inside the envelope (labels by P4 from the organizers' appended points).
+Совпадение засчитывается, когда обнаружение STOP лежит в пределах 3 м от ограничивающего бокса
+объекта вдоль пути; «внутри» — кадры с точками объекта внутри габарита (метки P4 по точкам,
+добавленным организаторами).
 
-| object | size, m | inside frames | STOP frames inside | first STOP |
+| объект | размер, м | кадров внутри | кадров STOP внутри | первый STOP |
 |---|---|---:|---:|---:|
-| box, centre | 2 × 2 × 2 | 213 | 208 (98 %) | 98.0 m (its first appearance) |
-| box on top of the envelope | 2 × 2 × 2 | 75 | 56 (75 %) | 111.5 m |
-| long low object on the rails | 0.5 × 2 × 0.2 | 77 | 52 (68 %) | 87.3 m |
-| cube, centre | 0.3 | 63 | 32 (51 %) | 55.8 m |
-| cube on the rail | 0.3 | 33 | 26 (79 %) | 48.0 m |
-| cube, envelope edge | 0.3 | 16 | 16 | 35.0 m |
-| box, envelope edge | 2 × 2 × 2 | 8 | 8 | 28.7 m |
-| hanging, 5 cm | 0.05 × 1.5 | 20 | 14 (70 %) | 30.1 m |
-| cube outside, near (not an obstacle) | 0.3 | — | 0 | — |
-| box outside (not an obstacle) | 2 × 2 × 2 | — | 9 false STOP frames | 142 m |
+| коробка по центру | 2 × 2 × 2 | 213 | 208 (98 %) | 98,0 м (с первого появления) |
+| коробка на верхней границе габарита | 2 × 2 × 2 | 75 | 56 (75 %) | 111,5 м |
+| длинный низкий объект на рельсах | 0,5 × 2 × 0,2 | 77 | 52 (68 %) | 87,3 м |
+| куб по центру | 0,3 | 63 | 32 (51 %) | 55,8 м |
+| куб на рельсе | 0,3 | 33 | 26 (79 %) | 48,0 м |
+| куб у края габарита | 0,3 | 16 | 16 | 35,0 м |
+| коробка у края габарита | 2 × 2 × 2 | 8 | 8 | 28,7 м |
+| висящий, 5 см | 0,05 × 1,5 | 20 | 14 (70 %) | 30,1 м |
+| куб снаружи, рядом (не препятствие) | 0,3 | — | 0 | — |
+| коробка снаружи (не препятствие) | 2 × 2 × 2 | — | 9 кадров ложного STOP | 142 м |
 
-Plus 22 STOP detections near no object. `clear_distance` extends past an object inside the
-envelope in 300 of the 605 frames that hold one (68 of them `GO`): it is not a guarantee of an
-empty track, as README says.
+Кроме того, 22 обнаружения STOP рядом ни с одним объектом. `clear_distance` уходит за объект внутри
+габарита в 300 из 605 кадров, где он есть (68 из них — `GO`): это не гарантия свободного пути, как
+и сказано в README.
 
-### A real person pasted into the other tunnels (range and transfer)
+### Реальный человек, вставленный в другие тоннели (дальность и перенос)
 
-The person of `doubleT_obstacle` (bag frames 20–49) cut out with its label box and pasted onto the
-detector's own track axis in the five obstacle-free recordings, three 3-second windows each, at a
-fixed distance, thinned to (55.5 / r)² of its points. Sustained = STOP at the person on ≥ 15 of the
-30 frames. No window had a STOP without the person (controls 0 / 15).
+Человек из `doubleT_obstacle` (кадры бэга 20–49) вырезан вместе с рамкой метки и вставлен на
+собственную ось пути детектора в пяти записях без препятствий, по три окна по 3 с в каждой, на
+фиксированной дистанции, с прореживанием до (55,5 / r)² его точек. Устойчивый = STOP на человеке в
+≥ 15 из 30 кадров. Ни в одном окне не было STOP без человека (контроль 0 / 15).
 
-| range | 60 m | 80 m | 100 m | 130 m | 160 m | 200 m |
+| дальность | 60 м | 80 м | 100 м | 130 м | 160 м | 200 м |
 |---|---|---|---|---|---|---|
-| sustained STOP | **11 / 15** | 8 / 15 | 6 / 15 | 2 / 15 | 1 / 15 | 0 / 15 |
-| any STOP | 14 / 15 | 11 / 15 | 11 / 15 | 6 / 15 | 6 / 15 | 3 / 15 |
+| устойчивый STOP | **11 / 15** | 8 / 15 | 6 / 15 | 2 / 15 | 1 / 15 | 0 / 15 |
+| любой STOP | 14 / 15 | 11 / 15 | 11 / 15 | 6 / 15 | 6 / 15 | 3 / 15 |
 
-The misses are CAUTION, not silence: the cluster is demoted as `beyond_axis` when the trusted axis
-range drops below its distance (in one platform window it is 45 m for the whole window, person or
-not), or merges with trackside structure into a `column`. Caveats: no occlusion shadow is cut
-behind the pasted person; placement uses the detector's own axis; one person, one posture set.
+Промахи — это CAUTION, а не молчание: кластер понижается как `beyond_axis`, когда доверенная
+дальность оси становится короче расстояния до него (в одном окне на платформе она составляет 45 м
+на всё окно, с человеком или без), или сливается с конструкцией у пути в `column`. Оговорки: за
+вставленным человеком не вырезается тень от заслонения; для размещения используется собственная
+ось детектора; один человек, один набор поз.
 
-### Software
+### Программная часть
 
-* `pytest`: **753 passed**, 1 deselected (needs the ride cache), 6 subtests, 168 s; `ruff` clean;
-  parameter copy in sync; `detector_freeze.py verify` PASS (31 files).
-* Docker: the runtime image builds from a clean checkout in 79 s (base image cached), 2.08 GB on
-  disk, native kernels compiled and enabled; default command
+* `pytest`: **753 теста прошли**, 1 не отобран (нужен кэш поездки), 6 подтестов, 168 с; `ruff`
+  без замечаний; копия параметров синхронизирована; `detector_freeze.py verify` PASS (31 файл).
+* Docker: образ для запуска собирается из чистого клона за 79 с (базовый образ в кэше), 2,08 ГБ на
+  диске, нативные ядра скомпилированы и включены; команда по умолчанию
   `ros2 launch resense_ros detector.launch.py freshness_mode:=replay`.
-* GitHub: CI green on `main`; **0 tags, 0 releases** at judging (`v1.0.0` is scheduled for 28.09
-  21:00 Moscow time).
+* GitHub: CI зелёный на `main`; **0 тегов, 0 релизов** на момент оценки (`v1.0.0` запланирован на
+  28.09, 21:00 по московскому времени).
 
-## Per criterion
+## По критериям
 
-### 8.1 Functionality — 14.5 / 25
+### 8.1 Функциональность — 14,5 / 25
 
-For: the real obstacle is found in every run, from the first frame the person is inside the
-envelope (frame 8) offline and in 4 of 5 README-procedure runs, at the right distance (55.5–56.6 m
-against labels 55.4–56.6 m), and held to the end of the bag; 1 % STOP frames on the five empty
-recordings and 1.5 % on the ride; every in-envelope object of the organizers gets a STOP; the
-outside cube never does.
-Against: on the ride 30 false STOP episodes in 13 km (2.3 per km, one every ~38 s of riding), 15 of
-them starting inside 60 m; a single **GO with the obstacle in view** (frame 111, reproducible) — a
-consumer that acts on one frame would release the brake; CAUTION on 35–69 % of empty-tunnel frames,
-so CAUTION carries little information; 9 false STOP frames on the outside box and 22 stray STOPs on
-set O; in the transplant test a real person at 60 m got no sustained STOP in 4 of 15 windows.
-Raise it: hold a confirmed track over two misses (the GO at 111); cut the ride's false STOPs
-(traced per episode first); explain or cut CAUTION on empty track; the `beyond_axis`
-demotion of on-axis objects (P3; the detector is frozen, so the captain decides).
+За: реальное препятствие находится в каждом прогоне, с первого кадра, на котором человек внутри
+габарита (кадр 8), офлайн и в 4 из 5 прогонов по процедуре README, на правильной дистанции
+(55,5–56,6 м при метках 55,4–56,6 м) и удерживается до конца бэга; 1 % кадров STOP на пяти пустых
+записях и 1,5 % на поездке; каждый объект организаторов внутри габарита получает STOP; куб снаружи
+— никогда.
+Против: на поездке 30 эпизодов ложного STOP на 13 км (2,3 на км, один примерно каждые 38 с
+движения), 15 из них начинаются ближе 60 м; единственный **GO при препятствии в поле зрения**
+(кадр 111, воспроизводится) — потребитель, реагирующий на один кадр, отпустил бы тормоз; CAUTION на
+35–69 % кадров пустого тоннеля, поэтому CAUTION несёт мало информации; 9 кадров ложного STOP на
+коробке снаружи и 22 случайных STOP на наборе O; в тесте со вставкой реальный человек на 60 м не
+получил устойчивого STOP в 4 из 15 окон.
+Как повысить: удерживать подтверждённый трек при двух пропусках (GO на кадре 111); сократить
+ложные STOP на поездке (сначала разобрать каждый эпизод); объяснить или убрать CAUTION на пустом
+пути; понижение `beyond_axis` для объектов на оси (P3; детектор опечатан, поэтому решает капитан).
 
-### 8.2 Range — 7 / 15
+### 8.2 Дальность — 7 / 15
 
-For: big objects from ~100 m (the 2 m box from its first appearance at 98 m, the box on top of the
-envelope from 111 m, the plank on the rails from 87 m); a real person sustained to 100 m in
-6 of 15 windows and to 130–160 m in the best ones.
-Against: the spec's "100 m — good" is reached for a person in 40 % of windows; small objects
-(0.3 m) only inside 35–56 m, the 5 cm hanging object from 30 m, edge objects from 29–35 m — inside
-braking distance at line speed. The LiDAR returns nothing past ~210 m, so 300 m is out of reach
-for anyone; 200 m needs multi-frame evidence, which is off without a speed input.
+За: крупные объекты с ~100 м (коробка 2 м с первого появления на 98 м, коробка на верхней границе
+габарита с 111 м, доска на рельсах с 87 м); реальный человек с устойчивым STOP до 100 м в 6 из 15
+окон и до 130–160 м в лучших.
+Против: «100 м — хорошо» из ТЗ достигается для человека в 40 % окон; малые объекты (0,3 м) — только
+внутри 35–56 м, висящий объект 5 см — с 30 м, объекты у края — с 29–35 м, то есть внутри тормозного
+пути на эксплуатационной скорости. LiDAR не возвращает ничего дальше ~210 м, поэтому 300 м
+недостижимы ни для кого; для 200 м нужны данные по нескольким кадрам, а они отключены без входной
+скорости.
 
-### 8.3 Speed — 7.5 / 10
+### 8.3 Скорость — 7,5 / 10
 
-For: 10 fps sustained with no node-side losses in steady state; e2e p95 85–94 ms (360°, 24 MB
-clouds) and 49–78 ms (120°) on 4 vCPU; decode ~30 ms + detect ~35–50 ms; under one core; RSS
-130–740 MB; C++ kernels, CPU only.
-Against: at 360° the p95 is close to the 100 ms period (one cold run 172 ms); start-up e2e p95
-0.5–1.1 s while the node catches up; with the default player the node never gets current
-(57–135 of 201 frames, 11 s queue lag, 4 GB RSS). Not measured on the 8-core stand.
+За: 10 кадр/с устойчиво, без потерь на стороне ноды в установившемся режиме; e2e p95 85–94 мс
+(360°, облака по 24 МБ) и 49–78 мс (120°) на 4 vCPU; декодирование ~30 мс + обнаружение
+~35–50 мс; меньше одного ядра; RSS 130–740 МБ; ядра на C++, только CPU.
+Против: на 360° p95 близок к периоду 100 мс (один холодный прогон — 172 мс); e2e p95 при старте
+0,5–1,1 с, пока нода нагоняет; с плеером по умолчанию нода так и не выходит на актуальные
+результаты (57–135 из 201 кадра, отставание очереди 11 с, RSS 4 ГБ). На 8-ядерном стенде не
+измерялось.
 
-### 8.4 Generalization — 7 / 15
+### 8.4 Обобщающая способность — 7 / 15
 
-For: no classes, no map, no training on objects: the tunnel is modelled every frame from rails,
-bed and walls, the mount is calibrated from the rails; the same config runs on round, square,
-double-track, platform and gate sections.
-Against: transfer is uneven — the same real person is a STOP from 60 to 100 m in one stretch and a
-CAUTION at 60 m in another, decided by the trusted axis range; ~30 special-case rules and 323
-parameters were tuned on seven recordings and the organizers' objects (some thresholds sit between
-two set O objects); the learned opinion is trained on the same recordings; all false-alarm rates
-are in-sample.
+За: никаких классов, карты и обучения на объектах: тоннель моделируется в каждом кадре по рельсам,
+полотну и стенам, крепление калибруется по рельсам; одна и та же конфигурация работает на круглых,
+квадратных, двухпутных участках, платформах и гермозатворах.
+Против: перенос неравномерен — один и тот же реальный человек даёт STOP с 60 до 100 м на одном
+участке и CAUTION на 60 м на другом, что решается доверенной дальностью оси; ~30 правил для
+частных случаев и 323 параметра настроены на семи записях и объектах организаторов (некоторые
+пороги лежат между двумя объектами набора O); обученное «мнение» обучено на тех же записях; все
+частоты ложных тревог — в выборке.
 
-### 8.5 Technical quality — 7 / 10
+### 8.5 Техническое качество — 7 / 10
 
-For: the detector library has no ROS and one method per stage; the node handles input switching,
-freshness, a watchdog and error reset; 753 tests, many behavioural; CI lints, tests, builds the
-image, plays bags through the archive offline, checks the detector seal; native kernels are
-bit-identical with a numpy fallback; one parameter source, synced and checked.
-Against: 323 parameters with a dozen dead experimental modes still branched in the hot path;
-functions of 110–190 lines (`Tracker.update`, node `__init__`); the node uses private rclpy calls;
-76 files in `scripts/` (~13.6 k lines) against ~9 k lines of product; ~16 k lines of Markdown
-with dated team process in jury documents and in config comments; stale or contradictory statements (below).
+За: библиотека детектора не зависит от ROS, по одному методу на этап; нода обрабатывает
+переключение входов, свежесть, сторожевой таймер (watchdog) и сброс после ошибки; 753 теста,
+многие поведенческие; CI запускает линтер и тесты, собирает образ, офлайн проигрывает бэги через
+архив, проверяет печать детектора; нативные ядра бит-в-бит совпадают с запасным вариантом на
+numpy; один источник параметров, синхронизируемый и проверяемый.
+Против: 323 параметра и десяток мёртвых экспериментальных режимов, всё ещё ветвящихся в горячем
+пути; функции по 110–190 строк (`Tracker.update`, `__init__` ноды); нода использует приватные
+вызовы rclpy; 76 файлов в `scripts/` (~13,6 тыс. строк) против ~9 тыс. строк продукта; ~16 тыс.
+строк Markdown с датированным командным процессом в документах для жюри и в комментариях
+конфигурации; устаревшие или противоречивые утверждения (ниже).
 
-### 8.6 Ease of launch — 7 / 10
+### 8.6 Простота запуска — 7 / 10
 
-For: `docker build` from a clean checkout works; `docker run --net=host resense` needs no
-arguments for a recorded bag; `ros2 bag play` from a normal user reaches it; `scripts/play_bag.sh`
-does steps 0–5 in one command; the README jury block is short.
-Against: README step 1 is `docker load` of an archive that is not published (0 releases; a CI
-artifact needs a GitHub login); the organizers' literal `ros2 bag play <bag>` gives stale results,
-so `--read-ahead-queue-size 10` is mandatory; `--net=host` is mandatory; step 0 `sysctl` for
-CycloneDDS consoles.
+За: `docker build` из чистого клона работает; `docker run --net=host resense` не требует аргументов
+для записанного бэга; `ros2 bag play` от обычного пользователя до него доходит;
+`scripts/play_bag.sh` выполняет шаги 0–5 одной командой; блок README для жюри короткий.
+Против: шаг 1 README — `docker load` архива, который не опубликован (0 релизов; артефакт CI
+требует входа в GitHub); буквальный `ros2 bag play <bag>` организаторов даёт устаревшие результаты,
+поэтому `--read-ahead-queue-size 10` обязателен; `--net=host` обязателен; шаг 0 — `sysctl` для
+консолей CycloneDDS.
 
-### 8.7 Team approach — 8 / 10
+### 8.7 Командный подход — 8 / 10
 
-For: DECISIONS (question → measurement → decision → evidence), EXPERIMENTS with the rejected
-variants and their numbers, pre-registered acceptance criteria that were also failed and said so,
-limitations stated next to results, held-out numbers separated from in-sample ones.
-Against: rules were added one per organizer object and several thresholds are bracketed by them;
-the record is spread over a 3.7 k-line log and partly describes an older detector.
+За: DECISIONS (вопрос → измерение → решение → материалы-доказательства (evidence)), EXPERIMENTS с
+отвергнутыми вариантами и их числами, заранее зафиксированные критерии приёмки, которые в том
+числе не были выполнены, о чём прямо сказано, ограничения рядом с результатами, числа вне выборки
+отделены от чисел в выборке.
+Против: правила добавлялись по одному на каждый объект организаторов, и ряд порогов зажат между
+ними; запись работы разбросана по журналу на 3,7 тыс. строк и частично описывает более старый
+детектор.
 
-### 8.8 Pitch — 3 / 5 (materials only)
+### 8.8 Питч — 3 / 5 (только материалы)
 
-For: 16 slides in the spec's order with the hero frame (the real person crossing at 55–57 m); a 2:50
-overview video with Russian subtitles and a 69 s Docker + RViz chain clip.
-Against: the video is silent; team slides carry roles but no names; several slides hold
-~1 000–1 100 characters; the headline false-alarm figure is the in-sample 2.5 per km (labelled as such, 2.8 held out next
-to it); rehearsals and the
-live remote demo are not done yet (only people can close these).
+За: 16 слайдов в порядке ТЗ с ключевым кадром (реальный человек, пересекающий путь на 55–57 м);
+обзорное видео 2:50 с русскими субтитрами и ролик цепочки Docker + RViz на 69 с.
+Против: видео без звука; на слайдах о команде указаны роли, но нет имён; на нескольких слайдах
+~1 000–1 100 знаков; главная цифра по ложным тревогам — 2,5 на км в выборке (подписана как таковая,
+рядом 2,8 вне выборки); репетиции и живая удалённая демонстрация пока не проведены (закрыть это
+могут только люди).
 
-## Since the judgement (29.09, not re-scored)
+## После оценки (29.09, баллы не пересчитывались)
 
-The scores above stay those of 28.09 evening; nothing below was judged independently.
+Баллы выше остаются баллами вечера 28.09; ничто из перечисленного ниже независимо не оценивалось.
 
-* **Node start-up (8.3):** a faster decode giving the same arrays byte for byte, a warm-up before
-  listening, and a recording's start-up burst caught up at 5 Hz. Results of the first 3 s at 360°
-  are 38–105 ms old instead of 312–325 ms (median). With the page cache dropped: 120–300 ms instead
-  of 829–1029 ms. Decisions are identical
-  ([evidence](evidence/node_startup_2026-09-29/README.md)). The node exits cleanly on Ctrl+C;
-  `check_dry_run.py` reports the playback pace. 770 tests pass.
-* **Documents (8.5):** README cut to the jury path and the results. The full experiment log,
-  the dated changelog and the dated records moved to [`archive/`](archive/README.md); a compact
-  EXPERIMENTS replaces the log. The stale statements in the table below are corrected, except the
-  release (still unpublished) and the deck's figures (P2 rebuilds the deck). The GitBook
-  ([resense.gitbook.io/resense-docs](https://resense.gitbook.io/resense-docs/)) is synced and
-  gained a results page and a team-approach page.
-* **Pitch and video (8.8):** owned by P2 since 28.09.
-* `tracking.hold_misses` 2, the fix for the GO at frame 111 suggested under 8.1, was measured on
-  the branch `gpt-score-push-20260928`: it fails the strict gate (more false alarms on the ride and
-  the empty recordings) and is rejected.
+* **Старт ноды (8.3):** более быстрое декодирование, дающее те же массивы байт в байт, прогрев
+  перед началом приёма и догон начального всплеска записи на 5 Гц. Результаты первых 3 с на 360°
+  имеют возраст 38–105 мс вместо 312–325 мс (медиана). При сброшенном страничном кэше: 120–300 мс
+  вместо 829–1029 мс. Решения идентичны
+  ([evidence](evidence/node_startup_2026-09-29/README.md)). Нода корректно завершается по Ctrl+C;
+  `check_dry_run.py` сообщает темп воспроизведения. 770 тестов проходят.
+* **Документы (8.5):** README сокращён до пути жюри и результатов. Полный журнал экспериментов,
+  датированный журнал изменений и датированные записи перенесены в [`archive/`](archive/README.md);
+  журнал заменён компактным EXPERIMENTS. Устаревшие утверждения из таблицы ниже исправлены, кроме
+  релиза (всё ещё не опубликован) и цифр колоды (P2 пересобирает колоду). GitBook
+  ([resense.gitbook.io/resense-docs](https://resense.gitbook.io/resense-docs/)) синхронизирован и
+  получил страницу результатов и страницу о командном подходе.
+* **Питч и видео (8.8):** с 28.09 ведёт P2.
+* `tracking.hold_misses` 2 — исправление GO на кадре 111, предложенное в 8.1, — измерено на ветке
+  `gpt-score-push-20260928`: оно не проходит строгий шлюз (больше ложных тревог на поездке и пустых
+  записях) и отвергнуто.
 
-## Stale or contradictory statements found (to fix)
+## Найденные устаревшие или противоречивые утверждения (исправить)
 
-| where | says | is |
+| где | сказано | на деле |
 |---|---|---|
-| README step 1, «Где взять архив» | `docker load -i resense-image-<версия>.tar.gz` | no tag and no release on GitHub at judging (~19:50 Moscow time; `v1.0.0` is scheduled for 21:00): the jury has no archive to load until it is published |
-| README «Где взять архив», ARCHITECTURE | the working branch `claude/amazing-fermi-t67v8g` | merged as PR #20; `main` is the branch |
-| ALGORITHM §3 and §6 | `cluster.floating_free_max_dy` 0.95 m | `configs/default.yaml`: 1.2 |
-| EXPERIMENTS "Current results" | 13 events on the five empty bags, 45 on the ride (26.09 detector) | the sealed 27.09 detector (see above) |
-| EXPERIMENTS §7, §8 | the learned second opinion "not shipped" | shipped: `tracking.doubt_model: track_opinion.json` |
-| deck slide 5 vs README | p95 "87–118 ms" vs "102 ms cached, 118 ms cold" | this judgement: 85–94 ms warm, 87–172 ms cold |
-| README parameters, `bag:=` row | launch with `bag:=` | without `freshness_mode:=replay` the node's default `live` gives FAULT on a recorded bag |
+| шаг 1 README, «Где взять архив» | `docker load -i resense-image-<версия>.tar.gz` | на момент оценки на GitHub нет ни тега, ни релиза (~19:50 по московскому времени; `v1.0.0` запланирован на 21:00): у жюри нет архива для загрузки, пока он не опубликован |
+| README «Где взять архив», ARCHITECTURE | рабочая ветка `claude/amazing-fermi-t67v8g` | влита как PR #20; ветка — `main` |
+| ALGORITHM §3 и §6 | `cluster.floating_free_max_dy` 0,95 м | `configs/default.yaml`: 1,2 |
+| EXPERIMENTS «Текущие результаты» | 13 событий на пяти пустых бэгах, 45 на поездке (детектор 26.09) | опечатанный детектор 27.09 (см. выше) |
+| EXPERIMENTS §7, §8 | обученное второе «мнение» «не поставляется» | поставляется: `tracking.doubt_model: track_opinion.json` |
+| слайд 5 колоды против README | p95 «87–118 мс» против «102 мс с кэшем, 118 мс холодный» | эта оценка: 85–94 мс при прогретом кэше, 87–172 мс при холодном |
+| параметры README, строка `bag:=` | запуск с `bag:=` | без `freshness_mode:=replay` режим ноды по умолчанию `live` даёт FAULT на записанном бэге |
 
-## Top risks on the hidden control data
+## Главные риски на скрытых контрольных данных
 
-1. A person or object beyond the trusted axis range, or next to trackside structure, is CAUTION,
-   not STOP — in this judgement 4 of 15 windows at 60 m (platform and double-track sections).
-2. Small or edge objects are found only inside ~30–56 m.
-3. The jury plays the bag the literal way (`ros2 bag play <bag>`): every result stale, few frames.
-4. A single GO frame between STOPs is read as "clear".
-5. False STOPs at platforms and switches (5 episodes on one 88 s recording).
+1. Человек или объект за пределами доверенной дальности оси или рядом с конструкцией у пути
+   получает CAUTION, а не STOP — в этой оценке 4 из 15 окон на 60 м (платформы и двухпутные
+   участки).
+2. Малые объекты и объекты у края находятся только внутри ~30–56 м.
+3. Жюри проигрывает бэг буквально (`ros2 bag play <bag>`): все результаты устаревшие, мало кадров.
+4. Единичный кадр GO между STOP читается как «свободно».
+5. Ложные STOP на платформах и стрелках (5 эпизодов на одной записи длиной 88 с).

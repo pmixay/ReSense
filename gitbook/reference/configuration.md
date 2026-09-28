@@ -19,7 +19,7 @@
 
 У большинства ключей в файле есть комментарий с датой и измерением, по которому выбрано значение.
 Самые важные параметры и их влияние:
-[`docs/ALGORITHM.md` §5](https://github.com/pmixay/ReSense/blob/main/docs/ALGORITHM.md#5-parameters-that-matter-most).
+[`docs/ALGORITHM.md` §5](https://github.com/pmixay/ReSense/blob/main/docs/ALGORITHM.md#5-наиболее-важные-параметры).
 
 ## Свой файл
 

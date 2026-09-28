@@ -1,18 +1,16 @@
-# ReSense — LiDAR obstacle detection in the metro clearance gauge
-
-*На русском: [README.ru.md](README.ru.md).*
+# ReSense — обнаружение препятствий по данным LiDAR в габарите метро
 
 [![ci](https://github.com/pmixay/ReSense/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/pmixay/ReSense/actions/workflows/ci.yml)
-· LCT 2026, case 05 (Moscow Metro) · team «Молоток» · package 1.0.0 ·
-**User guide (RU): [resense.gitbook.io/resense-docs](https://resense.gitbook.io/resense-docs/)**
+· ЛЦТ 2026, кейс 05 (Московский метрополитен) · команда «Молоток» · пакет 1.0.0 ·
+**Руководство пользователя: [resense.gitbook.io/resense-docs](https://resense.gitbook.io/resense-docs/)**
 
-ReSense tells a driverless metro train, ten times a second, whether something that should not be
-there is inside its clearance envelope and how far ahead along the track. It is a ROS 2 Humble node
-in a Docker image, CPU only. From every LiDAR cloud it models the normal tunnel — track bed, rail
-heads, the track axis and its curvature from the walls — cuts the organizers' 2.1 × 3.0 m train
-envelope along it and reports every persistent object inside: no object classes, no map, no
-training on obstacles. The answer is `/resense/decision` (`GO` / `CAUTION` / `STOP` / `FAULT`) and
-`/resense/nearest_distance` in metres.
+ReSense десять раз в секунду сообщает беспилотному поезду метро, находится ли внутри его габарита
+что-то, чего там быть не должно, и на каком расстоянии впереди по пути. Это нода ROS 2 Humble в
+образе Docker, только CPU. По каждому облаку LiDAR она строит модель нормального тоннеля — полотно,
+головки рельсов, ось пути и её кривизну по стенам, — вырезает вдоль неё габарит поезда 2,1 × 3,0 м,
+заданный организаторами, и сообщает о каждом устойчивом объекте внутри него: без классов объектов,
+без карты, без обучения на препятствиях. Ответ — `/resense/decision` (`GO` / `CAUTION` / `STOP` /
+`FAULT`) и `/resense/nearest_distance` в метрах.
 
 ## Кратко для жюри
 
@@ -54,61 +52,62 @@ ros2 topic echo /resense/nearest_distance --field data   # 5. расстояни
 55,5–56,6 м; один кадр `GO` (111) и два `CAUTION` (117, 197) — известное ограничение детектора
 (предмет на рельсе пропущен два кадра подряд). На `roundT_doubleT` (без препятствий) `STOP` нет.
 
-## Results
+## Результаты
 
-Measured on the organizers' data by the independent judgement of 28.09
-([`docs/SCORECARD.md`](docs/SCORECARD.md), raw outputs in
-[`docs/evidence/judgement_2026-09-28/`](docs/evidence/judgement_2026-09-28/README.md)) and on the
-team's 4-core VM ([`docs/evidence/vm_2026-09-28/`](docs/evidence/vm_2026-09-28/summary.md)).
-*In-sample*: the detector's rules were tuned on these recordings; there are no untouched real
-obstacles. Full tables: [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md).
+Измерено на данных организаторов независимой оценкой от 28.09
+([`docs/SCORECARD.md`](docs/SCORECARD.md), сырые выходные данные — в
+[`docs/evidence/judgement_2026-09-28/`](docs/evidence/judgement_2026-09-28/README.md)) и на
+4-ядерной ВМ команды ([`docs/evidence/vm_2026-09-28/`](docs/evidence/vm_2026-09-28/summary.md)).
+*В выборке*: правила детектора настраивались на этих записях; нетронутых реальных препятствий нет.
+Полные таблицы: [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md).
 
-| what | result | data |
+| что | результат | данные |
 |---|---|---|
-| real obstacle, `doubleT_obstacle` (person crossing at 55–57 m, object on the rail) | STOP from the person's first frame in the envelope to the end, 55.5–56.6 m (labels 55.4–56.6 m); one GO frame (111) | real |
-| false alarms, five obstacle-free recordings (2 287 frames, 250 s) | 23 STOP frames (1.0 %) in 7 episodes; 2 of the 5 recordings have none at all | real, in-sample |
-| false alarms, 20-minute ride (11 271 frames, 13 km, no obstacles) | 30 STOP episodes = **2.3 per km**, 1.5 % of frames | real, in-sample |
-| the organizers' 10 ray-cast objects (1 510 frames) | STOP for **8 of 8** objects inside the envelope; first STOP: 2 m box 98 m (its first appearance), box on the envelope top 111 m, plank on the rails 87 m, 0.3 m cubes 48–56 m, edge objects 29–35 m, 5 cm hanging object 30 m; the outside cube never | organizers' synthetic, in-sample |
-| a real person moved into the other five tunnels (15 windows) | sustained STOP at 60 m in 11 of 15 windows, 100 m in 6, 130 m in 2, 160 m in 1; no false STOP without the person | real points, judge's test |
-| sensor reach | no return beyond ~210 m in any of the 13 759 frames: 300 m is beyond this LiDAR | real |
-| speed, through ROS in Docker (player → result) | 10 fps, under one CPU core. Current results at 360° (24 MB clouds): e2e p95 81–82 ms, decode + detect p95 63–72 ms (4-core VM); 120°: 49–78 ms. Start-up (node of 29.09, [evidence](docs/evidence/node_startup_2026-09-29/README.md)): results of the first 3 s 38–105 ms old (median) instead of ~0.3 s; first STOP 0.8–1.0 s after the first cloud | 4-core VM, 4-vCPU sandbox |
-| tests | 770 passed (`pytest`), lint clean, CI: 4 jobs incl. the Docker image, the offline archive and both original bags cold | |
+| реальное препятствие, `doubleT_obstacle` (человек пересекает путь на 55–57 м, предмет на рельсе) | STOP с первого кадра, где человек в габарите, до конца записи, 55,5–56,6 м (метки 55,4–56,6 м); один кадр GO (111) | реальные |
+| ложные тревоги, пять записей без препятствий (2 287 кадров, 250 с) | 23 кадра STOP (1,0 %) в 7 эпизодах; в 2 из 5 записей их нет совсем | реальные, в выборке |
+| ложные тревоги, 20-минутная поездка (11 271 кадр, 13 км, без препятствий) | 30 эпизодов STOP = **2,3 на км**, 1,5 % кадров | реальные, в выборке |
+| 10 объектов организаторов, построенных лучевым методом (ray casting; 1 510 кадров) | STOP для **8 из 8** объектов внутри габарита; первый STOP: коробка 2 м — 98 м (её первое появление), коробка на верхней границе габарита — 111 м, доска на рельсах — 87 м, кубы 0,3 м — 48–56 м, объекты у края габарита — 29–35 м, висящий объект 5 см — 30 м; куб снаружи — ни разу | синтетические (организаторов), в выборке |
+| реальный человек, перенесённый в остальные пять тоннелей (15 окон) | устойчивый STOP на 60 м в 11 из 15 окон, на 100 м — в 6, на 130 м — в 2, на 160 м — в 1; без человека ложных STOP нет | реальные точки, тест независимой оценки |
+| досягаемость датчика | ни одного отражения дальше ~210 м ни в одном из 13 759 кадров: 300 м этому LiDAR недостижимы | реальные |
+| скорость, через ROS в Docker (плеер → результат) | 10 кадр/с, меньше одного ядра CPU. Актуальные результаты на 360° (облака по 24 МБ): e2e p95 81–82 мс, декодирование + обнаружение p95 63–72 мс (4-ядерная ВМ); 120°: 49–78 мс. Старт (нода от 29.09, [материалы-доказательства (evidence)](docs/evidence/node_startup_2026-09-29/README.md)): результаты первых 3 с имеют возраст 38–105 мс (медиана) вместо ~0,3 с; первый STOP через 0,8–1,0 с после первого облака | 4-ядерная ВМ, песочница на 4 vCPU |
+| тесты | 770 пройдено (`pytest`), линтер без замечаний, CI: 4 задания, включая образ Docker, офлайн-архив и оба исходных бэга на холодном старте | |
 
-**Known limits** (details: [ARCHITECTURE «Known limitations»](docs/ARCHITECTURE.md#limitations-of-the-sealed-2709-detector-verified-2809)):
-small (0.3 m) and edge objects are confirmed only inside 30–56 m; beyond the trusted track-axis
-range (short at platforms and double-track sections) an object on the track is `CAUTION`, not
-`STOP`; a confirmed object can drop for one frame after two missed frames (the GO above);
-`CAUTION` is frequent on empty track (35–69 % of frames); all figures are in-sample and the ground
-truth was labelled with the team's own tools. The detector is sealed since 27.09
-([`docs/DETECTOR_FREEZE.md`](docs/DETECTOR_FREEZE.md)).
+**Известные ограничения** (подробности: [ARCHITECTURE «Известные ограничения»](docs/ARCHITECTURE.md#ограничения-опечатанного-детектора-2709-проверено-2809)):
+малые (0,3 м) объекты и объекты у края габарита подтверждаются только в пределах 30–56 м; за
+пределами доверенной дальности оси пути (она коротка на платформах и двухпутных участках) объект на
+пути получает `CAUTION`, а не `STOP`; подтверждённый объект может пропасть на один кадр после двух
+пропущенных кадров (тот GO выше); `CAUTION` часто выдаётся на пустом пути (35–69 % кадров); все
+цифры получены в выборке, а эталонная разметка сделана собственными инструментами команды. Детектор
+опечатан с 27.09 ([`docs/DETECTOR_FREEZE.md`](docs/DETECTOR_FREEZE.md)).
 
-![doubleT_obstacle frame 24 seen from the cab: the train envelope (green) along the track axis, the points inside it (yellow) and the person reported at 55.8 m (STOP)](docs/img/hero_person.png)
-*Real data: `doubleT_obstacle` from the cab, the person at 55.8 m. Video: the 2:50 overview
-[`docs/video/resense_overview.mp4`](docs/video/resense_overview.mp4) (Russian subtitles) and the
-Docker + RViz chain [`docs/video/docker_chain_rviz.mp4`](docs/video/docker_chain_rviz.mp4).*
+![doubleT_obstacle, кадр 24, вид из кабины: габарит поезда (зелёный) вдоль оси пути, точки внутри него (жёлтые) и человек, обнаруженный на 55,8 м (STOP)](docs/img/hero_person.png)
+*Реальные данные: `doubleT_obstacle` из кабины, человек на 55,8 м. Видео: обзор на 2:50
+[`docs/video/resense_overview.mp4`](docs/video/resense_overview.mp4) (русские субтитры) и цепочка
+Docker + RViz [`docs/video/docker_chain_rviz.mp4`](docs/video/docker_chain_rviz.mp4).*
 
-## How it works
+## Как это работает
 
 ```mermaid
 flowchart LR
-  bag["ros2 bag play<br/>PointCloud2, 10 Hz<br/>(either topic / frame pair)"] --> node
+  bag["ros2 bag play<br/>PointCloud2, 10 Гц<br/>(любая пара топик / frame id)"] --> node
   subgraph node["resense_detector (Docker, --net=host)"]
     direction LR
-    dec["decode<br/>(from the bytes)"] --> cal["mount<br/>calibration"] --> trk["track model:<br/>bed, rails, axis,<br/>curvature"] --> env["2.1 × 3.0 m<br/>envelope"] --> clu["clustering +<br/>infrastructure<br/>signatures"] --> tr["tracking,<br/>0.5 s<br/>confirmation"]
+    dec["декодирование<br/>(из байтов)"] --> cal["калибровка<br/>крепления"] --> trk["модель пути:<br/>полотно, рельсы, ось,<br/>кривизна"] --> env["габарит<br/>2,1 × 3,0 м"] --> clu["кластеризация +<br/>сигнатуры<br/>инфраструктуры"] --> tr["трекинг,<br/>подтверждение<br/>0,5 с"]
   end
-  node --> out["/resense/decision · nearest_distance · clear_distance<br/>health · detections · status JSON · RViz markers"]
+  node --> out["/resense/decision · nearest_distance · clear_distance<br/>health · detections · status JSON · маркеры RViz"]
 ```
 
-Per frame: the cloud is read straight from its serialized bytes; the mount is calibrated from the
-rails; the bed, the rail heads and the track axis are fitted (curvature from the walls, so the
-corridor follows curves); the envelope is swept along the axis; points inside it are clustered with
-a range-adaptive DBSCAN; clusters matching tunnel infrastructure (columns, wall faces, overhead
-lines, signs) are advisory; a cluster that persists 0.5 s inside the envelope is a `STOP`. A small
-learned model may hold a doubtful far `STOP` for at most 10 processed frames; it never vetoes one.
-Architecture: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md); algorithm and its maths:
-[`docs/ALGORITHM.md`](docs/ALGORITHM.md); why each choice: [`docs/DECISIONS.md`](docs/DECISIONS.md).
+Для каждого кадра: облако читается прямо из сериализованных байтов; крепление калибруется по
+рельсам; подбираются полотно, головки рельсов и ось пути (кривизна — по стенам, поэтому коридор
+следует изгибам); габарит протягивается вдоль оси; точки внутри него кластеризуются DBSCAN с
+адаптивным к дальности радиусом; кластеры, соответствующие инфраструктуре тоннеля (колонны, грани
+стен, воздушные линии, знаки), — это предупреждение; кластер, сохраняющийся 0,5 с внутри габарита,
+— это `STOP`. Небольшая обученная модель может задержать сомнительный дальний `STOP` не более чем на
+10 обработанных кадров; она никогда не отменяет его.
+Архитектура: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md); алгоритм и его математика:
+[`docs/ALGORITHM.md`](docs/ALGORITHM.md); почему сделан каждый выбор: [`docs/DECISIONS.md`](docs/DECISIONS.md).
 
-## Build, run, process a bag
+## Сборка, запуск, обработка бэга
 
 ```bash
 docker build -t resense -f docker/Dockerfile .           # or ./scripts/build.sh; WITH_TOOLS=1 adds pytest, open3d, rosbags
@@ -119,7 +118,7 @@ scripts/export_image.sh                                  # offline delivery: dis
 scripts/load_image.sh dist/resense-image-<ver>.tar.gz    # sha256, docker load, a --network none check
 ```
 
-Without ROS or Docker (Python ≥ 3.10):
+Без ROS и Docker (Python ≥ 3.10):
 
 ```bash
 pip install -e ".[dev]" && pytest -q                     # the library, the tools, the C++ kernels if a compiler is present
@@ -127,78 +126,79 @@ resense run --bag /data/for_hackathon/doubleT_obstacle --out results.jsonl --ren
 resense bench --bag /data/for_hackathon/roundT_doubleT --every 5                           # per-stage timing
 ```
 
-The data (organizers' links, unpacking, frame cache) is described in
-[`docs/DATASET.md`](docs/DATASET.md); a bag directory is mounted at `/data`. The node listens to
-both topic / frame pairs of the organizers' recordings (`/lidar_points` + `hesai_lidar`,
-`/sensing/lidar/hesai128/pointcloud` + `lidar_livox`) and to any other `PointCloud2` topic; a new
-recording (topic, frame id or a stamp jump) gets a fresh detector, so bags can be played one after
-another into one running node. Remote demo: RViz screen share, or Foxglove on port 8765 with
-[`web/foxglove_layout.json`](web/foxglove_layout.json) ([`web/README.md`](web/README.md)).
+Данные (ссылки организаторов, распаковка, кэш кадров) описаны в
+[`docs/DATASET.md`](docs/DATASET.md); каталог с бэгом монтируется в `/data`. Нода слушает обе
+пары топик / frame id из записей организаторов (`/lidar_points` + `hesai_lidar`,
+`/sensing/lidar/hesai128/pointcloud` + `lidar_livox`) и любой другой топик `PointCloud2`; новая
+запись (топик, frame id или скачок метки времени) получает свежий детектор, поэтому бэги можно
+проигрывать один за другим в одну работающую ноду. Удалённая демонстрация: трансляция экрана с
+RViz или Foxglove на порту 8765 с [`web/foxglove_layout.json`](web/foxglove_layout.json)
+([`web/README.md`](web/README.md)).
 
-## Parameters
+## Параметры
 
-Every node parameter is a launch argument (`ros2 launch resense_ros detector.launch.py <name>:=<value>`);
-the full list with defaults: [GitBook — «Параметры ноды»](https://resense.gitbook.io/resense-docs/reference/node-parameters).
-The ones that matter most:
+Каждый параметр ноды — аргумент запуска (`ros2 launch resense_ros detector.launch.py <name>:=<value>`);
+полный список со значениями по умолчанию: [GitBook — «Параметры ноды»](https://resense.gitbook.io/resense-docs/reference/node-parameters).
+Самые важные:
 
-| parameter | default | meaning |
+| параметр | по умолчанию | значение |
 |---|---|---|
-| `freshness_mode` | `live` (the image's command passes `replay`) | `replay` ages a result from the player's publication (recorded bags), `live` from the acquisition stamp (a live LiDAR) |
-| `max_result_age` | 0.5 s | older results are not current: `FAULT`, or a held `STOP` |
-| `input_topic`, `auto_discover` | both organizer topics, true | input topics |
-| `catchup_step`, `catchup_startup_step` | 0.3 s, 0.2 s | frames the node takes while behind: 0.3 s of recording apart during a stall, 0.2 s (5 Hz) through a recording's start-up burst |
-| `warmup` | true | decode + a throwaway detector on synthetic frames before listening, so the first frame is not slower |
-| `sensor_forward/left/up`, `mount_*_deg`, `auto_calibrate` | the recordings' mount, true | sensor axes, fixed tilt, automatic mount calibration from the rails |
-| `ego_speed_mps`, `speed_topic`, `odom_topic` | none | a train speed enables multi-frame accumulation (off without one) |
-| `config_file` | the package's copy of `configs/default.yaml` | the detector parameters |
+| `freshness_mode` | `live` (команда образа передаёт `replay`) | `replay` отсчитывает возраст результата от публикации кадра плеером (записанные бэги), `live` — от метки времени получения кадра (работающий LiDAR) |
+| `max_result_age` | 0,5 с | более старые результаты неактуальны: `FAULT` либо удерживаемый `STOP` |
+| `input_topic`, `auto_discover` | оба топика организаторов, true | входные топики |
+| `catchup_step`, `catchup_startup_step` | 0,3 с, 0,2 с | кадры, которые нода берёт, пока отстаёт: с интервалом 0,3 с записи при задержке передачи, 0,2 с (5 Гц) на стартовой пачке записи |
+| `warmup` | true | декодирование и одноразовый детектор на синтетических кадрах до начала приёма, чтобы первый кадр не обрабатывался медленнее |
+| `sensor_forward/left/up`, `mount_*_deg`, `auto_calibrate` | крепление, как в записях, true | оси датчика, фиксированный наклон, автоматическая калибровка крепления по рельсам |
+| `ego_speed_mps`, `speed_topic`, `odom_topic` | нет | скорость поезда включает накопление по нескольким кадрам (без неё выключено) |
+| `config_file` | копия `configs/default.yaml` в пакете | параметры детектора |
 
-Detector parameters live in one file, [`configs/default.yaml`](configs/default.yaml) (the ROS
-package carries a checked copy): the envelope `gauge.profile` (|dy| ≤ 1.05 m, 0.12–3.0 m above the
-rail head, advisory band +0.35 m), `tracking.confirm_time_s` 0.5 s, `cluster.eps` 0.35 m growing
-with range, the infrastructure signatures and their limits. Each is explained in
+Параметры детектора находятся в одном файле, [`configs/default.yaml`](configs/default.yaml) (пакет
+ROS содержит проверяемую копию): габарит `gauge.profile` (|dy| ≤ 1,05 м, 0,12–3,0 м над головкой
+рельса, зона предупреждения +0,35 м), `tracking.confirm_time_s` 0,5 с, `cluster.eps` 0,35 м, растущий
+с дальностью, сигнатуры инфраструктуры и их пределы. Каждый объяснён в
 [`docs/ALGORITHM.md`](docs/ALGORITHM.md) §5.
 
-Topics: `/resense/decision`, `/resense/obstacle_detected`, `/resense/warning`,
+Топики: `/resense/decision`, `/resense/obstacle_detected`, `/resense/warning`,
 `/resense/nearest_distance`, `/resense/clear_distance`, `/resense/health`, `/resense/detections`
-(`vision_msgs/Detection3DArray`), `/resense/status` (JSON: every object with distance, lateral
-offset, size, confidence; the track model; health; timing; freshness), `/resense/latency_ms`,
-`/resense/fps`, RViz `/resense/markers` and `/resense/corridor_points`. A consumer should read
-`freshness.valid` in the status JSON and expire results itself; after the input stops, a `STOP`
-is held (`stop_held`) until a fresh non-`STOP` frame. Contract:
+(`vision_msgs/Detection3DArray`), `/resense/status` (JSON: каждый объект с расстоянием, боковым
+смещением, размером, уверенностью; модель пути; исправность; время обработки; свежесть),
+`/resense/latency_ms`, `/resense/fps`, для RViz — `/resense/markers` и `/resense/corridor_points`.
+Потребитель должен читать `freshness.valid` в JSON статуса и сам отбрасывать устаревшие результаты;
+после прекращения входа `STOP` удерживается (`stop_held`) до свежего кадра без `STOP`. Контракт:
 [GitBook — «Топики и JSON статуса»](https://resense.gitbook.io/resense-docs/reference/topics).
 
-## Documentation
+## Документация
 
-| organizers' requirement (spec §5, §7) | where |
+| требование организаторов (ТЗ §5, §7) | где |
 |---|---|
-| description, build, run, bag processing, parameters | this README; the Russian user guide [resense.gitbook.io/resense-docs](https://resense.gitbook.io/resense-docs/) (source [`gitbook/`](gitbook/)) |
-| architecture | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) |
-| algorithm: problem, data, processing, decision, parameters, limitations | [`docs/ALGORITHM.md`](docs/ALGORITHM.md), [`docs/SENSOR.md`](docs/SENSOR.md), [`docs/DATASET.md`](docs/DATASET.md) |
-| experiments: range, latency, FPS, false alarms, hard cases, evolution | [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md), protocol [`docs/EVALUATION.md`](docs/EVALUATION.md), decisions [`docs/DECISIONS.md`](docs/DECISIONS.md) |
-| video | [`docs/video/resense_overview.mp4`](docs/video/resense_overview.mp4) (2:50, subtitles [`.srt`](docs/video/resense_overview.ru.srt)), clips in [`docs/video/`](docs/video) |
-| presentation | [`docs/presentation/`](docs/presentation) (built by `scripts/build_deck.py`; texts [`docs/PRESENTATION.md`](docs/PRESENTATION.md)) |
+| описание, сборка, запуск, обработка бэга, параметры | этот README; русскоязычное руководство пользователя [resense.gitbook.io/resense-docs](https://resense.gitbook.io/resense-docs/) (исходники — [`gitbook/`](gitbook/)) |
+| архитектура | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) |
+| алгоритм: задача, данные, обработка, решение, параметры, ограничения | [`docs/ALGORITHM.md`](docs/ALGORITHM.md), [`docs/SENSOR.md`](docs/SENSOR.md), [`docs/DATASET.md`](docs/DATASET.md) |
+| эксперименты: дальность, задержка, частота кадров, ложные тревоги, трудные случаи, эволюция | [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md), протокол [`docs/EVALUATION.md`](docs/EVALUATION.md), решения [`docs/DECISIONS.md`](docs/DECISIONS.md) |
+| видео | [`docs/video/resense_overview.mp4`](docs/video/resense_overview.mp4) (2:50, субтитры [`.srt`](docs/video/resense_overview.ru.srt)), клипы в [`docs/video/`](docs/video) |
+| презентация | [`docs/presentation/`](docs/presentation) (собирается `scripts/build_deck.py`; тексты — [`docs/PRESENTATION.md`](docs/PRESENTATION.md)) |
 
-Every document with its purpose and owner: [`docs/README.md`](docs/README.md). What changed:
-[`CHANGELOG.md`](CHANGELOG.md).
+Каждый документ с его назначением и ответственным: [`docs/README.md`](docs/README.md). Что
+менялось: [`CHANGELOG.md`](CHANGELOG.md).
 
-## Repository
+## Репозиторий
 
-| path | what |
+| путь | что |
 |---|---|
-| [`resense/`](resense), [`native/`](native) | the detector library (numpy / scipy / scikit-learn, no ROS) and its optional C++ kernels (bit-identical, about half the detector time) |
-| [`ros2_ws/src/resense_ros/`](ros2_ws/src/resense_ros) | the ROS 2 node, launch file, RViz layout |
-| [`docker/`](docker), [`scripts/`](scripts), [`.github/workflows/`](.github/workflows) | image, tools (dry run, export, release, evaluation), CI and release |
-| [`configs/default.yaml`](configs/default.yaml) | the detector parameters |
-| [`tests/`](tests), [`web/`](web) | pytest suite; dashboard, Foxglove layout, label tool |
-| [`docs/`](docs), [`gitbook/`](gitbook), [`labels/`](labels) | documents and evidence; the user guide; labels of the organizers' recordings |
+| [`resense/`](resense), [`native/`](native) | библиотека детектора (numpy / scipy / scikit-learn, без ROS) и её необязательные ядра на C++ (побитово идентичные; сокращают время детектора примерно вдвое) |
+| [`ros2_ws/src/resense_ros/`](ros2_ws/src/resense_ros) | нода ROS 2, launch-файл, раскладка RViz |
+| [`docker/`](docker), [`scripts/`](scripts), [`.github/workflows/`](.github/workflows) | образ, инструменты (прогон dry run, экспорт, релиз, оценка), CI и релиз |
+| [`configs/default.yaml`](configs/default.yaml) | параметры детектора |
+| [`tests/`](tests), [`web/`](web) | набор тестов pytest; дашборд, раскладка Foxglove, инструмент разметки |
+| [`docs/`](docs), [`gitbook/`](gitbook), [`labels/`](labels) | документы и evidence; руководство пользователя; метки записей организаторов |
 
-## Team «Молоток»
+## Команда «Молоток»
 
-| | role (organizers' list) | owns |
+| | роль (по списку организаторов) | отвечает за |
 |---|---|---|
-| P1, captain | system analyst + ROS 2 developer | requirements, architecture, the node, Docker, CI and release, evaluation protocol, organizer liaison, submission |
-| P2 | software developer (UI) | RViz / Foxglove / web dashboard, label tool; **the pitch and the video** |
-| P3 | computer-vision engineer | the detector: track model, envelope, clustering, tracking, false-alarm suppression, performance |
-| P4 | data specialist | data tooling, synthetic obstacles, labels, metrics, tests |
+| P1, капитан | системный аналитик + разработчик ROS 2 | требования, архитектура, нода, Docker, CI и релиз, протокол оценки, связь с организаторами, сдача работы |
+| P2 | разработчик ПО (UI) | RViz / Foxglove / веб-дашборд, инструмент разметки; **питч и видео** |
+| P3 | инженер по компьютерному зрению | детектор: модель пути, габарит, кластеризация, трекинг, подавление ложных тревог, производительность |
+| P4 | специалист по данным | инструменты для данных, синтетические препятствия, метки, метрики, тесты |
 
-License: MIT.
+Лицензия: MIT.
