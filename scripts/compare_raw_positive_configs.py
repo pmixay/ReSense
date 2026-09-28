@@ -36,6 +36,15 @@ def digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
 
 
+def validate_native(library, status, expected, root):
+    if not library or not status.startswith("native ("):
+        raise ValueError("expected native backend is not active")
+    path = Path(library).resolve()
+    if not path.is_relative_to(root.resolve() / "resense") or sha(path) != expected:
+        raise ValueError("native binary origin/hash does not match the declared runtime")
+    return path
+
+
 def intervals(frames):
     out = []
     for frame in frames:
@@ -142,6 +151,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-root", type=Path, required=True)
     parser.add_argument("--expect-commit", required=True)
+    parser.add_argument("--expect-native-sha256", required=True)
     parser.add_argument("--bag", type=Path, required=True)
     parser.add_argument("--labels", type=Path)
     parser.add_argument("--out", type=Path, required=True)
@@ -160,6 +170,8 @@ def main():
         filename = getattr(module, "__file__", None)
         if name.startswith("resense.") and filename and not Path(filename).resolve().is_relative_to(root / "resense"):
             raise ValueError(f"imported detector module outside selected source: {name} {filename}")
+    native_path = validate_native(_native.LIBRARY, _native.status(), args.expect_native_sha256, root)
+    native_sha = sha(native_path)
     def git(*cmd):
         return subprocess.check_output(["git", "-C", str(root), *cmd])
     if git("rev-parse", "HEAD").decode().strip() != args.expect_commit:
@@ -193,8 +205,6 @@ def main():
         cfg.lowobj.local_support_enabled = False
         configs[name] = {"effective": cfg.to_dict(), "sha256": digest(cfg.to_dict())}
         engines[name], outputs[name] = Detector(cfg), []
-    native_path = Path(_native.LIBRARY) if _native.LIBRARY else None
-    native_sha = sha(native_path) if native_path else None
     print(json.dumps({"commit": args.expect_commit, "source_sha256": source_digest(files),
                       "import": resense.detector.__file__, "native": str(native_path),
                       "configs": {k: v["sha256"] for k, v in configs.items()}}), flush=True)

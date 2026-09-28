@@ -1,7 +1,7 @@
 """Audit guards for the source-bound four-config positive observer."""
 import pytest
 
-from scripts.compare_raw_positive_configs import compare, unmatched_pairs, validate_alignment
+from scripts.compare_raw_positive_configs import compare, sha, unmatched_pairs, validate_alignment, validate_native
 
 
 def row(frame, *, stamp=None, matches=(), detections=()):
@@ -30,3 +30,17 @@ def test_pair_reports_lost_target_despite_equal_aggregate_count():
     result = compare([row(0, matches=["person"])], [row(0, matches=["rail"])])
     assert result["lost_label_frames"] == result["gained_label_frames"] == 1
     assert not result["passed_frame_recall_and_no_new_unmatched"]
+
+
+def test_native_guard_rejects_inactive_wrong_hash_or_external_binary(tmp_path):
+    native = tmp_path / "resense" / "native.so"
+    native.parent.mkdir()
+    native.write_bytes(b"native fixture")
+    expected = sha(native)
+    assert validate_native(native, "native (native.so)", expected, tmp_path) == native
+    with pytest.raises(ValueError, match="not active"):
+        validate_native(native, "numpy (RESENSE_NATIVE=0)", expected, tmp_path)
+    with pytest.raises(ValueError, match="origin/hash"):
+        validate_native(native, "native (native.so)", "wrong", tmp_path)
+    with pytest.raises(ValueError, match="origin/hash"):
+        validate_native(native, "native (native.so)", expected, tmp_path / "other")

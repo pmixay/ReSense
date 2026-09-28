@@ -24,6 +24,8 @@ Source files must match the exact expected commit before replay. Preserve the
 source inventory, effective configurations, source/import paths, native backend,
 input/label hashes, per-frame input array hashes and observer hash. Verify source,
 input, labels, native binary and observer/dependency hashes again after replay.
+Require the native backend active from the selected checkout, with exact binary
+SHA256 `b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534`.
 The observer requires exact 0–200 coverage and matching identities across variants.
 
 Use the existing committed labels and one-to-one physical assignment from
@@ -52,6 +54,7 @@ Reproduction (after the default-gate CPU slot is released):
 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 python3 scripts/compare_raw_positive_configs.py \
   --source-root /workspace/ReSense-p3-sync \
   --expect-commit b84ea8f229be8d11d9db82ebd337198803ce92bf \
+  --expect-native-sha256 b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534 \
   --bag /data/raw/for_hackathon/doubleT_obstacle \
   --out /cycle/p3_sync/raw_positive_four_configs
 ```
