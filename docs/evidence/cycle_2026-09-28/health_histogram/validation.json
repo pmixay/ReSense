@@ -1,0 +1,48 @@
+{
+  "schema": "resense-health-histogram-validation-v1",
+  "protocol_commit": "2539c5b3d7faa158a659a537f42e8efb46f849d3",
+  "protocol_sha256": "9213a81623186bf3b1b1f7d6b3861039b3f04f11aa0275f8829a76ca32c8cfac",
+  "candidate_source_sha256": "7740db14b55bb5eade51d053a4463fdb996181c305acb47dd45ccad687aadde0",
+  "effective_config_sha256": "6a6e5d859a0c1a86adce91edf1e8a46cd35b4bee21c5876406f1071cf2eaa46f",
+  "files": {
+    "resense/health.py": "20a046d43cbacfb11929ba4437c1a4c2618263c9fb5b558a3b7a9471bcddea00",
+    "tests/test_health_histogram.py": "308d191ac90abd927f0497df4583ba59aed7e8a4bacc39b1e520a44d82dcdab4",
+    "scripts/bench_health_histogram.py": "709b33ed358dc0edba06d79a7a34bf9d7145428b9f995f32a077d5353837121d"
+  },
+  "unit_tests": {
+    "command": "docker exec -e PYTHONPATH=/workspace/ReSense-health -w /workspace/ReSense-health resense-cycle-dev python3 -m pytest -q tests/test_health_histogram.py",
+    "passed": 48,
+    "failed": 0,
+    "duration_s": 0.85,
+    "full_health_state_comparisons": 150,
+    "initial_fixture_correction": "First run passed 38 count cases; 10 state cases could not construct a TrackModel. Corrected the fixture to use default_track_model; no production change from this fixture failure."
+  },
+  "lint": {
+    "command": "python3 -m ruff check resense/health.py tests/test_health_histogram.py scripts/bench_health_histogram.py",
+    "passed": true
+  },
+  "microprobe": {
+    "report": "microprobe.json",
+    "sha256": "6af8fcfc675080d85441dbbf587acafa311527e6f7a00da3874d464232606203",
+    "exact_counts_equal": true,
+    "timing_acceptance": false
+  },
+  "prior_endpoint_failure": "../continuity/runtime/prototype_failure.json",
+  "native_preflight": "This fresh checkout has no local native .so. Counts-only probe does not use native kernels. Build scripts/build_native.sh and verify native backend before any detector/runtime comparison.",
+  "deferred": [
+    "Full gate and history replay",
+    "Quiet positive and clear original-bag ROS runtime acceptance",
+    "Timing-reporting correction as a separate change"
+  ],
+  "independent_review": {
+    "status": "No correctness blocker found.",
+    "reviewer": "checkpoint1_score_astra",
+    "checks": [
+      "Fast-path guards, endpoint comparisons, nonfinite exclusion, intp accumulation and bounded blocks.",
+      "Fallback dispatch/error preservation and unchanged azimuth/latency semantics.",
+      "Meaningful boundary and full-health output coverage.",
+      "Probe script and every production source-file hash independently matched."
+    ],
+    "remaining": "Full gate/history and quiet runtime acceptance remain pending."
+  }
+}
