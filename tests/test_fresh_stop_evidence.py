@@ -6,7 +6,10 @@ the existing one-miss STOP continuation.
 """
 from __future__ import annotations
 
+from dataclasses import replace
+
 import numpy as np
+import pytest
 
 from resense.clustering import Cluster
 from resense.config import DetectorConfig, TrackingConfig
@@ -133,6 +136,94 @@ def test_thin_continuation_cannot_confirm_an_unreported_track():
         # evidence and must not turn the accumulated hit count into a STOP.
         tracker.update([], frame_dt=0.1, thin=[_cluster(70.0, thin=True)])
     assert not any(t.reported and t.zone == "gauge" for t in tracker.tracks)
+
+
+def test_weak_low_preserves_earned_stop_but_cannot_supply_reacquisition_evidence():
+    tracker = Tracker(_cfg(low_confirm_hits=3, stop_keep_low_s=0.3))
+    clean = _cluster(45.0, kind="low")
+    weak = replace(clean, low_height_weak=True)
+    for _ in range(3):
+        track = _update(tracker, [clean])
+    assert track.reported and track.stop_earned
+    track_id = track.id
+
+    for k in range(3):
+        tracker.update([], frame_dt=0.1, low_height=[weak])
+        assert track.reported and track.stop_earned and track.last is weak
+        assert track.evidence_hist[-1] == "keep_low"
+        # Even while earlier ordinary hits remain in the window, a current weak return
+        # cannot start a new STOP. It is allowed here only because STOP was already earned.
+        assert not tracker._fresh_stop_ok(track)
+    assert track.evidence_hist == ["keep_low"] * 3
+
+    tracker.update([], frame_dt=0.1, low_height=[weak])
+    assert not track.reported and not track.stop_earned
+    track = _update(tracker, [clean])
+    assert track.id == track_id and not track.reported and not track.stop_earned
+    assert track.evidence_hist == ["keep_low", "keep_low", "ordinary"]
+    track = _update(tracker, [clean])
+    assert track.id == track_id and track.reported and track.stop_earned
+
+
+def test_advisory_demotion_rearms_fresh_gate_for_the_same_previous_stop():
+    tracker = Tracker(_cfg(fresh_stop_evidence_min_hits=3, zone_window=3))
+    for _ in range(3):
+        track = _update(tracker, [_cluster(60.0)])
+    assert track.stop_earned
+    track_id = track.id
+    for _ in range(3):
+        track = _update(tracker, [_cluster(60.0, zone="warning")])
+    assert track.reported and track.zone == "warning" and not track.stop_earned
+    for _ in range(2):
+        track = _update(tracker, [_cluster(60.0)])
+        assert track.id == track_id and track.reported and track.zone == "warning"
+        assert not track.stop_earned
+    track = _update(tracker, [_cluster(60.0)])
+    assert track.id == track_id and track.reported and track.stop_earned
+
+
+@pytest.mark.parametrize("fresh_enabled", [False, True])
+def test_near_escalation_on_advisory_clusters_records_existing_fresh_gate_recall_risk(fresh_enabled):
+    """P3 currently vetoes near escalation when the current cluster itself is advisory.
+
+    Preserve that opt-in behavior in this merge; changing it needs a separate candidate and
+    paired recall/false-STOP evidence. Strict voxels alone do not bypass the fresh gate.
+    """
+    tracker = Tracker(_cfg(fresh_stop_evidence=fresh_enabled, start_clean=True,
+                           near_escalate_voxels=10, near_escalate_hits=3, zone_window=3))
+    advisory = replace(_cluster(20.0, zone="warning"), n_gauge=10,
+                       reason="elevated", demoted=True)
+    for _ in range(3):
+        track = _update(tracker, [advisory])
+    assert track.near_escalated and track.rule_zone == "gauge"
+    assert (track.reported and track.zone == "gauge") is (not fresh_enabled)
+    assert track.stop_earned is (not fresh_enabled)
+
+    # Real ordinary evidence still permits onset without changing the track identity.
+    for _ in range(2):
+        track = _update(tracker, [_cluster(20.0)])
+    assert track.reported and track.zone == "gauge" and track.stop_earned
+
+
+def test_opinion_withholding_does_not_mark_a_stop_as_earned():
+    class DoubtfulOpinion:
+        def prob(self, features):
+            return 0.0
+
+    tracker = Tracker(_cfg())
+    tracker.cfg.doubt_extra_hits = 2
+    tracker.cfg.doubt_near = 0.0
+    tracker.cfg.doubt_body_height = 0.0
+    tracker.opinion = DoubtfulOpinion()
+    tracker.record = True
+    for _ in range(3):
+        track = _update(tracker, [_cluster(60.0)])
+    assert track.reported and track.withheld and track.zone == "warning"
+    assert not track.stop_earned
+    track = _update(tracker, [_cluster(60.0)])
+    assert track.withheld and not track.stop_earned
+    track = _update(tracker, [_cluster(60.0)])
+    assert track.reported and not track.withheld and track.stop_earned
 
 
 def test_defaults_and_experiment_yaml_are_independent():

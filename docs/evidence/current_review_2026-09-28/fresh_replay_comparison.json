@@ -1,0 +1,68 @@
+{
+  "input_db3_sha256": "05f1d7f7d1bbbc5e9453877416cc9f7367c19e31d35a5291271d863fc89c5ad9",
+  "command": "python3 -m resense.cli run --bag /data/for_hackathon/doubleT_obstacle --config configs/default.yaml --out out/current_score_2026-09-28/fresh_raw_default.jsonl --quiet",
+  "fresh_frames": 201,
+  "prior_frames": 201,
+  "compared_fields": [
+    "stamp",
+    "obstacle",
+    "warning",
+    "nearest_distance",
+    "detections",
+    "warnings",
+    "clear_distance",
+    "mount"
+  ],
+  "differences": [],
+  "all_compared_fields_equal": true,
+  "track_model_numeric_differences": {
+    "floor_coef": {
+      "frames": 201,
+      "max_absolute_difference": 1.3322676295501878e-15
+    },
+    "yaw": {
+      "frames": 191,
+      "max_absolute_difference": 7.632783294297951e-17
+    },
+    "curvature": {
+      "frames": 197,
+      "max_absolute_difference": 1.3010426069826053e-18
+    }
+  },
+  "excluded_fields_note": "Timing and health depend on machine load; other diagnostic-only fields are not compared.",
+  "counts": {
+    "frames": 201,
+    "alarm_frames": 190,
+    "alarm_events": 2,
+    "stop_episodes": 4,
+    "first_alarm_frame": 8,
+    "labelled": {
+      "per_label": {
+        "object_on_rail": {
+          "hits": 125,
+          "frames": 185
+        },
+        "person_crossing": {
+          "hits": 61,
+          "frames": 61
+        },
+        "object_on_rail_from_frame_75": {
+          "hits": 123,
+          "frames": 126
+        }
+      },
+      "hits": 186,
+      "frames": 246,
+      "fp_frames": 0,
+      "fp_events": 0,
+      "distance_error_max_m": 0.24
+    }
+  },
+  "rail_object_non_stop_frames": [
+    111,
+    117,
+    197
+  ],
+  "fresh_jsonl_sha256": "c3953b60a8afae589337d07841360797b07a61278372769503577676362a5a6c",
+  "latency_note": "Concurrent checks ran on a laptop; this is a functional replay, not a speed benchmark."
+}

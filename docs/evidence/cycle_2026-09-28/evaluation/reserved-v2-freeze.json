@@ -1,0 +1,43 @@
+{
+  "schema": "resense.reserved_candidate_freeze.v1",
+  "registered_at_utc": "2026-09-28 18:23:00 UTC",
+  "purpose": "Final reserved synthetic acceptance of this fixed continuity candidate; not real holdout validation.",
+  "protocol_file": "protocol_v2.json",
+  "protocol_sha256": "c93c4de4af298b10cbdf6ab15803645dce89d374dd547fc88131bb07afa7711e",
+  "split": "evaluation",
+  "reserved_status_at_freeze": "No reserved clouds generated and no reserved detector outputs observed.",
+  "execution_prerequisite": "Root must inspect the completed candidate full real regression gate and explicitly authorize reserved generation after this freeze commit.",
+  "execution_policy": "One saved reserved float cache, baseline and candidate on identical float32/compact16 pairs, one CPU; use the exact frozen source/config pair. Do not tune on reserved results. Once observed, the split is spent.",
+  "development_comparison_file": "comparison-development-v2.json",
+  "development_comparison_sha256": "47846ebdab34189e0a95a399f8a5363d77030580d147e13609e4d0326c3d18de",
+  "development_acceptance": {
+    "passed": true,
+    "regressions": [],
+    "improvements": [],
+    "detector_gain": false
+  },
+  "baseline": {
+    "commit": "dc4d33e2db24c63af68371fceaa267fe957cac2b",
+    "detector_source_sha256": "29574d0f9ce5ae90749cd2d4a8c28bd7d2bf607f43a17fd494b0c10f8c662636",
+    "config_sha256": "de5c7fd6dfa74c1e656af6e233efd625e3e552736534e32efa625e5e8ff57f47",
+    "development_report_file": "baseline-development-v2.json.gz",
+    "development_report_sha256": "ad24bf3e07f29f76af0b2a3ff75651f34fa79aeace737a65f8563b2fcda940a8",
+    "execution_checkout_commit_at_freeze": "589e721e8914c3c54d82022e776d5e46c4030b4d",
+    "native_library_sha256": "b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534"
+  },
+  "candidate": {
+    "commit": "ef1d8f50299d9ccbbf65fc4ad5519764615853f6",
+    "detector_source_sha256": "2389db97234b8c59ca4e5ebacf0eccffaba8ea44e97cdcbfe1df272864a5dab2",
+    "config_sha256": "6a6e5d859a0c1a86adce91edf1e8a46cd35b4bee21c5876406f1071cf2eaa46f",
+    "development_report_file": "candidate-development-v2.json.gz",
+    "development_report_sha256": "5708c39d5356e15f9e27fc12e42c227a6a88124f7feaef823b358e9918f7bf4b",
+    "execution_checkout_commit_at_freeze": "ef1d8f50299d9ccbbf65fc4ad5519764615853f6",
+    "native_library_sha256": "b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534"
+  },
+  "evaluation_tools": {
+    "scripts/synthetic_sensitivity.py": "c30c13e8f3293a0c2749a451f254ccc663ebf41ead3dca8dfdb1bef6893760f0",
+    "scripts/synthetic_geometry.py": "c0da724296a9f02532e993c78681833348002b457df079a5e66e73988edd4bd1",
+    "scripts/summarize_synthetic_sensitivity.py": "8ad8a1f8819f1829b41401bd519ba2651e4e6791c03332dcbba930391446fabd"
+  },
+  "physical_truth": "Read canonical_profile_m saved in generated cases; candidate default profiles cannot change this independent measurement."
+}

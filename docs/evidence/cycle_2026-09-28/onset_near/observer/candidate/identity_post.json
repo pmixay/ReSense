@@ -1,0 +1,13 @@
+{
+  "commit": "ff1b8bd63ef4c51532d44e422b854847e72220fb",
+  "status": "",
+  "source_sha256": "15f67a0b1739716ab2e5aa182198f95f6e68a8ad9c5d08f147b3c7106c7f2a82",
+  "config_sha256": "8c25720bfbe082bcef41a6f69ea5916068221dec79adc628e5b4543533f065b1",
+  "config_file_sha256": "72836545de92c18275feb92ffb56079c7d2b4c8e9f51f83c5324918c6131da88",
+  "native_sha256": "b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534",
+  "native_path": "/workspace/ReSense-onset/resense/_resense_native.so",
+  "native_enabled": true,
+  "capture_sha256": "d54d884d8947897598f5ea8f4d7086d561a4e354292e2ba6937ec5290c408c97",
+  "observer_sha256": "24f99af31f79eaafe606b322ad8c2309b5c0cd9f6e186ef0e4f7a43aeba60120",
+  "protocol_sha256": "8513767309e9d43886c94b96c0612224343d87a43d9d2c8db3a35d7720bc6ca5"
+}

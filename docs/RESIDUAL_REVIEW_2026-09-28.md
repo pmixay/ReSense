@@ -1,5 +1,22 @@
 # Residual-event investigation: coordinator closeout
 
+## Integration provenance
+
+This research was measured against detector revision `6385ff9`; commit `9aa1775` preserves
+that source with the completed diagnostic tools and reports. References below to live defaults,
+the working tree, Fresh STOP being default-off, and unchanged descriptors describe that historical
+research state. The saved input/output hashes remain the authority for each recorded run.
+
+The subsequent merge incorporates remote `059bb64`, including newer detector defaults,
+low-height continuation, health/timing changes and its validation evidence. These historical
+residual/range/local-body results do not validate that newer detector. Reproduce them in a
+separate checkout of `9aa1775`; an isolated `--tracking-ref 6385ff9` on the merged tree is
+insufficient because geometry and configuration have also changed. New measurements require
+fresh output paths and source/configuration provenance.
+
+Post-merge compatibility checks passed: **426 tests and 6 subtests**, with one Windows
+symlink-privilege test deselected. This is code/test compatibility, not a new dataset replay.
+
 ## Outcome
 
 All three research directions are complete for this cycle. **No additional detector candidate is

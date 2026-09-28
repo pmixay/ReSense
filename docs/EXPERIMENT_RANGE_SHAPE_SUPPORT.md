@@ -1,5 +1,8 @@
 # Range/shape support investigation — 28 September 2026
 
+**Historical report:** source/default references and replay commands describe the pre-merge
+research state preserved in `9aa1775`; see [integration provenance](RESIDUAL_REVIEW_2026-09-28.md#integration-provenance).
+
 **Result: concrete positive-loss diagnosis; no justified production candidate selected.**
 Exact point-identity tracing found both under-resolved small objects and resolved person/cable
 support rejected after connection to background. These require different remedies. A generic

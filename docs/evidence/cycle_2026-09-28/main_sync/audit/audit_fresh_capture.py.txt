@@ -1,0 +1,152 @@
+#!/usr/bin/env python3
+"""Read-only strict freshness/label audit; every original bag frame stays in denominators."""
+import argparse
+from collections import Counter
+import hashlib
+import json
+import math
+from pathlib import Path
+import sys
+
+
+def sha(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def intervals(ids):
+    result = []
+    for index in ids:
+        if result and index == result[-1][1] + 1:
+            result[-1][1] = index
+        else:
+            result.append([index, index])
+    return result
+
+
+def strict_current(frame, freshness_failures):
+    fresh = frame.get('freshness', {})
+    def bounded(value, lo, hi):
+        return (isinstance(value, (int, float)) and not isinstance(value, bool)
+                and math.isfinite(value) and lo <= value <= hi)
+    return (frame.get('snapshot_kind') == 'frame' and fresh.get('valid') is True
+            and fresh.get('reason') == 'current' and not frame.get('node', {}).get('catchup')
+            and bounded(fresh.get('source_age_s'), -.05, .5)
+            and bounded(fresh.get('residence_age_s'), 0, .5)
+            and bounded(fresh.get('queue_lag_s'), 0, 1e-6)
+            and not freshness_failures([frame]))
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--source-root', type=Path, required=True)
+    parser.add_argument('--capture', type=Path, required=True)
+    parser.add_argument('--bag', type=Path, required=True)
+    parser.add_argument('--labels', type=Path)
+    parser.add_argument('--out', type=Path, required=True)
+    parser.add_argument('--expect-source-frames', type=int, required=True)
+    parser.add_argument('--expect-labels-sha256')
+    args = parser.parse_args()
+    root = args.source_root.resolve()
+    sys.path[:0] = [str(root), str(root / 'scripts')]
+    from check_dry_run import load, read_bag, match_recording, freshness_failures, detected_obstacle, percentile
+    from resense.metrics import load_gt, gt_objects, _assign_detections
+    frames, skipped = load(args.capture)
+    if not frames:
+        raise ValueError('no processed-frame snapshots')
+    if len({f['node']['recording'] for f in frames}) != 1:
+        raise ValueError('audit requires exactly one recording per capture')
+    source = read_bag(str(args.bag), frames[0]['node']['input_topic'])
+    if source is None:
+        raise ValueError('original raw bag/header stamps required')
+    if len(source[1]) != args.expect_source_frames:
+        raise ValueError('original source frame count differs from declared recording')
+    mapping = match_recording([f['stamp'] for f in frames], source[1], .1)
+    if None in mapping or len(set(mapping)) != len(mapping) or mapping != sorted(mapping):
+        raise ValueError('unmatched, duplicated or unordered capture header stamps')
+    fresh_indices = [i for i,f in zip(mapping,frames) if strict_current(f, freshness_failures)]
+    def distribution(values):
+        values = [v for v in values if isinstance(v,(int,float)) and math.isfinite(v)]
+        if not values: return {'count': 0, 'mean': None, 'min': None, 'max': None, 'p50': None, 'p90': None, 'p95': None, 'p99': None}
+        return {'count': len(values), 'mean': sum(values)/len(values), 'min': min(values), 'max': max(values),
+                **{f'p{q}':percentile(values,q) for q in (50,90,95,99)}}
+    timing_rows = [{'frame':i, 'stamp':f['stamp'], 'decode_ms':f['node'].get('decode_ms'),
+                    'detect_ms':f['node'].get('detect_ms'), 'latency_ms':f['node'].get('latency_ms'),
+                    'strict_current':strict_current(f,freshness_failures),
+                    'source_age_ms':None if f['freshness'].get('source_age_s') is None else 1000*f['freshness']['source_age_s'],
+                    'residence_age_ms':None if f['freshness'].get('residence_age_s') is None else 1000*f['freshness']['residence_age_s'],
+                    'queue_lag_ms':None if f['freshness'].get('queue_lag_s') is None else 1000*f['freshness']['queue_lag_s'],
+                    'freshness_reason':f['freshness']['reason'], 'decision':f['decision']}
+                   for i,f in zip(mapping,frames)]
+    current_ages = [r['source_age_ms'] for r in timing_rows if r['strict_current']]
+    report = {
+        'schema': 'resense-strict-fresh-capture-v1', 'capture': str(args.capture),
+        'capture_sha256': sha(args.capture), 'auditor_sha256': sha(__file__),
+        'checker_sha256': sha(root / 'scripts/check_dry_run.py'),
+        'metrics_sha256': sha(root / 'resense/metrics.py'),
+        'bag': str(args.bag), 'topic': source[0],
+        'header_stamps_sha256': hashlib.sha256(json.dumps(source[1]).encode()).hexdigest(),
+        'original_frames': len(source[1]), 'captured_frames': len(frames),
+        'exact_header_sequence_complete': mapping==list(range(len(source[1]))),
+        'captured_indices': mapping, 'missing_indices': sorted(set(range(len(source[1]))) - set(mapping)),
+        'strict_fresh_frames': len(fresh_indices), 'strict_fresh_intervals': intervals(fresh_indices),
+        'invalid_reasons': dict(Counter(f['freshness']['reason'] for f in frames if not strict_current(f, freshness_failures))),
+        'freshness_contract_failures': freshness_failures(frames), 'non_frame_snapshots': skipped,
+        'p95_decode_detect_ms': percentile([f['node']['latency_ms'] for f in frames], 95),
+        'p95_strict_current_end_to_end_ms': percentile([1000*f['freshness']['source_age_s'] for f in frames if strict_current(f, freshness_failures)], 95),
+        'raw_current_stop_frames': sum(detected_obstacle(f) for f in frames),
+        'held_stop_frames': sum(f.get('stop_held', False) for f in frames),
+        'decisions': dict(Counter(f['decision'] for f in frames)),
+        'fresh_definition': 'valid/current frame snapshot, no catchup, registered source/residence/queue bounds, passing freshness contract',
+        'target_fresh_stop_definition': 'strict-current result plus actual detector STOP, decision STOP and not held',
+        'target_denominator': 'all visible in-gauge labels on original source frames, including missing capture frames',
+        'sustained_definition': 'five consecutive original source frame indices with matched fresh STOP',
+        'timing_distributions_ms': {**{k:distribution([r[k] for r in timing_rows]) for k in ('decode_ms','detect_ms','latency_ms')},
+                                    'strict_current_end_to_end_ms':distribution(current_ages)},
+        'per_frame_timing_and_freshness': timing_rows,
+        'strict_current_end_to_end_values_ms': current_ages,
+        'last_node_counters': {k:frames[-1]['node'].get(k) for k in ('frames','dropped_frames','catchup_skipped')},
+        'source_stamp_gaps_over_150ms': [{'before_index':i,'after_index':i+1,'interval_s':b-a}
+                                       for i,(a,b) in enumerate(zip(source[1],source[1][1:])) if b-a>.15],
+    }
+    if args.labels:
+        if args.expect_labels_sha256 and sha(args.labels)!=args.expect_labels_sha256:
+            raise ValueError('labels differ from declared frozen annotations')
+        gt = load_gt(str(args.labels))
+        report['labels_sha256'] = sha(args.labels)
+        by_index = dict(zip(mapping, frames))
+        targets = {}
+        for index in range(len(source[1])):
+            frame = by_index.get(index)
+            objects = [g for g in gt_objects(gt.get(f'{index:05d}', [])) if g.in_gauge]
+            if len({g.label for g in objects}) != len(objects):
+                raise ValueError('labels must be unique within a frame')
+            raw = frame['detections'] if frame and detected_obstacle(frame) else []
+            fresh = raw if frame and strict_current(frame, freshness_failures) and frame['decision']=='STOP' else []
+            matches = {'raw': _assign_detections(raw, objects), 'fresh': _assign_detections(fresh, objects)}
+            for gi,g in enumerate(objects):
+                target = targets.setdefault(g.label, {'visible_indices': [], 'raw_matched_indices': [], 'fresh_matched_indices': []})
+                target['visible_indices'].append(index)
+                for mode in matches:
+                    if gi in matches[mode]: target[mode+'_matched_indices'].append(index)
+        for target in targets.values():
+            for mode in ('raw', 'fresh'):
+                hits = target[mode+'_matched_indices']
+                spans = intervals(hits)
+                first = next(iter(hits), None)
+                sustained = next((a for a,b in spans if b-a+1 >= 5), None)
+                target[mode] = {
+                    'hits': len(hits), 'frames': len(target['visible_indices']),
+                    'first_stop_frame': first, 'first_stop_stamp': None if first is None else source[1][first],
+                    'first_sustained_five_frame_stop': sustained,
+                    'first_sustained_five_frame_stamp': None if sustained is None else source[1][sustained],
+                    'stop_intervals': spans,
+                    'missed_intervals': intervals(sorted(set(target['visible_indices']) - set(hits))),
+                }
+        report['targets'] = targets
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    args.out.write_text(json.dumps(report, indent=2)+'\n')
+    print(json.dumps({key:report[key] for key in ('captured_frames','original_frames','strict_fresh_frames','freshness_contract_failures')}))
+
+
+if __name__ == '__main__':
+    main()

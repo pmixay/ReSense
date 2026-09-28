@@ -3,7 +3,7 @@ import json
 
 import pytest
 
-from scripts.quality_acceptance import aligned, monitoring_cost, read_rows
+from scripts.quality_acceptance import alarm_changes, aligned, monitoring_cost, read_rows
 from scripts.evaluate_monitoring_candidate import candidate_row
 from scripts.score_clear_distance import decision
 
@@ -28,6 +28,27 @@ def test_fault_also_costs_coverage_and_range_collapse_fails():
     assert not monitoring_cost(before, faults)["passed"]
     assert not monitoring_cost(before, [row(i, distance=94.9) for i in range(100)])["passed"]
     assert monitoring_cost(before, [row(i, distance=95.0) for i in range(100)])["passed"]
+
+
+def test_equal_alarm_totals_cannot_hide_new_false_alarm_frames():
+    before = [dict(row(i), obstacle=i == 0, detections=[{"id": 1}] if i == 0 else [])
+              for i in range(2)]
+    after = [dict(row(i), obstacle=i == 1, detections=[{"id": 1}] if i == 1 else [])
+             for i in range(2)]
+    result = alarm_changes(before, after)
+    assert not result["no_new_alarm_frames"]
+    assert [r["frame"] for r in result["new_alarm_frames"]] == [1]
+    assert [r["frame"] for r in result["removed_alarm_frames"]] == [0]
+
+
+def test_same_alarm_id_cannot_hide_replaced_detection_geometry():
+    before = [dict(row(0), obstacle=True, detections=[{"id": 1, "center": [40, 0, 0]}])]
+    after = [dict(row(0), obstacle=True, detections=[{"id": 1, "center": [80, 0, 0]}])]
+    result = alarm_changes(before, after)
+    assert result["no_new_alarm_frames"]
+    assert not result["identical_alarm_outputs"]
+    assert result["changed_detection_frames"][0]["candidate"] == after[0]["detections"]
+    assert alarm_changes(before, before)["identical_alarm_outputs"]
 
 
 @pytest.mark.parametrize("after", [[row(0)], [row(1), row(0)], [row(0), dict(row(1), stamp=2.0)]])

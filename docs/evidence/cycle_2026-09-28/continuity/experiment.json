@@ -1,0 +1,234 @@
+{
+  "schema": "resense-low-height-experiment-v1",
+  "status": "provisional; defaults disabled; awaiting full gate and reserved evaluation",
+  "source_sha256": "fd60223da939d588f32d90687550300ee89d97d1130e09c8f17aba73d94eaa45",
+  "acceptance_sha256": "056e8d8b2ebc585017fbff01fadf24236e112c081809e0f7d0245e98a9aefc13",
+  "raw_summary_sha256": "3ec3bcbcfed9b969b76ee28014e8fbf0ab1be44c7629e8fd5c09668b462c90b3",
+  "candidate": {
+    "tracking.stop_keep_low_s": 0.3,
+    "lowobj.straddle_keep_height_margin": 0.03
+  },
+  "raw": {
+    "full": {
+      "baseline": {
+        "object_on_rail": {
+          "hits": 125,
+          "frames": 185
+        },
+        "person_crossing": {
+          "hits": 61,
+          "frames": 61
+        },
+        "object_on_rail_from_frame_75": {
+          "hits": 123,
+          "frames": 126
+        }
+      },
+      "candidate": {
+        "object_on_rail": {
+          "hits": 128,
+          "frames": 185
+        },
+        "person_crossing": {
+          "hits": 61,
+          "frames": 61
+        },
+        "object_on_rail_from_frame_75": {
+          "hits": 126,
+          "frames": 126
+        }
+      },
+      "new_unmatched": 0,
+      "new_labelled_misses": 0,
+      "passed_no_regression": true
+    },
+    "half": {
+      "baseline": {
+        "object_on_rail": {
+          "hits": 63,
+          "frames": 92
+        },
+        "person_crossing": {
+          "hits": 29,
+          "frames": 31
+        },
+        "object_on_rail_from_frame_75": {
+          "hits": 63,
+          "frames": 63
+        }
+      },
+      "candidate": {
+        "object_on_rail": {
+          "hits": 63,
+          "frames": 92
+        },
+        "person_crossing": {
+          "hits": 29,
+          "frames": 31
+        },
+        "object_on_rail_from_frame_75": {
+          "hits": 63,
+          "frames": 63
+        }
+      },
+      "new_unmatched": 0,
+      "new_labelled_misses": 0,
+      "passed_no_regression": true
+    },
+    "bursty": {
+      "baseline": {
+        "object_on_rail": {
+          "hits": 85,
+          "frames": 123
+        },
+        "person_crossing": {
+          "hits": 40,
+          "frames": 41
+        },
+        "object_on_rail_from_frame_75": {
+          "hits": 84,
+          "frames": 84
+        }
+      },
+      "candidate": {
+        "object_on_rail": {
+          "hits": 85,
+          "frames": 123
+        },
+        "person_crossing": {
+          "hits": 40,
+          "frames": 41
+        },
+        "object_on_rail_from_frame_75": {
+          "hits": 84,
+          "frames": 84
+        }
+      },
+      "new_unmatched": 0,
+      "new_labelled_misses": 0,
+      "passed_no_regression": true
+    },
+    "restart75": {
+      "baseline": {
+        "object_on_rail": {
+          "hits": 110,
+          "frames": 126
+        },
+        "object_on_rail_from_frame_75": {
+          "hits": 110,
+          "frames": 126
+        }
+      },
+      "candidate": {
+        "object_on_rail": {
+          "hits": 113,
+          "frames": 126
+        },
+        "object_on_rail_from_frame_75": {
+          "hits": 113,
+          "frames": 126
+        }
+      },
+      "new_unmatched": 0,
+      "new_labelled_misses": 0,
+      "passed_no_regression": true
+    }
+  },
+  "verification": [
+    {
+      "command": "python -m pytest -q tests/test_stop_keep.py tests/test_far_thin.py tests/test_lowobj_near.py tests/test_rail_start.py tests/test_history_robustness.py tests/test_stage_trace.py tests/test_low_height_keep.py -m 'not synthetic and not realdata'",
+      "result": "118 passed, 22 deselected in 12.60s"
+    },
+    {
+      "command": "RESENSE_RIDE_CACHE=/cycle/rail_start_cache python -m pytest -q tests/test_rail_start.py -k finding",
+      "result": "1 passed, 27 deselected in 15.29s",
+      "earlier_failure": "Historical cache directory lacked new_data_55_0013; rerun passed using fresh complete original segments55/56."
+    },
+    {
+      "command": "RESENSE_REQUIRE_SYNTHETIC=1 python -m pytest -q tests/test_stage_trace.py -m synthetic",
+      "result": "1 passed, 4 deselected in 3.20s"
+    },
+    {
+      "command": "python -m ruff check resense/clustering.py resense/config.py resense/detector.py resense/tracking.py scripts/evaluate_low_height_keep.py tests/test_low_height_keep.py",
+      "result": "All checks passed."
+    }
+  ],
+  "pending": [
+    "Full strict regression gate without waivers",
+    "Independent reserved synthetic evaluation",
+    "Integration review and detector reseal before enabling default"
+  ],
+  "review_fixes": {
+    "previous_candidate_commit": "0fa2c3ebadb6f216cce245a885960564bd927400",
+    "issues": [
+      "Weak expiry overrode the independent active calibration reseed hold.",
+      "Frame gaps above the motion/fit interval limit were clipped before consuming the weak-evidence budget."
+    ],
+    "changes": [
+      "Weak expiry applies only outside the existing calibration hold; its countdown is never reset.",
+      "Separate low_since_clean counter consumes actual positive timestamp intervals and resets only on clean low gauge hits."
+    ],
+    "checks": [
+      {
+        "command": "RESENSE_REQUIRE_SYNTHETIC=1 python -m pytest -q tests/test_low_height_keep.py tests/test_reseed_safety.py tests/test_stop_keep.py",
+        "result": "91 passed in 46.85s"
+      },
+      {
+        "command": "RESENSE_REQUIRE_SYNTHETIC=1 python -m pytest -q tests/test_low_height_keep.py",
+        "result": "35 passed in 1.70s",
+        "note": "After strengthening the assertion that a new clean hit resets the independent low clock."
+      },
+      {
+        "command": "python -m ruff check resense/detector.py resense/tracking.py tests/test_low_height_keep.py",
+        "result": "All checks passed."
+      }
+    ],
+    "raw_rerun": {
+      "bursty_baseline.jsonl.gz": {
+        "frames": 135,
+        "semantic_difference_frames": []
+      },
+      "bursty_candidate.jsonl.gz": {
+        "frames": 135,
+        "semantic_difference_frames": []
+      },
+      "full_baseline.jsonl.gz": {
+        "frames": 201,
+        "semantic_difference_frames": []
+      },
+      "full_candidate.jsonl.gz": {
+        "frames": 201,
+        "semantic_difference_frames": []
+      },
+      "half_baseline.jsonl.gz": {
+        "frames": 101,
+        "semantic_difference_frames": []
+      },
+      "half_candidate.jsonl.gz": {
+        "frames": 101,
+        "semantic_difference_frames": []
+      },
+      "restart75_baseline.jsonl.gz": {
+        "frames": 126,
+        "semantic_difference_frames": []
+      },
+      "restart75_candidate.jsonl.gz": {
+        "frames": 126,
+        "semantic_difference_frames": []
+      }
+    },
+    "raw_semantic_comparison_fields": [
+      "obstacle",
+      "warning",
+      "nearest_distance",
+      "detections",
+      "warnings",
+      "clear_distance",
+      "track",
+      "mount",
+      "n_candidates",
+      "n_corridor"
+    ],
+    "known_limitation": "Velocity remains metres per frame. A moving object at 10 m/s with 0.1/0.2/0.1 s intervals can fail the tight weak match: both off/on use ordinary hold, then miss, then recover on a clean hit."
+  }
+}

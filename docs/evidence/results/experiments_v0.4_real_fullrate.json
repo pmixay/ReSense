@@ -38,8 +38,8 @@
     "DONE"
    ]
   },
-  "machine": "4-core sandbox shared with another agent (P3) and with P4's own label script during the v0.4 run: load average 4.2-7.7 while it ran (see run_log), so every latency field of the v0.4 column is inflated by contention and is NOT comparable with the v0.3 column (recorded at an unknown load) nor with the reviewer's back-to-back numbers in docs/EXPERIMENTS.md (v0.4 77-94 ms mean). Alarm / event / advisory counts do not depend on the load. The jury's i7-9700E has 8 faster cores.",
-  "reproduces": "the reviewer's full-rate v0.4 totals of 21.09 (docs/EXPERIMENTS.md section 2b): 1016 vs 1001 alarm frames and 187 vs 192 events on the five obstacle-free bags",
+  "machine": "4-core sandbox shared with another agent (P3) and with P4's own label script during the v0.4 run: load average 4.2-7.7 while it ran (see run_log), so every latency field of the v0.4 column is inflated by contention and is NOT comparable with the v0.3 column (recorded at an unknown load) nor with the reviewer's back-to-back numbers in docs/archive/EXPERIMENTS_log_2026-09.md (v0.4 77-94 ms mean). Alarm / event / advisory counts do not depend on the load. The jury's i7-9700E has 8 faster cores.",
+  "reproduces": "the reviewer's full-rate v0.4 totals of 21.09 (docs/archive/EXPERIMENTS_log_2026-09.md section 2b): 1016 vs 1001 alarm frames and 187 vs 192 events on the five obstacle-free bags",
   "timing_ab_roundT_doubleT": {
    "what": "resense bench --npy /data/cache/roundT_doubleT (252 frames, per-stage detector time), three variants run back to back on the same machine, 12:11-12:13 on 21.09, load average 3.5 at the start and 5.5 at the end (another agent working): absolute values are inflated, only the differences between the three rows are meaningful; the i7-9700E has 8 faster cores",
    "commit": "f4e311f detector code (P4 branch for the --ego-speed option)",
@@ -157,7 +157,7 @@
      ]
     }
    },
-   "reading": "v0.4 costs +26 ms mean over v0.3 on this bag at this load: estimator ~10 ms, bed verification inside track ~8 ms, clustering of the merged cloud ~9 ms; with a given speed the estimator's 10 ms are saved but the union is merged on every frame (cluster +17 ms), so the total is the same. Consistent with the reviewer's +17-23 ms measured at a lower load (docs/EXPERIMENTS.md 2b)."
+   "reading": "v0.4 costs +26 ms mean over v0.3 on this bag at this load: estimator ~10 ms, bed verification inside track ~8 ms, clustering of the merged cloud ~9 ms; with a given speed the estimator's 10 ms are saved but the union is merged on every frame (cluster +17 ms), so the total is the same. Consistent with the reviewer's +17-23 ms measured at a lower load (docs/archive/EXPERIMENTS_log_2026-09.md 2b)."
   }
  },
  "totals_empty_bags": {

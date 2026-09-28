@@ -1,5 +1,8 @@
 # Local-body support decomposition — 28 September 2026
 
+**Historical report:** source/default references describe the pre-merge research state preserved
+in `9aa1775`; see [integration provenance](RESIDUAL_REVIEW_2026-09-28.md#integration-provenance).
+
 **Result: diagnostic rejection; no detector selector or production change is justified.**
 
 This experiment tested whether one fixed, runtime-identifiable local decomposition could recover

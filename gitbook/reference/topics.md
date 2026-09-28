@@ -54,7 +54,7 @@ flowchart LR
 | `health` | `level`, `decision_level`, `messages[]`, `points`, `visibility`, `blocked_sectors`, `rail_lock`, `monitored_range`, `latency_p95_ms`, поля свежести, … |
 | `mount` | автокалибровка: `status`, `orientation`, `roll_deg`, `pitch_deg`, `yaw_deg`, `height`, `lateral`, `drift_deg`, `frames_used`, `message` |
 | `timing_ms` | по этапам: `track`, `corridor`, `egomotion`, `accumulate`, `cluster`, `tracking`, `total` |
-| `freshness` | `mode`, `clock_reference`, `valid`, `reason`, `go_allowed`, возраст данных (`source_age_s`, `acquisition_age_s`, `publication_age_s`, `residence_age_s`, `queue_lag_s`), `evaluated_at_utc_s`, `max_result_age_s`, `future_tolerance_s` |
+| `freshness` | `mode`, `clock_reference`, `valid`, `reason` (`current`; `catchup` — нода догоняет отставание; `source_stale`, `queue_stale`, `epoch_unconfirmed`, …), `go_allowed`, возраст данных (`source_age_s`, `acquisition_age_s`, `publication_age_s`, `residence_age_s`, `queue_lag_s`), `evaluated_at_utc_s`, `max_result_age_s`, `future_tolerance_s` |
 | `stop_held` | предыдущий STOP остаётся видимым, пока вход недостоверен |
 | `snapshot_kind` | `frame`, `watchdog` или `processing_error` |
 | `ego_speed`, `ego_speed_source`, `ego_speed_estimate`, `ego_speed_confidence`, `n_accumulated` | использованная скорость, если есть, и накопление кадров |

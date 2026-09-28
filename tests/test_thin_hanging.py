@@ -1,5 +1,5 @@
 """Thin objects hanging from above into the envelope (``cluster.hanging_enabled``, SCORECARD #11,
-25.09; docs/EXPERIMENTS.md §1i, docs/evidence/results/p3_thin_hanging_2026-09-25.json).
+25.09; docs/archive/EXPERIMENTS_log_2026-09.md §1i, docs/evidence/results/p3_thin_hanging_2026-09-25.json).
 
 The organizers' 5 cm object hanging from the roof of set O dips only 0.2-0.4 m below the 3.0 m
 envelope top, with 1-3 returns there a frame: it never reaches the corridor clustering's 5-voxel

@@ -1,0 +1,49 @@
+{
+  "status": "aborted_incomplete_not_acceptance",
+  "source_commit": "b84ea8f229be8d11d9db82ebd337198803ce92bf",
+  "reason": "New checkout lacked package-local native library; NumPy fallback did not match baseline backend. No gate result accepted. Built unchanged C++ native library and restarted in separate default directory.",
+  "backend": "numpy",
+  "stopped_utc": "2026-09-28T19:02:55.075416+00:00",
+  "partial_captures": {
+    "cloud_with_fake_obj.jsonl": {
+      "sha256": "682fd7a85d5c2a46627ac42064b8c1ac9b6f9a0e4ad80e05cd2430c9c4f6719c",
+      "lines": 1510,
+      "bytes": 2538750
+    },
+    "new_data_0.jsonl": {
+      "sha256": "f98957ed187d9c204c8d4d15217066d2ba1b2dcaf1d092d2c2d394b3844676d2",
+      "lines": 1409,
+      "bytes": 2342218
+    },
+    "new_data_1.jsonl": {
+      "sha256": "3e32c4275c556961f52478a45d7627d072a1df704e901ff1743832fb75bb86e3",
+      "lines": 1409,
+      "bytes": 2609552
+    },
+    "new_data_2.jsonl": {
+      "sha256": "3ea95acb648843237f84bdf29067ab18d2a37fbab464e624c96d15e4cbc8c7c8",
+      "lines": 1409,
+      "bytes": 2407805
+    },
+    "new_data_3.jsonl": {
+      "sha256": "91f3d8b67384edb569096fbc8903104f70eacbc9bd4c3e9452e13b59f8d38c2f",
+      "lines": 291,
+      "bytes": 544940
+    },
+    "new_data_4.jsonl": {
+      "sha256": "fad26ebe7cbea4bac529345d166efd87a659fa2474942990d0cf02686194734b",
+      "lines": 237,
+      "bytes": 458739
+    },
+    "new_data_5.jsonl": {
+      "sha256": "2ad85fecfe06485036b93c00598ec705afc27410c8b4b891b6387b9fde548529",
+      "lines": 298,
+      "bytes": 492213
+    },
+    "new_data_6.jsonl": {
+      "sha256": "415438605a945ea530d0ef77744c3c6e8e03c4d29568b6c46c26416022adef2f",
+      "lines": 247,
+      "bytes": 385623
+    }
+  }
+}

@@ -1,0 +1,68 @@
+"""Inspect installed files in the immutable runtime image, without replay or timing work."""
+import ast
+import hashlib
+import json
+from pathlib import Path
+import sys
+
+from ament_index_python.packages import get_package_share_directory
+import resense
+from resense import _native
+from resense_ros import detector_node, fastcloud
+
+
+def sha(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+root = Path('/opt/resense')
+out = Path('/audit')
+expected = json.loads((out / 'image_identity.json').read_text())
+protocol = json.loads((out / 'runtime_protocol.json').read_text())
+build = json.loads((out / 'build.json').read_text())
+package = Path(resense.__file__).resolve().parent
+checks = {}
+for relative, checksum in expected['installed_files'].items():
+    path = package / relative.removeprefix('resense/')
+    actual = sha(path)
+    assert actual == checksum == expected['files'][relative], relative
+    checks[relative] = {'path': str(path), 'sha256': actual}
+for module, relative in ((detector_node, 'ros2_ws/src/resense_ros/resense_ros/detector_node.py'),
+                         (fastcloud, 'ros2_ws/src/resense_ros/resense_ros/fastcloud.py')):
+    path = Path(module.__file__).resolve()
+    actual = sha(path)
+    assert actual == protocol['files'][relative] == sha(root / relative), relative
+    checks[relative] = {'path': str(path), 'sha256': actual}
+share = Path(get_package_share_directory('resense_ros'))
+for relative, installed in (
+        ('ros2_ws/src/resense_ros/launch/detector.launch.py', share / 'launch/detector.launch.py'),
+        ('configs/default.yaml', share / 'config/detector.yaml')):
+    actual = sha(installed)
+    assert actual == protocol['files'][relative], relative
+    checks[relative] = {'path': str(installed.resolve()), 'sha256': actual}
+for relative in ('scripts/check_dry_run.py', 'scripts/check_fast_input.py'):
+    actual = sha(root / relative)
+    assert actual == protocol['files'][relative] == expected['integration_files'][relative], relative
+    checks[relative] = {'path': str(root / relative), 'sha256': actual}
+defaults = {}
+for call in ast.walk(ast.parse(Path(detector_node.__file__).read_text())):
+    if (isinstance(call, ast.Call) and isinstance(call.func, ast.Attribute)
+            and call.func.attr == 'declare_parameter' and len(call.args) >= 2
+            and isinstance(call.args[0], ast.Constant)):
+        if call.args[0].value in ('warmup', 'catchup_startup_step'):
+            defaults[call.args[0].value] = ast.literal_eval(call.args[1])
+assert defaults == {'catchup_startup_step': 0.0, 'warmup': True}
+assert _native.enabled(), _native.status()
+native = Path(_native.LIBRARY).resolve()
+assert sha(native) == expected['native_sha256']
+report = {
+    'schema': 'resense-main-sync-installed-verification-v1',
+    'image_id': build['image_id'], 'commit': build['commit'],
+    'expected_identity_sha256': sha(out / 'image_identity.json'),
+    'protocol_sha256': sha(out / 'runtime_protocol.json'),
+    'observer_sha256': sha(__file__), 'files': checks,
+    'native': {'enabled': True, 'status': _native.status(), 'path': str(native), 'sha256': sha(native)},
+    'node_defaults': defaults, 'pass': True,
+}
+(out / 'installed_verification.json').write_text(json.dumps(report, indent=2) + '\n')
+print(json.dumps({'pass': True, 'native': report['native'], 'node_defaults': defaults}))

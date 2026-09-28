@@ -1,0 +1,65 @@
+"""Check the merged installed image under the registered quiet local protocol."""
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import time
+
+OUT = Path(__file__).resolve().parent
+REPO = Path('/home/likikikpa/ReSense-p3-sync')
+DATA = Path('/home/likikikpa/ReSense-p4-data/for_hackathon')
+protocol = json.loads((OUT / 'runtime_protocol.json').read_text())
+expected_inputs = json.loads((OUT / 'execution_plan.json').read_text())['input_sha256']
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+def verify_source():
+    for name, checksum in protocol['files'].items():
+        assert sha(REPO / name) == checksum, name
+
+def snapshot():
+    return {'utc': datetime.now(timezone.utc).isoformat(),
+            'loadavg': Path('/proc/loadavg').read_text().strip(),
+            'thermal_millidegrees': {str(p): p.read_text().strip()
+                                    for p in Path('/sys/class/thermal').glob('thermal_zone*/temp')}}
+
+verify_source()
+results = {'schema': 'resense-main-sync-runtime-execution-v1',
+           'protocol_sha256': sha(OUT / 'runtime_protocol.json'),
+           'plan_sha256': sha(OUT / 'execution_plan.json'),
+           'runner_sha256': sha(Path(__file__)),
+           'image_id': subprocess.check_output(['docker', 'image', 'inspect', protocol['image'], '--format', '{{.Id}}'], text=True).strip(),
+           'warmed_inputs': {}, 'runs': {}}
+for kind, bag, count in [('positive', 'doubleT_obstacle', 201), ('clear', 'roundT_doubleT', 252)]:
+    checksums = {}
+    for path in sorted((DATA / bag).glob('*.db3')):
+        digest = hashlib.sha256()
+        with path.open('rb') as stream:
+            for block in iter(lambda: stream.read(8 * 1024 * 1024), b''):
+                digest.update(block)
+        checksums[path.name] = digest.hexdigest()
+    assert checksums == expected_inputs[bag], bag
+    results['warmed_inputs'][bag] = checksums
+    target = OUT / kind
+    if target.exists():
+        raise RuntimeError(f'refusing to overwrite earlier measurement: {target}')
+    time.sleep(30)
+    verify_source()
+    env = dict(os.environ, IMAGE=protocol['image'], SKIP_BUILD='1', OFFLINE='1', RATE='1.0',
+               BAG_READ_AHEAD_QUEUE_SIZE='10', OUT=str(target))
+    env['PATH'] = '/tmp/resense-health-python-bin:' + env['PATH']
+    command = ['bash', 'scripts/dry_run.sh', str(DATA / bag), '--min-frames', str(count),
+               '--max-p95-latency', '100', '--max-dropped', '0', '--min-playback-rate', '0.9']
+    command += ['--expect-obstacle', '--distance', '50:62'] if kind == 'positive' else ['--expect-clear']
+    entry = {'command': command, 'image': protocol['image'], 'started': snapshot()}
+    print('START ' + kind, flush=True)
+    with (OUT / f'{kind}.txt').open('w') as log:
+        run = subprocess.run(command, cwd=REPO, env=env, stdout=log, stderr=subprocess.STDOUT)
+    verify_source()
+    entry.update(exit_code=run.returncode, finished=snapshot(), source_unchanged=True)
+    results['runs'][kind] = entry
+    (OUT / 'execution.json').write_text(json.dumps(results, indent=2) + '\n')
+    print(f'END {kind}: exit {run.returncode}', flush=True)

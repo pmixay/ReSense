@@ -1,5 +1,8 @@
 # Temporal evidence-coherence investigation — 28 September 2026
 
+**Historical report:** source/default references describe the pre-merge research state preserved
+in `9aa1775`; see [integration provenance](RESIDUAL_REVIEW_2026-09-28.md#integration-provenance).
+
 **Decision: reject the interval-coherence candidate.** The unfinished candidate was removed from
 `resense/tracking.py` and `TrackingConfig`; its experimental YAML was removed as well. The measured
 diagnostic remains in `tests/test_evidence_coherence.py` so the rejection and its counterexamples can

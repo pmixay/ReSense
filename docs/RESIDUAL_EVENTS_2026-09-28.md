@@ -1,5 +1,8 @@
 # Residual false STOP inventory — 28 September 2026
 
+**Historical inventory:** these saved captures predate the remote detector updates merged after
+`9aa1775`; see [integration provenance](RESIDUAL_REVIEW_2026-09-28.md#integration-provenance).
+
 **The saved fresh-onset candidate leaves exactly 27 track events, 117 distinct STOP
 frames and 26 STOP episodes across 11,271 ride frames.** There are 133 STOP
 track-frames because several tracks overlap. These counts are recomputed from all

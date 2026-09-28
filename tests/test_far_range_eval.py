@@ -2,7 +2,10 @@
 
 import importlib.util
 from dataclasses import asdict
+import os
 from pathlib import Path
+import subprocess
+import sys
 
 import numpy as np
 import pytest
@@ -21,6 +24,15 @@ _spec.loader.exec_module(_module)
 near_anchor_placements = _module.near_anchor_placements
 run_sequence = _module.run_sequence
 consecutive_files = _module.consecutive_files
+
+
+def test_far_range_cli_imports_cache_helpers_outside_repository(tmp_path):
+    env = os.environ.copy()
+    env.pop("PYTHONPATH", None)
+    result = subprocess.run([sys.executable, str(_script), "--help"], cwd=tmp_path,
+                            env=env, capture_output=True, text=True, timeout=20)
+    assert result.returncode == 0, result.stderr
+    assert "--placement-mode" in result.stdout
 
 
 def model(center=0.0, slope=0.0, curvature=0.0, rail_score=0.1):

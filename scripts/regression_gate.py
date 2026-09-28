@@ -282,7 +282,8 @@ def run_set_f_straight(cache, cfg_path, work, jobs) -> dict:
 
 def measure(a) -> dict:
     """Run everything and return the result dict (the JSON of the gate)."""
-    from resense.io import _natural_key, load_cache_stamps
+    from scripts.cache_io import (cache_files, load_cache_stamps, validate_extended_ride_cache,
+                                  validate_ride_intake_manifest)
     os.makedirs(a.work, exist_ok=True)
     cfg_dict = eval_real.load_cfg_dict(a.config, a.set)
     cfg = eval_real.load_cfg(a.config, a.set)          # fail fast on an unknown key
@@ -290,12 +291,21 @@ def measure(a) -> dict:
     with open(cfg_path, "w", encoding="utf-8") as fh:
         yaml.safe_dump({"resense": cfg_dict}, fh, sort_keys=False)
     ride_dir = os.path.join(a.cache, RIDE)
-    have_ride = bool(glob.glob(os.path.join(ride_dir, "*.npy")))
+    ride_files = cache_files(ride_dir)
+    ride_markers = glob.glob(os.path.join(ride_dir, "new_data_*_stamps.json"))
+    have_ride = bool(ride_files or ride_markers)
+    if have_ride:
+        try:
+            ride_inventory = validate_extended_ride_cache(ride_dir, load_arrays=False)
+            validate_ride_intake_manifest(ride_dir, ride_inventory)
+        except ValueError as exc:
+            print(f"regression_gate: incomplete or invalid ride cache: {exc}", file=sys.stderr)
+            raise SystemExit(2) from exc
     names = SIX + [SET_O] + ([RIDE] if have_ride else [])
     jobs, pieces = [], {}
     for name in names:
         d = os.path.join(a.cache, name)
-        files = sorted(glob.glob(os.path.join(d, "*.npy")), key=_natural_key)
+        files = cache_files(d)
         if not files:
             print(f"regression_gate: no cached frames in {d} (the six recordings and {SET_O} are required)",
                   file=sys.stderr)

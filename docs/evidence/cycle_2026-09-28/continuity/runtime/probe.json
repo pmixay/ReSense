@@ -1,0 +1,164 @@
+{
+  "purpose": "Fixed first original positive cloud, two warmups and 12 measurements; diagnostic, not full replay acceptance.",
+  "numpy": "1.26.4",
+  "threads": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "raw_message_sha256": "bd3c3cd3cccc9f3f13319b0611cd697ffc5b429c35c9f80080fe2cdcf0afd33e",
+  "raw_slots": 921600,
+  "kept_points": 340888,
+  "timings": {
+    "histogram_ms": {
+      "mean_ms": 19.148145166658043,
+      "p95_ms": 19.621435300177836
+    },
+    "visibility_ms": {
+      "mean_ms": 1.0241492498911005,
+      "p95_ms": 1.1902444492989162
+    },
+    "health_ms": {
+      "mean_ms": 26.557385749811147,
+      "p95_ms": 27.679003799357815
+    },
+    "decode_ms": {
+      "mean_ms": 17.2891484999127,
+      "p95_ms": 18.396355449840485
+    },
+    "axis_ms": {
+      "mean_ms": 1.3311495834689897,
+      "p95_ms": 1.373552450331772
+    },
+    "detector_ms": {
+      "mean_ms": 52.84529741667635,
+      "p95_ms": 63.47779640013868
+    },
+    "reported_total_ms": {
+      "mean_ms": 26.24637924994507,
+      "p95_ms": 37.54022310013169
+    }
+  },
+  "histogram_probe": {
+    "histogram": {
+      "mean_ms": 18.719270916714475,
+      "p95_ms": 18.93843639991246
+    },
+    "searchsorted_bincount": {
+      "mean_ms": 2.675129833354125,
+      "p95_ms": 2.972967449932184
+    }
+  },
+  "exact_counts_equal": true,
+  "boundary_cases_equal": 6,
+  "samples": [
+    {
+      "histogram_ms": 18.484211999748368,
+      "visibility_ms": 1.076929999726417,
+      "health_ms": 25.715116999890597,
+      "decode_ms": 18.559739000011177,
+      "axis_ms": 1.3599980002254597,
+      "detector_ms": 58.71469400062779,
+      "reported_total_ms": 32.95925099973829
+    },
+    {
+      "histogram_ms": 18.67954200042732,
+      "visibility_ms": 0.9919160002027638,
+      "health_ms": 25.765909000256215,
+      "decode_ms": 17.64602700040996,
+      "axis_ms": 1.3355680002860026,
+      "detector_ms": 58.37367999993148,
+      "reported_total_ms": 32.568444999924395
+    },
+    {
+      "histogram_ms": 18.76244399954885,
+      "visibility_ms": 0.9884030005196109,
+      "health_ms": 26.113593999980367,
+      "decode_ms": 16.622845999336278,
+      "axis_ms": 1.3357329999053036,
+      "detector_ms": 69.2993659995409,
+      "reported_total_ms": 43.13918900061253
+    },
+    {
+      "histogram_ms": 18.947964999824762,
+      "visibility_ms": 0.9912649993566447,
+      "health_ms": 26.125442999727966,
+      "decode_ms": 18.15638999960356,
+      "axis_ms": 1.3114040002619731,
+      "detector_ms": 49.21376699985558,
+      "reported_total_ms": 23.046740000609134
+    },
+    {
+      "histogram_ms": 19.017745000383,
+      "visibility_ms": 0.9904770004141028,
+      "health_ms": 26.195911999820964,
+      "decode_ms": 16.914955000174814,
+      "axis_ms": 1.3086640001347405,
+      "detector_ms": 49.18335999991541,
+      "reported_total_ms": 22.942922999391158
+    },
+    {
+      "histogram_ms": 19.020941000235325,
+      "visibility_ms": 0.9766700004547602,
+      "health_ms": 26.381896999737364,
+      "decode_ms": 17.475104000368447,
+      "axis_ms": 1.3036729997111252,
+      "detector_ms": 48.11641600008443,
+      "reported_total_ms": 21.69402799972886
+    },
+    {
+      "histogram_ms": 19.454095000583038,
+      "visibility_ms": 0.9974129998226999,
+      "health_ms": 27.12641999914922,
+      "decode_ms": 17.66688099996827,
+      "axis_ms": 1.3203070002418826,
+      "detector_ms": 48.88996699992276,
+      "reported_total_ms": 21.71810099935101
+    },
+    {
+      "histogram_ms": 19.67171300020709,
+      "visibility_ms": 1.1324909992254106,
+      "health_ms": 28.354383999612764,
+      "decode_ms": 18.262677999700827,
+      "axis_ms": 1.3901190004617092,
+      "detector_ms": 50.40594699948997,
+      "reported_total_ms": 22.008062000168138
+    },
+    {
+      "histogram_ms": 19.473830999231723,
+      "visibility_ms": 0.9992590003093937,
+      "health_ms": 26.73518400024477,
+      "decode_ms": 17.535239999233454,
+      "axis_ms": 1.3523210000130348,
+      "detector_ms": 58.57056300010299,
+      "reported_total_ms": 31.79449500021292
+    },
+    {
+      "histogram_ms": 19.554667999727826,
+      "visibility_ms": 0.9323409994976828,
+      "health_ms": 26.662944999770843,
+      "decode_ms": 16.418514999713807,
+      "axis_ms": 1.339149000159523,
+      "detector_ms": 47.693415000139794,
+      "reported_total_ms": 20.991847000004782
+    },
+    {
+      "histogram_ms": 19.5802990001539,
+      "visibility_ms": 0.9517939997749636,
+      "health_ms": 26.738337999631767,
+      "decode_ms": 16.10093599992979,
+      "axis_ms": 1.3183549999666866,
+      "detector_ms": 48.12557000059314,
+      "reported_total_ms": 21.348866999687743
+    },
+    {
+      "histogram_ms": 19.13028699982533,
+      "visibility_ms": 1.2608319993887562,
+      "health_ms": 26.773485999910918,
+      "decode_ms": 16.110471000502002,
+      "axis_ms": 1.2985040002604364,
+      "detector_ms": 47.55682399991201,
+      "reported_total_ms": 20.744602999911876
+    }
+  ]
+}

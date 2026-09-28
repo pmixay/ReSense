@@ -1,0 +1,105 @@
+{
+  "schema": "resense-health-histogram-probe-v1",
+  "exact_counts_equal": true,
+  "scope": "First original cloud, configured axis transform only, no detector/calibration/ROS replay.",
+  "timing_status": "Exploratory under concurrent gate load; not performance acceptance.",
+  "source_sha256": "7740db14b55bb5eade51d053a4463fdb996181c305acb47dd45ccad687aadde0",
+  "source_files": {
+    "configs/default.yaml": "055e42dda2b8c86cfb612ebfa410811fe0b4173addd78bae66d686e72251a2f0",
+    "native/resense_native.cpp": "85688be18c41c68111f30e2bc45b83186650c1eead8b24a254d15c97cb2592f1",
+    "pyproject.toml": "088fb6545b1c9f7339b838cef779d0a24a3e8e24a1322a0392b5aa383c40e12a",
+    "resense/__init__.py": "fdf04a88071df1d8300d46f75d34cc00bf9fa205369be99b3cfef6db514ae306",
+    "resense/_native.py": "7417a55c2b0ddc9b95a5d46d78b6af9b724203475890a59a0be4a022c6d4fd58",
+    "resense/accumulate.py": "5cc507d81e330b9e23b909e06cfbdb14cebdb553af179d512e34fb7c22e5b0bd",
+    "resense/calibration.py": "9e84d7754f59fbc767db9fbc0a1bdfac5ef0dd0db70e27ce6b29238bc1731c8a",
+    "resense/cli.py": "1fd89acade866a2babe0566d15666bcdd50b167a26664d91880ec2504138b33f",
+    "resense/clustering.py": "1423c9b6011a5bb80cfb5b8e80a7de496e90366c5fb34760c5018ebd3bb6c8e9",
+    "resense/config.py": "5a9193728493638445fa29fc05891e12bc1047aa5619d095404a6361bdd9af64",
+    "resense/detector.py": "c1081b38f6f84c8bbcdec8e895cc4b909bce7cc393763689b5db58d5add2ed33",
+    "resense/egomotion.py": "fba03d8f0657358aeeaa24956dc2ea5f224673dbeb3452d0d6eb6f5ec515a25a",
+    "resense/evidence.py": "083ee20fc8bb9fc915575bd06fa04869a5f5ddc6ca9217a6145879d3c8249853",
+    "resense/frame.py": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9",
+    "resense/gauge.py": "0cd3b119249dc34fd36397afa3f60a5aaa22c9917d94dea4ffe6c79e4e744f35",
+    "resense/health.py": "20a046d43cbacfb11929ba4437c1a4c2618263c9fb5b558a3b7a9471bcddea00",
+    "resense/io.py": "032def133b9148dc43a0714f6ff8c84e049e4be11640093bdd8fe70bf9756b34",
+    "resense/lowobj.py": "f943a33bf660c0d63e9f37aaa16297a508ec75ce2dfb3475b65b30a65ad660d8",
+    "resense/metrics.py": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a",
+    "resense/models/track_opinion.json": "950da3654d1e0fbccbd903aae7300fccae440c9e2d0f7a942c3ff9c17145c5d6",
+    "resense/models/track_opinion_report.json": "eeaae172a9e232e547c61b6b3b0457a6d7a2b785ac5506315a7f39a0c70216fa",
+    "resense/opinion.py": "34dc6d6d5b0471158954a6833322683ef57e879e86fd0870d28ec66d562ffec8",
+    "resense/pointcloud.py": "2f20a0e6aa3ceab96b625fc85eff3ea24cb0a7ae6675467415f53f8cd464a053",
+    "resense/sensor.py": "0c5acd4d937d2c6946422018a2a394c71f4de351d338899e436bc1b2a34115b0",
+    "resense/synthetic.py": "6f6c86fefd70b26b6c6b2f51f01a6de43def587a8ae49f2eb2523e830a30c747",
+    "resense/track.py": "f9e405ea1f74555e55d2bf6de9664d8078349e42077dcab4a6c3a5a3284c56ba",
+    "resense/tracking.py": "7b2fef44f5dc88bf531649dee14a63a7f0784a14c894cdfaf7508ecfd4b9fd79",
+    "resense/viz.py": "3a5df9d0acb1a0d0f0dc9568131c17906bda49ac2dba65f5eb49343abe3d36db",
+    "ros2_ws/src/resense_ros/config/detector.yaml": "055e42dda2b8c86cfb612ebfa410811fe0b4173addd78bae66d686e72251a2f0",
+    "scripts/build_native.sh": "af7e559867082b2df45edea7a730b2641957a4acc9df929cbab01776f7f99aea",
+    "setup.py": "73a030dd50b47b1b43b02d72a9892ee4ed26106b686afa6cd39584222a721ee7"
+  },
+  "script_sha256": "709b33ed358dc0edba06d79a7a34bf9d7145428b9f995f32a077d5353837121d",
+  "config_sha256": "6a6e5d859a0c1a86adce91edf1e8a46cd35b4bee21c5876406f1071cf2eaa46f",
+  "runtime": {
+    "python": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+    "numpy": "1.26.4",
+    "health_import": "/workspace/ReSense-health/resense/health.py",
+    "native_library": null,
+    "native_required": false,
+    "reason": "Only NumPy histogram counting is measured."
+  },
+  "input": {
+    "database": "doubleT_obstacle_0.db3",
+    "raw_message_sha256": "bd3c3cd3cccc9f3f13319b0611cd697ffc5b429c35c9f80080fe2cdcf0afd33e",
+    "raw_slots": 921600,
+    "kept_points": 340888,
+    "values_dtype": "float32",
+    "edges_dtype": "float64"
+  },
+  "counts": [
+    18152,
+    18162,
+    18408,
+    18700,
+    19064,
+    19170
+  ],
+  "counts_dtype": "int64",
+  "measurements": {
+    "histogram": {
+      "samples_ms": [
+        60.98204500085558,
+        60.5219719982415,
+        60.637998998572584,
+        58.08492500000284,
+        59.29393099904701,
+        60.612487999605946,
+        61.59060199934174,
+        61.232747000758536,
+        58.436214001631015,
+        59.40718500096409,
+        61.173816000518855,
+        59.327053000743035
+      ],
+      "mean_ms": 60.10841475002356,
+      "p95_ms": 61.39378175012098
+    },
+    "sector_counts": {
+      "samples_ms": [
+        10.569534999376629,
+        10.59343999986595,
+        10.824248000062653,
+        10.34688300023845,
+        11.187305999555974,
+        10.149022999030421,
+        10.012722999817925,
+        10.914693999438896,
+        10.774566000691266,
+        10.392218999186298,
+        10.400441999081522,
+        10.30242900014855
+      ],
+      "mean_ms": 10.538958999707878,
+      "p95_ms": 11.037369399491581
+    }
+  }
+}

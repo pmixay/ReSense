@@ -1,0 +1,429 @@
+[
+ {
+  "bag": "roundT_doubleT",
+  "run": "clear_cold1",
+  "frames_in_bag": 252,
+  "frames_with_result": 252,
+  "clouds_seen_by_listener": 252,
+  "counts": {
+   "GO": 75,
+   "CAUTION": 176,
+   "FAULT": 1
+  },
+  "first_stop_frame": null,
+  "first_stop_after_first_cloud_s": null,
+  "first_stop_fresh": null,
+  "stop_dist": null,
+  "e2e_p50": 31.1,
+  "e2e_p95": 64.1,
+  "e2e_cur_p95": 49.0,
+  "e2e_max": 318.5,
+  "node_lat_p95": 64.2,
+  "cpu_cores": 0.48,
+  "rss_mb": 151.8,
+  "dropped": 0,
+  "catchup_skipped": 0,
+  "non_stop_runs_after_first_stop": [],
+  "player_args": "ros2 bag play <bag> --delay 3 --read-ahead-queue-size 10",
+  "page_cache": "cold",
+  "listener_subscribed_to_clouds": true
+ },
+ {
+  "bag": "roundT_doubleT",
+  "run": "clear_warm1",
+  "frames_in_bag": 252,
+  "frames_with_result": 252,
+  "clouds_seen_by_listener": 251,
+  "counts": {
+   "GO": 58,
+   "CAUTION": 176,
+   "FAULT": 18
+  },
+  "first_stop_frame": null,
+  "first_stop_after_first_cloud_s": null,
+  "first_stop_fresh": null,
+  "stop_dist": null,
+  "e2e_p50": 44.2,
+  "e2e_p95": 479.9,
+  "e2e_cur_p95": 77.8,
+  "e2e_max": 748.6,
+  "node_lat_p95": 75.0,
+  "cpu_cores": 0.77,
+  "rss_mb": 250.2,
+  "dropped": 0,
+  "catchup_skipped": 0,
+  "non_stop_runs_after_first_stop": [],
+  "player_args": "ros2 bag play <bag> --delay 3 --read-ahead-queue-size 10",
+  "page_cache": "warm",
+  "listener_subscribed_to_clouds": true
+ },
+ {
+  "bag": "roundT_doubleT",
+  "run": "clear_warm2",
+  "frames_in_bag": 252,
+  "frames_with_result": 252,
+  "clouds_seen_by_listener": 252,
+  "counts": {
+   "GO": 81,
+   "CAUTION": 170,
+   "FAULT": 1
+  },
+  "first_stop_frame": null,
+  "first_stop_after_first_cloud_s": null,
+  "first_stop_fresh": null,
+  "stop_dist": null,
+  "e2e_p50": 42.0,
+  "e2e_p95": 61.4,
+  "e2e_cur_p95": 60.0,
+  "e2e_max": 119.7,
+  "node_lat_p95": 55.9,
+  "cpu_cores": 0.49,
+  "rss_mb": 129.1,
+  "dropped": 0,
+  "catchup_skipped": 0,
+  "non_stop_runs_after_first_stop": [],
+  "player_args": "ros2 bag play <bag> --delay 3 --read-ahead-queue-size 10",
+  "page_cache": "warm",
+  "listener_subscribed_to_clouds": true
+ },
+ {
+  "bag": "doubleT_obstacle",
+  "run": "obst_cold1",
+  "frames_in_bag": 201,
+  "frames_with_result": 201,
+  "clouds_seen_by_listener": 181,
+  "counts": {
+   "CAUTION": 2,
+   "STOP": 190,
+   "GO": 1,
+   "FAULT": 8
+  },
+  "first_stop_frame": 8,
+  "first_stop_after_first_cloud_s": 1.05,
+  "first_stop_fresh": "source_stale",
+  "stop_dist": [
+   55.5,
+   56.6
+  ],
+  "e2e_p50": 30.7,
+  "e2e_p95": 605.5,
+  "e2e_cur_p95": 87.1,
+  "e2e_max": 834.2,
+  "node_lat_p95": 78.9,
+  "cpu_cores": 0.85,
+  "rss_mb": 522.3,
+  "dropped": 4,
+  "catchup_skipped": 0,
+  "non_stop_runs_after_first_stop": [
+   [
+    "GO",
+    111,
+    111,
+    1
+   ],
+   [
+    "CAUTION",
+    117,
+    117,
+    1
+   ],
+   [
+    "CAUTION",
+    197,
+    197,
+    1
+   ]
+  ],
+  "player_args": "ros2 bag play <bag> --delay 3 --read-ahead-queue-size 10",
+  "page_cache": "cold",
+  "listener_subscribed_to_clouds": true
+ },
+ {
+  "bag": "doubleT_obstacle",
+  "run": "obst_cold2",
+  "frames_in_bag": 201,
+  "frames_with_result": 200,
+  "clouds_seen_by_listener": 170,
+  "counts": {
+   "CAUTION": 2,
+   "GO": 2,
+   "STOP": 189,
+   "FAULT": 7
+  },
+  "first_stop_frame": 8,
+  "first_stop_after_first_cloud_s": 1.37,
+  "first_stop_fresh": "source_stale",
+  "stop_dist": [
+   55.5,
+   56.6
+  ],
+  "e2e_p50": 149.2,
+  "e2e_p95": 1110.9,
+  "e2e_cur_p95": 171.6,
+  "e2e_max": 1208.0,
+  "node_lat_p95": 97.8,
+  "cpu_cores": 1.04,
+  "rss_mb": 636.3,
+  "dropped": 4,
+  "catchup_skipped": 0,
+  "non_stop_runs_after_first_stop": [
+   [
+    "GO",
+    111,
+    111,
+    1
+   ],
+   [
+    "CAUTION",
+    117,
+    117,
+    1
+   ],
+   [
+    "CAUTION",
+    197,
+    197,
+    1
+   ]
+  ],
+  "player_args": "ros2 bag play <bag> --delay 3 --read-ahead-queue-size 10",
+  "page_cache": "cold",
+  "listener_subscribed_to_clouds": true
+ },
+ {
+  "bag": "doubleT_obstacle",
+  "run": "obst_plain1",
+  "frames_in_bag": 201,
+  "frames_with_result": 57,
+  "clouds_seen_by_listener": 178,
+  "counts": {
+   "STOP": 54,
+   "FAULT": 3
+  },
+  "first_stop_frame": 21,
+  "first_stop_after_first_cloud_s": 2.5,
+  "first_stop_fresh": "source_stale",
+  "stop_dist": [
+   55.7,
+   56.6
+  ],
+  "e2e_p50": 1429.8,
+  "e2e_p95": 1746.7,
+  "e2e_cur_p95": null,
+  "e2e_max": 1847.8,
+  "node_lat_p95": 88.2,
+  "cpu_cores": 1.27,
+  "rss_mb": 1224.4,
+  "dropped": 138,
+  "catchup_skipped": 130,
+  "non_stop_runs_after_first_stop": [],
+  "player_args": "ros2 bag play <bag> (Humble defaults)",
+  "page_cache": "warm",
+  "listener_subscribed_to_clouds": true
+ },
+ {
+  "bag": "doubleT_obstacle",
+  "run": "obst_plain2",
+  "frames_in_bag": 201,
+  "frames_with_result": 59,
+  "clouds_seen_by_listener": 180,
+  "counts": {
+   "STOP": 57,
+   "FAULT": 2
+  },
+  "first_stop_frame": 22,
+  "first_stop_after_first_cloud_s": 1.83,
+  "first_stop_fresh": "source_stale",
+  "stop_dist": [
+   55.7,
+   56.6
+  ],
+  "e2e_p50": 1437.9,
+  "e2e_p95": 1595.5,
+  "e2e_cur_p95": null,
+  "e2e_max": 1666.1,
+  "node_lat_p95": 78.9,
+  "cpu_cores": 1.27,
+  "rss_mb": 1017.7,
+  "dropped": 132,
+  "catchup_skipped": 118,
+  "non_stop_runs_after_first_stop": [],
+  "player_args": "ros2 bag play <bag> (Humble defaults)",
+  "page_cache": "cold",
+  "listener_subscribed_to_clouds": true
+ },
+ {
+  "bag": "doubleT_obstacle",
+  "run": "obst_plain3_nolisten",
+  "frames_in_bag": 201,
+  "frames_with_result": 135,
+  "clouds_seen_by_listener": 0,
+  "counts": {
+   "STOP": 126,
+   "FAULT": 9
+  },
+  "first_stop_frame": 24,
+  "first_stop_after_first_cloud_s": null,
+  "first_stop_fresh": "source_stale",
+  "stop_dist": [
+   55.7,
+   56.4
+  ],
+  "e2e_p50": null,
+  "e2e_p95": null,
+  "e2e_cur_p95": null,
+  "e2e_max": null,
+  "node_lat_p95": 83.6,
+  "cpu_cores": 0.99,
+  "rss_mb": 3973.3,
+  "dropped": 9,
+  "catchup_skipped": 0,
+  "non_stop_runs_after_first_stop": [],
+  "player_args": "ros2 bag play <bag> (Humble defaults)",
+  "page_cache": "warm",
+  "listener_subscribed_to_clouds": false
+ },
+ {
+  "bag": "doubleT_obstacle",
+  "run": "obst_warm1",
+  "frames_in_bag": 201,
+  "frames_with_result": 170,
+  "clouds_seen_by_listener": 192,
+  "counts": {
+   "STOP": 163,
+   "GO": 1,
+   "FAULT": 6
+  },
+  "first_stop_frame": 11,
+  "first_stop_after_first_cloud_s": 2.54,
+  "first_stop_fresh": "source_stale",
+  "stop_dist": [
+   55.5,
+   56.5
+  ],
+  "e2e_p50": 62.8,
+  "e2e_p95": 1146.9,
+  "e2e_cur_p95": 94.4,
+  "e2e_max": 1841.1,
+  "node_lat_p95": 80.6,
+  "cpu_cores": 0.86,
+  "rss_mb": 741.8,
+  "dropped": 35,
+  "catchup_skipped": 31,
+  "non_stop_runs_after_first_stop": [
+   [
+    "GO",
+    197,
+    197,
+    1
+   ]
+  ],
+  "player_args": "ros2 bag play <bag> --delay 3 --read-ahead-queue-size 10",
+  "page_cache": "warm",
+  "listener_subscribed_to_clouds": true
+ },
+ {
+  "bag": "doubleT_obstacle",
+  "run": "obst_warm2",
+  "frames_in_bag": 201,
+  "frames_with_result": 201,
+  "clouds_seen_by_listener": 193,
+  "counts": {
+   "CAUTION": 2,
+   "STOP": 190,
+   "GO": 1,
+   "FAULT": 8
+  },
+  "first_stop_frame": 8,
+  "first_stop_after_first_cloud_s": 1.08,
+  "first_stop_fresh": "source_stale",
+  "stop_dist": [
+   55.5,
+   56.6
+  ],
+  "e2e_p50": 27.6,
+  "e2e_p95": 513.0,
+  "e2e_cur_p95": 89.3,
+  "e2e_max": 735.5,
+  "node_lat_p95": 81.4,
+  "cpu_cores": 0.78,
+  "rss_mb": 430.7,
+  "dropped": 4,
+  "catchup_skipped": 0,
+  "non_stop_runs_after_first_stop": [
+   [
+    "GO",
+    111,
+    111,
+    1
+   ],
+   [
+    "CAUTION",
+    117,
+    117,
+    1
+   ],
+   [
+    "CAUTION",
+    197,
+    197,
+    1
+   ]
+  ],
+  "player_args": "ros2 bag play <bag> --delay 3 --read-ahead-queue-size 10",
+  "page_cache": "warm",
+  "listener_subscribed_to_clouds": true
+ },
+ {
+  "bag": "doubleT_obstacle",
+  "run": "obst_warm3",
+  "frames_in_bag": 201,
+  "frames_with_result": 201,
+  "clouds_seen_by_listener": 197,
+  "counts": {
+   "CAUTION": 2,
+   "STOP": 190,
+   "GO": 1,
+   "FAULT": 8
+  },
+  "first_stop_frame": 8,
+  "first_stop_after_first_cloud_s": 1.03,
+  "first_stop_fresh": "source_stale",
+  "stop_dist": [
+   55.5,
+   56.6
+  ],
+  "e2e_p50": 67.5,
+  "e2e_p95": 516.2,
+  "e2e_cur_p95": 84.6,
+  "e2e_max": 672.5,
+  "node_lat_p95": 80.5,
+  "cpu_cores": 0.84,
+  "rss_mb": 431.2,
+  "dropped": 4,
+  "catchup_skipped": 0,
+  "non_stop_runs_after_first_stop": [
+   [
+    "GO",
+    111,
+    111,
+    1
+   ],
+   [
+    "CAUTION",
+    117,
+    117,
+    1
+   ],
+   [
+    "CAUTION",
+    197,
+    197,
+    1
+   ]
+  ],
+  "player_args": "ros2 bag play <bag> --delay 3 --read-ahead-queue-size 10",
+  "page_cache": "warm",
+  "listener_subscribed_to_clouds": true
+ }
+]

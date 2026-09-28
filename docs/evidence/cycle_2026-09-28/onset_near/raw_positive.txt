@@ -1,0 +1,11 @@
+{"commit": "8983ea24c61d4be36cc502784313605551e61417", "source_sha256": "15f67a0b1739716ab2e5aa182198f95f6e68a8ad9c5d08f147b3c7106c7f2a82", "import": "/workspace/ReSense-onset/resense/detector.py", "native": "/workspace/ReSense-onset/resense/_resense_native.so", "configs": {"both_off": "65aca60aa40898400101a8ba143c7de134e793a00faab201a915268434875782", "continuation_only": "22a30ff265035e06358a21696cfb8bc61b598d16e5a64aa3536abfefbc4bd5fb", "onset_only": "03c8f5e2c71443cc4da1f4b19a3c5a7aa10f5e7aabc4467ba856c0c3cc0fe9bc", "both_on": "8c25720bfbe082bcef41a6f69ea5916068221dec79adc628e5b4543533f065b1"}}
+raw frame 0; four sequential variants
+raw frame 25; four sequential variants
+raw frame 50; four sequential variants
+raw frame 75; four sequential variants
+raw frame 100; four sequential variants
+raw frame 125; four sequential variants
+raw frame 150; four sequential variants
+raw frame 175; four sequential variants
+raw frame 200; four sequential variants
+{"both_off": {"targets": {"object_on_rail": [125, 185], "person_crossing": [61, 61]}, "unmatched": 6}, "continuation_only": {"targets": {"object_on_rail": [128, 185], "person_crossing": [61, 61]}, "unmatched": 6}, "onset_only": {"targets": {"object_on_rail": [125, 185], "person_crossing": [61, 61]}, "unmatched": 6}, "both_on": {"targets": {"object_on_rail": [128, 185], "person_crossing": [61, 61]}, "unmatched": 6}}

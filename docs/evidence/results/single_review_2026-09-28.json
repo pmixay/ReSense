@@ -1,0 +1,45 @@
+{
+  "schema": "resense-single-review-score-v1",
+  "date": "2026-09-28",
+  "reviewer": "independent model review supplied by the user",
+  "commit": "a2f9122acdd9de83d4bf30a2befdc0d3e1f9cdd5",
+  "score_type": "single-review internal assessment; not an organizer score",
+  "criteria": [
+    {"id": "8.1", "name": "Functionality", "maximum": 25, "score": 16},
+    {"id": "8.2", "name": "Range", "maximum": 15, "score": 7.5},
+    {"id": "8.3", "name": "Speed", "maximum": 10, "score": 8},
+    {"id": "8.4", "name": "Generalization", "maximum": 15, "score": 8},
+    {"id": "8.5", "name": "Technical quality", "maximum": 10, "score": 8},
+    {"id": "8.6", "name": "Ease of launch", "maximum": 10, "score": 8.5},
+    {"id": "8.7", "name": "Team approach", "maximum": 10, "score": 9},
+    {"id": "8.8", "name": "Pitch", "maximum": 5, "score": 4}
+  ],
+  "total": 69,
+  "comparison": {
+    "previous_paired_score": 66.5,
+    "previous_paired_commit": "806b6c4912d0a2bd92f5f4cc726fba87758e6548",
+    "criterion_deltas": {
+      "functionality": 0,
+      "range": 0,
+      "speed": 0,
+      "generalization": 0,
+      "technical_quality": 0.5,
+      "ease_of_launch": 1,
+      "team_approach": 0.5,
+      "pitch": 0.5
+    },
+    "total_delta": 2.5
+  },
+  "reviewer_note": "The newer launch and evidence work earns the increase. The rail-object raw recording has 123/126 STOP frames including GO at frame 111; the full ride has 32 alarm events; the three recent threshold candidates produced no detection change.",
+  "evidence": [
+    "docs/evidence/judge_outputs_2026-09-28/README.md",
+    "docs/evidence/results/p4_full_data_2026-09-28/README.md",
+    "docs/evidence/p1_p2_cold_bags_2026-09-28/README.md"
+  ],
+  "limitations": [
+    "This is a single reviewer score and is not averaged with the earlier paired review.",
+    "The organizer publishes no numerical weights; these criteria maxima are internal rubric values.",
+    "No untouched real-obstacle recording is available; new-scene generalization remains unverified.",
+    "The detector was not improved by P4 candidates A/B/C."
+  ]
+}

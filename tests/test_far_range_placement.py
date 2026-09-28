@@ -110,7 +110,7 @@ def test_sequence_does_not_fit_far_cloud_and_writes_ground_truth(monkeypatch):
     monkeypatch.setattr("resense.frame.frame_from_compact", frame_from_compact)
     monkeypatch.setattr("resense.synthetic.inject_obstacles", inject)
     monkeypatch.setattr("resense.detector.Detector", FakeDetector)
-    monkeypatch.setattr(far.np, "load", lambda _: None)
+    monkeypatch.setattr(far, "load_cache_array", lambda _path: None)
     job = (["new_data_46_000.npy"], {"new_data_46_000": 1.}, [20.], "box0.5", 150., 0., 30., 1,
            DetectorConfig().to_dict(), None, False, "rail", "independent", ref, 0.3, 12.)
     first = far.run_sequence(job)
@@ -146,7 +146,7 @@ def test_zero_return_frame_is_neither_a_hit_nor_a_false_detection(monkeypatch):
     monkeypatch.setattr("resense.detector.Detector", BackgroundDetection)
     monkeypatch.setattr("resense.synthetic.inject_obstacles", lambda *a, **kw:
                         InjectionResult(frame=frame, labels=np.zeros(1, int), n_added=[0]))
-    monkeypatch.setattr(far.np, "load", lambda _: None)
+    monkeypatch.setattr(far, "load_cache_array", lambda _path: None)
     job = (["new_data_46_0000.npy"], {"new_data_46_0000": 1.}, [0.], "box0.5", 50., 0., 30., 1,
            DetectorConfig().to_dict(), None, False, "rail", "independent",
            far.fixed_reference(0., 0., 0., -1., 0.), 0., 0.)

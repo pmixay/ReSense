@@ -1,0 +1,435 @@
+{
+  "schema": "resense-p4-artifact-manifest-v1",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 8397,
+      "sha256": "6fb34b3e2e7bd1c6223a5ad3957ed667cca5b3a82bfac58fef677f922ad167ea"
+    },
+    {
+      "path": "candidate_configs/A.yaml",
+      "bytes": 8640,
+      "sha256": "b1b9f0438a1941ec0104fd78dbee3d97a7d94d80a214459f1b34bbc258702c0f"
+    },
+    {
+      "path": "candidate_configs/B.yaml",
+      "bytes": 8641,
+      "sha256": "f1bc7b50b91e0de439bd6418a6888d1587f2d385f7f0a0f757b320304acc2eac"
+    },
+    {
+      "path": "candidate_configs/C.yaml",
+      "bytes": 8641,
+      "sha256": "7a3a4aa4139ec12fedbc2b61900c98da9875056ef19f25a6a955c97b23e1fcf2"
+    },
+    {
+      "path": "candidate_screen_protocol.json",
+      "bytes": 3191,
+      "sha256": "86d7065791723c0acf73c31b1bceb48c9d3ed5ced3697ae38d71dcb01a683ff5"
+    },
+    {
+      "path": "candidate_screen_results.json",
+      "bytes": 11847,
+      "sha256": "267c877c294e6d1d5a20d7b291653ccb39580d457093a9a434ffe85f7ec36d85"
+    },
+    {
+      "path": "data_intake.json",
+      "bytes": 6814,
+      "sha256": "59c448ae0db47c110ac5cbed0bf483e02bad14f1439d29ee567f1383988b901f"
+    },
+    {
+      "path": "effective_config.yaml",
+      "bytes": 8642,
+      "sha256": "309c822258b61fad1f149d8a542ba96d25dd69c25554762d0d22e49f1d25b711"
+    },
+    {
+      "path": "false_alarm_inventory.json",
+      "bytes": 58401,
+      "sha256": "25ba2ddfa398c62ce036d8e4b5e3a0046f88d9c22991103731ed3743f130351f"
+    },
+    {
+      "path": "final_regression_gate.json",
+      "bytes": 19950,
+      "sha256": "e80e3292bd2b617e596e5caa2185b9fc9b39de1ba68be0ffd00750099ba0b540"
+    },
+    {
+      "path": "p4_run_summary.json",
+      "bytes": 147316,
+      "sha256": "fccde58caa1ea8b019b54856a0fde4ed91d98402e07b6a1e1037ed7102af7fa1"
+    },
+    {
+      "path": "raw/gate/cloud_with_fake_obj.jsonl.gz",
+      "bytes": 237212,
+      "sha256": "b1889734301c192f4ef0c6f2b3bd6f97f605787b9edf3a72b82258e0f9cc786a"
+    },
+    {
+      "path": "raw/gate/doubleT_obstacle.jsonl.gz",
+      "bytes": 31593,
+      "sha256": "71773652603793e5617d0d4b6bb9a018ffda153ba982afe823732a435b05ee4f"
+    },
+    {
+      "path": "raw/gate/doubleT_platform.jsonl.gz",
+      "bytes": 53150,
+      "sha256": "2b6c44f90f3374bcb08058d8bf3e1e6916513f0db0b627496f071ba3735962a2"
+    },
+    {
+      "path": "raw/gate/new_data_0.jsonl.gz",
+      "bytes": 223218,
+      "sha256": "18fb290e012d69c25cae69b9f5dfe4743947f22598f3c1e826e78d661438ac39"
+    },
+    {
+      "path": "raw/gate/new_data_1.jsonl.gz",
+      "bytes": 245011,
+      "sha256": "0ed70d05da5ca693ab13dd4ed7138409eb7b9be8cff6980a8a8b399ce8eda8eb"
+    },
+    {
+      "path": "raw/gate/new_data_2.jsonl.gz",
+      "bytes": 221568,
+      "sha256": "866679e4915604084d4064e11c00bb5e1f2b86d26905d1c8ebdd9c8a7e159b5c"
+    },
+    {
+      "path": "raw/gate/new_data_3.jsonl.gz",
+      "bytes": 230788,
+      "sha256": "18593ef558bf0c6d6a6df174f9e3863c7d0490d4e6edd91cdab359574361255e"
+    },
+    {
+      "path": "raw/gate/new_data_4.jsonl.gz",
+      "bytes": 217037,
+      "sha256": "c47764d6615ef4cc0a14819d0f48eb1c9a660bcd729ecf7eac5fae55a743a9dc"
+    },
+    {
+      "path": "raw/gate/new_data_5.jsonl.gz",
+      "bytes": 207480,
+      "sha256": "5baba995a284dc91e6f117481ec1e48b45d287db253f07aa3279f63b8837d135"
+    },
+    {
+      "path": "raw/gate/new_data_6.jsonl.gz",
+      "bytes": 209143,
+      "sha256": "86a1711c1c4a6995892a6d34e316b695ce7c3d0d2b06f530d2e3c7fdda241714"
+    },
+    {
+      "path": "raw/gate/new_data_7.jsonl.gz",
+      "bytes": 195971,
+      "sha256": "11fa0373b1bbae4f095d829eae3b856de2d57a2a18bdddbc3e41d593f4e5e33d"
+    },
+    {
+      "path": "raw/gate/roundT_doubleT.jsonl.gz",
+      "bytes": 45257,
+      "sha256": "3be5769ba379e6c2de111cb252de63425a1e36d413d234fd087775323e55252e"
+    },
+    {
+      "path": "raw/gate/roundT_pressureGate_roundT.jsonl.gz",
+      "bytes": 42842,
+      "sha256": "7158ab91212896677dafb5ed25e0d8f6fd82be12dcca1b2c11234a3ec3be51cc"
+    },
+    {
+      "path": "raw/gate/roundT_squareT_pressureGate_squareT.jsonl.gz",
+      "bytes": 80063,
+      "sha256": "09326165d32bc528286fc20470b3a5933c79ef447bdfaf299239b231f1711df5"
+    },
+    {
+      "path": "raw/gate/squareT_platform_squareT_switch.jsonl.gz",
+      "bytes": 139456,
+      "sha256": "3d975f7810a7984871f1ece904a2c00322cc9d3fa7c607669694a0a419d19404"
+    },
+    {
+      "path": "raw/robustness/robustness_5hz.json/doubleT_obstacle.jsonl.gz",
+      "bytes": 15730,
+      "sha256": "edb683c6b58af2b7ca43b0f11e4951006eff0cc439ca1f4c963f9329a23de47d"
+    },
+    {
+      "path": "raw/robustness/robustness_5hz.json/doubleT_platform.jsonl.gz",
+      "bytes": 28914,
+      "sha256": "c06ee5a5397b14446b6f7153aa2108d7b595f7cc8f9515785bfe057946dca9f8"
+    },
+    {
+      "path": "raw/robustness/robustness_5hz.json/roundT_doubleT.jsonl.gz",
+      "bytes": 22987,
+      "sha256": "d3b3f0ac9c8dd086d379346530f8c6d45f2818f2bc177d6d14a04c8aa272200a"
+    },
+    {
+      "path": "raw/robustness/robustness_5hz.json/roundT_pressureGate_roundT.jsonl.gz",
+      "bytes": 21990,
+      "sha256": "1a8a073e431c95aeb85983bcb8fecb18b387bcb73289d2e53f6f1c1fe797dea0"
+    },
+    {
+      "path": "raw/robustness/robustness_5hz.json/roundT_squareT_pressureGate_squareT.jsonl.gz",
+      "bytes": 42118,
+      "sha256": "f5e45c4c09f7d9b9b0e8a5dadf24ea497b738fdafbb9b71636e6ca8e008b8a0d"
+    },
+    {
+      "path": "raw/robustness/robustness_5hz.json/squareT_platform_squareT_switch.jsonl.gz",
+      "bytes": 70539,
+      "sha256": "2b1f86d855a249aa7a7c78dd051577c591336223695954d9005ef36a9f053795"
+    },
+    {
+      "path": "raw/robustness/robustness_as_recorded.json/doubleT_obstacle.jsonl.gz",
+      "bytes": 30749,
+      "sha256": "733f3a83e5ef0b33fe46ca046cd1726c9944488c8e4286eac3b9c495a0270ad6"
+    },
+    {
+      "path": "raw/robustness/robustness_as_recorded.json/doubleT_platform.jsonl.gz",
+      "bytes": 51676,
+      "sha256": "5db02ada1cdf13e5d898f5d5e9c61aacbb60d1982e71755832ab722513f07fcb"
+    },
+    {
+      "path": "raw/robustness/robustness_as_recorded.json/roundT_doubleT.jsonl.gz",
+      "bytes": 44210,
+      "sha256": "3e95d3af0d62d54d01309018e2858e1d787f3d3c0a5724a557ecd43185f0366c"
+    },
+    {
+      "path": "raw/robustness/robustness_as_recorded.json/roundT_pressureGate_roundT.jsonl.gz",
+      "bytes": 41613,
+      "sha256": "c9918641ffe2143def40eea4a64d7856c3ddb521d7fc6c36aafe7f508ea12a6d"
+    },
+    {
+      "path": "raw/robustness/robustness_as_recorded.json/roundT_squareT_pressureGate_squareT.jsonl.gz",
+      "bytes": 77740,
+      "sha256": "cb4ccfe1c43f5a37789866d2f92e911188548cfee3f44cb5881e720a6c00c7e0"
+    },
+    {
+      "path": "raw/robustness/robustness_as_recorded.json/squareT_platform_squareT_switch.jsonl.gz",
+      "bytes": 135055,
+      "sha256": "9eab809128a0601e9f24df0f043f055f739f79b28ce501b99de36e0cc8e07c0d"
+    },
+    {
+      "path": "raw/robustness/robustness_pitch_3.json/doubleT_obstacle.jsonl.gz",
+      "bytes": 31077,
+      "sha256": "881f0befe0e511174b15558247af420e8ad0664069eb20e4ca5fc9de09e68aaa"
+    },
+    {
+      "path": "raw/robustness/robustness_pitch_3.json/doubleT_platform.jsonl.gz",
+      "bytes": 52083,
+      "sha256": "7b0d06a9179b1fdc78ea3272b0d5738aec60b8ccf5c8bd8d3bf728b49cbd4fc6"
+    },
+    {
+      "path": "raw/robustness/robustness_pitch_3.json/roundT_doubleT.jsonl.gz",
+      "bytes": 44290,
+      "sha256": "8f3b528ec4183268761a645fb8577d443eb401050cb281c9870b9d9b2e5a130e"
+    },
+    {
+      "path": "raw/robustness/robustness_pitch_3.json/roundT_pressureGate_roundT.jsonl.gz",
+      "bytes": 41251,
+      "sha256": "a641689d60aba528ff4bac8fe8d05098956e588834e4722189257bf843cab4d1"
+    },
+    {
+      "path": "raw/robustness/robustness_pitch_3.json/roundT_squareT_pressureGate_squareT.jsonl.gz",
+      "bytes": 78939,
+      "sha256": "ffb7571360896f93e9da47d56f6a89cba82444e7f94ff84f6dc7366c604abd02"
+    },
+    {
+      "path": "raw/robustness/robustness_pitch_3.json/squareT_platform_squareT_switch.jsonl.gz",
+      "bytes": 134306,
+      "sha256": "3cc80ed4bc09a06dd03c0ba6f6f853543f2827fb2f884e38b82a28fad57c2011"
+    },
+    {
+      "path": "raw/robustness/robustness_roll_3.json/doubleT_obstacle.jsonl.gz",
+      "bytes": 29510,
+      "sha256": "512a6f43fe5b962e7411d5f78e2d07134196cb37669c5cc573e0505152f3b2fd"
+    },
+    {
+      "path": "raw/robustness/robustness_roll_3.json/doubleT_platform.jsonl.gz",
+      "bytes": 51165,
+      "sha256": "6845991a832cf2193be844167929c93227f56bf4b673daefd773a9a02fbf03a3"
+    },
+    {
+      "path": "raw/robustness/robustness_roll_3.json/roundT_doubleT.jsonl.gz",
+      "bytes": 44571,
+      "sha256": "ab805c93e5bc2f7202f188719181d6747dc2224cb347af614b5b2b465bdaf957"
+    },
+    {
+      "path": "raw/robustness/robustness_roll_3.json/roundT_pressureGate_roundT.jsonl.gz",
+      "bytes": 41952,
+      "sha256": "d63fd835896716207099953c9bf94b8b4f9b5c9a008bb34ec76d5dfb73294183"
+    },
+    {
+      "path": "raw/robustness/robustness_roll_3.json/roundT_squareT_pressureGate_squareT.jsonl.gz",
+      "bytes": 79250,
+      "sha256": "d2b458f2aaa983fab9164631e5eefd251253cd166d637f65d69923936721d388"
+    },
+    {
+      "path": "raw/robustness/robustness_roll_3.json/squareT_platform_squareT_switch.jsonl.gz",
+      "bytes": 135816,
+      "sha256": "6895784551e138cc81be4409cbdc03d7225e2a1a978034ce1325e956570757bf"
+    },
+    {
+      "path": "raw/setF/curve_edge_anchored.json.gz",
+      "bytes": 89162,
+      "sha256": "d9ba34fd9c4e3c935da53306c6a308f84fd188e12cae34a8ff54c6a3d7629091"
+    },
+    {
+      "path": "raw/setF/curve_edge_legacy.json.gz",
+      "bytes": 75035,
+      "sha256": "0fec4681b880bef8ca5b405b4fcec5c579c216c017c89a05f0e8f5cdc03ae051"
+    },
+    {
+      "path": "raw/setF/straight_anchored.json.gz",
+      "bytes": 168997,
+      "sha256": "fa6f913d528ea492af4a39ba8755055aff2780748490da6555055e5154c85a49"
+    },
+    {
+      "path": "raw/setF/straight_legacy.json.gz",
+      "bytes": 149237,
+      "sha256": "30f1b9295a99e08f3c7bb1508b1a4047a38f3b7d245bda20eb90d75871c59a8e"
+    },
+    {
+      "path": "raw/setS/bed/roundT_doubleT.jsonl.gz",
+      "bytes": 5970,
+      "sha256": "959fac256a4db0b4396bc520638733efc0904877690390744c0f554bd2c782e3"
+    },
+    {
+      "path": "raw/setS/bed/roundT_doubleT_gt.json",
+      "bytes": 10640,
+      "sha256": "27b6ae6d00825041dbc8274eb4101b3467badb4a4451dbd130ba1c5923c28d3d"
+    },
+    {
+      "path": "raw/setS/bed/roundT_pressureGate_roundT.jsonl.gz",
+      "bytes": 5695,
+      "sha256": "1ab9e7915ae9b03753f72898d655f0b1eabfc2316df0a04d48abb7c232223c46"
+    },
+    {
+      "path": "raw/setS/bed/roundT_pressureGate_roundT_gt.json",
+      "bytes": 11048,
+      "sha256": "bab49db08f886e22c50c77142b5d5022987485d4d1187c85b30ed971bb44ff94"
+    },
+    {
+      "path": "raw/setS/bed/roundT_squareT_pressureGate_squareT.jsonl.gz",
+      "bytes": 10975,
+      "sha256": "fd3fd4eb48454592ad87723bcade683bed37185c4d99e1f1370c00929bb725dc"
+    },
+    {
+      "path": "raw/setS/bed/roundT_squareT_pressureGate_squareT_gt.json",
+      "bytes": 22013,
+      "sha256": "7c3bcfc7d9556047eb51c988cdd723dfcdb9dd093b29d9806b57d8315d71bc5a"
+    },
+    {
+      "path": "raw/setS/legacy/roundT_doubleT.jsonl.gz",
+      "bytes": 6084,
+      "sha256": "54c378c884caaafadb4bd24b6173666c4480549161c874b5c9c169f6ed73e38f"
+    },
+    {
+      "path": "raw/setS/legacy/roundT_doubleT_gt.json",
+      "bytes": 10091,
+      "sha256": "3ccbe9a01771cff9fca5ffeeb94c3327886f8fd4ade660f8b00ab65e2f8734eb"
+    },
+    {
+      "path": "raw/setS/legacy/roundT_pressureGate_roundT.jsonl.gz",
+      "bytes": 5967,
+      "sha256": "8103f7270820c665345dc8e083ef7ab999efaaacb6f343d14a014c45b7e1d024"
+    },
+    {
+      "path": "raw/setS/legacy/roundT_pressureGate_roundT_gt.json",
+      "bytes": 10481,
+      "sha256": "4d38c18fae75b9a0d704f679b6d4a53c9e881a33fade752b7e774a4c5cd928bc"
+    },
+    {
+      "path": "raw/setS/legacy/roundT_squareT_pressureGate_squareT.jsonl.gz",
+      "bytes": 11053,
+      "sha256": "e9162186a06065c58a50ea12f255d6dc06e06384acede4569ca075d12ba476f8"
+    },
+    {
+      "path": "raw/setS/legacy/roundT_squareT_pressureGate_squareT_gt.json",
+      "bytes": 20868,
+      "sha256": "d1dbdfc34932997e2a163e6413871ee7858f83457788192e937f2316c23462a0"
+    },
+    {
+      "path": "raw/startup.jsonl.gz",
+      "bytes": 741217,
+      "sha256": "fabbfe1eaca62b4e990bc8f0ea06c9baa612343a6b9b9c497bae664b7df28891"
+    },
+    {
+      "path": "regression_gate.json",
+      "bytes": 19950,
+      "sha256": "4cb2dbf0f5cbadf2c7c7b114a00df22a7abcded6b73306648014f31ffb59d77e"
+    },
+    {
+      "path": "ride_contacts/contact_01.png",
+      "bytes": 2507468,
+      "sha256": "c50aab7ca14f294516a9fb6679a56bce228f81f49429d8a9540692db9cb882f9"
+    },
+    {
+      "path": "ride_contacts/contact_02.png",
+      "bytes": 2533605,
+      "sha256": "36aafae6a0d0d90a6c69963ff6f7a3ce13a760dbde17b54a75c49745b8fd25b6"
+    },
+    {
+      "path": "ride_contacts/contact_03.png",
+      "bytes": 2621860,
+      "sha256": "6fc277ed1100d80e3835ff2cdb6fd233e793e3f102e006d43ba29496caeb68e2"
+    },
+    {
+      "path": "ride_contacts/contact_04.png",
+      "bytes": 2823889,
+      "sha256": "733bdbb077e2be9bcdd72683a7ef5a039d6e8af12fbf047824264ded224fb645"
+    },
+    {
+      "path": "ride_contacts/contact_05.png",
+      "bytes": 2536137,
+      "sha256": "a8e01aa13fd3c37d0ece90944dab7c3b350ca3ad1a9e62d15b223931b16a1f31"
+    },
+    {
+      "path": "ride_contacts/contact_06.png",
+      "bytes": 854503,
+      "sha256": "982d840e7e52c783a34f1c6206cc603c9e3a97fd517bebb47fec056123e1f573"
+    },
+    {
+      "path": "robustness/5hz.json",
+      "bytes": 4312,
+      "sha256": "386ce00ff334a859654dc54a6240f3d90a21641e0e65b3e93d7df1dcb4ef06c7"
+    },
+    {
+      "path": "robustness/as_recorded.json",
+      "bytes": 4697,
+      "sha256": "5f03234b167ff8b8fb55acce5defa3b84bac855f507f15dbd949fafc0cb2571f"
+    },
+    {
+      "path": "robustness/pitch_3.json",
+      "bytes": 4829,
+      "sha256": "24bad60e1a1019ce5879c8daea8d43f5d3412c137d3ab56af55c301fb1c35de4"
+    },
+    {
+      "path": "robustness/roll_3.json",
+      "bytes": 4679,
+      "sha256": "584f8ba594c187f4d59f04c892bcfd0eef3180aa8798bc56575d110e53e850e5"
+    },
+    {
+      "path": "setS_paired.json",
+      "bytes": 4072,
+      "sha256": "6c4fad8b00dde3540cdf7dddbb9e9314bae56dbbce2dfca1a60f74402ccbac3f"
+    },
+    {
+      "path": "setf_curve_edge_paired.json",
+      "bytes": 13683,
+      "sha256": "b971caca3543cde878c402bb4130e7d8f6d9bfc23639852616e02bdeca486b53"
+    },
+    {
+      "path": "setf_straight_paired.json",
+      "bytes": 28765,
+      "sha256": "e61305f1b67ba656b23d0a7c966ae6b17ab2e891614d225e1fe62656a2cf6e20"
+    },
+    {
+      "path": "seto_clear_distance.json",
+      "bytes": 2539,
+      "sha256": "81b9656e8475785ac2302e3cef1df93005b4e8e0ea17da0d475a65e49fa4b105"
+    },
+    {
+      "path": "seto_empty_suffix.json",
+      "bytes": 373,
+      "sha256": "2f1f86b4e856549e06dafe912bf9f3d0b5dfdd69ae067f73f7f0423acc73b6d7"
+    },
+    {
+      "path": "seto_score.json",
+      "bytes": 11487,
+      "sha256": "c147e347cee5d6439a340b07ba3789e24006cb763f0f482731bdd5a70efe55b1"
+    },
+    {
+      "path": "start_offsets.json",
+      "bytes": 5167,
+      "sha256": "b98b7b205687da820ed3481a12c6316fde8b32ced9e2b97c2143ca976bcca37b"
+    },
+    {
+      "path": "startup_census.json",
+      "bytes": 90016,
+      "sha256": "27d352a0ecb0aefd628927beba92939559220dbbbceb6e03bb7d4d03024b6f49"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+.....................................................................F.. [ 96%]
+...                                                                      [100%]
+=================================== FAILURES ===================================
+_________________ test_tracker_zone_is_majority_of_recent_hits _________________
+
+    def test_tracker_zone_is_majority_of_recent_hits():
+        t = Tracker(CFG.tracking)
+        for zone in ("gauge", "gauge", "warning"):
+            t.update([cluster_at(50.0, zone=zone)])
+>       assert t.confirmed()[0].zone == "gauge"
+E       IndexError: list index out of range
+
+tests/test_modules.py:106: IndexError
+=========================== short test summary info ============================
+FAILED tests/test_modules.py::test_tracker_zone_is_majority_of_recent_hits - ...
+1 failed, 74 passed in 43.19s

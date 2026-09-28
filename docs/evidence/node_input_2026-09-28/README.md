@@ -119,7 +119,7 @@ start-up catch-up was back on the newest frame; 122 and 103 current results of 2
 than judge A's six base runs with the same base image on the same kind of machine: +2.2–3.5 s
 warm and +3.9 s cold by his checker outputs (his summary says +3.1–3.9 s), 149–178 current
 results warm, 159 cold ([his checker outputs](../judge_outputs_2026-09-28/provenance/node_dry_runs_checker_output.txt),
-[report](../results/rejudge_2026-09-28.json)). Both are stated; the team's base runs are the ones
+his report superseded by [`SCORECARD.md`](../../SCORECARD.md) and removed). Both are stated; the team's base runs are the ones
 committed here, his raw captures are not. The before / after comparison of the current results
 therefore rests on judge A's pairs and on the CI runner, not on the team's two base runs, which
 also compare different subsets (103–122 against 179–182 current results).

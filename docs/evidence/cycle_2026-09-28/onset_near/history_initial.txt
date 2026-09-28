@@ -1,0 +1,19 @@
+..................................................................F..... [ 94%]
+....                                                                     [100%]
+=================================== FAILURES ===================================
+______________ test_start_clean_waits_for_a_hit_inside_the_gauge _______________
+
+    def test_start_clean_waits_for_a_hit_inside_the_gauge():
+        zones = ["gauge"] * 4 + ["warning", "gauge", "gauge"]
+        base = _run(TrackingConfig(), zones)
+        clean = _run(TrackingConfig(start_clean=True), zones)
+>       assert base[4] == [("gauge", True)]                 # the vote (4 of 5) confirms on an advisory hit
+E       AssertionError: assert [] == [('gauge', True)]
+E         
+E         Right contains one more item: ('gauge', True)
+E         Use -v to get more diff
+
+tests/test_history_robustness.py:82: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_history_robustness.py::test_start_clean_waits_for_a_hit_inside_the_gauge
+1 failed, 75 passed in 60.05s (0:01:00)

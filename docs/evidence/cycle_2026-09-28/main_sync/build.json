@@ -1,0 +1,9 @@
+{
+  "image_id": "sha256:f7ae11b87e187448ac25166983438e7304617b2eb85505564b38ed647dc2ec50",
+  "exit_code": 0,
+  "completed_utc": "2026-09-28T20:21:03.398464+00:00",
+  "commit": "75ef4e20e587203a394e365c4fa601c822adb164",
+  "protocol_sha256": "b9ebdad98c6a80c12ddbaa0295aad5c056c0c2cd7a961721ca94c48b3d04bb63",
+  "verified_installed_identity": true,
+  "image_identity_sha256": "99a2194414f09eb09ed7dfeb3beffe932414f9220551d08254ad7c8a281c9714"
+}

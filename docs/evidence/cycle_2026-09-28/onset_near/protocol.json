@@ -1,0 +1,26 @@
+{
+  "schema": "resense-onset-near-protocol-v1",
+  "status": "registered before production edits; isolated development candidate, not accepted",
+  "baseline_commit": "ef71c9dc4f88147327dcb41ea79358dfc690ba77",
+  "baseline": "Combined experimental source and health histogram candidate; its full native gate is pending independently.",
+  "mechanism": "At a new STOP onset, require zero misses, a current cluster and recorded provenance. Preserve established near escalation only when the current cluster satisfies Tracker._near and latest provenance is ordinary or off_gauge. Otherwise retain the existing strict-gauge and bounded fresh-evidence requirements.",
+  "history_semantics": "Prior keep_thin matches may contribute to near_hist. A current ordinary near match preserves that inherited near-history rule; the exception is not evidence that every prior near hit was ordinary. Current keep_thin, keep_low and far_thin never use the exception.",
+  "scope": [
+    "Minimal Tracker._fresh_stop_ok correction; preserve confirmation, column/approach precedence, calibration holds and later opinion withholding.",
+    "Propose fresh_stop_evidence=true in TrackingConfig, canonical YAML and ROS YAML only in this isolated candidate. Keep all other defaults, including stop_keep_low_s=0.3, unchanged.",
+    "Preserve the original P3 experiment config and historical evidence. Earlier ride reductions do not transfer to this revised mechanism without measurement."
+  ],
+  "focused_validation": [
+    "Existing ordinary advisory near escalation can report STOP; confirmation still applies.",
+    "Current continuation is rejected even with satisfied near history; mixed prior thin/current ordinary history explicitly preserves inherited semantics.",
+    "Column, untrusted range/height, low clusters and approach blocks retain precedence.",
+    "Opinion withholding, calibration holds, long gaps and STOP re-onset remain bounded.",
+    "Run affected tests and lint in resense-cycle-dev against /workspace/ReSense-onset; build the local native backend and verify its expected b5a5c2dc digest."
+  ],
+  "acceptance_after_parent_authorization": [
+    "Freeze clean source/config/native hashes, then run one full native default gate against the health candidate gate: six recordings, eight ride chunks, set O and set F, with no overrides, waivers or missing/worse required metrics.",
+    "Require retained raw person/rail coverage, first/sustained O/F distances, unmatched detections and monitoring range; inspect onset and post-gap histories, event/STOP episodes and fragmentation.",
+    "Run paired processing histories and original-header ROS replay only after the full gate survives and the parent schedules compute. Retain every failure.",
+    "No acceptance, publication or score improvement is asserted by focused tests or this protocol."
+  ]
+}

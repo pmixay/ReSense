@@ -1,0 +1,218 @@
+{
+  "schema": "resense-independent-paired-health-review-v1",
+  "date": "2026-09-28",
+  "review_type": "fresh-context evidence-informed paired internal judgment; not blinded or organizer score",
+  "official_criteria": "technical_specification_case05.txt section 8; numerical weights are internal",
+  "baseline_commit": "25a218a0a8b4e10089dfcf73b8d557d4a963290e",
+  "baseline_documentation_head": "abab723",
+  "candidate_measured_commit": "ef71c9dc4f88147327dcb41ea79358dfc690ba77",
+  "candidate_archive_head": "5fa978f59d4e787bce04da3ab9b4257f5474d772",
+  "recommendation": "accept health histogram optimization with existing defaults; deployment performance remains provisional",
+  "scores": [
+    {
+      "criterion": "functionality",
+      "maximum": 25,
+      "baseline": 17,
+      "candidate": 17,
+      "delta": 0
+    },
+    {
+      "criterion": "range",
+      "maximum": 15,
+      "baseline": 6,
+      "candidate": 6,
+      "delta": 0
+    },
+    {
+      "criterion": "speed",
+      "maximum": 10,
+      "baseline": 7.5,
+      "candidate": 8,
+      "delta": 0.5
+    },
+    {
+      "criterion": "generalization",
+      "maximum": 15,
+      "baseline": 6,
+      "candidate": 6,
+      "delta": 0
+    },
+    {
+      "criterion": "technical_quality",
+      "maximum": 10,
+      "baseline": 9,
+      "candidate": 9,
+      "delta": 0
+    },
+    {
+      "criterion": "launch",
+      "maximum": 10,
+      "baseline": 8.5,
+      "candidate": 8.5,
+      "delta": 0.0
+    },
+    {
+      "criterion": "approach",
+      "maximum": 10,
+      "baseline": 9,
+      "candidate": 9,
+      "delta": 0
+    },
+    {
+      "criterion": "pitch",
+      "maximum": 5,
+      "baseline": 4,
+      "candidate": 4,
+      "delta": 0
+    }
+  ],
+  "totals": {
+    "baseline": 67.0,
+    "candidate": 67.5,
+    "paired_delta": 0.5
+  },
+  "score_rationale": "Credit +0.5 speed only for measured local processing and freshness improvement; single fixed-order warm pair and incomplete target availability limit credit.",
+  "historical_assessments_preserved": {
+    "lead": 69,
+    "prior_same_reviewer_pair": {
+      "baseline": 66,
+      "candidate": 66,
+      "delta": 0
+    },
+    "checkpoint2_fresh": 67
+  },
+  "historical_interpretation": "67 to 67.5 is independently calibrated paired assessment, not a drop from historical 69.",
+  "verification": {
+    "tests_run": false,
+    "benchmarks_run": false,
+    "detector_jobs_run": false,
+    "internet_used": false,
+    "repo_edits": false,
+    "runtime_file_hashes_verified": 25,
+    "source_files_verified_per_exact_commit": 34,
+    "gate_frozen_source_files_verified": 34,
+    "raw_runtime_frame_pairs_verified": 453,
+    "raw_runtime_pair_differences": 0,
+    "processing_p95_recomputed": true,
+    "current_counts_recomputed": true
+  },
+  "gate": {
+    "comparison_metrics_same": 208,
+    "enforced_metrics_same": 146,
+    "real_organizer_frames": 15269,
+    "set_f_sequences": 30,
+    "set_f_actual_frames": 3060,
+    "changed_non_timing_frames": 0,
+    "health_timing_changed_frames": 15252,
+    "latency_derived_health_level_changes": 2333,
+    "focused_tests_reported": 48,
+    "full_health_state_comparisons_reported": 150,
+    "comparator_tests_reported": 27,
+    "shared_load_timing_is_acceptance": false
+  },
+  "runtime": {
+    "baseline_positive": {
+      "original_frames": 201,
+      "captured_frames": 201,
+      "strict_fresh_frames": 0,
+      "p95_decode_detect_ms": 105.15,
+      "p95_strict_current_end_to_end_ms": null,
+      "freshness_contract_failures": [
+        "freshness: no valid result in recording(s) 1"
+      ],
+      "invalid_reasons": {
+        "queue_stale": 1,
+        "source_stale": 200
+      },
+      "targets": {
+        "object_on_rail": {
+          "raw": 128,
+          "fresh": 0,
+          "visible": 185
+        },
+        "person_crossing": {
+          "raw": 61,
+          "fresh": 0,
+          "visible": 61
+        }
+      }
+    },
+    "candidate_positive": {
+      "original_frames": 201,
+      "captured_frames": 201,
+      "strict_fresh_frames": 170,
+      "p95_decode_detect_ms": 76.32,
+      "p95_strict_current_end_to_end_ms": 167.85173416137695,
+      "freshness_contract_failures": [],
+      "invalid_reasons": {
+        "epoch_unconfirmed": 1,
+        "catchup": 28,
+        "source_stale": 2
+      },
+      "targets": {
+        "object_on_rail": {
+          "raw": 128,
+          "fresh": 117,
+          "visible": 185
+        },
+        "person_crossing": {
+          "raw": 61,
+          "fresh": 49,
+          "visible": 61
+        }
+      }
+    },
+    "baseline_clear": {
+      "original_frames": 252,
+      "captured_frames": 252,
+      "strict_fresh_frames": 245,
+      "p95_decode_detect_ms": 77.328,
+      "p95_strict_current_end_to_end_ms": 86.75751686096191,
+      "freshness_contract_failures": [],
+      "invalid_reasons": {
+        "epoch_unconfirmed": 1,
+        "catchup": 6
+      }
+    },
+    "candidate_clear": {
+      "original_frames": 252,
+      "captured_frames": 252,
+      "strict_fresh_frames": 250,
+      "p95_decode_detect_ms": 60.513,
+      "p95_strict_current_end_to_end_ms": 73.7765669822693,
+      "freshness_contract_failures": [],
+      "invalid_reasons": {
+        "epoch_unconfirmed": 1,
+        "catchup": 1
+      }
+    }
+  },
+  "limitations": [
+    "One fixed-order quiet warm-disk pair per recording.",
+    "No cold candidate or target-hardware acceptance.",
+    "Positive current E2E p95 is 167.852 ms, distinct from 76.32 ms processing.",
+    "Fresh person 49/61; rail 117/185 and 115/126 late, so availability remains incomplete.",
+    "timing_ms.total excludes health.",
+    "Gate versus installed native build hashes differ; paired installed binaries are identical.",
+    "Fresh-onset candidate unaccepted and receives no credit."
+  ],
+  "next_two_fixes": [
+    {
+      "rank": 1,
+      "action": "Add explicit health and complete processing timing, preserving/versioning historical total and specifying latency-warning sampling semantics.",
+      "location": "resense/detector.py:279",
+      "validation": "Full timing contract plus both latency_affects_decision settings; node full-call observer retained."
+    },
+    {
+      "rank": 2,
+      "action": "Give startup preservation a finite deadline/backlog policy; localize remaining catchup gaps before altering sampling.",
+      "location": "ros2_ws/src/resense_ros/resense_ros/detector_node.py:743",
+      "validation": "Skipped original frames, processing history, first/sustained fresh STOP and raw/fresh target recall; no recall trade for faster timing."
+    }
+  ],
+  "evidence": {
+    "runtime_summary_sha256": "b8bc0ce07e90dafadb49273457f09611d2e0ed616308e8bf0899e73b53c43bb7",
+    "runtime_protocol_sha256": "307a49510249911280084f62611a3f90f3a02f8b65d47b4505c3ae64c28665be",
+    "report_markdown_sha256": "f091d580501fc022829e876fe13dad59d88ae32962a25cbf3564604a599770c3"
+  }
+}

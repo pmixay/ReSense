@@ -15,7 +15,7 @@ Before 28.09 the 27.09 detector's quality figures (the five empty recordings, th
 set F) were committed only as aggregate files ([the gate](../results/regression_gate_2026-09-27_quality.json),
 [the cross-fitted ride](../results/quality_cycle_2026-09-27/opinion_crossfit_2x_margin.json)),
 so a reader could not recompute them; judge B gave them no credit for that reason
-([both reports](../results/rejudge_2026-09-28.json)). Judge A of the 28.09 re-judgement ran the
+(their reports are superseded by the judgement in [`SCORECARD.md`](../../SCORECARD.md) and removed). Judge A of the 28.09 re-judgement ran the
 sealed detector on every recording he could obtain and kept its per-frame output. This folder
 holds those outputs unchanged (gzip), his scripts and logs, and a script that recomputes the
 figures with the team's counting.
@@ -23,7 +23,7 @@ figures with the team's counting.
 ## Provenance
 
 * **Who, when:** judge A of the fresh re-judgement of 28.09 (an independent reviewer agent in its
-  own session; [report](../results/rejudge_2026-09-28.json), `judges[0]`), 2026-09-28 between
+  own session; its report is superseded by [`SCORECARD.md`](../../SCORECARD.md) and removed), 2026-09-28 between
   08:37 and 09:12 (file times of his working folder, container clock), on a 4-vCPU Intel Xeon
   2.1 GHz sandbox.
 * **Code:** commit `806b6c4` of `claude/amazing-fermi-t67v8g`, host Python 3.11 with
@@ -138,7 +138,7 @@ one episode: a STOP at 126–142 m on the side of the box nearest the track.
   aggregates ([gate](../results/regression_gate_2026-09-27_quality.json),
   [cross-fit](../results/quality_cycle_2026-09-27/opinion_crossfit_2x_margin.json)); the per-frame
   ride output committed is the 26.09 (P3d) detector's
-  ([`freeze_2026-09-26/gate_frames/`](../freeze_2026-09-26/gate_frames/)).
+  ([`freeze_2026-09-26/gate_frames/`](../freeze_2026-09-26/gate_frames)).
 * Set F (team synthetic objects on those ride frames, anchored placement, 2 files × seeds 0 and
   1): person 4 of 4 approaches, first confirmed at 144–180 m, frames detected 82 of 100 at
   50–100 m, 65 of 94 at 100–150 m, 4 of 86 at 150–200 m; 1 m box 4 of 4, first 79–112 m; 3 cm

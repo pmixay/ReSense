@@ -1,0 +1,61 @@
+"""Archive every external evidence file with exact source/stored hashes and reversible names."""
+from datetime import datetime, timezone
+import gzip
+import hashlib
+import json
+from pathlib import Path
+
+SOURCE = Path(__file__).resolve().parent
+TARGET = Path('/home/likikikpa/ReSense-p3-sync/docs/evidence/cycle_2026-09-28/main_sync')
+
+
+def digest(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+manifest = {'schema': 'resense-main-sync-evidence-archive-v1',
+            'archived_utc': datetime.now(timezone.utc).isoformat(),
+            'source_commit': '75ef4e20e587203a394e365c4fa601c822adb164',
+            'external_root': str(SOURCE), 'files': [],
+            'manifest_scope': 'Every external file at archive time; this generated manifest excludes itself.'}
+expected = set()
+for path in sorted(SOURCE.rglob('*')):
+    if not path.is_file():
+        continue
+    relative = path.relative_to(SOURCE)
+    if '__pycache__' in relative.parts:
+        raise ValueError(f'Unrecorded Python cache in evidence: {path}')
+    raw = path.read_bytes()
+    packed = raw
+    stored = str(relative)
+    if stored.startswith('ci_75ef4e2/'):
+        stored = 'ci/' + stored.removeprefix('ci_75ef4e2/')
+    transform = 'identity'
+    if stored.endswith('.jsonl'):
+        stored += '.gz'
+        packed = gzip.compress(raw, compresslevel=9, mtime=0)
+        assert gzip.decompress(packed) == raw
+        transform = 'gzip-mtime-zero'
+    elif stored.endswith(('.py', '.sh')):
+        stored += '.txt'
+        transform = 'frozen-script-text'
+    elif stored.endswith('.log'):
+        stored = stored[:-4] + '.txt'
+        transform = 'log-text-extension'
+    if stored in expected:
+        raise ValueError(f'Archive name collision: {stored}')
+    expected.add(stored)
+    destination = TARGET / stored
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_bytes(packed)
+    assert destination.read_bytes() == packed
+    manifest['files'].append({'source': str(relative), 'archive': stored, 'transform': transform,
+                              'source_bytes': len(raw), 'source_sha256': digest(raw),
+                              'archive_bytes': len(packed), 'archive_sha256': digest(packed)})
+actual = {str(p.relative_to(TARGET)) for p in TARGET.rglob('*') if p.is_file() and p.name != 'manifest.json'}
+assert actual == expected, {'missing': sorted(expected - actual), 'extra': sorted(actual - expected)}
+manifest['source_total_bytes'] = sum(f['source_bytes'] for f in manifest['files'])
+manifest['archive_total_bytes'] = sum(f['archive_bytes'] for f in manifest['files'])
+(TARGET / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
+print(json.dumps({'files': len(manifest['files']), 'archive_bytes': manifest['archive_total_bytes'],
+                  'manifest_sha256': digest((TARGET / 'manifest.json').read_bytes())}))

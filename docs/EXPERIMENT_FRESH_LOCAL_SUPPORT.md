@@ -1,5 +1,10 @@
 # Direct Fresh STOP provenance and local-body support — 28 September 2026
 
+**Historical source scope:** these measurements used detector revision `6385ff9`, with
+the diagnostic additions preserved in `9aa1775`. They predate integration of remote revision
+`059bb64`, which changes detector defaults, tracking and timing. The counts below are not
+acceptance evidence for the merged detector. See the [integration note](RESIDUAL_REVIEW_2026-09-28.md#integration-provenance).
+
 **Decision: no new detector rule.** An instrumented replay now captures actual Fresh STOP
 confirmation sources, descriptor inputs, current point indices, effective strict/rail masks, voxel
 memberships and fitted references. The same fixed, label-blind local decomposition rescues resolved
@@ -127,7 +132,11 @@ paired ride/set O/stress replay, first/sustained positive range and uninstrument
 
 ## Reproduce
 
-From the repository root (the temporary output parent must already exist):
+Run from a separate checkout of `9aa1775` to reproduce the historical detector and diagnostic
+code together (the temporary output parent must already exist). Loading only the old tracker
+into the merged tree does not restore historical clustering or defaults. Use new output paths
+for a different source/configuration: `--resume` checks completed frame manifests and saved
+parity, but does not fully validate source/configuration identity.
 
 ```powershell
 $py = 'C:/Users/alikh/AppData/Local/Temp/opencode/resense-cross-ring-venv/Scripts/python.exe'

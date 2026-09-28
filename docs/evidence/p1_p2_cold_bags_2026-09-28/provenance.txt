@@ -1,0 +1,10 @@
+source: scripts/fetch_cold_bags.sh (pins: scripts/cold_bags.sha256)
+playback: rate=1.0; read_ahead_queue_size=10
+commit: 9086cd123316739065568220aeddcda035c42836
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root       146G   69G   77G  48% /
+cold bags: verified in /home/runner/resense-cold-bags (no download)
+90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09  /home/runner/resense-cold-bags/for_hackathon/doubleT_obstacle/metadata.yaml
+05f1d7f7d1bbbc5e9453877416cc9f7367c19e31d35a5291271d863fc89c5ad9  /home/runner/resense-cold-bags/for_hackathon/doubleT_obstacle/doubleT_obstacle_0.db3
+6ffb15678cae39ac117c33289fdf1aa280211d758fcfd530d9e3fe21cf3bf17d  /home/runner/resense-cold-bags/for_hackathon/roundT_doubleT/metadata.yaml
+6b5d3780bb8e373fae9c1a72080c34084f5a743efca5899526eb15c148a2b90d  /home/runner/resense-cold-bags/for_hackathon/roundT_doubleT/roundT_doubleT_0.db3

@@ -14,7 +14,7 @@ apt и PyPI нужна сеть), поэтому образ переноситс
 ```mermaid
 flowchart LR
     subgraph NET["машина с интернетом"]
-        EXP["scripts/export_image.sh<br/>или артефакт CI"]
+        EXP["scripts/export_image.sh,<br/>артефакт CI или релиз v1.0.0"]
     end
     EXP --> ARCH[("архив образа<br/>.tar.gz + .sha256")]
     ARCH -- "копирование на стенд" --> LOAD
@@ -29,8 +29,9 @@ flowchart LR
 scripts/export_image.sh            # → dist/resense-image-<version>.tar.gz и .sha256
 ```
 
-или скачайте артефакт CI нужного коммита ([Где взять образ Docker](../getting-started/get-the-image.md)).
-Скопируйте оба файла на стенд.
+или скачайте артефакт CI нужного коммита, а после публикации релиза `v1.0.0` — его архив
+(`scripts/verify_release.sh v1.0.0`); см. [Где взять образ Docker](../getting-started/get-the-image.md).
+Скопируйте архив и его `.sha256` на стенд.
 
 ## На стенде
 

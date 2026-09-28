@@ -1,0 +1,37 @@
+[
+  {
+    "name": "doubleT_obstacle",
+    "frames": 201,
+    "source": "/data/for_hackathon/doubleT_obstacle"
+  },
+  {
+    "name": "doubleT_platform",
+    "frames": 345,
+    "source": "/data/for_hackathon/doubleT_platform"
+  },
+  {
+    "name": "roundT_doubleT",
+    "frames": 252,
+    "source": "/data/for_hackathon/roundT_doubleT"
+  },
+  {
+    "name": "roundT_pressureGate_roundT",
+    "frames": 268,
+    "source": "/data/for_hackathon/roundT_pressureGate_roundT"
+  },
+  {
+    "name": "roundT_squareT_pressureGate_squareT",
+    "frames": 545,
+    "source": "/data/for_hackathon/roundT_squareT_pressureGate_squareT"
+  },
+  {
+    "name": "squareT_platform_squareT_switch",
+    "frames": 877,
+    "source": "/data/for_hackathon/squareT_platform_squareT_switch"
+  },
+  {
+    "name": "cloud_with_fake_obj",
+    "frames": 1510,
+    "source": "/data/fake-positive/cloud_with_fake_obj"
+  }
+]

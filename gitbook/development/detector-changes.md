@@ -4,6 +4,7 @@
 файл, от которого зависит его выход (`resense/`, `native/`, `configs/`, копия параметров ROS,
 обученная модель), и задание CI `checks` падает, если какой-то из них изменился без новой печати.
 Поэтому для изменения детектора нужны доказательства (evidence), что оно ничего не ухудшает.
+Печать 27.09 до сдачи не снимается; ниже — порядок для следующих изменений.
 
 ## Регрессионный гейт
 
@@ -44,10 +45,13 @@ flowchart TD
    явно через `--allow` с описанием компромисса, либо изменение получает статус «пробовали, не
    внедрили» (tried, not shipped) и записывается в `docs/EXPERIMENTS.md`.
 3. Изменение, которое должно сдвинуть числа, коммитит новую базовую линию и новую печать
-   (`python scripts/detector_freeze.py create --evidence <full gate JSON> --manifest <new seal>`), а документы, где приводятся числа, обновляются по
-   `docs/EXPERIMENTS.md`.
+   (`python scripts/detector_freeze.py create --evidence <full gate JSON> --manifest <new seal>`),
+   а документы, где приводятся числа (`docs/EXPERIMENTS.md`, README, страница
+   [Результаты и ограничения](../reference/results.md)), обновляются.
 4. Изменения, влияющие на безопасность, до слияния проходят независимое ревью.
 
-Датированная история всех принятых и отклонённых кандидатов:
-[`docs/EXPERIMENTS.md`](https://github.com/pmixay/ReSense/blob/main/docs/EXPERIMENTS.md),
-[`docs/DETECTOR_FREEZE.md`](https://github.com/pmixay/ReSense/blob/main/docs/DETECTOR_FREEZE.md).
+Датированная история принятых и отклонённых кандидатов до печати 27.09 — полный журнал
+[`docs/archive/EXPERIMENTS_log_2026-09.md`](https://github.com/pmixay/ReSense/blob/main/docs/archive/EXPERIMENTS_log_2026-09.md);
+печать и её проверка —
+[`docs/DETECTOR_FREEZE.md`](https://github.com/pmixay/ReSense/blob/main/docs/DETECTOR_FREEZE.md);
+краткий обзор — [Подход команды](../reference/approach.md).

@@ -1,0 +1,334 @@
+{
+ "sustained_threshold_frames": 15,
+ "by_range": {
+  "60.0": {
+   "windows": 15,
+   "sustained": 11,
+   "any_stop": 14,
+   "stop_frames_at_person": [
+    12,
+    26,
+    2,
+    8,
+    26,
+    24,
+    25,
+    25,
+    25,
+    25,
+    25,
+    26,
+    0,
+    25,
+    26
+   ]
+  },
+  "80.0": {
+   "windows": 15,
+   "sustained": 8,
+   "any_stop": 11,
+   "stop_frames_at_person": [
+    2,
+    26,
+    0,
+    0,
+    26,
+    0,
+    25,
+    7,
+    25,
+    25,
+    20,
+    13,
+    0,
+    29,
+    26
+   ]
+  },
+  "100.0": {
+   "windows": 15,
+   "sustained": 6,
+   "any_stop": 11,
+   "stop_frames_at_person": [
+    0,
+    26,
+    3,
+    0,
+    24,
+    3,
+    25,
+    13,
+    10,
+    25,
+    0,
+    13,
+    0,
+    25,
+    26
+   ]
+  },
+  "130.0": {
+   "windows": 15,
+   "sustained": 2,
+   "any_stop": 6,
+   "stop_frames_at_person": [
+    0,
+    0,
+    0,
+    0,
+    23,
+    6,
+    0,
+    2,
+    0,
+    15,
+    8,
+    0,
+    0,
+    4,
+    0
+   ]
+  },
+  "160.0": {
+   "windows": 15,
+   "sustained": 1,
+   "any_stop": 6,
+   "stop_frames_at_person": [
+    0,
+    0,
+    0,
+    0,
+    13,
+    9,
+    0,
+    0,
+    1,
+    7,
+    10,
+    0,
+    0,
+    16,
+    0
+   ]
+  },
+  "200.0": {
+   "windows": 15,
+   "sustained": 0,
+   "any_stop": 3,
+   "stop_frames_at_person": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    2,
+    7,
+    0,
+    0,
+    0,
+    0
+   ]
+  }
+ },
+ "windows": [
+  {
+   "bag": "doubleT_platform",
+   "start": 170,
+   "control_stop_frames": 0,
+   "stop_at_person": {
+    "60.0": 12,
+    "80.0": 2,
+    "100.0": 0,
+    "130.0": 0,
+    "160.0": 0,
+    "200.0": 0
+   }
+  },
+  {
+   "bag": "doubleT_platform",
+   "start": 300,
+   "control_stop_frames": 0,
+   "stop_at_person": {
+    "60.0": 26,
+    "80.0": 26,
+    "100.0": 26,
+    "130.0": 0,
+    "160.0": 0,
+    "200.0": 0
+   }
+  },
+  {
+   "bag": "doubleT_platform",
+   "start": 60,
+   "control_stop_frames": 0,
+   "stop_at_person": {
+    "60.0": 2,
+    "80.0": 0,
+    "100.0": 3,
+    "130.0": 0,
+    "160.0": 0,
+    "200.0": 0
+   }
+  },
+  {
+   "bag": "roundT_doubleT",
+   "start": 130,
+   "control_stop_frames": 0,
+   "stop_at_person": {
+    "60.0": 8,
+    "80.0": 0,
+    "100.0": 0,
+    "130.0": 0,
+    "160.0": 0,
+    "200.0": 0
+   }
+  },
+  {
+   "bag": "roundT_doubleT",
+   "start": 200,
+   "control_stop_frames": 0,
+   "stop_at_person": {
+    "60.0": 26,
+    "80.0": 26,
+    "100.0": 24,
+    "130.0": 23,
+    "160.0": 13,
+    "200.0": 0
+   }
+  },
+  {
+   "bag": "roundT_doubleT",
+   "start": 60,
+   "control_stop_frames": 0,
+   "stop_at_person": {
+    "60.0": 24,
+    "80.0": 0,
+    "100.0": 3,
+    "130.0": 6,
+    "160.0": 9,
+    "200.0": 0
+   }
+  },
+  {
+   "bag": "roundT_pressureGate_roundT",
+   "start": 140,
+   "control_stop_frames": 0,
+   "stop_at_person": {
+    "60.0": 25,
+    "80.0": 25,
+    "100.0": 25,
+    "130.0": 0,
+    "160.0": 0,
+    "200.0": 0
+   }
+  },
+  {
+   "bag": "roundT_pressureGate_roundT",
+   "start": 220,
+   "control_stop_frames": 0,
+   "stop_at_person": {
+    "60.0": 25,
+    "80.0": 7,
+    "100.0": 13,
+    "130.0": 2,
+    "160.0": 0,
+    "200.0": 0
+   }
+  },
+  {
+   "bag": "roundT_pressureGate_roundT",
+   "start": 60,
+   "control_stop_frames": 0,
+   "stop_at_person": {
+    "60.0": 25,
+    "80.0": 25,
+    "100.0": 10,
+    "130.0": 0,
+    "160.0": 1,
+    "200.0": 1
+   }
+  },
+  {
+   "bag": "roundT_squareT_pressureGate_squareT",
+   "start": 100,
+   "control_stop_frames": 0,
+   "stop_at_person": {
+    "60.0": 25,
+    "80.0": 25,
+    "100.0": 25,
+    "130.0": 15,
+    "160.0": 7,
+    "200.0": 2
+   }
+  },
+  {
+   "bag": "roundT_squareT_pressureGate_squareT",
+   "start": 300,
+   "control_stop_frames": 0,
+   "stop_at_person": {
+    "60.0": 25,
+    "80.0": 20,
+    "100.0": 0,
+    "130.0": 8,
+    "160.0": 10,
+    "200.0": 7
+   }
+  },
+  {
+   "bag": "roundT_squareT_pressureGate_squareT",
+   "start": 480,
+   "control_stop_frames": 0,
+   "stop_at_person": {
+    "60.0": 26,
+    "80.0": 13,
+    "100.0": 13,
+    "130.0": 0,
+    "160.0": 0,
+    "200.0": 0
+   }
+  },
+  {
+   "bag": "squareT_platform_squareT_switch",
+   "start": 100,
+   "control_stop_frames": 0,
+   "stop_at_person": {
+    "60.0": 0,
+    "80.0": 0,
+    "100.0": 0,
+    "130.0": 0,
+    "160.0": 0,
+    "200.0": 0
+   }
+  },
+  {
+   "bag": "squareT_platform_squareT_switch",
+   "start": 450,
+   "control_stop_frames": 0,
+   "stop_at_person": {
+    "60.0": 25,
+    "80.0": 29,
+    "100.0": 25,
+    "130.0": 4,
+    "160.0": 16,
+    "200.0": 0
+   }
+  },
+  {
+   "bag": "squareT_platform_squareT_switch",
+   "start": 800,
+   "control_stop_frames": 0,
+   "stop_at_person": {
+    "60.0": 26,
+    "80.0": 26,
+    "100.0": 26,
+    "130.0": 0,
+    "160.0": 0,
+    "200.0": 0
+   }
+  }
+ ]
+}

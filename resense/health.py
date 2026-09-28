@@ -14,7 +14,9 @@ per frame and without touching any detection:
   3 m of the track axis): the sightline in a curve, the end of the tunnel, fog;
 * ``rail_lock`` - share of the recent frames in which the rail pair was found (the track model
   runs on its prior without it: stations, switches, a covered bed);
-* ``latency_p95_ms`` against the frame budget;
+* ``latency_p95_ms`` against the frame budget. The detector supplies the previous completed
+  process interval, including health, and labels this basis and one-frame age in its result.
+  Its first call/reset has no sample: p95 is 0 until a completed call is supplied;
 * the mount calibration status and drift (``resense/calibration.py``);
 * ``floor_shadow_frames`` / ``floor_held_frames`` / ``floor_released_frames`` (review 25.09) -
   since the start (or a reset), the frames in which the floor-shadow rule of the track model
@@ -47,6 +49,32 @@ from resense import _native
 from resense.config import GaugeConfig, HealthConfig
 
 LEVELS = ("ok", "warn", "error")
+
+
+def _sector_counts(values: np.ndarray, edges: np.ndarray) -> np.ndarray:
+    """Exact unweighted histogram for the small explicit edge array used by health.
+
+    NumPy sorts chunks for explicit edges. Binary search counts the same intervals without
+    sorting the cloud. Keep unusual layouts/dtypes and subclass dispatch on the original path.
+    Working arrays are bounded to 65,536 values and at most 256 bins.
+    """
+    floating = (np.dtype("float32"), np.dtype("float64"))
+    if not (type(values) is np.ndarray and values.ndim == 1 and values.dtype in floating
+            and type(edges) is np.ndarray and edges.ndim == 1 and edges.dtype in floating
+            and 2 <= edges.size <= 257 and np.isfinite(edges).all()
+            and (edges[1:] > edges[:-1]).all()):
+        return np.histogram(values, bins=edges)[0]
+    n_bins = edges.size - 1
+    counts = np.zeros(n_bins, dtype=np.intp)
+    for start in range(0, values.size, 65536):
+        block = values[start:start + 65536]
+        indices = np.searchsorted(edges, block, side="right") - 1
+        # Only the final bin includes its right edge. Keep an array operand: a scalar
+        # float64 endpoint can round to float32 during comparison on NumPy 1.x.
+        indices[block == edges[-1:]] -= 1
+        valid = (indices >= 0) & (indices < n_bins)  # also excludes NaN and +/-inf
+        counts += np.bincount(indices[valid], minlength=n_bins)
+    return counts
 
 
 def visibility_along_track(xyz: np.ndarray, center_y, band: float = 3.0, k: int = 20) -> float:
@@ -85,8 +113,14 @@ class HealthMonitor:
         self._shadow = [0, 0, 0]
 
     def update(self, xyz: np.ndarray, meta: dict, track, gauge: GaugeConfig, trusted_range: float,
-               rails_min_score: float, latency_ms: float, calibration: Optional[dict] = None,
+               rails_min_score: float, latency_ms: Optional[float], calibration: Optional[dict] = None,
                obstacle_distance: Optional[float] = None, candidate_distance: Optional[float] = None) -> dict:
+        """Update scene health once; append a supplied latency sample, or none for ``None``.
+
+        Numeric callers retain their existing supplied-interval semantics. The detector
+        supplies its previous completed call so timing includes the health update itself.
+        The latency warning still requires ten samples in the configured window.
+        """
         cfg = self.cfg
         msgs, level, dlevel = [], 0, 0
 
@@ -115,7 +149,7 @@ class HealthMonitor:
         if n:
             az = np.degrees(np.arctan2(xyz[:, 1], xyz[:, 0]))
             edges = np.arange(-30.0, 30.0 + 1e-6, cfg.sector_deg)
-            counts = np.histogram(az, bins=edges)[0]
+            counts = _sector_counts(az, edges)
             ref = float(np.median(counts)) if counts.size else 0.0
             blocked = int((counts < 0.05 * max(ref, 1.0)).sum()) if ref > 0 else int(counts.size)
             if blocked:
@@ -138,8 +172,9 @@ class HealthMonitor:
             elif getattr(track, "floor_hold_run", 0) > 0:
                 self._shadow[2] += 1
 
-        self._lat.append(float(latency_ms))
-        p95 = float(np.percentile(self._lat, 95))
+        if latency_ms is not None:
+            self._lat.append(float(latency_ms))
+        p95 = float(np.percentile(self._lat, 95)) if self._lat else 0.0
         if len(self._lat) >= 10 and p95 > cfg.latency_budget_ms:
             flag(1, f"latency p95 {p95:.0f} ms over the {cfg.latency_budget_ms:.0f} ms budget",
                  decision=cfg.latency_affects_decision)

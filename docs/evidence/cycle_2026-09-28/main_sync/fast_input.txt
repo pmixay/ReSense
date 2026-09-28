@@ -1,0 +1,9 @@
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+[INFO] [1790626863.114272893] [rosbag2_storage]: Opened database '/data/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.
+[INFO] [1790626883.432665715] [rosbag2_storage]: Opened database '/data/roundT_doubleT/roundT_doubleT_0.db3' for READ_ONLY.
+/data/doubleT_obstacle: 201 of 201 frames identical (921600 points per frame) - PASS
+  rclpy_deserialize  median   7.54  p95  29.33  max 103.94 ms
+  fastcloud_parse    median   0.07  p95   0.12  max   6.66 ms
+/data/roundT_doubleT: 252 of 252 frames identical (307200 points per frame) - PASS
+  rclpy_deserialize  median   2.38  p95   3.17  max   8.06 ms
+  fastcloud_parse    median   0.07  p95   0.10  max   0.23 ms

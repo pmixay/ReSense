@@ -42,7 +42,6 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import glob
 import json
 import os
 import re
@@ -50,11 +49,21 @@ import sys
 import time
 from concurrent.futures import ProcessPoolExecutor
 from dataclasses import replace
+from pathlib import Path
 
 import numpy as np
 
+# This script is also run directly by users and the regression gate.  Add the repository root
+# before importing its shared cache helper; ``python scripts/far_range_eval.py`` otherwise puts
+# only the scripts/ directory on sys.path.
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.cache_io import cache_file_stem, cache_files, load_cache_array  # noqa: E402
+
 BINS = [(0, 50), (50, 100), (100, 150), (150, 200), (200, 250)]
-SPLIT_FRAME = re.compile(r"new_data_(\d+)_(\d+)\.npy$")
+SPLIT_FRAME = re.compile(r"new_data_(\d+)_(\d+)\.npy(?:\.zst)?$")
 FRAMES_PER_SPLIT = 51  # organizer new_data metadata: every split has frames 0000..0050
 
 
@@ -235,7 +244,7 @@ def run_sequence(job):
                 "placement_mode": mode, "skipped": reason}
 
     for f, spd in zip(files, speeds):
-        stem = os.path.splitext(os.path.basename(f))[0]
+        stem = cache_file_stem(f)
         t = stamps.get(stem)
         if mode in ("anchored", "independent") and t is None:
             return skipped(f"missing timestamp for {stem}")
@@ -258,8 +267,8 @@ def run_sequence(job):
         models = []
         previous = None
         for f, t, _, _ in path:
-            stem = os.path.splitext(os.path.basename(f))[0]
-            fr = frame_from_compact(np.load(f), cfg.sensor, stamp=t or 0.0, frame_id=stem)
+            stem = cache_file_stem(f)
+            fr = frame_from_compact(load_cache_array(f), cfg.sensor, stamp=t or 0.0, frame_id=stem)
             previous = estimate_track(fr.xyz, cfg.track, prev=previous)
             models.append(previous)
         try:
@@ -274,8 +283,8 @@ def run_sequence(job):
     fp = 0
     first = None
     for k, (f, t, spd, path_d) in enumerate(path):
-        stem = os.path.splitext(os.path.basename(f))[0]
-        fr = frame_from_compact(np.load(f), cfg.sensor, stamp=t or 0.0, frame_id=stem)
+        stem = cache_file_stem(f)
+        fr = frame_from_compact(load_cache_array(f), cfg.sensor, stamp=t or 0.0, frame_id=stem)
         if mode == "independent":
             spec, tm = independent_placement(kind, path_d, lateral, refl, reference, lateral_offset, yaw_deg, place)
         elif mode == "anchored":
@@ -372,7 +381,7 @@ def main():
         ap.error("--reflectivity must be between 0 and 255")
     import yaml
     from resense.config import DetectorConfig
-    from resense.io import _natural_key, load_cache_stamps
+    from scripts.cache_io import load_cache_stamps
     from resense.synthetic import OBJECT_CATALOGUE
     with open(a.config, "rb") as fh:
         config_bytes = fh.read()
@@ -384,7 +393,7 @@ def main():
     intake = json.loads(speeds_bytes)
     spd_file = {f["n"]: (f.get("speed_tracks") or 0.0) for f in intake["files"]}
     stamps = load_cache_stamps(a.cache)
-    allf = sorted(glob.glob(os.path.join(a.cache, "*.npy")), key=_natural_key)
+    allf = cache_files(a.cache)
     lo, hi = (float(v) for v in a.lateral.split(":"))
     if not np.isfinite([lo, hi, a.lateral_offset, a.yaw_perturb_deg]).all() or lo > hi:
         ap.error("lateral range and perturbations must be finite; lateral lo must not exceed hi")
@@ -401,7 +410,7 @@ def main():
         if not files:
             ap.error(f"no frames for new_data_{fn}")
         if a.placement_mode in ("independent", "anchored"):
-            missing = [os.path.basename(f) for f in files if os.path.splitext(os.path.basename(f))[0] not in stamps]
+            missing = [os.path.basename(f) for f in files if cache_file_stem(f) not in stamps]
             if missing:
                 ap.error(f"{a.placement_mode} placement requires bag stamps for every frame (missing {missing[:3]})")
             missing_speeds = [f for f in files if int(os.path.basename(f).split("_")[2]) not in spd_file]
