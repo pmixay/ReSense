@@ -1,0 +1,6 @@
+/data/doubleT_obstacle: 201 of 201 frames identical (921600 points per frame) - PASS
+  rclpy_deserialize  median   5.53  p95  28.94  max  93.95 ms
+  fastcloud_parse    median   0.07  p95   0.09  max   3.47 ms
+/data/roundT_doubleT: 252 of 252 frames identical (307200 points per frame) - PASS
+  rclpy_deserialize  median   1.84  p95   1.92  max   1.96 ms
+  fastcloud_parse    median   0.06  p95   0.07  max   0.08 ms
