@@ -83,7 +83,9 @@ if (ROOT / module.OUT_MP4).is_file():
 
 
 RESULTS = ROOT / "docs" / "evidence" / "results"
-if RESULTS.is_dir():
+# The image may carry individual evidence fixtures without the published video/baselines.
+# Like the other committed-output checks above, this check belongs to the video checkout.
+if (ROOT / module.OUT_MP4).is_file():
 
     def test_ride_card_follows_the_current_gate_baseline():
         """The ride card is a measured number: it names the ride events of the newest gate baseline
