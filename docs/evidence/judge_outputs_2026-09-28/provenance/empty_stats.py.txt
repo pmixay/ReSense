@@ -1,0 +1,10 @@
+import json, sys, glob
+for f in sys.argv[1:]:
+    rows = [json.loads(l) for l in open(f)]
+    st = [r for r in rows if r['obstacle']]
+    ev = []; prev = False
+    for r in rows:
+        if r['obstacle'] and not prev: ev.append((r['frame'], r['nearest_distance']))
+        prev = r['obstacle']
+    w = sum(1 for r in rows if r['warning'])
+    print(f.split('/')[-1], 'frames', len(rows), 'STOP frames', len(st), 'STOP episodes', len(ev), ev[:12], 'warning frames', w)

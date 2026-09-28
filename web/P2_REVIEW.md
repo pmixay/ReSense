@@ -2,7 +2,7 @@
 
 > **Owner:** P2 · **Base:** `main` at `8f23284`, including the accepted 27.09 detector
 > **Working branch:** `testovaya-gpt` (tracks `origin/testovaya-gpt`)
-> **Status:** public PPTX/PDF/MP4 rebuilt from the corrected sources on 28.09; local private preview uses the supplied roster and portraits. City, team formation, group photo, on-device demo and human rehearsals remain pending.
+> **Status:** public PPTX/PDF/MP4/SRT rebuilt from the corrected sources on 28.09; local private preview uses the supplied roster and portraits. City, team formation, group photo, on-device demo and human rehearsals remain pending.
 
 The previously reviewed P2 work was on `f6b156b`. Its remote Claude branch has since been
 deleted. Current `main` contains a newer detector (`352ca13`, measured at `d572807`), so the
@@ -19,7 +19,7 @@ preserved. The P2 instructions and freshness limitations are in `web/README.md`.
 | §5, §7.2: short algorithm video and accessible documentation | Public 2:50 H.264 overview and `.srt`, 16-slide PPTX/PDF in the organizers' template, updated interface screenshots, label-tool and replay instructions. The viewer can see data provenance (real bag vs organizer synthetic vs our synthetic). | Captain supplies submission links; optional narration is the speaker's choice. |
 | §8.5: robustness, tests, honest documentation | Live valid/current contract, STOP hold, stale overlays, reporting v2, label import and numeric validation, rendering and Foxglove split-advertisement checks. Browser tests cannot silently skip in CI. Detector seal checked separately; this pass does not change detector/config. | ROS runtime and physical rendering on the jury stand require the demo setup. |
 | §8.6: easy launch | `web/README.md` gives offline replay, browser validation and live Foxglove procedure. Existing `scripts/play_bag.sh` and Docker CI are owned by P1 and remain the supported jury path. | P1/demo operator checks the final image and supported read-ahead procedure on the actual machine. |
-| §8.7–8.8: explain approach, trade-offs and show results in a few minutes | Deck speaker notes, 16-slide public deck, 2:50 overview and narration script distinguish in-sample from cross-fitted estimates, known misses/false events and the 27.09 reference change. Removed claims of arbitrary mount support, ready-made braking integration, unmeasured competing-model AP and unseen external evaluation. | Captain/team provide private names/portraits/city/team history; build the private deck; conduct two timed team rehearsals. Public slides 2–3 show the roles P1–P4 (no `<…>` fields since 28.09 evening). |
+| §8.7–8.8: explain approach, trade-offs and show results in a few minutes | Deck speaker notes, 16-slide public deck, 2:50 overview and narration script distinguish in-sample from cross-fitted estimates, known misses/false events and the 27.09 reference change. Removed claims of arbitrary mount support, ready-made braking integration, unmeasured competing-model AP and unseen external evaluation. A local private preview now uses the supplied roster and portraits; it remains ignored and uncommitted. Public slides 2–3 show the roles P1–P4 (no `<…>` fields since 28.09 evening). | City, team formation and group photo are still missing. Review the private draft on the shared presentation setup and conduct two timed team rehearsals. |
 | §8.1–8.4: detector quality/range/speed/generalization | P2 visualizes and cites the **current** accepted regression numbers, including 61/61 real person frames, 32 in-sample and 37 cross-fitted ride events, set O edge ranges 35/18 m and the blind spots; since 28.09 evening also the node-path figures (object on the rail STOP in 123 of 126 frames with one GO; latency with its machine). | P3/P4/P1 own new algorithm changes and accepted measurements. Do not silently alter public claims until their gate and evidence change. |
 
 ## 28.09 evening: fixes after the fresh re-judgement
@@ -46,9 +46,10 @@ Every finding about the deck, the video and `docs/PRESENTATION.md` is fixed in t
 * `docs/PRESENTATION.md`: one status, the current numbers with their sources, the build; the
   dated rebuild records moved to its archive section.
 
-The committed PPTX, PDF and MP4 were rebuilt from these corrected sources on 28.09 using the
-commands in `docs/PRESENTATION.md` «Сборка». Their sizes, SHA-256 hashes and media properties are
-recorded in [`demo/evidence/p2_criteria_2026-09-28.json`](demo/evidence/p2_criteria_2026-09-28.json).
+The committed PPTX, PDF, MP4 and SRT were rebuilt from these corrected sources on 28.09 using the
+commands in `docs/PRESENTATION.md` «Сборка». The 16-page PDF was visually checked, including slides
+2, 3 and 13. Their sizes, SHA-256 hashes and media properties are recorded in
+[`demo/evidence/p2_criteria_2026-09-28.json`](demo/evidence/p2_criteria_2026-09-28.json).
 
 ## Corrections from the full client audit
 
@@ -108,5 +109,7 @@ The ignored private folder now contains a local draft made with the supplied ros
 it is not committed. City, team formation and team photo are still missing. The remaining device
 import, human rehearsals and physical stand run cannot be marked complete from this checkout:
 `/data/for_hackathon` and a second physical viewing device are absent. The existing CI's two-container
-protocol check is not a visual Foxglove import. Optional narration was not supplied. The internal independent
-scorecard's 72/100 is not an organizer score and is not changed by this presentation work.
+protocol check is not a visual Foxglove import. Optional narration was not supplied. The fresh
+independent 66.5/100 judgement is on `806b6c4`, before the corrected public binaries and current
+P2 artifact refresh; the earlier 72/100 is the dated 27.09 round-three judgement. Neither is an
+organizer-published score, and this artifact refresh has not been independently rescored.

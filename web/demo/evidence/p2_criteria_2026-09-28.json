@@ -154,7 +154,7 @@
     "no physical jury-stand run on the final image",
     "no human team rehearsals",
     "city, team formation and team group photo still pending for the private deck",
-    "new_data ride cache absent; full ride and set F regression rows are not currently reproduced in this checkout",
+    "full new_data ride cache absent; independent per-frame outputs cover selected 306 of 11,271 ride frames only, so full ride and set F regression rows remain unreproduced here",
     "no new detector quality measurement; this artifact refresh does not change detector/configuration"
   ]
 }

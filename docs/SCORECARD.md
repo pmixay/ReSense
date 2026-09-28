@@ -41,10 +41,14 @@ Reports: [both judges](evidence/results/rejudge_2026-09-28.json). What they foun
 - **Safety, pre-existing:** on the node path `doubleT_obstacle` shows **GO at frame 111** with the
   object on the rail in view (in every capture since 27.09, also before this pass; a confirmed low
   track misses two frames and the one-frame hold releases it; `clear_distance` is capped at 56 m
-  that frame). Also CAUTION at frames 117 and 197. Owner: the detector (P3), not changed here.
+  that frame). Also CAUTION at frames 117 and 197. Owner: the detector (P3), not changed here:
+  documented as a limitation of the sealed detector on 28.09 (ALGORITHM §6, DECISIONS row 26),
+  with both figures wherever the rail object is quoted (123 of 126 raw / node, 125 on the cache).
 - **Launch trap (8.6):** the image's default command runs `freshness_mode:=live`, so a recorded bag
   gives FAULT on every message unless `freshness_mode:=replay` is passed (the README jury commands,
   `play_bag.sh` and compose pass it). Changing the default is the captain's safety decision.
+  **Changed after the judgement (28.09, `d359a06`, not re-scored):** the image's default command
+  now passes `freshness_mode:=replay`; the node's own default stays `live` (DECISIONS row 25).
 - **Fixed after the judgement (not re-scored):** an unreadable raw message now is logged and
   dropped instead of stopping the node; organized clouds with row padding are packed before the
   decode; the one-gather decode that was not reliably faster is removed; tests added for
@@ -52,7 +56,13 @@ Reports: [both judges](evidence/results/rejudge_2026-09-28.json). What they foun
 - **Other:** 7 false STOP episodes on the five empty recordings (A); 31–38 false STOP events per 20
   minutes of riding (B, P3d/27.09 figures); CAUTION on 41–68 % of clear frames; small, edge and
   low objects STOP only inside braking distance; team slides still hold placeholders; DECISIONS.md
-  last verified 26.09.
+  last verified 26.09 (updated 28.09 with rows 18–27).
+- **Documentation corrected after the judgement (28.09, not re-scored):** judge A's per-frame
+  outputs of the sealed detector added with a recompute script
+  ([`evidence/judge_outputs_2026-09-28/`](evidence/judge_outputs_2026-09-28/README.md)); the
+  opinion's delay stated in processed frames; the all-frame end-to-end latency next to the
+  current-results one; the ground truth's dependence on the team's tools (EVALUATION §1); the
+  placement study called a sensitivity study; the README cut to the jury path.
 
 ## Quality-cycle review, round 3: 27 September (final detector `352ca13`, docs `0e5e251`)
 

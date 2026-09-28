@@ -1,0 +1,152 @@
+{
+ "per_kind": {
+  "person": {
+   "sequences": 1,
+   "skipped": 0,
+   "detected": 1,
+   "sustained_m": [
+    91.5
+   ],
+   "sustained_median": 91.5,
+   "first_detection_m": [
+    179.8
+   ],
+   "first_detection_median": 179.8,
+   "recall_by_bin": {
+    "0-50": [
+     20,
+     20
+    ],
+    "50-100": [
+     17,
+     25
+    ],
+    "100-150": [
+     10,
+     23
+    ],
+    "150-200": [
+     2,
+     23
+    ],
+    "200-250": [
+     0,
+     6
+    ]
+   },
+   "false_detections": 1
+  },
+  "trolley": {
+   "sequences": 1,
+   "skipped": 0,
+   "detected": 1,
+   "sustained_m": [
+    85.3
+   ],
+   "sustained_median": 85.3,
+   "first_detection_m": [
+    146.0
+   ],
+   "first_detection_median": 146.0,
+   "recall_by_bin": {
+    "0-50": [
+     20,
+     20
+    ],
+    "50-100": [
+     15,
+     25
+    ],
+    "100-150": [
+     4,
+     23
+    ],
+    "150-200": [
+     0,
+     18
+    ],
+    "200-250": [
+     0,
+     7
+    ]
+   },
+   "false_detections": 0
+  },
+  "box1.0": {
+   "sequences": 1,
+   "skipped": 0,
+   "detected": 1,
+   "sustained_m": [
+    85.3
+   ],
+   "sustained_median": 85.3,
+   "first_detection_m": [
+    79.1
+   ],
+   "first_detection_median": 79.1,
+   "recall_by_bin": {
+    "0-50": [
+     20,
+     20
+    ],
+    "50-100": [
+     15,
+     25
+    ],
+    "100-150": [
+     0,
+     23
+    ],
+    "150-200": [
+     0,
+     21
+    ],
+    "200-250": [
+     0,
+     8
+    ]
+   },
+   "false_detections": 0
+  },
+  "cable": {
+   "sequences": 1,
+   "skipped": 0,
+   "detected": 1,
+   "sustained_m": [
+    23.4
+   ],
+   "sustained_median": 23.4,
+   "first_detection_m": [
+    76.9
+   ],
+   "first_detection_median": 76.9,
+   "recall_by_bin": {
+    "0-50": [
+     9,
+     14
+    ],
+    "50-100": [
+     2,
+     13
+    ],
+    "100-150": [
+     0,
+     15
+    ],
+    "150-200": [
+     0,
+     19
+    ],
+    "200-250": [
+     0,
+     4
+    ]
+   },
+   "false_detections": 0
+  }
+ },
+ "jobs": 4,
+ "placement_mode": "anchored",
+ "skipped": 0,
+ "wall_s": 30.2
+}

@@ -1,0 +1,24 @@
+     0s member for_hackathon 0.00 GB
+     0s member for_hackathon/roundT_doubleT 0.00 GB
+     0s member for_hackathon/roundT_doubleT/roundT_doubleT_0.db3 2.01 GB
+     3s member for_hackathon/roundT_doubleT/metadata.yaml 0.00 GB
+     3s member for_hackathon/squareT_platform_squareT_switch 0.00 GB
+     3s member for_hackathon/squareT_platform_squareT_switch/squareT_platform_squareT_switch_0.db3 7.01 GB
+    87s ran squareT_platform_squareT_switch: processed 877 frames in 59.9 s (14.6 fps incl. I/O)
+    88s member for_hackathon/squareT_platform_squareT_switch/metadata.yaml 0.00 GB
+    88s member for_hackathon/doubleT_platform 0.00 GB
+    88s member for_hackathon/doubleT_platform/doubleT_platform_0.db3 2.76 GB
+   120s ran doubleT_platform: processed 345 frames in 26.4 s (13.1 fps incl. I/O)
+   120s member for_hackathon/doubleT_platform/metadata.yaml 0.00 GB
+   120s member for_hackathon/roundT_squareT_pressureGate_squareT 0.00 GB
+   120s member for_hackathon/roundT_squareT_pressureGate_squareT/roundT_squareT_pressureGate_squareT_0.db3 4.36 GB
+   168s ran roundT_squareT_pressureGate_squareT: processed 545 frames in 34.9 s (15.6 fps incl. I/O)
+   168s member for_hackathon/roundT_squareT_pressureGate_squareT/metadata.yaml 0.00 GB
+   168s member for_hackathon/doubleT_obstacle 0.00 GB
+   168s member for_hackathon/doubleT_obstacle/doubleT_obstacle_0.db3 4.82 GB
+   174s member for_hackathon/doubleT_obstacle/metadata.yaml 0.00 GB
+   174s member for_hackathon/roundT_pressureGate_roundT 0.00 GB
+   174s member for_hackathon/roundT_pressureGate_roundT/roundT_pressureGate_roundT_0.db3 2.14 GB
+   195s ran roundT_pressureGate_roundT: processed 268 frames in 16.7 s (16.1 fps incl. I/O)
+done ['doubleT_platform', 'roundT_pressureGate_roundT', 'roundT_squareT_pressureGate_squareT', 'squareT_platform_squareT_switch']
+rc=0

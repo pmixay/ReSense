@@ -1,0 +1,158 @@
+{
+ "per_kind": {
+  "person": {
+   "sequences": 2,
+   "skipped": 0,
+   "detected": 2,
+   "sustained_m": [
+    91.5,
+    157.9
+   ],
+   "sustained_median": 124.7,
+   "first_detection_m": [
+    168.0,
+    179.8
+   ],
+   "first_detection_median": 173.9,
+   "recall_by_bin": {
+    "0-50": [
+     41,
+     41
+    ],
+    "50-100": [
+     42,
+     50
+    ],
+    "100-150": [
+     32,
+     47
+    ],
+    "150-200": [
+     4,
+     46
+    ],
+    "200-250": [
+     0,
+     14
+    ]
+   },
+   "false_detections": 1
+  },
+  "box0.5": {
+   "sequences": 2,
+   "skipped": 0,
+   "detected": 1,
+   "sustained_m": [
+    21.2
+   ],
+   "sustained_median": 21.2,
+   "first_detection_m": [
+    42.0
+   ],
+   "first_detection_median": 42.0,
+   "recall_by_bin": {
+    "0-50": [
+     9,
+     41
+    ],
+    "50-100": [
+     0,
+     50
+    ],
+    "100-150": [
+     0,
+     43
+    ],
+    "150-200": [
+     0,
+     23
+    ],
+    "200-250": [
+     0,
+     4
+    ]
+   },
+   "false_detections": 0
+  },
+  "box1.0": {
+   "sequences": 2,
+   "skipped": 0,
+   "detected": 2,
+   "sustained_m": [
+    85.3,
+    119.9
+   ],
+   "sustained_median": 102.6,
+   "first_detection_m": [
+    79.1,
+    109.9
+   ],
+   "first_detection_median": 94.5,
+   "recall_by_bin": {
+    "0-50": [
+     41,
+     41
+    ],
+    "50-100": [
+     40,
+     50
+    ],
+    "100-150": [
+     5,
+     47
+    ],
+    "150-200": [
+     0,
+     43
+    ],
+    "200-250": [
+     0,
+     15
+    ]
+   },
+   "false_detections": 0
+  },
+  "cable": {
+   "sequences": 2,
+   "skipped": 0,
+   "detected": 2,
+   "sustained_m": [
+    23.4,
+    37.1
+   ],
+   "sustained_median": 30.2,
+   "first_detection_m": [
+    63.5,
+    76.9
+   ],
+   "first_detection_median": 70.2,
+   "recall_by_bin": {
+    "0-50": [
+     20,
+     29
+    ],
+    "50-100": [
+     5,
+     24
+    ],
+    "100-150": [
+     0,
+     30
+    ],
+    "150-200": [
+     0,
+     31
+    ],
+    "200-250": [
+     0,
+     6
+    ]
+   },
+   "false_detections": 0
+  }
+ },
+ "jobs": 8,
+ "placement_mode": "anchored",
+ "skipped": 0,
+ "wall_s": 46.1
+}

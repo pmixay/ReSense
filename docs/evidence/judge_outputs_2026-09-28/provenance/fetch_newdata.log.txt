@@ -1,0 +1,10 @@
+new_data.zst: 17.08 GB, modified 2026-09-17T12:51:29+00:00, sha256 8124b627a8a70516a4023db522849f1cadae711e7b152b0f701535a69dab99ec
+    18s extracted ./new_data/new_data_70.db3 408 MB
+    20s extracted ./new_data/new_data_46.db3 408 MB
+    50s extracted ./new_data/new_data_47.db3 408 MB
+   141s extracted ./new_data/new_data_69.db3 408 MB
+   151s extracted ./new_data/new_data_48.db3 408 MB
+   182s extracted ./new_data/metadata.yaml 0 MB
+   237s extracted ./new_data/new_data_68.db3 408 MB
+done ['metadata.yaml', 'new_data_46.db3', 'new_data_47.db3', 'new_data_48.db3', 'new_data_68.db3', 'new_data_69.db3', 'new_data_70.db3']
+rc=0

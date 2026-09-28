@@ -1,0 +1,156 @@
+{
+ "per_kind": {
+  "person": {
+   "sequences": 1,
+   "skipped": 0,
+   "detected": 1,
+   "sustained_m": [
+    91.5
+   ],
+   "sustained_median": 91.5,
+   "first_detection_m": [
+    169.2
+   ],
+   "first_detection_median": 169.2,
+   "recall_by_bin": {
+    "0-50": [
+     20,
+     20
+    ],
+    "50-100": [
+     17,
+     25
+    ],
+    "100-150": [
+     9,
+     23
+    ],
+    "150-200": [
+     9,
+     20
+    ],
+    "200-250": [
+     0,
+     6
+    ]
+   },
+   "false_detections": 2
+  },
+  "trolley": {
+   "sequences": 1,
+   "skipped": 0,
+   "detected": 1,
+   "sustained_m": [
+    89.5
+   ],
+   "sustained_median": 89.5,
+   "first_detection_m": [
+    81.1
+   ],
+   "first_detection_median": 81.1,
+   "recall_by_bin": {
+    "0-50": [
+     20,
+     20
+    ],
+    "50-100": [
+     16,
+     25
+    ],
+    "100-150": [
+     0,
+     23
+    ],
+    "150-200": [
+     0,
+     15
+    ],
+    "200-250": [
+     0,
+     7
+    ]
+   },
+   "false_detections": 0
+  },
+  "box1.0": {
+   "sequences": 1,
+   "skipped": 0,
+   "detected": 1,
+   "sustained_m": [
+    85.3
+   ],
+   "sustained_median": 85.3,
+   "first_detection_m": [
+    146.0
+   ],
+   "first_detection_median": 146.0,
+   "recall_by_bin": {
+    "0-50": [
+     20,
+     20
+    ],
+    "50-100": [
+     15,
+     25
+    ],
+    "100-150": [
+     2,
+     23
+    ],
+    "150-200": [
+     0,
+     22
+    ],
+    "200-250": [
+     0,
+     8
+    ]
+   },
+   "false_detections": 0
+  },
+  "cable": {
+   "sequences": 1,
+   "skipped": 0,
+   "detected": 1,
+   "sustained_m": [
+    35.7
+   ],
+   "sustained_median": 35.7,
+   "first_detection_m": [
+    50.2
+   ],
+   "first_detection_median": 50.2,
+   "recall_by_bin": {
+    "0-50": [
+     11,
+     15
+    ],
+    "50-100": [
+     1,
+     14
+    ],
+    "100-150": [
+     0,
+     17
+    ],
+    "150-200": [
+     0,
+     11
+    ],
+    "200-250": [
+     0,
+     3
+    ]
+   },
+   "false_detections": 0
+  }
+ },
+ "jobs": 4,
+ "placement_mode": "legacy",
+ "skipped": 0,
+ "wall_s": 29.4
+}
+
+real	0m29.909s
+user	1m5.189s
+sys	0m24.900s
