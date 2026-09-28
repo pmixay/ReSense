@@ -4,8 +4,8 @@
 > decisions; history of 16–24.09 in
 > [`archive/CAPTAIN_log_2026-09.md`](archive/CAPTAIN_log_2026-09.md).
 > **Audience:** P1, team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-28: the 28.09 section, C2, C9, C13, §4 and §5 against the head of the
-> working branch (`d359a06`: the image's default command) and the re-judgement of 28.09; earlier
+> **Last verified:** 2026-09-28: merged `origin/main` (`464f5bc`) into `testovaya-gpt`; latest
+> P1/P2 CI passed on source commit `9086cd1` and P4 evidence is current through `b68c25f`; earlier
 > tables retain dated evidence · **Status:** the 27.09 detector sealed and frozen; v1.0.0 release
 > scheduled for 28.09 21:00 Moscow time, not yet published
 
@@ -29,7 +29,25 @@ twice in a row, `hold_misses` 1) is a documented limitation, the detector stays 
 ([ARCHITECTURE «Known limitations»](ARCHITECTURE.md#limitations-of-the-sealed-2709-detector-verified-2809)); judge A's
 per-frame outputs of the sealed detector are added
 ([evidence](evidence/judge_outputs_2026-09-28/README.md)); the documents were corrected for both
-judges' findings (DECISIONS rows 18–27). Open: the team slides (P2 / team), the release (§5).
+judges' findings (DECISIONS rows 18–27).
+
+**Latest P1/P2 verification, 28.09:** [CI run 36432860933](https://github.com/pmixay/ReSense/actions/runs/36432860933)
+passed all four jobs on `testovaya-gpt` at `9086cd1`. The GitHub pytest job reports 764 passed,
+one ride-cache test deselected because that generic runner has no `/data/cache/new_data`, and six
+subtests; its separate browser job reports 74 passed, with zero skips in both JUnit reports. The
+full local `RESENSE_REQUIRE_SYNTHETIC=1 python -m pytest -q -rs` run on the merged branch, with the
+restored ride cache, reports 765 passed, six subtests, and no skips or deselections. The
+Docker job passed native-package tests, ROS launch and playback, stock and shared-memory DDS,
+remote-viewer recovery, and both original cold-disk recordings. The viewer simulation received 11
+layout topics and recovered after a deliberate link interruption; it does not replace a physical
+second-device rehearsal. Both original bags were replayed after dropping the page cache with
+read-ahead 10; the obstacle bag passed at 55.5–56.6 m with 0 source messages unprocessed, and the
+clear bag had 0 alarm frames and 0 source messages unprocessed. Captures and hashes are preserved
+in [the run receipt](evidence/p1_p2_cold_bags_2026-09-28/README.md). The local P4 run separately
+restored and tested the complete ride cache.
+
+Open: physical second-device import, private-deck city/team-formation/group-photo details, the
+team rehearsals, and the scheduled release (§5).
 
 ## Delegated work — 26.09 night (dated)
 
@@ -247,13 +265,19 @@ not replace this later failure or establish acceptance of the current root image
 - [x] Run both original bags cold on the current source with read-ahead 10. Run 362814 passed the
   obstacle and clear criteria; preserved outputs are in
   [`evidence/p1_p2_completion_2026-09-26/cold_bags_passed_run_36281462241/`](evidence/p1_p2_completion_2026-09-26/cold_bags_passed_run_36281462241/).
+  The later [run 36432860933](https://github.com/pmixay/ReSense/actions/runs/36432860933) repeated
+  both after dropping the page cache on `testovaya-gpt`: `doubleT_obstacle` PASS, p95 62 ms,
+  55.5–56.6 m, zero source messages unprocessed; `roundT_doubleT` PASS, zero alarm frames,
+  p95 38 ms, zero source messages unprocessed. The captured streams and provenance are preserved
+  in [`evidence/p1_p2_cold_bags_2026-09-28/`](evidence/p1_p2_cold_bags_2026-09-28/README.md).
 - [x] Adopt ten-message read-ahead as the supported operating procedure in the jury command,
   dry run, and demos. The [archive-cache run](evidence/p1_p2_supported_playback_2026-09-27/README.md)
   passed six CI jobs and the [verified-bag cache run](evidence/p1_p2_supported_playback_2026-09-27/cached_bags_run_36319767736/README.md)
   passed seven, each with both original cold bags; the ROS 2 default 1,000-message burst remains
   unsupported.
 - [ ] Import the Foxglove layout and rehearse from a physical second viewing device; CI only
-  simulates the separate viewer in a second container.
+  simulates the separate viewer in a second container. The simulation passed in run 36432860933:
+  11 layout topics, live detector messages, deliberate outage detection and recovery.
 - [x] Download that CI runtime archive and verify checksum, offline loading, imported source
   hashes and enabled native kernels. The older local `latest` image is restored. This is a
   current-source review artifact; [verification receipts](evidence/results/quality_delivery_2026-09-26/README.md)

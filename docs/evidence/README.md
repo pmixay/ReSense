@@ -4,8 +4,8 @@
 > [`EXPERIMENTS.md`](../EXPERIMENTS.md): the result summaries in `results/`, the logs, captures and
 > bench output of each run, and the recordings' original metadata.
 > **Audience:** team, jury · **Owner:** P1 (runs, timing), P4 (result summaries) · **Language:** EN
-> **Last verified:** 2026-09-28; the judge's per-frame outputs of the sealed detector and the node
-> input path added (each result remains the record of its own date) ·
+> **Last verified:** 2026-09-28; judge outputs, node input path, full-data P4 packet and P1/P2 cold-bag
+> CI receipt added (each result remains the record of its own date) ·
 > **Status:** current
 
 Every file here is the record of one run and is not rewritten: a new run gets a new file or folder
@@ -25,10 +25,20 @@ the end-to-end latency and CPU figures (current results and, with `e2e_all_frame
 frame result including the start-up), and the frame-by-frame identity check of the detector's
 input (`fast_input.json`).
 
+The [28 September P1/P2 CI rerun](p1_p2_cold_bags_2026-09-28/README.md) preserves the cold-cache
+replay of both original bags on `testovaya-gpt`, its source hashes, status captures and node logs,
+plus the per-frame input identity result. The same run also passed the isolated remote-viewer
+outage/recovery probe; the evidence is a protocol/container simulation, not a physical second
+screen rehearsal.
+
 The [28 September `testovaya-gpt` available-data gate](results/available_gate_testovaya_2026-09-28/README.md)
 preserves fresh per-frame outputs for the six original recordings and set O on the final 27.09
 detector. It matches all 159 available gated comparisons against the 27.09 baseline. It is partial:
-the ride and set F rows are explicitly missing because `/data/cache/new_data` was not present.
+the ride and set F rows were missing because the cache had not yet been restored. It is superseded
+by the [complete P4 full-data packet](results/p4_full_data_2026-09-28/README.md), which includes
+all six recordings, set O, all 221 ride splits and set F/S paired runs; the strict final gate passes
+all 208 enforced metrics with no waivers. P4 candidates A/B/C remain rejected and no detector gain
+or score increase is claimed.
 
 The [27 September supported playback rerun](p1_p2_supported_playback_2026-09-27/README.md)
 preserves both cold original-bag status streams and node logs, source hashes, and the six-job CI

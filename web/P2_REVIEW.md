@@ -1,6 +1,7 @@
 # P2 criteria completion — 28 September 2026
 
-> **Owner:** P2 · **Base:** `main` at `8f23284`, including the accepted 27.09 detector
+> **Owner:** P2 · **Reviewed base:** `main` at `8f23284`, including the accepted 27.09 detector;
+> current main `464f5bc` is merged into the working branch
 > **Working branch:** `testovaya-gpt` (tracks `origin/testovaya-gpt`)
 > **Status:** public PPTX/PDF/MP4/SRT rebuilt from the corrected sources on 28.09; local private preview uses the supplied roster and portraits. City, team formation, group photo, on-device demo and human rehearsals remain pending.
 
@@ -15,7 +16,7 @@ preserved. The P2 instructions and freshness limitations are in `web/README.md`.
 
 | Organizer requirement | P2 work and evidence | What remains |
 |---|---|---|
-| §4: Docker → supplied bag → raw cloud → detection → distance; preferably live | RViz config and Foxglove layout include both known raw-cloud topics, corridor and boxes; archived full Docker/RViz chain in `docs/video/docker_chain_rviz.mp4`. Foxglove channel and freshness protocol tested; browser's actual bundled roslib tested across subscribe, STOP, expiry, recovery and disconnect. The two-container viewer probe is enabled on this Claude branch. | On the actual demo machine, P1/P2 must import and visually inspect the layout from a **second device** while playing a supplied bag; test link loss/recovery. The archived recording is earlier detector evidence, not a new run of the 27.09 detector. |
+| §4: Docker → supplied bag → raw cloud → detection → distance; preferably live | RViz config and Foxglove layout include both known raw-cloud topics, corridor and boxes; archived full Docker/RViz chain in `docs/video/docker_chain_rviz.mp4`. Foxglove channel and freshness protocol tested; browser's actual bundled roslib tested across subscribe, STOP, expiry, recovery and disconnect. The two-container viewer probe passed on `testovaya-gpt` in [CI run 36432860933](https://github.com/pmixay/ReSense/actions/runs/36432860933): 11 layout topics, live detector messages, simulated link loss and recovery. | On the actual demo machine, P1/P2 must import and visually inspect the layout from a **physical second device** while playing a supplied bag; test link loss/recovery. The CI probe simulates a viewer container; it is not a visual import. The archived recording is earlier detector evidence, not a new run of the 27.09 detector. |
 | §5, §7.2: short algorithm video and accessible documentation | Public 2:50 H.264 overview and `.srt`, 16-slide PPTX/PDF in the organizers' template, updated interface screenshots, label-tool and replay instructions. The viewer can see data provenance (real bag vs organizer synthetic vs our synthetic). | Captain supplies submission links; optional narration is the speaker's choice. |
 | §8.5: robustness, tests, honest documentation | Live valid/current contract, STOP hold, stale overlays, reporting v2, label import and numeric validation, rendering and Foxglove split-advertisement checks. Browser tests cannot silently skip in CI. Detector seal checked separately; this pass does not change detector/config. | ROS runtime and physical rendering on the jury stand require the demo setup. |
 | §8.6: easy launch | `web/README.md` gives offline replay, browser validation and live Foxglove procedure. Existing `scripts/play_bag.sh` and Docker CI are owned by P1 and remain the supported jury path. | P1/demo operator checks the final image and supported read-ahead procedure on the actual machine. |
@@ -90,11 +91,18 @@ python web/demo/check_dashboard.py --jsonl out/p2-review-real.jsonl \
   --speed 2 --min-dist 55 --max-dist 57 --screenshot out/p2-review-real.png
 ```
 
-* Current verification on `testovaya-gpt`, 28.09: **83 P2 checks passed with Chromium and no skips**;
-  **753 core tests passed**, one ride-dependent test was deselected because `/data/cache/new_data`
-  is absent, and six subtests passed. Ruff 0.15.8, parameter synchronization, video consistency,
-  whitespace checks and the 31-file detector integrity seal pass. The detector seal does not replay
-  recordings.
+* Current CI verification on source commit `9086cd1`, 28.09: [run 36432860933](https://github.com/pmixay/ReSense/actions/runs/36432860933)
+  passed all four jobs. The hosted pytest job reports **764 passed, one ride-cache test deselected**
+  because `/data/cache/new_data` is not installed on that generic runner, and six subtests; the
+  Chromium dashboard job reports **74 passed**. Both JUnit reports have zero skipped tests. The
+  Docker job exercises native-package tests, ROS launch, playback, DDS modes, the separate-container
+  viewer and both original cold-disk bags. The complete-data P4 run restores the ride cache and
+  passes its strict gate; that is separate from this CI test-job deselection. Ruff, parameter
+  synchronization, video consistency, whitespace checks and the 31-file detector integrity seal
+  pass. The detector seal itself does not replay recordings.
+* Repeated locally on the merged `testovaya-gpt` tree with the restored ride cache:
+  `RESENSE_REQUIRE_SYNTHETIC=1 python -m pytest -q -rs` → **765 passed, six subtests, no skips or
+  deselections** (five Python `tarfile` deprecation warnings).
 * The shared browser validator accepted **4,760/4,760** archived records across **18** gzip files.
   It also accepted **982/982** statuses in **4** supported-playback capture files, including
   original-bag status streams.
@@ -106,10 +114,9 @@ python web/demo/check_dashboard.py --jsonl out/p2-review-real.jsonl \
   [`demo/evidence/p2_criteria_2026-09-28.json`](demo/evidence/p2_criteria_2026-09-28.json).
 
 The ignored private folder now contains a local draft made with the supplied roster and portraits;
-it is not committed. City, team formation and team photo are still missing. The remaining device
-import, human rehearsals and physical stand run cannot be marked complete from this checkout:
-`/data/for_hackathon` and a second physical viewing device are absent. The existing CI's two-container
-protocol check is not a visual Foxglove import. Optional narration was not supplied. The fresh
-independent 66.5/100 judgement is on `806b6c4`, before the corrected public binaries and current
-P2 artifact refresh; the earlier 72/100 is the dated 27.09 round-three judgement. Neither is an
-organizer-published score, and this artifact refresh has not been independently rescored.
+it is not committed. City, team formation and team photo are still missing. The remaining physical
+device import, human rehearsals and stand run are open. The CI two-container protocol check is not
+a visual Foxglove import. Optional narration was not supplied. The fresh independent **66.5/100**
+judgement is on `806b6c4`, before the corrected public binaries and current P2 artifact refresh;
+the earlier **72/100** is the dated 27.09 round-three judgement. Neither is an organizer-published
+score, and this artifact refresh has not been independently rescored.

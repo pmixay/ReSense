@@ -37,6 +37,15 @@ but no measured detector or product improvement. The **66.5/100 remains the last
 score** on `806b6c4`; the P4 run has not been independently rescored. The handoff's provisional
 internal carry-forward assessment is documented in [`P4_AUDIT.md`](P4_AUDIT.md).
 
+**P1/P2 delivery verification after the judgement (28 September): no score assigned yet.** The
+four-job [CI run 36432860933](https://github.com/pmixay/ReSense/actions/runs/36432860933) passed on
+`testovaya-gpt`: both original bags passed a cold-cache replay with no unprocessed source messages,
+the node input path matched the reference bytes on all 453 frames, and the separate-container
+Foxglove probe detected and recovered from a deliberate outage. This strengthens reproducibility
+and launch evidence after `806b6c4`; the physical second-device rehearsal and an independent
+re-judgement remain outstanding. Keep the score at **66.5/100** until a new independent review
+actually scores the newer work.
+
 Reports: [both judges](evidence/results/rejudge_2026-09-28.json). What they found:
 
 - **Speed (8.3, up):** the node's input path is real and byte-identical (453 of 453 frames, twice
@@ -858,6 +867,24 @@ objects (#4–#7) were placed from the sensor's axis, 0.24° off the rails the d
 5. **Process:** shipping from a red or untested `main`; `4b5786b` is the last green commit (§7).
 
 ## 6. Fastest points to gain
+
+The priority list below reflects the latest evidence, not a promise of 100 points. The independent
+66.5/100 review predates the newest P1/P2 work, and neither P4 nor the latest delivery checks have
+been independently rescored. A score change belongs to the next reviewer.
+
+| Priority | Work still needed | Criteria | Evidence needed to support more credit |
+|---:|---|---|---|
+| 1 | Improve small, edge and hanging-obstacle detection without increasing false alarms or releasing an unsafe GO; retain every existing safety exclusion | 8.1, 8.4 | New pre-registered detector hypothesis, labelled positives and negatives, all-data gate, false-event and range accounting; the P4 A/B/C threshold trials showed no target gain |
+| 2 | Measure real obstacle range and generalization on a route held out from tuning, with distance and object labels checked independently | 8.1, 8.2, 8.4 | Real positive objects across size/material/range and unseen approaches; synthetic set O, anchored placement and an obstacle-free ride cannot establish this |
+| 3 | Run the supported bag playback and live viewer on the actual demo setup, including a physical second screen; measure the 8-core stand and dense-station latency | 8.3, 8.5, 8.6 | Reproducible machine details, current end-to-end timings, live link recovery and a clean operator run; the four-job CI and two-container viewer test do not substitute for hardware |
+| 4 | Complete team details, private deck, and two timed rehearsals; verify the final submission artifacts | 8.7, 8.8 | Confirmed city/team-formation details, group photo if supplied, rehearsal timing and final artifact checks; current public assets are corrected but not independently rescored |
+| 5 | Obtain the outstanding organizer clarification and commission a fresh independent assessment after accepted changes | 8.1, 8.2, 8.4, all | Written answers to Q1/Q2 and a new review of the exact tested commit; do not convert internal evidence into organizer points |
+
+These are the largest evidence gaps, not a guaranteed route to a particular score. The older
+point estimates below are retained as historical context; several refer to work that has since
+changed or closed.
+
+### Historical point estimates from 24.09
 
 Gains are the judges' estimates in points out of 100; they overlap and do not add up. Effort is
 a rough size (≤ 1 h, hours, half a day, 1 day); ranked by gain per effort.
