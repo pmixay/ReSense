@@ -11,7 +11,7 @@ relative links re-pointed from `docs/` to `docs/archive/`; raw JSON names point 
 `../evidence/results/`; the link to the deleted review report of 24.09 is replaced by a note
 (the report is in the git history); two remarks on interrupted working sessions are removed; one
 thousands separator follows the docs format. Current results: [`../EXPERIMENTS.md`](EXPERIMENTS_log_2026-09.md);
-version history: [`../../CHANGELOG.md`](../../CHANGELOG.md).
+version history: [`CHANGELOG_2026-09.md`](CHANGELOG_2026-09.md).
 
 ## 0. Status — done and what is left (started 16.09, last updated 24.09)
 
