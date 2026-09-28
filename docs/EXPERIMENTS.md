@@ -3272,20 +3272,40 @@ chunked decode and an aligned uint16 view (a millisecond either way, slower on t
 rclpy's literal bytes, big-endian encapsulation and data, other layouts, row padding and
 malformed input.
 
-**Result** (end to end of the current results, p95 at 360°):
+**Result** (end to end of the **current** results, p95 at 360°):
 
 | measurement | before | after |
 |---|---|---|
-| independent judge, 5 alternating pairs, 4-vCPU Xeon 2.1 GHz, recording cached (median of the runs' p95) | 113 ms | **102 ms** |
+| independent judge, 5 alternating pairs, 4-vCPU Xeon 2.1 GHz, recording cached (median of the runs' p95) | 113 ms (102–169) | **102 ms** (87–111) |
 | the same judge, cold page cache | 137 ms | **118 ms** |
 | the team, 2 alternating pairs, same machine, cached | 120–127 ms | 93–97 ms |
 | CI runner, cold, unpaired (27.09 run 36319767736 vs 28.09 run 36397511351) | 126 ms | 60 ms |
 
 120°: 54–64 ms on the sandbox, 37 ms on the CI runner. Decode + detect p95 unchanged (~75 ms at
 360° on the sandbox); node process 0.4–0.8 cores, peak RSS 0.13–0.48 GB; 10 fps with no frame of
-the recording unprocessed after start-up; detections unchanged. **Honest reading:** a real but
-modest gain (~10–20 ms at 360° on the sandbox), not reliably under 100 ms there; the rest is the
-detector and the DDS transfer of the 24 MB cloud. Raw captures:
+the recording unprocessed after start-up; detections unchanged, including the detector's single
+GO at `doubleT_obstacle` frame 111 and CAUTION at 117 and 197 while the object on the rail is in
+view ([ARCHITECTURE «Known limitations»](ARCHITECTURE.md#limitations-of-the-sealed-2709-detector-verified-2809)).
+**Honest reading:** a real but modest gain (~10–20 ms at 360° on the sandbox), not reliably under
+100 ms there; the rest is the detector and the DDS transfer of the 24 MB cloud.
+
+**What the figures cover.** "Current" results are those whose input was fresh when they were
+made, the ones a consumer may act on; `scripts/check_dry_run.py` prints them. They leave out the
+start-up: while the node works through the player's first burst its results are published as
+FAULT, CAUTION or a held STOP (never GO), with input ages up to seconds. Over **every frame
+result** of the committed captures, start-up included (the frames the catch-up skipped are in
+neither; [`e2e_all_frames.py`](evidence/node_input_2026-09-28/e2e_all_frames.py)), p95 at 360°:
+base 1 227 / 2 143 ms → new 243 / 455 ms cached, 418 ms cold; the CI runner before the change
+762 ms; at 120° the two columns nearly agree (new 57–62 ms, base 72–76 ms). After the first
+current result every later result was current in every capture, so the difference is the
+start-up alone: 12–21 results at 360° with the new node, 79–98 in the team's base runs.
+
+**The "before" baseline is disputed.** The team's two base runs (start-up catch-up back on the
+newest frame at +7.9 / +9.8 s, 122 / 103 current results of 201) are worse than judge A's six
+base runs with the same base image: +2.2–3.5 s warm and +3.9 s cold by his checker outputs (his
+summary says +3.1–3.9 s), 149–178 current results warm. Both are stated in the
+[evidence](evidence/node_input_2026-09-28/README.md); the before / after claim rests on his
+pairs and the CI runner. Raw captures:
 [`evidence/node_input_2026-09-28/`](evidence/node_input_2026-09-28/README.md). **Not measured:** the
 organizers' 8-core i7-9700E; the ride's dense station stretch (frames 5700–5900, detector p95
 110 ms single-core) is the detector's clustering and is untouched here.

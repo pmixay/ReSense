@@ -1,0 +1,341 @@
+==== dto_cold_base_1
+== checking /tmp/judgeA/dry/dto_cold_base_1/status.jsonl ==
+status messages      : 201 (17 lines skipped)
+alarm frames         : 190
+detector alarm frames: 190 (held STOP excluded from positive evidence)
+obstacle distance    : 55.5 .. 56.6 m
+latency decode+detect: mean 60 / p95 78 / max 108 ms
+detector stage total : mean 29 / p95 43 ms
+end-to-end (current) : median 89 / p95 137 / max 187 ms over 159 current results (input publication -> result, through DDS)
+dropped input frames : 4 (0 of them skipped by the node's catch-up)
+dropped input settle : start-up catch-up back on the newest frame at +3.9 s; drops counted after +5.0 s (the later of 5 s and that, at most 15 s)
+dropped input vs bag : 151 messages of /sensing/lidar/hesai128/pointcloud after the first 5 s, 4 frame(s) missing from the recording itself; 0 of its messages not processed
+fps (last report)    : 9.93
+start of the input   : 50 frames in the first 5 s after the first one, largest gap 0.1 s, first STOP at +0.8 s
+freshness contract  : PASS
+
+FAIL: end-to-end p95 137 ms > 100 ms
+rc=1
+wall=34.136525522
+==== dto_cold_ci_1
+== checking /tmp/judgeA/dry/dto_cold_ci_1/status.jsonl ==
+status messages      : 201 (17 lines skipped)
+alarm frames         : 190
+detector alarm frames: 190 (held STOP excluded from positive evidence)
+obstacle distance    : 55.5 .. 56.6 m
+latency decode+detect: mean 56 / p95 74 / max 111 ms
+detector stage total : mean 29 / p95 42 ms
+end-to-end (current) : median 73 / p95 118 / max 161 ms over 169 current results (input publication -> result, through DDS)
+node CPU             : 0.73 cores median, 1.03 max (node process, every stats period); peak RSS 476 MB
+dropped input frames : 4 (0 of them skipped by the node's catch-up)
+dropped input settle : start-up catch-up back on the newest frame at +3.2 s; drops counted after +5.0 s (the later of 5 s and that, at most 15 s)
+dropped input vs bag : 151 messages of /sensing/lidar/hesai128/pointcloud after the first 5 s, 4 frame(s) missing from the recording itself; 0 of its messages not processed
+fps (last report)    : 10.01
+start of the input   : 50 frames in the first 5 s after the first one, largest gap 0.1 s, first STOP at +0.8 s
+freshness contract  : PASS
+
+FAIL: end-to-end p95 118 ms > 100 ms
+rc=1
+wall=33.885054304
+==== dto_offline_rt
+== checking /tmp/judgeA/dry/dto_offline_rt/status.jsonl ==
+status messages      : 201 (15 lines skipped)
+alarm frames         : 190
+detector alarm frames: 190 (held STOP excluded from positive evidence)
+obstacle distance    : 55.5 .. 56.6 m
+latency decode+detect: mean 57 / p95 72 / max 182 ms
+detector stage total : mean 29 / p95 41 ms
+end-to-end (current) : median 76 / p95 105 / max 132 ms over 178 current results (input publication -> result, through DDS)
+node CPU             : 0.77 cores median, 0.98 max (node process, every stats period); peak RSS 408 MB
+dropped input frames : 4 (0 of them skipped by the node's catch-up)
+dropped input settle : start-up catch-up back on the newest frame at +2.3 s; drops counted after +5.0 s (the later of 5 s and that, at most 15 s)
+dropped input vs bag : 151 messages of /sensing/lidar/hesai128/pointcloud after the first 5 s, 4 frame(s) missing from the recording itself; 0 of its messages not processed
+fps (last report)    : 10.01
+start of the input   : 50 frames in the first 5 s after the first one, largest gap 0.1 s, first STOP at +0.8 s
+freshness contract  : PASS
+
+PASS: all dry-run criteria met
+rc=0
+==== dto_warm_base_1
+== checking /tmp/judgeA/dry/dto_warm_base_1/status.jsonl ==
+status messages      : 201 (17 lines skipped)
+alarm frames         : 190
+detector alarm frames: 190 (held STOP excluded from positive evidence)
+obstacle distance    : 55.5 .. 56.6 m
+latency decode+detect: mean 57 / p95 75 / max 93 ms
+detector stage total : mean 29 / p95 41 ms
+end-to-end (current) : median 75 / p95 102 / max 150 ms over 166 current results (input publication -> result, through DDS)
+dropped input frames : 4 (0 of them skipped by the node's catch-up)
+dropped input settle : start-up catch-up back on the newest frame at +3.5 s; drops counted after +5.0 s (the later of 5 s and that, at most 15 s)
+dropped input vs bag : 151 messages of /sensing/lidar/hesai128/pointcloud after the first 5 s, 4 frame(s) missing from the recording itself; 0 of its messages not processed
+fps (last report)    : 8.47
+start of the input   : 50 frames in the first 5 s after the first one, largest gap 0.1 s, first STOP at +0.8 s
+freshness contract  : PASS
+
+FAIL: end-to-end p95 102 ms > 100 ms
+rc=1
+wall=34.067636928
+==== dto_warm_base_2
+== checking /tmp/judgeA/dry/dto_warm_base_2/status.jsonl ==
+status messages      : 201 (15 lines skipped)
+alarm frames         : 190
+detector alarm frames: 190 (held STOP excluded from positive evidence)
+obstacle distance    : 55.5 .. 56.6 m
+latency decode+detect: mean 59 / p95 73 / max 86 ms
+detector stage total : mean 29 / p95 40 ms
+end-to-end (current) : median 81 / p95 107 / max 165 ms over 176 current results (input publication -> result, through DDS)
+dropped input frames : 4 (0 of them skipped by the node's catch-up)
+dropped input settle : start-up catch-up back on the newest frame at +2.5 s; drops counted after +5.0 s (the later of 5 s and that, at most 15 s)
+dropped input vs bag : 151 messages of /sensing/lidar/hesai128/pointcloud after the first 5 s, 4 frame(s) missing from the recording itself; 0 of its messages not processed
+fps (last report)    : 10.05
+start of the input   : 50 frames in the first 5 s after the first one, largest gap 0.1 s, first STOP at +0.8 s
+freshness contract  : PASS
+
+FAIL: end-to-end p95 107 ms > 100 ms
+rc=1
+wall=33.547373493
+==== dto_warm_base_3
+== checking /tmp/judgeA/dry/dto_warm_base_3/status.jsonl ==
+status messages      : 201 (16 lines skipped)
+alarm frames         : 190
+detector alarm frames: 190 (held STOP excluded from positive evidence)
+obstacle distance    : 55.5 .. 56.6 m
+latency decode+detect: mean 62 / p95 76 / max 94 ms
+detector stage total : mean 31 / p95 42 ms
+end-to-end (current) : median 90 / p95 169 / max 186 ms over 149 current results (input publication -> result, through DDS)
+dropped input frames : 4 (0 of them skipped by the node's catch-up)
+dropped input settle : start-up catch-up back on the newest frame at +3.4 s; drops counted after +5.0 s (the later of 5 s and that, at most 15 s)
+dropped input vs bag : 151 messages of /sensing/lidar/hesai128/pointcloud after the first 5 s, 4 frame(s) missing from the recording itself; 0 of its messages not processed
+fps (last report)    : 10.1
+start of the input   : 50 frames in the first 5 s after the first one, largest gap 0.1 s, first STOP at +0.8 s
+freshness contract  : PASS
+
+FAIL: end-to-end p95 169 ms > 100 ms
+rc=1
+wall=33.710911236
+==== dto_warm_base_4
+== checking /tmp/judgeA/dry/dto_warm_base_4/status.jsonl ==
+status messages      : 201 (17 lines skipped)
+alarm frames         : 190
+detector alarm frames: 190 (held STOP excluded from positive evidence)
+obstacle distance    : 55.5 .. 56.6 m
+latency decode+detect: mean 61 / p95 78 / max 89 ms
+detector stage total : mean 30 / p95 42 ms
+end-to-end (current) : median 88 / p95 141 / max 176 ms over 161 current results (input publication -> result, through DDS)
+dropped input frames : 4 (0 of them skipped by the node's catch-up)
+dropped input settle : start-up catch-up back on the newest frame at +3.1 s; drops counted after +5.0 s (the later of 5 s and that, at most 15 s)
+dropped input vs bag : 151 messages of /sensing/lidar/hesai128/pointcloud after the first 5 s, 4 frame(s) missing from the recording itself; 0 of its messages not processed
+fps (last report)    : 10.05
+start of the input   : 50 frames in the first 5 s after the first one, largest gap 0.1 s, first STOP at +0.8 s
+freshness contract  : PASS
+
+FAIL: end-to-end p95 141 ms > 100 ms
+rc=1
+wall=33.625689142
+==== dto_warm_base_5
+== checking /tmp/judgeA/dry/dto_warm_base_5/status.jsonl ==
+status messages      : 201 (15 lines skipped)
+alarm frames         : 190
+detector alarm frames: 190 (held STOP excluded from positive evidence)
+obstacle distance    : 55.5 .. 56.6 m
+latency decode+detect: mean 58 / p95 75 / max 96 ms
+detector stage total : mean 29 / p95 43 ms
+end-to-end (current) : median 79 / p95 113 / max 175 ms over 178 current results (input publication -> result, through DDS)
+dropped input frames : 4 (0 of them skipped by the node's catch-up)
+dropped input settle : start-up catch-up back on the newest frame at +2.2 s; drops counted after +5.0 s (the later of 5 s and that, at most 15 s)
+dropped input vs bag : 151 messages of /sensing/lidar/hesai128/pointcloud after the first 5 s, 4 frame(s) missing from the recording itself; 0 of its messages not processed
+fps (last report)    : 10.1
+start of the input   : 50 frames in the first 5 s after the first one, largest gap 0.1 s, first STOP at +0.8 s
+freshness contract  : PASS
+
+FAIL: end-to-end p95 113 ms > 100 ms
+rc=1
+wall=33.734936882
+==== dto_warm_ci_1
+== checking /tmp/judgeA/dry/dto_warm_ci_1/status.jsonl ==
+status messages      : 201 (17 lines skipped)
+alarm frames         : 190
+detector alarm frames: 190 (held STOP excluded from positive evidence)
+obstacle distance    : 55.5 .. 56.6 m
+latency decode+detect: mean 57 / p95 75 / max 224 ms
+detector stage total : mean 30 / p95 42 ms
+end-to-end (current) : median 73 / p95 102 / max 242 ms over 157 current results (input publication -> result, through DDS)
+node CPU             : 0.73 cores median, 1.07 max (node process, every stats period); peak RSS 431 MB
+dropped input frames : 4 (0 of them skipped by the node's catch-up)
+dropped input settle : start-up catch-up back on the newest frame at +4.0 s; drops counted after +5.0 s (the later of 5 s and that, at most 15 s)
+dropped input vs bag : 151 messages of /sensing/lidar/hesai128/pointcloud after the first 5 s, 4 frame(s) missing from the recording itself; 0 of its messages not processed
+fps (last report)    : 10.05
+start of the input   : 50 frames in the first 5 s after the first one, largest gap 0.1 s, first STOP at +0.8 s
+freshness contract  : PASS
+
+FAIL: end-to-end p95 102 ms > 100 ms
+rc=1
+wall=33.623705778
+==== dto_warm_ci_2
+== checking /tmp/judgeA/dry/dto_warm_ci_2/status.jsonl ==
+status messages      : 201 (14 lines skipped)
+alarm frames         : 190
+detector alarm frames: 190 (held STOP excluded from positive evidence)
+obstacle distance    : 55.5 .. 56.6 m
+latency decode+detect: mean 53 / p95 65 / max 91 ms
+detector stage total : mean 28 / p95 37 ms
+end-to-end (current) : median 71 / p95 87 / max 159 ms over 185 current results (input publication -> result, through DDS)
+node CPU             : 0.71 cores median, 0.89 max (node process, every stats period); peak RSS 340 MB
+dropped input frames : 4 (0 of them skipped by the node's catch-up)
+dropped input settle : start-up catch-up back on the newest frame at +1.6 s; drops counted after +5.0 s (the later of 5 s and that, at most 15 s)
+dropped input vs bag : 151 messages of /sensing/lidar/hesai128/pointcloud after the first 5 s, 4 frame(s) missing from the recording itself; 0 of its messages not processed
+fps (last report)    : 10.1
+start of the input   : 50 frames in the first 5 s after the first one, largest gap 0.1 s, first STOP at +0.8 s
+freshness contract  : PASS
+
+PASS: all dry-run criteria met
+rc=0
+wall=33.346217140
+==== dto_warm_ci_3
+== checking /tmp/judgeA/dry/dto_warm_ci_3/status.jsonl ==
+status messages      : 201 (15 lines skipped)
+alarm frames         : 190
+detector alarm frames: 190 (held STOP excluded from positive evidence)
+obstacle distance    : 55.5 .. 56.6 m
+latency decode+detect: mean 54 / p95 67 / max 107 ms
+detector stage total : mean 29 / p95 39 ms
+end-to-end (current) : median 73 / p95 94 / max 157 ms over 186 current results (input publication -> result, through DDS)
+node CPU             : 0.75 cores median, 0.83 max (node process, every stats period); peak RSS 362 MB
+dropped input frames : 4 (0 of them skipped by the node's catch-up)
+dropped input settle : start-up catch-up back on the newest frame at +1.5 s; drops counted after +5.0 s (the later of 5 s and that, at most 15 s)
+dropped input vs bag : 151 messages of /sensing/lidar/hesai128/pointcloud after the first 5 s, 4 frame(s) missing from the recording itself; 0 of its messages not processed
+fps (last report)    : 10.13
+start of the input   : 50 frames in the first 5 s after the first one, largest gap 0.1 s, first STOP at +0.8 s
+freshness contract  : PASS
+
+PASS: all dry-run criteria met
+rc=0
+wall=33.629653357
+==== dto_warm_ci_4
+== checking /tmp/judgeA/dry/dto_warm_ci_4/status.jsonl ==
+status messages      : 201 (15 lines skipped)
+alarm frames         : 190
+detector alarm frames: 190 (held STOP excluded from positive evidence)
+obstacle distance    : 55.5 .. 56.6 m
+latency decode+detect: mean 59 / p95 82 / max 116 ms
+detector stage total : mean 31 / p95 45 ms
+end-to-end (current) : median 77 / p95 111 / max 146 ms over 179 current results (input publication -> result, through DDS)
+node CPU             : 0.76 cores median, 0.99 max (node process, every stats period); peak RSS 339 MB
+dropped input frames : 4 (0 of them skipped by the node's catch-up)
+dropped input settle : start-up catch-up back on the newest frame at +2.2 s; drops counted after +5.0 s (the later of 5 s and that, at most 15 s)
+dropped input vs bag : 151 messages of /sensing/lidar/hesai128/pointcloud after the first 5 s, 4 frame(s) missing from the recording itself; 0 of its messages not processed
+fps (last report)    : 10.05
+start of the input   : 50 frames in the first 5 s after the first one, largest gap 0.1 s, first STOP at +0.8 s
+freshness contract  : PASS
+
+FAIL: end-to-end p95 111 ms > 100 ms
+rc=1
+wall=33.825752484
+==== dto_warm_ci_5
+== checking /tmp/judgeA/dry/dto_warm_ci_5/status.jsonl ==
+status messages      : 201 (14 lines skipped)
+alarm frames         : 190
+detector alarm frames: 190 (held STOP excluded from positive evidence)
+obstacle distance    : 55.5 .. 56.6 m
+latency decode+detect: mean 59 / p95 80 / max 118 ms
+detector stage total : mean 30 / p95 43 ms
+end-to-end (current) : median 78 / p95 105 / max 154 ms over 179 current results (input publication -> result, through DDS)
+node CPU             : 0.77 cores median, 0.98 max (node process, every stats period); peak RSS 339 MB
+dropped input frames : 4 (0 of them skipped by the node's catch-up)
+dropped input settle : start-up catch-up back on the newest frame at +2.2 s; drops counted after +5.0 s (the later of 5 s and that, at most 15 s)
+dropped input vs bag : 151 messages of /sensing/lidar/hesai128/pointcloud after the first 5 s, 4 frame(s) missing from the recording itself; 0 of its messages not processed
+fps (last report)    : 10.03
+start of the input   : 50 frames in the first 5 s after the first one, largest gap 0.1 s, first STOP at +0.8 s
+freshness contract  : PASS
+
+FAIL: end-to-end p95 105 ms > 100 ms
+rc=1
+wall=33.753076676
+==== rt_cold_ci_1
+== checking /tmp/judgeA/dry/rt_cold_ci_1/status.jsonl ==
+status messages      : 252 (14 lines skipped)
+alarm frames         : 0
+detector alarm frames: 0 (held STOP excluded from positive evidence)
+latency decode+detect: mean 39 / p95 57 / max 80 ms
+detector stage total : mean 27 / p95 42 ms
+end-to-end (current) : median 45 / p95 64 / max 139 ms over 250 current results (input publication -> result, through DDS)
+node CPU             : 0.49 cores median, 0.53 max (node process, every stats period); peak RSS 126 MB
+dropped input frames : 0 (0 of them skipped by the node's catch-up)
+dropped input vs bag : 201 messages of /lidar_points after the first 5 s, 0 frame(s) missing from the recording itself; 0 of its messages not processed
+fps (last report)    : 10.0
+start of the input   : 51 frames in the first 5 s after the first one, largest gap 0.1 s
+freshness contract  : PASS
+
+PASS: all dry-run criteria met
+rc=0
+wall=38.115991137
+==== rt_warm_base_1
+== checking /tmp/judgeA/dry/rt_warm_base_1/status.jsonl ==
+status messages      : 252 (14 lines skipped)
+alarm frames         : 0
+detector alarm frames: 0 (held STOP excluded from positive evidence)
+latency decode+detect: mean 39 / p95 49 / max 82 ms
+detector stage total : mean 26 / p95 35 ms
+end-to-end (current) : median 56 / p95 70 / max 128 ms over 250 current results (input publication -> result, through DDS)
+dropped input frames : 0 (0 of them skipped by the node's catch-up)
+dropped input vs bag : 201 messages of /lidar_points after the first 5 s, 0 frame(s) missing from the recording itself; 0 of its messages not processed
+fps (last report)    : 10.0
+start of the input   : 51 frames in the first 5 s after the first one, largest gap 0.1 s
+freshness contract  : PASS
+
+PASS: all dry-run criteria met
+rc=0
+wall=37.470132200
+==== rt_warm_base_2
+== checking /tmp/judgeA/dry/rt_warm_base_2/status.jsonl ==
+status messages      : 252 (14 lines skipped)
+alarm frames         : 0
+detector alarm frames: 0 (held STOP excluded from positive evidence)
+latency decode+detect: mean 40 / p95 52 / max 78 ms
+detector stage total : mean 26 / p95 36 ms
+end-to-end (current) : median 56 / p95 75 / max 120 ms over 250 current results (input publication -> result, through DDS)
+dropped input frames : 0 (0 of them skipped by the node's catch-up)
+dropped input vs bag : 201 messages of /lidar_points after the first 5 s, 0 frame(s) missing from the recording itself; 0 of its messages not processed
+fps (last report)    : 10.07
+start of the input   : 51 frames in the first 5 s after the first one, largest gap 0.1 s
+freshness contract  : PASS
+
+PASS: all dry-run criteria met
+rc=0
+wall=37.547958348
+==== rt_warm_ci_1
+== checking /tmp/judgeA/dry/rt_warm_ci_1/status.jsonl ==
+status messages      : 252 (13 lines skipped)
+alarm frames         : 0
+detector alarm frames: 0 (held STOP excluded from positive evidence)
+latency decode+detect: mean 41 / p95 57 / max 92 ms
+detector stage total : mean 28 / p95 43 ms
+end-to-end (current) : median 46 / p95 64 / max 106 ms over 245 current results (input publication -> result, through DDS)
+node CPU             : 0.48 cores median, 0.53 max (node process, every stats period); peak RSS 129 MB
+dropped input frames : 0 (0 of them skipped by the node's catch-up)
+dropped input vs bag : 201 messages of /lidar_points after the first 5 s, 0 frame(s) missing from the recording itself; 0 of its messages not processed
+fps (last report)    : 9.96
+start of the input   : 51 frames in the first 5 s after the first one, largest gap 0.1 s
+freshness contract  : PASS
+
+PASS: all dry-run criteria met
+rc=0
+wall=37.535048194
+==== rt_warm_ci_2
+== checking /tmp/judgeA/dry/rt_warm_ci_2/status.jsonl ==
+status messages      : 252 (13 lines skipped)
+alarm frames         : 0
+detector alarm frames: 0 (held STOP excluded from positive evidence)
+latency decode+detect: mean 37 / p95 46 / max 59 ms
+detector stage total : mean 25 / p95 33 ms
+end-to-end (current) : median 43 / p95 54 / max 93 ms over 250 current results (input publication -> result, through DDS)
+node CPU             : 0.44 cores median, 0.48 max (node process, every stats period); peak RSS 128 MB
+dropped input frames : 0 (0 of them skipped by the node's catch-up)
+dropped input vs bag : 201 messages of /lidar_points after the first 5 s, 0 frame(s) missing from the recording itself; 0 of its messages not processed
+fps (last report)    : 10.0
+start of the input   : 51 frames in the first 5 s after the first one, largest gap 0.1 s
+freshness contract  : PASS
+
+PASS: all dry-run criteria met
+rc=0
+wall=37.487163241

@@ -1,0 +1,4 @@
+      0 s    0.00 GB  cloud_with_fake_obj/metadata.yaml
+     34 s    7.42 GB  cloud_with_fake_obj/cloud_with_fake_obj_0.db3
+extracted 2 files, 7.4 GB to /dev/shm/judgeA in 34 s
+rc=0

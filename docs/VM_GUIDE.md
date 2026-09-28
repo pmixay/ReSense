@@ -6,7 +6,8 @@
 > rehearsal), and how the results come back as evidence in a PR. Instructions only: every step is
 > a plain command of the repository's own tools, parameterised by shell variables you set.
 > **Audience:** team (a person or an agent on the VM) · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-25 against `46bb266`: the ride loop of §2.3 run in the dev sandbox on
+> **Last verified:** 2026-09-28: the image's default command and the release note of §4.5 only;
+> 2026-09-25 against `46bb266`: the ride loop of §2.3 run in the dev sandbox on
 > the first split files of `new_data.zst` (cache files byte-identical to the dev VM's ride cache of
 > 25.09), both download endpoints of §2 answering; the other commands follow the scripts' headers
 > and the README, not yet run on a VM · **Status:** current
@@ -15,7 +16,8 @@
 has a separate startup catch-up allowance and the dry-run checker matches recorded header
 stamps directly (§4.1). The sealed baseline's cold/warm/bounded-load results are in
 [freeze evidence](evidence/freeze_2026-09-26/README.md). A later quality cycle adds explicit
-`freshness_mode:=replay` for bag tests; the default `live` mode checks acquisition UTC.
+`freshness_mode:=replay` for bag tests; the node's default `live` mode checks acquisition UTC.
+Since 28.09 the image's default command passes `freshness_mode:=replay` itself.
 Rebuild the image before using the updated commands. Current harnesses require freshness
 metadata and at least one valid frame per recording, so an all-FAULT run cannot pass.
 Earlier dated measurements remain evidence for the versions actually run. Release is on hold.
@@ -443,7 +445,8 @@ mkdir -p "$EV/export_$DAY"
 image is built from `git archive HEAD`). **Done:** both scripts exit 0. **Evidence:**
 `docs/evidence/export_<date>/archive.txt` (size, sha256, commit); **never** the archive itself
 (`dist/` is ignored by git). This export creates no tag or release; the captain deferred public
-releases on 25.09 (C13), with the current preparation path below.
+releases on 25.09 (C13); the `v1.0.0` release is scheduled for 28.09 21:00 Moscow time (not yet
+published), by the path below.
 Without a VM: since 26.09 the CI job `offline-build` of a push to the working branch or `main`
 offers the same runtime archive (`GZIP_LEVEL=1`) with its `.sha256` as the run artifact
 `resense-image-<version>-<short commit>` (ARCHITECTURE "Deployment without internet").

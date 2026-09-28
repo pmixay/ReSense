@@ -3,7 +3,8 @@
 > **Purpose:** components, data flow and real-time budget of ReSense (spec §5 "Архитектура").
 > **Audience:** jury, team · **Owner:** P1 · **Language:** EN, summary RU
 > **Last verified:** 2026-09-25, `8932f3a` (detector v0.6.3, node v0.6.4); the node's input path and
-> end-to-end latency 2026-09-28 ("Real-time budget") · **Status:** current
+> end-to-end latency ("Real-time budget") and "Known limitations" 2026-09-28, against the committed
+> node captures and the sealed detector · **Status:** current
 
 **Кратко.** ROS 2-нода `resense_ros` принимает облако `PointCloud2` от `ros2 bag play` (любая из
 двух пар топик / frame id) и передаёт каждый кадр библиотеке `resense` (Python: numpy / scipy /
@@ -205,8 +206,9 @@ ros2 bag play ──/lidar_points or /sensing/lidar/hesai128/pointcloud (PointCl
   An outstanding `STOP` remains explicitly held until a fresh valid non-STOP result clears it;
   otherwise stale/unknown clocks produce `FAULT`, and a current short queue produces `CAUTION`.
   The node reports the source age, local queue residence, recording lag and validity reason.
-  Default `freshness_mode=live` compares acquisition UTC to system UTC. Explicit `replay` uses
-  DDS publication UTC; historical acquisition age is unavailable. The Humble executor adapter
+  The node's default `freshness_mode=live` compares acquisition UTC to system UTC. `replay` uses
+  DDS publication UTC; historical acquisition age is unavailable. Since 28.09 the image's default
+  command passes `freshness_mode:=replay` (recorded bags); a live LiDAR on a train needs `live`. The Humble executor adapter
   preserves publication metadata for the LiDAR subscriptions, including drained queued messages.
   Validity is checked at publication. The watchdog shares the detector executor and cannot run
   during a blocked callback. An actionable consumer must expire timestamped status locally;
@@ -270,7 +272,10 @@ unchanged. End to end through ROS (the input's publication by the player → the
 (an independent judge's 5 alternating pairs), not reliably under the 100 ms period there; on a
 CI runner, cold, 60 ms at 360° and 37 ms at 120°. The node process uses 0.4–0.8 cores. The status
 `node` object reports `decode_ms`, `detect_ms`, `cpu_cores` and `rss_peak_mb` on every frame, and
-`scripts/check_dry_run.py` prints the end-to-end figures of any capture.
+`scripts/check_dry_run.py` prints the end-to-end figures of any capture. Those cover the
+**current** results (input still fresh when the result was made); over every frame result,
+the start-up catch-up included, p95 at 360° is 243–455 ms cached and 418 ms cold on the sandbox
+([`e2e_all_frames.py`](evidence/node_input_2026-09-28/e2e_all_frames.py)).
 
 ## Native kernels (optional, C++; 24.09)
 
@@ -423,7 +428,7 @@ messages, 42 alarm frames at 44.9–59.9 m, p95 26 ms, both recordings, `PASS`.
 
 **Download from CI (26.09).** On a push to `main` or the working branch (`claude/amazing-fermi-t67v8g` since 28.09; not on other
 branches or tags), and only when every step of `offline-build` passed, the job uploads that very
-archive (`actions/upload-artifact@v4`, kept 30 days, stored as is: it is gzip already) as the run
+archive (`actions/upload-artifact@v7`, kept 30 days, stored as is: it is gzip already) as the run
 artifact `resense-image-<version>-<short commit>`: `resense-image-<version>-<short
 commit>.tar.gz`, a hard link to the archive that was loaded, rebuilt offline and played through,
 and its `.sha256`, written for that name as `export_image.sh` writes it and checked against the
@@ -488,6 +493,20 @@ on a clean checkout of the chosen tag, followed by publishing and `scripts/verif
 
 Details: [`ALGORITHM.md`](ALGORITHM.md) §6 and [`EXPERIMENTS.md`](EXPERIMENTS.md) §4.
 
+* **A confirmed STOP can drop for one frame** when its object forms no cluster in two frames in a
+  row (`tracking.hold_misses` 1 holds it over one miss only): on `doubleT_obstacle` the node
+  publishes GO at frame 111 (11.1 s) and CAUTION at frames 117 and 197 while the object lying
+  across the rail is in view, STOP on 123 of the 126 frames after the person leaves it
+  (`clear_distance` stays capped at 56.2 m in those frames). The detector is sealed, so this is
+  documented, not fixed (below, "Limitations of the sealed 27.09 detector").
+  A consumer should not act on a single-frame GO.
+* **The learned track opinion delays a doubtful far STOP by up to 10 processed frames** in a
+  track's life (beyond 25 m): ~1 s at 10 Hz, ~2 s at 5 Hz, longer in recording time while the
+  node catches up (one frame per 0.3 s of recording).
+* **Latency at 360° on a 4-vCPU machine**: end-to-end p95 of the current results about 100 ms
+  (judge A: 102 ms cached, 118 ms cold), not reliably under the frame period; the start-up
+  catch-up yields no current result for the first 1.5–4 s of a 360° recording (judge A's runs;
+  the all-frame p95 is 0.24–0.46 s, "Real-time budget"). The organizers' 8-core i7-9700E was not available for a measurement.
 * Curvature is only observed where tunnel boundaries are visible; stations and switch caverns
   weaken the estimate → detections there are demoted to warnings and `health` reports it.
 * Infrastructure filters are hand-tuned on six bags and checked on the 20-minute ride.
@@ -495,3 +514,48 @@ Details: [`ALGORITHM.md`](ALGORITHM.md) §6 and [`EXPERIMENTS.md`](EXPERIMENTS.m
   the same size); an object on a rail is.
 * Without a train speed the tracker uses a range-dependent gate with a 25 m/s slack and the
   pipeline is single-frame; beyond ~150 m a person returns 3–10 points per frame.
+
+### Limitations of the sealed 27.09 detector (verified 28.09)
+
+The detector is sealed ([`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md)): these are documented, not
+fixed. The quality cycle's own list is in
+[`QUALITY_CYCLE_2026-09-27.md`](QUALITY_CYCLE_2026-09-27.md) "Limits".
+
+* **A confirmed STOP drops for one frame when its object is missed twice in a row.** On
+  `doubleT_obstacle` the object lying across the rail (about 20 labelled points at 56 m, in view
+  the whole recording) gets **GO at frame 111** (11.1 s of recording) and CAUTION at frames 117
+  and 197 (11.7 s and 20.1 s): STOP on 123 of the 126 frames after the person leaves it, through
+  the ROS node and offline on the raw recording (125 of 126 on the team's 1 cm frame cache, the
+  figure quoted until 28.09). Traced offline on the raw recording with the sealed code (28.09): in
+  frames 110–111, 116–117 and 196–197 the low-object stage ([`ALGORITHM.md`](ALGORITHM.md) §3.3b) forms no cluster from the
+  object's returns, so its confirmed `low` track (40 hits by frame 109) misses two frames in a row;
+  `tracking.hold_misses` = 1 keeps it reported over the first miss, at its predicted distance, and
+  releases it on the second ([`ALGORITHM.md`](ALGORITHM.md) §4); the next frame matches it and it is a STOP again at once (frames
+  112, 118, 198). Frame 111 has no other object, so the decision is GO; in 117 and 197 advisory
+  objects elsewhere make it CAUTION. In those frames `clear_distance` stays capped at 56.2 m
+  (`health.clear_cap_lost`: the predicted distance of the lost track), so the monitored-range
+  estimate does not extend past the object, but a consumer that reads only `/resense/decision`
+  gets GO for one 100 ms frame. It reproduces in every node capture that processed all 201 frames
+  (the sealed detector: four captures of 28.09; the P3d detector: CI run 36319767736 of 27.09),
+  in the offline run on the raw recording and in judge A's jury-chain run; in the two captures
+  whose start-up catch-up skipped frames, 111 and 117 are STOP and only 197 is CAUTION — the
+  stages that form the cluster keep state across frames (the learned bed template, the smoothed
+  track model), so the misses depend on what the detector saw before. A fix (for example holding
+  a confirmed stationary in-envelope track over two or three misses at short range) would need
+  the full gate and a review; not made. Evidence and recomputation:
+  [`evidence/judge_outputs_2026-09-28/`](evidence/judge_outputs_2026-09-28/README.md).
+* **The learned opinion's delay is counted in processed frames** ([`ALGORITHM.md`](ALGORITHM.md) §3.6): at most 10 frames over a
+  track's life, beyond 25 m and not for a body ≥ 1 m tall within 40 m — ~1 s at 10 Hz, ~2 s at
+  5 Hz, up to ~3 s of recording while the node catches up. Its positives are synthetic; a real
+  object unlike them can use the whole budget.
+* **In-sample.** Every rule and the opinion's negatives were tuned on the six recordings, the ride
+  and set O; the only held-out figure is the ride with the opinion cross-fitted (37 events, the
+  rules still in-sample). The labels of `doubleT_obstacle` were made with the team's own tools
+  and set O's positions are measured in the shipped detector's frame: neither is an independent
+  ground truth ([`EVALUATION.md`](EVALUATION.md) §1).
+* **`CAUTION` is frequent**: 170–172 of the 252 frames of the obstacle-free `roundT_doubleT`
+  through the node (columns, the advisory band, objects beyond the trusted axis). It is
+  advisory, not an alarm, so an object demoted to it is easy to overlook.
+* **Small objects low on the bed and objects at the envelope edge are found late**: set O's
+  0.3 m cubes from 43–56 m, the edge cube from 35 m, the edge 2 × 2 m box from 18 m by the scorer
+  (its track from 28.7 m), set F's 0.5 m box on the bed in 1 of 6 approaches.

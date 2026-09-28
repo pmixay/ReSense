@@ -1,0 +1,144 @@
+#!/usr/bin/env python3
+"""Judge A's own matcher: per-frame detector output (resense run JSONL, or node status JSONL)
+against a per-frame label file (labels/*.json).
+
+A labelled object-frame is "positive" when the object is meant to be inside the envelope
+(label in_gauge true, plausible when given) and has >= 1 point.  A STOP detection (a detections[]
+entry of a frame with obstacle true) matches an object when its along-track distance lies in
+[d_obj - TOL_D, d_obj + size_x + TOL_D] and |lateral - lateral_obj| <= size_y / 2 + TOL_L.
+Reports per object: positive frames, frames with a matched STOP, the first (farthest, in time
+order) matched STOP distance, and the distance from which STOP holds on >= 90 % of the remaining
+positive frames; plus unmatched STOP frames (false alarms) and STOPs matched only to objects
+labelled outside the envelope.
+"""
+import argparse
+import gzip
+import json
+import collections
+
+ap = argparse.ArgumentParser()
+ap.add_argument("results")
+ap.add_argument("labels")
+ap.add_argument("--status", action="store_true", help="results are node /resense/status JSONL (match by stamp)")
+ap.add_argument("--tol-d", type=float, default=2.0)
+ap.add_argument("--tol-l", type=float, default=1.5)
+ap.add_argument("--json")
+a = ap.parse_args()
+
+L = json.load(open(a.labels))
+meta = L.get("_meta", {})
+objmeta = meta.get("objects", {})
+keys = sorted(k for k in L if k != "_meta")
+
+opener = gzip.open if a.results.endswith(".gz") else open
+rows = []
+for line in opener(a.results, "rt"):
+    line = line.strip()
+    if not line or line == "---":
+        continue
+    try:
+        d = json.loads(line)
+    except ValueError:
+        continue
+    if "obstacle" not in d:
+        continue
+    if a.status and (d.get("snapshot_kind", "frame") != "frame" or (d.get("decision") == "FAULT" and "node" not in d)):
+        continue
+    rows.append(d)
+
+if a.status:
+    # map node frames to label frames by header-stamp order: label frame i = i-th message of the bag
+    stamps = sorted({round(r["stamp"], 4) for r in rows})
+    # the status carries every processed frame; recover the bag index from the stamp period
+    import numpy as np
+    # label files have no stamps: assume the first bag frame is the smallest stamp minus skipped ones is unknown;
+    # use the node's input period and the first stamp of the bag passed via rows[0]["node"]? -> keep simple:
+    raise SystemExit("--status mode: use map_status_to_frames() in the caller")
+by_frame = {int(r["frame"]): r for r in rows}
+
+
+def positive(o):
+    ig = o.get("in_gauge")
+    if ig is None and o.get("name") in objmeta:
+        ig = objmeta[o["name"]]["in_gauge"]
+    return bool(ig) and o.get("plausible", True) and o.get("n_points", 1) > 0
+
+
+def matches(det, o):
+    d0 = o["distance"]
+    sx = o.get("size", [0.5, 0.5, 0.5])[0]
+    sy = o.get("size", [0.5, 0.5, 0.5])[1]
+    return (d0 - a.tol_d <= det["distance"] <= d0 + sx + a.tol_d
+            and abs(det["lateral"] - o["lateral"]) <= sy / 2 + a.tol_l)
+
+
+per = collections.defaultdict(lambda: {"positive_frames": 0, "stop_frames": 0, "first_stop_m": None,
+                                       "first_visible_m": None, "series": []})
+false_stop_frames, outside_stop_frames, frames_with_pos, frames_with_pos_stop = 0, 0, 0, 0
+background_frames, background_stop = 0, 0
+nearest_err = []
+missing = 0
+for k in keys:
+    i = int(k)
+    r = by_frame.get(i)
+    if r is None:
+        missing += 1
+        continue
+    objs = L[k]
+    dets = r["detections"] if r["obstacle"] else []
+    pos = [o for o in objs if positive(o)]
+    if pos:
+        frames_with_pos += 1
+        if r["obstacle"]:
+            frames_with_pos_stop += 1
+    if not objs:
+        background_frames += 1
+        if r["obstacle"]:
+            background_stop += 1
+    for o in pos:
+        p = per[o["name"]]
+        p["positive_frames"] += 1
+        if p["first_visible_m"] is None:
+            p["first_visible_m"] = o["distance"]
+        hit = [dd for dd in dets if matches(dd, o)]
+        p["series"].append((o["distance"], bool(hit)))
+        if hit:
+            p["stop_frames"] += 1
+            if p["first_stop_m"] is None:
+                p["first_stop_m"] = o["distance"]
+            nearest_err.append(min(abs(dd["distance"] - o["distance"]) for dd in hit))
+    unmatched = [dd for dd in dets if not any(matches(dd, o) for o in pos)]
+    if unmatched:
+        outside = [dd for dd in unmatched if any(matches(dd, o) for o in objs)]
+        if len(outside) == len(unmatched):
+            outside_stop_frames += 1
+        else:
+            false_stop_frames += 1
+
+out = {"frames_scored": len(keys) - missing, "frames_missing_in_results": missing,
+       "frames_with_positive": frames_with_pos, "frames_with_positive_and_stop": frames_with_pos_stop,
+       "false_stop_frames_unmatched": false_stop_frames, "stop_frames_only_on_outside_objects": outside_stop_frames,
+       "background_frames": background_frames, "background_stop_frames": background_stop,
+       "positive_object_frames": sum(p["positive_frames"] for p in per.values()),
+       "positive_object_frames_with_stop": sum(p["stop_frames"] for p in per.values()),
+       "median_abs_distance_error_m": (sorted(nearest_err)[len(nearest_err) // 2] if nearest_err else None),
+       "objects": {}}
+for n, p in per.items():
+    s = p["series"]
+    held = None
+    for j in range(len(s)):
+        rest = s[j:]
+        if rest and sum(h for _, h in rest) >= 0.9 * len(rest) and rest[0][1]:
+            held = rest[0][0]
+            break
+    out["objects"][n] = {"positive_frames": p["positive_frames"], "stop_frames": p["stop_frames"],
+                         "first_visible_m": p["first_visible_m"], "first_stop_m": p["first_stop_m"],
+                         "held_90pct_from_m": held}
+print(json.dumps({k: v for k, v in out.items() if k != "objects"}, indent=1))
+print(f"{'object':22s} {'pos':>5s} {'stop':>5s} {'first_vis':>9s} {'first_STOP':>10s} {'held90':>7s}")
+for n, o in out["objects"].items():
+    f = lambda v: "-" if v is None else f"{v:.1f}"
+    print(f"{n:22s} {o['positive_frames']:5d} {o['stop_frames']:5d} {f(o['first_visible_m']):>9s} "
+          f"{f(o['first_stop_m']):>10s} {f(o['held_90pct_from_m']):>7s}")
+if a.json:
+    json.dump(out, open(a.json, "w"), indent=1)

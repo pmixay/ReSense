@@ -4,7 +4,9 @@
 > written once so that P3 optimises against it, P4 implements it (`resense/metrics.py`,
 > `resense eval`) and the jury's criteria (spec §8) map onto numbers we actually report.
 > **Audience:** team, jury · **Owner:** P1 (protocol), P4 (code) · **Language:** EN, summary RU
-> **Last verified:** 2026-09-25 against `8932f3a` · **Status:** current
+> **Last verified:** 2026-09-28: §1 "How independent the ground truth is" against `labels/*.json`
+> `_meta`, `scripts/label_fake_objects.py` and [`DATASET.md`](DATASET.md); the rest 2026-09-25
+> against `8932f3a` · **Status:** current
 
 **Кратко.** Как мы измеряем качество. Наборы данных: S — наши синтетические объекты в реальных
 пустых кадрах; E — пять реальных записей без препятствий (ложные срабатывания); R — реальные
@@ -28,6 +30,24 @@ Results live in [`EXPERIMENTS.md`](EXPERIMENTS.md); this file defines how they a
 | **O** organizers' synthetic | `cloud_with_fake_obj` (24.09): ten objects ray-cast by the organizers' own tool into a real recording, labelled exactly from the appended object points (`labels/cloud_with_fake_obj.json`, [`DATASET.md`](DATASET.md)) | eight objects inside the envelope (2 × 2 m, 0.3 m cubes, a plank across the rails, a 5 cm hanging object) | two objects just outside it | per-object first STOP / held-from distance and false STOP on the outside objects (`scripts/score_fake_objects.py`); the tool that is part of the hidden check, so the closest thing to it |
 | **F** synthetic on the moving ride | `scripts/far_range_eval.py`: catalogue objects ray-cast into selected split files of the 20-minute ride `new_data`, approaching the moving train from 150–220 m; placement per §3 | person, trolley, 1 m crate, 0.5 m box, hanging cable, small objects on the bed and on a rail head | the ride's own frames (off-object detections) | first-confirmed and held distances on a moving background: straight track, curves, stations |
 | **H** hidden | the organizers' control bag on the day | unknown | unknown | nothing is tuned on it; the dry-run script only checks the pipeline runs |
+
+**How independent the ground truth is (28.09).** Neither labelled set is independent of the team's
+own processing, so their recall figures are consistency checks against the team's labelling, not
+an external truth:
+
+* **R** — [`labels/doubleT_obstacle.json`](../labels/doubleT_obstacle.json) was made by the team
+  (P4, 21–22.09) with the team's tools: DBSCAN on the team's frame cache with thresholds the team
+  chose, the lateral positions measured from the **median of the detector's own per-frame track
+  axis** (`resense.track.estimate_track`) and the heights from its per-frame rail-head model;
+  checked by eye on renders ([`DATASET.md`](DATASET.md) "Real labels"). Not the detector's output,
+  but its track model: an error the two share (the axis, the rail-head height) would not show as a
+  miss or a distance error.
+* **O** — the object *points* are exact (the organizers' tool appends them after the scan), and
+  `in_gauge` is the organizers' intent; but `distance` and `lateral` are measured in the frame
+  that the **shipped detector's mount calibration and per-frame track axis** give
+  (`scripts/label_fake_objects.py`), and the team inspected and tuned on set O.
+* Nothing in the data was labelled by a third party; the sets without labels (E, the ride) count
+  alarms, which need no ground truth.
 
 ## 2. Metrics
 

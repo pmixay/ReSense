@@ -4,7 +4,8 @@
 > [`EXPERIMENTS.md`](../EXPERIMENTS.md): the result summaries in `results/`, the logs, captures and
 > bench output of each run, and the recordings' original metadata.
 > **Audience:** team, jury · **Owner:** P1 (runs, timing), P4 (result summaries) · **Language:** EN
-> **Last verified:** 2026-09-27; supported P1/P2 cold-bag rerun added (each result remains the record of its own date) ·
+> **Last verified:** 2026-09-28; the judge's per-frame outputs of the sealed detector and the node
+> input path added (each result remains the record of its own date) ·
 > **Status:** current
 
 Every file here is the record of one run and is not rewritten: a new run gets a new file or folder
@@ -12,9 +13,16 @@ Every file here is the record of one run and is not rewritten: a new run gets a 
 in [`../archive/results/`](../archive/results/). `extended_dataset_intake.json` (the ride's
 per-file speeds and intake events) stays in `docs/` because scripts read it.
 
+The [28 September per-frame outputs of the sealed detector](judge_outputs_2026-09-28/README.md)
+(independent judge A, commit `806b6c4`, detector source equal to the seal) hold the offline runs
+of all six original recordings, set O (offline and through the node), two ride segments and set F,
+with their commands, logs and `recompute.py`, which recounts the headline figures with the gate's
+own counting: the only per-frame evidence of the 27.09 detector besides the node captures.
+
 The [28 September node input path](node_input_2026-09-28/README.md) holds the before / after
 dry runs of both original recordings through ROS (checker outputs, status captures, node logs),
-the end-to-end latency and CPU figures, and the frame-by-frame identity check of the detector's
+the end-to-end latency and CPU figures (current results and, with `e2e_all_frames.py`, every
+frame result including the start-up), and the frame-by-frame identity check of the detector's
 input (`fast_input.json`).
 
 The [27 September supported playback rerun](p1_p2_supported_playback_2026-09-27/README.md)
@@ -26,6 +34,7 @@ the earlier quota-blocked attempt without changing the detector baseline.
 ## Quality cycle — 27 September (final detector `352ca13`, measured at `d572807`)
 
 - [Detector seal](detector_freeze_2026-09-27.json) and [full gate against P3d](results/regression_gate_2026-09-27_quality.json): PASS, no waivers; also the [new baseline](results/regression_baseline_2026-09-27_quality.json).
+- Per-frame outputs of this detector, made by an independent judge on 28.09 (the six recordings, set O offline and through the node, two ride segments, set F) and recounted with the gate's counting: [`judge_outputs_2026-09-28/`](judge_outputs_2026-09-28/README.md). The gate above replays the 1 cm frame cache; the raw recordings differ by a few frames (five empty 8 / 23 / 7 against 11 / 40 / 13 events / alarm frames / STOP episodes; the rail object 123 against 125 of 126).
 - The learned opinion's [cross-fitted ride measurement](results/quality_cycle_2026-09-27/opinion_crossfit_2x_margin.json) ([zero margin](results/quality_cycle_2026-09-27/opinion_crossfit_zero_margin.json)) and its fold training reports (`opinion_report_*.json`).
 - [Cycle record](../QUALITY_CYCLE_2026-09-27.md) with its raw material in [`results/quality_cycle_2026-09-27/`](results/quality_cycle_2026-09-27/): every screen (`screens/`, the review fixes `review_*.json`, the ablations `ablation_*.json`), final acceptance and history stress, the re-registered 72-case [plan](results/quality_cycle_2026-09-27/novel_plan.json) and [results](results/quality_cycle_2026-09-27/novel_results.json.gz), the review's [side-symmetry check](results/quality_cycle_2026-09-27/side_person_check.json), benchmarks.
 - Independent reviews: round 1 of the first version (`8b74cd0`) [both judges](results/rejudge_quality_cycle_2026-09-27_round1.json), round 2 of `65c5a5b` [both judges](results/rejudge_quality_cycle_2026-09-27_round2.json); synthesis in [SCORECARD](../SCORECARD.md).
