@@ -1,12 +1,12 @@
 # RViz
 
-RViz shows the raw cloud, the points inside the envelope corridor, the corridor edges, the obstacle
-boxes with their distance and a status text. It runs from the same image; the host needs an X11
-display.
+RViz показывает сырое облако, точки внутри коридора габарита, границы коридора, рамки препятствий
+с расстоянием до них и текст состояния. Он запускается из того же образа; на хосте нужен дисплей
+X11.
 
-## Node with RViz
+## Нода с RViz
 
-Instead of the plain node command:
+Вместо обычной команды запуска ноды:
 
 ```bash
 xhost +local:docker && docker run --rm -it --net=host --ipc=host \
@@ -14,36 +14,39 @@ xhost +local:docker && docker run --rm -it --net=host --ipc=host \
   resense ros2 launch resense_ros detector.launch.py rviz:=true freshness_mode:=replay
 ```
 
-Then play the bag as in [Run on a bag](../getting-started/run-on-a-bag.md).
+Затем проиграйте бэг, как описано в разделе [Запуск на бэге](../getting-started/run-on-a-bag.md).
 
-## Everything in one container
+## Всё в одном контейнере
 
 ```bash
 ./scripts/run_demo.sh /data/for_hackathon/roundT_doubleT
 ```
 
-Node, RViz and the player in one container (`bag:=`, `rviz:=true` of the launch file). The launch
-file also takes `loop:=true`, `rate:=<factor>` and `delay:=<s>` for a continuous demo.
+Нода, RViz и плеер в одном контейнере (аргументы `bag:=` и `rviz:=true` launch-файла). Для
+непрерывной демонстрации launch-файл принимает также `loop:=true`, `rate:=<factor>` и `delay:=<s>`.
 
-## With docker compose
+## Через docker compose
 
 ```bash
 xhost +local:docker
-docker compose --profile viz up                 # detector + RViz + Foxglove bridge
-docker compose --profile tools up player        # plays $RESENSE_BAG
+docker compose --profile viz up                 # детектор + RViz + мост Foxglove
+docker compose --profile tools up player        # проигрывает $RESENSE_BAG
 ```
 
-## What you see
+## Что видно
 
-* **Fixed frame `resense_lidar`.** The node broadcasts a static identity transform from
-  `resense_lidar` to the frame id of the input cloud, so the same layout works for every bag.
-* **Two raw-cloud displays**, `/lidar_points` and `/sensing/lidar/hesai128/pointcloud`; the one the
-  bag carries renders, the other stays grey with "No messages received". A bag with a third topic
-  name needs one more display (*Add → PointCloud2 →* pick the topic); the node itself finds any
-  `PointCloud2` topic, so detections and the corridor show up regardless.
-* Colours: raw cloud by height in grey, corridor points orange, envelope obstacles red, advisory
-  objects orange, corridor edges green, status text above the track.
-* Saved views in the *Views* panel: *Top-down 150 m* and *Driver's seat*.
+* **Фиксированная система координат (Fixed Frame) — `resense_lidar`.** Нода публикует статическое
+  тождественное преобразование из `resense_lidar` в систему координат входного облака, поэтому одна
+  и та же раскладка подходит для любого бэга.
+* **Два дисплея сырого облака**, `/lidar_points` и `/sensing/lidar/hesai128/pointcloud`;
+  отрисовывается тот, чей топик есть в бэге, второй остаётся серым с надписью
+  «No messages received». Для бэга с третьим именем топика нужен ещё один дисплей
+  (*Add → PointCloud2 →* выбрать топик); сама нода находит любой топик `PointCloud2`, поэтому
+  обнаружения и коридор видны в любом случае.
+* Цвета: сырое облако — оттенками серого по высоте, точки коридора — оранжевые, препятствия
+  в габарите — красные, объекты зоны предупреждения — оранжевые, границы коридора — зелёные, текст
+  состояния — над путём.
+* Сохранённые виды на панели *Views*: *Top-down 150 m* и *Driver's seat*.
 
-The layout file is `ros2_ws/src/resense_ros/rviz/resense.rviz`; a host with ROS 2 can open it
-directly: `rviz2 -d ros2_ws/src/resense_ros/rviz/resense.rviz`.
+Файл раскладки — `ros2_ws/src/resense_ros/rviz/resense.rviz`; на хосте с ROS 2 его можно открыть
+напрямую: `rviz2 -d ros2_ws/src/resense_ros/rviz/resense.rviz`.

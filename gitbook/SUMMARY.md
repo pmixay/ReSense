@@ -1,43 +1,43 @@
-# Summary
+# Оглавление
 
-* [Introduction](README.md)
+* [Введение](README.md)
 
-## Getting started
+## Начало работы
 
-* [Кратко для жюри (RU)](getting-started/jury-quickstart-ru.md)
-* [Requirements](getting-started/requirements.md)
-* [Get the Docker image](getting-started/get-the-image.md)
-* [Run on a bag](getting-started/run-on-a-bag.md)
-* [Read the output](getting-started/read-the-output.md)
+* [Кратко для жюри](getting-started/jury-quickstart-ru.md)
+* [Требования](getting-started/requirements.md)
+* [Где взять образ Docker](getting-started/get-the-image.md)
+* [Запуск на бэге](getting-started/run-on-a-bag.md)
+* [Как читать результат](getting-started/read-the-output.md)
 
-## Visualisation
+## Визуализация
 
 * [RViz](visualisation/rviz.md)
-* [Foxglove (remote demo)](visualisation/foxglove.md)
-* [Web dashboard](visualisation/web-dashboard.md)
+* [Foxglove (удалённая демонстрация)](visualisation/foxglove.md)
+* [Веб-дашборд](visualisation/web-dashboard.md)
 
-## Guides
+## Руководства
 
-* [Get the data](guides/data.md)
-* [Offline analysis without ROS](guides/offline-analysis.md)
-* [Stand without internet](guides/offline-stand.md)
-* [Acceptance test (dry run)](guides/acceptance-test.md)
+* [Где взять данные](guides/data.md)
+* [Офлайн-анализ без ROS](guides/offline-analysis.md)
+* [Стенд без интернета](guides/offline-stand.md)
+* [Приёмочный тест (пробный прогон)](guides/acceptance-test.md)
 
-## Reference
+## Справочник
 
-* [Topics and status JSON](reference/topics.md)
-* [Node parameters](reference/node-parameters.md)
-* [Configuration file](reference/configuration.md)
-* [How it works](reference/how-it-works.md)
-* [Repository map and documents](reference/repository.md)
+* [Топики и JSON статуса](reference/topics.md)
+* [Параметры ноды](reference/node-parameters.md)
+* [Файл конфигурации](reference/configuration.md)
+* [Как это работает](reference/how-it-works.md)
+* [Карта репозитория и документы](reference/repository.md)
 
-## Development
+## Разработка
 
-* [Setup, tests and CI](development/setup-and-ci.md)
-* [Changing the detector](development/detector-changes.md)
-* [Editing this book](development/docs.md)
+* [Установка, тесты и CI](development/setup-and-ci.md)
+* [Изменение детектора](development/detector-changes.md)
+* [Редактирование книги](development/docs.md)
 
-## Help
+## Помощь
 
-* [Troubleshooting](troubleshooting.md)
-* [FAQ](faq.md)
+* [Решение проблем](troubleshooting.md)
+* [Частые вопросы](faq.md)

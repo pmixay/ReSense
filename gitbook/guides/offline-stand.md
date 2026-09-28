@@ -1,61 +1,61 @@
-# Stand without internet
+# Стенд без интернета
 
-The organizers' test machine has no internet. `docker build` cannot run there (the base image,
-apt and PyPI all need the network), so the image travels as an archive; nothing at run time needs
-the network.
+На тестовой машине организаторов нет интернета. `docker build` там не выполнится (базовому образу,
+apt и PyPI нужна сеть), поэтому образ переносится архивом; во время работы сеть не нужна ничему.
 
-| stage | needs the network? |
+| этап | нужна сеть? |
 |---|---|
-| `docker build` | yes: Docker Hub, the ROS and Ubuntu apt archives, PyPI |
-| `docker load` of the archive | no |
-| the node, launch file, entrypoint, compose services, RViz, `foxglove_bridge` | no (DDS over UDP on the host's interfaces; the loopback alone is enough) |
-| the web dashboard | no (fonts and `roslib` are bundled) |
-| Foxglove desktop app on a viewer's laptop | no |
+| `docker build` | да: Docker Hub, apt-архивы ROS и Ubuntu, PyPI |
+| `docker load` архива | нет |
+| нода, launch-файл, entrypoint, сервисы compose, RViz, `foxglove_bridge` | нет (DDS по UDP на интерфейсах хоста; достаточно одного loopback) |
+| веб-дашборд | нет (шрифты и `roslib` входят в комплект) |
+| настольное приложение Foxglove на ноутбуке зрителя | нет |
 
-## Prepare (on a machine with internet)
-
-```bash
-scripts/export_image.sh            # → dist/resense-image-<version>.tar.gz and .sha256
-```
-
-or download the CI artifact of the commit ([Get the Docker image](../getting-started/get-the-image.md)).
-Copy both files to the stand.
-
-## On the stand
+## Подготовка (на машине с интернетом)
 
 ```bash
-scripts/load_image.sh resense-image-<version>.tar.gz    # checksum, docker load, a start with --network none
+scripts/export_image.sh            # → dist/resense-image-<version>.tar.gz и .sha256
 ```
 
-then the jury commands of [Run on a bag](../getting-started/run-on-a-bag.md), or
-`scripts/play_bag.sh <bag> --archive resense-image-<version>.tar.gz` in one step.
+или скачайте артефакт CI нужного коммита ([Где взять образ Docker](../getting-started/get-the-image.md)).
+Скопируйте оба файла на стенд.
 
-`load_image.sh` exit codes: 2 bad argument, 3 no Docker, 4 checksum mismatch, 5 the loaded image
-failed its check.
+## На стенде
 
-## Rehearse it
+```bash
+scripts/load_image.sh resense-image-<version>.tar.gz    # контрольная сумма, docker load, запуск с --network none
+```
 
-Disconnect the network (cable out, Wi-Fi off), then:
+затем команды жюри из [Запуск на бэге](../getting-started/run-on-a-bag.md) или одним шагом
+`scripts/play_bag.sh <bag> --archive resense-image-<version>.tar.gz`.
+
+Коды выхода `load_image.sh`: 2 — неверный аргумент, 3 — нет Docker, 4 — не совпала контрольная
+сумма, 5 — загруженный образ не прошёл проверку.
+
+## Репетиция
+
+Отключите сеть (выньте кабель, выключите Wi-Fi), затем:
 
 ```bash
 IMAGE_TAR=dist/resense-image-<version>.tar.gz OFFLINE=1 ./scripts/dry_run.sh <bags>/doubleT_obstacle
 SKIP_BUILD=1 OFFLINE=1 ./scripts/dry_run.sh <bags>/roundT_doubleT --expect-clear --max-alarm-frames 2
 ```
 
-`IMAGE_TAR` loads the archive instead of building; `OFFLINE=1` runs node, player and recorder with
-`--network none` and refuses to build. Then play a bag by hand from a normal user's console, still
-offline. See [Acceptance test](acceptance-test.md).
+`IMAGE_TAR` загружает архив вместо сборки; `OFFLINE=1` запускает ноду, плеер и рекордер с
+`--network none` и не допускает сборку. Затем проиграйте бэг вручную из консоли обычного
+пользователя, по-прежнему без интернета. См. [Приёмочный тест](acceptance-test.md).
 
-The step-by-step offline rehearsal on a cloud VM, with a safety net that restores the network:
+Пошаговая репетиция без интернета на облачной ВМ, со страховкой, которая восстанавливает сеть:
 [`docs/VM_GUIDE.md` §5](https://github.com/pmixay/ReSense/blob/main/docs/VM_GUIDE.md#5-offline-rehearsal).
 
-## Building offline (best effort)
+## Сборка без интернета (без гарантий)
 
-After `docker load`, in the source tree of the same commit:
+После `docker load`, в дереве исходников того же коммита:
 
 ```bash
 chmod -R u+rwX,go+rX,go-w . && docker build --cache-from resense:<version> -t resense -f docker/Dockerfile .
 ```
 
-The archive's image carries its own layer cache and the base image's tag, so every step can come
-from it. If it does not work, the loaded image is untouched and runs as before.
+Образ из архива несёт собственный кэш слоёв и тег базового образа, так что каждый шаг может
+взяться из него. Если не получится, загруженный образ останется нетронутым и будет работать как
+прежде.

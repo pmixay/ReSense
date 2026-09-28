@@ -1,49 +1,49 @@
 # ReSense
 
-ReSense looks down the track ten times a second and tells a driverless metro train whether
-something is inside its clearance envelope, and how far away it is. It was built for LCT 2026,
-case 05, «Обнаружение посторонних объектов в тоннеле метро по данным 3D-лидара» (Moscow
-Transport / Moscow Metro).
+ReSense десять раз в секунду просматривает путь впереди и сообщает беспилотному поезду метро, есть
+ли что-то в его габарите и на каком расстоянии. Проект создан для ЛЦТ 2026, кейс 05, «Обнаружение
+посторонних объектов в тоннеле метро по данным 3D-лидара» (Московский транспорт / Московский
+метрополитен).
 
-From each LiDAR point cloud it builds a model of the normal tunnel (track bed, rail heads, the
-track axis and its curvature from the walls), cuts out the organizers' 2.1 × 3.0 m train
-envelope along that axis, and reports every persistent object inside it: distance along the
-track, lateral offset, size and confidence. No object classes or training labels are needed:
-geometry decides, and a small learned model only delays a doubtful far `STOP` by a bounded amount.
+По каждому облаку точек LiDAR он строит модель нормального тоннеля (полотно, головки рельсов, ось
+пути и её кривизну по стенам), вырезает вдоль этой оси габарит поезда 2,1 × 3,0 м, заданный
+организаторами, и сообщает о каждом устойчивом объекте в нём: расстояние вдоль пути, боковое
+смещение, размер и уверенность. Классы объектов и обучающая разметка не нужны: решает геометрия, а
+небольшая обученная модель лишь задерживает сомнительный дальний `STOP` на ограниченное время.
 
-This book is the **how-to**: getting the image, running it on a ROS 2 bag, reading the answer,
-watching it in RViz, Foxglove or the browser dashboard, and working on the code. Design
-rationale, measurements and team records stay in the repository documents it links to.
+Эта книга — **практическое руководство**: как получить образ, запустить его на бэге ROS 2, прочитать
+ответ, посмотреть результат в RViz, Foxglove или веб-дашборде и работать с кодом. Обоснование
+решений, измерения и записи команды остаются в документах репозитория, на которые она ссылается.
 
-## What you get
+## Что на выходе
 
-| output | where |
+| результат | где |
 |---|---|
-| `GO` / `CAUTION` / `STOP` / `FAULT` | ROS 2 topic `/resense/decision` |
-| distance to the obstacle along the track, m (−1: none) | `/resense/nearest_distance` |
-| estimated monitored range, m | `/resense/clear_distance` |
-| everything per frame as JSON (objects, track model, health, mount, timing, freshness) | `/resense/status` |
-| boxes, corridor outline, corridor points | `/resense/detections`, `/resense/markers`, `/resense/corridor_points` |
+| `GO` / `CAUTION` / `STOP` / `FAULT` | топик ROS 2 `/resense/decision` |
+| расстояние до препятствия вдоль пути, м (−1 — нет) | `/resense/nearest_distance` |
+| оценка дальности контроля, м | `/resense/clear_distance` |
+| всё по каждому кадру в JSON (объекты, модель пути, исправность, крепление датчика, время обработки, свежесть) | `/resense/status` |
+| рамки объектов, контур коридора, точки коридора | `/resense/detections`, `/resense/markers`, `/resense/corridor_points` |
 
-## The shortest path
+## Самый короткий путь
 
 ```bash
-docker load -i resense-image-<version>.tar.gz     # or: docker build -t resense -f docker/Dockerfile .
-scripts/play_bag.sh <bag directory>               # node + player + readout, prints "12.3 s  STOP  55.6 m"
+docker load -i resense-image-<version>.tar.gz     # или: docker build -t resense -f docker/Dockerfile .
+scripts/play_bag.sh <bag directory>               # нода + плеер + вывод, печатает "12.3 s  STOP  55.6 m"
 ```
 
-Step-by-step: [Run on a bag](getting-started/run-on-a-bag.md). The jury's version in Russian:
+Пошагово: [Запуск на бэге](getting-started/run-on-a-bag.md). Краткая версия для жюри:
 [Кратко для жюри](getting-started/jury-quickstart-ru.md).
 
-## Where things are
+## Где что лежит
 
-* Source code and every document: [github.com/pmixay/ReSense](https://github.com/pmixay/ReSense)
-* The browser dashboard: `web/index.html` in the repository, opened locally in a browser (see
-  [Web dashboard](visualisation/web-dashboard.md) for what it can and cannot do)
-* Results, experiments and their dates:
-  [`docs/EXPERIMENTS.md`](https://github.com/pmixay/ReSense/blob/main/docs/EXPERIMENTS.md) and the
-  [README summary](https://github.com/pmixay/ReSense/blob/main/README.md#current-results)
+* Исходный код и все документы: [github.com/pmixay/ReSense](https://github.com/pmixay/ReSense)
+* Веб-дашборд: `web/index.html` в репозитории, открывается локально в браузере (что он умеет и
+  чего не умеет — см. [Веб-дашборд](visualisation/web-dashboard.md))
+* Результаты, эксперименты и их даты:
+  [`docs/EXPERIMENTS.md`](https://github.com/pmixay/ReSense/blob/main/docs/EXPERIMENTS.md) и
+  [сводка в README](https://github.com/pmixay/ReSense/blob/main/README.md#current-results)
 
-> **Note.** Numbers (ranges, false alarms, timings) are deliberately not repeated in this book.
-> They live in one place, `docs/EXPERIMENTS.md` and the README summary, with the date and the data
-> each was measured on.
+> **Примечание.** Числа (дальности, ложные тревоги, время обработки) в этой книге намеренно не
+> повторяются. Они собраны в одном месте — в `docs/EXPERIMENTS.md` и сводке в README — вместе с
+> датой и данными, на которых измерено каждое.

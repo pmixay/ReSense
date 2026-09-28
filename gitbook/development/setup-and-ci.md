@@ -1,27 +1,27 @@
-# Setup, tests and CI
+# Установка, тесты и CI
 
-## Local setup
+## Локальная установка
 
 ```bash
 git clone https://github.com/pmixay/ReSense && cd ReSense
-pip install -e ".[dev]"          # Python ≥ 3.10; builds the C++ kernels when a compiler is present
-pytest -q                        # the suite; "skipped" means open3d is missing
-pipx run ruff==0.15.8 check .    # lint, pinned as in CI
-./scripts/sync_params.sh --check # the ROS parameter copy equals configs/default.yaml
-python scripts/detector_freeze.py verify   # the sealed detector files are unchanged
+pip install -e ".[dev]"          # Python ≥ 3.10; при наличии компилятора собирает ядра C++
+pytest -q                        # набор тестов; «skipped» — значит, нет open3d
+pipx run ruff==0.15.8 check .    # линтер, версия закреплена как в CI
+./scripts/sync_params.sh --check # копия параметров ROS совпадает с configs/default.yaml
+python scripts/detector_freeze.py verify   # опечатанные файлы детектора не изменились
 ```
 
-`RESENSE_REQUIRE_SYNTHETIC=1 pytest -q` makes a missing open3d a failure instead of a skip, as in
+С `RESENSE_REQUIRE_SYNTHETIC=1 pytest -q` отсутствие open3d — ошибка, а не пропуск теста, как в
 CI.
 
-The dashboard tests need Playwright and a Chromium build:
+Для тестов дашборда нужны Playwright и сборка Chromium:
 
 ```bash
 pip install playwright
 python -m pytest -q web/demo
 ```
 
-## In Docker
+## В Docker
 
 ```bash
 WITH_TOOLS=1 ./scripts/build.sh
@@ -32,23 +32,23 @@ docker run --rm resense bash -lc "python3 scripts/make_smoke_bag.py /tmp/b && sc
 ## CI
 
 [`.github/workflows/ci.yml`](https://github.com/pmixay/ReSense/blob/main/.github/workflows/ci.yml)
-runs on every push, in two stages:
+запускается при каждом пуше, в два этапа:
 
-| stage | job | what it proves |
+| этап | задание | что проверяет |
 |---|---|---|
-| 1 | `checks` | ruff, the parameter copy in sync, the detector seal |
-| 2 | `pytest` | the suite and the dashboard tests in headless Chromium; no test may be skipped |
-| 2 | `docker` | the tools image: the suite inside it, the node reached every way the jury can (another container, a uid-1000 player, stock Fast DDS, `scripts/play_bag.sh`, shared-memory mode, a remote Foxglove viewer); on `main` also the two original bags from a cold disk, and the node's fast input path against rclpy's conversion, byte for byte |
-| 2 | `offline-build` | the jury's runtime archive: made, every image removed, loaded back, rebuilt with no internet, both synthetic bags played through it on an internal network; on `main` the archive is uploaded as the run artifact |
+| 1 | `checks` | ruff, синхронность копии параметров, печать детектора |
+| 2 | `pytest` | набор тестов и тесты дашборда в Chromium без интерфейса (headless); пропуск любого теста — ошибка |
+| 2 | `docker` | образ с инструментами: набор тестов внутри него, связь с нодой всеми способами, доступными жюри (другой контейнер, плеер с uid 1000, штатный Fast DDS, `scripts/play_bag.sh`, режим общей памяти, удалённый просмотр в Foxglove); на `main` ещё два исходных бэга с холодного диска и побайтовая сверка быстрого пути приёма данных ноды с преобразованием rclpy |
+| 2 | `offline-build` | архив образа для жюри: собран, все образы удалены, архив загружен обратно, пересобран без интернета, оба синтетических бэга проиграны через него во внутренней сети; на `main` архив выгружается как артефакт прогона |
 
-[`release.yml`](https://github.com/pmixay/ReSense/blob/main/.github/workflows/release.yml) publishes
-the image archive as a GitHub release when a `v1.0.0-rcN` / `v1.0.0` tag is pushed.
+[`release.yml`](https://github.com/pmixay/ReSense/blob/main/.github/workflows/release.yml) публикует
+архив образа как релиз GitHub при пуше тега `v1.0.0-rcN` / `v1.0.0`.
 
-## Rules of the repository
+## Правила репозитория
 
-* `main` changes only through a pull request with CI green; the captain merges.
-* One parameter source (`configs/default.yaml`); numbers live only in `docs/EXPERIMENTS.md` and the
-  README summary; other documents link to them.
-* The status JSON and the topics are contracts: keys and topics are added, never renamed or
-  removed.
-* Who owns which files: [`docs/CAPTAIN.md` §8](https://github.com/pmixay/ReSense/blob/main/docs/CAPTAIN.md#8-ownership-map-a-file-not-listed-its-authors-lane-ask-p1).
+* `main` меняется только через pull request с зелёным CI; вливает капитан.
+* Один источник параметров (`configs/default.yaml`); числа живут только в `docs/EXPERIMENTS.md` и в
+  сводке README, остальные документы ссылаются на них.
+* JSON статуса и топики — контракты: ключи и топики добавляются, но никогда не переименовываются и
+  не удаляются.
+* Кто владелец каких файлов: [`docs/CAPTAIN.md` §8](https://github.com/pmixay/ReSense/blob/main/docs/CAPTAIN.md#8-ownership-map-a-file-not-listed-its-authors-lane-ask-p1).

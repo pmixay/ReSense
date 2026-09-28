@@ -1,64 +1,67 @@
-# Read the output
+# Как читать результат
 
-## The decision
+## Решение
 
-| `/resense/decision` | meaning |
+| `/resense/decision` | значение |
 |---|---|
-| `STOP` | **alarm**: a confirmed obstacle inside the organizers' 2.1 × 3.0 m train envelope |
-| `CAUTION` | advisory, **not an alarm**: a confirmed object just outside the envelope, a far cluster beyond the trusted track-model range, known infrastructure, degraded health, or the node catching up after a stall. Common in an ordinary tunnel |
-| `GO` | no obstacle detected and no health warning that affects the decision |
-| `FAULT` | no input (before the first frame, or more than 0.5 s without frames) or input that cannot be trusted |
+| `STOP` | **тревога**: подтверждённое препятствие в габарите поезда 2,1 × 3,0 м, заданном организаторами |
+| `CAUTION` | подсказка, **не тревога**: подтверждённый объект сразу за границей габарита, дальний кластер за пределами дальности, на которой модели пути можно доверять, известная инфраструктура, сниженная исправность или навёрстывание нодой отставания после задержки. В обычном тоннеле встречается часто |
+| `GO` | препятствие не обнаружено, и нет предупреждений об исправности, влияющих на решение |
+| `FAULT` | входа нет (до первого кадра или более 0,5 с без кадров) либо входу нельзя доверять |
 
-`GO` is a detection result, **not** permission to move a train.
+`GO` — результат обнаружения, а **не** разрешение на движение поезда.
 
-## What to evaluate
+## Что оценивать
 
-| question | topic | type | values |
+| вопрос | топик | тип | значения |
 |---|---|---|---|
-| is there an obstacle? | **`/resense/decision`** | `std_msgs/String` | `STOP` = alarm |
-| the same as a boolean | `/resense/obstacle_detected` | `std_msgs/Bool` | confirmed over 0.5 s, held over one missed frame |
-| how far is it? | **`/resense/nearest_distance`** | `std_msgs/Float32` | m along the track, −1 if none |
-| how far is the track monitored? | `/resense/clear_distance` | `std_msgs/Float32` | estimated monitored range, m; 0 on a fault |
-| is the input healthy? | `/resense/health` | `diagnostic_msgs/DiagnosticArray` | OK / WARN / ERROR / STALE with values |
-| everything | `/resense/status` | `std_msgs/String` (JSON) | [Topics and status JSON](../reference/topics.md) |
+| есть ли препятствие? | **`/resense/decision`** | `std_msgs/String` | `STOP` = тревога |
+| то же в виде булева значения | `/resense/obstacle_detected` | `std_msgs/Bool` | подтверждается за 0,5 с, удерживается при одном пропущенном кадре |
+| как далеко оно? | **`/resense/nearest_distance`** | `std_msgs/Float32` | м вдоль пути, −1 — если нет |
+| на какую дальность контролируется путь? | `/resense/clear_distance` | `std_msgs/Float32` | оценка дальности контроля, м; 0 при неисправности |
+| исправен ли вход? | `/resense/health` | `diagnostic_msgs/DiagnosticArray` | OK / WARN / ERROR / STALE со значениями |
+| всё | `/resense/status` | `std_msgs/String` (JSON) | [Топики и JSON статуса](../reference/topics.md) |
 
-`clear_distance` is an estimate from the sightline and the trusted track model, capped at detected
-obstacles and eligible clusters. An object that forms no such cluster can still be inside that
-range. Read `STOP` and `nearest_distance` together with health and warnings.
+`clear_distance` — оценка по линии видимости и доверенной модели пути, ограниченная обнаруженными
+препятствиями и подходящими кластерами. Объект, который не образует такого кластера, всё равно
+может находиться в пределах этой дальности. Читайте `STOP` и `nearest_distance` вместе с
+исправностью и предупреждениями.
 
-## A typical run on a recording with an obstacle
+## Типичный прогон на записи с препятствием
 
 ```text
-FAULT     # before the first frame arrives (the player is still loading the bag)
-GO        # first frames
-CAUTION   # an object approaches the envelope from the side
-STOP      # a person on the track, then an object on the rail; nearest_distance ≈ 55–57 m
-FAULT     # 0.5 s after the bag ends: no input, the path is not monitored
+FAULT     # до прихода первого кадра (плеер ещё загружает бэг)
+GO        # первые кадры
+CAUTION   # объект приближается к габариту сбоку
+STOP      # человек на пути, затем объект на рельсе; nearest_distance ≈ 55–57 м
+FAULT     # через 0,5 с после конца бэга: входа нет, путь не контролируется
 ```
 
-This is the shape of the output on the organizers' `doubleT_obstacle` recording; exact frames and
-distances depend on the machine and are recorded in `docs/EXPERIMENTS.md`.
+Так выглядит вывод на записи организаторов `doubleT_obstacle`; точные кадры и расстояния зависят
+от машины и зафиксированы в `docs/EXPERIMENTS.md`.
 
-## Freshness: using the output in software
+## Свежесть: использование результата в программах
 
-For an automatic consumer `/resense/decision` alone is not enough: a latched string carries no age.
+Автоматическому потребителю одного `/resense/decision` недостаточно: сохранённая (latched) строка
+не несёт своего возраста.
 
-* Read `/resense/status` and its `freshness` object: the clocks used, ages, `valid`, a `reason`,
-  and `go_allowed` (true only for a GO that is valid at evaluation time).
-* `evaluated_at_utc_s`, `max_result_age_s` (0.5 s) and `future_tolerance_s` (0.05 s) let you expire
-  a result with your own timer; that assumes synchronized UTC clocks.
-* When input stops or processing fails, every output reports invalid monitoring. A previous `STOP`
-  stays visible with `stop_held: true`, its original stamp and a zero monitored range, until a
-  fresh valid non-STOP frame clears it. Without a previous STOP the decision is `FAULT`.
-* Watchdog and error snapshots carry `snapshot_kind: watchdog | processing_error`; processed
-  frames carry `snapshot_kind: frame`.
+* Читайте `/resense/status` и его объект `freshness`: какие часы использованы, возрасты, `valid`,
+  `reason` и `go_allowed` (true только для GO, действительного на момент оценки).
+* `evaluated_at_utc_s`, `max_result_age_s` (0,5 с) и `future_tolerance_s` (0,05 с) позволяют
+  своим таймером считать результат просроченным; это предполагает синхронизированные часы UTC.
+* Когда вход прекращается или обработка завершается ошибкой, все выходы сообщают, что контроль
+  недействителен. Предыдущий `STOP` остаётся виден с `stop_held: true`, исходной меткой времени и
+  нулевой дальностью контроля, пока его не снимет свежий действительный кадр без STOP. Без
+  предыдущего STOP решение — `FAULT`.
+* Снимки watchdog и ошибок несут `snapshot_kind: watchdog | processing_error`; обработанные кадры —
+  `snapshot_kind: frame`.
 
-The full contract: README
-[“Topics published by the node”](https://github.com/pmixay/ReSense/blob/main/README.md#topics-published-by-the-node).
+Полный контракт — в разделе README
+[«Топики, публикуемые нодой»](https://github.com/pmixay/ReSense/blob/main/README.md#topics-published-by-the-node).
 
-## Offline, without ROS
+## Офлайн, без ROS
 
-`resense run --bag <dir> --out results.jsonl` writes the same per-frame JSON as `/resense/status`
-(one object per line) — see [Offline analysis without ROS](../guides/offline-analysis.md). Such a
-file, or a capture of `/resense/status`, can be replayed in the
-[web dashboard](../visualisation/web-dashboard.md).
+`resense run --bag <dir> --out results.jsonl` пишет тот же покадровый JSON, что и `/resense/status`
+(по объекту на строку), — см. [Офлайн-анализ без ROS](../guides/offline-analysis.md). Такой файл
+или запись `/resense/status` можно воспроизвести в
+[веб-дашборде](../visualisation/web-dashboard.md).

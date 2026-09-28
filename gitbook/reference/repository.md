@@ -1,35 +1,35 @@
-# Repository map and documents
+# Карта репозитория и документы
 
-## Layout
+## Структура
 
-| path | what |
+| путь | что там |
 |---|---|
-| `resense/` | the core library (numpy / scipy / scikit-learn, no ROS): point-cloud decoding, mount calibration, track model, envelope corridor, low-object stage, clustering, tracking, health, detector, synthetic injection, metrics, the `resense` CLI |
-| `native/` | optional C++ kernels for the per-frame hot spots; numpy fallback with identical output |
-| `ros2_ws/src/resense_ros/` | the ROS 2 Humble node, launch file, parameter copy, RViz layout |
-| `configs/default.yaml` | every detector parameter |
-| `docker/`, `docker-compose.yml` | the image and the compose services |
-| `scripts/` | build, run, dry run, export / load of the image archive, evaluation and the regression gate |
-| `web/` | the browser dashboard, Foxglove layout, label tool and their headless checks |
-| `tests/` | the test suite |
-| `labels/` | labels of the real obstacles and of the organizers' synthetic objects |
-| `docs/` | every document; the organizers' material in `docs/organizers/` |
-| `gitbook/` | this book |
+| `resense/` | основная библиотека (numpy / scipy / scikit-learn, без ROS): декодирование облаков точек, калибровка крепления, модель пути, коридор габарита, этап низких объектов, кластеризация, трекинг, исправность, детектор, вставка синтетических объектов, метрики, CLI `resense` |
+| `native/` | необязательные ядра на C++ для самых нагруженных участков обработки кадра; запасной путь на numpy с идентичным результатом |
+| `ros2_ws/src/resense_ros/` | нода ROS 2 Humble, launch-файл, копия параметров, раскладка RViz |
+| `configs/default.yaml` | все параметры детектора |
+| `docker/`, `docker-compose.yml` | образ и сервисы compose |
+| `scripts/` | сборка, запуск, пробный прогон, экспорт / загрузка архива образа, оценка и регрессионный гейт |
+| `web/` | веб-дашборд, раскладка Foxglove, инструмент разметки и их проверки без браузерного окна |
+| `tests/` | набор тестов |
+| `labels/` | разметка реальных препятствий и синтетических объектов организаторов |
+| `docs/` | все документы; материалы организаторов — в `docs/organizers/` |
+| `gitbook/` | эта книга |
 
-## Documents in the repository
+## Документы в репозитории
 
-| document | read it for |
+| документ | зачем читать |
 |---|---|
-| [README](https://github.com/pmixay/ReSense/blob/main/README.md) | the jury commands, current status and headline results with dates |
-| [ARCHITECTURE](https://github.com/pmixay/ReSense/blob/main/docs/ARCHITECTURE.md) | components, data flow, timing budget, native kernels, offline deployment |
-| [ALGORITHM](https://github.com/pmixay/ReSense/blob/main/docs/ALGORITHM.md) | the method stage by stage, decision rule, parameters, limitations |
-| [EXPERIMENTS](https://github.com/pmixay/ReSense/blob/main/docs/EXPERIMENTS.md) | every measurement: range, latency, FPS, false alarms, hard cases, what did not work |
-| [EVALUATION](https://github.com/pmixay/ReSense/blob/main/docs/EVALUATION.md) | the evaluation protocol and sets |
-| [DATASET](https://github.com/pmixay/ReSense/blob/main/docs/DATASET.md), [SENSOR](https://github.com/pmixay/ReSense/blob/main/docs/SENSOR.md) | the recordings, formats, the Hesai Pandar128 |
-| [DECISIONS](https://github.com/pmixay/ReSense/blob/main/docs/DECISIONS.md) | the key decisions on one page |
-| [VM_GUIDE](https://github.com/pmixay/ReSense/blob/main/docs/VM_GUIDE.md) | clean-machine dry run, bench and offline rehearsal on a cloud VM |
-| [CHANGELOG](https://github.com/pmixay/ReSense/blob/main/CHANGELOG.md) | what changed, per version and merge |
-| [docs/README](https://github.com/pmixay/ReSense/blob/main/docs/README.md) | the index of every document, its purpose and owner |
+| [README](https://github.com/pmixay/ReSense/blob/main/README.md) | команды для жюри, текущий статус и главные результаты с датами |
+| [ARCHITECTURE](https://github.com/pmixay/ReSense/blob/main/docs/ARCHITECTURE.md) | компоненты, поток данных, бюджет времени, ядра на C++, развёртывание без интернета |
+| [ALGORITHM](https://github.com/pmixay/ReSense/blob/main/docs/ALGORITHM.md) | метод по этапам, правило решения, параметры, ограничения |
+| [EXPERIMENTS](https://github.com/pmixay/ReSense/blob/main/docs/EXPERIMENTS.md) | все измерения: дальность, задержка, FPS, ложные тревоги, трудные случаи, что не сработало |
+| [EVALUATION](https://github.com/pmixay/ReSense/blob/main/docs/EVALUATION.md) | протокол оценки и наборы данных |
+| [DATASET](https://github.com/pmixay/ReSense/blob/main/docs/DATASET.md), [SENSOR](https://github.com/pmixay/ReSense/blob/main/docs/SENSOR.md) | записи, форматы, Hesai Pandar128 |
+| [DECISIONS](https://github.com/pmixay/ReSense/blob/main/docs/DECISIONS.md) | ключевые решения на одной странице |
+| [VM_GUIDE](https://github.com/pmixay/ReSense/blob/main/docs/VM_GUIDE.md) | пробный прогон на чистой машине, замеры производительности и репетиция без интернета на облачной ВМ |
+| [CHANGELOG](https://github.com/pmixay/ReSense/blob/main/CHANGELOG.md) | что изменилось — по версиям и слияниям |
+| [docs/README](https://github.com/pmixay/ReSense/blob/main/docs/README.md) | указатель всех документов: назначение и ответственный |
 
-The organizers' specification and their answers:
+Спецификация организаторов и их ответы:
 [`docs/organizers/`](https://github.com/pmixay/ReSense/tree/main/docs/organizers).

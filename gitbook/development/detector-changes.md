@@ -1,39 +1,39 @@
-# Changing the detector
+# Изменение детектора
 
-The detector is sealed: `docs/evidence/detector_freeze_2026-09-27.json` lists every file that
-determines its output (`resense/`, `native/`, `configs/`, the ROS parameter copy, the learned model)
-by SHA256, and CI's `checks` job fails when one changes without a new seal. A detector change
-therefore needs evidence that it does not make anything worse.
+Детектор опечатан: `docs/evidence/detector_freeze_2026-09-27.json` перечисляет по SHA256 каждый
+файл, от которого зависит его выход (`resense/`, `native/`, `configs/`, копия параметров ROS,
+обученная модель), и задание CI `checks` падает, если какой-то из них изменился без новой печати.
+Поэтому для изменения детектора нужны доказательства (evidence), что оно ничего не ухудшает.
 
-## The regression gate
+## Регрессионный гейт
 
-One command re-runs the real-data rows (the six recordings), the organizers' synthetic objects
-(set O), the 20-minute ride and the long-range synthetic set, and compares every gated metric with
-the committed baseline:
+Одна команда заново прогоняет строки по реальным данным (шесть записей), синтетические объекты
+организаторов (набор O), 20-минутную поездку и синтетический набор на большую дальность и сравнивает
+каждую проверяемую метрику с базовой линией (baseline) из репозитория:
 
 ```bash
 python scripts/regression_gate.py --cache /data/cache \
     --baseline docs/evidence/results/regression_baseline_2026-09-27_quality.json
 ```
 
-Exit 0 = every gated metric identical or better. It needs the frames cached once
-([Offline analysis](../guides/offline-analysis.md#the-real-data-report-card)); the ride and set F
-need `/data/cache/new_data` (streamed split by split as in
+Код выхода 0 — каждая проверяемая метрика та же или лучше. Кадры нужно один раз закешировать
+([Офлайн-анализ без ROS](../guides/offline-analysis.md#the-real-data-report-card)); поездке и набору F
+нужен `/data/cache/new_data` (скачивается по частям, как в
 [`docs/VM_GUIDE.md` §2.3](https://github.com/pmixay/ReSense/blob/main/docs/VM_GUIDE.md#23-the-20-minute-ride-split-by-split)).
-Without them their rows fail as "missing in this run"; name them with
-`--allow 'ride.*' --allow 'set_F_straight.*'` and say so in the pull request.
+Без него их строки проваливаются с вердиктом «missing in this run»; укажите их через
+`--allow 'ride.*' --allow 'set_F_straight.*'` и напишите об этом в pull request.
 
-## The procedure
+## Порядок действий
 
-1. Pre-register the candidate and its acceptance criteria before running it.
-2. Run the gate; put its JSON and table in the pull request. A worse metric is either accepted
-   explicitly with `--allow` and a stated trade-off, or the change is "tried, not shipped" and
-   recorded in `docs/EXPERIMENTS.md`.
-3. A change meant to move the numbers commits a new baseline and a new seal
-   (`python scripts/detector_freeze.py create --evidence <full gate JSON> --manifest <new seal>`), and the documents that quote numbers are updated from
+1. Зарегистрируйте кандидата и критерии его приёмки заранее, до запуска.
+2. Запустите гейт; приложите его JSON и таблицу к pull request. Ухудшение метрики либо принимается
+   явно через `--allow` с описанием компромисса, либо изменение получает статус «пробовали, не
+   внедрили» (tried, not shipped) и записывается в `docs/EXPERIMENTS.md`.
+3. Изменение, которое должно сдвинуть числа, коммитит новую базовую линию и новую печать
+   (`python scripts/detector_freeze.py create --evidence <full gate JSON> --manifest <new seal>`), а документы, где приводятся числа, обновляются по
    `docs/EXPERIMENTS.md`.
-4. Safety-relevant changes get an independent review before merging.
+4. Изменения, влияющие на безопасность, до слияния проходят независимое ревью.
 
-The dated history of every accepted and rejected candidate:
+Датированная история всех принятых и отклонённых кандидатов:
 [`docs/EXPERIMENTS.md`](https://github.com/pmixay/ReSense/blob/main/docs/EXPERIMENTS.md),
 [`docs/DETECTOR_FREEZE.md`](https://github.com/pmixay/ReSense/blob/main/docs/DETECTOR_FREEZE.md).

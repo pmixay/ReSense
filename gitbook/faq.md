@@ -1,44 +1,48 @@
-# FAQ
+# Частые вопросы
 
-**Does ReSense need a GPU, a map or the train's speed?**
-No. It runs on one CPU core, rebuilds the tunnel model from every frame and works without a speed.
-A speed, if given (`ego_speed_mps`, `speed_topic` or `odom_topic`), enables frame accumulation at
-range.
+**Нужны ли ReSense GPU, карта или скорость поезда?**
+Нет. Он работает на одном ядре CPU, строит модель тоннеля заново по каждому кадру и обходится без
+скорости. Если скорость задана (`ego_speed_mps`, `speed_topic` или `odom_topic`), включается
+накопление кадров на дальних дистанциях.
 
-**Does it need training data or object classes?**
-No. Geometry decides what is inside the envelope. A small learned model only delays a doubtful far
-STOP by a bounded amount; it cannot veto one.
+**Нужны ли обучающие данные или классы объектов?**
+Нет. Что находится внутри габарита, решает геометрия. Небольшая обученная модель лишь откладывает
+сомнительный дальний STOP на ограниченное время; отменить его она не может.
 
-**What counts as an obstacle?**
-Anything at least 30 × 30 × 10 cm inside the organizers' 2.1 × 3.0 m train envelope, including
-things hanging into it such as a broken cable. An object lying on the bed between the rails below
-the envelope floor is not an obstacle (the organizers' answer); one on a rail is.
+**Что считается препятствием?**
+Всё размером не меньше 30 × 30 × 10 см внутри габарита поезда 2,1 × 3,0 м, заданного
+организаторами, в том числе то, что свисает в него, например оборванный кабель. Предмет, лежащий
+на полотне между рельсами ниже нижней границы габарита, препятствием не считается (ответ
+организаторов); предмет на рельсе — считается.
 
-**Which topic and frame does it expect?**
-Either of the organizers' pairs (`/lidar_points` in `hesai_lidar`, or
-`/sensing/lidar/hesai128/pointcloud` in `lidar_livox`) or any other `PointCloud2` topic it
-discovers. The sensor mount is calibrated from the data.
+**Какой топик и какую систему координат он ожидает?**
+Любую из пар организаторов (`/lidar_points` в `hesai_lidar` или
+`/sensing/lidar/hesai128/pointcloud` в `lidar_livox`) либо любой другой найденный им топик
+`PointCloud2`. Крепление датчика калибруется по данным.
 
-**Can I play several bags without restarting the node?**
-Yes. A new topic, frame id or a stamp jump of more than 30 s starts a fresh detector.
+**Можно ли проиграть несколько бэгов без перезапуска ноды?**
+Да. Новый топик, новая система координат (frame id) или скачок метки времени больше чем на 30 с
+запускают детектор заново.
 
-**Is `GO` safe to drive on?**
-`GO` means no obstacle was detected. It is not an authorization to move a train. Software consumers
-should read the freshness fields of `/resense/status` and expire results with their own timer.
+**Безопасно ли ехать при `GO`?**
+`GO` означает, что препятствие не обнаружено. Это не разрешение на движение поезда. Программным
+потребителям следует читать поля свежести в `/resense/status` и считать результаты устаревшими по
+собственному таймеру.
 
-**How far does it see?**
-The Hesai Pandar128 in these recordings returns nothing beyond about 210 m. Detection range depends
-on the object's size and position; the measured figures, real and synthetic, are in
-[`docs/EXPERIMENTS.md`](https://github.com/pmixay/ReSense/blob/main/docs/EXPERIMENTS.md) and the
-README summary, each with its date and the data it was measured on.
+**Как далеко он видит?**
+Hesai Pandar128 в этих записях не возвращает ничего дальше примерно 210 м. Дальность обнаружения
+зависит от размера и положения объекта; измеренные значения на реальных и синтетических данных
+приведены в
+[`docs/EXPERIMENTS.md`](https://github.com/pmixay/ReSense/blob/main/docs/EXPERIMENTS.md) и в сводке
+README — у каждого указаны дата и данные, на которых оно измерено.
 
-**Can I upload a bag to the website and get results?**
-Not today. The dashboard replays results (a `results.jsonl` or a `/resense/status`
-capture); it has no server that could run the detector on an uploaded bag. Process the bag locally
-(`resense run --bag … --out results.jsonl`, or `scripts/dry_run.sh`) and load the file. See
-[Web dashboard](visualisation/web-dashboard.md).
+**Можно ли загрузить бэг на сайт и получить результаты?**
+Пока нет. Веб-дашборд воспроизводит результаты (`results.jsonl` или запись `/resense/status`);
+у него нет сервера, который мог бы запустить детектор на загруженном бэге. Обработайте бэг
+локально (`resense run --bag … --out results.jsonl` или `scripts/dry_run.sh`) и загрузите файл.
+См. [Веб-дашборд](visualisation/web-dashboard.md).
 
-**Is there a public download of the Docker image?**
-A published GitHub release carries the archive and its `.sha256` in its Assets; the README says
-whether one is out yet. The archive of every `main` commit is also a CI artifact (GitHub login
-needed), and `scripts/export_image.sh` makes one on any machine with Docker and internet.
+**Можно ли публично скачать образ Docker?**
+Опубликованный релиз GitHub содержит архив образа и его `.sha256` в Assets; вышел ли релиз, сказано
+в README. Архив образа для каждого коммита `main` доступен также как артефакт CI (нужен вход
+в GitHub), а `scripts/export_image.sh` соберёт его на любой машине с Docker и интернетом.

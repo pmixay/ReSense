@@ -1,50 +1,50 @@
-# Get the data
+# Где взять данные
 
-The recordings are the organizers' and are never committed to the repository. Everything reads
-them from a directory mounted or passed as a path, by default `/data/for_hackathon`.
+Записи принадлежат организаторам и в репозиторий никогда не попадают. Все инструменты читают их
+из смонтированного каталога или по переданному пути, по умолчанию `/data/for_hackathon`.
 
-## The recordings
+## Записи
 
-| set | what | link |
+| набор | что внутри | ссылка |
 |---|---|---|
-| six recordings | 20–88 s each from different parts of the metro, one topic each; real obstacles only in `doubleT_obstacle` (a person crossing ≈ 55–57 m ahead, an object on the right rail) | `Датасет.zip`, 3.7 GB, [Google Drive](https://drive.google.com/file/d/1WTlR2wDSuEHTOARGK_gZeXDTZ9RZpswu/view) |
-| `new_data` | a 20-minute, ~13 km ride with no obstacles, 221 split `.db3` files, 90 GB unpacked | `new_data.zst`, 17.1 GB, [Yandex Disk](https://disk.yandex.ru/d/N8IUpAyd7jyvow) |
-| `cloud_with_fake_obj` | 151 s with ten objects the organizers ray-cast into a real recording | 1.75 GB, [Yandex Disk](https://disk.yandex.ru/d/KpkG_yKoGk-vHQ) |
+| шесть записей | по 20–88 с с разных участков метро, по одному топику; настоящие препятствия только в `doubleT_obstacle` (человек пересекает путь ≈ в 55–57 м впереди, предмет на правом рельсе) | `Датасет.zip`, 3,7 ГБ, [Google Drive](https://drive.google.com/file/d/1WTlR2wDSuEHTOARGK_gZeXDTZ9RZpswu/view) |
+| `new_data` | 20-минутная поездка ~13 км без препятствий, разбита на 221 файл `.db3`, 90 ГБ в распакованном виде | `new_data.zst`, 17,1 ГБ, [Яндекс Диск](https://disk.yandex.ru/d/N8IUpAyd7jyvow) |
+| `cloud_with_fake_obj` | 151 с, десять объектов, которые организаторы вписали лучевым методом (ray casting) в реальную запись | 1,75 ГБ, [Яндекс Диск](https://disk.yandex.ru/d/KpkG_yKoGk-vHQ) |
 
-Sizes, frame counts, topics and scenes of every bag:
+Размеры, число кадров, топики и сцены каждого бэга:
 [`docs/DATASET.md`](https://github.com/pmixay/ReSense/blob/main/docs/DATASET.md).
 
-## Unpack only what you need
+## Распаковать только нужное
 
-The download is nested (zip → zip → zstd tar). `scripts/unpack_dataset.py` streams it and writes
-only the bags you ask for (needs `zstandard`, part of `pip install -e ".[dev]"`):
+Архив вложенный (zip → zip → zstd tar). `scripts/unpack_dataset.py` читает его потоком и
+записывает только запрошенные бэги (нужен `zstandard`, он входит в `pip install -e ".[dev]"`):
 
 ```bash
 python scripts/unpack_dataset.py Датасет.zip --list
 python scripts/unpack_dataset.py Датасет.zip --out /data --only doubleT_obstacle,roundT_doubleT
-python scripts/unpack_dataset.py Датасет.zip --out /data                        # all six (~22 GB)
+python scripts/unpack_dataset.py Датасет.zip --out /data                        # все шесть (~22 ГБ)
 python scripts/unpack_dataset.py https://disk.yandex.ru/d/KpkG_yKoGk-vHQ --out /data   # cloud_with_fake_obj
 ```
 
-By hand: `tar --zstd -xf for_hackathon.zst -C /data` after the two unzips.
+Вручную: `tar --zstd -xf for_hackathon.zst -C /data` после двух распаковок zip.
 
-The two recordings the CI cold-start check uses can be fetched and verified against pinned
-checksums with `scripts/fetch_cold_bags.sh <dir>` (downloads only when they are not already there).
+Две записи, на которых CI проверяет холодный старт, можно скачать и сверить с зафиксированными
+контрольными суммами через `scripts/fetch_cold_bags.sh <dir>` (скачивает, только если их ещё нет).
 
-## Check a new bag
+## Проверить новый бэг
 
 ```bash
-resense info /data/for_hackathon/<bag>       # metadata + the first frame: topic, frame id, width, points
+resense info /data/for_hackathon/<bag>       # метаданные + первый кадр: топик, frame id, ширина, точки
 resense run --bag /data/for_hackathon/<bag> --limit 30
 ```
 
-The track model must lock in the first frames and an empty tunnel start should raise no alarm. If
-`track.center` jumps or `n_corridor` stays 0 in the output, the sensor axis mapping
-(`sensor.forward/left/up`, or the node's `sensor_forward/left/up`) does not fit the bag. The full
-intake recipe: [`docs/DATASET.md` “How to check a new bag”](https://github.com/pmixay/ReSense/blob/main/docs/DATASET.md#how-to-check-a-new-bag-intake-recipe).
+Модель пути должна захватиться в первых кадрах, а пустой тоннель в начале не должен давать тревоги.
+Если в выводе `track.center` скачет или `n_corridor` остаётся 0, соответствие осей сенсора
+(`sensor.forward/left/up` или параметры ноды `sensor_forward/left/up`) не подходит к бэгу. Полный
+порядок приёмки: [`docs/DATASET.md` «Как проверить новый бэг»](https://github.com/pmixay/ReSense/blob/main/docs/DATASET.md#how-to-check-a-new-bag-intake-recipe).
 
-## Mounting data into containers
+## Монтирование данных в контейнеры
 
-The scripts mount the parent directory of the bag path at `/data`; `docker compose` mounts
-`$RESENSE_DATA` (default `/data/for_hackathon`) and plays `$RESENSE_BAG`; a plain `docker run` takes
-`-v <host dir>:/data:ro`.
+Скрипты монтируют родительский каталог бэга в `/data`; `docker compose` монтирует
+`$RESENSE_DATA` (по умолчанию `/data/for_hackathon`) и проигрывает `$RESENSE_BAG`; обычному
+`docker run` передаётся `-v <host dir>:/data:ro`.

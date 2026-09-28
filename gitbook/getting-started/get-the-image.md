@@ -1,71 +1,71 @@
-# Get the Docker image
+# Где взять образ Docker
 
-There are three ways, depending on whether the machine has internet.
+Есть три способа — в зависимости от того, есть ли на машине интернет.
 
-## 1. Load a prepared archive (no internet needed)
+## 1. Загрузить готовый архив (интернет не нужен)
 
-The organizers' test stand has no internet, so the image is delivered as one gzip archive with its
-checksum next to it:
+На стенде организаторов нет интернета, поэтому образ поставляется одним gzip-архивом, рядом с
+которым лежит его контрольная сумма:
 
 ```bash
-sha256sum -c resense-image-<version>.tar.gz.sha256   # optional: check it
-docker load -i resense-image-<version>.tar.gz        # tags resense:<version> and resense:latest
+sha256sum -c resense-image-<version>.tar.gz.sha256   # необязательно: проверка
+docker load -i resense-image-<version>.tar.gz        # теги resense:<version> и resense:latest
 ```
 
-`scripts/load_image.sh <archive>` does the checksum, the load and a first start of the image with
-`--network none` in one step.
+`scripts/load_image.sh <archive>` за один шаг проверяет контрольную сумму, загружает образ и
+выполняет его первый запуск с `--network none`.
 
-**Where the archive comes from:**
+**Откуда взять архив:**
 
-* **CI artifact** — every green push to `main` produces one. On GitHub: *Actions* → the `ci` run of
-  the commit (job `offline-build` green) → *Artifacts* → `resense-image-<version>-<commit>` (a zip
-  holding the `.tar.gz` and its `.sha256`; kept 30 days; downloading needs a GitHub login).
-* **Export it yourself** on any machine with internet and Docker:
+* **Артефакт CI** — его создаёт каждый зелёный пуш в `main`. На GitHub: *Actions* → прогон `ci`
+  нужного коммита (задание `offline-build` зелёное) → *Artifacts* →
+  `resense-image-<version>-<commit>` (zip с `.tar.gz` и его `.sha256`; хранится 30 дней; для
+  скачивания нужен вход в GitHub).
+* **Экспортировать самостоятельно** на любой машине с интернетом и Docker:
 
   ```bash
-  scripts/export_image.sh          # builds from HEAD with --no-cache → dist/resense-image-<version>.tar.gz + .sha256
+  scripts/export_image.sh          # собирает из HEAD с --no-cache → dist/resense-image-<version>.tar.gz + .sha256
   ```
 
-  `SKIP_BUILD=1 SOURCE_IMAGE=resense:latest scripts/export_image.sh` saves an image you already
-  have instead of building.
+  `SKIP_BUILD=1 SOURCE_IMAGE=resense:latest scripts/export_image.sh` вместо сборки сохраняет уже
+  имеющийся образ.
 
-* **GitHub release** — once one is published, its *Assets* hold the archive and its `.sha256`;
-  `scripts/verify_release.sh <tag>` downloads it into `dist/` and checks it. The README's jury
-  section says whether a release is out yet.
+* **Релиз GitHub** — после публикации архив и его `.sha256` лежат в *Assets* релиза;
+  `scripts/verify_release.sh <tag>` скачивает архив в `dist/` и проверяет его. Вышел ли уже релиз,
+  сказано в разделе README для жюри.
 
-## 2. Build it (internet needed)
-
-```bash
-docker build -t resense -f docker/Dockerfile .    # or ./scripts/build.sh
-```
-
-The build pulls `ros:humble-ros-base-jammy`, installs the ROS packages with apt and exactly pinned
-Python packages with pip, and compiles the optional C++ kernels. Useful variants:
+## 2. Собрать (нужен интернет)
 
 ```bash
-PULL=1 ./scripts/build.sh          # refresh the ros:humble base first (an old cached one fails apt-get update)
-WITH_TOOLS=1 ./scripts/build.sh    # + rosbags / matplotlib / open3d / pytest: the image CI tests with
+docker build -t resense -f docker/Dockerfile .    # или ./scripts/build.sh
 ```
 
-## 3. Rebuild offline from a loaded archive (best effort)
+Сборка скачивает `ros:humble-ros-base-jammy`, ставит пакеты ROS через apt и Python-пакеты точно
+зафиксированных версий через pip, а также компилирует необязательные ядра на C++. Полезные варианты:
 
-After step 1, in a checkout of the same commit, every layer can come from the archive's cache:
+```bash
+PULL=1 ./scripts/build.sh          # сначала обновить базовый ros:humble (старый из кэша ломает apt-get update)
+WITH_TOOLS=1 ./scripts/build.sh    # + rosbags / matplotlib / open3d / pytest: образ, на котором тестирует CI
+```
+
+## 3. Пересобрать без интернета из загруженного архива (без гарантий)
+
+После шага 1, в рабочей копии того же коммита, все слои могут взяться из кэша архива:
 
 ```bash
 chmod -R u+rwX,go+rX,go-w . && docker build --cache-from resense:<version> -t resense -f docker/Dockerfile .
 ```
 
-If it fails, the image from step 1 is untouched and works. Details: [Stand without
-internet](../guides/offline-stand.md).
+Если не получилось, образ из шага 1 остаётся нетронутым и рабочим. Подробнее: [Стенд без
+интернета](../guides/offline-stand.md).
 
-## What is inside
+## Что внутри
 
-The runtime image holds only what the node needs: ROS 2 Humble (`ros-base`), rosbag2 with the
-sqlite3 and MCAP plugins, RViz, `foxglove_bridge`, the `resense` package with its pinned numpy /
-scipy / scikit-learn / pyyaml, the compiled C++ kernels, and the ROS package `resense_ros`. It does
-**not** contain the offline bag reader (`rosbags`), Open3D or the test suite; those come with
-`WITH_TOOLS=1`.
+В рабочем образе только то, что нужно ноде: ROS 2 Humble (`ros-base`), rosbag2 с плагинами sqlite3
+и MCAP, RViz, `foxglove_bridge`, пакет `resense` с зафиксированными версиями numpy / scipy /
+scikit-learn / pyyaml, скомпилированные ядра на C++ и ROS-пакет `resense_ros`. Читалки бэгов без
+ROS (`rosbags`), Open3D и набора тестов в нём **нет**; они добавляются с `WITH_TOOLS=1`.
 
-Default command: `ros2 launch resense_ros detector.launch.py freshness_mode:=replay`, the node with
-topic auto-discovery, set up for recorded bags. On a train with a live LiDAR pass
-`freshness_mode:=live` (the node's own default) instead.
+Команда по умолчанию: `ros2 launch resense_ros detector.launch.py freshness_mode:=replay` — нода с
+автопоиском топиков, настроенная для записанных бэгов. На поезде с живым LiDAR вместо этого
+передайте `freshness_mode:=live` (собственное значение ноды по умолчанию).

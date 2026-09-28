@@ -86,5 +86,5 @@ xhost +local:docker && docker run --rm -it --net=host --ipc=host -e DISPLAY -e Q
 * Проверка: `sha256sum -c resense-image-<версия>.tar.gz.sha256` или `scripts/load_image.sh <архив>`
   (сумма, загрузка и запуск образа без сети).
 
-Подробнее по-английски: [Get the Docker image](get-the-image.md), [Run on a bag](run-on-a-bag.md),
-[Read the output](read-the-output.md).
+Подробнее: [Где взять образ Docker](get-the-image.md), [Запуск на бэге](run-on-a-bag.md),
+[Как читать результат](read-the-output.md).

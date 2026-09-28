@@ -1,71 +1,70 @@
-# Acceptance test (dry run)
+# Приёмочный тест (пробный прогон)
 
-`scripts/dry_run.sh` is the end-to-end check of the jury path on a real bag: it builds (or loads)
-the image, starts the node, waits until it advertises `/resense/status`, plays the bag with the
-supported settings, captures the status stream and asserts the result with
-`scripts/check_dry_run.py`. Exit code 0 = pass, 1 = a criterion failed, 3 = no Docker or the node
-did not start.
+`scripts/dry_run.sh` — сквозная проверка сценария жюри на настоящем бэге: собирает (или загружает)
+образ, запускает ноду, ждёт, пока она объявит `/resense/status`, проигрывает бэг с поддерживаемыми
+настройками, записывает поток статуса и проверяет результат через `scripts/check_dry_run.py`. Код
+выхода 0 — пройдено, 1 — не выполнен какой-то критерий, 3 — нет Docker или нода не запустилась.
 
-## The two standard runs
+## Два стандартных прогона
 
 ```bash
-./scripts/dry_run.sh <bags>/doubleT_obstacle                  # builds --no-cache; the person must be reported 50–62 m ahead
+./scripts/dry_run.sh <bags>/doubleT_obstacle                  # сборка с --no-cache; человек должен быть найден в 50–62 м впереди
 SKIP_BUILD=1 ./scripts/dry_run.sh <bags>/roundT_doubleT --expect-clear --max-alarm-frames 2
 ```
 
-With no extra arguments the `doubleT_obstacle` criteria apply: the obstacle at 50–62 m, p95 of
-decode + detect ≤ 100 ms, and no frame of the recording left unprocessed after the start-up
-catch-up. Arguments after the bag are passed to the checker, so the thresholds live in one place
-(`python3 scripts/check_dry_run.py --help`). The checker also prints the end-to-end latency of the
-current results (from the player's publication through DDS, the node's queue, decode and detection
-to the result) and the node's CPU use and peak memory; `--max-p95-e2e <ms>` makes the end-to-end
-p95 a criterion.
+Без дополнительных аргументов действуют критерии для `doubleT_obstacle`: препятствие на 50–62 м,
+p95 декодирования + детекции ≤ 100 мс и ни одного необработанного кадра записи после навёрстывания
+при старте. Аргументы после бэга передаются проверяющему скрипту, так что пороги заданы в одном
+месте (`python3 scripts/check_dry_run.py --help`). Скрипт также печатает сквозную задержку
+актуальных результатов (от публикации плеером через DDS, очередь ноды, декодирование и детекцию до
+результата), загрузку CPU и пиковую память ноды; `--max-p95-e2e <ms>` делает сквозной p95
+критерием.
 
-The raw capture stays in `out/dry_run/` (`status.jsonl`, `node.log`); `status.jsonl` replays in the
-[web dashboard](../visualisation/web-dashboard.md).
+Сырые записанные данные остаются в `out/dry_run/` (`status.jsonl`, `node.log`); `status.jsonl`
+можно проиграть в [веб-дашборде](../visualisation/web-dashboard.md).
 
-## Options (environment)
+## Параметры (переменные окружения)
 
-| variable | meaning |
+| переменная | значение |
 |---|---|
-| `SKIP_BUILD=1` | reuse `$IMAGE` (default `resense:latest`) instead of rebuilding |
-| `IMAGE_TAR=<archive>` | load the image from an archive instead of building |
-| `OFFLINE=1` | node, player and recorder with `--network none`; needs `IMAGE_TAR` or `SKIP_BUILD=1` |
-| `RATE=1.0` | playback rate |
-| `BAG_READ_AHEAD_QUEUE_SIZE=10` | the player's read-ahead; change only for a separately tested setup |
-| `OUT=out/dry_run` | where the capture goes |
-| `DOCKER_ARGS=""` | extra `docker run` arguments, e.g. `-e RESENSE_NATIVE=0` for the numpy path |
+| `SKIP_BUILD=1` | использовать `$IMAGE` (по умолчанию `resense:latest`) вместо пересборки |
+| `IMAGE_TAR=<archive>` | загрузить образ из архива вместо сборки |
+| `OFFLINE=1` | нода, плеер и рекордер с `--network none`; нужен `IMAGE_TAR` или `SKIP_BUILD=1` |
+| `RATE=1.0` | скорость проигрывания |
+| `BAG_READ_AHEAD_QUEUE_SIZE=10` | упреждающее чтение плеера; менять только для отдельно проверенной конфигурации |
+| `OUT=out/dry_run` | куда сохраняется запись |
+| `DOCKER_ARGS=""` | дополнительные аргументы `docker run`, например `-e RESENSE_NATIVE=0` для пути на numpy |
 
-## Why "after the start-up"
+## Почему «после старта»
 
-`ros2 bag play` preloads the bag with its clock already running and then sends the overdue first
-seconds back to back. The node works through that burst one frame per `catchup_step` (0.3 s) of
-recording and skips the frames in between on purpose (`node.catchup_skipped` in the status). Drops
-are therefore counted from the later of 5 s and the end of that catch-up (at most 15 s), and with
-`--bag` (which `dry_run.sh` passes) against the recording's own messages, so frames the recording
-itself lacks are not counted as drops.
+`ros2 bag play` предзагружает бэг, пока его часы уже идут, а затем отправляет просроченные первые
+секунды подряд, без пауз. Нода разбирает эту пачку по одному кадру на каждые `catchup_step` (0,3 с)
+записи и намеренно пропускает кадры между ними (`node.catchup_skipped` в статусе). Поэтому пропуски
+кадров считаются с более позднего из двух моментов — 5 с или конца навёрстывания (не позже 15 с), —
+а с `--bag` (его передаёт `dry_run.sh`) сверяются с сообщениями самой записи, так что кадры,
+которых нет в самой записи, пропусками не считаются.
 
-## The organizers' console
+## Консоль организаторов
 
-A player run by a normal user with the stock ROS 2 Humble middleware, as on a jury console:
+Плеер от имени обычного пользователя со штатным middleware ROS 2 Humble, как на консоли жюри:
 
 ```bash
 PLAYER_DDS=stock ./scripts/console_test.sh <bags>/roundT_doubleT <bags>/doubleT_obstacle -- \
   --expect-obstacle --obstacle-in 2 --expect-inputs 2 --min-frames 20 --max-p95-latency 1000 --max-dropped 100000
 ```
 
-## On an 8-core stand-in
+## На 8-ядерной машине вместо стенда
 
-`scripts/bench_8core.sh <bags>/doubleT_obstacle <bags>/roundT_doubleT` bundles the build, the dry
-runs on the native and numpy paths, the console tests, `docker stats` and offline timing into
-`docs/evidence/bench_<date>/`.
+`scripts/bench_8core.sh <bags>/doubleT_obstacle <bags>/roundT_doubleT` одним запуском выполняет
+сборку, пробные прогоны на нативном пути и на numpy, консольные тесты, `docker stats` и офлайн-замеры
+времени и складывает всё в `docs/evidence/bench_<date>/`.
 
-## What CI runs instead
+## Что вместо этого запускает CI
 
-The dataset is not in CI. On every push CI plays 40-frame synthetic bags in the organizers' exact
-message layout (a clear run, then a person at 60 m; both topic / frame pairs) through the image,
-with a uid-1000 player from another container and with a stock Fast DDS player, and plays them
-through the runtime image loaded from its archive on an internal network with no way out. Pushes
-to `main` also replay the two original bags, restored from a checksum-verified Actions cache, from
-a cold disk. See
-[Setup, tests and CI](../development/setup-and-ci.md).
+Датасета в CI нет. При каждом push CI проигрывает через образ синтетические бэги по 40 кадров точно
+в формате сообщений организаторов (сначала чистый путь, затем человек на 60 м; обе пары топик /
+frame id) — плеером с uid 1000 из другого контейнера и штатным плеером на Fast DDS, — а также
+проигрывает их через рабочий образ, загруженный из архива, во внутренней сети без выхода наружу.
+При push в `main` дополнительно проигрываются с холодного диска два исходных бэга, восстановленные
+из кэша Actions с проверкой контрольной суммы. См.
+[Установка, тесты и CI](../development/setup-and-ci.md).

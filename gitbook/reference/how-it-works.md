@@ -1,90 +1,94 @@
-# How it works
+# Как это работает
 
-The idea: do not try to recognise objects. Describe the normal tunnel from the data in every frame,
-cut out the space the train will sweep, and report whatever persistently occupies it. There is no
-map: the tunnel model is rebuilt from each frame.
+Идея: не пытаться распознавать объекты. По данным каждого кадра описать нормальный тоннель, вырезать
+объём, через который пройдёт поезд, и сообщать обо всём, что устойчиво его занимает. Карты нет:
+модель тоннеля заново строится по каждому кадру.
 
 ```text
 PointCloud2 (10 Hz) ──▶ resense_ros/detector_node ──▶ resense.Detector.process(frame)
-  1. sensor → vehicle frame (X forward, Y left, Z up), range crop          frame.py
-  1b. mount auto-calibration: orientation, roll, pitch from rails and bed  calibration.py
-  2. track model: bed profile, rail heads, track axis, curvature from walls track.py
-  3. clearance-envelope corridor along the axis (2.1 × 3.0 m + advisory)    gauge.py
-  3a. low objects on the rails                                             lowobj.py
-  3b. multi-frame accumulation beyond 40 m (only with a known speed)       accumulate.py
-  4. voxels → range-adaptive DBSCAN → infrastructure filters               clustering.py
-  5. persistence tracker → confirmed tracks                                tracking.py
-  5b. health: input, visibility, rail lock, monitored range                health.py
-  6. FrameResult → decision, distances, JSON, markers                      detector_node.py
+  1. датчик → координаты поезда (X вперёд, Y влево, Z вверх), обрезка по дальности  frame.py
+  1b. автокалибровка крепления: ориентация, крен, тангаж по рельсам и полотну       calibration.py
+  2. модель пути: профиль полотна, головки рельсов, ось пути, кривизна по стенам    track.py
+  3. коридор габарита вдоль оси (2,1 × 3,0 м + зона предупреждения)                 gauge.py
+  3a. низкие объекты на рельсах                                                     lowobj.py
+  3b. накопление кадров дальше 40 м (только при известной скорости)                 accumulate.py
+  4. воксели → DBSCAN с радиусом по дальности → фильтры инфраструктуры              clustering.py
+  5. трекер устойчивости → подтверждённые треки                                     tracking.py
+  5b. исправность: вход, видимость, захват рельсов, дальность контроля              health.py
+  6. FrameResult → решение, расстояния, JSON, маркеры                               detector_node.py
 ```
 
-## 1. Where the sensor is
+## 1. Где стоит датчик
 
-The LiDAR is not in the same place on every train. The detector maps the sensor's axes to the
-vehicle frame (configurable) and, by default, calibrates the mount itself from the first frames:
-the rail pair gives the orientation and roll, the bed slope gives the pitch. The result is reported
-in the status JSON under `mount`.
+LiDAR стоит не на каждом поезде в одном и том же месте. Детектор переводит оси датчика в систему
+координат поезда (это настраивается) и по умолчанию сам калибрует крепление по первым кадрам: пара
+рельсов даёт ориентацию и крен, уклон полотна — тангаж. Результат — в JSON статуса под ключом
+`mount`.
 
-## 2. The track model
+## 2. Модель пути
 
-Per frame: the bed height along the track (robust per-bin fit), the rail-head level and the track
-centre and yaw from a two-rail template (1.52 m gauge), and the curvature from the left and right
-tunnel boundaries (walls, column rows). The axis is trusted only as far as the boundaries are
-actually observed; beyond that, objects can only be advisory.
+На каждом кадре: высота полотна вдоль пути (робастная подгонка по участкам), уровень головок рельсов,
+центр пути и курсовой угол по шаблону из двух рельсов (колея 1,52 м), а кривизна — по левой и правой
+границам тоннеля (стены, ряды колонн). Оси доверяют лишь на той дальности, где границы
+действительно видны; дальше объекты могут быть только предупреждениями.
 
-## 3. The envelope
+## 3. Габарит
 
-The organizers' train envelope, 2.1 m wide and 3.0 m tall above the rail head, is swept along the
-fitted axis. A band 0.35 m wider is the advisory zone. Near the train, on straight track, the
-envelope is the union of the one built from the rails and the one measured from the sensor axis,
-so neither side is narrowed. Nothing lying on the bed below the envelope floor between the rails
-is reported (the organizers confirmed such an object is not an obstacle); objects on a rail, or
-straddling the floor, are found by a separate low-object stage.
+Габарит поезда, заданный организаторами, — 2,1 м в ширину и 3,0 м в высоту над головкой рельса —
+протягивается вдоль подогнанной оси. Полоса на 0,35 м шире — зона предупреждения. Вблизи поезда на
+прямом пути габарит — объединение габарита, построенного по рельсам, и габарита, отмеренного от оси
+датчика, так что ни одна сторона не сужается. О предметах, лежащих на полотне между рельсами ниже
+нижней границы габарита, детектор не сообщает (организаторы подтвердили, что такой объект не
+препятствие); объекты на рельсе или пересекающие нижнюю границу находит отдельный этап низких
+объектов.
 
-## 4. Candidates and infrastructure
+## 4. Кандидаты и инфраструктура
 
-Points inside the corridor are voxelised and clustered with DBSCAN whose radius grows with range.
-Tunnel hardware that legitimately comes close to the envelope — thin linear fixtures, low track
-hardware, wall faces, columns, overhead ducts — is recognised by shape signatures and demoted to
-advisory, never deleted from the output. Thin objects hanging near the axis (a broken cable) are
-never demoted.
+Точки внутри коридора вокселизуются и кластеризуются DBSCAN, радиус которого растёт с дальностью.
+Оборудование тоннеля, которое штатно подходит близко к габариту, — тонкие протяжённые элементы,
+низкое путевое оборудование, поверхности стен, колонны, короба над головой — распознаётся по
+сигнатурам формы и понижается до предупреждения, но никогда не удаляется из выхода. Тонкие объекты,
+свисающие у оси (оборванный кабель), не понижаются никогда.
 
-## 5. Persistence and the decision
+## 5. Устойчивость и решение
 
-A cluster becomes a track; a track becomes an obstacle only when it is **confirmed**: seen in at
-least 3 frames over at least 0.5 s, matched in most of its recent frames, with enough confidence,
-and inside the strict envelope in most of its recent hits. A reported obstacle is held over one
-missed frame. A small learned model (gradient-boosted trees) may delay a doubtful far STOP by a
-bounded number of frames in a track's life — never within 25 m, never for a standing body within
-40 m, and it can never veto or remove a STOP.
+Кластер становится треком; трек становится препятствием, только когда он **подтверждён**: виден
+минимум в 3 кадрах не менее чем за 0,5 с, сопоставлен в большинстве недавних кадров, имеет
+достаточную уверенность и в большинстве недавних попаданий находится внутри строгого габарита.
+Сообщённое препятствие удерживается при одном пропущенном кадре. Небольшая обученная модель
+(градиентный бустинг деревьев) может отложить сомнительный дальний STOP на ограниченное число кадров
+за жизнь трека — никогда ближе 25 м, никогда для стоящей фигуры ближе 40 м, и она никогда не может
+запретить или снять STOP.
 
-The decision per frame:
+Решение на каждом кадре:
 
-* `STOP` — a confirmed track inside the envelope;
-* `CAUTION` — only advisory tracks, known infrastructure, degraded health or catching up;
-* `GO` — none of the above;
-* `FAULT` — no input, stale input, or untrusted clocks (a held STOP takes priority).
+* `STOP` — подтверждённый трек внутри габарита;
+* `CAUTION` — только треки в зоне предупреждения, известная инфраструктура, сниженная исправность
+  или навёрстывание;
+* `GO` — ничего из перечисленного;
+* `FAULT` — нет входа, вход устарел или часам нельзя доверять (удерживаемый STOP важнее).
 
-## 6. Health and the monitored range
+## 6. Исправность и дальность контроля
 
-Every frame also reports how far the track is actually being watched (`clear_distance`): the
-sightline and the trusted track-model range, capped at any detected obstacle or eligible cluster.
-It is an estimate, not a guarantee that the track is empty.
+Каждый кадр также сообщает, на какую дальность путь действительно просматривается (`clear_distance`):
+по прямой видимости и доверенной дальности модели пути, с ограничением по любому обнаруженному
+препятствию или учитываемому кластеру. Это оценка, а не гарантия, что путь свободен.
 
-## Performance
+## Производительность
 
-One CPU core per node, no GPU. On the organizers' recordings a frame typically takes a fraction of
-the sensor's 100 ms period; dense station scenes are the slowest and can exceed it. Optional C++
-kernels (built into the image) cut the detector time by about half with bit-identical output. Measured timings with their dates and machines: README “Headline results” and
+Одно ядро CPU на ноду, без GPU. На записях организаторов кадр обычно обрабатывается за малую долю
+периода датчика 100 мс; самые медленные — плотные сцены на станциях, и они могут его превышать.
+Необязательные ядра на C++ (встроены в образ) сокращают время детектора примерно вдвое с побитово
+идентичным результатом. Измеренное время с датами и машинами: README, раздел «Headline results», и
 [`docs/EXPERIMENTS.md`](https://github.com/pmixay/ReSense/blob/main/docs/EXPERIMENTS.md) §3.
 
-## Read more
+## Подробнее
 
 * [`docs/ARCHITECTURE.md`](https://github.com/pmixay/ReSense/blob/main/docs/ARCHITECTURE.md) —
-  components, data flow, real-time budget, deployment without internet
-* [`docs/ALGORITHM.md`](https://github.com/pmixay/ReSense/blob/main/docs/ALGORITHM.md) — every
-  stage, the decision rule, parameters, limitations
-* [`docs/EXPERIMENTS.md`](https://github.com/pmixay/ReSense/blob/main/docs/EXPERIMENTS.md) — every
-  measurement, including the approaches that did not work
-* [`docs/DECISIONS.md`](https://github.com/pmixay/ReSense/blob/main/docs/DECISIONS.md) — key
-  decisions: hypothesis → experiment → result
+  компоненты, поток данных, бюджет реального времени, развёртывание без интернета
+* [`docs/ALGORITHM.md`](https://github.com/pmixay/ReSense/blob/main/docs/ALGORITHM.md) — все
+  этапы, правило решения, параметры, ограничения
+* [`docs/EXPERIMENTS.md`](https://github.com/pmixay/ReSense/blob/main/docs/EXPERIMENTS.md) — все
+  измерения, включая подходы, которые не сработали
+* [`docs/DECISIONS.md`](https://github.com/pmixay/ReSense/blob/main/docs/DECISIONS.md) — ключевые
+  решения: гипотеза → эксперимент → результат

@@ -1,7 +1,7 @@
-# Run on a bag
+# Запуск на бэге
 
-ReSense never opens bag files itself on the ROS path: the node subscribes to the point clouds that
-`ros2 bag play` publishes, exactly as it would to a live LiDAR driver.
+В режиме ROS ReSense сам никогда не открывает файлы бэгов: нода подписывается на облака точек,
+которые публикует `ros2 bag play`, — точно так же, как подписалась бы на драйвер живого LiDAR.
 
 ```text
 ros2 bag play <bag>  ──PointCloud2, 10 Hz──▶  resense_detector node (docker run --net=host … resense)
@@ -11,18 +11,18 @@ ros2 bag play <bag>  ──PointCloud2, 10 Hz──▶  resense_detector node (d
                                                 └─▶ /resense/detections, /resense/status (JSON), RViz markers
 ```
 
-## One command
+## Одной командой
 
-Needs only Docker and the image (loaded, or pass the archive):
+Нужны только Docker и образ (уже загруженный или переданный архивом):
 
 ```bash
 scripts/play_bag.sh <bag directory>
 scripts/play_bag.sh <bag directory> --archive resense-image-<version>.tar.gz
 ```
 
-It raises the UDP buffer if it can, loads the archive, starts the node and a listener (waiting for
-each to be ready, at most `READY_TIMEOUT` s, default 60), plays the bag as the calling user from the
-same image and prints every change of the decision:
+Скрипт по возможности поднимает буфер UDP, загружает архив, запускает ноду и слушателя (ждёт
+готовности каждого не дольше `READY_TIMEOUT` с, по умолчанию 60), проигрывает бэг из того же образа
+от имени вызвавшего пользователя и печатает каждую смену решения:
 
 ```text
 == doubleT_obstacle: playing as uid:gid 1000:1000; decision changes (time since start, decision, nearest distance):
@@ -33,86 +33,87 @@ same image and prints every change of the decision:
 == doubleT_obstacle played; node stopped
 ```
 
-(Timings in the example are illustrative.) Exit code 2 means a bad argument, 3 means no Docker,
-no image or a node that did not start.
+(Время в примере условное.) Код выхода 2 — неверный аргумент, 3 — нет Docker, нет образа или нода
+не запустилась.
 
-## Step by step (the organizers' console)
+## Пошагово (консоль организаторов)
 
-Three consoles on the same machine.
+Три консоли на одной машине.
 
-**0. Once per boot** — the UDP receive buffer for 360° clouds (needed with a CycloneDDS player,
-harmless otherwise):
+**0. Один раз после загрузки системы** — буфер приёма UDP для облаков 360° (нужен с плеером на
+CycloneDDS, в остальных случаях не мешает):
 
 ```bash
 sudo sysctl -w net.core.rmem_max=33554432
 ```
 
-**1. The node** (console 1):
+**1. Нода** (консоль 1):
 
 ```bash
 docker run --rm -it --net=host --ipc=host resense
 ```
 
-* `--net=host` is required: the image runs DDS over UDP only; in Docker's bridge network the
-  player and the node never discover each other.
-* The image's default command passes `freshness_mode:=replay`, which recorded bags need. Keep it
-  when you give your own command (`… detector.launch.py freshness_mode:=replay …`): the node's own
-  default, `live`, compares frame stamps with the system clock and answers `FAULT` on a recording.
+* `--net=host` обязателен: образ передаёт DDS только по UDP; в bridge-сети Docker плеер и нода не
+  находят друг друга.
+* Команда образа по умолчанию передаёт `freshness_mode:=replay`, который нужен для записанных
+  бэгов. Сохраните его, если задаёте свою команду (`… detector.launch.py freshness_mode:=replay …`):
+  собственный режим ноды по умолчанию, `live`, сравнивает метки времени кадров с системными часами
+  и на записи отвечает `FAULT`.
 
-**2. The player** (console 2, any user, ROS 2 Humble on the host):
+**2. Плеер** (консоль 2, любой пользователь, ROS 2 Humble на хосте):
 
 ```bash
 ros2 bag play <bag> --delay 3 --read-ahead-queue-size 10
 ```
 
-Without ROS 2 on the host, use the player in the image:
+Без ROS 2 на хосте используйте плеер из образа:
 
 ```bash
 docker run --rm --net=host -v <folder with bags>:/data:ro resense \
   ros2 bag play /data/<bag> --delay 3 --read-ahead-queue-size 10
 ```
 
-* `--delay 3` lets DDS discovery complete before the first cloud.
-* `--read-ahead-queue-size 10` is the supported playback mode. Humble's default (1 000 messages)
-  preloads a short recording while its clock runs and then sends the overdue start in one burst;
-  the first seconds of output are then stale.
-* The player and the node must use the same `ROS_DOMAIN_ID` (default 0).
+* `--delay 3` даёт DDS завершить обнаружение участников до первого облака.
+* `--read-ahead-queue-size 10` — поддерживаемый режим проигрывания. Со значением Humble по умолчанию
+  (1 000 сообщений) плеер предзагружает короткую запись, пока уже идут его часы, а затем отправляет
+  запоздавшее начало одной пачкой; первые секунды результата при этом устаревают.
+* `ROS_DOMAIN_ID` у плеера и ноды должен совпадать (по умолчанию 0).
 
-**3. The answer** (console 3):
+**3. Ответ** (консоль 3):
 
 ```bash
 ros2 topic echo /resense/decision --field data          # GO | CAUTION | STOP | FAULT
-ros2 topic echo /resense/nearest_distance --field data  # m along the track, −1 = none
+ros2 topic echo /resense/nearest_distance --field data  # м вдоль пути, −1 — нет
 ```
 
-What the values mean: [Read the output](read-the-output.md).
+Что означают значения: [Как читать результат](read-the-output.md).
 
-## Several bags into one node
+## Несколько бэгов в одну ноду
 
-The node listens to both known topic / frame pairs (`/lidar_points` in `hesai_lidar`,
-`/sensing/lidar/hesai128/pointcloud` in `lidar_livox`) and, unless `auto_discover:=false`, to any
-other `PointCloud2` topic. A new recording (another topic or frame id, or stamps that jump by more
-than `new_input_gap`, 30 s) gets a fresh detector, so bags can be played one after another into one
-running node without restarting it.
+Нода слушает обе известные пары топика и системы координат (`/lidar_points` в `hesai_lidar`,
+`/sensing/lidar/hesai128/pointcloud` в `lidar_livox`) и, если не задано `auto_discover:=false`,
+любой другой топик `PointCloud2`. Для новой записи (другой топик или frame id либо метки времени,
+скачущие больше чем на `new_input_gap`, 30 с) создаётся свежий детектор, поэтому бэги можно
+проигрывать один за другим в одну запущенную ноду без её перезапуска.
 
-## With docker compose
+## Через docker compose
 
-The bags' folder is `$RESENSE_DATA` (default `/data/for_hackathon`), the bag inside it
+Папка с бэгами — `$RESENSE_DATA` (по умолчанию `/data/for_hackathon`), бэг внутри неё —
 `$RESENSE_BAG`:
 
 ```bash
-docker compose up detector                        # the node, headless
-docker compose --profile tools up player          # plays $RESENSE_BAG into it
-docker compose --profile tools run --rm echo      # prints /resense/decision
+docker compose up detector                        # нода без GUI
+docker compose --profile tools up player          # проигрывает в неё $RESENSE_BAG
+docker compose --profile tools run --rm echo      # печатает /resense/decision
 RESENSE_DATA=/mnt/bags RESENSE_BAG=doubleT_obstacle docker compose --profile tools up
 ```
 
-With `resense:latest` already loaded, compose never builds or pulls; do not pass `--build` on a
-machine without internet.
+Если `resense:latest` уже загружен, compose ничего не собирает и не скачивает; на машине без
+интернета не передавайте `--build`.
 
-## Other wrappers
+## Другие обёртки
 
 ```bash
-./scripts/run_demo.sh /data/for_hackathon/roundT_doubleT         # node + RViz + playback in one container (X11)
-./scripts/run_headless.sh /data/for_hackathon/doubleT_obstacle   # the same without X11, prints "OBSTACLE 55.7 m"
+./scripts/run_demo.sh /data/for_hackathon/roundT_doubleT         # нода + RViz + проигрывание в одном контейнере (X11)
+./scripts/run_headless.sh /data/for_hackathon/doubleT_obstacle   # то же без X11, печатает "OBSTACLE 55.7 m"
 ```

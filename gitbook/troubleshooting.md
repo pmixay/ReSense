@@ -1,68 +1,69 @@
-# Troubleshooting
+# Решение проблем
 
-## The decision stays `FAULT`
+## Решение остаётся `FAULT`
 
-| cause | check | fix |
+| причина | проверка | что делать |
 |---|---|---|
-| the node is not on the host network | `docker ps` shows the node without `--net=host` | start it with `--net=host` (the image uses DDS over UDP only) |
-| different ROS domains | `echo $ROS_DOMAIN_ID` in the player's console | use the same value for player and node (default 0) |
-| `live` freshness on a recorded bag | the status JSON's `freshness.reason` mentions clocks or age | use the image's default command, or pass `freshness_mode:=replay` in your own |
-| the bag has not started yet | `FAULT` for the first seconds, then results | normal: the player preloads the bag; `--delay 3` gives discovery time |
-| the bag ended | `FAULT` 0.5 s after the last frame | normal: no input means the path is not monitored |
-| a topic the node does not see | `ros2 topic list` on the host | the node takes both known names and any `PointCloud2`; with `auto_discover:=false` pass `input_topic:=<topic>` |
+| нода не в сети хоста | `docker ps` показывает ноду без `--net=host` | запустите её с `--net=host` (образ передаёт DDS только по UDP) |
+| разные домены ROS | `echo $ROS_DOMAIN_ID` в консоли плеера | задайте одно и то же значение для плеера и ноды (по умолчанию 0) |
+| свежесть `live` на записанном бэге | `freshness.reason` в JSON статуса упоминает часы или возраст | используйте команду образа по умолчанию или передайте `freshness_mode:=replay` в своей |
+| бэг ещё не начался | первые секунды `FAULT`, затем результаты | норма: плеер предзагружает бэг; `--delay 3` даёт время на взаимное обнаружение по DDS |
+| бэг закончился | `FAULT` через 0,5 с после последнего кадра | норма: нет входа — путь не контролируется |
+| нода не видит топик | `ros2 topic list` на хосте | нода берёт оба известных имени и любой `PointCloud2`; при `auto_discover:=false` передайте `input_topic:=<topic>` |
 
-## No frames arrive from a 360-degree bag
+## Из 360-градусного бэга не приходят кадры <a href="#no-frames-arrive-from-a-360-degree-bag" id="no-frames-arrive-from-a-360-degree-bag"></a>
 
-The 360° clouds are 24 MB each. A CycloneDDS player at Ubuntu's default UDP receive buffer
-(`net.core.rmem_max` 212992) delivers almost none of them.
+Облака 360° весят по 24 МБ. Плеер на CycloneDDS при стандартном для Ubuntu буфере приёма UDP
+(`net.core.rmem_max` 212992) почти ни одно из них не доставляет.
 
 ```bash
-sudo sysctl -w net.core.rmem_max=33554432     # until reboot
+sudo sysctl -w net.core.rmem_max=33554432     # до перезагрузки
 ```
 
-The node logs a WARN at start when the buffer is smaller. The stock Fast DDS player of ROS 2 Humble
-is not affected; 120° clouds arrive either way. `scripts/play_bag.sh` raises the buffer itself when
-it can.
+Если буфер меньше, нода пишет WARN при старте. Штатного плеера ROS 2 Humble на Fast DDS это
+не касается; облака 120° приходят в любом случае. `scripts/play_bag.sh` сам поднимает буфер, когда
+может.
 
-## Results are late or frames are skipped at the start
+## Результаты запаздывают или в начале пропускаются кадры
 
-`ros2 bag play` with Humble's default read-ahead (1 000 messages) preloads the recording while its
-clock runs and then sends the overdue first seconds in one burst. Play with
-`--read-ahead-queue-size 10`, the supported setting. On a cold disk, pre-reading a 360° bag helps
-if memory allows:
+`ros2 bag play` с очередью упреждающего чтения Humble по умолчанию (1 000 сообщений) предзагружает
+запись, пока идут её часы, а затем отправляет просроченные первые секунды одной пачкой.
+Проигрывайте с `--read-ahead-queue-size 10` — это поддерживаемая настройка. На холодном диске,
+если хватает памяти, помогает заранее прочитать 360° бэг:
 
 ```bash
 cat <bag>/*.db3 > /dev/null
 ```
 
-The node reports its own start-up skips in the status (`node.catchup_skipped`, `node.catchup`);
-they are deliberate, not transport losses.
+О собственных пропусках кадров при старте нода сообщает в статусе (`node.catchup_skipped`,
+`node.catchup`); это намеренное навёрстывание, а не потери при передаче.
 
 ## Docker
 
-| symptom | fix |
+| симптом | что делать |
 |---|---|
-| `permission denied … docker.sock` | add yourself to the `docker` group and log in again, or `newgrp docker` |
-| `apt-get update` fails during the build | `PULL=1 ./scripts/build.sh` refreshes an old cached base image |
-| no internet on the machine | do not build: `docker load` the archive ([Stand without internet](guides/offline-stand.md)); with compose never pass `--build` |
-| a script exits with 3 | Docker is not running, the image is missing, or the node did not start (see its log) |
-| checksum mismatch in `load_image.sh` (exit 4) | the archive is incomplete or not the one the `.sha256` was made for; download it again |
+| `permission denied … docker.sock` | добавьте себя в группу `docker` и войдите в систему заново или выполните `newgrp docker` |
+| `apt-get update` падает при сборке | `PULL=1 ./scripts/build.sh` обновит устаревший закэшированный базовый образ |
+| на машине нет интернета | не собирайте, а загрузите архив через `docker load` ([Стенд без интернета](guides/offline-stand.md)); с compose никогда не передавайте `--build` |
+| скрипт завершается с кодом 3 | Docker не запущен, образа нет или нода не стартовала (см. её лог) |
+| несовпадение контрольной суммы в `load_image.sh` (код 4) | архив неполный или не тот, для которого сделан `.sha256`; скачайте его заново |
 
 ## RViz
 
-| symptom | fix |
+| симптом | что делать |
 |---|---|
-| `cannot open display` | run `xhost +local:docker` and pass `-e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix` |
-| one raw-cloud display is grey | normal: the layout has both topic names; the bag carries one |
-| no cloud at all | a bag with a third topic name: *Add → PointCloud2 →* pick it; detections still show |
+| `cannot open display` | выполните `xhost +local:docker` и передайте `-e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix` |
+| один дисплей сырого облака серый | норма: в раскладке оба имени топика, а в бэге — только одно |
+| облака нет совсем | бэг с третьим именем топика: *Add → PointCloud2 →* выберите его; обнаружения всё равно видны |
 
-## The web dashboard
+## Веб-дашборд
 
-| symptom | fix |
+| симптом | что делать |
 |---|---|
-| "Подключить" fails | rosbridge is not in the image (`apt install ros-humble-rosbridge-suite`); a copy of the page served over HTTPS cannot reach a remote `ws://`: open `web/index.html` locally, or use `wss://` |
-| a file loads but shows nothing | it must contain status JSON objects, one per line (`resense run --out` or a `/resense/status` capture) |
-| the banner shows «ДАННЫЕ УСТАРЕЛИ» live | the node's and the browser's clocks differ; synchronize UTC (NTP) |
+| «Подключить» не срабатывает | rosbridge нет в образе (`apt install ros-humble-rosbridge-suite`); копия страницы, отданная по HTTPS, не может подключиться к удалённому `ws://`: откройте `web/index.html` локально или используйте `wss://` |
+| файл загружается, но ничего не показывает | в нём должны быть JSON-объекты статуса, по одному на строку (`resense run --out` или запись `/resense/status`) |
+| в живом режиме баннер показывает «ДАННЫЕ УСТАРЕЛИ» | часы ноды и браузера расходятся; синхронизируйте UTC (NTP) |
 
-Still stuck: the node's log (`docker logs <container>`) and `/resense/health` name the problem in
-most cases; issues go to [GitHub](https://github.com/pmixay/ReSense/issues).
+Если не помогло: в большинстве случаев проблему называют лог ноды (`docker logs <container>`)
+и `/resense/health`; о проблемах сообщайте в issues на
+[GitHub](https://github.com/pmixay/ReSense/issues).

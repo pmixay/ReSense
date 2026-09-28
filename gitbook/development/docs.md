@@ -1,23 +1,24 @@
-# Editing this book
+# Редактирование книги
 
-The book's source is the `gitbook/` folder of the repository: plain Markdown, one file per page,
-the table of contents in `gitbook/SUMMARY.md`. `.gitbook.yaml` at the repository root points
-GitBook at that folder.
+Исходники книги — папка `gitbook/` репозитория: обычный Markdown, по файлу на страницу, оглавление —
+в `gitbook/SUMMARY.md`. `.gitbook.yaml` в корне репозитория указывает GitBook на эту папку.
 
-## Where it is published
+## Где опубликована книга
 
-The book is published on GitBook.com from this folder. Until Git Sync is connected, the published
-copy does not follow the repository by itself: change the pages here, then bring the change into
-GitBook (a change request, or a new import of the folder). With Git Sync (the space's *Configure* →
-*GitHub Sync* → this repository and branch, direction "GitHub → GitBook"), every push updates the
-site and edits made in GitBook's editor are committed back to `gitbook/`.
+Книга публикуется на GitBook.com из этой папки. Пока Git Sync не подключён, опубликованная копия
+сама за репозиторием не следует: меняйте страницы здесь, затем переносите изменение в GitBook
+(change request или новый импорт папки). С Git Sync (в пространстве *Configure* →
+*GitHub Sync* → этот репозиторий и ветка, направление «GitHub → GitBook») каждый пуш обновляет
+сайт, а правки из редактора GitBook коммитятся обратно в `gitbook/`.
 
-## Writing rules
+## Правила написания
 
-* Instructions here, evidence in `docs/`. Do not copy measured numbers into the book; link to
-  `docs/EXPERIMENTS.md` or the README summary, where each number has its date and data.
-* Link repository files with full GitHub URLs (`https://github.com/pmixay/ReSense/blob/main/…`):
-  relative links outside `gitbook/` do not exist on GitBook.
-* Plain Markdown only (tables, code blocks, block quotes), so a page reads the same on GitHub and
-  on GitBook.
-* Commands must be the ones the scripts and README use; when a script changes, update its page.
+* Инструкции — здесь, доказательства (evidence) — в `docs/`. Не копируйте измеренные числа в книгу;
+  ссылайтесь на `docs/EXPERIMENTS.md` или сводку README, где у каждого числа есть дата и данные.
+* На файлы репозитория ссылайтесь полными URL GitHub
+  (`https://github.com/pmixay/ReSense/blob/main/…`): относительных ссылок за пределы `gitbook/` на
+  GitBook не существует.
+* Только обычный Markdown (таблицы, блоки кода, цитаты), чтобы страница одинаково читалась на GitHub
+  и на GitBook.
+* Команды должны совпадать с теми, что в скриптах и README; когда скрипт меняется, обновите его
+  страницу.

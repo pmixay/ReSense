@@ -1,93 +1,93 @@
-# Node parameters
+# Параметры ноды
 
-Every node parameter is a launch argument of `resense_ros detector.launch.py`:
+Каждый параметр ноды — аргумент запуска `resense_ros detector.launch.py`:
 
 ```bash
 docker run --rm -it --net=host --ipc=host resense \
   ros2 launch resense_ros detector.launch.py freshness_mode:=replay auto_discover:=false input_topic:=/my/points
 ```
 
-The defaults below are those of the launch file
+Значения по умолчанию ниже взяты из launch-файла
 ([`detector.launch.py`](https://github.com/pmixay/ReSense/blob/main/ros2_ws/src/resense_ros/launch/detector.launch.py)).
-Detector tuning is not a launch argument; it lives in the [configuration file](configuration.md).
+Настройка детектора — не аргумент запуска: она находится в [файле конфигурации](configuration.md).
 
-## Input
+## Вход
 
-| argument | default | meaning |
+| аргумент | по умолчанию | значение |
 |---|---|---|
-| `input_topic` | `/lidar_points,/sensing/lidar/hesai128/pointcloud` | comma-separated candidate input topics |
-| `auto_discover` | `true` | also subscribe to `PointCloud2` topics found on the graph |
-| `discover_period` | `2.0` | s between discovery scans while the input is silent |
-| `input_switch_timeout` | `1.0` | s the active input must be silent before another topic is taken |
-| `new_input_gap` | `30.0` | s of forward stamp jump taken as a new recording (detector restarted) |
-| `hole_reset_gap` | `1.0` | s of forward stamp jump that resets the scene state (calibration kept) |
-| `input_reliability` | `auto` | input QoS: `auto` matches the publishers, or `reliable`, `best_effort` |
-| `input_queue_depth` | `40` | frames the subscription may hold between two processed frames |
-| `catchup_step` | `0.3` | s of recording between processed frames while frames wait; `0` = newest only |
-| `catchup_max_lag` | `5.0` | s: waiting frames older than the newest by more than this are dropped |
-| `catchup_startup_max_lag` | `20.0` | s of backlog allowed for a new recording's first catch-up |
-| `raw_input` | `true` | read the input clouds from their serialized bytes (`resense_ros/fastcloud.py`) instead of rclpy's message conversion; the detector gets identical arrays; `false` = rclpy's conversion |
+| `input_topic` | `/lidar_points,/sensing/lidar/hesai128/pointcloud` | входные топики-кандидаты через запятую |
+| `auto_discover` | `true` | также подписываться на топики `PointCloud2`, найденные в графе |
+| `discover_period` | `2.0` | с между поисками топиков, пока вход молчит |
+| `input_switch_timeout` | `1.0` | с молчания активного входа, после которых берётся другой топик |
+| `new_input_gap` | `30.0` | с скачка метки времени вперёд, который считается новой записью (детектор перезапускается) |
+| `hole_reset_gap` | `1.0` | с скачка метки времени вперёд, который сбрасывает состояние сцены (калибровка сохраняется) |
+| `input_reliability` | `auto` | QoS входа: `auto` подстраивается под издателей; либо `reliable`, `best_effort` |
+| `input_queue_depth` | `40` | сколько кадров подписка может держать между двумя обработанными кадрами |
+| `catchup_step` | `0.3` | с записи между обработанными кадрами, пока кадры ждут в очереди; `0` = только самый новый |
+| `catchup_max_lag` | `5.0` | с: ожидающие кадры, которые старше самого нового больше чем на это значение, отбрасываются |
+| `catchup_startup_max_lag` | `20.0` | с отставания, допустимого при первом навёрстывании новой записи |
+| `raw_input` | `true` | читать входные облака прямо из сериализованных байтов (`resense_ros/fastcloud.py`) вместо преобразования сообщений rclpy; детектор получает идентичные массивы; `false` = преобразование rclpy |
 
-## Sensor mount
+## Крепление датчика
 
-| argument | default | meaning |
+| аргумент | по умолчанию | значение |
 |---|---|---|
-| `sensor_forward`, `sensor_left`, `sensor_up` | empty (config file: `-y`, `+x`, `+z`) | which sensor axis points forward / left / up, e.g. `+x` |
-| `mount_roll_deg`, `mount_pitch_deg`, `mount_yaw_deg` | `-999` (= config file) | a fixed tilt correction in degrees |
-| `auto_calibrate` | `true` | find the orientation, roll and pitch from the rails and the bed in the first frames; reported in the status JSON under `mount` |
+| `sensor_forward`, `sensor_left`, `sensor_up` | пусто (в файле конфигурации: `-y`, `+x`, `+z`) | какая ось датчика смотрит вперёд / влево / вверх, например `+x` |
+| `mount_roll_deg`, `mount_pitch_deg`, `mount_yaw_deg` | `-999` (= из файла конфигурации) | фиксированная поправка наклона в градусах |
+| `auto_calibrate` | `true` | находить ориентацию, крен и тангаж по рельсам и полотну в первых кадрах; результат — в JSON статуса под ключом `mount` |
 
-## Freshness and guards
+## Свежесть и проверки входа
 
-| argument | default | meaning |
+| аргумент | по умолчанию | значение |
 |---|---|---|
-| `freshness_mode` | `live` (the image's default command passes `replay`) | `live` = acquisition time vs system UTC, for a live LiDAR; **`replay` for recorded bags** |
-| `max_result_age` | `0.5` | s: maximum source age, Python residence and recording queue lag |
-| `future_tolerance` | `0.05` | s of tolerated future clock skew |
-| `stale_timeout` | `0.5` | s without an input frame before the decision becomes `FAULT` |
-| `startup_grace` | `2.0` | s after start before "no LiDAR frame received yet" is published as `FAULT` |
-| `max_consecutive_errors` | `5` | processing exceptions in a row before the detector is reset |
+| `freshness_mode` | `live` (команда образа по умолчанию передаёт `replay`) | `live` = время получения кадра сравнивается с системным UTC, для работающего LiDAR; **`replay` для записанных бэгов** |
+| `max_result_age` | `0.5` | с: предел возраста источника, времени пребывания в Python и отставания очереди записи |
+| `future_tolerance` | `0.05` | с допустимого расхождения часов «в будущее» |
+| `stale_timeout` | `0.5` | с без входного кадра, после которых решение становится `FAULT` |
+| `startup_grace` | `2.0` | с после старта, прежде чем «no LiDAR frame received yet» публикуется как `FAULT` |
+| `max_consecutive_errors` | `5` | исключений обработки подряд, после которых детектор сбрасывается |
 
-## Train speed (optional)
+## Скорость поезда (необязательно)
 
-Without a speed the detector runs single-frame; with one it accumulates frames beyond 40 m.
+Без скорости детектор работает по одному кадру; со скоростью он накапливает кадры дальше 40 м.
 
-| argument | default | meaning |
+| аргумент | по умолчанию | значение |
 |---|---|---|
-| `ego_speed_mps` | `-1.0` | a constant train speed in m/s; < 0 = unknown |
-| `speed_topic` | empty | `std_msgs/Float32` topic with the speed in m/s |
-| `odom_topic` | empty | `nav_msgs/Odometry` topic; `twist.linear.x` is taken as the speed |
-| `speed_timeout` | `1.0` | s after which a speed message no longer counts |
+| `ego_speed_mps` | `-1.0` | постоянная скорость поезда в м/с; < 0 = неизвестна |
+| `speed_topic` | пусто | топик `std_msgs/Float32` со скоростью в м/с |
+| `odom_topic` | пусто | топик `nav_msgs/Odometry`; скоростью считается `twist.linear.x` |
+| `speed_timeout` | `1.0` | с, после которых сообщение о скорости перестаёт учитываться |
 
-## Output
+## Выход
 
-| argument | default | meaning |
+| аргумент | по умолчанию | значение |
 |---|---|---|
-| `publish_markers` | `true` | RViz `MarkerArray`, built only while something subscribes |
-| `publish_corridor_cloud` | `true` | points inside the corridor, built only while something subscribes |
-| `marker_x_max` | `250.0` | m, how far the corridor outline is drawn |
-| `output_frame` | empty | frame id of markers / detections; empty = the input's |
-| `stats_period` | `2.0` | s between fps / latency statistics |
-| `publish_tf` | `true` | broadcast a static identity transform `tf_parent_frame` → input frame |
-| `tf_parent_frame` | `resense_lidar` | the fixed frame of the RViz / Foxglove layouts |
+| `publish_markers` | `true` | `MarkerArray` для RViz; строится, только пока на него кто-то подписан |
+| `publish_corridor_cloud` | `true` | точки внутри коридора; строятся, только пока на них кто-то подписан |
+| `marker_x_max` | `250.0` | м, до какой дальности рисуется контур коридора |
+| `output_frame` | пусто | frame id маркеров / детекций; пусто = как у входа |
+| `stats_period` | `2.0` | с между статистикой fps / задержки |
+| `publish_tf` | `true` | публиковать статическое тождественное преобразование `tf_parent_frame` → frame входа |
+| `tf_parent_frame` | `resense_lidar` | фиксированный frame раскладок RViz / Foxglove |
 
-## Launch-file only
+## Только для launch-файла
 
-| argument | default | meaning |
+| аргумент | по умолчанию | значение |
 |---|---|---|
-| `config_file` | the package's `config/detector.yaml` | the detector parameter file |
-| `rviz` | `false` | also start RViz with the ReSense layout |
-| `bag` | empty | a bag to play from the launch file |
-| `rate` | `1.0` | its playback rate |
-| `loop` | `false` | replay the bag forever |
-| `delay` | `3.0` | s before the player starts, so discovery completes |
+| `config_file` | `config/detector.yaml` пакета | файл параметров детектора |
+| `rviz` | `false` | также запустить RViz с раскладкой ReSense |
+| `bag` | пусто | бэг, который проигрывается из launch-файла |
+| `rate` | `1.0` | скорость его проигрывания |
+| `loop` | `false` | проигрывать бэг по кругу без конца |
+| `delay` | `3.0` | с до старта плеера, чтобы успело завершиться обнаружение (discovery) |
 
-Playing from the launch file races the node's startup; the scripts start the node first and wait
-for `/resense/status` before playing.
+Проигрывание из launch-файла идёт наперегонки со стартом ноды; скрипты сначала запускают ноду и
+ждут `/resense/status`, а уже потом проигрывают бэг.
 
-## Environment variables of the image
+## Переменные окружения образа
 
-| variable | meaning |
+| переменная | значение |
 |---|---|
-| `RESENSE_NATIVE=0` | use the numpy path instead of the C++ kernels (same output, slower) |
-| `RESENSE_DDS=shm` | opt-in: add shared-memory transport (with `--ipc=host`) so a stock Fast DDS player on the host delivers clouds through `/dev/shm` |
-| `ROS_DOMAIN_ID` | must match the player's (default 0) |
+| `RESENSE_NATIVE=0` | использовать путь на numpy вместо ядер на C++ (тот же результат, медленнее) |
+| `RESENSE_DDS=shm` | по желанию: добавить транспорт через разделяемую память (с `--ipc=host`), чтобы штатный плеер на Fast DDS на хосте доставлял облака через `/dev/shm` |
+| `ROS_DOMAIN_ID` | должен совпадать с плеером (по умолчанию 0) |

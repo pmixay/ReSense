@@ -1,46 +1,46 @@
-# Configuration file
+# Файл конфигурации
 
-All detector tuning lives in one file,
-[`configs/default.yaml`](https://github.com/pmixay/ReSense/blob/main/configs/default.yaml), under
-the root key `resense:`. The CLI and the ROS node load the same file; the ROS package carries a
-copy (`ros2_ws/src/resense_ros/config/detector.yaml`) that must stay identical.
+Вся настройка детектора — в одном файле,
+[`configs/default.yaml`](https://github.com/pmixay/ReSense/blob/main/configs/default.yaml), под
+корневым ключом `resense:`. CLI и нода ROS загружают один и тот же файл; в пакете ROS лежит его
+копия (`ros2_ws/src/resense_ros/config/detector.yaml`), которая должна оставаться идентичной.
 
-| section | what it controls |
+| раздел | что задаёт |
 |---|---|
-| `sensor` | axis mapping (`forward: -y`, `left: +x`, `up: +z` for the organizers' mount), range crop, a fixed mount tilt |
-| `track` | the track model: bed profile, rail-pair template (gauge 1.52 m), wall fit for yaw and curvature, how far the axis is trusted |
-| `gauge` | the envelope: `profile` (the organizers' 2.1 × 3.0 m, i.e. \|dy\| ≤ 1.05 m, 0.12–3.0 m above the rail head), `warning_margin` (0.35 m advisory zone), range |
-| `cluster` | range-adaptive DBSCAN (`eps`, `range_scale`, `voxel`) and the infrastructure filters and signatures |
-| `tracking` | persistence before an alarm (`confirm_time_s`, `confirm_hits`, `conf_threshold`), holds and the learned track opinion |
-| `accumulation` | multi-frame accumulation, only with a known train speed |
-| `lowobj` | low objects on the rails |
-| `calibration` | the mount auto-calibration |
-| `health` | input guards and the monitored-range estimate; they never change a detection |
+| `sensor` | соответствие осей (`forward: -y`, `left: +x`, `up: +z` для крепления организаторов), обрезка по дальности, фиксированный наклон крепления |
+| `track` | модель пути: профиль полотна, шаблон пары рельсов (колея 1,52 м), подгонка по стенам для курсового угла и кривизны, до какой дальности доверять оси |
+| `gauge` | габарит: `profile` (2,1 × 3,0 м организаторов, т. е. \|dy\| ≤ 1,05 м, 0,12–3,0 м над головкой рельса), `warning_margin` (зона предупреждения 0,35 м), дальность |
+| `cluster` | DBSCAN с радиусом по дальности (`eps`, `range_scale`, `voxel`), фильтры и сигнатуры инфраструктуры |
+| `tracking` | устойчивость до тревоги (`confirm_time_s`, `confirm_hits`, `conf_threshold`), удержания и оценка трека обученной моделью |
+| `accumulation` | накопление кадров, только при известной скорости поезда |
+| `lowobj` | низкие объекты на рельсах |
+| `calibration` | автокалибровка крепления |
+| `health` | проверки входа и оценка дальности контроля; они никогда не меняют обнаружение |
 
-Every key has a comment in the file with its date and the measurement that decided it. The
-parameters that matter most and their effect:
+У каждого ключа в файле есть комментарий с датой и измерением, по которому выбрано значение.
+Самые важные параметры и их влияние:
 [`docs/ALGORITHM.md` §5](https://github.com/pmixay/ReSense/blob/main/docs/ALGORITHM.md#5-parameters-that-matter-most).
 
-## Use another file
+## Свой файл
 
-A file you pass is applied on top of the **code defaults** in `resense/config.py`, not on top of
-`configs/default.yaml`, and an unknown key is an error. So start from a full copy:
+Переданный файл накладывается на **значения по умолчанию из кода** в `resense/config.py`, а не на
+`configs/default.yaml`, и неизвестный ключ — ошибка. Поэтому начинайте с полной копии:
 
 ```bash
-cp configs/default.yaml my.yaml        # edit my.yaml
+cp configs/default.yaml my.yaml        # правьте my.yaml
 
-resense run --bag <bag> --config my.yaml --out results.jsonl          # offline
+resense run --bag <bag> --config my.yaml --out results.jsonl          # офлайн
 
 docker run --rm -it --net=host --ipc=host -v $PWD/my.yaml:/cfg/my.yaml:ro resense \
-  ros2 launch resense_ros detector.launch.py freshness_mode:=replay config_file:=/cfg/my.yaml   # the node
+  ros2 launch resense_ros detector.launch.py freshness_mode:=replay config_file:=/cfg/my.yaml   # нода
 ```
 
-The mount can also be set per run without a file: the node's `sensor_forward` / `sensor_left` /
-`sensor_up` and `mount_*_deg` launch arguments ([Node parameters](node-parameters.md)).
+Крепление можно задать и на один запуск, без файла: аргументы запуска ноды `sensor_forward` /
+`sensor_left` / `sensor_up` и `mount_*_deg` ([Параметры ноды](node-parameters.md)).
 
-## Change the defaults (developers)
+## Изменение значений по умолчанию (для разработчиков)
 
-1. Edit `configs/default.yaml`.
-2. `./scripts/sync_params.sh` copies it into the ROS package (`--check` is what CI runs).
-3. A change that affects detection goes through the regression gate and a new detector seal:
-   [Changing the detector](../development/detector-changes.md).
+1. Отредактируйте `configs/default.yaml`.
+2. `./scripts/sync_params.sh` копирует его в пакет ROS (с `--check` его запускает CI).
+3. Изменение, которое влияет на обнаружение, проходит регрессионный гейт и получает новую печать
+   детектора: [Изменение детектора](../development/detector-changes.md).

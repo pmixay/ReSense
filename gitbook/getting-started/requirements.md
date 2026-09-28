@@ -1,33 +1,33 @@
-# Requirements
+# Требования
 
-## To run the detector (the jury path)
+## Для запуска детектора (сценарий жюри)
 
-| what | why |
+| что | зачем |
 |---|---|
-| Linux x86-64 host with **Docker** | the image is `ros:humble-ros-base-jammy` (Ubuntu 22.04) plus ReSense; nothing else is installed on the host |
-| the image: an archive `resense-image-<version>.tar.gz`, or internet to build it | [Get the Docker image](get-the-image.md) |
-| a ROS 2 bag (rosbag2, sqlite3 or MCAP storage) with a `sensor_msgs/PointCloud2` topic | [Get the data](../guides/data.md) |
-| **CPU only**, one core per node at 10 Hz | no GPU, no CUDA; the image uses single-threaded BLAS on purpose |
-| `sudo` once for `sysctl net.core.rmem_max` | the UDP receive buffer for 24 MB 360° clouds when the player uses CycloneDDS ([Troubleshooting](../troubleshooting.md#no-frames-arrive-from-a-360-degree-bag)) |
+| хост Linux x86-64 с **Docker** | образ — это `ros:humble-ros-base-jammy` (Ubuntu 22.04) плюс ReSense; на хост больше ничего не ставится |
+| образ: архив `resense-image-<version>.tar.gz` или интернет для сборки | [Где взять образ Docker](get-the-image.md) |
+| бэг ROS 2 (rosbag2, хранилище sqlite3 или MCAP) с топиком `sensor_msgs/PointCloud2` | [Где взять данные](../guides/data.md) |
+| **только CPU**, одно ядро на ноду при 10 Гц | без GPU и CUDA; образ намеренно использует однопоточный BLAS |
+| `sudo` один раз для `sysctl net.core.rmem_max` | буфер приёма UDP для облаков 360° по 24 МБ, когда плеер работает на CycloneDDS ([Решение проблем](../troubleshooting.md#no-frames-arrive-from-a-360-degree-bag)) |
 
-Optional:
+Необязательно:
 
-* **ROS 2 Humble on the host** to play the bag and echo topics from a normal console. Without it,
-  the player runs from the same image (`scripts/play_bag.sh` does that for you).
-* **X11** for RViz on the same machine, or any second laptop with Foxglove for a remote view.
-* Memory: the node's peak RSS on a 360° bag is a few hundred MB; the player reads the bag from
-  disk, so a warm page cache helps on the very first play of a large bag.
+* **ROS 2 Humble на хосте** — чтобы проигрывать бэг и читать топики из обычной консоли. Без него
+  плеер запускается из того же образа (`scripts/play_bag.sh` делает это сам).
+* **X11** для RViz на той же машине или любой второй ноутбук с Foxglove для удалённого просмотра.
+* Память: пиковый RSS ноды на бэге 360° — несколько сотен МБ; плеер читает бэг с диска, поэтому при
+  самом первом проигрывании большого бэга помогает прогретый страничный кэш.
 
-No internet is needed at run time: the node, the launch file and the entrypoint make no network
-calls, and the dashboard's JavaScript dependencies are bundled.
+Во время работы интернет не нужен: нода, launch-файл и скрипт точки входа не обращаются к сети, а
+JavaScript-зависимости дашборда поставляются в комплекте.
 
-## To develop (no ROS needed)
+## Для разработки (ROS не нужен)
 
-| what | why |
+| что | зачем |
 |---|---|
 | Python ≥ 3.10 | `pip install -e ".[dev]"` |
-| a C++ compiler (optional) | the native kernels in `native/`; without one the numpy path is used, same output |
-| `open3d` (in `[dev]`) | synthetic obstacle injection and the tests that ray-cast; tests skip without it |
-| the dataset | only for real-data evaluation; unit tests and CI make their own small synthetic bags |
+| компилятор C++ (необязательно) | нативные ядра в `native/`; без него используется реализация на numpy с тем же результатом |
+| `open3d` (входит в `[dev]`) | вставка синтетических препятствий и тесты с трассировкой лучей; без него эти тесты пропускаются |
+| датасет | только для оценки на реальных данных; модульные тесты и CI создают собственные небольшие синтетические бэги |
 
-See [Setup, tests and CI](../development/setup-and-ci.md).
+См. [Установка, тесты и CI](../development/setup-and-ci.md).

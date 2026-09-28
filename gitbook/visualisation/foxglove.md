@@ -1,52 +1,53 @@
-# Foxglove (remote demo)
+# Foxglove (удалённая демонстрация)
 
-For an audience that is not at the machine, Foxglove replaces a remote desktop: the image already
-contains `foxglove_bridge`, and viewers open the prepared layout in their own Foxglove (desktop app
-or [app.foxglove.dev](https://app.foxglove.dev)).
+Для зрителей, которые находятся не у машины, Foxglove заменяет удалённый рабочий стол: в образе уже
+есть `foxglove_bridge`, а зрители открывают готовую раскладку в своём Foxglove (настольное
+приложение или [app.foxglove.dev](https://app.foxglove.dev)).
 
-## On the demo machine
+## На демонстрационной машине
 
-With the bags in `$RESENSE_DATA` (default `/data/for_hackathon`):
+Бэги лежат в `$RESENSE_DATA` (по умолчанию `/data/for_hackathon`):
 
 ```bash
-docker compose --profile viz up detector foxglove     # the node + the bridge on port 8765
-docker compose --profile tools up player              # plays $RESENSE_BAG once
+docker compose --profile viz up detector foxglove     # нода + мост на порту 8765
+docker compose --profile tools up player              # проигрывает $RESENSE_BAG один раз
 ```
 
-For a looping demo, add `--loop` to the player command in `docker-compose.yml`.
+Для демонстрации по кругу добавьте `--loop` в команду плеера в `docker-compose.yml`.
 
-## On each viewing laptop
+## На каждом ноутбуке зрителя
 
 1. Foxglove → **Open connection → Foxglove WebSocket → `ws://<demo host>:8765`**.
 2. **Layout → Import from file →** [`web/foxglove_layout.json`](https://github.com/pmixay/ReSense/blob/main/web/foxglove_layout.json).
 
-The layout has a 3D panel (camera behind the sensor looking down the track, both raw-cloud topics,
-`/resense/corridor_points`, `/resense/markers`), an indicator of `/resense/decision` (green GO,
-orange CAUTION, red STOP, violet FAULT), plots of `nearest_distance`, `clear_distance`,
-`latency_ms` and `fps` over the last 30 s, and the raw `/resense/status` JSON.
+В раскладке есть панель 3D (камера за датчиком смотрит вдоль пути; оба топика сырого облака,
+`/resense/corridor_points`, `/resense/markers`), индикатор `/resense/decision` (GO — зелёный,
+CAUTION — оранжевый, STOP — красный, FAULT — фиолетовый), графики `nearest_distance`,
+`clear_distance`, `latency_ms` и `fps` за последние 30 с и сырой JSON `/resense/status`.
 
-## Check the wiring before the audience joins
+## Проверка связи до подключения зрителей
 
 ```bash
 pip install websockets
 python web/demo/check_foxglove_live.py --url ws://127.0.0.1:8765 --require-freshness
 ```
 
-It checks that every topic of the layout is advertised and that messages arrive;
-`--require-freshness` also requires a current `/resense/status`.
+Скрипт проверяет, что все топики раскладки объявлены и сообщения по ним приходят;
+`--require-freshness` дополнительно требует актуальный `/resense/status`.
 
-## Over a slow link
+## По медленному каналу
 
-The raw cloud is 8 MB (120° field of view) to 24 MB (360°) per frame at 10 Hz. Uncheck the two
-raw-cloud topics in the 3D panel and keep `/resense/corridor_points` (a few thousand points), the
-markers and the plots: that is the whole picture of what the algorithm does at a few hundred kB/s.
+Сырое облако — от 8 МБ (поле зрения 120°) до 24 МБ (360°) на кадр при 10 Гц. Снимите галочки
+с двух топиков сырого облака на панели 3D и оставьте `/resense/corridor_points` (несколько тысяч
+точек), маркеры и графики: это полная картина работы алгоритма при нескольких сотнях кБ/с.
 
-## Known limits
+## Известные ограничения
 
-* The indicators show the **last received** value and never expire it: after a disconnection a
-  cached GO or STOP can stay on screen. Check the connection and the freshness in
-  `/resense/status`, or use the [web dashboard](web-dashboard.md), which expires results itself.
-* If a panel is empty after import, re-pick its topic in the panel settings. The 3D panel follows
-  `resense_lidar`, the node's static transform.
-* Port 8765 must be reachable from the viewers; the bridge has no authentication, so expose it only
-  on a trusted network.
+* Индикаторы показывают **последнее полученное** значение и никогда не считают его устаревшим:
+  после обрыва связи на экране может остаться закэшированный GO или STOP. Проверяйте соединение
+  и свежесть в `/resense/status` или используйте [веб-дашборд](web-dashboard.md), который сам
+  помечает результаты устаревшими.
+* Если после импорта панель пуста, заново выберите её топик в настройках панели. Панель 3D
+  привязана к `resense_lidar` — статическому преобразованию ноды.
+* Порт 8765 должен быть доступен зрителям; у моста нет аутентификации, поэтому открывайте его
+  только в доверенной сети.
