@@ -1,8 +1,8 @@
 # P2 criteria completion — 28 September 2026
 
 > **Owner:** P2 · **Base:** `main` at `8f23284`, including the accepted 27.09 detector
-> **Published branch:** `claude/amazing-fermi-t67v8g`
-> **Status:** deck and video sources corrected after the 28.09 re-judgement (below); the PPTX/PDF/MP4 need a rebuild; on-device demo and private pitch need team inputs
+> **Working branch:** `testovaya-gpt` (tracks `origin/testovaya-gpt`)
+> **Status:** public PPTX/PDF/MP4 rebuilt from the corrected sources on 28.09; local private preview uses the supplied roster and portraits. City, team formation, group photo, on-device demo and human rehearsals remain pending.
 
 The previously reviewed P2 work was on `f6b156b`. Its remote Claude branch has since been
 deleted. Current `main` contains a newer detector (`352ca13`, measured at `d572807`), so the
@@ -46,10 +46,9 @@ Every finding about the deck, the video and `docs/PRESENTATION.md` is fixed in t
 * `docs/PRESENTATION.md`: one status, the current numbers with their sources, the build; the
   dated rebuild records moved to its archive section.
 
-The committed PPTX, PDF and MP4 are still the morning build of 28.09 until rebuilt with the
-commands in `docs/PRESENTATION.md` «Сборка» (the hashes in
-[`demo/evidence/p2_criteria_2026-09-28.json`](demo/evidence/p2_criteria_2026-09-28.json) are that
-morning build's).
+The committed PPTX, PDF and MP4 were rebuilt from these corrected sources on 28.09 using the
+commands in `docs/PRESENTATION.md` «Сборка». Their sizes, SHA-256 hashes and media properties are
+recorded in [`demo/evidence/p2_criteria_2026-09-28.json`](demo/evidence/p2_criteria_2026-09-28.json).
 
 ## Corrections from the full client audit
 
@@ -90,10 +89,11 @@ python web/demo/check_dashboard.py --jsonl out/p2-review-real.jsonl \
   --speed 2 --min-dist 55 --max-dist 57 --screenshot out/p2-review-real.png
 ```
 
-* Morning of 28.09: **83 P2 checks passed**, no skips: browser UI, generated synthetic run, label tool, layout,
-  Foxglove protocol, presentation, hero and overview. **733 core tests passed**, one test
-  deselected for absent `/data/cache/new_data` and six subtests passed. The detector seal verifies
-  31 files; lint and whitespace checks pass.
+* Current verification on `testovaya-gpt`, 28.09: **83 P2 checks passed with Chromium and no skips**;
+  **753 core tests passed**, one ride-dependent test was deselected because `/data/cache/new_data`
+  is absent, and six subtests passed. Ruff 0.15.8, parameter synchronization, video consistency,
+  whitespace checks and the 31-file detector integrity seal pass. The detector seal does not replay
+  recordings.
 * The shared browser validator accepted **4,760/4,760** archived records across **18** gzip files.
   It also accepted **982/982** statuses in **4** supported-playback capture files, including
   original-bag status streams.
@@ -104,8 +104,9 @@ python web/demo/check_dashboard.py --jsonl out/p2-review-real.jsonl \
   the refreshed dashboard clip is 7.24 s. Exact hashes, sizes and commands are recorded in
   [`demo/evidence/p2_criteria_2026-09-28.json`](demo/evidence/p2_criteria_2026-09-28.json).
 
-The remaining device import, human rehearsals, private information and physical stand run cannot
-be honestly marked complete from this checkout: `/data/for_hackathon`, the ignored private folder,
-and a second physical viewing device are absent. The existing CI's two-container protocol check
-is not a visual Foxglove import. Optional narration was not supplied. The internal independent
+The ignored private folder now contains a local draft made with the supplied roster and portraits;
+it is not committed. City, team formation and team photo are still missing. The remaining device
+import, human rehearsals and physical stand run cannot be marked complete from this checkout:
+`/data/for_hackathon` and a second physical viewing device are absent. The existing CI's two-container
+protocol check is not a visual Foxglove import. Optional narration was not supplied. The internal independent
 scorecard's 72/100 is not an organizer score and is not changed by this presentation work.

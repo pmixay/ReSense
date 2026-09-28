@@ -17,6 +17,11 @@ dry runs of both original recordings through ROS (checker outputs, status captur
 the end-to-end latency and CPU figures, and the frame-by-frame identity check of the detector's
 input (`fast_input.json`).
 
+The [28 September `testovaya-gpt` available-data gate](results/available_gate_testovaya_2026-09-28/README.md)
+preserves fresh per-frame outputs for the six original recordings and set O on the final 27.09
+detector. It matches all 159 available gated comparisons against the 27.09 baseline. It is partial:
+the ride and set F rows are explicitly missing because `/data/cache/new_data` was not present.
+
 The [27 September supported playback rerun](p1_p2_supported_playback_2026-09-27/README.md)
 preserves both cold original-bag status streams and node logs, source hashes, and the six-job CI
 receipt. A [later seven-job run](p1_p2_supported_playback_2026-09-27/cached_bags_run_36319767736/README.md)
