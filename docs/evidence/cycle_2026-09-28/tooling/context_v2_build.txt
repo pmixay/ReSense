@@ -10,3 +10,7 @@ Step 2/3 : COPY docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json /opt/
 Step 3/3 : RUN python3 -c 'import json; p=json.load(open("/opt/resense/docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json")); assert p["splits"]; print("v2 protocol included")'
  ---> Running in b167295277be
 v2 protocol included
+ ---> Removed intermediate container b167295277be
+ ---> 0a8b13d12324
+Successfully built 0a8b13d12324
+Successfully tagged resense-cycle-context-v2:latest

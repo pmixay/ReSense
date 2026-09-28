@@ -30,8 +30,9 @@ small and edge objects, sustained range and false alarms on real recordings.
 5. Compare monitoring costs and processing-history stress. Preserve adverse findings.
 6. Freeze candidate source/config hashes before the reserved synthetic evaluation.
    Compare baseline and candidate on identical float clouds and their quantized pairs.
-7. Review the evidence, enable an accepted candidate, run the gate on the committed
-   default and replace the source seal. Run the final image and branch CI checks.
+7. Run the gate on committed proposed defaults in the isolated candidate checkout.
+   Review the evidence, integrate those exact measured files and replace the source
+   seal. Run the final image and branch CI checks.
 8. Request a fresh-context checkpoint review; score only demonstrated improvements.
 
 The [synthetic protocol](evidence/cycle_2026-09-28/evaluation/protocol.json) was
@@ -39,6 +40,14 @@ committed before this cycle's candidate results. Generated arrays remain outside
 Git; reports retain provenance and per-frame results. Previously examined real
 recordings and synthetic cases are development data. Synthetic evaluation cannot
 establish performance on an unseen real route.
+
+The [v2 amendment](evidence/cycle_2026-09-28/evaluation/protocol_v2.json) corrects
+physical-envelope placement before any v2 generation: both low shapes penetrate
+the envelope in each split, and a below-rail negative control is added. The
+[geometry audit](evidence/cycle_2026-09-28/evaluation/diagnosis-v1.md) preserves v1
+results and explains why boundary-only cases cannot be counted as demonstrated
+intrusion misses. V2 reserved clouds remain untouched until the candidate identities
+are fixed and the full real gate passes.
 
 ## Reproducibility repair
 
