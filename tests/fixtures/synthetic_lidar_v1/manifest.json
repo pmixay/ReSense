@@ -1,0 +1,2210 @@
+{
+  "label_encoding": {
+    "0": "background return or non-object return",
+    "1": "rail-straddling target object return",
+    "mask_bit_order": "little",
+    "mask_storage": "per-object bit-packed Boolean mask aligned with the point rows in the matching frame"
+  },
+  "provenance": {
+    "base_seed": 20260928,
+    "generator": {
+      "path": "scripts/generate_synthetic_lidar_fixture.py",
+      "ray_caster_base_commit": "a2f9122acdd9de83d4bf30a2befdc0d3e1f9cdd5",
+      "sha256": "62c95d608842b2b2bbc2c9f699ab09b2a416cc87e6276be447d854bf8c74824f"
+    },
+    "not_organizer_data": true,
+    "not_real_world_validation": true,
+    "ray_caster": "resense.synthetic.synthetic_tunnel_frame (Open3D RaycastingScene)",
+    "seed_policy": "base seed plus fixed offsets; each frame uses its own seed",
+    "synthetic": true,
+    "track_truth_available": true
+  },
+  "scenes": {
+    "clear_tunnel": {
+      "background_model": {
+        "axis_y_m": 0.25,
+        "axis_z_m": 0.8,
+        "floor_z_m": -1.5,
+        "length_m": 250.0,
+        "radius_m": 2.7,
+        "type": "fully ray-cast round tunnel with flat bed, two side benches, two rails"
+      },
+      "frames": [
+        {
+          "index": 0,
+          "object_return_counts": {},
+          "point_count": 127145,
+          "point_sha256": "525616f10947222e38bbe9cd8ab6a3ec0e7edebda0eedacfdb1ddf25411d738f",
+          "points_file": "frames/clear_tunnel/frame_000.npy",
+          "rng_seed": 20261028,
+          "stamp_s": 0.0
+        },
+        {
+          "index": 1,
+          "object_return_counts": {},
+          "point_count": 127145,
+          "point_sha256": "248955f041425e9ea1232b8284d08cfdb05d7a82bb136cb5b9faa844c042f2aa",
+          "points_file": "frames/clear_tunnel/frame_001.npy",
+          "rng_seed": 20261029,
+          "stamp_s": 0.1
+        },
+        {
+          "index": 2,
+          "object_return_counts": {},
+          "point_count": 127145,
+          "point_sha256": "dee173ced1b3e4c80147da17522daf21c91f21120ea51dd271e530516bdafc2c",
+          "points_file": "frames/clear_tunnel/frame_002.npy",
+          "rng_seed": 20261030,
+          "stamp_s": 0.2
+        },
+        {
+          "index": 3,
+          "object_return_counts": {},
+          "point_count": 127145,
+          "point_sha256": "0191409bddf88df1bb7a160dec4b49ee20637a2e28609e63f9a279ce28ddbefd",
+          "points_file": "frames/clear_tunnel/frame_003.npy",
+          "rng_seed": 20261031,
+          "stamp_s": 0.3
+        },
+        {
+          "index": 4,
+          "object_return_counts": {},
+          "point_count": 127145,
+          "point_sha256": "5b8d3837c206ec820ad4f2e09678f471a5bdb2e3045b5151d9605ba834102fe2",
+          "points_file": "frames/clear_tunnel/frame_004.npy",
+          "rng_seed": 20261032,
+          "stamp_s": 0.4
+        },
+        {
+          "index": 5,
+          "object_return_counts": {},
+          "point_count": 127145,
+          "point_sha256": "d433d4da61dd8da9072a8f8f80bd33ebe0ff7a11ad04ae96ac34f90622636f5f",
+          "points_file": "frames/clear_tunnel/frame_005.npy",
+          "rng_seed": 20261033,
+          "stamp_s": 0.5
+        }
+      ],
+      "obstacles": [],
+      "sequence": {
+        "empty_scene": true,
+        "frame_rate_hz": 10
+      },
+      "synthetic_track": {
+        "age": 0,
+        "axis_sides": 0,
+        "axis_valid": 9999.0,
+        "center": 0.25,
+        "curvature": 0.0,
+        "floor_coef": [
+          0.0,
+          0.0,
+          -1.5
+        ],
+        "floor_range": [
+          0.0,
+          250.0
+        ],
+        "floor_verified": 0.0,
+        "n_bins": 0,
+        "rail_offset": 0.35,
+        "rail_score": 0.0,
+        "rail_slabs": 0,
+        "residual": 0.0,
+        "wall_quality": -1.0,
+        "yaw": 0.0
+      }
+    },
+    "long_dropout_replay": {
+      "drop_windows_half_open": [
+        {
+          "end": 112,
+          "start": 110
+        },
+        {
+          "end": 118,
+          "start": 116
+        },
+        {
+          "end": 198,
+          "start": 196
+        }
+      ],
+      "frame_rate_hz": 10,
+      "frames": [
+        {
+          "drop_target_returns": false,
+          "frame_index": 0,
+          "frame_ref": "frames/rail_straddle/frame_000.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_000.bits.npy",
+          "stamp_s": 0.0
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 1,
+          "frame_ref": "frames/rail_straddle/frame_001.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_001.bits.npy",
+          "stamp_s": 0.1
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 2,
+          "frame_ref": "frames/rail_straddle/frame_002.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_002.bits.npy",
+          "stamp_s": 0.2
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 3,
+          "frame_ref": "frames/rail_straddle/frame_003.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_003.bits.npy",
+          "stamp_s": 0.3
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 4,
+          "frame_ref": "frames/rail_straddle/frame_004.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_004.bits.npy",
+          "stamp_s": 0.4
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 5,
+          "frame_ref": "frames/rail_straddle/frame_005.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_005.bits.npy",
+          "stamp_s": 0.5
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 6,
+          "frame_ref": "frames/rail_straddle/frame_006.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_006.bits.npy",
+          "stamp_s": 0.6
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 7,
+          "frame_ref": "frames/rail_straddle/frame_007.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_007.bits.npy",
+          "stamp_s": 0.7
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 8,
+          "frame_ref": "frames/rail_straddle/frame_008.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_008.bits.npy",
+          "stamp_s": 0.8
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 9,
+          "frame_ref": "frames/rail_straddle/frame_009.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_009.bits.npy",
+          "stamp_s": 0.9
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 10,
+          "frame_ref": "frames/rail_straddle/frame_010.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_010.bits.npy",
+          "stamp_s": 1.0
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 11,
+          "frame_ref": "frames/rail_straddle/frame_011.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_011.bits.npy",
+          "stamp_s": 1.1
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 12,
+          "frame_ref": "frames/rail_straddle/frame_000.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_000.bits.npy",
+          "stamp_s": 1.2
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 13,
+          "frame_ref": "frames/rail_straddle/frame_001.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_001.bits.npy",
+          "stamp_s": 1.3
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 14,
+          "frame_ref": "frames/rail_straddle/frame_002.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_002.bits.npy",
+          "stamp_s": 1.4
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 15,
+          "frame_ref": "frames/rail_straddle/frame_003.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_003.bits.npy",
+          "stamp_s": 1.5
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 16,
+          "frame_ref": "frames/rail_straddle/frame_004.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_004.bits.npy",
+          "stamp_s": 1.6
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 17,
+          "frame_ref": "frames/rail_straddle/frame_005.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_005.bits.npy",
+          "stamp_s": 1.7
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 18,
+          "frame_ref": "frames/rail_straddle/frame_006.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_006.bits.npy",
+          "stamp_s": 1.8
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 19,
+          "frame_ref": "frames/rail_straddle/frame_007.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_007.bits.npy",
+          "stamp_s": 1.9
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 20,
+          "frame_ref": "frames/rail_straddle/frame_008.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_008.bits.npy",
+          "stamp_s": 2.0
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 21,
+          "frame_ref": "frames/rail_straddle/frame_009.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_009.bits.npy",
+          "stamp_s": 2.1
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 22,
+          "frame_ref": "frames/rail_straddle/frame_010.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_010.bits.npy",
+          "stamp_s": 2.2
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 23,
+          "frame_ref": "frames/rail_straddle/frame_011.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_011.bits.npy",
+          "stamp_s": 2.3
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 24,
+          "frame_ref": "frames/rail_straddle/frame_000.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_000.bits.npy",
+          "stamp_s": 2.4
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 25,
+          "frame_ref": "frames/rail_straddle/frame_001.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_001.bits.npy",
+          "stamp_s": 2.5
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 26,
+          "frame_ref": "frames/rail_straddle/frame_002.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_002.bits.npy",
+          "stamp_s": 2.6
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 27,
+          "frame_ref": "frames/rail_straddle/frame_003.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_003.bits.npy",
+          "stamp_s": 2.7
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 28,
+          "frame_ref": "frames/rail_straddle/frame_004.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_004.bits.npy",
+          "stamp_s": 2.8
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 29,
+          "frame_ref": "frames/rail_straddle/frame_005.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_005.bits.npy",
+          "stamp_s": 2.9
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 30,
+          "frame_ref": "frames/rail_straddle/frame_006.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_006.bits.npy",
+          "stamp_s": 3.0
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 31,
+          "frame_ref": "frames/rail_straddle/frame_007.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_007.bits.npy",
+          "stamp_s": 3.1
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 32,
+          "frame_ref": "frames/rail_straddle/frame_008.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_008.bits.npy",
+          "stamp_s": 3.2
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 33,
+          "frame_ref": "frames/rail_straddle/frame_009.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_009.bits.npy",
+          "stamp_s": 3.3
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 34,
+          "frame_ref": "frames/rail_straddle/frame_010.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_010.bits.npy",
+          "stamp_s": 3.4
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 35,
+          "frame_ref": "frames/rail_straddle/frame_011.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_011.bits.npy",
+          "stamp_s": 3.5
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 36,
+          "frame_ref": "frames/rail_straddle/frame_000.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_000.bits.npy",
+          "stamp_s": 3.6
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 37,
+          "frame_ref": "frames/rail_straddle/frame_001.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_001.bits.npy",
+          "stamp_s": 3.7
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 38,
+          "frame_ref": "frames/rail_straddle/frame_002.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_002.bits.npy",
+          "stamp_s": 3.8
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 39,
+          "frame_ref": "frames/rail_straddle/frame_003.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_003.bits.npy",
+          "stamp_s": 3.9
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 40,
+          "frame_ref": "frames/rail_straddle/frame_004.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_004.bits.npy",
+          "stamp_s": 4.0
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 41,
+          "frame_ref": "frames/rail_straddle/frame_005.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_005.bits.npy",
+          "stamp_s": 4.1
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 42,
+          "frame_ref": "frames/rail_straddle/frame_006.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_006.bits.npy",
+          "stamp_s": 4.2
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 43,
+          "frame_ref": "frames/rail_straddle/frame_007.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_007.bits.npy",
+          "stamp_s": 4.3
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 44,
+          "frame_ref": "frames/rail_straddle/frame_008.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_008.bits.npy",
+          "stamp_s": 4.4
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 45,
+          "frame_ref": "frames/rail_straddle/frame_009.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_009.bits.npy",
+          "stamp_s": 4.5
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 46,
+          "frame_ref": "frames/rail_straddle/frame_010.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_010.bits.npy",
+          "stamp_s": 4.6
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 47,
+          "frame_ref": "frames/rail_straddle/frame_011.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_011.bits.npy",
+          "stamp_s": 4.7
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 48,
+          "frame_ref": "frames/rail_straddle/frame_000.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_000.bits.npy",
+          "stamp_s": 4.8
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 49,
+          "frame_ref": "frames/rail_straddle/frame_001.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_001.bits.npy",
+          "stamp_s": 4.9
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 50,
+          "frame_ref": "frames/rail_straddle/frame_002.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_002.bits.npy",
+          "stamp_s": 5.0
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 51,
+          "frame_ref": "frames/rail_straddle/frame_003.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_003.bits.npy",
+          "stamp_s": 5.1
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 52,
+          "frame_ref": "frames/rail_straddle/frame_004.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_004.bits.npy",
+          "stamp_s": 5.2
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 53,
+          "frame_ref": "frames/rail_straddle/frame_005.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_005.bits.npy",
+          "stamp_s": 5.3
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 54,
+          "frame_ref": "frames/rail_straddle/frame_006.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_006.bits.npy",
+          "stamp_s": 5.4
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 55,
+          "frame_ref": "frames/rail_straddle/frame_007.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_007.bits.npy",
+          "stamp_s": 5.5
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 56,
+          "frame_ref": "frames/rail_straddle/frame_008.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_008.bits.npy",
+          "stamp_s": 5.6
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 57,
+          "frame_ref": "frames/rail_straddle/frame_009.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_009.bits.npy",
+          "stamp_s": 5.7
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 58,
+          "frame_ref": "frames/rail_straddle/frame_010.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_010.bits.npy",
+          "stamp_s": 5.8
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 59,
+          "frame_ref": "frames/rail_straddle/frame_011.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_011.bits.npy",
+          "stamp_s": 5.9
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 60,
+          "frame_ref": "frames/rail_straddle/frame_000.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_000.bits.npy",
+          "stamp_s": 6.0
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 61,
+          "frame_ref": "frames/rail_straddle/frame_001.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_001.bits.npy",
+          "stamp_s": 6.1
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 62,
+          "frame_ref": "frames/rail_straddle/frame_002.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_002.bits.npy",
+          "stamp_s": 6.2
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 63,
+          "frame_ref": "frames/rail_straddle/frame_003.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_003.bits.npy",
+          "stamp_s": 6.3
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 64,
+          "frame_ref": "frames/rail_straddle/frame_004.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_004.bits.npy",
+          "stamp_s": 6.4
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 65,
+          "frame_ref": "frames/rail_straddle/frame_005.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_005.bits.npy",
+          "stamp_s": 6.5
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 66,
+          "frame_ref": "frames/rail_straddle/frame_006.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_006.bits.npy",
+          "stamp_s": 6.6
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 67,
+          "frame_ref": "frames/rail_straddle/frame_007.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_007.bits.npy",
+          "stamp_s": 6.7
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 68,
+          "frame_ref": "frames/rail_straddle/frame_008.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_008.bits.npy",
+          "stamp_s": 6.8
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 69,
+          "frame_ref": "frames/rail_straddle/frame_009.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_009.bits.npy",
+          "stamp_s": 6.9
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 70,
+          "frame_ref": "frames/rail_straddle/frame_010.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_010.bits.npy",
+          "stamp_s": 7.0
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 71,
+          "frame_ref": "frames/rail_straddle/frame_011.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_011.bits.npy",
+          "stamp_s": 7.1
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 72,
+          "frame_ref": "frames/rail_straddle/frame_000.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_000.bits.npy",
+          "stamp_s": 7.2
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 73,
+          "frame_ref": "frames/rail_straddle/frame_001.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_001.bits.npy",
+          "stamp_s": 7.3
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 74,
+          "frame_ref": "frames/rail_straddle/frame_002.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_002.bits.npy",
+          "stamp_s": 7.4
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 75,
+          "frame_ref": "frames/rail_straddle/frame_003.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_003.bits.npy",
+          "stamp_s": 7.5
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 76,
+          "frame_ref": "frames/rail_straddle/frame_004.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_004.bits.npy",
+          "stamp_s": 7.6
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 77,
+          "frame_ref": "frames/rail_straddle/frame_005.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_005.bits.npy",
+          "stamp_s": 7.7
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 78,
+          "frame_ref": "frames/rail_straddle/frame_006.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_006.bits.npy",
+          "stamp_s": 7.8
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 79,
+          "frame_ref": "frames/rail_straddle/frame_007.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_007.bits.npy",
+          "stamp_s": 7.9
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 80,
+          "frame_ref": "frames/rail_straddle/frame_008.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_008.bits.npy",
+          "stamp_s": 8.0
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 81,
+          "frame_ref": "frames/rail_straddle/frame_009.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_009.bits.npy",
+          "stamp_s": 8.1
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 82,
+          "frame_ref": "frames/rail_straddle/frame_010.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_010.bits.npy",
+          "stamp_s": 8.2
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 83,
+          "frame_ref": "frames/rail_straddle/frame_011.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_011.bits.npy",
+          "stamp_s": 8.3
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 84,
+          "frame_ref": "frames/rail_straddle/frame_000.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_000.bits.npy",
+          "stamp_s": 8.4
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 85,
+          "frame_ref": "frames/rail_straddle/frame_001.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_001.bits.npy",
+          "stamp_s": 8.5
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 86,
+          "frame_ref": "frames/rail_straddle/frame_002.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_002.bits.npy",
+          "stamp_s": 8.6
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 87,
+          "frame_ref": "frames/rail_straddle/frame_003.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_003.bits.npy",
+          "stamp_s": 8.7
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 88,
+          "frame_ref": "frames/rail_straddle/frame_004.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_004.bits.npy",
+          "stamp_s": 8.8
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 89,
+          "frame_ref": "frames/rail_straddle/frame_005.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_005.bits.npy",
+          "stamp_s": 8.9
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 90,
+          "frame_ref": "frames/rail_straddle/frame_006.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_006.bits.npy",
+          "stamp_s": 9.0
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 91,
+          "frame_ref": "frames/rail_straddle/frame_007.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_007.bits.npy",
+          "stamp_s": 9.1
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 92,
+          "frame_ref": "frames/rail_straddle/frame_008.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_008.bits.npy",
+          "stamp_s": 9.2
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 93,
+          "frame_ref": "frames/rail_straddle/frame_009.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_009.bits.npy",
+          "stamp_s": 9.3
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 94,
+          "frame_ref": "frames/rail_straddle/frame_010.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_010.bits.npy",
+          "stamp_s": 9.4
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 95,
+          "frame_ref": "frames/rail_straddle/frame_011.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_011.bits.npy",
+          "stamp_s": 9.5
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 96,
+          "frame_ref": "frames/rail_straddle/frame_000.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_000.bits.npy",
+          "stamp_s": 9.6
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 97,
+          "frame_ref": "frames/rail_straddle/frame_001.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_001.bits.npy",
+          "stamp_s": 9.7
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 98,
+          "frame_ref": "frames/rail_straddle/frame_002.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_002.bits.npy",
+          "stamp_s": 9.8
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 99,
+          "frame_ref": "frames/rail_straddle/frame_003.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_003.bits.npy",
+          "stamp_s": 9.9
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 100,
+          "frame_ref": "frames/rail_straddle/frame_004.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_004.bits.npy",
+          "stamp_s": 10.0
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 101,
+          "frame_ref": "frames/rail_straddle/frame_005.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_005.bits.npy",
+          "stamp_s": 10.1
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 102,
+          "frame_ref": "frames/rail_straddle/frame_006.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_006.bits.npy",
+          "stamp_s": 10.2
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 103,
+          "frame_ref": "frames/rail_straddle/frame_007.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_007.bits.npy",
+          "stamp_s": 10.3
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 104,
+          "frame_ref": "frames/rail_straddle/frame_008.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_008.bits.npy",
+          "stamp_s": 10.4
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 105,
+          "frame_ref": "frames/rail_straddle/frame_009.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_009.bits.npy",
+          "stamp_s": 10.5
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 106,
+          "frame_ref": "frames/rail_straddle/frame_010.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_010.bits.npy",
+          "stamp_s": 10.6
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 107,
+          "frame_ref": "frames/rail_straddle/frame_011.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_011.bits.npy",
+          "stamp_s": 10.7
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 108,
+          "frame_ref": "frames/rail_straddle/frame_000.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_000.bits.npy",
+          "stamp_s": 10.8
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 109,
+          "frame_ref": "frames/rail_straddle/frame_001.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_001.bits.npy",
+          "stamp_s": 10.9
+        },
+        {
+          "drop_target_returns": true,
+          "frame_index": 110,
+          "frame_ref": "frames/rail_straddle/frame_002.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_002.bits.npy",
+          "stamp_s": 11.0
+        },
+        {
+          "drop_target_returns": true,
+          "frame_index": 111,
+          "frame_ref": "frames/rail_straddle/frame_003.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_003.bits.npy",
+          "stamp_s": 11.1
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 112,
+          "frame_ref": "frames/rail_straddle/frame_004.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_004.bits.npy",
+          "stamp_s": 11.2
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 113,
+          "frame_ref": "frames/rail_straddle/frame_005.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_005.bits.npy",
+          "stamp_s": 11.3
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 114,
+          "frame_ref": "frames/rail_straddle/frame_006.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_006.bits.npy",
+          "stamp_s": 11.4
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 115,
+          "frame_ref": "frames/rail_straddle/frame_007.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_007.bits.npy",
+          "stamp_s": 11.5
+        },
+        {
+          "drop_target_returns": true,
+          "frame_index": 116,
+          "frame_ref": "frames/rail_straddle/frame_008.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_008.bits.npy",
+          "stamp_s": 11.6
+        },
+        {
+          "drop_target_returns": true,
+          "frame_index": 117,
+          "frame_ref": "frames/rail_straddle/frame_009.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_009.bits.npy",
+          "stamp_s": 11.7
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 118,
+          "frame_ref": "frames/rail_straddle/frame_010.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_010.bits.npy",
+          "stamp_s": 11.8
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 119,
+          "frame_ref": "frames/rail_straddle/frame_011.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_011.bits.npy",
+          "stamp_s": 11.9
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 120,
+          "frame_ref": "frames/rail_straddle/frame_000.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_000.bits.npy",
+          "stamp_s": 12.0
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 121,
+          "frame_ref": "frames/rail_straddle/frame_001.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_001.bits.npy",
+          "stamp_s": 12.1
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 122,
+          "frame_ref": "frames/rail_straddle/frame_002.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_002.bits.npy",
+          "stamp_s": 12.2
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 123,
+          "frame_ref": "frames/rail_straddle/frame_003.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_003.bits.npy",
+          "stamp_s": 12.3
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 124,
+          "frame_ref": "frames/rail_straddle/frame_004.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_004.bits.npy",
+          "stamp_s": 12.4
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 125,
+          "frame_ref": "frames/rail_straddle/frame_005.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_005.bits.npy",
+          "stamp_s": 12.5
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 126,
+          "frame_ref": "frames/rail_straddle/frame_006.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_006.bits.npy",
+          "stamp_s": 12.6
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 127,
+          "frame_ref": "frames/rail_straddle/frame_007.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_007.bits.npy",
+          "stamp_s": 12.7
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 128,
+          "frame_ref": "frames/rail_straddle/frame_008.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_008.bits.npy",
+          "stamp_s": 12.8
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 129,
+          "frame_ref": "frames/rail_straddle/frame_009.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_009.bits.npy",
+          "stamp_s": 12.9
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 130,
+          "frame_ref": "frames/rail_straddle/frame_010.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_010.bits.npy",
+          "stamp_s": 13.0
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 131,
+          "frame_ref": "frames/rail_straddle/frame_011.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_011.bits.npy",
+          "stamp_s": 13.1
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 132,
+          "frame_ref": "frames/rail_straddle/frame_000.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_000.bits.npy",
+          "stamp_s": 13.2
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 133,
+          "frame_ref": "frames/rail_straddle/frame_001.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_001.bits.npy",
+          "stamp_s": 13.3
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 134,
+          "frame_ref": "frames/rail_straddle/frame_002.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_002.bits.npy",
+          "stamp_s": 13.4
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 135,
+          "frame_ref": "frames/rail_straddle/frame_003.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_003.bits.npy",
+          "stamp_s": 13.5
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 136,
+          "frame_ref": "frames/rail_straddle/frame_004.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_004.bits.npy",
+          "stamp_s": 13.6
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 137,
+          "frame_ref": "frames/rail_straddle/frame_005.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_005.bits.npy",
+          "stamp_s": 13.7
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 138,
+          "frame_ref": "frames/rail_straddle/frame_006.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_006.bits.npy",
+          "stamp_s": 13.8
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 139,
+          "frame_ref": "frames/rail_straddle/frame_007.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_007.bits.npy",
+          "stamp_s": 13.9
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 140,
+          "frame_ref": "frames/rail_straddle/frame_008.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_008.bits.npy",
+          "stamp_s": 14.0
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 141,
+          "frame_ref": "frames/rail_straddle/frame_009.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_009.bits.npy",
+          "stamp_s": 14.1
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 142,
+          "frame_ref": "frames/rail_straddle/frame_010.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_010.bits.npy",
+          "stamp_s": 14.2
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 143,
+          "frame_ref": "frames/rail_straddle/frame_011.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_011.bits.npy",
+          "stamp_s": 14.3
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 144,
+          "frame_ref": "frames/rail_straddle/frame_000.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_000.bits.npy",
+          "stamp_s": 14.4
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 145,
+          "frame_ref": "frames/rail_straddle/frame_001.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_001.bits.npy",
+          "stamp_s": 14.5
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 146,
+          "frame_ref": "frames/rail_straddle/frame_002.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_002.bits.npy",
+          "stamp_s": 14.6
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 147,
+          "frame_ref": "frames/rail_straddle/frame_003.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_003.bits.npy",
+          "stamp_s": 14.7
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 148,
+          "frame_ref": "frames/rail_straddle/frame_004.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_004.bits.npy",
+          "stamp_s": 14.8
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 149,
+          "frame_ref": "frames/rail_straddle/frame_005.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_005.bits.npy",
+          "stamp_s": 14.9
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 150,
+          "frame_ref": "frames/rail_straddle/frame_006.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_006.bits.npy",
+          "stamp_s": 15.0
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 151,
+          "frame_ref": "frames/rail_straddle/frame_007.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_007.bits.npy",
+          "stamp_s": 15.1
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 152,
+          "frame_ref": "frames/rail_straddle/frame_008.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_008.bits.npy",
+          "stamp_s": 15.2
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 153,
+          "frame_ref": "frames/rail_straddle/frame_009.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_009.bits.npy",
+          "stamp_s": 15.3
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 154,
+          "frame_ref": "frames/rail_straddle/frame_010.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_010.bits.npy",
+          "stamp_s": 15.4
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 155,
+          "frame_ref": "frames/rail_straddle/frame_011.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_011.bits.npy",
+          "stamp_s": 15.5
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 156,
+          "frame_ref": "frames/rail_straddle/frame_000.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_000.bits.npy",
+          "stamp_s": 15.6
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 157,
+          "frame_ref": "frames/rail_straddle/frame_001.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_001.bits.npy",
+          "stamp_s": 15.7
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 158,
+          "frame_ref": "frames/rail_straddle/frame_002.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_002.bits.npy",
+          "stamp_s": 15.8
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 159,
+          "frame_ref": "frames/rail_straddle/frame_003.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_003.bits.npy",
+          "stamp_s": 15.9
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 160,
+          "frame_ref": "frames/rail_straddle/frame_004.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_004.bits.npy",
+          "stamp_s": 16.0
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 161,
+          "frame_ref": "frames/rail_straddle/frame_005.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_005.bits.npy",
+          "stamp_s": 16.1
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 162,
+          "frame_ref": "frames/rail_straddle/frame_006.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_006.bits.npy",
+          "stamp_s": 16.2
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 163,
+          "frame_ref": "frames/rail_straddle/frame_007.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_007.bits.npy",
+          "stamp_s": 16.3
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 164,
+          "frame_ref": "frames/rail_straddle/frame_008.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_008.bits.npy",
+          "stamp_s": 16.4
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 165,
+          "frame_ref": "frames/rail_straddle/frame_009.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_009.bits.npy",
+          "stamp_s": 16.5
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 166,
+          "frame_ref": "frames/rail_straddle/frame_010.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_010.bits.npy",
+          "stamp_s": 16.6
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 167,
+          "frame_ref": "frames/rail_straddle/frame_011.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_011.bits.npy",
+          "stamp_s": 16.7
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 168,
+          "frame_ref": "frames/rail_straddle/frame_000.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_000.bits.npy",
+          "stamp_s": 16.8
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 169,
+          "frame_ref": "frames/rail_straddle/frame_001.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_001.bits.npy",
+          "stamp_s": 16.9
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 170,
+          "frame_ref": "frames/rail_straddle/frame_002.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_002.bits.npy",
+          "stamp_s": 17.0
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 171,
+          "frame_ref": "frames/rail_straddle/frame_003.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_003.bits.npy",
+          "stamp_s": 17.1
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 172,
+          "frame_ref": "frames/rail_straddle/frame_004.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_004.bits.npy",
+          "stamp_s": 17.2
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 173,
+          "frame_ref": "frames/rail_straddle/frame_005.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_005.bits.npy",
+          "stamp_s": 17.3
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 174,
+          "frame_ref": "frames/rail_straddle/frame_006.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_006.bits.npy",
+          "stamp_s": 17.4
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 175,
+          "frame_ref": "frames/rail_straddle/frame_007.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_007.bits.npy",
+          "stamp_s": 17.5
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 176,
+          "frame_ref": "frames/rail_straddle/frame_008.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_008.bits.npy",
+          "stamp_s": 17.6
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 177,
+          "frame_ref": "frames/rail_straddle/frame_009.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_009.bits.npy",
+          "stamp_s": 17.7
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 178,
+          "frame_ref": "frames/rail_straddle/frame_010.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_010.bits.npy",
+          "stamp_s": 17.8
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 179,
+          "frame_ref": "frames/rail_straddle/frame_011.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_011.bits.npy",
+          "stamp_s": 17.9
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 180,
+          "frame_ref": "frames/rail_straddle/frame_000.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_000.bits.npy",
+          "stamp_s": 18.0
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 181,
+          "frame_ref": "frames/rail_straddle/frame_001.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_001.bits.npy",
+          "stamp_s": 18.1
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 182,
+          "frame_ref": "frames/rail_straddle/frame_002.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_002.bits.npy",
+          "stamp_s": 18.2
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 183,
+          "frame_ref": "frames/rail_straddle/frame_003.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_003.bits.npy",
+          "stamp_s": 18.3
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 184,
+          "frame_ref": "frames/rail_straddle/frame_004.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_004.bits.npy",
+          "stamp_s": 18.4
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 185,
+          "frame_ref": "frames/rail_straddle/frame_005.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_005.bits.npy",
+          "stamp_s": 18.5
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 186,
+          "frame_ref": "frames/rail_straddle/frame_006.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_006.bits.npy",
+          "stamp_s": 18.6
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 187,
+          "frame_ref": "frames/rail_straddle/frame_007.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_007.bits.npy",
+          "stamp_s": 18.7
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 188,
+          "frame_ref": "frames/rail_straddle/frame_008.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_008.bits.npy",
+          "stamp_s": 18.8
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 189,
+          "frame_ref": "frames/rail_straddle/frame_009.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_009.bits.npy",
+          "stamp_s": 18.9
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 190,
+          "frame_ref": "frames/rail_straddle/frame_010.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_010.bits.npy",
+          "stamp_s": 19.0
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 191,
+          "frame_ref": "frames/rail_straddle/frame_011.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_011.bits.npy",
+          "stamp_s": 19.1
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 192,
+          "frame_ref": "frames/rail_straddle/frame_000.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_000.bits.npy",
+          "stamp_s": 19.2
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 193,
+          "frame_ref": "frames/rail_straddle/frame_001.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_001.bits.npy",
+          "stamp_s": 19.3
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 194,
+          "frame_ref": "frames/rail_straddle/frame_002.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_002.bits.npy",
+          "stamp_s": 19.4
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 195,
+          "frame_ref": "frames/rail_straddle/frame_003.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_003.bits.npy",
+          "stamp_s": 19.5
+        },
+        {
+          "drop_target_returns": true,
+          "frame_index": 196,
+          "frame_ref": "frames/rail_straddle/frame_004.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_004.bits.npy",
+          "stamp_s": 19.6
+        },
+        {
+          "drop_target_returns": true,
+          "frame_index": 197,
+          "frame_ref": "frames/rail_straddle/frame_005.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_005.bits.npy",
+          "stamp_s": 19.7
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 198,
+          "frame_ref": "frames/rail_straddle/frame_006.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_006.bits.npy",
+          "stamp_s": 19.8
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 199,
+          "frame_ref": "frames/rail_straddle/frame_007.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_007.bits.npy",
+          "stamp_s": 19.9
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 200,
+          "frame_ref": "frames/rail_straddle/frame_008.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_008.bits.npy",
+          "stamp_s": 20.0
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 201,
+          "frame_ref": "frames/rail_straddle/frame_009.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_009.bits.npy",
+          "stamp_s": 20.1
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 202,
+          "frame_ref": "frames/rail_straddle/frame_010.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_010.bits.npy",
+          "stamp_s": 20.2
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 203,
+          "frame_ref": "frames/rail_straddle/frame_011.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_011.bits.npy",
+          "stamp_s": 20.3
+        },
+        {
+          "drop_target_returns": false,
+          "frame_index": 204,
+          "frame_ref": "frames/rail_straddle/frame_000.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_000.bits.npy",
+          "stamp_s": 20.4
+        }
+      ],
+      "purpose": "long-running tracker continuity/recovery smoke scenario with three known missing-return windows",
+      "sequence_length": 205,
+      "source_reuse": "the 12 rail_straddle clouds cycle by frame index modulo 12; masks are applied to the referenced source cloud",
+      "window_note": "these 2-frame gaps reproduce the index scale of the reported track-continuity cases; they are not copied from any recording"
+    },
+    "rail_straddle": {
+      "background_model": {
+        "axis_y_m": 0.25,
+        "axis_z_m": 0.8,
+        "floor_z_m": -1.5,
+        "length_m": 250.0,
+        "radius_m": 2.7,
+        "type": "fully ray-cast round tunnel with flat bed, two side benches, two rails"
+      },
+      "frames": [
+        {
+          "index": 0,
+          "object_masks": {
+            "1": {
+              "encoding": "numpy.packbits(bitorder='little'); one bit per point row",
+              "file": "masks/rail_straddle/object_1_frame_000.bits.npy",
+              "point_count": 127145,
+              "positive_count": 81,
+              "sha256": "c5913282e20c6921c972ad9e87dd211fc7a0d43c648e94561424d075a9a85dd7"
+            }
+          },
+          "object_return_counts": {
+            "1": 81
+          },
+          "point_count": 127145,
+          "point_sha256": "e53e2d848b60d3f2c32d2cbaea003379d7c4b494e79d8bb1e9c726395b635d70",
+          "points_file": "frames/rail_straddle/frame_000.npy",
+          "rng_seed": 20260928,
+          "stamp_s": 0.0
+        },
+        {
+          "index": 1,
+          "object_masks": {
+            "1": {
+              "encoding": "numpy.packbits(bitorder='little'); one bit per point row",
+              "file": "masks/rail_straddle/object_1_frame_001.bits.npy",
+              "point_count": 127145,
+              "positive_count": 81,
+              "sha256": "c5913282e20c6921c972ad9e87dd211fc7a0d43c648e94561424d075a9a85dd7"
+            }
+          },
+          "object_return_counts": {
+            "1": 81
+          },
+          "point_count": 127145,
+          "point_sha256": "9c9c9721f36a4be78c7504224c80e09b3982fac26b82514f187fc462eef0fd5a",
+          "points_file": "frames/rail_straddle/frame_001.npy",
+          "rng_seed": 20260929,
+          "stamp_s": 0.1
+        },
+        {
+          "index": 2,
+          "object_masks": {
+            "1": {
+              "encoding": "numpy.packbits(bitorder='little'); one bit per point row",
+              "file": "masks/rail_straddle/object_1_frame_002.bits.npy",
+              "point_count": 127145,
+              "positive_count": 81,
+              "sha256": "c5913282e20c6921c972ad9e87dd211fc7a0d43c648e94561424d075a9a85dd7"
+            }
+          },
+          "object_return_counts": {
+            "1": 81
+          },
+          "point_count": 127145,
+          "point_sha256": "f098c0a5f690a334ea4f4b52de2965715a504885fe0d5a3ec06ca84789bda9bc",
+          "points_file": "frames/rail_straddle/frame_002.npy",
+          "rng_seed": 20260930,
+          "stamp_s": 0.2
+        },
+        {
+          "index": 3,
+          "object_masks": {
+            "1": {
+              "encoding": "numpy.packbits(bitorder='little'); one bit per point row",
+              "file": "masks/rail_straddle/object_1_frame_003.bits.npy",
+              "point_count": 127145,
+              "positive_count": 81,
+              "sha256": "c5913282e20c6921c972ad9e87dd211fc7a0d43c648e94561424d075a9a85dd7"
+            }
+          },
+          "object_return_counts": {
+            "1": 81
+          },
+          "point_count": 127145,
+          "point_sha256": "3e2fe1542a0c014546660a0ca36cd4e1620e55c9c1eb194a2af5bf0e69c7728c",
+          "points_file": "frames/rail_straddle/frame_003.npy",
+          "rng_seed": 20260931,
+          "stamp_s": 0.3
+        },
+        {
+          "index": 4,
+          "object_masks": {
+            "1": {
+              "encoding": "numpy.packbits(bitorder='little'); one bit per point row",
+              "file": "masks/rail_straddle/object_1_frame_004.bits.npy",
+              "point_count": 127145,
+              "positive_count": 81,
+              "sha256": "c5913282e20c6921c972ad9e87dd211fc7a0d43c648e94561424d075a9a85dd7"
+            }
+          },
+          "object_return_counts": {
+            "1": 81
+          },
+          "point_count": 127145,
+          "point_sha256": "cd1b18e1045ef714b9ff62952d89899702e7f0077f0c4d377daa14527e12c7d2",
+          "points_file": "frames/rail_straddle/frame_004.npy",
+          "rng_seed": 20260932,
+          "stamp_s": 0.4
+        },
+        {
+          "index": 5,
+          "object_masks": {
+            "1": {
+              "encoding": "numpy.packbits(bitorder='little'); one bit per point row",
+              "file": "masks/rail_straddle/object_1_frame_005.bits.npy",
+              "point_count": 127145,
+              "positive_count": 81,
+              "sha256": "c5913282e20c6921c972ad9e87dd211fc7a0d43c648e94561424d075a9a85dd7"
+            }
+          },
+          "object_return_counts": {
+            "1": 81
+          },
+          "point_count": 127145,
+          "point_sha256": "4ad15c47e843b073f86562ed9afe7fce6f5ecd57b65e6347921793a02451cc8e",
+          "points_file": "frames/rail_straddle/frame_005.npy",
+          "rng_seed": 20260933,
+          "stamp_s": 0.5
+        },
+        {
+          "index": 6,
+          "object_masks": {
+            "1": {
+              "encoding": "numpy.packbits(bitorder='little'); one bit per point row",
+              "file": "masks/rail_straddle/object_1_frame_006.bits.npy",
+              "point_count": 127145,
+              "positive_count": 81,
+              "sha256": "c5913282e20c6921c972ad9e87dd211fc7a0d43c648e94561424d075a9a85dd7"
+            }
+          },
+          "object_return_counts": {
+            "1": 81
+          },
+          "point_count": 127145,
+          "point_sha256": "4009c2801f35f291bc43721813612aa602649cd159bc72836e18de1d94b0734f",
+          "points_file": "frames/rail_straddle/frame_006.npy",
+          "rng_seed": 20260934,
+          "stamp_s": 0.6
+        },
+        {
+          "index": 7,
+          "object_masks": {
+            "1": {
+              "encoding": "numpy.packbits(bitorder='little'); one bit per point row",
+              "file": "masks/rail_straddle/object_1_frame_007.bits.npy",
+              "point_count": 127145,
+              "positive_count": 81,
+              "sha256": "c5913282e20c6921c972ad9e87dd211fc7a0d43c648e94561424d075a9a85dd7"
+            }
+          },
+          "object_return_counts": {
+            "1": 81
+          },
+          "point_count": 127145,
+          "point_sha256": "4c6fba4cb1d7e47edb68459312ca13b0d709bc34fed2c243b67a76e90822da2a",
+          "points_file": "frames/rail_straddle/frame_007.npy",
+          "rng_seed": 20260935,
+          "stamp_s": 0.7
+        },
+        {
+          "index": 8,
+          "object_masks": {
+            "1": {
+              "encoding": "numpy.packbits(bitorder='little'); one bit per point row",
+              "file": "masks/rail_straddle/object_1_frame_008.bits.npy",
+              "point_count": 127145,
+              "positive_count": 81,
+              "sha256": "c5913282e20c6921c972ad9e87dd211fc7a0d43c648e94561424d075a9a85dd7"
+            }
+          },
+          "object_return_counts": {
+            "1": 81
+          },
+          "point_count": 127145,
+          "point_sha256": "30322cac55eef07bb7a81f08802ae2da51fc5cbe8e5980baf909ea93c291adc6",
+          "points_file": "frames/rail_straddle/frame_008.npy",
+          "rng_seed": 20260936,
+          "stamp_s": 0.8
+        },
+        {
+          "index": 9,
+          "object_masks": {
+            "1": {
+              "encoding": "numpy.packbits(bitorder='little'); one bit per point row",
+              "file": "masks/rail_straddle/object_1_frame_009.bits.npy",
+              "point_count": 127145,
+              "positive_count": 81,
+              "sha256": "c5913282e20c6921c972ad9e87dd211fc7a0d43c648e94561424d075a9a85dd7"
+            }
+          },
+          "object_return_counts": {
+            "1": 81
+          },
+          "point_count": 127145,
+          "point_sha256": "34dc709c2a4a39e54341b47aaec7be35255e7b23909c2a8c1346657df4078639",
+          "points_file": "frames/rail_straddle/frame_009.npy",
+          "rng_seed": 20260937,
+          "stamp_s": 0.9
+        },
+        {
+          "index": 10,
+          "object_masks": {
+            "1": {
+              "encoding": "numpy.packbits(bitorder='little'); one bit per point row",
+              "file": "masks/rail_straddle/object_1_frame_010.bits.npy",
+              "point_count": 127145,
+              "positive_count": 81,
+              "sha256": "c5913282e20c6921c972ad9e87dd211fc7a0d43c648e94561424d075a9a85dd7"
+            }
+          },
+          "object_return_counts": {
+            "1": 81
+          },
+          "point_count": 127145,
+          "point_sha256": "334415d76420594565be13d961429f07583abd46b3bcc470698eb1d2cdfe0382",
+          "points_file": "frames/rail_straddle/frame_010.npy",
+          "rng_seed": 20260938,
+          "stamp_s": 1.0
+        },
+        {
+          "index": 11,
+          "object_masks": {
+            "1": {
+              "encoding": "numpy.packbits(bitorder='little'); one bit per point row",
+              "file": "masks/rail_straddle/object_1_frame_011.bits.npy",
+              "point_count": 127145,
+              "positive_count": 81,
+              "sha256": "c5913282e20c6921c972ad9e87dd211fc7a0d43c648e94561424d075a9a85dd7"
+            }
+          },
+          "object_return_counts": {
+            "1": 81
+          },
+          "point_count": 127145,
+          "point_sha256": "ab19f49dc095b74939c9c78783c3336915ebf247f743a94752b0dc86c330b35d",
+          "points_file": "frames/rail_straddle/frame_011.npy",
+          "rng_seed": 20260939,
+          "stamp_s": 1.1
+        }
+      ],
+      "obstacles": [
+        {
+          "center_vehicle_m": [
+            24.2,
+            1.05,
+            -1.345
+          ],
+          "kind": "box",
+          "lateral_offset_from_track_m": 0.8,
+          "mesh_origin_vehicle_m": [
+            24.2,
+            1.05,
+            -1.5
+          ],
+          "nearest_face_distance_m": 24.0,
+          "placement": "box mesh bottom at base_z; lateral is relative to synthetic track axis",
+          "reflectivity": 30.0,
+          "size_m_xyz": [
+            0.4,
+            0.6,
+            0.31
+          ],
+          "yaw_deg": 0.0
+        }
+      ],
+      "sequence": {
+        "dropout_semantics": "For a gap variant of N frames, remove target-mask rows from frames [6, 6+N); object-hit rays become no returns and the target has occluded the background behind it.",
+        "frame_rate_hz": 10,
+        "gap_start_index": 6,
+        "gap_variants": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "observation_notes": "Six visible frames make the target a reported track with the baseline config; verify the desired tracker behavior after masking returns before using this as an expected-result test.",
+        "positive_recovery_frames": 3,
+        "positive_warmup_frames": 6,
+        "stationary_target": true
+      },
+      "synthetic_track": {
+        "age": 0,
+        "axis_sides": 0,
+        "axis_valid": 9999.0,
+        "center": 0.25,
+        "curvature": 0.0,
+        "floor_coef": [
+          0.0,
+          0.0,
+          -1.5
+        ],
+        "floor_range": [
+          0.0,
+          250.0
+        ],
+        "floor_verified": 0.0,
+        "n_bins": 0,
+        "rail_offset": 0.35,
+        "rail_score": 0.0,
+        "rail_slabs": 0,
+        "residual": 0.0,
+        "wall_quality": -1.0,
+        "yaw": 0.0
+      }
+    },
+    "range_edge_survey": {
+      "cases": [
+        {
+          "case": "box_30cm_50m_center",
+          "object_mask": {
+            "encoding": "numpy.packbits(bitorder='little'); one bit per point row",
+            "file": "masks/range_edge_survey/box_30cm_50m_center.bits.npy",
+            "point_count": 127145,
+            "positive_count": 9,
+            "sha256": "b22204ee464d2ebb7b028d2496af75c990e3f4791e3735f46c1a0349f3b38198"
+          },
+          "obstacle": {
+            "center_vehicle_m": [
+              50.15,
+              0.25,
+              -1.35
+            ],
+            "kind": "box",
+            "lateral_offset_from_track_m": 0.0,
+            "mesh_origin_vehicle_m": [
+              50.15,
+              0.25,
+              -1.5
+            ],
+            "nearest_face_distance_m": 50.0,
+            "placement": "box mesh bottom at base_z; lateral is relative to synthetic track axis",
+            "reflectivity": 30.0,
+            "size_m_xyz": [
+              0.3,
+              0.3,
+              0.3
+            ],
+            "yaw_deg": -4.0
+          },
+          "point_count": 127145,
+          "point_sha256": "7f00d969bd9e337717796c3ba2c589a16fbcd6bb6dfb3be0e00dfc76523d4a03",
+          "points_file": "frames/range_edge_survey/box_30cm_50m_center.npy",
+          "purpose": "sensor sampling/coverage probe only; detector success is not guaranteed",
+          "rng_seed": 20261128
+        },
+        {
+          "case": "box_30cm_75m_edge",
+          "object_mask": {
+            "encoding": "numpy.packbits(bitorder='little'); one bit per point row",
+            "file": "masks/range_edge_survey/box_30cm_75m_edge.bits.npy",
+            "point_count": 127145,
+            "positive_count": 4,
+            "sha256": "6af2ece28efb87d8cce741d9699542c66dcd7f568938331394f52c7e26f640d6"
+          },
+          "obstacle": {
+            "center_vehicle_m": [
+              75.15,
+              1.25,
+              -1.35
+            ],
+            "kind": "box",
+            "lateral_offset_from_track_m": 1.0,
+            "mesh_origin_vehicle_m": [
+              75.15,
+              1.25,
+              -1.5
+            ],
+            "nearest_face_distance_m": 75.0,
+            "placement": "box mesh bottom at base_z; lateral is relative to synthetic track axis",
+            "reflectivity": 30.0,
+            "size_m_xyz": [
+              0.3,
+              0.3,
+              0.3
+            ],
+            "yaw_deg": 3.0
+          },
+          "point_count": 127145,
+          "point_sha256": "abf9d5b53293d679336d3b62a615e08a792265745555367fc0ae743962731c9e",
+          "points_file": "frames/range_edge_survey/box_30cm_75m_edge.npy",
+          "purpose": "sensor sampling/coverage probe only; detector success is not guaranteed",
+          "rng_seed": 20261129
+        },
+        {
+          "case": "box_30cm_100m_edge",
+          "object_mask": {
+            "encoding": "numpy.packbits(bitorder='little'); one bit per point row",
+            "file": "masks/range_edge_survey/box_30cm_100m_edge.bits.npy",
+            "point_count": 127145,
+            "positive_count": 4,
+            "sha256": "86ba7c9a3829d9911659ef0d30cc7e6d800647ee996e3cfa2a3bdb41fbd9f579"
+          },
+          "obstacle": {
+            "center_vehicle_m": [
+              100.15,
+              1.25,
+              -1.35
+            ],
+            "kind": "box",
+            "lateral_offset_from_track_m": 1.0,
+            "mesh_origin_vehicle_m": [
+              100.15,
+              1.25,
+              -1.5
+            ],
+            "nearest_face_distance_m": 100.0,
+            "placement": "box mesh bottom at base_z; lateral is relative to synthetic track axis",
+            "reflectivity": 30.0,
+            "size_m_xyz": [
+              0.3,
+              0.3,
+              0.3
+            ],
+            "yaw_deg": -2.0
+          },
+          "point_count": 127145,
+          "point_sha256": "50b84c730b86e41b0294782ffdc8ae271260cd488a5aa697e619708916b0d1d5",
+          "points_file": "frames/range_edge_survey/box_30cm_100m_edge.npy",
+          "purpose": "sensor sampling/coverage probe only; detector success is not guaranteed",
+          "rng_seed": 20261130
+        },
+        {
+          "case": "box_50cm_50m_edge",
+          "object_mask": {
+            "encoding": "numpy.packbits(bitorder='little'); one bit per point row",
+            "file": "masks/range_edge_survey/box_50cm_50m_edge.bits.npy",
+            "point_count": 127145,
+            "positive_count": 25,
+            "sha256": "a19852ef62c253d98e7b723c364e3e480f79fbb0812c6259935148a651b705c4"
+          },
+          "obstacle": {
+            "center_vehicle_m": [
+              50.25,
+              1.25,
+              -1.25
+            ],
+            "kind": "box",
+            "lateral_offset_from_track_m": 1.0,
+            "mesh_origin_vehicle_m": [
+              50.25,
+              1.25,
+              -1.5
+            ],
+            "nearest_face_distance_m": 50.0,
+            "placement": "box mesh bottom at base_z; lateral is relative to synthetic track axis",
+            "reflectivity": 30.0,
+            "size_m_xyz": [
+              0.5,
+              0.5,
+              0.5
+            ],
+            "yaw_deg": 5.0
+          },
+          "point_count": 127145,
+          "point_sha256": "f3819d8fb2fc911e4fc870080de830b272857cf8e30e39402109705c2b2f3ab7",
+          "points_file": "frames/range_edge_survey/box_50cm_50m_edge.npy",
+          "purpose": "sensor sampling/coverage probe only; detector success is not guaranteed",
+          "rng_seed": 20261131
+        },
+        {
+          "case": "box_50cm_75m_center",
+          "object_mask": {
+            "encoding": "numpy.packbits(bitorder='little'); one bit per point row",
+            "file": "masks/range_edge_survey/box_50cm_75m_center.bits.npy",
+            "point_count": 127145,
+            "positive_count": 12,
+            "sha256": "907da8f083796da4f772d9fddc1b5a15c2ca6b431e084fb8a4b89b674cfb9e9f"
+          },
+          "obstacle": {
+            "center_vehicle_m": [
+              75.25,
+              0.25,
+              -1.25
+            ],
+            "kind": "box",
+            "lateral_offset_from_track_m": 0.0,
+            "mesh_origin_vehicle_m": [
+              75.25,
+              0.25,
+              -1.5
+            ],
+            "nearest_face_distance_m": 75.0,
+            "placement": "box mesh bottom at base_z; lateral is relative to synthetic track axis",
+            "reflectivity": 30.0,
+            "size_m_xyz": [
+              0.5,
+              0.5,
+              0.5
+            ],
+            "yaw_deg": -3.0
+          },
+          "point_count": 127145,
+          "point_sha256": "77cb6b0ef295477efdea67d95fd51c44b0dab605fbcab661bc8cf51c2f89934a",
+          "points_file": "frames/range_edge_survey/box_50cm_75m_center.npy",
+          "purpose": "sensor sampling/coverage probe only; detector success is not guaranteed",
+          "rng_seed": 20261132
+        },
+        {
+          "case": "box_50cm_100m_edge",
+          "object_mask": {
+            "encoding": "numpy.packbits(bitorder='little'); one bit per point row",
+            "file": "masks/range_edge_survey/box_50cm_100m_edge.bits.npy",
+            "point_count": 127145,
+            "positive_count": 5,
+            "sha256": "6474b7fd651b606f102b094c248abb03fc049f094d902743179c60bb9e2661ba"
+          },
+          "obstacle": {
+            "center_vehicle_m": [
+              100.25,
+              1.25,
+              -1.25
+            ],
+            "kind": "box",
+            "lateral_offset_from_track_m": 1.0,
+            "mesh_origin_vehicle_m": [
+              100.25,
+              1.25,
+              -1.5
+            ],
+            "nearest_face_distance_m": 100.0,
+            "placement": "box mesh bottom at base_z; lateral is relative to synthetic track axis",
+            "reflectivity": 30.0,
+            "size_m_xyz": [
+              0.5,
+              0.5,
+              0.5
+            ],
+            "yaw_deg": 2.0
+          },
+          "point_count": 127145,
+          "point_sha256": "c1846058493f300d9b479127fc700fcf2c0bd7f91f238997b64459f94b20e129",
+          "points_file": "frames/range_edge_survey/box_50cm_100m_edge.npy",
+          "purpose": "sensor sampling/coverage probe only; detector success is not guaranteed",
+          "rng_seed": 20261133
+        }
+      ],
+      "purpose": "Coverage-only samples for 0.3 m and 0.5 m boxes at 50 m, 75 m, and 100 m, with center/edge lateral placements and varied yaw/seed."
+    },
+    "single_frame_transient": {
+      "frame_rate_hz": 10,
+      "frames": [
+        {
+          "frame_ref": "frames/clear_tunnel/frame_000.npy",
+          "target_visible": false
+        },
+        {
+          "frame_ref": "frames/clear_tunnel/frame_001.npy",
+          "target_visible": false
+        },
+        {
+          "frame_ref": "frames/clear_tunnel/frame_002.npy",
+          "target_visible": false
+        },
+        {
+          "frame_ref": "frames/rail_straddle/frame_006.npy",
+          "mask_ref": "masks/rail_straddle/object_1_frame_006.bits.npy",
+          "target_visible": true
+        },
+        {
+          "frame_ref": "frames/clear_tunnel/frame_003.npy",
+          "target_visible": false
+        },
+        {
+          "frame_ref": "frames/clear_tunnel/frame_004.npy",
+          "target_visible": false
+        },
+        {
+          "frame_ref": "frames/clear_tunnel/frame_005.npy",
+          "target_visible": false
+        }
+      ],
+      "purpose": "One-frame object-return transient surrounded by fully clear synthetic scans; useful as a persistence negative control.",
+      "sequence_length": 7
+    }
+  },
+  "schema": "resense.synthetic_lidar_fixture.v1",
+  "sensor": {
+    "array_dtype": "COMPACT16_DTYPE: x/y/z int16 cm, intensity uint8, ring uint8",
+    "azimuth_fov_deg": [
+      -50.0,
+      50.0
+    ],
+    "azimuth_step_deg": 0.1,
+    "frame_rate_hz": 10,
+    "model": "Hesai Pandar128 E3X model from resense.sensor",
+    "mount_transform": {
+      "encoding_rule": "vehicle row-vector coordinates multiplied by this matrix to save sensor-frame coordinates",
+      "sensor_config": {
+        "forward": "-y",
+        "frame_id": "hesai_lidar",
+        "left": "+x",
+        "max_range": 250.0,
+        "min_range": 2.5,
+        "pitch_deg": 0.0,
+        "roll_deg": 0.0,
+        "up": "+z",
+        "yaw_deg": 0.0
+      },
+      "vehicle_from_sensor_matrix": [
+        [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "quantization_m": 0.01,
+    "ray_hit_noise": "synthetic_tunnel_frame defaults: Gaussian range sigma 0.01 m times (1 + range/100), intensity multiplier N(1, 0.1)",
+    "return_model": "single nearest hit per ray; the synthetic fixture does not model the Pandar dual-return slots",
+    "ring_assignment": "nearest configured ring elevation to ray-hit elevation",
+    "rings": 128,
+    "saved_coordinate_frame": "sensor frame expected by frame_from_compact"
+  }
+}
