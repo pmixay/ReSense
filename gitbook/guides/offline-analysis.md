@@ -53,7 +53,7 @@ resense eval data/synth                  # полнота (recall) по даль
 resense eval --bag /data/for_hackathon/doubleT_obstacle --gt labels/doubleT_obstacle.json --repeat 1 --text
 ```
 
-Формат разметки: [`docs/DATASET.md` «Формат разметки»](https://github.com/pmixay/ReSense/blob/main/docs/DATASET.md#label-format-gtjson).
+Формат разметки: [`docs/DATASET.md` «Формат разметки»](https://github.com/pmixay/ReSense/blob/main/docs/DATASET.md#формат-разметки-gtjson).
 `web/label_tool.html` — инструмент в браузере, которым делается такая разметка.
 
 ## Сводка по реальным данным <a href="#the-real-data-report-card" id="the-real-data-report-card"></a>
