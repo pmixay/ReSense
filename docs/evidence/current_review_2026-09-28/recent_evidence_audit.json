@@ -1,0 +1,325 @@
+{
+  "schema": "resense-recent-evidence-review-v1",
+  "reviewed_commit": "20e82297bbf859e7d63bee35044d6c8314f746c5",
+  "checks": {
+    "fixture": {
+      "cloud_hashes_shapes_validated": 24,
+      "mask_hashes_shapes_counts_validated": 18,
+      "generator_hash_validated": true,
+      "object_return_counts": {
+        "frames/rail_straddle/frame_000.npy": 81,
+        "frames/rail_straddle/frame_001.npy": 81,
+        "frames/rail_straddle/frame_002.npy": 81,
+        "frames/rail_straddle/frame_003.npy": 81,
+        "frames/rail_straddle/frame_004.npy": 81,
+        "frames/rail_straddle/frame_005.npy": 81,
+        "frames/rail_straddle/frame_006.npy": 81,
+        "frames/rail_straddle/frame_007.npy": 81,
+        "frames/rail_straddle/frame_008.npy": 81,
+        "frames/rail_straddle/frame_009.npy": 81,
+        "frames/rail_straddle/frame_010.npy": 81,
+        "frames/rail_straddle/frame_011.npy": 81,
+        "frames/range_edge_survey/box_30cm_50m_center.npy": 9,
+        "frames/range_edge_survey/box_30cm_75m_edge.npy": 4,
+        "frames/range_edge_survey/box_30cm_100m_edge.npy": 4,
+        "frames/range_edge_survey/box_50cm_50m_edge.npy": 25,
+        "frames/range_edge_survey/box_50cm_75m_center.npy": 12,
+        "frames/range_edge_survey/box_50cm_100m_edge.npy": 5
+      }
+    },
+    "runtime_source_hashes": "detector, tracking, default config match packet",
+    "p4_prose_count_correction": "208 same rows = 146 gated plus 62 informational; 16 other informational latency rows changed. No gate failures."
+  },
+  "gate_comparisons": {
+    "p4_reference_vs_quality": {
+      "artifact": "docs/evidence/results/p4_full_data_2026-09-28/regression_gate.json",
+      "baseline": "docs/evidence/results/regression_baseline_2026-09-27_quality.json",
+      "stored_summary_matches_recomputed": true,
+      "total_rows": 224,
+      "gated_rows": 146,
+      "gated_same": 146,
+      "informational_same": 62,
+      "all_same": 208,
+      "passed": true,
+      "failures": [],
+      "improvements": []
+    },
+    "p4_final_vs_quality": {
+      "artifact": "docs/evidence/results/p4_full_data_2026-09-28/final_regression_gate.json",
+      "baseline": "docs/evidence/results/regression_baseline_2026-09-27_quality.json",
+      "stored_summary_matches_recomputed": true,
+      "total_rows": 224,
+      "gated_rows": 146,
+      "gated_same": 146,
+      "informational_same": 62,
+      "all_same": 208,
+      "passed": true,
+      "failures": [],
+      "improvements": []
+    },
+    "candidate_vs_quality": {
+      "artifact": "docs/evidence/results/p1_raw_continuity_2026-09-28/strict_gate_hold_misses_2.json",
+      "baseline": "docs/evidence/results/regression_baseline_2026-09-27_quality.json",
+      "stored_summary_matches_recomputed": true,
+      "total_rows": 224,
+      "gated_rows": 146,
+      "gated_same": 139,
+      "informational_same": 44,
+      "all_same": 183,
+      "passed": false,
+      "failures": [
+        {
+          "metric": "ride.alarm_events",
+          "baseline": 32,
+          "current": 34,
+          "verdict": "worse",
+          "gated": true,
+          "allowed": false,
+          "fails": true
+        },
+        {
+          "metric": "set_F_straight.person.false_detections",
+          "baseline": 6,
+          "current": 8,
+          "verdict": "worse",
+          "gated": true,
+          "allowed": false,
+          "fails": true
+        },
+        {
+          "metric": "set_F_straight.box1.0.false_detections",
+          "baseline": 12,
+          "current": 13,
+          "verdict": "worse",
+          "gated": true,
+          "allowed": false,
+          "fails": true
+        },
+        {
+          "metric": "set_F_straight.trolley.false_detections",
+          "baseline": 5,
+          "current": 6,
+          "verdict": "worse",
+          "gated": true,
+          "allowed": false,
+          "fails": true
+        }
+      ],
+      "improvements": [
+        {
+          "metric": "recordings.doubleT_obstacle.labelled.object_on_rail.hits",
+          "baseline": 128,
+          "current": 129,
+          "verdict": "better",
+          "gated": true,
+          "allowed": false,
+          "fails": false
+        },
+        {
+          "metric": "recordings.doubleT_obstacle.labelled.object_on_rail_from_frame_75.hits",
+          "baseline": 125,
+          "current": 126,
+          "verdict": "better",
+          "gated": true,
+          "allowed": false,
+          "fails": false
+        },
+        {
+          "metric": "ride.stop_episodes",
+          "baseline": 31,
+          "current": 29,
+          "verdict": "better",
+          "gated": true,
+          "allowed": false,
+          "fails": false
+        }
+      ]
+    },
+    "candidate_vs_current_reference": {
+      "artifact": "docs/evidence/results/p1_raw_continuity_2026-09-28/current_reference_comparison.json",
+      "baseline": "docs/evidence/results/p4_full_data_2026-09-28/final_regression_gate.json",
+      "stored_summary_matches_recomputed": true,
+      "total_rows": 224,
+      "gated_rows": 146,
+      "gated_same": 139,
+      "informational_same": 44,
+      "all_same": 183,
+      "passed": false,
+      "failures": [
+        {
+          "metric": "ride.alarm_events",
+          "baseline": 32,
+          "current": 34,
+          "verdict": "worse",
+          "gated": true,
+          "allowed": false,
+          "fails": true
+        },
+        {
+          "metric": "set_F_straight.person.false_detections",
+          "baseline": 6,
+          "current": 8,
+          "verdict": "worse",
+          "gated": true,
+          "allowed": false,
+          "fails": true
+        },
+        {
+          "metric": "set_F_straight.box1.0.false_detections",
+          "baseline": 12,
+          "current": 13,
+          "verdict": "worse",
+          "gated": true,
+          "allowed": false,
+          "fails": true
+        },
+        {
+          "metric": "set_F_straight.trolley.false_detections",
+          "baseline": 5,
+          "current": 6,
+          "verdict": "worse",
+          "gated": true,
+          "allowed": false,
+          "fails": true
+        }
+      ],
+      "improvements": [
+        {
+          "metric": "recordings.doubleT_obstacle.labelled.object_on_rail.hits",
+          "baseline": 128,
+          "current": 129,
+          "verdict": "better",
+          "gated": true,
+          "allowed": false,
+          "fails": false
+        },
+        {
+          "metric": "recordings.doubleT_obstacle.labelled.object_on_rail_from_frame_75.hits",
+          "baseline": 125,
+          "current": 126,
+          "verdict": "better",
+          "gated": true,
+          "allowed": false,
+          "fails": false
+        },
+        {
+          "metric": "ride.stop_episodes",
+          "baseline": 31,
+          "current": 29,
+          "verdict": "better",
+          "gated": true,
+          "allowed": false,
+          "fails": false
+        }
+      ]
+    }
+  },
+  "raw_runs": {
+    "raw_default.jsonl.gz": {
+      "frames": 201,
+      "compressed_and_uncompressed_hashes_match": true,
+      "labelled_hits_and_visible_frames": {
+        "object_on_rail": [
+          125,
+          185
+        ],
+        "person_crossing": [
+          61,
+          61
+        ],
+        "object_after_frame_75": [
+          123,
+          126
+        ]
+      },
+      "alarm_frames": 190,
+      "advisory_frames": 22,
+      "non_stop_after_frame_75": [
+        111,
+        117,
+        197
+      ],
+      "unmatched_detections": [
+        {
+          "frame": 69,
+          "id": 4
+        },
+        {
+          "frame": 70,
+          "id": 4
+        },
+        {
+          "frame": 71,
+          "id": 4
+        },
+        {
+          "frame": 72,
+          "id": 4
+        },
+        {
+          "frame": 73,
+          "id": 4
+        },
+        {
+          "frame": 74,
+          "id": 4
+        }
+      ]
+    },
+    "raw_hold_misses_2.jsonl.gz": {
+      "frames": 201,
+      "compressed_and_uncompressed_hashes_match": true,
+      "labelled_hits_and_visible_frames": {
+        "object_on_rail": [
+          128,
+          185
+        ],
+        "person_crossing": [
+          61,
+          61
+        ],
+        "object_after_frame_75": [
+          126,
+          126
+        ]
+      },
+      "alarm_frames": 193,
+      "advisory_frames": 25,
+      "non_stop_after_frame_75": [],
+      "unmatched_detections": [
+        {
+          "frame": 69,
+          "id": 4
+        },
+        {
+          "frame": 70,
+          "id": 4
+        },
+        {
+          "frame": 71,
+          "id": 4
+        },
+        {
+          "frame": 72,
+          "id": 4
+        },
+        {
+          "frame": 73,
+          "id": 4
+        },
+        {
+          "frame": 74,
+          "id": 4
+        },
+        {
+          "frame": 75,
+          "id": 4
+        }
+      ]
+    }
+  },
+  "limits": [
+    "Validates committed artifacts and counts; no original DB3 or full cache replay.",
+    "Ground-truth labels are the team labels already in the repository."
+  ]
+}

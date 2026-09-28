@@ -1,0 +1,114 @@
+{
+  "schema": "resense-available-gate-evidence-v1",
+  "run_date_utc": "2026-09-28T10:43:35+00:00",
+  "branch": "testovaya-gpt",
+  "commit": "2583e0dc32afff95dc56efb0637fe46020e6dd3e",
+  "detector_version": "1.0.0",
+  "detector_changes_uncommitted": [],
+  "baseline": "docs/evidence/results/regression_baseline_2026-09-27_quality.json",
+  "baseline_commit": "d57280701f63d4baddb5e23233e7bdebda9c0594",
+  "effective_config_sha256": "de5c7fd6dfa74c1e656af6e233efd625e3e552736534e32efa625e5e8ff57f47",
+  "native": "native (_resense_native.cpython-312-x86_64-linux-gnu.so)",
+  "command": "/tmp/resense-p4-venv/bin/python scripts/regression_gate.py --cache /data/cache --jobs 1 --chunks 8 --baseline docs/evidence/results/regression_baseline_2026-09-27_quality.json --allow 'ride.*' --allow 'set_F_straight.*' --work out/testovaya/current_available_2026-09-28/gate --out out/testovaya/current_available_2026-09-28/gate.json",
+  "scope": "partial: six original recordings and cloud_with_fake_obj only; ride and set F straight were unavailable because /data/cache/new_data is absent",
+  "source_data_manifest": "docs/evidence/results/p4_data_intake_2026-09-26.json (verified cache frame counts, timestamps, and source archive metadata)",
+  "frames": {
+    "doubleT_obstacle": 201,
+    "doubleT_platform": 345,
+    "roundT_doubleT": 252,
+    "roundT_pressureGate_roundT": 268,
+    "roundT_squareT_pressureGate_squareT": 545,
+    "squareT_platform_squareT_switch": 877,
+    "cloud_with_fake_obj": 1510
+  },
+  "comparison": {
+    "baseline": "docs/evidence/results/regression_baseline_2026-09-27_quality.json",
+    "baseline_commit": "d57280701f63d4baddb5e23233e7bdebda9c0594",
+    "baseline_config_sha256": "de5c7fd6dfa74c1e656af6e233efd625e3e552736534e32efa625e5e8ff57f47",
+    "allow": [
+      "ride.*",
+      "set_F_straight.*"
+    ],
+    "passed": true,
+    "worse_gated": [],
+    "missing_gated": [],
+    "worse_allowed": [],
+    "missing_allowed": [
+      "ride.frames",
+      "ride.alarm_events",
+      "ride.stop_episodes",
+      "set_F_straight.person.detected",
+      "set_F_straight.person.first_detection_median_m",
+      "set_F_straight.person.false_detections",
+      "set_F_straight.box1.0.detected",
+      "set_F_straight.box1.0.first_detection_median_m",
+      "set_F_straight.box1.0.false_detections",
+      "set_F_straight.box0.5.detected",
+      "set_F_straight.box0.5.first_detection_median_m",
+      "set_F_straight.box0.5.false_detections",
+      "set_F_straight.trolley.detected",
+      "set_F_straight.trolley.first_detection_median_m",
+      "set_F_straight.trolley.false_detections",
+      "set_F_straight.cable.detected",
+      "set_F_straight.cable.first_detection_median_m",
+      "set_F_straight.cable.false_detections"
+    ],
+    "better": [],
+    "same": 159,
+    "info_changed": [
+      "latency_ms.doubleT_obstacle.mean",
+      "latency_ms.doubleT_obstacle.p95",
+      "latency_ms.doubleT_platform.mean",
+      "latency_ms.doubleT_platform.p95",
+      "latency_ms.roundT_doubleT.mean",
+      "latency_ms.roundT_doubleT.p95",
+      "latency_ms.roundT_pressureGate_roundT.mean",
+      "latency_ms.roundT_pressureGate_roundT.p95",
+      "latency_ms.roundT_squareT_pressureGate_squareT.mean",
+      "latency_ms.roundT_squareT_pressureGate_squareT.p95",
+      "latency_ms.squareT_platform_squareT_switch.mean",
+      "latency_ms.squareT_platform_squareT_switch.p95",
+      "latency_ms.cloud_with_fake_obj.mean",
+      "latency_ms.cloud_with_fake_obj.p95"
+    ]
+  },
+  "artifact_sha256": {
+    "frames/doubleT_obstacle.jsonl.gz": {
+      "rows": 201,
+      "bytes": 31525,
+      "sha256": "d752843d066b49a97d2eca293e27a3bd2827264b784ceae55c4afaba40799e56"
+    },
+    "frames/doubleT_platform.jsonl.gz": {
+      "rows": 345,
+      "bytes": 53425,
+      "sha256": "f0a66640cc3d0bbfe204d64b78edf683426b3b63dbde45c9c050b56ae8a5fdac"
+    },
+    "frames/roundT_doubleT.jsonl.gz": {
+      "rows": 252,
+      "bytes": 45452,
+      "sha256": "2499684eaaeec51ce1fef0486c72355e00bedbde49f32dc6b582baf750e06259"
+    },
+    "frames/roundT_pressureGate_roundT.jsonl.gz": {
+      "rows": 268,
+      "bytes": 43017,
+      "sha256": "bede4a7568439859cb1eb6ebe2d08364e259628fd4bcafc3c2fa7494a9914669"
+    },
+    "frames/roundT_squareT_pressureGate_squareT.jsonl.gz": {
+      "rows": 545,
+      "bytes": 81494,
+      "sha256": "06dffca7e6f2252d3b84c49e140b60b7370b1a63c055efe31600704c7a8dc79a"
+    },
+    "frames/squareT_platform_squareT_switch.jsonl.gz": {
+      "rows": 877,
+      "bytes": 139142,
+      "sha256": "aa5be13ad8922e217acd84b31e996148a1e4a81a651e47770dc0b0d3000fe7a5"
+    },
+    "frames/cloud_with_fake_obj.jsonl.gz": {
+      "rows": 1510,
+      "bytes": 236677,
+      "sha256": "3b4a3531480c069145ab788f2be818329a30be1ff8a6d58603b93ecbc8639c49"
+    }
+  },
+  "gate_json_sha256": "5e20b28047c1ca4a373f081f03ce184d3d1c7657e24a1961991b0a2b00e9b319",
+  "effective_config_file_sha256": "309c822258b61fad1f149d8a542ba96d25dd69c25554762d0d22e49f1d25b711"
+}

@@ -1,0 +1,508 @@
+{
+  "schema": "resense-p1-raw-continuity-v1",
+  "date": "2026-09-28",
+  "decision": "reject tracking.hold_misses=2; shipped detector unchanged",
+  "code_commit": "d73af5a44b5721358cbc3a1e8fcb1da169069960",
+  "branch": "gpt-score-push-20260928",
+  "source": {
+    "description": "Organizer six-recording Google Drive archive; see docs/DATASET.md and scripts/fetch_cold_bags.sh",
+    "bag_path": "/data/for_hackathon/doubleT_obstacle",
+    "metadata_sha256": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09",
+    "db3_sha256": "05f1d7f7d1bbbc5e9453877416cc9f7367c19e31d35a5291271d863fc89c5ad9",
+    "metadata_sha256_expected": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09",
+    "db3_sha256_expected": "05f1d7f7d1bbbc5e9453877416cc9f7367c19e31d35a5291271d863fc89c5ad9",
+    "sqlite_messages": 201,
+    "first_receive_stamp_ns": 1788354623110040384,
+    "last_receive_stamp_ns": 1788354643502070680,
+    "metadata_duration_s": 20.392030296,
+    "archive_sha256": "not published / not independently verified",
+    "archive_sha256_pinned_in_repository": "e23166801794cdeb2dcd77a3cc8b40a906b1d9cefab6f26739e368234e9168be",
+    "archive_sha256_verified": false,
+    "metadata_global_messages": 201,
+    "metadata_nested_file_message_count": 205,
+    "receive_timestamp_coverage_s": 20.392030239105225,
+    "first_receive_stamp_s": 1788354623.1100404,
+    "last_receive_stamp_s": 1788354643.5020707,
+    "large_receive_gaps": [
+      {
+        "after_frame": 138,
+        "gap_s": 0.201098,
+        "offset_s": 13.992
+      },
+      {
+        "after_frame": 164,
+        "gap_s": 0.412583,
+        "offset_s": 16.902
+      }
+    ]
+  },
+  "runtime": {
+    "python": "3.12.3",
+    "native": "built C++ kernels in /tmp/resense-p4-venv; semantic runs only, latency excluded",
+    "detector_sha256": "7eac7f53a90b92dd63f332e629d5b691b1943575418c54369d0bf95ea9f8da3e",
+    "tracking_sha256": "ed1b2a970e9a6a7b2f1646e7490b4fe11c7a1fe063c110b58cfe4e6fb9526e82",
+    "default_config_path": "configs/default.yaml",
+    "default_config_file_sha256": "a5acd9214d2aeb58bf86e0a3b91685a1f3ab17ebbf60dbfe6b39edbe616a72f6",
+    "default_effective_config_sha256": "de5c7fd6dfa74c1e656af6e233efd625e3e552736534e32efa625e5e8ff57f47",
+    "candidate_setting": "tracking.hold_misses: 1 -> 2",
+    "candidate_effective_config_sha256": "0648a9b68aacdabba65a811d1c83667878a1f22b286d141d29beecb5e8efe02c",
+    "only_effective_change": {
+      "tracking.hold_misses": [
+        1,
+        2
+      ]
+    }
+  },
+  "raw_offline": {
+    "default": {
+      "frames": 201,
+      "object_visible": {
+        "hits": 125,
+        "frames": 185
+      },
+      "object_from_frame_75": {
+        "hits": 123,
+        "frames": 126,
+        "miss_frames": [
+          111,
+          117,
+          197
+        ]
+      },
+      "person": {
+        "hits": 61,
+        "frames": 61
+      },
+      "alarm_frames": 190,
+      "advisory_frames": 22,
+      "unmatched_gauge_detections": 6,
+      "unmatched_rows": [
+        {
+          "frame": 69,
+          "id": 4,
+          "zone": "gauge",
+          "distance_m": 56.43,
+          "lateral_m": 1.21
+        },
+        {
+          "frame": 70,
+          "id": 4,
+          "zone": "gauge",
+          "distance_m": 56.53,
+          "lateral_m": 1.22
+        },
+        {
+          "frame": 71,
+          "id": 4,
+          "zone": "gauge",
+          "distance_m": 56.54,
+          "lateral_m": 1.26
+        },
+        {
+          "frame": 72,
+          "id": 4,
+          "zone": "gauge",
+          "distance_m": 56.56,
+          "lateral_m": 1.31
+        },
+        {
+          "frame": 73,
+          "id": 4,
+          "zone": "gauge",
+          "distance_m": 56.62,
+          "lateral_m": 1.29
+        },
+        {
+          "frame": 74,
+          "id": 4,
+          "zone": "gauge",
+          "distance_m": 56.66,
+          "lateral_m": 1.29
+        }
+      ],
+      "target_decisions": {
+        "111": {
+          "obstacle": false,
+          "warning": false,
+          "detections": []
+        },
+        "117": {
+          "obstacle": false,
+          "warning": true,
+          "detections": []
+        },
+        "197": {
+          "obstacle": false,
+          "warning": true,
+          "detections": []
+        }
+      }
+    },
+    "hold_misses_2": {
+      "frames": 201,
+      "object_visible": {
+        "hits": 128,
+        "frames": 185
+      },
+      "object_from_frame_75": {
+        "hits": 126,
+        "frames": 126,
+        "miss_frames": []
+      },
+      "person": {
+        "hits": 61,
+        "frames": 61
+      },
+      "alarm_frames": 193,
+      "advisory_frames": 25,
+      "unmatched_gauge_detections": 7,
+      "unmatched_rows": [
+        {
+          "frame": 69,
+          "id": 4,
+          "zone": "gauge",
+          "distance_m": 56.43,
+          "lateral_m": 1.21
+        },
+        {
+          "frame": 70,
+          "id": 4,
+          "zone": "gauge",
+          "distance_m": 56.53,
+          "lateral_m": 1.22
+        },
+        {
+          "frame": 71,
+          "id": 4,
+          "zone": "gauge",
+          "distance_m": 56.54,
+          "lateral_m": 1.26
+        },
+        {
+          "frame": 72,
+          "id": 4,
+          "zone": "gauge",
+          "distance_m": 56.56,
+          "lateral_m": 1.31
+        },
+        {
+          "frame": 73,
+          "id": 4,
+          "zone": "gauge",
+          "distance_m": 56.62,
+          "lateral_m": 1.29
+        },
+        {
+          "frame": 74,
+          "id": 4,
+          "zone": "gauge",
+          "distance_m": 56.66,
+          "lateral_m": 1.29
+        },
+        {
+          "frame": 75,
+          "id": 4,
+          "zone": "gauge",
+          "distance_m": 56.7,
+          "lateral_m": 1.29
+        }
+      ],
+      "target_decisions": {
+        "111": {
+          "obstacle": true,
+          "warning": false,
+          "detections": [
+            {
+              "id": 13,
+              "zone": "gauge",
+              "distance": 56.24,
+              "lateral": -0.88,
+              "center": [
+                56.44,
+                -2.19,
+                -1.73
+              ],
+              "size": [
+                0.35,
+                0.47,
+                0.23
+              ],
+              "n_points": 6,
+              "confidence": 0.5,
+              "age": 44,
+              "height_min": -0.12,
+              "intensity": 20.8,
+              "reason": "",
+              "kind": "low"
+            }
+          ]
+        },
+        "117": {
+          "obstacle": true,
+          "warning": true,
+          "detections": [
+            {
+              "id": 13,
+              "zone": "gauge",
+              "distance": 56.2,
+              "lateral": -0.85,
+              "center": [
+                56.37,
+                -2.17,
+                -1.73
+              ],
+              "size": [
+                0.27,
+                0.47,
+                0.23
+              ],
+              "n_points": 5,
+              "confidence": 0.5,
+              "age": 50,
+              "height_min": -0.13,
+              "intensity": 17.7,
+              "reason": "",
+              "kind": "low"
+            }
+          ]
+        },
+        "197": {
+          "obstacle": true,
+          "warning": true,
+          "detections": [
+            {
+              "id": 13,
+              "zone": "gauge",
+              "distance": 56.14,
+              "lateral": -0.82,
+              "center": [
+                56.37,
+                -2.16,
+                -1.71
+              ],
+              "size": [
+                0.42,
+                0.47,
+                0.24
+              ],
+              "n_points": 8,
+              "confidence": 0.5,
+              "age": 130,
+              "height_min": -0.13,
+              "intensity": 21.6,
+              "reason": "",
+              "kind": "low"
+            }
+          ]
+        }
+      }
+    },
+    "files": {
+      "raw_default.jsonl.gz": {
+        "sha256": "cd049331e5d7f66310c57ed92ab659b6b2a56417945ef49fd440f74fc89ae6d7",
+        "uncompressed_sha256": "894578250765feaf4e59474cfaaaa62b44eba8f6dcc074dcb8ce995f4174c256"
+      },
+      "raw_hold_misses_2.jsonl.gz": {
+        "sha256": "b1229ab458407d2a726cba664d0443643772769c87a20adc2fdff9cf55c74ea6",
+        "uncompressed_sha256": "6a9781de61e7bd90eea054eb72e130053fb83cb86d2513ef83fef3c57dc52700"
+      }
+    },
+    "interpretation": "The default raw offline replay reproduces the three non-STOP frames in the existing raw ROS-node capture. Hold=2 restores STOP on all three. It also extends a stale unmatched gauge detection (track 4) from frame 74 to frame 75."
+  },
+  "node_baseline": {
+    "run_commit": "a2f9122",
+    "status_frames": 201,
+    "target_frames": {
+      "111": {
+        "decision": "GO",
+        "obstacle": false,
+        "warning": false
+      },
+      "117": {
+        "decision": "CAUTION",
+        "obstacle": false,
+        "warning": true
+      },
+      "197": {
+        "decision": "CAUTION",
+        "obstacle": false,
+        "warning": true
+      }
+    },
+    "candidate_node_replay_run": false,
+    "reason": "The candidate failed the strict full-data gate, so it was rejected at the registered gate stage; the candidate was tested on the raw bag through the production offline Detector, not through ROS."
+  },
+  "strict_cached_gate": {
+    "raw_result_file": "strict_gate_hold_misses_2.json",
+    "passed": false,
+    "gate_vs_2026_09_27_baseline": {
+      "baseline": "docs/evidence/results/regression_baseline_2026-09-27_quality.json",
+      "baseline_commit": "d57280701f63d4baddb5e23233e7bdebda9c0594",
+      "baseline_config_sha256": "de5c7fd6dfa74c1e656af6e233efd625e3e552736534e32efa625e5e8ff57f47",
+      "allow": [],
+      "passed": false,
+      "worse_gated": [
+        "ride.alarm_events",
+        "set_F_straight.person.false_detections",
+        "set_F_straight.box1.0.false_detections",
+        "set_F_straight.trolley.false_detections"
+      ],
+      "missing_gated": [],
+      "worse_allowed": [],
+      "missing_allowed": [],
+      "better": [
+        "recordings.doubleT_obstacle.labelled.object_on_rail.hits",
+        "recordings.doubleT_obstacle.labelled.object_on_rail_from_frame_75.hits",
+        "ride.stop_episodes"
+      ],
+      "same": 183,
+      "info_changed": [
+        "recordings.doubleT_obstacle.stop_episodes",
+        "recordings.doubleT_obstacle.alarm_frames",
+        "recordings.doubleT_obstacle.advisory_frames",
+        "recordings.doubleT_obstacle.labelled.hits",
+        "recordings.doubleT_platform.alarm_frames",
+        "recordings.doubleT_platform.advisory_frames",
+        "recordings.roundT_doubleT.advisory_frames",
+        "recordings.roundT_pressureGate_roundT.advisory_frames",
+        "recordings.roundT_squareT_pressureGate_squareT.advisory_frames",
+        "recordings.squareT_platform_squareT_switch.alarm_frames",
+        "recordings.squareT_platform_squareT_switch.advisory_frames",
+        "five_empty.alarm_frames",
+        "ride.alarm_frames",
+        "set_O.objects.big_above.advisory_frames",
+        "set_F_straight.person.recall_100-150",
+        "set_F_straight.person.recall_150-200",
+        "set_F_straight.trolley.recall_100-150",
+        "set_F_straight.trolley.recall_150-200",
+        "latency_ms.doubleT_obstacle.mean",
+        "latency_ms.doubleT_obstacle.p95",
+        "latency_ms.doubleT_platform.mean",
+        "latency_ms.doubleT_platform.p95",
+        "latency_ms.roundT_doubleT.mean",
+        "latency_ms.roundT_doubleT.p95",
+        "latency_ms.roundT_pressureGate_roundT.mean",
+        "latency_ms.roundT_pressureGate_roundT.p95",
+        "latency_ms.roundT_squareT_pressureGate_squareT.mean",
+        "latency_ms.roundT_squareT_pressureGate_squareT.p95",
+        "latency_ms.squareT_platform_squareT_switch.mean",
+        "latency_ms.squareT_platform_squareT_switch.p95",
+        "latency_ms.cloud_with_fake_obj.mean",
+        "latency_ms.cloud_with_fake_obj.p95",
+        "latency_ms.new_data.mean",
+        "latency_ms.new_data.p95"
+      ]
+    },
+    "current_reference_commit": "1ee45726e9c21523cdeeff31426b60ab272c4cfd",
+    "current_reference_comparison": {
+      "baseline": "out/p4/final_gate.json",
+      "baseline_commit": "1ee45726e9c21523cdeeff31426b60ab272c4cfd",
+      "baseline_config_sha256": "de5c7fd6dfa74c1e656af6e233efd625e3e552736534e32efa625e5e8ff57f47",
+      "allow": [],
+      "passed": false,
+      "worse_gated": [
+        "ride.alarm_events",
+        "set_F_straight.person.false_detections",
+        "set_F_straight.box1.0.false_detections",
+        "set_F_straight.trolley.false_detections"
+      ],
+      "missing_gated": [],
+      "worse_allowed": [],
+      "missing_allowed": [],
+      "better": [
+        "recordings.doubleT_obstacle.labelled.object_on_rail.hits",
+        "recordings.doubleT_obstacle.labelled.object_on_rail_from_frame_75.hits",
+        "ride.stop_episodes"
+      ],
+      "same": 183,
+      "info_changed": [
+        "recordings.doubleT_obstacle.stop_episodes",
+        "recordings.doubleT_obstacle.alarm_frames",
+        "recordings.doubleT_obstacle.advisory_frames",
+        "recordings.doubleT_obstacle.labelled.hits",
+        "recordings.doubleT_platform.alarm_frames",
+        "recordings.doubleT_platform.advisory_frames",
+        "recordings.roundT_doubleT.advisory_frames",
+        "recordings.roundT_pressureGate_roundT.advisory_frames",
+        "recordings.roundT_squareT_pressureGate_squareT.advisory_frames",
+        "recordings.squareT_platform_squareT_switch.alarm_frames",
+        "recordings.squareT_platform_squareT_switch.advisory_frames",
+        "five_empty.alarm_frames",
+        "ride.alarm_frames",
+        "set_O.objects.big_above.advisory_frames",
+        "set_F_straight.person.recall_100-150",
+        "set_F_straight.person.recall_150-200",
+        "set_F_straight.trolley.recall_100-150",
+        "set_F_straight.trolley.recall_150-200",
+        "latency_ms.doubleT_obstacle.mean",
+        "latency_ms.doubleT_obstacle.p95",
+        "latency_ms.doubleT_platform.mean",
+        "latency_ms.doubleT_platform.p95",
+        "latency_ms.roundT_doubleT.mean",
+        "latency_ms.roundT_doubleT.p95",
+        "latency_ms.roundT_pressureGate_roundT.mean",
+        "latency_ms.roundT_pressureGate_roundT.p95",
+        "latency_ms.roundT_squareT_pressureGate_squareT.mean",
+        "latency_ms.roundT_squareT_pressureGate_squareT.p95",
+        "latency_ms.squareT_platform_squareT_switch.mean",
+        "latency_ms.squareT_platform_squareT_switch.p95",
+        "latency_ms.cloud_with_fake_obj.mean",
+        "latency_ms.cloud_with_fake_obj.p95",
+        "latency_ms.new_data.mean",
+        "latency_ms.new_data.p95"
+      ]
+    },
+    "reference_values": {
+      "ride": {
+        "alarm_frames": 130,
+        "alarm_events": 32,
+        "stop_episodes": 31
+      },
+      "five_empty": {
+        "alarm_frames": 40,
+        "alarm_events": 11,
+        "stop_episodes": 13
+      },
+      "set_F_straight_false_detections": {
+        "person": 6,
+        "box1.0": 12,
+        "trolley": 5
+      }
+    },
+    "candidate_values": {
+      "ride": {
+        "alarm_frames": 150,
+        "alarm_events": 34,
+        "stop_episodes": 29
+      },
+      "five_empty": {
+        "alarm_frames": 46,
+        "alarm_events": 11,
+        "stop_episodes": 13
+      },
+      "set_F_straight_false_detections": {
+        "person": 8,
+        "box1.0": 13,
+        "trolley": 6
+      }
+    },
+    "rejection_reasons": [
+      "ride alarm events: 32 -> 34",
+      "set F person false detections: 6 -> 8",
+      "set F box1.0 false detections: 12 -> 13",
+      "set F trolley false detections: 5 -> 6"
+    ]
+  },
+  "score": {
+    "current_independent_review": "69/100",
+    "reviewed_commit": "a2f9122",
+    "change": null,
+    "reason": "No detector candidate passed acceptance; this experiment receives no score credit."
+  },
+  "limitations": [
+    "Data are previously seen and labels were made by the team; not a new holdout.",
+    "The candidate is not a ROS-node replay; it was rejected by the registered strict gate first.",
+    "Raw replay timing is omitted from performance claims because the runs had different page-cache and concurrent CPU load.",
+    "The exact detector stage that drops the rail-object evidence at frames 111, 117 and 197 has not yet been isolated."
+  ]
+}

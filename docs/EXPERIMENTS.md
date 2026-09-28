@@ -4,14 +4,58 @@
 > range, latency, FPS, hard cases and how the quality changed (spec §5 "Эксперименты").
 > **Audience:** jury, team · **Owner:** P3, P4 (content), P1 (structure, timing) · **Language:** EN,
 > summary RU
-> **Last verified:** 2026-09-26 night: complete fresh gate on all caches, frozen `_ride_p3d`
-> detector, original-bag node checks and the preregistered P4 study · **Status:** current
+> **Last verified:** 2026-09-28: complete cache intake and strict full-data replay of the sealed
+> 27.09 detector, P4 candidate screens and paired placement checks, and the P1 raw-bag continuity
+> screen · **Status:** current
 
-**Кратко.** Заморозка детектора подтверждена полным прогоном: все 183 значения эталона совпали,
-включая поездку и набор F. Исправленная ROS-нода проходит холодный и тёплый запуск исходного бэга;
-детектор не менялся. Цель 75/100 пока не подтверждена: краевые объекты обнаруживаются лишь с
-5–10 м, а новый синтетический эксперимент выявляет много пропусков. Текущая переоценка:
-[SCORECARD](SCORECARD.md#freeze-review-26-september-night).
+**Кратко.** Детектор остался замороженным. В полном прогоне P4 все **208/208 контролируемых
+значений** совпали с базой 27.09, включая поездку и набор F. Три зарегистрированных P4 варианта
+не улучшили свои целевые объекты и отклонены. Новый P1 вариант `tracking.hold_misses = 2`
+восстанавливает три STOP на исходной записи, но увеличивает ложные срабатывания и отклонён
+строгим прогоном. Архив поездки проверен по опубликованным размеру и SHA-256; все 11 271 кадр
+доступны в кэше. P4 добавляет воспроизводимость, но не новую дальность обнаружения или проверку
+реальных препятствий. Свежая парная оценка — 66.5/100; более поздняя одиночная оценка на
+`a2f9122` — 69/100 за обновлённые запуск и доказательства, без повышения detector-критериев
+([SCORECARD](SCORECARD.md)).
+
+## P4 full-data completion — 28 September
+
+The six original recordings, organizer set O and all 221 splits of `new_data` were restored and
+validated. The [frozen-reference gate](evidence/results/p4_full_data_2026-09-28/regression_gate.json)
+and [final detector/config gate](evidence/results/p4_full_data_2026-09-28/final_regression_gate.json)
+both pass against the 27.09 quality baseline with all 146 enforced values unchanged
+(208 unchanged rows including 62 informational rows), no waivers and no
+missing or weaker metrics. The final replay used evaluator commit `1ee4572`, with unchanged
+detector and config hashes. The ride has 130 alarm frames, 32 track-ID events and 31 STOP episodes;
+the five empty recordings have 40 alarm frames, 11 events and 13 episodes. These event counts use
+the detector's sequence/track identity; episodes and repeated frames are reported separately.
+
+On set O, 8/8 in-envelope objects were detected over 411/801 visible object-frames. There were 6
+false STOP frames on the outside box, no background alarms, and 19/505 target-envelope
+`clear_distance` overclaims. Set O has been previously inspected. A/B/C changed no scored
+per-frame detector output or target metric, so all three were rejected before full-gate retesting.
+The six ride false-alarm contact sheets were reviewed; because the detected clusters lack
+independent identities, their causes remain uncertain. Startup, stress, offsets, per-object scores,
+paired set F and set S results, source/cache checksums and compressed per-frame outputs are in the
+[P4 evidence packet](evidence/results/p4_full_data_2026-09-28/README.md).
+
+P4 made no detector change, and its evidence has not been independently rescored as a separate
+detector result. The latest paired score remains **66.5/100** on `806b6c4`; a later single-review
+assessment gives **69/100** on `a2f9122`, crediting launch and evidence work only. This data refresh
+is not a detector score increase.
+
+## P1 raw-rail continuity screen — 28 September
+
+The original `doubleT_obstacle` DB3 was restored locally and its pinned DB3 and metadata hashes
+verified. The default raw replay reproduces the ROS-node GO at frame 111 and CAUTION at 117 and
+197. A single-change `tracking.hold_misses: 1 → 2` replay restores STOP at all three frames, raises
+the after-frame-75 rail-object result from 123/126 to 126/126, and preserves the crossing person at
+61/61. It also extends an unmatched off-axis track into a false gauge detection. On the strict
+cached gate the candidate increases ride alarms from 130 to 150 frames and events from 32 to 34,
+adds false detections to three set F types, and is rejected with no waivers. The default detector
+and the 69/100 single-review score remain unchanged. The candidate was not replayed through the ROS
+node after failing the strict gate. Raw runs, exact hashes, score derivation and the reviewable
+rejection are in the [P1 evidence packet](evidence/results/p1_raw_continuity_2026-09-28/README.md).
 
 ## Freeze validation — 26 September night
 

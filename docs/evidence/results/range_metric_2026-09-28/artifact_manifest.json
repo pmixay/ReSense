@@ -1,0 +1,22 @@
+{
+  "big_above.json.gz": {
+    "bytes": 178623,
+    "sha256": "7b579b7bc3a0eaf3f991d751d66da8d2b2fe44d9234d3aee28563541370ebac6"
+  },
+  "small_center.json.gz": {
+    "bytes": 11645,
+    "sha256": "892dc5fa9a40d266693ff2ff2d4159e59817f255bbc839d8685f47b44ad87123"
+  },
+  "small_on_rail.json.gz": {
+    "bytes": 18118,
+    "sha256": "531d7c2459b0c04df77cbcb64254cdd9c33aefb4a3f16fdde23d4d0b80b2ab7a"
+  },
+  "summary.json": {
+    "bytes": 1663,
+    "sha256": "52b663aad4331f4f7ebf78d25cbde7ce0d0eb812eb6c3f395c4e180db908cec3"
+  },
+  "thin_hanging.json.gz": {
+    "bytes": 8721,
+    "sha256": "4044dcbebe735876e283ca171821f1ff72cc59c49d99c9ca0693f4a3cc7885ba"
+  }
+}

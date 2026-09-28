@@ -1,0 +1,5 @@
+resense:
+  tracking:
+    stop_keep_low_s: 0.3
+  lowobj:
+    straddle_keep_height_margin: 0.03

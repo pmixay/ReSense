@@ -130,7 +130,7 @@ Measured sizes (25.09); a cached frame takes about 1.45 MB (`--every 1 --int16 -
 | the other four bags | 15.3 GB | unpack one at a time, cache, delete (keep if the disk allows) |
 | caches of the six recordings | 3.8 GB (2 488 frames) | keep |
 | `cloud_with_fake_obj`: download → bag → cache | 1.75 GB → 7.4 GB → 2.2 GB (1 510 frames) | keep the cache; the bag only to replay it |
-| the ride `new_data`: download → bag → cache | 17.1 GB → 90 GB → 16.5 GB (11 271 frames, 221 split files) | keep the cache; the bag only for a 20-minute replay |
+| the ride `new_data`: streamed archive → one split spool → cache | 17.1 GB streamed → at most 0.41 GB spool → about 4.6 GB projected compressed cache (11 271 frames, 221 split files; estimate from set O samples) | keep the verified cache; the 90 GB bag is not unpacked |
 | Docker: base image, builds, the image archive (0.5 GB) | about 10 GB | on the disk of `/var/lib/docker` |
 
 Everything but the ride's bag fits in **about 50 GB free** (peak while unpacking); keeping the
@@ -170,47 +170,37 @@ rm -rf "${DATA:?}/cloud_with_fake_obj"   # optional: the gate reads only the cac
 
 ### 2.3 The 20-minute ride, split by split
 
-`new_data.zst` is a zstd-compressed tar of one bag: 221 split files `new_data_<N>.db3` of 408 MB
-(51 frames each) and `metadata.yaml`. The loop below never writes more than one split file:
-`curl` streams the archive, `zstd` unpacks it on the fly, and `tar --to-command` hands each split
-file to a short shell command instead of writing it. The command spools that one file, caches it
-with `scripts/cache_frames.py --every 1 --int16 --stamps` and deletes it; meanwhile the next split
-file waits in the pipe. A split file whose `_stamps.json` (written last by `cache_frames.py`) is
-already in the cache is read past, so running the same lines again resumes after a break.
+`new_data.zst` is a zstd-compressed tar of one bag: 221 split files `new_data_<N>.db3` (51 frames
+each) and `metadata.yaml`. The cache command below streams the organizer archive, hashes every
+compressed byte against Yandex's published size and SHA-256, spools at most one DB3 split, and
+stores each frame as independently readable compact16 `.npy.zst` at zstd level 3. Each frame and
+the timestamp sidecar are written atomically; only a complete split with all 51 frame identities,
+readable arrays and increasing recorded timestamps can be resumed. Genuine timestamp gaps remain
+in the sidecars. The script writes `intake_manifest.json` only after the full 221-split inventory
+and archive checksum verify. It checks disk space before each spool and keeps at least 3 GiB free.
+The projected cache size is about 4.6 GB from 15 set O frame samples; actual size is recorded by
+the intake manifest and the space guard stops safely if the estimate is low. Each retry streams
+the source archive again but skips already verified splits. The raw 90 GB bag is never unpacked.
 Activate the §1 host environment first; `python -m pip show rosbags` must report the verified
-0.11.5 installation for these single-file commands.
+0.11.5 installation for the single-file DB3 reader.
 
 ```bash
-cd "$REPO"                              # the command below calls scripts/ relative to the clone
-SPOOL=$DATA/.ride_spool
-mkdir -p "$CACHE/new_data" "$SPOOL"
-export CACHE SPOOL                      # tar's command runs in a child shell
-# the download URL of new_data.zst: the Yandex Disk public API, no account needed
-HREF=$(curl -fsS --get \
-  --data-urlencode "public_key=https://disk.yandex.ru/d/N8IUpAyd7jyvow" \
-  --data-urlencode "path=/new_data.zst" \
-  https://cloud-api.yandex.net/v1/disk/public/resources/download \
-  | python3 -c 'import json, sys; print(json.load(sys.stdin)["href"])')
-# one split file at a time: spool, cache, delete; skip what is cached already
-curl -fsSL "$HREF" | zstd -dc | tar -x --wildcards '*.db3' --to-command='
-  f="$SPOOL/$(basename "$TAR_FILENAME")"; name=$(basename "$f" .db3)
-  if [ -f "$CACHE/new_data/${name}_stamps.json" ]; then cat > /dev/null; exit 0; fi
-  cat > "$f" && python scripts/cache_frames.py "$f" "$CACHE/new_data" --every 1 --int16 --stamps
-  rc=$?; rm -f "$f"; exit $rc'
-ls "$CACHE"/new_data/*_stamps.json | wc -l   # 221 when complete; fewer: run the lines again
+cd "$REPO"
+python scripts/cache_extended_ride.py --cache "$CACHE/new_data" \
+  --spool "$DATA/.resense_new_data_spool" --reserve-gib 3
+# Rerun the same command after an interruption; complete splits are validated and reused.
 ```
 
-About 4 s to stream and 3 s to cache each split file on the dev VM's link: 20–40 min in all,
-16.5 GB of cache, 0.4 GB of spool. A split file that fails to cache leaves no `_stamps.json`; `tar`
-then exits 2 at the end, and the next run caches only what is missing (it streams the archive
-again). To keep the whole bag instead (90 GB, for a 20-minute `ros2 bag play "$DATA/new_data"`):
-`python scripts/unpack_dataset.py https://disk.yandex.ru/d/N8IUpAyd7jyvow --member new_data.zst
---out "$DATA"`, then `cache_frames.py` on each `"$DATA"/new_data/new_data_*.db3`.
+The archive takes roughly 20–40 minutes to stream on the documented dev-VM link. A split that
+fails leaves no completion sidecar and will be rebuilt on the next run. To keep the whole bag
+instead (about 90 GB, for a 20-minute `ros2 bag play "$DATA/new_data"`), use
+`scripts/unpack_dataset.py`; it needs separate storage and does not preserve the 3 GiB headroom
+unless the disk has room for both the raw bag and cache.
 
 ### 2.4 Check
 
 ```bash
-for d in "$CACHE"/*/; do printf '%-40s %6d frames\n' "$(basename "$d")" "$(find "$d" -name '*.npy' | wc -l)"; done
+for d in "$CACHE"/*/; do printf '%-40s %6d frames\n' "$(basename "$d")" "$(find "$d" -type f \( -name '*.npy' -o -name '*.npy.zst' \) | wc -l)"; done
 ```
 
 Done when the counts are: `doubleT_obstacle` 201, `doubleT_platform` 345, `roundT_doubleT` 252,

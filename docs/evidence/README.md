@@ -4,8 +4,8 @@
 > [`EXPERIMENTS.md`](../EXPERIMENTS.md): the result summaries in `results/`, the logs, captures and
 > bench output of each run, and the recordings' original metadata.
 > **Audience:** team, jury · **Owner:** P1 (runs, timing), P4 (result summaries) · **Language:** EN
-> **Last verified:** 2026-09-28; the judge's per-frame outputs of the sealed detector and the node
-> input path added (each result remains the record of its own date) ·
+> **Last verified:** 2026-09-28; judge outputs, node input path, full-data P4 packet and P1/P2 cold-bag
+> CI receipt added (each result remains the record of its own date) ·
 > **Status:** current
 
 Every file here is the record of one run and is not rewritten: a new run gets a new file or folder
@@ -19,11 +19,37 @@ of all six original recordings, set O (offline and through the node), two ride s
 with their commands, logs and `recompute.py`, which recounts the headline figures with the gate's
 own counting: the only per-frame evidence of the 27.09 detector besides the node captures.
 
+The [current branch reassessment](../CURRENT_REVIEW_2026-09-28.md) retains **69/100** on
+`20e8229` after the synthetic fixture and rejected continuity experiment. Its
+[verification records](current_review_2026-09-28/) include a fresh original-bag replay,
+recomputed output counts and the CI receipt. The scope and inherited checks are stated in the review.
+
+The earlier [single-review score record](results/single_review_2026-09-28.json) records the user's
+independent model review of `a2f9122`: 69/100, with launch and evidence categories increased and
+the detector categories unchanged. The earlier paired 66.5/100 result remains a separate
+historical assessment.
+
 The [28 September node input path](node_input_2026-09-28/README.md) holds the before / after
 dry runs of both original recordings through ROS (checker outputs, status captures, node logs),
 the end-to-end latency and CPU figures (current results and, with `e2e_all_frames.py`, every
 frame result including the start-up), and the frame-by-frame identity check of the detector's
 input (`fast_input.json`).
+
+The [28 September P1/P2 CI rerun](p1_p2_cold_bags_2026-09-28/README.md) preserves the cold-cache
+replay of both original bags on `testovaya-gpt`, its source hashes, status captures and node logs,
+plus the per-frame input identity result. The same run also passed the isolated remote-viewer
+outage/recovery probe; the evidence is a protocol/container simulation, not a physical second
+screen rehearsal.
+
+The [28 September `testovaya-gpt` available-data gate](results/available_gate_testovaya_2026-09-28/README.md)
+preserves fresh per-frame outputs for the six original recordings and set O on the final 27.09
+detector. It matches all 159 available gated comparisons against the 27.09 baseline. It is partial:
+the ride and set F rows were missing because the cache had not yet been restored. It is superseded
+by the [complete P4 full-data packet](results/p4_full_data_2026-09-28/README.md), which includes
+all six recordings, set O, all 221 ride splits and set F/S paired runs; the strict final gate passes
+all 146 enforced metrics with no waivers (208 unchanged rows including 62 informational rows).
+P4 candidates A/B/C remain rejected and no detector gain
+or score increase is claimed.
 
 The [27 September supported playback rerun](p1_p2_supported_playback_2026-09-27/README.md)
 preserves both cold original-bag status streams and node logs, source hashes, and the six-job CI

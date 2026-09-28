@@ -1,6 +1,26 @@
-# Detector seal — 27 September 2026 (replaces the P3d seal of 26.09)
+# Detector seal — 28 September 2026
 
-**Current decision:** the reviewed detector of the [27.09 quality cycle](QUALITY_CYCLE_2026-09-27.md)
+**Current development reference:** bounded low-object height continuation from
+measured source `ef1d8f5`, integrated as `84763cf`. The
+[full regression](evidence/cycle_2026-09-28/regression/candidate/gate.json)
+passes against the 27 September quality baseline without overrides, waivers,
+missing rows or worse quality metrics: two enforced metrics improve, 144 are unchanged.
+The [current seal](evidence/detector_freeze_2026-09-27.json) covers its exact 31
+detector, configuration and build files. Its historical filename is retained for CI.
+
+The user authorized the [28 September improvement cycle](IMPROVEMENT_CYCLE_2026-09-28.md).
+Raw replay, all 33 processing histories, reserved synthetic comparison and 841
+installed-image tests support this development integration. The
+[previous baseline seal](evidence/cycle_2026-09-28/regression/baseline/detector_seal.json)
+is preserved. **Deployment remains provisional:** candidate and baseline both fail
+the latest local positive-bag runtime/freshness check; the candidate clear-bag check
+passes. [Image and runtime evidence](evidence/cycle_2026-09-28/image_candidate/README.md).
+Final candidate branch CI remains pending. This integrity record does not declare
+deployment acceptance.
+
+## The quality-cycle seal of 27 September (dated record)
+
+**Earlier decision:** the reviewed detector of the [27.09 quality cycle](QUALITY_CYCLE_2026-09-27.md)
 is the reference. Its seal [`detector_freeze_2026-09-27.json`](evidence/detector_freeze_2026-09-27.json)
 covers 31 files (the learned track opinion `resense/models/track_opinion.json` included) against
 the full gate [`regression_gate_2026-09-27_quality.json`](evidence/results/regression_gate_2026-09-27_quality.json)

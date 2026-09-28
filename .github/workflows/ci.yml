@@ -78,14 +78,15 @@ jobs:
     needs: checks
     runs-on: ubuntu-22.04
     env:
-      # the working branch and main also run the remote-viewer check and the original-bag cold-start
-      # regression (scripts/p1_cold_bag_test.sh keeps the same list)
-      FULL: ${{ github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/p1-p2-supported-playback-20260927' || github.ref == 'refs/heads/claude/amazing-fermi-t67v8g' || github.ref == 'refs/heads/main' }}
+      # The score/improvement branch, retained working branches and main run the viewer and
+      # original-bag cold-start regression (scripts/p1_cold_bag_test.sh keeps the same list)
+      FULL: ${{ github.ref == 'refs/heads/gpt-score-push-20260928' || github.ref == 'refs/heads/testovaya-gpt' || github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/p1-p2-supported-playback-20260927' || github.ref == 'refs/heads/claude/amazing-fermi-t67v8g' || github.ref == 'refs/heads/main' }}
     steps:
       - uses: actions/checkout@v7
       - run: docker build -t resense:ci --build-arg WITH_TOOLS=1 -f docker/Dockerfile .
       - name: unit tests inside the image (with open3d, so the synthetic-tunnel suite really runs)
-        # -w / so that "import resense" resolves to the installed package, not to the source tree in the cwd
+        # Start outside the source tree so tests exercise the installed resense package. The one
+        # test importing scripts.* adds the source root only after importing resense.
         run: docker run --rm -w / -e RESENSE_REQUIRE_SYNTHETIC=1 resense:ci python3 -m pytest -q -rs /opt/resense/tests
       - name: ROS 2 package is importable and the launch file resolves
         run: docker run --rm resense:ci bash -lc "ros2 pkg executables resense_ros && ros2 launch resense_ros detector.launch.py --print >/dev/null"
@@ -145,7 +146,7 @@ jobs:
         if: ${{ env.FULL == 'true' }}
         # The viewer probe needs the WITH_TOOLS=1 build's `websockets` client. This models a second
         # device on an isolated network and checks outage/recovery without requiring demo hardware.
-        # FULL includes the working branch claude/amazing-fermi-t67v8g since 28.09.
+        # FULL includes testovaya-gpt for the P1/P2/P4 completion run.
         run: IMAGE=resense:ci scripts/p2_viewer_test.sh
       # ---- the original-bag cold-start regression (working branch and main). The two original
       # organizer bags come from the Actions cache, so that Google Drive is not asked for the 3.7 GB
@@ -335,7 +336,7 @@ jobs:
       # runner's small disk.
       - name: the archive as a download, named after the commit (push to the working branch or main)
         id: artifact
-        if: ${{ success() && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/amazing-fermi-t67v8g') }}
+        if: ${{ success() && github.event_name == 'push' && (github.ref == 'refs/heads/gpt-score-push-20260928' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/amazing-fermi-t67v8g') }}
         run: |
           NAME="resense-image-$VER-${GITHUB_SHA::7}"
           mkdir -p /tmp/artifact

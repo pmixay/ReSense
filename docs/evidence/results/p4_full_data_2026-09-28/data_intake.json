@@ -1,0 +1,148 @@
+{
+  "schema": "resense-p4-data-intake-completion-v1",
+  "date": "2026-09-28",
+  "status": "all_existing_organizer_caches_verified",
+  "sources": {
+    "six_recordings": {
+      "url": "https://drive.usercontent.google.com/download?id=1WTlR2wDSuEHTOARGK_gZeXDTZ9RZpswu&export=download&confirm=t",
+      "archive_bytes": 3940746006,
+      "archive_sha256": "e23166801794cdeb2dcd77a3cc8b40a906b1d9cefab6f26739e368234e9168be",
+      "published_checksum": "none documented",
+      "zip_valid": true,
+      "metadata_matches_committed": {
+        "doubleT_obstacle": true,
+        "doubleT_platform": true,
+        "roundT_doubleT": true,
+        "roundT_pressureGate_roundT": true,
+        "roundT_squareT_pressureGate_squareT": true,
+        "squareT_platform_squareT_switch": true
+      },
+      "frames": 2488,
+      "recordings": [
+        {
+          "name": "doubleT_obstacle",
+          "frames": 201,
+          "expected_frames": 201,
+          "cache": "/data/cache/doubleT_obstacle",
+          "cache_tree_sha256": "f08acb43938ceb9174920d7e81eed0fce7939e05a66d51ed9f5276098e2551ce",
+          "stamps_sha256": "98efd2cbdcdbb5179cacb0ac4e5a697ad1e5a8704dc27b84a8e9b136204f97a7",
+          "timestamp_coverage_s": 20.39203,
+          "strictly_increasing": true,
+          "all_arrays_readable": true,
+          "metadata_matches_committed": true
+        },
+        {
+          "name": "doubleT_platform",
+          "frames": 345,
+          "expected_frames": 345,
+          "cache": "/data/cache/doubleT_platform",
+          "cache_tree_sha256": "85b0312a5827c5e39fb8d47483812947a1891843f2a886797afdcd78bd9399de",
+          "stamps_sha256": "a7e77907e84b0bd51a205aca31877ff7e4d5c401d6cbb5a320a917ac1c3b4711",
+          "timestamp_coverage_s": 34.419566,
+          "strictly_increasing": true,
+          "all_arrays_readable": true,
+          "metadata_matches_committed": true
+        },
+        {
+          "name": "roundT_doubleT",
+          "frames": 252,
+          "expected_frames": 252,
+          "cache": "/data/cache/roundT_doubleT",
+          "cache_tree_sha256": "0d296177f5650b28d6b2c1c7cfbfa6f267cfd650101c8d9d9f71805c68b00edc",
+          "stamps_sha256": "6f20693e0146d8b8c6c64f0797c915446ee947ce392eab9c972cf6f2c807fac7",
+          "timestamp_coverage_s": 25.071971,
+          "strictly_increasing": true,
+          "all_arrays_readable": true,
+          "metadata_matches_committed": true
+        },
+        {
+          "name": "roundT_pressureGate_roundT",
+          "frames": 268,
+          "expected_frames": 268,
+          "cache": "/data/cache/roundT_pressureGate_roundT",
+          "cache_tree_sha256": "352127ad95d3ec855c961b317767b3adbae150c1d4474a6eb87d6d0b37dfa852",
+          "stamps_sha256": "81fd74a3ce67139bf0fe37ea5511d7cdc7a8c61229c3328a8c294b71cf52885a",
+          "timestamp_coverage_s": 26.69878,
+          "strictly_increasing": true,
+          "all_arrays_readable": true,
+          "metadata_matches_committed": true
+        },
+        {
+          "name": "roundT_squareT_pressureGate_squareT",
+          "frames": 545,
+          "expected_frames": 545,
+          "cache": "/data/cache/roundT_squareT_pressureGate_squareT",
+          "cache_tree_sha256": "b07d095a28e0c603b0ed328dd9e7a8b91208e680128059de99578d8ed49f7507",
+          "stamps_sha256": "1510d1be1f301b57145d33b56696a024917cb21b5080a5761ebda32c56b86fa2",
+          "timestamp_coverage_s": 55.3775,
+          "strictly_increasing": true,
+          "all_arrays_readable": true,
+          "metadata_matches_committed": true
+        },
+        {
+          "name": "squareT_platform_squareT_switch",
+          "frames": 877,
+          "expected_frames": 877,
+          "cache": "/data/cache/squareT_platform_squareT_switch",
+          "cache_tree_sha256": "06978c6b3a19da06db31ed0f54ae014f540a10cde9285ff4d5e7d948538abe98",
+          "stamps_sha256": "76f538169d8a5977bd553e4a6bd181c49b35503b1af1be4df5be42dae820a430",
+          "timestamp_coverage_s": 88.2079758644104,
+          "strictly_increasing": true,
+          "all_arrays_readable": true,
+          "metadata_matches_committed": true
+        }
+      ],
+      "prior_manifest": "docs/evidence/results/p4_data_intake_2026-09-26.json",
+      "raw_archive_retained": false
+    },
+    "set_O": {
+      "url": {
+        "url": "https://disk.yandex.ru/d/KpkG_yKoGk-vHQ",
+        "published_bytes": 1746145824,
+        "published_sha256": "d41c2fb28475194a98efeca5d2ee3fd175c0aef350ffb92fff4c26d497e696e9"
+      },
+      "cache": "/data/cache/cloud_with_fake_obj",
+      "frames": 1510,
+      "expected_frames": 1510,
+      "cache_tree_sha256": "0135a30054d7919391fb515639d136a3c670a1f7b7f0cd9881f23eedc7023633",
+      "stamps_sha256": "a669bf88916aab970e3b5988eade44881345f99df3424400d244d881c4bba2ed",
+      "raw_bag_retained": true,
+      "prior_manifest": "docs/evidence/results/p4_data_intake_2026-09-26.json"
+    },
+    "new_data": {
+      "url": "https://disk.yandex.ru/d/N8IUpAyd7jyvow",
+      "member": "new_data.zst",
+      "archive_bytes": 17078961996,
+      "published_sha256": "8124b627a8a70516a4023db522849f1cadae711e7b152b0f701535a69dab99ec",
+      "actual_sha256": "8124b627a8a70516a4023db522849f1cadae711e7b152b0f701535a69dab99ec",
+      "size_verified": true,
+      "sha256_verified": true,
+      "cache": "/data/cache/new_data",
+      "cache_splits": 221,
+      "cache_frames": 11271,
+      "cache_bytes": 5258708521,
+      "encoding": "compact16 NPY, each frame independently zstd level 3 (.npy.zst)",
+      "timestamp_coverage": {
+        "first_frame": "new_data_0_0000",
+        "first_stamp": 1789642926.1610787,
+        "last_frame": "new_data_220_0050",
+        "last_stamp": 1789644126.0445478,
+        "duration_s": 1199.8834691047668,
+        "max_interval_s": 7.09865140914917,
+        "intervals_over_0_15_s": 55
+      },
+      "cache_arrays_readable": true,
+      "split_completeness": "221/221 splits, 51/51 timestamped frame identities in each split; every compact16 NPY.zst array fully read and validated",
+      "gap_policy": "Recorded timestamps retained unchanged; 55 intervals exceed 0.15 s, max interval 7.098651 s; no frames or timestamps fabricated.",
+      "raw_archive_retained": false,
+      "split_spool_retained": false,
+      "local_manifest": "/data/cache/new_data/intake_manifest.json"
+    }
+  },
+  "reproduction": {
+    "six_recordings_cache": "python scripts/cache_frames.py BAG CACHE --every 1 --int16 --stamps",
+    "new_data_cache": "python scripts/cache_extended_ride.py --cache /data/cache/new_data --spool /data/.resense_new_data_spool --reserve-gib 3",
+    "new_data_download": "Streamed and SHA-256 checked; one DB3 split spooled and processed at a time; raw archive and completed split spools deleted after verification.",
+    "cache_scope": "All caches and intake manifests remain outside Git."
+  }
+}

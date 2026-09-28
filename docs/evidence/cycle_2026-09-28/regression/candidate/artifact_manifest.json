@@ -1,0 +1,85 @@
+{
+  "schema": "resense-evidence-artifacts-v1",
+  "files": {
+    "captures/cloud_with_fake_obj.jsonl.gz": {
+      "sha256": "37c5dd8348fe3b423dc1f47ccda23ca04fd9661994b2428169af07a4322c4d5f",
+      "bytes": 243051
+    },
+    "captures/doubleT_obstacle.jsonl.gz": {
+      "sha256": "d9a856fcf3a857b8cbd5943e92ffe498c81a473e2fa514218bd46764500f0f56",
+      "bytes": 33690
+    },
+    "captures/doubleT_platform.jsonl.gz": {
+      "sha256": "f4454889cd80239b1b1b9a20ca04c236473122b79e72a0a01607277f12d20cca",
+      "bytes": 55556
+    },
+    "captures/new_data_0.jsonl.gz": {
+      "sha256": "dc1fad3425f79e5dcb70386622ecdf11b4f5235b30b8b34b02c1e3534bbf1394",
+      "bytes": 228308
+    },
+    "captures/new_data_1.jsonl.gz": {
+      "sha256": "d159af30deab4640438b52c30789afeea2357c33ea021214a291c1832c06fcb5",
+      "bytes": 250523
+    },
+    "captures/new_data_2.jsonl.gz": {
+      "sha256": "94d7ae4931f9ed371138beff2ae15e44ea5f7fdd8668588a5298e478e42f252b",
+      "bytes": 228059
+    },
+    "captures/new_data_3.jsonl.gz": {
+      "sha256": "9bcf8a692fdcb48012b964160fcf3ee9e86da049d64ca6640d25747a3669e5fd",
+      "bytes": 238414
+    },
+    "captures/new_data_4.jsonl.gz": {
+      "sha256": "fa931782d6a80bd1b036d9158fc386376e7d7e05584640ae659fd7a7eff0d8e7",
+      "bytes": 225244
+    },
+    "captures/new_data_5.jsonl.gz": {
+      "sha256": "dcb531e887b8cbac955f868643d1c29e26cf4ca348192f56ba56d1dbbfe0c8ad",
+      "bytes": 217134
+    },
+    "captures/new_data_6.jsonl.gz": {
+      "sha256": "8268697ce00ab624b0737c78a7ff9cc882ed036fc0537e58bc2b7cdba3a33cc2",
+      "bytes": 218169
+    },
+    "captures/new_data_7.jsonl.gz": {
+      "sha256": "9c5adb46e232cdd1d67ee47dac89e574a012ae684c0ca0170778e570e96910a5",
+      "bytes": 205884
+    },
+    "captures/roundT_doubleT.jsonl.gz": {
+      "sha256": "cc23f56f1996a7f037e59a3a06a4624fe50ec6483c9a04fb47a042057c5d02fe",
+      "bytes": 47166
+    },
+    "captures/roundT_pressureGate_roundT.jsonl.gz": {
+      "sha256": "b744e3572b9914cab3657d56481274101299bc4b2825569b27d008ffd8addaa9",
+      "bytes": 44548
+    },
+    "captures/roundT_squareT_pressureGate_squareT.jsonl.gz": {
+      "sha256": "9883c15eccc36f4e6fe30a37313c25810da30a6a1e6a29e263ebbda6ab9242d1",
+      "bytes": 83901
+    },
+    "captures/squareT_platform_squareT_switch.jsonl.gz": {
+      "sha256": "c2cf8d2b35dfd13edfab68e6a34fb746f8668f9bd643c5f7ced64e39b31550ea",
+      "bytes": 145342
+    },
+    "config.yaml": {
+      "sha256": "94dc769cfacb338f0069919545e836b28c7ef4f171b230ab7e92741a3949e5b4",
+      "bytes": 8705
+    },
+    "gate.json": {
+      "sha256": "bb6b79b6ae95176b3ba40bd524c503a08c8c509408f2dba991761d16e7d8d619",
+      "bytes": 20242
+    },
+    "gate.txt": {
+      "sha256": "590a7ba54ec4f90c0bcf05b47f7d633e29d99ffcbd4f94f79b8b050416ede3f9",
+      "bytes": 26024
+    },
+    "monitoring_acceptance.json": {
+      "sha256": "156e9f97c7be6d806bcc374460421e9ff278fc4bb2cfcdf5300a6ed59f6c18a7",
+      "bytes": 17800
+    },
+    "setF_straight.json.gz": {
+      "sha256": "5a0e01af1555c861e32f73578d93060a3106f836750b5361712287204e83430d",
+      "bytes": 149265
+    }
+  }
+}

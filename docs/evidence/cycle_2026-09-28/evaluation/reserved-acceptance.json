@@ -1,0 +1,89 @@
+{
+  "schema": "resense.reserved_synthetic_acceptance.v1",
+  "completed_at_utc": "2026-09-28 18:39:54 UTC",
+  "protocol_file": "protocol_v2.json",
+  "protocol_sha256": "c93c4de4af298b10cbdf6ab15803645dce89d374dd547fc88131bb07afa7711e",
+  "freeze_file": "reserved-v2-freeze.json",
+  "freeze_commit": "f22fd50dc22bbbc192bcbee5df7319abf536c8f2",
+  "freeze_sha256": "4a8f84d3c0af76fe17edf2ca7c76d22881b3fe928e90c1d7ef102c0f0c5b445f",
+  "authorization_commit": "6f910cf8e77bacfc861fc23dd051ae3298a84700",
+  "authorization_file": "reserved-v2-authorization.json",
+  "authorization_sha256": "1b10e2702fa574b60300389f301773b12855fb14b695978ed46099e4965d58d5",
+  "authorization_record": {
+    "schema": "resense-reserved-evaluation-authorization-v1",
+    "authorized_at_utc": "2026-09-28T18:27:51.057393+00:00",
+    "author": "root reviewer",
+    "action": "Generate reserved v2 once and evaluate the fixed baseline/candidate on identical saved clouds; no tuning on results.",
+    "freeze_file": "docs/evidence/cycle_2026-09-28/evaluation/reserved-v2-freeze.json",
+    "freeze_sha256": "4a8f84d3c0af76fe17edf2ca7c76d22881b3fe928e90c1d7ef102c0f0c5b445f",
+    "candidate_gate_file": "docs/evidence/cycle_2026-09-28/regression/candidate/gate.json",
+    "candidate_gate_sha256": "bb6b79b6ae95176b3ba40bd524c503a08c8c509408f2dba991761d16e7d8d619",
+    "candidate_commit": "ef1d8f50299d9ccbbf65fc4ad5519764615853f6",
+    "effective_config_sha256": "6a6e5d859a0c1a86adce91edf1e8a46cd35b4bee21c5876406f1071cf2eaa46f",
+    "full_gate_passed_without_waivers": true,
+    "limits": "Synthetic acceptance only; history stress, full image suite, original ROS replay and independent score review remain separate."
+  },
+  "input_manifest_file": "reserved-manifest-v2.json.gz",
+  "input_manifest_sha256": "28bffdec8250ccd85cac09e487e4f1ed4032a749559fdc304d662710f9240923",
+  "input_manifest_uncompressed_sha256": "4d38fedf448ca489f009e4091fd2d1e6ad78e4d920a7a61d44997b2c37ce713f",
+  "comparison_file": "comparison-reserved-v2.json",
+  "comparison_sha256": "5363f3244daa97e41fa409436637b8467dbab457cb9c2525013a444b5b6491c7",
+  "generated_once": true,
+  "cases": 36,
+  "float_clouds": 576,
+  "encodings": [
+    "float32",
+    "compact16"
+  ],
+  "replay_frames_per_implementation": 1152,
+  "baseline_candidate_signal_differences": {
+    "float32": {
+      "stop": 0,
+      "matched_stop": 0,
+      "unmatched_stop": 0,
+      "matched_ids": 0,
+      "detections": 0,
+      "clear_distance_m": 0,
+      "warning": 0,
+      "decision": 0
+    },
+    "compact16": {
+      "stop": 0,
+      "matched_stop": 0,
+      "unmatched_stop": 0,
+      "matched_ids": 0,
+      "detections": 0,
+      "clear_distance_m": 0,
+      "warning": 0,
+      "decision": 0
+    }
+  },
+  "checks": {
+    "freeze_source_config_and_native_hashes_match": true,
+    "protocol_and_tool_hashes_match": true,
+    "actual_physical_auditor_import_matches_frozen_helper": true,
+    "all_case_labels_and_frame_digests_match_saved_manifest": true,
+    "complete_split_in_both_reports": true,
+    "no_source_config_tool_tuning": true
+  },
+  "actual_physical_auditor_module": "/workspace/ReSense-evaluation/scripts/synthetic_geometry.py",
+  "cpu_policy": {
+    "affinity_cpu": 7,
+    "OMP_NUM_THREADS": 1,
+    "OPENBLAS_NUM_THREADS": 1,
+    "MKL_NUM_THREADS": 1
+  },
+  "acceptance": {
+    "passed": true,
+    "regressions": [],
+    "improvements": [],
+    "detector_gain": false
+  },
+  "reserved_state": "Spent by this fixed-candidate evaluation. It cannot be described as untouched if its results inform future changes.",
+  "limitations": [
+    "Synthetic reserved acceptance, not new real-route holdout validation.",
+    "Correlated stationary geometries and repeated scan angles are not independent statistical trials.",
+    "PASS establishes no regression against the frozen baseline, not adequate absolute detection performance.",
+    "No timing claim: other validation work shared the machine."
+  ]
+}

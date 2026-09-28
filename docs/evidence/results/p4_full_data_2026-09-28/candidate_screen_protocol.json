@@ -1,0 +1,56 @@
+{
+  "schema": "resense-p4-current-candidate-screen-protocol-v1",
+  "registered_utc": "2026-09-28T12:40:05Z",
+  "purpose": "Screen the three bounded P4 hypotheses from P4_AUDIT.md against the current sealed 27.09 detector. No detector or label changes are part of this experiment.",
+  "reference": {
+    "branch": "testovaya-gpt",
+    "commit": "43a0e7d9dc6a8683b1656de7b9d9c9cf601a58f1",
+    "detector_freeze": "docs/evidence/detector_freeze_2026-09-27.json",
+    "source_sha256": "298da6cc4fcbea98e002a94e1fe616d9c139db0f413e5c016745a97aee1fe66f",
+    "config": "configs/default.yaml",
+    "effective_config_sha256": "de5c7fd6dfa74c1e656af6e233efd625e3e552736534e32efa625e5e8ff57f47",
+    "gate": "out/p4/reference/gate.json",
+    "gate_sha256": "4cb2dbf0f5cbadf2c7c7b114a00df22a7abcded6b73306648014f31ffb59d77e",
+    "gate_status": "passed; all 208 enforced rows identical to the 2026-09-27 quality baseline"
+  },
+  "candidates": [
+    {
+      "id": "A",
+      "change": "tracking.near_escalate_distance: 35 -> 40 m",
+      "target": "Set O top object #8 (big_above): sustained STOP distance / STOP frames"
+    },
+    {
+      "id": "B",
+      "change": "tracking.near_escalate_voxels: 10 -> 8",
+      "target": "Set O edge cube #4 (small_edge_inside): STOP frames and first STOP distance"
+    },
+    {
+      "id": "C",
+      "change": "cluster.wall_keep_gauge_voxels: 10 -> 8",
+      "target": "Set O edge box #6 (big_edge_inside): STOP frames and first STOP distance"
+    }
+  ],
+  "stage_1_screen": {
+    "data": "The exact 1,510-frame cached set O from the full-gate run; unchanged labels, matching, visibility denominators and geometric safety exclusions.",
+    "single_change_per_candidate": true,
+    "reject_if": [
+      "The named target has no improvement in its registered STOP measure.",
+      "Any other inside object loses STOP frames, first-STOP distance, held-from distance, per-range-bin STOP count, or missed-interval coverage.",
+      "Any outside-object or background false-STOP metric increases.",
+      "Any clear_distance overclaim count increases."
+    ],
+    "keep_latency_in_acceptance": false
+  },
+  "later_stages_for_each_stage_1_pass": [
+    "Six original recordings: no weaker labelled detection, no increase in false events or STOP episodes.",
+    "Strict full regression gate against docs/evidence/results/regression_baseline_2026-09-27_quality.json, with the full ride and set F straight and no waivers.",
+    "Startup census, recorded-rate/5 Hz/+3 degree roll/+3 degree pitch, five start offsets, clear-distance, and the same paired set F/set S inputs and trajectories as the reference. No deterioration in false alarms, positive detections, range or clear-distance overclaims.",
+    "Only candidates passing every comparison may be considered for an A/B/C-order combination; the combination must pass all acceptance checks again."
+  ],
+  "interpretation_limits": [
+    "Set O is previously inspected synthetic-obstacle data, not unseen validation.",
+    "The ride contains no real obstacles.",
+    "Set F and set S objects are synthetic; anchored placement is not surveyed ground truth.",
+    "No score increase is inferred from a candidate screen."
+  ]
+}

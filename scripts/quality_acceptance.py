@@ -82,6 +82,30 @@ def monitoring_cost(reference: list[dict], candidate: list[dict], max_extra_pp: 
             "passed": pp <= max_extra_pp + 1e-9 and fraction >= min_range_fraction - 1e-9}
 
 
+def alarm_changes(reference: list[dict], candidate: list[dict]) -> dict:
+    """Expose shifted false alarms that aggregate counts can conceal.
+
+    Changed detection payloads are retained for review, including replacements in an
+    already-alarming frame. No spatial matching tolerance hides a changed output.
+    These inputs must be obstacle-free recordings, not labelled positive sequences.
+    """
+    aligned(reference, candidate)
+    added, removed, changed = [], [], []
+    for before, after in zip(reference, candidate):
+        identity = {k: after[k] for k in ("frame", "frame_id", "stamp")}
+        if after["obstacle"] and not before["obstacle"]:
+            added.append(identity)
+        if before["obstacle"] and not after["obstacle"]:
+            removed.append(identity)
+        if before["detections"] != after["detections"]:
+            changed.append({**identity, "reference": before["detections"],
+                            "candidate": after["detections"]})
+    return {"frames": len(reference), "new_alarm_frames": added,
+            "removed_alarm_frames": removed, "changed_detection_frames": changed,
+            "no_new_alarm_frames": not added,
+            "identical_alarm_outputs": not added and not removed and not changed}
+
+
 def compare(reference: Path, candidate: Path, labels: Path) -> dict:
     refs, candidates, provenance = {}, {}, {}
     for name in REQUIRED:
@@ -97,11 +121,16 @@ def compare(reference: Path, candidate: Path, labels: Path) -> dict:
     previous = overclaim(refs["cloud_with_fake_obj"], gt)
     current = overclaim(candidates["cloud_with_fake_obj"], gt)
     go_overclaims = current["totals"]["target_by_decision"].get("GO", 0)
+    alarm_diffs = {name: alarm_changes(refs[name], candidates[name])
+                   for name in (*EMPTY, *(f"new_data_{i}" for i in range(8)))}
     return {"schema": "resense-monitoring-acceptance-v1", "inputs": provenance,
             "labels": {"path": str(labels), "sha256": hashlib.sha256(labels.read_bytes()).hexdigest()},
             "limits": {"max_newly_uncertain_percentage_points": 5.0, "min_clear_median_fraction": 0.95},
             "monitoring_cost": costs, "monitoring_cost_passed": all(r["passed"] for r in costs.values()),
             "set_O_reference": previous, "set_O_candidate": current,
+            "negative_alarm_changes": alarm_diffs,
+            "no_new_negative_alarm_frames": all(r["no_new_alarm_frames"] for r in alarm_diffs.values()),
+            "identical_negative_alarm_outputs": all(r["identical_alarm_outputs"] for r in alarm_diffs.values()),
             "zero_GO_overclaim_diagnostic_passed": go_overclaims == 0,
             "note": "Set O envelope labels inherit a prior detector rail fit; this diagnostic is not independently surveyed truth. No overall detector acceptance is asserted here."}
 

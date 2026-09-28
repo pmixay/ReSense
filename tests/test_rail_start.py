@@ -13,7 +13,6 @@ report of such a track that was never matched at 4 m or farther. Every blind-zon
 """
 from __future__ import annotations
 
-import glob
 import os
 from pathlib import Path
 
@@ -200,9 +199,9 @@ def test_finding_rail_heads_ahead_of_a_standing_fresh_start_do_not_stop():
     STOP. Since 27.09 the along-track association gate (tracking.gate_along_only) alone also keeps
     this low track from confirming: no STOP with the rule off either."""
     from resense.frame import frame_from_compact
-    from resense.io import _natural_key, load_cache_stamps
-    files = sorted(glob.glob(os.path.join(RIDE, "*.npy")), key=_natural_key)
-    i0 = [os.path.basename(f) for f in files].index("new_data_55_0013.npy")
+    from scripts.cache_io import cache_file_stem, cache_files, load_cache_array, load_cache_stamps
+    files = cache_files(RIDE)
+    i0 = [cache_file_stem(f) for f in files].index("new_data_55_0013")
     stamps = load_cache_stamps(RIDE)
     runs = {}
     for within in (0.0, 4.0, "gate"):
@@ -214,8 +213,9 @@ def test_finding_rail_heads_ahead_of_a_standing_fresh_start_do_not_stop():
         det = Detector(cfg)
         stops = []
         for k, f in enumerate(files[i0:i0 + 40]):
-            stem = os.path.splitext(os.path.basename(f))[0]
-            r = det.process(frame_from_compact(np.load(f), cfg.sensor, stamp=stamps.get(stem, 0.1 * k), frame_id=stem))
+            stem = cache_file_stem(f)
+            r = det.process(frame_from_compact(load_cache_array(f), cfg.sensor,
+                                                stamp=stamps.get(stem, 0.1 * k), frame_id=stem))
             if r.obstacle:
                 stops.append((k, r.detections[0].kind, round(r.nearest_distance, 1)))
         runs[within] = stops

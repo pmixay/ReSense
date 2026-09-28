@@ -1,0 +1,11 @@
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+........................................                                 [100%]
+=============================== warnings summary ===============================
+usr/local/lib/python3.10/dist-packages/_pytest/cacheprovider.py:475
+  Warning: cache could not write path /review/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/review/.pytest_cache/v/cache/nodeids'
+
+usr/local/lib/python3.10/dist-packages/_pytest/cacheprovider.py:429
+  Warning: cache could not write path /review/.pytest_cache/v/cache/lastfailed: [Errno 30] Read-only file system: '/review/.pytest_cache/v/cache/lastfailed'
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+40 passed, 2 warnings in 18.54s

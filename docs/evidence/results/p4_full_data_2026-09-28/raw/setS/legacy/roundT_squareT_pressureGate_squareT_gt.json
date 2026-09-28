@@ -1,0 +1,1184 @@
+{
+ "_meta": {
+  "source": "inject",
+  "kinds": [
+   "person",
+   "box0.5",
+   "box1.0",
+   "plank",
+   "trolley"
+  ],
+  "distances": [
+   10.0,
+   250.0
+  ],
+  "per_frame": 1,
+  "negative_fraction": 0.2,
+  "sequence": 1,
+  "speed_mps": 0.0,
+  "frame_dt": 0.1,
+  "augment": false,
+  "seed": 1,
+  "input": "/data/cache/roundT_squareT_pressureGate_squareT",
+  "every": 10,
+  "start": 0,
+  "placement": "legacy_rail_head_minus_0.15m",
+  "reflectivity": null,
+  "rng_protocol": "separate_planning_and_per_frame_rendering_v1"
+ },
+ "00000": [
+  {
+   "kind": "box",
+   "size": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "distance": 84.8395484825165,
+   "lateral": -0.6405126971046593,
+   "yaw_deg": 152.39752163012724,
+   "reflectivity": 38.97298894274488,
+   "label": "box1.0_0_0",
+   "name": "box1.0",
+   "in_gauge": true,
+   "n_points": 50,
+   "seq": 0,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00001": [
+  {
+   "kind": "box",
+   "size": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "distance": 16.614187178336408,
+   "lateral": -0.16344155453550968,
+   "yaw_deg": 271.2647191229304,
+   "reflectivity": 30.991873753461192,
+   "label": "box1.0_1_0",
+   "name": "box1.0",
+   "in_gauge": true,
+   "n_points": 945,
+   "seq": 1,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00002": [
+  {
+   "kind": "cylinder",
+   "size": [
+    0.6,
+    0.6,
+    1.0
+   ],
+   "distance": 118.83949347535636,
+   "lateral": 0.5191716661711278,
+   "yaw_deg": 48.25501100897931,
+   "reflectivity": 64.2555863433316,
+   "label": "trolley_2_0",
+   "name": "trolley",
+   "in_gauge": true,
+   "n_points": 12,
+   "seq": 2,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00003": [
+  {
+   "kind": "box",
+   "size": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "distance": 190.08752143121262,
+   "lateral": -0.5337805667829307,
+   "yaw_deg": 100.94715287497438,
+   "reflectivity": 25.246266808836992,
+   "label": "box1.0_3_0",
+   "name": "box1.0",
+   "in_gauge": true,
+   "n_points": 3,
+   "seq": 3,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00004": [
+  {
+   "kind": "box",
+   "size": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "distance": 139.89444533138422,
+   "lateral": 0.8309829485948163,
+   "yaw_deg": 99.68083345633349,
+   "reflectivity": 34.49579881547067,
+   "label": "box1.0_4_0",
+   "name": "box1.0",
+   "in_gauge": true,
+   "n_points": 12,
+   "seq": 4,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00005": [
+  {
+   "kind": "box",
+   "size": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "distance": 159.6375413290001,
+   "lateral": -2.612854868438303,
+   "yaw_deg": 279.60592116322726,
+   "reflectivity": 22.317312249415405,
+   "label": "box1.0_5_0",
+   "name": "box1.0",
+   "in_gauge": false,
+   "n_points": 1,
+   "seq": 5,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00006": [
+  {
+   "kind": "cylinder",
+   "size": [
+    0.6,
+    0.6,
+    1.0
+   ],
+   "distance": 136.8614231824052,
+   "lateral": 0.7511358686236248,
+   "yaw_deg": 165.36091783874534,
+   "reflectivity": 43.16743013313623,
+   "label": "trolley_6_0",
+   "name": "trolley",
+   "in_gauge": true,
+   "n_points": 8,
+   "seq": 6,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00007": [
+  {
+   "kind": "box",
+   "size": [
+    0.5,
+    0.5,
+    0.5
+   ],
+   "distance": 72.42338745693357,
+   "lateral": 0.6347391092651821,
+   "yaw_deg": 302.3573475713072,
+   "reflectivity": 31.85882036208568,
+   "label": "box0.5_7_0",
+   "name": "box0.5",
+   "in_gauge": true,
+   "n_points": 17,
+   "seq": 7,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00008": [
+  {
+   "kind": "person",
+   "size": [
+    0.4,
+    0.5,
+    1.7
+   ],
+   "distance": 45.50128858838957,
+   "lateral": 0.019599992039759484,
+   "yaw_deg": 295.0656188829397,
+   "reflectivity": 47.65151038510889,
+   "label": "person_8_0",
+   "name": "person",
+   "in_gauge": true,
+   "n_points": 88,
+   "seq": 8,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00009": [
+  {
+   "kind": "person",
+   "size": [
+    0.4,
+    0.5,
+    1.7
+   ],
+   "distance": 55.917742253728065,
+   "lateral": -0.5550907337637565,
+   "yaw_deg": 29.358942250864576,
+   "reflectivity": 50.1182080567265,
+   "label": "person_9_0",
+   "name": "person",
+   "in_gauge": true,
+   "n_points": 58,
+   "seq": 9,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00010": [
+  {
+   "kind": "plank",
+   "size": [
+    2.0,
+    0.25,
+    0.3
+   ],
+   "distance": 123.25833264610965,
+   "lateral": 0.6503102931198032,
+   "yaw_deg": 98.65741990093858,
+   "reflectivity": 56.29611289249742,
+   "label": "plank_10_0",
+   "name": "plank",
+   "in_gauge": true,
+   "n_points": 17,
+   "seq": 10,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00011": [
+  {
+   "kind": "cylinder",
+   "size": [
+    0.6,
+    0.6,
+    1.0
+   ],
+   "distance": 77.65067856749012,
+   "lateral": 0.3958368903156474,
+   "yaw_deg": 77.4785401786705,
+   "reflectivity": 106.84553732002193,
+   "label": "trolley_11_0",
+   "name": "trolley",
+   "in_gauge": true,
+   "n_points": 24,
+   "seq": 11,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00012": [
+  {
+   "kind": "person",
+   "size": [
+    0.4,
+    0.5,
+    1.7
+   ],
+   "distance": 46.125959301082595,
+   "lateral": 0.5490986996610175,
+   "yaw_deg": 173.59645975176116,
+   "reflectivity": 58.183543642248544,
+   "label": "person_12_0",
+   "name": "person",
+   "in_gauge": true,
+   "n_points": 87,
+   "seq": 12,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00013": [
+  {
+   "kind": "box",
+   "size": [
+    0.5,
+    0.5,
+    0.5
+   ],
+   "distance": 171.63037291670534,
+   "lateral": 0.16110371175128668,
+   "yaw_deg": 330.8719030681761,
+   "reflectivity": 20.489813549867264,
+   "label": "box0.5_13_0",
+   "name": "box0.5",
+   "in_gauge": true,
+   "n_points": 3,
+   "seq": 13,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00014": [
+  {
+   "kind": "cylinder",
+   "size": [
+    0.6,
+    0.6,
+    1.0
+   ],
+   "distance": 68.93254413836262,
+   "lateral": 0.6939364800779041,
+   "yaw_deg": 276.6661196026516,
+   "reflectivity": 92.82843044164187,
+   "label": "trolley_14_0",
+   "name": "trolley",
+   "in_gauge": true,
+   "n_points": 35,
+   "seq": 14,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00015": [
+  {
+   "kind": "cylinder",
+   "size": [
+    0.6,
+    0.6,
+    1.0
+   ],
+   "distance": 49.48174395378431,
+   "lateral": -0.7871077393726171,
+   "yaw_deg": 135.05291873879108,
+   "reflectivity": 106.03902507148446,
+   "label": "trolley_15_0",
+   "name": "trolley",
+   "in_gauge": true,
+   "n_points": 62,
+   "seq": 15,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00016": [
+  {
+   "kind": "box",
+   "size": [
+    0.5,
+    0.5,
+    0.5
+   ],
+   "distance": 105.10147893207674,
+   "lateral": 0.3444066634999342,
+   "yaw_deg": 2.0968542388731404,
+   "reflectivity": 23.57143756348744,
+   "label": "box0.5_16_0",
+   "name": "box0.5",
+   "in_gauge": true,
+   "n_points": 4,
+   "seq": 16,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00017": [
+  {
+   "kind": "plank",
+   "size": [
+    2.0,
+    0.25,
+    0.3
+   ],
+   "distance": 101.30182477276776,
+   "lateral": -0.709341773926816,
+   "yaw_deg": 261.105817707446,
+   "reflectivity": 48.99479838109673,
+   "label": "plank_17_0",
+   "name": "plank",
+   "in_gauge": true,
+   "n_points": 11,
+   "seq": 17,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00018": [
+  {
+   "kind": "box",
+   "size": [
+    0.5,
+    0.5,
+    0.5
+   ],
+   "distance": 161.71242820004008,
+   "lateral": -0.1237918522006689,
+   "yaw_deg": 291.69876675826765,
+   "reflectivity": 37.346410112843984,
+   "label": "box0.5_18_0",
+   "name": "box0.5",
+   "in_gauge": true,
+   "n_points": 4,
+   "seq": 18,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00019": [
+  {
+   "kind": "box",
+   "size": [
+    0.5,
+    0.5,
+    0.5
+   ],
+   "distance": 68.37171143351851,
+   "lateral": -0.5466656067934439,
+   "yaw_deg": 92.47228820175698,
+   "reflectivity": 39.92282380237256,
+   "label": "box0.5_19_0",
+   "name": "box0.5",
+   "in_gauge": true,
+   "n_points": 16,
+   "seq": 19,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00020": [
+  {
+   "kind": "box",
+   "size": [
+    0.5,
+    0.5,
+    0.5
+   ],
+   "distance": 40.88157095612067,
+   "lateral": 2.8105028260352425,
+   "yaw_deg": 135.44586051411392,
+   "reflectivity": 33.95787141366163,
+   "label": "box0.5_20_0",
+   "name": "box0.5",
+   "in_gauge": false,
+   "n_points": 0,
+   "seq": 20,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00021": [
+  {
+   "kind": "box",
+   "size": [
+    0.5,
+    0.5,
+    0.5
+   ],
+   "distance": 150.76439843812753,
+   "lateral": 0.2969716434515294,
+   "yaw_deg": 302.28645729921925,
+   "reflectivity": 29.118579260874977,
+   "label": "box0.5_21_0",
+   "name": "box0.5",
+   "in_gauge": true,
+   "n_points": 3,
+   "seq": 21,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00022": [
+  {
+   "kind": "plank",
+   "size": [
+    2.0,
+    0.25,
+    0.3
+   ],
+   "distance": 36.33631936160722,
+   "lateral": -0.09288664317992834,
+   "yaw_deg": 73.16695587146278,
+   "reflectivity": 41.0309870907002,
+   "label": "plank_22_0",
+   "name": "plank",
+   "in_gauge": true,
+   "n_points": 96,
+   "seq": 22,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00023": [
+  {
+   "kind": "plank",
+   "size": [
+    2.0,
+    0.25,
+    0.3
+   ],
+   "distance": 148.4079319007085,
+   "lateral": -0.33455898791585603,
+   "yaw_deg": 349.8083912231117,
+   "reflectivity": 39.39143576459813,
+   "label": "plank_23_0",
+   "name": "plank",
+   "in_gauge": true,
+   "n_points": 0,
+   "seq": 23,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00024": [
+  {
+   "kind": "cylinder",
+   "size": [
+    0.6,
+    0.6,
+    1.0
+   ],
+   "distance": 230.24614172101906,
+   "lateral": 0.466683300971244,
+   "yaw_deg": 248.26685596094913,
+   "reflectivity": 87.75901844190051,
+   "label": "trolley_24_0",
+   "name": "trolley",
+   "in_gauge": true,
+   "n_points": 0,
+   "seq": 24,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00025": [
+  {
+   "kind": "plank",
+   "size": [
+    2.0,
+    0.25,
+    0.3
+   ],
+   "distance": 61.07943888168024,
+   "lateral": -0.7612491446990303,
+   "yaw_deg": 47.770667116843406,
+   "reflectivity": 44.653476812565714,
+   "label": "plank_25_0",
+   "name": "plank",
+   "in_gauge": true,
+   "n_points": 32,
+   "seq": 25,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00026": [
+  {
+   "kind": "cylinder",
+   "size": [
+    0.6,
+    0.6,
+    1.0
+   ],
+   "distance": 136.15108555894096,
+   "lateral": -0.36898840295006496,
+   "yaw_deg": 53.65728841345651,
+   "reflectivity": 101.50174079273332,
+   "label": "trolley_26_0",
+   "name": "trolley",
+   "in_gauge": true,
+   "n_points": 12,
+   "seq": 26,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00027": [
+  {
+   "kind": "box",
+   "size": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "distance": 213.27960895209512,
+   "lateral": -0.1770547970006685,
+   "yaw_deg": 44.80571970557274,
+   "reflectivity": 25.904685113253915,
+   "label": "box1.0_27_0",
+   "name": "box1.0",
+   "in_gauge": true,
+   "n_points": 1,
+   "seq": 27,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00028": [
+  {
+   "kind": "cylinder",
+   "size": [
+    0.6,
+    0.6,
+    1.0
+   ],
+   "distance": 211.89471824617286,
+   "lateral": 2.513993420810066,
+   "yaw_deg": 140.42683869835022,
+   "reflectivity": 58.551990276971075,
+   "label": "trolley_28_0",
+   "name": "trolley",
+   "in_gauge": false,
+   "n_points": 0,
+   "seq": 28,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00029": [
+  {
+   "kind": "cylinder",
+   "size": [
+    0.6,
+    0.6,
+    1.0
+   ],
+   "distance": 84.15236777814188,
+   "lateral": 0.34852110246524737,
+   "yaw_deg": 142.40031157887435,
+   "reflectivity": 81.7220097705934,
+   "label": "trolley_29_0",
+   "name": "trolley",
+   "in_gauge": true,
+   "n_points": 20,
+   "seq": 29,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00030": [
+  {
+   "kind": "cylinder",
+   "size": [
+    0.6,
+    0.6,
+    1.0
+   ],
+   "distance": 191.99340688091644,
+   "lateral": -0.537834238695604,
+   "yaw_deg": 129.5232935373397,
+   "reflectivity": 119.05751209761698,
+   "label": "trolley_30_0",
+   "name": "trolley",
+   "in_gauge": true,
+   "n_points": 0,
+   "seq": 30,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00031": [
+  {
+   "kind": "cylinder",
+   "size": [
+    0.6,
+    0.6,
+    1.0
+   ],
+   "distance": 14.0134771924905,
+   "lateral": -0.21331272124814393,
+   "yaw_deg": 177.68576157962264,
+   "reflectivity": 80.30423601556237,
+   "label": "trolley_31_0",
+   "name": "trolley",
+   "in_gauge": true,
+   "n_points": 764,
+   "seq": 31,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00032": [
+  {
+   "kind": "plank",
+   "size": [
+    2.0,
+    0.25,
+    0.3
+   ],
+   "distance": 116.26933361691881,
+   "lateral": -0.38616258818595883,
+   "yaw_deg": 75.34117534240276,
+   "reflectivity": 52.44653877229837,
+   "label": "plank_32_0",
+   "name": "plank",
+   "in_gauge": true,
+   "n_points": 0,
+   "seq": 32,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00033": [
+  {
+   "kind": "box",
+   "size": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "distance": 72.91523108559747,
+   "lateral": 2.4428071412796086,
+   "yaw_deg": 305.65602786933795,
+   "reflectivity": 39.98051764647875,
+   "label": "box1.0_33_0",
+   "name": "box1.0",
+   "in_gauge": false,
+   "n_points": 36,
+   "seq": 33,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00034": [
+  {
+   "kind": "box",
+   "size": [
+    0.5,
+    0.5,
+    0.5
+   ],
+   "distance": 192.5893083000358,
+   "lateral": 0.23457195979826084,
+   "yaw_deg": 9.534437605430043,
+   "reflectivity": 27.253937141156968,
+   "label": "box0.5_34_0",
+   "name": "box0.5",
+   "in_gauge": true,
+   "n_points": 0,
+   "seq": 34,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00035": [
+  {
+   "kind": "plank",
+   "size": [
+    2.0,
+    0.25,
+    0.3
+   ],
+   "distance": 40.62896475905671,
+   "lateral": -0.23066177423380918,
+   "yaw_deg": 80.10247174065807,
+   "reflectivity": 44.312220169120486,
+   "label": "plank_35_0",
+   "name": "plank",
+   "in_gauge": true,
+   "n_points": 107,
+   "seq": 35,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00036": [
+  {
+   "kind": "person",
+   "size": [
+    0.4,
+    0.5,
+    1.7
+   ],
+   "distance": 216.70400434887858,
+   "lateral": 0.5249811700626129,
+   "yaw_deg": 263.64990143721764,
+   "reflectivity": 40.25682946387572,
+   "label": "person_36_0",
+   "name": "person",
+   "in_gauge": true,
+   "n_points": 0,
+   "seq": 36,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00037": [
+  {
+   "kind": "box",
+   "size": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "distance": 70.30421876105963,
+   "lateral": -0.3822919160472078,
+   "yaw_deg": 27.076000253185594,
+   "reflectivity": 35.65520935852337,
+   "label": "box1.0_37_0",
+   "name": "box1.0",
+   "in_gauge": true,
+   "n_points": 61,
+   "seq": 37,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00038": [
+  {
+   "kind": "cylinder",
+   "size": [
+    0.6,
+    0.6,
+    1.0
+   ],
+   "distance": 156.77913528923716,
+   "lateral": 0.49300973558966044,
+   "yaw_deg": 12.201210185942246,
+   "reflectivity": 82.33782461042881,
+   "label": "trolley_38_0",
+   "name": "trolley",
+   "in_gauge": true,
+   "n_points": 0,
+   "seq": 38,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00039": [
+  {
+   "kind": "cylinder",
+   "size": [
+    0.6,
+    0.6,
+    1.0
+   ],
+   "distance": 238.48702449428436,
+   "lateral": -2.6564516783619987,
+   "yaw_deg": 55.56730771706555,
+   "reflectivity": 52.684402718937015,
+   "label": "trolley_39_0",
+   "name": "trolley",
+   "in_gauge": false,
+   "n_points": 0,
+   "seq": 39,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00040": [
+  {
+   "kind": "plank",
+   "size": [
+    2.0,
+    0.25,
+    0.3
+   ],
+   "distance": 76.31512338283666,
+   "lateral": -0.6407948249653361,
+   "yaw_deg": 48.288231043841975,
+   "reflectivity": 51.52115178318704,
+   "label": "plank_40_0",
+   "name": "plank",
+   "in_gauge": true,
+   "n_points": 21,
+   "seq": 40,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00041": [
+  {
+   "kind": "person",
+   "size": [
+    0.4,
+    0.5,
+    1.7
+   ],
+   "distance": 118.2493326811339,
+   "lateral": -2.353438973378853,
+   "yaw_deg": 344.62597221127345,
+   "reflectivity": 36.84860397858963,
+   "label": "person_41_0",
+   "name": "person",
+   "in_gauge": false,
+   "n_points": 0,
+   "seq": 41,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00042": [
+  {
+   "kind": "box",
+   "size": [
+    0.5,
+    0.5,
+    0.5
+   ],
+   "distance": 235.30043883517232,
+   "lateral": 0.3088577411652659,
+   "yaw_deg": 8.14238239932099,
+   "reflectivity": 36.900461831366925,
+   "label": "box0.5_42_0",
+   "name": "box0.5",
+   "in_gauge": true,
+   "n_points": 0,
+   "seq": 42,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00043": [
+  {
+   "kind": "cylinder",
+   "size": [
+    0.6,
+    0.6,
+    1.0
+   ],
+   "distance": 72.48741336354607,
+   "lateral": 2.27486948243408,
+   "yaw_deg": 95.16230248763718,
+   "reflectivity": 87.96195784426217,
+   "label": "trolley_43_0",
+   "name": "trolley",
+   "in_gauge": false,
+   "n_points": 3,
+   "seq": 43,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00044": [
+  {
+   "kind": "box",
+   "size": [
+    0.5,
+    0.5,
+    0.5
+   ],
+   "distance": 166.16138310391602,
+   "lateral": -0.724111816348098,
+   "yaw_deg": 218.34291263085447,
+   "reflectivity": 34.81888906476318,
+   "label": "box0.5_44_0",
+   "name": "box0.5",
+   "in_gauge": true,
+   "n_points": 0,
+   "seq": 44,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00045": [
+  {
+   "kind": "box",
+   "size": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "distance": 102.55788271781219,
+   "lateral": 0.33336646181971685,
+   "yaw_deg": 7.140292369177281,
+   "reflectivity": 23.126932998071727,
+   "label": "box1.0_45_0",
+   "name": "box1.0",
+   "in_gauge": true,
+   "n_points": 0,
+   "seq": 45,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00046": [
+  {
+   "kind": "person",
+   "size": [
+    0.4,
+    0.5,
+    1.7
+   ],
+   "distance": 222.28516758834712,
+   "lateral": -2.531720128912999,
+   "yaw_deg": 113.99703918264478,
+   "reflectivity": 33.16200181436899,
+   "label": "person_46_0",
+   "name": "person",
+   "in_gauge": false,
+   "n_points": 0,
+   "seq": 46,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00047": [
+  {
+   "kind": "box",
+   "size": [
+    0.5,
+    0.5,
+    0.5
+   ],
+   "distance": 241.1636120175364,
+   "lateral": 2.2494775482988585,
+   "yaw_deg": 271.21155052620907,
+   "reflectivity": 21.859839853244566,
+   "label": "box0.5_47_0",
+   "name": "box0.5",
+   "in_gauge": false,
+   "n_points": 0,
+   "seq": 47,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00048": [
+  {
+   "kind": "cylinder",
+   "size": [
+    0.6,
+    0.6,
+    1.0
+   ],
+   "distance": 91.40677426724166,
+   "lateral": -0.6620780850854477,
+   "yaw_deg": 314.79883251929033,
+   "reflectivity": 70.93844585374893,
+   "label": "trolley_48_0",
+   "name": "trolley",
+   "in_gauge": true,
+   "n_points": 1,
+   "seq": 48,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00049": [
+  {
+   "kind": "box",
+   "size": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "distance": 38.01036562744053,
+   "lateral": -2.941444161886869,
+   "yaw_deg": 40.74269761671204,
+   "reflectivity": 32.4462672743052,
+   "label": "box1.0_49_0",
+   "name": "box1.0",
+   "in_gauge": false,
+   "n_points": 2,
+   "seq": 49,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00050": [
+  {
+   "kind": "cylinder",
+   "size": [
+    0.6,
+    0.6,
+    1.0
+   ],
+   "distance": 17.69952366835689,
+   "lateral": -2.7054017537622066,
+   "yaw_deg": 290.672201174866,
+   "reflectivity": 89.31070328759282,
+   "label": "trolley_50_0",
+   "name": "trolley",
+   "in_gauge": false,
+   "n_points": 4,
+   "seq": 50,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00051": [
+  {
+   "kind": "cylinder",
+   "size": [
+    0.6,
+    0.6,
+    1.0
+   ],
+   "distance": 49.297997068760296,
+   "lateral": 0.3065519641292588,
+   "yaw_deg": 8.599973032372215,
+   "reflectivity": 95.42897858681786,
+   "label": "trolley_51_0",
+   "name": "trolley",
+   "in_gauge": true,
+   "n_points": 63,
+   "seq": 51,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00052": [
+  {
+   "kind": "plank",
+   "size": [
+    2.0,
+    0.25,
+    0.3
+   ],
+   "distance": 93.85224612930296,
+   "lateral": -2.716577092447707,
+   "yaw_deg": 271.879767598109,
+   "reflectivity": 58.40719999480222,
+   "label": "plank_52_0",
+   "name": "plank",
+   "in_gauge": false,
+   "n_points": 0,
+   "seq": 52,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00053": [
+  {
+   "kind": "cylinder",
+   "size": [
+    0.6,
+    0.6,
+    1.0
+   ],
+   "distance": 143.7781312218184,
+   "lateral": 2.4217066678975923,
+   "yaw_deg": 179.63512283052535,
+   "reflectivity": 84.02546013605934,
+   "label": "trolley_53_0",
+   "name": "trolley",
+   "in_gauge": false,
+   "n_points": 0,
+   "seq": 53,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ],
+ "00054": [
+  {
+   "kind": "person",
+   "size": [
+    0.4,
+    0.5,
+    1.7
+   ],
+   "distance": 119.9390945166686,
+   "lateral": 0.13626928861037746,
+   "yaw_deg": 301.4897118474257,
+   "reflectivity": 58.333119769391914,
+   "label": "person_54_0",
+   "name": "person",
+   "in_gauge": true,
+   "n_points": 0,
+   "seq": 54,
+   "seq_step": 0,
+   "speed_mps": 0.0
+  }
+ ]
+}

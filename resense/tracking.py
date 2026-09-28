@@ -100,6 +100,8 @@ class Track:
     evidence_hist: List[str] = field(default_factory=list)  # opt-in fresh_stop_evidence: recent hit provenance
     stop_earned: bool = False       # opt-in onset gate: a gauge STOP was actually earned, not merely reported advisory
     fresh_blocked: bool = False     # opt-in: a reported advisory cannot become a STOP on this hit
+    low_clean: Optional[Cluster] = None  # last clean low cluster; weak continuation cannot change this shape reference
+    low_since_clean: float = 0.0  # actual elapsed time, including stamp gaps clipped for the existing motion/fit rules
 
     @property
     def near_escalated(self) -> bool:
@@ -233,7 +235,9 @@ class Tracker:
 
     def update(self, clusters: List[Cluster], ego_shift: float = 0.0,
                frame_dt: Optional[float] = None, low_ok: bool = True, rail_within: float = 0.0,
-               thin: Optional[List[Cluster]] = None, far_thin: Optional[List[Cluster]] = None) -> List[Track]:
+               thin: Optional[List[Cluster]] = None, far_thin: Optional[List[Cluster]] = None,
+               low_height: Optional[List[Cluster]] = None,
+               low_frame_dt: Optional[float] = None) -> List[Track]:
         """Associate ``clusters`` with the tracks. ``ego_shift`` (m) is the distance the
         vehicle travelled since the previous frame when it is known: a track seen once has no
         velocity yet and is then predicted as a static object approaching by that much.
@@ -257,8 +261,14 @@ class Tracker:
         (:meth:`_approaching`); otherwise it is reported as advisory (``Track.approach_block``), never
         hidden. A track whose clean hits alone vote gauge (:meth:`_clean_gauge`: within
         ``thin_far_min_distance`` every hit is clean, so the vote clears within ``zone_window`` hits)
-        and a STOP in the previous frame keep the usual rules."""
+        and a STOP in the previous frame keep the usual rules. ``low_frame_dt`` is the
+        actual positive stamp interval when ``frame_dt`` was clipped for motion/fit rules;
+        it advances only the bounded low-height continuation clock."""
         c = self.cfg
+        # Weak low evidence is never a normal hit or a seed, even when supplied directly
+        # by another caller. The detector normally passes it separately.
+        low_height = list(low_height or []) + [cl for cl in clusters if cl.low_height_weak]
+        clusters = [cl for cl in clusters if not cl.low_height_weak]
         # widen the gate by the distance a static object travels in the *measured* interval, so a
         # dropped frame (0.2-0.3 s gap in the node) does not throw a 17 m/s approach out of the gate
         step = c.ego_speed_max * (float(frame_dt) if frame_dt is not None and frame_dt > 0 else c.frame_dt)
@@ -268,6 +278,9 @@ class Tracker:
         # 26.09 (stop_keep_max_s): the sensor time of this frame for the keep cap (the nominal period
         # when the caller gives no interval), so that the cap is in seconds at any input rate
         kdt = dt if dt > 0 else float(c.frame_dt)
+        low_dt = float(low_frame_dt) if low_frame_dt is not None and low_frame_dt > 0 else kdt
+        for t in self.tracks:
+            t.low_since_clean += low_dt
         self._clock += kdt
         n_t, n_c = len(self.tracks), len(clusters)
         matched_t = np.zeros(n_t, dtype=bool)
@@ -296,6 +309,9 @@ class Tracker:
                 t.span_s += dt
                 t.confidence = min(1.0, t.confidence + c.conf_gain * cl.score)
                 t.last = cl
+                t.low_clean = cl if cl.kind == "low" else None
+                if cl.kind == "low" and cl.zone == "gauge":
+                    t.low_since_clean = 0.0
                 if self.record:
                     t.obs = (t.obs + [observation(cl)])[-OBS_KEEP:]
                 g = cl.zone == "gauge" or keep
@@ -318,6 +334,8 @@ class Tracker:
         if c.thin_far_min_distance > 0 and far_thin:
             new_thin = self._far_thin([cl for cl in far_thin if not any(cl is u for u in used)],
                                       matched_t, ego_shift, step, dt, zw, hw, nk, kdt)
+        if c.stop_keep_low_s > 0 and low_height:
+            self._continue_low_height(low_height, matched_t, ego_shift, dt, zw, hw, nk, kdt)
         # unmatched tracks
         for i, t in enumerate(self.tracks):
             if not matched_t[i]:
@@ -343,6 +361,7 @@ class Tracker:
                     near_hist=[self._near(cl)] if nk else [], near_hits=nk,
                     since_clean=0.0 if cl.zone == "gauge" else float("inf"),
                     obs=[observation(cl)] if self.record else [],
+                    low_clean=cl if cl.kind == "low" else None,
                 ))
                 self._note(self.tracks[-1], cl, False, zw, "ordinary")
                 self._next_id += 1
@@ -403,6 +422,11 @@ class Tracker:
                 # The candidate blocks an advisory-to-STOP transition, but does not make an
                 # already reported advisory track disappear on the matched frame.
                 t.reported = True
+            if (t.hold <= 0 and t.last is not None and t.last.low_height_weak
+                    and t.low_since_clean > c.stop_keep_low_s + 1e-9):
+                # The ordinary missed-frame hold must not extend the weak-evidence budget.
+                # An independent calibration hold keeps its existing fixed countdown.
+                t.reported = False
             t.fresh_blocked = bool(fresh_blocked and t.reported)
             if t.misses == 0:
                 t.seen_reported = t.reported
@@ -411,12 +435,71 @@ class Tracker:
         if self.opinion is not None:
             self._doubt()
         for t in self.tracks:
+            # Use the final report and zone, after weak-low expiry and opinion withholding.
+            # Otherwise a rejected continuation could bypass the next fresh-onset check.
             t.stop_earned = (id(t) not in fresh_blocked_tracks and t.reported and t.zone == "gauge")
         if c.thin_far_min_distance > 0:
             # after the track opinion: a STOP withheld by it is not a STOP of this frame
             for t in self.tracks:
                 t.was_stop = t.reported and t.zone == "gauge"
         return self.tracks
+
+    @staticmethod
+    def _low_height_agrees(t: Track, cl: Cluster, predicted: np.ndarray) -> bool:
+        """A compact low blob near the predicted centre and similar to the last clean
+        low shape. Comparing against the clean shape prevents gradual growth or shrinkage
+        through a chain of weak observations. The 25 cm centre gate is deliberately much
+        tighter than the normal range-dependent association gate."""
+        clean = t.low_clean
+        if (clean is None or t.last is None or t.last.kind != "low" or clean.rail_line
+                or cl.kind != "low" or cl.zone != "gauge" or not cl.low_height_weak
+                or cl.reason or cl.rail_line or not cl.points_idx.size):
+            return False
+        if np.linalg.norm(cl.centroid - predicted) > 0.25:
+            return False
+        # Degenerate observed extents (one scan line or a flat face) get only a small
+        # absolute allowance; an enlarged surrounding bed patch is not the same object.
+        size = clean.size
+        return bool(np.all(cl.size >= 0.5 * size)
+                    and np.all(cl.size <= 2.0 * np.maximum(size, [0.1, 0.1, 0.05])))
+
+    def _continue_low_height(self, candidates: List[Cluster], matched: np.ndarray, ego_shift: float,
+                             dt: float, zw: int, hw: int, nk: int, kdt: float) -> None:
+        """Continue a reported low STOP using current straddle returns whose top alone
+        narrowly fails the clean threshold. No seeds, no new confirmations, no confidence
+        gain, and no reset of either clean-hit clock. Both association and the shape reference
+        are bounded; a cluster agreeing with more than one track is unused."""
+        static = np.array([-float(ego_shift), 0.0, 0.0])
+        predictions = [t.centroid if matched[i] else t.centroid + (t.velocity if t.hits > 1 else static)
+                       for i, t in enumerate(self.tracks)]
+        for cl in candidates:
+            owners = [i for i, t in enumerate(self.tracks)
+                      if self._low_height_agrees(t, cl, predictions[i])]
+            if len(owners) != 1:
+                continue
+            i = owners[0]
+            t = self.tracks[i]
+            if (matched[i] or not t.reported or t.zone != "gauge"
+                    or t.low_since_clean > self.cfg.stop_keep_low_s + 1e-9):
+                continue
+            t.since_clean += kdt
+            t.velocity = 0.5 * t.velocity + 0.5 * (cl.centroid - t.centroid)
+            t.centroid = cl.centroid
+            t.last = cl
+            t.hits += 1
+            t.age += 1
+            t.span_s += dt
+            t.misses = 0
+            t.kept = True
+            t.gauge_hits += 1
+            t.zone_hist = (t.zone_hist + [True])[-zw:]
+            t.column_hist = (t.column_hist + [False])[-zw:]
+            t.hit_hist = (t.hit_hist + [True])[-hw:]
+            if nk:
+                t.near_hist = (t.near_hist + [False])[-nk:]
+            self._note(t, cl, False, zw, "keep_low")
+            t.history.append(cl.distance)
+            matched[i] = True
 
     def _doubt(self) -> None:
         """27.09 (``tracking.doubt_extra_hits`` > 0 with ``doubt_model``): a track about to become a
@@ -540,8 +623,9 @@ class Tracker:
         """Record hit provenance and the existing far-evidence approach history.
 
         ``source`` is ``ordinary`` for a current cluster (including low-object evidence),
-        ``far_thin`` for the detector's separate sparse-evidence path, and ``keep_thin`` for a
-        scan-line continuation. The latter may preserve an earned STOP but cannot manufacture one.
+        ``far_thin`` for the detector's separate sparse-evidence path, ``keep_thin`` for a
+        scan-line continuation, and ``keep_low`` for bounded weak-low continuation. Neither
+        continuation source supplies fresh evidence for a new STOP onset.
         """
         c = self.cfg
         if c.fresh_stop_evidence:
@@ -561,13 +645,13 @@ class Tracker:
         The current match must be strict gauge evidence, so an old gauge vote cannot confirm on an
         advisory/off-gauge frame. Ordinary and low-object gauge hits count directly. A far sparse
         hit counts only when its existing approach fit identifies an approaching target. Thin
-        continuation hits are deliberately excluded.
+        and weak-low continuation hits are deliberately excluded.
         """
         c = self.cfg
         if t.misses != 0 or t.last is None or t.last.zone != "gauge" or not t.evidence_hist:
             return False
         source = t.evidence_hist[-1]
-        if source == "keep_thin":
+        if source in ("keep_thin", "keep_low"):
             return False
         if source == "far_thin" and not self._approaching(t):
             return False

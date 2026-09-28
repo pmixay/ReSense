@@ -1,0 +1,81 @@
+{
+  "schema": "resense-evidence-artifacts-v1",
+  "files": {
+    "README.md": {
+      "sha256": "e7fbfa8f2d9f7a7f6db3b7bc860d662490296327d5f5539ec724fcdb337c8114",
+      "bytes": 4595
+    },
+    "junit.xml": {
+      "sha256": "c11a6a336a8c121141b764ebe4cf0a86301d1ec059e4ecfd979d67347962799e",
+      "bytes": 103992
+    },
+    "loaded_raw_positive.txt": {
+      "sha256": "604491116d05ae867a3c933ee52f1325c50d33bb5acef3f70799a657b504d8d3",
+      "bytes": 3585
+    },
+    "loaded_raw_positive_node.txt": {
+      "sha256": "e47bad10ed47e8cbcb8c29982c2ef7a163f95adff2bdeb8a90398913a743abbe",
+      "bytes": 4867
+    },
+    "loaded_raw_positive_status.jsonl.gz": {
+      "sha256": "6a6cf0cd4f7bac081dcd680901bda8989bdae71d10964c33bddf64d58ec57cea",
+      "bytes": 19628
+    },
+    "quiet_baseline_positive.txt": {
+      "sha256": "68818e55058347c3c4d395101399359dd5f77e0db47df09a9a2adfa3439bf1a5",
+      "bytes": 3416
+    },
+    "quiet_baseline_positive_node.txt": {
+      "sha256": "327cf447a3afbd059f628193b421e761d880fb990926ae333e08563737251b6e",
+      "bytes": 5022
+    },
+    "quiet_baseline_positive_status.jsonl.gz": {
+      "sha256": "088e9a21314a2a5646b8b81d08f9d8e41d7633068ce3414cf5df22145aa36f8d",
+      "bytes": 39018
+    },
+    "quiet_candidate_clear.txt": {
+      "sha256": "596d899f445c29da5bcef5ca74c1b48d130bcedac9eabaaa633aa27703ac7215",
+      "bytes": 3121
+    },
+    "quiet_candidate_clear_node.txt": {
+      "sha256": "12a818f75a92f2afb1d38177a3976ee99ccde740ebcb5115aa767364008d8228",
+      "bytes": 5097
+    },
+    "quiet_candidate_clear_status.jsonl.gz": {
+      "sha256": "55aa68f3762b510759a726ed81ac9d878a2dcc20b7abdd311ab679bd9fff328e",
+      "bytes": 61306
+    },
+    "quiet_candidate_positive.txt": {
+      "sha256": "78b24f12a8c89403e1c47da515feb4e79920c1bba74872bb012d6ef0a580025e",
+      "bytes": 3422
+    },
+    "quiet_candidate_positive_node.txt": {
+      "sha256": "838e527235406719a57fd0c310b4ba5989175f6bdb071debe88dc1f3b1decb1c",
+      "bytes": 5199
+    },
+    "quiet_candidate_positive_status.jsonl.gz": {
+      "sha256": "bfaa7000588916254d806ef408fa57a3e433bd7f51c6144dcce75974c3367ac3",
+      "bytes": 45054
+    },
+    "smoke.txt": {
+      "sha256": "07f150f929157d847a03b1c0e09fb4f3e16cbcc9d249d3b941bbff02971dfb82",
+      "bytes": 5919
+    },
+    "smoke_node.txt": {
+      "sha256": "0f402e0ed0548f8d6c01eabbea55194276f83b470a6e377d45aadb0e89d7b17d",
+      "bytes": 3954
+    },
+    "smoke_status.jsonl.gz": {
+      "sha256": "81825d7b18e478acd48fdb5890bae3deb4b28359838db7adde908e7de90a67b3",
+      "bytes": 15601
+    },
+    "source.json": {
+      "sha256": "68236de37b7782de5a54926a0c1aab2e1cea3982722faf318847dbdc8ec737b3",
+      "bytes": 3363
+    },
+    "tests.txt": {
+      "sha256": "d0be09a4d7e176f8e096d4e7111d4fa2ac7d02d88684c077ab75778464c3d71a",
+      "bytes": 1196
+    }
+  }
+}
