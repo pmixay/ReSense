@@ -1,73 +1,67 @@
-# Detector Freeze
+# Заморозка детектора
 
-> **Purpose:** what is sealed, how the seal is verified, the gate that validates it, and how a
-> detector change would be accepted.
-> **Audience:** team, jury · **Owner:** P1 (seal), P3 (detector) · **Language:** EN
-> **Last verified:** 2026-09-28, experimental complete-timing source `bc75abe`: source integrity and full default gate pass.
-> **Status:** active user-authorized improvements; each detector change requires fresh acceptance and a replacement seal.
+> **Назначение:** что опечатано, как проверяется печать, шлюз, который её подтверждает, и как будет
+> приниматься изменение детектора.
+> **Аудитория:** команда, жюри · **Ответственный:** P1 (печать), P3 (детектор) · **Язык:** RU
+> **Проверено:** 2026-09-29: `python3 scripts/detector_freeze.py verify` PASS для полного тайминга;
+> шлюз измерен на исходниках `bc75abe` · **Статус:** активный цикл улучшений; печать фиксирует
+> проверенный срез, каждый кандидат требует новой приёмки
 
-## What is sealed
+## Что опечатано
 
-**Current development reference:** `experiment/cross-ring-sparse-evidence`, combining
-P3 work, validated low-object continuation, the health histogram optimization and corrected
-full-call timing. The [current seal](evidence/detector_freeze_2026-09-27.json) covers 34 detector,
-configuration and build files and matches measured timing source `bc75abe`; its digest is recorded
-in the manifest.
-The historical manifest filename is retained for CI.
+Текущий манифест [`detector_freeze_2026-09-27.json`](evidence/detector_freeze_2026-09-27.json)
+фиксирует 34 файла детектора, конфигурации и сборки. Он совпадает с полным таймингом, измеренным на
+исходниках `bc75abe`, с SHA-256 `506a1e05d19b99bae936188bfed4f2015a0cc0d562dec0251457022f6668f194`.
+Состав включает `resense/`, `native/`, конфигурации ROS и входы сборки; точный список и хеши находятся
+в манифесте. Код ноды ROS, launch-файл, Docker, CI и документация вне печати и проходят отдельные
+проверки. Предыдущие манифесты и результаты сохранены в истории Git.
 
-The [full default gate](evidence/cycle_2026-09-28/health_histogram/default/README.md)
-passes with all 208 compared metrics unchanged, including 146 enforced metrics, and no
-waivers. All 15,269 real-frame payloads and 30 set F cases (3,060 actual rows) match the
-combined P3 baseline outside verified timing effects. The
-[previous P3 seal](evidence/cycle_2026-09-28/health_histogram/previous_p3_seal.json)
-is preserved. This follows the user-authorized [improvement cycle](IMPROVEMENT_CYCLE_2026-09-28.md).
+## Как проверить
 
-The [complete-timing gate](evidence/cycle_2026-09-28/complete_timing/default/README.md)
-passes with the same 208 non-latency metrics. Exact parity covers all 15,269 recorded outputs;
-no non-timing field or invalid timing contract changed. Health now consumes the previous
-complete detector call and labels its one-frame-old sample. Default decisions and all other
-non-timing output are unchanged.
+`python3 scripts/detector_freeze.py verify` (только стандартная библиотека; без данных, пакетов и
+клона Git) завершается ошибкой, если опечатанный файл добавлен, изменён или удалён, если
+`configs/default.yaml` и его копия для ROS различаются, или если шлюз либо базовая линия (baseline),
+названные в манифесте, изменились или больше не фиксируют полный, пройденный шлюз без послаблений
+(waivers). CI запускает его в задании `checks` при каждом пуше. Он не прогоняет никаких данных, и
+файл, заменённый вместе с записанным хешем, проходит проверку: изменение манифеста ревьюится как код.
 
-[Matched installed-image runtime](evidence/cycle_2026-09-28/health_histogram/runtime/README.md)
-passes for the candidate: positive processing p95 105.15 → 76.32 ms, clear 77.33 → 60.51 ms;
-all 201/252 original messages are processed and detections are identical.
-Fresh positive availability improves from 0 to 170/201 frames, but current end-to-end p95
-is 167.85 ms. This is one local warm pair, not target-hardware or cold-start acceptance.
-The [previous experimental CI](evidence/cycle_2026-09-28/p3_sync/ci_25a218a/README.md)
-is green in all four jobs; CI of the new health integration must be checked separately.
+## Шлюз, подтверждающий печать
 
-## How to verify
+Текущий шлюз [полного тайминга](evidence/cycle_2026-09-28/complete_timing/default/README.md)
+сравнивает с принятой базовой линией исправности и сохраняет результаты предыдущего P3-среза.
+Все 208 нетайминговых метрик совпали; проверка охватывает 15 269 кадров и 30 наборов F / 3 060
+строк, без изменений решений и других нетайминговых выходов. Изменения уровня `health`, вызванные
+исправленной телеметрией, отдельно учтены; это не измеренный выигрыш скорости и не новая оценка балла.
 
-`python3 scripts/detector_freeze.py verify` (standard library only; no data, packages or Git
-checkout) fails if a sealed file is added, changed or removed, if `configs/default.yaml` and its ROS
-copy differ, or if the gate or baseline named in the manifest changed or no longer records a full,
-passing, waiver-free gate. CI runs it in job `checks` on every push. It replays no data, and a file
-replaced together with its recorded hash passes: a change to the manifest is reviewed like code.
+[`regression_gate_2026-09-27_quality.json`](evidence/results/regression_gate_2026-09-27_quality.json):
+каждый кадр шести записей, набора O, всей поездки и набора F straight на конфигурации по умолчанию,
+против [`regression_baseline_2026-09-26_ride_p3d.json`](evidence/results/regression_baseline_2026-09-26_ride_p3d.json):
+PASS без `--allow`, без отсутствующих строк и без ухудшившихся проверяемых метрик. Этот же прогон
+служит текущей базовой линией
+[`regression_baseline_2026-09-27_quality.json`](evidence/results/regression_baseline_2026-09-27_quality.json);
+повторный прогон против неё на ВМ команды 28.09 дал тот же результат, кроме информационных строк
+задержки ([`gate_2026-09-28/`](evidence/gate_2026-09-28/gate_table.txt)). Независимые выходные данные
+по кадрам: [`judge_outputs_2026-09-28/`](evidence/judge_outputs_2026-09-28/README.md),
+[`judgement_2026-09-28/`](evidence/judgement_2026-09-28/README.md). Измеренное качество и
+ограничения: [`SCORECARD.md`](SCORECARD.md), `docs/EXPERIMENTS.md`. Печать — это запись о
+целостности, а не релиз, не одобрение развёртывания и не доказательство безопасности.
 
-## The gate that validates it
+## Как будет принято изменение
 
-The [current complete-timing gate](evidence/cycle_2026-09-28/complete_timing/default/gate.json)
-compares against the accepted health source and then the
-[combined P3 baseline](evidence/cycle_2026-09-28/p3_sync/default/gate.json):
-all 208 compared metrics, including 146 enforced, are unchanged. Complete payload parity
-covers 15,269 real frames and 30 set F cases. The node, launch, Docker and documentation
-remain outside the seal and require their own checks. Main `059948a` changes the node;
-the old-node health runtime must not be used as combined-node acceptance.
+Перед включением любого изменения детектора требуется, по порядку:
 
-## How a change would be accepted
-
-The user authorized continuing improvements on the experimental branch. A detector change needs, in order:
-
-1. the defect and its acceptance test committed before any run; the patch reviewed, the affected
-   tests passing, the detector committed;
-2. the **full gate** on that commit (default configuration, the ride and set F cached as in
-   [`VM_GUIDE.md`](VM_GUIDE.md) §2.3): exit 0, every gated metric identical or better, no
-   `--allow`; a change meant to move the numbers commits its new baseline with it;
-3. an **independent safety review** of the patch and its per-frame differences: no STOP lost,
-   delayed or shortened on set O, the real obstacle, the range cases and the stress runs;
-4. a **reseal**, reviewed: `create` refuses a gate with waivers, missing rows or overrides, or a
-   sealed file that differs from the measured commit; then `DEFAULT_MANIFEST` in
-   `scripts/detector_freeze.py` points at the new manifest and `verify` passes.
+1. дефект и его приёмочный тест, закоммиченные до любого запуска; патч, прошедший ревью;
+   проходящие затронутые тесты; закоммиченный детектор;
+2. **полный шлюз** на этом коммите (конфигурация по умолчанию, поездка и набор F в кэше, как в
+   [`VM_GUIDE.md`](VM_GUIDE.md) §2.3): код выхода 0, каждая проверяемая метрика такая же или лучше,
+   без `--allow`; изменение, которое должно сдвинуть числа, коммитит вместе с собой новую базовую
+   линию;
+3. **независимое ревью безопасности** патча и его отличий по кадрам: ни один STOP не потерян, не
+   задержан и не укорочен на наборе O, реальном препятствии, случаях дальности и стресс-прогонах;
+4. **новую печать (reseal)**, прошедшую ревью: `create` отказывается работать с шлюзом с
+   послаблениями, отсутствующими строками или переопределениями, а также с опечатываемым файлом,
+   который отличается от измеренного коммита; затем `DEFAULT_MANIFEST` в
+   `scripts/detector_freeze.py` указывает на новый манифест, и `verify` проходит.
 
 ```bash
 python scripts/regression_gate.py --cache /data/cache --jobs 4 \
@@ -78,6 +72,6 @@ python scripts/detector_freeze.py create --manifest docs/evidence/detector_freez
   --evidence docs/evidence/results/regression_gate_<date>_<change>.json
 ```
 
-Superseded P3d seals of 26.09: [`detector_freeze_2026-09-26.json`](evidence/detector_freeze_2026-09-26.json),
+Замещённые печати P3d от 26.09: [`detector_freeze_2026-09-26.json`](evidence/detector_freeze_2026-09-26.json),
 [`…_before_comment_correction.json`](evidence/detector_freeze_2026-09-26_before_comment_correction.json).
-How the sealed detector came about: [`archive/QUALITY_CYCLE_2026-09-27.md`](archive/QUALITY_CYCLE_2026-09-27.md).
+Как появился опечатанный детектор: [`archive/QUALITY_CYCLE_2026-09-27.md`](archive/QUALITY_CYCLE_2026-09-27.md).

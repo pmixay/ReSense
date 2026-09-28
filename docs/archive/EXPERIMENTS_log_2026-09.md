@@ -3289,7 +3289,7 @@ malformed input.
 360° on the sandbox); node process 0.4–0.8 cores, peak RSS 0.13–0.48 GB; 10 fps with no frame of
 the recording unprocessed after start-up; detections unchanged, including the detector's single
 GO at `doubleT_obstacle` frame 111 and CAUTION at 117 and 197 while the object on the rail is in
-view ([ARCHITECTURE «Known limitations»](../ARCHITECTURE.md#limitations-of-the-sealed-2709-detector-verified-2809)).
+view ([ARCHITECTURE «Known limitations»](../ARCHITECTURE.md#ограничения-опечатанного-детектора-2709-проверено-2809)).
 **Honest reading:** a real but modest gain (~10–20 ms at 360° on the sandbox), not reliably under
 100 ms there; the rest is the detector and the DDS transfer of the 24 MB cloud.
 

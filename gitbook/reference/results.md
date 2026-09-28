@@ -110,7 +110,7 @@
 * [`docs/EXPERIMENTS.md`](https://github.com/pmixay/ReSense/blob/main/docs/EXPERIMENTS.md) —
   измерения команды; полный журнал —
   [`docs/archive/EXPERIMENTS_log_2026-09.md`](https://github.com/pmixay/ReSense/blob/main/docs/archive/EXPERIMENTS_log_2026-09.md)
-* [`docs/ARCHITECTURE.md` «Known limitations»](https://github.com/pmixay/ReSense/blob/main/docs/ARCHITECTURE.md#known-limitations)
+* [`docs/ARCHITECTURE.md` «Known limitations»](https://github.com/pmixay/ReSense/blob/main/docs/ARCHITECTURE.md#известные-ограничения)
   — ограничения с разбором причин
 * [`docs/evidence/judge_outputs_2026-09-28/`](https://github.com/pmixay/ReSense/blob/main/docs/evidence/judge_outputs_2026-09-28/README.md)
   — покадровые выходы опечатанного детектора и скрипт пересчёта

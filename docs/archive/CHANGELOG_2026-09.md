@@ -796,7 +796,7 @@ The README was cut to the jury path on 28.09 (the independent judge A asked for 
 are those of their dates; links are rewritten for this file's place in `docs/archive/`. The current
 figures: [`README.md`](../../README.md) "Results". Notes on the 26.09–27.09 figures below: the object on the rail's "125 of 126"
 is the replay of the 1 cm frame cache; on the raw recording (offline and through the node) it is
-123 of 126, with a GO at frame 111 ([ARCHITECTURE «Known limitations»](../ARCHITECTURE.md#limitations-of-the-sealed-2709-detector-verified-2809)),
+123 of 126, with a GO at frame 111 ([ARCHITECTURE «Known limitations»](../ARCHITECTURE.md#ограничения-опечатанного-детектора-2709-проверено-2809)),
 which the shortened output below leaves out; the learned opinion's "~1 s" is 10 processed frames
 (~1 s at 10 Hz, ~2 s at 5 Hz, longer while the node catches up).
 
