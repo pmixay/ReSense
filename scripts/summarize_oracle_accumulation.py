@@ -35,7 +35,7 @@ def summarize(data):
                     if c["source_raw"]:
                         source_gauge.append(c)
                         source_rows.append(record)
-                    elif v["mode"] == "production_background":
+                    elif "background" in v["mode"]:
                         backgrounds.append(record)
                 if c["source_raw"] and c["result"] is None:
                     total["source_rejected:" + str(c["return_condition"])] += 1
