@@ -262,3 +262,18 @@ def test_v2_rejects_a_below_rail_control_that_crosses_rail_head():
     protocol["negative_controls"][-1]["size_m"][2] = .20
     with pytest.raises(ValueError, match="crosses physical rail head"):
         evaluation.sequence_cases(protocol, "development")
+
+
+def test_source_identity_hashes_selected_detector_checkout(tmp_path, monkeypatch):
+    (tmp_path / "resense/models").mkdir(parents=True)
+    (tmp_path / "native").mkdir()
+    source = tmp_path / "resense/selected.py"
+    source.write_text("selected = True\n")
+    (tmp_path / "native/selected.cpp").write_text("// selected native source\n")
+    (tmp_path / "resense/models/selected.json").write_text("{}\n")
+    monkeypatch.setattr(evaluation, "DETECTOR_ROOT", tmp_path)
+    identity = evaluation.source_identity("a" * 40)
+    assert set(identity["files"]) == {"resense/selected.py", "native/selected.cpp", "resense/models/selected.json"}
+    assert identity["files"]["resense/selected.py"] == evaluation.file_hash(source)
+    source.write_text("selected = False\n")
+    assert evaluation.source_identity("a" * 40)["detector_source_sha256"] != identity["detector_source_sha256"]

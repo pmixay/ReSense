@@ -11,6 +11,7 @@ import argparse
 from dataclasses import asdict
 import hashlib
 import json
+import os
 from pathlib import Path
 import platform
 import re
@@ -20,8 +21,15 @@ import sys
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
+DETECTOR_ROOT = Path(os.environ.get("RESENSE_DETECTOR_ROOT", ROOT)).resolve()
+if not (DETECTOR_ROOT / "resense/__init__.py").is_file():
+    raise ValueError(f"RESENSE_DETECTOR_ROOT has no resense package: {DETECTOR_ROOT}")
+# The observer/protocol live here; production imports and source hashes come from the
+# explicitly selected checkout. No candidate files need to be copied or changed.
+for directory in (ROOT, DETECTOR_ROOT):
+    if str(directory) in sys.path:
+        sys.path.remove(str(directory))
+    sys.path.insert(0, str(directory))
 
 from resense.config import DetectorConfig  # noqa: E402
 from resense import _native  # noqa: E402
@@ -29,6 +37,9 @@ from resense.detector import Detector  # noqa: E402
 from resense.frame import axis_matrix, frame_from_compact  # noqa: E402
 from resense.pointcloud import COMPACT_DTYPE, compact_to_compact16  # noqa: E402
 from resense.sensor import RING_ELEVATION_DEG  # noqa: E402
+
+if Path(sys.modules["resense"].__file__).resolve().parent != DETECTOR_ROOT / "resense":
+    raise ValueError("imported resense package does not belong to selected detector checkout")
 
 PROTOCOL = ROOT / "docs/evidence/cycle_2026-09-28/evaluation/protocol.json"
 FIXTURE = ROOT / "tests/fixtures/synthetic_lidar_v1"
@@ -47,10 +58,10 @@ def json_hash(value):
 
 
 def source_identity(source_commit=None):
-    files = sorted((ROOT / "resense").glob("*.py")) + sorted((ROOT / "native").glob("*.cpp"))
-    files += sorted((ROOT / "resense/models").glob("*.json"))
-    hashes = {str(p.relative_to(ROOT)): file_hash(p) for p in files}
-    result = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True, capture_output=True)
+    files = sorted((DETECTOR_ROOT / "resense").glob("*.py")) + sorted((DETECTOR_ROOT / "native").glob("*.cpp"))
+    files += sorted((DETECTOR_ROOT / "resense/models").glob("*.json"))
+    hashes = {str(p.relative_to(DETECTOR_ROOT)): file_hash(p) for p in files}
+    result = subprocess.run(["git", "rev-parse", "HEAD"], cwd=DETECTOR_ROOT, text=True, capture_output=True)
     commit = result.stdout.strip() if result.returncode == 0 else source_commit
     if not commit:
         raise ValueError("Git metadata unavailable in this mount; pass --source-commit from the host checkout")
@@ -408,7 +419,7 @@ def main(argv=None):
     ev.add_argument("--baseline", type=Path)
     ev.add_argument("--output", type=Path, required=True)
     for command in (gen, ev):
-        command.add_argument("--config", type=Path, default=ROOT / "configs/default.yaml")
+        command.add_argument("--config", type=Path, default=DETECTOR_ROOT / "configs/default.yaml")
         command.add_argument("--protocol", type=Path, default=PROTOCOL)
         command.add_argument("--candidate-freeze", type=Path)
         command.add_argument("--source-commit", help="host checkout commit when a container cannot resolve worktree Git metadata")

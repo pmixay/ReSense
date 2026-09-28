@@ -154,3 +154,18 @@ frozen and the full real regression gate passes. The existing `--candidate-freez
 guards apply to both generation and replay. A v1 report cannot be compared to v2: protocol
 hashes differ. Reused development noise seeds and related synthetic shapes are not independent
 trials or real holdout evidence.
+
+To evaluate another frozen checkout without copying scripts into it, set
+`RESENSE_DETECTOR_ROOT=/absolute/path/to/checkout`. The runner verifies the imported `resense`
+package belongs to that checkout, hashes its detector/model/native sources, records its Git
+commit, loads its default configuration and native library, and continues to use the runner's
+own protocol/audit files. Plain `PYTHONPATH` is not an identity selector. For example:
+
+```sh
+RESENSE_DETECTOR_ROOT=/workspace/ReSense-continuity \
+  python3 scripts/synthetic_sensitivity.py evaluate \
+  --protocol docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json \
+  --cache /cycle/synthetic/development-v2 \
+  --baseline /cycle/synthetic/baseline-development-v2.json \
+  --output /cycle/synthetic/candidate-development-v2.json
+```
