@@ -11,7 +11,7 @@ rounds found three safety regressions (a one-sided envelope shift, a far-evidenc
 hide a track, an unbounded opinion delay) and a violated near bound of the opinion, and asked for
 a margin on its threshold; the record lists every fix and its cost. That gate is the new regression baseline
 ([`regression_baseline_2026-09-27_quality.json`](evidence/results/regression_baseline_2026-09-27_quality.json)).
-`python scripts/detector_freeze.py verify` (CI job `params-in-sync`) checks the seal. No release
+`python scripts/detector_freeze.py verify` (CI job `checks`) checks the seal. No release
 tag has been created or pushed.
 
 ## The P3d seal of 26 September (dated record)

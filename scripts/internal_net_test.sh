@@ -4,8 +4,9 @@
 # recorded by a third, all on a `docker network create --internal` network (a bridge with no way
 # out: the containers reach each other and nothing else, as on a stand whose network card is up but
 # not connected to the internet); then scripts/check_dry_run.py on the host. The same chain as the
-# ci.yml docker step "no internet, the organizers' way", as a script, so that the release workflow
-# (.github/workflows/release.yml) and scripts/release.sh run it on the image loaded from the archive.
+# ci.yml offline-build step "no internet, the release archive's runtime image", as a script, so that
+# the release workflow (.github/workflows/release.yml) and scripts/release.sh run it on the image
+# loaded from the archive.
 #
 #   scripts/internal_net_test.sh <bag dir> [<second bag dir, same parent>] [-- <check_dry_run.py args>]
 #   IMAGE=resense:v1.0.0-rc1 scripts/internal_net_test.sh /tmp/bags/smoke_bag /tmp/bags/smoke_bag2

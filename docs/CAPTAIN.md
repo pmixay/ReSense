@@ -294,7 +294,7 @@ all final links, approved team details and human confirmation that the form was 
 |---|---|
 | `docker/`, `docker-compose.yml`, `ros2_ws/src/resense_ros/` (except `rviz/`), `scripts/*.sh` (except `build_native.sh`), `scripts/{check_dry_run,make_smoke_bag,cache_to_bag,bench_node_path,bench_summary,check_no_network,release_meta}.py`, `tests/test_release.py` | P1 |
 | `README.md`, `CHANGELOG.md`, `docs/{README,ARCHITECTURE,ALGORITHM,EVALUATION,SENSOR,PLAN,CAPTAIN,QUESTIONS,SCORECARD,VM_GUIDE}.md`, `docs/archive/`, team notes in `docs/organizers/` | P1 (P3 reviews ALGORITHM) |
-| `.github/workflows/ci.yml`, `.github/workflows/release.yml` | `ci.yml`: P4 `pytest`, P2 `web`, P1 the other jobs; `release.yml`: P1 |
+| `.github/workflows/ci.yml`, `.github/workflows/release.yml` | `ci.yml`: P4 `pytest` (P2 its `web/demo` steps), P1 the other jobs; `release.yml`: P1 |
 | `configs/default.yaml` | P3 values, P1 structure |
 | `resense/{track,gauge,clustering,tracking,accumulate,egomotion,lowobj,calibration,health,config,detector,_native}.py`, `native/`, `setup.py`, `scripts/build_native.sh`, `tests/{test_algorithm,test_lowobj_near,test_native,test_cpu_savings,test_late_candidates}.py` | P3 |
 | `resense/{frame,pointcloud,sensor}.py` | P1 decoding / P3 geometry |
