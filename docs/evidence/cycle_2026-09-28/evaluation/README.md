@@ -86,6 +86,7 @@ identity and per-case counts are in [`baseline-summary.json`](baseline-summary.j
 | Positive cases with no target returns | 0 | 0 |
 | Unmatched STOP frames in positive cases | 0 | 0 |
 | STOP frames across three negative controls | 0/48 | 0/48 |
+| Clear distance extends past a visible target by more than 1 m | 208/512 | 208/512 |
 
 All cases that detect confirm at frame 4 and keep the STOP through frame 15. The missed cases
 are the rail box, 0.3 m cube and 0.5 m box at both 100 m and 150 m, plus the 0.3 m edge cube at
