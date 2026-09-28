@@ -1,0 +1,16 @@
+name	kind	kernels	exit	wall_s	bags	note
+build	build	-	0	2		scripts/build.sh (docker layer cache as found)
+dry_obstacle_native	dry	native	0	31	/data/for_hackathon/doubleT_obstacle	
+dry_clear_native	dry	native	0	36	/data/for_hackathon/roundT_doubleT	
+dry_obstacle_numpy	dry	numpy	1	31	/data/for_hackathon/doubleT_obstacle	
+dry_clear_numpy	dry	numpy	0	36	/data/for_hackathon/roundT_doubleT	
+ct_image	ct	native	0	69	/data/for_hackathon/roundT_doubleT,/data/for_hackathon/doubleT_obstacle	
+ct_stock	ct	native	0	69	/data/for_hackathon/roundT_doubleT,/data/for_hackathon/doubleT_obstacle	
+node_doubleT_obstacle_native	offline_node	native	0	18	/data/cache/doubleT_obstacle	
+node_doubleT_obstacle_numpy	offline_node	numpy	0	23	/data/cache/doubleT_obstacle	
+stages_doubleT_obstacle_native	offline_stages	native	0	10	/data/cache/doubleT_obstacle	
+stages_doubleT_obstacle_numpy	offline_stages	numpy	0	18	/data/cache/doubleT_obstacle	
+node_roundT_doubleT_native	offline_node	native	0	15	/data/cache/roundT_doubleT	
+node_roundT_doubleT_numpy	offline_node	numpy	0	20	/data/cache/roundT_doubleT	
+stages_roundT_doubleT_native	offline_stages	native	0	9	/data/cache/roundT_doubleT	
+stages_roundT_doubleT_numpy	offline_stages	numpy	0	16	/data/cache/roundT_doubleT	

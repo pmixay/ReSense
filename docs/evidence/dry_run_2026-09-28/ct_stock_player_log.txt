@@ -1,0 +1,12 @@
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+DDS uid=1000 RMW_IMPLEMENTATION=rmw_fastrtps_cpp FASTRTPS_DEFAULT_PROFILES_FILE=unset FASTDDS_DEFAULT_PROFILES_FILE=unset cwd=/tmp/tmp.2FSY0VJqE4 profile_in_cwd=none fastrtps=2.6.12-1jammy.20260723.233918
+PLAY bag=roundT_doubleT rc=0 new_shm_files=5
+  play: stdin is not a terminal device. Keyboard handling disabled.[INFO] [1790613832.721000878] [rosbag2_storage]: Opened database '/data/roundT_doubleT/roundT_doubleT_0.db3' for READ_ONLY.
+  play: [INFO] [1790613832.721058574] [rosbag2_player]: Set rate to 1
+  play: [INFO] [1790613832.726063066] [rosbag2_player]: Sleep 3000000000 ns
+  play: [INFO] [1790613835.726624018] [rosbag2_storage]: Opened database '/data/roundT_doubleT/roundT_doubleT_0.db3' for READ_ONLY.
+PLAY bag=doubleT_obstacle rc=0 new_shm_files=5
+  play: stdin is not a terminal device. Keyboard handling disabled.[INFO] [1790613866.241361058] [rosbag2_storage]: Opened database '/data/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.
+  play: [INFO] [1790613866.241418242] [rosbag2_player]: Set rate to 1
+  play: [INFO] [1790613866.246476648] [rosbag2_player]: Sleep 3000000000 ns
+  play: [INFO] [1790613869.246963945] [rosbag2_storage]: Opened database '/data/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.

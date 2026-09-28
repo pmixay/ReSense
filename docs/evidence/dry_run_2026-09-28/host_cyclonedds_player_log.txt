@@ -1,0 +1,9 @@
+[INFO] [1790614038.794271509] [rosbag2_storage]: Opened database '/data/for_hackathon/roundT_doubleT/roundT_doubleT_0.db3' for READ_ONLY.
+[INFO] [1790614038.794348722] [rosbag2_player]: Set rate to 1
+[INFO] [1790614038.797939952] [rosbag2_player]: Sleep 3000000000 ns
+[INFO] [1790614041.798420277] [rosbag2_storage]: Opened database '/data/for_hackathon/roundT_doubleT/roundT_doubleT_0.db3' for READ_ONLY.
+[INFO] [1790614072.467057981] [rosbag2_storage]: Opened database '/data/for_hackathon/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.
+[INFO] [1790614072.467131548] [rosbag2_player]: Set rate to 1
+[INFO] [1790614072.470801816] [rosbag2_player]: Sleep 3000000000 ns
+[INFO] [1790614075.471268364] [rosbag2_storage]: Opened database '/data/for_hackathon/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.
+player exit 0

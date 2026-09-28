@@ -1,0 +1,10 @@
+$ RESENSE_NATIVE=0  python3 -m resense.cli bench --npy /data/cache/roundT_doubleT
+kernels: numpy (RESENSE_NATIVE=0)
+track      mean    24.7 ms  p95    34.6 ms  max    38.3 ms
+corridor   mean    10.6 ms  p95    11.5 ms  max    12.5 ms
+egomotion  mean     0.0 ms  p95     0.0 ms  max     0.0 ms
+accumulate mean     0.0 ms  p95     0.0 ms  max     0.0 ms
+cluster    mean     7.3 ms  p95    10.7 ms  max    12.2 ms
+tracking   mean     1.0 ms  p95     1.4 ms  max     1.6 ms
+total      mean    43.6 ms  p95    54.0 ms  max    58.0 ms
+peak RSS 107 MB

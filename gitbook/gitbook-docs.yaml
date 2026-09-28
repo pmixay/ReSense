@@ -1,0 +1,13 @@
+$schema: https://api.gitbook.com/gitbook-docs.yaml
+
+site:
+  title: ReSense
+  structure:
+    - type: space
+      key: space-resense
+      title: ReSense
+      path: resense
+      default: true
+      content:
+        directory: ./
+        language: ru

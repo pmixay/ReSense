@@ -1,0 +1,56 @@
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+[INFO] [launch]: All log files can be found below /root/.ros/log/2026-09-28-16-44-55-214803-compute-vm-2-2-90-ssd-1790359373525df-1
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [detector_node-1]: process started with pid [22]
+[detector_node-1] [INFO] [1790613895.869185280] [resense_detector]: sensor mount: forward=-y left=+x up=+z roll/pitch/yaw=0.0/0.0/0.0 deg; auto-calibration on
+[detector_node-1] [INFO] [1790613895.882413606] [resense_detector]: ReSense detector listening on /lidar_points, /sensing/lidar/hesai128/pointcloud (+ auto-discovery); input reliability auto; per-frame kernels: native (_resense_native.cpython-310-x86_64-linux-gnu.so); resense 1.0.0
+[detector_node-1] [INFO] [1790613906.339347076] [resense_detector]: input 1: /lidar_points (frame_id=hesai_lidar, 307200 points)
+[detector_node-1] [INFO] [1790613906.340092599] [resense_detector]: static TF resense_lidar -> hesai_lidar (identity)
+[detector_node-1] [INFO] [1790613906.387687833] [resense_detector]: mount calibration: pending - 
+[detector_node-1] [INFO] [1790613907.913688573] [resense_detector]: frame 18: GO; freshness current; axis y=+0.03 R=39118; 8.9 fps; latency mean 42 / p95 49 / max 50 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.44 cores
+[detector_node-1] [INFO] [1790613909.912109160] [resense_detector]: frame 38: GO; freshness current; axis y=-0.01 R=98167; 10.0 fps; latency mean 37 / p95 44 / max 48 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.43 cores
+[detector_node-1] [INFO] [1790613911.912795018] [resense_detector]: frame 58: GO; freshness current; axis y=-0.01 R=43709; 10.0 fps; latency mean 37 / p95 45 / max 48 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.43 cores
+[detector_node-1] [INFO] [1790613913.922925931] [resense_detector]: frame 78: CAUTION; freshness current; axis y=-0.05 R=-2350; 9.9 fps; latency mean 35 / p95 42 / max 46 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.41 cores
+[detector_node-1] [INFO] [1790613915.919675795] [resense_detector]: frame 98: CAUTION; freshness current; axis y=-0.00 R=-1148; 10.0 fps; latency mean 38 / p95 45 / max 45 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.44 cores
+[detector_node-1] [INFO] [1790613917.921893828] [resense_detector]: frame 118: CAUTION; freshness current; axis y=+0.05 R=-1497; 10.0 fps; latency mean 40 / p95 48 / max 48 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.46 cores
+[detector_node-1] [INFO] [1790613919.920565653] [resense_detector]: frame 138: CAUTION; freshness current; axis y=+0.02 R=-1545; 10.0 fps; latency mean 38 / p95 45 / max 45 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.44 cores
+[detector_node-1] [INFO] [1790613921.915967990] [resense_detector]: frame 158: CAUTION; freshness current; axis y=+0.03 R=-1560; 10.0 fps; latency mean 38 / p95 46 / max 46 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.44 cores
+[detector_node-1] [INFO] [1790613923.913266783] [resense_detector]: frame 178: GO; freshness current; axis y=-0.04 R=-779; 10.0 fps; latency mean 39 / p95 47 / max 47 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.45 cores
+[detector_node-1] [INFO] [1790613925.221561138] [resense_detector]: mount calibration: identity - configured mapping confirmed
+[detector_node-1] [INFO] [1790613925.914032000] [resense_detector]: frame 198: CAUTION; freshness current; axis y=-0.06 R=-4476; 10.0 fps; latency mean 39 / p95 44 / max 47 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.45 cores
+[detector_node-1] [INFO] [1790613927.918465560] [resense_detector]: frame 218: CAUTION; freshness current; axis y=-0.03 R=inf; 10.0 fps; latency mean 38 / p95 42 / max 46 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.44 cores
+[detector_node-1] [INFO] [1790613929.912571266] [resense_detector]: frame 238: CAUTION; freshness current; axis y=-0.01 R=22322; 10.0 fps; latency mean 36 / p95 41 / max 41 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.43 cores
+[detector_node-1] [INFO] [1790613931.883247685] [resense_detector]: frame 252: FAULT: last result expired (> 0.5 s source/residence age): path not monitored; 7.1 fps; latency mean 36 / p95 43 / max 45 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.30 cores
+[detector_node-1] [INFO] [1790613940.264958618] [resense_detector]: 0.4 s of recording waiting: catching up, one frame every 0.3 s of recording
+[detector_node-1] [INFO] [1790613940.267112222] [resense_detector]: input 2: /sensing/lidar/hesai128/pointcloud (frame_id=lidar_livox, 921600 points) - input switched from /lidar_points: detector restarted
+[detector_node-1] [INFO] [1790613940.267830559] [resense_detector]: static TF resense_lidar -> lidar_livox (identity)
+[detector_node-1] [INFO] [1790613940.334855200] [resense_detector]: mount calibration: pending - 
+[detector_node-1] [INFO] [1790613940.625045129] [resense_detector]: mount calibration: provisional - provisional tilt: roll +3.62, pitch -0.81 deg (final after 20 observations)
+[detector_node-1] [INFO] [1790613941.056982007] [resense_detector]: caught up in 0.8 s: 13 frames processed, 0 skipped, at most 0.4 s of recording behind
+[detector_node-1] [INFO] [1790613941.883331529] [resense_detector]: frame 273: STOP at 55.7 m; freshness current; axis y=+0.04 R=-7226; 10.5 fps; latency mean 58 / p95 68 / max 76 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.83 cores
+[detector_node-1] [INFO] [1790613943.940074722] [resense_detector]: frame 294: STOP at 55.7 m; freshness current; axis y=+0.04 R=-7296; 10.2 fps; latency mean 55 / p95 63 / max 65 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.69 cores
+[detector_node-1] [INFO] [1790613945.883182188] [resense_detector]: frame 313: STOP at 56.2 m; freshness current; axis y=+0.05 R=-7598; 9.8 fps; latency mean 55 / p95 64 / max 65 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.67 cores
+[detector_node-1] [INFO] [1790613947.883121048] [resense_detector]: frame 333: STOP at 56.2 m; freshness current; axis y=+0.04 R=-7100; 10.0 fps; latency mean 54 / p95 62 / max 63 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.68 cores
+[detector_node-1] [INFO] [1790613949.883342835] [resense_detector]: frame 353: STOP at 56.2 m; freshness current; axis y=+0.05 R=-7311; 10.0 fps; latency mean 53 / p95 62 / max 64 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.67 cores
+[detector_node-1] [INFO] [1790613951.942118655] [resense_detector]: frame 374: STOP at 56.2 m; freshness current; axis y=+0.05 R=-7524; 10.2 fps; latency mean 54 / p95 63 / max 64 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.69 cores
+[detector_node-1] [INFO] [1790613953.951323745] [resense_detector]: frame 393: STOP at 56.1 m; freshness current; axis y=+0.04 R=-6371; 9.5 fps; latency mean 53 / p95 62 / max 62 ms; input period 100 ms; dropped 1 (0 skipped by the catch-up); CPU 0.64 cores
+[detector_node-1] [INFO] [1790613955.952639735] [resense_detector]: frame 413: STOP at 56.2 m; freshness current; axis y=+0.04 R=-6477; 10.0 fps; latency mean 54 / p95 63 / max 64 ms; input period 100 ms; dropped 1 (0 skipped by the catch-up); CPU 0.68 cores
+[detector_node-1] [INFO] [1790613957.883218796] [resense_detector]: frame 429: STOP at 56.1 m; freshness current; axis y=+0.04 R=-6754; 8.3 fps; latency mean 53 / p95 56 / max 61 ms; input period 100 ms; dropped 4 (0 skipped by the catch-up); CPU 0.56 cores
+[detector_node-1] [INFO] [1790613959.250985418] [resense_detector]: mount calibration: ok - tilt corrected: roll +3.01, pitch -0.84, yaw +0.00 deg
+[detector_node-1] [INFO] [1790613959.938772459] [resense_detector]: frame 450: CAUTION; freshness current; axis y=+0.02 R=-5413; 10.2 fps; latency mean 54 / p95 62 / max 67 ms; input period 100 ms; dropped 4 (0 skipped by the catch-up); CPU 0.69 cores
+[detector_node-1] [INFO] [1790613961.883254766] [resense_detector]: frame 453: STOP: last result expired (> 0.5 s source/residence age): path not monitored; 1.5 fps; latency mean 53 / p95 56 / max 56 ms; input period 100 ms; dropped 4 (0 skipped by the catch-up); CPU 0.11 cores
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [detector_node-1]: sending signal 'SIGINT' to process[detector_node-1]
+[detector_node-1] Traceback (most recent call last):
+[detector_node-1]   File "/opt/resense/ros2_ws/install/resense_ros/lib/resense_ros/detector_node", line 33, in <module>
+[detector_node-1]     sys.exit(load_entry_point('resense-ros', 'console_scripts', 'detector_node')())
+[detector_node-1]   File "/opt/resense/ros2_ws/build/resense_ros/resense_ros/detector_node.py", line 1260, in main
+[detector_node-1]     rclpy.shutdown()
+[detector_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+[detector_node-1]     _shutdown(context=context)
+[detector_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+[detector_node-1]     return context.shutdown()
+[detector_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+[detector_node-1]     self.__context.shutdown()
+[detector_node-1] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241
+[ERROR] [detector_node-1]: process has died [pid 22, exit code 1, cmd '/opt/resense/ros2_ws/install/resense_ros/lib/resense_ros/detector_node --ros-args -r __node:=resense_detector --params-file /tmp/launch_params_k0th0skj'].
