@@ -1,0 +1,69 @@
+== SKIP_BUILD=1: reusing resense:latest ==
+== OFFLINE=1: the container gets no network at all (--network none, loopback only) ==
+   (this host does not reach the internet either)
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+interfaces: lo
+  1.1.1.1:443: unreachable (ENETUNREACH)
+  8.8.8.8:443: unreachable (ENETUNREACH)
+  9.9.9.9:443: unreachable (ENETUNREACH)
+  [2606:4700:4700::1111]:443: unreachable (no IPv6 here: ENETUNREACH)
+  [2001:4860:4860::8888]:443: unreachable (no IPv6 here: ENETUNREACH)
+  [2620:fe::fe]:443: unreachable (no IPv6 here: ENETUNREACH)
+  registry-1.docker.io IPv4: no name resolution (gaierror)
+  registry-1.docker.io IPv6: no name resolution (gaierror)
+  archive.ubuntu.com IPv4: no name resolution (gaierror)
+  archive.ubuntu.com IPv6: no name resolution (gaierror)
+  packages.ros.org IPv4: no name resolution (gaierror)
+  packages.ros.org IPv6: no name resolution (gaierror)
+  pypi.org IPv4: no name resolution (gaierror)
+  pypi.org IPv6: no name resolution (gaierror)
+  files.pythonhosted.org IPv4: no name resolution (gaierror)
+  files.pythonhosted.org IPv6: no name resolution (gaierror)
+  cdn.jsdelivr.net IPv4: no name resolution (gaierror)
+  cdn.jsdelivr.net IPv6: no name resolution (gaierror)
+IPv4: blocked (0 of 3 connections succeeded)
+IPv6: blocked, no IPv6 on this machine (3 of 3 attempts: no IPv6 socket, route or address)
+OK: no internet from here
+== playing roundT_doubleT at rate 1.0 through the node (headless) ==
+== rosbag2 read-ahead queue: 10 messages ==
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1790615668.155213867] [rosbag2_storage]: Opened database '/data/roundT_doubleT/roundT_doubleT_0.db3' for READ_ONLY.
+[INFO] [1790615668.155274358] [rosbag2_player]: Set rate to 1
+[INFO] [1790615668.175225855] [rosbag2_player]: Sleep 3000000000 ns
+[INFO] [1790615671.175774769] [rosbag2_storage]: Opened database '/data/roundT_doubleT/roundT_doubleT_0.db3' for READ_ONLY.
+[WARN] [1790615676.853068721] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790615677.856070065] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790615678.856183684] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790615679.856284925] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790615680.856318743] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790615681.856330995] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790615682.856331481] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790615683.856339467] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790615684.856447576] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790615685.856524048] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790615686.856629498] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790615687.856783630] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790615688.856922640] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790615689.856991598] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790615690.857098779] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790615691.857250995] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790615692.857402605] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790615693.857547048] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+
+== checking out/off_clear/status.jsonl ==
+status messages      : 241 (16 lines skipped)
+alarm frames         : 0
+detector alarm frames: 0 (held STOP excluded from positive evidence)
+latency decode+detect: mean 39 / p95 53 / max 67 ms
+detector stage total : mean 26 / p95 35 ms
+end-to-end (current) : median 45 / p95 67 / max 135 ms over 216 current results (input publication -> result, through DDS)
+node CPU             : 0.42 cores median, 0.60 max (node process, every stats period); peak RSS 267 MB
+dropped input frames : 10 (10 of them skipped by the node's catch-up)
+dropped input settle : start-up catch-up back on the newest frame at +1.6 s; drops counted after +5.0 s (the later of 5 s and that, at most 15 s)
+dropped input vs bag : 200 messages of /lidar_points after the first 5 s, 0 frame(s) missing from the recording itself; 10 of its messages not processed
+fps (last report)    : 11.54
+start of the input   : 51 frames in the first 5 s after the first one, largest gap 0.1 s
+freshness contract  : PASS
+
+FAIL: 10 frames of the recording not processed after the first 5 s > 0
+exit 1

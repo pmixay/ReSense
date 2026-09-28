@@ -184,6 +184,10 @@ class ClusterConfig:
     min_points_far: int = 3        # minimum cluster size beyond ``far_range``
     far_range: float = 100.0
     weak_min_points: int = 4       # 27.09 (P5 range, on; 0 = off): a corridor cluster at least tracking.thin_far_min_distance away with fewer voxels than min_points (min_points_far) but at least this many is kept as weak far evidence (Cluster.weak): like a far scan line it goes to the tracker only and counts for a track only while the track approaches (tracking.approach_*)
+    # Experimental cross-ring sparse evidence (off until a real-bag A/B is measured): a far
+    # cluster just below weak_min_points may pass with distinct current-frame channels in the strict gauge.
+    weak_min_rings: int = 0
+    weak_min_points_with_rings: int = 3
     max_extent: float = 8.0        # m, larger clusters are tunnel structure, not obstacles
     # on since 25.09 (P3): > 0 = a cluster larger than max_extent is not dropped when its part inside the
     # strict gauge is at most this long along the track: an object touching a long line at the corridor
@@ -315,6 +319,13 @@ class TrackingConfig:
     zone_min_votes: int = 0        # 27.09 (P4 history, off; 0 = off): the zone vote counts at least this many hits: a track with fewer hits is voted as if its missing hits were outside the gauge (2 of 3 hits inside the gauge is not 60 % of 5); a history with dropped frames confirms on 3 hits where every frame needs 5 (confirm_time_s), so its vote was taken over 3 hits
     gate_along_only: bool = True  # 27.09 (P4 history, on; false = the whole distance): the association allowance for an object approaching at up to ego_speed_max over the measured frame interval applies to the along-track component only (it widened the gate in every direction: 2.5 m at 10 Hz, 7.5 m after two dropped frames, joining unrelated clusters metres apart across the track into one track)
     start_clean: bool = False      # 27.09 (P4 history, off): a track not reported in the previous frame is confirmed only on a hit whose own cluster is an obstacle inside the strict gauge (zone gauge): the vote of earlier hits alone does not start a STOP on a frame whose cluster is advisory or outside the envelope
+    # Opt-in fresh-stop provenance candidate: onset only, never continuation. A bounded record of
+    # matched-hit sources must contain this many ordinary/low or approaching far-sparse hits, and
+    # the onset hit itself must be in the strict gauge. Off-gauge and stop-keep thin hits cannot
+    # start a STOP from an old zone vote; an already reported STOP still uses hold_misses / keep.
+    fresh_stop_evidence: bool = False
+    fresh_stop_evidence_window: int = 3  # matched hits retained for the onset provenance check
+    fresh_stop_evidence_min_hits: int = 2 # eligible hits required in that bounded window
     column_hold: int = 2           # 25.09: a track whose cluster was demoted as a column (cluster.column_*) in at least this many of its last zone_window hits is advisory: a column far away shows more than column_min_height of itself in some frames only (roundT_doubleT, EXPERIMENTS.md 3a; 2 = the highest pre-registered candidate that passed, docs/evidence/results/column_hold_2026-09-25.json); 0 = off
     max_misses: int = 3            # frames a track survives without a match
     hold_misses: int = 1           # frames a reported track stays reported without a match (at its predicted distance): one missed frame does not drop a STOP (review 23.09); 0 = the v0.6.2 behaviour
@@ -355,6 +366,7 @@ class TrackingConfig:
     # speed, frame after frame on a line.
     thin_far_min_distance: float = 60.0  # m; > 0: a scan line at least this far, inside the strict gauge (zone gauge) with thin_far_min_voxels strict voxels and overlapping no other cluster of the frame, may start and continue a track; while the gauge vote of a track needs such hits, the track becomes a STOP only while it approaches (approach_*) and is reported as advisory otherwise, never hidden; a track whose clean hits alone vote gauge, and a STOP in the previous frame, keep the usual rules
     thin_far_min_voxels: int = 4        # strict-envelope voxels such a scan line needs
+    far_min_ring_count: int = 0         # experimental: distinct current-frame strict-gauge channels for far sparse evidence; 0 = off
     approach_hits: int = 5              # the last hits whose distances are fitted by a line in sensor time
     approach_min_speed: float = 2.0     # m/s the fitted line must approach at (and at most ego_speed_max)
     approach_max_residual: float = 0.5  # m, RMS of the distances about that line
@@ -417,6 +429,15 @@ class LowObjectConfig:
     near_min_bed_lateral_bins: int = 20  # support must span the central bed, not only the object footprint
     near_min_points: int = 5          # distinct occupied voxels; that box returns 5-10 at 12-28 m (10 rejected it)
     near_max_length: float = 0.75     # m along track; reject cables, guard rails, long drain covers
+    # Experimental local surface continuation: current-frame support on both along-track
+    # sides in the candidate's narrow lateral band must describe a raised surface.
+    # Missing, sparse or inconsistent support keeps the baseline (docs/EXPERIMENT_LOW_LOCAL_SUPPORT.md).
+    local_support_enabled: bool = False
+    local_support_along: float = 8.0       # m, trace window on each along-track side
+    local_support_guard: float = 0.3       # m, gap around the candidate footprint
+    local_support_lateral: float = 0.15    # m, same-surface lateral neighbourhood
+    local_support_tolerance: float = 0.025 # m, maximum surface-fit error and candidate agreement
+    local_support_max_correction: float = 0.15 # m, maximum upward correction of the existing bed
     # 26.09 (P3 start-up, docs/evidence/results/p3_startup_2026-09-26.json), candidates a / b:
     pending_advisory: bool = False       # (a) while the mount calibration is 'pending' a confirmed low track beyond pending_advisory_within is advisory (reason 'calibration_pending'), not STOP
     pending_advisory_within: float = 0.0  # m; (a) a low track at most this far stays a STOP

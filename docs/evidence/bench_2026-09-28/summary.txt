@@ -1,0 +1,30 @@
+ReSense bench, 2026-09-28T16:51:49+00:00 on compute-vm-2-2-90-ssd-1790359373525df; commit 464f5bc
+CPU Intel Xeon Processor (Icelake): 8 logical CPUs, 4 cores x 2 threads, 1 socket(s); RAM 15.6 GiB; governor n/a; docker 29.8.1
+host python 3.10.12, numpy 2.2.6; image kernels: native (_resense_native.cpython-310-x86_64-linux-gnu.so)
+Stands in for the organizers' i7-9700E (8 cores, no SMT), not available before the upload (organizers, 25.09).
+build (build): exit 0, 2 s; scripts/build.sh (docker layer cache as found)
+
+Docker chain (the node in resense:latest). frames = processed / in the bag(s); fps = median of the node's 2 s windows after 5 s; latency = decode + detect per frame, ms mean / p95 / max; det = detector stage, ms mean / p95; dropped = total (after the first 5 s); CPU = docker stats, % of one core, median while busy / peak; mem = container peak, MiB. dry: node + player + echo in one container; ct: the node container alone.
+run                      kernels    frames   fps         latency         det   dropped       CPU %    mem  check
+dry_obstacle_native      native    200/201  10.0        53/63/76       25/35     4 (4)      93/135   1053  PASS
+dry_clear_native         native    251/252  10.0        36/44/50       23/32     0 (0)       51/56    409  PASS
+dry_obstacle_numpy       numpy     200/201  10.1      91/103/137       59/71     5 (4)     133/136   1344  FAIL (exit 1)
+                          FAIL: freshness: no valid result in recording(s) 1
+                          FAIL: p95 latency 103 ms > 100 ms
+dry_clear_numpy          numpy     251/252  10.0        61/71/78       46/56     0 (0)      78/112    438  PASS
+ct_image                 native    442/453  10.0        44/62/78       24/34     6 (5)      45/107   1695  PASS
+ct_stock                 native    446/453  10.0       44/62/117       24/34     6 (6)      46/117   1743  PASS
+
+Offline, host python, single-threaded BLAS (ms per frame; node path = decode + crop + rotate + detect as detector_node.on_cloud, bench_node_path.py; stages = resense bench):
+run                                kernels frames   mean    p95    max  RSS MB
+node_doubleT_obstacle_native       native     201   40.2   49.9  103.1     242
+node_doubleT_obstacle_numpy        numpy      201   76.3   89.0  113.9     268
+stages_doubleT_obstacle_native     native     201   24.6   34.5   43.7     135
+stages_doubleT_obstacle_numpy      numpy      201   55.9   67.4  102.2     154
+node_roundT_doubleT_native         native     252   31.1   39.9   43.5     168
+node_roundT_doubleT_numpy          numpy      252   54.7   64.1   69.1     156
+stages_roundT_doubleT_native       native     252   22.5   31.4   34.8     104
+stages_roundT_doubleT_numpy        numpy      252   43.6   54.0   58.0     107
+numpy / native mean time: node_doubleT_obstacle 1.90x, stages_doubleT_obstacle 2.27x, node_roundT_doubleT 1.76x, stages_roundT_doubleT 1.94x
+
+failed or not passed: dry_obstacle_numpy

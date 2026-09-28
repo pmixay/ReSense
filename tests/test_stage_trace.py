@@ -64,10 +64,9 @@ def test_records_actual_rejection_return_condition_and_restores_function():
     assert clustering._corridor_cluster is original
     record = detector.trace["blobs"][0]
     assert record["target_points"] == 4
-    # the blob is under the point-count bar; without a weak_from distance (cluster.weak_min_points,
-    # 27.09) the return is the one under the weak-evidence test nested in that branch
-    assert record["returns"][-1]["condition"] == (
-        "not (weak_from > 0 and cfg.weak_min_points > 0 and (b.n_vox >= cfg.weak_min_points) and (dist >= weak_from))")
+    # Below the point-count bar and without weak_from, neither the ordinary weak path nor
+    # the opt-in cross-ring relaxation is eligible. The trace records their joint rejection.
+    assert record["returns"][-1]["condition"] == "not (ordinary or cross_ring)"
     assert record["returns"][-1]["value"] is None
     assert sys.getprofile() is None
 

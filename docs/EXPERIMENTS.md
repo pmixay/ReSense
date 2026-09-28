@@ -3249,6 +3249,10 @@ shm mode; a CycloneDDS player needs `rmem_max` 32 MiB in either mode. README ste
 CycloneDDS and costs Fast DDS nothing; the shm mode passes [`VM_GUIDE.md`](VM_GUIDE.md) §4.6, but no
 Fast DDS failure over UDP is left for it to fix, so it stays opt-in until the captain decides.
 
+**Re-run 28.09 on `main` `464f5bc`** (the same VM type, 4 physical cores, the node of §3d): both dry runs
+and the host consoles again PASS: stock Fast DDS at 212992 and 32 MiB, CycloneDDS at 32 MiB, UDP and
+`RESENSE_DDS=shm`, and both Docker console tests (CycloneDDS at 212992 not repeated); numbers in §3e.
+
 ### 3c. Cold-cache startup follow-up (26.09, P1/P2 branch)
 
 The branch CI test downloaded the original `doubleT_obstacle` bag, cleared the runner's page
@@ -3353,6 +3357,65 @@ pairs and the CI runner. Raw captures:
 [`evidence/node_input_2026-09-28/`](evidence/node_input_2026-09-28/README.md). **Not measured:** the
 organizers' 8-core i7-9700E; the ride's dense station stretch (frames 5700–5900, detector p95
 110 ms single-core) is the detector's clustering and is untouched here.
+
+### 3e. The team VM runs of 28.09 on `main` (`464f5bc`): bench, dry runs, end to end (4 physical cores)
+
+**Machine.** The third team VM of 25.09, reused: Yandex Cloud, Intel Xeon (Icelake), **8 vCPU = 4
+physical cores × 2 threads**, 15.6 GiB, Ubuntu 22.04, Docker 29.8.1, CPU steal 0; so **not** the
+8-core analogue (the i7-9700E has 8 physical cores). Its network disk reads **79 MB/s** sequentially
+(direct I/O, `machine.txt`), and unlike 25.09 the bags were played from that disk, not from a RAM
+tmpfs. Every step as [`VM_GUIDE.md`](VM_GUIDE.md) §2–§5, the image built `--no-cache` on the VM;
+the index of every run: [`evidence/vm_2026-09-28/summary.md`](evidence/vm_2026-09-28/summary.md).
+
+**Bench** (`scripts/bench_8core.sh`, [`evidence/bench_2026-09-28/`](evidence/bench_2026-09-28/summary.txt)):
+
+| run (Docker chain, rate 1.0) | kernels | frames processed | fps | decode + detect mean / p95 / max | detector mean / p95 | dropped (after 5 s) | container CPU % mean / max | memory MB | check |
+|---|---|---|---|---|---|---|---|---|---|
+| `dry_run.sh doubleT_obstacle` (360°) | native | 200 / 201 | 10.0 | 53 / 63 / 76 ms | 25 / 35 ms | 4 (4) | 93 / 135 | 1 053 | PASS |
+| same | numpy | 200 / 201 | 10.1 | 91 / 103 / 137 ms | 59 / 71 ms | 5 (4) | 133 / 136 | 1 344 | FAIL: p95 103 ms; the start-up catch-up never ended, no current result |
+| `dry_run.sh roundT_doubleT --expect-clear --max-alarm-frames 2` (120°) | native | 251 / 252 | 10.0 | 36 / 44 / 50 ms | 23 / 32 ms | 0 (0) | 51 / 56 | 409 | PASS |
+| same | numpy | 251 / 252 | 10.0 | 61 / 71 / 78 ms | 46 / 56 ms | 0 (0) | 78 / 112 | 438 | PASS |
+| `console_test.sh`, image's DDS profile | native | 442 / 453 | 10.0 | 44 / 62 / 78 ms | 24 / 34 ms | 6 (5) | 45 / 107 | 1 695 | PASS |
+| same, stock Fast DDS player | native | 446 / 453 | 10.0 | 44 / 62 / 117 ms | 24 / 34 ms | 6 (6) | 46 / 117 | 1 743 | PASS |
+
+Offline, host python, single-threaded BLAS, 360°: the node path (`bench_node_path.py`) 40.2 / 49.9
+ms mean / p95 native, 76.3 / 89.0 ms numpy (1.90×); 120° 31.1 / 39.9 ms native. The numpy path is
+the fallback, not the shipped one (the image builds the C++ kernels); it failed on 25.09 too (p95
+118–119 ms).
+
+**Dry runs and end to end** ([`evidence/dry_run_2026-09-28/`](evidence/dry_run_2026-09-28/),
+`dry_run.sh` with the supported read-ahead 10 and `--max-p95-latency 100 --max-dropped 0`; "warm" =
+the recording read into the page cache just before, "cold" = the page cache dropped before each):
+
+| run | wall time of the recording | fps | decode + detect p95 | end to end, current: median / p95 | current results | check |
+|---|---|---|---|---|---|---|
+| 360° warm, runs 1 / 2 | 19.1 / 19.4 s (20 s) | 10.0 | 63 / 63 ms | 69 / **82**, 67 / **81** ms | 171 / 168 of 201 | PASS / PASS |
+| 360° cold, runs 1 / 2 | 62.7 / 62.5 s | 3.0 | 72 / 75 ms | 71 / 88, 72 / 96 ms | 188 / 187 | PASS / PASS |
+| 360°, §4.1 as written | 62.7 s | 3.0 | 72 ms | 69 / 91 ms | 188 | PASS |
+| 120° warm, runs 1 / 2 | 24.1 / 24.1 s (25 s) | 10.0 | 44 / 45 ms | 44 / 55, 42 / 52 ms | 236 / 236 of 252 | PASS / PASS |
+| 120° cold, runs 1 / 2 | 26.1 / 25.8 s | 9.0 | 46 / 53 ms | 43 / 55, 43 / 58 ms | 235 / 225 | PASS / PASS |
+| 120°, §4.1 as written | 26.1 s | 9.1 | 51 ms | 42 / 60 ms | 236 | PASS |
+
+Every 360° run: STOP at 55.5–56.6 m (189–190 alarm frames), 0 recording messages unprocessed after
+settle (the 4 frames missing from the recording itself aside); every 120° run 0 alarm frames
+(`replay_node_frames.py` on the §4.1 capture: node 0, replay 0). `check_fast_input.py` in the image: 201 of 201 and 252
+of 252 frames identical; rclpy's conversion 7.3 / 27.6 ms median / p95 at 360°, the byte parse 0.08
+/ 2.6 ms.
+
+**Reading.** With the recording delivered at its real 10 Hz, the 360° end-to-end p95 of the current
+results is **81–82 ms** here (decode + detect p95 63 ms): under the 100 ms period, where §3d's
+4-vCPU 2.1 GHz sandbox measured 87–111 ms (judge A's runs of the reviewed node). Read from this VM's disk, the player cannot keep 10 Hz on
+the 4.5 GB 360° recording (~225 MB/s needed, 79 MB/s available): it plays in ~62.5 s, ~3 fps. The
+check still passes, since the end-to-end age starts at the player's publication and every message is
+processed, so **a player falling behind real time is invisible to the checker**; the wall time above
+comes from the captures' `freshness.evaluated_at_utc_s`. The 120° recording (~76 MB/s) plays in real
+time, at the disk's limit: the offline rehearsal of the same day had one storage stall on it (C25,
+[`evidence/offline_2026-09-28/`](evidence/offline_2026-09-28/)). Over every frame result (start-up
+included; [`e2e_vm.py`](evidence/dry_run_2026-09-28/e2e_vm.py), `e2e_vm.txt`), p95 is 0.7–0.9 s at
+360° and 0.3–0.6 s at 120° in these one-container runs, against 77–126 ms in the host consoles where the
+node runs before the player starts. Host consoles (README jury steps 0, 2–5; stock Fast DDS 2.6.12 or
+CycloneDDS 0.10.5 as uid 1000; UDP and `RESENSE_DDS=shm`): all PASS, 453 of 453 frames, 190 alarm
+frames, 195 `STOP` decisions each (§3b, C4).
 
 ## 4. What we learned / hard cases
 

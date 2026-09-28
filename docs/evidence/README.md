@@ -274,6 +274,26 @@ lists every file, the machine and the one sandbox-only deviation of the image bu
 |---|---|---|
 | `rejudge_2026-09-26/` | `pytest`; `OFFLINE=1 dry_run.sh` on both bags (page cache warm, dropped, unknown; `rmem_max` 4 MiB and 32 MiB); `PLAYER_DDS=stock console_test.sh` on both bags; `resense run --bag` on `cloud_with_fake_obj` with `score_fake_objects.py` and `score_clear_distance.py`; the full regression gate with the ride and set F straight; `resense bench` | 587 tests green (`p34/`: the check of the P3 / P4 pass, SCORECARD §0.8); dry runs and the stock console PASS with the bag in the page cache, `doubleT_obstacle` FAIL from a cold disk (34 of 201 frames processed: CAPTAIN C7, action 21); set O from the float bag 387 / 7 / 1; the gate against `_ride_p3d`: SCORECARD §0 |
 
+### `*_2026-09-28/`: `main` at `464f5bc` on the third team VM again (28.09)
+
+The VM of `*_2026-09-25_3` (Xeon Icelake, 8 vCPU = 4 physical cores, 15.6 GiB, Ubuntu 22.04,
+Docker 29.8.1, stock ROS 2 Humble with both Fast DDS and CycloneDDS), every step of
+[`../VM_GUIDE.md`](../VM_GUIDE.md) §1–§5 by an agent over SSH, the image built `--no-cache` on the
+VM, the original bags played from its disk (79 MB/s; no tmpfs). The index of every run and the
+findings: [`vm_2026-09-28/summary.md`](vm_2026-09-28/summary.md); the scripts that ran them:
+`vm_2026-09-28/scripts/`. No archive, bag, cache or `out/` is committed; the §6 scan finds package
+versions, public DNS resolvers, loopback / multicast / metadata-service addresses and the VM's
+generic admin account only.
+
+| folder | run | result |
+|---|---|---|
+| `vm_2026-09-28/` | machine facts, `pytest`, data logs (§2, the ride 221 of 221), `summary.md`, `scripts/` | 4 cores, steal 0, disk 79 MB/s; 754 tests passed |
+| `dry_run_2026-09-28/` | `--no-cache` build; §4.1 (`dry_*`, `dry_clear_replay.txt`); the cold-cache procedure and a warm repeat, twice each (`cold_*`, `warm_*`); `fast_input.*` (PR #20 identity check in the image); §4.2 (`ct_stock*`, `host_jury*` = README steps 0, 2–5, `host_fastdds*`, `host_cyclonedds*`); §4.6 (`host_shm*`, `ct_shm*`); `e2e_vm.py` / `.txt`: end to end over the current and all frame results | all PASS: 360° end to end p95 81–82 ms warm, 88–96 ms cold; host consoles 453 of 453 frames, 195 `STOP`; 453 of 453 input frames identical |
+| `bench_2026-09-28/` | §4.3, `scripts/bench_8core.sh` (`build/run.txt` force-added past `.gitignore`'s `build/`) | `dry_obstacle_native` PASS (p95 63 ms), every native run and both console tests PASS; numpy FAIL at 360° (p95 103 ms): exit 1 |
+| `gate_2026-09-28/` | §4.4, `regression_gate.py --jobs 4` against `regression_baseline_2026-09-27_quality.json` | GATE PASS: identical but 16 informational latency rows |
+| `export_2026-09-28/` | §4.5, `export_image.sh` + `load_image.sh` | PASS: 475 947 817 bytes, sha256 in `archive.txt` |
+| `offline_2026-09-28/` | §5 (nothing allowed out): pass 1 as written; `warm_bags/`: pass 2 with each recording read into the page cache first | pass 1: `dry_clear` FAIL (10 frames skipped after a 1.4 s input stall from the disk), the rest PASS; pass 2: all PASS |
+
 ### `bag_metadata/`: the original `metadata.yaml` of the six recordings
 
 These files are copied unchanged from the organizers' dataset. Every recording was made with

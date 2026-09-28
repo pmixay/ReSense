@@ -2,7 +2,7 @@
 # Cold-disk startup check using the organizer's bag. A small rosbag2
 # read-ahead queue avoids turning the 20 s recording into a burst while the cold 4.8 GB SQLite
 # file is preloaded; storage stalls remain real and the node still gets the original point clouds.
-# Requires Docker and runs on the score branch, retained working branches and main.
+# Requires Docker and runs on the score/P3 branches, retained working branches and main.
 # The two bags come from scripts/fetch_cold_bags.sh: DATASET_DIR=<dir> keeps them there (CI
 # restores that directory from its cache, job "docker") and reuses them while their sha256 still
 # match scripts/cold_bags.sha256, so that Google Drive is asked for the 3.7 GB archive only when
@@ -10,8 +10,8 @@
 set -euo pipefail
 
 case "${GITHUB_REF:-}" in
-  refs/heads/gpt-score-push-20260928|refs/heads/testovaya-gpt|refs/heads/claude/nifty-pascal-lzgl78|refs/heads/claude/p1-p2-supported-playback-20260927|refs/heads/claude/amazing-fermi-t67v8g|refs/heads/main) ;;
-  *) echo "skip: original-bag cold-disk test runs on the score branch, retained working branches and main"; exit 0 ;;
+  refs/heads/gpt-score-push-20260928|refs/heads/integration/p3-score-sync-20260928|refs/heads/experiment/cross-ring-sparse-evidence|refs/heads/testovaya-gpt|refs/heads/claude/nifty-pascal-lzgl78|refs/heads/claude/p1-p2-supported-playback-20260927|refs/heads/claude/amazing-fermi-t67v8g|refs/heads/main) ;;
+  *) echo "skip: original-bag cold-disk test runs on the score/P3 branches, retained working branches and main"; exit 0 ;;
 esac
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

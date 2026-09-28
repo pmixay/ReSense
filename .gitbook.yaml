@@ -1,0 +1,6 @@
+# GitBook.com Git Sync: the book's source is gitbook/ (see gitbook/development/docs.md).
+root: ./gitbook/
+
+structure:
+  readme: README.md
+  summary: SUMMARY.md

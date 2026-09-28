@@ -47,7 +47,18 @@ def cluster_record(c):
             "height_min": float(c.height_min), "height_max": float(c.height_max),
             "kind": c.kind, "zone": c.zone, "reason": c.reason,
             "rail_line": c.rail_line, "wall_kept": c.wall_kept, "demoted": c.demoted,
-            "thin": c.thin, "n_points_idx": int(c.points_idx.size)}
+            "thin": c.thin, "ring_count": int(getattr(c, "ring_count", 0)),
+            "n_points_idx": int(c.points_idx.size)}
+
+
+def observed_rings(frame, cluster, fresh):
+    """Actual channels of current support; Cluster.ring_count is strict-gauge corridor-only."""
+    if not fresh or frame.ring is None:
+        return None
+    indices = cluster.points_idx
+    if np.any((indices < 0) | (indices >= frame.n)):
+        raise RuntimeError("cluster point indices are not current-frame indices")
+    return np.unique(frame.ring[indices]).astype(int).tolist()
 
 
 def observe_associations(tracker):
@@ -112,6 +123,8 @@ def main():
     parser.add_argument("--archives", required=True)
     parser.add_argument("--cache", required=True)
     parser.add_argument("--out", required=True)
+    parser.add_argument("--expect-events", type=int, default=45,
+                        help="required alarm track identities (45 for the archived frozen ride)")
     args = parser.parse_args()
     out = Path(args.out)
     (out / "points").mkdir(parents=True, exist_ok=True)
@@ -155,7 +168,8 @@ def main():
                           "hit_hist": track.hit_hist.copy(), "column_held": track.column_held,
                           "near_escalated": track.near_escalated,
                           "association": detector.tracker.observed_associations.get(key),
-                          "support": support_stats(xyz, dy, h, idx)}
+                          "support": support_stats(xyz, dy, h, idx),
+                          "observed_ring_ids": observed_rings(frame, cluster, track.misses == 0)}
                 if k in schedule[key]:
                     center = track.centroid
                     mask = ((np.abs(xyz[:, 0] - center[0]) <= max(15.0, float(cluster.size[0]) + 8))
@@ -173,12 +187,13 @@ def main():
         all_events.extend(events.values())
         print(f"{piece}: {len(rows)} frames, {len(events)} alarm identities, {len(mismatches)} total mismatches", flush=True)
     report = {"frames": total, "events": all_events, "detection_mismatch_frames": mismatches,
-              "method": "Full chronological frozen replay; exact tracker.last point indices; no heuristic bbox target assignment.",
-              "limitations": ["Model-relative heights and lateral coordinates are estimates, not independent ground truth.",
-                              "Missing-track snapshots are absent; stale last-cluster indices are never used on later frames.",
-                              "Same-band local height statistics are diagnostic observations, not an evaluated rejection rule."]}
+               "method": "Full chronological frozen replay; exact tracker.last point indices; no heuristic bbox target assignment.",
+               "limitations": ["Model-relative heights and lateral coordinates are estimates, not independent ground truth.",
+                               "Cluster.ring_count is defined only for corridor clusters' current strict-gauge points; observed_ring_ids includes all current points, including low-object and off-gauge support.",
+                               "Missing-track snapshots are absent; stale last-cluster indices are never used on later frames.",
+                               "Same-band local height statistics are diagnostic observations, not an evaluated rejection rule."]}
     (out / "trace.json").write_text(json.dumps(report, indent=1) + "\n")
-    if total != 11271 or len(all_events) != 45 or mismatches:
+    if total != 11271 or len(all_events) != args.expect_events or mismatches:
         raise SystemExit("trace does not reproduce the complete frozen ride")
 
 

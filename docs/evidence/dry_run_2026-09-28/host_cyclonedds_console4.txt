@@ -1,0 +1,1 @@
+player pid 22512 (kladmin), RMW loaded: libddsc.so.0.10.5 librmw_cyclonedds_cpp.so 

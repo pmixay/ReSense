@@ -1,0 +1,766 @@
+{
+  "method": "Full replay matches the source JSONL on every frame; strict-gauge ring_count is current-frame corridor-only. Missing tracks and low clusters are counted separately.",
+  "frames": 11271,
+  "alarm_frames": 130,
+  "alarm_events": 32,
+  "stop_episodes": 31,
+  "counts": {
+    "events": 32,
+    "alarm_track_frames": 149,
+    "fresh_strict_frames": 78,
+    "fresh_low_frames": 19,
+    "fresh_off_gauge_frames": 13,
+    "missed_track_frames": 39,
+    "far_events": 15,
+    "far_ring_mixed": 4,
+    "far_onset_multi": 13,
+    "far_onset_single": 1,
+    "far_onset_no_strict_support": 1,
+    "far_80m_or_more": 15,
+    "low_events_with_2plus_observed_channels": 5,
+    "events_with_thin_at_stop": 0,
+    "far_ring_all_multi": 9,
+    "near_events": 17,
+    "near_with_low": 10,
+    "far_ring_no_fresh_strict_corridor_support": 1,
+    "far_ring_all_single": 1
+  },
+  "events": [
+    {
+      "key": "new_data_0.jsonl:3",
+      "first_alarm_frame": "new_data_0023",
+      "alarm_track_frames": 8,
+      "range_m": [
+        137.9,
+        143.6
+      ],
+      "first_alarm_ring_count": 4,
+      "fresh_strict_ring_class": "mixed",
+      "fresh_strict_rings_min_median_max": [
+        1,
+        4,
+        5
+      ],
+      "fresh_strict_frames": 7,
+      "fresh_low_frames": 0,
+      "fresh_low_observed_channel_counts": [],
+      "fresh_off_gauge_frames": 1,
+      "missed_track_frames": 0,
+      "any_low_object_support": false,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_0.jsonl:383",
+      "first_alarm_frame": "new_data_1378",
+      "alarm_track_frames": 4,
+      "range_m": [
+        122.0,
+        138.9
+      ],
+      "first_alarm_ring_count": 4,
+      "fresh_strict_ring_class": "all_multi",
+      "fresh_strict_rings_min_median_max": [
+        4,
+        7.5,
+        9
+      ],
+      "fresh_strict_frames": 4,
+      "fresh_low_frames": 0,
+      "fresh_low_observed_channel_counts": [],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 0,
+      "any_low_object_support": false,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_1.jsonl:74",
+      "first_alarm_frame": "new_data_1847",
+      "alarm_track_frames": 1,
+      "range_m": [
+        155.4,
+        155.4
+      ],
+      "first_alarm_ring_count": 5,
+      "fresh_strict_ring_class": "all_multi",
+      "fresh_strict_rings_min_median_max": [
+        5,
+        5,
+        5
+      ],
+      "fresh_strict_frames": 1,
+      "fresh_low_frames": 0,
+      "fresh_low_observed_channel_counts": [],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 0,
+      "any_low_object_support": false,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_1.jsonl:286",
+      "first_alarm_frame": "new_data_2668",
+      "alarm_track_frames": 11,
+      "range_m": [
+        32.3,
+        42.1
+      ],
+      "first_alarm_ring_count": null,
+      "fresh_strict_ring_class": "mixed",
+      "fresh_strict_rings_min_median_max": [
+        1,
+        2.0,
+        3
+      ],
+      "fresh_strict_frames": 4,
+      "fresh_low_frames": 3,
+      "fresh_low_observed_channel_counts": [
+        2,
+        1,
+        1
+      ],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 4,
+      "any_low_object_support": true,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_1.jsonl:295",
+      "first_alarm_frame": "new_data_2671",
+      "alarm_track_frames": 1,
+      "range_m": [
+        28.4,
+        28.4
+      ],
+      "first_alarm_ring_count": null,
+      "fresh_strict_ring_class": "no_fresh_strict_corridor_support",
+      "fresh_strict_rings_min_median_max": null,
+      "fresh_strict_frames": 0,
+      "fresh_low_frames": 0,
+      "fresh_low_observed_channel_counts": [],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 1,
+      "any_low_object_support": false,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_1.jsonl:292",
+      "first_alarm_frame": "new_data_2671",
+      "alarm_track_frames": 5,
+      "range_m": [
+        29.9,
+        32.7
+      ],
+      "first_alarm_ring_count": null,
+      "fresh_strict_ring_class": "no_fresh_strict_corridor_support",
+      "fresh_strict_rings_min_median_max": null,
+      "fresh_strict_frames": 0,
+      "fresh_low_frames": 3,
+      "fresh_low_observed_channel_counts": [
+        1,
+        2,
+        2
+      ],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 2,
+      "any_low_object_support": true,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_1.jsonl:298",
+      "first_alarm_frame": "new_data_2671",
+      "alarm_track_frames": 3,
+      "range_m": [
+        82.5,
+        87.7
+      ],
+      "first_alarm_ring_count": 2,
+      "fresh_strict_ring_class": "mixed",
+      "fresh_strict_rings_min_median_max": [
+        1,
+        1.5,
+        2
+      ],
+      "fresh_strict_frames": 2,
+      "fresh_low_frames": 0,
+      "fresh_low_observed_channel_counts": [],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 1,
+      "any_low_object_support": false,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_1.jsonl:293",
+      "first_alarm_frame": "new_data_2673",
+      "alarm_track_frames": 2,
+      "range_m": [
+        41.8,
+        43.2
+      ],
+      "first_alarm_ring_count": 2,
+      "fresh_strict_ring_class": "mixed",
+      "fresh_strict_rings_min_median_max": [
+        1,
+        1.5,
+        2
+      ],
+      "fresh_strict_frames": 2,
+      "fresh_low_frames": 0,
+      "fresh_low_observed_channel_counts": [],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 0,
+      "any_low_object_support": false,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_1.jsonl:310",
+      "first_alarm_frame": "new_data_2675",
+      "alarm_track_frames": 3,
+      "range_m": [
+        31.9,
+        33.6
+      ],
+      "first_alarm_ring_count": 4,
+      "fresh_strict_ring_class": "all_multi",
+      "fresh_strict_rings_min_median_max": [
+        2,
+        3.0,
+        4
+      ],
+      "fresh_strict_frames": 2,
+      "fresh_low_frames": 0,
+      "fresh_low_observed_channel_counts": [],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 1,
+      "any_low_object_support": false,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_1.jsonl:306",
+      "first_alarm_frame": "new_data_2676",
+      "alarm_track_frames": 2,
+      "range_m": [
+        28.6,
+        28.6
+      ],
+      "first_alarm_ring_count": null,
+      "fresh_strict_ring_class": "no_fresh_strict_corridor_support",
+      "fresh_strict_rings_min_median_max": null,
+      "fresh_strict_frames": 0,
+      "fresh_low_frames": 1,
+      "fresh_low_observed_channel_counts": [
+        1
+      ],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 1,
+      "any_low_object_support": true,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_1.jsonl:377",
+      "first_alarm_frame": "new_data_2729",
+      "alarm_track_frames": 2,
+      "range_m": [
+        105.1,
+        105.1
+      ],
+      "first_alarm_ring_count": 4,
+      "fresh_strict_ring_class": "all_multi",
+      "fresh_strict_rings_min_median_max": [
+        4,
+        4,
+        4
+      ],
+      "fresh_strict_frames": 1,
+      "fresh_low_frames": 0,
+      "fresh_low_observed_channel_counts": [],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 1,
+      "any_low_object_support": false,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_2.jsonl:81",
+      "first_alarm_frame": "new_data_3060",
+      "alarm_track_frames": 2,
+      "range_m": [
+        96.8,
+        96.8
+      ],
+      "first_alarm_ring_count": 4,
+      "fresh_strict_ring_class": "all_multi",
+      "fresh_strict_rings_min_median_max": [
+        4,
+        4,
+        4
+      ],
+      "fresh_strict_frames": 1,
+      "fresh_low_frames": 0,
+      "fresh_low_observed_channel_counts": [],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 1,
+      "any_low_object_support": false,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_2.jsonl:570",
+      "first_alarm_frame": "new_data_4152",
+      "alarm_track_frames": 4,
+      "range_m": [
+        27.1,
+        31.5
+      ],
+      "first_alarm_ring_count": null,
+      "fresh_strict_ring_class": "all_single",
+      "fresh_strict_rings_min_median_max": [
+        1,
+        1,
+        1
+      ],
+      "fresh_strict_frames": 1,
+      "fresh_low_frames": 1,
+      "fresh_low_observed_channel_counts": [
+        1
+      ],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 2,
+      "any_low_object_support": true,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_2.jsonl:586",
+      "first_alarm_frame": "new_data_4157",
+      "alarm_track_frames": 2,
+      "range_m": [
+        31.6,
+        31.6
+      ],
+      "first_alarm_ring_count": 1,
+      "fresh_strict_ring_class": "all_single",
+      "fresh_strict_rings_min_median_max": [
+        1,
+        1,
+        1
+      ],
+      "fresh_strict_frames": 1,
+      "fresh_low_frames": 0,
+      "fresh_low_observed_channel_counts": [],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 1,
+      "any_low_object_support": false,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_3.jsonl:266",
+      "first_alarm_frame": "new_data_5065",
+      "alarm_track_frames": 2,
+      "range_m": [
+        134.1,
+        136.1
+      ],
+      "first_alarm_ring_count": 5,
+      "fresh_strict_ring_class": "all_multi",
+      "fresh_strict_rings_min_median_max": [
+        5,
+        6.0,
+        7
+      ],
+      "fresh_strict_frames": 2,
+      "fresh_low_frames": 0,
+      "fresh_low_observed_channel_counts": [],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 0,
+      "any_low_object_support": false,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_4.jsonl:36",
+      "first_alarm_frame": "new_data_5699",
+      "alarm_track_frames": 6,
+      "range_m": [
+        105.9,
+        111.7
+      ],
+      "first_alarm_ring_count": 7,
+      "fresh_strict_ring_class": "all_multi",
+      "fresh_strict_rings_min_median_max": [
+        6,
+        6.5,
+        7
+      ],
+      "fresh_strict_frames": 2,
+      "fresh_low_frames": 0,
+      "fresh_low_observed_channel_counts": [],
+      "fresh_off_gauge_frames": 2,
+      "missed_track_frames": 2,
+      "any_low_object_support": false,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_4.jsonl:56",
+      "first_alarm_frame": "new_data_5714",
+      "alarm_track_frames": 1,
+      "range_m": [
+        35.4,
+        35.4
+      ],
+      "first_alarm_ring_count": null,
+      "fresh_strict_ring_class": "no_fresh_strict_corridor_support",
+      "fresh_strict_rings_min_median_max": null,
+      "fresh_strict_frames": 0,
+      "fresh_low_frames": 1,
+      "fresh_low_observed_channel_counts": [
+        1
+      ],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 0,
+      "any_low_object_support": true,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_4.jsonl:58",
+      "first_alarm_frame": "new_data_5714",
+      "alarm_track_frames": 4,
+      "range_m": [
+        33.4,
+        36.3
+      ],
+      "first_alarm_ring_count": null,
+      "fresh_strict_ring_class": "no_fresh_strict_corridor_support",
+      "fresh_strict_rings_min_median_max": null,
+      "fresh_strict_frames": 0,
+      "fresh_low_frames": 3,
+      "fresh_low_observed_channel_counts": [
+        1,
+        1,
+        1
+      ],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 1,
+      "any_low_object_support": true,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_4.jsonl:209",
+      "first_alarm_frame": "new_data_5901",
+      "alarm_track_frames": 4,
+      "range_m": [
+        27.9,
+        28.8
+      ],
+      "first_alarm_ring_count": null,
+      "fresh_strict_ring_class": "no_fresh_strict_corridor_support",
+      "fresh_strict_rings_min_median_max": null,
+      "fresh_strict_frames": 0,
+      "fresh_low_frames": 3,
+      "fresh_low_observed_channel_counts": [
+        2,
+        1,
+        2
+      ],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 1,
+      "any_low_object_support": true,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_4.jsonl:210",
+      "first_alarm_frame": "new_data_5902",
+      "alarm_track_frames": 2,
+      "range_m": [
+        21.6,
+        21.6
+      ],
+      "first_alarm_ring_count": 1,
+      "fresh_strict_ring_class": "all_single",
+      "fresh_strict_rings_min_median_max": [
+        1,
+        1,
+        1
+      ],
+      "fresh_strict_frames": 1,
+      "fresh_low_frames": 0,
+      "fresh_low_observed_channel_counts": [],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 1,
+      "any_low_object_support": false,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_4.jsonl:513",
+      "first_alarm_frame": "new_data_6859",
+      "alarm_track_frames": 6,
+      "range_m": [
+        36.9,
+        43.3
+      ],
+      "first_alarm_ring_count": 2,
+      "fresh_strict_ring_class": "all_multi",
+      "fresh_strict_rings_min_median_max": [
+        2,
+        2.0,
+        2
+      ],
+      "fresh_strict_frames": 2,
+      "fresh_low_frames": 0,
+      "fresh_low_observed_channel_counts": [],
+      "fresh_off_gauge_frames": 3,
+      "missed_track_frames": 1,
+      "any_low_object_support": false,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_5.jsonl:113",
+      "first_alarm_frame": "new_data_7338",
+      "alarm_track_frames": 11,
+      "range_m": [
+        81.4,
+        98.4
+      ],
+      "first_alarm_ring_count": 3,
+      "fresh_strict_ring_class": "all_multi",
+      "fresh_strict_rings_min_median_max": [
+        2,
+        3,
+        4
+      ],
+      "fresh_strict_frames": 9,
+      "fresh_low_frames": 0,
+      "fresh_low_observed_channel_counts": [],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 2,
+      "any_low_object_support": false,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_5.jsonl:146",
+      "first_alarm_frame": "new_data_7361",
+      "alarm_track_frames": 4,
+      "range_m": [
+        36.8,
+        42.3
+      ],
+      "first_alarm_ring_count": 1,
+      "fresh_strict_ring_class": "all_single",
+      "fresh_strict_rings_min_median_max": [
+        1,
+        1,
+        1
+      ],
+      "fresh_strict_frames": 1,
+      "fresh_low_frames": 1,
+      "fresh_low_observed_channel_counts": [
+        1
+      ],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 2,
+      "any_low_object_support": true,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_5.jsonl:330",
+      "first_alarm_frame": "new_data_7859",
+      "alarm_track_frames": 10,
+      "range_m": [
+        40.8,
+        47.6
+      ],
+      "first_alarm_ring_count": 3,
+      "fresh_strict_ring_class": "all_multi",
+      "fresh_strict_rings_min_median_max": [
+        3,
+        3.0,
+        3
+      ],
+      "fresh_strict_frames": 6,
+      "fresh_low_frames": 0,
+      "fresh_low_observed_channel_counts": [],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 4,
+      "any_low_object_support": false,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_5.jsonl:358",
+      "first_alarm_frame": "new_data_7943",
+      "alarm_track_frames": 11,
+      "range_m": [
+        94.6,
+        104.3
+      ],
+      "first_alarm_ring_count": 6,
+      "fresh_strict_ring_class": "mixed",
+      "fresh_strict_rings_min_median_max": [
+        1,
+        3.5,
+        6
+      ],
+      "fresh_strict_frames": 8,
+      "fresh_low_frames": 0,
+      "fresh_low_observed_channel_counts": [],
+      "fresh_off_gauge_frames": 2,
+      "missed_track_frames": 1,
+      "any_low_object_support": false,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_6.jsonl:250",
+      "first_alarm_frame": "new_data_9125",
+      "alarm_track_frames": 2,
+      "range_m": [
+        83.9,
+        83.9
+      ],
+      "first_alarm_ring_count": null,
+      "fresh_strict_ring_class": "no_fresh_strict_corridor_support",
+      "fresh_strict_rings_min_median_max": null,
+      "fresh_strict_frames": 0,
+      "fresh_low_frames": 0,
+      "fresh_low_observed_channel_counts": [],
+      "fresh_off_gauge_frames": 1,
+      "missed_track_frames": 1,
+      "any_low_object_support": false,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_6.jsonl:331",
+      "first_alarm_frame": "new_data_9263",
+      "alarm_track_frames": 10,
+      "range_m": [
+        96.8,
+        109.6
+      ],
+      "first_alarm_ring_count": 9,
+      "fresh_strict_ring_class": "all_multi",
+      "fresh_strict_rings_min_median_max": [
+        5,
+        9.0,
+        9
+      ],
+      "fresh_strict_frames": 4,
+      "fresh_low_frames": 0,
+      "fresh_low_observed_channel_counts": [],
+      "fresh_off_gauge_frames": 4,
+      "missed_track_frames": 2,
+      "any_low_object_support": false,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_6.jsonl:336",
+      "first_alarm_frame": "new_data_9284",
+      "alarm_track_frames": 3,
+      "range_m": [
+        122.1,
+        123.4
+      ],
+      "first_alarm_ring_count": 3,
+      "fresh_strict_ring_class": "all_multi",
+      "fresh_strict_rings_min_median_max": [
+        3,
+        3.0,
+        3
+      ],
+      "fresh_strict_frames": 2,
+      "fresh_low_frames": 0,
+      "fresh_low_observed_channel_counts": [],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 1,
+      "any_low_object_support": false,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_6.jsonl:518",
+      "first_alarm_frame": "new_data_9786",
+      "alarm_track_frames": 12,
+      "range_m": [
+        114.9,
+        124.5
+      ],
+      "first_alarm_ring_count": 2,
+      "fresh_strict_ring_class": "mixed",
+      "fresh_strict_rings_min_median_max": [
+        1,
+        2.0,
+        3
+      ],
+      "fresh_strict_frames": 12,
+      "fresh_low_frames": 0,
+      "fresh_low_observed_channel_counts": [],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 0,
+      "any_low_object_support": false,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_7.jsonl:204",
+      "first_alarm_frame": "new_data_10484",
+      "alarm_track_frames": 4,
+      "range_m": [
+        47.6,
+        50.9
+      ],
+      "first_alarm_ring_count": null,
+      "fresh_strict_ring_class": "no_fresh_strict_corridor_support",
+      "fresh_strict_rings_min_median_max": null,
+      "fresh_strict_frames": 0,
+      "fresh_low_frames": 2,
+      "fresh_low_observed_channel_counts": [
+        2,
+        1
+      ],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 2,
+      "any_low_object_support": true,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_7.jsonl:215",
+      "first_alarm_frame": "new_data_10506",
+      "alarm_track_frames": 2,
+      "range_m": [
+        46.4,
+        46.4
+      ],
+      "first_alarm_ring_count": null,
+      "fresh_strict_ring_class": "no_fresh_strict_corridor_support",
+      "fresh_strict_rings_min_median_max": null,
+      "fresh_strict_frames": 0,
+      "fresh_low_frames": 1,
+      "fresh_low_observed_channel_counts": [
+        2
+      ],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 1,
+      "any_low_object_support": true,
+      "any_thin_support_at_stop": false
+    },
+    {
+      "key": "new_data_7.jsonl:264",
+      "first_alarm_frame": "new_data_10644",
+      "alarm_track_frames": 5,
+      "range_m": [
+        96.0,
+        98.3
+      ],
+      "first_alarm_ring_count": 1,
+      "fresh_strict_ring_class": "all_single",
+      "fresh_strict_rings_min_median_max": [
+        1,
+        1,
+        1
+      ],
+      "fresh_strict_frames": 3,
+      "fresh_low_frames": 0,
+      "fresh_low_observed_channel_counts": [],
+      "fresh_off_gauge_frames": 0,
+      "missed_track_frames": 2,
+      "any_low_object_support": false,
+      "any_thin_support_at_stop": false
+    }
+  ],
+  "limits": [
+    "Events are track identities per independent replay chunk; several identities may STOP in the same frame.",
+    "Scene plots show geometry, not surveyed identities of individual surfaces.",
+    "Low-object ring_count is a placeholder: observed raw channel counts include all points, not just strict-gauge points."
+  ],
+  "trace_sha256": "ba9922128a61d3117407acaa0c682d8ae68ab899302ea635d327894f206ce1e8",
+  "inventory_sha256": "c2054c8aca4763675fc5d4680e3d1d7c0d8ca925afdd79e3dfd84f225dbee0be"
+}
