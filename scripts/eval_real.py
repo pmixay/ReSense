@@ -16,7 +16,6 @@ restarts at a piece boundary: a few events can be split in two). Per-frame JSONL
 from __future__ import annotations
 
 import argparse
-import glob
 import json
 import os
 import sys
@@ -96,14 +95,15 @@ def run_piece(job):
     from resense.config import DetectorConfig
     from resense.detector import Detector
     from resense.frame import frame_from_compact
+    from scripts.cache_io import cache_file_stem, load_cache_array
     cfg = DetectorConfig.from_dict(cfg_dict)
     det = Detector(cfg)
     lat = []
     with open(out_path, "w", encoding="utf-8") as fh:
         for i, f in enumerate(files):
-            stem = os.path.splitext(os.path.basename(f))[0]
+            stem = cache_file_stem(f)
             idx = int(stem.rsplit("_", 1)[1])
-            fr = frame_from_compact(np.load(f), cfg.sensor, stamp=stamps.get(stem, i * 0.1), frame_id=stem)
+            fr = frame_from_compact(load_cache_array(f), cfg.sensor, stamp=stamps.get(stem, i * 0.1), frame_id=stem)
             res = det.process(fr, ego_speed=speeds[i]) if speeds is not None else det.process(fr)
             d = res.to_dict()
             d["frame"] = idx if name in SIX else i
@@ -173,7 +173,7 @@ def main():
                     help="hand the train speed of new_data to the detector (per split file, 'speed_tracks' of "
                          "docs/extended_dataset_intake.json): the multi-frame accumulation path")
     a = ap.parse_args()
-    from resense.io import _natural_key, load_cache_stamps
+    from scripts.cache_io import cache_files, load_cache_stamps
     os.makedirs(a.out, exist_ok=True)
     cfg_dict = load_cfg_dict(a.config, a.set)
     cfg = load_cfg(a.config, a.set)                # fail fast on an unknown key
@@ -186,7 +186,7 @@ def main():
     pieces = {}
     for bag in [b for b in a.bags.split(",") if b]:
         d = os.path.join(a.cache, bag)
-        files = sorted(glob.glob(os.path.join(d, "*.npy")), key=_natural_key)
+        files = cache_files(d)
         if not files:
             print(f"skip {bag}: no cache in {d}", file=sys.stderr)
             continue

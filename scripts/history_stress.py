@@ -28,7 +28,6 @@ if __name__ == "__main__":
         os.environ.setdefault(_v, "1")
 
 import argparse  # noqa: E402
-import glob  # noqa: E402
 import json  # noqa: E402
 import sys  # noqa: E402
 import time  # noqa: E402
@@ -68,20 +67,20 @@ def run_cache(job):
     from resense.config import DetectorConfig
     from resense.detector import Detector
     from resense.frame import frame_from_compact
-    from resense.io import _natural_key, load_cache_stamps
+    from scripts.cache_io import cache_file_stem, cache_files, load_cache_array, load_cache_stamps
     from resense.pointcloud import COMPACT_DTYPE, compact_to_xyz, expand_compact16
     cfg = DetectorConfig.from_dict(cfg_dict)
     cfg.calibration.enabled = True
     d = os.path.join(cache, bag)
-    files = sorted(glob.glob(os.path.join(d, "*.npy")), key=_natural_key)
+    files = cache_files(d)
     stamps = load_cache_stamps(d)
     rng = np.random.default_rng(seed)
     det = Detector(cfg)
     stop_frames, events, dists = 0, set(), []
     for i in _history(kind, param, len(files), rng):
         f = files[i]
-        stem = os.path.splitext(os.path.basename(f))[0]
-        arr = np.load(f)
+        stem = cache_file_stem(f)
+        arr = load_cache_array(f)
         if kind == "dither":
             arr = expand_compact16(arr)
             xyz = compact_to_xyz(arr) + rng.uniform(-param, param, (arr.size, 3)).astype(np.float32) * 1e-3
