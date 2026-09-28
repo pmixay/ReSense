@@ -62,6 +62,7 @@ COPY tests ./tests
 COPY scripts ./scripts
 # The paired synthetic evaluator and its tests use the registered protocol in the image too.
 COPY docs/evidence/cycle_2026-09-28/evaluation/protocol.json ./docs/evidence/cycle_2026-09-28/evaluation/protocol.json
+COPY docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json ./docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json
 RUN if [ "$WITH_TOOLS" = "1" ]; then \
         pip3 install "rosbags==0.11.5" "zstandard==0.25.0" "matplotlib==3.10.7" "open3d==0.19.0" "pytest==8.4.2" "websockets==14.2"; \
     fi

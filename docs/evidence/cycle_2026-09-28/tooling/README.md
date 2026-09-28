@@ -32,3 +32,18 @@ fixture arrays reach the image (30 arrays used by the sequence controls).
 `.dockerignore` now permits precisely that protocol and fixture subtree and
 excludes the local Ruff cache. This is a build-context check, not the final image
 replay. The newly added synthetic evaluator also has 24 focused passing tests.
+
+## Fresh baseline image
+
+The full tools image built successfully from `b78a500`, with image ID
+`sha256:a3da7c28771a8ce2eb32f5e13e55c01ca59a12ad15719b40b3ba2cb7115b57f4`.
+Outside the source directory, its installed package loads the native extension,
+rosbags 0.11.5 and Open3D 0.19.0. ROS resolves `resense_ros detector_node` and the
+launch description. The 31 cache, synthetic evaluator and range diagnostic tests
+pass inside this image with networking disabled.
+
+The retained logs are `image_tooling_tests.txt` and `image_import_launch.txt`.
+This is the unchanged baseline detector, before candidate integration. A final
+candidate image still needs its own suite and ROS replay checks. Both registered
+protocol versions are now included by the Dockerfile and build context exceptions;
+the v2 addition follows the baseline image build above.

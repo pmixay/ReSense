@@ -5,6 +5,7 @@
 .github
 docs
 !docs/evidence/cycle_2026-09-28/evaluation/protocol.json
+!docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json
 web
 out
 data
