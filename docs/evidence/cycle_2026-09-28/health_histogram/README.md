@@ -12,7 +12,9 @@ Its production difference remains only `resense/health.py`; the health implement
 is byte-identical to `7885c6d`. The [combined protocol](combined_protocol.json) registers
 the new source/config identities and full-gate/per-frame parity criteria before evaluation.
 The package-local native module was rebuilt and matches the accepted `b5a5c2dc...` binary.
-Combined-source full-gate and runtime acceptance are pending. The original protocol,
+Combined-source focused checks pass: 48 tests in 0.52 seconds, lint and whitespace checks.
+[Preflight](combined_preflight.json) verifies the native module and source/config identities.
+Full-gate and runtime acceptance are pending. The original protocol,
 validation and microprobe below remain historical evidence for the earlier score source.
 
 Only `resense/health.py` changes production behavior: the blocked-sector histogram uses

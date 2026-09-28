@@ -11,7 +11,9 @@
   "effective_config_sha256": "22a30ff265035e06358a21696cfb8bc61b598d16e5a64aa3536abfefbc4bd5fb",
   "config_file_sha256": "f5ee418844de1cb5a87d972bd77689b28b50fc74d833e252183446af96fa03c2",
   "native_sha256": "b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534",
-  "production_difference": ["resense/health.py"],
+  "production_difference": [
+    "resense/health.py"
+  ],
   "baseline_gate": {
     "path": "docs/evidence/cycle_2026-09-28/p3_sync/default/gate.json",
     "sha256": "4072f9c5d9f00b50e46bcf5f2ccd16df1d3efe4b7dc7d6329bd33840317a6702",
@@ -27,5 +29,18 @@
   ],
   "timing_definition": "This candidate leaves timing_ms.total and the supplied HealthMonitor latency unchanged; the stage total still excludes health. node.detect_ms is the full Detector.process call and node.latency_ms includes decoding. A timing-reporting correction is separate work.",
   "historical_evidence": "protocol.json, validation.json and microprobe.json retain the original score-source preparation and loaded microprobe. Their old source/config hashes do not describe this combined-source evaluation. The scalar endpoint failure remains preserved.",
-  "deferred": ["Paired history checks", "Quiet original-bag installed-image runtime acceptance"]
+  "deferred": [
+    "Paired history checks",
+    "Quiet original-bag installed-image runtime acceptance"
+  ],
+  "quiet_runtime_plan": {
+    "images": "Build matched standard Docker images WITH_TOOLS=1 from exact experimental 25a218a0a8b4e10089dfcf73b8d557d4a963290e and the frozen combined health candidate; record installed production and native hashes.",
+    "execution": "After the full gate finishes and competing heavy jobs stop, run quiet sequential original-positive and original-clear full-rate (1.0) offline ROS checks with identical script, node and settings.",
+    "requirements": [
+      "All 201 positive and 252 clear frames; no drops.",
+      "Decode plus full detector p95 <= 100 ms and existing freshness checks.",
+      "Preserve full status, source and node logs for successes and failures."
+    ],
+    "limits": "Local quiet measurements are neither cold-disk nor target-hardware acceptance. Shared-load image builds and gate timings are diagnostic only."
+  }
 }
