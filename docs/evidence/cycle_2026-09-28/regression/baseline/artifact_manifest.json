@@ -69,13 +69,13 @@
       "sha256": "ff6f03e3ba98f5ed16ef6465fb0bd436caef7d72c43ea60507611720ab95775f",
       "bytes": 19965
     },
-    "gate.log": {
-      "sha256": "d16e1ad36da9b76cdae93ca2ec31afe52deacaa2a2ecad7e38a51ce566ecd63a",
-      "bytes": 26038
-    },
     "setF_straight.json.gz": {
       "sha256": "11da2ad334b12440015669dff73bda59ec03f0c8b279500bd9d063562c89f42b",
       "bytes": 149261
+    },
+    "gate.txt": {
+      "sha256": "d16e1ad36da9b76cdae93ca2ec31afe52deacaa2a2ecad7e38a51ce566ecd63a",
+      "bytes": 26038
     }
   }
 }
