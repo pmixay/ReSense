@@ -54,7 +54,3 @@ style.zip
 
 # Local assistant instruction template (not part of the repository)
 ui-screenshots.system-prompt.md
-
-# The GitBook build (gitbook/, .github/workflows/pages.yml)
-_site/
-_book/

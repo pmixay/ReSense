@@ -19,7 +19,6 @@ rewritten later; **frozen** = kept for reference, not maintained; **archive** = 
 |---|---|---|---|---|---|
 | [`README.md`](../README.md) | jury entry: build, run, what to look at, headline results (spec §5 README) | jury, team | EN + RU «Кратко для жюри» | P1 | current |
 | [`CHANGELOG.md`](../CHANGELOG.md) | one entry per version, v0.0 → v0.6.4, with the measured effect | jury, team | EN | P1 | current |
-| [`gitbook/`](../gitbook/SUMMARY.md) | the instructions as a GitBook: get the image, run on a bag, read the output, RViz / Foxglove / dashboard, offline stand, dry run, parameters, development, troubleshooting; no numbers (it links here). Built and published with the dashboard by `.github/workflows/pages.yml` to `https://pmixay.github.io/ReSense/` | jury, engineers, team | EN + RU jury page | P1 | current |
 | [`ARCHITECTURE.md`](ARCHITECTURE.md) | components, data flow, real-time budget (spec §5 "Архитектура") | jury, team | EN + RU summary | P1 | current |
 | [`ALGORITHM.md`](ALGORITHM.md) | how the detector decides, stage by stage; parameters; limitations (spec §5 "Описание алгоритма") | jury, P3 | EN + RU summary | P1 (structure), P3 (content) | current |
 | [`EXPERIMENTS.md`](EXPERIMENTS.md) | every measured result: false alarms, range, latency, FPS, hard cases, evolution (spec §5 "Эксперименты") | jury, team | EN + RU summary | P3 / P4 | current |
