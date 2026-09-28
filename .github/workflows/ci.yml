@@ -35,6 +35,7 @@ jobs:
     runs-on: ubuntu-22.04
     env:
       RESENSE_REQUIRE_SYNTHETIC: "1"
+      RESENSE_REQUIRE_WEB: "1"
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -141,9 +142,11 @@ jobs:
           IMAGE=resense:ci PLAYER_USER=1000:1000 NODE_DDS=shm OUT=out/console_test_shm_udp \
             scripts/console_test.sh /tmp/bags/smoke_bag /tmp/bags/smoke_bag2
       - name: remote Foxglove viewer — second container, isolated link and pause/recovery
-        if: ${{ env.FULL == 'true' }}
+        if: ${{ env.FULL == 'true' || github.ref == 'refs/heads/claude/amazing-fermi-t67v8g' }}
         # The viewer probe needs the WITH_TOOLS=1 build's `websockets` client. This models a second
         # device on an isolated network and checks outage/recovery without requiring demo hardware.
+        # Keep this P2 probe active on the reviewed Claude branch even when its P1 cold-bag FULL
+        # gate is restricted to main/earlier playback branches.
         run: IMAGE=resense:ci scripts/p2_viewer_test.sh
       # ---- the original-bag cold-start regression (working branch and main). The two original
       # organizer bags come from the Actions cache, so that Google Drive is not asked for the 3.7 GB

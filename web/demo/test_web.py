@@ -70,7 +70,7 @@ def test_foxglove_layout_parses_and_has_the_panels():
     decision = [c for k, c in cfg.items() if k.startswith("Indicator!") and c.get("path") == "/resense/decision.data"]
     assert decision and {r["rawValue"] for r in decision[0]["rules"]} == {"GO", "CAUTION", "STOP", "FAULT"}
     assert cfg["Indicator!obstacle"]["fallbackLabel"] == "NO DATA"
-    assert next(r["label"] for r in decision[0]["rules"] if r["rawValue"] == "GO") == "GO: no obstacle detected"
+    assert next(r["label"] for r in decision[0]["rules"] if r["rawValue"] == "GO") == "LAST GO: no obstacle detected"
     assert "/resense/clear_distance.data" in plotted
     assert any(c.get("topicPath") == "/resense/status" for k, c in cfg.items() if k.startswith("RawMessages!"))
 
@@ -205,10 +205,11 @@ def test_dashboard_freshness_and_live_stream_stall():
         page = b.new_page()
         page.goto("file://" + check_dashboard.INDEX, wait_until="domcontentloaded")
         page.wait_for_function("window.resense !== undefined")
-        base = {"stamp": 1.0, "obstacle": False, "warning": False, "nearest_distance": None,
+        base = {"stamp": 1.0, "snapshot_kind": "frame", "obstacle": False, "warning": False, "nearest_distance": None,
                 "detections": [], "warnings": [], "clear_distance": 120, "decision": "GO",
-                "health": {"level": "ok"}, "freshness": {"valid": True, "reason": "current",
-                "mode": "replay", "source_age_s": .02, "residence_age_s": .01,
+                "health": {"level": "ok"}, "freshness": {"valid": True, "reason": "current", "go_allowed": True,
+                "mode": "replay", "clock_reference": "publisher_utc", "queue_lag_s": 0,
+                "source_age_s": .02, "residence_age_s": .01,
                 "max_result_age_s": .5, "future_tolerance_s": .05}}
         # Fix UTC only for this delivery and simulate 50 ms of transport. Real live-stream
         # expiry timers keep running; the receipt assertions share the delivery's browser task.
@@ -231,7 +232,8 @@ def test_dashboard_freshness_and_live_stream_stall():
         assert page.inner_text("#clear") == "не определена"
         assert page.evaluate("state.cab.clearEnd") == 0
         # A new fresh message permits recovery; a later pause holds an outstanding STOP.
-        stop = dict(base, obstacle=True, decision="STOP", nearest_distance=50, clear_distance=50)
+        stop = dict(base, obstacle=True, decision="STOP", nearest_distance=50, clear_distance=50,
+                    freshness=dict(base["freshness"], go_allowed=False))
         page.evaluate(deliver, stop)
         page.evaluate("checkLiveStream(state.lastStatusArrival + 501)")
         assert page.inner_text("#decision") == "СТОП"
@@ -293,7 +295,7 @@ def test_dashboard_builtin_demo_and_summary():
         state = page.evaluate("({frames: window.resense.state.frames.length, summary: window.resense.state.summary})")
         assert state["frames"] == 60
         assert state["summary"] == {
-            "frames": 60, "alarm_events": 1, "alarm_frames": 36, "warning_frames": 4,
+            "frames": 60, "status_snapshots": 0, "stop_episodes": 1, "alarm_frames": 36, "warning_frames": 4,
             "nearest_m": pytest.approx(40.0), "max_detect_ms": 49,
         }
         page.locator("#summary-card summary").click()
@@ -379,16 +381,18 @@ def test_dashboard_reconnect_ignores_old_stream_and_closes_on_replay():
         assert page.locator("#panel-cab .stale-veil").is_visible()
         assert page.locator("#safety-card .stale-veil").is_visible()
 
-        fresh = {"obstacle": False, "warning": False, "decision": "GO", "nearest_distance": None,
+        fresh = {"snapshot_kind": "frame", "obstacle": False, "warning": False, "decision": "GO", "nearest_distance": None,
                  "detections": [], "warnings": [], "clear_distance": 120, "health": {"level": "ok"},
-                 "freshness": {"valid": True, "reason": "current", "source_age_s": .02,
+                  "freshness": {"valid": True, "reason": "current", "go_allowed": True, "source_age_s": .02,
+                                "mode": "replay", "clock_reference": "publisher_utc", "queue_lag_s": 0,
                                "residence_age_s": .01, "max_result_age_s": .5, "future_tolerance_s": .05}}
         page.evaluate("s => window.__fakeRos[0].publish({...s, freshness: {...s.freshness, evaluated_at_utc_s: Date.now()/1000}})", fresh)
         assert not page.locator("body").evaluate("el => el.classList.contains('live-stale')")
 
         page.click("#connect")
         page.wait_for_function("window.__fakeRos.length === 2")
-        stop = {**fresh, "obstacle": True, "decision": "STOP", "nearest_distance": 50, "clear_distance": 50}
+        stop = {**fresh, "obstacle": True, "decision": "STOP", "nearest_distance": 50, "clear_distance": 50,
+                "freshness": {**fresh["freshness"], "go_allowed": False}}
         page.evaluate("s => window.__fakeRos[1].publish({...s, freshness: {...s.freshness, evaluated_at_utc_s: Date.now()/1000}})", stop)
         title = page.inner_text("#banner-title")
         assert title == "ПРЕПЯТСТВИЕ 50.0 м"
@@ -633,6 +637,10 @@ def test_presentation_artifact_uses_the_organizers_slide_sequence():
     assert "42–64" not in text                                  # the numpy timing of 23.09, not the shipped path
     assert "~149" not in text                                   # the 90 % hold counts misses before the first STOP
     assert "Привет, участник хакатона" not in text
+    assert "Любое крепление" not in text
+    assert "стыкуется с системой торможения" not in text
+    assert "единицы процентов AP" not in text
+    assert "/resense/status" in text
 
 
 def test_overview_video_cards_follow_the_current_gate_baseline():

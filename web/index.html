@@ -32,6 +32,7 @@
         <div class="cab-stage"><canvas id="cab" role="img" aria-label="Вид по ходу движения из кабины: рельсы, габарит поезда, оценка дальности контроля и обнаруженные объекты с дистанцией"></canvas></div>
       </section>
       <section class="visual-card plan-card" id="panel-plan" role="tabpanel" aria-labelledby="tab-plan" hidden>
+        <div class="stale-veil" role="status">НЕТ АКТУАЛЬНЫХ ДАННЫХ ОТ ДЕТЕКТОРА</div>
         <div class="canvas-tools">
           <h2>Вид сверху</h2>
           <label>Дальность <select id="xmax"><option value="100">100 м</option><option value="150" selected>150 м</option><option value="250">250 м</option></select></label>
@@ -83,7 +84,7 @@
           <span>Детекции / предупреждения</span><b id="counts">0 / 0</b>
           <span>Ось пути, м (+ влево)</span><b id="axis">—</b>
           <span>Радиус кривой</span><b id="radius">—</b>
-          <span>Проверенная дальность</span><b id="valid">—</b>
+          <span>Дальность модели оси</span><b id="valid">—</b>
           <span>Точек / внутри габарита</span><b id="points">—</b>
           <span>Время обработки</span><b id="timing">—</b>
           <span>Путь / габарит / кластеры</span><b id="stages">—</b>
@@ -103,10 +104,11 @@
       <details class="side-section" id="summary-card">
         <summary>Сводка запуска</summary>
         <div class="side-section-body"><div class="kv">
-          <span>Событий / кадров тревоги</span><b id="s-alarms">—</b>
+          <span>Эпизодов STOP / кадров</span><b id="s-alarms">—</b>
           <span>Минимальная дистанция</span><b id="s-nearest">—</b>
           <span>Кадров предупреждения</span><b id="s-warnings">—</b>
           <span>Максимальное время</span><b id="s-max-time">—</b>
+          <span>Служебных снимков</span><b id="s-snapshots">—</b>
         </div><div class="summary-actions"><button id="export-report" type="button" title="Скачать сводку запуска в JSON" disabled>Скачать отчёт</button></div></div>
       </details>
       <details class="side-section" id="events-card">
@@ -170,12 +172,13 @@ function drawTop(res) {
   const axis = X => c0 + Math.tan(yaw) * X + 0.5 * k * X * X;
   // sensor / train nose
   ctx.fillStyle = '#e4000d'; ctx.beginPath(); ctx.moveTo(0, cy - 12); ctx.lineTo(14, cy); ctx.lineTo(0, cy + 12); ctx.closePath(); ctx.fill();
-  // track axis and the strict gauge corridor (half-width 1.4 m)
+  // Strict 2.1 m envelope, plus the separate 0.35 m advisory margin on each side.
   ctx.strokeStyle = 'rgba(19,169,87,0.45)'; ctx.setLineDash([2, 6]); ctx.beginPath();
   for (let X = 3; X <= XMAX; X += 5) { const px = X * sx, py = cy - axis(X) * sy; X === 3 ? ctx.moveTo(px, py) : ctx.lineTo(px, py); }
   ctx.stroke();
-  ctx.strokeStyle = '#00854a'; ctx.setLineDash([6, 4]);
-  for (const side of [1.4, -1.4]) {
+  for (const side of [1.05, -1.05, 1.4, -1.4]) {
+    ctx.strokeStyle = Math.abs(side) === 1.05 ? '#00854a' : '#967c29';
+    ctx.setLineDash(Math.abs(side) === 1.05 ? [] : [6, 4]);
     ctx.beginPath();
     for (let X = 3; X <= XMAX; X += 5) { const px = X * sx, py = cy - (axis(X) + side) * sy; X === 3 ? ctx.moveTo(px, py) : ctx.lineTo(px, py); }
     ctx.stroke();
@@ -219,7 +222,7 @@ function decisionOf(res) {
   if (decision === 'FAULT' || h.level === 'error' || dl === 'error') return 'FAULT';
   if (decision === 'CAUTION' || res.warning || dl === 'warn') return 'CAUTION';
   if (VALID_DECISIONS.has(decision)) return decision;
-  return h.level ? 'GO' : '—';
+  return 'GO';
 }
 function trackModel(t) {
   // resense.track.TrackModel.center_y / rail_z: quadratic bed, extrapolated linearly beyond floor_range
@@ -273,10 +276,11 @@ function cabScene(ctx, W, H, r, tm, cam, opts) {
   }
   // estimated monitored range in green, capped at the obstacle; the stop zone in red
   // (older results without clear_distance: the trusted corridor range; nothing on a fault or without data)
+  const stopped = r && decisionOf(r) === 'STOP';
   const clearEnd = !r || r.freshness?.valid === false || decisionOf(r) === 'FAULT' ? 0
-    : (r.obstacle ? r.nearest_distance : Math.min(r.clear_distance ?? t.axis_valid ?? 0, CAB.far));
+    : Math.min(r.clear_distance ?? t.axis_valid ?? 0, stopped ? (r.nearest_distance ?? 0) : CAB.far, CAB.far);
   band(CAB.rangeMin, clearEnd, -ENVELOPE.half, ENVELOPE.half, 0.01, 'rgba(19,169,87,0.34)');
-  if (r && r.obstacle && r.nearest_distance != null) band(r.nearest_distance, Math.min(r.nearest_distance + 6, CAB.far), -ENVELOPE.half, ENVELOPE.half, 0.01, 'rgba(228,0,13,0.5)');
+  if (stopped && r.nearest_distance != null) band(r.nearest_distance, Math.min(r.nearest_distance + 6, CAB.far), -ENVELOPE.half, ENVELOPE.half, 0.01, 'rgba(228,0,13,0.5)');
   // rails: per-segment width shrinks with range
   const xsRail = cabSteps(0, trackEnd);
   for (const side of [-RAIL_HALF, RAIL_HALF]) {
@@ -443,7 +447,9 @@ function drawTimeline() {
   for (const d of [50, 100, 150, 200]) { const y = yOf(d); ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(c.width, y); ctx.stroke(); ctx.fillStyle = '#292c31'; ctx.fillText(d + ' м', 4, y - 2); }
   // x-axis: wall clock in live mode, stamp relative to the first frame in replay
   const tick = 5, first = Math.floor((now - span) / tick) * tick;
-  for (let t = first; t <= now; t += tick) {
+  for (let i = 0; i <= Math.ceil(span / tick); i++) {
+    const t = first + i * tick;
+    if (t > now) continue;
     if (t < now - span) continue;
     const x = xOf(t); ctx.beginPath(); ctx.moveTo(x, bottom); ctx.lineTo(x, bottom + 4); ctx.stroke();
     const rel = t - (state.t0 || 0);
@@ -505,18 +511,19 @@ function applyResult(res, opts) {
   applyNode(res.node);
   // timeline history
   const warnDist = warns.length ? Math.min(...warns.map(w => w.distance)) : null;
-  state.hist.push({ t, dist: res.obstacle ? res.nearest_distance : null, warnDist, obstacle: !!res.obstacle });
+  const stopped = decision === 'STOP';
+  state.hist.push({ t, dist: stopped ? res.nearest_distance : null, warnDist, obstacle: stopped });
   while (state.hist.length > 5000) state.hist.shift();
   // alarm log: one line per alarm frame, one line when the alarm ends
   const when = state.mode === 'replay' ? `#${String(res.frame ?? state.shown - 1).padStart(5, '0')} +${(t - (state.t0 || 0)).toFixed(1)}с` : new Date().toLocaleTimeString('ru-RU');
-  if (res.obstacle) {
+  if (stopped) {
     state.alarmFrames++;
     logLine(`${when}  ПРЕПЯТСТВИЕ ${fmt(res.nearest_distance, 1, ' м')}  ` + dets.map(d => `#${d.id} смещение=${d.lateral.toFixed(1)} размер=${d.size[0].toFixed(1)}×${d.size[1].toFixed(1)}×${d.size[2].toFixed(1)} точек=${d.n_points} p=${d.confidence.toFixed(2)}`).join(' | '));
   } else if (state.lastObstacle) {
     logLine(`${when}  препятствие больше не обнаружено · тревога длилась ${state.alarmFrames} кадр.`);
     state.alarmFrames = 0;
   }
-  state.lastObstacle = !!res.obstacle;
+  state.lastObstacle = stopped;
   if (draw) { drawTop(res); drawTimeline(); drawCab(res); }
 }
 function applySafety(res) {
@@ -589,10 +596,16 @@ function onStatus(msg, source = ros, generation = rosGeneration) {
   let invalid = '';
   if (!f || typeof f.valid !== 'boolean') invalid = 'status_clock_unknown';
   else if (f.valid) {
-    if (!finite(f.evaluated_at_utc_s) || !finite(f.source_age_s) || !finite(f.residence_age_s)
+    const clocks = { live: 'acquisition_utc', replay: 'publisher_utc' };
+    if (!Object.hasOwn(clocks, f.mode) || f.clock_reference !== clocks[f.mode]
+        || !finite(f.evaluated_at_utc_s) || !finite(f.source_age_s) || !finite(f.residence_age_s)
         || !finite(f.max_result_age_s) || f.max_result_age_s <= 0 || f.max_result_age_s > .5
         || !finite(f.future_tolerance_s) || f.future_tolerance_s < 0 || f.future_tolerance_s > .05)
       invalid = 'status_clock_unknown';
+    else if (res.snapshot_kind !== 'frame' || res.stop_held || f.reason !== 'current'
+        || !finite(f.queue_lag_s) || f.queue_lag_s < 0 || f.queue_lag_s > 1e-6 || res.node?.catchup
+        || res.health?.level === 'error' || decisionOf(res) === 'FAULT'
+        || f.go_allowed !== (decisionOf(res) === 'GO')) invalid = 'status_not_current';
     else {
       const transport = Date.now() / 1000 - f.evaluated_at_utc_s;
       if (transport >= 0) f.transport_age_s = transport;
@@ -603,6 +616,7 @@ function onStatus(msg, source = ros, generation = rosGeneration) {
       else f.transport_age_s = Math.max(0, transport);
     }
   }
+  if (f?.valid === false) invalid = f.reason || 'status_not_current';
   if (invalid) {
     res.freshness = { ...(f || {}), valid: false, go_allowed: false, reason: invalid };
     if (invalid !== 'status_transport_stale') res.freshness.source_age_s = null;
@@ -659,13 +673,20 @@ function closeLive() {
   const oldRos = ros; ros = null;
   state.lastStatusArrival = null;
   if (oldRos) { try { oldRos.close(); } catch (e) {} }
+  $('conn').textContent = 'Нет подключения';
 }
 $('connect').onclick = () => {
+  replayReadGeneration++;
   if (typeof ROSLIB === 'undefined') { $('conn').textContent = 'roslib.js не загружен'; return; }
+  let url;
+  try {
+    url = new URL($('url').value);
+    if (!['ws:', 'wss:'].includes(url.protocol)) throw new Error('protocol');
+  } catch (e) { $('conn').textContent = 'Нужен адрес ws:// или wss://'; return; }
   setMode('live');
   closeLive();
   const generation = ++rosGeneration;
-  const currentRos = new ROSLIB.Ros({ url: $('url').value });
+  const currentRos = new ROSLIB.Ros({ url: url.href });
   ros = currentRos;
   state.lastStatusArrival = null; state.streamStale = false;
   setLiveStale(true);
@@ -709,6 +730,7 @@ function resetView() {
   drawTop({}); drawTimeline(); drawCab(null);
 }
 function setMode(m) {
+  replayReadGeneration++;
   if (state.mode === m) return;
   pause();
   if (m !== 'live') closeLive();
@@ -720,26 +742,34 @@ function setMode(m) {
   $('health-source').textContent = m === 'live' ? 'Поток отключён' : 'Запись готова';
   for (const id of ['play', 'stepback', 'stepfwd', 'seek']) $(id).disabled = m !== 'replay' || !state.frames.length;
   if (m === 'live') setLiveStale(true);
+  $('export-report').disabled = m !== 'replay' || !state.frames.length;
+  renderSummary();
 }
 function summarizeFrames(frames) {
-  let events = 0, alarmFrames = 0, warningFrames = 0, active = false, nearest = Infinity, maxTime = 0;
+  let episodes = 0, alarmFrames = 0, warningFrames = 0, active = false, nearest = Infinity, maxTime = 0;
+  let frameCount = 0, snapshots = 0;
   for (const f of frames) {
-    if (f.obstacle) { alarmFrames++; if (Number.isFinite(f.nearest_distance)) nearest = Math.min(nearest, f.nearest_distance); if (!active) events++; }
-    if (f.warning) warningFrames++;
-    active = !!f.obstacle;
+    if (f.snapshot_kind != null && f.snapshot_kind !== 'frame') { snapshots++; continue; }
+    frameCount++;
+    const decision = decisionOf(f), stopped = decision === 'STOP';
+    if (stopped) { alarmFrames++; if (Number.isFinite(f.nearest_distance)) nearest = Math.min(nearest, f.nearest_distance); if (!active) episodes++; }
+    if (decision === 'CAUTION' || f.warning) warningFrames++;
+    active = stopped;
     maxTime = Math.max(maxTime, Number((f.timing_ms || {}).total) || 0);
   }
-  return { frames: frames.length, alarm_events: events, alarm_frames: alarmFrames, warning_frames: warningFrames,
+  return { frames: frameCount, status_snapshots: snapshots, stop_episodes: episodes, alarm_frames: alarmFrames, warning_frames: warningFrames,
     nearest_m: isFinite(nearest) ? nearest : null, max_detect_ms: maxTime || null };
 }
 function renderSummary() {
-  const s = state.summary;
-  $('s-alarms').textContent = s ? `${s.alarm_events} / ${s.alarm_frames}` : '—';
+  const s = state.mode === 'replay' ? state.summary : null;
+  $('s-alarms').textContent = s ? `${s.stop_episodes} / ${s.alarm_frames}` : '—';
   $('s-nearest').textContent = s && s.nearest_m != null ? `${s.nearest_m.toFixed(1)} м` : '—';
   $('s-warnings').textContent = s ? s.warning_frames : '—';
   $('s-max-time').textContent = s && s.max_detect_ms != null ? `${s.max_detect_ms.toFixed(0)} мс` : '—';
+  $('s-snapshots').textContent = s ? s.status_snapshots : '—';
 }
 function loadText(text, name) {
+  replayReadGeneration++;
   const frames = [];
   for (const line of text.split(/\r?\n/)) {
     const s = line.trim(); if (!s) continue;
@@ -785,10 +815,13 @@ function downloadJSON(value, name) {
   a.download = name; document.body.appendChild(a); a.click();
   setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
 }
+let replayReadGeneration = 0;
 function readReplayFile(file) {
   if (!file) return;
+  const generation = ++replayReadGeneration;
   const r = new FileReader();
-  r.onload = () => loadText(String(r.result), file.name);
+  r.onload = () => { if (generation === replayReadGeneration) loadText(String(r.result), file.name); };
+  r.onerror = () => { if (generation === replayReadGeneration) $('frame-pos').textContent = 'Не удалось прочитать файл'; };
   r.readAsText(file);
 }
 function showFrame(i, draw) {
@@ -835,9 +868,9 @@ $('demo').onclick = () => {
   loadText(demoFrames().map(f => JSON.stringify(f)).join('\n'), 'Встроенное демо');
   $('speed').value = '2'; state.speed = 2; play();
 };
-$('export-report').onclick = () => downloadJSON({ generated_at: new Date().toISOString(), source: state.sourceName,
+$('export-report').onclick = () => { if (state.mode !== 'replay' || !state.frames.length) return; downloadJSON({ schema_version: 2, generated_at: new Date().toISOString(), source: state.sourceName,
   summary: state.summary, first_stamp: state.frames.length ? stampOf(state.frames[0]) : null,
-  last_stamp: state.frames.length ? stampOf(state.frames[state.frames.length - 1]) : null }, 'resense_run_report.json');
+  last_stamp: state.frames.length ? stampOf(state.frames[state.frames.length - 1]) : null }, 'resense_run_report.json'); };
 $('play').onclick = () => state.playing ? pause() : play();
 $('stepfwd').onclick = () => { pause(); step(1); };
 $('stepback').onclick = () => { pause(); step(-1); };
