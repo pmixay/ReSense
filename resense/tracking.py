@@ -91,6 +91,7 @@ class Track:
     was_stop: bool = False          # 27.09: reported in zone gauge (a STOP) after the previous update (thin_far_min_distance only)
     approach_block: bool = False    # 27.09: far evidence without an approach holds a reported advisory track advisory (zone)
     low_clean: Optional[Cluster] = None  # last clean low cluster; weak continuation cannot change this shape reference
+    low_since_clean: float = 0.0  # actual elapsed time, including stamp gaps clipped for the existing motion/fit rules
 
     @property
     def near_escalated(self) -> bool:
@@ -225,7 +226,8 @@ class Tracker:
     def update(self, clusters: List[Cluster], ego_shift: float = 0.0,
                frame_dt: Optional[float] = None, low_ok: bool = True, rail_within: float = 0.0,
                thin: Optional[List[Cluster]] = None, far_thin: Optional[List[Cluster]] = None,
-               low_height: Optional[List[Cluster]] = None) -> List[Track]:
+               low_height: Optional[List[Cluster]] = None,
+               low_frame_dt: Optional[float] = None) -> List[Track]:
         """Associate ``clusters`` with the tracks. ``ego_shift`` (m) is the distance the
         vehicle travelled since the previous frame when it is known: a track seen once has no
         velocity yet and is then predicted as a static object approaching by that much.
@@ -249,7 +251,9 @@ class Tracker:
         (:meth:`_approaching`); otherwise it is reported as advisory (``Track.approach_block``), never
         hidden. A track whose clean hits alone vote gauge (:meth:`_clean_gauge`: within
         ``thin_far_min_distance`` every hit is clean, so the vote clears within ``zone_window`` hits)
-        and a STOP in the previous frame keep the usual rules."""
+        and a STOP in the previous frame keep the usual rules. ``low_frame_dt`` is the
+        actual positive stamp interval when ``frame_dt`` was clipped for motion/fit rules;
+        it advances only the bounded low-height continuation clock."""
         c = self.cfg
         # Weak low evidence is never a normal hit or a seed, even when supplied directly
         # by another caller. The detector normally passes it separately.
@@ -264,6 +268,9 @@ class Tracker:
         # 26.09 (stop_keep_max_s): the sensor time of this frame for the keep cap (the nominal period
         # when the caller gives no interval), so that the cap is in seconds at any input rate
         kdt = dt if dt > 0 else float(c.frame_dt)
+        low_dt = float(low_frame_dt) if low_frame_dt is not None and low_frame_dt > 0 else kdt
+        for t in self.tracks:
+            t.low_since_clean += low_dt
         self._clock += kdt
         n_t, n_c = len(self.tracks), len(clusters)
         matched_t = np.zeros(n_t, dtype=bool)
@@ -293,6 +300,8 @@ class Tracker:
                 t.confidence = min(1.0, t.confidence + c.conf_gain * cl.score)
                 t.last = cl
                 t.low_clean = cl if cl.kind == "low" else None
+                if cl.kind == "low" and cl.zone == "gauge":
+                    t.low_since_clean = 0.0
                 if self.record:
                     t.obs = (t.obs + [observation(cl)])[-OBS_KEEP:]
                 g = cl.zone == "gauge" or keep
@@ -385,9 +394,10 @@ class Tracker:
                 q = False
             t.reported = (q or (t.reported and 0 < t.misses <= c.hold_misses)
                           or (t.reported and t.hold > 0))
-            if (t.last is not None and t.last.low_height_weak
-                    and t.since_clean > c.stop_keep_low_s + 1e-9):
+            if (t.hold <= 0 and t.last is not None and t.last.low_height_weak
+                    and t.low_since_clean > c.stop_keep_low_s + 1e-9):
                 # The ordinary missed-frame hold must not extend the weak-evidence budget.
+                # An independent calibration hold keeps its existing fixed countdown.
                 t.reported = False
             if t.misses == 0:
                 t.seen_reported = t.reported
@@ -424,7 +434,7 @@ class Tracker:
                              dt: float, zw: int, hw: int, nk: int, kdt: float) -> None:
         """Continue a reported low STOP using current straddle returns whose top alone
         narrowly fails the clean threshold. No seeds, no new confirmations, no confidence
-        gain, and no reset of ``since_clean``. Both association and the shape reference
+        gain, and no reset of either clean-hit clock. Both association and the shape reference
         are bounded; a cluster agreeing with more than one track is unused."""
         static = np.array([-float(ego_shift), 0.0, 0.0])
         predictions = [t.centroid if matched[i] else t.centroid + (t.velocity if t.hits > 1 else static)
@@ -437,7 +447,7 @@ class Tracker:
             i = owners[0]
             t = self.tracks[i]
             if (matched[i] or not t.reported or t.zone != "gauge"
-                    or t.since_clean + kdt > self.cfg.stop_keep_low_s + 1e-9):
+                    or t.low_since_clean > self.cfg.stop_keep_low_s + 1e-9):
                 continue
             t.since_clean += kdt
             t.velocity = 0.5 * t.velocity + 0.5 * (cl.centroid - t.centroid)

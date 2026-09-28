@@ -51,10 +51,13 @@ def test_current_evidence_bridges_two_frames_and_clean_hit_refreshes_budget():
         tr.update([], low_height=[cluster(weak=True)], frame_dt=0.1)
         assert t.reported and t.misses == 0 and t.last.low_height_weak
         assert t.since_clean == pytest.approx(0.1 * (k + 1))
+        assert t.low_since_clean == pytest.approx(0.1 * (k + 1))
         assert t.low_clean is clean and t.confidence == confidence
     tr.update([cluster()], frame_dt=0.1)
     assert t.reported and not t.last.low_height_weak and t.since_clean == 0
-    assert t.low_clean is t.last
+    assert t.low_clean is t.last and t.low_since_clean == 0
+    tr.update([], low_height=[cluster(weak=True)], frame_dt=0.2)
+    assert t.reported and t.misses == 0 and t.low_since_clean == pytest.approx(0.2)
 
 
 @pytest.mark.parametrize("intervals", [[0.1] * 6, [0.05] * 10, [0.19, 0.12], [0.2, 0.1, 0.01], [0.3, 0.01]])
@@ -91,6 +94,113 @@ def test_removal_uses_existing_hold_and_cannot_gain_an_extra_budget():
     for _ in range(5):
         tr.update([], low_height=[cluster(weak=True)], frame_dt=0.1)
         assert not tr.confirmed()
+
+
+@pytest.mark.parametrize("weak_before_reseed", [False, True])
+@pytest.mark.parametrize("keep_weak_returns", [False, True])
+def test_low_height_expiry_preserves_the_independent_fixed_calibration_hold(
+        weak_before_reseed, keep_weak_returns):
+    tr = tracker()
+    t = establish(tr)
+    if weak_before_reseed:
+        tr.update([], low_height=[cluster(weak=True)], frame_dt=0.1)
+    tr.reseed(np.eye(3), 6)
+    reported = []
+    for k in range(10):
+        use_weak = keep_weak_returns or (k == 0 and not weak_before_reseed)
+        tr.update([], low_height=[cluster(weak=True)] if use_weak else [], frame_dt=0.1)
+        reported.append(bool(tr.confirmed()))
+        if k < 6:
+            assert t.hold == 5 - k
+            assert t.since_clean == pytest.approx(0.1 * (k + 1 + int(weak_before_reseed)))
+            if t.since_clean > 0.3 + 1e-9:
+                assert t.misses > 0  # expired weak returns cannot reset misses or the clean budget
+    assert reported == [True] * 6 + [False] * 4
+
+
+def test_repeated_calibration_changes_cannot_extend_an_unmatched_weak_track():
+    tr = tracker()
+    t = establish(tr)
+    tr.update([], low_height=[cluster(weak=True)], frame_dt=0.1)
+    tr.reseed(np.eye(3), 6)
+    reported = []
+    for k in range(10):
+        tr.update([], frame_dt=0.1)
+        reported.append(bool(tr.confirmed()))
+        tr.reseed(np.eye(3), 6)
+        if k < 6:
+            assert t.hold == 5 - k
+            assert t.since_clean == pytest.approx(0.1 * (k + 2))
+    assert reported == [True] * 6 + [False] * 4
+
+
+@pytest.mark.parametrize("gap", [0.6, 1.0, 3.0])
+def test_detector_long_stamp_gap_does_not_match_weak_returns(gap):
+    cfg = DetectorConfig()
+    cfg.tracking = replace(cfg.tracking, stop_keep_low_s=0.3, doubt_extra_hits=0)
+    det = Detector(cfg)
+    for k in range(6):
+        dt = det._frame_dt(100 + 0.1 * k)
+        det._confirm([cluster()], 0.0, dt)
+    t = det.tracker.tracks[0]
+    det._low_height = [cluster(weak=True)]
+    dt = det._frame_dt(100.5 + gap)
+    assert dt == pytest.approx(0.1)  # existing clipped timing remains unchanged
+    det._confirm([], 0.0, dt)
+    assert t.low_since_clean == pytest.approx(gap)
+    assert t.reported and t.misses == 1 and not t.last.low_height_weak
+    dt = det._frame_dt(100.6 + gap)
+    det._confirm([], 0.0, dt)
+    assert not det.tracker.confirmed() and t.misses == 2
+
+
+@pytest.mark.parametrize("calibration_hold", [False, True])
+def test_detector_long_gap_expires_previous_weak_evidence_but_preserves_calibration_hold(calibration_hold):
+    cfg = DetectorConfig()
+    cfg.tracking = replace(cfg.tracking, stop_keep_low_s=0.3, doubt_extra_hits=0)
+    det = Detector(cfg)
+    for k in range(6):
+        dt = det._frame_dt(100 + 0.1 * k)
+        det._confirm([cluster()], 0.0, dt)
+    det._low_height = [cluster(weak=True)]
+    det._confirm([], 0.0, det._frame_dt(100.6))
+    t = det.tracker.tracks[0]
+    assert t.reported and t.misses == 0 and t.last.low_height_weak
+    if calibration_hold:
+        det.tracker.reseed(np.eye(3), 6)
+    reported = []
+    for k in range(7):
+        det._confirm([], 0.0, det._frame_dt(101.6 + k))
+        reported.append(bool(det.tracker.confirmed()))
+        if t in det.tracker.tracks:
+            assert t.low_since_clean == pytest.approx(1.1 + k)
+            assert t.misses == k + 1
+    assert reported == ([True] * 6 + [False] if calibration_hold else [False] * 7)
+
+
+def test_moving_object_with_mixed_cadence_falls_back_to_the_existing_miss_hold():
+    """The existing velocity estimate is metres/frame. A sudden doubled interval can
+    exceed the conservative weak-match gate; retain the ordinary hold and recover on a
+    clean hit. This control records that limitation without widening weak association."""
+    outcomes = []
+    for enabled in (False, True):
+        cfg = DetectorConfig()
+        cfg.tracking = replace(cfg.tracking, stop_keep_low_s=0.3 if enabled else 0, doubt_extra_hits=0)
+        det = Detector(cfg)
+        for k in range(6):
+            det._confirm([cluster(x=50 - k)], 10.0, det._frame_dt(100 + 0.1 * k))
+        t = det.tracker.tracks[0]
+        reported = []
+        for stamp, x in ((100.7, 43.0), (100.8, 42.0)):
+            det._low_height = [cluster(x=x, weak=True)]
+            det._confirm([], 10.0, det._frame_dt(stamp))
+            reported.append(bool(det.tracker.confirmed()))
+            assert not t.last.low_height_weak
+        det._low_height = []
+        det._confirm([cluster(x=41)], 10.0, det._frame_dt(100.9))
+        reported.append(bool(det.tracker.confirmed()))
+        outcomes.append(reported)
+    assert outcomes == [[True, False, True], [True, False, True]]
 
 
 @pytest.mark.parametrize("weak", [

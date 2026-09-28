@@ -182,6 +182,7 @@ class Detector:
         self._thin: List[Cluster] = []  # 26.09 (tracking.stop_keep_thin): this frame's corridor clusters flatter than min_height
         self._low_height: List[Cluster] = []  # current straddle evidence just below its clean top-height threshold
         self._prev_stamp: Optional[float] = None
+        self._low_frame_dt: Optional[float] = None  # actual positive stamp interval for the bounded low continuation
         self._gaps: deque = deque(maxlen=14)  # the last stamp intervals within [0, stamp_dt_range[1]] (s): the input rate
 
     @property
@@ -202,14 +203,19 @@ class Detector:
         self._thin = []
         self._low_height = []
         self._prev_stamp = None
+        self._low_frame_dt = None
         self._gaps.clear()
 
     def _frame_dt(self, stamp: float) -> float:
         """Time since the previous frame from the stamps when they are sane, else the nominal
         frame period (cached frames and synthetic tests carry no usable stamp)."""
         dt = self.cfg.tracking.frame_dt
+        self._low_frame_dt = dt
         if self._prev_stamp is not None:
             gap = float(stamp) - self._prev_stamp
+            # The existing motion/fit timing clips long gaps below. They still consume
+            # their real elapsed time from the independent low-evidence continuation cap.
+            self._low_frame_dt = gap if gap > 0 else dt
             lo, hi = self.cfg.accumulation.stamp_dt_range
             if lo <= gap <= hi:
                 dt = gap
@@ -648,6 +654,7 @@ class Detector:
                             rail_within=low.rail_start_within,
                             thin=self._thin if self.cfg.tracking.stop_keep_thin > 0 else None,
                             low_height=self._low_height,
+                            low_frame_dt=self._low_frame_dt,
                             far_thin=self._far_thin(clusters) if self.cfg.tracking.thin_far_min_distance > 0 else None)
         pending = low.pending_advisory and self.calib.state.status == "pending"
         dets: List[Detection] = []

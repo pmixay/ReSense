@@ -1,9 +1,9 @@
 {
   "schema": "resense-low-height-experiment-v1",
   "status": "provisional; defaults disabled; awaiting full gate and reserved evaluation",
-  "source_sha256": "136a995ae5ca79a51683707647f06f64401c56d798cd18e03e196832954909c6",
+  "source_sha256": "fd60223da939d588f32d90687550300ee89d97d1130e09c8f17aba73d94eaa45",
   "acceptance_sha256": "056e8d8b2ebc585017fbff01fadf24236e112c081809e0f7d0245e98a9aefc13",
-  "raw_summary_sha256": "9c40cc0299d4644fff32611988fc81a795da3e41090baf82d5abe16c3a1f99d9",
+  "raw_summary_sha256": "3ec3bcbcfed9b969b76ee28014e8fbf0ab1be44c7629e8fd5c09668b462c90b3",
   "candidate": {
     "tracking.stop_keep_low_s": 0.3,
     "lowobj.straddle_keep_height_margin": 0.03
@@ -157,5 +157,78 @@
     "Full strict regression gate without waivers",
     "Independent reserved synthetic evaluation",
     "Integration review and detector reseal before enabling default"
-  ]
+  ],
+  "review_fixes": {
+    "previous_candidate_commit": "0fa2c3ebadb6f216cce245a885960564bd927400",
+    "issues": [
+      "Weak expiry overrode the independent active calibration reseed hold.",
+      "Frame gaps above the motion/fit interval limit were clipped before consuming the weak-evidence budget."
+    ],
+    "changes": [
+      "Weak expiry applies only outside the existing calibration hold; its countdown is never reset.",
+      "Separate low_since_clean counter consumes actual positive timestamp intervals and resets only on clean low gauge hits."
+    ],
+    "checks": [
+      {
+        "command": "RESENSE_REQUIRE_SYNTHETIC=1 python -m pytest -q tests/test_low_height_keep.py tests/test_reseed_safety.py tests/test_stop_keep.py",
+        "result": "91 passed in 46.85s"
+      },
+      {
+        "command": "RESENSE_REQUIRE_SYNTHETIC=1 python -m pytest -q tests/test_low_height_keep.py",
+        "result": "35 passed in 1.70s",
+        "note": "After strengthening the assertion that a new clean hit resets the independent low clock."
+      },
+      {
+        "command": "python -m ruff check resense/detector.py resense/tracking.py tests/test_low_height_keep.py",
+        "result": "All checks passed."
+      }
+    ],
+    "raw_rerun": {
+      "bursty_baseline.jsonl.gz": {
+        "frames": 135,
+        "semantic_difference_frames": []
+      },
+      "bursty_candidate.jsonl.gz": {
+        "frames": 135,
+        "semantic_difference_frames": []
+      },
+      "full_baseline.jsonl.gz": {
+        "frames": 201,
+        "semantic_difference_frames": []
+      },
+      "full_candidate.jsonl.gz": {
+        "frames": 201,
+        "semantic_difference_frames": []
+      },
+      "half_baseline.jsonl.gz": {
+        "frames": 101,
+        "semantic_difference_frames": []
+      },
+      "half_candidate.jsonl.gz": {
+        "frames": 101,
+        "semantic_difference_frames": []
+      },
+      "restart75_baseline.jsonl.gz": {
+        "frames": 126,
+        "semantic_difference_frames": []
+      },
+      "restart75_candidate.jsonl.gz": {
+        "frames": 126,
+        "semantic_difference_frames": []
+      }
+    },
+    "raw_semantic_comparison_fields": [
+      "obstacle",
+      "warning",
+      "nearest_distance",
+      "detections",
+      "warnings",
+      "clear_distance",
+      "track",
+      "mount",
+      "n_candidates",
+      "n_corridor"
+    ],
+    "known_limitation": "Velocity remains metres per frame. A moving object at 10 m/s with 0.1/0.2/0.1 s intervals can fail the tight weak match: both off/on use ordinary hold, then miss, then recover on a clean hit."
+  }
 }

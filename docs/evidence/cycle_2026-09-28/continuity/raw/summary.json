@@ -1,8 +1,8 @@
 {
   "schema": "resense-low-height-replay-v1",
-  "created_utc": "2026-09-28T17:31:08.880636+00:00",
+  "created_utc": "2026-09-28T17:42:42.740371+00:00",
   "candidate_status": "provisional; full regression gate and independent reserved evaluation required",
-  "source_sha256": "136a995ae5ca79a51683707647f06f64401c56d798cd18e03e196832954909c6",
+  "source_sha256": "fd60223da939d588f32d90687550300ee89d97d1130e09c8f17aba73d94eaa45",
   "source_files": {
     "configs/default.yaml": "a5acd9214d2aeb58bf86e0a3b91685a1f3ab17ebbf60dbfe6b39edbe616a72f6",
     "native/resense_native.cpp": "85688be18c41c68111f30e2bc45b83186650c1eead8b24a254d15c97cb2592f1",
@@ -14,7 +14,7 @@
     "resense/cli.py": "1fd89acade866a2babe0566d15666bcdd50b167a26664d91880ec2504138b33f",
     "resense/clustering.py": "1423c9b6011a5bb80cfb5b8e80a7de496e90366c5fb34760c5018ebd3bb6c8e9",
     "resense/config.py": "1360f66a7067200ec9018bcd65054e4049bc4d9f0c7c0e05f65c8b971bee7593",
-    "resense/detector.py": "9c5351befbd07935e2d5f1b1cac28db2386cb5fde793b3aec799c3bab1de8cde",
+    "resense/detector.py": "c1081b38f6f84c8bbcdec8e895cc4b909bce7cc393763689b5db58d5add2ed33",
     "resense/egomotion.py": "fba03d8f0657358aeeaa24956dc2ea5f224673dbeb3452d0d6eb6f5ec515a25a",
     "resense/evidence.py": "083ee20fc8bb9fc915575bd06fa04869a5f5ddc6ca9217a6145879d3c8249853",
     "resense/frame.py": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9",
@@ -30,7 +30,7 @@
     "resense/sensor.py": "0c5acd4d937d2c6946422018a2a394c71f4de351d338899e436bc1b2a34115b0",
     "resense/synthetic.py": "6f6c86fefd70b26b6c6b2f51f01a6de43def587a8ae49f2eb2523e830a30c747",
     "resense/track.py": "f9e405ea1f74555e55d2bf6de9664d8078349e42077dcab4a6c3a5a3284c56ba",
-    "resense/tracking.py": "9f2d6b2c94c37720cc2fe580d4133ef1c874ded2e5b738215d8bab1214c980e2",
+    "resense/tracking.py": "7b2fef44f5dc88bf531649dee14a63a7f0784a14c894cdfaf7508ecfd4b9fd79",
     "resense/viz.py": "3a5df9d0acb1a0d0f0dc9568131c17906bda49ac2dba65f5eb49343abe3d36db",
     "ros2_ws/src/resense_ros/config/detector.yaml": "a5acd9214d2aeb58bf86e0a3b91685a1f3ab17ebbf60dbfe6b39edbe616a72f6",
     "scripts/build_native.sh": "af7e559867082b2df45edea7a730b2641957a4acc9df929cbab01776f7f99aea",
@@ -2491,11 +2491,11 @@
       "files": {
         "baseline": {
           "path": "full_baseline.jsonl.gz",
-          "sha256": "ee4b650a87f9633d5fe3bd4ebe6293be79e7b2b7eaca1020f36955d48c8838ee"
+          "sha256": "c35990b992753a0353d6c6b5ad0bd9afb87bc4f279a357f43fc3be3db8f8420a"
         },
         "candidate": {
           "path": "full_candidate.jsonl.gz",
-          "sha256": "bdff3d0622384517d0699bde7596fc88bcf3c313719b9d0fd8800cc9f68886ec"
+          "sha256": "aca98c894a3e549a403d0267637bf5bcb0c78cc4c62be12e2d4a8d35ade8d281"
         }
       },
       "archive_comparison": {
@@ -3370,11 +3370,11 @@
       "files": {
         "baseline": {
           "path": "half_baseline.jsonl.gz",
-          "sha256": "e2dd0dc2717cd000956e3e639f496f70016a13856feb95fa493fbe89080bd9ad"
+          "sha256": "2a21d5439b7cf79f88f66ce91cb39d157ac6cf7199b624b9e010330bf7aa47f6"
         },
         "candidate": {
           "path": "half_candidate.jsonl.gz",
-          "sha256": "ad8f7b652d96c1f9f2ae779a711bcafe07840324c60948b86984bd26102b52bc"
+          "sha256": "7318d89f70f4526266547e32dc76fb0465703b84da5f7be156317e54273413f5"
         }
       }
     },
@@ -4483,11 +4483,11 @@
       "files": {
         "baseline": {
           "path": "bursty_baseline.jsonl.gz",
-          "sha256": "a41f6c6ab7eee99181e95e2653de93adb706edd5bac43c01715377d7a47bdb47"
+          "sha256": "96a4d25c01884acde9a930b532619860381e7082b975ca083610d92f43b1340b"
         },
         "candidate": {
           "path": "bursty_candidate.jsonl.gz",
-          "sha256": "c7b7d3cfa6d0fdc823c324e9bcdfe99532724c5dd3399f81c0627e88bf73672f"
+          "sha256": "9cae9cc4da4f17ebcc578cd5a11885c21130e677a022a4bacf123c0a8d669236"
         }
       }
     },
@@ -5169,11 +5169,11 @@
       "files": {
         "baseline": {
           "path": "restart75_baseline.jsonl.gz",
-          "sha256": "789b1d82c777720299302e7e8c67ed8c27cd091dcc32aff852c5e017b1444a99"
+          "sha256": "b3b7ef6a7193f449d11c9915512f85f8376305ee46de985636e0228f2a66b04f"
         },
         "candidate": {
           "path": "restart75_candidate.jsonl.gz",
-          "sha256": "7c7461c1ab460cfa46194e274f46e56d995d24b13c41b709dc7b3b64db820155"
+          "sha256": "a9d8efe2801dc4ccbaa0c9d7429b83f70c11ca929babe7a0e5a6b88e6e5e833c"
         }
       }
     }

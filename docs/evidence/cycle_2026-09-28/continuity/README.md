@@ -37,8 +37,10 @@ The [candidate config](candidate.yaml) enables `tracking.stop_keep_low_s = 0.3` 
   half to twice the last clean shape, with small allowances for zero observed extents.
 - A blob agreeing with more than one track is unused. Marked rail geometry is unused.
 - Weak observations gain no confidence, never replace the clean shape reference, and never
-  reset time since the last clean hit. Continuation expires after 0.3 seconds of measured
-  sensor time. The ordinary missed-frame hold cannot extend a weak continuation past that cap.
+  reset time since the last clean hit. Eligibility to use weak returns expires after 0.3 seconds
+  of positive sensor timestamp intervals, including long gaps that the existing motion and fit
+  timing clips. The ordinary missed-frame hold cannot extend weak continuation past that cap.
+  A separate calibration hold retains its existing fixed countdown; weak evidence never resets it.
 - A first weak observation arriving after the cap is rejected; the existing first-miss hold
   still applies to the preceding clean observation. This does not add persistence.
 
@@ -77,7 +79,19 @@ fields of the archived raw baseline exactly. Counts, original input timestamps, 
 are in [raw/summary.json](raw/summary.json). Instrumented and concurrent replay timings are not
 latency evidence.
 
-Relevant existing and new tests passed: 118 tests without ray casting or recorded-data inputs;
+The review found and fixed two interactions before the full gate: weak expiry could override an
+active calibration hold, and clipped frame intervals could undercount long timestamp gaps. The
+low continuation now has its own elapsed-time counter and preserves the independent calibration
+hold. Regression tests cover both event orders, fixed and repeatedly requested calibration holds,
+0.6/1/3-second gaps through the detector timestamp path, and repeated weak returns beyond the cap.
+The post-review low, reseed-safety, and STOP-keep suite passed all 91 tests.
+
+The existing motion estimate is in metres per frame. At 10 m/s, suddenly changing intervals from
+0.1 to 0.2 to 0.1 seconds can put the object outside the narrow weak-match gate. A control test
+records the same fallback with the candidate off and on: one held STOP, then a missed STOP, then
+recovery on a clean observation. Improving that motion estimate is outside this candidate.
+
+Relevant existing and new tests passed before that review: 118 tests without ray casting or recorded-data inputs;
 the recorded rail-start check passed separately on the freshly cached original segment. A first
 attempt at that check failed because the historical cache directory lacked its required frame,
 before the complete cache was supplied. The full detector suite and regression gate remain the
