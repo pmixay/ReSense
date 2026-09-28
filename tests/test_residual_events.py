@@ -151,7 +151,6 @@ def report():
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-@pytest.mark.realdata(str(RESULTS))
 def test_recorded_inventory_counts_are_recoverable_from_retained_rows(report):
     events = report["events"]
     frames, track_frames, support, onsets = set(), 0, Counter(), Counter()
@@ -176,7 +175,6 @@ def test_recorded_inventory_counts_are_recoverable_from_retained_rows(report):
     assert report["base"] == report["captured_defaults"]
 
 
-@pytest.mark.realdata(str(RESULTS))
 def test_recorded_changed_onset_and_reacquisition_are_not_relabelled(report):
     events = {e["key"]: e for e in report["events"]}
     delayed = events["new_data_5.jsonl:358"]
@@ -190,7 +188,6 @@ def test_recorded_changed_onset_and_reacquisition_are_not_relabelled(report):
     assert len(report["stop_decision_changed_frames"]) == 13
 
 
-@pytest.mark.realdata(str(RESULTS))
 def test_markdown_inventory_matches_machine_record(report):
     path = Path(__file__).resolve().parents[1] / "docs/RESIDUAL_EVENTS_2026-09-28.md"
     assert markdown_table(report) in path.read_text(encoding="utf-8")

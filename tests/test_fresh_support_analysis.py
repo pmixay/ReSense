@@ -76,7 +76,7 @@ def test_local_decomposition_does_not_mutate_exact_inputs_or_use_scoring_labels(
     assert first["strict"][0]["descriptor"]["ring_count"] == 0
 
 
-@pytest.mark.realdata(str(DIRECT_CAPTURE_ROOT))
+@pytest.mark.realdata(str(DIRECT_CAPTURE_ROOT / "direct-fresh-support-all"))
 def test_direct_fresh_selected_events_and_positive_counterexample_when_capture_available():
     root = DIRECT_CAPTURE_ROOT
     trace = root / "direct-fresh-support-all"

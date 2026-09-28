@@ -7,6 +7,8 @@ docs
 gitbook
 !docs/evidence/cycle_2026-09-28/evaluation/protocol.json
 !docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json
+!docs/evidence/results/residual_events_2026-09-28.json
+!docs/RESIDUAL_EVENTS_2026-09-28.md
 web
 out
 data
