@@ -180,6 +180,7 @@ class Detector:
         self.bed = BedTemplate(self.cfg.lowobj)
         self.low_range = 0.0            # m, how far the bed was observed for the low-object stage (last frame)
         self._thin: List[Cluster] = []  # 26.09 (tracking.stop_keep_thin): this frame's corridor clusters flatter than min_height
+        self._low_height: List[Cluster] = []  # current straddle evidence just below its clean top-height threshold
         self._prev_stamp: Optional[float] = None
         self._gaps: deque = deque(maxlen=14)  # the last stamp intervals within [0, stamp_dt_range[1]] (s): the input rate
 
@@ -199,6 +200,7 @@ class Detector:
         self.evidence.reset()
         self.bed.reset()
         self._thin = []
+        self._low_height = []
         self._prev_stamp = None
         self._gaps.clear()
 
@@ -251,7 +253,8 @@ class Detector:
         if cfg.lowobj.rail_start_within > 0:
             # 26.09 (P3 rail start): low clusters near the train that are rail geometry; the rail lines
             # are at the axis +- rails_spacing / 2 of the rail coordinate (dy_rail, as the low stage)
-            mark_rail_line(clusters, xyz[:, 0], dy_rail, h_all, cfg.lowobj, cfg.track.rails_spacing, cfg.gauge.range_min)
+            mark_rail_line(clusters + self._low_height, xyz[:, 0], dy_rail, h_all, cfg.lowobj,
+                           cfg.track.rails_spacing, cfg.gauge.range_min)
         t5 = time.perf_counter()
         gauge, warn = self._confirm(clusters, speed, dt)
         cap = self._clear_cap(clusters, cand, dy_all, h_all, trust, n_acc) if cfg.health.clear_cap else None
@@ -507,6 +510,7 @@ class Detector:
         corridor object are dropped."""
         cfg = self.cfg
         acc = cfg.accumulation
+        self._low_height = []
         factor = max(1.0, n_acc * acc.min_points_scale) if n_acc > 1 else 1.0
         corr = cand.subset(~cand.low)
         dy_alt = None
@@ -540,7 +544,11 @@ class Detector:
         if straddle is not None:
             scfg = replace(cfg.lowobj, min_top=cfg.lowobj.straddle_min_top,
                            min_width=cfg.lowobj.straddle_min_width, max_length=cfg.lowobj.straddle_max_length)
-            straddling = _clusters_of(straddle, lcfg, axis_valid=valid, low=straddle.low, low_cfg=scfg)
+            margin = cfg.lowobj.straddle_keep_height_margin if cfg.tracking.stop_keep_low_s > 0 else 0.0
+            straddling = _clusters_of(straddle, lcfg, axis_valid=valid, low=straddle.low, low_cfg=scfg,
+                                     low_height_margin=margin)
+            self._low_height = [c for c in straddling if c.low_height_weak]
+            straddling = [c for c in straddling if not c.low_height_weak]
             # a straddling cluster is the whole of what the point-wise low stage saw a slice of
             lows = [c for c in lows if not any(_overlap(c, k) for k in straddling)] + straddling
         if near is not None and len(near):
@@ -557,6 +565,11 @@ class Detector:
         if lows:
             keep = self._not_part_of_corridor_objects(lows, straddling, clusters, corr)
             clusters = sorted(clusters + keep, key=lambda c: c.distance)
+        if self._low_height:
+            # The same foot and duplicate rules apply to continuation evidence. It never
+            # enters the normal candidate list or supersedes a clean low/corridor cluster.
+            self._low_height = self._not_part_of_corridor_objects(
+                self._low_height, self._low_height, clusters, corr)
         return clusters
 
     def _far_both_sides(self, clusters: List[Cluster], valid: float, floor_valid: float) -> float:
@@ -634,6 +647,7 @@ class Detector:
         self.tracker.update(clusters, ego_shift=(speed or 0.0) * dt, frame_dt=dt, low_ok=low_ok,
                             rail_within=low.rail_start_within,
                             thin=self._thin if self.cfg.tracking.stop_keep_thin > 0 else None,
+                            low_height=self._low_height,
                             far_thin=self._far_thin(clusters) if self.cfg.tracking.thin_far_min_distance > 0 else None)
         pending = low.pending_advisory and self.calib.state.status == "pending"
         dets: List[Detection] = []
@@ -647,7 +661,8 @@ class Detector:
                 center=t.centroid if t.misses else t.last.centroid,
                 size=t.last.size, n_points=t.last.n, confidence=t.confidence, age=t.age,
                 zone=t.zone, height_min=t.last.height_min, intensity=t.last.intensity,
-                reason=("doubt" if t.withheld else "near_envelope" if t.escalated else "stop_hold" if (t.kept and t.zone == "gauge")
+                reason=("doubt" if t.withheld else "near_envelope" if t.escalated
+                        else "low_height_hold" if t.last.low_height_weak else "stop_hold" if (t.kept and t.zone == "gauge")
                         else t.last.reason), kind=t.last.kind,
             ))
             d = dets[-1]

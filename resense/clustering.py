@@ -40,6 +40,7 @@ class Cluster:
     demoted: bool = False        # 26.09 (P3 range): in the strict gauge by its voxels, demoted only by a shape signature (SHAPE_SIGNATURES)
     thin: bool = False           # 26.09 (tracking.stop_keep_thin): flatter than min_height, kept only to continue a reported obstacle track
     weak: bool = False           # 27.09 (cluster.weak_min_points): fewer voxels than min_points, kept only as far evidence for an approaching track
+    low_height_weak: bool = False  # below the straddle top-height threshold; only bounded continuation of a low STOP
 
     @property
     def size(self) -> np.ndarray:
@@ -153,7 +154,7 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
                   height_valid: Optional[float] = None, gauge: Optional[GaugeConfig] = None,
                   dy_alt: Optional[np.ndarray] = None, in_rail: Optional[np.ndarray] = None,
                   keep_thin: bool = False, dy_report: Optional[np.ndarray] = None,
-                  weak_from: float = 0.0) -> List[Cluster]:
+                  weak_from: float = 0.0, low_height_margin: float = 0.0) -> List[Cluster]:
     """Voxelise candidates, cluster the voxels, describe and filter the clusters.
 
     ``xyz``/``intensity``/``dy``/``h``/``in_gauge`` are the corridor candidates;
@@ -247,7 +248,7 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
             b = _Blob.of(xyz, idx, int(np.unique(inv[idx]).size))
             factor = 1.0
         if low is not None and low_cfg is not None and bool(low[b.idx].mean() >= 0.5):
-            c = _low_cluster(b, dy, h, intensity, frame_idx, cfg, low_cfg)
+            c = _low_cluster(b, dy, h, intensity, frame_idx, cfg, low_cfg, low_height_margin)
         else:
             c = _corridor_cluster(b, dy, h, in_gauge, intensity, inv, frame_idx, cfg, factor, factor_range,
                                   axis_valid, height_valid, gauge, dy_alt, in_rail, keep_thin, dy_report, weak_from)
@@ -283,7 +284,8 @@ def _visibility(b: _Blob, width: float, height: float, cfg: ClusterConfig):
     return n_exp, score
 
 
-def _low_cluster(b: _Blob, dy, h, intensity, frame_idx, cfg: ClusterConfig, low_cfg) -> Optional[Cluster]:
+def _low_cluster(b: _Blob, dy, h, intensity, frame_idx, cfg: ClusterConfig, low_cfg,
+                 height_margin: float = 0.0) -> Optional[Cluster]:
     """A cluster made mostly of bed bumps (v0.6): kept as a gauge obstacle of ``kind = 'low'``
     when it is short along the track, not too wide, wide enough across the track and reaches
     the rail-head plane; the corridor's infrastructure filters are not applied."""
@@ -296,7 +298,8 @@ def _low_cluster(b: _Blob, dy, h, intensity, frame_idx, cfg: ClusterConfig, low_
     if size[1] < low_cfg.min_width:
         return None
     # the object must reach the rail-head plane (bed fixtures stay below it by design)
-    if low_cfg.min_top > -1.0 and float(h[b.idx].max()) < low_cfg.min_top:
+    weak_height = low_cfg.min_top > -1.0 and float(h[b.idx].max()) < low_cfg.min_top
+    if weak_height and (height_margin <= 0 or float(h[b.idx].max()) < low_cfg.min_top - height_margin):
         return None
     n_exp, score = _visibility(b, max(float(size[1]), 0.15), max(float(size[2]), 0.1), cfg)
     fi = frame_idx[b.idx]
@@ -305,7 +308,7 @@ def _low_cluster(b: _Blob, dy, h, intensity, frame_idx, cfg: ClusterConfig, low_
         bbox_min=b.bmin, bbox_max=b.bmax, distance=float(b.pts[:, 0].min()), lateral=float(dy[b.idx].mean()),
         height_min=float(h[b.idx].min()), height_max=float(h[b.idx].max()),
         intensity=float(intensity[b.idx].mean()) if intensity is not None else 0.0,
-        n_expected=n_exp, score=score, zone="gauge", n_gauge=b.n_vox, kind="low",
+        n_expected=n_exp, score=score, zone="gauge", n_gauge=b.n_vox, kind="low", low_height_weak=weak_height,
     )
 
 

@@ -1,0 +1,28 @@
+{
+  "schema": "resense-continuity-acceptance-v1",
+  "registered_date": "2026-09-28",
+  "base_commit": "f5db6d3",
+  "scope": "Diagnose and restore raw rail-object continuity without persistence regressions",
+  "acceptance": {
+    "raw_object_frames_75_200_hits": 126,
+    "raw_object_frames_75_200_total": 126,
+    "raw_person_hits": 61,
+    "raw_person_total": 61,
+    "raw_new_unmatched_gauge_detections": 0,
+    "strict_full_regression_gate": "unchanged or better, with no new waivers; includes set O, ride and set F",
+    "synthetic_removal": "continued evidence must terminate at the bounded hold limit after object removal",
+    "synthetic_transients": "weak or transient evidence must not start a track or perpetuate an old STOP indefinitely"
+  },
+  "controls": [
+    "Do not special-case known frame IDs, object distance or recording identity.",
+    "Trace current production detector stages before selecting a candidate.",
+    "Keep a candidate disabled by default until full validation.",
+    "Instrumented replay timings are diagnostic only, never latency evidence.",
+    "Known organizer inputs are development evidence, not new holdout data."
+  ],
+  "previous_rejected_candidate": {
+    "change": "tracking.hold_misses 1 to 2 globally",
+    "raw_hits": "123/126 to 126/126",
+    "failures": "New raw unmatched detection; ride events 32 to 34; set F false detection regressions"
+  }
+}
