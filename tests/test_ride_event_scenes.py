@@ -3,7 +3,12 @@ import importlib.util
 import json
 from pathlib import Path
 
+import numpy as np
 import pytest
+
+from scripts.cache_frames import _atomic_save
+from scripts.cache_io import load_cache_array
+from resense.pointcloud import COMPACT16_DTYPE
 
 
 spec = importlib.util.spec_from_file_location(
@@ -37,3 +42,15 @@ def test_duplicate_frame_ids_refuse_double_counting(tmp_path):
     write_rows(b, ["same"], [[2]])
     with pytest.raises(ValueError, match="duplicate ride frame"):
         scenes.collect([a, b])
+
+
+def test_scene_cache_index_loads_compressed_frame(tmp_path):
+    frame = np.zeros(3, dtype=COMPACT16_DTYPE)
+    frame["x"] = [1, 2, 3]
+    frame_id = "new_data_0_0000"
+    _atomic_save(str(tmp_path / f"{frame_id}.npy.zst"), frame, zstd_level=3)
+
+    indexed = scenes.cache_index(tmp_path)
+
+    assert indexed[frame_id].endswith(".npy.zst")
+    np.testing.assert_array_equal(load_cache_array(indexed[frame_id]), frame)

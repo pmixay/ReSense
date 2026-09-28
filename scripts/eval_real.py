@@ -25,6 +25,14 @@ from concurrent.futures import ProcessPoolExecutor
 import numpy as np
 import yaml
 
+# Direct invocation (``python scripts/eval_real.py``) places scripts/ rather than the repository
+# root on sys.path. Keep the shared cache reader importable outside the regression-gate wrapper.
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
+for _path in (ROOT, HERE):
+    if _path not in sys.path:
+        sys.path.insert(0, _path)
+
 SIX = ["doubleT_obstacle", "doubleT_platform", "roundT_doubleT", "roundT_pressureGate_roundT",
        "roundT_squareT_pressureGate_squareT", "squareT_platform_squareT_switch"]
 LABELS = {"doubleT_obstacle": "labels/doubleT_obstacle.json"}

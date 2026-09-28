@@ -49,10 +49,18 @@ import sys
 import time
 from concurrent.futures import ProcessPoolExecutor
 from dataclasses import replace
+from pathlib import Path
 
 import numpy as np
 
-from scripts.cache_io import cache_file_stem, cache_files, load_cache_array
+# This script is also run directly by users and the regression gate.  Add the repository root
+# before importing its shared cache helper; ``python scripts/far_range_eval.py`` otherwise puts
+# only the scripts/ directory on sys.path.
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.cache_io import cache_file_stem, cache_files, load_cache_array  # noqa: E402
 
 BINS = [(0, 50), (50, 100), (100, 150), (150, 200), (200, 250)]
 SPLIT_FRAME = re.compile(r"new_data_(\d+)_(\d+)\.npy(?:\.zst)?$")
