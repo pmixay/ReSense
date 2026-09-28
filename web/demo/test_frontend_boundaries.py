@@ -1,24 +1,7 @@
 """P2 regression checks for source switches, malformed records and label round trips."""
 import json
 
-import pytest
-
-from test_web import LABEL_TOOL, _browser_available, _launch
-
-
-@pytest.fixture
-def page():
-    if not _browser_available():
-        pytest.skip("playwright + chromium not available")
-    from playwright.sync_api import sync_playwright
-    with sync_playwright() as p:
-        browser = _launch(p)
-        page = browser.new_page()
-        errors = []
-        page.on("pageerror", lambda error: errors.append(str(error)))
-        yield page
-        browser.close()
-        assert not errors, errors
+from test_web import LABEL_TOOL
 
 
 def dashboard(page):
@@ -88,8 +71,9 @@ def test_result_import_rejects_bad_shapes_and_accepts_unknown_stop_distance(page
     assert page.evaluate("resense.state.summary.nearest_m") is None
     # Malformed live records cannot clear a held STOP or reset the receipt timer.
     page.evaluate("resense.setMode('live')")
-    page.evaluate("""s => onStatus({data: JSON.stringify({...s, freshness: {
-        valid: true, source_age_s: 0, residence_age_s: 0, max_result_age_s: .5,
+    page.evaluate("""s => onStatus({data: JSON.stringify({...s, snapshot_kind: 'frame', freshness: {
+        reason: 'current', mode: 'replay', clock_reference: 'publisher_utc', queue_lag_s: 0,
+        valid: true, go_allowed: false, source_age_s: 0, residence_age_s: 0, max_result_age_s: .5,
         future_tolerance_s: .05, evaluated_at_utc_s: Date.now()/1000
     }})})""", stop)
     page.evaluate("checkLiveStream(performance.now(), true)")
@@ -137,8 +121,9 @@ def test_invalid_live_status_keeps_panels_covered_until_current_result(page):
     page.evaluate("f => onStatus({data: JSON.stringify(f)})", frame)
     assert page.locator("#panel-cab .stale-veil").is_visible()
     assert page.text_content("#clear") == "не определена"
-    page.evaluate("""f => onStatus({data: JSON.stringify({...f, freshness: {
-        valid: true, source_age_s: 0, residence_age_s: 0, max_result_age_s: .5,
+    page.evaluate("""f => onStatus({data: JSON.stringify({...f, snapshot_kind: 'frame', freshness: {
+        reason: 'current', mode: 'replay', clock_reference: 'publisher_utc', queue_lag_s: 0,
+        valid: true, go_allowed: true, source_age_s: 0, residence_age_s: 0, max_result_age_s: .5,
         future_tolerance_s: .05, evaluated_at_utc_s: Date.now()/1000
     }})})""", frame)
     assert not page.locator("#panel-cab .stale-veil").is_visible()

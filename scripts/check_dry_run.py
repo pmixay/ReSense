@@ -275,6 +275,10 @@ def main(argv=None) -> int:
                         "process instead of the stamp gaps, so that frames missing from the recording itself "
                         "(doubleT_obstacle lacks 4) are not drops; one recording per capture")
     p.add_argument("--min-fps", type=float, default=None, help="minimum of the last reported node.fps")
+    p.add_argument("--max-p95-e2e", type=float, default=None, metavar="MS",
+                   help="ms, p95 of the end-to-end latency of the current results: freshness.source_age_s, "
+                        "from the input's publication by the player (replay) or its acquisition (live) through "
+                        "DDS, the node's queue, decode and detection to the result (28.09); default: report only")
     p.add_argument("--expect-inputs", type=int, default=0, metavar="N",
                    help="N recordings played one after another into one node (node.recording counts them); "
                         "with --expect-obstacle every one of them must have --min-alarm-frames alarms")
@@ -355,6 +359,14 @@ def main(argv=None) -> int:
     distances = [f["nearest_distance"] for f in detected if f.get("nearest_distance") is not None]
 
     p95 = percentile(valid_latencies, 95)
+    # end to end (28.09): input publication / acquisition -> result, over the results valid when made
+    e2e = [1e3 * f["freshness"]["source_age_s"] for f in frames
+           if isinstance(f.get("freshness"), dict) and f["freshness"].get("valid") is True
+           and isinstance(f["freshness"].get("source_age_s"), (int, float))
+           and math.isfinite(f["freshness"]["source_age_s"])]
+    e2e_p95 = percentile(e2e, 95)
+    cpu = [f["node"]["cpu_cores"] for f in frames if isinstance(f.get("node", {}).get("cpu_cores"), (int, float))]
+    rss = [f["node"]["rss_peak_mb"] for f in frames if isinstance(f.get("node", {}).get("rss_peak_mb"), (int, float))]
     print(f"status messages      : {len(frames)}" + (f" ({skipped} lines skipped)" if skipped else ""))
     print(f"alarm frames         : {len(alarms)}")
     if any("freshness" in f for f in frames):
@@ -367,6 +379,12 @@ def main(argv=None) -> int:
     if totals:
         print(f"detector stage total : mean {sum(totals)/len(totals):.0f} / "
               f"p95 {percentile(totals, 95):.0f} ms")
+    if e2e:
+        print(f"end-to-end (current) : median {percentile(e2e, 50):.0f} / p95 {e2e_p95:.0f} / max {max(e2e):.0f} ms "
+              f"over {len(e2e)} current results (input publication -> result, through DDS)")
+    if cpu:
+        print(f"node CPU             : {sorted(cpu)[len(cpu) // 2]:.2f} cores median, {max(cpu):.2f} max "
+              f"(node process, every stats period)" + (f"; peak RSS {max(rss):.0f} MB" if rss else ""))
     print(f"dropped input frames : {dropped}" + (f" ({catchup_skipped} of them skipped by the node's catch-up)"
                                                  if catchup_skipped is not None else "")
           + (f"; {dropped_settled} after {after}" if dropped_settled != dropped else ""))
@@ -417,6 +435,11 @@ def main(argv=None) -> int:
         failures.append("no obstacle distance reported, cannot check the distance window")
     if p95 is not None and p95 > args.max_p95_latency:
         failures.append(f"p95 latency {p95:.0f} ms > {args.max_p95_latency:.0f} ms")
+    if args.max_p95_e2e is not None:
+        if e2e_p95 is None:
+            failures.append("no current result with freshness.source_age_s: cannot check the end-to-end latency")
+        elif e2e_p95 > args.max_p95_e2e:
+            failures.append(f"end-to-end p95 {e2e_p95:.0f} ms > {args.max_p95_e2e:.0f} ms")
     if lost is not None:
         if lost > args.max_dropped:
             failures.append(f"{lost} frames of the recording not processed after {after} > {args.max_dropped}")

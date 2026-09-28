@@ -10,7 +10,7 @@
 set -euo pipefail
 
 case "${GITHUB_REF:-}" in
-  refs/heads/claude/nifty-pascal-lzgl78|refs/heads/claude/p1-p2-supported-playback-20260927|refs/heads/main) ;;
+  refs/heads/claude/nifty-pascal-lzgl78|refs/heads/claude/p1-p2-supported-playback-20260927|refs/heads/claude/amazing-fermi-t67v8g|refs/heads/main) ;;
   *) echo "skip: original-bag cold-disk test runs on the working branch and main"; exit 0 ;;
 esac
 
@@ -54,3 +54,10 @@ sudo sh -c 'sync; echo 3 > /proc/sys/vm/drop_caches'
 SKIP_BUILD=1 OUT="$OUT/roundT_doubleT" scripts/dry_run.sh "$CLEAR_BAG" \
   --expect-clear --max-alarm-frames 2 --max-p95-latency 100 --max-dropped 0
 echo "PASS: original roundT_doubleT cold-disk dry run" | tee -a "$OUT/result.txt"
+
+# The node's fast input path (28.09, ros2_ws/src/resense_ros/resense_ros/fastcloud.py) against rclpy's
+# message conversion and resense.pointcloud, byte for byte, on every frame of both recordings.
+docker run --rm -v "$BAGS_DIR/for_hackathon":/data:ro -v "$OUT":/out "$IMAGE" \
+  python3 /opt/resense/scripts/check_fast_input.py /data/doubleT_obstacle /data/roundT_doubleT \
+  --json /out/fast_input.json | tee "$OUT/fast_input.txt"
+echo "PASS: fast input path identical on every frame of both original recordings" | tee -a "$OUT/result.txt"

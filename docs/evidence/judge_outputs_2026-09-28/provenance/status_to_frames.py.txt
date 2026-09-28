@@ -1,0 +1,20 @@
+#!/usr/bin/env python3
+"""Node status JSONL -> resense-run-like JSONL with 'frame' = index of the bag message (header stamp match)."""
+import sys, json, bisect, gzip
+sys.path.insert(0, '/home/user/ReSense/scripts')
+from check_dry_run import read_bag, load
+status, bag, out = sys.argv[1], sys.argv[2], sys.argv[3]
+frames, _ = load(status)
+name, st = read_bag(bag)
+n = 0; unmatched = 0
+with open(out, 'w') as fh:
+    for f in frames:
+        s = f.get('stamp')
+        i = bisect.bisect_left(st, s)
+        c = [k for k in (i-1, i) if 0 <= k < len(st)]
+        k = min(c, key=lambda k: abs(st[k]-s))
+        if abs(st[k]-s) > 1e-4:
+            unmatched += 1; continue
+        f['frame'] = k
+        fh.write(json.dumps(f) + '\n'); n += 1
+print(f'{n} frames written, {unmatched} unmatched, bag has {len(st)} messages', file=sys.stderr)

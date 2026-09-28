@@ -1,0 +1,6 @@
+processed 1510 frames in 85.9 s (17.6 fps incl. I/O)
+
+real	1m26.244s
+user	2m31.651s
+sys	3m0.005s
+rc=0

@@ -109,6 +109,17 @@ them at 212992 too (25.09, EXPERIMENTS.md section 3b). Never fatal.
 Threads (25.09): ``OMP_NUM_THREADS`` / ``OPENBLAS_NUM_THREADS`` / ``MKL_NUM_THREADS`` default to 1
 (``resense_ros/__init__.py``, before numpy is imported; an explicit value in the environment
 wins), as the image sets them.
+
+Input path (28.09, ``raw_input``, default true): the clouds are taken as serialized bytes and read
+by ``resense_ros.fastcloud`` (``data`` stays a view of the bytes) instead of rclpy's message
+conversion: 12.5 ms median, 32 ms p95 per 24 MB 360-degree cloud on a 4-vCPU sandbox, paid for
+every queued frame of a start-up burst too. The decode is unchanged, so the detector gets the same
+arrays bit for bit (``scripts/check_fast_input.py`` on the original recordings). Bytes the parser
+rejects go through rclpy's conversion; a message neither can read is logged and dropped.
+Publishing (28.09): the decision topics go out first; the RViz markers and the corridor cloud
+are built only while something subscribes to them. The ``node`` object also reports
+``decode_ms`` and ``detect_ms`` of the frame, ``cpu_cores`` (the node process's CPU time per
+wall-clock second over the last ``stats_period``, DDS threads included) and ``rss_peak_mb``.
 """
 from __future__ import annotations
 
@@ -117,6 +128,7 @@ import inspect
 import json
 import math
 import os
+import resource
 import time
 import traceback
 
@@ -139,6 +151,8 @@ from resense.config import DetectorConfig
 from resense.detector import Detector, FrameResult
 from resense.frame import Frame, axis_matrix
 from resense.pointcloud import pointcloud2_to_arrays
+
+from resense_ros import fastcloud
 
 
 UNSET = -999.0   # sentinel of the mount_*_deg parameters: keep the value of the parameter file
@@ -224,6 +238,9 @@ class DetectorNode(Node):
         # auto = match the publishers: reliable when every publisher of the topic is (`ros2 bag play`
         # of the organizers' recordings), best-effort when one is not (a sensor-data driver)
         self.declare_parameter("input_reliability", "auto")   # auto | reliable | best_effort
+        # --- 28.09: take the clouds as serialized bytes and read them with resense_ros.fastcloud
+        # (rclpy's conversion: 12.5 ms median, 32 ms p95 per 24 MB cloud); false = rclpy's messages
+        self.declare_parameter("raw_input", True)
 
         cfg_file = self.get_parameter("config_file").get_parameter_value().string_value
         self.cfg = DetectorConfig.from_yaml(cfg_file) if cfg_file else DetectorConfig()
@@ -263,6 +280,8 @@ class DetectorNode(Node):
         self.tf_frames_sent = set()
 
         self.qos_depth = max(1, self.get_parameter("input_queue_depth").get_parameter_value().integer_value)
+        self.raw_input = self.get_parameter("raw_input").get_parameter_value().bool_value
+        self.raw_fallbacks = 0          # raw clouds that needed rclpy's conversion (logged once)
         self.catchup_step = self.get_parameter("catchup_step").get_parameter_value().double_value
         self.catchup_max_lag = self.get_parameter("catchup_max_lag").get_parameter_value().double_value
         self.catchup_startup_max_lag = self.get_parameter("catchup_startup_max_lag").get_parameter_value().double_value
@@ -333,6 +352,10 @@ class DetectorNode(Node):
         self.win_frames = 0
         self.fps = 0.0
         self.last_latency_ms = 0.0
+        self.last_decode_ms = 0.0
+        self.last_detect_ms = 0.0
+        self.cpu_cores = 0.0                  # node process CPU s per wall s over the last stats period
+        self.t_cpu = time.process_time()
         self.last_status = "clear"
         self.t_stats = time.perf_counter()
         period = self.get_parameter("stats_period").get_parameter_value().double_value
@@ -414,8 +437,35 @@ class DetectorNode(Node):
         self.sub_rel[topic] = reliability
         self.subs[topic] = self.create_subscription(
             PointCloud2, topic, lambda msg, info=None, t=topic: self.on_cloud(msg, t, info),
-            self.input_qos(reliability))
+            self.input_qos(reliability), raw=self.raw_input)
         self.subs[topic]._resense_with_info = True
+
+    @staticmethod
+    def make_header(sec: int, nanosec: int, frame_id: str) -> Header:
+        """A real ``std_msgs/Header`` for a cloud read from its bytes: it is copied into the
+        published messages."""
+        from builtin_interfaces.msg import Time
+        return Header(stamp=Time(sec=sec, nanosec=nanosec), frame_id=frame_id)
+
+    def as_cloud(self, msg):
+        """The cloud the node processes: a raw subscription's bytes read by ``fastcloud``
+        (rclpy's own conversion if they are not a plain-CDR PointCloud2), anything else as is.
+        None for bytes neither can read: the frame is dropped (logged), the node keeps running
+        and the watchdog reports the silence."""
+        if not isinstance(msg, (bytes, bytearray, memoryview)):
+            return msg
+        try:
+            return fastcloud.parse_pointcloud2(msg, self.make_header)
+        except ValueError as e:
+            self.raw_fallbacks += 1
+            if self.raw_fallbacks == 1:
+                self.get_logger().warn(f"input cloud not read from its bytes ({e}); using rclpy's conversion")
+        try:
+            from rclpy.serialization import deserialize_message
+            return deserialize_message(bytes(msg), PointCloud2)
+        except Exception as e:  # noqa: BLE001 - an unreadable message must not take the node down
+            self.get_logger().error(f"input cloud dropped: neither read from its bytes nor converted ({e!r})")
+            return None
 
     def on_match_qos(self) -> None:
         """(input_reliability auto) Re-create a subscription whose reliability differs from its
@@ -509,6 +559,9 @@ class DetectorNode(Node):
         dt = now - self.t_stats
         self.t_stats = now
         self.fps = self.win_frames / dt if dt > 0 else 0.0
+        cpu = time.process_time()
+        self.cpu_cores = (cpu - self.t_cpu) / dt if dt > 0 else 0.0
+        self.t_cpu = cpu
         self.pub_fps.publish(Float32(data=float(self.fps)))
         if self.win_frames:
             lat = np.asarray(self.win_latency)
@@ -516,7 +569,7 @@ class DetectorNode(Node):
                 f"frame {self.n_frames}: {self.last_status}; {self.fps:.1f} fps; "
                 f"latency mean {lat.mean():.0f} / p95 {np.percentile(lat, 95):.0f} / max {lat.max():.0f} ms; "
                 f"input period {self.input_period * 1e3:.0f} ms; dropped {self.dropped} "
-                f"({self.dropped_skipped} skipped by the catch-up)")
+                f"({self.dropped_skipped} skipped by the catch-up); CPU {self.cpu_cores:.2f} cores")
         self.win_latency.clear()
         self.win_frames = 0
 
@@ -527,7 +580,10 @@ class DetectorNode(Node):
                 "input_period_ms": round(self.input_period * 1e3, 1),
                 "ego_speed_mps": None if self.last_speed is None else round(float(self.last_speed), 2),
                 "ego_speed_source": self.last_speed_source,
-                "input_topic": self.active_topic, "recording": self.n_inputs}
+                "input_topic": self.active_topic, "recording": self.n_inputs,
+                "decode_ms": round(self.last_decode_ms, 2), "detect_ms": round(self.last_detect_ms, 2),
+                "cpu_cores": round(self.cpu_cores, 2),
+                "rss_peak_mb": round(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0, 1)}
 
     # ------------------------------------------------------------------
     def input_silent(self, timeout: float) -> bool:
@@ -628,6 +684,9 @@ class DetectorNode(Node):
     def on_cloud(self, msg: PointCloud2, topic: str = "", info=None) -> None:
         """Input callback: the frame joins the ones already waiting behind it, then the next one
         is processed (``catchup_step``)."""
+        msg = self.as_cloud(msg)
+        if msg is None:
+            return
         self.remember_arrival(msg, info)
         self.pending.append((topic, msg))
         self.take_waiting(topic)
@@ -652,8 +711,11 @@ class DetectorNode(Node):
                     got = handle.take_message(sub.msg_type, sub.raw)
                 if got is None:
                     return
-                self.remember_arrival(got[0], got[1])
-                self.pending.append((topic, got[0]))
+                cloud = self.as_cloud(got[0])
+                if cloud is None:
+                    continue
+                self.remember_arrival(cloud, got[1])
+                self.pending.append((topic, cloud))
                 if len(self.pending) > 2:
                     self.prune()                # hold the chain's frames only, not the whole burst
         except Exception as e:  # noqa: BLE001 - never lose the input over the queue peek
@@ -758,20 +820,24 @@ class DetectorNode(Node):
         self.last_frame_wall = t0
         try:
             xyz_s, inten, ring, n_raw, n_near = pointcloud2_to_arrays(
-                msg, self.cfg.sensor.min_range, self.cfg.sensor.max_range)
+                fastcloud.packed(msg), self.cfg.sensor.min_range, self.cfg.sensor.max_range)
             xyz_v = xyz_s @ self.R_vs.T.astype(np.float32)
             stamp = msg.header.stamp.sec + msg.header.stamp.nanosec * 1e-9
             frame = Frame(xyz=xyz_v, intensity=inten, ring=ring, stamp=stamp, frame_id=msg.header.frame_id,
                           meta={"n_raw": n_raw, "n_near": n_near})
             self._account_frame(stamp, (topic, msg.header.frame_id))
             self.last_speed, self.last_speed_source = self.ego_speed()
+            t_detect = time.perf_counter()
             res = (self.detector.process(frame, ego_speed=self.last_speed) if self._process_takes_speed
                    else self.detector.process(frame))
         except Exception as e:  # noqa: BLE001 - a bad frame must never take the node down
             self.on_processing_error(msg.header, e)
             return
         self.consecutive_errors = 0
-        self.last_latency_ms = (time.perf_counter() - t0) * 1e3   # decode + detect, goes into the status JSON
+        t_done = time.perf_counter()
+        self.last_latency_ms = (t_done - t0) * 1e3   # decode + detect, goes into the status JSON
+        self.last_decode_ms = (t_detect - t0) * 1e3
+        self.last_detect_ms = (t_done - t_detect) * 1e3
         mount = getattr(res, "mount", {}) or {}
         if mount.get("status") and mount.get("status") != self.mount_logged:
             self.mount_logged = mount["status"]
@@ -1036,20 +1102,21 @@ class DetectorNode(Node):
                           stop_source_frame_id=self.stop_latch["frame_id"])
         decision = self.decision(res)
         freshness["go_allowed"] = freshness["valid"] and decision == "GO"
-        status.update(node=self.node_stats(), decision=decision, snapshot_kind="frame", freshness=freshness,
-                      stop_held=held, detector_obstacle=raw_obstacle, detector_clear_distance=raw_range,
-                      clear_distance=float(res.clear_distance), health=res.health)
+        # the answer first (28.09): flag, distance and decision before the JSON and the visualisation
         self.pub_flag.publish(Bool(data=bool(res.obstacle)))
-        self.pub_warn.publish(Bool(data=bool(res.warning)))
         self.pub_dist.publish(Float32(data=float(res.nearest_distance) if res.nearest_distance is not None else -1.0))
+        self.pub_decision.publish(String(data=decision))
+        self.pub_clear.publish(Float32(data=float(res.clear_distance)))
+        self.pub_warn.publish(Bool(data=bool(res.warning)))
         self.last_published_valid = freshness["valid"]
         self.last_result_clock = (self.freshness_previous[1] if self.freshness_previous else None,
                                   self.current_arrival[0] if self.current_arrival else None)
         self.last_status = decision + (f" at {res.nearest_distance:.1f} m" if res.obstacle else "")
         self.last_status += "; freshness " + freshness["reason"]
+        status.update(node=self.node_stats(), decision=decision, snapshot_kind="frame", freshness=freshness,
+                      stop_held=held, detector_obstacle=raw_obstacle, detector_clear_distance=raw_range,
+                      clear_distance=float(res.clear_distance), health=res.health)
         self.pub_status.publish(String(data=json.dumps(status)))
-        self.pub_decision.publish(String(data=decision))
-        self.pub_clear.publish(Float32(data=float(res.clear_distance)))
         self.pub_health.publish(self.health_msg(hdr, res))
         # vehicle frame of the detector (after the mount calibration) -> sensor frame
         R_out = self.R_sv @ np.asarray(getattr(self.detector, "mount_rotation", np.eye(3))).T
@@ -1072,15 +1139,29 @@ class DetectorNode(Node):
             self.stop_ros = det_msg
         self.pub_det.publish(self.stop_ros if held and self.stop_ros is not None else det_msg)
 
-        if self.get_parameter("publish_markers").get_parameter_value().bool_value:
+        if (self.get_parameter("publish_markers").get_parameter_value().bool_value
+                and self.subscribed(self.pub_markers)):
             markers = self.make_markers(hdr, res, R_out)
             if held:
                 markers.markers[-1].text = "STOP HELD: previous obstacle; monitoring invalid"
             self.pub_markers.publish(markers)
-        if self.get_parameter("publish_corridor_cloud").get_parameter_value().bool_value and res.corridor_idx.size:
+        if (self.get_parameter("publish_corridor_cloud").get_parameter_value().bool_value and res.corridor_idx.size
+                and self.subscribed(self.pub_corridor)):
             pts = res.xyz if getattr(res, "xyz", None) is not None else frame.xyz
             self.pub_corridor.publish(self.make_cloud(hdr, pts[res.corridor_idx] @ R_out.T.astype(np.float32),
                                                      frame.intensity[res.corridor_idx]))
+
+    @staticmethod
+    def subscribed(pub) -> bool:
+        """Whether anything subscribes to ``pub`` (RViz, Foxglove, a recorder); unknown = yes. The
+        markers and the corridor cloud are built only then (together ~8 ms per 360-degree frame)."""
+        count = getattr(pub, "get_subscription_count", None)
+        if count is None:
+            return True
+        try:
+            return count() > 0
+        except Exception:  # noqa: BLE001 - a graph query must never cost a frame
+            return True
 
     def make_markers(self, hdr: Header, res: FrameResult, R_out=None) -> MarkerArray:
         R_out = self.R_sv if R_out is None else R_out
@@ -1115,6 +1196,8 @@ class DetectorNode(Node):
         prof = np.asarray(self.cfg.gauge.profile)
         half = float(prof[:, 0].max())
         xs = np.linspace(self.cfg.gauge.range_min, x_max, 60)
+        axis = np.stack([xs, np.broadcast_to(np.asarray(res.track.center_y(xs), dtype=float), xs.shape),
+                         np.broadcast_to(np.asarray(res.track.rail_z(xs), dtype=float) + 1.0, xs.shape)], axis=1)
         for k, side in enumerate((half, -half)):
             line = Marker(header=hdr, ns="resense", id=mid, type=Marker.LINE_STRIP, action=Marker.ADD)
             line.scale.x = 0.08
@@ -1123,10 +1206,8 @@ class DetectorNode(Node):
             else:
                 line.color.r, line.color.g, line.color.b, line.color.a = 0.2, 1.0, 0.3, 0.8
             line.pose.orientation.w = 1.0
-            for x in xs:
-                p_v = np.array([x, res.track.center_y(x) + side, res.track.rail_z(x) + 1.0])
-                p_s = R_out @ p_v
-                line.points.append(Point(x=float(p_s[0]), y=float(p_s[1]), z=float(p_s[2])))
+            edge = (axis + np.array([0.0, side, 0.0])) @ R_out.T      # the whole edge at once
+            line.points = [Point(x=a, y=b, z=c) for a, b, c in edge.tolist()]
             arr.markers.append(line)
             mid += 1
         status = Marker(header=hdr, ns="resense", id=mid, type=Marker.TEXT_VIEW_FACING, action=Marker.ADD)

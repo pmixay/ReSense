@@ -1,0 +1,71 @@
+{
+ "frames_scored": 1510,
+ "frames_missing_in_results": 0,
+ "frames_with_positive": 694,
+ "frames_with_positive_and_stop": 433,
+ "false_stop_frames_unmatched": 8,
+ "stop_frames_only_on_outside_objects": 25,
+ "background_frames": 761,
+ "background_stop_frames": 5,
+ "positive_object_frames": 801,
+ "positive_object_frames_with_stop": 424,
+ "median_abs_distance_error_m": 0.0,
+ "objects": {
+  "big_center": {
+   "positive_frames": 213,
+   "stop_frames": 209,
+   "first_visible_m": 98.69,
+   "first_stop_m": 98.16,
+   "held_90pct_from_m": 98.16
+  },
+  "small_on_rail": {
+   "positive_frames": 49,
+   "stop_frames": 26,
+   "first_visible_m": 237.31,
+   "first_stop_m": 47.96,
+   "held_90pct_from_m": 47.96
+  },
+  "small_center": {
+   "positive_frames": 79,
+   "stop_frames": 32,
+   "first_visible_m": 128.87,
+   "first_stop_m": 55.84,
+   "held_90pct_from_m": 55.84
+  },
+  "small_edge_inside": {
+   "positive_frames": 83,
+   "stop_frames": 18,
+   "first_visible_m": 154.66,
+   "first_stop_m": 34.97,
+   "held_90pct_from_m": 34.97
+  },
+  "big_edge_inside": {
+   "positive_frames": 125,
+   "stop_frames": 15,
+   "first_visible_m": 248.61,
+   "first_stop_m": 28.21,
+   "held_90pct_from_m": 28.21
+  },
+  "big_above": {
+   "positive_frames": 124,
+   "stop_frames": 56,
+   "first_visible_m": 248.15,
+   "first_stop_m": 111.42,
+   "held_90pct_from_m": 111.42
+  },
+  "long_low_on_rails": {
+   "positive_frames": 86,
+   "stop_frames": 53,
+   "first_visible_m": 248.49,
+   "first_stop_m": 88.97,
+   "held_90pct_from_m": 88.97
+  },
+  "thin_hanging": {
+   "positive_frames": 42,
+   "stop_frames": 15,
+   "first_visible_m": 199.69,
+   "first_stop_m": 30.12,
+   "held_90pct_from_m": 30.12
+  }
+ }
+}

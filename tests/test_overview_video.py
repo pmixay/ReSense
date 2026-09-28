@@ -27,10 +27,36 @@ def test_cut_table_is_consistent():
             assert c["tag"] in (None, *module.TAGS)
 
 
+def test_archived_visuals_are_identified_separately_from_current_metrics():
+    old_sources = ("docker_chain_rviz.mp4", "doubleT_obstacle_cab.mp4", "fake_objects_cab.mp4",
+                   "doubleT_obstacle_0024_v062.png")
+    for shot in module.all_shots():
+        if any(name in str(shot["src"]) for name in old_sources):
+            assert "архив" in shot["note"], shot
+
+
 def test_srt_time_format():
     assert module.fmt_srt_time(0.6) == "00:00:00,600"
     assert module.fmt_srt_time(169.4) == "00:02:49,400"
     assert module.fmt_srt_time(3725.25) == "01:02:05,250"
+
+
+def test_span_subtitles_are_clipped_and_rebased(tmp_path):
+    from types import SimpleNamespace
+    renderer = SimpleNamespace(cues=[(90, 95, ["first"], None, 0), (100, 115, ["last"], None, 0),
+                                    (115, 120, ["outside"], None, 0)])
+    path = tmp_path / "nested" / "clip.srt"
+    module.write_srt(path, renderer, (93, 111))
+    assert module.parse_srt(path) == [(0, 2, "first"), (7, 18, "last")]
+
+
+def test_span_chapters_use_the_clip_timeline(tmp_path):
+    path = tmp_path / "chapters.txt"
+    module.write_chapters(path, (93, 111))
+    text = path.read_text()
+    assert text.count("[CHAPTER]") == 1
+    assert "START=0\nEND=18000\n" in text
+    assert "title=Объекты организаторов" in text
 
 
 if (ROOT / module.OUT_MP4).is_file():

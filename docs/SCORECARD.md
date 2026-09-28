@@ -3,8 +3,66 @@
 > **Purpose:** the independent judgements of ReSense against the eight criteria of spec §8: score
 > per criterion, the evidence behind it, the risks on the hidden data and the fastest points to gain.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, summary RU
-> **Last independent judgement:** 2026-09-27, the quality cycle (rounds 1–3 below).
+> **Last independent judgement:** 2026-09-28, fresh re-judgement of `806b6c4` (below); 27.09 rounds 1–3 follow.
 > **Status:** current review below; earlier numbered sections are dated records.
+
+## Fresh re-judgement: 28 September (head `806b6c4`, the node input path of 28.09)
+
+**Combined 66.5/100** (judge A 72.5, judge B 62.5). Two new judges, told not to read this file or
+the earlier judge reports before scoring and to credit only what they reproduced or recomputed
+(each saw the README's quoted earlier total once while locating sections; both say they did not
+use it). Judge A measured: tests, the jury chain, 13 dry runs (warm, cold, offline; the reviewed
+image against `main`), the six recordings, set O and six ride files. Judge B audited the code and
+the committed raw evidence without heavy runs. Same aggregation rule. The detector is the sealed
+27.09 one; the lower totals than round 3 below (72) come from fresh judges and the per-frame
+outputs of the 27.09 detector not being committed (B could verify only the P3d-era figures), not
+from a change in the detector.
+
+| Criterion | Maximum | Judge A | Judge B | Combined | 27.09 round 3 |
+|---|---:|---:|---:|---:|---:|
+| Functionality |25|18|14|16|16.5|
+| Range |15|8|7.5|7.5|9.5|
+| Speed |10|8|8|**8**|7.5|
+| Generalization |15|10|6.5|8|9|
+| Technical quality |10|8|7.5|7.5|8|
+| Ease of launch |10|8|7.5|7.5|8.5|
+| Team approach |10|9|8|8.5|9|
+| Pitch |5|3.5|3.5|3.5|4|
+| **Total** |**100**|**72.5**|**62.5**|**66.5**|72|
+
+Reports: [both judges](evidence/results/rejudge_2026-09-28.json). What they found:
+
+- **Speed (8.3, up):** the node's input path is real and byte-identical (453 of 453 frames, twice
+  independently). End to end at 360°, judge A's 5 alternating pairs: p95 113 → 102 ms cached,
+  137 → 118 ms cold, decode + detect unchanged; the team's own figure (120–127 → 93–97) overstated
+  the gain and has been corrected in README, ARCHITECTURE, EXPERIMENTS §3d and CHANGELOG. CI
+  runner, cold: 60 / 37 ms at 360° / 120°. Still missing: the 8-core stand and the ride's dense
+  station stretch (detector clustering, p95 ~110 ms single-core).
+- **Safety, pre-existing:** on the node path `doubleT_obstacle` shows **GO at frame 111** with the
+  object on the rail in view (in every capture since 27.09, also before this pass; a confirmed low
+  track misses two frames and the one-frame hold releases it; `clear_distance` is capped at 56 m
+  that frame). Also CAUTION at frames 117 and 197. Owner: the detector (P3), not changed here:
+  documented as a limitation of the sealed detector on 28.09 (ALGORITHM §6, DECISIONS row 26),
+  with both figures wherever the rail object is quoted (123 of 126 raw / node, 125 on the cache).
+- **Launch trap (8.6):** the image's default command runs `freshness_mode:=live`, so a recorded bag
+  gives FAULT on every message unless `freshness_mode:=replay` is passed (the README jury commands,
+  `play_bag.sh` and compose pass it). Changing the default is the captain's safety decision.
+  **Changed after the judgement (28.09, `d359a06`, not re-scored):** the image's default command
+  now passes `freshness_mode:=replay`; the node's own default stays `live` (DECISIONS row 25).
+- **Fixed after the judgement (not re-scored):** an unreadable raw message now is logged and
+  dropped instead of stopping the node; organized clouds with row padding are packed before the
+  decode; the one-gather decode that was not reliably faster is removed; tests added for
+  big-endian CDR, padding and the fallback.
+- **Other:** 7 false STOP episodes on the five empty recordings (A); 31–38 false STOP events per 20
+  minutes of riding (B, P3d/27.09 figures); CAUTION on 41–68 % of clear frames; small, edge and
+  low objects STOP only inside braking distance; team slides still hold placeholders; DECISIONS.md
+  last verified 26.09 (updated 28.09 with rows 18–27).
+- **Documentation corrected after the judgement (28.09, not re-scored):** judge A's per-frame
+  outputs of the sealed detector added with a recompute script
+  ([`evidence/judge_outputs_2026-09-28/`](evidence/judge_outputs_2026-09-28/README.md)); the
+  opinion's delay stated in processed frames; the all-frame end-to-end latency next to the
+  current-results one; the ground truth's dependence on the team's tools (EVALUATION §1); the
+  placement study called a sensitivity study; the README cut to the jury path.
 
 ## Quality-cycle review, round 3: 27 September (final detector `352ca13`, docs `0e5e251`)
 

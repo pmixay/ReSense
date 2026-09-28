@@ -4,7 +4,7 @@ detector checks, the points inside it and the confirmed obstacle with its distan
 
 The picture for the pitch ("the train, the LiDAR, the obstacle our algorithm saw at X m") and
 for the README. The detector runs over the frames before the chosen one, so the obstacle on the
-picture is a confirmed track, exactly as the ROS node would report it.
+picture is an offline confirmed track. It is not a ROS freshness/transport measurement.
 
     python scripts/hero_view.py --npy /data/cache/doubleT_obstacle --frame 30 --out hero.png
     python scripts/hero_view.py --npy ... --frame 30 --lang en --out hero_en.png
@@ -33,12 +33,14 @@ GO = "#2ecc71"
 
 TEXT = {
     "ru": {"stop": "STOP", "obstacle": "препятствие {d} м", "go": "GO", "clear": "дальность контроля ≈ {d:.0f} м",
-           "caution": "CAUTION", "label": "ПРЕПЯТСТВИЕ · {d} м", "envelope": "габарит поезда 2,1 × 3,0 м",
-           "foot": "{name} · кадр {i} · реальные данные организаторов · без обучения на объектах",
+           "caution": "CAUTION", "fault": "FAULT", "untrusted": "нет достоверных данных",
+           "label": "ПРЕПЯТСТВИЕ · {d} м", "envelope": "габарит поезда 2,1 × 3,0 м",
+           "foot": "{name} · кадр {i} · реальные данные организаторов · решает геометрия габарита",
            "inset": "крупно: {n} точек, высота {h} м"},
     "en": {"stop": "STOP", "obstacle": "obstacle at {d} m", "go": "GO", "clear": "estimated monitored range {d:.0f} m",
-           "caution": "CAUTION", "label": "OBSTACLE · {d} m", "envelope": "train envelope 2.1 × 3.0 m",
-           "foot": "{name} · frame {i} · the organizers' real data · no object training",
+           "caution": "CAUTION", "fault": "FAULT", "untrusted": "input not trusted",
+           "label": "OBSTACLE · {d} m", "envelope": "train envelope 2.1 × 3.0 m",
+           "foot": "{name} · frame {i} · the organizers' real data · the envelope's geometry decides",
            "inset": "close-up: {n} points, {h} m tall"},
 }
 
@@ -68,6 +70,18 @@ class Camera:
         u = self.W / 2 - self.f * d[:, 1] / x
         v = self.H / 2 - self.f * (d[:, 2] / x - self.tp)
         return u, v, d[:, 0]
+
+
+def decision(res):
+    """Offline STOP/health precedence, matching DetectorNode.decision without ROS imports."""
+    health = getattr(res, "health", {}) or {}
+    if res.obstacle:
+        return "STOP"
+    if health.get("level") == "error":
+        return "FAULT"
+    if res.warning or health.get("decision_level", health.get("level")) == "warn":
+        return "CAUTION"
+    return "GO"
 
 
 def render(frame, res, path, name, index, lang="ru", x_max=110.0, W=1920, H=1080, hud=True, foot=None):
@@ -172,9 +186,12 @@ def render(frame, res, path, name, index, lang="ru", x_max=110.0, W=1920, H=1080
             ins.set_title(t["inset"].format(n=len(Q), h=num(float(d.size[2]))), color=LIGHT, fontsize=14, pad=8)
 
     # decision chip, as the node publishes it on /resense/decision
-    if res.obstacle:
+    state = decision(res)
+    if state == "STOP":
         head, sub, fc = t["stop"], t["obstacle"].format(d=num(res.nearest_distance)), PINK
-    elif res.warning:
+    elif state == "FAULT":
+        head, sub, fc = t["fault"], t["untrusted"], PINK
+    elif state == "CAUTION":
         head, sub, fc = t["caution"], "", CORRIDOR
     else:
         head, sub, fc = t["go"], t["clear"].format(d=getattr(res, "clear_distance", 0.0) or 0.0), GO
@@ -209,15 +226,22 @@ def main():
     ap.add_argument("--no-hud", action="store_true", help="only the cloud, the envelope and the boxes (no decision "
                     "chip, close-up or footer)")
     a = ap.parse_args()
+    if a.frame < 0 or (a.sequence is not None and not 0 <= a.sequence <= a.frame):
+        ap.error("frame indices must satisfy 0 <= FIRST <= frame")
     cfg = DetectorConfig.from_yaml(a.config) if a.config else DetectorConfig()
     det = Detector(cfg)
     name = a.name or os.path.basename(os.path.normpath(a.npy))
     W, H = (int(v) for v in a.size.lower().split("x"))
+    if min(W, H) <= 0 or a.x_max <= 0:
+        ap.error("size and x-max must be positive")
+    os.makedirs(os.path.dirname(os.path.abspath(a.out)), exist_ok=True)
     if a.sequence is not None:
         os.makedirs(a.out, exist_ok=True)
     res = frame = None
     idx = 0
     for i, frame in iter_npy_frames(a.npy, cfg.sensor, limit=a.frame + 1, index_from_name=True):
+        if i > a.frame:
+            break
         res, idx = det.process(frame), i
         if a.sequence is not None and i >= a.sequence:
             render(frame, res, os.path.join(a.out, f"frame_{i:05d}.png"), name, i, lang=a.lang, x_max=a.x_max,
@@ -226,6 +250,8 @@ def main():
             break
     if res is None:
         sys.exit("no frames")
+    if idx != a.frame:
+        sys.exit(f"requested frame {a.frame} is absent (last processed frame {idx})")
     if a.sequence is None:
         render(frame, res, a.out, name, idx, lang=a.lang, x_max=a.x_max, W=W, H=H, hud=not a.no_hud, foot=a.foot)
     print(f"{a.out}: frame {idx} obstacle={res.obstacle} clear_distance={res.clear_distance:.1f} m "

@@ -3,14 +3,15 @@
 > **Purpose:** the dashboard, the RViz and Foxglove layouts, the label tool, their headless checks
 > and the video recipes.
 > **Audience:** team, jury (demo) · **Owner:** P2 · **Language:** EN
-> **Last verified:** 2026-09-27 (53 `web/demo` checks pass, including Chromium, layouts and Foxglove protocol checks) · **Status:** current
+> **Last verified:** 2026-09-28 (evening): full P2 review on the sealed 27.09 detector and the fixes after the 28.09 re-judgement (see [`P2_REVIEW.md`](P2_REVIEW.md)) · **Status:** current
 
 Everything the jury sees: the RViz layout the launch file loads, a Foxglove layout for remote
 demos, a browser dashboard that works live (rosbridge) and offline (replay of `results.jsonl`),
-the scripts that verify the dashboard headlessly (53 tests in `web/demo/`, CI job `pytest`), and the
+the scripts that verify the dashboard headlessly (CI job `pytest`), and the
 video recipes.
 
-Current P2 fixes, verification and dependencies: [`P2_STATUS.md`](P2_STATUS.md).
+Current P2 fixes, verification and dependencies: [`P2_REVIEW.md`](P2_REVIEW.md).
+The first pass is recorded in [`P2_STATUS.md`](P2_STATUS.md).
 
 | file | what |
 |---|---|
@@ -21,7 +22,7 @@ Current P2 fixes, verification and dependencies: [`P2_STATUS.md`](P2_STATUS.md).
 | [`demo/check_dashboard.py`](demo/check_dashboard.py) | Playwright + headless Chromium: loads the JSONL into the dashboard, plays it, asserts the banner, screenshot / video |
 | [`demo/check_foxglove_live.py`](demo/check_foxglove_live.py) | Checks layout topics and receives detector messages through a running Foxglove bridge (`pip install websockets`) |
 | [`demo/capture_gallery.py`](demo/capture_gallery.py) | Playwright + Chromium: refreshes the dashboard screenshots in `docs/images` from the built-in demo and the recorded real status stream |
-| [`demo/test_web.py`](demo/test_web.py), [`demo/test_frontend_boundaries.py`](demo/test_frontend_boundaries.py), [`demo/test_foxglove_probe.py`](demo/test_foxglove_probe.py) | 53 pytest checks for layouts, JSONL, browser replay/live behavior, labels and Foxglove protocol: `python -m pytest -q web/demo` |
+| [`demo/test_web.py`](demo/test_web.py), [`demo/test_frontend_boundaries.py`](demo/test_frontend_boundaries.py), [`demo/test_p2_review.py`](demo/test_p2_review.py), [`demo/test_foxglove_probe.py`](demo/test_foxglove_probe.py) | layout, browser replay/live, annotation and Foxglove checks: `python -m pytest -q web/demo` |
 | [`assets/result-format.js`](assets/result-format.js) | shared validation of imported result records before either browser tool updates its state |
 | `../ros2_ws/src/resense_ros/rviz/resense.rviz` | RViz2 layout (P2-owned, loaded by `detector.launch.py rviz:=true` and the compose `rviz` service) |
 
@@ -73,9 +74,12 @@ On phones, the panels stack and the plots redraw at their displayed width. Two m
 * **Built-in demo**: press *Демо* for a 60-frame synthetic approach (120 → 40 m). It exercises
   GO / CAUTION / STOP, mount/health fields, playback and the summary card without ROS, Python or
   a dataset. It is a UI fallback for a jury laptop, not an evaluation result.
-* **Скачать отчёт** (section *Сводка запуска*) downloads `resense_run_report.json`: source,
-  frame count, alarm events/frames, warning frames, nearest confirmed distance, peak detector
-  time and time span.
+* **Скачать отчёт** (section *Сводка запуска*) downloads `resense_run_report.json` for the loaded
+  replay: source, frame count, STOP episodes/frames, warning frames, nearest confirmed distance,
+  peak detector time and timestamps. **Schema version 2** calls the count `stop_episodes`: the old
+  `alarm_events` name counted contiguous STOP episodes, not the evaluator's distinct confirmed track
+  IDs. Watchdog/error snapshots are counted separately as `status_snapshots` and excluded from frame
+  metrics. Summary and export are disabled in live mode, where no complete run is loaded.
 
 What is shown:
 
@@ -83,12 +87,12 @@ What is shown:
 |---|---|
 | banner **ПРЕПЯТСТВИЕ НЕ ОБНАРУЖЕНО / ВНИМАНИЕ / ПРЕПЯТСТВИЕ 55.6 м / ОШИБКА / ДАННЫЕ УСТАРЕЛИ**; includes health-only CAUTION and FAULT | `decision`, `obstacle`, `warning`, `nearest_distance`, `health`; live mode requires valid current status |
 | **cab view** (driver's-eye schematic, the camera of `scripts/hero_view.py` without the point cloud): rails and the 2.1 × 3.0 m train envelope along the fitted axis and bed profile, the estimated monitoring range in green (to the obstacle, else `clear_distance`), a red stop zone at the obstacle, confirmed objects as 3D boxes with a distance chip, a zoomed close-up of the nearest one, decision chip and legend; the tunnel outline is only a depth cue | `track.center/yaw/curvature/floor_coef/floor_range/rail_offset/axis_valid`, `detections[]`, `warnings[]`, `clear_distance`, `decision`, `health` |
-| top-down canvas (100 / 150 / 250 m): track axis, ±1.4 m band (the ±1.05 m train envelope plus the 0.35 m advisory margin), untrusted range shaded, red gauge boxes, orange advisory boxes with distance and confidence | `track.center/yaw/curvature/axis_valid`, `detections[]`, `warnings[]` |
+| top-down canvas (100 / 150 / 250 m): track axis, solid green ±1.05 m train envelope, dashed yellow ±1.4 m advisory boundary, untrusted range shaded, red gauge boxes, orange advisory boxes with distance and confidence | `track.center/yaw/curvature/axis_valid`, `detections[]`, `warnings[]` |
 | timeline (last 30 s): nearest gauge obstacle (red), nearest advisory object (orange) | `nearest_distance`, `warnings[].distance` |
 | detector card: counts, axis, radius, trusted range, points, per-stage timing | `track`, `n_points`, `n_corridor`, `timing_ms` |
 | decision and health: GO / CAUTION / STOP / FAULT, estimated monitored range, validity, source age, visibility, rail lock, calibration | `decision`, `clear_distance`, `freshness`, `stop_held`, `health`, `mount` |
 | **ROS node card**: `latency_ms`, `fps`, `frames`, `dropped_frames`, `input_period_ms` | `node` (only in the node's messages; a replay file says "no node stats") |
-| run summary: alarm events/frames, warning frames, nearest object, peak detector time | all loaded replay frames |
+| run summary: STOP episodes/frames, warning frames, nearest object, peak detector time; service snapshots separately | loaded replay frame rows only |
 | alarm log: one line per alarm frame (id, lateral offset, size, points, confidence), one line when the alarm ends | `detections[]` |
 
 Health warnings: latency above 100 ms (the 10 Hz period) and fps below 9 turn orange; when
@@ -104,6 +108,12 @@ the last distance explicitly labelled; otherwise it shows FAULT. A fresh validat
 permits recovery. Historical file playback keeps the recorded snapshot. Invalid monitoring
 never shows a green range, including a held STOP. Timer scheduling is not a hard real-time bound.
 
+A current live result must be a `frame` snapshot with `reason: current`, a recognized mode/clock
+pair (`live`/`acquisition_utc` or `replay`/`publisher_utc`), no queued lag/catch-up, no held-only STOP,
+and no FAULT decision or error health. `go_allowed` must agree with GO versus non-GO.
+Contradictory `valid: true` flags do not release a held STOP.
+Offline replay derives a decision from obstacle/warning flags and health for legacy files.
+
 `GO` means no obstacle was detected. The green range is an estimate from visibility and the track
 model, capped by eligible detected candidates; objects that form no such candidate may be missed
 inside it. The interface labels it «Дальность контроля» and shows this limitation beside the
@@ -116,6 +126,8 @@ pip install playwright                      # the Python package; a Chromium bui
 python web/demo/make_demo_run.py            # synthetic tunnel, person 120 -> 40 m over 40 frames, 10 clear frames before/after
 python web/demo/check_dashboard.py          # loads out/demo_run.jsonl, plays it, asserts, screenshot -> out/dashboard_synthetic.png
 python -m pytest -q web/demo                # the same as tests (+ layout checks); browser tests skip without Chromium
+RESENSE_REQUIRE_WEB=1 python -m pytest -q web/demo  # CI mode: any skip makes the job fail
+python web/demo/check_status_compatibility.py      # archived status formats vs the actual browser validator
 ```
 
 The Playwright package version must match the Chromium build it drives:
@@ -176,7 +188,7 @@ WebSocket → `ws://<demo host>:8765`**, then **Layout → Import from file →
 With the player running, check the connection and topic wiring from the demo machine:
 
 ```bash
-python web/demo/check_foxglove_live.py --url ws://127.0.0.1:8765
+python web/demo/check_foxglove_live.py --url ws://127.0.0.1:8765 --require-freshness
 ```
 
 On 25.09 this check passed against a live `foxglove_bridge` and `roundT_doubleT` bag: all 11
@@ -205,6 +217,10 @@ corridor edges and the status text), an indicator of `/resense/decision` (green 
 
 Known limits:
 
+* The stock Foxglove indicators show **last received** values (`LAST`), with no local expiry timer.
+  A disconnection may leave a cached GO or STOP. Check its connection and `/resense/status`
+  freshness; use the dashboard for locally expiring status. The probe checks one fresh status at a
+  moment in time, not ongoing visual expiry.
 * **Visual import remains unchecked**; the live protocol and topic paths passed the check above.
   If a panel comes up empty after import, re-pick its topic in the panel settings. The 3D panel
   follows `resense_lidar` (the node's static TF).
@@ -219,7 +235,15 @@ Known limits:
 ## Video
 
 The committed real-data clips (v0.6.2; the Docker chain v0.6.3) cover every presentation surface;
-all four are silent:
+all five are silent:
+
+The 2:50 overview uses these clips as **archival visualization** and labels them as such in its
+source line. Its numerical cards come from the deck's numbers (`N` in `scripts/build_deck.py`,
+sources in [`docs/PRESENTATION.md`](../docs/PRESENTATION.md) «Числа на слайдах и их источники»): the
+27.09 regression baseline, the 28.09 node captures for the object on the rail (STOP in 123 of 126
+frames through the node, one GO) and the end-to-end latency with the machine it was measured on,
+not measurements made in the earlier video clips. The current dashboard clip replays an archived
+node-status capture; neither clip is a fresh run of the final detector on the jury stand.
 
 * [`docker_chain_rviz.mp4`](../docs/video/docker_chain_rviz.mp4) — the full jury chain on screen:
   node and RViz in Docker, `ros2 bag play` as a normal user, and `/resense/decision` (v0.6.3);
@@ -227,9 +251,8 @@ all four are silent:
   driver's seat with the envelope, STOP decision, distance and close-up;
 * [`doubleT_obstacle_offline.mp4`](../docs/video/doubleT_obstacle_offline.mp4) — top and side
   views of every frame;
-* [`dashboard_current.mp4`](../docs/video/dashboard_current.mp4) — 11.7 s clip of the current
-  dashboard replaying the real `doubleT_obstacle` run at 2× speed; the browser check observed a
-  STOP near 55.5 m;
+* [`dashboard_current.mp4`](../docs/video/dashboard_current.mp4) — 7.24 s clip replaying 103
+  archived real `doubleT_obstacle` statuses at 2× speed; browser check observed STOP at 56.1 m;
 * [`dashboard_doubleT_obstacle.mp4`](../docs/video/dashboard_doubleT_obstacle.mp4) — earlier UI
   design, kept for comparison.
 
@@ -277,7 +300,14 @@ or more obstacles (kind, label, distance along the track, lateral offset, size L
 reflectivity, in-gauge flag, point count) — *add from detection* prefills a row from what the
 detector reported — or tick *checked, clear* for a verified empty frame. *Export gt.json*
 downloads the file; *import gt.json* continues an earlier session. Arrow keys move between
-frames; the canvas shows detector boxes (red / orange) and labels (cyan) top-down.
+frames; the canvas shows detector boxes (red / orange) and labels (green) top-down. Box/plank labels
+respect yaw; the strict 2.1 m envelope is separate from the advisory margin.
+
+Load results first, then their labels. A valid results file starts a **new recording session** and
+clears previous annotations; export them before switching recordings. Results without an absolute
+`frame` index are rejected instead of assigned guessed indices. Invalid/empty results leave the
+current session intact. File selections are applied in order, even when reads finish out of order.
+Invalid numeric edits retain the previous value and display an error.
 
 Format, identical to what `resense inject` writes (`cmd_inject` in `resense/cli.py`), so
 `resense eval` and `resense/metrics.py` read it unchanged:
@@ -311,3 +341,6 @@ previous annotations, including an explicit empty list; unlisted frames remain a
 Malformed frame keys or obstacle lists are rejected rather than marked clear. Explicit imported
 `in_gauge` values are preserved when geometry is edited, including values that initially agree
 with the footprint. Label text containing quotes or angle brackets round-trips as plain text.
+Metadata keys and extra obstacle fields (including evaluator `name` and `speed_mps`) are retained.
+Imported `bbox` rows are converted to editable distance/lateral/size; exported edited geometry
+supersedes the original bbox. The table scrolls on phones and frame rows are keyboard-selectable.

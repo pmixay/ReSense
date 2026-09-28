@@ -1,0 +1,17 @@
+import sys, tarfile, time
+sys.path.insert(0, '/home/user/ReSense/scripts')
+import zstandard
+from unpack_dataset import open_zst_stream
+want = {f"new_data_{n}.db3" for n in (46, 47, 48, 68, 69, 70)} | {"metadata.yaml"}
+raw = open_zst_stream("https://disk.yandex.ru/d/N8IUpAyd7jyvow", "new_data.zst")
+reader = zstandard.ZstdDecompressor().stream_reader(raw, read_across_frames=True)
+t0 = time.time(); got = set()
+with tarfile.open(fileobj=reader, mode="r|") as tar:
+    for m in tar:
+        base = m.name.split('/')[-1]
+        if base in want and m.isfile():
+            tar.extract(m, "/tmp/judgeA/newdata"); got.add(base)
+            print(f"{time.time()-t0:6.0f}s extracted {m.name} {m.size/1e6:.0f} MB", flush=True)
+        if got >= want - {"metadata.yaml"}:
+            break
+print("done", sorted(got), flush=True)

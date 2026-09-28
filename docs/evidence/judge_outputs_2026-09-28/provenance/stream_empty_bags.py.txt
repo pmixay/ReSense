@@ -1,0 +1,27 @@
+import sys, tarfile, time, os, subprocess, shutil
+sys.path.insert(0, '/home/user/ReSense/scripts')
+import zstandard
+from unpack_dataset import open_zst_stream
+want = {"doubleT_platform", "roundT_pressureGate_roundT", "roundT_squareT_pressureGate_squareT", "squareT_platform_squareT_switch"}
+raw = open_zst_stream("/tmp/judgeA/dataset.zip")
+reader = zstandard.ZstdDecompressor().stream_reader(raw, read_across_frames=True)
+t0 = time.time(); done = set()
+with tarfile.open(fileobj=reader, mode="r|") as tar:
+    for m in tar:
+        parts = m.name.removeprefix("./").split("/")
+        print(f"{time.time()-t0:6.0f}s member {m.name} {m.size/1e9:.2f} GB", flush=True)
+        if len(parts) < 3 or parts[1] not in want or not m.name.endswith(".db3"):
+            continue
+        bag = parts[1]
+        tar.extract(m, "/dev/shm/judgeA_bags")
+        path = os.path.join("/dev/shm/judgeA_bags", m.name)
+        out = f"/tmp/judgeA/empty_{bag}.jsonl"
+        r = subprocess.run(["resense", "run", "--bag", path, "--config", "/home/user/ReSense/configs/default.yaml",
+                            "--out", out, "--quiet"], capture_output=True, text=True)
+        print(f"{time.time()-t0:6.0f}s ran {bag}: {r.stderr.strip()[-200:]}", flush=True)
+        os.remove(path)
+        done.add(bag)
+        if done >= want:
+            break
+shutil.rmtree("/dev/shm/judgeA_bags", ignore_errors=True)
+print("done", sorted(done), flush=True)

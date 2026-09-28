@@ -3,7 +3,7 @@
 > **Purpose:** completed frontend work, verification and the next role dependencies.
 > **Audience:** team, P1 · **Owner:** P2 · **Language:** EN
 > **Last verified:** 2026-09-27, local changes on base `09629f5a981fa7e9ab5a789abecb13e8544c99d0`
-> **Status:** local P2 fixes verified; final presentation and demo depend on team inputs
+> **Status:** dated first-pass record; superseded by the [full P2 review](P2_REVIEW.md)
 
 P2 owns the dashboard, label tool, RViz/Foxglove layouts, presentation tooling and demo assets
 ([ownership map](../docs/CAPTAIN.md), §8). The current public presentation and video pass their

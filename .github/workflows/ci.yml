@@ -35,6 +35,7 @@ jobs:
     runs-on: ubuntu-22.04
     env:
       RESENSE_REQUIRE_SYNTHETIC: "1"
+      RESENSE_REQUIRE_WEB: "1"
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -79,7 +80,7 @@ jobs:
     env:
       # the working branch and main also run the remote-viewer check and the original-bag cold-start
       # regression (scripts/p1_cold_bag_test.sh keeps the same list)
-      FULL: ${{ github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/p1-p2-supported-playback-20260927' || github.ref == 'refs/heads/main' }}
+      FULL: ${{ github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/p1-p2-supported-playback-20260927' || github.ref == 'refs/heads/claude/amazing-fermi-t67v8g' || github.ref == 'refs/heads/main' }}
     steps:
       - uses: actions/checkout@v7
       - run: docker build -t resense:ci --build-arg WITH_TOOLS=1 -f docker/Dockerfile .
@@ -144,6 +145,7 @@ jobs:
         if: ${{ env.FULL == 'true' }}
         # The viewer probe needs the WITH_TOOLS=1 build's `websockets` client. This models a second
         # device on an isolated network and checks outage/recovery without requiring demo hardware.
+        # FULL includes the working branch claude/amazing-fermi-t67v8g since 28.09.
         run: IMAGE=resense:ci scripts/p2_viewer_test.sh
       # ---- the original-bag cold-start regression (working branch and main). The two original
       # organizer bags come from the Actions cache, so that Google Drive is not asked for the 3.7 GB
@@ -312,7 +314,8 @@ jobs:
           docker network create --internal "$NET" >/dev/null
           mkdir -p /tmp/offline_rt_out && chmod 777 /tmp/offline_rt_out
           docker run --rm --network "$NET" "$IMAGE" python3 scripts/check_no_network.py
-          docker run -d --name resense_rt_node --network "$NET" "$IMAGE" ros2 launch resense_ros detector.launch.py freshness_mode:=replay >/dev/null
+          # the image's default command, no arguments (the spec's `docker run` → `ros2 bag play` → result; 28.09)
+          docker run -d --name resense_rt_node --network "$NET" "$IMAGE" >/dev/null
           for _ in $(seq 1 60); do docker logs resense_rt_node 2>&1 | grep -q "ReSense detector listening" && break; sleep 1; done
           docker logs resense_rt_node 2>&1 | grep -q "ReSense detector listening"
           docker run -d --name resense_rt_echo --network "$NET" -v /tmp/offline_rt_out:/out "$IMAGE" bash -c "ros2 topic echo /resense/status --field data > /out/status.jsonl" >/dev/null
@@ -332,7 +335,7 @@ jobs:
       # runner's small disk.
       - name: the archive as a download, named after the commit (push to the working branch or main)
         id: artifact
-        if: ${{ success() && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/claude/nifty-pascal-lzgl78') }}
+        if: ${{ success() && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/amazing-fermi-t67v8g') }}
         run: |
           NAME="resense-image-$VER-${GITHUB_SHA::7}"
           mkdir -p /tmp/artifact
