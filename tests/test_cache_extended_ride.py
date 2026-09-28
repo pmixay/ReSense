@@ -3,15 +3,25 @@
 import hashlib
 import io
 import json
+import sys
 import tarfile
+from pathlib import Path
 
 import numpy as np
 import pytest
 import zstandard
 
-import scripts.cache_extended_ride as intake
-from scripts.cache_frames import _atomic_json, _atomic_save
-from resense.pointcloud import COMPACT16_DTYPE
+# In the Docker test, pytest starts from / so this first import resolves the installed package.
+# The cache utilities live in the source tree and are not installed with the runtime package.
+import resense  # noqa: F401 - preload the installed package before exposing source scripts
+
+REPO_ROOT = str(Path(__file__).resolve().parents[1])
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
+import scripts.cache_extended_ride as intake  # noqa: E402
+from scripts.cache_frames import _atomic_json, _atomic_save  # noqa: E402
+from resense.pointcloud import COMPACT16_DTYPE  # noqa: E402
 
 
 def _tar_zst():
