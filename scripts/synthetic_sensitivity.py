@@ -13,6 +13,7 @@ import hashlib
 import json
 from pathlib import Path
 import platform
+import re
 import subprocess
 import sys
 
@@ -99,10 +100,24 @@ def candidate_freeze(path, split):
     if path is None:
         raise ValueError("reserved evaluation requires --candidate-freeze JSON after candidate selection")
     frozen = json.loads(Path(path).read_text())
-    for key in ("commit", "detector_source_sha256", "config_sha256"):
-        if not isinstance(frozen.get(key), str) or not frozen[key]:
-            raise ValueError(f"candidate freeze lacks {key}")
+    for role in ("baseline", "candidate"):
+        identity = frozen.get(role, {})
+        for key, length in (("commit", 40), ("detector_source_sha256", 64), ("config_sha256", 64)):
+            if not isinstance(identity.get(key), str) or not re.fullmatch(f"[0-9a-f]{{{length}}}", identity[key]):
+                raise ValueError(f"candidate freeze lacks valid {role}.{key}")
     return {"file_sha256": file_hash(path), **frozen}
+
+
+def frozen_role(frozen, source, config_sha256):
+    """Documentation-only commits may differ; detector/config bytes must match a frozen pair."""
+    if frozen is None:
+        return None
+    matches = [role for role in ("baseline", "candidate")
+               if frozen[role]["detector_source_sha256"] == source["detector_source_sha256"]
+               and frozen[role]["config_sha256"] == config_sha256]
+    if not matches:
+        raise ValueError("reserved evaluation source/config does not match frozen baseline or candidate")
+    return "+".join(matches)
 
 
 def generate(args):
@@ -111,6 +126,9 @@ def generate(args):
 
     protocol = json.loads(args.protocol.read_text())
     frozen = candidate_freeze(args.candidate_freeze, args.split)
+    source = source_identity(args.source_commit)
+    cfg = DetectorConfig.from_yaml(str(args.config))
+    role = frozen_role(frozen, source, json_hash(asdict(cfg)))
     settings = protocol["splits"][args.split]
     all_cases = sequence_cases(protocol, args.split)
     selected = set(args.cases.split(",")) if args.cases else {c["name"] for c in all_cases}
@@ -121,7 +139,7 @@ def generate(args):
     manifest_path = args.output / "manifest.json"
     manifest = {"schema": "resense.synthetic_sequence_cache.v1", "synthetic": True,
                 "protocol_sha256": file_hash(args.protocol), "protocol": protocol, "split": args.split,
-                "candidate_freeze": frozen, "generator": source_identity(args.source_commit),
+                "candidate_freeze": frozen, "generator": source, "frozen_role": role,
                 "evaluator_sha256": file_hash(__file__), "cases": []}
     if manifest_path.exists():
         old = json.loads(manifest_path.read_text())
@@ -132,7 +150,7 @@ def generate(args):
             raise ValueError("existing cache uses a different raycaster")
         manifest = old
     recorded = {c["name"]: c for c in manifest["cases"]}
-    sensor = DetectorConfig().sensor
+    sensor = cfg.sensor
     for case in all_cases:
         if case["name"] not in selected:
             continue
@@ -180,10 +198,18 @@ def target_matches(detection, case, matching):
 
 def observation(result, case, returns, index, stamp, matching):
     matched = [target_matches(d, case, matching) for d in result.detections]
+    level = result.health.get("level", "ok")
+    decision = ("STOP" if result.obstacle else "FAULT" if level == "error" else "CAUTION"
+                if result.warning or result.health.get("decision_level", level) == "warn" else "GO")
     return {"frame": index, "stamp_s": stamp, "target_returns": returns,
             "visible": bool(case["positive"] and returns > 0), "stop": bool(result.obstacle),
             "matched_stop": any(matched), "unmatched_stop": any(not m for m in matched),
             "matched_ids": [d.id for d, match in zip(result.detections, matched) if match],
+            "detections": [{"id": int(d.id), "distance": float(d.distance),
+                            "center": np.asarray(d.center).tolist(), "size": np.asarray(d.size).tolist(),
+                            "kind": d.kind, "reason": d.reason} for d in result.detections],
+            "health": result.health, "decision": decision,
+            "decision_scope": "offline detector policy; no ROS freshness/watchdog evaluation",
             "clear_distance_m": float(result.clear_distance),
             "clear_overclaim": bool(case["positive"] and returns > 0 and result.clear_distance > case["distance_m"] + 1.0),
             "target_distance_m": case["distance_m"], "warning": bool(result.warning)}
@@ -235,13 +261,17 @@ def evaluate(args):
         raise ValueError("cache and evaluator candidate-freeze records differ")
     protocol = manifest["protocol"]
     cfg = DetectorConfig.from_yaml(str(args.config))
+    source = source_identity(args.source_commit)
+    config_sha256 = json_hash(asdict(cfg))
+    role = frozen_role(frozen, source, config_sha256)
     report = {"schema": "resense.synthetic_sensitivity_result.v1", "synthetic": True,
               "protocol_sha256": manifest["protocol_sha256"], "cache_manifest_sha256": file_hash(args.cache / "manifest.json"),
-              "split": manifest["split"], "candidate_freeze": frozen, "source": source_identity(args.source_commit),
-              "config_sha256": json_hash(asdict(cfg)), "config": asdict(cfg),
+              "split": manifest["split"], "candidate_freeze": frozen, "source": source,
+              "frozen_role": role, "config_sha256": config_sha256, "config": asdict(cfg),
               "runtime": {"python": platform.python_version(), "numpy": np.__version__,
                           "native": _native.status(), "native_library_sha256": file_hash(_native.LIBRARY) if _native.LIBRARY else None},
-              "evaluator_sha256": file_hash(__file__), "cases": []}
+              "evaluator_sha256": file_hash(__file__),
+              "cache_generator_script_sha256": manifest["evaluator_sha256"], "cases": []}
     for case in manifest["cases"]:
         detectors = {name: Detector(cfg) for name in ("float32", "compact16")}
         outputs = {name: [] for name in detectors}
@@ -267,6 +297,7 @@ def evaluate(args):
                                                                      if a["matched_stop"] != b["matched_stop"]]})
         print(f"evaluated {case['name']}", flush=True)
     expected = {c["name"] for c in sequence_cases(protocol, manifest["split"])}
+    report["expected_cases"] = sorted(expected)
     report["complete_split"] = {c["case"]["name"] for c in report["cases"]} == expected
     if args.baseline:
         report["comparison"] = compare_reports(json.loads(args.baseline.read_text()), report)
@@ -285,6 +316,12 @@ def compare_reports(baseline, current):
     new = {c["case"]["name"]: c for c in current["cases"]}
     if old.keys() != new.keys():
         raise ValueError("cannot compare different case sets")
+    incomplete = [name for name, report in (("baseline", baseline), ("current", current))
+                  if not report.get("complete_split")
+                  or set(report.get("expected_cases", [])) != set(old)]
+    if incomplete:
+        return {"passed": False, "regressions": [], "improvements": [], "detector_gain": False,
+                "incomplete_split": incomplete}
     regressions, improvements = [], []
     for name in old:
         if old[name]["input_sha256"] != new[name]["input_sha256"]:
@@ -348,10 +385,10 @@ def main(argv=None):
     gen.add_argument("--output", type=Path, required=True)
     ev = sub.add_parser("evaluate")
     ev.add_argument("--cache", type=Path, required=True)
-    ev.add_argument("--config", type=Path, default=ROOT / "configs/default.yaml")
     ev.add_argument("--baseline", type=Path)
     ev.add_argument("--output", type=Path, required=True)
     for command in (gen, ev):
+        command.add_argument("--config", type=Path, default=ROOT / "configs/default.yaml")
         command.add_argument("--protocol", type=Path, default=PROTOCOL)
         command.add_argument("--candidate-freeze", type=Path)
         command.add_argument("--source-commit", help="host checkout commit when a container cannot resolve worktree Git metadata")

@@ -55,6 +55,19 @@ def test_visible_rail_object_has_sustained_matched_stop(replay):
     assert len({d.id for _, _, r in rows[6:] for d in r.detections}) == 1
 
 
+def test_saved_observation_can_recompute_the_physical_match(replay):
+    index, returns, result = replay("gap", 0)[5]
+    case = evaluation.sequence_cases(PROTOCOL, "development")[0]
+    saved = evaluation.observation(result, case, returns, index, index * 0.1, PROTOCOL["matching"])
+    saved = json.loads(json.dumps(saved))
+    matches = [evaluation.target_matches(SimpleNamespace(**d), case, PROTOCOL["matching"])
+               for d in saved["detections"]]
+    assert saved["matched_stop"] == any(matches)
+    assert saved["matched_ids"] == [d["id"] for d, matched in zip(saved["detections"], matches) if matched]
+    assert saved["health"]["level"] in ("ok", "warn", "error")
+    assert saved["decision"] == "STOP"
+
+
 def test_confirmed_stop_survives_one_missing_target_return_frame(replay):
     rows = replay("gap", 1)
     assert rows[6][1] == 0
@@ -126,7 +139,8 @@ def test_matching_requires_physical_target_location_not_any_stop():
 
 def report(positive=True):
     metrics = evaluation.sequence_metrics([row(i, hit=i >= 4) for i in range(16)], PROTOCOL["metrics"])
-    return {"protocol_sha256": "fixed", "split": "development", "cases": [
+    return {"protocol_sha256": "fixed", "split": "development", "complete_split": True,
+            "expected_cases": ["example"], "cases": [
         {"case": {"name": "example", "positive": positive}, "input_sha256": "same",
          "encodings": {name: {"metrics": deepcopy(metrics)} for name in ("float32", "compact16")}}]}
 
@@ -151,6 +165,53 @@ def test_comparison_rejects_changed_clouds_and_missing_cases():
     current["cases"] = []
     with pytest.raises(ValueError, match="different case sets"):
         evaluation.compare_reports(baseline, current)
+
+
+@pytest.mark.parametrize("claimed_complete", [True, False])
+def test_comparison_never_passes_identical_incomplete_case_sets(claimed_complete):
+    baseline = report()
+    baseline["complete_split"] = claimed_complete
+    baseline["expected_cases"].append("missing_case")
+    result = evaluation.compare_reports(baseline, deepcopy(baseline))
+    assert not result["passed"] and not result["detector_gain"]
+    assert result["incomplete_split"] == ["baseline", "current"]
+
+
+def freeze_document():
+    return {role: {"commit": value * 40, "detector_source_sha256": value * 64,
+                   "config_sha256": value * 64}
+            for role, value in (("baseline", "a"), ("candidate", "b"))}
+
+
+def test_reserved_execution_requires_an_exact_frozen_source_and_config_pair(tmp_path):
+    path = tmp_path / "freeze.json"
+    path.write_text(json.dumps(freeze_document()))
+    frozen = evaluation.candidate_freeze(path, "evaluation")
+    assert evaluation.frozen_role(frozen, {"detector_source_sha256": "a" * 64}, "a" * 64) == "baseline"
+    assert evaluation.frozen_role(frozen, {"detector_source_sha256": "b" * 64}, "b" * 64) == "candidate"
+    for source, config in (("a", "b"), ("b", "a"), ("c", "b")):
+        with pytest.raises(ValueError, match="does not match frozen"):
+            evaluation.frozen_role(frozen, {"detector_source_sha256": source * 64}, config * 64)
+    incomplete = freeze_document()
+    del incomplete["baseline"]
+    path.write_text(json.dumps(incomplete))
+    with pytest.raises(ValueError, match="baseline.commit"):
+        evaluation.candidate_freeze(path, "evaluation")
+
+
+def test_evaluator_rejects_mutated_reserved_candidate_before_processing(tmp_path, monkeypatch):
+    path = tmp_path / "freeze.json"
+    path.write_text(json.dumps(freeze_document()))
+    frozen = evaluation.candidate_freeze(path, "evaluation")
+    manifest = {"protocol_sha256": evaluation.file_hash(evaluation.PROTOCOL), "split": "evaluation",
+                "candidate_freeze": frozen, "protocol": PROTOCOL, "cases": []}
+    (tmp_path / "manifest.json").write_text(json.dumps(manifest))
+    monkeypatch.setattr(evaluation, "source_identity", lambda _: {"detector_source_sha256": "c" * 64})
+    monkeypatch.setattr(evaluation, "Detector", lambda _: pytest.fail("detector ran before freeze validation"))
+    args = SimpleNamespace(cache=tmp_path, protocol=evaluation.PROTOCOL, candidate_freeze=path,
+                           config=ROOT / "configs/default.yaml", source_commit=None)
+    with pytest.raises(ValueError, match="does not match frozen"):
+        evaluation.evaluate(args)
 
 
 def test_reserved_seeds_and_geometry_are_distinct_and_evaluation_requires_freeze():

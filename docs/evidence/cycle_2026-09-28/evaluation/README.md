@@ -34,8 +34,9 @@ python3 scripts/synthetic_sensitivity.py evaluate --cache /cycle/synthetic/devel
 
 Run the evaluator from the candidate checkout against the same cache, adding
 `--baseline /cycle/synthetic/baseline-development.json`. Its exit status is nonzero when any
-registered case/encoding metric regresses. A report says `complete_split: false` if only a
-subset was generated. `--cases` permits a named development subset without renumbering seeds.
+registered case/encoding metric regresses or either report has an incomplete split. A report
+says `complete_split: false` if only a subset was generated. `--cases` permits a named
+development subset without renumbering seeds; those measurements cannot pass the strict gate.
 Generation can resume an existing cache only if the protocol, generator script and raycaster
 match; it checks existing file hashes. Evaluating always verifies every input hash.
 
@@ -46,10 +47,19 @@ No timing comparison is reported while other workers share the machine.
 
 Reserved evaluation uses `--split evaluation` when generating and requires
 `--candidate-freeze <file.json>` for generation and both replays. The freeze record must
-contain `commit`, `detector_source_sha256` and `config_sha256` from the finalized candidate's
-development report. Keep that exact record with the comparison. Baseline and candidate run
+contain `baseline` and `candidate` objects, each with `commit`, `detector_source_sha256` and
+`config_sha256` from their development reports. Generation and evaluation refuse source/config
+hash combinations that match neither frozen identity and report which identity is running.
+Keep that exact record with the comparison. Baseline and candidate run
 on identical saved float clouds; compact16 is derived from those clouds during each replay.
 Do not regenerate a different scene for the second detector.
+
+Per-frame reports retain detection IDs, full-precision distances/centres/sizes, kind/reason,
+health and the offline decision policy alongside matched flags. A reviewer can therefore
+recompute physical target matches. The decision excludes the ROS freshness watchdog; it is
+not presented as a live node replay. The initial development cache was generated with the
+first evaluator revision. Its original script hash remains in its manifest; subsequent
+reports record both that generator hash and the current evaluator hash.
 
 ## Checks added
 
