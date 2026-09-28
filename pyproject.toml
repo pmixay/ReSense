@@ -46,7 +46,3 @@ testpaths = ["tests"]
 [tool.ruff]
 # `ruff check .` (CI job "lint"): the default rules, pyflakes and pycodestyle errors
 target-version = "py310"
-
-[tool.ruff.lint.per-file-ignores]
-# Archived, hash-recorded gate runner bootstraps its original workspace before imports.
-"docs/evidence/cycle_2026-09-28/complete_timing/default/run_gate.py" = ["E402"]
