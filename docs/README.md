@@ -43,6 +43,7 @@ rewritten later; **frozen** = kept for reference, not maintained; **archive** = 
 | [`evidence/README.md`](evidence/README.md) | index of the raw run evidence and of the result summaries in `evidence/results/` | team, jury | EN | P1 / P4 | current |
 | [`images/README.md`](images/README.md) | dashboard UI screenshots and their data provenance | jury, team | EN | P2 | current |
 | [`archive/README.md`](archive/README.md) | superseded material kept for the record (captain's log of 16–24.09, day-1 results) | team | EN | P1 | archive |
+| [`gitbook/`](../gitbook/SUMMARY.md) | the instructions as a GitBook: get the image, run on a bag, read the output, RViz / Foxglove / dashboard, offline stand, dry run, parameters, development, troubleshooting; no numbers (it links here). Published on GitBook.com | jury, engineers, team | EN + RU jury page | P1 | current |
 | [`web/README.md`](../web/README.md) | dashboard, RViz / Foxglove layouts, label tool, headless checks, video recipes | team, jury (demo) | EN | P2 | current |
 
 ### Organizers' material ([`organizers/`](organizers/))
