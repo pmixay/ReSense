@@ -4,14 +4,36 @@
 > range, latency, FPS, hard cases and how the quality changed (spec §5 "Эксперименты").
 > **Audience:** jury, team · **Owner:** P3, P4 (content), P1 (structure, timing) · **Language:** EN,
 > summary RU
-> **Last verified:** 2026-09-26 night: complete fresh gate on all caches, frozen `_ride_p3d`
-> detector, original-bag node checks and the preregistered P4 study · **Status:** current
+> **Last verified:** 2026-09-28: complete cache intake and strict full-data replay of the sealed
+> 27.09 detector, plus P4 candidate screens and paired placement checks · **Status:** current
 
-**Кратко.** Заморозка детектора подтверждена полным прогоном: все 183 значения эталона совпали,
-включая поездку и набор F. Исправленная ROS-нода проходит холодный и тёплый запуск исходного бэга;
-детектор не менялся. Цель 75/100 пока не подтверждена: краевые объекты обнаруживаются лишь с
-5–10 м, а новый синтетический эксперимент выявляет много пропусков. Текущая переоценка:
-[SCORECARD](SCORECARD.md#freeze-review-26-september-night).
+**Кратко.** Детектор остался замороженным. В полном прогоне P4 все **208/208 контролируемых
+значений** совпали с базой 27.09, включая поездку и набор F. Три зарегистрированных варианта
+детектора не улучшили свои целевые объекты и отклонены. Архив поездки проверен по опубликованным
+размеру и SHA-256; все 11 271 кадр доступны в кэше. P4 добавляет воспроизводимость, но не новую
+дальность обнаружения, реальную проверку препятствий или подтверждённые баллы. Последняя свежая
+независимая оценка остаётся 66.5/100 ([SCORECARD](SCORECARD.md)).
+
+## P4 full-data completion — 28 September
+
+The six original recordings, organizer set O and all 221 splits of `new_data` were restored and
+validated. The [strict gate](evidence/results/p4_full_data_2026-09-28/regression_gate.json)
+passes against the 27.09 quality baseline with 208 enforced values unchanged, no waivers and no
+missing or weaker metrics. The ride has 130 alarm frames, 32 track-ID events and 31 STOP episodes;
+the five empty recordings have 40 alarm frames, 11 events and 13 episodes. These event counts use
+the detector's sequence/track identity; episodes and repeated frames are reported separately.
+
+On set O, 8/8 in-envelope objects were detected over 411/801 visible object-frames. There were 6
+false STOP frames on the outside box, no background alarms, and 19/505 target-envelope
+`clear_distance` overclaims. Set O has been previously inspected. A/B/C changed no scored
+per-frame detector output or target metric, so all three were rejected before full-gate retesting.
+The six ride false-alarm contact sheets were reviewed; because the detected clusters lack
+independent identities, their causes remain uncertain. Startup, stress, offsets, per-object scores,
+paired set F and set S results, source/cache checksums and compressed per-frame outputs are in the
+[P4 evidence packet](evidence/results/p4_full_data_2026-09-28/README.md).
+
+P4 made no detector change, and its evidence has not been independently rescored. The latest
+independent score remains **66.5/100** on `806b6c4`; this data refresh is not a score increase.
 
 ## Freeze validation — 26 September night
 

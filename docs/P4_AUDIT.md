@@ -3,9 +3,8 @@
 > **Purpose:** P4's audit of synthetic placement, evaluation accounting and the organizers'
 > synthetic-obstacle recording, with the corrections made and what they change.
 > **Audience:** team, jury (spec §8.7) · **Owner:** P4 · **Language:** EN
-> **Last verified:** 2026-09-26 evening against the P3d detector (`fa18832`'s code; the branch head carries only
-> docs and tests since), the ride and set F reproduced on a second machine ·
-> **Status:** historical audit, the P3d addendum, and the completion of 26.09 evening on top
+> **Last verified:** 2026-09-28 against the sealed 27.09 detector (`43a0e7d`), with all organizer caches restored and the full gate rerun ·
+> **Status:** dated audit history below; current full-data completion is recorded first
 
 Initial audit base: `a81108f` (v0.6.3, 23.09); integrated on `4cd32d6` (`main`, 24.09); merged as
 `4b5786b` (PR #9, 24.09).
@@ -13,6 +12,98 @@ Initial audit base: `a81108f` (v0.6.3, 23.09); integrated on `4cd32d6` (`main`, 
 **Later quality cycle:** [current results and open criteria](QUALITY_CYCLE_2026-09-26.md).
 Actual alarm-target tracing supersedes the near-sensor scene labels as the diagnosis of false
 targets. A1 and D1 were rejected by their registered checks; M2 is a partial monitoring candidate.
+
+## Full-data P4 completion — 28 September
+
+All available organizer data are now present and verified outside Git: the six original recordings
+(2,488 frames), set O (1,510 frames), and all 221 `new_data` ride splits (11,271 frames). The ride
+archive's published size and SHA-256 match the streamed bytes; every compressed cache frame and
+timestamp manifest was read and checked. The recording's 55 intervals over 0.15 s and 7.099 s
+maximum gap are preserved as recorded. Intake details, source URLs, cache paths and checksums are
+in [`p4_data_intake_2026-09-28.json`](evidence/results/p4_data_intake_2026-09-28.json); raw bags,
+archive and frame caches stay outside Git.
+
+The frozen detector at `43a0e7d` was replayed with the default config against the independent
+27.09 baseline. The [strict full gate](evidence/results/p4_full_data_2026-09-28/regression_gate.json)
+passes with **208/208 enforced values unchanged**, no missing/worse/better rows, no waivers and no
+unapproved regressions. The eight ride chunks contain 130 alarm frames, 32 track events and 31
+STOP episodes. Five empty recordings contain 40 alarm frames, 11 track events and 13 episodes.
+The full evidence packet includes compressed per-frame outputs and hashes, all run summaries,
+the effective config, and commands in
+[`p4_full_data_2026-09-28/`](evidence/results/p4_full_data_2026-09-28/README.md).
+
+The fresh set O score is **411/801 visible object-frames for in-envelope objects**, with 8/8 in-envelope
+objects detected, 6 false STOP frames on the outside large box and no background false STOPs.
+Object #4 has 18/83 STOP frames, first at 35.0 m; #6 has 7/125, first at 18.3 m; #8 has 56/124,
+first at 111.4 m and held from 123.6 m. The empty suffix (frames 804–1509) has no STOPs; it is
+previously inspected, not unseen validation. `clear_distance` overclaims remain 19/505 target
+frames and 154/801 intent frames (123 GO-judge frames).
+
+The three independently registered current hypotheses were all rejected at the set O screen:
+
+| Candidate | Change | Target result, before → after | Decision |
+|---|---|---|---|
+| A | `tracking.near_escalate_distance` 35 → 40 m | object #8: 56/124 STOP frames, first STOP 111.4 m, held from 123.6 m → identical | Rejected: no target gain |
+| B | `tracking.near_escalate_voxels` 10 → 8 | object #4: 18/83, first STOP 35.0 m, held from 38.7 m → identical | Rejected: no target gain |
+| C | `cluster.wall_keep_gauge_voxels` 10 → 8 | object #6: 7/125, first STOP 18.3 m, held from 10.3 m → identical | Rejected: no target gain |
+
+All 1,510 candidate frames are identical to the frozen gate after excluding wall-clock timing,
+the timing-only health field and a filename suffix; all detection, warning, track, decision,
+health and clear-distance values match. Outside-object alarms and clear-distance overclaims did
+not change. The registered later stages were not run because none passed its target condition.
+The full protocol and results are in
+[`p4_candidate_screen_protocol_2026-09-28.json`](evidence/results/p4_candidate_screen_protocol_2026-09-28.json)
+and [`p4_candidate_screen_results_2026-09-28.json`](evidence/results/p4_candidate_screen_results_2026-09-28.json).
+The older short-signature relaxation remains rejected as documented below.
+
+The current ride false-alarm inventory groups every event by recording piece and track ID, with
+frame intervals, range, detector-reported zone/stage and cause confidence. The midpoint STOP
+clouds for all 32 current ride events were reviewed in the attached contact sheets. Trackside
+tunnel/station structures are visible, but no independent object labels or exact point-support
+trace establish event causes; each cause remains **uncertain**. The five empty recordings and set
+O's outside object are listed separately in
+[`p4_false_alarm_inventory_2026-09-28.json`](evidence/results/p4_false_alarm_inventory_2026-09-28.json).
+
+Startup census, recorded rate, 5 Hz, ±3° mount stress, start offsets 0/10/20/30/40, set O's
+per-object range and clear-distance scores, paired set F straight and curve/edge placement, and
+the paired set S bed/legacy experiment are captured in the packet. They do not establish real
+long-range recall or surveyed placement truth. No detector change passed; P4 establishes complete
+reproducibility and preserves the frozen defaults.
+
+**Score disposition:** the last fresh independent assessment remains **66.5/100** on `806b6c4`
+([scorecard](SCORECARD.md)). This P4 run did not change detector behavior and has not been
+independently rescored, so no new score point is claimed. The current provisional internal
+assessment is carried forward at 66.5/100; this evidence packet does not imply a score increase.
+For this P4 handoff, the internal figure carries forward the latest combined criterion values
+below. It is not a fresh independent regrade; P4 adds zero points because it established
+reproducibility rather than a performance change.
+
+| Criterion | Maximum | Provisional internal | P4 change |
+|---|---:|---:|---:|
+| Functionality | 25 | 16 | 0 |
+| Range | 15 | 7.5 | 0 |
+| Speed | 10 | 8 | 0 |
+| Generalization | 15 | 8 | 0 |
+| Technical quality | 10 | 7.5 | 0 |
+| Ease of launch | 10 | 7.5 | 0 |
+| Team approach | 10 | 8.5 | 0 |
+| Pitch | 5 | 3.5 | 0 |
+| **Total** | **100** | **66.5** | **0** |
+
+The inherited detector and product evidence behind these values is the 28.09 independent report
+([`rejudge_2026-09-28.json`](evidence/results/rejudge_2026-09-28.json)); the P4 replay adds the
+complete-data gate and candidate audit described above. The organizers provide no published
+numerical weights, and this total is only a provisional internal reference.
+
+**Completion checklist:**
+
+- [x] Restore and verify all existing organizer caches; retain authentic timestamp gaps.
+- [x] Run the strict complete gate with the ride and set F straight, with no waivers.
+- [x] Re-run startup, rate/mount, offsets, set O, set F and set S comparisons.
+- [x] Record false alarms with frame, distance and detector-stage details; preserve uncertain causes.
+- [x] Pre-register and decide A/B/C; retain the shipped detector because all three fail their target screen.
+- [x] Preserve historical results and the 66.5/100 independent score; make no unsupported score claim.
+- [ ] Real obstacle validation on the ride and surveyed synthetic placements remain unavailable in the existing organizer data.
 
 ## Detector freeze and P4 completion (26.09 night)
 

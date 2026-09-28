@@ -1,0 +1,172 @@
+{
+  "schema": "resense-p4-setS-paired-v1",
+  "date": "2026-09-28",
+  "detector_commit": "43a0e7d9dc6a8683b1656de7b9d9c9cf601a58f1",
+  "config": "configs/default.yaml",
+  "backgrounds": [
+    "roundT_doubleT",
+    "roundT_pressureGate_roundT",
+    "roundT_squareT_pressureGate_squareT"
+  ],
+  "sampling": {
+    "every": 10,
+    "kinds": [
+      "person",
+      "box0.5",
+      "box1.0",
+      "plank",
+      "trolley"
+    ],
+    "distances_m": [
+      10,
+      250
+    ],
+    "negative_fraction": 0.2,
+    "seed": 1,
+    "per_frame": 1,
+    "rng_protocol": "separate_planning_and_per_frame_rendering_v1"
+  },
+  "geometry_verification": {
+    "sampled_objects": 108,
+    "frame_keys_identical": true,
+    "sample_identity_and_trajectory_identical": true,
+    "normalized_trajectory_sha256": "a250ab116130d80c316f2c5331ba8c651741eecf6fc3297deb0b18725fe02e95",
+    "bed_base_z_differs_from_legacy": 108,
+    "rendered_point_count_differs": 62,
+    "only_intended_fields_excluded_from_geometry_check": [
+      "base_z",
+      "n_points"
+    ]
+  },
+  "results": {
+    "bed": {
+      "objects": 108,
+      "in_gauge": 91,
+      "visible_in_gauge": 67,
+      "visible_hits": 22,
+      "by_class": {
+        "box1.0": {
+          "visible": 14,
+          "hits": 5
+        },
+        "trolley": {
+          "visible": 18,
+          "hits": 9
+        },
+        "box0.5": {
+          "visible": 13,
+          "hits": 0
+        },
+        "person": {
+          "visible": 9,
+          "hits": 8
+        },
+        "plank": {
+          "visible": 13,
+          "hits": 0
+        }
+      },
+      "background_alarm_frames": 3,
+      "background_alarm_ids": 2,
+      "by_background": {
+        "roundT_doubleT": {
+          "frames": 26,
+          "objects": 26,
+          "static_fp_events": 1,
+          "background_alarm_frames": 2
+        },
+        "roundT_pressureGate_roundT": {
+          "frames": 27,
+          "objects": 27,
+          "static_fp_events": 1,
+          "background_alarm_frames": 1
+        },
+        "roundT_squareT_pressureGate_squareT": {
+          "frames": 55,
+          "objects": 55,
+          "static_fp_events": 0,
+          "background_alarm_frames": 0
+        }
+      }
+    },
+    "legacy": {
+      "objects": 108,
+      "in_gauge": 91,
+      "visible_in_gauge": 68,
+      "visible_hits": 31,
+      "by_class": {
+        "box1.0": {
+          "visible": 14,
+          "hits": 5
+        },
+        "trolley": {
+          "visible": 18,
+          "hits": 13
+        },
+        "box0.5": {
+          "visible": 13,
+          "hits": 1
+        },
+        "person": {
+          "visible": 9,
+          "hits": 8
+        },
+        "plank": {
+          "visible": 14,
+          "hits": 4
+        }
+      },
+      "background_alarm_frames": 2,
+      "background_alarm_ids": 2,
+      "by_background": {
+        "roundT_doubleT": {
+          "frames": 26,
+          "objects": 26,
+          "static_fp_events": 1,
+          "background_alarm_frames": 1
+        },
+        "roundT_pressureGate_roundT": {
+          "frames": 27,
+          "objects": 27,
+          "static_fp_events": 0,
+          "background_alarm_frames": 0
+        },
+        "roundT_squareT_pressureGate_squareT": {
+          "frames": 55,
+          "objects": 55,
+          "static_fp_events": 1,
+          "background_alarm_frames": 1
+        }
+      }
+    }
+  },
+  "paired_visible_in_gauge": {
+    "visible_in_gauge_both": 65,
+    "hits_both": 22,
+    "bed_only": 0,
+    "legacy_only": 9,
+    "by_distance_bin": {
+      "0-50": {
+        "visible": 18,
+        "bed_hits": 13,
+        "legacy_hits": 16
+      },
+      "50-100": {
+        "visible": 23,
+        "bed_hits": 9,
+        "legacy_hits": 13
+      },
+      "100-150": {
+        "visible": 15,
+        "bed_hits": 0,
+        "legacy_hits": 2
+      },
+      "150-250": {
+        "visible": 9,
+        "bed_hits": 0,
+        "legacy_hits": 0
+      }
+    }
+  },
+  "interpretation": "Synthetic objects on real backgrounds; placement is not surveyed ground truth. Static repeat-for-confirmation counts are not operational rates."
+}

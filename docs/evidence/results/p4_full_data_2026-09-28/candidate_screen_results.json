@@ -1,0 +1,392 @@
+{
+  "schema": "resense-p4-current-candidate-screen-results-v1",
+  "date": "2026-09-28",
+  "protocol": "docs/evidence/results/p4_candidate_screen_protocol_2026-09-28.json",
+  "reference_commit": "43a0e7d9dc6a8683b1656de7b9d9c9cf601a58f1",
+  "reference_config_sha256": "de5c7fd6dfa74c1e656af6e233efd625e3e552736534e32efa625e5e8ff57f47",
+  "input": "/data/cache/cloud_with_fake_obj, 1510 frames with organizer timestamps",
+  "baseline_per_frame_source": "out/p4/reference/gate/cloud_with_fake_obj.jsonl",
+  "comparison_normalization": [
+    "wall-clock timing_ms",
+    "health.latency_p95_ms",
+    "frame_id source suffix (.npy)"
+  ],
+  "preserved_equal_fields": "Every remaining per-frame detector, decision, detection, warning, health, clear-distance and track field.",
+  "baseline_frames": 1510,
+  "baseline_normalized_behavior_sha256": "7faf4eab0668eb96e4411cc6a2cc3a7e71b48fabbe159f90edef5d5f16aa0956",
+  "reference_seto": {
+    "inside_stop_frames": 411,
+    "inside_visible_frames": 801,
+    "inside_objects_with_stop": 8,
+    "inside_objects": 8,
+    "outside_false_stop_frames": 6,
+    "background_false_stop_frames": 0,
+    "clear_distance_overclaim": {
+      "target": 19,
+      "target_frames": 505,
+      "intent": 154,
+      "intent_frames": 801,
+      "go_judge": 123,
+      "go_judge_in_envelope": 44,
+      "target_by_decision": {
+        "GO": 16,
+        "CAUTION": 1,
+        "STOP": 2
+      }
+    }
+  },
+  "candidates": [
+    {
+      "id": "A",
+      "change": "tracking.near_escalate_distance: 35.0 -> 40.0",
+      "target_object": "big_above",
+      "target_before": {
+        "alarm_frames": 56,
+        "first_alarm_m": 111.4,
+        "alarm_held_from_m": 123.6,
+        "bins": {
+          "0-50": {
+            "alarm": 25,
+            "advisory_only": 0,
+            "visible": 25
+          },
+          "50-100": {
+            "alarm": 25,
+            "advisory_only": 0,
+            "visible": 25
+          },
+          "100-150": {
+            "alarm": 6,
+            "advisory_only": 0,
+            "visible": 25
+          },
+          "150-200": {
+            "alarm": 0,
+            "advisory_only": 0,
+            "visible": 24
+          },
+          "200-300": {
+            "alarm": 0,
+            "advisory_only": 6,
+            "visible": 25
+          }
+        },
+        "missed_intervals": [
+          {
+            "start_frame": 559,
+            "end_frame": 626,
+            "frames": 68,
+            "from_m": 248.2,
+            "to_m": 113.5
+          }
+        ]
+      },
+      "target_after": {
+        "alarm_frames": 56,
+        "first_alarm_m": 111.4,
+        "alarm_held_from_m": 123.6,
+        "bins": {
+          "0-50": {
+            "alarm": 25,
+            "advisory_only": 0,
+            "visible": 25
+          },
+          "50-100": {
+            "alarm": 25,
+            "advisory_only": 0,
+            "visible": 25
+          },
+          "100-150": {
+            "alarm": 6,
+            "advisory_only": 0,
+            "visible": 25
+          },
+          "150-200": {
+            "alarm": 0,
+            "advisory_only": 0,
+            "visible": 24
+          },
+          "200-300": {
+            "alarm": 0,
+            "advisory_only": 6,
+            "visible": 25
+          }
+        },
+        "missed_intervals": [
+          {
+            "start_frame": 559,
+            "end_frame": 626,
+            "frames": 68,
+            "from_m": 248.2,
+            "to_m": 113.5
+          }
+        ]
+      },
+      "target_improved": false,
+      "outside_false_stop_frames_before": 6,
+      "outside_false_stop_frames_after": 6,
+      "background_false_stop_frames_before": 0,
+      "background_false_stop_frames_after": 0,
+      "clear_distance_overclaim_totals_unchanged": true,
+      "all_1510_per_frame_behavior_records_identical": true,
+      "normalized_behavior_sha256": "7faf4eab0668eb96e4411cc6a2cc3a7e71b48fabbe159f90edef5d5f16aa0956",
+      "baseline_jsonl_sha256": "684c6829c36b63d37e0d3028071031a6a6c6a3fb9ab89ff8359fd3166b49ec95",
+      "candidate_jsonl_sha256": "92480f4cfe8350406b6e739907f197d8e9477cf19bf6cbd124887084650275af",
+      "candidate_effective_config_sha256": "b1b9f0438a1941ec0104fd78dbee3d97a7d94d80a214459f1b34bbc258702c0f",
+      "stage_1_decision": "reject; no target improvement",
+      "later_acceptance_stages": "not run because the pre-registered stage-1 target condition failed"
+    },
+    {
+      "id": "B",
+      "change": "tracking.near_escalate_voxels: 10 -> 8",
+      "target_object": "small_edge_inside",
+      "target_before": {
+        "alarm_frames": 18,
+        "first_alarm_m": 35.0,
+        "alarm_held_from_m": 38.7,
+        "bins": {
+          "0-50": {
+            "alarm": 18,
+            "advisory_only": 7,
+            "visible": 26
+          },
+          "50-100": {
+            "alarm": 0,
+            "advisory_only": 0,
+            "visible": 27
+          },
+          "100-150": {
+            "alarm": 0,
+            "advisory_only": 0,
+            "visible": 27
+          },
+          "150-200": {
+            "alarm": 0,
+            "advisory_only": 0,
+            "visible": 3
+          }
+        },
+        "missed_intervals": [
+          {
+            "start_frame": 396,
+            "end_frame": 399,
+            "frames": 4,
+            "from_m": 154.7,
+            "to_m": 149.2
+          },
+          {
+            "start_frame": 401,
+            "end_frame": 461,
+            "frames": 61,
+            "from_m": 145.8,
+            "to_m": 36.8
+          }
+        ]
+      },
+      "target_after": {
+        "alarm_frames": 18,
+        "first_alarm_m": 35.0,
+        "alarm_held_from_m": 38.7,
+        "bins": {
+          "0-50": {
+            "alarm": 18,
+            "advisory_only": 7,
+            "visible": 26
+          },
+          "50-100": {
+            "alarm": 0,
+            "advisory_only": 0,
+            "visible": 27
+          },
+          "100-150": {
+            "alarm": 0,
+            "advisory_only": 0,
+            "visible": 27
+          },
+          "150-200": {
+            "alarm": 0,
+            "advisory_only": 0,
+            "visible": 3
+          }
+        },
+        "missed_intervals": [
+          {
+            "start_frame": 396,
+            "end_frame": 399,
+            "frames": 4,
+            "from_m": 154.7,
+            "to_m": 149.2
+          },
+          {
+            "start_frame": 401,
+            "end_frame": 461,
+            "frames": 61,
+            "from_m": 145.8,
+            "to_m": 36.8
+          }
+        ]
+      },
+      "target_improved": false,
+      "outside_false_stop_frames_before": 6,
+      "outside_false_stop_frames_after": 6,
+      "background_false_stop_frames_before": 0,
+      "background_false_stop_frames_after": 0,
+      "clear_distance_overclaim_totals_unchanged": true,
+      "all_1510_per_frame_behavior_records_identical": true,
+      "normalized_behavior_sha256": "7faf4eab0668eb96e4411cc6a2cc3a7e71b48fabbe159f90edef5d5f16aa0956",
+      "baseline_jsonl_sha256": "684c6829c36b63d37e0d3028071031a6a6c6a3fb9ab89ff8359fd3166b49ec95",
+      "candidate_jsonl_sha256": "5e4d777e580794bbcd8a4e95df3ef8923e2881440e94a5b2c79d57bed6b252f1",
+      "candidate_effective_config_sha256": "f1bc7b50b91e0de439bd6418a6888d1587f2d385f7f0a0f757b320304acc2eac",
+      "stage_1_decision": "reject; no target improvement",
+      "later_acceptance_stages": "not run because the pre-registered stage-1 target condition failed"
+    },
+    {
+      "id": "C",
+      "change": "cluster.wall_keep_gauge_voxels: 10 -> 8",
+      "target_object": "big_edge_inside",
+      "target_before": {
+        "alarm_frames": 7,
+        "first_alarm_m": 18.3,
+        "alarm_held_from_m": 10.3,
+        "bins": {
+          "0-50": {
+            "alarm": 7,
+            "advisory_only": 1,
+            "visible": 25
+          },
+          "50-100": {
+            "alarm": 0,
+            "advisory_only": 0,
+            "visible": 26
+          },
+          "100-150": {
+            "alarm": 0,
+            "advisory_only": 0,
+            "visible": 26
+          },
+          "150-200": {
+            "alarm": 0,
+            "advisory_only": 0,
+            "visible": 26
+          },
+          "200-300": {
+            "alarm": 0,
+            "advisory_only": 0,
+            "visible": 22
+          }
+        },
+        "missed_intervals": [
+          {
+            "start_frame": 454,
+            "end_frame": 456,
+            "frames": 3,
+            "from_m": 248.6,
+            "to_m": 244.8
+          },
+          {
+            "start_frame": 458,
+            "end_frame": 463,
+            "frames": 6,
+            "from_m": 241.2,
+            "to_m": 231.9
+          },
+          {
+            "start_frame": 468,
+            "end_frame": 573,
+            "frames": 106,
+            "from_m": 222.6,
+            "to_m": 20.2
+          },
+          {
+            "start_frame": 575,
+            "end_frame": 577,
+            "frames": 3,
+            "from_m": 16.3,
+            "to_m": 12.3
+          }
+        ]
+      },
+      "target_after": {
+        "alarm_frames": 7,
+        "first_alarm_m": 18.3,
+        "alarm_held_from_m": 10.3,
+        "bins": {
+          "0-50": {
+            "alarm": 7,
+            "advisory_only": 1,
+            "visible": 25
+          },
+          "50-100": {
+            "alarm": 0,
+            "advisory_only": 0,
+            "visible": 26
+          },
+          "100-150": {
+            "alarm": 0,
+            "advisory_only": 0,
+            "visible": 26
+          },
+          "150-200": {
+            "alarm": 0,
+            "advisory_only": 0,
+            "visible": 26
+          },
+          "200-300": {
+            "alarm": 0,
+            "advisory_only": 0,
+            "visible": 22
+          }
+        },
+        "missed_intervals": [
+          {
+            "start_frame": 454,
+            "end_frame": 456,
+            "frames": 3,
+            "from_m": 248.6,
+            "to_m": 244.8
+          },
+          {
+            "start_frame": 458,
+            "end_frame": 463,
+            "frames": 6,
+            "from_m": 241.2,
+            "to_m": 231.9
+          },
+          {
+            "start_frame": 468,
+            "end_frame": 573,
+            "frames": 106,
+            "from_m": 222.6,
+            "to_m": 20.2
+          },
+          {
+            "start_frame": 575,
+            "end_frame": 577,
+            "frames": 3,
+            "from_m": 16.3,
+            "to_m": 12.3
+          }
+        ]
+      },
+      "target_improved": false,
+      "outside_false_stop_frames_before": 6,
+      "outside_false_stop_frames_after": 6,
+      "background_false_stop_frames_before": 0,
+      "background_false_stop_frames_after": 0,
+      "clear_distance_overclaim_totals_unchanged": true,
+      "all_1510_per_frame_behavior_records_identical": true,
+      "normalized_behavior_sha256": "7faf4eab0668eb96e4411cc6a2cc3a7e71b48fabbe159f90edef5d5f16aa0956",
+      "baseline_jsonl_sha256": "684c6829c36b63d37e0d3028071031a6a6c6a3fb9ab89ff8359fd3166b49ec95",
+      "candidate_jsonl_sha256": "c13645d06f7c48800d1459c85b3d19fe8a17910aaffec7fac414f2e80d22e452",
+      "candidate_effective_config_sha256": "7a3a4aa4139ec12fedbc2b61900c98da9875056ef19f25a6a955c97b23e1fcf2",
+      "stage_1_decision": "reject; no target improvement",
+      "later_acceptance_stages": "not run because the pre-registered stage-1 target condition failed"
+    }
+  ],
+  "decision": "A, B and C rejected at stage 1; retain frozen defaults and historical baseline. No full-gate or stress runs needed for a screen that failed its registered target criterion.",
+  "limitations": [
+    "Set O was previously inspected synthetic-obstacle data, not unseen validation.",
+    "The ride contains no real obstacles; synthetic placements are not surveyed ground truth.",
+    "This P4 work establishes reproducibility and candidate decisions, not a score increase."
+  ]
+}

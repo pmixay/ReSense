@@ -30,6 +30,13 @@ from a change in the detector.
 | Pitch |5|3.5|3.5|3.5|4|
 | **Total** |**100**|**72.5**|**62.5**|**66.5**|72|
 
+**P4 data refresh (28 September): no score change.** The frozen detector was replayed against all
+available organizer caches; the strict gate passed with 208/208 enforced values unchanged, and
+all three registered P4 candidates failed their target screen. This adds reproducibility evidence
+but no measured detector or product improvement. The **66.5/100 remains the last independent
+score** on `806b6c4`; the P4 run has not been independently rescored. The handoff's provisional
+internal carry-forward assessment is documented in [`P4_AUDIT.md`](P4_AUDIT.md).
+
 Reports: [both judges](evidence/results/rejudge_2026-09-28.json). What they found:
 
 - **Speed (8.3, up):** the node's input path is real and byte-identical (453 of 453 frames, twice

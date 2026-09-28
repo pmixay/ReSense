@@ -158,8 +158,12 @@ detector's record [`docs/QUALITY_CYCLE_2026-09-27.md`](docs/QUALITY_CYCLE_2026-0
 outputs of the sealed detector on the raw recordings with a recompute script,
 [`docs/evidence/judge_outputs_2026-09-28/`](docs/evidence/judge_outputs_2026-09-28/README.md); the
 node's timing, [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) §3d and
-[`docs/evidence/node_input_2026-09-28/`](docs/evidence/node_input_2026-09-28/README.md). (The
-"Current results" table of EXPERIMENTS still describes the P3d detector of 26.09.)
+[`docs/evidence/node_input_2026-09-28/`](docs/evidence/node_input_2026-09-28/README.md). The
+complete P4 frame-cache replay of the frozen detector passes all 208 enforced comparisons; its
+per-object, stress, placement and intake records are in
+[`docs/evidence/results/p4_full_data_2026-09-28/`](docs/evidence/results/p4_full_data_2026-09-28/README.md).
+The table below keeps the raw-recording figures where they differ from cache replay, and marks
+both sources.
 
 | metric | value | kind |
 |---|---|---|
