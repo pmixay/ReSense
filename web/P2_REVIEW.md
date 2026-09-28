@@ -2,7 +2,7 @@
 
 > **Owner:** P2 · **Base:** `main` at `8f23284`, including the accepted 27.09 detector
 > **Published branch:** `claude/amazing-fermi-t67v8g`
-> **Status:** deck and video sources corrected after the 28.09 re-judgement (below); the PPTX/PDF/MP4 need a rebuild; on-device demo and private pitch need team inputs
+> **Status:** public PPTX/PDF/MP4/SRT rebuilt from the corrected sources; on-device demo and private pitch need team inputs
 
 The previously reviewed P2 work was on `f6b156b`. Its remote Claude branch has since been
 deleted. Current `main` contains a newer detector (`352ca13`, measured at `d572807`), so the
@@ -46,10 +46,14 @@ Every finding about the deck, the video and `docs/PRESENTATION.md` is fixed in t
 * `docs/PRESENTATION.md`: one status, the current numbers with their sources, the build; the
   dated rebuild records moved to its archive section.
 
-The committed PPTX, PDF and MP4 are still the morning build of 28.09 until rebuilt with the
-commands in `docs/PRESENTATION.md` «Сборка» (the hashes in
-[`demo/evidence/p2_criteria_2026-09-28.json`](demo/evidence/p2_criteria_2026-09-28.json) are that
-morning build's).
+The public PPTX, PDF, MP4 and SRT were rebuilt on 28.09 with the commands in
+`docs/PRESENTATION.md` «Сборка»; their hashes in
+[`demo/evidence/p2_criteria_2026-09-28.json`](demo/evidence/p2_criteria_2026-09-28.json)
+now describe the corrected binaries. PDF text and slide 13 were visually inspected: 16 pages,
+750+ tests, 123/126 rail-object STOP through ROS, 9 outside-box STOP frames and named-machine
+latencies. `make_overview_video.py --check` passes; 83 P2 tests passed with no skips; the video
+is 170 s, 1920×1080 with corrected captions. The core suite in this checkout passed 725 tests,
+skipped 28 native-kernel cases (kernels not built here), and deselected one missing-data case.
 
 ## Corrections from the full client audit
 
