@@ -1,0 +1,76 @@
+{
+ "what": "The review's side-symmetry check: a person (set F catalogue, 0.4 x 0.5 x 1.7 m) injected into 6 ride pieces (files 46,68,98,140,168,172) with its centre 1.05 m from the rail axis on either side (about 0.25 m inside the rails' envelope), from 90 m, legacy placement on the bed; far_range_eval.py, seed 0. Frames with object returns; STOP = matched detection.",
+ "code": "65c5a5b",
+ "first_version_by_judge_B": "gauge.reference 2 (8b74cd0), right side: 24/91 at 30-60 m, 55/68 at 0-30 m; reference 0: 91/91 and 67/68; left side unchanged",
+ "command": "python scripts/far_range_eval.py --cache <cache>/new_data --config <cfg with gauge.reference R> --files 46,68,98,140,168,172 --kinds person --start 90 --frames 60 --lateral=L:L --seed 0 --placement-mode legacy --place bed --speeds docs/extended_dataset_intake.json",
+ "results": {
+  "reference_3_lateral_-1.05": {
+   "stop_frames_by_bin": {
+    "0-30": [
+     67,
+     67
+    ],
+    "30-60": [
+     92,
+     92
+    ],
+    "60-90": [
+     66,
+     90
+    ]
+   },
+   "false_detections": 0
+  },
+  "reference_3_lateral_1.05": {
+   "stop_frames_by_bin": {
+    "0-30": [
+     67,
+     67
+    ],
+    "30-60": [
+     92,
+     92
+    ],
+    "60-90": [
+     69,
+     90
+    ]
+   },
+   "false_detections": 0
+  },
+  "reference_0_lateral_-1.05": {
+   "stop_frames_by_bin": {
+    "0-30": [
+     67,
+     67
+    ],
+    "30-60": [
+     92,
+     92
+    ],
+    "60-90": [
+     66,
+     90
+    ]
+   },
+   "false_detections": 0
+  },
+  "reference_0_lateral_1.05": {
+   "stop_frames_by_bin": {
+    "0-30": [
+     67,
+     67
+    ],
+    "30-60": [
+     92,
+     92
+    ],
+    "60-90": [
+     69,
+     90
+    ]
+   },
+   "false_detections": 0
+  }
+ }
+}

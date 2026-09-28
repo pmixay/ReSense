@@ -58,7 +58,56 @@ jobs:
       - run: ./scripts/sync_params.sh --check
       - name: frozen detector source and validation evidence
         run: python3 scripts/detector_freeze.py verify
+  dataset:
+    # The two original organizer bags of the cold-disk check (docker job), kept in the Actions
+    # cache so that Google Drive is not asked for the 3.7 GB archive on every push: its download
+    # quota refused the runners on 27.09 ("Quota exceeded", runs 36313587896 and 36313174302).
+    # The key is the hash of the pinned checksums (scripts/cold_bags.sha256): a hit is checked
+    # without downloading (lookup-only); only a miss downloads the archive once, unpacks and
+    # verifies the two bags (scripts/fetch_cold_bags.sh) and saves them at once, before and
+    # independently of the docker job's result. Caches are scoped to the branch that saved them
+    # and readable from every branch when saved on main (the default branch), so main's first
+    # run seeds every branch; dataset-cache.yml refreshes it on a schedule, before GitHub's
+    # 7-day eviction of unused caches.
+    runs-on: ubuntu-22.04
+    outputs:
+      wanted: ${{ steps.scope.outputs.wanted }}
+      available: ${{ steps.lookup.outputs.cache-hit == 'true' || steps.save.outcome == 'success' }}
+      key: ${{ steps.scope.outputs.key }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: which branches run the cold-disk check
+        id: scope
+        run: |
+          case "$GITHUB_REF" in
+            refs/heads/claude/nifty-pascal-lzgl78|refs/heads/claude/p1-p2-supported-playback-20260927|refs/heads/main) echo "wanted=true" >> "$GITHUB_OUTPUT" ;;
+            *) echo "wanted=false" >> "$GITHUB_OUTPUT" ;;
+          esac
+          echo "key=resense-cold-bags-${{ hashFiles('scripts/cold_bags.sha256', 'docs/evidence/bag_metadata/doubleT_obstacle_metadata.yaml', 'docs/evidence/bag_metadata/roundT_doubleT_metadata.yaml') }}" >> "$GITHUB_OUTPUT"
+      - name: cached bags present? (lookup only, nothing is downloaded)
+        id: lookup
+        if: ${{ steps.scope.outputs.wanted == 'true' }}
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/resense-cold-bags
+          key: ${{ steps.scope.outputs.key }}
+          lookup-only: true
+      - name: cache miss only — download the archive once, unpack and verify the two bags
+        id: fetch
+        if: ${{ steps.scope.outputs.wanted == 'true' && steps.lookup.outputs.cache-hit != 'true' }}
+        continue-on-error: true      # a Google Drive refusal is reported by the docker job as "not run"
+        run: |
+          pip install --quiet "zstandard>=0.22"
+          scripts/fetch_cold_bags.sh ~/resense-cold-bags
+      - name: save the verified bags (their own cache entry, before the docker job runs)
+        id: save
+        if: ${{ steps.fetch.outcome == 'success' }}
+        uses: actions/cache/save@v4
+        with:
+          path: ~/resense-cold-bags
+          key: ${{ steps.scope.outputs.key }}
   docker:
+    needs: dataset
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -81,6 +130,10 @@ jobs:
           mkdir -p /tmp/bags && chmod 777 /tmp/bags
           docker run --rm -v /tmp/bags:/bags resense:ci bash -lc "python3 scripts/make_smoke_bag.py /bags/smoke_bag && python3 scripts/make_smoke_bag.py /bags/smoke_bag2 --topic /sensing/lidar/hesai128/pointcloud --frame-id lidar_livox --distance 45"
           IMAGE=resense:ci PLAYER_USER=1000:1000 scripts/console_test.sh /tmp/bags/smoke_bag /tmp/bags/smoke_bag2
+      - name: the one-command wrapper for the jury (scripts/play_bag.sh) prints the decision changes, STOP included
+        run: |
+          IMAGE=resense:ci PLAYER_USER=1000:1000 scripts/play_bag.sh /tmp/bags/smoke_bag | tee out_play_bag.txt
+          grep -q "STOP" out_play_bag.txt
       - name: the jury's console with stock Fast DDS — a uid-1000 player and listener without our profile, shared memory on
         # the organizers play from a host console with Humble's default rmw_fastrtps_cpp (no XML profile: shared
         # memory + UDPv4). PLAYER_DDS=stock unsets the image's FASTRTPS_DEFAULT_PROFILES_FILE in the player and in a
@@ -108,42 +161,11 @@ jobs:
           IMAGE=resense:ci PLAYER_USER=1000:1000 NODE_DDS=shm OUT=out/console_test_shm_udp \
             scripts/console_test.sh /tmp/bags/smoke_bag /tmp/bags/smoke_bag2
       - name: remote Foxglove viewer — second container, isolated link and pause/recovery
-        if: ${{ github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/main' }}
+        if: ${{ github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/p1-p2-supported-playback-20260927' || github.ref == 'refs/heads/main' }}
         # Run before the image is round-tripped to the runtime-only archive: the viewer probe needs
         # the WITH_TOOLS=1 build's `websockets` client. This models a second device on an isolated
         # network and checks outage/recovery without requiring demo hardware.
         run: IMAGE=resense:ci scripts/p2_viewer_test.sh
-      # The organizers' Датасет.zip (3.7 GB) comes from Google Drive, which stops serving a file
-      # that is downloaded too often (27.09 on main: its "Quota exceeded … up to 24 hours" page
-      # instead of the archive). The archive is cached under its sha256, which
-      # p1_cold_bag_test.sh verifies, and is saved after the first download even if a later
-      # check fails, so Drive is asked once, not on every push.
-      - name: the organizers' dataset archive from the Actions cache
-        id: dataset
-        if: ${{ github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/main' }}
-        uses: actions/cache/restore@v4
-        with:
-          path: ~/.cache/resense-dataset/dataset.zip
-          key: resense-dataset-zip-e23166801794cdeb2dcd77a3cc8b40a906b1d9cefab6f26739e368234e9168be
-      - name: original bag cold-start regression — working branch and main
-        if: ${{ github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/main' }}
-        timeout-minutes: 15   # 4 min when it passes, plus up to 3 min waiting out a Google Drive page
-        run: IMAGE=resense:ci DATASET_ZIP="$HOME/.cache/resense-dataset/dataset.zip" scripts/p1_cold_bag_test.sh
-      - name: cache the verified dataset archive
-        # the script leaves the file there only once its sha256 matched; no file, no cache (a warning)
-        if: ${{ !cancelled() && steps.dataset.outcome == 'success' && steps.dataset.outputs.cache-hit != 'true' }}
-        uses: actions/cache/save@v4
-        with:
-          path: ~/.cache/resense-dataset/dataset.zip
-          key: ${{ steps.dataset.outputs.cache-primary-key }}
-      - name: retain original-bag cold-start evidence
-        if: ${{ always() && (github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/main') }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: p1-cold-dry-run-${{ github.sha }}
-          path: out/p1-cold-run/
-          if-no-files-found: ignore
-          retention-days: 30
       # ---- offline delivery: the test machine has no internet (organizers, 25.09,
       # docs/organizers/answers.md section 7), so the jury gets the image as an archive and runs
       # `docker load`, then the node with no internet. The three steps below prove that chain.
@@ -208,6 +230,37 @@ jobs:
           docker run --rm --network resense-offline --user 1000:1000 -e HOME=/tmp -v /tmp/offline_bags:/data:ro resense:latest bash -c "ros2 bag play /data/smoke_bag --delay 3 --disable-keyboard-controls && sleep 5 && ros2 bag play /data/smoke_bag2 --delay 3 --disable-keyboard-controls"
           sleep 4
           python3 scripts/check_dry_run.py /tmp/offline_out/status.jsonl --require-freshness --expect-obstacle --min-frames 20 --max-p95-latency 1000 --max-dropped 100000 --expect-inputs 2
+      # The two original bags of the cold-disk check come from the Actions cache that the job
+      # "dataset" above fills: the verified bags themselves, not the 3.7 GB archive, so a hit needs
+      # no download from Google Drive and no unpacking. Without them (Google Drive refused the
+      # one download it gets on a miss) the check cannot run: it is reported as not run, in the
+      # job summary and as a warning, never as passed.
+      - name: the two original bags from the Actions cache (job "dataset")
+        id: bags
+        if: ${{ needs.dataset.outputs.available == 'true' }}
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/resense-cold-bags
+          key: ${{ needs.dataset.outputs.key }}
+          fail-on-cache-miss: true
+      - name: original bag cold-start regression — working branch and main
+        if: ${{ needs.dataset.outputs.available == 'true' }}
+        timeout-minutes: 15
+        run: IMAGE=resense:ci DATASET_DIR="$HOME/resense-cold-bags" NO_DOWNLOAD=1 scripts/p1_cold_bag_test.sh
+      - name: original bag cold-start regression not run (no verified bags)
+        if: ${{ needs.dataset.outputs.wanted == 'true' && needs.dataset.outputs.available != 'true' }}
+        run: |
+          msg="original-bag cold-start regression NOT RUN: the verified bags are not cached and Google Drive refused the download (job dataset)"
+          echo "::warning::$msg"
+          echo "$msg" >> "$GITHUB_STEP_SUMMARY"
+      - name: retain original-bag cold-start evidence
+        if: ${{ always() && (github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/p1-p2-supported-playback-20260927' || github.ref == 'refs/heads/main') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: p1-cold-dry-run-${{ github.sha }}
+          path: out/p1-cold-run/
+          if-no-files-found: ignore
+          retention-days: 30
   offline-build:
     # The release archive on a machine with no internet (docs/ARCHITECTURE.md "Deployment without
     # internet"). The archive is made as for the release (scripts/export_image.sh: runtime image,

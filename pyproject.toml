@@ -36,6 +36,10 @@ resense = "resense.cli:main"
 [tool.setuptools.packages.find]
 include = ["resense*"]
 
+[tool.setuptools.package-data]
+# the learned track opinion (tracking.doubt_model), shipped with the package
+resense = ["models/*.json"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 

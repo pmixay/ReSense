@@ -3,8 +3,82 @@
 > **Purpose:** the independent judgements of ReSense against the eight criteria of spec §8: score
 > per criterion, the evidence behind it, the risks on the hidden data and the fastest points to gain.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, summary RU
-> **Last independent judgement:** 2026-09-26 night, freshness work and failed combined candidate acceptance.
+> **Last independent judgement:** 2026-09-27, the quality cycle (rounds 1–3 below).
 > **Status:** current review below; earlier numbered sections are dated records.
+
+## Quality-cycle review, round 3: 27 September (final detector `352ca13`, docs `0e5e251`)
+
+**Combined 72/100** (judge A 75, judge B 70; round 2: 72, round 1: 67). The target of 75
+combined is not met; judge A reaches it.
+
+| Criterion | Maximum | Judge A | Judge B | Combined |
+|---|---:|---:|---:|---:|
+| Functionality |25|17|16|16.5|
+| Range |15|10|9|9.5|
+| Speed |10|7.5|8|7.5|
+| Generalization |15|10.5|8|9|
+| Technical quality |10|8.5|7.5|8|
+| Ease of launch |10|8.5|8.5|8.5|
+| Team approach |10|9|9|9|
+| Pitch |5|4|4|4|
+| **Total** |**100**|**75**|**70**|**72**|
+
+Reports: [both judges](evidence/results/rejudge_quality_cycle_2026-09-27_round3.json). Both
+reproduced the screen, the placement runs (byte-identical) and the benchmarks, and recomputed the
+opinion's cross-fitted held-out result (43 → 37) from its per-frame outputs; judge A credits the
+measured held-out figure, the placement ablation (722 from the rails alone) and the launch wrapper.
+Judge B marks down generalization and technical quality: `floating_free_max_dy` 1.2 sits in a
+window bracketed by two set O objects (undisclosed until then), the opinion's and the rules'
+negatives come from the recordings the rules were tuned on, the tracker's interacting mechanisms
+keep growing, and several shipped-off options remain. Judge A found an undisclosed latency stretch
+on the ride (p95 111 ms at frames 5700–5900, predating the cycle). The disclosures are now in the
+record; the latency stretch, a broader range figure and pruning are open.
+
+## Quality-cycle review, round 2: 27 September (reviewed detector `65c5a5b`, docs `84c76b1`)
+
+**Combined 72/100** (judge A 72.5, judge B 73; round 1: 67). The target of 75 is not yet met.
+
+| Criterion | Maximum | Judge A | Judge B | Combined |
+|---|---:|---:|---:|---:|
+| Functionality |25|17|17.5|17|
+| Range |15|9|10|9.5|
+| Speed |10|8|7.5|7.5|
+| Generalization |15|9.5|9.5|9.5|
+| Technical quality |10|8|8|8|
+| Ease of launch |10|8.5|8|8|
+| Team approach |10|9|9|9|
+| Pitch |5|3.5|3.5|3.5|
+| **Total** |**100**|**72.5**|**73**|**72**|
+
+Reports: [both judges](evidence/results/rejudge_quality_cycle_2026-09-27_round2.json). Both
+reproduced the screen bit for bit, the union's never-narrower property frame by frame, the
+placement run and the benchmarks. Both found the opinion still withholding over a missed frame at
+a predicted 24.7 m (inside its stated 25 m bound), stale far-evidence comments, and stale README
+status blocks; both ask for a held-out false-alarm figure measured on the shipped detector rather
+than simulated, filled team slides, and a measurement on the 8-core stand.
+
+## Quality-cycle review, round 1: 27 September (first 27.09 version `8b74cd0`)
+
+**Combined 67/100** (judge A 70.5, judge B 65.5): the first version of the
+[27.09 quality cycle](QUALITY_CYCLE_2026-09-27.md), before the review fixes. Same aggregation rule
+(per criterion the mean of the two judges, rounded down to 0.5).
+
+| Criterion | Maximum | Judge A | Judge B | Combined |
+|---|---:|---:|---:|---:|
+| Functionality |25|18|15|16.5|
+| Range |15|8.5|9|8.5|
+| Speed |10|8|7.5|7.5|
+| Generalization |15|8.5|8|8|
+| Technical quality |10|8|7|7.5|
+| Ease of launch |10|8.5|8.5|8.5|
+| Team approach |10|8.5|7.5|8|
+| Pitch |5|2.5|3|2.5|
+| **Total** |**100**|**70.5**|**65.5**|**67**|
+
+Reports: [both judges](evidence/results/rejudge_quality_cycle_2026-09-27_round1.json). Their
+safety findings — the one-sided envelope shift, the far-evidence rule that could hide a track, the
+opinion delaying set O #6 at 28.7 m — and the wrong claims were fixed or corrected in `65c5a5b` and
+the record (its review section lists each finding and its disposition).
 
 ## Freeze review: 26 September night
 

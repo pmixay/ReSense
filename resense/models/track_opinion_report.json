@@ -1,0 +1,754 @@
+{
+ "features": [
+  "distance",
+  "abs_lateral",
+  "is_low",
+  "frac_low",
+  "hits",
+  "lat_std",
+  "lat_jump",
+  "cz_std",
+  "hmax_mean",
+  "hmin_mean",
+  "len_mean",
+  "width_mean",
+  "height_mean",
+  "gauge_frac",
+  "frac_demoted",
+  "frac_column",
+  "frac_beyond",
+  "dist_rough",
+  "hit_fraction"
+ ],
+ "near": 25.0,
+ "excluded": [],
+ "train_rows": {
+  "negative": 205,
+  "positive": 2646,
+  "positive_sequences": 102
+ },
+ "groups": [
+  "doubleT_platform",
+  "new_data:0",
+  "new_data:1",
+  "new_data:2",
+  "new_data:3",
+  "new_data:4",
+  "new_data:5",
+  "new_data:6",
+  "new_data:7",
+  "squareT_platform_squareT_switch"
+ ],
+ "heldout_auc": 0.9745,
+ "export_max_abs_diff": 0.0,
+ "simulation": [
+  {
+   "extra": 10,
+   "sticky": true,
+   "positive_quantile": "max_delayed",
+   "threshold": 0.03,
+   "ride_events": [
+    43,
+    28
+   ],
+   "ride_stop_rows": [
+    159,
+    105
+   ],
+   "empty_events": [
+    13,
+    11
+   ],
+   "synthetic_delayed_rows": 0,
+   "synthetic_delayed_sequences": 0,
+   "test_delayed": []
+  },
+  {
+   "extra": 10,
+   "sticky": true,
+   "positive_quantile": 0.005,
+   "threshold": 0.0579,
+   "ride_events": [
+    43,
+    22
+   ],
+   "ride_stop_rows": [
+    159,
+    83
+   ],
+   "empty_events": [
+    13,
+    10
+   ],
+   "synthetic_delayed_rows": 30,
+   "synthetic_delayed_sequences": 5,
+   "test_delayed": []
+  },
+  {
+   "extra": 10,
+   "sticky": true,
+   "positive_quantile": 0.01,
+   "threshold": 0.1228,
+   "ride_events": [
+    43,
+    19
+   ],
+   "ride_stop_rows": [
+    159,
+    71
+   ],
+   "empty_events": [
+    13,
+    7
+   ],
+   "synthetic_delayed_rows": 40,
+   "synthetic_delayed_sequences": 6,
+   "test_delayed": [
+    [
+     "syn:150:person:p5",
+     11,
+     30.1,
+     0.064
+    ],
+    [
+     "syn:150:person:p5",
+     12,
+     30.1,
+     0.358
+    ],
+    [
+     "syn:150:person:p5",
+     13,
+     30.1,
+     0.294
+    ],
+    [
+     "syn:150:person:p5",
+     14,
+     30.1,
+     0.416
+    ],
+    [
+     "syn:150:person:p5",
+     15,
+     30.1,
+     0.416
+    ],
+    [
+     "syn:150:person:p5",
+     16,
+     30.1,
+     0.416
+    ],
+    [
+     "syn:150:person:p5",
+     17,
+     30.1,
+     0.416
+    ],
+    [
+     "syn:150:person:p5",
+     18,
+     30.1,
+     0.3
+    ],
+    [
+     "syn:150:person:p5",
+     19,
+     30.1,
+     0.346
+    ],
+    [
+     "syn:150:person:p5",
+     20,
+     30.1,
+     0.346
+    ],
+    [
+     "syn:209:person:p7",
+     11,
+     54.9,
+     0.104
+    ],
+    [
+     "syn:209:person:p7",
+     12,
+     53.5,
+     0.484
+    ],
+    [
+     "syn:209:person:p7",
+     13,
+     51.7,
+     0.549
+    ],
+    [
+     "syn:209:person:p7",
+     14,
+     50.4,
+     0.766
+    ],
+    [
+     "syn:209:person:p7",
+     15,
+     48.8,
+     0.781
+    ],
+    [
+     "syn:209:person:p7",
+     16,
+     47.3,
+     0.781
+    ],
+    [
+     "syn:209:person:p7",
+     17,
+     45.9,
+     0.781
+    ],
+    [
+     "syn:209:person:p7",
+     18,
+     44.3,
+     0.58
+    ],
+    [
+     "syn:209:person:p7",
+     19,
+     42.8,
+     0.553
+    ],
+    [
+     "syn:209:person:p7",
+     20,
+     41.2,
+     0.464
+    ]
+   ]
+  },
+  {
+   "extra": 10,
+   "sticky": true,
+   "positive_quantile": 0.02,
+   "threshold": 0.2359,
+   "ride_events": [
+    43,
+    16
+   ],
+   "ride_stop_rows": [
+    159,
+    62
+   ],
+   "empty_events": [
+    13,
+    4
+   ],
+   "synthetic_delayed_rows": 98,
+   "synthetic_delayed_sequences": 12,
+   "test_delayed": [
+    [
+     "cloud_with_fake_obj",
+     627,
+     111.4,
+     0.195
+    ],
+    [
+     "cloud_with_fake_obj",
+     628,
+     109.4,
+     0.481
+    ],
+    [
+     "cloud_with_fake_obj",
+     629,
+     107.4,
+     0.309
+    ],
+    [
+     "cloud_with_fake_obj",
+     630,
+     105.4,
+     0.377
+    ],
+    [
+     "cloud_with_fake_obj",
+     631,
+     103.4,
+     0.54
+    ],
+    [
+     "cloud_with_fake_obj",
+     632,
+     101.4,
+     0.567
+    ],
+    [
+     "cloud_with_fake_obj",
+     633,
+     99.3,
+     0.581
+    ],
+    [
+     "cloud_with_fake_obj",
+     634,
+     97.3,
+     0.581
+    ],
+    [
+     "cloud_with_fake_obj",
+     635,
+     95.3,
+     0.581
+    ],
+    [
+     "cloud_with_fake_obj",
+     636,
+     93.3,
+     0.581
+    ],
+    [
+     "syn:150:person:p5",
+     11,
+     30.1,
+     0.064
+    ],
+    [
+     "syn:150:person:p5",
+     12,
+     30.1,
+     0.358
+    ],
+    [
+     "syn:150:person:p5",
+     13,
+     30.1,
+     0.294
+    ],
+    [
+     "syn:150:person:p5",
+     14,
+     30.1,
+     0.416
+    ],
+    [
+     "syn:150:person:p5",
+     15,
+     30.1,
+     0.416
+    ],
+    [
+     "syn:150:person:p5",
+     16,
+     30.1,
+     0.416
+    ],
+    [
+     "syn:150:person:p5",
+     17,
+     30.1,
+     0.416
+    ],
+    [
+     "syn:150:person:p5",
+     18,
+     30.1,
+     0.3
+    ],
+    [
+     "syn:150:person:p5",
+     19,
+     30.1,
+     0.346
+    ],
+    [
+     "syn:150:person:p5",
+     20,
+     30.1,
+     0.346
+    ],
+    [
+     "syn:209:person:p7",
+     11,
+     54.9,
+     0.104
+    ],
+    [
+     "syn:209:person:p7",
+     12,
+     53.5,
+     0.484
+    ],
+    [
+     "syn:209:person:p7",
+     13,
+     51.7,
+     0.549
+    ],
+    [
+     "syn:209:person:p7",
+     14,
+     50.4,
+     0.766
+    ],
+    [
+     "syn:209:person:p7",
+     15,
+     48.8,
+     0.781
+    ],
+    [
+     "syn:209:person:p7",
+     16,
+     47.3,
+     0.781
+    ],
+    [
+     "syn:209:person:p7",
+     17,
+     45.9,
+     0.781
+    ],
+    [
+     "syn:209:person:p7",
+     18,
+     44.3,
+     0.58
+    ],
+    [
+     "syn:209:person:p7",
+     19,
+     42.8,
+     0.553
+    ],
+    [
+     "syn:209:person:p7",
+     20,
+     41.2,
+     0.464
+    ],
+    [
+     "syn:34:person:p1",
+     11,
+     41.9,
+     0.186
+    ],
+    [
+     "syn:34:person:p1",
+     12,
+     41.9,
+     0.43
+    ],
+    [
+     "syn:34:person:p1",
+     13,
+     41.9,
+     0.436
+    ],
+    [
+     "syn:34:person:p1",
+     14,
+     41.9,
+     0.545
+    ],
+    [
+     "syn:34:person:p1",
+     15,
+     41.9,
+     0.545
+    ],
+    [
+     "syn:34:person:p1",
+     16,
+     41.9,
+     0.545
+    ],
+    [
+     "syn:34:person:p1",
+     17,
+     41.9,
+     0.577
+    ],
+    [
+     "syn:34:person:p1",
+     18,
+     41.9,
+     0.454
+    ],
+    [
+     "syn:34:person:p1",
+     19,
+     41.9,
+     0.414
+    ],
+    [
+     "syn:34:person:p1",
+     20,
+     41.9,
+     0.414
+    ],
+    [
+     "syn:58:person:p2",
+     8,
+     43.1,
+     0.229
+    ],
+    [
+     "syn:58:person:p2",
+     9,
+     43.1,
+     0.087
+    ],
+    [
+     "syn:58:person:p2",
+     10,
+     43.1,
+     0.065
+    ],
+    [
+     "syn:58:person:p2",
+     11,
+     43.1,
+     0.204
+    ],
+    [
+     "syn:58:person:p2",
+     12,
+     43.1,
+     0.65
+    ],
+    [
+     "syn:58:person:p2",
+     13,
+     43.1,
+     0.581
+    ],
+    [
+     "syn:58:person:p2",
+     14,
+     43.1,
+     0.581
+    ],
+    [
+     "syn:58:person:p2",
+     15,
+     43.1,
+     0.559
+    ],
+    [
+     "syn:58:person:p2",
+     16,
+     43.1,
+     0.559
+    ],
+    [
+     "syn:58:person:p2",
+     17,
+     43.1,
+     0.397
+    ]
+   ]
+  },
+  {
+   "extra": 10,
+   "sticky": true,
+   "positive_quantile": "max_delayed_x0.5",
+   "threshold": 0.015,
+   "ride_events": [
+    43,
+    38
+   ],
+   "ride_stop_rows": [
+    159,
+    138
+   ],
+   "empty_events": [
+    13,
+    12
+   ],
+   "synthetic_delayed_rows": 0,
+   "synthetic_delayed_sequences": 0,
+   "test_delayed": []
+  },
+  {
+   "extra": 10,
+   "sticky": true,
+   "positive_quantile": "max_delayed_x0.33",
+   "threshold": 0.0099,
+   "ride_events": [
+    43,
+    39
+   ],
+   "ride_stop_rows": [
+    159,
+    152
+   ],
+   "empty_events": [
+    13,
+    12
+   ],
+   "synthetic_delayed_rows": 0,
+   "synthetic_delayed_sequences": 0,
+   "test_delayed": []
+  },
+  {
+   "extra": 10,
+   "sticky": true,
+   "positive_quantile": "max_delayed_x0.25",
+   "threshold": 0.0075,
+   "ride_events": [
+    43,
+    41
+   ],
+   "ride_stop_rows": [
+    159,
+    154
+   ],
+   "empty_events": [
+    13,
+    13
+   ],
+   "synthetic_delayed_rows": 0,
+   "synthetic_delayed_sequences": 0,
+   "test_delayed": []
+  }
+ ],
+ "importance": {
+  "lat_std": 0.459,
+  "hmax_mean": 0.136,
+  "gauge_frac": 0.105,
+  "len_mean": 0.085,
+  "width_mean": 0.061,
+  "distance": 0.058,
+  "abs_lateral": 0.029,
+  "dist_rough": 0.025,
+  "hmin_mean": 0.01,
+  "lat_jump": 0.009,
+  "height_mean": 0.008,
+  "hits": 0.007,
+  "cz_std": 0.006,
+  "frac_beyond": 0.002,
+  "hit_fraction": 0.001,
+  "frac_demoted": 0.001,
+  "is_low": 0.0,
+  "frac_low": 0.0,
+  "frac_column": 0.0
+ },
+ "trained_on": "the shipped 27.09 detector (65c5a5b + the miss-branch fix) with the opinion pinned off; scripts/track_opinion.py collect / train (the same recipe as before)",
+ "shipped_threshold": {
+  "value": 0.015,
+  "why": "a 2x safety margin below the highest threshold (0.03) that delays no held-out synthetic sequence; chosen on the cross-fitted ride measurement: the margin costs 4 held-out ride events (33 -> 37)"
+ },
+ "crossfit_ride": {
+  "note": "measured, not simulated: each pair of ride pieces run by the full detector with the model of the fold that never saw it (scripts/opinion_crossfit.py); four folds (pieces 0-1, 2-3, 4-5, 6-7), each fold's threshold from its own grouped validation",
+  "opinion_off": {
+   "frames": 11271,
+   "alarm_frames": 176,
+   "alarm_events": 43,
+   "stop_episodes": 35,
+   "advisory_frames": 4743
+  },
+  "cross_fitted_2x_margin": {
+   "frames": 11271,
+   "alarm_frames": 170,
+   "alarm_events": 37,
+   "stop_episodes": 34,
+   "advisory_frames": 4743
+  },
+  "cross_fitted_zero_margin": {
+   "frames": 11271,
+   "alarm_frames": 143,
+   "alarm_events": 33,
+   "stop_episodes": 31,
+   "advisory_frames": 4756
+  },
+  "in_sample_retrained_2x_margin": {
+   "frames": 11271,
+   "alarm_frames": 130,
+   "alarm_events": 32,
+   "stop_episodes": 31,
+   "advisory_frames": 4759
+  },
+  "in_sample_retrained_zero_margin": {
+   "frames": 11271,
+   "alarm_frames": 90,
+   "alarm_events": 25,
+   "stop_episodes": 24,
+   "advisory_frames": 4776
+  },
+  "in_sample_previous_model": {
+   "frames": 11271,
+   "alarm_frames": 98,
+   "alarm_events": 26,
+   "stop_episodes": 26,
+   "advisory_frames": 4776
+  },
+  "folds_2x_margin": [
+   {
+    "pieces": [
+     0,
+     1
+    ],
+    "model": "/data/work/opinion3/model_fold_01.json",
+    "threshold": 0.0061
+   },
+   {
+    "pieces": [
+     2,
+     3
+    ],
+    "model": "/data/work/opinion3/model_fold_23.json",
+    "threshold": 0.0182
+   },
+   {
+    "pieces": [
+     4,
+     5
+    ],
+    "model": "/data/work/opinion3/model_fold_45.json",
+    "threshold": 0.0327
+   },
+   {
+    "pieces": [
+     6,
+     7
+    ],
+    "model": "/data/work/opinion3/model_fold_67.json",
+    "threshold": 0.0085
+   }
+  ],
+  "folds_zero_margin": [
+   {
+    "pieces": [
+     0,
+     1
+    ],
+    "model": "/data/work/opinion3/model_fold_01.json",
+    "threshold": 0.0123
+   },
+   {
+    "pieces": [
+     2,
+     3
+    ],
+    "model": "/data/work/opinion3/model_fold_23.json",
+    "threshold": 0.0364
+   },
+   {
+    "pieces": [
+     4,
+     5
+    ],
+    "model": "/data/work/opinion3/model_fold_45.json",
+    "threshold": 0.0655
+   },
+   {
+    "pieces": [
+     6,
+     7
+    ],
+    "model": "/data/work/opinion3/model_fold_67.json",
+    "threshold": 0.0171
+   }
+  ]
+ }
+}

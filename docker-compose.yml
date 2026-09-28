@@ -22,12 +22,12 @@ services:
     <<: *data
     build: { context: ., dockerfile: docker/Dockerfile }
     image: resense:latest
-    command: ros2 launch resense_ros detector.launch.py
+    command: ros2 launch resense_ros detector.launch.py freshness_mode:=replay
   player:
     <<: *data
     image: resense:latest
     profiles: ["tools"]
-    command: ros2 bag play /data/${RESENSE_BAG:-roundT_doubleT} --clock --delay 3
+    command: ros2 bag play /data/${RESENSE_BAG:-roundT_doubleT} --clock --delay 3 --read-ahead-queue-size 10
   echo:
     # the headless equivalent of watching RViz: GO / CAUTION / STOP / FAULT
     image: resense:latest

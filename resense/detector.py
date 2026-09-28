@@ -13,9 +13,11 @@ from resense.calibration import MountCalibrator
 from resense.clustering import Cluster, find_clusters, find_hanging
 from resense.config import DetectorConfig
 from resense.egomotion import EgoSpeedEstimate, EgoSpeedEstimator
+from resense.evidence import PersistentEvidence
 from resense.frame import Frame
 from resense.gauge import (axis_union_coordinates, axis_union_offset, axis_union_strict, corridor_coordinates,
-                           corridor_mask, gauge_core_mask, point_in_polygon, widened_profile)
+                           corridor_mask, gauge_core_mask, point_in_polygon, reference_offset, union_shift,
+                           widened_profile)
 from resense.health import HealthMonitor
 from resense.lowobj import BedTemplate, low_candidates, mark_rail_line
 from resense.track import TrackModel, estimate_track, rotate_track_model
@@ -118,6 +120,7 @@ class Candidates:
     idx: np.ndarray
     low: np.ndarray
     in_rail: Optional[np.ndarray] = None
+    dy_rail: Optional[np.ndarray] = None
 
     def __len__(self) -> int:
         return int(self.idx.size)
@@ -125,11 +128,18 @@ class Candidates:
     def rail(self) -> np.ndarray:
         return self.in_gauge if self.in_rail is None else self.in_rail
 
+    def lateral_rail(self) -> np.ndarray:
+        """The lateral from the rail axis (27.09): ``dy`` unless ``gauge.reference`` measured it from
+        the sensor axis."""
+        return self.dy if self.dy_rail is None else self.dy_rail
+
     def concat(self, other: "Candidates") -> "Candidates":
         out = {f.name: np.concatenate([getattr(self, f.name), getattr(other, f.name)])
-               for f in fields(self) if f.name != "in_rail"}
+               for f in fields(self) if f.name not in ("in_rail", "dy_rail")}
         if self.in_rail is not None or other.in_rail is not None:
             out["in_rail"] = np.concatenate([self.rail(), other.rail()])
+        if self.dy_rail is not None or other.dy_rail is not None:
+            out["dy_rail"] = np.concatenate([self.lateral_rail(), other.lateral_rail()])
         return Candidates(**out)
 
     def subset(self, m: np.ndarray) -> "Candidates":
@@ -138,7 +148,8 @@ class Candidates:
 
 
 def _clusters_of(c: Candidates, cfg, **kw) -> List[Cluster]:
-    return find_clusters(c.xyz, c.intensity, c.dy, c.h, c.in_gauge, cfg, frame_idx=c.idx, in_rail=c.in_rail, **kw)
+    return find_clusters(c.xyz, c.intensity, c.dy, c.h, c.in_gauge, cfg, frame_idx=c.idx, in_rail=c.in_rail,
+                         dy_report=c.dy_rail, **kw)
 
 
 def _finite_only(frame: Frame) -> Frame:
@@ -165,6 +176,7 @@ class Detector:
         self.ego = EgoSpeedEstimator(acc)
         self.calib = MountCalibrator(self.cfg.calibration, self.cfg.track)
         self.health = HealthMonitor(self.cfg.health)
+        self.evidence = PersistentEvidence(self.cfg.health, self.cfg.gauge)   # 27.09 (health.clear_cap_persist)
         self.bed = BedTemplate(self.cfg.lowobj)
         self.low_range = 0.0            # m, how far the bed was observed for the low-object stage (last frame)
         self._thin: List[Cluster] = []  # 26.09 (tracking.stop_keep_thin): this frame's corridor clusters flatter than min_height
@@ -184,6 +196,7 @@ class Detector:
         self.buffer.clear()
         self.ego.reset()
         self.health.reset()
+        self.evidence.reset()
         self.bed.reset()
         self._thin = []
         self._prev_stamp = None
@@ -221,6 +234,7 @@ class Detector:
         xyz = self._fit_track(frame.xyz, self._periods())
         t1 = time.perf_counter()
         cand, dy_all, h_all, mask, (valid, axis_valid, floor_valid) = self._corridor(xyz, frame.intensity)
+        trust = min(valid, floor_valid)  # the trusted range before the clustering (health.clear_cap_thin)
         dy_rail = self._dy_rail          # = dy_all unless gauge.axis_union 2 re-measured the corridor coordinate
         cand, straddle, near = self._low_stage(xyz, frame.intensity, dy_rail, h_all, mask, cand,
                                                min(axis_valid, floor_valid))
@@ -240,7 +254,7 @@ class Detector:
             mark_rail_line(clusters, xyz[:, 0], dy_rail, h_all, cfg.lowobj, cfg.track.rails_spacing, cfg.gauge.range_min)
         t5 = time.perf_counter()
         gauge, warn = self._confirm(clusters, speed, dt)
-        cap = self._clear_cap(clusters, cand, dy_all, h_all) if cfg.health.clear_cap else None
+        cap = self._clear_cap(clusters, cand, dy_all, h_all, trust, n_acc) if cfg.health.clear_cap else None
         t6 = time.perf_counter()
         mount = self.calib.state.to_dict()
         health = self.health.update(xyz, frame.meta, self.track, cfg.gauge, valid, cfg.track.rails_min_score,
@@ -336,8 +350,39 @@ class Detector:
         idx = np.flatnonzero(mask)
         cand = Candidates(xyz=xyz[idx], dy=dy_all[idx], h=h_all[idx], in_gauge=strict[idx],
                           intensity=intensity[idx], idx=idx, low=np.zeros(idx.size, dtype=bool))
+        ref = reference_offset(cand.xyz[:, 0], self.track, cfg.gauge) if cfg.gauge.reference > 0 else None
+        if ref is not None:
+            # 27.09 (gauge.reference 1 / 2 / 3, 3 on): the envelope measured from the sensor axis where
+            # it agrees with the rails (near field, straight track). The candidate set (the advisory
+            # corridor), the reported lateral (dy_rail), the gauge-distance reach and the frame-wide stages
+            # (bed, low objects, rail start, ego speed, hanging search, clear cap: dy_all) keep the rails;
+            # the hanging stage reads the strict membership from here. The corridor coordinate of the
+            # candidates (strict membership, shape rules, accumulation) is the lateral from the sensor axis (mode 3: only
+            # where that is nearer the centre, the union below; modes 1 / 2 everywhere in the near field). The
+            # rails' own strict membership is kept (in_rail, as for gauge.axis_union): an oversize cluster
+            # whose part inside the reference envelope took in an edge line falls back to it (the safety
+            # review's scene of 26.09), and the wall keep counts it
+            in_rail = cand.in_gauge
+            if cfg.gauge.edge_margin > 0 or cfg.gauge.edge_margin_per_100m > 0:
+                in_rail = in_rail & gauge_core_mask(cand.dy, cand.h, cand.xyz[:, 0], cfg.gauge)
+            cand.in_rail = in_rail
+            cand.dy_rail = cand.dy
+            # 27.09 (gauge.reference 3): the union - a point takes the sensor-axis lateral only where it is
+            # nearer the centre there, so neither side of the rails' envelope is narrowed
+            cand.dy = cand.dy + (union_shift(cand.dy, ref[1]) if cfg.gauge.reference == 3 else ref[1])
+            cand.in_gauge = point_in_polygon(cand.dy, cand.h, cfg.gauge.profile)
         if cfg.gauge.edge_margin > 0 or cfg.gauge.edge_margin_per_100m > 0:
-            cand.in_gauge = cand.in_gauge & gauge_core_mask(cand.dy, cand.h, cand.xyz[:, 0], cfg.gauge)
+            core = gauge_core_mask(cand.dy, cand.h, cand.xyz[:, 0], cfg.gauge)
+            if ref is not None and cfg.gauge.reference_edge_margin != 1.0:
+                # 27.09 (gauge.reference_edge_margin): the margin models the fitted rail axis' uncertainty;
+                # where the envelope is measured from the sensor axis it is scaled (0 = none)
+                s = max(float(cfg.gauge.reference_edge_margin), 0.0)
+                ok = ref[0]
+                if ok.any():
+                    g = replace(cfg.gauge, edge_margin=cfg.gauge.edge_margin * s,
+                                edge_margin_per_100m=cfg.gauge.edge_margin_per_100m * s)
+                    core[ok] = gauge_core_mask(cand.dy[ok], cand.h[ok], cand.xyz[ok, 0], g)
+            cand.in_gauge = cand.in_gauge & core
         if cfg.gauge.axis_union in (1, 3):
             # 26.09 (candidates A and B2, off by default): also inside when inside the envelope measured
             # from the sensor axis (near field, straight track, the two axes within axis_union_max_offset)
@@ -429,12 +474,24 @@ class Detector:
         if old is not None:
             Xo, dyo, ho, io, go = old
             Xo64 = Xo.astype(np.float64)
-            xyz_o = np.stack([Xo64, self.track.center_y(Xo64) + dyo, self.track.rail_z(Xo64) + ho],
-                             axis=1).astype(np.float32)
+            dro = None
+            if self.cfg.gauge.reference > 0:
+                # 27.09 (gauge.reference 1): the buffer holds the corridor coordinate, measured from the
+                # sensor axis where the reference applies (its offset at the shifted X, this frame's model)
+                ref = reference_offset(Xo64, self.track, self.cfg.gauge)
+                if ref is None:
+                    dro = dyo
+                elif self.cfg.gauge.reference == 3:
+                    # the union shifted a point only towards the centre: undo it where that is consistent
+                    dro = np.where(np.abs(dyo + ref[1]) >= np.abs(dyo), dyo, dyo - ref[1])
+                else:
+                    dro = dyo - ref[1]
+            yo = self.track.center_y(Xo64) + (dyo if dro is None else dro)
+            xyz_o = np.stack([Xo64, yo, self.track.rail_z(Xo64) + ho], axis=1).astype(np.float32)
             merged = cand.concat(Candidates(xyz=xyz_o, dy=dyo, h=ho, in_gauge=go, intensity=io,
                                             idx=np.full(Xo.size, -1, dtype=cand.idx.dtype),
                                             low=np.zeros(Xo.size, dtype=bool),
-                                            in_rail=self.buffer.merged_rail(acc.min_range)))
+                                            in_rail=self.buffer.merged_rail(acc.min_range), dy_rail=dro))
             n_acc = 1 + len(self.buffer)
         far = (cand.xyz[:, 0] >= acc.min_range) & ~cand.low
         self.buffer.push(cand.xyz[far, 0], cand.dy[far], cand.h[far], cand.intensity[far], cand.in_gauge[far],
@@ -458,18 +515,20 @@ class Detector:
             reg = axis_union_offset(corr.xyz[:, 0], self.track, cfg.gauge)
             if reg is not None:
                 dy_alt = corr.dy + reg[1]
-        keep_thin = cfg.tracking.stop_keep_thin > 0
+        keep_thin = cfg.tracking.stop_keep_thin > 0 or cfg.tracking.thin_far_min_distance > 0
         clusters = _clusters_of(corr, cfg.cluster, axis_valid=valid,
                                 height_valid=floor_valid if cfg.cluster.far_min_height > 0 else None,
                                 min_points_factor=factor, factor_range=acc.min_range,
                                 smear_max_length=acc.smear_max_length if n_acc > 1 else 0.0,
                                 smear_max_width=acc.smear_max_width if n_acc > 1 else 0.0, gauge=cfg.gauge,
-                                dy_alt=dy_alt, keep_thin=keep_thin)
+                                dy_alt=dy_alt, keep_thin=keep_thin,
+                                weak_from=cfg.tracking.thin_far_min_distance if cfg.cluster.weak_min_points > 0 else 0.0)
         if keep_thin:
-            # 26.09 (tracking.stop_keep_thin, off by default): the clusters flatter than min_height go
+            # 26.09 (tracking.stop_keep_thin, on since 26.09): the clusters flatter than min_height go
             # to the tracker only, to continue a track (Tracker._continue_thin); no other stage sees them
-            self._thin = [c for c in clusters if c.thin]
-            clusters = [c for c in clusters if not c.thin]
+            # (27.09: also tracking.thin_far_min_distance, Detector._far_thin)
+            self._thin = [c for c in clusters if c.thin or c.weak]
+            clusters = [c for c in clusters if not (c.thin or c.weak)]
         lows: List[Cluster] = []
         straddling: List[Cluster] = []
         lcfg = replace(cfg.cluster, eps=cfg.lowobj.eps)
@@ -549,7 +608,7 @@ class Detector:
         detection, not two (a straddling cluster yields only to a corridor cluster that is
         itself reported)."""
         tall = corr.h > self.cfg.lowobj.foot_max_top
-        Xc, dyc = corr.xyz[tall, 0], corr.dy[tall]
+        Xc, dyc = corr.xyz[tall, 0], corr.lateral_rail()[tall]
         keep = []
         for c in lows:
             m = ((Xc > c.bbox_min[0] - 0.3) & (Xc < c.bbox_max[0] + 0.3)
@@ -574,7 +633,8 @@ class Detector:
         low_ok = low.min_model_age <= 0 or self.track.age >= low.min_model_age
         self.tracker.update(clusters, ego_shift=(speed or 0.0) * dt, frame_dt=dt, low_ok=low_ok,
                             rail_within=low.rail_start_within,
-                            thin=self._thin if self.cfg.tracking.stop_keep_thin > 0 else None)
+                            thin=self._thin if self.cfg.tracking.stop_keep_thin > 0 else None,
+                            far_thin=self._far_thin(clusters) if self.cfg.tracking.thin_far_min_distance > 0 else None)
         pending = low.pending_advisory and self.calib.state.status == "pending"
         dets: List[Detection] = []
         for t in self.tracker.confirmed():
@@ -587,7 +647,7 @@ class Detector:
                 center=t.centroid if t.misses else t.last.centroid,
                 size=t.last.size, n_points=t.last.n, confidence=t.confidence, age=t.age,
                 zone=t.zone, height_min=t.last.height_min, intensity=t.last.intensity,
-                reason=("near_envelope" if t.escalated else "stop_hold" if (t.kept and t.zone == "gauge")
+                reason=("doubt" if t.withheld else "near_envelope" if t.escalated else "stop_hold" if (t.kept and t.zone == "gauge")
                         else t.last.reason), kind=t.last.kind,
             ))
             d = dets[-1]
@@ -597,13 +657,63 @@ class Detector:
         dets.sort(key=lambda d: d.distance)
         return [d for d in dets if d.zone == "gauge"], [d for d in dets if d.zone != "gauge"]
 
+    def _far_thin(self, clusters: List[Cluster]) -> List[Cluster]:
+        """27.09 (``tracking.thin_far_min_distance`` > 0, on): this frame's scan lines
+        (corridor clusters flatter than ``cluster.min_height``) that the tracker may use as far
+        evidence: at least that far, inside the strict gauge (zone ``gauge``: no far-field, overhead
+        or signature demotion) with ``thin_far_min_voxels`` strict voxels, and overlapping no other
+        cluster of the frame (the lower edge of an object another cluster already describes). With
+        ``cluster.weak_min_points`` also the clusters under the point-count bar (``Cluster.weak``)
+        that far and in zone ``gauge`` (``cluster.gauge_min_points`` strict voxels)."""
+        tc = self.cfg.tracking
+        return [c for c in self._thin
+                if c.distance >= tc.thin_far_min_distance and c.zone == "gauge"
+                and (c.n_gauge >= tc.thin_far_min_voxels or not c.thin) and not any(_overlap(c, k) for k in clusters)]
+
     # -- 6b ------------------------------------------------------------------------------------
     def _clear_cap(self, clusters: List[Cluster], cand: Candidates, dy_all: np.ndarray,
-                   h_all: np.ndarray) -> Optional[float]:
+                   h_all: np.ndarray, trust: float = np.inf, n_acc: int = 1) -> Optional[float]:
         """``health.clear_cap`` (25.09): the cap on the monitored-range estimate
         (None = no cap), see :func:`clear_cap_distance`. Runs after the tracker and changes
-        nothing it or the decision reads."""
-        return clear_cap_distance(clusters, self.tracker.tracks, cand, dy_all, h_all, self.cfg.gauge, self.cfg.health)
+        nothing it or the decision reads. 27.09: with ``clear_cap_thin`` also the nearest
+        scan-line cluster of this frame inside the strict envelope (:func:`thin_cap_distance`),
+        with ``clear_cap_persist`` the nearest persistent sparse envelope blob
+        (:class:`resense.evidence.PersistentEvidence`, updated every frame while it is on)."""
+        hcfg = self.cfg.health
+        best = clear_cap_distance(clusters, self.tracker.tracks, cand, dy_all, h_all, self.cfg.gauge, hcfg)
+        extra = []
+        if hcfg.clear_cap_thin and self.cfg.tracking.stop_keep_thin > 0:
+            extra.append(thin_cap_distance(self._thin, self.cfg.cluster.gauge_min_points, trust, n_acc))
+        if hcfg.clear_cap_persist > 0:
+            extra.append(self.evidence.update(cand.xyz[:, 0], cand.dy, cand.h, cand.low))
+        for d in extra:
+            if d is not None:
+                best = d if best is None else min(best, d)
+        return best
+
+
+def thin_cap_distance(thin: List[Cluster], min_gauge: int, trust: float, n_acc: int = 1) -> Optional[float]:
+    """``health.clear_cap_thin`` (27.09; the predicate of the M2 observer of 26.09,
+    scripts/evaluate_thin_monitoring.py, without its CAUTION): the distance of the nearest scan-line
+    cluster of this frame (flatter than ``cluster.min_height``; kept only for
+    ``tracking.stop_keep_thin``) inside the strict envelope (``zone`` gauge, at least ``min_gauge``
+    strict voxels), not demoted by any rule (``reason`` empty), a corridor cluster (``kind`` empty),
+    within the trusted range ``trust`` (axis and height reference), in a frame without merged
+    frames (``n_acc`` 1). The row of returns an object leaves at the envelope top or on the bed at
+    range (set O: the box above the envelope, the plank) caps the estimate although it cannot start
+    a track. A cluster under the point-count bar kept only as far evidence for an approaching track
+    (``Cluster.weak``, ``cluster.weak_min_points``) does not cap: it is not a scan line of the kind
+    this predicate was validated on."""
+    best: Optional[float] = None
+    if n_acc != 1:
+        return None
+    for c in thin:
+        if not c.thin or c.weak or c.kind or c.reason or c.zone != "gauge" or c.n_gauge < min_gauge:
+            continue
+        d = float(c.distance)
+        if np.isfinite(d) and 0.0 <= d <= trust and (best is None or d < best):
+            best = d
+    return best
 
 
 def clear_cap_distance(clusters: List[Cluster], tracks, cand: Candidates, dy_all: np.ndarray,

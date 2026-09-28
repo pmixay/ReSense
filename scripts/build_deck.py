@@ -10,9 +10,11 @@ Google Slides:
 
 Slides 7-11 (title, team, team cards, history, solution in short) keep their design and
 structure as the organizers require; the solution slides use the template's own layouts
-(12-29). Every number is taken from ``N`` below, which is copied from docs/EXPERIMENTS.md
-"Current results" and docs/P4_AUDIT.md; the pictures are made by ``scripts/hero_view.py`` and
-``resense run --render`` (``docs/img/``) and by the web UI's gallery (``docs/images/``; paths in ``IMG``).
+(12-29). Every measured number on the slides and in the speaker notes is written once, in ``N``
+below (copied from the regression gate baseline ``BASELINE``, docs/EXPERIMENTS.md "Current results"
+and docs/P4_AUDIT.md); the texts derive the rest (per km, ranges, counts). The pictures are made by
+``scripts/hero_view.py`` and ``resense run --render`` (``docs/img/``) and by the web UI's gallery
+(``docs/images/``; paths in ``IMG``).
 
 The PDF next to the deck is LibreOffice's export (Impress and the Montserrat fonts installed):
 
@@ -57,43 +59,236 @@ IMG = {
     "logo": None,                                     # the template's own "Московский транспорт" logo
 }
 
-# ---- every number on the slides (docs/EXPERIMENTS.md "Current results", §0, §2d, §2e, §3, §9;
-# docs/P4_AUDIT.md; docs/ARCHITECTURE.md "Native kernels", "GPU: evaluated, not used") ---------
+# ---- every measured number on the slides and in the speaker notes; each is written here once and the
+# slide texts, charts and notes read it through the helpers below. Sources: the regression gate
+# baseline BASELINE (keys named as there), the cycle record docs/QUALITY_CYCLE_2026-09-27.md (the
+# held-out checks and the costs), docs/EXPERIMENTS.md "Current results" (§0, §2d, §2e, §3, §9),
+# docs/P4_AUDIT.md, docs/ARCHITECTURE.md "Native kernels", "GPU: evaluated, not used" ----------------
+# The final 27.09 detector (352ca13: the opinion retrained on the shipped detector, 2x threshold
+# margin), measured at d572807 (the gate baseline below)
+BASELINE = "docs/evidence/results/regression_baseline_2026-09-27_quality.json"
 N = {
-    "frames": "13 759",
-    "person_hits": "58 из 61", "person_first": "0,3 с", "person_err": "0,23 м",
-    "object_hits": "125 из 126", "object_before": "2",
-    "ride_events": "45", "ride_per_km": "3,5", "ride_km": "13",
-    "empty_events": "13",
-    "first_person": "148", "sustained_person": "149", "band_person": "115", "speed_person": "167",
-    # the same straight approaches with the person anchored on the near rails (set F round 4, 5 pairs;
-    # 150 m in the same pairs with the legacy placement) [synthetic, P4_AUDIT "Paired straight-track"]
-    "anchored_person": "154", "anchored_legacy": "150",
-    # detector per frame on one core with the C++ kernels (the re-judgement of 26.09, idle 4-core machine: 22.7–30.7 ms
-    # mean, p95 32.8–42.1 ms on set O and the 120° / 360° recordings; the numpy path of 23.09 was 42–64 / 78 ms)
-    "latency": "23–31 мс", "p95": "42 мс",
-    "ros_p95": "58–81 мс",                   # decode + detect through ROS in Docker, 120° / 360°, 10 fps (26.09)
-    "native_cut": "38–57 %",                 # optional C++ kernels: detector time, identical output
-    "gpu_gain": "30–45 мс",                  # the GPU study's upper bound per 360° frame against numpy
-    "speed_err": "0,07 м/с",                 # the opt-in LiDAR-only train speed, median error (0.06–0.08)
-    "tests": "667+",                         # latest local full pytest pass; one ride-cache case needs new_data
-    # the organizers' own synthetic obstacles, set O (cloud_with_fake_obj: 10 objects, 1 510 frames,
-    # the train drives up to them at 1.4–20 m/s, no speed given) [organizers' synthetic, P4_AUDIT]
-    "fake_frames": "1 510", "fake_stop": "8 из 8", "fake_box": "98", "fake_plank": "82", "fake_cubes": "43–53",
-    "fake_top_frames": "51 из 124", "fake_outside_false": "6", "fake_background": "3",
-    # first confirmed detection, straight track, median over the approaches [synthetic in real frames,
-    # set F round 3 = the current code, EXPERIMENTS.md §2d; the anchored person: round 4]
-    "range_chart": [("человек 1,7 м · от рельсов", 154), ("человек 1,7 м", 148), ("тележка", 144),
-                    ("ящик 1 м", 111), ("висящий кабель 3 см", 95), ("ящик 30 см на рельсе", 49),
-                    ("предмет поперёк рельса", 46)],
-    # the organizers' in-envelope objects: (name, first STOP in m, label replacing the value or None,
-    # STOP held); the box at the envelope top is a STOP on every frame from 101.3 m (51 of 124, the STOP keep
-    # of 26.09); the two edge objects get only 2 and 6 STOP frames at 5-10 m
-    "fake_chart": [("ящик 2 × 2 м, верх габарита", 101, None, True), ("ящик 2 × 2 м в центре", 98, None, True),
-                   ("доска поперёк рельсов", 82, None, True), ("куб 0,3 м на рельсе", 43, None, True),
-                   ("куб 0,3 м в воздухе", 53, None, True), ("куб 0,3 м у края", 5, None, False),
-                   ("ящик 2 × 2 м у края", 10, None, False), ("висящий предмет 5 см", 30, None, True)],
+    # the organizers' real recordings [real]: six recordings and the 20-minute ride (13.0 km)
+    "frames_six": 2488, "frames_ride": 11271, "ride_km": 13,
+    # doubleT_obstacle: the person crossing (STOP frames, frames inside the envelope), the first alarm's
+    # delay after the person enters the envelope (first_alarm_frame against the label's first frame
+    # inside, 8, at 10 Hz; 0 = on the first frame inside), the largest distance error; the object on the
+    # rail after the person leaves (frame 75 on), and v0.6.1's own hits on it before the object was
+    # clustered whole (history)
+    "person": (61, 61), "person_delay_s": 0.0, "person_err_m": 0.23,
+    "rail_object": (125, 126), "rail_object_v061": 2,
+    # the person with the envelope from the rails alone (gauge.reference 0): the gain to 61 is entirely
+    # the sensor-axis addition, the frame the organizers measure lateral positions in (Q1 open)
+    "person_rails_only": 58,
+    # false alarm events (ride / five empty recordings), in-sample: the rules and the track opinion's
+    # negatives come from these recordings; the per-km figures are derived (/ ride_km)
+    "ride_events": 32, "empty_events": 11,
+    # the ride held out, measured: each pair of ride pieces run with an opinion model trained without
+    # them (cross-fitting): ride events with the opinion off (the rules alone) -> with the held-out model
+    "ride_cv": (43, 37),
+    # the threshold is half the highest that delays no held-out synthetic object (a 2x margin); with no
+    # margin the ride would give (in-sample, held-out) events: kept for safety
+    "ride_zero_margin": (25, 33),
+    # ablations of the shipped code, one key off at a time: the far evidence off: first STOP of the box
+    # at the envelope top and of the plank, m; the envelope reference off: the edge cube's first STOP, m
+    # (the person: person_rails_only; the opinion off: ride_cv[0])
+    "nofar_first": (101, 82), "noref_edge_cube_m": 5.2,
+    # its bounds: at most this many frames (~1 s) of delay over a track's whole life, never within
+    # opinion_near_m (also while the track is missed, at its predicted distance), never for a standing
+    # body (a cluster at least body_m tall) within body_near_m
+    "opinion_budget": 10, "opinion_near_m": 25, "opinion_body": (1.0, 40),
+    # clear-scene false STOP and processing history: STOPs in the captured node histories, STOP events
+    # of the history stress (the captures plus seeded dropped-frame / catch-up / offset / dither runs)
+    "history_captured": (2, 0), "history_stress": (78, 55),
+    # the organizers' own synthetic obstacles, set O (cloud_with_fake_obj: 10 objects, 1 510 frames, the
+    # train drives up to them at 1.4–20 m/s, no speed given) [organizers' synthetic]. The eight objects
+    # inside the envelope in the chart's order: gate key -> (chart name, first STOP m, STOP frames,
+    # visible frames, held: a STOP on every frame from the first STOP on (pink) or not (violet)).
+    "fake_frames": 1510,
+    "set_o": {
+        "big_above": ("ящик 2 × 2 м, верх габарита", 111.4, 56, 124, True),
+        "big_center": ("ящик 2 × 2 м в центре", 98.0, 208, 213, True),
+        "long_low_on_rails": ("доска поперёк рельсов", 87.2, 52, 86, True),
+        "small_on_rail": ("куб 0,3 м на рельсе", 42.7, 23, 49, True),
+        "small_center": ("куб 0,3 м в воздухе", 55.8, 32, 79, True),
+        "small_edge_inside": ("куб 0,3 м у края", 35.0, 18, 83, True),
+        "big_edge_inside": ("ящик 2 × 2 м у края", 18.3, 7, 125, False),
+        "thin_hanging": ("висящий предмет 5 см", 30.1, 15, 42, True),
+    },
+    "fake_outside_false": 6,          # STOP frames on the 2 x 2 m box outside the envelope (big_outside)
+    "fake_background": 0,             # alarm frames away from every object
+    # the edge box's own track STOPs from here; the scorer, matching within 1 m of the centre of the
+    # 2 m-wide box, credits the 7 frames from 18.3 m above
+    "edge_box_track_m": 28.7,
+    # the diagnostic overclaims: frames with an in-envelope object whose decision is GO with the
+    # monitored range past it (final_acceptance.json, set_O_candidate target_by_decision GO)
+    "overclaim_go": (46, 16),
+    "axis_angle": "−0,24°",           # the rails against the sensor axis, the frame the organizers placed from
+    # beyond this range a track may start from this many voxels; STOP only while it approaches on a
+    # line, advisory (reported, never hidden) otherwise
+    "far_weak": (60, 4),
+    # gauge.reference 3, the union: within this range on straight track a return is also inside when it
+    # is inside the envelope measured from the sensor axis (the offset clamped to axis_shift_m); it
+    # takes the sensor-axis lateral only where that is nearer the centre, so the rails' envelope is
+    # nowhere narrowed
+    "axis_near_m": 60, "axis_shift_m": 0.2,
+    # the pre-registered placement study (72 cases: four set O objects' own points at new places on the
+    # five empty recordings and the ride, paired controls) [organizers' synthetic, held out]: matched
+    # target frames before -> now, of the visible ones; cases with a match; paired-control matches.
+    # (the final detector's run, plan registered in d572807, identical per case to the earlier runs; with
+    # gauge.reference 0, the rails alone: 722)
+    "novel_frames": (544, 723, 2458), "novel_cases": (45, 72), "novel_controls": 0,
+    # set F: our objects ray-cast into the moving ride, straight track, first confirmed detection, median
+    # of 6 approaches: person, trolley, crate and cable from the gate run of 27.09 (BASELINE
+    # set_F_straight, legacy placement); the 30 cm box on the rail head and the object across the rail
+    # from round 3 (24.09, not in the gate); the anchored person: round 4, 5 pairs, 150 m in the same
+    # pairs with the legacy placement [synthetic in real frames, EXPERIMENTS §2d, P4_AUDIT]
+    "set_f": {
+        "person_anchored": ("человек 1,7 м · от рельсов", 154), "person": ("человек 1,7 м", 151),
+        "trolley": ("тележка", 151), "crate": ("ящик 1 м", 124), "cable": ("висящий кабель 3 см", 99),
+        "rail_box": ("ящик 30 см на рельсе", 49), "across_rail": ("предмет поперёк рельса", 46),
+    },
+    # the 0.5 m box on the bed between the rails: approaches with a detection (gate, set F straight)
+    "bed_box_found": (1, 6),
+    "anchored_legacy": 150,
+    "band_person": 115,               # the person in >= 90 % of the frames of every 10 m band from here
+    "speed_person": 167,              # the person with the train speed given (5-frame accumulation)
+    "curves": ("6 из 7", "58–86"),    # R ~ 350 m curves: approaches found, first confirmed (the sightline)
+    # detector per frame on one core with the C++ kernels (65c5a5b, idle sandbox: 18.0–22.9 ms mean, p95
+    # 22.7–32.6 ms, max 57 ms on set O, doubleT_obstacle, roundT_doubleT, squareT_platform); the node's
+    # path without the ROS transport (decode + crop + rotate + detect) p95 32–48 ms, peak RSS 161–248 MB
+    "latency": "18–23 мс", "p95": "33 мс", "decode_p95": "48 мс",
+    "ros_p95": "58–81 мс",            # decode + detect through ROS in Docker, 120° / 360°, 10 fps (26.09)
+    "native_cut": (38, 57),           # optional C++ kernels: detector time cut in %, identical output
+    "gpu_gain": "30–45 мс",           # the GPU study's upper bound per 360° frame against numpy
+    "speed_err": "0,07 м/с",          # the opt-in LiDAR-only train speed, median error (0.06–0.08)
+    "tests": "731",                   # the full local pytest pass of 27.09 (352ca13 + docs), 6 subtests; ride-cache cases need new_data
 }
+
+
+def num(x):
+    """13759 -> '13 759', 0.23 -> '0,23' (runs_of glues the thousands with a no-break space)."""
+    if isinstance(x, int):
+        return f"{x:,}".replace(",", " ")
+    return f"{x:g}".replace(".", ",")
+
+
+def of(pair):
+    return f"{pair[0]} из {pair[1]}"
+
+
+def metres(x):
+    """A distance on a slide: whole metres, half up (52.5 -> 53)."""
+    return int(x + 0.5)
+
+
+def frames_total():
+    return N["frames_six"] + N["frames_ride"]
+
+
+def per_km(events=None):
+    """ride events per km, '1,6' (the shipped detector's by default)"""
+    events = N["ride_events"] if events is None else events
+    return f"{events / N['ride_km']:.1f}".replace(".", ",")
+
+
+def plural(n, one, few, many):
+    """the Russian noun form after a number: 1 событие, 2 события, 5 событий"""
+    if n % 10 == 1 and n % 100 != 11:
+        return one
+    if 2 <= n % 10 <= 4 and not 12 <= n % 100 <= 14:
+        return few
+    return many
+
+
+def events(n):
+    return f"{n} {plural(n, 'событие', 'события', 'событий')}"
+
+
+def of_frames(pair):
+    """'61 из 61 кадра', '125 из 126 кадров' (the noun agrees with the last number)"""
+    return f"{of(pair)} {plural(pair[1], 'кадра', 'кадров', 'кадров')}"
+
+
+def novel():
+    """'723 из 2 458 кадров (было 544)': the pre-registered placement study"""
+    before, now, visible = N["novel_frames"]
+    return f"{now} из {num(visible)} кадров (было {before})"
+
+
+def set_o(key):
+    """(name, first STOP m, STOP frames, visible frames, held) of a set O object"""
+    return N["set_o"][key]
+
+
+def set_o_first(key):
+    return metres(set_o(key)[1])
+
+
+def set_o_stopped():
+    """'8 из 8': in-envelope objects with a STOP"""
+    objs = N["set_o"].values()
+    return of((sum(1 for o in objs if o[2] > 0), len(objs)))
+
+
+def cubes():
+    """'43–53': first STOP of the two 0.3 m cubes inside (on the rail, in the air)"""
+    lo, hi = sorted(set_o_first(k) for k in ("small_on_rail", "small_center"))
+    return f"{lo}–{hi}"
+
+
+def edge_frames():
+    """'2 и 6': STOP frames of the edge cube and the edge box"""
+    return f"{set_o('small_edge_inside')[2]} и {set_o('big_edge_inside')[2]}"
+
+
+def edge_first():
+    """'5–10': first STOP of the edge objects, m"""
+    lo, hi = sorted(set_o_first(k) for k in ("small_edge_inside", "big_edge_inside"))
+    return f"{lo}–{hi}"
+
+
+def edge_from():
+    """'35 и 18': first STOP of the edge cube and the edge box, m"""
+    return f"{set_o_first('small_edge_inside')} и {set_o_first('big_edge_inside')}"
+
+
+def set_f(key):
+    return N["set_f"][key][1]
+
+
+def native_cut():
+    return f"{N['native_cut'][0]}–{N['native_cut'][1]} %"
+
+
+def native_factor():
+    """'1,6–2,3': the detector time without the kernels against with them, from native_cut"""
+    lo, hi = (1 / (1 - p / 100) for p in N["native_cut"])
+    return f"{lo:.1f}–{hi:.1f}".replace(".", ",")
+
+
+def opinion_bounds():
+    """'не больше 10 кадров (~1 с) за жизнь трека, не ближе 25 м и не для стоящего тела ≥ 1 м ближе 40 м'"""
+    body_m, body_near = N["opinion_body"]
+    return (f"не больше {N['opinion_budget']} кадров (~{num(N['opinion_budget'] / 10)} с) за жизнь трека, "
+            f"не ближе {N['opinion_near_m']} м и не для стоящего тела ≥ {num(body_m)} м ближе {body_near} м")
+
+
+def unseen_km():
+    """'2,8': ride events per km measured with an opinion model that never saw the piece"""
+    return per_km(N["ride_cv"][1])
+
+
+def person_rails():
+    """'от рельсов — 58': the person with the envelope from the rails alone"""
+    return f"от рельсов — {N['person_rails_only']}"
+
+
+def person_alarm():
+    """when the alarm comes for the real person, as a phrase after 'тревога'"""
+    if N["person_delay_s"] <= 0:
+        return "с первого кадра в габарите"
+    return f"через {num(N['person_delay_s'])} с"
 
 # ---- the team (slides 7-10): the team is «Молоток», ReSense is the solution; personal data below are
 # placeholders here, the real values come from --team (not in git) -------------------------------
@@ -454,8 +649,9 @@ def s08_team(sl):
     d.height = Emu(1780000)
     fill(d, ["ROS 2-модуль: по потоку 3D-лидара 10 раз в секунду строит модель «нормального тоннеля» — "
              "полотно, рельсы, ось пути с кривизной по стенам, — проверяет габарит поезда 2,1 × 3,0 м и "
-             "отвечает GO / CAUTION / STOP / FAULT с расстоянием до препятствия. Без обучения на объектах, "
-             "без GPU, в Docker."], size=12)
+             "отвечает GO / CAUTION / STOP / FAULT с расстоянием до препятствия. Решает геометрия; обученное "
+             f"«мнение» о треке лишь откладывает сомнительный STOP, не больше чем на "
+             f"~{num(N['opinion_budget'] / 10)} с. Без GPU, в Docker."], size=12)
     u = shape(sl, 8)
     u.height = Emu(1350000)
     fill(u, ["Описываем среду, а не объекты: крепление лидара и ось пути калибруются по рельсам в каждом "
@@ -510,11 +706,13 @@ def s11_short(sl):
         "JSON-статус",
         "В каждом кадре: автокалибровка крепления → модель пути (полотно, рельсы, ось, кривизна по стенам) → "
         "габарит 2,1 × 3,0 м + низкие объекты на рельсах → кластеры → фильтры инфраструктуры → "
-        "подтверждение 0,5 с",
-        f"{N['latency']} на кадр (p95 ≤ {N['p95']}) на одном ядре с ядрами на C++ (они сокращают время "
-        f"детектора на {N['native_cut']}, выход тот же)",
-        f"Все {N['frames']} реальных кадров: человек на пути найден в {N['person_hits']} кадров, "
-        f"{N['ride_per_km']} ложных события на км поездки (правила решались на ней же)",
+        "подтверждение 0,5 с и «мнение» о треке",
+        f"{N['latency']} на кадр (p95 ≤ {N['p95']}; с декодированием облака p95 ≤ {N['decode_p95']}) на одном "
+        f"ядре с ядрами на C++ (они сокращают время детектора на {native_cut()}, выход тот же)",
+        f"Все {num(frames_total())} реальных кадров: человек на пути найден в {of_frames(N['person'])} "
+        f"({person_rails()}), "
+        f"{per_km()} ложных события на км поездки — на ней же подбирались правила (на кусках, которых модель "
+        f"не видела, — {unseen_km()})",
         f"Только CPU: GPU оценили и не берём — выигрыш ≤ {N['gpu_gain']} на кадр, а контейнер с GPU не "
         "стартует без nvidia-container-toolkit",
     ], size=12, space_before=4)
@@ -523,8 +721,9 @@ def s11_short(sl):
         "габарита при обкатке линий",
         "**Развитие:** скорость поезда от одометрии — узел её уже принимает (своя оценка по лидару: ошибка "
         f"{N['speed_err']}, пока опция); опора высоты по своду тоннеля — мелкие объекты дальше 100 м; "
-        "«второе мнение» на реальных препятствиях",
-        "**Внедрение:** docker load → docker run → ros2 bag play; один файл параметров; стандартные "
+        "«мнение» о треке — переобучить на реальных препятствиях",
+        "**Внедрение:** docker load → docker run → ros2 bag play или одной командой scripts/play_bag.sh; "
+        "один файл параметров; стандартные "
         "сообщения ROS 2 — стыкуется с системой торможения без переделки",
     ], size=12, space_before=6)
 
@@ -550,7 +749,8 @@ def s_problem(sl):          # template slide 24: problem / alternatives / soluti
 def s_data(sl):             # template slide 12: text left, picture right
     fill(placeholder(sl, 0), ["ДАННЫЕ И СЕНСОР"])
     fill(placeholder(sl, 1), [
-        f"**{N['frames']} кадров** — 6 записей (2 488) и 20-минутная поездка (11 271 кадр, {N['ride_km']} км, "
+        f"**{num(frames_total())} кадров** — 6 записей ({num(N['frames_six'])}) и 20-минутная поездка "
+        f"({num(N['frames_ride'])} кадр, {N['ride_km']} км, "
         "7 остановок, кривые до R ≈ 350 м)",
         "**Hesai Pandar128**, 10 Гц, ~190 тыс. точек в кадре: стены видны на 150–200 м, полотно — до ~100 м",
         "**~210 м — предел отражений в тоннеле:** каждая запись обрывается на 209–210 м, дальше нет ни "
@@ -594,7 +794,7 @@ def s_algorithm(sl):        # template slide 25: timeline 1-5
         (32, 33): ("Модель пути", "полотно, головки рельсов, ось; кривизна по стенам и колоннам до 150–200 м"),
         (28, 29): ("Габарит", "коридор 2,1 × 3,0 м вдоль оси и ступень низких объектов на рельсах"),
         (34, 35): ("Кластеры", "радиус растёт с дальностью; фильтры инфраструктуры; дальнее правило"),
-        (30, 31): ("Решение", "подтверждение 0,5 с → GO / CAUTION / STOP / FAULT и дальность контроля"),
+        (30, 31): ("Решение", "подтверждение 0,5 с и «мнение» о треке → GO / CAUTION / STOP / FAULT и дальность контроля"),
     }
     for (ti, di), (t, d) in steps.items():
         fill(placeholder(sl, ti), [t], size=15, bullet=False)
@@ -613,10 +813,12 @@ def s_hero(sl):             # template slide 13: big white card
     textbox(sl, Emu(x), Emu(card.top + m), Emu(card.left + card.width - x - m), Emu(h), [
         ("Реальная запись организаторов", {"bold": True, "size": 14, "color": DEEP}),
         ("Человек переходит путь на 55–57 м", {"space_before": 10}),
-        (f"Найден в **{N['person_hits']}** кадров внутри габарита", {"space_before": 8}),
-        (f"Тревога через {N['person_first']} после входа в габарит", {"space_before": 8}),
-        (f"Ошибка дальности ≤ {N['person_err']}", {"space_before": 8}),
-        (f"Предмет на рельсе — в **{N['object_hits']}** кадров после ухода человека", {"space_before": 8}),
+        (f"Найден в **{of(N['person'])}** {of_frames(N['person']).split()[-1]} внутри габарита "
+         f"({person_rails()})", {"space_before": 8}),
+        (f"Тревога {person_alarm()} после входа в габарит" if N["person_delay_s"] > 0
+         else f"Тревога {person_alarm()}", {"space_before": 8}),
+        (f"Ошибка дальности ≤ {num(N['person_err_m'])} м", {"space_before": 8}),
+        (f"Предмет на рельсе — в **{of(N['rail_object'])}** кадров после ухода человека", {"space_before": 8}),
     ], size=12, color="1C1D22", anchor="ctr")
     notes(sl, "Вот тоннель — двухпутный, поезд стоит, лидар на кабине. Вот облако: 350 тысяч точек за 0,1 с. "
               "Зелёным — габарит поезда, который алгоритм сам протянул вдоль оси пути по рельсам и стенам. "
@@ -636,34 +838,41 @@ def s_demo(sl):             # template slide 27: two browser frames
                                "живой узел — через rosbridge"], size=12)
     fill(placeholder(sl, 16), ["Цепочка жюри в Docker: узел с RViz, bag play от обычного пользователя из "
                                "другого контейнера, /resense/decision — STOP 56 м (видео 69 с)"], size=12)
-    textbox(sl, Emu(1210643), Emu(5700000), Emu(9770000), Emu(480000),
-            [("docker load → docker run → ros2 bag play → /resense/decision", {"align": "ctr"})], size=16,
+    textbox(sl, Emu(1210643), Emu(5640000), Emu(9770000), Emu(640000),
+            [("docker load → docker run → ros2 bag play → /resense/decision", {"align": "ctr"}),
+             ("или одной командой: scripts/play_bag.sh путь_к_бэгу [--archive resense-image-версия.tar.gz]",
+              {"align": "ctr", "size": 12, "bold": False, "space_before": 4})], size=16,
             color=DEEP, bold=True, anchor="ctr")
 
 
 def s_results(sl):          # template slide 20: left card + five rows
     title_chip(sl, 2, shape(sl, 14), "РЕЗУЛЬТАТЫ")
     fill(placeholder(sl, 14), [
-        (N["frames"], {"size": 36, "bold": True, "color": PINK}),
+        (num(frames_total()), {"size": 36, "bold": True, "color": PINK}),
         ("реальных кадров прогнаны целиком", {"size": 13}),
-        (N["person_hits"], {"size": 36, "bold": True, "color": PINK, "space_before": 14}),
-        ("кадров с человеком на пути — тревога", {"size": 13}),
-        (f"{N['ride_per_km']} на км", {"size": 36, "bold": True, "color": PINK, "space_before": 14}),
-        (f"ложных событий в поездке ({N['ride_events']} за {N['ride_km']} км; правила решались на ней же)", {"size": 13}),
+        (of(N["person"]), {"size": 36, "bold": True, "color": PINK, "space_before": 14}),
+        (f"кадров с человеком на пути — тревога ({person_rails()}; остальные — по оси лидара, от которой меряют "
+         "организаторы)", {"size": 13}),
+        (f"{per_km()} на км", {"size": 36, "bold": True, "color": PINK, "space_before": 14}),
+        (f"ложных событий в поездке ({N['ride_events']} за {N['ride_km']} км) — на ней же подбирались правила; "
+         f"на кусках поездки, которых модель не видела, — {unseen_km()} на км (измерено)", {"size": 13}),
     ], bullet=False, color="1C1D22")
     rows = [
-        f"**Реальная запись:** человек на пути — {N['person_hits']} кадров, тревога через {N['person_first']}, "
-        f"ошибка ≤ {N['person_err']}; предмет на рельсе — {N['object_hits']} кадров",
-        f"**Ложные остановки** (реальные; правила решались на этих же записях): поездка {N['ride_km']} км — "
-        f"{N['ride_events']} событий, пять пустых записей — {N['empty_events']}",
-        f"**Объекты организаторов** [их синтетика]: ящик 2 × 2 м — с {N['fake_box']} м, доска — с "
-        f"{N['fake_plank']} м, кубы 0,3 м — с {N['fake_cubes']} м; висящий 5 см — с 30 м; у края — лишь 2 и 6 кадров STOP",
-        f"**Человек на подходе** [наша синтетика]: первое подтверждение {N['first_person']} м "
-        f"(в 5 парах: {N['anchored_legacy']} → {N['anchored_person']} м от ближних рельсов), "
+        f"**Реальная запись:** человек на пути — {of_frames(N['person'])} ({person_rails()}), тревога {person_alarm()}, "
+        f"ошибка ≤ {num(N['person_err_m'])} м; предмет на рельсе — {of_frames(N['rail_object'])}",
+        f"**Ложные остановки** (реальные, на данных настройки правил): поездка {N['ride_km']} км — "
+        f"{events(N['ride_events'])} (без «мнения» — {N['ride_cv'][0]}; на кусках, которых модель не видела, — "
+        f"{N['ride_cv'][1]}); пять пустых записей — {N['empty_events']}",
+        f"**Объекты организаторов** [их синтетика]: ящик 2 × 2 м — с {set_o_first('big_center')} м, доска — с "
+        f"{set_o_first('long_low_on_rails')} м, у края — с {edge_from()} м; на новых местах [проверка заявлена "
+        f"заранее] — {novel()}",
+        f"**Человек на подходе** [наша синтетика]: первое подтверждение {set_f('person')} м "
+        f"(в 5 парах: {N['anchored_legacy']} → {set_f('person_anchored')} м от ближних рельсов), "
         f"в каждой полосе 10 м — со {N['band_person']} м; "
         f"{N['speed_person']} м со скоростью поезда",
-        f"**Задержка** {N['latency']} на кадр (p95 ≤ {N['p95']}) на одном ядре с ядрами на C++; через ROS в "
-        f"Docker на 4 ядрах — p95 {N['ros_p95']} при 10 кадрах/с; без GPU",
+        f"**Задержка** {N['latency']} на кадр (p95 ≤ {N['p95']}) на одном ядре с ядрами на C++; с "
+        f"декодированием облака p95 ≤ {N['decode_p95']}; через ROS в Docker на 4 ядрах — p95 {N['ros_p95']} "
+        "(замер 26.09); без GPU",
     ]
     for idx, text in zip(range(15, 20), rows):
         fill(placeholder(sl, idx), [text], size=12, bullet=False)
@@ -673,7 +882,7 @@ def s_range(sl):            # template slide 22: horizontal bar chart + four not
     title_chip(sl, 2, shape(sl, 15), "ДАЛЬНОСТЬ")
     gf = shape(sl, 12)
     cd = CategoryChartData()
-    data = list(reversed(N["range_chart"]))             # a bar chart draws the first category at the bottom
+    data = list(reversed(list(N["set_f"].values())))    # a bar chart draws the first category at the bottom
     cd.categories = [c for c, _ in data]
     cd.add_series("первое подтверждение, м", [v for _, v in data])
     ch = gf.chart
@@ -691,17 +900,20 @@ def s_range(sl):            # template slide 22: horizontal bar chart + four not
     ch.category_axis.tick_labels.font.size = Pt(11)
     ch.value_axis.tick_labels.font.size = Pt(10)
     pairs = [
-        (21, 18, "~210 м — предел отражений в тоннеле", "дальше 210 м во всех 13 759 кадрах нет ни одной точки"),
+        (21, 18, "~210 м — предел отражений в тоннеле",
+         f"дальше 210 м во всех {num(frames_total())} кадрах нет ни одной точки"),
         (22, 23, "Со скоростью поезда", f"накопление 5 кадров: человек {N['speed_person']} м; своя скорость по "
                                         f"лидару (ошибка {N['speed_err']}) STOP раньше не даёт — опция"),
         (24, 25, "Устойчиво", f"человек в ≥ 90 % кадров каждой полосы 10 м — со {N['band_person']} м"),
-        (26, 27, "В кривых", "6 из 7 подходов, с 58–86 м — предел видимости за стеной (R ≈ 350 м)"),
+        (26, 27, "В кривых", f"{N['curves'][0]} подходов, с {N['curves'][1]} м — предел видимости за стеной "
+                             "(R ≈ 350 м)"),
     ]
     for ti, di, t, d in pairs:
         fill(placeholder(sl, ti), [t], size=16)
         fill(placeholder(sl, di), [d], size=12, bullet=False)
     textbox(sl, Emu(346075), Emu(5820000), Emu(5800000), Emu(520000),
-            [f"первое подтверждение на прямой, медиана 6 подходов; «от рельсов» — объект поставлен по ближним "
+            [f"первое подтверждение на прямой, медиана 6 подходов (прогон гейта 27.09; ящик 30 см и предмет "
+             f"поперёк рельса — 24.09); «от рельсов» — объект поставлен по ближним "
              f"рельсам, а не по дальней оси детектора (5 пар, прежняя постановка — {N['anchored_legacy']} м); "
              "поезд 17–21 м/с без датчика скорости · синтетика в реальных кадрах поездки"],
             size=10, color="6B6B6B")
@@ -712,7 +924,8 @@ def s_fake(sl):             # template slide 21: column chart (turned into bars)
     title_chip(sl, 2, shape(sl, 13), "ОБЪЕКТЫ ОРГАНИЗАТОРОВ")
     shape(sl, 13).width = Emu(shape(sl, 2).width - 2 * (shape(sl, 13).left - shape(sl, 2).left))
     gf = shape(sl, 10)
-    data = list(reversed(N["fake_chart"]))              # the first category is drawn at the bottom
+    # (name, first STOP m, label replacing the value or None, STOP held); the first category is drawn at the bottom
+    data = [(name, metres(first), None, held) for name, first, _, _, held in reversed(list(N["set_o"].values()))]
     cd = CategoryChartData()
     cd.categories = [c for c, _, _, _ in data]
     cd.add_series("первый STOP, м", [v for _, v, _, _ in data])
@@ -739,20 +952,25 @@ def s_fake(sl):             # template slide 21: column chart (turned into bars)
     gf.height = Emu(gf.height - 300000)
     textbox(sl, Emu(346075), Emu(gf.top + gf.height + 40000), Emu(5749925), Emu(560000),
             [f"первый STOP, м; сиреневым — без устойчивого STOP · cloud_with_fake_obj: 10 объектов, "
-             f"{N['fake_frames']} кадров, поезд едет к ним 1,4–20 м/с, скорость узлу не дана · синтетика "
+             f"{num(N['fake_frames'])} кадров, поезд едет к ним 1,4–20 м/с, скорость узлу не дана · синтетика "
              "организаторов"],
             size=10, color="E6E1F5")
+    top = set_o("big_above")
     cards = [
-        (21, 18, f"STOP у {N['fake_stop']}, у края — лишь вблизи",
-         f"ящик 2 × 2 м в центре — с {N['fake_box']} м, с первого появления; доска поперёк рельсов — с "
-         f"{N['fake_plank']} м; кубы 0,3 м — с {N['fake_cubes']} м"),
+        (21, 18, f"STOP у {set_o_stopped()}, у края — с {edge_first()} м",
+         f"ящик 2 × 2 м в центре — с {set_o_first('big_center')} м, с первого появления; доска поперёк рельсов — с "
+         f"{set_o_first('long_low_on_rails')} м; кубы 0,3 м — с {cubes()} м. На новых местах ({N['novel_cases'][1]} "
+         f"{plural(N['novel_cases'][1], 'случай', 'случая', 'случаев')}, проверка заявлена заранее) — {novel()}; "
+         f"на том же фоне без объекта — {N['novel_controls']}"),
         (22, 23, "Мелкое вдали — поздно",
-         "на 60–115 м от куба 0,3 м 2–4 точки в кадре, кластеру нужно 5; ящик у верха габарита — "
-         f"STOP в {N['fake_top_frames']} кадров — непрерывно с 101 м, дальше CAUTION или ничего"),
+         f"на 60–115 м от куба 0,3 м 2–4 точки в кадре: дальше {N['far_weak'][0]} м трек начинаем и с "
+         f"{N['far_weak'][1]}, но STOP — только если объект приближается, иначе CAUTION; ящик у верха габарита — STOP в {of(top[2:4])} кадров — непрерывно с "
+         f"{metres(top[1])} м, дальше CAUTION или ничего"),
         (24, 25, "Ограничения — говорим честно",
-         "краевые объекты дают лишь 2 и 6 STOP кадров; висящий предмет 5 см: STOP с 30 м; объекты ставили от оси лидара "
-         f"(−0,24° к рельсам), мы строим габарит по рельсам. Ложных STOP: {N['fake_outside_false']} кадров "
-         f"у ящика снаружи, {N['fake_background']} — вне объектов"),
+         f"ближе {N['axis_near_m']} м на прямой точка в габарите и по оси лидара, от которой ставили объекты "
+         f"({N['axis_angle']} к рельсам; вопрос организаторам открыт); от рельсов габарит не сужается. GO с "
+         f"дальностью контроля за объектом — {N['overclaim_go'][1]} кадров (было {N['overclaim_go'][0]}); ложных "
+         f"STOP: {N['fake_outside_false']} у ящика снаружи, {N['fake_background']} вне объектов"),
     ]
     for ti, di, t, d in cards:
         fill(placeholder(sl, ti), [t], size=15, bold_all=True)
@@ -781,15 +999,19 @@ def s_hard(sl):             # template slide 15: five lined rows
     fill(placeholder(sl, 0), ["СЛОЖНЫЕ СЛУЧАИ"])
     rows = [
         "**Полотно полно предметов.** «Всё выше полотна» — 1 482 ложных события за 20 мин; порог «≥ 3 см над "
-        "головкой рельса + 0,5 с» — единицы",
+        "головкой рельса + 0,5 с» — единицы; мелкие предметы на полотне между рельсами (кубы 0,3 м; ящик 0,5 м "
+        f"найден в {of(N['bed_box_found'])} подходов) — слепое пятно",
         f"**Предмет на рельсе делился на две ступени.** Верх на 0,10–0,15 м — между ступенью низких объектов "
-        f"и габаритом; кластеризуем его целиком: {N['object_before']} → {N['object_hits']} кадров",
+        f"и габаритом; кластеризуем его целиком: {N['rail_object_v061']} → {of(N['rail_object'])} кадров",
         "**Станции и стрелки.** Край платформы и конструкции у торца — главный источник ложных остановок; "
-        "без рельсов в ближней зоне дальше 40 м — только предупреждение",
+        "без рельсов в ближней зоне дальше 40 м — только предупреждение; обученное «мнение» о треке может "
+        f"отложить сомнительный STOP — {opinion_bounds()}",
         "**Дальше 100 м — 1–5 точек на объект.** Высокие объекты — по дальнему правилу до ~150 м; мелкие "
-        f"(< 0,6 м) — ближе: кубы 0,3 м организаторов — только с {N['fake_cubes']} м (на 60–115 м — 2–4 точки)",
-        "**Объекты организаторов у края и тонкие.** Ящик 2 × 2 м у края — STOP лишь с 10 м (6 кадров): их объекты "
-        "стоят от оси лидара (−0,24° к рельсам), наш габарит — от рельсов; висящий предмет 5 см — STOP только с 30 м",
+        f"(< 0,6 м) — ближе: кубы 0,3 м организаторов — только с {cubes()} м (на 60–115 м — 2–4 точки)",
+        f"**Объекты организаторов у края и тонкие.** Их объекты стоят от оси лидара ({N['axis_angle']} к "
+        f"рельсам): ближе {N['axis_near_m']} м на прямой точку засчитываем и по ней — у края STOP с {edge_from()} м "
+        f"(габарит шире до {num(N['axis_shift_m'])} м, нигде не уже); висящий предмет 5 см — STOP только с "
+        f"{set_o_first('thin_hanging')} м",
     ]
     for idx, text in zip(range(15, 20), rows):
         ph = placeholder(sl, idx)
@@ -800,13 +1022,17 @@ def s_hard(sl):             # template slide 15: five lined rows
 def s_next(sl):             # template slide 17: three cards
     fill(placeholder(sl, 0), ["ИТОГИ И ПЛАНЫ"])
     cards = [
-        (49, 37, 38, "Что получилось", f"ROS 2-модуль в Docker; все {N['frames']} реальных кадров: человек и "
-                                       f"предмет на рельсе найдены, {N['ride_per_km']} ложных события на км (на данных, где решались правила); "
-                                       f"ящик организаторов — с {N['fake_box']} м; {N['tests']} тестов и CI"),
+        (49, 37, 38, "Что получилось", f"ROS 2-модуль в Docker; все {num(frames_total())} реальных кадров: человек и "
+                                       f"предмет на рельсе найдены, {per_km()} ложных события на км (на данных, где подбирались правила; "
+                                       f"на невиданных кусках поездки — {unseen_km()}); "
+                                       f"ящик организаторов — с {set_o_first('big_center')} м; {N['tests']} тестов и CI"),
         (50, 39, 40, "Что дальше", "мелкие объекты раньше: короткие сигнатуры инфраструктуры, опора высоты "
                                    "по своду тоннеля; скорость от одометрии (своя по лидару — опция); "
-                                   "«второе мнение» на реальных препятствиях; репетиция офлайн-запуска"),
-        (51, 41, 42, "Внедрение", "docker load → run → ros2 bag play; один файл параметров; стандартные "
+                                   "«мнение» о треке — переобучить на реальных препятствиях; ответ организаторов: габарит от рельсов "
+                                   "или от оси лидара"),
+        (51, 41, 42, "Внедрение", "docker load → run → ros2 bag play или одной командой: scripts/play_bag.sh "
+                                  "путь_к_бэгу [--archive resense-image-версия.tar.gz] — образ, узел, запись и "
+                                  "каждая смена решения с дистанцией; один файл параметров; стандартные "
                                   "сообщения ROS 2 — стыкуется с системой торможения"),
     ]
     for k, (ni, ti, di, t, d) in enumerate(cards):
@@ -825,34 +1051,63 @@ NOTES = {  # speaker notes per template slide (the main shot's are set in s_hero
         "учим сеть на объектах, а описываем нормальный тоннель. Главные трудности — ложные остановки на "
         "станциях и разные записи; обе решены в самой системе.",
     11: "Одной фразой: описываем нормальный тоннель и сообщаем всё, что попадает в габарит поезда. "
-        "Работает в ROS 2 и Docker, без обучения на объектах. GPU мы оценили и не используем: выигрыш — "
+        "Работает в ROS 2 и Docker. Решает геометрия; обученная часть одна — «мнение» о треке, и оно может "
+        f"только отложить сомнительный STOP, не больше чем на {N['opinion_budget']} кадров "
+        f"(~{num(N['opinion_budget'] / 10)} с), но не отменить его. GPU мы оценили и не используем: выигрыш — "
         "десятки миллисекунд, а контейнер с запросом GPU не стартует на машине без nvidia-container-toolkit.",
     24: "Почему не нейросеть: реальных препятствий в данных почти нет, а на 100+ м у объекта единицы точек. "
         "Геометрия среды переносится между тоннелями, внешний вид объектов — нет.",
-    12: "Все числа дальше — на всех 13 759 кадрах организаторов. Каждая запись обрывается на 209–210 м: "
-        "дальше в тоннеле нет ни одного отражения, и это предел для любого алгоритма на этих данных.",
-    25: "Пять шагов на каждый кадр, 23–31 мс в среднем на одном ядре; это с необязательными ядрами на C++, "
-        "без них время детектора в 1,6–2,3 раза больше при том же выходе бит в бит. Калибровка крепления — сама, по "
-        "рельсам; кривизна — по стенам, поэтому коридор осмыслен и там, где рельсов уже не видно.",
+    12: f"Все числа дальше — на всех {num(frames_total())} кадрах организаторов. Каждая запись обрывается на "
+        "209–210 м: дальше в тоннеле нет ни одного отражения, и это предел для любого алгоритма на этих данных.",
+    25: f"Пять шагов на каждый кадр, {N['latency']} в среднем на одном ядре; это с необязательными ядрами на C++, "
+        f"без них время детектора в {native_factor()} раза больше при том же выходе бит в бит. Калибровка "
+        "крепления — сама, по рельсам; кривизна — по стенам, поэтому коридор осмыслен и там, где рельсов уже "
+        "не видно.",
     27: "Цепочка организаторов прогнана в Docker на реальных записях: узел в одном контейнере, bag play из "
         "другого, от обычного пользователя. Решение — топик /resense/decision: GO, CAUTION, STOP, FAULT. "
         "Слева — наш дашборд: вид из кабины по статусу того же узла.",
-    20: "Человек на пути — 58 из 61 кадра, предмет на рельсе — 125 из 126. Ложных событий в 20-минутной "
-        "поездке — 3,5 на км, почти вдвое меньше, чем в v0.6.1. На объектах самих организаторов большой "
-        "ящик — с 98 м, кубы 30 см — только с 43–53 м; STOP у всех восьми, но у края — лишь 2 и 6 кадров, о них — через слайд.",
-    22: "Первое подтверждение человека — 148 м, медиана шести подходов. В пяти парных подходах — 150 м, "
-        "а если ставить его по ближним рельсам, а не по нашей же дальней оси, — 154 м: дальность на прямой "
-        "не зависит от оси детектора. Со скоростью поезда "
-        "— 167 м; свою скорость мы меряем по лидару с ошибкой 0,07 м/с, но раньше STOP она не даёт, поэтому "
-        "это опция. Дальше 210 м отражений нет. Всё это синтетика в реальных кадрах поездки.",
+    20: f"Человек на пути — {of_frames(N['person'])}, тревога {person_alarm()}; все добавленные кадры — от "
+        f"отсчёта по оси лидара, как у организаторов, по габариту от рельсов было бы {N['person_rails_only']}. "
+        f"Предмет на рельсе — {of(N['rail_object'])}. Ложных событий в 20-минутной поездке — {per_km()} на км, но это на тех же "
+        "данных, где мы подбирали правила и откуда взяты отрицательные примеры «мнения» о треке; без "
+        f"«мнения» одни правила дают {events(N['ride_cv'][0])}. Честную цифру мы измерили: каждую пару кусков "
+        f"поездки прогнали с моделью, которая их не видела, — {events(N['ride_cv'][1])}, {unseen_km()} на км. "
+        "На объектах "
+        f"организаторов большой ящик — с {set_o_first('big_center')} м, кубы 30 см — с {cubes()} м, у края — с "
+        f"{edge_from()} м. Проверка, на которой мы ничего не настраивали и которую заявили заранее, — те же "
+        f"объекты организаторов на новых местах: {novel()}. Это новые сочетания знакомых форм и фонов, а не "
+        "новые данные.",
+    22: f"Первое подтверждение человека — {set_f('person')} м, медиана шести подходов. В пяти парных подходах — "
+        f"{N['anchored_legacy']} м, а если ставить его по ближним рельсам, а не по нашей же дальней оси, — "
+        f"{set_f('person_anchored')} м: дальность на прямой не зависит от оси детектора. Со скоростью поезда "
+        f"— {N['speed_person']} м; свою скорость мы меряем по лидару с ошибкой {N['speed_err']}, но раньше STOP "
+        "она не даёт, поэтому это опция. Дальше 210 м отражений нет. Всё это синтетика в реальных кадрах поездки.",
     21: "Это единственная внешняя проверка — объекты, которые вставили сами организаторы, поезд едет к ним до "
-        "20 м/с. Большой ящик — с первого появления, 98 м; доска поперёк рельсов — с 82 м. Кубы 30 см — "
-        "только с 43–53 м: на 60–115 м от них 2–4 точки в кадре. Висящий предмет 5 см — с 30 м; ящик у верха "
-        "габарита — непрерывно с 101 м; у края — STOP лишь в 2 и 6 кадрах: объекты ставили от оси лидара, а наш "
-        "габарит идёт по рельсам.",
-    16: "Надёжность: сами находим крепление и вход, при проблемах с данными говорим FAULT, а не молчим.",
+        f"20 м/с. Большой ящик — с первого появления, {set_o_first('big_center')} м; доска поперёк рельсов — с "
+        f"{set_o_first('long_low_on_rails')} м. Кубы 30 см — только с {cubes()} м: на 60–115 м от них 2–4 точки в "
+        f"кадре. Висящий предмет 5 см — с {set_o_first('thin_hanging')} м; ящик у верха габарита — непрерывно с "
+        f"{set_o_first('big_above')} м. У края — с {edge_from()} м; трек ящика у края — STOP с "
+        f"{num(N['edge_box_track_m'])} м, а счётчик засчитывает кадры с {set_o_first('big_edge_inside')} м: он "
+        "ищет обнаружение в метре от центра двухметрового ящика. Организаторы ставили объекты от оси лидара, "
+        f"и ближе {N['axis_near_m']} м на прямой точку в габарите мы засчитываем и по ней. Габарит от рельсов "
+        "при этом нигде не сужается — только добавляется; прирост есть потому, что организаторы меряют от оси, "
+        f"а вопрос, от рельсов или от оси, открыт: без этого куб у края — лишь с {num(N['noref_edge_cube_m'])} м. "
+        f"Дальние слабые треки дали ящику у верха габарита и доске {set_o_first('big_above')} и "
+        f"{set_o_first('long_low_on_rails')} м вместо {N['nofar_first'][0]} и {N['nofar_first'][1]}.",
+    16: "Надёжность: сами находим крепление и вход, при проблемах с данными говорим FAULT, а не молчим. "
+        "Ложный STOP на пустой сцене больше не зависит от того, как узел получал кадры: в записанных историях "
+        f"узла — {N['history_captured'][1]} (было {N['history_captured'][0]}), в стресс-тесте с пропусками и "
+        f"догонялками — {events(N['history_stress'][1])} (было {N['history_stress'][0]}).",
     15: "Что не сработало и почему: полотно полно железа, станции — главный источник ложных остановок, "
-        "мелкие объекты организаторов видим поздно, тонкие — только вблизи, у края — лишь в нескольких кадрах.",
+        "мелкие объекты организаторов видим поздно, тонкие — только вблизи. «Мнение» о треке обучено на "
+        "синтетике: непохожий реальный объект — мусор, лежащий человек — оно может задержать, но "
+        f"{opinion_bounds()}; предел {N['opinion_near_m']} м действует и по предсказанной дистанции, пока трек "
+        "пропущен; STOP оно никогда не отменяет. "
+        "Порог — половина наибольшего, который не задерживает ни одного отложенного синтетического объекта; "
+        f"без этого запаса было бы {N['ride_zero_margin'][0]} событий в поездке и {N['ride_zero_margin'][1]} "
+        "на невиданных кусках — запас оставили ради безопасности. После независимой проверки первой версии "
+        "(два независимых судьи) исправили три вещи: габарит стал объединением — от рельсов нигде не "
+        "уже; задержку «мнения» ограничили; дальний слабый трек, пока не приближается, — CAUTION, а не скрыт.",
     17: "Итог: работающий модуль, честные цифры, понятные следующие шаги — мелкие объекты раньше, скорость "
         "от одометрии и замер на 8-ядерной машине.",
 }

@@ -203,9 +203,14 @@ def test_column_hold_person_beside_a_column_is_a_stop(tunnel):
     such frame)."""
     frame, _, _ = tunnel
     cfg = DetectorConfig()
+    # gauge.reference (on since 27.09) moves the envelope 0.2 m away from this column (the synthetic track axis
+    # is 0.25 m off the sensor axis): at 40 m it is advisory '' (outside), not 'column'; off here for the hold
+    cfg.gauge = replace(cfg.gauge, reference=0)
+    shipped = DetectorConfig()
     hold, zw = cfg.tracking.column_hold, cfg.tracking.zone_window
     assert hold >= 1
     off = DetectorConfig()
+    off.gauge = replace(off.gauge, reference=0)
     off.tracking = replace(off.tracking, column_hold=0)
     confirm = cfg.tracking.frames_to_confirm() - 1                  # frame index of the first STOP: 4
     for dist in (40.0, 60.0, 80.0):
@@ -217,8 +222,9 @@ def test_column_hold_person_beside_a_column_is_a_stop(tunnel):
                                     intensity=np.concatenate([frame.intensity, np.full(len(column), 30.0, np.float32)])))
             assert not res.obstacle
         assert res.warning and res.warnings[0].reason == "column"
-        assert _first_stop(frame, [person] * 8, cfg) == confirm
-        assert _first_stop(frame, [np.concatenate([column, person])] * 8, cfg) == confirm, dist
+        for c in (cfg, shipped):
+            assert _first_stop(frame, [person] * 8, c) == confirm
+            assert _first_stop(frame, [np.concatenate([column, person])] * 8, c) == confirm, dist
     column = _box_surface(60.0, 0.3, 0.95, 0.0, 2.8, 0.3)
     front = np.concatenate([column, _box_surface(59.65, 0.3, 0.95, 0.0, 1.8, 0.5)])   # the person in front of it
     stepped = np.concatenate([column, _box_surface(60.0, 0.3, 0.0, 0.0, 1.8, 0.5)])
@@ -231,6 +237,7 @@ def test_column_hold_person_beside_a_column_is_a_stop(tunnel):
             assert got == base, (m, got, base)
         else:
             assert base < got <= zw - hold, (m, got, base)
+        assert _first_stop(frame, seq, shipped) - m <= zw - hold             # the shipped defaults: the same bound
 
 
 # --- the rail shadow of a large near object (P3, 25.09) ------------------------------------------
@@ -689,7 +696,11 @@ def test_far_axis_both_sides_hall_curvature_no_longer_carries_a_far_stop(tunnel)
     t = Detector(DetectorConfig()).process(scene).track
     lat = float(t.center_y(np.array([125.0]))[0]) - AXIS_Y            # ~1 m left of the real track axis
     pts = _box_surface(125.0, 0.3, lat, 0.3, 1.7, 0.5)
-    off = _run_with(scene, pts, DetectorConfig(), n=5)            # the 5th frame confirms it
+    base = DetectorConfig()
+    # the learned track opinion (tracking.doubt_*, on since 27.09) withholds this far STOP (4 frames, then the
+    # lateral drifts out of the envelope as the hall axis settles); off here, so "off" is the flag's baseline
+    base.tracking = replace(base.tracking, doubt_extra_hits=0)
+    off = _run_with(scene, pts, base, n=5)                        # the 5th frame confirms it
     assert off.obstacle and off.detections[0].reason == "" and abs(off.detections[0].distance - 125.0) < 1.0
     for mode in (1, 2):
         on = _run_with(scene, pts, _both_sides(mode), n=5)

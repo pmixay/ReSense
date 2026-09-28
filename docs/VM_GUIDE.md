@@ -44,7 +44,8 @@ archive comes from `scripts/export_image.sh`, not from a release, and no step he
 The 26.09 completion pass prepares a public offline artifact after the final checks; §4.5
 separates that publication path from this local export procedure.
 
-**What is tested** is the branch or commit the captain names (`main` once PR #12 is merged). A
+**What is tested** is the branch or commit the captain names (PR #12 is merged into `main`; use
+the later tested branch if it contains the supported playback procedure). A
 failing criterion is a **finding to report**, with the numbers, not something to fix on the VM:
 no code, config or test changes are made there.
 
@@ -62,7 +63,7 @@ work inside `tmux`, so that long runs survive a dropped connection.
 
 ```bash
 REPO_URL='<clone URL of the repository>'          # set these two
-BRANCH='<branch or commit named by the captain>'   # main once PR #12 is merged
+BRANCH='<branch or commit named by the captain>'   # name the exact tested source
 REPO=$HOME/ReSense                  # the clone (any directory)
 DATA=/data                          # bags and caches; mount a data disk here if there is one
 BAGS=$DATA/for_hackathon            # the six recordings (the scripts' default)
@@ -251,7 +252,7 @@ after `cb9e4ab`), the build `--no-cache` again:
 
 | step | command | expected |
 |---|---|---|
-| drops (C7) | §4.1, first command | `dropped input settle`: environment-dependent (current cold CI +8.8 s at read-ahead 10); `dropped input vs bag : … 4 frame(s) missing from the recording itself; 0 of its messages not processed`; `PASS`; the node log says `dropped N (M skipped by the catch-up)` |
+| drops (C7) | §4.1, first command | `dropped input settle`: environment-dependent (earlier cold CI +8.8 s; archive-cache run +13.6 s; verified-bag cache run +2.6 s, all at read-ahead 10); `dropped input vs bag : … 4 frame(s) missing from the recording itself; 0 of its messages not processed`; `PASS`; the node log says `dropped N (M skipped by the catch-up)` |
 | false alarm (C7) | §4.1, second command, then the `replay_node_frames.py` line | `PASS` with at most 1 alarm frame (was 3 at 111–115 m: the column at 101–149 m, advisory since `tracking.column_hold` 2); the node's and the replay's alarm lists equal |
 | CycloneDDS player (C4) | `sudo sysctl -w net.core.rmem_max=33554432` (leave `rmem_default`), the host console of §4.2 with `RMW_IMPLEMENTATION=rmw_cyclonedds_cpp`, then `sudo sysctl -w net.core.rmem_max=212992` | both recordings arrive, `STOP` on the obstacle; no rmem WARN in the node log (the image now asks for a 32 MiB receive buffer, so `rmem_max` alone decides) |
 | bench (C8, closed; a confirmation) | §4.3 | `dry_obstacle_native` PASS; write down the physical core count |
@@ -307,23 +308,31 @@ current result after an 8.8 s startup catch-up and had zero original messages un
 frames are missing from that source recording. The clear bag produced zero alarm frames and zero
 unprocessed messages. Logs and status captures are in
 [`evidence/p1_p2_completion_2026-09-26/cold_bags_passed_run_36281462241/`](evidence/p1_p2_completion_2026-09-26/cold_bags_passed_run_36281462241/).
-The usual `dry_run.sh` default remains 1,000 read-ahead messages, and that default still produces
-stale output on the cold whole-recording burst. To reproduce the passing bounded-prefetch test on
-a machine with Docker and the original bags, drop caches before each command and set the variable
-for both runs:
+The supported-default rerun on `5a27c66` also passed both cold original bags and all six CI
+jobs after the Drive quota reset; it verified the archive and bag hashes and saved the archive
+in the Actions cache. Its 360° stream became current after +13.6 s, close to the 15 s gate.
+[Current receipt](evidence/p1_p2_supported_playback_2026-09-27/README.md).
+The subsequent [verified-bag cache run](evidence/p1_p2_supported_playback_2026-09-27/cached_bags_run_36319767736/README.md)
+passed seven jobs and both cold bags. The dataset job saved verified bags; Docker restored and
+reverified them without downloading. This run's 360° catch-up and first current STOP were at
++2.6 s of source time. Preserve the +13.6 s prior result as evidence of startup variability.
+The supported `dry_run.sh` default is now ten read-ahead messages, matching the passing
+bounded-prefetch runs. Humble's unbounded-for-these-bags default of 1,000 still produces stale
+output on the cold whole-recording burst. To reproduce the supported test on a machine with
+Docker and the original bags, drop caches before each command:
 
 ```bash
 sudo sh -c 'sync; echo 3 > /proc/sys/vm/drop_caches'
-BAG_READ_AHEAD_QUEUE_SIZE=10 SKIP_BUILD=1 OUT=out/cold_obstacle ./scripts/dry_run.sh "$BAGS/doubleT_obstacle" \
+SKIP_BUILD=1 OUT=out/cold_obstacle ./scripts/dry_run.sh "$BAGS/doubleT_obstacle" \
   --expect-obstacle --distance 50:62 --min-frames 20 --max-p95-latency 100 --max-dropped 0
 sudo sh -c 'sync; echo 3 > /proc/sys/vm/drop_caches'
-BAG_READ_AHEAD_QUEUE_SIZE=10 SKIP_BUILD=1 OUT=out/cold_clear ./scripts/dry_run.sh "$BAGS/roundT_doubleT" \
+SKIP_BUILD=1 OUT=out/cold_clear ./scripts/dry_run.sh "$BAGS/roundT_doubleT" \
   --expect-clear --max-alarm-frames 2 --max-p95-latency 100 --max-dropped 0
 ```
 
-This records the tested procedure; it does not change the default. C5/C7 remain partial until the
-captain accepts bounded prefetch/prewarm for operation or a separately tested default change
-passes.
+The command and jury procedure now use the tested ten-message limit by default. This closes the
+operating-procedure choice; it does not show that a 1,000-message overdue burst is handled, nor
+does it replace a physical clean-machine rehearsal.
 
 **Matching the bag.** `check_dry_run.py --bag` now reads each message's CDR header stamp and
 matches the node's stamp directly, with at most 100 microseconds of float roundoff tolerance
@@ -364,8 +373,8 @@ unset FASTRTPS_DEFAULT_PROFILES_FILE FASTDDS_DEFAULT_PROFILES_FILE RMW_FASTRTPS_
 mkdir -p out/host_console
 ros2 topic echo /resense/status --field data > out/host_console/status.jsonl & ECHO=$!
 sleep 4
-ros2 bag play "$BAGS/roundT_doubleT" --delay 3 --disable-keyboard-controls && sleep 5 &&
-  ros2 bag play "$BAGS/doubleT_obstacle" --delay 3 --disable-keyboard-controls
+ros2 bag play "$BAGS/roundT_doubleT" --delay 3 --read-ahead-queue-size 10 --disable-keyboard-controls && sleep 5 &&
+  ros2 bag play "$BAGS/doubleT_obstacle" --delay 3 --read-ahead-queue-size 10 --disable-keyboard-controls
 sleep 3; kill "$ECHO"
 python3 scripts/check_dry_run.py out/host_console/status.jsonl --require-freshness --expect-obstacle --obstacle-in 2 --expect-inputs 2 \
   --min-frames 20 --max-p95-latency 1000 --max-dropped 100000 | tee "$EV/dry_run_$DAY/host_console.txt"
@@ -400,8 +409,8 @@ VM (the captain: a machine with half the stand's cores is enough); a run here co
 ### 4.4 Regression gate with the ride
 
 ```bash
-BASELINE=$(ls docs/evidence/results/regression_baseline_*_ride*.json | LC_ALL=C sort | tail -n 1)   # the newest baseline with the ride
-echo "$BASELINE"      # since 26.09 (the P3 items of 26.09 and the STOP keep on): regression_baseline_2026-09-26_ride_p3d.json
+BASELINE=$(python3 -c "import glob, json; print(max((json.load(open(p))['created'], p) for p in glob.glob('docs/evidence/results/regression_baseline_*.json') if json.load(open(p)).get('ride', {}).get('available'))[1])")   # the newest baseline with the ride
+echo "$BASELINE"      # since 27.09 (the reviewed quality cycle): regression_baseline_2026-09-27_quality.json
 mkdir -p "$EV/gate_$DAY"
 python scripts/regression_gate.py --cache "$CACHE" --jobs 6 --baseline "$BASELINE" \
   --out "$EV/gate_$DAY/gate_$(git rev-parse --short HEAD).json" 2>&1 | tee "$EV/gate_$DAY/gate_table.txt"
@@ -482,8 +491,8 @@ mkdir -p out/host_shm
 ls -l /dev/shm > "$EV/dry_run_$DAY/host_shm_ls.txt"
 ros2 topic echo /resense/status --field data > out/host_shm/status.jsonl & ECHO=$!
 sleep 4
-ros2 bag play "$BAGS/roundT_doubleT" --delay 3 --disable-keyboard-controls && sleep 5 &&
-  ros2 bag play "$BAGS/doubleT_obstacle" --delay 3 --disable-keyboard-controls
+ros2 bag play "$BAGS/roundT_doubleT" --delay 3 --read-ahead-queue-size 10 --disable-keyboard-controls && sleep 5 &&
+  ros2 bag play "$BAGS/doubleT_obstacle" --delay 3 --read-ahead-queue-size 10 --disable-keyboard-controls
 sleep 3; kill "$ECHO"
 python3 scripts/check_dry_run.py out/host_shm/status.jsonl --require-freshness --expect-obstacle --obstacle-in 2 --expect-inputs 2 \
   --min-frames 20 --max-p95-latency 1000 --max-dropped 100000 | tee "$EV/dry_run_$DAY/host_console_shm.txt"

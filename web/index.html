@@ -120,6 +120,7 @@
 <div id="drop-overlay">Отпустите results.jsonl для воспроизведения</div>
 <!-- roslibjs нужен только для прямого эфира; воспроизведение записей работает без него -->
 <script async src="assets/vendor/roslib.min.js" onerror="document.getElementById('conn').textContent='roslib.js не загружен — доступна запись'"></script>
+<script src="assets/result-format.js"></script>
 <script>
 'use strict';
 const $ = id => document.getElementById(id);
@@ -510,7 +511,7 @@ function applyResult(res, opts) {
   const when = state.mode === 'replay' ? `#${String(res.frame ?? state.shown - 1).padStart(5, '0')} +${(t - (state.t0 || 0)).toFixed(1)}с` : new Date().toLocaleTimeString('ru-RU');
   if (res.obstacle) {
     state.alarmFrames++;
-    logLine(`${when}  ПРЕПЯТСТВИЕ ${res.nearest_distance.toFixed(1)} м  ` + dets.map(d => `#${d.id} смещение=${d.lateral.toFixed(1)} размер=${d.size[0].toFixed(1)}×${d.size[1].toFixed(1)}×${d.size[2].toFixed(1)} точек=${d.n_points} p=${d.confidence.toFixed(2)}`).join(' | '));
+    logLine(`${when}  ПРЕПЯТСТВИЕ ${fmt(res.nearest_distance, 1, ' м')}  ` + dets.map(d => `#${d.id} смещение=${d.lateral.toFixed(1)} размер=${d.size[0].toFixed(1)}×${d.size[1].toFixed(1)}×${d.size[2].toFixed(1)} точек=${d.n_points} p=${d.confidence.toFixed(2)}`).join(' | '));
   } else if (state.lastObstacle) {
     logLine(`${when}  препятствие больше не обнаружено · тревога длилась ${state.alarmFrames} кадр.`);
     state.alarmFrames = 0;
@@ -524,12 +525,12 @@ function applySafety(res) {
   const decision = decisionOf(res);
   $('decision').textContent = DECISION_RU[decision] || decision;
   $('decision').className = { STOP: 'bad', FAULT: 'bad', CAUTION: 'warn' }[decision] || '';
-  $('clear').textContent = res.freshness?.valid === false ? 'не определена' : res.clear_distance == null ? '—' : res.clear_distance.toFixed(0) + ' м';
+  $('clear').textContent = res.freshness?.valid === false || decision === 'FAULT' ? 'не определена' : res.clear_distance == null ? '—' : res.clear_distance.toFixed(0) + ' м';
   const fresh = res.freshness;
   $('freshness').textContent = !fresh ? 'не проверялась' : fresh.valid ? 'проверена при обработке' : fresh.reason === 'catchup' ? 'обработка очереди' : 'нет актуальных данных';
   $('freshness').className = !fresh || fresh.reason === 'catchup' ? 'warn' : fresh.valid ? '' : 'bad';
   $('age-label').textContent = fresh?.mode === 'replay' ? 'После публикации записи' : 'После измерения';
-  $('source-age').textContent = fresh?.source_age_s == null ? '—' : ((fresh.source_age_s + (fresh.transport_age_s || 0)) * 1000).toFixed(0) + ' мс';
+  $('source-age').textContent = !Number.isFinite(fresh?.source_age_s) ? '—' : ((fresh.source_age_s + (Number.isFinite(fresh.transport_age_s) ? fresh.transport_age_s : 0)) * 1000).toFixed(0) + ' мс';
   $('health').textContent = { ok: 'норма', warn: 'предупреждение', error: 'ошибка' }[h.level] || '—';
   $('health').className = { error: 'bad', warn: 'warn' }[h.level] || '';
   $('vis').textContent = h.visibility == null ? '—' : `${h.visibility.toFixed(0)} м / ${(100 * (h.rail_lock ?? 0)).toFixed(0)} %`;
@@ -583,8 +584,7 @@ function setLiveStale(stale) {
 function onStatus(msg, source = ros, generation = rosGeneration) {
   if (state.mode !== 'live' || source !== ros || generation !== rosGeneration) return;
   let res; try { res = JSON.parse(msg.data); } catch (e) { return; }
-  if (!res || typeof res !== 'object' || typeof res.obstacle !== 'boolean') return;
-  if (res.decision != null && !VALID_DECISIONS.has(res.decision)) return;
+  if (!resenseFormat.result(res) || !VALID_DECISIONS.has(res.decision)) return;
   const f = res.freshness, finite = v => typeof v === 'number' && Number.isFinite(v);
   let invalid = '';
   if (!f || typeof f.valid !== 'boolean') invalid = 'status_clock_unknown';
@@ -626,9 +626,11 @@ function onStatus(msg, source = ros, generation = rosGeneration) {
     res.stop_source_stamp = state.stopLatch.stamp; res.stop_source_frame_id = state.stopLatch.frame_id;
   }
   state.lastStatusArrival = performance.now(); state.streamStale = false;
-  $('health-source').className = 'pill ok'; $('health-source').textContent = 'Прямой эфир';
+  const current = res.freshness?.valid === true && decisionOf(res) !== 'FAULT';
+  $('health-source').className = 'pill ' + (current ? 'ok' : 'bad');
+  $('health-source').textContent = current ? 'Прямой эфир' : 'Нет актуального состояния';
   applyResult(res);
-  setLiveStale(false);
+  setLiveStale(!current);
 }
 function checkLiveStream(now = performance.now(), disconnected = false) {
   if (state.mode !== 'live' || !state.last || state.lastStatusArrival == null || state.streamStale) return;
@@ -698,6 +700,13 @@ function resetView() {
   state.node = { lastDropped: null, alertUntil: 0 };
   $('log').innerHTML = '<span class="empty-log">Событий пока нет.</span>';
   setBanner('idle', 'ОЖИДАНИЕ ДАННЫХ');
+  for (const id of ['dist', 'counts', 'axis', 'radius', 'valid', 'points', 'timing', 'stages',
+                    'decision', 'clear', 'freshness', 'source-age', 'health', 'vis', 'mount']) {
+    $(id).textContent = '—'; $(id).className = '';
+  }
+  $('frames').textContent = '0'; $('health-msgs').textContent = '';
+  applyNode(null);
+  drawTop({}); drawTimeline(); drawCab(null);
 }
 function setMode(m) {
   if (state.mode === m) return;
@@ -709,11 +718,13 @@ function setMode(m) {
   $('canvas-note').textContent = m === 'replay' ? 'Воспроизведение results.jsonl' : 'Данные ROS в реальном времени';
   $('health-source').className = 'pill ' + (m === 'live' ? 'warn' : 'ok');
   $('health-source').textContent = m === 'live' ? 'Поток отключён' : 'Запись готова';
+  for (const id of ['play', 'stepback', 'stepfwd', 'seek']) $(id).disabled = m !== 'replay' || !state.frames.length;
+  if (m === 'live') setLiveStale(true);
 }
 function summarizeFrames(frames) {
   let events = 0, alarmFrames = 0, warningFrames = 0, active = false, nearest = Infinity, maxTime = 0;
   for (const f of frames) {
-    if (f.obstacle) { alarmFrames++; nearest = Math.min(nearest, Number(f.nearest_distance)); if (!active) events++; }
+    if (f.obstacle) { alarmFrames++; if (Number.isFinite(f.nearest_distance)) nearest = Math.min(nearest, f.nearest_distance); if (!active) events++; }
     if (f.warning) warningFrames++;
     active = !!f.obstacle;
     maxTime = Math.max(maxTime, Number((f.timing_ms || {}).total) || 0);
@@ -732,7 +743,7 @@ function loadText(text, name) {
   const frames = [];
   for (const line of text.split(/\r?\n/)) {
     const s = line.trim(); if (!s) continue;
-    try { const o = JSON.parse(s); if (o && typeof o === 'object' && 'obstacle' in o) frames.push(o); } catch (e) { /* skip bad line */ }
+    try { const o = JSON.parse(s); if (resenseFormat.result(o)) frames.push(o); } catch (e) { /* skip bad line */ }
   }
   setMode('replay'); pause();
   state.frames = frames; state.idx = -1; state.t0 = frames.length ? stampOf(frames[0]) : null;
@@ -781,23 +792,26 @@ function readReplayFile(file) {
   r.readAsText(file);
 }
 function showFrame(i, draw) {
+  if (state.mode !== 'replay' || !state.frames[i]) return;
   state.idx = i; const f = state.frames[i];
   applyResult(f, { draw });
   $('seek').value = i; $('frame-pos').textContent = `Кадр ${i + 1} из ${state.frames.length}`;
 }
 function seek(i) {
+  if (state.mode !== 'replay' || !state.frames.length) return;
   // rebuild the timeline and the log from the start so that seeking backwards is consistent
   i = Math.max(0, Math.min(i, state.frames.length - 1));
   resetView();
   for (let k = 0; k <= i; k++) showFrame(k, k === i);
 }
 function step(n) {
-  if (!state.frames.length) return;
+  if (state.mode !== 'replay' || !state.frames.length) return;
   const i = state.idx + n;
   if (n > 0 && i < state.frames.length) showFrame(i, true);
   else if (n < 0 && i >= 0) seek(i);
 }
 function tick() {
+  if (state.mode !== 'replay') { pause(); return; }
   if (state.idx + 1 >= state.frames.length) {
     if ($('loop').checked) { seek(0); return; }
     pause(); return;
@@ -805,7 +819,7 @@ function tick() {
   showFrame(state.idx + 1, true);
 }
 function play() {
-  if (!state.frames.length || state.playing) return;
+  if (state.mode !== 'replay' || !state.frames.length || state.playing) return;
   if (state.idx + 1 >= state.frames.length) seek(0);
   state.playing = true; $('play').textContent = 'Пауза';
   state.timer = setInterval(tick, 1000 * FRAME_DT / state.speed);

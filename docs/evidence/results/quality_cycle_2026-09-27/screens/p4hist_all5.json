@@ -1,0 +1,119 @@
+{
+ "gate": {
+  "exit_code": 1,
+  "passed": false
+ },
+ "p1_edge_objects": {
+  "small_edge_inside": {
+   "stop_frames": 2,
+   "first_stop_m": 5.2,
+   "held_from_m": 5.2,
+   "advisory_frames": 23,
+   "visible_frames": 83
+  },
+  "big_edge_inside": {
+   "stop_frames": 6,
+   "first_stop_m": 10.3,
+   "held_from_m": 10.3,
+   "advisory_frames": 0,
+   "visible_frames": 125
+  }
+ },
+ "p2_ride": null,
+ "five_empty": {
+  "frames": 2287,
+  "alarm_frames": 50,
+  "alarm_events": 10,
+  "stop_episodes": 12,
+  "advisory_frames": 952
+ },
+ "set_O": {
+  "inside_stop_frames": 382,
+  "outside_false_stop_frames": 6,
+  "background": {
+   "alarm_frames": 0,
+   "track_ids": 0
+  },
+  "inside": {
+   "big_center": {
+    "stop_frames": 208,
+    "first_stop_m": 98.0,
+    "held_from_m": 98.7
+   },
+   "small_center": {
+    "stop_frames": 29,
+    "first_stop_m": 50.8,
+    "held_from_m": 55.8
+   },
+   "small_on_rail": {
+    "stop_frames": 23,
+    "first_stop_m": 42.7,
+    "held_from_m": 46.2
+   },
+   "small_edge_inside": {
+    "stop_frames": 2,
+    "first_stop_m": 5.2,
+    "held_from_m": 5.2
+   },
+   "big_edge_inside": {
+    "stop_frames": 6,
+    "first_stop_m": 10.3,
+    "held_from_m": 10.3
+   },
+   "big_above": {
+    "stop_frames": 51,
+    "first_stop_m": 101.3,
+    "held_from_m": 111.4
+   },
+   "long_low_on_rails": {
+    "stop_frames": 48,
+    "first_stop_m": 80.5,
+    "held_from_m": 89.0
+   },
+   "thin_hanging": {
+    "stop_frames": 15,
+    "first_stop_m": 30.1,
+    "held_from_m": 31.8
+   }
+  },
+  "outside": {
+   "small_outside_near": 0,
+   "big_outside": 6
+  }
+ },
+ "doubleT_obstacle": {
+  "first_alarm_frame": 11,
+  "per_label": {
+   "object_on_rail": {
+    "hits": 128,
+    "frames": 185
+   },
+   "person_crossing": {
+    "hits": 58,
+    "frames": 61
+   },
+   "object_on_rail_from_frame_75": {
+    "hits": 125,
+    "frames": 126
+   }
+  },
+  "fp_events": 0
+ },
+ "p4_history": {
+  "histories": 33,
+  "stop_frames": 235,
+  "stop_events": 55,
+  "histories_with_stop": 14,
+  "captures_stop_events": 0,
+  "cache_stop_events": 55
+ },
+ "name": "p4hist_all5",
+ "sets": [
+  "tracking.confirm_hits=5",
+  "tracking.zone_min_votes=5",
+  "tracking.gate_along_only=true",
+  "tracking.start_clean=true",
+  "track.axis_disagree_hold=5"
+ ],
+ "config": "/data/wt/p4hist/configs/default.yaml"
+}

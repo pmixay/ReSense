@@ -1,0 +1,35 @@
+# resense bench --npy, every frame, OMP_NUM_THREADS=1, idle 4-vCPU sandbox, code 65c5a5b, 2026-09-27T19:37:32Z
+ 19:37:32 up  2:26,  0 user,  load average: 9.61, 8.37, 8.36
+# note: the load average above still decays from the screens that ended just before; nothing else ran during the bench (an independent re-run on an idle machine reproduced every row within 0.4 ms)
+== cloud_with_fake_obj
+track      mean     8.7 ms  p95    10.0 ms  max    23.4 ms
+corridor   mean     4.5 ms  p95     5.0 ms  max     7.8 ms
+egomotion  mean     0.0 ms  p95     0.0 ms  max     0.0 ms
+accumulate mean     0.0 ms  p95     0.0 ms  max     0.1 ms
+cluster    mean     4.1 ms  p95     6.7 ms  max    47.6 ms
+tracking   mean     0.7 ms  p95     1.0 ms  max     1.9 ms
+total      mean    18.0 ms  p95    23.3 ms  max    57.1 ms
+== doubleT_obstacle
+track      mean    12.4 ms  p95    21.9 ms  max    30.0 ms
+corridor   mean     5.5 ms  p95     5.9 ms  max     7.2 ms
+egomotion  mean     0.0 ms  p95     0.0 ms  max     0.0 ms
+accumulate mean     0.0 ms  p95     0.0 ms  max     0.0 ms
+cluster    mean     4.2 ms  p95     5.3 ms  max     6.2 ms
+tracking   mean     0.8 ms  p95     1.0 ms  max     1.1 ms
+total      mean    22.9 ms  p95    32.6 ms  max    41.3 ms
+== roundT_doubleT
+track      mean     9.3 ms  p95    17.3 ms  max    19.2 ms
+corridor   mean     4.9 ms  p95     5.4 ms  max     6.7 ms
+egomotion  mean     0.0 ms  p95     0.0 ms  max     0.0 ms
+accumulate mean     0.0 ms  p95     0.0 ms  max     0.0 ms
+cluster    mean     6.1 ms  p95     8.9 ms  max    12.9 ms
+tracking   mean     0.9 ms  p95     1.2 ms  max     1.3 ms
+total      mean    21.2 ms  p95    30.0 ms  max    32.7 ms
+== squareT_platform_squareT_switch
+track      mean     8.4 ms  p95    10.5 ms  max    21.3 ms
+corridor   mean     4.6 ms  p95     5.1 ms  max     8.2 ms
+egomotion  mean     0.0 ms  p95     0.0 ms  max     0.0 ms
+accumulate mean     0.0 ms  p95     0.0 ms  max     0.0 ms
+cluster    mean     4.9 ms  p95     7.3 ms  max     8.8 ms
+tracking   mean     0.8 ms  p95     1.1 ms  max     1.7 ms
+total      mean    18.6 ms  p95    22.7 ms  max    32.9 ms

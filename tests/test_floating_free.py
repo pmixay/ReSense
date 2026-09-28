@@ -25,6 +25,7 @@ from resense.frame import Frame
 
 ROOT = Path(__file__).resolve().parents[1]
 FREE_SIZE = 0.5          # the shipped cluster.floating_free_max_size (m) since 25.09, round 2; 0 = off
+FREE_DY = 1.2            # the shipped cluster.floating_free_max_dy (m) since 27.09 (0.95 before)
 
 
 def _box(x0: float, length: float, lateral: float, bottom: float, height: float, width: float):
@@ -48,7 +49,7 @@ def test_free_hanging_classification():
         assert _reason(on, 50.0, 0.05, lat, 1.17, 0.22, 0.28) == ""
     assert _reason(on, 50.0, 0.3, 0.7, 1.0, 0.3, 0.3) == ""                 # seen whole
     # what the floating shape must keep demoting
-    assert _reason(on, 50.0, 0.3, 1.1, 1.0, 0.3, 0.3) == "floating"         # reaches past 0.95 m: wall side
+    assert _reason(on, 50.0, 0.3, 1.1, 1.0, 0.3, 0.3) == "floating"         # reaches past 1.2 m: wall side
     assert _reason(on, 50.0, 0.05, 0.95, 1.2, 0.25, 0.5) == "floating"      # a sign 0.7-1.2 m off the axis
     assert _reason(on, 50.0, 0.3, 0.7, 2.3, 0.3, 0.3) == "floating"         # top at 2.6 m: hangs from the vault
     assert _reason(on, 50.0, 1.0, 0.7, 1.0, 0.3, 0.3) == "floating"         # 1 m long: a fixture, not compact
@@ -60,7 +61,7 @@ def test_free_hanging_default():
     for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
                 DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
         c = cfg.cluster
-        assert (c.floating_free_max_size, c.floating_free_max_dy, c.floating_free_max_top) == (FREE_SIZE, 0.95, 2.5)
+        assert (c.floating_free_max_size, c.floating_free_max_dy, c.floating_free_max_top) == (FREE_SIZE, FREE_DY, 2.5)
 
 
 def _cast(specs):

@@ -4,6 +4,15 @@ This record covers the original-bag startup check and the live viewer/dashboard 
 `claude/p1-p2-completion-20260926`. It does not change detector quality, close the detector
 freeze/release hold, or revise the independent score.
 
+**Operating decision, 27.09:** the proven ten-message rosbag2 read-ahead limit is now the
+supported jury, dry-run, and demo playback setting. The cold results below were obtained with
+that exact setting, so they are acceptance evidence for the procedure; no new detector result is
+implied. Humble's 1,000-message default still fails the cold whole-bag burst and remains outside
+the supported procedure. PR #12 has since been merged into `main`; the dated branch references
+below identify the source of these measurements.
+The later [supported-default rerun](../p1_p2_supported_playback_2026-09-27/README.md) passed on
+the current branch after the Drive quota reset; this file retains the earlier run's raw results.
+
 ## Local verification
 
 After merging the latest shared quality-evidence branch, commit `a7789f7`,

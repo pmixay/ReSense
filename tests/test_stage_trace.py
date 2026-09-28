@@ -64,7 +64,10 @@ def test_records_actual_rejection_return_condition_and_restores_function():
     assert clustering._corridor_cluster is original
     record = detector.trace["blobs"][0]
     assert record["target_points"] == 4
-    assert record["returns"][-1]["condition"] == "b.n_vox < min_pts"
+    # the blob is under the point-count bar; without a weak_from distance (cluster.weak_min_points,
+    # 27.09) the return is the one under the weak-evidence test nested in that branch
+    assert record["returns"][-1]["condition"] == (
+        "not (weak_from > 0 and cfg.weak_min_points > 0 and (b.n_vox >= cfg.weak_min_points) and (dist >= weak_from))")
     assert record["returns"][-1]["value"] is None
     assert sys.getprofile() is None
 

@@ -39,6 +39,7 @@ class Cluster:
     wall_kept: bool = False      # 26.09: the wall-at-the-side rule would have dropped it; kept by cluster.wall_keep_gauge_voxels
     demoted: bool = False        # 26.09 (P3 range): in the strict gauge by its voxels, demoted only by a shape signature (SHAPE_SIGNATURES)
     thin: bool = False           # 26.09 (tracking.stop_keep_thin): flatter than min_height, kept only to continue a reported obstacle track
+    weak: bool = False           # 27.09 (cluster.weak_min_points): fewer voxels than min_points, kept only as far evidence for an approaching track
 
     @property
     def size(self) -> np.ndarray:
@@ -151,7 +152,8 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
                   low: Optional[np.ndarray] = None, low_cfg=None,
                   height_valid: Optional[float] = None, gauge: Optional[GaugeConfig] = None,
                   dy_alt: Optional[np.ndarray] = None, in_rail: Optional[np.ndarray] = None,
-                  keep_thin: bool = False) -> List[Cluster]:
+                  keep_thin: bool = False, dy_report: Optional[np.ndarray] = None,
+                  weak_from: float = 0.0) -> List[Cluster]:
     """Voxelise candidates, cluster the voxels, describe and filter the clusters.
 
     ``xyz``/``intensity``/``dy``/``h``/``in_gauge`` are the corridor candidates;
@@ -208,10 +210,20 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
     counts it, and an oversize cluster whose part in ``in_gauge`` is too long falls back to its part in
     it (safety review of 26.09: the union took in a long edge line beside an object and dropped both).
 
-    ``keep_thin`` (26.09, ``tracking.stop_keep_thin``, off by default): a corridor cluster flatter
+    ``keep_thin`` (26.09, ``tracking.stop_keep_thin``, on since 26.09): a corridor cluster flatter
     than ``min_height`` is not dropped but returned with ``thin`` set (every other test applied as
     usual); the caller hands such clusters to the tracker only to continue an obstacle track (one
     scan line of an object whose part inside the envelope is thinner than the ring spacing).
+
+    ``dy_report`` (27.09, ``gauge.reference`` > 0, on): the lateral from the rail axis when
+    ``dy`` is measured from the sensor axis; ``Cluster.lateral`` (the reported lateral) reads it, every
+    rule reads ``dy`` but the gauge-distance reach, which reads it (with the strict membership of
+    ``in_gauge``). ``None`` = ``dy``.
+    ``weak_from`` (27.09, ``cluster.weak_min_points`` with ``tracking.thin_far_min_distance``, on by
+    default): a corridor cluster at least this far with fewer voxels than the point-count bar but at
+    least ``cfg.weak_min_points`` is not dropped but returned with ``weak`` set (every other test
+    applied as usual); the caller hands it to the tracker only, as far evidence for an approaching
+    track.
     """
     out: List[Cluster] = []
     if xyz.shape[0] == 0:
@@ -238,7 +250,7 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
             c = _low_cluster(b, dy, h, intensity, frame_idx, cfg, low_cfg)
         else:
             c = _corridor_cluster(b, dy, h, in_gauge, intensity, inv, frame_idx, cfg, factor, factor_range,
-                                  axis_valid, height_valid, gauge, dy_alt, in_rail, keep_thin)
+                                  axis_valid, height_valid, gauge, dy_alt, in_rail, keep_thin, dy_report, weak_from)
         if c is not None:
             out.append(c)
     out.sort(key=lambda c: c.distance)
@@ -298,7 +310,7 @@ def _low_cluster(b: _Blob, dy, h, intensity, frame_idx, cfg: ClusterConfig, low_
 
 
 def _is_infrastructure(size: np.ndarray, lateral: float, h_max: float, cfg: ClusterConfig,
-                       spare_wall: bool = False) -> bool:
+                       spare_wall: bool = False, lat_along: Optional[float] = None) -> bool:
     """Shapes dropped outright: linear infrastructure along the track (rails, pipes, cables,
     duct edges), low narrow track hardware, wall-like structure at the side, a tall long narrow
     wall segment that a mis-estimated axis pulled into the corridor, and long linear structure
@@ -314,11 +326,11 @@ def _is_infrastructure(size: np.ndarray, lateral: float, h_max: float, cfg: Clus
     if size[2] > cfg.wall_min_height and size[0] > cfg.wall_segment_min_length and size[1] < cfg.wall_segment_max_width:
         return True
     return (size[0] > cfg.linear_min_aspect * max(float(size[1]), 0.05) and size[2] < cfg.linear_max_height
-            and abs(lateral) > cfg.linear_min_lateral)
+            and abs(lateral if lat_along is None else lat_along) > cfg.linear_min_lateral)
 
 
 def _advisory_reason(b: _Blob, dist: float, lateral: float, zone: str, dy, h, cfg: ClusterConfig,
-                     axis_valid: float, height_valid: Optional[float]) -> str:
+                     axis_valid: float, height_valid: Optional[float], lat_along: Optional[float] = None) -> str:
     """Why a cluster is advisory although it may have gauge voxels ('' = it is an obstacle):
     beyond the range where the axis or the height reference is supported, hanging entirely in
     the top zone (cables, lamps), or a v0.5 infrastructure signature (EXPERIMENTS.md 1b)."""
@@ -336,8 +348,17 @@ def _advisory_reason(b: _Blob, dist: float, lateral: float, zone: str, dy, h, cf
         return ""
     ady = np.abs(dy[b.idx])
     off_centre = abs(lateral) > cfg.signature_min_lateral
-    if cfg.column_min_height > 0 and size[2] > cfg.column_min_height and size[1] < cfg.column_max_width \
-            and (off_centre or size[1] >= cfg.column_min_width):
+    col_w = float(size[1])
+    if cfg.column_width_trim > 0 and col_w >= cfg.column_max_width and b.idx.size >= 3:
+        # 27.09 (P4 history): the width of the column's body, not of a few joined returns
+        # only when the trimmed tails are sparse (they span at least column_width_trim_min_cut): a dense
+        # uniform body 1.0-1.1 m wide keeps its box width (the tails of such a body are 0.1 m)
+        q = float(cfg.column_width_trim)
+        lo, hi = np.quantile(b.pts[:, 1], (q, 1.0 - q))
+        if col_w - float(hi - lo) >= cfg.column_width_trim_min_cut:
+            col_w = float(hi - lo)
+    if cfg.column_min_height > 0 and size[2] > cfg.column_min_height and col_w < cfg.column_max_width \
+            and (off_centre or col_w >= cfg.column_min_width):
         return "column"                    # column, post, gate leg: taller than any listed object, narrow
     # opt-in, off by default: a cluster as short as the organizers' test objects (and near enough)
     # that the elevated or floating shape would demote stays an obstacle (the rules after them
@@ -363,7 +384,7 @@ def _advisory_reason(b: _Blob, dist: float, lateral: float, zone: str, dy, h, cf
     if cfg.floating_min_height > 0 and h_min > cfg.floating_min_height and size[2] < cfg.floating_max_height \
             and size[1] < cfg.floating_max_width and (off_centre or along) and not free:
         return "" if short else "floating"   # sign, lamp, bracket: small and not touching the ground
-    if cfg.edge_min_lateral > 0 and abs(lateral) > cfg.edge_min_lateral \
+    if cfg.edge_min_lateral > 0 and abs(lateral if lat_along is None else lat_along) > cfg.edge_min_lateral \
             and size[0] > cfg.edge_min_aspect * max(float(size[1]), 0.05) and size[2] < cfg.edge_max_height:
         return "edge"                      # duct / bench / platform-edge fragment along the corridor edge
     if cfg.wall_face_min_height > 0 and size[2] > cfg.wall_face_min_height and h_max > cfg.wall_face_min_top:
@@ -476,7 +497,8 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
                       factor: float, factor_range: float, axis_valid: float,
                       height_valid: Optional[float], gauge: Optional[GaugeConfig] = None,
                       dy_alt: Optional[np.ndarray] = None, in_rail: Optional[np.ndarray] = None,
-                      keep_thin: bool = False) -> Optional[Cluster]:
+                      keep_thin: bool = False, dy_report: Optional[np.ndarray] = None,
+                      weak_from: float = 0.0) -> Optional[Cluster]:
     """A corridor cluster: size and point-count bars, the infrastructure shapes, then the zone
     (enough voxels in the strict gauge) and the reason that demotes it to advisory. ``in_rail``: the
     strict membership from the rails only (``find_clusters``). With ``keep_thin`` a cluster flatter
@@ -504,8 +526,12 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
     if factor > 1.0 and dist >= factor_range:
         min_pts = int(np.ceil(min_pts * factor))
         gauge_min = int(np.ceil(gauge_min * factor))
+    weak = False
     if b.n_vox < min_pts:
-        return None
+        # 27.09 (cluster.weak_min_points, on): kept as weak far evidence (find_clusters)
+        if not (weak_from > 0 and cfg.weak_min_points > 0 and b.n_vox >= cfg.weak_min_points and dist >= weak_from):
+            return None
+        weak = True
     lateral = float(dy[b.idx].mean())
     h_max = float(h[b.idx].max())
     # 26.09 (gauge.axis_union 3, off by default): the shape rules read the lateral from the sensor
@@ -523,12 +549,19 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
         # The voxels are counted in the envelope measured from the rails (in_rail; safety review of
         # 26.09: the wall keep does not change with gauge.axis_union)
         spare = int(np.unique(inv[b.idx][in_rail[b.idx]]).size) >= cfg.wall_keep_gauge_voxels
-    if _is_infrastructure(size, lat_rules, h_max, cfg, spare_wall=spare):
+    # 27.09 (gauge.reference_along_rails, on): with the envelope measured from the sensor
+    # axis, the rules for structure along the track (the linear infrastructure and the edge signature:
+    # both need a cluster elongated along the track) read the lateral from the rails, which such
+    # structure follows
+    lat_along = None
+    if dy_report is not None and gauge is not None and gauge.reference_along_rails:
+        lat_along = float(dy_report[b.idx].mean())
+    if _is_infrastructure(size, lat_rules, h_max, cfg, spare_wall=spare, lat_along=lat_along):
         return None
-    wall_kept = spare and _is_infrastructure(size, lat_rules, h_max, cfg)
+    wall_kept = spare and _is_infrastructure(size, lat_rules, h_max, cfg, lat_along=lat_along)
     n_gauge = int(np.unique(inv[b.idx][in_gauge[b.idx]]).size)
     zone = "gauge" if n_gauge >= gauge_min else "warning"
-    reason = _advisory_reason(b, dist, lat_rules, zone, dy_rules, h, cfg, axis_valid, height_valid)
+    reason = _advisory_reason(b, dist, lat_rules, zone, dy_rules, h, cfg, axis_valid, height_valid, lat_along)
     demoted = zone == "gauge" and reason in SHAPE_SIGNATURES
     if reason:
         zone = "warning"
@@ -545,14 +578,20 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
         # strict-gauge mask (shrunk by it: an oblique object was reported 0.3 / 0.55 / 1.2 m beyond
         # its entry at 40 / 80 / 120 m); never farther than the nearest point inside the envelope.
         # Without the gauge profile the nearest point of the cluster stays the distance.
-        reach = in_gauge[b.idx] | gauge_reach_mask(dy[b.idx], h[b.idx], b.pts[:, 0], gauge)
+        # 27.09 (gauge.reference): the reach is measured from the rail axis (dy_report), the strict
+        # membership from the reference: never farther than where the object enters either
+        dyr = dy if dy_report is None else dy_report
+        reach = in_gauge[b.idx] | gauge_reach_mask(dyr[b.idx], h[b.idx], b.pts[:, 0], gauge)
         if reach.any():
             dist = float(b.pts[reach, 0].min())
+    if dy_report is not None:
+        # 27.09 (gauge.reference 1): the reported lateral stays the one from the rail axis
+        lateral = float(dy_report[b.idx].mean())
     return Cluster(
         points_idx=fi[fi >= 0], n=b.n_vox, n_raw=int(b.idx.size), centroid=b.pts.mean(axis=0),
         bbox_min=b.bmin, bbox_max=b.bmax, distance=dist, lateral=lateral,
         height_min=float(h[b.idx].min()), height_max=h_max,
         intensity=float(intensity[b.idx].mean()) if intensity is not None else 0.0,
         n_expected=n_exp, score=score, zone=zone, n_gauge=n_gauge, retro=retro, reason=reason,
-        wall_kept=wall_kept, demoted=demoted and not retro, thin=thin,
+        wall_kept=wall_kept, demoted=demoted and not retro, thin=thin, weak=weak,
     )

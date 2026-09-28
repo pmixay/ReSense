@@ -1,0 +1,2 @@
+threshold 0.0222: 0.0222 ride events 21 episodes 22 frames 85
+threshold 0.0111: 0.0111 ride events 36 episodes 32 frames 147

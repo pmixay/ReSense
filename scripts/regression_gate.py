@@ -423,6 +423,11 @@ def metrics(result: dict) -> dict:
             put(f"{k}.first_detection_median_m", s.get("first_detection_median_m"), HIGHER, True)
             put(f"{k}.false_detections", s.get("false_detections"), LOWER, True)
             put(f"{k}.sustained_median_m", s.get("sustained_median_m"), HIGHER, False)
+            # 27.09 (the judges' review): the detected frames per 50 m distance bin, so a change that
+            # trades frames between ranges shows as a worse bin, not as an unchanged median; information
+            # rows (the reviewed 27.09 detector trades -2 / +5 frames of the 1 m box at 50-100 / 100-150 m)
+            for b, hv in (s.get("recall_by_bin") or {}).items():
+                put(f"{k}.recall_{b}", hv[0] if isinstance(hv, (list, tuple)) else hv, HIGHER, False)
     for name, s in (result.get("latency_ms") or {}).items():
         if isinstance(s, dict):
             put(f"latency_ms.{name}.mean", s.get("mean_ms"), LOWER, False)
