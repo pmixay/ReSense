@@ -311,4 +311,4 @@ evidence: [`DECISIONS.md`](DECISIONS.md).
 
 Raw summaries of the history: [`evidence/results/`](evidence/results) (index:
 [`evidence/README.md`](evidence/README.md)); the dated changelog with every measurement:
-[`archive/CHANGELOG_2026-09.md`](archive/CHANGELOG_2026-09.md).
+[`../CHANGELOG.md`](../CHANGELOG.md).

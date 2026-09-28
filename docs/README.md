@@ -34,9 +34,9 @@ The same in Russian, as a user guide: **[resense.gitbook.io/resense-docs](https:
 | [`CAPTAIN.md`](CAPTAIN.md) | captain's board: role, criteria, work left, branches, rules, contracts, ownership, decision log | EN | P1 | current |
 | [`PLAN.md`](PLAN.md) | roles, rules, milestones, status, risks | RU | P1 | current |
 | [`QUESTIONS.md`](QUESTIONS.md) | questions to the organizers and their status | RU message, EN rationale | P1 | current |
-| [`../CHANGELOG.md`](../CHANGELOG.md) | what changed, by version | EN | P1 | current |
+| [`../CHANGELOG.md`](../CHANGELOG.md) | the full history: what changed, newest first, with the figures measured on the day; the dated paragraphs cut from the README | EN | P1 | current |
 | [`evidence/README.md`](evidence/README.md) | index of the raw run evidence and result summaries | EN | P1 / P4 | current |
-| [`archive/README.md`](archive/README.md) | the full experiment log (§ numbers cited by code), the dated changelog, the captain's earlier boards, quality-cycle records, P4's audits | EN | P1 | archive |
+| [`archive/README.md`](archive/README.md) | the full experiment log (§ numbers cited by code), the captain's earlier boards, quality-cycle records, P4's audits | EN | P1 | archive |
 | [`../web/README.md`](../web/README.md) | dashboard, RViz / Foxglove layouts, label tool, video recipes | EN | P2 | current |
 | [`../web/DEMO_HANDOFF.md`](../web/DEMO_HANDOFF.md) | the live demo on the stand step by step, the second-device Foxglove check, the fallback, the rehearsal record, the private deck build | RU | P2 | current |
 | [`images/README.md`](images/README.md) | dashboard screenshots and their provenance | EN | P2 | current |
