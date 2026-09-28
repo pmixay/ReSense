@@ -1,0 +1,143 @@
+{
+  "review_date": "2026-09-28",
+  "integration_base": "8f232847477aaabc9c5f4965e6466af70b7d5d47",
+  "detector_reference": "352ca13; docs/evidence/results/regression_baseline_2026-09-27_quality.json",
+  "branch": "claude/amazing-fermi-t67v8g",
+  "checks": {
+    "p2": {
+      "command": "RESENSE_REQUIRE_WEB=1 python -m pytest -q -rs web/demo tests/test_overview_video.py",
+      "passed": 83,
+      "failures": 0,
+      "skipped": 0,
+      "by_module": {
+        "web.demo.test_foxglove_probe": 35,
+        "web.demo.test_frontend_boundaries": 6,
+        "web.demo.test_p2_review": 16,
+        "web.demo.test_web": 17,
+        "tests.test_overview_video": 9
+      }
+    },
+    "core": {
+      "command": "python -m pytest -q -rs tests",
+      "passed": 733,
+      "deselected": 1,
+      "deselected_reason": "/data/cache/new_data absent",
+      "subtests_passed": 6,
+      "failures": 0
+    },
+    "lint": "ruff 0.15.8 passed",
+    "detector_freeze": "31 files PASS (integrity check only)",
+    "diff_check": "passed",
+    "ci_initial": "GitHub Actions run 36393713036 on cc016ba: all four jobs passed; remote viewer branch gate not yet enabled at this commit"
+  },
+  "status_compatibility": {
+    "files": 18,
+    "records": 4760,
+    "rejected": []
+  },
+  "supported_playback_site_samples": {
+    "files": 4,
+    "records": 982,
+    "rejected": []
+  },
+  "real_replay": {
+    "source": "docs/evidence/docker_2026-09-23/obstacle_status.jsonl.gz",
+    "accepted_frames": 103,
+    "observed_stop_m": 56.1,
+    "browser_errors": 0
+  },
+  "presentation": {
+    "slides": 16,
+    "source": "organizer 37-slide template, public team-role placeholders replaced",
+    "rebuild": "28.09 evening corrections now present in PPTX/PDF/MP4/SRT; PDF inspected, P2 checks 83 passed, zero skipped",
+    "local_core_recheck": "725 passed, 28 native-kernel cases skipped (not built here), 1 missing-data case deselected, 6 subtests passed"
+  },
+  "artifacts": {
+    "docs/images/dashboard-cab-real.png": {
+      "bytes": 150641,
+      "sha256": "1a4128a0cda023e44a43c4527156a0dda75a7fc04c6865c6d319efe98dc90d7d"
+    },
+    "docs/images/dashboard-caution.png": {
+      "bytes": 150537,
+      "sha256": "d75fa5b609287a1f8b7e5ad3e209961d5680f7dce35a9fd16252bac41a8cc7cb"
+    },
+    "docs/images/dashboard-clear.png": {
+      "bytes": 140644,
+      "sha256": "17364c7065d1d37d56dda12ecc6b0fa0c1bfd892b728ae3100a3b0e20783739b"
+    },
+    "docs/images/dashboard-plan.png": {
+      "bytes": 110167,
+      "sha256": "964c4e0e046983e1208dc411b9e4c4b465babb3f0b1360ef4166f43b242e6b05"
+    },
+    "docs/images/dashboard-stop.png": {
+      "bytes": 148470,
+      "sha256": "846c367fc46d62a60db71c24643b9debd344f8806e5b8cfb54c5b427c767edbc"
+    },
+    "docs/presentation/ReSense_LCT2026.pdf": {
+      "bytes": 2964008,
+      "sha256": "97b22014fb6d5dc2faffa23da230abc64c77ea1ea0f9f1ee3c822f0aae1455f4"
+    },
+    "docs/presentation/ReSense_LCT2026.pptx": {
+      "bytes": 14381805,
+      "sha256": "c92944462fca1c2551a98a2ea6cd62439884c339c8a72d862a28ddf946eff2e6"
+    },
+    "docs/video/dashboard_current.mp4": {
+      "bytes": 1020062,
+      "sha256": "6b4a0308ffd1665f26a37f54bb238256565629757a6c169e540fe5a1d8e116ae"
+    },
+    "docs/video/resense_overview.mp4": {
+      "bytes": 20518391,
+      "sha256": "38c147e236013cc708a7e369bf30fe182aebef3a52e22409bc15f8451dfde530"
+    },
+    "docs/video/resense_overview.ru.srt": {
+      "bytes": 5300,
+      "sha256": "3a6705cd8f3968af6581bce06d3a4ffc12090c12810e4c28d8fa926736414697"
+    }
+  },
+  "media": {
+    "docs/video/dashboard_current.mp4": {
+      "programs": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "codec_type": "video",
+          "width": 1440,
+          "height": 900,
+          "r_frame_rate": "25/1"
+        }
+      ],
+      "format": {
+        "duration": "7.240000",
+        "size": "1020062"
+      }
+    },
+    "docs/video/resense_overview.mp4": {
+      "programs": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "codec_type": "video",
+          "width": 1920,
+          "height": 1080,
+          "r_frame_rate": "25/1"
+        },
+        {
+          "codec_name": "bin_data",
+          "codec_type": "data",
+          "r_frame_rate": "0/0"
+        }
+      ],
+      "format": {
+        "duration": "170.000000",
+        "size": "20518391"
+      }
+    }
+  },
+  "limits": [
+    "no physical Foxglove import/second device",
+    "no private team data",
+    "no supplied bag mounted for new ROS run",
+    "no human rehearsals",
+    "no new detector quality measurement"
+  ]
+}

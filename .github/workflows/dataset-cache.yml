@@ -1,31 +1,27 @@
 name: dataset-cache
-# Keeps the two original organizer bags of the cold-disk check (ci.yml, jobs "dataset" and
-# "docker") in the Actions cache of the default branch, where every branch's runs can read it.
-# GitHub evicts a cache entry that nobody used for 7 days; this refreshes it every 5 days, and a
-# manual run seeds it. A hit downloads nothing; a miss asks Google Drive for the archive once
+# Keeps the two original organizer bags of the cold-disk check (ci.yml, job "docker") in the
+# Actions cache of the default branch, where every branch's runs can read it. GitHub evicts a
+# cache entry that nobody used for 7 days; this refreshes it every 5 days, and a manual run seeds
+# it. A hit downloads nothing; a miss asks Google Drive for the archive once
 # (scripts/fetch_cold_bags.sh verifies the archive and the two bags against scripts/cold_bags.sha256)
-# and saves the bags. Scheduled runs use the default branch's copy of this file.
+# and saves the bags. Scheduled runs use the default branch's copy of this file. No push trigger:
+# ci.yml's docker job restores the same key on every push to main and seeds it on a miss (new
+# pinned checksums included), so a push here would only race it for the one Google Drive download.
 on:
   schedule:
     - cron: "41 3 */5 * *"
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - scripts/cold_bags.sha256
-      - scripts/fetch_cold_bags.sh
-      - .github/workflows/dataset-cache.yml
 jobs:
   cold-bags:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: the cache key (the pinned checksums)
         id: key
         run: echo "key=resense-cold-bags-${{ hashFiles('scripts/cold_bags.sha256', 'docs/evidence/bag_metadata/doubleT_obstacle_metadata.yaml', 'docs/evidence/bag_metadata/roundT_doubleT_metadata.yaml') }}" >> "$GITHUB_OUTPUT"
       - name: restore (a hit also refreshes the entry's last use)
         id: restore
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: ~/resense-cold-bags
           key: ${{ steps.key.outputs.key }}
@@ -39,7 +35,7 @@ jobs:
           fi
       - name: save on a miss
         if: ${{ steps.restore.outputs.cache-hit != 'true' }}
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6
         with:
           path: ~/resense-cold-bags
           key: ${{ steps.key.outputs.key }}

@@ -92,7 +92,9 @@ def steps(t, items, active):
 
 # ---- the cut: docs/PRESENTATION.md «Раскадровка» and «Текст за кадром» ------------------------
 # Numbers: the deck's (scripts/build_deck.py N: the 27.09 detector after the independent review,
-# gate baseline regression_baseline_2026-09-27_quality.json), marked in-sample / held-out as there.
+# gate baseline regression_baseline_2026-09-27_quality.json; since 28.09 evening also the node path on
+# the original recording for the object on the rail and the end-to-end latency with its machine),
+# marked in-sample / held-out as there.
 # Subtitles are the narration with the numbers in digits (the voice reads them as words).
 BLOCKS = [
     {"name": "Проблема", "t0": 0.0, "t1": 18.0,
@@ -106,7 +108,7 @@ BLOCKS = [
      ],
      "subs": [
          (0.6, 4.6, "Поезд без машиниста должен сам понять, свободен ли путь впереди."),
-         (4.8, 8.4, "Тормозной путь на 80 км/ч — около 200 метров."),
+          (4.8, 8.4, "С 80 км/ч при замедлении 1,2 м/с² — около 200 м без задержек."),
          (8.6, 12.4, "А тоннель метро однообразен и почти всегда пуст:"),
          (12.4, 17.6, "реальных препятствий, на которых можно научить нейросеть, в данных почти нет."),
      ]},
@@ -128,42 +130,42 @@ BLOCKS = [
          (22.0, 25.8, "В каждом кадре лидар калибруется по рельсам и строит ось пути,"),
          (25.8, 30.4, "а изгиб продлевает по стенам и колоннам — туда, где рельсов уже не видно."),
          (30.6, 33.0, "Вдоль оси — габарит поезда."),
-         (33.2, 37.6, "Всё, что в него попало и не является путём, — препятствие."),
+          (33.2, 37.6, "Ищем в нём то, что не является путём. Возможны пропуски."),
      ]},
     {"name": "Алгоритм", "t0": 38.0, "t1": 56.0,
      "shots": [
          shot(38.0, 48.0, "deck:8", note="презентация, слайд 8 · пять шагов на кадр"),
-         shot(48.0, 56.0, "img/doubleT_obstacle_0024_v062.png",
-              note="img/doubleT_obstacle_0024_v062.png · doubleT_obstacle, кадр 24, реальные данные"),
+          shot(48.0, 56.0, "img/doubleT_obstacle_0024_v062.png",
+               note="doubleT_obstacle, кадр 24 · архивный рендер v0.6.2; числа — по детектору 27.09"),
      ],
      "cards": [
          text(38.4, "5 шагов на кадр: калибровка, модель пути, габарит, кластеры, подтверждение 0,5 с "
                     "и «мнение» о треке"),
          text(44.6, "выход: GO · CAUTION · STOP · FAULT и оценка дальности контроля"),
-         num(50.4, "18–23 мс", "на кадр (p95 до 33 мс, с декодированием облака — до 48 мс) · одно ядро CPU "
-                               "с ядрами на C++ · без GPU", REAL),
+         num(50.4, "87–118 мс", "p95 от кадра до решения через ROS, 360° · 4 vCPU Xeon 2,1 ГГц; 120° — "
+                                "54–64 мс; раннер CI — 60 и 37 мс · без GPU", REAL),
      ],
      "subs": [
          (38.4, 44.4, "Пять шагов на кадр: калибровка крепления, модель пути, габарит, кластеры, "
                       "подтверждение за полсекунды."),
          (44.6, 50.2, "На выходе — GO, CAUTION, STOP или FAULT и оценка дальности контроля. "
                       "Возможны пропуски препятствий."),
-         (50.4, 55.6, "18–23 миллисекунды на кадр на одном ядре, без видеокарты."),
+         (50.4, 55.6, "От кадра до решения через ROS — p95 до 118 мс при 360° на четырёх ядрах, без видеокарты."),
      ]},
     {"name": "Демонстрация", "t0": 56.0, "t1": 93.0,
      "shots": [
-         shot(56.0, 62.0, "video/docker_chain_rviz.mp4", at=0.0,
-              note="video/docker_chain_rviz.mp4 · 0:00–0:06 · docker run, до входа FAULT"),
-         shot(62.0, 68.0, "video/docker_chain_rviz.mp4", at=12.0,
-              note="video/docker_chain_rviz.mp4 · 0:12–0:18 · bag play из другого контейнера"),
-         shot(68.0, 74.0, "video/docker_chain_rviz.mp4", at=24.0,
-              note="video/docker_chain_rviz.mp4 · 0:24–0:30 · /resense/decision: STOP"),
-         shot(74.0, 81.0, "video/doubleT_obstacle_cab.mp4", at=0.0, bits=0.35,
-              note="video/doubleT_obstacle_cab.mp4 · 0:00–0:07 · человек, реальные данные"),
-         shot(81.0, 87.0, "video/doubleT_obstacle_cab.mp4", at=8.0, bits=0.35,
-              note="video/doubleT_obstacle_cab.mp4 · 0:08–0:14 · предмет на рельсе"),
-         shot(87.0, 93.0, "images/dashboard-cab-real.png",
-              note="images/dashboard-cab-real.png · веб-интерфейс по статусу узла из Docker"),
+          shot(56.0, 62.0, "video/docker_chain_rviz.mp4", at=0.0,
+               note="архивная запись цепочки v0.6.3 · docker run, до входа FAULT"),
+          shot(62.0, 68.0, "video/docker_chain_rviz.mp4", at=12.0,
+               note="архивная запись цепочки v0.6.3 · bag play из другого контейнера"),
+          shot(68.0, 74.0, "video/docker_chain_rviz.mp4", at=24.0,
+               note="архивная запись цепочки v0.6.3 · /resense/decision: STOP"),
+          shot(74.0, 81.0, "video/doubleT_obstacle_cab.mp4", at=0.0, bits=0.35,
+               note="архивное видео v0.6.2 · метрики 61/61 по детектору 27.09"),
+          shot(81.0, 87.0, "video/doubleT_obstacle_cab.mp4", at=8.0, bits=0.35,
+               note="архивное видео v0.6.2 · предмет на рельсе; метрики по детектору 27.09"),
+          shot(87.0, 93.0, "images/dashboard-cab-real.png",
+               note="архивный статус из Docker · веб-интерфейс, не замер детектора 27.09"),
      ],
      "cards": [
          steps(56.4, ["docker load / build", "docker run", "ros2 bag play", "/resense/decision"],
@@ -171,7 +173,8 @@ BLOCKS = [
          num(68.0, "STOP", "человек на пути: 55,5–56,6 м по кадрам, doubleT_obstacle", REAL),
          num(74.0, "61 из 61", "кадров с человеком — тревога с первого кадра в габарите; от рельсов — 58",
              REAL),
-         num(81.2, "125 из 126", "кадров с предметом на рельсе", REAL),
+         num(81.2, "123 из 126", "кадров с предметом на рельсе — STOP через узел ROS; один кадр GO; на кэше "
+                                 "1 см — 125", REAL),
      ],
      "subs": [
          (56.4, 58.4, "Вот цепочка жюри как есть."),
@@ -181,13 +184,13 @@ BLOCKS = [
          (68.0, 73.8, "Вот поезд, вот лидар, а вот человек, который переходит путь: STOP, 55,8 метра."),
          (74.0, 77.6, "Тревога — с первого кадра в габарите:"),
          (77.6, 81.0, "человек найден в 61 кадре из 61, от рельсов — в 58."),
-         (81.2, 86.8, "Он уходит — на рельсе остаётся предмет, и его алгоритм тоже держит:"),
-         (86.8, 90.6, "125 кадров из 126."),
+         (81.2, 86.8, "Он уходит — на рельсе остаётся предмет, и алгоритм держит и его:"),
+         (86.8, 90.6, "STOP в 123 кадрах из 126, но один кадр — GO."),
      ]},
     {"name": "Объекты организаторов", "t0": 93.0, "t1": 123.0,
      "shots": [
-         shot(93.0, 111.0, "video/fake_objects_cab.mp4", at=0.0, bits=0.25,
-              note="video/fake_objects_cab.mp4 · 0:00–0:18 · ящик 2 × 2 м, 98 → 43 м"),
+          shot(93.0, 111.0, "video/fake_objects_cab.mp4", at=0.0, bits=0.25,
+               note="архивное видео · синтетика организаторов, ящик 2 × 2 м; метрики 27.09"),
          shot(111.0, 123.0, "deck:13", note="презентация, слайд 13 · объекты организаторов"),
      ],
      "cards": [
@@ -197,8 +200,7 @@ BLOCKS = [
          num(111.0, "8 из 8", "объектов в габарите — STOP; у края — с 35 и 18 м", ORG),
      ],
      "subs": [
-         (93.4, 98.4, "Главная внешняя проверка — препятствия, которые вставили в запись сами "
-                      "организаторы;"),
+          (93.4, 98.4, "Это синтетика организаторов на использованных фонах, не скрытая проверка;"),
          (98.4, 101.2, "поезд едет к ним до 20 метров в секунду."),
          (101.4, 106.2, "Ящик 2 × 2 метра — STOP с первого появления, с 98 метров;"),
          (106.2, 109.4, "доска поперёк рельсов — с 87."),
@@ -215,7 +217,8 @@ BLOCKS = [
          num(123.4, "13 759", "реальных кадров прогнаны целиком", REAL),
          num(126.8, "2,5 на км", "ложного события на поездке, где подбирались правила (32 за 13 км); "
                                 "на невиданных кусках — 37", REAL),
-         text(134.6, "«мнение» лишь откладывает STOP: не больше 1 с"),
+         text(134.6, "«мнение» лишь откладывает STOP: до 10 обработанных кадров — ~1 с при 10 Гц, "
+                     "~2 с при 5 Гц"),
          num(138.4, "151 м", "человек на подходе по прямой; в 5 парах 150 → 154 м, если ставить "
                             "по рельсам", OURS),
      ],
@@ -223,7 +226,7 @@ BLOCKS = [
          (123.4, 126.6, "Все 13 759 реальных кадров прогнаны целиком."),
          (126.8, 131.0, "2,5 ложного события на километр — на той же поездке, где подбирались правила;"),
          (131.2, 134.4, "на кусках поездки, которых модель не видела, — 37 событий."),
-         (134.6, 138.2, "«Мнение» может лишь отложить STOP — не больше чем на секунду."),
+         (134.6, 138.2, "«Мнение» лишь откладывает STOP — до 10 кадров, ~1 с при 10 Гц."),
          (138.4, 141.8, "На нашей синтетике человек на подходе подтверждён на 151 метре."),
          (142.0, 144.8, "Дальше 210 метров отражений нет."),
      ]},
@@ -246,7 +249,7 @@ BLOCKS = [
          (149.2, 153.2, "Свою скорость по лидару мы уже меряем с ошибкой 0,07 м/с,"),
          (153.2, 156.4, "но раннего STOP она не дала, поэтому это опция."),
          (156.6, 161.4, "Ядра на C++ ускорили детектор на 38–57 % с тем же результатом."),
-         (161.8, 166.2, "Docker load, docker run, ros2 bag play — и поезд видит путь."),
+          (161.8, 166.2, "Docker load, docker run, ros2 bag play — и система ищет препятствия."),
          (166.4, 169.4, "ReSense, команда «Молоток»."),
      ]},
 ]
@@ -1068,21 +1071,32 @@ class Renderer:
 
 # ================================================================ outputs
 
-def write_srt(path, renderer):
+def write_srt(path, renderer, span=None):
+    start, end = span or (0.0, DURATION)
+    os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
     with open(path, "w", encoding="utf-8", newline="\n") as f:
-        for n, (t0, t1, lines, _, _) in enumerate(renderer.cues, 1):
-            f.write(f"{n}\n{fmt_srt_time(t0)} --> {fmt_srt_time(t1)}\n" + "\n".join(lines) + "\n\n")
+        n = 0
+        for t0, t1, lines, _, _ in renderer.cues:
+            if t1 <= start or t0 >= end:
+                continue
+            n += 1
+            f.write(f"{n}\n{fmt_srt_time(max(t0, start) - start)} --> {fmt_srt_time(min(t1, end) - start)}\n"
+                    + "\n".join(lines) + "\n\n")
 
 
-def write_chapters(path):
+def write_chapters(path, span=None):
+    start, end = span or (0.0, DURATION)
     esc = re.compile(r"([=;#\\\n])")
     with open(path, "w", encoding="utf-8") as f:
         f.write(";FFMETADATA1\n")
         f.write("title=" + esc.sub(r"\\\1", "ReSense — обзор решения (кейс 05, ЛЦТ 2026)") + "\n")
         f.write("comment=" + esc.sub(r"\\\1", "без звука; субтитры: resense_overview.ru.srt") + "\n")
         for b in BLOCKS:
+            if b["t1"] <= start or b["t0"] >= end:
+                continue
             f.write("[CHAPTER]\nTIMEBASE=1/1000\n")
-            f.write(f"START={int(b['t0'] * 1000)}\nEND={int(b['t1'] * 1000)}\n")
+            f.write(f"START={round((max(b['t0'], start) - start) * 1000)}\n"
+                    f"END={round((min(b['t1'], end) - start) * 1000)}\n")
             f.write("title=" + esc.sub(r"\\\1", b["name"]) + "\n")
 
 
@@ -1104,7 +1118,7 @@ def encode(renderer, out, ffmpeg, crf, preset, span=None):
     os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
     with tempfile.TemporaryDirectory() as tmp:
         meta = os.path.join(tmp, "chapters.txt")
-        write_chapters(meta)
+        write_chapters(meta, span)
         cmd = [ffmpeg, "-v", "error", "-y",
                "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
                "-f", "ffmetadata", "-i", meta,
@@ -1148,8 +1162,15 @@ def main(argv=None):
     if bad:
         sys.exit("table problems:\n  " + "\n  ".join(bad))
     W, H = (int(v) for v in args.size.lower().split("x"))
-    if abs(W / H - 16 / 9) > 0.01:
+    if min(W, H) <= 0 or W % 2 or H % 2 or abs(W / H - 16 / 9) > 0.01:
         sys.exit("--size must be 16:9")
+    span = tuple(float(v) for v in args.span.split(",")) if args.span else None
+    if span and (len(span) != 2 or not 0 <= span[0] < span[1] <= DURATION):
+        ap.error(f"--span must satisfy 0 <= T0 < T1 <= {DURATION:g}")
+    if span:
+        span = tuple(round(v * FPS) / FPS for v in span)
+        if span[0] == span[1]:
+            ap.error("--span must contain at least one video frame")
     ffmpeg = None if args.check else find_ffmpeg(args.ffmpeg)
     r = Renderer((W, H), ffmpeg)            # also lays out every card and subtitle (raises if one overflows)
     if args.check:
@@ -1164,8 +1185,7 @@ def main(argv=None):
             print(path)
         r.close()
         return
-    write_srt(args.srt, r)
-    span = tuple(float(v) for v in args.span.split(",")) if args.span else None
+    write_srt(args.srt, r, span)
     encode(r, args.out, ffmpeg, args.crf, args.preset, span)
     print(f"wrote {args.out} ({os.path.getsize(args.out) / 1e6:.1f} MB) and {args.srt}")
 

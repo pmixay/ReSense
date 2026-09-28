@@ -2,9 +2,12 @@
 
 > **Purpose:** the record of the 27.09 detector cycle: the four open quality problems of 26.09,
 > what was tried, what shipped, the independent review of the first version and what it changed,
-> the acceptance evidence, the held-out check and the limits.
+> the acceptance evidence, the held-out ride check, the placement sensitivity study and the limits.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN
-> **Status:** shipped on the working branch; sealed in
+> **Last verified:** 2026-09-28: the wording of the placement study (a sensitivity study, not
+> held-out recall), the opinion's delay (counted in processed frames) and the rail-object row
+> against the raw-recording outputs ([`evidence/judge_outputs_2026-09-28/`](evidence/judge_outputs_2026-09-28/README.md));
+> the figures are those of 27.09 · **Status:** shipped on the working branch; sealed in
 > [`detector_freeze_2026-09-27.json`](evidence/detector_freeze_2026-09-27.json) (re-sealed after
 > two review rounds; detector `352ca13`, measured at `d572807`). No release published.
 
@@ -39,7 +42,7 @@ range at least 96.0 % of P3d on every empty recording and the ride).
 | 3. Diagnostic GO / range overclaims (set O) | 46 GO (54 in all) | **16** GO (19 in all); decisions unchanged by the caps |
 | 4. Clear-scene false STOP depends on processing history | captured node histories 2 STOPs (53 m); history stress 78 STOP events | captured histories **0**; history stress **55** events; rules only 75 |
 | Five empty recordings: alarm frames / events / episodes | 58 / 13 / 16 | 40 / 11 / 13; rules only 56 / 13 / 16 |
-| doubleT_obstacle (real person, real rail object) | person 58 of 61, rail object 125 of 126, first alarm frame 11 | person **61 of 61**, rail object 125 of 126, first alarm frame **8** — all of it from the envelope reference (58 of 61 from frame 11 with the rails alone) |
+| doubleT_obstacle (real person, real rail object) | person 58 of 61, rail object 125 of 126, first alarm frame 11 | person **61 of 61**, rail object 125 of 126, first alarm frame **8** — all of it from the envelope reference (58 of 61 from frame 11 with the rails alone). The gate replays the 1 cm frame cache: on the raw recording, offline and through the node, the rail object is 123 of 126, with a GO at frame 111 (found 28.09; [Limits](#limits)) |
 | Set O inside objects, STOP frames | 384 of 801 | **411**; background 3 → 0 frames; outside objects unchanged (#5 0, #7 6) |
 | Range, set O first STOP / held from | big_above 101.3 / 111.4 m; plank 82.2 / 90.8 m; floating cube 52.5 / 57.5 m | big_above **111.4 / 123.6 m**; plank **87.2 / 95.9 m**; cube **55.8 / 60.8 m** |
 | Set F straight (synthetic, the ride) | person 151.0 m, trolley 151.4 m, crate 123.9 m | first detections the same; the 1 m crate 50–100 m 125 → 123, 100–150 m 41 → 46 of 151 frames; every other kind and bin identical |
@@ -47,8 +50,9 @@ range at least 96.0 % of P3d on every empty recording and the ride).
 
 Every number above is in-sample except where stated: the five agents saw set O, the six
 recordings and the ride, and the track opinion's negatives are the rules' STOPs on the ride and
-the five empty recordings. The held-out evidence is the cross-fitted ride measurement of the
-learned component (below), and the placement study.
+the five empty recordings. The only held-out evidence is the cross-fitted ride measurement of
+the learned component (below); the placement study is a sensitivity check on seen shapes and seen
+backgrounds, not held-out recall.
 
 ### What each mechanism contributes (ablations)
 
@@ -102,8 +106,9 @@ advisory corridor). The first version shipped mode 2, a one-sided shift; see the
 ~0.3 ms and only at a STOP onset) score a track from its last 10 matched clusters (lateral spread
 and jumps, envelope share, height / size statistics, demotion shares, range roughness, hit
 fraction). A track about to become a STOP with an opinion below the threshold stays advisory
-(reason `doubt`) while it has budget: **at most 10 frames (~1 s) over the track's whole life**,
-misses and zone flicker included. It is never delayed within 25 m — over a missed frame at its
+(reason `doubt`) while it has budget: **at most 10 processed frames over the track's whole
+life** (~1 s at 10 Hz, ~2 s at 5 Hz, up to ~3 s of recording while the node catches up at one
+frame per 0.3 s), misses and zone flicker included. It is never delayed within 25 m — over a missed frame at its
 predicted distance too — and never when its cluster stands at least 1.0 m tall within 40 m (a
 standing body reaching into the envelope: every ride track the opinion withheld within 40 m was a
 flat return at most 0.5 m tall; set O #6, 1.9 m tall, had been withheld at 28.7 m). It never vetoes
@@ -197,8 +202,8 @@ claims against code and raw outputs) reviewed the first version at `8b74cd0` (sc
 Against the first version these fixes cost the ride 21 / 22 → 24 / 25 events / episodes, the five
 empty recordings 9 / 8 → 9 / 11 and the history stress 49 → 51 (the union and far-evidence fixes
 account for 21 → 22 ride events, the rest is mostly the lifetime budget: a flickering track at the
-standing-train platform no longer gets its delay back), for a hard 1 s bound on any learned delay
-and an envelope that is nowhere narrower than the rails'.
+standing-train platform no longer gets its delay back), for a hard bound of 10 processed frames
+on any learned delay (~1 s at 10 Hz) and an envelope that is nowhere narrower than the rails'.
 
 **Second round** (the reviewed detector `65c5a5b`; both judges re-ran the screen bit for bit, the
 union's never-narrower property frame by frame, the placement run and the benchmarks):
@@ -214,7 +219,7 @@ union's never-narrower property frame by frame, the placement run and the benchm
 | Stale README status blocks; the deck / video quoted the 24.09 script's 148 m, the gate reads 151 m; "held from 149 m" in the presentation text; CAUTION 41 % (measured 42.4 %) | corrected; the README's set F row now leads with the gate's figures and states the 0.5 m box (1 of 6) as a blind spot |
 | The median farthest placement distance covered matched cases only | both stated (44.3 m over matched cases, 24.5 m over all 72) |
 | Launch needs several flags and the sysctl | `scripts/play_bag.sh <bag> [--archive ...]` does steps 0–5 in one command; a CI step runs it on the smoke bag |
-| The placement study places objects in the sensor-axis frame, so it cannot show rails-frame generalization | a pre-registered reference-off run of the same plan: 722 of 2 458 (723 with the union): the held-out gain holds from the rails alone ([Held-out check](#held-out-check-organizer-objects-at-new-places)) |
+| The placement study places objects in the sensor-axis frame, so it cannot show rails-frame generalization | a pre-registered reference-off run of the same plan: 722 of 2 458 (723 with the union): the gain on new placements holds from the rails alone ([Placement sensitivity](#placement-sensitivity-organizer-objects-at-new-places)) |
 
 The retraining with a margin costs in-sample ride events (24 → 32; held out 33 → 37) and the
 history stress (51 → 55): the price of a learned delay with a safety margin.
@@ -238,7 +243,7 @@ Every screen is in [`screens/`](evidence/results/quality_cycle_2026-09-27/screen
 experiment's own account (including failures) in
 [`experiment_reports.json`](evidence/results/quality_cycle_2026-09-27/experiment_reports.json).
 
-## Held-out check: organizer objects at new places
+## Placement sensitivity: organizer objects at new places
 
 The 72-case protocol of 26.09 ([protocol](evidence/results/p4_novel_protocol_2026-09-26.json)):
 the organizers' own point sets of four set O objects (0.3 m cube floating, 0.3 m cube on the rail,
@@ -268,8 +273,9 @@ union reference adds, so a second pre-registered plan differs only in `gauge.ref
 rails alone; [plan](evidence/results/quality_cycle_2026-09-27/novel_plan_reference_off.json),
 [results](evidence/results/quality_cycle_2026-09-27/novel_results_reference_off.json.gz)):
 **722 of 2 458** frames, 45 cases, 0 paired controls — one frame fewer than with the union (the
-floating cube at +0.65 m). The held-out gain over P3d (544 → 722) holds from the rails alone; it
-comes from the other mechanisms of the cycle, not from the organizers' placement frame.
+floating cube at +0.65 m). The gain over P3d on new placements (544 → 722) holds from the rails
+alone; it comes from the other mechanisms of the cycle, not from the organizers' placement frame.
+It is a sensitivity result on seen shapes and seen backgrounds, not a held-out recall.
 
 ## Speed
 
@@ -303,8 +309,8 @@ few ms). No measurement on the 8-core stand exists.
 - **The opinion's positives are synthetic.** Its threshold keeps a 2× margin below the lowest
   held-out synthetic positive, but a real object unlike the training kinds (irregular debris, a
   lying person, a fallen panel, a person crossing beyond 40 m) may be delayed — by at most
-  10 frames (~1 s) in the track's life, only beyond 25 m, and never if it stands 1 m tall within
-  40 m. Never a veto.
+  10 processed frames in the track's life (~1 s at 10 Hz, ~2 s at 5 Hz, longer while the node
+  catches up), only beyond 25 m, and never if it stands 1 m tall within 40 m. Never a veto.
 - **The union reference relies on the organizers' placement frame for its gains.** It narrows
   nothing, but what it adds (the edge cube from 35 m, the person's three frames) exists because the
   organizers measure lateral positions from the sensor axis. Organizer question Q1 (rails or
@@ -318,8 +324,8 @@ few ms). No measurement on the 8-core stand exists.
   (5 of 6 detected), 103 m for the trolley and 1 m box, nothing on a curve with ~40 m monitored
   range; ahead of a standing train at 110 m, 0 of 9 placed objects were STOPped (70 m: 6 of 9).
 - **The learned opinion's held-out effect is modest**: 43 → 37 events, 35 → 34 STOP episodes,
-  176 → 170 alarm frames on unseen ride pieces — against a bounded (≤ 1 s) delay risk for real
-  objects unlike its synthetic positives.
+  176 → 170 alarm frames on unseen ride pieces — against a bounded delay risk (at most 10
+  processed frames) for real objects unlike its synthetic positives.
 - **16 GO overclaims remain**: first sightings, the 4-frame chain building up, one lateral jump of
   the far axis, evidence below the envelope floor or beyond the trusted range.
 - **History stress 55 events remain**, mostly the standing-train platform structures of
@@ -332,6 +338,11 @@ few ms). No measurement on the 8-core stand exists.
   82–84 of 129 frames at 0–50 m and 0 of 126 at 50–100 m from the rails; the union adds only the
   side towards which the sensor axis is offset (an independent judge's measurement).
 - No new real-obstacle recording exists; set O, set F and the placement study are synthetic.
+- **A confirmed STOP drops for one frame on two misses in a row** (found by the 28.09
+  re-judgement): the object on the rail of `doubleT_obstacle` is 125 of 126 on the gate's frame
+  cache, but 123 of 126 on the raw recording, offline and through the node — GO at frame 111,
+  CAUTION at 117 and 197 ([ARCHITECTURE «Known limitations»](ARCHITECTURE.md#limitations-of-the-sealed-2709-detector-verified-2809)).
+  It predates this cycle (the P3d detector's node capture of 27.09 shows it too).
 
 ## Acceptance record
 

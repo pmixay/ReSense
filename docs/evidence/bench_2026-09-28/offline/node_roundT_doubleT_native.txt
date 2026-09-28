@@ -1,0 +1,7 @@
+$ RESENSE_NATIVE=1  python3 scripts/bench_node_path.py --npy /data/cache/roundT_doubleT
+kernels: native (_resense_native.cpython-310-x86_64-linux-gnu.so)
+roundT_doubleT: 252 frames, 207727 slots per message
+  kernels: native (_resense_native.cpython-310-x86_64-linux-gnu.so)
+  decode + crop + rotate: mean 5.6 ms, p95 5.9 ms
+  decode + detect:        mean 31.1 ms, p95 39.9 ms, max 43.5 ms
+peak RSS 168 MB

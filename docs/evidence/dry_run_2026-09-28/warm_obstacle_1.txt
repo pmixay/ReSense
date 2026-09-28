@@ -1,0 +1,27 @@
+== SKIP_BUILD=1: reusing resense:latest ==
+== playing doubleT_obstacle at rate 1.0 through the node (headless) ==
+== rosbag2 read-ahead queue: 10 messages ==
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1790613494.127264268] [rosbag2_storage]: Opened database '/data/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.
+[INFO] [1790613494.127322978] [rosbag2_player]: Set rate to 1
+[INFO] [1790613494.132810212] [rosbag2_player]: Sleep 3000000000 ns
+[INFO] [1790613497.133297682] [rosbag2_storage]: Opened database '/data/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.
+
+== checking out/warm_obstacle_1/status.jsonl ==
+status messages      : 200 (16 lines skipped)
+alarm frames         : 189
+detector alarm frames: 189 (held STOP excluded from positive evidence)
+obstacle distance    : 55.5 .. 56.6 m
+latency decode+detect: mean 52 / p95 63 / max 73 ms
+detector stage total : mean 25 / p95 35 ms
+end-to-end (current) : median 69 / p95 82 / max 151 ms over 171 current results (input publication -> result, through DDS)
+node CPU             : 0.68 cores median, 0.84 max (node process, every stats period); peak RSS 681 MB
+dropped input frames : 4 (0 of them skipped by the node's catch-up)
+dropped input settle : start-up catch-up back on the newest frame at +2.9 s; drops counted after +5.0 s (the later of 5 s and that, at most 15 s)
+dropped input vs bag : 150 messages of /sensing/lidar/hesai128/pointcloud after the first 5 s, 4 frame(s) missing from the recording itself; 0 of its messages not processed
+fps (last report)    : 10.0
+start of the input   : 50 frames in the first 5 s after the first one, largest gap 0.1 s, first STOP at +0.8 s
+freshness contract  : PASS
+
+PASS: all dry-run criteria met
+exit 0

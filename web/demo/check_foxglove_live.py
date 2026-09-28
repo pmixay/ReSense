@@ -52,8 +52,14 @@ def current_status(payload: bytes, now: float) -> bool:
             return False
         if res.get("decision") not in ("GO", "CAUTION", "STOP"):
             return False
+        if type(res.get("obstacle")) is not bool:
+            return False
+        if res.get("health", {}).get("level") == "error":
+            return False
         f = res.get("freshness")
         if not isinstance(f, dict) or f.get("valid") is not True or f.get("reason") != "current":
+            return False
+        if f.get("go_allowed") is not (res["decision"] == "GO"):
             return False
         clocks = {"live": "acquisition_utc", "replay": "publisher_utc"}
         if f.get("mode") not in clocks or f.get("clock_reference") != clocks[f["mode"]]:
@@ -82,26 +88,28 @@ async def check(url: str, timeout: float, layout: Path, require_freshness: bool 
     import websockets
 
     expected = layout_topics(layout)
+    raw_clouds = {"/lidar_points", "/sensing/lidar/hesai128/pointcloud"}
+    required = (expected - raw_clouds) | LIVE_TOPICS
     deadline = time.monotonic() + timeout
     async with websockets.connect(url, subprotocols=["foxglove.sdk.v1"], max_size=None) as ws:
         advertised = {}
         channels = {}
         while time.monotonic() < deadline:
-            raw = await asyncio.wait_for(ws.recv(), deadline - time.monotonic())
+            try:
+                raw = await asyncio.wait_for(ws.recv(), deadline - time.monotonic())
+            except asyncio.TimeoutError:
+                break
             if not isinstance(raw, str):
                 continue
             msg = json.loads(raw)
             if msg.get("op") == "advertise":
                 channels.update({ch["topic"]: ch for ch in msg["channels"]})
                 advertised.update({ch["topic"]: ch["id"] for ch in msg["channels"]})
-                if LIVE_TOPICS <= advertised.keys():
+                if required <= advertised.keys() and raw_clouds & advertised.keys():
                     break
-        else:
-            raise RuntimeError("bridge did not advertise the detector's live topics")
 
         # Bags use one of two raw-cloud topic names; every other layout topic must exist.
-        raw_clouds = {"/lidar_points", "/sensing/lidar/hesai128/pointcloud"}
-        missing = (expected - raw_clouds) - advertised.keys()
+        missing = required - advertised.keys()
         if missing or not (raw_clouds & advertised.keys()):
             raise RuntimeError(f"layout topics unavailable: {sorted(missing or raw_clouds)}")
         if require_freshness:

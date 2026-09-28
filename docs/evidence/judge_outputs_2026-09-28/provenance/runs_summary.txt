@@ -1,0 +1,20 @@
+dto_cold_base_1: frames 201 valid 159 lat p50/p95 58/78 e2e p50/p95/max 90/136/187 fps 10.2 cpu None dec {'FAULT': 8, 'STOP': 190, 'GO': 1, 'CAUTION': 2} dist [55.51, 56.56] firstSTOP 0.8 firstValid 3.9
+dto_cold_ci_1: frames 201 valid 169 lat p50/p95 53/74 e2e p50/p95/max 73/118/161 fps 10.3 cpu 0.7 dec {'FAULT': 8, 'STOP': 190, 'GO': 1, 'CAUTION': 2} dist [55.51, 56.56] firstSTOP 0.8 firstValid 3.2
+dto_offline_rt: frames 201 valid 178 lat p50/p95 54/72 e2e p50/p95/max 76/105/132 fps 10.2 cpu 0.8 dec {'FAULT': 8, 'STOP': 190, 'GO': 1, 'CAUTION': 2} dist [55.51, 56.56] firstSTOP 0.8 firstValid 2.3
+dto_warm_base_1: frames 201 valid 166 lat p50/p95 55/75 e2e p50/p95/max 75/102/150 fps 10.2 cpu None dec {'FAULT': 8, 'STOP': 190, 'GO': 1, 'CAUTION': 2} dist [55.51, 56.56] firstSTOP 0.8 firstValid 3.5
+dto_warm_base_2: frames 201 valid 176 lat p50/p95 57/73 e2e p50/p95/max 82/107/165 fps 10.1 cpu None dec {'FAULT': 8, 'STOP': 190, 'GO': 1, 'CAUTION': 2} dist [55.51, 56.56] firstSTOP 0.8 firstValid 2.5
+dto_warm_base_3: frames 201 valid 149 lat p50/p95 62/76 e2e p50/p95/max 90/169/186 fps 10.1 cpu None dec {'FAULT': 8, 'STOP': 190, 'GO': 1, 'CAUTION': 2} dist [55.51, 56.56] firstSTOP 0.8 firstValid 3.4
+dto_warm_base_4: frames 201 valid 161 lat p50/p95 58/78 e2e p50/p95/max 88/141/176 fps 10.1 cpu None dec {'FAULT': 8, 'STOP': 190, 'GO': 1, 'CAUTION': 2} dist [55.51, 56.56] firstSTOP 0.8 firstValid 3.1
+dto_warm_base_5: frames 201 valid 178 lat p50/p95 55/75 e2e p50/p95/max 79/113/175 fps 10.1 cpu None dec {'FAULT': 8, 'STOP': 190, 'GO': 1, 'CAUTION': 2} dist [55.51, 56.56] firstSTOP 0.8 firstValid 2.2
+dto_warm_ci_1: frames 201 valid 157 lat p50/p95 53/75 e2e p50/p95/max 73/102/242 fps 10.1 cpu 0.7 dec {'FAULT': 8, 'STOP': 190, 'GO': 1, 'CAUTION': 2} dist [55.51, 56.56] firstSTOP 0.8 firstValid 4.0
+dto_warm_ci_2: frames 201 valid 185 lat p50/p95 51/65 e2e p50/p95/max 71/87/159 fps 10.1 cpu 0.7 dec {'FAULT': 2, 'CAUTION': 8, 'STOP': 190, 'GO': 1} dist [55.51, 56.56] firstSTOP 0.8 firstValid 1.6
+dto_warm_ci_3: frames 201 valid 186 lat p50/p95 52/67 e2e p50/p95/max 73/94/157 fps 10.1 cpu 0.8 dec {'FAULT': 6, 'CAUTION': 4, 'STOP': 190, 'GO': 1} dist [55.51, 56.56] firstSTOP 0.8 firstValid 1.5
+dto_warm_ci_4: frames 201 valid 179 lat p50/p95 56/82 e2e p50/p95/max 78/111/146 fps 10.1 cpu 0.8 dec {'FAULT': 6, 'CAUTION': 4, 'STOP': 190, 'GO': 1} dist [55.51, 56.56] firstSTOP 0.8 firstValid 2.2
+dto_warm_ci_5: frames 201 valid 179 lat p50/p95 57/80 e2e p50/p95/max 78/105/154 fps 10.1 cpu 0.8 dec {'FAULT': 8, 'STOP': 190, 'GO': 1, 'CAUTION': 2} dist [55.51, 56.56] firstSTOP 0.8 firstValid 2.2
+rt_cold_ci_1: frames 252 valid 250 lat p50/p95 37/57 e2e p50/p95/max 45/64/139 fps 10.1 cpu 0.5 dec {'FAULT': 1, 'CAUTION': 170, 'GO': 81} dist None firstSTOP None firstValid 0.2
+rt_warm_base_1: frames 252 valid 250 lat p50/p95 38/49 e2e p50/p95/max 56/70/128 fps 10.1 cpu None dec {'FAULT': 1, 'CAUTION': 170, 'GO': 81} dist None firstSTOP None firstValid 0.2
+rt_warm_base_2: frames 252 valid 250 lat p50/p95 38/52 e2e p50/p95/max 56/75/120 fps 10.1 cpu None dec {'FAULT': 1, 'CAUTION': 170, 'GO': 81} dist None firstSTOP None firstValid 0.2
+rt_warm_ci_1: frames 252 valid 245 lat p50/p95 38/58 e2e p50/p95/max 46/64/106 fps 10.1 cpu 0.5 dec {'FAULT': 1, 'CAUTION': 175, 'GO': 76} dist None firstSTOP None firstValid 0.7
+rt_warm_ci_2: frames 252 valid 250 lat p50/p95 35/46 e2e p50/p95/max 43/54/93 fps 10.1 cpu 0.4 dec {'FAULT': 1, 'CAUTION': 170, 'GO': 81} dist None firstSTOP None firstValid 0.2
+doubleT_obstacle: frames 201 valid 181 lat p50/p95 51/69 e2e p50/p95/max 72/91/161 fps 10.2 cpu 0.7 dec {'FAULT': 8, 'STOP': 190, 'GO': 1, 'CAUTION': 2} dist [55.51, 56.56] firstSTOP 0.8 firstValid 2.0
+roundT_doubleT: frames 252 valid 248 lat p50/p95 36/50 e2e p50/p95/max 44/59/140 fps 10.2 cpu 0.5 dec {'FAULT': 1, 'CAUTION': 172, 'GO': 79} dist None firstSTOP None firstValid 0.4

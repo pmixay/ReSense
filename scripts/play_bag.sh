@@ -15,6 +15,8 @@
 #    /resense/nearest_distance, e.g. "12.3 s  STOP  55.6 m";
 # 4. `ros2 bag play` from the same image as the calling user (uid:gid; a normal host console user);
 # 5. stops the containers when the bag has played (Ctrl-C stops everything too).
+# It waits for readiness, not for fixed times: the node's "listening" log line, then the
+# listener's first decision (the node's no-input FAULT), at most READY_TIMEOUT s (default 60).
 # Needs Docker, not ROS on the host. Exits 2 on a bad argument, 3 without Docker / image / node.
 set -euo pipefail
 
@@ -57,6 +59,7 @@ if [ -n "$ARCHIVE" ]; then
 fi
 docker image inspect "$IMAGE" >/dev/null 2>&1 || { echo "play_bag: image $IMAGE not found (docker load -i <archive>, or --archive)" >&2; exit 3; }
 
+READY_TIMEOUT="${READY_TIMEOUT:-60}"
 NODE=resense_play_node
 LISTEN=resense_play_listen
 cleanup() { docker rm -f "$NODE" "$LISTEN" >/dev/null 2>&1 || true; }
@@ -66,8 +69,14 @@ cleanup
 # 2. the node
 docker run -d --name "$NODE" --net=host --ipc=host "$IMAGE" \
   ros2 launch resense_ros detector.launch.py freshness_mode:=replay >/dev/null
-sleep 4
-docker ps --format '{{.Names}}' | grep -qx "$NODE" || { echo "play_bag: the node did not start" >&2; docker logs "$NODE" 2>&1 | tail -20; exit 3; }
+# ready = subscribed to its inputs (the node logs "ReSense detector listening on ..." then)
+waited=0
+until docker logs "$NODE" 2>&1 | grep -q "ReSense detector listening on"; do
+  if ! docker ps --format '{{.Names}}' | grep -qx "$NODE" || [ "$waited" -ge $((READY_TIMEOUT * 2)) ]; then
+    echo "play_bag: the node did not start" >&2; docker logs "$NODE" 2>&1 | tail -20; exit 3
+  fi
+  sleep 0.5; waited=$((waited + 1))
+done
 
 # 3. the listener: each change of the decision, with the nearest distance of that frame
 docker run -d --name "$LISTEN" --net=host --ipc=host --user "$USER_ID" -e HOME=/tmp "$IMAGE" \
@@ -87,7 +96,14 @@ n.create_subscription(Float32, "/resense/nearest_distance", dist, 10)
 n.create_subscription(String, "/resense/decision", dec, 10)
 rclpy.spin(n)
 ' >/dev/null
-sleep 2
+# ready = the listener has heard the node (its first line: the no-input FAULT, ~2 s after the node started)
+waited=0
+until [ -n "$(docker logs "$LISTEN" 2>/dev/null)" ]; do
+  if [ "$waited" -ge $((READY_TIMEOUT * 2)) ]; then
+    echo "play_bag: the listener heard nothing from the node in ${READY_TIMEOUT} s" >&2; exit 3
+  fi
+  sleep 0.5; waited=$((waited + 1))
+done
 
 # 4. the bag, played by the calling user from the same image
 echo "== $NAME: playing as uid:gid $USER_ID; decision changes (time since start, decision, nearest distance):"

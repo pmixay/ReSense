@@ -1,0 +1,544 @@
+{
+ "folder": "/home/kladmin/ReSense/docs/evidence/bench_2026-09-28",
+ "facts": {
+  "date": "2026-09-28T16:51:49+00:00",
+  "host": "compute-vm-2-2-90-ssd-1790359373525df",
+  "commit": "464f5bc",
+  "describe": "464f5bc",
+  "dirty": "0",
+  "cpu_model": "Intel Xeon Processor (Icelake)",
+  "nproc": "8",
+  "sockets": "1",
+  "cores": "4",
+  "threads_per_core": "2",
+  "ram_gib": "15.6",
+  "governor": "n/a",
+  "docker": "29.8.1",
+  "python": "3.10.12",
+  "numpy": "2.2.6",
+  "offline_only": "0",
+  "bench_limit": "all",
+  "image_id": "7ddefbc6ffad",
+  "image_size_mb": "2077",
+  "image_kernels": "native (_resense_native.cpython-310-x86_64-linux-gnu.so)"
+ },
+ "build": [
+  {
+   "name": "build",
+   "kind": "build",
+   "kernels": "-",
+   "exit": "0",
+   "wall_s": "2",
+   "bags": "",
+   "note": "scripts/build.sh (docker layer cache as found)"
+  }
+ ],
+ "docker": [
+  {
+   "name": "dry_obstacle_native",
+   "kind": "dry",
+   "kernels_asked": "native",
+   "exit": "0",
+   "wall_s": "31",
+   "bags": "/data/for_hackathon/doubleT_obstacle",
+   "kernels": "native (_resense_native.cpython-310-x86_64-linux-gnu.so); resense 1.0.0",
+   "frames_in_bags": 201,
+   "docker_stats": {
+    "container": "resense_bench_dry",
+    "samples": 14,
+    "busy_samples": 11,
+    "cpu_busy_median_pct": 93.3,
+    "cpu_peak_pct": 135.0,
+    "mem_peak_mib": 1052.7
+   },
+   "checks": [
+    "PASS: all dry-run criteria met"
+   ],
+   "frames": 200,
+   "latency_ms": {
+    "mean": 52.9,
+    "p95": 62.8,
+    "max": 76.1
+   },
+   "detector_ms": {
+    "mean": 25.4,
+    "p95": 35.1,
+    "max": 47.5
+   },
+   "fps_median": 10.0,
+   "dropped": 4,
+   "dropped_after_settle": 4
+  },
+  {
+   "name": "dry_clear_native",
+   "kind": "dry",
+   "kernels_asked": "native",
+   "exit": "0",
+   "wall_s": "36",
+   "bags": "/data/for_hackathon/roundT_doubleT",
+   "kernels": "native (_resense_native.cpython-310-x86_64-linux-gnu.so); resense 1.0.0",
+   "frames_in_bags": 252,
+   "docker_stats": {
+    "container": "resense_bench_dry",
+    "samples": 16,
+    "busy_samples": 13,
+    "cpu_busy_median_pct": 51.3,
+    "cpu_peak_pct": 56.2,
+    "mem_peak_mib": 408.7
+   },
+   "checks": [
+    "PASS: all dry-run criteria met"
+   ],
+   "frames": 251,
+   "latency_ms": {
+    "mean": 35.7,
+    "p95": 44.0,
+    "max": 49.7
+   },
+   "detector_ms": {
+    "mean": 23.3,
+    "p95": 31.7,
+    "max": 34.6
+   },
+   "fps_median": 10.0,
+   "dropped": 0,
+   "dropped_after_settle": 0
+  },
+  {
+   "name": "dry_obstacle_numpy",
+   "kind": "dry",
+   "kernels_asked": "numpy",
+   "exit": "1",
+   "wall_s": "31",
+   "bags": "/data/for_hackathon/doubleT_obstacle",
+   "kernels": "numpy (RESENSE_NATIVE=0); resense 1.0.0",
+   "frames_in_bags": 201,
+   "docker_stats": {
+    "container": "resense_bench_dry",
+    "samples": 14,
+    "busy_samples": 11,
+    "cpu_busy_median_pct": 133.2,
+    "cpu_peak_pct": 136.3,
+    "mem_peak_mib": 1343.5
+   },
+   "checks": [
+    "FAIL: freshness: no valid result in recording(s) 1",
+    "FAIL: p95 latency 103 ms > 100 ms"
+   ],
+   "frames": 200,
+   "latency_ms": {
+    "mean": 91.0,
+    "p95": 103.2,
+    "max": 137.0
+   },
+   "detector_ms": {
+    "mean": 59.1,
+    "p95": 71.0,
+    "max": 102.9
+   },
+   "fps_median": 10.07,
+   "dropped": 5,
+   "dropped_after_settle": 4
+  },
+  {
+   "name": "dry_clear_numpy",
+   "kind": "dry",
+   "kernels_asked": "numpy",
+   "exit": "0",
+   "wall_s": "36",
+   "bags": "/data/for_hackathon/roundT_doubleT",
+   "kernels": "numpy (RESENSE_NATIVE=0); resense 1.0.0",
+   "frames_in_bags": 252,
+   "docker_stats": {
+    "container": "resense_bench_dry",
+    "samples": 16,
+    "busy_samples": 13,
+    "cpu_busy_median_pct": 77.5,
+    "cpu_peak_pct": 111.9,
+    "mem_peak_mib": 438.2
+   },
+   "checks": [
+    "PASS: all dry-run criteria met"
+   ],
+   "frames": 251,
+   "latency_ms": {
+    "mean": 61.0,
+    "p95": 70.7,
+    "max": 78.1
+   },
+   "detector_ms": {
+    "mean": 45.8,
+    "p95": 56.0,
+    "max": 60.0
+   },
+   "fps_median": 10.0,
+   "dropped": 0,
+   "dropped_after_settle": 0
+  },
+  {
+   "name": "ct_image",
+   "kind": "ct",
+   "kernels_asked": "native",
+   "exit": "0",
+   "wall_s": "69",
+   "bags": "/data/for_hackathon/roundT_doubleT,/data/for_hackathon/doubleT_obstacle",
+   "kernels": "native (_resense_native.cpython-310-x86_64-linux-gnu.so); resense 1.0.0",
+   "frames_in_bags": 453,
+   "docker_stats": {
+    "container": "resense_ct_node",
+    "samples": 33,
+    "busy_samples": 21,
+    "cpu_busy_median_pct": 44.9,
+    "cpu_peak_pct": 107.3,
+    "mem_peak_mib": 1694.7
+   },
+   "checks": [
+    "PASS: all dry-run criteria met"
+   ],
+   "frames": 442,
+   "latency_ms": {
+    "mean": 43.7,
+    "p95": 61.9,
+    "max": 78.0
+   },
+   "detector_ms": {
+    "mean": 24.5,
+    "p95": 34.3,
+    "max": 48.8
+   },
+   "fps_median": 10.0,
+   "dropped": 6,
+   "dropped_after_settle": 5
+  },
+  {
+   "name": "ct_stock",
+   "kind": "ct",
+   "kernels_asked": "native",
+   "exit": "0",
+   "wall_s": "69",
+   "bags": "/data/for_hackathon/roundT_doubleT,/data/for_hackathon/doubleT_obstacle",
+   "kernels": "native (_resense_native.cpython-310-x86_64-linux-gnu.so); resense 1.0.0",
+   "frames_in_bags": 453,
+   "docker_stats": {
+    "container": "resense_ct_node",
+    "samples": 33,
+    "busy_samples": 20,
+    "cpu_busy_median_pct": 45.5,
+    "cpu_peak_pct": 117.3,
+    "mem_peak_mib": 1742.8
+   },
+   "checks": [
+    "PASS: all dry-run criteria met",
+    "PASS: a stock Fast DDS player and listener (shared memory on) reached the UDP-only node"
+   ],
+   "frames": 446,
+   "latency_ms": {
+    "mean": 43.6,
+    "p95": 61.5,
+    "max": 117.0
+   },
+   "detector_ms": {
+    "mean": 24.4,
+    "p95": 34.3,
+    "max": 48.7
+   },
+   "fps_median": 10.0,
+   "dropped": 6,
+   "dropped_after_settle": 6
+  }
+ ],
+ "offline": [
+  {
+   "name": "node_doubleT_obstacle_native",
+   "kind": "offline_node",
+   "kernels_asked": "native",
+   "exit": "0",
+   "wall_s": "18",
+   "bags": "/data/cache/doubleT_obstacle",
+   "kernels": "native (_resense_native.cpython-310-x86_64-linux-gnu.so)",
+   "peak_rss_mb": 242,
+   "frames": 201,
+   "total_ms": {
+    "mean": 40.2,
+    "p95": 49.9,
+    "max": 103.1
+   },
+   "decode_ms": {
+    "mean": 10.5,
+    "p95": 11.3
+   }
+  },
+  {
+   "name": "node_doubleT_obstacle_numpy",
+   "kind": "offline_node",
+   "kernels_asked": "numpy",
+   "exit": "0",
+   "wall_s": "23",
+   "bags": "/data/cache/doubleT_obstacle",
+   "kernels": "numpy (RESENSE_NATIVE=0)",
+   "peak_rss_mb": 268,
+   "frames": 201,
+   "total_ms": {
+    "mean": 76.3,
+    "p95": 89.0,
+    "max": 113.9
+   },
+   "decode_ms": {
+    "mean": 10.6,
+    "p95": 11.4
+   }
+  },
+  {
+   "name": "stages_doubleT_obstacle_native",
+   "kind": "offline_stages",
+   "kernels_asked": "native",
+   "exit": "0",
+   "wall_s": "10",
+   "bags": "/data/cache/doubleT_obstacle",
+   "kernels": "native (_resense_native.cpython-310-x86_64-linux-gnu.so)",
+   "peak_rss_mb": 135,
+   "frames": 201,
+   "stages_ms": {
+    "track": {
+     "mean": 13.6,
+     "p95": 23.6,
+     "max": 32.1
+    },
+    "corridor": {
+     "mean": 5.5,
+     "p95": 5.8,
+     "max": 6.3
+    },
+    "egomotion": {
+     "mean": 0.0,
+     "p95": 0.0,
+     "max": 0.0
+    },
+    "accumulate": {
+     "mean": 0.0,
+     "p95": 0.0,
+     "max": 0.0
+    },
+    "cluster": {
+     "mean": 4.5,
+     "p95": 5.6,
+     "max": 14.0
+    },
+    "tracking": {
+     "mean": 0.9,
+     "p95": 1.1,
+     "max": 1.1
+    },
+    "total": {
+     "mean": 24.6,
+     "p95": 34.5,
+     "max": 43.7
+    }
+   },
+   "total_ms": {
+    "mean": 24.6,
+    "p95": 34.5,
+    "max": 43.7
+   }
+  },
+  {
+   "name": "stages_doubleT_obstacle_numpy",
+   "kind": "offline_stages",
+   "kernels_asked": "numpy",
+   "exit": "0",
+   "wall_s": "18",
+   "bags": "/data/cache/doubleT_obstacle",
+   "kernels": "numpy (RESENSE_NATIVE=0)",
+   "peak_rss_mb": 154,
+   "frames": 201,
+   "stages_ms": {
+    "track": {
+     "mean": 35.4,
+     "p95": 47.3,
+     "max": 78.7
+    },
+    "corridor": {
+     "mean": 14.5,
+     "p95": 15.5,
+     "max": 18.3
+    },
+    "egomotion": {
+     "mean": 0.0,
+     "p95": 0.0,
+     "max": 0.0
+    },
+    "accumulate": {
+     "mean": 0.0,
+     "p95": 0.0,
+     "max": 0.0
+    },
+    "cluster": {
+     "mean": 5.2,
+     "p95": 6.3,
+     "max": 6.6
+    },
+    "tracking": {
+     "mean": 0.8,
+     "p95": 1.1,
+     "max": 1.1
+    },
+    "total": {
+     "mean": 55.9,
+     "p95": 67.4,
+     "max": 102.2
+    }
+   },
+   "total_ms": {
+    "mean": 55.9,
+    "p95": 67.4,
+    "max": 102.2
+   }
+  },
+  {
+   "name": "node_roundT_doubleT_native",
+   "kind": "offline_node",
+   "kernels_asked": "native",
+   "exit": "0",
+   "wall_s": "15",
+   "bags": "/data/cache/roundT_doubleT",
+   "kernels": "native (_resense_native.cpython-310-x86_64-linux-gnu.so)",
+   "peak_rss_mb": 168,
+   "frames": 252,
+   "total_ms": {
+    "mean": 31.1,
+    "p95": 39.9,
+    "max": 43.5
+   },
+   "decode_ms": {
+    "mean": 5.6,
+    "p95": 5.9
+   }
+  },
+  {
+   "name": "node_roundT_doubleT_numpy",
+   "kind": "offline_node",
+   "kernels_asked": "numpy",
+   "exit": "0",
+   "wall_s": "20",
+   "bags": "/data/cache/roundT_doubleT",
+   "kernels": "numpy (RESENSE_NATIVE=0)",
+   "peak_rss_mb": 156,
+   "frames": 252,
+   "total_ms": {
+    "mean": 54.7,
+    "p95": 64.1,
+    "max": 69.1
+   },
+   "decode_ms": {
+    "mean": 5.7,
+    "p95": 6.0
+   }
+  },
+  {
+   "name": "stages_roundT_doubleT_native",
+   "kind": "offline_stages",
+   "kernels_asked": "native",
+   "exit": "0",
+   "wall_s": "9",
+   "bags": "/data/cache/roundT_doubleT",
+   "kernels": "native (_resense_native.cpython-310-x86_64-linux-gnu.so)",
+   "peak_rss_mb": 104,
+   "frames": 252,
+   "stages_ms": {
+    "track": {
+     "mean": 9.8,
+     "p95": 18.1,
+     "max": 19.3
+    },
+    "corridor": {
+     "mean": 4.7,
+     "p95": 5.1,
+     "max": 6.0
+    },
+    "egomotion": {
+     "mean": 0.0,
+     "p95": 0.0,
+     "max": 0.0
+    },
+    "accumulate": {
+     "mean": 0.0,
+     "p95": 0.0,
+     "max": 0.0
+    },
+    "cluster": {
+     "mean": 6.9,
+     "p95": 10.2,
+     "max": 17.0
+    },
+    "tracking": {
+     "mean": 1.0,
+     "p95": 1.4,
+     "max": 1.6
+    },
+    "total": {
+     "mean": 22.5,
+     "p95": 31.4,
+     "max": 34.8
+    }
+   },
+   "total_ms": {
+    "mean": 22.5,
+    "p95": 31.4,
+    "max": 34.8
+   }
+  },
+  {
+   "name": "stages_roundT_doubleT_numpy",
+   "kind": "offline_stages",
+   "kernels_asked": "numpy",
+   "exit": "0",
+   "wall_s": "16",
+   "bags": "/data/cache/roundT_doubleT",
+   "kernels": "numpy (RESENSE_NATIVE=0)",
+   "peak_rss_mb": 107,
+   "frames": 252,
+   "stages_ms": {
+    "track": {
+     "mean": 24.7,
+     "p95": 34.6,
+     "max": 38.3
+    },
+    "corridor": {
+     "mean": 10.6,
+     "p95": 11.5,
+     "max": 12.5
+    },
+    "egomotion": {
+     "mean": 0.0,
+     "p95": 0.0,
+     "max": 0.0
+    },
+    "accumulate": {
+     "mean": 0.0,
+     "p95": 0.0,
+     "max": 0.0
+    },
+    "cluster": {
+     "mean": 7.3,
+     "p95": 10.7,
+     "max": 12.2
+    },
+    "tracking": {
+     "mean": 1.0,
+     "p95": 1.4,
+     "max": 1.6
+    },
+    "total": {
+     "mean": 43.6,
+     "p95": 54.0,
+     "max": 58.0
+    }
+   },
+   "total_ms": {
+    "mean": 43.6,
+    "p95": 54.0,
+    "max": 58.0
+   }
+  }
+ ]
+}

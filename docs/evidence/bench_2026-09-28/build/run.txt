@@ -1,0 +1,82 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 5.65kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/ros:humble-ros-base-jammy
+#2 DONE 1.3s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 499B done
+#3 DONE 0.0s
+
+#4 [ 1/18] FROM docker.io/library/ros:humble-ros-base-jammy@sha256:1813d3c85d7f96ff7d3012d865204583255740182db5d0065f8f8cd029a83138
+#4 resolve docker.io/library/ros:humble-ros-base-jammy@sha256:1813d3c85d7f96ff7d3012d865204583255740182db5d0065f8f8cd029a83138 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 8.27kB 0.0s done
+#5 DONE 0.0s
+
+#6 [ 5/18] COPY native ./native
+#6 CACHED
+
+#7 [10/18] COPY scripts ./scripts
+#7 CACHED
+
+#8 [11/18] RUN if [ "0" = "1" ]; then         pip3 install "rosbags==0.10.11" "zstandard==0.25.0" "matplotlib==3.10.7" "open3d==0.19.0" "pytest==8.4.2" "websockets==14.2";     fi
+#8 CACHED
+
+#9 [ 8/18] RUN pip3 install --upgrade "pip>=24"     && pip3 install "numpy==1.26.4" "scipy==1.13.1" "scikit-learn==1.5.2" "pyyaml==6.0.2"     && pip3 install --no-deps .     && cd / && python3 -c "import resense, resense.detector, resense._native as n; print('resense', resense.__version__, resense.__file__, n.status())"
+#9 CACHED
+
+#10 [16/18] COPY docker/entrypoint.sh /entrypoint.sh
+#10 CACHED
+
+#11 [ 7/18] COPY configs ./configs
+#11 CACHED
+
+#12 [ 9/18] COPY tests ./tests
+#12 CACHED
+
+#13 [ 4/18] COPY pyproject.toml setup.py README.md ./
+#13 CACHED
+
+#14 [ 3/18] WORKDIR /opt/resense
+#14 CACHED
+
+#15 [ 6/18] COPY resense ./resense
+#15 CACHED
+
+#16 [17/18] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 [15/18] COPY labels/doubleT_obstacle.json ./labels/doubleT_obstacle.json
+#17 CACHED
+
+#18 [12/18] COPY ros2_ws/src /opt/resense/ros2_ws/src
+#18 CACHED
+
+#19 [14/18] RUN . /opt/ros/humble/setup.sh && cd /opt/resense/ros2_ws && colcon build --symlink-install
+#19 CACHED
+
+#20 [ 2/18] RUN apt-get update && apt-get install -y --no-install-recommends         python3-pip python3-numpy python3-yaml g++         ros-humble-vision-msgs ros-humble-nav-msgs ros-humble-tf2-ros-py         ros-humble-rviz2 ros-humble-rosbag2         ros-humble-rosbag2-storage-default-plugins ros-humble-rosbag2-storage-mcap         ros-humble-foxglove-bridge     && rm -rf /var/lib/apt/lists/*
+#20 CACHED
+
+#21 [13/18] COPY configs/default.yaml /opt/resense/ros2_ws/src/resense_ros/config/detector.yaml
+#21 CACHED
+
+#22 [18/18] COPY docker/fastdds_udp.xml docker/fastdds_shm_udp.xml docker/dds_transport.sh docker/fastdds_shm_share.py /opt/resense/
+#22 CACHED
+
+#23 exporting to image
+#23 exporting layers done
+#23 exporting manifest sha256:93bbb76ed2141b9f17b1c958c0ff6b42e9584cb923e9f213db668843cef138a9 done
+#23 exporting config sha256:e2d1acf6c220023319f5bb1fd87bfe124b6e96d5f2d28b48cfcd71eaddab9a35 done
+#23 exporting attestation manifest sha256:a5eba2e15f7bd3d5beb4b93008d1ee3431d3cbf67b8d8743c3515c47cd36fdd8
+#23 exporting attestation manifest sha256:a5eba2e15f7bd3d5beb4b93008d1ee3431d3cbf67b8d8743c3515c47cd36fdd8 0.0s done
+#23 exporting manifest list sha256:7ddefbc6ffadb27d2e1794ccf3d8579d4287a83f876317c15442404b20e808f9 0.0s done
+#23 naming to docker.io/library/resense:latest done
+#23 unpacking to docker.io/library/resense:latest 0.0s done
+#23 DONE 0.1s

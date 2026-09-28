@@ -3,11 +3,14 @@
 > **Purpose:** every document of the repository, what it is for, who reads and maintains it, and
 > the terms they share.
 > **Audience:** jury, team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-26, the re-judgement pass (the table's rows and owners; package 1.0.0: detector v0.6.3 with the P3 rules of 25–26.09, node v0.6.4) · **Status:** current
+> **Last verified:** 2026-09-28: the table's rows against the documents' own headers (package 1.0.0: the sealed 27.09 detector, the node of 28.09) · **Status:** current
 
 Start with the root [`README.md`](../README.md): the jury path, what to look at and the headline
-results. Current numbers live in [`EXPERIMENTS.md`](EXPERIMENTS.md) "Current results"; what changed
-in each version, in [`CHANGELOG.md`](../CHANGELOG.md).
+results. The sealed 27.09 detector's figures: the README summary, its record
+[`QUALITY_CYCLE_2026-09-27.md`](QUALITY_CYCLE_2026-09-27.md) and the per-frame outputs in
+[`evidence/judge_outputs_2026-09-28/`](evidence/judge_outputs_2026-09-28/README.md); dated runs in
+[`EXPERIMENTS.md`](EXPERIMENTS.md) (its "Current results" table is still the P3d detector's of
+26.09); what changed in each version, in [`CHANGELOG.md`](../CHANGELOG.md).
 
 ## 1. Documents
 
@@ -18,19 +21,19 @@ rewritten later; **frozen** = kept for reference, not maintained; **archive** = 
 | document | purpose | audience | language | owner | status |
 |---|---|---|---|---|---|
 | [`README.md`](../README.md) | jury entry: build, run, what to look at, headline results (spec §5 README) | jury, team | EN + RU «Кратко для жюри» | P1 | current |
-| [`CHANGELOG.md`](../CHANGELOG.md) | one entry per version, v0.0 → v0.6.4, with the measured effect | jury, team | EN | P1 | current |
+| [`CHANGELOG.md`](../CHANGELOG.md) | one entry per version or merge, v0.0 → 1.0.0, with the measured effect; the README's dated status notes (moved 28.09) | jury, team | EN | P1 | current |
 | [`ARCHITECTURE.md`](ARCHITECTURE.md) | components, data flow, real-time budget (spec §5 "Архитектура") | jury, team | EN + RU summary | P1 | current |
 | [`ALGORITHM.md`](ALGORITHM.md) | how the detector decides, stage by stage; parameters; limitations (spec §5 "Описание алгоритма") | jury, P3 | EN + RU summary | P1 (structure), P3 (content) | current |
 | [`EXPERIMENTS.md`](EXPERIMENTS.md) | every measured result: false alarms, range, latency, FPS, hard cases, evolution (spec §5 "Эксперименты") | jury, team | EN + RU summary | P3 / P4 | current |
-| [`DECISIONS.md`](DECISIONS.md) | the 17 key decisions on one page: question, what was measured, result, decision, evidence | jury, team | EN + RU summary | P1 | current |
+| [`DECISIONS.md`](DECISIONS.md) | the 27 key decisions on one page (to 28.09): question, what was measured, result, decision, evidence | jury, team | EN + RU summary | P1 | current |
 | [`EVALUATION.md`](EVALUATION.md) | evaluation protocol: data sets, metrics, procedure, targets | team, jury | EN + RU summary | P1 / P4 | current |
 | [`DATASET.md`](DATASET.md) | the organizers' data: recordings, formats, labels, frame cache, unpacking | team, jury | EN + RU summary | P4 | current |
 | [`SENSOR.md`](SENSOR.md) | Hesai Pandar128 facts and what they imply for the detector | team, jury | EN + RU summary | P1 | current |
-| [`SCORECARD.md`](SCORECARD.md) | criteria judgements: the re-judgement of 26.09 evening on the integrated head (§0, measured by two independent judges), the one of 26.09 morning (§0a, 65 / 100, pre-integration head) and the first of 24.09 (§1–§8, 60 / 100): score per spec §8 criterion, evidence, what is left | team, jury | EN | P1 | current (§0), dated record (§1–§8) |
+| [`SCORECARD.md`](SCORECARD.md) | criteria judgements, newest first: the fresh re-judgement of 28.09 (66.5 / 100), the three review rounds of the 27.09 cycle, the reviews of 26.09 (§0, §0a) and the first of 24.09 (§1–§8, 60 / 100): score per spec §8 criterion, evidence, what is left | team, jury | EN | P1 | current (top section), dated records below |
 | [`PRESENTATION.md`](PRESENTATION.md) | slide requirements, drafts, speaker text | P2, P1 | RU | P2 | current |
 | [`PLAN.md`](PLAN.md) | roles, sprint calendar, team rules | team | RU | P1 | current |
 | [`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md) | frozen source/config manifest, acceptance provenance, candidate decisions and blocker policy | team, jury | EN | P1 / P3 | current (27.09 seal) |
-| [`QUALITY_CYCLE_2026-09-27.md`](QUALITY_CYCLE_2026-09-27.md) | the 27.09 detector cycle: four problems, what shipped (incl. the learned track opinion), the independent review of the first version and its fixes, per-mechanism ablations, acceptance, the held-out placement check, limits | jury, team | EN | P1 | current |
+| [`QUALITY_CYCLE_2026-09-27.md`](QUALITY_CYCLE_2026-09-27.md) | the 27.09 detector cycle: four problems, what shipped (incl. the learned track opinion), the independent review of the first version and its fixes, per-mechanism ablations, acceptance, the held-out ride check, the placement sensitivity study, limits | jury, team | EN | P1 | current |
 | [`QUALITY_CYCLE_2026-09-26.md`](QUALITY_CYCLE_2026-09-26.md) | the 26.09 cycle: freshness, rejected candidates M1 / M2 / A1 / D1 / T1 | team | EN | P1 | dated |
 | [`CAPTAIN.md`](CAPTAIN.md) | captain's board: criteria, work left, ownership map, frozen interfaces | P1, team | EN | P1 | current |
 | [`VM_GUIDE.md`](VM_GUIDE.md) | instructions for the team's temporary cloud VM, plain commands of the repository's tools: prerequisites, data (the ride streamed split by split), dry run, stock-player and host console, 8-core bench, regression gate with the ride, image archive, offline rehearsal, results into a PR | team (a person or an agent on the VM) | EN | P1 | current |
@@ -40,6 +43,7 @@ rewritten later; **frozen** = kept for reference, not maintained; **archive** = 
 | [`evidence/README.md`](evidence/README.md) | index of the raw run evidence and of the result summaries in `evidence/results/` | team, jury | EN | P1 / P4 | current |
 | [`images/README.md`](images/README.md) | dashboard UI screenshots and their data provenance | jury, team | EN | P2 | current |
 | [`archive/README.md`](archive/README.md) | superseded material kept for the record (captain's log of 16–24.09, day-1 results) | team | EN | P1 | archive |
+| [`gitbook/`](../gitbook/SUMMARY.md) | the instructions as a GitBook: get the image, run on a bag, read the output, RViz / Foxglove / dashboard, offline stand, dry run, parameters, development, troubleshooting; no numbers (it links here). Published on GitBook.com | jury, engineers, team | RU | P1 | current |
 | [`web/README.md`](../web/README.md) | dashboard, RViz / Foxglove layouts, label tool, headless checks, video recipes | team, jury (demo) | EN | P2 | current |
 
 ### Organizers' material ([`organizers/`](organizers/))

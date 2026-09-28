@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# usage: dry.sh <label> <image> <bag> [checker args...]
+set -u
+label=$1; image=$2; bag=$3; shift 3
+out=/tmp/judgeA/dry/$label
+mkdir -p "$out"
+cd /home/user/ReSense
+start=$(date +%s.%N)
+OUT="$out" IMAGE="$image" SKIP_BUILD=1 scripts/dry_run.sh "$bag" "$@" > "$out/run.log" 2>&1
+echo "rc=$?" >> "$out/run.log"
+echo "wall=$(echo "$(date +%s.%N) - $start" | bc)" >> "$out/run.log"
+sed -n '/== checking/,$p' "$out/run.log"

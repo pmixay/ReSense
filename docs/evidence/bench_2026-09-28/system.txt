@@ -1,0 +1,201 @@
+## date
+2026-09-28T16:51:50+00:00
+## uname -a
+Linux compute-vm-2-2-90-ssd-1790359373525df 5.15.0-191-generic #201-Ubuntu SMP Fri Aug 7 18:39:04 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+## os-release
+PRETTY_NAME="Ubuntu 22.04.5 LTS"
+NAME="Ubuntu"
+VERSION_ID="22.04"
+VERSION="22.04.5 LTS (Jammy Jellyfish)"
+VERSION_CODENAME=jammy
+ID=ubuntu
+ID_LIKE=debian
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+UBUNTU_CODENAME=jammy
+## lscpu
+Architecture:                            x86_64
+CPU op-mode(s):                          32-bit, 64-bit
+Address sizes:                           40 bits physical, 57 bits virtual
+Byte Order:                              Little Endian
+CPU(s):                                  8
+On-line CPU(s) list:                     0-7
+Vendor ID:                               GenuineIntel
+Model name:                              Intel Xeon Processor (Icelake)
+CPU family:                              6
+Model:                                   106
+Thread(s) per core:                      2
+Core(s) per socket:                      4
+Socket(s):                               1
+Stepping:                                0
+BogoMIPS:                                4000.00
+Flags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch cpuid_fault invpcid_single ssbd ibrs ibpb stibp ibrs_enhanced fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 wbnoinvd arat avx512vbmi umip pku ospke avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq la57 rdpid fsrm md_clear arch_capabilities
+Hypervisor vendor:                       KVM
+Virtualization type:                     full
+L1d cache:                               256 KiB (8 instances)
+L1i cache:                               256 KiB (8 instances)
+L2 cache:                                16 MiB (4 instances)
+L3 cache:                                16 MiB (1 instance)
+NUMA node(s):                            1
+NUMA node0 CPU(s):                       0-7
+Vulnerability Gather data sampling:      Not affected
+Vulnerability Indirect target selection: Mitigation; Aligned branch/return thunks
+Vulnerability Itlb multihit:             Not affected
+Vulnerability L1tf:                      Not affected
+Vulnerability Mds:                       Not affected
+Vulnerability Meltdown:                  Not affected
+Vulnerability Mmio stale data:           Mitigation; Clear CPU buffers; SMT Host state unknown
+Vulnerability Reg file data sampling:    Not affected
+Vulnerability Retbleed:                  Not affected
+Vulnerability Spec rstack overflow:      Not affected
+Vulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl and seccomp
+Vulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization
+Vulnerability Spectre v2:                Mitigation; Enhanced / Automatic IBRS; IBPB conditional; PBRSB-eIBRS SW sequence; BHI SW loop, KVM SW loop
+Vulnerability Srbds:                     Not affected
+Vulnerability Tsa:                       Not affected
+Vulnerability Tsx async abort:           Not affected
+Vulnerability Vmscape:                   Not affected
+## nproc
+8
+## free -m
+               total        used        free      shared  buff/cache   available
+Mem:           15987         324        8531           3        7131       15371
+Swap:              0           0           0
+## /proc/meminfo (head)
+MemTotal:       16371028 kB
+MemFree:         8735664 kB
+MemAvailable:   15739964 kB
+Buffers:           42212 kB
+Cached:          7202000 kB
+## uptime (load before the runs)
+ 16:51:50 up  7:07,  1 user,  load average: 0.83, 0.82, 1.39
+## cpufreq governor / boost
+## UDP buffer limits (DDS; the image asks for 8 MB)
+net.core.rmem_max = 212992
+net.core.wmem_max = 212992
+net.core.rmem_default = 212992
+net.core.wmem_default = 212992
+## /dev/shm (and Fast DDS files left in it: root-owned ones are what a uid-1000 client cannot open)
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs           7.9G  2.3M  7.9G   1% /dev/shm
+kladmin 644 fastrtps_port7413_el
+kladmin 644 fastrtps_port7413
+kladmin 644 sem.fastrtps_port7413_mutex
+kladmin 644 fastrtps_ce7c5cc6a375da9e
+kladmin 644 fastrtps_ce7c5cc6a375da9e_el
+root 644 fastrtps_port7411_el
+root 666 fastrtps_port7411
+root 666 fastrtps_d598216facb5bf46
+root 644 fastrtps_d598216facb5bf46_el
+root 666 sem.fastrtps_port7411_mutex
+kladmin 664 fastrtps_port7417_el
+kladmin 644 fastrtps_port7417
+kladmin 644 sem.fastrtps_port7417_mutex
+kladmin 644 fastrtps_84a40bb8ea5aef6b
+kladmin 664 fastrtps_84a40bb8ea5aef6b_el
+kladmin 644 fastrtps_1f2d9706246f96c1
+kladmin 644 fastrtps_1f2d9706246f96c1_el
+## docker version
+Client: Docker Engine - Community
+ Version:           29.8.1
+ API version:       1.56
+ Go version:        go1.26.8
+ Git commit:        4a63305
+ Built:             Tue Sep 15 16:25:26 2026
+ OS/Arch:           linux/amd64
+ Context:           default
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          29.8.1
+  API version:      1.56 (minimum version 1.40)
+  Go version:       go1.26.8
+  Git commit:       464cd50
+  Built:            Tue Sep 15 16:25:26 2026
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          v2.3.6
+  GitCommit:        ee2735368117d2eb259779949d5e75cdafec9761
+ runc:
+  Version:          1.5.1
+  GitCommit:        v1.5.1-0-g8f2685a4
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
+## docker info
+Client: Docker Engine - Community
+ Version:    29.8.1
+ Context:    default
+ Debug Mode: false
+ Plugins:
+  buildx: Docker Buildx (Docker Inc.)
+    Version:  v0.37.1
+    Path:     /usr/libexec/docker/cli-plugins/docker-buildx
+  compose: Docker Compose (Docker Inc.)
+    Version:  v5.5.1
+    Path:     /usr/libexec/docker/cli-plugins/docker-compose
+  model: Docker Model Runner (Docker Inc.)
+    Version:  v1.2.6
+    Path:     /usr/libexec/docker/cli-plugins/docker-model
+
+Server:
+ Containers: 0
+  Running: 0
+  Paused: 0
+  Stopped: 0
+ Images: 2
+ Server Version: 29.8.1
+ Storage Driver: overlayfs
+  driver-type: io.containerd.snapshotter.v1
+ Logging Driver: json-file
+ Cgroup Driver: systemd
+ Cgroup Version: 2
+ Plugins:
+  Volume: local
+  Network: bridge host ipvlan macvlan null overlay
+  Log: awslogs fluentd gcplogs gelf journald json-file local splunk syslog
+ CDI spec directories:
+  /etc/cdi
+  /var/run/cdi
+ Swarm: inactive
+ Runtimes: io.containerd.runc.v2 runc
+ Default Runtime: runc
+ Init Binary: docker-init
+ containerd version: ee2735368117d2eb259779949d5e75cdafec9761
+ runc version: v1.5.1-0-g8f2685a4
+ init version: de40ad0
+ Security Options:
+  apparmor
+   Profile: default
+  seccomp
+   Profile: builtin
+  cgroupns
+ Kernel Version: 5.15.0-191-generic
+ Operating System: Ubuntu 22.04.5 LTS
+ OSType: linux
+ Architecture: x86_64
+ CPUs: 8
+ Total Memory: 15.61GiB
+ Name: compute-vm-2-2-90-ssd-1790359373525df
+ ID: c028d4cf-bb88-4f3a-a9d7-c0d953092368
+ Docker Root Dir: /var/lib/docker
+ Debug Mode: false
+ Experimental: false
+ Insecure Registries:
+  ::1/128
+  127.0.0.0/8
+ Live Restore Enabled: false
+ Firewall Backend: iptables
+  EnableUserlandProxy: true
+  UserlandProxyPath: /usr/bin/docker-proxy
+
+## git
+464f5bc6b193ff3dcc4bd7d30b03745d8d260f6a 2026-09-28T15:50:42+03:00 Optimize node input path and add end-to-end latency verification (#20)
+## host python
+3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]
+numpy 2.2.6 scipy 1.15.3 scikit-learn 1.7.2
+## uptime (load after the runs)
+ 16:58:36 up  7:14,  1 user,  load average: 0.96, 0.82, 1.17

@@ -13,13 +13,15 @@
   <label class="muted">import gt.json <input type="file" id="file-gt" accept=".json"></label>
   <button id="export" class="primary">export gt.json</button>
   <span id="status" class="muted">no frames</span>
+  <span id="edit-error" role="status"></span>
 </header>
 <main>
   <div>
     <div class="card"><h3>frames <span id="frame-count" class="muted"></span></h3>
       <div class="row"><input type="number" id="new-frame" min="0" step="1" placeholder="bag frame index"><button id="add-frame">add frame</button></div>
       <ul id="frames"></ul>
-      <details><summary>Frame key help</summary><div class="hint">Frames come from the loaded results.jsonl (its <code>frame</code> key = absolute bag frame index) or are typed by hand. Key in gt.json: index zero-padded to 5 digits, e.g. <code>00042</code>. A frame marked "checked, clear" is exported with an empty list.</div></details>
+      <p class="hint">One recording per session. Export labels before loading another results file. Load results first, then import its gt.json.</p>
+      <details><summary>Frame key help</summary><div class="hint">Frames come from the loaded results.jsonl (its required <code>frame</code> key = absolute bag frame index) or are typed by hand. Key in gt.json: index zero-padded to 5 digits, e.g. <code>00042</code>. A frame marked "checked, clear" is exported with an empty list.</div></details>
     </div>
   </div>
   <div>
@@ -37,7 +39,7 @@
       </table></div>
       <details><summary>Label format and review notes</summary><div class="hint">Same shape as <code>resense inject</code> writes: <code>{"&lt;frame&gt;": [{"kind","size":[L,W,H],"distance","lateral","yaw_deg","reflectivity","label","in_gauge","n_points"}]}</code>. <code>distance</code> = m along the track to the nearest face, <code>lateral</code> = m from the track axis (+ left); <code>in_gauge</code> defaults to horizontal footprint overlap with the strict 1.05 m half-width. Check height and override the checkbox manually when needed: a value set by hand is kept when the object is edited afterwards. Detector-prefilled boxes are suggestions, not independent ground truth: review the original cloud before saving. <code>n_points</code> = 1 means "visible, count unknown" (<code>resense eval</code> skips entries with 0 as occluded).</div></details>
     </div>
-    <div class="card"><h3>Top view · detections in red, warnings in yellow, labels in green</h3><canvas id="top" width="1200" height="360"></canvas></div>
+    <div class="card"><h3>Top view · detections in red, warnings in yellow, labels in green</h3><p class="hint">Solid green: 2.1 m envelope. Dashed yellow: advisory margin (+0.35 m each side).</p><canvas id="top" width="1200" height="360"></canvas></div>
   </div>
 </main>
 <script src="assets/result-format.js"></script>
@@ -47,7 +49,7 @@ const $ = id => document.getElementById(id);
 const KINDS = ['person', 'box', 'plank', 'cylinder', 'sphere', 'trolley', 'other'];
 const SIZES = { person: [0.4, 0.5, 1.7], box: [0.5, 0.5, 0.5], plank: [2.0, 0.25, 0.30], cylinder: [0.4, 0.4, 0.9], sphere: [0.4, 0.4, 0.4], trolley: [0.6, 0.6, 1.0], other: [0.5, 0.5, 0.5] };
 const keyOf = i => String(i).padStart(5, '0');
-const state = { results: {}, labels: {}, checked: {}, current: null, source: '' };  // results: key -> FrameResult; labels: key -> [obstacle]
+const state = { results: {}, labels: {}, checked: {}, metadata: {}, current: null, source: '' };  // one recording per session
 
 function frameKeys() {
   const s = new Set([...Object.keys(state.results), ...Object.keys(state.labels), ...Object.keys(state.checked)]);
@@ -57,12 +59,14 @@ function renderFrames() {
   const ul = $('frames'); ul.innerHTML = '';
   const keys = frameKeys();
   for (const k of keys) {
-    const li = document.createElement('li'); li.dataset.key = k;
+    const li = document.createElement('li'); li.dataset.key = k; li.tabIndex = 0;
+    li.setAttribute('role', 'button'); li.setAttribute('aria-pressed', String(k === state.current));
     const r = state.results[k]; const n = (state.labels[k] || []).length;
     const st = r ? (r.obstacle ? `det ${r.nearest_distance == null ? '?' : r.nearest_distance.toFixed(1)} m` : (r.warning ? 'warn' : 'clear')) : '';
     li.innerHTML = `<span>${k}${n ? ' ★' + n : (state.checked[k] ? ' ✓' : '')}</span><span class="n ${r && r.obstacle ? 'status obstacle' : 'status clear'}">${st}</span>`;
     if (k === state.current) li.classList.add('active');
     li.onclick = () => select(k);
+    li.onkeydown = ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); select(k); } };
     ul.appendChild(li);
   }
   const labelled = keys.filter(k => (state.labels[k] || []).length || state.checked[k]).length;
@@ -71,8 +75,8 @@ function renderFrames() {
 }
 function select(k) { state.current = k; renderFrames(); renderObstacles(); draw(); }
 function newObstacle(kind, extra) {
-  kind = kind || 'person'; const s = SIZES[kind] || SIZES.other;
-  return Object.assign({ kind, size: [...s], distance: 50.0, lateral: 0.0, yaw_deg: 0.0, reflectivity: 40.0, label: kind, in_gauge: true, n_points: 1 }, extra || {});
+  kind = kind || 'person'; const s = Object.hasOwn(SIZES, kind) ? SIZES[kind] : SIZES.other;
+  return { kind, size: [...s], distance: 50.0, lateral: 0.0, yaw_deg: 0.0, reflectivity: 40.0, label: kind, in_gauge: true, n_points: 1, ...(extra || {}) };
 }
 function overlapsGauge(o) {
   const [length, width] = o.size;
@@ -108,6 +112,10 @@ function renderObstacles() {
       ${num('n_points', 1)}
       <td><button class="danger" data-i="${i}" data-f="delete">✕</button></td>`;
     tr.querySelector('input[data-f="label"]').value = o.label;
+    if (!KINDS.includes(o.kind)) {
+      const option = new Option(o.kind, o.kind, true, true);
+      tr.querySelector('select').add(option);
+    }
     body.appendChild(tr);
   });
   body.querySelectorAll('input,select').forEach(el => el.addEventListener('change', onEdit));
@@ -115,6 +123,16 @@ function renderObstacles() {
 }
 function onEdit(ev) {
   const el = ev.target, o = state.labels[state.current][+el.dataset.i], f = el.dataset.f;
+  $('edit-error').textContent = '';
+  if (!['kind', 'label', 'in_gauge'].includes(f)) {
+    const v = el.valueAsNumber;
+    if (!Number.isFinite(v) || (f.startsWith('size') && v <= 0)
+        || (['distance', 'reflectivity', 'n_points'].includes(f) && v < 0)
+        || (f === 'n_points' && !Number.isSafeInteger(v))) {
+      $('edit-error').textContent = 'Invalid measurement; previous value retained.';
+      renderObstacles(); return;
+    }
+  }
   if (f === 'kind') { o.kind = el.value; if (SIZES[o.kind]) o.size = [...SIZES[o.kind]]; if (!o.label || KINDS.includes(o.label)) o.label = o.kind; autoGauge(o); renderObstacles(); }
   else if (f === 'label') o.label = el.value;
   else if (f === 'in_gauge') { o.in_gauge = el.checked; o.gaugeManual = true; }
@@ -133,29 +151,46 @@ function draw() {
   for (let x = 0; x <= XMAX; x += 25) { ctx.beginPath(); ctx.moveTo(x * sx, 0); ctx.lineTo(x * sx, c.height); ctx.stroke(); ctx.fillStyle = '#202020'; ctx.fillText(x + ' m', x * sx + 4, 14); }
   const k = state.current, r = k && state.results[k], t = (r && r.track) || { center: 0, yaw: 0, curvature: 0 };
   const axis = X => (t.center || 0) + Math.tan(t.yaw || 0) * X + 0.5 * (t.curvature || 0) * X * X;
-  ctx.strokeStyle = '#00854a'; ctx.setLineDash([6, 4]);
-  for (const side of [1.4, -1.4]) { ctx.beginPath(); for (let X = 3; X <= XMAX; X += 5) { const px = X * sx, py = cy - (axis(X) + side) * sy; X === 3 ? ctx.moveTo(px, py) : ctx.lineTo(px, py); } ctx.stroke(); }
+  for (const side of [1.05, -1.05, 1.4, -1.4]) {
+    ctx.strokeStyle = Math.abs(side) === 1.05 ? '#00854a' : '#967c29';
+    ctx.setLineDash(Math.abs(side) === 1.05 ? [] : [6, 4]);
+    ctx.beginPath(); for (let X = 3; X <= XMAX; X += 5) { const px = X * sx, py = cy - (axis(X) + side) * sy; X === 3 ? ctx.moveTo(px, py) : ctx.lineTo(px, py); } ctx.stroke();
+  }
   ctx.setLineDash([]);
-  const drawBox = (X, Y, L, W, color, text, below) => {
-    const w = Math.max(L, 1.5) * sx, h = Math.max(W, 0.6) * sy, x = X * sx, y = cy - Y * sy;
-    ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.strokeRect(x - w / 2, y - h / 2, w, h);
+  const drawBox = (X, Y, L, W, color, text, below, yaw = 0) => {
+    const a = yaw * Math.PI / 180, ca = Math.cos(a), sa = Math.sin(a);
+    const corners = [[-L/2,-W/2], [L/2,-W/2], [L/2,W/2], [-L/2,W/2]].map(([x,y]) =>
+      [(X + x*ca - y*sa)*sx, cy - (Y + x*sa + y*ca)*sy]);
+    ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.beginPath();
+    corners.forEach(([x,y], i) => i ? ctx.lineTo(x,y) : ctx.moveTo(x,y));
+    ctx.closePath(); ctx.stroke();
+    const right = Math.max(...corners.map(p => p[0])), top = Math.min(...corners.map(p => p[1])), bottom = Math.max(...corners.map(p => p[1]));
     ctx.fillStyle = color; ctx.font = '800 12px "Moscow Sans", Arial, sans-serif';
-    ctx.fillText(text, x + w / 2 + 4, below ? y + h / 2 + 13 : y - h / 2 - 3);   // detector labels above, ours below
+    ctx.fillText(text, right + 4, below ? bottom + 13 : top - 3);
   };
   if (r) {
     for (const d of (r.warnings || [])) drawBox(d.center[0], d.center[1], d.size[0], d.size[1], '#967c29', `det ${d.distance.toFixed(1)} m`);
     for (const d of (r.detections || [])) drawBox(d.center[0], d.center[1], d.size[0], d.size[1], '#e4000d', `det ${d.distance.toFixed(1)} m`);
   }
-  for (const o of (k && state.labels[k]) || []) drawBox(o.distance + o.size[0] / 2, axis(o.distance) + o.lateral, o.size[0], o.size[1], '#00854a', `${o.label} ${o.distance.toFixed(1)} m${o.in_gauge ? '' : ' (outside)'}`, true);
+  for (const o of (k && state.labels[k]) || []) {
+    const x = o.distance + o.size[0] / 2;
+    drawBox(x, axis(x) + o.lateral, o.size[0], o.size[1], '#00854a', `${o.label} ${o.distance.toFixed(1)} m${o.in_gauge ? '' : ' (outside)'}`, true,
+      o.kind === 'box' || o.kind === 'plank' ? o.yaw_deg : 0);
+  }
 }
 
 // ---------------------------------------------------------------- loading
 function loadResults(text, name) {
-  state.results = {}; let n = 0;
+  const results = {}; let n = 0;
   for (const line of text.split(/\r?\n/)) {
     const s = line.trim(); if (!s) continue;
-    try { const o = JSON.parse(s); if (resenseFormat.result(o)) { state.results[keyOf(o.frame ?? n)] = o; n++; } } catch (e) { }
+    try { const o = JSON.parse(s); if (resenseFormat.result(o) && Number.isSafeInteger(o.frame)) { results[keyOf(o.frame)] = o; n++; } } catch (e) { }
   }
+  if (!n) { $('edit-error').textContent = 'No valid frames with absolute frame indices; current session retained.'; return 0; }
+  // A results file starts a recording. Import its gt.json afterwards; never attach labels
+  // from another recording just because its frame numbers happen to match.
+  state.results = results; state.labels = {}; state.checked = {}; state.metadata = {}; state.current = null;
+  $('edit-error').textContent = '';
   state.source = name || 'results.jsonl';
   const keys = frameKeys(); if (!keys.includes(state.current)) state.current = keys[0] || null;
   renderFrames(); renderObstacles(); draw();
@@ -163,20 +198,28 @@ function loadResults(text, name) {
 }
 function loadGT(obj) {
   if (!resenseFormat.record(obj)) throw new Error('gt.json must be a frame-keyed object');
-  const incoming = new Map(); let n = 0;
+  const incoming = new Map(), metadata = {}; let n = 0;
   for (const [k, list] of Object.entries(obj)) {
-    if (k.startsWith('_')) continue;              // "_meta" and other metadata keys of an inject gt.json
+    if (k.startsWith('_')) { Object.defineProperty(metadata, k, {value: structuredClone(list), enumerable: true}); continue; }
     if (!/^\d+$/.test(k) || !Number.isSafeInteger(+k) || !Array.isArray(list))
       throw new Error(`invalid frame ${k}: expected an index and obstacle list`);
     const key = keyOf(+k);
     if (incoming.has(key)) throw new Error(`duplicate frame ${key}`);
     const obstacles = list.map(o => {
       if (!resenseFormat.record(o)) throw new Error(`invalid obstacle in frame ${key}`);
-      const ob = newObstacle(o.kind, o);
+      let fields = structuredClone(o);
+      if (fields.bbox != null && (fields.distance == null || fields.size == null)) {
+        if (!Array.isArray(fields.bbox) || fields.bbox.length !== 2 || !fields.bbox.every(v => resenseFormat.vector(v, 3)))
+          throw new Error(`invalid bbox in frame ${key}`);
+        const [lo, hi] = fields.bbox;
+        fields = { ...fields, distance: fields.distance ?? lo[0], lateral: fields.lateral ?? (lo[1] + hi[1]) / 2,
+          size: fields.size ?? hi.map((v, i) => v - lo[i]) };
+      }
+      const ob = newObstacle(fields.kind, fields);
       if (typeof ob.kind !== 'string' || typeof ob.label !== 'string'
           || !resenseFormat.vector(ob.size, 3) || !ob.size.every(v => v > 0)
           || !['distance', 'lateral', 'yaw_deg', 'reflectivity', 'n_points'].every(f => resenseFormat.finite(ob[f]))
-          || ob.distance < 0 || !Number.isSafeInteger(ob.n_points) || ob.n_points < 0
+          || ob.distance < 0 || ob.reflectivity < 0 || !Number.isSafeInteger(ob.n_points) || ob.n_points < 0
           || typeof ob.in_gauge !== 'boolean') throw new Error(`invalid obstacle in frame ${key}`);
       ob.size = [...ob.size];
       ob.gaugeManual = Object.hasOwn(o, 'in_gauge');
@@ -191,15 +234,19 @@ function loadGT(obj) {
     state.labels[key] = list;
     state.checked[key] = list.length === 0;
   }
+  state.metadata = { ...state.metadata, ...metadata };
   const keys = frameKeys(); if (!state.current && keys.length) state.current = keys[0];
   renderFrames(); renderObstacles(); draw();
   return n;
 }
 function exportGT() {
-  const out = {};
+  const out = structuredClone(state.metadata);
   for (const k of frameKeys()) {
     const list = state.labels[k] || [];
-    if (list.length) out[k] = list.map(o => ({ kind: o.kind, size: o.size.map(Number), distance: +o.distance, lateral: +o.lateral, yaw_deg: +o.yaw_deg, reflectivity: +o.reflectivity, label: o.label, in_gauge: !!o.in_gauge, n_points: Math.round(+o.n_points) }));
+    if (list.length) out[k] = list.map(o => {
+      const { gaugeManual, bbox, ...row } = o; // edited dimensions supersede an imported bbox
+      return structuredClone(row);
+    });
     else if (state.checked[k]) out[k] = [];
   }
   return out;
@@ -209,8 +256,15 @@ function download(obj, name) {
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click();
   setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
 }
-$('file-jsonl').addEventListener('change', ev => { const f = ev.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => loadResults(String(r.result), f.name); r.readAsText(f); });
-$('file-gt').addEventListener('change', ev => { const f = ev.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => { try { loadGT(JSON.parse(String(r.result))); } catch (e) { alert('not a gt.json: ' + e); } }; r.readAsText(f); });
+// Preserve selection order even when a large results file finishes reading after gt.json.
+let fileQueue = Promise.resolve();
+function queueFile(file, load) {
+  if (!file) return;
+  fileQueue = fileQueue.then(async () => load(await file.text(), file.name))
+    .catch(error => { $('edit-error').textContent = 'Import failed: ' + error.message; });
+}
+$('file-jsonl').addEventListener('change', ev => queueFile(ev.target.files[0], loadResults));
+$('file-gt').addEventListener('change', ev => queueFile(ev.target.files[0], text => loadGT(JSON.parse(text))));
 $('export').onclick = () => download(exportGT(), 'gt.json');
 $('add-frame').onclick = () => { const v = $('new-frame').value; if (v === '' || !Number.isSafeInteger(+v) || +v < 0) return; const k = keyOf(+v); if (!state.labels[k]) state.labels[k] = []; select(k); };
 $('add-obs').onclick = () => { if (!state.current) return; (state.labels[state.current] = state.labels[state.current] || []).push(newObstacle('person')); state.checked[state.current] = false; renderObstacles(); renderFrames(); draw(); };
@@ -218,17 +272,17 @@ $('add-from-det').onclick = () => {
   const r = state.results[state.current]; if (!r) return;
   const list = state.labels[state.current] = state.labels[state.current] || [];
   for (const d of [...(r.detections || []), ...(r.warnings || [])]) {
-    list.push(newObstacle('other', { label: `det_${d.id}`, distance: +d.distance.toFixed(2), lateral: +d.lateral.toFixed(2), size: d.size.map(v => +v.toFixed(2)), in_gauge: d.zone === 'gauge', n_points: d.n_points || 1, reflectivity: +(d.intensity || 40).toFixed(1) }));
+    list.push(newObstacle('other', { label: `det_${d.id}`, distance: d.distance, lateral: d.lateral, size: [...d.size], in_gauge: d.zone === 'gauge', n_points: d.n_points ?? 1, reflectivity: d.intensity ?? 40 }));
   }
   state.checked[state.current] = false; renderObstacles(); renderFrames(); draw();
 };
 $('checked').onchange = ev => { if (!state.current) return; state.checked[state.current] = ev.target.checked; if (ev.target.checked) state.labels[state.current] = []; renderObstacles(); renderFrames(); draw(); };
 $('remove-frame').onclick = () => { const k = state.current; if (!k) return; delete state.labels[k]; delete state.checked[k]; delete state.results[k]; state.current = frameKeys()[0] || null; renderFrames(); renderObstacles(); draw(); };
 document.addEventListener('keydown', ev => {
-  if (ev.target.tagName === 'INPUT' || ev.target.tagName === 'SELECT') return;
+  if (ev.defaultPrevented || ev.target.closest('input, select, textarea') || ev.target.isContentEditable) return;
   const keys = frameKeys(), i = keys.indexOf(state.current);
-  if (ev.code === 'ArrowDown' && i + 1 < keys.length) select(keys[i + 1]);
-  else if (ev.code === 'ArrowUp' && i > 0) select(keys[i - 1]);
+  if (ev.code === 'ArrowDown' && i + 1 < keys.length) { ev.preventDefault(); select(keys[i + 1]); }
+  else if (ev.code === 'ArrowUp' && i > 0) { ev.preventDefault(); select(keys[i - 1]); }
 });
 const siteHeader = document.querySelector('header');
 let previousScrollY = window.scrollY;

@@ -2,7 +2,8 @@
 
 > **Purpose:** gallery of the browser dashboard's captures and where their data comes from.
 > **Audience:** jury, team · **Owner:** P2 · **Language:** EN
-> **Last verified:** 2026-09-26, regenerated after the output-label correction · **Status:** current
+> **Last verified:** 2026-09-28, screenshots refreshed against the P2 rendering update; archived
+> real-node captures retain their original provenance · **Status:** current
 
 These screenshots show the current Russian-language browser dashboard in its three decision states.
 Its Moscow Sans typography and primary red come from the supplied Metro style archive. The 16:9

@@ -4,13 +4,26 @@
 > [`EXPERIMENTS.md`](../EXPERIMENTS.md): the result summaries in `results/`, the logs, captures and
 > bench output of each run, and the recordings' original metadata.
 > **Audience:** team, jury · **Owner:** P1 (runs, timing), P4 (result summaries) · **Language:** EN
-> **Last verified:** 2026-09-27; supported P1/P2 cold-bag rerun added (each result remains the record of its own date) ·
+> **Last verified:** 2026-09-28; the judge's per-frame outputs of the sealed detector and the node
+> input path added (each result remains the record of its own date) ·
 > **Status:** current
 
 Every file here is the record of one run and is not rewritten: a new run gets a new file or folder
 (`results/experiments_<what>.json`, `<run>_<date>/`). Day-1 results that later runs superseded are
 in [`../archive/results/`](../archive/results/). `extended_dataset_intake.json` (the ride's
 per-file speeds and intake events) stays in `docs/` because scripts read it.
+
+The [28 September per-frame outputs of the sealed detector](judge_outputs_2026-09-28/README.md)
+(independent judge A, commit `806b6c4`, detector source equal to the seal) hold the offline runs
+of all six original recordings, set O (offline and through the node), two ride segments and set F,
+with their commands, logs and `recompute.py`, which recounts the headline figures with the gate's
+own counting: the only per-frame evidence of the 27.09 detector besides the node captures.
+
+The [28 September node input path](node_input_2026-09-28/README.md) holds the before / after
+dry runs of both original recordings through ROS (checker outputs, status captures, node logs),
+the end-to-end latency and CPU figures (current results and, with `e2e_all_frames.py`, every
+frame result including the start-up), and the frame-by-frame identity check of the detector's
+input (`fast_input.json`).
 
 The [27 September supported playback rerun](p1_p2_supported_playback_2026-09-27/README.md)
 preserves both cold original-bag status streams and node logs, source hashes, and the six-job CI
@@ -21,6 +34,7 @@ the earlier quota-blocked attempt without changing the detector baseline.
 ## Quality cycle — 27 September (final detector `352ca13`, measured at `d572807`)
 
 - [Detector seal](detector_freeze_2026-09-27.json) and [full gate against P3d](results/regression_gate_2026-09-27_quality.json): PASS, no waivers; also the [new baseline](results/regression_baseline_2026-09-27_quality.json).
+- Per-frame outputs of this detector, made by an independent judge on 28.09 (the six recordings, set O offline and through the node, two ride segments, set F) and recounted with the gate's counting: [`judge_outputs_2026-09-28/`](judge_outputs_2026-09-28/README.md). The gate above replays the 1 cm frame cache; the raw recordings differ by a few frames (five empty 8 / 23 / 7 against 11 / 40 / 13 events / alarm frames / STOP episodes; the rail object 123 against 125 of 126).
 - The learned opinion's [cross-fitted ride measurement](results/quality_cycle_2026-09-27/opinion_crossfit_2x_margin.json) ([zero margin](results/quality_cycle_2026-09-27/opinion_crossfit_zero_margin.json)) and its fold training reports (`opinion_report_*.json`).
 - [Cycle record](../QUALITY_CYCLE_2026-09-27.md) with its raw material in [`results/quality_cycle_2026-09-27/`](results/quality_cycle_2026-09-27/): every screen (`screens/`, the review fixes `review_*.json`, the ablations `ablation_*.json`), final acceptance and history stress, the re-registered 72-case [plan](results/quality_cycle_2026-09-27/novel_plan.json) and [results](results/quality_cycle_2026-09-27/novel_results.json.gz), the review's [side-symmetry check](results/quality_cycle_2026-09-27/side_person_check.json), benchmarks.
 - Independent reviews: round 1 of the first version (`8b74cd0`) [both judges](results/rejudge_quality_cycle_2026-09-27_round1.json), round 2 of `65c5a5b` [both judges](results/rejudge_quality_cycle_2026-09-27_round2.json); synthesis in [SCORECARD](../SCORECARD.md).
@@ -233,6 +247,26 @@ lists every file, the machine and the one sandbox-only deviation of the image bu
 | folder | run | result |
 |---|---|---|
 | `rejudge_2026-09-26/` | `pytest`; `OFFLINE=1 dry_run.sh` on both bags (page cache warm, dropped, unknown; `rmem_max` 4 MiB and 32 MiB); `PLAYER_DDS=stock console_test.sh` on both bags; `resense run --bag` on `cloud_with_fake_obj` with `score_fake_objects.py` and `score_clear_distance.py`; the full regression gate with the ride and set F straight; `resense bench` | 587 tests green (`p34/`: the check of the P3 / P4 pass, SCORECARD §0.8); dry runs and the stock console PASS with the bag in the page cache, `doubleT_obstacle` FAIL from a cold disk (34 of 201 frames processed: CAPTAIN C7, action 21); set O from the float bag 387 / 7 / 1; the gate against `_ride_p3d`: SCORECARD §0 |
+
+### `*_2026-09-28/`: `main` at `464f5bc` on the third team VM again (28.09)
+
+The VM of `*_2026-09-25_3` (Xeon Icelake, 8 vCPU = 4 physical cores, 15.6 GiB, Ubuntu 22.04,
+Docker 29.8.1, stock ROS 2 Humble with both Fast DDS and CycloneDDS), every step of
+[`../VM_GUIDE.md`](../VM_GUIDE.md) §1–§5 by an agent over SSH, the image built `--no-cache` on the
+VM, the original bags played from its disk (79 MB/s; no tmpfs). The index of every run and the
+findings: [`vm_2026-09-28/summary.md`](vm_2026-09-28/summary.md); the scripts that ran them:
+`vm_2026-09-28/scripts/`. No archive, bag, cache or `out/` is committed; the §6 scan finds package
+versions, public DNS resolvers, loopback / multicast / metadata-service addresses and the VM's
+generic admin account only.
+
+| folder | run | result |
+|---|---|---|
+| `vm_2026-09-28/` | machine facts, `pytest`, data logs (§2, the ride 221 of 221), `summary.md`, `scripts/` | 4 cores, steal 0, disk 79 MB/s; 754 tests passed |
+| `dry_run_2026-09-28/` | `--no-cache` build; §4.1 (`dry_*`, `dry_clear_replay.txt`); the cold-cache procedure and a warm repeat, twice each (`cold_*`, `warm_*`); `fast_input.*` (PR #20 identity check in the image); §4.2 (`ct_stock*`, `host_jury*` = README steps 0, 2–5, `host_fastdds*`, `host_cyclonedds*`); §4.6 (`host_shm*`, `ct_shm*`); `e2e_vm.py` / `.txt`: end to end over the current and all frame results | all PASS: 360° end to end p95 81–82 ms warm, 88–96 ms cold; host consoles 453 of 453 frames, 195 `STOP`; 453 of 453 input frames identical |
+| `bench_2026-09-28/` | §4.3, `scripts/bench_8core.sh` (`build/run.txt` force-added past `.gitignore`'s `build/`) | `dry_obstacle_native` PASS (p95 63 ms), every native run and both console tests PASS; numpy FAIL at 360° (p95 103 ms): exit 1 |
+| `gate_2026-09-28/` | §4.4, `regression_gate.py --jobs 4` against `regression_baseline_2026-09-27_quality.json` | GATE PASS: identical but 16 informational latency rows |
+| `export_2026-09-28/` | §4.5, `export_image.sh` + `load_image.sh` | PASS: 475 947 817 bytes, sha256 in `archive.txt` |
+| `offline_2026-09-28/` | §5 (nothing allowed out): pass 1 as written; `warm_bags/`: pass 2 with each recording read into the page cache first | pass 1: `dry_clear` FAIL (10 frames skipped after a 1.4 s input stall from the disk), the rest PASS; pass 2: all PASS |
 
 ### `bag_metadata/`: the original `metadata.yaml` of the six recordings
 

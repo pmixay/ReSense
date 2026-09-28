@@ -53,7 +53,7 @@ jobs:
             exit 2
           fi
           echo "release tag: $TAG (event: $GITHUB_EVENT_NAME)"
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: refs/tags/${{ env.TAG }}
       - name: the tag names the package version (scripts/release_meta.py)
@@ -70,7 +70,7 @@ jobs:
             sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc /usr/local/.ghcup /opt/hostedtoolcache/CodeQL
             df -h /
           fi
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.10"
       - name: host Python with Open3D for the tests and the smoke bags (as the ci.yml pytest job)
@@ -185,7 +185,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
       - name: keep the logs and the checksums (not the archive)
         if: ${{ always() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: release-${{ env.TAG }}-logs
           path: |

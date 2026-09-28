@@ -16,22 +16,28 @@ window.resenseFormat = (() => {
   function result(r) {
     if (!record(r) || typeof r.obstacle !== 'boolean'
         || (r.warning != null && typeof r.warning !== 'boolean')
+        || (r.stop_held != null && typeof r.stop_held !== 'boolean')
         || (r.decision != null && !decisions.has(r.decision))
         || !numbers(r, ['stamp', 'nearest_distance', 'clear_distance', 'n_points', 'n_corridor'])
-        || (r.frame != null && (!Number.isSafeInteger(r.frame) || r.frame < 0))) return false;
+        || (r.frame != null && (!Number.isSafeInteger(r.frame) || r.frame < 0))
+        || ['nearest_distance', 'clear_distance'].some(key => r[key] != null && r[key] < 0)) return false;
     for (const key of ['detections', 'warnings']) {
       if (r[key] != null && (!Array.isArray(r[key]) || !r[key].every(detection))) return false;
     }
     for (const key of ['track', 'timing_ms', 'node', 'health', 'mount', 'freshness']) {
       if (r[key] != null && !record(r[key])) return false;
     }
-    const t = r.track || {}, h = r.health || {};
+    const t = r.track || {}, h = r.health || {}, f = r.freshness || {};
     if (!numbers(t, ['center', 'yaw', 'curvature', 'axis_valid', 'rail_offset'])
         || (t.floor_coef != null && (!Array.isArray(t.floor_coef) || !t.floor_coef.length || !t.floor_coef.every(finite)))
         || (t.floor_range != null && !vector(t.floor_range, 2))
         || !numbers(r.timing_ms || {}, ['total', 'track', 'corridor', 'cluster'])
         || !numbers(r.node || {}, ['latency_ms', 'fps', 'frames', 'dropped_frames', 'input_period_ms'])
         || !numbers(h, ['visibility', 'rail_lock'])
+        || ['level', 'decision_level'].some(key => h[key] != null && !['ok', 'warn', 'error'].includes(h[key]))
+        || (f.valid != null && typeof f.valid !== 'boolean')
+        || !numbers(f, ['source_age_s', 'residence_age_s', 'evaluated_at_utc_s', 'transport_age_s',
+                        'max_result_age_s', 'future_tolerance_s', 'queue_lag_s'])
         || (h.messages != null && (!Array.isArray(h.messages) || !h.messages.every(v => typeof v === 'string')))) return false;
     return true;
   }

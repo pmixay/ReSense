@@ -3,25 +3,82 @@
 > **Purpose:** what changed in ReSense, one entry per version or merge, newest first; the numbers
 > are those measured when the change landed.
 > **Audience:** jury (spec §5 "как менялось качество"), team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-27, the quality cycle (the Unreleased entries; older entries record their own date) · **Status:** current
+> **Last verified:** 2026-09-28: the 28.09 entries against the node captures, `docker/Dockerfile` and the committed per-frame outputs; "Dated status notes" moved verbatim from the README; the 27.09 entries against the quality-cycle record (older entries record their own date) · **Status:** current
 
 Versions are the team's labels. The package metadata (`pyproject.toml`) says 0.1.0 up to PR #4,
 0.6.3 from PR #5 (`1210580`) and 1.0.0 from `65a5305` (25.09). A pushed tag `v1.0.0-rcN` /
-`v1.0.0` would be released by `.github/workflows/release.yml`; no tag or release is planned now
-(deferred by the captain on 25.09: the system is still in development;
-[`docs/CAPTAIN.md`](docs/CAPTAIN.md) §5). Results: [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md);
+`v1.0.0` would be released by `.github/workflows/release.yml`; releases were deferred by the
+captain on 25.09 (the system was still in development), and the `v1.0.0` release is now scheduled
+for 28.09 21:00 Moscow time, not yet published ([`docs/CAPTAIN.md`](docs/CAPTAIN.md) §5). Results: [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md);
 counts are "alarm frames / events (/ STOP episodes)" at full rate unless said. "Five bags" = the
 five obstacle-free recordings (2 287 frames); "ride" = the 20-minute recording `new_data` (11 271
 frames, 13 km, no obstacles).
 
-## Unreleased (further detector work authorized; package version 1.0.0)
+## Unreleased (package version 1.0.0; `v1.0.0` scheduled for 28.09 21:00 Moscow time)
 
+- **Documentation corrected after the fresh re-judgement of 28.09 (P1; detector sealed, unchanged):**
+  the GO at `doubleT_obstacle` frame 111 (and CAUTION at 117, 197) that every node capture of the
+  full recording shows is documented as a limitation of the frozen detector: a confirmed low track
+  missed two frames in a row is released by `tracking.hold_misses` 1 (`docs/ALGORITHM.md` §6,
+  `docs/ARCHITECTURE.md` "Known limitations"); the rail object is quoted as 123 of 126 on the raw
+  recording and through the node, 125 of 126 on the frame cache. The learned opinion's delay is
+  stated as 10 processed frames (~1 s at 10 Hz, ~2 s at 5 Hz, longer in a catch-up), not "≤ 1 s".
+  The end-to-end latency is given over current results and over all frame results with the
+  start-up (p95 at 360° 243–455 ms cached, 418 ms cold; `e2e_all_frames.py`), and the disputed
+  "before" baseline with judge A's figures. Judge A's per-frame outputs of the sealed detector
+  (six recordings, set O offline and through the node, two ride segments, set F) are added with
+  their provenance and a recompute script (`docs/evidence/judge_outputs_2026-09-28/`): five empty
+  recordings 8 events / 23 alarm frames / 7 STOP episodes on the raw recordings (11 / 40 / 13 on
+  the cache), set O 414 of 801 (411), the outside box 7 false STOP frames (6; judge A's matcher 9).
+  The ground truth's dependence on the team's own tools is stated (EVALUATION §1). The
+  placement study is called a sensitivity study, not a held-out gain. DECISIONS rows 18–27 (27.09
+  and 28.09). The README is cut
+  to the jury path, what to look at, current results, build / run / bag / parameters and the
+  documentation table; its dated paragraphs moved here ("Dated status notes").
+- **The image's default command runs the node for recorded bags (28.09, `d359a06`):**
+  `ros2 launch resense_ros detector.launch.py freshness_mode:=replay` (the input's age from its
+  publication by the player); before, a bare `docker run resense` + `ros2 bag play` gave `FAULT` on
+  every message of a clear recorded bag (both judges of 28.09). The node's own default stays
+  `live`, for a live LiDAR on a train; CI's offline runtime-image step starts the node with the
+  bare default command; a test pins the command and the node default.
+- **The node's input path and end-to-end latency (28.09, P1; detector unchanged):** the input
+  clouds are taken as serialized bytes (`raw_input`, default true) and read by
+  `resense_ros/fastcloud.py` instead of rclpy's message conversion (12.5 ms median, 32 ms p95 per
+  24 MB 360° cloud, paid again for every queued frame the start-up catch-up skips); a message
+  neither can read is logged and dropped; organized clouds with row padding are packed before the
+  (unchanged) decode; the decision topics go out before the status JSON; the RViz markers and the
+  corridor cloud are built only while something subscribes. The detector's input is byte-identical
+  on all 453 frames of both original recordings (`scripts/check_fast_input.py`, now also in CI).
+  End to end (the player's publication → the result), p95 at 360° on a 4-vCPU 2.1 GHz sandbox: an
+  independent judge's 5 alternating pairs 113 → 102 ms cached and 137 → 118 ms cold (the team's
+  2 pairs 120–127 → 93–97); decode + detect unchanged; CI runner cold 60 ms at 360°, 37 ms at 120°.
+  These cover the current results; over every frame result, start-up included, p95 at 360° went
+  1.2–2.1 s → 0.24–0.46 s in the team's captures (EXPERIMENTS §3d).
+  The status `node` object adds `decode_ms`, `detect_ms`, `cpu_cores` and `rss_peak_mb`;
+  `check_dry_run.py` prints the end-to-end latency and CPU (`--max-p95-e2e`);
+  `play_bag.sh` waits for the node and the listener instead of fixed sleeps; CI runs the original
+  bags and uploads the image archive for the working branch too; a test pins every node
+  parameter to a launch argument with the same default
+  ([evidence](docs/evidence/node_input_2026-09-28/README.md), EXPERIMENTS §3d).
+- **CI in two stages, four jobs (28.09):** a push ran seven `ci.yml` jobs, and a push to `main`
+  that touched the cold-bag pins also ran `dataset-cache.yml`. Now stage 1 `checks` (ruff, the
+  parameter copy, the detector seal: the former `lint` and `params-in-sync`) gates stage 2:
+  `pytest` (the suite plus the former `web` job's dashboard tests on the same install; the
+  zero-skip check now covers `web/demo` too), `docker` and `offline-build`. `docker` takes over the
+  former `dataset` job's cache restore / one-download seeding, and drops what `offline-build`
+  already proves on the jury's runtime archive (its own `docker save` / `rmi` / `load` round trip
+  and `--internal` network playback); its two in-image smoke tests are one, with
+  `--network none`. `dataset-cache.yml` keeps its schedule and manual run but no longer runs on a
+  push (it raced `ci.yml` for the one Google Drive download). Every action moved to its Node 24
+  release (`checkout@v7`, `setup-python@v7`, `cache/restore|save@v6`, `upload-artifact@v7`),
+  which ends the Node 20 deprecation warning on every job.
 - **Detector quality cycle of 27.09 (the user's four problems, ML allowed; sealed, reviewed):**
   five parallel experiments on one shared screen (`scripts/quality_screen.py`: the gate against P3d,
   the monitoring / overclaim diagnostics and the new processing-history stress
   `scripts/history_stress.py`), merged and switched on: the envelope near the train as the union
   of the rails' and the sensor-axis envelope within 60 m on straight track (`gauge.reference` 3),
-  a learned track opinion that may delay a doubtful STOP by at most 10 frames in a track's life,
+  a learned track opinion that may delay a doubtful STOP by at most 10 processed frames in a
+  track's life (~1 s at 10 Hz, ~2 s at 5 Hz),
   never within 25 m or for a standing body within 40 m (`tracking.doubt_*`, gradient-boosted trees
   in `resense/models/`, retrained on the shipped detector, grouped held-out AUC 0.975, a 2× margin
   on its threshold), monitored-range caps from persistent sparse
@@ -731,6 +788,264 @@ combined and their safety review, +28 the STOP keep and its cap, +3 P4's sustain
   from 34–43 m); tests 199 → 235. Record: [`docs/P4_AUDIT.md`](docs/P4_AUDIT.md).
 - **`41b7ae7` (24.09):** the organizers' experts' answers on the LiDAR mount and switches
   ([`docs/organizers/mount_and_switch_qa.md`](docs/organizers/mount_and_switch_qa.md)).
+
+## Dated status notes (moved from the README on 28.09)
+
+The README was cut to the jury path on 28.09 (the independent judge A asked for it). These are its
+dated paragraphs, verbatim, so that nothing they recorded is lost; the figures are those of their
+dates, links are relative to the repository root as in the README. The current figures:
+[`README.md`](README.md) "Current results". Notes on the 26.09–27.09 figures below: the object on the rail's "125 of 126"
+is the replay of the 1 cm frame cache; on the raw recording (offline and through the node) it is
+123 of 126, with a GO at frame 111 ([ARCHITECTURE «Known limitations»](docs/ARCHITECTURE.md#limitations-of-the-sealed-2709-detector-verified-2809)),
+which the shortened output below leaves out; the learned opinion's "~1 s" is 10 processed frames
+(~1 s at 10 Hz, ~2 s at 5 Hz, longer while the node catches up).
+
+### From «Кратко для жюри»: the 26.09 cold-disk check and the output before the freshness controls
+
+Проверка 26.09 со старым проигрыванием (4 ядра, без сети): `doubleT_obstacle` со
+сброшенным кэшем страниц — нода обработала 34 кадра из 201, первый STOP через 15,5 с; тот же
+прогон после `cat` — 139 кадров, STOP на 55,7–56,5 м
+([`docs/evidence/rejudge_2026-09-26/`](docs/evidence/rejudge_2026-09-26/)). Повторный проигрыш
+того же бэга уже идёт из памяти.
+
+Исторический вывод на `doubleT_obstacle` до контроля свежести (сокращён; текущая нода
+дополнительно проверяет возраст и удерживает STOP при потере входа):
+
+```text
+FAULT     # с 2 с после старта ноды, пока плеер загружает бэг (2,6–4 с): кадров ещё нет
+GO        # первая секунда записи; CAUTION, когда человек подходит к габариту
+STOP      # с 1,3–2,9 с записи (зависит от машины): человек на пути, затем предмет на рельсе, 55,5–56,6 м
+CAUTION   # дважды по одному кадру в конце (предмет пропущен в кадре), затем снова STOP
+FAULT     # через 0,5 с после конца бэга: входа нет, путь не контролируется
+```
+
+### Playback steps 3–4 of "How a bag is processed" with the 25–27.09 measurements
+
+3. **Play the bag** (ReSense reads no bag files: it subscribes to what the player publishes) on the
+   same `ROS_DOMAIN_ID` (default 0); `--delay 3` lets DDS discovery complete. CI plays it as uid
+   1000 from a second container of the image, with the image's profile and with the stock Humble
+   RMW (`rmw_fastrtps_cpp`, no XML profile, shared memory on: `PLAYER_DDS=stock
+   scripts/console_test.sh`), as a host console does; stock clients reach the node over UDP
+   because the node announces no shared-memory locators. A 360° recording played from a
+   CycloneDDS console needs `net.core.rmem_max` ≥ 32 MiB on the host for its 24 MB clouds (jury
+   step 0, `sudo sysctl -w net.core.rmem_max=33554432`): at Ubuntu's 212992 a CycloneDDS player
+   delivered 0–1 of 201 of them, all at 32 MiB; a genuine stock Fast DDS player delivered every
+   cloud at 212992 too (25.09, three team VMs; a run first recorded as "stock Fast DDS" was a
+   CycloneDDS player, EXPERIMENTS §3b); the 120° clouds arrive either way; the node logs a WARN at
+   start below 32 MiB. Optionally pre-read a 360° bag (`cat <bag>/*.db3 > /dev/null`) when memory
+   allows; its clouds are 240 MB/s of recording, and from a cold disk the player can fall behind at the start
+   (26.09 re-judgement: `doubleT_obstacle` with the page cache dropped, 337 MB/s cold reads: the
+   node processed 34 of 201 frames, first `STOP` +15.5 s, FAIL; the same run with the bag in the
+   page cache: 139 status messages, `STOP` at 55.7–56.5 m, PASS;
+   [`docs/evidence/rejudge_2026-09-26/`](docs/evidence/rejudge_2026-09-26/)).
+4. **Read the answer** ("What to look at"). Without step 3's queue limit, `ros2 bag play` (Humble)
+   preloads up to 1 000 messages,
+   all of a short recording, while its clock runs, then sends the overdue first seconds back to
+   back: `FAULT` until then (2.6–4 s for 1.9 GB in the page cache, longer from a slow disk). On the
+   P1/P2 follow-up, the first backlog preserves each observed input-period frame within the
+   20 s startup cap; later live stalls use the normal 0.3 s sampling step and 5 s limit. The first
+   cold-cache CI run failed before that correction (85/201 frames processed). An earlier 27.09 follow-up
+   passed both original bags cold with explicit ten-message read-ahead; the obstacle stream became
+   current at +8.8 s. The default 1,000-message read-ahead still failed freshness. See the
+   [tested procedure and remaining limitation](docs/VM_GUIDE.md#41-dry-run-with-the-original-bags).
+   The warm-cache 26.09 re-judgement reached real time in 3.4 s on `roundT_doubleT` and 9.5 s on
+   the 360° `doubleT_obstacle`.
+
+### The "Status (27.09)" block
+
+**Status (27.09): package 1.0.0, the reviewed 27.09 detector, node v0.6.4**
+
+The detector and defaults are those of the [27.09 quality cycle](docs/QUALITY_CYCLE_2026-09-27.md),
+revised after two rounds of independent review and sealed ([`DETECTOR_FREEZE.md`](docs/DETECTOR_FREEZE.md));
+node and dashboard freshness controls are implemented. No release is published (on hold by the
+user's decision; the CI job `offline-build` makes the image archive of every commit).
+
+**26.09 (dated record):** the P3d detector was sealed; the combined M2 / freshness candidate
+produced one false STOP at 53 m in a clear-bag trial whose registered limit is zero and was not
+merged ([the 26.09 record](docs/QUALITY_CYCLE_2026-09-26.md)). The [baseline source seal](docs/DETECTOR_FREEZE.md) and full gate reproduce all **146 gated values
+(199 total comparison rows)**, with no missing rows or waivers. Earlier startup-fix measurements
+pass original-bag idle cold/warm replays: first STOP +0.4 s after the first
+processed cloud, decode+detect p95 36 ms, no recorded messages lost after catch-up settles.
+The clear replay has zero alarms and p95 24 ms. Stock Fast DDS playback also passes; its clear
+recording has one false alarm within the existing allowance of two. Startup still skips frames;
+these timings exclude the player's disk preloading. [Raw evidence](docs/evidence/freeze_2026-09-26/README.md).
+
+**Detector quality cycle of 27.09** ([record](docs/QUALITY_CYCLE_2026-09-27.md)): the four open
+problems of 26.09 were attacked by five parallel experiments on one screen and the accepted
+candidates switched on; two rounds of independent two-judge review found three safety regressions
+and one violated bound, all fixed (`65c5a5b`, `352ca13`). Shipped: near the train the envelope is
+the union of the rails' one and the one measured from the sensor axis (the frame the organizers
+place objects in; no side is narrowed), a learned track opinion that may delay a doubtful STOP by
+at most 10 frames (~1 s) in a track's life, never within 25 m or for a standing body within 40 m
+(gradient-boosted trees retrained on the shipped detector, grouped held-out AUC 0.975, a 2× margin
+on its threshold, never a veto), monitored-range caps from persistent sparse evidence, the
+along-track association gate and the column body width, and far evidence for approaching tracks
+(advisory, never hidden, otherwise). Full gate PASS against P3d, no waiver: ride false events /
+STOP episodes 45 / 38 → **32 / 31** in-sample and **37 measured on ride pieces the opinion never
+saw** (43 without it), five empty recordings 13 / 16 → 11 / 13, the organizers' edge cube first
+STOP 5.2 → **35 m**, the edge box's track from 28.7 m (10.3 m), the box at the envelope top
+101 → 111 m, set O inside STOP frames 384 → 411, GO overclaims 46 → 16, the captured
+history-dependent clear-run STOP gone, history stress 78 → 55. **Where the gains come from** (one
+mechanism off at a time): the ride / five-empty / history gains are mostly the learned opinion
+(without it the ride keeps 43 / 35 and the history stress 75); the edge cube, edge box and the real
+person's 3 extra frames need the envelope reference, i.e. the organizers' sensor-axis placement frame (without it 5.2 m and 58 of 61; the edge cube's 35 m also needs `floating_free_max_dy` 1.2, in a window bracketed by two set O objects); the set O range gains are far evidence. The
+pre-registered placement of the
+organizers' objects at new offsets on the empty recordings and the ride (not used for tuning):
+matched frames 544 → **723** of 2 458, 45 of 72 cases, paired controls 0 (identical per case across the review fixes); with the reference switched off (the rails alone) 722 — the gain on new placements does not rest on the organizers' placement frame (a sensitivity study on seen shapes and backgrounds, not held-out recall). In-sample figures are marked as such in the record; the limits (the opinion's
+threshold at the edge of the held-out positives, the reference's gains resting on the organizers'
+placement frame while Q1 is open) are stated there.
+
+**Criteria judgement:** the independent reviews and remaining gaps are in
+[the scorecard](docs/SCORECARD.md). A fresh re-judgement of 28.09 (two new judges, the node input
+path of 28.09) gives judge A 72.5 and judge B 62.5, combined **66.5/100** (Speed 8/10); the 27.09
+quality cycle's third round, with other judges, gave 72 (round 2: 72, round 1: 67; 26.09: 64); the
+requested 75/100 combined is not met. P4's preregistered
+experiment (26.09) found the target in **45/72 cases and 544/2,458 visible frames** (27.09: 723),
+with zero paired-control matches. This tests
+synthetic combinations on seen backgrounds; it provides no real unseen-route recall result.
+All 45 ride false targets now have exact point/history traces; 14 causes remain unresolved.
+See [P4 audit](docs/P4_AUDIT.md), [experiments](docs/EXPERIMENTS.md) and
+[decision history](docs/DECISIONS.md).
+
+Since 24.09 (the 1.0.0 entry of [`CHANGELOG.md`](CHANGELOG.md)): optional C++ kernels (38–57 %
+less detector time, identical output, built and tested in the CI image), DBSCAN on scipy's
+cKDTree with scikit-learn's exact labels (1.3–2.6 ms less per frame, identical output), a
+measured answer on the train speed (EXPERIMENTS §9), delivery as an image archive for the
+offline stand, a CI step with a stock Fast DDS player, the long overhead rule for the station
+false STOPs, the P3 rules of 25–26.09 for the organizers' objects (ALGORITHM §3.5), version
+1.0.0 with a release workflow that publishes the image archive on a tag push, and a captioned
+2:50 overview video. `scripts/regression_gate.py` re-checks the real-data rows, set O, the ride
+and set F straight in one command. All current numbers:
+[`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) "Current results" and §0.
+
+**Earlier baseline checks (P3d, 26.09; dated):** 621 tests and 6 subtests passed, with no skips or
+deselections; the full regression gate includes all six recordings, set O, the 11,271-frame ride
+and set F straight. The five empty bags then had 13 false events / 16 STOP episodes, the ride
+45 / 38; the person 58/61, rail object 125/126, and set O 384/801 visible in-envelope STOP frames;
+edge objects STOPped only at 5–10 m (the 27.09 cycle changed all of these; see above). Prior measurements remain dated in
+[EXPERIMENTS](docs/EXPERIMENTS.md) and [the evidence index](docs/evidence/README.md).
+
+**Reproduced a second time the same evening** (the P3 / P4 completion pass, another fresh 4-vCPU
+container, every cache rebuilt again from the organizers' links): the strict gate with the ride and
+set F straight PASS with every gated row the same
+([`regression_gate_2026-09-26_head_fresh_machine.json`](docs/evidence/results/regression_gate_2026-09-26_head_fresh_machine.json));
+the rate / re-mount checks (5 Hz 10 / 10, +3° roll 14 / 16, +3° pitch 17 / 18 events / STOP
+episodes) and the 221-start ride census (18 starts with a STOP, none within 10 m) value for value;
+P4's candidate B (`tracking.near_escalate_voxels` 8) passes the full gate and every acceptance
+check with only set O #4 changing (2 → 3 STOP frames). The baseline decision retains the threshold
+at 10; candidate B is not shipped. The envelope union with its review fixes passes the full
+gate too (#4 2 → 9) and stays off until the organizers answer Q1. Details: EXPERIMENTS §1p,
+[`docs/P4_AUDIT.md`](docs/P4_AUDIT.md) "Completion on a second machine",
+[`completion record`](docs/evidence/results/p4_completion_2026-09-26_evening.json); a third
+judge's cross-check of the score: SCORECARD §0.7.
+
+### What the organizers' answers changed (the full list)
+
+What the organizers' answers changed ([`docs/organizers/answers.md`](docs/organizers/answers.md)):
+
+* the strict decision uses **their train envelope, 2.1 × 3.0 m**; the wider v0.5 polygon is the
+  advisory zone; objects **hanging** into it (broken cables) are obstacles; one that dips in with
+  only a few returns is found by the hanging stage only for groups ≤ 0.5 m, within 0.8 m of the
+  axis, out to 60 m and where the rails are locked (ALGORITHM §6);
+* **low objects on a rail**, or straddling the envelope floor like their object, are found by a
+  bed-anomaly stage; tall objects are reported out to the trusted axis range (~200 m on straight
+  track; the tunnel returns nothing beyond ~210 m), but on the organizers' own objects no STOP
+  comes beyond ~101 m (set O), and the 148–154 m person is our own synthetic;
+* the **mount is found from the data** (orientation, roll, pitch). 24.09
+  ([`mount_and_switch_qa.md`](docs/organizers/mount_and_switch_qa.md)): the test bags use the
+  mounts of the provided ones, the LiDAR 1 075 mm above the rail head on the train's centreline,
+  so the auto-calibration stays as a safeguard; glitches at switches (states unknown) will not
+  count against a solution;
+* every frame reports an **estimated monitored range** and input health. An object can be missed
+  within that range; `GO` means no obstacle was detected.
+
+### The headline results table as of 27.09 (the P3d history in each row)
+
+Headline results (kinds and placement modes: [`docs/README.md`](docs/README.md) "Glossary"):
+
+| metric | value | kind | date | source |
+|---|---|---|---|---|
+| false alarms, five obstacle-free bags (2 287 frames) | since 27.09: **11 events**, 40 alarm frames, 13 STOP episodes (in-sample: the track opinion's negatives include these recordings; without the opinion 13 events / 16 episodes); before: 13 events, 58 alarm frames, 16 STOP episodes (14 / 60 / 17 before `tracking.column_hold` 2, 20 / 107 / 27 before the long overhead rule of 25.09) | real | 25.09, 27.09 | EXPERIMENTS §1f, §3a; [QUALITY_CYCLE_2026-09-27](docs/QUALITY_CYCLE_2026-09-27.md) |
+| false alarms, 20-minute 13 km ride (11 271 frames) | since the 27.09 cycle: **37 events, 2.8 per km, on ride pieces the learned opinion never saw** (measured: each pair of the ride's 8 pieces run with a model trained without them); in-sample 32 events, 2.5 per km, 130 alarm frames, 31 STOP episodes; without the opinion 43 events / 35 episodes; before 27.09: **45 events, 3.5 per km** (in-sample: the ride decided the rules of 25.09), 183 alarm frames, 38 STOP episodes (46 / 187 / 39 before `lowobj.rail_start_within` of 26.09, 46 / 197 / 39 before `tracking.column_hold` 2, 47 / 204 / 39 before the rule) | real | 25.09, 26.09 | EXPERIMENTS §1f, §3a, §1n |
+| crossing person, `doubleT_obstacle` | since 27.09: STOP in **61 of 61** frames inside the envelope, from the first frame inside (frame 8), distance error ≤ 0.23 m — the gain is the envelope reference (the organizers' sensor-axis frame); from the rails alone 58 of 61 from frame 11 (0.3 s after entering), as before | real | 24.09, 27.09 | EXPERIMENTS §0; [QUALITY_CYCLE_2026-09-27](docs/QUALITY_CYCLE_2026-09-27.md) |
+| object lying across the rail (0.45 × 0.6 × 0.3 m) | **125 of the 126** frames after the person leaves it (124 before `calibration.keep_within_deg`, 25.09 round 2) | real | 24.09, 25.09 | EXPERIMENTS §0, §1i |
+| health warnings, `CAUTION` | warnings on 196 of 13 759 frames (1.4 %: stations, switches); `CAUTION` on 27–69 % of the frames of the empty bags, 42 % of the ride (re-measured 26.09 with the node's decision rule) | real | 24.09, 26.09 | EXPERIMENTS §0 |
+| organizers' synthetic objects (set O, 1 510 frames) | since 27.09: STOP in **411 of 801** visible in-envelope object-frames, the edge cube from **35.0 m** (18 frames), the edge box's track from 28.7 m (the scorer, matching within 1 m of the 2 m box's centre, credits 7 frames from 18.3 m), the box at the envelope top from 111.4 m, the plank from 87.2 m, the floating cube from 55.8 m, 0 background frames, outside objects unchanged ([QUALITY_CYCLE_2026-09-27](docs/QUALITY_CYCLE_2026-09-27.md)); before 27.09: STOP for **8 of 8** in-envelope objects since the near escalation of 26.09 (6 of 8 before, 5 of them held; 5 of 8 before the hanging stage of 25.09): 2 × 2 m box from 98 m, plank across the rails 82 m, 0.3 m cubes from 43–53 m (the hanging one from 52.5 m since round 2 of 25.09, 34.0 m before), the 5 cm hanging object from 30.1 m (missed before 25.09), the 2 × 2 m box at the envelope top in **51 of 124 frames**, STOP on every frame from 101.3 m under the P3d STOP keep (the scorer's 90 % held-from field reads 111.4 m) (22 frames, held-from 23.9 m on P3c), the edge 2 × 2 m box from 10.3 m (6 frames), and the edge 0.3 m cube at 5.2 m (2 frames); STOP in **384 of 801** visible in-envelope object-frames, 6 false STOP frames on the outside 2 × 2 m box, 3 background alarm frames; set O has been inspected before and is not unseen validation | organizers' synthetic | 24.09, 25.09, 26.09 | [P4_AUDIT](docs/P4_AUDIT.md), EXPERIMENTS §1h, §1i, §1l, §1o |
+| long range, straight track (set F) | the regression gate's current run (27.09 detector): person first confirmed at **151 m** median (6 of 6), trolley 151 m, 1 m crate 124 m, 3 cm hanging cable 99 m; **0.5 m box: 1 of 6** (18 of 110 frames within 50 m) — small objects low on the bed between the rails are a known blind spot (also the 0.3 m cubes of set O: STOP only from 43–56 m). The 24.09 script gave the person 148 m, in ≥ 90 % of the frames of every 10 m band from 115 m | synthetic, legacy | 24.09, 25.09, 27.09 | EXPERIMENTS §2d; [gate](docs/evidence/results/regression_gate_2026-09-27_quality.json) |
+| long range with a given train speed | person 167 m, crate 182 m (held only from 79 m) | synthetic, legacy | 24.09 | EXPERIMENTS §2d |
+| train speed | none is given (no odometry in the recordings); our LiDAR-only estimate is accurate (median error 0.06–0.08 m/s on 55–96 % of the moving frames), but even a perfect speed does not improve the organizers' check (no earlier first STOP, 6 → 17 false STOP frames on the box outside), so it stays off | real, organizers' synthetic | 24.09 | EXPERIMENTS §9 |
+| curves, stations, low objects | R ≈ 350 m curves 6 of 7 from 58–86 m (sightline past the inner wall); station stops 6 of 6 from 113 m; 30 cm on a rail head 6 of 6 from 42–49 m; person lying across the rails 6 of 6 from ~64 m | synthetic, legacy | 24.09 | EXPERIMENTS §2d |
+| sensor limit | no return beyond 210 m in any of the 13 759 frames: 300 m is beyond this sensor | real | 24.09 | EXPERIMENTS §2d |
+| other mounts | upside down, `+x` forward, backwards found; tilt recovered to 0.0–0.5° on re-mounted frames of 3 recordings | real, re-mounted | 22–23.09 | EXPERIMENTS §6 |
+| offline timing per frame | **the 27.09 detector, re-measured: 18.0–22.9 ms mean, p95 22.7–32.6 ms**, max 57 ms, on set O and three 120° / 360° recordings (one core, C++ kernels, idle 4-vCPU sandbox); **worst stretch: ride frames 5700–5900 (a dense station scene) 57 ms mean, p95 111 ms, max 143 ms** (clustering; P3d similar); the node's path without ROS transport (decode of the organizers' PointCloud2 layout, crop, rotation, detector) p95 32–48 ms, peak RSS 161–248 MB ([QUALITY_CYCLE_2026-09-27](docs/QUALITY_CYCLE_2026-09-27.md) "Speed"); 26.09 with the C++ kernels: 22.7–30.7 ms mean, p95 32.8–42.1 ms on set O and the 120° / 360° recordings (one core, idle 4-core machine, the re-judgement of 26.09; the numpy path there 78.3 / 95.5 ms at 360°); 23.09 on the numpy path: 42–64 ms mean, p95 53–78 ms on every recording (health monitor not included: 7–14 ms more); 24.09 on another idle VM 36.5–52.2 / 50.3–67.1 ms; the optional C++ kernels: −38…−57 %, identical output; DBSCAN on cKDTree (25.09): −1.3…−2.6 ms more on the native path | timing: sandbox | 23–25.09, 27.09 | EXPERIMENTS §3, ARCHITECTURE "Native kernels" |
+| ROS node in Docker, end to end | since 28.09 (input read from its serialized bytes, visualisation built only when watched; decode and detector unchanged): input publication → result through DDS, p95 of the current results at 360° **~10–20 ms lower**: an independent judge's 5 alternating pairs on a 4-vCPU Xeon 2.1 GHz, median 113 → 102 ms with the recording cached, 137 → 118 ms from a cold disk (the team's 2 pairs: 120–127 → 93–97 ms); p95 **not reliably under the 100 ms frame period** there. 120°: 54–64 ms. CI runner, cold, 28.09: **60 ms at 360°, 37 ms at 120°** (an earlier run on another runner, 27.09: 126 / 49 ms; unpaired). Decode + detect unchanged (p95 ~75 ms at 360° on the sandbox); node process 0.4–0.8 cores, peak RSS 0.13–0.48 GB; 10 fps, no frames dropped after start-up; the detector's input byte-identical on all 453 frames. Before 28.09: 120°: 10 fps, p95 76 ms; 360°: 7–10 fps; ~100 % of one core, 186 MB (v0.6.3) | timing: sandbox, CI | 23–24.09, 28.09 | EXPERIMENTS §3b, §3d; [evidence](docs/evidence/node_input_2026-09-28/README.md) |
+
+Set F uses legacy placement, which can flatter curves and envelope edges: P4's paired rerun found
+0 matches beyond 100 m on seven curve / edge scenes in either mode, and on straight track a person
+anchored on the near rails first at 154 m (legacy 150 m, 5 approaches; not surveyed ground truth).
+Set S on 108 real empty frames: 22 / 67 bed placement, 30 / 68 legacy (small samples; the P3d
+replay uses the same sample identities as the P3c run). Details:
+[`p3d paired set S report`](docs/evidence/results/p4_p3d_setS_paired_2026-09-26.json).
+
+### Acceptance test notes of 25–27.09
+
+`scripts/dry_run.sh <bag>` builds with `--no-cache`, waits for the node before playing, captures
+`/resense/status` and checks it (`scripts/check_dry_run.py`): on `doubleT_obstacle` the person in
+50–62 m, p95 of decode + detect ≤ 100 ms, no frame of the recording left unprocessed after the
+start-up; `--expect-clear --max-alarm-frames 2` on `roundT_doubleT` is the false-alarm half (the
+allowance covers the trackside device at 48–54 m, 1 frame in 3 of the 10 ROS runs of 25.09; the
+column at 101–149 m, 3 frames at 111–115 m from the original bag and 2 at 128–130 m from the cache,
+is advisory since `tracking.column_hold`, EXPERIMENTS §3a); thresholds are arguments of
+`scripts/check_dry_run.py`, the raw capture goes to `out/dry_run/` (`status.jsonl`, `node.log`).
+The 23.09 rehearsal in the sandbox: EXPERIMENTS §3b.
+
+**"After the start-up"** (25.09): `ros2 bag play` (Humble) preloads the bag with its clock running
+and then sends the overdue first seconds back to back; the node works through that burst one frame
+per 0.3 s of recording and skips the rest on purpose (`node.catchup_skipped`), at 360° on a 4-core
+VM until +7.7–7.9 s: 39–53 frames of `doubleT_obstacle` skipped by design in the passing runs of
+25.09, none lost in transport after the start-up (EXPERIMENTS §3a). So `--max-dropped` counts from
+the later of `--settle-s` (5 s) and the frame on which the node is back on the newest one
+(`node.catchup` false), at most `--max-settle-s` (15 s): a catch-up still running then fails, one
+that never ends does not move the settle point at all.
+`dry_run.sh` also passes `--bag`: the checker then counts the recording's own messages the node did
+not process, so the 4 frames `doubleT_obstacle` itself lacks (at +14.0 and +16.9 s) are not drops.
+The node's stamp-gap count `node.dropped_frames` is printed as before (EXPERIMENTS §3a).
+
+**Cold-disk startup (26.09 night):** the final node grants a new recording up to 20 s of initial
+backlog, preserves short queues, then restores the existing 5 s bound for later stalls. With
+zero bag pages resident before playback, `doubleT_obstacle` PASSES: 148 processed frames,
+143 alarm frames, first STOP +0.4 s, p95 36 ms and no post-settle recorded messages unprocessed.
+Catch-up settles at +7.4 s of recording. Warm playback and the clear recording also pass.
+The optional pre-read before jury step 3 can reduce disk delay; the supported cold playback uses
+`--read-ahead-queue-size 10` for both original bags. The earlier cold run used the default queue.
+[Evidence](docs/evidence/freeze_2026-09-26/README.md) retains the earlier failures. One additional
+cold trial under two direct readers (127.4 MiB/s combined) also passes: p95 36.37 ms, first STOP
++0.7 s, no post-settle losses. This is a bounded workload, not a measured overload limit.
+
+**Supported playback recheck, 27.09:** [archive-cache CI](docs/evidence/p1_p2_supported_playback_2026-09-27/README.md)
+passed both original bags cold with the ten-message queue. The obstacle bag had 199 status
+messages, STOP at 55.5–56.5 m and p95 76 ms; its first STOP was fail-safe while stale, and its
+first current STOP followed catch-up at +13.6 s. All 63 source messages after catch-up were
+processed. The clear bag had 252 statuses, zero alarms and p95 48 ms. The archive and database
+hashes match the earlier verified recordings. This does not validate Humble's 1,000-message
+default or an unbounded overdue burst.
+[A later seven-job rerun](docs/evidence/p1_p2_supported_playback_2026-09-27/cached_bags_run_36319767736/README.md)
+also passed after downloading, verifying and caching the two original bags: 201 obstacle statuses,
+first current STOP and catch-up at +2.6 s, p95 47 ms; 252 clear statuses, zero alarms, p95 32 ms.
+Both cold runs retain their separate timing and raw evidence.
+
+### Release sentence and repository-layout rows of 25–26.09
+
+`IMAGE_TAR=<archive> OFFLINE=1 ./scripts/dry_run.sh <bag>` is the same on real bags. A pushed
+release tag (`v1.0.0-rcN`, `v1.0.0`) would run `.github/workflows/release.yml`: tests, the runtime
+archive built, removed and loaded back, both bags through the loaded image (internal network and
+`--net=host` with a stock player), then the GitHub release with the archive, its `.sha256` and
+`SHA256SUMS`; no tag or release is planned now (deferred by the captain, 25.09: the system is still
+in development). `scripts/bench_8core.sh` bundles the acceptance runs and the timing for the team's
+8-core machine (the organizers' i7 stand is not available before the upload).
+
+| [`tests/`](tests/) | The latest P1/P2-branch local run passed 667 core/tool tests and 6 subtests; one `new_data` cache test was deselected because `/data/cache/new_data` is absent ([P1/P2 receipt](docs/evidence/p1_p2_completion_2026-09-26/README.md); [quality-cycle test evidence](docs/evidence/results/quality_root_checks_2026-09-26/README.md)) |
+| [`web/`](web/) | browser dashboard (offline replay; live via rosbridge, installed separately), Foxglove layout, label tool, 16 headless Chromium tests on the P1/P2 branch |
 
 ## v0.6.4 — 24.09 (`de98266`, PR #10)
 
