@@ -7,7 +7,10 @@ A separate fresh-context Astra reviewer gave the candidate **66/100** in
 [Checkpoint 1](CHECKPOINT1_REVIEW_2026-09-28.md). It used stricter deductions and
 new reserved/runtime evidence. Presenting that score as a replacement for 69 was
 a reporting error: unlike reviewers cannot establish a three-point code regression.
-Both reviews are retained. A same-reviewer baseline/candidate comparison is pending.
+Both reviews are retained. The subsequent
+[same-reviewer paired comparison](evidence/cycle_2026-09-28/checkpoint1_astra_paired.md)
+gives baseline 66 and candidate 66: zero whole-point change, with the narrow
+continuity gain explicitly credited.
 
 The actual measured improvement is raw rail-object STOP coverage **123 to 126/126**
 after frame 75, with unchanged person recall and no quality-gate regression.

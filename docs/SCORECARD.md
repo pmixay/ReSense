@@ -5,7 +5,7 @@
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, summary RU
 > **Established baseline rating:** **69/100**, the earlier lead assessment. The measured code improvement is raw rail STOP coverage 123 to 126/126 with no quality-gate regression.
 > **Separate independent review:** **66/100**, fresh-context GPT-6 Astra on candidate `ef1d8f5`. This is not a replacement measurement of the earlier 69 or evidence of a three-point code regression.
-> **Status:** a same-reviewer baseline/candidate comparison is pending. Scores are internal judgments; organizers publish no numerical weights. Deployment acceptance remains provisional.
+> **Status:** the same reviewer scores baseline and candidate **66/100 each (delta 0)**. Scores are internal judgments; organizers publish no numerical weights. Deployment acceptance remains provisional.
 
 ## Checkpoint 1: 28 September evening
 
@@ -22,6 +22,9 @@ The difference from the earlier 69-point lead review reflects an independent
 reviewer and newly measured limitations. It is not a paired measurement of a
 three-point software regression. Read the [complete independent review](CHECKPOINT1_REVIEW_2026-09-28.md)
 and [machine-readable result](evidence/cycle_2026-09-28/checkpoint1_astra.json).
+The [paired reassessment](evidence/cycle_2026-09-28/checkpoint1_astra_paired.md)
+holds evidence and reviewer constant: baseline 66, candidate 66, no whole-point
+change. It confirms no numerical regression within that review.
 
 ## Earlier lead reassessment: 28 September (`20e8229`)
 

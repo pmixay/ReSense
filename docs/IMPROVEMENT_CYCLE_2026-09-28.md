@@ -93,6 +93,6 @@ Keep **69/100 as the established earlier baseline assessment** and retain the
 independent **66/100** as a separate review. The initial checkpoint headline
 incorrectly implied that a different reviewer established a decrease from 69.
 There is no such paired measurement. The actual quality pair improves continuity
-and preserves the other enforced metrics. A same-reviewer comparison is being
-recorded before assigning any score change. No code or evidence is rolled back,
+and preserves the other enforced metrics. The [same-reviewer comparison](evidence/cycle_2026-09-28/checkpoint1_astra_paired.md)
+is now recorded: baseline 66, candidate 66, zero whole-point change. No code or evidence is rolled back,
 and neither review is hidden or relabeled as an automated test result.

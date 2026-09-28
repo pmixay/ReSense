@@ -171,7 +171,8 @@ both sources.
 The current code improves raw rail-object continuity from 123 to 126/126 with no
 quality-gate regression. A separate score-blind reviewer rated the candidate
 **66/100**; different reviewers and evidence do not establish a three-point
-software regression. A same-reviewer baseline/candidate comparison is pending.
+software regression. The same reviewer scores baseline and candidate 66/100 each: **0 whole-point
+change**, alongside the measured continuity improvement.
 [Review history and scope](docs/CURRENT_REVIEW_2026-09-28.md).
 Full quality/history checks and 841 image tests pass. **Deployment remains provisional:** local 360°
 positive playback fails freshness and 100 ms decode-plus-detect p95 (candidate
