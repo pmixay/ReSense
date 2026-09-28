@@ -3,16 +3,16 @@
 > **Purpose:** what is sealed, how the seal is verified, the gate that validates it, and how a
 > detector change would be accepted.
 > **Audience:** team, jury · **Owner:** P1 (seal), P3 (detector) · **Language:** EN
-> **Last verified:** 2026-09-28, experimental health source `ef71c9d`: source integrity and full default gate pass.
+> **Last verified:** 2026-09-28, experimental complete-timing source `bc75abe`: source integrity and full default gate pass.
 > **Status:** active user-authorized improvements; each detector change requires fresh acceptance and a replacement seal.
 
 ## What is sealed
 
 **Current development reference:** `experiment/cross-ring-sparse-evidence`, combining
-P3 work, validated low-object continuation and the exact-count health histogram optimization.
-The [current seal](evidence/detector_freeze_2026-09-27.json) covers 34 detector,
-configuration and build files, matching measured source `ef71c9d` with source digest
-`c0273a13a67ab4872dab00154caa75f6b30f50416775062c591fbb47906a0fa4`.
+P3 work, validated low-object continuation, the health histogram optimization and corrected
+full-call timing. The [current seal](evidence/detector_freeze_2026-09-27.json) covers 34 detector,
+configuration and build files and matches measured timing source `bc75abe`; its digest is recorded
+in the manifest.
 The historical manifest filename is retained for CI.
 
 The [full default gate](evidence/cycle_2026-09-28/health_histogram/default/README.md)
@@ -21,6 +21,12 @@ waivers. All 15,269 real-frame payloads and 30 set F cases (3,060 actual rows) m
 combined P3 baseline outside verified timing effects. The
 [previous P3 seal](evidence/cycle_2026-09-28/health_histogram/previous_p3_seal.json)
 is preserved. This follows the user-authorized [improvement cycle](IMPROVEMENT_CYCLE_2026-09-28.md).
+
+The [complete-timing gate](evidence/cycle_2026-09-28/complete_timing/default/README.md)
+passes with the same 208 non-latency metrics. Exact parity covers all 15,269 recorded outputs;
+no non-timing field or invalid timing contract changed. Health now consumes the previous
+complete detector call and labels its one-frame-old sample. Default decisions and all other
+non-timing output are unchanged.
 
 [Matched installed-image runtime](evidence/cycle_2026-09-28/health_histogram/runtime/README.md)
 passes for the candidate: positive processing p95 105.15 → 76.32 ms, clear 77.33 → 60.51 ms;
@@ -40,8 +46,9 @@ replaced together with its recorded hash passes: a change to the manifest is rev
 
 ## The gate that validates it
 
-The [current health gate](evidence/cycle_2026-09-28/health_histogram/default/gate.json)
-compares against the [combined P3 baseline](evidence/cycle_2026-09-28/p3_sync/default/gate.json):
+The [current complete-timing gate](evidence/cycle_2026-09-28/complete_timing/default/gate.json)
+compares against the accepted health source and then the
+[combined P3 baseline](evidence/cycle_2026-09-28/p3_sync/default/gate.json):
 all 208 compared metrics, including 146 enforced, are unchanged. Complete payload parity
 covers 15,269 real frames and 30 set F cases. The node, launch, Docker and documentation
 remain outside the seal and require their own checks. Main `059948a` changes the node;

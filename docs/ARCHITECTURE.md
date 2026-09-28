@@ -74,7 +74,10 @@ The detector (the `resense/` sources, the configuration and the build files) is 
   `obstacle`, `warning`, `nearest_distance`, `clear_distance`, `detections[]` (id, zone, kind,
   reason, distance, lateral offset, centre, size, points, confidence, age), `track` (bed, axis,
   rail offset, trusted ranges), `health` (level, `decision_level`, messages, monitored range),
-  `mount`, the ego speed and its source, `timing_ms`. The node adds a `node` object (`latency_ms`,
+  `mount`, the ego speed and its source, `timing_ms`. `timing_ms.stages` preserves the historical
+  interval through tracking; `health`, `result` and `total` include health and result construction.
+  Health latency is based on the previous completed call and reports its one-frame sample age.
+  The node adds a `node` object (`latency_ms`,
   `decode_ms`, `detect_ms`, `fps`, `frames`, `dropped_frames`, `catchup`, `catchup_skipped`,
   `input_topic`, `recording`, `cpu_cores`, `rss_peak_mb`, …), a `freshness` object and
   `snapshot_kind` (frame result, or watchdog / error snapshot).

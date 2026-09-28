@@ -368,6 +368,12 @@ A frame reports `obstacle = true` when at least one track is **confirmed**:
   shape signature — and it is not withheld by the learned opinion (§3.6); `tracking.reseed_hold`
   holds a STOP through a mount-calibration change (§2b).
 
+`timing_ms.stages` sums the six historical detector stages through tracking. `health` measures
+mount serialization and health monitoring; `result` measures `FrameResult` construction; `total`
+measures from detector entry through result construction. Detector health consumes the prior
+completed `total` and identifies its one-frame age, so the health call measures its own cost on
+the following frame. This is a telemetry correction; decisions do not use latency by default.
+
 `nearest_distance` is the along-track distance of the nearest confirmed gauge track, to the
 object's nearest point inside the envelope. Confirmed advisory tracks set `warning`, not
 `obstacle`. Every confirmed track (distance, lateral, size, confidence, age, kind, reason), the

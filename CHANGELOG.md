@@ -19,6 +19,16 @@ landed (detector figures on the 1 cm frame cache). Current results: [`README.md`
 archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of the GitHub release
 `v1.0.0`; until then: the CI artifact of a `main` run (GitHub login) or `scripts/export_image.sh`.
 
+### Changed — detector timing contract (28.09)
+
+- `timing_ms.total` now includes health monitoring and result construction; `stages` retains the
+  earlier interval. The health monitor consumes the previous complete call and publishes its
+  one-frame sample age. Direct numeric health callers retain their existing semantics.
+- Full native gate: all 208 non-latency comparison metrics unchanged, no waivers. Exact comparison:
+  15,269 recorded frames and 30 set F cases / 3,060 rows with no non-timing output changes or
+  invalid timing contracts. This fixes instrumentation; it claims no execution speed gain.
+- Validation and captures: [`complete timing evidence`](docs/evidence/cycle_2026-09-28/complete_timing/default/README.md).
+
 ### Changed — ROS node (29.09; the detector is sealed and unchanged)
 
 - **Faster, bit-identical decode:** `resense_ros/fastcloud.decode` returns the same arrays byte for

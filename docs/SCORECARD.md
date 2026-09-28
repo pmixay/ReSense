@@ -37,8 +37,11 @@ separately rated the combined baseline 67/100 before health acceptance. Its ment
 33 production files is a counting typo: the committed manifest and root audit cover 34.
 Both original reports are retained verbatim. The earlier paired 66 → 66 review below
 and historical lead rating of 69 are separate assessments, not a measured score decline.
-The next priorities are accurate full-call timing, startup/current-result recovery,
-and acceptance of the near-preserving fresh-onset candidate, which has no credit yet.
+Accurate full-call detector timing has since passed an exact 15,269-frame parity check and
+the full default gate; it corrects latency reporting without claiming a speed gain. The priority
+now is reducing false STOPs without worsening real-target onset or range. A narrowed low-history
+onset candidate reduced false STOPs in two registered ride segments, with no positive or Set F
+regression in its initial screens; it remains opt-in pending independent review and the full gate.
 
 ## Checkpoint 1: 28 September evening
 

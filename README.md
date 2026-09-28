@@ -15,13 +15,15 @@ training on obstacles. The answer is `/resense/decision` (`GO` / `CAUTION` / `ST
 ## Experimental development snapshot
 
 This branch is `experiment/cross-ring-sparse-evidence`. It includes main `059948a`
-(documentation, faster decoding and node warm-up) plus validated low-object continuation
-and the [health histogram optimization](docs/evidence/cycle_2026-09-28/health_histogram/README.md).
-The detector's full default gate and source seal pass. The [combined-node validation](docs/evidence/cycle_2026-09-28/main_sync/README.md)
-at `75ef4e2` retained all 453 original frames; local processing p95 was 86.95 ms (positive)
-and 59.79 ms (clear), with zero clear-recording STOPs. Fresh person matches were 40/61,
-so startup availability remains a limitation. Its four CI jobs passed, but the cold positive
-recording played at 0.782x; separate warm full-rate gates are being added.
+(faster decoding and node warm-up), validated low-object continuation, the
+[health histogram optimization](docs/evidence/cycle_2026-09-28/health_histogram/README.md),
+and the [complete timing correction](docs/evidence/cycle_2026-09-28/complete_timing/default/README.md).
+The timing candidate passed the full default gate and an exact 15,269-frame comparison with no
+non-timing changes. The [combined-node validation](docs/evidence/cycle_2026-09-28/main_sync/README.md)
+retained all 453 original frames; local processing p95 was 86.95 ms (positive) and 59.79 ms
+(clear), with zero clear-recording STOPs. Fresh person matches were 40/61, so startup availability
+remains limited. All four CI jobs pass at the current accepted main-sync commit, including the new
+separate warm full-rate gates; the earlier cold positive replay was 0.782x.
 Experimental keeps `catchup_startup_step:=0` (all input-period startup frames); main's
 0.2 s startup thinning remains available explicitly and requires separate recall acceptance.
 
