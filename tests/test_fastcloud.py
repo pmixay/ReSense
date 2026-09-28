@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import struct
 import sys
+from array import array
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -217,3 +218,96 @@ def test_decode_takes_the_fast_path_only_for_leading_float32_xyz():
     moved = (("intensity", 0, 7), ("x", 4, 7), ("y", 8, 7), ("z", 12, 7))
     assert not fast(_cloud({k: v for k, v in _scan(np.random.default_rng(6), 10).items() if k != "ring"},
                            moved, 16)[0])
+
+
+@pytest.mark.parametrize("raw", [False, True])
+@pytest.mark.parametrize("missing", [1, 26, 52])
+def test_truncated_padded_rows_cannot_be_decoded_as_points(raw, missing):
+    """Enough bytes for the declared point count does not mean every padded row is present.
+
+    The first row's padding is a plausible return at 99 m. The old fallback decoded it as the
+    second point instead of the actual second-row return at 20 m, without raising an error.
+    """
+    msg, _ = _cloud({"x": [10.0, 20.0], "y": [0.0, 0.0], "z": [0.0, 0.0]})
+    padding, _ = _cloud({"x": [99.0], "y": [0.0], "z": [0.0]})
+    data = msg.data[:26] + padding.data + msg.data[26:] + padding.data
+    broken = SimpleNamespace(**{**vars(msg), "height": 2, "width": 1, "row_step": 52,
+                                "data": data[:-missing]})
+    assert len(broken.data) >= broken.height * broken.width * broken.point_step
+    assert pointcloud2_to_arrays(broken, 0.5, 250.0)[0][:, 0].tolist() == [10.0, 99.0]
+    if raw:
+        broken = fastcloud.parse_pointcloud2(_cdr(broken))
+    with pytest.raises(ValueError, match="data length.*height.*row_step"):
+        fastcloud.packed(broken)
+
+
+@pytest.mark.parametrize("height,width,row_step,data_size", [
+    (1, 2, 52, 51),     # unpadded short payload
+    (1, 2, 52, 53),     # undeclared trailing bytes
+    (1, 1, 30, 26),     # one row still owes its declared padding
+    (2, 1, 30, 61),     # organized surplus is also inconsistent
+    (0, 1, 26, 26),     # no rows cannot carry points
+    (1, 0, 0, 1),      # no columns and no padding cannot carry data
+])
+def test_inconsistent_payload_length_is_rejected(height, width, row_step, data_size):
+    msg, _ = _cloud({"x": [10.0], "y": [0.0], "z": [0.0]})
+    malformed = SimpleNamespace(**{**vars(msg), "height": height, "width": width,
+                                   "row_step": row_step, "data": bytes(data_size)})
+    with pytest.raises(ValueError, match="data length"):
+        fastcloud.packed(malformed)
+
+
+@pytest.mark.parametrize("changes", [
+    {"row_step": 25}, {"row_step": -1}, {"height": -1}, {"width": -1},
+    {"point_step": -1}, {"point_step": 0},
+])
+def test_impossible_row_layout_is_rejected(changes):
+    msg, _ = _cloud({"x": [10.0], "y": [0.0], "z": [0.0]})
+    malformed = SimpleNamespace(**{**vars(msg), **changes})
+    with pytest.raises(ValueError, match="PointCloud2.*(nonnegative|positive|row_step)"):
+        fastcloud.packed(malformed)
+
+
+@pytest.mark.parametrize("bigendian", [False, True])
+@pytest.mark.parametrize("storage", [bytes, bytearray, memoryview, list,
+                                     lambda b: array("B", b), lambda b: np.frombuffer(b, np.uint16)])
+def test_valid_padding_and_generic_payload_storage_preserve_points(bigendian, storage):
+    msg, _ = _cloud({"x": [10.0, 20.0], "y": [1.0, 2.0], "z": [0.5, 1.0]}, bigendian=bigendian)
+    expected = pointcloud2_to_arrays(msg, 0.5, 250.0)
+    # Single-row messages retain their original object, including a list-of-octets payload.
+    generic = SimpleNamespace(**{**vars(msg), "data": storage(msg.data)})
+    assert fastcloud.packed(generic) is generic
+    _same(pointcloud2_to_arrays(generic, 0.5, 250.0), expected)
+    # Complete padded rows strip only padding, including when the storage's len != byte count.
+    payload = msg.data[:26] + b"\x7f" * 4 + msg.data[26:] + b"\x7f" * 4
+    padded = SimpleNamespace(**{**vars(msg), "height": 2, "width": 1, "row_step": 30,
+                                "data": storage(payload)})
+    _same(pointcloud2_to_arrays(fastcloud.packed(padded), 0.5, 250.0), expected)
+    single = SimpleNamespace(**{**vars(msg), "row_step": 56, "data": storage(msg.data + b"\x7f" * 4)})
+    assert fastcloud.packed(single) is single
+    _same(pointcloud2_to_arrays(single, 0.5, 250.0), expected)
+
+
+@pytest.mark.parametrize("row_step", [None, 0])
+def test_implicit_packed_stride_remains_supported(row_step):
+    msg, _ = _cloud({"x": [10.0, 20.0], "y": [0.0, 0.0], "z": [0.0, 0.0]})
+    msg.height, msg.width = 2, 1
+    if row_step is None:
+        del msg.row_step
+    else:
+        msg.row_step = row_step
+    assert fastcloud.packed(msg) is msg
+    assert pointcloud2_to_arrays(msg, 0.5, 250.0)[0][:, 0].tolist() == [10.0, 20.0]
+
+
+@pytest.mark.parametrize("height,width,row_step,data", [(0, 0, 0, b""), (0, 2, 52, b""),
+                                                        (1, 0, 0, b""), (2, 0, 4, b"padding!")])
+def test_empty_cloud_layouts_stay_empty(height, width, row_step, data):
+    msg, _ = _cloud({"x": [], "y": [], "z": []})
+    msg.height, msg.width, msg.row_step, msg.data = height, width, row_step, data
+    xyz, inten, ring, n_finite, n_near = pointcloud2_to_arrays(fastcloud.packed(msg), 0.5, 250.0)
+    assert xyz.shape == (0, 3) and inten.size == ring.size == n_finite == n_near == 0
+    # A default empty message may also have no fields or point size yet.
+    msg.height, msg.width, msg.row_step, msg.data = 0, 0, 0, b""
+    msg.fields, msg.point_step = [], 0
+    assert fastcloud.packed(msg) is msg
