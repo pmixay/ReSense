@@ -10,6 +10,8 @@ from resense.config import ClusterConfig, GaugeConfig
 from scripts.analyze_fresh_support import (decomposition, episode_count, exact_descriptor, negative_report, positive_report,
                                            runtime_support, validate_descriptor)
 
+DIRECT_CAPTURE_ROOT = Path("C:/Users/alikh/AppData/Local/Temp/opencode")
+
 
 def component():
     xyz = np.array([[110, 0, .4], [110.1, .2, .4], [110, .4, .8],
@@ -74,12 +76,12 @@ def test_local_decomposition_does_not_mutate_exact_inputs_or_use_scoring_labels(
     assert first["strict"][0]["descriptor"]["ring_count"] == 0
 
 
+@pytest.mark.realdata(str(DIRECT_CAPTURE_ROOT))
 def test_direct_fresh_selected_events_and_positive_counterexample_when_capture_available():
-    root = Path("C:/Users/alikh/AppData/Local/Temp/opencode")
+    root = DIRECT_CAPTURE_ROOT
     trace = root / "direct-fresh-support-all"
     centre = root / "range-shape-centre-direct-fresh.json"
-    if not (trace / "summary.json").exists() or not centre.exists():
-        pytest.skip("audited external direct-fresh trace not available")
+    assert (trace / "summary.json").exists() and centre.exists(), "marked direct-fresh capture is incomplete"
     negatives = negative_report(trace)
     assert negatives["paired_frames"] == 9255
     assert negatives["counts"]["stop_track_frames"] == 133

@@ -105,6 +105,7 @@ def test_rejected_candidate_has_no_tracking_flag_or_default():
     assert not hasattr(TrackingConfig(), "evidence_coherence")
 
 
+@pytest.mark.realdata(str(MEASUREMENT))
 def test_measured_remaining_inventory_is_133_track_frames():
     trace = _trace_data()
     retained = _retained_keys()
@@ -125,6 +126,7 @@ def test_measured_remaining_inventory_is_133_track_frames():
     }
 
 
+@pytest.mark.realdata(str(MEASUREMENT))
 def test_interval_rule_is_not_a_single_false_history_separator():
     trace = _trace_data()
     events = {event["key"]: event for event in trace["events"]}
@@ -139,6 +141,7 @@ def test_interval_rule_is_not_a_single_false_history_separator():
     assert "new_data_4.jsonl:58" in breaks
 
 
+@pytest.mark.realdata(str(MEASUREMENT))
 def test_293_fields_and_reference_change_are_not_identity_evidence():
     trace = _trace_data()
     event = next(event for event in trace["events"] if event["key"] == "new_data_1.jsonl:293")
@@ -169,6 +172,7 @@ def test_293_fields_and_reference_change_are_not_identity_evidence():
     assert (low["track"]["axis_sides"], reference["axis_sides"]) == (1, 2)
 
 
+@pytest.mark.realdata(str(MEASUREMENT))
 def test_association_residuals_do_not_prove_wrong_association():
     trace = _trace_data()
     retained = _retained_keys()
@@ -209,11 +213,11 @@ def test_late_arrival_can_earn_a_new_stop_without_prior_evidence():
     assert track.reported and track.zone == "gauge"
 
 
+@pytest.mark.realdata(str(POSITIVE_STRESS))
 def test_sparse_edge_positive_rows_are_unchanged_by_fresh_onset_replay():
     base_path = POSITIVE_STRESS / "setF_edge_base.json"
     fresh_path = POSITIVE_STRESS / "setF_edge_fresh.json"
-    if not base_path.exists() or not fresh_path.exists():
-        pytest.skip("positive stress cache not available")
+    assert base_path.exists() and fresh_path.exists(), "marked positive stress cache is incomplete"
     base = json.loads(base_path.read_text(encoding="utf-8"))
     fresh = json.loads(fresh_path.read_text(encoding="utf-8"))
     base_rows = [row for sequence in base["sequences"] for row in sequence["rows"]]
@@ -400,6 +404,7 @@ def diagnostic(measurement):
     }
 
 
+@pytest.mark.realdata(str(MEASUREMENT))
 def test_all_saved_stop_rows_validate_against_base_and_source():
     _trace_data()  # local capture availability check
     report = diagnostic(MEASUREMENT)

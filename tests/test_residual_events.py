@@ -12,6 +12,8 @@ from scripts.analyze_residual_events import (
     same_cluster, snapshot, support_class, validate_join,
 )
 
+RESULTS = Path(__file__).resolve().parents[1] / "docs/evidence/results"
+
 
 def row(frame, global_frame, ids):
     return {"frame": frame, "frame_id": f"new_data_{global_frame:04d}",
@@ -145,10 +147,11 @@ def test_config_differences_handle_top_level_scalars_and_missing_legacy_fields()
 
 @pytest.fixture(scope="module")
 def report():
-    path = Path(__file__).resolve().parents[1] / "docs/evidence/results/residual_events_2026-09-28.json"
+    path = RESULTS / "residual_events_2026-09-28.json"
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+@pytest.mark.realdata(str(RESULTS))
 def test_recorded_inventory_counts_are_recoverable_from_retained_rows(report):
     events = report["events"]
     frames, track_frames, support, onsets = set(), 0, Counter(), Counter()
@@ -173,6 +176,7 @@ def test_recorded_inventory_counts_are_recoverable_from_retained_rows(report):
     assert report["base"] == report["captured_defaults"]
 
 
+@pytest.mark.realdata(str(RESULTS))
 def test_recorded_changed_onset_and_reacquisition_are_not_relabelled(report):
     events = {e["key"]: e for e in report["events"]}
     delayed = events["new_data_5.jsonl:358"]
@@ -186,6 +190,7 @@ def test_recorded_changed_onset_and_reacquisition_are_not_relabelled(report):
     assert len(report["stop_decision_changed_frames"]) == 13
 
 
+@pytest.mark.realdata(str(RESULTS))
 def test_markdown_inventory_matches_machine_record(report):
     path = Path(__file__).resolve().parents[1] / "docs/RESIDUAL_EVENTS_2026-09-28.md"
     assert markdown_table(report) in path.read_text(encoding="utf-8")
