@@ -2,9 +2,9 @@
 """One command for a detector candidate: the regression gate, the monitoring diagnostics and the
 processing-history stress, summarised against the four open quality problems (27.09).
 
-    python scripts/quality_screen.py --name base                       # the checkout as it is
-    python scripts/quality_screen.py --name c1 --set gauge.axis_union=1 [--set ...] [--config FILE]
-    python scripts/quality_screen.py --name c1 --quick                 # six recordings + set O only
+    python scripts/quality_screen.py --name base --bag /data/for_hackathon/roundT_doubleT
+    python scripts/quality_screen.py --name c1 --bag BAG --set gauge.axis_union=1 [--set ...] [--config FILE]
+    python scripts/quality_screen.py --name c1 --quick --no-history     # six recordings + set O only
 
 It runs, from the checkout it lives in, on the caches of ``--cache``:
 
@@ -45,7 +45,7 @@ def _run(cmd, log):
     return r.returncode, round(time.time() - t0, 1)
 
 
-def summarize(work: str, gate_rc: int, quick: bool) -> dict:
+def summarize(work: str, gate_rc: int, quick: bool, history_rc=None) -> dict:
     gate = json.load(open(os.path.join(work, "gate.json"), encoding="utf-8"))
     so = gate.get("set_O") or {}
     objs = so.get("objects") or {}
@@ -79,7 +79,9 @@ def summarize(work: str, gate_rc: int, quick: bool) -> dict:
                                                         "clear_median_fraction": round(v["clear_median_fraction"], 4)}
                                                     for k, v in acc["monitoring_cost"].items()}}
     hist_path = os.path.join(work, "history.json")
-    if os.path.exists(hist_path):
+    if history_rc is not None:
+        out["history_execution"] = {"exit_code": history_rc, "passed": history_rc == 0}
+    if os.path.exists(hist_path) and history_rc in (None, 0):
         out["p4_history"] = json.load(open(hist_path, encoding="utf-8"))["totals"]
     return out
 
@@ -89,6 +91,7 @@ def main(argv=None) -> int:
     ap.add_argument("--name", required=True)
     ap.add_argument("--work", default="/data/work")
     ap.add_argument("--cache", default="/data/cache")
+    ap.add_argument("--bag", help="original roundT_doubleT bag; required unless --no-history")
     ap.add_argument("--config", default=os.path.join(ROOT, "configs", "default.yaml"))
     ap.add_argument("--set", action="append", default=[])
     ap.add_argument("--baseline", default=BASELINE)
@@ -98,10 +101,12 @@ def main(argv=None) -> int:
     ap.add_argument("--no-history", action="store_true")
     ap.add_argument("--no-lock", action="store_true")
     a = ap.parse_args(argv)
+    if not a.no_history and not a.bag:
+        ap.error("--bag is required unless --no-history; all three raw histories must be replayed")
     work = os.path.join(a.work, a.name)
     os.makedirs(work, exist_ok=True)
     sets = [x for s in a.set for x in ("--set", s)]
-    lock = None
+    lock, rc3 = None, None
     if not a.no_lock:
         lock = open(os.path.join(a.work, ".cpu.lock"), "w")
         print(f"[{a.name}] waiting for the machine lock ...", flush=True)
@@ -130,6 +135,7 @@ def main(argv=None) -> int:
             print(f"[{a.name}] acceptance exit {rc2} ({s2} s)", flush=True)
         if not a.no_history:
             rc3, s3 = _run([sys.executable, "scripts/history_stress.py", "--cache", a.cache, "--config", a.config, *sets,
+                            "--bag", a.bag,
                             "--jobs", str(a.jobs), "--out", os.path.join(work, "history.json")],
                            os.path.join(work, "history.log"))
             print(f"[{a.name}] history exit {rc3} ({s3} s)", flush=True)
@@ -137,12 +143,12 @@ def main(argv=None) -> int:
         if lock is not None:
             fcntl.flock(lock, fcntl.LOCK_UN)
             lock.close()
-    summary = summarize(work, rc, a.quick)
+    summary = summarize(work, rc, a.quick, history_rc=rc3)
     summary["name"], summary["sets"], summary["config"] = a.name, a.set, a.config
     with open(os.path.join(work, "summary.json"), "w", encoding="utf-8") as fh:
         json.dump(summary, fh, indent=1)
     print(json.dumps(summary, indent=1))
-    return 0
+    return rc3 or 0
 
 
 if __name__ == "__main__":
