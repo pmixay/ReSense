@@ -1,0 +1,31 @@
+{
+  "schema": "resense-health-histogram-combined-protocol-v1",
+  "status": "registered before combined-source evaluation",
+  "original_protocol_commit": "2539c5b3d7faa158a659a537f42e8efb46f849d3",
+  "original_candidate_commit": "7885c6d3b29095e19b66205fda2ca3bddfc2161d",
+  "baseline_commit": "25a218a0a8b4e10089dfcf73b8d557d4a963290e",
+  "merge_commit": "83bc5d8cc39f49df231f2ea0020fd5ca6b572ed2",
+  "baseline_source_sha256": "2fd88d8ba35c62d17a9c5cfa49c73652ba849cbbf36d8691734363d3c062d0eb",
+  "candidate_source_sha256": "c0273a13a67ab4872dab00154caa75f6b30f50416775062c591fbb47906a0fa4",
+  "candidate_health_sha256": "20a046d43cbacfb11929ba4437c1a4c2618263c9fb5b558a3b7a9471bcddea00",
+  "effective_config_sha256": "22a30ff265035e06358a21696cfb8bc61b598d16e5a64aa3536abfefbc4bd5fb",
+  "config_file_sha256": "f5ee418844de1cb5a87d972bd77689b28b50fc74d833e252183446af96fa03c2",
+  "native_sha256": "b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534",
+  "production_difference": ["resense/health.py"],
+  "baseline_gate": {
+    "path": "docs/evidence/cycle_2026-09-28/p3_sync/default/gate.json",
+    "sha256": "4072f9c5d9f00b50e46bcf5f2ccd16df1d3efe4b7dc7d6329bd33840317a6702",
+    "measured_commit": "b84ea8f229be8d11d9db82ebd337198803ce92bf"
+  },
+  "acceptance": [
+    "Repeat the 48 focused histogram and full-health sequence tests on the combined source with the declared native backend.",
+    "Run the full native default gate: six recordings, eight ride chunks, set O and set F; no overrides or waivers, no missing rows or worse metrics.",
+    "Compare each required capture on the same ordered frame identities and timestamps. Require exact obstacle, detection, warning and non-timing health payload equality, including clear and monitored distance; no aggregate cancellation.",
+    "Record all health latency_p95_ms and latency-message differences explicitly. A health level difference is timing-only only when it follows the unchanged latency warning rule and the same non-latency decision level; unexpected health changes fail parity.",
+    "Retain source/config/native/capture hashes and check production files against the frozen candidate commit before and after the gate.",
+    "Do not infer runtime acceptance from shared-load gate timings. Quiet original positive and clear installed-image checks remain required for latency and freshness claims."
+  ],
+  "timing_definition": "This candidate leaves timing_ms.total and the supplied HealthMonitor latency unchanged; the stage total still excludes health. node.detect_ms is the full Detector.process call and node.latency_ms includes decoding. A timing-reporting correction is separate work.",
+  "historical_evidence": "protocol.json, validation.json and microprobe.json retain the original score-source preparation and loaded microprobe. Their old source/config hashes do not describe this combined-source evaluation. The scalar endpoint failure remains preserved.",
+  "deferred": ["Paired history checks", "Quiet original-bag installed-image runtime acceptance"]
+}

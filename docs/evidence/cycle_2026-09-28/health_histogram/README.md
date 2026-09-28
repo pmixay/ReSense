@@ -4,6 +4,17 @@ Prepared in the isolated `improvement/health-histogram-20260928` branch, based o
 `1c2c5397006ecdc0e81da84dacff88aba6c2ecd3`. The [protocol](protocol.json) was committed as
 `2539c5b3d7faa158a659a537f42e8efb46f849d3` before implementation and evaluation.
 
+## Combined-source evaluation
+
+The isolated worktree now includes experimental commit
+`25a218a0a8b4e10089dfcf73b8d557d4a963290e`, merged at `83bc5d8`.
+Its production difference remains only `resense/health.py`; the health implementation
+is byte-identical to `7885c6d`. The [combined protocol](combined_protocol.json) registers
+the new source/config identities and full-gate/per-frame parity criteria before evaluation.
+The package-local native module was rebuilt and matches the accepted `b5a5c2dc...` binary.
+Combined-source full-gate and runtime acceptance are pending. The original protocol,
+validation and microprobe below remain historical evidence for the earlier score source.
+
 Only `resense/health.py` changes production behavior: the blocked-sector histogram uses
 binary search and integer counting instead of NumPy's sorting path. Azimuth calculation,
 edge generation, severity rules, configurations, detection/tracking, and timing definitions
