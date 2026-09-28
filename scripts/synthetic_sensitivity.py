@@ -38,8 +38,15 @@ from resense.frame import axis_matrix, frame_from_compact  # noqa: E402
 from resense.pointcloud import COMPACT_DTYPE, compact_to_compact16  # noqa: E402
 from resense.sensor import RING_ELEVATION_DEG  # noqa: E402
 
-if Path(sys.modules["resense"].__file__).resolve().parent != DETECTOR_ROOT / "resense":
-    raise ValueError("imported resense package does not belong to selected detector checkout")
+def validate_source_origin():
+    if Path(sys.modules["resense"].__file__).resolve().parent != DETECTOR_ROOT / "resense":
+        raise ValueError("imported resense package does not belong to selected detector checkout")
+
+
+# Normal installed-package tests may import this observer without measuring source-tree
+# code. Explicit selection and every actual generation/replay still require exact origin.
+if "RESENSE_DETECTOR_ROOT" in os.environ:
+    validate_source_origin()
 
 PROTOCOL = ROOT / "docs/evidence/cycle_2026-09-28/evaluation/protocol.json"
 FIXTURE = ROOT / "tests/fixtures/synthetic_lidar_v1"
@@ -143,6 +150,7 @@ def frozen_role(frozen, source, config_sha256):
 
 
 def generate(args):
+    validate_source_origin()
     # Imported only here: fixture replay and scoring do not require Open3D.
     from resense.synthetic import ObstacleSpec, synthetic_tunnel_frame
 
@@ -277,6 +285,7 @@ def sequence_metrics(rows, metric_cfg):
 
 
 def evaluate(args):
+    validate_source_origin()
     manifest = json.loads((args.cache / "manifest.json").read_text())
     if manifest["protocol_sha256"] != file_hash(args.protocol):
         raise ValueError("cache protocol hash does not match requested protocol")
