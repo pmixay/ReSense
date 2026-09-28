@@ -1,0 +1,240 @@
+diff --git a/resense/clustering.py b/resense/clustering.py
+index cd699f8..7be9901 100644
+--- a/resense/clustering.py
++++ b/resense/clustering.py
+@@ -156,7 +156,8 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
+                   dy_alt: Optional[np.ndarray] = None, in_rail: Optional[np.ndarray] = None,
+                   keep_thin: bool = False, dy_report: Optional[np.ndarray] = None,
+                   weak_from: float = 0.0, ring: Optional[np.ndarray] = None,
+-                  low_height_margin: float = 0.0) -> List[Cluster]:
++                  low_height_margin: float = 0.0,
++                  low_ray_keys: Optional[np.ndarray] = None) -> List[Cluster]:
+     """Voxelise candidates, cluster the voxels, describe and filter the clusters.
+ 
+     ``xyz``/``intensity``/``dy``/``h``/``in_gauge`` are the corridor candidates;
+@@ -238,6 +239,21 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
+         frame_idx = np.arange(xyz.shape[0])
+     vox, inv = voxelize(xyz, cfg)
+     vlabels = cluster_labels(vox, cfg)
++    if low_cfg is not None and low_ray_keys is not None:
++        # Retry only low-stage noise using independent acquisition rays. A 30 cm
++        # object at 50 m can return three adjacent columns that merge into two
++        # range-normalised voxels. Existing clusters and all thresholds stay intact.
++        retry = np.flatnonzero((vlabels[inv] < 0) & (frame_idx >= 0) & (low_ray_keys[:, 0] >= 0))
++        if retry.size >= cfg.min_samples:
++            keys, ray_inv = np.unique(low_ray_keys[retry], axis=0, return_inverse=True)
++            ray_inv = ray_inv.ravel()
++            sums = np.zeros((len(keys), 3), np.float64)
++            np.add.at(sums, ray_inv, xyz[retry])
++            rays = (sums / np.bincount(ray_inv)[:, None]).astype(np.float32)
++            extra = cluster_labels(rays, cfg)
++            extra[extra >= 0] += int(vlabels.max()) + 1
++            inv[retry] = len(vlabels) + ray_inv
++            vlabels = np.concatenate((vlabels, extra))
+     labels = vlabels[inv]                       # raw point labels
+     for lab in np.unique(vlabels):
+         if lab < 0:
+diff --git a/resense/detector.py b/resense/detector.py
+index 856ae0b..b3bea56 100644
+--- a/resense/detector.py
++++ b/resense/detector.py
+@@ -14,12 +14,14 @@ from resense.clustering import Cluster, find_clusters, find_hanging
+ from resense.config import DetectorConfig
+ from resense.egomotion import EgoSpeedEstimate, EgoSpeedEstimator
+ from resense.evidence import PersistentEvidence
+-from resense.frame import Frame
++from resense.frame import Frame, axis_matrix
+ from resense.gauge import (axis_union_coordinates, axis_union_offset, axis_union_strict, corridor_coordinates,
+                            corridor_mask, gauge_core_mask, point_in_polygon, reference_offset, union_shift,
+                            widened_profile)
+ from resense.health import HealthMonitor
+ from resense.lowobj import BedTemplate, low_candidates, mark_rail_line
++from resense.pointcloud import COMPACT16_SCALE
++from resense.sensor import AZIMUTH_STEP_DEG
+ from resense.track import TrackModel, estimate_track, rotate_track_model
+ from resense.tracking import Tracker
+ 
+@@ -188,6 +190,7 @@ class Detector:
+         self.low_range = 0.0            # m, how far the bed was observed for the low-object stage (last frame)
+         self._thin: List[Cluster] = []  # 26.09 (tracking.stop_keep_thin): this frame's corridor clusters flatter than min_height
+         self._frame_ring: Optional[np.ndarray] = None
++        self._frame_xyz: Optional[np.ndarray] = None
+         self._low_height: List[Cluster] = []  # current straddle evidence just below its clean top-height threshold
+         self._prev_stamp: Optional[float] = None
+         self._low_frame_dt: Optional[float] = None  # actual positive stamp interval for the bounded low continuation
+@@ -210,6 +213,7 @@ class Detector:
+         self.bed.reset()
+         self._thin = []
+         self._frame_ring = None
++        self._frame_xyz = None
+         self._low_height = []
+         self._prev_stamp = None
+         self._low_frame_dt = None
+@@ -248,6 +252,7 @@ class Detector:
+         t0 = time.perf_counter()
+         frame = _finite_only(frame)
+         self._frame_ring = frame.ring
++        self._frame_xyz = frame.xyz
+         dt = self._frame_dt(frame.stamp)
+         xyz = self._fit_track(frame.xyz, self._periods())
+         t1 = time.perf_counter()
+@@ -522,6 +527,34 @@ class Detector:
+         return merged, n_acc
+ 
+     # -- 5 -------------------------------------------------------------------------------------
++    def _low_ray_keys(self, cand: Candidates) -> Optional[np.ndarray]:
++        """Current acquisition ray groups, before fixed or automatic mount correction.
++
++        Recover sensor coordinates only for selected low points. Historical points
++        and missing channels cannot supply extra support; duplicate echoes share a key.
++        """
++        if self._frame_xyz is None or cand.ring is None:
++            return None
++        keys = np.full((len(cand), 2), -1, dtype=np.int64)
++        current = (cand.idx >= 0) & (cand.ring >= 0)
++        raw = self._frame_xyz[cand.idx[current]] @ axis_matrix(self.cfg.sensor)
++        if not current.any():
++            return keys
++        selected = np.flatnonzero(current)
++        rings = cand.ring[current]
++        angle = np.arctan2(raw[:, 1], raw[:, 0])
++        order = np.lexsort((angle, rings))
++        # No fixed grid origin: ring calibration can offset the azimuth lattice.
++        # The full centimetre cache step bounds XY quantisation error conservatively;
++        # echoes whose angular intervals overlap cannot count as separate rays.
++        error = np.arcsin(np.minimum(1.0, COMPACT16_SCALE / np.linalg.norm(raw[:, :2], axis=1)))
++        gaps = np.diff(angle[order])
++        separate = ((np.diff(rings[order]) != 0)
++                    | (gaps > np.radians(AZIMUTH_STEP_DEG / 2) + error[order][1:] + error[order][:-1]))
++        keys[selected, 0] = rings
++        keys[selected[order], 1] = np.cumsum(np.r_[True, separate]) - 1
++        return keys
++
+     def _cluster(self, cand: Candidates, n_acc: int, valid: float, floor_valid: float,
+                  straddle: Optional[Candidates], near: Optional[Candidates] = None) -> List[Cluster]:
+         """Voxelise, cluster, describe and filter: the corridor candidates (count thresholds
+@@ -561,7 +594,8 @@ class Detector:
+             # low candidates are clustered on their own with a tighter radius: at 50 m the corridor
+             # radius (0.8 m) merges a 30 cm object with the bed fixtures around it (v0.6 review)
+             low = cand.subset(cand.low)
+-            lows = _clusters_of(low, lcfg, axis_valid=valid, low=low.low, low_cfg=cfg.lowobj)
++            lows = _clusters_of(low, lcfg, axis_valid=valid, low=low.low, low_cfg=cfg.lowobj,
++                                low_ray_keys=self._low_ray_keys(low))
+         if straddle is not None:
+             scfg = replace(cfg.lowobj, min_top=cfg.lowobj.straddle_min_top,
+                            min_width=cfg.lowobj.straddle_min_width, max_length=cfg.lowobj.straddle_max_length)
+diff --git a/tests/test_low_ray_support.py b/tests/test_low_ray_support.py
+new file mode 100644
+index 0000000..16f3e45
+--- /dev/null
++++ b/tests/test_low_ray_support.py
+@@ -0,0 +1,109 @@
++"""Low-stage density support must count acquisition rays, never duplicate echoes."""
++from dataclasses import replace
++
++import numpy as np
++import pytest
++
++from resense.clustering import find_clusters, voxelize
++from resense.config import DetectorConfig
++from resense.detector import Candidates, Detector
++from resense.frame import sensor_to_vehicle
++
++
++# Three real v2 development returns: three columns, but two range-scaled cells.
++XYZ = np.array([[50.029274, 1.047964, -1.250048],
++                [50.023354, 1.135189, -1.249948],
++                [49.998894, 1.221947, -1.249388]], dtype=np.float32)
++KEYS = np.array([[52, -888], [52, -887], [52, -886]])
++
++
++def clusters(xyz=XYZ, keys=KEYS, *, low=True, height=0.068, indices=None, low_cfg=None):
++    cfg = DetectorConfig()
++    n = len(xyz)
++    return find_clusters(xyz, np.ones(n), xyz[:, 1] - 0.25,
++                         np.full(n, height), np.ones(n, bool),
++                         replace(cfg.cluster, eps=cfg.lowobj.eps),
++                         frame_idx=indices, low=np.ones(n, bool),
++                         low_cfg=(low_cfg or cfg.lowobj) if low else None,
++                         low_ray_keys=keys)
++
++
++def test_three_columns_recover_low_object_without_lowering_density_bars():
++    cfg = DetectorConfig()
++    assert len(voxelize(XYZ, cfg.cluster)[0]) == 2
++    assert cfg.cluster.min_samples == cfg.lowobj.min_points == 3
++    assert not clusters(keys=None)
++    actual = clusters()
++    assert len(actual) == 1 and actual[0].n == 3 and actual[0].kind == 'low'
++    assert actual[0].points_idx.tolist() == [0, 1, 2]
++
++
++@pytest.mark.parametrize('copies', [1, 2, 20])
++def test_duplicate_echoes_cannot_supply_a_third_ray(copies):
++    xyz = np.repeat(XYZ[:2], copies, axis=0)
++    keys = np.repeat(KEYS[:2], copies, axis=0)
++    assert not clusters(xyz, keys)
++
++
++@pytest.mark.parametrize('case', ['historical', 'unknown_ring', 'too_narrow', 'below_top', 'corridor'])
++def test_extra_support_preserves_current_geometry_and_path_guards(case):
++    xyz, keys, kwargs = XYZ.copy(), KEYS.copy(), {}
++    if case == 'historical':
++        kwargs['indices'] = np.array([0, 1, -1])
++    elif case == 'unknown_ring':
++        keys[2, 0] = -1
++    elif case == 'too_narrow':
++        xyz[:, 1] = 1.10 + np.arange(3) * 0.03
++    elif case == 'below_top':
++        kwargs['height'] = -0.01
++    elif case == 'corridor':
++        kwargs['low'] = False
++    assert not clusters(xyz, keys, **kwargs)
++
++
++def test_existing_cluster_is_unchanged_by_extra_ray_support():
++    xyz = XYZ.copy()
++    xyz[:, 1] -= 0.87  # same object, three separate original cells
++    assert len(voxelize(xyz, DetectorConfig().cluster)[0]) == 3
++    before, after = clusters(xyz, None), clusters(xyz, KEYS)
++    assert len(before) == len(after) == 1
++    assert before[0].n == after[0].n == 3
++    assert np.array_equal(before[0].points_idx, after[0].points_idx)
++    assert np.array_equal(before[0].centroid, after[0].centroid)
++
++
++def test_ray_keys_ignore_fixed_and_automatic_mount_corrections():
++    cfg = DetectorConfig()
++    cfg.sensor.roll_deg, cfg.sensor.pitch_deg, cfg.sensor.yaw_deg = 3, -2, 7
++    det = Detector(cfg)
++    angle = np.radians(np.array([-88.8, -88.7, -88.6]))
++    raw = np.column_stack((50 * np.cos(angle), 50 * np.sin(angle), np.full(3, -1.25)))
++    det._frame_xyz = sensor_to_vehicle(raw, cfg.sensor)
++    current = dict(dy=np.zeros(3), h=np.ones(3), in_gauge=np.ones(3, bool),
++                   intensity=np.ones(3), idx=np.arange(3), low=np.ones(3, bool),
++                   ring=np.full(3, 52))
++    before = det._low_ray_keys(Candidates(xyz=det._frame_xyz, **current))
++    from resense.calibration import rot_x, rot_y, rot_z
++    correction = rot_z(0.12) @ rot_y(-0.05) @ rot_x(0.08)
++    after = det._low_ray_keys(Candidates(xyz=det._frame_xyz @ correction.T, **current))
++    expected = np.column_stack((np.full(3, 52), np.arange(3)))
++    assert np.array_equal(before, expected)
++    assert np.array_equal(after, expected)
++
++
++def test_echoes_straddling_a_nominal_column_boundary_still_count_once():
++    cfg = DetectorConfig()
++    det = Detector(cfg)
++    # Two rays; one dual echo straddles the arbitrary fixed-grid rounding boundary.
++    angle = np.radians([-88.8501, -88.8499, -88.65])
++    radius = np.array([50.0, 50.01, 50.0])
++    raw = np.column_stack((radius * np.cos(angle), radius * np.sin(angle), np.full(3, -1.25)))
++    xyz = sensor_to_vehicle(raw, cfg.sensor)
++    det._frame_xyz = xyz
++    cand = Candidates(xyz=xyz, dy=xyz[:, 1] - 0.25, h=np.full(3, 0.068),
++                      in_gauge=np.ones(3, bool), intensity=np.ones(3), idx=np.arange(3),
++                      low=np.ones(3, bool), ring=np.full(3, 52))
++    keys = det._low_ray_keys(cand)
++    assert np.unique(keys, axis=0).shape[0] == 2
++    assert len(voxelize(xyz, cfg.cluster)[0]) == 2
++    assert not clusters(xyz, keys)
