@@ -1,0 +1,41 @@
+{
+  "schema": "resense-health-histogram-protocol-v1",
+  "registered_date": "2026-09-28",
+  "baseline_commit": "1c2c5397006ecdc0e81da84dacff88aba6c2ecd3",
+  "baseline_source_sha256": "9cc928915ab175de95675ed7ea880d7424410dbb7ed7426ca52cc076f51c5774",
+  "baseline_health_sha256": "dd8f34dac8c886ebd88ba49d0a950b6bc9c12a810bb1b583f6a6c076f7e61546",
+  "intent": "Replace only explicit-edge unweighted blocked-sector histogram counting; preserve every health output for the same inputs, state and latency argument.",
+  "candidate_scope": {
+    "production_file": "resense/health.py",
+    "strategy": "searchsorted(side=right), exact rightmost-edge adjustment using array comparison, and integer bincount; preserve original azimuth and edges.",
+    "supported_values": "One-dimensional native NumPy float32 or float64 arrays.",
+    "supported_edges": "One-dimensional native float32 or float64 arrays with 2 to 257 finite strictly increasing edges.",
+    "working_block_points": 65536,
+    "fallback": "Use the existing np.histogram(values,bins=edges)[0] for every unsupported dtype, shape, edge count, or edge ordering.",
+    "timing": "Do not change detector stage timers or the latency argument passed to HealthMonitor; timing_ms.total currently ends before health.update and is not full-call time."
+  },
+  "correctness_acceptance": [
+    "Exact integer count and dtype equality with np.histogram for all tested supported and fallback cases; no numerical tolerance.",
+    "Cover float32/float64 edge and value combinations, noninteger widths 0.3 and 7, exact edges and adjacent representable values, rightmost inclusion, signed zero, NaN/infinities, empty input and zero-bin layouts.",
+    "Cover strided/read-only input, values crossing the 65,536-point working block, very many edges, unsupported numeric dtypes, duplicate/descending/nonfinite edges, and relevant error behavior.",
+    "Preserve the previously rejected float32 endpoint case as an explicit regression.",
+    "Full HealthMonitor state-sequence dictionaries must equal the histogram oracle, including blocked-sectors severity, clear/monitored distance, calibration/latency warnings and both latency_affects_decision settings.",
+    "Configuration, native kernels, detection/tracking logic and latency-monitor definition remain unchanged."
+  ],
+  "evaluation_plan": {
+    "authorized_now": [
+      "Focused unit tests and lint.",
+      "Small isolated fixed-cloud microprobe may record exact counts and health outputs, with loaded-machine timing labelled exploratory."
+    ],
+    "deferred": [
+      "Full regression/history gate until root coordinates CPU.",
+      "Quiet original positive and clear ROS acceptance with identical runtime/config/inputs before claiming latency or freshness improvement."
+    ],
+    "timing_interpretation": "The concurrent P3 gate makes current timings unsuitable for performance acceptance; no speed claim from loaded timings."
+  },
+  "prior_rejected_prototype": {
+    "file": "../continuity/runtime/prototype_failure.json",
+    "sha256": "28a1ad2bb752cca0fab9c4469de5e12147056516bb30a4a86dde44318c7686b1",
+    "failure": "Scalar endpoint comparison rounded a float64 endpoint against float32 values, shifting a count at 0.3-degree width; retain an array endpoint."
+  }
+}

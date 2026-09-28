@@ -1,0 +1,21 @@
+{
+  "schema": "resense-health-gate-comparator-validation-v1",
+  "passed": 27,
+  "failed": 0,
+  "duration_s": 0.12,
+  "command": "docker exec -e PYTHONPATH=/cycle/health_histogram -w /cycle/health_histogram resense-cycle-dev python3 -m pytest -q test_compare_health_gate.py",
+  "lint_passed": true,
+  "observer_file_sha256": "07edb9b1eaa2e622965c89264ec8bbb23ad8be51b0ebd5a38e8ec14e34931cc0",
+  "tests_file_sha256": "dadf0644c170c253ed5192e94d3c1fbc6f320ad0ffe0f813b7876ad5352fed4f",
+  "test_archive_note": "The tested external fixture imports compare_health_gate directly; its archived copy imports the identical script as scripts.compare_health_gate. No fixture or assertion changes.",
+  "independent_review": {
+    "reviewer": "detector_review",
+    "status": "No remaining blocker.",
+    "checks": [
+      "Precise latency-only normalization with all other fields exact.",
+      "Frozen config-loader and manifest bindings.",
+      "Actual set F completeness and wall-time exclusion."
+    ]
+  },
+  "runtime": "No additional tests or replay started after notifying root archive compression was done."
+}

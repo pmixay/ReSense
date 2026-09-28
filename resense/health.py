@@ -49,6 +49,32 @@ from resense.config import GaugeConfig, HealthConfig
 LEVELS = ("ok", "warn", "error")
 
 
+def _sector_counts(values: np.ndarray, edges: np.ndarray) -> np.ndarray:
+    """Exact unweighted histogram for the small explicit edge array used by health.
+
+    NumPy sorts chunks for explicit edges. Binary search counts the same intervals without
+    sorting the cloud. Keep unusual layouts/dtypes and subclass dispatch on the original path.
+    Working arrays are bounded to 65,536 values and at most 256 bins.
+    """
+    floating = (np.dtype("float32"), np.dtype("float64"))
+    if not (type(values) is np.ndarray and values.ndim == 1 and values.dtype in floating
+            and type(edges) is np.ndarray and edges.ndim == 1 and edges.dtype in floating
+            and 2 <= edges.size <= 257 and np.isfinite(edges).all()
+            and (edges[1:] > edges[:-1]).all()):
+        return np.histogram(values, bins=edges)[0]
+    n_bins = edges.size - 1
+    counts = np.zeros(n_bins, dtype=np.intp)
+    for start in range(0, values.size, 65536):
+        block = values[start:start + 65536]
+        indices = np.searchsorted(edges, block, side="right") - 1
+        # Only the final bin includes its right edge. Keep an array operand: a scalar
+        # float64 endpoint can round to float32 during comparison on NumPy 1.x.
+        indices[block == edges[-1:]] -= 1
+        valid = (indices >= 0) & (indices < n_bins)  # also excludes NaN and +/-inf
+        counts += np.bincount(indices[valid], minlength=n_bins)
+    return counts
+
+
 def visibility_along_track(xyz: np.ndarray, center_y, band: float = 3.0, k: int = 20) -> float:
     """X of the ``k``-th farthest return within ``band`` metres of the track axis (m)."""
     model = getattr(center_y, "__self__", None)       # TrackModel.center_y: one native pass
@@ -115,7 +141,7 @@ class HealthMonitor:
         if n:
             az = np.degrees(np.arctan2(xyz[:, 1], xyz[:, 0]))
             edges = np.arange(-30.0, 30.0 + 1e-6, cfg.sector_deg)
-            counts = np.histogram(az, bins=edges)[0]
+            counts = _sector_counts(az, edges)
             ref = float(np.median(counts)) if counts.size else 0.0
             blocked = int((counts < 0.05 * max(ref, 1.0)).sum()) if ref > 0 else int(counts.size)
             if blocked:
