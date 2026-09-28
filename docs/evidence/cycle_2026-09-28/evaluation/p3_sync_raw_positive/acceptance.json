@@ -1,0 +1,40 @@
+{
+  "schema": "resense-four-config-raw-positive-acceptance-v1",
+  "status": "PASS: known positive recording precheck only",
+  "measured_source_commit": "b84ea8f229be8d11d9db82ebd337198803ce92bf",
+  "source_sha256": "2fd88d8ba35c62d17a9c5cfa49c73652ba849cbbf36d8691734363d3c062d0eb",
+  "observer_commit": "f121be7",
+  "runner_sha256": "ad2aaa6bf838a2d21b4e7ef72da496cb4050b37a35b0cea425b6246d752dd5ab",
+  "native_sha256": "b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534",
+  "source_unchanged_at_end": true,
+  "original_frames": 201,
+  "detector_frames": 804,
+  "timestamp_source": "PointCloud2.header.stamp",
+  "onset_public_signal_parity": {
+    "both_off__onset_only": {
+      "compared_frames": 201,
+      "excluded_fields": [
+        "timing_ms",
+        "health.latency_p95_ms"
+      ],
+      "mismatch_counts": {}
+    },
+    "continuation_only__both_on": {
+      "compared_frames": 201,
+      "excluded_fields": [
+        "timing_ms",
+        "health.latency_p95_ms"
+      ],
+      "mismatch_counts": {}
+    }
+  },
+  "all_four_registered_pairs_passed": true,
+  "captures_and_report": {
+    "both_off.jsonl.gz": "8dd125ab55eaedc292152fc40da28b036e95983d49edbcb4f77794e69c1a6dda",
+    "both_on.jsonl.gz": "c16309536d9076a35c52d3ad2fd1c5029f9196552171e80931a8b74edaaad809",
+    "continuation_only.jsonl.gz": "292fa2cef3a4d09198fb1adef224dbbece41652f00f96574fade63120ee97360",
+    "onset_only.jsonl.gz": "7584c398bc459eb2b60867b76a3e2325da0df25e70b02192264e57ed008daf9f",
+    "summary.json": "c0381c396ece77cd5acc1ff60fb857a455b2829cb8cbbbe2822864af22590dcd"
+  },
+  "execution_note": "Real replay started after the full default gate passed. The runner retained a planned concurrent-gate limitation string; no timing comparison was accepted."
+}

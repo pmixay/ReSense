@@ -65,6 +65,6 @@ OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 python3 scripts/compa
   --source-root /workspace/ReSense-p3-sync \
   --expect-commit b84ea8f229be8d11d9db82ebd337198803ce92bf \
   --expect-native-sha256 b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534 \
-  --bag /data/raw/for_hackathon/doubleT_obstacle \
+  --bag /data/for_hackathon/doubleT_obstacle \
   --out /cycle/p3_sync/raw_positive_four_configs
 ```
