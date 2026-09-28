@@ -271,8 +271,9 @@ def extracted(detector, top=0.09, **kwargs):
     return detector._cluster(empty, 1, 100.0, 100.0, straddle)
 
 
-def test_detector_routes_only_height_failures_and_preserves_default():
+def test_detector_routes_only_height_failures_and_preserves_disabled_path():
     cfg = DetectorConfig()
+    cfg.tracking.stop_keep_low_s = 0.0
     off = Detector(cfg)
     assert extracted(off) == [] and off._low_height == []
     cfg.tracking = replace(cfg.tracking, stop_keep_low_s=0.3)

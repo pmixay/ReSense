@@ -1,6 +1,6 @@
 # Low object height continuity candidate — 28 September
 
-Status: **provisional, disabled by default**. The candidate needs the strict full regression gate
+Status: **provisional, enabled only in isolated proposed defaults for validation**. The candidate needs the strict full regression gate
 and the independent reserved evaluation before acceptance. This work uses a previously inspected
 organizer recording and generated development scenes; it is not holdout evidence.
 
@@ -115,3 +115,13 @@ The default full schedule compares the disabled candidate's decisions with the a
 replay. Unrounded fitted track coefficients are excluded from exact cross-environment comparison:
 they differ at approximately machine precision between numerical-library versions. Reported
 obstacles, warnings, distances, candidates, clear distance, and mount state are compared exactly.
+
+## Exact proposed defaults
+
+After the targeted review, the isolated worktree uses 0.3 seconds in the dataclass,
+canonical YAML and ROS copy. Its complete effective config is identical to the
+previous `--set tracking.stop_keep_low_s=0.3` experiment. Shipping defaults on the
+score branch remain unchanged pending the full gate and qualified evaluation.
+The full gate now measures a clean commit without overrides, so acceptance can
+promote the exact measured source/config files. The raw paired runner explicitly
+disables this feature for its control even after proposed defaults change.

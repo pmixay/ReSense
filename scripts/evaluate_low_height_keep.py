@@ -112,6 +112,8 @@ def main():
         selected(name, 0)
     trace_frames = {int(k) for k in args.trace_frames.split(",") if k}
     cfg, candidate = DetectorConfig(), DetectorConfig.from_yaml(str(args.candidate))
+    # Preserve the feature-off control when the proposed default becomes enabled.
+    cfg.tracking.stop_keep_low_s = 0.0
     if cfg.sensor != candidate.sensor:
         raise ValueError("paired replay requires identical sensor preprocessing")
     args.out.mkdir(parents=True, exist_ok=True)
