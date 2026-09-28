@@ -46,8 +46,9 @@ physical-envelope placement before any v2 generation: both low shapes penetrate
 the envelope in each split, and a below-rail negative control is added. The
 [geometry audit](evidence/cycle_2026-09-28/evaluation/diagnosis-v1.md) preserves v1
 results and explains why boundary-only cases cannot be counted as demonstrated
-intrusion misses. V2 reserved clouds remain untouched until the candidate identities
-are fixed and the full real gate passes.
+intrusion misses. V2 reserved clouds were generated only after the identities were frozen and the
+full real gate passed. The split is now spent; both variants have identical outputs
+and weak absolute recall, documented in the reserved comparison.
 
 ## Reproducibility repair
 
@@ -59,3 +60,28 @@ and a real SQLite/CDR test covers directory and metadata-free split reads.
 The score branch now enables the existing full Docker checks and offline image
 artifact retention. The workflow must finish successfully before its outputs count
 as evidence; merely enabling the checks does not improve detection quality.
+
+
+## Checkpoint 1 — evening
+
+The [fresh-context Astra review](CHECKPOINT1_REVIEW_2026-09-28.md) gives **66/100**
+without reading prior scores. This is an independent assessment, not a same-reviewer
+three-point regression from the earlier 69. It supports development integration of
+exact measured candidate `ef1d8f5`, integrated as `84763cf`, with deployment provisional.
+
+- Raw rail STOP coverage improves 123 to 126/126 after frame 75; person remains 61/61.
+- The complete gate has two enforced improvements and 144 unchanged metrics, no waivers.
+- All 33 history captures are byte-identical; false events remain 32 on the ride.
+- Reserved synthetic outputs are identical for both variants: sustained positives
+  14/32 float32 and 13/32 compact16; no synthetic improvement is claimed.
+- The installed image passes 841 tests. The quiet local positive ROS run fails
+  freshness and 100 ms decode-plus-detect p95 for both variants; the candidate's
+  clear run passes. Full candidate CI is pending.
+
+P3's new experimental branch `experiment/cross-ring-sparse-evidence`, commit
+`290c337`, separately reports 32 to 27 false ride events with fresh STOP-onset
+support, disabled by default pending the missing six-bag validation. It has not
+been merged or included in this score. Its onset rule and this continuation rule
+may complement each other; their joint recall/false-alarm behavior needs a new
+registered comparison. Weak low continuation must never be counted as fresh
+onset evidence when combining them.

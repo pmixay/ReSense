@@ -1,17 +1,22 @@
 # Detector seal — 28 September 2026
 
-**Current reference:** unchanged detector behavior, with the corrected standalone-bag
-reader dependency. The [fresh full regression](evidence/cycle_2026-09-28/regression/baseline/gate.json)
-at `4b6f344` passes against the 27 September quality baseline without overrides,
-waivers, missing rows or worse quality metrics. The
-[current seal](evidence/detector_freeze_2026-09-27.json) covers its exact 31 detector,
-configuration and build files. Its historical filename is retained for CI.
+**Current development reference:** bounded low-object height continuation from
+measured source `ef1d8f5`, integrated as `84763cf`. The
+[full regression](evidence/cycle_2026-09-28/regression/candidate/gate.json)
+passes against the 27 September quality baseline without overrides, waivers,
+missing rows or worse quality metrics: two enforced metrics improve, 144 are unchanged.
+The [current seal](evidence/detector_freeze_2026-09-27.json) covers its exact 31
+detector, configuration and build files. Its historical filename is retained for CI.
 
 The user authorized the [28 September improvement cycle](IMPROVEMENT_CYCLE_2026-09-28.md).
-Candidates are validated in isolated checkouts before accepted source and defaults
-replace this reference. The low-height continuity candidate is still under evaluation.
-The [previous seal](evidence/cycle_2026-09-28/tooling/prior_detector_freeze.json) is preserved.
-Image, ROS and branch CI checks remain separate from this source-integrity record.
+Raw replay, all 33 processing histories, reserved synthetic comparison and 841
+installed-image tests support this development integration. The
+[previous baseline seal](evidence/cycle_2026-09-28/regression/baseline/detector_seal.json)
+is preserved. **Deployment remains provisional:** candidate and baseline both fail
+the latest local positive-bag runtime/freshness check; the candidate clear-bag check
+passes. [Image and runtime evidence](evidence/cycle_2026-09-28/image_candidate/README.md).
+Final candidate branch CI remains pending. This integrity record does not declare
+deployment acceptance.
 
 ## The quality-cycle seal of 27 September (dated record)
 

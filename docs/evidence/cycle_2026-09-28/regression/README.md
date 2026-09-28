@@ -47,7 +47,9 @@ latency-warning count is not a clean runtime comparison; decision-level coverage
 and detection results above are the relevant paired checks. All full captures,
 the set F report, log, config and artifact hashes are retained with the gate.
 
-Passing this gate authorizes the already frozen reserved synthetic comparison.
-Processing-history stress, reserved evaluation and final image checks remain
-separate acceptance conditions. The candidate has not replaced the score branch's
-detector yet.
+The subsequent frozen reserved comparison passed without gains or regressions.
+All 33 processing histories have identical paired captures, and the installed
+candidate image passed 841 tests. The exact measured detector was integrated into
+the score development branch at `84763cf` after independent review. Local positive
+ROS runtime/freshness fails for candidate and baseline; the clear-bag check passes.
+Deployment remains provisional and final candidate branch CI is pending.

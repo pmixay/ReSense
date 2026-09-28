@@ -1,6 +1,23 @@
 # Current project review — 28 September 2026
 
-**Current assessment: 69/100, unchanged after the additional work.**
+**Latest independent checkpoint: 66/100.** The full current assessment is
+[Checkpoint 1](CHECKPOINT1_REVIEW_2026-09-28.md), a fresh-context GPT-6 Astra review
+that excluded previous scores. The measured continuity candidate `ef1d8f5` is now
+integrated into the development branch as `84763cf`. Quality acceptance passes;
+deployment remains provisional because full-rate local positive ROS playback
+fails freshness and latency for candidate and baseline. Final candidate CI is pending.
+
+The earlier 69-point lead review below is preserved with its source and scope.
+The new reviewer gives stricter range/generalization/runtime deductions using the
+reserved synthetic and local runtime evidence. The measured continuity improvement
+is 123 to 126/126 raw rail-object STOP frames, with no new negative alarms in the
+full gate or 33 paired histories.
+
+---
+
+# Earlier lead review — 28 September 2026
+
+**Dated assessment at `20e8229`: 69/100.**
 
 Reviewed branch: `gpt-score-push-20260928`. Reviewed source:
 `20e82297bbf859e7d63bee35044d6c8314f746c5`, including both development commits after the previous

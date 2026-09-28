@@ -1,7 +1,11 @@
 # Low object height continuity candidate — 28 September
 
-Status: **provisional, enabled only in isolated proposed defaults for validation**. The candidate needs the strict full regression gate
-and the independent reserved evaluation before acceptance. This work uses a previously inspected
+Status: **integrated into the score development branch at `84763cf`; deployment provisional**.
+The exact measured `ef1d8f5` source passed the full quality gate, reserved comparison,
+all 33 history checks and 841 installed-image tests. Local positive ROS runtime fails
+for candidate and baseline; the clear-bag run passes. See the
+[checkpoint review](../../../CHECKPOINT1_REVIEW_2026-09-28.md) and
+[image evidence](../image_candidate/README.md). This work uses a previously inspected
 organizer recording and generated development scenes; it is not holdout evidence.
 
 ## Cause
@@ -120,8 +124,8 @@ obstacles, warnings, distances, candidates, clear distance, and mount state are 
 
 After the targeted review, the isolated worktree uses 0.3 seconds in the dataclass,
 canonical YAML and ROS copy. Its complete effective config is identical to the
-previous `--set tracking.stop_keep_low_s=0.3` experiment. Shipping defaults on the
-score branch remain unchanged pending the full gate and qualified evaluation.
+previous `--set tracking.stop_keep_low_s=0.3` experiment. The score development branch now uses these exact measured defaults after the
+full gate and independent evaluation; deployment acceptance remains provisional.
 The full gate now measures a clean commit without overrides, so acceptance can
 promote the exact measured source/config files. The raw paired runner explicitly
 disables this feature for its control even after proposed defaults change.

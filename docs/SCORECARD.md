@@ -3,10 +3,26 @@
 > **Purpose:** the independent judgements of ReSense against the eight criteria of spec §8: score
 > per criterion, the evidence behind it, the risks on the hidden data and the fastest points to gain.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, summary RU
-> **Latest reassessment:** **69/100** on `20e8229` (28.09, current-source review with fresh raw replay; unchanged after the additional work). The earlier single review was **69/100** on `a2f9122`; the latest paired judgement remains **66.5/100** on `806b6c4`.
-> **Status:** current review below; earlier numbered sections are dated records.
+> **Latest independent checkpoint:** **66/100**, fresh-context GPT-6 Astra, numerically blind, measured candidate `ef1d8f5` (28 September evening). Development integration is supported; deployment acceptance remains provisional.
+> **Status:** latest checkpoint below; earlier sections are dated records. Scores use internal weights, not organizer-published weights.
 
-## Current branch reassessment: 28 September (`20e8229`)
+## Checkpoint 1: 28 September evening
+
+| Functionality /25 | Range /15 | Speed /10 | Generalization /15 | Technical quality /10 | Launch /10 | Approach /10 | Pitch /5 | Total /100 |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 17 | 6 | 7 | 6 | 9 | 8 | 9 | 4 | **66** |
+
+The bounded continuity fix restores raw rail-object STOP coverage from 123 to
+126/126 after frame 75. Full quality and history gates pass; false alarms and
+reserved synthetic recall do not improve. Local full-rate positive ROS replay
+fails freshness and the 100 ms threshold for both baseline and candidate.
+
+The difference from the earlier 69-point lead review reflects an independent
+reviewer and newly measured limitations. It is not a paired measurement of a
+three-point software regression. Read the [complete independent review](CHECKPOINT1_REVIEW_2026-09-28.md)
+and [machine-readable result](evidence/cycle_2026-09-28/checkpoint1_astra.json).
+
+## Earlier lead reassessment: 28 September (`20e8229`)
 
 **69/100, unchanged.** The two development commits after the previous review add a synthetic fixture and a
 rejected continuity experiment. Production detector, settings, launch code and pitch artifacts

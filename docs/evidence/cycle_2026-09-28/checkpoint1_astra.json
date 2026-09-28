@@ -1,0 +1,148 @@
+{
+  "schema": "resense-independent-checkpoint-review-v1",
+  "reviewer": "GPT-6 Astra, fresh-context independent reviewer",
+  "date": "2026-09-28",
+  "total": 66,
+  "maximum": 100,
+  "score_kind": "Internal review judgment, not organizer score or measured performance percentage",
+  "weights_status": "Requested internal weights; organizers publish no numerical weights",
+  "blind_procedure": {
+    "excluded": [
+      "README.md",
+      "docs/SCORECARD.md",
+      "docs/CURRENT_REVIEW*",
+      "docs/IMPROVEMENT_CYCLE*",
+      "old checkpoint score JSONs"
+    ],
+    "basis": "Official section 8, direct source inspection, experiment artifacts, captures and presentation. No prior scores read. P3 parallel work excluded from frozen candidate assessment."
+  },
+  "candidate": {
+    "measured_commit": "ef1d8f50299d9ccbbf65fc4ad5519764615853f6",
+    "image_source_commit": "6104122bccce0ef4800533016774690ede5218f0",
+    "image_id": "sha256:ca5ce7502cca717f581ea7de09306b0e00e3bbe78fc138dfc9ae79632fdeebb6",
+    "frozen_files_equal": 31,
+    "source_sha256": "9cc928915ab175de95675ed7ea880d7424410dbb7ed7426ca52cc076f51c5774",
+    "integration_reported_by_root": "84763cf; reported after completed rating, no new review or testing performed"
+  },
+  "criteria": [
+    {
+      "section": "8.1",
+      "name": "Detection performance",
+      "weight": 25,
+      "score": 17,
+      "rationale": "Raw rail continuity improves 123 to 126/126 after frame 75; person remains 61/61. Negative outputs remain unchanged, including existing false alarms. Real positive coverage is narrow."
+    },
+    {
+      "section": "8.2",
+      "name": "Detection range",
+      "weight": 15,
+      "score": 6,
+      "rationale": "Real positive evidence is around 56 m. Synthetic results support longer ranges for larger objects, but small and edge objects remain weak. Reliable real detection at 100–300 m is unproven."
+    },
+    {
+      "section": "8.3",
+      "name": "Speed",
+      "weight": 10,
+      "score": 7,
+      "rationale": "Efficient CPU detector and successful historical ROS runs. Latest quiet full-speed candidate run fails freshness and the 100 ms target; matched baseline also fails. No candidate speed gain established."
+    },
+    {
+      "section": "8.4",
+      "name": "Generalization",
+      "weight": 15,
+      "score": 6,
+      "rationale": "Environment geometry, perturbation tests and reserved evaluation provide useful evidence. Reserved synthetic sustained detection is 14/32 float32 and 13/32 compact, with no candidate gain. No unseen real positive route."
+    },
+    {
+      "section": "8.5",
+      "name": "Technical development",
+      "weight": 10,
+      "score": 9,
+      "rationale": "Clear architecture, bounded continuation, 841 image tests passed, strict regression gate, provenance and 33 identical history captures. Monitoring overclaims remain unresolved."
+    },
+    {
+      "section": "8.6",
+      "name": "Ease of launch",
+      "weight": 10,
+      "score": 8,
+      "rationale": "Built image, installed/native imports and offline two-topic smoke pass. Full-speed local real-bag acceptance fails; candidate CI and organizer stand remain unverified at review time."
+    },
+    {
+      "section": "8.7",
+      "name": "Team approach",
+      "weight": 10,
+      "score": 9,
+      "rationale": "Extensive controlled experiments, rejected alternatives, explicit limitations and preserved failures."
+    },
+    {
+      "section": "8.8",
+      "name": "Pitch",
+      "weight": 5,
+      "score": 4,
+      "rationale": "Substantive presentation and demonstration assets explain the algorithm and limitations. Candidate metrics need refreshing; timed human delivery is unverified."
+    }
+  ],
+  "runtime": {
+    "candidate": {
+      "frame_statuses": 198,
+      "expected_frames": 201,
+      "decode_detect_mean_ms": 103,
+      "decode_detect_p95_ms": 125,
+      "detector_mean_ms": 36,
+      "detector_p95_ms": 53,
+      "fresh_valid_results": 0,
+      "passed": false
+    },
+    "baseline": {
+      "frame_statuses": 166,
+      "expected_frames": 201,
+      "decode_detect_mean_ms": 119,
+      "decode_detect_p95_ms": 137,
+      "detector_mean_ms": 42,
+      "detector_p95_ms": 58,
+      "fresh_valid_results": 0,
+      "passed": false
+    },
+    "interpretation": "Single unrandomized matched pair on local i7-8565U with four physical cores; no speed improvement inferred. Both fail local full-speed acceptance. Earlier heavily loaded failure also retained. Half-speed synthetic ROS smoke is integration evidence, not full-speed real-bag acceptance."
+  },
+  "recommendation": {
+    "development_integration": "Supported with proposed defaults: bounded continuity gain, strict quality gate without waivers, no new measured negative alarms, identical history captures and no reserved regression. Default-off is not required solely by a runtime failure also seen in the matched baseline.",
+    "deployment_acceptance": "Provisional. Retain runtime failure as an open acceptance gap; candidate CI and target-hardware validation pending at review time."
+  },
+  "limitations": [
+    "Known real recordings were used during development.",
+    "No unseen real route with positive obstacles and no organizer-stand measurement.",
+    "Reserved synthetic evaluation does not establish real-world transfer.",
+    "Existing 16 set O GO-overclaim diagnostics unchanged; set O envelope labels inherit a historical detector fit.",
+    "Internal development-v2 synthetic report includes 208 GO-overclaim frames per encoding.",
+    "Raw continuity and compact-cache recall differ; do not conflate them.",
+    "Public role cards are intentional; absent public personal names are not treated as a templating defect."
+  ],
+  "next_work": [
+    "Resolve full-speed ROS freshness on representative hardware using matched runs.",
+    "Measure unseen real positive approaches, particularly small objects beyond 100 m.",
+    "Validate physical envelope labels independently and address overstated clear distance.",
+    "Reduce station/switch false alarms while preserving continuity."
+  ],
+  "evidence": {
+    "official_rubric": "docs/organizers/technical_specification_case05.txt, section 8",
+    "candidate_source_proof": "/home/likikikpa/ReSense-cycle-data/proposed_image_source.json",
+    "raw_continuity": "/home/likikikpa/ReSense-continuity/docs/evidence/cycle_2026-09-28/continuity/raw/summary.json",
+    "candidate_gate": "docs/evidence/cycle_2026-09-28/regression/candidate/gate.json",
+    "monitoring": "docs/evidence/cycle_2026-09-28/regression/candidate/monitoring_acceptance.json",
+    "history": "/home/likikikpa/ReSense-continuity/docs/evidence/cycle_2026-09-28/continuity/history",
+    "development_v2": "/home/likikikpa/ReSense-cycle-data/synthetic/comparison-development-v2.json",
+    "reserved_v2": "/home/likikikpa/ReSense-cycle-data/synthetic/candidate-reserved-v2.json",
+    "image_tests": "/home/likikikpa/ReSense-cycle-data/image_candidate_test_output/junit.xml",
+    "image_smoke": "/home/likikikpa/ReSense-cycle-data/image_candidate_smoke.log",
+    "candidate_quiet_runtime": "/home/likikikpa/ReSense-cycle-data/candidate_raw_node/quiet_positive/status.jsonl",
+    "candidate_quiet_checker": "/home/likikikpa/ReSense-cycle-data/candidate_raw_node_quiet_positive.log",
+    "baseline_quiet_runtime": "/home/likikikpa/ReSense-cycle-data/baseline_raw_node/quiet_positive/status.jsonl",
+    "historical_cold_runtime": "docs/evidence/p1_p2_cold_bags_2026-09-28",
+    "historical_node_input": "docs/evidence/node_input_2026-09-28/cold_local",
+    "full_data": "docs/evidence/results/p4_full_data_2026-09-28/final_regression_gate.json",
+    "presentation": "docs/presentation/ReSense_LCT2026.pdf",
+    "architecture": "docs/ARCHITECTURE.md",
+    "experiments": "docs/EXPERIMENTS.md"
+  }
+}
