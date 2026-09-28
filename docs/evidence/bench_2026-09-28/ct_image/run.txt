@@ -1,0 +1,25 @@
+== playing as user 1000:1000 (image Fast DDS settings) from a separate container: roundT_doubleT then doubleT_obstacle
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1790614455.822862528] [rosbag2_storage]: Opened database '/data/roundT_doubleT/roundT_doubleT_0.db3' for READ_ONLY.
+[INFO] [1790614455.822921095] [rosbag2_player]: Set rate to 1
+[INFO] [1790614455.827779341] [rosbag2_player]: Sleep 3000000000 ns
+[INFO] [1790614458.828274866] [rosbag2_storage]: Opened database '/data/roundT_doubleT/roundT_doubleT_0.db3' for READ_ONLY.
+[detector_node-1] [INFO] [1790614449.871932002] [resense_detector]: ReSense detector listening on /lidar_points, /sensing/lidar/hesai128/pointcloud (+ auto-discovery); input reliability auto; per-frame kernels: native (_
+[detector_node-1] [INFO] [1790614460.540092970] [resense_detector]: input 1: /lidar_points (frame_id=hesai_lidar, 307200 points)
+[detector_node-1] [INFO] [1790614497.504888638] [resense_detector]: input 2: /sensing/lidar/hesai128/pointcloud (frame_id=lidar_livox, 921600 points) - input switched from /lidar_points: detector restarted
+status messages      : 442 (57 lines skipped)
+alarm frames         : 191
+detector alarm frames: 191 (held STOP excluded from positive evidence)
+obstacle distance    : 55.5 .. 56.5 m
+latency decode+detect: mean 44 / p95 62 / max 78 ms
+detector stage total : mean 25 / p95 34 ms
+end-to-end (current) : median 49 / p95 77 / max 148 ms over 307 current results (input publication -> result, through DDS)
+node CPU             : 0.45 cores median, 1.07 max (node process, every stats period); peak RSS 1707 MB
+dropped input frames : 6 (0 of them skipped by the node's catch-up); 5 after the first 5 s
+dropped input settle : start-up catch-up back on the newest frame at +2.4 s; drops counted after +5.0 s (the later of 5 s and that, at most 15 s)
+fps (last report)    : 9.99
+start of the input   : 50 frames in the first 5 s after the first one, largest gap 0.2 s
+freshness contract  : PASS
+recordings seen      : 2 ['/lidar_points', '/sensing/lidar/hesai128/pointcloud']
+
+PASS: all dry-run criteria met

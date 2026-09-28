@@ -1,0 +1,48 @@
+== SKIP_BUILD=1: reusing resense:latest ==
+== playing roundT_doubleT at rate 1.0 through the node (headless) ==
+== rosbag2 read-ahead queue: 10 messages ==
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1790613392.714722063] [rosbag2_storage]: Opened database '/data/roundT_doubleT/roundT_doubleT_0.db3' for READ_ONLY.
+[INFO] [1790613392.714806599] [rosbag2_player]: Set rate to 1
+[INFO] [1790613392.755254323] [rosbag2_player]: Sleep 3000000000 ns
+[INFO] [1790613395.755797173] [rosbag2_storage]: Opened database '/data/roundT_doubleT/roundT_doubleT_0.db3' for READ_ONLY.
+[WARN] [1790613400.931299724] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790613401.931413728] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790613402.931561494] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790613403.931564831] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790613404.931711922] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790613405.931715134] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790613406.931856045] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790613407.933758277] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790613408.933824596] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790613409.933853875] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790613410.933885383] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790613411.933946693] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790613412.934011894] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790613413.934045808] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790613414.934191441] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790613415.934337363] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790613416.934479000] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790613417.934482259] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790613418.934620177] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790613419.934650650] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790613420.934792120] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+[WARN] [1790613421.934903700] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+
+== checking out/cold_clear_1/status.jsonl ==
+status messages      : 252 (16 lines skipped)
+alarm frames         : 0
+detector alarm frames: 0 (held STOP excluded from positive evidence)
+latency decode+detect: mean 36 / p95 46 / max 108 ms
+detector stage total : mean 24 / p95 33 ms
+end-to-end (current) : median 43 / p95 55 / max 121 ms over 235 current results (input publication -> result, through DDS)
+node CPU             : 0.39 cores median, 0.44 max (node process, every stats period); peak RSS 266 MB
+dropped input frames : 0 (0 of them skipped by the node's catch-up)
+dropped input settle : start-up catch-up back on the newest frame at +1.7 s; drops counted after +5.0 s (the later of 5 s and that, at most 15 s)
+dropped input vs bag : 201 messages of /lidar_points after the first 5 s, 0 frame(s) missing from the recording itself; 0 of its messages not processed
+fps (last report)    : 9.01
+start of the input   : 51 frames in the first 5 s after the first one, largest gap 0.1 s
+freshness contract  : PASS
+
+PASS: all dry-run criteria met
+exit 0
