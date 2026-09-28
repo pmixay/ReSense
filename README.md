@@ -26,7 +26,7 @@ ReSense 10 раз в секунду отвечает беспилотному п
 ```bash
 sudo sysctl -w net.core.rmem_max=33554432                # 0. на хосте, до перезагрузки: буфер UDP для 360° облаков
 docker load -i resense-image-<версия>.tar.gz             # 1. один раз, без интернета
-docker run --rm -it --net=host --ipc=host resense ros2 launch resense_ros detector.launch.py freshness_mode:=replay  # 2. консоль 1: исторический бэг
+docker run --rm -it --net=host --ipc=host resense      # 2. консоль 1: нода (команда образа по умолчанию — для записанных бэгов)
 ros2 bag play <бэг> --delay 3 --read-ahead-queue-size 10 # 3. консоль 2: любой пользователь, ROS 2 Humble
 ros2 topic echo /resense/decision --field data           # 4. консоль 3: GO | CAUTION | STOP | FAULT
 ros2 topic echo /resense/nearest_distance --field data   # 5. расстояние до препятствия, м; −1 — нет
@@ -121,8 +121,11 @@ ros2 bag play <bag>  ──PointCloud2 (either topic / frame pair), 10 Hz──�
    `--network none`. With internet, build it instead (`docker build -t resense -f
    docker/Dockerfile .` or `./scripts/build.sh`: ROS 2 Humble and exactly pinned Python packages).
    Nothing in the node, the launch file or the entrypoint uses the network at run time.
-2. **Start the node** (command 2) with `freshness_mode:=replay` for historical recordings.
-   The default `live` mode requires acquisition timestamps comparable to system UTC. **`--net=host` is
+2. **Start the node** (command 2). The image's default command (since 28.09) is
+   `ros2 launch resense_ros detector.launch.py freshness_mode:=replay`, for recorded bags: the
+   input's age is taken from its publication by the player. On a train with a live LiDAR pass
+   `freshness_mode:=live` (the node's own default: acquisition timestamps compared with system
+   UTC; a recorded bag gives `FAULT` on every message in that mode). **`--net=host` is
    required**: the image runs Fast DDS over UDP only (`docker/fastdds_udp.xml`, so that a player run
    by any user reaches the root node), and in Docker's default bridge network the host's player and
    the node do not discover each other. `--ipc=host` is harmless, kept for older images. Opt-in,
@@ -407,7 +410,8 @@ docker run --rm resense bash -lc "python3 scripts/make_smoke_bag.py /tmp/b && sc
 * **mount**: `sensor_forward` / `sensor_left` / `sensor_up` (axis mapping, e.g. `+x`),
   `mount_roll_deg` / `mount_pitch_deg` / `mount_yaw_deg` (fixed tilt), `auto_calibrate` (true:
   orientation, roll and pitch from the rails and the bed, reported in `/resense/status` → `mount`);
-* **freshness**: `freshness_mode` (`live`, explicitly `replay` for bags), `max_result_age` (0.5 s),
+* **freshness**: `freshness_mode` (the node's default `live`; the image's default command passes
+  `replay`, for recorded bags; a live LiDAR on a train: `live`), `max_result_age` (0.5 s),
   `future_tolerance` (0.05 s);
 * **guards**: `stale_timeout` (0.5 s without a frame before `FAULT`), `startup_grace` (2.0 s after
   start before "no LiDAR frame received yet" is published as `FAULT`), `max_consecutive_errors` (5);

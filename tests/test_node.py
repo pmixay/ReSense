@@ -1167,3 +1167,14 @@ def test_every_node_parameter_is_a_launch_argument_with_the_same_default(node_cl
     for name, (default, typ) in launch.items():
         if name != "freshness_mode":          # the stand-in node declares replay for the unit streams
             assert cast[typ](default) == declared[name], name
+
+
+def test_the_image_starts_the_node_for_recorded_bags_and_the_node_default_stays_live(node_cls, monkeypatch):
+    """28.09: `docker run resense` (no arguments) must give current results on a played bag, the
+    spec's chain; the node's own default remains the stricter live clock for a train."""
+    import re
+    cmd = re.search(r'^CMD \[(.*)\]$', (NODE_PKG.parents[2] / "docker" / "Dockerfile").read_text(), re.M).group(1)
+    assert json.loads(f"[{cmd}]") == ["ros2", "launch", "resense_ros", "detector.launch.py", "freshness_mode:=replay"]
+    defaults = {}
+    monkeypatch.setattr(_Node, "declare_parameter", lambda self, n, v: (defaults.update({n: v}), self._params.update({n: v})))
+    assert node_cls().freshness_mode == defaults["freshness_mode"] == "live"

@@ -83,4 +83,8 @@ RUN chmod +x /entrypoint.sh
 COPY docker/fastdds_udp.xml docker/fastdds_shm_udp.xml docker/dds_transport.sh docker/fastdds_shm_share.py /opt/resense/
 ENV FASTRTPS_DEFAULT_PROFILES_FILE=/opt/resense/fastdds_udp.xml
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["ros2", "launch", "resense_ros", "detector.launch.py"]
+# The default command is for recorded bags, the jury's use (28.09): `docker run --net=host resense`
+# then `ros2 bag play <bag>` gives current results. The node's own default stays freshness_mode
+# live (acquisition time against system UTC); a train with a live LiDAR passes it explicitly:
+# `docker run --net=host resense ros2 launch resense_ros detector.launch.py freshness_mode:=live`.
+CMD ["ros2", "launch", "resense_ros", "detector.launch.py", "freshness_mode:=replay"]
