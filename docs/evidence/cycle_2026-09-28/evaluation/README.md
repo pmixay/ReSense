@@ -169,3 +169,18 @@ RESENSE_DETECTOR_ROOT=/workspace/ReSense-continuity \
   --baseline /cycle/synthetic/baseline-development-v2.json \
   --output /cycle/synthetic/candidate-development-v2.json
 ```
+
+
+## Frozen candidate development results
+
+The [complete development comparison](development-comparison.md) records the exact baseline
+and `ef1d8f5` candidate on v1 and prospectively corrected v2. Both comparisons pass with no
+regression **and no gain**; all public signals are identical (1,120 v1 and 1,152 v2 frame pairs).
+V2 sustains 19/32 positive sequences, with 0/64 negative STOP frames per encoding. Its 13 missed
+bodies do physically intersect the envelope; sampled-return visibility is reported separately.
+The current candidate's continuity benefit is assessed by the separate dropout/real replay
+checks, not these stationary sequences. Reserved data remain untouched.
+
+The physical return counter now consumes the canonical profile stored in each generated case,
+so future candidate profile changes cannot redefine independent truth. The documented profile
+parity proof preserves all current v2 results and their original auditor hashes.

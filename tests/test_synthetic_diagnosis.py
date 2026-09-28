@@ -74,7 +74,8 @@ def test_physical_return_count_uses_known_axis_floor_and_sensor_mapping():
     from resense.pointcloud import compact_to_compact16
     from synthetic_geometry import physical_return_count
     sensor = SensorConfig()
-    case = {"axis_y": .25, "floor_z": -1.5}
+    case = {"axis_y": .25, "floor_z": -1.5,
+            "physical_geometry": {"canonical_profile_m": [[-1.05, .12], [1.05, .12], [1.05, 3], [-1.05, 3]]}}
     # One point inside; the other three are below the floor, outside laterally, or beyond range.
     world = np.array([[50, .25, -.82], [50, .25, -1.30], [50, 1.5, -.82], [300, .25, -.82]])
     raw = np.zeros(4, dtype=COMPACT_DTYPE)
@@ -82,3 +83,23 @@ def test_physical_return_count_uses_known_axis_floor_and_sensor_mapping():
     for array in (raw, compact_to_compact16(raw)):
         assert physical_return_count(array, [True] * 4, sensor, case) == 1
         assert physical_return_count(array, [False] * 4, sensor, case) == 0
+
+
+def test_candidate_profile_cannot_change_saved_physical_return_truth(monkeypatch):
+    from types import SimpleNamespace
+    import synthetic_geometry as geometry
+    from resense.frame import axis_matrix
+    sensor = SensorConfig()
+    case = {"axis_y": 0, "floor_z": -1.5,
+            "physical_geometry": {"canonical_profile_m": [[-1.05, .12], [1.05, .12], [1.05, 3], [-1.05, 3]]}}
+    raw = np.zeros(2, dtype=COMPACT_DTYPE)
+    raw["x"], raw["y"], raw["z"] = (np.array([[50, 0, -.82], [50, 2.0, -.82]]) @ axis_matrix(sensor)).T
+    assert geometry.physical_return_count(raw, [True, True], sensor, case) == 1
+    monkeypatch.setattr(geometry, "GaugeConfig", lambda: SimpleNamespace(profile=[[-3, -.5], [3, -.5], [3, 3], [-3, 3]]))
+    assert geometry.physical_return_count(raw, [True, True], sensor, case) == 1
+
+
+def test_physical_return_truth_rejects_absent_saved_profile():
+    from synthetic_geometry import physical_return_count
+    with pytest.raises(ValueError, match="saved canonical_profile_m"):
+        physical_return_count(np.zeros(0, dtype=COMPACT_DTYPE), [], SensorConfig(), {"axis_y": 0, "floor_z": -1.5})

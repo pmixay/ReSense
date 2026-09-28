@@ -94,6 +94,7 @@ def main():
               "protocol_sha256": baseline["protocol_sha256"], "split": baseline["split"],
               "summary_script_sha256": file_hash(__file__), "geometry_auditor_sha256": file_hash(Path(__file__).with_name("synthetic_geometry.py")),
               "interpretation": "Original labels and headline metrics are preserved. Physical groups annotate body-interior, boundary-only and outside geometry without relabeling v1. Only v2 has preregistered positive overlap. Synthetic development is not official organizer scoring or real holdout evidence.",
+              "baseline_report_file": args.baseline.name, "candidate_report_file": args.candidate.name,
               "baseline_report_sha256": file_hash(args.baseline), "candidate_report_sha256": file_hash(args.candidate),
               "baseline": summarize(baseline), "candidate": summarize(candidate),
               "comparison": compare_reports(baseline, candidate),

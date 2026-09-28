@@ -107,6 +107,12 @@ def audit_case(case):
 
 def physical_return_count(array, target_mask, sensor, case):
     """Count actual decoded target returns in the known canonical physical envelope."""
+    profile = case.get("physical_geometry", {}).get("canonical_profile_m")
+    if profile is None:
+        raise ValueError("physical return counting requires the saved canonical_profile_m")
+    profile = np.asarray(profile, dtype=float)
+    if profile.ndim != 2 or profile.shape[1] != 2 or len(profile) < 3 or not np.isfinite(profile).all():
+        raise ValueError("saved canonical_profile_m is not a finite polygon")
     from resense.frame import axis_matrix
     from resense.gauge import point_in_polygon
     from resense.pointcloud import compact_to_xyz, expand_compact16
@@ -116,7 +122,7 @@ def physical_return_count(array, target_mask, sensor, case):
     target = xyz[keep] @ axis_matrix(sensor).T
     return int(point_in_polygon(target[:, 1] - case["axis_y"],
                                 target[:, 2] - case["floor_z"] - RAIL_HEIGHT_M,
-                                GaugeConfig().profile).sum())
+                                profile).sum())
 
 
 def main():
