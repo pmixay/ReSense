@@ -61,3 +61,21 @@ compatibility with archived data, not detector recall.
 Not checkable in this clone: the organizers' bags (`/data/for_hackathon`), the git-ignored private
 deck data, a physical second device and human rehearsals. The CI two-container probe is a protocol
 check, not a visual Foxglove import.
+
+## Rebuild of 28.09 evening
+
+* The dense public slides 5 and 15 shortened without changing a measured claim; the 16-slide
+  PPTX / PDF and the 170 s video rebuilt from those sources (new hashes in the evidence JSON); PDF
+  pages 2, 3, 5, 9, 11, 13–16 inspected at presentation size; `make_overview_video.py --check`:
+  7 blocks, 17 shots, 38 cues, 23 cards, 170 s; the `.srt` unchanged.
+* Rechecked on these binaries on 29.09 (sandbox, Playwright 1.56 + Chromium 141): the full P2 command
+  above, **83 passed, 0 skipped** (`rebuild_recheck` in the evidence JSON).
+* `build_deck.py --team` smoke-built with four synthetic portraits and complete example fields (16
+  slides, all four names on slide 3, no unfilled field on slides 2–4); the empty example JSON fails
+  before the build with the list of missing fields. The team's real data are not in the repository:
+  P2 collects them ([`DEMO_HANDOFF.md`](DEMO_HANDOFF.md)).
+* [`DEMO_HANDOFF.md`](DEMO_HANDOFF.md): the operator sequence on the stand, the second-device Foxglove
+  check, the stale-indicator caution, the offline fallback and what to record at each rehearsal. A
+  runbook, not a completed rehearsal.
+* The public team cards in `build_deck.py` were changed after this rebuild (P1: submission; P2:
+  pitch, deck, video): the committed PPTX / PDF show the old cards until P2's next rebuild.

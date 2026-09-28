@@ -14,7 +14,8 @@ video recipes.
 
 P2's deliverables, what is left and the rehearsal record: [`P2_STATUS.md`](P2_STATUS.md);
 requirement-by-requirement evidence and the repeatable checks: [`P2_REVIEW.md`](P2_REVIEW.md); the
-pitch, the deck and the overview video: [`docs/PRESENTATION.md`](../docs/PRESENTATION.md).
+pitch, the deck and the overview video: [`docs/PRESENTATION.md`](../docs/PRESENTATION.md); the demo
+runbook for the stand and the rehearsals (in Russian): [`DEMO_HANDOFF.md`](DEMO_HANDOFF.md).
 
 | file | what |
 |---|---|

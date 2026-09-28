@@ -24,7 +24,7 @@ Dates: upload 29.09 by 23:59 (target 18:00); technical expertise 30.09–14.10; 
 | Private deck (`--team`) | not built; `docs/presentation/private/` is git-ignored and empty in this clone | names, nicknames, place of study, city, how the team formed, four portraits from the team; build; never commit |
 | Overview video `docs/video/resense_overview.mp4` + `.srt` | 2:50, 1920×1080, 25 fps, no audio track, Russian subtitles burned in and as `.srt` | the same number differences in its cards and subtitles; optional voice-over read from the `.srt` and muxed without re-editing (fix the numbers first) |
 | Fallback demo `docs/video/docker_chain_rviz.mp4` | committed: 69 s archival recording of the jury chain (v0.6.3, 23.09) | play it once on the pitch laptop |
-| Live remote demo | procedure in PRESENTATION «Демонстрация» and [`README.md`](README.md) «Remote demo with Foxglove» | run it on the demo machine with a second device at both rehearsals |
+| Live remote demo | runbook [`DEMO_HANDOFF.md`](DEMO_HANDOFF.md); PRESENTATION «Демонстрация» and [`README.md`](README.md) «Remote demo with Foxglove» | run it on the demo machine with a second device at both rehearsals |
 | Rehearsals | none held yet | two timed rehearsals (PRESENTATION «Репетиции»); record them below |
 | Submission links | public deck PDF and video in `main` | hand the final links to the captain by 18:00 on 29.09 |
 
