@@ -102,8 +102,8 @@ detector-source commit was recorded as `b9d2d4a` before the evaluator-only commi
 records both that generator hash and the revised `0991251` evaluator hash. The detector and
 effective configuration did not change between those commits. Raw clouds are excluded from Git.
 
-This is development evidence, with one simple stationary geometry per case. No reserved
-evaluation clouds have been generated or scored. No detector improvement is claimed by this
+This is development evidence, with one simple stationary geometry per case. At the time of this baseline measurement, no reserved
+evaluation clouds had been generated or scored. No detector improvement is claimed by this
 baseline measurement.
 
 ## V1 geometry and stage audit
@@ -179,7 +179,7 @@ regression **and no gain**; all public signals are identical (1,120 v1 and 1,152
 V2 sustains 19/32 positive sequences, with 0/64 negative STOP frames per encoding. Its 13 missed
 bodies do physically intersect the envelope; sampled-return visibility is reported separately.
 The current candidate's continuity benefit is assessed by the separate dropout/real replay
-checks, not these stationary sequences. Reserved data remain untouched.
+checks, not these stationary sequences. At this development checkpoint, reserved data were untouched.
 
 The physical return counter now consumes the canonical profile stored in each generated case,
 so future candidate profile changes cannot redefine independent truth. The documented profile
@@ -194,3 +194,13 @@ reports before freezing. Documentation-only baseline commits may differ; its sou
 bytes must remain identical. Reserved generation requires the root reviewer's explicit
 approval after inspecting the completed candidate full real regression gate. Creating this
 record does not generate or inspect the reserved split.
+
+## Reserved v2 completed
+
+The [reserved comparison](reserved-comparison.md) passed with no candidate regression and no
+synthetic gain: all 1,152 baseline/candidate public frame signals are identical. Absolute
+performance is **14/32 sustained positives in float32, 13/32 in compact16**, with **0/64 negative
+STOP frames** per encoding. Quantization loses ten confirmed STOP frames on the person at the
+170 m edge in both implementations. The report preserves this failure, all frame outputs,
+input hashes and the authorization after the full real gate. The reserved split is now spent;
+no source/config/tool tuning followed its outcomes.
