@@ -184,3 +184,13 @@ checks, not these stationary sequences. Reserved data remain untouched.
 The physical return counter now consumes the canonical profile stored in each generated case,
 so future candidate profile changes cannot redefine independent truth. The documented profile
 parity proof preserves all current v2 results and their original auditor hashes.
+
+## Reserved v2 freeze
+
+[`reserved-v2-freeze.json`](reserved-v2-freeze.json) records the exact baseline/candidate
+source/config pairs from the complete v2 development reports, along with protocol, report,
+tool and native-library hashes. These production files/configs were rechecked against the
+reports before freezing. Documentation-only baseline commits may differ; its source/config
+bytes must remain identical. Reserved generation requires the root reviewer's explicit
+approval after inspecting the completed candidate full real regression gate. Creating this
+record does not generate or inspect the reserved split.
