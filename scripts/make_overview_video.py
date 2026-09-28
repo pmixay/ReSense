@@ -133,8 +133,8 @@ BLOCKS = [
     {"name": "Алгоритм", "t0": 38.0, "t1": 56.0,
      "shots": [
          shot(38.0, 48.0, "deck:8", note="презентация, слайд 8 · пять шагов на кадр"),
-         shot(48.0, 56.0, "img/doubleT_obstacle_0024_v062.png",
-              note="img/doubleT_obstacle_0024_v062.png · doubleT_obstacle, кадр 24, реальные данные"),
+          shot(48.0, 56.0, "img/doubleT_obstacle_0024_v062.png",
+               note="doubleT_obstacle, кадр 24 · архивный рендер v0.6.2; числа — по детектору 27.09"),
      ],
      "cards": [
          text(38.4, "5 шагов на кадр: калибровка, модель пути, габарит, кластеры, подтверждение 0,5 с "
@@ -152,18 +152,18 @@ BLOCKS = [
      ]},
     {"name": "Демонстрация", "t0": 56.0, "t1": 93.0,
      "shots": [
-         shot(56.0, 62.0, "video/docker_chain_rviz.mp4", at=0.0,
-              note="video/docker_chain_rviz.mp4 · 0:00–0:06 · docker run, до входа FAULT"),
-         shot(62.0, 68.0, "video/docker_chain_rviz.mp4", at=12.0,
-              note="video/docker_chain_rviz.mp4 · 0:12–0:18 · bag play из другого контейнера"),
-         shot(68.0, 74.0, "video/docker_chain_rviz.mp4", at=24.0,
-              note="video/docker_chain_rviz.mp4 · 0:24–0:30 · /resense/decision: STOP"),
-         shot(74.0, 81.0, "video/doubleT_obstacle_cab.mp4", at=0.0, bits=0.35,
-              note="video/doubleT_obstacle_cab.mp4 · 0:00–0:07 · человек, реальные данные"),
-         shot(81.0, 87.0, "video/doubleT_obstacle_cab.mp4", at=8.0, bits=0.35,
-              note="video/doubleT_obstacle_cab.mp4 · 0:08–0:14 · предмет на рельсе"),
-         shot(87.0, 93.0, "images/dashboard-cab-real.png",
-              note="images/dashboard-cab-real.png · веб-интерфейс по статусу узла из Docker"),
+          shot(56.0, 62.0, "video/docker_chain_rviz.mp4", at=0.0,
+               note="архивная запись цепочки v0.6.3 · docker run, до входа FAULT"),
+          shot(62.0, 68.0, "video/docker_chain_rviz.mp4", at=12.0,
+               note="архивная запись цепочки v0.6.3 · bag play из другого контейнера"),
+          shot(68.0, 74.0, "video/docker_chain_rviz.mp4", at=24.0,
+               note="архивная запись цепочки v0.6.3 · /resense/decision: STOP"),
+          shot(74.0, 81.0, "video/doubleT_obstacle_cab.mp4", at=0.0, bits=0.35,
+               note="архивное видео v0.6.2 · метрики 61/61 по детектору 27.09"),
+          shot(81.0, 87.0, "video/doubleT_obstacle_cab.mp4", at=8.0, bits=0.35,
+               note="архивное видео v0.6.2 · предмет на рельсе; метрики по детектору 27.09"),
+          shot(87.0, 93.0, "images/dashboard-cab-real.png",
+               note="архивный статус из Docker · веб-интерфейс, не замер детектора 27.09"),
      ],
      "cards": [
          steps(56.4, ["docker load / build", "docker run", "ros2 bag play", "/resense/decision"],
@@ -186,8 +186,8 @@ BLOCKS = [
      ]},
     {"name": "Объекты организаторов", "t0": 93.0, "t1": 123.0,
      "shots": [
-         shot(93.0, 111.0, "video/fake_objects_cab.mp4", at=0.0, bits=0.25,
-              note="video/fake_objects_cab.mp4 · 0:00–0:18 · ящик 2 × 2 м, 98 → 43 м"),
+          shot(93.0, 111.0, "video/fake_objects_cab.mp4", at=0.0, bits=0.25,
+               note="архивное видео · синтетика организаторов, ящик 2 × 2 м; метрики 27.09"),
          shot(111.0, 123.0, "deck:13", note="презентация, слайд 13 · объекты организаторов"),
      ],
      "cards": [

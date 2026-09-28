@@ -232,7 +232,8 @@ def test_dashboard_freshness_and_live_stream_stall():
         assert page.inner_text("#clear") == "не определена"
         assert page.evaluate("state.cab.clearEnd") == 0
         # A new fresh message permits recovery; a later pause holds an outstanding STOP.
-        stop = dict(base, obstacle=True, decision="STOP", nearest_distance=50, clear_distance=50)
+        stop = dict(base, obstacle=True, decision="STOP", nearest_distance=50, clear_distance=50,
+                    freshness=dict(base["freshness"], go_allowed=False))
         page.evaluate(deliver, stop)
         page.evaluate("checkLiveStream(state.lastStatusArrival + 501)")
         assert page.inner_text("#decision") == "СТОП"

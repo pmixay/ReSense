@@ -6,7 +6,7 @@
   "checks": {
     "p2": {
       "command": "RESENSE_REQUIRE_WEB=1 python -m pytest -q -rs web/demo tests/test_overview_video.py",
-      "passed": 82,
+      "passed": 83,
       "failures": 0,
       "skipped": 0,
       "by_module": {
@@ -14,12 +14,12 @@
         "web.demo.test_frontend_boundaries": 6,
         "web.demo.test_p2_review": 16,
         "web.demo.test_web": 17,
-        "tests.test_overview_video": 8
+        "tests.test_overview_video": 9
       }
     },
     "core": {
       "command": "python -m pytest -q -rs tests",
-      "passed": 732,
+      "passed": 733,
       "deselected": 1,
       "deselected_reason": "/data/cache/new_data absent",
       "subtests_passed": 6,
@@ -27,7 +27,8 @@
     },
     "lint": "ruff 0.15.8 passed",
     "detector_freeze": "31 files PASS (integrity check only)",
-    "diff_check": "passed"
+    "diff_check": "passed",
+    "ci_initial": "GitHub Actions run 36393713036 on cc016ba: all four jobs passed; remote viewer branch gate not yet enabled at this commit"
   },
   "status_compatibility": {
     "files": 18,
@@ -83,8 +84,8 @@
       "sha256": "6b4a0308ffd1665f26a37f54bb238256565629757a6c169e540fe5a1d8e116ae"
     },
     "docs/video/resense_overview.mp4": {
-      "bytes": 20598544,
-      "sha256": "38e76d00e4db6802765d94c45bc173555b3b7e91de2276ed2ef4259c0114fd11"
+      "bytes": 20590606,
+      "sha256": "4a63710556a6cab1e9db9ef852e735c0dda41256dd389605225c0e7a4f26dbe9"
     },
     "docs/video/resense_overview.ru.srt": {
       "bytes": 5229,
@@ -126,7 +127,7 @@
       ],
       "format": {
         "duration": "170.000000",
-        "size": "20598544"
+        "size": "20590606"
       }
     }
   },

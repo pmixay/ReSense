@@ -237,6 +237,11 @@ Known limits:
 The committed real-data clips (v0.6.2; the Docker chain v0.6.3) cover every presentation surface;
 all four are silent:
 
+The 2:50 overview uses these clips as **archival visualization** and labels them as such in its
+source line. Its numerical cards come from the accepted 27.09 regression baseline, not from
+measurements made in the earlier video clips. The current dashboard clip replays an archived
+node-status capture; neither clip is a fresh run of the final detector on the jury stand.
+
 * [`docker_chain_rviz.mp4`](../docs/video/docker_chain_rviz.mp4) — the full jury chain on screen:
   node and RViz in Docker, `ros2 bag play` as a normal user, and `/resense/decision` (v0.6.3);
 * [`doubleT_obstacle_cab.mp4`](../docs/video/doubleT_obstacle_cab.mp4) — the real bag from the

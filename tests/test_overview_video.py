@@ -27,6 +27,14 @@ def test_cut_table_is_consistent():
             assert c["tag"] in (None, *module.TAGS)
 
 
+def test_archived_visuals_are_identified_separately_from_current_metrics():
+    old_sources = ("docker_chain_rviz.mp4", "doubleT_obstacle_cab.mp4", "fake_objects_cab.mp4",
+                   "doubleT_obstacle_0024_v062.png")
+    for shot in module.all_shots():
+        if any(name in str(shot["src"]) for name in old_sources):
+            assert "архив" in shot["note"], shot
+
+
 def test_srt_time_format():
     assert module.fmt_srt_time(0.6) == "00:00:00,600"
     assert module.fmt_srt_time(169.4) == "00:02:49,400"

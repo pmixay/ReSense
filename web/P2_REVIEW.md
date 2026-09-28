@@ -15,7 +15,7 @@ preserved. The P2 instructions and freshness limitations are in `web/README.md`.
 
 | Organizer requirement | P2 work and evidence | What remains |
 |---|---|---|
-| §4: Docker → supplied bag → raw cloud → detection → distance; preferably live | RViz config and Foxglove layout include both known raw-cloud topics, corridor and boxes; archived full Docker/RViz chain in `docs/video/docker_chain_rviz.mp4`. Foxglove channel and freshness protocol tested; browser's actual bundled roslib tested across subscribe, STOP, expiry, recovery and disconnect. | On the actual demo machine, P1/P2 must import and visually inspect the layout from a **second device** while playing a supplied bag; test link loss/recovery. The archived recording is earlier detector evidence, not a new run of the 27.09 detector. |
+| §4: Docker → supplied bag → raw cloud → detection → distance; preferably live | RViz config and Foxglove layout include both known raw-cloud topics, corridor and boxes; archived full Docker/RViz chain in `docs/video/docker_chain_rviz.mp4`. Foxglove channel and freshness protocol tested; browser's actual bundled roslib tested across subscribe, STOP, expiry, recovery and disconnect. The two-container viewer probe is enabled on this Claude branch. | On the actual demo machine, P1/P2 must import and visually inspect the layout from a **second device** while playing a supplied bag; test link loss/recovery. The archived recording is earlier detector evidence, not a new run of the 27.09 detector. |
 | §5, §7.2: short algorithm video and accessible documentation | Public 2:50 H.264 overview and `.srt`, 16-slide PPTX/PDF in the organizers' template, updated interface screenshots, label-tool and replay instructions. The viewer can see data provenance (real bag vs organizer synthetic vs our synthetic). | Captain supplies submission links; optional narration is the speaker's choice. |
 | §8.5: robustness, tests, honest documentation | Live valid/current contract, STOP hold, stale overlays, reporting v2, label import and numeric validation, rendering and Foxglove split-advertisement checks. Browser tests cannot silently skip in CI. Detector seal checked separately; this pass does not change detector/config. | ROS runtime and physical rendering on the jury stand require the demo setup. |
 | §8.6: easy launch | `web/README.md` gives offline replay, browser validation and live Foxglove procedure. Existing `scripts/play_bag.sh` and Docker CI are owned by P1 and remain the supported jury path. | P1/demo operator checks the final image and supported read-ahead procedure on the actual machine. |
@@ -43,7 +43,9 @@ preserved. The P2 instructions and freshness limitations are in `web/README.md`.
   STOP/FAULT/CAUTION/GO precedence and refuse a missing requested frame.
 * Overview excerpts now clip and rebase SRT/chapter timestamps. The rebuilt public deck retains
   the latest detector's measured numbers and clearly states that braking integration is future
-  work and the organizer objects are synthetic on previously used backgrounds.
+  work and the organizer objects are synthetic on previously used backgrounds. The overview
+  identifies earlier v0.6.2/0.6.3 picture clips as archival: current metrics come from the
+  27.09 gate, not from replaying the new detector in those pictures.
 
 ## Repeatable checks and limits
 
@@ -53,12 +55,14 @@ python -m pytest -q -rs tests
 python scripts/detector_freeze.py verify
 ruff check .
 python web/demo/check_status_compatibility.py --out out/p2-review-status-compatibility.json
+mkdir -p out
+gzip -dc docs/evidence/docker_2026-09-23/obstacle_status.jsonl.gz > out/p2-review-real.jsonl
 python web/demo/check_dashboard.py --jsonl out/p2-review-real.jsonl \
   --speed 2 --min-dist 55 --max-dist 57 --screenshot out/p2-review-real.png
 ```
 
-* **82 P2 checks passed**, no skips: browser UI, generated synthetic run, label tool, layout,
-  Foxglove protocol, presentation, hero and overview. **732 core tests passed**, one test
+* **83 P2 checks passed**, no skips: browser UI, generated synthetic run, label tool, layout,
+  Foxglove protocol, presentation, hero and overview. **733 core tests passed**, one test
   deselected for absent `/data/cache/new_data` and six subtests passed. The detector seal verifies
   31 files; lint and whitespace checks pass.
 * The shared browser validator accepted **4,760/4,760** archived records across **18** gzip files.
