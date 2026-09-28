@@ -106,7 +106,7 @@ BLOCKS = [
      ],
      "subs": [
          (0.6, 4.6, "Поезд без машиниста должен сам понять, свободен ли путь впереди."),
-         (4.8, 8.4, "Тормозной путь на 80 км/ч — около 200 метров."),
+          (4.8, 8.4, "С 80 км/ч при замедлении 1,2 м/с² — около 200 м без задержек."),
          (8.6, 12.4, "А тоннель метро однообразен и почти всегда пуст:"),
          (12.4, 17.6, "реальных препятствий, на которых можно научить нейросеть, в данных почти нет."),
      ]},
@@ -128,7 +128,7 @@ BLOCKS = [
          (22.0, 25.8, "В каждом кадре лидар калибруется по рельсам и строит ось пути,"),
          (25.8, 30.4, "а изгиб продлевает по стенам и колоннам — туда, где рельсов уже не видно."),
          (30.6, 33.0, "Вдоль оси — габарит поезда."),
-         (33.2, 37.6, "Всё, что в него попало и не является путём, — препятствие."),
+          (33.2, 37.6, "Ищем в нём то, что не является путём. Возможны пропуски."),
      ]},
     {"name": "Алгоритм", "t0": 38.0, "t1": 56.0,
      "shots": [
@@ -197,8 +197,7 @@ BLOCKS = [
          num(111.0, "8 из 8", "объектов в габарите — STOP; у края — с 35 и 18 м", ORG),
      ],
      "subs": [
-         (93.4, 98.4, "Главная внешняя проверка — препятствия, которые вставили в запись сами "
-                      "организаторы;"),
+          (93.4, 98.4, "Это синтетика организаторов на использованных фонах, не скрытая проверка;"),
          (98.4, 101.2, "поезд едет к ним до 20 метров в секунду."),
          (101.4, 106.2, "Ящик 2 × 2 метра — STOP с первого появления, с 98 метров;"),
          (106.2, 109.4, "доска поперёк рельсов — с 87."),
@@ -246,7 +245,7 @@ BLOCKS = [
          (149.2, 153.2, "Свою скорость по лидару мы уже меряем с ошибкой 0,07 м/с,"),
          (153.2, 156.4, "но раннего STOP она не дала, поэтому это опция."),
          (156.6, 161.4, "Ядра на C++ ускорили детектор на 38–57 % с тем же результатом."),
-         (161.8, 166.2, "Docker load, docker run, ros2 bag play — и поезд видит путь."),
+          (161.8, 166.2, "Docker load, docker run, ros2 bag play — и система ищет препятствия."),
          (166.4, 169.4, "ReSense, команда «Молоток»."),
      ]},
 ]
@@ -1068,21 +1067,32 @@ class Renderer:
 
 # ================================================================ outputs
 
-def write_srt(path, renderer):
+def write_srt(path, renderer, span=None):
+    start, end = span or (0.0, DURATION)
+    os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
     with open(path, "w", encoding="utf-8", newline="\n") as f:
-        for n, (t0, t1, lines, _, _) in enumerate(renderer.cues, 1):
-            f.write(f"{n}\n{fmt_srt_time(t0)} --> {fmt_srt_time(t1)}\n" + "\n".join(lines) + "\n\n")
+        n = 0
+        for t0, t1, lines, _, _ in renderer.cues:
+            if t1 <= start or t0 >= end:
+                continue
+            n += 1
+            f.write(f"{n}\n{fmt_srt_time(max(t0, start) - start)} --> {fmt_srt_time(min(t1, end) - start)}\n"
+                    + "\n".join(lines) + "\n\n")
 
 
-def write_chapters(path):
+def write_chapters(path, span=None):
+    start, end = span or (0.0, DURATION)
     esc = re.compile(r"([=;#\\\n])")
     with open(path, "w", encoding="utf-8") as f:
         f.write(";FFMETADATA1\n")
         f.write("title=" + esc.sub(r"\\\1", "ReSense — обзор решения (кейс 05, ЛЦТ 2026)") + "\n")
         f.write("comment=" + esc.sub(r"\\\1", "без звука; субтитры: resense_overview.ru.srt") + "\n")
         for b in BLOCKS:
+            if b["t1"] <= start or b["t0"] >= end:
+                continue
             f.write("[CHAPTER]\nTIMEBASE=1/1000\n")
-            f.write(f"START={int(b['t0'] * 1000)}\nEND={int(b['t1'] * 1000)}\n")
+            f.write(f"START={round((max(b['t0'], start) - start) * 1000)}\n"
+                    f"END={round((min(b['t1'], end) - start) * 1000)}\n")
             f.write("title=" + esc.sub(r"\\\1", b["name"]) + "\n")
 
 
@@ -1104,7 +1114,7 @@ def encode(renderer, out, ffmpeg, crf, preset, span=None):
     os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
     with tempfile.TemporaryDirectory() as tmp:
         meta = os.path.join(tmp, "chapters.txt")
-        write_chapters(meta)
+        write_chapters(meta, span)
         cmd = [ffmpeg, "-v", "error", "-y",
                "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
                "-f", "ffmetadata", "-i", meta,
@@ -1148,8 +1158,15 @@ def main(argv=None):
     if bad:
         sys.exit("table problems:\n  " + "\n  ".join(bad))
     W, H = (int(v) for v in args.size.lower().split("x"))
-    if abs(W / H - 16 / 9) > 0.01:
+    if min(W, H) <= 0 or W % 2 or H % 2 or abs(W / H - 16 / 9) > 0.01:
         sys.exit("--size must be 16:9")
+    span = tuple(float(v) for v in args.span.split(",")) if args.span else None
+    if span and (len(span) != 2 or not 0 <= span[0] < span[1] <= DURATION):
+        ap.error(f"--span must satisfy 0 <= T0 < T1 <= {DURATION:g}")
+    if span:
+        span = tuple(round(v * FPS) / FPS for v in span)
+        if span[0] == span[1]:
+            ap.error("--span must contain at least one video frame")
     ffmpeg = None if args.check else find_ffmpeg(args.ffmpeg)
     r = Renderer((W, H), ffmpeg)            # also lays out every card and subtitle (raises if one overflows)
     if args.check:
@@ -1164,8 +1181,7 @@ def main(argv=None):
             print(path)
         r.close()
         return
-    write_srt(args.srt, r)
-    span = tuple(float(v) for v in args.span.split(",")) if args.span else None
+    write_srt(args.srt, r, span)
     encode(r, args.out, ffmpeg, args.crf, args.preset, span)
     print(f"wrote {args.out} ({os.path.getsize(args.out) / 1e6:.1f} MB) and {args.srt}")
 
