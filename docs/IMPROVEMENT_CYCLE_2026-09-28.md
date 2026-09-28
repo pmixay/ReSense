@@ -85,3 +85,14 @@ been merged or included in this score. Its onset rule and this continuation rule
 may complement each other; their joint recall/false-alarm behavior needs a new
 registered comparison. Weak low continuation must never be counted as fresh
 onset evidence when combining them.
+
+
+### Score reporting correction
+
+Keep **69/100 as the established earlier baseline assessment** and retain the
+independent **66/100** as a separate review. The initial checkpoint headline
+incorrectly implied that a different reviewer established a decrease from 69.
+There is no such paired measurement. The actual quality pair improves continuity
+and preserves the other enforced metrics. A same-reviewer comparison is being
+recorded before assigning any score change. No code or evidence is rolled back,
+and neither review is hidden or relabeled as an automated test result.

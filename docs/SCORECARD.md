@@ -3,8 +3,9 @@
 > **Purpose:** the independent judgements of ReSense against the eight criteria of spec §8: score
 > per criterion, the evidence behind it, the risks on the hidden data and the fastest points to gain.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, summary RU
-> **Latest independent checkpoint:** **66/100**, fresh-context GPT-6 Astra, numerically blind, measured candidate `ef1d8f5` (28 September evening). Development integration is supported; deployment acceptance remains provisional.
-> **Status:** latest checkpoint below; earlier sections are dated records. Scores use internal weights, not organizer-published weights.
+> **Established baseline rating:** **69/100**, the earlier lead assessment. The measured code improvement is raw rail STOP coverage 123 to 126/126 with no quality-gate regression.
+> **Separate independent review:** **66/100**, fresh-context GPT-6 Astra on candidate `ef1d8f5`. This is not a replacement measurement of the earlier 69 or evidence of a three-point code regression.
+> **Status:** a same-reviewer baseline/candidate comparison is pending. Scores are internal judgments; organizers publish no numerical weights. Deployment acceptance remains provisional.
 
 ## Checkpoint 1: 28 September evening
 
