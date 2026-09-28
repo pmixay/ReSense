@@ -1,0 +1,103 @@
+{
+ "doubleT_obstacle": {
+  "frames": 201,
+  "stop_frames": 190,
+  "caution_frames": 2,
+  "go_frames": 9,
+  "stop_episodes": [
+   [
+    8,
+    200,
+    55.5,
+    56.6
+   ]
+  ]
+ },
+ "roundT_doubleT": {
+  "frames": 252,
+  "stop_frames": 0,
+  "caution_frames": 173,
+  "go_frames": 79,
+  "stop_episodes": []
+ },
+ "doubleT_platform": {
+  "frames": 345,
+  "stop_frames": 3,
+  "caution_frames": 196,
+  "go_frames": 146,
+  "stop_episodes": [
+   [
+    33,
+    35,
+    31.3,
+    39.1
+   ]
+  ]
+ },
+ "roundT_pressureGate_roundT": {
+  "frames": 268,
+  "stop_frames": 2,
+  "caution_frames": 119,
+  "go_frames": 147,
+  "stop_episodes": [
+   [
+    139,
+    140,
+    53.3,
+    54.5
+   ]
+  ]
+ },
+ "roundT_squareT_pressureGate_squareT": {
+  "frames": 545,
+  "stop_frames": 0,
+  "caution_frames": 190,
+  "go_frames": 355,
+  "stop_episodes": []
+ },
+ "squareT_platform_squareT_switch": {
+  "frames": 877,
+  "stop_frames": 18,
+  "caution_frames": 443,
+  "go_frames": 416,
+  "stop_episodes": [
+   [
+    313,
+    313,
+    147.6,
+    147.6
+   ],
+   [
+    489,
+    490,
+    82.9,
+    82.9
+   ],
+   [
+    612,
+    613,
+    94.2,
+    94.4
+   ],
+   [
+    641,
+    645,
+    82.9,
+    147.5
+   ],
+   [
+    693,
+    700,
+    139.9,
+    145.8
+   ]
+  ]
+ },
+ "_five_empty": {
+  "frames": 2287,
+  "stop_frames": 23,
+  "caution_frames": 1121,
+  "go_frames": 1143,
+  "stop_episodes": 7
+ }
+}

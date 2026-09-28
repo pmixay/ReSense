@@ -50,11 +50,11 @@ preregistered acceptance checks and independent review. Remaining goals are:
 - Obtain the organizer's Q1 envelope-reference decision. Axis union remains off. The user has
   confirmed that no additional untouched real-obstacle recording is available; known-bag tests
   remain development validation.
-- Rejudge an accepted improvement against the quality criteria. The current provisional
-  independent aggregation is 64/100; the 75/100 target remains unmet.
+- Rejudge an accepted improvement against the quality criteria; the current judgement is in
+  [`SCORECARD.md`](SCORECARD.md).
 
 Public archive delivery, approved team information/photos, human rehearsals and the captain's personal
-submission remain on the [captain board](CAPTAIN.md#4-current-completion-and-remaining-actions).
+submission remain on the [captain board](CAPTAIN.md#3-work-to-do).
 
 ## Original priority and evidence, before this cycle
 
@@ -121,8 +121,8 @@ These are suggested engineering gates, not organizer promises or measured achiev
 - Original-bag cold/warm/bounded-load and stock DDS checks still pass; evaluate freshness in
   addition to compute latency and post-settle loss. Rejudge the resulting evidence independently.
 
-Final release publication remains on hold until the user authorizes it. A score of 75/100 is a
-quality target; completing this checklist does not predetermine independent judges' scores.
+Final release publication remains on hold until the user authorizes it. Completing this checklist
+does not predetermine independent judges' scores.
 
 ## Evidence
 
@@ -131,4 +131,4 @@ quality target; completing this checklist does not predetermine independent judg
 - [Loaded cold capture](evidence/freeze_2026-09-26/cold_load_final/status.jsonl.gz)
 - [Loaded cold node log](evidence/freeze_2026-09-26/cold_load_final/node.log.gz)
 - [Frozen organizer-object frame output](evidence/freeze_2026-09-26/gate_frames/cloud_with_fake_obj.jsonl.gz)
-- [Current independent scorecard](SCORECARD.md#freeze-review-26-september-night)
+- [Current independent scorecard](SCORECARD.md)

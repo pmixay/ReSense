@@ -160,7 +160,7 @@ frames, 13 km, no obstacles).
   figure, «3,5 на км» labelled in-sample on every slide, the slide 13 title qualified, ALGORITHM §4
   names its exceptions, the drop-criterion change disclosed next to the bench PASS, the stamps file
   of the through-ROS grade committed; the catch-up variants for CAPTAIN action 21 measured
-  (`catchup_max_lag:=20`: no scene resets cold, PASS warm). Final: 62.5 / 100.
+  (`catchup_max_lag:=20`: no scene resets cold, PASS warm).
 
 - **P1/P2 follow-through on the working branch (26.09):** the detector now grants a bounded
   20-second allowance only to the first backlog of a new recording, then returns to its normal
@@ -767,8 +767,8 @@ combined and their safety review, +28 the STOP keep and its cap, +3 P4's sustain
   141 / 28 / 33); defaults unchanged.
   [EXPERIMENTS §1e](docs/EXPERIMENTS.md).
 - **`194b3e7` (24.09): criteria judgement and documentation revision.** New
-  [`docs/SCORECARD.md`](docs/SCORECARD.md) (two independent judges, 60 / 100, judged at
-  `4b5786b`); one format for every team-written document (header block, RU summary, dated
+  [`docs/SCORECARD.md`](docs/SCORECARD.md) (two independent judges, judged at `4b5786b`; replaced
+  by the judgement of 28.09 evening); one format for every team-written document (header block, RU summary, dated
   numbers), [`docs/README.md`](docs/README.md) index, this changelog, `docs/archive/`,
   `docs/evidence/results/`; the separate review files removed (superseded by SCORECARD). Later on
   24.09: the train-speed and GPU studies (EXPERIMENTS §9,
@@ -895,11 +895,9 @@ matched frames 544 → **723** of 2 458, 45 of 72 cases, paired controls 0 (iden
 threshold at the edge of the held-out positives, the reference's gains resting on the organizers'
 placement frame while Q1 is open) are stated there.
 
-**Criteria judgement:** the independent reviews and remaining gaps are in
-[the scorecard](docs/SCORECARD.md). A fresh re-judgement of 28.09 (two new judges, the node input
-path of 28.09) gives judge A 72.5 and judge B 62.5, combined **66.5/100** (Speed 8/10); the 27.09
-quality cycle's third round, with other judges, gave 72 (round 2: 72, round 1: 67; 26.09: 64); the
-requested 75/100 combined is not met. P4's preregistered
+**Criteria judgement:** the current independent judgement (28.09 evening, `464f5bc`) and the
+remaining gaps are in [the scorecard](docs/SCORECARD.md); the earlier judgements are removed.
+P4's preregistered
 experiment (26.09) found the target in **45/72 cases and 544/2,458 visible frames** (27.09: 723),
 with zero paired-control matches. This tests
 synthetic combinations on seen backgrounds; it provides no real unseen-route recall result.

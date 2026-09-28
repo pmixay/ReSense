@@ -29,8 +29,8 @@ No Git tag, GitHub release or PR merge is part of this verification.
 
 This is separate from the failed combined M2/node original-bag experiment. Synthetic CI
 replay and successful packaging do not resolve the clear-bag false STOP, late edge detection,
-diagnostic range overclaims or weak generalization evidence. The internal combined score stays
-64/100; see [the quality report](../../../QUALITY_CYCLE_2026-09-26.md).
+diagnostic range overclaims or weak generalization evidence. See [the quality report](../../../QUALITY_CYCLE_2026-09-26.md) and the current judgement in
+[`SCORECARD.md`](../../../SCORECARD.md).
 
 ## Receipts
 

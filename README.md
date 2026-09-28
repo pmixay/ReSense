@@ -138,9 +138,9 @@ teams (23.09). Decision logic and thresholds: [`docs/ALGORITHM.md`](docs/ALGORIT
 | what is the estimated monitored range? | **`/resense/clear_distance`** (`std_msgs/Float32`) | sightline and trusted track-model range, capped at a detected obstacle, at an eligible unconfirmed/advisory cluster in the envelope (`health.clear_cap`, columns excluded) and at the predicted distance of a reported track it has just lost (`health.clear_cap_lost`); 0 on a fault. Objects that form no eligible cluster can remain inside this range |
 | everything else | `/resense/detections` (`vision_msgs/Detection3DArray`), `/resense/status` (JSON: every object with distance, lateral offset, size, confidence, kind; track model; health; mount calibration; timing; freshness) | |
 
-`clear_distance` does not establish that the track is empty. On the organizers' unquantized
-object recording it extends past an object with points in the rail envelope in 51 of 505
-object-frames (44 with `GO`; [SCORECARD §0.3](docs/SCORECARD.md#03-what-judge-a-measured)).
+`clear_distance` does not establish that the track is empty. On the organizers' object recording
+(offline, every frame) it extends past an object with points inside the envelope in 300 of the 605
+frames that hold one, 68 of them `GO` ([SCORECARD](docs/SCORECARD.md), judgement of 28.09).
 Read `STOP` and `nearest_distance` alongside health and warnings; `GO` is a detection result,
 not authorization to move a train.
 
@@ -354,7 +354,7 @@ lacks (4 in `doubleT_obstacle`, at +14.0 and +16.9 s) are not drops. The dated c
 start-up runs of 25–27.09 are in [`CHANGELOG.md`](CHANGELOG.md) "Dated status notes" and
 EXPERIMENTS §3a–§3d.
 
-**Clean-machine dry run** (part of the later deployment, [`docs/CAPTAIN.md`](docs/CAPTAIN.md) C7):
+**Clean-machine dry run** (part of the later deployment, [`docs/archive/CAPTAIN_board_2026-09-28.md`](docs/archive/CAPTAIN_board_2026-09-28.md) C7):
 a team machine that has never built the project, 8 cores for the latency and drop criteria (the
 organizers' i7 stand is not available before the upload), the original bags:
 
@@ -520,7 +520,7 @@ python3 docs/evidence/judge_outputs_2026-09-28/recompute.py            # the hea
 | input data format, sensor | [`docs/DATASET.md`](docs/DATASET.md), [`docs/SENSOR.md`](docs/SENSOR.md) (Hesai Pandar128) |
 | video | [`docs/video/resense_overview.mp4`](docs/video/resense_overview.mp4): the 2:50 overview (problem → idea → algorithm → demo → the organizers' objects → numbers → next), 1920×1080, no audio track, Russian subtitles burned in and as [`resense_overview.ru.srt`](docs/video/resense_overview.ru.srt), every number marked real / our synthetic / organizers' synthetic; built by `scripts/make_overview_video.py` from the clips, renders, UI captures and deck. Clips in [`docs/video/`](docs/video/): the jury chain in Docker with RViz (`docker_chain_rviz.mp4`, 69 s, v0.6.3: node, `ros2 bag play` as a normal user from another container, `/resense/decision`; sandbox, bag at 0.5×); the bag from the cab, offline renders, the dashboard replay (v0.6.2); the organizers' 2 × 2 m box from the cab on the moving train, STOP from 98 m (`fake_objects_cab.mp4`, 25.09); all silent; recipes in [`web/README.md`](web/README.md) |
 | presentation (slides 7–11 per the template) | [`docs/presentation/`](docs/presentation/) (`scripts/build_deck.py`; texts in [`docs/PRESENTATION.md`](docs/PRESENTATION.md)) |
-| submission | handled by the captain personally, with all its links ([`docs/CAPTAIN.md`](docs/CAPTAIN.md) C12) |
+| submission | handled by the captain personally, with all its links ([`docs/archive/CAPTAIN_board_2026-09-28.md`](docs/archive/CAPTAIN_board_2026-09-28.md) C12) |
 
 ## Team
 

@@ -66,5 +66,5 @@ the separate zero-alarm quality criterion.
 
 Final CI and branch cleanup status are recorded in [PR #12](https://github.com/pmixay/ReSense/pull/12).
 The earlier `d480b13` image receipt remains dated evidence and does not cover the merged node.
-The independent internal score remains **64/100**. Final detector acceptance and release remain
+The current criteria judgement is in [`SCORECARD.md`](SCORECARD.md). Final detector acceptance and release remain
 on hold; no merge into `main` or release publication is part of this task.

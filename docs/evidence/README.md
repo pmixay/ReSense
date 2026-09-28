@@ -4,14 +4,24 @@
 > [`EXPERIMENTS.md`](../EXPERIMENTS.md): the result summaries in `results/`, the logs, captures and
 > bench output of each run, and the recordings' original metadata.
 > **Audience:** team, jury · **Owner:** P1 (runs, timing), P4 (result summaries) · **Language:** EN
-> **Last verified:** 2026-09-28; the judge's per-frame outputs of the sealed detector and the node
-> input path added (each result remains the record of its own date) ·
+> **Last verified:** 2026-09-28 evening; the independent judgement of `464f5bc` added, the earlier
+> judge reports and P4's provisional scores removed (each result remains the record of its own
+> date) ·
 > **Status:** current
 
 Every file here is the record of one run and is not rewritten: a new run gets a new file or folder
 (`results/experiments_<what>.json`, `<run>_<date>/`). Day-1 results that later runs superseded are
 in [`../archive/results/`](../archive/results/). `extended_dataset_intake.json` (the ride's
 per-file speeds and intake events) stays in `docs/` because scripts read it.
+
+The [independent judgement of 28 September evening](judgement_2026-09-28/README.md) (commit
+`464f5bc`, the basis of [`../SCORECARD.md`](../SCORECARD.md)) holds 11 jury-chain captures with the
+judge's own listener, the offline per-frame outputs of the six recordings, set O and the whole
+ride, the real-person range test in five tunnels, and every script that produced and scored them.
+It replaces the earlier judgements: their reports (`results/rejudge_*.json`) and P4's provisional
+scores and review packets (`results/p4_provisional_score_*.json`, `results/p4_review_packet_*.json`)
+were removed on 28.09 (git history keeps them; `results/p4_p3d_artifacts_2026-09-26/manifest.json`
+still lists the P3d provisional score it hashed).
 
 The [28 September per-frame outputs of the sealed detector](judge_outputs_2026-09-28/README.md)
 (independent judge A, commit `806b6c4`, detector source equal to the seal) hold the offline runs
@@ -37,7 +47,6 @@ the earlier quota-blocked attempt without changing the detector baseline.
 - Per-frame outputs of this detector, made by an independent judge on 28.09 (the six recordings, set O offline and through the node, two ride segments, set F) and recounted with the gate's counting: [`judge_outputs_2026-09-28/`](judge_outputs_2026-09-28/README.md). The gate above replays the 1 cm frame cache; the raw recordings differ by a few frames (five empty 8 / 23 / 7 against 11 / 40 / 13 events / alarm frames / STOP episodes; the rail object 123 against 125 of 126).
 - The learned opinion's [cross-fitted ride measurement](results/quality_cycle_2026-09-27/opinion_crossfit_2x_margin.json) ([zero margin](results/quality_cycle_2026-09-27/opinion_crossfit_zero_margin.json)) and its fold training reports (`opinion_report_*.json`).
 - [Cycle record](../QUALITY_CYCLE_2026-09-27.md) with its raw material in [`results/quality_cycle_2026-09-27/`](results/quality_cycle_2026-09-27/): every screen (`screens/`, the review fixes `review_*.json`, the ablations `ablation_*.json`), final acceptance and history stress, the re-registered 72-case [plan](results/quality_cycle_2026-09-27/novel_plan.json) and [results](results/quality_cycle_2026-09-27/novel_results.json.gz), the review's [side-symmetry check](results/quality_cycle_2026-09-27/side_person_check.json), benchmarks.
-- Independent reviews: round 1 of the first version (`8b74cd0`) [both judges](results/rejudge_quality_cycle_2026-09-27_round1.json), round 2 of `65c5a5b` [both judges](results/rejudge_quality_cycle_2026-09-27_round2.json); synthesis in [SCORECARD](../SCORECARD.md).
 
 ## Freeze pass — 26 September night
 
@@ -46,7 +55,6 @@ the earlier quota-blocked attempt without changing the detector baseline.
 - [Fixed 72-case plan](results/p4_novel_plan_2026-09-26.json), [results](results/p4_novel_results_2026-09-26.json) and [source fixture](results/p4_novel_source_2026-09-26/README.md).
 - [All 45 ride events and scene review](results/p4_ride_scenes_2026-09-26/README.md).
 - [Presentation output/source hashes](presentation_2026-09-26/manifest.json).
-- Independent reviews: [A](results/rejudge_freeze_2026-09-26.json), [B](results/rejudge_freeze_b_2026-09-26.json); synthesis in [SCORECARD](../SCORECARD.md#freeze-review-26-september-night).
 
 ## 1. `results/`: raw summaries of the experiments
 
@@ -70,12 +78,10 @@ One JSON per experiment, each with a `note`, `_meta` or `source` block that name
 | [`p4_p3d_false_alarm_inventory_2026-09-26.json`](results/p4_p3d_false_alarm_inventory_2026-09-26.json) | 26.09 | P3d detector `fa18832` | P3d gate JSONL, compared frame by frame with P3c for six original recordings | event intervals, distances, detector reasons and explicitly uncertain causes; P3d false-alarm totals match the P3c inventory |
 | [`p4_p3d_seto_raw_cache_comparison_2026-09-26.json`](results/p4_p3d_seto_raw_cache_comparison_2026-09-26.json) | 26.09 | P3d detector `fa18832` | raw-bag and cached-frame runs with equal frame order and stamps | raw/cache scores differ under 5 mm int16 quantization; cache is the frozen gate reference |
 | [`p4_p3d_setS_paired_2026-09-26.json`](results/p4_p3d_setS_paired_2026-09-26.json) | 26.09 | P3d detector `fa18832` | paired `resense inject`/`eval`, bed and legacy placement on the same 108 sampled objects | bed 22/67 vs legacy 30/68; eight legacy-only and no bed-only hits among 65 shared-visible objects; trajectories match P3c and P3d runs |
-| [`p4_provisional_score_p3d_2026-09-26.json`](results/p4_provisional_score_p3d_2026-09-26.json), [`p4_review_packet_p3d_2026-09-26.json`](results/p4_review_packet_p3d_2026-09-26.json) | 26.09 | P3d current reference; internal rubric maxima | criterion-by-criterion provisional assessment and compact independent review packet | 67/100 provisional internal assessment; independent 65/100 is preserved on its original commit; inherited P3d gain is not credited to P4 |
 | [`p4_completion_checklist_p3d_2026-09-26.json`](results/p4_completion_checklist_p3d_2026-09-26.json) | 26.09 | P4 P3d available-data work | completed, rejected, incomplete and external-dependency checklist | all available-cache work is recorded; ride and set F acceptance remain open because current storage needs at least 5.3 GB additional free space |
 | [`p4_validation_p3d_2026-09-26.json`](results/p4_validation_p3d_2026-09-26.json) | 26.09 | P3d detector `fa18832`, P4 branch | required test, lint, parameter, browser, dashboard, evidence-integrity, link and strict-gate checks | available software checks pass; one ride-dependent test is deselected and the full gate has 18 missing ride/set F rows because the ride cache is unavailable |
 | [`p4_seto_raw_cache_comparison_2026-09-26.json`](results/p4_seto_raw_cache_comparison_2026-09-26.json) | 26.09 | frozen detector `dcf7f90`, default config | `resense run --bag` and `resense run --npy`, each scored with `scripts/score_fake_objects.py` | cache vs float raw bag differ under the same timestamps/config due to 5 mm int16 quantization; cache remains gate reference |
 | [`p4_setS_paired_2026-09-26.json`](results/p4_setS_paired_2026-09-26.json) | 26.09 | frozen detector `dcf7f90` | paired `resense inject` bed/legacy runs, seed 1, same 108 object samples and placement-only GT difference | bed 22/67 vs legacy 30/68; eight legacy-only among 65 objects visible in both; one extra trolley cause unisolated |
-| [`p4_provisional_score_2026-09-26.json`](results/p4_provisional_score_2026-09-26.json), [`p4_review_packet_2026-09-26.json`](results/p4_review_packet_2026-09-26.json) | 26.09 | current P4 branch evidence; explicitly provisional | eight repository rubric maxima applied to current evidence; independent 65/100 history preserved | 66.5/100 provisional internal assessment with limitations and re-review steps; not an organizer-published weight set or independent score |
 | [`p4_validation_2026-09-26.json`](results/p4_validation_2026-09-26.json) | 26.09 | frozen detector `dcf7f90`, docs/evidence P4 branch | required pytest, pinned Ruff, parameter sync, browser-backed web tests and dashboard replay, JSON/artifact integrity, diff check, strict gate | software checks pass; one ride-dependent test is deselected and the strict full gate reports 18 missing ride/set F rows because the ride cache is unavailable |
 | [`regression_baseline_2026-09-26_ride_p3c.json`](results/regression_baseline_2026-09-26_ride_p3c.json), [`regression_gate_2026-09-26_p3_integrated.json`](results/regression_gate_2026-09-26_p3_integrated.json) | 26.09 | `ed03bc2` (`wf14/integrate-p3`: the P3 items of 26.09 merged on `00143b0` with the fixes of their safety review; `gauge.axis_union` off), native path, config sha256 `7d32ed81…` | `scripts/regression_gate.py --cache /data/cache --jobs 1 --baseline results/regression_baseline_2026-09-25_ride_p3b.json` (six recordings, `cloud_with_fake_obj`, the ride in 8 pieces, set F straight; 857 s); P4 re-played all 1 510 set O frames and added each inside object's missed intervals after verifying every existing set O metric matched exactly | the current gate baseline: five bags 58 / 13 / 16, ride 183 / 45 / 38, `doubleT_obstacle` 186 of 246 from frame 11, set O 355 of 801 inside STOP frames, 8 of 8 objects with a STOP, set F straight person 151.0 m, false detections 26; P3 gate PASS against `_ride_p3b`, 7 gated rows better, none worse; P4 adds sustained-distance, distance-bin and missed-interval protections; EXPERIMENTS "Current results", §1n; P4_AUDIT; EVALUATION §3 step 6 |
 | [`p3_integration_2026-09-26.json`](results/p3_integration_2026-09-26.json) | 26.09 | `dd9d827`, `a88e6e9`, `e2a5327` (the three merges), `ed03bc2` (the safety review's fixes); native path | the merges and their conflicts; the interaction of the rules (code reading, `tests/test_near_escalation.py`, the ray-cast #6 shape with the union and the wall keep); the full gate on `a88e6e9` and on `ed03bc2`; set O replays with `gauge.axis_union` 1 (`scripts/eval_real.py --bags cloud_with_fake_obj --jobs 1`, scored with the gate's `set_o_entry`); `python -m resense.cli run --npy /data/cache/new_data --start 2818 --limit 40` (the rail-start finding); `scripts/output_fingerprint.py --jobs 1` with every new flag off against `bd67fb0` | the combination of 26.09: rail start (with the 0.06 m reference of the review), near escalation A and wall keep D on, the union off (blocked by the safety review); gate PASS, exactly the sum of the items' own gates; the union on top would add set O #4 2 → 9 STOP frames (not shipped); flags off identical to `bd67fb0`; 555 tests on both paths; EXPERIMENTS §1n |

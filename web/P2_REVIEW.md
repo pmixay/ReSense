@@ -24,7 +24,7 @@ preserved. The P2 instructions and freshness limitations are in `web/README.md`.
 
 ## 28.09 evening: fixes after the fresh re-judgement
 
-Two independent judges re-scored the branch on 28.09 ([`rejudge_2026-09-28.json`](../docs/evidence/results/rejudge_2026-09-28.json)).
+Two independent judges re-scored the branch on 28.09 (their report is superseded by [`SCORECARD.md`](../docs/SCORECARD.md) and removed).
 Every finding about the deck, the video and `docs/PRESENTATION.md` is fixed in the sources
 (`scripts/build_deck.py`, `scripts/make_overview_video.py`, the `.srt`, `docs/PRESENTATION.md`):
 
@@ -112,4 +112,4 @@ The remaining device import, human rehearsals, private information and physical 
 be honestly marked complete from this checkout: `/data/for_hackathon`, the ignored private folder,
 and a second physical viewing device are absent. The existing CI's two-container protocol check
 is not a visual Foxglove import. Optional narration was not supplied. The internal independent
-scorecard's 72/100 is not an organizer score and is not changed by this presentation work.
+scorecard ([`../docs/SCORECARD.md`](../docs/SCORECARD.md)) is not an organizer score.

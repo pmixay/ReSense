@@ -1,0 +1,6 @@
+pytest on the judged commit 464f5bc (RESENSE_REQUIRE_SYNTHETIC=1, Python 3.11, 4 vCPU, run while the image built):
+753 passed, 1 deselected, 6 subtests passed in 167.63s (0:02:47)
+deselected: tests/test_rail_start.py::test_finding_rail_heads_ahead_of_a_standing_fresh_start_do_not_stop (no /data/cache/new_data)
+ruff check .: All checks passed!
+scripts/sync_params.sh --check: parameter files in sync
+scripts/detector_freeze.py verify: PASS, 31 files, source 298da6cc4fcbea98e002a94e1fe616d9c139db0f413e5c016745a97aee1fe66f

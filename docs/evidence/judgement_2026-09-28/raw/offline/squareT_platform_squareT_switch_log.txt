@@ -1,0 +1,1 @@
+processed 877 frames in 185.5 s (4.7 fps incl. I/O)

@@ -1,0 +1,2 @@
+resense 1.0.0 /usr/local/lib/python3.10/dist-packages/resense/__init__.py native (_resense_native.cpython-310-x86_64-linux-gnu.so)
+build wall time 79 s (base image pre-pulled from mirror.gcr.io); exit 0; image resense:latest 2.08 GB on disk, 476 MB content; CMD [ros2 launch resense_ros detector.launch.py freshness_mode:=replay]

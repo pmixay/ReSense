@@ -9,7 +9,7 @@
 
 **Кратко.** Заморозка детектора подтверждена полным прогоном: все 183 значения эталона совпали,
 включая поездку и набор F. Исправленная ROS-нода проходит холодный и тёплый запуск исходного бэга;
-детектор не менялся. Цель 75/100 пока не подтверждена: краевые объекты обнаруживаются лишь с
+детектор не менялся. Оценка по критериям — [SCORECARD](SCORECARD.md); краевые объекты обнаруживаются лишь с
 5–10 м, а новый синтетический эксперимент выявляет много пропусков. Текущая переоценка:
 [SCORECARD](SCORECARD.md#freeze-review-26-september-night).
 
@@ -232,9 +232,9 @@ same 18 missing ride/set F rows. B is not accepted, and preregistered candidate-
 checks were not run. The pair of 108 set S samples remains 22/67 bed versus 30/68 legacy, with
 eight legacy-only and zero bed-only hits among 65 shared-visible objects.
 
-P4's internal score at the time was **67/100 provisional** (superseded: the judgement of record is
-[`SCORECARD.md`](SCORECARD.md) §0, 62.5 / 100), with the 0.5-point Works increase attributed
-to inherited P3d and no P4 detector credit. The independent 65/100 remains on its original commit.
+P4's internal assessment of that time is superseded by the judgement of record,
+[`SCORECARD.md`](SCORECARD.md) (28.09 evening); the inherited P3d gain was attributed to upstream
+detector work, with no P4 detector credit.
 At the latest capacity check, at least 5.3 GB more free disk is needed while preserving the 3 GiB
 reserve before streaming `new_data`. The full gate result, cache/raw comparison, candidate decisions,
 paired set S evidence and completion checklist are linked from

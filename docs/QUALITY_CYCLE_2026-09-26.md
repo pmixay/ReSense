@@ -99,7 +99,7 @@ dashboard UTC clocks must be synchronized. These mechanisms are not a braking sa
 | Independent generalization evidence | The user confirmed no additional untouched real-positive recording. Seen synthetic combinations do not replace one. |
 | Envelope-reference decision | Organizer Q1, rails versus sensor axis, remains unanswered. Axis union stays off. |
 | Final presentation identity | The supplied names/nicks/school and four individual portraits are in a local private preview. City, team-formation details, group photo and contact details remain pending. |
-| At least 75/100 | Current independent reviews score 65.5 and 63.5; the unchanged per-criterion aggregation gives 64/100. Rejected candidates receive no improvement credit. |
+| At least 75/100 | Not met at the time; the reviews of that day are superseded by [`SCORECARD.md`](SCORECARD.md) (28.09 evening). Rejected candidates receive no improvement credit. |
 | Final freeze and release | Quality goals remain open; release is explicitly prohibited by the user. |
 
 ## Evidence index
