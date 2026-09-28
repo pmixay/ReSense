@@ -1,0 +1,46 @@
+{
+  "mode": "historical_geometry_conditional_corridor",
+  "production_changed": false,
+  "STOP_gain_demonstrated": false,
+  "cases": {
+    "big_above": {
+      "frames": 34,
+      "source_match_ambiguities": 0,
+      "frames_with_source_background_mixed_voxels": 0,
+      "frames_with_refinement_source_voxel_gain": 8,
+      "frames_with_source_background_edges_above_linear_bound": 0,
+      "frames_with_reduced_connected_background": 0
+    },
+    "small_center": {
+      "frames": 39,
+      "source_match_ambiguities": 0,
+      "frames_with_source_background_mixed_voxels": 0,
+      "frames_with_refinement_source_voxel_gain": 3,
+      "frames_with_source_background_edges_above_linear_bound": 4,
+      "frames_with_reduced_connected_background": 4
+    },
+    "small_on_rail": {
+      "frames": 37,
+      "source_match_ambiguities": 0,
+      "frames_with_source_background_mixed_voxels": 0,
+      "frames_with_refinement_source_voxel_gain": 4,
+      "frames_with_source_background_edges_above_linear_bound": 16,
+      "frames_with_reduced_connected_background": 3
+    },
+    "thin_hanging": {
+      "frames": 28,
+      "source_match_ambiguities": 0,
+      "frames_with_source_background_mixed_voxels": 0,
+      "frames_with_refinement_source_voxel_gain": 0,
+      "frames_with_source_background_edges_above_linear_bound": 0,
+      "frames_with_reduced_connected_background": 0
+    }
+  },
+  "native_parity": {
+    "frames": 39,
+    "rows_identical": true,
+    "numpy_mode": "numpy (native kernels not built)",
+    "native_mode": "native (_resense_native.so)",
+    "native_library_sha256": "b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534"
+  }
+}
