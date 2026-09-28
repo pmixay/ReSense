@@ -5,6 +5,8 @@
 .github
 docs
 web
+gitbook
+_site
 out
 data
 dist

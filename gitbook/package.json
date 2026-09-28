@@ -1,0 +1,12 @@
+{
+  "name": "resense-book",
+  "private": true,
+  "description": "The ReSense GitBook (built with HonKit, deployed to GitHub Pages by .github/workflows/pages.yml)",
+  "scripts": {
+    "serve": "honkit serve",
+    "build": "honkit build . ../_site"
+  },
+  "devDependencies": {
+    "honkit": "6.2.2"
+  }
+}
