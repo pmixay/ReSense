@@ -159,11 +159,15 @@ outputs of the sealed detector on the raw recordings with a recompute script,
 [`docs/evidence/judge_outputs_2026-09-28/`](docs/evidence/judge_outputs_2026-09-28/README.md); the
 node's timing, [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) §3d and
 [`docs/evidence/node_input_2026-09-28/`](docs/evidence/node_input_2026-09-28/README.md). The
-complete P4 frame-cache replay of the frozen detector passes all 208 enforced comparisons; its
+complete P4 frame-cache replay of the frozen detector passes all 146 enforced comparisons
+(208 unchanged rows including 62 informational rows); its
 per-object, stress, placement and intake records are in
 [`docs/evidence/results/p4_full_data_2026-09-28/`](docs/evidence/results/p4_full_data_2026-09-28/README.md).
 The table below keeps the raw-recording figures where they differ from cache replay, and marks
 both sources.
+
+Current internal assessment: **69/100** on `20e8229`, unchanged after the latest fixture and
+rejected continuity experiment. [Review by criterion and fresh checks](docs/CURRENT_REVIEW_2026-09-28.md).
 
 | metric | value | kind |
 |---|---|---|

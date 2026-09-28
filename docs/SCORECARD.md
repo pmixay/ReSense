@@ -3,8 +3,25 @@
 > **Purpose:** the independent judgements of ReSense against the eight criteria of spec §8: score
 > per criterion, the evidence behind it, the risks on the hidden data and the fastest points to gain.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, summary RU
-> **Latest single-review estimate:** **69/100** on `a2f9122` (28.09, user-supplied independent model review; below). The latest paired judgement remains **66.5/100** on `806b6c4`; 27.09 rounds 1–3 follow.
+> **Latest reassessment:** **69/100** on `20e8229` (28.09, current-source review with fresh raw replay; unchanged after the additional work). The earlier single review was **69/100** on `a2f9122`; the latest paired judgement remains **66.5/100** on `806b6c4`.
 > **Status:** current review below; earlier numbered sections are dated records.
+
+## Current branch reassessment: 28 September (`20e8229`)
+
+**69/100, unchanged.** The two development commits after the previous review add a synthetic fixture and a
+rejected continuity experiment. Production detector, settings, launch code and pitch artifacts
+are unchanged. Fresh replay of the original obstacle recording reproduces 61/61 person frames,
+123/126 rail-object frames and the gaps at frames 111, 117 and 197. `hold_misses=2` fixes those
+gaps but worsens ride and synthetic false alarms, so it remains rejected.
+
+| Functionality /25 | Range /15 | Speed /10 | Generalization /15 | Technical quality /10 | Launch /10 | Approach /10 | Pitch /5 | Total /100 |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 16 | 7.5 | 8 | 8 | 8 | 8.5 | 9 | 4 | **69** |
+
+See the [current project review](CURRENT_REVIEW_2026-09-28.md) for exploration, criterion reasons,
+fresh verification, evidence limitations and next priorities. This is an internal assessment by
+the lead reviewer with specialist support after reading prior scores, not a new blinded paired
+judgement or an organizer score. Historical reviews below retain their original scope.
 
 ## Fresh re-judgement: 28 September (head `806b6c4`, the node input path of 28.09)
 
@@ -31,8 +48,9 @@ from a change in the detector.
 | **Total** |**100**|**72.5**|**62.5**|**66.5**|72|
 
 **P4 data refresh (28 September): no detector score change.** The frozen detector was replayed
-against all available organizer caches; the strict gate passed with 208/208 enforced values
-unchanged, and all three registered P4 candidates failed their target screen. This adds
+against all available organizer caches; the strict gate passed with all 146 enforced values
+unchanged (208 unchanged rows including 62 informational rows), and all three registered P4
+candidates failed their target screen. This adds
 reproducibility evidence but no measured detector improvement. The P4 packet's carry-forward
 assessment was 66.5/100; it did not include the later single-review update below.
 
@@ -63,7 +81,7 @@ A/B/C changed no scored detector output. The reviewer cites those findings in
 [`judge_outputs_2026-09-28`](evidence/judge_outputs_2026-09-28/README.md) and
 [`p4_full_data_2026-09-28`](evidence/results/p4_full_data_2026-09-28/README.md).
 
-Carry 69/100 as the current single-review internal estimate. Keep the paired 66.5/100 result as a
+This review established the earlier 69/100 single-review internal estimate. Keep the paired 66.5/100 result as a
 separate historical comparison; do not average unlike review counts or describe either as an
 organizer-published score. No untouched real-obstacle recording is available, so performance on
 new obstacle scenes remains unverified.

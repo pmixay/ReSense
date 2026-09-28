@@ -23,7 +23,8 @@
 The six original recordings, organizer set O and all 221 splits of `new_data` were restored and
 validated. The [frozen-reference gate](evidence/results/p4_full_data_2026-09-28/regression_gate.json)
 and [final detector/config gate](evidence/results/p4_full_data_2026-09-28/final_regression_gate.json)
-both pass against the 27.09 quality baseline with 208 enforced values unchanged, no waivers and no
+both pass against the 27.09 quality baseline with all 146 enforced values unchanged
+(208 unchanged rows including 62 informational rows), no waivers and no
 missing or weaker metrics. The final replay used evaluator commit `1ee4572`, with unchanged
 detector and config hashes. The ride has 130 alarm frames, 32 track-ID events and 31 STOP episodes;
 the five empty recordings have 40 alarm frames, 11 events and 13 episodes. These event counts use

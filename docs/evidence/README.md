@@ -19,7 +19,12 @@ of all six original recordings, set O (offline and through the node), two ride s
 with their commands, logs and `recompute.py`, which recounts the headline figures with the gate's
 own counting: the only per-frame evidence of the 27.09 detector besides the node captures.
 
-The [single-review score record](results/single_review_2026-09-28.json) records the user's
+The [current branch reassessment](../CURRENT_REVIEW_2026-09-28.md) retains **69/100** on
+`20e8229` after the synthetic fixture and rejected continuity experiment. Its
+[verification records](current_review_2026-09-28/) include a fresh original-bag replay,
+recomputed output counts and the CI receipt. The scope and inherited checks are stated in the review.
+
+The earlier [single-review score record](results/single_review_2026-09-28.json) records the user's
 independent model review of `a2f9122`: 69/100, with launch and evidence categories increased and
 the detector categories unchanged. The earlier paired 66.5/100 result remains a separate
 historical assessment.
@@ -42,7 +47,8 @@ detector. It matches all 159 available gated comparisons against the 27.09 basel
 the ride and set F rows were missing because the cache had not yet been restored. It is superseded
 by the [complete P4 full-data packet](results/p4_full_data_2026-09-28/README.md), which includes
 all six recordings, set O, all 221 ride splits and set F/S paired runs; the strict final gate passes
-all 208 enforced metrics with no waivers. P4 candidates A/B/C remain rejected and no detector gain
+all 146 enforced metrics with no waivers (208 unchanged rows including 62 informational rows).
+P4 candidates A/B/C remain rejected and no detector gain
 or score increase is claimed.
 
 The [27 September supported playback rerun](p1_p2_supported_playback_2026-09-27/README.md)

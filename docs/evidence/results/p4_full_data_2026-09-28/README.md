@@ -12,14 +12,16 @@ hashes for every file in this packet.
 
 The full strict regression gate passed against
 [`regression_baseline_2026-09-27_quality.json`](../regression_baseline_2026-09-27_quality.json):
-**208 enforced metrics were unchanged**, with no missing, worse, better or waived rows. Sixteen
+**146 enforced metrics were unchanged**, with no missing, worse, better or waived gated rows.
+Another 62 informational rows were unchanged: the JSON's `same: 208` counts both groups. Sixteen
 informational latency values changed with the VM workload. The ride portion has 130 alarm frames,
 32 track-ID events and 31 STOP episodes over 11,271 frames. Five obstacle-free recordings have 40
 alarm frames, 11 events and 13 episodes over 229.776 recorded seconds. Track events, STOP episodes
 and alarm frames are distinct measures.
 
-The final detector/config replay also passed the same strict gate: **208 enforced metrics were
-unchanged**, with no missing, worse, better or waived rows. Sixteen latency rows changed and remain
+The final detector/config replay also passed the same strict gate: **146 enforced metrics were
+unchanged**, plus 62 informational rows, with no missing, worse, better or waived gated rows.
+Sixteen latency rows changed and remain
 informational. The final raw JSON is [`final_regression_gate.json`](final_regression_gate.json);
 the original [`regression_gate.json`](regression_gate.json) preserves the frozen-reference run.
 
@@ -66,7 +68,7 @@ point support. Repeated hits in an event are correlated observations. Set O's si
 frames are attributed to the outside organizer object by its labels.
 
 At the time this P4 packet was published, the latest paired score was **66.5/100** on `806b6c4`.
-The P4 carry-forward assigned zero detector points because the detector and all 208 gated values
+The P4 carry-forward assigned zero detector points because the detector and all 146 gated values
 were unchanged. A later single-review model assessment of `a2f9122` assigns **69/100**, crediting
 newer launch and evidence work; it does not claim a P4 detector gain. See the current
 [scorecard](../../../SCORECARD.md) for the distinction between the single-review estimate and the

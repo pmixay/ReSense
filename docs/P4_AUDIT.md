@@ -26,7 +26,8 @@ archive and frame caches stay outside Git.
 The frozen detector at `43a0e7d` was replayed with the default config against the independent
 27.09 baseline. The [reference gate](evidence/results/p4_full_data_2026-09-28/regression_gate.json)
 and [final detector/config gate](evidence/results/p4_full_data_2026-09-28/final_regression_gate.json)
-both pass with **208/208 enforced values unchanged**, no missing/worse/better rows, no waivers and
+both pass with **146/146 enforced values unchanged** (208 unchanged rows including 62
+informational rows), no missing/worse/better gated rows, no waivers and
 no unapproved regressions. The final detector/config gate ran at commit `1ee4572`, after P4
 evaluator/evidence updates; detector and config hashes match the reference. The eight ride chunks
 contain 130 alarm frames, 32 track events and 31
