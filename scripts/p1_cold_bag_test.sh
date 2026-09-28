@@ -4,7 +4,7 @@
 # file is preloaded; storage stalls remain real and the node still gets the original point clouds.
 # Requires Docker and runs on the working branch and main.
 # The two bags come from scripts/fetch_cold_bags.sh: DATASET_DIR=<dir> keeps them there (CI
-# restores that directory from its cache, job "dataset") and reuses them while their sha256 still
+# restores that directory from its cache, job "docker") and reuses them while their sha256 still
 # match scripts/cold_bags.sha256, so that Google Drive is asked for the 3.7 GB archive only when
 # they are absent. NO_DOWNLOAD=1 (CI): never download, fail when they are not there.
 set -euo pipefail

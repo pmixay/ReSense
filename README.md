@@ -351,7 +351,7 @@ not authorization to move a train.
 pip install -e ".[dev]"                   # numpy scipy scikit-learn pyyaml + rosbags matplotlib open3d pytest
                                           # + the optional C++ kernels (native/); scripts/build_native.sh without pip
 pytest -q                                 # "skipped" means open3d is missing (RESENSE_REQUIRE_SYNTHETIC=1 fails then, as in CI)
-pipx run ruff==0.15.8 check .             # lint, as the CI job "lint"
+pipx run ruff==0.15.8 check .             # lint, as the CI job "checks"
 
 # unpack the dataset (docs/DATASET.md), then:
 resense info  /data/for_hackathon/roundT_doubleT
@@ -509,13 +509,13 @@ CI runs the chain without the dataset on every push: 40-frame synthetic bags in 
 exact layout (clear, then a person at 60 m; both topic / frame pairs) played through the node in
 the image, also by a uid-1000 player from another container, the alarm asserted at 55–66 m, and by
 a uid-1000 player and listener with stock Fast DDS (shared memory on, checked in `/dev/shm`) that
-must hear `STOP`. The offline delivery is checked the same way: the built image goes through
-`docker save` → `docker rmi` → `docker load` (`export_image.sh`, `load_image.sh`), then the bags
-are played through the loaded image with `--network none` and on an internal Docker network with
-no way out. The `offline-build` job does the same with the jury's own image: the runtime archive,
-made as for the release, is loaded after every image was removed, rebuilt offline with Docker Hub
-blocked (every layer from the archive's cache), and both synthetic bags are played through the
-runtime image exactly as loaded, by a uid-1000 player on an internal network.
+must hear `STOP`; the in-image smoke test runs with `--network none` (loopback only). The
+offline delivery is checked with the jury's own image (job `offline-build`): the runtime archive,
+made as for the release, goes through `docker save` → `docker rmi` → `docker load`
+(`export_image.sh`, `load_image.sh`) after every image was removed, is rebuilt offline with Docker
+Hub blocked (every layer from the archive's cache), and both synthetic bags are played through the
+runtime image exactly as loaded, by a uid-1000 player on an internal Docker network with no way
+out.
 `IMAGE_TAR=<archive> OFFLINE=1 ./scripts/dry_run.sh <bag>` is the same on real bags. A pushed
 release tag (`v1.0.0-rcN`, `v1.0.0`) would run `.github/workflows/release.yml`: tests, the runtime
 archive built, removed and loaded back, both bags through the loaded image (internal network and

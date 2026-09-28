@@ -5,7 +5,7 @@
 #   scripts/fetch_cold_bags.sh <dir>          # verify; download and unpack only when they are not there
 #   NO_DOWNLOAD=1 scripts/fetch_cold_bags.sh <dir>   # verify only
 #
-# The bags are what CI caches (.github/workflows/ci.yml, job "dataset"): 6.7 GB on disk, about a
+# The bags are what CI caches (.github/workflows/ci.yml, job "docker"): 6.7 GB on disk, about a
 # third of the 3.7 GB archive after the cache's own zstd, and no unpacking on a cache hit. Google
 # Drive is asked for the archive only when the verified bags are absent, and the archive is deleted
 # once they are unpacked and verified.

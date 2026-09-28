@@ -7,7 +7,7 @@
 
 Everything the jury sees: the RViz layout the launch file loads, a Foxglove layout for remote
 demos, a browser dashboard that works live (rosbridge) and offline (replay of `results.jsonl`),
-the scripts that verify the dashboard headlessly (53 tests in `web/demo/`, CI job `web`), and the
+the scripts that verify the dashboard headlessly (53 tests in `web/demo/`, CI job `pytest`), and the
 video recipes.
 
 Current P2 fixes, verification and dependencies: [`P2_STATUS.md`](P2_STATUS.md).

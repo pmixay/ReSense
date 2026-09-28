@@ -16,6 +16,18 @@ frames, 13 km, no obstacles).
 
 ## Unreleased (further detector work authorized; package version 1.0.0)
 
+- **CI in two stages, four jobs (28.09):** a push ran seven `ci.yml` jobs, and a push to `main`
+  that touched the cold-bag pins also ran `dataset-cache.yml`. Now stage 1 `checks` (ruff, the
+  parameter copy, the detector seal: the former `lint` and `params-in-sync`) gates stage 2:
+  `pytest` (the suite plus the former `web` job's dashboard tests on the same install; the
+  zero-skip check now covers `web/demo` too), `docker` and `offline-build`. `docker` takes over the
+  former `dataset` job's cache restore / one-download seeding, and drops what `offline-build`
+  already proves on the jury's runtime archive (its own `docker save` / `rmi` / `load` round trip
+  and `--internal` network playback); its two in-image smoke tests are one, with
+  `--network none`. `dataset-cache.yml` keeps its schedule and manual run but no longer runs on a
+  push (it raced `ci.yml` for the one Google Drive download). Every action moved to its Node 24
+  release (`checkout@v7`, `setup-python@v7`, `cache/restore|save@v6`, `upload-artifact@v7`),
+  which ends the Node 20 deprecation warning on every job.
 - **Detector quality cycle of 27.09 (the user's four problems, ML allowed; sealed, reviewed):**
   five parallel experiments on one shared screen (`scripts/quality_screen.py`: the gate against P3d,
   the monitoring / overclaim diagnostics and the new processing-history stress
