@@ -1,20 +1,19 @@
 """The node's input path for large clouds (28.09): a ``PointCloud2`` read straight from its CDR
-bytes, then decoded with one record gather.
+bytes.
 
-Why. rclpy's conversion of a received ``PointCloud2`` into a Python message costs about 21 ms for a
-24 MB 360-degree cloud of the organizers' recordings (4-vCPU sandbox, 28.09): the executor pays it
-for every message it takes, before the node's callback runs, and again for every queued frame of
-a start-up burst that the catch-up then skips. The node subscribes with ``raw=True`` instead and
-:func:`parse_pointcloud2` reads the fields it needs from the serialized bytes; ``data`` stays a
-zero-copy view of them. :func:`decode` then does what ``resense.pointcloud.pointcloud2_to_arrays``
-does, but gathers the kept records once by index instead of masking every field (14 ms instead of
-20 ms per 360-degree cloud, 5 instead of 8 ms per 120-degree cloud).
+Why. rclpy's conversion of a received ``PointCloud2`` into a Python message costs 12.5 ms median
+and 32 ms p95 per 24 MB 360-degree cloud of the organizers' recordings on a 4-vCPU sandbox (7 / 30
+ms on a CI runner; 28.09): the executor pays it for every message it takes, before the node's
+callback runs, and again for every queued frame of a start-up burst that the catch-up then skips.
+The node subscribes with ``raw=True`` instead and :func:`parse_pointcloud2` reads the fields from
+the serialized bytes (0.1 ms); ``data`` stays a zero-copy view of them, which keeps the bytes
+object alive as long as the message is. The decode is unchanged
+(``resense.pointcloud.pointcloud2_to_arrays``), so the detector gets the same arrays: checked by
+``tests/test_fastcloud.py`` and, byte for byte on every frame of the original recordings, by
+``scripts/check_fast_input.py``. Bytes the parser rejects go through rclpy's conversion.
 
-Both return exactly what the reference path returns (``deserialize_message`` and
-``pointcloud2_to_arrays``): ``tests/test_fastcloud.py`` checks it on synthetic layouts and
-``scripts/check_fast_input.py`` on every frame of the original recordings, byte for byte. Any
-layout the fast path does not cover (big-endian data, other field types, a malformed buffer)
-falls back to the reference path, so the detector always sees the same input.
+:func:`packed` removes row padding (``row_step`` > ``width * point_step`` in an organized cloud),
+which the decode does not expect; the organizers' clouds have one row and no padding.
 """
 from __future__ import annotations
 
@@ -23,7 +22,6 @@ from types import SimpleNamespace
 
 import numpy as np
 
-from resense.pointcloud import pointcloud2_dtype, pointcloud2_to_arrays, pointcloud2_to_structured
 
 CDR_BE, CDR_LE = 0, 1          # the second byte of the encapsulation header (OMG CDR, plain)
 
@@ -114,42 +112,19 @@ def parse_pointcloud2(raw, make_header=_plain_header) -> SimpleNamespace:
                            data=data, is_dense=is_dense)
 
 
-def _fast_layout(msg) -> bool:
-    """The layout :func:`decode` gathers directly: little-endian, x / y / z float32, intensity
-    float32 and ring uint16 when present, one element each."""
-    if msg.is_bigendian:
-        return False
-    want = {"x": 7, "y": 7, "z": 7, "intensity": 7, "ring": 4}
-    seen = set()
-    for f in msg.fields:
-        if f.name in want:
-            if int(f.datatype) != want[f.name] or int(f.count) != 1:
-                return False
-            seen.add(f.name)
-    return {"x", "y", "z"} <= seen
-
-
-def decode(msg, min_range: float, max_range: float):
-    """``pointcloud2_to_arrays`` with one gather of the kept records: the same ``(xyz, intensity,
-    ring, n_finite, n_near)``, bit for bit (the same float32 operations in the same order)."""
-    if not _fast_layout(msg):
-        return pointcloud2_to_arrays(msg, min_range, max_range)
-    pointcloud2_dtype(msg)                       # the same validation of the field table
-    arr = pointcloud2_to_structured(msg)
-    x, y, z = arr["x"], arr["y"], arr["z"]
-    r2 = np.multiply(x, x, dtype=np.float32)     # = x.astype(float32) ** 2
-    t = np.multiply(y, y)
-    r2 += t
-    np.multiply(z, z, out=t)
-    r2 += t
-    finite = np.isfinite(r2) & (r2 > 0.0025)     # (0, 0, 0): no return in that slot
-    near = finite & (r2 < min_range * min_range)
-    ok = finite & ~near & (r2 <= max_range * max_range)
-    rec = arr.take(np.flatnonzero(ok))           # the kept records, contiguous
-    n = rec.shape[0]
-    xyz = np.empty((n, 3), dtype=np.float32)
-    xyz[:, 0], xyz[:, 1], xyz[:, 2] = rec["x"], rec["y"], rec["z"]
-    names = arr.dtype.names
-    inten = rec["intensity"].astype(np.float32) if "intensity" in names else np.zeros(n, np.float32)
-    ring = rec["ring"].astype(np.uint16) if "ring" in names else np.zeros(n, np.uint16)
-    return xyz, inten, ring, int(np.count_nonzero(finite)), int(np.count_nonzero(near))
+def packed(msg):
+    """``msg`` without row padding: an organized cloud (``height`` > 1) whose ``row_step`` is longer
+    than ``width * point_step`` gets its rows copied together (a new object, ``row_step`` set to
+    the packed length); anything else is returned as is. ``resense.pointcloud`` reads the payload
+    as ``width * height`` consecutive points, which is right only without padding."""
+    height, width, step = int(msg.height), int(msg.width), int(msg.point_step)
+    row = int(getattr(msg, "row_step", width * step) or width * step)
+    if height <= 1 or row <= width * step:
+        return msg
+    buf = np.frombuffer(memoryview(msg.data).cast("B"), np.uint8)
+    if buf.size < height * row:
+        return msg                   # truncated: let the decode report it
+    data = buf[:height * row].reshape(height, row)[:, :width * step].tobytes()
+    return SimpleNamespace(header=msg.header, height=height, width=width, fields=msg.fields,
+                           is_bigendian=msg.is_bigendian, point_step=step, row_step=width * step,
+                           data=data, is_dense=getattr(msg, "is_dense", False))

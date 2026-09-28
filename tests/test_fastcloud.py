@@ -1,6 +1,6 @@
 """The node's input path (``resense_ros/fastcloud.py``, 28.09): a ``PointCloud2`` read from its
-serialized bytes and decoded with one gather must give the detector exactly what rclpy's message
-and ``resense.pointcloud.pointcloud2_to_arrays`` give it. No ROS needed: the CDR bytes are made by
+serialized bytes must give the detector exactly what rclpy's message gives it through
+``resense.pointcloud.pointcloud2_to_arrays``. No ROS needed: the CDR bytes are made by
 the small encoder below, and one sample is the literal output of rclpy's ``serialize_message``
 (ROS 2 Humble, Fast DDS) for the message ``_golden_message`` describes. The original recordings
 are compared frame by frame by ``scripts/check_fast_input.py`` (in the image, CI job ``docker``).
@@ -44,24 +44,26 @@ def _cloud(points: dict, layout=ORGANIZERS, step=26, bigendian=False, stamp=(172
     return msg, _cdr(msg)
 
 
-def _cdr(msg, garbage_padding=False) -> bytes:
-    """Plain little-endian CDR of a PointCloud2 (an encoder independent of the parser)."""
-    out = bytearray(b"\x00\x01\x00\x00")
+def _cdr(msg, garbage_padding=False, big_endian=False) -> bytes:
+    """Plain CDR of a PointCloud2, little-endian unless ``big_endian`` (an encoder independent of
+    the parser)."""
+    out = bytearray(b"\x00\x00\x00\x00" if big_endian else b"\x00\x01\x00\x00")
+    e = ">" if big_endian else "<"
 
     def align(a):
         while (len(out) - 4) % a:
             out.append(0xA5 if garbage_padding else 0)
 
-    def u32(v, fmt="<I"):
+    def u32(v, fmt="I"):
         align(4)
-        out.extend(struct.pack(fmt, v))
+        out.extend(struct.pack(e + fmt, v))
 
     def string(s):
         b = s.encode() + b"\x00"
         u32(len(b))
         out.extend(b)
 
-    u32(msg.header.stamp.sec, "<i")
+    u32(msg.header.stamp.sec, "i")
     u32(msg.header.stamp.nanosec)
     string(msg.header.frame_id)
     u32(msg.height)
@@ -118,7 +120,7 @@ def test_parse_reads_rclpy_bytes():
         ("x", 0, 7, 1), ("y", 4, 7, 1), ("z", 8, 7, 1), ("intensity", 12, 7, 1), ("ring", 16, 4, 1)]
     pts = [struct.unpack_from("<ffffH", msg.data, 18 * i) for i in range(3)]
     assert pts == [(1.5, -2.0, 0.25, 12.0, 3), (0.0, 0.0, 0.0, 0.0, 0), (30.0, 4.0, -1.0, 99.0, 127)]
-    xyz, inten, ring, n_finite, n_near = fastcloud.decode(msg, 0.5, 250.0)
+    xyz, inten, ring, n_finite, n_near = pointcloud2_to_arrays(msg, 0.5, 250.0)
     assert xyz.tolist() == [[1.5, -2.0, 0.25], [30.0, 4.0, -1.0]] and n_finite == 2 and n_near == 0
     assert inten.tolist() == [12.0, 99.0] and ring.tolist() == [3, 127]
 
@@ -146,25 +148,41 @@ def test_malformed_bytes_are_rejected():
     (ORGANIZERS, 26),                                                                 # the recordings
     ((("x", 0, 7), ("y", 4, 7), ("z", 8, 7), ("intensity", 12, 7), ("ring", 16, 4)), 18),   # the node tests
     ((("x", 0, 7), ("y", 4, 7), ("z", 8, 7)), 16),                                     # no intensity, no ring
-    ((("x", 0, 7), ("y", 4, 7), ("z", 8, 7), ("intensity", 16, 7)), 32),               # padded record
+    ((("x", 0, 8), ("y", 8, 8), ("z", 16, 8), ("intensity", 24, 7)), 28),              # float64 coordinates
 ])
-def test_decode_is_the_reference_bit_for_bit(layout, step):
+@pytest.mark.parametrize("bigendian", [False, True])
+def test_the_detector_gets_the_same_arrays_from_the_bytes(layout, step, bigendian):
+    """The decode is unchanged (``pointcloud2_to_arrays``): what the node reads from the bytes gives
+    the arrays rclpy's message gives, bit for bit, for any layout and data endianness."""
     names = {n for n, _, _ in layout}
     pts = {k: v for k, v in _scan(np.random.default_rng(3), 20000).items() if k in names}
-    msg, raw = _cloud(pts, layout, step)
-    for m in (msg, fastcloud.parse_pointcloud2(raw)):
-        for rng_min, rng_max in ((2.5, 250.0), (0.5, 60.0)):
-            _same(fastcloud.decode(m, rng_min, rng_max), pointcloud2_to_arrays(msg, rng_min, rng_max))
+    msg, raw = _cloud(pts, layout, step, bigendian=bigendian)
+    parsed = fastcloud.parse_pointcloud2(raw)
+    for rng_min, rng_max in ((2.5, 250.0), (0.5, 60.0)):
+        _same(pointcloud2_to_arrays(fastcloud.packed(parsed), rng_min, rng_max),
+              pointcloud2_to_arrays(msg, rng_min, rng_max))
 
 
-@pytest.mark.parametrize("variant", ["bigendian", "float64_xyz", "uint8_ring"])
-def test_other_layouts_take_the_reference_path(variant):
-    pts = _scan(np.random.default_rng(4), 3000)
-    if variant == "bigendian":
-        msg, raw = _cloud(pts, bigendian=True)
-    elif variant == "float64_xyz":
-        msg, raw = _cloud(pts, (("x", 0, 8), ("y", 8, 8), ("z", 16, 8), ("intensity", 24, 7)), 28)
-    else:
-        msg, raw = _cloud(pts, (("x", 0, 7), ("y", 4, 7), ("z", 8, 7), ("ring", 12, 2)), 13)
-    assert not fastcloud._fast_layout(msg)
-    _same(fastcloud.decode(fastcloud.parse_pointcloud2(raw), 2.5, 250.0), pointcloud2_to_arrays(msg, 2.5, 250.0))
+def test_big_endian_encapsulation_is_read_too():
+    """CDR_BE (encapsulation 00 00): every count, offset and string length big-endian."""
+    msg, _ = _cloud(_scan(np.random.default_rng(5), 200))
+    got = fastcloud.parse_pointcloud2(_cdr(msg, big_endian=True))
+    assert (got.header.stamp.sec, got.header.stamp.nanosec, got.header.frame_id) == (1726650000, 123456789,
+                                                                                     "lidar_livox")
+    assert [(f.name, f.offset, f.datatype) for f in got.fields] == [(f.name, f.offset, f.datatype) for f in msg.fields]
+    assert (got.width, got.point_step) == (200, 26) and bytes(got.data) == msg.data
+
+
+def test_row_padding_is_removed_before_the_decode():
+    """An organized cloud (3 rows of 1000 points) with 40 bytes of padding after every row decodes
+    like the same points without padding; an unpadded or single-row cloud is left as it is."""
+    msg, _ = _cloud(_scan(np.random.default_rng(6), 3000))
+    rows = np.frombuffer(msg.data, np.uint8).reshape(3, 1000 * 26)
+    padded = SimpleNamespace(**{**vars(msg), "height": 3, "width": 1000, "row_step": 1000 * 26 + 40,
+                                "data": np.hstack([rows, np.full((3, 40), 0x7F, np.uint8)]).tobytes()})
+    unpacked = fastcloud.packed(padded)
+    assert unpacked.row_step == 26000 and bytes(unpacked.data) == msg.data
+    _same(pointcloud2_to_arrays(unpacked, 2.5, 250.0), pointcloud2_to_arrays(msg, 2.5, 250.0))
+    assert fastcloud.packed(msg) is msg
+    organized = SimpleNamespace(**{**vars(msg), "height": 3, "width": 1000, "row_step": 26000})
+    assert fastcloud.packed(organized) is organized

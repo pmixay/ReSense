@@ -111,11 +111,11 @@ Threads (25.09): ``OMP_NUM_THREADS`` / ``OPENBLAS_NUM_THREADS`` / ``MKL_NUM_THRE
 wins), as the image sets them.
 
 Input path (28.09, ``raw_input``, default true): the clouds are taken as serialized bytes and read
-by ``resense_ros.fastcloud`` (the fields the node uses, ``data`` as a view of the bytes) instead of
-rclpy's message conversion, about 21 ms per 24 MB 360-degree cloud on a 4-vCPU machine, paid for
-every queued frame of a start-up burst too. The decode gathers the kept points once. The detector
-gets the same arrays bit for bit (``scripts/check_fast_input.py`` on the original recordings);
-any layout the fast path does not cover goes through the reference conversion.
+by ``resense_ros.fastcloud`` (``data`` stays a view of the bytes) instead of rclpy's message
+conversion: 12.5 ms median, 32 ms p95 per 24 MB 360-degree cloud on a 4-vCPU sandbox, paid for
+every queued frame of a start-up burst too. The decode is unchanged, so the detector gets the same
+arrays bit for bit (``scripts/check_fast_input.py`` on the original recordings). Bytes the parser
+rejects go through rclpy's conversion; a message neither can read is logged and dropped.
 Publishing (28.09): the decision topics go out first; the RViz markers and the corridor cloud
 are built only while something subscribes to them. The ``node`` object also reports
 ``decode_ms`` and ``detect_ms`` of the frame, ``cpu_cores`` (the node process's CPU time per
@@ -150,6 +150,7 @@ from resense import __version__ as RESENSE_VERSION, _native
 from resense.config import DetectorConfig
 from resense.detector import Detector, FrameResult
 from resense.frame import Frame, axis_matrix
+from resense.pointcloud import pointcloud2_to_arrays
 
 from resense_ros import fastcloud
 
@@ -238,7 +239,7 @@ class DetectorNode(Node):
         # of the organizers' recordings), best-effort when one is not (a sensor-data driver)
         self.declare_parameter("input_reliability", "auto")   # auto | reliable | best_effort
         # --- 28.09: take the clouds as serialized bytes and read them with resense_ros.fastcloud
-        # (rclpy's message conversion costs ~21 ms per 24 MB cloud); false = rclpy's messages
+        # (rclpy's conversion: 12.5 ms median, 32 ms p95 per 24 MB cloud); false = rclpy's messages
         self.declare_parameter("raw_input", True)
 
         cfg_file = self.get_parameter("config_file").get_parameter_value().string_value
@@ -448,7 +449,9 @@ class DetectorNode(Node):
 
     def as_cloud(self, msg):
         """The cloud the node processes: a raw subscription's bytes read by ``fastcloud``
-        (rclpy's own conversion if they are not a plain-CDR PointCloud2), anything else as is."""
+        (rclpy's own conversion if they are not a plain-CDR PointCloud2), anything else as is.
+        None for bytes neither can read: the frame is dropped (logged), the node keeps running
+        and the watchdog reports the silence."""
         if not isinstance(msg, (bytes, bytearray, memoryview)):
             return msg
         try:
@@ -457,8 +460,12 @@ class DetectorNode(Node):
             self.raw_fallbacks += 1
             if self.raw_fallbacks == 1:
                 self.get_logger().warn(f"input cloud not read from its bytes ({e}); using rclpy's conversion")
+        try:
             from rclpy.serialization import deserialize_message
             return deserialize_message(bytes(msg), PointCloud2)
+        except Exception as e:  # noqa: BLE001 - an unreadable message must not take the node down
+            self.get_logger().error(f"input cloud dropped: neither read from its bytes nor converted ({e!r})")
+            return None
 
     def on_match_qos(self) -> None:
         """(input_reliability auto) Re-create a subscription whose reliability differs from its
@@ -678,6 +685,8 @@ class DetectorNode(Node):
         """Input callback: the frame joins the ones already waiting behind it, then the next one
         is processed (``catchup_step``)."""
         msg = self.as_cloud(msg)
+        if msg is None:
+            return
         self.remember_arrival(msg, info)
         self.pending.append((topic, msg))
         self.take_waiting(topic)
@@ -703,6 +712,8 @@ class DetectorNode(Node):
                 if got is None:
                     return
                 cloud = self.as_cloud(got[0])
+                if cloud is None:
+                    continue
                 self.remember_arrival(cloud, got[1])
                 self.pending.append((topic, cloud))
                 if len(self.pending) > 2:
@@ -808,8 +819,8 @@ class DetectorNode(Node):
         self.begin_freshness(msg, t0)
         self.last_frame_wall = t0
         try:
-            xyz_s, inten, ring, n_raw, n_near = fastcloud.decode(
-                msg, self.cfg.sensor.min_range, self.cfg.sensor.max_range)
+            xyz_s, inten, ring, n_raw, n_near = pointcloud2_to_arrays(
+                fastcloud.packed(msg), self.cfg.sensor.min_range, self.cfg.sensor.max_range)
             xyz_v = xyz_s @ self.R_vs.T.astype(np.float32)
             stamp = msg.header.stamp.sec + msg.header.stamp.nanosec * 1e-9
             frame = Frame(xyz=xyz_v, intensity=inten, ring=ring, stamp=stamp, frame_id=msg.header.frame_id,

@@ -259,16 +259,17 @@ numpy path; the optional native kernels (next section) roughly halve it.
 
 **The node's own path and the end to end, 28.09** ([evidence](evidence/node_input_2026-09-28/README.md),
 EXPERIMENTS §3d). Per 360° frame the node used to pay rclpy's conversion of the 24 MB message into
-Python (12.5 ms median, 32 ms p95, before the callback; again for every queued frame that the
-start-up catch-up then skips), a masked decode (19 ms) and the RViz markers and corridor cloud
+Python (12.5 ms median, 32 ms p95 on a 4-vCPU sandbox, before the callback; again for every
+queued frame that the start-up catch-up then skips) and the RViz markers and corridor cloud
 (~8 ms, built whether anyone watched or not). It now takes the serialized bytes and reads them
-itself (`resense_ros/fastcloud.py`, 0.1 ms; the detector's input byte-identical on every frame
-of both original recordings), gathers the kept points once, publishes the decision first and
-builds the visualisation only for subscribers. Through ROS (4 vCPU, 2.1 GHz, the recording
-cached, two runs): the input's publication by the player → the result, p95 **93–97 ms** at 360°
-(120–127 before; 114 ms from a cold disk) and **57–61 ms** at 120° (68–76); decode 19 / 8 ms and detection 33 / 28 ms
-median; the node process at 0.72 / 0.46 cores, peak RSS 408–476 / 128 MB. The status `node` object
-reports `decode_ms`, `detect_ms`, `cpu_cores` and `rss_peak_mb` on every frame, and
+itself (`resense_ros/fastcloud.py`, 0.1 ms; the detector's input byte-identical on every frame of
+both original recordings), publishes the decision first and builds the visualisation only for
+subscribers; the decode (19 / 8 ms median at 360° / 120°) and the detector (33 / 28 ms) are
+unchanged. End to end through ROS (the input's publication by the player → the result), p95 at
+360° on the sandbox: 113 → 102 ms with the recording cached and 137 → 118 ms from a cold disk
+(an independent judge's 5 alternating pairs), not reliably under the 100 ms period there; on a
+CI runner, cold, 60 ms at 360° and 37 ms at 120°. The node process uses 0.4–0.8 cores. The status
+`node` object reports `decode_ms`, `detect_ms`, `cpu_cores` and `rss_peak_mb` on every frame, and
 `scripts/check_dry_run.py` prints the end-to-end figures of any capture.
 
 ## Native kernels (optional, C++; 24.09)

@@ -10,14 +10,18 @@
 
 **28.09, P1 lane (8.3 speed on the node side, CI, Docker, docs):** the node reads its input clouds
 from their serialized bytes (`resense_ros/fastcloud.py`; the detector's input byte-identical on all
-453 frames of both original recordings), decodes with one gather, publishes the decision first and
-builds the visualisation only for subscribers. End to end through ROS (player publication →
-result) p95 120–127 → 93–97 ms at 360° and 68–76 → 57–61 ms at 120° on a 4-vCPU sandbox; the node
-reports `decode_ms`, `detect_ms`, `cpu_cores` and `rss_peak_mb`; `play_bag.sh` waits for readiness;
+453 frames of both original recordings), publishes the decision first and builds the visualisation
+only for subscribers. End to end through ROS (player publication → result), p95 at 360° on a 4-vCPU
+sandbox: 113 → 102 ms cached, 137 → 118 ms cold (an independent judge's 5 pairs); CI runner cold
+60 / 37 ms at 360° / 120°. The node reports `decode_ms`, `detect_ms`, `cpu_cores` and
+`rss_peak_mb`; `play_bag.sh` waits for readiness;
 CI runs the original bags and uploads the image archive for this working branch
 ([evidence](evidence/node_input_2026-09-28/README.md), EXPERIMENTS §3d). The detector seal is
-unchanged. The 27.09 independent score is 72/100 ([SCORECARD](SCORECARD.md)); the re-judgement of
-this pass is recorded there.
+unchanged. Fresh re-judgement of this head, 28.09: **66.5/100** (A 72.5, B 62.5; 8.3 Speed 8/10,
+up from 7.5; 27.09 round 3 was 72 with other judges) ([SCORECARD](SCORECARD.md)). Captain's own
+criteria now: 8.3 8/10, 8.5 7.5/10, 8.6 7.5/10, 8.8 3.5/5 = 26.5 of 35. Open for the captain: the
+`freshness_mode` default of the image (both judges: FAULT on a bag without `:=replay`), the team
+slides, and the pre-existing GO at `doubleT_obstacle` frame 111 (P3).
 
 ## Delegated work — 26.09 night (dated)
 

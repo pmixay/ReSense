@@ -212,9 +212,10 @@ threshold at the edge of the held-out positives, the reference's gains resting o
 placement frame while Q1 is open) are stated there.
 
 **Criteria judgement:** the independent reviews and remaining gaps are in
-[the scorecard](docs/SCORECARD.md). The 27.09 quality cycle's third review round gives judge A 75
-and judge B 70, combined **72/100** (round 2: 72, round 1: 67; 26.09: 64); the requested 75/100
-combined is not met. P4's preregistered
+[the scorecard](docs/SCORECARD.md). A fresh re-judgement of 28.09 (two new judges, the node input
+path of 28.09) gives judge A 72.5 and judge B 62.5, combined **66.5/100** (Speed 8/10); the 27.09
+quality cycle's third round, with other judges, gave 72 (round 2: 72, round 1: 67; 26.09: 64); the
+requested 75/100 combined is not met. P4's preregistered
 experiment (26.09) found the target in **45/72 cases and 544/2,458 visible frames** (27.09: 723),
 with zero paired-control matches. This tests
 synthetic combinations on seen backgrounds; it provides no real unseen-route recall result.
@@ -289,7 +290,7 @@ Headline results (kinds and placement modes: [`docs/README.md`](docs/README.md) 
 | sensor limit | no return beyond 210 m in any of the 13 759 frames: 300 m is beyond this sensor | real | 24.09 | EXPERIMENTS §2d |
 | other mounts | upside down, `+x` forward, backwards found; tilt recovered to 0.0–0.5° on re-mounted frames of 3 recordings | real, re-mounted | 22–23.09 | EXPERIMENTS §6 |
 | offline timing per frame | **the 27.09 detector, re-measured: 18.0–22.9 ms mean, p95 22.7–32.6 ms**, max 57 ms, on set O and three 120° / 360° recordings (one core, C++ kernels, idle 4-vCPU sandbox); **worst stretch: ride frames 5700–5900 (a dense station scene) 57 ms mean, p95 111 ms, max 143 ms** (clustering; P3d similar); the node's path without ROS transport (decode of the organizers' PointCloud2 layout, crop, rotation, detector) p95 32–48 ms, peak RSS 161–248 MB ([QUALITY_CYCLE_2026-09-27](docs/QUALITY_CYCLE_2026-09-27.md) "Speed"); 26.09 with the C++ kernels: 22.7–30.7 ms mean, p95 32.8–42.1 ms on set O and the 120° / 360° recordings (one core, idle 4-core machine, the re-judgement of 26.09; the numpy path there 78.3 / 95.5 ms at 360°); 23.09 on the numpy path: 42–64 ms mean, p95 53–78 ms on every recording (health monitor not included: 7–14 ms more); 24.09 on another idle VM 36.5–52.2 / 50.3–67.1 ms; the optional C++ kernels: −38…−57 %, identical output; DBSCAN on cKDTree (25.09): −1.3…−2.6 ms more on the native path | timing: sandbox | 23–25.09, 27.09 | EXPERIMENTS §3, ARCHITECTURE "Native kernels" |
-| ROS node in Docker, end to end | since 28.09 (input read from its serialized bytes, one-gather decode, visualisation only when watched): **input publication → result through DDS, p95 93–97 ms at 360°** with the recording cached (before: 120–127 ms; 114 ms from a cold disk, the CI runner's cold baseline 126), **57–61 ms at 120°** (68–76; cold 59), median 73–74 / 44–45 ms; decode + detect p95 70–75 / 48–52 ms; the start-up catch-up current within 5 s (before +7.9–9.8 s); node process **0.72 cores at 360°, 0.46 at 120°**, peak RSS 408–476 / 128 MB; the detector's input byte-identical on all 453 frames; 4-vCPU Xeon 2.1 GHz, both original recordings, two runs each. Before: 120°: 10 fps, p95 76 ms; 360°: 7–10 fps; ~100 % of one core, 186 MB (v0.6.3); v0.6.4 peak RSS 403–434 MB at 360° | timing: sandbox | 23–24.09, 28.09 | EXPERIMENTS §3b, §3d; [evidence](docs/evidence/node_input_2026-09-28/README.md) |
+| ROS node in Docker, end to end | since 28.09 (input read from its serialized bytes, visualisation built only when watched; decode and detector unchanged): input publication → result through DDS, p95 of the current results at 360° **~10–20 ms lower**: an independent judge's 5 alternating pairs on a 4-vCPU Xeon 2.1 GHz, median 113 → 102 ms with the recording cached, 137 → 118 ms from a cold disk (the team's 2 pairs: 120–127 → 93–97 ms); p95 **not reliably under the 100 ms frame period** there. 120°: 54–64 ms. CI runner, cold, 28.09: **60 ms at 360°, 37 ms at 120°** (an earlier run on another runner, 27.09: 126 / 49 ms; unpaired). Decode + detect unchanged (p95 ~75 ms at 360° on the sandbox); node process 0.4–0.8 cores, peak RSS 0.13–0.48 GB; 10 fps, no frames dropped after start-up; the detector's input byte-identical on all 453 frames. Before 28.09: 120°: 10 fps, p95 76 ms; 360°: 7–10 fps; ~100 % of one core, 186 MB (v0.6.3) | timing: sandbox, CI | 23–24.09, 28.09 | EXPERIMENTS §3b, §3d; [evidence](docs/evidence/node_input_2026-09-28/README.md) |
 
 Set F uses legacy placement, which can flatter curves and envelope edges: P4's paired rerun found
 0 matches beyond 100 m on seven curve / edge scenes in either mode, and on straight track a person
@@ -400,9 +401,9 @@ docker run --rm resense bash -lc "python3 scripts/make_smoke_bag.py /tmp/b && sc
   recording between frames while frames wait; 0 = newest only), `catchup_max_lag` (5 s),
   `catchup_startup_max_lag` (20 s for the first catch-up of each recording; the entry window
   expires after 1 s if no catch-up starts, and later stalls keep the 5 s bound), `raw_input`
-  (true: the clouds are read from their serialized bytes, ~12 ms median / ~30 ms p95 less per 24 MB
-  360° cloud than rclpy's conversion, the detector's input identical byte for byte; false = rclpy's
-  messages);
+  (true: the clouds are read from their serialized bytes instead of rclpy's conversion, 12.5 ms
+  median / 32 ms p95 per 24 MB 360° cloud on a 4-vCPU sandbox; the detector's input identical byte
+  for byte; false = rclpy's messages);
 * **mount**: `sensor_forward` / `sensor_left` / `sensor_up` (axis mapping, e.g. `+x`),
   `mount_roll_deg` / `mount_pitch_deg` / `mount_yaw_deg` (fixed tilt), `auto_calibrate` (true:
   orientation, roll and pitch from the rails and the bed, reported in `/resense/status` → `mount`);

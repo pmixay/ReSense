@@ -67,8 +67,8 @@ PARAMS = {
     "input_reliability": ("auto", str, "input QoS: auto = match the publishers (reliable for ros2 bag play of the "
                                        "organizers' recordings), reliable, best_effort"),
     # 28.09: the clouds read from their serialized bytes (resense_ros/fastcloud.py), not converted by rclpy
-    "raw_input": ("true", bool, "read the input clouds from their serialized bytes (~21 ms less per 24 MB "
-                                "360-degree cloud); false = rclpy's message conversion"),
+    "raw_input": ("true", bool, "read the input clouds from their serialized bytes (rclpy's conversion: 12.5 ms "
+                                "median, 32 ms p95 per 24 MB 360-degree cloud); false = rclpy's message conversion"),
 }
 
 

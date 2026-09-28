@@ -1121,6 +1121,14 @@ def test_input_is_subscribed_raw_unless_disabled_and_bad_bytes_fall_back(node_cl
     assert node.raw_fallbacks == 2 and sum("not read from its bytes" in s for _, s in node.get_logger().lines) == 1
     msg = object()
     assert node.as_cloud(msg) is msg
+
+    def unreadable(raw, msg_type):
+        raise RuntimeError("failed to deserialize ROS message")
+    sys.modules["rclpy.serialization"].deserialize_message = unreadable
+    frames = node.n_frames
+    node.on_cloud(b"\x00\x01\x00\x00truncated", "/lidar_points", {"source_timestamp": time.time_ns()})
+    assert node.as_cloud(b"garbage") is None and node.n_frames == frames and not node.pending
+    assert sum("input cloud dropped" in s for _, s in node.get_logger().lines) == 2
     _Node.overrides = {"raw_input": False}
     assert all(sub.raw is False for sub in node_cls().subs.values())
 

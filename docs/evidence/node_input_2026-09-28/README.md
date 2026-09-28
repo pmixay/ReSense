@@ -5,7 +5,9 @@ below the ROS package are unchanged):
 
 * the input clouds are taken as serialized bytes (`raw_input`, default true) and read by
   `ros2_ws/src/resense_ros/resense_ros/fastcloud.py` instead of rclpy's message conversion;
-* the decode gathers the kept points once by index (`fastcloud.decode`);
+* (the `ab/new_*` runs below also used a one-gather decode; the independent review measured it
+  as no faster, 19.4 → 18.4 ms at 360° and slightly slower on the CI runner, so the final code keeps
+  the reference decode `pointcloud2_to_arrays`, same output);
 * the decision topics are published before the status JSON; the RViz markers and the corridor
   cloud are built only while something subscribes to them (corridor edges vectorised);
 * the status `node` object also reports `decode_ms`, `detect_ms`, `cpu_cores` (node process CPU
@@ -20,13 +22,13 @@ below the ROS package are unchanged):
 recordings read both ways, compared byte for byte (header, layout, payload, and the xyz /
 intensity / ring arrays and counts the detector receives).
 
-| recording | frames identical | rclpy conversion median / p95 | bytes parsed median / p95 | reference decode median | fast decode median |
-|---|---|---|---|---|---|
-| `doubleT_obstacle` (360°, 921 600 points) | **201 of 201** | 12.5 / 32.4 ms | 0.09 / 1.9 ms | 19.2 ms | 18.1 ms |
-| `roundT_doubleT` (120°, 307 200 points) | **252 of 252** | 3.2 / 4.4 ms | 0.07 / 0.13 ms | 7.2 ms | 5.8 ms |
+| recording | frames identical | rclpy conversion median / p95 | bytes parsed median / p95 |
+|---|---|---|---|
+| `doubleT_obstacle` (360°, 921 600 points) | **201 of 201** | 12.7 / 33.4 ms | 0.10 / 0.17 ms |
+| `roundT_doubleT` (120°, 307 200 points) | **252 of 252** | 3.2 / 4.4 ms | 0.08 / 0.14 ms |
 
-(Sequential read of the bag, each message decoded once; on repeated warm buffers the fast
-decode measured 14.2 against 20.1 ms at 360°.)
+(Final code: parsed bytes, row padding removed, the reference decode. CI runner, run 36397511351:
+rclpy 7.0 / 30.0 ms and parse 0.07 / 2.5 ms at 360°; 453 of 453 frames identical.)
 
 ## Before / after through ROS
 
@@ -65,11 +67,14 @@ p95 126 / 49 ms (run 36319767736).
 Per stage in the new node (`node.decode_ms` / `node.detect_ms`, median / p95): 360° 19.3 / 27 and
 33 / 45–51 ms; 120° 7.8–8.0 / 11 and 28 / 40–42 ms.
 
-The end-to-end p95 at 360° moved under the 100 ms frame period on this 2.1 GHz 4-vCPU machine
-(the organizers' i7-9700E has 8 faster cores; it was not available). The largest single gain is
-the start-up: queued clouds that the catch-up skips no longer cost a conversion each, so the node
-is current within the first 5 s instead of +7.9–9.8 s. The remaining time is the detector
-(sealed) and the DDS transfer of the 24 MB cloud over UDP.
+**Independent check (28.09 re-judgement, judge A, 5 alternating pairs at 360° on the same kind of
+machine):** end-to-end p95 median 113 → 102 ms with the recording cached, 137 → 118 ms cold;
+decode + detect p95 75 → 75 ms (unchanged, as expected: the gain is the conversion before the
+callback and the visualisation after it); the before start-up catch-up there took +3.1–3.9 s. So
+the team's two pairs above overstate the gain: it is ~10–20 ms at 360°, and p95 is not reliably
+under the 100 ms period on this 2.1 GHz 4-vCPU machine (the organizers' i7-9700E, 8 faster cores,
+was not available). On a CI runner the final code measured 60 ms (360°) and 37 ms (120°) cold.
+The remaining time is the detector (sealed) and the DDS transfer of the 24 MB cloud over UDP.
 
 ## Reproduce
 
