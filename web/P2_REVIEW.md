@@ -113,3 +113,29 @@ be honestly marked complete from this checkout: `/data/for_hackathon`, the ignor
 and a second physical viewing device are absent. The existing CI's two-container protocol check
 is not a visual Foxglove import. Optional narration was not supplied. The internal independent
 scorecard's 72/100 is not an organizer score and is not changed by this presentation work.
+
+## Follow-through in this checkout (after the 28.09 evidence capture)
+
+* Shortened the dense public slides 5 and 15 without changing the measured claims; rebuilt the
+  16-slide PPTX/PDF and the 170-second video from those sources. Inspected PDF pages 2, 3, 5, 9,
+  11, 13–16 at presentation size; the corrected binaries and hashes are in the evidence JSON.
+  `python -m pytest -q tests/test_overview_video.py web/demo/test_web.py -k
+  'presentation_artifact or overview_video or cut_table or srt or sources_exist or mp4_within'`:
+  **11 passed**, no failures. `make_overview_video.py --check`: 7 blocks, 17 shots, 38 cues,
+  23 cards, 170 s. The `.srt` did not change; video/PDF page cuts were regenerated.
+* Browser verification here is **incomplete**: Python 3.14 venv has SciPy and Playwright, but
+  bundled Chromium crashes on launch (`SIGTRAP`); Open3D installation hits a disk quota.
+  Local P2 run: 55 passed, 26 skipped, 2 deselected with `RESENSE_REQUIRE_WEB=1` and two
+  synthetic-dependent cases excluded, hence CI-mode **fails** as intended. A separate Docker
+  check using the project's image and Open3D passed the synthetic format test (1 passed).
+  The earlier 83/83 browser-inclusive run above is retained as dated evidence, not claimed
+  for this rebuild. Run the full no-skip command in CI before declaring this stage closed.
+* Prepared [`DEMO_HANDOFF.md`](DEMO_HANDOFF.md) with the exact operator sequence, second-device
+  Foxglove check, stale-indicator caution, offline fallback and two rehearsal record fields.
+  No second physical client or stand bag exists here; the runbook is not a completed rehearsal.
+* Verified `build_deck.py --team` with four temporary **synthetic** portraits and complete
+  example fields (16-slide private PPTX and PDF produced; all four names on PDF slide 3, no
+  placeholder fields on slides 2–4), and verified that the empty example JSON
+  fails before building with the missing-field list. These smoke files are under ignored `out/`.
+  The actual private data are absent from this clone; P1/team must supply and confirm the city,
+  formation history, names/nicks, study and four portraits before the private deck can be built.

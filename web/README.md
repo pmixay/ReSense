@@ -11,6 +11,7 @@ the scripts that verify the dashboard headlessly (CI job `pytest`), and the
 video recipes.
 
 Current P2 fixes, verification and dependencies: [`P2_REVIEW.md`](P2_REVIEW.md).
+Короткий сценарий показа и передачи капитану: [`DEMO_HANDOFF.md`](DEMO_HANDOFF.md).
 The first pass is recorded in [`P2_STATUS.md`](P2_STATUS.md).
 
 | file | what |

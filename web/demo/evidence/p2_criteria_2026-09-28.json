@@ -49,7 +49,7 @@
   "presentation": {
     "slides": 16,
     "source": "organizer 37-slide template, public team-role placeholders replaced",
-    "rebuild": "28.09 evening corrections now present in PPTX/PDF/MP4/SRT; PDF inspected, P2 checks 83 passed, zero skipped",
+    "rebuild": "Public PPTX/PDF/MP4 rebuilt after simplifying dense slides 5 and 15; PDF pages 2, 3, 5, 9, 11, 13-16 inspected; SRT unchanged. 11 targeted presentation/video checks passed in this checkout. Original full P2 browser run below is dated evidence, not a new run on this rebuild.",
     "local_core_recheck": "725 passed, 28 native-kernel cases skipped (not built here), 1 missing-data case deselected, 6 subtests passed"
   },
   "artifacts": {
@@ -74,20 +74,20 @@
       "sha256": "846c367fc46d62a60db71c24643b9debd344f8806e5b8cfb54c5b427c767edbc"
     },
     "docs/presentation/ReSense_LCT2026.pdf": {
-      "bytes": 2964008,
-      "sha256": "97b22014fb6d5dc2faffa23da230abc64c77ea1ea0f9f1ee3c822f0aae1455f4"
+      "bytes": 2955539,
+      "sha256": "edb83fde87e5f4f7224b367147f3982d12e29f3441a3e806ba5655264ef48e92"
     },
     "docs/presentation/ReSense_LCT2026.pptx": {
-      "bytes": 14381805,
-      "sha256": "c92944462fca1c2551a98a2ea6cd62439884c339c8a72d862a28ddf946eff2e6"
+      "bytes": 14380922,
+      "sha256": "f9712ce742d93158a38457477b7b5bb0dce57b15db30a8b02cf9bf365ba88d92"
     },
     "docs/video/dashboard_current.mp4": {
       "bytes": 1020062,
       "sha256": "6b4a0308ffd1665f26a37f54bb238256565629757a6c169e540fe5a1d8e116ae"
     },
     "docs/video/resense_overview.mp4": {
-      "bytes": 20518391,
-      "sha256": "38c147e236013cc708a7e369bf30fe182aebef3a52e22409bc15f8451dfde530"
+      "bytes": 20472752,
+      "sha256": "f2e4bfefc6bc26a69cab62fdcfc2b96cacaebd155982507256e6b09728d9443c"
     },
     "docs/video/resense_overview.ru.srt": {
       "bytes": 5300,
@@ -129,7 +129,7 @@
       ],
       "format": {
         "duration": "170.000000",
-        "size": "20518391"
+        "size": "20472752"
       }
     }
   },
