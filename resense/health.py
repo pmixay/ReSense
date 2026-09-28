@@ -14,7 +14,9 @@ per frame and without touching any detection:
   3 m of the track axis): the sightline in a curve, the end of the tunnel, fog;
 * ``rail_lock`` - share of the recent frames in which the rail pair was found (the track model
   runs on its prior without it: stations, switches, a covered bed);
-* ``latency_p95_ms`` against the frame budget;
+* ``latency_p95_ms`` against the frame budget. The detector supplies the previous completed
+  process interval, including health, and labels this basis and one-frame age in its result.
+  Its first call/reset has no sample: p95 is 0 until a completed call is supplied;
 * the mount calibration status and drift (``resense/calibration.py``);
 * ``floor_shadow_frames`` / ``floor_held_frames`` / ``floor_released_frames`` (review 25.09) -
   since the start (or a reset), the frames in which the floor-shadow rule of the track model
@@ -111,8 +113,14 @@ class HealthMonitor:
         self._shadow = [0, 0, 0]
 
     def update(self, xyz: np.ndarray, meta: dict, track, gauge: GaugeConfig, trusted_range: float,
-               rails_min_score: float, latency_ms: float, calibration: Optional[dict] = None,
+               rails_min_score: float, latency_ms: Optional[float], calibration: Optional[dict] = None,
                obstacle_distance: Optional[float] = None, candidate_distance: Optional[float] = None) -> dict:
+        """Update scene health once; append a supplied latency sample, or none for ``None``.
+
+        Numeric callers retain their existing supplied-interval semantics. The detector
+        supplies its previous completed call so timing includes the health update itself.
+        The latency warning still requires ten samples in the configured window.
+        """
         cfg = self.cfg
         msgs, level, dlevel = [], 0, 0
 
@@ -164,8 +172,9 @@ class HealthMonitor:
             elif getattr(track, "floor_hold_run", 0) > 0:
                 self._shadow[2] += 1
 
-        self._lat.append(float(latency_ms))
-        p95 = float(np.percentile(self._lat, 95))
+        if latency_ms is not None:
+            self._lat.append(float(latency_ms))
+        p95 = float(np.percentile(self._lat, 95)) if self._lat else 0.0
         if len(self._lat) >= 10 and p95 > cfg.latency_budget_ms:
             flag(1, f"latency p95 {p95:.0f} ms over the {cfg.latency_budget_ms:.0f} ms budget",
                  decision=cfg.latency_affects_decision)
