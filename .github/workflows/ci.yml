@@ -17,7 +17,8 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: lint (ruff, pinned)
-        run: pipx run ruff==0.15.8 check --output-format github .
+        # This archived gate runner is preserved byte-for-byte; its imports follow sys.path setup.
+        run: pipx run ruff==0.15.8 check --output-format github --exclude docs/evidence/cycle_2026-09-28/complete_timing/default/run_gate.py .
       - name: the ROS package's parameter copy is in sync with configs/default.yaml
         if: ${{ !cancelled() }}
         run: ./scripts/sync_params.sh --check
