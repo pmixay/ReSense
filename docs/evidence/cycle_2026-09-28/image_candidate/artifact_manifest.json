@@ -2,8 +2,8 @@
   "schema": "resense-evidence-artifacts-v1",
   "files": {
     "README.md": {
-      "sha256": "e7fbfa8f2d9f7a7f6db3b7bc860d662490296327d5f5539ec724fcdb337c8114",
-      "bytes": 4595
+      "sha256": "9dbe18631ca8ffbfc12765f6d4ddb79ac5da464a40e5967c29c45cf737e7d8ba",
+      "bytes": 5268
     },
     "junit.xml": {
       "sha256": "c11a6a336a8c121141b764ebe4cf0a86301d1ec059e4ecfd979d67347962799e",

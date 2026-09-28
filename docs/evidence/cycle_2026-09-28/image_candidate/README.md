@@ -78,3 +78,15 @@ Integration verification after the later observer/wrapper additions: 89 focused
 tests and six subtests passed, Ruff passed, parameter copies matched, and the
 31-file source seal verified. The 841-test image result above retains its exact
 image source identity rather than claiming these later tools were in that image.
+
+
+## Subsequent CI verification
+
+The complete [candidate CI at `8547009`](ci_8547009/README.md) passes all four
+jobs, including original cold recordings and offline build. Retained captures
+also pass an all-frame recount: positive 201/201, clear 252/252, freshness valid,
+zero post-settle dropped recording messages. Decode-plus-detect p95 is 78 ms
+positive / 51 ms clear; current-result end-to-end p95 is 96 / 58 ms. Actual CI
+positive detections recover 126/126 rail frames after frame 75, with person 61/61.
+This addresses candidate CI, not the laptop's remaining runtime problem or the
+organizers' unmeasured stand. The new combined P3 source needs its own validation.

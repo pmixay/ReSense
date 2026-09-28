@@ -1,0 +1,14 @@
+status messages      : 252 (13 lines skipped)
+alarm frames         : 0
+detector alarm frames: 0 (held STOP excluded from positive evidence)
+latency decode+detect: mean 44 / p95 51 / max 63 ms
+detector stage total : mean 21 / p95 28 ms
+end-to-end (current) : median 49 / p95 58 / max 118 ms over 247 current results (input publication -> result, through DDS)
+node CPU             : 0.49 cores median, 0.54 max (node process, every stats period); peak RSS 139 MB
+dropped input frames : 0 (0 of them skipped by the node's catch-up)
+dropped input vs bag : 201 messages of /lidar_points after the first 5 s, 0 frame(s) missing from the recording itself; 0 of its messages not processed
+fps (last report)    : 9.99
+start of the input   : 51 frames in the first 5 s after the first one, largest gap 0.1 s
+freshness contract  : PASS
+
+PASS: all dry-run criteria met
