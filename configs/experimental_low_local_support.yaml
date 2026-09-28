@@ -1,0 +1,10 @@
+resense:
+  # Opt-in along/lateral bed/rail surface-continuation experiment. Missing or
+  # inconsistent support keeps baseline evidence. See docs/EXPERIMENT_LOW_LOCAL_SUPPORT.md.
+  lowobj:
+    local_support_enabled: true
+    local_support_along: 8.0
+    local_support_guard: 0.3
+    local_support_lateral: 0.15
+    local_support_tolerance: 0.025
+    local_support_max_correction: 0.15

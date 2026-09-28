@@ -36,6 +36,13 @@ continue tracks; while the gauge vote of a track needs such hits, the track beco
 is reported as advisory otherwise, never hidden: a scan line of the bed or the vault is fixed in
 the sensor frame or jumps with the pitch, a static object ahead approaches at the train's speed.
 A track whose clean hits alone vote gauge, and a STOP in the previous frame, keep the usual rules.
+
+The opt-in ``fresh_stop_evidence`` candidate adds a provenance check only at a new STOP onset.
+Its bounded recent matched-hit record must contain the configured number of ordinary/low or
+approaching ``far_thin`` gauge hits, and the hit on the onset frame must itself be strict gauge
+evidence. A thin continuation hit and an off-gauge hit therefore cannot start a new STOP from an
+old zone vote. An already reported gauge STOP is not checked by this candidate, so the existing
+miss/occlusion and stop-keep behaviour remains responsible for continuation.
 """
 from __future__ import annotations
 
@@ -90,6 +97,9 @@ class Track:
     far_evidence: bool = False      # 27.09: the track was ever matched by a far scan line / weak far cluster (thin_far_min_distance)
     was_stop: bool = False          # 27.09: reported in zone gauge (a STOP) after the previous update (thin_far_min_distance only)
     approach_block: bool = False    # 27.09: far evidence without an approach holds a reported advisory track advisory (zone)
+    evidence_hist: List[str] = field(default_factory=list)  # opt-in fresh_stop_evidence: recent hit provenance
+    stop_earned: bool = False       # opt-in onset gate: a gauge STOP was actually earned, not merely reported advisory
+    fresh_blocked: bool = False     # opt-in: a reported advisory cannot become a STOP on this hit
 
     @property
     def near_escalated(self) -> bool:
@@ -110,7 +120,7 @@ class Track:
 
     @property
     def zone(self) -> str:
-        if self.withheld:
+        if self.withheld or self.fresh_blocked:
             return "warning"
         return self.rule_zone
 
@@ -296,7 +306,7 @@ class Tracker:
                 t.hit_hist = (t.hit_hist + [True])[-hw:]
                 if nk:
                     t.near_hist = (t.near_hist + [self._near(cl)])[-nk:]
-                self._note(t, cl, False, zw)
+                self._note(t, cl, False, zw, "ordinary")
                 t.history.append(cl.distance)
                 matched_t[i] = matched_c[j] = True
                 d[i, :] = np.inf
@@ -334,7 +344,7 @@ class Tracker:
                     since_clean=0.0 if cl.zone == "gauge" else float("inf"),
                     obs=[observation(cl)] if self.record else [],
                 ))
-                self._note(self.tracks[-1], cl, False, zw)
+                self._note(self.tracks[-1], cl, False, zw, "ordinary")
                 self._next_id += 1
         for cl in new_thin:
             t = Track(id=self._next_id, centroid=cl.centroid, velocity=np.zeros(3),
@@ -343,13 +353,18 @@ class Tracker:
                       zone_min_fraction=c.zone_min_fraction, column_hist=[False],
                       column_hold=int(c.column_hold), near_hist=[False] if nk else [], near_hits=nk,
                       since_clean=float("inf"))
-            self._note(t, cl, True, zw)
+            self._note(t, cl, True, zw, "far_thin")
             self.tracks.append(t)
             self._next_id += 1
         # reported: confirmed now, or reported in the previous frame and missed for at most
         # hold_misses frames (a single missed frame does not drop a STOP; review 23.09), or inside
         # a re-seed hold window (reseed; matched or not)
+        fresh_blocked_tracks = set()
         for t in self.tracks:
+            was_reported = t.reported
+            earned_stop = t.stop_earned
+            fresh_blocked = False
+            t.fresh_blocked = False
             q = self._qualifies(t)
             if c.thin_far_min_distance > 0:
                 # 27.09: a track whose gauge vote needs far scan-line / weak evidence becomes a STOP only
@@ -373,14 +388,30 @@ class Tracker:
                 # 27.09 (P4 history, start_clean): the earlier hits' vote alone does not start a STOP
                 # on a frame whose own cluster is advisory or outside the envelope
                 q = False
+            if q and c.fresh_stop_evidence and not earned_stop and t.rule_zone == "gauge":
+                # Onset only: an already earned STOP remains governed by hold_misses and the
+                # stop-keep rules, including through a reasonable occlusion. A far track that the
+                # existing approach guard has made advisory must remain a visible advisory track,
+                # rather than being hidden by this STOP-only candidate.
+                q = self._fresh_stop_ok(t)
+                fresh_blocked = not q
+                if fresh_blocked:
+                    fresh_blocked_tracks.add(id(t))
             t.reported = (q or (t.reported and 0 < t.misses <= c.hold_misses)
                           or (t.reported and t.hold > 0))
+            if fresh_blocked and was_reported and not earned_stop and t.misses == 0:
+                # The candidate blocks an advisory-to-STOP transition, but does not make an
+                # already reported advisory track disappear on the matched frame.
+                t.reported = True
+            t.fresh_blocked = bool(fresh_blocked and t.reported)
             if t.misses == 0:
                 t.seen_reported = t.reported
             if t.hold > 0:
                 t.hold -= 1
         if self.opinion is not None:
             self._doubt()
+        for t in self.tracks:
+            t.stop_earned = (id(t) not in fresh_blocked_tracks and t.reported and t.zone == "gauge")
         if c.thin_far_min_distance > 0:
             # after the track opinion: a STOP withheld by it is not a STOP of this frame
             for t in self.tracks:
@@ -497,7 +528,7 @@ class Tracker:
             t.hit_hist = (t.hit_hist + [True])[-hw:]
             if nk:
                 t.near_hist = (t.near_hist + [self._near(cl)])[-nk:]
-            self._note(t, cl, False, zw)
+            self._note(t, cl, False, zw, "keep_thin")
             t.history.append(cl.distance)
             matched_t[i] = True
             used.append(cl)
@@ -505,15 +536,45 @@ class Tracker:
             d[:, b] = np.inf
         return used
 
-    def _note(self, t: Track, cl: Cluster, far_thin: bool, zw: int) -> None:
-        """27.09 (``thin_far_min_distance`` > 0 only): remember whether this hit was a far scan line
-        (last ``zone_window`` hits) and its sensor time and distance (``approach_hits``)."""
+    def _note(self, t: Track, cl: Cluster, far_thin: bool, zw: int, source: str = "ordinary") -> None:
+        """Record hit provenance and the existing far-evidence approach history.
+
+        ``source`` is ``ordinary`` for a current cluster (including low-object evidence),
+        ``far_thin`` for the detector's separate sparse-evidence path, and ``keep_thin`` for a
+        scan-line continuation. The latter may preserve an earned STOP but cannot manufacture one.
+        """
         c = self.cfg
+        if c.fresh_stop_evidence:
+            n = max(1, int(c.fresh_stop_evidence_window))
+            if source == "ordinary" and cl.zone != "gauge":
+                source = "off_gauge"
+            t.evidence_hist = (t.evidence_hist + [source])[-n:]
         if c.thin_far_min_distance <= 0:
             return
         t.far_evidence = t.far_evidence or bool(far_thin)
         t.thin_hist = (t.thin_hist + [bool(far_thin)])[-zw:]
         t.approach = (t.approach + [(self._clock, float(cl.distance))])[-max(2, int(c.approach_hits)):]
+
+    def _fresh_stop_ok(self, t: Track) -> bool:
+        """Check bounded provenance for a new STOP onset.
+
+        The current match must be strict gauge evidence, so an old gauge vote cannot confirm on an
+        advisory/off-gauge frame. Ordinary and low-object gauge hits count directly. A far sparse
+        hit counts only when its existing approach fit identifies an approaching target. Thin
+        continuation hits are deliberately excluded.
+        """
+        c = self.cfg
+        if t.misses != 0 or t.last is None or t.last.zone != "gauge" or not t.evidence_hist:
+            return False
+        source = t.evidence_hist[-1]
+        if source == "keep_thin":
+            return False
+        if source == "far_thin" and not self._approaching(t):
+            return False
+        approaching = self._approaching(t) if "far_thin" in t.evidence_hist else False
+        eligible = sum(s == "ordinary" or (s == "far_thin" and approaching)
+                       for s in t.evidence_hist)
+        return eligible >= max(1, int(c.fresh_stop_evidence_min_hits))
 
     def _clean_gauge(self, t: Track) -> bool:
         """27.09: the zone vote of ``t`` is 'gauge' with its far scan-line / weak hits counted as not
@@ -598,7 +659,7 @@ class Tracker:
             t.hit_hist = (t.hit_hist + [True])[-hw:]
             if nk:
                 t.near_hist = (t.near_hist + [False])[-nk:]
-            self._note(t, cl, True, zw)
+            self._note(t, cl, True, zw, "far_thin")
             t.history.append(cl.distance)
             matched_t[i] = True
             d[a, :] = np.inf

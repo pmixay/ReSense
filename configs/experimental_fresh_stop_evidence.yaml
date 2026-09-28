@@ -1,0 +1,7 @@
+resense:
+  # Opt-in provenance-aware STOP-onset experiment. It does not change confirmation
+  # hits, zone votes, hold_misses, or continuation of an earned STOP.
+  tracking:
+    fresh_stop_evidence: true
+    fresh_stop_evidence_window: 3
+    fresh_stop_evidence_min_hits: 2

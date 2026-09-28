@@ -319,6 +319,13 @@ class TrackingConfig:
     zone_min_votes: int = 0        # 27.09 (P4 history, off; 0 = off): the zone vote counts at least this many hits: a track with fewer hits is voted as if its missing hits were outside the gauge (2 of 3 hits inside the gauge is not 60 % of 5); a history with dropped frames confirms on 3 hits where every frame needs 5 (confirm_time_s), so its vote was taken over 3 hits
     gate_along_only: bool = True  # 27.09 (P4 history, on; false = the whole distance): the association allowance for an object approaching at up to ego_speed_max over the measured frame interval applies to the along-track component only (it widened the gate in every direction: 2.5 m at 10 Hz, 7.5 m after two dropped frames, joining unrelated clusters metres apart across the track into one track)
     start_clean: bool = False      # 27.09 (P4 history, off): a track not reported in the previous frame is confirmed only on a hit whose own cluster is an obstacle inside the strict gauge (zone gauge): the vote of earlier hits alone does not start a STOP on a frame whose cluster is advisory or outside the envelope
+    # Opt-in fresh-stop provenance candidate: onset only, never continuation. A bounded record of
+    # matched-hit sources must contain this many ordinary/low or approaching far-sparse hits, and
+    # the onset hit itself must be in the strict gauge. Off-gauge and stop-keep thin hits cannot
+    # start a STOP from an old zone vote; an already reported STOP still uses hold_misses / keep.
+    fresh_stop_evidence: bool = False
+    fresh_stop_evidence_window: int = 3  # matched hits retained for the onset provenance check
+    fresh_stop_evidence_min_hits: int = 2 # eligible hits required in that bounded window
     column_hold: int = 2           # 25.09: a track whose cluster was demoted as a column (cluster.column_*) in at least this many of its last zone_window hits is advisory: a column far away shows more than column_min_height of itself in some frames only (roundT_doubleT, EXPERIMENTS.md 3a; 2 = the highest pre-registered candidate that passed, docs/evidence/results/column_hold_2026-09-25.json); 0 = off
     max_misses: int = 3            # frames a track survives without a match
     hold_misses: int = 1           # frames a reported track stays reported without a match (at its predicted distance): one missed frame does not drop a STOP (review 23.09); 0 = the v0.6.2 behaviour
@@ -420,6 +427,15 @@ class LowObjectConfig:
     near_min_bed_lateral_bins: int = 20  # support must span the central bed, not only the object footprint
     near_min_points: int = 5          # distinct occupied voxels; that box returns 5-10 at 12-28 m (10 rejected it)
     near_max_length: float = 0.75     # m along track; reject cables, guard rails, long drain covers
+    # Experimental local surface continuation: current-frame support on both along-track
+    # sides in the candidate's narrow lateral band must describe a raised surface.
+    # Missing, sparse or inconsistent support keeps the baseline (docs/EXPERIMENT_LOW_LOCAL_SUPPORT.md).
+    local_support_enabled: bool = False
+    local_support_along: float = 8.0       # m, trace window on each along-track side
+    local_support_guard: float = 0.3       # m, gap around the candidate footprint
+    local_support_lateral: float = 0.15    # m, same-surface lateral neighbourhood
+    local_support_tolerance: float = 0.025 # m, maximum surface-fit error and candidate agreement
+    local_support_max_correction: float = 0.15 # m, maximum upward correction of the existing bed
     # 26.09 (P3 start-up, docs/evidence/results/p3_startup_2026-09-26.json), candidates a / b:
     pending_advisory: bool = False       # (a) while the mount calibration is 'pending' a confirmed low track beyond pending_advisory_within is advisory (reason 'calibration_pending'), not STOP
     pending_advisory_within: float = 0.0  # m; (a) a low track at most this far stays a STOP

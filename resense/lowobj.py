@@ -103,6 +103,70 @@ class BedTemplate:
         return np.interp(dy, self.centres, self.prof)
 
 
+def local_surface_mask(X: np.ndarray, dy: np.ndarray, h: np.ndarray,
+                       candidates: np.ndarray, reference: np.ndarray,
+                       cfg: LowObjectConfig, support_mask: Optional[np.ndarray] = None) -> np.ndarray:
+    """Which candidate returns continue a locally observed bed/rail surface?
+
+    ``candidates`` indexes this frame; ``reference`` is the baseline bed height at
+    those indices. ``support_mask`` selects the already classified bed returns. No
+    lack-of-support rejection: every failed check returns False. This deliberately
+    does not infer a surveyed surface identity from a scan line.
+    Work is capped at 512 candidate returns; busier frames retain baseline evidence.
+    """
+    reject = np.zeros(candidates.size, dtype=bool)
+    if not cfg.local_support_enabled or candidates.size == 0 or candidates.size > 512:
+        return reject
+    radius = float(cfg.local_support_along)
+    guard = max(float(cfg.local_support_guard), 0.3)
+    lateral = float(cfg.local_support_lateral)
+    tol = float(cfg.local_support_tolerance)
+    correction = float(cfg.local_support_max_correction)
+    if not (0 < guard < radius <= 12.0 and 0.025 < lateral <= 0.25
+            and 0 < tol <= 0.03 and 0 < correction <= 0.15):
+        return reject
+    finite = np.isfinite(X) & np.isfinite(dy) & np.isfinite(h)
+    eligible = finite.copy()
+    if support_mask is not None:
+        eligible &= np.asarray(support_mask, dtype=bool)
+    order = np.flatnonzero(eligible)
+    order = order[np.argsort(X[order])]
+    xs = X[order]
+    for k, j in enumerate(candidates):
+        if not finite[j] or not np.isfinite(reference[k]):
+            continue
+        lo, hi = np.searchsorted(xs, [X[j] - radius, X[j] + radius])
+        ids = order[lo:hi]
+        dx, dd = X[ids] - X[j], dy[ids] - dy[j]
+        use = ((np.abs(dx) > guard) & (np.abs(dd) >= 0.025)
+               & (np.abs(dd) <= lateral))
+        # Support on just one rail edge must not masquerade as a local surface.
+        if not all(np.any(use & along & side) for along in (dx < -guard, dx > guard)
+                   for side in (dd < -0.025, dd > 0.025)):
+            continue
+        # Identical dual returns cannot manufacture support. Count one occupied cell per
+        # small along/lateral cell, then use one p90 per one-metre along bin, as in the
+        # trace diagnostic. This prevents one dense scan row dominating the line.
+        pts = np.column_stack((X[ids[use]], dy[ids[use]], h[ids[use]]))
+        if len(pts) < 8:
+            continue
+        cells = np.floor(pts[:, :2] / [0.05, 0.025]).astype(np.int64)
+        _, unique = np.unique(cells, axis=0, return_index=True)
+        pts = pts[np.sort(unique)]
+        bins = np.floor(pts[:, 0]).astype(np.int64)
+        values = np.asarray([np.percentile(pts[bins == b, 2], 90)
+                             for b in np.unique(bins) if (bins == b).sum() >= 2])
+        bin_ids = np.asarray([b for b in np.unique(bins) if (bins == b).sum() >= 2])
+        left, right = bin_ids < np.floor(X[j] - guard), bin_ids > np.floor(X[j] + guard)
+        if left.sum() < 2 or right.sum() < 2 or values.size < 4:
+            continue
+        line = float(np.median(values))
+        consistent = np.percentile(np.abs(values - line), 90) <= tol
+        if consistent and 0 < line - reference[k] <= correction:
+            reject[k] = abs(h[j] - line) <= tol
+    return reject
+
+
 def low_candidates(X: np.ndarray, dy: np.ndarray, h: np.ndarray, template: BedTemplate,
                    cfg: LowObjectConfig, range_min: float, x_limit: float,
                    h_bottom: float, with_all: bool = False, with_near: bool = False):
@@ -141,7 +205,21 @@ def low_candidates(X: np.ndarray, dy: np.ndarray, h: np.ndarray, template: BedTe
     off = np.interp(centres, centres[seen], off[seen])
     r = res - off[b]
     anomaly = (r > cfg.min_excess) & (r < cfg.max_excess) & (X[idx] < x_seen)
+    local_reject = np.zeros(idx.size, dtype=bool)
+    if cfg.local_support_enabled:
+        proposed = anomaly.copy()
+        if with_near and cfg.near_enabled:
+            proposed |= ((r > cfg.near_min_excess) & (r < cfg.max_excess)
+                         & (X[idx] < min(cfg.near_range, x_seen))
+                         & (np.abs(dy[idx]) <= cfg.near_half_width))
+        # Use the current low-height band, including non-anomalous returns; distant or
+        # high corridor surfaces cannot establish this local bed reference.
+        local_reject[proposed] = local_surface_mask(
+            X[idx], dy[idx], h[idx], np.flatnonzero(proposed), h[idx][proposed] - r[proposed], cfg,
+            support_mask=bed)
+        anomaly &= ~local_reject
     keep = anomaly.copy()
+    keep &= ~local_reject
     if cfg.min_point_top > -1.0:
         keep &= h[idx] > cfg.min_point_top
     # Require bed support in the *same* along-track bin: interpolation across an unobserved
@@ -163,7 +241,7 @@ def low_candidates(X: np.ndarray, dy: np.ndarray, h: np.ndarray, template: BedTe
                      & (spread >= cfg.near_min_bed_lateral_bins))
         central = ((r > cfg.near_min_excess) & (r < cfg.max_excess)
                    & (X[idx] < min(cfg.near_range, x_seen)) & (np.abs(dy[idx]) <= cfg.near_half_width)
-                   & seen[b] & near_seen[b])
+                   & seen[b] & near_seen[b] & ~local_reject)
         near = idx[central]
     return result(idx[keep], x_seen, idx[anomaly], near)
 
