@@ -49,13 +49,38 @@ def summarize(report):
                 "never_detected_cases": [c["case"]["name"] for c in selected
                                          if c["case"]["positive"] and c["encodings"][encoding]["metrics"]["matched_stop_frames"] == 0],
             }
+    pairs = [(a, b) for case in report["cases"]
+             for a, b in zip(case["encodings"]["float32"]["rows"], case["encodings"]["compact16"]["rows"])]
+    physical_disagreements = sum(a["target_returns_in_physical_envelope"] != b["target_returns_in_physical_envelope"]
+                                 for a, b in pairs) if pairs and all("target_returns_in_physical_envelope" in a
+                                 and "target_returns_in_physical_envelope" in b for a, b in pairs) else None
     return {"source": report["source"], "config_sha256": report["config_sha256"],
             "evaluator_sha256": report["evaluator_sha256"],
             "cache_generator_script_sha256": report["cache_generator_script_sha256"],
             "cache_manifest_sha256": report["cache_manifest_sha256"],
             "complete_split": report["complete_split"], "cases": len(report["cases"]),
             "quantization_disagreement_frames": sum(len(c["quantization_disagreement_frames"]) for c in report["cases"]),
+            "quantization_physical_envelope_count_disagreement_frames": physical_disagreements,
             "metrics": groups}
+
+
+def signal_differences(baseline, candidate):
+    by_name = {c["case"]["name"]: c for c in baseline["cases"]}
+    keys = ("stop", "matched_stop", "unmatched_stop", "matched_ids", "detections", "clear_distance_m", "warning", "decision")
+    counts = {encoding: dict.fromkeys(keys, 0) for encoding in ("float32", "compact16")}
+    for case in candidate["cases"]:
+        old = by_name[case["case"]["name"]]
+        for encoding in counts:
+            before = old["encodings"][encoding]["rows"]
+            after = case["encodings"][encoding]["rows"]
+            if len(before) != len(after):
+                raise ValueError("cannot compare different per-case frame counts")
+            for a, b in zip(before, after):
+                if a["frame"] != b["frame"]:
+                    raise ValueError("cannot compare different frame indices")
+                for key in keys:
+                    counts[encoding][key] += a[key] != b[key]
+    return counts
 
 
 def main():
@@ -71,7 +96,8 @@ def main():
               "interpretation": "Original labels and headline metrics are preserved. Physical groups annotate body-interior, boundary-only and outside geometry without relabeling v1. Only v2 has preregistered positive overlap. Synthetic development is not official organizer scoring or real holdout evidence.",
               "baseline_report_sha256": file_hash(args.baseline), "candidate_report_sha256": file_hash(args.candidate),
               "baseline": summarize(baseline), "candidate": summarize(candidate),
-              "comparison": compare_reports(baseline, candidate)}
+              "comparison": compare_reports(baseline, candidate),
+              "baseline_candidate_signal_difference_frames": signal_differences(baseline, candidate)}
     args.output.write_text(json.dumps(report, indent=2) + "\n")
 
 
