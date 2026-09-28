@@ -224,3 +224,41 @@ def test_reserved_seeds_and_geometry_are_distinct_and_evaluation_requires_freeze
     assert PROTOCOL["splits"]["development"]["geometry"] != PROTOCOL["splits"]["evaluation"]["geometry"]
     with pytest.raises(ValueError, match="candidate-freeze"):
         evaluation.candidate_freeze(None, "evaluation")
+
+
+def test_v2_positive_meshes_keep_physical_overlap_in_both_splits():
+    protocol = json.loads((evaluation.PROTOCOL.parent / "protocol_v2.json").read_text())
+    for split in ("development", "evaluation"):
+        cases = evaluation.sequence_cases(protocol, split)
+        assert len(cases) == 36
+        assert sum(c["positive"] for c in cases) == 32
+        for case in cases[:32]:
+            geometry = case["physical_geometry"]
+            assert geometry["body_intersects_envelope_interior"]
+            assert geometry["vertical_envelope_overlap_m"] >= .05
+            if case["name"].startswith(("rail_box_", "compact_box30_")):
+                assert case["size_m"][2] == .36
+                assert geometry["vertical_envelope_overlap_m"] == pytest.approx(.06)
+        below = cases[-1]
+        assert not below["positive"]
+        assert below["physical_geometry"]["entire_body_below_rail_head"]
+        assert below["physical_geometry"]["body_top_above_rail_m"] == pytest.approx(-.08)
+    # Historical v1 keeps its original dimensions and labels, with no retroactive audit fields.
+    old = evaluation.sequence_cases(PROTOCOL, "evaluation")
+    assert len(old) == 35
+    assert old[0]["size_m"][2] == pytest.approx(.279)
+    assert all("physical_geometry" not in case for case in old)
+
+
+def test_v2_rejects_a_positive_that_shrinks_out_of_the_envelope():
+    protocol = json.loads((evaluation.PROTOCOL.parent / "protocol_v2.json").read_text())
+    protocol["shapes"][0]["size_m"][2] = .30
+    with pytest.raises(ValueError, match="lacks registered envelope margin"):
+        evaluation.sequence_cases(protocol, "development")
+
+
+def test_v2_rejects_a_below_rail_control_that_crosses_rail_head():
+    protocol = json.loads((evaluation.PROTOCOL.parent / "protocol_v2.json").read_text())
+    protocol["negative_controls"][-1]["size_m"][2] = .20
+    with pytest.raises(ValueError, match="crosses physical rail head"):
+        evaluation.sequence_cases(protocol, "development")

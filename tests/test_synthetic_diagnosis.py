@@ -67,3 +67,18 @@ def test_independent_body_audit_uses_actual_person_mesh_and_outside_footprint():
     assert outside["classification"] == "outside"
     assert outside["vertical_envelope_overlap_m"] > 0
     assert outside["lateral_envelope_overlap_m"] == 0
+
+
+def test_physical_return_count_uses_known_axis_floor_and_sensor_mapping():
+    from resense.frame import axis_matrix
+    from resense.pointcloud import compact_to_compact16
+    from synthetic_geometry import physical_return_count
+    sensor = SensorConfig()
+    case = {"axis_y": .25, "floor_z": -1.5}
+    # One point inside; the other three are below the floor, outside laterally, or beyond range.
+    world = np.array([[50, .25, -.82], [50, .25, -1.30], [50, 1.5, -.82], [300, .25, -.82]])
+    raw = np.zeros(4, dtype=COMPACT_DTYPE)
+    raw["x"], raw["y"], raw["z"] = (world @ axis_matrix(sensor)).T
+    for array in (raw, compact_to_compact16(raw)):
+        assert physical_return_count(array, [True] * 4, sensor, case) == 1
+        assert physical_return_count(array, [False] * 4, sensor, case) == 0

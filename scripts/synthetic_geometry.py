@@ -105,6 +105,20 @@ def audit_case(case):
             "projected_envelope_overlap_area_m2": overlap}
 
 
+def physical_return_count(array, target_mask, sensor, case):
+    """Count actual decoded target returns in the known canonical physical envelope."""
+    from resense.frame import axis_matrix
+    from resense.gauge import point_in_polygon
+    from resense.pointcloud import compact_to_xyz, expand_compact16
+    xyz = compact_to_xyz(expand_compact16(array)).astype(np.float64)
+    r2 = (xyz * xyz).sum(axis=1)
+    keep = np.asarray(target_mask, bool) & np.isfinite(r2) & (r2 >= sensor.min_range ** 2) & (r2 <= sensor.max_range ** 2)
+    target = xyz[keep] @ axis_matrix(sensor).T
+    return int(point_in_polygon(target[:, 1] - case["axis_y"],
+                                target[:, 2] - case["floor_z"] - RAIL_HEIGHT_M,
+                                GaugeConfig().profile).sum())
+
+
 def main():
     from synthetic_sensitivity import file_hash, sequence_cases
     parser = argparse.ArgumentParser(description=__doc__)

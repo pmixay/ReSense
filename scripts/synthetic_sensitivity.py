@@ -66,7 +66,8 @@ def sequence_cases(protocol, split):
         for distance in settings["distances_m"]:
             for side, lateral in enumerate(shape["laterals_m"]):
                 cases.append({"name": f"{shape['name']}_{distance:g}m_{side}", "positive": True,
-                              "kind": shape["kind"], "size_m": [v * settings["size_scale"] for v in shape["size_m"]],
+                              "kind": shape["kind"], "size_m": [v * (settings["size_scale"] if scaled else 1.0)
+                                         for v, scaled in zip(shape["size_m"], shape.get("scale_axes", [True] * 3))],
                               "distance_m": distance, "lateral_m": lateral,
                               "yaw_deg": settings["yaw_degrees"][side]})
     for control in protocol["negative_controls"]:
@@ -76,6 +77,16 @@ def sequence_cases(protocol, split):
         case["seed"] = settings["seed"] + index * 100
         case["floor_z"] = settings["geometry"]["floor_z"]
         case["axis_y"] = settings["geometry"]["axis_y"]
+        if "physical_geometry" in protocol:
+            from scripts.synthetic_geometry import audit_case
+            physical = audit_case(case)
+            if case["positive"] and (not physical["body_intersects_envelope_interior"]
+                    or physical["vertical_envelope_overlap_m"] + 1e-10
+                    < protocol["physical_geometry"]["minimum_positive_vertical_overlap_m"]):
+                raise ValueError(f"positive mesh lacks registered envelope margin: {case['name']}")
+            if case.get("geometry_expectation") == "entire_body_below_rail_head" and not physical["entire_body_below_rail_head"]:
+                raise ValueError(f"below-rail control crosses physical rail head: {case['name']}")
+            case["physical_geometry"] = physical
     return cases
 
 
@@ -140,10 +151,12 @@ def generate(args):
     manifest = {"schema": "resense.synthetic_sequence_cache.v1", "synthetic": True,
                 "protocol_sha256": file_hash(args.protocol), "protocol": protocol, "split": args.split,
                 "candidate_freeze": frozen, "generator": source, "frozen_role": role,
-                "evaluator_sha256": file_hash(__file__), "cases": []}
+                "evaluator_sha256": file_hash(__file__),
+                "geometry_auditor_sha256": file_hash(ROOT / "scripts/synthetic_geometry.py") if "physical_geometry" in protocol else None,
+                "cases": []}
     if manifest_path.exists():
         old = json.loads(manifest_path.read_text())
-        for key in ("schema", "protocol_sha256", "split", "candidate_freeze", "evaluator_sha256"):
+        for key in ("schema", "protocol_sha256", "split", "candidate_freeze", "evaluator_sha256", "geometry_auditor_sha256"):
             if old.get(key) != manifest[key]:
                 raise ValueError(f"existing cache has different {key}; use a fresh output directory")
         if old["generator"]["files"]["resense/synthetic.py"] != manifest["generator"]["files"]["resense/synthetic.py"]:
@@ -271,7 +284,9 @@ def evaluate(args):
               "runtime": {"python": platform.python_version(), "numpy": np.__version__,
                           "native": _native.status(), "native_library_sha256": file_hash(_native.LIBRARY) if _native.LIBRARY else None},
               "evaluator_sha256": file_hash(__file__),
-              "cache_generator_script_sha256": manifest["evaluator_sha256"], "cases": []}
+              "cache_generator_script_sha256": manifest["evaluator_sha256"],
+              "geometry_auditor_sha256": file_hash(ROOT / "scripts/synthetic_geometry.py") if "physical_geometry" in protocol else None,
+              "cache_geometry_auditor_sha256": manifest.get("geometry_auditor_sha256"), "cases": []}
     for case in manifest["cases"]:
         detectors = {name: Detector(cfg) for name in ("float32", "compact16")}
         outputs = {name: [] for name in detectors}
@@ -281,14 +296,19 @@ def evaluate(args):
                 raise ValueError(f"changed cache file {row['file']}")
             with np.load(path, allow_pickle=False) as saved:
                 raw = saved["points"]
-                returns = int(np.count_nonzero(saved["target_mask"]))
+                target_mask = saved["target_mask"]
+                returns = int(np.count_nonzero(target_mask))
             packed = compact_to_compact16(raw)
             if len(raw) != len(packed):
                 raise ValueError("encoding pair dropped points")
             for encoding, array in (("float32", raw), ("compact16", packed)):
                 frame = frame_from_compact(array, cfg.sensor, stamp=row["stamp_s"])
                 result = detectors[encoding].process(frame)
-                outputs[encoding].append(observation(result, case, returns, row["index"], row["stamp_s"], protocol["matching"]))
+                saved_row = observation(result, case, returns, row["index"], row["stamp_s"], protocol["matching"])
+                if "physical_geometry" in case:
+                    from scripts.synthetic_geometry import physical_return_count
+                    saved_row["target_returns_in_physical_envelope"] = physical_return_count(array, target_mask, cfg.sensor, case)
+                outputs[encoding].append(saved_row)
         report["cases"].append({"case": {k: v for k, v in case.items() if k != "frames"},
                                 "input_sha256": json_hash(case["frames"]),
                                 "encodings": {name: {"metrics": sequence_metrics(rows, protocol["metrics"]), "rows": rows}

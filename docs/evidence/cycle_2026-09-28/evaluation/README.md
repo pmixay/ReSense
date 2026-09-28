@@ -115,3 +115,42 @@ score. [The independent geometry/stage audit](diagnosis-v1.md) distinguishes phy
 intrusion from sampled returns and explains all 13 misses. It preserves the original protocol,
 labels and results. All 448 traced outputs match the saved baseline after timing-only fields
 are excluded.
+
+## V2 registered before new generation
+
+[`protocol_v2.json`](protocol_v2.json) is a separate prospective amendment. `protocol.json`
+remains the CLI default so old commands reproduce v1; **pass `--protocol` explicitly for v2**.
+No v2 cloud or detector outcome was observed before this amendment was committed.
+
+Both low shapes now have 0.36 m height, giving 0.06 m of vertical envelope penetration above
+the actual 0.18 m rails. `compact_box30` names the 0.30 × 0.30 m footprint; it is not a cube.
+The reserved split scales these two footprints by 0.9 while preserving their height. The other
+registered shape scaling, seeds, geometry and acceptance stay unchanged. Four negative controls
+include a new central 0.30 × 0.30 × 0.10 m bed object whose top is 0.08 m below the rail head.
+There are 36 sequences per split, 32 positive and four negative.
+
+[`geometry-audit-v2.json`](geometry-audit-v2.json) records physical rail-head height, mesh top
+and interior overlap for every case. Case expansion refuses positives without the registered
+0.05 m minimum vertical overlap or a below-rail control that crosses the rail head. Generation
+stores this audit in each case; evaluation additionally records per-frame counts of target
+returns inside the known physical envelope, separately from all visible target returns.
+No detector fit supplies those measurements. Auditing reserved parameter geometry does not
+raycast reserved clouds or reveal detector outputs.
+
+New development commands, to run only after the registration commit:
+
+```sh
+python3 scripts/synthetic_sensitivity.py generate --split development \
+  --protocol docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json \
+  --output /cycle/synthetic/development-v2
+python3 scripts/synthetic_sensitivity.py evaluate \
+  --protocol docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json \
+  --cache /cycle/synthetic/development-v2 \
+  --output /cycle/synthetic/baseline-development-v2.json
+```
+
+Reserved v2 generation remains prohibited until the exact baseline/candidate identities are
+frozen and the full real regression gate passes. The existing `--candidate-freeze` source/config
+guards apply to both generation and replay. A v1 report cannot be compared to v2: protocol
+hashes differ. Reused development noise seeds and related synthetic shapes are not independent
+trials or real holdout evidence.
