@@ -167,10 +167,14 @@ per-object, stress, placement and intake records are in
 The table below keeps the raw-recording figures where they differ from cache replay, and marks
 both sources.
 
-Latest independent internal assessment: **66/100** on measured candidate `ef1d8f5`,
-integrated as `84763cf`. The fresh-context reviewer did not read earlier scores.
-[Review by criterion](docs/CHECKPOINT1_REVIEW_2026-09-28.md). Full quality/history
-checks and 841 image tests pass. **Deployment remains provisional:** local 360°
+**Established baseline assessment: 69/100**, from the earlier lead review.
+The current code improves raw rail-object continuity from 123 to 126/126 with no
+quality-gate regression. A separate score-blind reviewer rated the candidate
+**66/100**; different reviewers and evidence do not establish a three-point
+software regression. The same reviewer scores baseline and candidate 66/100 each: **0 whole-point
+change**, alongside the measured continuity improvement.
+[Review history and scope](docs/CURRENT_REVIEW_2026-09-28.md).
+Full quality/history checks and 841 image tests pass. **Deployment remains provisional:** local 360°
 positive playback fails freshness and 100 ms decode-plus-detect p95 (candidate
 125 ms, baseline 137 ms); the 120° clear run passes with 252 frames, zero alarms,
 and p95 93 ms. Final candidate CI is pending.

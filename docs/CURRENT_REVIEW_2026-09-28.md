@@ -1,17 +1,24 @@
 # Current project review — 28 September 2026
 
-**Latest independent checkpoint: 66/100.** The full current assessment is
-[Checkpoint 1](CHECKPOINT1_REVIEW_2026-09-28.md), a fresh-context GPT-6 Astra review
-that excluded previous scores. The measured continuity candidate `ef1d8f5` is now
-integrated into the development branch as `84763cf`. Quality acceptance passes;
-deployment remains provisional because full-rate local positive ROS playback
-fails freshness and latency for candidate and baseline. Final candidate CI is pending.
+**Established baseline rating: 69/100.** That assessment remains the historical
+reference for the branch; it was an internal judgment, not an automated test score.
 
-The earlier 69-point lead review below is preserved with its source and scope.
-The new reviewer gives stricter range/generalization/runtime deductions using the
-reserved synthetic and local runtime evidence. The measured continuity improvement
-is 123 to 126/126 raw rail-object STOP frames, with no new negative alarms in the
-full gate or 33 paired histories.
+A separate fresh-context Astra reviewer gave the candidate **66/100** in
+[Checkpoint 1](CHECKPOINT1_REVIEW_2026-09-28.md). It used stricter deductions and
+new reserved/runtime evidence. Presenting that score as a replacement for 69 was
+a reporting error: unlike reviewers cannot establish a three-point code regression.
+Both reviews are retained. The subsequent
+[same-reviewer paired comparison](evidence/cycle_2026-09-28/checkpoint1_astra_paired.md)
+gives baseline 66 and candidate 66: zero whole-point change, with the narrow
+continuity gain explicitly credited.
+
+The actual measured improvement is raw rail-object STOP coverage **123 to 126/126**
+after frame 75, with unchanged person recall and no quality-gate regression.
+Measured candidate `ef1d8f5` is integrated as `84763cf`; all 33 paired histories have
+identical negative outputs. Deployment remains provisional because full-rate local
+positive ROS playback fails freshness and latency for candidate and baseline.
+Final candidate CI is pending. The earlier lead review follows with its source
+and original scope.
 
 ---
 
