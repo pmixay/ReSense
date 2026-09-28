@@ -47,3 +47,9 @@ This is the unchanged baseline detector, before candidate integration. A final
 candidate image still needs its own suite and ROS replay checks. Both registered
 protocol versions are now included by the Dockerfile and build context exceptions;
 the v2 addition follows the baseline image build above.
+
+The revised evaluator also passes all 40 focused checks using that freshly
+installed baseline package, with current source tests mounted read-only outside
+the working directory (`image_observer_tests.txt`). This includes installed-package
+import layout and explicit measured-source guards. The two warnings concern only
+pytest's inability to write its cache into the read-only test mount.
