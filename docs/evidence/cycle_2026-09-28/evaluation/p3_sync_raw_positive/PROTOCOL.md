@@ -16,14 +16,22 @@ window/minimum remain 3/2. No settings will be tuned using the results.
 
 Replay all original 201 `doubleT_obstacle` frames in message order, preserving raw
 float returns, channel IDs, source frame indices, frame IDs and timestamps. Each
-configuration uses a fresh detector and an independent copy of each frame. No
+timestamp is `PointCloud2.header.stamp`, as in the ROS node. Use the committed
+`replay_node_frames.bag_frames` decoder (`pointcloud2_to_arrays`), not the generic
+receive-time/compact-array reader. The divergence test writes a two-message bag
+whose header interval is 0.1 s and receive interval is 0.7 s and checks exact raw
+coordinates, intensities, channel IDs and header times. This repair was registered
+before any real replay; there is no receive-time four-config result to discard.
+Each configuration uses a fresh detector and an independent copy of each frame. No
 cache quantization, subsampling, injected targets, observer masks or oracle
 coordinates enter the detector.
 
 Source files must match the exact expected commit before replay. Preserve the
 source inventory, effective configurations, source/import paths, native backend,
 input/label hashes, per-frame input array hashes and observer hash. Verify source,
-input, labels, native binary and observer/dependency hashes again after replay.
+labels and reader/dependency files against their blobs in the measured commit.
+Verify source, input, labels, native binary and observer/dependency hashes again
+after replay.
 Require the native backend active from the selected checkout, with exact binary
 SHA256 `b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534`.
 The observer requires exact 0–200 coverage and matching identities across variants.

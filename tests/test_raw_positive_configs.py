@@ -1,7 +1,9 @@
 """Audit guards for the source-bound four-config positive observer."""
 import pytest
 
-from scripts.compare_raw_positive_configs import compare, sha, unmatched_pairs, validate_alignment, validate_native
+from scripts.compare_raw_positive_configs import (
+    compare, node_raw_frames, sha, unmatched_pairs, validate_alignment, validate_native,
+)
 
 
 def row(frame, *, stamp=None, matches=(), detections=()):
@@ -44,3 +46,45 @@ def test_native_guard_rejects_inactive_wrong_hash_or_external_binary(tmp_path):
         validate_native(native, "native (native.so)", "wrong", tmp_path)
     with pytest.raises(ValueError, match="origin/hash"):
         validate_native(native, "native (native.so)", expected, tmp_path / "other")
+
+
+def test_raw_reader_preserves_header_clock_when_receive_intervals_diverge(tmp_path, monkeypatch):
+    """A real two-message bag makes receive-time substitution observably wrong."""
+    from pathlib import Path
+    import numpy as np
+    from rosbags.rosbag2 import Writer
+    from rosbags.typesys import Stores, get_typestore
+    from resense.config import DetectorConfig
+    from resense.frame import axis_matrix
+    from resense.io import iter_bag_frames
+
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[1] / "scripts"))
+    ts = get_typestore(Stores.ROS2_HUMBLE)
+    PointField = ts.types["sensor_msgs/msg/PointField"]
+    PointCloud = ts.types["sensor_msgs/msg/PointCloud2"]
+    Header = ts.types["std_msgs/msg/Header"]
+    Time = ts.types["builtin_interfaces/msg/Time"]
+    arr = np.array([(12.345, 1.234, -0.567, 17.25, 127)],
+                   dtype=[("x", "<f4"), ("y", "<f4"), ("z", "<f4"),
+                          ("intensity", "<f4"), ("ring", "<u2")])
+    fields = [PointField(name, offset, kind, 1) for name, offset, kind in (
+        ("x", 0, 7), ("y", 4, 7), ("z", 8, 7), ("intensity", 12, 7), ("ring", 16, 4))]
+    topic = "/lidar"
+    bag = tmp_path / "clock_divergence"
+    with Writer(bag, version=9) as writer:
+        connection = writer.add_connection(topic, "sensor_msgs/msg/PointCloud2", typestore=ts)
+        for ns, received in ((0, 200_000_000_000), (100_000_000, 200_700_000_000)):
+            msg = PointCloud(Header(Time(100, ns), "source_lidar"), 1, 1, fields, False,
+                             arr.itemsize, arr.itemsize, np.frombuffer(arr.tobytes(), dtype=np.uint8), True)
+            writer.write(connection, received, ts.serialize_cdr(msg, "sensor_msgs/msg/PointCloud2"))
+    cfg = DetectorConfig()
+    frames = list(node_raw_frames(bag, cfg, topic))
+    receive_frames = list(iter_bag_frames(str(bag), cfg.sensor, topic=topic))
+    assert [frame.stamp for _, frame in receive_frames] == [200., 200.7]
+    assert [frame.stamp for _, frame in frames] == [100., 100.1]
+    assert [i for i, _ in frames] == [0, 1]
+    assert [frame.frame_id for _, frame in frames] == ["source_lidar"] * 2
+    expected_xyz = np.array([[12.345, 1.234, -0.567]], np.float32) @ axis_matrix(cfg.sensor).astype(np.float32).T
+    np.testing.assert_array_equal(frames[0][1].xyz, expected_xyz)
+    np.testing.assert_array_equal(frames[0][1].ring, [127])
+    np.testing.assert_array_equal(frames[0][1].intensity, [17.25])

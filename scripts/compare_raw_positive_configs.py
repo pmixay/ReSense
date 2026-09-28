@@ -45,6 +45,12 @@ def validate_native(library, status, expected, root):
     return path
 
 
+def node_raw_frames(bag, config, topic):
+    """Reuse the selected source's ROS-equivalent header-stamp and float-array reader."""
+    from replay_node_frames import bag_frames
+    yield from bag_frames(bag, config, topic, [], True)
+
+
 def intervals(frames):
     out = []
     for frame in frames:
@@ -163,8 +169,10 @@ def main():
     import resense.detector
     from resense.config import DetectorConfig
     from resense.detector import Detector
-    from resense.io import iter_bag_frames
     from resense.metrics import _assign_detections, gt_objects, load_gt
+    import replay_node_frames
+    if Path(replay_node_frames.__file__).resolve() != root / "scripts/replay_node_frames.py":
+        raise ValueError("raw ROS reader imported outside selected source")
     for module in list(sys.modules.values()):
         name = getattr(module, "__name__", "")
         filename = getattr(module, "__file__", None)
@@ -184,9 +192,15 @@ def main():
         if hashlib.sha256(git("show", f"{args.expect_commit}:{path}")).hexdigest() != checksum:
             raise ValueError(f"production file differs from expected commit: {path}")
     runner_sha = sha(__file__)
-    observer_hashes = {"detector_freeze.py": sha(root / "scripts/detector_freeze.py")}
+    observer_hashes = {name: sha(root / "scripts" / name) for name in (
+        "detector_freeze.py", "replay_node_frames.py", "check_dry_run.py")}
+    for path, checksum in observer_hashes.items():
+        if hashlib.sha256(git("show", f"{args.expect_commit}:scripts/{path}")).hexdigest() != checksum:
+            raise ValueError(f"observer dependency differs from expected commit: {path}")
     labels = args.labels or root / "labels/doubleT_obstacle.json"
     labels_sha = sha(labels)
+    if labels_sha != hashlib.sha256(git("show", f"{args.expect_commit}:labels/doubleT_obstacle.json")).hexdigest():
+        raise ValueError("labels do not match the committed doubleT_obstacle annotations")
     label_payload = json.loads(labels.read_text())
     if label_payload["_meta"]["frames"] != 201 or label_payload["_meta"]["bag"] != "doubleT_obstacle":
         raise ValueError("expected original 201-frame doubleT_obstacle labels")
@@ -209,7 +223,8 @@ def main():
                       "import": resense.detector.__file__, "native": str(native_path),
                       "configs": {k: v["sha256"] for k, v in configs.items()}}), flush=True)
     manifest = []
-    for index, frame in iter_bag_frames(str(args.bag), base.sensor):
+    topic = label_payload["_meta"]["topic"]
+    for index, frame in node_raw_frames(args.bag, base, topic):
         parts = {key: None if getattr(frame, key) is None else hashlib.sha256(getattr(frame, key).tobytes()).hexdigest()
                  for key in ("xyz", "intensity", "ring")}
         manifest.append({"frame": index, "stamp": frame.stamp, "frame_id": frame.frame_id,
@@ -236,6 +251,8 @@ def main():
                          "import": resense.detector.__file__, "unchanged_at_end": True},
               "runner_sha256": runner_sha, "observer_dependencies": observer_hashes,
               "inputs": {"bag": str(args.bag), "files": inputs, "labels_sha256": labels_sha,
+                         "topic": topic, "timestamp_source": "PointCloud2.header.stamp",
+                         "decoder": "replay_node_frames.bag_frames/pointcloud2_to_arrays",
                          "manifest_sha256": digest(manifest), "manifest": manifest},
               "runtime": {"python": sys.version, "native": str(native_path), "native_sha256": native_sha,
                           "backend_status": _native.status(),
