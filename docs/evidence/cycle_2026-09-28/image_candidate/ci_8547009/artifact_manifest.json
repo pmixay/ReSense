@@ -1,0 +1,55 @@
+{
+  "schema": "resense-evidence-artifacts-v1",
+  "source_commit": "854700995ac93f1314d1c62e94c7b00c89ddd986",
+  "ci_run_id": 36467904812,
+  "files": {
+    "README.md": {
+      "sha256": "d951f9798ea90e918c129088532e0b53d13d3d1cfb2323dfcd86662f17c60e1f",
+      "bytes": 1773
+    },
+    "clear_check.txt": {
+      "sha256": "0bbf636315b13df91732c2aa1be4f2f6ea795f7c94fd3d9ab54ff97826626c91",
+      "bytes": 857
+    },
+    "clear_node.txt": {
+      "sha256": "6f15e89284a1be18f9928f22b269f76400390d7efd419a907bf447c98b77471c",
+      "bytes": 4387
+    },
+    "clear_status.jsonl.gz": {
+      "sha256": "868d70f821939b19dc5dead0eb322839efc9efde04adeba714e5f4181fe26f52",
+      "bytes": 59634
+    },
+    "fast_input.json": {
+      "sha256": "bc012b9d1e95f2405fbc690cacf14968f314085964724e4d9653a40022579007",
+      "bytes": 705
+    },
+    "fast_input.txt": {
+      "sha256": "0cdf901259086f5aba220d43de6bafe0b7a03a8972a4d835f177fa71e37b9956",
+      "bytes": 416
+    },
+    "positive_check.txt": {
+      "sha256": "b6ced824012efdb6a6a1a7b81b372f4b65e4869138f3399a1aa4e9d03325173b",
+      "bytes": 1088
+    },
+    "positive_label_match.json": {
+      "sha256": "524173adb2b0fac601cc44bdb8b0c25baec0dc144dfc30ed8effd4d77afaa69f",
+      "bytes": 7073
+    },
+    "positive_node.txt": {
+      "sha256": "8a856eb3639122c1925516c510774b216b8e5326e6af8c1a806e6b4ac72fbd37",
+      "bytes": 4509
+    },
+    "positive_status.jsonl.gz": {
+      "sha256": "07510f06d46021dc41c711c594321e3fc56a42d7e0aad850a95e2d7a32cfb718",
+      "bytes": 42383
+    },
+    "provenance.txt": {
+      "sha256": "cd1db2e48f0b9abd056ff327f35d2558d14fae72872e74ed81ce396c352ff6e8",
+      "bytes": 899
+    },
+    "result.txt": {
+      "sha256": "fc311bdfdb47ef63ee89c35b9d1ee86c30580ca3e0315df3e341472ab16e5e16",
+      "bytes": 173
+    }
+  }
+}
