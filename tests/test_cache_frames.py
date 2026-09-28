@@ -18,6 +18,36 @@ def _points(x):
     return out
 
 
+def test_real_standalone_split_matches_directory_and_preserves_selection(tmp_path):
+    """The streaming ride intake hands the reader a DB3 without metadata.yaml."""
+    from rosbags.typesys import Stores, get_typestore
+
+    from resense.io import iter_bag_compact
+    from scripts.make_smoke_bag import FRAME_ID, make_message, write_bag
+
+    bag = tmp_path / "tiny"
+    ts = get_typestore(Stores.ROS2_HUMBLE)
+    t0 = 1_700_000_000_000_000_000
+    period = 100_000_000
+    xyz = np.array([[1, 2, 3], [4, 5, 6]], dtype=np.float32)
+    messages = [make_message(ts, xyz + i, np.array([10, 20], dtype=np.float32),
+                             np.array([2, 3], dtype=np.uint16), t0 + i * period,
+                             i * 0.1, np.random.default_rng(i)) for i in range(4)]
+    write_bag(str(bag), messages, t0, period)
+    expected = list(iter_bag_compact(str(bag), start=1, every=2, limit=2))
+    (bag / "metadata.yaml").unlink()
+    split = next(bag.glob("*.db3"))
+    actual = list(iter_bag_compact(str(split), start=1, every=2, limit=2))
+    assert [row[0] for row in actual] == [1, 3]
+    for got, want in zip(actual, expected, strict=True):
+        assert got[:3] == want[:3]
+        assert got[1] == (t0 + got[0] * period) / 1e9
+        assert got[2] == FRAME_ID
+        np.testing.assert_array_equal(got[3], want[3])
+    with pytest.raises(RuntimeError, match="no PointCloud2 topic"):
+        list(iter_bag_compact(str(split), topic="/absent"))
+
+
 def test_compressed_split_cache_writes_readable_frames_and_stamp_manifest(tmp_path, monkeypatch):
     frames = [
         (0, 100.0, "lidar", _points(1.0)),
