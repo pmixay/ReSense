@@ -1,5 +1,7 @@
 # Criteria Scorecard
 
+*На русском: [SCORECARD.ru.md](SCORECARD.ru.md).*
+
 > **Purpose:** the independent judgement of ReSense against the eight criteria of spec §8: score per
 > criterion, what was measured, the deductions and what would raise each score.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, summary RU

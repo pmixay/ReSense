@@ -1,5 +1,7 @@
 # Evaluation Protocol
 
+*На русском: [EVALUATION.ru.md](EVALUATION.ru.md).*
+
 > **Purpose:** what "better" means for ReSense — data sets, metrics, procedure and targets —
 > written once so that the detector is optimised against it, `resense/metrics.py` and
 > `resense eval` implement it, and the jury's criteria (spec §8) map onto numbers we report.

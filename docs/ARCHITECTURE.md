@@ -1,5 +1,7 @@
 # Architecture
 
+*На русском: [ARCHITECTURE.ru.md](ARCHITECTURE.ru.md).*
+
 > **Purpose:** components, data flow, the ROS node, timing, delivery and CI of ReSense (spec §5
 > "Архитектура"). The algorithm itself: [`ALGORITHM.md`](ALGORITHM.md).
 > **Audience:** jury, team · **Owner:** P1 · **Language:** EN, summary RU

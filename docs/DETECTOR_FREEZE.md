@@ -1,5 +1,7 @@
 # Detector Freeze
 
+*На русском: [DETECTOR_FREEZE.ru.md](DETECTOR_FREEZE.ru.md).*
+
 > **Purpose:** what is sealed, how the seal is verified, the gate that validates it, and how a
 > detector change would be accepted.
 > **Audience:** team, jury · **Owner:** P1 (seal), P3 (detector) · **Language:** EN

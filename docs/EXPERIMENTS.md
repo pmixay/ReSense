@@ -1,5 +1,7 @@
 # Experiments
 
+*На русском: [EXPERIMENTS.ru.md](EXPERIMENTS.ru.md).*
+
 > **Purpose:** the measured results of ReSense for spec §5 «Эксперименты»: at what distance
 > obstacles are detected, processing latency, frame rate, false alarms, hard situations, how the
 > quality changed, and what was tried and not shipped (negative results included).

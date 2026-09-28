@@ -1,5 +1,7 @@
 # Documentation Index
 
+*На русском: [README.ru.md](README.ru.md).*
+
 > **Purpose:** every document of the repository, what it is for, who reads and maintains it, and
 > the terms they share.
 > **Audience:** jury, team · **Owner:** P1 · **Language:** EN
@@ -92,3 +94,6 @@ The same in Russian, as a user guide: **[resense.gitbook.io/resense-docs](https:
 * Every number with its kind (real / synthetic), in-sample or held out, and its evidence path.
 * "EXPERIMENTS §x" in code comments and older records refers to the archived full log,
   [`archive/EXPERIMENTS_log_2026-09.md`](archive/EXPERIMENTS_log_2026-09.md).
+* Russian translations sit next to the originals as `<NAME>.ru.md` (README, ARCHITECTURE, ALGORITHM,
+  EXPERIMENTS, EVALUATION, DECISIONS, DATASET, SENSOR, SCORECARD, DETECTOR_FREEZE and this index); the
+  English original is authoritative and is updated first.

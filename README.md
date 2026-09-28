@@ -1,5 +1,7 @@
 # ReSense — LiDAR obstacle detection in the metro clearance gauge
 
+*На русском: [README.ru.md](README.ru.md).*
+
 [![ci](https://github.com/pmixay/ReSense/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/pmixay/ReSense/actions/workflows/ci.yml)
 · LCT 2026, case 05 (Moscow Metro) · team «Молоток» · package 1.0.0 ·
 **User guide (RU): [resense.gitbook.io/resense-docs](https://resense.gitbook.io/resense-docs/)**

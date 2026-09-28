@@ -1,5 +1,7 @@
 # Key Decisions
 
+*На русском: [DECISIONS.ru.md](DECISIONS.ru.md).*
+
 > **Purpose:** the key decisions of ReSense on one page: the question, what was measured, the
 > result, the decision and where the evidence is. Dated log: [`CAPTAIN.md`](CAPTAIN.md) §9;
 > every number: the full experiment log [`archive/EXPERIMENTS_log_2026-09.md`](archive/EXPERIMENTS_log_2026-09.md).

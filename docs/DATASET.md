@@ -1,5 +1,7 @@
 # Dataset Notes
 
+*На русском: [DATASET.ru.md](DATASET.ru.md).*
+
 > **Purpose:** the organizers' data: the recordings, their topics, formats and point budget, the
 > labels, the frame cache, the synthetic-obstacle injector and the intake recipe for a new bag.
 > **Audience:** team, jury · **Owner:** P4 · **Language:** EN, summary RU

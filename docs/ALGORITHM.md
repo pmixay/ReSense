@@ -1,5 +1,7 @@
 # Algorithm
 
+*На русском: [ALGORITHM.ru.md](ALGORITHM.ru.md).*
+
 > **Purpose:** how ReSense decides that the path ahead is blocked, stage by stage, structured
 > after spec §5 "Описание алгоритма": problem → input data → point-cloud processing → decision
 > rule → parameters → limitations. Code comments cite the section numbers: keep them.

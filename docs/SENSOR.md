@@ -1,5 +1,7 @@
 # Sensor: Hesai Pandar128 (E3X)
 
+*На русском: [SENSOR.ru.md](SENSOR.ru.md).*
+
 > **Purpose:** what the LiDAR that recorded the organizers' data is and can do, from its manual and
 > from the recordings, and what that implies for the detector and the evaluation.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, summary RU
