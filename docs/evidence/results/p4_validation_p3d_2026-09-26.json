@@ -45,7 +45,7 @@
   },
   {
    "name": "edited-document local links",
-   "command": "Resolve local Markdown links in README.md, docs/EXPERIMENTS.md, docs/P4_AUDIT.md, docs/SCORECARD.md, docs/evidence/README.md",
+   "command": "Resolve local Markdown links in README.md, docs/archive/EXPERIMENTS_log_2026-09.md, docs/archive/P4_AUDIT.md, docs/SCORECARD.md, docs/evidence/README.md",
    "result": "PASS: all local links resolve."
   },
   {

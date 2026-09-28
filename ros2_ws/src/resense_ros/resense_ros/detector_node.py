@@ -91,11 +91,17 @@ input queue holds ``input_queue_depth`` frames and every frame waiting is taken;
 is processed at once. Short backlogs spanning at most ``catchup_step`` are processed in full;
 longer live backlogs are worked through ``catchup_step`` s of recording apart (the ones in between
 skipped, none older than ``catchup_max_lag`` s behind the newest). On the first backlog of a new
-recording, the node instead preserves every observed input-period frame within the startup lag
-allowance: cold-disk bag playback can deliver the whole recording overdue, and thinning it to
-``catchup_step`` can leave it behind until playback ends. The startup allowance closes when that
-first catch-up drains, or after 1 s without a catch-up starting; later stalls retain the normal
-5 s limit. ``catchup_step: 0`` keeps the newest-only behavior.
+recording (the player's start-up burst, ~0.7 s of recording with ``--read-ahead-queue-size 10``,
+the whole recording from a cold disk) the node takes frames ``catchup_startup_step`` (0.2 s) apart,
+the 5 Hz input the detector is validated on, within the start-up lag allowance
+(``catchup_startup_max_lag``), so the chain never has a gap that resets the scene. The start-up
+allowance closes when that first catch-up drains, or after 1 s without a catch-up starting; later
+stalls retain the normal 5 s limit. ``catchup_startup_step: 0`` preserves every input-period frame
+(the 26.09 behaviour); ``catchup_step: 0`` keeps the newest-only behavior.
+
+Warm-up (29.09, ``warmup``): before it logs "listening", the node runs the decode and a
+throwaway detector on three synthetic frames, so the first real frame does not pay first-call
+costs. The node's own detector starts from the first real frame.
 
 The static TF exists so that one RViz / Foxglove layout works for every bag: the organizers'
 bags carry different ``frame_id`` values (``hesai_lidar``, ``lidar_livox``); the layouts use
@@ -131,6 +137,7 @@ import os
 import resource
 import time
 import traceback
+from types import SimpleNamespace
 
 import numpy as np
 import rclpy
@@ -150,7 +157,6 @@ from resense import __version__ as RESENSE_VERSION, _native
 from resense.config import DetectorConfig
 from resense.detector import Detector, FrameResult
 from resense.frame import Frame, axis_matrix
-from resense.pointcloud import pointcloud2_to_arrays
 
 from resense_ros import fastcloud
 
@@ -232,6 +238,15 @@ class DetectorNode(Node):
                                                               # 0 = always the newest (the v0.6.3 behaviour)
         self.declare_parameter("catchup_max_lag", 5.0)        # s: waiting frames older than the newest by more are dropped
         self.declare_parameter("catchup_startup_max_lag", 20.0)  # s: extra allowance for a recording's initial burst
+        # --- 29.09: a recording's first backlog (the player's start-up burst) is worked through at most
+        # every catchup_startup_step s of recording - 0.2 s = every other frame of a 10 Hz sensor, the
+        # 5 Hz input the detector is validated on (EXPERIMENTS 1g) - instead of every frame: at ~70 ms a
+        # frame a node working every frame gains only ~30 ms per frame on a 100 ms period and needed
+        # ~2 s to get current after a 0.7 s burst. 0 = every input-period frame (the 26.09 behaviour).
+        self.declare_parameter("catchup_startup_step", 0.2)
+        # --- 29.09: run the decode and a throwaway detector on synthetic frames before listening, so the
+        # first real frame does not pay the first-call costs (imports, allocations: +55 ms measured)
+        self.declare_parameter("warmup", True)
         # --- v0.6.2: reliability of the input subscription. A 360-degree cloud is ~10 MB, i.e. ~160 UDP
         # fragments; best-effort loses the whole message with any fragment (measured in Docker with
         # `ros2 bag play` of doubleT_obstacle: 5 of 201 frames delivered best-effort, 174+ reliable).
@@ -285,6 +300,8 @@ class DetectorNode(Node):
         self.catchup_step = self.get_parameter("catchup_step").get_parameter_value().double_value
         self.catchup_max_lag = self.get_parameter("catchup_max_lag").get_parameter_value().double_value
         self.catchup_startup_max_lag = self.get_parameter("catchup_startup_max_lag").get_parameter_value().double_value
+        self.catchup_startup_step = max(
+            0.0, self.get_parameter("catchup_startup_step").get_parameter_value().double_value)
         self.startup_catchup_active = False
         self.startup_catchup_until = 0.0  # first cloud may arrive alone just before the preload burst
         self.pending = []              # (topic, msg) taken from the input queues, not processed yet, oldest first
@@ -366,6 +383,8 @@ class DetectorNode(Node):
             self.discover_timer = self.create_timer(max(dp, 0.5), self.on_discover)
         self.qos_timer = (self.create_timer(1.0, self.on_match_qos)
                           if self.input_reliability not in ("reliable", "best_effort") else None)
+        if self.get_parameter("warmup").get_parameter_value().bool_value:
+            self.warm_up()
         self.get_logger().info("ReSense detector listening on " + ", ".join(self.subs)
                                + (" (+ auto-discovery)" if self.discover_timer else "")
                                + f"; input reliability {self.input_reliability}; per-frame kernels: {_native.status()}"
@@ -373,6 +392,59 @@ class DetectorNode(Node):
         self.check_socket_buffers()
 
     # ------------------------------------------------------------------
+    @staticmethod
+    def synthetic_cloud(R_vs: np.ndarray, n_slots: int = 921_600, seed: int = 0):
+        """A PointCloud2-shaped cloud in the organizers' 26-byte layout (x, y, z, intensity float32,
+        ring uint16, timestamp float64): a straight tunnel - bed, rails, walls, vault - and a box
+        on the track 40 m ahead, in the sensor frame of ``R_vs``; two of three slots empty, as in
+        the dual-return recordings. Only the warm-up uses it."""
+        rng = np.random.default_rng(seed)
+        m = n_slots // 3
+        x = rng.uniform(2.0, 150.0, m)
+        part = rng.integers(0, 5, m)
+        y = np.select([part == 0, part == 1, part == 2, part == 3],
+                      [rng.uniform(-1.5, 1.5, m), rng.choice([-0.795, 0.795], m), -2.4 + 0 * x, 2.4 + 0 * x],
+                      rng.uniform(-2.4, 2.4, m))
+        z = np.select([part == 0, part == 1, part >= 2],
+                      [-1.25 + 0 * x, -1.075 + 0 * x, rng.uniform(-1.25, 3.5, m)])
+        z[part == 4] = 3.5
+        box = (x > 40.0) & (x < 40.6) & (np.abs(y) < 0.5)
+        z[box] = rng.uniform(-1.2, 0.3, int(box.sum()))
+        pts = np.c_[x, y, z] @ R_vs                       # vehicle -> sensor (R_vs rotates sensor -> vehicle)
+        dt = np.dtype({"names": ["x", "y", "z", "intensity", "ring", "timestamp"],
+                       "formats": ["<f4", "<f4", "<f4", "<f4", "<u2", "<f8"],
+                       "offsets": [0, 4, 8, 12, 16, 18], "itemsize": 26})
+        arr = np.zeros(n_slots, dt)
+        slots = rng.choice(n_slots, m, replace=False)
+        for k, name in enumerate("xyz"):
+            arr[name][slots] = pts[:, k]
+        arr["intensity"][slots] = rng.uniform(0.0, 60.0, m)
+        arr["ring"][slots] = rng.integers(0, 128, m)
+        fields = [SimpleNamespace(name=nm, offset=off, datatype=dtp, count=1) for nm, off, dtp in
+                  (("x", 0, 7), ("y", 4, 7), ("z", 8, 7), ("intensity", 12, 7), ("ring", 16, 4), ("timestamp", 18, 8))]
+        return SimpleNamespace(height=1, width=n_slots, fields=fields, is_bigendian=False, point_step=26,
+                                     row_step=26 * n_slots, data=memoryview(arr.view(np.uint8)), is_dense=False)
+
+    def warm_up(self) -> None:
+        """The decode and a throwaway detector on three synthetic frames, before the first input:
+        the first real frame then costs what the next ones do. The node's own detector is not
+        touched (its scene and mount calibration start from the first real frame); a failure is
+        logged and ignored."""
+        t0 = time.perf_counter()
+        try:
+            cloud = self.synthetic_cloud(self.R_vs)
+            scratch = Detector(self.cfg)
+            for k in range(3):
+                xyz_s, inten, ring, n_raw, n_near = fastcloud.decode(
+                    cloud, self.cfg.sensor.min_range, self.cfg.sensor.max_range)
+                frame = Frame(xyz=xyz_s @ self.R_vs.T.astype(np.float32), intensity=inten, ring=ring,
+                              stamp=0.1 * k, frame_id="warmup", meta={"n_raw": n_raw, "n_near": n_near})
+                res = scratch.process(frame)
+                json.dumps(res.to_dict())
+            self.get_logger().info(f"warm-up: {1e3 * (time.perf_counter() - t0):.0f} ms")
+        except Exception as e:  # noqa: BLE001 - the warm-up is an optimisation only
+            self.get_logger().warn(f"warm-up skipped: {e!r}")
+
     @staticmethod
     def socket_buffer_warning(values: dict, profile: bool = True):
         """The WARN line for the kernel's UDP receive-buffer limits, or None when they are fine.
@@ -639,7 +711,7 @@ class DetectorNode(Node):
         return msg.header.stamp.sec + msg.header.stamp.nanosec * 1e-9
 
     @staticmethod
-    def catchup_plan(stamps, last, step: float, max_lag: float):
+    def catchup_plan(stamps, last, step: float, max_lag: float, thin_short: bool = False):
         """Indices of the waiting frames to process, oldest first; the others are skipped.
 
         ``stamps``: the header stamps of the waiting frames of one input, in arrival order and
@@ -650,7 +722,9 @@ class DetectorNode(Node):
         steps at most ``step`` s of recording - each link the latest frame within ``step`` of the
         previous one, the next frame when none is - from ``last`` (from the first frame at the
         start of an input) to the newest frame; frames older than the newest by more than
-        ``max_lag`` s are dropped first. ``step`` <= 0: the newest frame only."""
+        ``max_lag`` s are dropped first. ``step`` <= 0: the newest frame only. ``thin_short``
+        (a recording's start-up catch-up): a short backlog is chained too, so a node slower than
+        the input keeps ``step`` apart instead of lagging further behind frame by frame."""
         n = len(stamps)
         if n <= 1:
             return list(range(n))
@@ -660,7 +734,7 @@ class DetectorNode(Node):
         if max_lag > 0:
             while i < n - 1 and stamps[i] < stamps[-1] - max_lag:
                 i += 1
-        if stamps[-1] - stamps[i] <= step + 1e-6:
+        if not thin_short and stamps[-1] - stamps[i] <= step + 1e-6:
             return list(range(i, n))
         plan, cur = [], last
         while i < n:
@@ -747,15 +821,17 @@ class DetectorNode(Node):
         if (last is None or self.startup_catchup_active) and 0 < max_lag < self.catchup_startup_max_lag:
             max_lag = self.catchup_startup_max_lag
         step = self.catchup_step
-        if step > 0 and (last is None or self.startup_catchup_active):
+        startup = last is None or self.startup_catchup_active
+        if step > 0 and startup:
             # Do not thin the first cold-disk burst: it may be the whole recording sent overdue,
             # so 0.3 s sampling can keep the node behind until playback has already ended. Use
             # the smallest observed gap as well as the running estimate: the latter may still
             # describe a previous recording with a different sensor rate.
             observed = min((b - a for a, b in zip(stamps, stamps[1:]) if b > a),
                            default=self.input_period)
-            step = min(step, self.input_period, observed)
-        plan = self.catchup_plan(stamps, last, step, max_lag)
+            step = min(step, max(min(self.input_period, observed), self.catchup_startup_step))
+        plan = self.catchup_plan(stamps, last, step, max_lag,
+                                 thin_short=startup and self.catchup_startup_step > 0)
         if len(plan) < n:
             run, self.pending = self.pending[:n], self.pending[n:]
             self.pending[:0] = [run[i] for i in plan]
@@ -819,7 +895,7 @@ class DetectorNode(Node):
         self.begin_freshness(msg, t0)
         self.last_frame_wall = t0
         try:
-            xyz_s, inten, ring, n_raw, n_near = pointcloud2_to_arrays(
+            xyz_s, inten, ring, n_raw, n_near = fastcloud.decode(
                 fastcloud.packed(msg), self.cfg.sensor.min_range, self.cfg.sensor.max_range)
             xyz_v = xyz_s @ self.R_vs.T.astype(np.float32)
             stamp = msg.header.stamp.sec + msg.header.stamp.nanosec * 1e-9
@@ -1255,9 +1331,11 @@ def main(args=None) -> None:
     except KeyboardInterrupt:
         pass
     finally:
+        # Ctrl+C: rclpy's signal handler has already shut the context down, so a plain
+        # rclpy.shutdown() raised "rcl_shutdown already called" and launch reported exit code 1
         executor.shutdown()
         node.destroy_node()
-        rclpy.shutdown()
+        rclpy.try_shutdown()
 
 
 if __name__ == "__main__":

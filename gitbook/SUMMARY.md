@@ -29,6 +29,8 @@
 * [Параметры ноды](reference/node-parameters.md)
 * [Файл конфигурации](reference/configuration.md)
 * [Как это работает](reference/how-it-works.md)
+* [Результаты и ограничения](reference/results.md)
+* [Подход команды](reference/approach.md)
 * [Карта репозитория и документы](reference/repository.md)
 
 ## Разработка

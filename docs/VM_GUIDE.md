@@ -1,143 +1,84 @@
 # VM Guide
 
 > **Purpose:** how a person or an agent on the team's temporary cloud VM prepares it, fetches the
-> organizers' data and runs the checks that need a real machine (8-core bench, dry run with the
-> original bags, stock-player console test, regression gate with the ride, image archive, offline
-> rehearsal), and how the results come back as evidence in a PR. Instructions only: every step is
-> a plain command of the repository's own tools, parameterised by shell variables you set.
+> organizers' data and runs the checks that need a real machine (dry run with the original bags,
+> host consoles, bench, regression gate with the ride, image archive, offline rehearsal), and how
+> the results come back as evidence in a PR. Instructions only: plain commands of the repository's
+> own tools, parameterised by shell variables you set.
 > **Audience:** team (a person or an agent on the VM) · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-28: the image's default command and the release note of §4.5 only;
-> 2026-09-25 against `46bb266`: the ride loop of §2.3 run in the dev sandbox on
-> the first split files of `new_data.zst` (cache files byte-identical to the dev VM's ride cache of
-> 25.09), both download endpoints of §2 answering; the other commands follow the scripts' headers
-> and the README, not yet run on a VM · **Status:** current
+> **Last verified:** 2026-09-29: the procedure against the full VM run of 28.09
+> ([`evidence/vm_2026-09-28/summary.md`](evidence/vm_2026-09-28/summary.md)), the node's start-up,
+> warm-up and shutdown against the launch file and the node, the image's default command against
+> `docker/Dockerfile` · **Status:** current
 
-**26.09 tooling update:** the host ride-cache workflow below uses `rosbags==0.11.5`; the node
-has a separate startup catch-up allowance and the dry-run checker matches recorded header
-stamps directly (§4.1). The sealed baseline's cold/warm/bounded-load results are in
-[freeze evidence](evidence/freeze_2026-09-26/README.md). A later quality cycle adds explicit
-`freshness_mode:=replay` for bag tests; the node's default `live` mode checks acquisition UTC.
-Since 28.09 the image's default command passes `freshness_mode:=replay` itself.
-Rebuild the image before using the updated commands. Current harnesses require freshness
-metadata and at least one valid frame per recording, so an all-FAULT run cannot pass.
-Earlier dated measurements remain evidence for the versions actually run. Release is on hold.
-
-## 0. What the VM is for, and when
+## 0. What the VM is for
 
 The organizers' stand (i7-9700E, 8 cores, Ubuntu 22.04, ROS 2 Humble, Docker) has **no
 internet**, and the team gets **no access** to it before the upload
-([`organizers/answers.md`](organizers/answers.md) §6–§7). The VM stands in for it:
-
-| run | tool | board item ([`CAPTAIN.md`](CAPTAIN.md)) | here |
-|---|---|---|---|
-| data: six recordings, `cloud_with_fake_obj`, the ride's frame cache | `scripts/unpack_dataset.py`, `scripts/cache_frames.py` | action 3 | §2 |
-| clean-machine dry run with the **original** bags | `scripts/dry_run.sh` | C7, action 15 | §4.1 |
-| the organizers' console: stock-DDS player, host console | `PLAYER_DDS=stock scripts/console_test.sh`, `ros2 bag play` | C4 | §4.2 |
-| 8-core bench, native and numpy kernels | `scripts/bench_8core.sh` | C8, action 7 | §4.3 |
-| regression gate with the ride | `scripts/regression_gate.py` | §6 (the gate), action 11 | §4.4 |
-| image archive and its check | `scripts/export_image.sh`, `scripts/load_image.sh` | C25, action 15 | §4.5 |
-| shared-memory mode (opt-in): host console at Ubuntu's `rmem_max` | `docker run … -e RESENSE_DDS=shm`, `ros2 bag play` | C4 | §4.6 |
-| offline rehearsal from the archive | `IMAGE_TAR=… OFFLINE=1 scripts/dry_run.sh` with outbound traffic blocked | C25, action 15 | §5 |
-
-**When** (the captain, 25.09): deployment and the presentation come later. The dry run, the
-bench, the archive and the offline rehearsal run when the team deploys; the data and the gate
-whenever a detector or config change needs the ride. **Releases are deferred** (no tags): the
-archive comes from `scripts/export_image.sh`, not from a release, and no step here pushes a tag.
-The 26.09 completion pass prepares a public offline artifact after the final checks; §4.5
-separates that publication path from this local export procedure.
-
-**What is tested** is the branch or commit the captain names (PR #12 is merged into `main`; use
-the later tested branch if it contains the supported playback procedure). A
-failing criterion is a **finding to report**, with the numbers, not something to fix on the VM:
-no code, config or test changes are made there.
+([`organizers/answers.md`](organizers/answers.md) §6–§7). A cloud VM stands in for it: §1–§3
+prepare it, §4.0 lists every run with its evidence and what PASS looks like. **What is tested** is
+the commit the captain names. A failing criterion is a **finding to report** with its numbers, not
+something to fix on the VM: no code, config or test changes there, and no step here creates or
+pushes a tag. The latest complete run: [`evidence/vm_2026-09-28/summary.md`](evidence/vm_2026-09-28/summary.md).
 
 ## 1. Prerequisites
 
-**The VM.** Ubuntu **22.04** (ROS 2 Humble's packages exist for 22.04 only; on another release
-everything but the host console of §4.2 still runs). For the bench, **8 physical cores**: on
-most clouds a vCPU is one hyper-thread, so 16 vCPU = 8 cores (`lscpu`: `Core(s) per socket` ×
-`Socket(s)`), on a type with the full core (not a burstable or shared-core one); 16 GB RAM or
-more; disk as in §2. Turn on the provider's **serial console** (the way in if SSH breaks, §5) and
-work inside `tmux`, so that long runs survive a dropped connection.
+**The VM.** Ubuntu **22.04** (Humble's packages exist for 22.04 only; elsewhere everything but the
+host consoles runs), 16 GB RAM or more, disk as in §2. A vCPU is usually one hyper-thread
+(`lscpu`: `Core(s) per socket` × `Socket(s)`); the stand has 8 physical cores, and the native path
+met every timing criterion on 4 ([`evidence/bench_2026-09-28/`](evidence/bench_2026-09-28/summary.txt)).
+**Disk speed:** the 360° recording is 4.5 GB for 20 s, ~225 MB/s at rate 1.0; on a slower disk
+(the team VM's network disk read 79 MB/s) the player falls behind real time and stalls, so the
+timed runs read the bags from the page cache or a RAM tmpfs (§3). Turn on the provider's **serial
+console** (the way in if SSH breaks, §5) and work inside `tmux`.
 
-**Variables.** Every command below uses these; set them in each new shell (or in a file you
-`source`):
+**Variables**, set in each new shell (or in a file you `source`):
 
 ```bash
-REPO_URL='<clone URL of the repository>'          # set these two
-BRANCH='<branch or commit named by the captain>'   # name the exact tested source
-REPO=$HOME/ReSense                  # the clone (any directory)
+REPO_URL='<clone URL of the repository>'; BRANCH='<branch or commit named by the captain>'
+REPO=$HOME/ReSense                  # the clone
 DATA=/data                          # bags and caches; mount a data disk here if there is one
 BAGS=$DATA/for_hackathon            # the six recordings (the scripts' default)
 CACHE=$DATA/cache                   # frame caches, read by eval_real.py / regression_gate.py
-EV=$REPO/docs/evidence              # evidence folders <run>_<date>
-DAY=$(date +%F)
+EV=$REPO/docs/evidence; DAY=$(date +%F)   # evidence folders <run>_<date>
 ```
 
-**Packages.** `sudo apt-get update && sudo apt-get install -y git curl zstd tmux build-essential
-python3-venv python3-pip`; `sudo mkdir -p "$DATA" && sudo chown "$(id -u):$(id -g)" "$DATA"`.
+**Packages and Docker.** `sudo apt-get update && sudo apt-get install -y git curl zstd tmux
+build-essential python3-venv python3-pip`; `sudo mkdir -p "$DATA" && sudo chown "$(id -u):$(id -g)"
+"$DATA"`. Docker Engine as [Docker's instructions for Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+describe, with the [post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/)
+(the `docker` group); done when `docker run --rm hello-world` works as your user.
 
-**Docker Engine**, as [Docker's instructions for Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
-describe, then the [post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/)
-(the `docker` group, so that the scripts run without `sudo`). Done when `docker run --rm
-hello-world` works as your user.
+**ROS 2 Humble on the host**, only for the host consoles (§4.2, §4.6): the
+[Debian packages](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html), **naming
+the RMWs**: `sudo apt-get install -y ros-humble-ros-base ros-humble-rmw-fastrtps-cpp
+ros-humble-rmw-cyclonedds-cpp` (with only the CycloneDDS one, a player with `RMW_IMPLEMENTATION`
+unset runs CycloneDDS, not Humble's default Fast DDS). What a player loads: `ros2 topic echo /x
+std_msgs/msg/String & sleep 4; grep -oE 'librmw_[a-z]+_cpp\.so' /proc/$!/maps | sort -u`.
 
-**ROS 2 Humble on the host**, only for the host-console player of §4.2: the
-[Debian-package installation](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html)
-**name the Fast DDS RMW explicitly**: `sudo apt-get install -y ros-humble-ros-base
-ros-humble-rmw-fastrtps-cpp` (plus `ros-humble-rmw-cyclonedds-cpp` for the CycloneDDS variant).
-`ros-humble-rmw-implementation` takes any one RMW, so `ros-base` together with the CycloneDDS package
-installs **no** Fast DDS and a player with `RMW_IMPLEMENTATION` unset then runs CycloneDDS (25.09: the
-second team VM's "Fast DDS" host runs were CycloneDDS). Check which one a player loads:
-`ros2 topic echo /x std_msgs/msg/String & sleep 4; grep -oE 'librmw_[a-z]+_cpp\.so' /proc/$!/maps | sort -u`
-(`librmw_fastrtps_cpp.so` expected). Everything else needs no ROS on the host.
-
-**The clone and the Python environment:**
+**The clone and the Python environment** (GitHub credentials stay on the VM, never in a commit):
 
 ```bash
 git clone "$REPO_URL" "$REPO" && cd "$REPO" && git checkout "$BRANCH"
 python3 -m venv .venv && . .venv/bin/activate    # activate it in every new shell
 pip install -U pip && pip install -e ".[dev]"    # the package, rosbags / zstandard for the data, the C++ kernels
-pip install "rosbags==0.11.5"                   # host cache tooling: individual ride .db3 splits need >=0.11.0
-scripts/build_native.sh                          # rebuild the kernels in place and print their status (after every checkout)
+pip install "rosbags==0.11.5"                   # §2.3 reads single .db3 split files: needs rosbags >= 0.11.0
+scripts/build_native.sh                          # rebuild the kernels and print their status (after every checkout)
 python -m pytest -q                              # optional: needs no data
 git rev-parse HEAD                               # the commit every result is recorded against
 ```
 
-A private repository needs your GitHub credentials first (`gh auth login`, or a token); they stay
-on the VM and never go into a commit.
-
-**Bag-reader version.** The ride loop in §2.3 passes one SQLite `.db3` file to
-`rosbags.rosbag2.Reader`. Standalone storage-file support was added in 0.11.0; 0.10.11 expects a
-bag directory containing `metadata.yaml`, so it fails on the single-file path. The 26.09 host
-rerun uses 0.11.5, whose reader selects the SQLite backend for `.db3` paths. This is a host
-data-preparation requirement; the runtime ROS node uses ROS messages and does not use Rosbags.
-The tools image's 0.10.11 remains suitable for complete bag directories, but use the host
-environment above for the split-file loop. [Upstream version history](https://ternaris.gitlab.io/rosbags/changes.html).
-
-**An agent** (for example a Claude Code session) is started by a person in `$REPO`, with this
-guide as its task and the variables above set. It runs the steps as written and reports; §5 cuts
-its own connection unless its API host is allowed there.
+**An agent** (for example a Claude Code session) is started by a person in `$REPO` with this guide
+as its task and the variables set; §5 cuts its own connection unless its API host is allowed.
 
 ## 2. Data
 
-Measured sizes (25.09); a cached frame takes about 1.45 MB (`--every 1 --int16 --stamps`):
-
-| item | size | keep? |
-|---|---|---|
-| `Датасет.zip` (Google Drive) | 3.7 GB | delete after unpacking |
-| bags `doubleT_obstacle` + `roundT_doubleT` | 6.4 GB | keep: dry run, console test, bench |
-| the other four bags | 15.3 GB | unpack one at a time, cache, delete (keep if the disk allows) |
-| caches of the six recordings | 3.8 GB (2 488 frames) | keep |
-| `cloud_with_fake_obj`: download → bag → cache | 1.75 GB → 7.4 GB → 2.2 GB (1 510 frames) | keep the cache; the bag only to replay it |
-| the ride `new_data`: download → bag → cache | 17.1 GB → 90 GB → 16.5 GB (11 271 frames, 221 split files) | keep the cache; the bag only for a 20-minute replay |
-| Docker: base image, builds, the image archive (0.5 GB) | about 10 GB | on the disk of `/var/lib/docker` |
-
-Everything but the ride's bag fits in **about 50 GB free** (peak while unpacking); keeping the
-ride's bag too needs about 90 GB more. `df -h "$DATA" /var/lib/docker` before you start.
-
-Links, formats and checksums: [`DATASET.md`](DATASET.md). All commands run in `$REPO` with the
-venv active.
+About **50 GB free** holds everything but the ride's bag (peak while unpacking): `Датасет.zip`
+3.7 GB (deleted after unpacking); the two dry-run bags `doubleT_obstacle` + `roundT_doubleT`
+6.4 GB (keep), the other four 15.3 GB (unpack, cache, delete one at a time); the six caches 3.8 GB;
+set O 1.75 GB download → 7.4 GB bag → 2.2 GB cache; the ride 17.1 GB download → 16.5 GB cache (its
+90 GB bag only for a 20-minute replay); Docker about 10 GB on the disk of `/var/lib/docker`. Links,
+formats and checksums: [`DATASET.md`](DATASET.md). All commands run in `$REPO` with the venv active.
 
 ### 2.1 The six recordings
 
@@ -152,13 +93,11 @@ for b in doubleT_obstacle doubleT_platform roundT_doubleT roundT_pressureGate_ro
   python scripts/cache_frames.py "$BAGS/$b" "$CACHE/$b" --every 1 --int16 --stamps
   case "$b" in doubleT_obstacle|roundT_doubleT) ;; *) rm -rf "${BAGS:?}/$b" ;; esac   # keep the dry-run pair only
 done
-chmod -R a+rX "$BAGS"                  # the console tests play as uid 1000
-rm "$DATA/dataset.zip"
+chmod -R a+rX "$BAGS"; rm "$DATA/dataset.zip"   # the console tests play as uid 1000
 ```
 
-`unpack_dataset.py` streams zip → zip → zstd → tar and writes only the bags asked for; each call
-reads the whole archive (a few minutes). With 22 GB to spare, unpack all six in one pass (leave out
-`--only`) and drop the `rm -rf` line.
+Each `unpack_dataset.py` call streams the whole archive (a few minutes) and writes only the bags
+asked for; with 22 GB to spare, unpack all six at once (no `--only`) and drop the `rm -rf` line.
 
 ### 2.2 `cloud_with_fake_obj` (set O)
 
@@ -170,103 +109,82 @@ rm -rf "${DATA:?}/cloud_with_fake_obj"   # optional: the gate reads only the cac
 
 ### 2.3 The 20-minute ride, split by split
 
-`new_data.zst` is a zstd-compressed tar of one bag: 221 split files `new_data_<N>.db3` of 408 MB
-(51 frames each) and `metadata.yaml`. The loop below never writes more than one split file:
-`curl` streams the archive, `zstd` unpacks it on the fly, and `tar --to-command` hands each split
-file to a short shell command instead of writing it. The command spools that one file, caches it
-with `scripts/cache_frames.py --every 1 --int16 --stamps` and deletes it; meanwhile the next split
-file waits in the pipe. A split file whose `_stamps.json` (written last by `cache_frames.py`) is
-already in the cache is read past, so running the same lines again resumes after a break.
-Activate the §1 host environment first; `python -m pip show rosbags` must report the verified
-0.11.5 installation for these single-file commands.
+`new_data.zst` is a zstd-compressed tar of one bag: 221 split files `new_data_<N>.db3` of 408 MB.
+`curl` streams it, `zstd` unpacks it on the fly, and `tar --to-command` hands each split file to a
+command that spools, caches and deletes it, so at most one is on disk. A split file whose
+`_stamps.json` (written last) is in the cache is read past, so running the lines again resumes
+after a break (20–40 min in all; `python -m pip show rosbags` must say 0.11.5).
 
 ```bash
-cd "$REPO"                              # the command below calls scripts/ relative to the clone
-SPOOL=$DATA/.ride_spool
-mkdir -p "$CACHE/new_data" "$SPOOL"
+cd "$REPO"; SPOOL=$DATA/.ride_spool; mkdir -p "$CACHE/new_data" "$SPOOL"
 export CACHE SPOOL                      # tar's command runs in a child shell
-# the download URL of new_data.zst: the Yandex Disk public API, no account needed
 HREF=$(curl -fsS --get \
   --data-urlencode "public_key=https://disk.yandex.ru/d/N8IUpAyd7jyvow" \
   --data-urlencode "path=/new_data.zst" \
   https://cloud-api.yandex.net/v1/disk/public/resources/download \
-  | python3 -c 'import json, sys; print(json.load(sys.stdin)["href"])')
-# one split file at a time: spool, cache, delete; skip what is cached already
+  | python3 -c 'import json, sys; print(json.load(sys.stdin)["href"])')   # Yandex Disk public API, no account
 curl -fsSL "$HREF" | zstd -dc | tar -x --wildcards '*.db3' --to-command='
   f="$SPOOL/$(basename "$TAR_FILENAME")"; name=$(basename "$f" .db3)
   if [ -f "$CACHE/new_data/${name}_stamps.json" ]; then cat > /dev/null; exit 0; fi
   cat > "$f" && python scripts/cache_frames.py "$f" "$CACHE/new_data" --every 1 --int16 --stamps
   rc=$?; rm -f "$f"; exit $rc'
-ls "$CACHE"/new_data/*_stamps.json | wc -l   # 221 when complete; fewer: run the lines again
+ls "$CACHE"/new_data/*_stamps.json | wc -l   # 221 when complete; fewer (tar exits 2): run the lines again
 ```
 
-About 4 s to stream and 3 s to cache each split file on the dev VM's link: 20–40 min in all,
-16.5 GB of cache, 0.4 GB of spool. A split file that fails to cache leaves no `_stamps.json`; `tar`
-then exits 2 at the end, and the next run caches only what is missing (it streams the archive
-again). To keep the whole bag instead (90 GB, for a 20-minute `ros2 bag play "$DATA/new_data"`):
-`python scripts/unpack_dataset.py https://disk.yandex.ru/d/N8IUpAyd7jyvow --member new_data.zst
---out "$DATA"`, then `cache_frames.py` on each `"$DATA"/new_data/new_data_*.db3`.
+The whole bag instead (90 GB): `python scripts/unpack_dataset.py https://disk.yandex.ru/d/N8IUpAyd7jyvow
+--member new_data.zst --out "$DATA"`, then `cache_frames.py` on each `"$DATA"/new_data/new_data_*.db3`.
 
 ### 2.4 Check
 
 ```bash
 for d in "$CACHE"/*/; do printf '%-40s %6d frames\n' "$(basename "$d")" "$(find "$d" -name '*.npy' | wc -l)"; done
-```
-
-Done when the counts are: `doubleT_obstacle` 201, `doubleT_platform` 345, `roundT_doubleT` 252,
-`roundT_pressureGate_roundT` 268, `roundT_squareT_pressureGate_squareT` 545,
-`squareT_platform_squareT_switch` 877, `cloud_with_fake_obj` 1 510, `new_data` 11 271; and the
-two bags are the organizers' originals:
-
-```bash
 for b in doubleT_obstacle roundT_doubleT; do cmp "$BAGS/$b/metadata.yaml" "docs/evidence/bag_metadata/${b}_metadata.yaml" && echo "$b original"; done
 ```
 
+Done when the counts are `doubleT_obstacle` 201, `doubleT_platform` 345, `roundT_doubleT` 252,
+`roundT_pressureGate_roundT` 268, `roundT_squareT_pressureGate_squareT` 545,
+`squareT_platform_squareT_switch` 877, `cloud_with_fake_obj` 1 510, `new_data` 11 271, and both
+dry-run bags print `original`.
+
 ## 3. Before the runs
 
-* `git status --short --untracked-files=no` is empty and `git rev-parse --short HEAD` is the
-  commit the captain named; `scripts/build_native.sh` was run on it.
-* The VM is otherwise idle for the timed runs (§4.1, §4.3); `vmstat 1 5` (column `st`, CPU steal)
-  goes into the machine facts.
-* The machine facts, once per day:
+* `git status --short --untracked-files=no` is empty, `git rev-parse --short HEAD` is the named
+  commit, `scripts/build_native.sh` was run on it; the VM is otherwise idle for the timed runs.
+* The machine facts, once per day (`st` in `vmstat` is CPU steal; the `dd` line the disk's speed):
 
   ```bash
   mkdir -p "$EV/vm_$DAY"
-  { lscpu; free -h; df -h "$DATA" /var/lib/docker; uname -a; docker version; vmstat 1 5; git -C "$REPO" rev-parse HEAD; } \
-    > "$EV/vm_$DAY/machine.txt" 2>&1
+  { lscpu; free -h; df -h "$DATA" /var/lib/docker; uname -a; docker version; vmstat 1 5; git -C "$REPO" rev-parse HEAD
+    sysctl net.core.rmem_max net.core.rmem_default
+    dd if="$(ls "$BAGS"/doubleT_obstacle/*.db3 | head -n 1)" of=/dev/null bs=4M count=512 iflag=direct 2>&1 | tail -n 1
+  } > "$EV/vm_$DAY/machine.txt" 2>&1
   ```
 
-The exit code of a command piped into `tee` is `${PIPESTATUS[0]}`, printed after each run below.
+* **Below ~250 MB/s**, read the bags into the page cache right before every timed run (§4.1–§4.3,
+  §5): `cat "$BAGS"/doubleT_obstacle/*.db3 "$BAGS"/roundT_doubleT/*.db3 > /dev/null` (6.4 GB of
+  free RAM; a build, the gate or an image load pushes them out again). Or copy them once to a RAM
+  tmpfs: `sudo mkdir -p /mnt/ramdata && sudo mount -t tmpfs -o size=7g tmpfs /mnt/ramdata && cp -a
+  "$BAGS"/doubleT_obstacle "$BAGS"/roundT_doubleT /mnt/ramdata/ && BAGS=/mnt/ramdata`.
+
+The exit code of a command piped into `tee` is `${PIPESTATUS[0]}`, printed after each run.
 
 ## 4. The runs
 
-In this order on a fresh VM: the dry run's `--no-cache` build (§4.1) should be the first build
-there, so that it is the clean machine of C7. Each run says what "done" means and where its
-evidence goes; §6 turns the evidence into a PR.
+On a fresh VM the dry run's `--no-cache` build (§4.1) is the first build, so that it is the clean
+machine. Evidence goes to `docs/evidence/<run>_<date>/`; §6 turns it into a PR.
 
-### 4.0 Owed now: the confirmation re-run of the 25.09 fixes
+### 4.0 Checklist
 
-The first VM run (25.09, code `7290873`; [`evidence/vm_2026-09-25/summary.md`](evidence/vm_2026-09-25/summary.md))
-failed three criteria; each was root-caused and fixed in the repository the same day
-(EXPERIMENTS §3a / §3b), but only on cached frames and bags rebuilt from them. One run on the VM
-confirms them with the original bags, on the commit the captain names (a head of PR #12 or `main`
-after `cb9e4ab`), the build `--no-cache` again:
-
-| step | command | expected |
+| run (tool) | evidence | PASS |
 |---|---|---|
-| drops (C7) | §4.1, first command | `dropped input settle`: environment-dependent (earlier cold CI +8.8 s; archive-cache run +13.6 s; verified-bag cache run +2.6 s, all at read-ahead 10); `dropped input vs bag : … 4 frame(s) missing from the recording itself; 0 of its messages not processed`; `PASS`; the node log says `dropped N (M skipped by the catch-up)` |
-| false alarm (C7) | §4.1, second command, then the `replay_node_frames.py` line | `PASS` with at most 1 alarm frame (was 3 at 111–115 m: the column at 101–149 m, advisory since `tracking.column_hold` 2); the node's and the replay's alarm lists equal |
-| CycloneDDS player (C4) | `sudo sysctl -w net.core.rmem_max=33554432` (leave `rmem_default`), the host console of §4.2 with `RMW_IMPLEMENTATION=rmw_cyclonedds_cpp`, then `sudo sysctl -w net.core.rmem_max=212992` | both recordings arrive, `STOP` on the obstacle; no rmem WARN in the node log (the image now asks for a 32 MiB receive buffer, so `rmem_max` alone decides) |
-| bench (C8, closed; a confirmation) | §4.3 | `dry_obstacle_native` PASS; write down the physical core count |
-| offline (C25) | §4.5 then §5 with the new archive | as in §5 |
-
-Commit the evidence as in §6 (`dry_run_<date>/`, `bench_<date>/`, `offline_<date>/`), one PR.
-
-**Done 25.09 afternoon** on a second team VM, code `76bf24e` (`docs/evidence/*_2026-09-25_2/`,
-EXPERIMENTS §3a / §3b): drops and false alarm PASS, online and offline; the bench PASS on the native
-path; the gate with the ride PASS; CycloneDDS at 32 MiB PASS. Its host console labelled "stock Fast
-DDS" (FAIL at 212992, 5 of 5) was a CycloneDDS player (§1: no Fast DDS RMW on that host); a genuine
-stock Fast DDS player passed at 212992 on the third VM (25.09 evening, §4.6, EXPERIMENTS §3b).
+| §4.1 dry run, both original bags (`scripts/dry_run.sh`) | `dry_run_<date>/dry_*.txt` | both exit 0; replay alarm list = the node's; each recording plays in about its own length |
+| §4.1 cold start (the same, page cache dropped) | `dry_run_<date>/cold_*.txt` | both exit 0 (meaningful on a fast disk only) |
+| §4.2 stock player in Docker (`PLAYER_DDS=stock scripts/console_test.sh`), host console (`ros2 bag play`) | `dry_run_<date>/ct_stock.txt`, `host_console*.txt` | exit 0 / check passes, `STOP` on the obstacle recording |
+| §4.3 bench (`scripts/bench_8core.sh`) | `bench_<date>/summary.txt` | `dry_obstacle_native` PASS |
+| §4.4 gate with the ride and set F (`scripts/regression_gate.py`) | `gate_<date>/` | exit 0, every gated metric identical or better |
+| §4.5 archive (`scripts/export_image.sh`, `scripts/load_image.sh`) | `export_<date>/archive.txt` | both exit 0 |
+| §4.6 shm mode, optional (`-e RESENSE_DDS=shm`) | `dry_run_<date>/host_console_shm*.txt` | check passes at `rmem_max` 212992 |
+| §5 offline (`IMAGE_TAR=… OFFLINE=1 scripts/dry_run.sh`, outbound blocked) | `offline_<date>/` | block verified; both dry runs exit 0; host console `STOP` |
 
 ### 4.1 Dry run with the original bags
 
@@ -274,104 +192,76 @@ stock Fast DDS player passed at 212992 on the third VM (25.09 evening, §4.6, EX
 mkdir -p "$EV/dry_run_$DAY"
 OUT=out/dry_obstacle ./scripts/dry_run.sh "$BAGS/doubleT_obstacle" 2>&1 | tee "$EV/dry_run_$DAY/dry_obstacle.txt"
 echo "exit ${PIPESTATUS[0]}"
+cat "$BAGS"/doubleT_obstacle/*.db3 "$BAGS"/roundT_doubleT/*.db3 > /dev/null   # §3
 SKIP_BUILD=1 OUT=out/dry_clear ./scripts/dry_run.sh "$BAGS/roundT_doubleT" --expect-clear --max-alarm-frames 2 \
   2>&1 | tee "$EV/dry_run_$DAY/dry_clear.txt"
 echo "exit ${PIPESTATUS[0]}"
+python scripts/replay_node_frames.py out/dry_clear/status.jsonl --bag "$BAGS/roundT_doubleT" | tee "$EV/dry_run_$DAY/dry_clear_replay.txt"
 ```
 
-The first builds the image with `--no-cache` (20–35 min with the build), plays the bag through
-the node and checks `/resense/status` with `scripts/check_dry_run.py`. **Done:** both exit 0: the
-person at 50–62 m in ≥ 3 frames, p95 of decode + detect ≤ 100 ms, no frame dropped after the settle
-point (the later of 5 s and the end of the node's start-up catch-up, at most 15 s; `dry_run.sh`
-passes `--bag`, so the frames missing from the recording itself, 4 in `doubleT_obstacle`, are not
-drops); on `roundT_doubleT` at most 2 alarm frames (since `tracking.column_hold` 2 the column at
-101–149 m, 3 frames at 111–115 m on 25.09, is advisory; the trackside frame at 53 m came in 3 of 10
-runs). Then `python scripts/replay_node_frames.py out/dry_clear/status.jsonl --bag
-"$BAGS/roundT_doubleT"` replays the frames the node processed offline and prints both alarm lists:
-equal lists mean the offline path matches the node (EXPERIMENTS §3a). A latency or drop failure is
-a result to record with the core count. **Evidence:** `docs/evidence/dry_run_<date>/` (the two outputs,
-plus the node logs and captures of `out/dry_*`, §6).
+The first command builds the image `--no-cache` (about 10 min on 4 cores), plays the bag through
+the node with `--read-ahead-queue-size 10` (the supported setting; Humble's default of 1 000 sends
+the overdue recording in a burst and the results go stale) and checks `/resense/status` with
+`scripts/check_dry_run.py --require-freshness --bag`; on a slow disk repeat it with `SKIP_BUILD=1`
+after the pre-read. **Done:** both exit 0: the obstacle at 50–62 m in ≥ 3 frames; decode + detect
+p95 ≤ 100 ms; no message of the recording unprocessed after the settle point (the later of 5 s
+and the end of the start-up catch-up, at most 15 s; the 4 frames missing from `doubleT_obstacle`
+itself are not drops); a current result for each recording; on `roundT_doubleT` at most 2 alarm
+frames; equal alarm lists from the replay line. The checker also prints the end-to-end latency of
+the current results (`--max-p95-e2e <ms>` asserts it) and the node's CPU.
 
-**Startup behavior since 26.09.** `catchup_startup_max_lag` defaults to 20 s for a new
-recording's initial burst. The allowance closes when the first catch-up reaches the newest
-frame, or after 1 s if no catch-up starts. An initial catch-up already underway retains it until
-it drains. Later stalls use `catchup_max_lag` = 5 s; true input holes still reset the scene.
-Short queues spanning at most `catchup_step` = 0.3 s process every frame; longer live backlogs are
-subsampled at that interval. On the P1/P2 follow-up branch, the first backlog instead keeps every
-observed input-period frame (including when the prior recording left a slower period estimate).
-A smaller explicit maximum lag is still enforced first. The 20 s cap can still discard older
-frames in a larger burst. Record cold and warm runs separately, including the first STOP, scene
-resets, frames processed, latency and the checker's result. Warming the bag before playback is
-useful operationally, but a warm pass alone does not validate the cold-start fix.
-
-**Cold-cache verification, 27.09.** Branch CI run 362814 passed both original bags after dropping
-the page cache before each replay, using `BAG_READ_AHEAD_QUEUE_SIZE=10`. The obstacle bag reached a
-current result after an 8.8 s startup catch-up and had zero original messages unprocessed; four
-frames are missing from that source recording. The clear bag produced zero alarm frames and zero
-unprocessed messages. Logs and status captures are in
-[`evidence/p1_p2_completion_2026-09-26/cold_bags_passed_run_36281462241/`](evidence/p1_p2_completion_2026-09-26/cold_bags_passed_run_36281462241/).
-The supported-default rerun on `5a27c66` also passed both cold original bags and all six CI
-jobs after the Drive quota reset; it verified the archive and bag hashes and saved the archive
-in the Actions cache. Its 360° stream became current after +13.6 s, close to the 15 s gate.
-[Current receipt](evidence/p1_p2_supported_playback_2026-09-27/README.md).
-The subsequent [verified-bag cache run](evidence/p1_p2_supported_playback_2026-09-27/cached_bags_run_36319767736/README.md)
-passed seven jobs and both cold bags. The dataset job saved verified bags; Docker restored and
-reverified them without downloading. This run's 360° catch-up and first current STOP were at
-+2.6 s of source time. Preserve the +13.6 s prior result as evidence of startup variability.
-The supported `dry_run.sh` default is now ten read-ahead messages, matching the passing
-bounded-prefetch runs. Humble's unbounded-for-these-bags default of 1,000 still produces stale
-output on the cold whole-recording burst. To reproduce the supported test on a machine with
-Docker and the original bags, drop caches before each command:
+**The playback speed:** the checker passes a player that fell behind real time, since every
+message is eventually processed. The wall time the node's results span:
 
 ```bash
-sudo sh -c 'sync; echo 3 > /proc/sys/vm/drop_caches'
-SKIP_BUILD=1 OUT=out/cold_obstacle ./scripts/dry_run.sh "$BAGS/doubleT_obstacle" \
-  --expect-obstacle --distance 50:62 --min-frames 20 --max-p95-latency 100 --max-dropped 0
-sudo sh -c 'sync; echo 3 > /proc/sys/vm/drop_caches'
-SKIP_BUILD=1 OUT=out/cold_clear ./scripts/dry_run.sh "$BAGS/roundT_doubleT" \
-  --expect-clear --max-alarm-frames 2 --max-p95-latency 100 --max-dropped 0
+python3 -c 'import json, sys
+t = [s["freshness"]["evaluated_at_utc_s"] for s in map(json.loads, filter(lambda l: l.startswith("{"), open(sys.argv[1])))
+     if (s.get("freshness") or {}).get("source_age_s") is not None]
+print(len(t), "frame results in", round(max(t) - min(t), 1), "s of wall time")' out/dry_obstacle/status.jsonl
 ```
 
-The command and jury procedure now use the tested ten-message limit by default. This closes the
-operating-procedure choice; it does not show that a 1,000-message overdue burst is handled, nor
-does it replace a physical clean-machine rehearsal.
+About the recording's length is right (`doubleT_obstacle` 20.4 s, `roundT_doubleT` 25.1 s); three
+times that means the disk set the pace: pre-read the bags (§3) and run again.
 
-**Matching the bag.** `check_dry_run.py --bag` now reads each message's CDR header stamp and
-matches the node's stamp directly, with at most 100 microseconds of float roundoff tolerance
-(and at most half a frame period). It uses the standard library and does not need Rosbags.
-Receive times can drift relative to header stamps, so fitting one offset between them was
-incorrect on set O. Rechecking the committed 26.09 set O ROS capture against the original bag
-finds 1,428 recorded messages after +5.9 s and none unprocessed; the former claim of 132 losses
-was a checker error. Bag holes and actual node losses remain separate, and the acceptance
-thresholds above are unchanged. This recheck is historical-capture validation, not a new run.
+**The node's start-up.** It logs `ReSense detector listening on …` after a warm-up (`warmup`, on by
+default: the decode and a throwaway detector on three synthetic frames, ~0.7 s), so the first real
+frame costs what the next ones do. A new recording's first backlog (the player's start-up burst)
+is worked through `catchup_startup_step` = 0.2 s of recording apart (every other 10 Hz frame, the
+5 Hz input the detector is validated on), within `catchup_startup_max_lag` 20 s; a frame waiting
+alone is processed at once; later stalls use `catchup_step` 0.3 s and `catchup_max_lag` 5 s (launch
+arguments; `catchup_startup_step:=0` takes every frame). Results made while it catches up are not
+current (`node.catchup`): FAULT, CAUTION or a held STOP, never GO. A storage stall of a second or
+more mid-recording makes the catch-up skip frames after the settle point and fails the check.
+
+**Cold start** (a separate result; CI runs it on every push to `main`, `scripts/p1_cold_bag_test.sh`):
+the two dry-run commands with `SKIP_BUILD=1`, `OUT=out/cold_*` and output into `cold_*.txt`, each
+right after `sudo sh -c 'sync; echo 3 > /proc/sys/vm/drop_caches'`; on a disk below ~250 MB/s it
+measures the disk. A latency or drop failure is a result to record with the core count.
 
 ### 4.2 The organizers' console: stock-DDS player, host console
 
-In Docker, a uid-1000 player with Humble's stock Fast DDS settings (shared memory + UDP, no XML
-profile) and a stock listener, both recordings into one node:
+In Docker, a uid-1000 player with Humble's stock Fast DDS (shared memory + UDP, no XML profile) and
+a stock listener, both recordings into one node (its header lists the assertions):
 
 ```bash
 PLAYER_DDS=stock OUT=out/ct_stock ./scripts/console_test.sh "$BAGS/roundT_doubleT" "$BAGS/doubleT_obstacle" -- \
   --expect-obstacle --obstacle-in 2 --expect-inputs 2 --min-frames 20 --max-p95-latency 1000 --max-dropped 100000 \
-  2>&1 | tee "$EV/dry_run_$DAY/ct_stock.txt"
-echo "exit ${PIPESTATUS[0]}"
+  2>&1 | tee "$EV/dry_run_$DAY/ct_stock.txt"; echo "exit ${PIPESTATUS[0]}"
 ```
 
-**Done:** exit 0: both recordings seen, the obstacle in the second, the listener heard `STOP`, the
-player used shared memory (the header of `scripts/console_test.sh` lists the assertions).
-
-With ROS 2 Humble on the host, the same by hand, as the jury does it (README «Кратко для жюри»),
-with a normal user's stock settings:
+With ROS 2 on the host, the same by hand as the jury does it (README «Кратко для жюри»), as a
+normal user with stock settings, the bags pre-read (§3). Console 1, the node on the image's default
+command (`freshness_mode:=replay`):
 
 ```bash
-docker run --rm --name resense_node --net=host --ipc=host resense:latest \
-  ros2 launch resense_ros detector.launch.py freshness_mode:=replay        # console 1: bag playback
+docker run --rm --name resense_node --net=host --ipc=host resense:latest 2>&1 | tee "$EV/dry_run_$DAY/host_console_node_log.txt"
 ```
 
 ```bash
-# console 2: the player, a normal user, stock RMW, no Fast DDS profile
+# console 2: the player, stock RMW, no Fast DDS profile; in a console 3 meanwhile:
+#   source /opt/ros/humble/setup.bash && ros2 topic echo /resense/decision --field data   # GO | CAUTION | STOP | FAULT
 source /opt/ros/humble/setup.bash
-unset FASTRTPS_DEFAULT_PROFILES_FILE FASTDDS_DEFAULT_PROFILES_FILE RMW_FASTRTPS_USE_QOS_FROM_XML
+unset FASTRTPS_DEFAULT_PROFILES_FILE FASTDDS_DEFAULT_PROFILES_FILE RMW_FASTRTPS_USE_QOS_FROM_XML RMW_IMPLEMENTATION
 mkdir -p out/host_console
 ros2 topic echo /resense/status --field data > out/host_console/status.jsonl & ECHO=$!
 sleep 4
@@ -382,53 +272,48 @@ python3 scripts/check_dry_run.py out/host_console/status.jsonl --require-freshne
   --min-frames 20 --max-p95-latency 1000 --max-dropped 100000 | tee "$EV/dry_run_$DAY/host_console.txt"
 ```
 
-```bash
-source /opt/ros/humble/setup.bash && ros2 topic echo /resense/decision --field data   # console 3: GO | CAUTION | STOP | FAULT
-```
+**Done:** the check passes (453 of 453 frames) and console 3 shows `STOP` during the obstacle
+recording. Stop the node with Ctrl+C in console 1: it exits cleanly (no traceback, no `process
+has died`). A stock Fast DDS player delivers every 360° cloud at Ubuntu's `rmem_max` 212992.
+Optional: consoles 2 and 3 with `export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp` (into
+`host_console_cyclonedds.txt`); a CycloneDDS player needs `sudo sysctl -w net.core.rmem_max=33554432`
+(README jury step 0; `…=212992` afterwards), and the node logs a WARN below 32 MiB.
+`scripts/play_bag.sh <bag>` does README steps 0–5 in one command with Docker only.
 
-**Done:** the check passes and console 3 shows `STOP` during the obstacle recording. Optional:
-the same with `export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp` in consoles 2 and 3 (the node stays
-on Fast DDS). A CycloneDDS player needs `net.core.rmem_max` ≥ 32 MiB on the host for the 360° clouds
-(25.09: none arrived at Ubuntu's 212992, all at 32 MiB; the node logs a WARN below it); a stock Fast
-DDS player does not (all clouds at 212992 on the first and third team VMs; the second VM's failing
-"Fast DDS" runs were CycloneDDS, §1):
-`sudo sysctl -w net.core.rmem_max=33554432` for the run, restored afterwards (§4.0). **Evidence:** with the dry run's.
-
-### 4.3 8-core bench
+### 4.3 Bench
 
 ```bash
+cat "$BAGS"/doubleT_obstacle/*.db3 "$BAGS"/roundT_doubleT/*.db3 > /dev/null   # §3
 RESENSE_DATA="$BAGS" RESENSE_CACHE="$CACHE" ./scripts/bench_8core.sh; echo "exit $?"
 ```
 
-Builds the image (timed), runs `dry_run.sh` on both bags with the node on the native kernels and
-on numpy, `console_test.sh` with the image's and the stock player, samples `docker stats`, times
-the detector on the host with peak RSS, and summarises (10–25 min; its header has the details).
-Keep the VM otherwise idle. **Done:** exit 0 and `summary.txt`: `dry_obstacle_native` passes (p95
-≤ 100 ms, no frame dropped after the settle point, §4.1). C8 was closed on 25.09 on the 4-core team
-VM (the captain: a machine with half the stand's cores is enough); a run here confirms it.
-**Evidence:** the script writes `docs/evidence/bench_<date>/` itself, ready to commit.
+Builds the image (timed), runs `dry_run.sh` on both bags with the native and the numpy kernels,
+`console_test.sh` with the image's and the stock player, samples `docker stats`, times the detector
+on the host with peak RSS and summarises (10–25 min; its header has the details) into
+`docs/evidence/bench_<date>/`, ready to commit. **Done:** `summary.txt` shows `dry_obstacle_native`
+PASS (p95 ≤ 100 ms, no drop after the settle point); write down the physical core count. The numpy
+fallback is not real time at 360° on 4 physical cores, so there the script exits 1 on
+`dry_obstacle_numpy` (known; the image ships the native kernels).
 
 ### 4.4 Regression gate with the ride
 
 ```bash
-BASELINE=$(python3 -c "import glob, json; print(max((json.load(open(p))['created'], p) for p in glob.glob('docs/evidence/results/regression_baseline_*.json') if json.load(open(p)).get('ride', {}).get('available'))[1])")   # the newest baseline with the ride
-echo "$BASELINE"      # since 27.09 (the reviewed quality cycle): regression_baseline_2026-09-27_quality.json
+BASELINE=$(python3 -c "import glob, json; print(max((json.load(open(p))['created'], p) for p in glob.glob('docs/evidence/results/regression_baseline_*.json') if json.load(open(p)).get('ride', {}).get('available'))[1])")
+echo "$BASELINE"      # the newest baseline with the ride: regression_baseline_2026-09-27_quality.json for the sealed detector
 mkdir -p "$EV/gate_$DAY"
-python scripts/regression_gate.py --cache "$CACHE" --jobs 6 --baseline "$BASELINE" \
+python scripts/regression_gate.py --cache "$CACHE" --jobs 4 --baseline "$BASELINE" \
   --out "$EV/gate_$DAY/gate_$(git rev-parse --short HEAD).json" 2>&1 | tee "$EV/gate_$DAY/gate_table.txt"
 echo "exit ${PIPESTATUS[0]}"
 ```
 
-Every frame of the six recordings, set O, the ride (in 8 pieces) and set F straight, each against
-the baseline. `--jobs` about the physical core count (the dev VM: 394 s at `--jobs 3` on 4 vCPU).
-Needs no Docker. **Done:** exit 0, every gated metric identical or better; on the commit the
-baseline was measured on, identical apart from latency. Exit 1: a gated metric is worse (the rows
-are in the table: report them) or a gated metric of the baseline is missing in this run (the ride
-and set F straight need `$CACHE/new_data`; a run without the ride on purpose passes only with
-`--allow 'ride.*' --allow 'set_F_straight.*'`, said in the report); 2: a recording's cache is
-missing or incomplete (§2.4). A candidate branch runs in its own worktree: `git worktree add ../candidate <branch>`,
-then `scripts/build_native.sh` and the same command there. **Evidence:** the JSON and the table in
-`docs/evidence/gate_<date>/`; the per-frame results in `out/regression_gate/` stay out of git.
+Every frame of the six recordings, set O, the ride (8 pieces) and set F straight against the
+baseline; `--jobs` about the physical core count (about 7 min at 4); no Docker. **Done:** exit 0,
+every gated metric identical or better (on the sealed detector identical but the informational
+latency rows). Exit 1: a gated metric is worse (report the rows) or missing (the ride and set F
+need `$CACHE/new_data`; a run without them passes only with `--allow 'ride.*' --allow
+'set_F_straight.*'`, said in the report); 2: a cache is missing or incomplete (§2.4). A candidate
+branch runs in its own `git worktree add ../candidate <branch>` after `scripts/build_native.sh`.
+`out/regression_gate/` (per-frame results) stays out of git.
 
 ### 4.5 Image archive
 
@@ -441,113 +326,37 @@ mkdir -p "$EV/export_$DAY"
   > "$EV/export_$DAY/archive.txt"
 ```
 
-15–20 min, needs the internet. `export_image.sh` refuses uncommitted changes to tracked files (the
-image is built from `git archive HEAD`). **Done:** both scripts exit 0. **Evidence:**
-`docs/evidence/export_<date>/archive.txt` (size, sha256, commit); **never** the archive itself
-(`dist/` is ignored by git). This export creates no tag or release; the captain deferred public
-releases on 25.09 (C13); the `v1.0.0` release is scheduled for 28.09 21:00 Moscow time (not yet
-published), by the path below.
-Without a VM: since 26.09 the CI job `offline-build` of a push to the working branch or `main`
-offers the same runtime archive (`GZIP_LEVEL=1`) with its `.sha256` as the run artifact
-`resense-image-<version>-<short commit>` (ARCHITECTURE "Deployment without internet").
-
-**Public artifact preparation, 26.09.** The next release follows the final commit's successful
-CI, verified detector seal, and original-bag cold/warm runs. Keep the commit ID, CI run URL and
-runtime evidence together. Select an unused `v1.0.0-rcN` tag and review
-`DRY_RUN=1 SMOKE=1 scripts/release.sh <tag>` from that commit; without an existing tag this dry
-run prints a warning, while a real manual release stops. Pushing the tag is the publication
-trigger: `.github/workflows/release.yml` rebuilds that commit, tests the loaded archive with no
-internet and a stock player, publishes the archive plus checksums, then downloads and verifies
-the public bytes. Wait for all of those steps before handing the link to the jury. This guide's
-preparation commands do not create or push a tag. The Actions artifact needs a GitHub login
-and expires with artifact retention; the verified release asset is the public deliverable.
+15–20 min, needs the internet; `export_image.sh` refuses uncommitted changes to tracked files.
+**Done:** both exit 0 (about 0.48 GB). Commit `archive.txt`, **never** the archive (`dist/` is
+ignored by git). The public archive is published as the assets of the GitHub release `v1.0.0` by
+`.github/workflows/release.yml` when the tag is pushed; until then it is the CI artifact of a
+`main` run (job `offline-build`, GitHub login) or `scripts/export_image.sh` as here.
 
 ### 4.6 Shared-memory mode (opt-in `RESENSE_DDS=shm`)
 
-**Run 25.09 evening on a third team VM** (`evidence/dry_run_2026-09-25_3/`, EXPERIMENTS §3b): PASS,
-both parts: a genuine stock Fast DDS player 2 of 2 at `rmem_max` 212992 with console 4 showing the
-node's `root 666 fastrtps_port7411`; CycloneDDS at 32 MiB PASS with no port mapped; the Docker
-variant PASS. The UDP default passed as well with that player at 212992 (2 of 2), so the flip below
-is the captain's call. The motivating failure (§4.0: a "stock Fast DDS" host console with 0–1 of
-201 clouds at 212992 on the second VM) was a CycloneDDS player (§1). `docker run … -e RESENSE_DDS=shm` puts the node on shared memory + UDP and opens its Fast
-DDS files in `/dev/shm` to other users (`docker/dds_transport.sh`, header of
-`docker/fastdds_shm_share.py`), so that such a player hands the clouds over `/dev/shm`, where
-socket buffers play no part. This run decides whether it becomes the default. The host console of
-§4.2, the node started with the variable, `rmem_max` left at the default, the player uid 1000:
-
-```bash
-sudo sysctl -w net.core.rmem_max=212992                  # Ubuntu's default (§4.0 raised it for CycloneDDS)
-docker run --rm --name resense_node --net=host --ipc=host -e RESENSE_DDS=shm resense:latest \
-  ros2 launch resense_ros detector.launch.py freshness_mode:=replay 2>&1 |
-  tee "$EV/dry_run_$DAY/host_shm_node_log.txt"                                                 # console 1
-```
-
-Its log starts with `[INFO] [resense.dds]: DDS transport: shm, shared memory + UDPv4 …` and then
-`[resense.shm] fastrtps_port<N>: mode 666 …` lines (the node's port segments, their semaphores
-and its data segment). No `[WARN] [resense.dds]` line: that one says the node fell back to UDP.
-
-```bash
-# console 2: the player, a normal user, stock RMW, no Fast DDS profile (as §4.2)
-source /opt/ros/humble/setup.bash
-unset FASTRTPS_DEFAULT_PROFILES_FILE FASTDDS_DEFAULT_PROFILES_FILE RMW_FASTRTPS_USE_QOS_FROM_XML RMW_IMPLEMENTATION
-mkdir -p out/host_shm
-ls -l /dev/shm > "$EV/dry_run_$DAY/host_shm_ls.txt"
-ros2 topic echo /resense/status --field data > out/host_shm/status.jsonl & ECHO=$!
-sleep 4
-ros2 bag play "$BAGS/roundT_doubleT" --delay 3 --read-ahead-queue-size 10 --disable-keyboard-controls && sleep 5 &&
-  ros2 bag play "$BAGS/doubleT_obstacle" --delay 3 --read-ahead-queue-size 10 --disable-keyboard-controls
-sleep 3; kill "$ECHO"
-python3 scripts/check_dry_run.py out/host_shm/status.jsonl --require-freshness --expect-obstacle --obstacle-in 2 --expect-inputs 2 \
-  --min-frames 20 --max-p95-latency 1000 --max-dropped 100000 | tee "$EV/dry_run_$DAY/host_console_shm.txt"
-```
-
-```bash
-source /opt/ros/humble/setup.bash && ros2 topic echo /resense/decision --field data   # console 3: GO | CAUTION | STOP | FAULT
-```
-
-```bash
-# console 4, while doubleT_obstacle plays: the node's queues the player writes into
-P=$(pgrep -n -f "bag play"); grep -o '/dev/shm/fastrtps_port[0-9]*$' "/proc/$P/maps" | sort -u | xargs -r stat -c '%U %a %n'
-```
-
-**Done:** the check passes at `rmem_max` 212992: both recordings seen, the obstacle in the second,
-about as many status messages and alarm frames as the 32 MiB run of 25.09 (391 and 144,
-[`evidence/dry_run_2026-09-25_2/diag_host_fastdds/host_console_fastdds_rmem32.txt`](evidence/dry_run_2026-09-25_2/diag_host_fastdds/host_console_fastdds_rmem32.txt)),
-not 0–1 of the 201 clouds; console 3 shows `STOP` during the obstacle recording; console 4 prints
-`root 666 /dev/shm/fastrtps_port<N>` lines. The node's rmem WARN still appears (it is about UDP
-players). Then the same consoles 2 and 3 with `export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp`, to
-show that a player without shared memory still reaches the node over UDP: it needs the 32 MiB of
-§4.0 (`sudo sysctl -w net.core.rmem_max=33554432` for the run, `…=212992` afterwards), result into
-`host_console_shm_cyclonedds.txt`; **done:** PASS with `STOP`, as the UDP-mode run of §4.0 (144
-`STOP`), and console 4 prints nothing. The same in Docker, which CI runs on the synthetic bags:
-`NODE_DDS=shm PLAYER_DDS=stock OUT=out/ct_shm ./scripts/console_test.sh "$BAGS/roundT_doubleT"
-"$BAGS/doubleT_obstacle" -- <the arguments of §4.2>`, exit 0.
-
-Stop the node with Ctrl+C in console 1, not `docker rm -f`: Fast DDS then removes its files.
-After a hard kill, root-owned `fastrtps_*` files stay in `/dev/shm`; a normal user's Fast DDS
-cannot remove them and skips those port numbers, the next node in shm mode clears them. **Evidence:**
-`host_console_shm.txt`, `host_console_shm_cyclonedds.txt`, `host_shm_ls.txt`, the node logs
-(`host_shm_node_log.txt`, one per run) and console 4's lines in `docs/evidence/dry_run_<date>/`. Both PASS: the
-default can flip (one line, `docker/dds_transport.sh`: `${RESENSE_DDS:-udp}` → `${RESENSE_DDS:-shm}`);
-a FAIL is recorded and the mode stays opt-in.
+Optional (CI's `docker` job tests it on every push). `-e RESENSE_DDS=shm` puts the node on shared
+memory + UDP and opens its Fast DDS files in `/dev/shm` to other users (`docker/dds_transport.sh`),
+so a stock Fast DDS player hands the clouds over `/dev/shm`; the default stays UDP-only. Run the
+host console of §4.2 at `rmem_max` 212992 with `-e RESENSE_DDS=shm` in console 1 (its log shows
+`DDS transport: shm`; a `[WARN] [resense.dds]` line means it fell back to UDP), results into
+`host_console_shm.txt`. **Done:** the check passes, `STOP` in console 3, and while
+`doubleT_obstacle` plays, `grep -o '/dev/shm/fastrtps_port[0-9]*$' /proc/$(pgrep -n -f "bag
+play")/maps | sort -u | xargs -r stat -c '%U %a %n'` prints `root 666 …` lines. In Docker:
+`NODE_DDS=shm PLAYER_DDS=stock` before §4.2's `console_test.sh` line, exit 0. Stop the node with
+Ctrl+C, not `docker rm -f`, so that Fast DDS removes its files from `/dev/shm`.
 
 ## 5. Offline rehearsal
 
-The stand has no internet, so the jury loads the archive and runs it offline. CI proves this with
-synthetic bags on every push; here it is proven with the original bags and the network cut, which
-closes action 15 (with the later deployment). Instructions only: nothing here is scripted, and
-**every rule is temporary** (never saved, gone after a reboot).
+The stand has no internet: the jury loads the archive and runs it offline. CI proves this with
+synthetic bags; here it is proven with the original bags and the network cut. Nothing is
+scripted, and **every rule is temporary** (never saved, gone after a reboot). Before you block
+anything: §4.5 is done (the archive in `dist/`, both bags on disk); the provider's serial console
+works (try it once); you work in `tmux` with a second SSH session open. **An agent's own API
+access is cut** unless its API host is allowed (step 3b); otherwise a person runs this section, or
+the agent runs steps 3c–7 as one command in `tmux` and reads the output after the restore.
 
-**Before you block anything:**
-
-* §4.5 is done: the archive is in `dist/`, both bags are on disk.
-* The provider's serial console works (try it once): it needs no network.
-* You work in `tmux`, and a second SSH session is open.
-* **An agent's own API access is cut** by the block unless its API host is allowed (step 3b), and
-  it cannot reach its model until the restore. Without step 3b, a person runs this section, or the
-  agent runs steps 3c–7 as one command in `tmux` and reads the output after the restore.
-
-**1. Write the restore first** (into `/run`, which a reboot clears):
+**1–2. Write the restore first** (into `/run`, cleared by a reboot) **and arm it** (a timer runs it
+after the window whatever happens to your shell):
 
 ```bash
 EXT_IF=$(ip route show default | awk '{ for (i = 1; i < NF; i++) if ($i == "dev") { print $(i + 1); exit } }')
@@ -560,18 +369,12 @@ done
 while iptables -D DOCKER-USER -o $EXT_IF -j REJECT 2>/dev/null; do :; done
 echo "restored \$(date -Is)" >> /run/resense-restore.log
 EOF
-```
-
-**2. Arm it before blocking:** a timer runs it after the window whatever happens to your shell.
-
-```bash
 sudo systemd-run --on-active=30min --unit=resense-restore /bin/sh /run/resense-restore.sh
 systemctl list-timers --all resense-restore.timer    # it must be listed; if not, stop here
 ```
 
-**3. Build the block:** outbound traffic only, in an own chain for IPv4 and IPv6. Incoming
-traffic is not touched, so SSH still arrives, and its replies pass as established connections.
-Nothing is blocked until step 3c hooks the chain in.
+**3. Build the block:** outbound only, in an own chain for IPv4 and IPv6; incoming SSH and its
+replies still pass. Nothing is blocked until step 3c.
 
 ```bash
 for t in iptables ip6tables; do
@@ -586,9 +389,8 @@ sudo ip6tables -A RESENSE_OFFLINE -d fe80::/10 -j ACCEPT                        
 sudo ip6tables -A RESENSE_OFFLINE -d ff00::/8 -j ACCEPT                             # multicast: neighbour discovery, DHCPv6
 ```
 
-**3b. Only for an agent that must keep its connection**, before step 3c: DNS and HTTPS to its API
-host (Claude Code: `api.anthropic.com`, unless it is set up for another provider), IPv4 only. The
-rehearsal is then not fully offline: say so in the evidence.
+**3b. Only for an agent that must keep its connection:** DNS and HTTPS to its API host (Claude
+Code: `api.anthropic.com`), IPv4 only; the rehearsal is then not fully offline: say so.
 
 ```bash
 sudo iptables -A RESENSE_OFFLINE -p udp --dport 53 -j ACCEPT
@@ -598,8 +400,8 @@ for ip in $(getent ahostsv4 api.anthropic.com | awk '{ print $1 }' | sort -u); d
 done
 ```
 
-**3c. Switch it on:** everything else is rejected at once (no hanging tools), from this host and
-from containers on Docker bridge networks.
+**3c–4. Switch it on** (everything else rejected at once, from this host and from containers on
+Docker bridge networks) **and check it** on both address families:
 
 ```bash
 for t in iptables ip6tables; do
@@ -607,111 +409,71 @@ for t in iptables ip6tables; do
   sudo $t -I OUTPUT 1 -j RESENSE_OFFLINE
 done
 sudo iptables -I DOCKER-USER 1 -o "$EXT_IF" -j REJECT
-```
-
-**4. Check the block, on both address families:**
-
-```bash
 mkdir -p "$EV/offline_$DAY"
-python3 scripts/check_no_network.py | tee "$EV/offline_$DAY/check_no_network.txt"
-echo "exit ${PIPESTATUS[0]}"                                                          # 0: nothing reachable
+python3 scripts/check_no_network.py | tee "$EV/offline_$DAY/check_no_network.txt"; echo "exit ${PIPESTATUS[0]}"   # 0: nothing reachable
 curl -4 -sS -m 5 -o /dev/null https://github.com; echo "IPv4: curl exit $?"          # non-zero expected
 curl -6 -sS -m 5 -o /dev/null https://ipv6.google.com; echo "IPv6: curl exit $?"     # non-zero expected
 ```
 
 If anything is reachable: restore (step 7), find the leak, start again. Then open a **new** SSH
-session from your computer: it must still log in. If it does not, the open session still works:
-restore now.
+session from your computer: it must still log in; if not, restore now from the open one.
 
-**5. The runs, offline:**
+**5. The runs, offline**, each recording read into the page cache right before it plays (§3):
 
 ```bash
 docker image rm -f $(docker images -q resense)          # start from the archive only
 ARCHIVE=$(ls -t dist/resense-image-*.tar.gz | head -n 1)
+cat "$BAGS"/doubleT_obstacle/*.db3 > /dev/null
 IMAGE_TAR="$ARCHIVE" OFFLINE=1 OUT=out/off_obstacle ./scripts/dry_run.sh "$BAGS/doubleT_obstacle" \
-  2>&1 | tee "$EV/offline_$DAY/dry_obstacle.txt"
-echo "exit ${PIPESTATUS[0]}"
+  2>&1 | tee "$EV/offline_$DAY/dry_obstacle.txt"; echo "exit ${PIPESTATUS[0]}"
+cat "$BAGS"/roundT_doubleT/*.db3 > /dev/null
 SKIP_BUILD=1 OFFLINE=1 OUT=out/off_clear ./scripts/dry_run.sh "$BAGS/roundT_doubleT" --expect-clear --max-alarm-frames 2 \
-  2>&1 | tee "$EV/offline_$DAY/dry_clear.txt"
-echo "exit ${PIPESTATUS[0]}"
+  2>&1 | tee "$EV/offline_$DAY/dry_clear.txt"; echo "exit ${PIPESTATUS[0]}"
 ```
 
-Then README «Кратко для жюри» steps 2–5 by hand from a normal user's host console, still
-offline (§4.2, host console). **Done:** both dry runs exit 0 with the §4.1 criteria, and the host
-console shows `STOP` on `doubleT_obstacle`.
+Then the host console of §4.2, still offline, into `offline_<date>/host_console.txt`; optionally
+`scripts/play_bag.sh "$BAGS/doubleT_obstacle" --archive "$ARCHIVE"`. **Done:** both dry runs exit 0
+with the §4.1 criteria and the host console passes with `STOP` on `doubleT_obstacle`.
 
-**6. Record what tried to go out**, before restoring (packet counters per rule; the `REJECT` line
-counts the blocked attempts):
+**6–7. Record what tried to go out** (packet counters per rule; the `REJECT` line counts the
+blocked attempts), **then restore by hand** and stop the timer:
 
 ```bash
 sudo iptables -L RESENSE_OFFLINE -v -n > "$EV/offline_$DAY/rules_ipv4.txt"
 sudo ip6tables -L RESENSE_OFFLINE -v -n > "$EV/offline_$DAY/rules_ipv6.txt"
-```
-
-**7. Restore by hand** and stop the timer:
-
-```bash
 sudo /bin/sh /run/resense-restore.sh; sudo systemctl stop resense-restore.timer
 curl -sS -m 15 -o /dev/null -w '%{http_code}\n' https://github.com    # 200: online again
 ```
 
 **Safety net, in order:** the timer restores at the end of the window; the serial console works
 without the network; a reboot from the provider's console clears every rule. **Never** save the
-rules (`iptables-save` into a file loaded at boot, `netfilter-persistent save`, installing
+rules (`iptables-save` into a file loaded at boot, `netfilter-persistent save`,
 `iptables-persistent`) and never stop the timer while the block is on.
 
 ## 6. Results and the PR
 
-**Folders** (in the clone): `docs/evidence/<run>_<date>/`, one per run: `vm_`, `dry_run_`,
-`bench_` (written by `bench_8core.sh`), `gate_`, `export_`, `offline_`. `.gitignore` hides `*.log`
-and `*.jsonl`, so rename and compress what you keep:
+One folder per run, `docs/evidence/<run>_<date>/`: `vm_` (with a `summary.md`: one row per run
+and the findings), `dry_run_`, `bench_`, `gate_`, `export_`, `offline_`. `.gitignore` hides `*.log`
+and `*.jsonl`, so rename and compress what you keep, then look at every file the `grep` lists:
+**no personal data** in a commit (names, e-mails, tokens, SSH keys, IP addresses including the VM's
+public one, home paths with a person's name):
 
 ```bash
-for r in dry_obstacle dry_clear ct_stock off_obstacle off_clear; do
+for r in dry_obstacle dry_clear cold_obstacle cold_clear ct_stock host_console off_obstacle off_clear; do
   d=out/$r; case "$r" in off_*) to="$EV/offline_$DAY" ;; *) to="$EV/dry_run_$DAY" ;; esac
   [ -f "$d/node.log" ] && cp "$d/node.log" "$to/${r}_node_log.txt"
   [ -f "$d/status.jsonl" ] && gzip -c "$d/status.jsonl" > "$to/${r}_status.jsonl.gz"
 done
 find "$EV" -path "*_$DAY/*" -type f -size +20M     # must print nothing
-```
-
-**No personal data** in a commit: names, e-mails, tokens, SSH keys, IP addresses (the VM's public
-address included), home paths with a person's name. Look at what this finds before committing:
-
-```bash
 grep -rIlE '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}|ghp_|github_pat_|PRIVATE KEY|([0-9]{1,3}\.){3}[0-9]{1,3}' "$EV"/*_"$DAY"
 ```
 
-Never commit bags, caches, `*.npy`, `*.db3`, the image archive or `out/`.
-
-**Doc rows to update** with the numbers exactly as the evidence has them (if a number disagrees
-with EXPERIMENTS "Current results", say so in the PR instead of editing the current results):
-
-| folder | edit | how |
-|---|---|---|
-| `bench_<date>/` | [`EXPERIMENTS.md`](EXPERIMENTS.md) §3; CAPTAIN C8, action 7 | one subsection "8-core bench on the team VM (<date>)": machine (CPU model, vCPU / physical cores, RAM), fps, latency mean / p95 / max, dropped frames, CPU %, memory, native vs numpy; C8 DONE only with ≥ 8 physical cores, else PARTIAL with the core count |
-| `dry_run_<date>/` | EXPERIMENTS §3b; CAPTAIN C7, C4, action 15 | one paragraph: date, machine, original bags, each criterion's number, PASS / FAIL; C4 from the stock player and the host console |
-| `offline_<date>/` | CAPTAIN C25, action 15 | the result, what was allowed (step 3b or nothing), the blocked attempts |
-| `export_<date>/` | CAPTAIN C13 | size and sha256 (releases stay deferred) |
-| `gate_<date>/` | the PR description | the table; a go / no-go on a change is the captain's |
-| every folder | [`evidence/README.md`](evidence/README.md) §2 | one short subsection: how it ran, the result |
-
-**The PR** (CAPTAIN §6): from a new branch, against `main`; never push to `main`, never
-force-push, never merge your own PR (the captain merges after CI is green and a review from
-another lane). The freeze times are those of CAPTAIN §6; the deployment runs come later by the
-captain's decision, so their PR adds evidence and the rows above, nothing else (no changes to
-`resense/`, `configs/`, `native/`, `labels/`, `docs/evidence/results/`, `web/` or the tests; a
-finding for another lane goes into the PR description).
-
-```bash
-git switch -c "vm-evidence-$DAY"
-git add docs/evidence/*_"$DAY" docs/EXPERIMENTS.md docs/CAPTAIN.md docs/evidence/README.md
-git commit -m "VM runs of $DAY: <what ran, where, the headline result>"
-git push -u origin "vm-evidence-$DAY"
-gh pr create --base main --title "VM evidence $DAY" --body "<the runs, their results, anything that failed>"
-```
-
-(without `gh`: push, then open the PR on GitHub.) A FAIL is evidence too: commit it as it is.
+Never commit bags, caches, `*.npy`, `*.db3`, the image archive or `out/`. Add one row per folder
+to [`evidence/README.md`](evidence/README.md) §2; a number that disagrees with the current results
+in `docs/EXPERIMENTS.md` goes into the PR description. **The PR** ([`CAPTAIN.md`](CAPTAIN.md) §6):
+a new branch `vm-evidence-$DAY` against `main` with `docs/evidence/*_"$DAY"` and the index rows
+only (never push to `main`, force-push or merge your own PR; `gh pr create --base main`); a FAIL is
+evidence too: commit it as it is.
 
 ## 7. When something goes wrong
 
@@ -721,8 +483,11 @@ gh pr create --base main --title "VM evidence $DAY" --body "<the runs, their res
 | the base image cannot be pulled | retry; a registry mirror as Docker's documentation describes |
 | Google Drive answers with a page (§2.1) | download `Датасет.zip` in a browser, `scp` it to `$DATA/dataset.zip` |
 | the ride stream broke off (§2.3) | run the same lines again: cached split files are skipped |
-| disk full | §2 table: delete bags you do not need, or mount a bigger data disk at `$DATA` |
+| disk full | §2: delete bags you do not need, or mount a bigger data disk at `$DATA` |
 | a run exits 3 | no Docker daemon (`scripts/require_docker.sh`) |
+| a dry run fails on frames skipped by the catch-up after an input stall | the disk stalled the player: pre-read the bags or use a tmpfs (§3), run again, keep both results |
+| a 20 s recording's results span about a minute of wall time (§4.1) | the disk sets the pace: the same |
+| a host console gets few or no 360° clouds | the player runs CycloneDDS (§1): `rmem_max` 32 MiB (§4.2), or install the Fast DDS RMW |
 | the block is still on (§5) | `sudo /bin/sh /run/resense-restore.sh`; else the serial console; else a reboot |
-| no ROS 2 on the host | everything but the host console of §4.2 runs; C4 then rests on the stock player in Docker |
+| no ROS 2 on the host | everything but the host consoles runs; the organizers' console rests on the stock player in Docker |
 | a step fails | keep its output, commit it, report it in the PR; do not change code on the VM |

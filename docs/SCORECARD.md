@@ -36,11 +36,12 @@ The organizers publish no weights; the maxima below are the team's reading of th
 | 8.5 | Technical quality | 10 | **7** | clean library/node split, 753 passing tests, strong CI, native kernels with fallback; 323 parameters, dead flags, 16 k lines of Markdown with stale claims | P1 (CI, Docker, docs), P3 (code) |
 | 8.6 | Ease of launch | 10 | **7** | builds from scratch in 79 s and runs with the default command; but no published image archive, `--read-ahead-queue-size 10` and `--net=host` are required | P1 |
 | 8.7 | Team approach | 10 | **8** | hypotheses, rejected variants, pre-registered criteria and limitations are recorded; over-tuning to the organizers' objects and a scattered record cost points | all; P1 edits |
-| 8.8 | Pitch | 5 | **3** | the deck follows problem → idea → algorithm → demo → results; silent video, placeholder team slides, dense text, no rehearsal yet | P1 (lead), P2 (deck, video) |
+| 8.8 | Pitch | 5 | **3** | the deck follows problem → idea → algorithm → demo → results; silent video, placeholder team slides, dense text, no rehearsal yet | P2 (pitch, deck, video; since 28.09) |
 | | **Total** | **100** | **61** | | |
 
-The captain's own criteria (8.3 node side, 8.5 CI / Docker / docs, 8.6, 8.8) come to
-**24.5 of 35**; the work that would raise them is in [`CAPTAIN.md`](CAPTAIN.md) §3.
+The captain's own criteria (8.3 node side, 8.5 CI / Docker / docs, 8.6) come to **21.5 of 30**;
+the pitch and the video (8.8) moved to P2 on 28.09. The work that would raise them is in
+[`CAPTAIN.md`](CAPTAIN.md) §3.
 
 ## How it was judged
 
@@ -221,6 +222,27 @@ Against: the video is silent; team slides carry roles but no names; several slid
 ~1 000–1 100 characters; the headline false-alarm figure is the in-sample 2.5 per km (labelled as such, 2.8 held out next
 to it); rehearsals and the
 live remote demo are not done yet (only people can close these).
+
+## Since the judgement (29.09, not re-scored)
+
+The scores above stay those of 28.09 evening; nothing below was judged independently.
+
+* **Node start-up (8.3):** a faster decode giving the same arrays byte for byte, a warm-up before
+  listening, and a recording's start-up burst caught up at 5 Hz. Results of the first 3 s at 360°
+  are 38–105 ms old instead of 312–325 ms (median). With the page cache dropped: 120–300 ms instead
+  of 829–1029 ms. Decisions are identical
+  ([evidence](evidence/node_startup_2026-09-29/README.md)). The node exits cleanly on Ctrl+C;
+  `check_dry_run.py` reports the playback pace. 770 tests pass.
+* **Documents (8.5):** README cut to the jury path and the results. The full experiment log,
+  the dated changelog and the dated records moved to [`archive/`](archive/README.md); a compact
+  EXPERIMENTS replaces the log. The stale statements in the table below are corrected, except the
+  release (still unpublished) and the deck's figures (P2 rebuilds the deck). The GitBook
+  ([resense.gitbook.io/resense-docs](https://resense.gitbook.io/resense-docs/)) is synced and
+  gained a results page and a team-approach page.
+* **Pitch and video (8.8):** owned by P2 since 28.09.
+* `tracking.hold_misses` 2, the fix for the GO at frame 111 suggested under 8.1, was measured on
+  the branch `gpt-score-push-20260928`: it fails the strict gate (more false alarms on the ride and
+  the empty recordings) and is rejected.
 
 ## Stale or contradictory statements found (to fix)
 

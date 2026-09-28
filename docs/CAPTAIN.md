@@ -1,14 +1,14 @@
 # Captain Board
 
 > **Purpose:** P1's board: the captain's role, the criteria the captain owns with their current
-> score, the work left to 29.09 and after, the state of the branches, the rules, contracts, owners
-> and decisions. The board as it stood until 28.09 (criteria checklist C1–C25, action list, release
-> notes, the analysis of 24.09) is archived in
+> score, the work left, the state of the branches, the rules, contracts, owners and decisions. The
+> board as it stood until 28.09 (criteria checklist C1–C25, action list, release notes, the
+> analysis of 24.09) is archived in
 > [`archive/CAPTAIN_board_2026-09-28.md`](archive/CAPTAIN_board_2026-09-28.md); 16–24.09 in
 > [`archive/CAPTAIN_log_2026-09.md`](archive/CAPTAIN_log_2026-09.md).
 > **Audience:** P1, team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-28 evening against `main` `464f5bc`, GitHub (0 tags, 0 releases, CI
-> green) and the independent judgement of the same evening ([`SCORECARD.md`](SCORECARD.md)).
+> **Last verified:** 2026-09-29: GitHub (0 tags, 0 releases), the VM run of 28.09, the node change
+> of 29.09 and the independent judgement of 28.09 ([`SCORECARD.md`](SCORECARD.md)).
 > **Status:** current
 
 ## 1. Role and dates
@@ -17,80 +17,76 @@ P1 is the captain: system analyst and ROS 2 / integration developer ([`PLAN.md`]
 captain owns the jury chain `docker load` (or `docker build`) `→ docker run → ros2 bag play →
 /resense/decision`, the node, Docker, CI and the release, the documents in §8, liaison with the
 organizers ([`QUESTIONS.md`](QUESTIONS.md), [`organizers/answers.md`](organizers/answers.md)),
-merges, the submission (sent by the captain personally) and the pitch.
+merges and the submission (sent by the captain personally). **Since 28.09 the pitch and the video
+belong to P2** (the defence on 23.10, the deck and the private deck, the video and its voice-over,
+rehearsals, the live remote demo; [`PRESENTATION.md`](PRESENTATION.md)).
 
-Dates (organizers' README): upload by **29.09 23:59** (target 18:00; the form takes links), technical
-expertise 30.09–14.10, pitch 23.10, awards 30.10. From 28.09 only blockers change code (§6).
+Dates (organizers' README): upload by **29.09 23:59** (target 18:00; the form takes links),
+technical expertise 30.09–14.10, pitch 23.10, awards 30.10. The detector is sealed; only the node,
+the image, the tools and the documents change (§6).
 
 ## 2. The captain's criteria and their score
 
-From the independent judgement of 28.09 evening ([`SCORECARD.md`](SCORECARD.md)); maxima are the
-team's reading of the spec, the organizers publish no weights.
+From the independent judgement of 28.09 evening ([`SCORECARD.md`](SCORECARD.md), not re-scored
+since); maxima are the team's reading of the spec, the organizers publish no weights.
 
-| criterion | max | score | what of it is the captain's | what costs points now |
-|---|---:|---:|---|---|
-| **8.3 Speed** (node side) | 10 | **7.5** | the node's input path, catch-up, freshness, the timing evidence | start-up catch-up (e2e p95 0.5–1.1 s over the first seconds); stale output and 4 GB RSS under the default player; 360° p95 close to the 100 ms period on 4 vCPU; no 8-core measurement |
-| **8.5 Technical quality** (CI, Docker, docs) | 10 | **7** | CI, Dockerfile, release workflow, README / ARCHITECTURE / ALGORITHM / EVALUATION, this board | ~16 k lines of Markdown with dated team process in jury documents; stale or contradictory statements (SCORECARD table); code complexity is P3's |
-| **8.6 Ease of launch** | 10 | **7** | all of it | no published image archive for README step 1; `--read-ahead-queue-size 10` is mandatory (the literal `ros2 bag play <bag>` gives stale results); `--net=host`; step 0 `sysctl` for CycloneDDS |
-| **8.8 Pitch** (lead) | 5 | **3** | the pitch itself, the private deck data, rehearsals, the live demo (P2 builds the deck and video) | silent video, team slides without names, dense slides, no rehearsal, live remote demo not rehearsed |
-| **captain's criteria** | **35** | **24.5** | | |
-| 8.7 Team approach (shared) | 10 | 8 | DECISIONS, the documents' structure | the record is scattered and partly describes an older detector |
+| criterion | max | score | what of it is the captain's | what costs points | done since the judgement |
+|---|---:|---:|---|---|---|
+| **8.3 Speed** (node side) | 10 | **7.5** | the node's input path, catch-up, freshness, the timing evidence | slow start-up (e2e p95 0.5–1.1 s over the first seconds at 360°); stale output under the default player; no 8-core measurement | 29.09: faster decode, warm-up, 5 Hz start-up catch-up — first 3 s at 360° 312–325 → 38–105 ms median e2e, all results p95 410–447 → 212–344 ms (cold 864–1084 → 333–599 ms), identical decisions ([evidence](evidence/node_startup_2026-09-29/README.md)); `check_dry_run.py` reports the playback pace and the start-up lag |
+| **8.5 Technical quality** (CI, Docker, docs) | 10 | **7** | CI, Dockerfile, release workflow, README / ARCHITECTURE / ALGORITHM / EVALUATION, this board | Markdown volume and dated process notes; stale statements | 29.09: README cut to the jury path; EXPERIMENTS compacted (full log archived); dated records archived; stale facts fixed across the docs and the GitBook |
+| **8.6 Ease of launch** | 10 | **7** | all of it | no published image archive for README step 1; `--read-ahead-queue-size 10` required; `--net=host` | 29.09: the node exits cleanly on Ctrl+C; the start-up burst is caught up faster |
+| **captain's criteria** | **30** | **21.5** | | | |
+| 8.7 Team approach (shared) | 10 | 8 | DECISIONS, the documents' structure | the record was scattered and partly described an older detector | 29.09: one compact EXPERIMENTS, DECISIONS current |
+| 8.8 Pitch — **P2 since 28.09** | 5 | 3 | liaison only | silent video, team slides without names, dense slides, no rehearsal | — |
 
-The rest of the total is the detector's (8.1 Functionality, 8.2 Range, 8.4 Generalization: P3 with
-P4's evaluation); the detector is sealed, so moving those needs the captain to unfreeze it (§3,
-item 7).
+The rest of the total is the detector's (8.1, 8.2, 8.4: P3 with P4's evaluation); the detector is
+sealed, so moving those needs the captain to unfreeze it (§3, item 6).
 
 ## 3. Work to do
 
-H = only a person (the captain) can do it; A = an agent can do it, the captain merges. Gains are
-the judge's estimate if the item is done well.
+H = only a person can do it; A = an agent can do it, the captain merges.
 
 **Before the upload (29.09, target 18:00):**
 
 | # | item | who | gain |
 |---|---|---|---|
-| 1 | **Publish the image archive.** Push the `v1.0.0` tag on the final `main` commit (`.github/workflows/release.yml` builds, loads back, plays both smoke bags and publishes `resense-image-v1.0.0.tar.gz`, its `.sha256` and `SHA256SUMS`). Then, logged out: open the release, download, `sha256sum -c`, `docker load`, README steps 2–5 on a clean machine. README step 1 has nothing to load until this is done. | H tags; A verifies | 8.6 +0.5–1 |
-| 2 | **Close the launch trap of the default player.** Either make the node keep only the newest frames when its backlog exceeds a bound, so the organizers' literal `ros2 bag play <bag>` gives current results (the node is P1's lane, outside the detector seal; needs the cold-bag CI and a dry run), or at minimum make `--read-ahead-queue-size 10` impossible to miss in README and the deck. Measured today: literal command → 57–135 of 201 frames, every result stale, 11 s queue lag, 4 GB RSS. | A implements, H decides (blocker rule) | 8.6 +0.5, 8.3 +0.5 |
-| 3 | **Fix the stale statements** listed in [`SCORECARD.md`](SCORECARD.md) ("Stale or contradictory statements"): the release wording once item 1 is done, the agent branch name in README «Где взять архив» and ARCHITECTURE, ALGORITHM's 0.95 m (config 1.2), README's `bag:=` row without `freshness_mode:=replay`, the deck's latency line. EXPERIMENTS "Current results" and its "opinion not shipped" are P3 / P4 text: order the fix or point them to the sealed detector's outputs. | A | 8.5 +0.5 |
-| 4 | **Private deck data.** City, team story, names, group photo into the private JSON; rebuild with `scripts/build_deck.py --team`; the public deck keeps roles only. | H (+ P2 builds) | 8.8 +0.5 |
-| 5 | **Submit.** Repository link at the tag with the commit hash, the image archive link with its sha256, the video, the deck (PDF); every link opened logged out first. | H | — (required) |
-| 6 | **Branches** (§4): do not merge any of the three before the upload; tell their owners. | H | protects CI |
+| 1 | **Merge the working branch** (the 29.09 node change and the documentation sweep) into `main` after its CI is green; GitBook syncs `gitbook/` from `main`. | H merges | 8.3, 8.5 |
+| 2 | **Publish the image archive.** Push the `v1.0.0` tag on the final `main` commit: `.github/workflows/release.yml` builds, loads back, plays both smoke bags and publishes `resense-image-v1.0.0.tar.gz`, its `.sha256` and `SHA256SUMS`. Then, logged out: download, `sha256sum -c`, `docker load`, README steps 2–5 on a clean machine. README step 1 has nothing to load until this is done. | H tags; A verifies | 8.6 +0.5–1 |
+| 3 | **Submit**: the repository at the tag with its commit hash, the archive link with its sha256, the video, the deck (PDF) — every link opened logged out first. | H | required |
+| 4 | Branches (§4): merge none of them before the upload; tell their owners. | H | protects CI |
+| 5 | The literal `ros2 bag play <bag>` (Humble's default read-ahead) still gives stale results: the player sends the whole overdue recording at once. Since 29.09 the node gets through it faster (145 instead of 57 of 201 frames, first STOP +2.3 s instead of +7.5 s), but the results stay stale. Keep `--read-ahead-queue-size 10` prominent in every instruction. | A | 8.6 |
 
-**Decide (detector frozen; each needs the full gate and a safety review, so only if it fits before 18:00):**
+**Decide (the detector is sealed):**
 
-| # | item | who | gain |
-|---|---|---|---|
-| 7 | (a) the GO at `doubleT_obstacle` frame 111 with the obstacle in view: hold a confirmed track over two misses (`tracking.hold_misses` 1 → 2); (b) the `beyond_axis` demotion that turns a person on the axis at 60 m into CAUTION where the trusted axis range is short (4 of 15 windows in the judgement's range test); (c) CAUTION on 35–69 % of empty-tunnel frames. Recommendation: (a) only, if the gate passes in time; (b) and (c) stay documented limitations. | H decides; P3 / A implement | 8.1 +0.5–1 |
+| # | item | who |
+|---|---|---|
+| 6 | The GO at `doubleT_obstacle` frame 111: `tracking.hold_misses` 1 → 2 was measured on 28.09 on the branch `gpt-score-push-20260928` (`docs/evidence/results/p1_raw_continuity_2026-09-28/` there): it restores the three frames but fails the strict gate (ride 130 → 150 alarm frames, 32 → 34 events; five recordings 40 → 46 alarm frames; more set F false detections) — **rejected, stays a documented limitation**. The `beyond_axis` demotion at platforms and the frequent CAUTION stay documented too. | H decides; P3 |
 
-**After the upload (only people can close these):**
+**After the upload:**
 
-| # | item | who | gain |
-|---|---|---|---|
-| 8 | Two pitch rehearsals with the fallback demo `video/docker_chain_rviz.mp4`; the live remote demo from a second device (Foxglove layout import); optional voice-over on the overview video. | H + team | 8.8 +0.5–1 |
-| 9 | Liaison: Q1 / Q2 answers into `organizers/answers.md`; answer the organizers daily during the expertise 30.09–14.10; pitch 23.10. | H | — |
-| 10 | If an 8-core machine is available: `scripts/bench_8core.sh` on both original bags, evidence committed. | H (+ A) | 8.3 +0.5 |
+| # | item | who |
+|---|---|---|
+| 7 | Answer the organizers daily during the expertise 30.09–14.10; Q1 / Q2 answers into `organizers/answers.md`. | H |
+| 8 | Pitch on 23.10: two rehearsals, the live remote demo from a second device, the private deck, the optional voice-over — **P2**; the captain joins the rehearsals. | P2 (+ team) |
+| 9 | If an 8-core machine is available: `scripts/bench_8core.sh` on both original bags, evidence committed. | H (+ A) |
 
-Done well, items 1–4 and 8 take the captain's criteria from 24.5 to about 28 of 35.
+## 4. Branches other than `main` (29.09)
 
-## 4. Branches other than `main` (28.09 evening)
+Checked read-only against `main`: none conflicts with `main`; none has an open pull request.
 
-Checked read-only against `main` `464f5bc`: none conflicts with `main`; none has an open pull request.
-
-| branch | head | by | what is new against `main` | CI | recommendation |
-|---|---|---|---|---|---|
-| `testovaya-gpt` | `a2f9122` | an agent VM (`root`), 28.09 11:02–14:34 UTC | 26 commits, of which 16 are the pre-squash commits of PR #20 (already in `main`) and 10 are new: compressed ride-cache tooling (`scripts/cache_io.py`, `scripts/cache_extended_ride.py`, `--zstd` in `cache_frames.py`, the evaluators read `.npy.zst`; `regression_gate.py` now refuses a ride cache without a complete intake manifest), P4's full-data evidence (87 files, 19.5 MB, 13.9 MB of it PNGs; four JSONs duplicated), a partial gate, cold-bag CI evidence, a rebuilt pptx / pdf / mp4 (~38 MB replaced), `ci.yml` and `p1_cold_bag_test.sh` list the branch itself. The detector is untouched (seal PASS). It reports: full strict gate PASS (208 metrics), ride 32 events / 31 STOP episodes, empty bags 11 / 13 on the cache, 764 tests in CI. | green (run 36437060113) | after the upload, cherry-pick the cache tooling (43a0e7d, eeabe34, once the intake-manifest rule is agreed) and the deduplicated P4 evidence; drop the branch-list edits; pick one canonical deck / video build |
-| `gpt-score-push-20260928` | `d73af5a` | an agent VM (`root`), 28.09 15:14–15:30 UTC | `testovaya-gpt` plus two commits: 4765661 records a single model review "69/100" and adds detector priorities to NEXT_DETECTOR_WORK; d73af5a adds `scripts/generate_synthetic_lidar_fixture.py` and `tests/fixtures/synthetic_lidar_v1/` (44 files, 24.8 MB of `.npy` force-added past `.gitignore`) that no test uses | green (run 36446234255) | do not merge: the review is superseded by [`SCORECARD.md`](SCORECARD.md) and the fixture is unused; keep the priorities text if wanted |
-| `experiment/cross-ring-sparse-evidence` | `3ba4521` | andrey (Andrey9923), 28.09 14:43–16:10 UTC | three commits on `df24c18`: an opt-in "cross-ring sparse evidence" (`cluster.weak_min_rings`, `tracking.far_min_ring_count`, both off by default; ring ids threaded through the candidates), `configs/experimental_cross_ring.yaml`, tests (36 pass on the merge tree), analysis scripts and `docs/EXPERIMENT_CROSS_RING.md` with a ride false-alarm trace. Its own results: no demonstrated improvement; the filter costs STOP range (0.3 m cube 55.8 → 52.5 m, box on top 111.4 → 101.3 m, plank 87.2 → 82.2 m). It changes five sealed detector files without resealing; the doc holds local Windows paths with a user name. | **red** on all three pushes (the seal check fails, so no test job runs) | keep as an experiment; do not merge before the upload; after it, only with a reseal, the full gate and a safety review |
+| branch | state | recommendation |
+|---|---|---|
+| `experiment/cross-ring-sparse-evidence` (andrey) | three commits on `df24c18`: an opt-in "cross-ring sparse evidence" (`cluster.weak_min_rings`, `tracking.far_min_ring_count`, off by default), tests, analysis scripts, `docs/EXPERIMENT_CROSS_RING.md` and a ride trace. Its own results: no improvement; the filter costs STOP range (0.3 m cube 55.8 → 52.5 m, box on top 111.4 → 101.3 m, plank 87.2 → 82.2 m). It changes five sealed detector files without resealing: **CI red** on every push | keep as an experiment; after the upload only with a reseal, the full gate and a safety review |
+| `gpt-score-push-20260928` (an agent VM, likikikpa) | the former `testovaya-gpt` (deleted on the remote; compressed ride-cache tooling, P4's full-data evidence, a rebuilt deck) plus: a self-review with a criterion score, 24.8 MB of unused `.npy` fixtures force-added past `.gitignore`, the rejected `hold_misses` 2 candidate with its evidence (item 6). It does not contain the current `main` | do not merge as is; after the upload cherry-pick the cache tooling and the evidence packets (deduplicated), drop the fixtures and the score |
 
 ## 5. Release and submission
 
-No tag or release exists (GitHub, 28.09 evening). `v1.0.0` is scheduled for 28.09 21:00 Moscow time
-through `.github/workflows/release.yml` (§3 item 1); the version in `pyproject.toml`,
-`resense/__init__.py`, `package.xml` and `setup.py` is 1.0.0 and kept equal by
-`tests/test_release.py`. Until the release exists, the image archive of a `main` commit is a CI
-artifact (GitHub login required) or `scripts/export_image.sh` on a machine with internet. The
-submission is the captain's personally: repository at the tag with its commit hash, the archive
-link with its sha256, the video and the deck.
+No tag or release exists (GitHub, 28.09 ~21:30 Moscow time; `v1.0.0` had been scheduled for 21:00).
+It is published by `.github/workflows/release.yml` when the tag is pushed (§3, item 2); the version
+in `pyproject.toml`, `resense/__init__.py`, `package.xml` and `setup.py` is 1.0.0 and kept equal by
+`tests/test_release.py`. Until then the image archive of a `main` commit is a CI artifact (GitHub
+login required) or `scripts/export_image.sh` on a machine with internet. The submission is the
+captain's personally.
 
 ## 6. Freeze and merge rules
 
@@ -103,7 +99,7 @@ link with its sha256, the video and the deck.
 - No edits in another lane's files without the owner's OK (§8), unless the captain orders them
   (25.09: the dashboard regressions in P2's lane, the P3 detector items, fixed by agents). Contract changes (§7): `[contract]`
   in the PR title and a heads-up to the consumers; add, never rename or remove.
-- Freeze: detector and config **26.09 20:00**, docs **27.09 20:00**; from 28.09 blockers only.
+- Freeze: detector and config sealed since 27.09 (`docs/DETECTOR_FREEZE.md`, checked by CI); the node, the image, the tools and the documents change through reviewed PRs with CI green.
 - Detector / config gate: `python scripts/regression_gate.py --baseline
   docs/evidence/results/regression_baseline_2026-09-26_ride_p3d.json` exits 0 on the change. Every
   gated metric must be identical or better on the six recordings, set O, the ride and set F
@@ -119,9 +115,9 @@ link with its sha256, the video and the deck.
 
 | contract | where | consumers |
 |---|---|---|
-| jury path `docker load` (no internet on the stand; `docker build` where there is) `→ docker run → ros2 bag play → /resense/decision` | README "Кратко для жюри", "Acceptance test and CI" | jury, P2 video |
+| jury path `docker load` (no internet on the stand; `docker build` where there is) `→ docker run → ros2 bag play → /resense/decision` | README «Кратко для жюри»; GitBook «Приёмочный тест» (`gitbook/guides/acceptance-test.md`) | jury, P2 video |
 | release (deferred by the captain, 25.09; inert until a tag is pushed): tags `v1.0.0-rcN` / `v1.0.0` only; assets `resense-image-<tag>.tar.gz`, its `.sha256` and `SHA256SUMS` | `.github/workflows/release.yml`, `scripts/release_meta.py`, `scripts/verify_release.sh` | the later deployment |
-| 12 topics `/resense/{decision, obstacle_detected, warning, nearest_distance, clear_distance, detections, status, health, markers, corridor_points, latency_ms, fps}` + `/tf_static` | `detector_node.py`, README "Topics published by the node" | P2, jury |
+| 12 topics `/resense/{decision, obstacle_detected, warning, nearest_distance, clear_distance, detections, status, health, markers, corridor_points, latency_ms, fps}` + `/tf_static` | `detector_node.py`, GitBook «Топики и JSON статуса» (`gitbook/reference/topics.md`) | P2, jury |
 | status JSON: `stamp, obstacle, warning, nearest_distance, clear_distance, detections[], warnings[], track, health, mount, timing_ms, ego_speed*, n_accumulated, n_*` + `node` (added by the node) | `FrameResult.to_dict()` in `resense/detector.py` | P2 dashboard, `resense run --out` |
 | `Frame` (xyz in the vehicle frame, intensity, ring, stamp) | `resense/frame.py` | P3, P4 |
 | one parameter file `configs/default.yaml`, root key `resense:`, ROS copy in sync | `resense/config.py`, `scripts/sync_params.sh` | P3 tunes, node loads |
@@ -132,14 +128,14 @@ link with its sha256, the video and the deck.
 | path | owner |
 |---|---|
 | `docker/`, `docker-compose.yml`, `ros2_ws/src/resense_ros/` (except `rviz/`), `scripts/*.sh` (except `build_native.sh`), `scripts/{check_dry_run,make_smoke_bag,cache_to_bag,bench_node_path,bench_summary,check_no_network,release_meta}.py`, `tests/test_release.py` | P1 |
-| `README.md`, `CHANGELOG.md`, `docs/{README,ARCHITECTURE,ALGORITHM,EVALUATION,SENSOR,PLAN,CAPTAIN,QUESTIONS,SCORECARD,VM_GUIDE}.md`, `docs/archive/`, team notes in `docs/organizers/` | P1 (P3 reviews ALGORITHM) |
+| `README.md`, `CHANGELOG.md`, `gitbook/`, `docs/{README,ARCHITECTURE,ALGORITHM,EVALUATION,SENSOR,PLAN,CAPTAIN,QUESTIONS,SCORECARD,VM_GUIDE,DECISIONS,DETECTOR_FREEZE,RESEARCH}.md`, `docs/archive/`, team notes in `docs/organizers/` | P1 (P3 reviews ALGORITHM) |
 | `.github/workflows/ci.yml`, `.github/workflows/release.yml` | `ci.yml`: P4 `pytest` (P2 its `web/demo` steps), P1 the other jobs; `release.yml`: P1 |
 | `configs/default.yaml` | P3 values, P1 structure |
 | `resense/{track,gauge,clustering,tracking,accumulate,egomotion,lowobj,calibration,health,config,detector,_native}.py`, `native/`, `setup.py`, `scripts/build_native.sh`, `tests/{test_algorithm,test_lowobj_near,test_native,test_cpu_savings,test_late_candidates}.py` | P3 |
 | `resense/{frame,pointcloud,sensor}.py` | P1 decoding / P3 geometry |
-| `resense/{synthetic,metrics,io,cli}.py`, other `tests/` (`test_node.py`: P1), `labels/`, `scripts/{cache_frames,eval_real,far_range_eval,compare_setf,label_fake_objects,score_fake_objects,short_signature_experiment,unpack_dataset,start_offsets,regression_gate}.py`, `scripts/speed_*.py` (with `tests/test_speed_eval_helpers.py`), `tests/test_regression_gate.py`, `docs/{P4_AUDIT,DATASET}.md`, `docs/evidence/results/` | P4 |
-| `docs/EXPERIMENTS.md` | P3 / P4; P1 appends timing |
-| `web/` (incl. `web/assets/fonts/`, `web/demo/`), `ros2_ws/src/resense_ros/rviz/`, `docs/{PRESENTATION.md,images/,img/,video/,presentation/}`, `scripts/{build_deck,hero_view,make_overview_video}.py`, `tests/test_overview_video.py` | P2 (`docs/img/` stays in place: scripts read it) |
+| `resense/{synthetic,metrics,io,cli}.py`, other `tests/` (`test_node.py`: P1), `labels/`, `scripts/{cache_frames,eval_real,far_range_eval,compare_setf,label_fake_objects,score_fake_objects,short_signature_experiment,unpack_dataset,start_offsets,regression_gate}.py`, `scripts/speed_*.py` (with `tests/test_speed_eval_helpers.py`), `tests/test_regression_gate.py`, `docs/DATASET.md`, `docs/archive/P4_AUDIT.md`, `docs/evidence/results/` | P4 |
+| `docs/EXPERIMENTS.md` (the full log of 16–28.09 archived in `docs/archive/EXPERIMENTS_log_2026-09.md`) | P3 / P4; P1 the node timing |
+| `web/` (incl. `web/assets/fonts/`, `web/demo/`), `ros2_ws/src/resense_ros/rviz/`, `docs/{PRESENTATION.md,images/,img/,video/,presentation/}`, `scripts/{build_deck,hero_view,make_overview_video}.py`, `tests/test_overview_video.py`; the pitch and the video since 28.09 | P2 (`docs/img/` stays in place: scripts read it) |
 
 ## 9. Decision log
 
@@ -193,8 +189,8 @@ link with its sha256, the video and the deck.
 | 26.09 | P3 round 2 (the captain: "make items 5–7, complete all P3 work that is possible"): the organizers' hanging cube #2 a STOP from 52.5 m (was 34.0 m, `cluster.floating_free_max_size`), their 5 cm hanging object a STOP from 30.1 m (was never, `cluster.hanging_enabled` with a rail-lock guard): set O 6 of 8 objects with a STOP, inside STOP frames 311 → 337; `health.clear_cap` on although it missed its pre-registered clutter limit by 0.5 pp (the delegate's decision: a conservative verified-clear distance, set O overclaim 147 → 60 frames, no decision changes); rate-independent calibration (5 Hz stress: five bags 13 → 10 events). A safety review blocked `calibration.refine_min_deg` (a re-seed could drop a confirmed STOP under tilt): refinement off, a ≤ 1° change rotates the model and tracks, a STOP is held for a fixed window through any change; the re-review passed with the hold fixed. Gate PASS (6 better, 0 worse), baseline `_ride_p3b`, 486 tests | EXPERIMENTS §1i, `p3_round2_*`, `p3_round2_review_fixes_2026-09-26.json`, `8de3a92` |
 | 26.09 | P3 wf14 integrated — rail-start (4 m, with the 0.06 m reference condition), near escalation (A) and wall keep (D) on; axis union off (safety review: blocking); baseline `_ride_p3c`; re-review of the fixes: rail start CLEAN, near escalation NON-BLOCKING, axis union CLEAN as shipped (off) | EXPERIMENTS §1k–§1n, `p3_integration_2026-09-26.json`, `regression_gate_2026-09-26_p3_integrated.json` |
 | 26.09 | P3 range — stop keep B10 on (`tracking.stop_keep_*`, cap 10 s after the safety review); set O box at the envelope top 22 → 51 STOP frames, continuous from 101.3 m; no first STOP moves; baseline `_ride_p3d` | EXPERIMENTS §1o, `p3_range_2026-09-26.json`, `regression_gate_2026-09-26_range_final.json` |
-| 26.09 | re-judgement of the integrated head (the user: "complete all P1 and P2 work; re-judge against the criteria, don't trust the docs"): two independent judges (their scores are superseded by the judgement of 28.09 evening); every agent-doable P1 / P2 item closed (deck, PDF, video and `.srt` on `_ride_p3d` and tested against the newest baseline; the claims found wrong fixed); the captain's remaining items then in the archived board's §4 |  [`evidence/rejudge_2026-09-26/`](evidence/rejudge_2026-09-26/) |
+| 26.09 | re-judgement of the integrated head (the user: "complete all P1 and P2 work; re-judge against the criteria, don't trust the docs"): two independent judges (their scores are superseded by the judgement of 28.09 evening); every agent-doable P1 / P2 item closed (deck, PDF, video and `.srt` on `_ride_p3d` and tested against the newest baseline; the claims found wrong fixed); the captain's remaining items then in the archived board's §4 |  [`evidence/rejudge_2026-09-26/`](evidence/rejudge_2026-09-26) |
 | 26.09 | jury step 3 reads the bag before playing it (`cat <bag>/*.db3 > /dev/null`): from a cold disk the 360° dry run FAILS (34 of 201 frames), warm it PASSES; the node fix is action 21, the captain's decision | C7, README «Кратко для жюри», "Acceptance test and CI" |
 | 26.09 evening | P3 / P4 completion on a second machine (the captain: complete all P3 and P4 work): the strict gate with the ride and set F passes with every row the same; P4's candidate B passes the full gate (set O #4 2 → 3 frames) and is eligible but **not shipped** (the freeze is the captain's; one frame at 7 m); the envelope union with the review fixes passes the full gate (#4 2 → 9 frames) and stays **off** (Q1 unanswered, one re-review item open); +3° pitch measured, no candidate; the 221-start census on the head: no STOP within 10 m; nothing shipped, `_ride_p3d` stands | EXPERIMENTS §1p, `p3_p4_prereg_2026-09-26_evening.json`, `regression_gate_2026-09-26_{head_fresh_machine,p4_candidate_B_full,axis_union_fixed_full}.json` |
-| 26.09 evening | the P3 / P4 pass checked by both re-judgement judges (the user: "p3 & p4 work arrived, re-judge and check your scores"): judge A re-ran the rate / mount / start-offset checks and the gates of candidate B and the union on its own machine, judge B diffed the JSONs; every number reproduces; seven text issues fixed (EXPERIMENTS §1p counts, the 1–3 m pitch STOP and the roll's unfinished calibration, the third judge's self-credit); no score moved (those scores are superseded by the judgement of 28.09 evening) | [`evidence/rejudge_2026-09-26/p34/`](evidence/rejudge_2026-09-26/p34/) |
+| 26.09 evening | the P3 / P4 pass checked by both re-judgement judges (the user: "p3 & p4 work arrived, re-judge and check your scores"): judge A re-ran the rate / mount / start-offset checks and the gates of candidate B and the union on its own machine, judge B diffed the JSONs; every number reproduces; seven text issues fixed (EXPERIMENTS §1p counts, the 1–3 m pitch STOP and the roll's unfinished calibration, the third judge's self-credit); no score moved (those scores are superseded by the judgement of 28.09 evening) | [`evidence/rejudge_2026-09-26/p34/`](evidence/rejudge_2026-09-26/p34) |
 | 28.09 evening | independent judgement of `464f5bc` (the user: "re-judge independently all criteria, don't trust current scores and docs, write your new judgement and purge old"): re-measured on the organizers' data; it replaces every earlier judgement, whose scores and judge reports are removed; the dated board is archived; the captain's work and the branches are in §2–§4 | [`SCORECARD.md`](SCORECARD.md), [`evidence/judgement_2026-09-28/`](evidence/judgement_2026-09-28/README.md) |

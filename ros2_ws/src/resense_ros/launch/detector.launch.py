@@ -64,6 +64,9 @@ PARAMS = {
     "catchup_max_lag": ("5.0", float, "s: waiting frames older than the newest by more than this are dropped"),
     "catchup_startup_max_lag": ("20.0", float, "s: backlog allowed for a new recording's first catch-up; "
                                             "later stalls use catchup_max_lag"),
+    "catchup_startup_step": ("0.2", float, "s of recording between processed frames of a new recording's first "
+                                           "backlog (0.2 = every other 10 Hz frame); 0 = every frame"),
+    "warmup": ("true", bool, "run the decode and a throwaway detector on synthetic frames before listening"),
     "input_reliability": ("auto", str, "input QoS: auto = match the publishers (reliable for ros2 bag play of the "
                                        "organizers' recordings), reliable, best_effort"),
     # 28.09: the clouds read from their serialized bytes (resense_ros/fastcloud.py), not converted by rclpy

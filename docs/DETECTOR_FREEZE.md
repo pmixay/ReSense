@@ -1,99 +1,68 @@
-# Detector seal — 27 September 2026 (replaces the P3d seal of 26.09)
+# Detector Freeze
 
-**Current decision:** the reviewed detector of the [27.09 quality cycle](QUALITY_CYCLE_2026-09-27.md)
-is the reference. Its seal [`detector_freeze_2026-09-27.json`](evidence/detector_freeze_2026-09-27.json)
-covers 31 files (the learned track opinion `resense/models/track_opinion.json` included) against
-the full gate [`regression_gate_2026-09-27_quality.json`](evidence/results/regression_gate_2026-09-27_quality.json)
-of `d572807` (detector `352ca13`): PASS against the P3d baseline with no waiver, missing row or
-worse gated metric, on the default parameters without overrides. It replaces the first 27.09 seal
-(`25498c1`) and the one after the first review (`65c5a5b`): two independent two-judge review
-rounds found three safety regressions (a one-sided envelope shift, a far-evidence rule that could
-hide a track, an unbounded opinion delay) and a violated near bound of the opinion, and asked for
-a margin on its threshold; the record lists every fix and its cost. That gate is the new regression baseline
-([`regression_baseline_2026-09-27_quality.json`](evidence/results/regression_baseline_2026-09-27_quality.json)).
-`python scripts/detector_freeze.py verify` (CI job `checks`) checks the seal. No release
-tag has been created or pushed.
+> **Purpose:** what is sealed, how the seal is verified, the gate that validates it, and how a
+> detector change would be accepted.
+> **Audience:** team, jury · **Owner:** P1 (seal), P3 (detector) · **Language:** EN
+> **Last verified:** 2026-09-29: `python3 scripts/detector_freeze.py verify` PASS; the manifest's
+> scope, gate and baseline against `scripts/detector_freeze.py`; the gate re-run of 28.09 ·
+> **Status:** current; the detector is sealed and does not change before the submission
 
-## The P3d seal of 26 September (dated record)
+## What is sealed
 
-**Earlier baseline decision:** preserve the validated detector and default configuration.
-Detector behavior remains that of `fa18832`; the acceptance
-baseline is [`regression_baseline_2026-09-26_ride_p3d.json`](evidence/results/regression_baseline_2026-09-26_ride_p3d.json).
-Further authorized candidates use isolated worktrees and must pass acceptance before integration.
+The detector of the 27.09 quality cycle (detector `352ca13`, measured at `d572807`), sealed by
+[`detector_freeze_2026-09-27.json`](evidence/detector_freeze_2026-09-27.json): the SHA-256 of its
+31 files in `resense/` (the learned track opinion `resense/models/track_opinion.json` included),
+`native/`, `configs/`, `ros2_ws/src/resense_ros/config/` and the build inputs `setup.py`,
+`pyproject.toml`, `scripts/build_native.sh`; the configuration hashes, the measured commit, and the
+validating gate and its baseline by path and hash. The ROS node code, launch file, Docker, CI and
+docs are outside the seal, with their own checks.
 
-The [manifest](evidence/detector_freeze_2026-09-26.json) identifies every frozen file by SHA256,
-the measured source commit, the complete validation record and its hash. It covers `resense/`,
-`native/`, `configs/`, the ROS config copy and detector build inputs. Generated binaries and Python
-caches are excluded. Node transport, launch, Docker and documentation have separate checks.
-This is a detector freeze; it does not declare the submission or deployment complete.
+## How to verify
 
-## Acceptance and provenance
+`python3 scripts/detector_freeze.py verify` (standard library only; no data, packages or Git
+checkout) fails if a sealed file is added, changed or removed, if `configs/default.yaml` and its ROS
+copy differ, or if the gate or baseline named in the manifest changed or no longer records a full,
+passing, waiver-free gate. CI runs it in job `checks` on every push. It replays no data, and a file
+replaced together with its recorded hash passes: a change to the manifest is reviewed like code.
 
-The [current full gate](evidence/results/regression_gate_2026-09-26_comment_correction.json) passed on this
-machine without `--allow`: all six recordings, 1,510 organizer-object frames, all 11,271 ride
-frames and set F straight are present. Every gated row equals `_ride_p3d`; only informational
-latency rows differ. The measured commit is `cc834fc`; the seal generator verifies every sealed
-file against that commit. The earlier [second-machine gate](evidence/results/regression_gate_2026-09-26_head_fresh_machine.json)
-remains as an independent reproduction. Creating or verifying the manifest itself does not
-replay data; the linked fresh gate did.
+## The gate that validates it
 
-This refresh corrects unsupported clearance claims in comments and docstrings only. Executable
-syntax trees and all configuration values are unchanged. Source digest is now
-`5d9a20861f66bb2c085d91c8a03a26710e6a1455d02c156102f6d9fdedff5fa6`.
-The [earlier seal](evidence/detector_freeze_2026-09-26_before_comment_correction.json) and its
-[original gate](evidence/results/regression_gate_2026-09-26_freeze.json) remain preserved.
-[Refresh evidence](evidence/results/quality_comment_baseline_2026-09-26/README.md).
-This is an integrity record for the unchanged P3d behavior; final quality acceptance remains on hold.
+[`regression_gate_2026-09-27_quality.json`](evidence/results/regression_gate_2026-09-27_quality.json):
+every frame of the six recordings, set O, the whole ride and set F straight on the default
+configuration, against [`regression_baseline_2026-09-26_ride_p3d.json`](evidence/results/regression_baseline_2026-09-26_ride_p3d.json):
+PASS with no `--allow`, missing row or worse gated metric. The same run is the current baseline
+[`regression_baseline_2026-09-27_quality.json`](evidence/results/regression_baseline_2026-09-27_quality.json);
+re-run against it on the team VM on 28.09, identical but the informational latency rows
+([`gate_2026-09-28/`](evidence/gate_2026-09-28/gate_table.txt)). Independent per-frame outputs:
+[`judge_outputs_2026-09-28/`](evidence/judge_outputs_2026-09-28/README.md),
+[`judgement_2026-09-28/`](evidence/judgement_2026-09-28/README.md). Measured quality and
+limitations: [`SCORECARD.md`](SCORECARD.md), `docs/EXPERIMENTS.md`. The seal is an integrity
+record, not a release, a deployment approval or a proof of safety.
 
-The default configuration file SHA256 is
-`c7ca5ad4f332b7025f66ab0addeb21025daf23a36aca4dbcc2d49fe5b8831f40`;
-the effective configuration SHA256 is
-`d2c8ab8d70954956d71c50cdc074962a3037e7ea2bc0e09568663ab34af53d6e`.
+## How a change would be accepted
 
-| Pending detector choice | Final decision | Evidence and reason |
-|---|---|---|
-| P4 candidate B: near escalation 10 → 8 voxels | Do not ship; retain 10 | [Full gate](evidence/results/regression_gate_2026-09-26_p4_candidate_B_full.json) and stress checks pass. The gain is one STOP frame at 7.1 m on edge object #4. That small gain does not justify lowering the threshold for every demoted track before the freeze. |
-| Envelope union | Keep `gauge.axis_union: 0` | [Full gate](evidence/results/regression_gate_2026-09-26_axis_union_fixed_full.json) passes, but Q1 on the reference axis is unanswered and the shape review of union clusters remains open. |
-| Candidates A and C | Rejected | Neither improves its target on the default detector; [P4 decision record](evidence/results/p4_p3d_candidate_decisions_2026-09-26.json). |
-| Further platform-axis and remount changes | Defer detector research | Measured limitations remain in [EXPERIMENTS §5](EXPERIMENTS.md#5-open-experiments). No additional bounded candidate passed the required acceptance checks. |
+None is planned before the submission. After it, a detector change needs, in order:
 
-## Verify or replace the seal
-
-From the repository root, with Python 3.10 or later:
+1. the defect and its acceptance test committed before any run; the patch reviewed, the affected
+   tests passing, the detector committed;
+2. the **full gate** on that commit (default configuration, the ride and set F cached as in
+   [`VM_GUIDE.md`](VM_GUIDE.md) §2.3): exit 0, every gated metric identical or better, no
+   `--allow`; a change meant to move the numbers commits its new baseline with it;
+3. an **independent safety review** of the patch and its per-frame differences: no STOP lost,
+   delayed or shortened on set O, the real obstacle, the range cases and the stress runs;
+4. a **reseal**, reviewed: `create` refuses a gate with waivers, missing rows or overrides, or a
+   sealed file that differs from the measured commit; then `DEFAULT_MANIFEST` in
+   `scripts/detector_freeze.py` points at the new manifest and `verify` passes.
 
 ```bash
-python scripts/detector_freeze.py verify
+python scripts/regression_gate.py --cache /data/cache --jobs 4 \
+  --baseline docs/evidence/results/regression_baseline_2026-09-27_quality.json \
+  --out docs/evidence/results/regression_gate_<date>_<change>.json
+python scripts/detector_freeze.py create --manifest docs/evidence/detector_freeze_<date>.json \
+  --baseline docs/evidence/results/regression_baseline_2026-09-27_quality.json \
+  --evidence docs/evidence/results/regression_gate_<date>_<change>.json
 ```
 
-This requires no data cache, third-party Python packages or Git checkout. It fails if a source file
-is added, changed or removed, a config copy differs, or the baseline or validation record changes.
-It does not execute the regression gate. Review of the manifest remains required: checksums do
-not prevent someone from deliberately replacing both a file and its recorded hash.
-
-For an authorized replacement: describe the defect and its acceptance test, review the patch,
-run the affected tests, commit the detector, then run the complete strict regression gate and
-create and review the replacement seal. The gate must name a commit with no uncommitted detector
-changes and use the default config without overrides. For example:
-
-```bash
-python scripts/regression_gate.py --cache /path/to/cache --jobs 3 \
-  --baseline docs/evidence/results/regression_baseline_2026-09-26_ride_p3d.json \
-  --out docs/evidence/results/regression_gate_frozen.json
-python scripts/detector_freeze.py create \
-  --evidence docs/evidence/results/regression_gate_frozen.json
-python scripts/detector_freeze.py verify
-```
-
-## Limits retained at the freeze
-
-The current criteria judgement is in [the SCORECARD](SCORECARD.md). Set O edge objects STOP only at 5–10 m;
-the ride has 45 false events and has no real obstacles. There is no unseen-route recall result.
-`clear_distance` estimates the monitored region capped by detected candidates; it can extend
-past objects that do not form a cluster. It must not be described as a guarantee of empty track.
-For the current evidence and output contract, use `STOP` and `nearest_distance`, with the health
-and warning outputs; see [the current SCORECARD](SCORECARD.md).
-
-The node startup fix passes fresh idle cold/warm and stock-console checks; see
-[evidence](evidence/freeze_2026-09-26/README.md). The public image archive, final CI and submission
-remain separate work.
-Q1/Q2 answers, private team information and the human pitch are external dependencies.
+Superseded P3d seals of 26.09: [`detector_freeze_2026-09-26.json`](evidence/detector_freeze_2026-09-26.json),
+[`…_before_comment_correction.json`](evidence/detector_freeze_2026-09-26_before_comment_correction.json).
+How the sealed detector came about: [`archive/QUALITY_CYCLE_2026-09-27.md`](archive/QUALITY_CYCLE_2026-09-27.md).

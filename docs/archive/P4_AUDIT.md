@@ -16,7 +16,7 @@ targets. A1 and D1 were rejected by their registered checks; M2 is a partial mon
 
 ## Detector freeze and P4 completion (26.09 night)
 
-The captain's delegated decision is recorded in [DETECTOR_FREEZE.md](DETECTOR_FREEZE.md):
+The captain's delegated decision is recorded in [DETECTOR_FREEZE.md](../DETECTOR_FREEZE.md):
 freeze the existing P3d detector and defaults, retain near-escalation threshold 10, keep the
 envelope union off, and reject candidates A/C. Candidate B's one additional STOP frame at
 7.1 m does not justify lowering the threshold across all demoted tracks. This resolves the
@@ -24,9 +24,9 @@ pending candidate decisions in the historical sections below. No detector parame
 against the new study.
 
 **Novel-placement sensitivity, one pre-registered run.**
-The [protocol](evidence/results/p4_novel_protocol_2026-09-26.json),
-[exact input plan](evidence/results/p4_novel_plan_2026-09-26.json) and
-[small source fixture](evidence/results/p4_novel_source_2026-09-26/README.md) were committed and
+The [protocol](../evidence/results/p4_novel_protocol_2026-09-26.json),
+[exact input plan](../evidence/results/p4_novel_plan_2026-09-26.json) and
+[small source fixture](../evidence/results/p4_novel_source_2026-09-26/README.md) were committed and
 pushed as `1dccdec` before evaluation. Every one of 72 cases was retained: four organizers'
 object point sequences, three sensor-axis lateral placements, and six seen backgrounds (five
 empty bags and a fixed ride window). Each case has a paired replay of its unmodified background.
@@ -34,7 +34,7 @@ The evaluator verifies source, background, code and config hashes. Eight focused
 physical-coordinate matching, point preservation, occlusion, input integrity and timestamps;
 P3 independently reviewed the harness before the plan was committed.
 
-The [results](evidence/results/p4_novel_results_2026-09-26.json) contain **544 matched frames
+The [results](../evidence/results/p4_novel_results_2026-09-26.json) contain **544 matched frames
 out of 2,458 visible object-frames (22.1%)**. All 544 are injection-only matches; the paired
 controls have **zero** matches at the target positions. At least one frame matches in **45 of
 72 cases**. These repeated frames are correlated observations, not independent encounters.
@@ -63,11 +63,11 @@ affected lateral variants are identified in the plan and results. No cases were 
 metadata files and six timestamp manifests match the prior intake hashes byte for byte. Set O
 has 1,510 frames; the ride has 11,271 frames and 221 timestamp manifests. The source fixture is
 120 KB including its provenance; raw bags and background caches stay outside the repository.
-The [fresh strict regression gate](evidence/results/regression_gate_2026-09-26_freeze.json)
+The [fresh strict regression gate](../evidence/results/regression_gate_2026-09-26_freeze.json)
 passes with no overrides or missing rows: all **146 gated values equal** the P3d baseline (199 total comparison rows; the earlier 183 count included unchanged informational rows).
 
 **All 45 ride false events reviewed.** The
-[inventory and eight cloud contact sheets](evidence/results/p4_ride_scenes_2026-09-26/README.md)
+[inventory and eight cloud contact sheets](../evidence/results/p4_ride_scenes_2026-09-26/README.md)
 reproduce 45 event IDs, 183 alarm frames and 38 STOP episodes over all 11,271 ride frames. Two
 reviewers inspected every event's midpoint STOP cloud. Near-sensor scene labels are 20
 platform/station, 16 tunnel and 9 uncertain; no switch/junction is confidently identified.
@@ -77,7 +77,7 @@ distances and durations are unavailable, so this inventory supplies no per-scene
 Repeated event memberships cover 217 frames because different IDs can share one alarm frame.
 
 **Current-result addendum (26.09).** This audit preserves its 24.09 measurements. The current
-[`_ride_p3d` regression baseline](evidence/results/regression_baseline_2026-09-26_ride_p3d.json)
+[`_ride_p3d` regression baseline](../evidence/results/regression_baseline_2026-09-26_ride_p3d.json)
 records 125/126 rail-object hits after frame 75, the archived ride result of 45 false events in
 13 km, 13 false events in five empty bags, and STOP for all 8 in-envelope organizers' objects
 (384/801 visible object-frames). The inherited P3d STOP-keep rule raises the top box from
@@ -101,28 +101,28 @@ cloud container (4 vCPU, 15 GB, no Docker daemon) from the organizers' links: se
 `cloud_with_fake_obj.zst` (1 510 frames), the six recordings from `Датасет.zip` (2 488 frames, each
 `metadata.yaml` equal to the committed originals), the ride from `new_data.zst` split by split
 (11 271 frames, 221 stamp files, 16 GB of cache; VM_GUIDE §2.3). Pre-registered before any run:
-[`p3_p4_prereg_2026-09-26_evening.json`](evidence/results/p3_p4_prereg_2026-09-26_evening.json)
+[`p3_p4_prereg_2026-09-26_evening.json`](../evidence/results/p3_p4_prereg_2026-09-26_evening.json)
 (commit `53b75d4`). Results (EXPERIMENTS §1p):
 
 * **The strict gate with the ride and set F straight, no `--allow`: PASS, every gated row the
-  same as `_ride_p3d`** ([`regression_gate_2026-09-26_head_fresh_machine.json`](evidence/results/regression_gate_2026-09-26_head_fresh_machine.json),
+  same as `_ride_p3d`** ([`regression_gate_2026-09-26_head_fresh_machine.json`](../evidence/results/regression_gate_2026-09-26_head_fresh_machine.json),
   319 s at `--jobs 3`): the 3 ride rows (11 271 frames, 45 events, 38 STOP episodes; 183 alarm
   frames) and the 15 set F straight rows (person 151.0 m, trolley 151.4 m, crate 123.9 m, cable
   98.9 m, 0.5 m box 1 of 6 at 51.9 m, false detections 6 / 5 / 12 / 3 / 0) that this audit could
   not check are now checked on a second machine. The cache-based baseline is reproduced exactly.
 * **Candidate B** (`tracking.near_escalate_voxels` 10 → 8), the full gate: PASS, 6 gated rows
   better (set O #4 2 → 3 STOP frames, first STOP 5.2 → 7.1 m), none worse, the ride identical
-  ([`regression_gate_2026-09-26_p4_candidate_B_full.json`](evidence/results/regression_gate_2026-09-26_p4_candidate_B_full.json)).
-  Its candidate-specific checks: all pass with numbers identical to the head (census 18 / 120 / 35 / 28 on the 221 ride splits, none within 10 m; as recorded 13 / 16, 5 Hz 10 / 10, roll 14 / 16, pitch 17 / 18; start offsets 13 / 16, 13 / 14, 13 / 12, 10 / 11, 7 / 11; [`p4_candidate_B_checks_2026-09-26/`](evidence/results/p4_candidate_B_checks_2026-09-26/)). By the frozen rules B is eligible; **it is not
+  ([`regression_gate_2026-09-26_p4_candidate_B_full.json`](../evidence/results/regression_gate_2026-09-26_p4_candidate_B_full.json)).
+  Its candidate-specific checks: all pass with numbers identical to the head (census 18 / 120 / 35 / 28 on the 221 ride splits, none within 10 m; as recorded 13 / 16, 5 Hz 10 / 10, roll 14 / 16, pitch 17 / 18; start offsets 13 / 16, 13 / 14, 13 / 12, 10 / 11, 7 / 11; [`p4_candidate_B_checks_2026-09-26/`](../evidence/results/p4_candidate_B_checks_2026-09-26)). By the frozen rules B is eligible; **it is not
   shipped by this session** (one frame at 7 m on an object that straddles the envelope edge, a
   lower voxel bar for every demoted track, and the detector freeze is the captain's; EXPERIMENTS
   §1p). Candidates A and C stay rejected at the set O screen.
 * The rate / re-mount checks (5 Hz 10 / 10, +3° roll 14 / 16, +3° pitch 17 / 18 events / STOP
   episodes), the start-offset denominators and the set O suffix stand as recorded above; the
   per-event list of the pitch and roll extras is in
-  [`p4_robustness_2026-09-26_evening/events_pitch_roll.txt`](evidence/results/p4_robustness_2026-09-26_evening/events_pitch_roll.txt).
+  [`p4_robustness_2026-09-26_evening/events_pitch_roll.txt`](../evidence/results/p4_robustness_2026-09-26_evening/events_pitch_roll.txt).
 * **The 221-start ride census on the P3d head**
-  ([`p4_census_p3d_2026-09-26.json`](evidence/results/p4_census_p3d_2026-09-26.json)): 18 of 221
+  ([`p4_census_p3d_2026-09-26.json`](../evidence/results/p4_census_p3d_2026-09-26.json)): 18 of 221
   split starts with a STOP, 120 STOP frames / 35 events / 28 episodes, 8 events in the first 1.5 s,
   none within 10 m; the eight ride pieces 1 start / 18 frames / 1 event (the 138 m one). The 2.9 m
   fresh-start finding of EXPERIMENTS §1j is gone with the rail-start rule; the rest equals the
@@ -132,7 +132,7 @@ cloud container (4 vCPU, 15 GB, no Docker daemon) from the organizers' links: se
 * Also measured, for P3: the envelope union with the review fixes passes the full gate for the
   first time (set O #4 2 → 9 STOP frames; off, EXPERIMENTS §1p).
 
-Completion record: [`p4_completion_2026-09-26_evening.json`](evidence/results/p4_completion_2026-09-26_evening.json).
+Completion record: [`p4_completion_2026-09-26_evening.json`](../evidence/results/p4_completion_2026-09-26_evening.json).
 The open scientific limits are unchanged: the ride has no real obstacles, set O is inspected data,
 anchored placement is not surveyed ground truth, the raw set O bag and its cache score differently.
 
@@ -152,7 +152,7 @@ target-envelope object-frames and 223 in 801 intent object-frames; 150 GO-judge 
 62 target-envelope frames. The raw bag differs from its quantized cache (387/7/1 versus 384/6/3
 inside/outside/background); the regression baseline remains cache-based. Full object, bin, missed
 interval, and clear-distance data are in the
-[`P3d available reference`](evidence/results/p4_p3d_available_reference_2026-09-26.json).
+[`P3d available reference`](../evidence/results/p4_p3d_available_reference_2026-09-26.json).
 
 The five empty recordings produce 58 alarm frames, 13 events, and 16 STOP episodes over 2,287
 frames and 229.776 s: 5.658 events and 6.963 episodes per 100 s. At 5 Hz they produce 38 / 10 / 10
@@ -166,7 +166,7 @@ The paired set S replay used the same 108 sample identities and trajectories as 
 the opposite P3d placement. Bed placement detected 22/67 visible in-gauge objects and legacy
 placement 30/68; among 65 visible in both, eight were legacy-only and none bed-only. The extra
 legacy trolley at 77.7 m has no isolated cause. This small synthetic sample is not surveyed ground
-truth; see the [`P3d paired set S report`](evidence/results/p4_p3d_setS_paired_2026-09-26.json).
+truth; see the [`P3d paired set S report`](../evidence/results/p4_p3d_setS_paired_2026-09-26.json).
 
 P3d candidate A (`tracking.near_escalate_distance` 35→40 m) leaves #8 unchanged at 51/124 and was
 rejected at the set O screen. Candidate B (`tracking.near_escalate_voxels` 10→8) moves #4 from
@@ -178,12 +178,12 @@ checks were not run. Candidate C (`cluster.wall_keep_gauge_voxels` 10→8) leave
 6/125 and was rejected at the set O screen. No combined candidate or P4 detector change was
 shipped. The short-signature relaxation remains rejected for increasing outside-object false STOPs.
 Exact decisions and output hashes are in the
-[`P3d candidate report`](evidence/results/p4_p3d_candidate_decisions_2026-09-26.json).
+[`P3d candidate report`](../evidence/results/p4_p3d_candidate_decisions_2026-09-26.json).
 
 P4's provisional internal assessment of 26.09 is superseded by the judgement of record,
-[`SCORECARD.md`](SCORECARD.md) (28.09 evening). The inherited P3d gain is attributed to upstream
-detector work, not P4. See the [`completion checklist`](evidence/results/p4_completion_checklist_p3d_2026-09-26.json)
-and the [`P3d validation record`](evidence/results/p4_validation_p3d_2026-09-26.json). The software checks
+[`SCORECARD.md`](../SCORECARD.md) (28.09 evening). The inherited P3d gain is attributed to upstream
+detector work, not P4. See the [`completion checklist`](../evidence/results/p4_completion_checklist_p3d_2026-09-26.json)
+and the [`P3d validation record`](../evidence/results/p4_validation_p3d_2026-09-26.json). The software checks
 pass (585 tests passed), but the ride-dependent rail-start test is deselected while the ride cache
 is absent; the strict gate therefore remains incomplete.
 
@@ -192,8 +192,8 @@ missed interval, and each object's visible-frame denominator and STOP count in e
 The scorer also lists each contiguous visible interval without a STOP, with its frame and distance
 limits. This prevents a gain in total STOP frames from hiding a regression at a particular range.
 Existing false-alarm, outside-object and background checks remain in place; startup and mount/rate stress continue to use
-[`startup_census.py`](../scripts/startup_census.py) and
-[`robustness_check.py`](../scripts/robustness_check.py).
+[`startup_census.py`](../../scripts/startup_census.py) and
+[`robustness_check.py`](../../scripts/robustness_check.py).
 
 The P3c replay matched every previously recorded set O value exactly. The longest consecutive
 visible misses are #4: 77 frames / 138.7 m of approach, #6: 110 / 210.3 m, and #8: 73 / 144.8 m.
@@ -208,7 +208,7 @@ target result. The known detector opportunities remain sustained detection of ed
 #6 and the box at the top (#8), fewer false STOPs on the ride, and stronger unseen-condition
 evidence. The axis-union candidate remains off: its earlier safety review found regressions when
 widened envelope membership joined long edge structures to real objects. No detector parameters
-were changed. The current independent judgement is in [`SCORECARD.md`](SCORECARD.md).
+were changed. The current independent judgement is in [`SCORECARD.md`](../SCORECARD.md).
 
 ## P4 available-data snapshot against P3c (26.09; historical)
 
@@ -217,10 +217,10 @@ coverage, and local paths. The six original bags contain 2,488/2,488 verified fr
 1,510/1,510 frames. The full gate was run without `--allow` against the frozen P3c baseline. It
 exited 1 because 3 ride and 15 set F straight metrics are missing; every locally available
 recording and set O metric matched or improved on that baseline. No new baseline was made.
-See [`p4_data_intake_2026-09-26.json`](evidence/results/p4_data_intake_2026-09-26.json),
-[`p4_available_reference_2026-09-26.json`](evidence/results/p4_available_reference_2026-09-26.json),
+See [`p4_data_intake_2026-09-26.json`](../evidence/results/p4_data_intake_2026-09-26.json),
+[`p4_available_reference_2026-09-26.json`](../evidence/results/p4_available_reference_2026-09-26.json),
 and the preserved
-[`artifact manifest`](evidence/results/p4_artifacts_2026-09-26/manifest.json).
+[`artifact manifest`](../evidence/results/p4_artifacts_2026-09-26/manifest.json).
 
 The five empty original recordings produced 58 alarm frames, 13 alarm events, and 16 STOP
 episodes over 2,287 frames and 229.776 seconds: 5.658 events and 6.963 episodes per 100 seconds.
@@ -228,7 +228,7 @@ By recording, `doubleT_platform` had 4/4/1 (alarm frames/events/episodes),
 `squareT_platform_squareT_switch` 54/9/15, and the other three had none. These are repeated
 frames on five recordings, not independent encounters. The frame intervals, track IDs, distances,
 reason codes, and explicitly uncertain causes are in the
-[`false-alarm inventory`](evidence/results/p4_false_alarm_inventory_2026-09-26.json).
+[`false-alarm inventory`](../evidence/results/p4_false_alarm_inventory_2026-09-26.json).
 On `doubleT_obstacle`, the labelled results are 58/61 person frames, 128/185 rail-object frames,
 and 125/126 rail-object frames after frame 75; maximum reported distance error is 0.23 m and no
 false event matched neither label. This agrees with the gate baseline.
@@ -253,14 +253,14 @@ The original float bag and 5 mm-quantized int16 cache are **not score-identical*
 configuration and timestamps: cache 355 inside STOP frames / 6 outside / 3 background frames in
 2 IDs; raw bag 357 / 7 / 1 in 1 ID. The regression baseline is cache-based, so candidate screening
 used the cache. See the
-[`raw/cache comparison`](evidence/results/p4_seto_raw_cache_comparison_2026-09-26.json).
+[`raw/cache comparison`](../evidence/results/p4_seto_raw_cache_comparison_2026-09-26.json).
 
 The paired set S run reused 108 sampled objects and matching labels, kind, distance, lateral,
 yaw, size and reflectivity. Bed placement matched 22/67 visible in-gauge objects; legacy placement
 matched 30/68. Eight of 65 objects visible in both were legacy-only, none bed-only. One additional
 legacy-only trolley hit at 77.7 m was not isolated as a cause and is not credited as a detector
 gain. Anchored placement remains an estimate, not surveyed ground truth. See the
-[`paired set S report`](evidence/results/p4_setS_paired_2026-09-26.json).
+[`paired set S report`](../evidence/results/p4_setS_paired_2026-09-26.json).
 
 Candidate A (`tracking.near_escalate_distance` 35→40) raised object #8 from 22 to 24 STOP frames
 and extended its sustained held-from range from 23.9 to 27.5 m. Candidate B
@@ -272,7 +272,7 @@ Candidate C (`cluster.wall_keep_gauge_voxels` 10→8) made no change to object #
 at the set O screen. The short-signature relaxation was rejected: inside STOP frames rose 355→381,
 but outside false STOP frames rose 6→9, including object #5 from 0→3. Decisions and score
 details are in the
-[`candidate record`](evidence/results/p4_candidate_decisions_2026-09-26.json).
+[`candidate record`](../evidence/results/p4_candidate_decisions_2026-09-26.json).
 
 ### Historical P3c completion snapshot (26.09; superseded by P3d above)
 
@@ -281,7 +281,7 @@ details are in the
   recorded; A/B/C pre-registered and each screened; rejected signature relaxation recorded;
   provisional score and independent-review packet prepared. Pinned Ruff, parameter sync,
   pytest, browser-backed web checks, JSON/hash validation and `git diff --check` are recorded in
-  [`p4_validation_2026-09-26.json`](evidence/results/p4_validation_2026-09-26.json).
+  [`p4_validation_2026-09-26.json`](../evidence/results/p4_validation_2026-09-26.json).
 - **Rejected or not accepted:** short signatures rejected for outside-object false STOPs; C rejected
   for no target improvement; A and B remain unaccepted because required data-dependent checks are
   unavailable. Shipped detector and historical baseline stay unchanged.
@@ -309,7 +309,7 @@ The current real labels contain repeated views of one crossing person, one walki
 one rail object. Their 5th / median / 95th percentile mean intensities (rows with at least 15
 points) are 35.7 / 59.8 / 68.2, 39.1 / 74.4 / 96.1 and 13.6 / 15.4 / 22.5 respectively.
 These are not independent samples of clothing or materials, and all are near 55 m. They cannot
-justify replacing the catalogue ranges for long-range tests. See [`DATASET.md`](DATASET.md).
+justify replacing the catalogue ranges for long-range tests. See [`DATASET.md`](../DATASET.md).
 
 ## New original-bag measurements
 
@@ -367,14 +367,14 @@ cannot replace the extended curve and gauge-edge comparison below.
 
 ## Paired extended-ride range audit (24.09, selected curve and edge scenes)
 
-The organizer archive (SHA-256 in [`DATASET.md`](DATASET.md)) was downloaded and verified.
+The organizer archive (SHA-256 in [`DATASET.md`](../DATASET.md)) was downloaded and verified.
 Selected contiguous full-rate split files 127–135, 160–168 and 175–181 were cached with real
 receive timestamps. Both modes used the **same seed, config, sampled lateral/reflectivity and
 frame selection**; `scripts/compare_setf.py` checks these and excludes a skipped trajectory
 from *both* denominators. The raw configurations, per-frame truth, visibility and detection
 rows are reproducible with the commands below; the compact per-sequence report, config and
 timestamp hashes are committed in
-[`experiments_p4_setf_paired.json`](evidence/results/experiments_p4_setf_paired.json).
+[`experiments_p4_setf_paired.json`](../evidence/results/experiments_p4_setf_paired.json).
 
 ```bash
 python scripts/far_range_eval.py --cache /data/cache/new_data --files 127,129,131,160,164,175,177 \
@@ -430,7 +430,7 @@ The straight set of set F round 3 was re-run in pairs on the current code:
 stamps. File 168 has a recording gap (a 65.4 m motion step), so anchored mode skips it, and the
 paired summary drops it from both modes. Anchored placement differs from legacy by 0.4–1.1 m
 in Y at the far end of the person approaches. Raw report:
-[`experiments_p4_setf_straight_paired.json`](evidence/results/experiments_p4_setf_straight_paired.json).
+[`experiments_p4_setf_straight_paired.json`](../evidence/results/experiments_p4_setf_straight_paired.json).
 
 ```bash
 python scripts/far_range_eval.py --cache /data/cache/new_data --files 46,68,98,140,168,172 --frames 110 \
@@ -459,19 +459,19 @@ draws differ), not because the detector changed.
 ## Organizer synthetic-obstacle recording (`cloud_with_fake_obj`, labelled 24.09)
 
 The organizers' folder added `cloud_with_fake_obj.zst` on 24.09
-([Yandex Disk](https://disk.yandex.ru/d/KpkG_yKoGk-vHQ), SHA-256 in [`DATASET.md`](DATASET.md)).
+([Yandex Disk](https://disk.yandex.ru/d/KpkG_yKoGk-vHQ), SHA-256 in [`DATASET.md`](../DATASET.md)).
 The first P4 pass scored it unlabelled on all **1 510 frames**: 342 alarm frames, 9 alarm track
 IDs, 459 advisory frames
-([`experiments_p4_fake_unlabelled.json`](evidence/results/experiments_p4_fake_unlabelled.json)).
+([`experiments_p4_fake_unlabelled.json`](../evidence/results/experiments_p4_fake_unlabelled.json)).
 The organizers then described the ten obstacles and their order. The object points turned out
 to be recoverable exactly: every message is the organizers' real scan followed by the object
 points (intensity 1). So the recording is now labelled: `scripts/label_fake_objects.py` →
-[`labels/cloud_with_fake_obj.json`](../labels/cloud_with_fake_obj.json), 1 206 object-frames of
+[`labels/cloud_with_fake_obj.json`](../../labels/cloud_with_fake_obj.json), 1 206 object-frames of
 ten objects in frames 0–803. How the labels are made, and three properties that limit how they
-can be read, are in [`DATASET.md`](DATASET.md) "Synthetic-obstacle recording". In short:
+can be read, are in [`DATASET.md`](../DATASET.md) "Synthetic-obstacle recording". In short:
 
 * the objects stand still in the tunnel and the train drives up to them at 1.4–20 m/s (corrected
-  24.09: an earlier ICP had the train backing up; [`EXPERIMENTS.md`](EXPERIMENTS.md) §9);
+  24.09: an earlier ICP had the train backing up; [`EXPERIMENTS.md`](EXPERIMENTS_log_2026-09.md) §9);
 * they are placed from the sensor's axis, which runs at −0.24° to the rails here, so the edge
   tests sit within ±0.1–0.4 m of the envelope edge;
 * beyond ~100 m their path leaves the tunnel. Those rows are graded out (`plausible`).
@@ -522,7 +522,7 @@ What the grade says, by cause:
   0.3 m object much beyond 50 m with this sensor. Accumulation needs an ego speed; with the
   train's measured speed it makes the 0.3 m cubes visible from 57–59 m instead of 43–51 m, but as
   advisories (the `floating` signature), and no first STOP comes earlier (one comes 3.4 m later;
-  [`EXPERIMENTS.md`](EXPERIMENTS.md) §9).
+  [`EXPERIMENTS.md`](EXPERIMENTS_log_2026-09.md) §9).
   Lowering the minimums (`min_points 3`, `min_points_far 2` or `gauge_min_points 2`) changed
   nothing for them.
 * **Two infrastructure signatures demote real test obstacles.** `floating` makes #2 advisory at
@@ -539,7 +539,7 @@ What the grade says, by cause:
 **Improvement experiments.** All run on the fake-object bag and, for the false-alarm cost, on
 all six original bags at every frame. The default reproduces 107 alarm frames / 20 events on the
 five empty bags and 185/246 labelled frames, first alarm 11, on `doubleT_obstacle`. Raw numbers:
-[`experiments_p4_fake_labelled.json`](evidence/results/experiments_p4_fake_labelled.json).
+[`experiments_p4_fake_labelled.json`](../evidence/results/experiments_p4_fake_labelled.json).
 
 | variant | fake bag: STOP frames on inside objects | fake bag: STOP frames on outside objects | fake bag: background alarm frames / IDs (never matched to an object) | five empty bags: alarm frames / events | `doubleT_obstacle` |
 |---|---:|---:|---:|---:|---|
@@ -565,7 +565,7 @@ the envelope measured from the rails in those frames. **Not shipped:** the rule 
 re-run with it.
 
 **What the organizers' set implies for the open bed question** (whether a bed object below the
-rail head counts; asked as Q3 in [`QUESTIONS.md`](QUESTIONS.md)): none of
+rail head counts; asked as Q3 in [`QUESTIONS.md`](../QUESTIONS.md)): none of
 their ten test objects lies on the bed between the rails. The small ones float mid-envelope, stand
 on a rail or sit at the edge, and the low one lies across both rails. The shipped policy
 (nothing below the envelope floor between the rails) is not tested by this set.

@@ -33,7 +33,7 @@ What it means for ReSense:
   (numpy / scipy / scikit-learn, optional C++ kernels compiled at build time), and nothing in the
   launch or compose files requests a GPU. The stand's driver / toolkit state therefore does not
   affect the build or the demo; the per-frame budget on this machine is the CPU one in
-  [`../EXPERIMENTS.md`](../EXPERIMENTS.md) §3.
+  [`../EXPERIMENTS.md`](../archive/EXPERIMENTS_log_2026-09.md) §3.
 * **Evaluated on 24.09 and rejected for 29.09**
   ([`../ARCHITECTURE.md`](../ARCHITECTURE.md) "GPU: evaluated, not used"): the i7-9700E has
   PCIe 3.0 only; a frame is ~1 160 small array operations, so a CuPy port is dispatch-bound and

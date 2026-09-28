@@ -45,7 +45,7 @@ Raw Set O detection/warning output is identical to its reference across all 1,51
 All 18 rate/positive-roll/positive-pitch summaries and all 30 startup-offset summaries preserve
 their detection metrics. Raw and quantized-cache scores retain their earlier differences.
 The earlier phrase “183 gated metrics” counted unchanged informational
-rows too; the [clarification](evidence/results/quality_cycle_2026-09-26_clarifications.json)
+rows too; the [clarification](../evidence/results/quality_cycle_2026-09-26_clarifications.json)
 records the correction without changing the gate.
 
 ### Combined runtime failure
@@ -64,7 +64,7 @@ M2 with zero detector mismatches: 233/243/234 frames and 1/1/0 STOPs. The failur
 it is not waived because an older detector also exhibits it.
 
 The trace identifies a trust increase after boundary loss and a merged fragment that changes the
-column's apparent width. [Point-level diagnosis and figure](evidence/results/quality_cycle_2026-09-26_clear_failure/README.md).
+column's apparent width. [Point-level diagnosis and figure](../evidence/results/quality_cycle_2026-09-26_clear_failure/README.md).
 T1 tests the trust mechanism with unchanged numerical limits; it does not tune the column rule.
 Its target screen passes, but its coverage gate fails: in ride segment 4 the `clear_distance`
 median falls from 120 to 60 m. The separate `health.monitored_range` median falls from 120 to
@@ -76,12 +76,12 @@ stress, raw or runtime trials are used to seek a favorable outcome.
 The local image archive is an offline review artifact with `runtime_acceptance_passed: false`.
 Its source/native checks and load test pass; packaging does not confer detector acceptance.
 The prior baseline image remains separately preserved. No tag or release is published.
-[Captures, exact image identity and archive receipt](evidence/results/quality_freshness_2026-09-26/README.md).
+[Captures, exact image identity and archive receipt](../evidence/results/quality_freshness_2026-09-26/README.md).
 The combined image contains M2; it is not an acceptance record for the main branch's P3d core.
 
 The separate P3d-plus-freshness CI archive at `d480b13` passes local checksum, offline load,
 revision, installed/imported source and enabled-native checks. All six CI jobs pass for that
-source. The previous local image is restored. [Delivery receipts](evidence/results/quality_delivery_2026-09-26/README.md)
+source. The previous local image is restored. [Delivery receipts](../evidence/results/quality_delivery_2026-09-26/README.md)
 record its exact identity; successful delivery does not close the detector acceptance failures.
 
 Freshness is validated at publication. The watchdog shares the detector executor and cannot
@@ -99,25 +99,25 @@ dashboard UTC clocks must be synchronized. These mechanisms are not a braking sa
 | Independent generalization evidence | The user confirmed no additional untouched real-positive recording. Seen synthetic combinations do not replace one. |
 | Envelope-reference decision | Organizer Q1, rails versus sensor axis, remains unanswered. Axis union stays off. |
 | Final presentation identity | The supplied names/nicks/school and four individual portraits are in a local private preview. City, team-formation details, group photo and contact details remain pending. |
-| At least 75/100 | Not met at the time; the reviews of that day are superseded by [`SCORECARD.md`](SCORECARD.md) (28.09 evening). Rejected candidates receive no improvement credit. |
+| At least 75/100 | Not met at the time; the reviews of that day are superseded by [`SCORECARD.md`](../SCORECARD.md) (28.09 evening). Rejected candidates receive no improvement credit. |
 | Final freeze and release | Quality goals remain open; release is explicitly prohibited by the user. |
 
 ## Evidence index
 
-- [Central protocol](evidence/results/quality_cycle_2026-09-26_protocol.json)
-- [Missed-object diagnosis](evidence/results/quality_cycle_2026-09-26_missed_diagnosis/README.md)
+- [Central protocol](../evidence/results/quality_cycle_2026-09-26_protocol.json)
+- [Missed-object diagnosis](../evidence/results/quality_cycle_2026-09-26_missed_diagnosis/README.md)
 - [Actual false-target diagnosis](P4_FALSE_TARGET_DIAGNOSIS.md)
-- [M1 rejection](evidence/results/quality_monitoring_M1_2026-09-26/README.md)
-- [M2 observer](evidence/results/quality_monitoring_M2_2026-09-26/README.md)
-- [M2 production validation](evidence/results/quality_monitoring_M2_production_2026-09-26/README.md)
-- [M2 raw, stress and startup checks](evidence/results/quality_cycle_2026-09-26_M2_validation/README.md)
-- [Combined runtime protocol](evidence/results/quality_combined_runtime_2026-09-26_protocol.json)
-- [Freshness and runtime results](evidence/results/quality_freshness_2026-09-26/README.md)
-- [A1 rejection](evidence/results/p4_A1_2026-09-26/README.md)
-- [D1 rejection](evidence/results/quality_cycle_2026-09-26_D1/README.md)
-- [Clear-failure attribution](evidence/results/quality_cycle_2026-09-26_clear_failure/README.md)
-- [T1 protocol](evidence/results/quality_cycle_2026-09-26_T1_protocol.json)
-- [T1 rejection and full results](evidence/results/quality_cycle_2026-09-26_T1/README.md)
-- [Main branch test evidence](evidence/results/quality_root_checks_2026-09-26/README.md)
-- [Comment-only baseline refresh](evidence/results/quality_comment_baseline_2026-09-26/README.md)
-- [Current-source offline delivery verification](evidence/results/quality_delivery_2026-09-26/README.md)
+- [M1 rejection](../evidence/results/quality_monitoring_M1_2026-09-26/README.md)
+- [M2 observer](../evidence/results/quality_monitoring_M2_2026-09-26/README.md)
+- [M2 production validation](../evidence/results/quality_monitoring_M2_production_2026-09-26/README.md)
+- [M2 raw, stress and startup checks](../evidence/results/quality_cycle_2026-09-26_M2_validation/README.md)
+- [Combined runtime protocol](../evidence/results/quality_combined_runtime_2026-09-26_protocol.json)
+- [Freshness and runtime results](../evidence/results/quality_freshness_2026-09-26/README.md)
+- [A1 rejection](../evidence/results/p4_A1_2026-09-26/README.md)
+- [D1 rejection](../evidence/results/quality_cycle_2026-09-26_D1/README.md)
+- [Clear-failure attribution](../evidence/results/quality_cycle_2026-09-26_clear_failure/README.md)
+- [T1 protocol](../evidence/results/quality_cycle_2026-09-26_T1_protocol.json)
+- [T1 rejection and full results](../evidence/results/quality_cycle_2026-09-26_T1/README.md)
+- [Main branch test evidence](../evidence/results/quality_root_checks_2026-09-26/README.md)
+- [Comment-only baseline refresh](../evidence/results/quality_comment_baseline_2026-09-26/README.md)
+- [Current-source offline delivery verification](../evidence/results/quality_delivery_2026-09-26/README.md)

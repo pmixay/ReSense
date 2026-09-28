@@ -2,7 +2,7 @@
   "candidate_source_commit": "6d5bc56",
   "original_plan": "docs/evidence/results/p4_novel_plan_2026-09-26.json",
   "repeat_plan": "docs/evidence/results/p4_A1_novel_plan_2026-09-26.json",
-  "protocol": "docs/P4_ASSOCIATION_A1_PROTOCOL.md",
+  "protocol": "docs/archive/P4_ASSOCIATION_A1_PROTOCOL.md",
   "gate_frame_payloads_verified_against_monitoring_hashes": 15,
   "commands": [
     "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 /home/resense/.venv/bin/python scripts/regression_gate.py --cache /home/resense/data/cache --jobs 2 --work /home/resense/validation/quality_cycle/a1/gate --out /home/resense/validation/quality_cycle/a1/gate.json --baseline docs/evidence/results/regression_gate_2026-09-26_freeze.json",

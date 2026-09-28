@@ -11,8 +11,8 @@ Google Slides:
 Slides 7-11 (title, team, team cards, history, solution in short) keep their design and
 structure as the organizers require; the solution slides use the template's own layouts
 (12-29). Every measured number on the slides and in the speaker notes is written once, in ``N``
-below (copied from the regression gate baseline ``BASELINE``, docs/EXPERIMENTS.md "Current results",
-docs/P4_AUDIT.md and the 28.09 node captures and re-judgement outputs in docs/evidence/, each with its
+below (copied from the regression gate baseline ``BASELINE``, docs/archive/EXPERIMENTS_log_2026-09.md "Current results",
+docs/archive/P4_AUDIT.md and the 28.09 node captures and re-judgement outputs in docs/evidence/, each with its
 source and, for timings, its machine); the texts derive the rest (per km, ranges, counts). The
 build refuses a deck with a ``<...>`` field on any slide. The pictures are made by
 ``scripts/hero_view.py`` and ``resense run --render`` (``docs/img/``) and by the web UI's gallery
@@ -64,9 +64,9 @@ IMG = {
 
 # ---- every measured number on the slides and in the speaker notes; each is written here once and the
 # slide texts, charts and notes read it through the helpers below. Sources: the regression gate
-# baseline BASELINE (keys named as there), the cycle record docs/QUALITY_CYCLE_2026-09-27.md (the
-# held-out checks and the costs), docs/EXPERIMENTS.md "Current results" (§0, §2d, §2e, §3, §9),
-# docs/P4_AUDIT.md, docs/ARCHITECTURE.md "Native kernels", "GPU: evaluated, not used" ----------------
+# baseline BASELINE (keys named as there), the cycle record docs/archive/QUALITY_CYCLE_2026-09-27.md (the
+# held-out checks and the costs), docs/archive/EXPERIMENTS_log_2026-09.md "Current results" (§0, §2d, §2e, §3, §9),
+# docs/archive/P4_AUDIT.md, docs/ARCHITECTURE.md "Native kernels", "GPU: evaluated, not used" ----------------
 # The final 27.09 detector (352ca13: the opinion retrained on the shipped detector, 2x threshold
 # margin), measured at d572807 (the gate baseline below)
 BASELINE = "docs/evidence/results/regression_baseline_2026-09-27_quality.json"
@@ -367,8 +367,8 @@ ROLES = ["Капитан · ROS 2, Docker, интеграция", "Визуал�
          "Компьютерное зрение: модель пути, трекинг", "Данные, синтетика, метрики, тесты"]
 # the public cards (README "Team"): (name line, role, what the member owns)
 PUBLIC_CARDS = [
-    ("P1 · капитан", "Системный аналитик, ROS 2", "требования, архитектура, узел ROS 2 и Docker, оценка, питч"),
-    ("P2 · фронтенд", "Разработчик ПО (Python / JS)", "RViz, Foxglove, веб-дашборд, разметка, видео, презентация"),
+    ("P1 · капитан", "Системный аналитик, ROS 2", "требования, архитектура, узел ROS 2 и Docker, оценка, сдача"),
+    ("P2 · фронтенд", "Разработчик ПО (Python / JS)", "RViz, Foxglove, дашборд, разметка, питч, презентация, видео"),
     ("P3 · зрение", "Инженер компьютерного зрения", "модель пути, габарит, кластеры, трекинг, дальность, скорость"),
     ("P4 · данные", "Специалист по данным", "датасет, синтетические препятствия, разметка, метрики, тесты, CI"),
 ]

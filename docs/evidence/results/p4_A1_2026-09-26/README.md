@@ -61,7 +61,7 @@ branch is retained for audit, not integrated into the accepted detector.
 
 Artifacts:
 
-- [Protocol](../../../P4_ASSOCIATION_A1_PROTOCOL.md) and
+- [Protocol](../../../archive/P4_ASSOCIATION_A1_PROTOCOL.md) and
   [identical-input code receipt](../p4_A1_novel_plan_2026-09-26.json).
 - [Full gate](gate.json), [gate log](gate.log), [Set F details](setF_straight.json).
 - `gate_frames/`: all 15 per-frame captures, compressed without changing their JSONL contents.

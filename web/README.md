@@ -3,20 +3,23 @@
 > **Purpose:** the dashboard, the RViz and Foxglove layouts, the label tool, their headless checks
 > and the video recipes.
 > **Audience:** team, jury (demo) · **Owner:** P2 · **Language:** EN
-> **Last verified:** 2026-09-28 (evening): full P2 review on the sealed 27.09 detector and the fixes after the 28.09 re-judgement (see [`P2_REVIEW.md`](P2_REVIEW.md)) · **Status:** current
+> **Last verified:** 2026-09-29: ownership (demo, video and pitch with P2), links, the CI remote-viewer
+> probe on `main` and the video's number sources checked; dashboard behaviour as reviewed on the sealed
+> 27.09 detector ([`P2_REVIEW.md`](P2_REVIEW.md)) · **Status:** current
 
 Everything the jury sees: the RViz layout the launch file loads, a Foxglove layout for remote
 demos, a browser dashboard that works live (rosbridge) and offline (replay of `results.jsonl`),
 the scripts that verify the dashboard headlessly (CI job `pytest`), and the
 video recipes.
 
-Current P2 fixes, verification and dependencies: [`P2_REVIEW.md`](P2_REVIEW.md).
-The first pass is recorded in [`P2_STATUS.md`](P2_STATUS.md).
+P2's deliverables, what is left and the rehearsal record: [`P2_STATUS.md`](P2_STATUS.md);
+requirement-by-requirement evidence and the repeatable checks: [`P2_REVIEW.md`](P2_REVIEW.md); the
+pitch, the deck and the overview video: [`docs/PRESENTATION.md`](../docs/PRESENTATION.md).
 
 | file | what |
 |---|---|
 | [`index.html`](index.html) | Russian-language dashboard with a compact Metro-inspired layout: status, cab view, top-down view, decision/health, timeline, node stats, run summary and alarm log; live + offline replay + built-in demo; no build step |
-| [`assets/fonts/`](assets/fonts/) | Moscow Sans Regular and ExtraBold from the supplied style archive, loaded locally; legacy Montserrat files remain for older documents |
+| [`assets/fonts/`](assets/fonts) | Moscow Sans Regular and ExtraBold from the supplied style archive, loaded locally; legacy Montserrat files remain for older documents |
 | [`foxglove_layout.json`](foxglove_layout.json) | Foxglove Studio layout (3D + plots + indicator + status), see "Remote demo with Foxglove" |
 | [`demo/make_demo_run.py`](demo/make_demo_run.py) | synthetic approach sequence → `out/demo_run.jsonl` in the `resense run --out` format |
 | [`demo/check_dashboard.py`](demo/check_dashboard.py) | Playwright + headless Chromium: loads the JSONL into the dashboard, plays it, asserts the banner, screenshot / video |
@@ -150,7 +153,7 @@ repository root.
   `doubleT_obstacle`, either pair in the control data: organizers, 23.09).
 * **Two raw-cloud displays**, `/lidar_points` and `/sensing/lidar/hesai128/pointcloud`, both
   Reliable / Keep Last / depth 5 (`ros2 bag play` offers the recorded RELIABLE profile; a
-  best-effort display lost most of the 5–10 MB clouds, [`EXPERIMENTS.md`](../docs/EXPERIMENTS.md)
+  best-effort display lost most of the 5–10 MB clouds, [experiment log](../docs/archive/EXPERIMENTS_log_2026-09.md)
   §3b): the one the bag carries
   renders, the other stays grey with "No messages received". **A generic third display is not
   possible**: RViz2 subscribes to one literal topic name per display (no wildcard, regex or
@@ -166,8 +169,8 @@ repository root.
   frame's forward axis is −Y), ~0–90 m in the frame; saved views *Top-down 150 m* and
   *Driver's seat* in the *Views* panel.
 * Validated by parsing (`python -m pytest -q web/demo`), and used in the Docker chain recording
-  of 23.09 ([`docs/video/docker_chain_rviz.mp4`](../docs/video/docker_chain_rviz.mp4), EXPERIMENTS
-  §3b).
+  of 23.09 ([`docs/video/docker_chain_rviz.mp4`](../docs/video/docker_chain_rviz.mp4), [experiment
+  log](../docs/archive/EXPERIMENTS_log_2026-09.md) §3b).
 
 ## Remote demo with Foxglove
 
@@ -193,7 +196,8 @@ python web/demo/check_foxglove_live.py --url ws://127.0.0.1:8765 --require-fresh
 
 On 25.09 this check passed against a live `foxglove_bridge` and `roundT_doubleT` bag: all 11
 layout topics were advertised and messages arrived on decision, status, corridor points and
-markers. The bridge uses the `foxglove.sdk.v1` WebSocket subprotocol. Branch CI also runs the
+markers. The bridge uses the `foxglove.sdk.v1` WebSocket subprotocol. CI on `main` (job `docker`,
+`scripts/p2_viewer_test.sh`) also runs the
 detector/bridge and viewer probe in separate containers on an internal Docker network; it pauses
 the server to require a stream failure, resumes it, and requires reconnection. This simulates two
 devices and link loss without hardware. Importing the layout and inspecting it in Foxglove on a
@@ -204,7 +208,8 @@ For the physical rehearsal, connect both devices to the same local network, open
 decision, distance, corridor and status all change while the bag plays. Pause the player and
 confirm that stale data is not presented as current; resume or replay and confirm recovery.
 Record the demo commit, image ID, two device types, connection address, time, and observed
-pass/fail in the captain's rehearsal notes. The CI container test covers transport and recovery;
+pass/fail in the rehearsal record of [`P2_STATUS.md`](P2_STATUS.md) (P2 runs the rehearsals and the
+live demo). The CI container test covers transport and recovery;
 it does not verify the Foxglove application's visual import on that laptop.
 
 What the audience sees: a 3D panel (dark, camera behind the sensor looking down the track, both
@@ -238,11 +243,10 @@ The committed real-data clips (v0.6.2; the Docker chain v0.6.3) cover every pres
 all five are silent:
 
 The 2:50 overview uses these clips as **archival visualization** and labels them as such in its
-source line. Its numerical cards come from the deck's numbers (`N` in `scripts/build_deck.py`,
-sources in [`docs/PRESENTATION.md`](../docs/PRESENTATION.md) «Числа на слайдах и их источники»): the
-27.09 regression baseline, the 28.09 node captures for the object on the rail (STOP in 123 of 126
-frames through the node, one GO) and the end-to-end latency with the machine it was measured on,
-not measurements made in the earlier video clips. The current dashboard clip replays an archived
+source line. Its numerical cards come from the deck's numbers (`N` in `scripts/build_deck.py`: the
+27.09 regression baseline and the 28.09 node captures), not from measurements made in the earlier
+video clips; their sources and where they differ from the independent judgement of 28.09 are in
+[`docs/PRESENTATION.md`](../docs/PRESENTATION.md) «Числа на слайдах и их источники». The current dashboard clip replays an archived
 node-status capture; neither clip is a fresh run of the final detector on the jury stand.
 
 * [`docker_chain_rviz.mp4`](../docs/video/docker_chain_rviz.mp4) — the full jury chain on screen:

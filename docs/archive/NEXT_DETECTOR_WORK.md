@@ -1,7 +1,7 @@
 # Work before a final detector freeze
 
 **Update 27.09:** the [27.09 quality cycle](QUALITY_CYCLE_2026-09-27.md) shipped and sealed a new
-reference detector ([`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md)), revised after an independent
+reference detector ([`DETECTOR_FREEZE.md`](../DETECTOR_FREEZE.md)), revised after an independent
 review: ride 45 / 38 → 32 / 31 false events / STOP episodes in-sample (37 events on ride pieces
 the opinion never saw), edge cube first STOP 5.2 → 35 m,
 GO overclaims 46 → 16, the captured history-dependent clear-run STOP gone. Open next steps (from
@@ -33,9 +33,9 @@ final detector acceptance and release publication remained on hold. See the
   in [CI run 36275557220](https://github.com/pmixay/ReSense/actions/runs/36275557220), including
   loaded runtime native-kernel assertions and synthetic replay with required freshness.
   Local download, checksum, offline loading and source/native verification pass
-  ([receipts](evidence/results/quality_delivery_2026-09-26/README.md)); the previous local image
+  ([receipts](../evidence/results/quality_delivery_2026-09-26/README.md)); the previous local image
   is restored. Public publication remains prohibited.
-  [Captain checklist](CAPTAIN.md#4-current-completion-and-remaining-actions).
+  [Captain checklist](../CAPTAIN.md#4-current-completion-and-remaining-actions).
 
 ## Further detector development remains
 
@@ -51,10 +51,10 @@ preregistered acceptance checks and independent review. Remaining goals are:
   confirmed that no additional untouched real-obstacle recording is available; known-bag tests
   remain development validation.
 - Rejudge an accepted improvement against the quality criteria; the current judgement is in
-  [`SCORECARD.md`](SCORECARD.md).
+  [`SCORECARD.md`](../SCORECARD.md).
 
 Public archive delivery, approved team information/photos, human rehearsals and the captain's personal
-submission remain on the [captain board](CAPTAIN.md#3-work-to-do).
+submission remain on the [captain board](../CAPTAIN.md#3-work-to-do).
 
 ## Original priority and evidence, before this cycle
 
@@ -126,9 +126,9 @@ does not predetermine independent judges' scores.
 
 ## Evidence
 
-- [Fresh full gate](evidence/results/regression_gate_2026-09-26_freeze.json)
+- [Fresh full gate](../evidence/results/regression_gate_2026-09-26_freeze.json)
 - [P4 audit and study](P4_AUDIT.md)
-- [Loaded cold capture](evidence/freeze_2026-09-26/cold_load_final/status.jsonl.gz)
-- [Loaded cold node log](evidence/freeze_2026-09-26/cold_load_final/node.log.gz)
-- [Frozen organizer-object frame output](evidence/freeze_2026-09-26/gate_frames/cloud_with_fake_obj.jsonl.gz)
-- [Current independent scorecard](SCORECARD.md)
+- [Loaded cold capture](../evidence/freeze_2026-09-26/cold_load_final/status.jsonl.gz)
+- [Loaded cold node log](../evidence/freeze_2026-09-26/cold_load_final/node.log.gz)
+- [Frozen organizer-object frame output](../evidence/freeze_2026-09-26/gate_frames/cloud_with_fake_obj.jsonl.gz)
+- [Current independent scorecard](../SCORECARD.md)

@@ -22,12 +22,12 @@ deletion without losing those commits or applying failed candidates.
 
 Two original M2 metadata files were additionally recovered for direct access:
 
-- [Implementation plan](evidence/results/quality_monitoring_M2_implementation_2026-09-26.json)
-- [Fixed placement plan](evidence/results/quality_monitoring_M2_novel_plan_2026-09-26.json.gz)
+- [Implementation plan](../evidence/results/quality_monitoring_M2_implementation_2026-09-26.json)
+- [Fixed placement plan](../evidence/results/quality_monitoring_M2_novel_plan_2026-09-26.json.gz)
 
 The placement plan is compressed without changing its original bytes (uncompressed SHA-256
 `00f3eb584ef965cc99203a4316eef9e4f21ee78574d123bcef56ee2b95ff053a`). Its historical metric-count
-wording is governed by the existing [199-row / 146-enforced clarification](evidence/results/quality_cycle_2026-09-26_clarifications.json).
+wording is governed by the existing [199-row / 146-enforced clarification](../evidence/results/quality_cycle_2026-09-26_clarifications.json).
 
 ## Merge corrections
 
@@ -52,10 +52,10 @@ Local validation covers **715 passing tests plus six subtests**. The combined su
 714 tests and deselects one because its default cache path is absent; that remaining test
 passes separately with `RESENSE_RIDE_CACHE` set to the existing recording cache. There are no
 skipped or unrun cases after that targeted check. Lint, diff and shell checks pass.
-[Validation receipt](evidence/results/branch_integration_2026-09-27/validation.json),
-[raw test output](evidence/results/branch_integration_2026-09-27/pytest.log.gz),
-[real-data check](evidence/results/branch_integration_2026-09-27/realdata_pytest.log.gz), and
-[history-preservation receipt](evidence/results/branch_integration_2026-09-27/history_merge_receipt.json)
+[Validation receipt](../evidence/results/branch_integration_2026-09-27/validation.json),
+[raw test output](../evidence/results/branch_integration_2026-09-27/pytest.log.gz),
+[real-data check](../evidence/results/branch_integration_2026-09-27/realdata_pytest.log.gz), and
+[history-preservation receipt](../evidence/results/branch_integration_2026-09-27/history_merge_receipt.json)
 record the tested source and every preserved branch tip.
 
 The baseline detector's 27-file integrity seal and parameter synchronization pass. There are no
@@ -66,5 +66,5 @@ the separate zero-alarm quality criterion.
 
 Final CI and branch cleanup status are recorded in [PR #12](https://github.com/pmixay/ReSense/pull/12).
 The earlier `d480b13` image receipt remains dated evidence and does not cover the merged node.
-The current criteria judgement is in [`SCORECARD.md`](SCORECARD.md). Final detector acceptance and release remain
+The current criteria judgement is in [`SCORECARD.md`](../SCORECARD.md). Final detector acceptance and release remain
 on hold; no merge into `main` or release publication is part of this task.

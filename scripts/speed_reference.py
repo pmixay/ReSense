@@ -31,7 +31,7 @@ receive stamps snapped to the 10 Hz rotation (``eval_real.nominal_stamps``), as 
 header clock (``--receive-stamps`` for the raw receive times). One JSONL row per frame goes to
 ``--out/<bag>.jsonl``; ``scripts/speed_accuracy.py`` summarises coverage and error.
 
-Measured on 24.09 (docs/EXPERIMENTS.md §9): the reference is valid on 89-100 % of the frames
+Measured on 24.09 (docs/archive/EXPERIMENTS_log_2026-09.md §9): the reference is valid on 89-100 % of the frames
 of every recording, its frame-to-frame noise is 0.01-0.03 m/s and the scan and the
 ICP agree within 1-4 mm; on the stationary ``doubleT_obstacle`` it reads 0.00 m/s (0.1 m in 20 s).
 Needs Open3D (a tool dependency, not part of the node image).

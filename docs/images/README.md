@@ -20,8 +20,8 @@ at 1600×900 using the built-in 60-frame jury demo, so they are reproducible wit
 or the organizers' dataset. Run `python web/demo/capture_gallery.py` from the repository root with
 Playwright and Chromium installed to refresh all five images; use `--chromium` to select a browser.
 The demo values are synthetic UI demonstration data, not evaluation evidence.
-Real-data renders remain in [`docs/img/`](../img/), and real-data videos remain in
-[`docs/video/`](../video/).
+Real-data renders remain in [`docs/img/`](../img), and real-data videos remain in
+[`docs/video/`](../video).
 
 ## GO — препятствие не обнаружено
 

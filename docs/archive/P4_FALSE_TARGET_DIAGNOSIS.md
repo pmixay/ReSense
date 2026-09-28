@@ -61,9 +61,9 @@ This supports a narrow directional-association bugfix experiment. It does **not*
 that this fix alone will reduce 45 events to 30. A separate preregistration specifies the candidate
 and acceptance gates; this diagnosis does not contain candidate results.
 
-Evidence: [review inventory](evidence/results/p4_false_targets_2026-09-26/inventory.json),
-[complete compressed temporal trace](evidence/results/p4_false_targets_2026-09-26/trace.json.gz),
-[contact sheets and provenance](evidence/results/p4_false_targets_2026-09-26/README.md).
+Evidence: [review inventory](../evidence/results/p4_false_targets_2026-09-26/inventory.json),
+[complete compressed temporal trace](../evidence/results/p4_false_targets_2026-09-26/trace.json.gz),
+[contact sheets and provenance](../evidence/results/p4_false_targets_2026-09-26/README.md).
 
 ## Reproduce
 

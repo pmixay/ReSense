@@ -138,7 +138,7 @@ one episode: a STOP at 126–142 m on the side of the box nearest the track.
   aggregates ([gate](../results/regression_gate_2026-09-27_quality.json),
   [cross-fit](../results/quality_cycle_2026-09-27/opinion_crossfit_2x_margin.json)); the per-frame
   ride output committed is the 26.09 (P3d) detector's
-  ([`freeze_2026-09-26/gate_frames/`](../freeze_2026-09-26/gate_frames/)).
+  ([`freeze_2026-09-26/gate_frames/`](../freeze_2026-09-26/gate_frames)).
 * Set F (team synthetic objects on those ride frames, anchored placement, 2 files × seeds 0 and
   1): person 4 of 4 approaches, first confirmed at 144–180 m, frames detected 82 of 100 at
   50–100 m, 65 of 94 at 100–150 m, 4 of 86 at 150–200 m; 1 m box 4 of 4, first 79–112 m; 3 cm

@@ -6,9 +6,9 @@
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN
 > **Last verified:** 2026-09-28: the wording of the placement study (a sensitivity study, not
 > held-out recall), the opinion's delay (counted in processed frames) and the rail-object row
-> against the raw-recording outputs ([`evidence/judge_outputs_2026-09-28/`](evidence/judge_outputs_2026-09-28/README.md));
+> against the raw-recording outputs ([`evidence/judge_outputs_2026-09-28/`](../evidence/judge_outputs_2026-09-28/README.md));
 > the figures are those of 27.09 · **Status:** shipped on the working branch; sealed in
-> [`detector_freeze_2026-09-27.json`](evidence/detector_freeze_2026-09-27.json) (re-sealed after
+> [`detector_freeze_2026-09-27.json`](../evidence/detector_freeze_2026-09-27.json) (re-sealed after
 > two review rounds; detector `352ca13`, measured at `d572807`). No release published.
 
 The user asked to fix four problems of the sealed P3d detector (26.09), to use ML where it helps,
@@ -21,12 +21,12 @@ version and found three safety regressions and several wrong claims, and a secon
 more bound violated and asked for a measured (not simulated) held-out false-alarm figure; the
 [review section](#independent-review-of-the-first-version-and-what-it-changed) lists every finding
 and its fix. Every number below is from the final detector (`352ca13`) unless marked. Raw material:
-[`evidence/results/quality_cycle_2026-09-27/`](evidence/results/quality_cycle_2026-09-27/)
+[`evidence/results/quality_cycle_2026-09-27/`](../evidence/results/quality_cycle_2026-09-27)
 (experiment reports, every screen's summary, final acceptance and history stress, ablations).
 
 ## Result
 
-The full gate of the shipped defaults ([`regression_gate_2026-09-27_quality.json`](evidence/results/regression_gate_2026-09-27_quality.json),
+The full gate of the shipped defaults ([`regression_gate_2026-09-27_quality.json`](../evidence/results/regression_gate_2026-09-27_quality.json),
 measured at `d572807`, no overrides) passes against the P3d baseline with no waiver, no missing
 row and no gated metric worse. Since this revision the gate also prints set F's detected frames
 per 50 m bin (the review found that the median first detection hid a trade); they are information
@@ -57,7 +57,7 @@ backgrounds, not held-out recall.
 ### What each mechanism contributes (ablations)
 
 One key switched off at a time, the same full screen
-([`screens/`](evidence/results/quality_cycle_2026-09-27/screens/)); measured on `65c5a5b` (the
+([`screens/`](../evidence/results/quality_cycle_2026-09-27/screens)); measured on `65c5a5b` (the
 previous opinion model: the first row there was 24 / 25, 9 / 11, 51), except the first row:
 
 | Switched off | Ride events / episodes | Five empty events / episodes | History stress | Set O #4 first STOP / person | Set O inside STOP frames |
@@ -100,9 +100,9 @@ oversize split and the wall keep. `cluster.floating_free_max_dy` 0.95 → 1.2 m 
 free-hanging cube reaching into the envelope from the side an obstacle (still inside the 1.40 m
 advisory corridor). The first version shipped mode 2, a one-sided shift; see the review.
 
-**Learned track opinion (problem 2, `tracking.doubt_*`, [`resense/opinion.py`](../resense/opinion.py)).**
+**Learned track opinion (problem 2, `tracking.doubt_*`, [`resense/opinion.py`](../../resense/opinion.py)).**
 60 depth-3 gradient-boosted trees (35 KB JSON in
-[`resense/models/track_opinion.json`](../resense/models/track_opinion.json), evaluated in numpy,
+[`resense/models/track_opinion.json`](../../resense/models/track_opinion.json), evaluated in numpy,
 ~0.3 ms and only at a STOP onset) score a track from its last 10 matched clusters (lateral spread
 and jumps, envelope share, height / size statistics, demotion shares, range roughness, hit
 fraction). A track about to become a STOP with an opinion below the threshold stays advisory
@@ -115,8 +115,8 @@ flat return at most 0.5 m tall; set O #6, 1.9 m tall, had been withheld at 28.7 
 and never takes a STOP down. On the final detector the nearest withheld frame of any recording is
 at 26.5 m.
 
-*Training* ([`scripts/track_opinion.py`](../scripts/track_opinion.py),
-[report](../resense/models/track_opinion_report.json)), retrained on the shipped detector (collected
+*Training* ([`scripts/track_opinion.py`](../../scripts/track_opinion.py),
+[report](../../resense/models/track_opinion_report.json)), retrained on the shipped detector (collected
 with the opinion off): negatives are the STOP rows of the rules on the ride and the five empty
 recordings; positives are 102 synthetic sequences ray-cast into real ride frames (person, 0.5 /
 1.0 m boxes, trolley, cable, low box, rail object, dog; moving and standing train). Grouped
@@ -131,9 +131,9 @@ positives, which is why the delay is bounded rather than trusted.
 0.03; the shipped threshold is **0.015, a 2× margin** (the lowest held-out positive onset scores at
 least twice the threshold).
 
-*Measured on unseen ride pieces* ([`scripts/opinion_crossfit.py`](../scripts/opinion_crossfit.py),
-[2× margin](evidence/results/quality_cycle_2026-09-27/opinion_crossfit_2x_margin.json),
-[zero margin](evidence/results/quality_cycle_2026-09-27/opinion_crossfit_zero_margin.json)):
+*Measured on unseen ride pieces* ([`scripts/opinion_crossfit.py`](../../scripts/opinion_crossfit.py),
+[2× margin](../evidence/results/quality_cycle_2026-09-27/opinion_crossfit_2x_margin.json),
+[zero margin](../evidence/results/quality_cycle_2026-09-27/opinion_crossfit_zero_margin.json)):
 four models, each trained without two of the ride's eight pieces and without the synthetic objects
 injected into them, each with its own threshold chosen the same way; every pair of pieces is then
 run by the full detector with the model that never saw it and counted as the regression gate
@@ -154,7 +154,7 @@ where no labelled object is inside the envelope (the plank at 134–136 m is lab
 those frames).
 
 **Monitored-range caps (problem 3, `health.clear_cap_thin`, `health.clear_cap_persist` 4,
-[`resense/evidence.py`](../resense/evidence.py)).** `clear_distance` is also capped by (a) the
+[`resense/evidence.py`](../../resense/evidence.py)).** `clear_distance` is also capped by (a) the
 nearest supported, undemoted scan-line cluster inside the envelope within the trusted range (the
 M2 idea without its CAUTION) and (b) persistent sparse evidence: compact, isolated blobs of ≥ 2
 envelope returns chained over 4 frames at constant lateral / height and a constant approach, as a
@@ -184,11 +184,11 @@ vault scan lines stay fixed in the sensor frame or jump with the pitch; an objec
 
 Two judges (an execution lens that re-ran everything, and a safety sceptic that audited the
 claims against code and raw outputs) reviewed the first version at `8b74cd0` (scores in
-[SCORECARD](SCORECARD.md)). Their findings and the disposition:
+[SCORECARD](../SCORECARD.md)). Their findings and the disposition:
 
 | Finding | Disposition |
 |---|---|
-| **Safety:** `gauge.reference` 2 narrowed the strict envelope by up to 0.2 m on the side the sensor axis leaves (which side depends on the rig's yaw): an injected person 0.25 m inside on that side was STOP in 24 of 91 frames at 30–60 m (91 of 91 from the rails) | fixed: mode 3, the union (above). The review's own scenario re-run on `65c5a5b` ([side_person_check.json](evidence/results/quality_cycle_2026-09-27/side_person_check.json)): STOP in 92 of 92 frames at 30–60 m and 67 of 67 at 0–30 m on both sides, identical to the rails alone; `tests/test_envelope_reference.py::test_union_stops_edge_boxes_on_both_sides` checks both sides for both yaw signs end to end; every set O, person and history row as with mode 2 |
+| **Safety:** `gauge.reference` 2 narrowed the strict envelope by up to 0.2 m on the side the sensor axis leaves (which side depends on the rig's yaw): an injected person 0.25 m inside on that side was STOP in 24 of 91 frames at 30–60 m (91 of 91 from the rails) | fixed: mode 3, the union (above). The review's own scenario re-run on `65c5a5b` ([side_person_check.json](../evidence/results/quality_cycle_2026-09-27/side_person_check.json)): STOP in 92 of 92 frames at 30–60 m and 67 of 67 at 0–30 m on both sides, identical to the rails alone; `tests/test_envelope_reference.py::test_union_stops_edge_boxes_on_both_sides` checks both sides for both yaw signs end to end; every set O, person and history row as with mode 2 |
 | **Safety:** a track ever matched by a far scan line was never reported, not even advisory, unless approaching at ≥ 2 m/s (a person walking up to a standing train); the flag was sticky and inherited by a dense object's track (set F 1 m box: STOP gap 85.3 → 72.9 m) | fixed: advisory, never hidden, and only while the gauge vote needs the far hits (above); `tests/test_far_thin.py` asserts the standing object is reported; the set F loss shrank from 6 frames to 2 (above) |
 | **Safety:** the opinion delayed set O #6 (withheld at 28.7 m in frames 569–570, STOP from 24.7 m); zone flicker and misses refilled its delay, so it could exceed 1 s; its threshold sits at the edge of the held-out positives | fixed: a lifetime budget of 10 frames and the standing-body exemption (above; `tests/test_track_opinion.py`); #6's track STOPs from 28.7 m. The threshold is unchanged: a 2× margin (0.0111) gave the ride 36 events on the first version, `doubt_near` 35 m gives 29 / 25 — both screened, neither shipped |
 | Claim "0 onsets delayed" on set O / `doubleT_obstacle` / synthetic persons: wrong, the simulation only counted scorer-matched rows | corrected; now counted per frame on the labelled recordings (above) |
@@ -239,18 +239,18 @@ history stress (51 → 55): the price of a learned delay with a safety margin.
 | Vault-anchored far height reference | +4–8 frames expected | cannot tell a tunnel-profile change from reference drift; high false-alarm risk |
 | Chain length 3, coasting, gap-skipping for the range cap | GO 12–20 | fail the 95 % range retention on roundT_doubleT |
 
-Every screen is in [`screens/`](evidence/results/quality_cycle_2026-09-27/screens/) and every
+Every screen is in [`screens/`](../evidence/results/quality_cycle_2026-09-27/screens) and every
 experiment's own account (including failures) in
-[`experiment_reports.json`](evidence/results/quality_cycle_2026-09-27/experiment_reports.json).
+[`experiment_reports.json`](../evidence/results/quality_cycle_2026-09-27/experiment_reports.json).
 
 ## Placement sensitivity: organizer objects at new places
 
-The 72-case protocol of 26.09 ([protocol](evidence/results/p4_novel_protocol_2026-09-26.json)):
+The 72-case protocol of 26.09 ([protocol](../evidence/results/p4_novel_protocol_2026-09-26.json)):
 the organizers' own point sets of four set O objects (0.3 m cube floating, 0.3 m cube on the rail,
 2 × 2 m box at the envelope top, 5 cm hanging object) transplanted at sensor lateral −0.65 / 0 /
 +0.65 m onto the five empty recordings and the ride, paired with the unmodified background, every
 case kept. The plan pins the detector code, so it was registered again for each revision (the
-final one: [plan](evidence/results/quality_cycle_2026-09-27/novel_plan.json), committed in
+final one: [plan](../evidence/results/quality_cycle_2026-09-27/novel_plan.json), committed in
 `d572807` before the run) and nothing was tuned on it. It measures sensitivity to new combinations of seen shapes
 and seen backgrounds, not real hold-out recall.
 
@@ -266,12 +266,12 @@ Per object and lateral (matched / visible): floating cube 114 / 91 / 25 → **16
 cube on the rail 101 / 74 / 36 → **112 / 93 / 43**, box at the envelope top 4 / 32 / 22 → 3 / 37 / 30,
 hanging object 21 / 18 / 6 → 21 / 18 / 6 (for −0.65 / 0 / +0.65 m). Every per-case row is identical
 across the three revisions of 27.09: the review fixes and the retrained opinion change nothing here.
-[Results](evidence/results/quality_cycle_2026-09-27/novel_results.json.gz).
+[Results](../evidence/results/quality_cycle_2026-09-27/novel_results.json.gz).
 
 **Is the gain the placement frame?** The objects are placed from the sensor axis, the frame the
 union reference adds, so a second pre-registered plan differs only in `gauge.reference` 0 (the
-rails alone; [plan](evidence/results/quality_cycle_2026-09-27/novel_plan_reference_off.json),
-[results](evidence/results/quality_cycle_2026-09-27/novel_results_reference_off.json.gz)):
+rails alone; [plan](../evidence/results/quality_cycle_2026-09-27/novel_plan_reference_off.json),
+[results](../evidence/results/quality_cycle_2026-09-27/novel_results_reference_off.json.gz)):
 **722 of 2 458** frames, 45 cases, 0 paired controls — one frame fewer than with the union (the
 floating cube at +0.65 m). The gain over P3d on new placements (544 → 722) holds from the rails
 alone; it comes from the other mechanisms of the cycle, not from the organizers' placement frame.
@@ -290,8 +290,8 @@ showed a 3.5 s tracking frame from before the persistent-evidence cost bound; it
 | `roundT_doubleT` (120°) | 21.2 / 30.0 / 32.7 ms | 30.2 / 38.5 / 57.4 ms, 161 MB |
 | `squareT_platform_squareT_switch` | 18.6 / 22.7 / 32.9 ms | — |
 
-([`bench_native.txt`](evidence/results/quality_cycle_2026-09-27/bench_native.txt),
-[`bench_node_path.txt`](evidence/results/quality_cycle_2026-09-27/bench_node_path.txt).) The
+([`bench_native.txt`](../evidence/results/quality_cycle_2026-09-27/bench_native.txt),
+[`bench_node_path.txt`](../evidence/results/quality_cycle_2026-09-27/bench_node_path.txt).) The
 26.09 re-judgement measured 22.7–30.7 ms mean, p95 32.8–42.1 ms for the detector on the same
 recordings; the 27.09 mechanisms stay within that. The node path (the PointCloud2 decode of the
 organizers' layout, crop, rotation and the detector, without ROS transport) stays below half the
@@ -341,23 +341,23 @@ few ms). No measurement on the 8-core stand exists.
 - **A confirmed STOP drops for one frame on two misses in a row** (found by the 28.09
   re-judgement): the object on the rail of `doubleT_obstacle` is 125 of 126 on the gate's frame
   cache, but 123 of 126 on the raw recording, offline and through the node — GO at frame 111,
-  CAUTION at 117 and 197 ([ARCHITECTURE «Known limitations»](ARCHITECTURE.md#limitations-of-the-sealed-2709-detector-verified-2809)).
+  CAUTION at 117 and 197 ([ARCHITECTURE «Known limitations»](../ARCHITECTURE.md#limitations-of-the-sealed-2709-detector-verified-2809)).
   It predates this cycle (the P3d detector's node capture of 27.09 shows it too).
 
 ## Acceptance record
 
 - Full gate: PASS against P3d, 0 worse / 0 missing / no `--allow`
-  ([gate](evidence/results/regression_gate_2026-09-27_quality.json)); the set F bins are
+  ([gate](../evidence/results/regression_gate_2026-09-27_quality.json)); the set F bins are
   information rows (the 1 m box −2 / +5 frames, above). It is also the new regression baseline
-  ([baseline](evidence/results/regression_baseline_2026-09-27_quality.json)).
-- Monitoring cost and overclaims: [final_acceptance.json](evidence/results/quality_cycle_2026-09-27/final_acceptance.json).
-- History stress: [final_history.json](evidence/results/quality_cycle_2026-09-27/final_history.json)
-  (P3d: [base_history.json](evidence/results/quality_cycle_2026-09-27/base_history.json)).
+  ([baseline](../evidence/results/regression_baseline_2026-09-27_quality.json)).
+- Monitoring cost and overclaims: [final_acceptance.json](../evidence/results/quality_cycle_2026-09-27/final_acceptance.json).
+- History stress: [final_history.json](../evidence/results/quality_cycle_2026-09-27/final_history.json)
+  (P3d: [base_history.json](../evidence/results/quality_cycle_2026-09-27/base_history.json)).
 - Tests: 731 tests and 6 subtests pass (the full local suite with the ride cache; new in this cycle: `tests/test_envelope_reference.py`,
   `test_track_opinion.py`, `test_clear_cap_persist.py`, `test_history_robustness.py`,
   `test_far_thin.py`); tests of older mechanisms pin only the key that changes an incidental
   detail and also assert their safety outcome with the shipped defaults.
-- Seal: [`detector_freeze_2026-09-27.json`](evidence/detector_freeze_2026-09-27.json)
+- Seal: [`detector_freeze_2026-09-27.json`](../evidence/detector_freeze_2026-09-27.json)
   (the opinion model included); `python scripts/detector_freeze.py verify` in CI.
 
 ## Reproduce
@@ -369,4 +369,4 @@ python scripts/history_stress.py --out out/history.json
 python scripts/novel_placement_eval.py run --plan docs/evidence/results/quality_cycle_2026-09-27/novel_plan.json --out out/novel.json --jobs 4
 ```
 
-The caches are built as in [`DATASET.md`](DATASET.md); the ride and set O are needed for the gate.
+The caches are built as in [`DATASET.md`](../DATASET.md); the ride and set O are needed for the gate.

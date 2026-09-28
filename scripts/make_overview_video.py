@@ -8,7 +8,7 @@ renders in ``docs/img/``, the web-UI captures in ``docs/images/`` and pages of t
 ``docs/presentation/ReSense_LCT2026.pdf``. Nothing is fetched from the network.
 
 On screen: the picture on the left; on the right the block's name and cards with its key numbers
-(every number from the script or docs/EXPERIMENTS.md "Current results", marked **реальные данные**,
+(every number from the script or docs/archive/EXPERIMENTS_log_2026-09.md "Current results", marked **реальные данные**,
 **наша синтетика** or **синтетика организаторов** as the script does), with the source file of the
 picture under them; the narration as burned-in Russian subtitles at the bottom (at most two lines).
 The same subtitles, with the same timings and line breaks, are written to
