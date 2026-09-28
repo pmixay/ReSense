@@ -3,104 +3,99 @@
 > **Purpose:** every document of the repository, what it is for, who reads and maintains it, and
 > the terms they share.
 > **Audience:** jury, team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-28: the table's rows against the documents' own headers (package 1.0.0: the sealed 27.09 detector, the node of 28.09) · **Status:** current
+> **Last verified:** 2026-09-29: the rows against the documents after the documentation sweep
+> (package 1.0.0: the detector sealed on 27.09, the node of 29.09) · **Status:** current
 
-Start with the root [`README.md`](../README.md): the jury path, what to look at and the headline
-results. The sealed 27.09 detector's figures: the README summary, its record
-[`QUALITY_CYCLE_2026-09-27.md`](QUALITY_CYCLE_2026-09-27.md) and the per-frame outputs in
-[`evidence/judge_outputs_2026-09-28/`](evidence/judge_outputs_2026-09-28/README.md); dated runs in
-[`EXPERIMENTS.md`](EXPERIMENTS.md) (its "Current results" table is still the P3d detector's of
-26.09); what changed in each version, in [`CHANGELOG.md`](../CHANGELOG.md).
+Start with the root [`README.md`](../README.md): what ReSense is, the jury commands, the results.
+The same in Russian, as a user guide: **[resense.gitbook.io/resense-docs](https://resense.gitbook.io/resense-docs/)**
+(source [`gitbook/`](../gitbook/SUMMARY.md), synced from `main`).
 
 ## 1. Documents
 
-Status: **current** = maintained; **dated record** = an audit or judgement of one date, not
-rewritten later; **frozen** = kept for reference, not maintained; **archive** = history in
-[`archive/`](archive/).
+**current** = maintained; **dated record** = one date's evidence or judgement, not rewritten;
+**archive** = history in [`archive/`](archive/README.md), not maintained.
 
-| document | purpose | audience | language | owner | status |
-|---|---|---|---|---|---|
-| [`README.md`](../README.md) | jury entry: build, run, what to look at, headline results (spec §5 README) | jury, team | EN + RU «Кратко для жюри» | P1 | current |
-| [`CHANGELOG.md`](../CHANGELOG.md) | one entry per version or merge, v0.0 → 1.0.0, with the measured effect; the README's dated status notes (moved 28.09) | jury, team | EN | P1 | current |
-| [`ARCHITECTURE.md`](ARCHITECTURE.md) | components, data flow, real-time budget (spec §5 "Архитектура") | jury, team | EN + RU summary | P1 | current |
-| [`ALGORITHM.md`](ALGORITHM.md) | how the detector decides, stage by stage; parameters; limitations (spec §5 "Описание алгоритма") | jury, P3 | EN + RU summary | P1 (structure), P3 (content) | current |
-| [`EXPERIMENTS.md`](EXPERIMENTS.md) | every measured result: false alarms, range, latency, FPS, hard cases, evolution (spec §5 "Эксперименты") | jury, team | EN + RU summary | P3 / P4 | current |
-| [`DECISIONS.md`](DECISIONS.md) | the 27 key decisions on one page (to 28.09): question, what was measured, result, decision, evidence | jury, team | EN + RU summary | P1 | current |
-| [`EVALUATION.md`](EVALUATION.md) | evaluation protocol: data sets, metrics, procedure, targets | team, jury | EN + RU summary | P1 / P4 | current |
-| [`DATASET.md`](DATASET.md) | the organizers' data: recordings, formats, labels, frame cache, unpacking | team, jury | EN + RU summary | P4 | current |
-| [`SENSOR.md`](SENSOR.md) | Hesai Pandar128 facts and what they imply for the detector | team, jury | EN + RU summary | P1 | current |
-| [`SCORECARD.md`](SCORECARD.md) | criteria judgements, newest first: single-review estimate 69 / 100 on `a2f9122`, paired re-judgement 66.5 / 100 on `806b6c4`, three 27.09 review rounds, and earlier reviews: score per spec §8 criterion, evidence, what is left | team, jury | EN | P1 | current (top section), dated records below |
-| [`PRESENTATION.md`](PRESENTATION.md) | slide requirements, drafts, speaker text | P2, P1 | RU | P2 | current |
-| [`PLAN.md`](PLAN.md) | roles, sprint calendar, team rules | team | RU | P1 | current |
-| [`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md) | frozen source/config manifest, acceptance provenance, candidate decisions and blocker policy | team, jury | EN | P1 / P3 | current (27.09 seal) |
-| [`QUALITY_CYCLE_2026-09-27.md`](QUALITY_CYCLE_2026-09-27.md) | the 27.09 detector cycle: four problems, what shipped (incl. the learned track opinion), the independent review of the first version and its fixes, per-mechanism ablations, acceptance, the held-out ride check, the placement sensitivity study, limits | jury, team | EN | P1 | current |
-| [`QUALITY_CYCLE_2026-09-26.md`](QUALITY_CYCLE_2026-09-26.md) | the 26.09 cycle: freshness, rejected candidates M1 / M2 / A1 / D1 / T1 | team | EN | P1 | dated |
-| [`CAPTAIN.md`](CAPTAIN.md) | captain's board: criteria, work left, ownership map, frozen interfaces | P1, team | EN | P1 | current |
-| [`VM_GUIDE.md`](VM_GUIDE.md) | instructions for the team's temporary cloud VM, plain commands of the repository's tools: prerequisites, data (the ride streamed split by split), dry run, stock-player and host console, 8-core bench, regression gate with the ride, image archive, offline rehearsal, results into a PR | team (a person or an agent on the VM) | EN | P1 | current |
-| [`QUESTIONS.md`](QUESTIONS.md) | open questions to the organizers | P1 | RU message, EN rationale | P1 | current |
-| [`P4_AUDIT.md`](P4_AUDIT.md) | audit of synthetic placement and evaluation accounting, set O grade | team, jury | EN | P4 | dated record |
-| [`RESEARCH.md`](RESEARCH.md) | day-1 literature survey (15.09) | team | EN | P3 | frozen |
-| [`evidence/README.md`](evidence/README.md) | index of the raw run evidence and of the result summaries in `evidence/results/` | team, jury | EN | P1 / P4 | current |
-| [`images/README.md`](images/README.md) | dashboard UI screenshots and their data provenance | jury, team | EN | P2 | current |
-| [`archive/README.md`](archive/README.md) | superseded material kept for the record (captain's log of 16–24.09, day-1 results) | team | EN | P1 | archive |
-| [`gitbook/`](../gitbook/SUMMARY.md) | the instructions as a GitBook: get the image, run on a bag, read the output, RViz / Foxglove / dashboard, offline stand, dry run, parameters, development, troubleshooting; no numbers (it links here). Published on GitBook.com | jury, engineers, team | RU | P1 | current |
-| [`web/README.md`](../web/README.md) | dashboard, RViz / Foxglove layouts, label tool, headless checks, video recipes | team, jury (demo) | EN | P2 | current |
+| document | purpose | language | owner | status |
+|---|---|---|---|---|
+| [`README.md`](../README.md) | the project's face: what it is, the jury path, results, build / run / parameters (spec §5 README) | EN + RU jury block | P1 | current |
+| [`gitbook/`](../gitbook/SUMMARY.md) | the user guide: image, running on a bag, reading the output, RViz / Foxglove / dashboard, offline stand, acceptance test, parameters, topics, results, the team's approach, troubleshooting | RU | P1 | current |
+| [`ARCHITECTURE.md`](ARCHITECTURE.md) | components, data flow, the node, freshness, delivery, CI, known limitations (spec §5 «Архитектура») | EN + RU summary | P1 | current |
+| [`ALGORITHM.md`](ALGORITHM.md) | how the detector decides, stage by stage, with its maths, parameters and limitations (spec §5 «Описание алгоритма») | EN + RU summary | P1 (structure), P3 (content) | current |
+| [`EXPERIMENTS.md`](EXPERIMENTS.md) | measured results: detection, range, false alarms, latency, FPS, hard cases, how quality changed, what was tried and not shipped (spec §5 «Эксперименты») | EN + RU summary | P3 / P4; P1 the node timing | current |
+| [`EVALUATION.md`](EVALUATION.md) | evaluation protocol: data sets, metrics, procedure, in-sample vs held out | EN + RU summary | P1 / P4 | current |
+| [`DECISIONS.md`](DECISIONS.md) | the key decisions on one page: question, what was measured, decision, evidence | EN + RU summary | P1 | current |
+| [`DATASET.md`](DATASET.md) | the organizers' data: recordings, formats, labels, frame cache, unpacking | EN + RU summary | P4 | current |
+| [`SENSOR.md`](SENSOR.md) | Hesai Pandar128 facts and what they imply | EN + RU summary | P1 | current |
+| [`RESEARCH.md`](RESEARCH.md) | the literature survey behind the approach | EN | P3 | current |
+| [`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md) | what is sealed, how CI verifies it, how a change would be accepted | EN | P1 / P3 | current |
+| [`SCORECARD.md`](SCORECARD.md) | the independent judgement of 28.09 evening against the eight criteria of spec §8, and what changed since | EN + RU summary | P1 | dated record + current follow-up |
+| [`PRESENTATION.md`](PRESENTATION.md) | the pitch: slide requirements, slide plan, speaker text, demo, rehearsals, building the deck and the video | RU | **P2** | current |
+| [`VM_GUIDE.md`](VM_GUIDE.md) | runbook for the team's cloud VM: data, dry run, host consoles, bench, gate, export, offline rehearsal | EN | P1 | current |
+| [`CAPTAIN.md`](CAPTAIN.md) | captain's board: role, criteria, work left, branches, rules, contracts, ownership, decision log | EN | P1 | current |
+| [`PLAN.md`](PLAN.md) | roles, rules, milestones, status, risks | RU | P1 | current |
+| [`QUESTIONS.md`](QUESTIONS.md) | questions to the organizers and their status | RU message, EN rationale | P1 | current |
+| [`../CHANGELOG.md`](../CHANGELOG.md) | what changed, by version | EN | P1 | current |
+| [`evidence/README.md`](evidence/README.md) | index of the raw run evidence and result summaries | EN | P1 / P4 | current |
+| [`archive/README.md`](archive/README.md) | the full experiment log (§ numbers cited by code), the dated changelog, the captain's earlier boards, quality-cycle records, P4's audits | EN | P1 | archive |
+| [`../web/README.md`](../web/README.md) | dashboard, RViz / Foxglove layouts, label tool, video recipes | EN | P2 | current |
+| [`../web/DEMO_HANDOFF.md`](../web/DEMO_HANDOFF.md) | the live demo on the stand step by step, the second-device Foxglove check, the fallback, the rehearsal record, the private deck build | RU | P2 | current |
+| [`images/README.md`](images/README.md) | dashboard screenshots and their provenance | EN | P2 | current |
 
-### Organizers' material ([`organizers/`](organizers/))
+### Organizers' material ([`organizers/`](organizers))
 
 | file | what | origin |
 |---|---|---|
 | [`README_organizers.md`](organizers/README_organizers.md) | the case page: task, timeline, criteria, links | organizers, unchanged |
 | [`technical_specification_case05.pdf`](organizers/technical_specification_case05.pdf) (+ `.txt`) | the specification (ТЗ) that "spec §" refers to | organizers, unchanged |
-| [`QA_session_transcript_ru.md`](organizers/QA_session_transcript_ru.md) | machine transcript of the organizers' Q&A recording of 22.09 | team transcript, unchanged |
-| [`mount_and_switch_qa.md`](organizers/mount_and_switch_qa.md) | answers on the LiDAR mount and switches (24.09) | organizers, formatted by the team |
-| [`QA_session.md`](organizers/QA_session.md) | summary of the Q&A session and the facts that changed the code | team (P1) |
+| [`QA_session_transcript_ru.md`](organizers/QA_session_transcript_ru.md) | machine transcript of the organizers' Q&A of 22.09 | team transcript |
+| [`QA_session.md`](organizers/QA_session.md) | summary of the Q&A and the facts that changed the code | team (P1) |
 | [`answers.md`](organizers/answers.md) | every organizer answer, verbatim, and what the team did with it | team (P1) |
-| [`test_stand_software.md`](organizers/test_stand_software.md) | the test stand's hardware and reported software, with team notes | organizers + team (P1) |
+| [`mount_and_switch_qa.md`](organizers/mount_and_switch_qa.md) | answers on the LiDAR mount and switches (24.09) | organizers, formatted by the team |
+| [`test_stand_software.md`](organizers/test_stand_software.md) | the test stand's hardware and software | organizers + team (P1) |
 
 ## 2. Folders
 
 | folder | contents |
 |---|---|
-| [`img/`](img/) | real-data renders (views from the cab, top / side renders); `scripts/build_deck.py` and `web/demo/check_dashboard.py` read and write here, so it stays in place |
-| [`images/`](images/) | dashboard UI screenshots (P2) |
-| [`video/`](video/) | the 2:50 overview `resense_overview.mp4` (Russian subtitles burned in and in `resense_overview.ru.srt`, no sound) and the clips it is cut from: the jury chain in Docker with RViz, the bag from the cab, offline renders, the organizers' objects from the cab, dashboard replay (all silent) |
-| [`presentation/`](presentation/) | the deck in the organizers' template (pptx + pdf); personal data only in its git-ignored `private/` subfolder |
-| [`sensor/`](sensor/) | the Hesai Pandar128 user manual |
-| [`evidence/`](evidence/) | raw logs, captures and bench output per run (`<run>_<date>/`), the recordings' `bag_metadata/`, and `results/` with every `experiments_*.json` summary |
-| [`archive/`](archive/) | history, not maintained |
-| [`organizers/`](organizers/) | organizer material (above) |
+| [`img/`](img), [`images/`](images) | real-data renders (read and written by `scripts/build_deck.py`, so they stay in place); dashboard screenshots |
+| [`video/`](video) | the 2:50 overview `resense_overview.mp4` (Russian subtitles, also as `.srt`) and its clips (Docker + RViz chain, the bag from the cab, the organizers' objects) |
+| [`presentation/`](presentation) | the deck in the organizers' template (pptx + pdf); personal data only in the git-ignored `private/` |
+| [`sensor/`](sensor) | the Hesai Pandar128 user manual |
+| [`evidence/`](evidence) | raw logs, captures and bench output per run (`<run>_<date>/`), the recordings' `bag_metadata/`, result summaries in `results/` |
+| [`archive/`](archive) | history, not maintained |
 
-`extended_dataset_intake.json` stays in `docs/`: three scripts read it (`scripts/far_range_eval.py`,
+`extended_dataset_intake.json` stays in `docs/`: scripts read it (`scripts/far_range_eval.py`,
 `scripts/eval_real.py`, `scripts/ml_dataset.py`).
 
 ## 3. Glossary
 
 | term | meaning |
 |---|---|
-| sandbox | the team's 4-vCPU development VM, where the offline timings and the Docker rehearsal of 23.09 ran; not the jury's stand |
-| stand | the organizers' test machine: Intel Core i7-9700E, 8 cores (spec §3.1, [`organizers/test_stand_software.md`](organizers/test_stand_software.md)); not open to the team before submission (organizers, 25.09: [`organizers/answers.md`](organizers/answers.md) §6), so the team's own 8-core machine, the "8-core analogue", stands in for timing |
-| ride | `new_data`, the organizers' extended 20-minute, 13 km recording (11 271 frames, no obstacles) |
 | envelope, gauge | the organizers' train envelope, 2.1 m wide × 3.0 m high around the track axis above the rail head: the strict zone of `STOP`; the advisory zone adds 0.35 m on each side |
-| alarm frame | a frame with `obstacle = true`, i.e. decision `STOP` |
-| event | one confirmed gauge track id: roughly one stop of the train; the headline false-alarm count |
-| STOP episode | a run of consecutive `STOP` frames: how often the braking signal switches on |
-| advisory, `CAUTION` | a confirmed object just outside the envelope or beyond the verified range, known infrastructure or degraded health; informational, not an alarm |
-| verified-clear distance | `clear_distance`: the obstacle distance, else how far the corridor was actually checked |
-| first confirmed / held from | for an approaching object: the largest distance at which it is first reported / from which it is reported in ≥ 90 % of the frames |
-| set S / E / R / O / F / H | data sets of [`EVALUATION.md`](EVALUATION.md) §1: S our synthetic objects in real empty frames; E the five obstacle-free organizer bags; R real obstacles (`doubleT_obstacle`); O the organizers' synthetic-obstacle recording `cloud_with_fake_obj`; F our synthetic objects approaching through consecutive frames of the moving ride (EXPERIMENTS §2d); H the hidden control bag |
-| real / synthetic / organizers' synthetic / timing | kind of a result: the organizers' recordings as recorded; our objects ray-cast into real frames; objects added by the organizers' own tool (set O); a latency measurement, always with its machine |
-| legacy / anchored placement | how set F places an object: legacy from the detector's own per-frame far axis (can flatter curves and envelope edges); anchored where a near (≤ 30 m) rail-supported track fit puts it, carried back along the ride (independent of the far axis, not surveyed ground truth); EVALUATION §3, [`P4_AUDIT.md`](P4_AUDIT.md) |
-| detector v0.6.3, node v0.6.4 | the current state: the v0.6.3 detector with the rules of 25–26.09 switched on by `configs/default.yaml` (gate baseline `_ride_p3d`), and the node's v0.6.4 catch-up of the burst at the start of a played bag ([`CHANGELOG.md`](../CHANGELOG.md)) |
+| ride | `new_data`, the organizers' 20-minute, 13 km recording (11 271 frames, no obstacles) |
+| set O / set F / set S | the organizers' ray-cast objects (`cloud_with_fake_obj`); the team's synthetic objects on the ride's straight track; the team's synthetic objects in the short recordings ([`EVALUATION.md`](EVALUATION.md) §1) |
+| real / organizers' synthetic / team synthetic | the recordings as recorded; objects added by the organizers' tool; objects ray-cast by the team |
+| in-sample / held out | measured on data the rules were tuned on / on data a component never saw |
+| alarm frame, STOP episode, event | a frame with `STOP`; a run of consecutive `STOP` frames; one confirmed gauge track |
+| `CAUTION`, advisory | an object just outside the envelope or beyond the trusted range, known infrastructure or degraded health: informational, not an alarm |
+| `clear_distance` | the estimated monitored range, capped at detected objects: an estimate, not a guarantee |
+| e2e | end to end: the player publishes a cloud → the node's result for it is received |
+| stand, sandbox, team VM | the organizers' test machine (i7-9700E, 8 cores, not available before the upload); the 4-vCPU development sandbox; the team's 4-core cloud VM |
 
 ## 4. Conventions
 
-* Every team-written document starts with the header block above (purpose, audience, owner by
-  role code P1–P4, language, last verified with the commit, status); the jury-facing ones add a
-  Russian «Кратко».
-* "Last verified" moves only when someone re-checked the document's numbers against that commit.
-* One fact, one home: the current numbers in EXPERIMENTS "Current results", version history in
-  CHANGELOG, organizer answers in `organizers/answers.md`; other documents give one line and a link.
-* Dates `DD.MM` in prose (2026), ISO `YYYY-MM-DD` in header blocks and file names; thousands with a
-  space (`13 759`); decimal point in EN, decimal comma in RU; every result with its kind and date.
-* Relative links; sections cited by number (`EXPERIMENTS §3b`), no deep anchors into other files.
+* Every team document starts with the header block (purpose, audience, owner by role P1–P4,
+  language, last verified, status); jury-facing ones add a Russian «Кратко».
+* One fact, one home: results in [`EXPERIMENTS.md`](EXPERIMENTS.md) (headline in the README), the
+  judgement in [`SCORECARD.md`](SCORECARD.md), organizer answers in `organizers/answers.md`, history
+  in [`../CHANGELOG.md`](../CHANGELOG.md) and [`archive/`](archive/README.md).
+* Every number with its kind (real / synthetic), in-sample or held out, and its evidence path.
+* "EXPERIMENTS §x" in code comments and older records refers to the archived full log,
+  [`archive/EXPERIMENTS_log_2026-09.md`](archive/EXPERIMENTS_log_2026-09.md).
+
+## Experimental branch work, 28.09
+
+* [P3 integration and evidence](P3_SCORE_SYNC_2026-09-28.md): accepted branch changes, measured
+  source, current limitations and earlier assessments.
+* [Health histogram validation](evidence/cycle_2026-09-28/health_histogram/README.md): the full
+  native gate, parity and runtime captures, each tied to its measured source.

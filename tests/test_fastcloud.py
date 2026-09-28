@@ -186,3 +186,34 @@ def test_row_padding_is_removed_before_the_decode():
     assert fastcloud.packed(msg) is msg
     organized = SimpleNamespace(**{**vars(msg), "height": 3, "width": 1000, "row_step": 26000})
     assert fastcloud.packed(organized) is organized
+
+
+# 29.09: fastcloud.decode, the node's faster reading of the same arrays
+
+@pytest.mark.parametrize("layout,step", [
+    (ORGANIZERS, 26),                                                                 # the fast path
+    ((("x", 0, 7), ("y", 4, 7), ("z", 8, 7), ("intensity", 12, 7), ("ring", 16, 4)), 18),   # fast path too
+    ((("x", 0, 7), ("y", 4, 7), ("z", 8, 7)), 16),                                     # fast, no intensity / ring
+    ((("x", 0, 8), ("y", 8, 8), ("z", 16, 8), ("intensity", 24, 7)), 28),              # reference decode
+    ((("intensity", 0, 7), ("x", 4, 7), ("y", 8, 7), ("z", 12, 7)), 16),               # reference decode
+])
+@pytest.mark.parametrize("bigendian", [False, True])
+def test_decode_equals_the_reference_decode_byte_for_byte(layout, step, bigendian):
+    names = {n for n, _, _ in layout}
+    pts = {k: v for k, v in _scan(np.random.default_rng(5), 20000).items() if k in names}
+    msg, raw = _cloud(pts, layout, step, bigendian=bigendian)
+    parsed = fastcloud.packed(fastcloud.parse_pointcloud2(raw))
+    for rng_min, rng_max in ((2.5, 250.0), (0.5, 60.0), (0.0, 1e9)):
+        got = fastcloud.decode(parsed, rng_min, rng_max)
+        _same(got, pointcloud2_to_arrays(parsed, rng_min, rng_max))
+        assert got[0].flags["C_CONTIGUOUS"] and all(isinstance(v, int) for v in got[3:])
+
+
+def test_decode_takes_the_fast_path_only_for_leading_float32_xyz():
+    fast = fastcloud._xyz_leading
+    msg, _ = _cloud(_scan(np.random.default_rng(6), 10), ORGANIZERS, 26)
+    assert fast(msg)
+    assert not fast(_cloud(_scan(np.random.default_rng(6), 10), ORGANIZERS, 26, bigendian=True)[0])
+    moved = (("intensity", 0, 7), ("x", 4, 7), ("y", 8, 7), ("z", 12, 7))
+    assert not fast(_cloud({k: v for k, v in _scan(np.random.default_rng(6), 10).items() if k != "ring"},
+                           moved, 16)[0])

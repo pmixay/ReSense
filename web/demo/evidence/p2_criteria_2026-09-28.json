@@ -2,10 +2,10 @@
   "review_date": "2026-09-28",
   "integration_base": "8f232847477aaabc9c5f4965e6466af70b7d5d47",
   "detector_reference": "352ca13; docs/evidence/results/regression_baseline_2026-09-27_quality.json",
-  "branch": "testovaya-gpt",
+  "branch": "claude/amazing-fermi-t67v8g",
   "checks": {
     "p2": {
-      "command": "PLAYWRIGHT_BROWSERS_PATH=/tmp/resense-p4-playwright RESENSE_REQUIRE_WEB=1 /tmp/resense-p4-venv/bin/python -m pytest -q -rs web/demo tests/test_overview_video.py",
+      "command": "RESENSE_REQUIRE_WEB=1 python -m pytest -q -rs web/demo tests/test_overview_video.py",
       "passed": 83,
       "failures": 0,
       "skipped": 0,
@@ -15,31 +15,20 @@
         "web.demo.test_p2_review": 16,
         "web.demo.test_web": 17,
         "tests.test_overview_video": 9
-      },
-      "browser": "Playwright Chromium from /tmp/resense-p4-playwright"
+      }
     },
     "core": {
-      "command": "RESENSE_REQUIRE_SYNTHETIC=1 /tmp/resense-p4-venv/bin/python -m pytest -q -rs",
-      "passed": 753,
+      "command": "python -m pytest -q -rs tests",
+      "passed": 733,
       "deselected": 1,
       "deselected_reason": "/data/cache/new_data absent",
       "subtests_passed": 6,
-      "failures": 0,
-      "warnings": 5
+      "failures": 0
     },
     "lint": "ruff 0.15.8 passed",
-    "detector_freeze": "31 files PASS (integrity check only; no recordings replayed)",
+    "detector_freeze": "31 files PASS (integrity check only)",
     "diff_check": "passed",
-    "ci_initial": "GitHub Actions run 36393713036 on cc016ba: all four jobs passed; remote viewer branch gate not yet enabled at this commit",
-    "parameter_sync": "scripts/sync_params.sh --check passed",
-    "video": "scripts/make_overview_video.py --check passed: 7 blocks, 17 shots, 38 subtitles, 23 cards, 170 s",
-    "ci_latest": {
-      "run_id": 36410614942,
-      "status": "success",
-      "commit": "2583e0dc32afff95dc56efb0637fe46020e6dd3e",
-      "url": "https://github.com/pmixay/ReSense/actions/runs/36410614942",
-      "scope": "CI for source commit before local artifact/evidence refresh"
-    }
+    "ci_initial": "GitHub Actions run 36393713036 on cc016ba: all four jobs passed; remote viewer branch gate not yet enabled at this commit"
   },
   "status_compatibility": {
     "files": 18,
@@ -59,14 +48,10 @@
   },
   "presentation": {
     "slides": 16,
-    "source": "organizer 37-slide template; public slides use role cards and no personal data",
-    "built_on": "2026-09-28",
-    "private_preview": "built locally from supplied roster and portraits; ignored and not committed",
-    "pending_private_fields": [
-      "city",
-      "team formation",
-      "group photo"
-    ]
+    "source": "organizer 37-slide template, public team-role placeholders replaced",
+    "rebuild": "Public PPTX/PDF/MP4 rebuilt after simplifying dense slides 5 and 15; PDF pages 2, 3, 5, 9, 11, 13-16 inspected; SRT unchanged. 11 targeted presentation/video checks passed in this checkout. Original full P2 browser run below is dated evidence, not a new run on this rebuild.",
+    "rebuild_recheck": "2026-09-29, at the merge into claude/wizardly-fermi-1dys4g (4-vCPU sandbox, Playwright 1.56 + Chromium 141): RESENSE_REQUIRE_WEB=1 python -m pytest -q -rs web/demo tests/test_overview_video.py on these PPTX/PDF/MP4: 83 passed, 0 skipped, 0 failures",
+    "local_core_recheck": "725 passed, 28 native-kernel cases skipped (not built here), 1 missing-data case deselected, 6 subtests passed"
   },
   "artifacts": {
     "docs/images/dashboard-cab-real.png": {
@@ -90,20 +75,20 @@
       "sha256": "846c367fc46d62a60db71c24643b9debd344f8806e5b8cfb54c5b427c767edbc"
     },
     "docs/presentation/ReSense_LCT2026.pdf": {
-      "bytes": 3097670,
-      "sha256": "0427454f5f1e8259118b26ddb074665b574ef0340b395f57480427c14f5a2a79"
+      "bytes": 2955539,
+      "sha256": "edb83fde87e5f4f7224b367147f3982d12e29f3441a3e806ba5655264ef48e92"
     },
     "docs/presentation/ReSense_LCT2026.pptx": {
-      "bytes": 14381809,
-      "sha256": "47d5e21c44017dc2f0908236f47f7e6f4f2aaf9ac45c64a3124d585187367c7c"
+      "bytes": 14380922,
+      "sha256": "f9712ce742d93158a38457477b7b5bb0dce57b15db30a8b02cf9bf365ba88d92"
     },
     "docs/video/dashboard_current.mp4": {
       "bytes": 1020062,
       "sha256": "6b4a0308ffd1665f26a37f54bb238256565629757a6c169e540fe5a1d8e116ae"
     },
     "docs/video/resense_overview.mp4": {
-      "bytes": 20474509,
-      "sha256": "031f1f1a4d41e9568e101db47bfc8d70f7f41a2738781edde04cfa714630e6c3"
+      "bytes": 20472752,
+      "sha256": "f2e4bfefc6bc26a69cab62fdcfc2b96cacaebd155982507256e6b09728d9443c"
     },
     "docs/video/resense_overview.ru.srt": {
       "bytes": 5300,
@@ -145,16 +130,15 @@
       ],
       "format": {
         "duration": "170.000000",
-        "size": "20474509"
+        "size": "20472752"
       }
     }
   },
   "limits": [
-    "no physical Foxglove import or second-device link-loss/recovery demo",
-    "no physical jury-stand run on the final image",
-    "no human team rehearsals",
-    "city, team formation and team group photo still pending for the private deck",
-    "full new_data ride cache absent; independent per-frame outputs cover selected 306 of 11,271 ride frames only, so full ride and set F regression rows remain unreproduced here",
-    "no new detector quality measurement; this artifact refresh does not change detector/configuration"
+    "no physical Foxglove import/second device",
+    "no private team data",
+    "no supplied bag mounted for new ROS run",
+    "no human rehearsals",
+    "no new detector quality measurement"
   ]
 }

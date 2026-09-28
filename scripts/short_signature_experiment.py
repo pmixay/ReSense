@@ -8,7 +8,7 @@ signatures demote real test obstacles to advisory. Hit: the 0.3 m cube floating 
 top of the envelope (``elevated``). The false alarms they suppress on the organizers' station
 recording are one structure ~104 m ahead of the stopped train, 3.9-5.7 m long. Keeping the
 demotion for clusters longer than ``SIG_MAXLEN`` m or farther than ``SIG_MAXDIST`` m separates
-the two on these data. The results are in docs/P4_AUDIT.md "Organizer synthetic-obstacle
+the two on these data. The results are in docs/archive/P4_AUDIT.md "Organizer synthetic-obstacle
 recording". The rule lives in ``resense/clustering.py`` (P3); this script patches it in memory
 so that the measurement can be repeated before anyone changes the detector:
 

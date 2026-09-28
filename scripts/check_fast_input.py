@@ -2,7 +2,7 @@
 """Check the node's fast input path on real recordings, frame by frame (28.09).
 
 For every ``PointCloud2`` message of each bag: the node's path (``resense_ros.fastcloud``: the
-serialized bytes parsed, row padding removed, then ``resense.pointcloud.pointcloud2_to_arrays``)
+serialized bytes parsed, row padding removed, then ``fastcloud.decode``)
 must give exactly what rclpy's path gives (``deserialize_message``, then the same decode): the
 same header, layout and payload, and the same xyz / intensity / ring arrays and counts, byte for
 byte. It also times the two readings per frame (median, p95). Runs where ROS 2 is (the image):
@@ -59,7 +59,7 @@ def check_bag(path: str, min_range: float, max_range: float) -> dict:
                 == [(f.name, f.offset, f.datatype, f.count) for f in ref.fields]
                 and bytes(fast.data) == bytes(memoryview(ref.data)))
         a = pointcloud2_to_arrays(ref, min_range, max_range)
-        b = pointcloud2_to_arrays(fastcloud.packed(fast), min_range, max_range)
+        b = fastcloud.decode(fastcloud.packed(fast), min_range, max_range)
         same = same and all(u.dtype == v.dtype and u.shape == v.shape and u.tobytes() == v.tobytes()
                             for u, v in zip(a[:3], b[:3])) and a[3:] == b[3:]
         if not same:

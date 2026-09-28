@@ -820,3 +820,27 @@ def test_held_stop_cannot_supply_positive_evidence_for_next_recording(check_dry_
     # Exposed held STOP is still counted against a clear-bag criterion.
     assert check_dry_run.main([path, "--expect-clear"]) == 1
     assert "60 false alarms" in capsys.readouterr().out
+
+
+def test_check_dry_run_reports_the_playback_pace_and_the_start_up_lag(check_dry_run, tmp_path, capsys):
+    """29.09 (VM run of 28.09): a player that falls behind real time is visible, and the lag of the
+    start-up results is reported apart from the current ones."""
+    def capture(path, wall_step):
+        with open(path, "w") as fh:
+            for i in range(60):
+                current = i >= 10
+                fh.write(json.dumps({
+                    "stamp": 100.0 + 0.1 * i, "obstacle": False, "warning": False, "nearest_distance": None,
+                    "detections": [], "timing_ms": {"total": 40.0},
+                    "node": {"latency_ms": 50.0, "fps": 10.0, "dropped_frames": 0, "recording": 1},
+                    "freshness": {"valid": current, "source_age_s": 0.08 if current else 0.6,
+                                  "evaluated_at_utc_s": 1.0e9 + wall_step * i}}) + "\n")
+        return str(path)
+    real = capture(tmp_path / "real.jsonl", 0.1)
+    assert check_dry_run.main([real, "--expect-clear", "--min-playback-rate", "0.9"]) == 0
+    out = capsys.readouterr().out
+    assert "playback pace        : 1.00 x real time (5.9 s of recording in 5.9 s)" in out
+    assert "end-to-end (all)     : median 80 / p95 600" in out
+    slow = capture(tmp_path / "slow.jsonl", 0.3)
+    assert check_dry_run.main([slow, "--expect-clear", "--min-playback-rate", "0.9"]) == 1
+    assert "played at 0.33 x real time" in capsys.readouterr().out

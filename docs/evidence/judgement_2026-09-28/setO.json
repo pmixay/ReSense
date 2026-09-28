@@ -1,0 +1,167 @@
+{
+ "objects": {
+  "big_center": {
+   "in_gauge_intent": true,
+   "size": [
+    2.0,
+    2.0,
+    2.0
+   ],
+   "frames_labelled": 213,
+   "frames_in_env": 213,
+   "stop_frames": 208,
+   "stop_frames_in_env": 208,
+   "caution_frames": 0,
+   "first_stop_m": 98.0,
+   "env_first_m": 98.69,
+   "env_last_m": 3.0
+  },
+  "small_center": {
+   "in_gauge_intent": true,
+   "size": [
+    0.3,
+    0.3,
+    0.3
+   ],
+   "frames_labelled": 79,
+   "frames_in_env": 63,
+   "stop_frames": 32,
+   "stop_frames_in_env": 32,
+   "caution_frames": 0,
+   "first_stop_m": 55.8,
+   "env_first_m": 127.46,
+   "env_last_m": 3.27
+  },
+  "small_on_rail": {
+   "in_gauge_intent": true,
+   "size": [
+    0.3,
+    0.3,
+    0.3
+   ],
+   "frames_labelled": 49,
+   "frames_in_env": 33,
+   "stop_frames": 26,
+   "stop_frames_in_env": 26,
+   "caution_frames": 0,
+   "first_stop_m": 48.0,
+   "env_first_m": 62.1,
+   "env_last_m": 3.26
+  },
+  "small_edge_inside": {
+   "in_gauge_intent": true,
+   "size": [
+    0.3,
+    0.3,
+    0.3
+   ],
+   "frames_labelled": 83,
+   "frames_in_env": 16,
+   "stop_frames": 18,
+   "stop_frames_in_env": 16,
+   "caution_frames": 9,
+   "first_stop_m": 35.0,
+   "env_first_m": 34.97,
+   "env_last_m": 3.32
+  },
+  "small_outside_near": {
+   "in_gauge_intent": false,
+   "size": [
+    0.3,
+    0.3,
+    0.3
+   ],
+   "frames_labelled": 112,
+   "frames_in_env": 101,
+   "stop_frames": 0,
+   "stop_frames_in_env": 0,
+   "caution_frames": 24,
+   "first_stop_m": null,
+   "env_first_m": 236.63,
+   "env_last_m": 13.71
+  },
+  "big_edge_inside": {
+   "in_gauge_intent": true,
+   "size": [
+    2.0,
+    2.0,
+    2.0
+   ],
+   "frames_labelled": 125,
+   "frames_in_env": 8,
+   "stop_frames": 15,
+   "stop_frames_in_env": 8,
+   "caution_frames": 19,
+   "first_stop_m": 28.7,
+   "env_first_m": 16.26,
+   "env_last_m": 2.27
+  },
+  "big_outside": {
+   "in_gauge_intent": false,
+   "size": [
+    2.0,
+    2.0,
+    2.0
+   ],
+   "frames_labelled": 104,
+   "frames_in_env": 52,
+   "stop_frames": 9,
+   "stop_frames_in_env": 7,
+   "caution_frames": 58,
+   "first_stop_m": 142.3,
+   "env_first_m": 208.93,
+   "env_last_m": 41.88
+  },
+  "big_above": {
+   "in_gauge_intent": true,
+   "size": [
+    2.0,
+    2.0,
+    2.0
+   ],
+   "frames_labelled": 124,
+   "frames_in_env": 75,
+   "stop_frames": 56,
+   "stop_frames_in_env": 56,
+   "caution_frames": 6,
+   "first_stop_m": 111.5,
+   "env_first_m": 248.15,
+   "env_last_m": 6.78
+  },
+  "long_low_on_rails": {
+   "in_gauge_intent": true,
+   "size": [
+    0.5,
+    2.0,
+    0.2
+   ],
+   "frames_labelled": 86,
+   "frames_in_env": 77,
+   "stop_frames": 52,
+   "stop_frames_in_env": 52,
+   "caution_frames": 0,
+   "first_stop_m": 87.3,
+   "env_first_m": 248.49,
+   "env_last_m": 2.87
+  },
+  "thin_hanging": {
+   "in_gauge_intent": true,
+   "size": [
+    0.05,
+    0.05,
+    1.5
+   ],
+   "frames_labelled": 42,
+   "frames_in_env": 20,
+   "stop_frames": 15,
+   "stop_frames_in_env": 14,
+   "caution_frames": 0,
+   "first_stop_m": 30.1,
+   "env_first_m": 49.83,
+   "env_last_m": 6.71
+  }
+ },
+ "stop_detections_near_no_object": 22,
+ "frames_with_stop": 450,
+ "frames": 1510
+}

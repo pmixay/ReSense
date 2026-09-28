@@ -1,72 +1,36 @@
-# P2 verification and handoff — 27 September 2026
+# P2 status: pitch, video, deck and demo
 
-> **Purpose:** completed frontend work, verification and the next role dependencies.
-> **Audience:** team, P1 · **Owner:** P2 · **Language:** EN
-> **Last verified:** 2026-09-27, local changes on base `09629f5a981fa7e9ab5a789abecb13e8544c99d0`
-> **Status:** dated first-pass record; superseded by the [full P2 review](P2_REVIEW.md)
+> **Purpose:** P2's deliverables, their state and what is left before the upload (29.09) and the pitch (23.10).
+> **Audience:** P2, team · **Owner:** P2 · **Language:** EN
+> **Last verified:** 2026-09-29: deliverables checked against `docs/presentation/`, `docs/video/`, the
+> hashes in [`demo/evidence/p2_criteria_2026-09-28.json`](demo/evidence/p2_criteria_2026-09-28.json) and the
+> independent judgement of 28.09 ([`SCORECARD.md`](../docs/SCORECARD.md))
+> **Status:** current
 
-P2 owns the dashboard, label tool, RViz/Foxglove layouts, presentation tooling and demo assets
-([ownership map](../docs/CAPTAIN.md), §8). The current public presentation and video pass their
-existing checks against the committed detector baseline.
+Since 28.09 P2 (frontend) also owns the pitch and the video: P2 leads the defence on 23.10 and owns the
+overview video and its optional voice-over, the public and the private deck, the two rehearsals and the
+live remote demo (Foxglove from a second device). The captain (P1) sends the submission. How to build,
+rehearse and present: [`docs/PRESENTATION.md`](../docs/PRESENTATION.md); requirement-by-requirement
+evidence and checks: [`P2_REVIEW.md`](P2_REVIEW.md).
 
-## Completed in this pass
+Dates: upload 29.09 by 23:59 (target 18:00); technical expertise 30.09–14.10; pitch 23.10; awards 30.10.
 
-- Prevented replay controls, shortcuts and playback callbacks from displaying an old file in
-  live mode after connecting to ROS. Live panels remain covered while waiting for current data.
-- Cleared old distances, decision details, plots and boxes when loading an empty/invalid replay
-  or changing sources.
-- Added shared result-shape validation for the dashboard and label tool. Invalid records are
-  rejected before rendering or updating the live receipt timer. Legacy optional fields remain
-  supported; live status requires an explicit recognized decision.
-- Fixed STOP rendering/logging when distance is unknown; report minima no longer coerce `null`
-  to zero. FAULT hides the old monitoring distance, and invalid live messages keep the stale veil.
-- Made label imports atomic and frame-replacing: importing `[]` removes old obstacles on that
-  frame; malformed data cannot silently become a verified negative.
-- Preserved explicit imported `in_gauge` values through later geometry edits. Quotes and angle
-  brackets in label text now survive rendering and export unchanged. Frame indices are validated
-  and sorted numerically.
-- Added six browser regressions in `demo/test_frontend_boundaries.py`. The original five tests
-  were run before the fixes and all five failed on the cloned source.
+## Deliverables
 
-## Verification
-
-Python 3.12, Playwright 1.63.0 / Chromium 153 on this Linux checkout:
-
-```bash
-python -m pytest -q -rs web/demo tests/test_overview_video.py
-# 59 passed, zero skipped:
-#   16 existing dashboard/layout/deck checks
-#   31 Foxglove probe cases
-#    6 new browser regressions
-#    6 overview-video checks
-ruff check .
-# All checks passed
-python web/demo/make_demo_run.py --out out/p2-demo-run.jsonl
-python web/demo/check_dashboard.py --jsonl out/p2-demo-run.jsonl \
-  --screenshot out/p2-dashboard-synthetic.png
-# PASS: 60-frame generated replay, no browser errors
-git diff --check
-```
-
-The shared validator also accepted **4,760 / 4,760** status records from **18** compressed capture
-files under `docs/evidence/docker_2026-09-23/`, `docs/evidence/p1_p2_completion_2026-09-26/` and
-`docs/evidence/results/quality_freshness_2026-09-26/`. This checks format compatibility, including
-older recordings and watchdog/freshness snapshots. The local scan report is
-`out/p2-status-compatibility.json`.
-
-The browser checks include recorded real-node replay, desktop/mobile layouts, keyboard controls,
-freshness expiry, STOP retention, reconnect behavior and `gt.json` compatibility with the Python
-evaluator. The Foxglove cases check the probe/protocol; this pass did not run a live ROS bridge or
-visually import the layout in Foxglove.
-
-## Next dependencies
-
-| Deliverable | Needed from | Exact handoff |
+| deliverable | state | left (P2) |
 |---|---|---|
-| Final private presentation | P1 / captain and team | Supply `private/team.json` and the four portraits to this checkout, including confirmed city and team-formation details. The prior checkout's private preview was Git-ignored and is absent here. Confirm whether to include a group photo. Then P2 can build the private PPTX/PDF using the documented `--team` path. |
-| Final results slides/video refresh | P3 + P4, coordinated by P1 | Provide the accepted detector revision, updated regression baseline and validated measurements. The quality cycle still has open acceptance failures; the current public artifacts describe the existing baseline. |
-| Physical remote demo and pitch | P1 / captain and team | Run the deployment on the demo machine, import `web/foxglove_layout.json` on the actual second device, and perform the two timed rehearsals in `docs/PRESENTATION.md`. |
-| Optional narration | Captain / speaker | Supply recorded narration aligned to `docs/video/resense_overview.ru.srt`; P2's muxing recipe is in the presentation guide. |
+| Web dashboard, label tool, RViz and Foxglove layouts | done; `web/demo` checks in CI job `pytest`; the remote-viewer probe (`scripts/p2_viewer_test.sh`, second container, link pause and recovery) in CI job `docker` on `main` | visual Foxglove import on a physical second device (rehearsals) |
+| Public deck `docs/presentation/ReSense_LCT2026.pptx` + PDF, 16 slides | built 28.09 by `scripts/build_deck.py`; committed files match the recorded hashes | decide on the differences from the independent judgement (PRESENTATION «Числа на слайдах и их источники»: latency, set O cubes and edge box, slide 3 still gives P1 the pitch): rebuild before the upload or state them in the talk |
+| Private deck (`--team`) | not built; `docs/presentation/private/` is git-ignored and empty in this clone | names, nicknames, place of study, city, how the team formed, four portraits from the team; build; never commit |
+| Overview video `docs/video/resense_overview.mp4` + `.srt` | 2:50, 1920×1080, 25 fps, no audio track, Russian subtitles burned in and as `.srt` | the same number differences in its cards and subtitles; optional voice-over read from the `.srt` and muxed without re-editing (fix the numbers first) |
+| Fallback demo `docs/video/docker_chain_rviz.mp4` | committed: 69 s archival recording of the jury chain (v0.6.3, 23.09) | play it once on the pitch laptop |
+| Live remote demo | runbook [`DEMO_HANDOFF.md`](DEMO_HANDOFF.md); PRESENTATION «Демонстрация» and [`README.md`](README.md) «Remote demo with Foxglove» | run it on the demo machine with a second device at both rehearsals |
+| Rehearsals | none held yet | two timed rehearsals (PRESENTATION «Репетиции»); record them below |
+| Submission links | public deck PDF and video in `main` | hand the final links to the captain by 18:00 on 29.09 |
 
-Final quality acceptance, publication and submission remain with P1 after the detector/evaluation
-handoff. See [the quality-cycle record](../docs/QUALITY_CYCLE_2026-09-26.md) for those dependencies.
+## Rehearsals
+
+None held yet. For each rehearsal add one line here: date; demo commit and image ID; the two devices
+and the connection address; total time and the slides that ran over; live demo pass or fail (decision,
+distance and corridor change during playback, a paused player is not shown as current, recovery after
+resume); whether the switch to the fallback video was tried.

@@ -5,7 +5,7 @@
 ```bash
 git clone https://github.com/pmixay/ReSense && cd ReSense
 pip install -e ".[dev]"          # Python ≥ 3.10; при наличии компилятора собирает ядра C++
-pytest -q                        # набор тестов; «skipped» — значит, нет open3d
+pytest -q                        # набор тестов (770); «skipped» — значит, нет open3d
 pipx run ruff==0.15.8 check .    # линтер, версия закреплена как в CI
 ./scripts/sync_params.sh --check # копия параметров ROS совпадает с configs/default.yaml
 python scripts/detector_freeze.py verify   # опечатанные файлы детектора не изменились
@@ -42,7 +42,10 @@ docker run --rm resense bash -lc "python3 scripts/make_smoke_bag.py /tmp/b && sc
 | 2 | `offline-build` | архив образа для жюри: собран, все образы удалены, архив загружен обратно, пересобран без интернета, оба синтетических бэга проиграны через него во внутренней сети; на `main` архив выгружается как артефакт прогона |
 
 [`release.yml`](https://github.com/pmixay/ReSense/blob/main/.github/workflows/release.yml) публикует
-архив образа как релиз GitHub при пуше тега `v1.0.0-rcN` / `v1.0.0`.
+архив образа как релиз GitHub при пуше тега `v1.0.0-rcN` (предварительный) или `v1.0.0`: заново
+прогоняет тесты тега, собирает и экспортирует образ, загружает архив обратно и проигрывает через
+него синтетические бэги без интернета, затем выкладывает архив, его `.sha256` и `SHA256SUMS`.
+Ручной запасной путь с теми же шагами — `scripts/release.sh`.
 
 ```mermaid
 flowchart LR
@@ -57,8 +60,10 @@ flowchart LR
 ## Правила репозитория
 
 * `main` меняется только через pull request с зелёным CI; вливает капитан.
-* Один источник параметров (`configs/default.yaml`); числа живут только в `docs/EXPERIMENTS.md` и в
-  сводке README, остальные документы ссылаются на них.
+* Один источник параметров (`configs/default.yaml`); измерения — в
+  [`docs/EXPERIMENTS.md`](https://github.com/pmixay/ReSense/blob/main/docs/EXPERIMENTS.md) и
+  [`docs/SCORECARD.md`](https://github.com/pmixay/ReSense/blob/main/docs/SCORECARD.md), в книге — на
+  странице [Результаты и ограничения](../reference/results.md); остальные документы ссылаются на них.
 * JSON статуса и топики — контракты: ключи и топики добавляются, но никогда не переименовываются и
   не удаляются.
 * Кто владелец каких файлов: [`docs/CAPTAIN.md` §8](https://github.com/pmixay/ReSense/blob/main/docs/CAPTAIN.md#8-ownership-map-a-file-not-listed-its-authors-lane-ask-p1).

@@ -235,6 +235,30 @@ def freshness_failures(frames):
     return failures
 
 
+def playback_pace(frames):
+    """(recording s, wall s) spanned by the processed frames of the first recording: the player's
+    pace, which the per-result ages cannot show (29.09, the VM run of 28.09: a 360-degree bag read
+    from a 79 MB/s disk played at ~0.3x real time while every result looked current). None when the
+    capture carries no evaluation clock (``freshness.evaluated_at_utc_s``)."""
+    rec = None
+    pts = []
+    for f in frames:
+        fr = f.get("freshness")
+        wall = fr.get("evaluated_at_utc_s") if isinstance(fr, dict) else None
+        stamp = f.get("stamp")
+        if not isinstance(wall, (int, float)) or not isinstance(stamp, (int, float)):
+            continue
+        r = (f.get("node") or {}).get("recording")
+        if rec is None:
+            rec = r
+        if r == rec and math.isfinite(wall) and math.isfinite(stamp):
+            pts.append((stamp, wall))
+    if len(pts) < 2:
+        return None
+    (s0, w0), (s1, w1) = min(pts), max(pts)
+    return (s1 - s0, w1 - w0) if s1 > s0 and w1 > w0 else None
+
+
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("status_jsonl")
@@ -275,6 +299,8 @@ def main(argv=None) -> int:
                         "process instead of the stamp gaps, so that frames missing from the recording itself "
                         "(doubleT_obstacle lacks 4) are not drops; one recording per capture")
     p.add_argument("--min-fps", type=float, default=None, help="minimum of the last reported node.fps")
+    p.add_argument("--min-playback-rate", type=float, default=None, metavar="R",
+                   help="fail when the recording played slower than R x real time (e.g. 0.9)")
     p.add_argument("--max-p95-e2e", type=float, default=None, metavar="MS",
                    help="ms, p95 of the end-to-end latency of the current results: freshness.source_age_s, "
                         "from the input's publication by the player (replay) or its acquisition (live) through "
@@ -365,6 +391,12 @@ def main(argv=None) -> int:
            and isinstance(f["freshness"].get("source_age_s"), (int, float))
            and math.isfinite(f["freshness"]["source_age_s"])]
     e2e_p95 = percentile(e2e, 95)
+    # 29.09: every result, start-up catch-up included (the lag a consumer sees in the first seconds)
+    e2e_all = [1e3 * f["freshness"]["source_age_s"] for f in frames
+               if isinstance(f.get("freshness"), dict)
+               and isinstance(f["freshness"].get("source_age_s"), (int, float))
+               and math.isfinite(f["freshness"]["source_age_s"])]
+    pace = playback_pace(frames)
     cpu = [f["node"]["cpu_cores"] for f in frames if isinstance(f.get("node", {}).get("cpu_cores"), (int, float))]
     rss = [f["node"]["rss_peak_mb"] for f in frames if isinstance(f.get("node", {}).get("rss_peak_mb"), (int, float))]
     print(f"status messages      : {len(frames)}" + (f" ({skipped} lines skipped)" if skipped else ""))
@@ -382,6 +414,12 @@ def main(argv=None) -> int:
     if e2e:
         print(f"end-to-end (current) : median {percentile(e2e, 50):.0f} / p95 {e2e_p95:.0f} / max {max(e2e):.0f} ms "
               f"over {len(e2e)} current results (input publication -> result, through DDS)")
+    if e2e_all and len(e2e_all) != len(e2e):
+        print(f"end-to-end (all)     : median {percentile(e2e_all, 50):.0f} / p95 {percentile(e2e_all, 95):.0f} / "
+              f"max {max(e2e_all):.0f} ms over {len(e2e_all)} results, start-up included")
+    if pace is not None:
+        print(f"playback pace        : {pace[0] / pace[1]:.2f} x real time ({pace[0]:.1f} s of recording "
+              f"in {pace[1]:.1f} s)")
     if cpu:
         print(f"node CPU             : {sorted(cpu)[len(cpu) // 2]:.2f} cores median, {max(cpu):.2f} max "
               f"(node process, every stats period)" + (f"; peak RSS {max(rss):.0f} MB" if rss else ""))
@@ -435,6 +473,12 @@ def main(argv=None) -> int:
         failures.append("no obstacle distance reported, cannot check the distance window")
     if p95 is not None and p95 > args.max_p95_latency:
         failures.append(f"p95 latency {p95:.0f} ms > {args.max_p95_latency:.0f} ms")
+    if args.min_playback_rate is not None:
+        if pace is None:
+            failures.append("playback pace unknown (no freshness.evaluated_at_utc_s in the capture)")
+        elif pace[0] / pace[1] < args.min_playback_rate:
+            failures.append(f"the recording played at {pace[0] / pace[1]:.2f} x real time "
+                            f"< {args.min_playback_rate:g}")
     if args.max_p95_e2e is not None:
         if e2e_p95 is None:
             failures.append("no current result with freshness.source_age_s: cannot check the end-to-end latency")

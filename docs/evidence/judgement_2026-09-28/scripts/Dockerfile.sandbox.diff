@@ -1,0 +1,4 @@
+15a16,18
+> COPY --from=ccr ca-bundle.crt /usr/local/share/ca-certificates/ccr-proxy.crt
+> RUN update-ca-certificates >/dev/null 2>&1 || true; sed -i "s|http://|https://|g" /etc/apt/sources.list /etc/apt/sources.list.d/*; sed -i "s|https://packages.ros.org|https://ftp.osuosl.org/pub/ros/packages.ros.org|g" /etc/apt/sources.list.d/*
+> ENV PIP_CERT=/etc/ssl/certs/ca-certificates.crt REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
