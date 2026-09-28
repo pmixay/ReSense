@@ -200,6 +200,9 @@ def test_reserved_execution_requires_an_exact_frozen_source_and_config_pair(tmp_
 
 
 def test_evaluator_rejects_mutated_reserved_candidate_before_processing(tmp_path, monkeypatch):
+    # This test isolates freeze identity ordering. Real source-origin checks have separate
+    # subprocess coverage for source and installed-package layouts.
+    monkeypatch.setattr(evaluation, "validate_source_origin", lambda: None)
     path = tmp_path / "freeze.json"
     path.write_text(json.dumps(freeze_document()))
     frozen = evaluation.candidate_freeze(path, "evaluation")
