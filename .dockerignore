@@ -4,6 +4,7 @@
 .git
 .github
 docs
+!docs/evidence/cycle_2026-09-28/evaluation/protocol.json
 web
 out
 data
@@ -13,7 +14,9 @@ dist
 resense/_resense_native*
 build
 .pytest_cache
+.ruff_cache
 *.egg-info
 **/*.npy
+!tests/fixtures/synthetic_lidar_v1/**/*.npy
 **/*.db3
 **/*.mcap

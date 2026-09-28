@@ -26,3 +26,9 @@ This run uses the persistent development container, not a newly built final imag
 The exact image also needs the registered protocol file, used by the new synthetic
 CLI and tests. Its Dockerfile now copies that file and explicitly installs the
 `libusb-1.0-0` runtime dependency required to import the Open3D tools wheel.
+
+A focused Docker context build verifies the protocol and all 42 committed NumPy
+fixture arrays reach the image (30 arrays used by the sequence controls).
+`.dockerignore` now permits precisely that protocol and fixture subtree and
+excludes the local Ruff cache. This is a build-context check, not the final image
+replay. The newly added synthetic evaluator also has 24 focused passing tests.
