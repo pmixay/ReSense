@@ -11,8 +11,9 @@
 значений** совпали с базой 27.09, включая поездку и набор F. Три зарегистрированных варианта
 детектора не улучшили свои целевые объекты и отклонены. Архив поездки проверен по опубликованным
 размеру и SHA-256; все 11 271 кадр доступны в кэше. P4 добавляет воспроизводимость, но не новую
-дальность обнаружения, реальную проверку препятствий или подтверждённые баллы. Последняя свежая
-независимая оценка остаётся 66.5/100 ([SCORECARD](SCORECARD.md)).
+дальность обнаружения или проверку реальных препятствий. Свежая парная оценка — 66.5/100;
+более поздняя одиночная оценка на `a2f9122` — 69/100 за обновлённые запуск и доказательства,
+без повышения detector-критериев ([SCORECARD](SCORECARD.md)).
 
 ## P4 full-data completion — 28 September
 
@@ -34,8 +35,10 @@ independent identities, their causes remain uncertain. Startup, stress, offsets,
 paired set F and set S results, source/cache checksums and compressed per-frame outputs are in the
 [P4 evidence packet](evidence/results/p4_full_data_2026-09-28/README.md).
 
-P4 made no detector change, and its evidence has not been independently rescored. The latest
-independent score remains **66.5/100** on `806b6c4`; this data refresh is not a score increase.
+P4 made no detector change, and its evidence has not been independently rescored as a separate
+detector result. The latest paired score remains **66.5/100** on `806b6c4`; a later single-review
+assessment gives **69/100** on `a2f9122`, crediting launch and evidence work only. This data refresh
+is not a detector score increase.
 
 ## Freeze validation — 26 September night
 

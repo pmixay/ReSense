@@ -3,7 +3,7 @@
 > **Purpose:** the independent judgements of ReSense against the eight criteria of spec §8: score
 > per criterion, the evidence behind it, the risks on the hidden data and the fastest points to gain.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, summary RU
-> **Last independent judgement:** 2026-09-28, fresh re-judgement of `806b6c4` (below); 27.09 rounds 1–3 follow.
+> **Latest single-review estimate:** **69/100** on `a2f9122` (28.09, user-supplied independent model review; below). The latest paired judgement remains **66.5/100** on `806b6c4`; 27.09 rounds 1–3 follow.
 > **Status:** current review below; earlier numbered sections are dated records.
 
 ## Fresh re-judgement: 28 September (head `806b6c4`, the node input path of 28.09)
@@ -30,21 +30,52 @@ from a change in the detector.
 | Pitch |5|3.5|3.5|3.5|4|
 | **Total** |**100**|**72.5**|**62.5**|**66.5**|72|
 
-**P4 data refresh (28 September): no score change.** The frozen detector was replayed against all
-available organizer caches; the strict gate passed with 208/208 enforced values unchanged, and
-all three registered P4 candidates failed their target screen. This adds reproducibility evidence
-but no measured detector or product improvement. The **66.5/100 remains the last independent
-score** on `806b6c4`; the P4 run has not been independently rescored. The handoff's provisional
-internal carry-forward assessment is documented in [`P4_AUDIT.md`](P4_AUDIT.md).
+**P4 data refresh (28 September): no detector score change.** The frozen detector was replayed
+against all available organizer caches; the strict gate passed with 208/208 enforced values
+unchanged, and all three registered P4 candidates failed their target screen. This adds
+reproducibility evidence but no measured detector improvement. The P4 packet's carry-forward
+assessment was 66.5/100; it did not include the later single-review update below.
 
-**P1/P2 delivery verification after the judgement (28 September): no score assigned yet.** The
+## Single-review update: 28 September (`a2f9122`)
+
+**69/100**, a user-supplied independent model review of the current working head
+`a2f9122acdd9de83d4bf30a2befdc0d3e1f9cdd5`. This is a single review, not an average, organizer
+score, or replacement for the last paired judgement of 66.5/100 on `806b6c4`.
+
+| Criterion | Maximum | Score | Change from the 66.5 paired review |
+|---|---:|---:|---:|
+| Functionality | 25 | 16 | 0 |
+| Range | 15 | 7.5 | 0 |
+| Speed | 10 | 8 | 0 |
+| Generalization | 15 | 8 | 0 |
+| Technical quality | 10 | 8 | +0.5 |
+| Ease of launch | 10 | 8.5 | +1 |
+| Team approach | 10 | 9 | +0.5 |
+| Pitch | 5 | 4 | +0.5 |
+| **Total** | **100** | **69** | **+2.5** |
+
+The reviewer attributes the increase to newer launch and evidence work. That explanation is
+consistent with the cold original-bag replay and separate-container viewer evidence in
+[`p1_p2_cold_bags_2026-09-28`](evidence/p1_p2_cold_bags_2026-09-28/README.md), plus the refreshed
+P4 packet. It does not claim a detector improvement: the raw rail-object recording still has
+123/126 STOP frames with GO at frame 111, the complete ride has 32 alarm events, and P4 candidates
+A/B/C changed no scored detector output. The reviewer cites those findings in
+[`judge_outputs_2026-09-28`](evidence/judge_outputs_2026-09-28/README.md) and
+[`p4_full_data_2026-09-28`](evidence/results/p4_full_data_2026-09-28/README.md).
+
+Carry 69/100 as the current single-review internal estimate. Keep the paired 66.5/100 result as a
+separate historical comparison; do not average unlike review counts or describe either as an
+organizer-published score. No untouched real-obstacle recording is available, so performance on
+new obstacle scenes remains unverified.
+
+**P1/P2 delivery verification after the paired judgement (28 September).** The
 four-job [CI run 36432860933](https://github.com/pmixay/ReSense/actions/runs/36432860933) passed on
 `testovaya-gpt`: both original bags passed a cold-cache replay with no unprocessed source messages,
 the node input path matched the reference bytes on all 453 frames, and the separate-container
-Foxglove probe detected and recovered from a deliberate outage. This strengthens reproducibility
-and launch evidence after `806b6c4`; the physical second-device rehearsal and an independent
-re-judgement remain outstanding. Keep the score at **66.5/100** until a new independent review
-actually scores the newer work.
+Foxglove probe detected and recovered from a deliberate outage. The single-review 69/100 update
+above credits newer launch and evidence work, but has not been combined with a second reviewer.
+The physical second-device rehearsal remains outstanding; the latest paired score stays
+**66.5/100**.
 
 Reports: [both judges](evidence/results/rejudge_2026-09-28.json). What they found:
 
@@ -868,17 +899,18 @@ objects (#4–#7) were placed from the sensor's axis, 0.24° off the rails the d
 
 ## 6. Fastest points to gain
 
-The priority list below reflects the latest evidence, not a promise of 100 points. The independent
-66.5/100 review predates the newest P1/P2 work, and neither P4 nor the latest delivery checks have
-been independently rescored. A score change belongs to the next reviewer.
+The priority list below reflects the latest evidence, not a promise of a target score. The
+single-review 69/100 assessment on `a2f9122` leaves functionality, range and generalization
+unchanged. The largest remaining gains require safe detector improvements and genuinely new
+real-obstacle evidence; the user has confirmed no untouched obstacle bag is currently available.
 
 | Priority | Work still needed | Criteria | Evidence needed to support more credit |
 |---:|---|---|---|
-| 1 | Improve small, edge and hanging-obstacle detection without increasing false alarms or releasing an unsafe GO; retain every existing safety exclusion | 8.1, 8.4 | New pre-registered detector hypothesis, labelled positives and negatives, all-data gate, false-event and range accounting; the P4 A/B/C threshold trials showed no target gain |
-| 2 | Measure real obstacle range and generalization on a route held out from tuning, with distance and object labels checked independently | 8.1, 8.2, 8.4 | Real positive objects across size/material/range and unseen approaches; synthetic set O, anchored placement and an obstacle-free ride cannot establish this |
-| 3 | Run the supported bag playback and live viewer on the actual demo setup, including a physical second screen; measure the 8-core stand and dense-station latency | 8.3, 8.5, 8.6 | Reproducible machine details, current end-to-end timings, live link recovery and a clean operator run; the four-job CI and two-container viewer test do not substitute for hardware |
-| 4 | Complete team details, private deck, and two timed rehearsals; verify the final submission artifacts | 8.7, 8.8 | Confirmed city/team-formation details, group photo if supplied, rehearsal timing and final artifact checks; current public assets are corrected but not independently rescored |
-| 5 | Obtain the outstanding organizer clarification and commission a fresh independent assessment after accepted changes | 8.1, 8.2, 8.4, all | Written answers to Q1/Q2 and a new review of the exact tested commit; do not convert internal evidence into organizer points |
+| 1 | Trace the raw rail-object GO at frame 111 and CAUTION at 117/197; test one bounded continuity change only if source-point and tracker evidence support it | 8.1 | Original `doubleT_obstacle` DB3 or equivalent unquantized frames and tracker history. The local int16 cache produces STOP at those frames, so it cannot validate a fix |
+| 2 | Trace platform/switch false STOP events to exact ride points and detector stages; test one causal rule at a time | 8.1, 8.4 | Full-ride point support, positive-preservation checks and a strict gate. The current ride has 32 events/31 episodes; event midpoint imagery alone leaves causes uncertain |
+| 3 | Improve small/edge detection using a demonstrated non-threshold cause and cross-frame evidence | 8.1, 8.2 | Set O is 411/801 visible in-envelope STOP frames. A/B/C threshold trials had no scored change; retain the existing safety exclusions and run the full acceptance matrix |
+| 4 | Measure generalization and long-range real detection on an untouched, labelled obstacle route | 8.1, 8.2, 8.4 | New real data is unavailable now. Synthetic holdouts can measure sensitivity, not real-scene transfer or organizer hidden-data recall |
+| 5 | Complete physical demo and human presentation work | 8.3, 8.5–8.8 | Physical second-device Foxglove import, stand timing, city/team-formation details, group photo if available, two timed rehearsals and final submission checks |
 
 These are the largest evidence gaps, not a guaranteed route to a particular score. The older
 point estimates below are retained as historical context; several refer to work that has since

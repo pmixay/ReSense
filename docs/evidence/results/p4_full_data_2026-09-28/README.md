@@ -65,9 +65,12 @@ remain **uncertain** because the event clusters lack independent labels and were
 point support. Repeated hits in an event are correlated observations. Set O's six false STOP
 frames are attributed to the outside organizer object by its labels.
 
-The last fresh independent score remains **66.5/100** on `806b6c4`. The provisional internal
-assessment carries that result forward with zero P4 points; no new independent review has scored
-this evidence packet.
+At the time this P4 packet was published, the latest paired score was **66.5/100** on `806b6c4`.
+The P4 carry-forward assigned zero detector points because the detector and all 208 gated values
+were unchanged. A later single-review model assessment of `a2f9122` assigns **69/100**, crediting
+newer launch and evidence work; it does not claim a P4 detector gain. See the current
+[scorecard](../../../SCORECARD.md) for the distinction between the single-review estimate and the
+historical paired score.
 
 ## Reproduction commands
 

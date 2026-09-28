@@ -3,7 +3,7 @@
 > **Owner:** P2 · **Reviewed base:** `main` at `8f23284`, including the accepted 27.09 detector;
 > current main `464f5bc` is merged into the working branch
 > **Working branch:** `testovaya-gpt` (tracks `origin/testovaya-gpt`)
-> **Status:** public PPTX/PDF/MP4/SRT rebuilt from the corrected sources on 28.09; local private preview uses the supplied roster and portraits. City, team formation, group photo, on-device demo and human rehearsals remain pending.
+> **Status:** public PPTX/PDF/MP4/SRT rebuilt from the corrected sources on 28.09; local private preview uses the supplied roster and portraits. City, team formation, group photo, physical second-device demo and human rehearsals remain pending. A single-review estimate is 69/100 on `a2f9122`; the paired assessment remains 66.5/100 on `806b6c4`.
 
 The previously reviewed P2 work was on `f6b156b`. Its remote Claude branch has since been
 deleted. Current `main` contains a newer detector (`352ca13`, measured at `d572807`), so the
@@ -116,7 +116,8 @@ python web/demo/check_dashboard.py --jsonl out/p2-review-real.jsonl \
 The ignored private folder now contains a local draft made with the supplied roster and portraits;
 it is not committed. City, team formation and team photo are still missing. The remaining physical
 device import, human rehearsals and stand run are open. The CI two-container protocol check is not
-a visual Foxglove import. Optional narration was not supplied. The fresh independent **66.5/100**
-judgement is on `806b6c4`, before the corrected public binaries and current P2 artifact refresh;
-the earlier **72/100** is the dated 27.09 round-three judgement. Neither is an organizer-published
-score, and this artifact refresh has not been independently rescored.
+a visual Foxglove import. Optional narration was not supplied. The paired **66.5/100** judgement
+is on `806b6c4`; a later single-review model assessment gives **69/100** on `a2f9122`, attributing
+the increase to newer launch and evidence work. It leaves functionality, range, speed and
+generalization unchanged. The earlier **72/100** is the dated 27.09 round-three judgement. None is
+an organizer-published score.

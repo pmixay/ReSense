@@ -20,8 +20,10 @@ sandbox: 113 → 102 ms cached, 137 → 118 ms cold (an independent judge's 5 pa
 `rss_peak_mb`; `play_bag.sh` waits for readiness;
 CI runs the original bags and uploads the image archive for this working branch
 ([evidence](evidence/node_input_2026-09-28/README.md), EXPERIMENTS §3d). The detector seal is
-unchanged. Fresh re-judgement of this head, 28.09: **66.5/100** (A 72.5, B 62.5; 8.3 Speed 8/10,
-up from 7.5; 27.09 round 3 was 72 with other judges) ([SCORECARD](SCORECARD.md)). Captain's own
+unchanged. Fresh paired re-judgement, 28.09: **66.5/100** on `806b6c4` (A 72.5, B 62.5; 27.09
+round 3 was 72 with other judges). A later single-review model assessment of `a2f9122` gives
+**69/100**, with increases only in technical quality, launch, team approach and pitch; it is not
+an average or organizer score ([SCORECARD](SCORECARD.md)). Captain's own
 criteria now: 8.3 8/10, 8.5 7.5/10, 8.6 7.5/10, 8.8 3.5/5 = 26.5 of 35. **Decided 28.09:** the
 image's default command runs the node with `freshness_mode:=replay` for recorded bags (`d359a06`;
 the node's own default stays `live`); the GO at `doubleT_obstacle` frame 111 (the rail object missed
@@ -228,8 +230,9 @@ action 3b done (the merge click is the captain's), action 1 without branch prote
 ## 4. Current completion and remaining actions
 
 **28.09:** the 27.09 detector is sealed ([`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md)) and stays
-frozen; since then only the node, the image and the documents changed. The re-judgement of 28.09
-gives 66.5/100. The `v1.0.0` release is scheduled for 28.09 21:00 Moscow time and is not yet
+frozen; since then only the node, the image and the documents changed. The paired re-judgement
+gives 66.5/100; a later single-review assessment gives 69/100 on `a2f9122`. The `v1.0.0` release
+is scheduled for 28.09 21:00 Moscow time and is not yet
 published (§5). The paragraph below is the dated state of 26.09.
 
 (26.09) The [P3d baseline seal](DETECTOR_FREEZE.md) and candidate-B decision are complete. The seal
@@ -284,8 +287,8 @@ not replace this later failure or establish acceptance of the current root image
   do not establish final detector acceptance.
 - [ ] Close the remaining detector quality gates, including the clear-bag failure, sustained
   detection, false alarms and monitored-range overclaims; independently rejudge any accepted
-  improvement. The 27.09 score, 72/100, and the 28.09 re-judgement, 66.5/100, do not meet the
-  75/100 target.
+  improvement. The 27.09 paired score, 72/100, the 28.09 paired re-judgement, 66.5/100, and the
+  later single-review estimate, 69/100, do not meet the 75/100 target.
 - [ ] Release `v1.0.0` with the image archive: **scheduled for 28.09 21:00 Moscow time, not yet
   published**; then verify the public download logged out. A CI artifact requires GitHub login
   and does not complete this item.

@@ -73,10 +73,11 @@ the paired set S bed/legacy experiment are captured in the packet. They do not e
 long-range recall or surveyed placement truth. No detector change passed; P4 establishes complete
 reproducibility and preserves the frozen defaults.
 
-**Score disposition:** the last fresh independent assessment remains **66.5/100** on `806b6c4`
-([scorecard](SCORECARD.md)). This P4 run did not change detector behavior and has not been
-independently rescored, so no new score point is claimed. The current provisional internal
-assessment is carried forward at 66.5/100; this evidence packet does not imply a score increase.
+**Score disposition at the P4 packet:** the then-latest paired assessment was **66.5/100** on
+`806b6c4` ([scorecard](SCORECARD.md)). This P4 run did not change detector behavior and did not
+earn detector points. A later single-review assessment of `a2f9122` gives **69/100**, crediting
+newer launch and evidence work only; it is recorded separately and does not rescore P4 as a
+detector improvement. The provisional table below is the dated 66.5 carry-forward.
 For this P4 handoff, the internal figure carries forward the latest combined criterion values
 below. It is not a fresh independent regrade; P4 adds zero points because it established
 reproducibility rather than a performance change.
@@ -105,7 +106,7 @@ numerical weights, and this total is only a provisional internal reference.
 - [x] Re-run startup, rate/mount, offsets, set O, set F and set S comparisons.
 - [x] Record false alarms with frame, distance and detector-stage details; preserve uncertain causes.
 - [x] Pre-register and decide A/B/C; retain the shipped detector because all three fail their target screen.
-- [x] Preserve historical results and the 66.5/100 independent score; make no unsupported score claim.
+- [x] Preserve the historical paired 66.5/100 result and record the later single-review 69/100 separately; make no unsupported detector-score claim.
 - [ ] Real obstacle validation on the ride and surveyed synthetic placements remain unavailable in the existing organizer data.
 
 ## Detector freeze and P4 completion (26.09 night)

@@ -19,6 +19,11 @@ of all six original recordings, set O (offline and through the node), two ride s
 with their commands, logs and `recompute.py`, which recounts the headline figures with the gate's
 own counting: the only per-frame evidence of the 27.09 detector besides the node captures.
 
+The [single-review score record](results/single_review_2026-09-28.json) records the user's
+independent model review of `a2f9122`: 69/100, with launch and evidence categories increased and
+the detector categories unchanged. The earlier paired 66.5/100 result remains a separate
+historical assessment.
+
 The [28 September node input path](node_input_2026-09-28/README.md) holds the before / after
 dry runs of both original recordings through ROS (checker outputs, status captures, node logs),
 the end-to-end latency and CPU figures (current results and, with `e2e_all_frames.py`, every
