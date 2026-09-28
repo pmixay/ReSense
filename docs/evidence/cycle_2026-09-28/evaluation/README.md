@@ -105,3 +105,13 @@ effective configuration did not change between those commits. Raw clouds are exc
 This is development evidence, with one simple stationary geometry per case. No reserved
 evaluation clouds have been generated or scored. No detector improvement is claimed by this
 baseline measurement.
+
+## V1 geometry and stage audit
+
+The historical positive labels above include boundary-contact cubes: a 0.30 m box on the bed
+reaches exactly the canonical envelope floor because the synthetic rails are 0.18 m high.
+The v1 development numbers are diagnostic and must not be read as an organizer-compliance
+score. [The independent geometry/stage audit](diagnosis-v1.md) distinguishes physical body
+intrusion from sampled returns and explains all 13 misses. It preserves the original protocol,
+labels and results. All 448 traced outputs match the saved baseline after timing-only fields
+are excluded.
