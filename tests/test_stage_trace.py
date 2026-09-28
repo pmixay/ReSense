@@ -72,10 +72,13 @@ def test_records_actual_rejection_return_condition_and_restores_function():
 
 
 @pytest.mark.synthetic
-def test_tracing_preserves_stateful_detector_output():
+@pytest.mark.parametrize("fresh", [False, True])
+def test_tracing_preserves_stateful_detector_output(fresh):
     cloud, labels, _ = synthetic_tunnel_frame(rng=np.random.default_rng(12), specs=[
         ObstacleSpec(kind="box", size=(0.3, 0.3, 0.3), distance=25, lateral=0, base_z=-0.2)])
-    plain, traced = Detector(DetectorConfig()), TraceDetector(DetectorConfig())
+    cfg = DetectorConfig()
+    cfg.tracking.fresh_stop_evidence = fresh
+    plain, traced = Detector(cfg), TraceDetector(DetectorConfig.from_dict(cfg.to_dict()))
     original = clustering._corridor_cluster
     targets = np.flatnonzero(labels == 1)
     assert len(targets) > 0
@@ -87,3 +90,6 @@ def test_tracing_preserves_stateful_detector_output():
         assert traced.trace["geometry"]["groups"]["cube"]["points"] == len(targets)
         assert clustering._corridor_cluster is original
     assert traced.trace["blobs"]
+    assert traced.trace["tracker_hits"]
+    if fresh:
+        assert all(hit["evidence_after"] for hit in traced.trace["tracker_hits"].values())
