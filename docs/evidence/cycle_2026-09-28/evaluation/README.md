@@ -70,3 +70,37 @@ real removal. Longer dropout tests allow improved continuity instead of preservi
 baseline's known failure. Metric tests independently verify that one detection does not count
 as sustained, distinguish invisible frames from visible misses, and enforce each registered
 regression condition for each input encoding.
+
+## Development baseline measured
+
+All 35 registered development cases completed on the unchanged baseline detector at evaluation
+commit `0991251`. The 560 generated float clouds were replayed as float32 and as the same clouds
+quantized to compact16: 1,120 detector frames altogether. The complete per-frame report is
+[`baseline-development.json.gz`](baseline-development.json.gz); its hashes, source/config
+identity and per-case counts are in [`baseline-summary.json`](baseline-summary.json).
+
+| Metric | Float32 | Compact16 |
+|---|---:|---:|
+| Sustained positive sequences | 19/32 | 19/32 |
+| Matched STOP / visible target frames, including confirmation | 228/512 | 228/512 |
+| Positive cases with no target returns | 0 | 0 |
+| Unmatched STOP frames in positive cases | 0 | 0 |
+| STOP frames across three negative controls | 0/48 | 0/48 |
+
+All cases that detect confirm at frame 4 and keep the STOP through frame 15. The missed cases
+are the rail box, 0.3 m cube and 0.5 m box at both 100 m and 150 m, plus the 0.3 m edge cube at
+50 m. Every missed case still has labelled target returns in every frame. Persons are sustained
+at all four registered distances through 150 m. The two encodings disagree on zero matched-STOP
+frames on these particular scenes; this does not resolve the raw/cache disagreements already
+measured on real recordings.
+
+The cache is local at `/cycle/synthetic/development` in the shared development container
+(`/home/likikikpa/ReSense-cycle-data/synthetic/development` on the host), roughly 1.1 GB. Its
+generator script hash exactly matches `scripts/synthetic_sensitivity.py` at `871a105`; its
+detector-source commit was recorded as `b9d2d4a` before the evaluator-only commit. The report
+records both that generator hash and the revised `0991251` evaluator hash. The detector and
+effective configuration did not change between those commits. Raw clouds are excluded from Git.
+
+This is development evidence, with one simple stationary geometry per case. No reserved
+evaluation clouds have been generated or scored. No detector improvement is claimed by this
+baseline measurement.
