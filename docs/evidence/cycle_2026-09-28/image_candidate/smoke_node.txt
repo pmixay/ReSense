@@ -1,0 +1,20 @@
+[INFO] [launch]: All log files can be found below /root/.ros/log/2026-09-28-18-25-56-574485-03f10e36415e-59
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [detector_node-1]: process started with pid [63]
+[detector_node-1] [INFO] [1790619958.991143176] [resense_detector]: sensor mount: forward=-y left=+x up=+z roll/pitch/yaw=0.0/0.0/0.0 deg; auto-calibration on
+[detector_node-1] [INFO] [1790619959.049576054] [resense_detector]: ReSense detector listening on /lidar_points, /sensing/lidar/hesai128/pointcloud (+ auto-discovery); input reliability auto; per-frame kernels: native (_resense_native.cpython-310-x86_64-linux-gnu.so); resense 1.0.0
+[detector_node-1] [WARN] [1790619959.054005586] [resense_detector]: net.core.rmem_max = 4194304, net.core.rmem_default = 212992: below 32 MiB. A bag player may then deliver few or none of the ~24 MB 360-degree clouds to this node (a CycloneDDS player; stock Fast DDS was not affected; the 120-degree clouds arrive). Fix on the host, before playing: sudo sysctl -w net.core.rmem_max=33554432 net.core.rmem_default=33554432
+[detector_node-1] [INFO] [1790619967.107388456] [resense_detector]: input 1: /lidar_points (frame_id=hesai_lidar, 139859 points)
+[detector_node-1] [INFO] [1790619967.110145576] [resense_detector]: static TF resense_lidar -> hesai_lidar (identity)
+[detector_node-1] [INFO] [1790619967.305886033] [resense_detector]: mount calibration: pending - 
+[detector_node-1] [INFO] [1790619969.120975734] [resense_detector]: frame 13: GO; freshness current; axis y=+0.25 R=-278617; 6.4 fps; latency mean 131 / p95 193 / max 199 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.85 cores
+[detector_node-1] [INFO] [1790619971.149067943] [resense_detector]: frame 23: STOP at 59.9 m; freshness current; axis y=+0.25 R=inf; 4.9 fps; latency mean 135 / p95 155 / max 166 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.70 cores
+[detector_node-1] [INFO] [1790619973.152287459] [resense_detector]: frame 33: STOP at 59.9 m; freshness current; axis y=+0.25 R=281941; 5.0 fps; latency mean 128 / p95 150 / max 163 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.68 cores
+[detector_node-1] [INFO] [1790619975.051829587] [resense_detector]: frame 40: STOP: last result expired (> 0.5 s source/residence age): path not monitored; 3.7 fps; latency mean 130 / p95 135 / max 135 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.52 cores
+[detector_node-1] [INFO] [1790619981.104740362] [resense_detector]: input 2: /sensing/lidar/hesai128/pointcloud (frame_id=lidar_livox, 139859 points) - input switched from /lidar_points: detector restarted
+[detector_node-1] [INFO] [1790619981.107384669] [resense_detector]: static TF resense_lidar -> lidar_livox (identity)
+[detector_node-1] [INFO] [1790619981.226242361] [resense_detector]: mount calibration: pending - 
+[detector_node-1] [INFO] [1790619983.051631655] [resense_detector]: frame 52: GO; freshness current; axis y=+0.25 R=-278506; 6.0 fps; latency mean 106 / p95 142 / max 150 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.73 cores
+[detector_node-1] [INFO] [1790619985.051840533] [resense_detector]: frame 62: STOP at 44.9 m; freshness current; axis y=+0.25 R=inf; 5.0 fps; latency mean 127 / p95 151 / max 162 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.72 cores
+[detector_node-1] [INFO] [1790619987.053871580] [resense_detector]: frame 72: STOP at 44.9 m; freshness current; axis y=+0.25 R=-140651; 5.0 fps; latency mean 142 / p95 156 / max 163 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.80 cores
+[detector_node-1] [INFO] [1790619989.055153898] [resense_detector]: frame 80: STOP: last result expired (> 0.5 s source/residence age): path not monitored; 4.0 fps; latency mean 135 / p95 146 / max 152 ms; input period 100 ms; dropped 0 (0 skipped by the catch-up); CPU 0.62 cores

@@ -25,5 +25,29 @@ all 15 per-frame captures and the full set F report. `artifact_manifest.json`
 records every artifact hash. The source seal references the complete gate and
 verifies that its measured commit has the exact current detector/build inputs.
 
-The candidate full gate, aligned output comparison and processing-history stress
-are still running. The candidate has not replaced the score branch's detector.
+## Exact proposed-default candidate
+
+[`candidate/gate.json`](candidate/gate.json) measures clean `ef1d8f5` with the
+committed proposed defaults and no overrides. The full gate **passes**: two
+enforced rail-object recall metrics improve and the other 144 enforced metrics
+are unchanged, with no waivers, worse rows or missing rows. Cached rail-object
+hits rise from 128 to 129 of 185 overall and from 125 to 126 of 126 after frame 75;
+person hits remain 61/61. The separately retained raw replay improves 123 to
+126/126 after frame 75 and 125 to 128/185 overall.
+
+[`monitoring_acceptance.json`](candidate/monitoring_acceptance.json) aligns every
+frame and timestamp in all 15 captures. Every alarm flag and detection payload
+is identical on the five empty bags and eight ride pieces. Monitoring coverage
+costs pass. The existing 16 set O GO clearance-overclaim flags remain unchanged;
+this diagnostic does **not** pass a zero-overclaim requirement, and its labels
+inherit an earlier fitted envelope rather than an independent survey.
+
+The candidate run took 1,905.4 seconds while sharing the machine. Its larger
+latency-warning count is not a clean runtime comparison; decision-level coverage
+and detection results above are the relevant paired checks. All full captures,
+the set F report, log, config and artifact hashes are retained with the gate.
+
+Passing this gate authorizes the already frozen reserved synthetic comparison.
+Processing-history stress, reserved evaluation and final image checks remain
+separate acceptance conditions. The candidate has not replaced the score branch's
+detector yet.
