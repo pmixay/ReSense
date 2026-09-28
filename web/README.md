@@ -3,7 +3,7 @@
 > **Purpose:** the dashboard, the RViz and Foxglove layouts, the label tool, their headless checks
 > and the video recipes.
 > **Audience:** team, jury (demo) · **Owner:** P2 · **Language:** EN
-> **Last verified:** 2026-09-28, full P2 review on the accepted 27.09 detector (see [`P2_REVIEW.md`](P2_REVIEW.md)) · **Status:** current
+> **Last verified:** 2026-09-28 (evening): full P2 review on the sealed 27.09 detector and the fixes after the 28.09 re-judgement (see [`P2_REVIEW.md`](P2_REVIEW.md)) · **Status:** current
 
 Everything the jury sees: the RViz layout the launch file loads, a Foxglove layout for remote
 demos, a browser dashboard that works live (rosbridge) and offline (replay of `results.jsonl`),
@@ -235,11 +235,14 @@ Known limits:
 ## Video
 
 The committed real-data clips (v0.6.2; the Docker chain v0.6.3) cover every presentation surface;
-all four are silent:
+all five are silent:
 
 The 2:50 overview uses these clips as **archival visualization** and labels them as such in its
-source line. Its numerical cards come from the accepted 27.09 regression baseline, not from
-measurements made in the earlier video clips. The current dashboard clip replays an archived
+source line. Its numerical cards come from the deck's numbers (`N` in `scripts/build_deck.py`,
+sources in [`docs/PRESENTATION.md`](../docs/PRESENTATION.md) «Числа на слайдах и их источники»): the
+27.09 regression baseline, the 28.09 node captures for the object on the rail (STOP in 123 of 126
+frames through the node, one GO) and the end-to-end latency with the machine it was measured on,
+not measurements made in the earlier video clips. The current dashboard clip replays an archived
 node-status capture; neither clip is a fresh run of the final detector on the jury stand.
 
 * [`docker_chain_rviz.mp4`](../docs/video/docker_chain_rviz.mp4) — the full jury chain on screen:

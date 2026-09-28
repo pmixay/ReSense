@@ -664,7 +664,13 @@ def test_overview_video_cards_follow_the_current_gate_baseline():
     person, rail = labelled["person_crossing"], labelled["object_on_rail_from_frame_75"]
     bigs = {c["big"] for c in cards if c["kind"] == "num"}
     assert f"{person['hits']} из {person['frames']}" in bigs
-    assert f"{rail['hits']} из {rail['frames']}" in bigs
+    # the object on the rail: the card shows the node path on the original recording (123 of 126,
+    # docs/evidence/node_input_2026-09-28) and names the baseline's 1 cm cache replay in its label
+    rail_cards = [c for c in cards if c["kind"] == "num" and "предметом на рельсе" in c["label"]]
+    assert rail_cards
+    for c in rail_cards:
+        assert c["big"].endswith(f" из {rail['frames']}")
+        assert f"на кэше 1 см — {rail['hits']}" in c["label"]
     assert module.check_table(files=False) == []
 
 

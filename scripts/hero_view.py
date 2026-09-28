@@ -35,12 +35,12 @@ TEXT = {
     "ru": {"stop": "STOP", "obstacle": "препятствие {d} м", "go": "GO", "clear": "дальность контроля ≈ {d:.0f} м",
            "caution": "CAUTION", "fault": "FAULT", "untrusted": "нет достоверных данных",
            "label": "ПРЕПЯТСТВИЕ · {d} м", "envelope": "габарит поезда 2,1 × 3,0 м",
-           "foot": "{name} · кадр {i} · реальные данные организаторов · без обучения на объектах",
+           "foot": "{name} · кадр {i} · реальные данные организаторов · решает геометрия габарита",
            "inset": "крупно: {n} точек, высота {h} м"},
     "en": {"stop": "STOP", "obstacle": "obstacle at {d} m", "go": "GO", "clear": "estimated monitored range {d:.0f} m",
            "caution": "CAUTION", "fault": "FAULT", "untrusted": "input not trusted",
            "label": "OBSTACLE · {d} m", "envelope": "train envelope 2.1 × 3.0 m",
-           "foot": "{name} · frame {i} · the organizers' real data · no object training",
+           "foot": "{name} · frame {i} · the organizers' real data · the envelope's geometry decides",
            "inset": "close-up: {n} points, {h} m tall"},
 }
 
