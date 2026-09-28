@@ -4,6 +4,16 @@
 есть `foxglove_bridge`, а зрители открывают готовую раскладку в своём Foxglove (настольное
 приложение или [app.foxglove.dev](https://app.foxglove.dev)).
 
+```mermaid
+flowchart LR
+    subgraph DEMO["демонстрационная машина"]
+        PLAY["плеер<br/>ros2 bag play"] -- "PointCloud2" --> NODE["нода ReSense"]
+        NODE --> BR["foxglove_bridge<br/>порт 8765"]
+    end
+    BR -- "ws://хост:8765" --> V1["ноутбук зрителя<br/>Foxglove + web/foxglove_layout.json"]
+    BR -- "ws://хост:8765" --> V2["ещё один ноутбук зрителя"]
+```
+
 ## На демонстрационной машине
 
 Бэги лежат в `$RESENSE_DATA` (по умолчанию `/data/for_hackathon`):

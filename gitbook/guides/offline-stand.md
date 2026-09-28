@@ -11,6 +11,18 @@ apt и PyPI нужна сеть), поэтому образ переноситс
 | веб-дашборд | нет (шрифты и `roslib` входят в комплект) |
 | настольное приложение Foxglove на ноутбуке зрителя | нет |
 
+```mermaid
+flowchart LR
+    subgraph NET["машина с интернетом"]
+        EXP["scripts/export_image.sh<br/>или артефакт CI"]
+    end
+    EXP --> ARCH[("архив образа<br/>.tar.gz + .sha256")]
+    ARCH -- "копирование на стенд" --> LOAD
+    subgraph STAND["стенд без интернета"]
+        LOAD["scripts/load_image.sh<br/>контрольная сумма · docker load · проверка"] --> RUN["нода и плеер<br/>или scripts/play_bag.sh"]
+    end
+```
+
 ## Подготовка (на машине с интернетом)
 
 ```bash

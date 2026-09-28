@@ -1,5 +1,17 @@
 # Топики и JSON статуса
 
+```mermaid
+flowchart LR
+    PC["PointCloud2<br/>input_topic или auto_discover"] --> N["нода resense_detector"]
+    SP["speed_topic / odom_topic<br/>необязательно"] -.-> N
+    N -- "1" --> A["ответ<br/>obstacle_detected · nearest_distance<br/>decision · clear_distance · warning"]
+    N -- "2" --> S["/resense/status<br/>JSON всего кадра"]
+    N -- "3" --> V["визуализация<br/>detections · markers · corridor_points"]
+    N --> H["/resense/health<br/>latency_ms · fps · /tf_static"]
+```
+
+Цифры на стрелках — порядок публикации в каждом кадре.
+
 ## Публикуемые топики
 
 | топик | тип | значение |

@@ -5,6 +5,23 @@
 настройками, записывает поток статуса и проверяет результат через `scripts/check_dry_run.py`. Код
 выхода 0 — пройдено, 1 — не выполнен какой-то критерий, 3 — нет Docker или нода не запустилась.
 
+```mermaid
+sequenceDiagram
+    participant S as scripts/dry_run.sh
+    participant N as нода в Docker
+    participant P as плеер
+    participant C as check_dry_run.py
+    S->>S: сборка образа без кэша или загрузка архива
+    S->>N: запуск ноды, freshness_mode:=replay
+    N-->>S: топик /resense/status объявлен
+    S->>S: запись /resense/status в out/dry_run/status.jsonl
+    S->>P: ros2 bag play, read-ahead 10
+    P->>N: PointCloud2
+    N-->>S: покадровый JSON статуса
+    S->>C: status.jsonl и критерии
+    C-->>S: код выхода 0 — прошёл, 1 — критерий не выполнен
+```
+
 ## Два стандартных прогона
 
 ```bash

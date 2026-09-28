@@ -3,12 +3,14 @@
 В режиме ROS ReSense сам никогда не открывает файлы бэгов: нода подписывается на облака точек,
 которые публикует `ros2 bag play`, — точно так же, как подписалась бы на драйвер живого LiDAR.
 
-```text
-ros2 bag play <bag>  ──PointCloud2, 10 Hz──▶  resense_detector node (docker run --net=host … resense)
-                                                ├─▶ /resense/decision        GO / CAUTION / STOP / FAULT
-                                                ├─▶ /resense/nearest_distance, /resense/obstacle_detected
-                                                ├─▶ /resense/clear_distance, /resense/health
-                                                └─▶ /resense/detections, /resense/status (JSON), RViz markers
+```mermaid
+flowchart LR
+    BAG[("бэг ROS 2")] --> PLAY["ros2 bag play"]
+    PLAY -- "PointCloud2, 10 Гц" --> NODE["нода resense_detector<br/>docker run --net=host … resense"]
+    NODE --> DEC["/resense/decision<br/>GO / CAUTION / STOP / FAULT"]
+    NODE --> DIST["/resense/nearest_distance<br/>/resense/obstacle_detected"]
+    NODE --> CLR["/resense/clear_distance<br/>/resense/health"]
+    NODE --> VIS["/resense/detections<br/>/resense/status (JSON)<br/>маркеры RViz"]
 ```
 
 ## Одной командой

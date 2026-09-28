@@ -2,6 +2,24 @@
 
 Есть три способа — в зависимости от того, есть ли на машине интернет.
 
+```mermaid
+flowchart LR
+    subgraph NET["машина с интернетом"]
+        BUILD["docker build<br/>scripts/build.sh"]
+        EXP["scripts/export_image.sh"]
+        CI["артефакт CI<br/>зелёный push в main"]
+        REL["релиз GitHub<br/>scripts/verify_release.sh"]
+    end
+    ARCH[("архив образа<br/>resense-image-*.tar.gz + .sha256")]
+    IMG["образ resense:latest"]
+    EXP --> ARCH
+    CI --> ARCH
+    REL --> ARCH
+    ARCH -- "1 · docker load<br/>scripts/load_image.sh" --> IMG
+    BUILD -- "2 · сборка" --> IMG
+    ARCH -. "3 · пересборка из кэша архива<br/>без интернета" .-> IMG
+```
+
 ## 1. Загрузить готовый архив (интернет не нужен)
 
 На стенде организаторов нет интернета, поэтому образ поставляется одним gzip-архивом, рядом с

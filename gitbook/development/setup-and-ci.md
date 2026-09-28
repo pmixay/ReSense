@@ -44,6 +44,16 @@ docker run --rm resense bash -lc "python3 scripts/make_smoke_bag.py /tmp/b && sc
 [`release.yml`](https://github.com/pmixay/ReSense/blob/main/.github/workflows/release.yml) публикует
 архив образа как релиз GitHub при пуше тега `v1.0.0-rcN` / `v1.0.0`.
 
+```mermaid
+flowchart LR
+    PUSH["push"] --> CHK["этап 1 · checks<br/>ruff · копия параметров · печать детектора"]
+    CHK --> PT["этап 2 · pytest<br/>набор тестов и тесты дашборда"]
+    CHK --> DK["этап 2 · docker<br/>образ с инструментами, все пути жюри"]
+    CHK --> OB["этап 2 · offline-build<br/>архив, пересборка без интернета"]
+    OB -- "на main" --> ART[("артефакт<br/>resense-image-*")]
+    TAG["тег v1.0.0-rcN / v1.0.0"] --> REL["release.yml<br/>релиз GitHub с архивом"]
+```
+
 ## Правила репозитория
 
 * `main` меняется только через pull request с зелёным CI; вливает капитан.
