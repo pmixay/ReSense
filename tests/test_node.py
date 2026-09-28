@@ -93,8 +93,8 @@ class _Node:
     def get_parameter(self, name):
         return _Param(self._params[name])
 
-    def create_subscription(self, msg_type, topic, cb, qos):
-        return types.SimpleNamespace(topic=topic, cb=cb, qos=qos)
+    def create_subscription(self, msg_type, topic, cb, qos, raw=False):
+        return types.SimpleNamespace(topic=topic, cb=cb, qos=qos, raw=raw)
 
     def destroy_subscription(self, sub):
         pass
@@ -144,10 +144,12 @@ def _stub_modules():
             return sub.callback(msg)
     rclpy.executors = mod("rclpy.executors", SingleThreadedExecutor=Executor,
                          await_or_execute=await_or_execute)
+    rclpy.serialization = mod("rclpy.serialization", deserialize_message=lambda raw, t: ("converted", len(raw)))
     rclpy.qos = mod("rclpy.qos", QoSProfile=lambda **kw: kw,
                     QoSReliabilityPolicy=types.SimpleNamespace(RELIABLE=1, BEST_EFFORT=2),
                     QoSHistoryPolicy=types.SimpleNamespace(KEEP_LAST=1))
     mod("geometry_msgs"), mod("geometry_msgs.msg", Point=_msg("Point"), TransformStamped=_msg("TransformStamped"))
+    mod("builtin_interfaces"), mod("builtin_interfaces.msg", Time=_msg("Time"))
     mod("nav_msgs"), mod("nav_msgs.msg", Odometry=_msg("Odometry"))
     mod("sensor_msgs"), mod("sensor_msgs.msg", PointCloud2=_msg("PointCloud2", ["fields"]),
                             PointField=_msg("PointField", FLOAT32=7, UINT16=4))
@@ -200,7 +202,7 @@ def _cloud(xyz_vehicle: np.ndarray, stamp: float, M: np.ndarray = None, frame_id
               for n, o, t in (("x", 0, 7), ("y", 4, 7), ("z", 8, 7), ("intensity", 12, 7), ("ring", 16, 4))]
     header = _Msg(frame_id=frame_id, stamp=_Msg(sec=int(stamp), nanosec=int((stamp % 1) * 1e9)))
     return _Msg(header=header, height=1, width=xyz_s.shape[0], fields=fields, is_bigendian=False,
-                point_step=18, row_step=18 * xyz_s.shape[0], data=data.tobytes()), R
+                point_step=18, row_step=18 * xyz_s.shape[0], data=data.tobytes(), is_dense=False), R
 
 
 def _feed(node, xyz, n, M=None, t0=0.0, topic="/lidar_points", frame_id="hesai_lidar"):
@@ -1074,3 +1076,86 @@ def test_result_carries_evaluation_clock_and_configured_expiry_for_consumers(fre
     remaining = f["max_result_age_s"] - max(0, f["source_age_s"], f["residence_age_s"])
     assert remaining == pytest.approx(0.4)
     assert f["evaluated_at_utc_s"] + remaining < clock["wall"] + 0.5
+
+
+# ---------------------------------------------------------------------------
+# 28.09: the input read from its serialized bytes, the publishing order, launch arguments
+
+_VOLATILE = {"timing_ms", "node", "freshness"}
+
+
+def _frames(node):
+    return [json.loads(m.data) for m in node.published["/resense/status"]]
+
+
+def _stable(status):
+    out = {k: v for k, v in status.items() if k not in _VOLATILE}
+    out["health"] = {k: v for k, v in status["health"].items() if "latency" not in k and k != "messages"}
+    return out
+
+
+def test_raw_cdr_input_gives_the_same_results_as_messages(node_cls, tunnel, box_scene):
+    """The raw subscription's bytes (``resense_ros/fastcloud.py``) and rclpy's message of the same
+    cloud give the same decision, distances, objects, track model and health on every frame."""
+    from test_fastcloud import _cdr
+    for scene in (tunnel[0].xyz, box_scene[0].xyz):
+        by_msg, by_raw = node_cls(), node_cls()
+        for k in range(7):
+            msg, _ = _cloud(scene, 0.1 * k)
+            by_msg.on_cloud(msg, "/lidar_points", {"source_timestamp": time.time_ns()})
+            by_raw.on_cloud(_cdr(msg), "/lidar_points", {"source_timestamp": time.time_ns()})
+        a, b = _frames(by_msg), _frames(by_raw)
+        assert len(a) == len(b) == 7
+        assert [_stable(x) for x in a] == [_stable(x) for x in b]
+    assert b[-1]["decision"] == "STOP" and 38.0 < b[-1]["nearest_distance"] < 42.0
+    assert by_raw.published["/resense/detections"][-1].header.stamp.sec == 0     # a real Header was made
+    assert {"decode_ms", "detect_ms", "cpu_cores", "rss_peak_mb"} <= set(b[-1]["node"])
+    assert b[-1]["node"]["latency_ms"] >= b[-1]["node"]["detect_ms"] > 0
+
+
+def test_input_is_subscribed_raw_unless_disabled_and_bad_bytes_fall_back(node_cls):
+    node = node_cls()
+    assert all(sub.raw is True for sub in node.subs.values())
+    assert node.as_cloud(b"\x00\x02\x00\x00not cdr") == ("converted", 11)      # rclpy's conversion instead
+    node.as_cloud(b"")
+    assert node.raw_fallbacks == 2 and sum("not read from its bytes" in s for _, s in node.get_logger().lines) == 1
+    msg = object()
+    assert node.as_cloud(msg) is msg
+    _Node.overrides = {"raw_input": False}
+    assert all(sub.raw is False for sub in node_cls().subs.values())
+
+
+def test_decision_goes_out_before_the_json_and_visualisation_only_for_subscribers(node_cls, box_scene):
+    node = node_cls()
+    order = []
+    for attr in ("pub_decision", "pub_dist", "pub_status", "pub_markers", "pub_corridor"):
+        pub = getattr(node, attr)
+        pub.publish = (lambda m, a=attr, p=pub.publish: (order.append(a), p(m)))
+    node.pub_markers.get_subscription_count = lambda: 0
+    node.pub_corridor.get_subscription_count = lambda: 0
+    _feed(node, box_scene[0].xyz, 3)
+    assert order.index("pub_dist") < order.index("pub_decision") < order.index("pub_status")
+    assert "pub_markers" not in order and "pub_corridor" not in order
+    node.pub_markers.get_subscription_count = lambda: 1           # RViz / Foxglove connects
+    node.pub_corridor.get_subscription_count = lambda: 2
+    _feed(node, box_scene[0].xyz, 1, t0=0.3)
+    assert order[-2:] == ["pub_markers", "pub_corridor"]
+    edge = node.published["/resense/markers"][-1].markers[-3]
+    assert len(edge.points) == 60 and all(isinstance(p.x, float) for p in edge.points)
+
+
+def test_every_node_parameter_is_a_launch_argument_with_the_same_default(node_cls):
+    """README "Node parameters": every node parameter is a launch argument (``config_file`` is the
+    launch file's own), with the node's default."""
+    import ast
+    tree = ast.parse((NODE_PKG / "launch" / "detector.launch.py").read_text())
+    table = next(n.value for n in ast.walk(tree) if isinstance(n, ast.Assign)
+                 and any(getattr(t, "id", "") == "PARAMS" for t in n.targets))
+    launch = {k.value: (v.elts[0].value, v.elts[1].id) for k, v in zip(table.keys, table.values)}
+    node = node_cls()
+    declared = {k: v for k, v in node._params.items() if k != "config_file"}
+    assert set(declared) == set(launch)
+    cast = {"bool": lambda s: s.lower() == "true", "float": float, "int": int, "str": str}
+    for name, (default, typ) in launch.items():
+        if name != "freshness_mode":          # the stand-in node declares replay for the unit streams
+            assert cast[typ](default) == declared[name], name

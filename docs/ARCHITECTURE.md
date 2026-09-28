@@ -2,7 +2,8 @@
 
 > **Purpose:** components, data flow and real-time budget of ReSense (spec §5 "Архитектура").
 > **Audience:** jury, team · **Owner:** P1 · **Language:** EN, summary RU
-> **Last verified:** 2026-09-25, `8932f3a` (detector v0.6.3, node v0.6.4) · **Status:** current
+> **Last verified:** 2026-09-25, `8932f3a` (detector v0.6.3, node v0.6.4); the node's input path and
+> end-to-end latency 2026-09-28 ("Real-time budget") · **Status:** current
 
 **Кратко.** ROS 2-нода `resense_ros` принимает облако `PointCloud2` от `ros2 bag play` (любая из
 двух пар топик / frame id) и передаёт каждый кадр библиотеке `resense` (Python: numpy / scipy /
@@ -256,6 +257,20 @@ team before submission ([`organizers/answers.md`](organizers/answers.md) §6); t
 come from the team's own 8-core machine ([`CAPTAIN.md`](CAPTAIN.md) action 7). The table is the
 numpy path; the optional native kernels (next section) roughly halve it.
 
+**The node's own path and the end to end, 28.09** ([evidence](evidence/node_input_2026-09-28/README.md),
+EXPERIMENTS §3d). Per 360° frame the node used to pay rclpy's conversion of the 24 MB message into
+Python (12.5 ms median, 32 ms p95, before the callback; again for every queued frame that the
+start-up catch-up then skips), a masked decode (19 ms) and the RViz markers and corridor cloud
+(~8 ms, built whether anyone watched or not). It now takes the serialized bytes and reads them
+itself (`resense_ros/fastcloud.py`, 0.1 ms; the detector's input byte-identical on every frame
+of both original recordings), gathers the kept points once, publishes the decision first and
+builds the visualisation only for subscribers. Through ROS (4 vCPU, 2.1 GHz, the recording
+cached, two runs): the input's publication by the player → the result, p95 **93–97 ms** at 360°
+(120–127 before; 114 ms from a cold disk) and **57–61 ms** at 120° (68–76); decode 19 / 8 ms and detection 33 / 28 ms
+median; the node process at 0.72 / 0.46 cores, peak RSS 408–476 / 128 MB. The status `node` object
+reports `decode_ms`, `detect_ms`, `cpu_cores` and `rss_peak_mb` on every frame, and
+`scripts/check_dry_run.py` prints the end-to-end figures of any capture.
+
 ## Native kernels (optional, C++; 24.09)
 
 Most of a frame's time went into full-cloud numpy passes of the track stage and the corridor /
@@ -405,7 +420,7 @@ command, a `/resense/status` recorder, a uid-1000 player of the same image, `che
 --expect-obstacle --expect-inputs 2`. First green on `5a15c7c` (run 36122640174, 25.09): 78 status
 messages, 42 alarm frames at 44.9–59.9 m, p95 26 ms, both recordings, `PASS`.
 
-**Download from CI (26.09).** On a push to `claude/nifty-pascal-lzgl78` or `main` (not on other
+**Download from CI (26.09).** On a push to `main` or the working branch (`claude/amazing-fermi-t67v8g` since 28.09; not on other
 branches or tags), and only when every step of `offline-build` passed, the job uploads that very
 archive (`actions/upload-artifact@v4`, kept 30 days, stored as is: it is gzip already) as the run
 artifact `resense-image-<version>-<short commit>`: `resense-image-<version>-<short

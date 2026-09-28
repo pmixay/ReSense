@@ -16,6 +16,22 @@ frames, 13 km, no obstacles).
 
 ## Unreleased (further detector work authorized; package version 1.0.0)
 
+- **The node's input path and end-to-end latency (28.09, P1; detector unchanged):** the input
+  clouds are taken as serialized bytes (`raw_input`, default true) and read by
+  `resense_ros/fastcloud.py` instead of rclpy's message conversion (12.5 ms median, 32 ms p95 per
+  24 MB 360° cloud, paid again for every queued frame the start-up catch-up skips); the decode
+  gathers the kept points once; the decision topics go out before the status JSON; the RViz
+  markers and the corridor cloud are built only while something subscribes. The detector's input
+  is byte-identical on all 453 frames of both original recordings (`scripts/check_fast_input.py`,
+  now also in CI). Through ROS on a 4-vCPU 2.1 GHz sandbox, two runs each: end-to-end (the
+  player's publication → the result) p95 120–127 → **93–97 ms** at 360°, 68–76 → **57–61 ms** at
+  120°; the 360° start-up catch-up current within 5 s instead of +7.9–9.8 s. The status `node`
+  object adds `decode_ms`, `detect_ms`, `cpu_cores` (0.72 at 360°, 0.46 at 120°) and
+  `rss_peak_mb`; `check_dry_run.py` prints the end-to-end latency and CPU (`--max-p95-e2e`);
+  `play_bag.sh` waits for the node and the listener instead of fixed sleeps; CI runs the original
+  bags and uploads the image archive for the working branch too; a test pins every node
+  parameter to a launch argument with the same default
+  ([evidence](docs/evidence/node_input_2026-09-28/README.md), EXPERIMENTS §3d).
 - **CI in two stages, four jobs (28.09):** a push ran seven `ci.yml` jobs, and a push to `main`
   that touched the cold-bag pins also ran `dataset-cache.yml`. Now stage 1 `checks` (ruff, the
   parameter copy, the detector seal: the former `lint` and `params-in-sync`) gates stage 2:

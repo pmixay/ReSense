@@ -48,7 +48,7 @@ ros2 topic echo /resense/nearest_distance --field data   # 5. расстояни
 xhost +local:docker && docker run --rm -it --net=host --ipc=host -e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix resense ros2 launch resense_ros detector.launch.py rviz:=true freshness_mode:=replay
 ```
 
-**Где взять архив.** Архив коммита ветки `claude/nifty-pascal-lzgl78` или `main` — артефакт CI:
+**Где взять архив.** Архив коммита `main` (или рабочей ветки `claude/amazing-fermi-t67v8g`) — артефакт CI:
 Actions → прогон `ci` этого коммита (задание `offline-build` зелёное) → Artifacts →
 `resense-image-<версия>-<коммит>` (zip с `.tar.gz` и `.sha256`, хранится 30 дней, нужен вход в
 GitHub; или `gh run download <id прогона> -n resense-image-<версия>-<коммит>`). Без CI его делает
@@ -289,7 +289,7 @@ Headline results (kinds and placement modes: [`docs/README.md`](docs/README.md) 
 | sensor limit | no return beyond 210 m in any of the 13 759 frames: 300 m is beyond this sensor | real | 24.09 | EXPERIMENTS §2d |
 | other mounts | upside down, `+x` forward, backwards found; tilt recovered to 0.0–0.5° on re-mounted frames of 3 recordings | real, re-mounted | 22–23.09 | EXPERIMENTS §6 |
 | offline timing per frame | **the 27.09 detector, re-measured: 18.0–22.9 ms mean, p95 22.7–32.6 ms**, max 57 ms, on set O and three 120° / 360° recordings (one core, C++ kernels, idle 4-vCPU sandbox); **worst stretch: ride frames 5700–5900 (a dense station scene) 57 ms mean, p95 111 ms, max 143 ms** (clustering; P3d similar); the node's path without ROS transport (decode of the organizers' PointCloud2 layout, crop, rotation, detector) p95 32–48 ms, peak RSS 161–248 MB ([QUALITY_CYCLE_2026-09-27](docs/QUALITY_CYCLE_2026-09-27.md) "Speed"); 26.09 with the C++ kernels: 22.7–30.7 ms mean, p95 32.8–42.1 ms on set O and the 120° / 360° recordings (one core, idle 4-core machine, the re-judgement of 26.09; the numpy path there 78.3 / 95.5 ms at 360°); 23.09 on the numpy path: 42–64 ms mean, p95 53–78 ms on every recording (health monitor not included: 7–14 ms more); 24.09 on another idle VM 36.5–52.2 / 50.3–67.1 ms; the optional C++ kernels: −38…−57 %, identical output; DBSCAN on cKDTree (25.09): −1.3…−2.6 ms more on the native path | timing: sandbox | 23–25.09, 27.09 | EXPERIMENTS §3, ARCHITECTURE "Native kernels" |
-| ROS node in Docker | 120°: 10 fps, p95 76 ms; 360°: 7–10 fps (the sandbox is at the frame period); ~100 % of one core, 186 MB (v0.6.3); v0.6.4 peak RSS 403–434 MB at 360° | timing: sandbox | 23–24.09 | EXPERIMENTS §3b |
+| ROS node in Docker, end to end | since 28.09 (input read from its serialized bytes, one-gather decode, visualisation only when watched): **input publication → result through DDS, p95 93–97 ms at 360°** with the recording cached (before: 120–127 ms; 114 ms from a cold disk, the CI runner's cold baseline 126), **57–61 ms at 120°** (68–76; cold 59), median 73–74 / 44–45 ms; decode + detect p95 70–75 / 48–52 ms; the start-up catch-up current within 5 s (before +7.9–9.8 s); node process **0.72 cores at 360°, 0.46 at 120°**, peak RSS 408–476 / 128 MB; the detector's input byte-identical on all 453 frames; 4-vCPU Xeon 2.1 GHz, both original recordings, two runs each. Before: 120°: 10 fps, p95 76 ms; 360°: 7–10 fps; ~100 % of one core, 186 MB (v0.6.3); v0.6.4 peak RSS 403–434 MB at 360° | timing: sandbox | 23–24.09, 28.09 | EXPERIMENTS §3b, §3d; [evidence](docs/evidence/node_input_2026-09-28/README.md) |
 
 Set F uses legacy placement, which can flatter curves and envelope edges: P4's paired rerun found
 0 matches beyond 100 m on seven curve / edge scenes in either mode, and on straight track a person
@@ -399,7 +399,10 @@ docker run --rm resense bash -lc "python3 scripts/make_smoke_bag.py /tmp/b && sc
   best-effort for a best-effort driver), `input_queue_depth` (40), `catchup_step` (0.3 s of
   recording between frames while frames wait; 0 = newest only), `catchup_max_lag` (5 s),
   `catchup_startup_max_lag` (20 s for the first catch-up of each recording; the entry window
-  expires after 1 s if no catch-up starts, and later stalls keep the 5 s bound);
+  expires after 1 s if no catch-up starts, and later stalls keep the 5 s bound), `raw_input`
+  (true: the clouds are read from their serialized bytes, ~12 ms median / ~30 ms p95 less per 24 MB
+  360° cloud than rclpy's conversion, the detector's input identical byte for byte; false = rclpy's
+  messages);
 * **mount**: `sensor_forward` / `sensor_left` / `sensor_up` (axis mapping, e.g. `+x`),
   `mount_roll_deg` / `mount_pitch_deg` / `mount_yaw_deg` (fixed tilt), `auto_calibrate` (true:
   orientation, roll and pitch from the rails and the bed, reported in `/resense/status` → `mount`);
@@ -535,9 +538,9 @@ in development). `scripts/bench_8core.sh` bundles the acceptance runs and the ti
 | `/resense/clear_distance` | `std_msgs/Float32` | estimated monitored range in m, capped at detected obstacles and eligible unconfirmed/advisory clusters; objects without such a cluster can be missed inside this range; 0 on a fault |
 | `/resense/health` | `diagnostic_msgs/DiagnosticArray` | OK / WARN / ERROR / STALE with messages and values: points, window dirt, blocked sectors, visibility, rail lock, latency p95, monitored range, mount calibration |
 | `/resense/detections` | `vision_msgs/Detection3DArray` | boxes in the sensor frame, `class_id` = `gauge_obstacle` / `warning_obstacle`, score = confidence |
-| `/resense/status` | `std_msgs/String` | JSON: full per-frame result (detections, track model, health, mount, per-stage timing) plus `node` = `{latency_ms, fps, frames, dropped_frames, catchup_skipped, catchup, input_period_ms, ego_speed_mps, ego_speed_source, input_topic, recording}` (`catchup_skipped`: the part of `dropped_frames` the node received and skipped while catching up; `catchup`: this frame was processed while behind) |
+| `/resense/status` | `std_msgs/String` | JSON: full per-frame result (detections, track model, health, mount, per-stage timing) plus `node` = `{latency_ms, fps, frames, dropped_frames, catchup_skipped, catchup, input_period_ms, ego_speed_mps, ego_speed_source, input_topic, recording, decode_ms, detect_ms, cpu_cores, rss_peak_mb}` (`catchup_skipped`: the part of `dropped_frames` the node received and skipped while catching up; `catchup`: this frame was processed while behind; since 28.09 `decode_ms` + `detect_ms` = `latency_ms`, `cpu_cores`: the node process's CPU time per wall second over the last `stats_period`, `rss_peak_mb`: its peak resident memory). The end-to-end latency of a result is `freshness.source_age_s` (input publication or acquisition → result) |
 | `/resense/latency_ms`, `/resense/fps` | `std_msgs/Float32` | per frame: decode + detect + publish, ms; frames processed per second, every `stats_period` s |
-| `/resense/markers`, `/resense/corridor_points` | `MarkerArray`, `PointCloud2` | RViz: boxes, labels, corridor outline, status text; points inside the corridor |
+| `/resense/markers`, `/resense/corridor_points` | `MarkerArray`, `PointCloud2` | RViz: boxes, labels, corridor outline, status text; points inside the corridor; built only while something subscribes (28.09) |
 | `/tf_static` | `tf2_msgs/TFMessage` | identity `resense_lidar` → the input cloud's `frame_id`, once per frame id |
 
 **Freshness and held STOP.** The default `freshness_mode:=live` compares the acquisition header

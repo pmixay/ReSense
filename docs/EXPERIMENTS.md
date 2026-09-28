@@ -3246,6 +3246,49 @@ The default 1,000-message read-ahead remains stale and is not claimed as support
 partial pending the captain's decision on the bounded-prefetch/prewarm procedure or a separately
 tested default change.
 
+### 3d. The node's input path and the end-to-end latency through ROS (28.09, P1)
+
+**Question.** The node's `latency_ms` (decode + detect) was 39 ms median at 360° on the CI runner,
+but the end-to-end latency of its current results (`freshness.source_age_s`: the player's
+publication → the result) was 92 ms median and **126 ms p95** (run 36319767736, both original
+recordings cold): above the 100 ms frame period. Where does the rest go, and what can the node
+itself remove without touching the sealed detector?
+
+**Measured (profile of the real node on `doubleT_obstacle`, in the image).** rclpy's conversion of
+the 24 MB message into Python costs 12.5 ms median / 32 ms p95 (paid by the executor before the
+callback, and for every queued frame the start-up catch-up then skips); the masked decode
+`pointcloud2_to_arrays` 19 ms; building the RViz markers and the corridor cloud ~8 ms per frame
+whether anything subscribes or not; the detector ~33 ms.
+
+**Change** (node only): the clouds are taken as serialized bytes and read by
+`resense_ros/fastcloud.py` (0.1 ms; `data` is a view of the bytes), decoded with one gather of the
+kept records, the decision topics published before the JSON, the visualisation built only for
+subscribers. Rejected on the way: a cache-sized chunked decode and an aligned uint16 view (no
+faster: the cost is numpy's unaligned strided access, not the cache).
+
+**Identity.** `scripts/check_fast_input.py`: 201 of 201 and 252 of 252 frames byte-identical
+(header, layout, payload, xyz / intensity / ring and counts), so the detector's output cannot
+change; `tests/test_fastcloud.py` covers rclpy's literal bytes, other layouts and malformed input.
+
+**Result** (4 vCPU Xeon 2.1 GHz, `scripts/dry_run.sh`, the recording cached, two runs per image,
+alternating):
+
+| | 360° before | 360° after | 120° before | 120° after |
+|---|---|---|---|---|
+| end to end, current results: median / p95 | 84–88 / 120–127 ms | 73–74 / **93–97 ms** | 46–59 / 68–76 ms | 44–45 / **57–61 ms** |
+| decode + detect p95 | 81–86 ms | 70–75 ms | 53–56 ms | 48–52 ms |
+| current results; start-up catch-up done | 103–122; +7.9–9.8 s | 179–180; within 5 s | 248–250 | 250 |
+| node CPU (median), peak RSS | – | 0.72 cores, 408–476 MB | – | 0.46 cores, 128 MB |
+
+Detections unchanged (STOP at 55.5–56.6 m, 0 alarm frames on the clear recording, 0 recording
+messages unprocessed after settle). From a cold disk (`scripts/p1_cold_bag_test.sh`, the page cache
+dropped, the final build): end to end p95 **114 ms** at 360° and **59 ms** at 120° (the player's
+240 MB/s disk reads delay the delivery; the node's own p95 stays 72 ms); the CI runner's cold
+baseline before the change was 126 / 49 ms. Raw captures and the checker outputs:
+[`evidence/node_input_2026-09-28/`](evidence/node_input_2026-09-28/README.md). **Not measured:** the
+organizers' 8-core i7-9700E (not open to the team); the ride's dense station stretch (frames
+5700–5900, detector p95 110 ms single-core) is the detector's clustering and is untouched here.
+
 ## 4. What we learned / hard cases
 
 1. **Sensor mounts differ between bags** (bed 1.5 m vs 2.0 m below the sensor, axis 0.05–0.25 m

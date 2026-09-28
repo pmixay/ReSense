@@ -1,0 +1,59 @@
+{
+ "results": [
+  {
+   "bag": "/data/doubleT_obstacle",
+   "frames": 201,
+   "points_per_frame": 921600,
+   "identical_frames": 201,
+   "mismatched_frames": [],
+   "rclpy_deserialize": {
+    "median_ms": 12.52,
+    "p95_ms": 32.36,
+    "max_ms": 97.81
+   },
+   "fastcloud_parse": {
+    "median_ms": 0.09,
+    "p95_ms": 1.87,
+    "max_ms": 3.58
+   },
+   "reference_decode": {
+    "median_ms": 19.17,
+    "p95_ms": 24.05,
+    "max_ms": 26.99
+   },
+   "fastcloud_decode": {
+    "median_ms": 18.08,
+    "p95_ms": 22.64,
+    "max_ms": 62.16
+   }
+  },
+  {
+   "bag": "/data/roundT_doubleT",
+   "frames": 252,
+   "points_per_frame": 307200,
+   "identical_frames": 252,
+   "mismatched_frames": [],
+   "rclpy_deserialize": {
+    "median_ms": 3.22,
+    "p95_ms": 4.4,
+    "max_ms": 11.27
+   },
+   "fastcloud_parse": {
+    "median_ms": 0.07,
+    "p95_ms": 0.13,
+    "max_ms": 0.24
+   },
+   "reference_decode": {
+    "median_ms": 7.16,
+    "p95_ms": 8.7,
+    "max_ms": 11.12
+   },
+   "fastcloud_decode": {
+    "median_ms": 5.76,
+    "p95_ms": 7.42,
+    "max_ms": 13.71
+   }
+  }
+ ],
+ "pass": true
+}

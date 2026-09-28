@@ -6,7 +6,20 @@
 > **Audience:** P1, team · **Owner:** P1 · **Language:** EN
 > **Last verified:** 2026-09-27, supported P1/P2 cold playback · **Status:** baseline sealed; final detector acceptance and publication on hold; earlier tables retain dated evidence
 
-## Current delegated work — 26.09 night
+## Current delegated work — 28.09
+
+**28.09, P1 lane (8.3 speed on the node side, CI, Docker, docs):** the node reads its input clouds
+from their serialized bytes (`resense_ros/fastcloud.py`; the detector's input byte-identical on all
+453 frames of both original recordings), decodes with one gather, publishes the decision first and
+builds the visualisation only for subscribers. End to end through ROS (player publication →
+result) p95 120–127 → 93–97 ms at 360° and 68–76 → 57–61 ms at 120° on a 4-vCPU sandbox; the node
+reports `decode_ms`, `detect_ms`, `cpu_cores` and `rss_peak_mb`; `play_bag.sh` waits for readiness;
+CI runs the original bags and uploads the image archive for this working branch
+([evidence](evidence/node_input_2026-09-28/README.md), EXPERIMENTS §3d). The detector seal is
+unchanged. The 27.09 independent score is 72/100 ([SCORECARD](SCORECARD.md)); the re-judgement of
+this pass is recorded there.
+
+## Delegated work — 26.09 night (dated)
 
 **27.09 integration:** the P1/P2 completion branch is integrated, with startup cadence,
 dashboard reconnect handling and remote-viewer checks. Completed experiment histories are
@@ -67,7 +80,7 @@ and six subtests. Its monitoring change still leaves 36 GO diagnostic overclaims
 detection recall. The public presentation retains the earlier dated detector evidence. The
 supplied names/nicks/school and four individual portraits are in a local private preview; city,
 team-formation details, group photo/contact details and human rehearsals remain pending. The
-current provisional independent aggregation is 64/100; the requested 75/100 is not established.
+independent aggregation of that night was 64/100 (72/100 after the 27.09 cycle, SCORECARD).
 Use the [independent scorecard](SCORECARD.md).
 Earlier tables below retain their dated evidence; this section and §4 govern current status.
 
@@ -223,7 +236,7 @@ not replace this later failure or establish acceptance of the current root image
   do not establish final detector acceptance.
 - [ ] Close the remaining detector quality gates, including the clear-bag failure, sustained
   detection, false alarms and monitored-range overclaims; independently rejudge any accepted
-  improvement. The current 64/100 does not meet the 75/100 target.
+  improvement. The 27.09 score, 72/100, does not meet the 75/100 target.
 - [ ] Publish an image/archive link and verify the public download logged out **only after new
   user authorization**. Publication and release tags remain prohibited; a CI artifact requires
   GitHub login and does not complete this item.

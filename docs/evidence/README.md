@@ -12,6 +12,11 @@ Every file here is the record of one run and is not rewritten: a new run gets a 
 in [`../archive/results/`](../archive/results/). `extended_dataset_intake.json` (the ride's
 per-file speeds and intake events) stays in `docs/` because scripts read it.
 
+The [28 September node input path](node_input_2026-09-28/README.md) holds the before / after
+dry runs of both original recordings through ROS (checker outputs, status captures, node logs),
+the end-to-end latency and CPU figures, and the frame-by-frame identity check of the detector's
+input (`fast_input.json`).
+
 The [27 September supported playback rerun](p1_p2_supported_playback_2026-09-27/README.md)
 preserves both cold original-bag status streams and node logs, source hashes, and the six-job CI
 receipt. A [later seven-job run](p1_p2_supported_playback_2026-09-27/cached_bags_run_36319767736/README.md)

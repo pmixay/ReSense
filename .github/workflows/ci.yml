@@ -79,7 +79,7 @@ jobs:
     env:
       # the working branch and main also run the remote-viewer check and the original-bag cold-start
       # regression (scripts/p1_cold_bag_test.sh keeps the same list)
-      FULL: ${{ github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/p1-p2-supported-playback-20260927' || github.ref == 'refs/heads/main' }}
+      FULL: ${{ github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/p1-p2-supported-playback-20260927' || github.ref == 'refs/heads/claude/amazing-fermi-t67v8g' || github.ref == 'refs/heads/main' }}
     steps:
       - uses: actions/checkout@v7
       - run: docker build -t resense:ci --build-arg WITH_TOOLS=1 -f docker/Dockerfile .
@@ -332,7 +332,7 @@ jobs:
       # runner's small disk.
       - name: the archive as a download, named after the commit (push to the working branch or main)
         id: artifact
-        if: ${{ success() && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/claude/nifty-pascal-lzgl78') }}
+        if: ${{ success() && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/amazing-fermi-t67v8g') }}
         run: |
           NAME="resense-image-$VER-${GITHUB_SHA::7}"
           mkdir -p /tmp/artifact
