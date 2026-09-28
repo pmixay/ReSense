@@ -1,0 +1,14 @@
+{
+  "schema": "resense-reserved-evaluation-authorization-v1",
+  "authorized_at_utc": "2026-09-28T18:27:51.057393+00:00",
+  "author": "root reviewer",
+  "action": "Generate reserved v2 once and evaluate the fixed baseline/candidate on identical saved clouds; no tuning on results.",
+  "freeze_file": "docs/evidence/cycle_2026-09-28/evaluation/reserved-v2-freeze.json",
+  "freeze_sha256": "4a8f84d3c0af76fe17edf2ca7c76d22881b3fe928e90c1d7ef102c0f0c5b445f",
+  "candidate_gate_file": "docs/evidence/cycle_2026-09-28/regression/candidate/gate.json",
+  "candidate_gate_sha256": "bb6b79b6ae95176b3ba40bd524c503a08c8c509408f2dba991761d16e7d8d619",
+  "candidate_commit": "ef1d8f50299d9ccbbf65fc4ad5519764615853f6",
+  "effective_config_sha256": "6a6e5d859a0c1a86adce91edf1e8a46cd35b4bee21c5876406f1071cf2eaa46f",
+  "full_gate_passed_without_waivers": true,
+  "limits": "Synthetic acceptance only; history stress, full image suite, original ROS replay and independent score review remain separate."
+}
