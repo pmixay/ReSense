@@ -14,7 +14,11 @@ the new source/config identities and full-gate/per-frame parity criteria before 
 The package-local native module was rebuilt and matches the accepted `b5a5c2dc...` binary.
 Combined-source focused checks pass: 48 tests in 0.52 seconds, lint and whitespace checks.
 [Preflight](combined_preflight.json) verifies the native module and source/config identities.
-Full-gate and runtime acceptance are pending. The original protocol,
+The [full native gate and parity comparison](default/README.md) now pass: all 208 metrics
+are unchanged; all 15,269 real-frame payloads match outside verified timing effects;
+all 30 set F cases and 3,060 actual rows match outside summary wall time.
+Quiet installed-image runtime acceptance remains pending. No new history replay is claimed.
+The original protocol,
 validation and microprobe below remain historical evidence for the earlier score source.
 
 Only `resense/health.py` changes production behavior: the blocked-sector histogram uses
@@ -35,7 +39,7 @@ included. Endpoint comparison keeps a one-element array operand, avoiding the pr
 rejected float32/scalar-float64 rounding error. That [failure](../continuity/runtime/prototype_failure.json)
 is retained and covered by a regression test.
 
-## Current evidence
+## Original preparation evidence
 
 [Validation record](validation.json): **48 focused tests passed** in 0.85 seconds, including
 150 complete health-state dictionary comparisons. Cases cover both floating precisions,
@@ -70,8 +74,9 @@ Effective configuration remains
 partial duration to the latency monitor. This candidate preserves that calculation.
 `node.detect_ms` measures the complete detector call; `node.latency_ms` measures decode plus
 detector before publication. The [runtime diagnosis](../continuity/runtime/README.md) records
-the discrepancy and the failed quiet positive runs. Full gate/history checks and quiet
-positive/clear ROS acceptance remain pending coordination by the parent agent.
+the discrepancy and the failed quiet positive runs. At that preparation stage, full gate/history checks and quiet
+positive/clear ROS acceptance were deferred. The combined-source gate result above supersedes
+that pending gate status; runtime acceptance remains separate.
 
 ## Reproduce the small probe
 
