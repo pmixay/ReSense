@@ -1,0 +1,245 @@
+#!/usr/bin/env python3
+"""Read-only observer for four preregistered failed Set F sequences."""
+import argparse
+import gzip
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import time
+
+import numpy as np
+import yaml
+
+
+def sha(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def simple(value):
+    if isinstance(value, np.ndarray):
+        return value.tolist()
+    if isinstance(value, np.generic):
+        return value.item()
+    if isinstance(value, (list, tuple)):
+        return [simple(v) for v in value]
+    if isinstance(value, dict):
+        return {str(k): simple(v) for k, v in value.items()}
+    return value
+
+
+def cluster(cl):
+    if cl is None:
+        return None
+    keys = ('n', 'n_raw', 'centroid', 'size', 'distance', 'lateral', 'height_min', 'height_max',
+            'score', 'zone', 'n_gauge', 'retro', 'reason', 'kind', 'rail_line', 'wall_kept',
+            'demoted', 'thin', 'weak', 'ring_count', 'low_height_weak')
+    return {k: simple(getattr(cl, k)) for k in keys}
+
+
+def snapshot(tracker, track):
+    data = {k: simple(v) for k, v in vars(track).items() if k not in ('last', 'low_clean', 'obs')}
+    data['last'] = cluster(track.last)
+    for prop in ('near_escalated', 'column_held', 'vote_zone', 'rule_zone', 'zone', 'escalated', 'hit_fraction'):
+        data[prop] = simple(getattr(track, prop))
+    data['near_current'] = tracker._near(track.last) if track.last is not None else False
+    data['approaching'] = tracker._approaching(track)
+    data['clean_gauge'] = tracker._clean_gauge(track)
+    data['qualifies'] = tracker._qualifies(track)
+    approach = np.asarray(track.approach[-max(2, int(tracker.cfg.approach_hits)):], dtype=float)
+    if len(approach) >= 2:
+        tt = approach[:, 0] - approach[:, 0].mean()
+        dd = approach[:, 1] - approach[:, 1].mean()
+        var = float((tt * tt).sum())
+        if var > 0:
+            slope = float((tt * dd).sum()) / var
+            data['approach_slope'] = slope
+            data['approach_rms'] = float(np.sqrt(np.mean((dd - slope * tt) ** 2)))
+    return data
+
+
+def branch(tracker, track):
+    if track.misses != 0 or track.last is None or not track.evidence_hist:
+        return 'missing_current_or_history'
+    source = track.evidence_hist[-1]
+    if track.near_escalated and tracker._near(track.last) and source in ('ordinary', 'off_gauge'):
+        return 'near_exception'
+    if track.last.zone != 'gauge':
+        return 'current_off_gauge'
+    if source in ('keep_thin', 'keep_low'):
+        return 'current_continuation'
+    approaching = tracker._approaching(track)
+    if source == 'far_thin' and not approaching:
+        return 'current_far_not_approaching'
+    eligible = sum(s == 'ordinary' or (s == 'far_thin' and approaching) for s in track.evidence_hist)
+    return 'eligible_pass' if eligible >= max(1, int(tracker.cfg.fresh_stop_evidence_min_hits)) else 'insufficient_eligible'
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--variant', choices=['baseline', 'candidate'], required=True)
+    ap.add_argument('--protocol', required=True)
+    ap.add_argument('--out', required=True)
+    args = ap.parse_args()
+    protocol = json.loads(Path(args.protocol).read_text())
+    variant = protocol['variants'][args.variant]
+    root = Path(variant['source_root'])
+    os.chdir(root)
+    sys.path.insert(0, str(root))
+    from scripts.detector_freeze import source_digest, source_hashes
+    from scripts import far_range_eval as far
+    from scripts.cache_io import cache_file_stem, cache_files, load_cache_stamps
+    from resense import _native
+    from resense.config import DetectorConfig
+    from resense.detector import Detector
+    from resense.tracking import Tracker
+    from resense.synthetic import OBJECT_CATALOGUE
+
+    config_raw = yaml.safe_load(Path(variant['config']).read_text())
+    cfg_dict = config_raw.get('resense', config_raw)
+    cfg = DetectorConfig.from_dict(cfg_dict)
+
+    def identity():
+        value = {
+            'commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip(),
+            'status': subprocess.check_output(['git', 'status', '--porcelain'], cwd=root, text=True),
+            'source_sha256': source_digest(source_hashes(root)),
+            'config_sha256': hashlib.sha256(json.dumps(cfg.to_dict(), sort_keys=True, separators=(',', ':')).encode()).hexdigest(),
+            'config_file_sha256': sha(variant['config']),
+            'native_sha256': sha(root / 'resense/_resense_native.so'),
+            'native_path': str(Path(_native.LIBRARY).resolve()),
+            'native_enabled': _native.enabled(),
+            'capture_sha256': sha(variant['capture']),
+            'observer_sha256': sha(__file__),
+            'protocol_sha256': sha(args.protocol),
+        }
+        for key in ('commit', 'source_sha256', 'config_sha256', 'config_file_sha256', 'capture_sha256'):
+            assert value[key] == variant[key], (key, value[key], variant[key])
+        assert value['status'] == '', value['status']
+        assert value['native_sha256'] == protocol['native_sha256']
+        assert value['native_path'] == str(root / 'resense/_resense_native.so')
+        assert value['native_enabled']
+        return value
+
+    output = Path(args.out)
+    output.mkdir(parents=True, exist_ok=False)
+    pre = identity()
+    (output / 'identity_pre.json').write_text(json.dumps(pre, indent=2)+'\n')
+    capture = json.loads(gzip.decompress(Path(variant['capture']).read_bytes()))
+    p = capture['parameters']
+    assert sha(variant['config']) == p['config_sha256']
+    speeds_path = root / 'docs/extended_dataset_intake.json'
+    assert sha(speeds_path) == p['speeds_sha256']
+    speeds_doc = json.loads(speeds_path.read_text())
+    speed_by_file = {f['n']: f.get('speed_tracks') or 0.0 for f in speeds_doc['files']}
+    stamps = load_cache_stamps(p['cache'])
+    allfiles = cache_files(p['cache'])
+    rng = np.random.default_rng(p['seed'])
+    lo, hi = map(float, p['lateral_range'].split(':'))
+    jobs = []
+    for file_number in map(int, p['files'].split(',')):
+        start = next(i for i, f in enumerate(allfiles) if Path(f).name.startswith(f'new_data_{file_number}_'))
+        files = far.consecutive_files(allfiles, start, p['frames'])
+        speeds = [speed_by_file.get(int(Path(f).name.split('_')[2]), 0.0) for f in files]
+        for kind in p['kinds'].split(','):
+            sampled_refl = float(rng.uniform(*OBJECT_CATALOGUE[kind].reflectivity))
+            refl = p['reflectivity'] if p['reflectivity'] is not None else sampled_refl
+            lateral = float(rng.uniform(lo, hi))
+            seed = int(rng.integers(1 << 30))
+            jobs.append((files, stamps, speeds, kind, p['start_m'], lateral, refl, seed, cfg_dict,
+                         p['far_min_height'], p['given_speed'], p['place'], p['placement_mode'],
+                         p['reference'], p['perturbation']['lateral_m'], p['perturbation']['yaw_deg']))
+    selected_files = [Path(f).name for job in jobs for f in job[0]]
+    assert selected_files == p['cache_files']
+    # Match the original runner's historical stamp digest expression exactly.
+    selected_stamps = {os.path.splitext(f)[0]: stamps.get(os.path.splitext(f)[0]) for f in selected_files}
+    assert hashlib.sha256(json.dumps(selected_stamps, sort_keys=True).encode()).hexdigest() == p['selected_stamps_sha256']
+    allowed = {(s['kind'], s['file0']) for s in protocol['sequences']}
+    jobs = [j for j in jobs if (j[3], Path(j[0][0]).name) in allowed]
+    assert len(jobs) == 4
+    manifests = []
+    for j in jobs:
+        expected = next(s for s in capture['sequences'] if (s['kind'], s['file0']) == (j[3], Path(j[0][0]).name))
+        assert (j[5], j[6]) == (expected['lateral'], expected['refl'])
+        manifests.append({'kind': j[3], 'file0': Path(j[0][0]).name, 'seed': j[7],
+                          'files': [{'name': Path(f).name, 'sha256': sha(f),
+                                     'stamp': stamps.get(cache_file_stem(f)), 'speed': spd}
+                                    for f, spd in zip(j[0], j[2])]})
+    (output / 'input_manifest.json').write_text(json.dumps(manifests, indent=2)+'\n')
+
+    state = {'frames': [], 'current': None}
+    original_process = Detector.process
+    original_update = Tracker.update
+    original_note = Tracker._note
+    original_fresh = Tracker._fresh_stop_ok
+
+    def process(self, frame, *pos, **kw):
+        item = {'frame': frame.frame_id, 'stamp': frame.stamp, 'events': []}
+        state['current'] = item
+        result = original_process(self, frame, *pos, **kw)
+        item['detections'] = [{k: simple(v) for k, v in vars(d).items()} for d in result.detections]
+        item['advisories'] = [{k: simple(v) for k, v in vars(d).items()} for d in result.warnings]
+        item['tracks_final'] = [snapshot(self.tracker, t) for t in self.tracker.tracks]
+        state['frames'].append(item)
+        return result
+
+    def update(self, *pos, **kw):
+        item = state['current']
+        item['tracks_before_update'] = [snapshot(self, t) for t in self.tracks]
+        item['update_input'] = {'clusters': [cluster(c) for c in pos[0]],
+                                'thin': [cluster(c) for c in (kw.get('thin') or [])],
+                                'far_thin': [cluster(c) for c in (kw.get('far_thin') or [])],
+                                'scalars': {k: simple(v) for k, v in kw.items() if k not in ('thin', 'far_thin', 'low_height')}}
+        return original_update(self, *pos, **kw)
+
+    def note(self, track, cl, is_far, zw, source='ordinary'):
+        value = original_note(self, track, cl, is_far, zw, source)
+        state['current']['events'].append({'type': 'note', 'source_argument': source,
+                                           'normalized_source': 'off_gauge' if source == 'ordinary' and cl.zone != 'gauge' else source,
+                                           'track': snapshot(self, track)})
+        return value
+
+    def fresh(self, track):
+        before = snapshot(self, track)
+        value = original_fresh(self, track)
+        reason = branch(self, track)
+        assert bool(value) == (reason in ('near_exception', 'eligible_pass'))
+        state['current']['events'].append({'type': 'fresh', 'return': bool(value), 'branch': reason, 'track': before})
+        return value
+
+    Detector.process = process
+    Tracker.update = update
+    Tracker._note = note
+    Tracker._fresh_stop_ok = fresh
+    summary = {'variant': args.variant, 'sequences': [], 'started_unix': time.time(), 'diagnosis_only': True}
+    for job in jobs:
+        state['frames'] = []
+        key = (job[3], Path(job[0][0]).name)
+        expected = next(s for s in capture['sequences'] if (s['kind'], s['file0']) == key)
+        print('START', key, flush=True)
+        got = far.run_sequence(job)
+        label = key[0] + '_' + key[1].split('.')[0]
+        (output / (label + '_semantic.json')).write_text(json.dumps(got, indent=1)+'\n')
+        with gzip.open(output / (label + '_trace.json.gz'), 'wt') as fh:
+            json.dump(state['frames'], fh, separators=(',', ':'))
+        matched = got == expected
+        result = {'kind': key[0], 'file0': key[1], 'frames': len(got['rows']), 'full_semantic_match': matched,
+                  'changed_rows': [{'index': i, 'expected': a, 'observed': b} for i, (a, b) in enumerate(zip(expected['rows'], got['rows'])) if a != b]}
+        summary['sequences'].append(result)
+        (output / 'summary.json').write_text(json.dumps(summary, indent=2)+'\n')
+        print('FINISH', key, 'semantic_match', matched, 'frames', len(got['rows']), flush=True)
+        assert matched, key
+    post = identity()
+    assert pre == post
+    (output / 'identity_post.json').write_text(json.dumps(post, indent=2)+'\n')
+    summary['finished_unix'] = time.time()
+    summary['identity_unchanged'] = True
+    summary['passed_observer_parity'] = all(s['full_semantic_match'] for s in summary['sequences'])
+    (output / 'summary.json').write_text(json.dumps(summary, indent=2)+'\n')
+    print(json.dumps(summary), flush=True)
+
+
+if __name__ == '__main__':
+    main()

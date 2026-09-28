@@ -1,0 +1,2132 @@
+{
+ "kind": "person",
+ "d0": 220.0,
+ "lateral": -0.3127566684084574,
+ "refl": 49.35491537443417,
+ "first": 166.2778753377155,
+ "fp": 1,
+ "rows": [
+  {
+   "frame": "new_data_168_0000",
+   "d": 220.0,
+   "path_d": 220.0,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 220.0,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -3.43
+   },
+   "gt_vehicle_y_m": -4.765655167342148,
+   "axis_error_m": 0.0,
+   "n": 2,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 161.0,
+   "vis": 183.9
+  },
+  {
+   "frame": "new_data_168_0001",
+   "d": 218.0,
+   "path_d": 218.0,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 218.0495777242066,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -3.291
+   },
+   "gt_vehicle_y_m": -4.762036786787557,
+   "axis_error_m": 0.0,
+   "n": 2,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 162.3,
+   "vis": 162.3
+  },
+  {
+   "frame": "new_data_168_0002",
+   "d": 216.1,
+   "path_d": 216.1,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 216.1335465476002,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -3.732
+   },
+   "gt_vehicle_y_m": -4.433707366498896,
+   "axis_error_m": 0.0,
+   "n": 1,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 180.0,
+   "vis": 180.0
+  },
+  {
+   "frame": "new_data_168_0003",
+   "d": 214.2,
+   "path_d": 214.2,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 214.17835800238544,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -3.339
+   },
+   "gt_vehicle_y_m": -4.153637760929221,
+   "axis_error_m": 0.0,
+   "n": 0,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 175.1,
+   "vis": 175.1
+  },
+  {
+   "frame": "new_data_168_0004",
+   "d": 212.3,
+   "path_d": 212.3,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 212.26850836677187,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -3.449
+   },
+   "gt_vehicle_y_m": -3.8265776486899497,
+   "axis_error_m": 0.0,
+   "n": 0,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 173.2,
+   "vis": 173.2
+  },
+  {
+   "frame": "new_data_168_0005",
+   "d": 210.3,
+   "path_d": 210.3,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 210.34440101142368,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -3.532
+   },
+   "gt_vehicle_y_m": -3.7193138009439335,
+   "axis_error_m": 0.0,
+   "n": 2,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 174.3,
+   "vis": 174.3
+  },
+  {
+   "frame": "new_data_168_0006",
+   "d": 208.5,
+   "path_d": 208.5,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 208.48110467972745,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -3.252
+   },
+   "gt_vehicle_y_m": -3.2518729701014597,
+   "axis_error_m": 0.0,
+   "n": 1,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 166.9,
+   "vis": 166.9
+  },
+  {
+   "frame": "new_data_168_0007",
+   "d": 206.6,
+   "path_d": 206.6,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 206.55064686387627,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -2.746
+   },
+   "gt_vehicle_y_m": -2.974497207582514,
+   "axis_error_m": 0.0,
+   "n": 1,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 182.0,
+   "vis": 182.0
+  },
+  {
+   "frame": "new_data_168_0008",
+   "d": 204.7,
+   "path_d": 204.7,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 204.65141633044095,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -3.086
+   },
+   "gt_vehicle_y_m": -2.6740151462599058,
+   "axis_error_m": 0.0,
+   "n": 1,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 180.0,
+   "vis": 180.0
+  },
+  {
+   "frame": "new_data_168_0009",
+   "d": 202.7,
+   "path_d": 202.7,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 202.71029375848983,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -3.548
+   },
+   "gt_vehicle_y_m": -2.3012599810547782,
+   "axis_error_m": 0.0,
+   "n": 2,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 182.3,
+   "vis": 182.3
+  },
+  {
+   "frame": "new_data_168_0010",
+   "d": 200.7,
+   "path_d": 200.7,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 200.69466855178072,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -2.92
+   },
+   "gt_vehicle_y_m": -2.0861607424856317,
+   "axis_error_m": 0.0,
+   "n": 1,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 184.0,
+   "vis": 184.0
+  },
+  {
+   "frame": "new_data_168_0011",
+   "d": 198.8,
+   "path_d": 198.8,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 198.8210635645735,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -3.009
+   },
+   "gt_vehicle_y_m": -2.0678389524670813,
+   "axis_error_m": 0.0,
+   "n": 1,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 182.8,
+   "vis": 182.8
+  },
+  {
+   "frame": "new_data_168_0012",
+   "d": 196.9,
+   "path_d": 196.9,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 196.91719459269746,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -2.813
+   },
+   "gt_vehicle_y_m": -1.9505199226798604,
+   "axis_error_m": 0.0,
+   "n": 3,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 179.1,
+   "vis": 179.1
+  },
+  {
+   "frame": "new_data_168_0013",
+   "d": 195.0,
+   "path_d": 195.0,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 194.979993692617,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -3.721
+   },
+   "gt_vehicle_y_m": -1.8540253737790429,
+   "axis_error_m": 0.0,
+   "n": 0,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 177.1,
+   "vis": 177.1
+  },
+  {
+   "frame": "new_data_168_0014",
+   "d": 193.1,
+   "path_d": 193.1,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 193.13121530800885,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -3.262
+   },
+   "gt_vehicle_y_m": -1.699991675923342,
+   "axis_error_m": 0.0,
+   "n": 1,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 189.8,
+   "vis": 189.8
+  },
+  {
+   "frame": "new_data_168_0015",
+   "d": 191.2,
+   "path_d": 191.2,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 191.16095640325392,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -3.877
+   },
+   "gt_vehicle_y_m": -1.591738142105375,
+   "axis_error_m": 0.0,
+   "n": 1,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 180.5,
+   "vis": 180.5
+  },
+  {
+   "frame": "new_data_168_0016",
+   "d": 189.4,
+   "path_d": 189.4,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 189.37871404407397,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -3.157
+   },
+   "gt_vehicle_y_m": -1.351827067090512,
+   "axis_error_m": 0.0,
+   "n": 3,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 186.0,
+   "vis": 186.0
+  },
+  {
+   "frame": "new_data_168_0017",
+   "d": 187.4,
+   "path_d": 187.4,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 187.39157231908894,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -2.867
+   },
+   "gt_vehicle_y_m": -1.1512569595239874,
+   "axis_error_m": 0.0,
+   "n": 1,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 184.1,
+   "vis": 184.1
+  },
+  {
+   "frame": "new_data_168_0018",
+   "d": 185.4,
+   "path_d": 185.4,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 185.4361372426972,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -3.011
+   },
+   "gt_vehicle_y_m": -1.1032836822377436,
+   "axis_error_m": 0.0,
+   "n": 2,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 182.1,
+   "vis": 182.1
+  },
+  {
+   "frame": "new_data_168_0019",
+   "d": 183.6,
+   "path_d": 183.6,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 183.60980232597743,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -3.258
+   },
+   "gt_vehicle_y_m": -0.9113999959516161,
+   "axis_error_m": 0.0,
+   "n": 0,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 175.7,
+   "vis": 175.7
+  },
+  {
+   "frame": "new_data_168_0020",
+   "d": 181.6,
+   "path_d": 181.6,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 181.6435929240738,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -3.183
+   },
+   "gt_vehicle_y_m": -0.9393515109206988,
+   "axis_error_m": 0.0,
+   "n": 1,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 182.9,
+   "vis": 182.9
+  },
+  {
+   "frame": "new_data_168_0021",
+   "d": 179.8,
+   "path_d": 179.8,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 179.7636648687166,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -2.899
+   },
+   "gt_vehicle_y_m": -1.0070321302553844,
+   "axis_error_m": 0.0,
+   "n": 4,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 185.4,
+   "vis": 185.4
+  },
+  {
+   "frame": "new_data_168_0022",
+   "d": 177.7,
+   "path_d": 177.7,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 177.74290816121285,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -2.813
+   },
+   "gt_vehicle_y_m": -1.0564579929258837,
+   "axis_error_m": 0.0,
+   "n": 3,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 183.5,
+   "vis": 183.5
+  },
+  {
+   "frame": "new_data_168_0023",
+   "d": 175.8,
+   "path_d": 175.8,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 175.83310417952094,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -2.581
+   },
+   "gt_vehicle_y_m": -1.0347757377219287,
+   "axis_error_m": 0.0,
+   "n": 1,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 181.6,
+   "vis": 181.6
+  },
+  {
+   "frame": "new_data_168_0024",
+   "d": 174.0,
+   "path_d": 174.0,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 173.9816504751035,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -2.893
+   },
+   "gt_vehicle_y_m": -1.070504996529677,
+   "axis_error_m": 0.0,
+   "n": 2,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 179.7,
+   "vis": 179.7
+  },
+  {
+   "frame": "new_data_168_0025",
+   "d": 172.0,
+   "path_d": 172.0,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 172.01389797064772,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -2.669
+   },
+   "gt_vehicle_y_m": -1.0149816737138102,
+   "axis_error_m": 0.0,
+   "n": 2,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 177.7,
+   "vis": 177.7
+  },
+  {
+   "frame": "new_data_168_0026",
+   "d": 170.1,
+   "path_d": 170.1,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 170.07495765615198,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -2.049
+   },
+   "gt_vehicle_y_m": -0.9642531245248984,
+   "axis_error_m": 0.0,
+   "n": 4,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 175.8,
+   "vis": 175.8
+  },
+  {
+   "frame": "new_data_168_0027",
+   "d": 168.2,
+   "path_d": 168.2,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 168.15142097482453,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -2.161
+   },
+   "gt_vehicle_y_m": -0.9303089496178848,
+   "axis_error_m": 0.0,
+   "n": 5,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 181.7,
+   "vis": 181.7
+  },
+  {
+   "frame": "new_data_168_0028",
+   "d": 166.3,
+   "path_d": 166.3,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 166.2778753377155,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.941
+   },
+   "gt_vehicle_y_m": -0.7642189801988126,
+   "axis_error_m": 0.0,
+   "n": 3,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 172.0,
+   "vis": 172.0
+  },
+  {
+   "frame": "new_data_168_0029",
+   "d": 164.4,
+   "path_d": 164.4,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 164.36036953943943,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.94
+   },
+   "gt_vehicle_y_m": -0.6529483764221564,
+   "axis_error_m": 0.0,
+   "n": 4,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 170.1,
+   "vis": 170.1
+  },
+  {
+   "frame": "new_data_168_0030",
+   "d": 162.5,
+   "path_d": 162.5,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 162.49459419979704,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -2.02
+   },
+   "gt_vehicle_y_m": -0.6964761101697885,
+   "axis_error_m": 0.0,
+   "n": 1,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 168.3,
+   "vis": 168.3
+  },
+  {
+   "frame": "new_data_168_0031",
+   "d": 160.5,
+   "path_d": 160.5,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 160.51304051482327,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.919
+   },
+   "gt_vehicle_y_m": -0.8084304342017998,
+   "axis_error_m": 0.0,
+   "n": 3,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 171.1,
+   "vis": 171.1
+  },
+  {
+   "frame": "new_data_168_0032",
+   "d": 158.6,
+   "path_d": 158.6,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 158.61674096315858,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.638
+   },
+   "gt_vehicle_y_m": -0.8153008732596035,
+   "axis_error_m": 0.0,
+   "n": 1,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 164.4,
+   "vis": 164.4
+  },
+  {
+   "frame": "new_data_168_0033",
+   "d": 156.7,
+   "path_d": 156.7,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 156.6923231611431,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.899
+   },
+   "gt_vehicle_y_m": -0.8779361078574889,
+   "axis_error_m": 0.0,
+   "n": 3,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 166.9,
+   "vis": 166.9
+  },
+  {
+   "frame": "new_data_168_0034",
+   "d": 154.8,
+   "path_d": 154.8,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 154.76542178578927,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.767
+   },
+   "gt_vehicle_y_m": -0.9052733612371188,
+   "axis_error_m": 0.0,
+   "n": 4,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 176.3,
+   "vis": 176.3
+  },
+  {
+   "frame": "new_data_168_0035",
+   "d": 152.9,
+   "path_d": 152.9,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 152.8680265400047,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.681
+   },
+   "gt_vehicle_y_m": -1.050261657419303,
+   "axis_error_m": 0.0,
+   "n": 5,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 179.7,
+   "vis": 179.7
+  },
+  {
+   "frame": "new_data_168_0036",
+   "d": 151.0,
+   "path_d": 151.0,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 151.00566611370252,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.485
+   },
+   "gt_vehicle_y_m": -1.0806978591359648,
+   "axis_error_m": 0.0,
+   "n": 3,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 177.8,
+   "vis": 177.8
+  },
+  {
+   "frame": "new_data_168_0037",
+   "d": 149.0,
+   "path_d": 149.0,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 148.99436889876685,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.499
+   },
+   "gt_vehicle_y_m": -1.1040686430187152,
+   "axis_error_m": 0.0,
+   "n": 7,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 175.9,
+   "vis": 175.9
+  },
+  {
+   "frame": "new_data_168_0038",
+   "d": 147.1,
+   "path_d": 147.1,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 147.09536206954766,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.549
+   },
+   "gt_vehicle_y_m": -1.0435216661588678,
+   "axis_error_m": 0.0,
+   "n": 7,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 178.7,
+   "vis": 178.7
+  },
+  {
+   "frame": "new_data_168_0039",
+   "d": 145.3,
+   "path_d": 145.3,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 145.26939694959333,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.507
+   },
+   "gt_vehicle_y_m": -1.0156586001978036,
+   "axis_error_m": 0.0,
+   "n": 3,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 176.8,
+   "vis": 176.8
+  },
+  {
+   "frame": "new_data_168_0040",
+   "d": 143.2,
+   "path_d": 143.2,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 143.23750981598872,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.183
+   },
+   "gt_vehicle_y_m": -1.0086821251087679,
+   "axis_error_m": 0.0,
+   "n": 4,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 170.1,
+   "vis": 170.1
+  },
+  {
+   "frame": "new_data_168_0041",
+   "d": 141.4,
+   "path_d": 141.4,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 141.40894698789188,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.397
+   },
+   "gt_vehicle_y_m": -0.936556136104565,
+   "axis_error_m": 0.0,
+   "n": 5,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 179.6,
+   "vis": 179.6
+  },
+  {
+   "frame": "new_data_168_0042",
+   "d": 139.5,
+   "path_d": 139.5,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 139.4759325524277,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.515
+   },
+   "gt_vehicle_y_m": -0.9610785776862183,
+   "axis_error_m": 0.0,
+   "n": 6,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 167.7,
+   "vis": 167.7
+  },
+  {
+   "frame": "new_data_168_0043",
+   "d": 137.5,
+   "path_d": 137.5,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 137.53216205302027,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.313
+   },
+   "gt_vehicle_y_m": -0.957684755549691,
+   "axis_error_m": 0.0,
+   "n": 9,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 175.9,
+   "vis": 175.9
+  },
+  {
+   "frame": "new_data_168_0044",
+   "d": 135.7,
+   "path_d": 135.7,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 135.67034490838586,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.349
+   },
+   "gt_vehicle_y_m": -0.9608852474621445,
+   "axis_error_m": 0.0,
+   "n": 7,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 173.8,
+   "vis": 173.8
+  },
+  {
+   "frame": "new_data_168_0045",
+   "d": 133.8,
+   "path_d": 133.8,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 133.82644692800324,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.478
+   },
+   "gt_vehicle_y_m": -1.0406091710754724,
+   "axis_error_m": 0.0,
+   "n": 4,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 179.8,
+   "vis": 179.8
+  },
+  {
+   "frame": "new_data_168_0046",
+   "d": 131.8,
+   "path_d": 131.8,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 131.78268064398253,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.495
+   },
+   "gt_vehicle_y_m": -1.1310142697337748,
+   "axis_error_m": 0.0,
+   "n": 10,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 173.4,
+   "vis": 173.4
+  },
+  {
+   "frame": "new_data_168_0047",
+   "d": 129.9,
+   "path_d": 129.9,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 129.86867650149784,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.332
+   },
+   "gt_vehicle_y_m": -1.102728226347672,
+   "axis_error_m": 0.0,
+   "n": 4,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 168.4,
+   "vis": 168.4
+  },
+  {
+   "frame": "new_data_168_0048",
+   "d": 128.0,
+   "path_d": 128.0,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 128.04924902312533,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.265
+   },
+   "gt_vehicle_y_m": -1.0469284748572605,
+   "axis_error_m": 0.0,
+   "n": 5,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 166.5,
+   "vis": 166.5
+  },
+  {
+   "frame": "new_data_168_0049",
+   "d": 125.8,
+   "path_d": 125.8,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 125.82835008845352,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.392
+   },
+   "gt_vehicle_y_m": -0.9527496566024336,
+   "axis_error_m": 0.0,
+   "n": 6,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 172.2,
+   "vis": 172.2
+  },
+  {
+   "frame": "new_data_168_0050",
+   "d": 124.2,
+   "path_d": 124.2,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 124.16955136805176,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.59
+   },
+   "gt_vehicle_y_m": -0.8828953973371575,
+   "axis_error_m": 0.0,
+   "n": 8,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 162.4,
+   "vis": 162.4
+  },
+  {
+   "frame": "new_data_169_0000",
+   "d": 122.3,
+   "path_d": 122.3,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 122.28420525306267,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.366
+   },
+   "gt_vehicle_y_m": -0.8464596398155025,
+   "axis_error_m": 0.0,
+   "n": 11,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 168.3,
+   "vis": 168.3
+  },
+  {
+   "frame": "new_data_169_0001",
+   "d": 120.4,
+   "path_d": 120.4,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 120.39542243468189,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.585
+   },
+   "gt_vehicle_y_m": -0.8499453454957702,
+   "axis_error_m": 0.0,
+   "n": 11,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 173.7,
+   "vis": 173.7
+  },
+  {
+   "frame": "new_data_169_0002",
+   "d": 118.4,
+   "path_d": 118.4,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 118.38544190817295,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.573
+   },
+   "gt_vehicle_y_m": -0.8368173318149909,
+   "axis_error_m": 0.0,
+   "n": 11,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 179.5,
+   "vis": 179.5
+  },
+  {
+   "frame": "new_data_169_0003",
+   "d": 116.5,
+   "path_d": 116.5,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 116.48458244983634,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.644
+   },
+   "gt_vehicle_y_m": -0.8441577848799507,
+   "axis_error_m": 0.0,
+   "n": 11,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 180.0,
+   "vis": 180.0
+  },
+  {
+   "frame": "new_data_169_0004",
+   "d": 114.4,
+   "path_d": 114.4,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 114.430879164156,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.519
+   },
+   "gt_vehicle_y_m": -0.7946626315184144,
+   "axis_error_m": 0.0,
+   "n": 11,
+   "hit": true,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 178.3,
+   "vis": 178.3
+  },
+  {
+   "frame": "new_data_169_0005",
+   "d": 112.6,
+   "path_d": 112.6,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 112.62458640395376,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.662
+   },
+   "gt_vehicle_y_m": -0.7814124756434684,
+   "axis_error_m": 0.0,
+   "n": 11,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 178.4,
+   "vis": 178.4
+  },
+  {
+   "frame": "new_data_169_0006",
+   "d": 110.6,
+   "path_d": 110.6,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 110.63608871493463,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.66
+   },
+   "gt_vehicle_y_m": -0.7645183758901056,
+   "axis_error_m": 0.0,
+   "n": 10,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 168.9,
+   "vis": 168.9
+  },
+  {
+   "frame": "new_data_169_0007",
+   "d": 108.8,
+   "path_d": 108.8,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 108.8067255346344,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -2.166
+   },
+   "gt_vehicle_y_m": -0.7608675783490737,
+   "axis_error_m": 0.0,
+   "n": 11,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 175.0,
+   "vis": 175.0
+  },
+  {
+   "frame": "new_data_169_0008",
+   "d": 106.9,
+   "path_d": 106.9,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 106.92378373550277,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.856
+   },
+   "gt_vehicle_y_m": -0.7455022622935894,
+   "axis_error_m": 0.0,
+   "n": 17,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 181.3,
+   "vis": 181.3
+  },
+  {
+   "frame": "new_data_169_0009",
+   "d": 104.9,
+   "path_d": 104.9,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 104.94398104371628,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.791
+   },
+   "gt_vehicle_y_m": -0.708690212564627,
+   "axis_error_m": 0.0,
+   "n": 16,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 171.2,
+   "vis": 171.2
+  },
+  {
+   "frame": "new_data_169_0010",
+   "d": 103.0,
+   "path_d": 103.0,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 103.03581687002644,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.944
+   },
+   "gt_vehicle_y_m": -0.6895321395011649,
+   "axis_error_m": 0.0,
+   "n": 17,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 171.7,
+   "vis": 171.7
+  },
+  {
+   "frame": "new_data_169_0011",
+   "d": 101.1,
+   "path_d": 101.1,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 101.07250943684222,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.87
+   },
+   "gt_vehicle_y_m": -0.713216549781603,
+   "axis_error_m": 0.0,
+   "n": 16,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 173.0,
+   "vis": 194.2
+  },
+  {
+   "frame": "new_data_169_0012",
+   "d": 98.9,
+   "path_d": 98.9,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 98.85371591346781,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.926
+   },
+   "gt_vehicle_y_m": -0.7297425355989484,
+   "axis_error_m": 0.0,
+   "n": 17,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 193.3,
+   "vis": 193.3
+  },
+  {
+   "frame": "new_data_169_0013",
+   "d": 97.2,
+   "path_d": 97.2,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 97.21884077944715,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.892
+   },
+   "gt_vehicle_y_m": -0.699827340849684,
+   "axis_error_m": 0.0,
+   "n": 18,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 196.5,
+   "vis": 196.5
+  },
+  {
+   "frame": "new_data_169_0014",
+   "d": 95.3,
+   "path_d": 95.3,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 95.3101030571272,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.826
+   },
+   "gt_vehicle_y_m": -0.6969058122177603,
+   "axis_error_m": 0.0,
+   "n": 19,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 194.6,
+   "vis": 194.6
+  },
+  {
+   "frame": "new_data_169_0015",
+   "d": 29.9,
+   "path_d": 29.9,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 29.86239545977614,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.782
+   },
+   "gt_vehicle_y_m": -0.45277430496927196,
+   "axis_error_m": 0.0,
+   "n": 200,
+   "hit": false,
+   "fp_dets": [
+    [
+     93.4,
+     -0.27,
+     [
+      0.25,
+      0.33,
+      1.02
+     ],
+     ""
+    ]
+   ],
+   "cand": true,
+   "mon": 145.5,
+   "vis": 145.5
+  },
+  {
+   "frame": "new_data_169_0016",
+   "d": 28.0,
+   "path_d": 28.0,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 27.96615650920378,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.769
+   },
+   "gt_vehicle_y_m": -0.45636985097320054,
+   "axis_error_m": 0.0,
+   "n": 209,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 146.6,
+   "vis": 146.6
+  },
+  {
+   "frame": "new_data_169_0017",
+   "d": 26.0,
+   "path_d": 26.0,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 26.021624763975222,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.782
+   },
+   "gt_vehicle_y_m": -0.42815579423541184,
+   "axis_error_m": 0.0,
+   "n": 248,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 148.6,
+   "vis": 148.6
+  },
+  {
+   "frame": "new_data_169_0018",
+   "d": 23.9,
+   "path_d": 23.9,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 23.900118853436474,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.759
+   },
+   "gt_vehicle_y_m": -0.4193253948050639,
+   "axis_error_m": 0.0,
+   "n": 268,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 146.9,
+   "vis": 146.9
+  },
+  {
+   "frame": "new_data_169_0019",
+   "d": 22.1,
+   "path_d": 22.1,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 22.1407928434576,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.743
+   },
+   "gt_vehicle_y_m": -0.4045486313466041,
+   "axis_error_m": 0.0,
+   "n": 348,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 146.6,
+   "vis": 146.6
+  },
+  {
+   "frame": "new_data_169_0020",
+   "d": 20.2,
+   "path_d": 20.2,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 20.207819250223242,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.719
+   },
+   "gt_vehicle_y_m": -0.4009161383330688,
+   "axis_error_m": 0.0,
+   "n": 407,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 147.2,
+   "vis": 147.2
+  },
+  {
+   "frame": "new_data_169_0021",
+   "d": 18.3,
+   "path_d": 18.3,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 18.29386911795274,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.7
+   },
+   "gt_vehicle_y_m": -0.4109380023611376,
+   "axis_error_m": 0.0,
+   "n": 517,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 144.4,
+   "vis": 144.4
+  },
+  {
+   "frame": "new_data_169_0022",
+   "d": 16.4,
+   "path_d": 16.4,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 16.370242073194838,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.663
+   },
+   "gt_vehicle_y_m": -0.39242918556519446,
+   "axis_error_m": 0.0,
+   "n": 664,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 144.1,
+   "vis": 144.1
+  },
+  {
+   "frame": "new_data_169_0023",
+   "d": 14.5,
+   "path_d": 14.5,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 14.512990664303597,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.417
+   },
+   "gt_vehicle_y_m": -0.3885003890058341,
+   "axis_error_m": 0.0,
+   "n": 900,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 147.5,
+   "vis": 147.5
+  },
+  {
+   "frame": "new_data_169_0024",
+   "d": 12.6,
+   "path_d": 12.6,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 12.614668585106639,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.399
+   },
+   "gt_vehicle_y_m": -0.3874781776393894,
+   "axis_error_m": 0.0,
+   "n": 1179,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 144.1,
+   "vis": 144.1
+  },
+  {
+   "frame": "new_data_169_0025",
+   "d": 10.7,
+   "path_d": 10.7,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 10.679877989812056,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.653
+   },
+   "gt_vehicle_y_m": -0.38321003974611867,
+   "axis_error_m": 0.0,
+   "n": 1216,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 60.0,
+   "vis": 148.9
+  },
+  {
+   "frame": "new_data_169_0026",
+   "d": 8.8,
+   "path_d": 8.8,
+   "gt": {
+    "kind": "person",
+    "size": [
+     0.4,
+     0.5,
+     1.7
+    ],
+    "distance": 8.75321343150903,
+    "lateral": -0.3127566684084574,
+    "yaw_deg": 0.0,
+    "reflectivity": 49.35491537443417,
+    "label": "person",
+    "base_z": -1.626
+   },
+   "gt_vehicle_y_m": -0.4033919955593168,
+   "axis_error_m": 0.0,
+   "n": 1613,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 60.0,
+   "vis": 148.2
+  }
+ ],
+ "file0": "new_data_168_0000.npy.zst",
+ "placement_mode": "legacy",
+ "reference": null,
+ "perturbation": null,
+ "anchor_frame": null
+}

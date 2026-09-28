@@ -1,0 +1,29 @@
+{
+  "schema": "resense-main-sync-preflight-v1",
+  "commit": "75ef4e20e587203a394e365c4fa601c822adb164",
+  "observed_utc": "2026-09-28T20:16:56.849306+00:00",
+  "checks": [
+    {
+      "command": "docker exec -e PYTHONPATH=/workspace/ReSense-p3-sync -w /workspace/ReSense-p3-sync resense-cycle-dev python3 -m pytest -q tests/test_node.py tests/test_fastcloud.py",
+      "exit_code": 0,
+      "result": "123 passed in 8.89s"
+    },
+    {
+      "command": "python3 scripts/detector_freeze.py verify",
+      "exit_code": 0,
+      "files": 34,
+      "source_sha256": "c0273a13a67ab4872dab00154caa75f6b30f50416775062c591fbb47906a0fa4"
+    },
+    {
+      "command": "./scripts/sync_params.sh --check",
+      "exit_code": 0
+    },
+    {
+      "command": "docker exec -e PYTHONPATH=/workspace/ReSense-p3-sync -w /workspace/ReSense-p3-sync resense-cycle-dev python3 -m ruff check .",
+      "exit_code": 0,
+      "result": "All checks passed!"
+    }
+  ],
+  "communication": "https://github.com/pmixay/ReSense/pull/24#issuecomment-5877703539",
+  "ci": "https://github.com/pmixay/ReSense/actions/runs/36477865858"
+}

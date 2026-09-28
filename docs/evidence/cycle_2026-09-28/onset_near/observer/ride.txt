@@ -1,0 +1,5 @@
+START 4 268
+FINISH 4 parity True
+START 5 321
+FINISH 5 parity True
+{"started_unix": 1790627267.985958, "pieces": [{"chunk": 4, "frames": 268, "full_non_timing_semantic_parity": true, "differences": []}, {"chunk": 5, "frames": 321, "full_non_timing_semantic_parity": true, "differences": []}], "diagnosis_only": true, "finished_unix": 1790627310.7453299, "identity_unchanged": true, "passed_observer_parity": true}

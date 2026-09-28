@@ -17,8 +17,11 @@ training on obstacles. The answer is `/resense/decision` (`GO` / `CAUTION` / `ST
 This branch is `experiment/cross-ring-sparse-evidence`. It includes main `059948a`
 (documentation, faster decoding and node warm-up) plus validated low-object continuation
 and the [health histogram optimization](docs/evidence/cycle_2026-09-28/health_histogram/README.md).
-The detector's full default gate and source seal pass. Combined-node runtime validation is
-separate from the completed health comparison, which used the previous node.
+The detector's full default gate and source seal pass. The [combined-node validation](docs/evidence/cycle_2026-09-28/main_sync/README.md)
+at `75ef4e2` retained all 453 original frames; local processing p95 was 86.95 ms (positive)
+and 59.79 ms (clear), with zero clear-recording STOPs. Fresh person matches were 40/61,
+so startup availability remains a limitation. Its four CI jobs passed, but the cold positive
+recording played at 0.782x; separate warm full-rate gates are being added.
 Experimental keeps `catchup_startup_step:=0` (all input-period startup frames); main's
 0.2 s startup thinning remains available explicitly and requires separate recall acceptance.
 

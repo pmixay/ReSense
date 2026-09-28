@@ -1,0 +1,1454 @@
+{
+  "schema": "resense-onset-near-default-negative-frame-comparison-v1",
+  "passed": true,
+  "rows": [
+    {
+      "recording": "doubleT_platform",
+      "baseline_stop_frames": 2,
+      "candidate_stop_frames": 2,
+      "baseline_stop_events": 3,
+      "candidate_stop_events": 2,
+      "frames": 345,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [
+        {
+          "baseline_id": 47,
+          "candidate_id": 47
+        },
+        {
+          "baseline_id": 49,
+          "candidate_id": 49
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [
+        {
+          "frame": 36,
+          "baseline": [
+            {
+              "id": 47,
+              "zone": "gauge",
+              "distance": 34.79,
+              "lateral": -0.05,
+              "center": [
+                34.8,
+                -0.26,
+                -1.35
+              ],
+              "size": [
+                0.02,
+                0.36,
+                0.0
+              ],
+              "n_points": 5,
+              "confidence": 1.0,
+              "age": 6,
+              "height_min": 0.07,
+              "intensity": 1.3,
+              "reason": "",
+              "kind": "low"
+            },
+            {
+              "id": 46,
+              "zone": "gauge",
+              "distance": 36.26,
+              "lateral": 1.07,
+              "center": [
+                36.71,
+                0.86,
+                -1.13
+              ],
+              "size": [
+                1.1,
+                0.63,
+                0.38
+              ],
+              "n_points": 5,
+              "confidence": 0.95,
+              "age": 6,
+              "height_min": 0.15,
+              "intensity": 1.5,
+              "reason": "",
+              "kind": ""
+            },
+            {
+              "id": 49,
+              "zone": "gauge",
+              "distance": 38.11,
+              "lateral": -0.77,
+              "center": [
+                38.8,
+                -0.99,
+                -1.41
+              ],
+              "size": [
+                1.04,
+                0.26,
+                0.04
+              ],
+              "n_points": 3,
+              "confidence": 1.0,
+              "age": 6,
+              "height_min": 0.04,
+              "intensity": 3.0,
+              "reason": "",
+              "kind": "low"
+            }
+          ],
+          "candidate": [
+            {
+              "id": 47,
+              "zone": "gauge",
+              "distance": 34.79,
+              "lateral": -0.05,
+              "center": [
+                34.8,
+                -0.26,
+                -1.35
+              ],
+              "size": [
+                0.02,
+                0.36,
+                0.0
+              ],
+              "n_points": 5,
+              "confidence": 1.0,
+              "age": 6,
+              "height_min": 0.07,
+              "intensity": 1.3,
+              "reason": "",
+              "kind": "low"
+            },
+            {
+              "id": 49,
+              "zone": "gauge",
+              "distance": 38.11,
+              "lateral": -0.77,
+              "center": [
+                38.8,
+                -0.99,
+                -1.41
+              ],
+              "size": [
+                1.04,
+                0.26,
+                0.04
+              ],
+              "n_points": 3,
+              "confidence": 1.0,
+              "age": 6,
+              "height_min": 0.04,
+              "intensity": 3.0,
+              "reason": "",
+              "kind": "low"
+            }
+          ]
+        },
+        {
+          "frame": 37,
+          "baseline": [
+            {
+              "id": 47,
+              "zone": "gauge",
+              "distance": 35.5,
+              "lateral": -0.05,
+              "center": [
+                35.5,
+                0.09,
+                -1.33
+              ],
+              "size": [
+                0.02,
+                0.36,
+                0.0
+              ],
+              "n_points": 5,
+              "confidence": 0.75,
+              "age": 7,
+              "height_min": 0.07,
+              "intensity": 1.3,
+              "reason": "",
+              "kind": "low"
+            },
+            {
+              "id": 46,
+              "zone": "gauge",
+              "distance": 37.19,
+              "lateral": 1.07,
+              "center": [
+                37.64,
+                0.97,
+                -1.0
+              ],
+              "size": [
+                1.1,
+                0.63,
+                0.38
+              ],
+              "n_points": 5,
+              "confidence": 0.7,
+              "age": 7,
+              "height_min": 0.15,
+              "intensity": 1.5,
+              "reason": "",
+              "kind": ""
+            },
+            {
+              "id": 49,
+              "zone": "gauge",
+              "distance": 37.86,
+              "lateral": -0.77,
+              "center": [
+                38.55,
+                -1.69,
+                -1.4
+              ],
+              "size": [
+                1.04,
+                0.26,
+                0.04
+              ],
+              "n_points": 3,
+              "confidence": 0.75,
+              "age": 7,
+              "height_min": 0.04,
+              "intensity": 3.0,
+              "reason": "",
+              "kind": "low"
+            }
+          ],
+          "candidate": [
+            {
+              "id": 47,
+              "zone": "gauge",
+              "distance": 35.5,
+              "lateral": -0.05,
+              "center": [
+                35.5,
+                0.09,
+                -1.33
+              ],
+              "size": [
+                0.02,
+                0.36,
+                0.0
+              ],
+              "n_points": 5,
+              "confidence": 0.75,
+              "age": 7,
+              "height_min": 0.07,
+              "intensity": 1.3,
+              "reason": "",
+              "kind": "low"
+            },
+            {
+              "id": 49,
+              "zone": "gauge",
+              "distance": 37.86,
+              "lateral": -0.77,
+              "center": [
+                38.55,
+                -1.69,
+                -1.4
+              ],
+              "size": [
+                1.04,
+                0.26,
+                0.04
+              ],
+              "n_points": 3,
+              "confidence": 0.75,
+              "age": 7,
+              "height_min": 0.04,
+              "intensity": 3.0,
+              "reason": "",
+              "kind": "low"
+            }
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "recording": "roundT_doubleT",
+      "baseline_stop_frames": 0,
+      "candidate_stop_frames": 0,
+      "baseline_stop_events": 0,
+      "candidate_stop_events": 0,
+      "frames": 252,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "recording": "roundT_pressureGate_roundT",
+      "baseline_stop_frames": 0,
+      "candidate_stop_frames": 0,
+      "baseline_stop_events": 0,
+      "candidate_stop_events": 0,
+      "frames": 268,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "recording": "roundT_squareT_pressureGate_squareT",
+      "baseline_stop_frames": 0,
+      "candidate_stop_frames": 0,
+      "baseline_stop_events": 0,
+      "candidate_stop_events": 0,
+      "frames": 545,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "recording": "squareT_platform_squareT_switch",
+      "baseline_stop_frames": 38,
+      "candidate_stop_frames": 33,
+      "baseline_stop_events": 8,
+      "candidate_stop_events": 6,
+      "frames": 877,
+      "new_stop_frames": [],
+      "removed_stop_frames": [
+        490,
+        527,
+        528,
+        580,
+        644
+      ],
+      "matched_events": [
+        {
+          "baseline_id": 158,
+          "candidate_id": 158
+        },
+        {
+          "baseline_id": 218,
+          "candidate_id": 218
+        },
+        {
+          "baseline_id": 242,
+          "candidate_id": 242
+        },
+        {
+          "baseline_id": 287,
+          "candidate_id": 287
+        },
+        {
+          "baseline_id": 298,
+          "candidate_id": 298
+        },
+        {
+          "baseline_id": 314,
+          "candidate_id": 314
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [
+        {
+          "frame": 490,
+          "baseline": [
+            {
+              "id": 218,
+              "zone": "gauge",
+              "distance": 82.88,
+              "lateral": 1.02,
+              "center": [
+                84.21,
+                1.45,
+                -0.87
+              ],
+              "size": [
+                2.19,
+                0.4,
+                1.23
+              ],
+              "n_points": 6,
+              "confidence": 1.0,
+              "age": 59,
+              "height_min": 0.13,
+              "intensity": 14.8,
+              "reason": "",
+              "kind": ""
+            }
+          ],
+          "candidate": []
+        },
+        {
+          "frame": 527,
+          "baseline": [
+            {
+              "id": 218,
+              "zone": "gauge",
+              "distance": 82.92,
+              "lateral": 1.02,
+              "center": [
+                84.68,
+                1.4,
+                -0.95
+              ],
+              "size": [
+                2.14,
+                0.41,
+                1.25
+              ],
+              "n_points": 9,
+              "confidence": 0.6,
+              "age": 96,
+              "height_min": 0.25,
+              "intensity": 19.4,
+              "reason": "",
+              "kind": ""
+            }
+          ],
+          "candidate": []
+        },
+        {
+          "frame": 528,
+          "baseline": [
+            {
+              "id": 218,
+              "zone": "gauge",
+              "distance": 83.08,
+              "lateral": 1.02,
+              "center": [
+                84.84,
+                1.39,
+                -1.02
+              ],
+              "size": [
+                2.14,
+                0.41,
+                1.25
+              ],
+              "n_points": 9,
+              "confidence": 0.35,
+              "age": 97,
+              "height_min": 0.25,
+              "intensity": 19.4,
+              "reason": "",
+              "kind": ""
+            }
+          ],
+          "candidate": []
+        },
+        {
+          "frame": 580,
+          "baseline": [
+            {
+              "id": 271,
+              "zone": "gauge",
+              "distance": 147.46,
+              "lateral": -0.64,
+              "center": [
+                147.49,
+                1.44,
+                -1.28
+              ],
+              "size": [
+                0.06,
+                0.41,
+                0.38
+              ],
+              "n_points": 4,
+              "confidence": 1.0,
+              "age": 5,
+              "height_min": 0.27,
+              "intensity": 8.8,
+              "reason": "beyond_height_ref",
+              "kind": ""
+            }
+          ],
+          "candidate": []
+        },
+        {
+          "frame": 644,
+          "baseline": [
+            {
+              "id": 304,
+              "zone": "gauge",
+              "distance": 82.9,
+              "lateral": 0.97,
+              "center": [
+                84.43,
+                1.44,
+                -0.76
+              ],
+              "size": [
+                2.25,
+                0.44,
+                2.41
+              ],
+              "n_points": 11,
+              "confidence": 1.0,
+              "age": 6,
+              "height_min": 0.15,
+              "intensity": 15.8,
+              "reason": "column",
+              "kind": ""
+            }
+          ],
+          "candidate": []
+        }
+      ],
+      "passed": true
+    },
+    {
+      "recording": "new_data_0",
+      "baseline_stop_frames": 12,
+      "candidate_stop_frames": 12,
+      "baseline_stop_events": 2,
+      "candidate_stop_events": 2,
+      "frames": 1409,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [
+        {
+          "baseline_id": 3,
+          "candidate_id": 3
+        },
+        {
+          "baseline_id": 383,
+          "candidate_id": 383
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "recording": "new_data_1",
+      "baseline_stop_frames": 14,
+      "candidate_stop_frames": 14,
+      "baseline_stop_events": 9,
+      "candidate_stop_events": 8,
+      "frames": 1409,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [
+        {
+          "baseline_id": 74,
+          "candidate_id": 74
+        },
+        {
+          "baseline_id": 286,
+          "candidate_id": 286
+        },
+        {
+          "baseline_id": 292,
+          "candidate_id": 292
+        },
+        {
+          "baseline_id": 293,
+          "candidate_id": 293
+        },
+        {
+          "baseline_id": 298,
+          "candidate_id": 298
+        },
+        {
+          "baseline_id": 306,
+          "candidate_id": 306
+        },
+        {
+          "baseline_id": 310,
+          "candidate_id": 310
+        },
+        {
+          "baseline_id": 377,
+          "candidate_id": 377
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [
+        {
+          "frame": 1262,
+          "baseline": [
+            {
+              "id": 295,
+              "zone": "gauge",
+              "distance": 24.73,
+              "lateral": 1.01,
+              "center": [
+                25.94,
+                1.77,
+                -1.0
+              ],
+              "size": [
+                2.23,
+                0.66,
+                0.42
+              ],
+              "n_points": 10,
+              "confidence": 0.381,
+              "age": 6,
+              "height_min": 0.15,
+              "intensity": 2.1,
+              "reason": "edge",
+              "kind": ""
+            },
+            {
+              "id": 292,
+              "zone": "gauge",
+              "distance": 32.66,
+              "lateral": 0.81,
+              "center": [
+                33.43,
+                0.65,
+                -1.43
+              ],
+              "size": [
+                1.29,
+                0.41,
+                0.05
+              ],
+              "n_points": 7,
+              "confidence": 1.0,
+              "age": 6,
+              "height_min": 0.03,
+              "intensity": 3.7,
+              "reason": "",
+              "kind": "low"
+            },
+            {
+              "id": 286,
+              "zone": "gauge",
+              "distance": 38.25,
+              "lateral": 1.04,
+              "center": [
+                38.85,
+                0.85,
+                -1.24
+              ],
+              "size": [
+                1.44,
+                0.63,
+                0.47
+              ],
+              "n_points": 7,
+              "confidence": 1.0,
+              "age": 13,
+              "height_min": 0.13,
+              "intensity": 3.8,
+              "reason": "",
+              "kind": ""
+            },
+            {
+              "id": 298,
+              "zone": "gauge",
+              "distance": 82.54,
+              "lateral": -0.22,
+              "center": [
+                88.53,
+                -0.7,
+                -1.92
+              ],
+              "size": [
+                6.8,
+                1.87,
+                0.32
+              ],
+              "n_points": 15,
+              "confidence": 1.0,
+              "age": 6,
+              "height_min": 0.24,
+              "intensity": 6.9,
+              "reason": "",
+              "kind": ""
+            }
+          ],
+          "candidate": [
+            {
+              "id": 292,
+              "zone": "gauge",
+              "distance": 32.66,
+              "lateral": 0.81,
+              "center": [
+                33.43,
+                0.65,
+                -1.43
+              ],
+              "size": [
+                1.29,
+                0.41,
+                0.05
+              ],
+              "n_points": 7,
+              "confidence": 1.0,
+              "age": 6,
+              "height_min": 0.03,
+              "intensity": 3.7,
+              "reason": "",
+              "kind": "low"
+            },
+            {
+              "id": 286,
+              "zone": "gauge",
+              "distance": 38.25,
+              "lateral": 1.04,
+              "center": [
+                38.85,
+                0.85,
+                -1.24
+              ],
+              "size": [
+                1.44,
+                0.63,
+                0.47
+              ],
+              "n_points": 7,
+              "confidence": 1.0,
+              "age": 13,
+              "height_min": 0.13,
+              "intensity": 3.8,
+              "reason": "",
+              "kind": ""
+            },
+            {
+              "id": 298,
+              "zone": "gauge",
+              "distance": 82.54,
+              "lateral": -0.22,
+              "center": [
+                88.53,
+                -0.7,
+                -1.92
+              ],
+              "size": [
+                6.8,
+                1.87,
+                0.32
+              ],
+              "n_points": 15,
+              "confidence": 1.0,
+              "age": 6,
+              "height_min": 0.24,
+              "intensity": 6.9,
+              "reason": "",
+              "kind": ""
+            }
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "recording": "new_data_2",
+      "baseline_stop_frames": 8,
+      "candidate_stop_frames": 6,
+      "baseline_stop_events": 3,
+      "candidate_stop_events": 2,
+      "frames": 1409,
+      "new_stop_frames": [],
+      "removed_stop_frames": [
+        1339,
+        1340
+      ],
+      "matched_events": [
+        {
+          "baseline_id": 81,
+          "candidate_id": 81
+        },
+        {
+          "baseline_id": 570,
+          "candidate_id": 570
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [
+        {
+          "frame": 1339,
+          "baseline": [
+            {
+              "id": 586,
+              "zone": "gauge",
+              "distance": 31.65,
+              "lateral": 1.2,
+              "center": [
+                32.54,
+                1.04,
+                -1.06
+              ],
+              "size": [
+                1.1,
+                0.63,
+                0.35
+              ],
+              "n_points": 6,
+              "confidence": 1.0,
+              "age": 5,
+              "height_min": 0.19,
+              "intensity": 8.6,
+              "reason": "",
+              "kind": ""
+            }
+          ],
+          "candidate": []
+        },
+        {
+          "frame": 1340,
+          "baseline": [
+            {
+              "id": 586,
+              "zone": "gauge",
+              "distance": 31.66,
+              "lateral": 1.2,
+              "center": [
+                32.55,
+                1.26,
+                -0.9
+              ],
+              "size": [
+                1.1,
+                0.63,
+                0.35
+              ],
+              "n_points": 6,
+              "confidence": 0.75,
+              "age": 6,
+              "height_min": 0.19,
+              "intensity": 8.6,
+              "reason": "",
+              "kind": ""
+            }
+          ],
+          "candidate": []
+        }
+      ],
+      "passed": true
+    },
+    {
+      "recording": "new_data_3",
+      "baseline_stop_frames": 2,
+      "candidate_stop_frames": 2,
+      "baseline_stop_events": 1,
+      "candidate_stop_events": 1,
+      "frames": 1409,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [
+        {
+          "baseline_id": 266,
+          "candidate_id": 266
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "recording": "new_data_4",
+      "baseline_stop_frames": 20,
+      "candidate_stop_frames": 20,
+      "baseline_stop_events": 6,
+      "candidate_stop_events": 5,
+      "frames": 1409,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [
+        {
+          "baseline_id": 36,
+          "candidate_id": 36
+        },
+        {
+          "baseline_id": 56,
+          "candidate_id": 56
+        },
+        {
+          "baseline_id": 58,
+          "candidate_id": 58
+        },
+        {
+          "baseline_id": 209,
+          "candidate_id": 209
+        },
+        {
+          "baseline_id": 513,
+          "candidate_id": 513
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [
+        {
+          "frame": 266,
+          "baseline": [
+            {
+              "id": 210,
+              "zone": "gauge",
+              "distance": 21.61,
+              "lateral": 1.14,
+              "center": [
+                21.77,
+                1.49,
+                -0.7
+              ],
+              "size": [
+                0.42,
+                0.52,
+                0.7
+              ],
+              "n_points": 7,
+              "confidence": 0.631,
+              "age": 6,
+              "height_min": 0.12,
+              "intensity": 10.8,
+              "reason": "",
+              "kind": ""
+            },
+            {
+              "id": 209,
+              "zone": "gauge",
+              "distance": 28.63,
+              "lateral": 0.7,
+              "center": [
+                28.65,
+                1.37,
+                -0.91
+              ],
+              "size": [
+                0.05,
+                0.2,
+                0.0
+              ],
+              "n_points": 4,
+              "confidence": 1.0,
+              "age": 7,
+              "height_min": 0.07,
+              "intensity": 17.6,
+              "reason": "",
+              "kind": "low"
+            }
+          ],
+          "candidate": [
+            {
+              "id": 209,
+              "zone": "gauge",
+              "distance": 28.63,
+              "lateral": 0.7,
+              "center": [
+                28.65,
+                1.37,
+                -0.91
+              ],
+              "size": [
+                0.05,
+                0.2,
+                0.0
+              ],
+              "n_points": 4,
+              "confidence": 1.0,
+              "age": 7,
+              "height_min": 0.07,
+              "intensity": 17.6,
+              "reason": "",
+              "kind": "low"
+            }
+          ]
+        },
+        {
+          "frame": 267,
+          "baseline": [
+            {
+              "id": 210,
+              "zone": "gauge",
+              "distance": 20.66,
+              "lateral": 1.14,
+              "center": [
+                20.82,
+                1.59,
+                -0.6
+              ],
+              "size": [
+                0.42,
+                0.52,
+                0.7
+              ],
+              "n_points": 7,
+              "confidence": 0.381,
+              "age": 7,
+              "height_min": 0.12,
+              "intensity": 10.8,
+              "reason": "",
+              "kind": ""
+            },
+            {
+              "id": 209,
+              "zone": "gauge",
+              "distance": 27.9,
+              "lateral": 0.72,
+              "center": [
+                28.35,
+                1.33,
+                -0.94
+              ],
+              "size": [
+                0.57,
+                0.2,
+                0.07
+              ],
+              "n_points": 7,
+              "confidence": 1.0,
+              "age": 8,
+              "height_min": 0.04,
+              "intensity": 14.4,
+              "reason": "",
+              "kind": "low"
+            }
+          ],
+          "candidate": [
+            {
+              "id": 209,
+              "zone": "gauge",
+              "distance": 27.9,
+              "lateral": 0.72,
+              "center": [
+                28.35,
+                1.33,
+                -0.94
+              ],
+              "size": [
+                0.57,
+                0.2,
+                0.07
+              ],
+              "n_points": 7,
+              "confidence": 1.0,
+              "age": 8,
+              "height_min": 0.04,
+              "intensity": 14.4,
+              "reason": "",
+              "kind": "low"
+            }
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "recording": "new_data_5",
+      "baseline_stop_frames": 36,
+      "candidate_stop_frames": 31,
+      "baseline_stop_events": 4,
+      "candidate_stop_events": 3,
+      "frames": 1409,
+      "new_stop_frames": [],
+      "removed_stop_frames": [
+        316,
+        317,
+        319,
+        320,
+        898
+      ],
+      "matched_events": [
+        {
+          "baseline_id": 113,
+          "candidate_id": 113
+        },
+        {
+          "baseline_id": 330,
+          "candidate_id": 330
+        },
+        {
+          "baseline_id": 358,
+          "candidate_id": 358
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [
+        {
+          "frame": 316,
+          "baseline": [
+            {
+              "id": 146,
+              "zone": "gauge",
+              "distance": 42.34,
+              "lateral": 1.18,
+              "center": [
+                42.47,
+                1.05,
+                -1.03
+              ],
+              "size": [
+                0.32,
+                0.63,
+                0.38
+              ],
+              "n_points": 7,
+              "confidence": 1.0,
+              "age": 7,
+              "height_min": 0.14,
+              "intensity": 6.6,
+              "reason": "",
+              "kind": ""
+            }
+          ],
+          "candidate": []
+        },
+        {
+          "frame": 317,
+          "baseline": [
+            {
+              "id": 146,
+              "zone": "gauge",
+              "distance": 41.09,
+              "lateral": 1.18,
+              "center": [
+                41.22,
+                1.08,
+                -0.99
+              ],
+              "size": [
+                0.32,
+                0.63,
+                0.38
+              ],
+              "n_points": 7,
+              "confidence": 0.75,
+              "age": 8,
+              "height_min": 0.14,
+              "intensity": 6.6,
+              "reason": "",
+              "kind": ""
+            }
+          ],
+          "candidate": []
+        },
+        {
+          "frame": 319,
+          "baseline": [
+            {
+              "id": 146,
+              "zone": "gauge",
+              "distance": 36.84,
+              "lateral": -0.05,
+              "center": [
+                36.84,
+                -0.18,
+                -1.34
+              ],
+              "size": [
+                0.01,
+                0.45,
+                0.0
+              ],
+              "n_points": 6,
+              "confidence": 0.85,
+              "age": 10,
+              "height_min": 0.03,
+              "intensity": 23.3,
+              "reason": "",
+              "kind": "low"
+            }
+          ],
+          "candidate": []
+        },
+        {
+          "frame": 320,
+          "baseline": [
+            {
+              "id": 146,
+              "zone": "gauge",
+              "distance": 34.65,
+              "lateral": -0.05,
+              "center": [
+                34.65,
+                -0.81,
+                -1.51
+              ],
+              "size": [
+                0.01,
+                0.45,
+                0.0
+              ],
+              "n_points": 6,
+              "confidence": 0.6,
+              "age": 11,
+              "height_min": 0.03,
+              "intensity": 23.3,
+              "reason": "",
+              "kind": "low"
+            }
+          ],
+          "candidate": []
+        },
+        {
+          "frame": 898,
+          "baseline": [
+            {
+              "id": 358,
+              "zone": "gauge",
+              "distance": 104.27,
+              "lateral": -0.68,
+              "center": [
+                105.69,
+                -13.45,
+                2.0
+              ],
+              "size": [
+                2.79,
+                1.55,
+                1.6
+              ],
+              "n_points": 13,
+              "confidence": 1.0,
+              "age": 5,
+              "height_min": 0.13,
+              "intensity": 27.2,
+              "reason": "",
+              "kind": ""
+            }
+          ],
+          "candidate": []
+        }
+      ],
+      "passed": true
+    },
+    {
+      "recording": "new_data_6",
+      "baseline_stop_frames": 27,
+      "candidate_stop_frames": 21,
+      "baseline_stop_events": 4,
+      "candidate_stop_events": 3,
+      "frames": 1409,
+      "new_stop_frames": [],
+      "removed_stop_frames": [
+        671,
+        672,
+        817,
+        818,
+        819,
+        820
+      ],
+      "matched_events": [
+        {
+          "baseline_id": 331,
+          "candidate_id": 331
+        },
+        {
+          "baseline_id": 336,
+          "candidate_id": 336
+        },
+        {
+          "baseline_id": 518,
+          "candidate_id": 518
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [
+        {
+          "frame": 671,
+          "baseline": [
+            {
+              "id": 250,
+              "zone": "gauge",
+              "distance": 83.94,
+              "lateral": -1.26,
+              "center": [
+                84.45,
+                8.86,
+                0.94
+              ],
+              "size": [
+                1.22,
+                0.5,
+                1.09
+              ],
+              "n_points": 15,
+              "confidence": 1.0,
+              "age": 8,
+              "height_min": 0.28,
+              "intensity": 6.7,
+              "reason": "",
+              "kind": ""
+            }
+          ],
+          "candidate": []
+        },
+        {
+          "frame": 672,
+          "baseline": [
+            {
+              "id": 250,
+              "zone": "gauge",
+              "distance": 82.13,
+              "lateral": -1.26,
+              "center": [
+                82.64,
+                8.31,
+                1.03
+              ],
+              "size": [
+                1.22,
+                0.5,
+                1.09
+              ],
+              "n_points": 15,
+              "confidence": 0.75,
+              "age": 9,
+              "height_min": 0.28,
+              "intensity": 6.7,
+              "reason": "",
+              "kind": ""
+            }
+          ],
+          "candidate": []
+        },
+        {
+          "frame": 817,
+          "baseline": [
+            {
+              "id": 331,
+              "zone": "gauge",
+              "distance": 100.72,
+              "lateral": 1.34,
+              "center": [
+                100.76,
+                9.92,
+                0.57
+              ],
+              "size": [
+                0.1,
+                0.09,
+                1.38
+              ],
+              "n_points": 5,
+              "confidence": 0.6,
+              "age": 13,
+              "height_min": 0.74,
+              "intensity": 5.7,
+              "reason": "",
+              "kind": ""
+            }
+          ],
+          "candidate": []
+        },
+        {
+          "frame": 818,
+          "baseline": [
+            {
+              "id": 331,
+              "zone": "gauge",
+              "distance": 98.37,
+              "lateral": 1.2,
+              "center": [
+                99.4,
+                9.74,
+                0.22
+              ],
+              "size": [
+                1.16,
+                0.36,
+                1.77
+              ],
+              "n_points": 17,
+              "confidence": 0.95,
+              "age": 14,
+              "height_min": 0.38,
+              "intensity": 10.1,
+              "reason": "",
+              "kind": ""
+            }
+          ],
+          "candidate": []
+        },
+        {
+          "frame": 819,
+          "baseline": [
+            {
+              "id": 331,
+              "zone": "gauge",
+              "distance": 97.04,
+              "lateral": 1.2,
+              "center": [
+                98.07,
+                9.49,
+                0.07
+              ],
+              "size": [
+                1.16,
+                0.36,
+                1.77
+              ],
+              "n_points": 17,
+              "confidence": 0.7,
+              "age": 15,
+              "height_min": 0.38,
+              "intensity": 10.1,
+              "reason": "",
+              "kind": ""
+            }
+          ],
+          "candidate": []
+        },
+        {
+          "frame": 820,
+          "baseline": [
+            {
+              "id": 331,
+              "zone": "gauge",
+              "distance": 96.83,
+              "lateral": 1.29,
+              "center": [
+                96.95,
+                8.96,
+                0.46
+              ],
+              "size": [
+                0.17,
+                0.22,
+                1.51
+              ],
+              "n_points": 9,
+              "confidence": 1.0,
+              "age": 16,
+              "height_min": 0.7,
+              "intensity": 18.5,
+              "reason": "",
+              "kind": ""
+            }
+          ],
+          "candidate": []
+        }
+      ],
+      "passed": true
+    },
+    {
+      "recording": "new_data_7",
+      "baseline_stop_frames": 11,
+      "candidate_stop_frames": 11,
+      "baseline_stop_events": 3,
+      "candidate_stop_events": 3,
+      "frames": 1408,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [
+        {
+          "baseline_id": 204,
+          "candidate_id": 204
+        },
+        {
+          "baseline_id": 215,
+          "candidate_id": 215
+        },
+        {
+          "baseline_id": 264,
+          "candidate_id": 264
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    }
+  ],
+  "note": "Stored default gate captures only; the 33-history replay was not started after the gate failure."
+}

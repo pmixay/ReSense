@@ -1,0 +1,64 @@
+#!/usr/bin/env python3
+"""Summarize preregistered lost hits from saved observer output only."""
+import gzip
+import json
+from pathlib import Path
+
+root = Path(__file__).resolve().parent
+protocol = json.loads((root/'protocol.json').read_text())
+fields = ('id', 'hits', 'misses', 'age', 'confidence', 'span_s', 'reported', 'seen_reported', 'stop_earned',
+          'was_stop', 'hold', 'kept', 'since_clean', 'zone_hist', 'thin_hist', 'evidence_hist', 'near_hist',
+          'near_escalated', 'near_current', 'column_held', 'vote_zone', 'rule_zone', 'zone', 'approach_block',
+          'approaching', 'approach_slope', 'approach_rms', 'approach', 'clean_gauge', 'qualifies', 'withheld',
+          'fresh_blocked', 'far_evidence', 'doubt', 'last')
+
+
+def brief(t):
+    return {k: t[k] for k in fields if k in t}
+
+
+def matches(d, row):
+    return abs(d['distance']-row['gt']['distance']) <= max(2.0, .03*row['gt']['distance']) and abs(d['lateral']-row['gt']['lateral']) <= 1.2
+
+
+out = []
+for spec in protocol['sequences']:
+    label = spec['kind']+'_'+spec['file0'].split('.')[0]
+    data = {}
+    for variant in ('baseline', 'candidate'):
+        trace = root/variant/(label+'_trace.json.gz')
+        if trace.exists():
+            data[variant] = (json.loads(gzip.decompress(trace.read_bytes())), json.loads((root/variant/(label+'_semantic.json')).read_text()))
+    if 'candidate' not in data:
+        continue
+    for frame in spec['lost_frames']:
+        item = {'kind': spec['kind'], 'file0': spec['file0'], 'frame': frame}
+        for variant, (trace, semantic) in data.items():
+            ix = next(i for i, t in enumerate(trace) if t['frame'] == frame)
+            row = semantic['rows'][ix]
+            t = trace[ix]
+            ids = {d['id'] for d in t['detections'] if matches(d, row)}
+            ids.update(x['id'] for x in t['tracks_final'] if x['last'] and matches(x['last'], row))
+            relevant = {'row': row, 'matching_detection_ids': sorted(ids), 'tracks': [], 'events': [], 'previous': []}
+            relevant['tracks'] = [brief(x) for x in t['tracks_final'] if x['id'] in ids]
+            relevant['events'] = [{**e, 'track': brief(e['track'])} for e in t['events'] if e['track']['id'] in ids]
+            relevant['previous'] = [{'frame': prev['frame'], 'tracks': [brief(x) for x in prev['tracks_final'] if x['id'] in ids],
+                                     'events': [{**e, 'track': brief(e['track'])} for e in prev['events'] if e['track']['id'] in ids]}
+                                    for prev in trace[max(0, ix-4):ix]]
+            item[variant] = relevant
+        out.append(item)
+(root/'lost_hit_trace_summary.json').write_text(json.dumps(out, indent=2)+'\n')
+for item in out:
+    print(item['kind'], item['frame'])
+    for variant in ('baseline', 'candidate'):
+        if variant not in item:
+            continue
+        d = item[variant]
+        print(' ', variant, 'hit', d['row']['hit'])
+        for t in d['tracks']:
+            last=t['last']
+            print('   track',t['id'],'report',t['reported'],'zone',t['zone'],'miss',t['misses'],'earned',t['stop_earned'],
+                  'last',last['zone'],round(last['distance'],1),last['reason'],'hist',t['evidence_hist'],
+                  'approaching',t['approaching'],'fit',t.get('approach_slope'),t.get('approach_rms'))
+        for e in d['events']:
+            print('   event',e['type'],e.get('normalized_source'),e.get('branch'),e.get('return'))

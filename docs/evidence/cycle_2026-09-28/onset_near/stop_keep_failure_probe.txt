@@ -1,0 +1,36 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_______________ test_thin_continues_a_stop_track_only_in_mode_1 ________________
+
+    def test_thin_continues_a_stop_track_only_in_mode_1():
+        """4 frames of only a scan line inside the gauge: off, the track misses them (dropped after 3
+        misses); mode 1 continues the STOP; a thin cluster never starts a track; mode 1 does not
+        continue a track that is not reported."""
+        xs = _approach(14)
+        seq = ([([_cl(x)], []) for x in xs[:6]] + [([], [_cl(x, thin=True)]) for x in xs[6:10]]
+               + [([_cl(x)], []) for x in xs[10:]])
+        off = _run(seq)
+        on = _run(seq, stop_keep_thin=1)
+        assert off[6] == (True, "gauge") and off[7] == (False, "gauge") and off[10] == (False, "gone")
+        assert all(r == (True, "gauge") for r in on[5:])
+        # never starts a track
+        only_thin = [([], [_cl(x, thin=True)]) for x in _approach(10)]
+        tr = Tracker(TrackingConfig(stop_keep_thin=2, stop_keep_min_voxels=0))
+        for cls, thin in only_thin:
+            tr.update(cls, ego_shift=0.0, frame_dt=0.1, thin=thin)
+        assert not tr.tracks
+        # mode 1 does not help an unreported track to its confirmation
+        seq2 = [([_cl(xs[0])], [])] + [([], [_cl(x, thin=True)]) for x in xs[1:4]] + [([_cl(x)], []) for x in xs[4:9]]
+        m1 = _run(seq2, stop_keep_thin=1)
+        m2 = _run(seq2, stop_keep_thin=2)
+        first = lambda r: [k for k, (rep, z) in enumerate(r) if rep and z == "gauge"][:1]  # noqa: E731
+>       assert first(m2) == [4] and (first(m1) == [] or first(m1)[0] > 4)
+E       assert ([5] == [4]
+E         
+E         At index 0 diff: 5 != 4
+E         Use -v to get more diff)
+
+tests/test_stop_keep.py:137: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_stop_keep.py::test_thin_continues_a_stop_track_only_in_mode_1
+1 failed, 27 deselected in 1.01s
