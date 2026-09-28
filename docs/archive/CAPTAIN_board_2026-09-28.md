@@ -22,7 +22,7 @@ unchanged. **Decided 28.09:** the
 image's default command runs the node with `freshness_mode:=replay` for recorded bags (`d359a06`;
 the node's own default stays `live`); the GO at `doubleT_obstacle` frame 111 (the rail object missed
 twice in a row, `hold_misses` 1) is a documented limitation, the detector stays sealed
-([ARCHITECTURE «Known limitations»](../ARCHITECTURE.md#limitations-of-the-sealed-2709-detector-verified-2809)); judge A's
+([ARCHITECTURE «Known limitations»](../ARCHITECTURE.md#ограничения-опечатанного-детектора-2709-проверено-2809)); judge A's
 per-frame outputs of the sealed detector are added
 ([evidence](../evidence/judge_outputs_2026-09-28/README.md)); the documents were corrected for both
 judges' findings (DECISIONS rows 18–27). Open: the team slides (P2 / team), the release (§5).
@@ -213,7 +213,7 @@ not replace this later failure or establish acceptance of the current root image
   `freshness_mode:=replay` for recorded bags (`d359a06`); the node's own default stays `live`
   (DECISIONS row 25).
 - [x] 28.09: the detector stays frozen; the GO at `doubleT_obstacle` frame 111 is documented as a
-  limitation ([ARCHITECTURE «Known limitations»](../ARCHITECTURE.md#limitations-of-the-sealed-2709-detector-verified-2809)),
+  limitation ([ARCHITECTURE «Known limitations»](../ARCHITECTURE.md#ограничения-опечатанного-детектора-2709-проверено-2809)),
   not fixed; the sealed detector's per-frame outputs of judge A are added
   ([evidence](../evidence/judge_outputs_2026-09-28/README.md)).
 - [x] Preserve the baseline seal and fresh strict gate: all 146 enforced metrics in 199 comparison rows pass.

@@ -1,20 +1,20 @@
-# Experiments
+# Эксперименты
 
-> **Purpose:** the measured results of ReSense for spec §5 «Эксперименты»: at what distance
-> obstacles are detected, processing latency, frame rate, false alarms, hard situations, how the
-> quality changed, and what was tried and not shipped (negative results included).
-> **Audience:** team, jury · **Owner:** P3 / P4 (detector results), P1 (node timing) ·
-> **Language:** EN, summary RU
-> **Last verified:** 2026-09-29: current figures against the judgement's raw summaries of 28.09,
-> the 27.09 gate and its VM re-run, the VM run of 28.09 and the node start-up A/B of 29.09; history
-> against the archived log and changelog · **Status:** current
+> **Назначение:** измеренные результаты ReSense для §5 ТЗ «Эксперименты»: на каком расстоянии
+> обнаруживаются препятствия, задержка обработки, частота кадров, ложные тревоги, трудные ситуации,
+> как менялось качество и что пробовали, но не выпустили (включая отрицательные результаты).
+> **Аудитория:** команда, жюри · **Ответственный:** P3 / P4 (результаты детектора), P1 (тайминги ноды) ·
+> **Язык:** RU
+> **Проверено:** 2026-09-29: текущие цифры — по сырым сводкам независимой оценки 28.09, шлюзу 27.09
+> и его перезапуску на ВМ, прогону на ВМ 28.09 и A/B-замеру старта ноды 29.09; история — по
+> архивному журналу и журналу изменений · **Статус:** актуален
 
-**Section numbers.** "EXPERIMENTS §x" (for example §1g, §3b, §3d) in code comments and older
-records refers to the full experiment log, archived verbatim at
-[`archive/EXPERIMENTS_log_2026-09.md`](archive/EXPERIMENTS_log_2026-09.md). In this file
-"log §x" means a section of that log; the quality-cycle records are
-[`archive/QUALITY_CYCLE_2026-09-26.md`](archive/QUALITY_CYCLE_2026-09-26.md) ("QC 26.09") and
-[`archive/QUALITY_CYCLE_2026-09-27.md`](archive/QUALITY_CYCLE_2026-09-27.md) ("QC 27.09").
+**Номера разделов.** «EXPERIMENTS §x» (например, §1g, §3b, §3d) в комментариях к коду и в более
+ранних записях означает полный журнал экспериментов, архивированный без изменений в
+[`archive/EXPERIMENTS_log_2026-09.md`](archive/EXPERIMENTS_log_2026-09.md). В этом файле «журнал §x» —
+раздел этого журнала; записи цикла качества —
+[`archive/QUALITY_CYCLE_2026-09-26.md`](archive/QUALITY_CYCLE_2026-09-26.md) («QC 26.09») и
+[`archive/QUALITY_CYCLE_2026-09-27.md`](archive/QUALITY_CYCLE_2026-09-27.md) («QC 27.09»).
 
 **Кратко.** Результаты детектора, запечатанного 27.09, и ROS-ноды от 29.09. Реальное препятствие
 (`doubleT_obstacle`): `STOP` с 8-го кадра (человек входит в габарит) до конца записи на 55,5–56,6 м,
@@ -25,290 +25,293 @@ records refers to the full experiment log, archived verbatim at
 меньше одного ядра CPU. Все частоты ложных срабатываний получены «в выборке». Ниже — трудные
 ситуации, как менялось качество с v0.1 и что пробовали, но не выпустили.
 
-## Data and protocol
+## Данные и протокол
 
-| data | frames | what it tests | kind |
+| данные | кадры | что проверяет | вид |
 |---|---|---|---|
-| `doubleT_obstacle` | 201 (360°, train standing) | a real person crossing at 55–57 m; a real object (0.45 × 0.6 × 0.3 m) lying across the right rail at ~56 m, in view the whole recording | real, in-sample |
-| five obstacle-free recordings (`doubleT_platform`, `roundT_doubleT`, `roundT_pressureGate_roundT`, `roundT_squareT_pressureGate_squareT`, `squareT_platform_squareT_switch`) | 2 287 (120°) | false alarms in round, square and double-track tunnels, a platform stop, a switch | real, in-sample |
-| the ride `new_data` | 11 271 (20 min, 13.0 km, seven stops) | false alarms per km; the organizers confirmed it holds no obstacle | real, in-sample; held out only for the learned opinion (cross-fitted) |
-| set O, `cloud_with_fake_obj` | 1 510 | ten objects ray-cast into a real ride by the organizers' own tool: 8 inside the envelope, 2 just outside | organizers' synthetic, in-sample |
-| set F | 6 straight ride files × 5 kinds, 110 frames each, from 220 m | the team's objects (person, trolley, 1 m crate, 3 cm hanging cable, 0.5 m box on the bed) ray-cast into the moving ride, legacy placement | team synthetic on seen backgrounds |
-| range test (28.09) | 5 recordings × 3 windows × 6 ranges | the real person of `doubleT_obstacle` pasted at 60–200 m into the other five tunnels, thinned to (55.5 / r)² of its points | real points on real frames; held-out composites on seen backgrounds |
+| `doubleT_obstacle` | 201 (360°, поезд стоит) | реальный человек, пересекающий путь на 55–57 м; реальный предмет (0,45 × 0,6 × 0,3 м), лежащий поперёк правого рельса на ~56 м, в поле зрения всю запись | реальные, в выборке |
+| пять записей без препятствий (`doubleT_platform`, `roundT_doubleT`, `roundT_pressureGate_roundT`, `roundT_squareT_pressureGate_squareT`, `squareT_platform_squareT_switch`) | 2 287 (120°) | ложные тревоги в круглом, квадратном и двухпутном тоннелях, на остановке у платформы, на стрелке | реальные, в выборке |
+| поездка `new_data` | 11 271 (20 мин, 13,0 км, семь остановок) | ложные тревоги на км; организаторы подтвердили, что препятствий в ней нет | реальные, в выборке; вне выборки только для обученной модели (перекрёстное обучение) |
+| набор O, `cloud_with_fake_obj` | 1 510 | десять объектов, вписанных лучевым методом (ray casting) в реальную поездку собственным инструментом организаторов: 8 внутри габарита, 2 сразу снаружи | синтетические (организаторов), в выборке |
+| набор F | 6 прямых файлов поездки × 5 видов, по 110 кадров, начиная с 220 м | объекты команды (человек, тележка, ящик 1 м, висящий кабель 3 см, коробка 0,5 м на полотне), вписанные лучевым методом в движущуюся поездку, прежняя расстановка | синтетические (команды) на знакомых фонах |
+| тест дальности (28.09) | 5 записей × 3 окна × 6 дальностей | реальный человек из `doubleT_obstacle`, вставленный на 60–200 м в остальные пять тоннелей, с прореживанием до (55,5 / r)² его точек | реальные точки на реальных кадрах; составные кадры вне выборки на знакомых фонах |
 
-**In-sample.** Every real recording and set O were inspected and tuned on, so every false-alarm
-rate below is in-sample. Held out are only the ride pieces scored by an opinion model that never
-saw them and the range test's composites; the hidden control data are not available. The labels
-of `doubleT_obstacle` and the set O positions were measured with the team's own tools, so neither
-is an independent ground truth. Sets, metrics and the gate: [`EVALUATION.md`](EVALUATION.md);
-data, downloads and labels: [`DATASET.md`](DATASET.md).
+**В выборке.** Все реальные записи и набор O просматривались, и на них велась настройка, поэтому
+каждая приведённая ниже частота ложных тревог получена в выборке. Вне выборки только части
+поездки, оценённые моделью, которая их не видела, и составные кадры теста дальности; скрытые
+контрольные данные недоступны. Метки `doubleT_obstacle` и положения объектов набора O измерены
+собственными инструментами команды, поэтому ни то, ни другое не является независимой эталонной
+разметкой. Наборы, метрики и шлюз: [`EVALUATION.md`](EVALUATION.md); данные, загрузки и метки:
+[`DATASET.md`](DATASET.md).
 
-**Two ways of counting.** The independent judgement of 28.09 (commit `464f5bc`,
-[`evidence/judgement_2026-09-28/`](evidence/judgement_2026-09-28/README.md)) ran the detector on
-every frame of the raw recordings and counts STOP frames and STOP episodes (runs of consecutive
-STOP frames); the ride was processed split by split with a detector reset every 5 s. The team's
-regression gate (`scripts/regression_gate.py`) replays the 1 cm frame cache and counts alarm
-frames, events (distinct confirmed tracks) and STOP episodes, the ride in 8 pieces. Current
-results lead with the judgement; the history table uses the gate.
+**Два способа подсчёта.** Независимая оценка 28.09 (коммит `464f5bc`,
+[`evidence/judgement_2026-09-28/`](evidence/judgement_2026-09-28/README.md)) прогнала детектор по
+каждому кадру сырых записей и считает кадры STOP и эпизоды STOP (серии подряд идущих кадров STOP);
+поездка обрабатывалась файл за файлом (split) со сбросом детектора каждые 5 с. Регрессионный шлюз
+команды (`scripts/regression_gate.py`) прогоняет кэш кадров 1 см и считает кадры тревоги, события
+(различные подтверждённые треки) и эпизоды STOP, поездку — в 8 частях. В текущих результатах
+первой идёт оценка; таблица истории использует шлюз.
 
-## Current results (detector sealed 27.09, node of 29.09)
+## Текущие результаты (детектор опечатан 27.09, нода от 29.09)
 
-The detector is sealed ([`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md)); the node change of 29.09
-leaves every decision after the start-up identical. Criterion-by-criterion assessment:
-[`SCORECARD.md`](SCORECARD.md).
+Детектор опечатан ([`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md)); изменение ноды 29.09 не меняет
+ни одного решения после старта. Оценка по критериям: [`SCORECARD.md`](SCORECARD.md).
 
-### Detection: the real obstacle
+### Обнаружение: реальное препятствие
 
-| what | result | kind | evidence |
+| что | результат | вид | материалы-доказательства (evidence) |
 |---|---|---|---|
-| person crossing at 55–57 m | STOP from frame 8 (the first frame the person is inside the envelope) to the end, 55.5–56.6 m | real, in-sample | [`offline_summary.json`](evidence/judgement_2026-09-28/offline_summary.json) |
-| object across the right rail at ~56 m | STOP on every frame after the person leaves it except **GO at frame 111** and CAUTION at 117 and 197 (reproducible; see [Hard situations](#hard-situations)) | real, in-sample | [`judge_outputs_2026-09-28/`](evidence/judge_outputs_2026-09-28/README.md) |
-| the whole recording, offline | STOP on 190 of 201 frames | real, in-sample | [`offline_summary.json`](evidence/judgement_2026-09-28/offline_summary.json) |
-| through the node (jury chain), first STOP after the first cloud | 1.0–1.4 s (node of 28.09); 0.79–1.16 s (node of 29.09) | real | [`chain_runs.json`](evidence/judgement_2026-09-28/chain_runs.json), [`node_startup_2026-09-29/`](evidence/node_startup_2026-09-29/README.md) |
+| человек пересекает путь на 55–57 м | STOP с кадра 8 (первого кадра, где человек внутри габарита) до конца, 55,5–56,6 м | реальные, в выборке | [`offline_summary.json`](evidence/judgement_2026-09-28/offline_summary.json) |
+| предмет поперёк правого рельса на ~56 м | STOP на каждом кадре после ухода человека, кроме **GO на кадре 111** и CAUTION на 117 и 197 (воспроизводится; см. [Трудные ситуации](#трудные-ситуации)) | реальные, в выборке | [`judge_outputs_2026-09-28/`](evidence/judge_outputs_2026-09-28/README.md) |
+| вся запись, офлайн | STOP на 190 из 201 кадра | реальные, в выборке | [`offline_summary.json`](evidence/judgement_2026-09-28/offline_summary.json) |
+| через ноду (цепочка жюри), первый STOP после первого облака | 1,0–1,4 с (нода от 28.09); 0,79–1,16 с (нода от 29.09) | реальные | [`chain_runs.json`](evidence/judgement_2026-09-28/chain_runs.json), [`node_startup_2026-09-29/`](evidence/node_startup_2026-09-29/README.md) |
 
-On the team's frame cache the gate counts the person 61 of 61 frames from frame 8 and the rail
-object 125 of 126 after the person leaves; on the raw recording, offline and through the node, it
-is 123 of 126 (the three frames above).
+На кэше кадров команды шлюз засчитывает человека на 61 из 61 кадра начиная с кадра 8, а предмет на
+рельсе — на 125 из 126 после ухода человека; на сырой записи, офлайн и через ноду — 123 из 126 (три
+кадра выше).
 
-### The organizers' objects (set O)
+### Объекты организаторов (набор O)
 
-| object (organizers' intent) | first STOP | STOP / labelled frames inside the envelope | kind |
+| объект (замысел организаторов) | первый STOP | кадры STOP / размеченные кадры внутри габарита | вид |
 |---|---|---|---|
-| 2 × 2 × 2 m box, centre | **98 m** (its first appearance) | 208 / 213 | organizers' synthetic, in-sample |
-| 2 × 2 m box at the top of the envelope | **111.5 m** | 56 / 75 | same |
-| long low object on the rails (0.5 × 2.0 × 0.2 m) | **87 m** | 52 / 77 | same |
-| 0.3 m cube, centre (floating) | 56 m | 32 / 63 | same |
-| 0.3 m cube on the rail | 48 m | 26 / 33 | same |
-| 0.3 m cube at the envelope edge | 35 m | 16 / 16 | same |
-| 2 m box at the envelope edge | 29 m | 8 / 8 | same |
-| 5 cm hanging object | 30 m | 14 / 20 | same |
-| 0.3 m cube just outside | 0 STOP (correct) | — | same |
-| 2 m box outside | 9 false STOP frames at 126–142 m | — | same |
+| коробка 2 × 2 × 2 м, по центру | **98 м** (её первое появление) | 208 / 213 | синтетические (организаторов), в выборке |
+| коробка 2 × 2 м у верхней границы габарита | **111,5 м** | 56 / 75 | то же |
+| длинный низкий объект на рельсах (0,5 × 2,0 × 0,2 м) | **87 м** | 52 / 77 | то же |
+| куб 0,3 м, по центру (парящий) | 56 м | 32 / 63 | то же |
+| куб 0,3 м на рельсе | 48 м | 26 / 33 | то же |
+| куб 0,3 м у края габарита | 35 м | 16 / 16 | то же |
+| коробка 2 м у края габарита | 29 м | 8 / 8 | то же |
+| висящий объект 5 см | 30 м | 14 / 20 | то же |
+| куб 0,3 м сразу снаружи | 0 STOP (верно) | — | то же |
+| коробка 2 м снаружи | 9 кадров ложного STOP на 126–142 м | — | то же |
 
-STOP for all 8 in-envelope objects; 22 stray STOP detections away from any object. Source:
-[`setO.json`](evidence/judgement_2026-09-28/setO.json) (a STOP counts for an object within 3 m
-along the track). The team's gate on the frame cache, with its own matching, gives 411 of 801
-visible in-envelope object-frames, 0 background frames, and first STOPs of 42.7 m for the cube on
-the rail and 18.3 m for the edge box (that scorer matches within 1 m of the 2 m box's centre; the
-box's track STOPs from 28.7 m); this file quotes the judgement's figures.
+STOP для всех 8 объектов внутри габарита; 22 отдельных обнаружения STOP вне каких-либо объектов.
+Источник: [`setO.json`](evidence/judgement_2026-09-28/setO.json) (STOP засчитывается объекту, если
+он в пределах 3 м вдоль пути). Шлюз команды на кэше кадров со своим сопоставлением даёт 411 из 801
+видимых кадров объектов внутри габарита, 0 фоновых кадров и первые STOP на 42,7 м для куба на
+рельсе и на 18,3 м для коробки у края (этот подсчёт сопоставляет в пределах 1 м от центра коробки
+2 м; трек коробки даёт STOP с 28,7 м); в этом файле приводятся цифры оценки.
 
-### False alarms
+### Ложные тревоги
 
-| recording | frames | STOP frames | STOP episodes (distance) | CAUTION frames |
+| запись | кадры | кадры STOP | эпизоды STOP (расстояние) | кадры CAUTION |
 |---|---:|---:|---|---:|
 | `roundT_doubleT` | 252 | 0 | 0 | 173 (69 %) |
-| `doubleT_platform` | 345 | 3 | 1 (31–39 m) | 196 (57 %) |
-| `roundT_pressureGate_roundT` | 268 | 2 | 1 (53–54 m) | 119 (44 %) |
+| `doubleT_platform` | 345 | 3 | 1 (31–39 м) | 196 (57 %) |
+| `roundT_pressureGate_roundT` | 268 | 2 | 1 (53–54 м) | 119 (44 %) |
 | `roundT_squareT_pressureGate_squareT` | 545 | 0 | 0 | 190 (35 %) |
-| `squareT_platform_squareT_switch` | 877 | 18 | 5 (83–148 m) | 443 (51 %) |
-| **five obstacle-free recordings** | 2 287 | **23 (1.0 %)** | **7** | 1 121 (49 %) |
-| **ride `new_data`**, 13.0 km, detector reset every 5 s | 11 271 | **164 (1.5 %)** | **30 = 2.3 per km** (~96 per hour), at 15–146 m | 4 142 (37 %) |
+| `squareT_platform_squareT_switch` | 877 | 18 | 5 (83–148 м) | 443 (51 %) |
+| **пять записей без препятствий** | 2 287 | **23 (1,0 %)** | **7** | 1 121 (49 %) |
+| **поездка `new_data`**, 13,0 км, сброс детектора каждые 5 с | 11 271 | **164 (1,5 %)** | **30 = 2,3 на км** (~96 в час), на 15–146 м | 4 142 (37 %) |
 
-All real, in-sample, independent judgement of 28.09
+Всё реальные данные, в выборке, независимая оценка 28.09
 ([`offline_summary.json`](evidence/judgement_2026-09-28/offline_summary.json),
-[`ride_summary.json`](evidence/judgement_2026-09-28/ride_summary.json)). CAUTION is advisory, not
-an alarm. The team's gate on the frame cache
+[`ride_summary.json`](evidence/judgement_2026-09-28/ride_summary.json)). CAUTION — подсказка, а не
+тревога. Шлюз команды на кэше кадров
 ([`regression_gate_2026-09-27_quality.json`](evidence/results/regression_gate_2026-09-27_quality.json)):
-five recordings 40 alarm frames / 11 events / 13 STOP episodes; the ride 130 / 32 / 31
-in-sample, and **37 events = 2.8 per km on ride pieces the learned opinion never saw** (each pair
-of the 8 pieces run with a model trained without them,
-[cross-fit](evidence/results/quality_cycle_2026-09-27/opinion_crossfit_2x_margin.json); 43 events
-with the opinion off). The rules themselves stay in-sample.
+пять записей — 40 кадров тревоги / 11 событий / 13 эпизодов STOP; поездка — 130 / 32 / 31
+в выборке и **37 событий = 2,8 на км на частях поездки, которых обученная модель не видела**
+(каждая пара из 8 частей прогонялась с моделью, обученной без них,
+[перекрёстное обучение](evidence/results/quality_cycle_2026-09-27/opinion_crossfit_2x_margin.json);
+43 события при выключенной модели). Сами правила остаются в выборке.
 
-### Range
+### Дальность
 
-| evidence | result | kind |
+| evidence | результат | вид |
 |---|---|---|
-| set O, first STOP | large objects 87–111.5 m (the 2 m box from its first appearance at 98 m), 0.3 m cubes 48–56 m, edge objects 29–35 m, 5 cm hanging object 30 m | organizers' synthetic, in-sample |
-| range test, sustained STOP (STOP at the person on ≥ 15 of 30 frames) | 60 m **11 / 15**, 80 m 8 / 15, 100 m 6 / 15, 130 m 2 / 15, 160 m 1 / 15, 200 m 0 / 15 windows; any STOP 14, 11, 11, 6, 6, 3 / 15; controls without the person: 0 false STOP | real points, held-out composites ([`transplant.json`](evidence/judgement_2026-09-28/transplant.json)) |
-| set F straight, median first detection (6 approaches each) | person **151.0 m** (6 of 6), trolley 151.4 m, 1 m crate 123.9 m, 3 cm hanging cable 98.9 m, 0.5 m box on the bed 1 of 6 (51.9 m); the person in 120 of 151 visible frames at 100–150 m, 13 of 125 at 150–200 m | team synthetic; gate of 27.09, re-run on the team VM 28.09 identical ([`gate_2026-09-28/`](evidence/gate_2026-09-28/gate_table.txt)) |
-| set F, person anchored on the near rails (24.09, v0.6.3) | 154 m (legacy 150 m on the same 5 approaches); on R ≈ 350 m curves nothing matched at 100–150 m in either placement (legacy first confirmations 58–86 m, the sightline) | team synthetic, dated (log §2d) |
-| set F with a given train speed (24.09, v0.6.3) | person 167 m, trolley 175 m, crate 182 m (held only from 79 m); the recordings carry no speed | team synthetic, dated (log §2d, §9) |
-| sensor | no return beyond ~210 m in any of the 13 759 frames: 300 m is beyond this LiDAR | real |
+| набор O, первый STOP | крупные объекты 87–111,5 м (коробка 2 м — с первого появления на 98 м), кубы 0,3 м 48–56 м, краевые объекты 29–35 м, висящий объект 5 см 30 м | синтетические (организаторов), в выборке |
+| тест дальности, устойчивый STOP (STOP на человеке на ≥ 15 из 30 кадров) | 60 м **11 / 15**, 80 м 8 / 15, 100 м 6 / 15, 130 м 2 / 15, 160 м 1 / 15, 200 м 0 / 15 окон; любой STOP 14, 11, 11, 6, 6, 3 / 15; контрольные окна без человека: 0 ложных STOP | реальные точки, составные кадры вне выборки ([`transplant.json`](evidence/judgement_2026-09-28/transplant.json)) |
+| набор F, прямые, медиана первого обнаружения (по 6 сближений) | человек **151,0 м** (6 из 6), тележка 151,4 м, ящик 1 м 123,9 м, висящий кабель 3 см 98,9 м, коробка 0,5 м на полотне 1 из 6 (51,9 м); человек — на 120 из 151 видимого кадра на 100–150 м, на 13 из 125 на 150–200 м | синтетические (команды); шлюз 27.09, перезапуск на ВМ команды 28.09 дал идентичный результат ([`gate_2026-09-28/`](evidence/gate_2026-09-28/gate_table.txt)) |
+| набор F, человек привязан к ближним рельсам (24.09, v0.6.3) | 154 м (прежняя схема — 150 м на тех же 5 сближениях); на кривых R ≈ 350 м на 100–150 м ничего не сопоставилось ни в одной из схем (прежние первые подтверждения 58–86 м, линия видимости) | синтетические (команды), датировано (журнал §2d) |
+| набор F с заданной скоростью поезда (24.09, v0.6.3) | человек 167 м, тележка 175 м, ящик 182 м (удерживался только с 79 м); в записях скорости нет | синтетические (команды), датировано (журнал §2d, §9) |
+| датчик | ни одного отражения дальше ~210 м ни в одном из 13 759 кадров: 300 м этому LiDAR недоступны | реальные |
 
-Misses in the range test are CAUTION, not silence: `beyond_axis` where the trusted axis range is
-short (platforms, double-track sections) or a merge with trackside structure into a `column`.
+Промахи в тесте дальности — это CAUTION, а не молчание: `beyond_axis`, где доверенная дальность оси
+короткая (платформы, двухпутные участки), или слияние с конструкцией у пути в `column`.
 
-### Speed and resources
+### Скорость и ресурсы
 
-| measure | result | machine, date | evidence |
+| измерение | результат | машина, дата | evidence |
 |---|---|---|---|
-| end to end at 360° (player publishes the cloud → result), p95 of the current results | **81–82 ms** warm, 88–96 ms cold page cache | team VM, Xeon Icelake, 4 physical cores, 28.09 | [`vm_2026-09-28/summary.md`](evidence/vm_2026-09-28/summary.md) |
-| same, independent judgement | 85–94 ms warm, 87–172 ms cold; 120°: 49–78 ms | 4-vCPU sandbox, 28.09 | [`chain_runs.json`](evidence/judgement_2026-09-28/chain_runs.json) |
-| node decode + detect, p95 | 63–72 ms (VM); 79–98 ms (sandbox) | 28.09 | same |
-| frame rate | **10.0 fps** at 360° with the C++ kernels; after the start-up every frame is processed | team VM, 28.09 | [`bench_2026-09-28/`](evidence/bench_2026-09-28/summary.txt) |
-| start-up (node of 29.09) | results of the first 3 s 38–105 ms old (median; was 312–325 ms); first STOP 0.79–0.98 s after the first cloud | 4-vCPU sandbox, 29.09 | [`node_startup_2026-09-29/`](evidence/node_startup_2026-09-29/README.md) |
-| CPU, memory | 0.5–1.0 core; RSS 130–740 MB; no GPU | 4-vCPU sandbox, 28.09 | [`chain_runs.json`](evidence/judgement_2026-09-28/chain_runs.json) |
-| numpy fallback (no C++ kernels) | not real time at 360° on 4 cores (decode + detect p95 103 ms) | team VM, 28.09 | [`bench_2026-09-28/`](evidence/bench_2026-09-28/summary.txt) |
+| сквозная задержка при 360° (плеер публикует облако → результат), p95 актуальных результатов | **81–82 мс** при прогретом страничном кэше, 88–96 мс при холодном | ВМ команды, Xeon Icelake, 4 физических ядра, 28.09 | [`vm_2026-09-28/summary.md`](evidence/vm_2026-09-28/summary.md) |
+| то же, независимая оценка | 85–94 мс прогретый, 87–172 мс холодный; 120°: 49–78 мс | песочница 4 vCPU, 28.09 | [`chain_runs.json`](evidence/judgement_2026-09-28/chain_runs.json) |
+| декодирование + обнаружение в ноде, p95 | 63–72 мс (ВМ); 79–98 мс (песочница) | 28.09 | то же |
+| частота кадров | **10,0 кадр/с** при 360° с ядрами на C++; после старта обрабатывается каждый кадр | ВМ команды, 28.09 | [`bench_2026-09-28/`](evidence/bench_2026-09-28/summary.txt) |
+| старт (нода от 29.09) | результаты первых 3 с возрастом 38–105 мс (медиана; было 312–325 мс); первый STOP через 0,79–0,98 с после первого облака | песочница 4 vCPU, 29.09 | [`node_startup_2026-09-29/`](evidence/node_startup_2026-09-29/README.md) |
+| CPU, память | 0,5–1,0 ядра; RSS 130–740 МБ; GPU нет | песочница 4 vCPU, 28.09 | [`chain_runs.json`](evidence/judgement_2026-09-28/chain_runs.json) |
+| запасной путь на numpy (без ядер на C++) | не реальное время при 360° на 4 ядрах (декодирование + обнаружение p95 103 мс) | ВМ команды, 28.09 | [`bench_2026-09-28/`](evidence/bench_2026-09-28/summary.txt) |
 
-Details, per stage and before / after: [Speed](#speed).
+Подробности по этапам и «до / после»: [Скорость](#скорость).
 
-### Tests and reproducibility
+### Тесты и воспроизводимость
 
-- `pytest`: 770 passed, 1 deselected (it needs the ride's frame cache), 6 subtests (29.09,
-  `RESENSE_REQUIRE_SYNTHETIC=1`); ruff clean; CI (4 jobs, 2 stages) green on `main`.
-- Seal: `python3 scripts/detector_freeze.py verify` PASS against
+- `pytest`: 770 пройдено, 1 не отобран (нужен кэш кадров поездки), 6 подтестов (29.09,
+  `RESENSE_REQUIRE_SYNTHETIC=1`); ruff без замечаний; CI (4 задания, 2 этапа) зелёный на `main`.
+- Печать: `python3 scripts/detector_freeze.py verify` — PASS относительно
   [`detector_freeze_2026-09-27.json`](evidence/detector_freeze_2026-09-27.json).
-- Gate: [`regression_gate_2026-09-27_quality.json`](evidence/results/regression_gate_2026-09-27_quality.json)
-  passes against the 26.09 baseline with no waiver and is the current baseline
+- Шлюз: [`regression_gate_2026-09-27_quality.json`](evidence/results/regression_gate_2026-09-27_quality.json)
+  проходит относительно базовой линии 26.09 без исключений (waiver) и является текущей базовой линией
   ([`regression_baseline_2026-09-27_quality.json`](evidence/results/regression_baseline_2026-09-27_quality.json));
-  the team VM re-ran it with the ride and set F on 28.09: every gated row identical.
-  `python scripts/regression_gate.py --cache <cache> --jobs 4` re-measures the gate's rows (six
-  recordings, set O, the ride, set F straight; caches: [`DATASET.md`](DATASET.md)).
+  ВМ команды перезапустила его с поездкой и набором F 28.09: каждая проверяемая шлюзом строка
+  идентична. `python scripts/regression_gate.py --cache <cache> --jobs 4` заново измеряет строки шлюза
+  (шесть записей, набор O, поездка, набор F, прямые; кэши: [`DATASET.md`](DATASET.md)).
 
-## Speed
+## Скорость
 
-### Detector, per stage
+### Детектор по этапам
 
-`resense bench`, every frame, one core (`OMP_NUM_THREADS=1`), C++ kernels, the sealed detector on
-an idle 4-vCPU sandbox, 27.09 ([`bench_native.txt`](evidence/results/quality_cycle_2026-09-27/bench_native.txt)),
-means in ms:
+`resense bench`, каждый кадр, одно ядро (`OMP_NUM_THREADS=1`), ядра на C++, опечатанный детектор на
+свободной песочнице 4 vCPU, 27.09 ([`bench_native.txt`](evidence/results/quality_cycle_2026-09-27/bench_native.txt)),
+средние в мс:
 
-| recording | track model | corridor | clustering | tracking | total mean / p95 / max |
+| запись | модель пути | коридор | кластеризация | трекинг | всего: среднее / p95 / макс |
 |---|---:|---:|---:|---:|---|
-| `doubleT_obstacle` (360°) | 12.4 | 5.5 | 4.2 | 0.8 | **22.9 / 32.6 / 41.3** |
-| `roundT_doubleT` (120°) | 9.3 | 4.9 | 6.1 | 0.9 | 21.2 / 30.0 / 32.7 |
-| set O (`cloud_with_fake_obj`) | 8.7 | 4.5 | 4.1 | 0.7 | 18.0 / 23.3 / 57.1 |
-| `squareT_platform_squareT_switch` | 8.4 | 4.6 | 4.9 | 0.8 | 18.6 / 22.7 / 32.9 |
+| `doubleT_obstacle` (360°) | 12,4 | 5,5 | 4,2 | 0,8 | **22,9 / 32,6 / 41,3** |
+| `roundT_doubleT` (120°) | 9,3 | 4,9 | 6,1 | 0,9 | 21,2 / 30,0 / 32,7 |
+| набор O (`cloud_with_fake_obj`) | 8,7 | 4,5 | 4,1 | 0,7 | 18,0 / 23,3 / 57,1 |
+| `squareT_platform_squareT_switch` | 8,4 | 4,6 | 4,9 | 0,8 | 18,6 / 22,7 / 32,9 |
 
-`total` stops after tracking; the health monitor runs after it and is included in the node's
-decode + detect. On the team VM (28.09) the same totals are 24.6 / 34.5 ms (360°) and
-22.5 / 31.4 ms (120°) mean / p95; the numpy path is 2.3× slower (55.9 / 67.4 ms at 360°).
-**Worst stretch:** ride frames 5700–5900, a dense station scene: 57.3 ms mean, p95 111.3 ms, max
-143.4 ms on one core, clustering up to 122 ms (27.09; the 26.09 detector was similar, QC 27.09
-"Speed"). History: the v0.3 code 56–71 ms mean on two recordings, v0.6.3 42–64 ms mean and
-p95 53–78 ms on the numpy path (23.09, log §3); the C++ kernels cut 38–57 % with identical output
-(24.09).
+`total` заканчивается после трекинга; монитор исправности работает после него и входит в
+декодирование + обнаружение в ноде. На ВМ команды (28.09) те же итоги — 24,6 / 34,5 мс (360°) и
+22,5 / 31,4 мс (120°) среднее / p95; путь на numpy медленнее в 2,3 раза (55,9 / 67,4 мс при 360°).
+**Самый тяжёлый участок:** кадры поездки 5700–5900, плотная сцена станции: 57,3 мс в среднем, p95
+111,3 мс, максимум 143,4 мс на одном ядре, кластеризация до 122 мс (27.09; детектор 26.09 был
+похож, QC 27.09 «Speed»). История: код v0.3 — 56–71 мс в среднем на двух записях, v0.6.3 — 42–64 мс
+в среднем и p95 53–78 мс на пути numpy (23.09, журнал §3); ядра на C++ сократили время на 38–57 %
+при идентичном результате (24.09).
 
-### Node path
+### Путь ноды
 
-| step | before → after | when, machine |
+| этап | до → после | когда, машина |
 |---|---|---|
-| input: rclpy's conversion of the 24 MB message into Python | 12.5 ms median, 32 ms p95 → read from the serialized bytes, 0.1 ms | 28.09, 4-vCPU sandbox (log §3d) |
-| RViz markers and corridor cloud | ~8 ms per frame always → built only while watched | 28.09 (log §3d) |
-| decode to x / y / z arrays (`fastcloud.decode`, identical arrays on all 453 frames) | 360°: **20.3 → 16.6 ms** median (p95 29.2 → 23.7); 120°: 7.4 → 4.8 ms | 29.09, 4-vCPU sandbox |
-| first frame after start (warm-up on three synthetic frames, ~0.7 s before "listening") | decode + detect 49 + 72 ms → ~31 + 42 ms | 29.09 |
-| node path offline (decode, crop, rotation, detector; no ROS) | 40.2 / 49.9 ms mean / p95 at 360°, 31.1 / 39.9 ms at 120° | team VM, 28.09 (before the 29.09 decode) |
+| вход: преобразование rclpy сообщения в 24 МБ в Python | 12,5 мс медиана, 32 мс p95 → чтение из сериализованных байтов, 0,1 мс | 28.09, песочница 4 vCPU (журнал §3d) |
+| маркеры RViz и облако коридора | ~8 мс на кадр всегда → строятся, только пока на них смотрят | 28.09 (журнал §3d) |
+| декодирование в массивы x / y / z (`fastcloud.decode`, идентичные массивы на всех 453 кадрах) | 360°: **20,3 → 16,6 мс** медиана (p95 29,2 → 23,7); 120°: 7,4 → 4,8 мс | 29.09, песочница 4 vCPU |
+| первый кадр после старта (прогрев на трёх синтетических кадрах, ~0,7 с до «listening») | декодирование + обнаружение 49 + 72 мс → ~31 + 42 мс | 29.09 |
+| путь ноды офлайн (декодирование, обрезка, поворот, детектор; без ROS) | 40,2 / 49,9 мс среднее / p95 при 360°, 31,1 / 39,9 мс при 120° | ВМ команды, 28.09 (до декодирования 29.09) |
 
-End to end through ROS (VM, 28.09): p95 of the current results 81–82 ms at 360° with the
-recording in the page cache (88–96 ms cold) and 52–60 ms at 120° (log §3e). A 20 s 360° recording
-is 4.5 GB, so playing it at 10 Hz needs ~225 MB/s of storage (see Hard situations).
+Сквозная задержка через ROS (ВМ, 28.09): p95 актуальных результатов 81–82 мс при 360° при записи в
+страничном кэше (88–96 мс при холодном) и 52–60 мс при 120° (журнал §3e). Запись 360° длиной 20 с
+занимает 4,5 ГБ, поэтому её воспроизведение на 10 Гц требует ~225 МБ/с от хранилища (см. «Трудные
+ситуации»).
 
-### Start-up: A/B of the 29.09 node
+### Старт: A/B ноды 29.09
 
-The image of `464f5bc` against the image with the 29.09 node, alternated on one idle 4-vCPU
-sandbox, through the jury chain with a listener that also subscribes to the clouds (absolute
-latencies higher than without it). e2e = the listener receives a cloud → the status of that cloud.
+Образ `464f5bc` против образа с нодой 29.09, попеременно на одной свободной песочнице 4 vCPU, через
+цепочку жюри со слушателем, который тоже подписан на облака (абсолютные задержки выше, чем без
+него). e2e = слушатель получает облако → статус этого облака.
 [`node_startup_2026-09-29/`](evidence/node_startup_2026-09-29/README.md):
 
-| condition | runs | e2e median, first 3 s | e2e p95, all results | first STOP after the first cloud |
+| условие | запусков | e2e медиана, первые 3 с | e2e p95, все результаты | первый STOP после первого облака |
 |---|---:|---|---|---|
-| 360° `doubleT_obstacle`, bag in the page cache | 3 + 3 | 312–325 → **38–105 ms** | 410–447 → **212–344 ms** | 0.90–0.99 → 0.79–0.98 s |
-| 360°, page cache dropped | 2 + 2 | 829–1029 → **120–300 ms** | 864–1084 → **333–599 ms** | 1.16–1.35 → 0.81–1.16 s |
-| 120° `roundT_doubleT` (clear) | 2 + 2 | 37–42 → 29–32 ms (p95 295–340 → 66–123 ms) | 52–60 → 48 ms | no STOP in either |
-| 360°, default player (read-ahead 1 000) | 1 + 1 | 7.0 → 4.3 s, all stale | — | 7.5 → 2.3 s; 57 → 145 of 201 frames processed |
+| 360° `doubleT_obstacle`, бэг в страничном кэше | 3 + 3 | 312–325 → **38–105 мс** | 410–447 → **212–344 мс** | 0,90–0,99 → 0,79–0,98 с |
+| 360°, страничный кэш сброшен | 2 + 2 | 829–1029 → **120–300 мс** | 864–1084 → **333–599 мс** | 1,16–1,35 → 0,81–1,16 с |
+| 120° `roundT_doubleT` (без препятствий) | 2 + 2 | 37–42 → 29–32 мс (p95 295–340 → 66–123 мс) | 52–60 → 48 мс | STOP нет ни в одном варианте |
+| 360°, плеер по умолчанию (read-ahead 1 000) | 1 + 1 | 7,0 → 4,3 с, все устаревшие | — | 7,5 → 2,3 с; обработано 57 → 145 из 201 кадра |
 
-Decisions after the start-up are identical (STOP 55.5–56.6 m from frame 8, the GO at 111);
-steady-state decode + detect and the current-result e2e are unchanged within noise.
+Решения после старта идентичны (STOP на 55,5–56,6 м с кадра 8, GO на 111); установившиеся
+декодирование + обнаружение и e2e актуальных результатов не изменились в пределах шума.
 
-## Hard situations
+## Трудные ситуации
 
-| situation | what happens | why | evidence |
+| ситуация | что происходит | почему | evidence |
 |---|---|---|---|
-| platforms and switches | 5 of the 7 STOP episodes of the five recordings are in `squareT_platform_squareT_switch` at 83–148 m while the train stands at the platform; `doubleT_platform` 1 at 31–39 m | beyond a platform the axis takes its curvature from hall walls that follow the platform, ~0.8 m off at 83 m, so the platform end reads inside the envelope; the switch parts at 147.5 m sit on an axis set by a hall wall seen only to 72–92 m | log §1f, §1h |
-| ride false alarms | 30 STOP episodes at 15–146 m | the 45 events of the 26.09 detector, traced by their geometry: 21 low track-cross-section fragments, 6 vertically continuing structures, 4 side-profile fragments, 14 sparse targets unresolved; by the scene at the train: 20 platform / station, 16 tunnel, 9 uncertain | QC 26.09, log "Freeze validation" |
-| trusted axis range (`beyond_axis`) | an object on the track beyond the trusted axis range is CAUTION, not STOP; in one platform window of the range test that range was 45 m for the whole window | the axis is trusted only as far as the tunnel boundaries are seen and agree; platforms and double-track sections shorten it | [`SCORECARD.md`](SCORECARD.md), [`transplant.json`](evidence/judgement_2026-09-28/transplant.json) |
-| small and edge objects late | 0.3 m cubes first STOP 48–56 m; edge cube 35 m; edge 2 m box 29 m; set F 0.5 m box on the bed 1 of 6; a person 0.1 m inside the edge: 0 of 126 frames at 50–100 m from the rails | beyond 60 m a 0.3 m cube returns 1–4 points a frame; at 150–220 m the extrapolated rail level moves by ±1 m; the organizers place edge objects from the sensor axis, and the union with that envelope applies only within 60 m on straight track | log §1o, QC 27.09 "Limits" |
-| curves and a standing train | set F: R ≈ 350 m curves first confirmed at 58–86 m; the person on six other ride segments at ±0.9 m: 115.5 m median (5 of 6); ahead of a standing train at 110 m 0 of 9 placed objects STOP (70 m: 6 of 9) | sightline past the inner wall; trusted range | log §2d, QC 27.09 "Limits" |
-| sensor reach | nothing beyond ~210 m | the LiDAR's cut-off in every recording; beyond ~100 m the bed does not return | log §2d |
-| monitored range | `clear_distance` extends past an in-envelope object in 300 of 605 set O frames (68 of them GO) | it is an estimate from what the sensor sees, not a guarantee | [`SCORECARD.md`](SCORECARD.md) |
-| frequent CAUTION | 49 % of the frames of the five recordings (35–69 %), 37 % of the ride | columns, the advisory band, objects beyond the trusted axis; an object demoted to CAUTION is easy to overlook | [`offline_summary.json`](evidence/judgement_2026-09-28/offline_summary.json) |
-| learned opinion's delay | a doubtful far STOP can wait up to 10 processed frames in a track's life (~1 s at 10 Hz, ~2 s at 5 Hz); never within 25 m or for a body ≥ 1 m tall within 40 m | its positives are synthetic; a real object unlike them can use the whole budget | QC 27.09 |
-| processing history | which frames the node processes changes some false STOPs: history stress 55 events (78 on the 26.09 detector), mostly the platform structures at 82–147 m | the track model keeps state across frames | QC 27.09 |
-| rate and mount | five recordings, false events: 13 as recorded, 10 at 5 Hz, 14 at +3° roll, 17 at +3° pitch; under +3° pitch a 2-frame low STOP at 1–3 m while the calibration is provisional | measured on the 26.09 detector | log §1g, §1p |
-| dense station scene | detector p95 111 ms on one core (ride frames 5700–5900) | clustering of dense near structure | [Speed](#speed) |
-| storage-bound playback | on the team VM (79 MB/s network disk) the 360° recording played in ~62.5 s, ~3 fps; the 120° one stalled once for 1.4 s and the node's catch-up skipped frames; the checker passed the ~3 fps runs | the 360° recording needs ~225 MB/s at rate 1.0; `check_dry_run.py` now prints the playback pace (`--min-playback-rate`) | [`vm_2026-09-28/summary.md`](evidence/vm_2026-09-28/summary.md) |
-| the player's default burst | without `--read-ahead-queue-size 10` (Humble's read-ahead 1 000) the player sends the overdue recording in a burst: 57–135 of 201 frames processed, every result stale (queue lag median 11 s, RSS up to 4 GB); with the 29.09 node 145 of 201, first STOP +2.3 s (was +7.5 s), still stale | the player, not the node; keep `--read-ahead-queue-size 10` | [`node_startup_2026-09-29/`](evidence/node_startup_2026-09-29/README.md) |
+| платформы и стрелки | 5 из 7 эпизодов STOP пяти записей приходятся на `squareT_platform_squareT_switch` на 83–148 м, пока поезд стоит у платформы; `doubleT_platform` — 1 на 31–39 м | за платформой ось берёт кривизну по стенам зала, идущим вдоль платформы, с отклонением ~0,8 м на 83 м, поэтому конец платформы читается как находящийся внутри габарита; части стрелки на 147,5 м оказываются на оси, заданной стеной зала, которая видна лишь до 72–92 м | журнал §1f, §1h |
+| ложные тревоги на поездке | 30 эпизодов STOP на 15–146 м | 45 событий детектора 26.09, разобранные по геометрии: 21 низкий фрагмент поперечного сечения пути, 6 вертикально продолжающихся конструкций, 4 фрагмента бокового профиля, 14 разреженных целей без объяснения; по сцене у поезда: 20 платформа / станция, 16 тоннель, 9 неясных | QC 26.09, журнал «Freeze validation» |
+| доверенная дальность оси (`beyond_axis`) | объект на пути за пределами доверенной дальности оси — CAUTION, а не STOP; в одном окне на платформе в тесте дальности эта дальность составляла 45 м на всё окно | оси доверяют лишь настолько далеко, насколько видны и согласуются границы тоннеля; платформы и двухпутные участки её сокращают | [`SCORECARD.md`](SCORECARD.md), [`transplant.json`](evidence/judgement_2026-09-28/transplant.json) |
+| малые и краевые объекты обнаруживаются поздно | кубы 0,3 м — первый STOP на 48–56 м; краевой куб — 35 м; краевая коробка 2 м — 29 м; набор F: коробка 0,5 м на полотне — 1 из 6; человек в 0,1 м внутри края: 0 из 126 кадров на 50–100 м от рельсов | дальше 60 м куб 0,3 м даёт 1–4 точки на кадр; на 150–220 м экстраполированный уровень рельсов смещается на ±1 м; организаторы размещают краевые объекты от оси датчика, а объединение с этим габаритом действует только в пределах 60 м на прямом пути | журнал §1o, QC 27.09 «Limits» |
+| кривые и стоящий поезд | набор F: на кривых R ≈ 350 м первое подтверждение на 58–86 м; человек на шести других участках поездки при ±0,9 м: медиана 115,5 м (5 из 6); перед стоящим поездом на 110 м 0 из 9 размещённых объектов дают STOP (на 70 м — 6 из 9) | линия видимости за внутренней стеной; доверенная дальность | журнал §2d, QC 27.09 «Limits» |
+| досягаемость датчика | ничего дальше ~210 м | предел LiDAR во всех записях; дальше ~100 м полотно не даёт отражений | журнал §2d |
+| дальность контроля | `clear_distance` уходит за объект внутри габарита в 300 из 605 кадров набора O (68 из них — GO) | это оценка по тому, что видит датчик, а не гарантия | [`SCORECARD.md`](SCORECARD.md) |
+| частый CAUTION | 49 % кадров пяти записей (35–69 %), 37 % поездки | колонны, зона предупреждения, объекты за доверенной осью; объект, понижённый до CAUTION, легко пропустить | [`offline_summary.json`](evidence/judgement_2026-09-28/offline_summary.json) |
+| задержка из-за обученной модели | сомнительный дальний STOP может ждать до 10 обработанных кадров за время жизни трека (~1 с на 10 Гц, ~2 с на 5 Гц); никогда — в пределах 25 м или для тела высотой ≥ 1 м в пределах 40 м | её положительные примеры синтетические; реальный объект, не похожий на них, может использовать весь бюджет | QC 27.09 |
+| история обработки | то, какие кадры обрабатывает нода, меняет часть ложных STOP: стресс-тест истории — 55 событий (78 на детекторе 26.09), в основном конструкции платформ на 82–147 м | модель пути хранит состояние между кадрами | QC 27.09 |
+| частота и крепление | пять записей, ложные события: 13 как записано, 10 на 5 Гц, 14 при крене +3°, 17 при тангаже +3°; при тангаже +3° — низкий STOP на 2 кадра на 1–3 м, пока калибровка предварительная | измерено на детекторе 26.09 | журнал §1g, §1p |
+| плотная сцена станции | p95 детектора 111 мс на одном ядре (кадры поездки 5700–5900) | кластеризация плотной ближней конструкции | [Скорость](#скорость) |
+| воспроизведение, ограниченное хранилищем | на ВМ команды (сетевой диск 79 МБ/с) запись 360° воспроизводилась ~62,5 с, ~3 кадр/с; запись 120° один раз встала на 1,4 с, и навёрстывание ноды пропустило кадры; проверяющий скрипт пропустил прогоны на ~3 кадр/с | запись 360° требует ~225 МБ/с при скорости 1,0; `check_dry_run.py` теперь печатает темп воспроизведения (`--min-playback-rate`) | [`vm_2026-09-28/summary.md`](evidence/vm_2026-09-28/summary.md) |
+| пачка плеера по умолчанию | без `--read-ahead-queue-size 10` (read-ahead 1 000 в Humble) плеер отправляет просроченную запись пачкой: обработано 57–135 из 201 кадра, все результаты устаревшие (медиана отставания очереди 11 с, RSS до 4 ГБ); с нодой 29.09 — 145 из 201, первый STOP +2,3 с (было +7,5 с), результаты всё равно устаревшие | плеер, а не нода; оставляйте `--read-ahead-queue-size 10` | [`node_startup_2026-09-29/`](evidence/node_startup_2026-09-29/README.md) |
 
-**The single GO at frame 111.** On `doubleT_obstacle` the object lying across the rail forms no
-cluster in frames 110–111, 116–117 and 196–197. Its confirmed `low` track is held over one miss
-(`tracking.hold_misses` 1) and released on the second, so the node publishes GO at frame 111 and
-CAUTION at 117 and 197 (other advisory objects in view); the next frame is STOP again, and
-`clear_distance` stays capped at 56.2 m in those frames. It reproduces offline on the raw
-recording and in every node capture that processed all 201 frames
-([ARCHITECTURE «Known limitations»](ARCHITECTURE.md#limitations-of-the-sealed-2709-detector-verified-2809),
-[`judge_outputs_2026-09-28/`](evidence/judge_outputs_2026-09-28/README.md)). The obvious fix,
-`tracking.hold_misses` 2, restores the three frames (123 → 126 of 126) but fails the strict gate:
-ride 130 → 150 alarm frames and 32 → 34 events, five recordings 40 → 46 alarm frames, and it
-also keeps a stale off-axis track alive. It is recorded on the branch `gpt-score-push-20260928`
-(`docs/evidence/results/p1_raw_continuity_2026-09-28/` there), not in `main`. The sealed detector
-keeps the limitation; a consumer should not act on a single-frame GO.
+**Одиночный GO на кадре 111.** На `doubleT_obstacle` предмет, лежащий поперёк рельса, не образует
+кластера в кадрах 110–111, 116–117 и 196–197. Его подтверждённый трек `low` удерживается через один
+пропуск (`tracking.hold_misses` 1) и снимается на втором, поэтому нода публикует GO на кадре 111 и
+CAUTION на 117 и 197 (в поле зрения другие объекты с предупреждением); следующий кадр — снова STOP, а
+`clear_distance` в этих кадрах остаётся ограниченным 56,2 м. Это воспроизводится офлайн на сырой
+записи и в каждом захвате ноды, обработавшем все 201 кадр
+([ARCHITECTURE «Известные ограничения»](ARCHITECTURE.md#ограничения-опечатанного-детектора-2709-проверено-2809),
+[`judge_outputs_2026-09-28/`](evidence/judge_outputs_2026-09-28/README.md)). Очевидное исправление,
+`tracking.hold_misses` 2, возвращает три кадра (123 → 126 из 126), но не проходит строгий шлюз:
+поездка 130 → 150 кадров тревоги и 32 → 34 события, пять записей 40 → 46 кадров тревоги, а также
+оставляет живым устаревший трек вне оси. Оно зафиксировано в ветке `gpt-score-push-20260928`
+(там `docs/evidence/results/p1_raw_continuity_2026-09-28/`), но не в `main`. Опечатанный детектор
+сохраняет это ограничение; потребителю не следует действовать по одиночному кадру GO.
 
-## How quality changed
+## Как менялось качество
 
-The team's counting (gate or its predecessors on the frame cache; five recordings = the 2 287
-obstacle-free frames; events = distinct confirmed tracks). v0.1 was measured on subsampled
-frames only, and on 22.09 the organizers' answers changed the target (a 2.1 × 3.0 m envelope), so
-the rows before and after v0.6.1 are not strictly comparable.
+Подсчёт команды (шлюз или его предшественники на кэше кадров; пять записей = 2 287 кадров без
+препятствий; события = различные подтверждённые треки). v0.1 измерялась только на прореженных
+кадрах, а 22.09 ответы организаторов изменили цель (габарит 2,1 × 3,0 м), поэтому строки до и после
+v0.6.1 не строго сопоставимы.
 
-| milestone | main change | five recordings: false events | ride: false events (per km) | real person: STOP frames of 61, first frame | set O: objects with STOP of 8 (STOP frames of 801) | set O first STOP: floating 0.3 m cube / edge cube | set F person, median first detection | source |
+| веха | главное изменение | пять записей: ложные события | поездка: ложные события (на км) | реальный человек: кадры STOP из 61, первый кадр | набор O: объекты со STOP из 8 (кадры STOP из 801) | набор O, первый STOP: парящий куб 0,3 м / краевой куб | набор F, человек, медиана первого обнаружения | источник |
 |---|---|---|---|---|---|---|---|---|
-| v0.1 (15.09) | rail self-calibration, rail-relative gauge, voxelised DBSCAN | 92 alarm frames on 231 subsampled frames | — | — | — | — | — | log §1 |
-| v0.3 (15.09; full rate 21.09) | nearer-boundary rule, 1.4 m gauge, hardware / wall filters | 192 (1 001 alarm frames, 44 %) | — | — | — | — | — | log §1, §1b |
-| v0.5 (21–22.09) | axis yaw from the rails, full curvature from the walls, infrastructure signatures, persistence | 32 | 93 (7.2)¹ | 61, frame 8 | — | — | ~106 m (no far-field rule) | log §0a, §1 |
-| v0.6.1 (22.09) | organizers' envelope, low-object stage at the rail heads, far-field rule, 20 s mount calibration | 30 | 82 (6.3) | 58, frame 11 | — | — | 150 m | log §0a, §1d |
-| v0.6.2 (23.09) | objects straddling the envelope floor clustered whole (rail object 2 → 121 of 185 frames), 0.5 s confirmation, no far alarm without rails | 20 | 47 (3.6) | 58, frame 11 | — | — | 148 m | log §0 |
-| v0.6.3 (23.09; set O 24.09) | a reported obstacle held over one missed frame | 20 | 47 (3.6) | 58, frame 11 | 5 (303) | 34.0 m / none | 148 m | log §0, §1f |
-| 25.09 rules | long overhead rule, column hold, rail-shadow rules, hanging-object stage, free-hanging cube exemption, clear-distance cap, 5 Hz / re-mount flags | 13 | 46 (3.5) | 58, frame 11 | 6 (337) | 52.5 m / none | 151.0 m² | log §1f, §1h, §1i |
-| 26.09 (P3d) | rail heads at a fresh start, near-field escalation, wall keep, STOP keep with a 10 s cap | 13 | 45 (3.5) | 58, frame 11 | 8 (384) | 52.5 m / 5.2 m | 151.0 m | log §1k–§1o |
-| **27.09, sealed** | envelope from the rails ∪ the sensor axis within 60 m, learned track opinion (bounded delay), range caps, along-track association gate, far evidence | **11** (13 without the opinion) | **32 (2.5)** in-sample; **37 (2.8) held out** | **61, frame 8** | **8 (411)** | **55.8 m / 35.0 m** | 151.0 m | QC 27.09 |
+| v0.1 (15.09) | самокалибровка по рельсам, габарит относительно рельсов, воксельный DBSCAN | 92 кадра тревоги на 231 прореженном кадре | — | — | — | — | — | журнал §1 |
+| v0.3 (15.09; полная частота 21.09) | правило ближней границы, габарит 1,4 м, фильтры оборудования / стен | 192 (1 001 кадр тревоги, 44 %) | — | — | — | — | — | журнал §1, §1b |
+| v0.5 (21–22.09) | рыскание оси по рельсам, полная кривизна по стенам, сигнатуры инфраструктуры, устойчивость | 32 | 93 (7,2)¹ | 61, кадр 8 | — | — | ~106 м (без правила дальней зоны) | журнал §0a, §1 |
+| v0.6.1 (22.09) | габарит организаторов, ступень низких объектов на головках рельсов, правило дальней зоны, 20-секундная калибровка крепления | 30 | 82 (6,3) | 58, кадр 11 | — | — | 150 м | журнал §0a, §1d |
+| v0.6.2 (23.09) | объекты, пересекающие нижнюю границу габарита, кластеризуются целиком (предмет на рельсе 2 → 121 из 185 кадров), подтверждение за 0,5 с, нет дальней тревоги без рельсов | 20 | 47 (3,6) | 58, кадр 11 | — | — | 148 м | журнал §0 |
+| v0.6.3 (23.09; набор O 24.09) | сообщённое препятствие удерживается через один пропущенный кадр | 20 | 47 (3,6) | 58, кадр 11 | 5 (303) | 34,0 м / нет | 148 м | журнал §0, §1f |
+| правила 25.09 | правило длинных навесных конструкций, удержание колонн, правила тени рельсов, ступень висящих объектов, исключение для свободно висящего куба, ограничение clear-distance, флаги 5 Гц / переустановки | 13 | 46 (3,5) | 58, кадр 11 | 6 (337) | 52,5 м / нет | 151,0 м² | журнал §1f, §1h, §1i |
+| 26.09 (P3d) | головки рельсов при свежем старте, эскалация в ближней зоне, удержание у стен, удержание STOP с ограничением 10 с | 13 | 45 (3,5) | 58, кадр 11 | 8 (384) | 52,5 м / 5,2 м | 151,0 м | журнал §1k–§1o |
+| **27.09, опечатан** | габарит от рельсов ∪ оси датчика в пределах 60 м, обученная модель треков (ограниченная задержка), ограничения дальности, строб ассоциации вдоль пути, дальние свидетельства | **11** (13 без модели) | **32 (2,5)** в выборке; **37 (2,8) вне выборки** | **61, кадр 8** | **8 (411)** | **55,8 м / 35,0 м** | 151,0 м | QC 27.09 |
 
-¹ Same harness as the later rows; the v0.5 run of 22.09 with a fresh detector per 51-frame file
-gave 102 events, 7.9 per km (log §1c). ² The set F script changed after 24.09 (the ray casting is
-seeded per frame): 148 → 151 m is the measurement, not the detector (log §2d).
+¹ Та же схема измерения, что и в более поздних строках; прогон v0.5 от 22.09 со свежим детектором на
+каждый файл из 51 кадра дал 102 события, 7,9 на км (журнал §1c). ² Скрипт набора F изменился после
+24.09 (ray casting использует свой seed на каждый кадр): 148 → 151 м — это изменение измерения, а
+не детектора (журнал §2d).
 
-The 27.09 gains per mechanism (QC 27.09 ablations): the ride and five-recording gains are mostly
-the learned opinion, whose negatives are those recordings (ride 43 → 32 in-sample, 43 → 37 held
-out); the person's three extra frames and the edge cube's 5.2 → 35 m come from the envelope
-reference; the set O range gains (box at the envelope top 101.3 → 111.4 m, plank 82.2 → 87.2 m)
-from far evidence. The judgement of 28.09 on the raw recordings (its own counting) is the
-[current result](#false-alarms): 7 STOP episodes on the five recordings, 30 on the ride.
+Вклад механизмов в улучшения 27.09 (абляции QC 27.09): улучшения на поездке и пяти записях — в
+основном от обученной модели, чьи отрицательные примеры — эти записи (поездка 43 → 32 в выборке,
+43 → 37 вне выборки); три дополнительных кадра на человеке и результат краевого куба 5,2 → 35 м —
+от точки отсчёта габарита; прирост дальности на наборе O (коробка у верхней границы габарита
+101,3 → 111,4 м, доска 82,2 → 87,2 м) — от дальних свидетельств. Оценка 28.09 на сырых записях (со
+своим подсчётом) — это [текущий результат](#ложные-тревоги): 7 эпизодов STOP на пяти записях, 30 на
+поездке.
 
-## What was tried and not shipped
+## Что пробовали и не выпустили
 
-Every item stays off in the sealed configuration or was never merged; decisions with their
-evidence: [`DECISIONS.md`](DECISIONS.md).
+Каждый пункт остаётся выключенным в опечатанной конфигурации или так и не был влит; решения с их
+доказательствами: [`DECISIONS.md`](DECISIONS.md).
 
-| approach (date, key) | result | why not shipped | source |
+| подход (дата, ключ) | результат | почему не выпущено | источник |
 |---|---|---|---|
-| bed-anomaly low-object stage: every bump > 7 cm above the learned bed (22.09) | ride 1 482 false events in 20 min (train-control inductors, drain covers, cable crossings) | a 30 × 30 × 10 cm box on the bed looks like the fixtures; the organizers do not count an object on the bed as an obstacle | log §1d, §7 |
-| rail-level low-object stage: a low cluster reaching the rail head (22.09) | the real rail object 170 of 185 frames, but ride 734 events (guard rails, joints, fastenings) | would stop the train every 1.6 s; the straddle clustering of v0.6.2 took over (121 of 185, +1 event) | log §1d, §0 |
-| central near-bed path, `lowobj.near_enabled` (24.09) | first gates: five recordings 20 → 145 events, ride 47 → 667, the 30 × 30 × 10 cm box 0 of 6 set F approaches; tighter gates: five recordings 107 events | false alarms; and a bed object below the rail head is not an obstacle (organizers, 25.09) | log §1e |
-| short signatures, `cluster.short_signature_max_length` 3 m (25.09) | set O STOP frames 303 → 352 (floating cube 34 → 52.5 m); five recordings 20 → 22 events; ride STOP episodes +6 | pre-registered limit of +5 ride episodes exceeded; the cube's gain came later from a narrower exemption | log §1f |
-| far-rail check, `track.rails_far_check_enabled` (24–25.09) | never fires on the six recordings, set O or the ride | nothing to gain on this data | log §1f, §1h |
-| LiDAR-only train speed, `accumulation.estimate_speed` (v0.4; measured 24.09) | median error 0.06–0.08 m/s, +6.6–6.8 ms per frame; five recordings 103 / 18 → 114 / 17 alarm frames / events; even a perfect speed: no earlier first STOP on set O, outside box 6 → 17 false STOP frames | no gain on the organizers' check, only far-field frame recall | log §9 |
-| far-support rule for the wall sides (82.9 m platform end), `track.walls_min_far_support` (25.09) | platform STOP episodes 15 → 1–10 | set O, `doubleT_platform` or the ride worse in every variant (ride 46 → 50 events): the axis filter amplifies any change | log §1h |
-| switch parts at 147.5 m: `cluster.far_min_height` 0.8–1.0; `cluster.far_axis_both_sides` 1 / 2 (25.09) | height: set F person 151.0 → 138.8–143.5 m, trolley 151.4 → 104.5–106.9 m; mode 2 passes the gate (ride 46 → 42 events) | range loss; mode 2 costs a person's first confirmation on gentle curves (124.1 → 122.2 m) | log §1h |
-| far bed bin dropped under an object's foot, `track.floor_far_min_width` (25.09) | removes one crate's 6 set F false detections, but other fixtures confirm instead (set F false detections 35 → 27–43) | a set O or set F row worse in every candidate | log §1h |
-| `tracking.zone_min_fraction` 0.6 → 0.7 (25.09) | fewer 5 Hz / tilt alarms | real person 185 → 183 labelled hits, first alarm frame 11 → 13 | log §1g |
-| start-up rules for low tracks (26.09): advisory while the calibration is pending; minimum model age; matched at ≥ 4 m | the third passed the gate (ride 46 → 45 events) | a real low object 3–3.9 m ahead of a standing train never STOPped; the other two lose or delay it | log §1j |
-| envelope union `gauge.axis_union` 1, within 50 m (26.09); variants B / B2 | edge cube first STOP 5.2 → 18.2 m (full gate PASS with the review fixes); B: plank −1 STOP frame; B2: ride +3 events | a safety review found it could drop an obstacle touching a long edge structure (oversize split; fixed later); kept off while organizer question Q1 (rails or sensor axis) was open; superseded on 27.09 by `gauge.reference` 3, which never narrows the rails' envelope | log §1m, §1p |
-| candidate B, `tracking.near_escalate_voxels` 10 → 8 (26.09) | gate PASS; edge cube first STOP 5.2 → 7.1 m, +1 STOP frame | one frame at 7 m against a lower bar for every demoted track; the detector was being frozen | log §1p |
-| STOP keep without a voxel bar (26.09) | box at the envelope top STOP on every frame from 101.3 m | ride alarm frames 183 → 192; shipped instead with a 10-voxel bar and a 10 s cap | log §1o |
-| M1: every raw envelope return limits the monitored range (26.09) | all 46 GO overclaims removed | +14.8–49.6 percentage points of uncertain frames on the empty recordings; range sharply reduced | QC 26.09 |
-| M2: supported thin clusters limit the range (26.09) | GO overclaims 46 → 36, detections identical | the combined runtime acceptance failed (a clear-recording STOP at 53.0 m, also in the older baseline); the idea shipped on 27.09 as a range cap without its CAUTION | QC 26.09, QC 27.09 |
-| A1: extra tracking allowance only for forward motion (26.09) | ride 45 → 44 events | one placement case 2 → 1 matches: its pre-registered per-case gate failed | QC 26.09 |
-| D1: full-cloud context for clipped thin / floating candidates (26.09) | edge cube +5 STOP frames; placement matches 544 → 591 | outside-object false STOPs 6 → 9, ride STOP episodes 38 → 40 | QC 26.09 |
-| T1: keep an observed boundary disagreement (26.09) | ride 45 → 43 events, 38 → 32 episodes | monitored-range median retention 50 % on a ride segment and 93.4 % on the platform / switch recording (95 % required) | QC 26.09 |
-| `gauge.reference` 2, a one-sided shift (27.09, first version) | the same set O and person gains as the union | narrows the rails' envelope by up to 0.2 m on one side: a person 0.25 m inside on that side STOP in 24 of 91 frames at 30–60 m | QC 27.09 |
-| envelope reference over the full range; clamp 0.3 m (27.09) | edge cube 21–25 frames from 42–48 m | ride +6 events | QC 27.09 |
-| learned opinion at zero margin; `tracking.doubt_near` 35 m (27.09) | ride 25 events in-sample, 33 held out; 29 events | no margin (one fold's threshold would delay ten held-out test rows); `doubt_near` costs 7 events more than the standing-body exemption | QC 27.09 |
-| `tracking.zone_min_votes` 5, `start_clean`, `confirm_hits` 5 (27.09) | history stress 78 → 55–70 events | each delays a set F person or trolley at ~150 m or a set O object by a frame | QC 27.09 |
-| learned second opinion as a veto on candidates (22.09) | AUC 0.976 without intensity; 83 % of false candidates removed at 97 % object recall | synthetic positives only: a veto with no real positives behind it; a learned opinion on tracks shipped on 27.09 as a bounded delay, never a veto | log §8 |
-| `tracking.hold_misses` 2 (28.09) | rail object 123 → 126 of 126 on the raw recording | strict gate fails: ride 130 → 150 alarm frames, 32 → 34 events; five recordings 40 → 46 alarm frames; branch `gpt-score-push-20260928` only | [above](#hard-situations) |
-| GPU (24.09) | estimated ≤ 30–45 ms per 360° frame against numpy, 5–15 ms against fused CPU code | a GPU container does not start without `nvidia-container-toolkit`; image +0.3–6 GB; untestable in CI; latency is not the limit | [`ARCHITECTURE.md`](ARCHITECTURE.md) "GPU: evaluated, not used" |
-| forward crop at X ≥ 2.9 m; reuse of the bed height (25.09) | identical output | no gain on the native path (crop +0.05…+2.4 ms, bed-height reuse 0.98 → 1.74 ms at 360°); faster only on the numpy fallback | log §7 |
+| ступень низких объектов по аномалиям полотна: каждый бугор выше выученного полотна более чем на 7 см (22.09) | на поездке 1 482 ложных события за 20 мин (индукторы систем управления поездом, крышки дренажа, кабельные переходы) | коробка 30 × 30 × 10 см на полотне выглядит как это оборудование; организаторы не считают предмет на полотне препятствием | журнал §1d, §7 |
+| ступень низких объектов на уровне рельсов: низкий кластер, достигающий головки рельса (22.09) | реальный предмет на рельсе — 170 из 185 кадров, но на поездке 734 события (контррельсы, стыки, крепления) | останавливала бы поезд каждые 1,6 с; её заменила кластеризация объектов, пересекающих границу, из v0.6.2 (121 из 185, +1 событие) | журнал §1d, §0 |
+| центральный путь у полотна, `lowobj.near_enabled` (24.09) | первые пороги: пять записей 20 → 145 событий, поездка 47 → 667, коробка 30 × 30 × 10 см — 0 из 6 сближений набора F; более жёсткие пороги: пять записей 107 событий | ложные тревоги; и предмет на полотне ниже головки рельса не является препятствием (организаторы, 25.09) | журнал §1e |
+| короткие сигнатуры, `cluster.short_signature_max_length` 3 м (25.09) | кадры STOP набора O 303 → 352 (парящий куб 34 → 52,5 м); пять записей 20 → 22 события; эпизоды STOP на поездке +6 | превышен заранее зафиксированный предел +5 эпизодов на поездке; выигрыш на кубе позже дало более узкое исключение | журнал §1f |
+| проверка дальних рельсов, `track.rails_far_check_enabled` (24–25.09) | ни разу не срабатывает на шести записях, наборе O и поездке | на этих данных выигрыша нет | журнал §1f, §1h |
+| скорость поезда только по LiDAR, `accumulation.estimate_speed` (v0.4; измерено 24.09) | медианная ошибка 0,06–0,08 м/с, +6,6–6,8 мс на кадр; пять записей 103 / 18 → 114 / 17 кадров тревоги / событий; даже идеальная скорость: первый STOP на наборе O не раньше, коробка снаружи 6 → 17 кадров ложного STOP | выигрыша на проверке организаторов нет, только покадровая полнота в дальней зоне | журнал §9 |
+| правило дальней опоры для сторон стен (конец платформы на 82,9 м), `track.walls_min_far_support` (25.09) | эпизоды STOP на платформах 15 → 1–10 | в каждом варианте хуже набор O, `doubleT_platform` или поездка (поездка 46 → 50 событий): фильтр оси усиливает любое изменение | журнал §1h |
+| части стрелки на 147,5 м: `cluster.far_min_height` 0,8–1,0; `cluster.far_axis_both_sides` 1 / 2 (25.09) | высота: человек набора F 151,0 → 138,8–143,5 м, тележка 151,4 → 104,5–106,9 м; режим 2 проходит шлюз (поездка 46 → 42 события) | потеря дальности; режим 2 стоит человеку первого подтверждения на пологих кривых (124,1 → 122,2 м) | журнал §1h |
+| дальняя ячейка полотна, отбрасываемая под основанием объекта, `track.floor_far_min_width` (25.09) | убирает 6 ложных обнаружений набора F у одного ящика, но вместо них подтверждается другое оборудование (ложные обнаружения набора F 35 → 27–43) | в каждом кандидате хуже строка набора O или набора F | журнал §1h |
+| `tracking.zone_min_fraction` 0,6 → 0,7 (25.09) | меньше тревог на 5 Гц / при наклоне | реальный человек 185 → 183 размеченных попаданий, первый кадр тревоги 11 → 13 | журнал §1g |
+| правила старта для низких треков (26.09): предупреждение, пока калибровка не завершена; минимальный возраст модели; сопоставление на расстоянии ≥ 4 м | третье прошло шлюз (поездка 46 → 45 событий) | реальный низкий объект в 3–3,9 м перед стоящим поездом так и не получал STOP; остальные два теряют или задерживают его | журнал §1j |
+| объединение габарита `gauge.axis_union` 1, в пределах 50 м (26.09); варианты B / B2 | краевой куб: первый STOP 5,2 → 18,2 м (полный шлюз PASS с исправлениями по ревью); B: доска −1 кадр STOP; B2: поездка +3 события | ревью безопасности показало, что оно могло потерять препятствие, касающееся длинной краевой конструкции (разбиение крупных кластеров, oversize split; позже исправлено); оставлено выключенным, пока вопрос организаторам Q1 (рельсы или ось датчика) был открыт; 27.09 заменено `gauge.reference` 3, который никогда не сужает габарит по рельсам | журнал §1m, §1p |
+| кандидат B, `tracking.near_escalate_voxels` 10 → 8 (26.09) | шлюз PASS; краевой куб: первый STOP 5,2 → 7,1 м, +1 кадр STOP | один кадр на 7 м против сниженного порога для каждого понижённого трека; детектор как раз замораживался | журнал §1p |
+| удержание STOP без порога по вокселям (26.09) | коробка у верхней границы габарита: STOP на каждом кадре с 101,3 м | кадры тревоги на поездке 183 → 192; выпущено вместо этого с порогом в 10 вокселей и ограничением 10 с | журнал §1o |
+| M1: каждое сырое отражение в габарите ограничивает дальность контроля (26.09) | все 46 завышений GO устранены | +14,8–49,6 п. п. неопределённых кадров на пустых записях; дальность резко снижена | QC 26.09 |
+| M2: поддержанные тонкие кластеры ограничивают дальность (26.09) | завышения GO 46 → 36, обнаружения идентичны | не прошла совместная приёмочная проверка при выполнении (STOP на 53,0 м на чистой записи, он есть и в старой базовой линии); идея выпущена 27.09 как ограничение дальности без своего CAUTION | QC 26.09, QC 27.09 |
+| A1: дополнительный допуск трекинга только для движения вперёд (26.09) | поездка 45 → 44 события | в одном случае размещения совпадений стало 2 → 1: не прошёл заранее зафиксированный порог для случая | QC 26.09 |
+| D1: контекст всего облака для обрезанных тонких / парящих кандидатов (26.09) | краевой куб +5 кадров STOP; совпадений при размещении 544 → 591 | ложные STOP на объекте снаружи 6 → 9, эпизоды STOP на поездке 38 → 40 | QC 26.09 |
+| T1: сохранять наблюдаемое расхождение границ (26.09) | поездка 45 → 43 события, 38 → 32 эпизода | медианное сохранение дальности контроля 50 % на одном участке поездки и 93,4 % на записи платформы / стрелки (требовалось 95 %) | QC 26.09 |
+| `gauge.reference` 2, одностороннее смещение (27.09, первая версия) | те же улучшения на наборе O и человеке, что у объединения | сужает габарит по рельсам до 0,2 м с одной стороны: человек в 0,25 м внутри с этой стороны получал STOP в 24 из 91 кадра на 30–60 м | QC 27.09 |
+| точка отсчёта габарита на всей дальности; ограничение (clamp) 0,3 м (27.09) | краевой куб 21–25 кадров с 42–48 м | поездка +6 событий | QC 27.09 |
+| обученная модель с нулевым запасом; `tracking.doubt_near` 35 м (27.09) | поездка 25 событий в выборке, 33 вне выборки; 29 событий | нулевой запас (порог одного фолда задержал бы десять тестовых строк вне выборки); `doubt_near` даёт на 7 событий больше, чем исключение для стоящего тела | QC 27.09 |
+| `tracking.zone_min_votes` 5, `start_clean`, `confirm_hits` 5 (27.09) | стресс-тест истории 78 → 55–70 событий | каждое задерживает человека или тележку набора F на ~150 м либо объект набора O на кадр | QC 27.09 |
+| обученное второе мнение как вето для кандидатов (22.09) | AUC 0,976 без интенсивности; убрано 83 % ложных кандидатов при 97 % полноты по объектам | только синтетические положительные примеры: вето без реальных положительных примеров за ним; обученная модель на треках выпущена 27.09 как ограниченная задержка, но не вето | журнал §8 |
+| `tracking.hold_misses` 2 (28.09) | предмет на рельсе 123 → 126 из 126 на сырой записи | строгий шлюз не проходит: поездка 130 → 150 кадров тревоги, 32 → 34 события; пять записей 40 → 46 кадров тревоги; только в ветке `gpt-score-push-20260928` | [выше](#трудные-ситуации) |
+| GPU (24.09) | оценка ≤ 30–45 мс на кадр 360° против numpy, 5–15 мс против объединённого (fused) CPU-кода | контейнер с GPU не запускается без `nvidia-container-toolkit`; образ +0,3–6 ГБ; не проверить в CI; задержка не является ограничением | [`ARCHITECTURE.md`](ARCHITECTURE.md) «GPU: evaluated, not used» |
+| обрезка вперёд на X ≥ 2,9 м; повторное использование высоты полотна (25.09) | идентичный результат | выигрыша на нативном пути нет (обрезка +0,05…+2,4 мс, повторное использование высоты полотна 0,98 → 1,74 мс при 360°); быстрее только на запасном пути numpy | журнал §7 |
 
-Raw summaries of the history: [`evidence/results/`](evidence/results) (index:
-[`evidence/README.md`](evidence/README.md)); the dated changelog with every measurement:
+Сырые сводки истории: [`evidence/results/`](evidence/results) (указатель:
+[`evidence/README.md`](evidence/README.md)); датированный журнал изменений со всеми измерениями:
 [`archive/CHANGELOG_2026-09.md`](archive/CHANGELOG_2026-09.md).
