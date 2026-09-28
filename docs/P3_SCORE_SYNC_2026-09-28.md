@@ -27,8 +27,9 @@ No force push or rewrite of P3 history is part of this synchronization.
 Neither result establishes overall superiority. The established earlier score remains
 69/100. A separate reviewer rated both the earlier baseline and `ef1d8f5` at
 66/100 under one rubric: zero whole-point regression. These are reviewer judgments,
-not automated test scores. The combined source and enabled P3 experiment have not
-received a new overall rating.
+not automated test scores. A later independent review scores the combined source 67 and the health optimization
+67.5 under the same rubric (+0.5 speed); see [current scorecard](SCORECARD.md).
+The enabled P3 experiment has not yet received acceptance or score credit.
 
 ## Integration rules
 

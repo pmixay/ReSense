@@ -1,0 +1,211 @@
+{
+  "schema": "resense-health-quiet-runtime-execution-v1",
+  "protocol_sha256": "307a49510249911280084f62611a3f90f3a02f8b65d47b4505c3ae64c28665be",
+  "runner_sha256": "a831a4ac7685fc927b9a2d46b12c0ab194946d91f5d6a3d2d8a30f19751d1dc0",
+  "warmed_inputs": {
+    "doubleT_obstacle": {
+      "doubleT_obstacle_0.db3": "05f1d7f7d1bbbc5e9453877416cc9f7367c19e31d35a5291271d863fc89c5ad9"
+    },
+    "roundT_doubleT": {
+      "roundT_doubleT_0.db3": "6b5d3780bb8e373fae9c1a72080c34084f5a743efca5899526eb15c148a2b90d"
+    }
+  },
+  "runs": {
+    "baseline_positive": {
+      "command": [
+        "bash",
+        "scripts/dry_run.sh",
+        "/home/likikikpa/ReSense-p4-data/for_hackathon/doubleT_obstacle",
+        "--min-frames",
+        "201",
+        "--max-p95-latency",
+        "100",
+        "--max-dropped",
+        "0",
+        "--expect-obstacle",
+        "--distance",
+        "50:62"
+      ],
+      "image": "resense:cycle-p3-base",
+      "started": {
+        "utc": "2026-09-28T19:49:43.051230+00:00",
+        "loadavg": "1.25 4.16 4.87 2/1030 83139",
+        "thermal_millidegrees": {
+          "/sys/class/thermal/thermal_zone2/temp": "50",
+          "/sys/class/thermal/thermal_zone0/temp": "70000",
+          "/sys/class/thermal/thermal_zone9/temp": "66000",
+          "/sys/class/thermal/thermal_zone7/temp": "71000",
+          "/sys/class/thermal/thermal_zone5/temp": "50",
+          "/sys/class/thermal/thermal_zone3/temp": "69000",
+          "/sys/class/thermal/thermal_zone1/temp": "20000",
+          "/sys/class/thermal/thermal_zone8/temp": "71000",
+          "/sys/class/thermal/thermal_zone6/temp": "58050",
+          "/sys/class/thermal/thermal_zone4/temp": "62050"
+        }
+      },
+      "exit_code": 1,
+      "finished": {
+        "utc": "2026-09-28T19:50:18.087026+00:00",
+        "loadavg": "1.30 3.85 4.75 1/1030 83593",
+        "thermal_millidegrees": {
+          "/sys/class/thermal/thermal_zone2/temp": "50",
+          "/sys/class/thermal/thermal_zone0/temp": "88000",
+          "/sys/class/thermal/thermal_zone9/temp": "65000",
+          "/sys/class/thermal/thermal_zone7/temp": "88000",
+          "/sys/class/thermal/thermal_zone5/temp": "50",
+          "/sys/class/thermal/thermal_zone3/temp": "73000",
+          "/sys/class/thermal/thermal_zone1/temp": "20000",
+          "/sys/class/thermal/thermal_zone8/temp": "88000",
+          "/sys/class/thermal/thermal_zone6/temp": "58050",
+          "/sys/class/thermal/thermal_zone4/temp": "63050"
+        }
+      }
+    },
+    "candidate_positive": {
+      "command": [
+        "bash",
+        "scripts/dry_run.sh",
+        "/home/likikikpa/ReSense-p4-data/for_hackathon/doubleT_obstacle",
+        "--min-frames",
+        "201",
+        "--max-p95-latency",
+        "100",
+        "--max-dropped",
+        "0",
+        "--expect-obstacle",
+        "--distance",
+        "50:62"
+      ],
+      "image": "resense:cycle-health",
+      "started": {
+        "utc": "2026-09-28T19:50:48.089592+00:00",
+        "loadavg": "0.85 3.50 4.60 1/1070 83771",
+        "thermal_millidegrees": {
+          "/sys/class/thermal/thermal_zone2/temp": "50",
+          "/sys/class/thermal/thermal_zone0/temp": "70000",
+          "/sys/class/thermal/thermal_zone9/temp": "65000",
+          "/sys/class/thermal/thermal_zone7/temp": "71000",
+          "/sys/class/thermal/thermal_zone5/temp": "50",
+          "/sys/class/thermal/thermal_zone3/temp": "69000",
+          "/sys/class/thermal/thermal_zone1/temp": "20000",
+          "/sys/class/thermal/thermal_zone8/temp": "71000",
+          "/sys/class/thermal/thermal_zone6/temp": "58050",
+          "/sys/class/thermal/thermal_zone4/temp": "62050"
+        }
+      },
+      "exit_code": 0,
+      "finished": {
+        "utc": "2026-09-28T19:51:22.579082+00:00",
+        "loadavg": "1.25 3.30 4.49 1/1035 84224",
+        "thermal_millidegrees": {
+          "/sys/class/thermal/thermal_zone2/temp": "50",
+          "/sys/class/thermal/thermal_zone0/temp": "88000",
+          "/sys/class/thermal/thermal_zone9/temp": "65000",
+          "/sys/class/thermal/thermal_zone7/temp": "88000",
+          "/sys/class/thermal/thermal_zone5/temp": "50",
+          "/sys/class/thermal/thermal_zone3/temp": "74000",
+          "/sys/class/thermal/thermal_zone1/temp": "20000",
+          "/sys/class/thermal/thermal_zone8/temp": "88000",
+          "/sys/class/thermal/thermal_zone6/temp": "57050",
+          "/sys/class/thermal/thermal_zone4/temp": "63050"
+        }
+      }
+    },
+    "baseline_clear": {
+      "command": [
+        "bash",
+        "scripts/dry_run.sh",
+        "/home/likikikpa/ReSense-p4-data/for_hackathon/roundT_doubleT",
+        "--min-frames",
+        "252",
+        "--max-p95-latency",
+        "100",
+        "--max-dropped",
+        "0",
+        "--expect-clear"
+      ],
+      "image": "resense:cycle-p3-base",
+      "started": {
+        "utc": "2026-09-28T19:51:59.664279+00:00",
+        "loadavg": "1.24 3.06 4.37 4/1035 84399",
+        "thermal_millidegrees": {
+          "/sys/class/thermal/thermal_zone2/temp": "50",
+          "/sys/class/thermal/thermal_zone0/temp": "75000",
+          "/sys/class/thermal/thermal_zone9/temp": "65000",
+          "/sys/class/thermal/thermal_zone7/temp": "74000",
+          "/sys/class/thermal/thermal_zone5/temp": "50",
+          "/sys/class/thermal/thermal_zone3/temp": "70000",
+          "/sys/class/thermal/thermal_zone1/temp": "20000",
+          "/sys/class/thermal/thermal_zone8/temp": "74000",
+          "/sys/class/thermal/thermal_zone6/temp": "57050",
+          "/sys/class/thermal/thermal_zone4/temp": "63050"
+        }
+      },
+      "exit_code": 0,
+      "finished": {
+        "utc": "2026-09-28T19:52:39.952378+00:00",
+        "loadavg": "1.94 3.02 4.30 1/1036 84873",
+        "thermal_millidegrees": {
+          "/sys/class/thermal/thermal_zone2/temp": "50",
+          "/sys/class/thermal/thermal_zone0/temp": "87000",
+          "/sys/class/thermal/thermal_zone9/temp": "65000",
+          "/sys/class/thermal/thermal_zone7/temp": "89000",
+          "/sys/class/thermal/thermal_zone5/temp": "50",
+          "/sys/class/thermal/thermal_zone3/temp": "78000",
+          "/sys/class/thermal/thermal_zone1/temp": "20000",
+          "/sys/class/thermal/thermal_zone8/temp": "89000",
+          "/sys/class/thermal/thermal_zone6/temp": "57050",
+          "/sys/class/thermal/thermal_zone4/temp": "65050"
+        }
+      }
+    },
+    "candidate_clear": {
+      "command": [
+        "bash",
+        "scripts/dry_run.sh",
+        "/home/likikikpa/ReSense-p4-data/for_hackathon/roundT_doubleT",
+        "--min-frames",
+        "252",
+        "--max-p95-latency",
+        "100",
+        "--max-dropped",
+        "0",
+        "--expect-clear"
+      ],
+      "image": "resense:cycle-health",
+      "started": {
+        "utc": "2026-09-28T19:53:09.955684+00:00",
+        "loadavg": "1.92 2.91 4.22 1/1035 84985",
+        "thermal_millidegrees": {
+          "/sys/class/thermal/thermal_zone2/temp": "50",
+          "/sys/class/thermal/thermal_zone0/temp": "75000",
+          "/sys/class/thermal/thermal_zone9/temp": "65000",
+          "/sys/class/thermal/thermal_zone7/temp": "75000",
+          "/sys/class/thermal/thermal_zone5/temp": "50",
+          "/sys/class/thermal/thermal_zone3/temp": "72000",
+          "/sys/class/thermal/thermal_zone1/temp": "20000",
+          "/sys/class/thermal/thermal_zone8/temp": "75000",
+          "/sys/class/thermal/thermal_zone6/temp": "57050",
+          "/sys/class/thermal/thermal_zone4/temp": "65050"
+        }
+      },
+      "exit_code": 0,
+      "finished": {
+        "utc": "2026-09-28T19:53:48.762545+00:00",
+        "loadavg": "1.67 2.73 4.10 1/1037 85449",
+        "thermal_millidegrees": {
+          "/sys/class/thermal/thermal_zone2/temp": "50",
+          "/sys/class/thermal/thermal_zone0/temp": "88000",
+          "/sys/class/thermal/thermal_zone9/temp": "65000",
+          "/sys/class/thermal/thermal_zone7/temp": "87000",
+          "/sys/class/thermal/thermal_zone5/temp": "50",
+          "/sys/class/thermal/thermal_zone3/temp": "76000",
+          "/sys/class/thermal/thermal_zone1/temp": "20000",
+          "/sys/class/thermal/thermal_zone8/temp": "87000",
+          "/sys/class/thermal/thermal_zone6/temp": "57050",
+          "/sys/class/thermal/thermal_zone4/temp": "65050"
+        }
+      }
+    }
+  }
+}

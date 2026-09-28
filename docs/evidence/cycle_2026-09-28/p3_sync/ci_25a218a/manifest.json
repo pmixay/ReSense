@@ -23,21 +23,13 @@
   },
   "files": {
     "README.md": {
-      "sha256": "1a6282541c7c70e82b72b7b23fae8e2bf9352eff14746165263e823f2fd70f26",
-      "bytes": 4500,
+      "sha256": "b8a1d49e0c65621933ed350698fa41af692100aea5b15f2d6cbc180616e54771",
+      "bytes": 4608,
       "original_path": "README.md",
       "original_sha256": "71492115f465e045a3f6fbcbb87b83446f4d99077e7adf55d02ac302b9ea11ff",
       "original_bytes": 3762,
       "encoding": "identity",
       "archive_note": "Text adapted to describe lossless compressed captures and omitted ZIPs; original task README hash retained."
-    },
-    "audit_captures.py": {
-      "sha256": "ea6aca46011a9364063dbfc68ea7a275bde5dd650bbe79d74132ed03d8dfb17b",
-      "bytes": 8194,
-      "original_path": "audit_captures.py",
-      "original_sha256": "ea6aca46011a9364063dbfc68ea7a275bde5dd650bbe79d74132ed03d8dfb17b",
-      "original_bytes": 8194,
-      "encoding": "identity"
     },
     "capture_audit.json": {
       "sha256": "60c5a00682941cdf2278954b6c89b1079f984ee2a1bdb8f96030d319c5ba6550",
@@ -206,6 +198,15 @@
       "original_sha256": "68cf95bc9d5e1fb62c3e61f130dac0e03ffd607b3bf31701e5292dfd4ac921b1",
       "original_bytes": 11612,
       "encoding": "identity"
+    },
+    "audit_captures.py.txt": {
+      "sha256": "ea6aca46011a9364063dbfc68ea7a275bde5dd650bbe79d74132ed03d8dfb17b",
+      "bytes": 8194,
+      "original_path": "audit_captures.py",
+      "original_sha256": "ea6aca46011a9364063dbfc68ea7a275bde5dd650bbe79d74132ed03d8dfb17b",
+      "original_bytes": 8194,
+      "encoding": "identity",
+      "archive_note": "Original Python observer bytes retained as .py.txt archival evidence; original filename/hash unchanged."
     }
   }
 }

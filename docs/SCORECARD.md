@@ -4,8 +4,32 @@
 > per criterion, the evidence behind it, the risks on the hidden data and the fastest points to gain.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, summary RU
 > **Established baseline rating:** **69/100**, the earlier lead assessment. The measured code improvement is raw rail STOP coverage 123 to 126/126 with no quality-gate regression.
-> **Separate independent review:** **66/100**, fresh-context GPT-6 Astra on candidate `ef1d8f5`. This is not a replacement measurement of the earlier 69 or evidence of a three-point code regression.
-> **Status:** the same reviewer scores baseline and candidate **66/100 each (delta 0)**. Scores are internal judgments; organizers publish no numerical weights. Deployment acceptance remains provisional.
+> **Latest independent paired review:** **67 → 67.5/100 (+0.5 speed)** for experimental baseline `25a218a` versus health candidate `ef71c9d`. This review has its own calibration; the earlier 69/100 remains a historical assessment.
+> **Status:** health optimization accepted for development after its default gate, payload parity and matched local runtime checks. Scores are internal judgments; organizers publish no numerical weights. Fresh availability and target-hardware acceptance remain incomplete.
+
+## Checkpoint 3: health optimization, 28 September
+
+| Functionality /25 | Range /15 | Speed /10 | Generalization /15 | Technical quality /10 | Launch /10 | Approach /10 | Pitch /5 | Total /100 |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 17 | 6 | 8 | 6 | 9 | 8.5 | 9 | 4 | **67.5** |
+
+The [fresh-context paired review](evidence/cycle_2026-09-28/checkpoint3_health_astra.md)
+awards only **+0.5 for speed**, compared with the same reviewer's 67-point baseline.
+The [machine-readable judgment](evidence/cycle_2026-09-28/checkpoint3_health_astra.json)
+and [runtime captures](evidence/cycle_2026-09-28/health_histogram/runtime/README.md)
+retain the baseline failure, exact source/image identities and remaining freshness gaps.
+Processing p95 improves 105.15 → 76.32 ms on the positive recording and 77.33 → 60.51 ms
+on the clear recording. Raw detections match all 453 frames. Positive current end-to-end
+p95 is still 167.85 ms; fresh person recall is 49/61, and fresh rail recall after frame 75
+is 115/126. One fixed-order local warm pair does not establish target-hardware performance.
+
+The [checkpoint 2 priority review](evidence/cycle_2026-09-28/checkpoint2_priority_astra.md)
+separately rated the combined baseline 67/100 before health acceptance. Its mention of
+33 production files is a counting typo: the committed manifest and root audit cover 34.
+Both original reports are retained verbatim. The earlier paired 66 → 66 review below
+and historical lead rating of 69 are separate assessments, not a measured score decline.
+The next priorities are accurate full-call timing, startup/current-result recovery,
+and acceptance of the near-preserving fresh-onset candidate, which has no credit yet.
 
 ## Checkpoint 1: 28 September evening
 

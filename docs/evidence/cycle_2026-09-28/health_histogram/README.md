@@ -17,7 +17,7 @@ Combined-source focused checks pass: 48 tests in 0.52 seconds, lint and whitespa
 The [full native gate and parity comparison](default/README.md) now pass: all 208 metrics
 are unchanged; all 15,269 real-frame payloads match outside verified timing effects;
 all 30 set F cases and 3,060 actual rows match outside summary wall time.
-Quiet installed-image runtime acceptance remains pending. No new history replay is claimed.
+[Quiet installed-image runtime checks](runtime/README.md) now pass for the candidate on both original bags. Positive processing p95 is 76.32 ms (baseline 105.15); clear p95 is 60.51 ms (baseline 77.33). Detections match on all 453 frames. Positive freshness is 170/201 and current end-to-end p95 is 167.85 ms. No new history replay is claimed.
 The original protocol,
 validation and microprobe below remain historical evidence for the earlier score source.
 
@@ -76,7 +76,7 @@ partial duration to the latency monitor. This candidate preserves that calculati
 detector before publication. The [runtime diagnosis](../continuity/runtime/README.md) records
 the discrepancy and the failed quiet positive runs. At that preparation stage, full gate/history checks and quiet
 positive/clear ROS acceptance were deferred. The combined-source gate result above supersedes
-that pending gate status; runtime acceptance remains separate.
+that pending gate status; the later matched runtime above supersedes the pending local runtime status.
 
 ## Reproduce the small probe
 

@@ -60,14 +60,16 @@ contract, an actual detector STOP, and no held STOP. This schema has no literal
 
 `capture_audit.json` preserves exact frame IDs, header identities, target timelines,
 invalid-reason counts, raw/fresh results, artifact hashes and checker identity.
-`audit_captures.py` reads SQLite CDR header prefixes and captures only; it does not
+`audit_captures.py.txt` contains the original observer, which reads SQLite CDR
+header prefixes and captures only; it does not
 run the detector, modify the repository, or tune any configuration. This audit
 adds a startup availability measurement; it does not replace the raw 61/61 person
 recall with a claim of full fresh recall.
 
-The auditor is archived byte-for-byte as executed, with its original workspace
-and `/cycle` paths. To reproduce it, restore the captures to its original task
-directory (decompressing the `.jsonl.gz` files); its hashes in `capture_audit.json`
+The auditor is archived byte-for-byte as executed, as a `.py.txt` evidence
+snapshot with its original workspace and `/cycle` paths. To reproduce it, restore
+the name `audit_captures.py` and the captures to its original task directory
+(decompressing the `.jsonl.gz` files); its hashes in `capture_audit.json`
 and the manifest identify the exact observer. The audit's `artifact_files` paths
 describe the original downloaded files, including verified ZIP hashes; use the
 manifest for their retained archive locations. No detector replay is required.

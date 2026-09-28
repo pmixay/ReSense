@@ -24,6 +24,23 @@ heads, track axis and its curvature from the walls), cuts the organizers' 2.1 ×
 envelope along it and reports every persistent object inside. No object classes, no map, no
 labels; CPU only.
 
+## Current experimental branch — 28 September
+
+Active work is on `experiment/cross-ring-sparse-evidence`; PR #24 is merged.
+The [latest detector evidence](docs/evidence/cycle_2026-09-28/health_histogram/README.md)
+includes P3 work, validated low-object continuation and a faster exact-count health monitor.
+The full default gate passes. Matched local processing p95 improves from 105.15 to 76.32 ms
+on the positive bag and 77.33 to 60.51 ms on the clear bag, with identical detections and
+all 201/252 source frames processed. Positive fresh availability remains 170/201 frames;
+current end-to-end p95 is 167.85 ms. These are local warm measurements.
+
+The jury walkthrough and examples below are dated baseline results. In the current branch,
+low-object continuation fills the old detector misses at frames 111, 117 and 197;
+[header-timestamp replay](docs/evidence/cycle_2026-09-28/evaluation/p3_sync_raw_positive/README.md) and
+[current runtime captures](docs/evidence/cycle_2026-09-28/health_histogram/runtime/README.md)
+separate detector recall from fresh output availability. Scores are review estimates, not
+CI results; no 100/100 claim is made.
+
 ## Кратко для жюри
 
 ReSense 10 раз в секунду отвечает беспилотному поезду метро: есть ли на пути то, чего там быть не
@@ -65,7 +82,7 @@ xhost +local:docker && docker run --rm -it --net=host --ipc=host -e DISPLAY -e Q
 
 **Где взять архив.** Релиз `v1.0.0` запланирован на 28.09, 21:00 МСК (на момент проверки ещё не
 опубликован); после публикации архив и его `.sha256` лежат в Assets релиза. До этого архив любого
-коммита `main` или рабочей ветки `claude/amazing-fermi-t67v8g` — артефакт CI: Actions → прогон
+коммита `main` или рабочей ветки `experiment/cross-ring-sparse-evidence` — артефакт CI: Actions → прогон
 `ci` этого коммита (задание `offline-build` зелёное) → Artifacts → `resense-image-<версия>-<коммит>`
 (zip с `.tar.gz` и `.sha256`, хранится 30 дней, нужен вход в GitHub; или `gh run download <id
 прогона> -n resense-image-<версия>-<коммит>`). Без CI его делает `scripts/export_image.sh` на

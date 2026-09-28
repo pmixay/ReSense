@@ -1,0 +1,47 @@
+from pathlib import Path
+from collections import Counter
+import hashlib,json,shutil,sys
+R=Path('/cycle/health_histogram/runtime'); O=R/'audit'
+sys.path.insert(0,'/workspace/ReSense-p3-sync/scripts')
+from check_dry_run import load
+sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+digest=lambda x:hashlib.sha256(json.dumps(x,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+b=json.loads((R/'baseline_image.json').read_text()); c=json.loads((R/'candidate_image.json').read_text())
+p=json.loads((R/'quiet_protocol.json').read_text());e=json.loads((R/'execution.json').read_text())
+assert sha(R/'quiet_protocol.json')==e['protocol_sha256']
+for d in (b,c):
+ assert digest(d['files'])==d['source_sha256']
+ assert digest(d['effective_config'])==d['effective_config_sha256']==p['effective_config_sha256']
+ assert d['native_sha256']==p['installed_native_sha256']
+assert b['effective_config']==c['effective_config'] and b['packages']==c['packages'] and b['node_sha256']==c['node_sha256']
+changes={}
+for k in ('files','installed_files'):
+ assert set(b[k])==set(c[k]);changes[k]=[f for f in b[k] if b[k][f]!=c[k][f]]
+ assert changes[k]==['resense/health.py']
+report={'schema':'resense-health-quiet-runtime-audit-v1','protocol_sha256':sha(R/'quiet_protocol.json'),'execution_sha256':sha(R/'execution.json'),
+ 'source_changes':changes,'effective_config_sha256':p['effective_config_sha256'],'installed_native_sha256':p['installed_native_sha256'],
+ 'images':{n:json.loads((R/(n+'_build.json')).read_text()) for n in ('baseline','candidate')},'runs':{},'pairs':{},
+ 'limitations':['One fixed-order quiet local warm-disk pair per recording; not target hardware or cold-start acceptance.',
+ 'Contract compliance, frame coverage, fresh availability, raw recall and fresh recall are separate.',
+ 'Baseline failure and candidate late catch-up gaps retained; node decode+detect and end-to-end latency are distinct.']}
+for name in p['order']:
+ a=json.loads((O/(name+'.json')).read_text())
+ assert sha(Path(a['capture']))==a['capture_sha256'] and a['exact_header_sequence_complete'] and not a['missing_indices']
+ assert a['original_frames']==(201 if name.endswith('positive') else 252)
+ keep=('captured_frames','original_frames','exact_header_sequence_complete','missing_indices','strict_fresh_frames','strict_fresh_intervals','invalid_reasons','freshness_contract_failures','last_node_counters','source_stamp_gaps_over_150ms','timing_distributions_ms','raw_current_stop_frames','held_stop_frames','decisions')
+ x={k:a[k] for k in keep}
+ if 'targets' in a:
+  x['targets']={n:{mode:t[mode] for mode in ('raw','fresh')} for n,t in a['targets'].items()}
+  t=a['targets']['object_on_rail'];x['rail_from_frame75']={mode:{'hits':sum(i>=75 for i in t[mode+'_matched_indices']),'frames':sum(i>=75 for i in t['visible_indices'])} for mode in ('raw','fresh')}
+ report['runs'][name]=x
+fields=('stamp','detector_obstacle','detections','warnings','detector_clear_distance','n_points','n_candidates','n_corridor','track','mount')
+for name in ('positive','clear'):
+ a,_=load(R/('baseline_'+name)/'status.jsonl');b,_=load(R/('candidate_'+name)/'status.jsonl')
+ assert len(a)==len(b) and [f['stamp'] for f in a]==[f['stamp'] for f in b]
+ report['pairs'][name]={'compared_frames':len(a),'fields':fields,'difference_counts':dict(Counter(k for x,y in zip(a,b) for k in fields if x.get(k)!=y.get(k)))}
+shutil.copyfile('/cycle/p3_sync/audit_fresh_capture.py',O/'audit_fresh_capture.py')
+shutil.copyfile(__file__,O/'summarize.py')
+report['audit_files']={f.name:sha(f) for f in sorted(O.iterdir()) if f.is_file() and f.name not in ('summary.json','README.md')}
+report['runtime_provenance_files']={f.name:sha(f) for f in sorted(R.iterdir()) if f.is_file()}
+(O/'summary.json').write_text(json.dumps(report,indent=2)+'\n')
+print(json.dumps({'identity_changes':changes,'raw_payload_pairs':report['pairs']}))

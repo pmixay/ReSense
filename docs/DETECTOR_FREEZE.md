@@ -1,22 +1,26 @@
 # Detector seal — 28 September 2026
 
-**Current development reference:** bounded low-object height continuation from
-measured source `ef1d8f5`, integrated as `84763cf`. The
-[full regression](evidence/cycle_2026-09-28/regression/candidate/gate.json)
-passes against the 27 September quality baseline without overrides, waivers,
-missing rows or worse quality metrics: two enforced metrics improve, 144 are unchanged.
-The [current seal](evidence/detector_freeze_2026-09-27.json) covers its exact 31
-detector, configuration and build files. Its historical filename is retained for CI.
+**Current development reference:** `experiment/cross-ring-sparse-evidence`, combining
+P3 work, validated low-object continuation and the exact-count health histogram optimization.
+The [current seal](evidence/detector_freeze_2026-09-27.json) covers 34 detector,
+configuration and build files, matching measured source `ef71c9d` with source digest
+`c0273a13a67ab4872dab00154caa75f6b30f50416775062c591fbb47906a0fa4`.
+The historical manifest filename is retained for CI.
 
-The user authorized the [28 September improvement cycle](IMPROVEMENT_CYCLE_2026-09-28.md).
-Raw replay, all 33 processing histories, reserved synthetic comparison and 841
-installed-image tests support this development integration. The
-[previous baseline seal](evidence/cycle_2026-09-28/regression/baseline/detector_seal.json)
-is preserved. **Deployment remains provisional:** candidate and baseline both fail
-the latest local positive-bag runtime/freshness check; the candidate clear-bag check
-passes. [Image and runtime evidence](evidence/cycle_2026-09-28/image_candidate/README.md).
-Final candidate branch CI remains pending. This integrity record does not declare
-deployment acceptance.
+The [full default gate](evidence/cycle_2026-09-28/health_histogram/default/README.md)
+passes with all 208 compared metrics unchanged, including 146 enforced metrics, and no
+waivers. All 15,269 real-frame payloads and 30 set F cases (3,060 actual rows) match the
+combined P3 baseline outside verified timing effects. The
+[previous P3 seal](evidence/cycle_2026-09-28/health_histogram/previous_p3_seal.json)
+is preserved. This follows the user-authorized [improvement cycle](IMPROVEMENT_CYCLE_2026-09-28.md).
+
+[Matched installed-image runtime](evidence/cycle_2026-09-28/health_histogram/runtime/README.md)
+passes for the candidate: positive processing p95 105.15 → 76.32 ms, clear 77.33 → 60.51 ms;
+all 201/252 original messages are processed and detections are identical.
+Fresh positive availability improves from 0 to 170/201 frames, but current end-to-end p95
+is 167.85 ms. This is one local warm pair, not target-hardware or cold-start acceptance.
+The [previous experimental CI](evidence/cycle_2026-09-28/p3_sync/ci_25a218a/README.md)
+is green in all four jobs; CI of the new health integration must be checked separately.
 
 ## The quality-cycle seal of 27 September (dated record)
 
@@ -47,7 +51,7 @@ the measured source commit, the complete validation record and its hash. It cove
 caches are excluded. Node transport, launch, Docker and documentation have separate checks.
 This is a detector freeze; it does not declare the submission or deployment complete.
 
-## Acceptance and provenance
+## Acceptance and provenance — 26 September (dated record)
 
 The [current full gate](evidence/results/regression_gate_2026-09-26_comment_correction.json) passed on this
 machine without `--allow`: all six recordings, 1,510 organizer-object frames, all 11,271 ride
@@ -104,9 +108,9 @@ python scripts/detector_freeze.py create \
 python scripts/detector_freeze.py verify
 ```
 
-## Limits retained at the freeze
+## Limits retained at the 26 September freeze (dated record)
 
-The current provisional independent combined score is 64/100; the 75-point target is not met. Set O edge objects STOP only at 5–10 m;
+At that checkpoint the provisional independent combined score was 64/100; the 75-point target is not met. Set O edge objects STOP only at 5–10 m;
 the ride has 45 false events and has no real obstacles. There is no unseen-route recall result.
 `clear_distance` estimates the monitored region capped by detected candidates; it can extend
 past objects that do not form a cluster. It must not be described as a guarantee of empty track.
