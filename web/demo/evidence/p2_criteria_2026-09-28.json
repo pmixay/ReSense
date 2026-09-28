@@ -2,7 +2,7 @@
   "review_date": "2026-09-28",
   "integration_base": "8f232847477aaabc9c5f4965e6466af70b7d5d47",
   "detector_reference": "352ca13; docs/evidence/results/regression_baseline_2026-09-27_quality.json",
-  "branch": "claude/p2-criteria-completion-20260928 (to merge into existing Claude branch)",
+  "branch": "claude/amazing-fermi-t67v8g",
   "checks": {
     "p2": {
       "command": "RESENSE_REQUIRE_WEB=1 python -m pytest -q -rs web/demo tests/test_overview_video.py",
@@ -32,6 +32,11 @@
   "status_compatibility": {
     "files": 18,
     "records": 4760,
+    "rejected": []
+  },
+  "supported_playback_site_samples": {
+    "files": 4,
+    "records": 982,
     "rejected": []
   },
   "real_replay": {

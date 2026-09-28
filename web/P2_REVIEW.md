@@ -1,13 +1,15 @@
 # P2 criteria completion — 28 September 2026
 
 > **Owner:** P2 · **Base:** `main` at `8f23284`, including the accepted 27.09 detector
-> **Target branch:** `claude/p2-criteria-completion-20260928`
+> **Published branch:** `claude/amazing-fermi-t67v8g`
 > **Status:** code and public artifacts complete on this branch; on-device demo and private pitch need team inputs
 
 The previously reviewed P2 work was on `f6b156b`. Its remote Claude branch has since been
 deleted. Current `main` contains a newer detector (`352ca13`, measured at `d572807`), so the
 reviewed client fixes were ported onto **current main** and the public PPTX/PDF/video were rebuilt
-from the current regression baseline instead of publishing an obsolete deck.
+from the current regression baseline instead of publishing an obsolete deck. Another contributor
+removed a draft GitBook/Pages site from the Claude branch during this review; that removal is
+preserved. The P2 instructions and freshness limitations are in `web/README.md`.
 
 ## Criteria and evidence
 
@@ -60,6 +62,8 @@ python web/demo/check_dashboard.py --jsonl out/p2-review-real.jsonl \
   deselected for absent `/data/cache/new_data` and six subtests passed. The detector seal verifies
   31 files; lint and whitespace checks pass.
 * The shared browser validator accepted **4,760/4,760** archived records across **18** gzip files.
+  It also accepted **982/982** statuses in **4** supported-playback capture files, including
+  original-bag status streams.
   Real replay smoke accepts **103** archived status frames, observes STOP at **56.1 m**. These
   establish UI compatibility with archived data, not detector recall on unseen data.
 * Public PPTX/PDF were rebuilt from the organizer's 37-slide template: **16 exported slides**.
