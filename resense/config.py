@@ -184,6 +184,10 @@ class ClusterConfig:
     min_points_far: int = 3        # minimum cluster size beyond ``far_range``
     far_range: float = 100.0
     weak_min_points: int = 4       # 27.09 (P5 range, on; 0 = off): a corridor cluster at least tracking.thin_far_min_distance away with fewer voxels than min_points (min_points_far) but at least this many is kept as weak far evidence (Cluster.weak): like a far scan line it goes to the tracker only and counts for a track only while the track approaches (tracking.approach_*)
+    # Experimental cross-ring sparse evidence (off until a real-bag A/B is measured): a far
+    # cluster just below weak_min_points may pass with distinct current-frame channels in the strict gauge.
+    weak_min_rings: int = 0
+    weak_min_points_with_rings: int = 3
     max_extent: float = 8.0        # m, larger clusters are tunnel structure, not obstacles
     # on since 25.09 (P3): > 0 = a cluster larger than max_extent is not dropped when its part inside the
     # strict gauge is at most this long along the track: an object touching a long line at the corridor
@@ -354,6 +358,7 @@ class TrackingConfig:
     # speed, frame after frame on a line.
     thin_far_min_distance: float = 60.0  # m; > 0: a scan line at least this far, inside the strict gauge (zone gauge) with thin_far_min_voxels strict voxels and overlapping no other cluster of the frame, may start and continue a track; while the gauge vote of a track needs such hits, the track becomes a STOP only while it approaches (approach_*) and is reported as advisory otherwise, never hidden; a track whose clean hits alone vote gauge, and a STOP in the previous frame, keep the usual rules
     thin_far_min_voxels: int = 4        # strict-envelope voxels such a scan line needs
+    far_min_ring_count: int = 0         # experimental: distinct current-frame strict-gauge channels for far sparse evidence; 0 = off
     approach_hits: int = 5              # the last hits whose distances are fitted by a line in sensor time
     approach_min_speed: float = 2.0     # m/s the fitted line must approach at (and at most ego_speed_max)
     approach_max_residual: float = 0.5  # m, RMS of the distances about that line

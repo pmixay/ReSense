@@ -40,6 +40,7 @@ class Cluster:
     demoted: bool = False        # 26.09 (P3 range): in the strict gauge by its voxels, demoted only by a shape signature (SHAPE_SIGNATURES)
     thin: bool = False           # 26.09 (tracking.stop_keep_thin): flatter than min_height, kept only to continue a reported obstacle track
     weak: bool = False           # 27.09 (cluster.weak_min_points): fewer voxels than min_points, kept only as far evidence for an approaching track
+    ring_count: int = 0          # distinct known channels in current-frame strict-gauge points; 0 = no ring evidence
 
     @property
     def size(self) -> np.ndarray:
@@ -153,7 +154,7 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
                   height_valid: Optional[float] = None, gauge: Optional[GaugeConfig] = None,
                   dy_alt: Optional[np.ndarray] = None, in_rail: Optional[np.ndarray] = None,
                   keep_thin: bool = False, dy_report: Optional[np.ndarray] = None,
-                  weak_from: float = 0.0) -> List[Cluster]:
+                  weak_from: float = 0.0, ring: Optional[np.ndarray] = None) -> List[Cluster]:
     """Voxelise candidates, cluster the voxels, describe and filter the clusters.
 
     ``xyz``/``intensity``/``dy``/``h``/``in_gauge`` are the corridor candidates;
@@ -223,7 +224,10 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
     default): a corridor cluster at least this far with fewer voxels than the point-count bar but at
     least ``cfg.weak_min_points`` is not dropped but returned with ``weak`` set (every other test
     applied as usual); the caller hands it to the tracker only, as far evidence for an approaching
-    track.
+    track. ``ring`` contains decoded elevation-channel IDs (negative = unknown). The experimental
+    ``cfg.weak_min_rings`` path admits ``cfg.weak_min_points_with_rings`` voxels when enough distinct
+    channels support current-frame points inside the strict gauge; historical and off-gauge points
+    cannot supply this support. Both weak paths still require ``weak_from`` > 0.
     """
     out: List[Cluster] = []
     if xyz.shape[0] == 0:
@@ -250,7 +254,8 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
             c = _low_cluster(b, dy, h, intensity, frame_idx, cfg, low_cfg)
         else:
             c = _corridor_cluster(b, dy, h, in_gauge, intensity, inv, frame_idx, cfg, factor, factor_range,
-                                  axis_valid, height_valid, gauge, dy_alt, in_rail, keep_thin, dy_report, weak_from)
+                                  axis_valid, height_valid, gauge, dy_alt, in_rail, keep_thin, dy_report,
+                                  weak_from, ring)
         if c is not None:
             out.append(c)
     out.sort(key=lambda c: c.distance)
@@ -498,7 +503,7 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
                       height_valid: Optional[float], gauge: Optional[GaugeConfig] = None,
                       dy_alt: Optional[np.ndarray] = None, in_rail: Optional[np.ndarray] = None,
                       keep_thin: bool = False, dy_report: Optional[np.ndarray] = None,
-                      weak_from: float = 0.0) -> Optional[Cluster]:
+                      weak_from: float = 0.0, ring: Optional[np.ndarray] = None) -> Optional[Cluster]:
     """A corridor cluster: size and point-count bars, the infrastructure shapes, then the zone
     (enough voxels in the strict gauge) and the reason that demotes it to advisory. ``in_rail``: the
     strict membership from the rails only (``find_clusters``). With ``keep_thin`` a cluster flatter
@@ -526,10 +531,20 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
     if factor > 1.0 and dist >= factor_range:
         min_pts = int(np.ceil(min_pts * factor))
         gauge_min = int(np.ceil(gauge_min * factor))
+    ring_count = 0
+    if ring is not None and b.idx.size:
+        current_gauge = b.idx[in_gauge[b.idx] & (frame_idx[b.idx] >= 0)]
+        rr = ring[current_gauge]
+        ring_count = int(np.unique(rr[rr >= 0]).size)
     weak = False
     if b.n_vox < min_pts:
         # 27.09 (cluster.weak_min_points, on): kept as weak far evidence (find_clusters)
-        if not (weak_from > 0 and cfg.weak_min_points > 0 and b.n_vox >= cfg.weak_min_points and dist >= weak_from):
+        ordinary = (weak_from > 0 and cfg.weak_min_points > 0
+                    and b.n_vox >= cfg.weak_min_points and dist >= weak_from)
+        cross_ring = (weak_from > 0 and cfg.weak_min_rings > 0
+                      and ring_count >= cfg.weak_min_rings
+                      and b.n_vox >= cfg.weak_min_points_with_rings and dist >= weak_from)
+        if not (ordinary or cross_ring):
             return None
         weak = True
     lateral = float(dy[b.idx].mean())
@@ -594,4 +609,5 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
         intensity=float(intensity[b.idx].mean()) if intensity is not None else 0.0,
         n_expected=n_exp, score=score, zone=zone, n_gauge=n_gauge, retro=retro, reason=reason,
         wall_kept=wall_kept, demoted=demoted and not retro, thin=thin, weak=weak,
+        ring_count=ring_count,
     )

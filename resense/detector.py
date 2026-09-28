@@ -111,7 +111,9 @@ class Candidates:
     index in the frame (``-1``: merged from an earlier frame by the accumulation) and the
     low-object flag (a bump above the track bed, below the envelope floor). ``in_rail`` (26.09):
     the strict membership measured from the rails only, when ``gauge.axis_union`` made
-    ``in_gauge`` the union with the envelope measured from the sensor axis; ``None`` = ``in_gauge``."""
+    ``in_gauge`` the union with the envelope measured from the sensor axis; ``None`` = ``in_gauge``.
+    ``ring`` holds decoded elevation channels; ``None`` or negative entries mean unknown. The
+    accumulation buffer does not preserve channels: old points receive -1 when concatenated."""
     xyz: np.ndarray
     dy: np.ndarray
     h: np.ndarray
@@ -121,6 +123,7 @@ class Candidates:
     low: np.ndarray
     in_rail: Optional[np.ndarray] = None
     dy_rail: Optional[np.ndarray] = None
+    ring: Optional[np.ndarray] = None
 
     def __len__(self) -> int:
         return int(self.idx.size)
@@ -135,11 +138,15 @@ class Candidates:
 
     def concat(self, other: "Candidates") -> "Candidates":
         out = {f.name: np.concatenate([getattr(self, f.name), getattr(other, f.name)])
-               for f in fields(self) if f.name not in ("in_rail", "dy_rail")}
+               for f in fields(self) if f.name not in ("in_rail", "dy_rail", "ring")}
         if self.in_rail is not None or other.in_rail is not None:
             out["in_rail"] = np.concatenate([self.rail(), other.rail()])
         if self.dy_rail is not None or other.dy_rail is not None:
             out["dy_rail"] = np.concatenate([self.lateral_rail(), other.lateral_rail()])
+        if self.ring is not None or other.ring is not None:
+            a = self.ring if self.ring is not None else np.full(len(self), -1, dtype=np.int64)
+            b = other.ring if other.ring is not None else np.full(len(other), -1, dtype=np.int64)
+            out["ring"] = np.concatenate([a, b])
         return Candidates(**out)
 
     def subset(self, m: np.ndarray) -> "Candidates":
@@ -149,7 +156,7 @@ class Candidates:
 
 def _clusters_of(c: Candidates, cfg, **kw) -> List[Cluster]:
     return find_clusters(c.xyz, c.intensity, c.dy, c.h, c.in_gauge, cfg, frame_idx=c.idx, in_rail=c.in_rail,
-                         dy_report=c.dy_rail, **kw)
+                         dy_report=c.dy_rail, ring=c.ring, **kw)
 
 
 def _finite_only(frame: Frame) -> Frame:
@@ -180,6 +187,7 @@ class Detector:
         self.bed = BedTemplate(self.cfg.lowobj)
         self.low_range = 0.0            # m, how far the bed was observed for the low-object stage (last frame)
         self._thin: List[Cluster] = []  # 26.09 (tracking.stop_keep_thin): this frame's corridor clusters flatter than min_height
+        self._frame_ring: Optional[np.ndarray] = None
         self._prev_stamp: Optional[float] = None
         self._gaps: deque = deque(maxlen=14)  # the last stamp intervals within [0, stamp_dt_range[1]] (s): the input rate
 
@@ -199,6 +207,7 @@ class Detector:
         self.evidence.reset()
         self.bed.reset()
         self._thin = []
+        self._frame_ring = None
         self._prev_stamp = None
         self._gaps.clear()
 
@@ -230,6 +239,7 @@ class Detector:
         cfg = self.cfg
         t0 = time.perf_counter()
         frame = _finite_only(frame)
+        self._frame_ring = frame.ring
         dt = self._frame_dt(frame.stamp)
         xyz = self._fit_track(frame.xyz, self._periods())
         t1 = time.perf_counter()
@@ -349,7 +359,8 @@ class Detector:
         mask, strict = corridor_mask(xyz, self.track, cfg.gauge, dy_all, h_all)
         idx = np.flatnonzero(mask)
         cand = Candidates(xyz=xyz[idx], dy=dy_all[idx], h=h_all[idx], in_gauge=strict[idx],
-                          intensity=intensity[idx], idx=idx, low=np.zeros(idx.size, dtype=bool))
+                          intensity=intensity[idx], idx=idx, low=np.zeros(idx.size, dtype=bool),
+                          ring=None if self._frame_ring is None else self._frame_ring[idx])
         ref = reference_offset(cand.xyz[:, 0], self.track, cfg.gauge) if cfg.gauge.reference > 0 else None
         if ref is not None:
             # 27.09 (gauge.reference 1 / 2 / 3, 3 on): the envelope measured from the sensor axis where
@@ -432,17 +443,20 @@ class Detector:
             if si.size >= 3:
                 ones = np.ones(si.size, dtype=bool)
                 straddle = Candidates(xyz=xyz[si], dy=dy_all[si], h=h_all[si], in_gauge=ones,
-                                      intensity=intensity[si], idx=si, low=ones)
+                                      intensity=intensity[si], idx=si, low=ones,
+                                      ring=None if self._frame_ring is None else self._frame_ring[si])
         if lidx.size:
             ones = np.ones(lidx.size, dtype=bool)
             cand = cand.concat(Candidates(xyz=xyz[lidx], dy=dy_all[lidx], h=h_all[lidx], in_gauge=ones,
-                                           intensity=intensity[lidx], idx=lidx, low=ones))
+                                           intensity=intensity[lidx], idx=lidx, low=ones,
+                                           ring=None if self._frame_ring is None else self._frame_ring[lidx]))
         near = None
         if nidx.size and self.track.rail_score >= cfg.track.rails_min_score:
             nidx = nidx[~mask[nidx]]
             ones = np.ones(nidx.size, dtype=bool)
             near = Candidates(xyz=xyz[nidx], dy=dy_all[nidx], h=h_all[nidx], in_gauge=ones,
-                              intensity=intensity[nidx], idx=nidx, low=ones)
+                              intensity=intensity[nidx], idx=nidx, low=ones,
+                              ring=None if self._frame_ring is None else self._frame_ring[nidx])
         return cand, straddle, near
 
     # -- 3 -------------------------------------------------------------------------------------
@@ -522,7 +536,8 @@ class Detector:
                                 smear_max_length=acc.smear_max_length if n_acc > 1 else 0.0,
                                 smear_max_width=acc.smear_max_width if n_acc > 1 else 0.0, gauge=cfg.gauge,
                                 dy_alt=dy_alt, keep_thin=keep_thin,
-                                weak_from=cfg.tracking.thin_far_min_distance if cfg.cluster.weak_min_points > 0 else 0.0)
+                                weak_from=cfg.tracking.thin_far_min_distance
+                                if cfg.cluster.weak_min_points > 0 or cfg.cluster.weak_min_rings > 0 else 0.0)
         if keep_thin:
             # 26.09 (tracking.stop_keep_thin, on since 26.09): the clusters flatter than min_height go
             # to the tracker only, to continue a track (Tracker._continue_thin); no other stage sees them
@@ -664,11 +679,16 @@ class Detector:
         or signature demotion) with ``thin_far_min_voxels`` strict voxels, and overlapping no other
         cluster of the frame (the lower edge of an object another cluster already describes). With
         ``cluster.weak_min_points`` also the clusters under the point-count bar (``Cluster.weak``)
-        that far and in zone ``gauge`` (``cluster.gauge_min_points`` strict voxels)."""
+        that far and in zone ``gauge`` (``cluster.gauge_min_points`` strict voxels). Experimental
+        ``far_min_ring_count`` filters known single-channel evidence only here; unknown channels
+        retain the usual path, and ``self._thin`` still supports continuation of existing STOPs."""
         tc = self.cfg.tracking
+        min_rings = tc.far_min_ring_count
         return [c for c in self._thin
                 if c.distance >= tc.thin_far_min_distance and c.zone == "gauge"
-                and (c.n_gauge >= tc.thin_far_min_voxels or not c.thin) and not any(_overlap(c, k) for k in clusters)]
+                and (c.n_gauge >= tc.thin_far_min_voxels or not c.thin)
+                and (min_rings <= 0 or c.ring_count <= 0 or c.ring_count >= min_rings)
+                and not any(_overlap(c, k) for k in clusters)]
 
     # -- 6b ------------------------------------------------------------------------------------
     def _clear_cap(self, clusters: List[Cluster], cand: Candidates, dy_all: np.ndarray,
