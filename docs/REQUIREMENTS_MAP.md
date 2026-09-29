@@ -38,7 +38,7 @@
 | 5. результат | `/resense/decision` = `STOP`, `/resense/nearest_distance` ≈ 55,5–56,6 м; одной командой — `scripts/play_bag.sh <бэг>` |
 | цепочка «тоннель → облако → алгоритм → препятствие → расстояние» | видео [`docs/video/docker_chain_rviz.mp4`](video/docker_chain_rviz.mp4) и обзор [`resense_overview.mp4`](video/resense_overview.mp4); сценарий живой демонстрации — [`web/DEMO_HANDOFF.md`](../web/DEMO_HANDOFF.md), [`PRESENTATION.md`](PRESENTATION.md) |
 | демонстрация в реальном времени через удалённый рабочий стол | трансляция RViz / Foxglove (порт 8765) — [`web/README.md`](../web/README.md) |
-| дополнительно: разбор записи в браузере, без ROS и Docker | веб-прототип [`webapp/`](../webapp/README.md) (PR #31, вне релиза `v1.0.0`): `scripts/run_webapp.sh` → запись или демо-запись → тот же опечатанный детектор → прогон с решениями по кадрам, оценкой по разметке и 3D-плеером из кабины, сравнение прогонов, прямой эфир ноды через rosbridge; скриншоты — [`images/`](images/README.md) `webapp-*.jpg` |
+| дополнительно: разбор записи в браузере, без ROS и Docker | веб-прототип [`webapp/`](../webapp/README.md), онлайн [resense.arbuz.lol](https://resense.arbuz.lol/) (PR #31, вне релиза `v1.0.0`): `scripts/run_webapp.sh` → запись или демо-запись → тот же опечатанный детектор → прогон с решениями по кадрам, оценкой по разметке и 3D-плеером из кабины, сравнение прогонов, прямой эфир ноды через rosbridge; скриншоты — [`images/`](images/README.md) `webapp-*.jpg` |
 
 ## 3. Документация (ТЗ §5)
 

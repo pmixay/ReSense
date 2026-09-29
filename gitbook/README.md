@@ -45,7 +45,8 @@ scripts/play_bag.sh <bag directory>               # нода + плеер + вы
 
 Пошагово: [Запуск на бэге](getting-started/run-on-a-bag.md). Краткая версия для жюри:
 [Кратко для жюри](getting-started/jury-quickstart-ru.md). Без Docker и ROS, в браузере:
-`scripts/run_webapp.sh` → http://localhost:8080 ([Веб-прототип](visualisation/web-prototype.md)).
+онлайн — **[resense.arbuz.lol](https://resense.arbuz.lol/)**, или свой экземпляр: `scripts/run_webapp.sh` → http://localhost:8080
+([Веб-прототип](visualisation/web-prototype.md)).
 
 ## Что уже измерено
 

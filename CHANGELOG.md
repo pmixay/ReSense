@@ -24,8 +24,8 @@ merged in; optional, it reaches `main` only through that PR with CI green.
 
 - A multi-page web site with a Russian UI in the «Линия» design ([`webapp/README.md`](webapp/README.md)): FastAPI
   backend `resense-web` ([`webapp/backend`](webapp/backend/README.md)), React + TypeScript + Vite frontend
-  ([`webapp/frontend`](webapp/frontend/README.md)), the HTTP contract [`webapp/API.md`](webapp/API.md). One command,
-  no ROS or Docker: `scripts/run_webapp.sh` → http://localhost:8080 (the API and the built site on one port; first
+  ([`webapp/frontend`](webapp/frontend/README.md)), the HTTP contract [`webapp/API.md`](webapp/API.md). Live at
+  https://resense.arbuz.lol/; locally one command, no ROS or Docker: `scripts/run_webapp.sh` → http://localhost:8080 (the API and the built site on one port; first
   run with internet: `--install`; Python ≥ 3.10, Node.js 20.19+ / 22.12+ only to build the frontend).
 - Inputs: a rosbag2 bag (a `.zip` of its folder, `.db3` + `metadata.yaml`, `.mcap`), a `results.jsonl` from
   `resense run --out` (decisions recomputed, no point clouds), cached `.npy` / `.npz` frames; files and folders by

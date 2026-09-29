@@ -11,7 +11,7 @@
 | `docker/`, `docker-compose.yml` | образ и сервисы compose |
 | `scripts/` | сборка, запуск, пробный прогон, экспорт / загрузка архива образа, оценка и регрессионный гейт |
 | `web/` | веб-дашборд, раскладка Foxglove, инструмент разметки и их проверки без браузерного окна |
-| `webapp/` | [веб-прототип](../visualisation/web-prototype.md) для жюри, вне релиза и образа: бэкенд FastAPI `resense-web` (`webapp/backend`), фронтенд React + TypeScript + Vite (`webapp/frontend`), контракт HTTP (`webapp/API.md`), браузерные тесты (`webapp/e2e`), макет дизайна (`webapp/design/mockup`); запуск — `scripts/run_webapp.sh` |
+| `webapp/` | [веб-прототип](../visualisation/web-prototype.md) для жюри (онлайн: [resense.arbuz.lol](https://resense.arbuz.lol/)), вне релиза и образа: бэкенд FastAPI `resense-web` (`webapp/backend`), фронтенд React + TypeScript + Vite (`webapp/frontend`), контракт HTTP (`webapp/API.md`), браузерные тесты (`webapp/e2e`), макет дизайна (`webapp/design/mockup`); запуск — `scripts/run_webapp.sh` |
 | `tests/` | набор тестов |
 | `labels/` | разметка реальных препятствий и синтетических объектов организаторов |
 | `docs/` | все документы; материалы организаторов — в `docs/organizers/`, доказательства (сырые данные замеров) — в `docs/evidence/`, датированные записи — в `docs/archive/` |

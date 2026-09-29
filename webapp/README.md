@@ -9,6 +9,8 @@ design «Линия» ([`design/mockup/`](design/mockup/README.md)).
 
 ## Run it
 
+**Live: [resense.arbuz.lol](https://resense.arbuz.lol/)** — a deployed instance, nothing to install. Your own instance:
+
 ```bash
 scripts/run_webapp.sh              # http://localhost:8080 — builds the frontend if needed, one port
 scripts/run_webapp.sh --install    # first time, with internet: pip install -e . -e webapp/backend, npm ci

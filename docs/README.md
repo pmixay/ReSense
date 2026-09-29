@@ -12,7 +12,8 @@
 Начните с корневого [`README.md`](../README.md): что такое ReSense, команды для жюри, результаты.
 Руководство пользователя: **[resense.gitbook.io/resense-docs](https://resense.gitbook.io/resense-docs/)**
 (исходники — [`gitbook/`](../gitbook/SUMMARY.md), синхронизируются из `main`).
-Веб-прототип для жюри (сайт без ROS и Docker, вне образа и релиза `v1.0.0`): [`webapp/README.md`](../webapp/README.md).
+Веб-прототип для жюри (сайт без ROS и Docker, вне образа и релиза `v1.0.0`): онлайн — **[resense.arbuz.lol](https://resense.arbuz.lol/)**,
+описание — [`webapp/README.md`](../webapp/README.md).
 
 ## 1. Документы
 

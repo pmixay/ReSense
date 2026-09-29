@@ -15,7 +15,7 @@ video recipes.
 
 **Web prototype.** The multi-page web site for the jury lives in [`webapp/`](../webapp/README.md)
 ([PR #31](https://github.com/pmixay/ReSense/pull/31); outside the Docker image and the `v1.0.0` release):
-`scripts/run_webapp.sh` → http://localhost:8080. Unlike this dashboard it processes recordings itself
+live at **[resense.arbuz.lol](https://resense.arbuz.lol/)**, or locally `scripts/run_webapp.sh` → http://localhost:8080. Unlike this dashboard it processes recordings itself
 (a bag or a synthetic demo recording, through the same sealed detector on its backend), keeps runs,
 and adds the score against labels, a fullscreen 3D player from the cab, run comparison and detector
 presets; it needs its Python backend and a one-time `scripts/run_webapp.sh --install` with internet.

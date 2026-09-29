@@ -24,7 +24,8 @@ xhost +local:docker                                      # RViz из конте�
 
 Открыть заранее: окно для демонстрации экрана, плеер с
 [`docs/video/docker_chain_rviz.mp4`](../docs/video/docker_chain_rviz.mp4), именную колоду; если капитан включил
-веб-прототип в план — его вкладку (`scripts/run_webapp.sh` → http://localhost:8080) с готовым прогоном
+веб-прототип в план — его вкладку (онлайн [resense.arbuz.lol](https://resense.arbuz.lol/) или свой экземпляр `scripts/run_webapp.sh` →
+http://localhost:8080) с готовым прогоном
 `doubleT_obstacle` в плеере (подготовка — [`docs/PRESENTATION.md`](../docs/PRESENTATION.md) «Демонстрация»).
 
 ## Показ (слайд 10, ~50 с)

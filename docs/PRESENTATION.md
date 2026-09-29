@@ -168,8 +168,8 @@ docker compose --profile tools up player`; всё одной командой �
 просмотр со второго устройства через Foxglove — [`web/DEMO_HANDOFF.md`](../web/DEMO_HANDOFF.md).
 
 **Дополнительный путь — веб-прототип** (без ROS, Docker и X11; вне образа и релиза, PR #31;
-[`webapp/README.md`](../webapp/README.md)). Заранее: `scripts/run_webapp.sh` (первый раз с интернетом —
-`--install`) → http://localhost:8080, на «Загрузке» из «Папки на сервере» обработать `doubleT_obstacle` с
+[`webapp/README.md`](../webapp/README.md)). Заранее: открыть онлайн [resense.arbuz.lol](https://resense.arbuz.lol/) или свой экземпляр
+(`scripts/run_webapp.sh`, первый раз с интернетом — `--install` → http://localhost:8080), на «Загрузке» из «Папки на сервере» обработать `doubleT_obstacle` с
 «Облаками точек» и открыть прогон в Плеере. Показать Прогон (решения по кадрам против разметки,
 расстояние, оценка по разметке) и Плеер (облако из кабины, габарит 2,1 × 3,0 м, рамка и расстояние;
 Space — пуск / пауза, `[` / `]` — события): после RViz, если остаётся время и капитан включит его в

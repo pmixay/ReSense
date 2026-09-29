@@ -148,4 +148,5 @@ RESENSE_DATA=/mnt/bags RESENSE_BAG=doubleT_obstacle docker compose --profile too
 ```
 
 Без Docker и ROS бэг обрабатывает тем же детектором [веб-прототип](../visualisation/web-prototype.md)
-(`scripts/run_webapp.sh` → http://localhost:8080; вне релиза `v1.0.0` и образа Docker).
+(онлайн — [resense.arbuz.lol](https://resense.arbuz.lol/), свой экземпляр — `scripts/run_webapp.sh` → http://localhost:8080; вне релиза `v1.0.0`
+и образа Docker).

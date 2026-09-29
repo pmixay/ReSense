@@ -87,6 +87,8 @@ xhost +local:docker && docker run --rm -it --net=host --ipc=host -e DISPLAY -e Q
 разметке, 3D-плеер из кабины, сравнение прогонов. Нужны Python ≥ 3.10 и Node.js 20.19+ или 22.12+ (для
 сборки сайта), ROS и Docker — нет. В релиз `v1.0.0` и образ Docker он не входит.
 
+Открыть онлайн: **[resense.arbuz.lol](https://resense.arbuz.lol/)** — ничего устанавливать не нужно. Свой экземпляр:
+
 ```bash
 scripts/run_webapp.sh --install    # один раз, нужен интернет: пакеты pip и npm
 scripts/run_webapp.sh              # http://localhost:8080
