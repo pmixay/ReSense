@@ -11,8 +11,8 @@ Google Slides:
 Slides 7-11 (title, team, team cards, history, solution in short) keep their design and
 structure as the organizers require; the solution slides use the template's own layouts
 (12-29). Every measured number on the slides and in the speaker notes is written once: the numbers the
-regression gate measures in ``GATE`` (one block at the top, provisional until the final gate of the
-shipped detector lands; ``--check-gate <baseline.json>`` lists what differs), everything else in ``N``,
+regression gate measures in ``GATE`` (one block at the top, the final gate of the
+shipped detector; ``--check-gate <baseline.json>`` lists what differs from another gate), everything else in ``N``,
 each with its source and, for timings, its machine: the node checks of 29.09
 (docs/evidence/frame111_2026-09-29), the 28.09 VM and judgement timings, and older dated measurements
 (docs/archive/EXPERIMENTS_log_2026-09.md, docs/archive/P4_AUDIT.md), which the slides date; the texts
@@ -73,21 +73,20 @@ def metres(x):
     return int(x + 0.5)
 
 
-# ==== PROVISIONAL — the numbers the final regression gate re-measures, ALL of them here and nowhere else.
-# Now: run r_1e2ed82 (29.09 evening; explained_run, shell and the ego veto on; 1 cm frame cache;
-# docs/evidence/cycle_2026-09-29/competitor_rules/gate.json, the same numbers as
-# docs/evidence/results/regression_baseline_2026-09-29_competitor_rules.json). The shipped detector since
-# a5455b3 has the shell rule OFF: when its gate lands, put the final baseline's value into each line (the
-# comment names the key), set GATE_RUN / GATE_SOURCE, rebuild. `build_deck.py --check-gate <baseline.json>`
-# lists every line that differs from a baseline, with the value to write. Everything below GATE derives
-# from it (per km, "без пропусков", ranges, chart bars); the web/demo deck test pins the same keys.
-GATE_RUN = "r_1e2ed82"
-GATE_SOURCE = "docs/evidence/results/regression_baseline_2026-09-29_competitor_rules.json"
+# ==== FINAL — the numbers the regression gate measures, ALL of them here and nowhere else.
+# The final gate of the shipped detector (29.09 night: explained_run and the ego veto on, the shell rule off
+# after the safety review; seal docs/evidence/detector_freeze_2026-09-29_shell_off.json; 1 cm frame cache;
+# docs/evidence/cycle_2026-09-29/shell_off/gate.json = the newest baseline below). A later gate: put its value
+# into each line (the comment names the key), set GATE_RUN / GATE_SOURCE, rebuild; `build_deck.py
+# --check-gate <baseline.json>` lists every line that differs, with the value to write. Everything below GATE
+# derives from it (per km, "без пропусков", ranges, chart bars); the web/demo deck test pins the same keys.
+GATE_RUN = "7464d80 (shell off)"
+GATE_SOURCE = "docs/evidence/results/regression_baseline_2026-09-29_shell_off.json"
 GATE = {
     "empty_events": 8,               # five_empty.alarm_events
     "empty_episodes": 12,            # five_empty.stop_episodes
-    "ride_events": 26,               # ride.alarm_events            (per km = / 13, derived)
-    "ride_episodes": 28,             # ride.stop_episodes
+    "ride_events": 27,               # ride.alarm_events            (per km = / 13, derived)
+    "ride_episodes": 30,             # ride.stop_episodes
     "obstacle_stop": (193, 201),     # recordings.doubleT_obstacle.alarm_frames, .frames
     "obstacle_first_frame": 8,       # recordings.doubleT_obstacle.first_alarm_frame
     "person": (61, 61),              # recordings.doubleT_obstacle.labelled.per_label.person_crossing hits, frames
@@ -113,7 +112,7 @@ GATE = {
 # re-measured on the final commit, not by the gate: `python3 -m pytest -q` (CHANGELOG 29.09: 1 279 pass,
 # plus 74 web/demo dashboard tests); the deck test (web/demo/test_web.py) asks >= 667
 TESTS = "1 279"
-# ==== end of PROVISIONAL
+# ==== end of FINAL
 
 # ---- every other measured number on the slides and in the speaker notes; each is written here once and
 # the slide texts, charts and notes read it through the helpers below. Sources: GATE above, the cycle
