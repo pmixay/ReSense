@@ -1,0 +1,102 @@
+.sel {
+  background: var(--white);
+  border-radius: 18px;
+  box-shadow: 0 0 0 1.5px var(--hair), 0 10px 24px -16px rgba(22, 21, 26, 0.5);
+  padding: 12px 12px 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+.fi {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--ink);
+  color: var(--white);
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.w {
+  flex: 1;
+  min-width: 0;
+}
+.nm {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 15px;
+  white-space: nowrap;
+  min-width: 0;
+}
+.name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+.ok {
+  height: 22px;
+  padding: 0 9px 0 5px;
+  border-radius: 11px;
+  background: var(--well-2);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 800;
+  font-size: var(--fs-min);
+  flex: none;
+}
+.facts {
+  display: flex;
+  gap: 6px;
+  margin-top: 7px;
+  flex-wrap: wrap;
+  max-height: 54px;
+  overflow: hidden;
+}
+.facts span {
+  height: 24px;
+  padding: 0 9px;
+  border-radius: 12px;
+  background: var(--well);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 700;
+  font-size: var(--fs-min);
+  white-space: nowrap;
+  max-width: 100%;
+}
+.facts span b {
+  font-weight: 800;
+  margin-left: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.facts .ink {
+  background: var(--ink);
+  color: var(--white);
+}
+.facts .good {
+  background: var(--go-tint);
+}
+.facts .warn {
+  background: var(--caution-tint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-height: 950px) {
+  .sel {
+    padding: 9px 10px 9px 12px;
+  }
+  .fi {
+    width: 40px;
+    height: 40px;
+  }
+  .facts {
+    margin-top: 5px;
+  }
+}

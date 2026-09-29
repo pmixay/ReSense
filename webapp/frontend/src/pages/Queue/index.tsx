@@ -1,33 +1,130 @@
-// Очередь — placeholder: the job list (running / waiting / finished) arrives with the page's own agent.
-import { isJobActive, useJobs } from '../../api/hooks';
-import { Button, Card, Chip, EmptyState, ErrorBanner, PageHeader, Spinner } from '../../components';
+// Очередь: the job the detector works on (processing line, progress, the decision string growing),
+// the waiting jobs with their place, and the finished / failed ones (open, player, log, retry).
+import { useCallback, useState, type ReactNode } from 'react';
+import { useClearFinishedJobs } from '../../api/hooks';
+import type { Job } from '../../api/types';
+import { Button, Card, EmptyState, ErrorBanner, PageHeader, Spinner } from '../../components';
+import { FailedRow, FinishedRow, QueuedRow } from './JobRows';
+import { LogDialog } from './LogDialog';
+import { CountChips } from './QueueParts';
+import { RunningJob } from './RunningJob';
+import { useQueue } from './useQueue';
+import styles from './Queue.module.css';
 
 export default function Queue() {
-  const jobs = useJobs(undefined, { retry: false });
-  const active = jobs.data?.filter(isJobActive).length ?? 0;
+  const { jobs, groups, finished, recById, runById } = useQueue();
+  const clear = useClearFinishedJobs();
+  const [logJob, setLogJob] = useState<Job | null>(null);
+  const closeLog = useCallback(() => setLogJob(null), []);
+  const running = groups.running[0];
+  const loading = jobs.isLoading;
+
+  const body = (content: ReactNode) =>
+    jobs.isError ? (
+      <ErrorBanner error={jobs.error} onRetry={() => void jobs.refetch()} retrying={jobs.isFetching} />
+    ) : loading ? (
+      <div className={styles.center}>
+        <Spinner size={24} />
+      </div>
+    ) : (
+      content
+    );
+
   return (
     <>
       <PageHeader
         title="Очередь"
         station={1}
-        chips={jobs.data ? <Chip variant="outline">{active ? `${active} в работе или ждут` : 'нет активных задач'}</Chip> : undefined}
+        chips={jobs.data ? <CountChips groups={groups} /> : undefined}
         actions={
-          <Button variant="primary" icon="upload" to="/upload">
-            Новая запись
-          </Button>
+          <>
+            <Button variant="outline" icon="trash" onClick={() => clear.mutate()} loading={clear.isPending} disabled={finished.length === 0}>
+              Убрать готовые
+            </Button>
+            <Button variant="primary" icon="upload" to="/upload">
+              Новая запись
+            </Button>
+          </>
         }
       />
-      <Card title="Задачи" help="Детектор обрабатывает одну запись за раз; остальные ждут в порядке очереди.">
-        {jobs.isError ? (
-          <ErrorBanner error={jobs.error} onRetry={() => void jobs.refetch()} />
-        ) : jobs.isLoading ? (
-          <Spinner />
-        ) : (
-          <EmptyState icon="queue" title={jobs.data?.length ? `Задач: ${jobs.data.length}` : 'Очередь пуста'}>
-            Страница в разработке.
-          </EmptyState>
-        )}
-      </Card>
+      {clear.isError && <ErrorBanner error={clear.error} compact className={styles.topErr} />}
+      <section className={`grid-12 fill-viewport ${styles.grid}`}>
+        <Card
+          title="В работе"
+          help="Детектор обрабатывает одну запись за раз, остальные ждут в порядке очереди. Прогон появляется в «Прогонах», когда задача готова."
+          helpPlacement="bottom-start"
+          className={styles.main}
+        >
+          {body(
+            running ? (
+              <RunningJob job={running} recording={recById.get(running.recording_id)} variant="full" />
+            ) : (
+              <EmptyState
+                icon="cpu"
+                title="Детектор свободен"
+                action={
+                  <div className={styles.acts}>
+                    <Button variant="dark" icon="upload" to="/upload">
+                      Загрузить запись
+                    </Button>
+                    <Button variant="outline" icon="sparkle" to="/upload?source=demo">
+                      Демо
+                    </Button>
+                  </div>
+                }
+              >
+                {groups.queued.length ? 'Следующая задача запускается…' : 'Новая задача начнётся сразу.'}
+              </EmptyState>
+            ),
+          )}
+        </Card>
+
+        <div className={styles.side}>
+          <Card title="Ждут" badges={<span className={styles.n}>{groups.queued.length}</span>} className={styles.waiting}>
+            {body(
+              groups.queued.length ? (
+                <div className={styles.scroll}>
+                  {groups.queued.map((j) => (
+                    <QueuedRow key={j.id} job={j} recording={recById.get(j.recording_id)} />
+                  ))}
+                </div>
+              ) : (
+                <div className={styles.emptyLine}>Очередь пуста</div>
+              ),
+            )}
+          </Card>
+
+          <Card
+            title="Завершено"
+            badges={<span className={styles.n}>{finished.length}</span>}
+            help="Галочка — прогон готов; чип — итог по разметке или число СТОП. Ошибку можно повторить с теми же параметрами."
+            helpPlacement="bottom"
+            className={styles.finished}
+            actions={
+              <Button variant="outline" size="sm" iconRight="arrow-right" to="/runs">
+                Все прогоны
+              </Button>
+            }
+          >
+            {body(
+              finished.length ? (
+                <div className={styles.scroll}>
+                  {finished.map((j) =>
+                    j.status === 'done' ? (
+                      <FinishedRow key={j.id} job={j} recording={recById.get(j.recording_id)} run={j.run_id ? runById.get(j.run_id) : undefined} />
+                    ) : (
+                      <FailedRow key={j.id} job={j} recording={recById.get(j.recording_id)} onLog={setLogJob} />
+                    ),
+                  )}
+                </div>
+              ) : (
+                <EmptyState icon="list" size="sm" title="Готовых задач нет" />
+              ),
+            )}
+          </Card>
+        </div>
+      </section>
+      {logJob && <LogDialog job={logJob} onClose={closeLog} />}
     </>
   );
 }

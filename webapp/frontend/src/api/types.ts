@@ -145,6 +145,23 @@ export interface RunDetail extends Run {
   episodes: Episode[];
   events: Episode[];
   recording: Recording | null;
+  /** the job options the run was made with (defaults filled in); null for old runs */
+  options?: Required<JobOptions> | null;
+  /** the preset's overrides at job time ({} = the detector defaults) */
+  overrides?: Record<string, ParamValue>;
+  /** bytes of the stored results.jsonl / clouds.bin (null when absent) */
+  sizes?: { results_jsonl: number | null; clouds: number | null };
+}
+
+/** GET /api/runs/{id}/labels: the run's label file per processed frame (distance chart band). */
+export interface RunLabels {
+  available: boolean;
+  labels_name: string | null;
+  in_gauge: boolean[];
+  /** nearest face of the nearest labelled, visible in-gauge object (m), null where none */
+  near: (number | null)[];
+  /** near + the object's length (m) */
+  far: (number | null)[];
 }
 
 export interface RunSeries {
@@ -352,6 +369,17 @@ export interface DemoCreate {
   scenario: DemoScenario;
   seconds?: number; // 5..60, default 15
   seed?: number;
+  /** client-chosen id (8..64 of A-Za-z0-9_-) to follow the generation via DemoProgress */
+  progress_id?: string;
+}
+
+/** GET /api/recordings/demo/progress/{progress_id} while POST /api/recordings/demo runs. */
+export interface DemoProgress {
+  progress_id: string;
+  fraction: number; // 0..1
+  done: boolean;
+  recording_id: string | null;
+  error: string | null;
 }
 
 /** Raw labels file (labels/*.json): {"_meta": {...}, "00042": [{...}], ...}. */

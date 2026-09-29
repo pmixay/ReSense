@@ -36,7 +36,8 @@ def _detail(ctx: Context, row: dict) -> dict:
     episodes, events = runs_mod.episodes(ctx.settings, row["id"])
     rec = rec_mod.get(ctx.db, row["recording_id"]) if row["recording_id"] else None
     return {**runs_mod.to_api(row), "episodes": episodes, "events": events,
-            "recording": rec_mod.to_api(ctx.settings, rec) if rec else None}
+            "recording": rec_mod.to_api(ctx.settings, rec) if rec else None,
+            **runs_mod.detail_extras(ctx.settings, row["id"])}
 
 
 @router.get("/runs")
@@ -72,6 +73,15 @@ def run_series(run_id: str, ctx: Context = Depends(get_ctx)) -> Response:
     _row(ctx, run_id)
     try:
         return _json(runs_mod.series_bytes(ctx.settings, run_id))
+    except FileNotFoundError:
+        raise not_found("Результаты прогона не найдены") from None
+
+
+@router.get("/runs/{run_id}/labels")
+def run_labels(run_id: str, ctx: Context = Depends(get_ctx)) -> Response:
+    _row(ctx, run_id)
+    try:
+        return _json(dumps(runs_mod.labels_series(ctx.settings, run_id)))
     except FileNotFoundError:
         raise not_found("Результаты прогона не найдены") from None
 
@@ -128,7 +138,8 @@ def download_report(run_id: str, ctx: Context = Depends(get_ctx)) -> Response:
     detail = _detail(ctx, row)
     doc = runs_mod.read_summary_doc(ctx.settings, run_id)
     report = {"schema": "resense_web_report", "version": 1,
-              "run": {k: v for k, v in detail.items() if k not in ("episodes", "events", "recording")},
+              "run": {k: v for k, v in detail.items()
+                      if k not in ("episodes", "events", "recording", "options", "overrides", "sizes")},
               "episodes": detail["episodes"], "generated_at": now_iso(),
               "events": detail["events"], "recording": detail["recording"],
               "options": doc.get("options"), "overrides": doc.get("overrides"), "config": doc.get("config")}

@@ -1,0 +1,230 @@
+.drop {
+  flex: 1;
+  min-height: 0;
+  border-radius: var(--r-tile);
+  border: 2px dashed var(--ink);
+  background: radial-gradient(circle at 50% 58%, rgba(22, 21, 26, 0.035), rgba(22, 21, 26, 0) 55%), var(--well-3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 92px 14px 60px;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.over {
+  border-width: 3px;
+  background: var(--well-2);
+}
+.top {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  top: 14px;
+  z-index: 2;
+}
+.card {
+  background: var(--white);
+  border-radius: 18px;
+  box-shadow: 0 0 0 1.5px var(--hair), 0 10px 24px -16px rgba(22, 21, 26, 0.5);
+  padding: 12px 12px 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+.fi {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--ink);
+  color: var(--white);
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.fiWarn {
+  background: var(--caution);
+  color: var(--ink);
+}
+.w {
+  flex: 1;
+  min-width: 0;
+}
+.nm {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 15px;
+  white-space: nowrap;
+  min-width: 0;
+}
+.name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+.kind {
+  height: 22px;
+  padding: 0 9px;
+  border-radius: 11px;
+  background: var(--well-2);
+  display: inline-flex;
+  align-items: center;
+  font-weight: 800;
+  font-size: var(--fs-min);
+  flex: none;
+}
+.kindWarn {
+  background: var(--caution-tint);
+}
+.bar {
+  margin-top: 9px;
+}
+.line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 7px;
+  font-weight: 600;
+  font-size: var(--fs-min);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.line b {
+  font-weight: 800;
+}
+.inlineErr {
+  margin-top: 8px;
+}
+.errBox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--white);
+  border-radius: 18px;
+  padding: 8px;
+  box-shadow: 0 0 0 1.5px var(--hair);
+}
+.errBox > :first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.prompt {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+}
+.big {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: var(--red);
+  color: var(--white);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 0 0 12px var(--red-tint), 0 18px 30px -12px rgba(228, 0, 13, 0.7);
+  flex: none;
+}
+.h {
+  font-size: 24px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.or {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+}
+.fm {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 8px;
+  gap: 7px;
+  justify-content: center;
+  align-items: center;
+}
+.fchip {
+  height: 34px;
+  padding: 0 12px 0 7px;
+  border-radius: var(--pill);
+  background: var(--white);
+  box-shadow: inset 0 0 0 1.5px var(--hair-2);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: var(--fs-meta);
+  white-space: nowrap;
+}
+.fci {
+  width: 22px;
+  height: 22px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  color: var(--white);
+}
+.reading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}
+
+@media (max-width: 1500px) {
+  .fci {
+    display: none;
+  }
+  .fchip {
+    padding: 0 12px;
+  }
+  .prompt {
+    gap: 26px;
+  }
+}
+@media (max-width: 1380px) {
+  .fchip {
+    height: 30px;
+    font-size: var(--fs-min);
+  }
+}
+@media (max-height: 950px) {
+  .big {
+    width: 76px;
+    height: 76px;
+    box-shadow: 0 0 0 10px var(--red-tint), 0 14px 24px -12px rgba(228, 0, 13, 0.7);
+  }
+  .big svg {
+    width: 32px;
+    height: 32px;
+  }
+  .h {
+    font-size: 22px;
+  }
+  .or {
+    margin-top: 14px;
+  }
+  .drop {
+    padding: 84px 14px 54px;
+  }
+  .prompt {
+    gap: 28px;
+  }
+  .card {
+    padding: 9px 10px 9px 12px;
+  }
+  .fi {
+    width: 40px;
+    height: 40px;
+  }
+}

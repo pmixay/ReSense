@@ -79,6 +79,49 @@ def episodes(settings: Settings, run_id: str) -> tuple[list[dict], list[dict]]:
     return eps, (evs if evs is not None else events_of(eps))
 
 
+def _size(path: Path) -> int | None:
+    try:
+        return path.stat().st_size
+    except OSError:
+        return None
+
+
+def detail_extras(settings: Settings, run_id: str) -> dict:
+    """The run-detail keys kept in ``summary.json`` / on disk: the job options and the preset
+    overrides the run was made with, and the sizes of its stored files (bytes, None if absent)."""
+    doc = read_summary_doc(settings, run_id)
+    d = run_dir(settings, run_id)
+    options = doc.get("options")
+    overrides = doc.get("overrides")
+    return {
+        "options": options if isinstance(options, dict) else None,
+        "overrides": overrides if isinstance(overrides, dict) else {},
+        "sizes": {"results_jsonl": _size(d / results.RESULTS), "clouds": _size(d / "clouds.bin")},
+    }
+
+
+def labels_series(settings: Settings, run_id: str) -> dict:
+    """Per processed frame, what the run's label file says: an in-gauge object and its along-track
+    extent (``GET /runs/{id}/labels``). ``available`` is false when the run was made without labels
+    or its label file is gone / no longer readable (e.g. the recording was deleted)."""
+    empty = {"available": False, "labels_name": None, "in_gauge": [], "near": [], "far": []}
+    doc = read_summary_doc(settings, run_id)
+    path = doc.get("labels_path")
+    if not path or not Path(path).is_file():
+        return empty
+    from resense_web import evaluation
+    frames = series(settings, run_id)["frame"]
+    try:
+        in_gauge = evaluation.labels_in_gauge(frames, Path(path))
+        near, far = evaluation.labels_extent(frames, Path(path))
+    except (OSError, ValueError, KeyError, TypeError):
+        return empty
+    ev = (doc.get("summary") or {}).get("eval") or {}
+    name = ev.get("labels_name") if isinstance(ev, dict) else None
+    return {"available": True, "labels_name": name or Path(path).name, "in_gauge": in_gauge,
+            "near": near, "far": far}
+
+
 def series(settings: Settings, run_id: str) -> dict:
     """The chart arrays (``series.json``; rebuilt from results.jsonl when missing)."""
     d = run_dir(settings, run_id)

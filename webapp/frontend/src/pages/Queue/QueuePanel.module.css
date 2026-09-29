@@ -1,0 +1,42 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 22px 22px 20px;
+}
+.center {
+  display: grid;
+  place-items: center;
+  flex: 1;
+}
+.idle {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--well);
+  border-radius: var(--r-tile);
+  padding: 16px 18px;
+}
+.idleIc {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--white);
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.idleT {
+  flex: 1;
+  font-family: var(--f-head);
+  font-weight: 800;
+  font-size: 15px;
+}
+.lists {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  margin: 0 -6px;
+  padding: 0 6px 4px;
+  scrollbar-width: thin;
+}

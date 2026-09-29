@@ -1,0 +1,249 @@
+.job {
+  background: var(--well);
+  border-radius: var(--r-tile);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.full {
+  flex: 1;
+  min-height: 0;
+  padding: 22px 26px 22px;
+}
+.head {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.title {
+  flex: 1;
+  min-width: 0;
+}
+.nm {
+  font-weight: 800;
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.full .nm {
+  font-family: var(--f-head);
+  font-size: 22px;
+  line-height: 1.15;
+}
+.mt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: var(--fs-meta);
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.mt b {
+  font-weight: 800;
+}
+.full .mt {
+  margin-top: 6px;
+}
+.pl {
+  margin: 12px 0 4px;
+}
+.full .pl {
+  margin: 22px 0 10px;
+}
+.prog {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  margin-top: 4px;
+}
+.pc {
+  font-family: var(--f-head);
+  font-weight: 800;
+  font-size: 40px;
+  line-height: 0.9;
+  white-space: nowrap;
+  min-width: 2.2ch;
+}
+.full .pc {
+  font-size: 56px;
+}
+.pc small {
+  font-size: 18px;
+}
+.barWrap {
+  flex: 1;
+  padding-bottom: 4px;
+  min-width: 0;
+}
+.note {
+  font-weight: 700;
+  font-size: var(--fs-meta);
+  margin-bottom: 6px;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+.full .stats {
+  margin-top: 20px;
+  gap: 12px;
+}
+.js {
+  background: var(--white);
+  border-radius: var(--r-sm);
+  padding: 10px 12px;
+  min-width: 0;
+}
+.full .js {
+  padding: 14px 16px;
+}
+.v {
+  font-family: var(--f-head);
+  font-weight: 800;
+  font-size: 17px;
+  white-space: nowrap;
+}
+.full .v {
+  font-size: 22px;
+}
+.l {
+  font-weight: 600;
+  font-size: var(--fs-min);
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* full: decisions so far + stage timings, pushed to the bottom of the card */
+.decisions {
+  margin-top: auto;
+  padding-top: 20px;
+}
+.secHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--f-head);
+  font-weight: 700;
+  font-size: 12.5px;
+  min-height: 40px;
+  margin-bottom: 8px;
+}
+.sp {
+  flex: 1;
+}
+.secVal {
+  margin-left: auto;
+  font-family: var(--f-head);
+  font-weight: 800;
+  font-size: 15px;
+}
+.last {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--f-body);
+  font-weight: 700;
+  font-size: var(--fs-meta);
+}
+.stripTrack {
+  height: 30px;
+  border-radius: 9px;
+  background: var(--well-2);
+  overflow: hidden;
+}
+.stripGrow {
+  transition: width 0.6s var(--ease);
+}
+.timings {
+  padding-top: 16px;
+}
+.tbar {
+  display: flex;
+  height: 14px;
+  border-radius: 7px;
+  overflow: hidden;
+  gap: 2px;
+  background: var(--white);
+}
+.tseg {
+  flex-basis: 0;
+  min-width: 3px;
+  background: var(--ink);
+  opacity: calc(1 - var(--k) * 0.14);
+}
+.tlegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-top: 10px;
+  font-weight: 600;
+  font-size: var(--fs-min);
+}
+.tlegend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.tlegend b {
+  font-weight: 800;
+}
+.tlegend i {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--ink);
+  opacity: calc(1 - var(--k) * 0.14);
+}
+.err {
+  margin-top: 12px;
+}
+
+@media (max-width: 1500px) {
+  .l {
+    font-size: 11.5px;
+  }
+}
+@media (max-height: 950px) {
+  .job {
+    padding: 14px 18px;
+  }
+  .full {
+    padding: 18px 22px;
+  }
+  .pl {
+    margin: 8px 0 2px;
+  }
+  .full .pl {
+    margin: 14px 0 6px;
+  }
+  .stats {
+    margin-top: 10px;
+  }
+  .js {
+    padding: 7px 12px;
+  }
+  .full .js {
+    padding: 10px 14px;
+  }
+  .pc {
+    font-size: 34px;
+  }
+  .full .pc {
+    font-size: 46px;
+  }
+  .decisions {
+    padding-top: 12px;
+  }
+  .timings {
+    padding-top: 10px;
+  }
+}

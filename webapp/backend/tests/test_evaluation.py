@@ -140,3 +140,17 @@ def test_evaluate_without_detections_key(tmp_path):
     frames = [{"frame": 0, "obstacle": False}, {"frame": 1, "obstacle": True}]
     s = evaluation.evaluate(frames, p)
     assert s["false_stop_frames"] == 1 and s["frames_labelled"] == 2
+
+
+def test_labels_extent(tmp_path):
+    """The chart band of the run page: the nearest in-gauge, visible labelled object per frame."""
+    far_box = {"distance": 42.0, "lateral": 0.2, "size": [1.2, 0.6, 1.0], "in_gauge": True}
+    near_box = {"distance": 30.0, "lateral": 0.0, "size": [0.5, 0.5, 1.7], "in_gauge": True}
+    side = {"distance": 12.0, "lateral": 2.4, "size": [0.5, 0.5, 1.0], "in_gauge": False}
+    data = {"_meta": {"bag": "t"}, "00000": [side], "00001": [far_box, near_box, side],
+            "00002": [dict(near_box, n_points=0)], "00003": [far_box]}
+    p = _write(tmp_path, data)
+    near, far = evaluation.labels_extent([0, 1, 2, 3, 7], p)
+    assert near == [None, 30.0, None, 42.0, None]      # beside the track / hidden / unlabelled: none
+    assert far == [None, 30.5, None, 43.2, None]
+    assert evaluation.labels_extent([], p) == ([], [])

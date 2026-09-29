@@ -1,0 +1,50 @@
+.anchor {
+  display: inline-flex;
+  flex: none;
+}
+.menu {
+  position: fixed;
+  z-index: 70;
+  background: var(--card);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-pop);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  border-radius: 14px;
+  padding: 8px 10px;
+  font-weight: 700;
+  font-size: 13.5px;
+  text-align: left;
+  color: var(--ink);
+}
+.item:hover,
+.item:focus-visible {
+  background: var(--well);
+  box-shadow: none;
+}
+.item:disabled {
+  background: var(--well-2);
+}
+.ic {
+  width: 32px;
+  height: 32px;
+  border-radius: 11px;
+  background: var(--well);
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.item:hover .ic,
+.item:focus-visible .ic {
+  background: var(--card);
+}

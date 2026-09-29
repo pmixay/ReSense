@@ -1,0 +1,43 @@
+.counts {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+.sec {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--f-head);
+  font-weight: 700;
+  font-size: 12.5px;
+  margin: 16px 2px 9px;
+  min-height: 30px;
+}
+.n {
+  height: 22px;
+  min-width: 22px;
+  padding: 0 7px;
+  border-radius: 11px;
+  background: var(--ink);
+  color: var(--white);
+  font-family: var(--f-body);
+  font-weight: 800;
+  font-size: 12px;
+  display: grid;
+  place-items: center;
+}
+.right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--f-body);
+}
+
+@media (max-height: 950px) {
+  .sec {
+    margin: 12px 2px 7px;
+  }
+}

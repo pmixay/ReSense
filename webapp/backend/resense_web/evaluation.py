@@ -163,6 +163,27 @@ def labels_in_gauge(frame_indices: Sequence[int], labels_path: Path) -> list[boo
     return [_in_gauge(frames.get(int(i))) if i is not None else False for i in frame_indices]
 
 
+def labels_extent(frame_indices: Sequence[int], labels_path: Path) -> tuple[list[float | None], list[float | None]]:
+    """Per bag frame index: the along-track extent of the nearest labelled, visible in-gauge object -
+    ``near`` (its nearest face, m) and ``far`` (near + its length) - or None where the labels have
+    no such object. The detector's ``nearest_distance`` of a correct STOP falls near ``near``."""
+    frames, _ = _labels(labels_path)
+    near: list[float | None] = []
+    far: list[float | None] = []
+    for i in frame_indices:
+        objs = [g for g in gt_objects(frames.get(int(i)) or [])] if i is not None else []
+        objs = [g for g in objs if g.in_gauge and math.isfinite(float(g.distance))]
+        if not objs:
+            near.append(None)
+            far.append(None)
+            continue
+        g = min(objs, key=lambda o: float(o.distance))
+        length = float(g.size[0]) if len(g.size) and math.isfinite(float(g.size[0])) else 0.0
+        near.append(round(float(g.distance), 2))
+        far.append(round(float(g.distance) + max(length, 0.0), 2))
+    return near, far
+
+
 def _json_safe(o):
     if isinstance(o, dict):
         return {str(k): _json_safe(v) for k, v in o.items()}

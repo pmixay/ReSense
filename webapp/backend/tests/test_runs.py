@@ -69,13 +69,22 @@ def test_job_progress_and_run_list(done_run):
 
 
 def test_run_detail_and_series(done_run):
-    client, _settings, rec, job = done_run
+    client, settings, rec, job = done_run
     d = client.get(f"/api/runs/{job['run_id']}").json()
     assert d["recording"]["id"] == rec["id"]
     eps = d["episodes"]
     assert sum(e["n_frames"] for e in eps) == N_FRAMES and eps[-1]["decision"] == "STOP"
     assert eps[-1]["last_frame"] == N_FRAMES - 1 and eps[-1]["distance_min"] is not None
     assert all(e["decision"] != "GO" for e in d["events"][-1:])
+    # what the run was made with, and its stored files
+    assert d["options"]["cloud_points"] == 6000 and d["options"]["every"] == 1 and d["overrides"] == {}
+    assert d["sizes"]["results_jsonl"] > 0 and d["sizes"]["clouds"] > 0
+    assert d["sizes"]["results_jsonl"] == (settings.runs_dir / job["run_id"] / "results.jsonl").stat().st_size
+    assert "options" not in client.get("/api/runs").json()[0]
+    # no labels for this recording: the labels overlay is unavailable (200, not an error)
+    assert client.get(f"/api/runs/{job['run_id']}/labels").json() == {
+        "available": False, "labels_name": None, "in_gauge": [], "near": [], "far": []}
+    assert client.get("/api/runs/nosuch/labels").status_code == 404
     series = client.get(f"/api/runs/{job['run_id']}/series").json()
     assert series["frame"] == list(range(N_FRAMES)) and series["decisions"] == d["summary"]["decisions"]
     for key in ("t", "nearest", "clear", "latency_ms", "n_detections", "n_warnings", "n_points", "visibility"):
@@ -135,6 +144,7 @@ def test_downloads(done_run):
     rep = r.json()
     assert rep["schema"] == "resense_web_report" and rep["version"] == 1 and rep["generated_at"]
     assert rep["run"]["id"] == job["run_id"] and rep["run"]["summary"]["n_frames"] == N_FRAMES
+    assert "sizes" not in rep["run"] and rep["options"]["cloud_points"] == 6000 and rep["overrides"] == {}
     assert sum(e["n_frames"] for e in rep["episodes"]) == N_FRAMES
     assert "report.json" in r.headers["content-disposition"]
     r = client.get(f"{base}/frames.csv")
@@ -240,11 +250,21 @@ def test_evaluation_with_uploaded_labels(client, env, synthetic_bag):
     assert 0 < ev["recall"] <= 1 and isinstance(ev["raw"], dict)
     series = client.get(f"/api/runs/{job['run_id']}/series").json()
     assert series["labels_in_gauge"] == [False] * 8 + [True] * 12
+    lab = client.get(f"/api/runs/{job['run_id']}/labels").json()
+    assert lab["available"] and lab["labels_name"] == ev["labels_name"]
+    assert lab["in_gauge"] == series["labels_in_gauge"]
+    assert lab["near"] == [None] * 8 + [30.0] * 12 and lab["far"] == [None] * 8 + [30.4] * 12
+    scored_run = job["run_id"]
     # evaluate=false: no scores, the chart overlay stays
     job = wait_job(client, client.post("/api/jobs", json={"recording_id": rec["id"], "options": {
         "clouds": False, "evaluate": False, "limit": 10}}).json()["id"])
     assert client.get(f"/api/runs/{job['run_id']}").json()["summary"]["eval"] is None
     assert client.get(f"/api/runs/{job['run_id']}/series").json()["labels_in_gauge"] == [False] * 8 + [True] * 2
+    assert client.get(f"/api/runs/{job['run_id']}/labels").json()["near"] == [None] * 8 + [30.0] * 2
+    # the uploaded label file goes with its recording: the overlay becomes unavailable, the scores stay
+    assert client.delete(f"/api/recordings/{rec['id']}").status_code == 204
+    assert client.get(f"/api/runs/{scored_run}/labels").json()["available"] is False
+    assert client.get(f"/api/runs/{scored_run}").json()["summary"]["eval"]["frames_detected"] == ev["frames_detected"]
 
 
 def test_npz_and_plain_array_frames(client, env, synthetic_clouds):

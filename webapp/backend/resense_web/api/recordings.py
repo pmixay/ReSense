@@ -4,6 +4,8 @@ from __future__ import annotations
 import json
 import os
 import shutil
+import threading
+import time
 import zipfile
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Query, Request, Response
@@ -26,6 +28,7 @@ WRITE_CHUNK = 4 * 1024 * 1024
 DISK_MARGIN = 256 * 1024 ** 2
 MAX_LABELS_BYTES = 64 * 1024 ** 2
 SCENARIOS = ("approach", "crossing", "clear")
+PROGRESS_ID = r"^[A-Za-z0-9_-]{8,64}$"
 
 
 class UploadCreate(BaseModel):
@@ -40,6 +43,59 @@ class DemoCreate(BaseModel):
     scenario: str = "approach"
     seconds: float = Field(default=15.0, ge=5, le=60)
     seed: int | None = Field(default=None, ge=0, le=2 ** 31 - 1)
+    progress_id: str | None = Field(default=None, pattern=PROGRESS_ID)
+
+
+class DemoProgress:
+    """Progress of demo generations, keyed by a client-chosen ``progress_id``: the POST is
+    synchronous (~0.65 s per simulated second), so the UI polls this while it waits. One process
+    serves the API (the job queue lives in it too), so an in-memory registry is enough; entries
+    expire ``TTL_S`` after their last update."""
+
+    TTL_S = 600.0
+
+    def __init__(self) -> None:
+        self._lock = threading.Lock()
+        self._items: dict[str, dict] = {}
+
+    def _prune(self, now: float) -> None:
+        for key in [k for k, v in self._items.items() if now - v["_t"] > self.TTL_S]:
+            del self._items[key]
+
+    def start(self, key: str) -> bool:
+        """Register a generation; False when one with this id is still running."""
+        now = time.monotonic()
+        with self._lock:
+            self._prune(now)
+            cur = self._items.get(key)
+            if cur is not None and not cur["done"] and cur["error"] is None:
+                return False
+            self._items[key] = {"fraction": 0.0, "done": False, "recording_id": None, "error": None, "_t": now}
+            return True
+
+    def _set(self, key: str, **fields) -> None:
+        with self._lock:
+            item = self._items.get(key)
+            if item is not None:
+                item.update(fields, _t=time.monotonic())
+
+    def update(self, key: str, fraction: float) -> None:
+        self._set(key, fraction=round(min(1.0, max(0.0, float(fraction))), 4))
+
+    def finish(self, key: str, recording_id: str) -> None:
+        self._set(key, fraction=1.0, done=True, recording_id=recording_id)
+
+    def fail(self, key: str, message: str) -> None:
+        self._set(key, error=message)
+
+    def get(self, key: str) -> dict | None:
+        with self._lock:
+            self._prune(time.monotonic())
+            item = self._items.get(key)
+            return None if item is None else {"progress_id": key, **{k: v for k, v in item.items() if k != "_t"}}
+
+
+DEMO_PROGRESS = DemoProgress()
 
 
 def _recording_or_404(ctx: Context, rec_id: str) -> dict:
@@ -151,24 +207,43 @@ def create_demo(body: DemoCreate | None = Body(default=None), ctx: Context = Dep
     body = body or DemoCreate()
     if body.scenario not in SCENARIOS:
         raise HTTPException(422, "Сценарий должен быть одним из: approach, crossing, clear")
+    key = body.progress_id
+    if key is not None and not DEMO_PROGRESS.start(key):
+        raise HTTPException(409, "Демо-запись с этим progress_id уже создаётся")
     from resense_web import demo as demo_mod
     rec_id = new_id()
     rec_dir = ctx.settings.recordings_dir / rec_id
     out = rec_dir / f"demo_{body.scenario}"
     seed = 0 if body.seed is None else int(body.seed)
+    report = (lambda f: DEMO_PROGRESS.update(key, f)) if key is not None else None
     try:
-        info = demo_mod.generate_demo_bag(out, scenario=body.scenario, seconds=float(body.seconds), seed=seed)
+        info = demo_mod.generate_demo_bag(out, scenario=body.scenario, seconds=float(body.seconds), seed=seed,
+                                          progress=report)
         probe = probe_path(out)
+        name = (info or {}).get("name") or probe.source_name
+        row = rec_mod.insert(ctx.db, probe, name=name, source="demo", rec_id=rec_id,
+                             meta={"scenario": body.scenario, "seconds": float(body.seconds), "seed": seed})
     except ValueError as exc:
         shutil.rmtree(rec_dir, ignore_errors=True)
+        if key is not None:
+            DEMO_PROGRESS.fail(key, str(exc))
         raise HTTPException(422, str(exc)) from None
     except BaseException:
         shutil.rmtree(rec_dir, ignore_errors=True)
+        if key is not None:
+            DEMO_PROGRESS.fail(key, "Не удалось создать демо-запись")
         raise
-    name = (info or {}).get("name") or probe.source_name
-    row = rec_mod.insert(ctx.db, probe, name=name, source="demo", rec_id=rec_id,
-                         meta={"scenario": body.scenario, "seconds": float(body.seconds), "seed": seed})
+    if key is not None:
+        DEMO_PROGRESS.finish(key, rec_id)
     return rec_mod.to_api(ctx.settings, row)
+
+
+@router.get("/recordings/demo/progress/{progress_id}")
+def demo_progress(progress_id: str) -> dict:
+    item = DEMO_PROGRESS.get(progress_id)
+    if item is None:
+        raise not_found("Создание демо-записи не найдено")
+    return item
 
 
 # --- recordings ---------------------------------------------------------------------------------

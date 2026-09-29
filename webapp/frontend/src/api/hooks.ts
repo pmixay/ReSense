@@ -27,6 +27,7 @@ import type {
   Recording,
   Run,
   RunDetail,
+  RunLabels,
   RunSeries,
   ServerListing,
   SystemInfo,
@@ -50,6 +51,7 @@ export const qk = {
   runs: ['runs'] as const,
   run: (id: string) => ['run', id] as const,
   runSeries: (id: string) => ['run-series', id] as const,
+  runLabels: (id: string) => ['run-labels', id] as const,
   runFrames: (id: string, from: number, count: number) => ['run-frames', id, from, count] as const,
   runClouds: (id: string) => ['run-clouds', id] as const,
   runCloud: (id: string, pos: number) => ['run-cloud', id, pos] as const,
@@ -406,6 +408,17 @@ export function useRunSeries(id: string | null | undefined, opts?: QueryOpts<Run
   });
 }
 
+/** The run's labels per processed frame (the distance chart's band); `available: false` without labels. */
+export function useRunLabels(id: string | null | undefined, opts?: QueryOpts<RunLabels>) {
+  return useQuery<RunLabels, ApiError>({
+    queryKey: qk.runLabels(id ?? ''),
+    queryFn: ({ signal }) => api.get<RunLabels>(`/runs/${enc(id ?? '')}/labels`, { signal }),
+    enabled: !!id,
+    staleTime: Infinity,
+    ...opts,
+  });
+}
+
 export const FRAMES_PAGE_MAX = 500;
 
 export function fetchRunFrames(id: string, from: number, count: number, signal?: AbortSignal): Promise<FramesPage> {
@@ -482,7 +495,7 @@ export function useDeleteRun() {
   return useMutation<void, ApiError, string>({
     mutationFn: (id) => api.del(`/runs/${enc(id)}`),
     onSuccess: (_v, id) => {
-      for (const root of ['run', 'run-series', 'run-frames', 'run-clouds', 'run-cloud']) qc.removeQueries({ queryKey: [root, id] });
+      for (const root of ['run', 'run-series', 'run-labels', 'run-frames', 'run-clouds', 'run-cloud']) qc.removeQueries({ queryKey: [root, id] });
       onRunsChanged(qc);
     },
   });
