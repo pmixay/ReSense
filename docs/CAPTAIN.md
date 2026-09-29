@@ -55,7 +55,7 @@ artifact map and the upload list: [`REQUIREMENTS_MAP.md`](REQUIREMENTS_MAP.md) �
 | # | item | who | state |
 |---|---|---|---|
 | 1 | **Final documentation pass** (every doc against `7532a6b`, the 29.09 rules in ALGORITHM / EXPERIMENTS / DECISIONS, the pitch deck with current numbers, the requirements map, the judgement's offline measurements re-run on `7532a6b` as `evidence/judgement_2026-09-29/`) → one PR from `claude/admiring-pascal-ex9v51`; merge after CI is green. Docs only: no sealed file changes. | A; H merges | in progress |
-| 2 | **Release candidate:** push `v1.0.0-rc1` on `7532a6b` (the image's code is final; the doc PR changes nothing the runtime uses). `release.yml` publishes the archive; then on the team VM, logged out: download, `sha256sum -c`, `IMAGE_TAR=… OFFLINE=1 scripts/dry_run.sh` on `doubleT_obstacle` and `roundT_doubleT`; commit the output as `evidence/vm_2026-09-29/`. The agent session cannot push tags (its git proxy takes only its branch). | H tags, H runs the VM | waiting for the tag |
+| 2 | **Release candidate:** push `v1.0.0-rc2` on the commit of the new seal (the image's code is final there; `rc1` on `7532a6b` is cancelled: it still has the `shell` rule). `release.yml` publishes the archive; then on the team VM, logged out: download, `sha256sum -c`, `IMAGE_TAR=… OFFLINE=1 scripts/dry_run.sh` on `doubleT_obstacle` and `roundT_doubleT`; commit the output as `evidence/vm_2026-09-29/`. The agent session cannot push tags (its git proxy takes only its branch). | H tags, H runs the VM | after the reseal |
 | 3 | **Final release:** push `v1.0.0` on the final `main` after item 1 merges; check the release assets and their sha256. | H | after 1 |
 | 4 | **Submit** (links): the repository with the final commit hash, the `v1.0.0` archive and its sha256, the video, the deck (PDF), the GitBook — every link opened logged out first. | H | after 3 |
 | 5 | Keep `--read-ahead-queue-size 10` prominent in every instruction: with Humble's default read-ahead the results stay stale. | A | done in README / GitBook |
@@ -66,7 +66,7 @@ artifact map and the upload list: [`REQUIREMENTS_MAP.md`](REQUIREMENTS_MAP.md) �
 |---|---|---|
 | 6 | Answer the organizers daily during the expertise 30.09–14.10; new answers into `organizers/answers.md` (no question open). | H |
 | 7 | Pitch on 23.10: two rehearsals, the live remote demo from a second device ([`../web/DEMO_HANDOFF.md`](../web/DEMO_HANDOFF.md)), the speech of [`PRESENTATION.md`](PRESENTATION.md). | P1 + team |
-| 8 | The independent safety review of the three rules of 29.09 (DETECTOR_FREEZE step 3; the agent review of 29.09 evening is recorded in the doc PR). | A |
+| 8 | A human read of the safety review of 29.09 night (the agent review: `shell` BLOCKING → switched off; `explained_run`, the ego veto NON-BLOCKING with documented limits). | P1, P3 |
 | 9 | If an 8-core machine is available: `scripts/bench_8core.sh` on both original bags, evidence committed. | H (+ A) |
 
 ## 4. Branches other than `main` (29.09 evening)
@@ -200,7 +200,8 @@ and publishes `resense-image-<tag>.tar.gz`, its `.sha256` and `SHA256SUMS`. The 
 | 29.09 evening | three false-alarm rules from other case-05 teams' public solutions on by default (`tracking.explained_run` 5, `cluster.shell_min_top` 2.3 m, `tracking.ego_veto_min_speed` 4 m/s), each gated on all organizer data: PASS, 7 metrics better, none worse (ride 32 / 31 → 26 / 28 events / STOP episodes); five other candidates rejected; resealed at `1e2ed82`; the safety review of step 3 was not done before the seal | PR #29, [`evidence/cycle_2026-09-29/competitor_rules/gate_table.md`](evidence/cycle_2026-09-29/competitor_rules/gate_table.md), CHANGELOG |
 | 29.09 evening | the current gate becomes the regression baseline (`evidence/results/regression_baseline_2026-09-29_competitor_rules.json`, a copy of the sealing gate; the user's decision): the deck and video tests check today's numbers and a future gate compares against the shipped detector | the user, 29.09 |
 | 29.09 evening | P2 declined the pitch after delivering the deck with the team's photos; the captain owns the pitch with agent help, the team records the video; the named deck (names and photos) is committed to the public repository (the user's decision; lifts the placeholder rule of 25.09) | the user, 29.09 |
-| 29.09 evening | release: `v1.0.0-rc1` on `7532a6b` first (the runtime is final), verified on the team VM from the published archive; `v1.0.0` on the final `main` after the documentation PR | the user, 29.09; §3 items 2–3 |
+| 29.09 night | **the `shell` rule off** (`cluster.shell_min_top` 0, `a5455b3`; the user's decision on the safety review): the rule read a floor-standing cluster's own top above the 3.0 m envelope as the lining, so a cable hanging from the vault to the rails, a pole, a standing train were CAUTION beyond 40 m (ray-cast tunnel, 22 m/s: catalogue `cable_low` first STOP 21.0 m on vs 73.8 m off; pole 36.4 vs 104.6 m); alone it bought ride 32 / 31 → 31 / 29. `explained_run` and the ego veto stay (NON-BLOCKING; the ego veto must only get a measured speed). Full gate of the shell-off commit against the `3eeb106` gate, then a new seal | the user, 29.09; safety review in the doc PR |
+| 29.09 night | release: `v1.0.0-rc1` on `7532a6b` cancelled (it has the `shell` rule); `v1.0.0-rc2` on the new seal's commit, verified on the team VM from the published archive; `v1.0.0` on the final `main` after the documentation PR | the user, 29.09; §3 items 2–3 |
 
 ## Experimental branch integration, 28.09
 

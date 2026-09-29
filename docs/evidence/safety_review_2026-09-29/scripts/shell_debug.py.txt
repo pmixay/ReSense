@@ -1,0 +1,28 @@
+import numpy as np
+from resense.config import DetectorConfig
+from resense.detector import Detector
+from resense.frame import Frame
+from resense.synthetic import ObstacleSpec, synthetic_tunnel_frame
+orig = Detector._shell
+def spy(self, clusters, xyz, dy_all, h_all):
+    before = {id(c): c.reason for c in clusters}
+    orig(self, clusters, xyz, dy_all, h_all)
+    for c in clusters:
+        if c.reason == "shell" and before[id(c)] != "shell":
+            cc = self.cfg.cluster; X = xyz[:, 0]; x0, x1 = float(c.bbox_min[0]), float(c.bbox_max[0]); ds = 1 + 0.01 * x0
+            idx = c.points_idx; d0, d1 = dy_all[idx].min() - cc.shell_lateral, dy_all[idx].max() + cc.shell_lateral; top = c.height_max
+            m = (X > x0 - ds) & (X < x1 + ds) & (h_all > top) & (h_all < top + cc.shell_gap) & (dy_all > d0) & (dy_all < d1)
+            print(f"  shell: dist {c.distance:.1f} X {x0:.1f}-{x1:.1f} dy {d0:.2f}..{d1:.2f} h {c.height_min:.2f}-{top:.2f}; above: n={m.sum()} X {np.round(np.percentile(X[m],[0,50,100]),1)} h {np.round(np.percentile(h_all[m],[0,50,100]),2)} dy {np.round(np.percentile(dy_all[m],[0,50,100]),2)}")
+Detector._shell = spy
+for D in (100.0, 60.0):
+    frame, _, _ = synthetic_tunnel_frame(rng=np.random.default_rng(7), specs=[ObstacleSpec(kind="box", size=(3.0, 1.2, 2.6), distance=D, lateral=0.0, reflectivity=30.0, label="v", base=0.3)])
+    det = Detector(DetectorConfig()); print("box 1.2 x 2.6 base 0.3 (top 2.9) at", D)
+    for k in range(2): det.process(Frame(xyz=frame.xyz, intensity=frame.intensity, stamp=0.1 * k))
+print("moving control box, 22 m/s")
+det = Detector(DetectorConfig()); D = 130.0; k = 0
+while D > 38:
+    frame, _, _ = synthetic_tunnel_frame(rng=np.random.default_rng(500 + k), specs=[ObstacleSpec(kind="box", size=(3.0, 1.2, 2.6), distance=D, lateral=0.0, reflectivity=30.0, label="veh2", base=0.3)])
+    print(f" frame {k} D {D:.1f}", end="")
+    r = det.process(Frame(xyz=frame.xyz, intensity=frame.intensity, stamp=0.1 * k))
+    print(" ", [(round(c.distance,1), c.zone, c.reason, round(c.height_max,2), round(float(c.size[1]),2)) for c in r.candidates if c.distance > 30][:2])
+    D -= 2.2; k += 1

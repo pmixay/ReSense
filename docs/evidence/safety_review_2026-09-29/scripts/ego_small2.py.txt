@@ -1,0 +1,32 @@
+"""Near escalation vs the veto: object with few strict voxels (n_gauge 5 < near_escalate_voxels 10) vs 40,
+train at 7 m/s with the speed input 22 (constant parameter), from 150 m. And train braking to a stop with coasting."""
+import numpy as np
+from resense.clustering import Cluster
+from resense.config import TrackingConfig
+from resense.tracking import Tracker
+def cl(x, ng):
+    c = np.array([x, 0.0, 0.3])
+    return Cluster(points_idx=np.arange(3), n=40, n_raw=40, centroid=c, bbox_min=c - 0.15, bbox_max=c + 0.15,
+                   distance=x, lateral=0.0, height_min=0.15, height_max=0.45, intensity=10.0, n_expected=40.0,
+                   score=1.0, zone="gauge", n_gauge=ng)
+for ng in (40, 5):
+    for veto in (4.0, 0.0):
+        t = Tracker(TrackingConfig(doubt_extra_hits=0, ego_veto_min_speed=veto)); first = None
+        v = 7.0
+        for k in range(300):
+            d = 150 - v * 0.1 * k
+            if d < 3: break
+            t.update([cl(d, ng)], ego_shift=0.0, frame_dt=0.1, far_thin=[], odo_speed=22.0)
+            if any(tr.reported and tr.zone == "gauge" for tr in t.tracks):
+                first = round(d, 1); break
+        print(f"n_gauge={ng} veto={'on' if veto else 'off'}: first STOP at {first} m (train 7 m/s, speed input 22)")
+# braking to a stop: estimates 8,7,...,1 then None (standing); object appears at 60 m during the braking
+speeds = [8, 7, 6, 5, 4.5, 4, 3, 2, 1, None, None, None, None, None, None, None, None, None, None, None]
+for veto in (4.0, 0.0):
+    t = Tracker(TrackingConfig(doubt_extra_hits=0, ego_veto_min_speed=veto)); d = 60.0; s = ""
+    for k, sp in enumerate(speeds):
+        true = sp if sp is not None else 0.0
+        t.update([cl(d, 40)], ego_shift=0.0, frame_dt=0.1, far_thin=[], odo_speed=sp)
+        s += "S" if any(tr.reported and tr.zone == "gauge" for tr in t.tracks) else "."
+        d -= true * 0.1
+    print(f"braking to a stop, veto {'on' if veto else 'off'}: {s}")
